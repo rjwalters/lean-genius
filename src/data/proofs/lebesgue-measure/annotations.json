@@ -75,7 +75,7 @@
       "startLine": 116,
       "endLine": 128
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Translation Invariance",
     "content": "**Translation Invariance**: $\\mu(E + c) = \\mu(E)$\n\nLebesgue measure is invariant under translation. In Lean, this is expressed as `IsAddLeftInvariant volume`, which Mathlib derives from the fact that Lebesgue measure is a Haar measure on $(\\mathbb{R}, +)$.\n\nThe explicit proof of `volume_add_left` uses `measure_preimage_add`, rewriting the image $c + E$ as the preimage of $E$ under $x \\mapsto -c + x$.\n\n**Uniqueness**: Any translation-invariant Borel measure on $\\mathbb{R}$ that assigns finite measure to $[0,1]$ is a scalar multiple of Lebesgue measure. This is a special case of the uniqueness of Haar measure on locally compact groups.",
     "mathContext": "$\\mu(E + c) = \\mu(E)$ for all measurable $E$ and $c \\in \\mathbb{R}$; Lebesgue measure is the unique (up to scaling) translation-invariant Borel measure",
@@ -123,7 +123,7 @@
       "startLine": 191,
       "endLine": 210
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Monotone Convergence Theorem",
     "content": "**Monotone Convergence Theorem** (Beppo Levi, 1906):\n\nIf $f_n \\nearrow f$ pointwise (non-decreasing to $f$), then:\n$$\\int f_n \\, d\\mu \\to \\int f \\, d\\mu$$\n\nThe proof delegates to `lintegral_tendsto_of_tendsto_of_monotone`, converting pointwise hypotheses to almost-everywhere statements via `ae_of_all`.\n\n**Corollary** (`lintegral_tsum_eq`): For non-negative measurable $f_n$,\n$$\\int \\sum_n f_n = \\sum_n \\int f_n$$\nThis is proved via `lintegral_tsum` and is essential for series manipulations in analysis.\n\n**Why Important**: Justifies interchanging limits and integrals under monotonicity — no need for uniform convergence. This is strictly weaker than dominated convergence but applies to $[0,\\infty]$-valued functions where no integrable bound is needed.",
     "mathContext": "$f_n \\nearrow f \\implies \\int f_n \\to \\int f$; $\\int \\sum_n f_n = \\sum_n \\int f_n$",
@@ -146,7 +146,7 @@
       "startLine": 230,
       "endLine": 239
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Dominated Convergence Theorem",
     "content": "**Dominated Convergence Theorem** (Lebesgue, 1910):\n\nIf $f_n \\to f$ pointwise a.e. and $\\|f_n(x)\\| \\leq g(x)$ for integrable $g$, then:\n$$\\int f_n \\, d\\mu \\to \\int f \\, d\\mu$$\n\nThe proof is a single line delegating to `tendsto_integral_of_dominated_convergence`, which is one of the deepest results in Mathlib's measure theory library.\n\n**Why this is the workhorse**: Unlike monotone convergence (requires monotonicity) or uniform convergence (requires uniformity), DCT needs only:\n1. Pointwise a.e. convergence\n2. An integrable dominating function\n\nThis generality makes it applicable throughout analysis, probability, and PDE theory. It also implies that $f$ itself is integrable — a free bonus.",
     "mathContext": "$\\|f_n\\| \\leq g \\in L^1$, $f_n \\to f$ a.e. $\\implies \\int f_n \\to \\int f$ and $f \\in L^1$",
@@ -170,7 +170,7 @@
       "startLine": 260,
       "endLine": 294
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Fubini's Theorem",
     "content": "**Fubini-Tonelli Theorem**:\n\nTwo forms are proved:\n\n1. **Tonelli** (non-negative): For measurable $f : \\mathbb{R}^2 \\to [0,\\infty]$,\n$$\\int\\int f(x,y)\\,d\\mu(x)\\,d\\nu(y) = \\int f\\,d(\\mu \\times \\nu)$$\nProved via `lintegral_prod`.\n\n2. **Fubini** (integrable): For $f \\in L^1(\\mu \\times \\nu)$,\n$$\\int\\int f(x,y)\\,d\\mu\\,d\\nu = \\int\\int f(x,y)\\,d\\nu\\,d\\mu$$\nThe proof shows both iterated integrals equal the product integral using `integral_prod`, then applies `integral_prod_swap` with `hf.comp_measurable measurable_swap` for the other order.\n\nAlso proves `integral_prod_eq_integral_integral`: the product integral equals the iterated integral.\n\n**Historical note**: Guido Fubini (1907) and Leonida Tonelli (1909) independently established these results. Tonelli's version for non-negative functions doesn't require integrability — a crucial distinction.",
     "mathContext": "$\\int\\int f\\,dx\\,dy = \\int\\int f\\,dy\\,dx = \\iint f\\,d(\\mu \\times \\nu)$",
@@ -195,7 +195,7 @@
       "startLine": 306,
       "endLine": 324
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Completeness and Null Sets",
     "content": "**Completeness of Lebesgue Measure**:\n\nProves two key results about null sets:\n\n1. `countable_measure_zero`: Any countable set $S \\subseteq \\mathbb{R}$ has $\\mu(S) = 0$, via `Set.Countable.measure_zero`.\n\n2. `rationals_measure_zero`: $\\mu(\\mathbb{Q}) = 0$ as a corollary, since $\\mathbb{Q}$ is countable (`Set.countable_range`).\n\nThe Cantor set theorem is stated as `True` (placeholder) but represents the deep fact that uncountable sets can have measure zero. The standard Cantor set $C \\subseteq [0,1]$ satisfies $|C| = |\\mathbb{R}|$ (continuum cardinality) but $\\mu(C) = 0$ because the total length removed is $\\sum_{n=1}^\\infty 2^{n-1}/3^n = 1$.",
     "mathContext": "$S$ countable $\\implies \\mu(S) = 0$; $\\mu(\\mathbb{Q}) = 0$; Cantor set: $|C| = \\mathfrak{c}$ but $\\mu(C) = 0$",

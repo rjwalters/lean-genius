@@ -7,7 +7,7 @@
     "author": "Stephen Cook (1971)",
     "date": "1971",
     "status": "axiomatized",
-    "proofRepoPath": "Proofs/PNPBarriersSound.lean",
+    "proofRepoPath": "Proofs/PNPBarriersUnified.lean",
     "tags": [
       "computability",
       "complexity-theory",
@@ -16,8 +16,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 123,
-    "assumptions": "123 axiom declarations encoding standard complexity theory results across 52 parts: basic containments (P⊆NP⊆PSPACE⊆EXP), Cook-Levin theorem, Ladner's theorem, polynomial hierarchy, three major barriers (relativization, natural proofs, algebrization), space complexity (Savitch, Immerman-Szelepcsenyi), probabilistic classes (BPP⊆PSPACE, Sipser-Lautemann), interactive proofs (IP=PSPACE, AM, MIP*=RE), PCP theorem, fine-grained complexity (ETH, SETH), meta-complexity (MCSP, Kolmogorov), circuit complexity (AC0, TC0, NC), derandomization (P=BPP conjecture, Nisan-Wigderson), TFNP subclasses (PPAD, PLS, PPP, CLS), descriptive complexity (Fagin, Immerman-Vardi), counting complexity (#P, Toda's theorem), quantum complexity (QMA, QIP=PSPACE), zero-knowledge proofs, Reingold's USTCON∈L, Unique Games Conjecture, Barrington's theorem, and more. The P vs NP question itself remains open.",
+    "axiomCount": 126,
+    "assumptions": "126 axiom declarations across ComplexityCore.lean (5 core model axioms) and PNPBarriersUnified.lean (121 landscape axioms): core model (Phi_countably_many, Phi_pair_project_first, Phi_negate, poly_time_compose, reduction_preserves_P), barrier axioms (Baker-Gill-Solovay eq/sep, razborov_rudich, Aaronson-Wigderson eq/neq, algebrization_subsumes_relativization), containments (P subset NP subset PSPACE subset EXP), Cook-Levin theorem, Ladner's theorem, polynomial hierarchy, space complexity (Savitch, Immerman-Szelepcsenyi), probabilistic classes (BPP, Sipser-Lautemann), interactive proofs (IP=PSPACE, AM, MIP*=RE), PCP theorem, fine-grained complexity (ETH, SETH), meta-complexity (MCSP, Kolmogorov), circuit complexity (AC0, TC0, NC), derandomization (Nisan-Wigderson, Impagliazzo-Wigderson), TFNP subclasses (PPAD, PLS, PPP, CLS), descriptive complexity (Fagin, Immerman-Vardi), counting complexity (#P, Toda's theorem), quantum complexity (QMA, QIP=PSPACE), zero-knowledge proofs, Reingold's USTCON in L, Unique Games Conjecture, Barrington's theorem, and more. The P vs NP question itself remains open.",
     "mathlibDependencies": [
       {
         "theorem": "Mathlib.Logic.Basic",
@@ -31,25 +31,26 @@
       }
     ],
     "originalContributions": [
-      "Comprehensive formalization of computational complexity theory (52 parts, 6821 lines)",
-      "298 proved theorems connecting complexity classes, barriers, and structural results",
-      "83 definitions and 82 opaque constants modeling the full complexity landscape",
-      "Three major barriers (relativization, natural proofs, algebrization) formalized",
-      "Master summary theorem unifying 16 components of the P vs NP landscape"
+      "Unified formalization of computational complexity theory across ComplexityCore.lean and PNPBarriersUnified.lean (6777 combined lines)",
+      "Sound Godelized computation model (opaque Phi) preventing the trivial solver collapse of the legacy model",
+      "Three major barriers (relativization, natural proofs, algebrization) with both BGS-derived and truly opaque formulations",
+      "Aaronson-Wigderson algebrization axioms with independent opaque oracle model (from PNPBarriersOQ01)",
+      "Master summary theorem unifying 21 components of the P vs NP landscape"
     ],
     "dateAdded": "2025-12-29",
     "millenniumProblem": "p-vs-np",
-    "lineCount": 6764
+    "lineCount": 6777
   },
   "leanFile": {
-    "path": "Proofs/PNPBarriersSound.lean",
-    "lineCount": 6764,
+    "path": "Proofs/PNPBarriersUnified.lean",
+    "lineCount": 6370,
     "imports": [
       "Mathlib.Logic.Basic",
       "Mathlib.Tactic",
-      "Mathlib.Data.Set.Basic"
+      "Mathlib.Data.Set.Basic",
+      "Proofs.ComplexityCore"
     ],
-    "namespace": "PNPBarriersSound",
+    "namespace": "PNPBarriersUnified",
     "structures": [
       "Program",
       "Polynomial",

@@ -9,6 +9,7 @@
     "date": "1975",
     "status": "verified",
     "proofRepoPath": "Proofs/SzemerediRegularity.lean",
+    "leanFile": "proofs/Proofs/SzemerediRegularity.lean",
     "tags": [
       "szemeredi",
       "combinatorics",
@@ -30,17 +31,18 @@
         "module": "Mathlib.Order.Partition.Finpartition"
       },
       {
-        "theorem": "Finset.card",
-        "description": "Cardinality for edge density computation",
-        "module": "Mathlib.Data.Finset.Card"
+        "theorem": "szemeredi_regularity",
+        "description": "Mathlib's complete regularity lemma, bridged to our definitions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Regularity.Lemma"
       }
     ],
     "originalContributions": [
-      "Epsilon-regular pair definition for SimpleGraph bipartite subgraphs",
-      "Regular partition definition with equitable partition and bounded irregularity",
-      "Partition energy function with bounded energy proof",
-      "Edge density bounds: edgeDensity_nonneg and edgeDensity_le_one (proved)",
+      "Density-squared convexity lemma (Cauchy-Schwarz ingredient) with full proof",
+      "Edge count additivity for disjoint vertex sets",
+      "Split energy identity and quantitative excess bound",
       "Partition energy upper bound: partitionEnergy_le_one (proved)",
+      "Termination bound: max_iterations via Archimedean property",
+      "Bridge theorems connecting our definitions to Mathlib's szemeredi_regularity",
       "Regularity lemma (strong + full form) via Mathlib bridge"
     ],
     "dateAdded": "2026-03-21",
@@ -49,8 +51,8 @@
       "Graph theory: edge density and bipartite subgraphs",
       "Equipartitions and the energy increment argument",
       "Pseudo-randomness and epsilon-regular pairs",
-      "Triangle removal lemma and graph counting lemma",
-      "Szemeredi's theorem on arithmetic progressions"
+      "Cauchy-Schwarz inequality (for density convexity)",
+      "Szemerédi core definitions (edgeDensity, IsEpsilonRegular, etc.)"
     ],
     "references": [
       {
@@ -72,104 +74,134 @@
         "key": "FK99",
         "citation": "Frieze, A. and Kannan, R., Quick approximation to matrices and applications, Combinatorica 19 (1999), 175-220.",
         "type": "paper"
+      },
+      {
+        "key": "ADLRY94",
+        "citation": "Alon, N., Duke, R.A., Lefmann, H., Rödl, V., and Yuster, R., The algorithmic aspects of the regularity lemma, JCSS 52 (1996), 480-491.",
+        "type": "paper"
       }
     ],
     "relatedProofs": [
-      {
-        "id": "szemeredi-full",
-        "relationship": "used-by",
-        "description": "The full Szemerédi theorem uses regularity + counting to find arithmetic progressions"
-      },
-      {
-        "id": "roth-theorem-k3",
-        "relationship": "related",
-        "description": "Roth's theorem can be proved via regularity + triangle removal"
-      }
+      "szemeredi-core",
+      "szemeredi-counting",
+      "szemeredi-full",
+      "szemeredi-theorem",
+      "roth-theorem-k3",
+      "ramseys-theorem",
+      "prob-method-alteration"
     ],
     "lineCount": 501
   },
   "overview": {
-    "historicalContext": "The Szemeredi Regularity Lemma, proved by Endre Szemeredi in 1975 as a key tool in his proof of Szemeredi's theorem, has become one of the most important and widely-used results in combinatorics. It provides a universal structural decomposition for graphs: any sufficiently large graph can be partitioned into a bounded number of parts such that the edges between almost all pairs of parts behave pseudo-randomly.\n\nThe lemma's power lies in reducing arbitrary graph problems to problems about dense random-like bipartite graphs. This 'structure vs randomness' paradigm has transformed graph theory, additive combinatorics, and theoretical computer science.\n\nGowers (1997) showed that the tower-type bound on the number of parts is unavoidable: the partition size must grow as a tower of exponentials in 1/epsilon. Despite this, the lemma's qualitative power is undiminished, and it remains the primary tool for transferring results from random graphs to arbitrary graphs.\n\nThe regularity lemma has inspired numerous variants: the strong regularity lemma (Alon-Fischer-Krivelevich-Szegedy), weak regularity (Frieze-Kannan), arithmetic regularity (Green), and hypergraph regularity (Gowers, Rodl-Skokan).",
+    "historicalContext": "The Szemerédi Regularity Lemma, proved by Endre Szemerédi in 1975 as a key tool in his proof of Szemerédi's theorem, has become one of the most important and widely-used results in combinatorics. It provides a universal structural decomposition for graphs: any sufficiently large graph can be partitioned into a bounded number of parts such that the edges between almost all pairs of parts behave pseudo-randomly.\n\nThe lemma's power lies in reducing arbitrary graph problems to problems about dense random-like bipartite graphs. This 'structure vs randomness' paradigm has transformed graph theory, additive combinatorics, and theoretical computer science.\n\nGowers (1997) showed that the tower-type bound on the number of parts is unavoidable: the partition size must grow as a tower of exponentials in 1/epsilon. Despite this, the lemma's qualitative power is undiminished, and it remains the primary tool for transferring results from random graphs to arbitrary graphs.\n\nThe regularity lemma has inspired numerous variants: the strong regularity lemma (Alon-Fischer-Krivelevich-Szegedy), weak regularity (Frieze-Kannan), arithmetic regularity (Green), and hypergraph regularity (Gowers, Rödl-Skokan). This formalization proves the lemma in three forms: a vacuous basic form, a strong form with minimum part count, and a full form with partition structure, all bridged to Mathlib's complete regularity implementation.",
     "problemStatement": "For every $\\varepsilon > 0$ and integer $m \\geq 1$, there exists $M = M(\\varepsilon, m)$ such that every graph $G$ on $n \\geq M$ vertices admits an $\\varepsilon$-regular partition into at most $M$ parts.\n\nA pair $(V_i, V_j)$ is $\\varepsilon$-regular if for all $A \\subseteq V_i$, $B \\subseteq V_j$ with $|A| \\geq \\varepsilon|V_i|$, $|B| \\geq \\varepsilon|V_j|$: $|d(A,B) - d(V_i,V_j)| \\leq \\varepsilon$, where $d(X,Y) = e(X,Y)/(|X||Y|)$ is the edge density.",
-    "proofStrategy": "The formalization uses the energy increment argument:\n\n1. **Epsilon-regular pairs**: Define edge density d(A,B) between vertex subsets and the epsilon-regularity condition. A pair is regular if all large sub-pairs have similar density.\n\n2. **Partition energy**: Define the energy E(P) = (1/k^2) * sum_{i,j} d(V_i, V_j)^2 for a k-partition P. Energy always lies in [0,1].\n\n3. **Energy increment**: If a partition has more than epsilon * C(k,2) irregular pairs, it can be refined into a partition with energy at least E(P) + epsilon^5. This is the key technical step.\n\n4. **Regularity lemma**: Start with an arbitrary equipartition. If it is not epsilon-regular, refine it. Since energy increases by at least epsilon^5 at each step and is bounded by 1, the process terminates after at most epsilon^{-5} refinements. The final partition is epsilon-regular with at most M = tower(epsilon^{-5}, m) parts.",
+    "proofStrategy": "The formalization has three parts:\n\n**Part II (Energy Machinery)**: Proves the Cauchy-Schwarz ingredient (`density_sq_convex`): splitting a vertex set A into disjoint A₁ ∪ A₂ increases the sum of squared densities. The proof reduces to the algebraic identity $n_1 d_1^2 + n_2 d_2^2 - (n_1+n_2)((n_1 d_1 + n_2 d_2)/(n_1+n_2))^2 = n_1 n_2 (d_1-d_2)^2/(n_1+n_2) \\geq 0$. Also proves `partitionEnergy_le_one` via the bound $d(V_i,V_j)^2 \\leq 1$.\n\n**Part III (Main Result)**: First proves a vacuous form (`regularity_lemma`) using the trivial one-part partition {V}. Then bridges to Mathlib via compatibility theorems: `edgeDensity_eq_mathlib` (our density matches Mathlib's), `mathlib_uniform_imp_regular` (Mathlib's strict uniformity implies our regularity), and `irregular_subset_nonuniform` (our irregular pairs are a subset of Mathlib's). These bridges yield the strong form (`regularity_lemma_strong`, with m₀ ≤ k ≤ M) and full form (`regularity_lemma_full`, with partition coverage and disjointness).",
     "keyInsights": [
       "Epsilon-regularity captures pseudo-randomness: regular pairs behave like random bipartite graphs for subgraph counting",
       "Partition energy E(P) is a natural potential function: it increases with refinement and is bounded by 1",
       "The energy increment of epsilon^5 per irregular step guarantees termination in at most epsilon^{-5} refinements",
       "The tower-type bound on the number of parts is necessary (Gowers 1997), showing the lemma is inherently non-polynomial",
-      "The 'structure vs randomness' decomposition is the conceptual heart: separate any graph into a structured part (partition) and random part (regular pairs)"
+      "The 'structure vs randomness' decomposition is the conceptual heart: separate any graph into a structured part (partition) and random part (regular pairs)",
+      "Bridging to Mathlib's regularity avoids re-proving the full energy increment argument, which is the most technical step — the bridge theorems convert between our ℚ-valued definitions and Mathlib's ℝ-valued ones",
+      "The density-squared convexity lemma is the Cauchy-Schwarz inequality specialized to edge densities: splitting a vertex set can only increase the weighted sum of squared densities"
     ]
   },
   "sections": [
     {
       "id": "preamble",
-      "title": "Preamble",
+      "title": "Preamble, Imports, and Re-exports",
       "startLine": 1,
-      "endLine": 20,
-      "summary": "Module docstring listing Parts I–III, references to Szemerédi (1975) and Komlós-Simonovits (1996). Imports Mathlib, opens `Classical`, declares finite vertex type variables.",
-      "mathContext": "Setting: $G = (V, E)$ simple graph with $V$ finite. Namespace `Szemeredi.Regularity` encapsulates all definitions."
+      "endLine": 30,
+      "summary": "Module docstring, imports Mathlib and SzemerediCore, re-exports core definitions (`edgeDensity`, `IsEpsilonRegular`, `IsRegularPartition`, `partitionEnergy` and their basic lemmas) so downstream code referencing `Szemeredi.Regularity.*` continues to compile.",
+      "mathContext": "Re-exports: `edgeDensity`, `IsEpsilonRegular`, `IsRegularPartition`, `partitionEnergy`, `edgeDensity_nonneg`, `edgeDensity_le_one`, `partitionEnergy_nonneg` from `Szemeredi.Core`."
     },
     {
-      "id": "definitions",
-      "title": "Part I: Epsilon-Regular Pairs and Partitions",
-      "startLine": 22,
-      "endLine": 53,
-      "summary": "Defines `edgeDensity G A B` as $|E(A,B)|/(|A||B|)$, `IsEpsilonRegular G eps A B` (all large sub-pairs have density within $\\varepsilon$ of the pair density), and `IsRegularPartition G eps parts` (at most $\\varepsilon \\binom{k}{2}$ irregular pairs).",
-      "mathContext": "$d(A,B) = \\frac{e(A,B)}{|A||B|}$. $(A,B)$ is $\\varepsilon$-regular if $\\forall A' \\subseteq A, B' \\subseteq B$ with $|A'| \\geq \\varepsilon|A|, |B'| \\geq \\varepsilon|B|$: $|d(A',B') - d(A,B)| \\leq \\varepsilon$."
+      "id": "energy-helpers",
+      "title": "Part II: Edge Count Helpers and Density Convexity",
+      "startLine": 32,
+      "endLine": 147,
+      "summary": "Proves three helper lemmas and the main density convexity theorem. `card_mul_edgeDensity` recovers edge count from density. `edge_count_union` shows edge counts are additive over disjoint vertex sets. `density_sq_convex` is the Cauchy-Schwarz ingredient: $n_1 d_1^2 + n_2 d_2^2 \\geq (n_1+n_2) d^2$ when $d$ is the weighted average density.",
+      "mathContext": "Density convexity: if $A = A_1 \\sqcup A_2$, then $|A_1| d(A_1,B)^2 + |A_2| d(A_2,B)^2 \\geq |A| d(A,B)^2$. Reduces to $n_1 n_2 (d_1-d_2)^2/(n_1+n_2) \\geq 0$."
     },
     {
-      "id": "density-properties",
-      "title": "Density Properties",
-      "startLine": 55,
-      "endLine": 78,
-      "summary": "**Proved.** Two key density bounds: `edgeDensity_nonneg` ($d(A,B) \\geq 0$) and `edgeDensity_le_one` ($d(A,B) \\leq 1$). Both follow from the definition via `positivity` and `div_le_one`.",
-      "mathContext": "$0 \\leq d(A,B) \\leq 1$ for all $A, B$. The upper bound uses $|\\{(a,b) \\in A \\times B : ab \\in E\\}| \\leq |A||B|$."
+      "id": "energy-analysis",
+      "title": "Energy Analysis: Splitting and Bounds",
+      "startLine": 149,
+      "endLine": 219,
+      "summary": "Extracts irregular pairs (`exists_irregular_pair`), proves the algebraic split energy identity ($n_1 n_2 (d_1-d_2)^2/(n_1+n_2)$), non-negativity, and quantitative excess bound. Includes a note explaining why the energy increment step is deferred to Mathlib.",
+      "mathContext": "Split identity: $n_1 d_1^2 + n_2 d_2^2 - (n_1+n_2)\\bar{d}^2 = \\frac{n_1 n_2 (d_1-d_2)^2}{n_1+n_2}$. Bound: if $|d_1-d_2| \\geq \\delta$, excess $\\geq \\frac{n_1 n_2 \\delta^2}{n_1+n_2}$."
     },
     {
-      "id": "energy",
-      "title": "Part II: Partition Energy and Increment",
-      "startLine": 79,
-      "endLine": 121,
-      "summary": "Defines `partitionEnergy` $E(\\mathcal{P}) = \\frac{1}{k^2}\\sum d(V_i,V_j)^2$. **Proves** non-negativity and `density_sq_convex` (Cauchy-Schwarz ingredient for energy bounds).",
-      "mathContext": "$E(\\mathcal{P}) = \\frac{1}{k^2}\\sum_{i,j} d(V_i,V_j)^2$. Increment: not $\\varepsilon$-regular $\\Rightarrow \\exists \\mathcal{P}'$ with $E(\\mathcal{P}') \\geq E(\\mathcal{P}) + \\varepsilon^5$ and $|\\mathcal{P}'| \\leq k \\cdot 2^k$."
+      "id": "regularity-main",
+      "title": "Part III: Regularity Lemma (Vacuous and Strong Forms)",
+      "startLine": 221,
+      "endLine": 321,
+      "summary": "Proves `partitionEnergy_le_one` ($E \\leq 1$ for valid partitions), `max_iterations` (termination bound), `exists_irregular_witness` (extract witnessing subsets), and the basic `regularity_lemma` (vacuously satisfied by the one-part partition $\\{V\\}$).",
+      "mathContext": "Energy bound: $E(\\mathcal{P}) \\leq 1$ since $d^2 \\leq d \\leq 1$ and the sum has $k^2$ terms with $1/k^2$ factor. Termination: $\\lceil 1/\\varepsilon^5 \\rceil$ iterations suffice."
     },
     {
-      "id": "regularity-lemma",
-      "title": "Part III: Regularity Lemma (Main Result)",
-      "startLine": 123,
-      "endLine": 186,
-      "summary": "**Proves** `partitionEnergy_le_one` ($E(\\mathcal{P}) \\leq 1$ for valid partitions), `max_iterations` (termination bound $\\lceil 1/\\varepsilon^5 \\rceil$), and the main `regularity_lemma` plus strong and full forms via Mathlib bridge. All sorry-free.",
-      "mathContext": "$E \\leq 1$ (proved). Main: $\\forall \\varepsilon > 0, \\exists M(\\varepsilon): n \\geq M \\Rightarrow$ graph has $\\varepsilon$-regular partition into $\\leq M$ parts. Terminates in $\\leq \\lceil \\varepsilon^{-5} \\rceil$ refinement steps."
+      "id": "mathlib-bridge",
+      "title": "Bridge to Mathlib: Compatibility and Strong/Full Forms",
+      "startLine": 323,
+      "endLine": 500,
+      "summary": "Four compatibility theorems bridging our definitions to Mathlib's: `edgeDensity_eq_mathlib` (density equivalence), `mathlib_uniform_imp_regular` (Mathlib uniformity → our regularity), `equipartition_imp_equitable` (equitability bridge), `irregular_subset_nonuniform` (irregular pairs subset). These yield `regularity_lemma_strong` (with m₀ ≤ k ≤ M) and `regularity_lemma_full` (with partition structure: coverage and disjointness) via `szemeredi_regularity` from Mathlib.",
+      "mathContext": "Bridge: our $\\varepsilon$-regularity (with $\\leq$) is implied by Mathlib's uniformity (with $<$). Our irregular pair set $\\subseteq$ Mathlib's non-uniform set. This yields: $\\forall \\varepsilon > 0, m_0 \\geq 1, \\exists M: n \\geq M \\Rightarrow$ graph has $\\varepsilon$-regular partition with $m_0 \\leq k \\leq M$."
     }
   ],
   "conclusion": {
-    "summary": "The Szemeredi Regularity Lemma provides a universal structural decomposition of graphs into pseudo-random pieces. The formalization via energy increment establishes the foundational tool for the entire Szemeredi program.",
-    "implications": "This formalization provides:\n\n**1. Fundamental Graph Structure Theorem**\nThe Regularity Lemma is the most important structural result in graph theory, and this formalization makes its subtle conditions machine-checkable.\n\n**2. Foundation for Counting and Removal**\nRegularity is prerequisite for the counting lemma and triangle removal lemma, which in turn yield Szemeredi's theorem.\n\n**3. Structure vs Randomness Paradigm**\nThe regularity decomposition exemplifies the modern 'structure vs randomness' paradigm that has transformed combinatorics.\n\n**4. Reusable Infrastructure**\nEpsilon-regularity definitions, partition energy, and refinement tools are reusable across graph theory problems.\n\n**5. Path to Variants**\nThe formalization provides a template for strong regularity, arithmetic regularity, and hypergraph regularity variants.",
+    "summary": "Complete formalization of the Szemerédi Regularity Lemma in three forms (basic, strong, full) in 501 lines with 17 theorems, 0 sorries, 0 axioms. The energy machinery (density convexity, split identities, energy bounds) is proved from scratch, while the main regularity result is obtained by bridging to Mathlib's comprehensive implementation via four compatibility theorems.",
+    "implications": "This formalization provides:\n\n**1. Fundamental Graph Structure Theorem**: The most important structural result in graph theory, machine-verified in all three standard forms.\n\n**2. Foundation for Counting and Removal**: The regularity lemma is the prerequisite for the counting lemma and triangle removal lemma (in `szemeredi-counting`), which in turn yield Szemerédi's theorem on arithmetic progressions.\n\n**3. Structure vs Randomness Paradigm**: The regularity decomposition exemplifies the modern 'structure vs randomness' paradigm that has transformed combinatorics, with applications ranging from property testing to the Green-Tao theorem.\n\n**4. Reusable Energy Machinery**: The density convexity lemma, split energy identities, and energy bounds are independently useful for regularity-based arguments beyond this specific lemma.\n\n**5. Mathlib Bridge Pattern**: The four compatibility theorems demonstrate a clean pattern for bridging custom definitions to Mathlib's established theorems, avoiding redundant re-proofs while maintaining a custom API.",
     "openQuestions": [
       "Can we formalize the Gowers lower bound showing the tower-type partition size is necessary?",
       "How does Frieze-Kannan weak regularity compare, and can it serve as a simpler stepping stone?",
-      "Can the partition refinement be made algorithmic with polynomial-time guarantees (Alon-Duke-Lefmann-Rodl-Yuster)?",
-      "What is the optimal energy increment constant, and can we formalize tight bounds?"
+      "Can the partition refinement be made algorithmic with polynomial-time guarantees (Alon-Duke-Lefmann-Rödl-Yuster)?",
+      "Formalize the strong regularity lemma (Alon-Fischer-Krivelevich-Szegedy 2000) which achieves almost-all-pairs regular",
+      "Extend to hypergraph regularity (Gowers 2007, Rödl-Skokan 2004) where regularity conditions involve higher-order uniformity"
     ]
   },
   "crossReferences": [
     {
-      "proofId": "szemeredi-counting",
-      "relationship": "The counting and removal lemmas are the primary applications of regularity"
+      "targetId": "szemeredi-core",
+      "relationship": "foundational",
+      "description": "Imports core definitions (edgeDensity, IsEpsilonRegular, IsRegularPartition, partitionEnergy) and re-exports them for downstream use"
     },
     {
-      "proofId": "ramseys-theorem",
-      "relationship": "Ramsey theory and regularity are complementary tools for finding structure in large graphs"
+      "targetId": "szemeredi-counting",
+      "relationship": "extends",
+      "description": "The counting and removal lemmas are the primary applications of regularity — they use epsilon-regular pairs to count and remove subgraph copies"
     },
     {
-      "proofId": "prob-method-alteration",
-      "relationship": "Regularity captures pseudo-randomness, bridging deterministic graphs and probabilistic arguments"
+      "targetId": "szemeredi-full",
+      "relationship": "extends",
+      "description": "The full Szemerédi theorem on arithmetic progressions uses this regularity lemma as its structural backbone"
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "extends",
+      "description": "The main Szemerédi theorem statement depends on the partition infrastructure provided by this file"
+    },
+    {
+      "targetId": "roth-theorem-k3",
+      "relationship": "related",
+      "description": "Roth's theorem (1953) on 3-term APs can be proved via regularity + triangle removal — the regularity lemma provides the structural decomposition, and the triangle removal lemma extracts the arithmetic progression"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey theory and regularity are complementary tools: Ramsey guarantees monochromatic complete subgraphs, while regularity decomposes any dense graph into pseudorandom pieces"
+    },
+    {
+      "targetId": "prob-method-alteration",
+      "relationship": "related",
+      "description": "Regularity captures pseudo-randomness: epsilon-regular pairs behave like random bipartite graphs for counting purposes, bridging deterministic graph structure and probabilistic arguments"
     }
   ],
   "leanFile": {
     "imports": [
-      "Mathlib"
+      "Mathlib",
+      "Proofs.SzemerediCore"
     ],
+    "opens": ["Classical", "Szemeredi.Core"],
     "namespace": "Szemeredi.Regularity",
     "lineCount": 501,
     "axiomCount": 0,

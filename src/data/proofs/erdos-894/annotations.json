@@ -61,7 +61,7 @@
       "startLine": 94,
       "endLine": 123
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Diophantine Connection and Katznelson's Construction",
     "content": "**fractionalDistance(x)** = min(x - ⌊x⌋, ⌈x⌉ - x) — distance to the nearest integer.\n\n**problem_464_result** (axiom): For any lacunary sequence, ∃ irrational θ and δ > 0 such that ||θ·n_k|| > δ for all k. This is the 'badly approximable' property.\n\n**katznelsonColoring** (defined): Divide [0,1) into ⌈1/δ⌉ intervals of length δ. Color n by which interval contains the fractional part of n·θ. The Lean definition computes ⌊frac(nθ)/δ⌋ mod ⌈1/δ⌉.\n\n**katznelson_theorem** (axiom): If ||θ·n_k|| > δ for all k, then katznelsonColoring avoids monochromatic differences. The key idea: if c(a) = c(b) then frac(aθ) and frac(bθ) are in the same δ-interval, so ||θ(a-b)|| < δ, contradicting the separation.",
     "mathContext": "Katznelson's crucial observation (2001) reduced the coloring problem to Diophantine approximation. The separation condition ||θ·n_k|| > δ ensures no two same-colored integers differ by an element of A.",
@@ -80,7 +80,7 @@
       "startLine": 125,
       "endLine": 139
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem: Lacunary Sequences Are Finitely Colorable",
     "content": "**lacunary_finitely_colorable** (PROVED): Every lacunary sequence is finitely colorable.\n\nProof: Given IsLacunary a ε, apply problem_464_result to get θ and δ. Use ⌈1/δ⌉ colors via katznelsonColoring. Apply katznelson_theorem to verify the coloring avoids monochromatic differences.\n\n**ErdosConjecture894** (Prop): The formal statement ∀ a ε, IsLacunary a ε → IsFinitelyColorable {n | ∃ k, n = a k}.\n\n**erdos_894** (PROVED): ErdosConjecture894, definitionally equal to lacunary_finitely_colorable.\n\nThis is the central result — Problem #894 is SOLVED.",
     "mathContext": "The proof is a clean composition: Problem #464 provides the Diophantine input, Katznelson's construction produces the coloring, and the theorem follows.",
@@ -98,7 +98,7 @@
       "startLine": 141,
       "endLine": 153
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Peres-Schlag Quantitative Bounds",
     "content": "**peres_schlag_bound** (axiom): For a lacunary sequence with ratio (1+ε), ∃ C and a coloring using ⌈C/(ε·log(1/ε))⌉ colors that avoids monochromatic differences.\n\n**peres_schlag_optimality** (axiom): The chromatic number is ≤ C/(ε·log(1/ε)) for a universal constant C > 0.\n\nPeres and Schlag (2010) proved these in 'Two Erdős problems on lacunary sequences: the Peres-Schlag theorem'. Their method combined harmonic analysis with probabilistic arguments.",
     "mathContext": "For ε = 1 (e.g., powers of 2), the bound gives O(1) colors. For ε → 0 (slowly growing lacunary sequences), more colors are needed, scaling as ε⁻¹ log(1/ε).",
@@ -116,7 +116,7 @@
       "startLine": 202,
       "endLine": 220
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Special Cases: Powers of 2 and 3",
     "content": "**powers_of_2_colorable** (PROVED): {1, 2, 4, 8, ...} is finitely colorable. Proof: 2^n is lacunary with ε = 1 (from geometric_is_lacunary), so apply lacunary_finitely_colorable.\n\n**powers_of_3_colorable** (PROVED): {1, 3, 9, 27, ...} is finitely colorable. Proof: 3^n is lacunary with ε = 2, since 3^{k+1} = 3·3^k = (1+2)·3^k.\n\nThese concrete examples demonstrate the main theorem on familiar sequences.",
     "mathContext": "Powers of any integer r ≥ 2 are lacunary with ε = r-1. The main theorem applies uniformly to all such sequences.",
@@ -134,7 +134,7 @@
       "startLine": 222,
       "endLine": 233
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_894_summary** (PROVED): Combines two key results:\n1. ErdosConjecture894 holds — every lacunary sequence is finitely colorable\n2. Problem464Statement → ErdosConjecture894 — the logical implication is proved\n\nProof: ⟨erdos_894, problem_464_implies_894⟩\n\nThis captures both the resolution of Problem #894 and the logical structure showing how it follows from Problem #464.",
     "mathContext": "The summary theorem packages the positive resolution with the proved dependency on Problem #464, giving a complete picture of the logical structure.",

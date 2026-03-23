@@ -26,7 +26,7 @@
       "startLine": 50,
       "endLine": 60
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Convex Hull of Finite Sets: Closedness and Compactness",
     "content": "These two auxiliary results establish that convex hulls of finite sets in normed spaces behave well topologically. The closedness result follows from a deep fact in finite-dimensional analysis: convex hulls of compact (hence finite) sets in normed spaces are closed. The compactness result is even stronger, following from the Caratheodory representation theorem which shows the convex hull of a finite set is the continuous image of a compact simplex. Both results are applied as one-liners via Mathlib, demonstrating the power of the library's existing infrastructure.",
     "mathContext": "For finite $s \\subseteq E$: $\\mathrm{conv}(s)$ is closed; for $\\mathrm{pts}: \\mathrm{Fin}\\, n \\to E$: $\\mathrm{conv}(\\mathrm{range}(\\mathrm{pts}))$ is compact.",
@@ -200,7 +200,7 @@
       "startLine": 254,
       "endLine": 296
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Main Theorem: Assembly via Compactness",
     "content": "The main theorem ties everything together. First, compactness of K produces a finite subcover of epsilon-balls (via IsCompact.elim_finite_subcover_image). The centers are then indexed by Fin N through Fintype.truncEquivFin. The covering property is translated from the set-theoretic union to the norm-based formulation needed by the bump functions. Finally, the three established properties -- continuity, convex hull membership, and epsilon-approximation -- are packaged into the existential witness. The proof is constructive in the sense that the projection map is explicitly defined, not merely shown to exist.",
     "mathContext": "$K$ compact $\\Rightarrow$ $\\exists$ finite $\\{x_i\\} \\subset K$ with $K \\subseteq \\bigcup B(x_i, \\varepsilon)$ $\\Rightarrow$ construct $\\pi$ with all required properties.",

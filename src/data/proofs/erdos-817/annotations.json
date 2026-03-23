@@ -76,7 +76,7 @@
       "startLine": 48,
       "endLine": 63
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Equivalent AP-Free Definitions",
     "content": "We prove two definitions of '$k$-AP-free' are equivalent:\n\n1. **Existential**: For all $a, d > 0$, $\\exists i < k$ with $a + i \\cdot d \\notin S$\n2. **Negation**: For all $a, d > 0$, it's NOT the case that all terms are in $S$\n\nThe proof uses `push_neg` to convert between these forms, a common Lean 4 technique for switching between existential and universal quantifiers.",
     "mathContext": "This equivalence is logically: $(\\exists$ missing term$) \\iff (\\neg$ all terms present$)$. Both capture 'not a complete $k$-AP in $S$'.",
@@ -121,7 +121,7 @@
       "startLine": 76,
       "endLine": 100
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Basic Properties of Subset Sums",
     "content": "We prove fundamental facts about subset sum sets:\n\n1. **zero_mem_subsetSums**: $0 \\in \\langle A \\rangle$ (from the empty subset)\n2. **sum_mem_subsetSums**: $\\sum A \\in \\langle A \\rangle$ (from $A$ itself)\n3. **mem_subsetSums_of_mem**: Each $a \\in A$ is in $\\langle A \\rangle$ (from $\\{a\\}$)\n4. **card_subsetSums_le**: $|\\langle A \\rangle| \\leq 2^{|A|}$\n\nThe cardinality bound uses `card_image_le` and `card_powerset`.",
     "mathContext": "The bound $|\\langle A \\rangle| \\leq 2^n$ comes from: at most $2^n$ subsets, each giving one sum (possibly with collisions). Equality holds when all subset sums are distinct, as for $A = \\{1, 2, 4, 8, \\ldots, 2^{n-1}\\}$ (binary representation).",
@@ -168,7 +168,7 @@
       "startLine": 128,
       "endLine": 148
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Main Conjecture (OPEN)",
     "content": "**erdos817Conjecture**: Is $g_3(n) \\gg 3^n$?\n\nFormally: $3^n =O[\\text{atTop}] g(3,n)$, meaning there exists $C > 0$ such that $g(3,n) \\geq C \\cdot 3^n$ for large $n$.\n\n**erdos817ConjectureAlt**: Alternative formulation using `∀ᶠ n in atTop`, stating $\\exists c > 0$ such that eventually $g(3,n) \\geq c \\cdot 3^n$.",
     "mathContext": "The $\\gg$ notation means 'is asymptotically bounded below by'. The conjecture asks whether avoiding 3-APs in subset sums requires $N$ to grow at least exponentially with $n$, with no polynomial correction.",
@@ -192,7 +192,7 @@
       "startLine": 149,
       "endLine": 161
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Sárközy Partial Result",
     "content": "**erdosSarkozy_partial**: $g_3(n) \\gg 3^n/n^{O(1)}$.\n\nThis axiom states: there exists $O > 0$ such that $3^n/n^O =O[\\text{atTop}] g(3,n)$.\n\nThis establishes exponential growth but with a polynomial correction factor. The main conjecture asks if this factor is necessary.",
     "mathContext": "Erdős and Sárközy proved this using density arguments. The bound $g_3(n) \\geq c \\cdot 3^n / n^O$ means the exponential rate $3^n$ is correct, but current methods cannot eliminate the $n^{-O}$ loss.",
@@ -214,7 +214,7 @@
       "startLine": 163,
       "endLine": 177
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Basic Bounds",
     "content": "**g_ge_n**: $g_k(n) \\geq n$ for $k \\geq 3$, $n \\geq 1$ (we need $n$ distinct elements in $\\{1,\\ldots,N\\}$).\n\n**g3_le_exp**: $g_3(n) \\leq 3^n$ (the set $\\{1, 3, 9, \\ldots, 3^{n-1}\\}$ works).\n\nThese give: $n \\leq g_3(n) \\leq 3^n$. The conjecture asks if $g_3(n)$ is closer to the upper bound. Both carry `sorry` — the proofs require showing specific sets are AP-free.",
     "mathContext": "For $A = \\{1, 3, 9, \\ldots, 3^{n-1}\\}$, every subset sum has a unique base-3 representation with digits 0 or 1. These sums are 3-AP-free because a 3-AP $a, a+d, a+2d$ would require $2(a+d) = a + (a+2d)$, which fails for sums of distinct powers of 3.",
@@ -237,7 +237,7 @@
       "startLine": 179,
       "endLine": 195
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Small Cases",
     "content": "**g3_one = 1**: $A = \\{1\\}$ has $\\langle A \\rangle = \\{0, 1\\}$, which is trivially 3-AP-free (fewer than 3 elements).\n\n**g3_two = 2**: $A = \\{1, 2\\}$ gives $\\{0, 1, 2, 3\\}$ which contains the 3-AP $(0, 1, 2)$. But $A = \\{1, 3\\}$ with $N = 3$ gives $\\{0, 1, 3, 4\\}$, which is 3-AP-free. However $g_3(2) = 2$ claims $N = 2$ works — using $A = \\{1, 2\\}$ requires checking more carefully. Both carry `sorry`.",
     "mathContext": "These small cases illustrate that the choice of $A$ matters. Even for $n=2$, naive choices fail while careful choices succeed.",
@@ -259,7 +259,7 @@
       "startLine": 209,
       "endLine": 222
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Maximum Subset Sum Bound (Proved)",
     "content": "**max_subsetSums_le**: For $A \\subseteq \\{1,\\ldots,N\\}$, every element $s \\in \\langle A \\rangle$ satisfies $s \\leq |A| \\cdot N$.\n\nThis is **fully proved** (no sorry) using `Finset.sum_le_card_nsmul` and `card_le_card`. The proof first bounds $B.\\text{sum}(\\text{id}) \\leq |B| \\cdot N$ for any $B \\subseteq A$, then uses $|B| \\leq |A|$.",
     "mathContext": "$\\sum_{a \\in B} a \\leq |B| \\cdot \\max(A) \\leq |A| \\cdot N$ since each $a \\leq N$. This means $\\langle A \\rangle \\subseteq \\{0, \\ldots, nN\\}$, giving the density bound $|\\langle A \\rangle| / (nN) \\leq 2^n / (nN)$ used in the heuristic.",
@@ -303,7 +303,7 @@
       "startLine": 224,
       "endLine": 239
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Szemerédi's Theorem",
     "content": "**szemeredi_theorem**: For $k \\geq 3$ and $\\delta > 0$, there exists $N_0$ such that any $S \\subseteq \\{1,\\ldots,N\\}$ with $|S| \\geq \\delta N$ contains a $k$-term AP (for $N \\geq N_0$).\n\nThis is axiomatized since the full proof is one of the deepest results in combinatorics — Szemerédi's original 1975 proof was a tour de force, later reproved by Furstenberg via ergodic theory (1977) and Gowers via higher-order Fourier analysis (2001).",
     "mathContext": "Szemerédi's theorem states: for all $k$ and $\\delta > 0$, $\\exists N_0$ such that $\\forall N \\geq N_0$, any $S \\subseteq [N]$ with $|S| \\geq \\delta N$ satisfies $\\neg\\text{IsAPFreeOfLength}(k, S)$. It implies that avoiding $k$-APs requires sparse sets.",

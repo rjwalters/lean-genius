@@ -40,7 +40,7 @@
       "startLine": 51,
       "endLine": 71
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Basic Properties of tau",
     "content": "**tau_one, tau_prime, tau_prime_power, tau_multiplicative:**\n\n- tau(1) = 1\n- tau(p) = 2 for prime p\n- tau(p^k) = k + 1\n- tau(mn) = tau(m)*tau(n) when gcd(m,n) = 1\n\n**Multiplicativity:** The key property enabling the proof.",
     "significance": "key",
@@ -133,7 +133,7 @@
       "startLine": 113,
       "endLine": 118
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Eberhard's Theorem (2025)",
     "content": "**eberhard_theorem:**\n\nALL positive rationals p/q appear as tau(n+1)/tau(n).\n\n```lean\naxiom eberhard_theorem :\n    forall p q >= 1, exists n >= 1, tau(n+1) * q = tau(n) * p\n```\n\n**Significance:** This is stronger than density - every rational is achieved exactly!\n\n**Reference:** arXiv:2505.00727 (2025)",
     "mathContext": "A very recent result from 2025.",
@@ -151,7 +151,7 @@
       "startLine": 142,
       "endLine": 153
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Conjecture is TRUE",
     "content": "**erdos_964_true:**\n\nThe density conjecture follows from Eberhard's theorem.\n\n```lean\ntheorem erdos_964_true : ErdosConjecture964 := by\n  intro r hr eps heps\n  -- Rationals are dense in (0, infinity)\n  -- All rationals are in ratioSet by Eberhard\n  -- Therefore ratioSet is dense\n```\n\n**Logic:** rationals dense + all rationals achieved = density.",
     "significance": "key",
@@ -167,7 +167,7 @@
       "startLine": 159,
       "endLine": 181
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Examples",
     "content": "**Small examples of divisor ratios:**\n\n- tau(2)/tau(1) = 2/1 = 2\n- tau(3)/tau(2) = 2/2 = 1\n- tau(4)/tau(3) = 3/2\n- tau(5)/tau(4) = 2/3\n- tau(6)/tau(5) = 4/2 = 2\n\n**Variety:** Even small n give diverse ratios.",
     "significance": "supporting",
@@ -183,7 +183,7 @@
       "startLine": 183,
       "endLine": 195
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Extreme Ratios",
     "content": "**small_ratios_exist, large_ratios_exist:**\n\nThe ratio tau(n+1)/tau(n) can be arbitrarily small or arbitrarily large.\n\n```lean\naxiom small_ratios_exist : forall eps > 0, exists n >= 1, divisorRatio n < eps\naxiom large_ratios_exist : forall M, exists n >= 1, divisorRatio n > M\n```\n\n**Intuition:** Choose n = 2^k - 1 (many divisors) followed by 2^k (few divisors), or vice versa.",
     "significance": "supporting",
@@ -232,7 +232,7 @@
       "startLine": 258,
       "endLine": 270
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Average Ratio",
     "content": "**average_ratio_is_one:**\n\nThe average value of tau(n+1)/tau(n) is 1.\n\n```lean\naxiom average_ratio_is_one :\n    Tendsto averageRatio atTop (nhds 1)\n```\n\n**Intuition:** On average, tau(n+1) ~ tau(n).",
     "significance": "supporting",
@@ -248,7 +248,7 @@
       "startLine": 283,
       "endLine": 311
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary",
     "content": "**Erdos Problem #964: SOLVED**\n\n**Question:** Is {tau(n+1)/tau(n)} dense in (0, infinity)?\n\n**Answer: YES** (Eberhard 2025)\n\n**Stronger:** ALL positive rationals appear.\n\n**Key insight:** Consecutive integers can be chosen so their divisor counts have any prescribed ratio.\n\n**Related:** Problem #946, prime k-tuple conjecture.",
     "significance": "key",

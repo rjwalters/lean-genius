@@ -53,7 +53,7 @@
       "startLine": 109,
       "endLine": 141
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdos-Hajnal-Shelah Theorem and odd_cycles_are_common (Fully Proved)",
     "content": "**oddCycle k hk** (axiom): the odd cycle $C_{2k+1}$ on `Fin (2k+1)`. **oddCycle_chromatic** (axiom): $\\chi(C_{2k+1}) = 3$.\n\n**erdos_hajnal_shelah** (axiom): if $\\chi(G) = \\aleph_1$, then $\\exists N$ s.t. $\\forall k \\geq N$, $C_{2k+1}$ embeds into $G$.\n\n**odd_cycles_are_common** (FULLY PROVED): given $G_1, G_2$ with $\\chi = \\aleph_1$, take $k = \\max(N_1, N_2) + 1$ to get a common odd cycle embedding into both. The proof uses `obtain` to extract the EHS witnesses, `let k := max N_1 N_2 + 1`, shows `1 \\leq k` by `omega`, then applies both EHS instances with `omega` for the $\\geq$ conditions.",
     "mathContext": "The Erdos-Hajnal-Shelah theorem (1974) is a deep result in infinite combinatorics. The proof uses Ramsey-type arguments: partition the edges of a graph with $\\chi = \\aleph_1$ and use the uncountable chromatic number to force long odd paths that close into cycles. The key insight is that uncountable chromatic number provides an inexhaustible supply of vertices that cannot be separated by finitely many colors, and Ramsey's theorem for pairs then forces the cycle structure. The `odd_cycles_are_common` theorem is the file's main non-trivial proof: it's a clean application of EHS to two graphs simultaneously. The trick of taking $k = \\max(N_1, N_2) + 1$ ensures the chosen odd cycle is large enough for both EHS instances. This is the best known partial result toward Problem #62 — common subgraphs with $\\chi = 3$.",
@@ -101,7 +101,7 @@
       "startLine": 158,
       "endLine": 207
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Auxiliary Properties and Summary",
     "content": "**finite_implies_countable** (PROVED): $\\chi = k \\Rightarrow$ countably colorable. Lifts `Fin k`-coloring to $\\mathbb{N}$-coloring via `Fin.val`.\n\n**embed_colorable** (PROVED): if $H$ embeds into $G$ and $G$ is $k$-colorable, then $H$ is $k$-colorable. Composes the coloring with the embedding function.\n\n**Summary**: OPEN. Best partial result: common $\\chi = 3$ subgraphs (odd cycles) via EHS. The $\\chi = 4$ and $\\chi = \\aleph_0$ versions are wide open.",
     "mathContext": "The two proved auxiliary results establish monotonicity properties essential for the chromatic hierarchy. `finite_implies_countable` ensures the chain $\\chi = k \\Rightarrow \\chi \\leq \\aleph_0$, so HasChromaticAleph1 (not countably colorable) implies not finitely colorable. `embed_colorable` is the pullback property: colorings pull back along embeddings. This means if $H$ embeds into $G$, then $\\chi(H) \\leq \\chi(G)$, which is the standard monotonicity of chromatic number under subgraph inclusion. Both proofs are constructive and short — the coloring composition works directly. These are the only fully proved results besides `odd_cycles_are_common`, giving this file 0 sorries: all definitions are complete and all axioms are intentional (EHS, oddCycle).",

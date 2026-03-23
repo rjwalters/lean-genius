@@ -155,6 +155,16 @@
       "targetId": "brouwer-fixed-point",
       "relationship": "related",
       "description": "The 1D Brouwer fixed point theorem follows directly from IVT, which is closely tied to FTC. For $f:[0,1] \\to [0,1]$ continuous, $g(x) = f(x) - x$ satisfies $g(0) \\geq 0 \\geq g(1)$, so IVT gives $g(c) = 0$, establishing the existence of a fixed point"
+    },
+    {
+      "targetId": "greens-theorem",
+      "relationship": "extends",
+      "description": "Green's theorem $\\oint_C (P\\,dx + Q\\,dy) = \\iint_D (\\partial Q/\\partial x - \\partial P/\\partial y)\\,dA$ is the 2D generalization of FTC: just as FTC says $\\int_a^b F'(x)\\,dx = F(b) - F(a)$ (boundary evaluation), Green's theorem evaluates a double integral via a line integral over the boundary. This is a special case of the generalized Stokes theorem $\\int_M d\\omega = \\int_{\\partial M} \\omega$, of which FTC is the 1D case"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ is derived using FTC applied to $\\ln(n!) = \\sum \\ln k \\approx \\int_1^n \\ln x\\,dx = n\\ln n - n + 1$. FTC converts the discrete sum to an integral, and the correction terms (including the $\\sqrt{2\\pi n}$ factor from the Euler-Maclaurin formula) require repeated application of integration by parts — itself a consequence of FTC"
     }
   ],
   "relatedProofs": [
@@ -167,7 +177,9 @@
     "harmonic-divergence",
     "cauchy-schwarz-integral",
     "mathematical-induction",
-    "brouwer-fixed-point"
+    "brouwer-fixed-point",
+    "greens-theorem",
+    "stirling-formula"
   ],
   "references": [
     {

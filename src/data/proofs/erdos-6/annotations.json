@@ -41,7 +41,7 @@
       "startLine": 45,
       "endLine": 46
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Primes Are Infinite",
     "content": "**Euclid's Theorem**: The set of prime numbers is infinite. This fundamental result from `Nat.infinite_setOf_prime` is needed for the nth prime to be well-defined for all n.",
     "significance": "supporting",
@@ -57,7 +57,7 @@
       "startLine": 48,
       "endLine": 50
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Strict Monotonicity",
     "content": "`nthPrime_strictMono`: The prime enumeration is strictly increasing. This follows from `Nat.nth_strictMono` applied to the infinite set of primes.",
     "significance": "key",
@@ -73,7 +73,7 @@
       "startLine": 52,
       "endLine": 57
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Prime Gaps Are Positive",
     "content": "Since primes are strictly increasing (p_{n+1} > p_n for all n), all prime gaps d_n are positive. The proof uses strict monotonicity and omega.",
     "significance": "supporting",
@@ -89,7 +89,7 @@
       "startLine": 59,
       "endLine": 65
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "First Prime Gaps",
     "content": "`primeGap_zero = 1` (gap between 2 and 3) and `primeGap_one = 2` (gap between 3 and 5). These are proved using Mathlib's concrete values for small primes.",
     "significance": "supporting",
@@ -171,7 +171,7 @@
       "startLine": 99,
       "endLine": 110
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Banks-Freiberg-Turnage-Butterbaugh Theorem",
     "content": "**The Main Result (2015)**: For any m ≥ 1, there are infinitely many n with d_n < d_{n+1} < ... < d_{n+m}. This completely resolves and generalizes Erdős Problem 6.",
     "mathContext": "The proof uses the Maynard-Tao sieve machinery developed for the bounded gaps conjecture. This allows controlling the distribution of primes in short intervals with remarkable precision.",
@@ -189,7 +189,7 @@
       "startLine": 112,
       "endLine": 114
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Decreasing Version",
     "content": "The decreasing analogue also holds: infinitely many n have d_n > d_{n+1} > ... > d_{n+m} for any m. Prime gaps oscillate in both directions.",
     "significance": "key",
@@ -205,7 +205,7 @@
       "startLine": 118,
       "endLine": 120
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem Resolved",
     "content": "**erdos_6_solved**: The conjecture is TRUE. This follows by applying Banks-Freiberg-Turnage-Butterbaugh with m = 2.",
     "mathContext": "A 67-year-old problem solved by the bounded gaps revolution.",
@@ -221,7 +221,7 @@
       "startLine": 127,
       "endLine": 137
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Maynard-Tao Bounded Gaps",
     "content": "**Key Tool**: The Maynard-Tao theorem guarantees that for any m, there exists H such that infinitely often, an interval of length H contains at least m primes.",
     "mathContext": "Maynard (2015) and independently Tao developed powerful sieve methods showing primes cluster in ways previously thought impossible to prove. This revolutionized prime gap research.",
@@ -239,7 +239,7 @@
       "startLine": 139,
       "endLine": 147
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Zhang's Breakthrough",
     "content": "**Zhang (2013)**: There exists H such that infinitely many prime pairs differ by at most H. Zhang proved H = 70,000,000 initially; this has been reduced to H = 246.",
     "mathContext": "Zhang's proof was the first to show bounded gaps unconditionally, a landmark in analytic number theory. It opened the floodgates for subsequent improvements.",
@@ -257,7 +257,7 @@
       "startLine": 151,
       "endLine": 159
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Arbitrarily Long Monotone Runs",
     "content": "A beautiful corollary: not just triples, but arbitrarily long increasing (or decreasing) sequences of prime gaps exist. There are infinitely many runs of length 10, 100, or any m.",
     "significance": "key",
@@ -273,7 +273,7 @@
       "startLine": 165,
       "endLine": 169
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Prime Gaps Oscillate Forever",
     "content": "`prime_gaps_oscillate`: Both increasing and decreasing patterns occur infinitely often. Prime gaps never settle into monotone behavior - they oscillate forever.",
     "mathContext": "This rules out any eventual regularity in prime gaps. The primes remain 'random-looking' at all scales.",

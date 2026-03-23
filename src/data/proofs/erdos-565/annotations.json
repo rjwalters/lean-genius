@@ -163,7 +163,7 @@
       "startLine": 141,
       "endLine": 160
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Existence of R*(G) (Deuber, EHP, Rodl)",
     "content": "Axiomatizes `induced_ramsey_exists`: for any graph $G$ on $n$ vertices, there exist $m$ and $H$ such that $H$ has the induced Ramsey property for $G$. This non-trivial result was proved independently by Deuber (1975), Erdos-Hajnal-Posa (1975), and Rodl (1973, for bipartite graphs). The theorem `induced_ramsey_number_finite` derives that the defining set for $R^*(G)$ is nonempty. The original proofs used partition calculus and the Hales-Jewett theorem; Nesetril-Rodl later gave a cleaner proof using their partite construction.",
     "mathContext": "$\\forall G:\\; R^*(G) < \\infty$; equivalently, $\\{m : \\exists H \\text{ on } m \\text{ vertices with } H \\xrightarrow{\\text{ind}} (G)_2\\} \\neq \\emptyset$",
@@ -186,7 +186,7 @@
       "startLine": 161,
       "endLine": 174
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Rodl's Bipartite Bound (1973)",
     "content": "Axiomatizes Rodl's early result: for bipartite graphs $G$ on $n$ vertices, $R^*(G) \\le 2^{O(n)}$. This was the first evidence that exponential bounds might hold in general. The bipartite case is easier because bipartite graphs have a natural 2-partition structure that constrains how the host graph must be built. The axiom includes a `True` hypothesis as a placeholder for the bipartiteness condition.",
     "mathContext": "$G$ bipartite, $|V(G)| = n \\implies R^*(G) \\le 2^{Cn}$ for some absolute $C > 0$",
@@ -208,7 +208,7 @@
       "startLine": 175,
       "endLine": 183
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Kohayakawa-Promel-Rodl Bound (1998)",
     "content": "Axiomatizes the KPR bound: $R^*(G) < 2^{O(n(\\log n)^2)}$ for all $n$-vertex graphs. This was the first general upper bound showing quasi-polynomial growth (exponential with a polylogarithmic correction). The proof uses the sparse regularity lemma of Kohayakawa and Rodl: decompose a random-like host graph into pseudorandom bipartite pairs, then embed $G$ using the regularity structure. The $(\\log n)^2$ factor comes from applying regularity at two levels.",
     "mathContext": "$R^*(G) \\le 2^{C n (\\ln n)^2}$ for $n \\ge 2$, where $C > 0$ is absolute",
@@ -231,7 +231,7 @@
       "startLine": 184,
       "endLine": 192
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Conlon-Fox-Sudakov Bound (2012)",
     "content": "Axiomatizes the CFS improvement: $R^*(G) < 2^{O(n \\log n)}$, eliminating one logarithmic factor from the KPR bound. The key innovation was a more efficient use of the dependent random choice technique combined with the Lovasz Local Lemma. Instead of two levels of regularity, they showed that one level suffices by choosing the host graph more carefully. This brought the bound within a single logarithmic factor of the conjectured exponential.",
     "mathContext": "$R^*(G) \\le 2^{C n \\ln n}$ for $n \\ge 2$, improving KPR by a $\\log n$ factor",
@@ -254,7 +254,7 @@
       "startLine": 193,
       "endLine": 218
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Aragao et al. Theorem: R*(G) <= 2^{O(n)} (2025)",
     "content": "The breakthrough axiomatized as `aragao_et_al_theorem`: there exists a constant $C > 0$ such that $R^*(G) \\le 2^{Cn}$ for ALL graphs $G$ on $n \\ge 1$ vertices. This resolves Erdos Problem #565 after 50+ years of incremental progress. The theorem `erdos_565_solution` follows immediately. The proof introduces a new 'graph-of-graphs' construction that avoids the logarithmic overhead of regularity methods: instead of embedding $G$ into a regular host, they build a host that directly encodes the structure of $G$ at multiple scales.",
     "mathContext": "$\\exists C > 0:\\; \\forall n \\ge 1,\\; \\forall G \\in \\mathcal{G}_n:\\; R^*(G) \\le 2^{Cn}$",
@@ -276,7 +276,7 @@
       "startLine": 219,
       "endLine": 251
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Comparison with Ordinary Ramsey Numbers",
     "content": "Defines `ordinaryRamseyNumber` (minimum $m$ such that every 2-coloring of $K_m$ yields a monochromatic -- not necessarily induced -- copy of $G$) and states `induced_ramsey_ge_ordinary`: $R^*(G) \\ge R(G)$. This holds because any monochromatic induced copy is automatically a monochromatic copy (the induced condition is strictly stronger). The axiom `gap_can_be_large` asserts the gap can be arbitrarily large: $\\exists G$ with $R^*(G) \\ge k \\cdot R(G)$. Complete bipartite graphs and random graphs witness the largest known gaps.",
     "mathContext": "$R^*(G) \\ge R(G)$ always; $\\forall k,\\; \\exists G:\\; R^*(G) \\ge k \\cdot R(G)$",
@@ -299,7 +299,7 @@
       "startLine": 252,
       "endLine": 274
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Exponential Lower Bounds and Tightness",
     "content": "Axiomatizes `exponential_lower_bound`: there exist graphs $G$ on $n$ vertices with $R^*(G) \\ge 2^{cn}$ for a positive constant $c$. The proved theorem `bound_essentially_tight` combines the upper bound (Aragao et al.) with this lower bound to show the exponential growth rate is optimal. Random graphs witness the lower bound: a typical $G(n, 1/2)$ satisfies $R^*(G) \\ge 2^{\\Omega(n)}$ because any host for a random graph must contain many different induced subgraph patterns, forcing exponential size.",
     "mathContext": "$\\exists c > 0:\\; \\forall n \\ge 1,\\; \\exists G_n:\\; R^*(G_n) \\ge 2^{cn}$; combined: $R^* = 2^{\\Theta(n)}$ in worst case",
@@ -321,7 +321,7 @@
       "startLine": 275,
       "endLine": 307
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary: Complete Resolution of Erdos Problem #565",
     "content": "The `erdos_565_summary` theorem bundles both directions: (1) $R^*(G) \\le 2^{Cn}$ for all $G$ (Aragao et al.), and (2) $\\exists G$ with $R^*(G) \\ge 2^{cn}$ (random graph lower bound). Together these establish $R^*(G) = 2^{\\Theta(n)}$ in the worst case, completely resolving the problem. The proof is a pair construction `\\langle aragao\\_et\\_al\\_theorem, exponential\\_lower\\_bound \\rangle`, combining the two axiomatized results.",
     "mathContext": "$\\max_G R^*(G) = 2^{\\Theta(n)}$: upper bound from Aragao et al. (2025), lower bound from random graphs",

@@ -81,7 +81,7 @@
       "startLine": 77,
       "endLine": 92
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Known Results",
     "content": "**weak_inequality:** Any nonzero signed sum satisfies |sum| ≥ 1/lcm(1,...,n). This is because the sum has denominator dividing lcm, so the numerator is a nonzero integer, giving |sum| ≥ 1/lcm. Axiomatized since the formal proof requires careful rational arithmetic.\n\n**counterexample_small_n:** For n = 4, choosing δ = (0, 1, -1, -1) gives 0 + 1/2 - 1/3 - 1/4 = -1/12. Since lcm(1,2,3,4) = 12, we get |sum| = 1/12 = 1/lcm — equality, not strict inequality. This shows Q2 fails for small n.",
     "mathContext": "The weak inequality is a direct consequence of the clearing-denominators argument: multiply through by lcm(1,...,n) to get a nonzero integer, which has absolute value ≥ 1. The counterexample is verifiable by computation: (6-4-3)/12 = -1/12.",
@@ -99,7 +99,7 @@
       "startLine": 94,
       "endLine": 103
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Kovac–van Doorn Bound",
     "content": "**kovac_van_doorn_bound:** For every n ≥ 1, there exists a sign function δ with 0 < |∑ δ_k/k|. The full result of Kovac and van Doorn gives the upper bound 2^{-n·(log log log n)^{1+o(1)}/log n}, but the formalization captures only the existence of nonzero sums.\n\nThe gap between this sub-exponential bound and the conjectured c/2^n is enormous for large n. Van Doorn's heuristic arguments suggest the sub-exponential rate may be optimal.",
     "mathContext": "The exponent n·(log log log n)^{1+o(1)}/log n grows much slower than n, making 2^{-this} much larger than 2^{-cn} = (c'/2^c)^n. Formalizing the precise rate would require real analysis beyond what's needed for the problem statement.",
@@ -117,7 +117,7 @@
       "startLine": 105,
       "endLine": 121
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_317_summary:** A proved theorem combining the two known results:\n1. The weak inequality: |sum| ≥ 1/lcm for all nonzero signed sums\n2. The counterexample: equality is achievable at n = 4\n\nProved by `exact ⟨weak_inequality, counterexample_small_n⟩`. This captures the complete state of knowledge: the trivial lower bound holds, but the strict version (Q2) fails for small n and remains open for large n.",
     "mathContext": "The summary packages both sides of the known result: the lower bound is valid (weak form), but cannot be improved to strict for all n. Together they delineate exactly what is known and what remains open.",

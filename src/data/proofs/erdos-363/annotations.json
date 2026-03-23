@@ -73,7 +73,7 @@
       "startLine": 107,
       "endLine": 123
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Pomerance's Observation",
     "content": "**pomeranceCounterexample:**\n\nFor any n ≥ 2, the product of four specific size-3 intervals built from powers of 2 is always a perfect square.\n\nThis shows the |Iᵢ| ≥ 4 condition is necessary - without it, infinitely many counterexamples exist trivially.",
     "mathContext": "The four blocks involve terms like (2^n - 1) · 2^n · (2^n + 1) = 2^n(2^(2n) - 1). These combine in a way that makes the total product a perfect square.",
@@ -90,7 +90,7 @@
       "startLine": 129,
       "endLine": 139
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Ulas's Theorem (2005)",
     "content": "**Axiom ulas_theorem:**\n\nFor n = 4 or n ≥ 6, there are infinitely many collections of n disjoint intervals, each of size exactly 4, whose product is a perfect square.\n\nThis was the first major result disproving the conjecture.",
     "mathContext": "Ulas used techniques from Diophantine equations to construct parametric families of solutions. The cases n = 3 and n = 5 required different methods.",
@@ -107,7 +107,7 @@
       "startLine": 145,
       "endLine": 155
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bauer-Bennett Theorem (2007)",
     "content": "**Axiom bauer_bennett_theorem:**\n\nFor n = 3 or n = 5, there are infinitely many collections of n disjoint intervals, each of size exactly 4, whose product is a perfect square.\n\nThis filled the gaps left by Ulas's theorem.",
     "mathContext": "Together with Ulas, this shows infinitely many solutions exist for ALL n ≥ 3 when using size-4 intervals.",
@@ -123,7 +123,7 @@
       "startLine": 161,
       "endLine": 171
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bennett-Van Luijk Theorem (2012)",
     "content": "**Axiom bennett_van_luijk_theorem:**\n\nFor n ≥ 5, there are infinitely many collections of n disjoint intervals, each of size exactly 5, whose product is a perfect square.\n\nThis extended the result to larger interval sizes.",
     "mathContext": "This suggests the phenomenon is not specific to size-4 intervals, supporting Ulas's conjecture that any size k ≥ 4 admits infinitely many solutions for large enough n.",
@@ -139,7 +139,7 @@
       "startLine": 177,
       "endLine": 187
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Infinitely Many Size-4 Collections",
     "content": "**Theorem infinitely_many_size4_collections:**\n\nThere are infinitely many collections where all intervals have size 4 and the product is a perfect square.\n\nProof: Apply Ulas's theorem for n = 4, then project to forget the constraint on n.",
     "significance": "key"
@@ -151,7 +151,7 @@
       "startLine": 189,
       "endLine": 205
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Conjecture is FALSE",
     "content": "**Theorem erdosConjecture363_false:**\n\n¬erdosConjecture363\n\n**Proof**: The set of size-4 collections is a subset of squareCollections (since size-4 ≥ 4). We have infinitely many size-4 collections. An infinite subset of a finite set is a contradiction.",
     "significance": "key"
@@ -163,7 +163,7 @@
       "startLine": 211,
       "endLine": 216
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem (erdos_363)",
     "content": "**Theorem erdos_363:**\n\n¬erdosConjecture363\n\nThe answer to Erdős Problem #363 is NO - the conjecture is FALSE.",
     "significance": "key"
@@ -187,7 +187,7 @@
       "startLine": 239,
       "endLine": 255
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Selfridge Theorem",
     "content": "**Axiom erdos_selfridge:**\n\nThe product of two or more consecutive positive integers is never a perfect power.\n\nThis 1975 result motivates Problem #363: if a single block is never a power, what about disjoint blocks?",
     "mathContext": "The proof uses prime factorization arguments. Key insight: among n consecutive integers, there's always a prime p > n/2 that divides exactly one term, preventing the product from being a perfect power.",
@@ -204,7 +204,7 @@
       "startLine": 261,
       "endLine": 276
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary",
     "content": "**Theorem erdos_363_summary:**\n\n1. The conjecture is FALSE (infinitely many square-product collections exist)\n2. Pomerance showed |Iᵢ| ≥ 4 is needed (size-3 gives trivial counterexamples)\n3. Ulas + Bauer-Bennett cover all n ≥ 3 for size-4 intervals\n4. Bennett-Van Luijk extended to size-5 intervals\n5. Ulas's conjecture (any size k for large n) remains open",
     "significance": "key"

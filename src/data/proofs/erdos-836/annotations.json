@@ -61,7 +61,7 @@
       "startLine": 110,
       "endLine": 127
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Question 1: O(r²) Vertex Bound (FALSE)",
     "content": "**Question 1** asks whether every r-uniform, intersecting, 3-chromatic hypergraph has O(r²) vertices. This is formalized as the existence of a constant C > 0 with |V| ≤ Cr². The axiom **question1_false** states this is FALSE — Alon's counterexample disproves it with exponentially many vertices.",
     "mathContext": "The formal statement uses an existential quantifier over C : ℝ and universal quantifiers over r, V, and H. The negation ¬Question1 means for every C, some r-uniform intersecting 3-chromatic hypergraph exceeds Cr² vertices.",
@@ -79,7 +79,7 @@
       "startLine": 133,
       "endLine": 166
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Alon's Counterexample Construction",
     "content": "**Alon's construction** takes a set X of size 2r-2 and the set Y of balanced partitions of X (size C(2r-2,r-1)/2). The hypergraph has r-subsets of X as edges, plus edges combining (r-1)-subsets with partition elements. This yields ~4^r/√r vertices — exponentially larger than r². The axiom **exponential_growth** confirms 4^r/√r > r² for large r.",
     "mathContext": "AlonVertexCount(r) = 4^r/√r is defined using Real.sqrt. The axiom alon_construction asserts existence of a hypergraph satisfying all required properties (uniform, intersecting, 3-chromatic) with at least AlonVertexCount(r)/2 vertices.",
@@ -97,7 +97,7 @@
       "startLine": 172,
       "endLine": 198
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Lovász Edge Intersection Bound",
     "content": "**The Erdős-Lovász bound (1975)** proves that in any r-uniform, intersecting, 3-chromatic hypergraph, some pair of distinct edges must intersect in at least Ω(r/log r) vertices. This is the best known lower bound. Whether it can be improved to Ω(r) is a major open question.",
     "mathContext": "ErdosLovaszBound(r) = r/Real.log(r). The axiom erdos_lovasz_bound asserts existence of two distinct edges whose intersection (typed as a subtype) has cardinality at least ErdosLovaszBound(r)/2. The proof in the original paper uses probabilistic methods.",
@@ -133,7 +133,7 @@
       "startLine": 252,
       "endLine": 279
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_836_summary** packages both main results as a conjunction: (1) ¬Question1 (vertex count is not O(r²)) and (2) the Erdős-Lovász intersection bound holds for all r ≥ 2. The proof is simply ⟨question1_false, erdos_lovasz_bound⟩, combining the two key axioms.",
     "mathContext": "The theorem type is a conjunction of the negation of Question1 and the universal statement of the Erdős-Lovász bound. The anonymous constructor ⟨·, ·⟩ packages both components cleanly.",

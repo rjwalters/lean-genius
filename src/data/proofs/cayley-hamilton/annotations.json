@@ -23,7 +23,7 @@
       "startLine": 62,
       "endLine": 65
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "The Characteristic Polynomial is Monic",
     "content": "A polynomial is **monic** if its leading coefficient is 1. The characteristic polynomial is always monic because when we expand det(λI - A), the λⁿ term comes from the product of the diagonal elements, which contributes exactly λⁿ.\n\nFor a 2×2 matrix [[a,b],[c,d]], the characteristic polynomial is:\n$$\\det \\begin{pmatrix} \\lambda - a & -b \\\\ -c & \\lambda - d \\end{pmatrix} = \\lambda^2 - (a+d)\\lambda + (ad-bc)$$\n\nNote the leading coefficient of λ² is 1.",
     "mathContext": "Leading coefficient = 1",
@@ -40,7 +40,7 @@
       "startLine": 67,
       "endLine": 71
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Degree Equals Dimension",
     "content": "The characteristic polynomial of an n×n matrix has degree exactly n. This follows from the determinant formula: expanding det(λI - A), the highest power of λ that can appear is n (from the product of diagonal terms).\n\nThis has the important consequence that when we apply Cayley-Hamilton, the equation p(A) = 0 gives us a relation involving Aⁿ. This means Aⁿ can be written as a linear combination of lower powers!",
     "mathContext": "deg(p) = n",
@@ -57,7 +57,7 @@
       "startLine": 87,
       "endLine": 98
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Main Theorem (Wiedijk #49)",
     "content": "**The Cayley-Hamilton Theorem**: Every square matrix satisfies its own characteristic polynomial.\n\nFormally, if A is an n×n matrix with characteristic polynomial p(λ) = det(λI - A), then:\n$$p(A) = 0$$\n\nThe proof in Mathlib uses the adjugate matrix identity:\n$$A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$$\n\nBy working with matrices over the polynomial ring R[X] and carefully analyzing (XI - A) and its adjugate, the result follows from pure algebra.",
     "mathContext": "$p_A(A) = 0$",
@@ -75,7 +75,7 @@
       "startLine": 122,
       "endLine": 130
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Nilpotent Matrices",
     "content": "A matrix is **nilpotent** if some power of it equals zero: Nᵏ = 0 for some k.\n\nIf N is nilpotent, all its eigenvalues are 0 (since if Nv = λv with v ≠ 0, then Nᵏv = λᵏv = 0 implies λ = 0). Thus the characteristic polynomial is just p(λ) = λⁿ.\n\nBy Cayley-Hamilton, p(N) = Nⁿ = 0. This proves that every nilpotent n×n matrix satisfies Nⁿ = 0.",
     "mathContext": "N nilpotent ⟹ Nⁿ = 0",

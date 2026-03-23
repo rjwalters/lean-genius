@@ -92,7 +92,7 @@
       "startLine": 81,
       "endLine": 90
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Main Conjecture (OPEN)",
     "content": "**Erdős Problem #520**: Does there exist c > 0 such that almost surely,\n\nlimsup_{N→∞} S_N / √(N log log N) = c ?\n\nThe notation `∀ᵐ ω ∂ℙ` means \"for almost every ω with respect to the probability measure.\"",
     "mathContext": "If true, this would give a law of the iterated logarithm for random multiplicative functions.",
@@ -110,7 +110,7 @@
       "startLine": 98,
       "endLine": 104
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Wintner's Second Moment (1944)",
     "content": "**Wintner's Result**: E[S_N²] = #{square-free m ≤ N}.\n\nProof idea: E[f(m)f(n)] = 1 if m = n and square-free (since f(m)² = 1), and 0 otherwise (by independence and mean zero).\n\nSo E[S_N²] = ∑_{m≤N} E[f(m)²] = #{square-free m ≤ N}.",
     "mathContext": "This gives variance approximately (6/π²)N.",
@@ -128,7 +128,7 @@
       "startLine": 106,
       "endLine": 111
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Square-Free Density",
     "content": "The density of square-free integers is 6/π² ≈ 0.608.\n\nThis classical result comes from the inclusion-exclusion formula:\n∑_{n≤N} μ²(n) ~ (6/π²)N\n\nwhere μ is the Möbius function.",
     "mathContext": "The constant 6/π² = 1/ζ(2) where ζ is the Riemann zeta function.",
@@ -146,7 +146,7 @@
       "startLine": 113,
       "endLine": 124
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Harper's Moment Bounds (2020)",
     "content": "**Harper's Result**: For k ≥ 1,\n\nE[|S_N|^{2k}] ≍ N^k (log log N)^{k²}\n\nThe exponent k² (not k) on log log N shows that higher moments grow faster than expected from second moment alone. This reflects subtle correlations.",
     "mathContext": "The ≍ notation means bounded above and below by constant multiples.",
@@ -164,7 +164,7 @@
       "startLine": 130,
       "endLine": 132
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Values in {-1, 0, 1}",
     "content": "Rademacher multiplicative functions take values only in {-1, 0, 1}:\n\n- **0** for non-square-free n\n- **±1** for square-free n (product of ±1 from each prime factor)",
     "significance": "supporting",
@@ -180,7 +180,7 @@
       "startLine": 134,
       "endLine": 136
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Mean Zero",
     "content": "**rademacher_mean_zero**: E[f(n)] = 0 for all n > 1.\n\nFor square-free n, f(n) = ±1 with equal probability 1/2, so E[f(n)] = 0.\nFor non-square-free n, f(n) = 0 deterministically.",
     "significance": "key",
@@ -196,7 +196,7 @@
       "startLine": 138,
       "endLine": 141
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Uncorrelated Values",
     "content": "**rademacher_uncorrelated**: For distinct square-free n ≠ m,\n\nE[f(n)f(m)] = 0\n\nThis is because n and m have at least one prime factor that differs, and independence + mean zero gives the result.",
     "significance": "key",
@@ -231,7 +231,7 @@
       "startLine": 172,
       "endLine": 176
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Uniform on Square-Frees",
     "content": "For square-free n > 1, f(n) is uniformly distributed on {-1, 1}.\n\nThis is because f(n) = f(p₁)...f(pᵣ) where each f(pᵢ) = ±1 independently. The product of k independent ±1 variables is still uniformly ±1.",
     "significance": "supporting",

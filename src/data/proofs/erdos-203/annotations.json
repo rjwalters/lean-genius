@@ -75,7 +75,7 @@
       "startLine": 76,
       "endLine": 80
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Selfridge's Sierpinski Number",
     "content": "selfridge_sierpinski = 78557. selfridge_sierpinski_is_sierpinski: 78557 is a Sierpinski number.",
     "mathContext": "The smallest proven Sierpinski number. The true minimum remains unknown.",
@@ -127,7 +127,7 @@
       "startLine": 144,
       "endLine": 155
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Coprimality Equivalence",
     "content": "coprime_6_equiv: m.Coprime 6 <-> m.Coprime 2 AND m.Coprime 3. m must be coprime to both 2 and 3.",
     "mathContext": "Standard decomposition of coprimality to a composite.",
@@ -144,7 +144,7 @@
       "startLine": 157,
       "endLine": 161
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Base Case",
     "content": "base_case: if AvoidsPrimes(m) then m + 1 is not prime. The k = l = 0 case gives this constraint.",
     "mathContext": "Immediately rules out m such that m + 1 is prime.",
@@ -161,7 +161,7 @@
       "startLine": 163,
       "endLine": 178
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Small Cases Fail",
     "content": "one_fails: m = 1 fails (2 is prime). five_fails: m = 5 fails (11 = 2*5+1 is prime).",
     "mathContext": "Small coprime-to-6 values quickly produce primes.",
@@ -195,7 +195,7 @@
       "startLine": 209,
       "endLine": 213
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Formal Statement",
     "content": "erdos_203_statement: The conjecture is equivalent to existence of m coprime to 6 avoiding all primes.",
     "mathContext": "Precise formal statement of the problem.",

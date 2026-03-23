@@ -94,22 +94,6 @@
       "Can interactive systems (human + machine) solve undecidable problems?"
     ]
   },
-  "references": [
-    {
-      "authors": "Turing, Alan M.",
-      "title": "On Computable Numbers, with an Application to the Entscheidungsproblem",
-      "year": "1936",
-      "venue": "Proceedings of the London Mathematical Society, s2-42(1), pp. 230-265",
-      "note": "Foundational paper introducing Turing machines and proving the undecidability of the halting problem via diagonalization"
-    },
-    {
-      "authors": "Sipser, Michael",
-      "title": "Introduction to the Theory of Computation",
-      "year": "2012",
-      "venue": "Cengage Learning, 3rd edition",
-      "note": "Chapter 4 gives a modern treatment of the halting problem, its proof via diagonalization, and consequences including Rice's theorem"
-    }
-  ],
   "crossReferences": [
     {
       "targetId": "cantor-diagonalization",
@@ -155,6 +139,16 @@
       "targetId": "continuum-hypothesis",
       "relationship": "thematic",
       "description": "Both illustrate fundamental limits of formal methods: the halting problem shows some questions about programs are algorithmically undecidable, while CH shows some questions about sets are axiomatically independent. Both demonstrate that natural mathematical questions can fall outside the reach of specific formal frameworks"
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "foundational",
+      "description": "Cantor's theorem ($|A| < |\\mathcal{P}(A)|$) is the prototype of the diagonal argument that Turing adapted for the halting problem. The halting problem's proof constructs a 'paradoxical program' $D(x) = $ 'run forever if $H(x,x)$ says halt, else halt' — this is exactly Cantor's diagonal set $\\{x : x \\notin f(x)\\}$ applied to the halting oracle $H$"
+    },
+    {
+      "targetId": "p-vs-np",
+      "relationship": "related",
+      "description": "The halting problem proves absolute undecidability (no algorithm decides all instances), while P vs NP asks about efficient decidability (can NP problems be solved in polynomial time?). The halting problem's diagonal argument shows some problems are not decidable at all; P $\\neq$ NP would show some decidable problems are not efficiently decidable — a finer gradation of computational impossibility"
     }
   ],
   "relatedProofs": [
@@ -166,7 +160,9 @@
     "mathematical-induction",
     "fundamental-arithmetic",
     "russell-1-plus-1",
-    "continuum-hypothesis"
+    "continuum-hypothesis",
+    "cantors-theorem",
+    "p-vs-np"
   ],
   "references": [
     {

@@ -165,7 +165,7 @@
       "startLine": 54,
       "endLine": 57
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "χ ≥ ω Always",
     "content": "**Fundamental bound:** $\\chi(G) \\geq \\omega(G)$ for all graphs.\n\nA $k$-clique requires $k$ distinct colors (all vertices mutually adjacent), so $\\chi \\geq \\omega$.\n\nThis means the ratio $\\chi/\\omega \\geq 1$.",
     "significance": "key",
@@ -209,7 +209,7 @@
       "startLine": 80,
       "endLine": 83
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Tutte-Zykov Construction",
     "content": "**Tutte (1947) and Zykov (1949) independently:**\n\nGraphs with $\\omega = 2$ (triangle-free) can have arbitrarily large $\\chi$!\n\nThis is surprising: triangle-free graphs seem 'sparse' but can still require many colors. The ratio $\\chi/\\omega$ can be arbitrarily large.",
     "significance": "key",
@@ -232,7 +232,7 @@
       "startLine": 89,
       "endLine": 98
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Triangle-Free Large χ",
     "content": "For any $k$, there exist triangle-free graphs with $\\chi \\geq k$.\n\nThis follows from Tutte-Zykov: $\\omega = 2$ means no triangles ($K_3$).\n\n**Intuition breaker:** Locally sparse (no triangles) doesn't mean globally easy to color!",
     "significance": "key",
@@ -278,7 +278,7 @@
       "startLine": 112,
       "endLine": 117
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős's Asymptotic",
     "content": "**Erdős proved:** $f(n) \\asymp n/(\\log n)^2$\n\nMeaning: $c_1 \\cdot n/(\\log n)^2 \\leq f(n) \\leq c_2 \\cdot n/(\\log n)^2$ for constants $c_1, c_2 > 0$.\n\nSo $f(n)$ grows, but slower than linear. The $(\\log n)^2$ denominator makes growth sub-polynomial.",
     "significance": "key",
@@ -327,7 +327,7 @@
       "startLine": 136,
       "endLine": 139
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Limit Bounds",
     "content": "**If the limit exists,** it lies in $(\\log 2)^2 \\cdot [1/4, 1]$.\n\nNumerically: $(\\log 2)^2 \\approx 0.48$, so the limit (if it exists) is in $[0.12, 0.48]$.\n\nThis $4\\times$ gap shows we don't know $f(n)$ precisely even asymptotically.",
     "significance": "key",
@@ -372,7 +372,7 @@
       "startLine": 162,
       "endLine": 168
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Strong Perfect Graph Theorem",
     "content": "**Chudnovsky, Robertson, Seymour, Thomas (2006):**\n\n$G$ is perfect $\\iff$ $G$ has no odd hole or odd antihole.\n\nAn odd hole is an induced odd cycle $C_{2k+1}$ for $k \\geq 2$.\nAn odd antihole is the complement of an odd hole.\n\nThis landmark theorem completely characterizes perfect graphs!",
     "significance": "key",
@@ -396,7 +396,7 @@
       "startLine": 172,
       "endLine": 178
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Ramsey Connection",
     "content": "**Connection to Ramsey numbers:**\n\n$f(R(k,k)) \\geq k$, where $R(k,k)$ is the diagonal Ramsey number.\n\nRamsey graphs (those achieving Ramsey bounds) have large $\\chi/\\omega$ ratio because they avoid both large cliques and large independent sets.",
     "significance": "key",
@@ -466,7 +466,7 @@
       "startLine": 208,
       "endLine": 222
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Growth Rate Analysis",
     "content": "Restates and derives consequences of the Erdős asymptotic. `f_growth_rate` directly invokes `erdos_asymptotic`. `ratio_bounded` shows $f(n) \\cdot (\\log n)^2 / n$ is bounded away from 0 and $\\infty$.",
     "significance": "supporting",
@@ -488,7 +488,7 @@
       "startLine": 226,
       "endLine": 245
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Status",
     "content": "**Erdős Problem #627: OPEN**\n\n1. **$f(n) \\asymp n/(\\log n)^2$:** Erdős established the growth rate\n2. **Limit question:** Does $f(n)/(n/(\\log n)^2)$ converge? UNKNOWN\n3. **Limit bounds:** If exists, in $(\\log 2)^2 \\cdot [1/4, 1] \\approx [0.12, 0.48]$\n4. **Tutte-Zykov:** Triangle-free graphs can have arbitrarily large $\\chi$\n5. **Perfect graphs:** $\\chi = \\omega$ always (ratio exactly 1)\n6. **Constructions:** Mycielski, Kneser achieve high ratio",
     "significance": "key",

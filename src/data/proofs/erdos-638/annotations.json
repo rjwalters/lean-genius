@@ -144,7 +144,7 @@
       "startLine": 67,
       "endLine": 77
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Classical Ramsey Theorem and Complete Graph Family",
     "content": "The classical Ramsey theorem for triangles: for every n ≥ 1, there exists N such that K_N (represented as ⊤ : SimpleGraph (Fin N)) has the n-colour triangle Ramsey property. As a corollary, the family of complete graphs {K_m : m ∈ ℕ} forms a Ramsey family. This is Ramsey's theorem (1930) specialized to triangles and multiple colors.",
     "mathContext": "Ramsey's theorem (1930): $\\forall n \\ge 1$, $\\exists N = R_n(3)$ such that $K_N \\to (K_3)^2_n$. The known bounds are $R_2(3) = 6$ (Ramsey), $R_3(3) = 17$ (Greenwood–Gleason 1955), and $R_n(3)$ grows exponentially in $n$.",

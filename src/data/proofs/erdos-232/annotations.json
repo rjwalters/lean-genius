@@ -164,7 +164,7 @@
       "startLine": 153,
       "endLine": 174
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Trivial Upper Bound",
     "content": "**trivial_upper_bound:**\n\nm_1 <= 1/2.\n\nFor any unit vector u, sets A and A + u must be disjoint (otherwise two points at distance 1). This forces density <= 1/2.\n\nThe theorem `translation_disjoint` formalizes this: if A is unit-distance-free and ||u|| = 1, then A intersect (A + u) = empty. Since A and A + u each have the same density and are disjoint, their combined density is at most 1.",
     "mathContext": "The translation argument: for any unit vector $u$, the translate $A + u = \\{a + u : a \\in A\\}$ satisfies $A \\cap (A + u) = \\emptyset$ (otherwise $a = a' + u$ for $a, a' \\in A$, giving $\\|a - a'\\| = \\|u\\| = 1$). Since $\\overline{\\delta}(A + u) = \\overline{\\delta}(A)$ by translation invariance of Lebesgue measure and $\\overline{\\delta}(A \\cup (A + u)) \\leq 1$, we get $2 \\cdot \\overline{\\delta}(A) \\leq 1$, hence $m_1 \\leq 1/2$.",
@@ -186,7 +186,7 @@
       "startLine": 176,
       "endLine": 186
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Hexagonal Lower Bound",
     "content": "**hexagonal_lower_bound:**\n\nm_1 >= pi/(8*sqrt(3)) approximately 0.2267.\n\nConstruction: Take a hexagonal lattice with spacing chosen so that open discs of radius 1/2 centered at lattice points are pairwise disjoint and each disc is unit-distance-free. The density equals the packing density of these discs.",
     "mathContext": "Place open discs of radius $1/2$ at the vertices of a hexagonal lattice with nearest-neighbor distance $\\sqrt{3}$ (slightly more than 1, so discs are disjoint). Each disc has diameter 1, so no two points within a disc are at distance 1. The packing density of circles in the hexagonal arrangement is $\\frac{\\pi}{2\\sqrt{3}}$; with radius $1/2$ in a lattice of spacing $\\sqrt{3}$, the density is $\\frac{\\pi (1/2)^2}{(\\sqrt{3})^2 \\cdot \\sqrt{3}/2} = \\frac{\\pi}{8\\sqrt{3}} \\approx 0.2267$.",
@@ -208,7 +208,7 @@
       "startLine": 188,
       "endLine": 193
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Croft's Improvement (1967)",
     "content": "**croft_lower_bound:**\n\nm_1 >= 0.22936.\n\nCroft refined the hexagonal construction by using annular regions (rings) instead of discs, allowing a slightly higher packing density while maintaining the unit-distance-free property.",
     "mathContext": "Croft's construction in 'Incidence incidents' (1967) replaces solid discs with carefully chosen annular sectors on a modified lattice. By using regions $\\{x : r_1 \\leq \\|x - c\\| \\leq r_2\\}$ with $r_2 - r_1 < 1$ and lattice spacing tuned to avoid unit distances between different annuli, the area covered per fundamental domain increases to density $\\geq 0.22936$. This remained the best lower bound for over 55 years.",
@@ -230,7 +230,7 @@
       "startLine": 195,
       "endLine": 206
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Ambrus et al. (2023)",
     "content": "**ambrus_et_al_upper_bound:**\n\nm_1 <= 0.247.\n\nThis breakthrough result by Ambrus, Csiszarik, Matolcsi, Varga, and Zsamboki definitively answers Erdos's question: YES, m_1 <= 1/4 (in fact, strictly less).",
     "mathContext": "The proof by Ambrus et al. (arXiv:2207.14179) uses a combination of Fourier analysis and linear programming bounds. They study the autocorrelation function of the indicator $\\mathbf{1}_A$ and exploit the constraint that the Fourier transform of $\\mathbf{1}_A * \\mathbf{1}_A$ must vanish on the unit circle (due to the unit-distance-free condition). An optimized linear program then yields $\\overline{\\delta}(A) \\leq 0.247$. This technique is inspired by Delsarte's method from coding theory.",
@@ -254,7 +254,7 @@
       "startLine": 208,
       "endLine": 227
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdos's Question Answered",
     "content": "**erdos_232_solution and erdos_232_quarter_bound:**\n\nThe main theorem `erdos_232_solution` proves m_1 < 1/4 by chaining the Ambrus et al. bound (m_1 <= 0.247) with the numerical fact 0.247 < 0.25. The weaker `erdos_232_quarter_bound` follows by `linarith`.",
     "mathContext": "The proof is a simple chain of inequalities: $m_1 \\leq 0.247 < 1/4$. The first inequality is the deep result of Ambrus et al.; the second is arithmetic. In Lean, `calc` chains the inequalities and `norm_num` handles $0.247 < 0.25$. The `linarith` tactic derives the weak bound $m_1 \\leq 1/4$ from the strict bound $m_1 < 1/4$.",
@@ -275,7 +275,7 @@
       "startLine": 229,
       "endLine": 244
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Current Best Bounds",
     "content": "**current_bounds:**\n\n0.22936 <= m_1 <= 0.247\n\nCombines Croft's lower bound with the Ambrus et al. upper bound. The `bounds_gap` theorem computes the explicit gap: 0.247 - 0.22936 = 0.01764.",
     "mathContext": "The current state of knowledge pins $m_1$ to the interval $[0.22936, 0.247]$, a window of width $\\approx 0.018$. Narrowing this gap requires either (a) a better construction for the lower bound, or (b) a tighter LP relaxation for the upper bound. The exact value of $m_1$ remains one of the outstanding open problems in combinatorial geometry.",
@@ -295,7 +295,7 @@
       "startLine": 246,
       "endLine": 274
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Examples",
     "content": "**Basic examples of unit-distance-free sets:**\n\n1. **Empty set:** Trivially unit-distance-free (vacuously true, proved by `False.elim`).\n2. **Singletons:** One point has no distinct pair, so no unit distance pair. Proved via `simp` on membership.\n3. **Ball of radius 1/2:** Any two points in an open ball of radius 1/2 have distance < 1 by the triangle inequality. (Still a `sorry` in the formalization.)",
     "mathContext": "These examples illustrate the definition at increasing complexity. The ball example is the key building block for the hexagonal construction: if $B(c, 1/2) = \\{x : \\|x - c\\| < 1/2\\}$, then for $p, q \\in B(c, 1/2)$ the triangle inequality gives $\\|p - q\\| \\leq \\|p - c\\| + \\|c - q\\| < 1/2 + 1/2 = 1$, so no unit distance pair exists.",
@@ -341,7 +341,7 @@
       "startLine": 307,
       "endLine": 333
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary",
     "content": "**erdos_232_summary:**\n\nCombines the main results into a single theorem: m_1 <= 1/4 AND 0.22936 <= m_1 <= 0.247. Built from `erdos_232_quarter_bound` and `current_bounds`.",
     "mathContext": "The summary theorem packages the complete answer to Erdos's question as a conjunction: (1) the affirmative answer $m_1 \\leq 1/4$, and (2) the precise bounds $0.22936 \\leq m_1 \\leq 0.247$ representing the current state of the art as of 2023.",

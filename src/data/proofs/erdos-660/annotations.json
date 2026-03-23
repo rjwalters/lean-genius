@@ -186,7 +186,7 @@
       "startLine": 83,
       "endLine": 92
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Altman's Theorem (2D Case)",
     "content": "Formalizes Altman's 1963 result: any convex polygon with $n \\geq 3$ vertices determines at least $\\lfloor n/2 \\rfloor$ distinct distances. The proof relies on the cyclic structure of convex polygons: for each diagonal length, there are at most 2 diagonals of that length in a convex polygon, giving the $n/2$ bound. Marked `sorry` since the full geometric argument requires substantial development.",
     "mathContext": "For a convex $n$-gon in $\\mathbb{R}^2$ with $n \\geq 3$: $|\\Delta^+| \\geq \\lfloor n/2 \\rfloor$.",
@@ -230,7 +230,7 @@
       "startLine": 100,
       "endLine": 112
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Conjecture (OPEN)",
     "content": "The open conjecture: there exists a vanishing function $\\varepsilon(n) \\to 0$ such that any convex polyhedron with $n$ vertices determines at least $(1 - \\varepsilon(n)) \\cdot n/2$ distinct distances. This extends Altman's exact $\\lfloor n/2 \\rfloor$ bound from 2D to an asymptotic $n/2$ bound in 3D. The weaker form (some linear bound $cn$) is also open.",
     "mathContext": "$\\exists \\varepsilon : \\mathbb{N} \\to \\mathbb{R},\\, \\varepsilon(n) \\to 0,\\, \\forall n,\\, \\forall V$ convex polyhedron vertices with $|V| = n$: $|\\Delta^+(V)| \\geq (1 - \\varepsilon(n)) \\cdot n/2$.",
@@ -253,7 +253,7 @@
       "startLine": 116,
       "endLine": 121
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Trivial Lower Bound",
     "content": "The weakest possible bound: any $n \\geq 2$ points must have at least 1 distinct distance (since two distinct points are at positive distance). The gap between this trivial bound and the conjectured $\\Theta(n)$ illustrates the difficulty of the problem.",
     "mathContext": "$n \\geq 2 \\implies |\\Delta^+| \\geq 1$.",
@@ -274,7 +274,7 @@
       "startLine": 134,
       "endLine": 139
     },
-    "type": "example",
+    "type": "context",
     "title": "Regular Tetrahedron (4 Vertices, 1 Distance)",
     "content": "The regular tetrahedron is the simplest Platonic solid: all 4 vertices are mutually equidistant at edge length $a$. With $|\\Delta^+| = 1$ vs. the conjectured bound $\\approx 2$, it shows the conjecture is not tight for small $n$. The tetrahedron is the unique convex polytope in $\\mathbb{R}^3$ with all edges equal.",
     "mathContext": "Regular tetrahedron: $n = 4$, $|\\Delta^+| = 1$. Conjecture predicts $(1-o(1)) \\cdot 2 \\approx 2$.",
@@ -296,7 +296,7 @@
       "startLine": 141,
       "endLine": 147
     },
-    "type": "example",
+    "type": "context",
     "title": "Cube (8 Vertices, 3 Distances)",
     "content": "The cube has 8 vertices with exactly 3 distinct distances: edge length $a$, face diagonal $a\\sqrt{2}$, and space diagonal $a\\sqrt{3}$. With $|\\Delta^+| = 3$ vs. the conjectured $\\approx 4$, the cube is already close to the conjectured threshold. The distance structure reflects the three types of vertex pairs: adjacent, face-diagonal, and space-diagonal.",
     "mathContext": "Cube: $n = 8$, distances $\\{a, a\\sqrt{2}, a\\sqrt{3}\\}$, so $|\\Delta^+| = 3$. Conjecture: $\\geq (1-o(1)) \\cdot 4$.",
@@ -319,7 +319,7 @@
       "startLine": 149,
       "endLine": 154
     },
-    "type": "example",
+    "type": "context",
     "title": "Octahedron (6 Vertices, 2 Distances)",
     "content": "The regular octahedron has 6 vertices with exactly 2 distinct distances: the edge length $a\\sqrt{2}$ (between adjacent vertices) and the axis length $2a$ (between opposite vertices). With $|\\Delta^+| = 2$ vs. conjectured $\\approx 3$, it illustrates how high symmetry can reduce the distance count.",
     "mathContext": "Octahedron: $n = 6$, distances $\\{a\\sqrt{2}, 2a\\}$, so $|\\Delta^+| = 2$. Conjecture: $\\geq (1-o(1)) \\cdot 3$.",
@@ -341,7 +341,7 @@
       "startLine": 170,
       "endLine": 177
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Guth-Katz Theorem (2015)",
     "content": "The landmark result by Larry Guth and Nets Hawk Katz: any $n$ points in $\\mathbb{R}^2$ determine at least $\\Omega(n/\\log n)$ distinct distances. This resolved Erdős's 1946 conjecture up to the logarithmic factor. The proof uses the polynomial partitioning method. For points in convex position, the convexity constraint should eliminate the $\\log n$ loss, which is why Problem #660 conjectures a clean $\\Theta(n)$ bound.",
     "mathContext": "Guth-Katz (2015): $|\\Delta| \\geq c \\cdot n / \\log n$ for any $n$ points in $\\mathbb{R}^2$. For convex position: conjectured $|\\Delta| \\geq (1-o(1)) \\cdot n/2$.",

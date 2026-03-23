@@ -78,7 +78,7 @@
       "startLine": 58,
       "endLine": 76
     },
-    "type": "proof",
+    "type": "technique",
     "title": "Small Powerful Numbers",
     "content": "**Concrete verification** that 1, 4, 8, 9 are powerful. 1 is vacuously powerful (no prime divides it). 4 = 2² is powerful because 2² | 4. Similarly 8 = 2³ and 9 = 3². These are the first four powerful numbers.",
     "mathContext": "Each proof uses interval_cases to enumerate small primes and verify the divisibility condition p | n → p² | n. The proofs are fully constructive with no sorry or axiom.",
@@ -149,7 +149,7 @@
       "startLine": 125,
       "endLine": 138
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Main Problem: Erdős #938",
     "content": "**The central question**: Is apIndices.Finite? This asks whether the set of indices where consecutive powerful numbers form APs is finite. Axiomatized because the problem is open — neither proved nor disproved.",
     "mathContext": "Stated as: axiom erdos_938 : apIndices.Finite. Using axiom rather than theorem+sorry signals that this is a genuine open problem, not a gap in the formalization. The answer is unknown.",
@@ -185,7 +185,7 @@
       "startLine": 156,
       "endLine": 173
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Asymptotic Counting",
     "content": "**The density of powerful numbers** up to x is asymptotically (ζ(3/2)/ζ(3))·√x ≈ 2.17·√x. This classical result shows powerful numbers become increasingly sparse, with average gap growing like √n.",
     "mathContext": "countPowerful(n) counts powerful numbers in {0, ..., n}. The axiom states ∃ c > 0 such that countPowerful(n)/√n → c as n → ∞. The constant c = ζ(3/2)/ζ(3) involves the Riemann zeta function.",
@@ -203,7 +203,7 @@
       "startLine": 175,
       "endLine": 201
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "AP Differences and Finiteness",
     "content": "**If the AP indices are finite**, then the set of common differences is also finite. The structure ConsecutivePowerfulAPWithDiff packages an AP index with its common difference, and apDifferences collects all differences that occur.",
     "mathContext": "The lemma differences_finite_of_indices_finite proves: apIndices.Finite → apDifferences.Finite, using Set.Finite.subset and the fact that apDifferences ⊆ powerfulGap '' apIndices. This is a genuine derived result, not axiomatized.",

@@ -59,7 +59,7 @@
       "startLine": 99,
       "endLine": 115
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Trivial Bounds",
     "content": "**Trivial Upper Bound:** f(N) ≤ N because (A+A) ∩ [1,N] is a subset of [1,N].\n\n**Trivial Lower Bound:** f(N) ≥ √N since any admissible set generates at least √N distinct sums in [1,N].\n\nBoth bounds are axiomatized. The interesting bounds are the Erdős-Freud results (3/8)N and (1/2)N.",
     "mathContext": "These bounds follow from basic cardinality arguments but are stated as axioms since the formal proofs require careful reasoning about the sSup definition.",
@@ -76,7 +76,7 @@
       "startLine": 121,
       "endLine": 130
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Freud Lower Bound",
     "content": "**Lower Bound: f(N) ≥ (3/8 - o(1))N**\n\nErdős and Freud (1991) constructed sets achieving this bound.\n\nThe construction uses sets that:\n- Avoid too much additive structure\n- Still generate many distinct sums in [1,N]\n- Use arithmetic progressions with carefully chosen parameters",
     "mathContext": "The lower bound comes from an explicit construction. The proof that these sets achieve 3N/8 sums requires counting arguments from additive combinatorics.",
@@ -94,7 +94,7 @@
       "startLine": 132,
       "endLine": 141
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Freud Upper Bound",
     "content": "**Upper Bound: f(N) ≤ (1/2 + o(1))N**\n\nNo √N-sized set can have restricted sumset larger than N/2.\n\n**Key insight:** Sums a+b range from 2 to 2N, but only half land in [1,N]. This geometric constraint limits coverage.",
     "mathContext": "The upper bound exploits the distribution of sums: for elements in [1,N], the sum a+b is roughly uniformly distributed over [2,2N], so about half exceed N.",
@@ -112,7 +112,7 @@
       "startLine": 147,
       "endLine": 168
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Combined Bounds",
     "content": "**Combined Bounds (proved from axioms):**\n\nFor any ε > 0, for sufficiently large N:\n(3/8 - ε)N ≤ f(N) ≤ (1/2 + ε)N\n\nThis theorem combines both Erdős-Freud axioms by taking the maximum of the two thresholds N₁ and N₂.\n\nAlso verified computationally: the gap between coefficients is exactly 1/8.",
     "mathContext": "The proof uses the standard technique of taking max(N₁, N₂) to ensure both bounds hold simultaneously for N ≥ max(N₁, N₂).",
@@ -129,7 +129,7 @@
       "startLine": 170,
       "endLine": 198
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Construction and Upper Bound Arguments",
     "content": "**Lower Bound Construction:**\nTo achieve 3N/8, Erdős-Freud construct sets using arithmetic progressions with carefully chosen common difference. The construction avoids excessive additive structure while generating many distinct sums in [1,N].\n\n**Upper Bound Argument:**\nSums a+b with a,b ∈ [1,N] range from 2 to 2N. Roughly half exceed N, limiting (A+A) ∩ [1,N] to at most N/2 elements.\n\nBoth are axiomatized with their full mathematical content (not trivial placeholders).",
     "mathContext": "These axioms formalize the construction and counting arguments with precise quantitative statements rather than trivial True placeholders.",
@@ -164,7 +164,7 @@
       "startLine": 225,
       "endLine": 236
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Arithmetic Progression Sumset",
     "content": "**Arithmetic Progressions are Suboptimal:**\n\nFor A = {0, 1, ..., k-1}: |A+A| = 2k-1 sums.\n\nWith k = √N: only ~2√N sums, far from optimal (0.375N).\n\nAPs have too much additive structure - their sums overlap heavily, producing many duplicate values.",
     "mathContext": "The sumset of an AP of length k is an AP of length 2k-1. This is the minimum possible sumset size for a k-element set (Freiman-Ruzsa theory).",
@@ -182,7 +182,7 @@
       "startLine": 238,
       "endLine": 253
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Gap",
     "content": "**The Gap Between Bounds:**\n\nboundGap = 1/2 - 3/8 = 1/8\n\nThe gap is 12.5% of N. Finding the true asymptotic constant somewhere in [0.375, 0.5] is the core **OPEN** question.\n\nVerified computationally: `gap_is_eighth : boundGap = 1 / 8`",
     "mathContext": "The gap theorem is proved by unfolding definitions and using norm_num. This is one of the few fully verified results in this formalization.",
@@ -199,7 +199,7 @@
       "startLine": 255,
       "endLine": 289
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_819_summary (proved):**\n\nCombines the lower and upper bounds into a single theorem:\n\n1. **Lower:** ∀ ε > 0, ∃ N₀, ∀ N ≥ N₀: f(N) ≥ (3/8 - ε)N\n2. **Upper:** ∀ ε > 0, ∃ N₀, ∀ N ≥ N₀: f(N) ≤ (1/2 + ε)N\n\nProved by exact application of the two Erdős-Freud axioms.\n\nErdős Problem #819 is **OPEN** - the gap remains.",
     "mathContext": "The summary theorem packages both bounds as a conjunction, proved by pairing the two axioms.",

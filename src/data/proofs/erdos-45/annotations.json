@@ -118,7 +118,7 @@
       "startLine": 81,
       "endLine": 83
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Croot's Theorem (2003)",
     "content": "**croot_existence**: For all k ≥ 2, there exists n_k such that HasKEgyptianProperty n_k k. This is the main result — the k-Egyptian property is achievable. One sorry remains (the proof uses probabilistic methods).",
     "significance": "key",
@@ -140,7 +140,7 @@
       "startLine": 92,
       "endLine": 93
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sawhney's Upper Bound",
     "content": "**sawhney_upper_bound**: The minimal n_k satisfies n_k ≤ exp(C^k) for some absolute constant C > 0. The bound is **doubly exponential** in k.",
     "significance": "key",
@@ -162,7 +162,7 @@
       "startLine": 102,
       "endLine": 103
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sawhney's Lower Bound",
     "content": "**sawhney_lower_bound**: If n has the k-Egyptian property, then n ≥ exp(c^k) for some constant c > 0. The doubly exponential bound is **sharp**.",
     "significance": "key",
@@ -185,7 +185,7 @@
       "startLine": 107,
       "endLine": 110
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Divisor Reciprocal Sum = σ_{-1}(n)",
     "content": "**divisor_reciprocal_sum**: The reciprocal sum of all divisors of n equals σ_{-1}(n) = Σ_{d|n} 1/d. This is a multiplicative function: σ_{-1}(n) = Π_{p^a || n} (1 + 1/p + ... + 1/p^a).",
     "significance": "supporting",
@@ -208,7 +208,7 @@
       "startLine": 113,
       "endLine": 116
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Egyptian Fraction Bound (PROVED)",
     "content": "**egyptian_fraction_bound**: If D' has reciprocal sum 1 with all elements positive, then each d ∈ D' satisfies d ≤ Π_{d'∈D'} d'. **Proved by Aristotle** via `Finset.dvd_prod_of_mem` and `Nat.le_of_dvd`.",
     "significance": "key",
@@ -230,7 +230,7 @@
       "startLine": 123,
       "endLine": 124
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Case k = 2: n = 120",
     "content": "**case_k_2**: 120 has the 2-Egyptian property. The number 120 = 2³·3·5 has 14 proper divisors with reciprocal sum ≈ 2.4, enough to force a monochromatic Egyptian subset under any 2-coloring.",
     "significance": "supporting",

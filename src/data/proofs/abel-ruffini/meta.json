@@ -116,7 +116,7 @@
       "id": "small-solvable",
       "title": "Small Symmetric Groups are Solvable",
       "startLine": 100,
-      "endLine": 118,
+      "endLine": 119,
       "summary": "Part IV docstring and theorems: `s0_solvable` and `s1_solvable` via `inferInstance`. Documents the derived series for $S_2$ through $S_4$, showing why each is solvable, and contrasts with $S_n$ ($n \\geq 5$) which is not.",
       "mathContext": "$S_0$ and $S_1$ are trivial groups (order 1), hence abelian and trivially solvable. The sharp boundary at $n = 5$ corresponds exactly to the existence of quadratic, cubic (Cardano, 1545), and quartic (Ferrari, 1545) formulas contrasted with the impossibility for degree 5."
     },
@@ -139,7 +139,7 @@
   ],
   "conclusion": {
     "summary": "This formalization demonstrates one of mathematics' most beautiful connections: the solution of polynomial equations reduces to group theory. Galois's insight that symmetry groups control solvability unified algebra in a profound way.\n\nThe key results: Mathlib's solvableByRad.isSolvable' proves that solvability by radicals implies a solvable Galois group. The simplicity of A5 (alternatingGroup.isSimpleGroup_five) implies S5 is not solvable. Together, these show the general quintic is unsolvable.",
-    "implications": "Galois theory has far-reaching consequences:\n\n1. CONSTRUCTIBILITY: Similar techniques prove that angle trisection and cube doubling are impossible with compass and straightedge.\n\n2. INVERSE GALOIS PROBLEM: Which groups appear as Galois groups over Q? This remains open for many groups.\n\n3. ALGEBRAIC NUMBER THEORY: Galois groups of field extensions are central to understanding number fields and their arithmetic.\n\n4. MODERN ALGEBRA: Galois's ideas pioneered the abstract study of groups, fields, and their relationships - the foundation of modern algebra.\n\n5. SPECIFIC SOLUTIONS: While the general quintic is unsolvable, specific quintics may be solvable. Galois theory tells us exactly which ones.\n\n6. IMPOSSIBILITY PARADIGM: Abel-Ruffini inaugurated a tradition of impossibility proofs that extends through Lindemann's transcendence of $e$ and $\\pi$ (1882), Gödel's incompleteness (1931), Turing's halting problem (1936), and Matiyasevich's negative resolution of Hilbert's tenth problem (1970). Each shows that some natural class of problems admits no universal solution within a given formal framework.\n\n7. TRANSCENDENCE HIERARCHY: Abel-Ruffini's impossibility (roots not expressible by radicals) sits between irrationality ($\\sqrt{2} \\notin \\mathbb{Q}$, c. 500 BCE) and transcendence ($e, \\pi \\notin \\overline{\\mathbb{Q}}$, 1882) in a hierarchy of expressibility barriers.",
+    "implications": "Galois theory has far-reaching consequences:\n\n1. CONSTRUCTIBILITY: Similar techniques prove that angle trisection and cube doubling are impossible with compass and straightedge.\n\n2. INVERSE GALOIS PROBLEM: Which groups appear as Galois groups over Q? This remains open for many groups.\n\n3. ALGEBRAIC NUMBER THEORY: Galois groups of field extensions are central to understanding number fields and their arithmetic.\n\n4. MODERN ALGEBRA: Galois's ideas pioneered the abstract study of groups, fields, and their relationships - the foundation of modern algebra.\n\n5. SPECIFIC SOLUTIONS: While the general quintic is unsolvable, specific quintics may be solvable. Galois theory tells us exactly which ones.\n\n6. IMPOSSIBILITY PARADIGM: Abel-Ruffini inaugurated a tradition of impossibility proofs that extends through Lindemann's transcendence of $e$ and $\\pi$ (1882), Gödel's incompleteness (1931), Turing's halting problem (1936), and Matiyasevich's negative resolution of Hilbert's tenth problem (1970). Each shows that some natural class of problems admits no universal solution within a given formal framework.\n\n7. TRANSCENDENCE HIERARCHY: Abel-Ruffini's impossibility (roots not expressible by radicals) sits between irrationality ($\\sqrt{2} \\notin \\mathbb{Q}$, c. 500 BCE) and transcendence ($e, \\pi \\notin \\overline{\\mathbb{Q}}$, 1882) in a hierarchy of expressibility barriers.\n\n8. FEIT-THOMPSON AND THE ODD ORDER THEOREM: The Feit-Thompson theorem (1963) — every group of odd order is solvable — is the deepest generalization of the solvability concept central to Abel-Ruffini. It implies that any polynomial whose Galois group has odd order is solvable by radicals, and its 255-page proof launched the classification of finite simple groups. The formalization of Feit-Thompson in Coq (Gonthier et al., 2013) was a landmark in formal verification.",
     "openQuestions": [
       "Can we formalize a *specific* unsolvable quintic in Lean — e.g., $x^5 - x - 1$ over $\\mathbb{Q}$ has Galois group exactly $S_5$? This requires formalizing the Galois group computation, not just citing Mathlib's general result.",
       "Mathlib notes that `IsSolvable` instances for $S_2, S_3, S_4$ were not available at time of writing. Can these be added and `s2_solvable`, `s3_solvable`, `s4_solvable` proved by `inferInstance`, completing the full picture of which $S_n$ are solvable?",
@@ -348,6 +348,11 @@
       "targetId": "chinese-remainder-non-coprime",
       "relationship": "foundational",
       "description": "The non-coprime Chinese Remainder Theorem generalizes the decomposition of cyclic groups that underpins radical extensions: each radical step in the Galois bridge produces a cyclic Galois quotient $\\mathbb{Z}/n\\mathbb{Z}$, and understanding when such cyclic groups decompose as direct products (CRT) versus remaining indecomposable is essential to the composition series analysis that distinguishes solvable groups ($S_4$) from non-solvable ones ($S_5$)"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-01",
+      "relationship": "related",
+      "description": "Zolotarev's 1872 proof of quadratic reciprocity uses the sign homomorphism $\\text{sign}: S_n \\to \\{\\pm 1\\}$ — the same homomorphism whose kernel $A_n = \\ker(\\text{sign})$ is central to Abel-Ruffini's proof chain. In Zolotarev's proof, the Legendre symbol $(a/p)$ equals the signature of the multiplication-by-$a$ permutation on $(\\mathbb{Z}/p\\mathbb{Z})^{\\times}$, directly linking the symmetric group structure that drives Abel-Ruffini's impossibility to quadratic reciprocity"
     }
   ],
   "relatedProofs": [
@@ -390,7 +395,8 @@
     "angle-trisection-oq-02",
     "angle-trisection-oq-02-oq-01",
     "chinese-remainder-constructive",
-    "chinese-remainder-non-coprime"
+    "chinese-remainder-non-coprime",
+    "elementary-quadratic-reciprocity-oq-01"
   ],
   "references": [
     {
@@ -497,6 +503,13 @@
       "year": "1859",
       "venue": "Taylor and Francis, London",
       "note": "Independently rediscovered and popularized Bring's reduction of the quintic to x⁵ + px + q (now called the Bring-Jerrard form). Jerrard's 1834 paper first brought this result to wider attention, though Bring's priority was later established by Hermite"
+    },
+    {
+      "authors": "Feit, Walter; Thompson, John G.",
+      "title": "Solvability of groups of odd order",
+      "year": "1963",
+      "venue": "Pacific Journal of Mathematics, vol. 13, no. 3, pp. 775–1029",
+      "note": "The celebrated Odd Order Theorem: every finite group of odd order is solvable. This 255-page proof is the deepest result about group solvability since Galois and directly implies that any polynomial whose Galois group has odd order is solvable by radicals"
     }
   ],
   "leanFile": {

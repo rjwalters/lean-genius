@@ -42,7 +42,7 @@
       "startLine": 48,
       "endLine": 57
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Asymptotic Density δ(n)",
     "content": "**delta n** is the asymptotic density of integers with a divisor in (n, 2n), axiomatized with bounds: 0 ≤ δ(n) ≤ 1. The density is defined as the limit lim_{N→∞} |{m ≤ N : ∃d ∈ (n, 2n), d | m}| / N. This limit exists by standard analytic number theory arguments. Axiomatization is needed because formalizing the limit requires measure-theoretic infrastructure beyond Mathlib.",
     "mathContext": "Asymptotic density (or natural density) measures the 'proportion' of integers satisfying a property. It is well-defined for this set by results of Davenport and Erdős.",
@@ -96,7 +96,7 @@
       "startLine": 85,
       "endLine": 105
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Historical Results: Besicovitch to Erdős",
     "content": "Three landmark results span 26 years: **Besicovitch (1934)** proved liminf δ(n) = 0 — the density can get arbitrarily small. **Erdős (1935)**, at age 22, strengthened this to δ(n) = o(1) — the full limit is 0, not just the liminf. **Erdős (1960)** found the correct exponent: δ(n) = (log n)^{-α + o(1)}, identifying α as the decay rate. Each result tightened the previous one.",
     "mathContext": "The progression from liminf to lim to quantitative bounds is a classic pattern in analytic number theory. Erdős's 1960 result, published in Russian (Vestnik Leningrad. Univ.), left only the secondary correction factor to be determined.",
@@ -115,7 +115,7 @@
       "startLine": 107,
       "endLine": 116
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Ford's Exact Asymptotic (2008)",
     "content": "**ford_2008_main** gives the exact growth rate: δ(n) ≍ 1/((log n)^α (log log n)^{3/2}). The ≍ notation means there exist constants 0 < c < C such that c·f(n) ≤ δ(n) ≤ C·f(n) for all large n. The (log log n)^{3/2} factor refines Erdős's 1960 estimate. Ford's paper appeared in the Annals of Mathematics, one of the most prestigious journals in mathematics.",
     "mathContext": "Ford's proof uses sophisticated techniques from multiplicative number theory, including the anatomy of integers and sieve methods. The secondary factor (log log n)^{3/2} arises from the precise structure of smooth numbers.",
@@ -133,7 +133,7 @@
       "startLine": 118,
       "endLine": 129
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Ford's Disproof and Generalization",
     "content": "**ford_2008_disproof** shows δ₁(n) is NOT o(δ(n)): there exists c > 0 with δ₁(n) ≥ c·δ(n) for all large n. **ford_2008_general** extends this: for each r ≥ 1, δᵣ(n) ≫ᵣ δ(n). This means no single divisor count dominates — the distribution is surprisingly flat. Erdős was 'quite sure' that δ₁ = o(δ) at Oberwolfach in 1986, but his own doubt (citing Tenenbaum's work) proved prescient.",
     "mathContext": "The disproof shows that the typical integer with a divisor in (n, 2n) has just one such divisor, contradicting the intuition that divisors should 'cluster'. The implicit constants in ≫ᵣ depend on r.",
@@ -151,7 +151,7 @@
       "startLine": 131,
       "endLine": 141
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Primes Avoid the Interval",
     "content": "**prime_no_divisor** is a constructively proved theorem: if p > 2n is prime, then p has no divisor in (n, 2n). The proof uses Nat.Prime.eq_one_or_self_of_dvd — a prime's only divisors are 1 and itself, and neither falls in (n, 2n) when p > 2n. This illustrates that primes are 'invisible' to the density δ(n) for large enough primes.",
     "mathContext": "This is one of the few fully proved results in the formalization. It uses omega for the arithmetic contradictions after case-splitting on the prime's divisors.",
@@ -169,7 +169,7 @@
       "startLine": 143,
       "endLine": 163
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_446_summary** combines Ford's two main results into a single conjunction: (1) the lower bound from the exact asymptotic, and (2) the disproof of δ₁ = o(δ). The proof extracts the lower bound from ford_2008_main and uses ford_2008_disproof directly. This theorem encapsulates the complete resolution of both parts of Erdős Problem #446.",
     "mathContext": "The proof uses Lean 4 pattern matching (obtain) to destructure the existential and conjunction in ford_2008_main, then pairs the results. This is the culmination of 74 years of work on the problem.",

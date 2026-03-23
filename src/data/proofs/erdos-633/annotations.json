@@ -179,7 +179,7 @@
       "startLine": 100,
       "endLine": 103
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Universal Square Dissections",
     "content": "**Every triangle can be dissected into $n^2$ congruent triangles for any $n \\geq 1$.** The construction: divide each side into $n$ equal parts and connect corresponding division points to form an $n \\times n$ grid of $n^2$ similar (and congruent) sub-triangles, each scaled by factor $1/n$. This shows square numbers are always achievable; the question is whether NON-square numbers are also achievable.",
     "mathContext": "universal_square_dissection : ∀ T : Triangle, ∀ n ≥ 1, CanDissectInto T (n * n)",
@@ -224,7 +224,7 @@
       "startLine": 147,
       "endLine": 149
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Soifer's Theorem",
     "content": "**soifer_square_only** (sorry): The triangle $(\\sqrt{2}, \\sqrt{3}, \\sqrt{4})$ has the square-only property. The proof involves careful analysis of how the irrational side lengths constrain possible tilings — any dissection must respect the algebraic relationships between sides, forcing the count to be a perfect square.",
     "mathContext": "soifer_square_only : HasSquareOnlyProperty soiferTriangle",
@@ -269,7 +269,7 @@
       "startLine": 171,
       "endLine": 174
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Equilateral Dissects to 3",
     "content": "**Counterexample to square-only:** The equilateral triangle can be dissected into 3 congruent triangles (not a perfect square!). Construction: connect the centroid to the three vertices, creating three congruent triangles with angles $30°$-$30°$-$120°$. This shows equilateral triangles do NOT have the square-only property.",
     "mathContext": "equilateral_not_square_only : CanDissectInto equilateralTriangle 3 ∧ ¬IsSquare 3",
@@ -291,7 +291,7 @@
       "startLine": 176,
       "endLine": 179
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Right Isosceles Dissects to 2",
     "content": "**Another counterexample:** The 45-45-90 right isosceles triangle can be dissected into 2 congruent right isosceles triangles. Construction: draw the altitude from the right angle to the hypotenuse, creating two congruent copies. Since 2 is not a perfect square, this triangle does NOT have the square-only property.",
     "mathContext": "right_isosceles_not_square_only : CanDissectInto rightIsoscelesTriangle 2 ∧ ¬IsSquare 2",
@@ -313,7 +313,7 @@
       "startLine": 188,
       "endLine": 191
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Similar Dissection Theorem",
     "content": "**Related result (similar, not congruent):** Every triangle can be dissected into $n$ similar triangles for $n \\neq 2, 3, 5$. Some triangles cannot be dissected into 2, 3, or 5 similar copies. This is a complete characterization for the similar case — much cleaner than the congruent case, which remains open.",
     "mathContext": "similar_dissection_complete : ∀ T, ∀ n ∉ {2, 3, 5}, CanDissectIntoSimilar T n",
@@ -380,7 +380,7 @@
       "startLine": 228,
       "endLine": 232
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result: Square-Only Triangles Exist",
     "content": "**erdos_633_exists** (sorry): There exists a triangle with the square-only property, witnessed by Soifer's triangle $(\\sqrt{2}, \\sqrt{3}, \\sqrt{4})$. The complete classification of all such triangles remains the open problem worth \\$25.",
     "mathContext": "erdos_633_exists : ∃ T : Triangle, HasSquareOnlyProperty T\nProof: ⟨soiferTriangle, soifer_square_only⟩",

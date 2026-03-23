@@ -147,7 +147,7 @@
       "startLine": 86,
       "endLine": 100
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Szemerédi's Theorem (1976) and Answer",
     "content": "**szemeredi_theorem (axiom):** Szemerédi proved in 1976 that the answer is YES: there exists $C > 0$ such that $|A||B| \\leq C \\cdot N^2 / \\log N$ whenever all products are distinct. His proof used a clever counting argument: by unique factorization, each product $n = ab$ determines $(a,b)$ uniquely only if $n$ has few divisor pairs in $A \\times B$. The $\\log N$ savings comes from the average number of divisors $d(n) \\sim \\log n$.\n\n**erdos_490_answer:** The answer to Erdős #490 is YES, by direct application of Szemerédi's theorem.",
     "mathContext": "Szemerédi's result: $\\exists C > 0$ such that $\\forall N \\geq 2$, $\\forall A, B \\subseteq \\{1,\\ldots,N\\}$, if $|A \\cdot B| = |A||B|$ then $|A||B| \\leq C N^2 / \\log N$. The proof exploits the divisor function: for typical $n \\leq N^2$, the number of representations $n = ab$ with $a \\leq N, b \\leq N$ is $\\sim d(n)$, and $\\sum_{n \\leq X} d(n) \\sim X \\log X$. Distinct products force at most one representation per $n$, losing the $\\log N$ factor.",
@@ -266,7 +266,7 @@
       "startLine": 203,
       "endLine": 227
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bounds History",
     "content": "**trivial_bound (sorry):** $|A||B| \\leq N^2$ since $|A|, |B| \\leq N$.\n\n**counting_bound (sorry):** Also $|A||B| \\leq N^2$ from the fact that all products lie in $\\{1,\\ldots,N^2\\}$ and distinct products means $|A||B| = |A \\cdot B| \\leq N^2$.\n\n**szemeredi_bound:** $|A||B| \\leq C \\cdot N^2 / \\log N$, derived directly from the axiomatized `szemeredi_theorem`. This is the only bound in the file that is fully proved (from the axiom).",
     "mathContext": "The progression of bounds: $|A||B| \\leq N^2$ (trivial) $\\to$ $|A||B| \\leq C N^2 / \\log N$ (Szemerédi 1976). The $\\log N$ improvement is significant: it shows that the multiplicative structure of $\\{1,\\ldots,N\\}$ (specifically, the density of primes) imposes a logarithmic constraint on distinct-product pairs. No further improvement is possible since the optimal example matches this bound.",
@@ -289,7 +289,7 @@
       "startLine": 228,
       "endLine": 254
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary and Main Theorems",
     "content": "**erdos_490:** The main result restated: `ErdosQuestion490` holds (identical to `erdos_490_answer` above).\n\n**erdos_490_main:** The explicit statement without the `ErdosQuestion490` wrapper, directly asserting the existence of a constant $C$ for the bound. Both are immediate from `szemeredi_theorem`.",
     "mathContext": "The final statement: $\\exists C > 0, \\forall N \\geq 2, \\forall A, B \\subseteq \\{1,\\ldots,N\\}$, if all products $ab$ are distinct, then $|A||B| \\leq C N^2 / \\log N$. This completely resolves Erdős's question in the affirmative.",
@@ -311,7 +311,7 @@
       "startLine": 256,
       "endLine": 277
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Optimality of the Bound",
     "content": "**bound_is_optimal (partially proved):** Shows the $N^2/\\log N$ bound is tight: there exist $A, B$ achieving $|A||B| \\geq c \\cdot N^2 / \\log N$ for some $c > 0$. The proof uses the optimal construction (A = first half, B = upper primes) and sets $c = 1/3$ as a lower bound constant. Three sorry obligations remain for subset verification and the lower bound estimate.\n\nThis optimality result, combined with Szemerédi's upper bound, shows the answer is $\\Theta(N^2/\\log N)$.",
     "mathContext": "The bound is tight: $\\max_{A,B} |A||B| = \\Theta(N^2/\\log N)$. The lower bound uses $|A| = \\lfloor N/2 \\rfloor$ and $|B| = \\pi(N) - \\pi(N/2) \\sim N/(2\\log N)$, giving $|A||B| \\sim N^2/(4\\log N)$. With more careful choice of the split point (not necessarily $N/2$), one can achieve $|A||B| \\sim N^2/(2\\log N)$. The exact constant in the optimum is related to the open limit question.",

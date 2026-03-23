@@ -127,7 +127,7 @@
       "startLine": 94,
       "endLine": 116
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Straus Bounds (1966)",
     "content": "**straus_lower_bound:** liminf k(N)/√N ≥ 2 (from the interval construction).\n**straus_upper_bound:** limsup k(N)/√N ≤ 4/√3 ≈ 2.309.\n\nThe gap between 2 and 2.309 motivated further research. The constant 4/√3 arises from a counting argument bounding how many disjoint sum sets can fit in the available range.",
     "significance": "key",
@@ -145,7 +145,7 @@
       "startLine": 118,
       "endLine": 141
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "ENS Improvement (1991)",
     "content": "**ensConstant = √(143/27) ≈ 2.301.** Erdős-Nicolas-Sárközy (1991) improved Straus's upper bound from 4/√3 ≈ 2.309 to √(143/27) ≈ 2.301. The axiom **ens_improves_straus** confirms this is strictly better. This narrowed the gap toward the true limit of 2.",
     "significance": "key",
@@ -160,7 +160,7 @@
       "startLine": 145,
       "endLine": 153
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Deshouillers-Freiman Main Theorem (1999)",
     "content": "**deshouillers_freiman_main:** For all ε > 0 and sufficiently large N, |k(N)/√N - 2| < ε. This resolves the problem: the limit exists and equals 2. The proof is technical, involving detailed analysis of subset sum structure in admissible sets.",
     "mathContext": "The proof by Deshouillers-Freiman uses Freiman's structure theory of sets with small sumsets, adapted to the admissibility constraint.",
@@ -177,7 +177,7 @@
       "startLine": 155,
       "endLine": 159
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Limit is 2",
     "content": "**k_limit_is_two:** The topological limit statement: k(N)/√N → 2 as N → ∞ via Filter.Tendsto. This is equivalent to the ε-δ statement in deshouillers_freiman_main.",
     "significance": "key",
@@ -193,7 +193,7 @@
       "startLine": 161,
       "endLine": 169
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Optimal Sets are Often Intervals",
     "content": "**optimal_often_interval:** For infinitely many N, the optimal admissible set has the form (N-k, N] ∩ ℕ. This justifies Straus's intuition that intervals are 'natural' admissible sets.",
     "significance": "key",
@@ -220,7 +220,7 @@
       "startLine": 193,
       "endLine": 209
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sum Set Properties",
     "content": "**sumSet_card_bound:** |S_r| ≤ C(|A|, r) since each r-subset gives at most one sum. **total_sums_bounded:** For A ⊆ {1,...,N}, r-element sums lie in [r, r·N], bounding the range. These constraints explain why k(N) grows as √N: disjoint sum sets must fit in bounded range.",
     "significance": "key",
@@ -236,7 +236,7 @@
       "startLine": 229,
       "endLine": 234
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result: erdos_874",
     "content": "**erdos_874:** k(N)/√N → 2 as N → ∞. This is the complete resolution of Problem #874, following directly from k_limit_is_two.",
     "significance": "key",
@@ -251,7 +251,7 @@
       "startLine": 236,
       "endLine": 251
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Answer: Conjecture is TRUE",
     "content": "**erdos_874_answer:** For any ε > 0 and large enough N, (2-ε)√N ≤ k(N) ≤ (2+ε)√N. This is proved from the main theorem using abs_sub_lt_iff and the non-negativity of √N. The proof is constructive given the axiomatized main theorem.",
     "significance": "key",

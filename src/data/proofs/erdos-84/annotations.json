@@ -79,7 +79,7 @@
       "startLine": 85,
       "endLine": 114
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős-Faudree Bounds",
     "content": "**trivial_upper_bound:** $f(n) \\le 2^{n-2}$ since $A \\subseteq \\{3,\\ldots,n\\}$ and $|\\{3,\\ldots,n\\}| = n-2$.\n\n**erdos_faudree_lower_bound:** $f(n) > 2^{n/2}$ for $n \\ge 6$. The construction uses graphs where roughly $n/2$ cycle lengths can be independently controlled: for each subset of these lengths, there exists a graph realizing exactly that subset plus possibly some forced lengths. This shows at least $2^{n/2}$ distinct cycle sets exist.\n\n**erdos_faudree_bounds:** The combination $2^{n/2} < f(n) \\le 2^{n-2}$, proved as a conjunction of the two axioms. This is the only proved theorem in this section, assembling the axiomatized bounds.",
     "mathContext": "$2^{\\lfloor n/2 \\rfloor} < f(n) \\le 2^{n-2}$. Taking $n$-th roots: $\\sqrt{2} < f(n)^{1/n} \\le 2^{(n-2)/n} \\to 2$. So the exponential growth rate $f(n)^{1/n}$ is between $\\sqrt{2} \\approx 1.414$ and $2$.",
@@ -102,7 +102,7 @@
       "startLine": 115,
       "endLine": 147
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Verstraëte's Theorem (Part 1 Solved)",
     "content": "**isLittleO:** Defines $f = o(g)$ as: for all $\\varepsilon > 0$, eventually $f(n) < \\varepsilon \\cdot g(n)$. This is the standard little-$o$ asymptotic notation.\n\n**part1_statement:** The formal statement $f = o(2^n)$, i.e., $f(n)/2^n \\to 0$.\n\n**verstraete_theorem (2004):** $f(n) \\le 2^{n - n^{1/10}}$ for $n \\ge 10$. This was the breakthrough that solved Part 1. The key insight is that cycle sets have *structural dependencies*: if a graph contains cycles of certain lengths, it is forced to contain or exclude cycles of other lengths. These dependencies reduce the effective degrees of freedom from $n - 2$ to roughly $n - n^{1/10}$.\n\n**part1_solved:** Axiomatized corollary that Part 1 holds.",
     "mathContext": "$f(n) \\le 2^{n - n^{1/10}}$ implies $f(n)/2^n \\le 2^{-n^{1/10}} \\to 0$, so $f(n) = o(2^n)$. The exponent savings $n^{1/10}$ comes from counting dependent constraints among cycle lengths in dense graphs.",
@@ -127,7 +127,7 @@
       "startLine": 148,
       "endLine": 167
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Nenadov's Improvement (2025)",
     "content": "**nenadov_theorem (2025):** For $n \\ge 100$ and any $\\varepsilon > 0$, $f(n) \\le 2^{n - n^{1/2 - \\varepsilon}}$. This dramatically improved Verstraëte's exponent from $1/10$ to nearly $1/2$.\n\nThe improvement from $n^{0.1}$ to $n^{0.5 - o(1)}$ represents a qualitative leap: the savings now come from roughly $\\sqrt{n}$ structural constraints rather than just $n^{0.1}$. Combined with the lower bound $f(n) > 2^{n/2}$, this places $f(n)$ in the range $2^{n/2} < f(n) \\le 2^{n - \\sqrt{n}}$.\n\n**best_upper_bound:** A thin wrapper theorem that directly applies `nenadov_theorem`.",
     "mathContext": "$f(n) \\le 2^{n - n^{1/2 - \\varepsilon}}$ for any $\\varepsilon > 0$ and $n$ large. This is tight with the lower bound up to the exponent: $2^{n/2} < f(n) \\le 2^{n - n^{1/2 - o(1)}}$. In terms of the exponential growth rate, $f(n)^{1/n} \\to 2$ if the upper bound is close to tight.",
@@ -200,7 +200,7 @@
       "startLine": 212,
       "endLine": 223
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Structural Constraints on Cycle Sets",
     "content": "**structural_constraint:** There exist subsets $A \\subseteq \\{3, \\ldots, n\\}$ that are not achievable by any graph on $n$ vertices. This is the fundamental fact underlying Part 1: the set of achievable cycle sets is a proper subset of $\\mathcal{P}(\\{3,\\ldots,n\\})$.\n\nThe constraints arise from graph-theoretic dependencies between cycle lengths. For instance, by a classical result of Bondy, any graph with $\\ge n^2/4$ edges is either bipartite or pancyclic (contains cycles of every length $3 \\le \\ell \\le n$). This means a dense non-bipartite graph cannot have a 'sparse' cycle set. More subtle constraints exist: having many short cycles forces the existence of certain longer cycles.",
     "mathContext": "$\\exists n,\\, \\exists A \\subseteq \\{3,\\ldots,n\\} : A \\text{ is not achievable}$. Concretely, for $n \\ge 4$, the set $A = \\{3, n\\}$ (triangle and Hamiltonian cycle but nothing in between) is not achievable for most $n$, because graphs dense enough to have Hamiltonian cycles tend to have intermediate cycle lengths as well.",
@@ -224,7 +224,7 @@
       "startLine": 225,
       "endLine": 237
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Small Values of f(n)",
     "content": "**small_values:** $f(3) = 2$, $f(4) = 4$, $f(5) = 8$.\n\nFor $n = 3$: The only achievable cycle sets are $\\emptyset$ (take a tree/matching) and $\\{3\\}$ (take $K_3$).\n\nFor $n = 4$: Achievable sets are $\\emptyset$, $\\{3\\}$, $\\{4\\}$, $\\{3,4\\}$. Any graph on 4 vertices either has no cycles, only triangles, only a 4-cycle, or both.\n\nFor $n = 5$: All $2^3 = 8$ subsets of $\\{3,4,5\\}$ are achievable. This is the largest $n$ where $f(n) = 2^{n-2}$ (every subset is achievable). For $n \\ge 6$, structural constraints kick in and $f(n) < 2^{n-2}$.",
     "mathContext": "$f(3) = 2 = 2^1$, $f(4) = 4 = 2^2$, $f(5) = 8 = 2^3 = 2^{n-2}$. The pattern $f(n) = 2^{n-2}$ breaks at $n = 6$ where structural constraints force $f(6) < 2^4 = 16$.",
@@ -246,7 +246,7 @@
       "startLine": 238,
       "endLine": 279
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorems",
     "content": "**erdos_84_summary:** Packages the two main established results:\n1. $f(n) = o(2^n)$ (Part 1, from `part1_solved`)\n2. Not all subsets are achievable (from `structural_constraint`)\n\nProved by `exact ⟨part1_solved, structural_constraint⟩`.\n\n**erdos_84:** A simplified alias stating just Part 1: $f = o(2^n)$. This is the headline result, directly from `part1_solved`.\n\nThe formalization captures the full state of knowledge: Part 1 solved with quantitative bounds (Verstraëte, Nenadov), Part 2 and the limit question both open, and structural constraints as the underlying mechanism.",
     "mathContext": "$f(n) = o(2^n)$ and $\\exists$ non-achievable cycle sets. Combined with the open Part 2, the complete picture is: $2^{n/2} < f(n) \\ll 2^{n - \\sqrt{n}}$, with the lower bound sharpness and limit existence both unknown.",

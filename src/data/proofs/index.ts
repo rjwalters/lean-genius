@@ -70,9 +70,19 @@ export async function getProofAsync(slug: string): Promise<ProofData | undefined
           sections: m.sections || [],
           overview: m.overview,
           conclusion: m.conclusion,
+          crossReferences: m.crossReferences,
           source: '',
         },
         annotations: (module.annotations?.default || module.annotations || []) as Annotation[],
+      }
+    }
+
+    // Inject crossReferences from raw meta.json if the proof object doesn't have them
+    if (proofData?.proof && !proofData.proof.crossReferences) {
+      const rawMeta = module.meta?.default || module.meta || module.default?.proof
+      const crossRefs = rawMeta?.crossReferences
+      if (crossRefs && Array.isArray(crossRefs)) {
+        proofData.proof.crossReferences = crossRefs
       }
     }
 

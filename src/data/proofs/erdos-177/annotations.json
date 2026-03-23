@@ -119,7 +119,7 @@
       "startLine": 66,
       "endLine": 68
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Roth's Lower Bound (1964)",
     "content": "**Roth's discrepancy theorem: $h(d) \\geq c\\sqrt{d}$.**\n\nKlaus Roth (1964) proved that no coloring can achieve discrepancy smaller than $c\\sqrt{d}$ for arithmetic progressions of common difference $d$. The proof uses Fourier analysis on $\\mathbb{Z}/N\\mathbb{Z}$: the $L^2$ norm of the Fourier transform of the coloring restricted to residue class $d$ gives a lower bound on the discrepancy. This was one of the earliest applications of harmonic analysis to discrepancy theory.",
     "significance": "key",
@@ -142,7 +142,7 @@
       "startLine": 74,
       "endLine": 76
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Beck's Upper Bound (2017)",
     "content": "**Beck's polynomial upper bound: $h(d) \\leq d^{8+\\varepsilon}$.**\n\nJózsef Beck (2017) proved the first polynomial upper bound on $h(d)$, dramatically improving the factorial bound $h(d) \\leq d!$ of Cantor-Erdős-Schreiber-Straus (1966). For every $\\varepsilon > 0$, there exists a coloring $f$ and constant $C = C(\\varepsilon)$ such that $\\text{disc}(f, d) \\leq Cd^{8+\\varepsilon}$ for all $d \\geq 1$. The proof constructs the coloring probabilistically with careful derandomization.",
     "significance": "key",
@@ -165,7 +165,7 @@
       "startLine": 82,
       "endLine": 83
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Cantor-Erdős-Schreiber-Straus Factorial Bound (1966)",
     "content": "**The first upper bound: $h(d) \\leq d!$.**\n\nCantor, Erdős, Schreiber, and Straus (1966) proved the earliest quantitative result: there exists a coloring with $\\text{disc}(f, d) \\leq d!$ for all $d$. While the factorial growth is far from optimal (superseded by Beck's polynomial bound), this was the foundational result showing $h(d)$ is finite for all $d$ — a non-trivial fact given that Van der Waerden's theorem forces $h(d) \\to \\infty$.",
     "significance": "key",
@@ -187,7 +187,7 @@
       "startLine": 95,
       "endLine": 98
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result: erdos_177",
     "content": "**Erdős Problem #177: OPEN.**\n\nThe main theorem states the Roth lower bound $h(d) \\geq c\\sqrt{d}$, proved via `roth_lower_bound`. This captures the strongest known unconditional result. Combined with the axiomatized Beck upper bound $h(d) \\leq d^{8+\\varepsilon}$, the current state of knowledge is:\n$$c\\sqrt{d} \\leq h(d) \\leq Cd^{8+\\varepsilon}$$\nThe exact polynomial exponent $\\alpha$ in $h(d) \\approx d^\\alpha$ remains unknown.",
     "significance": "key",

@@ -130,7 +130,7 @@
       "startLine": 156,
       "endLine": 165
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Johansson-Kahn-Vu (2008)",
     "content": "**johansson_kahn_vu:**\n\nThe threshold for Shamir's problem is ℓ(n) ≍ n log n.\n\nThis means: c · n log n ≤ ℓ(n) ≤ C · n log n for some constants 0 < c < C.\n\nThis was the breakthrough result, published in 'Factors in random graphs', Random Structures Algorithms (2008).",
     "mathContext": "This paper resolved a 30-year-old problem using sophisticated probabilistic methods.",
@@ -147,7 +147,7 @@
       "startLine": 167,
       "endLine": 175
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Kahn's Precise Asymptotic (2023)",
     "content": "**kahn_precise_threshold:**\n\nThe precise asymptotic is ℓ(n) ~ n log n.\n\nThis means: ℓ(n) / (n log n) → 1 as n → ∞.\n\nKahn proved this in 'Asymptotics for Shamir's problem', Adv. Math. (2023), also for general r-uniform hypergraphs.",
     "significance": "key"
@@ -159,7 +159,7 @@
       "startLine": 177,
       "endLine": 185
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "General r-uniform Case",
     "content": "**kahn_general_r:**\n\nFor r-uniform hypergraphs on rn vertices, the threshold for perfect matchings is also ~ n log n.\n\nRemarkably, the threshold is the SAME for all uniformities r ≥ 2. This was not expected - hypergraphs seemed more complex than graphs.",
     "mathContext": "The uniformity independence was a surprising discovery.",
@@ -172,7 +172,7 @@
       "startLine": 191,
       "endLine": 198
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Below Threshold",
     "content": "**below_threshold_fails:**\n\nIf m < (1-ε) n log n, then almost surely no perfect matching exists.\n\n**Why:** Below threshold, the hypergraph has isolated vertices (vertices in no edge). A perfect matching is impossible if any vertex is isolated.",
     "significance": "key"
@@ -196,7 +196,7 @@
       "startLine": 217,
       "endLine": 223
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Above Threshold",
     "content": "**above_threshold_succeeds:**\n\nIf m > (1+ε) n log n, then almost surely a perfect matching exists.\n\nThe proof is technically challenging, using the nibble method and regularity-type arguments.",
     "significance": "key"
@@ -220,7 +220,7 @@
       "startLine": 280,
       "endLine": 295
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős Problem #747: SOLVED",
     "content": "**erdos_747** (axiom) and **erdos_747_answer** (theorem): The threshold for perfect matchings in random 3-uniform hypergraphs is ℓ(n) ~ n log n. The answer theorem directly applies Kahn's precise asymptotic result.",
     "significance": "key"
@@ -232,7 +232,7 @@
       "startLine": 297,
       "endLine": 328
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Complete Summary",
     "content": "**erdos_747_summary** combines all three key results into a single statement:\n\n1. **Threshold exists:** ShamirQuestion is satisfied\n2. **Order of magnitude:** ℓ(n) ≍ n log n (Johansson-Kahn-Vu)\n3. **Precise asymptotic:** ℓ(n)/n log n → 1 (Kahn)\n\nThe proof assembles these from the individual axioms.",
     "significance": "key"

@@ -49,7 +49,31 @@
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 38,
     "axiomCount": 0,
-    "lineCount": 225
+    "lineCount": 225,
+    "relatedProblems": [
+      {
+        "id": "amgm-inequality-oq-02",
+        "relationship": "Sub-entry exploring extensions or open questions arising from AM-GM"
+      },
+      {
+        "id": "amgm-inequality-oq-03",
+        "relationship": "Power mean hierarchy generalizing the AM-GM chain"
+      }
+    ],
+    "leanFile": {
+      "lineCount": 225,
+      "structureCount": 0,
+      "axiomCount": 0,
+      "theoremCount": 8,
+      "lemmaCount": 0,
+      "defCount": 0,
+      "imports": [
+        "Mathlib.Analysis.MeanInequalities",
+        "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+        "Mathlib.Algebra.Order.Field.Basic",
+        "Mathlib.Tactic"
+      ]
+    }
   },
   "overview": {
     "historicalContext": "The AM-GM inequality has ancient origins. Euclid implicitly used it in Book VI of the *Elements* (~300 BCE): if you inscribe a right triangle in a semicircle and drop an altitude from the right angle to the hypotenuse, the altitude's length is the geometric mean of the two segments of the hypotenuse. Since the altitude can be no longer than the radius (the arithmetic mean of the two segments), this gives AM ≥ GM geometrically.\n\nThe first general n-variable proof was given by Augustin-Louis Cauchy in his 1821 *Cours d'analyse*. Cauchy's elegant method uses **forward-backward induction**: he first proves the inequality for powers of 2 (by repeatedly applying the two-variable case), then shows that if AM-GM holds for n numbers, it holds for n-1 numbers as well (by setting one variable equal to the mean). This backward step is the clever insight that makes the induction work without needing $n$ to increase by 1 each time.\n\nIndependently, Colin Maclaurin (1729) discovered a hierarchy of symmetric inequalities that imply AM-GM as a special case. His *Maclaurin inequalities* relate the elementary symmetric polynomial means and strictly strengthen AM-GM for distinct values.\n\nGeorge Pólya later gave what many consider the most elegant proof: the exponential inequality $e^{x-1} \\geq x$ (with equality iff $x=1$) applied to each ratio $a_i / G$ (where $G$ is the geometric mean) immediately yields $e^{A/G - 1} \\geq A/G \\geq 1$, hence $A \\geq G$. This proof, featured in Steele's *Cauchy-Schwarz Master Class*, reveals AM-GM as a consequence of the convexity of $e^x$.\n\nToday AM-GM is one of the most ubiquitous tools in mathematical analysis, combinatorics, and optimization. It appears in proofs of the Cauchy-Schwarz inequality, bounds on entropy in information theory, and the isoperimetric inequality. It is #38 on Wiedijk's landmark list of 100 theorems deemed important to formalize in proof assistants.",
@@ -124,6 +148,16 @@
       "targetId": "area-of-circle",
       "relationship": "related",
       "description": "AM-GM's product-sum corollary $ab \\leq ((a+b)/2)^2$ proves that the square maximizes area among rectangles with fixed perimeter — the discrete analogue of the continuous isoperimetric principle that the circle maximizes area for given perimeter, yielding $A = \\pi r^2$."
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation $n! \\approx \\sqrt{2\\pi n}(n/e)^n$ uses the log-AM-GM inequality in its derivation: bounding $\\sum \\log k$ by integrals of $\\log x$ relies on the concavity of $\\log$ (the same convexity argument underlying the weighted AM-GM)."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "AM-GM yields central binomial coefficient estimates: $\\binom{2n}{n} \\leq 4^n$ follows from $\\binom{2n}{n} = \\sum \\binom{n}{k}^2 / \\binom{2n}{n}$ via AM-GM-like counting, and the entropy bound $\\binom{n}{k} \\leq 2^{nH(k/n)}$ uses the AM-GM / Jensen connection through the binary entropy function."
     }
   ],
   "relatedProofs": [
@@ -137,7 +171,9 @@
     "amgm-inequality-oq-03-oq-01",
     "amgm-inequality-oq-03-oq-02",
     "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
-    "area-of-circle"
+    "area-of-circle",
+    "stirling-formula",
+    "binomial-theorem"
   ],
   "sections": [
     {
@@ -203,7 +239,8 @@
     "openQuestions": [
       "How does AM-GM generalize to operator means in matrix analysis? The matrix AM-GM inequality $A \\# B \\leq (A+B)/2$ (where $\\#$ is the geometric mean of positive-definite matrices) requires substantially deeper machinery.",
       "Maclaurin's inequalities $e_1/\\binom{n}{1} \\geq (e_2/\\binom{n}{2})^{1/2} \\geq \\cdots \\geq (e_n/\\binom{n}{n})^{1/n}$ (where $e_k$ are elementary symmetric polynomials) strictly refine AM-GM—are these fully formalized in Mathlib?",
-      "How do weighted power means $M_p = (\\sum w_i z_i^p)^{1/p}$ interpolate between GM ($p \\to 0$) and AM ($p=1$), and can Lean verify the full monotonicity of $p \\mapsto M_p$?"
+      "How do weighted power means $M_p = (\\sum w_i z_i^p)^{1/p}$ interpolate between GM ($p \\to 0$) and AM ($p=1$), and can Lean verify the full monotonicity of $p \\mapsto M_p$?",
+      "The Gauss arithmetic-geometric mean iteration $a_{n+1} = (a_n + b_n)/2$, $b_{n+1} = \\sqrt{a_n b_n}$ converges quadratically to the AGM, which computes elliptic integrals: $\\int_0^{\\pi/2} d\\theta/\\sqrt{a^2\\cos^2\\theta + b^2\\sin^2\\theta} = \\pi/(2\\cdot\\text{AGM}(a,b))$. Can this convergence and the elliptic integral connection be formalized in Lean?"
     ]
   },
   "references": [
@@ -241,6 +278,13 @@
       "year": "2003",
       "venue": "Kluwer Academic Publishers (Mathematics and Its Applications, vol. 560)",
       "note": "Encyclopedic reference cataloging over 50 types of means and their ordering properties. Chapter III covers the AM-GM inequality with 15 distinct proofs including Cauchy's forward-backward induction, Pólya's exponential proof, and proofs via Schur convexity and majorization"
+    },
+    {
+      "authors": "Cox, David A.",
+      "title": "The Arithmetic-Geometric Mean of Gauss",
+      "year": "1984",
+      "venue": "L'Enseignement Mathématique, vol. 30, pp. 275–330",
+      "note": "Definitive account of Gauss's arithmetic-geometric mean iteration and its connection to elliptic integrals — the most beautiful computational application of the AM-GM inequality, achieving quadratic convergence for computing π and elliptic functions"
     }
   ],
   "leanFile": {

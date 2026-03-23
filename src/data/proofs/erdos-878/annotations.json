@@ -78,7 +78,7 @@
       "startLine": 124,
       "endLine": 154
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Sum H(x) and No Mean Value",
     "content": "**H(x)** = ∑_{n<x} f(n)/n.\n\n**H_lower_bound**: H(x) ≥ c·x·log⁴x (4-fold iterated log).\n**H_upper_bound**: H(x) ≤ C·x·log³x (3-fold iterated log).\n\n**H_limsup_infinite**: limsup H(x)/x = ∞.\n**H_liminf_finite**: liminf H(x)/x is finite.\n\n**f_no_mean_value** (theorem): Combines both, showing f(n)/n has no mean value — very unusual for 'additive-like' functions.",
     "mathContext": "The lack of a mean value distinguishes f from conventional additive functions. The gap between 4-fold and 3-fold iterated logarithms in the H(x) bounds is also remarkable.",
@@ -96,7 +96,7 @@
       "startLine": 156,
       "endLine": 170
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős's 1984 Partial Asymptotic",
     "content": "**erdos_1984**: There exists a strictly increasing sequence seq with seq → ∞ such that max_{n≤seq(k)} f(n) ~ seq(k)·log(seq(k))/log(log(seq(k))).\n\nThe asymptotic holds along SOME subsequence but not necessarily for ALL x. Whether it holds for all x is Question 2 (open).",
     "mathContext": "Erdős proved this in 1984. The subsequence restriction is significant — removing it is one of the main open questions.",
@@ -113,7 +113,7 @@
       "startLine": 182,
       "endLine": 230
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary",
     "content": "**erdos_878_summary** and **erdos_878**: Combine the known results:\n1. f(n) ≤ F(n) for all n (f_le_F)\n2. Erdős's bounds on H(x): x·log⁴x ≪ H(x) ≪ x·log³x\n3. f(n)/n has no mean value (limsup = ∞, liminf finite)\n\nProved by combining f_le_F, H_lower_bound, H_upper_bound, and f_no_mean_value.\n\nThe main questions (Questions 1-3, precise H(x) asymptotic) remain OPEN.",
     "mathContext": "The summary captures what is known while the open questions are formalized as Prop definitions without being asserted.",

@@ -60,7 +60,7 @@
       "startLine": 99,
       "endLine": 146
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Known 4-Chromatic Constructions",
     "content": "**Four key constructions** axiomatized from the literature:\n\n1. **Moser Spindle (1961):** 7 vertices, girth 3, χ = 4. The smallest 4-chromatic UDG.\n\n2. **O'Donnell (1994):** 56 vertices, girth 4, χ = 4. Triangle-free!\n\n3. **Chilakamarri (1995):** 47 vertices, girth 4, χ = 4. Smallest triangle-free 4-chromatic UDG.\n\n4. **Wormald (1979):** 6448 vertices, girth 5, χ = 4. No triangles or 4-cycles!\n\nThe dramatic growth in vertex count (7 → 47 → 6448) hints that higher-girth constructions may be impossible.",
     "mathContext": "Each axiom asserts existence of a finite point set in ℝ² with specific cardinality, girth, and chromatic number properties.",
@@ -95,7 +95,7 @@
       "startLine": 172,
       "endLine": 197
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Consequences of Known Constructions",
     "content": "Three theorems derived from the construction axioms:\n\n**girth_3_chi_4:** 4-chromatic UDGs exist (from Moser spindle).\n**girth_4_chi_4:** 4-chromatic UDGs with girth ≥ 4 exist (from O'Donnell).\n**girth_5_chi_4:** 4-chromatic UDGs with girth ≥ 5 exist (from Wormald).\n\nEach proof extracts the relevant properties from the axioms. Together, they show the conjecture's threshold k must be at least 6.",
     "significance": "key",
@@ -111,7 +111,7 @@
       "startLine": 199,
       "endLine": 218
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Hadwiger-Nelson Connection",
     "content": "**The Hadwiger-Nelson Problem:** What is χ(ℝ²), the chromatic number of the infinite unit distance graph of the plane?\n\n**Known bounds:** 5 ≤ χ(ℝ²) ≤ 7.\n- **de Grey (2018):** Found a 1581-vertex 5-chromatic UDG, raising the lower bound from 4 to 5 — a breakthrough after 60+ years.\n- **Upper bound:** A hexagonal tiling with hexagon diameter < 1 gives a 7-coloring.\n\n**de_grey_lower_bound** axiomatizes the existence of a 5-chromatic finite UDG.",
     "mathContext": "The Hadwiger-Nelson problem (1950) is one of the most famous open problems in combinatorial geometry.",
@@ -129,7 +129,7 @@
       "startLine": 220,
       "endLine": 238
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Abstract vs. Geometric Graphs",
     "content": "**Erdős (1959):** For ANY g and k, there exist abstract graphs with girth ≥ g and χ ≥ k.\n\nThis landmark result (proved by the probabilistic method) shows that in the world of abstract graphs, large girth does NOT constrain chromatic number.\n\nBut **unit distance graphs** live in ℝ² — the rigid Euclidean structure may prevent high-girth high-chromatic-number constructions. Problem #705 asks exactly whether this geometric constraint eventually forces χ ≤ 3.",
     "mathContext": "Erdős's 1959 result was one of the first major applications of the probabilistic method in combinatorics.",
@@ -164,7 +164,7 @@
       "startLine": 275,
       "endLine": 311
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Statement and Summary",
     "content": "**erdos_705_main** combines all three girth-specific results:\n\n1. 4-chromatic UDGs exist (Moser spindle)\n2. 4-chromatic UDGs with girth ≥ 4 exist (O'Donnell)\n3. 4-chromatic UDGs with girth ≥ 5 exist (Wormald)\n\nThe problem asks whether this sequence can be extended to all girths, or whether some threshold forces 3-colorability.\n\nThe answer remains **OPEN** — one of the most tantalizing problems in combinatorial geometry.",
     "mathContext": "The proof is a simple conjunction of the three derived theorems, showing the current state of knowledge.",

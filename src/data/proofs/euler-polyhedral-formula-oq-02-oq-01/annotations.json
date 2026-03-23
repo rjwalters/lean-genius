@@ -37,7 +37,7 @@
   {
     "id": "ann-gauss-bonnet",
     "line": 89,
-    "type": "theorem",
+    "type": "technique",
     "content": "States the Gauss-Bonnet theorem as a theorem (unwrapping the structure axiom): ∫_M K dA = 2πχ(M). This is the central result connecting local geometry to global topology — changing the Riemannian metric changes K pointwise but not the integral.",
     "mathContext": "$$\\int_M K\\,dA = 2\\pi\\chi(M)$$\nThe proof for embedded surfaces uses Stokes' theorem applied to the connection form; Chern's intrinsic proof uses the Pfaffian of the curvature 2-form. Here it is simply the structure axiom `S.gauss_bonnet`.",
     "significance": "key",
@@ -54,7 +54,7 @@
   {
     "id": "ann-topological-invariance",
     "line": 95,
-    "type": "theorem",
+    "type": "technique",
     "content": "Total curvature is a topological invariant: surfaces with the same Euler characteristic have the same total curvature, regardless of which Riemannian metric they carry. This is the profound content of Gauss-Bonnet — geometry is constrained by topology.",
     "mathContext": "If $\\chi(S_1) = \\chi(S_2)$, then $\\int_{S_1} K_1\\,dA_1 = \\int_{S_2} K_2\\,dA_2$. The metrics on $S_1, S_2$ can be completely different; only the topology matters.",
     "significance": "key",
@@ -70,7 +70,7 @@
   {
     "id": "ann-curvature-sign",
     "line": 112,
-    "type": "theorem",
+    "type": "technique",
     "content": "Three fundamental curvature-topology constraints: positive total curvature implies χ > 0, negative implies χ < 0, zero implies χ = 0. Each proof substitutes ∫K dA = 2πχ and uses nlinarith with π > 0 to derive the sign of χ from the sign of the integral.",
     "mathContext": "$\\int K\\,dA > 0 \\Rightarrow \\chi > 0$, $\\int K\\,dA < 0 \\Rightarrow \\chi < 0$, $\\int K\\,dA = 0 \\Rightarrow \\chi = 0$. Since $\\int K\\,dA = 2\\pi\\chi$ and $\\pi > 0$, the sign of $\\chi$ matches the sign of $\\int K\\,dA$.",
     "significance": "key",
@@ -87,7 +87,7 @@
   {
     "id": "ann-special-surfaces",
     "line": 140,
-    "type": "theorem",
+    "type": "technique",
     "content": "Computes total curvature for each genus: sphere (g=0) gives 4π, torus (g=1) gives 0, double torus (g=2) gives -4π. The general formula ∫K dA = 4π(1-g) follows from 2π(2-2g) = 4π(1-g). Proved by substituting the genus into total_curvature_genus and using linarith.",
     "mathContext": "Genus $0$: $\\int K\\,dA = 4\\pi$. Genus $1$: $\\int K\\,dA = 0$. Genus $2$: $\\int K\\,dA = -4\\pi$. General: $\\int K\\,dA = 4\\pi(1 - g)$. Each step more negative by $4\\pi$ per handle added.",
     "significance": "supporting",
@@ -105,7 +105,7 @@
   {
     "id": "ann-genus-determination",
     "line": 175,
-    "type": "theorem",
+    "type": "technique",
     "content": "Complete classification from curvature sign: ∫K dA > 0 forces genus 0 (sphere), = 0 forces genus 1 (torus), < 0 forces genus ≥ 2. The negative case uses by_contra and omega to eliminate g = 0 (where ∫K = 4π > 0, contradicting ∫K < 0) and g = 1 (where ∫K = 0, also contradicting).",
     "mathContext": "$\\int K > 0 \\Rightarrow g = 0$ (sphere), $\\int K = 0 \\Rightarrow g = 1$ (torus), $\\int K < 0 \\Rightarrow g \\geq 2$ (hyperbolic). This is the topological content of the **uniformization theorem**: every closed surface admits constant curvature $+1, 0, -1$ matching its genus.",
     "significance": "key",
@@ -141,7 +141,7 @@
   {
     "id": "ann-area-bound",
     "line": 262,
-    "type": "theorem",
+    "type": "technique",
     "content": "Bonnet-type area bound: for a sphere (g=0) with K ≥ K_min > 0 everywhere, Area ≤ 4π/K_min. The proof uses K_min · Area ≤ ∫K dA = 4π. This is the 2D analogue of Bonnet's theorem (diameter ≤ π/√K_min), connecting curvature lower bounds to compactness.",
     "mathContext": "If $K \\geq K_{\\min} > 0$ on a sphere: $\\text{Area}(M) \\leq \\frac{4\\pi}{K_{\\min}}$. Equality holds for the round sphere of radius $r = 1/\\sqrt{K_{\\min}}$ with area $4\\pi r^2 = 4\\pi/K_{\\min}$.",
     "significance": "key",
@@ -159,7 +159,7 @@
   {
     "id": "ann-discrete-connection",
     "line": 297,
-    "type": "theorem",
+    "type": "technique",
     "content": "Proves smooth and discrete Gauss-Bonnet agree: both give 2πχ as total curvature. The smooth version uses K (Gaussian curvature), the discrete uses δ(v) = 2π - Σθ (angular deficiency). As a triangulation refines (mesh → 0), Σ_v δ(v) → ∫_M K dA, justifying finite element methods in geometric computing.",
     "mathContext": "Smooth: $\\int_M K\\,dA = 2\\pi\\chi(M)$. Discrete: $\\sum_v \\delta(v) = 2\\pi\\chi(M)$. Both yield $4\\pi$ for $S^2$, $0$ for $T^2$, $-4\\pi$ for genus $2$. The discrete-to-smooth limit is: $\\lim_{\\text{mesh} \\to 0} \\sum_v \\delta(v) = \\int_M K\\,dA$.",
     "significance": "key",
@@ -195,7 +195,7 @@
   {
     "id": "ann-hairy-ball",
     "line": 357,
-    "type": "theorem",
+    "type": "technique",
     "content": "The sphere has χ = 2, which by Poincaré-Hopf implies every tangent vector field on S² has zeros (sum of indices = χ = 2 ≠ 0). The torus has χ = 0 and admits nowhere-vanishing vector fields. These are topological applications of the Gauss-Bonnet computation.",
     "mathContext": "Sphere: $\\chi(S^2) = 2 - 2 \\cdot 0 = 2$. By **Poincaré-Hopf**: $\\sum_p \\text{ind}_p(X) = \\chi(M)$. Since $\\chi(S^2) = 2 \\neq 0$, every vector field on $S^2$ has zeros — the **hairy ball theorem**. Torus: $\\chi(T^2) = 0$, so nowhere-vanishing fields exist.",
     "significance": "supporting",
@@ -249,7 +249,7 @@
   {
     "id": "ann-girard-formula",
     "line": 548,
-    "type": "theorem",
+    "type": "technique",
     "content": "Girard's formula (1629): on a surface of constant curvature K, a geodesic triangle has Area = (α + β + γ - π)/K. On the unit sphere: Area = α + β + γ - π (the spherical excess). This directly follows from the polygon Gauss-Bonnet with χ = 1.",
     "mathContext": "For a geodesic triangle on a surface of constant curvature $K$:\n$$K \\cdot \\text{Area} = \\alpha + \\beta + \\gamma - \\pi$$\nThis gives the famous trichotomy: $K > 0$ (spherical geometry, angle excess), $K = 0$ (Euclidean, angle sum $= \\pi$), $K < 0$ (hyperbolic, angle deficit).",
     "significance": "key",
@@ -267,7 +267,7 @@
   {
     "id": "ann-poincare-hopf",
     "line": 635,
-    "type": "theorem",
+    "type": "technique",
     "content": "The Poincaré-Hopf index theorem: for a vector field on a compact surface with isolated zeros, Σ index(p_i) = χ(M). The hairy ball theorem follows immediately: a nowhere-vanishing field has total index 0, so χ must be 0 — impossible for S² (χ = 2).",
     "mathContext": "$$\\sum_i \\text{index}(V, p_i) = \\chi(M)$$\nThe hairy ball theorem: every continuous tangent vector field on $S^2$ must vanish somewhere, since $\\chi(S^2) = 2 \\neq 0$. Only the torus ($\\chi = 0$) and Klein bottle support non-vanishing fields.",
     "significance": "key",
@@ -285,7 +285,7 @@
   {
     "id": "ann-morse-theory",
     "line": 700,
-    "type": "theorem",
+    "type": "technique",
     "content": "Morse theory relates critical points of smooth functions to topology: χ(M) = #minima - #saddles + #maxima. For S² (χ = 2): every Morse function needs #min + #max ≥ 2 + #saddles. For T² (χ = 0): at least 2 saddles needed.",
     "mathContext": "The weak Morse inequality: $\\chi(M) = \\sum_{k} (-1)^k c_k$ where $c_k$ is the number of index-$k$ critical points. For surfaces: $\\chi = c_0 - c_1 + c_2$. The strong Morse inequalities further constrain individual Betti numbers.",
     "significance": "key",

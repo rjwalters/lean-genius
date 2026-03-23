@@ -74,7 +74,7 @@
       "startLine": 70,
       "endLine": 75
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Axiom: Lattice Works",
     "content": "We take as an axiom that the Moree-Osburn lattice achieves all three required properties:\n1. Can be truncated to have exactly n points\n2. Satisfies the 4-point property\n3. Has at most n/√(log n) distinct distances\n\nThis is axiomatic because the proof requires deep results from analytic number theory (Landau's theorem on quadratic forms).",
     "mathContext": "Landau's theorem states that the number of integers ≤ N representable as x² + Dy² (for fixed D) is asymptotic to CN/√(log N) for an explicit constant C depending on D. For D=2, this controls our distance count.",
@@ -92,7 +92,7 @@
       "startLine": 81,
       "endLine": 94
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős #659: Answer is Yes",
     "content": "The main theorem states that point sets with the 4-point property and few distances **do exist**. We prove this by exhibiting the Moree-Osburn lattice as a witness.\n\nThe proof is straightforward given the axiom: we use the lattice family, and the axiom guarantees it has the required properties with constant C = 1.",
     "mathContext": "The existential is witnessed by `moreeOsburnLattice`. The proof uses `omega` to handle the inequality n > 0 → n > 1 and `norm_num` to verify C = 1 > 0.",

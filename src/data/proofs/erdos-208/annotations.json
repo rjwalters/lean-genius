@@ -96,7 +96,7 @@
       "startLine": 78,
       "endLine": 85
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Filaseta-Trifonov Bound",
     "content": "**Filaseta & Trifonov (1992)** proved that gaps satisfy s_{n+1} - sₙ ≪ sₙ^{1/5+o(1)}. This was the best unconditional bound for decades.",
     "mathContext": "The exponent 1/5 comes from sieve methods. Improving below 1/5 requires fundamentally new techniques.",
@@ -114,7 +114,7 @@
       "startLine": 87,
       "endLine": 93
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Pandey's Improvement",
     "content": "**Pandey (2024)** improved the exponent to 1/5 - c for some positive constant c. This is the current best unconditional result, breaking the 1/5 barrier.",
     "mathContext": "While the specific value of c is not published, any improvement below 1/5 represents significant progress.",
@@ -132,7 +132,7 @@
       "startLine": 97,
       "endLine": 106
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős Lower Bound",
     "content": "**Erdős (1951)** proved that infinitely many gaps achieve s_{n+1} - sₙ > (1 + o(1)) · (π²/6) · log(sₙ)/log(log(sₙ)). This shows Question 2's bound would be optimal.",
     "mathContext": "The proof constructs intervals where many consecutive numbers are divisible by small squares, forcing large gaps.",
@@ -150,7 +150,7 @@
       "startLine": 110,
       "endLine": 119
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "ABC Conjecture Connection",
     "content": "**Granville (1998)** proved that Question 1 follows from the ABC conjecture. The ABC conjecture is one of the most important open problems in number theory.",
     "mathContext": "ABC concerns coprime integers a + b = c and bounds c by the radical rad(abc). If true, it would resolve many open problems.",
@@ -168,7 +168,7 @@
       "startLine": 144,
       "endLine": 149
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Density of Squarefree Numbers",
     "content": "The **density of squarefree numbers** is 6/π² ≈ 0.6079. This classical result says about 60.8% of natural numbers are squarefree.",
     "mathContext": "This follows from the product formula ∏_p (1 - 1/p²) = 6/π². It implies 'typical' gaps between squarefree numbers are small (about 1.6).",
@@ -186,7 +186,7 @@
       "startLine": 129,
       "endLine": 142
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Squarefree Examples",
     "content": "We verify small cases using **native_decide**: 2, 3, 5, 6 are squarefree, while 4 = 2² is not. These establish the basic structure of the sequence.",
     "mathContext": "The native_decide tactic uses Lean's kernel to check decidable predicates. Squarefree has a decidable instance via factorization.",
@@ -204,7 +204,7 @@
       "startLine": 166,
       "endLine": 182
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Small Gap Examples",
     "content": "Concrete gap computations: gap of 1 (1→2, 2→3, 5→6, 6→7), gap of 2 (3→5, skipping 4=2²), gap of 3 (7→10, skipping 8=2³ and 9=3²).",
     "mathContext": "Most gaps are 1 or 2. Larger gaps occur when multiple consecutive numbers are divisible by squares. The gap 7→10 is the first gap of 3.",

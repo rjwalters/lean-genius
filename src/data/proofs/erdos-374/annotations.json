@@ -2,61 +2,140 @@
   {
     "id": "ann-e374-header",
     "proofId": "erdos-374",
-    "range": { "startLine": 1, "endLine": 19 },
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
     "type": "concept",
     "title": "Problem Overview",
     "content": "**Erdős Problem #374** (OPEN):\n\nFor m ∈ ℕ, define F(m) as the minimal k ≥ 2 such that there exist a₁ < a₂ < ... < aₖ = m with a₁! · a₂! · ... · aₖ! a perfect square. Let Dₖ = {m : F(m) = k}.\n\n**Question:** What is the growth rate of |Dₖ ∩ {1,...,n}| for 3 ≤ k ≤ 6?\n\n**Known:** D₂ = perfect squares, primes are in no Dₖ, Dₖ = ∅ for k > 6, min(D₆) = 527.",
     "mathContext": "For $m \\in \\mathbb{N}$, $F(m) = \\min\\{k \\geq 2 : \\exists a_1 < \\cdots < a_k = m, \\prod_{i=1}^k a_i! \\in \\square\\}$. The classes $D_k = \\{m : F(m) = k\\}$ partition $\\{m : F(m) \\text{ exists}\\}$ into at most 5 nonempty classes $D_2, \\ldots, D_6$. Key tool: $v_p(n!) = \\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$ (Legendre).",
     "significance": "key",
-    "relatedConcepts": ["factorials", "perfect squares", "prime factorization", "Legendre's formula", "Erdős-Graham 1976", "p-adic valuation"],
-    "prerequisites": ["IsPerfectSquare", "factorialProduct", "bigF", "inDk", "HasSquareFactorialProduct"]
+    "relatedConcepts": [
+      "factorials",
+      "perfect squares",
+      "prime factorization",
+      "Legendre's formula",
+      "Erdős-Graham 1976",
+      "p-adic valuation"
+    ],
+    "prerequisites": [
+      "IsPerfectSquare",
+      "factorialProduct",
+      "bigF",
+      "inDk",
+      "HasSquareFactorialProduct"
+    ]
   },
   {
     "id": "ann-e374-definitions",
     "proofId": "erdos-374",
-    "range": { "startLine": 21, "endLine": 52 },
+    "range": {
+      "startLine": 21,
+      "endLine": 52
+    },
     "type": "definition",
     "title": "Factorial Product Definitions",
     "content": "**IsPerfectSquare n:** n = k² for some k.\n\n**factorialProduct seq:** computes a₁! · a₂! · ... · aₖ! via left fold.\n\n**HasSquareFactorialProduct m k:** there exists a strictly increasing sequence of length k ending at m whose factorial product is a perfect square.\n\n**bigF m = F(m):** axiomatised as the minimal such k (≥ 2).\n\n**inDk k m:** m belongs to class Dₖ, meaning F(m) = k.\n\nThe key insight: a product of factorials is a perfect square iff all primes appear to even total multiplicity across all factorials.",
     "mathContext": "By Legendre's formula, $v_p(n!) = \\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$. The product $\\prod a_i!$ is a perfect square iff $\\sum_i v_p(a_i!) \\equiv 0 \\pmod{2}$ for all primes $p$. `factorialProduct` uses `List.foldl` over `Nat.factorial`.",
     "significance": "key",
-    "relatedConcepts": ["Legendre's formula", "p-adic valuation", "factorials", "Nat.factorial", "List.foldl", "parity conditions"],
-    "prerequisites": ["Nat.factorial", "List.foldl", "Nat.sqrt", "IsPerfectSquare", "HasSquareFactorialProduct"]
+    "relatedConcepts": [
+      "Legendre's formula",
+      "p-adic valuation",
+      "factorials",
+      "Nat.factorial",
+      "List.foldl",
+      "parity conditions"
+    ],
+    "prerequisites": [
+      "Nat.factorial",
+      "List.foldl",
+      "Nat.sqrt",
+      "IsPerfectSquare",
+      "HasSquareFactorialProduct"
+    ]
   },
   {
     "id": "ann-e374-D2",
     "proofId": "erdos-374",
-    "range": { "startLine": 54, "endLine": 62 },
-    "type": "result",
+    "range": {
+      "startLine": 54,
+      "endLine": 62
+    },
+    "type": "insight",
     "title": "D₂ = Perfect Squares and Prime Exclusion",
     "content": "**D2_eq_squares:** D₂ consists exactly of perfect squares > 1.\n\nWhy: F(m) = 2 means m! itself (or a single pair) gives a square. Since n! is a perfect square iff n is a perfect square (by parity of v_p(n!)), D₂ = {4, 9, 16, 25, ...}.\n\n**no_prime_in_Dk:** No prime p belongs to any Dₖ.\n\nWhy: p! has v_p(p!) = 1 (odd), and including p in any product preserves this odd parity. So no factorial product involving p! can be a perfect square.",
     "mathContext": "$n! \\in \\square \\iff n$ is a perfect square (since $v_2(n!) = n - s_2(n)$ has determined parity). For primes $p$: $v_p(p!) = 1$ (odd), so $p \\notin D_k$ for any $k$. Thus $D_2 = \\{4, 9, 16, 25, \\ldots\\}$ and no prime contributes to any class.",
     "significance": "key",
-    "relatedConcepts": ["perfect squares", "prime numbers", "p-adic valuation", "D2_eq_squares", "no_prime_in_Dk", "prime exclusion"],
-    "prerequisites": ["inDk", "bigF", "Nat.Prime", "IsPerfectSquare", "p-adic valuation"]
+    "relatedConcepts": [
+      "perfect squares",
+      "prime numbers",
+      "p-adic valuation",
+      "D2_eq_squares",
+      "no_prime_in_Dk",
+      "prime exclusion"
+    ],
+    "prerequisites": [
+      "inDk",
+      "bigF",
+      "Nat.Prime",
+      "IsPerfectSquare",
+      "p-adic valuation"
+    ]
   },
   {
     "id": "ann-e374-D6",
     "proofId": "erdos-374",
-    "range": { "startLine": 64, "endLine": 69 },
-    "type": "result",
+    "range": {
+      "startLine": 64,
+      "endLine": 69
+    },
+    "type": "insight",
     "title": "Finiteness: Only D₂ through D₆",
     "content": "**Dk_empty_above_6:** Dₖ = ∅ for k ≥ 7.\n\nEvery integer with a defined F(m) has F(m) ∈ {2, 3, 4, 5, 6}. There are only 5 nonempty classes.\n\n**D6_smallest:** The smallest element of D₆ is 527, determined by exhaustive computation.\n\nThe sparseness of D₆ (starting at 527) contrasts with D₂ (starting at 4) and D₃ (starting at small composites).",
     "mathContext": "The bound $k \\leq 6$ comes from a parity argument: with 6 or more terms, the prime factorization parities can always be balanced via appropriate choice of the $a_i$. The exact bound 6 is tight: $\\min(D_6) = 527$ (verified computationally), and $D_7 = \\emptyset$.",
     "significance": "key",
-    "relatedConcepts": ["parity argument", "computational verification", "D6_smallest", "Dk_empty_above_6", "finiteness", "extremal bound"],
-    "prerequisites": ["inDk", "bigF", "HasSquareFactorialProduct", "Finset.filter"]
+    "relatedConcepts": [
+      "parity argument",
+      "computational verification",
+      "D6_smallest",
+      "Dk_empty_above_6",
+      "finiteness",
+      "extremal bound"
+    ],
+    "prerequisites": [
+      "inDk",
+      "bigF",
+      "HasSquareFactorialProduct",
+      "Finset.filter"
+    ]
   },
   {
     "id": "ann-e374-conjecture",
     "proofId": "erdos-374",
-    "range": { "startLine": 71, "endLine": 80 },
-    "type": "conjecture",
+    "range": {
+      "startLine": 71,
+      "endLine": 80
+    },
+    "type": "concept",
     "title": "Growth Rate Question (OPEN)",
     "content": "**erdos_374_growth_rate:**\n\nFor 3 ≤ k ≤ 6, determine the growth rate of |Dₖ ∩ {1,...,n}|.\n\nFormalised as: for each k, there exists an exponent α ∈ (0,1] such that |Dₖ ∩ {1,...,n}| ≤ n^{α+ε} for large n.\n\nExpected: D₃ is the densest (most composites have F = 3), while D₆ is the sparsest. Understanding the growth rates would reveal the 'landscape' of factorial square products.",
     "mathContext": "Since $|D_2 \\cap [n]| \\sim \\sqrt{n}$, one expects $|D_3 \\cap [n]|$ to dominate among composites. The conjecture posits $|D_k \\cap [n]| \\leq n^{\\alpha_k + \\varepsilon}$ for exponents $\\alpha_2 = 1/2 < \\alpha_3 \\leq \\cdots \\leq \\alpha_6 < 1$. The connection to Legendre's formula makes exact asymptotics difficult.",
     "significance": "key",
-    "relatedConcepts": ["growth rate", "counting function", "open problem", "Legendre's formula", "asymptotic density", "prime counting function"],
-    "prerequisites": ["inDk", "Finset.card", "Real.rpow", "Filter.Tendsto", "bigF"]
+    "relatedConcepts": [
+      "growth rate",
+      "counting function",
+      "open problem",
+      "Legendre's formula",
+      "asymptotic density",
+      "prime counting function"
+    ],
+    "prerequisites": [
+      "inDk",
+      "Finset.card",
+      "Real.rpow",
+      "Filter.Tendsto",
+      "bigF"
+    ]
   }
 ]

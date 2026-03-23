@@ -24,7 +24,7 @@
       "startLine": 86,
       "endLine": 88
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Hilbert's Basis Theorem (1888)",
     "content": "**Hilbert's Basis Theorem** states that if R is a Noetherian ring, then the polynomial ring R[X] is also Noetherian.\n\nThis was proved by Hilbert in 1888 as part of his revolutionary approach to invariant theory. Rather than computing invariants explicitly, Hilbert showed existence via finiteness arguments.",
     "mathContext": "R Noetherian => R[X] Noetherian => R[X,Y] Noetherian => ...\n\nBy induction, k[x_1, ..., x_n] is Noetherian for any field k.",
@@ -78,7 +78,7 @@
       "startLine": 232,
       "endLine": 252
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Hilbert's Finiteness Theorem",
     "content": "**Theorem** (Hilbert 1890, Mumford 1965, Haboush 1975):\n\nIf G is a reductive group acting on a polynomial ring k[x_1,...,x_n], then the ring of invariants is finitely generated.\n\nThe proof uses:\n1. Reynolds operator to project R onto R^G\n2. Hilbert's Basis Theorem to show R^G is Noetherian\n3. The interplay between the two",
     "mathContext": "More precisely: if I is any ideal of R^G, then I*R (extended to R) satisfies:\n\nI = rho(I*R) = R^G intersection I*R\n\nThis shows ideals of R^G are finitely generated.",
@@ -96,7 +96,7 @@
       "startLine": 282,
       "endLine": 310
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Nagata's Counterexample (1959)",
     "content": "**Nagata's Counterexample:**\n\nThere exists an algebraic group G acting on k^32 such that the ring of invariants is NOT finitely generated.\n\n**Construction:**\n- G = G_a^13 (13 copies of the additive group)\n- The action is via certain derivations\n- The invariant ring contains infinitely many algebraically independent elements",
     "mathContext": "Why G_a fails:\n\nThe additive group G_a is **unipotent**, not reductive.\n- It has NO Reynolds operator\n- Its representations are NOT completely reducible\n- The 'bad' representation theory leads to bad invariant theory",

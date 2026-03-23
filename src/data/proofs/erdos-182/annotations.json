@@ -77,7 +77,7 @@
       "startLine": 69,
       "endLine": 83
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Basic Properties of Regular Graphs",
     "content": "**zero_regular_edgeless**: A 0-regular graph has no edges.\n\n**regular_edge_count**: A k-regular graph on n vertices has exactly kn/2 edges.\n  - Each vertex contributes k to the degree sum\n  - Total degree sum = kn\n  - Each edge counted twice, so edges = kn/2\n\n**regular_parity**: k*n must be even for a k-regular graph to exist.\n\n**complete_is_regular**: K_n is (n-1)-regular.",
     "mathContext": "These are standard facts about regular graphs. The edge count formula 2|E| = sum of degrees is the handshaking lemma.",
@@ -95,7 +95,7 @@
       "startLine": 91,
       "endLine": 101
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Janzer-Sudakov Theorem (2023)",
     "content": "**axiom janzer_sudakov_theorem**:\nFor every k >= 3, there exists C = C(k) > 0 such that any graph on n vertices with at least C*n*log(log n) edges contains a k-regular subgraph.\n\n**Significance**: This resolves the upper bound side of Erdos Problem #182.\n\n**Method**: Iterative reduction argument where each step preserves structure. The iteration depth is O(log log n).",
     "mathContext": "The log log n factor is unusual in extremal combinatorics. It arises from the specific iterative structure of the proof.",
@@ -113,7 +113,7 @@
       "startLine": 103,
       "endLine": 109
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Upper Bound Corollary",
     "content": "**axiom extremal_upper_bound**:\nIf a graph on n vertices (n >= 10) has no k-regular subgraph, then it has fewer than C*n*log(log n) edges.\n\n**This is the contrapositive of Janzer-Sudakov**: If edges >= threshold, then has k-regular subgraph. Equivalently, if no k-regular subgraph, then edges < threshold.",
     "mathContext": "The bound n >= 10 ensures log(log n) is well-defined and positive.",
@@ -130,7 +130,7 @@
       "startLine": 117,
       "endLine": 126
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Pyber-Rodl-Szemeredi Lower Bound (1995)",
     "content": "**axiom pyber_rodl_szemeredi_lower_bound**:\nThere exist graphs on n vertices with Omega(n log log n) edges that contain no 3-regular subgraph.\n\n**Construction**: The proof uses an explicit construction based on careful analysis of degree constraints.\n\n**Significance**: This shows the Janzer-Sudakov bound is tight up to constants.",
     "mathContext": "The lower bound was known for decades before the matching upper bound. The construction shows the log log n factor is necessary, not just sufficient.",
@@ -148,7 +148,7 @@
       "startLine": 128,
       "endLine": 133
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Tight Bounds",
     "content": "**axiom extremal_theta**:\nThe extremal function f(n,k) = Theta(n log log n).\n\nThere exist constants 0 < c < C such that:\n- c * n * log(log n) <= f(n,k) <= C * n * log(log n)\n\n**Interpretation**: The extremal function grows exactly like n log log n, up to constant factors.",
     "mathContext": "Theta notation means both upper and lower bounds match asymptotically. This is the strongest possible characterization.",
@@ -165,7 +165,7 @@
       "startLine": 139,
       "endLine": 146
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Special Case: k = 2 (Forests)",
     "content": "**k_equals_2_is_forest**: A graph has no 2-regular subgraph iff it is acyclic (a forest).\n\n**Why?**: A 2-regular graph is a disjoint union of cycles. So no 2-regular subgraph means no cycles.\n\n**forest_edge_bound**: Forests have at most n-1 edges.\n\n**Implication**: For k=2, the extremal function is linear (n-1), not n log log n.",
     "mathContext": "The case k=2 is fundamentally different. The log log n behavior only emerges for k >= 3.",
@@ -183,7 +183,7 @@
       "startLine": 158,
       "endLine": 174
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Connected k-Regular Variant",
     "content": "**HasConnectedKRegularSubgraph**: Like HasKRegularSubgraph, but requires H to be connected.\n\n**connected_3_regular_bound** (Erdos 1975):\nGraphs with >= C*n^{5/3} edges contain a connected 3-regular subgraph.\n\n**Comparison**: This is weaker than the general case (n^{5/3} >> n log log n). Requiring connectivity significantly weakens the forcing condition.",
     "mathContext": "Erdos proved this weaker bound in 1975. The connected variant remains less understood than the general case.",
@@ -200,7 +200,7 @@
       "startLine": 180,
       "endLine": 185
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Dense Graphs",
     "content": "**axiom dense_has_regular**:\nFor any epsilon > 0, graphs with >= epsilon*n^2 edges contain k-regular subgraphs (for n large enough).\n\n**Interpretation**: Quadratically dense graphs (constant edge density) always have regular substructures. The interesting threshold is at the sparser n log log n level.",
     "mathContext": "This shows the n log log n threshold is about sparse graphs. Dense graphs trivially have all kinds of substructures.",
@@ -234,7 +234,7 @@
       "startLine": 211,
       "endLine": 223
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Main Resolution Theorem",
     "content": "**axiom erdos_182_resolved**:\nCombines both directions:\n\n1. **Upper bound**: No k-regular subgraph implies edges <= C*n*log(log n)\n2. **Lower bound**: There exist graphs with edges >= c*n*log(log n) and no k-regular subgraph\n\n**Together**: The extremal function is Theta(n log log n), fully resolving the problem.",
     "mathContext": "This single axiom encapsulates the complete solution to Erdos Problem #182.",

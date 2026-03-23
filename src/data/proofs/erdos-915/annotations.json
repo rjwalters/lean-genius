@@ -140,7 +140,7 @@
       "startLine": 115,
       "endLine": 125
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Extremal Construction",
     "content": "The construction of $n$ copies of $K_m$ sharing a single vertex serves as the **lower bound witness**: a graph with $1 + (m-1)n$ vertices and $1 + \\binom{m}{2}n$ edges that avoids $m$ vertex-disjoint paths between any pair. This shows $k_m(1 + (m-1)n) \\geq 1 + \\binom{m}{2}n + 1$.",
     "mathContext": "The construction works because any two vertices in different copies of $K_m$ can only connect through the shared vertex, limiting vertex-disjoint paths. The vertex and edge counts follow from: each $K_m$ contributes $m-1$ new vertices and $\\binom{m}{2}$ edges, minus the $m-1$ edges incident to the shared vertex that are counted per copy.",
@@ -159,7 +159,7 @@
       "startLine": 129,
       "endLine": 130
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "k_2(n) = n: The Trivial Case",
     "content": "$k_2(n) = n$ for $n \\geq 2$. Any graph with $n$ vertices and $n$ edges contains a cycle, hence two internally vertex-disjoint paths between some pair of vertices on that cycle.",
     "mathContext": "A graph on $n$ vertices with $n$ edges must contain a cycle (since a tree on $n$ vertices has exactly $n-1$ edges). Any cycle provides two vertex-disjoint paths between any pair of vertices on it — the two arcs of the cycle.",
@@ -177,7 +177,7 @@
       "startLine": 132,
       "endLine": 134
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bártfai (1960): k_3 Case",
     "content": "**Bártfai's Result:** $k_3(2n) = 3n - 1$ and $k_3(2n+1) = 3n + 1$. The parity-dependent formula shows that the exact threshold for 3 vertex-disjoint paths depends on whether the vertex count is even or odd.",
     "mathContext": "Bártfai proved this before the general Bollobás-Erdős conjecture was formulated. The conjecture predicts $k_3(1 + 2n) = 1 + 3n$, which matches $k_3(2n+1) = 3n + 1$. The even case $k_3(2n) = 3n - 1$ is consistent since $2n = 1 + 2(n - 1/2)$ doesn't fit the conjecture's parametrization exactly.",
@@ -195,7 +195,7 @@
       "startLine": 136,
       "endLine": 137
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bollobás (1966): k_4 Case",
     "content": "**Bollobás's Result:** $k_4(n) = 2n - 1$ for $n \\geq 4$. This is the last case where the vertex-disjoint conjecture holds. The clean formula $2n - 1$ matches the conjectured growth rate of $(m/2)n = 2n$ up to the constant.",
     "mathContext": "Bollobás proved this six years after Bártfai's $k_3$ result, completing the small cases. The proof required careful extremal graph theory arguments. The conjecture predicts $k_4(1 + 3n) = 1 + 6n$, which is equivalent to $k_4(n) = 2n - 1$ when $n = 1 + 3k$.",
@@ -213,7 +213,7 @@
       "startLine": 139,
       "endLine": 149
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Conjecture TRUE for m = 2, 3, 4",
     "content": "`conjecture_small_m` packages the three positive results as a conjunction: `BollobasErdosConjecture 2 ∧ BollobasErdosConjecture 3 ∧ BollobasErdosConjecture 4`. Each component is axiomatized since deriving the conjecture format from the explicit parity-dependent formulas requires careful modular arithmetic.",
     "mathContext": "The axiomatization of `conjecture_m2`, `conjecture_m3`, `conjecture_m4` reflects the gap between knowing explicit formulas (like $k_4(n) = 2n - 1$) and verifying the conjecture's specific parametrization $k_m(1 + (m-1)n) = 1 + \\binom{m}{2}n$, which requires substituting and simplifying with `Nat.choose`.",
@@ -233,7 +233,7 @@
       "startLine": 153,
       "endLine": 166
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Leonard (1973): Counterexample for m = 5",
     "content": "**The Disproof:** Leonard constructed a graph with 57 vertices and 141 edges that avoids 5 vertex-disjoint paths between any pair. Since $1 + 4 \\cdot 14 = 57$ and $1 + \\binom{5}{2} \\cdot 14 = 141$, this is an exact counterexample — the conjecture predicts $k_5(57) = 141$, but this graph shows 141 edges are insufficient.",
     "mathContext": "The parameters $n = 14$ give the conjecture's predicted vertex count $1 + 4 \\cdot 14 = 57$ and edge count $1 + 10 \\cdot 14 = 141$. Leonard's construction matches these exact parameters but avoids the conclusion, directly disproving the conjecture for $m = 5$. The construction likely uses a carefully designed block structure exploiting low connectivity.",
@@ -252,7 +252,7 @@
       "startLine": 168,
       "endLine": 171
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Leonard's Asymptotic Lower Bound",
     "content": "Leonard showed $k_5(n) > (5/2 + c)n - O(1)$ for some constant $c > 0$, meaning the growth rate of $k_5$ is strictly above the conjectured $5/2$ per vertex. This is formalized using `Filter.atTop` for the eventually-for-large-$n$ quantifier and $\\mathbb{Q}$ for the constant $c$.",
     "mathContext": "The use of `∀ᶠ n in Filter.atTop` means the bound holds for all sufficiently large $n$. The rational constant $c > 0$ quantifies how much the actual threshold exceeds the conjecture. Sørensen-Thomassen later pinned down the exact coefficient as $8/3 - 5/2 = 1/6$.",
@@ -271,7 +271,7 @@
       "startLine": 173,
       "endLine": 180
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sørensen-Thomassen (1974): Exact k_5 Formula",
     "content": "**Exact Formula:** $k_5(n) = \\lfloor 8n/3 \\rfloor - 3$ for $n \\geq 13$. The coefficient $8/3 \\approx 2.667$ is strictly larger than the conjectured $5/2 = 2.5$, confirming and quantifying the failure of the conjecture for $m = 5$.",
     "mathContext": "The formula $\\lfloor 8n/3 \\rfloor - 3$ in Lean uses natural number division `(8 * n) / 3 - 3`, which computes floor division. The threshold $n \\geq 13$ ensures the formula is valid (small cases may differ). The ratio $k_5(n)/n \\to 8/3$ as $n \\to \\infty$, exceeding the conjectured $5/2$ by a factor of $16/15$.",
@@ -289,7 +289,7 @@
       "startLine": 182,
       "endLine": 195
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Mader (1973): General Disproof for m ≥ 6",
     "content": "**General Disproof:** For any $m \\geq 6$ and any constant $C$, there exists $n$ with $k_m(n) > mn/2 + C$. Combined with Leonard's $m = 5$ result, this shows the Bollobás-Erdős conjecture fails for **all** $m \\geq 5$. The axioms `conjecture_false_m5` and `conjecture_false_large_m` state this as negations of the conjecture.",
     "mathContext": "Mader's argument is asymptotic: for each $m \\geq 6$, the function $k_m(n)$ grows faster than $(m/2)n$ — the conjectured coefficient $m/2$ is too small. Unlike Leonard's explicit construction for $m = 5$, Mader's proof for $m \\geq 6$ uses a probabilistic or counting argument showing the growth rate exceeds the prediction.",
@@ -308,7 +308,7 @@
       "startLine": 199,
       "endLine": 206
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Mader (1973): Edge-Disjoint Complete Solution",
     "content": "**Complete Solution:** $\\ell_m(n) = \\lfloor m(n-1)/2 + 1 \\rfloor$ for all $m \\geq 2$ and $n \\geq 2$. This confirms the Bollobás-Erdős conjecture for edge-disjoint paths. In Lean, this is `m * (n - 1) / 2 + 1` using natural number division.",
     "mathContext": "Mader's proof uses induction on $m$ and structural arguments about minimum degree. The formula $\\ell_m(n) = \\lfloor m(n-1)/2 \\rfloor + 1$ means a graph needs slightly more than $m/2$ times the number of non-isolated edges to guarantee $m$ edge-disjoint paths. The floor arises because $m(n-1)$ may be odd.",
@@ -327,7 +327,7 @@
       "startLine": 208,
       "endLine": 213
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Edge-Disjoint Conjecture Proved",
     "content": "`EdgeDisjointConjecture m` states $\\ell_m(n) = m(n-1)/2 + 1$ for all $n \\geq 2$. The theorem `edge_disjoint_solved` proves this for all $m \\geq 2$ by directly applying `mader_edge_disjoint`. This is a genuine Lean theorem (not an axiom) since it follows from the axiomatized Mader result.",
     "mathContext": "The proof `fun _ n hn => mader_edge_disjoint m n hm hn` is a simple function application: given the hypothesis $m \\geq 2$ (from the conjecture definition) and $n \\geq 2$, apply Mader's formula. The two-line proof demonstrates that the edge-disjoint conjecture is an immediate corollary of Mader's theorem.",
@@ -345,7 +345,7 @@
       "startLine": 215,
       "endLine": 226
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Specific ℓ_m Values (Leonard 1972-1973)",
     "content": "Explicit formulas for small $m$: $\\ell_m(n) = k_m(n)$ for $m \\leq 4$ (`leonard_small_m`), $\\ell_5(2n) = 5n - 2$ and $\\ell_5(2n+1) = 5n + 1$ (`leonard_ell5`), and $\\ell_6(n) = 3n - 2$ (`leonard_ell6`). These are consistent with Mader's general formula.",
     "mathContext": "The equality $\\ell_m = k_m$ for $m \\leq 4$ means that for small $m$, forcing edge-disjoint paths is exactly as hard as forcing vertex-disjoint paths. For $m = 5$, the functions diverge: $\\ell_5(n) \\approx 5n/2$ (matching the conjecture) while $k_5(n) \\approx 8n/3$ (exceeding it). This divergence is the key phenomenon the problem reveals.",
@@ -363,7 +363,7 @@
       "startLine": 230,
       "endLine": 241
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Mader's Degree Condition",
     "content": "**Stronger Result:** If a graph $G$ has more than $(m/2)(n-1) - (1/2)\\sum_{r=0}^{m-2} e_r(G)$ edges, where $e_r(G)$ counts vertices of degree $\\leq r$, then $G$ contains $m$ edge-disjoint paths between some pair. The low-degree correction term improves the simple edge count threshold.",
     "mathContext": "The sum $\\sum_{r=0}^{m-2} e_r(G)$ is computed in Lean as `(Finset.range (m-1)).sum (fun r => (Finset.univ.filter (fun v => G.degree v ≤ r)).card)`. This counts how many vertices have degree at most $r$ for each $r < m-1$. Vertices with low degree contribute less to connectivity, so the threshold can be reduced when many low-degree vertices are present.",
@@ -383,7 +383,7 @@
       "startLine": 245,
       "endLine": 258
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "3-Connected Special Case (Sørensen-Thomassen 1974)",
     "content": "The Bollobás-Erdős conjecture holds for **3-connected graphs**: if $G$ is 3-connected with $1 + (m-1)n$ vertices and $\\geq 1 + \\binom{m}{2}n$ edges, then $G$ contains $m$ vertex-disjoint paths between some pair. The 3-connectivity is axiomatized as: removing any set of fewer than 3 vertices leaves the graph connected.",
     "mathContext": "The 3-connectivity condition `∀ (S : Finset V), S.card < 3 → (G.induce (univ \\ S)).Connected` says that no 2-vertex separator disconnects $G$. This rules out the low-connectivity structure exploited by Leonard's and Mader's counterexamples, which all have vertex cuts of size $< 3$. The `G.induce` operation restricts the graph to a subset of vertices.",
@@ -403,7 +403,7 @@
       "startLine": 278,
       "endLine": 292
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Results Summary",
     "content": "`erdos_915_summary` is the capstone theorem combining all four main results into a single conjunction:\n1. $\\text{BollobasErdosConjecture}(m)$ holds for $m = 2, 3, 4$\n2. $\\neg\\text{BollobasErdosConjecture}(5)$\n3. $\\forall m \\geq 6$, $\\neg\\text{BollobasErdosConjecture}(m)$\n4. $\\forall m \\geq 2$, $\\text{EdgeDisjointConjecture}(m)$\n\nThe proof is a direct tuple of the component results.",
     "mathContext": "The four-part conjunction cleanly separates the problem's resolution: parts (1)-(3) completely classify the vertex-disjoint conjecture by the value of $m$, while part (4) affirms the edge-disjoint version unconditionally. The proof `⟨conjecture_small_m, conjecture_false_m5, conjecture_false_large_m, edge_disjoint_solved⟩` is an anonymous constructor for the product type.",

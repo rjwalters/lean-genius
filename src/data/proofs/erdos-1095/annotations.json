@@ -115,7 +115,7 @@
       "startLine": 82,
       "endLine": 92
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Basic Properties of $g(k)$",
     "content": "Two immediate consequences: (1) $g(k) > k + 1$ — by construction, we skip $n \\le k+1$ (where $\\binom{n}{k} \\in \\{0, 1, n\\}$ are degenerate); (2) $\\binom{g(k)}{k}$ is $k$-rough — by the `Nat.find_spec` minimality property.",
     "significance": "key",
@@ -137,7 +137,7 @@
       "startLine": 100,
       "endLine": 106
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Original EES Bounds (1974)",
     "content": "Ecklund, Erdős, and Selfridge proved: (1) **Lower**: $g(k) > k^{1+c}$ for some $c > 0$; (2) **Upper**: $g(k) \\le e^{(1+o(1))k}$. The polynomial lower bound follows from counting primes in $[k+2, n]$ that divide $\\binom{n}{k}$. The exponential upper bound uses $\\operatorname{lcm}(1,\\ldots,k) \\sim e^k$.",
     "significance": "key",
@@ -159,7 +159,7 @@
       "startLine": 108,
       "endLine": 111
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Konyagin's Improvement (1999)",
     "content": "Konyagin proved $g(k) \\gg \\exp(c (\\log k)^2)$ for some $c > 0$. This is **superpolynomial** but still far from the conjectured $\\exp(c \\cdot k / \\log k)$. The proof uses results on the distribution of smooth numbers and Rankin's method.",
     "significance": "key",
@@ -203,7 +203,7 @@
       "startLine": 127,
       "endLine": 129
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "LCM Asymptotic",
     "content": "The Prime Number Theorem gives $\\log(L_k)/k \\to 1$ as $k \\to \\infty$. Equivalently, $\\psi(k)/k \\to 1$ where $\\psi$ is Chebyshev's function. Thus $L_k = e^{k(1+o(1))}$.",
     "significance": "key",
@@ -269,7 +269,7 @@
       "startLine": 157,
       "endLine": 160
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "ELS Consensus Bound (1993)",
     "content": "Erdős, Lacampagne, and Selfridge stated that any 'right-thinking person' would conjecture $g(k) \\ge \\exp(c \\cdot k / \\log k)$. This expected lower bound remains unproven. It would bridge the gap between Konyagin's $\\exp(c(\\log k)^2)$ and the heuristic.",
     "significance": "key",
@@ -291,7 +291,7 @@
       "startLine": 168,
       "endLine": 181
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Computed Values of $g(k)$",
     "content": "Known values: $g(2) = 3$, $g(3) = 7$, $g(4) = 23$, $g(5) = 62$, $g(6) = 143$ (OEIS A003458). For example, $\\binom{7}{3} = 35 = 5 \\cdot 7$ is 3-rough, and no smaller $n > 4$ works: $\\binom{5}{3} = 10 = 2 \\cdot 5$ (factor 2 $\\le$ 3), $\\binom{6}{3} = 20 = 2^2 \\cdot 5$ (factor 2 $\\le$ 3).",
     "significance": "key",

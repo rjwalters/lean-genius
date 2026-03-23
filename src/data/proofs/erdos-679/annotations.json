@@ -55,7 +55,7 @@
       "startLine": 53,
       "endLine": 72
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Hardy-Ramanujan Normal Order",
     "content": "**Hardy-Ramanujan (1917).** The normal order of ω(n) is log log n: for almost all n (density 1), ω(n) is within a (1±ε) factor of log log n. Also: the maximum of ω(n) for n ≤ x is approximately log x / log log x.",
     "mathContext": "The Hardy-Ramanujan theorem (1917) is one of the landmark results of analytic number theory. It says that 'typical' integers have about log log n distinct prime factors — a doubly logarithmic function that grows extremely slowly (log log 10^{100} ≈ 5.4). The proof uses the first and second moments of ω(n) computed via the prime harmonic sum. The maximum value of ω for n ≤ x is much larger: ~ log x / log log x, achieved by primorials p₁p₂...pᵣ. This gap between normal and extremal behavior is central to Problem #679, which asks whether n-k can simultaneously avoid the extremal regime for all k.",
@@ -106,7 +106,7 @@
       "startLine": 92,
       "endLine": 109
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Stronger Version (Disproven)",
     "content": "**StrongerVersion is FALSE.** The version with O(1) error — asking whether ω(n-k) < log k / log log k + C for a constant C — is disproven. In fact, for all large n, there exists k < n with ω(n-k) ≥ log k / log log k + c · log k / (log log k)², where c > 0 is an absolute constant.",
     "mathContext": "The disproof shows that the (1+ε) multiplicative slack is essential: without it, even a bounded additive correction fails. The quantitative lower bound ω(n-k) ≥ log k/log log k + c · log k/(log log k)² means that for every large n, some predecessor n-k exceeds the threshold by a secondary term of order log k/(log log k)². This is proven by a counting argument: among the residues n-k for k near e^{e^j}, sufficiently many must have ω above the sharp threshold. The gap between the O(1) (false) and (1+ε) (open) versions highlights the delicate nature of the problem.",
@@ -155,7 +155,7 @@
       "startLine": 130,
       "endLine": 143
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Special Cases: Powers of 2 and Primorials",
     "content": "**Special n values.** For n = 2^m (power of 2): there exists k < 2^m with ω(2^m - k) ≥ log k / log log k. For n = primorial(r) = p₁·p₂·...·pᵣ: ω(primorial(r)) = r, so primorials are prime-factor-rich. The primorial definition uses `Nat.nth Nat.Prime` to select the r-th prime.",
     "mathContext": "Powers of 2 and primorials represent extremes of the prime factorization spectrum: 2^m has ω = 1 (one distinct prime factor) but Ω = m, while primorial(r) has ω = r (all distinct) and Ω = r (squarefree). Testing n = 2^m is natural because 2^m - k ranges over all odd numbers below 2^m, and some of these must have many prime factors by a counting argument. Primorials are the 'greedily prime-rich' numbers, analogous to highly composite numbers for the τ function. The property SatisfiesProperty(ε, n) is hardest to achieve for n with structured factorization.",
@@ -180,7 +180,7 @@
       "startLine": 145,
       "endLine": 157
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Lower Bounds on ω(n-k)",
     "content": "**existence_of_large_omega.** For any n ≥ 10, there exists k with 2 ≤ k < n and ω(n-k) ≥ (log log n)/2. Also: the set of k with ω(n-k) ≤ 2 has density strictly less than 1 in {0,...,n-1}.",
     "mathContext": "These lower bounds show that some predecessor n-k must have a reasonable number of prime factors. The bound ω(n-k) ≥ (log log n)/2 follows from the Hardy-Ramanujan theorem applied to the residues n-1, n-2, ..., 1: since ω(m) ≥ (log log m)/2 for 'most' m, at least one of the n-1 values n-k must satisfy this. The density bound on {k : ω(n-k) ≤ 2} uses the fact that integers with at most 2 prime factors (semiprimes and below) have density approaching 0 in a precise sense.",
@@ -250,7 +250,7 @@
       "startLine": 190,
       "endLine": 197
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Key Dichotomy",
     "content": "**dichotomy.** Either the MainConjecture holds (infinitely many special n exist) or there is a uniform lower bound: for all large n, some k < n has ω(n-k) ≥ (1+c) log k / log log k with c > 0. This is an excluded-middle formalization of the problem's two possible outcomes.",
     "mathContext": "The dichotomy cleanly separates the two possible worlds. If the conjecture fails, the negation gives: for all ε > 0, only finitely many n satisfy the property. Compactness arguments then yield a uniform c > 0 such that for all large n, some predecessor n-k has ω 'overshooting' by a multiplicative (1+c) factor. This dichotomy is useful because different proof strategies apply in each case: the positive case requires constructing infinitely many special n, while the negative case requires exhibiting large-ω predecessors universally.",
@@ -275,7 +275,7 @@
       "startLine": 199,
       "endLine": 212
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Density Considerations",
     "content": "**Density bounds.** If special n exist, they are sparse: the count of n ≤ x satisfying the property is at most x / log x. The DensityQuestion asks whether the count is even sparser — at most x^α for some α < 1.",
     "mathContext": "The density bound #{n ≤ x : SatisfiesProperty(ε, n)} ≤ x / log x shows that even if infinitely many special n exist, they form a zero-density subset of the integers (since x/log x = o(x)). The proof uses the fact that for each special n, all predecessors n-k must avoid the set of prime-factor-rich integers, which constrains n to avoid many residue classes. The question whether the count is actually x^α for α < 1 (polynomial but sublinear) would indicate these n are much rarer than primes.",

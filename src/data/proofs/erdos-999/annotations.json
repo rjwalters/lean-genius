@@ -79,7 +79,7 @@
       "startLine": 86,
       "endLine": 99
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Duffin-Schaeffer Conjecture and Both Directions",
     "content": "**DuffinSchaefferConjecture:** ∀ f, SeriesDiverges f ↔ AlmostAllApproximable f.\n\n**easy_direction:** AlmostAllApproximable f → SeriesDiverges f. Follows from the Borel-Cantelli lemma — if the sum converges, the limsup set has measure zero.\n\n**hard_direction:** SeriesDiverges f → AlmostAllApproximable f. This is the actual conjecture, open for 79 years. The difficulty is that approximation sets for different q can overlap in complex ways, preventing direct Borel-Cantelli application.",
     "mathContext": "The easy direction is a standard measure theory argument. The hard direction required Koukoulopoulos and Maynard to develop new graph-theoretic techniques on the 'GCD graph' to handle the overlaps.",
@@ -97,7 +97,7 @@
       "startLine": 101,
       "endLine": 119
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős's Partial Result and Koukoulopoulos-Maynard",
     "content": "**ErdosCondition f:** ∃ C, ∀ q, f(q) · q ≤ C — the approximation function decays at least as fast as 1/q.\n\n**erdos_bounded_case:** The conjecture holds when f·q is bounded. Erdős proved this special case.\n\n**koukoulopoulos_maynard_2020:** The full DuffinSchaefferConjecture. Published in Annals of Mathematics 192(1), 251-307.\n\n**duffin_schaeffer_theorem:** Named version, defined as koukoulopoulos_maynard_2020.",
     "mathContext": "Erdős's partial result handles the 'bounded' case where approximation intervals are uniformly small. The full conjecture allows f to be arbitrary, making overlap analysis much harder. Koukoulopoulos-Maynard's proof introduced the 'compression' technique on GCD graphs.",
@@ -115,7 +115,7 @@
       "startLine": 121,
       "endLine": 148
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Consequences and Related Results",
     "content": "**convergence_case:** If the series converges, almost no α is infinitely approximable.\n\n**zero_one_law:** For any f, either almost all or almost none are approximable — no intermediate case. This follows from the Duffin-Schaeffer theorem: divergence gives 'all', convergence gives 'none'.\n\n**continued_fraction_case:** f(q) = 1 gives almost all approximable. This is the classical continued fraction result.\n\n**khintchine_theorem:** For monotone decreasing f, ∑ f(q)/q = ∞ ↔ almost all approximable. The 1924 precursor that Duffin-Schaeffer generalizes.\n\n**LimsupSet f:** The set { α | IsInfinitelyApproximable α f } — the 'limsup' of approximation events.",
     "mathContext": "The zero-one law is a striking dichotomy: there is no function f for which exactly half of all reals are infinitely approximable. Khintchine's theorem requires monotonicity, which Duffin-Schaeffer removes at the cost of replacing ∑ f(q)/q with ∑ φ(q)·f(q)/q.",
@@ -134,7 +134,7 @@
       "startLine": 150,
       "endLine": 166
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_999_summary:** Proved conjunction of main results:\n1. DuffinSchaefferConjecture holds (from koukoulopoulos_maynard_2020)\n2. Both directions: ∀ f, SeriesDiverges f ↔ AlmostAllApproximable f\n3. Zero-one law: ∀ f, AlmostAllApproximable f ∨ AlmostNoneApproximable f\n\nThe proof is `⟨koukoulopoulos_maynard_2020, koukoulopoulos_maynard_2020, zero_one_law⟩`, packaging the axioms into a single proved statement.",
     "mathContext": "Summary theorems serve as entry points for understanding the formalization. Items (1) and (2) are the same statement (DuffinSchaefferConjecture is defined as the biconditional), while (3) adds the zero-one dichotomy.",

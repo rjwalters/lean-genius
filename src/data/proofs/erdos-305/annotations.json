@@ -73,7 +73,7 @@
       "startLine": 76,
       "endLine": 77
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Existence Theorem",
     "content": "**egyptian_representation_exists** guarantees every positive rational < 1 has an Egyptian fraction representation. This follows from the greedy algorithm (Fibonacci-Sylvester).",
     "mathContext": "For $0 < a < b$, the greedy algorithm produces a representation by repeatedly choosing $n = \\lceil b/a \\rceil$. The remainder $a/b - 1/n = (an - b)/(bn)$ has strictly smaller numerator $an - b < a$, so the process terminates in at most $a$ steps. This was known to Fibonacci (1202) in the Liber Abaci.",
@@ -139,7 +139,7 @@
       "startLine": 127,
       "endLine": 128
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Trivial Lower Bound",
     "content": "**D_b_lower_trivial**: D(b) ≥ b for b ≥ 2. The fraction (b-1)/b requires denominator at least b in any representation.",
     "mathContext": "For $(b-1)/b$, any Egyptian fraction $\\sum 1/n_i = (b-1)/b$ must include some $n_i \\leq b$, since the sum of all unit fractions $1/n$ for $n > b$ is less than $\\int_b^\\infty 1/x\\,dx$ which is insufficient. More precisely, $\\sum_{n > b} 1/n$ diverges but the finite partial sums grow too slowly.",
@@ -159,7 +159,7 @@
       "startLine": 135,
       "endLine": 136
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Prime Lower Bound",
     "content": "**D_prime_lower**: D(p) ≫ p log p for prime p. This shows the (log b)¹ factor is necessary, making the conjecture sharp up to o(1) in the exponent.",
     "mathContext": "For prime $p$, representing $(p-1)/p = \\sum 1/n_i$ requires all $n_i$ to be multiples of $p$ (for the sum to have $p$ in the denominator). Writing $n_i = p m_i$, we need $\\sum 1/m_i = (p-1)/1$, which requires $\\max(m_i) \\gg p-1$ terms from the harmonic series $H_N \\sim \\log N$. Hence $\\max(n_i) = p \\cdot \\max(m_i) \\gg p \\log p$.",
@@ -181,7 +181,7 @@
       "startLine": 143,
       "endLine": 145
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bleicher-Erdős Bound",
     "content": "**bleicher_erdos_bound** (1976): D(b) ≪ b(log b)². This was the first strong upper bound, initiating the modern study of this problem.",
     "mathContext": "Bleicher and Erdős (1976) proved $D(b) \\leq C \\cdot b (\\log b)^2$. The gap between this $O(b(\\log b)^2)$ upper bound and the $\\Omega(b \\log b)$ lower bound is one factor of $\\log b$, which Erdős conjectured could be reduced to $(\\log b)^{o(1)}$.",
@@ -203,7 +203,7 @@
       "startLine": 152,
       "endLine": 155
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Yokota's Bound",
     "content": "**yokota_bound** (1988): D(b) ≪ b(log b)(log log b)⁴(log log log b)². This solved Erdős #305 by showing D(b) ≪ b(log b)^{1+o(1)}.",
     "mathContext": "Yokota proved $D(b) \\leq C \\cdot b \\cdot \\log b \\cdot (\\log\\log b)^4 (\\log\\log\\log b)^2$. Since $(\\log\\log b)^4 (\\log\\log\\log b)^2 = (\\log b)^{o(1)}$, this confirms $D(b) \\ll b(\\log b)^{1+o(1)}$, solving the conjecture.",
@@ -225,7 +225,7 @@
       "startLine": 161,
       "endLine": 164
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Liu-Sawhney Bound",
     "content": "**liu_sawhney_bound** (2024): D(b) ≪ b(log b)(log log b)³(log log log b)^{O(1)}. Improved Yokota's bound using additive combinatorics techniques.",
     "mathContext": "Liu and Sawhney (2024) improved the iterated log exponent from 4 to 3 by connecting Egyptian fractions to additive combinatorics: dense subsets of $\\{1, \\ldots, N\\}$ with large harmonic sum contain subsets summing to 1. This is a unit fraction analogue of the Erdős-Ginzburg-Ziv theorem.",
@@ -269,7 +269,7 @@
       "startLine": 186,
       "endLine": 189
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Solution",
     "content": "**erdos_305_solved** proves the conjecture. Since (log log b)^k = (log b)^{o(1)}, Yokota's bound confirms D(b) ≪ b(log b)^{1+o(1)}.",
     "mathContext": "The proof requires showing $(\\log\\log b)^4 (\\log\\log\\log b)^2 \\leq (\\log b)^\\epsilon$ for any $\\epsilon > 0$ and sufficiently large $b$. This follows from $\\log\\log b = o((\\log b)^\\delta)$ for any $\\delta > 0$. The `sorry` reflects the technicality of formalizing iterated logarithm asymptotics.",
@@ -314,7 +314,7 @@
       "startLine": 223,
       "endLine": 228
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Greedy Not Optimal",
     "content": "**greedy_not_optimal**: The greedy algorithm can produce unnecessarily large denominators. Example: 2/9 = 1/5 + 1/45 (greedy) vs 1/6 + 1/18 (optimal).",
     "mathContext": "For $2/9$: greedy gives $n = \\lceil 9/2 \\rceil = 5$, remainder $2/9 - 1/5 = 1/45$, so $2/9 = 1/5 + 1/45$ with $\\max = 45$. But $2/9 = 1/6 + 1/18$ has $\\max = 18 < 45$. This gap can be arbitrarily large, motivating the search for non-greedy algorithms.",
@@ -335,7 +335,7 @@
       "startLine": 240,
       "endLine": 241
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Representation of 1",
     "content": "**one_representations**: 1 = 1/2 + 1/3 + 1/6 is the simplest Egyptian fraction for 1. Many representations exist, connecting to perfect numbers.",
     "mathContext": "The representation $1 = 1/2 + 1/3 + 1/6$ corresponds to the perfect number $6 = 1 + 2 + 3$: $\\sum_{d | n, d < n} 1/d = 1$ iff $n$ is perfect. More generally, the number of representations of 1 with max denominator $\\leq n$ grows superpolynomially.",
@@ -357,7 +357,7 @@
       "startLine": 273,
       "endLine": 278
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Odd Egyptian Fractions",
     "content": "**odd_egyptian_exists**: Every rational with odd denominator has an Egyptian fraction using only odd denominators. A variant of the existence theorem.",
     "mathContext": "If $b$ is odd, then $a/b$ can be written as $\\sum 1/n_i$ with all $n_i$ odd. This is proved by a modified greedy algorithm choosing the smallest odd $n$ with $1/n \\leq a/b$. The argument is more delicate because odd unit fractions are sparser, but termination still follows from numerator decrease.",
@@ -379,7 +379,7 @@
       "startLine": 316,
       "endLine": 317
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Harmonic Connection",
     "content": "**harmonic_connection**: Harmonic sums H_n = ∑_{k=1}^n 1/k ~ log n explain why logarithms appear in D(b) bounds. Egyptian fractions are partial harmonic sums.",
     "mathContext": "The harmonic number $H_n = \\sum_{k=1}^n 1/k = \\ln n + \\gamma + O(1/n)$ where $\\gamma \\approx 0.5772$ is Euler's constant. Egyptian fractions are subsums of the harmonic series, so the maximum denominator is constrained by how quickly partial harmonic sums can reach $a/b$. The bound $H_n \\leq \\ln(n+1) + 1$ is axiomatized.",
@@ -403,7 +403,7 @@
       "startLine": 336,
       "endLine": 339
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Dense Egyptian Fractions",
     "content": "**dense_egyptian_fractions**: Liu-Sawhney proved sets A ⊆ [1,N] with ∑ 1/n ≥ (log N)^{4/5+o(1)} contain a subset summing to 1. Connects to additive combinatorics.",
     "mathContext": "Liu and Sawhney (2024): if $A \\subseteq \\{1, \\ldots, N\\}$ with $\\sum_{a \\in A} 1/a \\geq (\\log N)^{4/5 + o(1)}$, then $\\exists S \\subseteq A$ with $\\sum_{s \\in S} 1/s = 1$. This is a unit fraction analogue of the Erdős-Ginzburg-Ziv theorem. The exponent $4/5$ is not known to be optimal.",
@@ -426,7 +426,7 @@
       "startLine": 360,
       "endLine": 369
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem",
     "content": "**erdos_305** proves the problem: D(b) ≪ b(log b)^{1+o(1)} follows from Yokota's bound. The maximum denominator needed grows only slightly faster than b log b.",
     "mathContext": "The final theorem $\\texttt{erdos\\_305} : \\texttt{erdos305Problem}$ is proved by reduction to $\\texttt{erdos\\_305\\_solved}$, which derives the conjecture from Yokota's bound via the asymptotic fact $(\\log\\log b)^4 (\\log\\log\\log b)^2 = (\\log b)^{o(1)}$.",

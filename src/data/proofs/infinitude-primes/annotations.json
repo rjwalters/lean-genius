@@ -64,7 +64,7 @@
       "startLine": 44,
       "endLine": 45
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Divisibility in Factorial",
     "content": "Any positive integer $k \\leq n$ divides $n!$. This is because $k$ appears as one of the factors in the product $1 \\cdot 2 \\cdots n$.\n\nWe simply invoke Mathlib's `Nat.dvd_factorial` which already has this proven.",
     "mathContext": "$0 < k \\leq n \\Rightarrow k \\mid n!$\n\nThis is why $n! + 1$ cannot share any small prime factors with $n!$.",
@@ -81,7 +81,7 @@
       "startLine": 50,
       "endLine": 51
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "n! + 1 is at least 2",
     "content": "For any $n$, we have $n! + 1 \\geq 2$. Since $n! \\geq 1$ (factorials are always positive), adding 1 gives us at least 2.\n\nThis ensures that $n! + 1$ has at least one prime divisor.",
     "mathContext": "$n! \\geq 1 \\Rightarrow n! + 1 \\geq 2$",
@@ -98,7 +98,7 @@
       "startLine": 56,
       "endLine": 57
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "The Key Divisibility Lemma",
     "content": "If $p$ divides both $a$ and $a+1$, then $p$ divides 1. This is the heart of Euclid's proof.\n\nThe proof: if $p \\mid a$ and $p \\mid (a+1)$, then $p \\mid ((a+1) - a) = 1$.\n\nSince no prime divides 1, this creates the contradiction we need.",
     "mathContext": "$p \\mid a \\land p \\mid (a+1) \\Rightarrow p \\mid 1$\n\nEquivalently: consecutive integers are coprime.",
@@ -116,7 +116,7 @@
       "startLine": 65,
       "endLine": 78
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Euclid's Theorem: Unbounded Primes",
     "content": "**For any $n$, there exists a prime $p > n$.**\n\nThe proof constructs $Q = n! + 1$ and reasons:\n1. $Q \\geq 2$, so $Q$ has a prime divisor $p$ (using `Nat.exists_prime_and_dvd`)\n2. Suppose for contradiction that $p \\leq n$\n3. Then $p \\mid n!$ (since $p$ is a factor in $1 \\cdot 2 \\cdots n$)\n4. But $p \\mid Q = n! + 1$\n5. So $p \\mid ((n!+1) - n!) = 1$\n6. Since $p \\mid 1$, we have $p = 1$\n7. **Contradiction**: $p$ is prime, so $p \\neq 1$\n\nTherefore $p > n$. Since $n$ was arbitrary, primes are unbounded.",
     "mathContext": "$\\forall n, \\exists p$ prime, $p > n$\n\nKey insight: if $p \\mid n!$ and $p \\mid (n!+1)$, then $p \\mid 1$, which is impossible for primes.",
@@ -139,7 +139,7 @@
       "startLine": 65,
       "endLine": 104
     },
-    "type": "tactic",
+    "type": "technique",
     "title": "Proof by Contradiction Setup",
     "content": "The `by_contra` tactic sets up a proof by contradiction. We assume $p \\leq n$ (the negation of $p > n$) and derive a contradiction.\n\nThe `push_neg` tactic then simplifies `¬(p > n)` to `p ≤ n`, which is easier to work with.",
     "mathContext": "Goal: $p > n$\n`by_contra h`: Assume $\\neg(p > n)$\n`push_neg`: Transform to $p \\leq n$",
@@ -157,7 +157,7 @@
       "startLine": 50,
       "endLine": 54
     },
-    "type": "tactic",
+    "type": "technique",
     "title": "The omega Tactic",
     "content": "The `omega` tactic is Lean's decision procedure for linear integer arithmetic. It automatically solves goals involving:\n- Inequalities ($<$, $\\leq$, $>$, $\\geq$)\n- Addition and subtraction\n- Multiplication by constants\n\nHere it proves $n! \\geq 1 \\Rightarrow n! + 1 \\geq 2$ instantly.",
     "mathContext": "`omega` handles Presburger arithmetic: the first-order theory of $(\\mathbb{Z}, +, <)$.",
@@ -193,7 +193,7 @@
       "startLine": 106,
       "endLine": 107
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Infinitude of Primes (Final Statement)",
     "content": "The theorem `primes_infinite` is simply an alias for `unbounded_primes`, stating the result in a form emphasizing infinitude: for any bound $n$, there exists a prime exceeding it.",
     "mathContext": "The sequence $2, 3, 5, 7, 11, 13, 17, \\ldots$ never terminates.",
@@ -210,7 +210,7 @@
       "startLine": 112,
       "endLine": 112
     },
-    "type": "corollary",
+    "type": "technique",
     "title": "Every Prime Has a Larger Prime",
     "content": "Given any prime $p$, there exists another prime $q > p$. This follows immediately from unbounded_primes: we can always find a prime larger than any given number, including primes.",
     "mathContext": "$\\forall p$ prime, $\\exists q$ prime, $q > p$",
@@ -227,7 +227,7 @@
       "startLine": 116,
       "endLine": 116
     },
-    "type": "corollary",
+    "type": "technique",
     "title": "No Largest Prime",
     "content": "There is no largest prime. If there were a prime $p$ such that all primes $q \\leq p$, then by unbounded_primes we could find a prime $q > p$, contradicting that $p$ is largest.\n\nThis is the contrapositive way of saying primes are infinite.",
     "mathContext": "$\\neg \\exists p$ prime such that $\\forall q$ prime, $q \\leq p$",

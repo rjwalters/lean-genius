@@ -220,7 +220,7 @@
       "startLine": 101,
       "endLine": 102
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Cauchy-Schwarz Upper Bound",
     "content": "The fundamental upper bound $f(n) \\leq \\sqrt{n}$, proved by Cauchy-Schwarz: $(\\sum s_i)^2 \\leq n \\cdot \\sum s_i^2 \\leq n \\cdot 1 = n$, where $\\sum s_i^2 \\leq 1$ because non-overlapping squares in the unit square have total area at most $1$. This bound is tight at $n = k^2$ (achieved by the $k \\times k$ grid) and is the key tool for proving $f(k^2) = k$.",
     "mathContext": "$f(n) \\leq \\sqrt{n}$ via $(\\sum s_i)^2 \\leq n \\sum s_i^2 \\leq n$",
@@ -242,7 +242,7 @@
       "startLine": 104,
       "endLine": 105
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Monotonicity of f",
     "content": "The function $f$ is non-decreasing: $n \\leq m \\implies f(n) \\leq f(m)$. Any packing of $n$ squares can be extended to $m$ squares by adding $m - n$ squares of arbitrarily small side length (the extra squares contribute negligibly to the sum). This ensures $f(k^2+1) \\geq f(k^2) = k$.",
     "mathContext": "$n \\leq m \\implies f(n) \\leq f(m)$",
@@ -262,7 +262,7 @@
       "startLine": 111,
       "endLine": 112
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "f(1) = 1",
     "content": "One square in the unit square: the maximum side length is $1$ (the unit square itself), giving $f(1) = 1$. This is the trivial base case: $f(1) = \\sqrt{1} = 1$, matching the Cauchy-Schwarz bound exactly.",
     "mathContext": "$f(1) = 1$",
@@ -282,7 +282,7 @@
       "startLine": 114,
       "endLine": 115
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "f(2) = 1 (Erdős)",
     "content": "Two non-overlapping squares in the unit square have maximum side-length sum equal to $1$. This was Erdős's first result on the problem, proved in an early paper for Hungarian high school students. The proof shows that if $s_1 + s_2 > 1$, the two squares cannot fit without overlapping. This is the first 'plateau': $f(2) = f(1) = 1$.",
     "mathContext": "$f(2) = 1 < \\sqrt{2} \\approx 1.414$, a strict loss from the Cauchy-Schwarz bound",
@@ -304,7 +304,7 @@
       "startLine": 117,
       "endLine": 118
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "f(4) = 2",
     "content": "Four squares of side $1/2$ tile the unit square perfectly, achieving $f(4) = 4 \\times 1/2 = 2 = \\sqrt{4}$. This is the first case where the Cauchy-Schwarz bound is tight beyond $n = 1$: the $2 \\times 2$ grid is optimal.",
     "mathContext": "$f(4) = 2 = \\sqrt{4}$, tight Cauchy-Schwarz bound",
@@ -326,7 +326,7 @@
       "startLine": 120,
       "endLine": 121
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "f(5) = 2 (Newman)",
     "content": "Five squares cannot beat the $2 \\times 2$ grid: $f(5) = 2$. This non-trivial result was proved by D. J. Newman via personal communication to Erdős. It is the first confirmed case of the main conjecture ($k = 2$: $f(2^2 + 1) = f(5) = 2 = k$). The proof requires showing that any configuration of $5$ non-overlapping squares in $[0,1]^2$ has side-length sum at most $2$.",
     "mathContext": "$f(5) = f(4) = 2$, confirming $f(k^2 + 1) = k$ for $k = 2$",
@@ -348,7 +348,7 @@
       "startLine": 123,
       "endLine": 124
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "f(9) = 3",
     "content": "Nine squares of side $1/3$ tile the unit square in a $3 \\times 3$ grid, achieving $f(9) = 9 \\times 1/3 = 3 = \\sqrt{9}$. The next open case of the conjecture is $f(10) = 3$ (i.e., $k = 3$).",
     "mathContext": "$f(9) = 3 = \\sqrt{9}$",
@@ -369,7 +369,7 @@
       "startLine": 130,
       "endLine": 131
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "f(k^2) = k for All k",
     "content": "The general result: for any $k \\geq 1$, the $k \\times k$ grid of squares with side $1/k$ achieves sum $k^2 \\times (1/k) = k$. The Cauchy-Schwarz bound gives $f(k^2) \\leq \\sqrt{k^2} = k$, so the grid is optimal. This is the foundation: the conjecture asks whether $f(k^2 + 1) = f(k^2)$.",
     "mathContext": "$f(k^2) = k = \\sqrt{k^2}$, achievable by the $k \\times k$ grid of side-$1/k$ squares",
@@ -391,7 +391,7 @@
       "startLine": 136,
       "endLine": 139
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Grid Construction Existence",
     "content": "Asserts the existence of a $k \\times k$ grid packing achieving $\\text{sumSides} = k$. The construction places squares at centers $((2i+1)/(2k), (2j+1)/(2k))$ for $0 \\leq i, j < k$, each with side length $1/k$. This is sorry'd — the proof would require constructing the `Packing` structure and verifying containment and disjointness for all $\\binom{k^2}{2}$ pairs.",
     "mathContext": "$\\exists P \\in \\text{Packing}(k^2),\\; \\text{sumSides}(P) = k$",
@@ -413,7 +413,7 @@
       "startLine": 145,
       "endLine": 146
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Lower Bound f(k^2+1) >= k",
     "content": "The trivial lower bound: $f(k^2+1) \\geq k$ follows from monotonicity ($f(k^2+1) \\geq f(k^2) = k$). Alternatively, one can construct a packing: take the $k \\times k$ grid and split one square of side $1/k$ into two smaller squares. The sum stays at $k$ (the two small squares contribute less than $1/k$ total). The conjecture asserts this lower bound is tight.",
     "mathContext": "$f(k^2 + 1) \\geq f(k^2) = k$",
@@ -457,7 +457,7 @@
       "startLine": 152,
       "endLine": 159
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Conjecture Equivalence: Plateau Formulation",
     "content": "A fully proved theorem (no sorry) showing the main conjecture is equivalent to $f(k^2+1) = f(k^2)$ for all $k \\geq 1$. The proof uses `f_perfect_square` to rewrite both sides. This reformulates the conjecture as: every perfect square $k^2$ is a **plateau point** where the function $f$ doesn't increase.",
     "mathContext": "$f(k^2+1) = k \\iff f(k^2+1) = f(k^2)$",
@@ -478,7 +478,7 @@
       "startLine": 167,
       "endLine": 169
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Halász Bound (Odd Increments)",
     "content": "Halász (1984) proved that $f(k^2 + 2c + 1) \\geq k + c/k$ for $c \\geq 1$. The construction: start with a $k \\times k$ grid of side-$1/k$ squares. Replace $c$ squares with pairs of slightly adjusted squares, gaining $c/k$ in total side length. This shows the function $f$ increases by at least $1/k$ for every two squares beyond $k^2 + 1$.",
     "mathContext": "$f(k^2 + 2c + 1) \\geq k + c/k$ for $k \\geq 1, c \\geq 1$",
@@ -500,7 +500,7 @@
       "startLine": 171,
       "endLine": 173
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Halász Bound (Even Increments)",
     "content": "The companion bound for even increments: $f(k^2 + 2c) \\geq k + c/(k+1)$ for $c \\geq 1$. The slightly weaker coefficient $1/(k+1)$ (vs. $1/k$) reflects the different parity structure of the construction. Together, the odd and even bounds give a complete lower bound for $f$ between consecutive perfect squares.",
     "mathContext": "$f(k^2 + 2c) \\geq k + c/(k+1)$ for $k \\geq 1, c \\geq 1$",
@@ -543,7 +543,7 @@
       "startLine": 186,
       "endLine": 188
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Praton Equivalence",
     "content": "A deep result by Iwan Praton showing that the main conjecture $f(k^2+1) = k$ is logically equivalent to the full Erdős-Soifer conjecture $f(k^2+2c+1) = k + c/k$. This means the simplest open case ($f(10) = 3$) would imply the complete formula. The equivalence uses the Halász bounds as the bridge between the two statements.",
     "mathContext": "$\\text{erdos106Conjecture} \\iff \\text{erdosSoiferConjecture}$",
@@ -588,7 +588,7 @@
       "startLine": 199,
       "endLine": 200
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "BKU Theorem (2024): Axis-Parallel Case Solved",
     "content": "Baek, Koizumi, and Ueoro (2024) proved $g(k^2+1) = k$ for axis-parallel squares, completely solving the restricted problem. They also determined the full formula $g(k^2+2c+1) = k + c/k$. This breakthrough shows the conjecture holds when rotations are forbidden but leaves the general rotated case open — the critical remaining question is whether rotated squares can beat axis-parallel packings.",
     "mathContext": "$g(k^2 + 1) = k$ for all $k \\geq 1$ (Baek-Koizumi-Ueoro, 2024)",
@@ -631,7 +631,7 @@
       "startLine": 209,
       "endLine": 213
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "1 is a Plateau Point",
     "content": "A fully proved theorem: $1 \\in \\text{plateauSet}$ because $f(2) = f(1) = 1$. The proof unfolds the definition and rewrites using the axioms $f_2$ and $f_1$. This is the simplest confirmed plateau and corresponds to the $k = 1$ case of the main conjecture.",
     "mathContext": "$f(2) = f(1) = 1$, so $1 \\in \\text{plateauSet}$",
@@ -652,7 +652,7 @@
       "startLine": 215,
       "endLine": 220
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Perfect Squares and Plateaus",
     "content": "A fully proved theorem establishing the equivalence: $k^2 \\in \\text{plateauSet} \\iff f(k^2+1) = k$. This directly connects the plateau formulation to the main conjecture. The proof rewrites using $f(k^2) = k$ via `f_perfect_square`. The main conjecture is thus: all perfect squares are plateaus.",
     "mathContext": "$k^2 \\in \\text{plateauSet} \\iff f(k^2 + 1) = k$, using $f(k^2) = k$",

@@ -20,7 +20,7 @@
   {
     "id": "ann-core-inequality",
     "line": 76,
-    "type": "theorem",
+    "type": "technique",
     "content": "**Mean Value Inequality** (core theorem): For $f : \\mathbb{R} \\to E$ with $\\|f'(x)\\| \\leq C$ on $[a,b]$, we have $\\|f(x) - f(a)\\| \\leq C(x-a)$ for all $x \\in [a,b]$. This is the central result — all other theorems either specialize it, provide counterexamples to strengthening it, or derive consequences. The one-line proof delegates to Mathlib's `norm_image_sub_le_of_norm_deriv_le_segment'`.",
     "mathContext": "The proof uses a partition argument: divide $[a,x]$ into subintervals, apply the triangle inequality $\\|f(x) - f(a)\\| \\leq \\sum \\|f(t_{i+1}) - f(t_i)\\|$, use differentiability to bound each term by $C(t_{i+1} - t_i)$, and sum to get $C(x-a)$. This avoids the intermediate value theorem entirely, which is why it works for vectors.",
     "significance": "key",
@@ -38,7 +38,7 @@
   {
     "id": "ann-scalar-inequality",
     "line": 99,
-    "type": "theorem",
+    "type": "technique",
     "content": "**Scalar specialization**: When $E = \\mathbb{R}$, the vector inequality becomes $|f(x) - f(a)| \\leq C(x-a)$. Lean's type unification automatically specializes, so the proof is simply `mean_value_inequality hf hC`. This is strictly weaker than the classical scalar MVT which gives exact equality at some point $c$.",
     "mathContext": "For $\\mathbb{R}$-valued functions, $\\|f(x) - f(a)\\| = |f(x) - f(a)|$ since the norm on $\\mathbb{R}$ is the absolute value. The inequality loses the sign information: it cannot distinguish $f(b) > f(a)$ from $f(b) < f(a)$.",
     "significance": "supporting",
@@ -54,7 +54,7 @@
   {
     "id": "ann-classical-equality",
     "line": 108,
-    "type": "theorem",
+    "type": "technique",
     "content": "**Classical MVT equality**: For $f : \\mathbb{R} \\to \\mathbb{R}$ continuous on $[a,b]$ and differentiable on $(a,b)$, $\\exists c \\in (a,b)$ with $f'(c) = \\frac{f(b)-f(a)}{b-a}$. Uses Mathlib's `exists_deriv_eq_slope`. This relies on the **intermediate value theorem** applied to $g(x) = f(x) - \\lambda x$ (reducing to Rolle's theorem), which is why it has no vector analogue.",
     "mathContext": "Proof sketch: define $g(x) = f(x) - \\frac{f(b)-f(a)}{b-a} x$. Then $g(a) = g(b)$, so by Rolle's theorem $\\exists c, g'(c) = 0$, giving $f'(c) = \\frac{f(b)-f(a)}{b-a}$. Rolle's theorem itself uses the extreme value theorem (continuous function on $[a,b]$ attains its extrema) and the definition of derivative at an extremum.",
     "significance": "key",
@@ -92,7 +92,7 @@
   {
     "id": "ann-lipschitz",
     "line": 163,
-    "type": "theorem",
+    "type": "technique",
     "content": "**Derivative bound implies Lipschitz**: If $\\|Df(x)\\|_{\\text{op}} \\leq L$ on a convex set $S$, then $f$ is $L$-Lipschitz on $S$. Uses NNReal for the Lipschitz constant. Convexity is essential: for any $x, y \\in S$, the segment $[x,y] \\subseteq S$, so MVT applies along it. On non-convex domains, derivative bounds do not imply Lipschitz.",
     "mathContext": "If $\\|Df(x)\\|_{\\text{op}} \\leq L$ for all $x \\in S$ (convex), then $\\|f(x) - f(y)\\| \\leq L \\|x - y\\|$ for all $x, y \\in S$. This bridges pointwise derivative information and global regularity, and is the key to proving that smooth maps between manifolds are locally Lipschitz.",
     "significance": "key",
@@ -113,7 +113,7 @@
   {
     "id": "ann-zero-deriv-constant",
     "line": 173,
-    "type": "theorem",
+    "type": "technique",
     "content": "**Zero derivative implies constant** (vector version): If $f'(x) = 0$ for all $x \\in [a,b)$, then $f(b) = f(a)$. The proof is a beautiful application of MVT with $C = 0$: $\\|f(b) - f(a)\\| \\leq 0 \\cdot (b-a) = 0$, and $\\|f(b) - f(a)\\| \\geq 0$ (norm non-negativity), so by `le_antisymm`: $\\|f(b) - f(a)\\| = 0$, hence $f(b) = f(a)$ by `norm_eq_zero`.",
     "mathContext": "This cannot be proved via the scalar MVT for vector functions — it genuinely requires the vector inequality. The key steps: (1) $\\|0\\| = 0 \\leq 0$, (2) $0 \\cdot (b-a) = 0$, (3) antisymmetry, (4) `norm_eq_zero` and `sub_eq_zero`.",
     "significance": "key",
@@ -131,7 +131,7 @@
   {
     "id": "ann-contraction-bound",
     "line": 205,
-    "type": "theorem",
+    "type": "technique",
     "content": "**Contraction bound from derivative**: If $\\|T'(x)\\| \\leq q$ on $[a,b]$, then $\\|T(x) - T(a)\\| \\leq q(x-a)$. Exactly the MVT inequality in contraction mapping language. When $q < 1$, $T$ is a strict contraction, enabling Banach's fixed-point theorem: the Picard iteration $T^n(x_0)$ converges to a unique fixed point.",
     "mathContext": "In the Banach fixed-point theorem, one needs $\\|T(x) - T(y)\\| \\leq q\\|x-y\\|$ with $q < 1$. The MVT inequality provides this when $\\|DT\\|_{\\text{op}} \\leq q < 1$. For ODEs, the Picard operator $\\Phi(u)(t) = x_0 + \\int_0^t F(s, u(s))ds$ is a contraction when $F$ is Lipschitz.",
     "significance": "supporting",
@@ -147,7 +147,7 @@
   {
     "id": "ann-displacement-bound",
     "line": 229,
-    "type": "theorem",
+    "type": "technique",
     "content": "**Displacement bound**: For $f : \\mathbb{R} \\to \\mathbb{R}$ with $\\|f'\\| \\leq C$ on $[0,T]$: $\\|f(T) - f(0)\\| \\leq CT$. The simplest 'derivative controls displacement' principle. The proof specializes MVT to the endpoint $T$ and simplifies. This is the constant-coefficient case of Gronwall's inequality, which generalizes to $y'(t) \\leq \\alpha y(t) + \\beta$.",
     "mathContext": "Gronwall's inequality: if $y'(t) \\leq \\alpha y(t) + \\beta$ and $y(0) = y_0$, then $y(t) \\leq (y_0 + \\beta/\\alpha)e^{\\alpha t} - \\beta/\\alpha$. The displacement bound is the $\\alpha = 0$ case: $y'(t) \\leq C$ gives $y(t) - y(0) \\leq Ct$.",
     "significance": "supporting",
@@ -165,7 +165,7 @@
   {
     "id": "ann-banach-general",
     "line": 265,
-    "type": "theorem",
+    "type": "technique",
     "content": "**Banach space MVT**: The most general form — for $f : E \\to F$ between arbitrary normed spaces, differentiable on a convex set with $\\|Df(x)\\|_{\\text{op}} \\leq C$: $\\|f(b) - f(a)\\| \\leq C\\|b - a\\|$. Uses `fderivWithin` (Fréchet derivative within a set). This is the foundation for the implicit function theorem, inverse function theorem, and Nash-Moser iteration in infinite dimensions.",
     "mathContext": "The Fréchet derivative $Df(x) : E \\to_L F$ is a bounded linear map. Its operator norm $\\|Df(x)\\|_{\\text{op}} = \\sup_{\\|h\\|=1} \\|Df(x)(h)\\|$ measures the maximum infinitesimal stretching. The inequality says $f$ cannot stretch distances more than $C$-fold globally.",
     "significance": "key",
@@ -186,7 +186,7 @@
   {
     "id": "ann-ode-uniqueness",
     "line": 294,
-    "type": "theorem",
+    "type": "technique",
     "content": "**ODE difference bound via MVT**: If $f(a) = g(a)$ and $\\|f'(t) - g'(t)\\| \\leq q$ on $[a,b)$, then $\\|(f(x)-g(x)) - (f(a)-g(a))\\| \\leq q(x-a)$. The proof constructs $h = f - g$ using `HasDerivWithinAt.sub`, then applies Mathlib's MVT. This is the core of Picard-Lindelöf uniqueness: two ODE solutions with close derivatives remain close.",
     "mathContext": "For the ODE $x' = F(t,x)$ with $L$-Lipschitz $F$: if $x_1, x_2$ are solutions with $x_1(a) = x_2(a)$, then $\\|(x_1-x_2)'\\| = \\|F(t,x_1)-F(t,x_2)\\| \\leq L\\|x_1-x_2\\|$. Combined with Gronwall, this gives uniqueness: $x_1 = x_2$.",
     "significance": "key",
@@ -204,7 +204,7 @@
   {
     "id": "ann-strict-mono",
     "line": 331,
-    "type": "theorem",
+    "type": "technique",
     "content": "**Strict monotonicity from positive derivative**: $f' > 0$ on $(a,b)$ with $f$ continuous on $[a,b]$ implies $f(a) < f(b)$. This *cannot* be proved from the vector inequality — it genuinely needs the scalar MVT equality. Proof: get $c$ via `exists_deriv_eq_slope`, observe $f'(c) > 0$, substitute $f'(c) = \\frac{f(b)-f(a)}{b-a}$, use $b-a > 0$ and `div_mul_cancel₀` to get $f(b)-f(a) > 0$.",
     "mathContext": "The vector inequality only gives $|f(b)-f(a)| \\leq C(b-a)$ — non-negative, unable to determine the sign of $f(b)-f(a)$. The equality $f'(c) = \\frac{f(b)-f(a)}{b-a} > 0$ preserves sign information. This is why the scalar MVT retains independent value alongside the vector inequality.",
     "significance": "key",
@@ -223,7 +223,7 @@
   {
     "id": "ann-antiderivative",
     "line": 347,
-    "type": "theorem",
+    "type": "technique",
     "content": "**Antiderivative uniqueness**: If $f' = g'$ on $[a,b)$, then $f(x) - g(x) = f(a) - g(a)$ for all $x \\in [a,b]$. Proof: set $h = f - g$, show $h' = 0$ via `sub_eq_zero`, apply MVT with $C = 0$ (reusing the constant_of_deriv_zero_vector technique). Uses vector machinery even for a scalar result, showing the vector approach subsumes the scalar case.",
     "mathContext": "This is the uniqueness part of the fundamental theorem of calculus: if $F' = G'$ then $F - G$ is constant. The constant of integration $f(a) - g(a)$ is the only degree of freedom. In Lean, the proof chain is: `sub_eq_zero` → `norm_le_zero` → `le_antisymm` → `norm_eq_zero` → `sub_eq_zero`.",
     "significance": "key",
@@ -241,7 +241,7 @@
   {
     "id": "ann-banach-fderiv-zero",
     "line": 429,
-    "type": "theorem",
+    "type": "technique",
     "content": "**Banach constant-function theorem**: If the Fréchet derivative $Df = 0$ on a convex set $S \\subseteq E$, then $f$ is constant on $S$. Full Banach space generalization of `constant_of_deriv_zero_vector`. The proof mirrors the $\\mathbb{R} \\to E$ version: set $C = 0$ in the Banach MVT, use $\\|0\\|_{\\text{op}} = 0 \\leq 0$, then antisymmetry.",
     "mathContext": "For $f : E \\to F$ with $Df(x) = 0$ (the zero operator) for all $x \\in S$: $\\|f(b) - f(a)\\| \\leq 0 \\cdot \\|b-a\\| = 0$. This generalizes to: if $Df = Dg$ on a connected open set, then $f - g$ is constant. Connectedness is needed because the convexity argument works locally.",
     "significance": "key",

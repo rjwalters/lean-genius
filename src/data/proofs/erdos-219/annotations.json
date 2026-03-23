@@ -60,7 +60,7 @@
       "startLine": 45,
       "endLine": 50
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Example: {3, 5, 7}",
     "content": "The triple **{3, 5, 7}** is the simplest non-trivial example of a prime AP. It has first term 3, common difference 2, and length 3. All three are prime.",
     "mathContext": "This is the unique 3-term prime AP with difference 2. For larger differences, many 3-term APs exist (e.g., {5, 11, 17} with difference 6).",
@@ -78,7 +78,7 @@
       "startLine": 52,
       "endLine": 59
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Example: {5, 11, 17, 23, 29}",
     "content": "The quintuple **{5, 11, 17, 23, 29}** is a 5-term prime AP with first term 5 and common difference 6. We verify each element is prime using norm_num.",
     "mathContext": "The common difference 6 = 2·3 is the smallest possible for a 5-term prime AP. Differences must be divisible by 2·3 = 6 for progressions of length ≥ 5.",
@@ -114,7 +114,7 @@
       "startLine": 73,
       "endLine": 83
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Green-Tao Theorem",
     "content": "The **Green-Tao theorem** (2008) proves that primes contain arbitrarily long arithmetic progressions. This is one of the most celebrated results in 21st century mathematics.",
     "mathContext": "The proof combines Szemerédi's theorem (APs in dense sets), ergodic theory, and a pseudorandomness argument to handle the sparseness of primes.",
@@ -132,7 +132,7 @@
       "startLine": 85,
       "endLine": 88
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Explicit Formulation",
     "content": "An equivalent explicit formulation: for all k ≥ 1, there exist a, d with d > 0 such that a, a+d, a+2d, ..., a+(k-1)d are ALL prime.",
     "mathContext": "This makes the constructive content clearer: we need specific numbers a and d, not just abstract existence. Finding such a, d is computationally hard for large k.",
@@ -150,7 +150,7 @@
       "startLine": 95,
       "endLine": 103
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Record: k = 23",
     "content": "The **longest known** arithmetic progression of primes has 23 terms, found by Pritchard, Moran, and others in 2019. The first term and common difference are astronomically large.",
     "mathContext": "The progression uses a = 56211383760397 and d involves the primorial 23# = 223092870. Finding k = 24 would require massive computational resources.",
@@ -186,7 +186,7 @@
       "startLine": 126,
       "endLine": 141
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "The **summary** combines our main results: the Green-Tao theorem holds (axiomatized), {3, 5, 7} is verified as a prime AP, and {5, 11, 17, 23, 29} are all prime.",
     "mathContext": "This conjunction packages the key verified facts for export and reference.",

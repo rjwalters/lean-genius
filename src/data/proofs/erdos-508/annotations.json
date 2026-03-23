@@ -78,7 +78,7 @@
       "startLine": 39,
       "endLine": 44
     },
-    "type": "conjecture",
+    "type": "concept",
     "title": "Hadwiger-Nelson Problem Statement",
     "content": "**erdos_508_problem (axiom):** The main statement: $5 \\leq \\chi(\\mathbb{R}^2) \\leq 7$. This combines the de Grey lower bound with the Isbell upper bound, narrowing the problem to three possible values.\n\nThe fact that this is axiomatized (rather than proved from `de_grey_2018` and `chromatic_le_7_isbell`) is a stylistic choice — it could equivalently be derived as a theorem.",
     "mathContext": "The conjunction $5 \\leq \\chi(\\mathbb{R}^2) \\wedge \\chi(\\mathbb{R}^2) \\leq 7$ constrains the answer to $\\chi(\\mathbb{R}^2) \\in \\{5, 6, 7\\}$. Most experts conjecture $\\chi(\\mathbb{R}^2) = 7$, but no proof exists. Even ruling out $\\chi = 5$ or $\\chi = 6$ would be a major achievement.",
@@ -100,7 +100,7 @@
       "startLine": 46,
       "endLine": 53
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Lower Bounds: χ ≥ 3 and χ ≥ 4",
     "content": "**chromatic_ge_3 (axiom):** An equilateral triangle with side length 1 is a unit-distance graph requiring 3 colors (it's $K_3$). This is the simplest lower bound.\n\n**chromatic_ge_4_moser (axiom):** The Moser spindle (1961) is a 7-vertex, 11-edge unit-distance graph with chromatic number 4. It consists of two rhombi sharing vertices, cleverly arranged so that 3 colors force a monochromatic unit-distance pair. The Golomb graph (10 vertices) provides an alternative proof.",
     "mathContext": "The Moser spindle has vertices at specific coordinates in $\\mathbb{R}^2$ forming two unit rhombi. Its chromatic number is exactly 4: a simple case analysis shows 3 colors are insufficient, while 4 suffice by construction. By the Erdős-de Bruijn theorem, $\\chi(\\text{Moser}) = 4$ implies $\\chi(\\mathbb{R}^2) \\geq 4$.",
@@ -123,7 +123,7 @@
       "startLine": 55,
       "endLine": 58
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "de Grey (2018): χ ≥ 5",
     "content": "**de_grey_2018 (axiom):** Aubrey de Grey's 2018 breakthrough improved the lower bound for the first time in over 60 years. He constructed a unit-distance graph on 1581 vertices (later reduced to 509 by Exoo-Ismailescu and others) that requires 5 colors.\n\nde Grey's construction starts with a Moser spindle, then builds progressively larger graphs by rotating and combining copies. The verification that no 4-coloring exists was done computationally using SAT solvers. This was the first time computer-assisted methods solved a major open problem in chromatic geometry.",
     "mathContext": "de Grey's graph $G$ satisfies $\\chi(G) \\geq 5$: for every $c : V(G) \\to \\{1,2,3,4\\}$, there exist adjacent vertices $u, v$ with $c(u) = c(v)$. The graph is embeddable in $\\mathbb{R}^2$ with all edges having Euclidean length exactly 1. By Erdős-de Bruijn, $\\chi(G) \\geq 5 \\Rightarrow \\chi(\\mathbb{R}^2) \\geq 5$.",
@@ -147,7 +147,7 @@
       "startLine": 60,
       "endLine": 65
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Isbell Upper Bound: χ ≤ 7",
     "content": "**chromatic_le_7_isbell (axiom):** John Isbell's 7-coloring of the plane tiles $\\mathbb{R}^2$ with regular hexagons whose diameter is slightly less than 1. Each hexagon is assigned one of 7 colors in a repeating pattern, ensuring that any two points of the same color are at distance less than 1.\n\nThis construction has been known since the 1960s and remains the best upper bound. No 6-coloring of the plane is known, and improving to $\\chi \\leq 6$ would likely require abandoning the tiling approach entirely.",
     "mathContext": "The hexagonal tiling uses hexagons with diameter $d < 1$ (typically $d = 1 - \\epsilon$ for small $\\epsilon > 0$). Points within the same hexagon are at distance $< 1$, so coloring each hexagon monochromatically is safe. The 7-color pattern ensures hexagons of the same color are always separated by distance $> 1$. This works because the hexagonal lattice can be 7-colored so that same-colored hexagons are never adjacent or diagonal-adjacent.",
@@ -171,7 +171,7 @@
       "startLine": 67,
       "endLine": 73
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Fractional Chromatic Bounds",
     "content": "**fractional_chromatic_bounds (axiom):** The fractional chromatic number satisfies $4 \\leq \\chi_f(\\mathbb{R}^2) \\leq 4.36$. The fractional chromatic number is a linear programming relaxation of the chromatic number, always satisfying $\\chi_f \\leq \\chi$.\n\nThe lower bound 4 comes from a probabilistic argument over the unit circle, and the upper bound 4.36 (more precisely $\\approx 4.3599$) is due to Croft. Since $\\chi \\geq \\lceil \\chi_f \\rceil = 5$ is consistent with (but does not prove) $\\chi \\geq 5$ independently.",
     "mathContext": "The fractional chromatic number $\\chi_f(G)$ is defined as $\\min \\sum_I w(I)$ over weights $w : \\mathcal{I}(G) \\to [0,\\infty)$ such that for each vertex $v$, $\\sum_{I \\ni v} w(I) \\geq 1$, where $\\mathcal{I}(G)$ is the set of independent sets. Always $\\chi_f(G) \\leq \\chi(G)$, and $\\chi_f(G) \\leq \\chi(G) \\leq \\chi_f(G) \\cdot (1 + \\ln |V|)$ for finite graphs.",
@@ -195,7 +195,7 @@
       "startLine": 75,
       "endLine": 78
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Higher Dimensions: χ(R³)",
     "content": "**higher_dimensions (axiom):** The chromatic number of $\\mathbb{R}^3$ satisfies $6 \\leq \\chi(\\mathbb{R}^3) \\leq 15$. In general, $\\chi(\\mathbb{R}^d)$ grows exponentially with $d$ — Frankl and Wilson (1981) showed $\\chi(\\mathbb{R}^d) \\geq (1.207...)^d$ using algebraic methods.\n\nThe gap between lower and upper bounds widens dramatically in higher dimensions, making the planar case ($d = 2$) the most tractable.",
     "mathContext": "For $\\mathbb{R}^d$, the unit-distance graph has $\\chi(\\mathbb{R}^d)$ growing exponentially. The Frankl-Wilson bound $\\chi(\\mathbb{R}^d) \\geq (1 + o(1))^d$ uses intersection theorems for set systems. Upper bounds come from lattice-based colorings generalizing the hexagonal tiling.",
@@ -219,7 +219,7 @@
       "startLine": 80,
       "endLine": 88
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-de Bruijn Compactness Theorem (1951)",
     "content": "**erdos_de_bruijn (axiom):** The chromatic number of the plane equals the supremum of chromatic numbers of its finite subgraphs. Formally: $k \\leq \\chi(\\mathbb{R}^2)$ iff there exists a finite set of points in $\\mathbb{R}^2$ whose induced unit-distance graph requires $> k-1$ colors.\n\nThis is a consequence of the compactness theorem for propositional logic (or equivalently, Tychonoff's theorem for product topologies). It is the theoretical justification for de Grey's approach: constructing a single finite graph with high chromatic number suffices to bound $\\chi(\\mathbb{R}^2)$ from below.",
     "mathContext": "The Erdős-de Bruijn theorem (1951): for an infinite graph $G$, $\\chi(G) = \\sup\\{\\chi(H) : H \\text{ finite subgraph of } G\\}$. Applied to the unit-distance graph: $\\chi(\\mathbb{R}^2) = \\sup_n \\sup_{p_1,\\ldots,p_n \\in \\mathbb{R}^2} \\chi(G[p_1,\\ldots,p_n])$ where $G[p_1,\\ldots,p_n]$ is the induced unit-distance subgraph on those points. The axiom formalizes this as: $k \\leq \\chi(\\mathbb{R}^2)$ iff there exist $n$ points such that every $k$-coloring has a monochromatic edge.",

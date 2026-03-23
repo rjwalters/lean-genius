@@ -128,7 +128,7 @@
       "startLine": 156,
       "endLine": 161
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Upper Bound",
     "content": "**h_upper_bound:**\n\nWith n points, there are C(n,3) triples, hence at most C(n,3) distinct radii.\n\n```lean\ntheorem h_upper_bound (n : N) : h n <= Nat.choose n 3\n```\n\nThis is the obvious upper bound - each triple contributes at most one radius.",
     "significance": "key"
@@ -140,7 +140,7 @@
       "startLine": 170,
       "endLine": 175
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "h(4) Lower Bound",
     "content": "**h_four_lower:**\n\nFour points in general position give at least 2 distinct radii.\n\n```lean\naxiom h_four_lower : h 4 >= 2\n```\n\n**Why:** If all 4 circumradii (from the 4 triples) were equal, the 4 points would lie on a common circle, violating general position.",
     "mathContext": "This is the key observation: the 'no 4 concyclic' constraint forces radius diversity.",
@@ -153,7 +153,7 @@
       "startLine": 181,
       "endLine": 199
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Main Conjecture",
     "content": "**erdos_831_conjecture:**\n\nWhat are the asymptotics of h(n)?\n\n**Possible behaviors:**\n1. h(n) = Theta(n) - linear growth\n2. h(n) = Theta(n^alpha) - polynomial growth for some alpha in (0, 2)\n3. h(n) = Theta(n^2) - quadratic growth\n\nThe problem asks to determine which case holds.\n\nAxiomatized as the disjunction of these possibilities.",
     "mathContext": "The constraint 'no 4 concyclic' suggests radii must spread out, but the rate is unknown.",
@@ -166,7 +166,7 @@
       "startLine": 205,
       "endLine": 219
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Regular Polygons Fail",
     "content": "**regular_polygon_not_general:**\n\nPoints of a regular n-gon are concyclic, so they don't satisfy general position.\n\n```lean\ntheorem regular_polygon_not_general (S : Finset Point)\n    (h : isRegularPolygon S) (hcard : S.card >= 4) :\n    not isInGeneralPosition S\n```\n\nRegular polygons cannot be used to construct minimizing configurations.",
     "significance": "key"
@@ -178,7 +178,7 @@
       "startLine": 221,
       "endLine": 228
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Random Points",
     "content": "**random_points_many_radii:**\n\nRandom points in general position are expected to have many distinct radii.\n\nSpecifically: for random n points, the number of distinct radii is at least c*n for some constant c > 0.\n\nThis suggests the minimum h(n) might be linear or superlinear.",
     "significance": "supporting"
@@ -222,7 +222,7 @@
       "startLine": 256,
       "endLine": 267
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Small Cases",
     "content": "**h_five_bounds and h_six_bounds:**\n\n**h(5):** With 5 points, C(5,3) = 10 triples.\nBounds: 2 <= h(5) <= 10\n\n**h(6):** With 6 points, C(6,3) = 20 triples.\nBounds: 3 <= h(6) <= 20\n\nThe exact values for small n are not known.",
     "significance": "key"
@@ -234,7 +234,7 @@
       "startLine": 273,
       "endLine": 294
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_831_summary:**\n\nCombines known results:\n1. h(3) = 1 (trivial - one triple, one radius)\n2. h(4) >= 2 (non-concyclicity forces diversity)\n3. h(n) <= C(n,3) (obvious upper bound)\n\n```lean\ntheorem erdos_831_summary :\n    h 3 = 1 and h 4 >= 2 and forall n, h n <= Nat.choose n 3\n```",
     "significance": "key"
@@ -246,7 +246,7 @@
       "startLine": 296,
       "endLine": 303
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Open Question",
     "content": "**erdos_831_open_question:**\n\nThe main open question: what is the asymptotic behavior of h(n)?\n\nWe can prove existence of a positive lower bound function:\n```lean\ntheorem erdos_831_open_question :\n    exists f, (forall n >= 3, h n >= f n) and (forall n >= 3, f n > 0)\n```\n\nBut the exact growth rate remains unknown.",
     "significance": "key"

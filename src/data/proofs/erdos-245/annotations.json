@@ -94,7 +94,7 @@
       "startLine": 70,
       "endLine": 87
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Mann's Bound (1960)",
     "content": "**Mann's Theorem**: For any infinite zero-density set A, the asymptotic growth ratio is at least **2**.\n\nErdos wrote this is 'easy to see', but the proof actually requires careful density arguments from Mann's 1960 paper.\n\nThe intuition: when you add two sparse sets together, you get at least twice as many distinct sums because most pairs (a, b) with a < b give distinct values a + b.\n\nThis is stated as an axiom because the proof requires advanced techniques from additive number theory.",
     "mathContext": "2 ≤ asymptoticGrowthRatio A",
@@ -114,7 +114,7 @@
       "startLine": 89,
       "endLine": 113
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Freiman's Theorem (1973)",
     "content": "**Freiman's Theorem - The Main Result**\n\nFor any infinite zero-density set A, the asymptotic growth ratio is at least **3**.\n\nThis is the **sharp bound** - it cannot be improved because powers of 2 achieve exactly 3.\n\nFreiman proved this in his 1973 monograph 'Foundations of a structural theory of set addition', which founded the field now known as additive combinatorics.\n\nThe proof uses structural arguments about how elements of A can combine to form sums, showing that sparse sets must have significant sumset growth.",
     "mathContext": "3 ≤ asymptoticGrowthRatio A",
@@ -135,7 +135,7 @@
       "startLine": 110,
       "endLine": 113
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Positive Answer to Problem #245",
     "content": "The main theorem `erdos_245_positive_answer` states:\n\n**For all infinite sets A with zero density, the asymptotic growth ratio is ≥ 3.**\n\nThis is a direct application of Freiman's theorem, affirming Erdos's conjecture.",
     "significance": "key",
@@ -150,7 +150,7 @@
       "startLine": 120,
       "endLine": 126
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Powers of 2 are Infinite",
     "content": "We prove that {2^k : k ∈ ℕ} is an infinite set.\n\nThe proof uses `Set.infinite_of_injective_forall_mem`:\n1. The function k ↦ 2^k is injective (different exponents give different powers)\n2. Every value 2^k is in the set\n\nTherefore the set is infinite.\n\nThe injectivity uses `Nat.pow_right_injective` with base 2 > 1.",
     "mathContext": "{n : ℕ | ∃ k, n = 2^k}.Infinite",
@@ -183,7 +183,7 @@
       "startLine": 148,
       "endLine": 152
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sumset of Powers of 2",
     "content": "We prove that for any a, b ∈ ℕ, the sum 2^a + 2^b belongs to the sumset of powers of 2.\n\nThis is a simple application of the sumset definition:\n- 2^a ∈ powersOfTwo (witnessed by a)\n- 2^b ∈ powersOfTwo (witnessed by b)\n- Therefore 2^a + 2^b ∈ powersOfTwo + powersOfTwo",
     "mathContext": "2^a + 2^b ∈ sumset powersOfTwo",
@@ -215,7 +215,7 @@
       "startLine": 169,
       "endLine": 187
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary of Known Results",
     "content": "`problem_245_summary` combines all our results:\n\n1. **Freiman (1973)**: Growth ratio ≥ 3 for all zero-density sets\n   - The sharp bound\n   - Part of foundational additive combinatorics\n\n2. **Mann (1960)**: Growth ratio ≥ 2 for all zero-density sets\n   - The weaker bound\n   - 'Easy to see' according to Erdos\n\nBoth are stated as axioms and combined into a single summary theorem.",
     "significance": "key",

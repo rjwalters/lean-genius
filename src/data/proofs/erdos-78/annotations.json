@@ -2,145 +2,290 @@
   {
     "id": "erdos-78-ann-simpleg",
     "proofId": "erdos-78",
-    "range": { "startLine": 26, "endLine": 29 },
+    "range": {
+      "startLine": 26,
+      "endLine": 29
+    },
     "type": "definition",
     "title": "Simple Graph Structure",
     "content": "Custom `SimpleG n` structure for graphs on $\\text{Fin}\\,n$ vertices, with adjacency relation `adj`, symmetry, and irreflexivity. This avoids Mathlib's `SimpleGraph` type class complexity while maintaining the essential properties needed for Ramsey theory. The structure is parameterized by vertex count $n$.",
     "mathContext": "`SimpleG n` = $(V, E)$ with $V = \\text{Fin}\\,n$, $E \\subseteq \\binom{V}{2}$, formalized as `adj : Fin n \\to Fin n \\to Prop` with `symm` and `irrefl`",
     "significance": "supporting",
-    "relatedConcepts": ["simple graph", "adjacency relation", "symmetric relation", "irreflexive relation"],
-    "prerequisites": ["Fin type", "Prop", "symmetric relations"]
+    "relatedConcepts": [
+      "simple graph",
+      "adjacency relation",
+      "symmetric relation",
+      "irreflexive relation"
+    ],
+    "prerequisites": [
+      "Fin type",
+      "Prop",
+      "symmetric relations"
+    ]
   },
   {
     "id": "erdos-78-ann-clique",
     "proofId": "erdos-78",
-    "range": { "startLine": 32, "endLine": 34 },
+    "range": {
+      "startLine": 32,
+      "endLine": 34
+    },
     "type": "definition",
     "title": "Clique Definition",
     "content": "A $k$-clique in $G$ is a subset $S$ of $k$ vertices where every pair is adjacent. This is the combinatorial heart of Ramsey theory: $R(k)$ is the minimum $n$ forcing a $k$-clique or $k$-independent set in every graph on $n$ vertices.",
     "mathContext": "$G.\\text{hasClique}(k) \\iff \\exists S \\subseteq V, |S| = k, \\forall u, v \\in S, u \\ne v \\Rightarrow G.\\text{adj}(u, v)$",
     "significance": "key",
-    "relatedConcepts": ["clique", "complete subgraph", "clique number", "Turán's theorem"],
-    "prerequisites": ["SimpleG", "Finset.card", "pairwise adjacency"]
+    "relatedConcepts": [
+      "clique",
+      "complete subgraph",
+      "clique number",
+      "Turán's theorem"
+    ],
+    "prerequisites": [
+      "SimpleG",
+      "Finset.card",
+      "pairwise adjacency"
+    ]
   },
   {
     "id": "erdos-78-ann-indepset",
     "proofId": "erdos-78",
-    "range": { "startLine": 37, "endLine": 39 },
+    "range": {
+      "startLine": 37,
+      "endLine": 39
+    },
     "type": "definition",
     "title": "Independent Set Definition",
     "content": "A $k$-independent set in $G$ is a subset $S$ of $k$ vertices where no pair is adjacent. Equivalently, it is a $k$-clique in the complement graph $\\overline{G}$. The independence number $\\alpha(G)$ is the size of the largest independent set.",
     "mathContext": "$G.\\text{hasIndepSet}(k) \\iff \\exists S \\subseteq V, |S| = k, \\forall u, v \\in S, u \\ne v \\Rightarrow \\neg G.\\text{adj}(u, v)$",
     "significance": "key",
-    "relatedConcepts": ["independent set", "independence number", "complement graph", "stable set"],
-    "prerequisites": ["SimpleG", "Finset.card", "pairwise non-adjacency"]
+    "relatedConcepts": [
+      "independent set",
+      "independence number",
+      "complement graph",
+      "stable set"
+    ],
+    "prerequisites": [
+      "SimpleG",
+      "Finset.card",
+      "pairwise non-adjacency"
+    ]
   },
   {
     "id": "erdos-78-ann-ramsey",
     "proofId": "erdos-78",
-    "range": { "startLine": 41, "endLine": 48 },
+    "range": {
+      "startLine": 41,
+      "endLine": 48
+    },
     "type": "definition",
     "title": "Diagonal Ramsey Number R(k)",
     "content": "The diagonal Ramsey number $R(k)$ is the minimum $n$ such that every graph on $n$ vertices contains either a $k$-clique or a $k$-independent set. Equivalently, every 2-coloring of $K_n$'s edges contains a monochromatic $K_k$. The axiomatization separates the existence (`ramseyNumber`) from the specification (`ramseyNumber_spec`), which states the Ramsey property for graphs on $R(k)$ vertices.",
     "mathContext": "$R(k) = \\min\\{n : \\forall G \\text{ on } n \\text{ vertices}, \\omega(G) \\ge k \\text{ or } \\alpha(G) \\ge k\\}$",
     "significance": "key",
-    "relatedConcepts": ["Ramsey number", "Ramsey's theorem", "monochromatic subgraph", "edge coloring"],
-    "prerequisites": ["SimpleG", "hasClique", "hasIndepSet"]
+    "relatedConcepts": [
+      "Ramsey number",
+      "Ramsey's theorem",
+      "monochromatic subgraph",
+      "edge coloring"
+    ],
+    "prerequisites": [
+      "SimpleG",
+      "hasClique",
+      "hasIndepSet"
+    ]
   },
   {
     "id": "erdos-78-ann-probabilistic",
     "proofId": "erdos-78",
-    "range": { "startLine": 52, "endLine": 56 },
+    "range": {
+      "startLine": 52,
+      "endLine": 56
+    },
     "type": "context",
     "title": "Erdős Probabilistic Bound (1947)",
     "content": "Erdős's landmark 1947 result: $R(k) > k \\cdot 2^{k/2} / e$, proved by showing a random graph on $n < \\sqrt{2}^k$ vertices has no $k$-clique or $k$-independent set with positive probability. This was the birth of the probabilistic method in combinatorics. The bound is non-constructive: it proves existence without giving an explicit construction. The formalization axiomatizes both the exponential form ($\\exists C > 1, C^k \\le R(k)$) and the asymptotic $\\sqrt{2}$ constant.",
     "mathContext": "$R(k) \\ge k \\cdot 2^{k/2}/e \\approx (\\sqrt{2})^k$. Proof: $\\Pr[\\text{random } G \\text{ has } k\\text{-clique}] \\le \\binom{n}{k} 2^{-\\binom{k}{2}} < 1$ when $n < \\sqrt{2}^k$",
     "significance": "key",
-    "relatedConcepts": ["probabilistic method", "random graph", "union bound", "first moment method"],
-    "prerequisites": ["Ramsey number", "probability", "union bound", "binomial coefficient"]
+    "relatedConcepts": [
+      "probabilistic method",
+      "random graph",
+      "union bound",
+      "first moment method"
+    ],
+    "prerequisites": [
+      "Ramsey number",
+      "probability",
+      "union bound",
+      "binomial coefficient"
+    ]
   },
   {
     "id": "erdos-78-ann-isexplicit",
     "proofId": "erdos-78",
-    "range": { "startLine": 65, "endLine": 68 },
+    "range": {
+      "startLine": 65,
+      "endLine": 68
+    },
     "type": "definition",
     "title": "Explicit Construction Predicate",
     "content": "The predicate `IsExplicit G` is axiomatized as `True` since constructibility is a meta-property (polynomial-time computability of the adjacency function). The key requirement for Problem #78 is that the graph can be constructed in $\\text{poly}(n)$ time, not just shown to exist probabilistically. This connects to circuit complexity and derandomization.",
     "mathContext": "A graph is explicit if $\\text{adj}(u, v)$ is computable in $\\text{poly}(\\log n)$ time",
     "significance": "supporting",
-    "relatedConcepts": ["explicit construction", "polynomial-time computability", "derandomization", "circuit complexity"],
-    "prerequisites": ["SimpleG", "computational complexity"]
+    "relatedConcepts": [
+      "explicit construction",
+      "polynomial-time computability",
+      "derandomization",
+      "circuit complexity"
+    ],
+    "prerequisites": [
+      "SimpleG",
+      "computational complexity"
+    ]
   },
   {
     "id": "erdos-78-ann-cohen",
     "proofId": "erdos-78",
-    "range": { "startLine": 70, "endLine": 76 },
+    "range": {
+      "startLine": 70,
+      "endLine": 76
+    },
     "type": "context",
     "title": "Cohen's Construction (2015)",
     "content": "Cohen (2015) built explicit $n$-vertex graphs with no clique or independent set of size $2^{(\\log \\log n)^C}$. This was the first super-polylogarithmic improvement over trivial algebraic constructions but still exponentially far from the target $c \\cdot \\log n$. The construction uses algebraic geometry and character sum estimates.",
     "mathContext": "$\\alpha(G), \\omega(G) < 2^{(\\log \\log n)^C}$ — doubly logarithmic, far from the target $O(\\log n)$",
     "significance": "supporting",
-    "relatedConcepts": ["explicit construction", "algebraic geometry", "character sums", "Cayley graph"],
-    "prerequisites": ["SimpleG", "IsExplicit", "clique number", "independence number"]
+    "relatedConcepts": [
+      "explicit construction",
+      "algebraic geometry",
+      "character sums",
+      "Cayley graph"
+    ],
+    "prerequisites": [
+      "SimpleG",
+      "IsExplicit",
+      "clique number",
+      "independence number"
+    ]
   },
   {
     "id": "erdos-78-ann-li",
     "proofId": "erdos-78",
-    "range": { "startLine": 78, "endLine": 84 },
+    "range": {
+      "startLine": 78,
+      "endLine": 84
+    },
     "type": "context",
     "title": "Li's Construction (2023)",
     "content": "Li (2023) improved the explicit construction to achieve $\\alpha(G), \\omega(G) < (\\log n)^C$. This is the current state of the art for constructive Ramsey bounds. The gap from $(\\log n)^C$ to the target $c \\cdot \\log n$ (polynomial in $\\log n$ vs. linear in $\\log n$) remains enormous and represents a fundamental barrier in combinatorics.",
     "mathContext": "Li: $\\alpha(G), \\omega(G) < (\\log n)^C$ vs. target $c \\cdot \\log n$ — a polynomial-vs-linear gap in $\\log n$",
     "significance": "key",
-    "relatedConcepts": ["explicit Ramsey graph", "polylogarithmic bound", "constructive combinatorics"],
-    "prerequisites": ["SimpleG", "IsExplicit", "Cohen's construction"]
+    "relatedConcepts": [
+      "explicit Ramsey graph",
+      "polylogarithmic bound",
+      "constructive combinatorics"
+    ],
+    "prerequisites": [
+      "SimpleG",
+      "IsExplicit",
+      "Cohen's construction"
+    ]
   },
   {
     "id": "erdos-78-ann-main",
     "proofId": "erdos-78",
-    "range": { "startLine": 88, "endLine": 95 },
-    "type": "conjecture",
+    "range": {
+      "startLine": 88,
+      "endLine": 95
+    },
+    "type": "concept",
     "title": "Constructive Ramsey Challenge ($100)",
     "content": "The main open problem: construct explicit $n$-vertex graphs with no clique or independent set of size $c \\cdot \\log n$. This would match the probabilistic lower bound constructively, showing $R(k) > C^k$ for an explicit family. Erdős offered $\\$100$ for this. The formalization axiomatizes the existence of such a constant $c > 0$ and an explicit graph family.",
     "mathContext": "$\\exists c > 0, \\forall n \\ge 2, \\exists G$ explicit on $n$ vertices: $\\omega(G), \\alpha(G) < c \\cdot \\log n$",
     "significance": "key",
-    "relatedConcepts": ["Erdős prize", "constructive lower bound", "Ramsey graph", "derandomization"],
-    "prerequisites": ["Ramsey number", "IsExplicit", "logarithmic bound"]
+    "relatedConcepts": [
+      "Erdős prize",
+      "constructive lower bound",
+      "Ramsey graph",
+      "derandomization"
+    ],
+    "prerequisites": [
+      "Ramsey number",
+      "IsExplicit",
+      "logarithmic bound"
+    ]
   },
   {
     "id": "erdos-78-ann-es-upper",
     "proofId": "erdos-78",
-    "range": { "startLine": 99, "endLine": 103 },
+    "range": {
+      "startLine": 99,
+      "endLine": 103
+    },
     "type": "context",
     "title": "Erdős–Szekeres Upper Bound (1935)",
     "content": "The classical Erdős–Szekeres bound $R(k) \\le \\binom{2k-2}{k-1} < 4^k$ from 1935 was the first explicit upper bound on diagonal Ramsey numbers. The proof uses the recurrence $R(r,s) \\le R(r-1,s) + R(r,s-1)$ and induction. This $4^k$ barrier stood for nearly 90 years.",
     "mathContext": "$R(k) \\le \\binom{2k-2}{k-1} < 4^k / \\sqrt{\\pi k}$ (Stirling). Recurrence: $R(r,s) \\le R(r-1,s) + R(r,s-1)$",
     "significance": "supporting",
-    "relatedConcepts": ["Erdős–Szekeres theorem", "binomial coefficient", "Ramsey recurrence", "central binomial coefficient"],
-    "prerequisites": ["Ramsey number", "binomial coefficients", "induction"]
+    "relatedConcepts": [
+      "Erdős–Szekeres theorem",
+      "binomial coefficient",
+      "Ramsey recurrence",
+      "central binomial coefficient"
+    ],
+    "prerequisites": [
+      "Ramsey number",
+      "binomial coefficients",
+      "induction"
+    ]
   },
   {
     "id": "erdos-78-ann-cgms",
     "proofId": "erdos-78",
-    "range": { "startLine": 105, "endLine": 107 },
+    "range": {
+      "startLine": 105,
+      "endLine": 107
+    },
     "type": "context",
     "title": "CGMS Upper Bound (2023)",
     "content": "Campos, Griffiths, Morris, and Sahasrabudhe (2023) proved $R(k) \\le (4 - \\varepsilon)^k$ for some $\\varepsilon > 0$, breaking the 88-year-old $4^k$ barrier. Their proof uses a novel graph coloring algorithm with entropy compression. This was one of the biggest breakthroughs in Ramsey theory and narrows the gap between upper and lower bounds.",
     "mathContext": "$R(k) \\le (4 - \\varepsilon)^k$ for some $\\varepsilon > 0$ (CGMS 2023), improving $R(k) \\le 4^k$ (Erdős–Szekeres 1935)",
     "significance": "key",
-    "relatedConcepts": ["CGMS theorem", "entropy compression", "graph coloring algorithm", "Ramsey upper bound"],
-    "prerequisites": ["Ramsey number", "Erdős–Szekeres bound", "exponential bounds"]
+    "relatedConcepts": [
+      "CGMS theorem",
+      "entropy compression",
+      "graph coloring algorithm",
+      "Ramsey upper bound"
+    ],
+    "prerequisites": [
+      "Ramsey number",
+      "Erdős–Szekeres bound",
+      "exponential bounds"
+    ]
   },
   {
     "id": "erdos-78-ann-paley",
     "proofId": "erdos-78",
-    "range": { "startLine": 1, "endLine": 16 },
+    "range": {
+      "startLine": 1,
+      "endLine": 16
+    },
     "type": "insight",
     "title": "Paley Graph and the Constructive Gap",
     "content": "The best known explicit Ramsey graphs before Li (2023) were Paley graphs: for a prime $p \\equiv 1 \\pmod{4}$, connect vertices $i, j \\in \\mathbb{F}_p$ iff $i - j$ is a quadratic residue. These achieve $\\alpha(G), \\omega(G) \\sim \\sqrt{p}$ (by the Weil bound), giving independence/clique number $\\sqrt{n}$. The target is $c \\cdot \\log n$, an exponential gap from $\\sqrt{n}$. This gap between $\\sqrt{n}$ and $\\log n$ represents one of the largest known gaps between constructive and probabilistic bounds in all of combinatorics.",
     "mathContext": "Paley graph: $\\omega(G), \\alpha(G) \\sim \\sqrt{n}$ vs. target $c \\cdot \\log n$ — an exponential gap",
     "significance": "key",
-    "relatedConcepts": ["Paley graph", "quadratic residue", "Weil bound", "character sums", "pseudorandomness"],
-    "prerequisites": ["finite field", "quadratic residue", "Weil's theorem"]
+    "relatedConcepts": [
+      "Paley graph",
+      "quadratic residue",
+      "Weil bound",
+      "character sums",
+      "pseudorandomness"
+    ],
+    "prerequisites": [
+      "finite field",
+      "quadratic residue",
+      "Weil's theorem"
+    ]
   }
 ]

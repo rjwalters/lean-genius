@@ -114,7 +114,7 @@
       "startLine": 93,
       "endLine": 107
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Gyárfás-Komlós-Szemerédi Theorem (1984)",
     "content": "**The GKS Theorem**: For any graph G with n vertices and kn edges:\n\nΣ 1/aᵢ ≥ c · log(k)\n\nfor some absolute constant c > 0.\n\nThis resolves the first part of Erdős's question affirmatively. Dense graphs MUST have diverse cycle lengths.",
     "mathContext": "The logarithmic bound is tight up to constants. Liu-Montgomery (2020) proved the sharp constant is (1/2 - o(1)).",
@@ -150,7 +150,7 @@
       "startLine": 139,
       "endLine": 148
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Complete Bipartite Cycle Structure",
     "content": "**Complete bipartite K_{r,s} cycle lengths**: exactly {4, 6, 8, ..., 2·min(r,s)}.\n\nKey properties:\n- Minimum cycle length is 4 (no triangles in bipartite graphs)\n- Maximum cycle length is 2·min(r,s)\n- All intermediate even lengths are achieved\n- No odd cycles exist",
     "mathContext": "A cycle in K_{r,s} alternates between the two parts, so it must have even length. The maximum uses all vertices of the smaller part twice.",
@@ -168,7 +168,7 @@
       "startLine": 150,
       "endLine": 159
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bipartite Cycle Sum Formula",
     "content": "**bipartiteCycleSum(r, s)** = Σᵢ₌₂^{min(r,s)} 1/(2i) = (1/2) · Σᵢ₌₂^m 1/i\n\nThis is half of a partial harmonic sum. For large m = min(r,s):\n\nbipartiteCycleSum ≈ (1/2) · (ln(m) - 1 + γ)\n\nwhere γ ≈ 0.577 is the Euler-Mascheroni constant.",
     "mathContext": "The factor of 1/2 comes from even-only cycle lengths: we sum 1/4 + 1/6 + 1/8 + ... = (1/2)(1/2 + 1/3 + 1/4 + ...).",
@@ -186,7 +186,7 @@
       "startLine": 168,
       "endLine": 173
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Minimum Degree Forces Short Cycles",
     "content": "**Classical result**: A graph with minimum degree d ≥ 2 contains a cycle of length at most 2d.\n\n**Proof idea**: Take a longest path P = v₀ - v₁ - ... - vₖ. The endpoint vₖ has d neighbors, all on P (else we could extend). By pigeonhole, some neighbor vᵢ has i ≤ 2d, giving a cycle of length k - i ≤ k ≤ 2d.",
     "mathContext": "This is a key technique in extremal graph theory: longest paths force short cycles via degree constraints.",
@@ -204,7 +204,7 @@
       "startLine": 191,
       "endLine": 201
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Kővári-Sós-Turán Theorem",
     "content": "**The KST Theorem** (1954): A K_{r,s}-free graph on n vertices has at most\n\n(1/2)(s-1)^{1/r} · n^{2-1/r} + ((r-1)/2) · n\n\nedges.\n\nThis is the **Zarankiewicz problem**: what's the maximum edges avoiding a complete bipartite subgraph?",
     "mathContext": "For r = s = 2, this gives the C₄-free bound: at most (1/2)n^{3/2} + n/2 edges. The GKS proof uses similar extremal techniques.",
@@ -222,7 +222,7 @@
       "startLine": 207,
       "endLine": 217
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Density One Implies Cycles",
     "content": "**Lemma**: A graph with n edges on n vertices contains a cycle.\n\n**Proof**: A forest (acyclic graph) on n vertices has at most n-1 edges. Each tree component with v vertices contributes v-1 edges.\n\nWith n edges, the graph has 'extra' edges beyond a spanning forest, so some component must contain a cycle.",
     "mathContext": "This is the base case: even k = 1 forces at least one cycle. The GKS theorem shows k ≫ 1 forces many cycle lengths.",
@@ -240,7 +240,7 @@
       "startLine": 242,
       "endLine": 252
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bipartite Graphs Have Only Even Cycles",
     "content": "**Classical result**: In a bipartite graph, all cycles have even length.\n\n**Proof**: 2-color the graph (bipartite = 2-colorable). Walking around a cycle, colors alternate: R-B-R-B-...\n\nAfter k steps, we return to the starting vertex (starting color). This requires k to be even.",
     "mathContext": "This is why complete bipartite graphs avoid odd cycle contributions (1/3, 1/5, 1/7, ...) in the reciprocal sum.",
@@ -258,7 +258,7 @@
       "startLine": 254,
       "endLine": 262
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Odd Cycle Positive Contribution",
     "content": "**Theorem**: An odd cycle of length k ≥ 3 contributes 1/k > 0 to the reciprocal sum.\n\n**Proof**: Uses `positivity` tactic since k ≥ 3 implies k > 0 as a real number.\n\nThis is the fully verified theorem in the file - the one actual proof rather than axiom.",
     "mathContext": "Odd cycles are exactly what non-bipartite graphs have. Their positive contribution (1/3, 1/5, ...) might make non-bipartite graphs have larger sums than bipartite ones.",

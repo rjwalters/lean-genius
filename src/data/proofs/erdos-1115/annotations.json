@@ -79,7 +79,7 @@
       "startLine": 58,
       "endLine": 68
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Hayman's Positive Result (1960)",
     "content": "Hayman proved in 1960 that for finite-order entire functions satisfying certain regularity conditions, an escape path exists with $\\ell(r) \\leq Cr$ for some constant $C > 0$. The critical condition is $\\log M(r) \\ll (\\log r)^2$: when the function grows this slowly, a straight ray to infinity works because the maximum modulus grows so gently that the function must tend to infinity along some ray. The formalization states this for all finite-order functions, though the precise result requires regularity beyond just finite order.",
     "mathContext": "$\\forall f,\\, \\forall \\rho,\\; \\text{IsFiniteOrder}(f, \\rho) \\implies \\exists \\gamma,\\; \\text{IsEscapePath}(f, \\gamma) \\wedge \\exists C > 0,\\; \\forall r \\geq 1$: $\\ell(r) \\leq Cr$.",
@@ -103,7 +103,7 @@
       "startLine": 74,
       "endLine": 83
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Gol'dberg-Eremenko Counterexample (1979)",
     "content": "The decisive negative result: Gol'dberg and Eremenko constructed entire functions of finite order such that **every** escape path has arc length growing faster than $O(r)$. Their construction produces functions whose level curves $\\{z : |f(z)| = c\\}$ wind around the origin so many times that any path through them to infinity must accumulate superlinear arc length. This disproves Erdős's question in the strong sense: the counterexamples can have any prescribed finite order $\\rho > 0$.",
     "mathContext": "$\\exists f,\\, \\exists \\rho,\\; \\text{IsFiniteOrder}(f, \\rho) \\wedge \\forall \\gamma,\\; \\text{IsEscapePath}(f, \\gamma) \\implies \\neg(\\ell(r) = O(r))$.",
@@ -127,7 +127,7 @@
       "startLine": 89,
       "endLine": 101
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem: Problem #1115 Disproved",
     "content": "The main theorem asserts the existence of a finite-order entire function for which no escape path has $\\ell(r) = O(r)$, directly disproving Erdős's question. The proof is by invoking `goldberg_eremenko_counterexample`. The formalization captures the strongest form of the negative answer: it is not just that some functions lack good paths, but that the counterexamples can be of any prescribed order.",
     "mathContext": "The statement $\\exists f,\\, \\exists \\rho,\\; \\text{IsFiniteOrder}(f, \\rho) \\wedge \\forall \\gamma,\\; \\text{IsEscapePath}(f, \\gamma) \\implies \\ell(r) \\neq O(r)$ directly contradicts the conjecture $\\ell(r) = O(r)$ for all finite-order functions.",

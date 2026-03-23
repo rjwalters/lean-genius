@@ -197,7 +197,7 @@
       "startLine": 122,
       "endLine": 146
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Hajnal-Tuza Bounds (1991)",
     "content": "**eht_lower_bound and eht_upper_bound:**\n\nThe 1991 paper by Erdős, Hajnal, and Tuza established both bounds:\n\n**Lower bound:** $t(r) \\ge \\frac{3}{16}r + \\frac{7}{8}$\n- Constructed via explicit hypergraphs satisfying the local condition but requiring many covering vertices\n- The construction uses a careful arrangement of edges that locally always intersect but globally spread out\n\n**Upper bound:** $t(r) \\le \\frac{1}{5}r$\n- Proved via a double-counting/probabilistic argument\n- Shows that the local intersection property constrains global structure enough to guarantee a small cover\n\n**The gap:** $\\frac{3}{16} = 0.1875$ vs $\\frac{1}{5} = 0.2$ — a difference of only $0.0125$ in the leading coefficient. Despite decades of effort, neither bound has been improved. This narrow gap is characteristic of difficult extremal problems where the truth is hard to pin down.",
     "mathContext": "Lower: $\\forall r \\ge 3,\\; \\exists \\mathcal{H}_r \\text{ $r$-uniform}: \\text{local condition holds} \\wedge \\tau(\\mathcal{H}_r) \\ge \\frac{3}{16}r + \\frac{7}{8}$.\n\nUpper: $\\forall r \\ge 3,\\; \\forall \\mathcal{H} \\text{ $r$-uniform}: \\text{local condition} \\Rightarrow \\tau(\\mathcal{H}) \\le \\frac{1}{5}r$.",
@@ -338,7 +338,7 @@
       "startLine": 246,
       "endLine": 286
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_616_summary:**\n\nThe capstone theorem combines both Erdős-Hajnal-Tuza bounds into a single statement:\n\n1. **Existential lower bound:** For every $r \\ge 3$, there exists an $r$-uniform hypergraph satisfying the local condition with $\\tau \\ge \\frac{3}{16}r$.\n2. **Universal upper bound:** Every $r$-uniform hypergraph satisfying the local condition has $\\tau \\le \\frac{1}{5}r$.\n\nThe proof delegates to the respective axioms via `linarith` (for adjusting the additive constant in the lower bound) and direct application of the upper bound axiom.\n\n**Mathematical status:** This summary formalizes the complete state of knowledge on Problem #616 as of 2026. The gap $\\frac{3}{16} \\le c \\le \\frac{1}{5}$ has persisted since 1991.",
     "mathContext": "$\\forall r \\ge 3:\\; \\bigl(\\exists \\mathcal{H}: \\tau(\\mathcal{H}) \\ge \\frac{3}{16}r\\bigr) \\;\\wedge\\; \\bigl(\\forall \\mathcal{H}: \\text{local cond.} \\Rightarrow \\tau(\\mathcal{H}) \\le \\frac{1}{5}r\\bigr)$.",

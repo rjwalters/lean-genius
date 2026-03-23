@@ -96,7 +96,7 @@
       "startLine": 43,
       "endLine": 58
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Verified Values of τ",
     "content": "We verify τ(n) for several small values: τ(1)=1, τ(2)=2, τ(6)=4, τ(12)=6. We also check that primes like 5 and 7 have exactly 2 divisors.",
     "mathContext": "These are proved by `native_decide`, which computes the actual values and verifies the equalities at compile time. This provides certified examples.",
@@ -114,7 +114,7 @@
       "startLine": 62,
       "endLine": 79
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Monotone Variant (Erdős-Straus)",
     "content": "**Solved (1971)**: If (aₙ) is a monotone increasing sequence of positive integers tending to infinity, then the sum Σ τ(n)/(a₁·...·aₙ) is **irrational**.",
     "mathContext": "This is stated as an `axiom` because the Erdős-Straus proof uses analytic techniques beyond current Mathlib. The key is that monotonicity ensures the denominators grow predictably.",
@@ -132,7 +132,7 @@
       "startLine": 81,
       "endLine": 93
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Power Variant (Erdős 1948)",
     "content": "**Solved (1948)**: For any integer t ≥ 2, the sum Σ τ(n)/tⁿ is **irrational**. This is the special case where all aₙ = t.",
     "mathContext": "This connects to **Lambert series** Σ xⁿ/(1-xⁿ) which generate divisor-related functions. The proof uses divisibility analysis of partial sums.",
@@ -168,7 +168,7 @@
       "startLine": 113,
       "endLine": 118
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "τ(n) is Always Positive",
     "content": "For any n ≥ 1, we have τ(n) ≥ 1 since every positive integer has at least one divisor (itself, or 1).",
     "mathContext": "We verify this for specific values using `native_decide`. A general proof would use that 1 always divides n, so 1 ∈ divisors(n), so card ≥ 1.",

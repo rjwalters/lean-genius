@@ -61,7 +61,7 @@
       "startLine": 66,
       "endLine": 76
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Upper Bounds: Geneson and Adenwalla",
     "content": "**geneson_2019:** There exists a permutation of ℤ avoiding 6-term MAPs (k ≤ 5). Geneson's construction uses a clever interlacing of positive and negative integers in blocks.\n\n**adenwalla_2022:** There exists a permutation of ℤ avoiding 5-term MAPs (k ≤ 4). Adenwalla refined Geneson's approach to break all 5-MAPs.\n\nBoth are axiomatized because the explicit constructions are complex and verification requires detailed combinatorial arguments about block orderings.",
     "mathContext": "The constructions work by arranging integers in blocks that alternate between positive and negative values. The block sizes and orderings are chosen so that any long AP spanning multiple blocks cannot have all its positions in increasing order.",
@@ -79,7 +79,7 @@
       "startLine": 78,
       "endLine": 83
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Lower Bound: 3-MAPs Are Unavoidable",
     "content": "**trivial_lower_bound:** Every permutation of ℤ contains a 3-term MAP. This is believed to be true and gives k ≥ 3.\n\nDespite the name 'trivial', this is actually non-trivial to prove formally — it requires a careful pigeonhole argument on infinite permutations. The term 'trivial' refers to 3 being the smallest interesting case (2-MAPs are obviously unavoidable).",
     "mathContext": "For finite permutations of {1,...,n}, the Erdős-Szekeres theorem guarantees long monotone subsequences, but the AP constraint is more restrictive. For infinite permutations, the argument requires showing that the AP structure cannot be entirely disrupted.",
@@ -115,7 +115,7 @@
       "startLine": 106,
       "endLine": 121
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Concrete Permutation Examples",
     "content": "**identityPerm / identity_is_perm:** The identity f(n) = n is a permutation, proved via Function.bijective_id. Every AP is trivially monotone under the identity, so this permutation has k-MAPs for all k.\n\n**negationPerm / negation_is_perm:** The negation f(n) = -n is a permutation. Injectivity follows from negation being cancellative; surjectivity from -(-b) = b. Under negation, an increasing AP becomes decreasing in position, so this permutation has different MAP structure than the identity.\n\nThese examples verify that the definitions are instantiatable and non-vacuous.",
     "mathContext": "The negation permutation proof is constructive: injectivity by simp on the negation, surjectivity by providing -b as the witness. These are the simplest non-trivial permutations and serve as sanity checks for the formalization.",
@@ -133,7 +133,7 @@
       "startLine": 123,
       "endLine": 134
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_195_summary:** Combines both bounds into a single proved statement:\n- Upper bound: ∃ f, IsPermutation f ∧ AvoidsMAP f 5 (from adenwalla_2022)\n- Lower bound: ∀ f, IsPermutation f → HasMAP f 3 (from trivial_lower_bound)\n\nThe proof is `exact ⟨adenwalla_2022, trivial_lower_bound⟩`, directly packaging the two axioms. This summary captures the complete state of knowledge: 3 ≤ k ≤ 4, with the exact value OPEN.",
     "mathContext": "Summary theorems serve as entry points for understanding the formalization. By combining bounds into a conjunction, we make explicit that both directions are established, with only the gap remaining.",

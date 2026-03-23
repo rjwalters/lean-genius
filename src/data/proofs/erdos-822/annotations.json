@@ -78,7 +78,7 @@
       "startLine": 68,
       "endLine": 71
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Lower Bound: n + φ(n) ≥ n",
     "content": "Since φ(n) ≥ 0, we always have n + φ(n) ≥ n. This trivial observation is proved by unfolding the definition and using omega.",
     "mathContext": "The `omega` tactic handles this linear arithmetic automatically.",
@@ -95,7 +95,7 @@
       "startLine": 73,
       "endLine": 76
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Parity of n + φ(n)",
     "content": "For even n ≥ 2, n + φ(n) is always even. But for odd primes p, φ(p) = p-1 is even, so p + (p-1) = 2p-1 is odd. This means odd values in the range come from primes (and n = 1, 2).",
     "mathContext": "When n is even and ≥ 2: φ(n) is even (since n has factor 2), so n + φ(n) is even. For odd primes p: p + (p-1) = 2p-1 is odd. So both even and odd numbers appear in the range.",
@@ -113,7 +113,7 @@
       "startLine": 83,
       "endLine": 92
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Positive Density Result (Axiom)",
     "content": "**The main theorem of Gabdullin–Iudelevich–Luca (2024):** The set {n + φ(n) : n ∈ ℕ} has positive lower natural density. There exists a constant c > 0 such that for large enough N, at least approximately cN integers up to N are representable as n + φ(n).",
     "mathContext": "The formal statement: ∃ c > 0, ∀ ε > 0, ∃ N₀, ∀ M ≥ N₀, |{m < M : m ∈ range}| ≥ (c-ε)·M. This is axiomatized because the proof uses deep analytic number theory beyond current Mathlib.",
@@ -131,7 +131,7 @@
       "startLine": 94,
       "endLine": 106
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Generalization to Other Functions",
     "content": "Gabdullin–Iudelevich–Luca also proved that the same positive density result holds when φ is replaced by other arithmetic functions, including σ (sum of divisors), τ (divisor count), and ω (number of distinct prime factors).",
     "mathContext": "This suggests a general phenomenon: for many natural arithmetic functions f, the set {n + f(n)} has positive density. The underlying reason relates to the average behavior and distribution of these multiplicative functions.",
@@ -149,7 +149,7 @@
       "startLine": 110,
       "endLine": 118
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_822_summary** combines the two main results: (1) the positive density axiom, and (2) the trivial lower bound n + φ(n) ≥ n. The proof is simply `⟨nPlusTotientValues_hasPosDensity, nPlusTotient_ge⟩`.",
     "significance": "key",

@@ -98,7 +98,7 @@
       "startLine": 57,
       "endLine": 65
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Pyber–Rödl–Szemerédi Lower Bound",
     "content": "The lower bound f(n) ≥ c·n·log log n was proved by Pyber, Rödl, and Szemerédi in 1995. Their construction uses probabilistic methods combined with Ramsey-theoretic ideas to build dense graphs avoiding the forbidden configuration. The iterated logarithm growth rate suggests the extremal function is only barely superlinear.",
     "mathContext": "$\\exists c > 0$ such that $f(n) \\ge c \\cdot n \\cdot \\log \\log n$ for all sufficiently large $n$. The statement uses Lean's `Filter.atTop` for the \"eventually\" quantifier, capturing the asymptotic nature of the bound.",
@@ -121,7 +121,7 @@
       "startLine": 67,
       "endLine": 76
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "CJMM Upper Bound (2024)",
     "content": "Chakraborti, Janzer, Methuku, and Montgomery proved in 2024 that f(n) ≤ C·n·(log n)^α for constants C, α > 0. This was a major breakthrough, dramatically improving the previous best upper bound of O(n√(log n)) and nearly closing the gap with the lower bound. Their method uses structural decomposition and dependent random choice techniques.",
     "mathContext": "$\\exists C_0 > 0,\\; \\alpha > 0$ such that $f(n) \\le C_0 \\cdot n \\cdot (\\log n)^\\alpha$ for all sufficiently large $n$. The gap between $\\log \\log n$ and $(\\log n)^\\alpha$ remains the central open question.",
@@ -166,7 +166,7 @@
       "startLine": 91,
       "endLine": 99
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "k-Cycle Generalization (CJMM 2024)",
     "content": "Chakraborti et al. also proved a generalization: for any k ≥ 2, graphs with more than C·n·(log n)^α edges must contain k pairwise edge-disjoint cycles on some common vertex set. This shows the upper bound is robust — the polylogarithmic threshold is not specific to k = 2 but holds for any fixed number of edge-disjoint cycles.",
     "mathContext": "For every $k \\ge 2$, $\\exists C_0, \\alpha > 0$ such that any $n$-vertex graph with more than $C_0 \\cdot n \\cdot (\\log n)^\\alpha$ edges contains $k$ pairwise edge-disjoint Hamiltonian cycles on some common vertex subset.",

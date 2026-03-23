@@ -53,7 +53,7 @@
       "startLine": 55,
       "endLine": 64
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Symmetry of Ramsey Numbers",
     "content": "$R(s, t) = R(t, s)$ for all $s, t$. Proved by complementing the coloring function $c \\mapsto \\neg c$: a red $K_s$ in $c$ corresponds to a blue $K_s$ in $\\neg c$ and vice versa. The proof uses `congr!` for the `sInf` equality and `aesop` for the logical equivalence after negation.",
     "mathContext": "$R(s,t) = R(t,s)$. Proof: if $c$ witnesses $(K_s^{\\text{red}}, K_t^{\\text{blue}})$, then $\\bar{c}$ witnesses $(K_t^{\\text{red}}, K_s^{\\text{blue}})$.",
@@ -74,7 +74,7 @@
       "startLine": 66,
       "endLine": 82
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "$R(1, t) = 1$",
     "content": "$R(1, t) = 1$ for all $t \\geq 1$. Any single vertex trivially forms a monochromatic $K_1$, so $N = 1$ suffices. The proof constructs the singleton set $\\{0\\}$ as the witness and uses `le_antisymm` between `sInf_le` (upper bound) and `le_csInf` (lower bound from the trivial set).",
     "mathContext": "$R(1, t) = 1$ for $t \\geq 1$. The clique $K_1$ requires no edges, so any coloring satisfies the condition vacuously.",
@@ -95,7 +95,7 @@
       "startLine": 84,
       "endLine": 123
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "$R(2, t) = t$",
     "content": "$R(2, t) = t$ for all $t \\geq 2$. Either some two vertices share a red edge (giving $K_2$ in red), or all edges are blue, forming a complete blue $K_t$. The proof is a detailed `le_antisymm` argument: the upper bound constructs both cases via case analysis on any coloring of $K_t$; the lower bound shows $K_{t-1}$ can be all-blue without containing $K_t$.",
     "mathContext": "$R(2,t) = t$. Upper: in any 2-coloring of $K_t$, either $\\exists$ red edge or all blue $\\Rightarrow K_t^{\\text{blue}}$. Lower: color all edges of $K_{t-1}$ blue; no red $K_2$ avoided only if $t-1 < t$.",
@@ -140,7 +140,7 @@
       "startLine": 156,
       "endLine": 167
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Spencer's Lower Bound (1977)",
     "content": "Spencer proved $R(4,k) \\geq c \\cdot (k \\log k)^{5/2}$ using probabilistic methods with dependent random choices (the Lovász Local Lemma). This was the best lower bound for 46 years, but fell far short of the expected $k^3/(\\log k)^{O(1)}$. The exponent $5/2$ on $(k \\log k)$ translates to roughly $k^{5/2} (\\log k)^{5/2}$, which is suboptimal by a factor of $k^{1/2}$.",
     "mathContext": "$R(4,k) \\geq c \\cdot (k \\log k)^{5/2}$ for some $c > 0$. Note: $(k \\log k)^{5/2} = k^{5/2} (\\log k)^{5/2} \\ll k^3/(\\log k)^4$.",
@@ -163,7 +163,7 @@
       "startLine": 170,
       "endLine": 181
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "AKS Upper Bound (1980)",
     "content": "Ajtai, Komlós, and Szemerédi proved $R(4,k) \\leq C \\cdot k^3/(\\log k)^2$ using a greedy algorithm that iteratively removes vertices of low degree. This established the cubic growth rate of $R(4,k)$ and created the benchmark that stood for 43 years. Their technique is constructive, unlike the probabilistic lower bounds.",
     "mathContext": "$R(4,k) \\leq C \\cdot k^3/(\\log k)^2$ for some $C > 0$. Equivalently, every graph on $N > C k^3/(\\log k)^2$ vertices contains either $K_4$ or an independent set of size $k$.",
@@ -186,7 +186,7 @@
       "startLine": 184,
       "endLine": 195
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Mattheus-Verstraete Breakthrough (2023)",
     "content": "Sam Mattheus and Jacques Verstraete proved $R(4,k) \\geq c \\cdot k^3/(\\log k)^4$, SOLVING Erdős Problem #166 and earning the \\$250 prize. Their proof uses algebraic graph constructions from finite geometry: they build $K_4$-free graphs from incidence structures of classical polar spaces over finite fields $\\mathbb{F}_q$, achieving independence number $O(q)$ on $\\Theta(q^3)$ vertices.",
     "mathContext": "$R(4,k) \\geq c \\cdot k^3/(\\log k)^4$ for some $c > 0$. The construction: take the collinearity graph of $\\text{PG}(3, q)$ with appropriate modifications. Vertex count $\\sim q^3$, no $K_4$, independence number $\\sim q$.",
@@ -233,7 +233,7 @@
       "startLine": 212,
       "endLine": 218
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős Problem #166 is SOLVED",
     "content": "`erdos_166_solved` proves `Erdos166Statement` by instantiating the existential with $A = 4$ and the constant $c$ from `mattheus_verstraete`. The proof is a clean three-line extraction: obtain the constant, provide the witnesses, and verify positivity with `norm_num`.",
     "mathContext": "$\\text{Erdos166Statement}$ holds with $(c, A) = (c_{\\text{MV}}, 4)$ where $c_{\\text{MV}}$ comes from the Mattheus-Verstraete axiom.",
@@ -253,7 +253,7 @@
       "startLine": 220,
       "endLine": 232
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Current Best Bounds",
     "content": "`current_bounds` packages both the Mattheus-Verstraete lower bound and AKS upper bound into a single statement: $c \\cdot k^3/(\\log k)^4 \\leq R(4,k) \\leq C \\cdot k^3/(\\log k)^2$ for all $k \\geq 3$. The proof extracts constants from both axioms and combines them with a conjunction.",
     "mathContext": "$\\exists c, C > 0:\\, \\forall k \\geq 3,\\, c \\cdot k^3/(\\log k)^4 \\leq R(4,k) \\leq C \\cdot k^3/(\\log k)^2$.",
@@ -275,7 +275,7 @@
       "startLine": 234,
       "endLine": 264
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Status Summary and Problem Resolution",
     "content": "`erdos_166_status` is a definitional wrapper confirming the problem is solved. The docstring serves as a comprehensive summary of the problem's history, resolution, and remaining questions. It records the timeline from Spencer (1977) through AKS (1980) to Mattheus-Verstraete (2023).",
     "mathContext": "$\\text{erdos\\_166\\_status} : \\text{Erdos166Statement} := \\text{erdos\\_166\\_solved}$.",
@@ -295,7 +295,7 @@
       "startLine": 266,
       "endLine": 283
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Logarithmic Gap Analysis",
     "content": "`logarithmic_gap` formalizes the remaining open question: the exponent $\\alpha$ in $R(4,k) = \\Theta(k^3/(\\log k)^\\alpha)$ satisfies $2 \\leq \\alpha \\leq 4$. The proof constructs $\\alpha = 2$ (from AKS) and $\\beta = 4$ (from Mattheus-Verstraete) and packages both bounds. Determining the exact $\\alpha$ is the natural successor problem to Erdős #166.",
     "mathContext": "$\\exists \\alpha, \\beta:\\, 2 \\leq \\alpha,\\, \\beta \\leq 4,\\, \\forall k \\geq 3,\\, \\exists c, C > 0:\\, c \\cdot k^3/(\\log k)^\\beta \\leq R(4,k) \\leq C \\cdot k^3/(\\log k)^\\alpha$.",

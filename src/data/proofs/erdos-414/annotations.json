@@ -52,7 +52,7 @@
       "startLine": 38,
       "endLine": 40
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Strict Monotonicity",
     "content": "**h(n) > n** for all n ≥ 1, since τ(n) ≥ 1 (every positive integer has at least divisor 1). Combined with h(n) ≤ 2n (since τ(n) ≤ n), each step advances by at least 1 and at most n.",
     "significance": "key",
@@ -73,7 +73,7 @@
       "startLine": 50,
       "endLine": 52
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "h at Primes",
     "content": "For a prime p, τ(p) = 2 (divisors: 1 and p), so **h(p) = p + 2**. Primes advance by the minimum non-trivial amount. Highly composite numbers like 12 (τ = 6), 24 (τ = 8), 60 (τ = 12) advance much further.",
     "significance": "key",
@@ -95,7 +95,7 @@
       "startLine": 65,
       "endLine": 69
     },
-    "type": "conjecture",
+    "type": "concept",
     "title": "Erdős Problem #414: All Orbits Merge (OPEN)",
     "content": "**Conjecture**: For any m, n ≥ 1, there exist i, j ∈ ℕ with h^i(m) = h^j(n). Equivalently, all forward orbits of h eventually coalesce into a single infinite trajectory. Erdős and Graham believed the answer is YES.",
     "significance": "key",
@@ -117,7 +117,7 @@
       "startLine": 73,
       "endLine": 76
     },
-    "type": "conjecture",
+    "type": "concept",
     "title": "Single Eventual Orbit",
     "content": "**Equivalent formulation**: There exists a single sequence S : ℕ → ℕ such that every orbit of h eventually enters S. That is, for each n ≥ 1, there exists k₀ such that {h^k(n) : k ≥ k₀} ⊆ range(S).",
     "significance": "key",
@@ -138,7 +138,7 @@
       "startLine": 80,
       "endLine": 83
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Orbit of 1",
     "content": "**Orbit of 1**: 1 → 2 → 4 → 7 → 9 → 12 → 18 → 24 → 32 → 38 → 42 → 50 → ... The orbit accelerates when hitting highly composite numbers (12 → 18 jumps by 6) and decelerates near primes (7 → 9 advances by just 2).",
     "significance": "supporting",
@@ -160,7 +160,7 @@
       "startLine": 87,
       "endLine": 88
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Orbits of 1 and 3 Merge at 7",
     "content": "**h³(1) = h²(3) = 7**: The orbit of 1 reaches 7 in 3 steps (1→2→4→7), while the orbit of 3 reaches 7 in 2 steps (3→5→7). After 7, both follow the same path: 7→9→12→18→24→...",
     "significance": "key",
@@ -182,7 +182,7 @@
       "startLine": 95,
       "endLine": 96
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Dirichlet's Average Order of τ",
     "content": "**Dirichlet (1849)**: Σ_{n≤N} τ(n) = N log N + (2γ - 1)N + O(√N), where γ ≈ 0.5772 is the Euler-Mascheroni constant. On average, τ(n) ≈ log n.",
     "significance": "key",
@@ -203,7 +203,7 @@
       "startLine": 98,
       "endLine": 100
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Linear Lower Bound on Orbit Growth",
     "content": "**h^k(n) ≥ n + k** for all n ≥ 1. Each step adds at least τ(h^{k-1}(n)) ≥ 1, so after k steps the orbit has advanced by at least k. On average the growth is faster: h^k(n) ≈ n + k · log(n + k).",
     "significance": "supporting",
@@ -225,7 +225,7 @@
       "startLine": 105,
       "endLine": 109
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Orbits Get Arbitrarily Close",
     "content": "For any m, n ≥ 1 and any bound D, there exist i, j such that |h^i(m) - h^j(n)| < D. This weaker statement (proximity without exact collision) is plausible from average growth rates but also unproven.",
     "significance": "key",

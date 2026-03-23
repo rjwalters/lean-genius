@@ -2,193 +2,362 @@
   {
     "id": "ann-100-imports",
     "proofId": "erdos-100",
-    "range": { "startLine": 1, "endLine": 33 },
+    "range": {
+      "startLine": 1,
+      "endLine": 33
+    },
     "type": "context",
     "title": "Imports and Module Documentation",
     "content": "Imports for Euclidean geometry (EuclideanSpace, inner product), finite sets (Finset), real analysis (NNReal, logarithm), and filter convergence. The module formalizes Erdős Problem #100 on point sets with restricted distances in the plane.",
     "mathContext": "The formalization works in $\\mathbb{R}^2$ modeled as `EuclideanSpace \\mathbb{R} (Fin 2)` with the standard inner product inducing the Euclidean metric $d(p,q) = \\|p - q\\|$.",
     "significance": "context",
-    "relatedConcepts": ["Euclidean space", "inner product space", "metric space"],
-    "prerequisites": ["real analysis", "finite sets"]
+    "relatedConcepts": [
+      "Euclidean space",
+      "inner product space",
+      "metric space"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "finite sets"
+    ]
   },
   {
     "id": "ann-100-point",
     "proofId": "erdos-100",
-    "range": { "startLine": 34, "endLine": 42 },
+    "range": {
+      "startLine": 34,
+      "endLine": 42
+    },
     "type": "definition",
     "title": "Point Type",
     "content": "A point in the Euclidean plane ℝ². Defines the base type for all geometric constructions in this formalization.",
     "mathContext": "Points are elements of $\\mathbb{R}^2 = \\mathbb{R} \\times \\mathbb{R}$, represented as `EuclideanSpace \\mathbb{R} (Fin 2)` for access to Mathlib's metric space infrastructure.",
     "significance": "supporting",
-    "relatedConcepts": ["Euclidean plane", "coordinate geometry", "metric space"],
-    "prerequisites": ["real numbers", "vector spaces"]
+    "relatedConcepts": [
+      "Euclidean plane",
+      "coordinate geometry",
+      "metric space"
+    ],
+    "prerequisites": [
+      "real numbers",
+      "vector spaces"
+    ]
   },
   {
     "id": "ann-100-dist",
     "proofId": "erdos-100",
-    "range": { "startLine": 44, "endLine": 45 },
+    "range": {
+      "startLine": 44,
+      "endLine": 45
+    },
     "type": "definition",
     "title": "Euclidean Distance",
     "content": "dist(p, q) = ||p - q||, the standard Euclidean distance. This is the fundamental metric underlying all distance conditions in the problem.",
     "mathContext": "The Euclidean distance $d(p,q) = \\sqrt{(p_1-q_1)^2 + (p_2-q_2)^2}$ satisfies the triangle inequality and is invariant under rotations and translations of $\\mathbb{R}^2$.",
     "significance": "key",
-    "relatedConcepts": ["metric space", "norm", "triangle inequality", "isometry"],
-    "prerequisites": ["inner product", "square root"]
+    "relatedConcepts": [
+      "metric space",
+      "norm",
+      "triangle inequality",
+      "isometry"
+    ],
+    "prerequisites": [
+      "inner product",
+      "square root"
+    ]
   },
   {
     "id": "ann-100-mindist",
     "proofId": "erdos-100",
-    "range": { "startLine": 57, "endLine": 59 },
+    "range": {
+      "startLine": 57,
+      "endLine": 59
+    },
     "type": "definition",
     "title": "Minimum Distance One",
     "content": "All pairwise distances in the point set are at least 1. This is the first component of the restricted distance condition, ensuring points are well-separated.",
     "mathContext": "The predicate $\\forall p, q \\in A,\\ p \\neq q \\Rightarrow d(p,q) \\geq 1$ ensures the point configuration is a **packing**: no two points are closer than unit distance. Combined with integer distances, this forces all distances to be positive integers $\\{1, 2, 3, \\ldots\\}$.",
     "significance": "key",
-    "relatedConcepts": ["packing", "separation condition", "well-separated sets", "hard-core model"],
-    "prerequisites": ["metric space", "Euclidean distance"]
+    "relatedConcepts": [
+      "packing",
+      "separation condition",
+      "well-separated sets",
+      "hard-core model"
+    ],
+    "prerequisites": [
+      "metric space",
+      "Euclidean distance"
+    ]
   },
   {
     "id": "ann-100-intdist",
     "proofId": "erdos-100",
-    "range": { "startLine": 61, "endLine": 64 },
+    "range": {
+      "startLine": 61,
+      "endLine": 64
+    },
     "type": "definition",
     "title": "Integer Distances",
     "content": "All distances between distinct points are positive integers (equivalently, any two distinct distances differ by at least 1). This is the key arithmetic constraint.",
     "mathContext": "The condition $d(p,q) \\in \\mathbb{Z}_{>0}$ for all $p \\neq q$ is extremely restrictive. Integer-distance sets in $\\mathbb{R}^2$ have been studied since antiquity. An old result of Erdős and Anning (1945) shows that an **infinite** set of points in $\\mathbb{R}^2$ with all mutual distances integers must be collinear.",
     "significance": "key",
-    "relatedConcepts": ["integer-distance sets", "Erdős-Anning theorem", "rational distance problem", "Heron points"],
-    "prerequisites": ["Euclidean distance", "integer lattice"]
+    "relatedConcepts": [
+      "integer-distance sets",
+      "Erdős-Anning theorem",
+      "rational distance problem",
+      "Heron points"
+    ],
+    "prerequisites": [
+      "Euclidean distance",
+      "integer lattice"
+    ]
   },
   {
     "id": "ann-100-restricted",
     "proofId": "erdos-100",
-    "range": { "startLine": 66, "endLine": 68 },
+    "range": {
+      "startLine": 66,
+      "endLine": 68
+    },
     "type": "definition",
     "title": "Restricted Distances",
     "content": "Point set satisfies both minimum distance 1 and integer distances. Together these force all pairwise distances to be distinct positive integers 1, 2, 3, ..., severely constraining the geometry.",
     "mathContext": "A point set $A \\subset \\mathbb{R}^2$ has **restricted distances** if $\\forall p \\neq q \\in A$: $d(p,q) \\geq 1$ and $d(p,q) \\in \\mathbb{Z}$. Equivalently, the multiset of distances takes values in $\\{1, 2, 3, \\ldots\\}$. The number of distinct distances is then bounded by the diameter: $|\\{d(p,q)\\}| \\leq \\text{diam}(A)$.",
     "significance": "key",
-    "relatedConcepts": ["integer-distance sets", "distance set", "distinct distances", "diameter"],
-    "prerequisites": ["minimum distance one", "integer distances"]
+    "relatedConcepts": [
+      "integer-distance sets",
+      "distance set",
+      "distinct distances",
+      "diameter"
+    ],
+    "prerequisites": [
+      "minimum distance one",
+      "integer distances"
+    ]
   },
   {
     "id": "ann-100-diameter",
     "proofId": "erdos-100",
-    "range": { "startLine": 76, "endLine": 80 },
+    "range": {
+      "startLine": 76,
+      "endLine": 80
+    },
     "type": "definition",
     "title": "Diameter",
     "content": "Maximum pairwise distance in a finite point set. The central quantity in Erdős Problem #100: must the diameter grow linearly with the number of points?",
     "mathContext": "The diameter $\\text{diam}(A) = \\max_{p,q \\in A} d(p,q)$ measures the spread of the point configuration. For restricted distance sets, $\\text{diam}(A) \\geq |\\{d(p,q) : p \\neq q\\}|$ since all distances are distinct positive integers. The conjecture asserts $\\text{diam}(A) \\gg n$ where $n = |A|$.",
     "significance": "key",
-    "relatedConcepts": ["maximum distance", "spread", "convex hull", "bounding circle"],
-    "prerequisites": ["Euclidean distance", "finite sets"]
+    "relatedConcepts": [
+      "maximum distance",
+      "spread",
+      "convex hull",
+      "bounding circle"
+    ],
+    "prerequisites": [
+      "Euclidean distance",
+      "finite sets"
+    ]
   },
   {
     "id": "ann-100-conjecture",
     "proofId": "erdos-100",
-    "range": { "startLine": 92, "endLine": 96 },
+    "range": {
+      "startLine": 92,
+      "endLine": 96
+    },
     "type": "definition",
     "title": "Main Conjecture",
     "content": "For restricted distance sets, diameter ≥ c·n for some absolute constant c > 0. This is the central open conjecture: the diameter must grow at least linearly with the number of points.",
     "mathContext": "The conjecture states $\\exists c > 0$ such that for all $n$-point restricted distance sets $A \\subset \\mathbb{R}^2$, $\\text{diam}(A) \\geq c \\cdot n$. The best known lower bound is $\\text{diam}(A) \\gg n / \\log n$ (via Guth-Katz), while Piepmeyer's construction shows $c \\leq 5/9 \\approx 0.556$.",
     "significance": "key",
-    "relatedConcepts": ["linear growth", "extremal geometry", "Guth-Katz theorem"],
-    "prerequisites": ["restricted distances", "diameter"]
+    "relatedConcepts": [
+      "linear growth",
+      "extremal geometry",
+      "Guth-Katz theorem"
+    ],
+    "prerequisites": [
+      "restricted distances",
+      "diameter"
+    ]
   },
   {
     "id": "ann-100-strong",
     "proofId": "erdos-100",
-    "range": { "startLine": 98, "endLine": 101 },
+    "range": {
+      "startLine": 98,
+      "endLine": 101
+    },
     "type": "definition",
     "title": "Strong Conjecture",
     "content": "Diameter ≥ n-1 for sufficiently large n. This stronger version claims the optimal constant is essentially 1, meaning diameter grows as fast as possible.",
     "mathContext": "The strong conjecture asserts $\\text{diam}(A) \\geq n-1$ for $n$ sufficiently large. If true, this would be tight: $n$ collinear points at positions $0, 1, 2, \\ldots, n-1$ have diameter $n-1$ and satisfy the restricted distance condition. Piepmeyer's 9-point construction with diameter $< 5 < 9-1 = 8$ shows this fails for small $n$.",
     "significance": "key",
-    "relatedConcepts": ["collinear configurations", "optimal constants", "extremal configurations"],
-    "prerequisites": ["main conjecture", "Piepmeyer's construction"]
+    "relatedConcepts": [
+      "collinear configurations",
+      "optimal constants",
+      "extremal configurations"
+    ],
+    "prerequisites": [
+      "main conjecture",
+      "Piepmeyer's construction"
+    ]
   },
   {
     "id": "ann-100-kanold",
     "proofId": "erdos-100",
-    "range": { "startLine": 109, "endLine": 112 },
+    "range": {
+      "startLine": 109,
+      "endLine": 112
+    },
     "type": "context",
     "title": "Kanold's Bound",
     "content": "diameter ≥ n^(3/4) for restricted distance sets. This was the first non-trivial lower bound, using combinatorial counting arguments on the distance set.",
     "mathContext": "Kanold proved $\\text{diam}(A) \\geq n^{3/4}$ by analyzing how distances distribute among integer values. The argument uses the pigeonhole principle: with $\\binom{n}{2}$ pairs and at most $\\text{diam}(A)$ distinct distances, some distance value is repeated $\\geq \\binom{n}{2}/\\text{diam}(A)$ times, then geometric constraints on distance-$k$ graphs yield the bound.",
     "significance": "key",
-    "relatedConcepts": ["pigeonhole principle", "distance multiplicity", "incidence geometry"],
-    "prerequisites": ["restricted distances", "combinatorial counting"]
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "distance multiplicity",
+      "incidence geometry"
+    ],
+    "prerequisites": [
+      "restricted distances",
+      "combinatorial counting"
+    ]
   },
   {
     "id": "ann-100-guthkatz",
     "proofId": "erdos-100",
-    "range": { "startLine": 114, "endLine": 118 },
+    "range": {
+      "startLine": 114,
+      "endLine": 118
+    },
     "type": "context",
     "title": "Guth-Katz Bound",
     "content": "diameter ≥ c·n/log n via the distinct distances theorem. This is the current best lower bound, following from the landmark Guth-Katz result on Erdős's distinct distances problem (#89).",
     "mathContext": "Guth and Katz (2015) proved that $n$ points in $\\mathbb{R}^2$ determine $\\geq c \\cdot n/\\log n$ distinct distances. For restricted distance sets, all distances are positive integers bounded by the diameter, so $\\text{diam}(A) \\geq \\Delta(A) \\geq c \\cdot n / \\log n$. Their proof uses the **polynomial partitioning** method and the **Elekes-Sharir framework**, reducing to counting line intersections in $\\mathbb{R}^3$.",
     "significance": "key",
-    "relatedConcepts": ["polynomial partitioning", "Elekes-Sharir framework", "algebraic geometry", "incidence geometry"],
-    "prerequisites": ["distinct distances problem", "algebraic methods in combinatorics"]
+    "relatedConcepts": [
+      "polynomial partitioning",
+      "Elekes-Sharir framework",
+      "algebraic geometry",
+      "incidence geometry"
+    ],
+    "prerequisites": [
+      "distinct distances problem",
+      "algebraic methods in combinatorics"
+    ]
   },
   {
     "id": "ann-100-piepmeyer",
     "proofId": "erdos-100",
-    "range": { "startLine": 126, "endLine": 131 },
+    "range": {
+      "startLine": 126,
+      "endLine": 131
+    },
     "type": "context",
     "title": "Piepmeyer's Construction",
     "content": "An explicit construction of 9 points with restricted distances and diameter < 5. This is the best known upper bound on the optimal constant, showing the diameter-to-n ratio can be below 5/9.",
     "mathContext": "Piepmeyer constructed 9 points $\\{p_1, \\ldots, p_9\\} \\subset \\mathbb{R}^2$ with all pairwise distances positive integers and $\\max d(p_i, p_j) < 5$. Since $n = 9$ and $\\text{diam} < 5$, the ratio $\\text{diam}/n < 5/9 \\approx 0.556$. This disproves the strong conjecture for $n = 9$ and shows that the linear constant $c$ (if it exists) satisfies $c < 5/9$.",
     "significance": "key",
-    "relatedConcepts": ["extremal constructions", "integer-distance sets", "upper bounds"],
-    "prerequisites": ["restricted distances", "strong conjecture"]
+    "relatedConcepts": [
+      "extremal constructions",
+      "integer-distance sets",
+      "upper bounds"
+    ],
+    "prerequisites": [
+      "restricted distances",
+      "strong conjecture"
+    ]
   },
   {
     "id": "ann-100-ratio",
     "proofId": "erdos-100",
-    "range": { "startLine": 133, "endLine": 142 },
+    "range": {
+      "startLine": 133,
+      "endLine": 142
+    },
     "type": "technique",
     "title": "Piepmeyer Ratio",
     "content": "Diameter/n can be less than 5/9 ≈ 0.56. This theorem extracts the quantitative consequence of Piepmeyer's construction for the linear conjecture.",
     "mathContext": "The ratio $\\text{diam}(A)/|A| < 5/9$ from Piepmeyer's 9-point example provides an upper bound on the optimal constant in the linear conjecture. If $\\text{diam}(A) \\geq c \\cdot n$ for all restricted distance sets, then $c \\leq 5/9$. The exact optimal constant remains unknown.",
     "significance": "supporting",
-    "relatedConcepts": ["extremal ratios", "optimal constants", "asymptotic bounds"],
-    "prerequisites": ["Piepmeyer's construction", "main conjecture"]
+    "relatedConcepts": [
+      "extremal ratios",
+      "optimal constants",
+      "asymptotic bounds"
+    ],
+    "prerequisites": [
+      "Piepmeyer's construction",
+      "main conjecture"
+    ]
   },
   {
     "id": "ann-100-numdist",
     "proofId": "erdos-100",
-    "range": { "startLine": 150, "endLine": 153 },
+    "range": {
+      "startLine": 150,
+      "endLine": 153
+    },
     "type": "definition",
     "title": "Distinct Distances",
     "content": "Count of distinct pairwise distances in a point set. This connects directly to Erdős #89 (the distinct distances problem).",
     "mathContext": "For a finite set $A \\subset \\mathbb{R}^2$, define $\\Delta(A) = |\\{d(p,q) : p, q \\in A, p \\neq q\\}|$. Erdős (1946) conjectured $\\Delta(A) \\gg n / \\sqrt{\\log n}$; Guth-Katz (2015) proved $\\Delta(A) \\gg n / \\log n$. For restricted distance sets, $\\Delta(A) \\leq \\text{diam}(A)$ since all distances are positive integers.",
     "significance": "key",
-    "relatedConcepts": ["distinct distances problem", "Erdős #89", "Guth-Katz theorem", "distance set"],
-    "prerequisites": ["Euclidean distance", "finite point sets"]
+    "relatedConcepts": [
+      "distinct distances problem",
+      "Erdős #89",
+      "Guth-Katz theorem",
+      "distance set"
+    ],
+    "prerequisites": [
+      "Euclidean distance",
+      "finite point sets"
+    ]
   },
   {
     "id": "ann-100-distbound",
     "proofId": "erdos-100",
-    "range": { "startLine": 155, "endLine": 163 },
-    "type": "lemma",
+    "range": {
+      "startLine": 155,
+      "endLine": 163
+    },
+    "type": "technique",
     "title": "Distinct ≤ Diameter",
     "content": "For integer distances, the number of distinct distance values is at most the diameter. This is the key bridge connecting the distinct distances problem to the diameter conjecture.",
     "mathContext": "If all distances are positive integers, then $\\Delta(A) \\subseteq \\{1, 2, \\ldots, \\lfloor\\text{diam}(A)\\rfloor\\}$, so $|\\Delta(A)| \\leq \\text{diam}(A)$. Combined with Guth-Katz ($\\Delta(A) \\gg n/\\log n$), this yields $\\text{diam}(A) \\gg n/\\log n$. This elegant reduction is the key insight linking the two Erdős problems.",
     "significance": "key",
-    "relatedConcepts": ["integer intervals", "counting argument", "reduction between problems"],
-    "prerequisites": ["integer distances", "distinct distances", "diameter"]
+    "relatedConcepts": [
+      "integer intervals",
+      "counting argument",
+      "reduction between problems"
+    ],
+    "prerequisites": [
+      "integer distances",
+      "distinct distances",
+      "diameter"
+    ]
   },
   {
     "id": "ann-100-unitgraph",
     "proofId": "erdos-100",
-    "range": { "startLine": 252, "endLine": 263 },
+    "range": {
+      "startLine": 252,
+      "endLine": 263
+    },
     "type": "definition",
     "title": "Unit Distance Graph",
     "content": "Graph with edges between points at distance exactly 1. For restricted distance sets, this captures the closest-neighbor structure and connects to chromatic number problems.",
     "mathContext": "The **unit distance graph** $G_1(A)$ has vertex set $A$ and edges $\\{p, q\\}$ where $d(p,q) = 1$. More generally, one defines the **distance-$k$ graph** $G_k(A)$ for each integer $k \\geq 1$. The chromatic number of the unit distance graph of $\\mathbb{R}^2$ (the Hadwiger-Nelson problem) is known to be between 5 and 7.",
     "significance": "supporting",
-    "relatedConcepts": ["Hadwiger-Nelson problem", "chromatic number", "distance graph", "unit distance conjecture"],
-    "prerequisites": ["graph theory", "Euclidean distance"]
+    "relatedConcepts": [
+      "Hadwiger-Nelson problem",
+      "chromatic number",
+      "distance graph",
+      "unit distance conjecture"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "Euclidean distance"
+    ]
   }
 ]

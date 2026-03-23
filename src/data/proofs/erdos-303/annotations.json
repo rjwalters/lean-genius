@@ -61,7 +61,7 @@
       "startLine": 55,
       "endLine": 82
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Verified Examples",
     "content": "We prove four concrete examples using `norm_num`:\n\n• **1/2 = 1/3 + 1/6**: The classic example (2, 3, 6)\n• **1/3 = 1/4 + 1/12**: Triple (3, 4, 12)\n• **1/4 = 1/5 + 1/20**: Triple (4, 5, 20)\n• **1/6 = 1/7 + 1/42**: Triple (6, 7, 42)\n\nThese follow a pattern: for n ≥ 2, (n, n+1, n(n+1)) is always a solution.",
     "mathContext": "Verification for 1/2 = 1/3 + 1/6: We have 1/3 + 1/6 = 2/6 + 1/6 = 3/6 = 1/2. ✓\n\nThe `norm_num` tactic performs exact arithmetic verification, confirming these numerical equalities.",
@@ -134,7 +134,7 @@
       "startLine": 140,
       "endLine": 164
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Infinite Family of Solutions",
     "content": "**infinitely_many_solutions** proves that for any n ≥ 2:\n\n**1/n = 1/(n+1) + 1/(n(n+1))**\n\nVerification: 1/(n+1) + 1/(n(n+1)) = n/(n(n+1)) + 1/(n(n+1)) = (n+1)/(n(n+1)) = 1/n ✓\n\nThis gives infinitely many distinct solutions, crucial for the Ramsey argument.",
     "mathContext": "This identity is the key to the Brown-Rödl proof sketch:\n\n1. There are infinitely many solutions (n, n+1, n(n+1)) for n = 2, 3, 4, ...\n2. In any k-colouring, by pigeonhole, infinitely many share a colour\n3. A Ramsey argument then finds a monochromatic triple\n\nThe proof that these triples are distinct (n ≠ n+1 ≠ n(n+1)) uses basic algebra.",
@@ -152,7 +152,7 @@
       "startLine": 202,
       "endLine": 224
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Solution Distinctness",
     "content": "**solution_distinct** proves that for n ≥ 2, the triple (n, n+1, n(n+1)) has three distinct values:\n\n• n ≠ n+1 (obvious: consecutive integers differ)\n• n+1 ≠ n(n+1): If equal, n(n+1) - (n+1) = (n-1)(n+1) = 0, so n = 1. But n ≥ 2.\n• n ≠ n(n+1): If equal, n·n = 0, so n = 0. But n ≥ 2.",
     "mathContext": "The proofs use `omega` for simple inequalities and explicit algebraic manipulation. The case n+1 = n(n+1) reduces to showing n ≠ 1, and n = n(n+1) reduces to showing n ≠ 0.",

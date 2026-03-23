@@ -121,7 +121,7 @@
       "startLine": 60,
       "endLine": 62
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Conjecture Disproof",
     "content": "**Theorem**: $\\neg\\text{OriginalConjecture}$. The original $(2/9)n^2$ bound is disproved by the Füredi-Maleki construction, which provides graphs exceeding the Turán threshold with at most $(c + o(1))n^2 < (2/9)n^2$ edges in 5-cycles.",
     "significance": "key",
@@ -214,7 +214,7 @@
       "startLine": 107,
       "endLine": 110
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Exact Answer: $cn^2$",
     "content": "**Combined Theorem**: $\\text{FurediMalekiConstruction} \\wedge \\text{GrzesikHuVolecBound}$. The minimum number of edges in $C_5$, over all $n$-vertex graphs with more than $n^2/4$ edges, is $(c + o(1))n^2$ where $c = (2 + \\sqrt{2})/16$. Proved by conjunction of the two results.",
     "significance": "key",
@@ -260,7 +260,7 @@
       "startLine": 139,
       "endLine": 149
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős-Faudree-Rousseau Triangle Bound",
     "content": "**Erdős-Faudree-Rousseau**: Every graph with $> n^2/4$ edges has at least $2\\lfloor n/2 \\rfloor + 1$ edges contained in triangles. Defined here as `edgesInOddCycle G 1` (a triangle is a 3-cycle, i.e., $C_{2 \\cdot 1 + 1}$). This is a **linear** bound, much weaker than the quadratic bounds for $C_5$ and longer cycles.",
     "significance": "key",
@@ -283,7 +283,7 @@
       "startLine": 153,
       "endLine": 172
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Turán Threshold Sharpness",
     "content": "The **Turán graph** $T(n, 2)$ (complete bipartite with balanced parts) has exactly $\\lfloor n^2/4 \\rfloor$ edges and **zero edges in $C_5$** (since it is bipartite and $C_5$ is an odd cycle). This shows the threshold $n^2/4$ is **sharp**: at the threshold, there need not be any edges in 5-cycles.",
     "significance": "key",
@@ -305,7 +305,7 @@
       "startLine": 176,
       "endLine": 186
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Small Cases ($n = 5, 6$)",
     "content": "**$n = 5$**: The $C_5$ graph itself has 5 edges, all in a $C_5$. **$n = 6$**: Every graph on 6 vertices with more than 9 edges (i.e., $> 6^2/4 = 9$) has at least 5 edges in a $C_5$. These small cases illustrate the supersaturation phenomenon concretely.",
     "significance": "supporting",

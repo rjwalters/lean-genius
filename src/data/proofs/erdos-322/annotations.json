@@ -42,7 +42,7 @@
       "startLine": 82,
       "endLine": 100
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Mahler's Theorem (1936): Hypothesis K Fails for Cubes",
     "content": "**The Key Breakthrough**\n\nMahler (1936) proved that Hypothesis K is false for k = 3. Specifically, there exist infinitely many n such that r_3(n) ≫ n^{1/12}. This was a major surprise — Hardy and Littlewood had believed K was true for all k ≥ 3.\n\nThe proof uses properties of cubic forms and algebraic number theory. The exponent 1/12 arises from the structure of the underlying lattice point counting.\n\nThe corollary hypothesisK_fails_for_3 restates this in the negation-of-K framework.",
     "mathContext": "∃ c > 0, ∀ N, ∃ n ≥ N, r_3(n) ≥ c · n^{1/12}",
@@ -60,7 +60,7 @@
       "startLine": 113,
       "endLine": 142
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Chowla Bound and Hypothesis K*",
     "content": "**Weaker Results for All k ≥ 3**\n\nThe Erdős-Chowla theorem (1936) gives a weaker lower bound valid for ALL k ≥ 3: there exist infinitely many n with r_k(n) ≫ n^{c/log log n} for some constant c > 0 depending on k. This grows faster than any iterated logarithm but slower than any polynomial — so it doesn't disprove Hypothesis K.\n\nHypothesis K* is a weaker version of K: Σ_{n≤N} r_k(n)² ≪ N^{1+ε}. This allows occasional polynomial spikes in r_k(n) but controls their frequency. Erdős and Graham called it 'probably true but no doubt very deep' and noted it 'would suffice for most applications.'",
     "mathContext": "r_k(n) ≫ n^{c/log log n} i.o.; Σ_{n≤N} r_k(n)² ≤ C · N^{1+ε}",
@@ -79,7 +79,7 @@
       "startLine": 144,
       "endLine": 157
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Positive Density Claim",
     "content": "**Erdős's Result on Dense Subsets**\n\nIf S ⊆ ℕ has positive lower density (|S ∩ [1,N]| ≥ δN for some δ > 0) and B = {s^k : s ∈ S}, then the representation count using k-th powers from B is unbounded: for every M, some n has r_B^{(k)}(n) ≥ M.\n\nThis shows that restricting to k-th powers of a dense subset still gives arbitrarily many representations — density is sufficient for unbounded growth.",
     "mathContext": "S has positive density ⟹ ∀ M, ∃ n, representationCount k n ≥ M",
@@ -97,7 +97,7 @@
       "startLine": 159,
       "endLine": 191
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary: Problem #322 is PARTIALLY SOLVED",
     "content": "**Combined Results**\n\nThe erdos_322_summary theorem bundles the two main known results:\n1. hypothesisK_fails 3 — Mahler's disproof of Hypothesis K for cubes\n2. Erdős-Chowla bound for all k ≥ 3 — weaker sub-polynomial lower bound\n\nThe proof is a direct pair ⟨hypothesisK_fails_for_3, fun k hk => erdos_chowla_bound k hk⟩.\n\nThe main theorem erdos_322 states simply: hypothesisK_fails 3, citing Mahler via the axiom. For k ≥ 4, the problem remains one of the central open questions in additive number theory.",
     "mathContext": "erdos_322 : hypothesisK_fails 3; erdos_322_summary : hypothesisK_fails 3 ∧ (∀ k ≥ 3, Erdős-Chowla)",

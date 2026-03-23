@@ -62,7 +62,7 @@
       "startLine": 75,
       "endLine": 86
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Extremal Function f(d)",
     "content": "**f(d)** is axiomatized rather than defined via sSup, since it ranges over all graph types with max degree d. The axiom **f_realized** guarantees that f(d) is achieved by some concrete graph, establishing existence of extremal graphs.\n\nThis axiomatization avoids universe issues that would arise from taking a supremum over all possible vertex types. The existence guarantee is essential: it confirms that f(d) is a genuine extremal quantity, not merely a formal supremum.",
     "mathContext": "f : ℕ → ℕ is an axiom because defining it as sSup over all graph types would require quantifying over types, which is problematic in Lean's type theory. The f_realized axiom provides the key extremal property.",
@@ -80,7 +80,7 @@
       "startLine": 88,
       "endLine": 118
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Known Bounds on f(d)",
     "content": "Four bounds are axiomatized, telling the complete story of progress on this problem:\n\n1. **greedy_upper_bound**: f(d) ≤ d² + 1. A simple greedy argument — the starting point.\n2. **erdos_lower_bound**: f(d) ≥ d^{4/3 - ε} for large d. Erdős's probabilistic construction using Sidon sets.\n3. **alon_mcdiarmid_reed_upper**: f(d) ≤ C·d^{4/3}. The Lovász Local Lemma resolution.\n4. **precise_lower_bound**: f(d) ≥ c·d^{4/3}/(log d)^{1/3}. The best known lower bound.\n\nBounds (3) and (4) together establish f(d) = Θ(d^{4/3}), answering YES to f(d) = o(d²).",
     "mathContext": "The AMR upper bound uses the Lovász Local Lemma to show that a random coloring can be modified to avoid bichromatic cycles. The lower bound constructs explicit graphs from Sidon sets where many colors are forced. The log factor in the lower bound comes from density limitations of Sidon sets in {1,...,n}.",
@@ -99,7 +99,7 @@
       "startLine": 120,
       "endLine": 129
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Theta Bound: f(d) = Θ(d^{4/3})",
     "content": "**asymptotic_theta** combines the upper and lower bounds into a single statement: for d ≥ 3, c·d^{4/3}/(log d)^{1/3} ≤ f(d) ≤ C·d^{4/3} with 0 < c < C.\n\nThe (log d)^{1/3} gap between the upper and lower bounds is the only remaining imprecision. Closing this gap — determining whether f(d) ~ c·d^{4/3} for some constant c — is an open problem.",
     "mathContext": "The Θ notation means both O and Ω hold simultaneously. The log factor in the lower bound comes from the density limitations of Sidon sets: the densest Sidon set in {1,...,n} has O(n^{1/2}) elements.",
@@ -136,7 +136,7 @@
       "startLine": 144,
       "endLine": 150
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Original Question: f(d) = o(d²)",
     "content": "**erdos_797_subquadratic**: The original Erdős question asked whether f(d) = o(d²). This is axiomatized as: for every ε > 0, there exists d₀ such that for all d ≥ d₀, f(d) ≤ ε·d².\n\nThis follows from the AMR upper bound f(d) ≤ C·d^{4/3}, since d^{4/3}/d² = d^{-2/3} → 0 as d → ∞. The explicit ε-δ formulation captures the little-o notation precisely in Lean's type theory.",
     "mathContext": "f(d) = o(d²) means f(d)/d² → 0 as d → ∞, formalized as ∀ ε > 0, ∃ d₀, ∀ d ≥ d₀, f(d) ≤ ε·d². This is the direct formalization of the original question.",
@@ -154,7 +154,7 @@
       "startLine": 152,
       "endLine": 175
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem: erdos_797_summary",
     "content": "**erdos_797_summary** is a proved theorem combining:\n1. The AMR upper bound: ∃ C > 0, ∀ d ≥ 1, f(d) ≤ C·d^{4/3}\n2. The precise lower bound: ∃ c > 0, ∀ d ≥ 3, f(d) ≥ c·d^{4/3}/(log d)^{1/3}\n\nProof: `exact ⟨alon_mcdiarmid_reed_upper, precise_lower_bound⟩`\n\nThis captures the complete resolution of Erdős Problem #797, establishing f(d) = Θ(d^{4/3}) and confirming that f(d) = o(d²).",
     "mathContext": "The theorem is a clean conjunction of the two main asymptotic bounds, demonstrating that f(d) = Θ(d^{4/3}) up to a logarithmic factor in the lower bound.",

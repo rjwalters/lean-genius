@@ -239,6 +239,21 @@
       "targetId": "gelfond-schneider",
       "relationship": "related",
       "description": "The Gelfond-Schneider theorem proves $\\alpha^\\beta$ is transcendental for algebraic $\\alpha \\neq 0,1$ and irrational algebraic $\\beta$. Euler's identity can be written as $(-1)^{1/i\\pi} = e$, connecting the transcendence of $e$ to the exponential framework. Gelfond's constant $e^\\pi = (-1)^{-i}$ is transcendental by Gelfond-Schneider"
+    },
+    {
+      "targetId": "de-moivre",
+      "relationship": "foundational",
+      "description": "De Moivre's theorem $(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$ is an immediate corollary of Euler's formula: $(e^{i\\theta})^n = e^{in\\theta}$. Conversely, de Moivre's theorem motivated the search for the exponential representation that Euler's formula provides — making Euler's identity the conceptual foundation for de Moivre"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Gauss sums $g(\\chi) = \\sum_{a=0}^{p-1} \\chi(a) e^{2\\pi i a/p}$ — defined using Euler's formula — are the key tool in proving quadratic reciprocity. The explicit evaluation $|g(\\chi)|^2 = p$ for the Legendre symbol uses the orthogonality of roots of unity $e^{2\\pi ik/p}$, connecting Euler's identity to number theory"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's formula $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ contains both $e$ and $\\pi$ — the same constants in Euler's identity $e^{i\\pi} + 1 = 0$. The $\\pi$ appears via the Gaussian integral (connected to $e^{i\\theta}$ through polar coordinates), and the $e$ appears as the base of the natural exponential — making Stirling's formula a real-analytic cousin of Euler's identity"
     }
   ],
   "relatedProofs": [
@@ -252,7 +267,10 @@
     "primitive-roots",
     "abel-ruffini",
     "fundamental-theorem-calculus",
-    "gelfond-schneider"
+    "gelfond-schneider",
+    "de-moivre",
+    "quadratic-reciprocity",
+    "stirling-formula"
   ],
   "leanFile": {
     "imports": [

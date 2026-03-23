@@ -105,7 +105,7 @@
       "startLine": 53,
       "endLine": 62
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős-Sarányi Lower Bound",
     "content": "**erdos_saranyi_lower_bound.** Axiomatized: there exists c > 0 such that f(m, N) ≥ c√m for all m ≥ 1 and N ≥ m. This is the known result establishing the lower bound on divisibility covering.",
     "mathContext": "The Erdős-Sarányi proof (1959) uses a pigeonhole/counting argument: each element $a \\in A$ contributes approximately $2N/a$ multiples to any interval of length $2N$. The total number of (element, multiple) pairs is $\\sum_{a \\in A} 2N/a$. By the AM-HM inequality applied to the elements of $A \\subseteq \\{1, \\ldots, N\\}$, this sum is at least $2m$. A careful counting argument then shows at least $c\\sqrt{m}$ distinct multiples must appear, since each integer has at most $O(\\sqrt{m})$ divisors from $A$.",
@@ -130,7 +130,7 @@
       "startLine": 68,
       "endLine": 75
     },
-    "type": "conjecture",
+    "type": "concept",
     "title": "Upper Bound Conjecture",
     "content": "**erdos_upper_bound_conjecture.** The open conjecture: there exists C > 0 such that for every m ≥ 1, some N ≥ m has f(m, N) ≤ C√m. Combined with the lower bound, this would give f(m) ≍ √m.",
     "mathContext": "The upper bound conjecture asks for the existence of 'hard' sets and intervals: for each $m$, can we find $A$ and an interval where only $O(\\sqrt{m})$ integers are covered? Constructing such extremal sets is difficult because the divisibility structure creates complex overlap patterns. Natural candidates are sets of integers near $\\sqrt{N}$ (which have roughly equal multiplicative density) or sets with special arithmetic properties (e.g., primes in a range). The conjecture has resisted attack for over 60 years.",
@@ -154,7 +154,7 @@
       "startLine": 81,
       "endLine": 91
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem",
     "content": "**erdos_650.** The main theorem restates the Erdős-Sarányi lower bound: f(m, N) ≥ c√m. This is the strongest known result on the problem, with the matching upper bound remaining open.",
     "mathContext": "The theorem captures the current state of knowledge: the $\\sqrt{m}$ lower bound is established, but the matching upper bound is unproven. If both bounds hold, then $f(m) \\asymp \\sqrt{m}$, meaning the covering efficiency is precisely characterized up to constants. This would place the problem in the same asymptotic class as many other extremal covering problems where the answer is a square root of the parameter.",

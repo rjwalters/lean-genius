@@ -85,5 +85,53 @@
     "significance": "supporting",
     "relatedConcepts": ["graph homomorphism", "subgraph counting", "hypergraph removal"],
     "prerequisites": ["triangle_removal_lemma", "subgraph embedding"]
+  },
+  {
+    "id": "counting-per-vertex",
+    "proofId": "szemeredi-counting",
+    "type": "technique",
+    "range": { "startLine": 171, "endLine": 228 },
+    "title": "Per-Vertex Triangle Contribution and Density Bound",
+    "content": "`perVertexTriangles G B C a` counts edges between the $B$-neighborhood and $C$-neighborhood of vertex $a$. The theorem `perVertex_density_bound` establishes: when neighborhoods are $\\varepsilon$-fractions of $B$ and $C$, and $(B,C)$ is $\\varepsilon$-regular, the per-vertex contribution is at least $(d(B,C) - \\varepsilon) \\cdot |N_B(a)| \\cdot |N_C(a)|$.\n\nThis is the inner loop of the counting lemma: for each 'good' vertex $a \\in A$ (one with large neighborhoods in both $B$ and $C$), regularity of $(B,C)$ gives a lower bound on the triangle contribution through $a$.",
+    "mathContext": "$\\text{perVertex}(a) = |\\{(b,c) \\in N_B(a) \\times N_C(a) : bc \\in E\\}| \\geq (d(B,C) - \\varepsilon) |N_B(a)| |N_C(a)|$ when $|N_B(a)| \\geq \\varepsilon|B|$, $|N_C(a)| \\geq \\varepsilon|C|$.",
+    "significance": "key",
+    "relatedConcepts": ["neighborhood density", "regularity application", "per-vertex counting"],
+    "prerequisites": ["neighborhoodIn", "IsEpsilonRegular", "edgeDensity"]
+  },
+  {
+    "id": "counting-lemma-full",
+    "proofId": "szemeredi-counting",
+    "type": "technique",
+    "range": { "startLine": 229, "endLine": 454 },
+    "title": "Counting Lemma: Full Proof",
+    "content": "The complete counting lemma proof. Given $\\varepsilon$-regular pairs $(A,B)$, $(A,C)$, $(B,C)$ with densities $\\geq \\varepsilon$, the triangle count satisfies $T(A,B,C) \\geq (d_{AB} - \\varepsilon)(d_{AC} - \\varepsilon)(d_{BC} - \\varepsilon)|A||B||C|$.\n\nThe proof structure: (1) Partition $A$ into 'good' vertices (large neighborhoods in both $B$ and $C$) and 'bad' vertices. (2) Show $|\\text{bad}| < 2\\varepsilon|A|$ using `bad_vertices_small` for both the $(A,B)$ and $(A,C)$ pairs. (3) For each good vertex $a$, apply `perVertex_density_bound` to get $\\geq (d_{BC}-\\varepsilon)|N_B(a)||N_C(a)|$ triangles through $a$. (4) Use $|N_B(a)| \\geq (d_{AB}-\\varepsilon)|B|$ and $|N_C(a)| \\geq (d_{AC}-\\varepsilon)|C|$ from goodness. (5) Sum over good vertices: $T \\geq |A_\\text{good}| \\cdot (d_{AB}-\\varepsilon)(d_{AC}-\\varepsilon)(d_{BC}-\\varepsilon)|B||C|$. (6) Since $|A_\\text{good}| \\geq (1-2\\varepsilon)|A|$, the bound follows.\n\nAlso includes `counting_lemma_lower_bound`: a simplified corollary bounding $T \\geq c \\cdot |A||B||C|$ for positive constant $c$.",
+    "mathContext": "Full proof: $T(A,B,C) \\geq (d_{AB} - \\varepsilon)(d_{AC} - \\varepsilon)(d_{BC} - \\varepsilon)|A||B||C|$ via vertex-by-vertex counting over 'good' vertices with $|A_{\\text{good}}| \\geq (1-2\\varepsilon)|A|$.",
+    "significance": "key",
+    "relatedConcepts": ["good/bad vertex decomposition", "neighborhood lower bound", "error propagation", "Finset.sum"],
+    "prerequisites": ["perVertex_density_bound", "bad_vertices_small", "goodVertices"]
+  },
+  {
+    "id": "counting-monotonicity",
+    "proofId": "szemeredi-counting",
+    "type": "technique",
+    "range": { "startLine": 511, "endLine": 536 },
+    "title": "Triangle Count Monotonicity (Proved)",
+    "content": "`triangleCount_mono`: if $A_1 \\subseteq A_2$, $B_1 \\subseteq B_2$, $C_1 \\subseteq C_2$, then $T(A_1,B_1,C_1) \\leq T(A_2,B_2,C_2)$. Proved by `Finset.card_le_card`: every triangle in the smaller product is also in the larger product. Corollary `triangleCount_le_total`: $T(A,B,C) \\leq T(V,V,V)$ for any subsets.\n\nThese monotonicity results are used in the quantitative removal proof to relate per-part triangle counts to total triangle counts.",
+    "mathContext": "$A_1 \\subseteq A_2, B_1 \\subseteq B_2, C_1 \\subseteq C_2 \\Rightarrow T(A_1,B_1,C_1) \\leq T(A_2,B_2,C_2)$. Corollary: $T(A,B,C) \\leq T(V,V,V)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["monotonicity", "Finset.card_le_card", "subset inclusion"],
+    "prerequisites": ["triangleCount definition"]
+  },
+  {
+    "id": "counting-quantitative-removal",
+    "proofId": "szemeredi-counting",
+    "type": "insight",
+    "range": { "startLine": 537, "endLine": 1001 },
+    "title": "Quantitative Triangle Removal via Regularity (Main Result)",
+    "content": "The centerpiece of the file: `triangle_removal_quantitative` constructs explicit $\\gamma(\\delta)$ using the Regularity Lemma. The proof: (1) Set $\\varepsilon = \\delta/6$ and apply `regularity_with_finpartition` to get a Finpartition with $m_0 \\leq k \\leq M$ parts. (2) Construct the removal set $R$: edges within parts, edges in irregular pairs, and edges in regular pairs with density $< \\delta/2$. (3) Show $|R| \\leq \\delta n^2$ by counting: within-part edges $\\leq n^2/k$, irregular edges $\\leq \\varepsilon n^2$, sparse edges contribute at most $(\\delta/2) n^2$. (4) Show any remaining triangle has vertices in three mutually regular, dense parts (since all other edges were removed). (5) Apply `counting_lemma` to get a positive lower bound on the triangle count from this triple, at least $c \\cdot (n/2M)^3$ triangles. (6) Set $\\gamma$ small enough that $\\gamma n^3 < c(n/2M)^3$, ensuring no such triple exists.\n\nThis is the most technically demanding section of the file, requiring careful management of the partition structure (via `Finpartition`), part size bounds (equitability gives $|P_i| \\geq n/2M$), and the interplay between the counting lemma and the removal set construction.",
+    "mathContext": "$\\forall \\delta > 0$, set $\\varepsilon = \\delta/6$, $M = M(\\varepsilon)$, $\\gamma = (\\delta/6)^3/(2M)^3$. Then $T(G) \\leq \\gamma n^3 \\Rightarrow \\exists R,\\, |R| \\leq \\delta n^2,\\, G \\setminus R$ triangle-free.",
+    "significance": "key",
+    "relatedConcepts": ["Finpartition", "equitable partition", "edge removal construction", "counting lemma application", "part size bounds"],
+    "prerequisites": ["counting_lemma", "regularity_lemma_full", "triangleCount_mono"]
   }
 ]

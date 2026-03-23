@@ -55,7 +55,7 @@
       "startLine": 33,
       "endLine": 40
     },
-    "type": "conjecture",
+    "type": "concept",
     "title": "Polynomial Bound Conjecture",
     "content": "**erdos_706_polynomial_bound.** The main question: does L(r) ≤ C · r^k for constants C, k > 0? This asks whether the chromatic number grows at most polynomially in the number of forbidden distances. Status: OPEN.",
     "mathContext": "The polynomial bound conjecture is the central question. Currently, the best known upper bound on L(r) is exponential (from Frankl-Wilson type methods), while the trivial lower bound is L(r) ≥ L(1) ≥ 5. There is an enormous gap between these bounds. A polynomial bound would be remarkable: it would mean that adding more forbidden distances increases the chromatic requirement only mildly, suggesting that the geometric structure of ℝ² provides 'enough room' for efficient coloring even with many constraints. An exponential lower bound would instead reveal that distance constraints interact multiplicatively.",
@@ -78,7 +78,7 @@
       "startLine": 42,
       "endLine": 57
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Known Bounds: Hadwiger-Nelson and Monotonicity",
     "content": "**Base case, monotonicity, and trivial lower bound.** For r = 1 (Hadwiger-Nelson): 5 ≤ L(1) ≤ 7. De Grey (2018) proved the lower bound 5 with a 1581-vertex graph. L(r) is monotone non-decreasing (more distances → more edges → higher chromatic number). Trivial lower bound: L(r) ≥ 5 for all r ≥ 1.",
     "mathContext": "The **Hadwiger-Nelson problem** (1950) asks for the chromatic number of the unit distance graph of ℝ². For decades the bounds were 4 ≤ χ ≤ 7, until Aubrey de Grey's breakthrough (2018) showing χ ≥ 5 via a computer-found 1581-vertex unit distance graph requiring 5 colors. The upper bound 7 comes from a hexagonal tiling with diameter slightly less than 1. Monotonicity of L(r) follows because G_A is a subgraph of G_B whenever A ⊆ B, and subgraphs have at most the chromatic number of the supergraph. The trivial lower bound L(r) ≥ 5 combines monotonicity with de Grey's result.",
@@ -101,7 +101,7 @@
       "startLine": 59,
       "endLine": 67
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Exponential Upper Bound",
     "content": "**erdos_706_exponential_upper.** L(r) ≤ C^r for some constant C > 1. This exponential upper bound is known from Frankl-Wilson type methods. The polynomial conjecture asks whether this can be dramatically improved.",
     "mathContext": "The exponential upper bound L(r) ≤ C^r follows from bounds on the chromatic number of distance graphs derived from algebraic methods. The **Frankl-Wilson theorem** (1981) gives exponential lower bounds on the chromatic number of unit distance graphs in ℝ^n, but in the plane the situation is different: the upper bound for multi-distance graphs is exponential in r. The gap between the polynomial conjecture L(r) ≤ r^{O(1)} and the known exponential bound L(r) ≤ C^r is vast. Closing this gap — in either direction — would be a major advance in combinatorial geometry.",

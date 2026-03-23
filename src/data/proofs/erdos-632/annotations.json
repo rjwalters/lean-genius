@@ -229,7 +229,7 @@
       "startLine": 96,
       "endLine": 98
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "List Chromatic ≥ Chromatic",
     "content": "**list_chromatic_ge_chromatic**: $\\chi_L(G) \\geq \\chi(G)$\n\nList chromatic number is at least the ordinary chromatic number. This holds because the adversary can assign identical lists to all vertices, forcing the problem to contain ordinary coloring as a special case.",
     "mathContext": "$\\chi_L(G) \\geq \\chi(G)$. The gap $\\chi_L(G) - \\chi(G)$ can be arbitrarily large: complete bipartite graphs $K_{n,n}$ satisfy $\\chi(K_{n,n}) = 2$ but $\\chi_L(K_{n,n}) = \\lceil \\log_2 n \\rceil + 1$.",
@@ -251,7 +251,7 @@
       "startLine": 106,
       "endLine": 109
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Monotonicity in a",
     "content": "**choosable_mono_a**: More available colors makes choosability easier.\n\n$a_1 \\leq a_2 \\wedge \\text{IsChoosable}(G, a_1, b) \\implies \\text{IsChoosable}(G, a_2, b)$. With more colors in each list, any strategy that worked for smaller lists still works.",
     "mathContext": "$\\text{IsChoosable}(G, a, b)$ is monotone non-decreasing in $a$: larger lists give the player more choices. The adversary's power also grows (more list options), but the player can restrict to sub-lists of size $a_1$.",
@@ -272,7 +272,7 @@
       "startLine": 111,
       "endLine": 114
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Anti-monotonicity in b",
     "content": "**choosable_mono_b**: Fewer colors to select makes choosability easier.\n\n$b_1 \\geq b_2 \\wedge \\text{IsChoosable}(G, a, b_1) \\implies \\text{IsChoosable}(G, a, b_2)$. If you can pick $b_1$ disjoint colors, you can certainly pick $b_2 \\leq b_1$.",
     "mathContext": "$\\text{IsChoosable}(G, a, b)$ is monotone non-increasing in $b$: selecting fewer colors relaxes the disjointness constraint. Any valid $b_1$-selection contains valid $b_2$-sub-selections for $b_2 \\leq b_1$.",
@@ -315,7 +315,7 @@
       "startLine": 138,
       "endLine": 141
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Trivial Case m = 1",
     "content": "**ert_m_eq_1**: The conjecture holds trivially for $m = 1$ since $a \\cdot 1 = a$ and $b \\cdot 1 = b$.\n\nProved by `simp`, which reduces $a \\cdot 1 = a$ and the identity follows.",
     "mathContext": "$\\text{IsChoosable}(G, a, b) \\implies \\text{IsChoosable}(G, a \\cdot 1, b \\cdot 1)$ is an identity since $a \\cdot 1 = a$.",
@@ -336,7 +336,7 @@
       "startLine": 143,
       "endLine": 153
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Vacuous Case b = 0",
     "content": "**ert_b_eq_0**: The conjecture holds vacuously for $b = 0$ since selecting $0$ colors means $S(v) = \\emptyset$ for all $v$, and empty sets are trivially disjoint.\n\nThe proof constructs the witness $S(v) = \\emptyset$ and uses `disjoint_empty_right`.",
     "mathContext": "$\\text{IsChoosable}(G, a, 0) \\implies \\text{IsChoosable}(G, am, 0)$ since $b \\cdot m = 0 \\cdot m = 0$ and the selection $S \\equiv \\emptyset$ always satisfies disjointness.",
@@ -400,7 +400,7 @@
       "startLine": 171,
       "endLine": 172
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "(4,1) → (8,2) Is FALSE",
     "content": "**ert_4_1_to_8_2_false**: $\\neg\\text{ERT\\_Case\\_4\\_1\\_to\\_8\\_2}$\n\nThe specific case $(4,1) \\to (8,2)$ is FALSE. This is the axiomatized core of the DHS counterexample — the single fact from which the entire disproof follows.",
     "mathContext": "$\\neg(\\forall G,\\; \\text{IsChoosable}(G, 4, 1) \\implies \\text{IsChoosable}(G, 8, 2))$, equivalently $\\exists G,\\; \\text{IsChoosable}(G, 4, 1) \\wedge \\neg\\text{IsChoosable}(G, 8, 2)$.",
@@ -421,7 +421,7 @@
       "startLine": 180,
       "endLine": 184
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The DHS Counterexample",
     "content": "**dhs_counterexample**: The Dvořák–Hu–Sereni theorem (2019).\n\n$\\exists V, G : \\text{SimpleGraph}\\, V$, $\\text{IsChoosable}(G, 4, 1) \\wedge \\neg\\text{IsChoosable}(G, 8, 2)$.\n\nThis graph, constructed from Kneser-type structures, has over 100 vertices and is the smallest known counterexample to the ERT conjecture.",
     "mathContext": "$\\exists G,\\; \\chi_L(G) \\leq 4 \\wedge \\neg\\text{IsChoosable}(G, 8, 2)$. The construction in [DHS19] starts from $K(8,2)$ (the Kneser graph with vertices = 2-element subsets of $[8]$, edges = disjoint pairs) and modifies it to achieve $(4,1)$-choosability.",
@@ -443,7 +443,7 @@
       "startLine": 186,
       "endLine": 191
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "DHS Graph Structure",
     "content": "**dhs_graph_structure**: The counterexample graph has $n > 100$ vertices, is $(4,1)$-choosable, and is not $(8,2)$-choosable.\n\nThe large vertex count reflects the combinatorial complexity of the Kneser-type construction.",
     "mathContext": "$\\exists n > 100,\\, G : \\text{SimpleGraph}(\\text{Fin}\\, n),\\; \\text{IsChoosable}(G, 4, 1) \\wedge \\neg\\text{IsChoosable}(G, 8, 2)$. Whether a smaller counterexample exists remains open.",
@@ -465,7 +465,7 @@
       "startLine": 193,
       "endLine": 198
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Bad List Assignment",
     "content": "**dhs_bad_assignment**: There exists a color assignment with 8 colors such that no valid 2-selection makes adjacent vertices disjoint.\n\nThis is the constructive core: the adversary has a winning strategy in the $(8,2)$-choosability game on the DHS graph.",
     "mathContext": "$\\exists G, L : V \\to \\binom{[8]}{8},\\; \\text{IsValidAssignment}(L) \\wedge \\neg\\exists S,\\; \\text{IsValidSelection}(L, S, 2) \\wedge \\text{SelectionsDisjoint}(G, S)$. The bad assignment is the adversary's winning move.",
@@ -488,7 +488,7 @@
       "startLine": 206,
       "endLine": 214
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "m = 2 Case Is FALSE",
     "content": "**ert_m2_false**: $\\neg\\text{ERT\\_Case\\_m2}$\n\nThe $m = 2$ case of the conjecture is false. Proof: assume `ERT_Case_m2`, specialize to $a = 4, b = 1$ to get `ERT_Case_4_1_to_8_2`, then apply `ert_4_1_to_8_2_false` for contradiction.",
     "mathContext": "$\\neg(\\forall G, a, b,\\; \\text{IsChoosable}(G, a, b) \\implies \\text{IsChoosable}(G, 2a, 2b))$. The proof is a clean specialization: $\\text{ERT}_{m=2} \\implies \\text{ERT}_{4,1 \\to 8,2}$ (with $a=4, b=1$), contradicting the axiom.",
@@ -510,7 +510,7 @@
       "startLine": 216,
       "endLine": 225
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "ERT Conjecture Is FALSE",
     "content": "**ert_conjecture_false** and **erdos_632**: $\\neg\\text{ERT\\_Conjecture}$\n\nThe full disproof chain: assume `ERT_Conjecture`, specialize to $m = 2$ to get `ERT_Case_m2`, which we know is false. The two-step chain $(4,1) \\not\\to (8,2) \\implies \\neg\\text{ERT}_{m=2} \\implies \\neg\\text{ERT}$ is complete.",
     "mathContext": "$\\neg(\\forall G, a, b, m \\geq 1,\\; \\text{IsChoosable}(G, a, b) \\implies \\text{IsChoosable}(G, am, bm))$. The proof uses `norm_num` to establish $2 \\geq 1$ when specializing the universal $m$.",
@@ -532,7 +532,7 @@
       "startLine": 233,
       "endLine": 242
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Fractional Choosability Scales",
     "content": "**fractional_choosability_scales**: In the fractional relaxation, the scaling property holds trivially since $a/b = am/(bm)$ in $\\mathbb{Q}$.\n\nThe contrast with the integer failure is the key surprise: integer and fractional choosability behave fundamentally differently under parameter scaling.",
     "mathContext": "$\\chi_f^l(G) \\leq a/b \\implies \\chi_f^l(G) \\leq am/(bm)$ holds since $a/b = am/(bm)$ as rational numbers. Alon–Tuza–Voigt (1997) established this and related results connecting fractional choosability to the fractional chromatic number.",
@@ -554,7 +554,7 @@
       "startLine": 244,
       "endLine": 247
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Complete Graphs Satisfy ERT",
     "content": "**complete_graph_ert**: For complete graphs $K_n$, the ERT conjecture holds — choosability scales.\n\nComplete graphs have such rigid structure that the adversary cannot exploit the scaling to create obstructions.",
     "mathContext": "$\\forall n, a, b, m \\geq 1,\\; \\text{IsChoosable}(K_n, a, b) \\implies \\text{IsChoosable}(K_n, am, bm)$. For $K_n$ with $b = 1$, $\\chi_L(K_n) = n$, and the scaling follows from the symmetry of complete graphs.",
@@ -576,7 +576,7 @@
       "startLine": 249,
       "endLine": 252
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bipartite Graphs Satisfy ERT",
     "content": "**bipartite_ert**: For bipartite graphs, the ERT conjecture holds.\n\nBipartite graphs have $\\chi_L(G) \\leq \\lceil \\log_2 n \\rceil + 1$ (for $K_{n,n}$) but their 2-colorability constrains the combinatorics enough that scaling works.",
     "mathContext": "$\\forall G \\text{ bipartite},\\, a, b, m \\geq 1,\\; \\text{IsChoosable}(G, a, b) \\implies \\text{IsChoosable}(G, am, bm)$. Bipartite graphs satisfy $\\chi(G) \\leq 2$, and the structural simplicity prevents the Kneser-type obstructions.",
@@ -598,7 +598,7 @@
       "startLine": 254,
       "endLine": 262
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Planar Graphs: m = 2 Case",
     "content": "**planar_m2**: For planar graphs, the $m = 2$ case of the ERT conjecture holds: $(a,b)$-choosable implies $(2a, 2b)$-choosable.\n\nPlanarity provides Euler's formula constraint $|E| \\leq 3|V| - 6$, preventing the dense substructures needed for the DHS counterexample.",
     "mathContext": "For planar $G$ with $|E| \\leq 3|V| - 6$: $\\text{IsChoosable}(G, a, b) \\implies \\text{IsChoosable}(G, 2a, 2b)$. Planarity limits the maximum average degree to less than 6, which constrains the list coloring problem.",
@@ -621,7 +621,7 @@
       "startLine": 280,
       "endLine": 284
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Ohba's Theorem (Noel–Reed–Wu)",
     "content": "**ohba_noel_reed_wu**: $\\chi_L(G) = \\chi(G)$ when $|V| \\leq 2\\chi(G) + 1$.\n\nConjectured by Ohba (2002), proved by Noel, Reed, and Wu (2015). Graphs with few vertices relative to their chromatic number are chromatic-choosable — their list and ordinary chromatic numbers coincide.",
     "mathContext": "$|V(G)| \\leq 2\\chi(G) + 1 \\implies \\chi_L(G) = \\chi(G)$. This gives a sufficient condition for the list coloring gap to vanish. The bound $2\\chi + 1$ is tight.",

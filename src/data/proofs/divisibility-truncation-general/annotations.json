@@ -2,7 +2,7 @@
   {
     "lineStart": 37,
     "lineEnd": 44,
-    "type": "key-step",
+    "type": "technique",
     "title": "Division-Modulus Identity",
     "content": "The foundation: n = 10*(n/10) + n%10 cast to ℤ. This is proved by `push_cast; omega` using Nat.div_add_mod. Used as `hdiv` in both main theorems via `linear_combination -hdiv`.",
     "mathContext": "In $\\mathbb{Z}$: $n = 10 \\cdot \\lfloor n/10 \\rfloor + (n \\bmod 10)$, lifted from `Nat.div_add_mod` via `push_cast`. This is the pivotal identity enabling the algebraic manipulation that `linear_combination -hdiv` exploits in both osculator theorems.",
@@ -22,7 +22,7 @@
   {
     "lineStart": 46,
     "lineEnd": 66,
-    "type": "key-theorem",
+    "type": "technique",
     "title": "General Positive Osculator Theorem",
     "content": "The main theorem: for any d coprime to 10 and c satisfying d | 10c-1, we have d | n ↔ d | (n/10 + c*(n%10)). The proof uses the key algebraic identity 10*(q+cr) = n + (10c-1)*r, proved by `linear_combination -hdiv`.",
     "mathContext": "Key identity: $10(\\lfloor n/10 \\rfloor + c \\cdot (n \\bmod 10)) = n + (10c-1)(n \\bmod 10)$. When $d \\mid (10c-1)$, the right-hand correction term is $\\equiv 0 \\pmod{d}$, so $d \\mid n \\iff d \\mid 10(q+cr) \\iff d \\mid (q+cr)$, where the last step uses $\\gcd(d,10)=1$ via `IsCoprime.dvd_of_dvd_mul_left`.",
@@ -43,7 +43,7 @@
   {
     "lineStart": 82,
     "lineEnd": 123,
-    "type": "key-theorem",
+    "type": "technique",
     "title": "General Negative Osculator Theorem",
     "content": "Symmetric theorem for the negative osculator case: d | 10c+1 gives d | n ↔ d | (n/10 - c*(n%10)). Used for d=7,11,17 where 10c ≡ -1 (mod d).",
     "mathContext": "Symmetric identity: $10(\\lfloor n/10 \\rfloor - c \\cdot (n \\bmod 10)) = n - (10c+1)(n \\bmod 10)$. When $d \\mid (10c+1)$, we have $10c \\equiv -1 \\pmod{d}$, i.e., $c$ is the negative inverse of 10 mod $d$. Canonical examples: $d=7$, $c=2$ (since $21 = 3 \\cdot 7$); $d=11$, $c=1$ (since $11 = 11$).",
@@ -64,7 +64,7 @@
   {
     "lineStart": 129,
     "lineEnd": 145,
-    "type": "example",
+    "type": "context",
     "title": "Classical Rules as Corollaries",
     "content": "Seven (c=2, neg): 10*2+1=21=3*7. Eleven (c=1, neg): 10*1+1=11. Thirteen (c=4, pos): 10*4-1=39=3*13. These are the classic pencil-and-paper divisibility rules now proved as one-liners from the general theorem.",
     "mathContext": "Osculator table: $d=7$: $c=2$ (neg), $21 = 3 \\cdot 7$; $d=11$: $c=1$ (neg), $11 = 11$; $d=13$: $c=4$ (pos), $39 = 3 \\cdot 13$; $d=17$: $c=12$ (pos), $10 \\cdot 12 - 1 = 119 = 7 \\cdot 17$; $d=19$: $c=2$ (pos), $10 \\cdot 2 - 1 = 19$. Each classical rule is a `decide`-verifiable corollary.",
@@ -84,7 +84,7 @@
   {
     "lineStart": 242,
     "lineEnd": 260,
-    "type": "key-theorem",
+    "type": "technique",
     "title": "Summary Theorem: Five Classical Cases",
     "content": "Master theorem packaging the positive and negative osculator results for d ∈ {3,7,9,11,13}. Shows how each classical rule is a one-line consequence of the general framework, unifying sum-of-digits, alternating-sum, and truncation methods.",
     "mathContext": "The five classical divisibility rules unified under one theorem: $d=3$ (pos, $c=1$, $9=3\\cdot3$); $d=7$ (neg, $c=2$, $21=3\\cdot7$); $d=9$ (pos, $c=9$, yields digit-sum iteration); $d=11$ (neg, $c=1$, yields alternating digit-sum); $d=13$ (pos, $c=4$, $39=3\\cdot13$). All follow by `decide` + the general theorems.",

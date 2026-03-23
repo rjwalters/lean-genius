@@ -125,7 +125,7 @@
       "startLine": 110,
       "endLine": 123
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bollobás's Theorem (1977)",
     "content": "**axiom bollobas_theorem**:\n\nFor P = {a, a+d, ...} with a ≥ 3, d > 0, containsEven:\n∃ c > 0, ∀ graphs G:\n  avgDegree G ≥ c → ∃ k ∈ P, ContainsCycleLength G k\n\nHigh average degree forces a cycle from the progression!\n\nThis resolved the Erdős-Burr conjecture.",
     "mathContext": "The constant c depends on a and d, but its optimal form is unknown. This is the main theorem.",
@@ -155,7 +155,7 @@
       "startLine": 125,
       "endLine": 145
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Even Cycles Corollary (Verified)",
     "content": "**theorem even_cycles_from_high_degree** ✓\n\n∃ c > 0, avgDegree G ≥ c → ∃ even k ≥ 4, cycle of length k\n\n**Proof**: Apply Bollobás with P = {4, 6, 8, ...} (a=4, d=2).\n- 4 is even, so containsEven holds\n- Any k ∈ P has form 4 + 2m, which is even and ≥ 4",
     "mathContext": "This is a direct application of the main theorem to the simplest progression of even numbers.",
@@ -213,7 +213,7 @@
       "startLine": 177,
       "endLine": 187
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Related Results",
     "content": "**axiom bondy_simonovits**: High min degree → cycles of consecutive even lengths.\nIf all vertices have degree ≥ d, then G has even cycles of lengths 4, 6, ..., 2d.\n\n**axiom avg_to_min_degree**: High avg degree → subgraph with high min degree.\nIf avgDegree ≥ 2d, there's a subgraph where all vertices have degree ≥ d.\n\nThese connect average and minimum degree conditions.",
     "mathContext": "Bondy-Simonovits is a key tool. The average-to-minimum reduction lets us apply minimum degree results.",
@@ -242,7 +242,7 @@
       "startLine": 189,
       "endLine": 231
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Why Even Numbers Are Necessary",
     "content": "**axiom bipartite_no_odd_cycles**: Bipartite graphs have no odd cycles.\n\n**Proof sketch**: In bipartite G with parts A, B:\n- Cycle vertices alternate: A, B, A, B, ...\n- To close the cycle, we need even length\n\n**axiom even_condition_necessary**: For odd-only progressions, NO constant works.\n\n**Example**: P = {3, 7, 11, ...} (≡ 3 mod 4)\n- K_{n,n} has average degree n (arbitrarily large)\n- K_{n,n} is bipartite → only even cycles\n- So K_{n,n} has no cycles in P, regardless of c",
     "mathContext": "This explains WHY the theorem requires P to contain even numbers. Bipartite graphs are the counterexample.",
@@ -272,7 +272,7 @@
       "startLine": 237,
       "endLine": 251
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Multiples of 4 (Verified)",
     "content": "**theorem multiples_of_four** ✓\n\n∃ c > 0, avgDegree G ≥ c → ∃ k divisible by 4, k ≥ 4, cycle of length k\n\n**Proof**: Apply Bollobás with P = {4, 8, 12, ...} (a=4, d=4).\n- 4 is even, so containsEven holds\n- Any k ∈ P has form 4 + 4m = 4(1+m), divisible by 4",
     "mathContext": "Another application showing the theorem works for sparser progressions (every 4th even number).",

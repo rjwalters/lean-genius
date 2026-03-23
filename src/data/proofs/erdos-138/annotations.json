@@ -74,7 +74,7 @@
       "startLine": 48,
       "endLine": 55
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Van der Waerden's Theorem",
     "content": "Van der Waerden's theorem (1927) is the foundational result: for any number of colors r ≥ 1 and progression length k ≥ 1, there exists N such that every r-coloring of {1,...,N} contains a monochromatic k-term arithmetic progression.\n\nThis is axiomatized because a full proof requires Ramsey-theoretic arguments involving double induction on r and k, which would be substantial to formalize.",
     "mathContext": "axiom van_der_waerden_theorem :\n  ∀ r k : ℕ, r ≥ 1 → k ≥ 1 → ∃ N : ℕ, ∀ c : Coloring N r, HasMonochromaticAP c k",
@@ -141,7 +141,7 @@
       "startLine": 71,
       "endLine": 74
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Berlekamp's Lower Bound",
     "content": "Berlekamp (1968) proved that for prime p, W(p+1) ≥ p · 2^p. This is the strongest known lower bound at specific values.\n\nThe proof uses finite field constructions: color the integers 1 to p·2^p by their discrete logarithm mod p. Avoiding APs of length p+1 requires avoiding complete cosets in the multiplicative group.",
     "mathContext": "axiom berlekamp_lower_bound (p : ℕ) (hp : p.Prime) :\n  p * (2 ^ p) ≤ W (p + 1)\n\nExamples:\n- p=2: W(3) ≥ 8 (actual: W(3)=9)\n- p=3: W(4) ≥ 24 (actual: W(4)=35)\n- p=5: W(6) ≥ 160 (actual: W(6)=1132)",
@@ -163,7 +163,7 @@
       "startLine": 76,
       "endLine": 80
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Gowers' Upper Bound",
     "content": "Gowers (2001) proved W(k) ≤ 2^{2^{2^{2^{2^{k+9}}}}} - a tower of height 5. This comes from his celebrated analytic proof of Szemerédi's theorem.\n\nWhile this is an enormous bound, it was the first primitive recursive upper bound. Earlier bounds from the original van der Waerden proof and Shelah's improvements involved Ackermann-like functions.",
     "mathContext": "axiom gowers_upper_bound (k : ℕ) :\n  W k ≤ 2 ^ (2 ^ (2 ^ (2 ^ (2 ^ (k + 9)))))\n\nEven for k=3, this gives an astronomically large bound, far exceeding the true value W(3)=9.",
@@ -184,7 +184,7 @@
       "startLine": 82,
       "endLine": 85
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Kozik-Shabanov Lower Bound",
     "content": "Kozik and Shabanov (2016) proved the best general lower bound: W(k) ≫ 2^k for some absolute constant c.\n\nUnlike Berlekamp's bound which is strong at primes, this holds for all k. The proof uses the Lovász Local Lemma and hypergraph coloring techniques.",
     "mathContext": "axiom kozik_shabanov_lower_bound :\n  ∃ c : ℝ, c > 0 ∧ ∀ k : ℕ, k ≥ 1 → (c * 2^k : ℝ) ≤ W k\n\nThis says W(k) grows at least exponentially, but the main conjecture asks if it grows faster than ANY exponential.",
@@ -226,7 +226,7 @@
       "startLine": 109,
       "endLine": 118
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Main Conjecture (OPEN)",
     "content": "Erdős Problem #138 with $500 prize: Does W(k)^{1/k} → ∞ as k → ∞?\n\nThis asks whether the van der Waerden numbers grow faster than any exponential function c^k. If true, it would mean that for any constant c, eventually W(k) > c^k.\n\nThe conjecture is formalized using Filter.Tendsto to atTop, the standard Mathlib way to express divergence to infinity.",
     "mathContext": "def Erdos138Conjecture : Prop :=\n  Tendsto (fun k => (W k : ℝ) ^ (1 / (k : ℝ))) atTop atTop\n\nEquivalently: lim_{k→∞} W(k)^{1/k} = ∞",
@@ -272,7 +272,7 @@
       "startLine": 137,
       "endLine": 146
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Implication Between Conjectures",
     "content": "The theorem states that the main conjecture implies ExponentialDiverges: if W(k)^{1/k} → ∞, then W(k)/2^k → ∞.\n\nThe proof idea: if W(k)^{1/k} → ∞, then for any c > 0, eventually W(k)^{1/k} > c, so W(k) > c^k. Choosing c = 2 gives W(k) > 2^k eventually, hence W(k)/2^k → ∞.\n\nThis shows the main conjecture is strictly stronger than asking whether W(k) beats 2^k.",
     "mathContext": "theorem conjecture_implies_exponential :\n    Erdos138Conjecture → ExponentialDiverges := by\n  intro hconj\n  sorry\n\nThe sorry reflects that formalizing the limit argument requires careful filter manipulation.",

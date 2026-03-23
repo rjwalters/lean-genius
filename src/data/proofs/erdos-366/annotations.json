@@ -44,7 +44,7 @@
       "startLine": 64,
       "endLine": 69
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "1 is Vacuously k-Full",
     "content": "**Theorem**: 1 is k-full for any k ≥ 0.\n\n```lean\ntheorem one_is_kfull (k : ℕ) : IsKFull k 1 := by\n  intro p hp hdiv\n  have h1 : p = 1 := Nat.dvd_one.mp hdiv\n  exact absurd h1 (Nat.Prime.ne_one hp)\n```\n\n**Proof**: The definition requires k ≤ factorization(1, p) for all primes p dividing 1. But no prime divides 1 (if p | 1 then p = 1, contradicting p prime), so the condition is vacuously true.",
     "mathContext": "This is a standard vacuous truth argument: the universal quantifier over an empty set is always true.",
@@ -80,7 +80,7 @@
       "startLine": 121,
       "endLine": 138
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Known Pairs in Reverse Direction",
     "content": "**CubefulPowerfulPairs**: The set of n where n is 3-full and n+1 is 2-full.\n\n```lean\ndef CubefulPowerfulPairs : Set ℕ := { n | IsCubeful n ∧ IsPowerful (n + 1) }\n\ntheorem eight_nine_pair : 8 ∈ CubefulPowerfulPairs\ntheorem golomb_pair : 12167 ∈ CubefulPowerfulPairs\n```\n\n**Known Examples**:\n1. **(8, 9)**: 8 = 2³ is cubeful, 9 = 3² is powerful\n2. **(12167, 12168)**: 12167 = 23³ is cubeful, 12168 = 2³ × 3² × 13² is powerful (Golomb 1970)\n\n**Computational Bound**: These are the ONLY pairs below 10²².",
     "mathContext": "Golomb discovered the second pair in 1970. The 35-year gap between 8 and 12167 hints at the extreme rarity of such pairs.",
@@ -116,7 +116,7 @@
       "startLine": 169,
       "endLine": 188
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Mahler's Result via Pell Equations",
     "content": "**Mahler's Theorem**: There are infinitely many consecutive powerful numbers.\n\n```lean\naxiom mahler_consecutive_powerful :\n  { n | IsPowerful n ∧ IsPowerful (n + 1) }.Infinite\n```\n\n**Proof Sketch**: The Pell equation x² = 8y² + 1 has infinitely many solutions. Each solution gives a pair (8y², x²) which are consecutive and both powerful.\n\n**First Examples**:\n- (8, 9): 8 = 2³, 9 = 3²\n- (288, 289): 288 = 2⁵ × 3², 289 = 17²\n- (675, 676): 675 = 3³ × 5², 676 = 2² × 13²\n\n**Why this doesn't solve #366**: Pell gives (powerful, powerful) pairs, not (powerful, cubeful) pairs.",
     "mathContext": "Erdős originally asked Mahler this question, and Mahler immediately saw the Pell equation connection.",
@@ -152,7 +152,7 @@
       "startLine": 220,
       "endLine": 249
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Density of k-Full Numbers",
     "content": "**Growth Rates**:\n- Powerful numbers: |{n ≤ N : n is 2-full}| ~ c₂ × √N\n- Cubeful numbers: |{n ≤ N : n is 3-full}| ~ c₃ × N^(1/3)\n\n```lean\naxiom powerful_growth :\n  ∃ c₁ c₂ : ℕ, c₁ > 0 ∧ c₂ > 0 ∧ ∀ N ≥ 100,\n    c₁ * Nat.sqrt N / 100 ≤ powerfulCount N ∧\n    powerfulCount N ≤ c₂ * Nat.sqrt N\n```\n\n**Heuristic for Erdős #366**:\n- P(n powerful) ~ n^(-1/2)\n- P(n+1 cubeful) ~ n^(-2/3)\n- P(both) ~ n^(-7/6)\n\nSum over all n: ∑ n^(-7/6) converges, so expected count is FINITE.",
     "mathContext": "Golomb (1970) established the √N count for powerful numbers. The heuristic suggests only finitely many (2-full, 3-full) pairs should exist.",
@@ -170,7 +170,7 @@
       "startLine": 206,
       "endLine": 218
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Structure of k-Full Numbers",
     "content": "**Representation Theorem**: Every k-full number > 1 can be written as a^k × b^(k+1) for some a, b.\n\n```lean\naxiom kfull_structure (k n : ℕ) (hn : n > 1) (hk : IsKFull k n) :\n  ∃ a b : ℕ, b > 0 ∧ n = a^k * b^(k+1)\n\naxiom powerful_form (n : ℕ) (hn : n > 1) (hp : IsPowerful n) :\n  ∃ a b : ℕ, n = a^2 * b^3\n```\n\n**Special Case for Powerful Numbers**:\nEvery powerful number > 1 has the form a²b³.\n\n**Examples**:\n- 8 = 1² × 2³\n- 36 = 6² × 1³\n- 72 = 2³ × 3² (powerful: 2 appears ≥2 times, 3 appears ≥2 times)",
     "mathContext": "This structural characterization helps understand what consecutive pairs look like and why they're rare.",
@@ -188,7 +188,7 @@
       "startLine": 190,
       "endLine": 204
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Computational Bounds",
     "content": "**Search Results**:\n\n```lean\naxiom computational_bound :\n  ∀ n, 12167 < n → n < 10^22 → n ∉ CubefulPowerfulPairs\n\naxiom forward_pair_bound :\n  ∀ n, n < 10^22 → ¬(IsPowerful n ∧ IsCubeful (n + 1))\n```\n\n**Interpretation**:\n- No (3-full, 2-full) pairs between 12167 and 10²²\n- No (2-full, 3-full) pairs below 10²² at all\n\n**Scale**: 10²² is an enormous bound. The next pair (in either direction) must be astronomically large if it exists.",
     "mathContext": "These computational results from OEIS A060355 show the extreme rarity of such pairs.",

@@ -74,7 +74,7 @@
       "startLine": 74,
       "endLine": 83
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Kummer's Theorem",
     "content": "**The Main Result**: The multiplicity (p-adic valuation) of prime p in C(n,k) equals the number of carry positions when adding k and (n-k) in base p.\n\n$$\\nu_p\\binom{n}{k} = |\\{i : p^i \\leq k \\mod p^i + (n-k) \\mod p^i\\}|$$\n\nThis is `Nat.Prime.multiplicity_choose` from Mathlib—the theorem is already proven there!",
     "mathContext": "multiplicity $p$ $\\binom{n}{k}$ = (filtered count of carry positions)",
@@ -98,7 +98,7 @@
       "startLine": 85,
       "endLine": 90
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Alternative Formulation",
     "content": "An equivalent statement for C(n+k, k): the multiplicity equals carries when adding k and n in base p.\n\nThis form is sometimes more convenient because both numbers being added are non-negative and their sum is exactly n+k.",
     "mathContext": "$\\nu_p\\binom{n+k}{k} = $ carries when adding $k + n$ in base $p$",
@@ -119,7 +119,7 @@
       "startLine": 96,
       "endLine": 112
     },
-    "type": "example",
+    "type": "context",
     "title": "Example: C(10, 4) = 210",
     "content": "Let's verify Kummer's theorem:\n\n**C(10, 4) = 210 = 2 × 3 × 5 × 7**\n\nFor p = 2: Adding 4 + 6 in binary:\n- 4 = 100₂, 6 = 110₂\n- 100 + 110 = 1010₂ (one carry)\n- ν₂(210) = 1 ✓\n\nFor p = 3: Adding 4 + 6 in base 3:\n- 4 = 11₃, 6 = 20₃\n- 11 + 20 = 101₃ (one carry)\n- ν₃(210) = 1 ✓",
     "mathContext": "$C(10,4) = 210 = 2 \\times 3 \\times 5 \\times 7$",
@@ -141,7 +141,7 @@
       "startLine": 114,
       "endLine": 116
     },
-    "type": "example",
+    "type": "context",
     "title": "Example: C(6, 3) = 20",
     "content": "**C(6, 3) = 20 = 4 × 5 = 2² × 5**\n\nFor p = 2: Adding 3 + 3 in binary:\n- 3 = 11₂, 3 = 11₂\n- 11 + 11 = 110₂ (two carries at positions 1 and 2)\n- ν₂(20) = 2 ✓\n\nThe central binomial coefficient C(2n, n) often has high 2-adic valuation!",
     "mathContext": "$C(6,3) = 20 = 2^2 \\times 5$, two carries in binary addition",
@@ -184,7 +184,7 @@
       "startLine": 135,
       "endLine": 138
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Prime Power Case",
     "content": "For 0 < k < p^n, the prime p divides C(p^n, k).\n\nIn base p, p^n = 10...0 (1 followed by n zeros). Adding any k < p^n to p^n - k produces at least one carry.\n\nThis generalizes the result that p | C(p, k) for 0 < k < p.",
     "mathContext": "$0 < k < p^n \\Rightarrow p \\mid \\binom{p^n}{k}$",
@@ -205,7 +205,7 @@
       "startLine": 140,
       "endLine": 154
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Connection to Lucas' Theorem",
     "content": "**Lucas' Theorem**: C(n, k) ≡ ∏ᵢ C(nᵢ, kᵢ) (mod p)\n\nwhere nᵢ, kᵢ are the i-th digits of n, k in base p.\n\nKummer's theorem explains the \"why\": if any digit kᵢ > nᵢ, then C(nᵢ, kᵢ) = 0, making the whole product 0 mod p.\n\nEach such \"digit overflow\" corresponds to a carry, and the number of carries gives the exact multiplicity.",
     "mathContext": "Lucas: $\\binom{n}{k} \\equiv \\prod_i \\binom{n_i}{k_i} \\pmod{p}$",
@@ -227,7 +227,7 @@
       "startLine": 156,
       "endLine": 170
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Digit Sum Formulation",
     "content": "An equivalent formulation using digit sums:\n\n$$(p-1) \\cdot \\nu_p\\binom{n}{k} = S_p(k) + S_p(n-k) - S_p(n)$$\n\nwhere S_p(m) is the sum of digits of m in base p.\n\nThis follows from Legendre's formula: ν_p(n!) = (n - S_p(n))/(p-1).\n\nEach carry \"costs\" exactly p-1 in the digit sum equation!",
     "mathContext": "$(p-1) \\cdot \\nu_p\\binom{n}{k} = S_p(k) + S_p(n-k) - S_p(n)$",

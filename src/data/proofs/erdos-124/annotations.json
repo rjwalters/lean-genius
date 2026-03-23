@@ -47,7 +47,7 @@
   {
     "id": "pomerance",
     "proofId": "erdos-124",
-    "type": "theorem",
+    "type": "technique",
     "title": "Pomerance's Necessity",
     "content": "**Pomerance**: The reciprocal condition is NECESSARY.\n\nIf $\\sum 1/(d_i - 1) < 1$, then infinitely many integers are NOT representable as $\\sum c_i a_i$ with $c_i \\in \\{0,1\\}$ and $a_i \\in P(d_i, 0)$.\n\n**Intuition**: When the combined density of digit-restricted numbers is below 1, there aren't enough 'building blocks' to cover all integers. The gap $1 - \\sum 1/(d_i - 1) > 0$ means a positive proportion of integers are missed.\n\n**Lean**: Axiomatized as: if `∀ᶠ n in atTop, IsRepresentable r d n` holds, then `reciprocalCondition r d` must hold. The contrapositive: below the threshold, eventual representability fails.\n\n**Combined with Q1**: This gives a complete characterization at level 0: the reciprocal condition is necessary AND sufficient.",
     "mathContext": "Σ 1/(dᵢ-1) < 1 ⟹ infinitely many unrepresentable integers",
@@ -70,7 +70,7 @@
   {
     "id": "q1-proved",
     "proofId": "erdos-124",
-    "type": "theorem",
+    "type": "technique",
     "title": "Question 1 (PROVED)",
     "content": "**Q1 (PROVED)**: If $\\sum 1/(d_i - 1) \\geq 1$ and the bases are valid ($3 \\leq d_1 < \\cdots < d_r$), then all sufficiently large integers are representable:\n\n$$\\forall^\\infty n, \\; \\exists c_i \\in \\{0,1\\}, \\; a_i \\in P(d_i, 0): \\; n = \\sum c_i a_i$$\n\n**Method**: Proved via Alexeev's approach and formalized by Aristotle. The proof constructs representations using a greedy algorithm on the base-$d$ expansions, showing that the reciprocal condition provides enough 'room' to cover all residues.\n\n**Lean**: Uses `Filter.atTop` for 'eventually for all large $n$'. Axiomatized because the constructive proof is deep.",
     "mathContext": "Σ 1/(dᵢ-1) ≥ 1 ⟹ ∀ᶠ n, IsRepresentable(n)",
@@ -118,11 +118,11 @@
   {
     "id": "case-3-4-7",
     "proofId": "erdos-124",
-    "type": "theorem",
+    "type": "technique",
     "title": "{3,4,7} Verification",
     "content": "**Q2 verified for bases {3, 4, 7}**:\n\n- $1/(3-1) + 1/(4-1) + 1/(7-1) = 1/2 + 1/3 + 1/6 = 1$ (exact threshold)\n- $\\gcd(3, 4, 7) = 1$ (pairwise coprime)\n\nFor any $k \\geq 1$, all sufficiently large integers can be represented using digits from level $k$ onward in these three bases.\n\n**Why {3,4,7} is special**: The Egyptian fraction $1/2 + 1/3 + 1/6 = 1$ is one of the simplest unit fraction decompositions of 1 with distinct denominators. The pairwise coprimality (3, 4, 7 share no common factor) removes all trivial obstructions.\n\n**Lean**: Uses `![3, 4, 7]` (Matrix.vecCons notation) for the 3-element vector of bases.",
     "mathContext": "1/2 + 1/3 + 1/6 = 1, gcd(3,4,7) = 1",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "Egyptian fractions",
       "pairwise coprime",

@@ -73,7 +73,7 @@
       "startLine": 35,
       "endLine": 46
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Basic Properties",
     "content": "**Elementary lemmas**:\n- `one_squarefree`: $1$ is squarefree (vacuously: no primes divide 1) — from `squarefree_one`\n- `one_is_pow2`: $1 = 2^0$ is a power of 2\n- `two_is_pow2`: $2 = 2^1$ is a power of 2\n- `prime_squarefree`: Every prime $p$ is squarefree (only $p^1$ divides $p$) — from `hp.squarefree`\n\nThese building blocks are used to construct the small examples.",
     "mathContext": "`squarefree_one`, `hp.squarefree` from Mathlib",
@@ -95,7 +95,7 @@
       "startLine": 50,
       "endLine": 64
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Small Examples: $n = 3, 5, 7, 9$",
     "content": "**Fully proved representations**:\n\n| $n$ | Decomposition | Squarefree | Power of 2 | Proof |\n|-----|--------------|------------|------------|-------|\n| 3 | $1 + 2$ | 1 | $2^1$ | `rfl` |\n| 5 | $1 + 4$ | 1 | $2^2$ | `rfl` |\n| 7 | $5 + 2$ | 5 | $2^1$ | `decide` |\n| 9 | $1 + 8$ | 1 | $2^3$ | `rfl` |\n\nThe proofs use `decide` for checking squarefreeness of 5, and `rfl` for arithmetic equalities. These serve as concrete evidence for the conjecture.",
     "mathContext": "$3 = 1 + 2^1$, $5 = 1 + 2^2$, $7 = 5 + 2^1$, $9 = 1 + 2^3$",
@@ -141,7 +141,7 @@
       "startLine": 72,
       "endLine": 74
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Known Wieferich Primes: 1093 and 3511",
     "content": "**Axiomatized**: The only known Wieferich primes are **1093** (Meissner, 1913) and **3511** (Beeger, 1922).\n\n$2^{1092} \\equiv 1 \\pmod{1093^2}$ and $2^{3510} \\equiv 1 \\pmod{3511^2}$.\n\nNo others exist below $6.7 \\times 10^{15}$ (Dorais et al., 2011). It is unknown whether there are finitely or infinitely many Wieferich primes. Heuristic arguments suggest about $\\ln \\ln N$ Wieferich primes up to $N$.",
     "mathContext": "$2^{1092} \\equiv 1 \\pmod{1093^2}$, $2^{3510} \\equiv 1 \\pmod{3511^2}$",
@@ -251,7 +251,7 @@
       "startLine": 96,
       "endLine": 98
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Granville-Soundararajan Connection (1998)",
     "content": "**Deep Connection** (axiomatized): If Erdős Problem #11 is true, then infinitely many primes are non-Wieferich.\n\n`axiom granville_soundararajan : Erdos11Conjecture → InfinitelyManyNonWieferich`\n\n**The argument**: If $n$ is odd and $n - 2^k$ is squarefree for some $k$, then primes dividing $n - 2^k$ satisfy certain Fermat quotient conditions. If all but finitely many primes were Wieferich, this would impose too many square divisibility constraints, eventually preventing all $n - 2^k$ from being squarefree.\n\n**Published in**: \"A binary additive problem of Erdős and the order of $2 \\bmod p^2$\" (1998).",
     "mathContext": "Erdős #11 $\\Rightarrow$ infinitely many non-Wieferich primes; connects additive structure to Fermat quotients",
@@ -275,7 +275,7 @@
       "startLine": 102,
       "endLine": 104
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Hercher Verification (2024)",
     "content": "**Computational verification** (axiomatized): All odd integers from 3 to $2^{50} \\approx 1.12 \\times 10^{15}$ satisfy the conjecture.\n\nHercher used GPU parallelization to extend verification by a factor of ~800,000 over the previous bound. For each odd $n$, the algorithm checks $n - 2^k$ for $k = 0, 1, \\ldots$ until a squarefree value is found.\n\n**Significance**: No counterexample in over $10^{15}$ trials strongly supports the conjecture.",
     "mathContext": "$\\forall n$ odd, $1 < n < 2^{50} \\Rightarrow \\text{IsSquarefreePlusPow2}(n)$",
@@ -297,7 +297,7 @@
       "startLine": 106,
       "endLine": 108
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Odlyzko Verification",
     "content": "**Earlier verification** (axiomatized): All odd $n$ from 3 to $10^7$ satisfy the conjecture. This was the state of the art before Hercher's massive GPU-accelerated extension.\n\nThe progression from $10^7$ to $2^{50} \\approx 10^{15}$ represents 8 orders of magnitude improvement.",
     "mathContext": "$\\forall n$ odd, $1 < n < 10^7 \\Rightarrow \\text{IsSquarefreePlusPow2}(n)$",
@@ -317,7 +317,7 @@
       "startLine": 112,
       "endLine": 118
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős Density Result",
     "content": "**Erdős proved** (axiomatized): The set of odd $n$ satisfying the conjecture has natural density 1. The set of exceptions (if any) has density 0.\n\nFormalized using `Filter.Tendsto` to express that the proportion of $n \\leq N$ in the \"good\" set $S$ tends to 1.\n\n**Proof idea**: For most odd $n$, at least one of $n - 1, n - 2, n - 4, \\ldots, n - 2^k$ is squarefree. The probability that all $\\lfloor \\log_2 n \\rfloor + 1$ candidates are non-squarefree is $(1 - 6/\\pi^2)^{\\sim \\log_2 n}$, which is summable, so Borel-Cantelli gives density 0 for exceptions.",
     "mathContext": "$\\lim_{N \\to \\infty} \\frac{|\\{n \\leq N : n \\text{ odd}, \\text{IsSquarefreePlusPow2}(n)\\}|}{N} = 1$",

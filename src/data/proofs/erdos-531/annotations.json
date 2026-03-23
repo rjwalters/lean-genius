@@ -88,7 +88,7 @@
       "startLine": 72,
       "endLine": 78
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Folkman's Theorem",
     "content": "**folkman_theorem:**\n\nFor all k ≥ 1, there exists N such that any 2-coloring of {1,...,N} has a k-element set with monochromatic subset sums.\n\n```lean\naxiom folkman_theorem :\n  ∀ k : ℕ, k ≥ 1 → ∃ N : ℕ, ExistsMonochromaticSet N k\n```\n\nThis can be derived from Rado's theorem on partition regularity of linear systems.",
     "mathContext": "Originally proved by Sanders and Folkman in the 1960s.",
@@ -105,7 +105,7 @@
       "startLine": 90,
       "endLine": 92
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Spencer Lower Bound (1989)",
     "content": "**erdos_spencer_1989:**\n\nFirst non-trivial lower bound:\n$$F(k) \\geq 2^{ck^2/\\log k}$$\n\nfor some constant c > 0.\n\nThis shows F(k) grows at least exponentially in k²/log k, much faster than polynomial.",
     "significance": "key",
@@ -121,7 +121,7 @@
       "startLine": 94,
       "endLine": 96
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Balogh et al. (2017)",
     "content": "**balogh_2017:**\n\nImproved lower bound:\n$$F(k) \\geq 2^{2^{k-1}/k}$$\n\nThis is **doubly exponential** in k! Even for small k, F(k) is astronomically large.\n\n**Reference:** Balogh, Eberhard, Narayanan, Treglown, Wagner, \"An improved lower bound for Folkman's theorem\", Bull. Lond. Math. Soc. (2017).",
     "mathContext": "The proof uses inductive construction exploiting multiplicative structure of subset sums.",
@@ -138,7 +138,7 @@
       "startLine": 104,
       "endLine": 113
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Small Cases",
     "content": "**Explicit Values:**\n\n- **F(1) = 1:** Any single element has exactly one subset sum (itself), trivially monochromatic\n- **F(2) = 3:** In {1,2,3}, any 2-coloring forces {a,b,a+b} monochromatic\n- **F(3) ≥ 11:** The 3-element case requires at least 11 elements\n\nEven F(3) is only known as a lower bound - exact computation is very hard.",
     "significance": "supporting",
@@ -154,7 +154,7 @@
       "startLine": 122,
       "endLine": 125
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Upper Bounds",
     "content": "**folkman_upper_bound:**\n\nThe original upper bound from Folkman's proof is at least tower-type (iterated exponentials).\n\nThe huge gap between 2^{2^{k-1}/k} (lower) and tower(k) (upper) is the main open question.",
     "significance": "key",
@@ -170,7 +170,7 @@
       "startLine": 140,
       "endLine": 146
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Connection to Rado's Theorem",
     "content": "**folkman_from_rado:**\n\nFolkman's theorem follows from Rado's theorem (1933) on partition regularity.\n\nThe system of equations:\n- For each non-empty S ⊆ {1,...,k}: Σᵢ∈S xᵢ = yₛ\n\nRado's theorem guarantees monochromatic solutions exist for any finite coloring.\n\nThis gives existence but with weak (tower-type) bounds.",
     "mathContext": "Rado's theorem characterizes which linear systems have monochromatic solutions in any finite coloring.",
@@ -188,7 +188,7 @@
       "startLine": 182,
       "endLine": 185
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result",
     "content": "**erdos_531:**\n\n```lean\ntheorem erdos_531 :\n    ∀ k : ℕ, k ≥ 1 → (ValidN k).Nonempty :=\n  fun k hk => folkman_theorem k hk\n```\n\nThe main theorem confirms that for every k, the set of valid N values is non-empty, meaning F(k) exists and is finite.\n\nCombined with balogh_2017, we know F(k) ≥ 2^{2^{k-1}/k} for all k ≥ 1.",
     "significance": "key",

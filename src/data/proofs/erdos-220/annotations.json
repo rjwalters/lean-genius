@@ -42,7 +42,7 @@
       "startLine": 54,
       "endLine": 57
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Cardinality Equals φ(n)",
     "content": "**card_reducedResidues:**\n\n|reducedResidues n| = φ(n)\n\nThis is essentially the definition of Euler's totient function.",
     "significance": "key",
@@ -174,7 +174,7 @@
       "startLine": 115,
       "endLine": 122
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Montgomery-Vaughan (Squares)",
     "content": "**montgomery_vaughan_squared:**\n\n∃C > 0: ∀n ≥ 1, ∑(gap)² ≤ C · n²/φ(n)\n\nThe main result confirming Erdős's conjecture.",
     "mathContext": "Published in Annals of Mathematics, 1986.",
@@ -191,7 +191,7 @@
       "startLine": 124,
       "endLine": 131
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Montgomery-Vaughan (General)",
     "content": "**montgomery_vaughan_general:**\n\nFor any γ ≥ 1: ∃C > 0: ∀n ≥ 1, ∑(gap)^γ ≤ C · n^γ/φ(n)^{γ-1}\n\nThe full generalization to all powers.",
     "significance": "key",
@@ -223,7 +223,7 @@
       "startLine": 161,
       "endLine": 166
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Prime Case",
     "content": "**prime_case:**\n\nFor prime p, reduced residues are {1, 2, ..., p-1} with all gaps = 1.\n\nSum of squares = p - 2, bound = p²/(p-1) ≈ p. Bound holds easily.",
     "mathContext": "Primes give the simplest case where all gaps are equal.",
@@ -240,7 +240,7 @@
       "startLine": 168,
       "endLine": 173
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Power of 2 Case",
     "content": "**power_of_two_case:**\n\nFor n = 2^k, residues are {1, 3, 5, ..., 2^k - 1} with all gaps = 2.\n\nSum = 2^{k+1}, bound = 2^{k+1}. The bound is TIGHT here.",
     "mathContext": "Powers of 2 show the bound is essentially optimal.",
@@ -276,7 +276,7 @@
       "startLine": 189,
       "endLine": 191
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Maximum Gap Bound",
     "content": "**maximum_gap_bound:**\n\nmax(gap) ≤ C · (n/φ(n)) · (log n)²\n\nThe maximum gap is at most average times a logarithmic factor.",
     "significance": "supporting",
@@ -292,7 +292,7 @@
       "startLine": 232,
       "endLine": 236
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_220_summary:**\n\nCombines all components: Montgomery-Vaughan proved the squared gaps conjecture.\n\n∑(gap)² ≪ n²/φ(n)",
     "mathContext": "The theorem statement captures the complete resolution.",
@@ -309,7 +309,7 @@
       "startLine": 238,
       "endLine": 239
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem Solved",
     "content": "**erdos_220_solved:**\n\nErdős Problem #220 was completely resolved by Montgomery-Vaughan (1986).\n\nThe $500 prize problem is solved.",
     "significance": "supporting",

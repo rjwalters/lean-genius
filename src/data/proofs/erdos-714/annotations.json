@@ -61,7 +61,7 @@
       "startLine": 81,
       "endLine": 93
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Kovari-Sos-Turan Upper Bound",
     "content": "**kovari_sos_turan:**\n\nFor all r >= 2: ex(n; K_{r,r}) <= c * n^{2-1/r}\n\nMore precisely: ex(n; K_{r,r}) <= (1/2)(r-1)^{1/r} * n^{2-1/r} + O(n)\n\nThis 1954 theorem is the fundamental upper bound.",
     "mathContext": "Proved by double counting: count pairs (v, S) where S is an r-subset of neighbors of v.",
@@ -102,7 +102,7 @@
       "startLine": 117,
       "endLine": 129
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Complete Solution for r=2",
     "content": "**zarankiewicz_r2:**\n\nex(n; K_{2,2}) = (1/2 + o(1)) * n^{3/2}\n\nSince K_{2,2} = C_4 (the 4-cycle), this follows from the Erdos-Klein-Reiman theorem.\n\nExtremal graphs come from incidence graphs of projective planes.",
     "mathContext": "The Petersen graph and friends achieve the bound.",
@@ -120,7 +120,7 @@
       "startLine": 130,
       "endLine": 144
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Brown's Theorem for r=3",
     "content": "**brown_theorem:**\n\nex(n; K_{3,3}) >= c * n^{5/3}\n\nBrown (1966) and independently Erdos-Renyi-Sos (1966) proved this.\n\nThe construction uses generalized hexagons from incidence geometry.",
     "mathContext": "Uses algebraic constructions over finite fields.",
@@ -133,7 +133,7 @@
       "startLine": 145,
       "endLine": 159
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Conjecture Proved for r=2",
     "content": "**erdos_714_r2:**\n\n```lean\ntheorem erdos_714_r2 : erdosConjectureLowerBound 2 := by\n  unfold erdosConjectureLowerBound\n  obtain (c1, c2, hc1, _, hbounds) := zarankiewicz_r2\n  use c1\n  ...\n```\n\nFollows from zarankiewicz_r2 since 3/2 = 2 - 1/2.",
     "significance": "key"
@@ -145,7 +145,7 @@
       "startLine": 160,
       "endLine": 171
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Conjecture Proved for r=3",
     "content": "**erdos_714_r3:**\n\nFollows from Brown's theorem since 5/3 = 2 - 1/3.\n\nThe construction uses generalized hexagons.",
     "significance": "key"
@@ -157,7 +157,7 @@
       "startLine": 176,
       "endLine": 184
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "r=4 Case: OPEN",
     "content": "**best_known_lower_bound_r4:**\n\nNo construction achieving ex(n; K_{4,4}) >> n^{7/4} is known.\n\nThe best known lower bound gives only n^{3/2}, strictly weaker than the conjectured n^{7/4}.\n\nThis is one of the most famous open problems in extremal combinatorics.",
     "significance": "key"
@@ -169,7 +169,7 @@
       "startLine": 189,
       "endLine": 198
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Projective Plane Construction",
     "content": "**projective_plane_construction:**\n\nFor r=2, extremal graphs come from incidence graphs of projective planes PG(2,q).\n\nIf q is prime, the incidence graph has:\n- q^2 + q + 1 vertices\n- (q+1)(q^2+q+1) edges\n- No K_{2,2} subgraph",
     "mathContext": "Projective planes over finite fields provide optimal K_{2,2}-free graphs.",
@@ -186,7 +186,7 @@
       "startLine": 200,
       "endLine": 209
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Generalized Hexagons",
     "content": "**generalized_hexagon_construction:**\n\nFor r=3, constructions use generalized hexagons (girth-12 cages from incidence geometry).\n\nWhen q is a prime power, these give K_{3,3}-free graphs on O(q^3) vertices with O(q^5) edges, matching the n^{5/3} bound.",
     "significance": "key"
@@ -198,7 +198,7 @@
       "startLine": 211,
       "endLine": 218
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Norm Graphs (KRS 1996)",
     "content": "**norm_graph_lower_bound:**\n\nKollar-Ronyai-Szabo (1996) used algebraic constructions via norms over finite fields to give K_{r,r}-free graphs with Omega(n^{2-2/(r+1)}) edges.\n\nFor r >= 4, this is weaker than the conjectured n^{2-1/r}, showing a genuine gap.",
     "mathContext": "Best known algebraic construction for r >= 4.",
@@ -215,7 +215,7 @@
       "startLine": 224,
       "endLine": 232
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "K_{2,2} = C_4",
     "content": "**k22_equals_c4:**\n\nK_{2,2} is exactly the 4-cycle C_4. A graph is K_{2,2}-free iff it contains no complete bipartite K_{2,2}.\n\nSo ex(n; K_{2,2}) = ex(n; C_4), connecting this problem to Problem #768.",
     "mathContext": "Both ask for maximum edges in a graph with no 4-cycle.",
@@ -228,7 +228,7 @@
       "startLine": 234,
       "endLine": 243
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Matrix Formulation",
     "content": "**zarankiewicz_matrix_connection:**\n\nThe Zarankiewicz problem z(m,n;r,s) asks for the maximum 1s in an m x n 0-1 matrix with no all-1s r x s submatrix.\n\nThe connection: ex(n; K_{r,r}) <= c * n^{2-1/r} + r*n/2, matching the KST bound.",
     "significance": "supporting"
@@ -240,7 +240,7 @@
       "startLine": 249,
       "endLine": 263
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_714_summary:**\n\n```lean\ntheorem erdos_714_summary :\n    erdosConjectureLowerBound 2 and\n    erdosConjectureLowerBound 3\n```\n\n1. r=2: SOLVED (exact asymptotics)\n2. r=3: SOLVED (Brown 1966)\n3. r>=4: OPEN",
     "significance": "key"
@@ -252,7 +252,7 @@
       "startLine": 265,
       "endLine": 285
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Zarankiewicz Problem Status",
     "content": "**zarankiewicz_status:**\n\nCombines all results:\n1. KST upper bound for all r >= 2\n2. Lower bound matching upper bound for r=2,3\n3. Gap remains for r >= 4\n\nOne of the most famous open problems in extremal combinatorics.",
     "significance": "key"

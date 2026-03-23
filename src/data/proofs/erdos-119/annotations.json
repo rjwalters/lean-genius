@@ -98,7 +98,7 @@
       "startLine": 43,
       "endLine": 54
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Part 1: $\\limsup M_n = \\infty$ (Wagner 1980)",
     "content": "States that for any sequence of points on the unit circle, the limsup of $M_n$ is infinite (equal to $\\top$ in EReal). Solved by Georg Wagner in 1980, who proved the stronger result that $M_n > (\\log n)^c$ infinitely often for some $c > 0$. This was published in the Bulletin of the London Mathematical Society.",
     "mathContext": "$\\forall z : \\mathbb{N} \\to \\mathbb{C},\\, (\\forall i,\\, |z_i| = 1) \\implies \\limsup_{n \\to \\infty} M_n = +\\infty$. Wagner's quantitative bound: $M_n > (\\log n)^c$ for infinitely many $n$.",
@@ -122,7 +122,7 @@
       "startLine": 56,
       "endLine": 68
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Part 2: Polynomial Growth $M_n > N^c$ (Beck 1991)",
     "content": "States that there exists $c > 0$ such that $\\max_{n \\leq N} M_n > N^c$ for all $N$. Solved by József Beck in his 1991 Annals of Mathematics paper 'The modulus of polynomials with zeros on the unit circle'. Beck's proof uses deep techniques from Diophantine approximation and harmonic analysis. This is a major strengthening of Part 1, replacing logarithmic growth with polynomial growth.",
     "mathContext": "$\\forall z : \\mathbb{N} \\to \\mathbb{C},\\, (\\forall i,\\, |z_i| = 1) \\implies \\exists c > 0,\\, \\forall N,\\, \\exists n \\leq N,\\, M_n > N^c$. The jump from $(\\log n)^c$ to $n^c$ required fundamentally new methods.",

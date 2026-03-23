@@ -174,7 +174,7 @@
       "startLine": 159,
       "endLine": 176
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Ajtai-Komlós-Szemerédi Asymptotic Theorem",
     "content": "**AKS_theorem:** For any $\\varepsilon > 0$, there exists $N$ such that for all graphs $G$ on $\\geq N$ vertices: if at least $\\lceil(1+\\varepsilon)n/2\\rceil$ vertices have degree $\\geq \\lceil(1+\\varepsilon)n/2\\rceil$, then $G$ contains every tree on $\\leq n/2$ vertices.\n\nThis 1995 result by Ajtai, Komlós, and Szemerédi was the first major progress on the LKS conjecture. The $(1+\\varepsilon)$ factor was later removed by Zhao.",
     "mathContext": "The AKS theorem: $\\forall \\varepsilon > 0, \\exists N_0$ such that $\\forall n \\geq N_0$, if $|H_{\\lceil(1+\\varepsilon)n/2\\rceil}(G)| \\geq \\lceil(1+\\varepsilon)n/2\\rceil$, then $G \\supseteq T$ for all trees $T$ with $|V(T)| \\leq n/2$. Published in 'On a conjecture of Loebl' (1995).",
@@ -198,7 +198,7 @@
       "startLine": 177,
       "endLine": 196
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Zhao's Theorem and the Main Result",
     "content": "**zhao_theorem:** Axiomatizes Zhao's 2011 result: $\\exists N$ such that for all $G$ on $\\geq N$ vertices, `satisfiesLKS G → ContainsAllTreesUpTo G (n/2)`. This removes the $(1+\\varepsilon)$ factor from the AKS theorem.\n\n**erdos_580:** The main theorem of this formalization, derived in a single line as `zhao_theorem`. This demonstrates that the logical content is entirely captured by Zhao's result.\n\nZhao's proof strategy: (1) apply Szemerédi's Regularity Lemma to decompose $G$, (2) analyze the reduced graph structure, (3) use the blow-up lemma and probabilistic embedding to place the tree into pseudo-random pairs.",
     "mathContext": "Zhao's theorem: $\\exists N_0 \\in \\mathbb{N}$ such that $\\forall n \\geq N_0$, $\\forall G$ on $n$ vertices, $|H_{n/2}(G)| \\geq n/2 \\Rightarrow G \\supseteq T$ for every tree $T$ with $|V(T)| \\leq n/2$. Published in *Electronic Journal of Combinatorics* 18(1), Paper 27, 2011.",
@@ -222,7 +222,7 @@
       "startLine": 200,
       "endLine": 222
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Special Cases: Paths and Stars",
     "content": "**path_case:** Under the LKS condition, all paths of length $\\leq n/2 - 1$ embed in $G$. The proof idea: among the $\\geq n/2$ high-degree vertices, a greedy walk can extend step-by-step, always finding an unused neighbor.\n\n**star_case:** Stars $K_{1,k-1}$ with $k \\leq n/2$ embed trivially: any vertex of degree $\\geq n/2 \\geq k$ can serve as the center, with $k-1$ of its neighbors as leaves.\n\nThese represent the easiest trees to embed. The true difficulty lies in 'broom' trees (path + star), caterpillar trees, and trees with branching structure.",
     "mathContext": "A path $P_\\ell$ on $\\ell+1$ vertices embeds under LKS by a greedy algorithm: start at any high-degree vertex and extend. A star $K_{1,k-1}$ embeds because any vertex with $\\deg(v) \\geq k-1$ provides a center with enough neighbors. The hard cases are trees combining long paths with branching, requiring the Regularity Lemma.",
@@ -248,7 +248,7 @@
       "startLine": 223,
       "endLine": 237
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Tightness of the LKS Condition",
     "content": "**LKS_tightness:** For every $n \\geq 4$, there exists a graph on $n$ vertices with exactly $n/2 - 1$ vertices of degree $\\geq n/2 - 1$ that fails to contain some tree on $n/2$ vertices.\n\n**The extremal construction:** Consider $G = K_{\\lfloor n/2 \\rfloor - 1} \\cup K_{\\lceil n/2 \\rceil + 1}$, the disjoint union of two cliques. The smaller clique has $\\lfloor n/2 \\rfloor - 1$ vertices each of degree $\\lfloor n/2 \\rfloor - 2$, while the larger has $\\lceil n/2 \\rceil + 1$ vertices of degree $\\lceil n/2 \\rceil$. A path of length $n/2 - 1$ cannot be embedded because it would need to fit entirely within one component, but both components are too small to accommodate it.",
     "mathContext": "The sharpness construction shows that relaxing the LKS condition from $n/2$ to $n/2 - 1$ allows counterexamples. Specifically, $G = K_{n/2-1} \\cup K_{n/2+1}$ satisfies $|H_{n/2-1}(G)| = n/2 - 1$ but $P_{n/2} \\not\\subseteq G$ since neither component has $n/2$ vertices.",
@@ -272,7 +272,7 @@
       "startLine": 238,
       "endLine": 267
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_580_summary:** Restates the main result with an extensive docstring. The LKS $(n/2, n/2, n/2)$ conjecture is PROVED for large $n$.\n\nThe theorem is definitionally equal to `zhao_theorem`, serving as a self-documenting entry point that records the problem status, historical context, key techniques (Szemerédi's Regularity Lemma, probabilistic arguments), and remaining open question (verification for all $n$).",
     "mathContext": "The summary theorem: $\\exists N_0, \\forall n \\geq N_0, \\forall G$ on $n$ vertices, $|H_{n/2}(G)| \\geq n/2 \\Rightarrow \\forall T$ tree with $|V(T)| \\leq n/2, T \\subseteq G$. The proof term is simply `zhao_theorem`.",

@@ -60,7 +60,7 @@
       "startLine": 46,
       "endLine": 53
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Main Conjecture",
     "content": "**Erdős Problem #172** (OPEN): For any k-coloring and any target size m, there exists a set A with |A| ≥ m that is sum-product monochromatic. In other words, arbitrarily large such sets exist regardless of the coloring.",
     "mathContext": "Formally: ∀ k ≥ 1, ∀ c : ℕ → Fin k, ∀ m, ∃ A with |A| ≥ m and ∃ c₀ such that all subset sums and products of A have color c₀.",
@@ -78,7 +78,7 @@
       "startLine": 61,
       "endLine": 69
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Moreira (2017)",
     "content": "**Joel Moreira's breakthrough**: In any finite coloring of ℕ, there exist x, y such that {x, x+y, xy} are all the same color. This was the first non-trivial case (|A| = 2) of the conjecture.",
     "mathContext": "Published in Annals of Mathematics, this resolved a long-standing question. The proof uses ergodic theory and the structure of ultrafilters on ℕ.",
@@ -96,7 +96,7 @@
       "startLine": 71,
       "endLine": 82
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Alweiss (2023)",
     "content": "**Ryan Alweiss's extension**: The full conjecture holds over ℚ\\{0}. For any finite coloring of nonzero rationals and any m, there exist arbitrarily large sum-product monochromatic sets.",
     "mathContext": "This suggests the conjecture may be true for ℕ as well. The rational case allows more algebraic flexibility (inverses exist), but the core difficulty of combining sums and products is the same.",
@@ -114,7 +114,7 @@
       "startLine": 86,
       "endLine": 93
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Hindman (1980) Counterexample",
     "content": "**The infinite version fails**: Hindman proved that with 7 colors, there exists a coloring of ℕ such that NO infinite set has all its sums and products monochromatic. This shows the finite requirement is essential.",
     "mathContext": "The counterexample uses 7 colors specifically. It's unknown whether 7 is optimal or if fewer colors suffice.",
@@ -132,7 +132,7 @@
       "startLine": 97,
       "endLine": 111
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sum-Only and Product-Only",
     "content": "We also define **sum-only monochromatic** and **product-only monochromatic** variants. These are strictly weaker than sum-product monochromatic. Classical results like Schur's theorem guarantee sum-only monochromatic sets.",
     "mathContext": "The theorem sum_product_implies_both shows that sum-product monochromatic implies both individual properties. The converse is false - having monochromatic sums AND products separately doesn't give sum-product monochromatic.",
@@ -168,7 +168,7 @@
       "startLine": 123,
       "endLine": 130
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Empty Set Example",
     "content": "The empty set satisfies the property **vacuously** - there are no nonempty subsets, so the condition is trivially true for any color c₀.",
     "mathContext": "This is a standard vacuous truth argument. The proof uses that S ⊆ ∅ and S.Nonempty lead to a contradiction.",

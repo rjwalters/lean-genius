@@ -97,7 +97,7 @@
       "startLine": 87,
       "endLine": 109
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Brown–Jung Theorem (a = b = 3)",
     "content": "**Brown–Jung (1969)**: `TihanyForPair 3 3` holds. This was the original case Erdős asked about: every $K_5$-free 5-chromatic graph is $(3,3)$-splittable.\n\n`tihany_3_3` instantiates this: $\\chi(G) = 5 \\wedge K_5 \\not\\subseteq G \\implies$ $(3,3)$-splittable. Proved directly from the axiom.\n\n**Equivalent formulation** (`brown_jung_odd_cycles`): such a graph contains two vertex-disjoint odd cycles $C_1, C_2$ (axiomatized with explicit cardinality constraints $|C_i| = 2k_i + 1$, $k_i \\ge 1$). Since odd cycles have $\\chi = 3$, disjoint odd cycles give $(3,3)$-splittability.",
     "mathContext": "$$\\chi(G) = 5,\\; K_5 \\not\\subseteq G \\implies \\exists C_1, C_2 \\text{ disjoint odd cycles in } G$$",
@@ -142,7 +142,7 @@
       "startLine": 135,
       "endLine": 150
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Tihany for Independence Number 2",
     "content": "**`independenceNumber G`**: the maximum size of an independent set (sorry'd noncomputable definition).\n\n**`balogh_alpha_2`** (axiomatized): Tihany holds for all $(a,b)$ pairs when $\\alpha(G) = 2$. Graphs with $\\alpha = 2$ are very 'dense' — every triple of vertices contains an edge. Combined with being $K_k$-free, this severely constrains the graph structure.\n\nBalogh, Kostochka, Prince, and Stiebitz (2009) proved this by exploiting the Ramsey-like structure: $\\alpha = 2$ means the complement has no triangle, which (by Ramsey) bounds the order.",
     "mathContext": "$$\\alpha(G) = 2 \\implies \\text{Tihany holds for all valid } (a,b)$$",
@@ -209,7 +209,7 @@
       "startLine": 187,
       "endLine": 202
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Partial Results and Easy Cases",
     "content": "**`weak_splittability`** (sorry'd): a $K_k$-free $k$-chromatic graph has an induced subgraph with $\\chi \\ge \\max(a,b)$. This is weaker than splittability (only one high-$\\chi$ part, not two disjoint ones).\n\n**`tihany_a_eq_2`** (sorry'd): the case $a = 2$ is easy. Any graph with $\\chi \\ge 3$ contains an edge (so $\\chi \\ge 2$ on that edge), and the remaining graph has high chromatic number.\n\n**`TihanySymmetric a`**: the symmetric case $a = b$, where $k = 2a - 1$ (odd). This is the hardest case for each value of $a$.",
     "mathContext": "$$a = 2:\\; \\text{TihanyForPair}(2, b) \\text{ is easy}; \\quad \\text{TihanySymmetric}(a) = \\text{TihanyForPair}(a, a)$$",
@@ -230,7 +230,7 @@
       "startLine": 204,
       "endLine": 219
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Odd Cycles and (3,3)-Splittability",
     "content": "**`odd_cycle_chi_3`** (sorry'd): every odd cycle $C_{2k+1}$ ($k \\ge 1$) has $\\chi = 3$. Odd cycles are the simplest non-bipartite graphs and the building blocks for 3-chromatic substructure.\n\n**`disjoint_odd_cycles_splittable`** (sorry'd): two vertex-disjoint odd cycles in $G$ imply $(3,3)$-splittability. The cycle-inducing hypotheses (`hC₁_cycle`, `hC₂_cycle`) are sorry'd since formalizing 'is a cycle' requires path/walk infrastructure.\n\nThis connects Brown–Jung to cycle theory: the $a=b=3$ case reduces to finding two disjoint odd cycles, which has a topological flavor (related to graph minor theory).",
     "mathContext": "$$\\chi(C_{2k+1}) = 3; \\quad C_1 \\cap C_2 = \\emptyset,\\; C_1, C_2 \\text{ odd cycles} \\implies (3,3)\\text{-split}$$",
@@ -252,7 +252,7 @@
       "startLine": 221,
       "endLine": 254
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Problem Status",
     "content": "`erdos_628_status` packages the three proved special cases into one theorem:\n1. `TihanyForPair 3 3` (Brown–Jung)\n2. Tihany for quasi-line graphs (Balogh et al.)\n3. Tihany for $\\alpha = 2$ (Balogh et al.)\n\nProved by combining the three axioms. The `#check` commands verify all key declarations.\n\n**The general Tihany Conjecture remains OPEN.** The next frontier is likely the case $a = 3, b = 4$ (i.e., $k = 6$): does every $K_6$-free 6-chromatic graph contain disjoint subgraphs with $\\chi \\ge 3$ and $\\chi \\ge 4$?",
     "mathContext": "$$\\text{erdos\\_628\\_status}:\\; \\text{TihanyForPair}(3,3) \\;\\wedge\\; \\text{quasi-line} \\;\\wedge\\; \\alpha=2$$",

@@ -153,8 +153,8 @@ gather_status() {
         aristotle_status="running:$(get_session_uptime "aristotle-agent")"
     fi
 
-    # Researchers (up to 7 supported)
-    for i in 1 2 3 4 5 6 7; do
+    # Researchers (up to 16 supported)
+    for i in $(seq 1 16); do
         if session_exists "researcher-$i"; then
             researcher_sessions+=("researcher-$i:$(get_session_uptime "researcher-$i")")
         fi
@@ -208,6 +208,14 @@ gather_status() {
         research_completed=$(jq -r '.session_stats.research_completed // 0' "$STATE_FILE")
     fi
 
+    # Read schedule info from state file
+    local schedule_window=""
+    local schedule_time=""
+    if [[ -f "$STATE_FILE" ]]; then
+        schedule_window=$(jq -r '.schedule_window // ""' "$STATE_FILE" 2>/dev/null)
+        schedule_time=$(jq -r '.schedule_time // ""' "$STATE_FILE" 2>/dev/null)
+    fi
+
     if $JSON_OUTPUT; then
         # Output as JSON
         cat <<EOF
@@ -215,7 +223,9 @@ gather_status() {
   "daemon": {
     "running": $daemon_running,
     "uptime": "$daemon_uptime",
-    "started_at": "$started_at"
+    "started_at": "$started_at",
+    "schedule_window": "$schedule_window",
+    "schedule_time": "$schedule_time"
   },
   "work_queue": {
     "proofs_needing_enrichment": "$enrichment_count",
@@ -275,6 +285,17 @@ EOF
             echo -e "  Daemon: ${GREEN}Running${NC} (uptime: $daemon_uptime)"
         else
             echo -e "  Daemon: ${YELLOW}Not running${NC} (agents may still be active)"
+        fi
+
+        # Schedule window (if active)
+        if [[ -f "$STATE_FILE" ]]; then
+            local schedule_window
+            schedule_window=$(jq -r '.schedule_window // ""' "$STATE_FILE" 2>/dev/null)
+            if [[ -n "$schedule_window" ]]; then
+                local schedule_time
+                schedule_time=$(jq -r '.schedule_time // ""' "$STATE_FILE" 2>/dev/null)
+                echo -e "  Schedule: ${CYAN}${schedule_window}${NC} (as of ${schedule_time})"
+            fi
         fi
         echo ""
 

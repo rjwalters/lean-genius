@@ -1,0 +1,217 @@
+{
+  "id": "feuerbachs-theorem-defs",
+  "title": "Feuerbach's Theorem Definitions and Nine-Point Circle",
+  "slug": "feuerbachs-theorem-defs",
+  "description": "Core definitions and infrastructure for Feuerbach's Theorem (Wiedijk #29): triangle geometry in R^2 with coordinate formulas for circumcenter, orthocenter, incenter, excircles, nine-point circle, and altitude feet. Proves all 9 special points lie on the nine-point circle (3 side midpoints, 3 Euler midpoints, 3 altitude feet) with the Euler line relation. Imported by FeuerbachsTheoremOQ01.",
+  "meta": {
+    "author": "Karl Wilhelm Feuerbach (1822), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Nine-point_circle",
+    "date": "1822",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FeuerbachsTheoremDefs.lean",
+    "leanFile": "proofs/Proofs/FeuerbachsTheoremDefs.lean",
+    "tags": [
+      "geometry",
+      "euclidean-geometry",
+      "nine-point-circle",
+      "feuerbach",
+      "triangle",
+      "circumcenter",
+      "incircle",
+      "infrastructure"
+    ],
+    "badge": "infrastructure",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function for distance computations",
+        "module": "Mathlib.Data.Real.Sqrt"
+      },
+      {
+        "theorem": "EuclideanGeometry",
+        "description": "Euclidean geometry framework from Mathlib",
+        "module": "Mathlib.Geometry.Euclidean.Triangle"
+      },
+      {
+        "theorem": "Metric.Sphere",
+        "description": "Sphere/circle definitions for circle tangency",
+        "module": "Mathlib.Geometry.Euclidean.Sphere.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Triangle structure: non-degenerate triangle in R^2 with coordinate vertices",
+      "Triangle special points: circumcenter, orthocenter, centroid, incenter formulas",
+      "Excircle infrastructure: excenter_a/b/c and exradius_a/b/c definitions",
+      "Nine-point circle: center N = midpoint(O, H), radius R/2",
+      "9 membership proofs: all 3 side midpoints, 3 Euler midpoints, 3 altitude feet on the nine-point circle",
+      "Euler line relation: G = (2O + H)/3",
+      "Circumcenter equidistance from all vertices (squared version via perpendicular bisectors)",
+      "Tangency definitions: internal and external circle tangency",
+      "Numerical verification: 3-4-5 right triangle with computed circumradius, inradius, incircle Feuerbach tangency"
+    ],
+    "references": [
+      {
+        "key": "Fe22",
+        "citation": "Feuerbach, K. W. (1822). Eigenschaften einiger merkwuerdigen Punkte des geradlinigen Dreiecks und mehrerer durch sie bestimmten Linien und Figuren.",
+        "type": "paper"
+      },
+      {
+        "key": "Co67",
+        "citation": "Coxeter, H. S. M. (1967). Geometry Revisited. Mathematical Association of America.",
+        "type": "book"
+      },
+      {
+        "key": "BP21",
+        "citation": "Brianchon, C. J. and Poncelet, J. V. (1821). Recherches sur la détermination d'une hyperbole équilatère. Annales de Mathématiques, 11, 205-220.",
+        "type": "paper"
+      }
+    ],
+    "relatedProofs": [
+      "feuerbachs-theorem-oq-01",
+      "feuerbachs-theorem"
+    ],
+    "dateAdded": "2026-03-22",
+    "axiomCount": 0,
+    "lineCount": 687,
+    "wiedijkNumber": 29,
+    "prerequisites": [
+      "Euclidean geometry in R^2 (coordinates, distance formula)",
+      "Triangle geometry (circumcenter, orthocenter, incenter, excircles)",
+      "The nine-point circle and its properties",
+      "Coordinate geometry computations (field_simp, ring, nlinarith)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The nine-point circle was discovered independently by Charles-Julien Brianchon and Jean-Victor Poncelet in 1821 and by Karl Wilhelm Feuerbach in 1822. Feuerbach's key contribution, proved in his 1822 treatise *Eigenschaften einiger merkwürdigen Punkte des geradlinigen Dreiecks*, was that this circle is tangent to the inscribed circle and all three excircles of the triangle. The tangency point with the incircle is now called the Feuerbach point, and the theorem itself is #29 on Wiedijk's list of 100 greatest theorems.\n\nThe nine-point circle was further studied by Leonhard Euler (who established the Euler line through circumcenter, centroid, and orthocenter) and named by Olry Terquem in 1842 after proving it passes through all nine special points. The relationship N = (O + H)/2 connecting the nine-point center to the Euler line was established by Feuerbach and generalized by later mathematicians.\n\nThis module provides the complete definitional infrastructure using explicit coordinate geometry in R^2. The approach trades the elegance of synthetic proofs for computational verifiability: every step is a polynomial identity verified by field_simp + ring. The 3-4-5 right triangle serves as a numerical sanity check, confirming that all formulas are consistent and Feuerbach tangency holds (|NI| = |R/2 - r|).",
+    "problemStatement": "Provide the complete definitional and computational infrastructure for Feuerbach's Theorem:\n\n1. **Triangle structure**: Non-degenerate triangle in R^2 with side lengths, area, semiperimeter\n2. **Special points**: Circumcenter O, orthocenter H, centroid G, incenter I, excenters\n3. **Nine-point circle**: Center N = midpoint(O, H), radius R/2\n4. **Circle membership**: All 9 points (3 side midpoints, 3 Euler midpoints, 3 altitude feet) lie on the nine-point circle\n5. **Euler line**: G = (2O + H)/3\n6. **Tangency definitions**: Internal and external circle tangency\n7. **Numerical verification**: 3-4-5 right triangle as a concrete test case",
+    "proofStrategy": "The proofs use coordinate geometry with explicit formulas:\n\n1. **Circumcenter**: Computed via perpendicular bisector intersection. Equidistance proved via the perpendicular bisector condition (B-A) dot (B+A-2O) = 0, which is linear in O and verified by field_simp + ring after clearing the denominator.\n\n2. **Nine-point membership**: For each of the 9 points P, show dist(N, P) = R/2 by proving |P - N|^2 = |O - A|^2/4. The key lemma ninepoint_membership factors out the common proof structure: express P - N as half of some (O - V) vector, then use circumcenter equidistance.\n\n3. **Altitude feet**: The most computationally intensive proofs (maxHeartbeats 25,600,000). After unfolding the projection formula, clearing denominators (field_simp with circumcenter denom and side length sq), the result reduces to a polynomial identity verified by ring.\n\n4. **Numerical verification**: The 3-4-5 right triangle provides a concrete check: R = 5/2, r = 1, N = (3/4, 1), I = (1, 1), |NI| = 1/4 = |R/2 - r|, confirming Feuerbach tangency.",
+    "keyInsights": [
+      "Coordinate geometry trades elegance for verifiability: explicit formulas make every step machine-checkable at the cost of longer algebraic manipulations",
+      "The ninepoint_membership lemma factors out the common pattern: each of the 9 points satisfies P - N = (O - V)/2 for some vertex V, so dist(N, P) = dist(O, V)/2 = R/2",
+      "Circumcenter equidistance is proved via the perpendicular bisector condition, which is LINEAR in O (much easier than the quadratic distance equations)",
+      "The 3-4-5 right triangle is the simplest non-trivial test case: R = 5/2 (half the hypotenuse), r = 1, orthocenter at the right-angle vertex, confirming all formulas",
+      "Non-degeneracy (the signed area is nonzero) is the single structural hypothesis needed for all computations"
+    ],
+    "prerequisites": [
+      "Coordinate geometry: points in R^2, distance formula, midpoint formula",
+      "Triangle special points: circumcenter via perpendicular bisector intersection, orthocenter via Euler line",
+      "The nine-point circle: center is midpoint of circumcenter and orthocenter, radius is half the circumradius",
+      "Lean tactics: field_simp for clearing denominators, ring for polynomial identities, nlinarith for nonlinear arithmetic"
+    ]
+  },
+  "sections": [
+    {
+      "id": "triangle-config",
+      "title": "Triangle Configuration in R^2",
+      "startLine": 1,
+      "endLine": 93,
+      "summary": "Defines Point = R x R, the Triangle structure with non-degeneracy condition, side lengths a/b/c via sqrt, semiperimeter, and area via the shoelace formula.",
+      "mathContext": "Triangle $ABC$ in $\\mathbb{R}^2$ with non-degeneracy: $(B_x - A_x)(C_y - A_y) - (C_x - A_x)(B_y - A_y) \\neq 0$. Side lengths via Euclidean distance, area via signed area formula."
+    },
+    {
+      "id": "special-points",
+      "title": "Special Points of a Triangle",
+      "startLine": 95,
+      "endLine": 186,
+      "summary": "Defines midpoints of sides, circumcenter O via perpendicular bisector formula, circumradius R, orthocenter H = A + B + C - 2O (Euler line relation), centroid G = (A+B+C)/3, and the dist2 distance function.",
+      "mathContext": "Circumcenter $O$: intersection of perpendicular bisectors. Orthocenter $H = A + B + C - 2O$. Centroid $G = (A+B+C)/3$. Euler line: $O$, $G$, $H$ collinear with $G$ dividing $OH$ in ratio $1:2$."
+    },
+    {
+      "id": "nine-point-circle",
+      "title": "The Nine-Point Circle",
+      "startLine": 139,
+      "endLine": 186,
+      "summary": "Defines nine-point center N = midpoint(O, H), nine-point radius R/2, Euler midpoints (midpoints of AH, BH, CH), altitude feet via orthogonal projection, and squared distance function.",
+      "mathContext": "Nine-point center $N = (O + H)/2$, nine-point radius $R_9 = R/2$. The 9 special points: side midpoints $M_a, M_b, M_c$; Euler midpoints mid$(A,H)$, mid$(B,H)$, mid$(C,H)$; altitude feet $H_a, H_b, H_c$."
+    },
+    {
+      "id": "incircle-excircles",
+      "title": "Incircle and Excircles",
+      "startLine": 189,
+      "endLine": 252,
+      "summary": "Defines incenter I as weighted average of vertices by opposite side lengths, inradius r = area/semiperimeter, three excenters and exradii. Defines internal and external circle tangency.",
+      "mathContext": "Incenter $I = (aA + bB + cC)/(a+b+c)$, inradius $r = \\Delta/s$. Excircle opposite $A$: center $I_A = (-aA + bB + cC)/(-a+b+c)$, exradius $r_A = \\Delta/(s-a)$."
+    },
+    {
+      "id": "euler-line-circumcenter",
+      "title": "Euler Line and Circumcenter Properties",
+      "startLine": 254,
+      "endLine": 372,
+      "summary": "Proves the Euler line relation G = (2O+H)/3, nine-point center on the Euler line, R/2 radius, helper lemmas (eq_of_sq_eq, dist2_nonneg, ninePointRadius_nonneg), circumcenter denominator nonzero, and circumcenter equidistance from vertices via perpendicular bisector conditions.",
+      "mathContext": "Euler line: $G = (2O + H)/3$. Circumcenter equidistance: $|OB|^2 = |OA|^2$ and $|OC|^2 = |OA|^2$, proved via the linear perpendicular bisector condition."
+    },
+    {
+      "id": "midpoint-membership",
+      "title": "Side Midpoints and Euler Midpoints on the Nine-Point Circle",
+      "startLine": 373,
+      "endLine": 440,
+      "summary": "Proves all 6 midpoints lie on the nine-point circle: 3 side midpoints (M_a - N = (O-A)/2 etc.) and 3 Euler midpoints (mid(A,H) - N = (A-O)/2 etc.). Uses the ninepoint_membership lemma and circumcenter equidistance.",
+      "mathContext": "For each midpoint $P$: $|P - N|^2 = |O - V|^2/4 = R^2/4$, so $\\text{dist}(N, P) = R/2$. Side midpoints use $M_a - N = (O - A)/2$; Euler midpoints use mid$(A,H) - N = (A - O)/2$."
+    },
+    {
+      "id": "altitude-feet",
+      "title": "Altitude Feet on the Nine-Point Circle",
+      "startLine": 442,
+      "endLine": 576,
+      "summary": "Proves all 3 altitude feet lie on the nine-point circle. These are the most computationally intensive proofs (maxHeartbeats 25,600,000): after clearing denominators (side length squared and circumcenter denominator), the equality reduces to a polynomial identity verified by ring.",
+      "mathContext": "Altitude foot $H_a$ = projection of $A$ onto $BC$. After clearing $|BC|^2$ and the circumcenter denominator $d$: $|H_a - N|^2 = R^2/4$ reduces to a polynomial identity in the vertex coordinates."
+    },
+    {
+      "id": "numerical-verification",
+      "title": "Numerical Verification: 3-4-5 Right Triangle",
+      "startLine": 577,
+      "endLine": 687,
+      "summary": "Constructs the 3-4-5 right triangle and verifies: area = 6, semiperimeter = 6, inradius = 1, circumcenter = (3/2, 2), circumradius = 5/2, orthocenter = (0,0), nine-point center = (3/4, 1), nine-point radius = 5/4, incenter = (1,1). Verifies Feuerbach incircle tangency: |NI| = |R/2 - r| = 1/4.",
+      "mathContext": "3-4-5 triangle: $R = 5/2$, $r = 1$, $R/2 - r = 1/4$. $|NI| = |(3/4, 1) - (1, 1)| = 1/4 = |R/2 - r|$, confirming internal tangency of nine-point circle and incircle."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "feuerbachs-theorem-oq-01",
+      "relationship": "foundational",
+      "description": "Provides all definitions, special point formulas, and nine-point circle membership proofs imported by the main Feuerbach tangency proof (incircle and excircle tangency distance relations)"
+    },
+    {
+      "targetId": "feuerbachs-theorem",
+      "relationship": "foundational",
+      "description": "Provides the definitional infrastructure assembled by the top-level Feuerbach's Theorem entry"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "The Euclidean distance formula used throughout this module is a direct application of the Pythagorean theorem"
+    },
+    {
+      "targetId": "isosceles-triangle",
+      "relationship": "related",
+      "description": "Circumcenter equidistance from vertices is the defining property used in this module; the isosceles triangle proof shares similar coordinate geometry techniques"
+    }
+  ],
+  "conclusion": {
+    "summary": "This module provides comprehensive, fully verified infrastructure (687 lines, 38 theorems/lemmas, 35 definitions, 1 structure, 0 axioms, 0 sorries) for Feuerbach's Theorem. All 9 special points are proved to lie on the nine-point circle, the Euler line relation is established, and the 3-4-5 triangle serves as a numerical verification. This is the largest infrastructure entry in the gallery.",
+    "implications": "The coordinate geometry approach, while algebraically intensive, makes the nine-point circle properties fully constructive and computationally verifiable. The factored ninepoint_membership lemma provides a reusable proof pattern that could be extended to other circle membership proofs. The numerical verification with the 3-4-5 triangle demonstrates that all formulas are consistent.",
+    "openQuestions": [
+      "Can the altitude foot proofs be optimized to require fewer heartbeats (currently 25.6M)?",
+      "Extend to prove the nine-point circle is the unique circle through all 9 points",
+      "Formalize the Feuerbach point as the tangency point between the nine-point circle and incircle",
+      "Connect to Mathlib's affine geometry framework for a more abstract treatment"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Geometry.Euclidean.Sphere.Basic",
+      "Mathlib.Geometry.Euclidean.Triangle",
+      "Mathlib.Geometry.Euclidean.Circumcenter",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Real", "EuclideanGeometry"],
+    "namespace": "FeuerbachsTheorem",
+    "lineCount": 687,
+    "axiomCount": 0,
+    "theoremCount": 38,
+    "definitionCount": 35
+  }
+}

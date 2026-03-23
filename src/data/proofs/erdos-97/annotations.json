@@ -114,7 +114,7 @@
       "startLine": 109,
       "endLine": 128
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Danzer's Counterexample (1987)",
     "content": "**danzerCounterexample** is Danzer's famous 9-point construction.\n\nThere exists a convex 9-gon where EVERY vertex has exactly 3 other vertices equidistant from it.\n\n**Why an axiom?** The explicit coordinates involve √3 and specific rational multiples. See formal-conjectures for details.",
     "mathContext": "The construction uses 3 groups of 3 points arranged around an equilateral triangle core.",
@@ -133,7 +133,7 @@
       "startLine": 137,
       "endLine": 155
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Fishburn-Reeds Result (1992)",
     "content": "**fishburnReedsExample** is stronger than Danzer: a convex 20-gon where every vertex has 3 vertices at UNIT distance.\n\n**fishburnReedsMinimal** proves 20 is the minimum for this property.\n\nThis uses a fixed distance (1), not just equidistance at varying radii.",
     "mathContext": "The construction involves a careful arrangement ensuring all relevant distances are exactly 1.",
@@ -170,7 +170,7 @@
       "startLine": 202,
       "endLine": 209
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Non-Convex Case: No Bound",
     "content": "**hypercubeEmbedding** shows that without convexity, there's no bound.\n\nThe d-dimensional hypercube graph (2^d vertices, each with d neighbors) can be embedded in ℝ² with all edges having length 1.\n\nThis gives a (non-convex) polygon where every vertex has d unit-distance neighbors, for any d.",
     "mathContext": "This is why convexity is essential to the problem.",

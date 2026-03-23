@@ -96,7 +96,7 @@
       "startLine": 65,
       "endLine": 75
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Lower Bound (PNT)",
     "content": "The **Prime Number Theorem** gives a matching LOWER bound: Σ dₙ² ≥ c·N(log N)² for some constant c.\n\nThis is unconditional - no hypothesis needed.\n\n**Why?** The average gap is log p by PNT. So on average, dₙ² ≈ (log p)². Summing N such terms gives N(log N)².",
     "mathContext": "Axiomatized as: N(log N)² =O[atTop] sumSquaresGaps. This is the reverse big-O (lower bound).",
@@ -114,7 +114,7 @@
       "startLine": 77,
       "endLine": 87
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Cramér's Conditional Upper Bound (1936)",
     "content": "**Cramér** proved that assuming the **Riemann Hypothesis**, we have Σ dₙ² = O(N(log N)⁴).\n\nThis is the best known unconditional-style upper bound, but it's weaker than the conjecture by a factor of (log N)².\n\nThe proof uses deep connections between prime distribution and zeros of the zeta function.",
     "mathContext": "RiemannHypothesis → sumSquaresGaps =O[atTop] N(log N)⁴. Cramér's 1936 paper 'On the order of magnitude...'",
@@ -132,7 +132,7 @@
       "startLine": 89,
       "endLine": 102
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Selberg's Improvement (1943)",
     "content": "**Selberg** improved Cramér's result by considering a weighted sum:\n\nΣ dₙ²/n ≪ (log N)⁴\n\nThe 1/n weighting gives more influence to small indices. This is slightly stronger than Cramér's bound.\n\nSelberg's work pioneered the 'Selberg sieve' technique.",
     "mathContext": "RiemannHypothesis → selbergSum =O[atTop] (log N)⁴, where selbergSum = Σ dₙ²/(n+1).",
@@ -150,7 +150,7 @@
       "startLine": 106,
       "endLine": 116
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Current Status",
     "content": "**The conjecture remains OPEN.** We have:\n\n- Lower bound: N(log N)² (unconditional) ✓\n- Upper bound: N(log N)⁴ (conditional on RH) ✓\n- Conjecture: N(log N)² (open) ✗\n\nThe gap between what we can prove and what we conjecture is (log N)² - two logarithmic factors.",
     "mathContext": "We state: Erdos233Conjecture ∨ ¬Erdos233Conjecture (law of excluded middle - we don't know which).",
@@ -186,7 +186,7 @@
       "startLine": 137,
       "endLine": 140
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "First Prime Gaps",
     "content": "The first few prime gaps are:\n\n- d₀ = 3 - 2 = 1\n- d₁ = 5 - 3 = 2  \n- d₂ = 7 - 5 = 2\n\nThese concrete values are axiomatized since nthPrime is noncomputable in Lean.",
     "mathContext": "primeGap(0) = 1, primeGap(1) = 2, primeGap(2) = 2. These can be verified externally.",
@@ -204,7 +204,7 @@
       "startLine": 144,
       "endLine": 158
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "The **summary theorem** combines our concrete examples with the open status:\n\n1. First prime gaps: d₀=1, d₁=2, d₂=2\n2. The conjecture is either true or false (we don't know which)\n\nThis captures the complete state of knowledge we've formalized.",
     "mathContext": "summary_erdos_233: (first_prime_gaps) ∧ (Erdos233Conjecture ∨ ¬Erdos233Conjecture)",

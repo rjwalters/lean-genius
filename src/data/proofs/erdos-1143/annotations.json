@@ -56,7 +56,7 @@
   {
     "id": "covering-le-k",
     "line": 57,
-    "type": "theorem",
+    "type": "technique",
     "content": "**Trivial upper bound**: $F_k \\leq k$. At most $k$ integers in an interval of $k$ consecutive integers can be divisible by anything. This is the starting point for non-trivial estimates.",
     "mathContext": "Since $\\text{covered}(a,k) \\subseteq [a, a+k)$ and $|[a,a+k)| = k$, we have $|\\text{covered}(a,k)| \\leq k$ for all $a$, hence $\\inf_a |\\text{covered}(a,k)| \\leq k$.",
     "significance": "supporting",
@@ -72,7 +72,7 @@
   {
     "id": "single-prime-bounds",
     "line": 64,
-    "type": "theorem",
+    "type": "technique",
     "content": "**Single prime sandwich**: For a single prime $p$, $\\lfloor k/p \\rfloor \\leq F_k(\\{p\\}) \\leq \\lfloor k/p \\rfloor + 1$. In any $k$ consecutive integers, there are either $\\lfloor k/p \\rfloor$ or $\\lfloor k/p \\rfloor + 1$ multiples of $p$, depending on the starting position modulo $p$.",
     "mathContext": "Among $k$ consecutive integers starting at $a$, the multiples of $p$ are $\\{a + r, a + r + p, \\ldots\\}$ where $r = p - (a \\bmod p)$. The count is $\\lfloor(k - r)/p\\rfloor + 1$ if $r \\leq k$, else $\\lfloor k/p \\rfloor$. The minimum over $a$ is $\\lfloor k/p \\rfloor$.",
     "significance": "key",
@@ -91,7 +91,7 @@
   {
     "id": "density-positivity",
     "line": 77,
-    "type": "theorem",
+    "type": "technique",
     "content": "**Density is positive**: $0 < d(S) < 1$ for any nonempty set of primes. Each factor $(1 - 1/p) \\in (0,1)$ for primes $p \\geq 2$, so their product is in $(0,1)$, making $d = 1 - \\prod(1-1/p) \\in (0,1)$. This ensures the covering function grows linearly in $k$.",
     "mathContext": "For primes $p \\geq 2$: $0 < 1 - 1/p \\leq 1/2 < 1$, so $0 < \\prod_{p \\in S}(1 - 1/p) < 1$ when $S \\neq \\emptyset$. Hence $0 < 1 - \\prod(1-1/p) < 1$. The density approaches 1 as more primes are included (by Mertens' theorem, $\\prod_{p \\leq x}(1-1/p) \\sim 2e^{-\\gamma}/\\ln x$).",
     "significance": "key",
@@ -108,7 +108,7 @@
   {
     "id": "covering-asymptotic",
     "line": 92,
-    "type": "theorem",
+    "type": "technique",
     "content": "**Asymptotic density axiom**: $|F_k - k \\cdot d(S)| \\leq C$ for a constant $C$ depending only on the prime set, not on $k$. This says the covering function is well-approximated by the density prediction, with bounded error. Axiomatized because the proof requires CRT-based equidistribution in residue classes.",
     "mathContext": "The covering count in $[a, a+k)$ decomposes by residue classes modulo $\\text{lcm}(p_1, \\ldots, p_u)$. The deviation from $k \\cdot d$ comes from incomplete periods at the interval boundaries, contributing at most $O(\\text{lcm})$ error. The constant $C$ can be taken as $\\prod p_i$.",
     "significance": "key",
@@ -127,7 +127,7 @@
   {
     "id": "erdos-selfridge-exact",
     "line": 102,
-    "type": "theorem",
+    "type": "technique",
     "content": "**Erdős-Selfridge axiom** ($2 < \\alpha < 3$): When $k = \\alpha p_u$ with $\\alpha \\in (2,3)$, an exact value of $F_k$ exists. This is one of the 'lost results' in combinatorial number theory — Erdős and Selfridge reportedly found the formula, but the paper has never been located. Axiomatized as a placeholder for a known but unavailable result.",
     "mathContext": "When $\\alpha \\in (2,3)$, the interval $[a, a+k)$ contains exactly 2 or 3 multiples of $p_u$, creating a constrained optimization. The exact formula likely involves the precise residue class structure modulo $p_u$ combined with covering by smaller primes. The axiom states $\\exists v, F_k = v$ without specifying $v$.",
     "significance": "key",
@@ -146,7 +146,7 @@
   {
     "id": "alpha-gt-3-open",
     "line": 110,
-    "type": "theorem",
+    "type": "technique",
     "content": "**Open regime axiom** ($\\alpha > 3$): For $k = \\alpha p_u$ with $\\alpha > 3$, the covering function satisfies density-type bounds: $k(d-1) \\leq F_k \\leq kd + u$. This is essentially the density approximation plus/minus terms depending on the number of primes. Very little beyond these bounds is known.",
     "mathContext": "The upper bound $F_k \\leq kd + u$ adds at most one extra covered integer per prime (boundary effects). The lower bound $F_k \\geq k(d-1)$ is a weak form; the interesting question is whether $F_k \\geq k(d - \\epsilon)$ for small $\\epsilon$. Progress here would constrain Jacobsthal's function from above.",
     "significance": "key",
@@ -165,7 +165,7 @@
   {
     "id": "density-two-three",
     "line": 125,
-    "type": "theorem",
+    "type": "technique",
     "content": "**Concrete example**: $d(\\{2,3\\}) = 1 - (1-1/2)(1-1/3) = 1 - 1/3 = 2/3$. In any 6 consecutive integers, exactly 4 are divisible by 2 or 3 (and the minimum over starting positions is also 4). This is the simplest non-trivial case of the covering problem.",
     "mathContext": "The 6-element pattern modulo $\\text{lcm}(2,3) = 6$ is: positions $\\{0,2,3,4\\}$ are covered (0 by both, 2 by 2, 3 by 3, 4 by 2), positions $\\{1,5\\}$ are uncovered (both coprime to 6). So $F_6(\\{2,3\\}) = 4 = 6 \\cdot 2/3$.",
     "significance": "supporting",
@@ -182,7 +182,7 @@
   {
     "id": "density-two-three-five",
     "line": 131,
-    "type": "theorem",
+    "type": "technique",
     "content": "**Three-prime example**: $d(\\{2,3,5\\}) = 1 - (1/2)(2/3)(4/5) = 1 - 4/15 = 11/15 \\approx 0.733$. Among 30 consecutive integers (one full period of $\\text{lcm}(2,3,5) = 30$), exactly 22 are divisible by 2, 3, or 5. The 8 coprime elements are $\\{1,7,11,13,17,19,23,29\\}$ — the totatives of 30.",
     "mathContext": "Euler's totient: $\\phi(30) = 30 \\cdot (1-1/2)(1-1/3)(1-1/5) = 8$, so 22 out of 30 are covered. The density $11/15$ is exact by CRT periodicity. Adding more primes increases coverage: $d(\\{2,3,5,7\\}) = 1 - (1/2)(2/3)(4/5)(6/7) = 209/210$.",
     "significance": "supporting",

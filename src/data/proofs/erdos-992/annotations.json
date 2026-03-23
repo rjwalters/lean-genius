@@ -42,7 +42,7 @@
       "startLine": 73,
       "endLine": 89
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Known Upper Bounds",
     "content": "**erdos_koksma_cassels** (1949-50): D(N) ≤ C·√N·(log N)^{5/2} for a.e. α. The first metric result on discrepancy of lacunary-like sequences.\n\n**baker_1981**: D(N) ≤ C·√N·(log N)^{3/2} for a.e. α. The current best general bound, improving the exponent from 5/2 to 3/2.\n\nBoth use the ∀ᵐ quantifier from Mathlib's measure theory library to express 'for almost all α ∈ [0,1]'.\n\nBaker's improvement used refined estimates on exponential sums and the Erdős-Turán inequality.",
     "mathContext": "The improvement from (log N)^{5/2} to (log N)^{3/2} was substantial but still far from the conjectured o(1). No further improvement has been made since 1981.",
@@ -60,7 +60,7 @@
       "startLine": 91,
       "endLine": 104
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Lacunary Sequences",
     "content": "**Lacunary(x, λ):** x(n+1)/x(n) > λ > 1 for all n — the sequence grows at least geometrically.\n\n**erdos_gal_lacunary:** For lacunary sequences, D(N) ≤ C·√N·(log log N)^k for a.e. α.\n\nThis is much stronger than Baker's general bound: (log log N)^k versus (log N)^{3/2}. For example, at N = 10^6: (log N)^{3/2} ≈ 51, but log log N ≈ 2.6.\n\nThe Erdős-Gál result supports the conjecture that the general bound should also be subpolynomial in log N.",
     "mathContext": "Lacunary sequences have strong independence properties that make exponential sum estimates much easier. The question is whether these estimates can be extended to all sequences.",
@@ -113,7 +113,7 @@
       "startLine": 158,
       "endLine": 179
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_992_summary** (PROVED): Combines two key results:\n1. Baker's bound: D(N) ≪ √N·(log N)^{3/2} for all sequences and a.e. α\n2. Erdős-Gál: D(N) ≪ √N·(log log N)^k for lacunary sequences and a.e. α\n\nProof: ⟨baker_1981, erdos_gal_lacunary⟩\n\nThe summary captures the complete picture: the best general bound and the special lacunary bound. The conjectures ask whether the lacunary bound extends to all sequences.",
     "mathContext": "Both conjuncts are instantiated from the axiomatized results. The summary theorem is proved, not axiomatized.",

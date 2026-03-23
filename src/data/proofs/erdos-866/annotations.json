@@ -145,7 +145,7 @@
       "startLine": 69,
       "endLine": 74
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "g₃ Exact Value",
     "content": "Choi–Erdős–Szemerédi proved $g_3(N) = 2$ exactly. If A ⊆ {1,...,2N} has |A| ≥ N+2, then three integers b₁, b₂, b₃ exist with all three pairwise sums in A. The proof uses a pigeonhole argument on complementary pairs: with N+2 elements in a range of 2N, there are enough collisions in complementary pairs to force three mutually compatible sums.",
     "mathContext": "$g_3(N) = 2$ for all $N \\ge 1$. The upper bound: if $|A| \\ge N+2$, consider complementary pairs $(a, 2N+1-a)$. By pigeonhole, $A$ contains both elements of some pair, giving a structured starting point for finding the triple.",
@@ -189,7 +189,7 @@
       "startLine": 85,
       "endLine": 89
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "g₄ Bounded",
     "content": "$g_4(N)$ is bounded by an absolute constant C independent of N. This is surprising: no matter how large N is, adding a fixed constant beyond N elements always forces four integers with all $\\binom{4}{2} = 6$ pairwise sums in A. The proof uses a more sophisticated pigeonhole argument than the k=3 case, exploiting the arithmetic structure of {1,...,2N}.",
     "mathContext": "$\\exists C \\in \\mathbb{N},\\; \\forall N \\ge 1,\\; g_4(N) \\le C$. The constant $C$ is independent of $N$—a striking contrast with $g_5(N) \\to \\infty$.",
@@ -211,7 +211,7 @@
       "startLine": 91,
       "endLine": 95
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "van Doorn's Bound",
     "content": "van Doorn proved $g_4(N) \\le 2032$, the best known explicit bound. The gap between this and the lower bound (likely much smaller) remains wide. The proof combines algebraic and combinatorial techniques to systematically find four witnesses whose six pairwise sums all lie in any sufficiently dense subset.",
     "mathContext": "$g_4(N) \\le 2032$ for all $N \\ge 1$. The exact value of $g_4$ is unknown—it could be as small as a single digit.",
@@ -231,7 +231,7 @@
       "startLine": 99,
       "endLine": 106
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "g₅ Asymptotic",
     "content": "$g_5(N) \\asymp \\log N$: the first case where the threshold grows with N. The upper bound uses a probabilistic or greedy argument showing dense sets must contain the pattern. The lower bound constructs explicit sets of size $N + c \\log N$ avoiding the 5-element pairwise sums configuration. This logarithmic transition from the constant g₄ is a key feature of the problem.",
     "mathContext": "$\\exists c_1, c_2 > 0,\\; \\forall^\\infty N : c_1 \\log N \\le g_5(N) \\le c_2 \\log N$. The transition $g_4 = O(1)$ to $g_5 = \\Theta(\\log N)$ shows that requiring $\\binom{5}{2} = 10$ pairwise sums (vs $\\binom{4}{2} = 6$) fundamentally changes the problem.",
@@ -275,7 +275,7 @@
       "startLine": 119,
       "endLine": 126
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "g₆ Asymptotic",
     "content": "$g_6(N) \\asymp \\sqrt{N}$: the transition to polynomial growth. Requiring all $\\binom{6}{2} = 15$ pairwise sums of 6 integers is so restrictive that the threshold jumps from logarithmic to polynomial. The upper bound likely uses counting arguments on the number of potential 6-tuples, while the lower bound constructs sets of size $N + c\\sqrt{N}$ avoiding the configuration.",
     "mathContext": "$\\exists c_1, c_2 > 0,\\; \\forall^\\infty N : c_1 \\sqrt{N} \\le g_6(N) \\le c_2 \\sqrt{N}$. The jump from $\\Theta(\\log N)$ to $\\Theta(\\sqrt{N})$ between $k=5$ and $k=6$ is one of the most striking features.",
@@ -297,7 +297,7 @@
       "startLine": 130,
       "endLine": 139
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "General Upper Bound",
     "content": "For all $k \\ge 3$: $g_k(N) \\ll_k N^{1-2^{-k}}$. The exponent $1 - 2^{-k}$ approaches 1 as $k \\to \\infty$, so the bound approaches $N$. The proof uses induction on $k$ with a density increment argument: finding $k-1$ witnesses whose pairwise sums are in A, then leveraging the remaining density to find the $k$-th.",
     "mathContext": "$\\forall k \\ge 3,\\; \\exists C_k > 0,\\; \\forall^\\infty N : g_k(N) \\le C_k \\cdot N^{1-2^{-k}}$. Exponents: $k=3: 7/8$, $k=4: 15/16$, $k=5: 31/32$, $k=6: 63/64$, ..., $\\to 1$.",
@@ -342,7 +342,7 @@
       "startLine": 154,
       "endLine": 161
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "General Lower Bound",
     "content": "For any $\\varepsilon > 0$, if k is large enough, then $g_k(N) > N^{1-\\varepsilon}$. This means for large k, you need almost all of {1,...,2N} to guarantee the pairwise sums configuration. The proof constructs explicit avoiding sets using algebraic or probabilistic methods, showing the threshold can be pushed arbitrarily close to N.",
     "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists k_0 : \\forall k \\ge k_0,\\; \\forall^\\infty N : g_k(N) > N^{1-\\varepsilon}$. Combined with the upper bound: $g_k(N) = N^{1-o(1)}$ as $k \\to \\infty$.",

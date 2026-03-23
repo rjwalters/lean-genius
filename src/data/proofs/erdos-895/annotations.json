@@ -202,7 +202,7 @@
       "startLine": 75,
       "endLine": 78
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Barber's Theorem (2015): Main Computational Result",
     "content": "**Ben Barber's Result:** For all $n \\geq 18$ and every triangle-free graph $G$ on $\\text{Fin}\\,n$, `HasIndependentAdditiveTriple G`.\n\nVerified computationally via SAT: encode the negation as Boolean satisfiability (variables for edges, clauses for triangle-freeness and absence of independent additive triples), then check UNSAT for each $n \\geq 18$.\n\nThe `sorry` represents this deep computational result.",
     "mathContext": "SAT encoding: Boolean variables $e_{ij}$ for edges; clauses $\\neg e_{ab} \\lor \\neg e_{bc} \\lor \\neg e_{ac}$ (triangle-freeness) for all triples; and for each potential triple $(a,b,a+b)$: $e_{a,b} \\lor e_{b,a+b} \\lor e_{a,a+b}$ (NOT independent). UNSAT of this formula means no triangle-free graph avoids all independent additive triples.",
@@ -227,7 +227,7 @@
       "startLine": 80,
       "endLine": 83
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "erdos_895: The Conjecture Proved",
     "content": "**`erdos_895 : erdos895Conjecture`**\n\nProved cleanly: `use 18; exact barber_theorem`\n- `use 18`: instantiates the existential witness $N = 18$\n- `exact barber_theorem`: the remaining goal is exactly barber_theorem\n\n**Erdős Problem #895: SOLVED.** The conjecture is TRUE with threshold $N = 18$.",
     "mathContext": "After `use 18`, the goal becomes `∀ n ≥ 18, ∀ G: GraphOnInterval n, IsTriangleFree G → HasIndependentAdditiveTriple G` — which is precisely `barber_theorem`. This is the canonical Lean pattern for proving `∃ N, P N` by providing a witness and reducing to a named theorem.",
@@ -253,7 +253,7 @@
       "startLine": 87,
       "endLine": 96
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Counterexample for n=17 and Sharpness of Threshold",
     "content": "**`counterexample_17`:** There exists a triangle-free graph on 17 vertices with no independent additive triple — verified by Barber's SAT computation.\n\n**`threshold_sharp`:** Packages both directions:\n1. $\\forall n \\geq 18$: result holds (barber_theorem)\n2. $\\exists G$ on 17: triangle-free AND no independent additive triple (counterexample_17)\n\nProved: `exact ⟨barber_theorem, counterexample_17⟩`",
     "mathContext": "The sharpness theorem `threshold_sharp` is the conjunction `P ∧ Q` where `P = barber_theorem` and `Q = counterexample_17`. The `⟨·,·⟩` syntax is Lean's `And.intro`. The counterexample graph for $n = 17$ is a specific SAT-found triangle-free graph on $\\{1, \\ldots, 17\\}$ with no three independent vertices forming an additive triple.",
@@ -278,7 +278,7 @@
       "startLine": 100,
       "endLine": 104
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Ramsey R(3,3) = 6: Classical Foundation",
     "content": "**`ramsey_3_3`:** Any symmetric 2-coloring of $K_6$ contains a monochromatic triangle.\n\nFormally: for any symmetric `c : Fin 6 → Fin 6 → Fin 2`, there exist distinct $a, b, d$ with $c(a,b) = c(b,d) = c(a,d)$.\n\nThis underpins the independence bound: triangle-free graphs have large independent sets, whose arithmetic structure is the content of Problem #895.",
     "mathContext": "$R(3,3) = 6$ (Frank Ramsey, 1930): the smallest $n$ such that any 2-coloring of $K_n$ has a monochromatic triangle. Proof by pigeonhole: fix $v \\in K_6$ (degree 5); by pigeonhole $\\geq 3$ edges from $v$ have the same color. Those 3 endpoints: if any adjacent (same color) → monochromatic triangle with $v$; otherwise all three form a same-color independent set (but both colors form triangles by R(3,3)=6). The Lean formulation uses `Fin 6 → Fin 6 → Fin 2` for 2-coloring.",
@@ -303,7 +303,7 @@
       "startLine": 106,
       "endLine": 109
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Independence Bound: α(G) ≥ √n for Triangle-Free Graphs",
     "content": "**`triangleFree_independence_bound`:** Every triangle-free $G$ on $n$ vertices has an independent set of size $\\geq \\sqrt{n}$.\n\n`∃ S : Finset (Fin n), S.card ≥ Nat.sqrt n ∧ ∀ a b ∈ S, a ≠ b → ¬G.Adj a b`\n\nThis follows from Ramsey bounds. The $\\sqrt{n}$ guarantee gives the arithmetic search space needed for Problem #895.",
     "mathContext": "Ajtai-Komlós-Szemerédi (1980): triangle-free graphs on $n$ vertices have $\\alpha(G) \\geq c\\sqrt{n \\log n}$. The weaker bound $\\alpha(G) \\geq \\sqrt{n}$ follows from $R(3,k) \\leq Ck^2/\\log k$: if $\\alpha(G) < \\sqrt{n}$, the Ramsey bound would force a triangle, contradiction. `Nat.sqrt n` in Lean is $\\lfloor\\sqrt{n}\\rfloor$ (integer square root).",
@@ -431,7 +431,7 @@
       "startLine": 148,
       "endLine": 150
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Hajnal's Conjecture is OPEN: rfl Placeholder",
     "content": "**`hajnal_conjecture_open : hajnalConjecture ↔ hajnalConjecture := by rfl`**\n\nA tautology by reflexivity — makes no mathematical claim. This is the project's convention for documenting open problems: a compilable file entry that clearly marks the problem as unresolved while preserving its formal statement.",
     "mathContext": "`Iff.rfl : P ↔ P` holds for any proposition by reflexivity of $\\leftrightarrow$. The `rfl` tactic applies this automatically. The pattern `theorem X : P ↔ P := by rfl` is a placeholder: it compiles, documents the statement, but proves nothing. Compare with `sorry` (which also compiles but admits unprovable goals) — `rfl` on a tautology is entirely sound.",
@@ -455,7 +455,7 @@
       "startLine": 154,
       "endLine": 164
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Mantel's Theorem and Dense Triangle-Free Graphs",
     "content": "**`mantel_theorem`:** A triangle-free graph on $n$ vertices has $\\leq n^2/4$ edges: `G.edgeFinset.card ≤ n^2 / 4`.\n\n**`dense_triangleFree_independence`:** Dense triangle-free graphs (with $\\geq n^2/5$ edges) have independent sets of size $\\geq n/3$.\n\n`K_{n/2, n/2}` achieves exactly $n^2/4$ edges (complete bipartite, triangle-free).",
     "mathContext": "**Mantel (1907)**: $|E(G)| \\leq n^2/4$ for triangle-free $G$. Proof: $\\sum_{(u,v) \\in E} (\\deg u + \\deg v) \\leq n \\cdot |E|$ (each vertex appears in $\\deg v$ edge pairs), but $= \\sum_v \\deg(v)^2 \\geq 2|E|^2/n$ by Cauchy-Schwarz, so $|E| \\leq n^2/4$. `G.edgeFinset.card` counts the unordered edge set of a `SimpleGraph` in Mathlib. Note: `n^2 / 4` uses natural number division.",
@@ -481,7 +481,7 @@
       "startLine": 176,
       "endLine": 183
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "erdos_895_summary: Main Results Packaged",
     "content": "**`erdos_895_summary`:** The capstone theorem packaging:\n1. `∀ n ≥ 18, ∀ G: IsTriangleFree G → HasIndependentAdditiveTriple G` (the main result)\n2. `erdos895Threshold = 18` (the explicit threshold value)\n\nProved by `exact ⟨barber_theorem, rfl⟩`:\n- `barber_theorem` proves the main result\n- `rfl` proves `erdos895Threshold = 18` by definitional reduction ($18 = 18$)",
     "mathContext": "The `And.intro ⟨barber_theorem, rfl⟩` pattern: `rfl` closes `erdos895Threshold = 18` because `erdos895Threshold` was defined as `18` by `def erdos895Threshold : ℕ := 18` — so Lean's kernel unfolds both sides to `18 = 18 → rfl`. This packages both the theorem and the threshold value into a single named result for easy citation.",

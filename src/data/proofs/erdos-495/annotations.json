@@ -59,7 +59,7 @@
       "startLine": 73,
       "endLine": 86
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Littlewood Conjecture",
     "content": "**LittlewoodConjecture** is formalized as: for every pair of reals (α, β), every ε > 0, and every starting point N, there exists n ≥ N with n · ‖nα‖ · ‖nβ‖ < ε. This 'infinitely often' formulation is equivalent to saying the liminf is zero. The conjecture has been open for nearly a century.",
     "mathContext": "LittlewoodConjecture : Prop := ∀ α β : ℝ, ∀ ε > 0, ∀ N : ℕ, ∃ n ≥ N, n ≥ 1 ∧ littlewoodProduct n α β < ε. This is equivalent to the liminf formulation but avoids needing to formalize liminf over ℕ → ℝ in the type theory.",
@@ -77,7 +77,7 @@
       "startLine": 88,
       "endLine": 98
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Rational Case",
     "content": "**The conjecture is trivially true when α is rational.** If α = p/q, then for any multiple n of q, we have nα is an integer, so ‖nα‖ = 0 and the entire product vanishes. This is the simplest case and shows the conjecture is really about irrational numbers.",
     "mathContext": "If α = p/q with q ≥ 1, then for n = kq we get ‖nα‖ = ‖kp‖ = 0, making the Littlewood product zero. Axiomatized since the formal proof requires divisibility arguments.",
@@ -94,7 +94,7 @@
       "startLine": 100,
       "endLine": 111
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Cassels-Swinnerton-Dyer (1955)",
     "content": "**The first non-trivial result:** Cassels and Swinnerton-Dyer proved the Littlewood conjecture holds when α and β are algebraically related cubic irrationals — for example, α = ∛2 and β = (∛2)². Their proof uses the geometry of numbers and properties of cubic number fields.",
     "mathContext": "The theorem applies when α is a root of a cubic polynomial aX³ + bX + c = 0 (a ≠ 0) and β = rα² + sα for rational r, s. This covers pairs in the same cubic field extension of ℚ. The proof was later reinterpreted in terms of dynamics on SL(3,ℝ)/SL(3,ℤ).",
@@ -112,7 +112,7 @@
       "startLine": 113,
       "endLine": 136
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Einsiedler-Katok-Lindenstrauss (2006)",
     "content": "**The major breakthrough:** EKL proved that the set of counterexamples to the Littlewood conjecture has Hausdorff dimension zero. In simple terms, counterexamples (if they exist) are vanishingly rare — far rarer than any positive-dimensional set. This work earned Elon Lindenstrauss the 2010 Fields Medal.\n\n**ekl_countable_exceptions**: We axiomatize a weaker consequence: for each fixed α, the set of β failing Littlewood is countable.",
     "mathContext": "The proof uses ergodic theory on the homogeneous space SL(3,ℝ)/SL(3,ℤ), specifically the classification of invariant measures for diagonal actions (the A-action). The key insight is translating the number-theoretic problem into a question about orbit closures in a Lie group quotient.",
@@ -149,7 +149,7 @@
       "startLine": 165,
       "endLine": 188
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_495_summary** combines the known results:\n1. The conjecture holds for rational α (trivially)\n2. For each α, exceptions are countable (consequence of EKL)\n\n**Status: OPEN** in full generality.",
     "mathContext": "The summary theorem assembles littlewood_rational_case and ekl_countable_exceptions.",

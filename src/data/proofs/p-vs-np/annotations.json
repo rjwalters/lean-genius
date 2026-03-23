@@ -126,7 +126,7 @@
       "startLine": 205,
       "endLine": 252
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "P ⊆ NP",
     "content": "**Theorem**: $P \\subseteq NP$. If a problem can be **solved** in polynomial time, it can certainly be **verified** in polynomial time — the verifier simply runs the solver, ignoring the certificate. The proof constructs a verifier from the polynomial-time solver: given input $n$ and certificate $c$, it runs `prog.decide n` and discards $c$. The time bound requires careful polynomial arithmetic to show that `poly.eval (inputSize n)` is bounded by `poly'.eval (inputSize n + inputSize c)`.",
     "mathContext": "This is the 'easy direction' of the $P$ vs $NP$ relationship. The proof is fully constructive with no axioms: it builds the verifier explicitly, proves correctness (both completeness and soundness follow from `h_solves`), and establishes the polynomial time bound via `Nat.pow_le_pow_right` and `Nat.mul_le_mul_right`. The hard open question is whether $NP \\subseteq P$.",
@@ -173,7 +173,7 @@
       "startLine": 303,
       "endLine": 449
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Transitivity of Polynomial Reductions",
     "content": "**Theorem**: Polynomial reductions are transitive. Given $A \\leq_p B$ and $B \\leq_p C$, we construct $A \\leq_p C$ with $f_3 = f_2 \\circ f_1$. The proof is the most technically demanding in the file (~150 lines), requiring careful polynomial arithmetic to show that the composed time bound $T_1(n) + T_2(\\text{outputSize}_1(n))$ and composed output size $\\text{outputSize}_2(\\text{outputSize}_1(n))$ are both polynomial.",
     "mathContext": "The bounding polynomial uses degree $\\max(d_1, d_2 \\cdot d_3)$ and coefficient $2(c_1+1)(c_2+1)(c_3+1)^{d_2}$, capturing both the direct computation cost and the blowup from composing output sizes. Key lemmas used: `poly_pow_expand` for $(c \\cdot (n+1)^{d_1})^{d_2} = c^{d_2} \\cdot (n+1)^{d_1 d_2}$ and `Nat.pow_le_pow_right` for monotonicity of powers.",
@@ -196,7 +196,7 @@
       "startLine": 460,
       "endLine": 562
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Reductions Preserve P-Membership",
     "content": "**Theorem**: If $A \\leq_p B$ and $B \\in P$, then $A \\in P$. This is the fundamental property making polynomial reductions useful: they transfer tractability. The proof constructs a solver for $A$ that applies the reduction $f$ then runs $B$'s solver on $f(n)$, with the total time bounded by a polynomial combining the reduction's computation time and $B$'s running time on the (polynomially-bounded) output.",
     "mathContext": "The constructed program `prog_A` computes $f(n)$ in time $T_f(|n|)$ then runs $\\text{prog}_B$ on $f(n)$ in time $T_B(|f(n)|) \\leq T_B(\\text{outputSize}(|n|))$. Since both $T_f$ and $T_B \\circ \\text{outputSize}$ are polynomial, their sum is polynomial. This theorem, combined with Cook-Levin, yields the key equivalence: $P = NP$ iff any NP-complete problem is in $P$.",
@@ -266,7 +266,7 @@
       "startLine": 660,
       "endLine": 666
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Cook-Levin Theorem (1971)",
     "content": "**Cook-Levin Theorem**: SAT is NP-complete. The axiom `cook_levin_axiom` asserts that every NP problem poly-reduces to SAT. The theorem `cook_levin` then combines this with `SAT_in_NP_axiom` to establish NP-completeness. A full proof would require encoding Turing machine configurations as Boolean variables and transitions as CNF constraints (~5000+ lines).",
     "mathContext": "Cook's proof (1971) encodes the computation tableau of a nondeterministic TM as a Boolean formula: variables $x_{i,j,s}$ represent 'cell $(i,j)$ contains symbol $s$'. Transition constraints become CNF clauses. The formula has size $O(T(n)^2)$ where $T(n)$ is the NTM's time bound, so the reduction is polynomial. Levin independently proved the same result (1973) in the USSR.",
@@ -290,7 +290,7 @@
       "startLine": 672,
       "endLine": 755
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "NP-Complete Problems: 3-SAT, CLIQUE, SUBSET-SUM, HAMPATH",
     "content": "Several classic NP-complete problems are defined and their NP-completeness proved via reduction chains from SAT. Since all are modeled as the same abstract placeholder (`fun _ => false`), the reductions are identity functions. In the real theory: SAT $\\leq_p$ 3-SAT (clause splitting), 3-SAT $\\leq_p$ CLIQUE (gadget construction), 3-SAT $\\leq_p$ SUBSET-SUM (binary encoding), 3-SAT $\\leq_p$ HAMPATH (vertex gadgets).",
     "mathContext": "Karp (1972) established the first large catalog of NP-complete problems by showing reduction chains from SAT. The formalization uses helper theorems `always_false_inNP` and `eq_SAT_NPHard` to streamline the proofs, since all placeholder problems are the same constant function. The actual reductions (e.g., 3-SAT from SAT via clause-splitting into $O(k)$ 3-literal clauses) would each require hundreds of lines.",
@@ -315,7 +315,7 @@
       "startLine": 769,
       "endLine": 806
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "coNP, Complement Closure, and P ⊆ coNP",
     "content": "`coNP` is defined as $\\{L \\mid \\bar{L} \\in NP\\}$ — problems whose complements are in NP. The key theorem `P_closed_complement` proves that $P$ is closed under complementation: $L \\in P \\Leftrightarrow \\bar{L} \\in P$. As a corollary, $P \\subseteq NP \\cap \\text{coNP}$. Whether $NP = \\text{coNP}$ is another major open question.",
     "mathContext": "The proof of $P$-complement closure constructs a new program that negates the output: given solver $M$ for $L$, define $M'(x) = \\neg M(x)$. Both directions use this construction. The theorem `P_subset_coNP` chains: $L \\in P \\Rightarrow \\bar{L} \\in P \\Rightarrow \\bar{L} \\in NP \\Rightarrow L \\in \\text{coNP}$. If $P \\neq NP$, it is widely believed that $NP \\neq \\text{coNP}$ as well.",
@@ -339,7 +339,7 @@
       "startLine": 822,
       "endLine": 864
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The P ≠ NP Conjecture and Key Equivalences",
     "content": "The conjecture $P \\neq NP$ is formalized as `P_ne_NP_Conjecture := P ≠ NP`. The theorem `P_ne_NP_iff_exists` proves equivalence with $\\exists L \\in NP,\\, L \\notin P$. The central result `NPC_in_P_implies_P_eq_NP` shows: if **any** NP-complete problem is in $P$, then $P = NP$. This means the entire $P$ vs $NP$ question reduces to the tractability of a single NP-complete problem.",
     "mathContext": "The proof of `NPC_in_P_implies_P_eq_NP` uses the reduction chain: for any $A \\in NP$, NP-hardness of $L$ gives $A \\leq_p L$, and since $L \\in P$, `poly_reduce_P_preserved` yields $A \\in P$. Thus $NP \\subseteq P$, and combined with `P_subset_NP`, we get $P = NP$. The contrapositive is equally important: if $P \\neq NP$, then **no** NP-complete problem is in $P$.",
@@ -362,7 +362,7 @@
       "startLine": 874,
       "endLine": 887
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Time Hierarchy and P ≠ EXPTIME",
     "content": "Two separation results are stated as axioms: the **Time Hierarchy Theorem** ($\\text{DTIME}(n) \\subsetneq \\text{DTIME}(n^2)$, proved by diagonalization) and $P \\neq \\text{EXPTIME}$. These demonstrate that time-bounded complexity classes form a strict hierarchy, but the gap between $P$ and $NP$ — which lies between $P$ and $\\text{EXPTIME}$ — remains unresolved.",
     "mathContext": "The Time Hierarchy Theorem (Hartmanis-Stearns, 1965) uses a universal TM to diagonalize: construct a problem solvable in $O(n^2)$ steps but not in $O(n)$ steps. The separation $P \\neq \\text{EXPTIME}$ follows from $P \\subseteq \\text{DTIME}(n^k)$ for some $k$, and $\\text{DTIME}(n^k) \\subsetneq \\text{DTIME}(2^{n^k})$ by the hierarchy theorem. These are the strongest unconditional separations known for deterministic classes.",
@@ -386,7 +386,7 @@
       "startLine": 898,
       "endLine": 899
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Ladner's Theorem (1975): NP-Intermediate Problems",
     "content": "**Ladner's Theorem**: If $P \\neq NP$, then there exist **NP-intermediate** problems — problems in $NP$ that are neither in $P$ nor NP-complete. This shows the NP landscape is rich, not a simple two-tier hierarchy. Candidate NP-intermediate problems include Graph Isomorphism (now known to be in quasi-polynomial time by Babai 2015) and Integer Factorization (basis of RSA cryptography).",
     "mathContext": "Ladner's proof constructs an artificial NP-intermediate problem by 'padding' SAT: define $L_H = \\{(\\varphi, 1^{H(|\\varphi|)}) \\mid \\varphi \\in \\text{SAT}\\}$ where $H$ grows slowly enough that $L_H \\notin P$ but fast enough that $L_H$ is not NP-hard. The construction uses a careful diagonalization against all polynomial-time algorithms and all polynomial-time reductions.",

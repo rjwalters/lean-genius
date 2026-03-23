@@ -92,7 +92,7 @@
       "startLine": 100,
       "endLine": 104
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bernstein's Theorem (1931)",
     "content": "**bernstein**\n\nFor ANY choice of interpolation nodes:\n$$\\exists x_0 \\in [-1,1]: \\limsup_{n\\to\\infty} \\lambda_n(x_0) = \\infty$$\n\nThis is a fundamental negative result: uniform convergence for all continuous functions is impossible regardless of node choice.",
     "mathContext": "Bernstein's theorem shows that the Lebesgue function must diverge somewhere. The question is whether convergence can still occur at such points.",
@@ -109,7 +109,7 @@
       "startLine": 118,
       "endLine": 123
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdos-Vertesi Theorem (1980)",
     "content": "**erdos_vertesi**\n\nFor ANY choice of interpolation nodes, there exists a continuous function f such that:\n$$|L^n f(x)| \\to \\infty \\text{ for almost every } x$$\n\nEven stronger than Bernstein: not just the Lebesgue function, but the actual interpolation diverges a.e. for some f.",
     "mathContext": "This shows that for any node choice, pathological functions exist. But the questions ask about ALL continuous f.",
@@ -177,7 +177,7 @@
       "startLine": 200,
       "endLine": 205
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Faber's Theorem",
     "content": "**faber**\n\nFor ANY choice of interpolation nodes, there exists a continuous function f for which L^n f does NOT converge uniformly to f.\n\nThis is another fundamental negative result: universal uniform convergence is impossible.",
     "mathContext": "Faber's theorem complements Bernstein's: one shows Lebesgue diverges, the other shows actual interpolation diverges.",
@@ -190,7 +190,7 @@
       "startLine": 214,
       "endLine": 219
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Positive Measure Divergence",
     "content": "**positive_measure_divergence**\n\nFor any point sequence, there exists a continuous f such that the set where |L^n f(x)| -> infinity has positive measure.\n\nCombined with Erdos-Vertesi (a.e. divergence), this shows how widespread divergence can be.",
     "significance": "key"

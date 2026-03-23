@@ -74,7 +74,7 @@
       "startLine": 37,
       "endLine": 58
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "powersOfTwo_not_divisibility_free (Fully Proved)",
     "content": "Powers of 2 do NOT form a divisibility-free set. Counterexample: a=2, b=4, c=8 gives 2 | (4+8) = 2 | 12. The proof provides this explicit counterexample and derives the contradiction.",
     "mathContext": "The counterexample $a = 2, b = 4, c = 8$: all distinct, $2 < 4$ and $2 < 8$, and $2 \\mid 12$ since $12 = 6 \\times 2$. More generally, for $i < j$ and $i < k$: $2^i \\mid (2^j + 2^k)$ since $2^j + 2^k = 2^{\\min(j,k)}(1 + 2^{|j-k|})$ and $i \\leq \\min(j,k)$. This corrects the annotation from the earlier version which incorrectly claimed powers of 2 are divisibility-free.",
@@ -118,7 +118,7 @@
       "startLine": 73,
       "endLine": 77
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "neg_one_not_square_mod_three_mod_four (Fully Proved)",
     "content": "The first supplementary law of quadratic reciprocity: -1 is a quadratic non-residue mod p when p ≡ 3 (mod 4). Proved using ZMod.exists_sq_eq_neg_one_iff and omega.",
     "mathContext": "The first supplementary law: $\\left(\\frac{-1}{p}\\right) = (-1)^{(p-1)/2}$, so $-1$ is a QR mod $p$ iff $p \\equiv 1 \\pmod{4}$. In Lean: $\\texttt{ZMod.exists\\_sq\\_eq\\_neg\\_one\\_iff}$ gives the equivalence $\\texttt{IsSquare}(-1 : \\texttt{ZMod } p) \\iff p \\% 4 \\neq 3$, and $\\texttt{omega}$ closes the goal from $p \\% 4 = 3$.",
@@ -140,7 +140,7 @@
       "startLine": 85,
       "endLine": 141
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "prime_3mod4_not_div_sum_squares (Fully Proved)",
     "content": "If p, q, r are distinct primes ≡ 3 (mod 4) with p < q and p < r, then p ∤ (q² + r²). The proof works in ZMod p: if p | (q²+r²), then q²+r² ≡ 0 mod p, so (r/q)² ≡ -1 mod p, contradicting the first supplementary law.",
     "mathContext": "The proof strategy: assume $p \\mid (q^2 + r^2)$. In $\\mathbb{Z}/p\\mathbb{Z}$: $q^2 + r^2 \\equiv 0$, so $r^2 = -q^2$. Since $p \\nmid q$ (distinct primes with $p < q$), $q$ is a unit in $\\mathbb{Z}/p\\mathbb{Z}$, and $(r \\cdot q^{-1})^2 = r^2 \\cdot (q^2)^{-1} = -q^2 \\cdot (q^2)^{-1} = -1$. So $-1$ is a square mod $p$, contradicting $p \\equiv 3 \\pmod{4}$. The $\\texttt{calc}$ block shows $(r \\cdot q^{-1})^2 = r^2 \\cdot (q^2)^{-1} = -q^2 \\cdot (q^2)^{-1} = -1$.",
@@ -164,7 +164,7 @@
       "startLine": 143,
       "endLine": 188
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "primeSquares3mod4_divisibility_free (Fully Proved)",
     "content": "The main construction theorem: squares of primes ≡ 3 (mod 4) form a divisibility-free set. If p² < q², r² are squares of distinct primes ≡ 3 (mod 4), then p² ∤ (q² + r²). The proof unpacks the set membership, derives p < q and p < r from p² < q² and p² < r², applies prime_3mod4_not_div_sum_squares to get p ∤ (q²+r²), then lifts to p² ∤ (q²+r²).",
     "mathContext": "The key chain: $p^2 < q^2 \\implies p < q$ (since squaring is monotone on $\\mathbb{N}$), then $p \\nmid (q^2 + r^2)$ by the quadratic residue argument, then $p^2 \\nmid (q^2 + r^2)$ since $p \\mid p^2$ and divisibility is transitive. The final step uses $\\texttt{sq\\_not\\_dvd\\_of\\_not\\_dvd}$: if $p \\nmid n$ then $p^2 \\nmid n$.",
@@ -187,7 +187,7 @@
       "startLine": 192,
       "endLine": 198
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Sárközy: Density Zero",
     "content": "Every infinite divisibility-free set has asymptotic density 0: |A ∩ {1,...,N}| / N → 0 as N → ∞. This rules out sets with positive density but leaves the decay rate completely open.",
     "mathContext": "The density zero result $A(N)/N \\to 0$ follows from a counting argument: if $A$ had positive density $\\delta > 0$, then for large $N$, $A$ contains $\\sim \\delta N$ elements in $[1, N]$. For a typical $a \\in A \\cap [1, \\sqrt{N}]$, the residues $\\{b \\bmod a : b \\in A, b > a\\}$ would fill $\\Omega(\\delta N / a)$ of the $a$ residue classes. The sum-free constraint mod $a$ limits this to $< a/2$ classes, giving $\\delta N / a < a/2$, or $a > \\sqrt{2\\delta N}$. But $a \\leq \\sqrt{N}$ by assumption — contradiction for $\\delta > 1/2$. Iterating this argument drives $\\delta \\to 0$.",
@@ -277,7 +277,7 @@
       "startLine": 236,
       "endLine": 246
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Coprime Case: Schoen-Baier Bound",
     "content": "When A is both divisibility-free and pairwise coprime, the bound improves dramatically: A(N) = O(N^{2/3}/log N). Proved by Schoen (2001) and Baier (2004) using sieve methods. The coprime constraint eliminates shared factors that could create large divisibility-free subsets.",
     "mathContext": "For pairwise coprime $A$: $A(N) \\leq C N^{2/3} / \\log N$. The exponent $2/3$ is far below $1/2$ from $\\sqrt{N}$, showing coprimality forces much stronger sparseness. The proof uses the large sieve inequality: coprime elements in $[1, N]$ have limited residue class overlaps, and the sum-free condition mod $a$ further restricts growth.",
@@ -299,7 +299,7 @@
       "startLine": 250,
       "endLine": 273
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "primeSquares3mod4_is_good (Fully Proved)",
     "content": "Combines two proved results: primeSquares3mod4_infinite (the set is infinite, using Dirichlet's theorem as axiom + injectivity of squaring) and primeSquares3mod4_divisibility_free (the set satisfies the property, via quadratic residue argument). This provides a concrete infinite divisibility-free set with growth ~√N/log N.",
     "mathContext": "Infiniteness: the map $p \\mapsto p^2$ is injective on $\\{p : p \\equiv 3 \\pmod{4},\\; p \\text{ prime}\\}$, and this set is infinite by Dirichlet's theorem (axiomatized as $\\texttt{infinitely\\_many\\_primes\\_3mod4}$). So the image $\\{p^2\\}$ is infinite. Combined with $\\texttt{primeSquares3mod4\\_divisibility\\_free}$: the conjunction gives a fully-verified example.",

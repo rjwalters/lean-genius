@@ -92,7 +92,7 @@
       "startLine": 73,
       "endLine": 78
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Size Ramsey Number",
     "content": "sizeRamseyNumber(G) = R̂(G) is the minimum number of edges in a graph H that is Ramsey for G. Axiomatized since the definition spans all graph sizes.",
     "mathContext": "Introduced by Erdős-Faudree-Rousseau-Schelp (1978). Measures edge-complexity of Ramsey.",
@@ -143,7 +143,7 @@
       "startLine": 108,
       "endLine": 111
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Beck's Theorem (1983)",
     "content": "R̂(Pₙ) = O(n) for paths. Paths have linear size Ramsey numbers despite having n-1 edges.",
     "mathContext": "Beck's breakthrough showed paths are 'easy' for size Ramsey. Uses random embedding techniques.",
@@ -160,7 +160,7 @@
       "startLine": 112,
       "endLine": 117
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Rödl-Szemerédi Theorem (2000)",
     "content": "R̂(Kₙ) = Θ(n²) for complete graphs. This is linear in edge count e(Kₙ) = n(n-1)/2.",
     "mathContext": "Complete graphs are maximally dense but have R̂ = Θ(edges), not superlinear.",
@@ -177,7 +177,7 @@
       "startLine": 118,
       "endLine": 123
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "KRSS Theorem (2011)",
     "content": "Bounded degree graphs have linear size Ramsey numbers: if max_deg(G) ≤ Δ, then R̂(G) = O_Δ(n).",
     "mathContext": "Kohayakawa-Rödl-Schacht-Szemerédi showed bounded degree is sufficient for linear R̂.",
@@ -194,7 +194,7 @@
       "startLine": 130,
       "endLine": 134
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Trivial Lower Bound",
     "content": "R̂(G) ≥ e(G) always. Any Ramsey graph H for G must contain G as a subgraph, hence has at least e(G) edges.",
     "mathContext": "This is the baseline. The conjecture asks if density improves this to R̂(G) ≥ f(C)·e(G).",
@@ -211,7 +211,7 @@
       "startLine": 135,
       "endLine": 140
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Dense Graphs Have Many Edges",
     "content": "If G is C-dense (e ≥ Cn), then e(G) ≥ Cn trivially. Combined with R̂ ≥ e, we get R̂(G) ≥ Cn.",
     "mathContext": "But the question is whether we can do better: R̂(G) ≥ f(C)·e(G) where f(C)/C → ∞.",
@@ -262,7 +262,7 @@
       "startLine": 171,
       "endLine": 178
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Vertex Ramsey Number",
     "content": "graphRamseyNumber(G) = R(G) is the classical Ramsey number (minimum vertices). R̂(G) ≤ e(K_{R(G)}) = R(G)·(R(G)-1)/2.",
     "mathContext": "Size Ramsey is bounded by taking the complete graph on R(G) vertices.",

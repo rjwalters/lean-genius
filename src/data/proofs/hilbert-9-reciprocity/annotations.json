@@ -24,7 +24,7 @@
       "startLine": 76,
       "endLine": 80
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Quadratic Reciprocity",
     "content": "**Gauss's Golden Theorem** (1796): For distinct odd primes $p$ and $q$:\n\n$(p/q)(q/p) = (-1)^{\\frac{p-1}{2} \\cdot \\frac{q-1}{2}}$\n\nThis is the simplest reciprocity law, governing when a prime is a quadratic residue (perfect square) modulo another prime.\n\nGauss called this his 'golden theorem' and gave 8 different proofs during his lifetime.",
     "mathContext": "$(p/q) = 1$ means $p$ is a quadratic residue mod $q$: $\\exists x : x^2 \\equiv p \\pmod{q}$\n\n$(p/q) = -1$ means $p$ is a quadratic non-residue mod $q$",
@@ -42,7 +42,7 @@
       "startLine": 82,
       "endLine": 85
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "First Supplementary Law",
     "content": "**First Supplementary Law**: $-1$ is a quadratic residue mod $p$ if and only if $p \\equiv 1 \\pmod{4}$.\n\nThis tells us when the equation $x^2 \\equiv -1 \\pmod{p}$ has solutions. For example:\n- $p = 5$: $2^2 = 4 \\equiv -1$, so $-1$ is a QR\n- $p = 7$: No solution exists, so $-1$ is a QNR",
     "mathContext": "$(-1/p) = (-1)^{\\frac{p-1}{2}} = \\begin{cases} 1 & \\text{if } p \\equiv 1 \\pmod{4} \\\\ -1 & \\text{if } p \\equiv 3 \\pmod{4} \\end{cases}$",
@@ -60,7 +60,7 @@
       "startLine": 87,
       "endLine": 90
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Second Supplementary Law",
     "content": "**Second Supplementary Law**: $2$ is a quadratic residue mod $p$ if and only if $p \\equiv \\pm 1 \\pmod{8}$.\n\nFor example:\n- $p = 7 \\equiv 7 \\pmod{8}$: $3^2 = 9 \\equiv 2$, so $2$ is a QR\n- $p = 5 \\equiv 5 \\pmod{8}$: No solution, so $2$ is a QNR",
     "mathContext": "$(2/p) = (-1)^{\\frac{p^2-1}{8}} = \\begin{cases} 1 & \\text{if } p \\equiv \\pm 1 \\pmod{8} \\\\ -1 & \\text{if } p \\equiv \\pm 3 \\pmod{8} \\end{cases}$",
@@ -114,7 +114,7 @@
       "startLine": 134,
       "endLine": 152
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Artin Reciprocity Law",
     "content": "**Artin Reciprocity** (1927): For an abelian extension $L/K$ of number fields, the Artin map\n\n$\\mathfrak{p} \\mapsto (L/K, \\mathfrak{p})$\n\nextends to a surjective homomorphism from the ray class group $C_{\\mathfrak{m}}(K)$ to $\\text{Gal}(L/K)$.\n\nThis is THE answer to Hilbert's 9th problem. Every reciprocity law follows from this single principle!",
     "mathContext": "$\\psi: I^{\\mathfrak{m}}(K) \\to \\text{Gal}(L/K)$\n$\\psi(\\mathfrak{p}) = (L/K, \\mathfrak{p})$\n\nKernel: $\\ker(\\psi) = P_{\\mathfrak{m},1}(K) \\cdot N_{L/K}(I(L))$",
@@ -168,7 +168,7 @@
       "startLine": 217,
       "endLine": 237
     },
-    "type": "example",
+    "type": "context",
     "title": "Modular Arithmetic Examples",
     "content": "We verify properties underlying the reciprocity law:\n\n**Residue classes mod 4**: $5 \\equiv 1$, $3 \\equiv 3 \\pmod{4}$\n\n**Residue classes mod 8**: $7 \\equiv 7$, $5 \\equiv 5 \\pmod{8}$\n\n**Sign computation**: For $p=3, q=7$:\n$(p-1)/2 \\cdot (q-1)/2 = 1 \\cdot 3 = 3$ (odd)\n\nSo $(3/7)(7/3) = -1$ by the main reciprocity law.",
     "mathContext": "The sign factor $(-1)^{(p-1)/2 \\cdot (q-1)/2}$ determines whether the Legendre symbols are equal or opposite.",

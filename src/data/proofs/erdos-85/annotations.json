@@ -116,7 +116,7 @@
       "startLine": 107,
       "endLine": 115
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Asymptotic Behavior",
     "content": "**minDegreeForC4_asymptotic** states that f(n)/√n → 1 as n → ∞.\n\nThis means f(n) = (1 + o(1))√n: the threshold grows like the square root of the number of vertices.\n\n**Why an axiom?** This is a known result from extremal graph theory, but formalizing the proof requires substantial machinery.",
     "mathContext": "Formally: `Tendsto (fun n => f(n)/√n) atTop (𝓝 1)` says the ratio converges to 1.",
@@ -171,7 +171,7 @@
       "startLine": 188,
       "endLine": 195
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Kővári-Sós-Turán Theorem",
     "content": "**kovariSosTuran** gives an upper bound on C₄-free graphs: at most n²/4 + n/2 edges.\n\nThis is a fundamental result in extremal graph theory. It implies that dense graphs must contain 4-cycles.\n\n**Why an axiom?** The proof is well-known but not yet formalized in Mathlib.",
     "mathContext": "The bound O(n^{3/2}) on edges translates to O(√n) on average/minimum degree—connecting to f(n) ~ √n.",

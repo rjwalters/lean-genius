@@ -149,7 +149,7 @@
       "startLine": 190,
       "endLine": 201
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bounds on AR",
     "content": "ar_lower_bound: AR(n, H) >= 1. ar_upper_bound: AR(n, H) <= C(n,2). ar_mono_n: monotone in n.",
     "mathContext": "Basic bounds. Upper bound is trivial (each edge gets own color). Monotonicity follows from restriction.",
@@ -167,7 +167,7 @@
       "startLine": 209,
       "endLine": 217
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Turan Connection",
     "content": "turan(n, k, H) := max edges in H-free graph. ar_turan_lower: AR(n, H) >= ex(n, H) + 1.",
     "mathContext": "Key connection to extremal graph theory. Give H-free subgraph rainbow coloring, one color for complement.",
@@ -185,7 +185,7 @@
       "startLine": 227,
       "endLine": 234
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Special Cases",
     "content": "ar_path_3: AR(n, P_3) = 1. ar_k3: AR(n, K_3) = n - 1. Small cases are known exactly.",
     "mathContext": "P_3 is trivial (2 edges need different colors). K_3 = C_3 gives n-1 by Erdos-Simonovits-Sos.",

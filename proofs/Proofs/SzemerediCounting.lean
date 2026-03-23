@@ -811,12 +811,26 @@ theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
           _ ≤ delta / 8 * (n : ℚ) ^ 2 + delta / 8 * (n : ℚ) ^ 2 := by linarith
           _ = delta / 4 * (n : ℚ) ^ 2 := by ring
       -- Step 3: Bound irregular cross-part pairs ≤ (δ/2)n²
-      -- #irregular ordered pairs ≤ ε·k·(k-1), each contributes ≤ (n/k+1)² pairs.
-      -- Total ≤ ε·k²·(n/k+1)² ≤ 4ε·n² ≤ (δ/2)·n² (since ε ≤ δ/8).
+      -- PROOF STRATEGY: Same pattern as h_wp above.
+      -- 1. R_irreg ⊆ biUnion over irregular pairs of (Vi ×ˢ Vj)
+      -- 2. Use Finset.card_le_card + Finset.card_biUnion_le (same as h_wp lines 733-746)
+      -- 3. Each |Vi ×ˢ Vj| ≤ (n/k+1)² (from hmax_part)
+      -- 4. Number of irregular ordered pairs: unfold IsRegularPartition → hreg gives
+      --    (parts.product parts).filter(irregular).card ≤ eps * k * (k-1)
+      -- 5. Total ≤ eps * k² * (n/k+1)² ≤ 4*eps*n² (expand, use k ≤ n)
+      -- 6. Since eps ≤ delta/8: 4*eps*n² ≤ (delta/2)*n²
       have h_irreg : (R_irreg.card : ℚ) ≤ (delta / 2) * ↑n ^ 2 := by sorry
       -- Step 4: Bound sparse cross-part edges ≤ (δ/4)n²
-      -- Each sparse pair has density < 2ε, so edge count < 2ε·|Vi|·|Vj|.
-      -- Total sparse edges < 2ε · Σ|Vi|·|Vj| ≤ 2ε·n² ≤ (δ/4)·n².
+      -- PROOF STRATEGY: Different from h_wp — this filters on G.Adj.
+      -- 1. R_sparse ⊆ biUnion over sparse pairs of (Vi ×ˢ Vj).filter(G.Adj)
+      -- 2. Each sparse pair has edgeDensity < 2*eps
+      -- 3. Use card_mul_edgeDensity: |(Vi×Vj).filter Adj| = density * |Vi| * |Vj|
+      --    so each contributes < 2*eps * |Vi| * |Vj| ≤ 2*eps * (n/k+1)²
+      -- 4. At most k² ordered pairs total
+      -- 5. Total < 2*eps * k² * (n/k+1)² ≤ 2*eps * 4 * n² (expand)
+      --    BUT simpler: Σ|Vi|·|Vj| over all pairs ≤ (Σ|Vi|)² = n²
+      --    so total < 2*eps * n²
+      -- 6. Since eps ≤ delta/8: 2*eps*n² ≤ (delta/4)*n²
       have h_sparse : (R_sparse.card : ℚ) ≤ (delta / 4) * ↑n ^ 2 := by sorry
       -- Step 5: Combine the three bounds
       calc (R.card : ℚ) ≤ ↑R_wp.card + ↑R_irreg.card + ↑R_sparse.card := hR_card

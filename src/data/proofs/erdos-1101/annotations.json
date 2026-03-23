@@ -111,7 +111,7 @@
       "startLine": 85,
       "endLine": 90
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Conjecture 1: No Polynomial Growth",
     "content": "Erdős conjectured that **NO good sequence can have polynomial growth** uₙ = O(n^k).\n\nThe intuition is that polynomial-growth sequences don't have enough 'room' between their terms to satisfy the gap bound. This is axiomatized because it remains an **OPEN problem**.",
     "significance": "key",
@@ -128,7 +128,7 @@
       "startLine": 92,
       "endLine": 98
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Conjecture 2: Sub-exponential Growth Possible",
     "content": "Erdős conjectured that there **IS** a good sequence with sub-exponential growth: log(uₙ) = o(n).\n\nThis means uₙ grows slower than any exponential e^(cn). The gap between polynomial (too slow) and sub-exponential (achievable) is the heart of the problem.",
     "significance": "key",
@@ -145,7 +145,7 @@
       "startLine": 107,
       "endLine": 111
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős's Existence Theorem",
     "content": "Erdős proved that **SOME good sequence exists**—specifically, the sequence of all primes works.\n\nThis establishes that the 'good' condition is not vacuous. However, the primes grow like n log n (slower than any polynomial n^(1+ε)), so this doesn't resolve the growth rate questions.",
     "significance": "key",
@@ -162,7 +162,7 @@
       "startLine": 113,
       "endLine": 121
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sieve Theory Lower Bound",
     "content": "Classical sieve theory shows that gaps in A must be **at least** (1+o(1))·t·∏(1-1/uᵢ)⁻¹.\n\nThis is the lower bound matching the upper bound in the 'good' definition. The 'good' condition asks when this bound is essentially tight.",
     "mathContext": "Sieve methods give lower bounds on gaps by counting integers in intervals that survive the sieve. The product formula gives the expected density.",

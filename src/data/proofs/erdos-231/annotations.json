@@ -125,7 +125,7 @@
       "startLine": 91,
       "endLine": 103
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Avoidance Hierarchy",
     "content": "**square_is_abelian_square, abelian_square_free_implies_squarefree:**\n\nEvery square is an abelian square.\n\nSo abelian-square-free ⟹ squarefree.",
     "mathContext": "This hierarchy is fundamental in combinatorics on words.",
@@ -159,7 +159,7 @@
       "startLine": 124,
       "endLine": 127
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Thue's Theorem",
     "content": "**thue_squarefree:**\n\nArbitrarily long squarefree strings exist over 3 letters.\n\n(In fact, infinite squarefree strings exist.)",
     "mathContext": "Thue proved this in the early 1900s, founding the field.",
@@ -177,7 +177,7 @@
       "startLine": 129,
       "endLine": 131
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "3 Letters Not Enough",
     "content": "**three_letters_not_enough:**\n\nFor abelian-square-free, 3 letters are NOT enough.\n\nAll sufficiently long strings over 3 letters contain abelian squares.",
     "significance": "key",
@@ -193,7 +193,7 @@
       "startLine": 139,
       "endLine": 145
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Keränen's Construction",
     "content": "**keranen_1992:**\n\nFor every n, there exists an abelian-square-free string of length n over 4 letters.\n\nEquivalently, infinite abelian-square-free strings exist over {1,2,3,4}.",
     "mathContext": "Published in ICALP 1992, pp. 41-52.",
@@ -211,7 +211,7 @@
       "startLine": 147,
       "endLine": 155
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Keränen Morphism",
     "content": "**keranen_morphism:**\n\nThere exists a morphism μ : Σ → Σ* where |μ(a)| = 85 for each letter a.\n\nApplying μ preserves abelian-square-freeness.",
     "mathContext": "The 85-letter morphism is the heart of Keränen's construction.",
@@ -229,7 +229,7 @@
       "startLine": 163,
       "endLine": 179
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Conjecture Disproved",
     "content": "**erdos_231_disproved:**\n\nFor k ≥ 4, Erdős's conjecture is FALSE.\n\nStrings of length 2^k - 1 over k letters CAN avoid abelian squares.",
     "significance": "key",
@@ -245,7 +245,7 @@
       "startLine": 185,
       "endLine": 189
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "k = 2 Case",
     "content": "**k_equals_2_abelian_square:**\n\nFor k = 2 (binary alphabet), all strings of length ≥ 4 contain abelian squares.\n\nSo Erdős's conjecture holds for k = 2.",
     "significance": "supporting",
@@ -261,7 +261,7 @@
       "startLine": 191,
       "endLine": 193
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "k = 3 Case",
     "content": "**k_equals_3_contains:**\n\nFor k = 3, all strings of length 7 = 2³ - 1 contain abelian squares.\n\nSo Erdős's conjecture holds for k = 3.",
     "significance": "supporting",
@@ -277,7 +277,7 @@
       "startLine": 205,
       "endLine": 214
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Example: abba",
     "content": "**example: isAbelianSquare ['a', 'b', 'b', 'a']:**\n\n\"abba\" = \"ab\" + \"ba\" where \"ba\" is a permutation of \"ab\".\n\nSo \"abba\" is an abelian square.",
     "significance": "supporting",
@@ -310,7 +310,7 @@
       "startLine": 229,
       "endLine": 234
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Connection to #192",
     "content": "**connection_to_192:**\n\nProblem #192 asks about infinite abelian-square-free sequences.\n\nKeränen's result answers both problems.",
     "significance": "supporting",
@@ -326,7 +326,7 @@
       "startLine": 254,
       "endLine": 257
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_231_summary:**\n\nErdős's conjecture was disproved for k ≥ 4.\n\nThe Keränen construction provides infinite counterexamples.",
     "significance": "key",
@@ -342,7 +342,7 @@
       "startLine": 259,
       "endLine": 260
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem Resolved",
     "content": "**erdos_231_resolved:**\n\nErdős Problem #231 was completely resolved by Keränen in 1992.",
     "significance": "supporting",

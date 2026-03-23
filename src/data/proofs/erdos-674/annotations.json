@@ -71,7 +71,7 @@
       "startLine": 44,
       "endLine": 46
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Ko (1940): Solutions Exist",
     "content": "**Ko's Theorem**: YES, solutions to $x^x y^y = z^z$ exist with $x,y,z > 1$. The affirmative answer to Erdős Problem #674, proved by exhibiting an explicit example.",
     "significance": "key",
@@ -114,7 +114,7 @@
       "startLine": 74,
       "endLine": 76
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Ko's Solution Validity",
     "content": "States that Ko's example satisfies $\\text{koX}^{\\text{koX}} \\cdot \\text{koY}^{\\text{koY}} = \\text{koZ}^{\\text{koZ}}$. This is a computational verification requiring enormous arithmetic (numbers with millions of digits).",
     "significance": "key",
@@ -137,7 +137,7 @@
       "startLine": 90,
       "endLine": 92
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "No Coprime Solutions (Ko 1940)",
     "content": "**No coprime solutions**: If $\\gcd(x,y) = 1$ then $x^x y^y = z^z$ has no solution with $x,y,z > 1$. This means every solution must have shared prime factors between $x$ and $y$.",
     "significance": "key",
@@ -159,7 +159,7 @@
       "startLine": 100,
       "endLine": 103
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Schinzel (1958): Shared Prime Divisors",
     "content": "**Schinzel's Theorem**: For any solution and any prime $p$, $p \\mid x \\iff p \\mid y$. This strengthens Ko's coprimality result: not just $\\gcd(x,y) > 1$, but $x$ and $y$ have exactly the same prime divisors.",
     "significance": "key",
@@ -202,7 +202,7 @@
       "startLine": 112,
       "endLine": 114
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Dem'janenko (1975): Identical Prime Factors",
     "content": "**Dem'janenko's Theorem**: Schinzel's conjecture is true — all three variables $x, y, z$ share identical prime factors. This is the deepest structural result about solutions to $x^x y^y = z^z$.",
     "significance": "key",
@@ -245,7 +245,7 @@
       "startLine": 128,
       "endLine": 131
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Mills' Constraint: No Solutions with 4xy > z²",
     "content": "**Mills' Theorem**: No non-trivial solutions satisfy $4xy > z^2$ (i.e., $Q > 1/4$) when $x \\ne y$. This restricts all solutions to the region $Q \\le 1/4$.",
     "significance": "key",
@@ -267,7 +267,7 @@
       "startLine": 133,
       "endLine": 135
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Ko's Family: 4xy = z²",
     "content": "Ko's explicit example satisfies $4 \\cdot \\text{koX} \\cdot \\text{koY} = \\text{koZ}^2$, i.e., $Q = 1/4$. This can be verified: $4 \\cdot 2^{12} \\cdot 3^6 \\cdot 2^8 \\cdot 3^8 = 2^{22} \\cdot 3^{14} = (2^{11} \\cdot 3^7)^2$.",
     "significance": "supporting",
@@ -291,7 +291,7 @@
       "startLine": 147,
       "endLine": 150
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Uchiyama (1984): Finiteness for Fixed Q",
     "content": "**Uchiyama's Theorem**: For each fixed $Q \\in (0, 1/4)$, the set of solutions with $\\text{ratioQ}(s) = Q$ is finite. Uses Baker's theory of linear forms in logarithms.",
     "significance": "key",
@@ -335,7 +335,7 @@
       "startLine": 172,
       "endLine": 175
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Infinitely Many Solutions",
     "content": "Ko's parametric family produces infinitely many distinct solutions to $x^x y^y = z^z$. Since different $n \\ge 2$ yield different solutions (the prime factorization changes), the solution set is infinite.",
     "significance": "key",
@@ -379,7 +379,7 @@
       "startLine": 203,
       "endLine": 205
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Universal Ratio Constraint Q ≤ 1/4",
     "content": "Every solution satisfies $Q = xy/z^2 \\le 1/4$, i.e., $4xy \\le z^2$. This universal bound partitions the problem: equality ($Q = 1/4$) is Ko's family, and strict inequality ($Q < 1/4$) has only finitely many solutions per fixed $Q$.",
     "significance": "key",
@@ -401,7 +401,7 @@
       "startLine": 214,
       "endLine": 227
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Small Cases: No Solutions for x = 2, 3, or x = y",
     "content": "No solutions with $x = 2$ (since $4 y^y = z^z$ forces contradictory 2-adic valuations), $x = 3$ (similar argument with 3-adic valuations), or $x = y$ (since $x^{2x} = z^z$ requires $z = x^{2x/z}$ which has no integer solutions for $x,z > 1$).",
     "significance": "supporting",
@@ -423,7 +423,7 @@
       "startLine": 242,
       "endLine": 245
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Ordering: x < z < y",
     "content": "In any solution with $x \\le y$, the ordering is $x < z < y$. This follows from the strict convexity of $t \\mapsto t \\log t$: the equation $x \\log x + y \\log y = z \\log z$ forces $z$ to lie strictly between $x$ and $y$.",
     "significance": "supporting",

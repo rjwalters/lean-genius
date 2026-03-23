@@ -96,7 +96,7 @@
       "startLine": 154,
       "endLine": 159
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Main Conjecture",
     "content": "**erdos891_conjecture(k):** For k ≥ 2, there exists N such that HasManyFactors(n, k) holds for all n ≥ N.\n\nIn other words: every primorial-length interval eventually contains an integer with many prime factors.\n\n**Status:** OPEN for all k ≥ 2.",
     "significance": "key"
@@ -108,7 +108,7 @@
       "startLine": 168,
       "endLine": 177
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The k = 2 Case",
     "content": "**erdos891_k_equals_2:** The conjecture for k = 2.\n\nThis is the simplest open case. It asks:\n\n*Does every interval of 6 consecutive integers (for large n) contain a number with at least 3 prime factors?*\n\n**Examples that work:**\n- [8, 14): Contains 8 = 2³ with Ω(8) = 3\n- [12, 18): Contains 12 = 2² · 3 with Ω(12) = 3\n\nBut proving this for ALL large n remains open.",
     "significance": "key"
@@ -120,7 +120,7 @@
       "startLine": 179,
       "endLine": 206
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Verified Examples",
     "content": "**Concrete computations** using native_decide:\n\n- Ω(8) = 3 (since 8 = 2³)\n- Ω(12) = 3 (since 12 = 2² · 3)\n- Ω(18) = 3 (since 18 = 2 · 3²)\n- Ω(24) = 4 (since 24 = 2³ · 3)\n\n**example_interval_8_14:** Shows [8, 14) satisfies the k=2 condition since 8 has 3 prime factors.\n\nThese examples demonstrate the conjecture works for specific intervals.",
     "significance": "key"
@@ -132,7 +132,7 @@
       "startLine": 215,
       "endLine": 228
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Schinzel's Theorem",
     "content": "**schinzel_theorem:** A weaker version of the conjecture IS provable.\n\nIf we use $p_1 \\cdots p_{k-1} \\cdot p_{k+1}$ instead of $p_1 \\cdots p_k$ (skipping the k-th prime), then the statement holds.\n\n**Proof idea:** Uses Pólya's theorem on unbounded gaps in k-smooth number sequences.\n\nThis shows the conjecture is \"almost\" true - just with a slightly larger interval.",
     "significance": "key"
@@ -144,7 +144,7 @@
       "startLine": 236,
       "endLine": 244
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Dickson's Conjecture",
     "content": "**dicksons_conjecture:** A major open problem generalizing the twin prime conjecture.\n\nIt states: For linear forms aᵢn + bᵢ with certain conditions, infinitely many n make all forms simultaneously prime.\n\n**Special cases:**\n- k=1: Infinitely many primes (proven)\n- k=2 with forms n, n+2: Twin prime conjecture (open)\n\nUsed in Weisenberg's conditional result.",
     "mathContext": "Dickson's conjecture is one of the strongest open conjectures in prime number theory, implying infinitely many twin primes, Sophie Germain primes, and more.",
@@ -162,7 +162,7 @@
       "startLine": 246,
       "endLine": 256
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Weisenberg's Counterexample",
     "content": "**weisenberg_conditional:** Under Dickson's conjecture, the statement FAILS with interval length $p_1 \\cdots p_k - 1$.\n\nThis shows:\n1. The exact primorial length is critical\n2. Subtracting just 1 breaks the conjecture\n3. The problem has deep connections to prime constellations\n\nConditionally, infinitely many intervals of length primorial(k) - 1 have NO integer with > k factors.",
     "significance": "key"
@@ -191,7 +191,7 @@
       "startLine": 285,
       "endLine": 310
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem Summary",
     "content": "**erdos_891_summary:** Complete status of Erdős Problem #891.\n\n**What's proven:**\n- Concrete examples work (intervals containing 8, 12, 24)\n- Schinzel's weaker version with modified primorial\n\n**What's open:**\n- Main conjecture for any k ≥ 2\n- Even the k = 2 case (intervals of length 6)\n\n**What's conditionally resolved:**\n- Weisenberg: primorial - 1 fails (under Dickson's conjecture)",
     "significance": "key"

@@ -74,7 +74,7 @@
       "startLine": 62,
       "endLine": 65
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Primorial Positivity",
     "content": "**primorial_pos:**\n\nPrimorials are positive for $k \\ge 1$:\n```lean\naxiom primorial_pos (k : ℕ) (hk : k ≥ 1) : primorial k > 0\n```\n\nSince each prime $p_i \\ge 2 > 0$, the product of positive factors is positive. Axiomatized for convenience.",
     "mathContext": "A product of positive integers is positive. More precisely, $N_k = \\prod_{i=1}^{k} p_i \\ge 2^k > 0$ for $k \\ge 1$. This positivity is needed to ensure divisions by $N_k$ are well-defined in the gap distribution formulas.",
@@ -279,7 +279,7 @@
       "startLine": 178,
       "endLine": 184
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Hooley's Theorem (1965)",
     "content": "**hooley_theorem:**\n\nThe gap distribution converges pointwise to $\\text{Exp}(1)$:\n```lean\naxiom hooley_theorem :\n    ∀ c : ℝ, c ≥ 0 →\n      Tendsto (fun k => gapDistribution k c) atTop (nhds (exponentialCDF c))\n```\n\n**Reference:** Hooley, C. 'On the difference between consecutive numbers prime to n. II', Mathematika 12 (1965), 171-185.",
     "mathContext": "Hooley's proof uses the sieve of Eratosthenes structure: integers coprime to $N_k$ are precisely those surviving deletion of multiples of $p_1, \\ldots, p_k$. As $k \\to \\infty$, the sieved set becomes increasingly sparse (density $\\sim e^{-\\gamma}/\\log p_k \\to 0$), and the normalized gaps converge in distribution to $\\text{Exp}(1)$. The proof relies on inclusion-exclusion estimates for the count of coprime integers in short intervals.",
@@ -302,7 +302,7 @@
       "startLine": 186,
       "endLine": 199
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős #235 is PROVED",
     "content": "**erdos_235_proved:**\n\nThe conjecture follows from Hooley's theorem by witnessing $f = \\text{exponentialCDF}$:\n```lean\ntheorem erdos_235_proved : ErdosConjecture235 := by\n  use exponentialCDF\n  constructor\n  · exact exponential_cdf_continuous\n  · exact hooley_theorem\n```\n\nThe proof is a simple existential witness: the exponential CDF is continuous and matches the limit.",
     "mathContext": "The formal proof witnesses $f(c) = 1 - e^{-c}$ for the existential in `ErdosConjecture235`. Two obligations are discharged: (1) continuity of $e^{-c}$ (via `exponential_cdf_continuous`, currently `sorry`), and (2) pointwise convergence (via `hooley_theorem`, axiomatized). This clean structure separates the analytic fact (continuity) from the number-theoretic content (convergence).",
@@ -325,7 +325,7 @@
       "startLine": 205,
       "endLine": 232
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Distribution Properties",
     "content": "**Properties of the exponential CDF:**\n\n- `distribution_at_zero`: $f(0) = 1 - e^0 = 0$ (proved via `simp`)\n- `distribution_at_infinity`: $f(c) \\to 1$ as $c \\to \\infty$ (sorry)\n- `median_gap`: $f(\\ln 2) = 1/2$ (sorry) — half of normalized gaps are below $\\ln 2 \\approx 0.693$\n- `mean_normalized_gap`: The mean of $g_i/\\bar{g}$ is exactly 1 (axiomatized)\n\nThese validate the exponential distribution's consistency with basic statistical properties.",
     "mathContext": "For $\\text{Exp}(1)$: $E[X] = 1$, $\\text{Var}(X) = 1$, $\\text{Median} = \\ln 2$, $P(X > 1) = e^{-1} \\approx 0.368$. The median being $\\ln 2 < 1 < E[X]$ reflects the right-skewed nature of the exponential distribution — most gaps are smaller than average, but occasional large gaps pull the mean up.",
@@ -348,7 +348,7 @@
       "startLine": 238,
       "endLine": 244
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Uniform Convergence",
     "content": "**hooley_uniform:**\n\nThe convergence $f_k(c) \\to 1 - e^{-c}$ is uniform on compact intervals $[a, b]$:\n```lean\naxiom hooley_uniform (a b : ℝ) (hab : a ≤ b) :\n    ∀ ε > 0, ∃ K : ℕ, ∀ k ≥ K, ∀ c ∈ Set.Icc a b,\n      |gapDistribution k c - exponentialCDF c| < ε\n```\n\nThis is strictly stronger than pointwise convergence and ensures the limit is well-behaved.",
     "mathContext": "Uniform convergence on compact sets implies convergence of integrals, moments, and other functionals. For CDFs, uniform convergence is equivalent to convergence in the Kolmogorov-Smirnov metric $\\sup_c |f_k(c) - f(c)|$. This strengthening of Hooley's result shows the gap distribution is well-approximated by $\\text{Exp}(1)$ simultaneously at all scales.",
@@ -372,7 +372,7 @@
       "startLine": 246,
       "endLine": 252
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Error Term",
     "content": "**hooley_error_term:**\n\nQuantitative rate: $|f_k(c) - (1 - e^{-c})| \\le C/\\log k$:\n```lean\naxiom hooley_error_term :\n    ∃ C : ℝ, C > 0 ∧ ∀ k ≥ 2, ∀ c ≥ 0,\n      |gapDistribution k c - exponentialCDF c| ≤ C / Real.log k\n```\n\nThe $O(1/\\log k)$ rate means convergence is relatively fast in $k$.",
     "mathContext": "The error bound $O(1/\\log k)$ arises from the sieve estimates: the local density of coprimes in intervals of length $\\bar{g}$ deviates from $\\varphi(N_k)/N_k$ by at most $O(1/\\log p_k) = O(1/\\log k)$. Since $\\log k \\to \\infty$ slowly, one needs moderately large $k$ (say $k \\ge 100$) for high accuracy, but the convergence is polynomial in $1/\\log k$ rather than exponential.",
@@ -395,7 +395,7 @@
       "startLine": 258,
       "endLine": 264
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Maximum Gap Bound",
     "content": "**max_gap_bound:**\n\nThe maximum gap grows like $\\log N_k \\cdot \\log\\log N_k$:\n```lean\naxiom max_gap_bound (k : ℕ) (hk : k ≥ 2) :\n    ∃ g ∈ gapSequence k, ∀ g' ∈ gapSequence k, g' ≤ g ∧\n      (g : ℝ) ≤ Real.log (primorial k) * Real.log (Real.log (primorial k))\n```\n\nWhile the typical gap is $\\sim e^\\gamma \\log p_k$, the maximum gap is significantly larger.",
     "mathContext": "The maximum gap is related to the Jacobsthal function $j(N_k)$. Known bounds give $j(N_k) = O(p_k \\log p_k)$, and the best results come from Iwaniec's sieve methods. The ratio of max gap to average gap grows like $\\log p_k / e^\\gamma$, confirming that extreme gaps are $\\sim \\log p_k$ times the average — consistent with the exponential distribution's unbounded support.",
@@ -441,7 +441,7 @@
       "startLine": 286,
       "endLine": 303
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Mertens' Third Theorem and Average Gap Asymptotics",
     "content": "**Mertens' third theorem** and its consequence for average gaps:\n\n```lean\naxiom mertens_third :\n    Tendsto (fun k => (primorialTotient k : ℝ) / (primorial k : ℝ) * Real.log (nthPrime k))\n      atTop (nhds (Real.exp (-eulerGamma)))\n```\n\n**Consequence:** $N_k/\\varphi(N_k) \\sim e^\\gamma \\cdot \\log p_k$ where $\\gamma = 0.5772\\ldots$\n\nThis connects the average gap to the Euler-Mascheroni constant via `average_gap_asymptotic`.",
     "mathContext": "Mertens' third theorem (1874) states $\\prod_{p \\le x}(1 - 1/p) \\sim e^{-\\gamma}/\\log x$. Taking $x = p_k$, the product over the first $k$ primes gives $\\varphi(N_k)/N_k \\sim e^{-\\gamma}/\\log p_k$, hence $\\bar{g}_k = N_k/\\varphi(N_k) \\sim e^\\gamma \\log p_k$. The Euler-Mascheroni constant $\\gamma = \\lim_{n \\to \\infty}(H_n - \\ln n) = 0.5772\\ldots$ appears naturally as the correction between the harmonic series and the logarithm.",
@@ -466,7 +466,7 @@
       "startLine": 305,
       "endLine": 335
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary and Final Theorems",
     "content": "**Erdős Problem #235: SOLVED**\n\n- `erdos_235`: Main theorem, definitionally equal to `erdos_235_proved`\n- `erdos_235_answer(c, hc)`: Direct application — for each $c \\ge 0$, the gap distribution converges to $1 - e^{-c}$\n\n**Key chain:** Hooley's theorem → exponential CDF witness → conjecture proved.",
     "mathContext": "The final theorem `erdos_235_answer` strips away the existential and continuity wrapper, giving the clean statement: for each $c \\ge 0$, $\\lim_{k \\to \\infty} f_k(c) = 1 - e^{-c}$. This is the most directly usable form of the result, providing convergence at any specific quantile.",

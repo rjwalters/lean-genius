@@ -40,7 +40,7 @@
       "startLine": 57,
       "endLine": 58
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "μ(1) = 1",
     "content": "The Möbius function satisfies μ(1) = 1. This is the base case for the multiplicative function.",
     "mathContext": "By definition, μ(1) = 1 since 1 has zero prime factors (k=0, so (-1)^0 = 1).",
@@ -57,7 +57,7 @@
       "startLine": 60,
       "endLine": 79
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Möbius Function Examples",
     "content": "Computed examples: μ(2) = μ(3) = μ(5) = -1 (primes), μ(4) = μ(9) = 0 (have squared factors), μ(6) = μ(10) = 1 (products of 2 distinct primes).",
     "mathContext": "These verify the Möbius function definition using `native_decide`, which evaluates decidable propositions at compile time.",
@@ -75,7 +75,7 @@
       "startLine": 90,
       "endLine": 91
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "1 is Squarefree",
     "content": "The number 1 is squarefree. This is a base case — no prime squared can divide 1.",
     "mathContext": "Proved using Mathlib's `squarefree_one` lemma directly.",
@@ -92,7 +92,7 @@
       "startLine": 93,
       "endLine": 96
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Squarefree ↔ μ(n) ≠ 0",
     "content": "**Key characterization**: n is squarefree if and only if μ(n) ≠ 0. This connects the Möbius function to squarefreeness.",
     "mathContext": "Uses Mathlib's `moebius_ne_zero_iff_squarefree`. When n has a squared prime factor, μ(n) = 0; otherwise μ(n) = ±1.",
@@ -110,7 +110,7 @@
       "startLine": 98,
       "endLine": 104
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "μ(n)² as Indicator",
     "content": "**Indicator property**: μ(n)² equals 1 if n is squarefree, 0 otherwise. This makes μ(n)² the indicator function for squarefree numbers.",
     "mathContext": "The sum ∑ μ(n)² · n/2ⁿ therefore equals ∑_{squarefree n} n/2ⁿ.",
@@ -145,7 +145,7 @@
       "startLine": 128,
       "endLine": 132
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Series Convergence",
     "content": "The series converges absolutely. Since |μ(n)²| ≤ 1 and n/2ⁿ → 0 exponentially, the sum ≤ ∑ n/2ⁿ = 2.",
     "mathContext": "Stated as an axiom since we focus on the irrationality result, not the convergence proof.",
@@ -162,7 +162,7 @@
       "startLine": 149,
       "endLine": 156
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Chen-Ruzsa Theorem",
     "content": "**Chen-Ruzsa (1999)**: The sum ∑ μ(n)² · n/2ⁿ is irrational. More strongly, ANY infinite subseries over squarefree numbers is irrational.",
     "mathContext": "Stated as an axiom since the proof uses transcendence theory techniques beyond current Mathlib formalization.",
@@ -180,7 +180,7 @@
       "startLine": 158,
       "endLine": 163
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős Problem #259",
     "content": "**Main Result**: The sum ∑ μ(n)² · n/2ⁿ is irrational. This follows directly from the Chen-Ruzsa theorem.",
     "mathContext": "The statement `Irrational (∑' n, (moebiusFn n)² * n / 2^n)` is exactly Erdős's original question.",
@@ -198,7 +198,7 @@
       "startLine": 165,
       "endLine": 167
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Alternative Statement",
     "content": "Alternative formulation using tsum notation: directly states the tsum is irrational.",
     "mathContext": "Uses `series_summable.hasSum` to convert between HasSum and tsum formulations.",

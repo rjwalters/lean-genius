@@ -53,7 +53,7 @@
       "startLine": 49,
       "endLine": 66
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Binomial Theorem (Main Result)",
     "content": "The central theorem `binomial_theorem`: for any `CommSemiring R` and $n \\in \\mathbb{N}$:\n$$(x + y)^n = \\sum_{k \\in \\text{range}(n+1)} \\binom{n}{k} \\cdot x^k \\cdot y^{n-k}$$\n\nThe proof:\n1. `rw [add_pow]` — rewrite using Mathlib's binomial theorem (which has a different term ordering: $x^k \\cdot y^{n-k} \\cdot \\binom{n}{k}$)\n2. `congr 1` — reduce to showing each summand matches\n3. `ext k` — introduce the summation index\n4. `ring` — normalize the commutative semiring expression to show $\\binom{n}{k} \\cdot x^k \\cdot y^{n-k} = x^k \\cdot y^{n-k} \\cdot \\binom{n}{k}$\n\n**Generality**: Works for any commutative semiring, not just ℤ or ℝ.",
     "mathContext": "$(x+y)^n = \\sum_{k=0}^n \\binom{n}{k} x^k y^{n-k}$. Each term arises from choosing which $k$ of the $n$ factors $(x+y)$ contribute $x$. The $\\binom{n}{k}$ ways of making this choice give the coefficient.",
@@ -78,7 +78,7 @@
       "startLine": 67,
       "endLine": 81
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sum of Binomial Coefficients Equals 2^n",
     "content": "Proves `sum_binomial_coefficients`: $\\sum_{k=0}^n \\binom{n}{k} = 2^n$.\n\nThis is a one-line application of `Nat.sum_range_choose`. The result follows from the binomial theorem by setting $x = y = 1$: $(1 + 1)^n = 2^n = \\sum \\binom{n}{k} \\cdot 1^k \\cdot 1^{n-k} = \\sum \\binom{n}{k}$.\n\n**Combinatorial interpretation**: The total number of subsets of an $n$-element set is $2^n$, because each element is either included or excluded (2 choices per element).",
     "mathContext": "$\\sum_{k=0}^n \\binom{n}{k} = 2^n$. Row $n$ of Pascal's triangle sums to $2^n$. Example: row 4 is $1, 4, 6, 4, 1$ with sum $16 = 2^4$.",
@@ -101,7 +101,7 @@
       "startLine": 82,
       "endLine": 97
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Alternating Sum Vanishes",
     "content": "Proves `alternating_sum_binomial`: for $n \\geq 1$, $\\sum_{k=0}^n (-1)^k \\binom{n}{k} = 0$.\n\nThe proof uses `Int.alternating_sum_range_choose`, which gives $\\sum (-1)^k \\binom{n}{k} = \\text{if } n = 0 \\text{ then } 1 \\text{ else } 0$. The hypothesis `0 < n` eliminates the $n = 0$ case via `simp [Nat.pos_iff_ne_zero.mp hn]`.\n\n**Why $n \\geq 1$ is needed**: For $n = 0$, $\\binom{0}{0} \\cdot (-1)^0 = 1 \\neq 0$.\n\n**Interpretation**: Even-indexed and odd-indexed binomial coefficients have equal sums: $\\binom{n}{0} + \\binom{n}{2} + \\cdots = \\binom{n}{1} + \\binom{n}{3} + \\cdots = 2^{n-1}$.",
     "mathContext": "Setting $x = 1, y = -1$ in the binomial theorem: $(1 + (-1))^n = 0^n = 0 = \\sum (-1)^k \\binom{n}{k}$ for $n \\geq 1$. This is related to inclusion-exclusion: the alternating sum counts the Euler characteristic.",
@@ -125,7 +125,7 @@
       "startLine": 98,
       "endLine": 110
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Pascal's Identity",
     "content": "Proves `pascal_identity`: $\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}$.\n\nThis is a one-line wrapper around `Nat.choose_succ_succ`. The recurrence defines Pascal's triangle: each entry is the sum of the two entries above it.\n\n**Combinatorial proof**: To choose $k+1$ items from $n+1$: either include item $n+1$ (choose remaining $k$ from $n$, giving $\\binom{n}{k}$) or exclude it (choose all $k+1$ from $n$, giving $\\binom{n}{k+1}$).",
     "mathContext": "$\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}$ for all $n, k \\in \\mathbb{N}$. This recursion, together with $\\binom{n}{0} = 1$, uniquely determines all binomial coefficients. It also proves the binomial theorem by induction.",
@@ -148,7 +148,7 @@
       "startLine": 111,
       "endLine": 131
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Symmetry and Boundary Values",
     "content": "Three structural properties of binomial coefficients:\n\n1. **`binomial_symmetry`**: $\\binom{n}{k} = \\binom{n}{n-k}$ for $k \\leq n$. Choosing $k$ items is equivalent to choosing which $n-k$ to leave out. Wraps `Nat.choose_symm`.\n\n2. **`binomial_zero`**: $\\binom{n}{0} = 1$. There is exactly one way to choose nothing (the empty set). Wraps `Nat.choose_zero_right`.\n\n3. **`binomial_self`**: $\\binom{n}{n} = 1$. There is exactly one way to choose everything (the full set). Wraps `Nat.choose_self`.\n\nThese three properties, combined with Pascal's identity, completely characterize the binomial coefficients.",
     "mathContext": "Symmetry: $\\binom{n}{k} = \\frac{n!}{k!(n-k)!} = \\frac{n!}{(n-k)!k!} = \\binom{n}{n-k}$. This makes Pascal's triangle symmetric about its vertical axis.",
@@ -171,7 +171,7 @@
       "startLine": 132,
       "endLine": 149
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Special Cases: Square and Cube Expansions",
     "content": "Two explicit expansions proved by the `ring` tactic alone:\n\n1. **`binomial_square`**: $(x + y)^2 = x^2 + 2xy + y^2$ — coefficients $1, 2, 1$ from row 2 of Pascal's triangle\n\n2. **`binomial_cube`**: $(x + y)^3 = x^3 + 3x^2y + 3xy^2 + y^3$ — coefficients $1, 3, 3, 1$ from row 3\n\nBoth work for any `CommSemiring R`. The `ring` tactic verifies these identities purely by algebraic normalization, without invoking the general binomial theorem — demonstrating that small cases are trivially decidable.",
     "mathContext": "$(x+y)^2 = x^2 + 2xy + y^2$ and $(x+y)^3 = x^3 + 3x^2y + 3xy^2 + y^3$. The `ring` tactic normalizes expressions in commutative (semi)rings by expanding and collecting terms, making these proofs completely automatic.",
@@ -194,7 +194,7 @@
       "startLine": 150,
       "endLine": 177
     },
-    "type": "note",
+    "type": "context",
     "title": "Examples, Verification, and Closing",
     "content": "Six numerical examples verified with `native_decide`:\n\n- $(1+1)^4 = 16$ — power computation\n- $\\binom{4}{0} + \\binom{4}{1} + \\binom{4}{2} + \\binom{4}{3} + \\binom{4}{4} = 16$ — explicit coefficient sum\n- $\\binom{5}{2} = 10$, $\\binom{10}{5} = 252$ — individual coefficients\n- $\\binom{5}{3} = \\binom{4}{2} + \\binom{4}{3}$ — Pascal's identity\n- $\\binom{6}{2} = \\binom{6}{4}$ — symmetry\n\nEnds with `#check` commands verifying the four main theorems type-check, and closes the `BinomialTheorem` namespace.",
     "mathContext": "`native_decide` evaluates `Decidable` propositions by running the Lean kernel's evaluator. For concrete natural number computations, this is essentially a calculator — it computes $\\binom{10}{5}$ and checks it equals 252.",

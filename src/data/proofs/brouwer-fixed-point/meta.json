@@ -76,13 +76,22 @@
         "Mathlib.Analysis.InnerProductSpace.PiL2",
         "Mathlib.Topology.MetricSpace.Basic"
       ],
-      "opens": ["Set", "Metric"],
+      "opens": [
+        "Set",
+        "Metric"
+      ],
       "namespace": "Brouwer",
       "lineCount": 250,
       "axiomCount": 2,
       "theoremCount": 5,
       "definitionCount": 6
-    }
+    },
+    "relatedProblems": [
+      {
+        "id": "brouwer-fixed-point-oq-02",
+        "relationship": "Extension of brouwer fixed point"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "Luitzen Egbertus Jan Brouwer proved this theorem in 1911 in *Mathematische Annalen*. Earlier special cases were known: Poincaré proved a version for smooth maps in 1886, and Hadamard proved the 2D case in 1910 using degree theory. Brouwer's contribution was the full generalization to continuous maps in arbitrary dimension.\n\nThe result is beautifully intuitive: no matter how you continuously 'stir' a disk, some point must end up exactly where it started. Multiple proofs exist: Brouwer's original via degree theory, Sperner's 1928 combinatorial proof via his lemma on triangulations, Milnor's 1965 differential topology proof via Sard's theorem, and modern proofs via singular homology.\n\nThe theorem's applications are vast. John Nash used it in 1950 to prove equilibrium existence in non-cooperative games (Nobel Prize 1994). It guarantees solutions to differential equations via Schauder's extension to Banach spaces. In computational complexity, finding Brouwer fixed points is PPAD-complete (Papadimitriou 1994), explaining why Nash equilibrium computation is hard.\n\nIronically, Brouwer later founded **intuitionism** (1920s), rejecting the law of excluded middle and the non-constructive proof-by-contradiction his own theorem relies upon. He came to view the theorem as an example of mathematics that proves existence without construction — precisely what intuitionists object to.",
@@ -261,6 +270,16 @@
       "targetId": "konigsberg",
       "relationship": "thematic",
       "description": "Both are pioneering results in topology: Euler's solution of the Königsberg bridge problem (1736) launched graph theory and combinatorial topology, while Brouwer's fixed point theorem (1911) launched algebraic topology. The progression from Euler's discrete topological insight to Brouwer's continuous one mirrors the development of topology from combinatorial to algebraic"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "foundational",
+      "description": "Cauchy-Schwarz provides the triangle inequality $\\|u+v\\| \\leq \\|u\\| + \\|v\\|$ that makes the closed ball $B^n = \\{x : \\|x\\| \\leq 1\\}$ convex and the norm continuous — both prerequisites for Brouwer's theorem. The inner product structure governed by Cauchy-Schwarz ensures the ball is a well-behaved compact convex set"
+    },
+    {
+      "targetId": "isoperimetric-theorem",
+      "relationship": "thematic",
+      "description": "Both characterize fundamental properties of the ball/sphere: the isoperimetric theorem shows the ball maximizes volume for given surface area, while Brouwer's theorem shows the ball has the fixed point property. Both use compactness and convexity in essential ways — the isoperimetric theorem via calculus of variations, Brouwer via algebraic topology"
     }
   ],
   "relatedProofs": [
@@ -275,6 +294,8 @@
     "pythagorean-theorem",
     "area-of-circle",
     "halting-problem",
-    "konigsberg"
+    "konigsberg",
+    "cauchy-schwarz",
+    "isoperimetric-theorem"
   ]
 }

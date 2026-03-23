@@ -94,7 +94,7 @@
       "startLine": 75,
       "endLine": 77
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Anning-Erdős Theorem",
     "content": "**Anning-Erdős (1945)** proved a fundamental finiteness result: any set in the plane with no three collinear and all distances integers must be finite. This doesn't even need the concyclic condition!",
     "mathContext": "axiom anning_erdos_finite : ∀ S, NoThreeCollinear S → AllDistancesInteger S → S.Finite. This is why finding large examples is hard.",
@@ -129,7 +129,7 @@
       "startLine": 99,
       "endLine": 100
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Harborth's Construction",
     "content": "**Harborth** proved that n=5 is achievable by explicitly constructing 5 points in general position with integer distances.",
     "mathContext": "axiom harborth_five : ExistsIntDistSetGP 5. The explicit coordinates involve Pythagorean triples.",
@@ -147,7 +147,7 @@
       "startLine": 108,
       "endLine": 109
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Kreisel-Kurz Record",
     "content": "**Kreisel and Kurz (2008)** achieved the current record: n=7. Their 'integral heptagon' has no three collinear, no four concyclic, and all 21 pairwise distances are integers.",
     "mathContext": "axiom kreisel_kurz_seven : ExistsIntDistSetGP 7. This has been the record for over 15 years. n=8 remains unknown.",
@@ -165,7 +165,7 @@
       "startLine": 114,
       "endLine": 121
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Derived Existence Theorems",
     "content": "From the n=7 construction, we prove n=4,5,6 exist by taking subsets. A subset of a set in general position is still in general position, and inherits integer distances.",
     "mathContext": "exists_four, exists_six are axioms; exists_five, exists_seven are theorems referencing the axioms. The predicates are preserved under taking subsets.",
@@ -183,7 +183,7 @@
       "startLine": 130,
       "endLine": 134
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sparsity Bound",
     "content": "**Greenfeld-Iliopoulou-Peluse (2024)** proved that integer distance sets in general position in [-N,N]² have size at most O((log N)^C). This extreme sparsity shows such sets are rare.",
     "mathContext": "axiom gip_sparsity_bound : ∃ C > 0, for all S in [-N,N]² satisfying the conditions, |S| ≤ (log N)^C. This is an unconditional bound (no Bombieri-Lang needed).",
@@ -201,7 +201,7 @@
       "startLine": 146,
       "endLine": 149
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary",
     "content": "The summary theorem combines all known constructions: n=4,5,6,7 all exist. The open question is whether n=8 or larger is achievable.",
     "mathContext": "known_constructions : ExistsIntDistSetGP 4 ∧ ExistsIntDistSetGP 5 ∧ ExistsIntDistSetGP 6 ∧ ExistsIntDistSetGP 7",

@@ -106,7 +106,7 @@
       "startLine": 93,
       "endLine": 103
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Counterexample Exists",
     "content": "**counterexample_exists:**\n\nThere exists a 2-coloring c such that for ANY set A with |A| = ℵ₁, the pairwise sums are NOT monochromatic.\n\n```lean\naxiom counterexample_exists :\n  ∃ c : TwoColoring, ∀ A : Set ℝ,\n    HasCardinalityAleph1 A → ¬ IsMonochromatic c (PairwiseSums A)\n```\n\nKomjáth (2016) proved this unconditionally.",
     "mathContext": "The construction uses sophisticated partition calculus techniques.",
@@ -123,7 +123,7 @@
       "startLine": 105,
       "endLine": 113
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Conjecture Disproved",
     "content": "**erdos_965_disproved:**\n\nThe conjecture is FALSE.\n\n```lean\ntheorem erdos_965_disproved : ¬ ErdosConjecture965 := by\n  intro hConj\n  obtain ⟨c, hc⟩ := counterexample_exists\n  obtain ⟨A, hA_card, hA_mono⟩ := hConj c\n  exact hc A hA_card hA_mono\n```\n\nProof: The counterexample coloring contradicts the conjecture.",
     "significance": "key",
@@ -155,7 +155,7 @@
       "startLine": 138,
       "endLine": 153
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Komjáth's Unconditional Result",
     "content": "**komjath_unconditional:**\n\nKomjáth (2016) proved the counterexample exists WITHOUT assuming CH.\n\n```lean\naxiom komjath_unconditional :\n  ∃ c : TwoColoring, ∀ A : Set ℝ,\n    HasCardinalityAleph1 A → ¬ IsMonochromatic c (PairwiseSums A)\n```\n\nSoukup and Weiss independently obtained the same result.",
     "mathContext": "This shows the result is a theorem of ZFC, not just ZFC+CH.",
@@ -173,7 +173,7 @@
       "startLine": 159,
       "endLine": 180
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Countable vs Uncountable",
     "content": "**countable_ramsey_possible, countable_vs_uncountable:**\n\nThe key contrast:\n- **Countable:** For ANY coloring, there EXISTS a countable infinite set with monochromatic pairwise sums\n- **Uncountable:** There EXISTS a coloring where NO uncountable set has monochromatic pairwise sums\n\nThe transition from countable to uncountable is where Ramsey properties break down.",
     "significance": "key",
@@ -206,7 +206,7 @@
       "startLine": 206,
       "endLine": 240
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem Summary",
     "content": "**erdos_965_summary, erdos_965_answer_no:**\n\n| Aspect | Result |\n|--------|--------|\n| Question | Uncountable monochromatic sums? |\n| Answer | NO |\n| Original | Erdős (1975) under CH |\n| Final | Komjáth (2016) unconditionally |\n| Contrast | Countable sets: YES |",
     "significance": "key",

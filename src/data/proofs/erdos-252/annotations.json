@@ -52,7 +52,7 @@
       "startLine": 57,
       "endLine": 59
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Case k = 0: Erdős-Straus (1971)",
     "content": "**erdos_252_k0** (axiom): $\\sum \\sigma_0(n)/n! = \\sum d(n)/n!$ is irrational. Here $d(n) = \\sigma_0(n)$ is the number-of-divisors function. Proved by Erdős and Ernst Straus in 1971 using properties of the divisor counting function and factorial denominators.",
     "mathContext": "$\\text{Irrational}\\left(\\sum_{n=1}^{\\infty} \\frac{d(n)}{n!}\\right)$ where $d(n) = |\\{d : d \\mid n\\}|$",
@@ -74,7 +74,7 @@
       "startLine": 61,
       "endLine": 63
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Case k = 1: Erdős (1952)",
     "content": "**erdos_252_k1** (axiom): $\\sum \\sigma_1(n)/n! = \\sum \\sigma(n)/n!$ is irrational. Noted as 'reasonably straightforward' by Erdős in 1952. The function $\\sigma_1(n) = \\sigma(n)$ is the classical sum-of-divisors function, central to the theory of perfect numbers ($\\sigma(n) = 2n$ iff $n$ is perfect).",
     "mathContext": "$\\text{Irrational}\\left(\\sum_{n=1}^{\\infty} \\frac{\\sigma(n)}{n!}\\right)$ where $\\sigma(n) = \\sum_{d \\mid n} d$",
@@ -96,7 +96,7 @@
       "startLine": 65,
       "endLine": 67
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Case k = 2: Erdős (1952)",
     "content": "**erdos_252_k2** (axiom): $\\sum \\sigma_2(n)/n!$ is irrational. Also noted by Erdős in 1952. The function $\\sigma_2(n) = \\sum_{d \\mid n} d^2$ sums the squares of all divisors. This connects to Ramanujan's work on the Eisenstein series $E_4(\\tau) = 1 + 240\\sum_{n=1}^{\\infty} \\sigma_3(n)q^n$.",
     "mathContext": "$\\text{Irrational}\\left(\\sum_{n=1}^{\\infty} \\frac{\\sigma_2(n)}{n!}\\right)$ where $\\sigma_2(n) = \\sum_{d \\mid n} d^2$",
@@ -118,7 +118,7 @@
       "startLine": 69,
       "endLine": 71
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Case k = 3: Schlage-Puchta / Friedlander-Luca-Stoiciu (2006-2007)",
     "content": "**erdos_252_k3** (axiom): $\\sum \\sigma_3(n)/n!$ is irrational. This case required a qualitative leap beyond the 'straightforward' $k \\leq 2$. Jan-Christoph Schlage-Puchta (2006) proved it using sieve methods and prime factor distribution. Independently, John Friedlander, Florian Luca, and Igor Stoiciu (2007) used a different approach based on the Euler totient function.",
     "mathContext": "$\\text{Irrational}\\left(\\sum_{n=1}^{\\infty} \\frac{\\sigma_3(n)}{n!}\\right)$ where $\\sigma_3(n) = \\sum_{d \\mid n} d^3$",
@@ -143,7 +143,7 @@
       "startLine": 73,
       "endLine": 75
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Case k = 4: Pratt (2022)",
     "content": "**erdos_252_k4** (axiom): $\\sum \\sigma_4(n)/n!$ is irrational. The most recent breakthrough, proved by Kyle Pratt in 2022 using arithmetic density arguments and careful analysis of $p$-adic valuations of partial sums. This pushed the frontier from 2007 to 2022, a 15-year gap reflecting the increasing difficulty.",
     "mathContext": "$\\text{Irrational}\\left(\\sum_{n=1}^{\\infty} \\frac{\\sigma_4(n)}{n!}\\right)$ where $\\sigma_4(n) = \\sum_{d \\mid n} d^4$",
@@ -167,7 +167,7 @@
       "startLine": 77,
       "endLine": 84
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Consolidation: All k ≤ 4",
     "content": "**erdos_252_le_4**: Consolidation theorem proving irrationality for all $k \\leq 4$. Uses `interval_cases k` to enumerate $k \\in \\{0,1,2,3,4\\}$ and dispatches each to the corresponding axiom. This is the main proved result of the formalization.",
     "mathContext": "$\\forall k \\leq 4, \\; \\text{Irrational}\\left(\\sum_{n=1}^{\\infty} \\frac{\\sigma_k(n)}{n!}\\right)$",
@@ -235,7 +235,7 @@
       "startLine": 124,
       "endLine": 126
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Schinzel Implies All k",
     "content": "**schinzel_implies_all_k** (axiom): Schlage-Puchta (2006) proved that Schinzel's Hypothesis H implies irrationality of $\\sum \\sigma_k(n)/n!$ for all $k \\geq 1$. The key idea: Hypothesis H provides sufficiently many primes $p$ with specific residue properties to control the $p$-adic structure of the partial sums.",
     "mathContext": "$\\text{SchinzelHypothesisH} \\Rightarrow \\forall k \\geq 1, \\; \\text{Irrational}\\left(\\sum \\frac{\\sigma_k(n)}{n!}\\right)$",
@@ -283,7 +283,7 @@
       "startLine": 144,
       "endLine": 154
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Computational Verifications",
     "content": "**sigma_0_one**, **sigma_1_six**, **sigma_0_six**, **sigma_2_two**: Verified computations using `decide` and `native_decide`. Notable: $\\sigma_1(6) = 12 = 2 \\times 6$, confirming that 6 is a perfect number (the smallest). $\\sigma_0(6) = 4$ since $6 = 2 \\times 3$ has divisors $\\{1, 2, 3, 6\\}$.",
     "mathContext": "$\\sigma_0(1) = 1$, $\\sigma_1(6) = 1 + 2 + 3 + 6 = 12$, $\\sigma_0(6) = 4$, $\\sigma_2(2) = 1^2 + 2^2 = 5$",
@@ -306,7 +306,7 @@
       "startLine": 156,
       "endLine": 161
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Divisor Sum at Primes",
     "content": "**sigma_prime** (axiom): For prime $p$, $\\sigma_k(p) = 1 + p^k$. Since the only divisors of a prime $p$ are $1$ and $p$ itself, the sum of $k$-th powers is $1^k + p^k = 1 + p^k$. This formula is fundamental for understanding how $\\sigma_k$ behaves on prime inputs, which controls the series' arithmetic.",
     "mathContext": "$p \\text{ prime} \\Rightarrow \\sigma_k(p) = 1^k + p^k = 1 + p^k$",
@@ -328,7 +328,7 @@
       "startLine": 169,
       "endLine": 181
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Convergence of the Series",
     "content": "**sigma_le_pow** and **divisorPowerSum_summable** (axioms): The series $\\sum \\sigma_k(n)/n!$ converges absolutely. The bound $\\sigma_k(n) \\leq n^{k+1}$ follows from the fact that $n$ has at most $n$ divisors, each at most $n^k$. Then $\\sum n^{k+1}/n!$ converges since factorials dominate any polynomial: $n^{k+1}/n! \\to 0$ exponentially fast.",
     "mathContext": "$\\sigma_k(n) \\leq n \\cdot n^k = n^{k+1}$ and $\\sum_{n=1}^{\\infty} \\frac{n^{k+1}}{n!} < \\infty$ by the ratio test, so $\\sum \\frac{\\sigma_k(n)}{n!}$ converges.",

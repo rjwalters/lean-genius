@@ -61,7 +61,7 @@
       "startLine": 71,
       "endLine": 99
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Elsholtz-Harper Growth Bounds and Prime Counting",
     "content": "**Counting Functions and Asymptotics**\n\nThe countingFunction |A ∩ [1,x]| counts elements of A up to x. GrowthBounds captures the Elsholtz-Harper (2015) result: if InverseGoldbachPair A B holds, then for large x:\n\n  c₁ · √x / (log x · log log x) ≤ |A ∩ [1,x]| ≤ c₂ · √x · log log x\n\nThis is remarkably tight — the upper and lower bounds differ only by a (log x · (log log x)²) factor. The bounds force A and B to grow like √x, which is natural: if both have ~√x elements up to x, their sumset has ~x elements, matching the prime counting function π(x) ~ x/log x up to logarithmic factors.\n\nThe prime number theorem π(x) ~ x/log x is axiomatized as a limit statement using Filter.Tendsto.",
     "mathContext": "√x/(log x · log log x) ≪ |A ∩ [1,x]| ≪ √x · log log x; π(x)/[x/log x] → 1",
@@ -79,7 +79,7 @@
       "startLine": 101,
       "endLine": 140
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Three-Set Case and Restricted Sumsets",
     "content": "**Elsholtz (2001) and Tao-Ziegler (2023)**\n\nElsholtz completely resolved the three-set analog: no infinite sets A, B, C (each with ≥ 2 elements) can satisfy A + B + C = Primes (mod finite). The proof uses the fact that triple sumsets have too much additive structure to match the pseudo-random distribution of primes.\n\nIn the positive direction, Tao and Ziegler (2023) showed that infinite B, C exist with the restricted sumset {b + c : b ∈ B, c ∈ C, with index constraint} entirely contained in the primes. This is weaker than full equality (inclusion vs. agreement) and does not contradict the conjecture.\n\nThe no_triple_solution theorem follows immediately from the elsholtz_2001 axiom.",
     "mathContext": "¬∃ A B C, A + B + C =_{fin} Primes; ∃ B C infinite, B + C ⊆ Primes",
@@ -97,7 +97,7 @@
       "startLine": 142,
       "endLine": 173
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Goldbach Connection and Structural Constraints",
     "content": "**Relationship to Goldbach's Conjecture**\n\nGoldbach's conjecture states every even n > 2 is a sum of two primes. The theorem goldbach_implies_sumset formalizes: if Goldbach holds, then Primes + Primes ⊇ {even n > 2}. This is a PROVED theorem (not axiomatized) — the proof unfolds the definitions directly.\n\nThe axiom primes_sumset_not_primes states Primes + Primes ≠ Primes (mod finite). The reason: Primes + Primes contains all sufficiently large even numbers (by Goldbach), but primes are almost all odd. So the symmetric difference is infinite.\n\nThe structural constraint must_contain_small_elements axiomatizes that any hypothetical solution A, B must have small elements (1 or 2) in specific configurations.",
     "mathContext": "Goldbach ⟹ Primes + Primes ⊇ {even n > 2}; Primes + Primes ≠_{fin} Primes",
@@ -115,7 +115,7 @@
       "startLine": 175,
       "endLine": 219
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary: Problem #431 is OPEN",
     "content": "**Summary of Known Results**\n\nThe erdos_431_statement theorem bundles the key equivalence and results:\n1. InverseGoldbachConjecture ↔ ¬∃ infinite A, B with A + B =_{fin} Primes\n2. Any such A, B must satisfy Elsholtz-Harper growth bounds\n3. The three-set case is completely ruled out\n\nThe erdos_431_summary and erdos_431 theorems provide a clean conjunction of the three main known results: Elsholtz (2001) on triples, Elsholtz-Harper (2015) on growth bounds, and Tao-Ziegler (2023) on restricted sumsets. The two-set case remains one of the most important open problems in additive prime number theory.",
     "mathContext": "(¬∃ A B C triple) ∧ (∀ pair → bounds) ∧ (∃ restricted ⊆ primes)",

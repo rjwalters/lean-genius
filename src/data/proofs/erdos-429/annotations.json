@@ -58,7 +58,7 @@
       "startLine": 67,
       "endLine": 79
     },
-    "type": "proof",
+    "type": "technique",
     "title": "Admissibility Equivalence (Proved)",
     "content": "**admissible_iff_avoided**:\n\nThis theorem proves that IsAdmissible A ↔ (∀ p prime, ∃ r, AvoidedResidue A p r). The forward direction unfolds the negation of CoversAllResidues to find the avoided class. The reverse constructs a contradiction if all classes were covered.\n\nThis is one of the few fully proved results in the file — a constructive equivalence between two formulations of admissibility. The proof uses `not_forall` and `not_exists` simplification lemmas from Mathlib.",
     "mathContext": "The proof works by unfolding definitions and applying classical logic. The equivalence means we can work with either formulation as convenient: the 'negative' formulation (does not cover all) or the 'positive' formulation (has an avoided residue).",
@@ -140,7 +140,7 @@
       "startLine": 114,
       "endLine": 126
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Weisenberg's Counterexamples",
     "content": "**weisenberg_theorem** and **weisenberg_lacunary** (axioms):\n\nWeisenberg (2024) proved two results axiomatized here:\n1. There exists a zero-density admissible set with NO prime shift\n2. Even lacunary admissible sets can fail to have prime shifts\n\nThe key insight is the construction uses *covering congruences*: for each shift n, a different element a ∈ A is chosen such that n + a is divisible by a specific prime. The primes and residues are arranged so every possible n is blocked.\n\nThese are recorded as axioms because the construction is non-trivial and involves techniques (covering systems, careful modular arithmetic) beyond what Mathlib can currently verify automatically.",
     "mathContext": "The construction is related to classical covering system arguments. Weisenberg showed that the covering approach can be made compatible with both admissibility and arbitrary sparsity, which was not obvious a priori.",
@@ -158,7 +158,7 @@
       "startLine": 128,
       "endLine": 132
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Disproof (Proved)",
     "content": "**erdos_429_disproved**:\n\nDerives ¬ErdosConjecture429 from weisenberg_theorem by contradiction. If the conjecture held, applying it to Weisenberg's counterexample A (which satisfies HasZeroDensity and IsAdmissible) would give HasPrimeShift A, contradicting ¬HasPrimeShift A.\n\nThis is a clean three-line proof: introduce the conjecture, obtain the counterexample, derive contradiction. The mathematical content is in the axiomatized theorem; this derivation is purely logical.",
     "mathContext": "The proof pattern is modus tollens: P → Q, ¬Q, therefore ¬P. Here P is the conjecture and Q is 'the counterexample has a prime shift.'",
@@ -193,7 +193,7 @@
       "startLine": 143,
       "endLine": 146
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Admissibility is Necessary",
     "content": "**admissibility_necessary** (axiom):\n\nIf A has a prime shift and A is nonempty, then A must be admissible. This is the easy direction: if A covered all residues mod some prime p, then for any n, some n + a ≡ 0 (mod p), making n + a composite (assuming n + a > p).\n\nThis axiom completes the picture: admissibility is necessary but not sufficient for prime shifts.",
     "significance": "supporting",
@@ -209,7 +209,7 @@
       "startLine": 148,
       "endLine": 171
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_429_summary**:\n\nPackages the three main results as a conjunction:\n1. ¬ErdosConjecture429 — the conjecture is false\n2. A specific sparse admissible counterexample exists (weisenberg_theorem)\n3. A lacunary admissible counterexample exists (weisenberg_lacunary)\n\nThe proof is simply ⟨erdos_429_disproved, weisenberg_theorem, weisenberg_lacunary⟩.\n\nThis provides a complete formalization of the problem's resolution, demonstrating that no weakening of the sparsity hypothesis can save the conjecture.",
     "mathContext": "The summary progresses from qualitative (conjecture is false) through quantitative (zero density suffices for counterexample) to structural (even lacunary sets fail). This mirrors how Weisenberg's paper strengthens the result in stages.",

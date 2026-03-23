@@ -17,7 +17,11 @@
       "abundancy",
       "subset-sum"
     ],
-    "prerequisites": ["Divisor function", "Abundant numbers", "Subset-sum problem"]
+    "prerequisites": [
+      "Divisor function",
+      "Abundant numbers",
+      "Subset-sum problem"
+    ]
   },
   {
     "id": "erdos-825-divisor-defs",
@@ -36,7 +40,11 @@
       "abundant-numbers",
       "number-theory"
     ],
-    "prerequisites": ["Finset.filter", "Finset.sum", "Divisibility"]
+    "prerequisites": [
+      "Finset.filter",
+      "Finset.sum",
+      "Divisibility"
+    ]
   },
   {
     "id": "erdos-825-semiperfect",
@@ -55,7 +63,11 @@
       "perfect-numbers",
       "NP-completeness"
     ],
-    "prerequisites": ["properDivisors", "Finset subset", "Finset.sum"]
+    "prerequisites": [
+      "properDivisors",
+      "Finset subset",
+      "Finset.sum"
+    ]
   },
   {
     "id": "erdos-825-weird",
@@ -73,7 +85,10 @@
       "weird-numbers",
       "rare-sequences"
     ],
-    "prerequisites": ["IsAbundant", "IsSemiperfect"]
+    "prerequisites": [
+      "IsAbundant",
+      "IsSemiperfect"
+    ]
   },
   {
     "id": "erdos-825-examples",
@@ -91,12 +106,15 @@
       "smallest-weird",
       "exhaustive-check"
     ],
-    "prerequisites": ["IsWeird", "divisorSum"]
+    "prerequisites": [
+      "IsWeird",
+      "divisorSum"
+    ]
   },
   {
     "id": "erdos-825-lower",
     "proofId": "erdos-825",
-    "type": "theorem",
+    "type": "technique",
     "range": {
       "startLine": 63,
       "endLine": 68
@@ -109,7 +127,11 @@
       "lower-bound",
       "counterexample"
     ],
-    "prerequisites": ["weird_70", "sigma_70", "IsSemiperfect"]
+    "prerequisites": [
+      "weird_70",
+      "sigma_70",
+      "IsSemiperfect"
+    ]
   },
   {
     "id": "erdos-825-odd-weird",
@@ -128,7 +150,11 @@
       "erdos-470",
       "open-problem"
     ],
-    "prerequisites": ["IsWeird", "abundancy", "Even/odd classification"]
+    "prerequisites": [
+      "IsWeird",
+      "abundancy",
+      "Even/odd classification"
+    ]
   },
   {
     "id": "erdos-825-conjecture",
@@ -147,6 +173,10 @@
       "open-problem",
       "abundancy-threshold"
     ],
-    "prerequisites": ["ErdosProblem825", "necessary_lower_bound", "odd_weird_abundancy_bound"]
+    "prerequisites": [
+      "ErdosProblem825",
+      "necessary_lower_bound",
+      "odd_weird_abundancy_bound"
+    ]
   }
 ]

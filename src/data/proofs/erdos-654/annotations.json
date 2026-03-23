@@ -120,7 +120,7 @@
       "startLine": 47,
       "endLine": 49
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Known Lower Bound $(n-1)/3$",
     "content": "Every point has at least $(n-1)/3$ distinct distances under the no-four-concyclic condition. Proof: the circle of radius $d$ centered at $x_i$ contains at most 3 configuration points (including $x_i$), so at most 3 points share each distance, giving $\\ge (n-1)/3$ distinct values.",
     "significance": "key",
@@ -143,7 +143,7 @@
       "startLine": 57,
       "endLine": 60
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Conjecture (Axiomatized)",
     "content": "For every $\\varepsilon > 0$ and sufficiently large $n$, any $n$-point configuration with no four concyclic has some point with $\\ge (1 - \\varepsilon)n$ distinct distances. The conjecture is stated with explicit $\\varepsilon$-$N$ quantifiers, formalizing the $o(1)$ error.",
     "significance": "key",
@@ -190,7 +190,7 @@
       "startLine": 75,
       "endLine": 78
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős-Pach Weaker Variant (Axiomatized)",
     "content": "Under general position (no three collinear), does some point have $\\ge (1/3 + c)n$ distinct distances for an absolute constant $c > 0$? This is weaker than the main conjecture but still open.",
     "significance": "key",
@@ -213,7 +213,7 @@
       "startLine": 86,
       "endLine": 89
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Guth-Katz Distinct Distances Context",
     "content": "The Guth-Katz theorem (2015) gives $\\Omega(n / \\log n)$ total distinct distances for any $n$-point configuration, without geometric restrictions. This resolves the Erdős distinct distances conjecture up to the log factor.",
     "significance": "key",
@@ -236,7 +236,7 @@
       "startLine": 94,
       "endLine": 96
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Circle Distance Bound",
     "content": "Under no-four-concyclic, at most 3 points (besides $x_i$) share any given distance $d > 0$ from $x_i$. These points lie on the circle of radius $d$ centered at $x_i$, which meets at most 3 other configuration points.",
     "significance": "key",

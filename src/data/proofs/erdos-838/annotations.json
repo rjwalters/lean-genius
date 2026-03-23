@@ -78,7 +78,7 @@
       "startLine": 96,
       "endLine": 113
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdos's Bounds (1978)",
     "content": "**erdos_lower_bound:** f(n) > n^{c_1 log n} for some c_1 > 0.\n**erdos_upper_bound:** f(n) < n^{c_2 log n} for some c_2 > 0.\n\n**erdos_bounds theorem (PROVED):** Combines both into a single statement. The proof extracts constants from each axiom using obtain.\n\nThese bounds pin down f(n) to quasi-polynomial growth: n^{Theta(log n)}, faster than any polynomial but slower than any exponential.",
     "mathContext": "Quasi-polynomial growth n^{O(log n)} is an intermediate rate between polynomial and exponential, common in complexity theory and combinatorics.",
@@ -114,7 +114,7 @@
       "startLine": 135,
       "endLine": 154
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdos-Szekeres and Triangle Bounds",
     "content": "**erdos_szekeres_convex_subset:** Any n points in general position contain a convex subset of size >= log_2(n). This follows from the Erdos-Szekeres theorem.\n\n**triangles_are_convex:** Every 3-element subset in general position forms a triangle, hence a convex subset.\n\n**triangle_count_lower_bound:** Any n-point set has >= C(n,3) convex triangles. This gives a crude lower bound on f(n) of order n^3.",
     "mathContext": "These provide structural understanding: triangles are the most abundant convex subsets, and the Erdos-Szekeres theorem guarantees large convex subsets exist.",
@@ -132,7 +132,7 @@
       "startLine": 156,
       "endLine": 165
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Growth Rate Properties",
     "content": "**f_superpolynomial:** For any k, f(n) > n^k for large n. The quasi-polynomial growth eventually dominates any fixed polynomial.\n\n**f_subexponential:** For any c > 1, f(n) < c^n for large n. The growth is strictly slower than exponential.\n\nTogether these characterize f(n) as having intermediate (quasi-polynomial) growth.",
     "significance": "key",
@@ -149,7 +149,7 @@
       "startLine": 170,
       "endLine": 183
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_838_summary (PROVED):** Packages the main results:\n1. Erdos bounds: n^{c_1 log n} < f(n) < n^{c_2 log n}\n2. Superpolynomial growth: f(n) > n^k for any k and large n\n\nProof: exact <erdos_bounds, f_superpolynomial>.\n\nThe full problem (existence and value of the limit constant c) remains OPEN.",
     "mathContext": "The summary combines the quantitative bounds with the qualitative growth characterization, giving a complete picture of what is known about f(n).",

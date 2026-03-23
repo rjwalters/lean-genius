@@ -75,7 +75,7 @@
       "startLine": 57,
       "endLine": 60
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős Problem #466 (Proved)",
     "content": "**erdos_466**: ∃ δ > 0 such that N(X, δ) → ∞ as X → ∞ (via `Filter.Tendsto ... Filter.atTop Filter.atTop`). The answer to Erdős's question is YES — arbitrarily large separated configurations exist.",
     "significance": "key",
@@ -97,7 +97,7 @@
       "startLine": 64,
       "endLine": 68
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Graham's Logarithmic Bound",
     "content": "**graham_logarithmic_bound**: For sufficiently large X, N(X, 1/10) ≥ (log X)/10. This was the first proof that N(X, δ) can grow without bound, answering Erdős's question.",
     "significance": "key",
@@ -121,7 +121,7 @@
       "startLine": 72,
       "endLine": 79
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sárközy's Polynomial Bound",
     "content": "**sarkozy_polynomial_bound**: ∃ δ₀ > 0 such that for all 0 < δ < δ₀ and sufficiently large X, N(X, δ) > X^{1/2 − δ^{1/7}}. For small δ, this gives nearly √X points — an exponential improvement over Graham.",
     "significance": "key",
@@ -145,7 +145,7 @@
       "startLine": 83,
       "endLine": 85
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Fractional Distance Bound: ‖x‖ ≤ 1/2",
     "content": "**fracDist_bound**: For all x ∈ ℝ, fracDist(x) ≤ 1/2. Consequently, δ > 1/2 is trivially impossible — no two points can have fractional distance ≥ δ when δ > 1/2.",
     "significance": "key",
@@ -166,7 +166,7 @@
       "startLine": 87,
       "endLine": 90
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Monotonicity in X",
     "content": "**maxSeparatedPoints_mono**: If X₁ ≤ X₂ then N(X₁, δ) ≤ N(X₂, δ). A larger disk can accommodate at least as many separated points.",
     "significance": "supporting",
@@ -188,7 +188,7 @@
       "startLine": 92,
       "endLine": 95
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Monotonicity in δ",
     "content": "**maxSeparatedPoints_anti**: If δ₁ ≤ δ₂ then N(X, δ₂) ≤ N(X, δ₁). A stricter separation requirement reduces the achievable count.",
     "significance": "supporting",

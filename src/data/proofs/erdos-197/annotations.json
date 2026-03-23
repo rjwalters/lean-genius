@@ -101,7 +101,7 @@
       "startLine": 104,
       "endLine": 121
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Partition Membership",
     "content": "**partition_mem_iff:**\n\nIn a two-partition, each element belongs to exactly one part.\n\n```lean\ntheorem partition_mem_iff (A B : Set N) (h : isTwoPartition A B) (n : N) :\n    (n in A and n not in B) or (n not in A and n in B)\n```\n\nThis is a basic but important property of partitions.",
     "significance": "supporting"
@@ -113,7 +113,7 @@
       "startLine": 130,
       "endLine": 141
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdos Problem #197 (Open)",
     "content": "**erdos_197_conjecture:**\n\nThe main open question: Does there exist a partition of N into two sets A and B such that both can be permuted to avoid monotone 3-APs?\n\n```lean\naxiom erdos_197_conjecture :\n    (exists A B, isTwoPartition A B and\n      canPermuteTo3APFree A and canPermuteTo3APFree B) or\n    (forall A B, isTwoPartition A B ->\n      not canPermuteTo3APFree A or not canPermuteTo3APFree B)\n```\n\nAxiomatized as the disjunction of the two possible answers (yes or no).",
     "mathContext": "This formulation captures that the problem is open - we assert one of the two answers holds without knowing which.",
@@ -138,7 +138,7 @@
       "startLine": 156,
       "endLine": 162
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdos-Graham Three-Set Theorem",
     "content": "**erdos_graham_three_sets:**\n\nN CAN be partitioned into THREE sets, each permutable to avoid monotone 3-APs.\n\n```lean\naxiom erdos_graham_three_sets :\n    exists A B C, isThreePartition A B C and\n      canPermuteTo3APFree A and canPermuteTo3APFree B and canPermuteTo3APFree C\n```\n\nThis proves the threshold is at most 3. The open question is whether it's 2 or 3.",
     "mathContext": "The construction uses sophisticated combinatorial techniques. The jump from 2 to 3 represents a fundamental structural change.",
@@ -151,7 +151,7 @@
       "startLine": 196,
       "endLine": 206
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Identity Has 3-APs",
     "content": "**identity_has_3AP:**\n\nThe sequence 0, 1, 2, 3, ... has a 3-AP at any three consecutive terms.\n\n```lean\ntheorem identity_has_3AP : hasMonotone3AP id := by\n  use 0, 1, 2\n  ...\n```\n\n**Verification:** 0 + 2 = 2 = 2 * 1.\n\nThe natural ordering fails spectacularly!",
     "significance": "key"
@@ -163,7 +163,7 @@
       "startLine": 208,
       "endLine": 214
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Powers of 2 Avoid 3-APs",
     "content": "**powers_of_2_avoid_3AP:**\n\nThe sequence 1, 2, 4, 8, 16, ... avoids 3-APs.\n\n```lean\naxiom powers_of_2_avoid_3AP : avoids3AP (fun n => 2 ^ n)\n```\n\n**Why:** If 2^a + 2^c = 2 * 2^b, then by uniqueness of binary representation, we need a = b = c (contradiction for a < b < c).\n\nThis is a canonical example of a 3-AP-free sequence.",
     "mathContext": "Powers of 2 have unique binary representations, which prevents the AP equality from holding with distinct exponents.",
@@ -180,7 +180,7 @@
       "startLine": 220,
       "endLine": 229
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Non-Computability",
     "content": "**erdos_197_not_finite_checkable:**\n\nThe two-set version cannot be resolved by finite computation.\n\nAny finite portion of N can be partitioned to avoid 3-APs in both parts, but this doesn't guarantee a solution for all of N.\n\nThis is why the problem remains open despite decades of study.",
     "mathContext": "Compactness arguments fail here. Local solutions don't compose into global solutions.",
@@ -210,7 +210,7 @@
       "startLine": 260,
       "endLine": 274
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem Status",
     "content": "**erdos_197_status:**\n\nSummary of what we know:\n1. The three-set version is solvable (erdos_graham_three_sets)\n2. Individual 3-AP-free sequences exist (powers_of_2_avoid_3AP)\n\n```lean\ntheorem erdos_197_status :\n    (exists A B C, isThreePartition A B C and ...) and\n    (exists f, avoids3AP f)\n```\n\nThe open question is whether two sets suffice.",
     "significance": "key"
@@ -222,7 +222,7 @@
       "startLine": 276,
       "endLine": 285
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Main Open Question",
     "content": "**erdos_197_open_question:**\n\nWhether two sets suffice remains unknown.\n\n```lean\ntheorem erdos_197_open_question :\n    (exists A B, isTwoPartition A B and\n      canPermuteTo3APFree A and canPermuteTo3APFree B) or\n    (forall A B, isTwoPartition A B ->\n      not canPermuteTo3APFree A or not canPermuteTo3APFree B) :=\n  erdos_197_conjecture\n```\n\nThis directly exposes the open nature of the problem.",
     "significance": "key"

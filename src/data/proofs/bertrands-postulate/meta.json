@@ -38,7 +38,13 @@
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 98,
     "axiomCount": 0,
-    "lineCount": 165
+    "lineCount": 165,
+    "relatedProblems": [
+      {
+        "id": "bertrands-postulate-oq-03",
+        "relationship": "Extensions and generalizations of Bertrand's postulate"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "Joseph Bertrand conjectured this result in 1845 after verifying it for all integers up to 3,000,000. He stated the conjecture in his *Traité d'Algèbre* without proof, noting that a prime always appears between $n$ and $2n-2$ for every $n$ he checked.\n\nPafnuty Chebyshev provided the first proof in 1852 using analytic methods involving what are now called the Chebyshev functions $\\theta(x) = \\sum_{p \\leq x} \\log p$ and $\\psi(x) = \\sum_{p^k \\leq x} \\log p$. He proved the stronger result that $(1 - \\epsilon)x/\\log x < \\pi(x) < (1 + \\epsilon)x/\\log x$ for large $x$ and specific constants, from which Bertrand's postulate follows.\n\nIn 1932, the 19-year-old Paul Erdős published an elegant elementary proof in *Acta Litt. Sci. Szeged* that avoided complex analysis entirely, relying instead on clever analysis of the prime factorization of $\\binom{2n}{n}$. This became his first published paper and launched his legendary mathematical career — Erdős later called it his favorite proof. The key insight: $\\binom{2n}{n} \\geq 4^n/(2n)$ (from $(1+1)^{2n} = \\sum \\binom{2n}{k}$), but if no prime lies in $(n, 2n]$, all prime power factors of $\\binom{2n}{n}$ are $\\leq n$, making the product too small to match $4^n/(2n)$ for $n \\geq 512$.\n\nThe theorem is sometimes called the 'Bertrand-Chebyshev theorem' in honor of both the conjecturer and first prover. Srinivasa Ramanujan gave another proof in his first published paper (1919), using the gamma function. Bertrand's Postulate is a stepping stone toward the Prime Number Theorem: while Bertrand guarantees at least one prime in $(n, 2n]$, the PNT (proved independently by Hadamard and de la Vallée Poussin in 1896) gives the asymptotic density $\\pi(x) \\sim x/\\log x$.",
@@ -54,6 +60,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "imports-docstring",
+      "title": "Imports and Historical Context",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Import of `Mathlib.NumberTheory.Bertrand` and `Mathlib.Tactic`. Comprehensive docstring covering the problem statement, historical development (Bertrand 1845, Chebyshev 1852, Erdős 1932), proof approach via Mathlib delegation, and connections to prime gap theory. Namespace `BertrandsPostulate` opens `Nat`.",
+      "mathContext": "Three key historical proofs: Bertrand conjectured $\\forall n, \\exists p \\in (n, 2n]$ prime after checking $n \\leq 3{,}000{,}000$; Chebyshev proved it analytically via $\\vartheta(x) = \\sum_{p \\leq x} \\log p$; Erdős gave an elementary proof using $\\binom{2n}{n}$ and the central binomial coefficient."
+    },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
@@ -147,6 +161,11 @@
       "targetId": "riemann-hypothesis",
       "relationship": "related",
       "description": "RH implies the strongest form of the prime gap bound: $p_{n+1} - p_n = O(\\sqrt{p_n} \\log p_n)$, far stronger than Bertrand's $p_{n+1} < 2p_n$. Both concern the regularity of prime distribution but at different scales — Bertrand is elementary, RH is deep"
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "Both quantify prime density: Bertrand's postulate gives a local guarantee ($\\exists$ prime in $(n, 2n]$), while $\\sum 1/p = \\infty$ gives a global measure (primes are collectively dense enough for their reciprocals to diverge). Together they establish that primes are both locally frequent and globally ubiquitous"
     }
   ],
   "relatedProofs": [
@@ -156,7 +175,8 @@
     "prime-number-theorem",
     "fundamental-arithmetic",
     "bertrands-postulate-oq-03",
-    "riemann-hypothesis"
+    "riemann-hypothesis",
+    "prime-reciprocal-divergence"
   ],
   "leanFile": {
     "imports": [

@@ -85,7 +85,7 @@
       "startLine": 135,
       "endLine": 139
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős-Kakutani Theorem (1943)",
     "content": "**erdos_kakutani_equivalence:**\n\nThe Continuum Hypothesis is EQUIVALENT to the statement:\n'ℝ can be written as a countable union of ℚ-linearly independent sets.'\n\nThis is a remarkable characterization of CH in terms of linear algebra!",
     "mathContext": "CH ↔ ∃(S : ℕ → Set ℝ), (∀i, IsQLinearlyIndependent (S i)) ∧ (⋃i, S i) = univ",
@@ -103,7 +103,7 @@
       "startLine": 172,
       "endLine": 176
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Davies' Theorem (1972)",
     "content": "**davies_theorem:**\n\nAssuming CH, ℝ² can be decomposed into countably many sets with distinct pairwise distances.\n\nThis extended Erdős-Kakutani from dimension 1 to dimension 2.",
     "significance": "key"
@@ -115,7 +115,7 @@
       "startLine": 183,
       "endLine": 187
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Kunen's Theorem (1987)",
     "content": "**kunen_theorem:**\n\nAssuming CH, ℝⁿ can be decomposed into countably many sets with distinct pairwise distances, for ALL dimensions n.\n\nThis completely solves the problem under CH.",
     "significance": "key"
@@ -127,7 +127,7 @@
       "startLine": 198,
       "endLine": 207
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős-Hajnal Necessity",
     "content": "**erdos_hajnal_necessity:**\n\nIf CH is FALSE, then for any finite partition of ℝ, there exist 4 points in one piece determining at most 4 distinct distances (instead of the required 6).\n\nThis shows CH is NECESSARY for the decomposition to work.",
     "mathContext": "¬CH → finite partitions fail the distinct distances property",
@@ -140,7 +140,7 @@
       "startLine": 284,
       "endLine": 286
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result",
     "content": "**erdos_1127:**\n\nCH → ∀n, Erdos1127Question' n\n\nAssuming the Continuum Hypothesis, ℝⁿ can be decomposed into countably many sets with distinct pairwise distances, for every dimension n.\n\nThis follows immediately from Kunen's theorem.",
     "significance": "key"

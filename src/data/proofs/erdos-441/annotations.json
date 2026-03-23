@@ -120,7 +120,7 @@
       "startLine": 124,
       "endLine": 130
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Chen's Asymptotic (1998)",
     "content": "Chen's theorem: g(N) ~ (9N/8)^{1/2} as N → ∞. This establishes the asymptotic behavior — the construction gives the right order of magnitude.",
     "mathContext": "Chen (1998) proved $g(N)/\\sqrt{9N/8} \\to 1$ as $N \\to \\infty$, formalized as $\\forall \\epsilon > 0, \\exists N_0, \\forall N \\geq N_0: |g(N)/\\sqrt{9N/8} - 1| < \\epsilon$. This confirms Erdős' construction gives the correct leading term $\\sqrt{9N/8} \\approx 1.061\\sqrt{N}$.",
@@ -142,7 +142,7 @@
       "startLine": 132,
       "endLine": 139
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Chen-Dai Upper Bound (2007)",
     "content": "Chen-Dai upper bound: g(N) ≤ (9N/8)^{1/2} + O((N/log N)^{1/2} · log log N). The error term grows with N, leaving room for the construction to be suboptimal.",
     "mathContext": "The bound $g(N) \\leq \\sqrt{9N/8} + C\\sqrt{N/\\log N} \\cdot \\log\\log N$ has error $O(\\sqrt{N/\\log N} \\cdot \\log\\log N) = o(\\sqrt{N})$ but $\\omega(1)$. The gap between the construction size $\\sqrt{9N/8} + O(1)$ and the upper bound allows counterexamples where $g(N)$ exceeds the construction by $O(\\sqrt{N/\\log N})$.",
@@ -164,7 +164,7 @@
       "startLine": 145,
       "endLine": 150
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Construction Not Optimal (Chen-Dai 2006)",
     "content": "Chen-Dai (2006): For infinitely many N, g(N) > |ErdosConstruction(N)|. This definitively answers Erdős' question: NO, the construction is not always optimal.",
     "mathContext": "$\\forall M, \\exists N > M: g(N) > |\\text{ErdosConstruction}(N)|$ shows infinitely many counterexamples. The proof identifies $N$ values where integers with favorable GCD structure (e.g., highly composite numbers with many divisors) create strictly larger LCM-bounded sets than the rigid two-part construction allows.",
@@ -186,7 +186,7 @@
       "startLine": 152,
       "endLine": 160
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "erdos_question_disproved",
     "content": "Erdős' question is disproved: if the construction is not optimal for infinitely many N, then it cannot be optimal for ALL N. The proof is basic logic using omega.",
     "mathContext": "The proof extracts $N > 0$ from $\\texttt{ConstructionNotOptimal}$ with $g(N) > |\\text{Construction}(N)|$, obtains $g(N) = |\\text{Construction}(N)|$ from $\\texttt{ErdosQuestion}$, and derives a contradiction via `omega` ($x > y \\wedge x = y \\to \\bot$). This is one of the fully-proved theorems in the file.",
@@ -230,7 +230,7 @@
       "startLine": 250,
       "endLine": 274
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary",
     "content": "Erdős Problem #441: SOLVED. Question: Is Erdős' construction optimal? Answer: NO. Asymptotic g(N) ~ (9N/8)^{1/2} (Chen 1998). For infinitely many N, g(N) > |construction| (Chen-Dai 2006).",
     "mathContext": "The summary theorem chains $\\texttt{ChenAsymptotic} \\to \\texttt{ConstructionNotOptimal} \\to \\neg\\texttt{ErdosQuestion}$ via $\\texttt{erdos\\_question\\_disproved}$. The packaging theorem $\\texttt{erdos\\_441\\_solved}$ bundles all three results as a conjunction from their axioms.",

@@ -41,7 +41,7 @@
       "startLine": 50,
       "endLine": 57
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Basic Properties",
     "content": "0 ∈ FiniteSubsums(a) (empty sum) and a(n) ∈ FiniteSubsums(a) (singleton sum).",
     "mathContext": "These are immediate from the definition.",
@@ -126,7 +126,7 @@
       "startLine": 107,
       "endLine": 109
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Galvin's Counterexample",
     "content": "galvin_counterexample: ¬MonochromaticConjecture. The monochromatic version is disproved.",
     "mathContext": "Galvin used the 2-adic structure to construct a counterexample.",
@@ -177,7 +177,7 @@
       "startLine": 151,
       "endLine": 156
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Hindman's Theorem",
     "content": "hindman_theorem: ∀k > 0, ∀k-coloring c, ∃ increasing a with monochromatic FiniteSubsums(a). But NO growth bound!",
     "mathContext": "Hindman (1974) proved this using ultrafilters. Won the Steele Prize.",
@@ -245,7 +245,7 @@
       "startLine": 215,
       "endLine": 227
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Results",
     "content": "erdos_948_mono_false: Original monochromatic conjecture is FALSE. erdos_948_statement: Formal statement of modified conjecture.",
     "mathContext": "The formalization captures both the disproved and open versions.",

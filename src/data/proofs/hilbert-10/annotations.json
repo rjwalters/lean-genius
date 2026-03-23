@@ -132,7 +132,7 @@
       "startLine": 117,
       "endLine": 123
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Halting is Undecidable",
     "content": "**Turing's Theorem** (1936): No algorithm can correctly decide whether an arbitrary program halts.\n\nThe proof uses diagonalization: for any proposed oracle, we can construct a behavior (the diagonal) that the oracle must get wrong.\n\nThis is the foundation for proving H10 undecidable.",
     "mathContext": "$\\forall H : \\mathbb{N}^2 \\to \\text{Bool}, \\exists \\text{behavior}, \\forall n : \\text{behavior}(n) \\neq H(n,n)$",
@@ -168,7 +168,7 @@
       "startLine": 180,
       "endLine": 183
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "H10 is Undecidable",
     "content": "**Main Theorem**: Hilbert's 10th Problem is undecidable.\n\nNo algorithm can determine whether an arbitrary Diophantine equation has integer solutions.\n\nProof: If such an algorithm existed, we could use it (via MRDP) to decide the halting problem. But halting is undecidable. Contradiction.",
     "mathContext": "$\\nexists$ oracle $: \\text{DiophantinePolynomial} \\to \\text{Bool}$ that correctly decides solvability",

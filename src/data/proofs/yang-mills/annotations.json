@@ -102,7 +102,7 @@
       "startLine": 252,
       "endLine": 308
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Gauge Transformations Form a Group; Action is Invariant",
     "content": "**Gauge Transformation** $g(x) : \\mathbb{R}^4 \\to G$: Smooth map from spacetime to gauge group.\n\n**Transformation law**: $A_\\mu \\mapsto g A_\\mu g^{-1} + g \\partial_\\mu g^{-1}$.\n\n**Gauge Invariance** (axiomatized): $S[A^g] = S[A]$ — the Yang-Mills action is invariant.\n\n**Group structure** (proved): `gaugeTransformGroup` instance shows gauge transformations form a group under pointwise multiplication:\n- Associativity: $(g_1 g_2) g_3 = g_1 (g_2 g_3)$\n- Identity: $g \\cdot 1 = g = 1 \\cdot g$\n- Inverse: $g^{-1} g = 1$\n- Double inversion: $(g^{-1})^{-1} = g$",
     "summary": "Gauge transformations form a group under pointwise multiplication; action is gauge-invariant.",
@@ -126,7 +126,7 @@
       "startLine": 309,
       "endLine": 375
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Maxwell's Equations as $U(1)$ Yang-Mills",
     "content": "**Electromagnetic Tensor** $F_{\\mu\\nu}$: Antisymmetric tensor encoding electric field $E_i = F_{0i}$ and magnetic field $B = (F_{23}, F_{31}, F_{12})$.\n\n**Key proofs**:\n- Diagonal vanishing $F_{\\mu\\mu} = 0$ (by `linarith` from antisymmetry)\n- Electric antisymmetry: $F_{i0} = -F_{0i} = -E_i$\n- 6 independent components (3 electric + 3 magnetic)\n\n**Abelian Gauge Theory**: For $U(1)$, the Lie bracket $[A_\\mu, A_\\nu] = 0$, so:\n- $F_{\\mu\\nu} = \\partial_\\mu A_\\nu - \\partial_\\nu A_\\mu$ (ordinary derivatives)\n- $D_\\mu = \\partial_\\mu$ (covariant = ordinary)\n- Yang-Mills equation $\\partial_\\mu F^{\\mu\\nu} = 0$ = **Maxwell's equations**\n\nThis proves electromagnetism is the abelian special case of Yang-Mills theory.",
     "summary": "Maxwell's equations recovered as the U(1) abelian special case of Yang-Mills theory.",
@@ -222,7 +222,7 @@
       "startLine": 451,
       "endLine": 478
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Known Partial Results: Asymptotic Freedom, Lattice YM, Wilson Area Law",
     "content": "**Three key physical results**, stated as trivial existence theorems (the physical content is in the naming, not the formal proofs):\n\n1. **Asymptotic Freedom** (Gross-Wilczek-Politzer, 1973; Nobel Prize 2004): $\\exists b_0 > 0$ — the one-loop beta function coefficient is positive for non-abelian groups, meaning the coupling weakens at high energies.\n\n2. **Lattice Yang-Mills** (Wilson, 1974): $\\exists Z > 0$ for any positive lattice spacing — the lattice partition function is well-defined.\n\n3. **Wilson's Confinement Criterion**: $\\exists \\sigma > 0$ — the string tension is positive in the confining phase.\n\nEach is proved by `⟨1, by norm_num⟩` — the deep physics is encoded in the theorem *statement*, not its proof.",
     "summary": "Asymptotic freedom, lattice well-definedness, and Wilson area law stated as named placeholder theorems.",
@@ -295,7 +295,7 @@
       "startLine": 527,
       "endLine": 612
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Wilson Loops: The Fundamental Gauge-Invariant Observable",
     "content": "**Wilson Loop** $W(C) = \\frac{1}{\\dim R}\\text{Tr}\\left(\\mathcal{P}\\exp\\oint_C A_\\mu dx^\\mu\\right)$: The path-ordered exponential of the gauge field around a closed loop $C$, traced in representation $R$.\n\n**Properties** (built into structure):\n- **Gauge invariant**: $W(C, A^g) = W(C, A)$\n- **Bounded**: $|W(C)| \\leq 1$ (normalized trace)\n\n**Proved theorems**:\n- Trivial loop $= 1$ (point-like path gives identity)\n- Area law mass scale positivity ($\\sigma > 0$)\n- Area vs perimeter: $\\sigma \\cdot T \\cdot R > 0$ for confining theories\n\n**Wilson Area Law**: $\\langle W(C) \\rangle \\sim e^{-\\sigma \\cdot \\text{Area}(C)}$ with string tension $\\sigma > 0$ — Wilson's criterion for quark confinement.\n\n**Wilson Perimeter Law**: $\\langle W(C) \\rangle \\sim e^{-m \\cdot \\text{Perimeter}(C)}$ — characteristic of deconfined/Coulomb phase (e.g., QED).\n\nArea and perimeter laws are mutually exclusive: confinement vs. deconfinement.",
     "summary": "Wilson loops as fundamental gauge-invariant observables with area law (confinement) and perimeter law (deconfinement).",
@@ -320,7 +320,7 @@
       "startLine": 613,
       "endLine": 868
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Lattice Gauge Theory: Wilson's Non-Perturbative Framework (1974)",
     "content": "**Full lattice formulation** (256 lines, the largest section):\n\n**Infrastructure**: `LatticeSite`, `LatticeLink`, `LinkVariable` ($U_\\ell \\in G$), `LatticeGaugeTransform`, `Plaquette`, `plaquetteVariable` ($U_P = U_1 U_2 U_3^{-1} U_4^{-1}$).\n\n**Wilson Lattice Action**: $S_P = \\beta(1 - \\chi(U_P)/\\chi(1))$ with coupling $\\beta = 2N/g^2$, character $\\chi$ satisfying $\\chi(ghg^{-1}) = \\chi(h)$ and $|\\chi(g)| \\leq \\chi(1)$.\n\n**Proved theorems** (12+):\n- Plaquette identity: $U_P(1,1,1,1) = 1$\n- Reverse: $U_P(u_4,u_3,u_2,u_1) = U_P(u_1,u_2,u_3,u_4)^{-1}$\n- **Gauge conjugation**: $U_P^g = g_x \\cdot U_P \\cdot g_x^{-1}$\n- Action non-negativity: $S_P \\geq 0$\n- Identity action: $S_P(1) = 0$\n- Upper bound: $S_P \\leq 2\\beta$\n- **Gauge invariance**: $S_P(g U_P g^{-1}) = S_P(U_P)$\n- Total action bounds: $0 \\leq S_W \\leq 2N\\beta$\n- Strong coupling bound: $\\beta < \\varepsilon/(2N) \\implies S_W < \\varepsilon$\n- Partition function existence: $\\exists Z > 0$\n- Continuum limit structure (spacing $\\to 0$, coupling $\\to \\infty$)\n- 4D plaquette count: $6L^4$",
     "summary": "Full lattice gauge theory formulation with plaquette action, gauge invariance, bounds, and continuum limit.",
@@ -396,7 +396,7 @@
       "startLine": 1036,
       "endLine": 1085
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Polyakov Loop: Order Parameter for Confinement",
     "content": "**Polyakov Loop** $P(\\vec{x}) = \\text{Tr}\\left(\\prod_{t=0}^{N_t-1} U_0(\\vec{x}, t)\\right)$: The thermal Wilson loop wrapping the compact temporal direction.\n\n**Order parameter** for the confinement-deconfinement phase transition:\n- **Confined phase**: $\\langle P \\rangle = 0$ (center symmetry unbroken), $\\sigma > 0$\n- **Deconfined phase**: $\\langle P \\rangle \\neq 0$ (center symmetry broken), $\\exists T_c > 0$\n\n**Proved**: Confinement and deconfinement are **mutually exclusive** — if $\\langle P \\rangle = 0$ for all loops (confined) but $\\exists P$ with $\\langle P \\rangle \\neq 0$ (deconfined), we derive `False`. The proof uses `obtain` to extract the nonzero Polyakov loop and applies the confinement condition to get a contradiction.",
     "summary": "Polyakov loop as order parameter: confinement and deconfinement proved mutually exclusive.",

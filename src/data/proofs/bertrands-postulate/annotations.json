@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Primes Are Never Far Apart",
     "content": "Bertrand's Postulate guarantees that primes are distributed densely enough that between any positive integer $n$ and its double $2n$, there's always at least one prime.\n\n$$\\forall n > 0, \\exists p \\text{ prime}: n < p \\leq 2n$$\n\nThis means:\n- After 2, the next prime (3) is at most 4\n- After 100, there's a prime before 200\n- Prime gaps grow, but not too fast",
+    "mathContext": "$\\forall n \\geq 1,\\; \\exists p \\in (n, 2n]$ with $p$ prime. Equivalently, the prime gap $p_{k+1} - p_k < p_k$ for all primes $p_k$.",
     "significance": "key",
     "relatedConcepts": [
       "prime gaps",
@@ -47,7 +48,7 @@
       "startLine": 54,
       "endLine": 61
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Main Statement",
     "content": "**Bertrand's Postulate**: For any positive natural number $n$, there exists a prime $p$ with $n < p \\leq 2n$.\n\n```lean\ntheorem bertrand_postulate (n : ℕ) (hn : 0 < n) :\n    ∃ p, Nat.Prime p ∧ n < p ∧ p ≤ 2 * n\n```\n\nWe wrap Mathlib's `Nat.exists_prime_lt_and_le_two_mul`, converting the hypothesis from `n ≠ 0` to `0 < n`.",
     "mathContext": "$\\exists p \\text{ prime}: n < p \\leq 2n$",
@@ -92,6 +93,7 @@
     "type": "technique",
     "title": "Infinitude of Primes (Alternative Proof)",
     "content": "Bertrand's Postulate provides yet another proof that there are infinitely many primes:\n\n1. Given any $n$, apply Bertrand to get prime $p$ with $n < p$\n2. This prime $p > n$\n3. Since $n$ was arbitrary, primes are unbounded\n4. Therefore there are infinitely many primes\n\nThis is distinct from Euclid's factorial argument, showing how the same result can arise from different perspectives.",
+    "mathContext": "Given any $N$, apply Bertrand with $n = N$ to get prime $p > N$. Since $N$ was arbitrary, primes are unbounded: $\\{p : p \\text{ prime}\\}$ is infinite.",
     "significance": "key",
     "relatedConcepts": [
       "infinitude of primes",
@@ -133,6 +135,7 @@
     "type": "insight",
     "title": "The Descending Prime Chain",
     "content": "For small $n$ (< 512), an explicit chain of primes covers all cases:\n\n983, 491, 241, 127, 61, 31, 17, 11, 7, 5, 3, 2\n\nEach prime $p$ in this list satisfies $p > q/2$ where $q$ is the previous prime. This ensures every $n < 521$ has a prime in $(n, 2n]$.\n\nExample: For $n = 50$, we find 61 in the chain with $50 < 61 \\leq 100$. ✓",
+    "mathContext": "The chain $983 > 491 > 241 > \\cdots > 2$ has each prime $p_i > p_{i+1}/2$, so for $p_{i+1}/2 < n \\leq p_i/2$ we get $p_i \\in (n, 2n]$. This covers all $n \\leq 521$ by explicit computation.",
     "significance": "key",
     "relatedConcepts": [
       "constructive proofs",
@@ -172,7 +175,7 @@
       "startLine": 99,
       "endLine": 106
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "No Largest Prime (via Bertrand)",
     "content": "Another formulation of the infinitude of primes: there is no largest prime number. Proved by contradiction — if $p$ were the largest prime, `primes_infinite_via_bertrand` produces a prime $q > p$, contradicting maximality. The `omega` tactic closes the final numerical contradiction $q \\leq p$ vs $q > p$.",
     "mathContext": "$\\neg\\exists p \\text{ prime}: \\forall q \\text{ prime},\\, q \\leq p$. Equivalent to: $\\forall N, \\exists p > N$ prime.",

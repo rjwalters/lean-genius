@@ -102,7 +102,7 @@
       "startLine": 133,
       "endLine": 152
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Partition Theorem (PROVED)",
     "content": "**partition_theorem (n : ℕ) : (distincts n).card = (odds n).card**\n\nThis is the main result — a FULLY PROVED theorem (no axioms or sorry!). The proof is a one-liner: `(Theorems100.partition_theorem n).symm`, which applies the Mathlib proof from the Wiedijk 100 Theorems archive and reverses the equality direction.\n\nThe Mathlib proof uses generating functions: it shows the formal power series ∏(1+xᵏ) and ∏1/(1-x^{2k+1}) are equal, then extracts the coefficient of xⁿ to get the partition count equality.",
     "mathContext": "The key generating function identity: $\\prod_{k=1}^{\\infty}(1+x^k) = \\prod_{k=0}^{\\infty}\\frac{1}{1-x^{2k+1}}$. This follows from $1+x^k = \\frac{1-x^{2k}}{1-x^k}$, so $\\prod(1+x^k) = \\prod\\frac{1-x^{2k}}{1-x^k}$. The numerator contains $(1-x^{2k})$ for all $k$, and the denominator $(1-x^k)$ for all $k$. Telescoping cancels all even factors, leaving $1/\\prod_{k \\text{ odd}}(1-x^k)$.",

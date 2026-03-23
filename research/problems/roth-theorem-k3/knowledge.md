@@ -118,7 +118,42 @@ The Parseval proof `∑_r ‖Â(r)‖² = |A|·N` requires:
 ### Sorry Classification (Updated)
 | Sorry | Difficulty | Notes |
 |-------|-----------|-------|
-| parseval_on_zmod | Medium | char_orthogonality proved; needs normSq expansion |
+| ~~parseval_on_zmod~~ | ~~Medium~~ | **PROVED** (Session 4) |
 | triple_count_fourier | Hard | Similar structure to Parseval but triple product |
 | fourier_large_coefficient | Medium | Follows from Parseval + triple_count |
 | density_increment_lemma | Hard | Needs fourier_large_coefficient + pigeonhole on subprogressions |
+
+## Session 4 (2026-03-22, researcher-7)
+
+### What Was Done
+1. **Proved conj_psi**: conj(ψ(x)) = ψ(-x) via unit-norm inversion
+   - Key insight: avoid `map_exp` (not in Mathlib) by using |ψ(x)| = 1
+   - ψ(x) · ψ(-x) = ψ(0) = 1 (by psi_add + psi_zero)
+   - conj(ψ(x)) · ψ(x) = |ψ(x)|² = 1 (by Complex.norm_exp + re=0)
+   - Both are right-inverses of ψ(x) → equal by cancellation
+2. **Proved parseval_on_zmod**: ∑_r ‖Â(r)‖² = |A|·N (Parseval identity)
+   - Convert ‖z‖² = re(z·conj z) via Complex.mul_conj + normSq_eq_norm_sq
+   - Pull .re out of sum (re is additive, proved by induction on Finset)
+   - Expand (∑ ψ)·conj(∑ ψ) = ∑∑ ψ·conj(ψ) via sum_mul + mul_sum
+   - Use conj_psi: conj(ψ(ry)) = ψ(-(ry))
+   - Combine via psi_add: ψ(rx)·ψ(-(ry)) = ψ(r(x-y))
+   - Swap sums (two applications of Finset.sum_comm)
+   - Apply char_orthogonality: ∑_r ψ(r(x-y)) = N·δ(x=y)
+   - Collapse diagonal: ∑_{x∈A} N = |A|·N
+3. **Reduced sorry count**: 4 → 3
+
+### Key Technical Discoveries
+- `Complex.normSq_eq_norm_sq`: converts between normSq and ‖·‖²
+- `Complex.norm_exp z`: ‖exp(z)‖ = Real.exp(z.re), so unit-norm when re=0
+- `Finset.sum_ite_eq`: collapses conditional sums over Finsets
+- Avoid `map_exp`/`Complex.exp_conj` — not available. Use unit-norm argument instead
+- `left_ne_zero_of_mul` useful for ψ(x) ≠ 0 from ψ(x)·ψ(-x) = 1
+- Sum swapping inside outer sums: use `simp_rw` with explicit `Finset.sum_comm`
+
+### Remaining Sorry Dependency Chain (Updated)
+```
+triple_count_fourier (sorry) ──────────────────────┐
+                                                    ├→ fourier_large_coefficient (sorry)
+parseval_on_zmod (PROVED) ─────────────────────────┤    └→ density_increment_lemma (sorry)
+                                                              └→ roth_density_bound (PROVED)
+```

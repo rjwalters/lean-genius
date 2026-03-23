@@ -77,7 +77,7 @@
       "startLine": 243,
       "endLine": 358
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Progressive Results: Bondy-Erdős → Nikiforov → KLS",
     "content": "Three progressively stronger results proving the formula for larger ranges:\n\n**bondy_erdos** (1973): Formula holds for $k > n^2 - 2$. The Bondy-Erdős threshold is quadratic in $n$.\n\n**nikiforov** (2005): Formula holds for $k \\geq 4n + 2$. Reduces the threshold from quadratic to linear. Uses spectral graph theory and eigenvalue bounds.\n\n**keevash_long_skokan** (2021): Formula holds for $k \\geq C \\log n / \\log \\log n$. Reduces the threshold to near-logarithmic. Uses the stability method and extremal graph theory.\n\n**kls_improves** (proved by Aristotle): For $n \\geq 100$, the KLS threshold $\\log n / \\log \\log n < 4n + 2$. This uses the bound $e < 3$.",
     "mathContext": "The threshold progression: $n^2 - 1$ (Bondy-Erdős 1973) $\\to$ $4n + 2$ (Nikiforov 2005) $\\to$ $C \\log n / \\log \\log n$ (KLS 2021). For $n = 100$: Bondy-Erdős needs $k \\geq 9999$, Nikiforov needs $k \\geq 402$, KLS needs $k \\geq C \\cdot \\log 100 / \\log \\log 100 \\approx 3C$. The dramatic improvement from quadratic to near-logarithmic represents 48 years of progress.",
@@ -101,7 +101,7 @@
       "startLine": 376,
       "endLine": 420
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Special Cases: Small Parameters and R(C_k, K_3)",
     "content": "**cycle_3_is_triangle**: $R(C_3, K_n) = R(K_3, K_n)$ since $C_3 = K_3$.\n\n**ramsey_C4_K3** = 7 and **ramsey_C5_K3** = 9: small verified values.\n\n**ramsey_Ck_K3**: $R(C_k, K_3) = 2k - 1$ for $k \\geq 4$. This is the triangle case: every 2-coloring of $K_{2k-1}$ contains a red $C_k$ or a blue triangle. The formula gives $(k-1)(3-1)+1 = 2k-1$, confirming the conjecture for $n = 3$.",
     "mathContext": "For $n = 3$: $R(C_k, K_3) = 2k - 1$ for all $k \\geq 4$. This was proved by Faudree and Schelp (1974) and independently by Rosta (1973). The proof uses the fact that a graph on $2k-1$ vertices with no triangle in the complement has minimum degree $\\geq k$, and Dirac's theorem gives a Hamiltonian cycle (hence $C_k$).",

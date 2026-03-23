@@ -63,7 +63,7 @@
       "startLine": 89,
       "endLine": 97
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Known Exact Values",
     "content": "Two axioms capture the exactly computed values. **g_two : g 2 = 2** (Gallai): for any two integers a, b ≥ 2, two consecutive integers from an interval of length max(a,b) suffice to have their product divisible by ab. **g_three : g 3 = 4** (Erdős-Surányi 1959): three integers require four consecutive integers. The pattern g(n) ≈ 2n is already visible: g(2)/2 = 1, g(3)/3 = 4/3 ≈ 1.33, trending toward the conjectured limit of 2.",
     "mathContext": "g(2) = 2 (Gallai). g(3) = 4 (Erdős-Surányi 1959). Ratio g(n)/n: g(2)/2=1, g(3)/3≈1.33.",
@@ -81,7 +81,7 @@
       "startLine": 99,
       "endLine": 112
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bounds on g(n)",
     "content": "**g_trivial_upper** gives g(n) ≤ n² as a rough upper bound — the entire interval always works trivially. **erdos_suranyi_lower** is the key lower bound: g(n) ≥ 2n - 10√n for n ≥ 2, which gives g(n) ≥ (2-o(1))n asymptotically. The construction for the lower bound uses A = {p_i · p_j : i ≠ j} where p_1 < ... < p_ℓ are primes satisfying 2p₁² > p_ℓ². This forces the prime factors of ∏A to be spread across many distinct primes, each appearing with small multiplicity, making it impossible for a small set of consecutive integers to accumulate all the required divisibility.",
     "mathContext": "g_trivial_upper: g(n) ≤ n². erdos_suranyi_lower: g(n) ≥ 2n - 10√n for n ≥ 2. Construction: A = {pᵢpⱼ : i≠j}, primes with 2p₁² > p_ℓ².",
@@ -117,7 +117,7 @@
       "startLine": 129,
       "endLine": 143
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Interval Length Variant",
     "content": "The related variant studies c_n: the smallest scaling factor ≥ 1 such that an interval of length c_n · max(A) contains n elements whose product is divisible by ∏A. **c** is axiomatized since computing the optimal scaling requires optimization over all A. Known values: **c_two : c 2 = 1** (no extra length needed for 2 elements) and **c_three : c 3 = √2** (need ~41% more length for 3 elements). This is connected to Erdős Problem #709. The c_n variant and g(n) capture different aspects of the same divisibility phenomenon.",
     "mathContext": "axiom c (n : ℕ) : ℝ. c₂ = 1. c₃ = √2. Related to Problem #709.",
@@ -135,7 +135,7 @@
       "startLine": 156,
       "endLine": 190
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorems",
     "content": "Two summary theorems. **erdos_708** combines all three known results: g(2) = 2, g(3) = 4, and the Erdős-Surányi lower bound, proved by ⟨g_two, g_three, erdos_suranyi_lower⟩. **erdos_708_summary** provides just the exact values: g(2) = 2 ∧ g(3) = 4, proved by ⟨g_two, g_three⟩. The problem remains OPEN — the gap between the lower bound (2-o(1))n and the conjectured upper bound (2+o(1))n has resisted over 60 years of effort.",
     "mathContext": "erdos_708 : g 2 = 2 ∧ g 3 = 4 ∧ (∀ n ≥ 2, g(n) ≥ 2n - 10√n) := ⟨g_two, g_three, erdos_suranyi_lower⟩. erdos_708_summary : g 2 = 2 ∧ g 3 = 4 := ⟨g_two, g_three⟩.",

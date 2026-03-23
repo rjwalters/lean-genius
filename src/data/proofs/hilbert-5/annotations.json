@@ -179,7 +179,7 @@
       "startLine": 313,
       "endLine": 323
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Pardon's Theorem (2013)",
     "content": "**pardon_dimension_3**: The Hilbert-Smith conjecture holds in dimension 3.\n\nThe $p$-adic integers $\\mathbb{Z}_p$ cannot act faithfully on any 3-manifold.\n\nCurrently `theorem pardon_dimension_3 : True := trivial` — a placeholder statement. A full formalization would require extensive 3-manifold topology.",
     "mathContext": "John Pardon proved this as a graduate student at Stanford, publishing in the Annals of Mathematics (2013). His proof uses deep techniques from geometric topology including Smith theory and cohomological dimension. This was a major breakthrough, as the $n=3$ case had been open since the 1940s. Pardon later won the Breakthrough Prize in Mathematics.",

@@ -76,7 +76,7 @@
       "startLine": 82,
       "endLine": 88
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The {2,3} Case: All Representable",
     "content": "Erdős's 'silly conjecture': ALL positive integers are representable for {p,q} = {2,3}. The proof is by simple induction. Erdős called it 'silly' because he expected it to be difficult, but Jansen found an easy proof.",
     "mathContext": "∀ n ≥ 1, IsRepresentable(3, 2, n)",
@@ -111,7 +111,7 @@
       "startLine": 115,
       "endLine": 121
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős-Lewin Characterization",
     "content": "The fundamental characterization (1996): The set of non-representable numbers is FINITE if and only if {p,q} = {2,3}. All other coprime pairs have infinitely many non-representables.",
     "mathContext": "Finite(NonRepresentable(p,q)) ↔ {p,q} = {2,3}",
@@ -145,7 +145,7 @@
       "startLine": 158,
       "endLine": 171
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Yu-Chen Coprime Infinitude",
     "content": "Yu-Chen (2022) proved infinitely many COPRIME non-representables exist for most (p,q): q > 3, or q = 3 and p ≠ 5, or q = 2 and p ∉ {3, 5, 9}. This answers one of Erdős's main questions.",
     "mathContext": "Set.Infinite({n ∈ NonRep | gcd(n, pq) = 1})",
@@ -162,7 +162,7 @@
       "startLine": 177,
       "endLine": 203
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Minimum Summand Bounds",
     "content": "For {2,3}, Erdős-Lewin asked: how large can all summands be? Yu-Chen proved n/(log n)^{log₂3} ≪ f(n) ≪ n/log n. Yang-Zhao (2025) improved the lower bound to f(n) ≫ n/log n, matching the upper bound.",
     "mathContext": "f(n) ~ n/log n (up to constants)",
@@ -179,7 +179,7 @@
       "startLine": 220,
       "endLine": 238
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Example: 1 is Representable",
     "content": "The simplest case: 1 = 3^0 · 2^0. A single-element 'sum' trivially satisfies the non-divisibility constraint. This gives a constructive proof that 1 ∈ Representable.",
     "mathContext": "IsRepresentable(3, 2, 1) proved by {1}",
@@ -196,7 +196,7 @@
       "startLine": 251,
       "endLine": 292
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Complete Summary",
     "content": "Erdős Problem #1110: Status OPEN (partially resolved). The {2,3} case is completely solved. For other (p,q): infinitely many non-representables exist (Erdős-Lewin), density zero in many cases (Yu-Chen), infinitely many coprime exceptions for most parameters.",
     "mathContext": "Synthesis of all main results",

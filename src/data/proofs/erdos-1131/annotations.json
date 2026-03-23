@@ -114,7 +114,7 @@
       "startLine": 64,
       "endLine": 69
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Interpolation Property: $l_k(x_k) = 1$",
     "content": "Each basis polynomial evaluates to 1 at its own node: $l_k(x_k) = \\prod_{i \\ne k} \\frac{x_k - x_i}{x_k - x_i} = 1$. This is immediate from the definition when nodes are distinct.",
     "significance": "key",
@@ -136,7 +136,7 @@
       "startLine": 70,
       "endLine": 75
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Orthogonality: $l_k(x_j) = 0$ for $j \\ne k$",
     "content": "Each basis polynomial vanishes at all other nodes: $l_k(x_j) = 0$ for $j \\ne k$. This follows because the product $\\prod_{i \\ne k}(x_j - x_i)$ contains the factor $x_j - x_j = 0$ when $j \\ne k$.",
     "significance": "key",
@@ -158,7 +158,7 @@
       "startLine": 76,
       "endLine": 85
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Lower Bound: $I \\ge 2/n$",
     "content": "For any node configuration in $[-1,1]$: $I(x_1,\\ldots,x_n) \\ge 2/n$. This follows from the **partition of unity** $\\sum_k l_k(x) = 1$ and Cauchy-Schwarz: $1 = (\\sum_k l_k(x))^2 \\le n \\sum_k l_k(x)^2$, so $\\sum_k l_k(x)^2 \\ge 1/n$, and integrating gives $I \\ge 2/n$.",
     "significance": "key",
@@ -180,7 +180,7 @@
       "startLine": 86,
       "endLine": 92
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Upper Bound: $I \\le 2n$",
     "content": "For any node configuration: $I \\le 2n$. This crude bound says the integral cannot grow faster than linearly in $n$. Much tighter bounds are known for specific node choices.",
     "significance": "supporting",
@@ -223,7 +223,7 @@
       "startLine": 104,
       "endLine": 109
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Chebyshev Nodes in $[-1,1]$",
     "content": "All Chebyshev nodes satisfy $-1 \\le x_k \\le 1$. This follows from $|\\cos \\theta| \\le 1$ for all $\\theta \\in \\mathbb{R}$.",
     "significance": "supporting",
@@ -244,7 +244,7 @@
       "startLine": 110,
       "endLine": 115
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Chebyshev Nodes Are Distinct",
     "content": "For $n \\ge 2$, the Chebyshev nodes are pairwise distinct. The angles $(2k+1)\\pi/(2n)$ are distinct in $(0, \\pi)$, and cosine is strictly decreasing on $[0, \\pi]$.",
     "significance": "supporting",
@@ -266,7 +266,7 @@
       "startLine": 116,
       "endLine": 122
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Chebyshev Integral Estimate",
     "content": "For Chebyshev nodes: $I \\approx 2 - c/n$ with error $O(1/n^2)$. There exists $c > 0$ such that $|I_n - (2 - c/n)| \\le c/n^2$. This shows Chebyshev nodes give $I$ close to 2 with a $1/n$ correction.",
     "significance": "key",
@@ -310,7 +310,7 @@
       "startLine": 131,
       "endLine": 140
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős's Conjecture: $\\min I = 2 - (1+o(1))/n$",
     "content": "The central open conjecture: $|\\min I_n - (2 - 1/n)| \\le \\varepsilon/n$ for all $n \\ge N_0(\\varepsilon)$. This asserts the minimum integral equals $2 - 1/n$ with lower-order corrections, i.e., $\\min I = 2 - (1+o(1))/n$.",
     "significance": "key",
@@ -332,7 +332,7 @@
       "startLine": 145,
       "endLine": 156
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem: $I \\ge 2/n$",
     "content": "The formalized result: for any distinct nodes in $[-1,1]$, the Lagrange integral satisfies $I \\ge 2/n$. Proved by applying the `lagrangeIntegral_lower_bound` axiom. This is the simplest known bound.",
     "significance": "key",

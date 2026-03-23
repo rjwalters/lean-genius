@@ -147,7 +147,7 @@
       "startLine": 110,
       "endLine": 137
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Cassels's Theorem (1960)",
     "content": "**cassels_theorem (axiom):** Under strictly stronger hypotheses, every large integer is a subset sum.\n\n**HasStrongGrowthCondition**: $(\\text{count}(2x) - \\text{count}(x)) / \\log\\log x \\to \\infty$. Strictly stronger than Erdős's condition.\n\n**HasStrongIrrationalityCondition**: $\\sum \\|\\theta n\\|^2 = \\infty$. Strictly *weaker* than Erdős's $\\sum \\|\\theta n\\| = \\infty$ (since $\\|\\theta n\\|^2 \\le \\|\\theta n\\|$).\n\nThe 'paradox': Cassels strengthens one condition but weakens the other, and the combination works.",
     "mathContext": "Cassels's proof in 'On the representation of integers as the sums of distinct summands taken from a fixed set' (Acta Sci. Math. Szeged, 1960) uses a Fourier-analytic method. The $L^2$ irrationality condition $\\sum \\|\\theta n\\|^2 = \\infty$ is natural because $\\|\\theta n\\|^2$ appears when squaring exponential sums $|\\sum_{n \\in A} e^{2\\pi i \\theta n}|^2$. The logarithmic growth condition ensures enough 'room' for the circle method estimates. The gap between Erdős's and Cassels's conditions is the open question.",
@@ -195,7 +195,7 @@
       "startLine": 158,
       "endLine": 185
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_254_summary (proved from axioms):**\n\nCombines three results:\n1. Cassels's theorem: representation under strong conditions\n2. Powers of 2 satisfy growth + irrationality conditions\n3. Powers of 2 represent all large integers\n\nProved by: $\\langle\\texttt{cassels\\_theorem}, \\langle\\texttt{growth}, \\texttt{irrationality}\\rangle, \\texttt{representation}\\rangle$",
     "mathContext": "The summary theorem packages the formalization's content as a conjunction. While the open conjecture `ErdosConjecture` is stated but not proved, the summary demonstrates: (a) Cassels's stronger version is axiomatized, (b) a concrete example (powers of 2) satisfies all conditions, and (c) the example achieves the desired conclusion. This shows the formalization captures both the known result and the gap to the open problem.",

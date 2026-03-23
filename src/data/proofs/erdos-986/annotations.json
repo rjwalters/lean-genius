@@ -77,7 +77,7 @@
       "startLine": 104,
       "endLine": 124
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Spencer's Result (1977)",
     "content": "**spencer_1977:**\n\nSpencer proved the k = 3 case: R(3,n) ≫ n² / (log n)^c.\n\n```lean\naxiom spencer_1977 :\n  ∃ c : ℝ, c > 0 ∧\n    (fun n => (RamseyNumber 3 n : ℝ)) ≫\n    (fun n => (n : ℝ)^2 / (log n)^c)\n```\n\nSpencer used probabilistic methods to establish this asymptotic lower bound.",
     "mathContext": "Spencer's paper 'Asymptotic lower bounds for Ramsey functions' appeared in Discrete Math. (1977).",
@@ -95,7 +95,7 @@
       "startLine": 126,
       "endLine": 146
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Mattheus-Verstraete Breakthrough (2023)",
     "content": "**mattheus_verstraete_2023:**\n\nA major breakthrough proving the k = 4 case: R(4,n) ≫ n³ / (log n)^c.\n\n```lean\naxiom mattheus_verstraete_2023 :\n  ∃ c : ℝ, c > 0 ∧\n    (fun n => (RamseyNumber 4 n : ℝ)) ≫\n    (fun n => (n : ℝ)^3 / (log n)^c)\n```\n\nThis resolved a long-standing open problem, determining the asymptotic order of R(4,n).",
     "mathContext": "Their paper 'The asymptotics of r(4,t)' used algebraic geometry techniques. arXiv:2306.04007",
@@ -113,7 +113,7 @@
       "startLine": 148,
       "endLine": 162
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bohman-Keevash Lower Bound (2010)",
     "content": "**bohman_keevash_2010:**\n\nBest known general lower bound for all k ≥ 3:\nR(k,n) ≫ n^((k+1)/2) / (log n)^α\n\nwhere α depends on k.\n\nThis bound has polynomial exponent (k+1)/2, which is weaker than the conjectured k-1 for k ≥ 5.",
     "mathContext": "Bohman and Keevash analyzed the 'H-free process' - a random greedy algorithm avoiding cliques.",
@@ -131,7 +131,7 @@
       "startLine": 164,
       "endLine": 172
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "AKS Upper Bound (1980)",
     "content": "**aks_1980_upper:**\n\nAjtai-Komlós-Szemerédi proved the upper bound:\nR(k,n) ≪ n^(k-1) / (log n)^(k-2)\n\nNote: The polynomial exponent k-1 matches the conjecture's lower bound target.",
     "mathContext": "The AKS bound uses stepwise probabilistic arguments and established the 'correct' polynomial growth rate.",
@@ -167,7 +167,7 @@
       "startLine": 216,
       "endLine": 249
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem Summary",
     "content": "**erdos_986_summary:**\n\nCombines all known results about the conjecture.\n\n**Status Table:**\n\n| k | Status | Who/When |\n|---|--------|----------|\n| 3 | **YES** | Spencer, 1977 |\n| 4 | **YES** | Mattheus-Verstraete, 2023 |\n| ≥5 | **OPEN** | - |\n\n**Key insight:** The 46-year gap between solving k=3 and k=4 shows the difficulty of these problems.",
     "significance": "key",

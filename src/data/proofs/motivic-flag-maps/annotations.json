@@ -93,7 +93,7 @@
       "startLine": 92,
       "endLine": 98
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Geometric Series Formula",
     "content": "**(L-1) · [Pⁿ] = L^{n+1} - 1**: The projective class satisfies the geometric series identity. This is proved using Mathlib's `mul_geom_sum`.",
     "mathContext": "The identity (x-1)(1 + x + ... + xⁿ) = x^{n+1} - 1 is a standard algebraic fact. We apply it with x = L.",
@@ -162,7 +162,7 @@
       "startLine": 123,
       "endLine": 127
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "[GL_1] = L - 1",
     "content": "For n=1, the formula simplifies: GL_1 ≅ Gₘ (the multiplicative group), which has motivic class L - 1 = [A¹] - [point].",
     "mathContext": "GL_1 = k* is the punctured affine line, obtained from A¹ by removing the origin. The scissor relation gives [k*] = [A¹] - [pt] = L - 1.",
@@ -179,7 +179,7 @@
       "startLine": 129,
       "endLine": 134
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "[GL_2] = (L-1)(L²-1)·L",
     "content": "For n=2: [GL_2] = (L-1)(L²-1)·L. The product (L-1)(L²-1) = (L-1)²(L+1) captures the two pivot choices.",
     "mathContext": "The factors are: (L-1) for the first column being nonzero, (L²-1) for the second column not being a multiple of the first, and L for the upper triangular entry.",
@@ -231,7 +231,7 @@
       "startLine": 168,
       "endLine": 179
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Small Flag Varieties",
     "content": "[Fl_1] = 1 (a point) and [Fl_2] = 1 + L (a projective line). These are proved directly by unfolding definitions.",
     "mathContext": "Fl_1 parametrizes \"flags\" in k¹, which is trivial (one point). Fl_2 ≅ P¹ parametrizes lines in k².",
@@ -283,7 +283,7 @@
       "startLine": 315,
       "endLine": 322
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem (Bryan et al. 2025)",
     "content": "**[Ω²_β(Fl_{n+1})] = [GL_n × A^a]**: The motivic class of the space of based rational maps equals GL_n times affine space, with dimension a determined by β.",
     "mathContext": "This is the central result from arXiv:2601.07222. It exhibits \"motivic purity\": a complicated moduli space has a simple motivic class. The theorem is axiomatized since its proof requires deep algebraic geometry.",
@@ -301,7 +301,7 @@
       "startLine": 324,
       "endLine": 337
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Special Cases n=1, n=2",
     "content": "The main theorem is instantiated for n=1 (maps to P¹) and n=2 (maps to Fl₃). These follow directly from the general axiom.",
     "mathContext": "For n=1, we get maps P¹ → P¹ (rational functions). For n=2, we get maps to the 3-dimensional flag variety of nested lines and planes in k³.",
@@ -318,7 +318,7 @@
       "startLine": 339,
       "endLine": 346
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Expanded Form in L",
     "content": "The main theorem can be written explicitly in terms of L: the result is ∏(L^{i+1} - 1) · L^{triangular(n) + a}.",
     "mathContext": "This expansion shows exactly how the motivic class depends on L. It combines the GL_n formula with the affine factor L^a.",

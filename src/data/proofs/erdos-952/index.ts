@@ -1,7 +1,7 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
-import sourceRaw from '../../../../proofs/Proofs/Erdos952Problem.lean?raw'
+import sourceRaw from '../../../../proofs/Proofs/Stubs/Erdos952Problem.lean?raw'
 
 const meta = metaJson as unknown as {
   id: string

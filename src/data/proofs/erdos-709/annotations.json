@@ -80,7 +80,7 @@
       "startLine": 96,
       "endLine": 101
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Function f(n)",
     "content": "**f(n)**: the minimal $k$ such that any interval of $k \\cdot \\max(A)$ consecutive integers has the covering property for every valid $n$-element set $A$.\n\nAxiomatized with:\n- **f_pos**: $f(n) > 0$ for $n \\geq 1$\n- **f_sufficient**: intervals of length $\\geq f(n) \\cdot \\max(A)$ always admit a covering\n\nComputing f(n) exactly is infeasible, so we axiomatize it and work with bounds.",
     "mathContext": "The function f(n) is well-defined by a compactness argument: for fixed n, there are finitely many 'worst-case' configurations up to scaling by max(A). The axiomatization captures the key property that f(n) suffices without needing to compute it.",
@@ -98,7 +98,7 @@
       "startLine": 107,
       "endLine": 110
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Lower Bound: (log n)^c",
     "content": "**Lower bound** (Erdős-Surányi 1959):\n\n$$f(n) \\geq (\\log n)^c$$\n\nfor some constant $c > 0$ and all sufficiently large $n$.\n\n**Proof idea**: Take $A = \\{p_1, \\ldots, p_n\\}$ to be the first $n$ primes. By the Chinese Remainder Theorem, the events '$p_i$ divides a random integer' are approximately independent. A probabilistic counting argument shows that short intervals sometimes fail to provide enough distinct multiples.",
     "mathContext": "The lower bound uses the probabilistic method — a hallmark of Erdős's approach. The key insight is that for prime sets, the Chinese Remainder Theorem makes the divisibility constraints nearly independent, and a counting argument shows short intervals are sometimes insufficient.",
@@ -117,7 +117,7 @@
       "startLine": 112,
       "endLine": 115
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Upper Bound: C√n",
     "content": "**Upper bound** (Erdős-Surányi 1959):\n\n$$f(n) \\leq C\\sqrt{n}$$\n\nfor some constant $C > 0$ and all $n \\geq 1$.\n\n**Proof idea**: In an interval of length $\\sqrt{n} \\cdot \\max(A)$, each $a_i$ has at least $\\sqrt{n}$ multiples in $I$. By Hall's marriage theorem, a system of distinct representatives exists whenever every subset $S \\subseteq A$ collectively has at least $|S|$ multiples — which the $\\sqrt{n}$ multiplicity guarantees.",
     "mathContext": "Hall's marriage theorem states that a bipartite graph has a perfect matching iff every subset of one side has enough neighbors. Here, each a_i has ≥ √n multiples in I, and the pigeonhole principle ensures Hall's condition is satisfied.",
@@ -136,7 +136,7 @@
       "startLine": 117,
       "endLine": 121
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős-Surányi 1959",
     "content": "**Combined bounds theorem:**\n\n$$(\\log n)^c \\ll f(n) \\ll \\sqrt{n}$$\n\nThis theorem packages both bounds into a single statement. The proof is immediate from the two axioms `lower_bound_log` and `upper_bound_sqrt`.\n\nThe gap between these bounds is the heart of the open problem.",
     "mathContext": "The ≪ notation (Vinogradov notation) means 'bounded above by a constant times'. The combined statement shows f(n) is sandwiched between polynomial and logarithmic growth, with the exact rate unknown.",
@@ -154,7 +154,7 @@
       "startLine": 127,
       "endLine": 131
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Small Cases: f(1) and f(2)",
     "content": "**Special cases:**\n\n- $f(1) = 1$: Any interval of length $\\max(A)$ contains a multiple of the single element $a_1$\n- $f(2) \\leq 2$: Two elements can always be covered in an interval of length $2 \\cdot \\max(A)$\n\nThese base cases are easy to verify directly and anchor the function f.",
     "mathContext": "For f(1): in any interval of length a₁, at least one integer is divisible by a₁ (since multiples of a₁ are spaced a₁ apart). For f(2): with length 2·max(a,b), there are enough multiples of both a and b to find distinct ones.",
@@ -171,7 +171,7 @@
       "startLine": 137,
       "endLine": 141
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Monotonicity and Growth",
     "content": "**Properties of f:**\n\n- **Monotone**: $m \\leq n \\implies f(m) \\leq f(n)$ — larger sets need longer intervals\n- **At least logarithmic**: $f(n) \\geq \\log n$ for $n \\geq 2$ — even the weakest lower bound grows\n\nMonotonicity follows because any $m$-element covering problem embeds into an $n$-element one.",
     "mathContext": "Monotonicity is natural: covering more elements is harder. The logarithmic lower bound is weaker than (log n)^c but holds for all n ≥ 2, not just sufficiently large n.",
@@ -243,7 +243,7 @@
       "startLine": 238,
       "endLine": 246
     },
-    "type": "proof",
+    "type": "technique",
     "title": "Divisibility by 2 Example",
     "content": "**Proved example**: Any interval of length $\\geq 2$ contains a multiple of 2.\n\nThis is the simplest case of the covering problem with $n = 1$, $A = \\{2\\}$.\n\nThe proof constructs the nearest even number $2 \\cdot \\lceil(\\text{start}+1)/2\\rceil$ and verifies it lies in the interval using `omega`.",
     "mathContext": "This is a constructive proof: we explicitly find the multiple rather than using an existence argument. The omega tactic handles the arithmetic inequalities automatically.",
@@ -261,7 +261,7 @@
       "startLine": 248,
       "endLine": 254
     },
-    "type": "proof",
+    "type": "technique",
     "title": "Square Root Computations",
     "content": "**Computational verification** using `native_decide`:\n\n- $\\sqrt{100} = 10$\n- $\\sqrt{10000} = 100$\n\nThese illustrate the scale of the upper bound $f(n) \\leq C\\sqrt{n}$: at $n = 100$, intervals of length $\\sim 10 \\cdot \\max(A)$ suffice; at $n = 10000$, intervals of length $\\sim 100 \\cdot \\max(A)$ suffice.",
     "mathContext": "native_decide evaluates decidable propositions by compilation to native code, making it efficient for numerical computations. These examples ground the abstract upper bound in concrete numbers.",
@@ -279,7 +279,7 @@
       "startLine": 281,
       "endLine": 286
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Statement",
     "content": "**erdos_709_statement**: The main theorem combining both Erdős-Surányi bounds.\n\nStates the conjunction:\n1. Lower bound: $\\exists c > 0$ such that $f(n) \\geq (\\log n)^c$ for large $n$\n2. Upper bound: $\\exists C > 0$ such that $f(n) \\leq C\\sqrt{n}$ for all $n \\geq 1$\n\nProved by pairing the two axioms: `⟨lower_bound_log, upper_bound_sqrt⟩`.",
     "mathContext": "This theorem serves as the formal summary of what is known about Problem 709. The proof is a simple conjunction introduction, since the individual bounds are axiomatized. The real mathematical content is in the axioms themselves.",

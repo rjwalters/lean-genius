@@ -21,7 +21,12 @@
       "Real.Gamma",
       "rpow"
     ],
-    "tags": ["unit-ball-volume", "gamma-function", "n-ball", "definition"]
+    "tags": [
+      "unit-ball-volume",
+      "gamma-function",
+      "n-ball",
+      "definition"
+    ]
   },
   {
     "id": "ann-ndvol-gamma-computations",
@@ -47,7 +52,12 @@
       "Gamma_add_one",
       "Gamma_pos_of_pos"
     ],
-    "tags": ["gamma-computation", "half-integer", "sqrt-pi", "positivity"]
+    "tags": [
+      "gamma-computation",
+      "half-integer",
+      "sqrt-pi",
+      "positivity"
+    ]
   },
   {
     "id": "ann-ndvol-derivative-relation",
@@ -56,7 +66,7 @@
       "startLine": 106,
       "endLine": 131
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Key Derivative: d/dr[V_n(r)] = S_n(r)",
     "content": "The n-dimensional generalization of dA/dr = C = 2πr. Since V_n(r) = ω_n · r^n is polynomial in r, the derivative is S_n(r) = n · ω_n · r^(n-1) by the power rule. The constant ω_n multiplies through via HasDerivAt.const_mul.\n\nThis is the central structural insight: because V_n is a pure power function, the volume-surface duality is an instance of the power rule. Continuity of both V_n and S_n follows from the continuity of polynomial functions.",
     "mathContext": "The derivative relation $\\frac{d}{dr} V_n(r) = S_n(r)$ says that the rate of volume growth equals the surface area. Geometrically: adding an infinitesimal shell of thickness $dr$ to the $n$-ball of radius $r$ increases volume by $S_n(r) \\cdot dr$. This is the $n$-dimensional \"onion peeling\" principle.",
@@ -71,7 +81,12 @@
       "hasDerivAt_pow",
       "HasDerivAt.const_mul"
     ],
-    "tags": ["derivative", "power-rule", "onion-peeling", "volume-surface"]
+    "tags": [
+      "derivative",
+      "power-rule",
+      "onion-peeling",
+      "volume-surface"
+    ]
   },
   {
     "id": "ann-ndvol-main-theorem",
@@ -80,7 +95,7 @@
       "startLine": 133,
       "endLine": 165
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem: V_n(r) = ∫₀ʳ S_n(ρ) dρ via FTC",
     "content": "The main result: V_n(r) = ∫₀ʳ S_n(ρ) dρ, proved via FTC Part 2 (integral_eq_sub_of_hasDerivAt). The proof uses three ingredients: (1) the derivative relation d/dr[V_n] = S_n at each point in [0,r]; (2) the interval integrability of S_n (from continuity); (3) the boundary condition V_n(0) = 0 (since r^n = 0 for n ≥ 1).\n\nThe companion result deriv_volume_integral recovers S_n from the integral via FTC Part 1 (integral_hasDerivAt_right), completing the circle: differentiation and integration are inverse operations on these smooth functions.",
     "mathContext": "FTC Part 2: if $F' = f$ on $[a,b]$ and $f$ is integrable, then $\\int_a^b f = F(b) - F(a)$. Here $F = V_n$, $f = S_n$, $a = 0$, $b = r$. Since $V_n(0) = \\omega_n \\cdot 0^n = 0$ for $n \\geq 1$: $\\int_0^r S_n(\\rho) \\, d\\rho = V_n(r) - 0 = V_n(r)$.",
@@ -96,7 +111,12 @@
       "intervalIntegral.integral_hasDerivAt_right",
       "IntervalIntegrable"
     ],
-    "tags": ["main-theorem", "ftc", "integral-formula", "fully-proved"]
+    "tags": [
+      "main-theorem",
+      "ftc",
+      "integral-formula",
+      "fully-proved"
+    ]
   },
   {
     "id": "ann-ndvol-special-cases",
@@ -120,7 +140,12 @@
       "unitBallVolume_two",
       "unitBallVolume_three"
     ],
-    "tags": ["special-cases", "classical-formulas", "wiedijk-100", "circle-sphere"]
+    "tags": [
+      "special-cases",
+      "classical-formulas",
+      "wiedijk-100",
+      "circle-sphere"
+    ]
   },
   {
     "id": "ann-ndvol-shell-volumes",
@@ -129,7 +154,7 @@
       "startLine": 213,
       "endLine": 230
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Shell/Annulus Volume Generalization",
     "content": "Generalizes the integral formula to shells (annuli): ∫_{r₁}^{r₂} S_n(ρ) dρ = V_n(r₂) - V_n(r₁). This is the natural extension of FTC Part 2 without the V_n(0) = 0 simplification. The 3D case gives the volume of a spherical shell: ∫_{r₁}^{r₂} 4πρ² dρ = (4π/3)(r₂³ - r₁³).\n\nThe proof is identical to the main theorem but with arbitrary endpoints r₁, r₂ instead of 0 and r.",
     "mathContext": "The shell volume formula $V_n(r_2) - V_n(r_1) = \\omega_n(r_2^n - r_1^n)$ is the basis of the \"shell method\" in calculus. For thin shells ($r_2 = r_1 + dr$): $\\Delta V \\approx S_n(r_1) \\cdot dr$, recovering the derivative relation.",
@@ -144,7 +169,12 @@
       "intervalIntegral.integral_eq_sub_of_hasDerivAt",
       "hasDerivAt_nBallVol"
     ],
-    "tags": ["shell-volume", "annulus", "ftc-general", "spherical-shell"]
+    "tags": [
+      "shell-volume",
+      "annulus",
+      "ftc-general",
+      "spherical-shell"
+    ]
   },
   {
     "id": "ann-ndvol-scaling-ratio",
@@ -153,7 +183,7 @@
       "startLine": 232,
       "endLine": 262
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Scaling Laws and Surface-to-Volume Ratio",
     "content": "Two scaling laws: V_n(cr) = c^n · V_n(r) and S_n(cr) = c^(n-1) · S_n(r). These reflect the dimensional analysis principle: volume scales as length^n and surface area as length^(n-1).\n\nThe surface-to-volume ratio S_n(r)/V_n(r) = n/r is proved by algebraic manipulation with field_simp and pow_sub₀. This ratio grows linearly with dimension n, which explains the concentration of measure phenomenon: in high dimensions, most of the ball's volume is concentrated near the boundary (within a thin shell of thickness ~r/n).",
     "mathContext": "The ratio $S_n/V_n = n/r$ has profound consequences in high-dimensional geometry. For $n = 100$ and $r = 1$: the shell of thickness $0.01$ (from $r = 0.99$ to $1$) contains fraction $1 - 0.99^{100} \\approx 63\\%$ of the total volume. This is the \"curse of dimensionality\" in a geometric guise.",
@@ -169,7 +199,12 @@
       "field_simp",
       "Gamma_pos_of_pos"
     ],
-    "tags": ["scaling-law", "surface-volume-ratio", "concentration-of-measure", "high-dimensional"]
+    "tags": [
+      "scaling-law",
+      "surface-volume-ratio",
+      "concentration-of-measure",
+      "high-dimensional"
+    ]
   },
   {
     "id": "ann-ndvol-summary-chain",
@@ -192,6 +227,11 @@
       "multivariable calculus",
       "surface area formulas"
     ],
-    "tags": ["open-question-chain", "generalization", "wiedijk-100", "narrative"]
+    "tags": [
+      "open-question-chain",
+      "generalization",
+      "wiedijk-100",
+      "narrative"
+    ]
   }
 ]

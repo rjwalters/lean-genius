@@ -77,7 +77,7 @@
       "startLine": 95,
       "endLine": 103
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős-Turán Theorem",
     "content": "**erdos_turan_sidon:**\n\nf(N) ~ √N as N → ∞.\n\nThe maximum Sidon set size grows like the square root of N.",
     "mathContext": "This classical result shows Sidon sets are quite sparse - at most ~√N elements can have all distinct pairwise sums.",
@@ -129,7 +129,7 @@
       "startLine": 161,
       "endLine": 169
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Saxton-Thomason Lower Bound",
     "content": "**saxton_thomason_lower_bound:**\n\nA(N) ≥ 2^{1.16·f(N)} for large N.\n\nFrom 'Hypergraph containers', Invent. Math. (2015).",
     "mathContext": "The hypergraph container method provides a powerful way to count combinatorial structures. This lower bound implies Question 1 is true.",
@@ -147,7 +147,7 @@
       "startLine": 171,
       "endLine": 179
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "KLRS Upper Bound",
     "content": "**klrs_upper_bound:**\n\nA(N) ≤ 2^{6.442·f(N)} for large N.\n\nFrom Kohayakawa-Lee-Rödl-Samotij, Random Structures Algorithms (2015).",
     "mathContext": "This upper bound, combined with the lower bound, shows the exponent is strictly between 1.16 and 6.442.",
@@ -165,7 +165,7 @@
       "startLine": 181,
       "endLine": 195
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Combined Bounds",
     "content": "**current_bounds:**\n\nFor large N: 2^{1.16·f(N)} ≤ A(N) ≤ 2^{6.442·f(N)}\n\nThis theorem combines the Saxton-Thomason lower and KLRS upper bounds.",
     "mathContext": "The gap between 1.16 and 6.442 shows both questions are answered: Q1 yes (exponent > 1), Q2 no (exponent ≠ 1+o(1)).",
@@ -183,7 +183,7 @@
       "startLine": 229,
       "endLine": 255
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary of Results",
     "content": "**erdos_861_summary:**\n\n- Question 1: YES (A(N)/2^{f(N)} → ∞)\n- Question 2: NO (exponent ≠ 1+o(1))\n\nThe exact constant c in A(N) ~ 2^{c·f(N)} remains open, known to be in [1.16, 6.442].",
     "mathContext": "Determining the exact value of c is an active research problem in additive combinatorics.",

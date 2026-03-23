@@ -74,7 +74,7 @@
       "startLine": 67,
       "endLine": 70
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős–Moser Bound (1965)",
     "content": "The original bound with a logarithmic factor:\n$$|\\{S \\subseteq A : \\sum S = t\\}| \\le C \\cdot \\frac{2^N}{N^{3/2}} \\cdot (\\log N)^{3/2}$$\n\nThis was the first result showing polynomial concentration improvement over the trivial $2^N$ bound.",
     "mathContext": "Erdős and Moser proved this by a combinatorial argument bounding the number of sign patterns $\\epsilon_1 a_1 + \\cdots + \\epsilon_N a_N$ that hit a target, related to the Littlewood-Offord problem. The $(\\log N)^{3/2}$ factor comes from their less refined treatment of the Fourier integral. Sárközy and Szemerédi's sharper analysis removed it.",
@@ -97,7 +97,7 @@
       "startLine": 72,
       "endLine": 76
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sárközy–Szemerédi Sharp Bound (1965)",
     "content": "The sharp bound answering Question 1:\n$$|\\{S \\subseteq A : \\sum S = t\\}| \\le C \\cdot \\frac{2^N}{N^{3/2}}$$\n\nRemoved the $(\\log N)^{3/2}$ factor from the Erdős–Moser bound using refined Fourier analysis and saddle point methods.",
     "mathContext": "The proof analyzes the generating function $F(z) = \\prod_{a \\in A}(1 + z^a)$. The count equals the Fourier coefficient $\\hat{F}(t)$, extracted via the integral $(2\\pi)^{-1} \\int_0^{2\\pi} F(e^{i\\theta}) e^{-it\\theta} d\\theta$. Saddle point analysis shows $|F(e^{i\\theta})|$ is concentrated near $\\theta = 0$ with width $\\sim 1/\\sqrt{N}$, giving the $N^{-3/2}$ factor (one $N^{-1/2}$ from the Gaussian width, one $N^{-1}$ from the peak-to-total ratio).",
@@ -120,7 +120,7 @@
       "startLine": 78,
       "endLine": 82
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Tightness of the Bound",
     "content": "The $2^N/N^{3/2}$ bound is tight up to constants: for any $\\varepsilon > 0$ and all sufficiently large $N$, there exists a set $A$ of size $N$ and a target $t$ achieving concentration $\\ge (1 - \\varepsilon) \\cdot 2^N/N^{3/2}$.",
     "mathContext": "The extremal set achieving this is the symmetric set $\\{-\\lfloor(N-1)/2\\rfloor, \\ldots, \\lfloor N/2 \\rfloor\\}$ with target $t = 0$ (Stanley 1980). The statement uses `∀ᶠ N : ℕ in atTop` to express 'for all sufficiently large $N$'.",
@@ -165,7 +165,7 @@
       "startLine": 99,
       "endLine": 104
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Halász's Theorem (1977)",
     "content": "With fixed cardinality $|S| = l$, the exponent improves from $3/2$ to $2$:\n$$|\\{S \\subseteq A : \\sum S = t, |S| = l\\}| \\le C \\cdot \\frac{2^N}{N^2}$$\n\nThe constant $C$ is independent of both $l$ and $t$.",
     "mathContext": "Halász's proof introduces a second Fourier variable to handle the cardinality constraint. The generating function becomes $F(z, w) = \\prod_{a \\in A}(1 + w \\cdot z^a)$, and the count is a double Fourier coefficient. The two-dimensional saddle point analysis gives $N^{-1}$ from each variable, yielding $N^{-2}$ total. This is the $d=1$ case of the multi-dimensional bound $2^N/N^{(d+1)/2}$.",
@@ -210,7 +210,7 @@
       "startLine": 118,
       "endLine": 128
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Stanley's Extremal Result (1980)",
     "content": "For any set $A$ and any target $t$:\n$$|\\{S \\subseteq A : \\sum S = t\\}| \\le |\\{S \\subseteq \\text{symmetricSet}(|A|) : \\sum S = 0\\}|$$\n\nThe symmetric set maximizes concentration, with the maximum achieved at target $0$. Stanley's proof uses the **hard Lefschetz theorem** from algebraic geometry.",
     "mathContext": "Stanley's proof works by associating to $A$ a graded algebra whose Hilbert function equals the subset sum distribution. The hard Lefschetz theorem ensures this algebra has the Sperner property (unimodal, log-concave Hilbert function). The symmetric set corresponds to the polynomial ring $k[x_1, \\ldots, x_N]/(x_i^2 - 1)$, which has the largest possible peak by Lefschetz. This is one of the most celebrated applications of algebraic geometry to combinatorics.",
@@ -256,7 +256,7 @@
       "startLine": 146,
       "endLine": 152
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Halász Multi-dimensional Bound",
     "content": "For $d$-dimensional integer vectors:\n$$|\\{S \\subseteq A : \\sum S = t\\}| \\le C \\cdot \\frac{2^{|A|}}{|A|^{(d+1)/2}}$$\n\nThe exponent $(d+1)/2$ interpolates: $3/2$ for $d = 2$, $2$ for $d = 3$, etc. This unifies the Q1 bound ($d = 1$: exponent $3/2$) and Q2 bound ($d = 1$ with cardinality: equivalent to $d = 2$).",
     "mathContext": "The multi-dimensional saddle point analysis introduces $d$ Fourier variables $\\theta_1, \\ldots, \\theta_d$, each contributing a factor of $N^{-1/2}$ to the integral estimate. Combined with the baseline $2^N / N^{1/2}$ from the one-dimensional case, this gives $2^N / N^{(d+1)/2}$. The fixed-cardinality case is equivalent to $d = 2$ because the cardinality constraint $\\sum \\mathbf{1}_{s \\in S} = l$ acts as an additional linear equation.",
@@ -303,7 +303,7 @@
       "startLine": 181,
       "endLine": 191
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Summary Theorem",
     "content": "**erdos_362_summary** combines both main results:\n- Q1: $|\\{S \\subseteq A : \\sum S = t\\}| \\le C \\cdot 2^N / N^{3/2}$ (Sárközy–Szemerédi)\n- Q2: $|\\{S \\subseteq A : \\sum S = t, |S| = l\\}| \\le C \\cdot 2^N / N^2$ (Halász)\n\nProved directly as `⟨sarkozy_szemeredi_1965, halasz_1977⟩`.",
     "mathContext": "The theorem is a conjunction proved by pairing the two axiomatized bounds. Both directions hold with universal constants $C > 0$ independent of $A$, $t$, and $l$. The proof `exact ⟨sarkozy_szemeredi_1965, halasz_1977⟩` is a term-mode anonymous constructor, showing both components are available as axioms in the proof environment.",

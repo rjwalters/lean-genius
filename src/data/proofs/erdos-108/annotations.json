@@ -96,7 +96,7 @@
       "startLine": 93,
       "endLine": 101
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős Problem #108: Affirmative Answer",
     "content": "**The answer is YES**: The threshold function f(k,r) exists for all valid parameters. This theorem is a direct consequence of the axiomatized Erdős-Hajnal-Rödl theorem, providing a clean statement of the positive resolution.",
     "mathContext": "The proof is simply `erdos_hajnal_rodl_theorem` - we extract the main result directly from the axiom. This shows the logical structure: once the core theorem is established, the problem's resolution follows immediately.",
@@ -114,7 +114,7 @@
       "startLine": 103,
       "endLine": 116
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Rödl's Theorem: The r=4 Case",
     "content": "**Rödl's 1977 breakthrough**: For any k ≥ 2, sufficiently chromatic graphs contain **triangle-free** subgraphs of chromatic number ≥ k. Girth ≥ 4 means no cycles of length 3, i.e., no triangles. This was the first case proved and remains the most important.",
     "mathContext": "The proof instantiates the general theorem with r=4, proving 4 ≥ 4 with `Nat.le_refl 4`. This special case connects to Mycielski's construction, which builds triangle-free graphs of arbitrarily high chromatic number.",

@@ -101,7 +101,7 @@
       "startLine": 174,
       "endLine": 233
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Dehn's Invariance and Obstruction Theorems",
     "content": "Two key results: (1) `dehn_invariance`: if $P \\sim Q$ then $D(P) = D(Q)$, proved from the axiom `dehn_invariance_axiom`. The supporting axioms `cutting_preserves_dehn` and `isometry_preserves_dehn` capture why: cutting creates paired edges with opposite angles summing to $\\pi$ (hence vanishing in $\\mathbb{R}/\\pi\\mathbb{Q}$), and rigid motions preserve lengths and angles. (2) `different_dehn_not_scissors_congruent`: the **fully proved** contrapositive — if $D(P) \\neq D(Q)$ then $P \\not\\sim Q$. The proof uses `intro/apply/exact` with `dehn_invariance`.",
     "mathContext": "$P \\sim Q \\implies D(P) = D(Q)$ (Dehn's theorem). Contrapositive: $D(P) \\neq D(Q) \\implies P \\not\\sim Q$. When cutting along a plane, new edges satisfy $\\theta_1 + \\theta_2 = \\pi$, so $\\ell \\otimes [\\theta_1] + \\ell \\otimes [\\pi - \\theta_1] = \\ell \\otimes [\\pi] = 0$ in $\\mathbb{R}/\\pi\\mathbb{Q}$.",
@@ -124,7 +124,7 @@
       "startLine": 238,
       "endLine": 280
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Cube: Dehn Invariant is Zero",
     "content": "Every dihedral angle of a cube is $\\pi/2$ (90°). Since $\\pi/2 = (1/2)\\pi$ is a rational multiple of $\\pi$, each term $\\ell \\otimes [\\pi/2] = 0$ in $\\mathbb{R}/\\pi\\mathbb{Q}$. Three results are **fully proved**: `cube_angle_is_rational_pi` (via `use 1, 2` and `ring`), `cubeEdge` (edge constructor), and `cube_dehn_invariant_is_zero` (by showing every term's angle is $\\pi/2$, then applying `cube_angle_is_rational_pi`). The proof uses `List.mem_map`, `Finset.mem_toList`, and `simp`.",
     "mathContext": "$D(\\text{cube}) = \\sum_{i=1}^{12} \\ell_i \\otimes [\\pi/2] = 0$ since $[\\pi/2] = 0$ in $\\mathbb{R}/\\pi\\mathbb{Q}$. The proof: $\\pi/2 \\cdot 2 = 1 \\cdot \\pi$, so $\\pi/2 \\in \\pi\\mathbb{Q}$.",
@@ -148,7 +148,7 @@
       "startLine": 285,
       "endLine": 329
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Regular Tetrahedron: Dehn Invariant is Non-Zero",
     "content": "The dihedral angle of a regular tetrahedron is $\\theta = \\arccos(1/3) \\approx 70.53°$. By Niven's theorem (1956): if $\\cos(q\\pi)$ is algebraic for rational $q$, then $\\cos(q\\pi) \\in \\{0, \\pm 1/2, \\pm 1\\}$. Since $\\cos(\\theta) = 1/3 \\notin \\{0, \\pm 1/2, \\pm 1\\}$, the angle $\\theta/\\pi$ is irrational. This irrationality is axiomatized via `tetrahedron_angle_not_rational_pi`. The theorem `tetrahedron_dehn_invariant_nonzero` is **fully proved**: if $D(\\text{tet})$ were zero, every edge's angle would be a rational multiple of $\\pi$, contradicting Niven's theorem.",
     "mathContext": "$\\theta = \\arccos(1/3)$, and $\\theta/\\pi \\notin \\mathbb{Q}$ by Niven's theorem. Therefore $D(\\text{tet}) = \\sum_{i=1}^{6} \\ell_i \\otimes [\\arccos(1/3)] \\neq 0$, since $[\\arccos(1/3)] \\neq 0$ in $\\mathbb{R}/\\pi\\mathbb{Q}$.",
@@ -172,7 +172,7 @@
       "startLine": 334,
       "endLine": 372
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Hilbert 3: Cube and Tetrahedron Not Scissors Congruent",
     "content": "The main theorem `hilbert3_cube_tetrahedron_not_scissors_congruent` is **fully proved** from the axioms. The proof by contradiction: assume $\\text{cube} \\sim \\text{tet}$; then $D(\\text{cube}) = D(\\text{tet})$ by `dehn_invariance`; but $D(\\text{cube})$ is zero by `cube_dehn_invariant_is_zero`; rewriting via the equality gives $D(\\text{tet})$ is zero, contradicting `tetrahedron_dehn_invariant_nonzero`. The proof uses `intro`, `apply`, `rw [← h_dehn_eq]`, and `exact`.",
     "mathContext": "$D(\\text{cube}) = 0 \\neq D(\\text{tet}) \\implies \\text{cube} \\not\\sim \\text{tet}$. Volume is irrelevant — the `h_equal_volume : True` parameter emphasizes that only the Dehn invariant matters.",
@@ -195,7 +195,7 @@
       "startLine": 377,
       "endLine": 401
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sydler's Theorem (1965): Complete Classification",
     "content": "Sydler proved in 1965 that the Dehn invariant is not just an obstruction — it is a **complete** invariant: $P \\sim Q \\iff \\text{Vol}(P) = \\text{Vol}(Q) \\wedge D(P) = D(Q)$. The 'only if' direction is Dehn's theorem plus volume preservation; the 'if' direction took 65 years to prove. Axiomatized as `sydler_theorem` with volume represented abstractly as `True`.",
     "mathContext": "$P \\sim Q \\iff \\text{Vol}(P) = \\text{Vol}(Q) \\wedge D(P) = D(Q)$. Sydler's proof (1965) showed that equal volume and equal Dehn invariant are **sufficient** for scissors congruence in $\\mathbb{R}^3$, completing the classification.",
@@ -218,7 +218,7 @@
       "startLine": 406,
       "endLine": 469
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "2D Contrast: Bolyai-Gerwien and Dimension Contrast",
     "content": "The Bolyai-Gerwien theorem (1833): any two polygons of equal area ARE scissors congruent. This dramatic 2D/3D contrast motivated Hilbert's question. In 2D, all angles in cut polygons become multiples of $\\pi$, so the 'Dehn invariant' is always zero — only area matters. In 3D, dihedral angles like $\\arccos(1/3)$ are genuinely non-trivial in $\\mathbb{R}/\\pi\\mathbb{Q}$. The `dimension_contrast` theorem is **fully proved**, combining `bolyai_gerwien_theorem` (axiom) with `cube_tetrahedron_different_dehn` (axiom).",
     "mathContext": "2D: $\\text{Area}(P) = \\text{Area}(Q) \\implies P \\sim Q$ (Bolyai-Gerwien). 3D: $\\exists P, Q$ with $\\text{Vol}(P) = \\text{Vol}(Q)$ but $P \\not\\sim Q$ (Dehn). The `Polygon` structure carries `area : ℝ` with `area_pos : 0 < area`.",

@@ -60,7 +60,7 @@
       "startLine": 93,
       "endLine": 102
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Partition Arrow Relation",
     "content": "**partitionArrow α β γ** axiomatizes the partition relation α → (β, γ)². The full definition would require: (1) fixing a well-ordering of type α, (2) considering all 2-colorings of unordered pairs, (3) defining 'homogeneous set of order type β', and (4) defining 'subgraph isomorphic to γ in color 1'. This infrastructure exceeds what is available in Mathlib, so the relation is taken as an axiom.",
     "mathContext": "The partition relation is a central concept in infinite combinatorics. For finite ordinals, it reduces to classical Ramsey theory. For uncountable ordinals like ω₁², the theory becomes much richer and often depends on set-theoretic axioms.",
@@ -78,7 +78,7 @@
       "startLine": 104,
       "endLine": 123
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Main Conjecture and Finite Case",
     "content": "**erdos597Conjecture** states the full open problem: for all graphs G with ≤ℵ₁ vertices, no K₄, and no K_{ℵ₀,ℵ₀}, the partition relation ω₁² → (ω₁ω, G)² holds. **finiteCaseConjecture** restricts to finite G (dropping the K_{ℵ₀,ℵ₀}-free condition, since finite graphs are automatically K_{ℵ₀,ℵ₀}-free). Even the finite case is open beyond the triangle.",
     "mathContext": "The conjecture is formalized as a universally quantified Prop over all types α with a SimpleGraph' structure satisfying the three conditions. The finite case uses Lean's Fintype class to restrict to finite vertex sets.",
@@ -96,7 +96,7 @@
       "startLine": 125,
       "endLine": 132
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Hajnal Triangle Theorem",
     "content": "**erdosHajnalTriangle** axiomatizes the proven result ω₁² → (ω₁ω, 3)². This says: for any 2-coloring of pairs from ω₁², either there is a homogeneous set of order type ω₁ω, or there is a monochromatic triangle. This is the strongest positive result known toward Problem #597 and serves as the foundation for the conjecture.",
     "mathContext": "The triangle (Fin 3) is the simplest non-trivial graph case. Erdős and Hajnal's proof uses ordinal partition calculus techniques including stepping-up lemmas. The result demonstrates that the partition relation can hold for small graphs.",
@@ -114,7 +114,7 @@
       "startLine": 134,
       "endLine": 141
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Baumgartner's Counterexample",
     "content": "**baumgartnerCounterexample** axiomatizes the negative result: there exists a type β of cardinality ℵ₀ such that ω₁² ↛ (ω₁ω, β × β)². This captures ω₁² ↛ (ω₁ω, K_{ℵ₀,ℵ₀})² — Baumgartner constructed an explicit 2-coloring witnessing the failure. Since K_{ℵ₀,ℵ₀} is bipartite (hence K₄-free), this shows the original question without the K_{ℵ₀,ℵ₀}-free condition has a negative answer.",
     "mathContext": "The counterexample is formalized existentially: there exists a countable type whose product β × β serves as the vertex set of K_{ℵ₀,ℵ₀}. The negation of the partition relation means there exists a 2-coloring with no homogeneous ω₁ω and no monochromatic copy of the bipartite graph.",
@@ -150,7 +150,7 @@
       "startLine": 173,
       "endLine": 189
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem: Known Results Combined",
     "content": "**erdos597_knownResults** is the only proven theorem in this formalization. It combines the two axiomatized partial results into a conjunction: (1) the Erdős-Hajnal positive result for triangles, and (2) the Baumgartner negative result for K_{ℵ₀,ℵ₀}. The proof is `⟨erdosHajnalTriangle, baumgartnerCounterexample⟩`, directly pairing the two axioms. This theorem encapsulates the current state of knowledge on Problem #597.",
     "mathContext": "The conjunction captures the 'gap' that defines Problem #597: we know the partition relation holds for the smallest non-trivial case (triangles) and fails for the infinite bipartite case. Everything in between — finite K₄-free graphs, countable graphs, graphs on ℵ₁ vertices with both exclusions — is unknown.",

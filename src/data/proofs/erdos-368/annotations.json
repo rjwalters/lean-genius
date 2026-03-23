@@ -72,7 +72,7 @@
       "startLine": 72,
       "endLine": 94
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Consecutive Coprimality",
     "content": "**consecutive_coprime:**\n\nConsecutive integers n and n+1 are always coprime.\n\n**Statement:**\n```lean\ntheorem consecutive_coprime (n : ℕ) : Nat.Coprime n (n + 1) :=\n  Nat.coprime_self_add_one n\n```\n\n**Consequence:**\nThe prime factors of n(n+1) are exactly the union of prime factors of n and n+1, with no overlap. Thus F(n) = max(gpf(n), gpf(n+1)).",
     "mathContext": "This is a classical result: gcd(n, n+1) = 1 since any common divisor would divide their difference, which is 1.",
@@ -94,7 +94,7 @@
       "startLine": 96,
       "endLine": 116
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Pólya's Theorem (1918)",
     "content": "**polya_theorem:**\n\nF(n) → ∞ as n → ∞.\n\n**Statement:**\n```lean\naxiom polya_theorem : ∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N, F n > M\n```\n\n**Significance:** This foundational 1918 result shows that the largest prime factor of n(n+1) is unbounded. No matter how large M is, eventually F(n) exceeds M.",
     "mathContext": "Pólya's proof uses elementary but clever arguments about the distribution of smooth numbers. This was the first result on this problem.",
@@ -116,7 +116,7 @@
       "startLine": 118,
       "endLine": 139
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Mahler's Bound (1935)",
     "content": "**mahler_bound:**\n\nF(n) ≫ log log n.\n\n**Statement:**\n```lean\naxiom mahler_bound :\n    ∃ c : ℝ, c > 0 ∧ ∃ N : ℕ,\n      ∀ n ≥ N, (F n : ℝ) ≥ c * Real.log (Real.log n)\n```\n\n**Significance:** This was the first quantitative lower bound, showing F(n) grows at least as fast as log log n. This is very slow growth, but it's an effective bound.",
     "mathContext": "Mahler's methods involve transcendence theory and p-adic analysis. The log log n bound held for nearly 90 years.",
@@ -138,7 +138,7 @@
       "startLine": 141,
       "endLine": 170
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Schinzel's Upper Bound (1967)",
     "content": "**schinzel_upper and isSmooth:**\n\nFor infinitely many n, F(n) ≤ n^(O(1/log log log n)).\n\n**Upper Bound:**\n```lean\naxiom schinzel_upper :\n    ∃ C : ℝ, C > 0 ∧ ∀ M : ℕ, ∃ n > M,\n      (F n : ℝ) ≤ (n : ℝ) ^ (C / Real.log (Real.log (Real.log n)))\n```\n\n**Smooth Numbers:**\n```lean\ndef isSmooth (B n : ℕ) : Prop := ∀ p : ℕ, p.Prime → p ∣ n → p ≤ B\n```\n\nSchinzel constructs n where n(n+1) is unusually smooth (all prime factors small).",
     "mathContext": "This shows F(n) cannot always be polynomial in n. The construction uses the distribution of smooth numbers in polynomial sequences.",
@@ -182,7 +182,7 @@
       "startLine": 197,
       "endLine": 219
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Pasten's Theorem (2024)",
     "content": "**pasten_bound:**\n\nF(n) ≫ (log log n)² / (log log log n).\n\n**Statement:**\n```lean\naxiom pasten_bound :\n    ∃ c : ℝ, c > 0 ∧ ∃ N : ℕ,\n      ∀ n ≥ N, (F n : ℝ) ≥ c * (Real.log (Real.log n))^2 / Real.log (Real.log (Real.log n))\n```\n\n**Significance:** This 2024 breakthrough is the strongest known lower bound, improving Mahler by a factor of (log log n)/(log log log n).",
     "mathContext": "Pasten's work connects to improvements on subexponential ABC bounds. His actual theorem concerns P(n² + 1), with techniques applicable to n(n+1).",
@@ -204,7 +204,7 @@
       "startLine": 221,
       "endLine": 274
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Concrete Examples",
     "content": "**F values for small n:**\n\n```lean\ntheorem F_small_values :\n    F 1 = 2 ∧ F 2 = 3 ∧ F 3 = 3 ∧ F 4 = 5 ∧\n    F 5 = 5 ∧ F 6 = 7 ∧ F 7 = 7 ∧ F 8 = 3\n```\n\n**Notable:**\n- F(1) = gpf(2) = 2\n- F(8) = gpf(72) = gpf(2³ · 3²) = 3 (surprisingly small!)\n\nThe sequence 2, 3, 3, 5, 5, 7, 7, 3, ... is OEIS A074399.",
     "mathContext": "The value F(8) = 3 shows that F can be small relative to n when n(n+1) happens to be smooth.",
@@ -226,7 +226,7 @@
       "startLine": 297,
       "endLine": 322
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "ABC Connection",
     "content": "**radical and abc_implies_strong_bound:**\n\n**Radical:**\n```lean\ndef radical (n : ℕ) : ℕ := (n.primeFactors).prod id\n```\nThe product of distinct prime factors of n.\n\n**ABC Implication:**\n```lean\naxiom abc_implies_strong_bound :\n    (ABC conjecture) → (∀ ε > 0, F(n) ≫ (log n)^(1-ε))\n```\n\nIf the ABC conjecture holds, we would have much stronger lower bounds on F(n).",
     "mathContext": "For n(n+1), we can apply ABC with a=n, b=1, c=n+1. The radical rad(n(n+1)) is controlled by F(n).",
@@ -248,7 +248,7 @@
       "startLine": 324,
       "endLine": 353
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Results Summary",
     "content": "**erdos_368_summary:**\n\nCombines all main results:\n\n```lean\ntheorem erdos_368_summary :\n    -- Pólya: F(n) → ∞\n    (∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N, F n > M) ∧\n    -- Mahler: F(n) ≫ log log n\n    (∃ c > 0, ∃ N, ∀ n ≥ N, F n ≥ c * log log n) ∧\n    -- Pasten: F(n) ≫ (log log n)² / (log log log n)\n    (∃ c > 0, ∃ N, ∀ n ≥ N, F n ≥ c * (log log n)² / log log log n) ∧\n    -- Schinzel upper bound\n    (∃ C > 0, infinitely many n with F n ≤ n^(C/log log log n))\n```\n\n**Status:** Partially solved. Gap remains between Pasten's lower bound and Erdős's conjecture.",
     "mathContext": "This theorem captures the complete current state of knowledge on Erdős Problem #368.",

@@ -37,7 +37,17 @@
     ],
     "dateAdded": "2025-12-22",
     "wiedijkNumber": 47,
-    "axiomCount": 0
+    "axiomCount": 0,
+    "relatedProblems": [
+      {
+        "id": "central-limit-theorem-oq-01",
+        "relationship": "Extension of central limit theorem"
+      },
+      {
+        "id": "central-limit-theorem-oq-03",
+        "relationship": "Extension of central limit theorem"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "The Central Limit Theorem (CLT) stands as one of the most remarkable results in probability theory. Its origins trace back to Abraham de Moivre's 1733 analysis of coin flips, but the theorem took nearly two centuries to reach its modern form.\n\nPierre-Simon Laplace generalized de Moivre's result in 1812, showing that sums of many independent random variables tend toward a bell curve. However, the first rigorous proof came from Aleksandr Lyapunov in 1901, using characteristic functions.\n\nThe algebraic topological perspective—viewing the Gaussian as a fixed point of a renormalization flow on the space of distributions—emerged in the late 20th century, connecting probability theory to dynamical systems, information geometry, and category theory.\n\nThis dual perspective reveals not just *that* the Gaussian appears universally, but *why*: it is an attractor in the space of probability distributions under the operation of convolution and rescaling.",
@@ -201,6 +211,21 @@
       "targetId": "central-limit-theorem-oq-03",
       "relationship": "extended-by",
       "description": "Investigates the categorical structure of probability distributions under convolution, connecting CLT to operad theory and higher categories"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "foundational",
+      "description": "Cauchy-Schwarz bounds $|\\mathbb{E}[XY]| \\leq \\sqrt{\\mathbb{E}[X^2]\\mathbb{E}[Y^2]}$ are used throughout the CLT proof: bounding characteristic function differences, controlling truncation errors, and establishing moment conditions. The $L^2$ inner product structure that Cauchy-Schwarz governs is the natural framework for variance and covariance calculations"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The binomial distribution $P(X = k) = \\binom{n}{k}p^k(1-p)^{n-k}$ arises directly from the binomial theorem with $x = p, y = 1-p$. De Moivre's original CLT (1733) showed this binomial distribution converges to the Gaussian, making the binomial theorem the algebraic foundation for the first limit theorem in probability"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "The CLT proof via characteristic functions uses $\\varphi_X(t) = \\mathbb{E}[e^{itX}]$, where $e^{itX} = \\cos(tX) + i\\sin(tX)$ (Euler's formula). The Gaussian characteristic function $\\varphi(t) = e^{-t^2/2}$ — the CLT's limit — is the real-valued case, connecting Euler's formula to the universality of the normal distribution"
     }
   ],
   "relatedProofs": [
@@ -209,6 +234,9 @@
     "stirling-formula",
     "area-of-circle",
     "central-limit-theorem-oq-01",
-    "central-limit-theorem-oq-03"
+    "central-limit-theorem-oq-03",
+    "cauchy-schwarz",
+    "binomial-theorem",
+    "euler-identity"
   ]
 }

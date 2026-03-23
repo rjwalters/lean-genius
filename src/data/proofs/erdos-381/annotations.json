@@ -73,7 +73,7 @@
       "startLine": 70,
       "endLine": 78
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "1 is Highly Composite",
     "content": "**one_highly_composite:** 1 ∈ HC.\n\nτ(1) = 1, and there's no positive integer less than 1 to compare against.\n\nThis is the smallest highly composite number.",
     "significance": "supporting",
@@ -88,7 +88,7 @@
       "startLine": 111,
       "endLine": 119
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "12 is Highly Composite",
     "content": "**twelve_highly_composite:** 12 ∈ HC.\n\nτ(12) = 6, the first number with 6 divisors.\n\nDivisors of 12: {1, 2, 3, 4, 6, 12}.",
     "significance": "key",
@@ -104,7 +104,7 @@
       "startLine": 121,
       "endLine": 133
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Divisor Counts Verified",
     "content": "**Computational verification of τ values:**\n\nUsing `native_decide` to verify:\n- τ(1) = 1, τ(2) = 2, τ(3) = 2\n- τ(4) = 3, τ(5) = 2, τ(6) = 4\n- τ(12) = 6, τ(24) = 8, τ(36) = 9\n\nThese confirm which numbers are highly composite.",
     "significance": "supporting",
@@ -120,7 +120,7 @@
       "startLine": 143,
       "endLine": 152
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős's Lower Bound (1944)",
     "content": "**erdos_lower_bound:** Q(x) ≫ (log x)^{1+c} for some c > 0.\n\nErdős proved this in his 1944 paper \"On highly composite numbers\".\n\nThe count grows faster than log x, but still subpolynomially in x.",
     "mathContext": "This lower bound shows HC numbers are more common than one might expect from their sparse appearance.",
@@ -153,7 +153,7 @@
       "startLine": 186,
       "endLine": 194
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Nicolas's Upper Bound (1971)",
     "content": "**nicolas_upper_bound:** Q(x) ≪ (log x)^C for some constant C > 0.\n\nNicolas proved this in \"Répartition des nombres hautement composés de Ramanujan\" (1971).\n\nThis DISPROVES Erdős's question - Q(x) has bounded polynomial growth in log x.",
     "mathContext": "The exponent C ≈ 1.71 according to Nicolas's analysis.",
@@ -171,7 +171,7 @@
       "startLine": 207,
       "endLine": 218
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Conjecture is FALSE",
     "content": "**erdos_question_false:** ¬erdos_question.\n\nNicolas's upper bound contradicts the existence of arbitrarily fast growth.\n\nIf Q(x) ≤ K(log x)^C, then Q(x) cannot be ≥ c(log x)^k for k > C.",
     "significance": "key",
@@ -187,7 +187,7 @@
       "startLine": 222,
       "endLine": 232
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Combined Bounds",
     "content": "**Q_bounds:** (log x)^{1+c} ≪ Q(x) ≪ (log x)^C.\n\nErdős's lower bound and Nicolas's upper bound together pin down the growth rate:\n- Lower: Q(x) ≥ K₁(log x)^{1+c}\n- Upper: Q(x) ≤ K₂(log x)^C\n\nSo Q(x) ~ (log x)^α for some 1 + c ≤ α ≤ C.",
     "significance": "key",
@@ -203,7 +203,7 @@
       "startLine": 244,
       "endLine": 252
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "HC Exponent Structure",
     "content": "**HC_exponent_decreasing:** For highly composite n, the prime factorization exponents are non-increasing.\n\nIf n = 2^{a₁} · 3^{a₂} · ... · p^{a_k}, then a₁ ≥ a₂ ≥ ... ≥ a_k.\n\nThis is the key structural result from Ramanujan (1915).",
     "mathContext": "Formalized as: for primes p < q, factorization(q) ≤ factorization(p).",
@@ -220,7 +220,7 @@
       "startLine": 254,
       "endLine": 262
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Ramanujan's Characterization",
     "content": "**ramanujan_characterization:** For sufficiently large HC numbers (n > 720), the largest prime factor divides n exactly once, and no larger primes appear.\n\nThis gives a complete structural description of highly composite numbers.",
     "significance": "key",
@@ -269,7 +269,7 @@
       "startLine": 320,
       "endLine": 323
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result: erdos_381",
     "content": "**erdos_381:** ¬erdos_question.\n\n```lean\ntheorem erdos_381 : ¬erdos_question := erdos_question_false\n```\n\n**The conjecture is FALSE** - Q(x) does NOT grow faster than every power of log x.",
     "significance": "key",
@@ -285,7 +285,7 @@
       "startLine": 337,
       "endLine": 348
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_381_summary:** Combines the three key results:\n\n1. **Erdős's lower bound** (1944): Q(x) ≫ (log x)^{1+c}\n2. **Nicolas's upper bound** (1971): Q(x) ≪ (log x)^C\n3. **Disproof**: ¬erdos_question\n\nThis single theorem captures the complete resolution of the problem.",
     "significance": "key",

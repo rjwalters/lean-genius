@@ -7,8 +7,16 @@
     "content": "Imports six Mathlib modules: InnerProductSpace.Basic for EuclideanSpace ℝ (Fin 2), MetricSpace.Basic for the dist function, Finset.Basic and Finset.Card for finite point sets and offDiag enumeration, Filter.Basic for the atTop filter used in asymptotic statements, and Tactic for general automation.",
     "significance": "supporting",
     "mathContext": "The formalization uses `EuclideanSpace \\mathbb{R} (\\text{Fin}\\,2)` as the type of points in $\\mathbb{R}^2$, which carries both the inner product structure and the induced metric `dist`.",
-    "relatedConcepts": ["inner product space", "metric space", "finite sets", "filter"],
-    "prerequisites": ["Mathlib type classes", "EuclideanSpace definition"],
+    "relatedConcepts": [
+      "inner product space",
+      "metric space",
+      "finite sets",
+      "filter"
+    ],
+    "prerequisites": [
+      "Mathlib type classes",
+      "EuclideanSpace definition"
+    ],
     "range": {
       "startLine": 17,
       "endLine": 22
@@ -22,8 +30,16 @@
     "content": "Counts unordered pairs of distinct points at Euclidean distance exactly 1. Uses offDiag filtering on Finset of points in ℝ², divided by 2 for unordered pairs.",
     "significance": "key",
     "mathContext": "For a finite set $S \\subset \\mathbb{R}^2$, defines $\\text{udpc}(S) = |\\{(p, q) \\in S \\times S : p \\neq q,\\, \\|p - q\\| = 1\\}| / 2$. The `offDiag` function produces all ordered pairs $(p, q)$ with $p \\neq q$; dividing by 2 converts to unordered pairs $\\{p, q\\}$.",
-    "relatedConcepts": ["Finset.offDiag", "dist", "unit circle", "unordered pairs"],
-    "prerequisites": ["Finset operations", "EuclideanSpace metric"],
+    "relatedConcepts": [
+      "Finset.offDiag",
+      "dist",
+      "unit circle",
+      "unordered pairs"
+    ],
+    "prerequisites": [
+      "Finset operations",
+      "EuclideanSpace metric"
+    ],
     "range": {
       "startLine": 26,
       "endLine": 28
@@ -37,8 +53,15 @@
     "content": "The set unitDistanceCounts(n) collects all possible values of unitDistancePairsCount over n-point configurations. This is the set whose supremum defines u(n).",
     "significance": "supporting",
     "mathContext": "Defines $\\mathcal{U}(n) = \\{\\text{udpc}(S) : S \\subset \\mathbb{R}^2,\\, |S| = n\\}$, the range of the unit distance counting function over all $n$-point configurations. This is a subset of $\\mathbb{N}$ whose supremum is the extremal function $u(n)$.",
-    "relatedConcepts": ["set comprehension", "extremal function", "point configuration"],
-    "prerequisites": ["unitDistancePairsCount", "set-builder notation in Lean"],
+    "relatedConcepts": [
+      "set comprehension",
+      "extremal function",
+      "point configuration"
+    ],
+    "prerequisites": [
+      "unitDistancePairsCount",
+      "set-builder notation in Lean"
+    ],
     "range": {
       "startLine": 30,
       "endLine": 33
@@ -52,8 +75,15 @@
     "content": "The function u(n) = max over all n-point configurations of the number of unit-distance pairs. Defined as sSup of the set of achievable counts.",
     "significance": "key",
     "mathContext": "Defines $u(n) = \\sup \\mathcal{U}(n) = \\sup\\{\\text{udpc}(S) : |S| = n\\}$. The use of `sSup` (supremum in a conditionally complete lattice) requires the set to be bounded above, which is axiomatized in `unitDistanceCounts_bddAbove`.",
-    "relatedConcepts": ["sSup", "conditionally complete lattice", "extremal combinatorics"],
-    "prerequisites": ["unitDistanceCounts", "BddAbove"],
+    "relatedConcepts": [
+      "sSup",
+      "conditionally complete lattice",
+      "extremal combinatorics"
+    ],
+    "prerequisites": [
+      "unitDistanceCounts",
+      "BddAbove"
+    ],
     "range": {
       "startLine": 35,
       "endLine": 37
@@ -62,13 +92,20 @@
   {
     "id": "bdd-above",
     "proofId": "erdos-90",
-    "type": "theorem",
+    "type": "technique",
     "title": "Well-Definedness of u(n)",
     "content": "The set of achievable unit distance counts is bounded above, ensuring that sSup (and hence u(n)) is well-defined. The bound is C(n,2) = n(n-1)/2, the total number of unordered pairs.",
     "significance": "supporting",
     "mathContext": "Axiomatizes $\\mathcal{U}(n) \\subseteq [0, \\binom{n}{2}]$: since there are at most $\\binom{n}{2}$ unordered pairs, the set of achievable unit distance counts is bounded. This ensures $u(n) = \\mathrm{sSup}(\\mathcal{U}(n))$ is a natural number rather than $\\infty$.",
-    "relatedConcepts": ["BddAbove", "binomial coefficient", "sSup well-definedness"],
-    "prerequisites": ["unitDistanceCounts", "Finset.card"],
+    "relatedConcepts": [
+      "BddAbove",
+      "binomial coefficient",
+      "sSup well-definedness"
+    ],
+    "prerequisites": [
+      "unitDistanceCounts",
+      "Finset.card"
+    ],
     "range": {
       "startLine": 43,
       "endLine": 44
@@ -77,13 +114,21 @@
   {
     "id": "sst-bound",
     "proofId": "erdos-90",
-    "type": "theorem",
+    "type": "technique",
     "title": "Spencer–Szemerédi–Trotter Bound",
     "content": "u(n) = O(n^{4/3}), proved in 1984 using the Szemerédi–Trotter incidence theorem. This is the best known upper bound and has stood for over 40 years.",
     "significance": "key",
     "mathContext": "States $\\exists C > 0,\\, \\forall n \\geq 1: u(n) \\leq C \\cdot n^{4/3}$. The proof reduces unit distances to point-circle incidences: for each point $p_i$, the unit circle $C_i = \\{q : |p_i - q| = 1\\}$ contributes incidences with other points. The Szemerédi–Trotter theorem bounds $I(P, \\mathcal{C}) = O(|P|^{2/3} |\\mathcal{C}|^{2/3} + |P| + |\\mathcal{C}|)$, giving $O(n^{4/3})$ when $|P| = |\\mathcal{C}| = n$.",
-    "relatedConcepts": ["Szemerédi–Trotter theorem", "incidence geometry", "unit circles", "crossing number inequality"],
-    "prerequisites": ["maxUnitDistances", "incidence bounds"],
+    "relatedConcepts": [
+      "Szemerédi–Trotter theorem",
+      "incidence geometry",
+      "unit circles",
+      "crossing number inequality"
+    ],
+    "prerequisites": [
+      "maxUnitDistances",
+      "incidence bounds"
+    ],
     "range": {
       "startLine": 48,
       "endLine": 54
@@ -92,13 +137,22 @@
   {
     "id": "lattice-bound",
     "proofId": "erdos-90",
-    "type": "theorem",
+    "type": "technique",
     "title": "Lattice Lower Bound",
     "content": "Integer lattice constructions achieve n^{1+c/log log n} unit distances, establishing the conjectured order of magnitude from below.",
     "significance": "key",
     "mathContext": "States $\\exists c > 0$ such that $\\forall^\\infty n: u(n) \\geq n^{1+c/\\log\\log n}$. The construction uses $\\sqrt{n} \\times \\sqrt{n}$ integer lattice points and exploits the fact that the number of representations of an integer $m$ as $m = a^2 + b^2$ is $r_2(m) = 4 \\sum_{d|m} \\chi(d)$ where $\\chi$ is the non-principal character mod 4. Choosing $m$ with many small prime factors $\\equiv 1 \\pmod{4}$ maximizes $r_2(m)$, yielding the $n^{c/\\log\\log n}$ factor.",
-    "relatedConcepts": ["sums of two squares", "integer lattice", "highly composite numbers", "Ramanujan–Hardy"],
-    "prerequisites": ["maxUnitDistances", "Filter.atTop", "Real.log"],
+    "relatedConcepts": [
+      "sums of two squares",
+      "integer lattice",
+      "highly composite numbers",
+      "Ramanujan–Hardy"
+    ],
+    "prerequisites": [
+      "maxUnitDistances",
+      "Filter.atTop",
+      "Real.log"
+    ],
     "range": {
       "startLine": 58,
       "endLine": 63
@@ -112,8 +166,16 @@
     "content": "u(n) = n^{1+O(1/log log n)}: the maximum number of unit distances grows only slightly faster than linear. This would match the lattice lower bound. $500 prize.",
     "significance": "key",
     "mathContext": "Conjectures $\\exists C > 0$ such that $\\forall^\\infty n: u(n) \\leq n^{1+C/\\log\\log n}$. Combined with the lattice lower bound $u(n) \\geq n^{1+c/\\log\\log n}$, this would pin down $u(n) = n^{1+\\Theta(1/\\log\\log n)}$. The double logarithm arises because the number of prime factors of a typical integer $m \\leq n$ is $\\sim \\log\\log n$ (Hardy–Ramanujan theorem).",
-    "relatedConcepts": ["extremal function", "Hardy–Ramanujan theorem", "double logarithm", "prize problem"],
-    "prerequisites": ["maxUnitDistances", "lattice_lower_bound"],
+    "relatedConcepts": [
+      "extremal function",
+      "Hardy–Ramanujan theorem",
+      "double logarithm",
+      "prize problem"
+    ],
+    "prerequisites": [
+      "maxUnitDistances",
+      "lattice_lower_bound"
+    ],
     "range": {
       "startLine": 67,
       "endLine": 74
@@ -122,13 +184,20 @@
   {
     "id": "weak-form",
     "proofId": "erdos-90",
-    "type": "theorem",
+    "type": "technique",
     "title": "Weak Conjecture: u(n) = n^{1+o(1)}",
     "content": "The weaker form states u(n) ≤ n^{1+ε} for every ε > 0 and large n. Even this is wide open. Erdős offered $300 (later $250) for this version.",
     "significance": "key",
     "mathContext": "States $\\forall \\varepsilon > 0,\\, \\forall^\\infty n: u(n) \\leq n^{1+\\varepsilon}$. This is equivalent to $\\lim_{n \\to \\infty} \\frac{\\log u(n)}{\\log n} = 1$, meaning the exponent in $u(n) \\approx n^\\alpha$ satisfies $\\alpha = 1$. The current best gives $\\alpha \\leq 4/3$; even proving $\\alpha < 4/3$ would be a breakthrough.",
-    "relatedConcepts": ["subpolynomial growth", "exponent", "o(1) notation"],
-    "prerequisites": ["maxUnitDistances", "ErdosProblem90"],
+    "relatedConcepts": [
+      "subpolynomial growth",
+      "exponent",
+      "o(1) notation"
+    ],
+    "prerequisites": [
+      "maxUnitDistances",
+      "ErdosProblem90"
+    ],
     "range": {
       "startLine": 76,
       "endLine": 81
@@ -142,8 +211,16 @@
     "content": "Valtr constructed a non-Euclidean metric on ℝ² where n points can have Θ(n^{4/3}) unit distances. Since SST methods generalize to such metrics, breaking the n^{4/3} barrier requires exploiting Euclidean geometry specifically.",
     "significance": "key",
     "mathContext": "Axiomatizes the existence of a semimetric $d : \\mathbb{R}^2 \\times \\mathbb{R}^2 \\to \\mathbb{R}$ (symmetric, non-negative, $d(x,x) = 0$) and constant $c > 0$ such that $\\forall^\\infty n$, some $n$-point set has $\\geq c \\cdot n^{4/3}$ pairs at $d$-distance 1. The key point: the Szemerédi–Trotter theorem applies to any family of curves with bounded pairwise intersection, so $d$-unit circles also satisfy the $O(n^{4/3})$ bound. Valtr shows this bound is **tight** in the general convex-curve setting.",
-    "relatedConcepts": ["semimetric", "convex curves", "incidence geometry", "algebraic structure of Euclidean distance"],
-    "prerequisites": ["spencer_szemeredi_trotter", "metric space axioms"],
+    "relatedConcepts": [
+      "semimetric",
+      "convex curves",
+      "incidence geometry",
+      "algebraic structure of Euclidean distance"
+    ],
+    "prerequisites": [
+      "spencer_szemeredi_trotter",
+      "metric space axioms"
+    ],
     "range": {
       "startLine": 85,
       "endLine": 98

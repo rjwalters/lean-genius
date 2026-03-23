@@ -76,7 +76,7 @@
       "startLine": 99,
       "endLine": 192
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Steinerberger's Criterion and Wolstenholme's Theorem",
     "content": "The key theorem `steinerberger_criterion`: if the leading digit of $n$ in base $p$ equals $p - 1$, then $p \\mid \\gcd(a_n, L_n)$. This is actually proved (not axiomatized!) from two ingredients: the `divisibility_characterization` (relating divisibility to numerators of partial harmonic sums) and Wolstenholme's theorem ($p^2 \\mid \\text{num}(H_{p-1})$ for $p \\ge 5$). The case $p = 3$ is handled by direct computation: $H_2 \\cdot 2! = 3$, divisible by 3.",
     "mathContext": "Wolstenholme (1862): $p^2 \\mid \\text{num}(H_{p-1})$ for prime $p \\ge 5$. Characterization: $p \\mid \\gcd(a_n, L_n) \\iff p \\mid \\text{num}(H_k \\cdot k!)$ where $k = $ leading digit of $n$ in base $p$. Combined: leading digit $p-1 \\Rightarrow p \\mid \\gcd$.",
@@ -124,7 +124,7 @@
       "startLine": 247,
       "endLine": 373
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Structural Properties of L_n and H_n",
     "content": "Proves foundational properties. For $L_n$: computed values $L(0)=1, L(1)=1, L(2)=2, \\ldots, L(6)=60$; positivity $L(n) > 0$; divisibility $L(n) \\mid n!$; and $k \\mid L(n)$ for $1 \\le k \\le n$. For $H_n$: computed values $H(1)=1, H(2)=3/2, \\ldots, H(6)=49/20$; recurrence $H(n+1) = H(n) + 1/(n+1)$; positivity; strict monotonicity; and monotonicity. Also proves $H_n \\cdot L_n \\ge 0$ and $H_n \\cdot L_n = \\sum_{k=1}^n L_n/k$.",
     "mathContext": "$L(n) \\mid n!$ (since each $k \\le n$ divides both $L(n)$ and $n!$). $H(n+1) = H(n) + \\frac{1}{n+1}$. $H_n \\cdot L_n = \\sum_{k=1}^n \\frac{L_n}{k} \\in \\mathbb{Z}$. Computed: $L(6) = 60$, $H(6) = 49/20$.",
@@ -147,7 +147,7 @@
       "startLine": 374,
       "endLine": 431
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Computed GCD Values: First Occurrence at n=6",
     "content": "Proves exact GCD values by computation. $\\gcd(a_n, L_n) = 1$ for $n = 1, 2, 3, 4, 5$ and $\\gcd = 3$ at $n = 6$ (the first occurrence of $\\gcd > 1$). Extended examples: $\\gcd = 3$ for $n = 7, 8$ (all have leading digit 2 in base 3) and $\\gcd = 1$ for $n = 9, 10$. Total: 7 values with $\\gcd = 1$ found among $n \\le 10$.",
     "mathContext": "$n = 6$: $a_6 = H_6 \\cdot L_6 = (49/20) \\cdot 60 = 147$, $\\gcd(147, 60) = 3$. The leading digit of 6 in base 3 is 2 $= 3 - 1$. $n = 9$: $a_9 = 7129$, $\\gcd(7129, 2520) = 1$.",
@@ -169,7 +169,7 @@
       "startLine": 432,
       "endLine": 614
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Leading Digit Theory and Infinite Families",
     "content": "Develops the theory of leading digits in base $p$. The key structural result `leadingDigit_pm1_times_pow`: for any $p > 1$ and $k \\ge 0$, $\\text{ld}((p-1) \\cdot p^k, p) = p - 1$, because $(p-1) \\cdot p^k$ in base $p$ is the digit $p-1$ followed by $k$ zeros. Combined with Steinerberger: $p \\mid \\gcd(a_{(p-1)p^k}, L_{(p-1)p^k})$ for any prime $p \\ge 3$. This gives infinite families for $p = 3$ ($\\{2 \\cdot 3^k\\}$) and $p = 5$ ($\\{4 \\cdot 5^k\\}$).",
     "mathContext": "$(p-1) \\cdot p^k$ in base $p$: $\\underbrace{(p-1)}_{\\text{leading}} \\underbrace{00\\ldots0}_{k \\text{ zeros}}$. General theorem: $p \\mid \\gcd(a_{(p-1)p^k}, L_{(p-1)p^k})$ for prime $p \\ge 3$, $k \\ge 1$.",
@@ -192,7 +192,7 @@
       "startLine": 641,
       "endLine": 698
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Part 2 Proved: Infinitely Many n with gcd > 1",
     "content": "The theorem `part2_trivially_true` proves Part 2 using the infinite family $\\{2 \\cdot 3^k : k \\ge 1\\}$. For each such $n$, $\\text{ld}(n, 3) = 2 = 3 - 1$, so $3 \\mid \\gcd(a_n, L_n)$ by Steinerberger. An alternate proof `part2_via_five` uses $\\{4 \\cdot 5^k\\}$. The summary theorem `erdos_291` packages Part 2 as the proved component.",
     "mathContext": "$\\{2 \\cdot 3^k : k \\ge 1\\} \\subseteq \\{n : \\gcd(a_n, L_n) > 1\\}$ is infinite. Proof: $k \\mapsto 2 \\cdot 3^{k+1}$ is injective and $3 \\mid \\gcd$ at each point. Similarly $\\{4 \\cdot 5^k\\}$ provides a second family with $5 \\mid \\gcd$.",

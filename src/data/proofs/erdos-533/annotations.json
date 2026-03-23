@@ -2,7 +2,7 @@
   {
     "id": "ann-e533-imports",
     "proofId": "erdos-533",
-    "type": "import",
+    "type": "context",
     "title": "Mathlib Foundations",
     "content": "Imports Finset, Nat, Real, and tactic libraries for finite graph definitions and edge counting.",
     "mathContext": "Graphs on $n$ vertices are modeled using `Fin n` for vertices and `Finset (Fin n)` for vertex subsets. The `Real` import supports the density parameter $\\delta$ and edge count comparisons like $\\delta n^2 \\leq |E(G)|$.",
@@ -156,7 +156,7 @@
   {
     "id": "ann-e533-ehsss",
     "proofId": "erdos-533",
-    "type": "axiom",
+    "type": "concept",
     "title": "EHSSS Result for δ > 1/16",
     "content": "Erdős, Hajnal, Simonovits, Sós, and Szemerédi proved: for δ > 1/16, any K₅-free graph with ≥ δn² edges has a triangle-free subset of size ≥ (δ/2)n.",
     "mathContext": "The **EHSSS theorem** uses the **Szemerédi regularity lemma**: partition the vertices into clusters, analyze the bipartite graphs between clusters, and exploit K₅-freeness to find a cluster pair with few triangles. The threshold $\\delta > 1/16$ arises from the regularity lemma's approximation: below this density, the regular pairs may not contain enough structure to extract a large triangle-free set. The linear bound $|S| \\geq (\\delta/2)n$ is optimal up to the constant.",
@@ -180,7 +180,7 @@
   {
     "id": "ann-e533-k4free",
     "proofId": "erdos-533",
-    "type": "axiom",
+    "type": "concept",
     "title": "K₄-Free Case: All δ > 0",
     "content": "For K₄-free graphs, the triangle-free subset result holds for every δ > 0, not just δ > 1/16.",
     "mathContext": "When the excluded clique is $K_4$ instead of $K_5$, the Turán density drops to $1/3$, and the graph structure is more constrained. The stronger result for $K_4$-free graphs uses the **Kővári-Sós-Turán theorem** and refined counting arguments. This confirms the general philosophy: smaller excluded cliques yield stronger structural consequences. The problem is whether $K_5$ behaves like $K_4$ (true for all $\\delta$) or like $K_7$ (fails).",
@@ -203,7 +203,7 @@
   {
     "id": "ann-e533-erdos-rogers",
     "proofId": "erdos-533",
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Rogers Counterexample for K₇",
     "content": "There exist K₇-free graphs with ≥ n²/4 edges where every triangle-free subset has o(n) vertices, disproving the conjecture for K₇.",
     "mathContext": "The **Erdős-Rogers construction** (1962) builds $K_7$-free graphs of density $1/4$ where all triangle-free subsets are sublinear. The construction uses iterated Ramsey-type blow-ups: start with a dense graph, replace each vertex by a clique, and iterate. After enough iterations, the graph is $K_7$-free but every large subset contains a triangle. The threshold between \"always works\" ($K_4$) and \"fails\" ($K_7$) makes $K_5$ and $K_6$ the **critical boundary cases**.",
@@ -227,7 +227,7 @@
   {
     "id": "ann-e533-conjecture",
     "proofId": "erdos-533",
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős Problem 533: Full Conjecture",
     "content": "For every δ > 0, any K₅-free graph on n vertices with ≥ δn² edges contains a triangle-free subset of size ≥ c(δ)·n.",
     "mathContext": "The conjecture extends EHSSS from $\\delta > 1/16$ to all $\\delta > 0$. The quantifier structure is $\\forall \\delta > 0, \\exists c > 0, \\forall n, \\forall G$ $K_5$-free with $\\geq \\delta n^2$ edges, $\\exists S$ triangle-free with $|S| \\geq cn$. The constant $c = c(\\delta)$ may depend on $\\delta$. The problem is at the frontier of **extremal graph theory**: it tests whether $K_5$-freeness is strong enough to force structured subgraphs at all densities, or whether there is a phase transition between $K_4$ (always works) and $K_7$ (fails).",

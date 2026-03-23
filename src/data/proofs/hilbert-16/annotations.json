@@ -101,7 +101,7 @@
       "startLine": 224,
       "endLine": 306
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "H(1) = 0: No Limit Cycles for Linear Systems",
     "content": "**$H(1) = 0$**: Linear systems have no limit cycles. The proof is structured in three steps:\n\n1. Define `LinearVectorField` with coefficient matrix $\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}$\n2. Convert to `PolynomialVectorField 1` using `toPolynomialVectorField` (requires axiomatized `linear_poly_degree_le_one`)\n3. Axiomatize `linear_no_limit_cycles_axiom` based on eigenvalue classification\n\n**Phase portrait classification by eigenvalues $\\lambda_1, \\lambda_2$**:\n- **Node**: real, same sign — no periodic orbits\n- **Saddle**: real, opposite signs — no periodic orbits\n- **Focus**: complex with $\\text{Re} \\neq 0$ — spirals, no periodic orbits\n- **Center**: purely imaginary — all orbits periodic but **not isolated**\n\nIn every case, no isolated periodic orbit exists, so $H(1) = 0$.",
     "mathContext": "For $\\dot{x} = Ax$ with $A \\in M_{2 \\times 2}(\\mathbb{R})$: solutions are $x(t) = e^{At} x_0$. If $\\lambda_{1,2} = \\alpha \\pm i\\beta$ with $\\beta \\neq 0$, orbits spiral ($\\alpha \\neq 0$) or form concentric ellipses ($\\alpha = 0$). Concentric ellipses give a center — continuous family of periodic orbits, none isolated.",
@@ -125,7 +125,7 @@
       "startLine": 308,
       "endLine": 352
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Known Lower Bounds on H(n)",
     "content": "**$H(2) \\geq 4$** (Shi Songling, 1980): A quadratic system with the '(3,1) distribution' — 3 limit cycles around one focus and 1 around another. This was a major advance in the Chinese school of dynamical systems.\n\n**$H(3) \\geq 13$** (various authors): Cubic systems with at least 13 limit cycles, improved over time via computer-assisted constructions.\n\nBoth results are axiomatized because formalization requires explicit polynomial constructions and computational verification of orbit isolation. These are **lower bounds only** — no upper bounds on $H(2)$ or $H(3)$ are known.",
     "mathContext": "$H(2) \\geq 4$: Shi's system has the form $\\dot{x} = \\delta x - y - lx^2 + (m-l)xy + ny^2$, $\\dot{y} = x + ax^2 + bxy$ for specific parameter values producing 4 isolated periodic orbits. The (3,1) means 3 small limit cycles from Hopf bifurcation near one focus, plus 1 large limit cycle surrounding the other.",
@@ -149,7 +149,7 @@
       "startLine": 354,
       "endLine": 389
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Ecalle-Ilyashenko Finiteness Theorem (1991-92)",
     "content": "**Theorem**: $H(n) < \\infty$ for all $n$. Polynomial vector fields have only finitely many limit cycles.\n\n**History**: Dulac claimed this in 1923, but gaps were found. Ecalle and Ilyashenko independently fixed it 70 years later, each requiring 500+ pages.\n\n**Ecalle's approach**: Resurgent functions — a theory of divergent series with controlled singularities, allowing analytic continuation of Dulac maps past singular points.\n\n**Ilyashenko's approach**: Asymptotic analysis of Dulac maps (first-return maps on transversals to polycycles), showing they cannot accumulate limit periodic sets.\n\n**Crucial caveat**: The proof gives **no bound** on $H(n)$ — just finiteness. An effective version remains open.",
     "mathContext": "The **Dulac map** $\\Delta: [0, \\varepsilon) \\to [0, \\varepsilon)$ is the composition of corner maps near saddle points of a polycycle. The key is showing $\\Delta(x) - x$ has isolated zeros (finite number of fixed points = finite limit cycles near the polycycle). Ecalle's resurgent functions handle the divergent power series expansions of these corner maps.",
@@ -174,7 +174,7 @@
       "startLine": 391,
       "endLine": 457
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Poincare-Bendixson Theorem",
     "content": "**Poincare-Bendixson Theorem** (Poincare 1881-86, Bendixson 1901): In 2D, if a trajectory $\\gamma$ has a bounded $\\omega$-limit set containing no equilibria, then $\\omega(\\gamma)$ is a periodic orbit.\n\nThe formalization defines `omegaLimitSet` as $\\bigcap_{T \\in \\mathbb{R}} \\overline{\\gamma([T, \\infty))}$, `isEquilibrium` ($F(p) = 0$), and axiomatizes the theorem using `Bornology.IsBounded`.\n\nAlso axiomatizes `limit_cycle_as_omega_limit`: every limit cycle is the $\\omega$-limit of some non-periodic trajectory (spiraling toward or away from the cycle).\n\n**Why 2D is special**: The non-crossing property of trajectories (from ODE uniqueness) prevents the complex behavior possible in 3D (strange attractors, chaos). This constrains 2D dynamics to equilibria, periodic orbits, and saddle cycles.",
     "mathContext": "In $\\mathbb{R}^2$, the Jordan curve theorem implies that a simple closed curve $\\Gamma$ divides the plane into two regions. Trajectory uniqueness prevents crossing, so trajectories can only spiral toward or away from $\\Gamma$. This gives the trichotomy: $\\omega(\\gamma)$ is either an equilibrium, a periodic orbit, or a graphic (cycle of saddle connections).",
@@ -223,7 +223,7 @@
       "startLine": 524,
       "endLine": 565
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary: Hilbert 16 Still OPEN",
     "content": "**Hilbert 16: Open since 1900, also Smale's 13th Problem.**\n\nThe `Hilbert16_summary` theorem (proved by `trivial`) synthesizes the formalization across all 11 parts:\n\n**Known**: $H(1) = 0$, $H(n) < \\infty$ (Ecalle-Ilyashenko), $H(2) \\geq 4$ (Shi 1980), $H(3) \\geq 13$\n**Unknown**: Exact $H(2)$, any formula for $H(n)$, any polynomial bound, effective Ecalle-Ilyashenko\n**Why hard**: Global bifurcation structure, no good computational approach, Poincare-Bendixson gives only qualitative constraints\n\nThe `#check` commands verify `HilbertNumber`, `H1_eq_zero`, `Ecalle_Ilyashenko`, and `PoincareBendixson`.",
     "mathContext": "The 565-line formalization axiomatizes 8 deep results and proves 6 theorems (mostly wrappers around axioms). The key definitions (`PolynomialVectorField`, `isLimitCycle`, `HilbertNumber`) are fully constructive; the main theorems ($H(1) = 0$, finiteness, lower bounds, Poincare-Bendixson) require axiomatization of their classical proofs.",

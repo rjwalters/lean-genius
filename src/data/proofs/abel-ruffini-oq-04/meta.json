@@ -102,6 +102,11 @@
         "key": "Wu07",
         "citation": "Wussing, H., The Genesis of the Abstract Group Concept: A Contribution to the History of the Origin of Abstract Group Theory, Dover (2007, reprint of 1984 MIT Press edition).",
         "type": "book"
+      },
+      {
+        "key": "FT63",
+        "citation": "Feit, W. and Thompson, J.G., Solvability of groups of odd order, Pacific Journal of Mathematics 13(3) (1963), 775–1029.",
+        "type": "paper"
       }
     ],
     "relatedProofs": [
@@ -129,7 +134,11 @@
       "hilbert-10",
       "vietas-formulas",
       "primitive-roots",
-      "fermats-last-theorem"
+      "fermats-last-theorem",
+      "puiseux-theorem",
+      "elementary-quadratic-reciprocity-oq-01",
+      "derangements",
+      "partition-theorem"
     ],
     "prerequisites": [
       "Group theory (normal subgroups, derived series, solvability)",
@@ -264,6 +273,26 @@
       "targetId": "angle-trisection-oq-02-oq-01",
       "relationship": "related",
       "description": "Both use Galois-theoretic obstructions to prove impossibility via parallel strategies: this file shows Gal(generic quintic) ≅ S₅ is not solvable, blocking radical solutions; OQ-02-OQ-01 proves that constructibility requires the Galois group to be a 2-group (natDegree divides |Gal|), blocking compass-and-straightedge constructions. Both reduce geometric/algebraic impossibility to a group-theoretic property check"
+    },
+    {
+      "targetId": "puiseux-theorem",
+      "relationship": "complementary",
+      "description": "Puiseux's theorem shows that the field of fractional power series ℂ{{t^{1/∞}}} is algebraically closed — every polynomial equation has a Puiseux series solution. This provides an illuminating contrast with Abel-Ruffini: while radicals (nested nth roots) cannot solve the generic quintic, Puiseux series always can. The Newton-Puiseux algorithm constructs solutions term-by-term via the Newton polygon, succeeding precisely where radical formulas fail. This situates Abel-Ruffini as a statement about the specific class of radical expressions, not about the existence of 'closed-form' solutions in general"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-01",
+      "relationship": "related",
+      "description": "Zolotarev's 1872 proof of quadratic reciprocity uses the sign homomorphism sign: Sₙ → {±1} — the same homomorphism whose kernel Aₙ = ker(sign) is central to this file's proof chain. In Zolotarev's proof, the Legendre symbol (a/p) equals the signature of the multiplication-by-a permutation on (ℤ/pℤ)*, directly linking the symmetric group structure that drives Abel-Ruffini's impossibility to a fundamental result in number theory. Both proofs exploit the same group-theoretic infrastructure (symmetric groups and their sign homomorphism) for entirely different purposes"
+    },
+    {
+      "targetId": "derangements",
+      "relationship": "related",
+      "description": "The derangement formula D(n) = n! Σ(-1)^k/k! counts fixed-point-free permutations in Sₙ via inclusion-exclusion on the group action of Sₙ on {1,...,n}. The sign homomorphism sign: Sₙ → {±1} partitions derangements into even (in Aₙ) and odd — the same sign homomorphism whose kernel Aₙ = ker(sign) is central to the Abel-Ruffini proof chain. The derangement count also illustrates how combinatorial properties of Sₙ (fixed-point structure) coexist with its algebraic properties (solvability), showcasing two faces of the same group"
+    },
+    {
+      "targetId": "partition-theorem",
+      "relationship": "related",
+      "description": "Integer partitions of n index the conjugacy classes of Sₙ by cycle type — a partition λ = (λ₁, λ₂, ...) corresponds to the class of permutations with cycle lengths λ₁, λ₂, etc. The conjugacy class sizes of A₅ (1, 12, 12, 15, 20, corresponding to cycle types (1⁵), (2²1), (3 1²), (5), (5) split) are the raw data for proving A₅ simplicity: a normal subgroup must be a union of conjugacy classes including {e}, and the only sub-sums of {1, 12, 12, 15, 20} that divide 60 are 1 and 60. Euler's partition theorem (odd parts ↔ distinct parts) thus connects to group theory through the cycle-type encoding"
     }
   ],
   "overview": {
@@ -345,7 +374,7 @@
   ],
   "conclusion": {
     "summary": "Fully verified (0 sorries, 0 axioms) pedagogical exposition of the A₅ simplicity proof chain in 163 lines with 8 theorems. Each link in the chain from A₅ simplicity to the Abel-Ruffini theorem is named, machine-verified, and documented with historical and mathematical context. The key technical theorem is symmetric_not_solvable, which bridges Mathlib's cardinal-level statement to natural numbers.",
-    "implications": "This file serves as a pedagogical bridge between abstract group theory and classical algebra. By making the proof chain explicit — with each step named and independently checkable — it demonstrates that the Abel-Ruffini theorem follows from a single deep fact (A₅ simplicity) through a short chain of elementary implications. The file also highlights the role of Mathlib's typeclass system in automating solvability proofs for small groups. More broadly, the chain illustrates a general pattern in Galois theory: structural properties of groups (simplicity, solvability) translate into concrete impossibility results about algebraic equations. This paradigm extends to other areas — for example, the impossibility of angle trisection and cube doubling by compass and straightedge follow from analogous Galois-theoretic arguments about field extension degrees. The formalization also connects to modern computational algebra: algorithms for computing Galois groups over ℚ (e.g., Stauduhar's method, van der Waerden's approach, and modern p-adic methods) can decide radical solvability of any specific polynomial, transforming Abel-Ruffini's negative result into a positive algorithmic criterion via its contrapositive.",
+    "implications": "This file serves as a pedagogical bridge between abstract group theory and classical algebra. By making the proof chain explicit — with each step named and independently checkable — it demonstrates that the Abel-Ruffini theorem follows from a single deep fact (A₅ simplicity) through a short chain of elementary implications. The file also highlights the role of Mathlib's typeclass system in automating solvability proofs for small groups. More broadly, the chain illustrates a general pattern in Galois theory: structural properties of groups (simplicity, solvability) translate into concrete impossibility results about algebraic equations. This paradigm extends to other areas — for example, the impossibility of angle trisection and cube doubling by compass and straightedge follow from analogous Galois-theoretic arguments about field extension degrees. The formalization also connects to modern computational algebra: algorithms for computing Galois groups over ℚ (e.g., Stauduhar's method, van der Waerden's approach, and modern p-adic methods) can decide radical solvability of any specific polynomial, transforming Abel-Ruffini's negative result into a positive algorithmic criterion via its contrapositive. The same group-theoretic paradigm extends to differential Galois theory (Picard-Vessiot theory): a linear ODE is 'solvable by quadratures' iff its differential Galois group has solvable identity component, with Kovacic's algorithm (1986) making this decidable for second-order equations — a direct analogue of how Galois group computation decides radical solvability for polynomials.",
     "openQuestions": [
       "Formalize the Galois group computation for the generic quintic: Gal(x⁵ + a₁x⁴ + ··· + a₅ / ℚ(a₁,...,a₅)) = S₅",
       "Prove S₂, S₃, S₄ solvable explicitly (not just S₀, S₁) to complete the degree-by-degree picture",

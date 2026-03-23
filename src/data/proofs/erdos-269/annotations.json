@@ -95,7 +95,7 @@
       "startLine": 153,
       "endLine": 175
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Main Conjecture (OPEN)",
     "content": "**erdos_269 (OPEN):**\n\n```lean\naxiom erdos_269 (P : Finset N) (hPrime : forall p in P, p.Prime)\n    (hCard : P.card >= 2) :\n    Irrational (lcmSeries (P : Set N))\n```\n\n**Statement:**\nFor any finite set P of at least 2 primes, the LCM series is irrational.\n\n**What Makes It Hard:**\nThe duplicate terms (when L_n = L_{n-1}) create a complex pattern that depends on the specific primes in P.",
     "mathContext": "The finite case remains open. Understanding the duplicate pattern is the key challenge.",
@@ -113,7 +113,7 @@
       "startLine": 177,
       "endLine": 192
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Infinite P Case (SOLVED)",
     "content": "**erdos_269_infinite:**\n\n```lean\naxiom erdos_269_infinite (P : Set N)\n    (hPrime : forall p in P, p.Prime) (hInf : P.Infinite) :\n    Irrational (lcmSeries P)\n```\n\n**Erdos called this 'a simple exercise'.**\n\n**Why It's Easier:**\nWith infinitely many primes, there are infinitely many 'new contributions' at each p-adic level, preventing the series from being rational.\n\nThe finite case lacks this infinite source of irrationality.",
     "mathContext": "The infinite case was solved by Erdos. The key difference is that infinite P provides endless new structure.",
@@ -166,7 +166,7 @@
       "startLine": 284,
       "endLine": 306
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Distinct Terms Case (SOLVED)",
     "content": "**erdos_269_distinct:**\n\nIf we remove duplicate terms (where L_n = L_{n-1}), the series is irrational.\n\n```lean\ndef distinctLcmTerms (P : Set N) : Set N :=\n  { n | n = 0 or partialLcm P n != partialLcm P (n - 1) }\n\naxiom erdos_269_distinct (P : Finset N) ... :\n    Irrational (distinctLcmSeries (P : Set N))\n```\n\n**Note by Erdos:**\nThe series without duplicates is irrational. The difficulty is precisely the duplicate terms!",
     "mathContext": "This partial result shows that duplicates are the key obstacle. The 'cleaned' series is tractable.",
@@ -184,7 +184,7 @@
       "startLine": 308,
       "endLine": 340
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary",
     "content": "**Erdos Problem #269: Summary**\n\n```lean\ntheorem erdos_269_summary :\n    -- Infinite case is solved\n    (forall P, primes in P -> P.Infinite -> Irrational (lcmSeries P)) and\n    -- Distinct case is solved\n    (forall P finite primes, |P|>=2 -> Irrational (distinctLcmSeries P)) and\n    -- General finite case is open\n    True\n```\n\n**State of Knowledge:**\n1. Infinite P: SOLVED (irrational)\n2. Finite P, distinct: SOLVED (irrational)\n3. Finite P, full: OPEN",
     "significance": "key",

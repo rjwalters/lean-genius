@@ -96,7 +96,7 @@
       "startLine": 68,
       "endLine": 76
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Why Discrete Sets?",
     "content": "The **identity theorem** says that if an analytic function has zeros with a limit point, it must be identically zero. Therefore, we can only prescribe zeros on discrete sets.",
     "mathContext": "This axiom states that discrete sets are either empty or countable. The discreteness is essential - it's why the Sₙ must have no finite limit points.",
@@ -114,7 +114,7 @@
       "startLine": 80,
       "endLine": 99
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Barth-Schneider Theorem",
     "content": "**Theorem** (Barth-Schneider, 1972): The answer to Erdős Problem #229 is YES. For any sequence of discrete sets, there exists a transcendental entire function whose derivatives vanish on them.",
     "mathContext": "axiom barth_schneider_theorem : Erdos229Question. The construction uses Weierstrass products and careful control of derivatives. Axiomatized because the proof requires advanced function theory.",
@@ -132,7 +132,7 @@
       "startLine": 98,
       "endLine": 99
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Answer",
     "content": "The answer to Erdős Problem #229 is **YES**: we can always find such a transcendental entire function.",
     "mathContext": "theorem erdos_229_answer : Erdos229Question := barth_schneider_theorem. This directly invokes the axiomatized Barth-Schneider result.",
@@ -149,7 +149,7 @@
       "startLine": 103,
       "endLine": 118
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Explicit Formulation",
     "content": "An equivalent formulation: for any sequence of discrete sets, there exist a transcendental entire function f and a sequence of **positive** integers (nₖ) such that f^(nₖ) vanishes on Sₖ.",
     "mathContext": "This makes explicit that the derivative indices nₖ are positive, not just non-negative. The function f and the sequence (nₖ) are constructed together.",
@@ -166,7 +166,7 @@
       "startLine": 122,
       "endLine": 128
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Weierstrass Factorization",
     "content": "The **Weierstrass factorization theorem** is a classical result: for any discrete set S, there exists an entire function vanishing exactly on S. This is a special case (k = 0) of the general result.",
     "mathContext": "axiom weierstrass_factorization : ∀ S, HasNoFiniteLimitPoint S → ∃ f, IsEntireFunction f ∧ ∀ z ∈ S, f z = 0. This classical theorem is the foundation for prescribing zeros.",
@@ -184,7 +184,7 @@
       "startLine": 130,
       "endLine": 135
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Derivative Zeros",
     "content": "We can also prescribe zeros of a **specific** derivative: given k and a discrete set S, there exists an entire function whose k-th derivative vanishes on S.",
     "mathContext": "axiom derivative_zeros : ∀ k, ∀ S, HasNoFiniteLimitPoint S → ∃ f, IsEntireFunction f ∧ ∀ z ∈ S, iteratedDeriv k f z = 0. This extends Weierstrass to derivatives.",
@@ -201,7 +201,7 @@
       "startLine": 147,
       "endLine": 160
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary",
     "content": "The **summary** confirms the main result: Erdős Problem #229 has a positive answer via the Barth-Schneider theorem.",
     "mathContext": "theorem summary_erdos_229 : Erdos229Question := barth_schneider_theorem. This packages the key result for export.",

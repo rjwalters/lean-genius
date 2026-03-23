@@ -101,7 +101,7 @@
       "startLine": 70,
       "endLine": 76
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Trivial Bound and $r \\geq 3$ Requirement",
     "content": "**trivial_upper_bound:** $f_r(N) \\leq N$ for $r \\geq 3$. The restriction $r \\geq 3$ is essential: for $r = 2$, every pair trivially forms a 2-clique with $d = \\gcd(a, b)$, so $f_2(N) = 1$.",
     "mathContext": "For $r = 2$, `HasNoRGCDSubset A 2` forces $|A| \\leq 1$. The interesting regime begins at $r = 3$, where avoiding $\\gcd$-triples is nontrivial.",
@@ -123,7 +123,7 @@
       "startLine": 82,
       "endLine": 91
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős's Original Upper Bound (1964)",
     "content": "**erdos_1964_upper_bound:** $f_r(N) \\leq C \\cdot N^{3/4 + \\varepsilon}$ for all $\\varepsilon > 0$ and $N$ sufficiently large.\n\nThe first non-trivial upper bound, proved by Erdős in 1964 using counting arguments. Superseded by Abbott-Hanson's improvement to exponent $1/2$.",
     "mathContext": "Erdős's counting argument: bound the number of pairs $(A, S)$ where $S \\subseteq A$ is a bad $r$-subset, then use divisor sums to get $|A|^r \\ll N^{3r/4 + o(1)}$, yielding $|A| \\ll N^{3/4}$.",
@@ -145,7 +145,7 @@
       "startLine": 97,
       "endLine": 110
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Abbott-Hanson Upper Bound (1970)",
     "content": "**abbott_hanson_upper_bound:** $f_r(N) \\leq C \\cdot N^{1/2 + \\varepsilon}$ for all $\\varepsilon > 0$ and sufficiently large $N$.\n\nThe **best known upper bound**. Abbott and Hanson improved Erdős's exponent from $3/4$ to $1/2$ using graph-theoretic methods, specifically Turán-type bounds on the $\\gcd$-graph.\n\n**exponent_improvement** verifies $3/4 > 1/2$ by `norm_num`.",
     "mathContext": "The Abbott-Hanson argument analyzes the graph $G_d$ on $A$ where $a \\sim b$ iff $\\gcd(a,b) = d$. Since no $K_r$ exists in $G_d$, Turán's theorem gives $|E(G_d)| \\leq (1 - 1/(r-1))|A|^2/2$. Summing over all $d$ with divisor estimates yields $|A| \\leq N^{1/2 + o(1)}$.",
@@ -169,7 +169,7 @@
       "startLine": 116,
       "endLine": 126
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős Lower Bound (1964)",
     "content": "**erdos_lower_bound:** $f_3(N) > N^{c/\\log \\log N}$ for some $c > 0$ and $N$ sufficiently large.\n\nThis quasi-polynomial lower bound grows slower than $N^\\varepsilon$ for any $\\varepsilon > 0$, but faster than any polylogarithmic function. Erdős's construction uses smooth numbers with controlled prime factorizations to build large sets avoiding $\\gcd$-triples.",
     "mathContext": "The lower bound $N^{c/\\log \\log N} = \\exp(c \\log N / \\log \\log N)$ is 'quasi-polynomial': for comparison, $\\log^k N \\ll N^{c/\\log \\log N} \\ll N^\\varepsilon$ for any fixed $k$ and $\\varepsilon > 0$. The construction selects numbers with $\\leq k$ prime factors for an appropriate $k \\sim \\log \\log N$.",
@@ -262,7 +262,7 @@
       "startLine": 211,
       "endLine": 219
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_535_summary:** Combines the two key bounds:\n1. Abbott-Hanson: $\\forall r \\geq 3,\\, f_r(N) \\leq C \\cdot N^{1/2 + \\varepsilon}$\n2. Erdős: $f_3(N) > N^{c/\\log \\log N}$\n\nProved by $\\langle \\text{abbott\\_hanson\\_upper\\_bound}, \\text{erdos\\_lower\\_bound} \\rangle$.",
     "mathContext": "The conjunction $(f_r(N) \\leq N^{1/2+o(1)}) \\wedge (f_3(N) > N^{c/\\log \\log N})$ encapsulates the complete known picture. The gap between exponents $1/2$ and $c/\\log \\log N \\to 0$ is the open problem.",

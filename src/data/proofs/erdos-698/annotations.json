@@ -79,7 +79,7 @@
       "startLine": 68,
       "endLine": 82
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Szekeres Bound (1978)",
     "content": "**axiom erdos_szekeres_bound**: gcd(C(n,i), C(n,j)) ≥ C(n,i)/C(j,i)\n\n**axiom erdos_szekeres_exponential**: gcd(C(n,i), C(n,j)) ≥ 2^i\n\n**The key observation**:\nC(n,i) divides C(n,j) · C(j,i) (by a counting argument).\nSo any common divisor of C(n,i) and C(n,j) must be at least C(n,i)/C(j,i) ≥ 2^i.\n\nThis shows the GCD is exponential in i!",
     "mathContext": "The bound uses the identity C(n,j) · C(j,i) = C(n,i) · C(n-i,j-i), which follows from counting ordered selections.",
@@ -103,7 +103,7 @@
       "startLine": 84,
       "endLine": 96
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "GCD is Always > 1",
     "content": "**theorem gcd_always_gt_one**: For valid pairs, gcd > 1.\n\n**Proof**:\n1. By erdos_szekeres_exponential: gcd ≥ 2^i\n2. Since i ≥ 2: 2^i ≥ 2^2 = 4\n3. Therefore: gcd ≥ 4 > 1 ✓\n\nThis is one of the few theorems proved directly (not axiomatized)!",
     "mathContext": "This theorem shows that distinct middle binomial coefficients always share non-trivial factors - a surprising structural property of Pascal's triangle.",
@@ -127,7 +127,7 @@
       "startLine": 98,
       "endLine": 110
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sharpness of Erdős-Szekeres Bound",
     "content": "**axiom sharpness_example**: For prime p, gcd(C(2p,1), C(2p,p)) = 2.\n\n**The construction**:\n- Take i = 1, j = p, n = 2p\n- C(2p,1) = 2p\n- C(2p,p) is divisible by exactly 2 (not p)\n- So gcd = 2 = 2^1 = 2^i ✓\n\nThis shows the Erdős-Szekeres bound is tight for small i.",
     "mathContext": "Finding extremal examples that achieve bounds is a key technique in combinatorics. This example shows we can't improve the base case.",
@@ -175,7 +175,7 @@
       "startLine": 134,
       "endLine": 162
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bergman's Theorem (2011)",
     "content": "**axiom bergman_bound_exists**:\ngcd(C(n,i), C(n,j)) ≥ c · n^{1/2} · 2^i / i^{3/2}\n\n**axiom min_gcd_growth**:\nFor n ≥ 4 and valid pairs, gcd ≥ c · √n.\n\n**The key improvement**:\nBergman's bound has an n-dependent term! Taking i = 2 (the minimum valid i):\ngcd ≥ c · √n · 4 / 2^{3/2} = c' · √n\n\nSo the minimum GCD grows like √n - answering Erdős-Szekeres affirmatively.",
     "mathContext": "Bergman's 2011 paper 'On common divisors of multinomial coefficients' appeared in Bull. Aust. Math. Soc. The proof uses deep number-theoretic techniques.",
@@ -199,7 +199,7 @@
       "startLine": 164,
       "endLine": 195
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Resolution of the Problem",
     "content": "**bergmanH c n**: The growth function h(n) = ⌊c · √n⌋.\n\n```lean\nnoncomputable def bergmanH (c : ℝ) (n : ℕ) : ℕ :=\n  ⌊c * Real.sqrt n⌋₊\n```\n\n**theorem bergmanH_unbounded**: h(n) = ⌊c · √n⌋ → ∞.\n\n**theorem erdos698_answer : erdos698Question**\n\nBy Bergman's bound, taking h = bergmanH c gives an unbounded function with gcd ≥ h(n) for all valid pairs.",
     "mathContext": "The resolution connects Bergman's analytic bound to the discrete existence question. The floor function ensures h is a natural number.",
@@ -271,7 +271,7 @@
       "startLine": 197,
       "endLine": 215
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Pascal's Triangle Structure",
     "content": "**axiom divisibility_structure**: Middle entries share common factors.\n\n**axiom pascal_primes**: Primes in Pascal's triangle are rare.\n\nThe only primes in Pascal's triangle (except edges) are C(p,k) for prime p, 0 < k < p.\n\n**Observation**: Since interior entries share factors, they can't all be prime. This connects to the GCD question.",
     "mathContext": "Pascal's triangle has rich divisibility structure. Row n has entry n in position 1, and all interior entries are divisible by primes ≤ n.",
@@ -295,7 +295,7 @@
       "startLine": 217,
       "endLine": 222
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Multinomial Generalization",
     "content": "**axiom multinomial_generalization**: Bergman proved broader results.\n\nThe multinomial coefficient (n; k₁, k₂, ..., kₘ) = n! / (k₁! · k₂! · ... · kₘ!)\n\nBergman's paper actually studies GCDs of multinomial coefficients, with binomial coefficients as the special case m = 2.",
     "mathContext": "Generalizing from binomial to multinomial coefficients is a common pattern in combinatorics. The GCD structure extends naturally.",
@@ -319,7 +319,7 @@
       "startLine": 233,
       "endLine": 244
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Kummer's Theorem",
     "content": "**axiom kummer_theorem**: p-adic valuation via carry counting.\n\n**Kummer's Theorem (1852)**:\nThe largest power of prime p dividing C(m+n, m) equals the number of carries when adding m and n in base p.\n\n**Example**: C(10,3) in base 2:\n10 = 1010₂, 3 = 0011₂\nAdding 3 + 7 = 10 has 3 carries, so 2³ | C(10,3).\n\nThis connects GCDs to digital representations!",
     "mathContext": "Kummer's theorem provides an algorithmic way to compute p-adic valuations of binomial coefficients. It's fundamental to understanding their prime factorizations.",
@@ -343,7 +343,7 @@
       "startLine": 246,
       "endLine": 252
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Lucas' Theorem",
     "content": "**axiom lucas_theorem**: Modular structure of binomial coefficients.\n\n**Lucas' Theorem (1878)**:\nC(m,n) mod p = ∏ C(mᵢ, nᵢ) mod p\n\nwhere mᵢ, nᵢ are base-p digits of m, n.\n\n**Consequence**: C(m,n) ≡ 0 (mod p) iff some nᵢ > mᵢ.\n\nThis gives modular information complementing Kummer's multiplicative information.",
     "mathContext": "Lucas' theorem reduces modular computation of large binomial coefficients to small ones. Combined with Kummer, it gives complete prime factor information.",
@@ -367,7 +367,7 @@
       "startLine": 254,
       "endLine": 272
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary of Results",
     "content": "**theorem erdos_698_summary** combines:\n\n1. **Erdős-Szekeres bound**: gcd ≥ 2^i\n2. **Non-trivial GCD**: gcd > 1 always\n3. **Affirmative answer**: erdos698Question = YES\n\nThis packages all the main results into one theorem for easy reference.",
     "mathContext": "Summary theorems document what has been achieved. They're useful for building on this work in future proofs.",
@@ -391,7 +391,7 @@
       "startLine": 274,
       "endLine": 287
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result: erdos_698",
     "content": "**theorem erdos_698 : erdos698Question**\n\n**Statement**: There exists h(n) → ∞ such that gcd(C(n,i), C(n,j)) ≥ h(n) for all valid pairs.\n\n**Proof**: Follows from erdos698_answer, which uses Bergman's bound.\n\n**Status**: SOLVED by Bergman (2011)\n\n**The answer**: h(n) = Ω(√n) works - the minimum GCD grows like the square root of n.",
     "mathContext": "This is the formal resolution of Erdős Problem #698. The theorem states the existence of the required growth function.",
@@ -463,7 +463,7 @@
       "startLine": 224,
       "endLine": 231
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Number Theory Connections",
     "content": "**axiom number_theory_connections**: Links to broader theory.\n\n**Key connections**:\n1. **p-adic valuations**: Kummer's theorem\n2. **Modular arithmetic**: Lucas' theorem\n3. **Prime distribution**: Factors of factorials\n4. **Combinatorial identities**: Pascal relations\n\nThe GCD of binomial coefficients sits at a nexus of number theory and combinatorics.",
     "mathContext": "Understanding why these coefficients share factors requires tools from across number theory. This problem showcases the unity of the field.",

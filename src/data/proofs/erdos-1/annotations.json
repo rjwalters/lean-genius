@@ -52,7 +52,7 @@
       "startLine": 53,
       "endLine": 65
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Lower Bound: N >= 2^(n-1) (PROVED)",
     "content": "Proves `erdos_1_lower_bound`: for A in {1,...,N} with positive elements and distinct subset sums, 2^(|A|-1) <= N. The Aristotle proof first establishes |P(A)| <= 2N via the injectivity of the sum function, then case-splits on |A| using `rcases` with 0, 1, and k+2 cases. The base cases use `simp_all` and `linarith`; the inductive case uses `grind`.",
     "mathContext": "$A \\subseteq \\{1, \\ldots, N\\}$, $|A| = n$, all subset sums distinct $\\Rightarrow 2^{n-1} \\leq N$. The argument: $2^n$ distinct sums lie in $\\{0, 1, \\ldots, \\sum A\\} \\subseteq \\{0, \\ldots, nN\\}$, but the refined bound uses the powerset injection into $\\{0, \\ldots, 2N\\}$, giving $2^n \\leq 2N + 1$, hence $N \\geq 2^{n-1}$.",
@@ -77,7 +77,7 @@
       "startLine": 58,
       "endLine": 62
     },
-    "type": "tactic",
+    "type": "technique",
     "title": "Powerset Cardinality Bound",
     "content": "Key step in the lower bound proof: establishes |P(A)| <= 2N. The injectivity of the sum function on subsets gives an injection from P(A) to {0, ..., sum(A)}. Since sum(A) <= |A| * N <= nN, and the sums are non-negative integers, the powerset size is bounded. The proof uses `exact?` to find the right Mathlib lemma and `absurd` for the contradiction argument.",
     "mathContext": "The injection $S \\mapsto \\sum_{a \\in S \\cap A} a$ maps $\\mathcal{P}(A)$ into $\\{0, 1, \\ldots, \\sum_{a \\in A} a\\}$. Since $\\sum_{a \\in A} a \\leq |A| \\cdot N$ and the map is injective, $|\\mathcal{P}(A)| = 2^n \\leq nN + 1$.",
@@ -100,7 +100,7 @@
       "startLine": 68,
       "endLine": 75
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Maximum Element Bound (PROVED)",
     "content": "Proves `max_element_bound`: for nonempty A with positive elements and distinct subset sums, 2^(|A|-1) <= A.max' hA. The Aristotle proof uses `convert` to reduce to `erdos_1_lower_bound` with N = max(A). The hypothesis that all elements of A are <= max(A) is proved by `Finset.le_max'`. The `assumption` tactic handles the remaining goals.",
     "mathContext": "$2^{|A|-1} \\leq \\max(A)$. Proof: set $N = \\max(A)$, then $A \\subseteq \\{1, \\ldots, N\\}$ (since $a \\leq \\max(A)$ for all $a \\in A$), so `erdos_1_lower_bound` gives $2^{|A|-1} \\leq N = \\max(A)$. This corollary is often more directly useful than the main theorem.",
@@ -123,7 +123,7 @@
       "startLine": 78,
       "endLine": 83
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Subset Sum Spacing (PROVED)",
     "content": "Proves `subset_sums_spacing`: for A with positive elements and distinct subset sums, if S, T are subsets of A with S != T, then S.sum id != T.sum id. The Aristotle proof applies the injectivity hypothesis from `hasDistinctSubsetSums` and uses `simp_all` with `Finset.subset_iff` to handle the filter-subset correspondence. The `Finset.sum_filter_of_ne` lemma simplifies the filtered sums.",
     "mathContext": "For $S, T \\subseteq A$ with $S \\neq T$: $\\sum_{a \\in S} a \\neq \\sum_{a \\in T} a$. This is the Sidon-like property for subsets (rather than just pairs). For $A = \\{1, 2, 4\\}$: $\\{1, 4\\}$ sums to 5, $\\{2, 4\\}$ sums to 6 — all $\\binom{3}{2} = 3$ pair sums are distinct, and so are all $2^3 = 8$ subset sums.",

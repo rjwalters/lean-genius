@@ -146,7 +146,7 @@
       "startLine": 87,
       "endLine": 96
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Large Primes Satisfy Condition",
     "content": "All primes p > n^{2/3} automatically satisfy the product-divisibility condition. If p | bc with b, c ≤ n and b, c ≠ p, then since p is prime, p | b or p | c. But b ≤ n < p^{3/2} and p | b implies b ≥ p, so b/p ≤ n/p < n^{1/3}. Then bc/p < n^{1/3} · n = n^{4/3} < p^2, contradicting p² | bc.",
     "mathContext": "For prime $p > n^{2/3}$: if $p \\mid bc$ with $b, c \\in [n] \\setminus \\{p\\}$, then WLOG $p \\mid b$, so $b = kp$ with $k < n^{1/3}$. Then $bc = kpc \\leq kpn$ and $p \\nmid c$ (else $p^2 \\mid bc$ needs $bc \\geq p^2 > n^{4/3}$, but $bc \\leq n^2$). Contradiction from the condition.",
@@ -170,7 +170,7 @@
       "startLine": 104,
       "endLine": 107
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Lower Bound on F(n)",
     "content": "Erdős (1938) proved F(n) ≥ π(n) + c₁·n^{2/3}·(log n)^{-2}. Beyond the large primes, one can include carefully chosen composites — products of two primes near n^{1/3} — that also satisfy the condition, adding ~c₁·n^{2/3}·(log n)^{-2} elements.",
     "mathContext": "$F(n) \\geq \\pi(n) + c_1 n^{2/3}(\\log n)^{-2}$. Construction: include all primes $> n^{2/3}$ plus semiprimes $pq$ where $p, q \\approx n^{1/3}$ are chosen to avoid product divisibility. By PNT, there are $\\sim n^{1/3}/(\\frac{1}{3}\\log n)$ such primes.",
@@ -193,7 +193,7 @@
       "startLine": 109,
       "endLine": 112
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Upper Bound on F(n)",
     "content": "Erdős proved F(n) ≤ π(n) + c₂·n^{2/3}·(log n)^{-2} with c₂ > c₁. The upper bound uses the bipartite graph construction: non-prime elements of A create edges in a P₃-free bipartite graph, and the forest bound limits their count.",
     "mathContext": "$F(n) \\leq \\pi(n) + c_2 n^{2/3}(\\log n)^{-2}$. The gap $c_1 < c_2$ means we know $F(n) - \\pi(n) = \\Theta(n^{2/3}(\\log n)^{-2})$ but not the exact constant.",
@@ -216,7 +216,7 @@
       "startLine": 114,
       "endLine": 116
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Simple Upper Bound",
     "content": "A cleaner (but weaker) bound: F(n) ≤ π(n) + n^{2/3}. This drops the (log n)^{-2} refinement but is easier to prove: the graph has at most n^{2/3} small-integer vertices, so the forest has fewer edges than vertices.",
     "mathContext": "$F(n) \\leq \\pi(n) + n^{2/3}$. The bipartite graph has $\\leq n^{2/3}$ vertices on the small side and $\\pi(n) - \\pi(n^{2/3})$ on the large prime side. Forest: $|E| < |V| \\leq n^{2/3} + \\pi(n)$.",
@@ -379,7 +379,7 @@
       "startLine": 163,
       "endLine": 165
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "P₃-Free Implies Forest",
     "content": "A P₃-free graph is a forest (each connected component is a star, having no cycles and diameter ≤ 2). Forests satisfy |E| < |V|, which directly bounds the number of non-prime elements of A by the total number of vertices (small integers + large primes).",
     "mathContext": "$P_3$-free $\\Rightarrow$ forest (each component is $K_{1,m}$). $|E| < |V| = |U| + |V| \\leq n^{2/3} + \\pi(n)$. This gives $F(n) \\leq \\pi(n) + n^{2/3}$ (simple bound).",
@@ -427,7 +427,7 @@
       "startLine": 182,
       "endLine": 186
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Generalized Bounds",
     "content": "For the r-product condition, the critical exponent changes from 2/3 to 2/(r+1). This is because a prime p > n^{2/(r+1)} cannot divide a product of r numbers each ≤ n: the product is at most n^r < p^{r+1}/p = p^r, so p² ∤ product. The secondary term becomes Θ(n^{2/(r+1)}).",
     "mathContext": "$\\pi(n) + c_1 n^{2/(r+1)} \\leq F_r(n) \\leq \\pi(n) + c_2 n^{2/(r+1)}$. The threshold is $n^{2/(r+1)}$: primes above this cannot divide $r$-products of elements $\\leq n$.",

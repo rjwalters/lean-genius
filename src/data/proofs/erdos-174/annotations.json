@@ -44,7 +44,7 @@
       "startLine": 79,
       "endLine": 91
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Spherical Sets and the EGMRSS Theorem",
     "content": "**IsSpherical A** means all points lie on a sphere: ∃ center, radius > 0, ∀ x ∈ A, dist x center = radius. **ramsey_implies_spherical** (EGMRSS 1973) axiomatizes the necessary condition: every Ramsey set is spherical. The proof constructs a distance-based coloring: color x by the distance from x to some reference point modulo a threshold. If A is not spherical, the distances from A's points to the center vary, so no congruent copy can be monochromatic.",
     "mathContext": "ramsey_implies_spherical : IsRamsey A → IsSpherical A. Contrapositive: non-spherical ⟹ non-Ramsey.",
@@ -81,7 +81,7 @@
       "startLine": 115,
       "endLine": 159
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Known Ramsey Families",
     "content": "Four families proved Ramsey. **rectangle_is_ramsey** (EGMRSS 1973): vertices of k-dimensional boxes are Ramsey, using product arguments. **simplex_is_ramsey** (Frankl-Rödl 1990): k+1 affinely independent points are Ramsey, using partite methods. **trapezoid_is_ramsey** (Kříž 1992): four points with two parallel sides. **regular_polygon_is_ramsey** (Kříž 1991): all regular polygons and polyhedra, using permutation group methods. The IsRegularPolygon definition simplifies to m ≥ 3 vertices that are spherical, which captures the essential geometric constraint.",
     "mathContext": "rectangle_is_ramsey, simplex_is_ramsey, trapezoid_is_ramsey, regular_polygon_is_ramsey: four axioms for known Ramsey families.",
@@ -100,7 +100,7 @@
       "startLine": 161,
       "endLine": 205
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Concrete Examples and Non-Examples",
     "content": "Concrete configurations with explicit coordinates. **twoPoints** ({![0], ![1]}) is the simplest Ramsey set — by pigeonhole in high dimension. **equilateralTriangle** and **square** are Ramsey as special cases of simplices and rectangles. **not_spherical_not_ramsey** is a genuine Lean proof: the contrapositive of EGMRSS, proved by `intro hNotSph hRam; exact hNotSph (ramsey_implies_spherical A hRam)`. **collinearFour** ({0,1,2,4}) demonstrates a non-Ramsey set: unequal spacing means non-spherical. **collinear_not_ramsey** chains the two results.",
     "mathContext": "not_spherical_not_ramsey : ¬IsSpherical A → ¬IsRamsey A. Proved by contrapositive of EGMRSS axiom.",
@@ -118,7 +118,7 @@
       "startLine": 207,
       "endLine": 220
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Characterization Problem",
     "content": "**erdos_174_question** formalizes the main open problem: ∃ P, ∀ n A, P n A ↔ IsRamsey A — find a property characterizing Ramsey sets. **characterization_exists** is a genuine Lean proof that such a P exists trivially (take P = IsRamsey, proved by `rfl`). The real challenge is finding a *geometrically meaningful* P. The candidates are IsSpherical (Graham) and IsSubtransitive (LRW). This section highlights the gap between mathematical existence and mathematical understanding.",
     "mathContext": "characterization_exists : erdos_174_question := ⟨IsRamsey, fun n A => rfl⟩. Trivial but illustrates the real question.",
@@ -136,7 +136,7 @@
       "startLine": 222,
       "endLine": 256
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorems",
     "content": "Two summary theorems. **erdos_174** combines four key results into a conjunction: (1) Ramsey ⟹ Spherical (EGMRSS), (2) Rectangles are Ramsey, (3) Simplices are Ramsey, (4) Trapezoids are Ramsey, proved by ⟨ramsey_implies_spherical, rectangle_is_ramsey, simplex_is_ramsey, trapezoid_is_ramsey⟩. **erdos_174_summary** gives just the EGMRSS necessary condition for a specific configuration. The problem remains OPEN — the gap between the necessary condition and the known sufficient conditions has persisted for over 50 years.",
     "mathContext": "erdos_174 : (Ramsey→Spherical) ∧ (Rectangle→Ramsey) ∧ (Simplex→Ramsey) ∧ (Trapezoid→Ramsey) := ⟨...⟩.",

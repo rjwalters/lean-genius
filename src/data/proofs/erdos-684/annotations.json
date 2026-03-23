@@ -75,7 +75,7 @@
       "startLine": 90,
       "endLine": 98
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Mahler's Theorem (Ineffective)",
     "content": "mahler_ineffective: For any epsilon > 0, smooth part <= n^{1+epsilon} for sufficiently large n. But N is not explicit.",
     "mathContext": "Classical result giving asymptotic bound, but useless for explicit computation.",
@@ -92,7 +92,7 @@
       "startLine": 106,
       "endLine": 111
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Tang-ChatGPT Bound",
     "content": "tang_bound: f(n) <= n^{30/43 + o(1)}. The exponent 30/43 ≈ 0.698. Best known unconditional bound.",
     "mathContext": "Recent result (2026) giving explicit exponent. Major progress on the problem.",
@@ -109,7 +109,7 @@
       "startLine": 113,
       "endLine": 118
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "RH-Conditional Bound",
     "content": "rh_conditional_bound: Under Riemann Hypothesis, f(n) <= n^{2/3 + o(1)}. Better exponent but conditional.",
     "mathContext": "Shows connection to prime distribution and zero-free regions.",
@@ -126,7 +126,7 @@
       "startLine": 126,
       "endLine": 134
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Heuristic Conjecture",
     "content": "heuristic_conjecture: f(n) ~ 2 log n for density 1 set of n. Vastly smaller than proven bounds!",
     "mathContext": "Suggests huge gap between proven and true behavior. Major open question.",
@@ -143,7 +143,7 @@
       "startLine": 146,
       "endLine": 153
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Kummer's Theorem",
     "content": "kummer_theorem: v_p(C(n,k)) = carries when adding k + (n-k) in base p. Connects to Legendre formula.",
     "mathContext": "Fundamental result for understanding prime powers in binomial coefficients.",
@@ -161,7 +161,7 @@
       "startLine": 164,
       "endLine": 168
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Prime Binomial Structure",
     "content": "prime_binomial_structure: For prime p and 1 <= k <= p-1, p divides C(p,k).",
     "mathContext": "Special structure of binomial coefficients for prime upper index.",

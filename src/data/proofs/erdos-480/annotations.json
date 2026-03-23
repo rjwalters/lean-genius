@@ -78,7 +78,7 @@
       "startLine": 66,
       "endLine": 73
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Newman's Conjecture (Theorem)",
     "content": "**newman_conjecture**: For any unit interval sequence, the set of pairs (m, n) satisfying |x(m+n) - x(m)| ≤ 1/(√5·n) is infinite.\n\nNewman originally conjectured the √5 bound. Chung and Graham proved this and more - they found the optimal constant is larger than √5.",
     "mathContext": "The statement uses Set.Infinite to assert infinitely many good pairs exist. This is an axiom because the proof requires probabilistic and analytic methods beyond Mathlib.",
@@ -96,7 +96,7 @@
       "startLine": 81,
       "endLine": 90
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Chung-Graham Theorem (1984)",
     "content": "**chung_graham_theorem**: The optimal constant C for which infinitely many pairs satisfy the approximation is exactly c = 1 + Σ 1/F_{2k}.\n\nThis is stronger than Newman's conjecture because c ≈ 2.535 > √5 ≈ 2.236. A larger constant means a tighter bound 1/c < 1/√5.",
     "mathContext": "Fan Chung and Ronald Graham proved this in their 1984 paper 'On irregularities of distribution'. The construction showing optimality uses sequences related to Sturmian words.",
@@ -114,7 +114,7 @@
       "startLine": 92,
       "endLine": 98
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Optimality of the Constant",
     "content": "**chung_graham_optimal**: The constant c is best possible - for any C > c, there exists a sequence with only finitely many C-good pairs.\n\nThis uses **IsGreatest** to assert c is the maximum of all working constants. The extremal sequences are related to irrational rotations on the circle.",
     "mathContext": "IsGreatest S c means c ∈ S and ∀ x ∈ S, x ≤ c. Here S is the set of constants for which all sequences have infinitely many good pairs.",
@@ -150,7 +150,7 @@
       "startLine": 112,
       "endLine": 117
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Golden Ratio Squared",
     "content": "**goldenRatio_sq**: φ² = φ + 1.\n\nThis is the defining property of the golden ratio. The proof uses ring_nf to simplify ((1 + √5)/2)² and sq_sqrt to handle √5·√5 = 5.",
     "mathContext": "From φ² = φ + 1 we can derive φ = 1 + 1/φ, showing the recursive self-similarity that makes φ appear in growth patterns and spirals.",
@@ -168,7 +168,7 @@
       "startLine": 136,
       "endLine": 149
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Golden Ratio Conjugate Properties",
     "content": "**binetPsi** ψ = (1 - √5)/2 is the conjugate of φ.\n\n**golden_conjugate_sum**: φ + ψ = 1\n**golden_conjugate_prod**: φ · ψ = -1\n\nThese are the standard relations between roots of x² - x - 1 = 0 (Vieta's formulas).",
     "mathContext": "Binet's formula uses both: F_n = (φⁿ - ψⁿ)/√5. Since |ψ| < 1, the ψⁿ term vanishes for large n, giving F_n ≈ φⁿ/√5.",
@@ -186,7 +186,7 @@
       "startLine": 160,
       "endLine": 167
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Comparing √5 and c",
     "content": "**sqrt5_lt_chungGraham**: √5 < c (the Chung-Graham constant).\n\nSince √5 ≈ 2.236 and c ≈ 2.535, we have 1/c ≈ 0.394 < 1/√5 ≈ 0.447. The Chung-Graham bound is tighter than Newman's original conjecture!\n\nThe proof uses calc to chain: √5 < 2.3 (since 5 < 2.3² = 5.29) and 2.3 < 2.5 < c.",
     "mathContext": "Real.sqrt_lt_sqrt compares square roots: √a < √b when a < b. Real.sqrt_sq shows √(x²) = x for x ≥ 0.",
@@ -204,7 +204,7 @@
       "startLine": 176,
       "endLine": 193
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Verified Sequence Examples",
     "content": "**constant_seq_unit_interval**: A constant sequence x_n = c with c ∈ [0,1] is a valid unit interval sequence.\n\n**constant_seq_diff_zero**: For constant sequences, |x(m+n) - x(m)| = 0 always, so ALL pairs are good!\n\n**harmonic_seq_unit_interval**: The sequence x_n = n/(n+1) stays in [0, 1) and converges to 1.",
     "mathContext": "The harmonic sequence n/(n+1) = 1 - 1/(n+1) shows that sequences can approach the boundary. The proof uses div_le_one and positivity.",
@@ -222,7 +222,7 @@
       "startLine": 209,
       "endLine": 213
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_480_summary**: Combines both results - for any unit interval sequence, there are infinitely many pairs satisfying both the √5 bound AND the tighter Chung-Graham bound.\n\nThe proof is a simple conjunction of newman_conjecture and chung_graham_theorem.",
     "mathContext": "The And.intro notation ⟨_, _⟩ constructs a conjunction from its two components. This packages both theorems into a single statement.",
