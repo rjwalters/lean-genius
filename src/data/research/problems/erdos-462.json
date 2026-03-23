@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-13T04:11:10.512Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "6 axioms proved, 1 remains (deep analytic)",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Proved ALL 6 minFac-based axioms (7→1 axioms). Only compositeSum_asymptotic remains (deep analytic NT).",
+    "builtItems": [
+      "Proved leastPrimeFactor_prime via Nat.minFac_prime",
+      "Proved leastPrimeFactor_dvd via Nat.minFac_dvd",
+      "Proved leastPrimeFactor_le via Nat.minFac_le_of_dvd",
+      "Proved leastPrimeFactor_prime_self via Nat.Prime.minFac_eq",
+      "Proved leastPrimeFactor_ge_two via minFac_prime + Prime.two_le",
+      "Proved leastPrimeFactor_le_sqrt via minFac_sq_le_self + Real.sqrt_le_sqrt"
+    ],
+    "insights": [
+      "All minFac axioms follow trivially from Mathlib: unfold leastPrimeFactor, simp away the ≤1 guard, then apply the Nat.minFac lemma",
+      "sqrt proof: minFac²≤n (Nat.minFac_sq_le_self) → sqrt(minFac²)≤sqrt(n) (Real.sqrt_le_sqrt) → minFac≤sqrt(n) (Real.sqrt_sq)"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "compositeSum_asymptotic is the only remaining axiom — deep analytic number theory, not provable from Mathlib"
+    ],
     "markdown": "# Erdős #462 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $p(n)$ denote the least prime factor of $n$. There is a constant $c>0$ such that\\[\\sum_{\\substack{n<x\\\\ n\\textrm{ not prime}}}\\frac{p(n)}{n}\\sim c\\frac{x^{1/2}}{(\\log x)^2}.\\]Is it true that there exists a constant $C>0$ such that\\[\\sum_{x\\leq n\\leq x+Cx^{1/2}(\\log x)^2}\\frac{p(n)}{n} \\gg 1\\]for all large $x$?\n\n\n\n\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #461\n- Problem #463\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
@@ -58,8 +70,8 @@
       "path": "Proofs/Erdos462Problem.lean",
       "filename": "Erdos462Problem.lean",
       "lineCount": 85,
-      "theoremCount": 0,
-      "axiomCount": 7,
+      "theoremCount": 6,
+      "axiomCount": 1,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
