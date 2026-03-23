@@ -158,6 +158,11 @@
       "targetId": "binomial-theorem",
       "relationship": "related",
       "description": "AM-GM yields central binomial coefficient estimates: $\\binom{2n}{n} \\leq 4^n$ follows from $\\binom{2n}{n} = \\sum \\binom{n}{k}^2 / \\binom{2n}{n}$ via AM-GM-like counting, and the entropy bound $\\binom{n}{k} \\leq 2^{nH(k/n)}$ uses the AM-GM / Jensen connection through the binary entropy function."
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "supports",
+      "description": "The FTC underlies the proof that $-\\log$ is convex on $(0, \\infty)$: since $(-\\log x)'' = 1/x^2 > 0$, integration via FTC gives convexity, which yields Jensen's inequality for $-\\log$, the standard route to weighted AM-GM in Mathlib. Pólya's elegant proof similarly relies on the convexity of $e^x$ ($(e^x)'' = e^x > 0$)."
     }
   ],
   "relatedProofs": [
@@ -173,7 +178,8 @@
     "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
     "area-of-circle",
     "stirling-formula",
-    "binomial-theorem"
+    "binomial-theorem",
+    "fundamental-theorem-calculus"
   ],
   "sections": [
     {
@@ -278,6 +284,13 @@
       "year": "2003",
       "venue": "Kluwer Academic Publishers (Mathematics and Its Applications, vol. 560)",
       "note": "Encyclopedic reference cataloging over 50 types of means and their ordering properties. Chapter III covers the AM-GM inequality with 15 distinct proofs including Cauchy's forward-backward induction, Pólya's exponential proof, and proofs via Schur convexity and majorization"
+    },
+    {
+      "authors": "Pólya, George; Szegő, Gábor",
+      "title": "Problems and Theorems in Analysis I: Series, Integral Calculus, Theory of Functions",
+      "year": "1925",
+      "venue": "Springer (English edition: Grundlehren der mathematischen Wissenschaften, vol. 193, 1972)",
+      "note": "Part I collects dozens of inequality problems centered on AM-GM, including proofs via Schur convexity, majorization, and the exponential function. Problem 64 gives the forward-backward induction proof, and Problem 74 connects AM-GM to entropy maximization"
     },
     {
       "authors": "Cox, David A.",

@@ -161,6 +161,13 @@
       "For Type I, the proof closes without B′ (Barker-Prange + ESŠ)",
       "The diagnostic value: any unconditional proof MUST rule out failure of B′",
       "The conditional theorem: B′ → Type I only → ESŠ → regularity"
+    ],
+    "prerequisites": [
+      "Partial differential equations: Navier-Stokes equations, weak solutions, regularity theory",
+      "Functional analysis: Sobolev spaces $H^s$, $L^p$ spaces, spectral theory of the Stokes operator",
+      "Real analysis: Lebesgue integration, energy estimates, interpolation inequalities (Gagliardo-Nirenberg)",
+      "Geometric measure theory: Hausdorff dimension, parabolic cylinders, CKN partial regularity",
+      "Fluid dynamics: vorticity $\\omega = \\nabla \\times u$, enstrophy, vortex stretching"
     ]
   },
   "sections": [
@@ -273,6 +280,26 @@
       "targetId": "schauder-fixed-point",
       "relationship": "foundational",
       "description": "Schauder's fixed point theorem is used in PDE existence proofs: weak solutions to Navier-Stokes are constructed via Galerkin approximation and compactness arguments, where Schauder-type fixed points guarantee existence of approximate solutions"
+    },
+    {
+      "targetId": "navier-stokes-oq-01",
+      "relationship": "extended-by",
+      "description": "Extension exploring additional aspects of the Navier-Stokes regularity theory"
+    },
+    {
+      "targetId": "navier-stokes-oq-02",
+      "relationship": "extended-by",
+      "description": "Extension exploring further directions in the Navier-Stokes formalization"
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "foundational",
+      "description": "The Lebesgue integral underlies all energy estimates in the Navier-Stokes analysis: enstrophy $E = \\int|\\omega|^2$, palinstrophy $P = \\int|\\nabla\\omega|^2$, and the Sobolev embeddings that control solution regularity all require Lebesgue space theory"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "foundational",
+      "description": "Fourier analysis is central to the spectral gap arguments: the Faber-Krahn inequality $\\lambda_1 \\geq \\pi^2/(4R^2)$ relates the first Dirichlet eigenvalue to domain geometry, and the CKN critical threshold $2/\\pi^2$ emerges from the competition between stretching and viscous dissipation in Fourier space"
     }
   ],
   "relatedProofs": [
@@ -280,6 +307,54 @@
     "yang-mills",
     "riemann-hypothesis",
     "poincare-conjecture",
-    "schauder-fixed-point"
+    "schauder-fixed-point",
+    "navier-stokes-oq-01",
+    "navier-stokes-oq-02",
+    "lebesgue-measure",
+    "fourier-series"
+  ],
+  "references": [
+    {
+      "authors": "Navier, C.L.M.H.",
+      "title": "Mémoire sur les lois du mouvement des fluides",
+      "year": "1822",
+      "venue": "Mémoires de l'Académie Royale des Sciences de l'Institut de France",
+      "note": "First derivation of the equations of motion for viscous fluids"
+    },
+    {
+      "authors": "Stokes, G.G.",
+      "title": "On the theories of the internal friction of fluids in motion",
+      "year": "1845",
+      "venue": "Transactions of the Cambridge Philosophical Society 8, 287–305",
+      "note": "Established the modern form of the equations now bearing both names"
+    },
+    {
+      "authors": "Leray, J.",
+      "title": "Sur le mouvement d'un liquide visqueux emplissant l'espace",
+      "year": "1934",
+      "venue": "Acta Mathematica 63, 193–248",
+      "note": "Foundational paper proving existence of weak solutions and introducing the blowup scenario — the starting point for the regularity problem"
+    },
+    {
+      "authors": "Caffarelli, L.; Kohn, R.; Nirenberg, L.",
+      "title": "Partial regularity of suitable weak solutions of the Navier-Stokes equations",
+      "year": "1982",
+      "venue": "Communications on Pure and Applied Mathematics 35(6), 771–831",
+      "note": "The CKN ε-regularity theorem: singular sets have 1-dimensional parabolic Hausdorff measure zero — the key tool used in the conditional regularity analysis"
+    },
+    {
+      "authors": "Escauriaza, L.; Seregin, G.; Šverák, V.",
+      "title": "L₃,∞-solutions of Navier-Stokes equations and backward uniqueness",
+      "year": "2003",
+      "venue": "Russian Mathematical Surveys 58(2), 211–250",
+      "note": "Proved Type I blowup exclusion via backward uniqueness — the ESŠ theorem that closes the proof chain when concentration at parabolic scale is established"
+    },
+    {
+      "authors": "Ladyzhenskaya, O.A.",
+      "title": "The Mathematical Theory of Viscous Incompressible Flow",
+      "year": "1969",
+      "venue": "Gordon and Breach, 2nd edition",
+      "note": "Proved global existence and uniqueness for 2D Navier-Stokes — the unconditional result formalized in this file"
+    }
   ]
 }
