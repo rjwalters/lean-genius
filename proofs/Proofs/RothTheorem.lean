@@ -841,6 +841,81 @@ theorem fourier_large_coefficient {N : ℕ} (hN : 1 < N) (hNodd : Odd N)
     length ~√N. By pigeonhole, A has increased density on at least one
     of these progressions. AP-freeness is preserved since any 3-AP in the
     subprogression would lift to a 3-AP in the original set. -/
+/-- L·r = 0 in ZMod N where L = N/gcd(val(r), N).
+    Since g | val(r), L·val(r) = (N/g)·(g·s) = N·s ≡ 0 mod N. -/
+private lemma mul_L_r_eq_zero {N : ℕ} [NeZero N] (r : ZMod N) :
+    let g := Nat.gcd (ZMod.val r) N
+    let L := N / g
+    (↑L : ZMod N) * r = 0 := by
+  intro g L
+  have hgN : g ∣ N := Nat.gcd_dvd_right _ _
+  have hg_dvd_r : g ∣ ZMod.val r := Nat.gcd_dvd_left _ _
+  -- Key: N | L * val(r) because L * val(r) = (N/g)*(g*s) = N*s
+  have hdvd : N ∣ L * ZMod.val r := by
+    obtain ⟨s, hs⟩ := hg_dvd_r
+    rw [hs, show L = N / g from rfl, ← mul_assoc, Nat.div_mul_cancel hgN]
+  -- ↑L * r = ↑(L * val(r)) = 0 since N | L * val(r)
+  -- (Needs: ↑(val(r)) = r in ZMod N, standard ZMod property)
+  sorry
+
+/-- ψ(r·) is constant on cosets of ⟨L⟩ where L = N/gcd(val(r),N).
+    For any x in coset C_t, ψ(rx) = ψ(rt), because L·r = 0 in ZMod N. -/
+private lemma psi_const_on_coset {N : ℕ} [NeZero N] (r : ZMod N) :
+    let g := Nat.gcd (ZMod.val r) N
+    let L := N / g
+    ∀ t k : ZMod N, ψ (r * (t + k * (L : ZMod N))) = ψ (r * t) := by
+  intro g L t k
+  have hLr := mul_L_r_eq_zero r (g := g) (L := L)
+  suffices h : r * (k * ↑L) = 0 by rw [mul_add, h, add_zero]
+  calc r * (k * ↑L) = k * (↑L * r) := by ring
+    _ = k * 0 := by rw [hLr]
+    _ = 0 := mul_zero _
+
+/-- Character sum over coset representatives vanishes for r ≠ 0.
+    Σ_{t<L} ψ(r·t) = 0, because ψ(r·t) = e^{2πist/L} where
+    s = val(r)/g is coprime to L, giving a primitive L-th root sum. -/
+private lemma coset_char_sum_zero {N : ℕ} [NeZero N] (r : ZMod N)
+    (hr : r ≠ 0) (hN1 : 1 < N) :
+    let g := Nat.gcd (ZMod.val r) N
+    let L := N / g
+    (Finset.range L).sum (fun t => ψ (r * (t : ZMod N))) = 0 := by
+  -- Each ψ(r·t) = ω^(st) where ω = e^{2πi/L} and s = val(r)/g with gcd(s,L)=1.
+  -- So ω^s is a primitive L-th root of unity, and Σ_{t<L} (ω^s)^t = 0 by
+  -- root_unity_sum_zero (already proved in Part III).
+  sorry
+
+/-- Coset density increment: given a large Fourier coefficient at r with
+    g = gcd(val(r), N) ≥ √N, the annihilator coset partition gives a
+    subprogression with density ≥ δ + δ²/4.
+
+    The proof uses three key facts:
+    1. ψ(r·) is constant on each coset (psi_const_on_coset)
+    2. The character sum Σ_t ψ(rt) = 0 (coset_char_sum_zero)
+    3. Pigeonhole on the real-part alignment:
+       - Â(r) = Σ_t a_t · ψ(rt) where a_t = |A ∩ C_t|
+       - Choose θ: Re(e^{-iθ}Â(r)) = ‖Â(r)‖ ≥ δ²N/2
+       - c_t = Re(e^{-iθ}·ψ(rt)) ∈ [-1,1], Σ c_t = 0
+       - Σ(a_t - mean)·c_t ≥ δ²N/2, so Σ_{+}d_t ≥ δ²N/4
+       - max d_t ≥ δ²N/(4L) = δ²g/4
+       - Density: max a_t/g ≥ δ + δ²/4 ≥ δ + δ²/100 -/
+private lemma coset_density_increment {N : ℕ} [NeZero N] (A : Finset (ZMod N))
+    (hAP : APFree A) (delta : ℝ) (hdelta : 0 < delta)
+    (hdensity : (A.card : ℝ) ≥ delta * N)
+    (r : ZMod N) (hr : r ≠ 0) (hfourier : ‖fourierCoeff A r‖ ≥ delta ^ 2 * N / 2)
+    (hN1 : 1 < N) (hNodd : Odd N)
+    (hg : Nat.gcd (ZMod.val r) N ≥ 2)
+    (hg_sqrt : Nat.gcd (ZMod.val r) N ≥ Nat.sqrt N) :
+    ∃ (M : ℕ) (B : Finset (ZMod M)),
+      0 < M ∧ M ≥ Nat.sqrt N ∧ APFree B ∧
+      (B.card : ℝ) ≥ (delta + delta ^ 2 / 100) * M := by
+  -- The full proof requires:
+  -- 1. Partition A by cosets of ⟨N/g⟩, count a_t = |A ∩ C_t|
+  -- 2. Show Â(r) = Σ a_t · ψ(rt) (using psi_const_on_coset)
+  -- 3. Real-part alignment + pigeonhole (10-step argument above)
+  -- 4. Embed dense coset into ZMod g (AP-preserving map)
+  -- 5. AP-freeness from apFree_subset
+  sorry
+
 theorem density_increment_lemma {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
     (hAP : APFree A) (delta : ℝ) (hdelta : 0 < delta)
     (hdensity : (A.card : ℝ) ≥ delta * N) :
@@ -849,7 +924,33 @@ theorem density_increment_lemma {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
       M ≥ Nat.sqrt N ∧
       APFree B ∧
       (B.card : ℝ) ≥ (delta + delta ^ 2 / 100) * M := by
-  sorry
+  haveI : NeZero N := ⟨by omega⟩
+  by_cases hN3 : 1 < N
+  · have hAlt : A.card < N := apFree_card_lt hN3 A hAP
+    have hdelta1 : delta < 1 := by
+      by_contra h; push_neg at h
+      have h1 : (A.card : ℝ) ≥ 1 * ↑N := calc
+        (A.card : ℝ) ≥ delta * ↑N := hdensity
+        _ ≥ 1 * ↑N := mul_le_mul_of_nonneg_right h (Nat.cast_nonneg N)
+      linarith [show (A.card : ℝ) < ↑N from by exact_mod_cast hAlt]
+    by_cases hNodd : Odd N
+    · -- N odd, N ≥ 2: get large Fourier coefficient
+      obtain ⟨r, hr, hfourier⟩ := fourier_large_coefficient hN3 hNodd A hAP delta hdelta hdensity
+      set g := Nat.gcd (ZMod.val r) N
+      by_cases hg_sqrt : g ≥ Nat.sqrt N
+      · by_cases hg2 : g ≥ 2
+        · exact coset_density_increment A hAP delta hdelta hdensity r hr hfourier hN3 hNodd hg2 hg_sqrt
+        · -- g < 2 but g ≥ √N means √N ≤ 1, so N ≤ 1, contradicting N ≥ 2
+          omega
+      · -- g < √N: cosets too short. Need box partition (prime N case).
+        -- For prime N, every r≠0 has gcd=1, so the coset partition is trivial.
+        -- Requires phase-approximation "box partition" approach.
+        sorry
+    · -- N even: reduce to odd subprogression via CRT or power-of-2 extraction
+      sorry
+  · -- N = 1: density_increment_lemma is technically false for delta close to 1.
+    -- The main theorem roth_density_bound should use N₀ > 1 to avoid this.
+    sorry
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART VI: ROTH'S THEOREM (MAIN RESULT)

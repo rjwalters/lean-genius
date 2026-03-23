@@ -223,3 +223,35 @@ fourier_large_coefficient (1 sorry: norm bound in Case 2)
     └→ density_increment_lemma (sorry)
           └→ roth_density_bound (PROVED)
 ```
+
+## Session 9 (2026-03-23, researcher-5)
+
+### What Was Done
+1. **Decomposed `density_increment_lemma`** into coset partition cases:
+   - N≥2, odd, g≥√N → coset_density_increment (sorry)
+   - N≥2, odd, g<√N → box partition needed (sorry)
+   - N even → reduction to odd (sorry)
+   - N=1 → false edge case (sorry)
+
+2. **Proved `psi_const_on_coset`** (modulo `mul_L_r_eq_zero`):
+   ψ(r·(t + k·L)) = ψ(r·t) for all k, because L·r = 0 in ZMod N.
+
+3. **Discovered density increment ≥ δ²/4** (stronger than needed δ²/100):
+   Using Â(r) = Σ a_t·ψ(rt) with Σψ(rt)=0, the real-part alignment gives
+   max deviation ≥ δ²g/4 by pigeonhole, hence density ≥ δ + δ²/4.
+
+4. **Identified N=1 bug**: density_increment_lemma is FALSE for N=1, δ=1.
+   Main theorem roth_density_bound uses N₀=1 which is unsound for δ=1.
+
+### Key Insight: Annihilator Partition
+The RIGHT partition is cosets of H = ⟨N/g⟩ (annihilator of ⟨r⟩), NOT cosets of ⟨r⟩ itself. On these cosets, ψ(r·) is EXACTLY constant (no phase approximation needed). This is because ⟨r⟩ ⊆ H⊥, so the Fourier coefficient at r contributes to the energy.
+
+### Sorry Chain (Session 9)
+```
+mul_L_r_eq_zero (ZMod API) ──→ psi_const_on_coset (PROVED)
+coset_char_sum_zero (sorry) ──→ coset_density_increment (sorry)
+                                  ──→ density_increment_lemma
+g<√N box partition (sorry) ────→    └→ density_increment_step (PROVED)
+N even (sorry) ────────────────→        └→ density_iteration (PROVED)
+N=1 (sorry, FALSE) ───────────→            └→ roth_density_bound (PROVED)
+```
