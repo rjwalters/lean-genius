@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 23
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Structure and Open Question Origin",
     "content": "Imports `Nat.GCD.Basic` for natural number GCD, `Data.Int.GCD` for integer GCD, and `Mathlib.Tactic` for proof automation (including `linear_combination` and `native_decide`). The module documentation traces the open question back through the bezout-identity chain: starting from the basic Bézout identity (OQ-01), through Euclid's lemma generalization (OQ-02), to this constructive algorithm (OQ-02-OQ-01). The key formula $q = uc + vk$ is previewed in the header.",
     "mathContext": "The open question asks whether Bézout coefficients can be combined with Euclid's lemma algorithmically. The affirmative answer: $ua + vb = 1$ and $a | bc$ yield explicit $q = uc + vk$ with $aq = c$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "open question chain",
       "constructive mathematics",
@@ -56,7 +56,7 @@
       "startLine": 84,
       "endLine": 107
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "The Core Quotient Formula",
     "content": "The heart of the construction: in ANY CommRing, given u*a + v*b = 1 (Bézout) and b*c = a*k (divisibility witness), we have a*(u*c + v*k) = c. The proof is a beautiful calc chain: expand by ring → substitute a*k = b*c → factor as (u*a + v*b)*c → apply Bézout → simplify 1*c = c.\n\neuclids_lemma_constructive wraps this into a divisibility statement: the explicit witness is ⟨u*c + v*k, proof⟩. The ring-axiomatic generality means this works for integers, polynomials, Gaussian integers, and any commutative ring.",
     "mathContext": "The formula $q = uc + vk$ is the constructive content of Euclid's lemma. Classically, the proof is non-constructive: \"since $\\gcd(a,b) = 1$ and $a | bc$, therefore $a | c$.\" The constructive version gives an explicit algorithm: compute $u, v$ via extended GCD, extract $k$ from the divisibility proof, and return $uc + vk$.",
@@ -80,7 +80,7 @@
       "startLine": 109,
       "endLine": 144
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Constructive Algorithm: Assembly over ℕ",
     "content": "constructive_div assembles the full algorithm: extract Bézout coefficients (x,y) from extGcd, extract divisibility witness k from hdvd.choose, return x*c + y*k. The correctness theorem constructive_div_correct proves a*q = c by converting extGcd_correct to match quotient_formula's hypothesis.\n\neuclids_lemma_via_extGcd packages the result as a divisibility statement over ℤ. The definition is noncomputable because it uses hdvd.choose (classical choice), but the Bézout coefficients themselves are computable.",
     "mathContext": "The algorithm takes $a, b, c \\in \\mathbb{N}$ with $\\gcd(a,b) = 1$ and a proof of $a | bc$, and returns the quotient $q = c/a \\in \\mathbb{Z}$. The correctness proof converts between the extGcd output format $(x, y, g)$ where $ax + by = g$ and the quotient formula's input format $ua + vb = 1$.",
@@ -104,7 +104,7 @@
       "startLine": 146,
       "endLine": 168
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Computational Verification via native_decide",
     "content": "Seven examples verify the extGcd implementation against expected values using native_decide (kernel-level computation). Tests cover coprime pairs (3,7), (5,7), (17,5) confirming gcd = 1 and valid Bézout identities, plus the non-coprime pair (252,198) confirming gcd = 18.\n\nnative_decide compiles the expression to native code and evaluates it, providing absolute certainty that the computation matches. This is stronger than #eval (which doesn't produce a proof term).",
     "mathContext": "The examples verify: $\\gcd(3,7) = 1$ with $3 \\cdot (-2) + 7 \\cdot 1 = 1$; $\\gcd(5,7) = 1$ with $5 \\cdot 3 + 7 \\cdot (-2) = 1$; $\\gcd(17,5) = 1$ with $17 \\cdot (-2) + 5 \\cdot 7 = 1$; $\\gcd(252,198) = 18$ with $252 \\cdot 4 + 198 \\cdot (-5) = 18$.",

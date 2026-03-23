@@ -53,7 +53,7 @@
       "startLine": 34,
       "endLine": 35
     },
-    "type": "context",
+    "type": "concept",
     "title": "Namespace and Proof Architecture",
     "content": "The `AbelRuffini` namespace scopes the entire proof development into a seven-part logical structure that mirrors the mathematical argument:\n\n- **Part I** (Solvable by Radicals): Definitions — `IsSolvableByRad` and field variables\n- **Part II** (Galois Bridge): radical solvability implies solvable Galois group\n- **Part III** (Non-Solvability): $S_n$ not solvable for $n \\geq 5$, $A_5$ simple\n- **Part IV** (Small Groups): $S_0, S_1$ are solvable — contrast with the threshold\n- **Part V** (Abel-Ruffini): Synthesis via contrapositive\n- **Parts VI–VII** (Commentary): Why degree 5, historical significance\n\nThis organization separates the field-theoretic ingredient (Part II) from the group-theoretic ingredient (Part III) before combining them (Part V), reflecting how modern algebra textbooks present the proof as a composition of independent modules. All theorem names are prefixed with `AbelRuffini.` when referenced externally.",
     "mathContext": "The namespace groups nine declarations: two core theorems (`galois_bridge`, `not_solvable_by_rad_of_not_solvable_gal`), four group-theoretic results (`symmetric_group_not_solvable`, `s5_not_solvable`, `s6_not_solvable`, `a5_is_simple`), two solvability instances (`s0_solvable`, `s1_solvable`), and one existence witness (`exists_quintic`). The modular structure enables each component to be independently verified and reused.",
@@ -101,7 +101,7 @@
       "startLine": 51,
       "endLine": 57
     },
-    "type": "context",
+    "type": "concept",
     "title": "Part II: The Galois-Theoretic Bridge",
     "content": "This docstring introduces the central insight of the formalization: the connection between radical solvability (a field-theoretic property) and group solvability (a group-theoretic property). Galois's 1831 memoir established that these two notions correspond precisely.\n\nThe bridge is one-directional for the impossibility proof: solvable by radicals $\\Rightarrow$ solvable Galois group. The converse (solvable Galois group $\\Rightarrow$ solvable by radicals) also holds but is not needed here — only the contrapositive of the forward direction is used in `not_solvable_by_rad_of_not_solvable_gal`.\n\nNotably, this Galois-theoretic approach differs from Abel's original 1824 proof. Abel worked directly with the structure of radical expressions: he showed that any radical solution of a degree-$n$ polynomial can be written as a sum $x = p_0 + p_1 R^{1/m} + p_2 R^{2/m} + \\cdots + p_{m-1} R^{(m-1)/m}$ where the $p_i$ and $R$ involve nested radicals, and that the resulting permutation symmetries force inconsistencies for $n \\geq 5$. Abel never formulated the notion of a 'group' — that was Galois's contribution, which made the argument conceptually transparent and generalizable to characterize solvability for *any* polynomial, not just the generic one.",
     "mathContext": "Galois's correspondence: $\\text{IsSolvableByRad}\\,F\\,\\alpha \\Leftrightarrow \\text{IsSolvable}(\\text{Gal}(\\text{minpoly}_F(\\alpha)))$. The forward direction ($\\Rightarrow$) is `solvableByRad.isSolvable'`; the backward direction ($\\Leftarrow$) uses the primitive element theorem and Galois's constructive procedure for extracting radicals from a solvable tower of normal subgroups.",
@@ -172,7 +172,7 @@
       "startLine": 77,
       "endLine": 84
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Cardinal Bridge: From ℕ to Lean's Type Universe",
     "content": "The proof of symmetric_group_not_solvable bridges between ℕ (where 5 ≤ n lives) and Cardinal (where Mathlib's Equiv.Perm.not_solvable expects 5 ≤ Cardinal.mk α). Step 1: simp rewrites Cardinal.mk (Fin n) as ↑n. Step 2: exact_mod_cast strips the cast and applies hn. The ℕ → Cardinal coercion is an order embedding, so inequalities transfer automatically. This 3-line pattern recurs in AbelRuffiniOQ04.lean.",
     "mathContext": "$5 \\leq n$ in $\\mathbb{N}$ $\\xrightarrow{\\text{cast}}$ $\\uparrow 5 \\leq \\uparrow n$ in Cardinal $\\xleftarrow{\\text{simp}}$ $5 \\leq |\\text{Fin}\\,n|$. The cast $\\mathbb{N} \\hookrightarrow \\text{Cardinal}$ is an order embedding.",
@@ -196,7 +196,7 @@
       "startLine": 86,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Instantiating Non-Solvability for S₅ and S₆",
     "content": "`s5_not_solvable` and `s6_not_solvable` specialize the general `symmetric_group_not_solvable` to $n = 5$ and $n = 6$. The proofs are one-liners: for $n = 5$, the bound $5 \\leq 5$ is `le_rfl`; for $n = 6$, it is discharged by `omega`. The simplicity of $A_5$ (`a5_is_simple`) is stated separately as the structural reason the derived series of $S_5$ stalls.\n\nThese instantiations make the abstract result concrete: $S_5$ is the specific group relevant to quintic polynomials, while $S_6$ confirms the pattern extends to all higher degrees.",
     "mathContext": "$S_5 = \\text{Equiv.Perm}(\\text{Fin}\\ 5)$, $|S_5| = 120$. The derived series: $S_5 \\triangleright A_5 \\triangleright A_5 \\triangleright \\cdots$ (stuck because $[A_5, A_5] = A_5$, i.e., $A_5$ is perfect). Compare $S_4 \\triangleright A_4 \\triangleright V_4 \\triangleright \\mathbb{Z}/2 \\triangleright \\{e\\}$ which terminates.",
@@ -294,7 +294,7 @@
       "startLine": 131,
       "endLine": 135
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Part V Setup: Existence of Quintics and the Main Theorem Preamble",
     "content": "Part V combines the Galois bridge (Part II) with non-solvability of $S_n$ (Part III) to state the Abel-Ruffini theorem.\n\n`exists_quintic` provides a trivial witness that degree-5 polynomials exist: $X^5$ has `natDegree = 5`, proved by `simp` on `Polynomial.natDegree_pow` and `Polynomial.natDegree_X`. This is a sanity check — the substantive content is in `not_solvable_by_rad_of_not_solvable_gal` that follows.\n\nThe Part V docstring frames the logical structure: the contrapositive of `galois_bridge` converts \"solvable by radicals → solvable Galois group\" into \"unsolvable Galois group → not solvable by radicals.\" Since $S_5$ is not solvable, any polynomial with Galois group $S_5$ has roots that are not expressible by radicals.",
     "mathContext": "$\\exists p \\in \\mathbb{Q}[X],\\; \\deg(p) = 5$. Witness: $p = X^5$.\n\n$\\text{natDegree}(X^n) = n \\cdot \\text{natDegree}(X) = n \\cdot 1 = n$.",
@@ -340,7 +340,7 @@
       "startLine": 151,
       "endLine": 183
     },
-    "type": "context",
+    "type": "insight",
     "title": "Why Degree 5 and the Historical Revolution",
     "content": "The closing commentary (Parts VI–VII) explains *why* degree 5 is the exact threshold and places the result in historical context. The derived series of $S_4$ terminates because $A_4$ has the Klein four-group $V_4$ as a normal subgroup, while $A_5$ has no proper normal subgroups at all (it is simple).\n\nHistorically, Abel-Ruffini was revolutionary as one of the first major **impossibility proofs** — showing that something *cannot* be done. This methodology later influenced Lindemann's proof that $\\pi$ is transcendental (1882), Gödel's incompleteness theorems (1931), and Turing's halting problem (1936). The commentary also makes a subtle but important distinction: quintic equations **do** have solutions (by the Fundamental Theorem of Algebra — see `fundamental-theorem-algebra` in the gallery), they just cannot be expressed using radicals.\n\nThe impossibility framework pioneered here — proving that a natural class of problems admits no solution within a given formal system — also connects to the angle trisection impossibility (see `angle-trisection`), which uses the same Galois-theoretic machinery to show that constructibility requires the minimal polynomial's degree to be a power of 2.",
     "mathContext": "The conjugacy classes of $A_5$ have sizes $1, 12, 12, 15, 20$ (summing to 60), corresponding to: identity (1), products of two disjoint transpositions (15), 3-cycles (20), and two classes of 5-cycles (12 each). A normal subgroup must be a union of conjugacy classes including $\\{e\\}$ (size 1), and its order must divide $|A_5| = 60$. The possible sub-sums starting with 1 yield no proper divisor of 60 except 1 itself, proving $A_5$ has no proper nontrivial normal subgroups.\n\nThis combinatorial fact also proves $A_5$ is perfect: since $[A_5, A_5]$ is a normal subgroup and $A_5$ is simple, either $[A_5, A_5] = \\{e\\}$ (impossible since $A_5$ is non-abelian) or $[A_5, A_5] = A_5$.",
