@@ -423,6 +423,16 @@
       "targetId": "erdos-226",
       "relationship": "thematic",
       "description": "Erdős Problem #226 (entire functions preserving rationality) explores the boundary between algebraic and transcendental functions. Abel-Ruffini shows polynomial roots can escape the radical closure of $\\mathbb{Q}$, while Erdős #226 asks which entire functions map $\\mathbb{Q}$ to itself — both concern the structural relationship between algebraic constraints and the functions that respect them"
+    },
+    {
+      "targetId": "solution-of-cubic-oq-03",
+      "relationship": "complementary",
+      "description": "Vieta's formulas for the cubic via Cardano's roots demonstrate the solvable case in action: the three Cardano roots of $x^3 + px + q = 0$ satisfy Vieta's formulas (sum = 0, pairwise products = $p$, triple product = $-q$), with the factorization obtained through explicit radical expressions. This is the degree-3 instance of the radical tower that Abel-Ruffini proves impossible at degree 5 — $S_3$ is solvable (derived series $\\{e\\} \\triangleleft A_3 \\triangleleft S_3$ terminates), so Cardano's radical formula exists, and Vieta's formulas confirm it reconstructs the original polynomial"
+    },
+    {
+      "targetId": "platonic-solids",
+      "relationship": "related",
+      "description": "The classification of exactly five Platonic solids connects to Abel-Ruffini through the icosahedron: $A_5$ is isomorphic to the rotation group of the regular icosahedron (60 rotational symmetries matching $|A_5| = 60$). Klein (1884) exploited this isomorphism to solve the general quintic via the icosahedral equation — while no radical formula exists (Abel-Ruffini), the quintic IS solvable using functions adapted to icosahedral symmetry. The icosahedron is the most symmetric Platonic solid with a non-abelian rotation group, making the connection between five Platonic solids and the degree-5 threshold structurally meaningful"
     }
   ],
   "relatedProofs": [
@@ -478,7 +488,9 @@
     "descartes-rule-of-signs",
     "euler-identity",
     "gcd-algorithm",
-    "erdos-226"
+    "erdos-226",
+    "solution-of-cubic-oq-03",
+    "platonic-solids"
   ],
   "references": [
     {

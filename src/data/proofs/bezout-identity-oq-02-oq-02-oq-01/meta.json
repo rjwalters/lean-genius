@@ -294,6 +294,21 @@
       "targetId": "gcd-algorithm-oq-01",
       "relationship": "related",
       "description": "Formalizes Lamé's theorem on worst-case Euclidean algorithm complexity: consecutive Fibonacci numbers achieve the worst case, giving O(log min(a,b)) steps. This quantifies the efficiency of the extended Euclidean algorithm used here to compute Bézout coefficients — the extGcd implementation inherits the same complexity bound"
+    },
+    {
+      "targetId": "factor-remainder-theorem",
+      "relationship": "related",
+      "description": "The factor theorem ($\\alpha$ is a root of $p(x)$ iff $(x - \\alpha) | p(x)$) is the polynomial ring analog of the divisibility machinery formalized here. Both use the division algorithm in their respective domains ($\\mathbb{Z}$ for Bézout, $F[x]$ for the factor theorem), and the extended Euclidean algorithm generalizes to polynomial GCD computation — the constructive quotient formula $q = uc + vk$ works identically in $F[x]$ since polynomial rings over fields are Euclidean domains"
+    },
+    {
+      "targetId": "bezout-identity-oq-03-oq-01",
+      "relationship": "sibling",
+      "description": "The CRT ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ is constructed from the same Bézout coefficients computed by the extended Euclidean algorithm. The isomorphism maps $x \\mapsto (x \\bmod m, x \\bmod n)$ with inverse $a \\mapsto a_1 vn + a_2 um$ where $um + vn = 1$ — directly using the output of extGcd"
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime-oq-01",
+      "relationship": "related",
+      "description": "Computational efficiency improvements for CRT with non-coprime moduli parallel the constructive concerns of this entry: both focus on making number-theoretic existence results computationally effective. The non-coprime CRT uses $\\gcd(m,n) = um + vn$ (the general Bézout output, not just the coprime case) to canonicalize and compute solutions efficiently"
     }
   ],
   "relatedProofs": [
@@ -314,7 +329,10 @@
     "bezout-identity-oq-02-oq-02-oq-01-oq-01",
     "bezout-identity-oq-04",
     "bezout-identity-oq-02-oq-01",
-    "gcd-algorithm-oq-01"
+    "gcd-algorithm-oq-01",
+    "factor-remainder-theorem",
+    "bezout-identity-oq-03-oq-01",
+    "chinese-remainder-non-coprime-oq-01"
   ],
   "references": [
     {

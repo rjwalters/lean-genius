@@ -209,6 +209,16 @@
       "targetId": "quadratic-reciprocity",
       "relationship": "related",
       "description": "Quadratic reciprocity governs when $a$ is a square modulo $p$, closely tied to primitive roots: Artin's conjecture (referenced in the formalization) predicts infinitely many primes have a given primitive root, and the factorization structure of $p-1$ determines the primitive root structure via quadratic residues"
+    },
+    {
+      "targetId": "dirichlets-theorem-oq-01",
+      "relationship": "related",
+      "description": "Siegel zeros (exceptionally small values of $L(1, \\chi)$) are the main obstruction to proving strong results about primes in arithmetic progressions. Primes of the form $2^k q + 1$ lie in specific residue classes, and Dirichlet's theorem guarantees their infinitude in each class, but the quantitative distribution — how many such primes up to $x$ — depends on whether Siegel zeros exist. A resolution of the Siegel zero conjecture would sharpen the density predictions for Erdős #1065"
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Fermat's two-squares theorem ($p = a^2 + b^2 \\iff p \\equiv 1 \\pmod{4}$) characterizes primes by a condition on $p - 1$: requiring $4 | (p-1)$. Erdős #1065 imposes a stronger structural condition on $p - 1 = 2^k q$ (exactly one odd prime factor). Both problems connect the arithmetic structure of $p - 1$ to properties of the prime $p$ itself, using the group $(\\mathbb{Z}/p\\mathbb{Z})^*$ of order $p - 1$"
     }
   ],
   "relatedProofs": [
@@ -222,7 +232,9 @@
     "infinitude-primes",
     "bertrands-postulate",
     "prime-number-theorem",
-    "quadratic-reciprocity"
+    "quadratic-reciprocity",
+    "dirichlets-theorem-oq-01",
+    "fermat-two-squares"
   ],
   "leanFile": {
     "imports": [

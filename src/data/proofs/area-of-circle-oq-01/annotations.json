@@ -18,7 +18,9 @@
     ],
     "prerequisites": [
       "differential calculus",
-      "Lean 4 import system"
+      "Lean 4 import system",
+      "Lebesgue measure",
+      "trigonometric functions"
     ]
   },
   {
@@ -61,7 +63,9 @@
       "2π as full angle"
     ],
     "prerequisites": [
-      "circle geometry"
+      "circle geometry",
+      "Real.pi definition",
+      "radian measure"
     ]
   },
   {
@@ -129,7 +133,9 @@
       "Differentiable typeclass"
     ],
     "prerequisites": [
-      "HasDerivAt implies DifferentiableAt"
+      "HasDerivAt implies DifferentiableAt",
+      "Fréchet differentiability",
+      "polynomial calculus"
     ]
   },
   {
@@ -284,7 +290,9 @@
       "duality"
     ],
     "prerequisites": [
-      "deriv_circleArea_eq_circumference"
+      "deriv_circleArea_eq_circumference",
+      "fundamental theorem of calculus",
+      "HasDerivAt.deriv"
     ]
   }
 ]
