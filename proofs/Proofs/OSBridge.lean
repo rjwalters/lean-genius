@@ -67,22 +67,22 @@ abbrev ETestFunctionC := SchwartzMap ESpaceTime ℂ
     Schwartz space with the weak-* topology.
 
     In Douglas et al., this carries the cylinder sigma-algebra from the bochner
-    library (Minlos.NuclearSpace). We axiomatize the MeasurableSpace instance
-    since we don't have that dependency. -/
+    library (Minlos.NuclearSpace). We define the cylinder sigma-algebra directly
+    using standard Mathlib primitives. -/
 abbrev EFieldConfiguration := WeakDual ℝ (SchwartzMap ESpaceTime ℝ)
 
-/-- Axiomatized MeasurableSpace on field configurations.
+/-- The cylinder sigma-algebra on field configurations: the smallest sigma-algebra
+    making all evaluation maps omega -> omega(f) measurable.
+    This is the standard sigma-algebra for probability measures on duals of
+    nuclear spaces (see Glimm-Jaffe, Ch. 6; Douglas et al. arXiv:2603.15770). -/
+instance fieldConfigMeasurableSpace : MeasurableSpace EFieldConfiguration :=
+  ⨆ f : ETestFunction, (borel ℝ).comap (fun ω : EFieldConfiguration => ω f)
 
-    The correct sigma-algebra is the cylinder sigma-algebra: the smallest
-    sigma-algebra making all evaluation maps w -> w(f) measurable. In
-    Douglas et al. this is provided by the bochner library. We axiomatize
-    it here.
-
-    This is mathematically sound: the cylinder sigma-algebra exists and is
-    well-defined for any topological vector space. -/
-axiom fieldConfigMeasurableSpace : MeasurableSpace EFieldConfiguration
-
-attribute [instance] fieldConfigMeasurableSpace
+/-- Evaluation maps are measurable w.r.t. the cylinder sigma-algebra. -/
+theorem eval_measurable (f : ETestFunction) :
+    Measurable (fun ω : EFieldConfiguration => ω f) := by
+  rw [measurable_iff_comap_le]
+  exact le_iSup (fun g => (borel ℝ).comap (fun ω : EFieldConfiguration => ω g)) f
 
 /- ## Distribution Pairing
 
