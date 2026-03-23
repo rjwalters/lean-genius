@@ -66,6 +66,12 @@ This project uses **two distinct AI agent orchestration systems** for different 
 
 **Team orchestration**: `/lean` - Start/stop/scale the full mathematical agent team
 
+### PR Labels for Math Agents
+
+**Math agents (Researcher, Enricher, Aristotle, Erdos Enhancer) must NOT add `loom:review-requested` to their PRs.** The deployer merges math PRs directly without Judge review. Only add content-specific labels like `research`, `enrichment`, or `aristotle-integration`.
+
+If you want a specific PR to go through Loom Judge review, manually add `loom:review-requested` — the deployer will skip it until a Judge approves it.
+
 ### Two Enrichment Systems
 
 The project has two distinct enrichment systems:
