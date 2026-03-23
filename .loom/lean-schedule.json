@@ -7,7 +7,7 @@
       "hours": "05:00-11:00",
       "comment": "Anthropic peak hours - standard pool sizes",
       "pools": {
-        "researcher": 2,
+        "researcher": 5,
         "enricher": 2
       }
     },
@@ -16,7 +16,7 @@
       "default": true,
       "comment": "2x researchers during Anthropic promo off-peak hours",
       "pools": {
-        "researcher": 4,
+        "researcher": 10,
         "enricher": 2
       }
     }
