@@ -126,13 +126,21 @@ axiom kierstead_penrice_radius2 :
 
 /- ## Structural Observations -/
 
-/-- Triangle-free with large chromatic number implies large girth
-    neighborhoods: the local structure is tree-like. -/
-axiom triangle_free_large_chrom_local_tree :
+/-- Triangle-free with large chromatic number implies the conclusion holds
+    for any vertex: since G has infinite chromatic number, ¬ChromAtMost k
+    is immediate for all k, making the neighbor condition vacuous. -/
+theorem triangle_free_large_chrom_local_tree :
   ∀ {V : Type*} (G : SimpleGraph V),
     G.IsTriangleFree → G.HasInfiniteChrom →
       ∀ k : ℕ, ∃ v : V, ∀ w : V, G.Adj v w →
-        ¬G.ChromAtMost k
+        ¬G.ChromAtMost k := by
+  intro V G _ hinf k
+  -- G has infinite chromatic number, so it's not 1-colorable, hence V is nonempty
+  have hne : Nonempty V := by
+    by_contra h
+    rw [not_nonempty_iff] at h
+    exact hinf 1 ⟨⟨fun v => h.elim v, fun {v} => h.elim v⟩⟩
+  exact ⟨hne.some, fun _ _ => hinf k⟩
 
 /-- The conjecture generalizes: for any forest F, does every triangle-free
     graph with χ(G) ≥ f(|F|) contain F as an induced subgraph? -/
