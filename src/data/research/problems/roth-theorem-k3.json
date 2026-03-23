@@ -34,7 +34,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 10 proved mul_L_r_eq_zero and added apFree_filter_affine. Sorry count 6->5. Remaining: coset_char_sum_zero, coset_density_increment, box partition, edge cases.",
+    "progressSummary": "PROGRESS: 0 axioms, 4 sorries remain. N=1 edge case is unprovable as stated (need N>1 guard). coset_partition_sum needs bijection proof. Total sorry count: 4.",
     "builtItems": [
       "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
       "Build now succeeds: 0 axioms, 3 sorries",
@@ -92,7 +92,11 @@
       "Proof architecture bug: N₀=1 in roth_density_bound is wrong; need N₀=2^{2^K} where K=ceil(100/delta²)",
       "Fix requires 2≤M in density increment conclusion (not just M≥sqrt(N)) to maintain APFree→density<1",
       "ZMod.val injectivity: cases N | zero=>absurd | succ n=>Fin.ext",
-      "apFree_filter_affine: d!=0 and hq gives d*q!=0, lift 3-AP via ring rewrites"
+      "apFree_filter_affine: d!=0 and hq gives d*q!=0, lift 3-AP via ring rewrites",
+      "N=1 edge case in density_increment_lemma is UNPROVABLE as stated: when delta=1 and N=1, need B.card >= 1.01*M but B.card <= M. Fix: require N>1 (or fold into the by_cases already there)",
+      "coset_partition_sum requires bijection between A and disjoint union of cosets. Needs map a↦(a.val%g, a.val/g) and its inverse",
+      "fourier_coset_decomp requires regrouping Fourier sums by coset; ψ(r·) constant on cosets when (N/g) | val(r)",
+      "Pigeonhole sorry: standard averaging argument, find coset with density above mean+delta²/4N/g"
     ],
     "mathlibGaps": [],
     "nextSteps": [
