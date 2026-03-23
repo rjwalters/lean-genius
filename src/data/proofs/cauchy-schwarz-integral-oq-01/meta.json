@@ -66,7 +66,12 @@
       "**Nnnorm Multiplicativity**: For real numbers, `nnnorm_mul : ‖x·y‖₊ = ‖x‖₊·‖y‖₊` (not `Real.nnnorm_mul`) gives the equality needed to pass from pointwise products to Hölder.",
       "**Minkowski from Norm**: Since `Lp ℝ p μ` is a `NormedAddCommGroup`, Minkowski's inequality is just the abstract norm triangle inequality `norm_add_le`."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Measure theory: measurable functions, Lebesgue integration (lintegral)",
+      "L^p spaces: Lp E p μ as Banach spaces with the snorm",
+      "Non-negative extended reals (ENNReal) and non-negative reals (NNReal)",
+      "Hölder conjugate exponents: 1/p + 1/q = 1 with p, q > 1"
+    ]
   },
   "sections": [
     {
