@@ -26,10 +26,10 @@
   {
     "id": "ann-fourier",
     "proofId": "roth-theorem-k3",
-    "range": { "startLine": 93, "endLine": 124 },
+    "range": { "startLine": 93, "endLine": 448 },
     "type": "technique",
-    "title": "Part III: Fourier Analysis Infrastructure",
-    "content": "Defines `fourierCoeff A r` as the discrete Fourier transform $\\hat{1_A}(r) = \\sum_{x \\in A} e^{2\\pi i \\cdot \\text{val}(rx)/N}$. States three key infrastructure results: (1) `fourierCoeff_norm_le`: $|\\hat{1_A}(r)| \\leq |A|$ via triangle inequality, (2) `parseval_on_zmod`: Parseval's identity $\\sum_r |\\hat{1_A}(r)|^2 = |A| \\cdot N$, and (3) `triple_count_fourier`: the Fourier identity $\\Lambda_3(A) = N^{-1} \\sum_r \\hat{1_A}(r)^2 \\overline{\\hat{1_A}(2r)}$. All three are sorry'd but well-specified for Aristotle.",
+    "title": "Part III: Fourier Analysis on Z/NZ (356 lines)",
+    "content": "Defines `fourierCoeff A r` as the discrete Fourier transform and builds a comprehensive character theory infrastructure (225 lines of fully proved ψ properties including character orthogonality via the shift argument). **Key proved results**: (1) `fourierCoeff_norm_le`: $|\\hat{1_A}(r)| \\leq |A|$ via triangle inequality, (2) `parseval_on_zmod` (PROVED, 43 lines): Parseval's identity $\\sum_r |\\hat{1_A}(r)|^2 = |A| \\cdot N$ via character orthogonality, (3) `triple_count_fourier` (PROVED, 32 lines): the AP counting Fourier identity. One sorry remains in the helper `tripleCount_add_card_eq_triple_sum` (combinatorial identity). The Parseval proof is particularly elegant: it expands Fourier products into double character sums, applies orthogonality to collapse to the diagonal, and simplifies.",
     "mathContext": "$\\hat{1_A}(r) = \\sum_{x \\in A} e^{2\\pi i rx/N}$. Parseval: $\\sum_r |\\hat{1_A}(r)|^2 = N|A|$. 3-AP identity: $\\Lambda_3(A) = N^{-1} \\sum_r \\hat{1_A}(r)^2 \\overline{\\hat{1_A}(2r)}$.",
     "significance": "key",
     "relatedConcepts": ["discrete Fourier transform", "Parseval's identity", "exponential sums"],
@@ -38,7 +38,7 @@
   {
     "id": "ann-large-coeff",
     "proofId": "roth-theorem-k3",
-    "range": { "startLine": 126, "endLine": 141 },
+    "range": { "startLine": 449, "endLine": 465 },
     "type": "technique",
     "title": "Part IV: Large Fourier Coefficient from AP-Freeness",
     "content": "The key analytic step: if $A$ has density $\\delta$ and no 3-AP, then some nonzero Fourier coefficient has $|\\hat{1_A}(r)| \\geq \\delta^2 N/2$. The proof (sorry'd) combines AP-freeness ($\\Lambda_3 = 0$), the Fourier identity (Part III), and Parseval. Since $\\hat{1_A}(0) = |A| = \\delta N$ and $\\Lambda_3 = 0$, the nonzero terms must cancel the $r=0$ contribution, forcing some $|\\hat{1_A}(r)|$ to be large.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-density-increment",
     "proofId": "roth-theorem-k3",
-    "range": { "startLine": 143, "endLine": 162 },
+    "range": { "startLine": 466, "endLine": 495 },
     "type": "technique",
     "title": "Part V: Density Increment Lemma",
     "content": "If $A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$ has density $\\delta$ and no 3-AP, then there exists a subprogression $B \\subseteq \\mathbb{Z}/M\\mathbb{Z}$ with $M \\geq \\sqrt{N}$, $0 < M$, $B$ is AP-free, and $B$ has density $\\geq \\delta + \\delta^2/100$. The statement was improved from the original to include `APFree B` and `0 < M` in the conclusion, both essential for the iteration argument in Part VI.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-iteration",
     "proofId": "roth-theorem-k3",
-    "range": { "startLine": 164, "endLine": 233 },
+    "range": { "startLine": 496, "endLine": 594 },
     "type": "insight",
     "title": "Part VI: Iteration Argument and Roth's Theorem",
     "content": "Contains two key results: (1) `density_iteration` (PROVED): $k$ applications of the density increment boost density from $\\delta$ to at least $\\delta + k\\delta^2/100$. The proof uses the fact that the density $d_k \\geq \\delta$ at each step, so each increment $d_k^2/100 \\geq \\delta^2/100$, giving a linear lower bound on the cumulative increment. (2) `roth_density_bound` (sorry'd): the final theorem $r_3(N) = o(N)$. After $K = \\lceil 100(1-\\delta)/\\delta^2 \\rceil + 1$ iterations, density would exceed 1, contradicting $|A| \\leq N$.",
