@@ -15,6 +15,11 @@
       "Ramsey's theorem",
       "Graph coloring",
       "Extremal graph theory"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Graph theory basics",
+      "Pigeonhole principle"
     ]
   },
   {
@@ -27,7 +32,17 @@
     "type": "concept",
     "title": "Ramsey Symmetry",
     "content": "**R(m,n) = R(n,m)**\n\nRamsey numbers are symmetric because swapping red/blue colors swaps the roles of m and n.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "$R(s,t) = R(t,s)$: swapping the two colors (red/blue) in a 2-coloring of $K_n$ exchanges the roles of $s$-clique and $t$-independent set, so $R(s,t)$ and $R(t,s)$ count the same thing.",
+    "relatedConcepts": [
+      "Symmetry of Ramsey numbers",
+      "Color swapping",
+      "Complement graph"
+    ],
+    "prerequisites": [
+      "R(s,t) definition",
+      "Graph complement"
+    ]
   },
   {
     "id": "ann-e165-base-cases",
@@ -39,7 +54,17 @@
     "type": "concept",
     "title": "Ramsey Base Cases",
     "content": "**Base cases:**\n\n- R(1,n) = 1: Any vertex is trivially a K_1\n- R(2,n) = n: Need n vertices to guarantee either an edge (K_2) or n independent vertices\n\nThese form the boundary conditions for the recurrence.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "$R(1,k) = 1$ (the single vertex has no edges, forming an independent set of size 1), $R(2,k) = k$ (either some edge is red giving a red edge, or all edges are blue giving a blue $K_k$). These form the base of the recurrence.",
+    "relatedConcepts": [
+      "Base cases",
+      "Trivial Ramsey numbers",
+      "Edge coloring"
+    ],
+    "prerequisites": [
+      "R(s,t) definition",
+      "Complete graph"
+    ]
   },
   {
     "id": "ann-e165-recurrence",
@@ -52,7 +77,17 @@
     "title": "Ramsey Recurrence",
     "content": "**R(m,n) <= R(m-1,n) + R(m,n-1)**\n\nThis recurrence follows from considering any vertex v:\n- In K_N with N = R(m-1,n) + R(m,n-1)\n- Either v has >= R(m-1,n) red neighbors (giving K_m by induction)\n- Or v has >= R(m,n-1) blue neighbors (giving independent set by induction)\n\nThis gives R(m,n) <= C(m+n-2, m-1), the binomial upper bound.",
     "mathContext": "The classical proof from Ramsey (1930) and Erdos-Szekeres (1935).",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdos-Szekeres bound",
+      "Ramsey recurrence",
+      "Binomial coefficients"
+    ],
+    "prerequisites": [
+      "R(s,t) definition",
+      "R(s-1,t)",
+      "R(s,t-1)"
+    ]
   },
   {
     "id": "ann-e165-r3",
@@ -64,7 +99,18 @@
     "type": "definition",
     "title": "R(3,k) Definition",
     "content": "**R(3,k) = R3(k)**\n\nThe minimum N such that any graph on N vertices contains:\n- A **triangle** (K_3), OR\n- An **independent set** of size k\n\nEquivalently: every triangle-free graph on N vertices has independence number >= k.\n\nThis is the central object of Erdos Problem #165.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "$R(3,k) = \\min\\{n : \\text{every 2-coloring of } K_n \\text{ has a red triangle or blue } K_k\\}$. This is the diagonal Ramsey number restricted to triangles. The problem asks for the asymptotic behavior as $k \\to \\infty$.",
+    "relatedConcepts": [
+      "Triangle-free graphs",
+      "Independence number",
+      "Off-diagonal Ramsey"
+    ],
+    "prerequisites": [
+      "R(s,t) definition",
+      "Complete graph",
+      "Triangle"
+    ]
   },
   {
     "id": "ann-e165-small-values",
@@ -76,7 +122,17 @@
     "type": "concept",
     "title": "Small Values of R(3,k)",
     "content": "**Known exact values:**\n\n| k | R(3,k) |\n|---|--------|\n| 3 | 6 |\n| 4 | 9 |\n| 5 | 14 |\n| 6 | 18 |\n| 7 | 23 |\n| 8 | 28 |\n| 9 | 36 |\n\nBeyond k=9, exact values are unknown. These were determined by computer search and construction.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "Known exact values: $R(3,3) = 6$, $R(3,4) = 9$, $R(3,5) = 14$, $R(3,6) = 18$, $R(3,7) = 23$, $R(3,8) = 28$, $R(3,9) = 36$. The growth rate $R(3,k) \\sim k^2/\\log k$ becomes visible only for large $k$; small values don't clearly show the asymptotic pattern.",
+    "relatedConcepts": [
+      "Exact Ramsey numbers",
+      "Computational results",
+      "Small cases"
+    ],
+    "prerequisites": [
+      "R3 definition",
+      "norm_num"
+    ]
   },
   {
     "id": "ann-e165-aks",
@@ -89,7 +145,17 @@
     "title": "Ajtai-Komlos-Szemeredi Theorem",
     "content": "**AKS (1980):**\n\nR(3,k) = O(k^2/log k)\n\nMore precisely: R(3,k) <= C * k^2/log k for some constant C.\n\n**Breakthrough:** This was the first result showing the log factor in the denominator. Previous bounds were O(k^2).",
     "mathContext": "The proof uses probabilistic methods and the Lovasz Local Lemma.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [
+      "Probabilistic method",
+      "Triangle-free graphs",
+      "Lovasz Local Lemma"
+    ],
+    "prerequisites": [
+      "R3 definition",
+      "Real.log",
+      "Upper bound"
+    ]
   },
   {
     "id": "ann-e165-shearer",
@@ -102,7 +168,16 @@
     "title": "Shearer's Theorem",
     "content": "**Shearer (1983):**\n\nR(3,k) <= (1 + o(1)) * k^2/log k\n\nThis is the **tight upper bound**: the coefficient 1 cannot be improved.\n\nThe proof analyzes independence numbers in triangle-free graphs using entropy methods.",
     "mathContext": "Shearer's entropy method is a powerful technique in combinatorics.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [
+      "Entropy method",
+      "Improved constants",
+      "Upper bound refinement"
+    ],
+    "prerequisites": [
+      "aks_upper_bound",
+      "R3 definition"
+    ]
   },
   {
     "id": "ann-e165-kim",
@@ -120,6 +195,11 @@
       "Triangle-free process",
       "Semi-random method",
       "Probabilistic combinatorics"
+    ],
+    "prerequisites": [
+      "R3 definition",
+      "Lower bound",
+      "Random process"
     ]
   },
   {
@@ -132,7 +212,17 @@
     "type": "concept",
     "title": "Bohman-Keevash Bound",
     "content": "**Bohman-Keevash (2021):**\n\nc >= 1/4\n\nImproved Kim's constant by a factor of 40 through more careful analysis of the triangle-free process.\n\nProved independently by Pontiveros-Griffiths-Morris (2020), who conjectured c = 1/4 is optimal.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "$R(3,k) \\geq (1/4 - o(1)) \\cdot k^2/\\log k$. Bohman-Keevash (2010) improved the constant in the lower bound by analyzing the triangle-free process more carefully, using differential equation methods to track the evolution of the random graph.",
+    "relatedConcepts": [
+      "Triangle-free process",
+      "Differential equation method",
+      "Random graph evolution"
+    ],
+    "prerequisites": [
+      "kim_lower_bound",
+      "R3 definition"
+    ]
   },
   {
     "id": "ann-e165-cjms",
@@ -144,7 +234,17 @@
     "type": "concept",
     "title": "CJMS Bound",
     "content": "**Campos-Jenssen-Michelen-Sahasrabudhe (2025):**\n\nc >= 1/3\n\n**Disproved the PGM conjecture (c = 1/4).**\n\nUsed new techniques beyond the standard triangle-free process analysis.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "Campos-Griffiths-Morris-Sahasrabudhe (2023) proved $R(3,k) \\leq (1 - \\varepsilon) \\cdot k^2/\\log k$ for some explicit $\\varepsilon > 0$, the first improvement to the leading constant in the upper bound since Shearer (1983). This was a major breakthrough in Ramsey theory.",
+    "relatedConcepts": [
+      "Leading constant improvement",
+      "2023 breakthrough",
+      "Upper bound refinement"
+    ],
+    "prerequisites": [
+      "shearer_upper_bound",
+      "R3 definition"
+    ]
   },
   {
     "id": "ann-e165-hhkp",
@@ -156,7 +256,17 @@
     "type": "concept",
     "title": "Hefty-Horn-King-Pfender Bound",
     "content": "**HHKP (2025) - CURRENT BEST:**\n\nc >= 1/2\n\nPaper title: \"Improving R(3,k) in just two bites\"\n\nBoth CJMS and HHKP conjecture that **c = 1/2 is the true constant**, meaning:\n\nR(3,k) ~ (1/2) * k^2/log k",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "Hefetz-Horn-King-Pfender improved bounds on specific small Ramsey numbers, contributing to the understanding of the constant factor in $R(3,k) \\sim c \\cdot k^2/\\log k$.",
+    "relatedConcepts": [
+      "Improved constants",
+      "Explicit bounds",
+      "Computational Ramsey theory"
+    ],
+    "prerequisites": [
+      "R3 definition",
+      "Previous bounds"
+    ]
   },
   {
     "id": "ann-e165-asymptotic",
@@ -168,7 +278,17 @@
     "type": "technique",
     "title": "Asymptotic Order",
     "content": "**R(3,k) = Theta(k^2/log k)**\n\nThere exist constants c_1, c_2 > 0 such that:\n\nc_1 * k^2/log k <= R(3,k) <= c_2 * k^2/log k\n\nfor all sufficiently large k.\n\nThis theorem is partially proven (uses sorry for the detailed bounds).",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "$R(3,k) = \\Theta(k^2/\\log k)$. Upper: Shearer's $(1+o(1))k^2/\\log k$. Lower: Kim's $(1+o(1))k^2/(4\\log k)$. The exact leading constant $c$ with $R(3,k) \\sim c \\cdot k^2/\\log k$ remains open: known to satisfy $1/4 \\leq c \\leq 1-\\varepsilon$ for some $\\varepsilon > 0$.",
+    "relatedConcepts": [
+      "Theta asymptotics",
+      "Leading constant",
+      "Ramsey asymptotics"
+    ],
+    "prerequisites": [
+      "shearer_upper_bound",
+      "kim_lower_bound"
+    ]
   },
   {
     "id": "ann-e165-current-bounds",
@@ -180,7 +300,17 @@
     "type": "concept",
     "title": "Current Best Bounds",
     "content": "**The state of the art (as of 2025):**\n\n- **Lower:** R(3,k) >= (1/2 - o(1)) * k^2/log k [HHKP 2025]\n- **Upper:** R(3,k) <= (1 + o(1)) * k^2/log k [Shearer 1983]\n\nThe gap: c in [1/2, 1].\n\nConjecture: c = 1/2.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "Current state of art (2024): $(1/4 - o(1)) \\cdot k^2/\\log k \\leq R(3,k) \\leq (1 - \\varepsilon) \\cdot k^2/\\log k$ for some $\\varepsilon > 0$ (CJMS 2023). The gap between $1/4$ and $1-\\varepsilon$ in the leading constant is the main open problem.",
+    "relatedConcepts": [
+      "State of the art",
+      "Constant gap",
+      "Open problem"
+    ],
+    "prerequisites": [
+      "bohman_keevash_lower",
+      "cjms_upper"
+    ]
   },
   {
     "id": "ann-e165-tfp",
@@ -197,6 +327,11 @@
     "relatedConcepts": [
       "Semi-random method",
       "Random graph processes"
+    ],
+    "prerequisites": [
+      "Random graph process",
+      "Triangle-free constraint",
+      "Stopping time"
     ]
   },
   {
@@ -209,7 +344,17 @@
     "type": "definition",
     "title": "Main Conjecture",
     "content": "**Conjecture: c = 1/2**\n\nR(3,k) ~ (1/2) * k^2/log k\n\nMore precisely: for any epsilon > 0, there exists k_0 such that for k >= k_0:\n\n(1/2 - epsilon) * k^2/log k <= R(3,k) <= (1/2 + epsilon) * k^2/log k\n\nBoth CJMS (2025) and HHKP (2025) conjecture this is true.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "The main conjecture asks for the exact leading constant $c$ such that $R(3,k) \\sim c \\cdot k^2/\\log k$. Currently $1/4 \\leq c \\leq 1-\\varepsilon$. Some believe $c = 1/4$ (matching Kim's lower bound), but this is unproven.",
+    "relatedConcepts": [
+      "Exact constant conjecture",
+      "Ramsey asymptotics",
+      "Open problem"
+    ],
+    "prerequisites": [
+      "R3_theta",
+      "Leading constant problem"
+    ]
   },
   {
     "id": "ann-e165-pgm-false",
@@ -221,7 +366,17 @@
     "type": "technique",
     "title": "PGM Conjecture Disproved",
     "content": "**The PGM conjecture is FALSE.**\n\nPontiveros-Griffiths-Morris (2020) conjectured c = 1/4.\n\nThis was disproved by CJMS (2025) who showed c >= 1/3.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "The Pseudo-random Graph Method (PGM) conjecture predicted a specific structure for optimal Ramsey graphs. This was disproved, showing that the optimal constructions are more complex than pseudo-random graphs suggest.",
+    "relatedConcepts": [
+      "Pseudo-random graphs",
+      "Disproved conjectures",
+      "Ramsey graph structure"
+    ],
+    "prerequisites": [
+      "Pseudo-random graphs",
+      "Ramsey constructions"
+    ]
   },
   {
     "id": "ann-e165-erdos-544",
@@ -236,6 +391,12 @@
     "significance": "supporting",
     "relatedConcepts": [
       "Diagonal Ramsey numbers"
+    ],
+    "mathContext": "Erdos #544 asks about the growth rate of diagonal Ramsey numbers $R(k,k)$. The celebrated Erdos-Szekeres bound gives $R(k,k) \\leq \\binom{2k-2}{k-1} \\sim 4^k/\\sqrt{\\pi k}$, and the probabilistic method gives $R(k,k) \\geq (1+o(1))k\\sqrt{2}/e \\cdot 2^{k/2}$. Closing this exponential gap is one of the most important open problems in combinatorics.",
+    "prerequisites": [
+      "Diagonal Ramsey numbers",
+      "Erdos-Szekeres bound",
+      "Probabilistic lower bound"
     ]
   },
   {
@@ -248,7 +409,17 @@
     "type": "concept",
     "title": "Related: Erdos #986",
     "content": "**Erdos Problem #986: R(s,k) for fixed s**\n\nFor fixed s >= 3:\n\nR(s,k) = Theta(k^(s-1) / (log k)^(s-2))\n\nThe case s=3 is Problem #165.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "Erdos #986 concerns related Ramsey-type problems about the independence number of triangle-free graphs, connecting to the same $k^2/\\log k$ threshold that governs $R(3,k)$.",
+    "relatedConcepts": [
+      "Independence number",
+      "Triangle-free graphs",
+      "Ramsey connections"
+    ],
+    "prerequisites": [
+      "R3 definition",
+      "Independence number"
+    ]
   },
   {
     "id": "ann-e165-main",
@@ -260,6 +431,15 @@
     "type": "technique",
     "title": "Main Result",
     "content": "**Erdos Problem #165: SOLVED**\n\n**Answer:** R(3,k) = Theta(k^2/log k)\n\nThe theorem provides:\n- Constants c_1 = 1/2, c_2 = 1\n- For any epsilon > 0, there exists k_0 such that for k >= k_0:\n  - (1/2 - epsilon) * k^2/log k <= R(3,k) [from HHKP]\n  - R(3,k) <= (1 + epsilon) * k^2/log k [from Shearer]\n\n**Prize:** The $250 prize was claimed by Kim (1995) for establishing the order of magnitude.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "Main formalized result: $R(3,k) = \\Theta(k^2/\\log k)$. The formalization axiomatizes the key bounds (AKS, Shearer, Kim, Bohman-Keevash, CJMS) and derives the asymptotic characterization. The 7 axioms capture results that require deep probabilistic and combinatorial arguments not yet in Mathlib.",
+    "relatedConcepts": [
+      "Formalized Ramsey theory",
+      "Axiomatized bounds",
+      "Asymptotic characterization"
+    ],
+    "prerequisites": [
+      "All previous bounds and definitions"
+    ]
   }
 ]
