@@ -542,12 +542,22 @@ theorem fourierCoeff_zero {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
 /-- For N ≥ 3, an AP-free subset cannot be all of ZMod N. -/
 theorem apFree_card_lt {N : ℕ} [NeZero N] (A : Finset (ZMod N)) (hAP : APFree A)
     (hN3 : N ≥ 3) : A.card < N := by
-  sorry
+  by_contra h
+  push_neg at h
+  have heq : A.card = Fintype.card (ZMod N) := by
+    have := card_le_nat A; rw [ZMod.card]; omega
+  have hu := Finset.eq_univ_of_card A heq
+  rw [hu] at hAP
+  haveI : Fact (1 < N) := ⟨by omega⟩
+  exact hAP 0 1 one_ne_zero (Finset.mem_univ _) (Finset.mem_univ _) (Finset.mem_univ _)
 
 /-- For odd N, r ↦ 2r is a bijection on ZMod N (since 2 is invertible). -/
 private lemma two_mul_bijective {N : ℕ} [NeZero N] (hNodd : ¬ 2 ∣ N) :
     Function.Bijective (fun r : ZMod N => 2 * r) := by
-  sorry
+  have hcop : Nat.Coprime 2 N :=
+    (Nat.Prime.coprime_iff_not_dvd Nat.prime_two).mpr hNodd
+  have hu : IsUnit (2 : ZMod N) := (ZMod.unitOfCoprime 2 hcop).isUnit
+  exact Finite.injective_iff_bijective.mp (fun a b h => hu.mul_left_cancel h)
 
 /-- Parseval restricted to r ≠ 0 after change of variables r ↦ 2r for odd N:
     Σ_{r≠0} ‖Â(2r)‖² = |A|(N - |A|). -/
@@ -556,7 +566,45 @@ private lemma parseval_nonzero_double {N : ℕ} [NeZero N] (A : Finset (ZMod N))
     (((Finset.univ : Finset (ZMod N)).filter (· ≠ 0)).sum
       fun r => ‖fourierCoeff A (2 * r)‖ ^ 2) =
     A.card * N - A.card ^ 2 := by
-  sorry
+  -- Step 1: filter (· ≠ 0) = erase 0
+  have heq_set : (Finset.univ : Finset (ZMod N)).filter (· ≠ 0) = Finset.univ.erase 0 := by
+    ext x; simp [Finset.mem_filter, Finset.mem_erase]
+  rw [heq_set]
+  -- Step 2: split off r=0 term: erase.sum + g(0) = univ.sum
+  set g : ZMod N → ℝ := fun r => ‖fourierCoeff A (2 * r)‖ ^ 2
+  have hsplit : (Finset.univ.erase (0 : ZMod N)).sum g + g 0 = Finset.univ.sum g :=
+    Finset.sum_erase_add _ g (Finset.mem_univ 0)
+  -- Step 3: g(0) = ‖Â(0)‖² = |A|²
+  have hg0 : g 0 = (↑A.card : ℝ) ^ 2 := by
+    show ‖fourierCoeff A (2 * 0)‖ ^ 2 = _
+    rw [mul_zero, fourierCoeff_zero, Complex.norm_natCast]
+  -- Step 4: Σ_r g(r) = Σ_s ‖Â(s)‖² = |A|·N via bijection + Parseval
+  have hfull : Finset.univ.sum g = ↑A.card * ↑N := by
+    show (Finset.univ.sum fun r => ‖fourierCoeff A (2 * r)‖ ^ 2) = _
+    rw [show (Finset.univ.sum fun r : ZMod N => ‖fourierCoeff A (2 * r)‖ ^ 2) =
+        Finset.univ.sum (fun s => ‖fourierCoeff A s‖ ^ 2) from
+      Fintype.sum_equiv (Equiv.ofBijective _ (two_mul_bijective hNodd)) _ _ (fun _ => rfl)]
+    exact_mod_cast parseval_on_zmod A
+  -- Combine: erase.sum = |A|N - |A|²
+  linarith
+
+/-- Parseval restricted to r ≠ 0 (without the 2r change of variables):
+    Σ_{r≠0} ‖Â(r)‖² = |A|(N - |A|). -/
+private lemma parseval_nonzero {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
+    (((Finset.univ : Finset (ZMod N)).filter (· ≠ 0)).sum
+      fun r => ‖fourierCoeff A r‖ ^ 2) =
+    A.card * N - A.card ^ 2 := by
+  have heq_set : (Finset.univ : Finset (ZMod N)).filter (· ≠ 0) = Finset.univ.erase 0 := by
+    ext x; simp [Finset.mem_filter, Finset.mem_erase]
+  rw [heq_set]
+  set f : ZMod N → ℝ := fun r => ‖fourierCoeff A r‖ ^ 2
+  have hsplit : (Finset.univ.erase (0 : ZMod N)).sum f + f 0 = Finset.univ.sum f :=
+    Finset.sum_erase_add _ f (Finset.mem_univ 0)
+  have hf0 : f 0 = (↑A.card : ℝ) ^ 2 := by
+    show ‖fourierCoeff A 0‖ ^ 2 = _
+    rw [fourierCoeff_zero, Complex.norm_natCast]
+  have hfull : Finset.univ.sum f = ↑A.card * ↑N := by exact_mod_cast parseval_on_zmod A
+  linarith
 
 /-- If A has no 3-AP and has density delta, then some Fourier coefficient
     is large. This is the key analytic step in Roth's proof.
@@ -606,28 +654,16 @@ theorem fourier_large_coefficient {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
   -- Arithmetic: |A|³ - |A|N > (δ²N/2) · |A|(N-|A|) when δ²N(1+δ) > 2
   -- Contradiction.
   --
-  -- This requires 5 sorry-level steps, all of which follow from:
-  -- (1) Fourier identity + separating r=0 term [complex algebra]
-  -- (2) Triangle inequality + norm of product [Finset.norm_sum_le]
-  -- (3) AM-GM on ‖Â(r)‖·‖Â(2r)‖ + Parseval [odd N bijection]
-  -- (4) Real part extraction [S is real-valued]
-  -- (5) Arithmetic bound [δ²N(1+δ) > 2, nlinarith]
-  --
-  -- We formalize the arithmetic (step 5) and structure, leaving (1)-(4) as sorry.
-  -- Combined sorry: steps 1-4 give us:
-  -- "If all ‖Â(r)‖ < δ²N/2 for r≠0, then |A|³ - |A|N ≤ (δ²N/2)·|A|(N-|A|)"
-  suffices h_key : ∀ r : ZMod N, r ≠ 0 → ‖fourierCoeff A r‖ < delta ^ 2 * ↑N / 2 →
+  -- Proof by contradiction: assume all Fourier coefficients are small, derive
+  -- both an upper bound (Fourier analysis) and lower bound (arithmetic) that
+  -- contradict each other.
+  suffices h_key : (∀ r : ZMod N, r ≠ 0 → ‖fourierCoeff A r‖ < delta ^ 2 * ↑N / 2) →
       (A.card : ℝ) ^ 3 - ↑A.card * ↑N ≤
       delta ^ 2 * ↑N / 2 * (↑A.card * (↑N - ↑A.card)) from by
     by_contra hall
     push_neg at hall
     -- hall : ∀ r, r ≠ 0 → ‖Â(r)‖ < δ²N/2
-    -- Need any r ≠ 0 to apply h_key. Since N ≥ 3, there exists r ≠ 0.
-    have ⟨r, hr⟩ : ∃ r : ZMod N, r ≠ 0 := by
-      -- N ≥ 3, so ZMod N has nonzero elements
-      sorry
-    have h_upper := h_key r hr (hall r hr)
-    -- But |A|³ - |A|N > (δ²N/2)·|A|(N-|A|) from arithmetic
+    have h_upper := h_key hall
     have h_lower : (A.card : ℝ) ^ 3 - ↑A.card * ↑N >
         delta ^ 2 * ↑N / 2 * (↑A.card * (↑N - ↑A.card)) := by
       suffices hsuff : 2 * (A.card : ℝ) ^ 2 + delta ^ 2 * ↑N * ↑A.card -
@@ -640,10 +676,98 @@ theorem fourier_large_coefficient {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
                  mul_nonneg (mul_nonneg (by nlinarith : (4 * delta + delta ^ 2) ≥ 0)
                    (le_of_lt hNpos)) hab]
     linarith
-  -- Prove h_key: the combined Fourier-analytic bound
-  -- This packages steps (1)-(4) into a single sorry
-  intro r _ _
-  sorry
+  -- ═══ Prove h_key: Fourier-analytic upper bound ═══
+  -- Chain: |A|³-|A|N ≤ Σ ‖Â(r)‖²‖Â(2r)‖ ≤ (δ²N/2)·Σ ‖Â(r)‖‖Â(2r)‖ ≤ (δ²N/2)·|A|(N-|A|)
+  intro hall
+  -- Step 1: Fourier sum for AP-free sets = |A|·N
+  have hzero := (apFree_iff_tripleCount_zero A).mp hAP
+  have hfour := triple_count_fourier A
+  simp only [hzero, Nat.cast_zero, zero_add] at hfour
+  have hN_ne : (↑N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
+  have hS : (Finset.univ.sum fun r : ZMod N =>
+      fourierCoeff A r ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * r))) =
+      (↑A.card : ℂ) * ↑N := by
+    rw [eq_comm, inv_mul_eq_div, div_eq_iff hN_ne, eq_comm] at hfour; exact hfour.symm
+  -- Step 2: r=0 term = |A|³
+  have hf0 : fourierCoeff A 0 ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * (0 : ZMod N))) =
+      (↑A.card : ℂ) ^ 3 := by
+    rw [mul_zero, fourierCoeff_zero, map_natCast]; ring
+  -- Step 3: Σ_{r≠0} = |A|N - |A|³
+  have hNeq : ((Finset.univ.filter (· ≠ (0 : ZMod N))).sum fun r =>
+      fourierCoeff A r ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * r))) =
+      (↑A.card : ℂ) * ↑N - (↑A.card : ℂ) ^ 3 := by
+    set f : ZMod N → ℂ := fun r => fourierCoeff A r ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * r))
+    have hsplit := Finset.sum_filter_add_sum_filter_not (Finset.univ : Finset (ZMod N))
+      (· ≠ (0 : ZMod N)) f
+    -- Σ_{r=0} f(r) = f(0) = |A|³
+    have hzero_sum : ((Finset.univ.filter (fun r : ZMod N => ¬(r ≠ 0))).sum f) =
+        (↑A.card : ℂ) ^ 3 := by
+      simp only [not_not, Finset.filter_eq', Finset.mem_univ, ↓reduceIte, Finset.sum_singleton]
+      exact hf0
+    rw [hzero_sum] at hsplit
+    exact eq_sub_of_add_eq (hsplit.trans hS)
+  -- Step 4: |A|³ - |A|N ≤ Σ ‖Â(r)‖²·‖Â(2r)‖  (norm chain)
+  have hS_norm : (A.card : ℝ) ^ 3 - ↑A.card * ↑N ≤
+      ((Finset.univ.filter (· ≠ (0 : ZMod N))).sum fun r =>
+        ‖fourierCoeff A r‖ ^ 2 * ‖fourierCoeff A (2 * r)‖) := by
+    -- Sum = (|A|N - |A|³ : ℝ) as complex. Its norm = |A|³ - |A|N (negative real).
+    have hnorm_eq : ‖((Finset.univ.filter (· ≠ (0 : ZMod N))).sum fun r =>
+        fourierCoeff A r ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * r)))‖ =
+        (A.card : ℝ) ^ 3 - ↑A.card * ↑N := by
+      rw [hNeq]
+      -- Convert ℂ expression to (ℝ expression : ℂ)
+      have hrc : (↑A.card : ℂ) * ↑N - (↑A.card : ℂ) ^ 3 =
+          (((↑A.card : ℝ) * ↑N - (↑A.card : ℝ) ^ 3 : ℝ) : ℂ) := by push_cast; ring
+      rw [hrc, Complex.norm_real, Real.norm_eq_abs, abs_of_nonpos (by nlinarith)]
+      ring
+    -- Triangle inequality + norm of product
+    have htri := norm_sum_le (Finset.univ.filter (· ≠ (0 : ZMod N)))
+      (fun r : ZMod N => fourierCoeff A r ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * r)))
+    have hnorm_term : ∀ r : ZMod N,
+        ‖fourierCoeff A r ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * r))‖ =
+        ‖fourierCoeff A r‖ ^ 2 * ‖fourierCoeff A (2 * r)‖ := by
+      intro r; rw [norm_mul, norm_pow]; congr 1; rw [starRingEnd_apply, norm_star]
+    simp_rw [hnorm_term] at htri; linarith
+  -- Step 5: Σ ‖Â(r)‖²·‖Â(2r)‖ ≤ (δ²N/2)·Σ ‖Â(r)‖·‖Â(2r)‖
+  have hfactor : ((Finset.univ.filter (· ≠ (0 : ZMod N))).sum fun r =>
+      ‖fourierCoeff A r‖ ^ 2 * ‖fourierCoeff A (2 * r)‖) ≤
+      delta ^ 2 * ↑N / 2 * ((Finset.univ.filter (· ≠ (0 : ZMod N))).sum fun r =>
+        ‖fourierCoeff A r‖ * ‖fourierCoeff A (2 * r)‖) := by
+    rw [Finset.mul_sum]
+    apply Finset.sum_le_sum
+    intro r hr
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hr
+    calc ‖fourierCoeff A r‖ ^ 2 * ‖fourierCoeff A (2 * r)‖
+        = ‖fourierCoeff A r‖ * (‖fourierCoeff A r‖ * ‖fourierCoeff A (2 * r)‖) := by
+          rw [sq]; ring
+      _ ≤ delta ^ 2 * ↑N / 2 * (‖fourierCoeff A r‖ * ‖fourierCoeff A (2 * r)‖) :=
+          mul_le_mul_of_nonneg_right (le_of_lt (hall r hr))
+            (mul_nonneg (norm_nonneg _) (norm_nonneg _))
+  -- Step 6: AM-GM + Parseval: Σ ‖Â(r)‖·‖Â(2r)‖ ≤ |A|(N-|A|)
+  have hamgm : ((Finset.univ.filter (· ≠ (0 : ZMod N))).sum fun r =>
+      ‖fourierCoeff A r‖ * ‖fourierCoeff A (2 * r)‖) ≤
+      ↑A.card * (↑N - ↑A.card) := by
+    calc ((Finset.univ.filter (· ≠ (0 : ZMod N))).sum fun r =>
+          ‖fourierCoeff A r‖ * ‖fourierCoeff A (2 * r)‖)
+        ≤ ((Finset.univ.filter (· ≠ (0 : ZMod N))).sum fun r =>
+          (‖fourierCoeff A r‖ ^ 2 + ‖fourierCoeff A (2 * r)‖ ^ 2) / 2) := by
+          apply Finset.sum_le_sum; intro r _
+          nlinarith [sq_nonneg (‖fourierCoeff A r‖ - ‖fourierCoeff A (2 * r)‖),
+                     norm_nonneg (fourierCoeff A r), norm_nonneg (fourierCoeff A (2 * r))]
+      _ = (((Finset.univ.filter (· ≠ (0 : ZMod N))).sum fun r => ‖fourierCoeff A r‖ ^ 2) +
+           ((Finset.univ.filter (· ≠ (0 : ZMod N))).sum fun r =>
+            ‖fourierCoeff A (2 * r)‖ ^ 2)) / 2 := by
+          rw [← Finset.sum_div, ← Finset.sum_add_distrib]
+      _ = ↑A.card * (↑N - ↑A.card) := by
+          rw [parseval_nonzero A, parseval_nonzero_double A hNodd]; ring
+  -- Final chain
+  calc (A.card : ℝ) ^ 3 - ↑A.card * ↑N
+      ≤ ((Finset.univ.filter (· ≠ (0 : ZMod N))).sum fun r =>
+          ‖fourierCoeff A r‖ ^ 2 * ‖fourierCoeff A (2 * r)‖) := hS_norm
+    _ ≤ delta ^ 2 * ↑N / 2 * ((Finset.univ.filter (· ≠ (0 : ZMod N))).sum fun r =>
+          ‖fourierCoeff A r‖ * ‖fourierCoeff A (2 * r)‖) := hfactor
+    _ ≤ delta ^ 2 * ↑N / 2 * (↑A.card * (↑N - ↑A.card)) := by
+        apply mul_le_mul_of_nonneg_left hamgm; positivity
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART V: DENSITY INCREMENT LEMMA
