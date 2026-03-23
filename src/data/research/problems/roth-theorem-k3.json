@@ -34,7 +34,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 7 decomposed fourier_large_coefficient into 2 cases. Case 1 (δ²N<2) FULLY PROVED via Parseval pigeonhole. Case 2 (δ²N≥2) proved modulo single norm bound sorry (AM-GM + Parseval argument documented). Added 3 helper lemmas (apFree_card_lt, parseval_nonzero, fourierCoeff_zero). Changed signature to hN:1<N. Sorry count unchanged at 2 but significant proof architecture added.",
+    "progressSummary": "PROGRESS: Proved direct Fourier bound 2|A|≤N+1 for AP-free sets (no density increment needed). Identified density_increment_lemma is FALSE as stated for edge cases. File: 1 sorry (density_increment_lemma), 0 axioms.",
     "builtItems": [
       "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
       "Build now succeeds: 0 axioms, 3 sorries",
@@ -51,7 +51,10 @@
       "parseval_nonzero in RothTheorem.lean",
       "fourierCoeff_zero in RothTheorem.lean",
       "fourier_large_coefficient Case 1 proof in RothTheorem.lean",
-      "fourier_large_coefficient Case 2 setup (Fourier identity separation, norm computation) in RothTheorem.lean"
+      "fourier_large_coefficient Case 2 setup (Fourier identity separation, norm computation) in RothTheorem.lean",
+      "apFree_card_quadratic_bound: 2|A|²≤N(|A|+1) for APFree A⊆ZMod N, N>1 — PROVED in RothTheorem.lean",
+      "apFree_card_le_half: 2|A|≤N+1 for APFree A⊆ZMod N, N>1 — PROVED in RothTheorem.lean",
+      "Fixed 5 Mathlib API breakages: ZMod.isUnit_natCast_iff, natCast_zmod_eq_zero_iff_dvd, exact_mod_cast, card_pos direction, eq_univ_of_card"
     ],
     "insights": [
       "RothTheorem.lean had 3 build errors: deprecated Finset.not_mem_empty, broken apFree_singleton, non-existent Complex.abs",
@@ -81,7 +84,11 @@
       "apFree_card_lt proved: AP-free sets cannot be full ZMod N for N≥2 (uses {0,1,2} or {0,1,0} 3-AP)",
       "parseval_nonzero proved: Σ_{r≠0}‖Â(r)‖² = n(N-n) as helper lemma",
       "fourierCoeff_zero proved: Â(0) = |A|",
-      "Theorem signature changed to hN:1<N (was 0<N) since ZMod 1 has no r≠0"
+      "Theorem signature changed to hN:1<N (was 0<N) since ZMod 1 has no r≠0",
+      "Direct Fourier bound 2|A|²≤N(|A|+1) does NOT require oddness—works for all N>1",
+      "density_increment_lemma as stated is FALSE for N=1,delta=1: conclusion requires density>1 which is impossible",
+      "Proof architecture bug: N₀=1 in roth_density_bound is wrong; need N₀=2^{2^K} where K=ceil(100/delta²)",
+      "Fix requires 2≤M in density increment conclusion (not just M≥sqrt(N)) to maintain APFree→density<1"
     ],
     "mathlibGaps": [],
     "nextSteps": [
