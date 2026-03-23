@@ -275,6 +275,16 @@
       "targetId": "bezout-identity-oq-04",
       "relationship": "sibling",
       "description": "Complete parametric solution set of linear Diophantine equations ax + by = c: solutions form a 1D lattice {(x₀ + (b/d)t, y₀ - (a/d)t) : t ∈ ℤ}. Extends the single-solution Bézout computation here to the full solution family, using the same extended GCD infrastructure"
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "Proves the Fundamental Theorem of Arithmetic from Euclid's lemma — a direct consumer of the constructive Euclid's lemma developed here. The proof chain Bézout → Euclid's lemma → unique factorization shows that the constructive quotient extraction formalized in this entry is a building block for the most fundamental theorem in number theory"
+    },
+    {
+      "targetId": "gcd-algorithm-oq-01",
+      "relationship": "related",
+      "description": "Formalizes Lamé's theorem on worst-case Euclidean algorithm complexity: consecutive Fibonacci numbers achieve the worst case, giving O(log min(a,b)) steps. This quantifies the efficiency of the extended Euclidean algorithm used here to compute Bézout coefficients — the extGcd implementation inherits the same complexity bound"
     }
   ],
   "relatedProofs": [
@@ -293,7 +303,9 @@
     "quadratic-reciprocity",
     "primitive-roots",
     "bezout-identity-oq-02-oq-02-oq-01-oq-01",
-    "bezout-identity-oq-04"
+    "bezout-identity-oq-04",
+    "bezout-identity-oq-02-oq-01",
+    "gcd-algorithm-oq-01"
   ],
   "references": [
     {
