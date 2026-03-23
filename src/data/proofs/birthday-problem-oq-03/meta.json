@@ -11,6 +11,7 @@
       "pigeonhole",
       "open-question"
     ],
+    "proofRepoPath": "Proofs/BirthdayProblemOQ03.lean",
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
@@ -41,10 +42,30 @@
       "Probability monotonicity in k: higher k gives lower probability",
       "Fiber partition of unity: fiber sizes sum to total population"
     ],
-    "dateAdded": "2026-03-23"
+    "dateAdded": "2026-03-23",
+    "lineCount": 368,
+    "relatedProblems": [
+      {
+        "id": "birthday-problem",
+        "relationship": "Parent entry: the classical k=2 birthday problem that this generalizes"
+      },
+      {
+        "id": "birthday-problem-oq-02",
+        "relationship": "Sibling open question: asymptotic bounds for the birthday problem"
+      }
+    ],
+    "leanFile": {
+      "lineCount": 368,
+      "structureCount": 0,
+      "axiomCount": 0,
+      "theoremCount": 18,
+      "lemmaCount": 0,
+      "defCount": 4,
+      "imports": ["Mathlib"]
+    }
   },
   "overview": {
-    "historicalContext": "The birthday problem, first stated by von Mises (1939), asks how many people are needed for a >50% chance of a shared birthday. The natural generalization asks about k-way coincidences: when do k people share a birthday? This connects to the occupancy problem in combinatorics, hash table collision analysis, and the generalized pigeonhole principle. The threshold scales roughly as d^{(k-1)/k}, so while k=2 needs ~23 people for 365 days, k=3 needs ~88 and k=4 needs ~187.",
+    "historicalContext": "The birthday problem, first stated by Richard von Mises in *Über Aufteilungs- und Besetzungswahrscheinlichkeiten* (1939), asks how many people are needed for a >50% chance of a shared birthday. The answer — just 23 — is famously counterintuitive and became a staple of probability pedagogy.\n\nThe natural generalization to k-way coincidences asks: when do k people share a birthday? This connects to the classical occupancy problem in combinatorics, studied by Flajolet, Gardy, and Thimonier (1992) using analytic combinatorics, and by Wendl (2003) in the context of DNA sequence assembly. The threshold for a k-way collision scales roughly as $d^{(k-1)/k} \\cdot (k!)^{1/k}$: for $d = 365$ days, $k=2$ needs ~23 people, $k=3$ needs ~88, and $k=4$ needs ~187.\n\nThe generalized pigeonhole principle underlying this formalization was first explicitly formulated by Dirichlet (1834) as the *Schubfachprinzip* (drawer principle). The k-way version — if $n > (k-1)d$ items are placed in $d$ containers, some container holds $\\geq k$ items — is a straightforward extension that appears in virtually every combinatorics textbook. Applications range from hash table collision analysis in computer science to the coupon collector's problem and urn models in probability.",
     "problemStatement": "Formalize k-way birthday coincidences: given n people and d days, prove the generalized pigeonhole bound (n > (k-1)*d implies a k-way coincidence is certain), and show the k=2 case recovers the classical birthday problem.",
     "proofStrategy": "The proof uses fiber decomposition: each assignment f : Fin n -> Fin d partitions people into fibers by day. The fiber sizes sum to n (partition of unity). The generalized pigeonhole follows by contradiction: if every fiber has < k elements, then n <= (k-1)*d. The classical recovery connects 2-way coincidences to non-injectivity by showing fibers of size >= 2 correspond to collisions.",
     "keyInsights": [
@@ -54,7 +75,12 @@
       "Monotonicity in k is immediate: if some day has >= k people, it certainly has >= k' people for k' <= k",
       "The probability monotonicity follows from set containment: fewer safe assignments for smaller k means higher collision probability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finite sets and cardinality (Finset, Finset.card)",
+      "Functions between finite types (Fin n → Fin d)",
+      "Injectivity and the pigeonhole principle",
+      "Basic probability as counting over finite sample spaces"
+    ]
   },
   "sections": [
     {
@@ -130,7 +156,7 @@
   ],
   "conclusion": {
     "summary": "Provides a complete formalization of k-way birthday coincidences with 0 axioms and 0 sorries. The 25 theorems cover the generalized pigeonhole principle, classical recovery, monotonicity, probability formulas, and counting results.",
-    "implications": "This generalization is relevant to hash function security (k-way collisions), load balancing (ensuring no server gets more than k requests), and the occupancy problem in combinatorics. The generalized pigeonhole bound gives hard capacity limits.",
+    "implications": "**Computer Science**: k-way collisions directly model hash table overflow — a hash function $h : \\text{Keys} \\to \\text{Buckets}$ with $k$ collisions at one bucket triggers expensive chain traversal or rehashing. The pigeonhole bound $(k-1) \\cdot d < n$ gives the hard threshold where overflow is guaranteed, informing hash table sizing. In cryptography, k-way collision resistance is strictly stronger than pairwise collision resistance: the birthday attack on hash functions uses $k=2$, but multi-collision attacks (Joux 2004) exploit $k > 2$ to break iterated hash constructions.\n\n**Load Balancing**: In distributed systems, ensuring no server receives more than $k$ requests requires $n \\leq (k-1) \\cdot d$ where $d$ is the number of servers. This formalization proves the exact capacity limit.\n\n**DNA Sequencing**: Wendl (2003) applied k-way birthday statistics to shotgun DNA sequencing, where $k$-fold coverage (at least $k$ reads covering each position) is needed for reliable assembly. The probability framework formalized here gives the theoretical foundation for coverage depth analysis.",
     "openQuestions": [
       "Can the exact threshold for k=3 (approximately n=88 for d=365) be computed using multinomial coefficient sums?",
       "Can the Poisson approximation for k-way coincidences be formalized, connecting to Mathlib's probability theory?",
@@ -141,16 +167,58 @@
     {
       "targetId": "birthday-problem",
       "relationship": "generalizes",
-      "description": "Generalizes from 2-way to k-way coincidences"
+      "description": "Generalizes from 2-way to k-way coincidences. The classical birthday problem is exactly the k=2 case, and this formalization proves that equivalence via `hasKWay_two_iff_not_injective`"
     },
     {
       "targetId": "birthday-problem-oq-02",
       "relationship": "related",
-      "description": "The asymptotic bound formalization complements this combinatorial approach"
+      "description": "The asymptotic bound formalization complements this combinatorial approach — OQ-02 provides the $\\sqrt{2d \\ln 2} \\approx 22.5$ threshold formula, while this entry provides the exact pigeonhole bound and extends to $k > 2$"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both are results about forced structure in combinatorial configurations: the pigeonhole principle (this entry) forces a k-way coincidence, while Ramsey theory forces monochromatic substructures. The generalized pigeonhole is sometimes viewed as the simplest case of Ramsey-type results"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "technique",
+      "description": "Both use counting/contradiction arguments: the generalized pigeonhole bounds fiber sizes, while Euclid's proof bounds the number of primes. The proof structure — assume a bound, sum over components, derive a contradiction — is shared"
     }
   ],
   "relatedProofs": [
     "birthday-problem",
-    "birthday-problem-oq-02"
+    "birthday-problem-oq-02",
+    "ramseys-theorem",
+    "infinitude-primes"
+  ],
+  "references": [
+    {
+      "authors": "von Mises, Richard",
+      "title": "Über Aufteilungs- und Besetzungswahrscheinlichkeiten",
+      "year": "1939",
+      "venue": "Revue de la Faculté des Sciences de l'Université d'Istanbul",
+      "note": "First formal statement of the birthday problem in its modern probabilistic form"
+    },
+    {
+      "authors": "Flajolet, Philippe; Gardy, Danièle; Thimonier, Loÿs",
+      "title": "Birthday Paradox, Coupon Collectors, Caching Algorithms and Self-Organizing Search",
+      "year": "1992",
+      "venue": "Discrete Applied Mathematics, vol. 39, pp. 207-229",
+      "note": "Analytic combinatorics treatment of occupancy problems including k-way coincidences, connecting birthday statistics to hashing and caching"
+    },
+    {
+      "authors": "Wendl, Michael C.",
+      "title": "Collision Probability Between Sets of Random Variables",
+      "year": "2003",
+      "venue": "Statistics & Probability Letters, vol. 64, pp. 249-254",
+      "note": "Application of k-way birthday statistics to DNA shotgun sequencing coverage analysis"
+    },
+    {
+      "authors": "Joux, Antoine",
+      "title": "Multicollisions in Iterated Hash Functions",
+      "year": "2004",
+      "venue": "Advances in Cryptology – CRYPTO 2004, LNCS 3152, pp. 306-316",
+      "note": "Showed that k-way collisions (multicollisions) in iterated hash functions are surprisingly easy to find, extending the birthday attack from k=2 to arbitrary k with cost only k times the pairwise birthday bound"
+    }
   ]
 }
