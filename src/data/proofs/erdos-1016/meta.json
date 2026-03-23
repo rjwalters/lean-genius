@@ -111,6 +111,99 @@
       "Is there a non-hierarchical construction achieving $h(n) \\leq \\lfloor\\log_2 n\\rfloor + O(1)$, eliminating the $\\log^* n$ term?"
     ]
   },
+  "crossReferences": [
+    {
+      "target": "erdos-1012",
+      "relationship": "companion problem",
+      "description": "Long Cycles in Dense Graphs studies the minimum edges forcing an (n-k)-cycle in n-vertex graphs. Both problems study the edge threshold for cycle structure, with #1012 addressing cycle length near n (nearly Hamiltonian) and #1016 addressing the excess beyond a Hamiltonian cycle needed for all shorter cycles."
+    },
+    {
+      "target": "erdos-65",
+      "relationship": "companion problem",
+      "description": "Cycle Lengths in Dense Graphs asks whether the sum of reciprocals of cycle lengths grows as log k when the graph has kn edges. Both problems concern the spectrum of cycle lengths achievable in sparse-to-moderate density graphs and connect cycle diversity to edge count."
+    },
+    {
+      "target": "erdos-64",
+      "relationship": "related problem",
+      "description": "Power of Two Cycles in Min Degree 3 Graphs asks whether every graph with minimum degree ≥ 3 contains a cycle of length 2^k. The doubling argument underlying the lower bound in #1016 — each extra edge at most doubles the range of achievable cycle lengths — is directly related to the power-of-two cycle theme."
+    },
+    {
+      "target": "erdos-58",
+      "relationship": "related problem",
+      "description": "Chromatic Number vs Odd Cycle Lengths connects the number of distinct odd cycle lengths to chromatic number. Both problems study how the set of realized cycle lengths is constrained by graph parameters (edge count vs. chromatic number)."
+    },
+    {
+      "target": "erdos-1017",
+      "relationship": "related problem",
+      "description": "Clique Partition of Graphs studies f(n,k), the minimum cliques needed to partition any graph with n vertices and k edges. Both problems involve extremal graph theory where n²/4 is a threshold (Turán's theorem / Bondy's pancyclicity theorem), and the Erdős–Goodman–Pósa result cited in #1017 is analogous in spirit to Bondy's quadratic threshold in #1016."
+    },
+    {
+      "target": "erdos-1079",
+      "relationship": "related problem",
+      "description": "Turán Density in Neighborhoods asks about Turán-dense neighborhoods in graphs at the Turán threshold. Bondy's result that n²/4 edges force pancyclicity or bipartiteness in #1016 is a close analogue of Turán-type thresholds, connecting both problems to the structural consequences of dense graph edge counts."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "target": "erdos-1012",
+      "relationship": "Long Cycles in Dense Graphs (Woodall, 1972) — extremal edges forcing near-Hamiltonian cycles, closely related to pancyclicity edge thresholds"
+    },
+    {
+      "target": "erdos-65",
+      "relationship": "Cycle Lengths in Dense Graphs — distribution of cycle lengths in kn-edge graphs, companion to pancyclic cycle-spectrum questions"
+    },
+    {
+      "target": "erdos-64",
+      "relationship": "Power of Two Cycles in Min Degree 3 Graphs — the doubling argument linking achievable cycle lengths to edge additions, foundational to the #1016 lower bound"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["J.A. Bondy"],
+      "title": "Pancyclic graphs I",
+      "venue": "Journal of Combinatorial Theory, Series B",
+      "year": 1971,
+      "volume": "11",
+      "pages": "80–84",
+      "doi": "10.1016/0095-8956(71)90016-5",
+      "note": "Introduces pancyclic graphs, proves that n²/4 edges suffice for pancyclicity or bipartiteness, and poses the bounds on h(n) studied in Erdős Problem #1016."
+    },
+    {
+      "authors": ["C. Griffin"],
+      "title": "A lower bound for the minimum number of edges in a pancyclic graph on n vertices",
+      "venue": "Australasian Journal of Combinatorics",
+      "year": 2013,
+      "volume": "57",
+      "pages": "295–304",
+      "note": "Establishes the lower bound h(n) ≥ ⌊log₂(n-1)⌋ - 1 via the doubling argument, rigorously proving the bound conjectured by Bondy."
+    },
+    {
+      "authors": ["J. George", "A. Khodkar", "W.D. Wallis"],
+      "title": "Pancyclic and Bipancyclic Graphs",
+      "venue": "Springer Briefs in Mathematics, Springer",
+      "year": 2016,
+      "doi": "10.1007/978-3-319-31951-3",
+      "note": "Proves the upper bound h(n) ≤ ⌊log₂ n⌋ + log* n + O(1) via explicit hierarchical construction with ⌊log₂ n⌋ doubling stages and log* n correction stages."
+    },
+    {
+      "authors": ["J.A. Bondy", "U.S.R. Murty"],
+      "title": "Graph Theory",
+      "venue": "Graduate Texts in Mathematics, Springer",
+      "year": 2008,
+      "volume": "244",
+      "doi": "10.1007/978-1-84628-970-5",
+      "note": "Standard reference for Hamiltonian graph theory and pancyclicity; Chapter 10 covers cycle structure including the Bondy–Simonovits theorem and related extremal results."
+    },
+    {
+      "authors": ["R.J. Faudree", "R.H. Schelp", "M. Simonovits"],
+      "title": "On some Turán type problems in graph theory",
+      "venue": "Combinatorics (Keszthely, 1976), Colloq. Math. Soc. János Bolyai",
+      "year": 1978,
+      "volume": "18",
+      "pages": "311–335",
+      "note": "Studies extremal problems for cycles including the Turán-type threshold for forcing all cycle lengths; provides context for the n²/4 threshold in Bondy's pancyclicity theorem."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",

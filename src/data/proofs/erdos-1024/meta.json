@@ -120,6 +120,98 @@
       "Connections to coding theory and designs?"
     ]
   },
+  "crossReferences": [
+    {
+      "target": "erdos-1020",
+      "relationship": "The Erdős Matching Conjecture (Problem #1020) concerns independence in r-uniform hypergraphs via matchings; both problems study extremal independence structure in uniform hypergraphs and use the same toolbox of probabilistic and algebraic methods."
+    },
+    {
+      "target": "erdos-1022",
+      "relationship": "Problem #1022 on Property B for sparse set families is closely related: Property B asks for 2-colorings of hyperedges with no monochromatic edge, which is dual to the independent-set problem in hypergraphs. Both use linear or sparse hypergraph assumptions."
+    },
+    {
+      "target": "erdos-1025",
+      "relationship": "Problem #1025 on independent sets in pair functions shares the theme of guaranteeing large independent sets in combinatorial structures; the Erdős–Hajnal framework and probabilistic lower-bound argument appear in both."
+    },
+    {
+      "target": "erdos-1013",
+      "relationship": "The triangle-free chromatic threshold (Problem #1013) relies on the probabilistic method to build sparse graphs with high chromatic number; the logarithmic corrections and density arguments parallel those in the Phelps–Rödl proof."
+    },
+    {
+      "target": "erdos-1029",
+      "relationship": "Problem #1029 on Ramsey number growth is a canonical application of the probabilistic method (Erdős 1947); the first-moment argument giving independence-number lower bounds in Problem #1024 is a direct descendant of the same technique."
+    },
+    {
+      "target": "erdos-1030",
+      "relationship": "Problem #1030 on off-diagonal Ramsey numbers also exploits probabilistic constructions and asymptotic gap-closing arguments, making it methodologically parallel to the Phelps–Rödl resolution of Problem #1024."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "target": "erdos-1020",
+      "description": "Erdős Matching Conjecture: extremal independence/matching in r-uniform hypergraphs"
+    },
+    {
+      "target": "erdos-1022",
+      "description": "Property B for sparse set families: 2-coloring and independent transversals in hypergraphs"
+    },
+    {
+      "target": "erdos-1025",
+      "description": "Independent sets in pair functions: probabilistic lower bounds for independence"
+    },
+    {
+      "target": "erdos-1029",
+      "description": "Ramsey number growth: foundational probabilistic-method lower bound"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Kevin T. Phelps", "Vojtěch Rödl"],
+      "title": "On the algorithmic complexity of coloring simple hypergraphs and Steiner triple systems",
+      "venue": "Combinatorica",
+      "year": 1986,
+      "volume": "6",
+      "number": "1",
+      "pages": "61–78",
+      "doi": "10.1007/BF02579409",
+      "note": "Primary reference: proves f(n) ≍ (n log n)^{1/2} for 3-uniform linear hypergraphs."
+    },
+    {
+      "authors": ["Paul Erdős"],
+      "title": "On the combinatorial problems which I would most like to see solved",
+      "venue": "Combinatorica",
+      "year": 1981,
+      "volume": "1",
+      "number": "1",
+      "pages": "25–42",
+      "doi": "10.1007/BF02579174",
+      "note": "Erdős's original problem statement and initial bounds n^{1/2} ≪ f(n) ≪ n^{2/3}."
+    },
+    {
+      "authors": ["Paul Erdős", "Joel Spencer"],
+      "title": "Probabilistic Methods in Combinatorics",
+      "venue": "Academic Press",
+      "year": 1974,
+      "note": "The probabilistic method used for the independence lower bound; the first-moment technique is developed here."
+    },
+    {
+      "authors": ["Noga Alon", "Joel H. Spencer"],
+      "title": "The Probabilistic Method",
+      "venue": "Wiley-Interscience",
+      "year": 2016,
+      "edition": "4th",
+      "note": "Standard reference for the probabilistic method including the Lovász Local Lemma and independence number bounds in hypergraphs."
+    },
+    {
+      "authors": ["Stasys Jukna"],
+      "title": "Extremal Combinatorics: With Applications in Computer Science",
+      "venue": "Springer",
+      "year": 2011,
+      "edition": "2nd",
+      "doi": "10.1007/978-3-642-17364-6",
+      "note": "Chapter on hypergraph independence numbers and Steiner systems; covers the density arguments underlying the Phelps–Rödl bound."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Finset.Basic",
