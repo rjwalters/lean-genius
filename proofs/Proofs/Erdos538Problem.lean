@@ -155,6 +155,57 @@ axiom mertens_prime_reciprocal_lower :
     ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 3 →
       c * Real.log (Real.log (N : ℝ)) ≤ primeReciprocalSum N
 
+/-
+## Section V-B: Harmonic Sum Bounds (moved before double counting)
+-/
+
+/-- Key inequality: 1/(n+1) ≤ log(n+1) - log(n) for n ≥ 1. -/
+private lemma inv_succ_le_log_sub (n : ℕ) (hn : 1 ≤ n) :
+    (1 : ℝ) / ((n : ℝ) + 1) ≤ Real.log ((n : ℝ) + 1) - Real.log (n : ℝ) := by
+  have hn_pos : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr (by omega)
+  have hn1_pos : (0 : ℝ) < (n : ℝ) + 1 := by linarith
+  have h := Real.log_le_sub_one_of_pos (div_pos hn_pos hn1_pos)
+  rw [Real.log_div (ne_of_gt hn_pos) (ne_of_gt hn1_pos)] at h
+  have : (n : ℝ) / ((n : ℝ) + 1) - 1 = -(1 / ((n : ℝ) + 1)) := by field_simp; ring
+  linarith
+
+/-- Without the representation constraint, the maximum reciprocal sum
+of A ⊆ {1,...,N} is bounded by 1 + log N (harmonic sum bound). -/
+theorem harmonic_upper_bound (N : ℕ) (hN : N ≥ 1) :
+    ∀ A : Finset ℕ, A ⊆ Finset.range (N + 1) →
+      reciprocalSum A ≤ 1 + Real.log (N : ℝ) := by
+  intro A hA
+  suffices h : reciprocalSum (Finset.range (N + 1)) ≤ 1 + Real.log (N : ℝ) from
+    le_trans (reciprocalSum_mono hA) h
+  clear A hA
+  induction N with
+  | zero => omega
+  | succ n ih =>
+    rcases Nat.eq_zero_or_pos n with rfl | hn_pos
+    · simp only [reciprocalSum, Finset.sum_range_succ, Finset.sum_range_zero]
+      norm_num [Real.log_one]
+    · have h_ih := ih (by omega : n ≥ 1)
+      show reciprocalSum (Finset.range (n + 1 + 1)) ≤ 1 + Real.log (↑(n + 1))
+      simp only [reciprocalSum] at h_ih ⊢
+      rw [show n + 1 + 1 = (n + 1) + 1 from rfl, Finset.sum_range_succ]
+      rw [if_pos (show n + 1 > 0 from Nat.succ_pos n)]
+      have h_key := inv_succ_le_log_sub n (by omega : 1 ≤ n)
+      have h_cast : ((n + 1 : ℕ) : ℝ) = (n : ℝ) + 1 := by push_cast; ring
+      rw [h_cast]
+      linarith
+
+/-- H(N²) ≤ 1 + 2·log N for N ≥ 1. -/
+private lemma harmonic_sq_bound (N : ℕ) (hN : N ≥ 1) :
+    reciprocalSum (Finset.range (N * N + 1)) ≤ 1 + 2 * Real.log (N : ℝ) := by
+  have hNN : N * N ≥ 1 := by nlinarith
+  calc reciprocalSum (Finset.range (N * N + 1))
+      ≤ 1 + Real.log (↑(N * N) : ℝ) :=
+        harmonic_upper_bound (N * N) hNN _ (Finset.Subset.refl _)
+    _ = 1 + 2 * Real.log (↑N : ℝ) := by
+        congr 1; push_cast
+        rw [show (↑N : ℝ) * ↑N = (↑N : ℝ) ^ 2 from (sq _).symm, Real.log_pow]
+        push_cast; ring
+
 /-- Double counting inequality: (Σ_{a ∈ A} 1/a)·(Σ_{p prime ≤ N} 1/p) ≤ r·H(N²).
     Expanding the product of sums gives Σ_{a ∈ A, p prime ≤ N} 1/(ap).
     Grouping by m = ap: each m ≤ N² has at most r representations (by
@@ -164,7 +215,108 @@ lemma double_counting_bound (A : Finset ℕ) (N r : ℕ)
     (hA : A ⊆ Finset.range (N + 1)) (hr : HasBoundedRepr A r) :
     reciprocalSum A * primeReciprocalSum N ≤
       (r : ℝ) * (1 + 2 * Real.log (N : ℝ)) := by
-  sorry
+  rcases Nat.eq_zero_or_pos N with rfl | hN
+  · -- N = 0: P = ∅, primeReciprocalSum 0 = 0
+    have hp0 : primeReciprocalSum 0 = 0 := by
+      unfold primeReciprocalSum
+      have h : (Finset.range 1).filter Nat.Prime = ∅ := by
+        ext x; simp only [Finset.mem_filter, Finset.mem_range, Finset.not_mem_empty,
+          iff_false, not_and]; intro hx hp; exact absurd hp.one_lt (by omega)
+      rw [h, Finset.sum_empty]
+    rw [hp0, mul_zero]
+    positivity
+  -- Suffices: LHS ≤ r * H(N²) ≤ r * (1 + 2 log N)
+  suffices h_core : reciprocalSum A * primeReciprocalSum N ≤
+      (r : ℝ) * reciprocalSum (Finset.range (N * N + 1)) by
+    exact le_trans h_core (mul_le_mul_of_nonneg_left (harmonic_sq_bound N (by omega))
+      (Nat.cast_nonneg r))
+  -- Setup
+  set P := (Finset.range (N + 1)).filter Nat.Prime with hP_def
+  -- Step 1: Expand LHS as double sum over A ×ˢ P
+  have h_expand : reciprocalSum A * primeReciprocalSum N =
+      ∑ x ∈ A ×ˢ P,
+        ((if (x.1 : ℕ) > 0 then (1 : ℝ) / (↑x.1 : ℝ) else 0) *
+          ((1 : ℝ) / (↑x.2 : ℝ))) := by
+    simp only [reciprocalSum, primeReciprocalSum, ← hP_def]
+    rw [Finset.sum_mul]
+    simp_rw [Finset.mul_sum]
+    rw [← Finset.sum_product']
+  rw [h_expand]
+  -- Step 2: Products land in range(N²+1)
+  have h_maps : ∀ x ∈ A ×ˢ P,
+      x.1 * x.2 ∈ Finset.range (N * N + 1) := by
+    intro ⟨a, p⟩ hmem
+    rw [Finset.mem_product] at hmem
+    rw [Finset.mem_range]
+    have ha : a < N + 1 := Finset.mem_range.mp (hA hmem.1)
+    have hp : p < N + 1 := Finset.mem_range.mp (Finset.mem_filter.mp hmem.2).1
+    nlinarith
+  -- Step 3: Fiber decomposition
+  rw [← Finset.sum_fiberwise_of_maps_to h_maps]
+  -- Step 4: Expand RHS as sum
+  rw [show (r : ℝ) * reciprocalSum (Finset.range (N * N + 1)) =
+      ∑ m ∈ Finset.range (N * N + 1),
+        (r : ℝ) * (if m > 0 then (1 : ℝ) / (↑m : ℝ) else 0)
+    from by rw [reciprocalSum, Finset.mul_sum]]
+  -- Step 5: Pointwise bound on each fiber
+  apply Finset.sum_le_sum
+  intro m _
+  by_cases hm : m > 0
+  · -- m > 0: all fiber elements have a > 0 (since p prime > 0 and ap = m > 0)
+    -- Each fiber term equals 1/m
+    have h_eq : ∀ x ∈ (A ×ˢ P).filter (fun x : ℕ × ℕ => x.1 * x.2 = m),
+        (if (x.1 : ℕ) > 0 then (1 : ℝ) / (↑x.1 : ℝ) else 0) *
+          ((1 : ℝ) / (↑x.2 : ℝ)) = (1 : ℝ) / (↑m : ℝ) := by
+      intro ⟨a, p⟩ hx
+      rw [Finset.mem_filter, Finset.mem_product] at hx
+      have hap : a * p = m := hx.2
+      have hp_prime : p.Prime := (Finset.mem_filter.mp hx.1.2).2
+      have ha_pos : a > 0 := by
+        rcases Nat.eq_zero_or_pos a with rfl | h
+        · simp at hap; omega
+        · exact h
+      rw [if_pos ha_pos, show (↑m : ℝ) = ↑a * ↑p from by exact_mod_cast hap.symm]
+      have ha_ne : (↑a : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+      have hp_ne : (↑p : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hp_prime.ne_zero
+      field_simp
+    rw [Finset.sum_congr rfl h_eq, Finset.sum_const, nsmul_eq_mul, if_pos hm]
+    -- Goal: ↑card * (1/↑m) ≤ ↑r * (1/↑m)
+    apply mul_le_mul_of_nonneg_right _ (div_nonneg one_pos.le (Nat.cast_nonneg m))
+    -- Fiber card ≤ reprCount A m ≤ r
+    have h_card : ((A ×ˢ P).filter (fun x : ℕ × ℕ => x.1 * x.2 = m)).card ≤ r := by
+      calc ((A ×ˢ P).filter (fun x : ℕ × ℕ => x.1 * x.2 = m)).card
+          ≤ reprCount A m := by
+            apply Finset.card_le_card_of_injOn Prod.fst
+            · -- Prod.fst maps fiber into reprCount set
+              intro ⟨a, p⟩ hx
+              simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_product] at hx
+              simp only [Finset.mem_coe]
+              refine Finset.mem_filter.mpr ⟨hx.1.1, p, (Finset.mem_filter.mp hx.1.2).2, ?_⟩
+              exact hx.2.symm.trans (mul_comm a p)
+            · -- Prod.fst is injective on fiber
+              intro ⟨a₁, p₁⟩ h₁ ⟨a₂, p₂⟩ h₂ heq
+              simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_product] at h₁ h₂
+              simp only at heq
+              have ha₁ : a₁ > 0 := by
+                rcases Nat.eq_zero_or_pos a₁ with rfl | h
+                · simp at h₁; omega
+                · exact h
+              exact Prod.ext heq (by nlinarith [h₁.2, h₂.2])
+        _ ≤ r := hr m
+    exact_mod_cast h_card
+  · -- m = 0: all fiber terms have a*p = 0, so a = 0 (p prime > 0), so term = 0
+    push_neg at hm
+    have hm0 : m = 0 := by omega
+    subst hm0
+    simp only [show ¬((0 : ℕ) > 0) from by omega, ite_false, mul_zero]
+    exact le_of_eq (Finset.sum_eq_zero (fun ⟨a, p⟩ hx => by
+      simp only [Finset.mem_filter, Finset.mem_product] at hx
+      have hp : p.Prime := (Finset.mem_filter.mp hx.1.2).2
+      have ha : a = 0 := by
+        rcases mul_eq_zero.mp hx.2 with h | h
+        · exact h
+        · exact absurd h hp.ne_zero
+      simp [ha]))
 
 /-- exp(1) < 3, a well-known numerical fact (e ≈ 2.71828). -/
 private lemma exp_one_lt_three : Real.exp 1 < 3 := by
@@ -235,54 +387,8 @@ theorem erdos_upper_bound :
       _ = 3 / c * ↑r * Real.log ↑N / Real.log (Real.log ↑N) := by ring
 
 /-
-## Section VI: Trivial Bound Without Constraint
+(Section VI: Trivial Bound moved to Section V-B above)
 -/
-
-/-- Key inequality: 1/(n+1) ≤ log(n+1) - log(n) for n ≥ 1.
-    Proof: apply log(x) ≤ x - 1 to x = n/(n+1), giving
-    log(n/(n+1)) ≤ n/(n+1) - 1 = -1/(n+1), so log((n+1)/n) ≥ 1/(n+1). -/
-private lemma inv_succ_le_log_sub (n : ℕ) (hn : 1 ≤ n) :
-    (1 : ℝ) / ((n : ℝ) + 1) ≤ Real.log ((n : ℝ) + 1) - Real.log (n : ℝ) := by
-  have hn_pos : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr (by omega)
-  have hn1_pos : (0 : ℝ) < (n : ℝ) + 1 := by linarith
-  have h := Real.log_le_sub_one_of_pos (div_pos hn_pos hn1_pos)
-  rw [Real.log_div (ne_of_gt hn_pos) (ne_of_gt hn1_pos)] at h
-  -- h : log n - log(n+1) ≤ n/(n+1) - 1 = -1/(n+1)
-  have : (n : ℝ) / ((n : ℝ) + 1) - 1 = -(1 / ((n : ℝ) + 1)) := by field_simp; ring
-  linarith
-
-/-- Without the representation constraint, the maximum reciprocal sum
-of A ⊆ {1,...,N} is bounded by 1 + log N (harmonic sum bound). -/
-theorem harmonic_upper_bound (N : ℕ) (hN : N ≥ 1) :
-    ∀ A : Finset ℕ, A ⊆ Finset.range (N + 1) →
-      reciprocalSum A ≤ 1 + Real.log (N : ℝ) := by
-  intro A hA
-  -- Reduce to bounding the full harmonic sum H_N
-  suffices h : reciprocalSum (Finset.range (N + 1)) ≤ 1 + Real.log (N : ℝ) from
-    le_trans (reciprocalSum_mono hA) h
-  clear A hA
-  -- Prove H_N ≤ 1 + log N by induction
-  induction N with
-  | zero => omega
-  | succ n ih =>
-    rcases Nat.eq_zero_or_pos n with rfl | hn_pos
-    · -- Base case: N = 1
-      -- reciprocalSum({0,1}) = 0 + 1 = 1 ≤ 1 + log 1 = 1
-      simp only [reciprocalSum, Finset.sum_range_succ, Finset.sum_range_zero]
-      norm_num [Real.log_one]
-    · -- Inductive step: n ≥ 1, prove for N = n + 1
-      have h_ih := ih (by omega : n ≥ 1)
-      -- Split: reciprocalSum(range(n+2)) = reciprocalSum(range(n+1)) + 1/(n+1)
-      show reciprocalSum (Finset.range (n + 1 + 1)) ≤ 1 + Real.log (↑(n + 1))
-      simp only [reciprocalSum] at h_ih ⊢
-      rw [show n + 1 + 1 = (n + 1) + 1 from rfl, Finset.sum_range_succ]
-      rw [if_pos (show n + 1 > 0 from Nat.succ_pos n)]
-      -- Goal: (∑ in range(n+1)) + 1/↑(n+1) ≤ 1 + log ↑(n+1)
-      have h_key := inv_succ_le_log_sub n (by omega : 1 ≤ n)
-      -- Normalize ↑(n+1) to ↑n + 1
-      have h_cast : ((n + 1 : ℕ) : ℝ) = (n : ℝ) + 1 := by push_cast; ring
-      rw [h_cast]
-      linarith
 
 /-
 ## Section VII: Double Counting Identity
