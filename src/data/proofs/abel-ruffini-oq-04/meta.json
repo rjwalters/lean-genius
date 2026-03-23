@@ -22,6 +22,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
+    "wiedijkNumber": 83,
     "dateAdded": "2026-03-22",
     "mathlibDependencies": [
       {
@@ -156,7 +157,13 @@
       "Galois theory fundamentals (field extensions, Galois groups)",
       "Familiarity with Lean 4 and Mathlib"
     ],
-    "lineCount": 163
+    "lineCount": 163,
+    "relatedProblems": [
+      {
+        "id": "abel-ruffini",
+        "relationship": "Extension of the base Abel-Ruffini theorem, making the internal proof chain explicit with named, independently verifiable steps"
+      }
+    ]
   },
   "crossReferences": [
     {
