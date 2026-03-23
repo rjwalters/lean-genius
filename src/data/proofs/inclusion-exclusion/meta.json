@@ -46,7 +46,8 @@
     ],
     "wiedijkNumber": 96,
     "axiomCount": 0,
-    "lineCount": 218
+    "lineCount": 218,
+    "assumptions": "None. All theorems fully proved from Mathlib."
   },
   "overview": {
     "historicalContext": "The inclusion-exclusion principle was first formulated by Abraham de Moivre in 1718 for computing probabilities. It was later generalized by Daniel da Silva (1854) and Joseph Sylvester. The principle is fundamental in combinatorics, probability theory, and number theory (e.g., Euler's totient function uses inclusion-exclusion).\n\nThe basic idea addresses a common counting problem: when we add the sizes of two sets, elements in their intersection get counted twice. The principle systematically corrects for this overcounting.",

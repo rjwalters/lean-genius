@@ -54,7 +54,8 @@
       "Multiplicative function case"
     ],
     "axiomCount": 3,
-    "lineCount": 195
+    "lineCount": 195,
+    "assumptions": "Assumes 3 axiom(s): erdosDiscrepancy, erdosDiscrepancyComplex, multiplicativeDiscrepancy"
   },
   "overview": {
     "historicalContext": "The Erdős Discrepancy Problem, posed in the 1930s, asks whether every ±1 sequence must have unbounded partial sums along some arithmetic progression. For over 80 years, this remained one of the most famous open problems in combinatorics.\n\nIn 2010, the Polymath5 project—a massive collaborative effort—attempted to solve it but fell short. In September 2015, Terence Tao announced a complete solution, earning the $500 prize. His proof uses deep connections to multiplicative number theory, particularly a variant of the Elliott conjecture.\n\nTao's breakthrough came from realizing that the problem reduces to studying completely multiplicative functions, where techniques from analytic number theory become available.",
@@ -176,7 +177,9 @@
   ],
   "references": [
     {
-      "authors": ["Terence Tao"],
+      "authors": [
+        "Terence Tao"
+      ],
       "title": "The Erdős discrepancy problem",
       "venue": "Discrete Analysis",
       "year": 2016,
@@ -187,7 +190,10 @@
       "notes": "The definitive paper proving the Erdős Discrepancy Conjecture using the Elliott conjecture on multiplicative functions."
     },
     {
-      "authors": ["Terence Tao", "Joni Teräväinen"],
+      "authors": [
+        "Terence Tao",
+        "Joni Teräväinen"
+      ],
       "title": "The structure of logarithmically averaged correlations of multiplicative functions, with applications to the Chowla and Elliott conjectures",
       "venue": "Duke Mathematical Journal",
       "year": 2019,
@@ -198,7 +204,10 @@
       "notes": "Establishes the logarithmic Elliott conjecture used as a key step in Tao's discrepancy proof."
     },
     {
-      "authors": ["Alexey Lisitsa", "Boris Konev"],
+      "authors": [
+        "Alexey Lisitsa",
+        "Boris Konev"
+      ],
       "title": "A SAT attack on the Erdős discrepancy conjecture",
       "venue": "arXiv preprint",
       "year": 2014,
@@ -206,7 +215,9 @@
       "notes": "Used SAT solvers to verify the conjecture up to C = 2, providing strong computational evidence that ultimately preceded Tao's proof."
     },
     {
-      "authors": ["Paul Erdős"],
+      "authors": [
+        "Paul Erdős"
+      ],
       "title": "Some unsolved problems",
       "venue": "Michigan Mathematical Journal",
       "year": 1957,
@@ -216,7 +227,9 @@
       "notes": "One of the original sources containing Erdős's formulation of the discrepancy problem and related open questions."
     },
     {
-      "authors": ["Polymath5 Project"],
+      "authors": [
+        "Polymath5 Project"
+      ],
       "title": "The Erdős discrepancy problem",
       "venue": "Polymath Project Wiki / arXiv:1509.05363",
       "year": 2010,

@@ -56,7 +56,8 @@
     ],
     "dateAdded": "2026-02-09",
     "axiomCount": 0,
-    "lineCount": 237
+    "lineCount": 237,
+    "assumptions": "None. All theorems fully proved from Mathlib."
   },
   "overview": {
     "historicalContext": "The Neumann series is named after Carl Neumann (1832-1925), who used it to solve integral equations. It is the operator-theoretic analogue of the scalar geometric series 1/(1-r) = 1 + r + r² + ⋯ for |r| < 1.\n\nIn functional analysis, the Neumann series is a foundational tool: it shows that any bounded linear operator sufficiently close to the identity is invertible, and provides an explicit formula for the inverse. This underpins perturbation theory, iterative methods in numerical linear algebra, and the theory of Fredholm operators.\n\nThe formalization works in any complete normed ring, which includes matrices with operator norm, bounded linear operators on Banach spaces, and more exotic algebraic structures.",

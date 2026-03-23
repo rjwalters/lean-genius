@@ -46,7 +46,8 @@
       "Special case extraction for Rödl's r=4 theorem"
     ],
     "axiomCount": 1,
-    "lineCount": 142
+    "lineCount": 142,
+    "assumptions": "Assumes 1 axiom(s): erdos_hajnal_rodl_theorem"
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Hajnal in the 1960s, connecting two fundamental graph parameters: chromatic number and girth. The chromatic number measures global coloring complexity, while girth measures local sparsity (absence of short cycles).\n\nThe question asks whether high chromatic number forces the existence of subgraphs that are simultaneously highly chromatic AND locally sparse (large girth). This is surprising because high-girth graphs resemble trees locally, and trees are trivially 2-colorable.\n\nVojtěch Rödl proved the r=4 case in 1977, showing that graphs with sufficiently high chromatic number must contain triangle-free subgraphs of arbitrarily high chromatic number. This connected to the classical Mycielski construction of triangle-free graphs with high chromatic number, but went further by showing such subgraphs exist inside ANY sufficiently chromatic graph.",
@@ -147,7 +148,9 @@
   ],
   "references": [
     {
-      "authors": ["V. Rödl"],
+      "authors": [
+        "V. Rödl"
+      ],
       "title": "On the chromatic number of subgraphs of a given graph",
       "venue": "Proceedings of the American Mathematical Society",
       "year": 1977,
@@ -157,7 +160,10 @@
       "note": "Proves the r=4 case: every graph with sufficiently high chromatic number contains a triangle-free subgraph of chromatic number ≥ k."
     },
     {
-      "authors": ["P. Erdős", "A. Hajnal"],
+      "authors": [
+        "P. Erdős",
+        "A. Hajnal"
+      ],
       "title": "On chromatic number of graphs and set-systems",
       "venue": "Acta Mathematica Hungarica",
       "year": 1966,
@@ -167,7 +173,9 @@
       "note": "Original paper posing the problem of high-chromatic subgraphs with large girth, establishing the foundational questions addressed in Erdős Problem #108."
     },
     {
-      "authors": ["J. Mycielski"],
+      "authors": [
+        "J. Mycielski"
+      ],
       "title": "Sur le coloriage des graphs",
       "venue": "Colloquium Mathematicum",
       "year": 1955,
@@ -177,7 +185,9 @@
       "note": "Mycielski's construction of triangle-free graphs with arbitrarily high chromatic number, a key precursor showing that high girth and high chromatic number are compatible."
     },
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "Graph theory and probability",
       "venue": "Canadian Journal of Mathematics",
       "year": 1959,
@@ -187,7 +197,10 @@
       "note": "Erdős's seminal paper introducing the probabilistic method in graph theory, used to construct graphs with high girth and high chromatic number, directly motivating the problem in #108."
     },
     {
-      "authors": ["N. Alon", "J. H. Spencer"],
+      "authors": [
+        "N. Alon",
+        "J. H. Spencer"
+      ],
       "title": "The Probabilistic Method",
       "venue": "Wiley-Interscience",
       "year": 2016,

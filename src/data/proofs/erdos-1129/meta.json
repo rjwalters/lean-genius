@@ -67,7 +67,8 @@
       "erdos_1129_summary theorem: complete summary"
     ],
     "axiomCount": 9,
-    "lineCount": 374
+    "lineCount": 374,
+    "assumptions": "Assumes 9 axioms for deep results"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1129: Optimal Lagrange Interpolation**\n\nThis problem concerns polynomial interpolation, a fundamental topic in numerical analysis dating back to Newton and Lagrange. Given data points (x₁,y₁),...,(xₙ,yₙ), the unique interpolating polynomial of degree ≤ n-1 is P(x) = Σyₖl_k(x), where l_k are the Lagrange basis functions.\n\n**Historical Development:**\n- **Faber (1914)**: First proved that no choice of nodes can keep the Lebesgue constant bounded as n → ∞. This was a fundamental negative result showing polynomial interpolation has inherent limitations.\n- **Bernstein (1931)**: Improved the lower bound to Λ > (2/π - o(1)) log n and found optimal nodes for n = 3.\n- **Erdős (1961)**: Achieved the sharp lower bound Λ ≥ (2/π) log n - O(1).\n- **Erdős (1967)**: Conjectured the equal-height characterization and posed the complex variant.\n- **Kilgore & Cheney (1976)**: Proved existence of minimizing configurations.\n- **Kilgore (1977)**: Proved the equal-height characterization.\n- **de Boor & Pinkus (1978)**: Proved uniqueness for canonical configurations.\n- **Brutman (1980), Brutman & Pinkus (1980)**: Proved roots of unity are optimal on the unit circle.\n- **Rack & Vajda (2015)**: Found the explicit optimal configuration for n = 4.\n\n**Mathematical Setting:**\nThe Lebesgue constant Λ = max_{x∈[-1,1]} Σ|l_k(x)| measures how much interpolation can amplify errors. If f is approximated by P interpolating at nodes x_i, then ||f - P||_∞ ≤ (1 + Λ) · E_n(f), where E_n(f) is the best polynomial approximation error.",
@@ -213,7 +214,10 @@
   ],
   "references": [
     {
-      "authors": ["T. Kilgore", "E. W. Cheney"],
+      "authors": [
+        "T. Kilgore",
+        "E. W. Cheney"
+      ],
       "title": "A theorem on interpolation in Haar subspaces",
       "journal": "Aequationes Mathematicae",
       "year": 1976,
@@ -222,7 +226,9 @@
       "description": "First proof of the existence of optimal interpolation nodes (Kilgore-Cheney existence theorem); the key compactness argument establishing that a minimizer of Λ exists in [-1,1]^n."
     },
     {
-      "authors": ["T. Kilgore"],
+      "authors": [
+        "T. Kilgore"
+      ],
       "title": "A characterization of the Lagrange interpolating projection with minimal Tchebycheff norm",
       "journal": "Journal of Approximation Theory",
       "year": 1977,
@@ -231,7 +237,10 @@
       "description": "Proves the equal-height characterization: optimal nodes equalize the local maxima of the Lebesgue function on consecutive subintervals (equioscillation theorem)."
     },
     {
-      "authors": ["C. de Boor", "A. Pinkus"],
+      "authors": [
+        "C. de Boor",
+        "A. Pinkus"
+      ],
       "title": "Proof of the conjectures of Bernstein and Erdős concerning the optimal nodes for polynomial interpolation",
       "journal": "Journal of Approximation Theory",
       "year": 1978,
@@ -240,7 +249,9 @@
       "description": "Proves uniqueness of the canonical minimizer and resolves both the Bernstein and Erdős conjectures on optimal interpolation nodes; the source for the uniqueness axiom in the Lean formalization."
     },
     {
-      "authors": ["G. Faber"],
+      "authors": [
+        "G. Faber"
+      ],
       "title": "Über die interpolatorische Darstellung stetiger Funktionen",
       "journal": "Jahresbericht der Deutschen Mathematiker-Vereinigung",
       "year": 1914,
@@ -249,7 +260,9 @@
       "description": "The foundational 1914 result showing that no sequence of interpolation nodes can keep Λ_n bounded; establishes Λ_n → ∞ for every node sequence, the starting point for the logarithmic lower bound."
     },
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "Problems and results on the theory of interpolation II",
       "journal": "Acta Mathematica Academiae Scientiarum Hungaricae",
       "year": 1961,

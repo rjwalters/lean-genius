@@ -62,7 +62,8 @@
     ],
     "dateAdded": "2026-02-26",
     "axiomCount": 0,
-    "lineCount": 209
+    "lineCount": 209,
+    "assumptions": "None. All theorems fully proved from Mathlib."
   },
   "overview": {
     "historicalContext": "**Gauss's formula** (1+2+...+n = n(n+1)/2) is the most famous example of a pattern that generalizes to all dimensions. The triangular numbers 1, 3, 6, 10, 15, ... are sums of the natural numbers. The **tetrahedral numbers** 1, 4, 10, 20, 35, ... are sums of triangular numbers. More generally, the **k-simplex numbers** are the (k-1)-simplex numbers accumulated one dimension at a time.\n\nThe precise statement is the **Hockey Stick Identity** (named for the shape of Pascal's triangle it references): summing the k-th column of Pascal's triangle gives the next column:\n$$\\sum_{i=0}^{n} \\binom{i+k}{k} = \\binom{n+k+1}{k+1}$$\n\nThis single identity captures: counting (k=0), arithmetic series (k=1), triangular numbers (k=2), tetrahedral numbers (k=3), and all higher-dimensional simplicial numbers.",

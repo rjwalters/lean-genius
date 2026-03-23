@@ -81,7 +81,8 @@
       "Bounds on pi (Real.pi_pos, Real.pi_gt_three)",
       "Divisibility and powers (dvd_pow_self)"
     ],
-    "lineCount": 168
+    "lineCount": 168,
+    "assumptions": "Assumes 2 axiom(s): bergelson_richter, random_coprime_density"
   },
   "overview": {
     "summary": "Formalizes Erdős Problem #1149, solved by Bergelson and Richter (2017): for non-integer α > 0, the natural density of integers n with gcd(n, ⌊n^α⌋) = 1 is exactly 6/π². The main theorem is axiomatized (deep ergodic theory), with supporting results proved: density bounds 0 < 6/π² < 1, integer exponent exclusion, and the connection to classical coprime probability. 168 lines, 0 sorries, 2 axioms.",

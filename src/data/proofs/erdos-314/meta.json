@@ -56,7 +56,8 @@
       "Connection to Euler-Mascheroni constant"
     ],
     "axiomCount": 10,
-    "lineCount": 184
+    "lineCount": 184,
+    "assumptions": "Assumes 10 axioms for deep results"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #314: Harmonic Sum Error Term**\n\nThis problem from Erdős-Graham (1980) studies partial harmonic sums. Given n, let m(n) be the minimal integer such that the harmonic sum from n to m reaches at least 1. The error ε(n) is how much the sum overshoots 1.\n\n**Historical Development:**\n- **Erdős-Graham (1980):** Posed the question: is lim inf n²ε(n) = 0?\n- **Lim-Steinerberger (2024):** Proved YES with explicit bounds.\n\n**Key Insight:** Since harmonic sums grow like log(m/n), we have m(n) ≈ e·n. The question asks how precisely the sum can hit 1.",

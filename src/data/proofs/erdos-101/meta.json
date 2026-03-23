@@ -41,7 +41,8 @@
       "Lean 4 formalization of Erdős Problem #101: Four-Point Lines from Planar Point Sets",
       "Complete proof architecture with verified type-checking"
     ],
-    "dateAdded": "2026-03-23"
+    "dateAdded": "2026-03-23",
+    "assumptions": "Assumes 5 axiom(s): erdos_101_conjecture, grunbaum_lower_bound, solymosi_stojakovic_lower, collinear_triples_no_four, szemeredi_trotter"
   },
   "sections": [
     {

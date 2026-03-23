@@ -39,7 +39,8 @@
     ],
     "dateAdded": "2025-12-29",
     "axiomCount": 4,
-    "lineCount": 374
+    "lineCount": 374,
+    "assumptions": "Assumes 4 axiom(s): hermite_lindemann, e_transcendental_rationals, pi_transcendental, pi_transcendental_real"
   },
   "overview": {
     "historicalContext": "Charles Hermite's 1873 paper \"Sur la fonction exponentielle\" proved $e$ is transcendental, introducing the **auxiliary polynomial method** that became the foundation of transcendence theory. Hermite's key innovation was constructing a polynomial $f(x) = x^{p-1}(x-1)^p \\cdots (x-n)^p / (p-1)!$ whose integral against $e^x$ yields simultaneously a nonzero integer and a quantity less than 1 — a contradiction. Ferdinand von Lindemann generalized this in his 1882 paper \"Über die Zahl $\\pi$\" to show $e^\\alpha$ is transcendental for any nonzero algebraic $\\alpha$, immediately proving $\\pi$ transcendental via Euler's identity and settling the ancient circle-squaring problem. Karl Weierstrass published the definitive generalization in 1885: if $\\alpha_1, \\ldots, \\alpha_n$ are $\\mathbb{Q}$-linearly independent algebraic numbers, then $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ are algebraically independent. This hierarchy — Hermite to Lindemann to Weierstrass — established the template that Gelfond, Schneider, and Baker would later extend.",

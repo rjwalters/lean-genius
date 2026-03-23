@@ -72,7 +72,8 @@
     "originalContributions": [
       "Lean 4 formalization of Erdős Problem #801: Dense Subgraphs in Graphs with Bounded Independence",
       "Complete proof architecture with verified type-checking"
-    ]
+    ],
+    "assumptions": "Assumes 3 axiom(s): alon_1996, log_factor_necessary, vertex_set_size_optimal"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem circa 1979, asking whether graphs with bounded independence number must contain locally dense subsets — a fundamental local-global question in extremal graph theory. The problem is motivated by Ramsey theory: if $\\alpha(G) \\leq \\sqrt{n}$, then by Ramsey-type reasoning, the graph must be 'dense' in some sense, but can this density be localized to a small subset? Noga Alon resolved it affirmatively in 1996 using the probabilistic method — specifically, random sampling of $\\sqrt{n}$-vertex subsets. The expected number of induced edges in a random $\\sqrt{n}$-subset is $\\Omega(\\sqrt{n} \\log n)$ when $\\alpha(G) \\leq \\sqrt{n}$ implies $e(G) = \\Omega(n \\log n)$, so some $\\sqrt{n}$-subset achieves this bound. The $\\log n$ factor is tight: Paley graphs (constructed from quadratic residues modulo primes) show no $\\sqrt{n}$-subset can induce more than $O(\\sqrt{n} \\log n)$ edges. This connects to deep questions about pseudo-random graphs and Ramsey multiplicity.",

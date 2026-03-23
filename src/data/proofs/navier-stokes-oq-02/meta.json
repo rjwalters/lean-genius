@@ -59,7 +59,8 @@
       "Theorem continuous_dependence_2d: for any ε > 0, threshold δ = ε·exp(-C·E(0)·T) gives W(0) ≤ δ implies W(t) ≤ ε, establishing Hadamard well-posedness"
     ],
     "dateAdded": "2026-02-28",
-    "lineCount": 22350
+    "lineCount": 22350,
+    "assumptions": "Formalization in progress (0 sorry/sorries remaining)."
   },
   "overview": {
     "historicalContext": "The well-posedness of 2D Navier-Stokes has been known since Ladyzhenskaya's work in 1969. The proof of uniqueness uses a Gronwall inequality argument: if two solutions u₁ and u₂ satisfy the same equations with the same initial data, then the difference energy W(t) = ‖u₁(t) - u₂(t)‖² satisfies a differential inequality W'(t) ≤ C·E(t)·W(t), where E(t) is the enstrophy of the reference solution. Since 2D enstrophy is bounded (E(t) ≤ E(0)), the Gronwall inequality gives exponential growth W(t) ≤ W(0)·exp(C·E(0)·t), and uniqueness follows from W(0) = 0.\n\nThis is a classical result in PDE theory, but its formalization in Lean 4 is new. The key challenge is encoding the stability estimate as a structural hypothesis (rather than deriving it from PDE theory, which would require Sobolev space infrastructure not yet in Mathlib).",

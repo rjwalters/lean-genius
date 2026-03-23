@@ -49,7 +49,8 @@
       "Connection to B₂ sequences and extremal combinatorics"
     ],
     "axiomCount": 11,
-    "lineCount": 226
+    "lineCount": 226,
+    "assumptions": "Assumes 11 axioms for deep results"
   },
   "overview": {
     "historicalContext": "A **Sidon set** (or B₂ sequence) is a set where all pairwise sums are distinct. Equivalently, all non-zero differences are distinct. For a 4-element Sidon set, the difference set B - B has exactly 13 elements (including 0).\n\nErdős asked: if every 4-element subset of A has 'almost' this property (|B - B| ≥ 11, missing at most one pair of differences), must A contain a large Sidon subset?\n\nErdős and Sós first proved c ≥ 1/2. Gyárfás and Lehel (1995) improved this to strict bounds:\n- **Lower bound**: c > 1/2 (greedy construction)\n- **Upper bound**: c < 3/5 (Fibonacci numbers as counterexample)\n\nThe exact value of c remains OPEN.",

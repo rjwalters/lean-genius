@@ -70,7 +70,8 @@
     "originalContributions": [
       "Lean 4 formalization of Erdős #510: Chowla's Cosine Problem",
       "Complete proof architecture with verified type-checking"
-    ]
+    ],
+    "assumptions": "Assumes 3 axiom(s): erdos_510_chowla, bedert_bound, sidon_optimality"
   },
   "sections": [
     {

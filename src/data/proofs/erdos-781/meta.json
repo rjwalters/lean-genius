@@ -53,7 +53,8 @@
       "erdos_781_summary main theorem"
     ],
     "axiomCount": 12,
-    "lineCount": 258
+    "lineCount": 258,
+    "assumptions": "Assumes 12 axioms for deep results"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #781: Descending Waves in 2-Colorings**\n\nThis problem concerns monochromatic patterns in 2-colorings of integers, specifically \"descending waves\" where successive gaps are non-increasing.\n\n**Key History:**\n- Brown, Erdős, Freedman (1990): Introduced the problem, proved k² - k + 1 ≤ f(k) ≤ (k³ - 4k + 9)/3\n- Alon, Spencer (1989): DISPROVED the conjecture by showing f(k) ≫ k³\n\n**Mathematical Setting:**\nA descending wave x₁ < x₂ < ... < xₖ satisfies x_j ≥ (x_{j-1} + x_{j+1})/2 for all interior points. Equivalently, the gaps (x_{i+1} - x_i) form a non-increasing sequence.",

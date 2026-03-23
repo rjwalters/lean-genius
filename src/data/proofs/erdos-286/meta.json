@@ -52,7 +52,8 @@
       "Defined IsEgyptianFraction and proved equivalence with IsUnitFractionSum"
     ],
     "axiomCount": 5,
-    "lineCount": 245
+    "lineCount": 245,
+    "assumptions": "Assumes 5 axiom(s): no_k2_representation, croot_theorem, representation_monotone, optimality, greedy_algorithm_exists"
   },
   "overview": {
     "historicalContext": "This problem originates from the landmark monograph 'Old and New Problems and Results in Combinatorial Number Theory' by Erdős and Graham (1980, p. 33). It asks whether 1 can be expressed as a sum of k distinct unit fractions 1/n₁ + ... + 1/nₖ where all denominators lie in a 'short' interval of width approximately (e-1)k.\n\nThe constant (e-1) ≈ 1.718 arises naturally: if one chooses denominators uniformly from an interval [a, a+w], the expected reciprocal sum is approximately (w/a)·(1/a) summed over the interval, and optimizing this leads to the exponential constant. The problem is a deep question about the combinatorial structure of Egyptian fractions under interval constraints.\n\nCroot (2001) proved the affirmative answer in his Acta Arithmetica paper 'On unit fractions with denominators in short intervals.' His proof uses the greedy algorithm with careful interval management. He also proved that the constant (e-1) is asymptotically optimal — one cannot do better than (e-1-ε)k for any ε > 0. The case k = 2 is impossible (1/a + 1/b = 1 with distinct positive integers has no solution), but k ≥ 3 always admits representations.",

@@ -55,7 +55,8 @@
       "Connection to polynomial lemniscates"
     ],
     "axiomCount": 6,
-    "lineCount": 194
+    "lineCount": 194,
+    "assumptions": "Assumes 6 axioms for deep results"
   },
   "overview": {
     "historicalContext": "This problem originates from the 1958 paper 'Metric properties of polynomials' by Erdős, Herzog, and Piranian. They studied the geometry of polynomial level sets—specifically the sublevel set {z : |f(z)| < 1} for monic polynomials with roots in the unit disk.\n\nThe authors proved that this sublevel set always has a connected component containing at least two roots (the Component Lemma). The open problem asks for a quantitative strengthening: can we find not just connectivity, but a SHORT path of length less than 2 connecting two roots?\n\nThe constant 2 is sharp—it's the diameter of the unit disk, so roots could be nearly 2 apart. The conjecture asks whether the sublevel set always provides an efficient shortcut.",
@@ -183,7 +184,11 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "F. Herzog", "G. Piranian"],
+      "authors": [
+        "P. Erdős",
+        "F. Herzog",
+        "G. Piranian"
+      ],
       "title": "Metric properties of polynomials",
       "journal": "Journal d'Analyse Mathématique",
       "volume": "6",
@@ -192,7 +197,10 @@
       "description": "The foundational paper establishing the Component Lemma: for any monic polynomial with roots in the unit disk, the sublevel set {z : |f(z)| < 1} has a connected component containing at least two roots. This is the starting point for Erdős Problem #1041."
     },
     {
-      "authors": ["A. Eremenko", "W. Hayman"],
+      "authors": [
+        "A. Eremenko",
+        "W. Hayman"
+      ],
       "title": "On the length of lemniscates",
       "journal": "The Michigan Mathematical Journal",
       "volume": "46",
@@ -202,7 +210,9 @@
       "description": "Proves that the total length of the lemniscate {z : |f(z)| = 1} for a degree-n monic polynomial is O(n), with sharp constants. This work informs quantitative path-length questions inside sublevel sets."
     },
     {
-      "authors": ["V. Totik"],
+      "authors": [
+        "V. Totik"
+      ],
       "title": "The area of polynomial lemniscates",
       "journal": "Proceedings of the American Mathematical Society",
       "volume": "130",
@@ -212,14 +222,19 @@
       "description": "Studies the area enclosed by polynomial lemniscates and its relation to the capacity of the polynomial. Provides potential-theoretic tools complementary to the path-length approach of Erdős Problem #1041."
     },
     {
-      "authors": ["A. Eremenko"],
+      "authors": [
+        "A. Eremenko"
+      ],
       "title": "A conjecture of Erdős on the connectivity of lemniscates",
       "journal": "Preprint (arXiv:math/0307474)",
       "year": "2003",
       "description": "Discusses connectivity properties of polynomial lemniscates, directly engaging with the Erdős–Herzog–Piranian framework and related open problems including the short-path conjecture."
     },
     {
-      "authors": ["E. B. Saff", "V. Totik"],
+      "authors": [
+        "E. B. Saff",
+        "V. Totik"
+      ],
       "title": "Logarithmic Potentials with External Fields",
       "journal": "Grundlehren der mathematischen Wissenschaften, Springer",
       "volume": "316",

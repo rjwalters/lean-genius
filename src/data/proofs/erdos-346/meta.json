@@ -50,7 +50,8 @@
       "Lean 4 formalization of Erdős Problem #346: Complete Sequences and the Golden Ratio",
       "Complete proof architecture with verified type-checking"
     ],
-    "dateAdded": "2026-03-23"
+    "dateAdded": "2026-03-23",
+    "assumptions": "Assumes 4 axiom(s): graham_strongly_complete, graham_fragile, golden_ratio_fragile, irregular_examples"
   },
   "overview": {
     "historicalContext": "A sequence of positive integers is complete if every sufficiently large integer can be represented as a sum of distinct terms. Zeckendorf's theorem (1972) shows the Fibonacci sequence is complete: every positive integer has a unique Fibonacci representation. The question of how robust completeness is — what happens when terms are removed — connects to deep properties of the golden ratio.\n\nGraham (1964) showed that the sequence Fₙ − (−1)^n (= 1, 3, 4, 8, 12, 21, ...) is both strongly complete (removing finitely many terms preserves completeness) and fragile (removing infinitely many terms can destroy it). Erdős and Graham (1980) studied this phenomenon systematically.\n\nThe golden ratio φ = (1+√5)/2 ≈ 1.618 appears as a sharp threshold: if aₙ₊₁/aₙ > φ, fragility is automatic.",

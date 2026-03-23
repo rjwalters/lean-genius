@@ -65,7 +65,8 @@
       "exceeds_turan_has_triangle: corollary of Turán's theorem"
     ],
     "axiomCount": 8,
-    "lineCount": 194
+    "lineCount": 194,
+    "assumptions": "Assumes 8 axioms for deep results"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1971 [Er71], motivated by the classical Turán problem. The Turán number $\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$ (proved by Turán in 1941) is the maximum edges in a triangle-free graph on $n$ vertices. When a graph exceeds this threshold by $k$ edges, triangles must exist by Turán's theorem. Erdős asked: can we find nearly $k$ edge-disjoint triangles? He originally conjectured $f(c) = 0$ for all $c$ (every excess edge 'belongs to' a unique triangle). Sauer disproved this with $K_{1,m,m}$: it has $2m$ excess edges but only $2m - 1$ edge-disjoint triangles, since the degree-1 vertex is a bottleneck. Erdős himself proved $f(c) = 0$ for $c < 1/2$ using chromatic number arguments. Györi (1988) [Gy88] resolved the problem completely, showing $f(c) \\leq Cc^2$ for an absolute constant $C$. The quadratic growth is essentially optimal. Györi also refined the small-$c$ range: $f(c) = 0$ for $c < 2$ (odd $n$) and $c < 3/2$ (even $n$), reflecting the parity-dependent structure of the Turán graph.",
@@ -183,35 +184,45 @@
   ],
   "references": [
     {
-      "authors": ["E. Györi"],
+      "authors": [
+        "E. Györi"
+      ],
       "title": "On the number of edge disjoint triangles in graphs of given size",
       "year": 1988,
       "venue": "Combinatorics (Eger, 1987), Colloq. Math. Soc. János Bolyai, vol. 52, North-Holland",
       "note": "The main reference: Györi proves f(c) ≤ Cc² and provides parity-dependent refinements f(c)=0 for c<2 (odd n) and c<3/2 (even n)."
     },
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "Some unsolved problems in graph theory and combinatorics",
       "year": 1971,
       "venue": "Combinatorial Mathematics and its Applications, Academic Press",
       "note": "Original problem statement. Erdős posed the question and proved f(c)=0 for c<1/2."
     },
     {
-      "authors": ["P. Turán"],
+      "authors": [
+        "P. Turán"
+      ],
       "title": "On an extremal problem in graph theory",
       "year": 1941,
       "venue": "Matematikai és Fizikai Lapok, 48, 436–452",
       "note": "Proves the Turán theorem: ex(n,K₃)=⌊n²/4⌋. This is the baseline whose excess is studied in Erdős #1009."
     },
     {
-      "authors": ["N. Sauer"],
+      "authors": [
+        "N. Sauer"
+      ],
       "title": "On the density of complete bipartite subgraphs in graphs with bounded independent sets",
       "year": 1975,
       "venue": "Proceedings of a conference on graph theory",
       "note": "Sauer's counterexample: K_{1,m,m} has 2m excess edges but only 2m−1 edge-disjoint triangles, proving f(2) ≥ 1 and that f(c)=0 fails for all c."
     },
     {
-      "authors": ["W. T. Gowers"],
+      "authors": [
+        "W. T. Gowers"
+      ],
       "title": "Hypergraph regularity and the multidimensional Szemerédi theorem",
       "year": 2007,
       "venue": "Annals of Mathematics, 166(3), 897–946",

@@ -57,7 +57,8 @@
       "Bounds: S(x) >= 2 for x >= 3, S(x) <= x^2/4"
     ],
     "axiomCount": 0,
-    "lineCount": 380
+    "lineCount": 380,
+    "assumptions": "Axiomatized formalization with stated assumptions."
   },
   "overview": {
     "historicalContext": "**Erdos Problem #1061**\n\nThis problem appears as Problem B15 in Richard Guy's celebrated collection \"Unsolved Problems in Number Theory\" (2004 edition), attributed to Erdos.\n\n**The Question:**\nThe sum of divisors function sigma(n) is one of the most studied arithmetic functions. This problem explores when the additive equation sigma(a) + sigma(b) = sigma(a + b) holds.\n\n**Mathematical Context:**\nUnlike many arithmetic functions, sigma is neither subadditive nor superadditive in general. The equation sigma(a) + sigma(b) = sigma(a + b) represents a delicate balance where the divisor structure of a + b relates precisely to the divisors of a and b.\n\n**Current Status:**\nThis problem remains OPEN. The question of whether the count of solutions grows linearly (with density c > 0) or has some other asymptotic behavior has not been resolved.",
@@ -200,28 +201,38 @@
   ],
   "references": [
     {
-      "authors": ["Richard K. Guy"],
+      "authors": [
+        "Richard K. Guy"
+      ],
       "title": "Unsolved Problems in Number Theory, 3rd ed., Problem B15",
       "venue": "Springer",
       "year": 2004,
       "description": "Original source recording the problem: how many ordered pairs (a,b) satisfy σ(a)+σ(b)=σ(a+b) with a+b ≤ x?"
     },
     {
-      "authors": ["Paul Erdős", "Carl Pomerance"],
+      "authors": [
+        "Paul Erdős",
+        "Carl Pomerance"
+      ],
       "title": "On the normal number of prime factors of φ(n)",
       "venue": "Rocky Mountain Journal of Mathematics",
       "year": 1985,
       "description": "Establishes analytic techniques for counting solutions to arithmetic-function equations that underpin the linear-growth question in #1061"
     },
     {
-      "authors": ["Gerard Abelian", "Heinrich-Wolfgang Leopoldt"],
+      "authors": [
+        "Gerard Abelian",
+        "Heinrich-Wolfgang Leopoldt"
+      ],
       "title": "On additive properties of the sum-of-divisors function",
       "venue": "Acta Arithmetica",
       "year": 1975,
       "description": "Early study of when σ(a)+σ(b) can equal σ(n) for various n; context for the Erdős problem"
     },
     {
-      "authors": ["Neil J. A. Sloane"],
+      "authors": [
+        "Neil J. A. Sloane"
+      ],
       "title": "The On-Line Encyclopedia of Integer Sequences, A110177",
       "venue": "OEIS Foundation",
       "year": 2005,
@@ -229,7 +240,9 @@
       "description": "Catalogs integers n = a+b for which σ(a)+σ(b) = σ(a+b); the OEIS sequence directly referenced in the Lean formalization"
     },
     {
-      "authors": ["Kevin Ford"],
+      "authors": [
+        "Kevin Ford"
+      ],
       "title": "The distribution of integers with a divisor in a given interval",
       "venue": "Annals of Mathematics",
       "year": 2008,

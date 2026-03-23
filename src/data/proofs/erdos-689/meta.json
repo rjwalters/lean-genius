@@ -42,7 +42,8 @@
       "Lean 4 formalization of Erdős Problem #689: Double Covering by Prime Congruence Classes",
       "Complete proof architecture with verified type-checking"
     ],
-    "dateAdded": "2026-03-23"
+    "dateAdded": "2026-03-23",
+    "assumptions": "Assumes 5 axiom(s): erdos_689_double_cover, erdos_689_r_fold, mertens_sum_divergence, jacobsthal_connection, green_variant_r10"
   },
   "sections": [
     {

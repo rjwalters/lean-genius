@@ -70,7 +70,8 @@
       "disjoint_diff_total: combined difference count (sorry)"
     ],
     "axiomCount": 3,
-    "lineCount": 129
+    "lineCount": 129,
+    "assumptions": "Assumes 3 axiom(s): maxSidonSize, sidon_size_asymptotic, barreto_counterexample"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #43** ($100 bounty)\n\nThis is one of Erdős's celebrated prize problems in additive combinatorics, concerning the structure of **Sidon sets** (also called $B_2$ sets) under a disjoint difference constraint.\n\n**Historical Development:**\n- **Erdős & Turán (1941):** Proved $f(N) \\le \\sqrt{N} + O(N^{1/4})$ and constructed Sidon sets achieving $f(N) \\ge \\sqrt{N} - O(N^{1/4})$ using Singer difference sets from finite projective planes. This established $f(N) \\sim \\sqrt{N}$.\n- **Chowla (1944):** Simplified the Singer construction, showing explicit Sidon sets of size $\\sim \\sqrt{p}$ for primes $p$.\n- **Erdős (1950s-1970s):** Posed Problem #43 asking whether two Sidon sets with disjoint nonzero differences are \"complementary\" — their combined pair count cannot exceed what a single optimal Sidon set achieves, up to $O(1)$.\n- **Tao:** Proved partial results for the equal-size case: if $|A| = |B| = m$, then $m \\le (1/\\sqrt{2} + o(1))\\sqrt{N}$.\n- **Barreto:** Showed the equal-size variant with a multiplicative savings factor $(1-c)$ is false for infinitely many $N$.\n\n**Mathematical Context:**\nThe problem sits at the intersection of additive combinatorics and extremal set theory. Sidon sets are fundamental objects: a set $A \\subseteq \\{1,\\ldots,N\\}$ is Sidon if all pairwise sums $a + b$ ($a \\le b$) are distinct, equivalently if all nonzero differences are distinct. The maximum size $f(N) \\sim \\sqrt{N}$ arises because a Sidon set of size $m$ produces $\\binom{m}{2}$ distinct sums in $\\{2,\\ldots,2N\\}$, giving $\\binom{m}{2} \\lesssim N$. Problem #43 asks whether this constraint is tight even when the difference space is partitioned between two sets.",
@@ -208,7 +209,10 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "P. Turán"],
+      "authors": [
+        "P. Erdős",
+        "P. Turán"
+      ],
       "title": "On a problem of Sidon in additive number theory, and on some related problems",
       "journal": "Journal of the London Mathematical Society",
       "volume": "16",
@@ -218,7 +222,9 @@
       "note": "Founding paper proving f(N)≤√N+O(N^{1/4}) and constructing Sidon sets of size ~√N via Singer difference sets"
     },
     {
-      "authors": ["S. Chowla"],
+      "authors": [
+        "S. Chowla"
+      ],
       "title": "Solution of a problem of Erdős and Turán in additive-number theory",
       "journal": "Proceedings of the National Academy of Sciences of India",
       "volume": "14",
@@ -227,7 +233,9 @@
       "note": "Simplified Singer-type construction giving explicit Sidon sets of size ~√p for prime p"
     },
     {
-      "authors": ["B. Lindström"],
+      "authors": [
+        "B. Lindström"
+      ],
       "title": "An inequality for B_2-sequences",
       "journal": "Journal of Combinatorial Theory",
       "volume": "6",
@@ -237,7 +245,9 @@
       "note": "Proves C(|A|,2)≤N for Sidon sets in {1,…,N} via a direct counting argument on differences"
     },
     {
-      "authors": ["I. Z. Ruzsa"],
+      "authors": [
+        "I. Z. Ruzsa"
+      ],
       "title": "Solving a linear equation in a set of integers",
       "journal": "Acta Arithmetica",
       "volume": "65",
@@ -247,7 +257,9 @@
       "note": "Develops the Plünnecke-Ruzsa inequality and sumset methods used in modern Sidon set analysis"
     },
     {
-      "authors": ["K. O'Bryant"],
+      "authors": [
+        "K. O'Bryant"
+      ],
       "title": "A complete annotated bibliography of work related to Sidon sets",
       "journal": "Electronic Journal of Combinatorics",
       "volume": "DS11",

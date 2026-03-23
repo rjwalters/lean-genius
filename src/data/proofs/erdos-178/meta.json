@@ -89,7 +89,8 @@
         "url": "https://doi.org/10.1090/S0002-9947-1985-0805965-8",
         "description": "Spencer's seminal discrepancy result for finite set systems, providing context for Beck's infinite-family result"
       }
-    ]
+    ],
+    "assumptions": "Assumes 6 axioms for deep results"
   },
   "overview": {
     "historicalContext": "**Discrepancy Theory and Sequence Balancing**\n\nErdős Problem #178 is a fundamental question in combinatorial discrepancy theory: can we assign ±1 values to integers in a way that balances arbitrary infinite families of sequences?\n\n**Historical Development:**\n- **Erdős:** Posed the problem, remarking 'it seems certain that the answer is affirmative'\n- **Beck (1981):** Proved the existence of such a signing (the answer is YES)\n- **Beck (2017):** Quantified the bound as O(d^(4+ε)) for any ε > 0\n\nThe problem connects to fundamental questions about how well structured sets can be balanced.",

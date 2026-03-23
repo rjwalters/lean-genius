@@ -2,7 +2,7 @@
   "id": "area-of-circle-oq-01-oq-02",
   "title": "Area from Circumference Integration",
   "slug": "area-of-circle-oq-01-oq-02",
-  "description": "The area of a circle A = \u03c0r\u00b2 derived by integrating the circumference C(\u03c1) = 2\u03c0\u03c1 from 0 to r. Formalizes Archimedes' geometric vision of the disk as a sum of concentric rings via the Fundamental Theorem of Calculus.",
+  "description": "The area of a circle A = πr² derived by integrating the circumference C(ρ) = 2πρ from 0 to r. Formalizes Archimedes' geometric vision of the disk as a sum of concentric rings via the Fundamental Theorem of Calculus.",
   "meta": {
     "author": "Archimedes (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Area_of_a_circle",
@@ -23,12 +23,12 @@
     "mathlibDependencies": [
       {
         "theorem": "intervalIntegral.integral_eq_sub_of_hasDerivAt",
-        "description": "FTC Part 2: \u222b\u2090\u1d47 F'(x) dx = F(b) - F(a) when F is differentiable",
+        "description": "FTC Part 2: ∫ₐᵇ F'(x) dx = F(b) - F(a) when F is differentiable",
         "module": "Mathlib.MeasureTheory.Integral.Bochner.FundThmCalculus"
       },
       {
         "theorem": "intervalIntegral.integral_hasDerivAt_right",
-        "description": "FTC Part 1: d/dr \u222b\u2080\u02b3 f(\u03c1) d\u03c1 = f(r) when f is continuous",
+        "description": "FTC Part 1: d/dr ∫₀ʳ f(ρ) dρ = f(r) when f is continuous",
         "module": "Mathlib.MeasureTheory.Integral.Bochner.FundThmCalculus"
       },
       {
@@ -43,39 +43,40 @@
       }
     ],
     "originalContributions": [
-      "Complete formalization of A(r) = \u222b\u2080\u02b3 C(\u03c1) d\u03c1 via FTC Part 2",
+      "Complete formalization of A(r) = ∫₀ʳ C(ρ) dρ via FTC Part 2",
       "Answers the open question from the Circumference from Area gallery entry",
-      "Annulus area formula: \u222b_{r\u2081}^{r\u2082} 2\u03c0\u03c1 d\u03c1 = \u03c0(r\u2082\u00b2 - r\u2081\u00b2)",
+      "Annulus area formula: ∫_{r₁}^{r₂} 2πρ dρ = π(r₂² - r₁²)",
       "Duality theorem: differentiating the integral recovers the circumference (FTC Part 1)",
-      "Unit disk area verification: \u222b\u2080\u00b9 2\u03c0\u03c1 d\u03c1 = \u03c0",
-      "Scaling law: changing radius by c scales area by c\u00b2"
+      "Unit disk area verification: ∫₀¹ 2πρ dρ = π",
+      "Scaling law: changing radius by c scales area by c²"
     ],
     "dateAdded": "2026-02-23",
     "axiomCount": 0,
-    "lineCount": 146
+    "lineCount": 146,
+    "assumptions": "None. All theorems fully proved from Mathlib."
   },
   "overview": {
-    "historicalContext": "Archimedes of Syracuse (~287\u2013212 BCE) conceived of the disk as being composed of infinitely many concentric circular rings (annuli). Each ring at radius \u03c1 has circumference $2\\pi\\rho$ and infinitesimal width $d\\rho$, contributing area $2\\pi\\rho\\, d\\rho$ to the total. Summing all rings from $\\rho = 0$ to $\\rho = r$ gives the total area $A = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$. This argument\u2014though not stated in integral notation by Archimedes\u2014is the conceptual foundation of his proof in *Measurement of a Circle* and anticipates Leibniz's integral calculus by nearly two millennia. The formal statement $A(r) = \\int_0^r C(\\rho)\\, d\\rho$ follows from the Fundamental Theorem of Calculus (Newton\u2013Leibniz, 1660s\u20131680s): since $\\frac{dA}{dr} = C(r)$, which was proved in the companion entry (*Circumference via Area Differentiation*), the FTC gives $A(r) - A(0) = \\int_0^r C(\\rho)\\, d\\rho$, and $A(0) = 0$ yields the formula.",
+    "historicalContext": "Archimedes of Syracuse (~287–212 BCE) conceived of the disk as being composed of infinitely many concentric circular rings (annuli). Each ring at radius ρ has circumference $2\\pi\\rho$ and infinitesimal width $d\\rho$, contributing area $2\\pi\\rho\\, d\\rho$ to the total. Summing all rings from $\\rho = 0$ to $\\rho = r$ gives the total area $A = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$. This argument—though not stated in integral notation by Archimedes—is the conceptual foundation of his proof in *Measurement of a Circle* and anticipates Leibniz's integral calculus by nearly two millennia. The formal statement $A(r) = \\int_0^r C(\\rho)\\, d\\rho$ follows from the Fundamental Theorem of Calculus (Newton–Leibniz, 1660s–1680s): since $\\frac{dA}{dr} = C(r)$, which was proved in the companion entry (*Circumference via Area Differentiation*), the FTC gives $A(r) - A(0) = \\int_0^r C(\\rho)\\, d\\rho$, and $A(0) = 0$ yields the formula.",
     "problemStatement": "**Area from Circumference Integration**:\n\nFor the circumference function $C(\\rho) = 2\\pi\\rho$ and the area function $A(r) = \\pi r^2$, prove:\n$$A(r) = \\int_0^r C(\\rho)\\, d\\rho$$\n\nThis holds for all $r \\in \\mathbb{R}$ (signed integral for $r < 0$).",
     "proofStrategy": "The proof applies **FTC Part 2** (the evaluation theorem): if $F$ is differentiable with $F' = f$, then $\\int_a^b f(x)\\, dx = F(b) - F(a)$. Since the companion entry proved $\\frac{d}{dr}(\\pi r^2) = 2\\pi r$, we have $A' = C$. Applying FTC on $[0, r]$ gives $\\int_0^r C(\\rho)\\, d\\rho = A(r) - A(0) = \\pi r^2 - 0 = \\pi r^2$. The circumference function is continuous (hence integrable), and the power rule supplies the derivative.",
     "keyInsights": [
-      "The formula $A(r) = \\int_0^r C(\\rho)\\, d\\rho$ and $C(r) = \\frac{dA}{dr}$ together express that **area and circumference are mutual inverses under the FTC** \u2014 integration and differentiation cancel each other",
+      "The formula $A(r) = \\int_0^r C(\\rho)\\, d\\rho$ and $C(r) = \\frac{dA}{dr}$ together express that **area and circumference are mutual inverses under the FTC** — integration and differentiation cancel each other",
       "The same pattern holds in all dimensions: the volume $V_n(r)$ of an $n$-ball satisfies $S_n(r) = V_n'(r)$ and $V_n(r) = \\int_0^r S_n(\\rho)\\, d\\rho$, where $S_n$ is the surface area",
-      "The proof works for **all $r \\in \\mathbb{R}$**, not just $r \\geq 0$, because Mathlib's `intervalIntegral` is the signed integral \u2014 for $r < 0$, $\\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$ still holds",
+      "The proof works for **all $r \\in \\mathbb{R}$**, not just $r \\geq 0$, because Mathlib's `intervalIntegral` is the signed integral — for $r < 0$, $\\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$ still holds",
       "The **annulus formula** $\\int_{r_1}^{r_2} 2\\pi\\rho\\, d\\rho = \\pi(r_2^2 - r_1^2)$ is an immediate corollary, computing the area of the ring between two circles",
-      "Combining the two open-question answers: differentiating then integrating (or integrating then differentiating) $\\pi r^2$ returns $\\pi r^2$ \u2014 a concrete illustration of the FTC for the most classical function in geometry"
+      "Combining the two open-question answers: differentiating then integrating (or integrating then differentiating) $\\pi r^2$ returns $\\pi r^2$ — a concrete illustration of the FTC for the most classical function in geometry"
     ]
   },
   "crossReferences": [
     {
       "targetId": "area-of-circle",
       "relationship": "extends",
-      "description": "The foundational Area of a Circle entry proves A = \u03c0r\u00b2 via Lebesgue measure. This entry derives the same formula by integration, using circumference as the integrand."
+      "description": "The foundational Area of a Circle entry proves A = πr² via Lebesgue measure. This entry derives the same formula by integration, using circumference as the integrand."
     },
     {
       "targetId": "area-of-circle-oq-01",
       "relationship": "companion",
-      "description": "The companion entry proves C = dA/dr (differentiation direction). This entry proves A = \u222bC dr (integration direction). Together they establish the complete FTC duality for circle geometry."
+      "description": "The companion entry proves C = dA/dr (differentiation direction). This entry proves A = ∫C dr (integration direction). Together they establish the complete FTC duality for circle geometry."
     },
     {
       "targetId": "fundamental-theorem-calculus",
@@ -85,12 +86,12 @@
     {
       "targetId": "isoperimetric-theorem",
       "relationship": "related",
-      "description": "The annulus area formula \u222b_{r\u2081}^{r\u2082} 2\u03c0\u03c1 d\u03c1 = \u03c0(r\u2082\u00b2-r\u2081\u00b2) proved here relates to the isoperimetric inequality: the circle achieves the maximum area-to-perimeter ratio"
+      "description": "The annulus area formula ∫_{r₁}^{r₂} 2πρ dρ = π(r₂²-r₁²) proved here relates to the isoperimetric inequality: the circle achieves the maximum area-to-perimeter ratio"
     },
     {
       "targetId": "pi-transcendental",
       "relationship": "related",
-      "description": "Both use Mathlib's \u03c0: the integral \u222b\u2080\u02b3 2\u03c0\u03c1 d\u03c1 = \u03c0r\u00b2 involves the same transcendental constant whose properties are established in the \u03c0-transcendence formalization"
+      "description": "Both use Mathlib's π: the integral ∫₀ʳ 2πρ dρ = πr² involves the same transcendental constant whose properties are established in the π-transcendence formalization"
     },
     {
       "targetId": "area-of-circle-oq-01-oq-02-oq-01",
@@ -100,7 +101,7 @@
     {
       "targetId": "area-of-circle-oq-01-oq-02-oq-02",
       "relationship": "extended-by",
-      "description": "Integration by parts for Fourier coefficients of periodic functions \u2014 the same IBP technique used in the circumference integration proof extends to computing the Fourier coefficients that arise when representing geometric quantities (like arc length and curvature) as trigonometric series"
+      "description": "Integration by parts for Fourier coefficients of periodic functions — the same IBP technique used in the circumference integration proof extends to computing the Fourier coefficients that arise when representing geometric quantities (like arc length and curvature) as trigonometric series"
     }
   ],
   "sections": [
@@ -116,7 +117,7 @@
       "title": "Area and Circumference Functions",
       "startLine": 46,
       "endLine": 56,
-      "summary": "Defines `circleArea(r) = \u03c0 * r\u00b2` and `circumference(\u03c1) = 2 * \u03c0 * \u03c1` as noncomputable real-valued functions. Proves continuity of both functions."
+      "summary": "Defines `circleArea(r) = π * r²` and `circumference(ρ) = 2 * π * ρ` as noncomputable real-valued functions. Proves continuity of both functions."
     },
     {
       "id": "derivative",
@@ -130,23 +131,23 @@
       "title": "Main Theorem: Integration Recovers Area",
       "startLine": 74,
       "endLine": 92,
-      "summary": "Proves `area_from_integral`: \u222b \u03c1 in 0..r, circumference \u03c1 = circleArea r for all r. Uses FTC Part 2 (integral_eq_sub_of_hasDerivAt) with continuity of circumference for integrability."
+      "summary": "Proves `area_from_integral`: ∫ ρ in 0..r, circumference ρ = circleArea r for all r. Uses FTC Part 2 (integral_eq_sub_of_hasDerivAt) with continuity of circumference for integrability."
     },
     {
       "id": "corollaries",
       "title": "Corollaries and Special Cases",
       "startLine": 93,
       "endLine": 153,
-      "summary": "Derives: explicit form (\u222b\u2080\u02b3 2\u03c0\u03c1 d\u03c1 = \u03c0r\u00b2), annulus area formula (\u222b_{r\u2081}^{r\u2082} 2\u03c0\u03c1 d\u03c1 = \u03c0(r\u2082\u00b2 - r\u2081\u00b2)), FTC Part 1 duality (differentiating the integral recovers circumference), unit disk area (= \u03c0), and quadratic scaling law."
+      "summary": "Derives: explicit form (∫₀ʳ 2πρ dρ = πr²), annulus area formula (∫_{r₁}^{r₂} 2πρ dρ = π(r₂² - r₁²)), FTC Part 1 duality (differentiating the integral recovers circumference), unit disk area (= π), and quadratic scaling law."
     }
   ],
   "conclusion": {
-    "summary": "This formalization proves A(r) = \u222b\u2080\u02b3 C(\u03c1) d\u03c1 using the Fundamental Theorem of Calculus, answering the open question from the Circumference from Area gallery entry. The proof uses the companion result dA/dr = C(r) as the antiderivative relationship, then applies FTC Part 2. Together with its companion, it establishes the complete integration-differentiation duality for circle geometry. The proof file contains 153 lines, 0 sorries, 0 axioms.",
-    "implications": "The integration-differentiation duality $A' = C$ and $A = \\int C$ is not special to circles \u2014 it holds for all dimensions. The $n$-ball volume $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2+1)$ satisfies $V_n' = S_n$ where $S_n$ is surface area, and $V_n(r) = \\int_0^r S_n(\\rho)\\, d\\rho$. This pattern reflects a deep principle in geometric measure theory: the boundary measure is the variation of the volume measure.",
+    "summary": "This formalization proves A(r) = ∫₀ʳ C(ρ) dρ using the Fundamental Theorem of Calculus, answering the open question from the Circumference from Area gallery entry. The proof uses the companion result dA/dr = C(r) as the antiderivative relationship, then applies FTC Part 2. Together with its companion, it establishes the complete integration-differentiation duality for circle geometry. The proof file contains 153 lines, 0 sorries, 0 axioms.",
+    "implications": "The integration-differentiation duality $A' = C$ and $A = \\int C$ is not special to circles — it holds for all dimensions. The $n$-ball volume $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2+1)$ satisfies $V_n' = S_n$ where $S_n$ is surface area, and $V_n(r) = \\int_0^r S_n(\\rho)\\, d\\rho$. This pattern reflects a deep principle in geometric measure theory: the boundary measure is the variation of the volume measure.",
     "openQuestions": [
-      "Can the n-dimensional analogue V_n(r) = \u222b\u2080\u02b3 S_n(\u03c1) d\u03c1 be formalized for all n?",
-      "Can the isoperimetric inequality C\u00b2 \u2265 4\u03c0A (with equality only for circles) be proved?",
-      "Can Archimedes' original method of exhaustion (polygon approximation) be formalized as a Riemann sum that converges to \u222b\u2080\u02b3 2\u03c0\u03c1 d\u03c1?"
+      "Can the n-dimensional analogue V_n(r) = ∫₀ʳ S_n(ρ) dρ be formalized for all n?",
+      "Can the isoperimetric inequality C² ≥ 4πA (with equality only for circles) be proved?",
+      "Can Archimedes' original method of exhaustion (polygon approximation) be formalized as a Riemann sum that converges to ∫₀ʳ 2πρ dρ?"
     ]
   },
   "relatedProofs": [

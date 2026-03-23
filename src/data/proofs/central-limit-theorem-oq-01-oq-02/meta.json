@@ -40,7 +40,8 @@
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "lineCount": 312
+    "lineCount": 312,
+    "assumptions": "None. All theorems fully proved from Mathlib."
   },
   "overview": {
     "historicalContext": "The Lévy-Khintchine formula stands as one of the deepest results in probability theory, characterizing all infinitely divisible distributions through a single canonical representation. Paul Lévy established the formula in 1934 as part of his systematic study of stochastic processes with independent increments, building on earlier work by Bruno de Finetti (1929) on the structure of infinitely divisible laws. Aleksandr Khintchine independently proved the same result in 1937 using characteristic function methods. The formula reveals that every infinitely divisible distribution is uniquely determined by three objects: a drift parameter γ, a Gaussian variance σ², and a Lévy measure ν that describes the jump structure. This trichotomy — drift, diffusion, jumps — became the foundation for the modern theory of Lévy processes, with far-reaching applications in mathematical finance (jump-diffusion models of Merton 1976), physics (anomalous diffusion), and statistics (stable distributions as limit laws for heavy-tailed data).",

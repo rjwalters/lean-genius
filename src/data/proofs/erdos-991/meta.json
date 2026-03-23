@@ -65,7 +65,8 @@
       "improvement_factor: comparing bounds"
     ],
     "axiomCount": 5,
-    "lineCount": 359
+    "lineCount": 359,
+    "assumptions": "Assumes 5 axiom(s): brauchart_bound, marzo_mas_bound, erdos_991_qualitative, potential_theory_equidistribution, polar_cap_bound"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #991**\n\nThis problem concerns the distribution of optimal point configurations on the sphere. The setup involves logarithmic energy minimization, a classical topic in potential theory with applications to polynomial interpolation and numerical integration on spheres.\n\n**Key History:**\n- The qualitative result (discrepancy is o(n)) follows from classical potential theory, though the exact attribution is unclear\n- Brauchart (2008): First quantitative bound of O(n^{3/4})\n- Wolff (unpublished): Improved to O(n^{2/3})\n- Marzo-Mas (2021): Published proof of O(n^{2/3}) as a special case of a more general result about Riesz energy on manifolds\n\n**Mathematical Setting:**\n- Consider n points on the unit sphere S² in R³\n- Optimal configurations maximize the product of pairwise distances (equivalently, minimize logarithmic energy)\n- These are called Fekete points in approximation theory\n- The question asks: do such optimal points distribute uniformly with respect to spherical caps?",

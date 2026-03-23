@@ -52,7 +52,8 @@
     ],
     "relatedProblems": [],
     "axiomCount": 6,
-    "lineCount": 261
+    "lineCount": 261,
+    "assumptions": "Assumes 6 axioms for deep results"
   },
   "overview": {
     "historicalContext": "**Finite Subgraphs of Infinite Chromatic Graphs**\n\nThe de Bruijn-Erdős theorem (1951) states that a graph with infinite chromatic number contains finite subgraphs of every finite chromatic number. But how efficiently? This problem asks whether there's a universal bound F(n) on the size needed to achieve chromatic number n.\n\n**The Conjecture (Erdős-Hajnal-Szemerédi 1982)**: For graphs with chromatic number ℵ₁ (the first uncountable cardinal), there should exist F(n) such that an n-chromatic subgraph exists on at most F(n) vertices. This was already known to fail for ℵ₀-chromatic graphs.\n\n**The Disproof**: Shelah (2005) showed the negative answer is consistent with ZFC. Lambie-Hanson (2020) then constructed an actual ZFC counterexample—no set-theoretic assumptions needed! This completely resolves the problem.",

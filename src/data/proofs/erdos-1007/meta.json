@@ -35,7 +35,8 @@
       "Lean 4 formalization of Erdős Problem #1007: Graph Dimension",
       "Complete proof architecture with verified type-checking"
     ],
-    "dateAdded": "2026-03-23"
+    "dateAdded": "2026-03-23",
+    "assumptions": "Assumes 4 axiom(s): hasUnitEmbedding_exists, min_edges_dimension_4, k33_unique_minimum, min_edges_dimension_5"
   },
   "overview": {
     "historicalContext": "The notion of graph dimension was introduced by Erdős, Harary, and Tutte. A graph has dimension d if it can be embedded in ℝᵈ with all edges as unit segments, but not in ℝᵈ⁻¹. Erdős posed this specific question to Soifer in January 1992, asking for the minimum edge count among 4-dimensional graphs.\n\nThe dimension ladder for complete graphs is natural: K₂ has dimension 1 (a single edge), K₃ has dimension 2 (equilateral triangle in the plane), K₄ has dimension 3 (regular tetrahedron). But dimension 4 breaks the pattern—the minimum is not K₅ but K_{3,3}, a bipartite graph with only 9 edges.\n\nHouse (2013) proved the minimum is 9 and that K_{3,3} is the unique achiever. Chaffee and Noble (2016) extended this to dimension 5, finding the minimum is 15 edges, achieved by both K₆ and K_{1,3,3}. The uniqueness at dimension 4 does not persist at higher dimensions.",

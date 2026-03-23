@@ -50,7 +50,8 @@
       "erdos_1112_summary theorem: the k=2 vs k≥3 dichotomy"
     ],
     "axiomCount": 7,
-    "lineCount": 217
+    "lineCount": 217,
+    "assumptions": "Assumes 7 axioms for deep results"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1112** originates from a remark in Erdős and Graham's 1980 monograph \"Old and New Problems and Results in Combinatorial Number Theory.\" The problem asks about the interplay between lacunary sequences (exponentially growing, very sparse sequences) and k-fold sumsets of sequences with bounded consecutive gaps.\n\nThe core question is a generalization of a result Erdős and Graham proved for k=2: if B is sufficiently lacunary (specifically, 2-lacunary with b₁ ≥ 5), then one can find a sequence A with gaps in [2,3] such that A+A avoids B entirely. They noted that 'whether such behavior can hold for A+A+A (or more summands) is not known.'\n\n**Key Historical Developments:**\n- **1980 (Erdős-Graham):** Proved r₂(2,3) = 2, meaning 2-lacunary sequences can be avoided by 2-fold sumsets with [2,3] gaps.\n- **1997 (Bollobás-Hegyvári-Jin):** Proved the striking negative result that r₃(2,3) does NOT exist - no matter how lacunary B is, any A with [2,3] gaps will have A+A+A intersecting B.\n- **2000 (Chen):** Generalized the k=2 case, showing r₂(a,b) ≤ 2 whenever b ≠ 2a.\n- **2021 (Tang-Yang):** Further technical non-existence results for k ≥ 3.",
@@ -196,7 +197,10 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "R.L. Graham"],
+      "authors": [
+        "P. Erdős",
+        "R.L. Graham"
+      ],
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "venue": "Monographies de L'Enseignement Mathématique",
       "volume": "28",
@@ -204,7 +208,11 @@
       "note": "Origin of Problem #1112; proves r₂(2,3) = 2"
     },
     {
-      "authors": ["B. Bollobás", "N. Hegyvári", "P. Jin"],
+      "authors": [
+        "B. Bollobás",
+        "N. Hegyvári",
+        "P. Jin"
+      ],
       "title": "Sumsets and the absence of lacunary sequences",
       "venue": "Acta Mathematica Hungarica",
       "volume": "77",
@@ -213,7 +221,9 @@
       "note": "Proves r₃(2,3) does not exist — the k=3 impossibility result"
     },
     {
-      "authors": ["Y.-G. Chen"],
+      "authors": [
+        "Y.-G. Chen"
+      ],
       "title": "On subsets of integers with bounded consecutive differences avoiding lacunary sequences",
       "venue": "Acta Arithmetica",
       "volume": "95",
@@ -222,7 +232,10 @@
       "note": "Generalizes the k=2 result: r₂(a,b) ≤ 2 whenever b ≠ 2a"
     },
     {
-      "authors": ["M. Tang", "Y. Yang"],
+      "authors": [
+        "M. Tang",
+        "Y. Yang"
+      ],
       "title": "Non-existence results for k-fold sumset avoidance of lacunary sequences",
       "venue": "Journal of Number Theory",
       "volume": "221",
@@ -231,7 +244,9 @@
       "note": "Extended non-existence results for k ≥ 3 beyond the (2,3) case"
     },
     {
-      "authors": ["T.F. Bloom"],
+      "authors": [
+        "T.F. Bloom"
+      ],
       "title": "A quantitative improvement for Roth's theorem on arithmetic progressions",
       "venue": "Journal of the London Mathematical Society",
       "volume": "93",

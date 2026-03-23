@@ -57,7 +57,8 @@
       "IsKFree definition: k-free numbers"
     ],
     "axiomCount": 4,
-    "lineCount": 198
+    "lineCount": 198,
+    "assumptions": "Assumes 4 axiom(s): nthElement, squarefreeSetAsBFree, erdos_squarefree_limit, squarefree_density"
   },
   "overview": {
     "historicalContext": "Erdős posed Problem #489 in 1961, asking whether a natural gap statistic converges for sequences defined by sparse divisibility constraints. The problem generalizes classical questions about squarefree numbers to arbitrary B-free sets.\n\nThe squarefree case (A = {p² : p prime}) was solved by Erdős himself, who proved that the normalized sum of squared gaps between consecutive squarefree numbers converges. The density of squarefree numbers is 6/π² ≈ 0.6079, a classical result connected to the Riemann zeta function.\n\nThe general case remains open: for an arbitrary sparse set A with |A ∩ [1,x]| = o(√x), it is unknown whether the second moment of gaps in the A-free sequence always converges. This connects to sieve theory, gap distributions, and moment methods in analytic number theory.",

@@ -45,7 +45,8 @@
       "Lean 4 formalization of How Few Pieces to Square a Circle?",
       "Complete proof architecture with verified type-checking"
     ],
-    "dateAdded": "2026-03-23"
+    "dateAdded": "2026-03-23",
+    "assumptions": "Assumes 5 axiom(s): minPieceCount, minPieceCount_achieves, minPieceCount_is_min, laczkovich_upper_bound, lower_bound_three"
   },
   "sections": [
     {

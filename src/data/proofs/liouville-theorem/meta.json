@@ -39,7 +39,8 @@
     ],
     "dateAdded": "2025-12-29",
     "axiomCount": 6,
-    "lineCount": 444
+    "lineCount": 444,
+    "assumptions": "Assumes 6 axioms for deep results"
   },
   "overview": {
     "historicalContext": "Joseph Liouville published his groundbreaking result in 1844 in the *Journal de Mathématiques Pures et Appliquées*, a journal he himself had founded in 1836. At the time, mathematicians strongly suspected that transcendental numbers existed — Euler had conjectured as much — but no one had produced a single example. Liouville's insight was indirect: rather than analyzing a specific constant, he identified a *structural property* (superpolynomial approximability by rationals) that forces transcendence. He then exhibited $L = \\sum 10^{-n!}$ as a concrete number with this property. This was nearly 30 years before Cantor's cardinality argument (1874) showed transcendentals are overwhelmingly common, and predated Hermite's proof that $e$ is transcendental (1873) and Lindemann's proof for $\\pi$ (1882). Liouville's method via Diophantine approximation remains the conceptual foundation for modern transcendence theory, influencing the Thue-Siegel-Roth progression that culminated in Roth's Fields Medal.",

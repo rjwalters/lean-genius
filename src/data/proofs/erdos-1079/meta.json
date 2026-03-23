@@ -48,7 +48,8 @@
       "erdos_1079 theorem: proved from summary axiom"
     ],
     "axiomCount": 4,
-    "lineCount": 176
+    "lineCount": 176,
+    "assumptions": "Assumes 4 axiom(s): bollobas_thomason, bondy_strengthening, turan_theorem, erdos_1079_summary"
   },
   "overview": {
     "historicalContext": "Erdős Problem #1079 was posed by Erdős around 1975 (referenced in [Er75]) as a natural refinement of Turán's theorem. Turán's theorem says that a K_r-free graph on n vertices has at most ex(n, K_r) edges; Erdős asked whether having this many edges forces not just a global clique but also local density — specifically, a vertex whose neighborhood is itself Turán-dense for the next smaller clique.\n\nBollobás and Thomason proved the conjecture in 1981: if G has at least ex(n, K_r) edges and is not the Turán graph itself, then some vertex v with degree d = Ω_r(n) has at least ex(d, K_{r−1}) edges in its neighborhood. In 1983, Bondy strengthened this by showing that when G has strictly more than ex(n, K_r) edges, the maximum-degree vertex always works. This means one need not search for the right vertex — the most connected one is guaranteed to have a dense neighborhood.\n\nErdős described this result as 'a nice generalisation of Turán's theorem.' The Turán graph T(n, r−1) is the unique exception: its neighborhoods are themselves Turán graphs T(d, r−2), achieving exactly ex(d, K_{r−1}) edges rather than exceeding it. The result sits at the foundation of extremal graph theory and has influenced stability results and algorithmic approaches to finding dense substructures.",
@@ -161,7 +162,10 @@
   ],
   "references": [
     {
-      "authors": ["B. Bollobás", "A. G. Thomason"],
+      "authors": [
+        "B. Bollobás",
+        "A. G. Thomason"
+      ],
       "title": "Graphs which contain all small graphs",
       "venue": "European Journal of Combinatorics",
       "year": 1981,
@@ -171,7 +175,9 @@
       "note": "Proves the main theorem of Problem #1079: for r ≥ 4, any graph with at least ex(n, K_r) edges has a vertex with a Turán-dense neighborhood."
     },
     {
-      "authors": ["J. A. Bondy"],
+      "authors": [
+        "J. A. Bondy"
+      ],
       "title": "Counting subgraphs: a new approach to the Girth problem",
       "venue": "Graphs and Combinatorics",
       "year": 1983,
@@ -180,7 +186,9 @@
       "note": "Strengthens the Bollobás–Thomason result: when edges strictly exceed ex(n, K_r), the maximum-degree vertex has a Turán-dense neighborhood."
     },
     {
-      "authors": ["P. Turán"],
+      "authors": [
+        "P. Turán"
+      ],
       "title": "On an extremal problem in graph theory",
       "venue": "Matematikai és Fizikai Lapok",
       "year": 1941,
@@ -189,14 +197,18 @@
       "note": "The original Turán theorem establishing ex(n, K_r) and the extremal Turán graph T(n, r−1); the foundational result that Problem #1079 generalizes from global to local density."
     },
     {
-      "authors": ["B. Bollobás"],
+      "authors": [
+        "B. Bollobás"
+      ],
       "title": "Extremal Graph Theory",
       "venue": "Academic Press, London",
       "year": 1978,
       "note": "Comprehensive reference on Turán-type problems, supersaturation, and stability; the theoretical background for the Bollobás–Thomason result."
     },
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "On the number of complete subgraphs contained in certain graphs",
       "venue": "Magyar Tudományos Akadémia Matematikai Kutató Intézetének Közleményei",
       "year": 1962,

@@ -66,7 +66,8 @@
       "erdos_max_theorem: maximum exceeds threshold"
     ],
     "axiomCount": 9,
-    "lineCount": 245
+    "lineCount": 245,
+    "assumptions": "Assumes 9 axioms for deep results"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1132: Lebesgue Functions in Polynomial Interpolation**\n\nThis problem concerns the Lebesgue function Lₙ(x), a fundamental quantity in polynomial interpolation theory. For any set of nodes x₁,...,xₙ, the Lebesgue function measures how much the Lagrange interpolation can magnify errors.\n\n**Key History:**\n- Bernstein (1931): Proved that 'good' points are dense in (-1,1)\n- Erdős (1961): Proved the maximum of Lₙ always exceeds (2/π)log(n) - O(1)\n- Erdős (1967): Posed the two questions in this problem\n\n**Mathematical Context:**\nThe Lebesgue function Lₙ(x) = Σₖ |lₖ(x)| where lₖ are Lagrange basis polynomials controls interpolation error. For Chebyshev nodes, Λₙ ~ (2/π)log(n), which is optimal. The questions ask whether this growth rate is achieved at fixed points (not just at the maximum) for infinite node sequences.",
@@ -188,35 +189,45 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "Problems and Results on the Theory of Interpolation, II",
       "venue": "Acta Mathematica Academiae Scientiarum Hungaricae",
       "year": 1961,
       "note": "Proves the lower bound Λₙ ≥ (2/π)log(n) − O(1) for the Lebesgue constant of any node sequence; this is the key quantitative result underlying both questions in Problem #1132."
     },
     {
-      "authors": ["S. N. Bernstein"],
+      "authors": [
+        "S. N. Bernstein"
+      ],
       "title": "Sur la limitation des valeurs d'un polynôme P_n(x) de degré n sur tout un segment par ses valeurs en n+1 points du segment",
       "venue": "Izvestia Akademii Nauk SSSR",
       "year": 1931,
       "note": "Establishes that the set of 'good' points x where Lₙ(x) grows like (2/π)log(n) is dense in (-1,1), the density result formalized as bernstein_density_theorem in this entry."
     },
     {
-      "authors": ["T. J. Rivlin"],
+      "authors": [
+        "T. J. Rivlin"
+      ],
       "title": "An Introduction to the Approximation of Functions",
       "venue": "Blaisdell Publishing Company (reprinted Dover, 1981)",
       "year": 1969,
       "note": "Classical graduate text covering Lebesgue functions, Lebesgue constants, Chebyshev nodes, and the (2/π)log(n) asymptotic in depth; standard reference for the background to Problem #1132."
     },
     {
-      "authors": ["E. W. Cheney"],
+      "authors": [
+        "E. W. Cheney"
+      ],
       "title": "Introduction to Approximation Theory",
       "venue": "McGraw-Hill (reprinted AMS Chelsea, 1998)",
       "year": 1966,
       "note": "Covers Chebyshev nodes, equidistant node instability (Runge phenomenon), and the optimality of Chebyshev interpolation in terms of Lebesgue constants, providing the context for the (2/π)log(n) lower bound."
     },
     {
-      "authors": ["L. Brutman"],
+      "authors": [
+        "L. Brutman"
+      ],
       "title": "Lebesgue Functions for Polynomial Interpolation — A Survey",
       "venue": "Annals of Numerical Mathematics",
       "year": 1997,

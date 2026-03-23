@@ -38,7 +38,8 @@
       "Lean 4 formalization of Ramsey Numbers Avoiding Monochromatic Cliques",
       "Complete proof architecture with verified type-checking"
     ],
-    "dateAdded": "2026-03-23"
+    "dateAdded": "2026-03-23",
+    "assumptions": "Assumes 6 axioms for deep results"
   },
   "overview": {
     "historicalContext": "Paul Erdős and András Gyárfás introduced R(n;k,r) in their 1997 paper 'A variant of the classical Ramsey problem' [Er97b], proposing that the growth rate is precisely exponential in n^{1/(k-1)}. This generalizes the classical Ramsey number R(n) = R(n;2,2) from Ramsey (1930), where the exponent 1/(k-1) reduces to 1 for k=2. Erdős and Gyárfás proved the lower bound R(n;3,r) > C^{√n} using a probabilistic argument — a random 2-coloring of K_N typically has no large monochromatic-clique-free sets when N is subexponential. The upper bound R(n;3,r) < C^{√n} remains open as of 2025. Girão observed that the original formulation of the problem has an ambiguity regarding whether R(n;k,r) requires the n vertices to avoid all monochromatic K_k or just K_k in a single color, leading to different interpretations in the literature.",

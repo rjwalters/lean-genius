@@ -65,7 +65,8 @@
       "greedyRepresentation definition and greedy_eventually_works axiom"
     ],
     "axiomCount": 19,
-    "lineCount": 266
+    "lineCount": 266,
+    "assumptions": "Assumes 19 axioms for deep results"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #246** asks about complete sequences — sets where every sufficiently large integer can be represented as a sum of distinct elements.\n\n**Historical Development:**\n- **Birch (1959):** Original proof that {a^k b^l : gcd(a,b)=1} is complete\n- **Cassels (1960):** General result implying completeness for logarithmically dense sets\n- **Davenport:** Observed that bounded l suffices\n- **Hegyvári (2000):** First explicit bound on l (quadruple exponential)\n- **Fang-Chen (2017):** Improved to triply exponential\n- **Yu (2024):** Can use only large summands (> n/(log n)^{1+o(1)})\n\n**Key Insight:** Two coprime bases generate enough distinct numbers that their logarithmic density suffices for completeness.",

@@ -43,7 +43,8 @@
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$500",
     "axiomCount": 8,
-    "lineCount": 176
+    "lineCount": 176,
+    "assumptions": "Assumes 8 axioms for deep results"
   },
   "overview": {
     "historicalContext": "Van der Waerden proved his theorem in 1927, answering a conjecture of Baudet. The original proof gave Ackermann-type bounds on W(k). Berlekamp (1968) gave the first strong lower bounds using finite field constructions: coloring integers by discrete logarithm mod p avoids long APs. Shelah (1988) obtained the first primitive recursive upper bound, and Gowers (2001) dramatically improved it to tower-of-height-5 using his uniformity norms, winning a Fields Medal partly for this work. Kozik and Shabanov (2016) established the current best general lower bound W(k) ≫ 2^k via the Lovász Local Lemma. Erdős posed this problem in 1980 with a $500 prize, asking whether W(k) grows faster than any exponential — the vast gap between known bounds remains one of the central open problems in Ramsey theory.",

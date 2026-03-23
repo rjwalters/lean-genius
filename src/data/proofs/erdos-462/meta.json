@@ -50,7 +50,8 @@
       "Basic properties: p(p) = p for primes, p(n) ≥ 2, p(n) ≤ √n for composites"
     ],
     "axiomCount": 7,
-    "lineCount": 84
+    "lineCount": 84,
+    "assumptions": "Assumes 7 axioms for deep results"
   },
   "leanFile": {
     "path": "Proofs/Erdos462Problem.lean",

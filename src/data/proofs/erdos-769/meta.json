@@ -51,7 +51,8 @@
       "erdos_769_summary theorem combining key results"
     ],
     "axiomCount": 17,
-    "lineCount": 158
+    "lineCount": 158,
+    "assumptions": "Assumes 17 axioms for deep results"
   },
   "overview": {
     "historicalContext": "The cube dissection problem asks: given an n-dimensional unit cube, what is the minimum number c(n) such that for all k ≥ c(n), the cube can be decomposed into exactly k smaller homothetic (scaled, axis-aligned) cubes? Hadwiger initiated the study of this function, proving the first lower bound c(n) ≥ 2^n + 2^{n-1} = 3·2^{n-1}. The exact value c(2) = 6 is known: a square cannot be split into 2, 3, 4, or 5 squares, but can be split into 6 or more.\n\nBurgess and Erdős (1974) proved the first upper bound c(n) ≪ n^{n+1}, showing the function grows at most super-exponentially. Hudelson (1998) refined this under divisibility conditions, proving c(n) < 6^n when gcd(2^n - 1, 3^n - 1) = 1. The most significant recent advance came from Connor and Marmorino (2018), who improved the lower bound to c(n) ≥ 2^{n+1} - 1 for n ≥ 3 and refined the upper bounds: c(n) ≤ 1.8n^{n+1} when n+1 is prime, and c(n) ≤ e²n^n otherwise.\n\nThe central open question is whether c(n) ≫ n^n. Erdős expressed strong belief that c(n) > n^n when n+1 is prime. The current gap between the exponential lower bound (~2^n) and super-exponential upper bound (~n^n) is enormous, and closing it remains one of the main challenges in combinatorial geometry. Even the exact value c(3) is unknown, though Meier conjectured c(3) = 48.",

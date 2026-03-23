@@ -48,7 +48,8 @@
       "Lean 4 formalization of Erdős Problem #390: Factorial Factorization with Large Factors",
       "Complete proof architecture with verified type-checking"
     ],
-    "dateAdded": "2026-03-23"
+    "dateAdded": "2026-03-23",
+    "assumptions": "Assumes 1 axiom(s): factorizationMax_asymptotic"
   },
   "overview": {
     "historicalContext": "Paul Erdős and Ronald Graham first discussed this problem in their 1980 monograph. The key breakthrough came in the 1982 paper by Erdős, Richard Guy, and John Selfridge ('Another property of 239 and some related questions', Congress. Numer. 35), which established that the excess $f(n) - 2n$ has order of magnitude $n/\\log n$. The title refers to the surprising fact that $239$ is the smallest prime $p$ such that $p \\cdot (p+1)/2$ is not a product of primes $\\leq p$ — a related factorization curiosity. The problem asks whether the normalized excess $(f(n) - 2n) \\cdot \\log n / n$ converges to a specific constant, which would reveal the precise structure of optimal large-factor factorizations of $n!$. The function $f(n)$ is recorded as OEIS sequence A193429. This problem sits at the intersection of factorial arithmetic, prime number theory, and optimization over integer partitions.",

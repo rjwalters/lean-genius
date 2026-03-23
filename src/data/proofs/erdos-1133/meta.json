@@ -92,7 +92,8 @@
       }
     ],
     "axiomCount": 4,
-    "lineCount": 218
+    "lineCount": 218,
+    "assumptions": "Assumes 4 axiom(s): erdos_related_result, lagrange_interpolation, lagrange_divergence, chebyshev_optimal"
   },
   "overview": {
     "historicalContext": "**Polynomial Interpolation: From Lagrange to Erdős**\n\nThe problem of polynomial interpolation — finding a polynomial passing through given points — dates to Lagrange (1795) and Newton. While the existence and uniqueness of the interpolating polynomial of degree < n through n points is elementary, the BEHAVIOR of this polynomial between the sample points is a deep and subtle question.\n\n**Runge's Phenomenon (1901)**\n\nCarl Runge discovered that polynomial interpolation of f(x) = 1/(1+25x²) on uniform nodes in [-1,1] diverges wildly near the endpoints. This showed that more sample points can make interpolation WORSE — a counterintuitive phenomenon that launched modern approximation theory.\n\n**The Lebesgue Constant**\n\nThe Lebesgue constant Λ_n = max_x Σ|ℓ_i(x)| measures the worst-case amplification of interpolation error. Faber (1914) proved that for ANY node sequence, Λ_n → ∞, meaning interpolation diverges for some continuous function. Chebyshev nodes achieve the minimal Λ_n = (2/π)log n + O(1).\n\n**Erdős's Contribution (1967)**\n\nIn his 1967 paper 'Problems and results on the convergence and divergence properties of the Lagrange interpolation polynomials,' Erdős posed Problem #1133 as a strengthening of the divergence phenomenon. He proved a weaker result: one can always FIND a polynomial bounded at sample points that explodes elsewhere. The conjecture asks whether one can CHOOSE target values to force this for ALL approximating polynomials — an adversarial strengthening that remains open after nearly 60 years.\n\n**Why It's Hard**\n\nThe difficulty is the quantifier reversal: proving existence (∃P with ‖P‖_∞ > C) is easier than proving universality (∀P satisfying constraints has ‖P‖_∞ > C). The latter requires a strategy for choosing y_i that simultaneously defeats all possible polynomials — an infinite-dimensional minimax problem.",
@@ -219,7 +220,9 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "Problems and results on the convergence and divergence properties of the Lagrange interpolation polynomials and some extremal problems",
       "venue": "Mathematica (Cluj)",
       "year": 1967,
@@ -228,7 +231,9 @@
       "note": "Primary source: Erdős poses Problem #1133 and proves the weaker existence result (∃P with large norm), which is formalized as the erdos_related_result axiom."
     },
     {
-      "authors": ["G. Faber"],
+      "authors": [
+        "G. Faber"
+      ],
       "title": "Über die interpolatorische Darstellung stetiger Funktionen",
       "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung",
       "year": 1914,
@@ -237,7 +242,10 @@
       "note": "Proves that the Lebesgue constant Λ_n → ∞ for ANY node sequence — the fundamental obstruction theorem (lagrange_divergence axiom) underlying Problem #1133."
     },
     {
-      "authors": ["C. de Boor", "A. Pinkus"],
+      "authors": [
+        "C. de Boor",
+        "A. Pinkus"
+      ],
       "title": "Proof of the conjectures of Bernstein and Erdős concerning the optimal nodes for polynomial interpolation",
       "venue": "Journal of Approximation Theory",
       "year": 1978,
@@ -248,7 +256,9 @@
       "note": "Resolves Erdős Problem #1130 (Υ functional); the Lebesgue constant bound (2/π) log n + O(1) proved here provides context for the Chebyshev node optimality used in #1133."
     },
     {
-      "authors": ["T. J. Rivlin"],
+      "authors": [
+        "T. J. Rivlin"
+      ],
       "title": "An Introduction to the Approximation of Functions",
       "venue": "Dover Publications",
       "year": 1981,
@@ -256,7 +266,9 @@
       "note": "Standard reference for Chebyshev polynomial theory, Lebesgue constants, and the minimax polynomial approximation problems that form the mathematical background of Problem #1133."
     },
     {
-      "authors": ["E. W. Cheney"],
+      "authors": [
+        "E. W. Cheney"
+      ],
       "title": "Introduction to Approximation Theory",
       "venue": "AMS Chelsea Publishing",
       "year": 1998,

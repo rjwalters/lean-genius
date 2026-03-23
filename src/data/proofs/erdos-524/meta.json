@@ -56,7 +56,8 @@
     "originalContributions": [
       "Lean 4 formalization of Erdős #524: Maximum of Random Sign Polynomials",
       "Complete proof architecture with verified type-checking"
-    ]
+    ],
+    "assumptions": "Assumes 4 axiom(s): erdos_lower_bound, chung_upper_bound, salem_zygmund_trigonometric, erdos_524_order_of_magnitude"
   },
   "sections": [
     {

@@ -42,7 +42,8 @@
     "dateAdded": "2024-12-27",
     "wiedijkNumber": 73,
     "axiomCount": 2,
-    "lineCount": 280
+    "lineCount": 280,
+    "assumptions": "Assumes 2 axiom(s): erdos_szekeres_existence_axiom, erdos_szekeres_tight_axiom"
   },
   "overview": {
     "historicalContext": "Paul Erdős and George Szekeres proved this theorem in 1935 in their paper \"A combinatorial problem in geometry.\" It was one of Erdős's first major results, published when he was just 22 years old. The theorem arose from the Happy Ending Problem about convex polygons and has since become a cornerstone of combinatorics and Ramsey theory. The elegant pigeonhole proof gives an exact tight bound. Dilworth's theorem (1950) generalized it: in any finite partially ordered set, the minimum number of chains covering it equals the maximum antichain size; the Erdős-Szekeres theorem is the linear order special case. The result is also a foundational instance of the general Ramsey principle that any large enough structure must contain order.",

@@ -47,7 +47,8 @@
       "Tightness construction via existential type quantification"
     ],
     "axiomCount": 4,
-    "lineCount": 106
+    "lineCount": 106,
+    "assumptions": "Assumes 4 axiom(s): rademacher_triangle_count, erdos_1010_supersaturation, turán_triangle_existence, erdos_1010_tight"
   },
   "overview": {
     "historicalContext": "This problem extends the classical Turán theorem (1941), which established that a triangle-free graph on n vertices has at most ⌊n²/4⌋ edges, achieved uniquely by K_{⌊n/2⌋,⌈n/2⌉}. Rademacher (unpublished, c. 1940s, attributed by Erdős) proved the first supersaturation result: exceeding this threshold by one edge forces at least ⌊n/2⌋ triangles. Erdős [Er62d] extended this to t < cn for a constant c and conjectured the full result for all t < ⌊n/2⌋. The conjecture was proved independently by Lovász-Simonovits (1976), who developed the influential 'stability method' for extremal graph theory, and by Nikiforov-Khadzhiivanov (1981). The stability method shows that graphs close to the Turán bound must structurally resemble the Turán graph, and has since become a fundamental technique in the field.",

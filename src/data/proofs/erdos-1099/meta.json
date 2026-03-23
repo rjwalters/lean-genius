@@ -60,7 +60,8 @@
       "Examples for primes, powers of 2, and highly composite numbers"
     ],
     "axiomCount": 9,
-    "lineCount": 320
+    "lineCount": 320,
+    "assumptions": "Assumes 9 axioms for deep results"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1099** was posed by Erdős in 1981 as part of his study of divisor structure. The problem asks about the regularity of divisor gaps: can we find integers whose consecutive divisor ratios are all close to 1?\n\n**Historical Development:**\n- **1981 (Erdős [Er81h]):** Posed the problem, noting that n! and lcm{1,...,n} seem like good candidates.\n- **1984 (Vose [Vo84]):** Resolved the problem affirmatively by constructing a specific sequence with bounded h_α.\n\n**Key Insight:** The question is about how \"smooth\" the divisor structure of integers can be. While primes have terrible divisor gaps (ratio = p), and even powers of 2 grow linearly in h_α, Vose showed there exist numbers with much smoother divisor distributions.",
@@ -209,7 +210,9 @@
       "id": "Vose1984",
       "type": "journal",
       "title": "Fractional parts of sequences",
-      "authors": ["Michael D. Vose"],
+      "authors": [
+        "Michael D. Vose"
+      ],
       "year": 1984,
       "journal": "Journal of Number Theory",
       "volume": 19,
@@ -222,7 +225,9 @@
       "id": "Erdos1981",
       "type": "proceedings",
       "title": "Problems in number theory and combinatorics",
-      "authors": ["Paul Erdős"],
+      "authors": [
+        "Paul Erdős"
+      ],
       "year": 1981,
       "booktitle": "Proceedings of the Sixth Manitoba Conference on Numerical Mathematics",
       "publisher": "Utilitas Mathematica",
@@ -233,7 +238,9 @@
       "id": "Tenenbaum1995",
       "type": "book",
       "title": "Introduction to Analytic and Probabilistic Number Theory",
-      "authors": ["Gérald Tenenbaum"],
+      "authors": [
+        "Gérald Tenenbaum"
+      ],
       "year": 1995,
       "publisher": "Cambridge University Press",
       "series": "Cambridge Studies in Advanced Mathematics",
@@ -244,7 +251,10 @@
       "id": "HalberstamRoth1966",
       "type": "book",
       "title": "Sequences",
-      "authors": ["Heini Halberstam", "Klaus F. Roth"],
+      "authors": [
+        "Heini Halberstam",
+        "Klaus F. Roth"
+      ],
       "year": 1966,
       "publisher": "Oxford University Press",
       "description": "Classic reference covering divisor distributions, the divisor function τ, and the analytic methods used to study divisor ratios. Foundational background for Problems #673 and #1099."
@@ -253,7 +263,9 @@
       "id": "ErdosBook2025",
       "type": "website",
       "title": "The Erdős Problems",
-      "authors": ["Thomas F. Bloom"],
+      "authors": [
+        "Thomas F. Bloom"
+      ],
       "year": 2025,
       "url": "https://erdosproblems.com/1099",
       "description": "Online database entry for Erdős Problem #1099, with references to Vose (1984) and statement of the open sub-questions about n! and lcm{1,...,n}."

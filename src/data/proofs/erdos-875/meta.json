@@ -45,7 +45,8 @@
       "Lean 4 formalization of Erdős Problem #875: Admissible Sequences with Disjoint Sumsets",
       "Complete proof architecture with verified type-checking"
     ],
-    "dateAdded": "2026-03-23"
+    "dateAdded": "2026-03-23",
+    "assumptions": "Assumes 4 axiom(s): erdos_875_gap_threshold, erdos_875_ratio_one, popcount_sum_distinct_pow2, finite_version_connection"
   },
   "overview": {
     "historicalContext": "**Deshouillers and Erdős** posed this as an infinite variant of Problem #874. An **admissible sequence** $a_1 < a_2 < \\cdots$ has the property that the $r$-fold sumsets $S_r = \\{a_{i_1} + \\cdots + a_{i_r} : i_1 < \\cdots < i_r\\}$ are pairwise disjoint for distinct $r \\geq 1$. The simplest example is powers of 2 ($a_n = 2^n$), where binary representation ensures disjointness via popcount. The central question is **how slowly** an admissible sequence can grow. Erdős noted that the ratio-one property $a_{n+1}/a_n \\to 1$ (subexponential growth) is achievable but 'not completely trivial.' The problem connects to **Sidon sets** (where sumsets of different sizes are automatically separated by parity of the number of terms) and to the **subset sum problem** in computational complexity.",

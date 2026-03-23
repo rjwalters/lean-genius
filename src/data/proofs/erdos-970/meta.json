@@ -55,7 +55,8 @@
       "small_values_consistent theorem combining known values"
     ],
     "axiomCount": 12,
-    "lineCount": 173
+    "lineCount": 173,
+    "assumptions": "Assumes 12 axioms for deep results"
   },
   "overview": {
     "historicalContext": "Jacobsthal's function h(k) measures how long an interval of consecutive integers must be to guarantee an element coprime to any number with at most k prime factors. The function was introduced by Jacobsthal, who conjectured h(k) = O(k²). This remains one of the major open problems in multiplicative number theory.\n\nIwaniec (1978) proved the best known upper bound h(k) ≤ C(k log k)² using sieve methods. The lower bound was dramatically improved by Ford, Green, Konyagin, Maynard, and Tao (2018), who used their breakthrough results on prime gaps to show h(k) ≥ ck(log k)(log log log k)/(log log k)².\n\nThe gap between upper and lower bounds remains substantial, and closing it (or even reaching the conjectured k² bound) would be a major advance.",

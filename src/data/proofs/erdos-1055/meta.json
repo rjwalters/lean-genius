@@ -50,7 +50,8 @@
       "Lean 4 formalization of Erdős Problem #1055: Prime Classification by p+1 Factorization",
       "Complete proof architecture with verified type-checking"
     ],
-    "dateAdded": "2026-03-23"
+    "dateAdded": "2026-03-23",
+    "assumptions": "Assumes 4 axiom(s): infinitely_many_in_each_class, erdos_growth_conjecture, selfridge_bounded_conjecture, class_density_subpolynomial"
   },
   "sections": [
     {

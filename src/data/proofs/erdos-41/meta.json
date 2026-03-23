@@ -48,7 +48,8 @@
       "Examples: empty set, singleton, and powers of 2 as B_h sets"
     ],
     "axiomCount": 4,
-    "lineCount": 170
+    "lineCount": 170,
+    "assumptions": "Assumes 4 axiom(s): erdos_b2_theorem, nash_b4_theorem, chen_even_h_theorem, powers_of_two_sidon_property"
   },
   "overview": {
     "historicalContext": "Erdős Problem #41 asks about the density of B_h sequences - sets where all h-element subset sums are distinct. The h=2 case corresponds to classical Sidon sets, studied extensively in additive combinatorics.\n\nErdős proved the h=2 case: if A is an infinite Sidon set, then liminf |A ∩ {1,...,N}| / √N = 0. This means Sidon sets must be sparse infinitely often at the √N scale.\n\nThe problem generalizes to all h ≥ 2: is liminf |A ∩ {1,...,N}| / N^(1/h) = 0 for infinite B_h sets? Nash (1989) proved this for h=4 using Fourier-analytic methods, and Chen (1996) extended it to all even h.\n\nThe h=3 case (triple sums) remains OPEN with a $500 prize. Odd h ≥ 3 resists the Fourier techniques that work for even h.",
@@ -154,21 +155,28 @@
   ],
   "references": [
     {
-      "authors": ["Jian-Dong Chen"],
+      "authors": [
+        "Jian-Dong Chen"
+      ],
       "title": "On the density of B_h[g] sequences",
       "venue": "Journal of Number Theory",
       "year": 1996,
       "note": "Proves liminf |A ∩ {1,...,N}| / N^{1/h} = 0 for all infinite B_h sets with even h ≥ 2, resolving the even-h cases of Erdős Problem #41."
     },
     {
-      "authors": ["John Nash"],
+      "authors": [
+        "John Nash"
+      ],
       "title": "On the density of B_4 sequences",
       "venue": "Unpublished manuscript",
       "year": 1989,
       "note": "First resolution of an odd-index-adjacent case: proves the density bound for h=4 using Fourier-analytic methods, motivating Chen's later generalization."
     },
     {
-      "authors": ["Paul Erdős", "Pál Turán"],
+      "authors": [
+        "Paul Erdős",
+        "Pál Turán"
+      ],
       "title": "On a problem of Sidon in additive number theory, and on some related problems",
       "venue": "Journal of the London Mathematical Society",
       "year": 1941,
@@ -177,7 +185,10 @@
       "note": "Foundational paper on Sidon sets (B_2 sets) and their density; establishes the h=2 bound that Erdős Problem #41 generalizes."
     },
     {
-      "authors": ["Ben Green", "Imre Z. Ruzsa"],
+      "authors": [
+        "Ben Green",
+        "Imre Z. Ruzsa"
+      ],
       "title": "Counting sumsets and sum-free sets modulo a prime",
       "venue": "Studia Scientiarum Mathematicarum Hungarica",
       "year": 2004,
@@ -186,7 +197,9 @@
       "note": "Modern treatment of B_h sets and their density using Fourier-analytic and combinatorial methods relevant to both the solved and open cases of Problem #41."
     },
     {
-      "authors": ["Kevin O'Bryant"],
+      "authors": [
+        "Kevin O'Bryant"
+      ],
       "title": "A complete annotated bibliography of work related to Sidon sets",
       "venue": "Electronic Journal of Combinatorics",
       "year": 2004,

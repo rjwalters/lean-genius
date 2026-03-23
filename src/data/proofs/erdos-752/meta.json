@@ -63,7 +63,8 @@
       "SudakovVerstrateConjecture definition: consecutive lengths conjecture"
     ],
     "axiomCount": 14,
-    "lineCount": 246
+    "lineCount": 246,
+    "assumptions": "Assumes 14 axioms for deep results"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #752** was posed by Erdős, Faudree, and Schelp about cycle lengths in graphs with high girth.\n\n**Historical Development:**\n- **Erdős-Faudree-Schelp (original):** Proved the case s = 2 and conjectured the general result.\n- **Sudakov-Verstraëte (2008):** Proved the full conjecture and a stronger version: under average degree k and girth > 2s, there are Ω(k^s) consecutive even cycle lengths.\n\n**Key Insight:** The tension between high girth (no short cycles) and high degree (forcing many cycles) creates structure that guarantees many distinct cycle lengths.\n\nThe result is tight up to constants: Moore graphs show that Ω(k^s) cannot be improved.",

@@ -61,7 +61,8 @@
       "general_egyptian_fraction axiom: every n/m has Egyptian representation"
     ],
     "axiomCount": 13,
-    "lineCount": 195
+    "lineCount": 195,
+    "assumptions": "Assumes 13 axioms for deep results"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #292** concerns Egyptian fractions - sums of distinct unit fractions.\n\n**Historical Development:**\n- **Straus:** Observed that A is closed under multiplication\n- **Early observation:** A does not contain any prime power\n- **van Doorn:** If n ∈ A (n > 1) then 2n ∈ A\n- **Martin (2000):** Proved A has density 1 and characterized the complement B\n\n**Key Insight:** The complement B consists essentially of small multiples of prime powers, and |B ∩ [1,x]|/x ~ (log log x)/(log x), which tends to 0.",

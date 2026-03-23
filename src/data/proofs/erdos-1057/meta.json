@@ -137,7 +137,8 @@
       }
     ],
     "axiomCount": 6,
-    "lineCount": 1113
+    "lineCount": 1113,
+    "assumptions": "Assumes 6 axioms for deep results"
   },
   "overview": {
     "historicalContext": "Carmichael numbers are composite integers that perfectly mimic primes under Fermat's test: $a^n \\equiv a \\pmod{n}$ for all $a$. Korselt characterized them in 1899 (squarefree with $(p-1) \\mid (n-1)$ for all prime divisors $p$), but the first example $561 = 3 \\times 11 \\times 17$ was only found by R.D. Carmichael in 1910. Erdős (1956) gave the first non-trivial upper bound on their counting function using sieve methods, showing $C(x) < x \\cdot \\exp(-c \\cdot \\frac{\\log x \\cdot \\log\\log\\log x}{\\log\\log x})$. For decades, it was unknown whether infinitely many exist. The breakthrough came in 1994 when Alford, Granville, and Pomerance proved $C(x) \\to \\infty$, establishing $C(x) > x^{2/7}$. Harman (2008) improved the lower bound exponent to $0.33336704$, and Lichtman (2022) pushed it to $0.3389$. Pomerance's (1989) heuristic predicts $C(x) \\sim x \\cdot \\exp(-\\frac{\\log x \\cdot \\log\\log\\log x}{\\log\\log x})$, matching Erdős's upper bound. The conjecture $C(x) = x^{1-o(1)}$ remains wide open, with a vast gap between the known lower bound exponent $\\approx 0.34$ and the conjectured behavior.",
@@ -297,7 +298,11 @@
   ],
   "references": [
     {
-      "authors": ["W.R. Alford", "A. Granville", "C. Pomerance"],
+      "authors": [
+        "W.R. Alford",
+        "A. Granville",
+        "C. Pomerance"
+      ],
       "title": "There are infinitely many Carmichael numbers",
       "venue": "Annals of Mathematics",
       "volume": "139",
@@ -307,7 +312,9 @@
       "note": "The landmark 1994 proof of AGP that $C(x) \\to \\infty$, establishing $C(x) > x^{2/7}$; directly axiomatized in this formalization."
     },
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "On pseudoprimes and Carmichael numbers",
       "venue": "Publicationes Mathematicae Debrecen",
       "volume": "4",
@@ -316,7 +323,9 @@
       "note": "Erdős's original 1956 paper establishing the upper bound $C(x) < x \\cdot \\exp(-c \\cdot \\log x \\cdot \\log\\log\\log x / \\log\\log x)$; the source of this problem."
     },
     {
-      "authors": ["C. Pomerance"],
+      "authors": [
+        "C. Pomerance"
+      ],
       "title": "Two methods in elementary analytic number theory",
       "venue": "Number Theory and Applications (Banff, 1988), NATO Adv. Sci. Inst. Ser. C Math. Phys. Sci.",
       "volume": "265",
@@ -326,7 +335,9 @@
       "note": "Pomerance's heuristic prediction $C(x) \\sim x \\cdot \\exp(-\\frac{\\log x \\cdot \\log\\log\\log x}{\\log\\log x})$, formalized as `pomeranceConjecture` in this file."
     },
     {
-      "authors": ["G. Harman"],
+      "authors": [
+        "G. Harman"
+      ],
       "title": "On the number of Carmichael numbers up to x",
       "venue": "Bulletin of the London Mathematical Society",
       "volume": "37",
@@ -336,7 +347,9 @@
       "note": "Harman's improvement of the lower bound exponent to $0.33336704$; one of the two lower-bound axioms in the formalization."
     },
     {
-      "authors": ["J.D. Lichtman"],
+      "authors": [
+        "J.D. Lichtman"
+      ],
       "title": "Almost primes and the Banks-Martin conjecture",
       "venue": "Journal of Number Theory",
       "volume": "225",

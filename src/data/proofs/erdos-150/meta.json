@@ -72,7 +72,8 @@
       "Concrete examples: c(5) >= 3, c(8) >= 9, c(11) >= 27"
     ],
     "axiomCount": 7,
-    "lineCount": 325
+    "lineCount": 325,
+    "assumptions": "Assumes 7 axioms for deep results"
   },
   "overview": {
     "historicalContext": "**Erdos Problem #150**\n\nThis problem concerns extremal graph theory and the structure of vertex cuts in graphs.\n\n**Key History:**\n- Erdos and Nesetril: Posed the original question about minimal cuts\n- Seymour: Provided the key lower bound construction using paths\n- Bradac (2024): Solved the problem, proving alpha exists and alpha < 2\n\n**Mathematical Setting:**\n- A minimal cut is an inclusion-minimal set of vertices whose removal disconnects the graph\n- c(n) = maximum number of minimal cuts over all n-vertex graphs\n- The question asks about the asymptotic growth rate c(n)^{1/n}",

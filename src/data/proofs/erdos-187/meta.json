@@ -39,7 +39,8 @@
       "Lean 4 formalization of Erdős Problem #187: Arithmetic Progressions in 2-Colorings",
       "Complete proof architecture with verified type-checking"
     ],
-    "dateAdded": "2026-03-23"
+    "dateAdded": "2026-03-23",
+    "assumptions": "Assumes 7 axioms for deep results"
   },
   "overview": {
     "historicalContext": "The problem of finding long monochromatic arithmetic progressions (APs) in 2-colorings of the integers has its roots in van der Waerden's 1927 theorem, which guarantees that any finite coloring of ℤ contains arbitrarily long monochromatic APs. Van der Waerden's original proof was non-constructive and gave tower-type bounds; Shelah (1988) later gave a primitive-recursive proof, but the quantitative bounds remain astronomical. Cohen and Erdős sharpened the question by fixing the common difference d: what is f(d), the maximum AP length that every 2-coloring must contain with difference d for infinitely many d? Erdős noted that the irrational rotation coloring χ(n) = ⌊√2 · n⌋ mod 2 limits monochromatic AP lengths, illustrating that Diophantine approximation governs the extremal colorings. The landmark result of Beck (1980) used discrepancy-theoretic methods to show f(d) ≤ (1+o(1))log₂ d — a striking logarithmic upper bound from probabilistic combinatorics. As of 2025, no lower bound beyond f(d) → ∞ (from van der Waerden) is known, making the gap between O(log d) and ω(1) the central open difficulty.",

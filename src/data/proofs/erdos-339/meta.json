@@ -59,7 +59,8 @@
       "erdos_339_solved, erdos_339_summary theorems"
     ],
     "axiomCount": 6,
-    "lineCount": 231
+    "lineCount": 231,
+    "assumptions": "Assumes 6 axioms for deep results"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #339: Additive Bases and Distinct Sums**\n\nThis problem explores the relationship between additive bases and 'restricted' representations using distinct elements.\n\n**Key History:**\n- Erdős-Graham (1980): Posed both conjectures in their monograph\n- Hegyvári-Hennecart-Plagne (2003): Proved both conjectures in J. Reine Angew. Math.\n\n**Mathematical Setting:**\nA set A ⊆ ℕ is a basis of order r if every large integer is a sum of r elements from A. The question is whether the 'restricted' sums (using r DISTINCT elements) also cover a positive fraction of integers.",

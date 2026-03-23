@@ -43,7 +43,8 @@
     ],
     "dateAdded": "2026-02-11",
     "axiomCount": 0,
-    "lineCount": 118
+    "lineCount": 118,
+    "assumptions": "None. All theorems fully proved from Mathlib."
   },
   "overview": {
     "historicalContext": "**Bunyakovsky's Extension to Integrals**\n\nViktor Bunyakovsky proved the integral form of the Cauchy-Schwarz inequality in 1859, extending Cauchy's 1821 discrete version to continuous functions. Hermann Schwarz independently proved it in 1885. The inequality states that for square-integrable functions $f, g$:\n\n$$\\left(\\int f \\cdot g \\, d\\mu\\right)^2 \\leq \\left(\\int f^2 \\, d\\mu\\right) \\cdot \\left(\\int g^2 \\, d\\mu\\right)$$\n\nThis is fundamental to functional analysis: it shows that the $L^2$ inner product is well-defined and that $L^2$ is a Hilbert space.\n\n**Modern Formalization Strategy**\n\nIn Mathlib, $L^2(\\mu)$ is already equipped with an `InnerProductSpace` instance, where $\\langle f, g \\rangle = \\int f \\cdot g \\, d\\mu$. The abstract Cauchy-Schwarz inequality $|\\langle f, g \\rangle| \\leq \\|f\\| \\cdot \\|g\\|$ therefore immediately gives the integral form. The key insight is that the bridge theorem connecting the abstract inner product to the concrete integral is the critical step.",

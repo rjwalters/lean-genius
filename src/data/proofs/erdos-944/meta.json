@@ -41,7 +41,8 @@
       "The open case k = 4"
     ],
     "axiomCount": 11,
-    "lineCount": 150
+    "lineCount": 150,
+    "assumptions": "Assumes 11 axioms for deep results"
   },
   "overview": {
     "historicalContext": "A **k-vertex-critical graph** is one with chromatic number k where every vertex is critical (its deletion reduces χ). A **critical edge** is one whose deletion reduces χ.\n\nDirac (1970) conjectured that for k ≥ 4, there exist k-vertex-critical graphs with NO critical edges. This asks whether vertex-criticality and edge-criticality can be 'decoupled.'\n\n**Timeline of results**:\n- 1970: Dirac's conjecture\n- 1992: Brown constructs a 5-vertex-critical graph with no critical edges (11 vertices)\n- 2002: Lattanzio shows such graphs exist when k-1 is not prime\n- 2002: Jensen gives a general construction for all k ≥ 5\n- 2025: Martinsson-Steiner prove existence for large k and any r ≥ 1\n- 2025: Skottova-Steiner show f_k(n) → ∞ for k ≥ 5\n\nThe case **k = 4 remains OPEN**.",

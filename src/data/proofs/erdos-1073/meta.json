@@ -44,7 +44,8 @@
       "Lean 4 formalization of Composites Dividing Factorial Plus One",
       "Complete proof architecture with verified type-checking"
     ],
-    "dateAdded": "2026-03-23"
+    "dateAdded": "2026-03-23",
+    "assumptions": "None. All theorems fully proved from Mathlib."
   },
   "overview": {
     "historicalContext": "Erdős, Hardy, and Subbarao asked how many composite numbers divide n!+1 for some n. By Wilson's theorem, every prime p divides (p-1)!+1, and this property characterizes primes completely. For composites the situation is radically different: if u | n!+1 then u must be coprime to n!, forcing every prime factor of u to exceed n and hence u > n². This coprimality constraint severely limits which composites can appear. The known sequence 25, 121, 169, 437, ... (OEIS A256519) is extremely sparse — all known examples are prime powers or semiprimes whose prime factors happen to align with a single factorial. Subbarao connected these to Wilson pseudoprimes: composites that mimic primality in factorial arithmetic. The conjecture A(x) ≤ x^{o(1)} would confirm that this phenomenon is exceptionally rare, growing slower than any fixed power of x.",

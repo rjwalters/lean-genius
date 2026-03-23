@@ -44,7 +44,8 @@
       "Lean 4 formalization of Totient Iteration to Primes",
       "Complete proof architecture with verified type-checking"
     ],
-    "dateAdded": "2026-03-23"
+    "dateAdded": "2026-03-23",
+    "assumptions": "Assumes 12 axioms for deep results"
   },
   "overview": {
     "historicalContext": "This problem originates with Finucane and was popularized by Erdos and Graham in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p. 81). The map $T(n) = \\varphi(n) + 1$ defines a discrete dynamical system on the positive integers: since $\\varphi(n) < n - 1$ for composite $n > 1$, each application strictly decreases the value until a prime fixed point is reached ($T(p) = p$ for primes $p$). The iteration count $F(n) = \\min\\{k \\geq 0 : T^k(n) \\text{ is prime}\\}$ appears as OEIS A039651. Cambie noted that $F(n) = o(n)$ is trivial but the true growth rate remains unknown --- heuristically $F(n) = O(\\log n)$ since $\\varphi(n)/n$ has mean value $6/\\pi^2 \\approx 0.608$, suggesting each step reduces $n$ by a constant factor. Guy discusses the problem in UPINT (B41). The companion problem replacing $\\varphi$ by $\\sigma$ (sum of divisors) yields $n \\mapsto \\sigma(n) - 1$, which is non-decreasing for composites, making termination at a prime an entirely separate open question related to aliquot sequences and the Catalan--Dickson conjecture.",

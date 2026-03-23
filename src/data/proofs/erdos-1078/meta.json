@@ -52,7 +52,8 @@
     "mathlib_version": "4.15.0",
     "dateAdded": "2026-01-19",
     "axiomCount": 6,
-    "lineCount": 214
+    "lineCount": 214,
+    "assumptions": "Assumes 6 axioms for deep results"
   },
   "overview": {
     "historicalContext": "Bollobás, Erdős, and Szemerédi conjectured in 1975 that in balanced r-partite graphs, minimum degree at least (r - 3/2 - o(1))n forces a complete r-clique K_r. They also constructed examples showing the constant r - 3/2 is best possible, with extremal graphs avoiding K_r via subtle parity arguments.\n\nHaxell proved the conjecture in 2001 using connections to list coloring theory. Her proof showed that the minimum degree condition forces a rainbow clique through a reduction to vertex list coloring problems, resolving the question after 25 years.\n\nHaxell and Szabó determined the exact sharp threshold in 2006: (r-1)n - ⌈sn/(2s-1)⌉ where s = ⌊r/2⌋. This precise formula reveals the role of parity in the problem — the floor of r/2 appears because the extremal constructions depend on whether r is even or odd. Asymptotically, ⌈sn/(2s-1)⌉ ≈ n/2, recovering the (r - 3/2)n threshold.",
@@ -189,7 +190,9 @@
   ],
   "references": [
     {
-      "authors": ["P.E. Haxell"],
+      "authors": [
+        "P.E. Haxell"
+      ],
       "title": "A Note on Vertex List Colouring",
       "venue": "Combinatorics, Probability and Computing",
       "year": 2001,
@@ -199,7 +202,10 @@
       "note": "Proves the BES conjecture: minimum degree ≥ (r − 3/2 − o(1))n in a balanced r-partite graph forces K_r."
     },
     {
-      "authors": ["P.E. Haxell", "T. Szabó"],
+      "authors": [
+        "P.E. Haxell",
+        "T. Szabó"
+      ],
       "title": "Odd Independent Transversals Are Odd",
       "venue": "Combinatorics, Probability and Computing",
       "year": 2006,
@@ -209,7 +215,11 @@
       "note": "Determines the exact sharp threshold (r − 1)n − ⌈sn/(2s−1)⌉ and proves optimality via parity-based extremal constructions."
     },
     {
-      "authors": ["B. Bollobás", "P. Erdős", "E. Szemerédi"],
+      "authors": [
+        "B. Bollobás",
+        "P. Erdős",
+        "E. Szemerédi"
+      ],
       "title": "On Complete Subgraphs of r-Chromatic Graphs",
       "venue": "Discrete Mathematics",
       "year": 1975,
@@ -219,7 +229,9 @@
       "note": "Original 1975 paper by Bollobás–Erdős–Szemerédi conjecturing the (r − 3/2)n threshold and giving the extremal constructions showing sharpness of the constant."
     },
     {
-      "authors": ["P.E. Haxell"],
+      "authors": [
+        "P.E. Haxell"
+      ],
       "title": "On the Strong Chromatic Number",
       "venue": "Combinatorics, Probability and Computing",
       "year": 2004,
@@ -229,7 +241,9 @@
       "note": "Connects the BES conjecture to strong chromatic numbers and independent transversals; the list-coloring reduction central to the 2001 proof is elaborated here."
     },
     {
-      "authors": ["R. Häggkvist"],
+      "authors": [
+        "R. Häggkvist"
+      ],
       "title": "On the Structure of Non-Hamiltonian Graphs I",
       "venue": "Combinatorica",
       "year": 1992,

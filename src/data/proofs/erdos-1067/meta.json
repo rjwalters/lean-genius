@@ -59,7 +59,8 @@
       "erdos_1067 and erdos_1067_answer main theorems"
     ],
     "axiomCount": 6,
-    "lineCount": 252
+    "lineCount": 252,
+    "assumptions": "Assumes 6 axioms for deep results"
   },
   "overview": {
     "historicalContext": "**Erdős-Hajnal and Infinite Graph Coloring**\n\nPaul Erdős and András Hajnal posed this question in 1966 as part of their systematic investigation of infinite graph coloring. The study of uncountable chromatic numbers was a major theme in Erdős's work on infinite combinatorics, connecting graph theory to set theory and cardinal arithmetic.\n\n**The question**: A graph is *infinitely connected* if any two vertices are connected by infinitely many pairwise vertex-disjoint paths (equivalently, by Menger's theorem, no finite vertex cut separates any two vertices). Erdős and Hajnal asked: if $\\chi(G) = \\aleph_1$ (the smallest uncountable cardinal), must $G$ contain an infinitely connected subgraph $H$ with $\\chi(H) = \\aleph_1$?\n\n**Komjáth's breakthrough (2013)**: Péter Komjáth showed the answer could be negative — in some models of ZFC (obtained by forcing), counterexamples exist. He also proved that for graphs with exactly $\\aleph_1$ vertices, the answer is *independent* of ZFC.\n\n**Soukup's ZFC counterexample (2015)**: Lajos Soukup settled the question definitively by constructing a counterexample provable in ZFC alone. His construction builds 'ladder' structures from trees, creating graphs where the chromatic bottleneck resides in thin, poorly connected components.\n\n**Bowler-Pitz simplification (2024)**: Nathan Bowler and Steffen Pitz gave a more elementary construction, making the counterexample accessible without specialized set-theoretic machinery.\n\n**Thomassen's edge variant (2017)**: Carsten Thomassen showed the analogous question for edge-connectivity (infinitely many edge-disjoint paths) is also false.",
@@ -193,35 +194,47 @@
   ],
   "references": [
     {
-      "authors": ["Lajos Soukup"],
+      "authors": [
+        "Lajos Soukup"
+      ],
       "title": "Infinite graphs with no odd cycles of a given length",
       "venue": "European Journal of Combinatorics",
       "year": 2015,
       "note": "Constructs the ZFC counterexample to the Erdős-Hajnal question, building ladder-tree graphs with χ = ℵ₁ but no infinitely connected subgraph of uncountable chromatic number"
     },
     {
-      "authors": ["Nathan Bowler", "Steffen Pitz"],
+      "authors": [
+        "Nathan Bowler",
+        "Steffen Pitz"
+      ],
       "title": "A simpler proof of the Erdős-Hajnal conjecture for forests",
       "venue": "arXiv",
       "year": 2024,
       "note": "Provides a more elementary construction of the counterexample to Erdős Problem #1067, accessible without specialized set-theoretic forcing machinery"
     },
     {
-      "authors": ["Péter Komjáth"],
+      "authors": [
+        "Péter Komjáth"
+      ],
       "title": "A note on uncountably chromatic graphs",
       "venue": "Combinatorica",
       "year": 2013,
       "note": "Proves the consistency of a counterexample (via forcing) and establishes that for graphs with exactly ℵ₁ vertices, the Erdős-Hajnal question is independent of ZFC"
     },
     {
-      "authors": ["Carsten Thomassen"],
+      "authors": [
+        "Carsten Thomassen"
+      ],
       "title": "Graph decomposition with applications to subdivisions and path systems modulo k",
       "venue": "Journal of Graph Theory",
       "year": 2017,
       "note": "Shows the analogous question for infinite edge-connectivity is also false, strengthening the negative answer and demonstrating robustness across connectivity notions"
     },
     {
-      "authors": ["Paul Erdős", "András Hajnal"],
+      "authors": [
+        "Paul Erdős",
+        "András Hajnal"
+      ],
       "title": "On chromatic number of graphs and set-systems",
       "venue": "Acta Mathematica Hungarica",
       "year": 1966,

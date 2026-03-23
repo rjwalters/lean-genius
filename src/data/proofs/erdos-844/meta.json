@@ -57,7 +57,8 @@
       "erdos_844_characterization theorem: complete characterization"
     ],
     "axiomCount": 16,
-    "lineCount": 246
+    "lineCount": 246,
+    "assumptions": "Assumes 16 axioms for deep results"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #844: Non-Squarefree Products**\n\nThis problem appears in Erdős-Sárközy [Er92b, p.239] and concerns extremal sets with multiplicative constraints.\n\n**Key History:**\n- **Erdős-Sárközy (1992):** Posed the original problem\n- **Weisenberg:** First proof using Chvátal's intersecting families result\n- **Alexeev-Mixon-Sawin [AMS25]:** Independent alternative proof\n\n**The Connection:**\nThe problem reduces to finding the largest 'intersecting family' of squarefree numbers - subsets where any two elements share a prime factor. Chvátal's 1974 result on intersecting hypergraph families provides the answer.",

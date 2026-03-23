@@ -29,7 +29,8 @@
       "Proof by contradiction (diagonal argument)",
       "Function types and higher-order functions"
     ],
-    "axiomCount": 0
+    "axiomCount": 0,
+    "assumptions": "None. All theorems fully proved from Mathlib."
   },
   "overview": {
     "historicalContext": "Alan Turing published this groundbreaking result in 1936, the same paper where he introduced the Turing machine model of computation. Working independently from Alonzo Church (who proved an equivalent result using lambda calculus), Turing established that there are fundamental limits to what can be computed.\n\nThe halting problem was the first concrete example of an undecidable problem, and it remains the canonical example in computer science education. The proof technique - diagonalization - connects deeply to Cantor's work on uncountability (1891) and Godel's incompleteness theorems (1931).\n\nThe practical implications are profound: no static analysis tool can perfectly detect all infinite loops, no compiler can optimize away all non-terminating code, and no verification system can automatically prove termination for all programs.",
@@ -197,8 +198,8 @@
       "authors": "Rice, Henry Gordon",
       "title": "Classes of Recursively Enumerable Sets and Their Decision Problems",
       "year": "1953",
-      "venue": "Transactions of the American Mathematical Society, vol. 74, pp. 358\u2013366",
-      "note": "Rice's theorem: every non-trivial semantic property of programs is undecidable. This is the most powerful generalization of the halting problem \u2014 it shows that undecidability is not a quirk of the halting predicate but a universal feature of program behavior"
+      "venue": "Transactions of the American Mathematical Society, vol. 74, pp. 358–366",
+      "note": "Rice's theorem: every non-trivial semantic property of programs is undecidable. This is the most powerful generalization of the halting problem — it shows that undecidability is not a quirk of the halting predicate but a universal feature of program behavior"
     },
     {
       "authors": "Hodges, Andrew",
@@ -212,7 +213,7 @@
       "title": "Theory of Recursive Functions and Effective Computability",
       "year": "1967",
       "venue": "McGraw-Hill (reprinted MIT Press, 1987)",
-      "note": "Graduate-level reference for recursion theory: covers the halting problem, the arithmetical hierarchy, the recursion theorem, and Post's problem \u2014 the standard for the full theory of computability"
+      "note": "Graduate-level reference for recursion theory: covers the halting problem, the arithmetical hierarchy, the recursion theorem, and Post's problem — the standard for the full theory of computability"
     }
   ]
 }

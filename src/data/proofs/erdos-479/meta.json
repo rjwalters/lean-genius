@@ -50,7 +50,8 @@
       "Documentation of the k = 3 difficulty (smallest n = 4700063497)"
     ],
     "axiomCount": 9,
-    "lineCount": 221
+    "lineCount": 221,
+    "assumptions": "Assumes 9 axioms for deep results"
   },
   "overview": {
     "historicalContext": "This problem is a conjecture of Ronald Graham, reported by Erdős and Graham. The question asks whether for every residue k (except k = 1), there are infinitely many n such that 2^n ≡ k (mod n).\n\nThe restriction k ≠ 1 is necessary and easy to verify: for n > 1, we always have 2^n ≢ 1 (mod n). This is because for even n, 2^n ≡ 0 (mod 2), not 1; and for odd n > 1, more subtle arguments apply.\n\nGraham, Lehmer, and Lehmer proved the conjecture for special cases: when k is a power of 2, or when k = -1. Tang later gave a simplified proof for these cases.\n\nThe problem is computationally challenging. For k = 3, the smallest n with 2^n ≡ 3 (mod n) is n = 4700063497 — a 10-digit number! This illustrates how sparse solutions can be for certain residues. The OEIS sequence A036236 catalogs the smallest n for each k.",

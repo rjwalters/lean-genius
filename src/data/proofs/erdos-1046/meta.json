@@ -63,7 +63,8 @@
       "Basic potential theory",
       "Vieta's formulas for monic polynomials"
     ],
-    "lineCount": 248
+    "lineCount": 248,
+    "assumptions": "Assumes 7 axioms for deep results"
   },
   "overview": {
     "historicalContext": "Erdős, Fritz Herzog, and George Piranian posed this problem in their influential 1958 paper on the geometric properties of lemniscates — the sublevel sets $\\{z \\in \\mathbb{C} : |p(z)| \\leq 1\\}$ of monic polynomials $p$ of degree $n$. They conjectured that any such lemniscate of capacity 1 (i.e., leading coefficient 1) has both diameter $\\leq 2$ and width $\\leq 2$. Christian Pommerenke (1959) proved the disc containment conjecture: the lemniscate is always contained in a disc of radius 1, answering the diameter question affirmatively. However, he also showed the width conjecture is FALSE — there exist lemniscates of capacity 1 with width exceeding 2. The disc containment result connects to potential theory and the transfinite diameter of compact sets in $\\mathbb{C}$.",
@@ -202,7 +203,11 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "F. Herzog", "G. Piranian"],
+      "authors": [
+        "P. Erdős",
+        "F. Herzog",
+        "G. Piranian"
+      ],
       "title": "On the geometric properties of level curves of polynomials",
       "journal": "Illinois Journal of Mathematics",
       "volume": "2",
@@ -211,7 +216,9 @@
       "description": "Original paper posing the disc containment and width conjectures for connected lemniscates of monic polynomials."
     },
     {
-      "authors": ["Ch. Pommerenke"],
+      "authors": [
+        "Ch. Pommerenke"
+      ],
       "title": "On the derivative of a polynomial",
       "journal": "Michigan Mathematical Journal",
       "volume": "6",
@@ -220,7 +227,9 @@
       "description": "Proves the disc containment theorem (E ⊆ D(centroid, 2)) and provides a counterexample disproving the width conjecture."
     },
     {
-      "authors": ["Ch. Pommerenke"],
+      "authors": [
+        "Ch. Pommerenke"
+      ],
       "title": "On the coefficients and Hankel determinants of univalent functions",
       "journal": "Journal of the London Mathematical Society",
       "volume": "41",
@@ -229,7 +238,9 @@
       "description": "Subsequent work by Pommerenke on polynomial geometry and function theory in the complex plane, building on the lemniscate results."
     },
     {
-      "authors": ["M. Marden"],
+      "authors": [
+        "M. Marden"
+      ],
       "title": "Geometry of Polynomials",
       "journal": "Mathematical Surveys and Monographs, American Mathematical Society",
       "volume": "3",
@@ -238,7 +249,9 @@
       "description": "Comprehensive reference on the geometry of polynomial zero sets, including lemniscate containment, critical points, and the Gauss–Lucas theorem used in characterizing connectivity."
     },
     {
-      "authors": ["T. Ransford"],
+      "authors": [
+        "T. Ransford"
+      ],
       "title": "Potential Theory in the Complex Plane",
       "journal": "London Mathematical Society Student Texts, Cambridge University Press",
       "volume": "28",

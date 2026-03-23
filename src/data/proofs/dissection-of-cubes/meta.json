@@ -65,7 +65,8 @@
       "Well-ordering principle and infinite descent",
       "Combinatorial arguments in discrete geometry",
       "Basic real analysis (volume decomposition)"
-    ]
+    ],
+    "assumptions": "Assumes 2 axiom(s): smaller_cube_above_axiom, all_different_implies_long_chains_axiom"
   },
   "overview": {
     "historicalContext": "The impossibility of dissecting a cube into smaller cubes of all different sizes was proved by J.E. Littlewood and included in his book 'A Mathematician's Miscellany' (1953) as an example of mathematical elegance. The proof requires no computation or algebraic manipulation — just geometric visualization and infinite descent.\n\nThe 2D analog has a completely different answer: a square CAN be dissected into squares of all different sizes. The first such 'squared square' was found by Brooks, Smith, Stone, and Tutte in 1940, using an ingenious connection to electrical network theory. The smallest 'simple perfect squared square' has 21 squares and side 112, found by Duijvestijn (1978).\n\nThe key geometric reason for the dimensional difference: in 3D, the smallest cube on any floor is completely surrounded by taller cubes on all 4 sides, forcing its top face to be a new interior floor. In 2D, a square can extend to the boundary wall, breaking the descent argument. The impossibility extends to all dimensions >= 3 and to rectangular boxes.",

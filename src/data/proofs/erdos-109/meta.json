@@ -49,7 +49,8 @@
       "Verified example for even numbers"
     ],
     "axiomCount": 1,
-    "lineCount": 438
+    "lineCount": 438,
+    "assumptions": "Assumes 1 axiom(s): moreira_richter_robertson"
   },
   "overview": {
     "historicalContext": "The Erdős Sumset Conjecture was a longstanding open problem connecting density and additive structure. Erdős asked whether sets of positive upper density must contain rich additive structure in the form of infinite sumsets.\n\nThe conjecture was proved in 2019 by Joel Moreira, Florian Richter, and Donald Robertson in their paper 'A proof of a sumset conjecture of Erdős' published in the Annals of Mathematics. This was a major breakthrough in additive combinatorics, establishing a fundamental connection between asymptotic density and additive structure.\n\nThe proof uses sophisticated techniques from ergodic theory, including the Furstenberg correspondence principle and recurrence along polynomial sequences. This connects to Szemerédi's theorem (arithmetic progressions in dense sets) but establishes a different kind of additive structure.",
@@ -169,7 +170,11 @@
   ],
   "references": [
     {
-      "authors": ["Joel Moreira", "Florian K. Richter", "Donald Robertson"],
+      "authors": [
+        "Joel Moreira",
+        "Florian K. Richter",
+        "Donald Robertson"
+      ],
       "title": "A proof of a sumset conjecture of Erdős",
       "journal": "Annals of Mathematics",
       "volume": "189",
@@ -180,7 +185,10 @@
       "note": "The primary source proving the conjecture; uses Furstenberg correspondence and polynomial ergodic recurrence."
     },
     {
-      "authors": ["Vitaly Bergelson", "Alexander Leibman"],
+      "authors": [
+        "Vitaly Bergelson",
+        "Alexander Leibman"
+      ],
       "title": "Polynomial extensions of van der Waerden's and Szemerédi's theorems",
       "journal": "Journal of the American Mathematical Society",
       "volume": "9",
@@ -191,7 +199,9 @@
       "note": "Foundational ergodic theory paper on polynomial recurrence; key precursor to the Moreira–Richter–Robertson proof."
     },
     {
-      "authors": ["Hillel Furstenberg"],
+      "authors": [
+        "Hillel Furstenberg"
+      ],
       "title": "Ergodic behavior of diagonal measures and a theorem of Szemerédi on arithmetic progressions",
       "journal": "Journal d'Analyse Mathématique",
       "volume": "31",
@@ -201,7 +211,9 @@
       "note": "Introduces the Furstenberg correspondence principle connecting combinatorial density to measure-theoretic recurrence; central tool in the sumset conjecture proof."
     },
     {
-      "authors": ["Endre Szemerédi"],
+      "authors": [
+        "Endre Szemerédi"
+      ],
       "title": "On sets of integers containing no k elements in arithmetic progression",
       "journal": "Acta Arithmetica",
       "volume": "27",
@@ -211,7 +223,12 @@
       "note": "Szemerédi's theorem: positive-density sets contain k-term arithmetic progressions; the parallel density-forces-structure result whose proof technique influenced Problem #109."
     },
     {
-      "authors": ["Bryna Kra", "Joel Moreira", "Florian K. Richter", "Donald Robertson"],
+      "authors": [
+        "Bryna Kra",
+        "Joel Moreira",
+        "Florian K. Richter",
+        "Donald Robertson"
+      ],
       "title": "Infinite sumsets in sets with positive density",
       "journal": "Journal of the European Mathematical Society",
       "volume": "26",

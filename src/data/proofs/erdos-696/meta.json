@@ -53,7 +53,8 @@
     ],
     "axiomCount": 19,
     "lineCount": 340,
-    "dateAdded": "2026-03-23"
+    "dateAdded": "2026-03-23",
+    "assumptions": "Assumes 19 axioms for deep results"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #696**\n\nThis problem explores chains of prime divisors with congruence conditions, connecting to the multiplicative group structure of finite fields.\n\n**Key History:**\n- Erdős (1979): Posed the problem in [Er79e, p.81]\n- Erdős noted it's 'easy to see' that h(n) → ∞ for almost all n\n- van Doorn: Provided formal proof in the comments\n- The normal order log*(n) conjecture remains open\n\n**Mathematical Setting:**\nThe condition pᵢ₊₁ ≡ 1 (mod pᵢ) means pᵢ divides pᵢ₊₁ - 1, so (ℤ/pᵢ₊₁ℤ)* has a subgroup of order pᵢ. This reflects the multiplicative structure of primes.",

@@ -55,7 +55,8 @@
     ],
     "dateAdded": "2026-02-22",
     "axiomCount": 10,
-    "lineCount": 317
+    "lineCount": 317,
+    "assumptions": "Assumes 10 axioms for deep results"
   },
   "overview": {
     "historicalContext": "Gödel (1940) showed CH is consistent with ZFC using the constructible universe L; Cohen (1963) showed ¬CH is also consistent using forcing. The independence of CH left open a deeper philosophical question: which axioms, if any, should we add to ZFC to settle it? Gödel initially hoped V=L was the right answer, but Scott (1961) showed V=L is incompatible with measurable cardinals — large cardinals that most set theorists consider mathematically natural. Since the 1970s, forcing axioms like Martin's Maximum (MM) and the Proper Forcing Axiom (PFA) have emerged as popular alternatives, and these axioms imply ¬CH. Woodin's ongoing Ultimate-L program (1999–) seeks a canonical inner model that satisfies GCH while accommodating all large cardinals.",

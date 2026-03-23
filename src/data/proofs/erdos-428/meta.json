@@ -69,7 +69,8 @@
       "Proved allOffsetsPrime_mono (subset monotonicity)"
     ],
     "axiomCount": 2,
-    "lineCount": 130
+    "lineCount": 130,
+    "assumptions": "Assumes 2 axiom(s): erdos_graham_limsup, finite_set_zero_density"
   },
   "leanFile": {
     "path": "Proofs/Erdos428Problem.lean",

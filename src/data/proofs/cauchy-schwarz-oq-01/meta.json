@@ -53,7 +53,8 @@
     ],
     "dateAdded": "2026-02-24",
     "axiomCount": 0,
-    "lineCount": 138
+    "lineCount": 138,
+    "assumptions": "None. All theorems fully proved from Mathlib."
   },
   "overview": {
     "historicalContext": "**From Real to Complex: Extending Cauchy-Schwarz**\n\nThe classical Cauchy-Schwarz inequality for real inner product spaces states:\n$$|\\langle u, v \\rangle| \\leq \\|u\\| \\cdot \\|v\\|$$\n\nFor complex inner product spaces, the inner product $\\langle u, v \\rangle_\\mathbb{C}$ is **sesquilinear**: conjugate-linear in the first argument, linear in the second. The generalization requires the complex modulus:\n$$\\|\\langle u, v \\rangle_\\mathbb{C}\\| \\leq \\|u\\| \\cdot \\|v\\|$$\n\n**The Open Question**: Can the existing real Cauchy-Schwarz formalization be extended to complex inner product spaces using Mathlib's `inner_mul_le_norm_mul_norm`?\n\n**The Answer**: YES — and even more is true. Mathlib's `norm_inner_le_norm` works uniformly for any field `𝕜` satisfying `[RCLike 𝕜]`, which includes both `ℝ` and `ℂ`. The complex case requires no additional work beyond what Mathlib already provides.",

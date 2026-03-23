@@ -59,7 +59,8 @@
       "Finite Hindman theorem axiom and Hindman numbers definition"
     ],
     "axiomCount": 5,
-    "lineCount": 329
+    "lineCount": 329,
+    "assumptions": "Assumes 5 axiom(s): hindman_theorem, idempotent_ultrafilter_exists, ultrafilter_implies_hindman, hales_jewett_implies_hindman, hindman_finite_exists"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #532: Hindman's Theorem (IP Sets)**\n\nThis fundamental problem in Ramsey theory was posed by Graham and Rothschild in the early 1970s. It asks whether, for any finite coloring of the natural numbers, some color class must contain an 'IP set' - a set containing all finite sums from some infinite sequence.\n\n**Historical Development:**\n- **1971:** Graham and Rothschild posed the question in their work on Ramsey theory\n- **1974:** Neil Hindman proved the affirmative answer for any number of colors\n- **1975+:** Ultrafilter proofs discovered, connecting to topological dynamics\n- **Modern:** Hindman's theorem is now central to combinatorics and ergodic theory",

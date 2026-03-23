@@ -46,7 +46,8 @@
     ],
     "axiomCount": 6,
     "lineCount": 244,
-    "dateAdded": "2026-03-23"
+    "dateAdded": "2026-03-23",
+    "assumptions": "Assumes 6 axioms for deep results"
   },
   "overview": {
     "historicalContext": "This problem explores the interplay between local constraints (every 4 points determine many distances) and global behavior (few total distances). Erdős believed such configurations should exist and would yield bounds for related problems about point configurations.\n\nThe solution came from an unexpected direction: algebraic number theory. Moree and Osburn (2006) discovered that points on a 'stretched' integer lattice {(a, b√2) : a,b ∈ ℤ} have the remarkable property of avoiding regular geometric configurations while having few distinct distances. The key insight is that distances in this lattice have the form √(x² + 2y²), and by Landau's theorem, the count of integers representable this way grows as O(N/√log N).\n\nLund and Sheffer independently found this construction, and Grayzel later completed the proof by ruling out the pentagon configuration using computer assistance.",

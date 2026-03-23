@@ -58,7 +58,8 @@
     ],
     "axiomCount": 6,
     "lineCount": 239,
-    "dateAdded": "2026-03-23"
+    "dateAdded": "2026-03-23",
+    "assumptions": "Assumes 6 axioms for deep results"
   },
   "overview": {
     "historicalContext": "This problem is notably NOT actually an Erdős problem. According to Erdős himself, the conjecture originated with Theodore Motzkin, Basil Gordon, and others at a 1963 Pasadena number theory meeting. Erdős popularized it by sharing it widely, and the attribution was eventually forgotten.\n\nThe 'Gaussian moat' refers to prime-free regions in ℤ[i]. The question asks whether one can 'walk' from 0 to infinity on Gaussian primes with bounded step size.\n\nKnown results:\n- Jordan and Rabung (1970): No walk with steps ≤ 2\n- Tsuchimura (2005): No walk with steps ≤ √26\n- Gethner et al.: Step size 4 insufficient\n\nTerence Tao has indicated this problem appears quite difficult.",

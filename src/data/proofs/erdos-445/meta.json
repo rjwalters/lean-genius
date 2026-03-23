@@ -50,7 +50,8 @@
       "erdos_445_summary: two-part conjunction of known results"
     ],
     "axiomCount": 5,
-    "lineCount": 141
+    "lineCount": 141,
+    "assumptions": "Assumes 5 axiom(s): heilbronn_threshold, heilbronn_unpublished, KloostermanSum, weil_bound, heath_brown_2000"
   },
   "overview": {
     "historicalContext": "Erdős asked whether for any c > 1/2, a sufficiently large prime p guarantees that every interval (n, n + p^c) contains a pair a, b with ab ≡ 1 (mod p). The heuristic reasoning is compelling: an interval of length L = p^c contains roughly L²/p = p^{2c-1} inverse pairs, which exceeds 1 exactly when c > 1/2.\n\nHeilbronn proved this for c sufficiently close to 1 in an unpublished result, establishing that the conjecture holds above some threshold c₀ < 1. The breakthrough came from Heath-Brown in 2000, who used Kloosterman sum estimates — particularly the Weil bound |K(m,n;p)| ≤ 2√p — combined with careful averaging arguments to push the threshold down to c > 3/4.\n\nThe gap c ∈ (1/2, 3/4] remains completely open. Closing this gap would likely require new estimates for exponential sums or entirely different counting methods. The problem connects to the broader theme of how multiplicative structure modulo primes distributes across short intervals, a central question in analytic number theory.",

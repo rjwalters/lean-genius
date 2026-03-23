@@ -47,7 +47,8 @@
       "SimpleGraph in Mathlib",
       "Nešetřil-Rödl theorem (structural Ramsey theory)"
     ],
-    "lineCount": 146
+    "lineCount": 146,
+    "assumptions": "Assumes 4 axiom(s): nesetril_rodl_c4_c6, erdos_hajnal_c4_trees, erdos_596, erdos_595_k4_k3"
   },
   "overview": {
     "historicalContext": "Erdős Problem #596 from [Er87] asks for a characterization of graph pairs (G₁, G₂) satisfying a finite/countable Ramsey-type dichotomy. Erdős and Hajnal originally conjectured no such pairs exist, but Nešetřil-Rödl and Erdős-Hajnal showed that (C₄, C₆) is a valid pair. The related Problem #595 asks specifically about (K₄, K₃). The structural Ramsey theory context here traces back to the Nešetřil-Rödl theorem of the 1970s, which proved that for any graph H there exist graphs with arbitrarily high chromatic number containing no odd cycle shorter than any fixed length. Erdős and Hajnal's result that C₄-free graphs decompose into countably many trees (a consequence of their work on sparse graphs) provided the key tool for the countable coloring half of the (C₄, C₆) dichotomy.",

@@ -47,7 +47,8 @@
       "Verified factorial computations for small cases"
     ],
     "axiomCount": 5,
-    "lineCount": 158
+    "lineCount": 158,
+    "assumptions": "Assumes 5 axiom(s): erdos_198_answer, factorialSidon_is_sidon, factorialSidon_intersects_all_APs, lacunary_is_sidon, baumgartner_construction"
   },
   "overview": {
     "historicalContext": "This problem explores the relationship between Sidon sets (sets with all pairwise sums distinct) and arithmetic progressions. Erdős asked whether every Sidon set must be 'sparse enough' that its complement contains an infinite AP.\n\nBaumgartner (1975) showed the answer is NO by constructing a Sidon set that intersects every infinite AP. His method was implicit - enumerate all APs and greedily select elements to form a lacunary (hence Sidon) sequence.\n\nMore recently, AlphaProof found an explicit construction: A = {n! + n : n ≥ 0}. This set is Sidon and intersects every AP, providing a concrete counterexample.",

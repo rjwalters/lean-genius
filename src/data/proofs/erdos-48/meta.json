@@ -60,7 +60,8 @@
       "erdos_48 theorem: the main result"
     ],
     "axiomCount": 10,
-    "lineCount": 471
+    "lineCount": 471,
+    "assumptions": "Assumes 10 axioms for deep results"
   },
   "overview": {
     "historicalContext": "**Erdos Problem #48**\n\nThis problem asks about common values of two fundamental arithmetic functions.\n\n**Key History:**\n- Erdos [Er59c], [Er74b], [Er95]: Original problem formulations\n- Ford-Luca-Pomerance (2010): Proved infinitely many pairs exist\n- Garaev (2011): Improved density bounds\n\n**Mathematical Setting:**\n- phi(n) = Euler's totient = count of integers 1 to n coprime to n\n- sigma(n) = sum of all positive divisors of n\n\nBoth are multiplicative functions with very different behavior: phi(n) < n for n > 1 (shrinks), while sigma(n) > n for n > 1 (grows).",
@@ -216,7 +217,11 @@
   ],
   "references": [
     {
-      "authors": ["Kevin Ford", "Florian Luca", "Carl Pomerance"],
+      "authors": [
+        "Kevin Ford",
+        "Florian Luca",
+        "Carl Pomerance"
+      ],
       "title": "Common values of the arithmetic functions φ and σ",
       "venue": "Bulletin of the London Mathematical Society",
       "year": 2010,
@@ -226,7 +231,9 @@
       "note": "Proves infinitely many pairs (n,m) with φ(n) = σ(m); the main result axiomatized as ford_luca_pomerance."
     },
     {
-      "authors": ["Moubariz Z. Garaev"],
+      "authors": [
+        "Moubariz Z. Garaev"
+      ],
       "title": "On the number of common values of the arithmetic functions φ and σ below x",
       "venue": "Bulletin of the Belgian Mathematical Society – Simon Stevin",
       "year": 2011,
@@ -236,7 +243,9 @@
       "note": "Improves density bounds to exp((log log x)^{ω(x)}) where ω(x) → ∞; axiomatized as garaev_improvement."
     },
     {
-      "authors": ["Paul Erdős"],
+      "authors": [
+        "Paul Erdős"
+      ],
       "title": "Some remarks on number theory",
       "venue": "Riveon Lematematika (Israel)",
       "year": 1959,
@@ -245,7 +254,9 @@
       "note": "Original 1959 formulation [Er59c] of the problem asking about common values of φ and σ."
     },
     {
-      "authors": ["Kevin Ford"],
+      "authors": [
+        "Kevin Ford"
+      ],
       "title": "The distribution of totients",
       "venue": "Ramanujan Journal",
       "year": 1998,
@@ -255,7 +266,11 @@
       "note": "Comprehensive study of Im(φ) and its density; background for the value-distribution results used in the proof."
     },
     {
-      "authors": ["Paul Erdős", "Carl Pomerance", "András Sárközy"],
+      "authors": [
+        "Paul Erdős",
+        "Carl Pomerance",
+        "András Sárközy"
+      ],
       "title": "On locally repeated values of certain arithmetic functions",
       "venue": "Journal of Number Theory",
       "year": 1987,

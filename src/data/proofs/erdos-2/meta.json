@@ -48,7 +48,8 @@
       "Lean 4 formalization of Erdős Problem #2: Covering Systems",
       "Complete proof architecture with verified type-checking"
     ],
-    "dateAdded": "2026-03-23"
+    "dateAdded": "2026-03-23",
+    "assumptions": "Assumes 4 axiom(s): hough_bound, balister_bound, owens_construction, reciprocal_sum_ge_one"
   },
   "overview": {
     "historicalContext": "Covering systems were introduced by Erdős around 1950. He asked whether the minimum modulus of a covering system with distinct moduli can be made arbitrarily large, calling it 'perhaps my favourite problem' and offering a $1000 prize. Constructions pushed the minimum modulus steadily upward: 2 (Erdős 1950), 3 (Choi 1971), 20 (Krukenberg 1971), 36 (Gibson 2009), 40 (Nielsen 2009), and 42 (Owens 2014). Most experts expected the answer to be YES. In a stunning surprise, Hough (2015) proved the answer is NO — every covering system must contain a modulus $\\leq 10^{16}$ — using the Lovász Local Lemma and building on work of Filaseta, Ford, Konyagin, Pomerance, and Yu (2007). The bound was dramatically improved to $616{,}000$ by Balister, Bollobás, Morris, Sahasrabudhe, and Tiba (2022) using their novel 'distortion method', published in the Annals of Mathematics. The exact maximum possible minimum modulus remains unknown, lying between 42 and 616,000.",

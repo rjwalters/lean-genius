@@ -31,7 +31,8 @@
     ],
     "dateAdded": "2025-12-31",
     "axiomCount": 1,
-    "lineCount": 165
+    "lineCount": 165,
+    "assumptions": "Assumes 1 axiom(s): legendre_conjecture"
   },
   "overview": {
     "historicalContext": "Adrien-Marie Legendre conjectured in 1798 that there is always at least one prime between consecutive perfect squares. Despite being believed true and verified computationally for huge values of n, it remains unproven after over 225 years.\n\nLegendre's conjecture implies the Andrica conjecture and is implied by the Riemann Hypothesis. It's one of several famous unsolved problems about prime gaps:\n- Bertrand's Postulate (n, 2n): PROVED (Chebyshev 1852)\n- Legendre's Conjecture (n^2, (n+1)^2): OPEN\n- Oppermann's Conjecture: OPEN (stronger than Legendre)",

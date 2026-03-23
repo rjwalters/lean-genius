@@ -48,7 +48,8 @@
       "Lean 4 formalization of Erdős Problem #1100: Coprime Consecutive Divisors",
       "Complete proof architecture with verified type-checking"
     ],
-    "dateAdded": "2026-03-23"
+    "dateAdded": "2026-03-23",
+    "assumptions": "Assumes 4 axiom(s): tau_perp_lower_bound, tau_perp_equality_infinitely_often, erdos_hall_max_lower_bound, erdos_simonovits_bounds"
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and R. R. Hall in their 1978 paper *On some unconventional problems on the divisors of integers* (Acta Arithmetica). Hall was a specialist in multiplicative number theory at York, and this collaboration produced several problems exploring the fine structure of divisor sequences. The function $\\tau^{\\perp}(n)$ measures how often consecutive divisors in the increasing sequence $1 = d_1 < d_2 < \\cdots < d_{\\tau(n)} = n$ are coprime — a surprisingly subtle invariant. The trivial lower bound $\\tau^{\\perp}(n) \\geq \\omega(n)$ is immediate (each prime $p \\mid n$ contributes at least one coprime transition in the divisor list), and is tight infinitely often. The deeper questions concern whether $\\tau^{\\perp}(n)$ typically exceeds $\\omega(n)$ by a large factor. The exponential bounds on $g(k)$ are due to Erdős and Simonovits, who showed $\\sqrt{2}^k \\lesssim g(k) \\lesssim (2-c)^k$, revealing that the combinatorics of coprime transitions in divisor lattices is genuinely exponential but sub-maximal.",

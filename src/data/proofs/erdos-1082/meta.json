@@ -55,7 +55,8 @@
       "erdos_1082_status summary theorem"
     ],
     "axiomCount": 4,
-    "lineCount": 351
+    "lineCount": 351,
+    "assumptions": "Assumes 4 axiom(s): szemeredi_n_over_3, szemeredi_no_k_on_line, xichuan_counterexample, guth_katz_distinct_distances"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1082: Distinct Distances in General Position**\n\nThis problem originates from combinatorial geometry and explores how many distinct distances must be determined by points in general position (no three collinear).\n\n**Historical Timeline:**\n- **Szemerédi (~1975):** Proved the n/3 bound - points in general position determine at least n/3 distinct distances. This was unpublished but cited in Erdős's 1975 paper. Szemerédi also proved that if no k points are collinear, some point determines ≫ n/k distances.\n- **Erdős (1975):** Conjectured the n/2 bound in \"On some problems of elementary and combinatorial geometry.\"\n- **Xichuan (2020s):** Provided a counterexample to the stronger form: 42 points where each point sees only 20 distinct distances.\n\nThe problem connects to the famous Erdős distinct distances problem, which Guth-Katz resolved in 2015 with an Ω(n/log n) bound.",
@@ -196,7 +197,9 @@
   ],
   "references": [
     {
-      "authors": ["Paul Erdős"],
+      "authors": [
+        "Paul Erdős"
+      ],
       "title": "On some problems of elementary and combinatorial geometry",
       "venue": "Annali di Matematica Pura ed Applicata",
       "year": 1975,
@@ -206,7 +209,10 @@
       "note": "Original source of the n/2 conjecture for points in general position (no three collinear)."
     },
     {
-      "authors": ["Larry Guth", "Nets Hawk Katz"],
+      "authors": [
+        "Larry Guth",
+        "Nets Hawk Katz"
+      ],
       "title": "On the Erdős distinct distances problem in the plane",
       "venue": "Annals of Mathematics",
       "year": 2015,
@@ -217,7 +223,10 @@
       "note": "Proves Ω(n/log n) distinct distances for all n-point sets; the strongest known lower bound for Problem #89, contextualizing the n/2 threshold for general position."
     },
     {
-      "authors": ["Endre Szemerédi", "William T. Trotter Jr."],
+      "authors": [
+        "Endre Szemerédi",
+        "William T. Trotter Jr."
+      ],
       "title": "Extremal problems in discrete geometry",
       "venue": "Combinatorica",
       "year": 1983,
@@ -228,7 +237,9 @@
       "note": "Szemerédi–Trotter incidence theorem, foundational to distance counting arguments including Szemerédi's unpublished n/3 bound cited in Problem #1082."
     },
     {
-      "authors": ["Emanuel Altman"],
+      "authors": [
+        "Emanuel Altman"
+      ],
       "title": "On a problem of Erdős",
       "venue": "The American Mathematical Monthly",
       "year": 1963,
@@ -239,7 +250,10 @@
       "note": "Proves that the vertices of a convex n-gon determine at least ⌊n/2⌋ distinct distances, establishing the resolved analogue of the open Problem #1082."
     },
     {
-      "authors": ["József Solymosi", "Csaba D. Tóth"],
+      "authors": [
+        "József Solymosi",
+        "Csaba D. Tóth"
+      ],
       "title": "Distinct distances in the plane",
       "venue": "Discrete & Computational Geometry",
       "year": 2001,

@@ -54,7 +54,8 @@
       "Connection to Problem #208 (prime squares conjecture)"
     ],
     "axiomCount": 5,
-    "lineCount": 139
+    "lineCount": 139,
+    "assumptions": "Assumes 5 axiom(s): erdos_1101_no_polynomial, erdos_1101_yes_subexponential, erdos_good_sequence_exists, sieve_lower_bound, prime_squares_good_conjecture"
   },
   "overview": {
     "historicalContext": "This problem connects sieve theory with questions about the growth rates of multiplicative sequences. Given a sequence u = {u₁ < u₂ < ...} of pairwise coprime integers with Σ1/uᵢ < ∞, consider the integers A = {a₁ < a₂ < ...} not divisible by any uᵢ.\n\nThe 'density' of A is given by ∏(1 - 1/uᵢ), and sieve theory shows that gaps between consecutive elements of A are at least (1+o(1))·tₓ·∏(1-1/uᵢ)⁻¹. Erdős called u 'good' if the gaps are also bounded ABOVE by (1+ε)·tₓ·∏(1-1/uᵢ)⁻¹.\n\nErdős proved that SOME good sequence exists (using all primes), but the question of which growth rates are achievable remains open. He conjectured that polynomial growth is impossible but sub-exponential growth is achievable.",
@@ -168,7 +169,9 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "Problems and results on combinatorial number theory",
       "venue": "A Survey of Combinatorial Theory (J. N. Srivastava et al., eds.), North-Holland",
       "year": 1973,
@@ -176,21 +179,28 @@
       "note": "Original source containing Problem #1101 and Erdős's discussion of good sequences and gap bounds for sieved integers."
     },
     {
-      "authors": ["H. Halberstam", "H.-E. Richert"],
+      "authors": [
+        "H. Halberstam",
+        "H.-E. Richert"
+      ],
       "title": "Sieve Methods",
       "venue": "Academic Press, London–New York",
       "year": 1974,
       "note": "Standard reference for the sieve-theoretic framework underlying the lower bound tₓ·∏(1−1/uᵢ)⁻¹ on gaps in sieved sets."
     },
     {
-      "authors": ["H. Davenport"],
+      "authors": [
+        "H. Davenport"
+      ],
       "title": "Multiplicative Number Theory",
       "venue": "Graduate Texts in Mathematics, vol. 74, Springer, New York",
       "year": 1980,
       "note": "Background on multiplicative structure, Dirichlet series, and analytic methods relevant to density and gap arguments for multiplicative sequences."
     },
     {
-      "authors": ["A. Granville"],
+      "authors": [
+        "A. Granville"
+      ],
       "title": "Harald Cramér and the distribution of prime numbers",
       "venue": "Scandinavian Actuarial Journal",
       "year": 1995,
@@ -198,7 +208,10 @@
       "note": "Discusses probabilistic models for prime gaps; the heuristic framework here informs expectations for gap behavior in sieved integer sequences."
     },
     {
-      "authors": ["B. Green", "T. Tao"],
+      "authors": [
+        "B. Green",
+        "T. Tao"
+      ],
       "title": "The primes contain arbitrarily long arithmetic progressions",
       "venue": "Annals of Mathematics",
       "year": 2008,
