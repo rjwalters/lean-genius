@@ -99,6 +99,95 @@
       "Can the methods used to study Wilson primes (searches to $5 \\times 10^{17}$) shed light on the distribution of Wilson-maximal primes?"
     ]
   },
+  "crossReferences": [
+    {
+      "slug": "wilsons-theorem",
+      "relationship": "Wilson's theorem ($p \\mid (p-1)!+1$ iff $p$ is prime) is the direct foundation of Problem #1072: it establishes the upper bound $f(p) \\leq p-1$ and guarantees the infimum defining $f(p)$ is finite for every prime."
+    },
+    {
+      "slug": "erdos-1073",
+      "relationship": "Immediate companion problem: #1073 asks whether composites $u$ with $u \\mid n!+1$ for some $n$ are sub-polynomial in count, while #1072 studies the least such $n$ for primes. Both probe the arithmetic of factorial residues modulo primes and composites."
+    },
+    {
+      "slug": "erdos-1074",
+      "relationship": "Direct sibling from the same Erdős–Hardy–Subbarao (2002) paper: #1074 asks about the density of EHS numbers and Pillai primes, which are defined by the same factorial congruence $n! \\equiv -1 \\pmod{p}$ studied in #1072."
+    },
+    {
+      "slug": "erdos-1058",
+      "relationship": "Complementary factorial-prime problem: #1058 asks which primes can divide $n!+1$ for $n$ in specific intervals, and its resolution by Luca (2001) illustrates the kind of finiteness argument that would be needed to settle #1072a."
+    },
+    {
+      "slug": "erdos-1056",
+      "relationship": "Related modular-arithmetic problem about products of consecutive intervals modulo $p$: both #1056 and #1072 investigate when specific products (partial factorials) achieve a prescribed residue modulo a prime."
+    },
+    {
+      "slug": "bertrands-postulate",
+      "relationship": "Bertrand's postulate underpins prime distribution arguments used as context for #1072: knowing that primes are 'dense enough' is relevant to understanding whether Wilson-maximal primes can be infinite or must have zero density."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "slug": "wilsons-theorem",
+      "description": "The classical theorem that $(n-1)! \\equiv -1 \\pmod{n}$ iff $n$ is prime; forms the upper bound $f(p) \\leq p-1$ central to Problem #1072."
+    },
+    {
+      "slug": "erdos-1073",
+      "description": "Counts composites $u$ dividing some $n!+1$; directly complements #1072 by extending the factorial divisibility question from primes to composites."
+    },
+    {
+      "slug": "erdos-1074",
+      "description": "Studies EHS numbers and Pillai primes via the same $n! \\equiv -1 \\pmod{p}$ congruence; co-authored by Erdős, Hardy, and Subbarao in the same 2002 paper."
+    },
+    {
+      "slug": "erdos-1059",
+      "description": "Asks whether infinitely many primes $p$ satisfy $p - k!$ composite for all valid $k$; related open problem about factorial-prime interactions from the same era."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["P. Erdős", "R. L. Graham", "I. Z. Ruzsa", "E. G. Straus"],
+      "title": "On the prime factors of $\\binom{2n}{n}$",
+      "journal": "Mathematics of Computation",
+      "volume": "29",
+      "year": 1975,
+      "pages": "83–92",
+      "note": "Early Erdős work on factorial arithmetic and prime divisors, establishing techniques used in the Hardy-Subbarao program"
+    },
+    {
+      "authors": ["P. Erdős", "R. L. Graham"],
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "publisher": "L'Enseignement Mathématique",
+      "year": 1980,
+      "note": "Comprehensive survey including problems on factorial residues and prime congruences; background for the #1072 program"
+    },
+    {
+      "authors": ["F. Luca"],
+      "title": "On the equation $x^a + 2^b = p^n$",
+      "journal": "Indagationes Mathematicae",
+      "volume": "14",
+      "year": 2003,
+      "pages": "207–222",
+      "note": "Luca's methods for factorial-prime equations, relevant to the resolution of the companion Problem #1058 and techniques bearing on #1072"
+    },
+    {
+      "authors": ["R. Crandall", "K. Dilcher", "C. Pomerance"],
+      "title": "A search for Wieferich and Wilson primes",
+      "journal": "Mathematics of Computation",
+      "volume": "66",
+      "year": 1997,
+      "pages": "433–449",
+      "doi": "10.1090/S0025-5718-97-00791-6",
+      "note": "Definitive computational search for Wilson primes to $5 \\times 10^8$; establishes that Wilson primes (a stronger condition than Wilson-maximality) are extremely rare"
+    },
+    {
+      "authors": ["R. K. Guy"],
+      "title": "Unsolved Problems in Number Theory",
+      "edition": "3rd",
+      "publisher": "Springer",
+      "year": 2004,
+      "note": "Problem A2 catalogues Wilson primes; Problem A15 lists related factorial congruence open problems including the Hardy-Subbarao program"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Factorial.Basic",
