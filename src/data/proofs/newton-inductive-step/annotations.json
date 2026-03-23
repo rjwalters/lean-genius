@@ -1,231 +1,164 @@
 [
   {
-    "id": "ann-module-header",
+    "id": "ann-header-import",
     "proofId": "newton-inductive-step",
-    "range": {
-      "startLine": 1,
-      "endLine": 9
-    },
+    "range": { "startLine": 1, "endLine": 8 },
     "type": "context",
-    "title": "Module Overview and Imports",
-    "content": "The module header summarizes the proof's goal: the key binomial inequality $bc^3 + adc^2 + ac^3 \\geq 2b^2cd + b^3d$ for Newton's log-concavity, proved via absorption identities. The identity $k^3(k+1)(m-k+2) \\cdot (\\text{LHS} - \\text{RHS}) = (m-k+1)(m+1)^2 b^4$ is stated in the docstring.\n\nThe single `import Mathlib` pulls in the full Mathlib library, providing `Nat.choose`, `Nat.choose_succ_right_eq` (the absorption identity), and the `linear_combination`, `positivity`, and `nlinarith` tactics used throughout. No `open` declarations are needed since the proof references Mathlib names with their full namespace prefixes.",
-    "mathContext": "The absorption identity $k \\cdot \\binom{m}{k} = (m - k + 1) \\cdot \\binom{m}{k-1}$ from `Nat.choose_succ_right_eq` is the only external mathematical fact used. Everything else is derived algebraically within this module.",
+    "title": "Module Header and Imports",
+    "content": "Documents the module's purpose: proving the key binomial coefficient inequality for Newton's log-concavity theorem. The inequality $bc^3 + adc^2 + ac^3 \\geq 2b^2cd + b^3d$ (where $a, b, c, d$ are four consecutive binomial coefficients) is the inductive step in the classical proof that the sequence $\\binom{m}{k}$ is log-concave.\n\nImports all of Mathlib via the single `import Mathlib` statement. The key dependency is `Mathlib.Data.Nat.Choose.Basic` for `Nat.choose_succ_right_eq` (the absorption identity).",
+    "mathContext": "Key identity: $k^3(k+1)(r+1) \\cdot (\\text{LHS} - \\text{RHS}) = r(k+r)^2 b^4 \\geq 0$ where $r = m - k + 1$.",
     "significance": "context",
     "relatedConcepts": [
-      "Mathlib import",
-      "Nat.choose_succ_right_eq",
-      "linear_combination tactic"
+      "Newton's inequalities",
+      "log-concavity",
+      "binomial coefficients"
     ],
     "prerequisites": [
-      "Lean 4 module system",
-      "Mathlib library"
+      "binomial coefficients",
+      "Mathlib"
     ]
   },
   {
     "id": "ann-quadratic-nonneg",
     "proofId": "newton-inductive-step",
-    "range": {
-      "startLine": 11,
-      "endLine": 18
-    },
-    "type": "theorem",
+    "range": { "startLine": 10, "endLine": 18 },
+    "type": "technique",
     "title": "Quadratic Non-Negativity Helper",
-    "content": "`quadratic_nonneg` proves that $\\alpha t^2 + \\beta t + \\gamma \\geq 0$ for $t \\geq 0$ when $\\alpha, \\gamma \\geq 0$ and $4\\alpha\\gamma \\geq \\beta^2$.\n\nThe proof splits on whether $\\alpha = 0$ (in which case $\\beta = 0$ follows from the discriminant condition, leaving just $\\gamma \\geq 0$) or $\\alpha > 0$ (where the completing-the-square identity $(2\\alpha t + \\beta)^2 \\geq 0$ and `nlinarith` finish the job).\n\nThis is a general-purpose helper for proving polynomial non-negativity, useful when the main inequality reduces to a quadratic form after clearing denominators.",
-    "mathContext": "If $\\alpha, \\gamma \\geq 0$ and $4\\alpha\\gamma \\geq \\beta^2$ (non-negative discriminant), then $\\alpha t^2 + \\beta t + \\gamma \\geq 0$ for all $t \\geq 0$.\n\nKey identity: $\\alpha(\\alpha t^2 + \\beta t + \\gamma) = (\\alpha t + \\beta/2)^2 + (\\alpha\\gamma - \\beta^2/4) \\geq 0$.",
+    "content": "Proves `quadratic_nonneg`: if $\\alpha, \\gamma \\geq 0$ and $4\\alpha\\gamma \\geq \\beta^2$, then $\\alpha t^2 + \\beta t + \\gamma \\geq 0$ for all $t \\geq 0$.\n\n**Proof:** Two cases. If $\\alpha = 0$, then the discriminant condition forces $\\beta = 0$ (from $0 \\geq \\beta^2$), and the expression reduces to $\\gamma \\geq 0$. If $\\alpha > 0$, the key insight is completing the square: $\\alpha(\\alpha t^2 + \\beta t + \\gamma) = (\\alpha t + \\beta/2)^2 + (\\alpha\\gamma - \\beta^2/4)$. Both terms are non-negative (the first as a square, the second from the discriminant condition), so the product is non-negative. Since $\\alpha > 0$, the original expression is non-negative. The `nlinarith` tactic verifies this from the hint `sq_nonneg (2*\\alpha*t + \\beta)`.\n\nThis lemma is a general tool for establishing non-negativity of quadratic expressions, used when the absorption identity approach produces a quadratic in some parameter.",
+    "mathContext": "If $\\alpha, \\gamma \\geq 0$ and $4\\alpha\\gamma \\geq \\beta^2$ (non-positive discriminant), then $\\alpha t^2 + \\beta t + \\gamma \\geq 0$ for $t \\geq 0$. Standard completing-the-square argument.",
     "significance": "supporting",
     "relatedConcepts": [
       "completing the square",
-      "discriminant condition",
-      "nlinarith tactic",
-      "polynomial non-negativity"
+      "discriminant",
+      "quadratic non-negativity",
+      "nlinarith",
+      "sq_nonneg"
     ],
     "prerequisites": [
       "real arithmetic",
-      "sq_nonneg"
+      "quadratic polynomials"
     ]
   },
   {
     "id": "ann-binom-ineq-statement",
     "proofId": "newton-inductive-step",
-    "range": {
-      "startLine": 23,
-      "endLine": 28
-    },
-    "type": "theorem",
-    "title": "The Main Binomial Inequality Statement",
-    "content": "`binom_ineq` states the key quartic inequality for Newton's log-concavity: for four consecutive binomial coefficients $a = \\binom{m}{k-2}$, $b = \\binom{m}{k-1}$, $c = \\binom{m}{k}$, $d = \\binom{m}{k+1}$, we have $bc^3 + adc^2 + ac^3 \\geq 2b^2cd + b^3d$.\n\nThe hypotheses $2 \\leq k$ and $k + 1 \\leq m$ ensure all four binomial coefficients are well-defined and positive. The `let` bindings cast `Nat.choose` values to $\\mathbb{R}$ for the inequality.",
-    "mathContext": "For $2 \\leq k \\leq m - 1$ and $a = \\binom{m}{k-2}$, $b = \\binom{m}{k-1}$, $c = \\binom{m}{k}$, $d = \\binom{m}{k+1}$:\n$$bc^3 + adc^2 + ac^3 \\geq 2b^2cd + b^3d$$\n\nThis is equivalent to $c^2(bc + ad + ac) \\geq bd(2bc + b^2)$, a log-concavity condition on the sequence of binomial coefficients.",
-    "significance": "critical",
+    "range": { "startLine": 20, "endLine": 28 },
+    "type": "concept",
+    "title": "Main Theorem Statement: binom_ineq",
+    "content": "States the key binomial coefficient inequality: for $m, k \\in \\mathbb{N}$ with $2 \\leq k$ and $k + 1 \\leq m$, let $a = \\binom{m}{k-2}$, $b = \\binom{m}{k-1}$, $c = \\binom{m}{k}$, $d = \\binom{m}{k+1}$ (cast to $\\mathbb{R}$). Then:\n$$bc^3 + adc^2 + ac^3 \\geq 2b^2cd + b^3d$$\n\nThe constraint $2 \\leq k$ ensures $k - 2 \\geq 0$ (so $a$ is well-defined), and $k + 1 \\leq m$ ensures $d$ is non-trivially defined. The four consecutive binomial coefficients satisfy three absorption identities that are the key tool for the proof.\n\n**Connection to Newton's inequalities:** This inequality is equivalent to $c^2(bc + ad + ac) \\geq bd(2bc + b^2)$, which arises when proving the log-concavity condition $e_k^2 \\geq e_{k-1} \\cdot e_{k+1}$ for elementary symmetric polynomials by induction on the number of variables.",
+    "mathContext": "For consecutive $a = \\binom{m}{k-2}$, $b = \\binom{m}{k-1}$, $c = \\binom{m}{k}$, $d = \\binom{m}{k+1}$: $bc^3 + adc^2 + ac^3 \\geq 2b^2cd + b^3d$.",
+    "significance": "key",
     "relatedConcepts": [
+      "binomial coefficients",
       "Newton's inequalities",
       "log-concavity",
-      "binomial coefficients",
       "elementary symmetric polynomials"
     ],
     "prerequisites": [
-      "Nat.choose",
-      "Nat.cast to ℝ"
+      "binomial coefficients",
+      "real arithmetic"
     ]
   },
   {
     "id": "ann-absorption-identities",
     "proofId": "newton-inductive-step",
-    "range": {
-      "startLine": 31,
-      "endLine": 46
-    },
-    "type": "theorem",
-    "title": "The Three Absorption Identities",
-    "content": "The proof derives three **absorption identities** from `Nat.choose_succ_right_eq`, which states $(m - k + 1) \\cdot \\binom{m}{k-1} = k \\cdot \\binom{m}{k}$:\n\n1. `h1`: $k \\cdot c = (m - k + 1) \\cdot b$ — relating $\\binom{m}{k}$ and $\\binom{m}{k-1}$\n2. `h2`: $(k+1) \\cdot d = (m - k) \\cdot c$ — relating $\\binom{m}{k+1}$ and $\\binom{m}{k}$\n3. `h3`: $(k-1) \\cdot b = (m - k + 2) \\cdot a$ — relating $\\binom{m}{k-1}$ and $\\binom{m}{k-2}$\n\nEach derivation involves `congr_arg Nat.cast` to lift from $\\mathbb{N}$ to $\\mathbb{R}$, `push_cast` to distribute the cast, and `Nat.cast_sub` with proof that the subtraction doesn't underflow. These three identities are the entire algebraic input to the proof — everything else is polynomial manipulation.",
-    "mathContext": "The absorption identity: $k \\cdot \\binom{m}{k} = (m - k + 1) \\cdot \\binom{m}{k-1}$.\n\nSetting $r = m - k + 1$:\n- $kc = rb$\n- $(k+1)d = (r-1)c$\n- $(k-1)b = (r+1)a$\n\nThese express all four binomial coefficients in terms of any one of them and the two parameters $k, r$.",
-    "significance": "critical",
-    "relatedConcepts": [
-      "Nat.choose_succ_right_eq",
-      "push_cast tactic",
-      "Nat to ℝ coercion",
-      "absorption identity"
-    ],
-    "prerequisites": [
-      "Nat.choose_succ_right_eq",
-      "Nat.cast_sub",
-      "congr_arg"
-    ]
-  },
-  {
-    "id": "ann-positivity-setup",
-    "proofId": "newton-inductive-step",
-    "range": {
-      "startLine": 47,
-      "endLine": 53
-    },
-    "type": "context",
-    "title": "Parameter Setup: r and Positivity Bounds",
-    "content": "The proof introduces the key parameter $r = m - k + 1$ (the 'complement' of $k$ relative to $m$), which together with $k$ controls the ratios of consecutive binomial coefficients. Four positivity facts are established:\n\n- $k > 0$ (from $k \\geq 2$, via `positivity`)\n- $r > 0$ (from $k \\leq m$, since $r = m - k + 1 \\geq 1$)\n- $b \\geq 0$ (binomial coefficients are natural numbers, so their cast to $\\mathbb{R}$ is non-negative)\n- The absorption identity is rewritten as $kc = rb$ (replacing $m - k + 1$ with $r$)\n\nThis reparametrization is the key conceptual move: after this point, the proof works entirely in terms of $k$, $r$, and $b$, with no further reference to $m$ or the binomial coefficient function.",
-    "mathContext": "Setting $r = m - k + 1$ gives a symmetric pair of parameters: $k$ counts from the left, $r$ counts from the right, and $k + r = m + 1$. The absorption identities become $kc = rb$, $(k+1)d = (r-1)c$, $(k-1)b = (r+1)a$.",
+    "range": { "startLine": 30, "endLine": 46 },
+    "type": "technique",
+    "title": "Absorption Identities: Relating Consecutive Binomial Coefficients",
+    "content": "Derives three absorption identities from `Nat.choose_succ_right_eq`, which states $\\binom{m}{k} = \\frac{m-k+1}{k} \\binom{m}{k-1}$, equivalently $k \\cdot \\binom{m}{k} = (m-k+1) \\cdot \\binom{m}{k-1}$:\n\n1. **h1**: $k \\cdot c = (m - k + 1) \\cdot b$, i.e., $k \\cdot \\binom{m}{k} = (m-k+1) \\cdot \\binom{m}{k-1}$\n2. **h2**: $(k+1) \\cdot d = (m - k) \\cdot c$, i.e., $(k+1) \\cdot \\binom{m}{k+1} = (m-k) \\cdot \\binom{m}{k}$\n3. **h3**: $(k-1) \\cdot b = (m - k + 2) \\cdot a$, i.e., $(k-1) \\cdot \\binom{m}{k-1} = (m-k+2) \\cdot \\binom{m}{k-2}$\n\nEach derivation involves index arithmetic (`show k - 1 + 1 = k`), casting from $\\mathbb{N}$ to $\\mathbb{R}$ via `Nat.cast`, and using `Nat.cast_sub` to handle subtraction. The `push_cast` tactic simplifies cast expressions. The `linarith` tactic finishes by rearranging terms.\n\n**Why absorption?** These identities let us express products of consecutive binomial coefficients purely in terms of one coefficient and the parameters $k$ and $r = m - k + 1$. This eliminates all factorial computations and reduces the problem to polynomial arithmetic.",
+    "mathContext": "Absorption identity: $k \\cdot \\binom{m}{k} = (m-k+1) \\cdot \\binom{m}{k-1}$. Three instances relate $a, b, c, d$ pairwise. Setting $r = m - k + 1$: $kc = rb$, $(k+1)d = (r-1)c$, $(k-1)b = (r+1)a$.",
     "significance": "key",
     "relatedConcepts": [
-      "reparametrization",
-      "positivity tactic",
-      "Nat.cast_nonneg",
-      "absorption identity"
+      "absorption identity",
+      "Nat.choose_succ_right_eq",
+      "Nat.cast",
+      "push_cast",
+      "index arithmetic"
     ],
     "prerequisites": [
-      "positivity tactic",
-      "Nat.cast_nonneg"
+      "binomial coefficients",
+      "Nat to Real casting"
     ]
   },
   {
-    "id": "ann-power-identities",
+    "id": "ann-derived-identities",
     "proofId": "newton-inductive-step",
-    "range": {
-      "startLine": 54,
-      "endLine": 66
-    },
-    "type": "theorem",
-    "title": "Derived Power Identities and Cross-Products",
-    "content": "From the absorption identity $kc = rb$, the proof derives:\n- `h1_sq`: $k^2 c^2 = r^2 b^2$ (squaring)\n- `h1_cube`: $k^3 c^3 = r^3 b^3$ (cubing)\n- `h12`: $k(k+1)d = r(r-1)b$ (combining h1 and h2)\n- `h3'`: $(r+1)a = (k-1)b$ (rewriting h3)\n\nAll four are proved via `linear_combination` with appropriate polynomial coefficients. For instance, `h1_sq` uses the cofactor $(kc + rb)$ applied to `h1'`, exploiting the identity $X^2 - Y^2 = (X+Y)(X-Y)$.\n\nThese derived identities express every monomial appearing in the target inequality in terms of powers of $b$, $k$, and $r$.",
-    "mathContext": "From $kc = rb$:\n- $k^2c^2 = r^2b^2$ (via $(kc + rb)(kc - rb) = 0$)\n- $k^3c^3 = r^3b^3$\n- $k(k+1)d = r(r-1)b$ (from $kc = rb$ and $(k+1)d = (r-1)c$)\n\nAll binomial coefficient monomials are now expressible as $f(k, r) \\cdot b^n$.",
+    "range": { "startLine": 47, "endLine": 66 },
+    "type": "technique",
+    "title": "Derived Power and Product Identities",
+    "content": "From the absorption identities, derives five key equations by algebraic manipulation:\n\n- **h1'**: $kc = rb$ (just h1 rewritten with $r = m - k + 1$)\n- **h1_sq**: $k^2 c^2 = r^2 b^2$ (squaring h1', proved by `linear_combination` with the hint $(kc + rb) \\cdot h1'$)\n- **h1_cube**: $k^3 c^3 = r^3 b^3$ (cubing h1', proved by `linear_combination` with the hint $(k^2c^2 + krbc + r^2b^2) \\cdot h1'$)\n- **h12**: $k(k+1)d = r(r-1)b$ (combining h1 and h2: $(k+1)d = (r-1)c$ and $kc = rb$ give $k(k+1)d = k(r-1)c = (r-1)rb$)\n- **h3'**: $(r+1)a = (k-1)b$ (rewriting h3 with $r$)\n\nThese power identities are the building blocks for expressing $D \\cdot (\\text{LHS} - \\text{RHS})$ in terms of $b^4$ alone. The `linear_combination` tactic combines the absorption identities with specific polynomial coefficients to derive each identity.",
+    "mathContext": "From $kc = rb$: $k^2c^2 = r^2b^2$, $k^3c^3 = r^3b^3$. From $kc = rb$ and $(k+1)d = (r-1)c$: $k(k+1)d = r(r-1)b$. From $h3$: $(r+1)a = (k-1)b$.",
     "significance": "key",
     "relatedConcepts": [
       "linear_combination tactic",
       "polynomial identity",
-      "monomial reduction"
+      "algebraic manipulation",
+      "power identities"
     ],
     "prerequisites": [
-      "h1' absorption identity",
+      "absorption identities",
       "linear_combination"
     ]
   },
   {
-    "id": "ann-algebraic-roadmap",
+    "id": "ann-sufficiency-reduction",
     "proofId": "newton-inductive-step",
-    "range": {
-      "startLine": 67,
-      "endLine": 86
-    },
-    "type": "insight",
-    "title": "Algebraic Roadmap: Term-by-Term Reduction",
-    "content": "This comment block lays out the complete algebraic plan before executing it. Each of the five terms in $D \\cdot (\\text{LHS} - \\text{RHS})$ is expressed as $f(k,r) \\cdot b^4$:\n\n- $D \\cdot bc^3 = (k+1)(r+1) r^3 b^4$\n- $D \\cdot adc^2 = (k-1)(r-1) r^3 b^4$\n- $D \\cdot ac^3 = (k^2-1) r^3 b^4$\n- $D \\cdot 2b^2cd = 2(r^2-1) k r^2 b^4$\n- $D \\cdot b^3d = (r+1)r(r-1) k^2 b^4$\n\nThe sum simplifies to $r(k+r)^2 b^4$ — a fact that can be verified by expanding $(k+r)^2 = k^2 + 2kr + r^2$ and collecting terms. This roadmap is a characteristic pattern in formal proofs: stating the complete algebraic strategy in comments before executing it step by step with verified `linear_combination` calls.",
-    "mathContext": "The five-term decomposition uses: $k^3c^3 = r^3b^3$ (cubing the absorption identity), $k(k+1)d = r(r-1)b$ (chaining two absorption identities), $(r+1)a = (k-1)b$ (the third absorption identity), and $k^2c^2 = r^2b^2$ (squaring). Each product identity eliminates one more variable until only $b^4$ remains.",
+    "range": { "startLine": 67, "endLine": 94 },
+    "type": "technique",
+    "title": "Reduction to D * target >= 0",
+    "content": "Sets up the proof's key reduction: multiply both sides by $D = k^3(k+1)(r+1) > 0$ and show $D \\cdot (\\text{LHS} - \\text{RHS}) \\geq 0$.\n\n**Why multiply by D?** The absorption identities express products like $kc = rb$, so to eliminate all binomial coefficients from the inequality, we need to multiply by appropriate powers of $k$, $(k+1)$, and $(r+1)$. The product $D = k^3(k+1)(r+1)$ is the least common 'denominator' that allows every term to be rewritten in terms of $b$ alone.\n\nThe positivity of $D$ is verified by `positivity` (since $k \\geq 2 > 0$ and $r \\geq 1 > 0$). The `suffices` tactic reduces the goal to showing $D \\cdot (\\text{LHS} - \\text{RHS}) \\geq 0$, then the implication is proved by contraposition: if the original inequality failed, then $D \\cdot (\\text{negative}) < 0$ by `mul_neg_of_pos_of_neg`, contradicting the non-negativity.",
+    "mathContext": "Multiplier $D = k^3(k+1)(r+1) > 0$ (since $k \\geq 2, r \\geq 1$). Reduction: $D \\cdot (\\text{LHS} - \\text{RHS}) \\geq 0 \\iff \\text{LHS} \\geq \\text{RHS}$ since $D > 0$.",
     "significance": "supporting",
     "relatedConcepts": [
-      "proof planning",
-      "polynomial reduction",
-      "term-by-term elimination"
-    ],
-    "prerequisites": [
-      "absorption identities",
-      "power identities"
-    ]
-  },
-  {
-    "id": "ann-d-strategy",
-    "proofId": "newton-inductive-step",
-    "range": {
-      "startLine": 87,
-      "endLine": 94
-    },
-    "type": "insight",
-    "title": "The Multiplier Strategy: D * (target) ≥ 0",
-    "content": "The proof multiplies the target inequality by $D = k^3(k+1)(r+1) > 0$ (where $r = m - k + 1$). Since $D > 0$, showing $D \\cdot (\\text{LHS} - \\text{RHS}) \\geq 0$ is equivalent to $\\text{LHS} \\geq \\text{RHS}$.\n\nThis 'clear the denominators' step is essential: the absorption identities involve divisions (ratios of consecutive binomial coefficients), and multiplying by $D$ produces a clean polynomial identity. The sufficiency direction is proved by contradiction: if LHS < RHS, then $D \\cdot (\\text{LHS} - \\text{RHS}) < 0$ (since $D > 0$), contradicting the result.\n\nThe positivity of $D$ follows from $k \\geq 2$ and $r \\geq 1$, handled by `positivity`.",
-    "mathContext": "$D = k^3(k+1)(r+1) > 0$ since $k \\geq 2$, $r = m - k + 1 \\geq 1$.\n\n$D \\cdot (\\text{LHS} - \\text{RHS}) = r(k + r)^2 b^4 \\geq 0$.\n\nSince $D > 0$: $\\text{LHS} - \\text{RHS} \\geq 0 \\Leftrightarrow D \\cdot (\\text{LHS} - \\text{RHS}) \\geq 0$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "clearing denominators",
       "positivity tactic",
-      "proof by contradiction",
-      "sum-of-squares certificates"
+      "proof by contraposition",
+      "multiplication by positive",
+      "clearing denominators"
     ],
     "prerequisites": [
-      "positivity",
-      "mul_neg_of_pos_of_neg"
+      "real arithmetic",
+      "positivity"
     ]
   },
   {
-    "id": "ann-key-products",
+    "id": "ann-key-identities",
     "proofId": "newton-inductive-step",
-    "range": {
-      "startLine": 103,
-      "endLine": 129
-    },
-    "type": "theorem",
-    "title": "Key Product Identities for Each Term",
-    "content": "Five **key product identities** express each term of $D \\cdot (\\text{LHS} - \\text{RHS})$ in terms of $b^4$:\n\n1. `key1`: $k^3 \\cdot b \\cdot c^3 = r^3 \\cdot b^4$\n2. `key2`: $k(k+1) \\cdot b^3 \\cdot d = r(r-1) \\cdot b^4$\n3. `key3`: $k^2 \\cdot b^2 \\cdot c^2 = r^2 \\cdot b^4$\n4. `key4`: $k^3(k+1)(r+1) \\cdot a \\cdot d \\cdot c^2 = (k-1)(r-1) \\cdot r^3 \\cdot b^4$\n5. `key5`: $k^3(k+1)(r+1) \\cdot a \\cdot c^3 = (k^2 - 1) \\cdot r^3 \\cdot b^4$\n\nEach is proved by `linear_combination` using previously derived identities as building blocks. `key4` is the most complex, requiring a preliminary `step1` that combines two absorption identities multiplicatively.",
-    "mathContext": "All five monomials in $D \\cdot (\\text{target})$ are reduced to $f(k, r) \\cdot b^4$:\n\n$D \\cdot bc^3 = (k+1)(r+1) \\cdot r^3 \\cdot b^4$\n$D \\cdot adc^2 = (k-1)(r-1) \\cdot r^3 \\cdot b^4$\n$D \\cdot ac^3 = (k^2-1) \\cdot r^3 \\cdot b^4$\n$D \\cdot 2b^2cd = 2kr^2(r^2-1) \\cdot b^4$\n$D \\cdot b^3d = k^2 r(r^2-1) \\cdot b^4$",
+    "range": { "startLine": 95, "endLine": 129 },
+    "type": "technique",
+    "title": "Key Substitution Identities (key1-key5)",
+    "content": "Derives five key identities that express each term of $D \\cdot (\\text{LHS} - \\text{RHS})$ in terms of $b^4$:\n\n- **key1**: $k^3 \\cdot b \\cdot c^3 = r^3 \\cdot b^4$ (from h1_cube $\\cdot$ b)\n- **key2**: $k(k+1) \\cdot b^3 \\cdot d = r(r-1) \\cdot b^4$ (from h12 $\\cdot$ b^3)\n- **key3**: $k^2 \\cdot b^2 \\cdot c^2 = r^2 \\cdot b^4$ (from h1_sq $\\cdot$ b^2)\n- **key4**: $k^3(k+1)(r+1) \\cdot adc^2 = (k-1)(r-1)r^3 \\cdot b^4$ (combines h2' and h3' to get $(k+1)d \\cdot (r+1)a = (r-1)c \\cdot (k-1)b$, then multiplies by $k^3c^2$ and uses key1)\n- **key5**: $k^3(k+1)(r+1) \\cdot ac^3 = (k^2-1)r^3 \\cdot b^4$ (uses $(r+1)a = (k-1)b$ from h3', then $(k+1)(k-1) = k^2 - 1$, and key1)\n\nEach identity is proved by `linear_combination` with appropriate hints. The technique is a systematic 'clearing of binomial coefficients': every occurrence of $a, c, d$ is eliminated in favor of $b$ and the parameters $k, r$.\n\n**key4 is the most intricate**: it requires first proving the intermediate identity $(k+1)d \\cdot (r+1)a = (r-1)(k-1) \\cdot bc$ (by combining absorption identities for adjacent pairs), then multiplying by $k^3c^2$ and using key1 to eliminate $c^3$.",
+    "mathContext": "Term-by-term rewriting: each product involving $a, c, d$ is expressed as a polynomial in $k, r$ times $b^4$. The five key identities convert the 5-term inequality into a single polynomial expression in $k, r$ multiplied by $b^4$.",
     "significance": "key",
     "relatedConcepts": [
-      "linear_combination tactic",
-      "polynomial arithmetic",
-      "absorption identity chaining"
+      "systematic substitution",
+      "linear_combination",
+      "polynomial reduction",
+      "clearing denominators"
     ],
     "prerequisites": [
-      "h1_cube",
-      "h12",
-      "h1_sq",
-      "h3'"
+      "derived identities",
+      "linear_combination tactic"
     ]
   },
   {
     "id": "ann-final-identity",
     "proofId": "newton-inductive-step",
-    "range": {
-      "startLine": 141,
-      "endLine": 152
-    },
+    "range": { "startLine": 130, "endLine": 152 },
     "type": "insight",
-    "title": "The Final Identity: r(k+r)²b⁴ ≥ 0",
-    "content": "The climax: `suffices h_ident` reduces the proof to showing the algebraic identity\n$$D \\cdot (\\text{LHS} - \\text{RHS}) = r(k + r)^2 b^4$$\nwhich is non-negative by `positivity` (since $r > 0$, $(k+r)^2 \\geq 0$, $b^4 \\geq 0$).\n\nThe identity itself is verified by a single `linear_combination` call that combines all five key product identities with polynomial coefficients. The six-term linear combination is the algebraic heart of the proof — it encodes the polynomial identity\n$$[(k+1)(r+1) + (k-1)(r-1) + (k^2-1)]r^3 - [2kr^2 + k^2r](r^2-1) = r(k+r)^2$$\nwhich can be verified by expanding both sides. The fact that $r(k+r)^2 \\geq 0$ is trivial, but the identity connecting it to the binomial coefficient expression is where the mathematical insight lies.",
-    "mathContext": "$k^3(k+1)(r+1)(bc^3 + adc^2 + ac^3 - 2b^2cd - b^3d) = r(k+r)^2 b^4$.\n\nSince $r > 0$, $(k+r)^2 \\geq 0$, $b^4 \\geq 0$: the RHS is $\\geq 0$.\n\nEquality holds iff $b = 0$ (impossible for valid $k, m$) or $k + r = 0$ (impossible since $k \\geq 2, r \\geq 1$, so $k + r \\geq 3$). Thus the inequality is strict for all valid inputs.",
-    "significance": "critical",
+    "title": "Final Identity and Proof Completion",
+    "content": "The proof's climax: combines all five key identities to show $D \\cdot (\\text{LHS} - \\text{RHS}) = r(k+r)^2 b^4$.\n\nThe `suffices h_ident` reduces the goal to proving this identity, after which `positivity` closes the goal (since $r > 0$, $(k+r)^2 \\geq 0$, and $b^4 \\geq 0$).\n\nThe identity itself is proved by a single `linear_combination` call with six terms, each using one of the key identities as a summand with specific polynomial coefficients:\n$$D \\cdot (\\text{target}) = (k+1)(r+1) \\cdot \\text{key1} + \\text{key4} + \\text{key5} - 2k^3(r+1)b^2c \\cdot h2' - 2k(r^2-1) \\cdot \\text{key3} - k^2(r+1) \\cdot \\text{key2}$$\n\nThe polynomial computation verifies that $[(k+1)(r+1) + (k-1)(r-1) + (k^2-1)]r^3 - [2kr^2 + k^2r](r^2-1) = r(k+r)^2$, which reduces to checking that the coefficient polynomial $r(k+r)^2 = r(k^2 + 2kr + r^2)$ matches. The `linear_combination` tactic handles this automatically.\n\n**Tightness:** The inequality is tight only when $r(k+r)^2 b^4 = 0$, which requires $b = 0$ (impossible for valid $k, m$ since $\\binom{m}{k-1} > 0$), or $r = 0$ (impossible since $r = m - k + 1 \\geq 1$). So the inequality is strict for all valid parameters.",
+    "mathContext": "$k^3(k+1)(r+1) \\cdot (\\text{LHS} - \\text{RHS}) = r(k+r)^2 b^4 \\geq 0$. Since $r > 0$ and $b > 0$: the inequality is strict. Verified by `linear_combination` combining six derived identities, then `positivity`.",
+    "significance": "key",
     "relatedConcepts": [
-      "linear_combination tactic",
+      "polynomial identity verification",
+      "linear_combination",
       "positivity tactic",
-      "polynomial certificate",
-      "sum-of-squares"
+      "tightness analysis",
+      "algebraic proof"
     ],
     "prerequisites": [
-      "key1 through key5",
-      "h2'",
+      "key identities 1-5",
+      "linear_combination",
       "positivity"
     ]
   }
