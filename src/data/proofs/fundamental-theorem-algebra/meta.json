@@ -230,6 +230,31 @@
       "targetId": "pi-transcendental",
       "relationship": "related",
       "description": "FTA guarantees all algebraic numbers live in $\\mathbb{C}$, while Lindemann (1882) proves $\\pi \\notin \\overline{\\mathbb{Q}}$ — transcendental numbers exist in $\\mathbb{C}$ but are unreachable by polynomial equations. The algebraic closure $\\overline{\\mathbb{Q}}$ is a countable subfield of the uncountable $\\mathbb{C}$, so 'most' complex numbers are transcendental"
+    },
+    {
+      "targetId": "factor-remainder-theorem",
+      "relationship": "related",
+      "description": "The factor theorem ($\\alpha$ is a root of $p(x)$ iff $(x - \\alpha) \\mid p(x)$) is the induction step for FTA: each root produces a linear factor, and iterating gives the complete factorization $p(x) = a_n \\prod_{i=1}^n (x - r_i)$ over $\\mathbb{C}$"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "related",
+      "description": "Over $\\mathbb{C}$ (or any algebraically closed field), FTA ensures both the characteristic and minimal polynomials split into linear factors, enabling the Jordan normal form decomposition — the foundation of matrix analysis"
+    },
+    {
+      "targetId": "hilbert-17",
+      "relationship": "related",
+      "description": "Hilbert's 17th problem (is every non-negative polynomial a sum of squares of rational functions?) is resolved over $\\mathbb{R}$ by Artin (1927). FTA provides the algebraic closure $\\mathbb{C} = \\mathbb{R}(i)$ that makes the real-closed structure of $\\mathbb{R}$ explicit — the Artin-Schreier characterization of real-closed fields is essentially the converse of FTA"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "complementary",
+      "description": "FTA guarantees every polynomial has complex roots; the A₅ simplicity proof chain in this sub-entry shows those roots cannot always be expressed by radicals — existence vs. expressibility"
+    },
+    {
+      "targetId": "angle-trisection-oq-02",
+      "relationship": "related",
+      "description": "FTA guarantees that every polynomial over $\\mathbb{Q}$ splits over $\\mathbb{C}$, ensuring the splitting field and Galois group are well-defined. The constructibility analysis in this entry depends on this: the Galois group of $\\text{minpoly}(\\cos 20°)$ controls whether the angle can be trisected"
     }
   ],
   "relatedProofs": [
@@ -248,7 +273,12 @@
     "brouwer-fixed-point",
     "euler-identity",
     "quadratic-reciprocity",
-    "pi-transcendental"
+    "pi-transcendental",
+    "factor-remainder-theorem",
+    "cayley-hamilton-minpoly",
+    "hilbert-17",
+    "abel-ruffini-oq-04",
+    "angle-trisection-oq-02"
   ],
   "references": [
     {
