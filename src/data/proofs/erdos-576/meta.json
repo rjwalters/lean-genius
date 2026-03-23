@@ -43,7 +43,8 @@
     "originalContributions": [
       "Lean 4 formalization of Erdős Problem #576: Turán Numbers for Hypercube Graphs",
       "Complete proof architecture with verified type-checking"
-    ]
+    ],
+    "dateAdded": "2026-03-23"
   },
   "overview": {
     "historicalContext": "This problem originates from the foundational work of Erdős and Simonovits in 1970 on extremal problems for bipartite graphs. The hypercube graph Q_k is a fundamental structure in combinatorics, appearing in coding theory, Boolean function analysis, and theoretical computer science. Determining the Turán number ex(n; Q_k) asks: what is the maximum number of edges in an n-vertex graph that contains no copy of Q_k as a subgraph? While the Erdős-Stone theorem completely resolves this question for non-bipartite graphs, the bipartite case remains notoriously difficult. The hypercube Turán problem exemplifies this difficulty and has attracted attention from leading combinatorialists for over 50 years.",

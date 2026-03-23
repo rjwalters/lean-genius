@@ -58,7 +58,8 @@
       "fGeneral definition: generalized problem"
     ],
     "axiomCount": 8,
-    "lineCount": 245
+    "lineCount": 245,
+    "dateAdded": "2026-03-23"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in [Er79d]. For binomial coefficient C(n,k), we decompose it as u·v where u is the k-smooth part (primes ≤ k) and v is the k-rough part (primes > k).\n\nThe function f(n) asks: how small can k be while still having the smooth part exceed n²?\n\nMahler's classical theorem gives an ineffective bound. Recent work by Tang & ChatGPT (2026) proved f(n) ≤ n^{30/43+o(1)}, with n^{2/3+o(1)} conditional on the Riemann Hypothesis.\n\nRemarkably, heuristic arguments by Sothanaphan & ChatGPT suggest f(n) ~ 2 log n for most n - vastly smaller than proven bounds!\n\nThe sequence f(n) is recorded in OEIS A392019.",

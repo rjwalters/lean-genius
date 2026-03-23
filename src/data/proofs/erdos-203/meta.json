@@ -57,7 +57,8 @@
       "erdos_203_statement theorem: formal main statement"
     ],
     "axiomCount": 2,
-    "lineCount": 255
+    "lineCount": 255,
+    "dateAdded": "2026-03-23"
   },
   "overview": {
     "historicalContext": "Erdos posed this problem in 1980 with Graham [ErGr80, p. 27]. It generalizes the Sierpinski problem, which asks for odd m such that 2^k * m + 1 is never prime for any k >= 0.\n\nThe classical Sierpinski problem was solved: Selfridge (1962) showed 78557 is Sierpinski, using covering systems. The Sierpinski Problem (finding the smallest such number) remains open, with candidates being eliminated by the 'Seventeen or Bust' project.\n\nProblem 203 extends this to expressions involving both powers of 2 and 3, making the covering system approach much more complex.",

@@ -61,7 +61,8 @@
       "Enumeration of easy primes for 360-based constructions and connection to Hough's theorem"
     ],
     "axiomCount": 4,
-    "lineCount": 115
+    "lineCount": 115,
+    "dateAdded": "2026-03-23"
   },
   "overview": {
     "historicalContext": "A covering system is a finite collection of residue classes $a_i \\pmod{m_i}$ whose union is all of $\\mathbb{Z}$. Erdős asked whether one can construct a covering system using only moduli of the form $p - 1$ for primes $p \\geq 5$. When $p \\geq 3$ is allowed, Selfridge found such a system using divisors of $360 = 2^3 \\cdot 3^2 \\cdot 5$, with the key modulus $2 = 3 - 1$. The restriction to $p \\geq 5$ excludes modulus 2, making coverage much harder since every modulus must be $\\geq 4$. From Erdős–Graham (1980), p.24. Hough's 2015 resolution of the minimum modulus conjecture constrains the approach further.",

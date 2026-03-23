@@ -46,7 +46,8 @@
     "originalContributions": [
       "Lean 4 formalization of Erdős #902: Tournament Domination",
       "Complete proof architecture with verified type-checking"
-    ]
+    ],
+    "dateAdded": "2026-03-23"
   },
   "overview": {
     "historicalContext": "Erdős asked this question about tournament domination in 1963. The function f(n) gives the minimum tournament size where every n-set of vertices is dominated by some external vertex. Szekeres & Szekeres (1965) established the lower bound n·2^n. Only f(1)=3, f(2)=7, f(3)=19 are known exactly. Tournament domination connects to the theory of voting paradoxes and the study of doubly regular tournaments, as dominating sets correspond to candidates who can beat any committee in majority voting. The probabilistic method, pioneered by Erdős, shows that random tournaments satisfy domination properties with high probability, but the extremal question of minimizing tournament size is considerably harder.",

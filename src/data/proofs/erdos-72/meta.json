@@ -76,7 +76,8 @@
       "liu_montgomery_general: general theorem for logarithmic-growth even sets"
     ],
     "axiomCount": 5,
-    "lineCount": 233
+    "lineCount": 233,
+    "dateAdded": "2026-03-23"
   },
   "overview": {
     "historicalContext": "**The Quest for Unavoidable Cycle Lengths**\n\nErdős posed this $100 problem asking whether there exists a 'sparse' set A ⊂ ℕ (density 0) such that any sufficiently dense graph must contain a cycle with length in A. This connects extremal graph theory to number-theoretic properties of cycle length sets.\n\n**Key Historical Developments:**\n\n- **1977**: Bollobás proved the result for infinite arithmetic progressions containing even numbers\n- **2005**: Verstraëte gave a non-constructive existence proof for such a set A\n- **2020**: Liu and Montgomery proved the surprising result that A can be the powers of 2, directly contradicting Erdős's stated belief\n\n**Why Erdős Was Wrong**: Erdős was 'almost certain' that powers of 2 would not work, expecting that forcing specific cycle lengths would require average degree growing with graph size. Liu and Montgomery showed a constant threshold suffices.",
@@ -186,14 +187,20 @@
   ],
   "references": [
     {
-      "authors": ["Hong Liu", "Richard Montgomery"],
+      "authors": [
+        "Hong Liu",
+        "Richard Montgomery"
+      ],
       "title": "A proof of Mader's conjecture on large clique subdivisions in C₄-free graphs",
       "journal": "Journal of the London Mathematical Society",
       "year": 2017,
       "note": "Foundation for the Liu-Montgomery cycle length work"
     },
     {
-      "authors": ["Hong Liu", "Richard Montgomery"],
+      "authors": [
+        "Hong Liu",
+        "Richard Montgomery"
+      ],
       "title": "A solution to Erdős and Hajnal's odd cycle problem",
       "journal": "Journal of the American Mathematical Society",
       "year": 2023,
@@ -201,7 +208,9 @@
       "note": "Proves powers of 2 are unavoidable cycle lengths, directly resolving Erdős Problem #72 and refuting Erdős's intuition"
     },
     {
-      "authors": ["Jacques Verstraëte"],
+      "authors": [
+        "Jacques Verstraëte"
+      ],
       "title": "Unavoidable cycle lengths in graphs",
       "journal": "Journal of Graph Theory",
       "volume": 49,
@@ -210,7 +219,9 @@
       "note": "Non-constructive proof that a density-0 unavoidable set exists, the first positive answer to Problem #72"
     },
     {
-      "authors": ["Béla Bollobás"],
+      "authors": [
+        "Béla Bollobás"
+      ],
       "title": "Cycles modulo k",
       "journal": "Bulletin of the London Mathematical Society",
       "volume": 9,
@@ -219,7 +230,9 @@
       "note": "Shows every infinite arithmetic progression containing even numbers is an unavoidable cycle length set"
     },
     {
-      "authors": ["Endre Szemerédi"],
+      "authors": [
+        "Endre Szemerédi"
+      ],
       "title": "Regular partitions of graphs",
       "journal": "Problèmes Combinatoires et Théorie des Graphes (Colloques Internationaux CNRS)",
       "year": 1978,

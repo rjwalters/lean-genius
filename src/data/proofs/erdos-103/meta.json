@@ -58,7 +58,8 @@
       "diameter_asymptotic axiom: relation to packing"
     ],
     "axiomCount": 7,
-    "lineCount": 248
+    "lineCount": 248,
+    "dateAdded": "2026-03-23"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in [Er94b] (1994). The question concerns the diversity of optimal point configurations in the plane.\n\nGiven n points with minimum pairwise separation 1, we seek configurations minimizing the diameter (largest distance). h(n) counts how many 'essentially different' (incongruent) optimal configurations exist.\n\nThe problem connects to classical circle packing - placing n non-overlapping unit circles in the smallest possible containing circle. The hexagonal lattice is optimal for large n (Thue-Minkowski).\n\nRelated to Erdős Problem #99. Even very weak versions of the conjecture remain open.",
@@ -203,7 +204,9 @@
   "references": [
     {
       "key": "Er94b",
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "Some of my favourite unsolved problems",
       "venue": "A Tribute to Paul Erdős",
       "year": 1994,
@@ -213,7 +216,9 @@
     },
     {
       "key": "Thue10",
-      "authors": ["A. Thue"],
+      "authors": [
+        "A. Thue"
+      ],
       "title": "Über die dichteste Zusammenstellung von kongruenten Kreisen in einer Ebene",
       "venue": "Norske Vid. Selsk. Skr.",
       "year": 1910,
@@ -223,7 +228,11 @@
     },
     {
       "key": "Schur1994",
-      "authors": ["I. Schur", "A. Meir", "J. Moser"],
+      "authors": [
+        "I. Schur",
+        "A. Meir",
+        "J. Moser"
+      ],
       "title": "On the problem of minimum diameter of point sets with prescribed distances",
       "venue": "Discrete Mathematics",
       "year": 1994,
@@ -233,7 +242,10 @@
     },
     {
       "key": "PachAg95",
-      "authors": ["J. Pach", "P. K. Agarwal"],
+      "authors": [
+        "J. Pach",
+        "P. K. Agarwal"
+      ],
       "title": "Combinatorial Geometry",
       "venue": "Wiley-Interscience",
       "year": 1995,
@@ -241,7 +253,11 @@
     },
     {
       "key": "BMP05",
-      "authors": ["P. Brass", "W. Moser", "J. Pach"],
+      "authors": [
+        "P. Brass",
+        "W. Moser",
+        "J. Pach"
+      ],
       "title": "Research Problems in Discrete Geometry",
       "venue": "Springer",
       "year": 2005,

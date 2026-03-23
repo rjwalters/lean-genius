@@ -44,7 +44,8 @@
     "originalContributions": [
       "Lean 4 formalization of Erdős Problem #740: Chromatic Number and Odd Cycle Avoidance",
       "Complete proof architecture with verified type-checking"
-    ]
+    ],
+    "dateAdded": "2026-03-23"
   },
   "overview": {
     "historicalContext": "Erdős and Hajnal posed this problem about preserving chromatic number while avoiding short odd cycles. It first appeared in Erdős's 1981 paper 'On the combinatorial problems which I would most like to see solved' ([Er81]), where he listed it among approximately 50 problems he considered most important in combinatorics. Rödl proved the case 𝔪 = ℵ₀ and r = 3 (triangle-free) in 1977, using a sophisticated probabilistic argument involving random vertex selection. The problem also appears in Erdős's 1995 survey [Er95d] on combinatorial set theory. The general case and the threshold function f_r(𝔪) remain open, connecting infinite combinatorics, set theory, and structural graph theory. The problem sits at the intersection of Ramsey theory and chromatic graph theory, building on Erdős's seminal 1959 result that graphs with arbitrarily high girth and chromatic number exist.",

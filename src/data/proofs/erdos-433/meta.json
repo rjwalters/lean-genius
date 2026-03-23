@@ -52,7 +52,8 @@
       "Gap counting and symmetry properties"
     ],
     "axiomCount": 13,
-    "lineCount": 334
+    "lineCount": 334,
+    "dateAdded": "2026-03-23"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #433**\n\nThis problem connects extremal combinatorics to the classical Frobenius number problem (also called the coin problem or money changing problem).\n\n**Key History:**\n- Sylvester-Frobenius (1884): G({a,b}) = ab - a - b for coprime a, b\n- Erdős-Graham (1972): First bounds g(k,n) < 2n²/k\n- Dixmier (1990): Proved exact asymptotic g(k,n) ~ n²/(k-1)\n\n**The Frobenius Problem:**\nGiven positive integers with gcd = 1, find the largest integer that cannot be represented as their non-negative linear combination. The \"Chicken McNugget\" problem is a famous example.",

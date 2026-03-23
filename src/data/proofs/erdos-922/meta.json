@@ -38,7 +38,8 @@
     "originalContributions": [
       "Lean 4 formalization of Erdős Problem #922: Folkman's Chromatic Number Bound",
       "Complete proof architecture with verified type-checking"
-    ]
+    ],
+    "dateAdded": "2026-03-23"
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Hajnal in 1967 as they studied connections between local graph properties and chromatic number. The condition that every subgraph has a large independent set is a strong structural constraint. Surprisingly, they could not prove even the k=1 case, though k=0 is trivial (it implies bipartiteness). Jon Folkman proved the general result in 1970, establishing that the chromatic bound k+2 always holds. This is a beautiful example of how local constraints (subgraph structure) control global properties (chromatic number).",

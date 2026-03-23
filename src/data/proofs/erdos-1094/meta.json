@@ -31,7 +31,8 @@
     "originalContributions": [
       "Lean 4 formalization of Erdős Problem #1094: Least Prime Factor of Binomial Coefficients",
       "Complete proof architecture with verified type-checking"
-    ]
+    ],
+    "dateAdded": "2026-03-23"
   },
   "overview": {
     "historicalContext": "This conjecture emerged from a systematic study of prime factors of binomial coefficients by Erdős, Lacampagne, and Selfridge, published in 1988 and 1993. The question builds on Erdős Problem 384, which asks whether $\\binom{n}{k}$ always has a prime factor $\\leq n/k$ when $n \\geq 2k$. Problem 1094 strengthens this by asking about the *least* prime factor and allowing the bound $\\max(n/k, k)$ with only finitely many exceptions. John Selfridge (1977) independently made the stronger conjecture that the bound holds for all $n \\geq k^2 - 1$, with $\\binom{62}{6}$ as the unique exception. The list of 14 known exceptions was compiled by Erdős, Lacampagne, and Selfridge through extensive computation. The problem connects to classical questions about smooth numbers in combinatorial sequences and the distribution of prime factors of $n!$, studied via Legendre's formula and Kummer's theorem on p-adic valuations of binomial coefficients.",

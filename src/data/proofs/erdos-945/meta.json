@@ -47,7 +47,8 @@
       "Conditional result under Cramér's conjecture"
     ],
     "axiomCount": 6,
-    "lineCount": 170
+    "lineCount": 170,
+    "dateAdded": "2026-03-23"
   },
   "overview": {
     "historicalContext": "This problem, posed by Erdős and Mirsky in their 1952 paper on the distribution of the divisor function, asks a natural question: how long can consecutive integers maintain distinct divisor counts?\n\nThe divisor function τ(n) counts divisors of n. While τ varies considerably—primes have τ = 2, highly composite numbers have large τ—the question is whether collisions (τ(a) = τ(b) for distinct a, b) must occur within short intervals.\n\nErdős and Mirsky established both lower and upper bounds in 1952, but the gap between them has resisted closure for over 70 years. Beker later improved the upper bound, and connections to Cramér's conjecture on prime gaps have been observed.",

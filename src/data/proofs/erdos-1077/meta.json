@@ -46,7 +46,8 @@
       "Connection to extremal graph theory"
     ],
     "axiomCount": 2,
-    "lineCount": 155
+    "lineCount": 155,
+    "dateAdded": "2026-03-23"
   },
   "overview": {
     "historicalContext": "Erdős Problem 1077 was posed by Erdős and Simonovits (1970) in the context of extremal graph theory. A graph is D-balanced if the ratio of maximum to minimum degree is at most D. The question asks: given a dense graph (one with n^{1+α} edges), how large a balanced subgraph can we guarantee?\n\nThe original statement had ambiguities: the exponent 1-α suggested in [ErSi70] decreases as α increases, which is counterintuitive. The erdosproblems.com entry clarifies that this was likely a typo.\n\nJiang and Longbrake (2025) provided a complete resolution: the optimal number of vertices is Θ(n^α). They proved every such graph has a 6-balanced subgraph on Ω(n^α) vertices, and complete bipartite graphs show this is tight.",
@@ -162,7 +163,10 @@
   ],
   "references": [
     {
-      "authors": ["Tao Jiang", "Sean Longbrake"],
+      "authors": [
+        "Tao Jiang",
+        "Sean Longbrake"
+      ],
       "title": "Balanced subgraphs in dense graphs",
       "venue": "arXiv preprint",
       "year": 2025,
@@ -170,7 +174,10 @@
       "description": "Resolves Erdős Problem #1077 by proving every n-vertex graph with n^{1+α} edges contains a 6-balanced subgraph on Ω(n^α) vertices, and that complete bipartite graphs show this is tight."
     },
     {
-      "authors": ["Paul Erdős", "Miklós Simonovits"],
+      "authors": [
+        "Paul Erdős",
+        "Miklós Simonovits"
+      ],
       "title": "A limit theorem in graph theory",
       "venue": "Studia Scientiarum Mathematicarum Hungarica",
       "year": 1966,
@@ -179,7 +186,9 @@
       "description": "Founding paper on extremal graph theory with density hypotheses; the original source for the Erdős-Simonovits problem on balanced subgraphs."
     },
     {
-      "authors": ["Endre Szemerédi"],
+      "authors": [
+        "Endre Szemerédi"
+      ],
       "title": "Regular partitions of graphs",
       "venue": "Problèmes Combinatoires et Théorie des Graphes (Colloq. Internat. CNRS)",
       "year": 1978,
@@ -187,14 +196,18 @@
       "description": "Introduces the Szemerédi Regularity Lemma, the foundational tool for extracting quasi-random structure from dense graphs, underpinning iterative-regularization methods used in the resolution."
     },
     {
-      "authors": ["Béla Bollobás"],
+      "authors": [
+        "Béla Bollobás"
+      ],
       "title": "Extremal Graph Theory",
       "venue": "Academic Press (London Mathematical Society Monographs)",
       "year": 1978,
       "description": "Comprehensive treatment of extremal graph theory, including degree regularity, balanced subgraphs, and complete bipartite extremal configurations."
     },
     {
-      "authors": ["Reinhard Diestel"],
+      "authors": [
+        "Reinhard Diestel"
+      ],
       "title": "Graph Theory",
       "venue": "Springer Graduate Texts in Mathematics",
       "year": 2017,

@@ -53,7 +53,8 @@
       "Includes verified computational examples for small moduli"
     ],
     "axiomCount": 2,
-    "lineCount": 155
+    "lineCount": 155,
+    "dateAdded": "2026-03-23"
   },
   "overview": {
     "historicalContext": "This problem was posed by Paul Erdős and concerns the distribution of the smallest primes in arithmetic progressions. Let p(a,d) denote the least prime congruent to a modulo d. The question asks whether there is a systematic bias causing many residue classes to have their least primes significantly larger than the expected average.\n\nErdős made significant progress on this problem in his 1949 paper 'On some applications of Brun's method' (Acta Univ. Szeged). Using Brun's sieve, he proved two partial results: first, that the desired phenomenon occurs for infinitely many moduli d (though not necessarily all large d); second, that in the opposite direction, for any ε > 0, many residue classes have least primes less than ε·φ(d)·log d.\n\nThis problem sits at the intersection of sieve theory and the study of primes in arithmetic progressions, extending questions raised by Dirichlet's theorem and refined by Linnik's theorem on the least prime in an arithmetic progression.",

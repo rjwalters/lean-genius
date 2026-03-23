@@ -71,7 +71,8 @@
         "url": "https://doi.org/10.1515/crll.1852.44.93",
         "description": "Kummer's classical theorem relating p-adic valuations of binomial coefficients to carries in base-p arithmetic"
       }
-    ]
+    ],
+    "dateAdded": "2026-03-23"
   },
   "overview": {
     "historicalContext": "Erdős first asked whether $\\binom{2n}{n}$ is squarefree for infinitely many $n$ in the 1970s, noting the connection to prime power divisibility of factorials via Legendre's formula. The question traces back to Kummer's 1852 theorem relating $v_p\\binom{m+n}{m}$ to carries in base-$p$ addition — one of the earliest results in $p$-adic number theory. Sárközy (1985) proved $\\binom{2n}{n}$ is not squarefree for all sufficiently large $n$ using analytic estimates on smooth numbers and the distribution of prime powers. Granville and Ramaré (1996) completed the proof for all $n \\ge 5$ by combining Sárközy's asymptotic result with direct verification of small cases and a delicate analysis of the power-of-2 case. The associated function $f(n) = \\max_p v_p\\binom{2n}{n}$ was studied by Sander (1992, 1995), who proved $f(n) \\to \\infty$ with lower bound $(\\log n)^{1/10}$, later improved to $(\\log n)^{1/4}$ by Erdős and Kolesnik (1999). The upper bound $f(n) = O(\\log n)$ is immediate from Kummer's theorem, and the gap between $(\\log n)^{1/4}$ and $\\log n$ remains open.",

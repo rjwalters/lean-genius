@@ -60,7 +60,8 @@
       "turan definition: extremal graph theory connection"
     ],
     "axiomCount": 8,
-    "lineCount": 275
+    "lineCount": 275,
+    "dateAdded": "2026-03-23"
   },
   "overview": {
     "historicalContext": "Erdős, Simonovits, and Sós introduced anti-Ramsey theory in their 1975 paper, asking for the maximum number of colors in an edge-coloring of K_n that avoids a rainbow (all-distinct-colors) copy of a given graph G.\n\nThe problem connects Ramsey theory (which minimizes colors to force monochromatic subgraphs) with extremal graph theory. While classical Ramsey theory asks 'how many colors before monochromatic H?', anti-Ramsey asks 'how many colors while avoiding rainbow H?'\n\nThe case AR(n, C_3) = n - 1 was proven in the original paper. The general cycle formula remains open, while the path formula has seen recent progress with Yuan's 2021 announcement.",
@@ -208,7 +209,11 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "M. Simonovits", "V. T. Sós"],
+      "authors": [
+        "P. Erdős",
+        "M. Simonovits",
+        "V. T. Sós"
+      ],
       "title": "Anti-Ramsey theorems",
       "venue": "Infinite and Finite Sets (Colloq., Keszthely, 1973), Vol. II",
       "year": 1975,
@@ -218,7 +223,10 @@
       "notes": "Founding paper of anti-Ramsey theory. Proves AR(n, C_3) = n - 1, introduces the general framework, and states the cycle formula conjecture."
     },
     {
-      "authors": ["R. Haas", "M. Young"],
+      "authors": [
+        "R. Haas",
+        "M. Young"
+      ],
       "title": "The anti-Ramsey number of perfect matching",
       "venue": "Discrete Mathematics",
       "year": 2012,
@@ -229,7 +237,10 @@
       "notes": "Determines anti-Ramsey numbers for perfect matchings; the matching case provides context for the path and cycle cases studied in Problem #1105."
     },
     {
-      "authors": ["Z. Jin", "X. Li"],
+      "authors": [
+        "Z. Jin",
+        "X. Li"
+      ],
       "title": "Anti-Ramsey numbers for graphs with independent cycles",
       "venue": "Electronic Journal of Combinatorics",
       "year": 2009,
@@ -239,7 +250,9 @@
       "notes": "Studies anti-Ramsey numbers for graphs consisting of independent cycles, directly related to the cycle case AR(n, C_k) in Problem #1105."
     },
     {
-      "authors": ["L. Yuan"],
+      "authors": [
+        "L. Yuan"
+      ],
       "title": "Anti-Ramsey numbers of paths",
       "venue": "arXiv preprint",
       "year": 2021,
@@ -247,7 +260,10 @@
       "notes": "Announced the complete determination of the anti-Ramsey number for paths AR(n, P_k) for n ≥ k ≥ 5, as referenced in the formalization via the yuan_path_announced axiom."
     },
     {
-      "authors": ["C. Montellano-Ballesteros", "V. Neumann-Lara"],
+      "authors": [
+        "C. Montellano-Ballesteros",
+        "V. Neumann-Lara"
+      ],
       "title": "An anti-Ramsey theorem",
       "venue": "Combinatorica",
       "year": 2002,

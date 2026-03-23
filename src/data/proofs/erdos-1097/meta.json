@@ -66,7 +66,8 @@
     "originalContributions": [
       "Lean 4 formalization of Common Differences in Three-Term Arithmetic Progressions",
       "Complete proof architecture with verified type-checking"
-    ]
+    ],
+    "dateAdded": "2026-03-23"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem at the 1989 Great Western Number Theory problem session in Asilomar, California. He asked: given an $n$-element set of integers $A$, how many distinct common differences can three-term arithmetic progressions in $A$ have?\n\nThe Erdős-Spencer probabilistic argument (random subsets of $\\{1,\\ldots,N\\}$) showed that $\\Omega(n^{3/2})$ is achievable. Bourgain connected the problem to the Kakeya conjecture, reformulating it via restricted sums and differences. In 1999, Katz and Tao established $O(n^{11/6})$ using Szemerédi-Trotter incidence geometry. Lemm improved the lower bound past $n^{1.778}$ in 2015, and in 2025 AlphaEvolve achieved a marginal further improvement. The gap $\\Omega(n^{1.778})$ vs $O(n^{11/6}) \\approx O(n^{1.833})$ remains open, with implications for the Kakeya conjecture and additive combinatorics.",

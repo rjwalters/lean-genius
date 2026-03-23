@@ -46,7 +46,8 @@
       "Formalized the KLL 2025 partial resolution"
     ],
     "axiomCount": 3,
-    "lineCount": 120
+    "lineCount": 120,
+    "dateAdded": "2026-03-23"
   },
   "overview": {
     "historicalContext": "This problem asks about the sparseness of sets A ⊂ (1,∞) with the property that |kx - y| ≥ 1 for all distinct x, y ∈ A and all positive integers k. Such sets are called \"well-separated under integer dilation\" - no element can be close to an integer multiple of another.\n\nFor integer sets, this condition implies the set is \"primitive\" (no element divides another). Erdős proved in 1935 that primitive integer sets have convergent reciprocal-log series ∑ 1/(n log n). Behrend showed in 1935 that their partial sums satisfy ∑_{n<x} 1/n ≪ log x / √(log log x).\n\nThe generalization to real sets remained open for decades. In 2025, Koukoulopoulos, Lamzouri, and Lichtman made a breakthrough, proving that ∑_{x<n, x∈A} 1/x = o(log n). The stronger conjectures about liminf of density and convergence of ∑ 1/(x log x) remain open.",
