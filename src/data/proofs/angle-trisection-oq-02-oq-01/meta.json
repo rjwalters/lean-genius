@@ -234,6 +234,11 @@
       "targetId": "nth-root-irrational",
       "relationship": "related",
       "description": "The irrationality of $\\sqrt[n]{m}$ for non-perfect-power $m$ produces a degree-$n$ extension $[\\mathbb{Q}(\\sqrt[n]{m}):\\mathbb{Q}] = n$. By this file's result, $\\sqrt[n]{m}$ is constructible only if its Galois group is a 2-group — which fails for $n = 3$ since $\\text{Gal}(x^3 - m) \\cong S_3$ has order 6"
+    },
+    {
+      "targetId": "factor-remainder-theorem",
+      "relationship": "foundational",
+      "description": "The factor theorem ($\\alpha$ is a root of $p(x)$ iff $(x - \\alpha) \\mid p(x)$) underpins the crucial step `minpoly.dvd`: the minimal polynomial divides any polynomial vanishing at $\\alpha$, which yields $\\text{minpoly}(F, \\alpha) \\mid p$ in the tower law argument. The mutual divisibility of irreducible polynomials — the crux of showing $\\deg(\\text{minpoly}) = \\deg(p)$ — rests on this factorization principle"
     }
   ],
   "relatedProofs": [
@@ -249,7 +254,8 @@
     "abel-ruffini-oq-04",
     "sqrt2-irrational",
     "fundamental-theorem-algebra",
-    "nth-root-irrational"
+    "nth-root-irrational",
+    "factor-remainder-theorem"
   ],
   "leanFile": {
     "imports": [
