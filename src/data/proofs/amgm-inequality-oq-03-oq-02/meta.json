@@ -221,7 +221,7 @@
       "id": "identities-and-chain",
       "title": "Supporting Identities and HM ≤ GM ≤ AM",
       "startLine": 202,
-      "endLine": 326,
+      "endLine": 316,
       "summary": "geomMean_eq_exp_sum_log: GM = exp(∑ wᵢ log zᵢ). powerMean_one_eq_arithMean: M₁ = AM. powerMean_eq_exp_log: M_r exp form. powerMean_neg1_le_geomMean_le_arithMean: HM ≤ GM ≤ AM.",
       "mathContext": "$\\text{GM} = \\prod z_i^{w_i} = \\exp(\\sum w_i \\log z_i)$ via `log_prod` + `log_rpow`. The chain $\\text{HM} \\leq \\text{GM} \\leq \\text{AM}$ follows from AM-GM on inverse values."
     }
