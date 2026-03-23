@@ -89,7 +89,8 @@
       "Union avoidance is the key: over an infinite field, finitely many proper subspaces cannot cover the whole space",
       "The GCD/Bezout argument connects polynomial annihilation to the factor structure of the minimal polynomial",
       "Polynomial evaluations at the same matrix commute, enabling the d(M)v = 0 argument via mul_comm",
-      "normalizedFactors provides the canonical finite set of irreducible factors needed for union avoidance"
+      "normalizedFactors provides the canonical finite set of irreducible factors needed for union avoidance",
+      "The proof structure mirrors the prime avoidance lemma in commutative algebra (Davis 1964): proper submodules replace prime ideals, and the line argument replaces the pigeonhole argument — a concrete instance of the algebra/geometry dictionary"
     ]
   },
   "sections": [
@@ -130,9 +131,10 @@
     "summary": "Complete proof that nonderogatory matrices over infinite fields have cyclic vectors. All 5 theorems and 2 definitions are fully verified with 0 sorries, 0 axioms, using Mathlib's UniqueFactorizationMonoid infrastructure.",
     "implications": "This resolves the sorry in CayleyHamiltonMinpolyOQ04Backward.lean (which had the complete proof architecture but couldn't import UFD due to DecidableEq conflicts). Combined with the forward direction from OQ04, this gives a complete characterization: over infinite fields, M is nonderogatory iff it has a cyclic vector.",
     "openQuestions": [
-      "Can the infinite field hypothesis be weakened to fields with |K| > n?",
-      "What is the measure of cyclic vectors among all vectors (Zariski density)?",
-      "Extend to nonderogatory operators on infinite-dimensional spaces"
+      "Can the infinite field hypothesis be weakened to fields with $|K| > n$? The union avoidance argument only needs $|K| \\geq k$ where $k$ is the number of irreducible factors, which is at most $n$.",
+      "What is the measure of cyclic vectors? Over $\\mathbb{R}$ or $\\mathbb{C}$, the set of cyclic vectors is Zariski-open (complement of a determinantal variety), hence has full Lebesgue measure — can this be formalized?",
+      "Extend to nonderogatory operators on infinite-dimensional spaces, where the structure theorem for modules over PIDs gives a countable invariant factor decomposition",
+      "Over finite fields $\\mathbb{F}_q$ with $q \\leq n$, the union avoidance lemma fails. What is the exact threshold: for which $(n, q)$ pairs does every nonderogatory $M \\in M_n(\\mathbb{F}_q)$ have a cyclic vector?"
     ]
   },
   "sorryCount": 0,
@@ -173,13 +175,25 @@
       "targetId": "fundamental-arithmetic",
       "relationship": "uses",
       "description": "Unique factorization in $K[X]$ (a Euclidean domain, hence UFD) provides the irreducible factor decomposition of the minimal polynomial, which drives the union avoidance construction"
+    },
+    {
+      "targetId": "cayley-hamilton-reduction",
+      "relationship": "related",
+      "description": "Both extend the Cayley-Hamilton theorem in different directions: reduction develops computational aspects, while this proof develops the structural characterization via cyclic vectors"
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "uses-concept",
+      "description": "The Euclidean algorithm for polynomial GCD is the computational backbone of the Bezout identity used in the GCD annihilation lemma"
     }
   ],
   "relatedProofs": [
     "cayley-hamilton",
     "cayley-hamilton-minpoly",
     "bezout-identity",
-    "fundamental-arithmetic"
+    "fundamental-arithmetic",
+    "cayley-hamilton-reduction",
+    "gcd-algorithm"
   ],
   "references": [
     {
@@ -202,6 +216,13 @@
       "year": "2008",
       "venue": "Springer GTM 135, 3rd edition",
       "note": "Graduate text with a thorough development of the cyclic decomposition theorem and its connection to the rational canonical form via invariant factors"
+    },
+    {
+      "authors": "Davis, Edward D.",
+      "title": "Ideals of the principal class, R-sequences, and a certain monoidal transformation",
+      "year": "1964",
+      "venue": "Pacific Journal of Mathematics",
+      "note": "Contains the prime avoidance lemma in commutative algebra, whose linear algebra analogue (union avoidance over infinite fields) is the key technical tool in this proof"
     }
   ]
 }

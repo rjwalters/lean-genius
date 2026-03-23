@@ -8,7 +8,7 @@
     },
     "type": "context",
     "title": "Module Documentation: Nonderogatory Implies Cyclic Vector",
-    "content": "This module proves the central theorem of rational canonical form theory: over an infinite field $K$, a nonderogatory matrix (minpoly = charpoly) has a cyclic vector. The proof uses three independent techniques — union avoidance over infinite fields, GCD annihilation via Bezout, and irreducible factorization from UniqueFactorizationMonoid — composed into a clean contradiction argument.\n\nThis resolves the sorry left in the backward direction of OQ-04/OQ-05, completing the equivalence: $M$ is nonderogatory $\\Leftrightarrow$ $M$ has a cyclic vector (over infinite fields).",
+    "content": "This module proves the central theorem of rational canonical form theory: over an infinite field $K$, a nonderogatory matrix (minpoly = charpoly) has a cyclic vector. The proof uses three independent techniques — union avoidance over infinite fields, GCD annihilation via Bezout, and irreducible factorization from UniqueFactorizationMonoid — composed into a clean contradiction argument.\n\nThis resolves the sorry left in the backward direction of OQ-04/OQ-05, completing the equivalence: $M$ is nonderogatory $\\Leftrightarrow$ $M$ has a cyclic vector (over infinite fields). Module-theoretically, this says the $K[X]$-module $K^n$ (with $X$ acting as $M$) is cyclic iff it has a single invariant factor — the structure theorem for finitely generated modules over PIDs in its most concrete matrix incarnation.",
     "mathContext": "Nonderogatory: $\\mu_M = \\chi_M$ (minimal polynomial equals characteristic polynomial). Cyclic vector: $v \\in K^n$ such that $\\{v, Mv, M^2v, \\ldots, M^{n-1}v\\}$ spans $K^n$, equivalently no nonzero polynomial of degree $< n$ annihilates $v$ under $M$.",
     "significance": "key",
     "prerequisites": [
@@ -83,7 +83,7 @@
     "content": "The most technically intricate helper: over an infinite field $K$, a nontrivial $K$-vector space cannot be a finite union of proper subspaces. Proved by induction on the number of subspaces, using a line argument. Given $v \\notin S_k$ and $w \\notin S_1 \\cup \\cdots \\cup S_{k-1}$ (from the inductive hypothesis), the line $\\{v + tw : t \\in K\\}$ meets each $S_i$ in at most one point — because two intersections $v + t_1 w, v + t_2 w \\in S_i$ would force $(t_1 - t_2)w \\in S_i$, hence $w \\in S_i$ (contradicting the choice of $w$). Since $K$ is infinite and there are only finitely many bad values of $t$, some $v + tw$ avoids all subspaces.",
     "mathContext": "For proper subspaces $S_1, \\ldots, S_k \\subsetneq V$ over infinite $K$: $\\exists v \\in V \\setminus (S_1 \\cup \\cdots \\cup S_k)$. The key: $|\\{t \\in K : v + tw \\in S_i\\}| \\leq 1$ for each $i$, so the set of bad parameters has $|\\text{bad}| \\leq k < |K| = \\infty$.",
     "significance": "key",
-    "relatedConcepts": ["prime avoidance", "Zariski topology", "generic points"],
+    "relatedConcepts": ["prime avoidance", "Zariski topology", "generic points", "Davis avoidance lemma", "structure theorem for modules over PIDs"],
     "prerequisites": ["Finset.induction_on", "Submodule.smul_mem", "Set.Finite"]
   },
   {
@@ -121,18 +121,6 @@
     "significance": "key",
     "relatedConcepts": ["unique factorization", "associated elements", "normalizedFactors", "contradiction"],
     "prerequisites": ["exists_mem_normalizedFactors_of_dvd", "dvd_of_mem_normalizedFactors"]
-  },
-  {
-    "id": "ann-ker-proper",
-    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01",
-    "range": { "startLine": 134, "endLine": 144 },
-    "type": "technique",
-    "title": "Proper Kernel of Nonzero Matrix",
-    "content": "If a matrix $A \\neq 0$, then $\\ker(A) \\neq K^n$ (the kernel is a proper subspace). Proved by contrapositive: if $\\ker(A) = K^n$, then $A e_j = 0$ for every standard basis vector $e_j$, so every column of $A$ is zero, contradicting $A \\neq 0$. This is used in Phase 2 to show that each cofactor kernel $\\ker((\\mu/q)(M))$ is a proper subspace — since $\\deg(\\mu/q) < n = \\deg(\\mu)$, the matrix $(\\mu/q)(M)$ is nonzero by the minimality of the minimal polynomial.",
-    "mathContext": "$A \\neq 0 \\implies \\ker(A) \\subsetneq K^n$. The proof extracts column $j$ via $A e_j = 0$ using `Pi.single j 1` as the standard basis vector, then reads off the matrix entry $A_{ij}$ from the dot product.",
-    "significance": "supporting",
-    "relatedConcepts": ["kernel of linear map", "standard basis", "proper subspace"],
-    "prerequisites": ["Matrix.mulVecLin", "LinearMap.mem_ker", "Pi.single"]
   },
   {
     "id": "ann-phase2-subspaces",
