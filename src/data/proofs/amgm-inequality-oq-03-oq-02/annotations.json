@@ -26,7 +26,7 @@
   {
     "id": "ann-pmlo-03-deriv",
     "proofId": "amgm-inequality-oq-03-oq-02",
-    "range": { "startLine": 83, "endLine": 113 },
+    "range": { "startLine": 83, "endLine": 98 },
     "type": "technique",
     "title": "Derivative of ∑ wᵢzᵢ^r at r = 0",
     "content": "`hasDerivAt_sum_weighted_rpow_zero` computes the derivative of r ↦ ∑ wᵢzᵢ^r at r = 0, yielding ∑ wᵢ log zᵢ. For each term: `Real.hasStrictDerivAt_const_rpow` gives HasDerivAt for zᵢ^r with derivative zᵢ^0 · log zᵢ = log zᵢ. `HasDerivAt.const_mul` and `HasDerivAt.sum` then differentiate the full weighted sum.",
@@ -36,9 +36,21 @@
     "prerequisites": ["HasDerivAt API", "rpow derivative", "Finset sum differentiation"]
   },
   {
+    "id": "ann-pmlo-03b-log-zero",
+    "proofId": "amgm-inequality-oq-03-oq-02",
+    "range": { "startLine": 100, "endLine": 111 },
+    "type": "technique",
+    "title": "The Log Identity: f(0) = 0",
+    "content": "`log_sum_weighted_rpow_zero` proves that f(0) = log(∑ wᵢzᵢ^0) = log(1) = 0. This identity is essential for the slope argument: since f(0) = 0, the difference quotient f(r)/r = (f(r) - f(0))/(r - 0) is exactly the slope that converges to f'(0) by the definition of derivative. Without f(0) = 0, the slope limit would give (f(r) - f(0))/r → f'(0), not f(r)/r → f'(0).",
+    "mathContext": "$f(0) = \\log\\left(\\sum_i w_i z_i^0\\right) = \\log\\left(\\sum_i w_i\\right) = \\log(1) = 0$ since $z_i^0 = 1$ and $\\sum w_i = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["rpow_zero", "log_one", "slope at zero"],
+    "prerequisites": ["Real.rpow_zero", "Real.log_one", "weight normalization"]
+  },
+  {
     "id": "ann-pmlo-04-log-deriv",
     "proofId": "amgm-inequality-oq-03-oq-02",
-    "range": { "startLine": 121, "endLine": 139 },
+    "range": { "startLine": 117, "endLine": 137 },
     "type": "technique",
     "title": "HasDerivAt for log(∑ wᵢzᵢ^r) at r = 0",
     "content": "`hasDerivAt_log_sum_weighted_rpow` applies the chain rule to compose log with the weighted sum. Since the inner function evaluates to 1 at r = 0 (as ∑ wᵢzᵢ^0 = ∑ wᵢ = 1), the chain rule gives (1/1) · ∑ wᵢ log zᵢ = ∑ wᵢ log zᵢ.",
@@ -50,7 +62,7 @@
   {
     "id": "ann-pmlo-05-slope-limit",
     "proofId": "amgm-inequality-oq-03-oq-02",
-    "range": { "startLine": 151, "endLine": 175 },
+    "range": { "startLine": 143, "endLine": 171 },
     "type": "technique",
     "title": "Core Limit: (log ∑ wᵢzᵢ^r)/r → ∑ wᵢ log zᵢ",
     "content": "`tendsto_log_sum_div_rpow` is the key intermediate limit. Since g(r) = log(∑ wᵢzᵢ^r) satisfies g(0) = 0 and g'(0) = ∑ wᵢ log zᵢ, we have g(r)/r = (g(r) - g(0))/(r - 0) → g'(0) by the definition of derivative. The Lean proof uses `hasDerivAt_iff_tendsto_slope` which directly connects HasDerivAt to this slope limit, then `congr'` with `slope g 0 = g r / r` (since g 0 = 0).",
@@ -62,7 +74,7 @@
   {
     "id": "ann-pmlo-06-geom-mean",
     "proofId": "amgm-inequality-oq-03-oq-02",
-    "range": { "startLine": 181, "endLine": 193 },
+    "range": { "startLine": 177, "endLine": 189 },
     "type": "technique",
     "title": "Geometric Mean as Exponential",
     "content": "`geomMean_eq_exp_sum_log` proves GM = ∏ zᵢ^wᵢ = exp(∑ wᵢ log zᵢ). The proof rewrites the product using `Real.exp_log` (since GM > 0), then shows log GM = ∑ wᵢ log zᵢ via `Real.log_prod` (product of positives) and `Real.log_rpow` (log of rpow).",
@@ -76,7 +88,7 @@
     "proofId": "amgm-inequality-oq-03-oq-02",
     "range": { "startLine": 191, "endLine": 214 },
     "type": "technique",
-    "title": "Supporting Identities: M₁ = AM and M_r = exp((log ∑)/r)",
+    "title": "Supporting Identities: M₁ = AM and M_r = exp(log/r)",
     "content": "Two supporting identities bridge definitions and the main limit. `powerMean_one_eq_arithMean` shows M₁ = AM by simplifying z^1 = z via `rpow_one`. `powerMean_eq_exp_log` rewrites the power mean as M_r = exp((1/r) · log(∑ wᵢzᵢ^r)) using `rpow_def_of_pos` — this is the form where f(r)/r appears, connecting the power mean to the slope limit. The proof is 3 lines: rewrite via rpow_def_of_pos, then `congr 1; ring` aligns the exponents.",
     "mathContext": "$M_1 = \\sum w_i z_i^1 = \\sum w_i z_i = \\text{AM}$. For $r \\neq 0$: $(\\sum w_i z_i^r)^{1/r} = \\exp\\left(\\frac{1}{r} \\cdot \\log(\\sum w_i z_i^r)\\right)$ via $x^a = e^{a \\log x}$ for $x > 0$.",
     "significance": "supporting",
@@ -86,7 +98,7 @@
   {
     "id": "ann-pmlo-07-main",
     "proofId": "amgm-inequality-oq-03-oq-02",
-    "range": { "startLine": 231, "endLine": 257 },
+    "range": { "startLine": 220, "endLine": 247 },
     "type": "insight",
     "title": "MAIN THEOREM: lim_{r→0} M_r = GM",
     "content": "`tendsto_powerMean_zero` is the main result. The proof:\n1. Gets exp(∑ wᵢ log zᵢ) as the limit via composing `tendsto_log_sum_div_rpow` with continuity of exp\n2. Rewrites the target GM = exp(∑ wᵢ log zᵢ) via `geomMean_eq_exp_sum_log`\n3. Applies `congr'` with the identity (∑ wᵢzᵢ^r)^(1/r) = exp(log(∑ wᵢzᵢ^r)/r) for all r\nThe congr step uses `rpow_def_of_pos` and ring arithmetic.",
@@ -98,7 +110,7 @@
   {
     "id": "ann-pmlo-08-chain",
     "proofId": "amgm-inequality-oq-03-oq-02",
-    "range": { "startLine": 267, "endLine": 302 },
+    "range": { "startLine": 249, "endLine": 292 },
     "type": "technique",
     "title": "Completing the Chain: HM ≤ GM ≤ AM",
     "content": "`powerMean_neg1_le_geomMean_le_arithMean` proves both inequalities:\n- **HM ≤ GM**: Apply AM-GM to inverse values z⁻¹. Since GM(z⁻¹) = GM(z)⁻¹ and GM(z⁻¹) ≤ AM(z⁻¹) = ∑ wᵢ/zᵢ = 1/HM, we get 1/GM ≤ 1/HM hence HM ≤ GM.\n- **GM ≤ AM**: Direct from `Real.geom_mean_le_arith_mean_weighted`.\n\n**The inversion trick:** The HM ≤ GM direction is a classic example of reducing one inequality to another by symmetry. The proof applies AM-GM to z⁻¹ instead of z, exploiting the fact that GM(z⁻¹) = GM(z)⁻¹ (geometric mean commutes with inversion). This technique generalizes: many power mean inequalities reduce to the r > 0 case by replacing zᵢ with zᵢ⁻¹ and r with -r.",
