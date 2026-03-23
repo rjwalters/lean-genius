@@ -139,6 +139,91 @@
       "Problem 82: general induced regular subgraph bounds"
     ]
   },
+  "crossReferences": [
+    {
+      "target": "erdos-82",
+      "relationship": "direct-generalization",
+      "note": "Erdős Problem #82 asks for large induced regular subgraphs in arbitrary graphs; Problem #1031 strengthens this by restricting to non-Ramsey graphs and achieving the sharper c log n bound via universality."
+    },
+    {
+      "target": "erdos-88",
+      "relationship": "related-topic",
+      "note": "Erdős Problem #88 studies induced subgraph structure in Ramsey graphs; Problem #1031 is the complementary question for non-Ramsey (Ramsey-extremal) graphs."
+    },
+    {
+      "target": "erdos-1036",
+      "relationship": "sibling-problem",
+      "note": "Erdős Problem #1036 asks about distinct induced subgraphs in non-Ramsey graphs — closely related universality question in the same Prömel-Rödl framework."
+    },
+    {
+      "target": "erdos-1037",
+      "relationship": "sibling-problem",
+      "note": "Erdős Problem #1037 explores degree diversity and Ramsey properties; shares the theme of structural richness forced by the non-Ramsey condition."
+    },
+    {
+      "target": "erdos-1030",
+      "relationship": "related-topic",
+      "note": "Erdős Problem #1030 concerns Ramsey number growth rates — the probabilistic lower bounds that establish the existence of non-Ramsey graphs underpinning Problem #1031."
+    },
+    {
+      "target": "erdos-szekeres",
+      "relationship": "foundational",
+      "note": "The Erdős-Szekeres theorem provides the Ramsey-theoretic backbone: every large graph has a trivial subgraph of size ≥ ½ log n, making log n the natural scale for the non-Ramsey condition."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "target": "erdos-82",
+      "description": "The predecessor question on regular induced subgraphs without the non-Ramsey restriction."
+    },
+    {
+      "target": "erdos-1036",
+      "description": "Distinct induced subgraphs in non-Ramsey graphs — the same Prömel-Rödl universality result applied to isomorphism-type diversity."
+    },
+    {
+      "target": "erdos-88",
+      "description": "Induced subgraph structure in Ramsey graphs — the complementary setting to Problem #1031."
+    },
+    {
+      "target": "erdos-szekeres",
+      "description": "Foundational Ramsey-type theorem establishing the log n scale used throughout this problem."
+    }
+  ],
+  "references": [
+    {
+      "key": "EFS1988",
+      "citation": "Erdős, P., Fajtlowicz, S., and Staton, W. (1988). Degree sequences in triangle-free graphs. Discrete Mathematics 92(1–3), 85–88.",
+      "type": "paper",
+      "doi": "10.1016/0012-365X(88)90009-9",
+      "note": "Original paper posing the question about induced regular subgraphs in graphs with no large trivial subgraph."
+    },
+    {
+      "key": "PromelRodl1999",
+      "citation": "Prömel, H.J. and Rödl, V. (1999). Non-Ramsey graphs are c log n-universal. Journal of Combinatorial Theory, Series A 88(2), 379–384.",
+      "type": "paper",
+      "doi": "10.1006/jcta.1999.2989",
+      "note": "Resolving paper: proves non-Ramsey graphs are c log n-universal, giving a much stronger result than asked."
+    },
+    {
+      "key": "ErdosSzekeres1935",
+      "citation": "Erdős, P. and Szekeres, G. (1935). A combinatorial problem in geometry. Compositio Mathematica 2, 463–470.",
+      "type": "paper",
+      "note": "Foundational paper establishing Ramsey-type bounds that define the log n scale central to this problem."
+    },
+    {
+      "key": "Szemeredi1978",
+      "citation": "Szemerédi, E. (1978). Regular partitions of graphs. In Problèmes Combinatoires et Théorie des Graphes, Colloques Internationaux CNRS 260, 399–401.",
+      "type": "paper",
+      "note": "Szemerédi's regularity lemma is a key tool in the Prömel-Rödl proof, used to extract diverse edge structure from non-Ramsey graphs."
+    },
+    {
+      "key": "Ramsey1930",
+      "citation": "Ramsey, F.P. (1930). On a problem of formal logic. Proceedings of the London Mathematical Society s2-30(1), 264–286.",
+      "type": "paper",
+      "doi": "10.1112/plms/s2-30.1.264",
+      "note": "The original Ramsey theorem guaranteeing trivial subgraphs in every large graph; defines the non-Ramsey condition by contrast."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",

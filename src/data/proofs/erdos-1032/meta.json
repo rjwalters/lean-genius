@@ -111,6 +111,98 @@
       "Can probabilistic or algebraic constructions improve the n^{1/3} bound?"
     ]
   },
+  "crossReferences": [
+    {
+      "target": "erdos-58",
+      "relationship": "related",
+      "description": "Chromatic number constrained by odd cycle structure — another Erdős problem linking chromatic number to graph structural properties, paralleling the critical graph angle"
+    },
+    {
+      "target": "erdos-108",
+      "relationship": "related",
+      "description": "High chromatic subgraphs with large girth — directly related: asks for high-χ graphs with large girth, the dual challenge to critical graphs with high minimum degree"
+    },
+    {
+      "target": "erdos-1013",
+      "relationship": "related",
+      "description": "Triangle-free chromatic threshold — explores how high chromatic number can be achieved with sparse local structure, closely related to minimum degree constraints in critical graphs"
+    },
+    {
+      "target": "erdos-1011",
+      "relationship": "related",
+      "description": "Triangles in graphs with high chromatic number — examines edge density needed to force triangles when χ is high, complementing the minimum degree perspective of Problem 1032"
+    },
+    {
+      "target": "erdos-1092",
+      "relationship": "related",
+      "description": "Chromatic decomposition threshold — studies how many edges must be removed to reduce chromatic number, closely tied to edge-criticality which underlies k-chromatic critical graph theory"
+    },
+    {
+      "target": "four-color-theorem",
+      "relationship": "related",
+      "description": "Four Color Theorem — the landmark result on planar graph chromatic number; 4-chromatic critical graphs are the irreducible obstacles to 3-coloring and connect directly to planarity questions"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "target": "erdos-1104",
+      "relationship": "related",
+      "description": "Maximum chromatic number of triangle-free graphs — establishing χ = Θ(√(n/log n)) for triangle-free graphs; since 4-chromatic critical graphs are triangle-free (or nearly so in constructions), these results bound the chromatic number in the regime Erdős considers"
+    },
+    {
+      "target": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey's Theorem — guarantees monochromatic cliques in any coloring of large complete graphs; Ramsey-type arguments appear in probabilistic constructions of high-minimum-degree critical graphs"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["G. A. Dirac"],
+      "title": "Some theorems on abstract graphs",
+      "venue": "Proceedings of the London Mathematical Society",
+      "year": 1952,
+      "volume": "s3-2",
+      "pages": "69–81",
+      "doi": "10.1112/plms/s3-2.1.69",
+      "note": "Dirac's foundational work constructing k-chromatic critical graphs with minimum degree δ > n/2 for k = 6, the positive case referenced in Erdős Problem 1032"
+    },
+    {
+      "authors": ["M. Simonovits", "B. Toft"],
+      "title": "On the structure of k-chromatic graphs and some related topics",
+      "venue": "Proceedings of the British Combinatorial Conference",
+      "year": 1973,
+      "pages": "169–175",
+      "note": "Simonovits and Toft's construction achieving minimum degree ≫ n^{1/3} for 4-chromatic critical graphs — the current best result for k = 4 motivating Erdős Problem 1032"
+    },
+    {
+      "authors": ["B. Toft"],
+      "title": "On the maximal number of edges of critical k-chromatic graphs",
+      "venue": "Studia Scientiarum Mathematicarum Hungarica",
+      "year": 1970,
+      "volume": "5",
+      "pages": "461–470",
+      "note": "Source of Toft's conjecture that every 4-chromatic critical graph on n vertices has ≥ (5/3 + o(1))n edges, formalized as ToftConjecture in the Lean file"
+    },
+    {
+      "authors": ["P. Erdős", "A. Hajnal"],
+      "title": "On chromatic number of graphs and set-systems",
+      "venue": "Acta Mathematica Hungarica",
+      "year": 1966,
+      "volume": "17",
+      "pages": "61–99",
+      "doi": "10.1007/BF02020444",
+      "note": "Foundational work by Erdős and Hajnal on chromatic number, providing structural results on critical graphs and hypergraph coloring that inform the minimum degree problem"
+    },
+    {
+      "authors": ["T. Gallai"],
+      "title": "Kritische Graphen I",
+      "venue": "Magyar Tudományos Akadémia Matematikai Kutató Intézetének Közleményei",
+      "year": 1963,
+      "volume": "8",
+      "pages": "165–192",
+      "note": "Gallai's seminal paper on the structure of critical graphs, establishing key properties of k-chromatic critical graphs including degree bounds and decomposition theorems"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",
