@@ -28,9 +28,9 @@
     "proofId": "angle-trisection-oq-02-oq-03",
     "range": { "startLine": 111, "endLine": 145 },
     "type": "context",
-    "title": "The Gauss-Wantzel Axiom and IsConstructibleNgon",
-    "content": "**IsConstructibleNgon** defines a regular $n$-gon as constructible when $\\cos(2\\pi/n)$ lies in some intermediate field $K$ of $\\mathbb{R}/\\mathbb{Q}$ with $[K:\\mathbb{Q}] = 2^k$.\n\nThe **gauss_wantzel_theorem** is axiomatized because assembling cyclotomic field theory into the full statement requires ~300 lines not yet written. The needed ingredients exist in Mathlib: (1) `IsCyclotomicExtension.degree_eq_totient`; (2) `ZMod.unitsEquivCoprime` for the Galois group; (3) real subfield calculation $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}(\\cos)] = 2$.",
-    "mathContext": "**Axiom**: `IsConstructibleNgon n ↔ TotientIsPow2 n` for $n \\ge 3$. **Definition**: `IsConstructibleNgon n := \\exists K \\le \\mathbb{R},\\; [K:\\mathbb{Q}] = 2^k \\wedge \\cos(2\\pi/n) \\in K$.",
+    "title": "The Gauss-Wantzel Theorem and IsConstructibleNgon (NOW PROVED)",
+    "content": "**IsConstructibleNgon** defines a regular $n$-gon as constructible when $\\cos(2\\pi/n)$ lies in some intermediate field $K$ of $\\mathbb{R}/\\mathbb{Q}$ with $[K:\\mathbb{Q}] = 2^k$.\n\nThe **gauss_wantzel_theorem** was originally axiomatized but is now fully proved (0 axioms remain). The proof uses: (1) `IsCyclotomicExtension.finrank` for $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = \\varphi(n)$; (2) Chebyshev polynomials showing $\\cos(2\\pi/n)$ is algebraic; (3) cyclotomic tower law showing $[\\mathbb{Q}(\\cos(2\\pi/n)):\\mathbb{Q}] = \\varphi(n)/2$; (4) the 2-group criterion from OQ-02. The file grew from ~548 lines to 1799 lines in the process of eliminating all axioms.",
+    "mathContext": "**Proved**: `IsConstructibleNgon n ↔ TotientIsPow2 n` for $n \\ge 3$. **Definition**: `IsConstructibleNgon n := \\exists K \\le \\mathbb{R},\\; [K:\\mathbb{Q}] = 2^k \\wedge \\cos(2\\pi/n) \\in K$.",
     "significance": "key",
     "relatedConcepts": ["gauss_wantzel_theorem", "IsCyclotomicExtension", "ZMod.unitsEquivCoprime", "IntermediateField"],
     "prerequisites": ["Polynomial.cyclotomic", "IsCyclotomicExtension", "Real.cos"]
