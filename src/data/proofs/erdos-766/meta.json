@@ -173,6 +173,46 @@
       "How does f behave for specific graph families (trees, cycles, complete multipartite)?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both are foundational results in extremal/Ramsey graph theory: Ramsey guarantees monochromatic cliques in edge-colored complete graphs, while extremal numbers quantify the threshold for forced subgraph copies in dense graphs"
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "The Szemerédi regularity lemma is the main structural tool for proving extremal graph theory results: it decomposes dense graphs into pseudorandom bipartite pairs, enabling subgraph counting that underlies Turán-type bounds like those studied here"
+    },
+    {
+      "targetId": "erdos-1009",
+      "relationship": "related",
+      "description": "Both concern edge-counting thresholds in extremal graph theory: #766 studies the minimum extremal number over graphs with given vertex and edge counts, while #1009 studies edge-disjoint subgraph packing beyond the Turán threshold"
+    },
+    {
+      "targetId": "erdos-767",
+      "relationship": "related",
+      "description": "Adjacent Erdős problem in the same series on extremal graph theory and Turán-type questions"
+    },
+    {
+      "targetId": "erdos-765",
+      "relationship": "related",
+      "description": "Adjacent Erdős problem studying related extremal graph theory questions about edge density thresholds"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The binomial coefficient C(n,2) = n(n-1)/2 counts the maximum possible edges in an n-vertex graph and appears throughout extremal graph theory as the normalizing quantity for edge density"
+    }
+  ],
+  "relatedProofs": [
+    "ramseys-theorem",
+    "szemeredi-regularity",
+    "erdos-1009",
+    "erdos-767",
+    "erdos-765",
+    "combinations-formula"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",
