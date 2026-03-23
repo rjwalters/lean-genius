@@ -58,10 +58,11 @@
     "problemStatement": "**The Ultrametric Triangle Inequality**: In a non-Archimedean metric space, the distance function satisfies the strengthened inequality:\n\n$$d(x, z) \\leq \\max(d(x, y), d(y, z))$$\n\nThis implies:\n1. **Isosceles Triangle Theorem**: Every triangle is isosceles — if two sides have different lengths, the third equals the longer one\n2. **Ball Structure**: Every interior point of a ball is its center: $z \\in B(x,r) \\Rightarrow B(x,r) = B(z,r)$\n3. **Clopen Balls**: Open balls are also closed, with empty boundary\n4. **p-adic Instance**: The p-adic norm $|\\cdot|_p$ satisfies $|x+y|_p \\leq \\max(|x|_p, |y|_p)$",
     "proofStrategy": "The key original result is the **isosceles triangle theorem**. Given d(x,y) < d(y,z), we prove d(x,z) = d(y,z) by antisymmetry:\n\n- **Upper bound**: d(x,z) ≤ max(d(x,y), d(y,z)) = d(y,z) by the ultrametric inequality\n- **Lower bound**: Suppose d(x,z) < d(y,z). Then d(y,z) ≤ max(d(y,x), d(x,z)) = max(d(x,y), d(x,z)) < d(y,z), a contradiction\n\nThe corollary that every triangle is isosceles follows by case analysis: if d(x,y) ≠ d(y,z), apply the isosceles theorem; if both differ from d(x,z), derive a contradiction via the ultrametric inequality.\n\nBall properties (every point is a center, balls are clopen, balls are disjoint-or-equal) are imported from Mathlib's `IsUltrametricDist` infrastructure. The p-adic norm's ultrametric property comes from `padicNorm.nonarchimedean`.",
     "keyInsights": [
-      "The ultrametric inequality is strictly stronger than the standard triangle inequality",
-      "Every triangle in an ultrametric space is isosceles — a striking geometric consequence",
-      "Ultrametric balls have no boundary: they are clopen and every interior point is a center",
-      "The p-adic norm provides the canonical example of a non-Archimedean metric"
+      "The ultrametric inequality is strictly stronger than the standard triangle inequality — replacing addition with max fundamentally changes geometry",
+      "Every triangle in an ultrametric space is isosceles: the sharp form d(x,z) = max(d(x,y), d(y,z)) upgrades the inequality to equality when sides differ",
+      "Ultrametric balls have no boundary: they are clopen and every interior point is a center, giving the space a tree-like partition structure at every scale",
+      "The p-adic norm provides the canonical non-Archimedean metric, where integers are bounded (|n|_p ≤ 1) — the exact opposite of the real absolute value",
+      "Ostrowski's classification theorem shows this Archimedean/non-Archimedean dichotomy is exhaustive: every absolute value on ℚ is equivalent to |·| or some |·|_p"
     ]
   },
   "conclusion": {
@@ -77,48 +78,93 @@
   "sections": [
     {
       "id": "ultrametric-fundamentals",
-      "title": "Ultrametric Fundamentals",
+      "title": "Part I: Ultrametric Fundamentals",
       "startLine": 31,
       "endLine": 46,
-      "summary": "The ultrametric inequality d(x,z) ≤ max(d(x,y), d(y,z)) implies the standard triangle inequality since max(a,b) ≤ a + b for nonneg values."
+      "summary": "The ultrametric inequality d(x,z) ≤ max(d(x,y), d(y,z)) implies the standard triangle inequality since max(a,b) ≤ a + b for nonneg values.",
+      "mathContext": "$d(x,z) \\leq \\max(d(x,y), d(y,z)) \\leq d(x,y) + d(y,z)$"
     },
     {
       "id": "isosceles-triangle",
-      "title": "Isosceles Triangle Theorem",
+      "title": "Part II: Isosceles Triangle Theorem",
       "startLine": 47,
       "endLine": 130,
-      "summary": "In an ultrametric space, if d(x,y) < d(y,z), then d(x,z) = d(y,z). Consequently, every triangle is isosceles: at least two of the three pairwise distances must be equal."
+      "summary": "Three theorems: (1) if d(x,y) < d(y,z) then d(x,z) = d(y,z), (2) every triangle is isosceles (at least two sides equal), (3) sharp form d(x,z) = max(d(x,y), d(y,z)) when sides differ. The key proof technique applies the ultrametric inequality in both directions to squeeze the third distance.",
+      "mathContext": "If $d(x,y) \\neq d(y,z)$, then $d(x,z) = \\max(d(x,y), d(y,z))$"
     },
     {
       "id": "ball-structure",
-      "title": "Ball Structure",
+      "title": "Part III: Ball Structure",
       "startLine": 131,
-      "endLine": 174,
-      "summary": "Ultrametric balls exhibit remarkable properties: every interior point is a center, distinct equal-radius balls are disjoint, and all balls are clopen with empty frontier."
+      "endLine": 152,
+      "summary": "Every interior point of an ultrametric ball is its center (B(x,r) = B(z,r) for z ∈ B(x,r)), and two balls of equal radius are either identical or disjoint — no partial overlap.",
+      "mathContext": "$z \\in B(x,r) \\Rightarrow B(x,r) = B(z,r)$; $B(x,r) = B(y,r) \\lor B(x,r) \\cap B(y,r) = \\emptyset$"
     },
     {
-      "id": "padic-instance",
-      "title": "The p-adic Triangle Inequality",
+      "id": "clopen-balls",
+      "title": "Part IV: Clopen Balls",
+      "startLine": 153,
+      "endLine": 174,
+      "summary": "Open balls in ultrametric spaces are clopen (both open and closed), and their frontier is empty. This contrasts with Euclidean space where open balls have nonempty boundary spheres.",
+      "mathContext": "$\\text{IsClopen}(B(x,r))$ and $\\text{frontier}(B(x,r)) = \\emptyset$"
+    },
+    {
+      "id": "padic-ultrametric",
+      "title": "Part V: The p-adic Triangle Inequality",
       "startLine": 175,
+      "endLine": 206,
+      "summary": "The p-adic norm satisfies the ultrametric inequality: |x+y|_p ≤ max(|x|_p, |y|_p). This implies the standard triangle inequality and that all integers are p-adically bounded: |n|_p ≤ 1.",
+      "mathContext": "$|q+r|_p \\leq \\max(|q|_p, |r|_p)$ and $|n|_p \\leq 1$ for all $n \\in \\mathbb{Z}$"
+    },
+    {
+      "id": "padic-examples",
+      "title": "Part VI: Concrete p-adic Examples",
+      "startLine": 207,
       "endLine": 224,
-      "summary": "The p-adic norm on ℚ satisfies the ultrametric inequality: |x+y|_p ≤ max(|x|_p, |y|_p). This means all integers are p-adically bounded: |n|_p ≤ 1."
+      "summary": "Concrete computations: |p|_p = 1/p (the prime is 'small' in its own norm), and |1|_p = 1 (units have norm 1).",
+      "mathContext": "$|p|_p = p^{-1}$, $|1|_p = 1$"
     },
     {
       "id": "comparison",
-      "title": "Archimedean vs Non-Archimedean Comparison",
+      "title": "Part VII: Archimedean vs Non-Archimedean Comparison",
       "startLine": 225,
       "endLine": 255,
-      "summary": "The Archimedean property (for any x > 0, some n ∈ ℕ satisfies nx > 1) holds in ℝ but fails in p-adic fields, where |n|_p ≤ 1 for all integers."
+      "summary": "Direct comparison: ℝ satisfies the Archimedean property (ℕ is unbounded) while p-adic norms violate it (|n|_p ≤ 1 for all integers). Ostrowski's theorem shows this dichotomy classifies all absolute values on ℚ.",
+      "mathContext": "Archimedean: $\\forall x > 0, \\exists n, x < n$. Non-Archimedean: $|n|_p \\leq 1$ for all $n \\in \\mathbb{Z}$."
     }
   ],
   "crossReferences": [
     {
       "targetId": "triangle-inequality",
       "relationship": "extends",
-      "description": "This proof extends the standard triangle inequality to ultrametric spaces, showing that the non-Archimedean strengthening d(x,z) ≤ max(d(x,y), d(y,z)) produces qualitatively different geometry."
+      "description": "Extends the standard triangle inequality to the ultrametric setting, where max replaces addition"
+    },
+    {
+      "targetId": "isosceles-triangle",
+      "relationship": "related",
+      "description": "The classical isosceles triangle theorem deals with Euclidean triangles; here ALL triangles are isosceles in ultrametric spaces"
     }
   ],
   "relatedProofs": [
-    "triangle-inequality"
+    "triangle-inequality",
+    "isosceles-triangle"
+  ],
+  "references": [
+    {
+      "text": "Hensel, K. (1897). Über eine neue Begründung der Theorie der algebraischen Zahlen. Jahresbericht der DMV, 6, 83-88.",
+      "url": "https://en.wikipedia.org/wiki/P-adic_number"
+    },
+    {
+      "text": "Ostrowski, A. (1916). Über einige Lösungen der Funktionalgleichung φ(x)·φ(y) = φ(xy). Acta Mathematica, 41, 271-284.",
+      "url": "https://en.wikipedia.org/wiki/Ostrowski%27s_theorem"
+    },
+    {
+      "text": "Krasner, M. (1944). Nombres semi-réels et espaces ultramétriques. Comptes Rendus de l'Académie des Sciences, 219, 433-435.",
+      "url": "https://en.wikipedia.org/wiki/Ultrametric_space"
+    },
+    {
+      "text": "Robert, A.M. (2000). A Course in p-adic Analysis. Graduate Texts in Mathematics 198, Springer.",
+      "url": "https://en.wikipedia.org/wiki/P-adic_analysis"
+    }
   ]
 }
