@@ -183,3 +183,35 @@ tripleCount_add_card_eq_triple_sum (sorry) ─── pure combinatorics
 parseval_on_zmod (PROVED) ──┘    └→ density_increment_lemma (sorry)
                                        └→ roth_density_bound (PROVED)
 ```
+
+## Session 6 (2026-03-23, researcher-1)
+
+### What Was Done
+1. **Proved two_mul_eq_zero_unique** — uniqueness of 2-torsion in ZMod N
+   - Key technique: ZMod.val arithmetic. From 2a=0: (val a + val a) % N = 0.
+   - Since 0 < val a < N: val a + val a ∈ (0, 2N), only multiple of N is N itself.
+   - Helper `dvd_range_eq`: if N ∣ s and 0 < s < 2N then s = N (via Nat.le_of_dvd + contradiction)
+   - Final step: `ZMod.val_injective N hval_eq` (note: first arg is explicit `N : ℕ`)
+2. **Proved apFree_card_lt** — AP-free ⊂ Z/NZ has < N elements (need `card_le_nat A` in omega context)
+3. **Proved fourier_large_coefficient** — the key analytic step!
+   - Two-case argument: sparse regime (δ²N ≤ 2) via Parseval pigeonhole, dense (δ²N > 2) via Fourier identity + triangle inequality contradiction
+   - Required `set_option maxHeartbeats 800000` (nlinarith in dense case is expensive)
+4. **Fixed Mathlib API issues**: `Nat.one_lt_cast` → `exact_mod_cast`, `Nat.cast_lt` → `exact_mod_cast`
+5. **Reduced sorry count**: 3 → 1 (only `density_increment_lemma` remains)
+
+### Key Technical Discoveries
+- `ZMod N` is NOT `Fin N` at the type level for variable N (even with `NeZero N`). `Fin.ext` fails. Use `ZMod.val_injective N` instead.
+- `ZMod.val_injective` takes explicit `N : ℕ` as first argument: `ZMod.val_injective N hval_eq`
+- `ext` tactic doesn't find extensionality for `ZMod N` — not `@[ext]`-tagged
+- `Nat.one_lt_cast.mpr` fails with CharZero stuck — use `by exact_mod_cast hN` instead
+- `Nat.dvd_sub'` doesn't exist in current Mathlib — use `rcases` on divisor + `Nat.mul_le_mul_left`
+- `set_option maxHeartbeats 800000 in` must go BEFORE docstring, not between docstring and theorem
+- `linarith` handles `N * 2 ≤ N * k` and `N * (k+2) < 2 * N` via treating products as atoms
+
+### Remaining Sorry Dependency Chain (Updated Session 6)
+```
+density_increment_lemma (1 sorry) ── needs subprogression extraction
+    └→ roth_density_bound (PROVED)
+```
+
+All other sorries are eliminated. The proof of Roth's theorem is complete modulo `density_increment_lemma`.
