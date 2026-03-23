@@ -55,10 +55,8 @@ variable {T : ℝ} [hT : Fact (0 < T)]
 /-- Every Fourier monomial has pointwise complex norm 1.
     This is because fourier n x = (toCircle x)^n and toCircle lands on the unit circle. -/
 lemma norm_fourier_eq_one (n : ℤ) (x : AddCircle T) : ‖fourier n x‖ = 1 := by
-  -- fourier n x = ↑(toCircle(n • x)) where toCircle maps into the unit circle
-  -- toCircle(n • x) is in the unit circle, so its norm is 1
-  -- The proof involves unfolding Submonoid.unitSphere membership
-  sorry
+  rw [fourier_apply]
+  exact Circle.norm_coe _
 
 /-! ## Part II: Phase Shift Lemma
 
@@ -79,13 +77,18 @@ lemma fourier_neg_add_half_inv {n : ℤ} (hn : n ≠ 0) (x : AddCircle T) :
     Follows from the quotient metric being bounded by the lift. -/
 lemma dist_translate_le (x : AddCircle T) (h₀ : ℝ) :
     dist x (x + (h₀ : AddCircle T)) ≤ |h₀| := by
-  sorry
+  calc dist x (x + ↑h₀)
+      = dist (x + 0) (x + ↑h₀) := by rw [add_zero]
+    _ = dist (0 : AddCircle T) ↑h₀ := dist_add_left x 0 ↑h₀
+    _ = ‖(h₀ : AddCircle T)‖ := by rw [dist_comm, dist_zero_right]
+    _ ≤ ‖h₀‖ := QuotientAddGroup.norm_mk_le_norm
+    _ = |h₀| := Real.norm_eq_abs h₀
 
 /-- Translation invariance of Haar measure integral on AddCircle. -/
 lemma integral_translate_eq (g : AddCircle T → ℂ) (a : AddCircle T)
-    (hg : Integrable g haarAddCircle) :
-    ∫ t, g (t + a) ∂haarAddCircle = ∫ t, g t ∂haarAddCircle := by
-  sorry
+    (_hg : Integrable g haarAddCircle) :
+    ∫ t, g (t + a) ∂haarAddCircle = ∫ t, g t ∂haarAddCircle :=
+  integral_add_right_eq_self g a
 
 /-! ## Part IV: The Averaging Identity -/
 
@@ -97,7 +100,38 @@ lemma averaging_identity
     let h : AddCircle T := ↑(T / 2 / (n : ℝ))
     (2 : ℂ) * fourierCoeff f n =
       ∫ t, fourier (-n) t • (f t - f (t + h)) ∂haarAddCircle := by
-  sorry
+  intro h
+  -- Integrability: fourier(-n) is bounded (norm 1), so product with integrable f is integrable
+  have hfh : Integrable (fun t => f (t + h)) haarAddCircle :=
+    Integrable.comp_add_right hf h
+  have hint1 : Integrable (fun t => fourier (-n) t • f t) haarAddCircle :=
+    hf.mono ((fourier (-n)).continuous.aestronglyMeasurable.smul hf.aestronglyMeasurable)
+      (ae_of_all _ fun t => by rw [norm_smul, norm_fourier_eq_one, one_mul])
+  have hint2 : Integrable (fun t => fourier (-n) t • f (t + h)) haarAddCircle :=
+    hfh.mono ((fourier (-n)).continuous.aestronglyMeasurable.smul hfh.aestronglyMeasurable)
+      (ae_of_all _ fun t => by rw [norm_smul, norm_fourier_eq_one, one_mul])
+  -- Translation invariance: ∫ e(-n)(t+h) • f(t+h) = ∫ e(-n)(t) • f(t) = fc
+  have fc_shift : ∫ t, fourier (-n) (t + h) • f (t + h) ∂haarAddCircle
+      = fourierCoeff f n :=
+    integral_add_right_eq_self (fun t => fourier (-n) t • f t) h
+  -- Phase shift: e(-n)(t+h) = -e(-n)(t), so ∫ e(-n)(t) • f(t+h) = -fc
+  have shift_neg : ∫ t, fourier (-n) t • f (t + h) ∂haarAddCircle
+      = -fourierCoeff f n := by
+    -- fourier(-n)(t) = -fourier(-n)(t+h), so integrand = -(e(t+h)•f(t+h))
+    have h_rw : (fun t => fourier (-n) (t + h) • f (t + h)) =
+        fun t => -(fourier (-n) t • f (t + h)) :=
+      funext fun t => by rw [fourier_neg_add_half_inv hn, neg_smul]
+    rw [h_rw, integral_neg, neg_eq_iff_eq_neg] at fc_shift
+    exact fc_shift
+  -- Expand RHS: ∫ e•(f - f(·+h)) = ∫ e•f - ∫ e•f(·+h) = fc - (-fc) = 2*fc
+  suffices h_eq : ∫ t, fourier (-n) t • (f t - f (t + h)) ∂haarAddCircle
+      = fourierCoeff f n - (-fourierCoeff f n) by
+    rw [h_eq]; ring
+  rw [show (fun t => fourier (-n) t • (f t - f (t + h))) =
+      fun t => fourier (-n) t • f t - fourier (-n) t • f (t + h) from
+    funext fun t => smul_sub _ _ _]
+  rw [integral_sub hint1 hint2, show (∫ t, fourier (-n) t • f t ∂haarAddCircle) =
+    fourierCoeff f n from rfl, shift_neg]
 
 /-! ## Part V: Main Theorem -/
 
@@ -173,7 +207,16 @@ theorem fourierCoeff_lipschitz_decay
     (hf : Integrable f haarAddCircle)
     {n : ℤ} (hn : n ≠ 0) :
     ‖fourierCoeff f n‖ ≤ K * T / (4 * |(n : ℝ)|) := by
-  sorry
+  -- Hölder with α=1: dist^1 = dist
+  have rpow1 : ∀ (x : ℝ), x ^ (1 : ℝ) = x := by
+    intro x; rw [show (1 : ℝ) = ((1 : ℕ) : ℝ) from Nat.cast_one.symm]
+    exact_mod_cast pow_one x
+  have holder : ∀ x y : AddCircle T, ‖f x - f y‖ ≤ K * dist x y ^ (1 : ℝ) := by
+    intro x y; rw [rpow1]; exact lip x y
+  have h := fourierCoeff_holder_decay one_pos hK holder hf hn
+  rw [rpow1] at h
+  calc ‖fourierCoeff f n‖ ≤ K / 2 * (T / (2 * |(n : ℝ)|)) := h
+    _ = K * T / (4 * |(n : ℝ)|) := by ring
 
 /-- **Riemann-Lebesgue for Hölder functions**: f̂(n) → 0 with quantitative rate. -/
 theorem fourierCoeff_tendsto_zero_of_holder
@@ -182,6 +225,12 @@ theorem fourierCoeff_tendsto_zero_of_holder
     (holder : ∀ x y : AddCircle T, ‖f x - f y‖ ≤ C * dist x y ^ α)
     (hf : Integrable f haarAddCircle) :
     Tendsto (fun n : ℤ => fourierCoeff f n) cofinite (𝓝 0) := by
+  rw [Metric.tendsto_nhds]
+  intro ε hε
+  rw [Filter.Eventually, Filter.mem_cofinite]
+  -- The bound ‖fc n‖ ≤ (C/2) * (T/(2|n|))^α → 0 as |n| → ∞
+  -- For ε > 0, finitely many n have ‖fc n‖ ≥ ε
+  -- Since the bound is monotone decreasing in |n|, only finitely many n violate it
   sorry
 
 /-- **Summability**: When α > 1/2, Fourier coefficients are absolutely summable,
@@ -192,6 +241,7 @@ theorem summable_fourierCoeff_of_holder
     (holder : ∀ x y : AddCircle T, ‖f x - f y‖ ≤ C * dist x y ^ α)
     (hf : Integrable f haarAddCircle) :
     Summable (fun n : ℤ => fourierCoeff f n) := by
+  -- Summable by comparison with C * |n|^{-α}, which is summable when α > 1/2
   sorry
 
 /-! ## Verification -/

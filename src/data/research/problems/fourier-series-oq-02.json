@@ -1,59 +1,116 @@
 {
   "slug": "fourier-series-oq-02",
-  "title": "[Problem Title]",
-  "phase": "OBSERVE",
+  "title": "Fourier Coefficient Decay under Hölder Continuity",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\forall f \\in C^{0,\\alpha}(\\mathbb{T}), \\quad |\\hat{f}(n)| \\leq \\frac{C}{2} \\left(\\frac{T}{2|n|}\\right)^\\alpha",
+    "plain": "Alpha-Hölder continuous functions on the circle have Fourier coefficients decaying as O(|n|^{-alpha}). This quantifies how regularity controls spectral decay.",
+    "whyMatters": [
+      "Foundational result in harmonic analysis connecting regularity to spectral decay",
+      "Corollaries include Riemann-Lebesgue lemma and uniform convergence criteria"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Main bound fourierCoeff_holder_decay (modulo 2 corollary sorries)",
+      "Phase shift lemma fourier_neg_add_half_inv",
+      "Pointwise norm norm_fourier_eq_one via Circle.norm_coe",
+      "Quotient metric bound dist_translate_le via QuotientAddGroup.norm_mk_le_norm",
+      "Haar translation invariance integral_translate_eq via integral_add_right_eq_self",
+      "Averaging identity via funext + integral_sub",
+      "Lipschitz decay corollary fourierCoeff_lipschitz_decay"
+    ],
+    "open": [
+      "Riemann-Lebesgue corollary (quantitative rate, needs finiteness argument)",
+      "Summability corollary (needs comparison with |n|^{-alpha} series)"
+    ],
+    "goal": "Complete all sorries to get a fully verified formalization"
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-03-22T15:12:20-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "phase": "ACT",
+    "since": "2026-03-23T09:00:00Z",
+    "iteration": 2,
+    "focus": "Prove remaining 2 corollary sorries",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Prove fourierCoeff_tendsto_zero_of_holder and summable_fourierCoeff_of_holder",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: fourier-series-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "progressSummary": "PROGRESS: 5 of 7 sorries filled. Main theorem + 4 helpers fully proved. 2 corollary sorries remain.",
+    "builtItems": [
+      "norm_fourier_eq_one (PROVED): ‖fourier n x‖ = 1 via Circle.norm_coe",
+      "fourier_neg_add_half_inv (PROVED): phase shift for fourier(-n)",
+      "dist_translate_le (PROVED): quotient metric bound via QuotientAddGroup.norm_mk_le_norm",
+      "integral_translate_eq (PROVED): Haar translation invariance via integral_add_right_eq_self",
+      "averaging_identity (PROVED): 2*fc = ∫ e(-n)*(f-f(·+h)) via funext + integral_sub",
+      "fourierCoeff_holder_decay (PROVED): main bound C/2 * (T/(2|n|))^alpha",
+      "fourierCoeff_lipschitz_decay (PROVED): Lipschitz corollary K*T/(4|n|)",
+      "Gallery entry src/data/proofs/fourier-series-oq-02/"
+    ],
+    "insights": [
+      "Phase shift averaging trick: shifting by T/(2n) negates fourier(-n), isolating Holder modulus",
+      "Mathlib fourier_add_half_inv_index is key; extend to fourier(-n) via conjugation",
+      "Circle.norm_coe directly proves ‖fourier n x‖ = 1 after fourier_apply (no Submonoid unfolding needed)",
+      "QuotientAddGroup.norm_mk_le_norm is a term (not a function), don't pass explicit args",
+      "integral_add_right_eq_self works for haarAddCircle (IsAddRightInvariant instance exists)",
+      "Integrable.comp_add_right works for translated functions under Haar measure",
+      "simp_rw cannot unfold local let bindings in hypotheses - use funext to rewrite integrand functions",
+      "rpow_one/rpow_natCast not in scope without Real namespace; use Nat.cast_one.symm + exact_mod_cast pow_one",
+      "integral_const on probability measure requires Measure.real unfold"
+    ],
+    "mathlibGaps": [
+      "rpow_one for Real not directly accessible without full namespace (workaround: Nat.cast_one + exact_mod_cast)",
+      "No simple way to prove x^(1:ℝ)=x without cast gymnastics"
+    ],
+    "nextSteps": [
+      "Prove fourierCoeff_tendsto_zero_of_holder: show bound → 0 via Filter.Eventually + finiteness",
+      "Prove summable_fourierCoeff_of_holder: comparison test with ∑ |n|^{-α} for α > 1/2",
+      "Consider submitting corollaries to Aristotle as companion file"
+    ],
+    "markdown": "# Knowledge Base: fourier-series-oq-02\n\n## Session 2 (2026-03-23)\n\nFilled 5 of 7 sorries in helper lemmas. Key Mathlib APIs discovered:\n- Circle.norm_coe for pointwise fourier norm\n- QuotientAddGroup.norm_mk_le_norm for quotient distance bound\n- integral_add_right_eq_self for Haar translation invariance\n- Integrable.comp_add_right for shifted integrability\n\nRemaining: 2 corollary sorries (Riemann-Lebesgue + summability).\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "analysis",
+    "fourier-analysis",
+    "harmonic-analysis"
   ],
   "relatedProofs": [
     "fourier-series",
     "fourier-series-oq-03"
   ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Katznelson (2004) An Introduction to Harmonic Analysis Ch.I §2",
+      "Grafakos (2014) Classical Fourier Analysis Prop.3.1.17"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.Analysis.Fourier.AddCircle",
+      "Mathlib.Analysis.Complex.Circle"
+    ]
   },
   "started": "2026-03-22T15:12:20-07:00",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
+    {
+      "path": "Proofs/FourierSeriesOQ02.lean",
+      "filename": "FourierSeriesOQ02.lean",
+      "lineCount": 250,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02.lean"
+    },
     {
       "path": "Proofs/FourierSeries.lean",
       "filename": "FourierSeries.lean",
