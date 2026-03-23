@@ -5218,21 +5218,6 @@ def selectionStatus : SelectionCriterion → String
   | .smooth_approximation => "OPEN"
   | .markov => "EXISTS (Flandoli-Romito)"
 
-/-- The convex integration hierarchy shows how "wild" solutions can be:
-
-    | Equation | α threshold | Non-uniqueness | Uniqueness |
-    |----------|-------------|----------------|------------|
-    | Euler    | 1/3         | α < 1/3 (Isett)| α > 1/3 (CET) |
-    | NS       | ???         | Leray-Hopf (BV) | Strong sols (Serrin) |
-    | SQG     | 1/2         | Partial         | α > 1/2    |
-
-    For NS, the "threshold" between uniqueness and non-uniqueness
-    is unknown. Serrin gives uniqueness for strong solutions,
-    BV gives non-uniqueness for weak solutions. The gap is the
-    fundamental open question. -/
-theorem convex_integration_summary :
-    (1 : ℕ) + 1 = 2 := rfl
-
 /-- The intermittent convex integration technique uses temporal
     concentration to handle the viscous term νΔu.
 
@@ -5756,15 +5741,6 @@ structure ProdiSerrin where
 /-- For p = 6: q = 4 satisfies the Serrin condition 2/q + 3/p = 1. -/
 theorem serrin_p6_q4 : 2 / (4 : ℝ) + 3 / 6 = 1 := by ring
 
-/-- The Millennium Prize reduces to closing the Serrin gap.
-    All known approaches gain partial improvement but cannot close
-    the full gap of 1/2 between energy estimates and regularity. -/
-theorem serrin_gap_is_the_problem :
-    -- Energy gives Serrin value 3/2
-    -- Regularity needs Serrin value ≤ 1
-    -- Gap = 1/2, open since Leray (1934)
-    (1 : ℕ) + 1 = 2 := rfl
-
 end CriticalSobolev
 
 /- ═══════════════════════════════════════════════════════════════════════════════
@@ -6099,20 +6075,6 @@ theorem energy_vanishes (ed : ExponentialDecay) (ε : ℝ) (hε : ε > 0) :
         calc ed.E_0 * Real.exp (-ed.decay_rate * t)
             ≤ ed.E_0 * (ε / ed.E_0) := by exact mul_le_mul_of_nonneg_left h1 (le_of_lt ed.hE0)
           _ = ε := mul_div_cancel₀ ε (ne_of_gt ed.hE0)
-
-/-- Summary: bounded domains are "easier" but still unsolved.
-
-    On bounded domains:
-    1. Poincaré inequality gives exponential decay
-    2. After large time, solution is small → regularity follows
-    3. The problem is SHORT-TIME regularity (before exponential kicks in)
-    4. Small data → global regularity (Koch-Tataru applies)
-
-    The Millennium Prize is equally open on bounded domains and R³. -/
-theorem bounded_domain_summary :
-    -- Bounded domains: eventually small, but short-time regularity unsolved
-    -- Same fundamental obstruction as R³: Serrin gap of 1/2
-    (1 : ℕ) + 1 = 2 := rfl
 
 end BoundedDomains
 
@@ -7615,20 +7577,6 @@ structure CarlesonMeasureNorm where
   hsup : sup_component ≥ 0
   hcarl : carleson_component ≥ 0
 
-/-- The critical embedding chain with quantitative relations.
-
-    The embeddings L³ ↪ BMO⁻¹ and H^{1/2} ↪ L³ are continuous:
-    ‖u‖_{BMO⁻¹} ≤ C ‖u‖_{L³}
-    ‖u‖_{L³} ≤ C ‖u‖_{H^{1/2}}  (Sobolev embedding in 3D)
-
-    So Koch-Tataru implies all previous small-data results:
-    ‖u₀‖_{H^{1/2}} small → ‖u₀‖_{L³} small → ‖u₀‖_{BMO⁻¹} small → global -/
-theorem embedding_chain :
-    -- H^{1/2} ⊂ L³ ⊂ BMO⁻¹ (continuous embeddings)
-    -- Koch-Tataru in BMO⁻¹ ⟹ Kato in H^{1/2}
-    -- The inclusion is strict: log|x| ∈ BMO⁻¹ \ L³
-    (1 : ℕ) + 1 = 2 := rfl
-
 /-- Why Koch-Tataru is optimal: ill-posedness below BMO⁻¹.
 
     Bourgain-Pavlović (2008): NS is ill-posed in B^{-1}_{∞,∞}.
@@ -7908,20 +7856,6 @@ structure LorentzSpace where
   q : ℝ
   hq : q ≥ 1
 
-/-- Lorentz space embeddings for p = 3 (the critical exponent).
-
-    L^{3,1} ⊂ L^{3,2} ⊂ L³ ⊂ L^{3,∞}
-    (smallest)          (L^p)   (largest = weak L³)
-
-    Each inclusion is strict:
-    - f(x) = |x|^{-1} · 1_{|x|≤1} ∈ L^{3,∞} \ L³ in ℝ³
-    - f(x) = |x|^{-1} · (log|x|)^{-2/3} · 1_{|x|≤1/2} ∈ L³ \ L^{3,2} -/
-theorem lorentz_chain :
-    -- L^{3,1} ⊂ L^{3,2} ⊂ L^{3,3} = L³ ⊂ L^{3,∞}
-    -- For Seregin: L^{3,∞} suffices (largest critical space for regularity)
-    -- Each step is a genuine generalization
-    (1 : ℕ) + 1 = 2 := rfl
-
 /-- Morrey spaces M^{p,λ}: capturing local concentration.
 
     ‖f‖_{M^{p,λ}} = sup_{x,r} r^{(λ-n)/p} (∫_{B(x,r)} |f|^p)^{1/p}
@@ -8052,20 +7986,6 @@ structure BarelySupercritical where
   /-- If c > threshold, solution stays bounded (global regularity) -/
   global_reg : c > c_threshold → solution_norm_bound > 0
 
-/-- The logarithmic gap in Tao's barely supercritical result.
-
-    Standard NS: need ‖u‖_{L³} bounded
-    Tao's modification: need ‖u‖_{L³} / log(‖u‖_{L³})^c bounded
-
-    The log factor is the ENTIRE gap between what we can prove
-    and what we need. A single logarithm separates us from
-    solving the Millennium Problem. -/
-theorem log_gap_significance :
-    -- log(x) grows slower than x^ε for any ε > 0
-    -- So the gap is "infinitesimally small" in scaling terms
-    -- Yet it has resisted 90+ years of effort
-    (1 : ℕ) + 1 = 2 := rfl
-
 /-- The endpoint regularity problem for the pressure.
 
     Pressure satisfies: -Δp = ∂_i∂_j(u_i u_j)
@@ -8112,28 +8032,6 @@ theorem subcritical_sobolev_exponent : 3 * ((1 : ℚ) / 2 - 1 / 6) = 1 := by nor
     half a spatial derivative ↔ quarter of a time derivative
     Combined: exactly the Serrin gap of 1/2. -/
 theorem derivative_gap : (1 : ℚ) - 1 / 2 = 1 / 2 := by norm_num
-
-/-- Summary: the regularity problem through the lens of critical spaces.
-
-    | Space | Regularity? | Status |
-    |-------|-------------|--------|
-    | L^∞ | Yes (BKM) | Trivial |
-    | L³ | Yes (ESŠ) | Proved 2003 |
-    | L^{3,∞} | Yes (Seregin) | Proved 2012 |
-    | Ḣ^{1/2} | Yes (equiv to L³) | Via Sobolev |
-    | Ḃ^{-1+3/p}_{p,∞} | Yes for p > 3 | Besov criteria |
-    | BMO⁻¹ | Yes (small data) | Koch-Tataru 2001 |
-    | L² | ? | Millennium Problem |
-    | Log-supercritical | Yes (Tao) | Barely beyond critical |
-
-    The table shows: regularity holds in EVERY critical space except L².
-    L² is subcritical (below critical scaling) and is exactly where
-    Leray-Hopf solutions live. Bridging L² to L³ is the entire problem. -/
-theorem critical_space_summary :
-    -- Regularity holds for ALL critical norms ≥ L³
-    -- Leray-Hopf gives L² (subcritical, below the threshold)
-    -- Gap: L² → L³ = 1/2 derivative = the Millennium Problem
-    (1 : ℕ) + 1 = 2 := rfl
 
 end CriticalSpaces
 
@@ -8511,28 +8409,6 @@ theorem ckn_partial_regularity :
     -- This is optimal: there exist model problems with point singularities
     (3 : ℕ) = 3 := rfl
 
-/-- Why P¹ = 0 is optimal (cannot be improved to P^{1-ε} = 0).
-
-    Scheffer (1985) constructed a "weak solution" (in a generalized sense)
-    with a singular set of positive P¹-measure. However, this is not a
-    suitable weak solution, so CKN does not apply.
-
-    For genuine Navier-Stokes:
-    - No example is known with even a SINGLE singular point
-    - CKN allows up to a discrete (countable) set of singular points
-    - The gap between theory (allows singularities) and practice (none observed)
-      is a central mystery
-
-    The question "Are there ANY singular points?" is exactly the
-    Millennium Problem (for smooth initial data). -/
-theorem ckn_optimality_gap :
-    -- Theory allows: countable isolated singularities
-    -- Practice shows: zero singularities (for all tested initial data)
-    -- Gap = Millennium Problem
-    -- Improving CKN to P^0(S) = 0 would SOLVE the Millennium Problem
-    -- (P^0 = 0 means S is empty)
-    (1 : ℕ) + 1 = 2 := rfl
-
 /-- The local energy inequality in detail.
 
     For φ ≥ 0, φ ∈ C₀^∞(ℝ³ × ℝ):
@@ -8721,31 +8597,6 @@ theorem bkm_cf_connection :
     -- Blowup requires BOTH: intense vorticity + rapid reorientation
     -- This rules out many potential singularity scenarios
     (3 : ℕ) = 3 := rfl
-
-/-- Subsequent geometric regularity results.
-
-    The Constantin-Fefferman approach inspired many extensions:
-
-    1. **da Veiga-Berselli (2002)**: Regularity if vorticity direction is
-       in W^{1,p} with p > 3/2 (weaker than Lipschitz)
-
-    2. **Grujić-Ruzmaikina (2006)**: Only need direction coherence in
-       regions where BOTH |ω| and |strain| are large
-
-    3. **Vasseur (2007)**: Replaced Lipschitz by 1/2-Hölder continuity
-       of vorticity direction
-
-    4. **Chae-Lee (2002)**: Extended to Euler equations (inviscid case)
-
-    The trend: weakening the angle condition while maintaining regularity.
-    The weakest known sufficient condition is 1/2-Hölder continuity
-    of the vorticity direction. -/
-theorem subsequent_geometric_results :
-    -- da Veiga-Berselli: W^{1,p} direction with p > 3/2 suffices
-    -- Grujić-Ruzmaikina: only need coherence where BOTH |ω|, |S| are large
-    -- Vasseur: 1/2-Hölder suffices (weaker than Lipschitz)
-    -- Chae-Lee: extends to Euler (no viscosity)
-    (1 : ℕ) + 1 = 2 := rfl
 
 /-- The strain-vorticity alignment in turbulence.
 
@@ -8968,52 +8819,6 @@ theorem epochs_of_regularity :
     -- Combined with CKN: finitely many spatial singularities per singular time
     (3 : ℕ) = 3 := rfl
 
-/-- The singular time set structure.
-
-    Let T = { t > 0 : u is not smooth on (t-ε, t+ε) for any ε > 0 }
-
-    Leray's bounds on T:
-    1. T is closed (regularity is an open condition in time)
-    2. |T| = 0 (Lebesgue measure zero)
-    3. If t₁, t₂ ∈ T with t₁ < t₂, then t₂ - t₁ ≥ c/‖u₀‖⁴_{L²}
-       (singular times are separated by energy-dependent gaps)
-    4. Therefore T is at most countable
-
-    The separation bound (3) comes from Fujita-Kato local existence:
-    after re-regularization at T*, the solution exists smoothly for
-    time ≥ c·ν/‖u(T*+)‖⁴. Since ‖u(T*+)‖ ≤ ‖u₀‖, the gaps are bounded below. -/
-theorem singular_time_separation :
-    -- Singular times are separated: min gap ≥ c/‖u₀‖⁴
-    -- This limits the total number of singularities on [0,T]
-    -- At most N ≤ T·‖u₀‖⁴/c singular times
-    -- Each has finitely many singular spatial points (by CKN)
-    (1 : ℕ) + 1 = 2 := rfl
-
-/-- Leray's self-similar blowup exclusion.
-
-    Leray asked: can solutions blow up in a self-similar way?
-    u(x,t) = (T-t)^{-1/2} U(x/√(T-t))
-
-    where U solves the Leray system:
-    -ν∆U + (U·∇)U + ½U + ½(x·∇)U = -∇P, ∇·U = 0
-
-    Nečas-Růžička-Šverák (1996) proved: NO such blowup exists.
-    If U ∈ L³(ℝ³), then U = 0.
-
-    This rules out the simplest blowup scenario, but:
-    - Discretely self-similar blowup (Type II) is NOT excluded
-    - Asymptotically self-similar blowup is NOT excluded
-    - The result uses the L³ condition crucially
-
-    Tsai (1998) extended to asymptotically self-similar:
-    if u is close to (T-t)^{-1/2} U near blowup, then U = 0. -/
-theorem self_similar_exclusion :
-    -- Self-similar blowup u ~ (T-t)^{-1/2} U(x/√(T-t)) impossible
-    -- Nečas-Růžička-Šverák 1996: U ∈ L³ ⟹ U = 0
-    -- Tsai 1998: extended to asymptotically self-similar
-    -- NOT ruled out: Type II (discretely self-similar) blowup
-    (1 : ℕ) + 1 = 2 := rfl
-
 /-- The Leray projection and Helmholtz decomposition.
 
     Key tool: any vector field f ∈ L²(ℝ³)³ decomposes uniquely as
@@ -9132,80 +8937,6 @@ theorem kato_local_existence :
     -- T depends on ‖u₀‖_3 (larger data ⟹ shorter existence)
     -- Proof: contraction mapping in scaled L³ space
     (3 : ℕ) = 3 := rfl
-
-/-- Small data global existence.
-
-    Theorem: There exists ε > 0 such that if ‖u₀‖_{L³} < ε·ν,
-    then the mild solution exists globally and decays:
-    ‖u(t)‖_{L³} ≤ C·ε·ν for all t > 0
-    ‖u(t)‖_{L^∞} ≤ C·ε·ν/t^{1/2} (algebraic decay)
-
-    The threshold ε is universal (independent of u₀).
-
-    Why small L³ data works:
-    - L³ is scaling-critical: ‖u_λ‖_3 = ‖u‖_3
-    - Small ‖u₀‖_3 means the nonlinearity is dominated by diffusion
-    - The bilinear form B(u,u) is small when u is small in L³
-    - Contraction mapping applies globally
-
-    The gap between "small" and "large" is the Millennium Problem:
-    does every large-data solution eventually become small? -/
-theorem small_data_global :
-    -- ‖u₀‖_{L³} < εν ⟹ global smooth solution
-    -- Decays: ‖u(t)‖_∞ ~ t^{-1/2} (like the heat equation)
-    -- The threshold ε is universal
-    -- Large data: unknown whether solutions eventually become small
-    (1 : ℕ) + 1 = 2 := rfl
-
-/-- Critical spaces for Navier-Stokes.
-
-    A Banach space X is critical for NS if the norm is invariant
-    under the NS scaling u → λu(λx, λ²t):
-
-    ‖u_λ(·,0)‖_X = ‖u(·,0)‖_X  for all λ > 0
-
-    Known critical spaces (ordered by inclusion, largest first):
-    1. BMO⁻¹ (Koch-Tataru 2001) - LARGEST with well-posedness
-    2. B^{-1+3/p}_{p,∞} (Cannone 1995) - Besov spaces
-    3. L³(ℝ³) (Kato 1984) - Lebesgue
-    4. Ḣ^{1/2}(ℝ³) (Fujita-Kato 1964) - homogeneous Sobolev
-    5. L²(ℝ³) (Leray 1934) - energy space (NOT critical: subcritical)
-
-    The hierarchy:
-    BMO⁻¹ ⊃ L³ ⊃ Ḣ^{1/2} ⊃ H¹ ⊃ ... (each smaller)
-
-    L² is subcritical: ‖u_λ‖_2 = λ^{-1/2}‖u‖_2 → ∞ as λ → ∞
-    This is why Leray-Hopf theory doesn't give uniqueness or regularity. -/
-theorem critical_space_hierarchy :
-    -- BMO⁻¹ ⊃ L³ ⊃ Ḣ^{1/2}: nested critical spaces
-    -- All give local existence and small-data global existence
-    -- Koch-Tataru: BMO⁻¹ is optimal (ill-posed in B^{-1}_{∞,∞})
-    -- L² is subcritical: too large for uniqueness theory
-    (1 : ℕ) + 1 = 2 := rfl
-
-/-- The blowup criterion in terms of mild solutions.
-
-    If u is a mild solution on [0, T*) and T* < ∞ is the maximal
-    existence time, then:
-
-    lim_{t→T*⁻} ‖u(t)‖_{L³} = ∞
-
-    Equivalently: ‖u(t)‖_{L³} stays bounded ⟹ solution continues.
-
-    Stronger: for Serrin-class solutions:
-    u ∈ L^q(0,T; L^p) with 2/q + 3/p ≤ 1 ⟹ regularity on [0,T]
-
-    The connection to Leray:
-    - Leray gives global WEAK solution in L^∞(L²) ∩ L²(H¹)
-    - Kato gives local STRONG solution in C(L³)
-    - Gap: L² regularity is not enough to guarantee L³ regularity
-    - Bridging this gap = solving the Millennium Problem -/
-theorem mild_blowup_criterion :
-    -- Blowup at T* ⟹ ‖u(t)‖_{L³} → ∞ as t → T*
-    -- Contrapositive: bounded L³ ⟹ no blowup
-    -- The gap: Leray gives L^∞(L²) but we need C(L³)
-    -- Closing this gap would solve the problem
-    (1 : ℕ) + 1 = 2 := rfl
 
 /-- Picard iteration and the role of criticality.
 
@@ -9408,28 +9139,6 @@ theorem angular_momentum_maximum_principle :
     -- But u_θ = Γ/r can still blow up if Γ concentrates on axis
     -- The maximum principle prevents Γ from growing but not from focusing
     (3 : ℕ) = 3 := rfl
-
-/-- Chen-Strain-Yau-Tsai lower bound on blowup rate (2008).
-
-    Theorem: If an axisymmetric solution with swirl blows up at time T*,
-    then for some C > 0:
-    ‖u(t)‖_{L^∞} ≥ C/(T* - t)^{1/2}
-
-    This is the Type I blowup rate (same as the self-similar scaling).
-    Combined with the Nečas-Růžička-Šverák exclusion of self-similar blowup:
-
-    Any blowup must be:
-    - At least as fast as (T*-t)^{-1/2} (CSYT lower bound)
-    - Not exactly (T*-t)^{-1/2} in a self-similar way (NRŠ exclusion)
-    - So: slightly faster than self-similar, or non-self-similar
-
-    This strongly constrains the blowup mechanism in axisymmetric flows. -/
-theorem chen_strain_yau_tsai :
-    -- If blowup at T*: ‖u(t)‖_∞ ≥ C/(T*-t)^{1/2}
-    -- This is the Type I (self-similar) rate
-    -- Combined with NRŠ: blowup cannot be exactly self-similar
-    -- Constrains but does not exclude blowup
-    (1 : ℕ) + 1 = 2 := rfl
 
 /-- The Lei-Zhang criticality result (2017).
 
@@ -10492,18 +10201,6 @@ structure TaoLogarithmic where
   /-- The gap between standard NS and regularity is "logarithmic" -/
   gapIsLogarithmic : Prop
 
-/-- Summary: what hyperdissipative analysis tells us.
-    The standard NS is supercritical by exactly s_c = 1/2.
-    Lions threshold is α = 5/4 (gap of 1/4 in dissipation power).
-    Tao shows even a logarithmic improvement suffices.
-    The Millennium Problem is "one logarithm away" from being solved. -/
-theorem hyperdissipative_summary :
-    -- α ≥ 5/4: regular (Lions 1969)
-    -- α = 1 + log correction: regular (Tao 2009)
-    -- α = 1: OPEN (Millennium Problem)
-    -- The gap is a single logarithm of the Laplacian
-    (1 : ℕ) + 1 = 2 := rfl
-
 end HyperdissipativeNS
 
 /-!
@@ -11216,21 +10913,6 @@ inductive LiouvilleCondition where
   | typeI_with_decay   -- |u| ≤ C/√(-t) + spatial decay: Chae-Wolf (2019)
   | bounded_BMOminus1  -- ‖u‖_{BMO⁻¹} ≤ M: OPEN (would suffice for regularity)
   deriving Repr
-
-/-- Summary: Liouville theorems reduce the Millennium Problem to showing
-    that blowup limits have specific integrability. The gap between what
-    rescaling gives (L_{3,∞}) and what Liouville needs (L³ or better) is
-    the heart of the open problem. -/
-theorem liouville_summary :
-    -- Ancient solutions arise as blowup limits via parabolic rescaling
-    -- KNSS (2009): bounded ancient mild solutions in L³ are zero
-    -- Seregin (2012): extends to weak L³ (L_{3,∞}) for suitable weak solutions
-    -- ESŠ program: Liouville theorem would close the regularity argument
-    -- Gap: rescaling gives L_{3,∞} bound, Liouville works for L_{3,∞}
-    -- But: "suitable weak" vs "mild" distinction creates a technical gap
-    -- Closing this gap completely would resolve the Millennium Problem
-    -- DSS solutions (Bradshaw-Tsai): potential counterexample pathway
-    (1 : ℕ) + 1 = 2 := rfl
 
 end LiouvilleTheorems
 
@@ -12161,18 +11843,6 @@ theorem leray_hopf_serrin_gap : (2 : ℚ) / 2 + 3 / 6 - 1 = 1 / 2 := by norm_num
 
 /-- One-component criterion exponent: 2/p + 3/q ≤ 1/2 (stricter than full Serrin). -/
 theorem one_component_threshold : (1 : ℚ) / 2 = 1 / 2 := by norm_num
-
-/-- Summary: All known regularity criteria are critical - none verified for Leray-Hopf. -/
-theorem regularity_criteria_summary :
-    -- Velocity: 2/p + 3/q ≤ 1 (Serrin/LPS/ESŠ)
-    -- Vorticity: ∫‖ω‖_{L^∞} < ∞ (BKM) or BMO variant (Kozono-Taniuchi)
-    -- Pressure: p ∈ L^{5/3+ε} (Seregin-Šverák) or gradient versions
-    -- Strain: S ∈ L^p_t L^q_x, 2/p + 3/q ≤ 1 (Neustupa-Penel)
-    -- Geometric: Lipschitz vorticity direction (Constantin-Fefferman)
-    -- Partial: single velocity/vorticity component with stronger norms
-    -- Gap: Leray-Hopf gives 2/2 + 3/6 = 3/2, need ≤ 1; gap = 1/2
-    -- The gap is purely NONLINEAR: no linear interpolation can close it
-    (1 : ℕ) + 1 = 2 := rfl
 
 end RegularityCriteriaCompendium
 
@@ -15588,26 +15258,6 @@ theorem energy_balance_steady (eps_in eps : ℝ) (h_bal : eps_in = eps) :
 theorem scale_ratio_consistency :
     (1 : ℝ) / 2 + 1 / 4 = 3 / 4 := by norm_num
 
-/-- Summary: Part LXXXIX proved Kolmogorov microscale and spectral energy algebra. -/
-theorem kolmogorov_microscale_summary :
-    -- PROVED (no sorry, no axiom):
-    -- Kolmogorov η: dimensional analysis exponents (ν^{3/4}·ε^{-1/4})
-    -- Kolmogorov u_η, τ_η dimensional checks
-    -- Local Re at Kolmogorov scale = 1
-    -- Taylor microscale Re_λ ~ Re^{1/2}
-    -- Scale ratios: η/L ~ Re^{-3/4}, λ/L ~ Re^{-1/2}, η/λ ~ Re^{-1/4}
-    -- DNS cost: 2D ~ Re^2, 3D ~ Re^3
-    -- Inertial range decades = (3/4)·log₁₀(Re)
-    -- Dissipation spectrum exponent k^{1/3} in inertial range
-    -- D(k) increasing in inertial range
-    -- Batchelor scale for Sc > 1
-    -- K41 structure function exponents ζ_p = p/3
-    -- 4/5 law factor
-    -- She-Lévêque ζ_3 = 1 (exact), ζ_6 = 16/9, intermittency 2/9
-    -- Spectral energy conservation
-    -- Scale ratio consistency: 1/2 + 1/4 = 3/4
-    (1 : ℕ) + 1 = 2 := rfl
-
 end KolmogorovMicroscales
 
 -- ═══════════════════════════════════════════════════════════════════════════════
@@ -16281,11 +15931,6 @@ theorem hs_blowup_rate (s : ℝ) : (2*s - 1) / 4 = s/2 - 1/4 := by ring
 -- The L^{3,∞} norm is the weakest scale-invariant norm.
 -- ESŠ proof uses backward uniqueness (Carleman estimates) + unique continuation.
 -- This means any blowup must be Type II: faster than (T*-t)^{-1/2}.
-theorem ess_excludes_type_I :
-    -- Type I: ||u||_∞ ≤ C(T*-t)^{-1/2} ⟹ ||u||_{L^3} bounded ⟹ no blowup
-    -- So Type I ⟹ regularity (contrapositive: blowup ⟹ not Type I)
-    (1 : ℕ) + 1 = 2 := rfl
-
 /-- Seregin (2012): blowup at T* ⟹ lim_{t→T*} ||u(t)||_{L^3} = ∞.
     This is stronger than ESŠ: not just weak L^3, but strong L^3. -/
 -- The proof uses the Koch-Tataru BMO^{-1} well-posedness:
@@ -16332,19 +15977,6 @@ theorem log_blowup_rate_check :
 theorem scale_invariant_exponent (p : ℝ) (hp : p > 0) :
     p/2 - 3/2 - (p * (1/2 - 3/(2*p))) = 0 := by ring
 
-/-- Type II blowup rate constraints (Albritton-Barker 2024):
-    For Type II blowup, there exist UNIFORM bounds on the rescaled
-    solution at scales above the blowup rate.
-    The blowup rate separates into slow (controllable) and fast (singular):
-    ||u(t)||_∞ = o((T*-t)^{-1/2-ε}) for any ε > 0 is still possible
-    but ||u(t)||_∞ ≤ C(T*-t)^{-1/2} is excluded by ESŠ. -/
-theorem type_II_gap :
-    -- The gap between Type I exclusion and known upper bounds:
-    -- ESŠ excludes ||u||_∞ ≤ C(T*-t)^{-1/2} (rate exactly 1/2)
-    -- Nothing excludes ||u||_∞ ~ (T*-t)^{-1/2-ε} for ε > 0
-    -- The critical gap is at rate EXACTLY 1/2 (logarithmic corrections)
-    (1 : ℕ) + 1 = 2 := rfl
-
 /-- Dimensional analysis of blowup: if blowup at T*, the natural
     length scale is ℓ(t) ~ (ν(T*-t))^{1/2} (diffusion scale).
     Velocity: u ~ ℓ/τ ~ (ν/(T*-t))^{1/2}
@@ -16356,21 +15988,6 @@ theorem type_I_dimensional_check (nu : ℝ) (tau : ℝ) (htau : tau > 0) :
     -- ω ~ u/ℓ = (ν/τ)^{1/2}/(ν·τ)^{1/2} = 1/τ
     -- Check: u·ω = (ν/τ)^{1/2}/τ, and ∂u/∂t ~ u/τ = (ν/τ)^{1/2}/τ ✓
     (3 : ℕ) = 3 := rfl
-
-/-- Summary: Part XCIII classified blowup rates and lower bounds. -/
-theorem blowup_rate_summary :
-    -- PROVED (no sorry, no axiom):
-    -- Type I scaling exponent = 1/2
-    -- Leray L^3 criticality (d/p - 1 = 0)
-    -- Serrin blowup exponents for all p
-    -- H^1 blowup rate -1/4
-    -- H^s blowup rate -(2s-1)/4
-    -- ESŠ excludes Type I (stated)
-    -- Seregin L^3 necessity (stated)
-    -- Rate hierarchy: 1/2 > 1/4 > 0
-    -- Scale-invariant quantity exponent
-    -- Type II gap characterization
-    (1 : ℕ) + 1 = 2 := rfl
 
 end BlowupRates
 
@@ -16864,19 +16481,6 @@ theorem interpolation_gain :
     -- separate control in x₃.
     (3 : ℕ) = 3 := rfl
 
-/-- Summary: Part XCVI proved one-component and gradient regularity criteria. -/
-theorem one_component_summary :
-    -- PROVED (no sorry, no axiom):
-    -- Neustupa-Penel endpoint exponent q=6
-    -- Kukavica-Ziane scaling condition 2/p+3/q=2
-    -- Gradient scaling equivalence (2-2/p-3/q=0 ↔ 2/p+3/q=2)
-    -- Criteria RHS ordering: 1/2 < 1 < 2
-    -- Vorticity component threshold q>3/2
-    -- Cao-Titi vs Serrin comparison (stated)
-    -- Divergence-free coupling mechanism (stated)
-    -- Anisotropic interpolation gain (stated)
-    (1 : ℕ) + 1 = 2 := rfl
-
 end OneComponentCriteria
 
 -- ═══════════════════════════════════════════════════════════════════════════
@@ -17105,13 +16709,6 @@ theorem log_weaker_than_power :
 -- Instead of sup_t ||u(t)||_3 < ∞ (Serrin + ESŠ),
 -- it suffices: ||u(t)||_3 ≤ C(log(T-t)^{-1})^s for some s > 0.
 -- This allows ||u||_3 → ∞ at blowup, but SLOWLY (logarithmically).
-theorem log_growth_is_slow :
-    -- For the endpoint (∞, L^3), the log-Serrin criterion allows:
-    -- ||u(t)||_{L^3} ≤ C · (log(1/(T*-t)))^{1/2}
-    -- This diverges as t → T*, but much slower than any power:
-    -- (log(1/h))^{1/2} << h^{-ε} for any ε > 0 as h → 0
-    (1 : ℕ) + 1 = 2 := rfl
-
 /-- Kozono-Taniuchi (2000): BMO replaces L^∞ in the BKM criterion.
     BKM requires ∫₀ᵀ ||ω||_∞ dt < ∞ for regularity.
     KT improve to: ∫₀ᵀ ||ω||²_BMO / (1 + log(||ω||_{H^s}/||ω||_BMO)) dt < ∞.
@@ -17180,19 +16777,6 @@ theorem serrin_time_gap :
     This 1/2 is EXACTLY the same as the Sobolev gap s_c = 1/2.
     All roads lead to the same fundamental obstruction. -/
 theorem fundamental_gap : (3:ℝ)/2 - 1 = 1/2 := by norm_num
-
-/-- Summary: Part XCVIII proved logarithmic improvements and near-critical estimates. -/
-theorem log_improvements_summary :
-    -- PROVED (no sorry, no axiom):
-    -- Sobolev gap check: 1/2 - (1/2)/3 = 1/3
-    -- Log-Serrin growth characterization (stated)
-    -- Regularity moduli ordering: h < h^{1/2} < 1/|log h|
-    -- Time integrability gap: 2/4 + 3/3 = 3/2 > 1
-    -- Fundamental gap: 3/2 - 1 = 1/2
-    -- Tao log improvement mechanism (stated)
-    -- Kozono-Taniuchi BMO criterion (stated)
-    -- Brezis-Gallouet-Wainger interpolation (stated)
-    (1 : ℕ) + 1 = 2 := rfl
 
 end LogarithmicImprovements
 

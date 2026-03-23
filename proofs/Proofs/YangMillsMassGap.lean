@@ -3513,82 +3513,6 @@ theorem stringTension_largeN_scaling (N : ℕ) (hN : N ≥ 2) (g : ℝ) :
 PART XLIII: SUMMARY (UPDATED)
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- Summary of Yang-Mills Existence and Mass Gap formalization.
-
-**Proven (210+ theorems)**:
-- Minkowski metric: symmetry, diagonal, trace = 2, signature (1,3), norm squared
-- Field strength: antisymmetry, diagonal = 0 (module proof), 6 independent components
-- EM tensor: diagonal = 0, electric antisymmetry, 6 components
-- Gauge transformations: group structure, identity, associativity, double inverse
-- Mass gap: downward closure, vacuum zero energy
-- Abelian gauge theory and Maxwell equations structure
-- Asymptotic freedom existence
-- Wilson loop: trivial loop, area law mass scale, area vs perimeter
-- Lattice gauge theory: plaquette variable, Wilson action, gauge invariance, bounds
-- 2D Yang-Mills: Migdal formula, area law, string tension positivity
-- Transfer matrix: mass gap from eigenvalues, correlation decay
-- Polyakov loop: confinement/deconfinement criterion, mutual exclusivity
-- SU(2) representation theory: trivial, fundamental, adjoint Casimir values (0, 3/4, 2)
-- SU(2) string tension: σ = 3g²/16 for fundamental representation
-- Center symmetry Z_N: ±1 for SU(2), center transformation of Polyakov loop
-- Confinement = center symmetry unbroken; deconfinement = center symmetry broken
-- Concrete SU(2) Migdal: fundamental and adjoint instances with explicit string tensions
-- Casimir scaling: σ_adj/σ_fund = 16/9 for SU(2), general scaling law
-- Heat kernel expansion: partition function Z = Σ d² exp(-C₂·g²·A), truncated to j≤1
-- Heat kernel properties: positivity, zero-area value (14), lower bound (≥1), decay
-- Center group structure: multiplication, associativity, identity, inverse, commutativity
-- SU(2) center: self-inverse property (-1)² = 1
-- General SU(N) Casimir formulas: C₂(fund) = (N²-1)/(2N), C₂(adj) = N
-- SU(N) Casimir monotonicity, adjoint > fundamental, ratio formula
-- Consistency checks: SU(N) formula matches SU(2)-specific values
-- SU(3) Migdal instances: fundamental (σ=2g²/9) and adjoint (σ=3g²/16)
-- SU(3) Casimir scaling ratio: 27/32
-- SU(3) confines stronger than SU(2) (2g²/9 > 3g²/16)
-- N-ality classification: trivial/adjoint screen (σ=0), fundamental confines (σ>0)
-- SU(3) heat kernel: truncated partition function, zero-area value (74), lower bound, decay
-- Large-N limit: C₂(fund)/N < 1/2, gap = 1/(2N²), ratio C₂(adj)/C₂(fund) ≥ 2
-- 't Hooft coupling: λ = g²N, string tension rescaling σ·N → λ/2
-- Creutz ratios: extract σ from Wilson loops, proved χ = σ under area law
-- Confinement/deconfinement mutual exclusivity via Creutz ratios
-- Glueball spectrum: mass gap = lightest glueball mass
-- Planar limit: genus expansion, 1/N² suppression of non-planar corrections
-- Osterwalder-Schrader: Euclidean metric, time reflection involution, Schwinger functions
-- Schwinger mass gap: exponential decay characterization, Euclidean ↔ Hamiltonian equivalence
-- Beta function: β₀ = 11N/3, SU(2) = 22/3, SU(3) = 11, linearity, per-color scaling
-- Running coupling: asymptotic freedom proved (coupling decreases at high energy)
-- Λ_QCD: positivity, Λ < μ₀ (confinement scale below reference)
-- Trace anomaly: quantum breaking of conformal invariance, SU(2)/SU(3) coefficients
-- Spectral gap: correlation length ξ=1/Δ, monotonicity, Δ=1/ξ roundtrip
-- Källén-Lehmann: spectral density positivity, mass gap from spectral support
-- Continuum limit: ξ grows as 1/(Δ·a), required divergence as a→0
-- Faddeev-Popov: gauge fixing, ghost fields, BRST nilpotency, Slavnov-Taylor identities
-- Ghost fields: SU(2) has 3, SU(3) has 8; ghost loop contribution to beta function
-- Gluon propagator: Feynman gauge, Landau gauge, longitudinal/transverse decomposition
-- Beta function decomposition: gluon (23N/6) + ghost (-N/6) = β₀ (11N/3)
-- Strong coupling: expansion parameter β/(2N²), area law Wilson loops, string tension
-- String tension: σ_sc = -ln(1/(Ng²)), monotonicity in coupling, positivity
-- Critical coupling: SU(2) β_c ≈ 2.2, SU(3) β_c ≈ 5.7
-- Theta vacuum: winding number, instanton action bound 8π²|n|/g², suppression
-- Topological sectors: vacuum energy E(θ) = 1-cos(θ), minimum at θ=0, max at θ=π
-- Instanton moduli: dim = 4N|n|, SU(2) has 8, SU(3) has 12 dimensions
-- 2D exact solution: partition function Z_R = d²·exp(-g²C₂A/2), exact string tensions
-- Casimir scaling exact in 2D, SU(3) confines stronger than SU(2)
-- SU(N) 2D mass gap = g²(N²-1)/(4N), monotone in N
-- Confinement criteria: Creutz ratio extracts σ from Wilson loops
-- Linear quark potential V(R) = σR, string breaking at R = 2m/σ
-- 't Hooft coupling λ = g²N, large-N string tension scaling
-
-**Axiomatized (16 axioms)**: Killing form (symmetric, negative-definite, ad-invariant,
-zero-iff), field strength computation, Bianchi identity, gauge invariance, gauge
-transformation law, Bogomolny bound, energy-momentum conservation, conformal invariance,
-Wilson loop composition, OS reconstruction theorem, Euclidean mass gap → Wightman mass gap,
-Witten-Veneziano relation (topological susceptibility).
-
-**Open conjecture**: Existence of quantum YM in 4D with positive mass gap.
-
-**Badge**: conjecture -/
-theorem summary : (1 : ℕ) + 1 = 2 := rfl
-
 #check YangMillsMillenniumProblem
 #check hasMassGap
 #check hasSomeMassGap
@@ -3938,16 +3862,6 @@ theorem gribov_propagator_at_zero (gp : GribovGluonPropagator) :
   rw [gp.hprop]
   simp
 
-/-- The Gribov propagator has complex poles at p² = ±iγ².
-    This violates the Kallen-Lehmann spectral representation:
-    no positive spectral density → gluon is NOT a particle.
-
-    This is strong evidence for gluon confinement. -/
-theorem gribov_complex_poles :
-    -- p² = iγ² and p² = -iγ² are complex, not real
-    -- No real poles → no physical particle
-    (1 : ℕ) + 1 = 2 := rfl
-
 end GribovCopies
 
 /- ═══════════════════════════════════════════════════════════════════════════════
@@ -4208,43 +4122,6 @@ theorem center_vortex_trivial (N : ℕ) (hN : N ≥ 2) :
     centerVortexTension N 0 = 0 := by
   unfold centerVortexTension
   simp [Nat.cast_zero, zero_mul, zero_div, Real.sin_zero]
-
-/-- The deep connection: Gribov, dual superconductor, and center vortices
-    are all manifestations of the same non-perturbative physics.
-
-    | Mechanism | Key object | Predicts |
-    |-----------|-----------|----------|
-    | Gribov | Gribov copies, complex poles | Gluon confinement |
-    | Dual SC | Magnetic monopoles | Color-electric confinement |
-    | Center vortex | ℤ_N defects | Area law, N-ality |
-
-    All three are confirmed by lattice simulations.
-    A complete proof of confinement likely needs all three ideas. -/
-theorem confinement_mechanisms_summary :
-    -- All three mechanisms are needed for a full picture
-    -- Lattice confirms all three contribute
-    (1 : ℕ) + 1 = 2 := rfl
-
-/-- The Millennium Prize mass gap problem, after all this analysis:
-
-    To prove: ∃ Δ > 0 such that every state in the physical Hilbert space
-    of pure SU(N) Yang-Mills theory has energy ≥ Δ (above the vacuum).
-
-    Known approaches and their status:
-    | Approach | Status | Gap? |
-    |----------|--------|------|
-    | Perturbation theory | Well-understood | No gap (massless gluons) |
-    | Lattice (numerical) | Strong evidence | Gap ≈ 1.5 GeV |
-    | Gribov-Zwanziger | Modified propagator | Suggests gap |
-    | Dual superconductor | Confinement | Suggests gap |
-    | 2D Yang-Mills | Exactly solved | Gap = g²C₂/2 |
-    | Osterwalder-Schrader | Framework | Gap equivalent to exp decay |
-    | Constructive QFT | 2D proved, 4D open | 4D is the prize |
-
-    The challenge: extending the 2D proof to 4D while controlling
-    the renormalization group flow in the continuum limit. -/
-theorem mass_gap_problem_landscape :
-    (1 : ℕ) + 1 = 2 := rfl
 
 end DualSuperconductor
 
@@ -4856,28 +4733,6 @@ structure RegularityStructureYM where
 /- In 3D, the Yang-Mills Langevin equation requires renormalization.
     The regularity is negative: α = -1/2 - ε. -/
 
-/- Stochastic quantization and the mass gap: a unified picture.
-
-    The mass gap appears in four equivalent characterizations:
-    1. Hamiltonian: spectral gap of H (E₁ - E₀ > 0)
-    2. Euclidean: exponential decay of Schwinger functions
-    3. Lattice: exponential decay of correlation functions
-    4. Stochastic: exponential mixing of Langevin dynamics
-
-    All four are equivalent for a well-defined quantum field theory.
-
-    The stochastic approach has a major advantage: it connects the
-    mass gap to the spectral theory of a concrete differential operator
-    (the Fokker-Planck Hamiltonian), which is potentially more tractable
-    than the original quantum Hamiltonian. -/
-theorem mass_gap_four_characterizations :
-    -- Four equivalent characterizations of the mass gap
-    -- 1. Spectral gap of Hamiltonian
-    -- 2. Exponential decay of Euclidean correlators
-    -- 3. Exponential decay of lattice correlators (→ continuum limit)
-    -- 4. Exponential mixing of Langevin dynamics (Fokker-Planck gap)
-    (1 : ℕ) + 1 = 2 := rfl
-
 end StochasticQuantization
 
 /-! ## Part XLIX: Fine-Grained Complexity and Derandomization Barriers
@@ -4924,25 +4779,6 @@ structure SpectralGapUndecidability where
   /-- The undecidability: no algorithm decides gap > 0 vs gap = 0 -/
   undecidable : Prop
 
-/-- Yang-Mills is NOT a general Hamiltonian — it has gauge symmetry.
-
-    The gauge symmetry constrains the Hamiltonian significantly:
-    - Local gauge invariance (Gauss law constraint)
-    - Asymptotic freedom (specific β-function)
-    - Confining potential at large distances
-
-    These constraints may make the mass gap decidable for Yang-Mills
-    specifically, even though the general problem is undecidable.
-    This is analogous to how specific Diophantine equations may be
-    decidable even though Hilbert's 10th problem is undecidable. -/
-theorem yang_mills_not_general_hamiltonian :
-    -- Yang-Mills has additional structure beyond general local Hamiltonians:
-    -- 1. Gauge symmetry (massively reduces degrees of freedom)
-    -- 2. Asymptotic freedom (UV behavior is controlled)
-    -- 3. Specific local interaction structure (F_μν F^μν)
-    -- The mass gap problem for YM may be decidable even if general case isn't
-    (1 : ℕ) + 1 = 2 := rfl
-
 /-- QMA-hardness of local Hamiltonians.
 
     The local Hamiltonian problem (estimating ground state energy
@@ -4979,21 +4815,6 @@ structure Derandomization where
   hmc : mc_error > 0
   /-- Derandomized algorithm (hypothetical) runtime -/
   derand_runtime : ℕ
-
-/-- The "sign problem" in lattice gauge theory.
-
-    For pure Yang-Mills: NO sign problem! The action is real.
-    The Boltzmann weight exp(-S_W) > 0 for all configurations.
-
-    This is why Monte Carlo works well for pure gauge theory.
-    (With fermions, there IS a sign problem.) -/
-theorem pure_yang_mills_no_sign_problem :
-    -- For pure Yang-Mills lattice theory:
-    -- 1. Wilson action S_W is real for all link configurations
-    -- 2. exp(-S_W) > 0 always (valid probability weight)
-    -- 3. Importance sampling is efficient
-    -- 4. Monte Carlo convergence is guaranteed
-    (1 : ℕ) + 1 = 2 := rfl
 
 end ComplexityBarriers
 
@@ -5182,25 +5003,6 @@ structure N4SYMConformal where
 /-- N=4 SYM has no mass gap (it's conformal). -/
 theorem n4_sym_no_mass_gap (n4 : N4SYMConformal) :
     n4.beta_zero = 0 := n4.hbeta
-
-/-- SUSY breaking hierarchy and mass gap existence.
-
-    | Theory | SUSY | Mass Gap | Confinement | Exact Solution |
-    |--------|------|----------|-------------|----------------|
-    | Pure YM | None | Yes (?) | Yes (lattice) | No |
-    | N=1 SYM | Minimal | Yes | Yes | Partial (condensate) |
-    | N=2 SYM | Extended | Depends | With soft breaking | Yes (SW curve) |
-    | N=4 SYM | Maximal | No | No | Yes (conformal) |
-
-    More SUSY → less confinement → less mass gap.
-    The challenge: can we use SUSY insights for pure YM? -/
-theorem susy_mass_gap_hierarchy :
-    -- More supersymmetry → weaker mass gap
-    -- N=4: no mass gap (conformal)
-    -- N=2: mass gap with soft breaking
-    -- N=1: mass gap (gluino condensate)
-    -- N=0 (pure YM): mass gap (Millennium Prize)
-    (1 : ℕ) + 1 = 2 := rfl
 
 end SUSYYangMills
 
@@ -5397,24 +5199,6 @@ structure HawkingPageTransition where
   hR : R > 0
   /-- T_c related to 1/R -/
   hscale : T_c * R ≤ 10  -- order one in natural units
-
-/-- Summary of holographic approaches to the mass gap.
-
-    While AdS/CFT is not rigorous for pure YM (no known exact dual),
-    holographic models consistently predict:
-    1. Mass gap exists (from IR geometry)
-    2. Confinement via string tension (strings in warped geometry)
-    3. Glueball spectrum matches lattice (hard/soft wall models)
-    4. Deconfinement at finite T (Hawking-Page)
-
-    The holographic intuition: mass gap ↔ geometric IR cutoff. -/
-theorem holographic_mass_gap_intuition :
-    -- In all holographic models of confining gauge theories:
-    -- 1. The geometry has an IR endpoint (hard wall, smooth cap, or cigar)
-    -- 2. Normalizable modes in the bulk have discrete, gapped spectrum
-    -- 3. The lightest mode → mass gap
-    -- 4. Wilson loops show area law behavior
-    (1 : ℕ) + 1 = 2 := rfl
 
 end AdSCFT
 
@@ -5667,33 +5451,6 @@ theorem ym_2d_mass_gap_rigorous (os : OSReconstruction2D) :
     os.mass_gap > 0 := by
   rw [os.hmgap]
   apply div_pos (mul_pos os.hg os.hcasimir) (by norm_num : (0:ℝ) < 2)
-
-/-- The Millennium Prize problem: state of the art summary.
-
-    What is known rigorously:
-    | Dimension | Existence | Mass Gap | Method |
-    |-----------|-----------|----------|--------|
-    | 2D | ✅ Yes | ✅ Yes (= g²C₂/2) | Heat kernel, regularity structures |
-    | 3D | Partial | Unknown | Regularity structures (ongoing) |
-    | 4D | ❌ Open | ❌ Open | This IS the Millennium Prize |
-
-    Most promising approaches for 4D:
-    1. Regularity structures (extend CCHS from 2D)
-    2. Lattice → continuum via renormalization group
-    3. Stochastic quantization with controlled renormalization
-    4. Functional integral construction with cluster expansion
-
-    All approaches must ultimately prove:
-    (a) Existence: the 4D YM measure is a well-defined probability measure
-    (b) OS axioms: the measure satisfies Osterwalder-Schrader axioms
-    (c) Mass gap: exponential decay of correlators with rate Δ > 0 -/
-theorem millennium_prize_state_of_art :
-    -- The Yang-Mills mass gap problem requires:
-    -- 1. Rigorous construction of 4D SU(N) YM measure
-    -- 2. Verification of Osterwalder-Schrader axioms
-    -- 3. Proof of mass gap Δ > 0
-    -- Currently: 2D is solved, 3D is partially solved, 4D is open
-    (1 : ℕ) + 1 = 2 := rfl
 
 end ConstructiveQFT
 
@@ -5972,28 +5729,6 @@ theorem su2_gauss_generators : 2 ^ 2 - 1 = 3 := by norm_num
 /-- For SU(3): 8 Gauss law generators per site. -/
 theorem su3_gauss_generators : 3 ^ 2 - 1 = 8 := by norm_num
 
-/-- Absence of phase transition conjecture.
-
-    For pure SU(N) Yang-Mills in 4D, it is conjectured that:
-    - There is NO phase transition as g² varies from ∞ to 0
-    - The strong coupling phase is analytically connected to weak coupling
-    - The mass gap exists for ALL values of g²
-
-    This is supported by:
-    1. Lattice Monte Carlo: no signal of phase transition
-    2. Large-N: smooth crossover
-    3. FRG: continuous flow from UV to IR
-
-    If true, the strong coupling proof of the mass gap
-    extends (by analytic continuation) to all couplings. -/
-theorem no_phase_transition_conjecture :
-    -- For pure SU(N) YM in 4D:
-    -- Strong coupling: mass gap proved (Kogut-Susskind)
-    -- Weak coupling: asymptotic freedom (Gross-Wilczek-Politzer)
-    -- Conjecture: these two regimes are connected without phase transition
-    -- This would prove the mass gap for all g²
-    (1 : ℕ) + 1 = 2 := rfl
-
 end KogutSusskind
 
 /-! ## Part LV: Topological Aspects — Donaldson Theory and TQFT
@@ -6115,19 +5850,6 @@ structure SeibergWittenInvariant where
   /-- Expected dimension of SW moduli space:
       d = (c₁² - 2χ - 3σ)/4 -/
   expected_dim : ℤ
-
-/-- The Witten conjecture (now theorem): Donaldson invariants can be
-    expressed in terms of Seiberg-Witten invariants.
-
-    For simply connected 4-manifolds with b⁺₂ > 1:
-    D_X = 2^{2+7χ/4+11σ/4} · exp(Q/2) · Σ_K (-1)^{...} SW_X(K)
-
-    This was proved by various groups using physics-inspired methods. -/
-theorem witten_conjecture_statement :
-    -- Donaldson invariants are expressible via Seiberg-Witten invariants
-    -- This unifies two major approaches to 4-manifold topology
-    -- The proof uses ideas from quantum Yang-Mills theory
-    (1 : ℕ) + 1 = 2 := rfl
 
 /-- Theta dependence and CP violation.
 
@@ -6387,46 +6109,6 @@ theorem strong_coupling_gap_pos (sc : StrongCouplingTransfer) :
   rw [strong_coupling_mass_gap sc]
   apply mul_pos (div_pos (mul_pos sc.ha sc.hg) (by norm_num : (0:ℝ) < 2)) sc.hcasimir
 
-/-- The continuum limit challenge.
-
-    The finite-volume mass gap is proved for ANY g² > 0.
-    The Millennium Prize requires:
-
-    1. Infinite volume: L → ∞ (thermodynamic limit)
-       - Does the gap Δ(L) converge to Δ(∞) > 0?
-       - For strong coupling: yes (cluster expansion)
-       - For weak coupling: unknown (this is the problem!)
-
-    2. Continuum limit: a → 0 with g²(a) → 0 (asymptotic freedom)
-       - The physical mass m_phys = Δ(a)/a must remain finite and positive
-       - Requires m_phys ~ Λ_QCD (dynamical mass generation)
-       - This is exactly the mass gap conjecture
-
-    The transfer matrix proves the gap exists at any finite volume
-    and finite lattice spacing. The challenge is the double limit. -/
-theorem continuum_limit_challenge :
-    -- Proved: ∀ L, ∀ g², Δ(L, g²) > 0
-    -- Open: lim_{L→∞, a→0} Δ(L, a)/a > 0
-    -- This limit (if it exists and is positive) is the mass gap
-    (1 : ℕ) + 1 = 2 := rfl
-
-/-- Summary: what the transfer matrix proves and what remains.
-
-    PROVED (in this section):
-    ✅ Finite-volume mass gap > 0 for any coupling
-    ✅ Mass gap = log(λ₀/λ₁) from Perron-Frobenius
-    ✅ Exponential correlation decay with rate = λ₁/λ₀ < 1
-    ✅ Strong coupling mass gap = g²·C₂(fund)/2
-
-    OPEN (Millennium Prize):
-    ❌ Mass gap survives thermodynamic limit (L → ∞)
-    ❌ Mass gap survives continuum limit (a → 0)
-    ❌ Physical mass gap m_phys = Λ_QCD · f(N) > 0 -/
-theorem transfer_matrix_summary :
-    -- The transfer matrix method provides the strongest finite-volume
-    -- results, but the infinite-volume continuum limit remains open
-    (1 : ℕ) + 1 = 2 := rfl
-
 end TransferMatrix
 
 /-! ## Part LVII: Grand Summary — Mass Gap Problem Status
@@ -6487,56 +6169,6 @@ end TransferMatrix
   - Proof of mass gap Δ > 0 in 4D continuum limit -/
 
 section GrandSummary
-
-/-- The Yang-Mills mass gap: all characterizations agree.
-
-    The mass gap Δ > 0 is equivalent to:
-    1. Spectral gap of Hamiltonian H
-    2. Exponential decay of Euclidean correlators
-    3. Finite correlation length ξ = 1/Δ
-    4. Exponential mixing of Langevin dynamics
-    5. Positive gluon mass from FRG/Dyson-Schwinger
-    6. Strong coupling gap surviving to weak coupling
-    7. Lightest normalizable bulk mode in holographic dual
-    8. Convergence of character expansion (trivial rep dominance) -/
-theorem mass_gap_equivalences :
-    -- Eight equivalent characterizations of the mass gap
-    -- All are consistent with lattice evidence
-    -- Any one would suffice for the Millennium Prize (in 4D)
-    (1 : ℕ) + 1 = 2 := rfl
-
-/-- Summary of proved results across all dimensions.
-
-    | Dimension | Mass Gap | String Tension | Confinement |
-    |-----------|----------|----------------|-------------|
-    | 2D | g²C₂/2 (exact) | g²C₂/2 (exact) | Proved |
-    | 3D | Expected | Expected | Partial results |
-    | 4D | Millennium Prize | ~(440 MeV)² | Lattice evidence |
-
-    The 2D result is completely rigorous.
-    The 4D result is the open problem. -/
-theorem dimensional_summary :
-    -- 2D: Solved (Migdal, Driver, Levy, CCHS)
-    -- 3D: Partially solved (regularity structures progress)
-    -- 4D: Open (THIS IS THE PRIZE)
-    (1 : ℕ) + 1 = 2 := rfl
-
-/-- The mathematical structures needed for a full 4D proof.
-
-    Any proof of the 4D mass gap will likely need:
-    1. A rigorous definition of the YM path integral measure
-    2. Control of UV divergences (renormalization)
-    3. Control of IR behavior (confinement/mass gap)
-    4. OS axiom verification
-    5. Non-perturbative methods (lattice, stochastic, or other)
-
-    These remain among the deepest open problems in mathematics. -/
-theorem what_a_proof_needs :
-    -- A proof of the 4D Yang-Mills mass gap requires solving
-    -- some of the hardest problems in mathematical physics:
-    -- rigorous QFT construction, renormalization, and
-    -- non-perturbative control of strongly coupled systems
-    (1 : ℕ) + 1 = 2 := rfl
 
 end GrandSummary
 
@@ -6626,41 +6258,6 @@ theorem schwinger_tension_mass_relation (p : SchwingerParams) :
     schwingerStringTension p = schwingerMassSq p / 2 := by
   unfold schwingerStringTension schwingerMassSq
   ring
-
-/-- The chiral condensate of the Schwinger model.
-
-    ⟨ψ̄ψ⟩ = -e^γ/(2π^{3/2}) · e
-
-    where γ is the Euler-Mascheroni constant. This is an exact result
-    demonstrating spontaneous chiral symmetry breaking. -/
-theorem schwinger_chiral_condensate :
-    -- The Schwinger model has a nonzero chiral condensate
-    -- This is the 1+1D analogue of quark condensation in QCD
-    -- It provides evidence that confinement and chiral symmetry breaking
-    -- are intimately connected
-    (1 : ℕ) + 1 = 2 := rfl
-
-/-- The Schwinger model as a test case for Yang-Mills.
-
-    | Feature | Schwinger Model | 4D Yang-Mills |
-    |---------|-----------------|---------------|
-    | Mass gap | e/√π (exact) | Δ > 0 (conjectured) |
-    | Confinement | Yes (linear V) | Yes (lattice) |
-    | Chiral anomaly | Yes | Yes |
-    | Asymptotic freedom | No (super-renorm) | Yes |
-    | Gauge group | U(1) | SU(N) |
-    | Dimensions | 1+1 | 3+1 |
-
-    The Schwinger model proves that gauge theories CAN have a mass gap.
-    The 4D non-abelian case remains open. -/
-theorem schwinger_as_ym_test :
-    -- The Schwinger model demonstrates:
-    -- 1. Mass gap can arise purely from quantum effects (no Higgs)
-    -- 2. The mechanism is the axial anomaly
-    -- 3. Confinement and mass gap are connected
-    -- The challenge for 4D YM is that non-abelian effects and
-    -- 4D UV divergences make the analysis much harder
-    (1 : ℕ) + 1 = 2 := rfl
 
 /-- Multi-flavor Schwinger model with N_f massless fermions.
 
@@ -6765,20 +6362,6 @@ theorem smoothing_radius_pos (p : GradientFlowParams) (ht : p.t > 0) :
   unfold smoothingRadius
   exact Real.sqrt_pos_of_pos (mul_pos (by norm_num : (8 : ℝ) > 0) ht)
 
-/-- The Yang-Mills action decreases monotonically along the flow.
-
-    dS/dt = -2 ∫ |D_ν G_νμ|² d⁴x ≤ 0
-
-    This means the flow always moves toward classical solutions
-    (minima of the action). At t → ∞, the flow converges to
-    instantons or the vacuum. -/
-theorem flow_action_monotone :
-    -- For any gauge field configuration:
-    -- S[B(t₁)] ≥ S[B(t₂)] when t₁ ≤ t₂
-    -- The flow minimizes the Yang-Mills action
-    -- It converges to critical points: instantons, merons, or vacuum
-    (1 : ℕ) + 1 = 2 := rfl
-
 /-- The flowed energy density E(t).
 
     E(t) = ⟨(1/4) G_μν^a(t,x) G_μν^a(t,x)⟩
@@ -6832,44 +6415,6 @@ noncomputable def energyDensityLeading (N : ℕ) (g_sq : ℝ) : ℝ :=
 theorem su3_energy_coefficient :
     3 * ((3 : ℝ) ^ 2 - 1) / (128 * Real.pi ^ 2) = 3 / (16 * Real.pi ^ 2) := by
   ring
-
-/-- Connection to the mass gap.
-
-    The gradient flow provides a non-perturbative definition of the
-    running coupling: g²_GF(μ) = (128π²)/(3(N²-1)) · t² ⟨E(t)⟩|_{μ=1/√(8t)}
-
-    The mass gap Δ is related to the scale where this coupling becomes O(1):
-    Δ ~ 1/√(8t*) where t* is defined by g²_GF(1/√(8t*)) ≈ 1.
-
-    This provides a concrete (lattice-computable) characterization of Λ_QCD
-    and hence the mass gap. -/
-theorem gradient_flow_mass_gap_connection :
-    -- The gradient flow relates UV (small t) to IR (large t):
-    -- Small t: perturbative, g²_GF → 0 (asymptotic freedom)
-    -- Large t: non-perturbative, g²_GF grows (confinement)
-    -- The mass gap scale is where the coupling becomes strong
-    (1 : ℕ) + 1 = 2 := rfl
-
-/-- Lattice gradient flow: the Symanzik-improved discretization.
-
-    On the lattice with spacing a:
-    - Flow equation becomes: V(t+ε,x,μ) = exp(-ε·Z(t)) · V(t,x,μ)
-    - Z is constructed from plaquettes (Wilson/Symanzik improved)
-    - Continuum limit: a → 0 with t/a² → ∞
-
-    The lattice flow inherits all good properties:
-    - Gauge covariant
-    - Monotone action decrease
-    - UV finiteness at t > 0
-    - Automatic O(a²) improvement with Symanzik action -/
-theorem lattice_gradient_flow :
-    -- The lattice implementation of gradient flow provides:
-    -- 1. Non-perturbative scale setting (t₀, w₀)
-    -- 2. Topological charge measurement
-    -- 3. Running coupling definition
-    -- 4. Connection to continuum limit
-    -- All crucial ingredients for studying the mass gap on the lattice
-    (1 : ℕ) + 1 = 2 := rfl
 
 end GradientFlow
 
@@ -7025,83 +6570,6 @@ theorem deconfined_minimum_pos (pot : PolyakovPotential) (ha₂ : pot.a₂ > 0) 
   apply div_pos ha₂
   exact mul_pos two_pos pot.ha₄
 
-/-- The quark free energy from the Polyakov loop.
-
-    F_q(T) = -T · ln⟨P(T)⟩
-
-    - Confined: ⟨P⟩ = 0 → F_q = ∞ (infinite energy to add a quark)
-    - Deconfined: ⟨P⟩ > 0 → F_q finite (quarks can be freed)
-
-    This is the physical meaning of confinement:
-    it costs infinite energy to isolate a single color charge. -/
-theorem quark_free_energy_confinement :
-    -- In the confined phase:
-    -- ⟨P⟩ = 0 ⟹ F_q = -T·ln(0) = +∞
-    -- An isolated quark has infinite free energy
-    -- This IS confinement
-    -- The mass gap at T = 0 is the zero-temperature limit of this phenomenon
-    (1 : ℕ) + 1 = 2 := rfl
-
-/-- Connection to mass gap: the Polyakov loop correlation function.
-
-    The correlation of Polyakov loops at spatial separation r:
-    ⟨P(x⃗) P†(y⃗)⟩ ~ exp(-V(r)/T)
-
-    where V(r) is the static quark-antiquark potential.
-
-    At zero temperature:
-    - Confined: V(r) ~ σ·r (linear) → exponential fall-off → mass gap
-    - The mass gap equals the lightest glueball mass
-
-    The string tension σ and mass gap Δ are related:
-    σ ∝ Δ² (up to dimensionless factors) -/
-theorem polyakov_correlator_mass_gap :
-    -- The Polyakov loop correlator encodes the static potential
-    -- The mass gap is visible in the exponential decay rate
-    -- At T = 0: the decay rate = mass gap / T → infinite separation
-    -- This connects finite-temperature and zero-temperature physics
-    (1 : ℕ) + 1 = 2 := rfl
-
-/-- The spatial string tension σ_s(T) above T_c.
-
-    Even in the deconfined phase (T > T_c), the spatial Wilson loop
-    still shows area law with spatial string tension:
-    σ_s(T) ~ g⁴(T) T² for T >> T_c
-
-    This is because magnetic modes are not screened (Linde's problem).
-    The magnetic mass m_mag ~ g²T is non-perturbative even at T >> T_c.
-
-    This is another face of the Yang-Mills mass gap:
-    even at high T, the 3D effective theory (EQCD) confines magnetically. -/
-theorem spatial_string_tension_persists :
-    -- Above T_c:
-    -- Electric modes: Debye screened, m_E ~ gT (perturbative)
-    -- Magnetic modes: NOT screened, m_M ~ g²T (non-perturbative)
-    -- The 3D Yang-Mills theory (from dimensional reduction) still confines
-    -- This is Linde's problem: perturbation theory breaks down for
-    -- static magnetic modes, even at arbitrarily high temperature
-    (1 : ℕ) + 1 = 2 := rfl
-
-/-- Summary of finite-temperature Yang-Mills physics.
-
-    The complete picture:
-
-    | Temperature | Phase | ⟨P⟩ | Mass Gap | String Tension |
-    |-------------|-------|------|----------|----------------|
-    | T = 0 | Confined | N/A | Δ > 0 (OPEN) | σ > 0 |
-    | 0 < T < T_c | Confined | 0 | Δ(T) > 0 | σ(T) > 0 |
-    | T = T_c | Critical | 0→>0 | Δ → 0 | σ → 0 |
-    | T > T_c | Deconfined | >0 | Δ_E = 0 | σ_s > 0 |
-
-    The Millennium Prize is about the T = 0 row. -/
-theorem finite_temperature_summary :
-    -- The Polyakov loop provides the complete framework for
-    -- understanding the relationship between mass gap, confinement,
-    -- and the deconfinement phase transition.
-    -- At T = 0: the mass gap problem
-    -- At T > 0: rich phase structure connected to the mass gap
-    (1 : ℕ) + 1 = 2 := rfl
-
 end PolyakovLoop
 
 /-! ## Part LXI: Glueball Spectrum — Lightest State IS the Mass Gap
@@ -7205,44 +6673,6 @@ theorem mass_gap_in_string_units :
     scalar_ratio.ratio > 0 ∧ scalar_ratio.ratio < 5 := by
   refine ⟨?_, ?_⟩ <;> simp [scalar_ratio] <;> norm_num
 
-/-- Large-N scaling of glueball masses.
-
-    In the 't Hooft large-N limit:
-    - Glueball masses m ~ O(1) (independent of N)
-    - Glueball widths Γ ~ O(1/N²) (narrow states)
-    - String tension σ ~ O(1)
-    - Mass gap Δ ~ O(1)
-
-    The mass gap does NOT vanish as N → ∞, supporting
-    the conjecture that Δ > 0 for all N ≥ 2. -/
-theorem glueball_large_N :
-    -- Large-N predictions:
-    -- 1. Glueball masses are O(1) in N → mass gap survives
-    -- 2. Glueball decay widths are O(1/N²) → sharp resonances
-    -- 3. The number of glueball states grows (they become free)
-    -- 4. Witten's conjecture: the spectrum approaches strings
-    -- Evidence: lattice SU(N) for N = 2, 3, 4, 5, 6, 8 confirms
-    -- the N-independence of mass ratios
-    (1 : ℕ) + 1 = 2 := rfl
-
-/-- Experimental status of glueballs.
-
-    Candidates for the scalar glueball:
-    - f₀(1500): good candidate, but mixes with q̄q states
-    - f₀(1710): alternative candidate
-    - Neither confirmed: glueball-meson mixing complicates identification
-
-    Even though the mass gap has precise lattice predictions,
-    experimental confirmation is complicated by mixing with
-    quark-antiquark states in full QCD. -/
-theorem glueball_experimental_status :
-    -- The glueball mass gap is predicted with 3% precision from lattice QCD
-    -- But experimental identification remains challenging due to
-    -- glueball-meson mixing in full QCD with quarks
-    -- Pure Yang-Mills (no quarks) is cleaner theoretically
-    -- but doesn't exist in nature
-    (1 : ℕ) + 1 = 2 := rfl
-
 end GlueballSpectrum
 
 /-! ## Part LXII: 't Hooft Anomaly Matching — IR Constraints from UV
@@ -7314,14 +6744,6 @@ def gkswAnomaly (N : ℕ) (hN : N ≥ 2) : MixedAnomaly where
 theorem gksw_coeff_is_one (N : ℕ) (hN : N ≥ 2) :
     (gkswAnomaly N hN).anomalyCoeff = 1 := rfl
 
-/-- Anomaly matching constrains the IR: pure YM cannot have trivial vacuum. -/
-theorem anomaly_ir_constraint :
-    -- 't Hooft anomaly matching proves:
-    -- 1. Pure YM cannot have a trivial vacuum
-    -- 2. The vacuum must have nontrivial structure (N degenerate vacua)
-    -- 3. Consistent with confinement + mass gap
-    (1 : ℕ) + 1 = 2 := rfl
-
 end AnomalyMatching
 
 /-! ## Part LXIII: Conformal Window — Banks-Zaks Fixed Point
@@ -7390,13 +6812,6 @@ def su3ConformalWindow : ConformalWindowEdge where
 theorem pure_ym_below_window' :
     0 < su3ConformalWindow.N_f_star_lower := by
   simp [su3ConformalWindow]
-
-/-- In the conformal window, there is no mass gap (power-law correlators). -/
-theorem conformal_window_no_gap :
-    -- N_f = 0 → Δ > 0 (the Millennium Prize)
-    -- N_f near N_f* → Δ → 0
-    -- N_f > N_f* → Δ = 0 (conformal)
-    (1 : ℕ) + 1 = 2 := rfl
 
 end ConformalWindow
 
@@ -7506,17 +6921,6 @@ def lindeBreakdownVal : LindeBreakdown where
   firstNPOrder := 6
   hnp := rfl
 
-/-- Dimensional reduction and the 4D mass gap.
-
-    Even at T → ∞, 3D MQCD confines non-perturbatively.
-    The 3D mass gap Δ₃D ~ g₃² = g₄²T.
-    The 4D mass gap Δ₄D emerges as T → 0 when all scales collapse. -/
-theorem dim_reduction_and_4d_gap :
-    -- 4D YM → EQCD → MQCD = pure 3D YM → confines
-    -- But the 4D → 3D reduction only works at T >> Λ_QCD
-    -- The T = 0 mass gap problem remains the open challenge
-    (1 : ℕ) + 1 = 2 := rfl
-
 end DimensionalReduction
 
 /-! ## Part LXV: 't Hooft Loop — Electric-Magnetic Duality and Confinement
@@ -7601,24 +7005,6 @@ theorem em_duality_confined_higgs (sigma : ℝ) (hs : sigma > 0) :
     isAreaLaw (confinedPhaseWT sigma hs).wilson =
     isAreaLaw (higgsPhaseWT sigma hs).thooft := rfl
 
-/-- The mass gap from Wilson loop area law.
-
-    If the Wilson loop satisfies area law with string tension σ:
-    ⟨W(C)⟩ ~ exp(-σ · Area(C))
-
-    Then the theory has a mass gap:
-    Δ ≥ √σ (dimensional analysis: [σ] = mass²)
-
-    The glueball mass ~ √σ provides the scale. -/
-theorem area_law_implies_mass_gap :
-    -- Wilson area law with string tension σ > 0 means:
-    -- 1. Linear confining potential V(r) = σ · r
-    -- 2. Correlation functions decay exponentially
-    -- 3. Mass gap Δ ~ √σ
-    -- 4. The lightest state is a flux tube excitation
-    -- Proving area law for 4D SU(N) IS the mass gap problem!
-    (1 : ℕ) + 1 = 2 := rfl
-
 end THooftLoop
 
 /-! ## Part LXVI: Witten Index and Vacuum Structure
@@ -7663,15 +7049,6 @@ theorem witten_index_nonzero (N : ℕ) (hN : N ≥ 2) :
     (symWittenIndex N hN).index ≠ 0 := by
   simp [symWittenIndex]
   omega
-
-/-- Nonzero Witten index implies unbroken supersymmetry. -/
-theorem witten_index_susy_unbroken :
-    -- I_W ≠ 0 proves:
-    -- 1. Supersymmetry is not spontaneously broken
-    -- 2. The vacuum energy E₀ = 0
-    -- 3. There are N degenerate ground states
-    -- For pure N=1 SYM SU(N): all N vacua have E₀ = 0
-    (1 : ℕ) + 1 = 2 := rfl
 
 /-- Gaugino condensation: the N=1 SYM mass gap.
 
@@ -7907,15 +7284,6 @@ structure PowerLawDecay where
   power_bound : ∀ r, r > 1 →
     correlator r ≤ C_bound / r ^ (2 * scalingDim)
 
-/-- **PROVED: Power-law decay does not give exponential suppression.**
-
-For any proposed mass gap Δ > 0, a power-law correlator eventually
-exceeds the exponential bound, proving the mass gap must be zero. -/
-theorem power_law_no_mass_gap (pld : PowerLawDecay) (Δ : ℝ) (hΔ : Δ > 0) :
-    -- Power-law decay is slower than any exponential: eventually r^{-α} > e^{-Δr}
-    -- This means power-law correlators are incompatible with a mass gap
-    (1 : ℕ) + 1 = 2 := rfl  -- Proof requires comparison of polynomial vs exponential growth
-
 /-- **The mass gap criterion**: a theory has mass gap Δ if and only if
 the connected two-point correlator of every gauge-invariant operator
 decays exponentially with rate Δ.
@@ -8109,17 +7477,6 @@ theorem os_axiom_count : (5 : ℕ) = 5 := rfl
 /-- **PROVED: Wightman axioms are precisely 5 conditions.** -/
 theorem wightman_axiom_count : (5 : ℕ) = 5 := rfl
 
-/-- Summary: The Millennium Prize requires constructing a QFT satisfying
-    the Osterwalder-Schrader axioms with a positive spectral gap. -/
-theorem os_summary :
-    -- OS axioms (OS0-OS4) define what "existence" of a QFT means
-    -- Reflection positivity (OS2) is the KEY axiom — gives Hilbert space
-    -- OS reconstruction: Schwinger functions ⟹ Wightman axioms (unique)
-    -- Mass gap: spectrum above vacuum bounded below by Δ > 0
-    -- For Yang-Mills: lattice → continuum + gauge invariance + mass gap
-    -- Steps 1-2 known, Steps 3-5 are the prize
-    (1 : ℕ) + 1 = 2 := rfl
-
 end OsterwalderSchrader
 
 -- ═══════════════════════════════════════════════════════════════════════════════
@@ -8263,20 +7620,6 @@ theorem coupling_decreases (N : ℕ) (hN : 2 ≤ N) (lam : ℝ) (hlam : lam > 0)
   have : (2 : ℝ) ≤ (N : ℝ) := Nat.ofNat_le_cast.mpr hN
   linarith
 
-/-- Summary: The large-N expansion simplifies Yang-Mills to planar diagrams,
-    connecting to string theory and providing the strongest non-rigorous
-    evidence for the mass gap. -/
-theorem large_n_summary :
-    -- 't Hooft coupling λ = g²N held fixed as N → ∞
-    -- Only planar (genus 0) diagrams survive at leading order
-    -- Genus g suppressed by (1/N²)^g
-    -- Master field: unique classical field configuration at N = ∞
-    -- String theory connection: g_s = 1/N, planar = free strings
-    -- Mass gap and string tension have well-defined N → ∞ limits
-    -- Eguchi-Kawai reduction: single site captures infinite volume
-    -- Large-N provides strongest evidence for mass gap (not a proof)
-    (1 : ℕ) + 1 = 2 := rfl
-
 end LargeN
 
 -- ═══════════════════════════════════════════════════════════════════════════════
@@ -8375,17 +7718,6 @@ theorem qcd_is_af : 2 * 6 < 11 * 3 := by omega
 /-- **PROVED: The asymptotic freedom window for SU(3).**
     N_f < 16.5, so N_f ≤ 16 (integer). Physical QCD has N_f = 6. -/
 theorem su3_af_window : 2 * 16 < 11 * 3 := by omega
-
-/-- Summary: Asymptotic freedom is the key to understanding the mass gap. -/
-theorem asymptotic_freedom_summary :
-    -- Asymptotic freedom: g → 0 at high energy (Gross-Wilczek-Politzer 1973)
-    -- Beta function: β₀ = (11N - 2N_f)/(48π²) > 0 for pure YM
-    -- Running coupling: α_s(μ) → 0 as μ → ∞, → ∞ as μ → Λ_{QCD}
-    -- Dimensional transmutation: scale Λ from dimensionless g
-    -- All physical masses ~ Λ_{QCD}: mass gap Δ ~ glueball mass ~ √σ
-    -- Confinement mechanism: linear potential V(r) ~ σ·r at large r
-    -- Mass gap and confinement are two aspects of the same physics
-    (1 : ℕ) + 1 = 2 := rfl
 
 end AsymptoticFreedom
 
@@ -8566,21 +7898,6 @@ theorem casimir_ratio_lower_bound (N : ℕ) (hN : N ≥ 2) :
   rw [ge_iff_le, le_div_iff₀ hN2]
   nlinarith
 
-/-- **Summary: Casimir scaling connects representation theory to the mass gap.**
-
-    The mass gap Δ is the energy of the lightest glueball (0⁺⁺ state).
-    Casimir scaling tells us that the string tension — and hence the
-    mass gap scale — is governed by C₂(R) of the color source.
-
-    The fundamental string tension σ_fund sets THE mass gap scale:
-    Δ ~ 4√σ_fund from lattice QCD (Part LXI).
-
-    Casimir scaling + string breaking = complete picture of confinement:
-    - N-ality ≠ 0: permanent confinement, V(r) ~ σ·r
-    - N-ality = 0: string breaking, V(r) → const for large r -/
-theorem casimir_scaling_summary :
-    (1 : ℕ) + 1 = 2 := rfl
-
 end CasimirScalingHypothesis
 
 /-! ## Part LXXII: Vafa-Witten Theorem — Parity Cannot Be Spontaneously Broken
@@ -8752,20 +8069,6 @@ theorem vw_correlation_finite (vw : VafaWittenMassGap) :
     This means no massless particle carries parity-odd quantum numbers. -/
 theorem gapped_no_massless_parity (Δ : ℝ) (hΔ : Δ > 0) :
     Δ ≠ 0 := ne_of_gt hΔ
-
-/-- Summary: Vafa-Witten constrains the vacuum structure of the mass gap problem.
-
-    For the Yang-Mills mass gap problem:
-    - If the theory exists (OS axioms) AND has a mass gap, Vafa-Witten
-      tells us the vacuum must preserve parity and CP.
-    - This is consistent with the lattice QCD evidence: the 0⁺⁺ glueball
-      (scalar, parity-even) is the lightest state.
-    - A parity-odd ground state (0⁻⁺) would violate Vafa-Witten.
-
-    Historical note: Vafa-Witten (1984) was one of the first rigorous
-    non-perturbative results about QCD. It uses only path integral
-    positivity — no perturbation theory needed. -/
-theorem vafa_witten_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end VafaWittenTheorem
 
@@ -9003,21 +8306,6 @@ structure EffectiveStringExpansion where
 theorem no_r2_correction (es : EffectiveStringExpansion) :
     es.c2 = 0 := es.hc2
 
-/-- Summary: The Lüscher term connects the mass gap to string theory.
-
-    For the Yang-Mills mass gap problem:
-    1. The confining flux tube IS an effective string (confirmed by lattice)
-    2. The string mass gap m ~ √(σ · 2π · 11/12) ≈ 2.4√σ
-    3. The lattice glueball mass gap is Δ/√σ ≈ 3.98 (from Part LXI)
-    4. The string estimate (2.4) vs lattice value (3.98) differ because
-       the glueball is a closed string, not an open string
-    5. The universal Lüscher coefficient −π/12 is confirmed to 1% accuracy
-
-    The effective string theory provides a microscopic understanding of
-    WHY there is a mass gap: the confining string has a minimum energy
-    set by zero-point quantum fluctuations of transverse modes. -/
-theorem lüscher_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end LüscherTerm
 
 -- ═══════════════════════════════════════════════════════════════════════════════
@@ -9126,14 +8414,6 @@ theorem axion_mass_from_curvature (E'' : ℝ) (f_a : ℝ)
 theorem chiral_theory_counterexample :
     ∃ v : ℝ, v ≠ 0 ∧ v + v ≠ 0 := by
   exact ⟨1, one_ne_zero, by norm_num⟩
-
-/-- Summary: Extended Vafa-Witten analysis with theta dependence. -/
-theorem vafa_witten_extended_summary :
-    -- Vafa-Witten (1984): P and CP are not spontaneously broken at θ=0
-    -- E(θ) ≥ E(0): θ=0 is global minimum of vacuum energy
-    -- Implication: strong CP problem solvable by axion mechanism
-    -- Limitation: does NOT apply to chiral theories (Standard Model)
-    (1 : ℕ) + 1 = 2 := rfl
 
 end VafaWittenExtended
 
@@ -9303,18 +8583,6 @@ theorem character_area_law (β : ℝ) (N : ℕ) (hN : 2 ≤ N)
   · rw [div_lt_one (by positivity)]; exact h_strong
   · omega
 
-/-- Summary: Strong coupling expansion proves confinement on the lattice. -/
-theorem strong_coupling_summary :
-    -- At strong coupling (β ≪ 1), Wilson loops obey area law ⟨W⟩ ~ exp(-σ·A)
-    -- String tension σ = -ln(β/(2N)) > 0, diverges as β → 0
-    -- Area law ⟹ linear potential V(R) = σR ⟹ confinement
-    -- Area law ⟹ mass gap Δ ≥ σ (exponential correlation decay)
-    -- Character expansion: ⟨W⟩ = (β/(2N))^Area · (1 + corrections)
-    -- Osterwalder-Seiler (1978): rigorous proof of area law for small β
-    -- THE HARD PART: does σ(β) remain positive as β → ∞ (continuum limit)?
-    -- This continuity of confinement IS the Millennium Prize problem
-    (1 : ℕ) + 1 = 2 := rfl
-
 end StrongCoupling
 
 -- ═══════════════════════════════════════════════════════════════════════════════
@@ -9416,17 +8684,6 @@ theorem creutz_deconfined :
 theorem creutz_symmetric (I J : ℕ) :
     -- The area contribution is symmetric
     (I : ℤ) * J = J * I := by ring
-
-/-- Summary: Creutz ratios are the standard lattice tool for measuring confinement. -/
-theorem creutz_summary :
-    -- Creutz ratio χ(I,J) = -ln(W(I,J)W(I-1,J-1) / W(I,J-1)W(I-1,J))
-    -- For area law W ~ exp(-σIJ): χ = σ exactly
-    -- Perimeter and corner contributions cancel by construction
-    -- χ > 0 ⟹ confined (positive string tension)
-    -- χ → 0 ⟹ deconfined (perimeter law)
-    -- Lattice data: χ(I,J) → σ_phys as I,J → ∞ for SU(3)
-    -- Standard method: compute W(I,J) via Monte Carlo, extract χ
-    (1 : ℕ) + 1 = 2 := rfl
 
 end CreutzRatios
 
@@ -9561,17 +8818,6 @@ theorem anomaly_breaks_ua1 (m_eta : ℝ) (m_pi : ℝ)
 theorem vacuum_energy_bounded (ts : TopSusceptibility) :
     -- E(0) ≤ E(π) since E(0) is the global minimum
     ts.vacuum_energy 0 ≤ ts.vacuum_energy Real.pi := ts.energy_min Real.pi
-
-/-- Summary: Topological susceptibility connects vacuum topology to mass spectrum. -/
-theorem top_susceptibility_summary :
-    -- χ_t = ∂²E(θ)/∂θ²|_{θ=0} > 0 in pure YM (≈ (180 MeV)⁴ from lattice)
-    -- Witten-Veneziano: m²_{η'} = 2N_f·χ_t/f²_π explains η' mass
-    -- χ_t > 0 ⟹ non-trivial topological vacuum (instantons, θ-vacua)
-    -- Large-N: χ_t ~ 1/N², η' becomes Goldstone boson at N = ∞
-    -- Instanton gas: χ_t ~ Λ⁴·exp(-8π²/g²) (semiclassical)
-    -- Connection to mass gap: same non-perturbative physics (topological fluctuations)
-    -- The axial anomaly + topological susceptibility explains the η'-π mass splitting
-    (1 : ℕ) + 1 = 2 := rfl
 
 end TopologicalSusceptibility
 
@@ -9709,18 +8955,6 @@ theorem su3_center_factor : (1 : ℝ) - (-1/2 : ℝ) = 3/2 := by ring
 theorem trivial_rep_no_confinement (σ_fund : ℝ) :
     σ_fund * 0 = 0 := mul_zero σ_fund
 
-/-- Summary: Center vortex model explains confinement via topological defects. -/
-theorem center_vortex_summary :
-    -- Random center vortex piercing → area law (confinement)
-    -- String tension σ = (1 - Re(ω)) · ρ > 0 for non-trivial center
-    -- Vortex removal: σ → 0 (lattice evidence)
-    -- Vortex-only: σ_vortex = σ_full (vortex dominance)
-    -- Percolation ↔ confinement; depercolation ↔ deconfinement at T_c
-    -- SU(2): σ = 2ρ; SU(3): σ = (3/2)ρ
-    -- N-ality determines asymptotic string tension
-    -- Center vortices also explain: chiral symmetry breaking, topological charge
-    (1 : ℕ) + 1 = 2 := rfl
-
 end CenterVortexModel
 
 -- Part LXXVI: Kugo-Ojima Confinement Criterion
@@ -9843,19 +9077,6 @@ theorem gribov_horizon_singular (ghc : GribovHorizonCondition) :
 theorem ko_gz_consistency (ko : KugoOjimaParameter) (ghc : GribovHorizonCondition) :
     ko.u_zero = -1 ∧ ghc.fp_eigenvalue = 0 :=
   ⟨ko.h_confinement, ghc.h_horizon⟩
-
-/-- Summary: Kugo-Ojima criterion provides BRST-based sufficient condition for confinement. -/
-theorem kugo_ojima_summary :
-    -- u(0) = -1 is the Kugo-Ojima confinement criterion
-    -- When satisfied: all colored states are in BRST quartets (unphysical)
-    -- Only color-singlet states survive in physical Hilbert space
-    -- Ghost propagator enhanced (divergent): G(p) ~ 1/p^{2+2κ}
-    -- Gluon propagator suppressed: D(0) = 0 (scaling solution)
-    -- Gribov horizon: FP operator zero mode → ghost enhancement → u(0) = -1
-    -- Lattice debate: scaling (D(0)=0) vs decoupling (D(0)>0) solutions
-    -- Both scenarios confine, but through subtly different mechanisms
-    -- Connection to mass gap: confined gluons → glueball mass spectrum with Δ > 0
-    (1 : ℕ) + 1 = 2 := rfl
 
 end KugoOjimaCriterion
 
@@ -10080,20 +9301,6 @@ theorem adjoint_string_breaks (σ_adj_asymptotic : ℝ)
     (h : σ_adj_asymptotic = 0) :
     σ_adj_asymptotic = 0 := h
 
-/-- Summary: Chromoelectric flux tubes explain confinement and the mass gap. -/
-theorem flux_tube_summary :
-    -- Flux tube energy: V(L) = σ·L (linear confinement)
-    -- Constant force F = σ between quarks (unlike QED F ~ 1/L²)
-    -- Cornell potential: V(r) = σr - α/r (lattice-verified)
-    -- Tube width w ~ λ_D ≈ 0.3 fm, grows as √(ln L) (roughening)
-    -- Dual Meissner effect: monopole condensation → flux tube formation
-    -- String breaking at L_b = 2m/σ (meson pair creation from vacuum)
-    -- Mass gap: Δ ~ √σ · 4 from lightest closed flux tube excitation
-    -- σ > 0 (confinement) directly implies Δ > 0 (mass gap)
-    -- Casimir scaling σ_r/σ_f = C₂(r)/C₂(f) at intermediate distances
-    -- N-ality determines asymptotic string tension: k-strings, adjoint breaking
-    (1 : ℕ) + 1 = 2 := rfl
-
 end ChromoelectricFluxTubes
 
 -- Part LXXVIII: Chiral Symmetry Breaking — Banks-Casher Relation
@@ -10146,8 +9353,6 @@ theorem condensate_bounds_spectral (cc : ChiralCondensate) :
   have hpi : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
   field_simp
 
-theorem chiral_symmetry_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end ChiralSymmetryBreaking
 
 -- Part LXXIX: Center Vortex Model — Confinement Mechanism
@@ -10193,8 +9398,6 @@ theorem nality_determines_confinement (N k : ℕ) :
     (Nality N k = 0 ↔ N ∣ k) := by
   simp [Nality, Nat.dvd_iff_mod_eq_zero]
 
-theorem center_vortex_nality_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end CenterVortexModel
 
 -- Part LXXX: Stochastic Quantization — Parisi-Wu Approach
@@ -10236,8 +9439,6 @@ theorem larger_gap_faster_convergence (Δ₁ Δ₂ τ : ℝ)
   apply Real.exp_lt_exp.mpr
   have : Δ₂ * τ > Δ₁ * τ := by nlinarith
   linarith
-
-theorem stochastic_quantization_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end StochasticQuantization
 -- Part LXXVIII: Glueball Spectrum — The Mass Gap Made Concrete
@@ -10403,19 +9604,6 @@ theorem exponential_clustering (C Δ x : ℝ) (hC : C > 0) (hΔ : Δ > 0) (hx : 
 theorem confinement_radius_positive (Δ : ℝ) (hΔ : Δ > 0) :
     1 / Δ > 0 := div_pos one_pos hΔ
 
-/-- Summary: The glueball spectrum provides the most concrete form of the mass gap. -/
-theorem glueball_spectrum_summary :
-    -- The mass gap Δ = m(0⁺⁺), the lightest scalar glueball
-    -- Lattice SU(3): m(0⁺⁺) ≈ 1730 MeV, m(2⁺⁺) ≈ 2400 MeV
-    -- Mass hierarchy: 0⁺⁺ < 2⁺⁺ < 0⁻⁺ < ... (J^{PC} ordering)
-    -- All masses scale as m ~ c·√σ with universal dimensionless coefficients
-    -- Δ > 0 ↔ exponential clustering ↔ finite correlation length
-    -- Δ = -lim_{|x|→∞} log⟨O(x)O(0)⟩/|x| (spectral definition)
-    -- Glueballs are color-singlet: invariant under gauge transformations
-    -- Large-N: individual masses O(1), number of states O(N²)
-    -- OZI suppression: glueball widths Γ ~ 1/N² → narrow resonances
-    (1 : ℕ) + 1 = 2 := rfl
-
 end GlueballSpectrum
 
 -- Part LXXIX: Dual Superconductor Mechanism — Monopole Condensation
@@ -10537,19 +9725,6 @@ theorem bogomolny_bound (E Φ : ℝ) (hE : E ≥ |Φ|) (hΦ : |Φ| > 0) :
     Both vanish simultaneously: ρ = 0 ↔ σ = 0 ↔ deconfinement. -/
 theorem monopole_confinement_link (σ ρ : ℝ) (hσ : σ > 0) (hρ : ρ > 0) :
     σ > 0 ∧ ρ > 0 := ⟨hσ, hρ⟩
-
-/-- Summary: The dual superconductor mechanism. -/
-theorem dual_superconductor_summary :
-    -- t'Hooft-Mandelstam (1976-78): QCD vacuum = dual superconductor
-    -- Abelian projection: SU(N) → U(1)^{N-1} + monopoles
-    -- Monopole condensation → dual Meissner effect
-    -- Chromoelectric flux confined to ANO vortex tubes
-    -- String tension σ > 0 ↔ dual photon mass m > 0 ↔ mass gap Δ > 0
-    -- Lattice evidence: abelian dominance (90%+ of string tension from abelian part)
-    -- Classification: QCD vacuum is weakly type II (near borderline)
-    -- Physical picture: quark-antiquark pair connected by flux tube
-    -- Tube breaking at large distance → string breaking (with dynamical quarks)
-    (1 : ℕ) + 1 = 2 := rfl
 
 end DualSuperconductor
 
@@ -10679,21 +9854,6 @@ theorem instanton_integrand_positive (ρ g : ℝ) (hρ : ρ > 0) (hg : g > 0) :
   · exact pow_pos hρ 6
   · exact Real.exp_pos _
 
-/-- Summary: Instanton effects and their role in the mass gap. -/
-theorem instanton_summary :
-    -- Instantons are finite-action solutions of Euclidean YM equations
-    -- Action S = 8π²|Q|/g², where Q ∈ ℤ is topological charge
-    -- Self-dual (Q>0) and anti-self-dual (Q<0) configurations
-    -- Bogomolny bound: S ≥ 8π²|Q|/g², saturated by instantons
-    -- Theta vacuum |θ⟩ = Σ exp(inθ)|n⟩ parametrizes physical vacua
-    -- Strong CP problem: θ_QCD ≈ 0 experimentally (axion proposal)
-    -- t'Hooft vertex: instanton generates 2N_f-fermion interaction
-    -- Resolves U(1)_A problem: no ninth Goldstone boson (η' mass)
-    -- Instanton liquid model: ρ_avg ≈ 1/3 fm, n ≈ 1 fm⁻⁴
-    -- Contributes to mass gap but does NOT explain confinement alone
-    -- Combined with monopoles: instanton-monopole connection (caloron = instanton at finite T)
-    (1 : ℕ) + 1 = 2 := rfl
-
 end Instantons
 
 -- Part LXXXI: Hamiltonian Lattice Formulation — Kogut-Susskind
@@ -10797,20 +9957,6 @@ theorem gap_at_all_couplings (g : ℝ) (hg : g > 0) :
     -- At any positive coupling, EITHER strong or weak coupling gap exists
     g ^ 2 > 0 ∧ Real.exp (-(1 / g ^ 2)) > 0 := by
   exact ⟨sq_pos_of_pos hg, Real.exp_pos _⟩
-
-/-- Summary: Hamiltonian lattice formulation. -/
-theorem hamiltonian_lattice_summary :
-    -- Kogut-Susskind (1975): Hamiltonian = H_E + H_B on spatial lattice
-    -- H_E = (g²/2a)Σ E² (electric, dominates at strong coupling)
-    -- H_B = (1/g²a)Σ(1-ReTrU_P/N) (magnetic, dominates at weak coupling)
-    -- Mass gap Δ = E₁ - E₀ is the spectral gap of H
-    -- Strong coupling: Δ ~ g²·C₂/(2a), gap from electric flux excitation
-    -- Weak coupling: Δ ~ Λ_QCD from dimensional transmutation
-    -- No phase transition in pure YM → gap exists at all couplings
-    -- Transfer matrix: H = -log(T)/a connects Hamiltonian to Euclidean path integral
-    -- Gauss law: physical states satisfy ∇·E = 0 (color-singlet constraint)
-    -- Confinement in strong coupling: Wilson loop area law proved exactly
-    (1 : ℕ) + 1 = 2 := rfl
 
 end HamiltonianLattice
 
@@ -11063,18 +10209,6 @@ theorem nloCoeff_pos_4d (sigma : ℝ) (hs : sigma > 0) : nloCoeff 4 sigma > 0 :=
   have : (1152 : ℝ) * sigma > 0 := mul_pos (by norm_num) hs
   exact div_pos (by norm_num [mul_pos, hpi2]) ‹1152 * sigma > 0›
 
-/-- Summary: The effective string theory of confinement. -/
-theorem effective_string_summary :
-    -- 1. Confining flux tube is described by Nambu-Goto string at large distances
-    -- 2. Lüscher term V = σr - π(d-2)/(24r) is UNIVERSAL (any d, any gauge group)
-    -- 3. In d=4: correction = -π/(12r) ≈ -0.2618/r, confirmed by lattice
-    -- 4. Flux tube width grows as w² ~ ln(r)/σ (logarithmic broadening)
-    -- 5. No 1/r² correction for Nambu-Goto (low-energy universality)
-    -- 6. NLO at 1/r³ depends on string action; Nambu-Goto gives c₃ = 11π²/(288σ)
-    -- 7. The effective string picture confirms confinement + mass gap:
-    --    σ > 0 ⟹ linear potential ⟹ confinement ⟹ mass gap Δ ~ √σ
-    (1 : ℕ) + 1 = 2 := rfl
-
 end EffectiveStringTheory
 
 -- ═══════════════════════════════════════════════════════════════════════════════
@@ -11243,19 +10377,6 @@ theorem taylor_nonrenormalization :
 theorem ko_gluon_suppressed (ko : KugoOjimaData) (hko : isKOConfined ko)
     (hlink : ko.gluon_prop_zero = 0 ↔ ko.u_zero = -1) :
     ko.gluon_prop_zero = 0 := hlink.mpr hko
-
-/-- Summary: Kugo-Ojima BRST confinement criterion (Part LXXXII). -/
-theorem kugo_ojima_brst_summary :
-    -- 1. u(0) = -1 is the BRST confinement criterion
-    -- 2. It implies global color charge is unphysical ⟹ confinement
-    -- 3. Ghost propagator enhanced (IR divergent) in scaling scenario
-    -- 4. Gluon propagator suppressed D(0) = 0 ⟹ gluon is not a particle
-    -- 5. Taylor's theorem: ghost-gluon vertex not renormalized in Landau gauge
-    -- 6. Lattice: u(0) ≈ -0.83 for SU(3) (close to confined, but decoupling)
-    -- 7. Two IR solutions: scaling (κ>0) vs decoupling (κ=0)
-    -- 8. Both solutions consistent with confinement, differ in IR details
-    -- 9. Connects to Gribov: KO criterion ⟺ Gribov horizon condition
-    (1 : ℕ) + 1 = 2 := rfl
 
 end KugoOjimaConfinement
 
@@ -11442,20 +10563,6 @@ theorem zero_nality_zero_tension (N : ℕ) (hN : N ≥ 3) :
     casimirScalingRatio N 0 = 0 := by
   unfold casimirScalingRatio; simp
 
-/-- Summary: K-string tensions and the sine law. -/
-theorem kstring_summary :
-    -- 1. K-strings: flux tubes connecting sources of N-ality k
-    -- 2. σ_k depends ONLY on N-ality k, not the full representation (screening)
-    -- 3. Sine law: σ_k/σ₁ = sin(πk/N)/sin(π/N) (from M-theory)
-    -- 4. Casimir scaling: σ_k/σ₁ = k(N-k)/(N-1) (from perturbation theory)
-    -- 5. Both agree at leading order (σ_k ~ k·σ₁ at large N)
-    -- 6. Lattice data favors sine law for large N
-    -- 7. Charge conjugation: σ_{N-k} = σ_k
-    -- 8. Zero N-ality: σ₀ = 0 (adjoint quarks screened)
-    -- 9. Maximum tension at k = N/2 (for even N)
-    -- 10. SU(3) has only k=1 strings; SU(4)+ have novel k-strings
-    (1 : ℕ) + 1 = 2 := rfl
-
 end KStringTensions
 
 /- ═══════════════════════════════════════════════════════════════════════════════
@@ -11629,19 +10736,6 @@ theorem banks_rabinovici_phase_structure (N : ℕ) (hN : N ≥ 2) :
 theorem elitzur_theorem :
     ∃ (gauge_invariance_preserved : Prop), gauge_invariance_preserved :=
   ⟨True, trivial⟩
-
-/-- Summary of confinement-Higgs complementarity and implications for the mass gap. -/
-theorem confinement_higgs_summary :
-    -- Key results in this section:
-    -- 1. Fradkin-Shenker: confinement and Higgs are analytically connected (fundamental Higgs)
-    -- 2. 't Hooft complementarity: two descriptions of the same physics
-    -- 3. Mass gap exists in both phases when connected
-    -- 4. Adjoint Higgs preserves center symmetry → genuine confinement transition
-    -- 5. Elitzur: gauge symmetry never breaks spontaneously
-    -- 6. For Millennium Problem: pure YM has exact center symmetry → sharp confinement
-    -- 7. Mass gap is spectral (energy gap), confinement is dynamical (area law)
-    -- 8. Both must be proved for the Millennium Problem, but they're distinct properties
-    (1 : ℕ) + 1 = 2 := rfl
 
 end ConfinementHiggsComplementarity
 
@@ -11821,27 +10915,6 @@ theorem dimension_difficulty_spectrum :
     marginally renormalizable — the hardest case. -/
 theorem coupling_dimension (d : ℕ) (hd : d ≤ 4) :
     4 - d ≥ 0 := by omega
-
-/-- **The expert consensus on the Millennium Problem.**
-
-    Most mathematical physicists believe:
-    1. 4D Yang-Mills theory EXISTS as a continuum QFT
-    2. It HAS a positive mass gap
-    3. A proof will require fundamentally new mathematics
-    4. The lattice approach is most promising but needs new compactness arguments
-    5. Supersymmetric results (Seiberg-Witten, Witten index) inform but don't solve
-    6. The problem is harder than 3D YM, which is already very difficult
-    7. A solution would likely earn the Fields Medal in addition to the Millennium Prize
-
-    The gap between what's known and what's needed is comparable to
-    Fermat's Last Theorem before Wiles: we have extensive evidence
-    and many partial results, but the final proof seems to require
-    a new insight connecting analysis, algebra, and geometry. -/
-theorem expert_consensus_summary :
-    -- The problem is expected to have a positive answer (existence + mass gap)
-    -- But proof requires new mathematics
-    -- Key needed: non-perturbative control of the continuum limit
-    (1 : ℕ) + 1 = 2 := rfl
 
 end MillenniumProofLandscape
 
@@ -12023,21 +11096,6 @@ theorem gluon_physical_dof (N : ℕ) (hN : N ≥ 2) : 2 * (N ^ 2 - 1) ≥ 6 := b
 
 /-- **PROVED: SU(3) has 16 physical gluon polarizations.** -/
 theorem su3_physical_gluons : 2 * (3 ^ 2 - 1) = (16 : ℕ) := by norm_num
-
-/-- Summary: Haag's theorem and non-perturbative Yang-Mills.
-
-    Key takeaways for the mass gap problem:
-    1. The interaction picture FAILS for rigorous QFT (Haag's theorem)
-    2. Perturbation theory gives asymptotic series with ZERO convergence radius
-    3. The mass gap is a non-perturbative effect: Δ ~ Λ_QCD ~ exp(-8π²/(β₀g²))
-    4. Non-perturbative methods (lattice, constructive QFT) are essential
-    5. The free gluon Fock space is the WRONG Hilbert space for interacting YM
-    6. The correct approach: construct the theory directly (lattice → continuum) -/
-theorem haag_summary :
-    -- Interaction picture fails → must use non-perturbative methods
-    -- Mass gap is invisible to perturbation theory
-    -- Lattice approach avoids Haag's theorem entirely
-    (1 : ℕ) + 1 = 2 := rfl
 
 end HaagsTheorem
 
@@ -12249,20 +11307,6 @@ theorem gz_propagator_maximum (γ : ℝ) (hγ : γ > 0) :
 /-- **PROVED: The maximum propagator value is positive and finite.** -/
 theorem gz_max_positive (γ : ℝ) (hγ : γ > 0) :
     1 / (2 * γ ^ 2) > 0 := by positivity
-
-/-- Summary: Coulomb gauge confinement and the Gribov-Zwanziger scenario.
-
-    Key results:
-    1. Zwanziger's inequality σ_C ≥ σ_W links Coulomb and Wilson confinement
-    2. The Gribov region restricts gauge field configurations
-    3. Ghost enhancement near the Gribov horizon signals confinement
-    4. The GZ gluon propagator vanishes at p=0 (gluon confinement)
-    5. Lattice confirms σ_C/σ_W ≈ 2-3 for SU(2)
-    6. The refined GZ action with condensates matches lattice gluon propagator data -/
-theorem coulomb_gauge_summary :
-    -- Coulomb gauge provides an alternative but consistent picture of confinement
-    -- The Gribov-Zwanziger mechanism gives concrete predictions testable on lattice
-    (1 : ℕ) + 1 = 2 := rfl
 
 end CoulombGaugeConfinement
 
@@ -12489,23 +11533,6 @@ theorem glueball_string_ratio_positive :
     Total number of low-lying glueball states ≤ 12 (up to ~4 GeV). -/
 theorem glueball_channels : 3 * 2 * 2 = (12 : ℕ) := by norm_num
 
-/-- Summary: Spectral positivity violation as a confinement criterion.
-
-    Key results:
-    1. Källén-Lehmann positivity distinguishes physical vs confined states
-    2. Gluon propagator (lattice) violates KL positivity → gluons confined
-    3. The refined GZ propagator has complex conjugate poles → no positive ρ
-    4. For SU(3): M⁴ < 4λ⁴ confirmed → complex poles verified
-    5. Quark propagator also violates KL positivity → quarks confined
-    6. Only color-singlet states satisfy KL positivity → mass gap = glueball mass
-    7. The mass gap is NOT the unphysical gluon mass but the 0⁺⁺ glueball mass
-    8. This unifies confinement (no colored asymptotic states) with the mass gap
-       (lightest physical state has positive mass) -/
-theorem spectral_positivity_summary :
-    -- KL positivity violation: the modern criterion for confinement
-    -- Unifies gluon confinement, quark confinement, and the mass gap
-    (1 : ℕ) + 1 = 2 := rfl
-
 end SpectralPositivityViolation
 
 -- ============================================================================
@@ -12723,18 +11750,6 @@ theorem anomalous_dim_sum_rule (γ_c γ_gh γ_gl : ℝ) (h : γ_c + 2 * γ_gh + 
     Total: 5 unknowns, 2 equations → 3 must be modeled. -/
 theorem dse_minimal_system : 2 + 3 = (5 : ℕ) := by norm_num
 
-/-- Summary of Dyson-Schwinger equations for Yang-Mills theory.
-
-    Key results:
-    1. Taylor's theorem: ghost-gluon vertex is finite (Z̃₁ = 1) in Landau gauge
-    2. Taylor coupling: α_T = α_s · J² · Z from propagators alone
-    3. Scaling solution: power-law IR behavior with ghost enhancement
-    4. Decoupling solution: massive-type gluon, still confining
-    5. Both solutions satisfy Schwinger function positivity violation
-    6. The anomalous dimension sum rule constrains the IR behavior
-    7. Ghost enhancement (γ < 0) → confinement in the Kugo-Ojima scenario -/
-theorem dse_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end DysonSchwingerEquations
 
 -- ============================================================================
@@ -12938,18 +11953,6 @@ theorem creutz_ratio_strong_coupling (R T : ℤ) (hR : R > 0) (hT : T > 0) :
     -- W(R,T-1) = u^{R(T-1)}, W(R-1,T) = u^{(R-1)T}
     -- RT + (R-1)(T-1) - R(T-1) - (R-1)T = 1
     R * T + (R - 1) * (T - 1) = R * (T - 1) + (R - 1) * T + 1 := by ring
-
-/-- Summary of the strong coupling expansion.
-
-    Key results:
-    1. At strong coupling (β → 0), confinement is EXACT
-    2. Wilson loops obey area law: ⟨W(C)⟩ = u^{Area(C)}
-    3. String tension: σ = -ln(u) > 0 for u = β/(2N²)
-    4. Mass gap: m = 2σ (glueball = closed flux tube)
-    5. Cluster decomposition: correlations decay as u^{distance}
-    6. SU(3) confines more than SU(2) at same coupling
-    7. The challenge is connecting to the continuum limit β → ∞ -/
-theorem strong_coupling_expansion_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end StrongCouplingExpansion
 
@@ -13192,20 +12195,6 @@ theorem sw_vs_millennium :
     as dyons (n_e, n_m) with gcd(n_e, n_m) = 1. -/
 theorem bps_weak_coupling_count : 1 + 1 = (2 : ℕ) := by norm_num
 
-/-- Summary of Seiberg-Witten theory for Yang-Mills mass gap.
-
-    Key results:
-    1. N=2 SYM is exactly solvable via the SW curve
-    2. BPS mass formula: M = |n_e·a + n_m·a_D| (exact)
-    3. Monopole point u = Λ²: monopoles become massless
-    4. N=2 → N=1 deformation: monopole condensation → confinement
-    5. Exact mass gap: Δ = c·m·|Λ| (protected by SUSY)
-    6. String tension: σ = Δ²/(8π) (dual Meissner effect)
-    7. Monodromies form SL(2,ℤ) — consistency of the solution
-    8. Pure YM (N=0) remains open — SUSY breaking loses exact control
-    9. Conceptual lesson: confinement ↔ monopole condensation -/
-theorem seiberg_witten_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end SeibergWittenTheory
 
 -- ============================================================================
@@ -13327,17 +12316,6 @@ theorem coupling_freezing (b0 : ℝ) (hb0 : b0 > 0) (m0_sq Λ_sq : ℝ)
     4 * Real.pi / (b0 * Real.log (4 * m0_sq / Λ_sq)) > 0 := by
   have hπ : Real.pi > 0 := Real.pi_pos
   positivity
-
-/-- Summary of the dynamical gluon mass.
-
-    Key results:
-    1. Lattice confirms D(0) > 0 → decoupling solution
-    2. Dynamical mass m₀ ≈ 500 MeV (gauge-invariant via pinch technique)
-    3. Cornwall's running mass: m²(q²) → 0 in UV (asymptotic freedom preserved)
-    4. Mass eliminates the Landau pole → α_s(0) ≈ 0.7-0.9 (finite)
-    5. Glueball/gluon mass ratio ≈ 3 (two-gluon bound state)
-    6. γ = 12/11 = 1 + 1/b₀ connects mass running to β-function -/
-theorem dynamical_gluon_mass_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end DynamicalGluonMass
 
@@ -13542,19 +12520,6 @@ theorem type_II_stable (kappa : ℝ) (hk : kappa > 1 / Real.sqrt 2) :
     For SU(2): M_monopole ≈ 500 MeV (from lattice), comparable to m_gluon. -/
 theorem bogomolnyi_monopole_mass_positive (v e : ℝ) (hv : v > 0) (he : e > 0) :
     4 * Real.pi * v / e > 0 := by positivity
-
-/-- Summary of dual superconductivity for Yang-Mills mass gap.
-
-    Key results:
-    1. 't Hooft-Mandelstam mechanism: confinement ↔ monopole condensation
-    2. Dirac quantization: e·g = 2πn constrains monopole charges
-    3. Dual penetration depth λ_D sets the flux tube radius
-    4. Type II dual superconductor: flux tubes stable (QCD κ ≈ 1-2)
-    5. Abelian dominance: abelian projection captures ~92% of string tension
-    6. Monopole condensate ⟨ρ⟩ = σ/(2πλ²) > 0 when confining
-    7. The mass gap is the lightest glueball, NOT the monopole mass
-    8. Monopole condensation provides a mechanism for flux tube formation -/
-theorem dual_superconductivity_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end MonopolesDualSuperconductivity
 
@@ -13779,19 +12744,6 @@ theorem svz_mass_gap (c4 M_sq : ℝ) (hc : c4 > 0) (hM : M_sq > 0) :
     (No other dimension-4 gauge-invariant, Lorentz-scalar operator exists.)
     With quarks, ⟨m_q q̄q⟩ adds another, but for pure YM: just one. -/
 theorem dim4_operator_count_pure_ym : (1 : ℕ) = 1 := rfl
-
-/-- Summary of vacuum condensates and SVZ sum rules.
-
-    Key results:
-    1. Gluon condensate ⟨αs/π · F²⟩ ≈ 0.012 GeV⁴ = (330 MeV)⁴
-    2. OPE organizes non-perturbative corrections by dimension
-    3. Dimension-4 gluon condensate is the LEADING power correction
-    4. Borel transform improves convergence (factorial suppression)
-    5. Trace anomaly: ⟨θ^μ_μ⟩ ∝ β₀ · ⟨F²⟩ → negative vacuum energy
-    6. SVZ sum rules connect condensates to hadron masses
-    7. Nonzero gluon condensate guarantees mass gap m > 0
-    8. All mass scales agree: Δ ~ Λ_QCD ~ c ~ 300 MeV -/
-theorem vacuum_condensates_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end VacuumCondensatesSVZ
 
@@ -14080,21 +13032,6 @@ theorem chi_t_large_N (N : ℕ) (hN : N ≥ 2) :
   have hN_pos : (N : ℚ) > 0 := Nat.cast_pos.mpr (by omega)
   field_simp
 
-/-- Summary of theta vacuum and topological charge.
-
-    Key results:
-    1. Topological charge Q ∈ ℤ (second Chern class)
-    2. θ-vacuum: |θ⟩ = Σ e^{inθ}|n⟩, periodic with period 2π
-    3. Vacuum energy E(θ) = ½χ_t(1-cos θ), minimized at θ = 0
-    4. Topological susceptibility χ_t = (180 MeV)⁴ > 0 in pure YM
-    5. Witten-Veneziano: m²_η' = 2N_f·χ_t/f²_π explains η' mass
-    6. Instantons generate θ-dependence via exp(-8π²/g²)
-    7. Strong CP problem: |θ| < 10⁻¹⁰ experimentally
-    8. χ_t > 0 requires mass gap Δ > 0 for spectral sum convergence
-    9. N degenerate θ-vacua for SU(N) from Z_N center symmetry
-    10. χ_t = O(1) at large N (from f²_π·m²_η' scaling) -/
-theorem theta_vacuum_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end ThetaVacuumTopologicalCharge
 
 /-
@@ -14213,8 +13150,6 @@ theorem su2_twist_self_conjugate (n : ZMod 2) : n = -n := by
 
 theorem trivial_twist_self_conjugate (N : ℕ) (hN : N ≥ 2) :
     (0 : ZMod N) = -(0 : ZMod N) := by simp
-
-theorem twisted_bc_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end THooftTwistedBoundaryConditions
 
@@ -14363,8 +13298,6 @@ theorem sconfinement_scale_dim (Nc : ℕ) (hNc : Nc ≥ 2) :
 
 theorem conformal_window_width (Nc : ℕ) (hNc : Nc ≥ 2) :
     3 * Nc ≥ 2 * Nc := by omega
-
-theorem seiberg_duality_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end SeibergDuality
 
@@ -14615,19 +13548,6 @@ theorem frg_trace_4d (N : ℕ) (hN : N ≥ 2) :
   have hN2 : N ^ 2 ≥ 4 := by nlinarith
   zify [show 1 ≤ N ^ 2 from by omega]
   ring
-
-/-
-    Summary: Functional Renormalization Group
-    1. Wetterich equation provides exact, non-perturbative flow
-    2. Gluon propagator develops IR mass (screening mass)
-    3. Two IR solutions: scaling (ghost-enhanced) and decoupling (massive gluon)
-    4. Both solutions predict mass gap — consistent with confinement
-    5. FRG gluon mass ≈ 500-600 MeV matches lattice QCD
-    6. Ghost anomalous dimension κ > 0 signals Kugo-Ojima confinement
-    7. Net flow DOF for SU(3) in 4D: 8 = 24 (gluon) - 16 (ghost)
-    8. IR propagator vanishes at p²=0 (Källén-Lehmann violation)
-    9. Running coupling has IR fixed point (scaling) or freezes (decoupling) -/
-theorem frg_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end FunctionalRG
 
@@ -14912,19 +13832,6 @@ theorem sb_dof_monotone (N₁ N₂ : ℕ) (hN₁ : N₁ ≥ 2) (hN₂ : N₂ ≥
   have h2 : 1 ≤ N₁ ^ 2 := by nlinarith
   exact Nat.mul_lt_mul_of_pos_left (Nat.sub_lt_sub_right h2 h1) (by omega)
 
-/-- Adjoint Polyakov loop ⟨L_adj⟩: invariant under Z_N, does not serve as
-    order parameter for center symmetry.
-    Key: ⟨L_adj⟩ ≠ 0 even in the confined phase (color screening). -/
-theorem adjoint_not_order_param :
-    (1 : ℕ) + 1 = 2 := rfl  -- Conceptual statement: adjoint L is Z_N-invariant
-
-/-- On R³ × S¹ with adjoint fermions (Ünsal 2008):
-    Center symmetry is preserved for ALL circle sizes.
-    No phase transition → mass gap persists at all scales.
-    This gives the closest known semi-classical approach to the mass gap. -/
-theorem unsal_center_stability (N : ℕ) (hN : N ≥ 2) (L_size : ℝ) (hL : 0 < L_size) :
-    (1 : ℕ) + 1 = 2 := rfl  -- Statement: center stability holds for all L > 0
-
 /-- Abelian confinement on R³ × S¹: at small S¹, SU(N) → U(1)^{N-1}.
     Magnetic monopoles (from KK tower) generate mass gap.
     Number of monopole types = N. -/
@@ -14965,27 +13872,6 @@ theorem gap_decreases_with_action (S0₁ S0₂ : ℝ) (N : ℕ) (hN : N ≥ 1)
   have hlt : -S0₂ / ↑N < -S0₁ / ↑N := by
     apply div_lt_div_of_pos_right _ hN_pos; linarith
   exact Real.exp_strictMono hlt
-
-/-- Continuity conjecture: the mass gap on R³ × S¹(L) is continuous as L → ∞.
-    If proven, this would bridge the semi-classical mass gap to the R⁴ mass gap.
-    Currently unproven — the main obstacle in the Ünsal program. -/
-theorem continuity_conjecture_statement :
-    (1 : ℕ) + 1 = 2 := rfl  -- Statement: m(L) is continuous and non-vanishing for all L
-
-/-
-    Summary: Center Symmetry and Deconfinement
-    1. Polyakov loop ⟨L⟩ is the order parameter: ⟨L⟩ = 0 ↔ confined
-    2. Z_N center symmetry: broken in deconfined phase, N degenerate vacua
-    3. Svetitsky-Yaffe: SU(2) 2nd order (Ising), SU(N≥3) 1st order
-    4. GPY potential: V(ℓ) = -a₂T²ℓ² + a₄ℓ⁴ governs transition
-    5. String tension σ(T) → 0 at T_c (deconfinement)
-    6. Casimir scaling: σ_adj/σ_fund = 2N²/(N²-1) > 1
-    7. Debye mass m_D = gT√((N+Nf/2)/3) screens in QGP
-    8. T_c/√σ ≈ 0.629 for SU(3) (universal ratio at large N)
-    9. Ünsal: R³×S¹ with adjoint fermions → center-stable, no phase transition
-    10. Monopole mass gap ~ exp(-8π²/(Ng²)) on small S¹ (semi-classical)
-    11. Continuity conjecture: m(L) non-vanishing for all L bridges to R⁴ -/
-theorem center_symmetry_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end CenterSymmetry
 
@@ -15269,21 +14155,6 @@ theorem os_correlation_length_grows (a₁ a₂ m : ℝ) (ha₁ : 0 < a₁) (ha�
   unfold osCorrelationLength
   exact div_lt_div_of_pos_left one_pos (mul_pos ha₂ hm) (mul_lt_mul_of_pos_right hlt hm)
 
-/-
-    Summary: Osterwalder-Schrader Axioms
-    1. OS axioms (5) provide Euclidean formulation of QFT
-    2. Wightman axioms (7) are the Minkowski formulation — OS reconstruction connects them
-    3. Reflection positivity (OS2) → transfer matrix → Hilbert space + Hamiltonian
-    4. Mass gap ↔ spectral gap of transfer matrix: Δ = -ln(λ₁)/a > 0
-    5. Schwinger 2-point function: exponential decay at rate m (mass gap)
-    6. Cluster decomposition (OS4) ↔ unique vacuum
-    7. Wilson lattice action satisfies OS axioms (Osterwalder-Seiler 1978)
-    8. Euclidean propagator 1/(p²+m²) → mass-shell via Wick rotation
-    9. Continuum limit: correlation length ξ = 1/(am) → ∞ (second-order transition)
-    10. All transfer matrix eigenvalues positive (from OS2)
--/
-theorem os_axioms_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end OsterwalderSchrader
 
 -- Part CI: Resurgence and Trans-Series in Yang-Mills
@@ -15563,22 +14434,6 @@ theorem ir_renormalon_spacing (beta0 : ℝ) (k : ℕ) (hb : 0 < beta0) (hk : k �
   push_cast
   ring
 
-/-
-    Summary: Resurgence and Trans-Series
-    1. Perturbation theory diverges: a_n ~ n! · A^{-n} (factorial growth)
-    2. Borel transform: B[f](t) = Σ a_n t^n/n! (finite convergence radius)
-    3. IR renormalons at t = 2k/β₀ obstruct Borel summation along R⁺
-    4. UV renormalons at t = -k/β₀ on negative axis (no obstruction)
-    5. IR ambiguity ~ Λ²ᵏ/Q²ᵏ matches OPE power corrections
-    6. Trans-series: perturbative + Σ e^{-nS₀} · (perturbative)_n
-    7. Resurgence: large-order perturbative ↔ non-perturbative sectors
-    8. Bions on R³×S¹: real, unambiguous non-perturbative contributions
-    9. Bion mass gap: m ~ Λ·exp(-S₀/N) (calculable on compactified space)
-    10. Stokes phenomenon: discontinuity = non-perturbative correction
-    11. Running coupling α_s(Q²) = 1/(β₀·ln(Q²/Λ²)) → 0 at Q → ∞
--/
-theorem resurgence_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end ResurgenceTransSeries
 
 -- Part CII: Entanglement Entropy and Confinement
@@ -15822,23 +14677,6 @@ theorem replica_needs_two : replicaSheets 2 = 2 := by
     area laws (not just von Neumann). -/
 theorem renyi_index_ordering (n : ℕ) (hn : n ≥ 2) : 1 < n := by omega
 
-/-
-    Summary: Entanglement Entropy and Confinement
-    1. Hastings theorem: mass gap → area law for entanglement entropy
-    2. Confining EE: S_A = σ_E · |∂A| + subleading (area law)
-    3. Deconfined EE: S_A ~ |∂A| · log(|∂A|/ε) (log violation)
-    4. Mutual information I(A:B) ~ exp(-m·r) in confining phase (exponential)
-    5. Mutual information I(A:B) ~ 1/r^{2Δ} in deconfined phase (power law)
-    6. Topological EE: γ = ln(N) for SU(N) gauge theory
-    7. Entropic c-theorem: c_UV > c_IR ≥ 0, with c_IR = 0 for confining theories
-    8. Ryu-Takayanagi: S_A = Area(γ_A)/(4G_N) in holographic theories
-    9. Entropic order parameter ΔS ~ N² at deconfining transition
-    10. Distillable entanglement ~ exp(-σ·Area) in confining phase
-    11. Bell pairs per link ≤ 2·log₂(N) for SU(N)
-    12. Replica trick: S_A = -∂_n Z_n/Z_1^n|_{n→1}
--/
-theorem entanglement_entropy_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end EntanglementEntropy
 
 -- Part CIII: Large-N Volume Reduction and Matrix Models
@@ -16016,21 +14854,6 @@ theorem semicircle_support_pos (R : ℝ) (hR : 0 < R) :
     0 < semicircleSupport R := by
   unfold semicircleSupport; linarith
 
-/-
-    Summary: Large-N Volume Reduction and Matrix Models
-    1. 't Hooft limit: N → ∞ with fixed λ = g²N, coupling g² → 0
-    2. Eguchi-Kawai: SU(∞) on L^d lattice ≡ single-site (d matrices)
-    3. Volume reduction: L^d factor in DOF eliminated at N = ∞
-    4. Twisted EK: fixes center symmetry breaking, needs N ≥ L^{d/2}
-    5. Genus expansion: amplitude ~ N^{2-2g}, planar dominance at large N
-    6. Planar free energy F ~ N² · f(λ) (master field)
-    7. String coupling g_s = 1/N: gauge/string duality
-    8. Meson width Γ ~ 1/N → 0: stable mesons at large N
-    9. Baryon mass M_B ~ N·Λ: heavy solitons (Skyrmion)
-    10. Wigner semicircle: universal eigenvalue distribution of matrix models
--/
-theorem large_n_volume_reduction_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end LargeNVolumeReduction
 
 -- Part CIV: Lattice Continuum Limit and Asymptotic Scaling
@@ -16202,21 +15025,6 @@ theorem blocking_reduces_sites (L d : ℕ) (hL : L ≥ 2) (hd : d ≥ 1) :
   simp
   apply Nat.pow_le_pow_left
   exact Nat.div_le_self L 2
-
-/-
-    Summary: Lattice Continuum Limit and Asymptotic Scaling
-    1. Wilson coupling β = 2N/g² → ∞ as g² → 0 (continuum limit)
-    2. Asymptotic scaling: a(β) ~ exp(-β/(2b₀)) (exponential decrease)
-    3. String tension σa² → 0 while σ (physical) stays fixed
-    4. Sommer parameter r₀ ≈ 0.5 fm sets the physical scale
-    5. One-loop b₀ = 11N/(48π²) positive → asymptotic freedom
-    6. Two-loop b₁ provides power-law correction to scaling
-    7. Balaban's block-spin RG: UV stability proved in 3D
-    8. Block-spin: each step doubles spacing, halves linear size
-    9. β coefficient monotone in N (more colors → stronger AF)
-    10. 4D continuum limit: Balaban's program is the path to Millennium Prize
--/
-theorem lattice_continuum_limit_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end LatticeContinuumLimit
 
@@ -16510,21 +15318,6 @@ theorem noise_correlator_symmetric (a b mu nu : ℕ) :
   have h2 : (mu == nu) = (nu == mu) := by simp [beq_iff_eq, eq_comm]
   rw [h1, h2, Bool.and_comm]
 
-/-
-    Summary: Stochastic Quantization (Parisi-Wu)
-    1. Langevin equation generates quantum fluctuations via stochastic time
-    2. Equilibrium distribution = exp(-S): recovers Euclidean path integral
-    3. No gauge fixing needed (Parisi-Wu): gauge orbits explored naturally
-    4. Zwanziger gauge-fixed version: α-independent for physical observables
-    5. Fokker-Planck spectral gap = mass gap of the QFT
-    6. Convergence rate exp(-gap·τ): mass gap controls thermalization
-    7. Critical slowing down: low-momentum modes thermalize slowly
-    8. Free-field propagator: D(p²,τ) → 1/(p²+m²) as τ → ∞
-    9. Noise correlator diagonal in color × Lorentz indices
-    10. Foundation for lattice Monte Carlo: HMC = discretized Langevin
--/
-theorem stochastic_quantization_pw_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end StochasticQuantization
 
 -- ============================================================================
@@ -16791,21 +15584,6 @@ theorem gap_equals_kk (w : WittenModelAds) :
     wittenMassGap w = kkMassScale w := by
   unfold wittenMassGap kkMassScale; rfl
 
-/-
-    Summary: AdS/CFT and Holographic Mass Gap
-    1. AdS/CFT maps strongly-coupled gauge theories to weakly-curved gravity
-    2. Hard-wall model: mass gap D = j1/z_max from IR wall in AdS
-    3. Soft-wall model: dilaton Phi=kappa2 z2 gives linear Regge trajectories
-    4. Regge slope = 4 kappa2 (constant mass2 spacing between excitations)
-    5. Hawking-Page transition: thermal AdS to BH = confinement to deconfinement
-    6. Gap/T_c ratio ~ j1 pi ~ 7.5 (compare lattice QCD: ~ 5.5)
-    7. t Hooft coupling lambda = g2 N controls gravity/gauge duality regime
-    8. Central charge c ~ N2 grows with gauge group rank
-    9. Witten model: M5-branes on circle gives pure Yang-Mills in 4D
-    10. Holographic mass gap ~ 1/R_circle (compactification scale)
--/
-theorem holographic_mass_gap_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end HolographicMassGap
 
 
@@ -17041,21 +15819,6 @@ theorem uv_behavior_worsens (d1 d2 : ℕ) (h : d1 < d2) :
   unfold couplingMassDimension
   omega
 
-/-
-    Summary: Karabali-Kim-Nair Mass Gap in 2+1D
-    1. In 2+1D, g2 has dimension [mass]: single scale determines everything
-    2. KKN parameterize gauge field by gauge-invariant matrix M
-    3. Path integral Jacobian GENERATES mass: m = g2 N / (2 pi)
-    4. Mass comes from the measure, not the action!
-    5. String tension: sigma = g4 N2 / (8 pi), Casimir scaling verified
-    6. 0++ glueball: M = 2m (two-gluon threshold)
-    7. SU(2) prediction m/g2 = 1/pi ~ 0.318, lattice gives 0.335: ~5% match
-    8. Exact result because 2+1D is super-renormalizable: [g2] = 1
-    9. 3+1D has [g2] = 0: marginal coupling, no exact result known
-    10. KKN approach is the closest to a "proof" of mass gap in any dimension
--/
-theorem kkn_mass_gap_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end KKNMassGap
 
 
@@ -17191,19 +15954,6 @@ theorem no_landau_pole (rc : CFRunningCoupling) : rc.peakValue < 10 := rc.peak_f
 theorem ir_freezing (rc : CFRunningCoupling) :
     0 < rc.irValue ∧ rc.irValue < rc.peakValue := ⟨rc.ir_pos, rc.ir_below_peak⟩
 
-/-
-    Summary: Curci-Ferrari Model and Massive Gluon Propagator
-    1. CF model adds mass m2/2 * A2 to FP Lagrangian
-    2. Tree-level propagator D(p2) = 1/(p2+m2): finite D(0) = 1/m2
-    3. CF propagator bounded above by FP propagator (mass screens IR)
-    4. Beta function: b_CF = 35/6 for pure SU(3), AF preserved
-    5. Running mass decreases at high p2 (UV decoupling)
-    6. No Landau pole: coupling bounded at all scales
-    7. IR freezing: coupling finite at p = 0
-    8. CF model bridges lattice data and analytical calculations
--/
-theorem curci_ferrari_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end CurciFerrariModel
 
 -- ============================================================================
@@ -17291,17 +16041,6 @@ theorem abelian_dominance_cho (d : ChoDecomp)
     d.abelianPart / d.total ≥ 9 / 10 := by
   rw [ge_iff_le, div_le_div_iff₀ (by norm_num : (0:ℝ) < 10) h_total_pos]
   linarith
-
-/-
-    Summary: Faddeev-Niemi Decomposition and Knot Solitons
-    1. Low-energy SU(2) YM: unit vector n : R3 -> S2
-    2. Hopf invariant pi_3(S2) = Z classifies configurations
-    3. VK bound: E >= C |Q|^{3/4} (sharp)
-    4. Mass gap = energy of Q=1 Hopfion
-    5. Cho decomposition: abelian + valence, abelian dominates
-    6. Confining string = knotted chromoelectric flux tube
--/
-theorem faddeev_niemi_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end FaddeevNiemiDecomposition
 
@@ -17413,19 +16152,6 @@ theorem small_lattice_basis : truncatedBasisSize 2 2 1 = 3 ^ 8 := by
 
 /-- 3^8 = 6561. -/
 theorem basis_size_value : (3 : ℕ) ^ 8 = 6561 := by norm_num
-
-/-
-    Summary: Hamiltonian Truncation and Variational Mass Gap Bounds
-    1. Rayleigh-Ritz: variational estimate is upper bound on true gap
-    2. Strong coupling: gap = g2 * C_fund (electric flux excitation)
-    3. SU(2): gap = 3g2/4; SU(3): gap = 4g2/3
-    4. Casimir scaling: gap grows with N at strong coupling
-    5. Weak coupling: gap ~ Lambda * exp(-const/g2) (non-perturbative)
-    6. No phase transition: gap > 0 for ALL g2 > 0
-    7. Truncated basis size grows exponentially with volume
-    8. Small lattice (2x2, j=1): basis = 6561 (exact diag feasible)
--/
-theorem hamiltonian_truncation_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end HamiltonianTruncation
 
@@ -17618,19 +16344,6 @@ theorem massGap_nonperturbative (p : GGModelParams) :
     polyakovMassGap p > 0 ∧ massGapScaling p < p.g2 :=
   ⟨polyakovMassGap_pos p, massGap_exponentially_small p⟩
 
-/-
-    Summary: Polyakov's 3D Confinement
-    1. Georgi-Glashow model: SU(2) → U(1) with Higgs VEV v
-    2. 3D monopole-instantons: point-like, action S₀ = 4πv/g²
-    3. Monopole gas ↔ Coulomb gas with Debye screening
-    4. Dual photon mass: m = √(8π·ζ/g²) where ζ = e^{-S₀}
-    5. Mass gap is EXACTLY computable and strictly positive
-    6. String tension σ = m·g²/(4π) > 0 (confinement)
-    7. Non-perturbative: invisible to all orders of perturbation theory
-    8. Template for Ünsal's R³×S¹ approach to 4D mass gap
--/
-theorem polyakov_3d_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end Polyakov3DConfinement
 
 /- ## Part CXII: Zamolodchikov c-Theorem — Irreversibility of RG Flow
@@ -17804,19 +16517,6 @@ theorem strong_implies_weak (p : CTheoremParams) :
     all gluonic degrees of freedom acquiring a mass (gap). -/
 theorem ym_confinement_c_theorem (N : ℕ) (hN : N ≥ 2) :
     eulerAnomaly N > 0 := eulerAnomaly_pos N hN
-
-/-
-    Summary: Zamolodchikov c-Theorem and a-Theorem
-    1. c-theorem (2D): c_UV ≥ c_IR, monotone under RG flow
-    2. c_IR = 0 for gapped (confining) theories
-    3. a-theorem (4D): a_UV > a_IR (Komargodski-Schwimmer 2011)
-    4. SU(N) Euler anomaly: a = (N²-1)·31/180
-    5. Confining SU(N): a_UV > 0, a_IR = 0
-    6. Constrains maximum IR massless DOF
-    7. Spectral representation: Δc = ∫ ρ(μ²) dμ² with ρ ≥ 0
-    8. RG irreversibility is thermodynamic in nature
--/
-theorem zamolodchikov_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end ZamolodchikovCTheorem
 
@@ -18033,20 +16733,6 @@ theorem stringBreaking_increases (mQ₁ mQ₂ σ : ℝ)
 theorem pure_gauge_no_breaking (σ : ℝ) (hσ : σ > 0) (r : ℝ) (hr : r > 0) :
     σ * r > 0 := mul_pos hσ hr
 
-/-
-    Summary: Elitzur's Theorem and Gauge-Invariant Confinement
-    1. Elitzur (1975): local gauge symmetry cannot spontaneously break
-    2. Gauge-variant observables have ⟨O⟩ = 0 in finite volume
-    3. Wilson loops (gauge-invariant) are correct order parameters
-    4. Fradkin-Shenker: no phase boundary between confined/Higgs (fundamental)
-    5. Adjoint matter: genuine confined/deconfined transition exists
-    6. Strong coupling: σ_eff = -ln(β/2d) > 0 (Osterwalder-Seiler)
-    7. Massive vectors: 3 polarizations vs 2 for massless (N²-1 species)
-    8. String breaking at r_b ~ 2M_q/σ (fundamental matter only)
-    9. Pure gauge: true confinement with σ > 0 for all r
--/
-theorem elitzur_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end ElitzurTheorem
 
 /- ## Part CXIV: Chiral Symmetry Breaking and the Banks-Casher Relation
@@ -18210,19 +16896,6 @@ theorem nearZero_grows_with_V (ρ0 V₁ V₂ ε : ℝ)
 theorem casher_argument_setup (σ Λ : ℝ) (hσ : σ > 0) (hΛ : Λ > 0) :
     σ * Λ > 0 := mul_pos hσ hΛ
 
-/-
-    Summary: Chiral Symmetry Breaking and the Banks-Casher Relation
-    1. χSB: SU(N_f)_L × SU(N_f)_R → SU(N_f)_V
-    2. N_f²-1 Goldstone bosons (pions): 3 for N_f=2, 8 for N_f=3
-    3. Banks-Casher: ⟨ψ̄ψ⟩ = πρ(0), condensate ↔ spectral density
-    4. GMOR: m²_π f²_π = m_q |⟨ψ̄ψ⟩| (pion mass from quark mass)
-    5. Chiral limit: m_q → 0 gives m_π → 0 (massless Goldstones)
-    6. Non-Goldstone hadrons have mass ~ Λ_QCD (the mass gap)
-    7. Spectral gap ~ 1/(ρ₀V) decreases with volume
-    8. Casher's argument: confinement → chiral symmetry breaking
--/
-theorem chiral_sb_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end ChiralSymmetryBreakingBC
 
 /- ## Part CXV: Regge Trajectories — Linear J vs M² as Confinement Evidence
@@ -18381,19 +17054,6 @@ theorem string_tension_from_rho : (0.14 : ℝ) < 1 / (2 * Real.pi * 0.88) := by
   rw [lt_div_iff₀ (mul_pos (mul_pos (by norm_num) Real.pi_pos) (by norm_num))]
   nlinarith [Real.pi_lt_four]
 
-/-
-    Summary: Regge Trajectories
-    1. Linear J = α'M² + α₀ organizes hadron spectrum
-    2. α' = 1/(2πσ) relates slope to string tension
-    3. Lightest state: M² = |α₀|/α' > 0 when α₀ < 0
-    4. Daughter trajectories shifted down by integer units
-    5. Pomeron (glueball): α₀ ≈ 1.08 > 1 (supercritical)
-    6. Meson slope α' ≈ 0.88 GeV⁻² (ρ trajectory)
-    7. σ ≈ 0.18 GeV² from Regge phenomenology
-    8. Mass gap = lightest state on leading trajectory
--/
-theorem regge_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end ReggeTrajectories
 
 /- ## Part CXVI: Weinberg-Witten Theorem — Constraints on Massless Composites
@@ -18503,19 +17163,6 @@ theorem no_composite_graviton : (2 : ℝ) > 1 := by norm_num
     The boundary CFT doesn't have a local stress tensor that would
     create the WW obstruction. -/
 theorem adscft_evades_ww : True := trivial
-
-/-
-    Summary: Weinberg-Witten Theorem
-    1. WW1: massless charged particles have spin ≤ 1/2
-    2. WW2: massless particles coupling to T^μν have spin ≤ 1
-    3. Composite gluons (spin-1, colored) are forbidden from being massless
-    4. Elementary gauge bosons evade WW via gauge-dependent currents
-    5. Confinement requires mass gap for all colored states
-    6. No composite graviton (spin-2 coupled to stress tensor)
-    7. AdS/CFT evades WW through holographic duality
-    8. Constraints are topological/kinematic, not dynamic
--/
-theorem weinberg_witten_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end WeinbergWittenTheorem
 
@@ -18689,19 +17336,6 @@ theorem pure_ym_gap_scale : (1710 : ℝ) > 0 := by norm_num
     Pure gauge has much larger mass gap than full QCD. -/
 theorem pure_vs_qcd_ratio : (1710 : ℝ) / 135 > 12 := by norm_num
 
-/-
-    Summary: QCD Inequalities
-    1. Weingarten: m_π ≤ m_hadron for any hadron (pion is lightest)
-    2. Nussinov-Weingarten: m_N ≥ (3/2)m_π from quark counting
-    3. Experimental ratio m_N/m_π ≈ 6.7 >> 3/2 (bound far from tight)
-    4. Quark propagator decays as exp(-m·r) (exponential clustering)
-    5. Reflection positivity underlies all inequalities
-    6. Correlation length ξ = 1/m determines particle mass
-    7. Physical hierarchy: m_π < m_K < m_η < m_ρ < m_N < m_η'
-    8. Pure YM gap (~1710 MeV) >> QCD gap (~135 MeV)
--/
-theorem qcd_inequalities_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end QCDInequalities
 
 /- ## Part CXVIII: Coleman-Mandula Theorem — Fundamental S-Matrix Constraints
@@ -18828,20 +17462,6 @@ theorem asymptotic_completeness_from_gap (gap : ℝ) (hgap : gap > 0) :
 theorem ym_symmetry_fixed (N : ℕ) (hN : N ≥ 2) (gap : ℝ) (hgap : gap > 0) :
     totalSymDim 4 N = 10 + (N ^ 2 - 1) := by
   unfold totalSymDim poincareDim internalDim; omega
-
-/-
-    Summary: Coleman-Mandula Theorem
-    1. In a gapped QFT with nontrivial scattering:
-       symmetry = Poincaré × Internal (no mixing allowed)
-    2. Mass gap is a REQUIRED hypothesis
-    3. Without gap: conformal group SO(d,2) could extend Poincaré
-    4. SUSY is the unique loophole (Haag-Lopuszanski-Sohnius)
-    5. 4D Poincaré: 10 generators; conformal: 15 (5 extra)
-    6. SU(3) QCD with gap: exactly 18 symmetry generators
-    7. Asymptotic completeness follows from gap via Haag-Ruelle
-    8. Gap fixes the symmetry structure completely
--/
-theorem coleman_mandula_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end ColemanMandula
 
@@ -19001,19 +17621,6 @@ theorem tension_decreases_with_beta (β₁ β₂ b₀ N Λ : ℝ)
       show -β₂ / (b₀ * N) < -β₁ / (b₀ * N)
       exact div_lt_div_of_pos_right (by linarith) hden)
   · exact sq_pos_of_pos hΛ
-
-/-
-    Summary: Lattice Phase Structure
-    1. Pure SU(N) in 4D: NO bulk phase transition (Creutz 1980)
-    2. Strong coupling gap analytically connected to continuum
-    3. Free energy f(β) is analytic for all β > 0
-    4. Contrast: compact U(1) HAS a phase transition at βc ≈ 1.01
-    5. Character expansion: u(β) = β/4 at strong coupling
-    6. Plaquette → 1 at weak coupling (perturbative regime)
-    7. Asymptotic scaling: σ ∝ Λ²·exp(-β/b₀N)
-    8. σ decreases smoothly with β (no discontinuity)
--/
-theorem lattice_phase_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end LatticePhaseStructure
 
@@ -19213,19 +17820,6 @@ theorem confined_exists (Δ σ : ℝ) (hΔ : Δ > 0) (hσ : σ > 0) :
     ∃ (c : ConfinedPhaseT), c.massGap > 0 := by
   exact ⟨⟨Δ, hΔ, σ, hσ, 0, rfl⟩, hΔ⟩
 
-/-
-    Summary: Deconfinement Phase Transition
-    1. T < T_c: confined (mass gap, area law, ⟨P⟩ = 0)
-    2. T > T_c: deconfined (Debye screening, ⟨P⟩ > 0)
-    3. SU(2): 2nd order (Ising universality)
-    4. SU(3): 1st order (3-state Potts)
-    5. T_c/√σ ≈ 0.629 (SU(3)), 0.709 (SU(2))
-    6. Latent heat ~ N² (grows with gauge group)
-    7. Magnetic confinement persists above T_c (Linde problem)
-    8. SB DOF: 2(N²-1), approached from below at high T
--/
-theorem deconfinement_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end DeconfinementTransition
 
 /- ## Part CXXI: BRST Cohomology — Gauge Fixing and Physical State Space
@@ -19352,19 +17946,6 @@ noncomputable def kugoOjimaFromBRST (u0 : ℝ) : Prop := u0 = -1
     only color-singlet states. This is confinement from BRST. -/
 theorem brst_confinement (u0 : ℝ) (h : kugoOjimaFromBRST u0) :
     u0 = -1 := h
-
-/-
-    Summary: BRST Cohomology
-    1. BRST charge Q: nilpotent (Q²=0), increases ghost# by 1
-    2. Physical states = H⁰(Q) = ker(Q)/im(Q) at ghost# 0
-    3. Ghost fields cancel unphysical polarizations
-    4. Physical DOF: (N²-1)(d-2) per gluon color (16 for SU(3) in 4D)
-    5. Ghost net contribution = 0 (ghosts + antighosts cancel)
-    6. Slavnov-Taylor identities ensure gauge-invariant amplitudes
-    7. Kugo-Ojima u(0)=-1 ↔ complete BRST quartet mechanism ↔ confinement
-    8. Mass gap = lightest state in H⁰(Q)
--/
-theorem brst_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end BRSTCohomology
 
@@ -19493,19 +18074,6 @@ noncomputable def spectralThreshold (massGap : ℝ) : ℝ := massGap ^ 2
 theorem spectral_threshold_pos (m : ℝ) (hm : m > 0) :
     spectralThreshold m > 0 := by
   unfold spectralThreshold; positivity
-
-/-
-    Summary: Operator Product Expansion
-    1. OPE: O₁(x)O₂(0) = Σ C_n(x) O_n(0) (Wilson, 1969)
-    2. Leading non-perturbative correction: dimension 4 (gluon condensate)
-    3. Dimensions 1,2,3 vanish by symmetry in pure YM
-    4. Power corrections: ~ (Λ/Q)^d, higher d more suppressed
-    5. ⟨(α_s/π)G²⟩ ≈ 0.012 GeV⁴ (the leading condensate)
-    6. Dimension 6: two independent operators (suppressed)
-    7. Sum rules connect OPE to spectral function (mass gap)
-    8. Convergence: valid for Q >> Λ_QCD
--/
-theorem ope_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end OperatorProductExpansion
 
@@ -19649,19 +18217,6 @@ theorem af_vs_as_exclusive (gStar : ℝ) (hgStar : gStar > 0) :
     The mass gap emerges in this strong-coupling regime. -/
 theorem strong_coupling_regime (α_s : ℝ) (h : α_s > 1) :
     α_s > 0 := by linarith
-
-/-
-    Summary: Asymptotic Freedom vs Safety
-    1. AF: β₀ > 0 → g → 0 at UV (Gross-Wilczek-Politzer 1973)
-    2. β₀ = 11N_c/3 - 2N_f/3, positive for N_f < 11N_c/2
-    3. Pure SU(3): β₀ = 11, β₁ = 102 (both positive)
-    4. Running coupling: α(Q²) ~ 1/ln(Q²/Λ²) at large Q
-    5. Λ_QCD from dimensional transmutation: Λ = μ·exp(-1/(2bα))
-    6. Λ_QCD << μ at weak coupling (exponentially small)
-    7. Strong coupling at Q ~ Λ: perturbation theory breaks down
-    8. Mass gap emerges in non-perturbative strong-coupling regime
--/
-theorem af_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end AsymptoticFreedomVsSafety
 
@@ -21079,17 +19634,6 @@ theorem instanton_sectors_countable (Q : ℤ) :
     For U(1), dim SU(1) = 1² - 1 = 0 (no gauge copies). -/
 theorem abelian_no_gribov : (1 : ℕ) ^ 2 - 1 = 0 := by norm_num
 
-/-
-    Summary: Gribov Problem and Neuberger's Zero
-    1. Gribov copies are topologically inevitable for SU(N)
-    2. First Gribov region Omega: -div D >= 0 (bounded, convex)
-    3. Neuberger's zero: Z_FP = 0 from sign cancellation
-    4. GZ propagator D(p²) = p²/(p^4+gamma^4) vanishes at p² = 0
-    5. Refined GZ: D(0) > 0 from A-squared condensate (decoupling)
-    6. Both scenarios imply confinement via positivity violation
--/
-theorem gribov_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end GribovProblemNeuberger
 
 /- ## Part CXXV: Lattice Spectroscopy and the Mass Gap
@@ -21246,18 +19790,6 @@ theorem torus_volume' (L T : ℕ) (hL : L ≥ 4) (hT : T ≥ L) :
   have h4 : L ^ 3 = L * L * L := by ring
   nlinarith
 
-/-
-    Summary: Lattice Spectroscopy and the Mass Gap
-    1. Mass gap = lightest 0++ glueball mass
-    2. SU(3): m0 = 1710 (50)(80) MeV
-    3. Dimensionless ratio: m0/sqrt(sigma) = 3.55 (12)
-    4. Large-N universal: ratio varies < 2% for SU(3)-SU(6)
-    5. No phase transition: gap exists at all beta
-    6. Finite volume: m(L) = m_inf*(1 + O(exp(-mL)))
-    7. Continuum limit: a -> 0 extrapolation is smooth
--/
-theorem lattice_spectroscopy_summary' : (1 : ℕ) + 1 = 2 := rfl
-
 end LatticeSpectroscopyMassGap
 
 /- ## Part CXXVI: Infrared Coupling Freezing and Effective Charges
@@ -21398,20 +19930,6 @@ theorem commensurate_scale_relation' (aR aR' C : ℝ)
 theorem crewther_conformal' (aR aBj : ℝ) (h : aR = aBj) :
     aR - aBj = 0 := by linarith
 
-/-
-    Summary: Infrared Coupling Freezing and Effective Charges
-    1. Perturbative alpha_s has a Landau pole at Q = Lambda_QCD
-    2. Non-perturbatively: alpha_s(0) is FINITE (freezing)
-    3. Cornwall: dynamical gluon mass mg regulates the pole
-    4. Lattice (Taylor): alpha_T(0) approx 0.29
-    5. Bjorken: alpha_g1(0) approx 0.97
-    6. ALL schemes agree: 0 < alpha_s(0) < infinity
-    7. Running mass mg(Q²) -> 0 in UV (AF preserved)
-    8. Both DSE solutions give freezing
-    9. Freezing scale Q_freeze ~ mg defines the mass gap scale
--/
-theorem coupling_freezing_summary' : (1 : ℕ) + 1 = 2 := rfl
-
 end InfraredCouplingFreezing
 
 /- ## Part CXXVII: CP^{N-1} Sigma Model — 2D Analogue with Proven Mass Gap
@@ -21522,18 +20040,6 @@ theorem cpn_large_N_mass_survives (m : ℝ) (hm : m > 0) :
     | Large-N solvable | Yes            | Partially |
 -/
 theorem cpn_ym_parallel : True := trivial
-
-/-
-    Summary: CP^{N-1} Sigma Model
-    1. CP^{N-1} in 2D is the closest 2D analogue of 4D Yang-Mills
-    2. Asymptotic freedom: β₀ = N/(2π) > 0 (like YM β₀ = 11N/48π²)
-    3. Mass gap: m = Λ·exp(-2π/(Ng²)) via dimensional transmutation
-    4. Instantons: S = 2π|Q| (integer topological charge)
-    5. Mass gap is PROVEN in 2D (unlike 4D YM)
-    6. Large-N expansion: mass gap survives N → ∞
-    7. Confinement of CP^{N-1} charges (like quark confinement)
--/
-theorem cpn_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end CPNSigmaModel
 
@@ -21769,19 +20275,6 @@ theorem qcd2_confinement_energy (lambda L : ℝ) (hl : lambda > 0) (hL : L > 0) 
     qcd2ConfPotential (qcd2Tension lambda) L > 0 :=
   qcd2ConfPotential_pos _ _ (qcd2Tension_pos lambda hl) hL
 
-/-
-    Summary: 't Hooft Model (QCD₂ at Large N)
-    1. Confining potential: V(r) = σ·r with σ = λ/(2π) > 0
-    2. Mass gap: m²₁ = πλ > 0 (lightest meson)
-    3. Discrete spectrum: m²_n = πλ(n+1), n = 0, 1, 2, ...
-    4. Constant Regge slope: Δm² = πλ = 2π²σ
-    5. Level density: N(M²) ~ M²/(πλ) (linear growth)
-    6. Physical mass gap: m₁ = √(πλ) = π√(2σ)
-    7. Exact solution demonstrates confinement + mass gap rigorously in 2D
-    8. The 4D case remains open: no analogous exact solution technique
--/
-theorem thooft_qcd2_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end THooftQCD2Model
 
 /- ## Part CXXVII: Dyson-Schwinger Equations — Non-Perturbative Skeleton Expansion
@@ -21972,19 +20465,6 @@ theorem irFixedPointSU3_pos : irFixedPointSU3 > 0 := by
 theorem ir_fixed_point_finite : irFixedPointSU3 < 100 := by
   unfold irFixedPointSU3; norm_num
 
-/-
-    Summary: Dyson-Schwinger Equations
-    1. DSEs form infinite coupled tower relating n-point to (n+1)-point functions
-    2. Pure gauge: 2 propagator DSEs (gluon + ghost); N_f quarks adds N_f more
-    3. Two IR solutions: scaling (ghost-enhanced, D(0)=0) and decoupling (massive gluon, D(0)>0)
-    4. Sum rule: γ_A + 2γ_c = 0 (gluon + ghost anomalous dimensions)
-    5. Schwinger function zero-crossing signals positivity violation (confinement)
-    6. Lattice favors decoupling: m_gluon ≈ 0.5 GeV for SU(3)
-    7. Taylor coupling: α_T(0) ≈ 2.97 (finite IR fixed point) in scaling solution
-    8. Both solutions imply confinement: scaling via D(0)=0, decoupling via massive gluon
--/
-theorem dse_equations_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end DSEEquations
 
 /- ## Part CXXVIII: Vafa-Witten Theorem — Parity Cannot Spontaneously Break
@@ -22125,19 +20605,6 @@ theorem vw_mass_gap_is_scalar : scalarGlueballMass > 0 := by
     The experimental bound on the neutron EDM gives |θ| < 10⁻¹⁰.
     Vafa-Witten explains why θ = 0 is the natural vacuum choice. -/
 theorem strong_cp_natural : (0 : ℝ) ≤ Real.pi := le_of_lt Real.pi_pos
-
-/-
-    Summary: Vafa-Witten Theorem
-    1. Vector-like theories have positive path integral measure (real det)
-    2. Parity-odd operators have vanishing VEV: ⟨O_odd⟩ = 0
-    3. C, P, T cannot spontaneously break in QCD with m > 0
-    4. θ = 0 is the natural vacuum (energy minimum for χ_t > 0)
-    5. Chiral breaking SU(N_f)_L × SU(N_f)_R → SU(N_f)_V preserves parity
-    6. Mass gap state must be parity-even: 0⁺⁺ glueball (1.71 GeV)
-    7. Exception: Wilson fermions on lattice can break parity (Aoki phase)
-    8. Strong CP problem: θ = 0 is dynamically selected by Vafa-Witten
--/
-theorem vafaWitten_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end VafaWittenTheorem
 
@@ -22334,21 +20801,6 @@ theorem prepotential_real (a Lambda : ℝ) (hL : Lambda > 0) (ha : a > Lambda) :
     a ^ 2 / Lambda ^ 2 > 0 := by
   exact div_pos (sq_pos_of_pos (by linarith)) (sq_pos_of_pos hL)
 
-/-
-    Summary: Seiberg-Witten Theory
-    1. N=2 SU(2) SYM is exactly solvable via elliptic curve
-    2. Moduli space singular at u = ±Λ² (monopole/dyon massless)
-    3. BPS mass formula: M = |n_e·a + n_m·a_D|
-    4. At strong coupling: monopole condenses → dual Meissner effect → confinement
-    5. String tension σ = |a_D|·⟨M⟩/(2π) > 0
-    6. Soft breaking N=2 → N=1 → pure YM: mass gap ∝ √(m·Λ) > 0 persists
-    7. SU(N) has N confining vacua (matches Witten index)
-    8. Douglas-Shenker: general SU(N) curve with N-1 moduli
-    9. This is the strongest evidence that 4D YM has a mass gap:
-       exact calculation shows confinement survives to non-SUSY limit
--/
-theorem seibergWitten_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end SeibergWittenTheory
 
 /- ## Part CXXX: Atiyah-Singer Index Theorem in Gauge Theory —
@@ -22489,20 +20941,6 @@ theorem instanton_susceptibility (K : ℝ) (hK : K > 0) :
 theorem dilute_gas_positive (S_0 : ℝ) (hS : S_0 > 0) (N : ℕ) (hN : N ≥ 2) :
     S_0 ^ (2 * N) > 0 := by
   exact pow_pos hS _
-
-/-
-    Summary: Atiyah-Singer Index Theorem in Gauge Theory
-    1. Index theorem: n_+ - n_- = Q (topological charge)
-    2. Instanton (Q=1) has exactly 1 chiral zero mode per flavor
-    3. Total zero modes = 2N_f|Q| (both chiralities)
-    4. 't Hooft vertex: determinantal interaction from N_f zero modes
-    5. Moduli space: dim = 4N|Q| (8 for SU(2) Q=1)
-    6. Instantons suppress perturbation theory: weight ~ e^{-8π²/g²}
-    7. U(1)_A anomaly: ∂j⁵ ~ N_f Tr(F∧*F), gives η' mass
-    8. Topological susceptibility χ_t > 0 from instanton gas
-    9. Connects topology → spectrum → mass gap
--/
-theorem atiyahSinger_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end AtiyahSingerGauge
 
@@ -22647,20 +21085,6 @@ theorem strongCouplingStringTension_pos (N : ℕ) (hN : N ≥ 2) :
     This immediately gives confinement. -/
 theorem ks_strong_coupling_area_law (N R T : ℕ) (hN : N ≥ 2) (hR : R > 0) (hT : T > 0) :
     R * T > 0 := Nat.mul_pos hR hT
-
-/-
-    Summary: Part CXXXI — Kogut-Susskind Hamiltonian Lattice Gauge Theory
-    1. H = g²·Σ E² + (1/g²)·Σ (1 - Re Tr U_□): electric + magnetic
-    2. Strong coupling (g → ∞): Δ ≈ g²·C₂(fund) > 0 (electric gap)
-    3. Weak coupling: Δ ∝ exp(-const/g²) (non-perturbative)
-    4. Transfer matrix: Δ = -ln(λ₁)/a > 0 when λ₁ < 1
-    5. Gauss law: N²-1 constraints per site for SU(N)
-    6. Strong coupling string tension: σ·a² = ln(2N²) > 0
-    7. Area law at strong coupling: ⟨W(R,T)⟩ ~ exp(-σ·R·T)
-    8. Key insight: mass gap provably exists at strong coupling;
-       the challenge is showing it persists to the continuum limit
--/
-theorem ks_hamiltonian_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end KogutSusskindHamiltonian
 
@@ -22825,20 +21249,6 @@ theorem tc_ratio_decreasing :
     No known criterion gives deconfinement at zero temperature. -/
 theorem universal_confinement : ∀ N : ℕ, N ≥ 2 → N ≥ 2 := fun _ h => h
 
-/-
-    Summary: Part CXXXII — Confinement Criteria Unified Comparison
-    1. 10 independent confinement criteria cataloged
-    2. 6 directly imply mass gap > 0 (Wilson, KO, spectral, Polyakov3D, SVZ, dual)
-    3. 4 more are consistent with mass gap (center, GZ, EE, Regge)
-    4. 7 known implications between criteria
-    5. All criteria verified on the lattice for SU(3) at T = 0
-    6. T_c/√σ decreases with N: 0.709 (SU(2)) → 0.604 (SU(4))
-    7. No known criterion predicts deconfinement at T = 0
-    8. Key insight: the mass gap is overdetermined — multiple independent
-       lines of evidence all point to Δ > 0
--/
-theorem confinement_criteria_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end ConfinementCriteria
 
 /- ## Part CXXXIII: Lattice Monte Carlo and Mass Extraction
@@ -22939,18 +21349,6 @@ theorem largeN_limit : (3.55 : ℝ) > 0 := by norm_num
 
 /-- SU(3) correction: M(0++)/√σ = 3.55 + 2.7/9 ≈ 3.85 (close to measured 3.89). -/
 theorem su3_glueball_check : (3.55 : ℝ) + 2.7 / 9 > 3.8 := by norm_num
-
-/-
-    Summary: Part CXXXIII — Lattice Monte Carlo and Mass Extraction
-    1. Effective mass from correlator decay: m_eff(t) = -ln(C(t+1)/C(t))
-    2. Decaying correlator → positive effective mass → mass gap
-    3. SU(3) glueball spectrum: 0++ (1.71 GeV) < 2++ (2.46) < 0-+ (2.56)
-    4. Mass gap = lightest glueball = 0++ at 3.89√σ ≈ 1.71 GeV
-    5. Finite volume: m(L) → m(∞) + O(exp(-mL)) exponentially fast
-    6. Large-N: M/√σ → 3.55 + 2.7/N² (universal at N → ∞)
-    7. SU(3): computed 3.85 vs measured 3.89 (excellent agreement)
--/
-theorem lattice_mc_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end LatticeMonteCarlo
 
@@ -23109,20 +21507,6 @@ theorem large_N_stable_mesons (width : ℝ) (N : ℕ) (hN : N ≥ 2)
     width ≤ 1 / 2 := by
   rw [hwidth]; exact large_N_suppression N hN
 
-/-
-    Summary: 't Hooft Model (QCD₂)
-    1. SU(N) gauge theory + fundamental quarks in 1+1D
-    2. Exactly solvable at large N ('t Hooft 1974)
-    3. String tension: σ = λ/(2π) where λ = g²N
-    4. Meson spectrum: m²_n = πλ(n+1), exact and linear
-    5. Mass gap: m₀ = √(πλ) (lightest meson)
-    6. Regge slope: α' = 1/(πλ) = 1/(2π²σ)
-    7. Exact confinement: quark propagator has no real pole
-    8. Large-N: mesons stable, scattering ~ 1/N → 0
-    9. Template for 4D: Regge + confinement + mass gap
--/
-theorem thooft_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end tHooftModelQCD2
 
 
@@ -23244,18 +21628,6 @@ theorem intersecting_loops_bounded (w_int w_max : ℝ) (h : |w_int| ≤ w_max)
     (hm : w_max > 0) :
     w_int < w_max + 1 := by linarith [abs_le.mp h]
 
-/-
-    Summary: Migdal-Makeenko Loop Equations
-    1. Non-perturbative equations of motion for Wilson loops
-    2. Infinite hierarchy: loop of shape C → loops of simpler shapes
-    3. Factorization at large N: W(C₁∪C₂) = W(C₁)·W(C₂) + O(1/N²)
-    4. Master field at N = ∞: path integral localizes
-    5. Area law W(C) = exp(-σ·Area) ↔ confinement
-    6. Connection to string theory via Nambu-Goto action
-    7. Eguchi-Kawai reduction: single-plaquette captures dynamics at large N
--/
-theorem loop_eq_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end MigdalMakeenkoLoopEquations
 
 /- ## Part CXXXI: Random Matrix Theory and Spectral Statistics
@@ -23370,18 +21742,6 @@ theorem unfolding_unit_mean (sum_spacings n : ℝ) (hn : n > 0) (hsum : sum_spac
 theorem dirac_gap_from_mass_gap (m_gap lambda_min : ℝ)
     (h_gap : m_gap > 0) (h_bound : lambda_min ≥ m_gap / 2) :
     lambda_min > 0 := by linarith
-
-/-
-    Summary: Random Matrix Theory and Spectral Statistics
-    1. Dyson classification: β = 1 (GOE/SU(2)), 2 (GUE/SU(N≥3)), 4 (GSE)
-    2. Level repulsion: P(0) = 0, prevents spectral degeneracies
-    3. Wigner semicircle: universal eigenvalue density for large matrices
-    4. Spectral rigidity: GUE spacing ratio 0.60 >> Poisson 0.39
-    5. Banks-Casher: ρ(0) > 0 ↔ chiral breaking ↔ mass gap
-    6. Tracy-Widom: edge fluctuations scale as N^{-2/3}
-    7. Universal predictions confirmed on lattice: mass gap spectral structure
--/
-theorem rmt_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end RandomMatrixTheory
 
@@ -23523,18 +21883,6 @@ theorem universality_test (m_W m_S m_I : ℝ)
   rw [abs_lt]
   constructor <;> linarith
 
-/-
-    Summary: Scale Setting and Physical Mass Gap Determination
-    1. Sommer parameter r₀ ≈ (395 MeV)⁻¹ sets the distance scale
-    2. Wilson flow √t₀, w₀ provide precision alternatives
-    3. Physical mass gap: m₀⁺⁺ = 1710 (50)(80) MeV
-    4. m₀/√σ = 3.55 (12) — universal dimensionless ratio
-    5. Continuum extrapolation: O(a²) leading artifacts
-    6. Large-N stable: ratio varies < 1% for SU(3)-SU(8)
-    7. Multiple actions and scales give consistent results (universality)
--/
-theorem scale_setting_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end ScaleSettingPhysicalMassGap
 
 /- ## Part CXXXIII: Vacuum Wavefunctional — Schrödinger Picture of Yang-Mills
@@ -23634,17 +21982,6 @@ theorem coulomb_ham_positive_definite (e_tr b coul : ℝ)
     (he : e_tr > 0) (hb : b > 0) (hc : coul ≥ 0) :
     e_tr + b + coul > 0 := by linarith
 
-/-
-    Summary: Vacuum Wavefunctional
-    1. Vacuum Ψ₀[A] is a functional of gauge field configurations
-    2. Perturbative kernel K(p) = 1/(2|p|) → gapless (free photons)
-    3. Massive kernel K(p) = 1/(2√(p²+m²)) → mass gap m
-    4. Mass gap = spectral gap between E₀ and E₁
-    5. Temporal gauge A₀ = 0 + Gauss law → quantum mechanics on orbit space
-    6. Strong coupling: Ψ₀ ~ exp(-σ∫|A|) signals confinement
--/
-theorem vacuum_wavefunctional_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end VacuumWavefunctional
 
 /- ## Part CXXXIV: Confinement Criteria Summary — Necessary and Sufficient Conditions
@@ -23729,18 +22066,6 @@ theorem confinement_hierarchy (area_law center_unbr monopole_cond : Prop)
     (h_center : center_unbr → True)
     (h_monopole : monopole_cond → True) :
     True := trivial
-
-/-
-    Summary: Confinement Criteria
-    1. Wilson (area law): most direct, σ > 0 ↔ Δ > 0
-    2. Kugo-Ojima (u=-1): BRST cohomology, lattice ~95%
-    3. Center symmetry: unbroken below T_c, broken above
-    4. Dual superconductor: monopole condensation
-    5. All equivalent to mass gap in pure gauge theory
-    6. Spatial tension σ_s > 0 even above T_c (3D confinement persists)
-    7. Casimir scaling (short range) → N-ality screening (long range)
--/
-theorem confinement_criteria_summary_rfl : (1 : ℕ) + 1 = 2 := rfl
 
 end ConfinementCriteriaSummary
 
@@ -23840,19 +22165,6 @@ theorem jaffe_witten_requirement (p0 p_sq delta : ℝ)
   · linarith [sq_nonneg delta]
   · linarith
 
-/-
-    Summary: Millennium Prize Statement
-    1. Three requirements: existence + axioms + mass gap Δ > 0
-    2. Must work for ANY compact simple G (not just SU(3))
-    3. Theory must be non-trivial (S ≠ identity)
-    4. Pure gauge theory (no quarks)
-    5. 2D completely solved; 3D and 4D remain open
-    6. Lattice provides evidence but not proof
-    7. No partial result achieves all three simultaneously
-    8. Jaffe-Witten formulation: spectral condition on Poincaré generators
--/
-theorem millennium_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end MillenniumPrizeStatement
 
 /- ## Part CXXXVI: Lattice Strong-to-Weak Coupling Continuity
@@ -23936,18 +22248,6 @@ theorem scaling_limit (xi_lat a xi_phys : ℝ) (h : xi_phys = xi_lat * a)
     (hxi : xi_phys > 0) :
     xi_phys > 0 := hxi
 
-/-
-    Summary: Strong-to-Weak Coupling Continuity
-    1. Strong coupling: m₀ ~ -ln(β/2N²) >> 0 (trivially gapped)
-    2. No phase transition in SU(N): Z(β) is analytic
-    3. Mass gap is a continuous function of β
-    4. Contrast: U(1) compact HAS a phase transition
-    5. Correlation length finite at all β
-    6. Implication: mass gap persists to the continuum limit
-    7. Rigorous gap: need to bound m(β) away from 0 as β → ∞
--/
-theorem strong_weak_continuity_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end StrongWeakContinuity
 
 /- ## Part CXXXVII: Mass Gap Summary — 21,000 Lines of Evidence
@@ -24015,19 +22315,6 @@ theorem dimension_4_is_hard : (4 : ℕ) > 3 := by omega
       instantons, monopoles, vortices, anomalies, phase transitions, ... -/
 theorem formalization_stats :
     totalSections = 137 ∧ sessionSections = 12 := ⟨rfl, rfl⟩
-
-/-
-    Summary: Mass Gap Evidence
-    1. Lattice: m₀ = 1710 MeV, m₀/√σ = 3.55 (universal)
-    2. Strong coupling: trivially gapped, no phase transition
-    3. 2D models: CPN, GN, 't Hooft all have proven mass gap
-    4. Confinement: σ > 0 implies Δ > 0
-    5. Propagator: GZ/DSE/FRG all give massive gluon
-    6. Spectrum: glueball hierarchy, level repulsion
-    7. IR freezing: α_s(0) finite, mg ~ 500 MeV
-    8. Open: rigorous 4D construction
--/
-theorem mass_gap_evidence_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end MassGapSummary
 
@@ -24120,17 +22407,6 @@ theorem mass_gap_independent_of_sources (m_gap m_gluelump : ℝ)
     (h_gap : m_gap > 0) :
     m_gap > 0 := h_gap
 
-/-
-    Summary: Adjoint String Breaking
-    1. Fundamental (N-ality k=1): σ_F > 0 always (true confinement)
-    2. Adjoint (N-ality k=0): σ_adj → 0 at large R (screening)
-    3. Casimir scaling at short R: σ_adj/σ_F = C₂(adj)/C₂(fund)
-    4. String breaks at R_b = 2·m_gluelump/σ_adj
-    5. Mass gap m₀ exists regardless: it's a vacuum property
-    6. Gluelump mass ≈ 0.87 GeV, mass gap ≈ 1.71 GeV
--/
-theorem adjoint_breaking_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end AdjointStringBreaking
 
 /- ## Part CXXXIX: Color Glass Condensate and Saturation — UV Completion of Confinement
@@ -24187,16 +22463,6 @@ theorem bk_unitarity (S : ℝ) (hS0 : 0 ≤ S) (hS1 : S ≤ 1) :
     non-perturbative physics (large x). -/
 theorem saturation_to_mass_gap (Q_s Lambda : ℝ) (h : Q_s = Lambda) (hL : Lambda > 0) :
     Q_s > 0 := by linarith
-
-/-
-    Summary: Color Glass Condensate
-    1. Saturation scale Q_s: where gluon occupation ~ 1/α_s
-    2. Q_s grows with A^{1/3} (nuclear enhancement)
-    3. CGC = classical regime (high occupation)
-    4. BK equation: unitarized evolution (S - S² ≥ 0)
-    5. Q_s at large x → Λ_QCD: bridge to mass gap scale
--/
-theorem cgc_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end ColorGlassCondensate
 
@@ -24268,17 +22534,6 @@ theorem fesr_consistency (integral_had integral_pqcd : ℝ)
 theorem weinberg_first_sum_rule (rho_V rho_A f_pi : ℝ)
     (h : rho_V - rho_A = f_pi ^ 2) (hf : f_pi > 0) :
     rho_V > rho_A := by nlinarith [sq_nonneg f_pi]
-
-/-
-    Summary: Quark-Hadron Duality
-    1. Mass gap = onset of hadronic spectral function
-    2. Below Δ: ρ(s) = 0 (no states)
-    3. Above Δ: ρ(s) > 0 (hadronic states)
-    4. Duality: hadron sum ≈ pQCD above threshold s₀ ≈ 2.25 GeV²
-    5. FESR constrains mass gap from perturbative physics
-    6. Weinberg sum rules: mass gap consistent with chiral symmetry
--/
-theorem quark_hadron_duality_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end QuarkHadronDuality
 
@@ -24360,17 +22615,6 @@ theorem instanton_generates_chi (n rho4 : ℝ) (hn : n > 0) (hr : rho4 > 0) :
     Convergence requires E_n - E_0 > Δ > 0 (mass gap). -/
 theorem chi_t_requires_gap' (delta : ℝ) (hd : delta > 0) :
     delta ^ 2 > 0 := by positivity
-
-/-
-    Summary: Topological Susceptibility and Witten-Veneziano
-    1. χ_t^{1/4} = 191 (5) MeV in pure SU(3) (lattice)
-    2. Chiral limit: χ_t → 0 (anomaly screening by quarks)
-    3. WV formula: m²_{η'} = 2N_f·χ_t/f²_π connects topology to mass
-    4. η' mass (958 MeV) >> pion mass (135 MeV): topological origin
-    5. Large N: η' becomes 9th Goldstone (m_{η'} ~ 1/√N)
-    6. χ_t convergence requires mass gap Δ > 0
--/
-theorem topological_susceptibility_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end TopologicalSusceptibilityWV
 
@@ -24460,19 +22704,6 @@ theorem scheme_independent_ratios (m1_a m2_a m1_b m2_b c : ℝ)
     m1_b / m2_b = m1_a / m2_a := by
   rw [h1, h2, mul_div_mul_left _ _ (ne_of_gt hc)]
 
-/-
-    Summary: Dimensional Transmutation
-    1. Classical YM is scale-invariant (no mass parameter)
-    2. Quantization introduces Λ_QCD via trace anomaly
-    3. Λ_QCD = μ·exp(-1/(2b₀α)) — exponentially small at weak coupling
-    4. Physical value: Λ_QCD ≈ 300 MeV (MS-bar, N_f = 0)
-    5. Mass gap: m₀ = 5.7 · Λ_QCD ≈ 1710 MeV
-    6. ALL masses proportional to Λ: single-parameter spectrum
-    7. Mass ratios are scheme-independent
-    8. Dimensional transmutation is the ONLY source of mass in pure YM
--/
-theorem dimensional_transmutation_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end DimensionalTransmutation
 
 /- ## Part CXLIII: Lattice Gauge Theory — Wilson's Formulation
@@ -24559,19 +22790,6 @@ theorem lattice_mass_gap_pos (ratio : ℝ) (h0 : 0 < ratio) (h1 : ratio < 1) :
   rw [neg_pos]
   exact Real.log_neg h0 h1
 
-/-
-    Summary: Wilson's Lattice Gauge Theory
-    1. UV regulator via lattice spacing a
-    2. EXACT gauge invariance on the lattice
-    3. Wilson action: S = β Σ [1 - (1/N) Re Tr U_P]
-    4. Continuum limit: β → ∞ (a → 0)
-    5. Strong coupling: σ·a² ~ -ln(β/2N²) > 0
-    6. Creutz ratio extracts string tension
-    7. Transfer matrix: mass gap = -ln(λ₁/λ₀) > 0
-    8. Monte Carlo: numerical computation of observables
--/
-theorem wilson_lattice_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end WilsonLatticeFormulation
 
 /- ## Part CXLIV: Step Scaling Function — Non-Perturbative Running Coupling
@@ -24646,18 +22864,6 @@ theorem step_scaling_continuum (sigma_cont c a_over_L : ℝ)
 theorem pure_su3_no_walking (sigma u : ℝ) (h : sigma > u + 0.01) (hu : u > 0) :
     sigma - u > 0 := by linarith
 
-/-
-    Summary: Step Scaling Function
-    1. σ(u) = ḡ²(2L) defines non-perturbative running
-    2. σ(u) > u for AF theories (coupling grows toward IR)
-    3. Schrödinger functional provides gauge-invariant coupling
-    4. ALPHA: α_s(M_Z) = 0.118(3) from non-perturbative running
-    5. ~9 steps connect 100 GeV to mass gap scale (300 MeV)
-    6. Continuum extrapolation: O(a²) artifacts
-    7. Pure SU(3): no walking, steady growth toward confinement
--/
-theorem step_scaling_summary : (1 : ℕ) + 1 = 2 := rfl
-
 end StepScalingFunction
 
 /- ## Part CXLV: Positivity Violation and Gluon Confinement
@@ -24729,18 +22935,6 @@ theorem ghost_enhancement' (kappa : ℝ) (hk : kappa > 0) :
 theorem mass_gap_lightest_physical (m_gap m_glueball : ℝ)
     (h : m_glueball = m_gap) (hm : m_gap > 0) :
     m_glueball > 0 := by linarith
-
-/-
-    Summary: Positivity Violation and Gluon Confinement
-    1. Free particles: spectral density ρ(s) ≥ 0 (Källén-Lehmann)
-    2. Confined gluons: ρ(s) < 0 for some s (positivity violated)
-    3. Decoupling: D(0) > 0 (lattice-confirmed)
-    4. Complex poles: gluon has complex mass (unstable)
-    5. Schwinger function crosses zero at t ≈ 0.5 fm
-    6. Ghost enhancement: G(p²) ~ 1/p^{2+2κ} with κ > 0
-    7. Only color singlets have ρ ≥ 0: mass gap = lightest singlet
--/
-theorem positivity_violation_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end PositivityViolationGluonConfinement
 
@@ -24929,20 +23123,6 @@ theorem instanton_param_suppressed (g_sq : ℝ) (hg : g_sq > 0) :
   apply div_pos _ hg
   apply mul_pos (by norm_num : (8 : ℝ) > 0)
   exact sq_pos_of_pos Real.pi_pos
-
-/-
-    Summary: Nekrasov Partition Function
-    1. Z = Z_pert · Z_inst (factorization)
-    2. Z_inst = Σ_k q^k · Z_k (instanton expansion)
-    3. Z_k = sum over Young diagrams of weight factors
-    4. Equivariant localization reduces infinite-dim integral to finite sum
-    5. ADHM dim = 4kN; SU(2) k=1 has 8 real dimensions, 2 fixed points
-    6. Nekrasov-Okounkov: lim ε₁ε₂ ln Z = F_SW (proves Seiberg-Witten)
-    7. NS limit (ε₂→0): connects to quantum integrable systems
-    8. Self-dual Ω-background: topological string amplitudes
-    9. Higher instantons suppressed: q^{k+1} < q^k for q < 1
--/
-theorem nekrasov_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end NekrasovPartitionFunction
 
@@ -25141,21 +23321,6 @@ theorem bion_no_ambiguity (real_amplitude : ℝ) :
     -- Real amplitude (no imaginary part), unlike instantons
     -- This is because bions have zero topological charge
     (real_amplitude : ℝ) = real_amplitude := rfl
-
-/-
-    Summary: Magnetic Bions and Semi-Classical Confinement
-    1. Deformed YM on R³ × S¹: SU(N) → U(1)^{N-1} (abelianization)
-    2. N types of monopole-instantons, action S₀ = 8π²/(g²N)
-    3. Magnetic bions [MᵢM̄ᵢ₊₁]: neutral, attractive, action 2S₀/N
-    4. Bion amplitude ~ ζ² ~ exp(-2S₀/N) (doubly suppressed)
-    5. Dual photon mass gap: m² ~ (N/L)²·exp(-2S₀/N) > 0
-    6. String tension from Polyakov-type mechanism in 3D effective theory
-    7. Sine law for k-string tensions emerges naturally
-    8. Double-trace deformation preserves center symmetry for all L
-    9. Continuity conjecture: mass gap connected small L → large L → R⁴
-    10. Closest existing result to a rigorous YM mass gap proof
--/
-theorem bion_confinement_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end MagneticBionConfinement
 
@@ -25405,22 +23570,6 @@ theorem af_helps_continuum (g_at_a : ℝ → ℝ)
     (h_decreasing : ∀ a₁ a₂ : ℝ, 0 < a₁ → a₁ < a₂ → g_at_a a₁ < g_at_a a₂)
     (a1 a2 : ℝ) (ha1 : 0 < a1) (ha2 : a1 < a2) :
     g_at_a a1 < g_at_a a2 := h_decreasing a1 a2 ha1 ha2
-
-/-
-    Summary: Balaban's Renormalization Group
-    1. Block-spin RG: integrate out UV modes step by step
-    2. Effective spacing doubles: a_k = 2^k · a₀
-    3. Running coupling controlled at weak bare coupling
-    4. Action = classical + small fluctuations + large field (instanton)
-    5. d=2: complete proof of continuum limit
-    6. d=3: UV stability proved (Balaban 1984)
-    7. d=4: partial UV stability (finite steps controlled)
-    8. Gap to Millennium Prize: extend to infinitely many steps in d=4
-    9. Gauge invariance preserved exactly at every RG step
-    10. Cluster expansion: modern approach to completing the program
-    11. YM non-trivial (unlike φ⁴): AF ensures meaningful continuum limit
--/
-theorem balaban_rg_summary : (1 : ℕ) + 1 = 2 := rfl
 
 end BalabanRenormalizationGroup
 
@@ -26315,22 +24464,6 @@ theorem banks_zaks_window :
     -- The conformal window starts somewhere between N_f = 8 and N_f = 12
     -- Lattice studies suggest N_f^* ≈ 10-12 for SU(3) fundamental
     (33 : ℕ) - 2 * 16 = 1 := by omega
-
-/-- Miransky scaling: mass gap near the conformal boundary.
-    m ~ Λ × exp(-C/√(N_f^* - N_f))
-    This "essential singularity" means the mass gap turns on very steeply
-    below N_f^* — it's not a power law but exponentially suppressed. -/
-theorem miransky_scaling_type :
-    -- BKT-type (Berezinskii-Kosterlitz-Thouless) scaling
-    -- Also called "Miransky scaling" or "conformal phase transition"
-    -- The exponent: 1/√(N_f^* - N_f) diverges as N_f → N_f^*
-    -- So m → 0 faster than any power: lim_{δ→0} δ^n × e^{-C/√δ} = 0 for all n
-    -- This is an "infinite-order" phase transition
-    -- Compare: ordinary (2nd order) transition: m ~ |T - T_c|^ν (power law)
-    -- The Miransky scaling has ν = ∞ (infinite critical exponent)
-    -- Physical QCD (N_f = 6): far from the window, mass gap ~ Λ_QCD ~ 200 MeV
-    -- The exponent type: 1/2 (square root in the denominator)
-    (1 : ℕ) + 1 = 2 := rfl  -- Square root = exponent 1/2
 
 /-- Walking technicolor: at N_f slightly below N_f^*, the coupling "walks"
     (runs very slowly) over a large range of scales before eventually confining.
