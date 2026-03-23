@@ -1,7 +1,7 @@
 {
   "slug": "erdos-361",
-  "title": "Erdős #361",
-  "phase": "OBSERVE",
+  "title": "Erd\u0151s #361",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -11,30 +11,54 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Empty set is non-representing for n > 0",
+      "Non-representing is monotone under subset inclusion",
+      "Singleton {1} is non-representing for n >= 2",
+      "Sum-bounded sets are non-representing",
+      "Full range is optimal when sum < n",
+      "maxNonReprSize >= 1 for c >= 1, n >= 2"
+    ],
+    "open": [
+      "Asymptotic growth rate of maxNonReprSize (conjectured Theta(sqrt(n)))",
+      "Whether maxNonReprSize depends on n irregularly"
+    ],
+    "goal": "Formalize structural properties; asymptotic growth is axiomatized as open"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-13T00:56:39.043Z",
+    "phase": "COMPLETED",
+    "since": "2026-03-23T20:30:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Eliminated all sorries, fixed incorrect theorem, added structural lemmas.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None \u2014 formalization complete. 2 axioms remain (open Erd\u0151s conjecture).",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: 0 sorries, 2 axioms (open Erd\u0151s conjectures), 8 theorems proved.",
+    "builtItems": [
+      "nonRepresenting_empty: empty set is non-representing",
+      "nonRepresenting_subset: monotone under subsets",
+      "singleton_one_nonRepr: {1} non-representing for n >= 2",
+      "nonRepresenting_of_sum_lt: if sum(A) < n then A non-representing",
+      "maxNonRepr_full_of_sum_lt: when sum < n, full range is optimal (corrects former false theorem)",
+      "maxNonRepr_ge_one: maxNonReprSize >= 1 for c >= 1, n >= 2"
+    ],
+    "insights": [
+      "The former maxNonRepr_large_n theorem was FALSE: claimed eventually all of {1,...,floor(cn)} is non-repr for c<1, but sum grows as Theta(c^2 n^2) which exceeds n",
+      "open Classical needed for Finset.filter DecidablePred synthesis with NonRepresenting",
+      "Mathlib.Analysis.Asymptotics.Asymptotics was split into Defs + Lemmas in newer Mathlib",
+      "Finset.le_sup is the key tool for showing lower bounds on Finset.sup definitions",
+      "Finset.sum_le_sum_of_subset_of_nonneg gives subset sum monotonicity for nat-valued functions",
+      "Nat.floor_pos.mpr bridges (1:R) <= x to 0 < floor(x)"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #361 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $c>0$ and $n$ be some large integer. What is the size of the largest $A\\subseteq \\{1,\\ldots,\\lfloor cn\\rfloor\\}$ such that $n$ is not a sum of a subset of $A$? Does this depend on $n$ in an irregular way?\n\n\n\n\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #360\n- Problem #362\n- Problem #2\n- Problem #39\n- Problem #1\n- Problem #4\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+    "markdown": ""
   },
   "tags": [
     "erdos"
@@ -50,18 +74,18 @@
     "mathlib": []
   },
   "started": "2026-01-13T00:56:39.043Z",
-  "lastUpdate": "2026-03-13T07:52:17.046Z",
+  "lastUpdate": "2026-03-23T20:30:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos361Problem.lean",
       "filename": "Erdos361Problem.lean",
-      "lineCount": 101,
-      "theoremCount": 5,
+      "lineCount": 146,
+      "theoremCount": 8,
       "axiomCount": 2,
       "defCount": 5,
-      "sorryCount": 3,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos361Problem.lean"
     }
