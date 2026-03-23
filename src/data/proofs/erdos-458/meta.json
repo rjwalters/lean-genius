@@ -35,52 +35,64 @@
       "Chebyshev's theorem gives $\\log \\text{lcm}(1, \\ldots, n) = \\psi(n) \\sim n$, so asymptotically the ratio $\\text{lcm}(1,\\ldots,p_{k+1})/\\text{lcm}(1,\\ldots,p_k) \\approx e^{p_{k+1}-p_k}$.",
       "The formalization uses `Finset.lcm` over `Finset.range` and `Nat.nth` for the prime enumeration, with small cases verified via `native_decide`."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime numbers and prime enumeration",
+      "Least common multiple (LCM)",
+      "Chebyshev's theorem on prime distribution",
+      "Legendre's conjecture (for conditional results)"
+    ]
   },
   "sections": [
     {
       "id": "imports",
-      "title": "Imports and Overview",
+      "title": "Imports, Overview, and Setup",
       "startLine": 1,
       "endLine": 33,
-      "summary": "Module imports and problem overview for LCM inequality between consecutive primes."
+      "summary": "Module docstring introducing the conjecture with Erdős-Graham's 'almost certainly true' assessment and the two obstacles (controlling primes $q$ with $p_k < q^2 < p_{k+1}$, and small prime complications). Imports full Mathlib, opens `Nat Finset BigOperators`.",
+      "mathContext": "The conjecture: $\\text{lcm}(1, \\ldots, p_{k+1}-1) < p_k \\cdot \\text{lcm}(1, \\ldots, p_k)$. Logarithmically: $\\psi(p_{k+1}-1) - \\psi(p_k) < \\log p_k$."
     },
     {
       "id": "lcm-function",
-      "title": "The LCM Function",
+      "title": "The LCM Function and Properties",
       "startLine": 34,
       "endLine": 91,
-      "summary": "Define lcm_upto using Finset.lcm and verify small values: lcm(1,...,5) = 60, etc."
+      "summary": "Defines `lcm_upto n = (Finset.Icc 1 n).lcm id`. Proves `lcm_upto_one`, `lcm_upto_pos` (LCM is always positive via `Finset.lcm_eq_zero_iff`), five small values via `native_decide`, divisibility monotonicity `lcm_upto_dvd_mono`, and two axioms: `lcm_upto_prime_step` (LCM is constant between primes) and `lcm_upto_at_prime` ($\\text{lcm}(p) = p \\cdot \\text{lcm}(p-1)$ for prime $p$).",
+      "mathContext": "$\\text{lcm\\_upto}(n) = \\prod_{p \\leq n} p^{\\lfloor \\log_p n \\rfloor}$. Growth pattern: $\\text{lcm\\_upto}(n) = \\text{lcm\\_upto}(n-1)$ when $n$ is composite with no new prime powers, and $\\text{lcm\\_upto}(p) = p \\cdot \\text{lcm\\_upto}(p-1)$ at primes."
     },
     {
       "id": "nth-prime",
       "title": "The nth Prime",
       "startLine": 93,
       "endLine": 116,
-      "summary": "Define nthPrime using Nat.nth and prove basic properties."
+      "summary": "`nthPrime k = Nat.nth Nat.Prime k` (noncomputable). Four axioms for specific values ($p_0 = 2, \\ldots, p_3 = 7$). Two theorems: `nthPrime_prime` (every $p_k$ is prime, via `Nat.nth_mem_of_infinite`) and `nthPrime_strictMono` (strict monotonicity, via `Nat.nth_strictMono`).",
+      "mathContext": "$p_k = \\text{Nat.nth}\\;\\{n \\in \\mathbb{N} : \\text{Prime}(n)\\}\\;k$, the $(k+1)$-th prime in increasing order."
     },
     {
       "id": "main-conjecture",
-      "title": "The Main Conjecture",
+      "title": "The Main Conjecture and Connection to Legendre",
       "startLine": 118,
       "endLine": 158,
-      "summary": "State the conjecture and explain the connection to Legendre's conjecture."
+      "summary": "`Erdos458Conjecture`: $\\forall k \\geq 1, \\text{lcm\\_upto}(p_{k+1}-1) < p_k \\cdot \\text{lcm\\_upto}(p_k)$. Then `LegendreConjecture` restated locally, and `legendre_implies_gap_bound` (axiom): Legendre implies $p_{k+1} - p_k < \\sqrt{p_k} + 1$.",
+      "mathContext": "The conditional: Legendre $\\Rightarrow$ gap $< \\sqrt{p_k} + 1$ $\\Rightarrow$ at most one prime $q$ with $q^2 \\in (p_k, p_{k+1})$ $\\Rightarrow$ controlled LCM growth $\\Rightarrow$ Erdős #458."
     },
     {
-      "id": "small-cases",
-      "title": "Verified Small Cases",
+      "id": "small-cases-and-asymptotic",
+      "title": "Verified Small Cases and Chebyshev Asymptotic",
       "startLine": 160,
-      "endLine": 179,
-      "summary": "Verify the conjecture holds for k=1,2 by computation, plus Chebyshev asymptotic."
+      "endLine": 181,
+      "summary": "Two verified cases: $k=1$ ($12 < 18$) and $k=2$ ($60 < 300$) via `native_decide`. Axiom `chebyshev_psi`: $c_1 n < \\log \\text{lcm\\_upto}(n) < c_2 n$ for constants $0 < c_1 < 1 < c_2$.",
+      "mathContext": "Chebyshev (1852): $\\psi(n) \\sim n$, so $\\text{lcm\\_upto}(n) \\sim e^n$. The conjecture concerns the fine structure of this growth between consecutive primes."
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #458 about the growth of LCM between consecutive primes. The conjecture remains open because proving it requires controlling prime gaps, essentially requiring Legendre's conjecture. Small cases are verified computationally.",
-    "implications": "This connects the fine structure of LCM growth to deep questions about prime distribution. A proof would have implications for understanding how composite numbers fill gaps between primes.",
+    "summary": "This formalization defines $\\text{lcm\\_upto}(n)$ via `Finset.lcm`, defines the $k$-th prime via `Nat.nth`, and states Erdős Problem #458 as a Lean `Prop`. The conjecture remains open because proving it requires controlling prime gaps at a level close to Legendre's conjecture. Two small cases ($k = 1, 2$) are verified computationally, and the connection to Legendre's conjecture and Chebyshev's asymptotic is formalized.",
+    "implications": "**Connections to Prime Distribution Theory**\n\nErdős #458 connects the fine structure of LCM growth to deep questions about prime distribution:\n\n1. **LCM and the Chebyshev $\\psi$ function**: Since $\\log \\text{lcm}(1,\\ldots,n) = \\psi(n)$, the conjecture translates to $\\psi(p_{k+1}-1) - \\psi(p_k) < \\log p_k$, bounding the local growth of $\\psi$ between consecutive primes.\n\n2. **Conditional on Legendre**: Legendre's conjecture would imply prime gaps $p_{k+1} - p_k < \\sqrt{p_k} + 1$, limiting the number of new prime powers in the gap to at most one, which would suffice for Erdős #458.\n\n3. **Unconditional progress**: Baker-Harman-Pintz (2001) proved primes in intervals of length $x^{0.525}$, but this alone may not suffice — Erdős #458 needs control over prime *powers* in the gap, not just the gap length.\n\n4. **Relationship to prime power distribution**: The conjecture is really about how prime *powers* (not just primes) are distributed between consecutive primes. A prime $q$ with $p_k < q^2 < p_{k+1}$ contributes $q$ to the LCM ratio, making the problem harder than controlling prime gaps alone.",
     "openQuestions": [
-      "Does Legendre's conjecture imply Erdős #458?",
-      "Can the conjecture be proved unconditionally for sufficiently large k?",
-      "What is the relationship to the Riemann Hypothesis?"
+      "Does Legendre's conjecture formally imply Erdős #458? The formalization states a conditional gap bound, but the full implication from gap control to the LCM inequality remains to be formalized.",
+      "Can the axioms `lcm_upto_prime_step` and `lcm_upto_at_prime` be proved from Mathlib's `Finset.lcm` lemmas? This would reduce the axiom count from 8 to 6.",
+      "Can the conjecture be verified computationally for larger $k$ using `native_decide` or certified computation? The current verification covers only $k = 1, 2$.",
+      "What is the sharpest version: is $\\text{lcm}(1,\\ldots,p_{k+1}-1) / \\text{lcm}(1,\\ldots,p_k) = O(p_k^{1/2})$ or even $O(\\log p_k)$?",
+      "Can the nthPrime value axioms ($p_0 = 2$, etc.) be eliminated by proving them from the `Nat.nth` definition, perhaps using a decidable instance for `Nat.Prime` with `native_decide`?"
     ]
   },
   "leanFile": {
@@ -97,5 +109,62 @@
     "axiomCount": 8,
     "theoremCount": 12,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "legendre-partial",
+      "relationship": "related",
+      "description": "Legendre's conjecture (prime between $n^2$ and $(n+1)^2$) is the key ingredient: if Legendre holds, prime gaps near $p_k$ are $< \\sqrt{p_k} + 1$, controlling the LCM growth that Erdős #458 asks about. The formalization explicitly states this conditional."
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate (prime in $(n, 2n)$) is a weaker prime gap result. It does not suffice for Erdős #458 because the Bertrand gap bound ($p_{k+1} < 2p_k$) is too large — the LCM could grow by a factor up to $2p_k$, exceeding the $p_k$ bound."
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The PNT gives $\\psi(n) \\sim n$, providing the asymptotic framework for understanding LCM growth. Chebyshev's weaker bounds (formalized as `chebyshev_psi`) establish that $\\log \\text{lcm}(1,\\ldots,n)$ grows linearly."
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes guarantees `Nat.nth Nat.Prime k` is well-defined for all $k$ — the foundation for the `nthPrime` definition used in the conjecture statement."
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Zhang/Maynard's bounded prime gaps ($\\liminf(p_{n+1}-p_n) \\leq 246$) show gaps stay small infinitely often, but Erdős #458 needs gaps to stay controlled *always*, not just infinitely often."
+    }
+  ],
+  "relatedProofs": [
+    "legendre-partial",
+    "bertrands-postulate",
+    "prime-number-theorem",
+    "infinitude-primes",
+    "bounded-prime-gaps"
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Monographie No. 28, Université de Genève",
+      "note": "The source of Problem #458, described as 'almost certainly' true. Contains the observation that a proof requires controlling prime gaps at a level close to Legendre's conjecture"
+    },
+    {
+      "authors": "Nair, Mohan",
+      "title": "On Chebyshev-type inequalities for primes",
+      "year": "1982",
+      "venue": "The American Mathematical Monthly, vol. 89, no. 2, pp. 126–129",
+      "note": "Elementary proof of Chebyshev's bounds on ψ(n), the logarithm of lcm(1,...,n). The bounds 0.92n < ψ(n) < 1.11n are the foundation for the asymptotic analysis in the formalization"
+    },
+    {
+      "authors": "Chebyshev, Pafnuty L.",
+      "title": "Mémoire sur les nombres premiers",
+      "year": "1852",
+      "venue": "Mémoires de l'Académie Impériale des Sciences de St.-Pétersbourg, vol. 7",
+      "note": "Established the first explicit bounds on the prime counting function and ψ(n), proving that ψ(n) grows linearly. The axiom chebyshev_psi formalizes a version of these bounds"
+    }
+  ]
 }

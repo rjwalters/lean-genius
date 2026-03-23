@@ -4,17 +4,23 @@
     "proofId": "erdos-458",
     "range": {
       "startLine": 1,
-      "endLine": 26
+      "endLine": 32
     },
     "type": "concept",
-    "title": "Problem Overview",
-    "content": "**Erdős Problem #458** asks about the growth rate of the LCM function between consecutive primes. Is it true that lcm(1,...,p_{k+1}-1) < p_k · lcm(1,...,p_k) for all k ≥ 1? Erdős and Graham call this 'almost certainly' true, but proving it requires something close to Legendre's conjecture.",
-    "mathContext": "The LCM function lcm(1,...,n) grows roughly like e^n. The conjecture controls growth between consecutive primes p_k and p_{k+1}.",
+    "title": "Problem Overview and Setup",
+    "content": "**Erdős Problem #458** asks whether the growth of $\\text{lcm}(1, \\ldots, n)$ between consecutive primes is controlled by the smaller prime. Erdős and Graham described this as 'almost certainly true' but noted the proof requires controlling prime gaps at a level close to Legendre's conjecture.\n\nThe module imports the full Mathlib and opens `Nat`, `Finset`, and `BigOperators` for access to `Finset.lcm`, `Nat.nth`, and big operator notation. The `Erdos458` namespace scopes the definitions.\n\nThe key obstacle: between $p_k$ and $p_{k+1}$, primes $q$ with $p_k < q^2 < p_{k+1}$ contribute factors $q^2$ to the LCM that could make it exceed $p_k \\cdot \\text{lcm}(1, \\ldots, p_k)$. Legendre's conjecture would ensure at most one such $q$ exists for each $k$.",
+    "mathContext": "The conjecture: $\\text{lcm}(1, \\ldots, p_{k+1} - 1) < p_k \\cdot \\text{lcm}(1, \\ldots, p_k)$ for all $k \\geq 1$.\n\nSince $\\log \\text{lcm}(1, \\ldots, n) = \\psi(n) = \\sum_{p^a \\leq n} \\log p$ (the Chebyshev $\\psi$ function), the conjecture asks that $\\psi(p_{k+1} - 1) - \\psi(p_k) < \\log p_k$. By the PNT, $\\psi(n) \\sim n$, so the left side is $\\approx p_{k+1} - p_k$ and the right side is $\\log p_k$. For large $k$, the prime gap $p_{k+1} - p_k$ is typically $O(\\log p_k)$ by the PNT, making the inequality plausible.",
     "significance": "key",
     "relatedConcepts": [
-      "lcm",
-      "primes",
-      "legendre-conjecture"
+      "Chebyshev psi function",
+      "prime gaps",
+      "Legendre's conjecture",
+      "LCM function"
+    ],
+    "prerequisites": [
+      "prime numbers",
+      "least common multiple",
+      "prime gap conjectures"
     ]
   },
   {
@@ -25,14 +31,20 @@
       "endLine": 44
     },
     "type": "definition",
-    "title": "The LCM Function",
-    "content": "**lcm_upto(n)** is the least common multiple of {1, 2, ..., n}, defined using Finset.lcm over the interval [1,n]. This fundamental function has deep connections to prime distribution via Chebyshev's ψ function.",
-    "mathContext": "lcm_upto n = lcm{1,2,...,n}. Asymptotically, log(lcm_upto n) ~ n, so lcm_upto n ~ e^n.",
+    "title": "The LCM Function: lcm_upto",
+    "content": "**`lcm_upto n`** is the least common multiple of $\\{1, 2, \\ldots, n\\}$, defined as `(Finset.Icc 1 n).lcm id`. This uses Mathlib's `Finset.lcm` which computes the LCM of a function applied to a finite set — here, the identity function on $\\{1, \\ldots, n\\}$.\n\nThe LCM function has a remarkable connection to prime distribution via the Chebyshev $\\psi$ function: $\\log \\text{lcm}(1, \\ldots, n) = \\psi(n) = \\sum_{p^a \\leq n} \\log p$. This identity holds because $\\text{lcm}(1, \\ldots, n) = \\prod_{p \\leq n} p^{\\lfloor \\log_p n \\rfloor}$: each prime $p$ contributes its highest power $\\leq n$.",
+    "mathContext": "$\\text{lcm\\_upto}(n) = \\text{lcm}(1, 2, \\ldots, n) = \\prod_{p \\leq n} p^{\\lfloor \\log_p n \\rfloor}$.\n\nExamples: $\\text{lcm\\_upto}(6) = \\text{lcm}(1,2,3,4,5,6) = 2^2 \\cdot 3 \\cdot 5 = 60$. Note $\\text{lcm\\_upto}(5) = 60 = \\text{lcm\\_upto}(6)$ because $6 = 2 \\cdot 3$ introduces no new prime powers.\n\nAsymptotically, $\\log \\text{lcm\\_upto}(n) = \\psi(n) \\sim n$ by the PNT, so $\\text{lcm\\_upto}(n) \\sim e^n$.",
     "significance": "key",
     "relatedConcepts": [
-      "finset-lcm",
-      "chebyshev-psi",
-      "prime-distribution"
+      "Finset.lcm",
+      "Chebyshev psi function",
+      "prime factorization",
+      "Prime Number Theorem"
+    ],
+    "prerequisites": [
+      "least common multiple",
+      "prime factorization",
+      "Finset.Icc"
     ]
   },
   {
@@ -43,14 +55,20 @@
       "endLine": 75
     },
     "type": "technique",
-    "title": "Basic Properties",
-    "content": "We verify basic properties: lcm_upto 1 = 1, lcm_upto is always positive, and compute small values like lcm(1,...,5) = 60. Monotonicity is also established.",
-    "mathContext": "Small values verified by native_decide: lcm_upto 2 = 2, lcm_upto 3 = 6, lcm_upto 4 = 12, lcm_upto 5 = 60, lcm_upto 6 = 60.",
+    "title": "Basic Properties and Small Values",
+    "content": "A suite of foundational results about `lcm_upto`:\n\n1. **`lcm_upto_one`**: $\\text{lcm}(1) = 1$, proved by `simp`.\n2. **`lcm_upto_pos`**: $\\text{lcm\\_upto}(n) > 0$ for all $n$. The proof unfolds the definition, then uses `Finset.lcm_eq_zero_iff` — the LCM of a set is zero iff some element maps to zero. Since `id` maps $\\{1, \\ldots, n\\}$ to positive numbers, the LCM is positive.\n3. **Small values** via `native_decide`: $\\text{lcm}(1,2) = 2$, $\\text{lcm}(1,2,3) = 6$, $\\text{lcm}(1,\\ldots,4) = 12$, $\\text{lcm}(1,\\ldots,5) = 60$, $\\text{lcm}(1,\\ldots,6) = 60$.\n\nThe last two values being equal illustrates a key property: adding $6 = 2 \\cdot 3$ to the set doesn't change the LCM because $6$'s prime factors are already present at sufficient powers.",
+    "mathContext": "The sequence $\\text{lcm\\_upto}(n)$ for $n = 1, 2, \\ldots, 10$ is: $1, 2, 6, 12, 60, 60, 420, 840, 2520, 2520$. The LCM stays constant when crossing a composite number whose prime factorization is already covered, and jumps when crossing a prime or a new prime power.",
     "significance": "supporting",
     "relatedConcepts": [
-      "native-decide",
-      "monotonicity",
-      "computation"
+      "Finset.lcm_eq_zero_iff",
+      "native_decide",
+      "prime powers",
+      "LCM stability at composites"
+    ],
+    "prerequisites": [
+      "Finset.lcm properties",
+      "native_decide tactic",
+      "Nat.pos_of_ne_zero"
     ]
   },
   {
@@ -60,15 +78,21 @@
       "startLine": 77,
       "endLine": 91
     },
-    "type": "concept",
-    "title": "Growth Properties",
-    "content": "**Axioms about LCM growth**: When crossing a prime p, the LCM multiplies by exactly p. Between primes, the LCM only grows by powers of smaller primes.",
-    "mathContext": "lcm_upto(p) = p · lcm_upto(p-1) for prime p. This captures how primes contribute to LCM growth.",
+    "type": "technique",
+    "title": "Growth Properties: Monotonicity and Prime Steps",
+    "content": "Three results about how `lcm_upto` grows:\n\n1. **`lcm_upto_dvd_mono`**: If $m \\leq n$, then $\\text{lcm\\_upto}(m) \\mid \\text{lcm\\_upto}(n)$. This uses `Finset.lcm_mono` and `Finset.Icc_subset_Icc` — a larger interval's LCM is divisible by a smaller interval's LCM.\n\n2. **`lcm_upto_prime_step`** (axiom): Between consecutive primes, the LCM doesn't change: $\\text{lcm\\_upto}(n) = \\text{lcm\\_upto}(p - 1)$ when $n$ lies between $p$ and the next prime. This captures the fact that composite numbers don't introduce new prime factors.\n\n3. **`lcm_upto_at_prime`** (axiom): Crossing a prime multiplies the LCM by that prime: $\\text{lcm\\_upto}(p) = p \\cdot \\text{lcm\\_upto}(p - 1)$. This is the key structural fact — primes are exactly the numbers that increase the LCM.\n\nThe two axioms formalize the fundamental relationship between primes and LCM growth. They could be proved from Mathlib's `Finset.lcm` lemmas but are stated as axioms in this formalization.",
+    "mathContext": "$\\text{lcm\\_upto}(n)$ changes only at prime powers: $\\text{lcm\\_upto}(p^a) = p \\cdot \\text{lcm\\_upto}(p^a - 1)$ when $p^a$ is the highest power of $p$ not exceeding $n$. For the first occurrence of each prime $p$: $\\text{lcm\\_upto}(p) = p \\cdot \\text{lcm\\_upto}(p-1)$.\n\nThis gives the product formula: $\\text{lcm\\_upto}(n) = \\prod_{p \\leq n} p^{\\lfloor \\log_p n \\rfloor}$.",
     "significance": "key",
     "relatedConcepts": [
-      "prime-factors",
-      "lcm-growth",
-      "multiplicativity"
+      "Finset.lcm_mono",
+      "divisibility order",
+      "prime factorization of LCM",
+      "axiom declarations"
+    ],
+    "prerequisites": [
+      "Finset.Icc_subset_Icc",
+      "prime factorization",
+      "divisibility"
     ]
   },
   {
@@ -79,14 +103,20 @@
       "endLine": 116
     },
     "type": "definition",
-    "title": "The nth Prime",
-    "content": "**nthPrime(k)** is the k-th prime (0-indexed: p_0 = 2, p_1 = 3, etc.), defined using Nat.nth. We verify p_0 = 2, p_1 = 3, and establish that primes are strictly increasing.",
-    "mathContext": "nthPrime k = Nat.nth Nat.Prime k. Uses Nat.infinite_setOf_prime to guarantee existence.",
+    "title": "The nth Prime: nthPrime",
+    "content": "**`nthPrime k`** is the $k$-th prime (0-indexed), defined as `Nat.nth Nat.Prime k`. This uses Mathlib's `Nat.nth` function, which enumerates elements of an infinite set of naturals in increasing order. The existence of infinitely many primes (`Nat.infinite_setOf_prime`) guarantees `Nat.nth` is well-defined.\n\n**Axioms**: $p_0 = 2$, $p_1 = 3$, $p_2 = 5$, $p_3 = 7$ are stated as axioms rather than proved computationally. These could theoretically be proved using `native_decide` on a decidable form, but `Nat.nth` is `noncomputable` by definition.\n\n**Theorems**: `nthPrime_prime` (every $p_k$ is prime) follows directly from `Nat.nth_mem_of_infinite`. `nthPrime_strictMono` (primes are strictly increasing: $j < k \\Rightarrow p_j < p_k$) follows from `Nat.nth_strictMono`.",
+    "mathContext": "$p_k = \\text{Nat.nth}\\;\\text{Nat.Prime}\\;k$, the $(k+1)$-th prime. The sequence: $p_0 = 2, p_1 = 3, p_2 = 5, p_3 = 7, p_4 = 11, \\ldots$\n\nStrict monotonicity $p_j < p_k$ for $j < k$ is immediate from `Nat.nth_strictMono` applied to the infinite set of primes. This uses the fact that any infinite subset of $\\mathbb{N}$ has a unique order-preserving enumeration.",
     "significance": "key",
     "relatedConcepts": [
-      "nat-nth",
-      "prime-enumeration",
-      "strict-monotonicity"
+      "Nat.nth",
+      "Nat.infinite_setOf_prime",
+      "noncomputable definition",
+      "prime enumeration"
+    ],
+    "prerequisites": [
+      "Nat.nth function",
+      "infinite sets of naturals",
+      "StrictMono"
     ]
   },
   {
@@ -97,14 +127,20 @@
       "endLine": 135
     },
     "type": "definition",
-    "title": "The Main Conjecture",
-    "content": "**Erdős Problem #458**: For all k ≥ 1, lcm(1,...,p_{k+1}-1) < p_k · lcm(1,...,p_k). This asks whether LCM growth between consecutive primes is bounded by multiplication by the smaller prime.",
-    "mathContext": "Intuitively: between p_k and p_{k+1}, LCM only grows by composite factors (powers of smaller primes), bounded by p_k.",
+    "title": "The Main Conjecture: Erdős458Conjecture",
+    "content": "The formal statement of Erdős Problem #458: for all $k \\geq 1$, $\\text{lcm\\_upto}(p_{k+1} - 1) < p_k \\cdot \\text{lcm\\_upto}(p_k)$.\n\nThe docstring explains the intuition: between consecutive primes $p_k$ and $p_{k+1}$, the LCM can only grow by composite factors (powers of primes smaller than $p_{k+1}$). The conjecture says this composite growth is bounded by multiplication by $p_k$.\n\nThe condition $k \\geq 1$ excludes $k = 0$ (where $p_0 = 2, p_1 = 3$, and the inequality becomes $\\text{lcm}(1,2) = 2 < 2 \\cdot 1 = 2$, which fails by strict inequality).",
+    "mathContext": "$\\text{Erdős458Conjecture} :\\equiv \\forall k \\geq 1,\\; \\text{lcm\\_upto}(p_{k+1} - 1) < p_k \\cdot \\text{lcm\\_upto}(p_k)$.\n\nTaking logarithms: $\\psi(p_{k+1} - 1) < \\log p_k + \\psi(p_k)$, i.e., $\\psi(p_{k+1} - 1) - \\psi(p_k) < \\log p_k$. Since $\\psi(p_{k+1} - 1) - \\psi(p_k) = \\sum_{p_k < p^a < p_{k+1}} \\log p$ (summing over prime powers in the gap), this bounds the total 'new prime power contribution' between consecutive primes by $\\log p_k$.",
     "significance": "key",
     "relatedConcepts": [
-      "open-problem",
-      "prime-gaps",
-      "lcm-bounds"
+      "open conjecture",
+      "LCM growth rate",
+      "prime gap bounds",
+      "Chebyshev psi function"
+    ],
+    "prerequisites": [
+      "lcm_upto definition",
+      "nthPrime definition",
+      "strict inequality"
     ]
   },
   {
@@ -114,15 +150,21 @@
       "startLine": 137,
       "endLine": 158
     },
-    "type": "definition",
+    "type": "insight",
     "title": "Connection to Legendre's Conjecture",
-    "content": "**Obstacle**: We need to control primes q with p_k < q² < p_{k+1}. **Legendre's Conjecture** (there's always a prime between n² and (n+1)²) would help by bounding prime gaps.",
-    "mathContext": "If Legendre holds, then p_{k+1} - p_k < √p_k + 1, which bounds the interval where problematic primes q could appear.",
+    "content": "The formalization identifies the key obstacle: primes $q$ with $p_k < q^2 < p_{k+1}$ contribute factors of $q$ to $\\text{lcm}(1, \\ldots, p_{k+1}-1)$ that aren't in $\\text{lcm}(1, \\ldots, p_k)$. If there are many such $q$, the product of these contributions could exceed $p_k$.\n\nLegendre's conjecture is restated as `LegendreConjecture`: $\\forall n \\geq 1, \\exists p \\in \\mathbb{P}: n^2 < p < (n+1)^2$. If true, the prime gap $p_{k+1} - p_k < \\sqrt{p_k} + 1$ (axiom `legendre_implies_gap_bound`), which limits the number of problematic primes $q$ to at most one.\n\nThis conditional result illustrates a common pattern in analytic number theory: results about prime distribution often depend on controlling prime gaps, which in turn depends on deep conjectures like Legendre's or RH.",
+    "mathContext": "If $p_{k+1} - p_k < \\sqrt{p_k} + 1$ (implied by Legendre), then the interval $(p_k, p_{k+1})$ contains at most $\\sqrt{p_k}$ integers, so at most one prime $q$ can satisfy $q^2 < p_{k+1}$ (since $q > p_k^{1/4}$ and the interval is too short for two such primes). With at most one new prime power in the gap, $\\text{lcm}(1, \\ldots, p_{k+1}-1) \\leq q \\cdot \\text{lcm}(1, \\ldots, p_k) < p_k \\cdot \\text{lcm}(1, \\ldots, p_k)$ for large $k$.",
     "significance": "key",
     "relatedConcepts": [
-      "legendre-conjecture",
-      "prime-gaps",
-      "conditional-result"
+      "Legendre's conjecture",
+      "conditional results",
+      "prime gap bounds",
+      "analytic number theory"
+    ],
+    "prerequisites": [
+      "LegendreConjecture definition",
+      "prime gap theory",
+      "square root bounds"
     ]
   },
   {
@@ -134,13 +176,17 @@
     },
     "type": "technique",
     "title": "Verified Small Cases",
-    "content": "**Small cases verified computationally**: k=1 (lcm(1,2,3,4)=12 < 3·6=18) and k=2 (lcm(1,...,6)=60 < 5·60=300). Both verified by native_decide.",
-    "mathContext": "These concrete examples show the conjecture holds for the first few primes, building confidence in the general statement.",
+    "content": "Two concrete verifications:\n\n**$k = 1$** ($p_1 = 3, p_2 = 5$): $\\text{lcm}(1,2,3,4) = 12 < 3 \\cdot 6 = 18$. The ratio is $12/18 = 2/3$.\n\n**$k = 2$** ($p_2 = 5, p_3 = 7$): $\\text{lcm}(1,\\ldots,6) = 60 < 5 \\cdot 60 = 300$. The ratio is $60/300 = 1/5$.\n\nBoth are verified by `native_decide`, using the previously computed values of `lcm_upto`. The ratio $\\text{lcm}(1,\\ldots,p_{k+1}-1) / (p_k \\cdot \\text{lcm}(1,\\ldots,p_k))$ is well below 1 in both cases, providing computational confidence.",
+    "mathContext": "The inequality $\\text{lcm}(1,\\ldots,p_{k+1}-1) < p_k \\cdot \\text{lcm}(1,\\ldots,p_k)$ is equivalent to $\\frac{\\text{lcm}(1,\\ldots,p_{k+1}-1)}{\\text{lcm}(1,\\ldots,p_k)} < p_k$. The ratio on the left equals $\\prod_{p_k < p^a < p_{k+1}} p$ (product of primes whose powers enter the LCM in the gap). For small cases: $k=1$ has ratio $\\frac{12}{6} = 2 < 3$; $k=2$ has ratio $\\frac{60}{60} = 1 < 5$.",
     "significance": "supporting",
     "relatedConcepts": [
-      "native-decide",
-      "verification",
-      "small-cases"
+      "native_decide",
+      "computational verification",
+      "LCM ratio"
+    ],
+    "prerequisites": [
+      "lcm_upto small values",
+      "native_decide tactic"
     ]
   },
   {
@@ -148,17 +194,23 @@
     "proofId": "erdos-458",
     "range": {
       "startLine": 170,
-      "endLine": 179
+      "endLine": 181
     },
     "type": "concept",
-    "title": "Chebyshev's Asymptotic",
-    "content": "**Chebyshev's Result**: log(lcm_upto n) ~ n as n → ∞. This means lcm_upto n grows roughly like e^n. The conjecture asks about fine structure of this growth between consecutive primes.",
-    "mathContext": "There exist 0 < c₁ < 1 < c₂ such that c₁n < log(lcm_upto n) < c₂n for all n ≥ 2.",
+    "title": "Chebyshev's Asymptotic and Closure",
+    "content": "The axiom `chebyshev_psi` states Chebyshev's bounds: there exist constants $0 < c_1 < 1 < c_2$ such that $c_1 n < \\log \\text{lcm\\_upto}(n) < c_2 n$ for all $n \\geq 2$. Chebyshev proved this in 1852 with $c_1 \\approx 0.92$ and $c_2 \\approx 1.11$.\n\nThe PNT strengthens this to $\\psi(n) \\sim n$, i.e., $\\lim_{n \\to \\infty} \\psi(n)/n = 1$. The Erdős #458 conjecture asks about the fine structure of this growth: not just the overall rate, but whether the growth *between consecutive primes* is bounded by multiplication by the smaller prime.\n\nThe `end Erdos458` closes the namespace.",
+    "mathContext": "Chebyshev (1852): $0.92 n < \\psi(n) < 1.11 n$ for $n \\geq 2$, where $\\psi(n) = \\log \\text{lcm}(1, \\ldots, n)$. The PNT: $\\psi(n)/n \\to 1$. Erdős #458 asks whether $\\psi(p_{k+1} - 1) - \\psi(p_k) < \\log p_k$, a question about the *local* behavior of $\\psi$ near primes, not its *global* growth rate.",
     "significance": "key",
     "relatedConcepts": [
-      "chebyshev-bounds",
-      "asymptotic-growth",
-      "prime-number-theorem"
+      "Chebyshev bounds",
+      "Chebyshev psi function",
+      "Prime Number Theorem",
+      "asymptotic analysis"
+    ],
+    "prerequisites": [
+      "Chebyshev's theorem",
+      "natural logarithm",
+      "asymptotic notation"
     ]
   }
 ]
