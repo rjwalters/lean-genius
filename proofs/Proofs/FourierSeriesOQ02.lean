@@ -82,21 +82,32 @@ def halfPeriod (T : ℝ) (n : ℤ) : ℝ :=
   if n = 0 then 0 else T / (2 * ↑n)
 
 /-- Fourier monomials have unit norm: ‖e_n(x)‖ = 1 for all x.
-    This is because fourier n x lies on the unit circle in ℂ. -/
-axiom fourier_norm_one (n : ℤ) (x : AddCircle T) : ‖fourier n x‖ = 1
+    This is because fourier n x = ↑(n • x).toCircle lies on the unit circle in ℂ.
+    Proved via fourier_apply which unfolds to the circle-valued toCircle map. -/
+theorem fourier_norm_one (n : ℤ) (x : AddCircle T) : ‖fourier n x‖ = 1 := by
+  simp [fourier_apply]
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
-PART III: AXIOMATIZED ANALYSIS INFRASTRUCTURE
+PART III: ANALYSIS INFRASTRUCTURE (PARTIALLY PROVED)
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 /-- Key identity: translating by T/(2n) negates the n-th Fourier monomial.
 
     fourier(-n)(x + T/(2n)) = e^{2πi(-n)(x + T/(2n))/T}
                              = e^{2πi(-n)x/T} · e^{-πi}
-                             = -fourier(-n)(x) -/
-axiom fourier_translate_halfperiod (n : ℤ) (hn : n ≠ 0) (x : AddCircle T) :
-    fourier (-n) (circleTranslate (halfPeriod T n) x) = -(fourier (-n) x)
+                             = -fourier(-n)(x)
+
+    Proved by reducing to Mathlib's fourier_add_half_inv_index (for mode n)
+    via the conjugation identity fourier_neg: fourier(-n) = conj(fourier n). -/
+theorem fourier_translate_halfperiod (n : ℤ) (hn : n ≠ 0) (x : AddCircle T) :
+    fourier (-n) (circleTranslate (halfPeriod T n) x) = -(fourier (-n) x) := by
+  unfold circleTranslate halfPeriod
+  simp only [hn, ite_false]
+  rw [fourier_neg, fourier_neg]
+  have h_eq : (T / (2 * (↑n : ℝ)) : ℝ) = T / 2 / ↑n := by ring
+  rw [h_eq, fourier_add_half_inv_index hn hT.out]
+  exact map_neg (starRingEnd ℂ) (fourier n x)
 
 /-- Difference formula for Fourier coefficients:
 

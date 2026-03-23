@@ -1,45 +1,76 @@
 {
   "slug": "fourier-series-oq-02",
-  "title": "[Problem Title]",
-  "phase": "OBSERVE",
+  "title": "Fourier Coefficient Decay Under Hölder Continuity",
+  "phase": "ACT",
   "status": "active",
-  "tier": "A",
+  "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "∀ (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T → ℂ), IsHolderOnCircle C α f → ∀ n ≠ 0, ‖fourierCoeff f n‖ ≤ (C/2) * (T / (2|n|))^α",
+    "plain": "Prove that the Fourier coefficients of an α-Hölder continuous function on the circle decay at rate O(1/|n|^α), and that this bound is optimal.",
+    "whyMatters": [
+      "Fundamental result in harmonic analysis connecting smoothness to frequency decay",
+      "Bridges Faulhaber integer power sums to real-exponent zeta theory"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "fourier_norm_one: ‖fourier n x‖ = 1 (via toCircle)",
+      "fourier_translate_halfperiod: fourier(-n)(x + T/(2n)) = -fourier(-n)(x)",
+      "fourierCoeff_holder_decay: main theorem from axioms",
+      "fourierCoeff_lipschitz_decay: Lipschitz special case",
+      "holder_continuous: Hölder ⟹ continuous",
+      "lipschitz_is_holder_one: Lipschitz ⊂ Hölder(1)"
+    ],
+    "open": [
+      "Prove remaining 10 axioms: difference formula, Hölder translation bound, integral product bound, summability, optimality, converse, C^k/C^∞/analytic decay"
+    ],
+    "goal": "Reduce axiom count further by proving core analytical infrastructure"
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-03-22T15:12:20-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "phase": "ACT",
+    "since": "2026-03-23T18:00:00Z",
+    "iteration": 2,
+    "focus": "Proved 2 of 12 axioms. Core infrastructure (fourier_norm_one, half-period identity) now verified.",
+    "blockers": [
+      "holder_translation_bound needs QuotientAddGroup distance API (dist on AddCircle)",
+      "fourierCoeff_difference_formula needs Haar measure translation invariance"
+    ],
+    "nextAction": "Prove holder_translation_bound using HolderWith.dist_le_of_le + quotient distance bound",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: fourier-series-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "progressSummary": "PROGRESS: Reduced axiom count from 12 to 10. Proved fourier_norm_one and fourier_translate_halfperiod.",
+    "builtItems": [
+      "fourier_norm_one: proved via simp [fourier_apply] — toCircle maps to unit circle",
+      "fourier_translate_halfperiod: proved via fourier_neg + fourier_add_half_inv_index + map_neg"
+    ],
+    "insights": [
+      "fourier_apply unfolds to ↑(n • x).toCircle, which immediately gives unit norm via simp",
+      "fourier_add_half_inv_index takes explicit (hT : 0 < T), not Fact instance — need hT.out",
+      "fourier_neg relates fourier(-n) to starRingEnd(fourier n), enabling conjugation approach",
+      "T/(2*n) vs T/2/n: ring normalizes between these equivalent forms",
+      "holder_translation_bound needs QuotientAddGroup dist API — dist(x, x+↑s) ≤ |s| on AddCircle",
+      "integral_product_bound needs norm_integral_le + fourier_norm_one + holder_bound + probability measure"
+    ],
+    "mathlibGaps": [
+      "No obvious dist(x, x+↑s) ≤ |s| lemma found for AddCircle quotient metric"
+    ],
+    "nextSteps": [
+      "Prove holder_translation_bound via HolderWith API + quotient distance bound",
+      "Prove integral_product_bound from norm_integral_le + fourier_norm_one + holder_bound",
+      "Prove fourierCoeff_difference_formula via Haar translation invariance"
+    ]
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "harmonic-analysis",
+    "fourier-series",
+    "holder-continuity",
+    "coefficient-decay"
   ],
   "relatedProofs": [
     "fourier-series",
@@ -48,33 +79,28 @@
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "fourier_apply (Mathlib.Analysis.Fourier.AddCircle)",
+      "fourier_add_half_inv_index (Mathlib.Analysis.Fourier.AddCircle)",
+      "fourier_neg (Mathlib.Analysis.Fourier.AddCircle)",
+      "HolderWith (Mathlib.Topology.MetricSpace.Holder)"
+    ]
   },
   "started": "2026-03-22T15:12:20-07:00",
+  "lastUpdate": "2026-03-23T18:00:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
-      "path": "Proofs/FourierSeries.lean",
-      "filename": "FourierSeries.lean",
-      "lineCount": 467,
-      "theoremCount": 13,
-      "axiomCount": 2,
-      "defCount": 0,
+      "path": "Proofs/FourierSeriesOQ02.lean",
+      "filename": "FourierSeriesOQ02.lean",
+      "lineCount": 280,
+      "theoremCount": 9,
+      "axiomCount": 10,
+      "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeries.lean"
-    },
-    {
-      "path": "Proofs/FourierSeriesOQ03.lean",
-      "filename": "FourierSeriesOQ03.lean",
-      "lineCount": 732,
-      "theoremCount": 24,
-      "axiomCount": 6,
-      "defCount": 9,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ03.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02.lean"
     }
   ]
 }

@@ -46,6 +46,21 @@
         "theorem": "LipschitzWith",
         "description": "Lipschitz continuity predicate",
         "module": "Mathlib.Topology.MetricSpace.Lipschitz"
+      },
+      {
+        "theorem": "fourier_apply",
+        "description": "Unfolds fourier n x = ↑(n • x).toCircle",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "fourier_add_half_inv_index",
+        "description": "Half-period translation: fourier n (x + T/(2n)) = -fourier n x",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "fourier_neg",
+        "description": "Conjugation: fourier (-n) x = conj(fourier n x)",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
       }
     ],
     "originalContributions": [
@@ -58,9 +73,9 @@
       "fourierCoeff_difference_formula: difference formula for coefficients",
       "full regularity-decay hierarchy: Hölder → C^k → C^∞ → analytic"
     ],
-    "axiomCount": 12,
-    "lineCount": 269,
-    "assumptions": "12 axiom(s) encoding analytical infrastructure: half-period identity, difference formula, integral bounds, Hölder translation bound, summability, optimality, partial converse, smooth/analytic decay. See the Lean source for details."
+    "axiomCount": 10,
+    "lineCount": 280,
+    "assumptions": "10 axiom(s) encoding analytical infrastructure: difference formula, integral bounds, Hölder translation bound, summability, optimality, partial converse, smooth/analytic decay. Two formerly axiomatized results now proved: fourier_norm_one (‖e_n(x)‖ = 1 via toCircle) and fourier_translate_halfperiod (half-period negation via fourier_add_half_inv_index)."
   },
   "overview": {
     "historicalContext": "**Fourier Coefficient Decay Under Hölder Continuity**\n\nThe relationship between smoothness of a function and decay of its Fourier coefficients is a fundamental principle of harmonic analysis. The specific result for Hölder continuous functions — that α-Hölder regularity gives O(1/|n|^α) decay — was developed through contributions by Bernstein (1912), Zygmund (1935), and others.\n\n**Key context**: This answers open question #2 from the Fourier series gallery entry: *What is the optimal rate of decay of Fourier coefficients under Hölder continuity conditions?*\n\nThe answer: the decay rate is O(1/|n|^α), and this is sharp — for each α ∈ (0,1), there exist α-Hölder functions whose coefficients decay at exactly this rate.",
@@ -94,7 +109,7 @@
       "title": "Translation Infrastructure",
       "startLine": 74,
       "endLine": 95,
-      "summary": "Defines `circleTranslate` (translation on AddCircle) and `halfPeriod` (T/(2n)). Axiomatizes `fourier_norm_one`: ‖e_n(x)‖ = 1.",
+      "summary": "Defines `circleTranslate` (translation on AddCircle) and `halfPeriod` (T/(2n)). Proves `fourier_norm_one`: ‖e_n(x)‖ = 1 via Mathlib's fourier_apply and toCircle.",
       "mathContext": "The half-period $h = T/(2n)$ satisfies $e_{-n}(x + h) = -e_{-n}(x)$ because $e^{-\\pi i} = -1$."
     },
     {
