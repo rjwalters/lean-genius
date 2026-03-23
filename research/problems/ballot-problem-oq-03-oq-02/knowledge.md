@@ -269,3 +269,66 @@ The self-inverse proof has this structure:
 
 ### Files Modified
 - `proofs/Proofs/BallotProblemOQ03OQ02.lean` (+30 lines: cast_pathMN_val helper, membership proof)
+
+---
+
+## Session 2026-03-23 (researcher-1, session 2) - Prefix Preservation Infrastructure
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 61)
+**Problem**: ballot-problem-oq-03-oq-02
+**Prior Status**: in-progress, ACT phase, 1 sorry (cancellable_sum_eq_zero)
+
+### Work Done
+
+1. **PROVED `northBeforeEast_prefix`**: Key lemma for the tail-swap self-inverse proof.
+   Shows that northBeforeEast depends only on the list prefix when the prefix
+   contains > k East steps. Proof by induction on the prefix list.
+   - false head: decrements k, recurse on tail with k-1
+   - true head: adds 1, recurse with same k (prefix has same East count)
+
+2. **PROVED `colEntry_prefix_eq`**: Direct corollary — colEntry at column k+1
+   depends only on the prefix when it has > k East steps.
+
+3. **Documented full self-inverse proof strategy** in the cancellable_sum_eq_zero
+   docstring, including the key insight about range expansion.
+
+### Key Mathematical Insight: Range Expansion Only Adds Points Above y₀
+
+The self-inverse proof for the GV tail-swap involution requires showing the
+canonical first crossing (column, shared_row, pair) is preserved. The critical
+observation:
+
+When the tail-swap extends path i₀'s range at column c₀ (from [a_i₀, b_i₀] to
+[a_i₀, b_j₀] where b_j₀ ≥ b_i₀), any NEW shared lattice points with third
+paths are at y' ≥ b_i₀ + 1 > b_i₀ ≥ y₀. This is because:
+- The expansion only adds points at the TOP (from b_i₀ to b_j₀)
+- y₀ ≤ b_i₀ (since y₀ is in the original range of path i₀)
+- For pairs that didn't overlap in the original: the non-overlapping range gap
+  was above b_i₀, so new overlap starts at > y₀
+- For pairs that already overlapped: their shared row was ≥ y₀ by canonicality
+
+Therefore the canonical crossing datum (c₀, y₀, ci, cj) is preserved, and the
+same swap is applied twice, giving σ * swap(ci,cj) * swap(ci,cj) = σ and
+double tail-swap = identity (via List.take_append_drop).
+
+### Remaining Sorry
+
+1. **`cancellable_sum_eq_zero`** (1 sorry): The full tail-swap construction requires:
+   - Canonical crossing pair via Finset.min' with (sharedRow, i, j) ordering
+   - Split position computation at the shared lattice point
+   - PathMN validity of swapped paths (length + East count preservation)
+   - Applying Finset.sum_involution with all 4 properties
+
+   **Available infrastructure**:
+   - `northBeforeEast_prefix` + `colEntry_prefix_eq` (PROVED this session)
+   - `take_east_count_within_column` (PROVED earlier)
+   - `swapTailsAt` + length preservation (PROVED earlier)
+   - `gvInvolution_sign_reversal` (PROVED, only depends on perm)
+   - `gvInvolution_no_fixed` (PROVED, only depends on perm)
+
+   **Estimated remaining**: ~150 lines of path surgery (PathMN construction,
+   canonical crossing finder, self-inverse assembly).
+
+### Files Modified
+- `proofs/Proofs/BallotProblemOQ03OQ02.lean` (+35 lines: northBeforeEast_prefix, colEntry_prefix_eq)
+- `research/problems/ballot-problem-oq-03-oq-02/knowledge.md` (this session)

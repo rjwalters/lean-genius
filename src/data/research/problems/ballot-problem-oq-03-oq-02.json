@@ -34,7 +34,8 @@
       "gvInvolutionFn simplified: uses Classical.choice for paths (makes it well-typed) — specific tail-swapped paths needed only for membership/self-inverse",
       "REPLACED Classical.choice with northThenEastPath: canonical all-North-then-all-East path constructor. This ensures image paths cross at column 0 under wellFormed.",
       "northThenEast_not_NI PROVED: two northThenEast paths from different sources cross at column 0 when sources(i) ≤ targets(j)",
-      "Self-inverse requires CANONICAL crossing (lex-min on (c,y,i,j)), NOT firstNonFixed (shown by 3-cycle counterexample)"
+      "Self-inverse requires CANONICAL crossing (lex-min on (c,y,i,j)), NOT firstNonFixed (shown by 3-cycle counterexample)",
+      "Range expansion in GV tail-swap only adds shared points above y₀ (canonical row) — key for self-inverse preservation"
     ],
     "builtItems": [
       "BallotProblemOQ03OQ02.lean: r×r LGV lemma formalization (~1100 lines, expanded from 1050)",
@@ -62,18 +63,18 @@
       "gvNewPerm RIGHT multiplication fix: σ*swap(i,j) instead of swap(i,j)*σ (PROVED)",
       "pathMN_nonempty: Nonempty (PathMN m n) for all m,n (PROVED via pathMN_card + choose_pos)",
       "cast_pathMN_val: cast between PathMN types with equal n preserves .val (PROVED)",
-      "gvInvolution_membership: image tuple is cancellable (PROVED via cast_pathMN_val + northThenEast_not_NI)"
+      "gvInvolution_membership: image tuple is cancellable (PROVED via cast_pathMN_val + northThenEast_not_NI)",
+      "northBeforeEast_prefix: prefix determines northBeforeEast (BallotProblemOQ03OQ02.lean:1266)",
+      "colEntry_prefix_eq: prefix determines colEntry (BallotProblemOQ03OQ02.lean:1287)"
     ],
     "openQuestions": [
       "Need canonical (deterministic) crossing pair for self-inverse — current crossingI/J use Classical.choose",
       "Mathlib version drift: take_at_column_entry/take_east_count_within_column have pre-existing compat errors (~14 errors)"
     ],
     "nextSteps": [
-      "Fix pre-existing Mathlib compat errors in take_at_column_entry (Bool.false_eq_false unknown) — needed for suffix-swap",
-      "Build canonical crossing pair via Finset.min' on lex-ordered (c,y,i,j) crossing quadruples",
-      "Build tail-swap PathMN construction: split at shared (c,y), join prefix+suffix, prove validity",
-      "Prove self-inverse: canonical crossing preserved (prefix unchanged → lex-min same) + double swap = identity",
-      "Assemble cancellable_sum_eq_zero via Finset.sum_involution with the new self-inverse involution"
+      "Build canonical crossing pair finder (Finset.min with sharedRow ordering)",
+      "Construct PathMN from tail-swapped lists (length + East count proofs)",
+      "Apply Finset.sum_involution with all 4 properties proved"
     ],
     "progressSummary": "PROGRESS: Membership sorry PROVED. 1 sorry remains (cancellable_sum_eq_zero — needs self-inverse involution via suffix-swap, ~200 lines). Pre-existing Mathlib compat errors in take_at_column_entry block suffix-swap work."
   },

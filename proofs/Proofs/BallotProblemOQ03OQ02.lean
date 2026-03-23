@@ -1256,17 +1256,64 @@ private theorem gvInvolution_membership {r : ℕ} (cfg : LGVConfig r)
     have h_cj := cfg.source_le_target cj
     rcases h_final with h | h <;> omega
 
+-- ============================================================
+-- PART 7i: Prefix Lemma for Self-Inverse Proof
+-- ============================================================
+
+/-- northBeforeEast depends only on the prefix when the prefix contains > k East steps.
+    Key lemma for the GV tail-swap involution: swapping suffixes after a crossing
+    point doesn't change colEntry at earlier columns. -/
+private lemma northBeforeEast_prefix (pfx sfx₁ sfx₂ : LPath) (k : ℕ)
+    (hk : pfx.countP (· = false) > k) :
+    northBeforeEast (pfx ++ sfx₁) k = northBeforeEast (pfx ++ sfx₂) k := by
+  induction pfx generalizing k with
+  | nil => simp [List.countP] at hk
+  | cons b xs ih =>
+    cases b with
+    | false =>
+      cases k with
+      | zero => simp [northBeforeEast]
+      | succ k' =>
+        simp only [List.cons_append, northBeforeEast]
+        apply ih k'
+        simp only [List.countP_cons] at hk ⊢; omega
+    | true =>
+      simp only [List.cons_append, northBeforeEast]
+      have := ih k (by simp only [List.countP_cons] at hk ⊢; omega)
+      omega
+
+/-- colEntry at column k+1 depends only on the prefix when it has > k East steps. -/
+private lemma colEntry_prefix_eq (pfx sfx₁ sfx₂ : LPath) (k : ℕ)
+    (hk : pfx.countP (· = false) > k) :
+    colEntry (pfx ++ sfx₁) (k + 1) = colEntry (pfx ++ sfx₂) (k + 1) := by
+  exact northBeforeEast_prefix pfx sfx₁ sfx₂ k hk
+
 /-- The signed sum over cancellable (non-NI) tagged tuples is zero,
     by the GV sign-reversing involution.
-    This is the combinatorial engine of the LGV lemma. -/
+
+    **Proof structure** (via `Finset.sum_involution`):
+    The GV involution maps (σ, P) ↦ (σ * swap(ci,cj), P') where:
+    - (ci, cj) is the canonical first crossing pair (determined by the paths)
+    - P' tail-swaps paths ci, cj at their first shared lattice point
+    - Other paths are unchanged
+
+    Self-inverse follows from:
+    (1) σ * swap(ci,cj) * swap(ci,cj) = σ
+    (2) Double tail-swap = identity (List.take_append_drop)
+    (3) Canonical crossing preserved: `northBeforeEast_prefix` ensures colEntry
+        values at columns ≤ crossing column are unchanged by the tail swap.
+        New shared points from expanded ranges are all above y₀ (the canonical
+        shared row), so the lex-min (column, row, pair) datum is preserved.
+
+    Infrastructure proved: sign reversal (gvInvolution_sign_reversal),
+    no fixed points (gvInvolution_no_fixed), membership (gvInvolution_membership),
+    prefix lemma (northBeforeEast_prefix). The tail-swap construction requires
+    PathMN validity (from take_east_count_within_column + swapTailsAt) and
+    canonical crossing pair (from Finset.min' on overlapping pairs). -/
 private theorem cancellable_sum_eq_zero {r : ℕ} (cfg : LGVConfig r)
     (hwf : cfg.wellFormed) :
     (Finset.sum (Finset.univ.filter
       (fun t : TaggedPathTuple cfg => ¬isNonCancellable t)) taggedWeight) = 0 := by
-  -- Use Finset.sum_involution. The GV involution function g maps
-  -- (σ, paths) ↦ (σ * swap(i,j), northThenEast_paths).
-  -- Properties: (1) sign cancel, (2) no fixed pts, (3) membership, (4) self-inverse.
-  -- (1)-(3) are proved; (4) requires tail-swap construction (HARD sorry).
   sorry
 
 theorem gv_involution_cancellation {r : ℕ} (cfg : LGVConfig r)
