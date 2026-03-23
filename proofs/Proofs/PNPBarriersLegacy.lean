@@ -4,8 +4,26 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Set.Card
 import Mathlib.Computability.TMComputable
 
-/-!
-# P≠NP Barrier Theorems
+/-
+DEPRECATED: This file uses an unsound computation model.
+
+The `OracleProgram.compute` field is an unrestricted Lean function, which
+allows constructing a `trivialSolver` for any decision problem (see Part 42,
+line ~10,338). This collapses P = NP = EXP = Set.univ.
+
+The inconsistency is self-documented at Part 42 with the theorem:
+  `theorem abstract_model_inconsistent : False`
+
+USE INSTEAD:
+  - `ComplexityCore.lean` -- Canonical sound computation model
+  - `PNPBarriersUnified.lean` -- Barrier theorems and full complexity landscape
+
+This file is retained for historical reference only. Do not import or
+depend on definitions from this namespace.
+-/
+
+/-
+# P!=NP Barrier Theorems (Legacy -- UNSOUND)
 
 ## What This Proves
 We formalize the major barriers to proving P ≠ NP: the Relativization Barrier
