@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdos Problem #18**: Practical Numbers and the h(m) Function\n\n**Definition**: A positive integer m is **practical** if every integer 1 <= k < m can be expressed as a sum of distinct divisors of m.\n\n**Status**: OPEN ($250 prize)\n\n**Key Question**: Is h(n!) < n^o(1)? Where h(m) is the minimum number of divisors needed.\n\n**Examples**: 12 is practical: divisors {1,2,3,4,6,12} represent 5=1+4, 7=1+6, etc.",
     "mathContext": "Practical numbers were defined by Srinivasan (1948). The OEIS sequence is A005153: 1, 2, 4, 6, 8, 12, 16, 18, 20, 24, ...",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "practical-numbers",
       "divisor-sums",
@@ -46,7 +46,7 @@
     "title": "Practical Numbers",
     "content": "**IsPractical m**: m >= 1 and for all k : 1 <= k < m, IsRepresentable k m\n\nEvery positive integer less than m is representable.\n\n**PracticalNumbers** = { m | IsPractical m }\n\nAlso called **panarithmic numbers** (Srinivasan, 1948).",
     "mathContext": "The definition requires covering all integers from 1 to m-1. This is much stronger than just representing 'most' integers.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "practical-number",
       "srinivasan",
@@ -118,7 +118,7 @@
     "title": "Stewart-Sierpinski Characterization",
     "content": "**Complete characterization** (1954-1955):\n\nFor m = p_1^a_1 * p_2^a_2 * ... * p_k^a_k with p_1 < p_2 < ... < p_k:\n\nm is practical iff\n- p_1 = 2 (m is even), AND\n- p_i <= 1 + sigma(p_1^a_1 * ... * p_{i-1}^{a_{i-1}}) for all i >= 2\n\nwhere sigma(n) = sum of divisors of n.",
     "mathContext": "This gives an efficient O(log m) test for practicality. The condition ensures each prime 'fits' within the representable range of smaller factors.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "stewart",
       "sierpinski",
@@ -136,7 +136,7 @@
     "title": "The h(m) Function",
     "content": "**h(m)**: Minimum number of divisors of m needed such that every k < m can be represented.\n\n**Trivial bound**: h(m) <= d(m) where d(m) = number of divisors.\n\n**Key insight**: Even with many divisors, we might only need a few!\n\nFor 2^n: h(2^n) = n+1 (need all powers of 2 for binary).",
     "mathContext": "Computing h(m) exactly is hard (subset sum optimization). The question is whether h(n!) can be much smaller than the divisor count.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "h-function",
       "minimum",
@@ -190,7 +190,7 @@
     "title": "The Main Conjectures ($250)",
     "content": "**conjecture_part1**: There exist infinitely many m with h(m) < (log log m)^O(1)\nDoubly-logarithmic bound for infinitely many m.\n\n**conjecture_part2_weak** ($250): h(n!) = o(n^epsilon) for all epsilon > 0\nSubpolynomial growth - slower than any power of n.\n\n**conjecture_part2_strong**: h(n!) < (log n)^O(1)\nPolylogarithmic growth in n.",
     "mathContext": "The prize is for part 2. The weak form asks if h(n!) grows slower than any polynomial. The strong form conjectures polylog behavior.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "conjecture",
       "subpolynomial",
@@ -316,7 +316,7 @@
     "title": "Summary and Status",
     "content": "**Erdos Problem #18: OPEN** ($250 prize)\n\n**Question**: Is h(n!) < n^o(1)? Or even h(n!) < (log n)^O(1)?\n\n**Known**:\n- h(n!) < n (Erdos)\n- Some m have h(m) = O(sqrt(log m)) (Vose)\n- Stewart-Sierpinski characterization\n\n**Related facts**:\n- Practical Goldbach: PROVEN\n- Practical twins: INFINITE\n- Density: 0 (like primes)\n\n**References**: Srinivasan (1948), Stewart-Sierpinski (1954-55), Vose (1985), OEIS A005153",
     "mathContext": "The problem has been open since at least 1985. Progress requires understanding the divisor structure of factorials deeply.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "problem-status",
       "open",

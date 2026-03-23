@@ -98,7 +98,7 @@
     "title": "Main Result: Infinitely Many Solutions",
     "content": "**Erdős Problem #397** is DISPROVED: the set of solutions is infinite. Somani's parametric family provides infinitely many distinct solutions, one for each a ≥ 2.",
     "mathContext": "We state `CentralBinomSolutions.Infinite` as an axiom. The proof follows from Somani's family: for each a ≥ 2, we get a distinct solution, so there are at least countably infinitely many.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "disproof",
       "infinite-set",
@@ -133,7 +133,7 @@
     "title": "Somani's Identity",
     "content": "**Somani's Identity**: For a ≥ 2, C(a)·C(2a+2)·C(c) = C(a+1)·C(2a)·C(c+1) where c = 8a² + 8a + 1.",
     "mathContext": "This identity is stated as an axiom because verifying it requires expanding the factorial expressions and showing the prime factorizations match. The identity was discovered computationally and verified algebraically.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "binomial-identity",
       "factorial",

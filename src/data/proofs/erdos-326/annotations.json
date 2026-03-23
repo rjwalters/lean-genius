@@ -46,7 +46,7 @@
     "title": "Additive Basis of Order k",
     "content": "A basis of **order k** requires at most k summands. An order 2 basis means every large number is a sum of at most 2 elements. The perfect squares have order 4 (Lagrange's theorem).",
     "mathContext": "The constraint `m <= k` in the definition bounds the number of summands. Lower order = denser set required. Order 2 is quite restrictive.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Lagrange four-square theorem",
       "Goldbach conjecture",
@@ -100,7 +100,7 @@
     "title": "Main Theorem (Open Problem)",
     "content": "**Erdős Problem #326**: Given any order 2 basis A, must there exist a sub-basis B with non-convergent growth ratio? This is stated as a disjunction: either YES for all A, or NO for some A.",
     "mathContext": "We use `axiom` because the answer is unknown. The disjunction P ∨ ¬P is always true, so this captures the mathematical question without assuming an answer. A proof of either disjunct would resolve the problem.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open problems",
       "existential statements",
@@ -118,7 +118,7 @@
     "title": "Cassels' Theorem (1957)",
     "content": "**Cassels disproved Erdős's original conjecture** by constructing an order 2 basis A where the growth ratio aₖ/k² converges to a positive limit. This shows 'nice' bases exist.",
     "mathContext": "The existential statement guarantees a basis with `0 < x` and `HasGrowthLimit a x`. Cassels' construction is explicit but technical. This answered the A=B version negatively.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "counterexample",
       "construction",

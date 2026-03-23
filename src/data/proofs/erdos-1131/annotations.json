@@ -2,193 +2,349 @@
   {
     "id": "ann-1131-imports",
     "proofId": "erdos-1131",
-    "range": { "startLine": 26, "endLine": 30 },
+    "range": {
+      "startLine": 26,
+      "endLine": 30
+    },
     "type": "concept",
     "title": "Imports and Namespace",
     "content": "Imports Mathlib's inner product space basics, real number foundations, and finite set operations. Opens the `Erdos1131` namespace to scope all definitions and axioms.",
     "significance": "supporting",
     "mathContext": "The `InnerProductSpace.Basic` import provides the real number infrastructure and integration-related tools. `Finset.Basic` gives the finite product $\\prod_{i \\ne k}$ used in the Lagrange basis formula. The namespace scoping prevents name collisions with other Erdős problem formalizations.",
-    "relatedConcepts": ["mathlib", "inner-product-space", "finset"],
-    "prerequisites": ["lean-4-basics"]
+    "relatedConcepts": [
+      "mathlib",
+      "inner-product-space",
+      "finset"
+    ],
+    "prerequisites": [
+      "lean-4-basics"
+    ]
   },
   {
     "id": "ann-1131-nodeconfig",
     "proofId": "erdos-1131",
-    "range": { "startLine": 36, "endLine": 39 },
+    "range": {
+      "startLine": 36,
+      "endLine": 39
+    },
     "type": "definition",
     "title": "Node Configuration",
     "content": "A `NodeConfig n` is a function `Fin n → ℝ` with values in $[-1,1]$, packaged as a subtype. These are the interpolation nodes: $n$ distinct points in the interval $[-1,1]$ where the interpolating polynomial matches the function values.",
     "significance": "key",
     "mathContext": "In approximation theory, the choice of interpolation nodes critically affects the quality of polynomial interpolation. Classical choices include **equally spaced** nodes (prone to Runge's phenomenon), **Chebyshev nodes** $x_k = \\cos((2k+1)\\pi/(2n))$ (minimize the Lebesgue constant growth), and **Legendre nodes** (zeros of $P_n$, which minimize the maximum of $\\Lambda_n(x) = \\sum |l_k(x)|$).",
-    "relatedConcepts": ["interpolation-nodes", "runge-phenomenon", "lebesgue-constant"],
-    "prerequisites": ["polynomial-interpolation"]
+    "relatedConcepts": [
+      "interpolation-nodes",
+      "runge-phenomenon",
+      "lebesgue-constant"
+    ],
+    "prerequisites": [
+      "polynomial-interpolation"
+    ]
   },
   {
     "id": "ann-1131-distinct",
     "proofId": "erdos-1131",
-    "range": { "startLine": 41, "endLine": 45 },
+    "range": {
+      "startLine": 41,
+      "endLine": 45
+    },
     "type": "definition",
     "title": "Distinct Nodes",
     "content": "The distinctness condition $\\forall i \\ne j, x_i \\ne x_j$ ensures the Lagrange basis is well-defined. Without it, the denominators $x_k - x_i$ would vanish and the basis polynomials would be undefined.",
     "significance": "key",
     "mathContext": "Distinctness is equivalent to requiring that the **Vandermonde determinant** $\\prod_{i < j}(x_j - x_i) \\ne 0$. The Vandermonde matrix $V_{ij} = x_i^j$ is invertible iff the nodes are distinct, which guarantees the existence and uniqueness of the degree $n-1$ interpolating polynomial.",
-    "relatedConcepts": ["vandermonde-determinant", "polynomial-uniqueness", "interpolation-existence"],
-    "prerequisites": ["node-configuration", "linear-algebra"]
+    "relatedConcepts": [
+      "vandermonde-determinant",
+      "polynomial-uniqueness",
+      "interpolation-existence"
+    ],
+    "prerequisites": [
+      "node-configuration",
+      "linear-algebra"
+    ]
   },
   {
     "id": "ann-1131-lagrange-basis",
     "proofId": "erdos-1131",
-    "range": { "startLine": 47, "endLine": 52 },
+    "range": {
+      "startLine": 47,
+      "endLine": 52
+    },
     "type": "definition",
     "title": "Lagrange Basis Polynomials",
     "content": "The $k$-th Lagrange basis polynomial: $l_k(x) = \\prod_{i \\ne k} \\frac{x - x_i}{x_k - x_i}$. These satisfy $l_k(x_k) = 1$ and $l_k(x_j) = 0$ for $j \\ne k$, forming a basis for polynomials of degree $\\le n-1$.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The Lagrange basis polynomials form a **cardinal basis** for the space $\\Pi_{n-1}$ of polynomials of degree $\\le n-1$: any $p \\in \\Pi_{n-1}$ can be written as $p(x) = \\sum_k p(x_k) l_k(x)$. The **Lebesgue function** $\\Lambda_n(x) = \\sum_k |l_k(x)|$ controls the interpolation error: $\\|f - L_n f\\|_\\infty \\le (1 + \\Lambda_n) \\inf_{p \\in \\Pi_{n-1}} \\|f - p\\|_\\infty$. The Lebesgue constant $\\Lambda_n = \\max_x \\Lambda_n(x)$ grows at least as $O(\\log n)$ (Erdős 1961).",
-    "relatedConcepts": ["cardinal-basis", "lebesgue-function", "interpolation-error"],
-    "prerequisites": ["node-configuration", "polynomial-space"]
+    "relatedConcepts": [
+      "cardinal-basis",
+      "lebesgue-function",
+      "interpolation-error"
+    ],
+    "prerequisites": [
+      "node-configuration",
+      "polynomial-space"
+    ]
   },
   {
     "id": "ann-1131-integral",
     "proofId": "erdos-1131",
-    "range": { "startLine": 54, "endLine": 59 },
+    "range": {
+      "startLine": 54,
+      "endLine": 59
+    },
     "type": "definition",
     "title": "The Objective Functional $I$",
     "content": "The integral $I(x_1,\\ldots,x_n) = \\int_{-1}^{1} \\sum_k |l_k(x)|^2 \\, dx$. This measures the total $L^2$-energy of the Lagrange basis. Axiomatized since full Lagrange interpolation infrastructure is not built in Lean.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The functional $I$ is the $L^2[-1,1]$ norm squared of the vector of basis polynomials: $I = \\sum_k \\|l_k\\|_2^2$. Since $\\sum_k l_k(x) = 1$ (partition of unity), we have $I \\ge \\int_{-1}^{1} 1^2/n \\, dx = 2/n$ by Cauchy-Schwarz. The quantity $I/2$ can also be interpreted as the trace of the **Gram matrix** $G_{jk} = \\int_{-1}^{1} l_j(x) l_k(x) \\, dx$.",
-    "relatedConcepts": ["L2-norm", "gram-matrix", "partition-of-unity"],
-    "prerequisites": ["lagrange-basis", "lebesgue-integration"]
+    "relatedConcepts": [
+      "L2-norm",
+      "gram-matrix",
+      "partition-of-unity"
+    ],
+    "prerequisites": [
+      "lagrange-basis",
+      "lebesgue-integration"
+    ]
   },
   {
     "id": "ann-1131-basis-self",
     "proofId": "erdos-1131",
-    "range": { "startLine": 64, "endLine": 69 },
+    "range": {
+      "startLine": 64,
+      "endLine": 69
+    },
     "type": "theorem",
     "title": "Interpolation Property: $l_k(x_k) = 1$",
     "content": "Each basis polynomial evaluates to 1 at its own node: $l_k(x_k) = \\prod_{i \\ne k} \\frac{x_k - x_i}{x_k - x_i} = 1$. This is immediate from the definition when nodes are distinct.",
     "significance": "key",
     "mathContext": "This is the first of two **cardinal basis properties** that characterize Lagrange interpolation. Together with $l_k(x_j) = 0$ for $j \\ne k$, it ensures that the interpolating polynomial $L_n f(x) = \\sum_k f(x_k) l_k(x)$ exactly reproduces $f$ at the nodes: $L_n f(x_j) = f(x_j)$.",
-    "relatedConcepts": ["cardinal-basis", "interpolation-condition", "kronecker-delta"],
-    "prerequisites": ["lagrange-basis", "distinct-nodes"]
+    "relatedConcepts": [
+      "cardinal-basis",
+      "interpolation-condition",
+      "kronecker-delta"
+    ],
+    "prerequisites": [
+      "lagrange-basis",
+      "distinct-nodes"
+    ]
   },
   {
     "id": "ann-1131-basis-other",
     "proofId": "erdos-1131",
-    "range": { "startLine": 70, "endLine": 75 },
+    "range": {
+      "startLine": 70,
+      "endLine": 75
+    },
     "type": "theorem",
     "title": "Orthogonality: $l_k(x_j) = 0$ for $j \\ne k$",
     "content": "Each basis polynomial vanishes at all other nodes: $l_k(x_j) = 0$ for $j \\ne k$. This follows because the product $\\prod_{i \\ne k}(x_j - x_i)$ contains the factor $x_j - x_j = 0$ when $j \\ne k$.",
     "significance": "key",
     "mathContext": "The orthogonality property means the Lagrange basis evaluates as the **Kronecker delta**: $l_k(x_j) = \\delta_{kj}$. This makes the interpolation operator $L_n$ a **projection**: $L_n^2 = L_n$ on the space of polynomials of degree $\\le n-1$. The matrix $[l_k(x_j)]_{j,k}$ is the identity matrix.",
-    "relatedConcepts": ["kronecker-delta", "projection-operator", "interpolation-matrix"],
-    "prerequisites": ["lagrange-basis", "distinct-nodes"]
+    "relatedConcepts": [
+      "kronecker-delta",
+      "projection-operator",
+      "interpolation-matrix"
+    ],
+    "prerequisites": [
+      "lagrange-basis",
+      "distinct-nodes"
+    ]
   },
   {
     "id": "ann-1131-lower-bound",
     "proofId": "erdos-1131",
-    "range": { "startLine": 76, "endLine": 85 },
+    "range": {
+      "startLine": 76,
+      "endLine": 85
+    },
     "type": "theorem",
     "title": "Lower Bound: $I \\ge 2/n$",
     "content": "For any node configuration in $[-1,1]$: $I(x_1,\\ldots,x_n) \\ge 2/n$. This follows from the **partition of unity** $\\sum_k l_k(x) = 1$ and Cauchy-Schwarz: $1 = (\\sum_k l_k(x))^2 \\le n \\sum_k l_k(x)^2$, so $\\sum_k l_k(x)^2 \\ge 1/n$, and integrating gives $I \\ge 2/n$.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The Cauchy-Schwarz inequality for the partition of unity is the simplest bound. The partition of unity $\\sum_k l_k(x) = 1$ holds for all $x$ because the constant function 1 is a polynomial of degree 0, and its Lagrange interpolant at any nodes is itself. The bound $I \\ge 2/n$ is far from tight — the conjecture says $I \\approx 2 - 1/n \\gg 2/n$ for large $n$.",
-    "relatedConcepts": ["cauchy-schwarz", "partition-of-unity", "L2-lower-bound"],
-    "prerequisites": ["lagrange-integral", "cauchy-schwarz-inequality"]
+    "relatedConcepts": [
+      "cauchy-schwarz",
+      "partition-of-unity",
+      "L2-lower-bound"
+    ],
+    "prerequisites": [
+      "lagrange-integral",
+      "cauchy-schwarz-inequality"
+    ]
   },
   {
     "id": "ann-1131-upper-bound",
     "proofId": "erdos-1131",
-    "range": { "startLine": 86, "endLine": 92 },
+    "range": {
+      "startLine": 86,
+      "endLine": 92
+    },
     "type": "theorem",
     "title": "Upper Bound: $I \\le 2n$",
     "content": "For any node configuration: $I \\le 2n$. This crude bound says the integral cannot grow faster than linearly in $n$. Much tighter bounds are known for specific node choices.",
     "significance": "supporting",
     "mathContext": "The bound $I \\le 2n$ follows from $|l_k(x)| \\le$ some polynomial bound over $[-1,1]$. For equidistant nodes, $I$ actually grows exponentially (related to Runge's phenomenon), but for well-chosen nodes like Chebyshev or Legendre, $I \\approx 2 - O(1/n)$. The tight behavior is captured by the ESVV94 bounds.",
-    "relatedConcepts": ["runge-phenomenon", "equidistant-nodes", "polynomial-growth"],
-    "prerequisites": ["lagrange-integral"]
+    "relatedConcepts": [
+      "runge-phenomenon",
+      "equidistant-nodes",
+      "polynomial-growth"
+    ],
+    "prerequisites": [
+      "lagrange-integral"
+    ]
   },
   {
     "id": "ann-1131-chebyshev",
     "proofId": "erdos-1131",
-    "range": { "startLine": 97, "endLine": 103 },
+    "range": {
+      "startLine": 97,
+      "endLine": 103
+    },
     "type": "definition",
     "title": "Chebyshev Nodes",
     "content": "The Chebyshev nodes of the first kind: $x_k = \\cos\\left(\\frac{(2k+1)\\pi}{2n}\\right)$ for $k = 0, \\ldots, n-1$. These are the roots of the **Chebyshev polynomial** $T_n(x) = \\cos(n \\arccos x)$.",
     "significance": "key",
     "mathContext": "Chebyshev nodes are a classical choice in approximation theory because they minimize the maximum of $|\\omega_n(x)| = |\\prod_k (x - x_k)|$ over $[-1,1]$ — this is **Chebyshev's equioscillation theorem**. The minimum value is $2^{1-n}$, achieved uniquely by $T_n$. The Lebesgue constant for Chebyshev nodes grows as $\\Lambda_n \\sim (2/\\pi) \\log n + O(1)$, which is nearly optimal.",
-    "relatedConcepts": ["chebyshev-polynomials", "equioscillation", "lebesgue-constant"],
-    "prerequisites": ["trigonometric-polynomials", "minimax-approximation"]
+    "relatedConcepts": [
+      "chebyshev-polynomials",
+      "equioscillation",
+      "lebesgue-constant"
+    ],
+    "prerequisites": [
+      "trigonometric-polynomials",
+      "minimax-approximation"
+    ]
   },
   {
     "id": "ann-1131-cheb-range",
     "proofId": "erdos-1131",
-    "range": { "startLine": 104, "endLine": 109 },
+    "range": {
+      "startLine": 104,
+      "endLine": 109
+    },
     "type": "theorem",
     "title": "Chebyshev Nodes in $[-1,1]$",
     "content": "All Chebyshev nodes satisfy $-1 \\le x_k \\le 1$. This follows from $|\\cos \\theta| \\le 1$ for all $\\theta \\in \\mathbb{R}$.",
     "significance": "supporting",
     "mathContext": "The Chebyshev nodes are symmetric about 0 and cluster near $\\pm 1$ with density proportional to $1/\\sqrt{1-x^2}$, the **arcsine distribution**. This clustering near the endpoints counteracts Runge's phenomenon and produces the nearly optimal Lebesgue constant growth.",
-    "relatedConcepts": ["arcsine-distribution", "endpoint-clustering", "cosine-function"],
-    "prerequisites": ["chebyshev-nodes"]
+    "relatedConcepts": [
+      "arcsine-distribution",
+      "endpoint-clustering",
+      "cosine-function"
+    ],
+    "prerequisites": [
+      "chebyshev-nodes"
+    ]
   },
   {
     "id": "ann-1131-cheb-distinct",
     "proofId": "erdos-1131",
-    "range": { "startLine": 110, "endLine": 115 },
+    "range": {
+      "startLine": 110,
+      "endLine": 115
+    },
     "type": "theorem",
     "title": "Chebyshev Nodes Are Distinct",
     "content": "For $n \\ge 2$, the Chebyshev nodes are pairwise distinct. The angles $(2k+1)\\pi/(2n)$ are distinct in $(0, \\pi)$, and cosine is strictly decreasing on $[0, \\pi]$.",
     "significance": "supporting",
     "mathContext": "Distinctness follows from the strict monotonicity of cosine on $[0, \\pi]$: if $0 < \\theta_1 < \\theta_2 < \\pi$, then $\\cos \\theta_1 > \\cos \\theta_2$. The angles $(2k+1)\\pi/(2n)$ for $k = 0, \\ldots, n-1$ are equally spaced in the interval $(\\pi/(2n), \\pi - \\pi/(2n))$, all strictly between 0 and $\\pi$.",
-    "relatedConcepts": ["cosine-monotonicity", "equally-spaced-angles", "injectivity"],
-    "prerequisites": ["chebyshev-nodes", "trigonometry"]
+    "relatedConcepts": [
+      "cosine-monotonicity",
+      "equally-spaced-angles",
+      "injectivity"
+    ],
+    "prerequisites": [
+      "chebyshev-nodes",
+      "trigonometry"
+    ]
   },
   {
     "id": "ann-1131-cheb-integral",
     "proofId": "erdos-1131",
-    "range": { "startLine": 116, "endLine": 122 },
+    "range": {
+      "startLine": 116,
+      "endLine": 122
+    },
     "type": "theorem",
     "title": "Chebyshev Integral Estimate",
     "content": "For Chebyshev nodes: $I \\approx 2 - c/n$ with error $O(1/n^2)$. There exists $c > 0$ such that $|I_n - (2 - c/n)| \\le c/n^2$. This shows Chebyshev nodes give $I$ close to 2 with a $1/n$ correction.",
     "significance": "key",
     "mathContext": "The Chebyshev integral $I_n^{\\text{Cheb}}$ can be computed using the orthogonality of Chebyshev polynomials on $[-1,1]$ with weight $1/\\sqrt{1-x^2}$. The leading term is $I = 2 - \\pi^2/(2n) + O(1/n^2)$ (Kilgore 1978). The key question is whether there exist nodes with $I < I_n^{\\text{Cheb}}$ — Szabados (1966) showed there are, but the optimal nodes remain unknown.",
-    "relatedConcepts": ["chebyshev-orthogonality", "kilgore-nodes", "optimal-interpolation"],
-    "prerequisites": ["chebyshev-nodes", "lagrange-integral"]
+    "relatedConcepts": [
+      "chebyshev-orthogonality",
+      "kilgore-nodes",
+      "optimal-interpolation"
+    ],
+    "prerequisites": [
+      "chebyshev-nodes",
+      "lagrange-integral"
+    ]
   },
   {
     "id": "ann-1131-min-integral",
     "proofId": "erdos-1131",
-    "range": { "startLine": 128, "endLine": 130 },
+    "range": {
+      "startLine": 128,
+      "endLine": 130
+    },
     "type": "definition",
     "title": "Minimum Lagrange Integral",
     "content": "The infimum $\\min_n I = \\inf\\{I(x_1,\\ldots,x_n) : x_i \\in [-1,1]\\}$ over all node configurations. Defined using `sInf` (infimum of a set of reals).",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The infimum is attained because the set of valid configurations is compact (closed and bounded in $\\mathbb{R}^n$) and $I$ is continuous. The optimal nodes — those achieving the minimum — are related to the **Kilgore-de Boor-Pinkus** optimal interpolation nodes, which minimize the Lebesgue constant. However, minimizing $I$ (the $L^2$ norm) and minimizing $\\Lambda_n$ (the $L^\\infty$ norm) lead to different optimal configurations.",
-    "relatedConcepts": ["infimum", "compactness", "optimal-nodes"],
-    "prerequisites": ["lagrange-integral", "topology"]
+    "relatedConcepts": [
+      "infimum",
+      "compactness",
+      "optimal-nodes"
+    ],
+    "prerequisites": [
+      "lagrange-integral",
+      "topology"
+    ]
   },
   {
     "id": "ann-1131-conjecture",
     "proofId": "erdos-1131",
-    "range": { "startLine": 131, "endLine": 140 },
+    "range": {
+      "startLine": 131,
+      "endLine": 140
+    },
     "type": "theorem",
     "title": "Erdős's Conjecture: $\\min I = 2 - (1+o(1))/n$",
     "content": "The central open conjecture: $|\\min I_n - (2 - 1/n)| \\le \\varepsilon/n$ for all $n \\ge N_0(\\varepsilon)$. This asserts the minimum integral equals $2 - 1/n$ with lower-order corrections, i.e., $\\min I = 2 - (1+o(1))/n$.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "ESVV94 proved the bounds $2 - O((\\log n)^2/n) \\le \\min I \\le 2 - 2/(2n-1)$. The upper bound comes from Legendre nodes (zeros of $P_n$): for these, $I = 2 - 2/(2n-1) = 2 - 1/n + O(1/n^2)$. The lower bound leaves a gap — the $O((\\log n)^2)$ factor vs the conjectured $O(1)$. Closing this gap is the heart of the open problem.",
-    "relatedConcepts": ["ESVV94-bounds", "legendre-nodes", "asymptotic-conjecture"],
-    "prerequisites": ["min-lagrange-integral", "approximation-theory"]
+    "relatedConcepts": [
+      "ESVV94-bounds",
+      "legendre-nodes",
+      "asymptotic-conjecture"
+    ],
+    "prerequisites": [
+      "min-lagrange-integral",
+      "approximation-theory"
+    ]
   },
   {
     "id": "ann-1131-main-theorem",
     "proofId": "erdos-1131",
-    "range": { "startLine": 145, "endLine": 156 },
+    "range": {
+      "startLine": 145,
+      "endLine": 156
+    },
     "type": "theorem",
     "title": "Main Theorem: $I \\ge 2/n$",
     "content": "The formalized result: for any distinct nodes in $[-1,1]$, the Lagrange integral satisfies $I \\ge 2/n$. Proved by applying the `lagrangeIntegral_lower_bound` axiom. This is the simplest known bound.",
     "significance": "key",
     "mathContext": "While the bound $I \\ge 2/n$ is far from the conjectured $\\min I \\approx 2 - 1/n$, it establishes the correct direction: the integral is bounded away from zero. The proof uses only the partition of unity and Cauchy-Schwarz. Tighter lower bounds require understanding the oscillatory behavior of $l_k(x)$ between nodes — this is where the logarithmic factors enter in the ESVV94 bound.",
-    "relatedConcepts": ["lower-bound", "cauchy-schwarz", "oscillatory-behavior"],
-    "prerequisites": ["lagrange-integral-lower-bound", "partition-of-unity"]
+    "relatedConcepts": [
+      "lower-bound",
+      "cauchy-schwarz",
+      "oscillatory-behavior"
+    ],
+    "prerequisites": [
+      "lagrange-integral-lower-bound",
+      "partition-of-unity"
+    ]
   }
 ]

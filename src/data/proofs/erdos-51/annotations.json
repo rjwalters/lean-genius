@@ -2,133 +2,249 @@
   {
     "id": "erdos-51-ann-preimage",
     "proofId": "erdos-51",
-    "range": { "startLine": 36, "endLine": 38 },
+    "range": {
+      "startLine": 36,
+      "endLine": 38
+    },
     "type": "definition",
     "title": "Totient Preimage Set",
     "content": "**totientPreimage a** = {n : ℕ | n.totient = a}, the set of all natural numbers whose Euler totient equals a. This is the fiber of φ over the value a.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The **totient preimage** φ⁻¹(a) = {n ∈ ℕ : φ(n) = a} is a finite set for each a (since φ(n) ≥ √(n/2) for n > 6, so φ(n) = a implies n ≤ 2a²). The size of this set varies enormously: |φ⁻¹(1)| = 2 (only n = 1, 2), |φ⁻¹(2)| = 3 (n = 3, 4, 6), but |φ⁻¹(a)| can be arbitrarily large. The set is always non-empty for even a ≥ 2 (since φ(2a+1) = 2a when 2a+1 is prime, and other constructions handle composite cases). **Carmichael's conjecture** (1907, still open) asserts |φ⁻¹(a)| ≠ 1 for all a — no totient value has a unique preimage. The Lean formalization uses `{n : ℕ | n.totient = a}` with Mathlib's `Nat.totient`.",
-    "relatedConcepts": ["Euler totient function", "fiber of a function", "Carmichael's conjecture", "inverse totient problem"],
-    "prerequisites": ["Nat.totient", "Set notation"]
+    "relatedConcepts": [
+      "Euler totient function",
+      "fiber of a function",
+      "Carmichael's conjecture",
+      "inverse totient problem"
+    ],
+    "prerequisites": [
+      "Nat.totient",
+      "Set notation"
+    ]
   },
   {
     "id": "erdos-51-ann-isTotientValue",
     "proofId": "erdos-51",
-    "range": { "startLine": 40, "endLine": 42 },
+    "range": {
+      "startLine": 40,
+      "endLine": 42
+    },
     "type": "definition",
     "title": "IsTotientValue Predicate",
     "content": "**IsTotientValue a** ≡ ∃ n : ℕ, n.totient = a. The predicate that a is in the range of Euler's totient function.",
     "significance": "key",
     "mathContext": "The **range of Euler's totient function** is a proper subset of ℕ: not every natural number is a totient value. The totient values form the set {1, 2, 4, 6, 8, 10, 12, ...} (OEIS A002202). Key facts: (1) Every even number ≥ 2 is a totient value (if 2k+1 is prime, φ(2k+1) = 2k; for composite cases, other constructions work). (2) The only odd totient values are 1 (from φ(1) = φ(2) = 1). (3) Some even numbers like 14, 26, 34 are **non-totient values** — they are not in the range of φ. Wait — actually 14 *is* a totient value: φ(18) = 6... let me correct: the non-totient values include {14, 26, 34, 38, ...} (OEIS A005277). The predicate IsTotientValue filters for membership in this range.",
-    "relatedConcepts": ["range of totient", "non-totient values (OEIS A005277)", "totient values (OEIS A002202)"],
-    "prerequisites": ["Nat.totient", "existential quantification"]
+    "relatedConcepts": [
+      "range of totient",
+      "non-totient values (OEIS A005277)",
+      "totient values (OEIS A002202)"
+    ],
+    "prerequisites": [
+      "Nat.totient",
+      "existential quantification"
+    ]
   },
   {
     "id": "erdos-51-ann-smallest",
     "proofId": "erdos-51",
-    "range": { "startLine": 44, "endLine": 51 },
+    "range": {
+      "startLine": 44,
+      "endLine": 51
+    },
     "type": "definition",
     "title": "Smallest Totient Preimage",
     "content": "**smallestTotientPreimage a** = the smallest n with φ(n) = a, computed via `Nat.find`. Returns 0 if a is not a totient value (vacuously). This is the central quantity: the conjecture asks whether this can grow much faster than a.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The **smallest preimage function** n_a = min{n : φ(n) = a} is well-defined for totient values a since the preimage set is non-empty and finite. The implementation uses `Nat.find` which searches for the least natural number satisfying the predicate. The Classical.choice handles the existential witness. For primes p, n_{p-1} ≤ p (since φ(p) = p-1), so the ratio n_{p-1}/(p-1) ≤ p/(p-1) → 1. This means **prime-generated totient values have small ratios**. The conjecture asks whether there exist infinitely many totient values a where n_a/a is unbounded — these must come from totient values that are *not* of the form p-1 for a small prime p. The sequence of smallest preimages begins: n_1=1, n_2=3, n_4=5, n_6=7, n_8=15, n_10=11, n_12=13, ... (OEIS A058277).",
-    "relatedConcepts": ["Nat.find", "minimal element of preimage", "Classical.choice", "OEIS A058277"],
-    "prerequisites": ["Nat.find", "Classical.choice", "Nonempty"]
+    "relatedConcepts": [
+      "Nat.find",
+      "minimal element of preimage",
+      "Classical.choice",
+      "OEIS A058277"
+    ],
+    "prerequisites": [
+      "Nat.find",
+      "Classical.choice",
+      "Nonempty"
+    ]
   },
   {
     "id": "erdos-51-ann-conjecture",
     "proofId": "erdos-51",
-    "range": { "startLine": 55, "endLine": 64 },
+    "range": {
+      "startLine": 55,
+      "endLine": 64
+    },
     "type": "theorem",
     "title": "Erdős Problem #51: Divergent Preimage Ratio",
     "content": "**erdos_51_conjecture**: ∃ infinite A ⊆ ℕ with all elements totient values, such that smallestTotientPreimage(a)/a → ∞ as a → ∞ through A. The ratio of smallest preimage to value can be made arbitrarily large along an infinite subsequence.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "This is the formal statement of Erdős Problem #51, posed in 1995. The conjecture quantifies over an infinite set A of totient values, requiring that for any constant C > 0, all sufficiently large a ∈ A have n_a/a > C. The formalization uses the ε-δ style: ∀ C > 0, ∃ N, ∀ a ∈ A with a ≥ N, n_a/a > C. This is equivalent to saying n_a/a → ∞ along the subsequence A. The problem is **open** and asks a fundamental question about the **inverse totient function**: can the inverse be wildly inefficient? For 'typical' totient values a, the smallest preimage is O(a) (heuristically), but the conjecture asks whether the worst case is unbounded. The difficulty is that the structure of φ⁻¹(a) depends intricately on the prime factorization of a and the Diophantine properties of a+1, 2a+1, etc.",
-    "relatedConcepts": ["divergent subsequences", "inverse function inefficiency", "Diophantine structure of totient preimages"],
-    "prerequisites": ["Set.Infinite", "IsTotientValue", "smallestTotientPreimage"]
+    "relatedConcepts": [
+      "divergent subsequences",
+      "inverse function inefficiency",
+      "Diophantine structure of totient preimages"
+    ],
+    "prerequisites": [
+      "Set.Infinite",
+      "IsTotientValue",
+      "smallestTotientPreimage"
+    ]
   },
   {
     "id": "erdos-51-ann-totient-one",
     "proofId": "erdos-51",
-    "range": { "startLine": 68, "endLine": 69 },
+    "range": {
+      "startLine": 68,
+      "endLine": 69
+    },
     "type": "lemma",
     "title": "φ(1) = 1",
     "content": "**totient_one**: Nat.totient 1 = 1. The only integer coprime to 1 in {1,...,1} is 1 itself. Proved by `simp`.",
     "significance": "supporting",
     "mathContext": "The trivial case φ(1) = 1: the only positive integer ≤ 1 coprime to 1 is 1 itself. This is the unique fixed point of the smallest preimage function: n_1 = 1, ratio = 1. The proof uses `simp`, which unfolds Nat.totient for the literal value 1. Note that φ(2) = 1 as well, so 1 is a totient value with two preimages {1, 2}, consistent with Carmichael's conjecture.",
-    "relatedConcepts": ["base case", "simp tactic", "φ(2) = 1"],
-    "prerequisites": ["Nat.totient"]
+    "relatedConcepts": [
+      "base case",
+      "simp tactic",
+      "φ(2) = 1"
+    ],
+    "prerequisites": [
+      "Nat.totient"
+    ]
   },
   {
     "id": "erdos-51-ann-totient-prime",
     "proofId": "erdos-51",
-    "range": { "startLine": 71, "endLine": 73 },
+    "range": {
+      "startLine": 71,
+      "endLine": 73
+    },
     "type": "theorem",
     "title": "φ(p) = p − 1 for Prime p",
     "content": "**totient_prime**: For prime p, Nat.totient p = p − 1. All integers in {1,...,p-1} are coprime to p.",
     "significance": "key",
     "mathContext": "For a prime p, exactly p-1 of the integers {1,...,p} are coprime to p (all except p itself), so φ(p) = p-1. This is the **fundamental source of 'easy' totient values**: every integer of the form p-1 (for prime p) is a totient value with a 'nearby' preimage (the prime p itself). The ratio n_{p-1}/（p-1) ≤ p/(p-1) → 1, so prime-generated totient values have the *smallest* possible ratios. The conjecture requires finding totient values that are *not* efficiently realized by any prime — values where the smallest preimage must come from a composite number with a special multiplicative structure. This is axiomatized rather than proved because while `Nat.Prime.totient_eq_pred` exists in Mathlib, the exact formulation may differ.",
-    "relatedConcepts": ["prime totient formula", "coprimality", "easy totient values"],
-    "prerequisites": ["Nat.Prime", "Nat.totient"]
+    "relatedConcepts": [
+      "prime totient formula",
+      "coprimality",
+      "easy totient values"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Nat.totient"
+    ]
   },
   {
     "id": "erdos-51-ann-even",
     "proofId": "erdos-51",
-    "range": { "startLine": 85, "endLine": 88 },
+    "range": {
+      "startLine": 85,
+      "endLine": 88
+    },
     "type": "theorem",
     "title": "Every Even a ≥ 2 Is a Totient Value",
     "content": "**even_totient_values**: For even a ≥ 2, there exists n with φ(n) = a. The range of φ includes all even numbers ≥ 2.",
     "significance": "key",
     "mathContext": "This is a classical result in number theory. The proof strategy: if a is even, consider n = 2a + 1. If 2a+1 is prime, then φ(2a+1) = 2a, not a. Better: by **Dirichlet's theorem**, there are infinitely many primes p ≡ 1 (mod a), and for such p, a | φ(p) = p-1. But we need φ(n) = a exactly. A constructive approach: for even a = 2m, we can use n = 2(2m+1) if 2m+1 is prime (giving φ(n) = φ(2)·φ(2m+1) = 1·2m = 2m = a). More generally, the surjectivity of φ onto even numbers follows from the Chinese Remainder Theorem and the density of primes. The non-totient values (OEIS A005277) are all even numbers that cannot be achieved: 14, 26, 34, 38, ... Actually, there's a subtlety — not *every* even number is a totient value. The statement here may be an over-simplification; the axiom may hold with additional conditions.",
-    "relatedConcepts": ["Dirichlet's theorem", "Chinese Remainder Theorem", "non-totient values", "OEIS A005277"],
-    "prerequisites": ["IsTotientValue", "Even"]
+    "relatedConcepts": [
+      "Dirichlet's theorem",
+      "Chinese Remainder Theorem",
+      "non-totient values",
+      "OEIS A005277"
+    ],
+    "prerequisites": [
+      "IsTotientValue",
+      "Even"
+    ]
   },
   {
     "id": "erdos-51-ann-carmichael",
     "proofId": "erdos-51",
-    "range": { "startLine": 95, "endLine": 99 },
+    "range": {
+      "startLine": 95,
+      "endLine": 99
+    },
     "type": "theorem",
     "title": "Erdős's Carmichael Result",
     "content": "**erdos_carmichael**: If any totient value has exactly one preimage (|φ⁻¹(a)| = 1), then infinitely many do. This is Erdős's 1935 partial result toward Carmichael's conjecture.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "**Carmichael's conjecture** (1907) states that no totient value has a unique preimage: |φ⁻¹(a)| ≠ 1 for all a. In other words, if φ(n) = a, there always exists m ≠ n with φ(m) = a. **Erdős (1935)** proved a striking conditional result: if there exists *any* counterexample (a totient value with exactly one preimage), then there must be *infinitely many* counterexamples. The proof uses the multiplicative structure of φ: if φ(n) = a uniquely, then by manipulating the prime factorization of n, one can construct infinitely many other unique-preimage values. Carmichael's conjecture has been verified computationally for a up to 10^{10^10}, but remains unproven. The formalization uses `Set.ncard` for the cardinality of the preimage set and `Set.Infinite` for the conclusion.",
-    "relatedConcepts": ["Carmichael's conjecture (1907)", "Erdős's 1935 result", "multiplicative structure of φ", "Set.ncard"],
-    "prerequisites": ["totientPreimage", "Set.ncard", "Set.Infinite", "IsTotientValue"]
+    "relatedConcepts": [
+      "Carmichael's conjecture (1907)",
+      "Erdős's 1935 result",
+      "multiplicative structure of φ",
+      "Set.ncard"
+    ],
+    "prerequisites": [
+      "totientPreimage",
+      "Set.ncard",
+      "Set.Infinite",
+      "IsTotientValue"
+    ]
   },
   {
     "id": "erdos-51-ann-prime-ratio",
     "proofId": "erdos-51",
-    "range": { "startLine": 103, "endLine": 113 },
+    "range": {
+      "startLine": 103,
+      "endLine": 113
+    },
     "type": "lemma",
     "title": "Prime Preimage Ratio Bounds",
     "content": "**prime_preimage_ratio**: For prime p, smallestTotientPreimage(p−1) ≤ p. **prime_minus_one_ratio_bounded**: For prime p ≥ 3, the ratio is at most 2. These show that totient values of the form p−1 have bounded preimage ratios.",
     "significance": "key",
     "mathContext": "For any prime p, φ(p) = p-1, so p is a preimage of p-1. Hence the *smallest* preimage n_{p-1} ≤ p, giving ratio n_{p-1}/(p-1) ≤ p/(p-1). For p ≥ 3, this ratio is at most 3/2 < 2, so `prime_minus_one_ratio_bounded` gives the bound 2 (with room to spare). These bounds reveal the **structural obstruction** to the conjecture: the totient values p-1 (for primes p) form a dense set, and they all have small ratios. The conjecture must find values *between* these prime-generated values — totient values a where a+1, 2a+1, 3a+1, ... are all composite (so no small prime contributes a preimage), forcing n_a to come from a composite with large prime factors. Such values are rare but may exist infinitely often.",
-    "relatedConcepts": ["prime-generated totient values", "structural obstruction", "density of primes in arithmetic progressions"],
-    "prerequisites": ["Nat.Prime", "smallestTotientPreimage"]
+    "relatedConcepts": [
+      "prime-generated totient values",
+      "structural obstruction",
+      "density of primes in arithmetic progressions"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "smallestTotientPreimage"
+    ]
   },
   {
     "id": "erdos-51-ann-inverse-count",
     "proofId": "erdos-51",
-    "range": { "startLine": 115, "endLine": 117 },
+    "range": {
+      "startLine": 115,
+      "endLine": 117
+    },
     "type": "definition",
     "title": "Inverse Totient Counting Function",
     "content": "**inverseTotientCount a** = |φ⁻¹(a)| = (totientPreimage a).ncard. The number of solutions to φ(n) = a.",
     "significance": "supporting",
     "mathContext": "The **inverse totient counting function** A(a) = |{n : φ(n) = a}| measures how many preimages each totient value has. The function is tabulated in OEIS A014197. Key facts: A(a) = 0 for non-totient values, A(1) = 2, A(2) = 3, A(4) = 4, A(8) = 5, A(12) = 6. The function A(a) can be arbitrarily large (the `highly_totient_exist` axiom). **Ford's theorem** (1998) shows that for any k, there are infinitely many a with A(a) = k. The relationship to Problem #51 is indirect: having many preimages (large A(a)) does not imply the *smallest* preimage is large — the conjecture asks about min(φ⁻¹(a)), not |φ⁻¹(a)|.",
-    "relatedConcepts": ["OEIS A014197", "Ford's theorem (1998)", "highly totient numbers"],
-    "prerequisites": ["totientPreimage", "Set.ncard"]
+    "relatedConcepts": [
+      "OEIS A014197",
+      "Ford's theorem (1998)",
+      "highly totient numbers"
+    ],
+    "prerequisites": [
+      "totientPreimage",
+      "Set.ncard"
+    ]
   },
   {
     "id": "erdos-51-ann-highly-totient",
     "proofId": "erdos-51",
-    "range": { "startLine": 119, "endLine": 122 },
+    "range": {
+      "startLine": 119,
+      "endLine": 122
+    },
     "type": "theorem",
     "title": "Highly Totient Numbers Exist",
     "content": "**highly_totient_exist**: For any k, some totient value a has at least k preimages (inverseTotientCount(a) ≥ k). The preimage sizes are unbounded.",
     "significance": "supporting",
     "mathContext": "A **highly totient number** is a totient value a such that |φ⁻¹(a)| > |φ⁻¹(b)| for all totient values b < a. The existence of arbitrarily many preimages follows from the multiplicative structure of φ: the number a = 2^k is a totient value of 3^k (since φ(3^k) = 2·3^{k-1}... actually φ(2^{k+1}) = 2^k), and by combining prime powers, one can engineer many preimages. The sequence of highly totient numbers begins: 1, 2, 4, 8, 12, 24, 48, 72, 144, ... (OEIS A097942). The connection to Problem #51: a totient value with *many* preimages might have a large *smallest* preimage (the preimages could be spread out), but this is not guaranteed — the smallest might still be close to a.",
-    "relatedConcepts": ["highly totient numbers (OEIS A097942)", "multiplicative structure", "preimage spread"],
-    "prerequisites": ["inverseTotientCount"]
+    "relatedConcepts": [
+      "highly totient numbers (OEIS A097942)",
+      "multiplicative structure",
+      "preimage spread"
+    ],
+    "prerequisites": [
+      "inverseTotientCount"
+    ]
   }
 ]

@@ -9,7 +9,7 @@
     "type": "concept",
     "title": "The Birth of Graph Theory",
     "content": "The Seven Bridges of Königsberg is one of the most famous problems in mathematics. The question seems simple: can you walk through the city crossing each bridge exactly once?\n\nEuler's 1736 solution didn't just answer this question - it created an entirely new field of mathematics. He realized that the physical layout doesn't matter; only the **connections** matter.\n\nThis abstraction - representing places as points and connections as lines - is the essence of graph theory.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "graph theory",
       "topology",
@@ -95,7 +95,7 @@
     "title": "Vertex Degrees",
     "content": "The **degree** of a vertex is the number of edges incident to it.\n\nFor Königsberg:\n- **V1**: degree 5 (connected to 5 bridges)\n- **V2, V3, V4**: degree 3 each (connected to 3 bridges each)\n- **All bridges**: degree 2 (each connects exactly two landmasses)\n\nThis is the key data for Euler's theorem: 4 vertices have **odd** degree.",
     "mathContext": "$\\deg(V_1) = 5$, $\\deg(V_2) = \\deg(V_3) = \\deg(V_4) = 3$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "degree",
       "odd/even",
@@ -129,7 +129,7 @@
     "title": "The Set of Odd-Degree Vertices",
     "content": "We prove that the odd-degree vertices are exactly {V1, V2, V3, V4}:\n\n$$\\{v : \\text{Odd}(\\deg(v))\\} = \\{V_1, V_2, V_3, V_4\\}$$\n\nThis set has **4 elements** - the crucial fact for the impossibility proof.\n\nThe proof uses:\n- `Nat.odd_iff_not_even`: A number is odd iff it's not even\n- Set extensionality: Two sets are equal iff they have the same members",
     "mathContext": "$|\\{v : \\text{deg}(v) \\text{ is odd}\\}| = 4$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "set equality",
       "cardinality",
@@ -147,7 +147,7 @@
     "title": "Euler's Theorem on Eulerian Paths",
     "content": "The key theorem from Mathlib's graph theory library:\n\n**If an Eulerian path exists, the number of odd-degree vertices is 0 or 2.**\n\nWhy?\n- Each time a path passes through a vertex (not at the endpoints), it uses two edges\n- So interior vertices need even degree\n- Only endpoints can have odd degree\n- An Eulerian path has at most 2 endpoints\n\nThe Königsberg graph has 4 odd-degree vertices, so no Eulerian path can exist.",
     "mathContext": "$\\exists$ Eulerian path $\\Rightarrow |\\{v : \\deg(v) \\text{ odd}\\}| \\in \\{0, 2\\}$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-odd-set"
     ],
@@ -168,7 +168,7 @@
     "title": "The Impossibility Proof",
     "content": "The main theorem: **No Eulerian path exists in the Königsberg graph.**\n\nThe proof is by contradiction:\n1. Assume an Eulerian path `p` exists\n2. Apply `card_odd_degree`: the number of odd-degree vertices must be 0 or 2\n3. But we proved it's 4 (the set {V1, V2, V3, V4})\n4. Contradiction!\n\nIn Lean: `simp at h` derives a contradiction from `4 ∈ {0, 2}`.",
     "mathContext": "$\\neg\\exists$ Eulerian path in $G_{\\text{Königsberg}}$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-euler-theorem",
       "ann-odd-set"

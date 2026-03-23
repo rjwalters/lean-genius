@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #366** investigates consecutive integers with prescribed prime power structure.\n\n**k-Full Numbers**: n is k-full if every prime p | n has p^k | n\n- 2-full = powerful (squareful)\n- 3-full = cubeful\n\n**Main Question**: Does any pair (n 2-full, n+1 3-full) exist?\n\n**Known Results**:\n- Reverse direction: (8,9) and (12167, 12168) are (3-full, 2-full) pairs\n- Forward direction: NO KNOWN EXAMPLES\n- No other pairs below 10²²",
     "mathContext": "This connects the multiplicative structure of consecutive integers to questions about prime power divisibility.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "powerful numbers",
       "cubeful numbers",
@@ -29,7 +29,7 @@
     "title": "k-Full Number Definitions",
     "content": "**IsKFull(k, n)**: n is k-full if every prime factor appears with multiplicity ≥ k.\n\n```lean\ndef IsKFull (k n : ℕ) : Prop :=\n  ∀ p, p.Prime → p ∣ n → k ≤ n.factorization p\n```\n\n**Special Cases**:\n- `IsPowerful n = IsKFull 2 n` (2-full, squareful)\n- `IsCubeful n = IsKFull 3 n` (3-full)\n\n**Examples**:\n- 4 = 2² is 2-full (powerful)\n- 8 = 2³ is 3-full (cubeful)\n- 36 = 2² × 3² is 2-full (powerful)\n- 12 = 2² × 3 is NOT 2-full (3 appears only once)",
     "mathContext": "Using Nat.factorization gives direct access to prime multiplicities, making the definition precise and computable for specific values.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Nat.factorization",
       "prime multiplicity",
@@ -66,7 +66,7 @@
     "title": "The Main Open Conjecture",
     "content": "**Erdős Problem #366**: Does there exist n > 0 such that n is 2-full and n+1 is 3-full?\n\n```lean\ndef erdos_366_conjecture : Prop :=\n  ∃ n > 0, IsPowerful n ∧ IsCubeful (n + 1)\n\naxiom erdos_366_open :\n  ¬(erdos_366_conjecture ↔ True) ∧ ¬(erdos_366_conjecture ↔ False)\n```\n\n**Status**: OPEN as of 2024\n\n**Computational Search**: No examples found below 10²².\n\n**Heuristic Argument**: The expected number of such pairs is finite (possibly zero) based on density arguments.",
     "mathContext": "The axiom erdos_366_open formally captures that the problem is neither proved nor disproved.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open problem",
       "existence statement",
@@ -84,7 +84,7 @@
     "title": "Known Pairs in Reverse Direction",
     "content": "**CubefulPowerfulPairs**: The set of n where n is 3-full and n+1 is 2-full.\n\n```lean\ndef CubefulPowerfulPairs : Set ℕ := { n | IsCubeful n ∧ IsPowerful (n + 1) }\n\ntheorem eight_nine_pair : 8 ∈ CubefulPowerfulPairs\ntheorem golomb_pair : 12167 ∈ CubefulPowerfulPairs\n```\n\n**Known Examples**:\n1. **(8, 9)**: 8 = 2³ is cubeful, 9 = 3² is powerful\n2. **(12167, 12168)**: 12167 = 23³ is cubeful, 12168 = 2³ × 3² × 13² is powerful (Golomb 1970)\n\n**Computational Bound**: These are the ONLY pairs below 10²².",
     "mathContext": "Golomb discovered the second pair in 1970. The 35-year gap between 8 and 12167 hints at the extreme rarity of such pairs.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Golomb",
       "computational search",

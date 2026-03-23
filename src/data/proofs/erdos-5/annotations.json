@@ -7,8 +7,15 @@
     "content": "Imports Nat.Prime for primality, Real.Basic for ℝ and logarithm, and Topology.Basic for limit point concepts.",
     "mathContext": "The formalization works in $\\mathbb{R}$ using Mathlib's `Real.log` for the normalization $g(n) = (p_{n+1} - p_n)/\\log p_n$. The cast from $\\mathbb{Z}$ to $\\mathbb{R}$ handles the gap $p_{n+1} - p_n$ correctly even when formalized as a difference of natural numbers.",
     "significance": "supporting",
-    "relatedConcepts": ["real analysis", "natural number primes", "logarithm"],
-    "prerequisites": ["Mathlib.Data.Real.Basic", "Mathlib.Data.Nat.Prime.Basic"],
+    "relatedConcepts": [
+      "real analysis",
+      "natural number primes",
+      "logarithm"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Nat.Prime.Basic"
+    ],
     "range": {
       "startLine": 23,
       "endLine": 26
@@ -22,8 +29,14 @@
     "content": "Axiomatizes nthPrime as a function ℕ → ℕ, avoiding the computability issues of constructive prime enumeration.",
     "mathContext": "The function $p : \\mathbb{N} \\to \\mathbb{N}$ satisfying $p(1) = 2, p(2) = 3, p(3) = 5, \\ldots$ is axiomatized rather than defined, since constructive prime enumeration would require a decidable primality sieve. The axiom captures the essential properties: $p(n)$ is prime for $n \\geq 1$, and the sequence is strictly monotone. This is a standard pattern for number-theoretic formalizations in Lean.",
     "significance": "key",
-    "relatedConcepts": ["prime enumeration", "axiomatization patterns", "constructive vs classical"],
-    "prerequisites": ["Nat.Prime"],
+    "relatedConcepts": [
+      "prime enumeration",
+      "axiomatization patterns",
+      "constructive vs classical"
+    ],
+    "prerequisites": [
+      "Nat.Prime"
+    ],
     "range": {
       "startLine": 32,
       "endLine": 32
@@ -37,8 +50,13 @@
     "content": "nthPrime n is prime for all n ≥ 1. The guard n ≥ 1 avoids issues with nthPrime 0.",
     "mathContext": "The 1-indexing convention ($p_1 = 2$) matches the standard number-theoretic convention. The condition $n \\geq 1$ leaves $p(0)$ unspecified, which is harmless since all statements use $n \\geq 1$.",
     "significance": "supporting",
-    "relatedConcepts": ["Nat.Prime", "1-indexed sequences"],
-    "prerequisites": ["nthPrime"],
+    "relatedConcepts": [
+      "Nat.Prime",
+      "1-indexed sequences"
+    ],
+    "prerequisites": [
+      "nthPrime"
+    ],
     "range": {
       "startLine": 35,
       "endLine": 35
@@ -52,8 +70,15 @@
     "content": "nthPrime is strictly increasing, using Mathlib's StrictMono typeclass.",
     "mathContext": "Strict monotonicity $p(m) < p(n)$ for $m < n$ encodes that each prime is followed by a strictly larger one. Combined with primality, this fully characterizes the prime enumeration function up to the choice of $p(0)$. The `StrictMono` predicate from Mathlib provides access to useful lemmas about order-preserving maps.",
     "significance": "key",
-    "relatedConcepts": ["StrictMono", "order theory", "prime ordering"],
-    "prerequisites": ["nthPrime", "StrictMono"],
+    "relatedConcepts": [
+      "StrictMono",
+      "order theory",
+      "prime ordering"
+    ],
+    "prerequisites": [
+      "nthPrime",
+      "StrictMono"
+    ],
     "range": {
       "startLine": 38,
       "endLine": 38
@@ -66,9 +91,17 @@
     "title": "Normalized Gap Ratio",
     "content": "g(n) = (p_{n+1} − p_n) / log(p_n), the prime gap normalized by the expected gap size from the prime number theorem.",
     "mathContext": "The **prime number theorem** (PNT) states $\\pi(x) \\sim x/\\ln x$, which implies the average gap between consecutive primes near $x$ is approximately $\\ln x$. The normalization $g(n) = (p_{n+1} - p_n)/\\log p_n$ thus scales gaps so that $g(n)$ has average value $1$. The question of whether $S = [0, \\infty)$ asks whether *every* possible fluctuation around this average occurs infinitely often. The `noncomputable` annotation reflects that `Real.log` is noncomputable in Lean.",
-    "significance": "critical",
-    "relatedConcepts": ["prime number theorem", "logarithmic normalization", "average gap"],
-    "prerequisites": ["nthPrime", "Real.log", "integer cast"],
+    "significance": "key",
+    "relatedConcepts": [
+      "prime number theorem",
+      "logarithmic normalization",
+      "average gap"
+    ],
+    "prerequisites": [
+      "nthPrime",
+      "Real.log",
+      "integer cast"
+    ],
     "range": {
       "startLine": 41,
       "endLine": 42
@@ -81,9 +114,17 @@
     "title": "Limit Point of Gaps",
     "content": "C is a limit point of g(n) if for every ε > 0 and every N, there exists n ≥ N with |g(n) − C| < ε. This is the standard ε-N formulation of cluster points.",
     "mathContext": "The set $S = \\{C \\in \\mathbb{R} : C \\text{ is a limit point of } g(n)\\}$ is the closure of $\\{g(n) : n \\in \\mathbb{N}\\}$ in the one-point compactification $[0, \\infty]$. The $\\forall \\varepsilon > 0, \\forall N, \\exists n \\geq N$ quantifier structure is the standard sequential characterization of cluster points, avoiding topological machinery. This captures \"infinitely many $n$ with $g(n) \\approx C$\" rigorously.",
-    "significance": "critical",
-    "relatedConcepts": ["cluster points", "ε-N definition", "sequential limits", "topology"],
-    "prerequisites": ["normalizedGap", "Real.abs"],
+    "significance": "key",
+    "relatedConcepts": [
+      "cluster points",
+      "ε-N definition",
+      "sequential limits",
+      "topology"
+    ],
+    "prerequisites": [
+      "normalizedGap",
+      "Real.abs"
+    ],
     "range": {
       "startLine": 46,
       "endLine": 48
@@ -96,9 +137,18 @@
     "title": "Goldston-Pintz-Yıldırım: 0 ∈ S",
     "content": "GPY (2009) proved lim inf g(n) = 0, establishing that 0 is a limit point of the normalized gap sequence.",
     "mathContext": "The **GPY theorem** (2009) proved $\\liminf_{n \\to \\infty} (p_{n+1} - p_n)/\\log p_n = 0$, meaning primes can be much closer together than average infinitely often. This was the breakthrough that initiated the chain: GPY (2009) → Zhang (2013, bounded gaps) → Maynard-Tao (2013, multiple bounded gaps) → Polymath 8 (gap ≤ 246). The GPY sieve method combined the Bombieri-Vinogradov theorem with the Selberg sieve in a novel way.",
-    "significance": "critical",
-    "relatedConcepts": ["GPY theorem", "bounded gaps", "Zhang's theorem", "Maynard-Tao", "sieve methods"],
-    "prerequisites": ["IsLimitPointOfGaps", "normalizedGap"],
+    "significance": "key",
+    "relatedConcepts": [
+      "GPY theorem",
+      "bounded gaps",
+      "Zhang's theorem",
+      "Maynard-Tao",
+      "sieve methods"
+    ],
+    "prerequisites": [
+      "IsLimitPointOfGaps",
+      "normalizedGap"
+    ],
     "range": {
       "startLine": 54,
       "endLine": 54
@@ -111,9 +161,15 @@
     "title": "Westzynthius: Unbounded Gaps (∞ ∈ S)",
     "content": "Westzynthius (1931) proved that normalized gaps can be arbitrarily large: for every M, infinitely many n satisfy g(n) > M.",
     "mathContext": "**Westzynthius** (1931) showed $\\limsup (p_{n+1} - p_n)/\\log p_n = \\infty$, proving that gaps between primes can grow much faster than $\\log p_n$ infinitely often. The best quantitative bound is due to **Ford-Green-Konyagin-Maynard-Tao** (2018): there exist gaps exceeding $c \\cdot \\log n \\cdot \\log\\log n \\cdot \\log\\log\\log\\log n / (\\log\\log\\log n)^2$. This is formalized as a universal statement: for *every* $M$, the set $\\{n : g(n) > M\\}$ is infinite.",
-    "significance": "critical",
-    "relatedConcepts": ["large gaps", "Rankin's theorem", "Ford-Green-Konyagin-Maynard-Tao"],
-    "prerequisites": ["normalizedGap"],
+    "significance": "key",
+    "relatedConcepts": [
+      "large gaps",
+      "Rankin's theorem",
+      "Ford-Green-Konyagin-Maynard-Tao"
+    ],
+    "prerequisites": [
+      "normalizedGap"
+    ],
     "range": {
       "startLine": 59,
       "endLine": 60
@@ -127,8 +183,15 @@
     "content": "For any C > 0, infinitely many n have g(n) > C. This strengthens unbounded gaps by showing S contains arbitrarily large finite values.",
     "mathContext": "**Hildebrand and Maier** showed that $S$ contains arbitrarily large finite numbers, not just $\\infty$. This is stronger than Westzynthius: it's not merely that gaps can be large, but that specific large values are *limit points*. Combined with GPY ($0 \\in S$), this means $S$ is unbounded from above and contains $0$, but the interior structure of $S$ between $0$ and $\\infty$ remains mysterious.",
     "significance": "key",
-    "relatedConcepts": ["Hildebrand-Maier theorem", "finite limit points", "gap distribution"],
-    "prerequisites": ["normalizedGap", "IsLimitPointOfGaps"],
+    "relatedConcepts": [
+      "Hildebrand-Maier theorem",
+      "finite limit points",
+      "gap distribution"
+    ],
+    "prerequisites": [
+      "normalizedGap",
+      "IsLimitPointOfGaps"
+    ],
     "range": {
       "startLine": 64,
       "endLine": 65
@@ -142,8 +205,15 @@
     "content": "Merikoski (2020) proved that at least 1/3 of any interval [0, T] belongs to S in the sense of Lebesgue measure.",
     "mathContext": "The sequence of density improvements for $S$: **Erdős-Ricci** (positive measure) → **Banks-Freiberg-Maynard** (≥ 12.5%) → **Merikoski** (2020, ≥ 1/3). The formalization uses a finitary approximation: a `Finset ℝ` of at least $T/3$ many limit points in $[0, T]$. This is a pragmatic compromise—the true statement involves Lebesgue measure, but Finset approximation is more tractable in Lean.",
     "significance": "key",
-    "relatedConcepts": ["Lebesgue measure", "density bounds", "Banks-Freiberg-Maynard"],
-    "prerequisites": ["IsLimitPointOfGaps", "Finset"],
+    "relatedConcepts": [
+      "Lebesgue measure",
+      "density bounds",
+      "Banks-Freiberg-Maynard"
+    ],
+    "prerequisites": [
+      "IsLimitPointOfGaps",
+      "Finset"
+    ],
     "range": {
       "startLine": 70,
       "endLine": 72
@@ -156,9 +226,15 @@
     "title": "Erdős Problem 5: S = [0, ∞)",
     "content": "Every non-negative real C is a limit point of g(n). This is the full conjecture: the set of limit points of normalized prime gaps is all of [0, ∞).",
     "mathContext": "The conjecture $S = [0, \\infty)$ is formalized as $\\forall C \\geq 0, \\text{IsLimitPointOfGaps}(C)$. This would mean that for *every* target ratio $C$, there are infinitely many consecutive prime pairs with gap ratio approximately $C$. The conjecture is one of the deepest open problems about prime distribution, connecting to the **Hardy-Littlewood prime $k$-tuples conjecture**, **Cramér's model** of primes as random events with density $1/\\ln x$, and the **Elliott-Halberstam conjecture** on primes in arithmetic progressions.",
-    "significance": "critical",
-    "relatedConcepts": ["Hardy-Littlewood conjecture", "Cramér's model", "Elliott-Halberstam conjecture"],
-    "prerequisites": ["IsLimitPointOfGaps"],
+    "significance": "key",
+    "relatedConcepts": [
+      "Hardy-Littlewood conjecture",
+      "Cramér's model",
+      "Elliott-Halberstam conjecture"
+    ],
+    "prerequisites": [
+      "IsLimitPointOfGaps"
+    ],
     "range": {
       "startLine": 79,
       "endLine": 80

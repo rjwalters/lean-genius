@@ -2,12 +2,15 @@
   {
     "id": "ann-e119-header",
     "proofId": "erdos-119",
-    "range": { "startLine": 1, "endLine": 20 },
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
     "type": "context",
     "title": "Problem Overview: Three-Part Conjecture",
     "content": "Header documentation presenting Erdős Problem #119 as a three-part conjecture about the maximum modulus of monic polynomials with roots on the unit circle. Part 1 (limsup $M_n = \\infty$) was solved by Wagner (1980), Part 2 ($M_n > n^c$ infinitely often) by Beck (1991), and Part 3 ($\\sum M_k > n^{1+c}$) remains open with a $100 prize from Erdős.",
     "mathContext": "For $z_1, \\ldots, z_n$ on $|z| = 1$, define $p_n(z) = \\prod_{i=1}^n (z - z_i)$ and $M_n = \\max_{|z|=1} |p_n(z)|$. Part 1: $\\limsup M_n = \\infty$. Part 2: $\\exists c > 0,\\, M_n > n^c$ i.o. Part 3: $\\exists c > 0,\\, \\sum_{k \\leq n} M_k > n^{1+c}$ for large $n$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "maximum modulus principle",
       "Diophantine approximation",
@@ -23,7 +26,10 @@
   {
     "id": "ann-e119-imports",
     "proofId": "erdos-119",
-    "range": { "startLine": 22, "endLine": 29 },
+    "range": {
+      "startLine": 22,
+      "endLine": 29
+    },
     "type": "context",
     "title": "Imports and Setup",
     "content": "Imports Mathlib modules for the complex unit circle, normed spaces, filters (for limsup and eventually), and big operators (for finite sums and products). Opens the Filter and Finset namespaces for convenient access to `atTop`, `limsup`, `range`, and `∑`/`∏`.",
@@ -42,12 +48,15 @@
   {
     "id": "erdos-119-poly",
     "proofId": "erdos-119",
-    "range": { "startLine": 31, "endLine": 36 },
+    "range": {
+      "startLine": 31,
+      "endLine": 36
+    },
     "type": "definition",
     "title": "Unit Circle Polynomial",
     "content": "Defines the monic polynomial $p_n(w) = \\prod_{i < n} (w - z_i)$ where each $z_i$ lies on the unit circle. Uses 0-indexing with `Finset.range n`. The polynomial is parametrized by a sequence $z : \\mathbb{N} \\to \\mathbb{C}$ (the root sequence) and a degree $n$, giving a function $\\mathbb{C} \\to \\mathbb{C}$.",
     "mathContext": "$\\text{unitCirclePoly}(z, n)(w) = \\prod_{i=0}^{n-1} (w - z_i)$ where $|z_i| = 1$ for all $i$. This is a monic polynomial of degree $n$ with all roots on $S^1$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "monic polynomials",
       "unit circle $S^1$",
@@ -62,12 +71,15 @@
   {
     "id": "erdos-119-maxmod",
     "proofId": "erdos-119",
-    "range": { "startLine": 38, "endLine": 41 },
+    "range": {
+      "startLine": 38,
+      "endLine": 41
+    },
     "type": "definition",
     "title": "Maximum Modulus $M_n$",
     "content": "Defines $M_n = \\sup\\{\\|p_n(w)\\| : \\|w\\| = 1\\}$, the maximum of $|p_n|$ on the unit circle. By the maximum modulus principle, this equals the maximum of $|p_n|$ on the closed unit disk. The supremum is taken over the set of complex numbers with norm 1, using Lean's `sSup`.",
     "mathContext": "$M_n = \\max_{|w|=1} |p_n(w)| = \\sup\\{\\|\\prod_{i<n}(w - z_i)\\| : \\|w\\| = 1\\}$. Since $p_n$ is continuous on the compact set $|w| = 1$, the supremum is attained.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "maximum modulus principle",
       "supremum on compact sets",
@@ -82,7 +94,10 @@
   {
     "id": "erdos-119-part1",
     "proofId": "erdos-119",
-    "range": { "startLine": 43, "endLine": 54 },
+    "range": {
+      "startLine": 43,
+      "endLine": 54
+    },
     "type": "theorem",
     "title": "Part 1: $\\limsup M_n = \\infty$ (Wagner 1980)",
     "content": "States that for any sequence of points on the unit circle, the limsup of $M_n$ is infinite (equal to $\\top$ in EReal). Solved by Georg Wagner in 1980, who proved the stronger result that $M_n > (\\log n)^c$ infinitely often for some $c > 0$. This was published in the Bulletin of the London Mathematical Society.",
@@ -103,12 +118,15 @@
   {
     "id": "erdos-119-part2",
     "proofId": "erdos-119",
-    "range": { "startLine": 56, "endLine": 68 },
+    "range": {
+      "startLine": 56,
+      "endLine": 68
+    },
     "type": "theorem",
     "title": "Part 2: Polynomial Growth $M_n > N^c$ (Beck 1991)",
     "content": "States that there exists $c > 0$ such that $\\max_{n \\leq N} M_n > N^c$ for all $N$. Solved by József Beck in his 1991 Annals of Mathematics paper 'The modulus of polynomials with zeros on the unit circle'. Beck's proof uses deep techniques from Diophantine approximation and harmonic analysis. This is a major strengthening of Part 1, replacing logarithmic growth with polynomial growth.",
     "mathContext": "$\\forall z : \\mathbb{N} \\to \\mathbb{C},\\, (\\forall i,\\, |z_i| = 1) \\implies \\exists c > 0,\\, \\forall N,\\, \\exists n \\leq N,\\, M_n > N^c$. The jump from $(\\log n)^c$ to $n^c$ required fundamentally new methods.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "polynomial growth",
       "Annals of Mathematics",
@@ -123,12 +141,15 @@
   {
     "id": "erdos-119-part3",
     "proofId": "erdos-119",
-    "range": { "startLine": 70, "endLine": 80 },
+    "range": {
+      "startLine": 70,
+      "endLine": 80
+    },
     "type": "concept",
     "title": "Part 3: Partial Sum Growth $\\sum M_k > n^{1+c}$ (Open)",
     "content": "The open Part 3 is the strongest form: there exists $c > 0$ such that $\\sum_{k < n} M_k > n^{1+c}$ for all sufficiently large $n$. This is formalized using `Filter.Eventually` (the `\\forall^\\infty` notation) with respect to the `atTop` filter. Erdős offered a $100 prize for its resolution. This asks about cumulative growth rather than individual peaks — even if most $M_k$ are moderate, the sum must grow super-linearly.",
     "mathContext": "$\\text{ErdosProblem119} \\iff \\forall z : \\mathbb{N} \\to S^1,\\, \\exists c > 0,\\, \\forall^\\infty n,\\, \\sum_{k=0}^{n-1} M_k > n^{1+c}$. The eventually quantifier means: there exists $N_0$ such that the inequality holds for all $n \\geq N_0$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "partial sums",
       "Filter.Eventually",
@@ -144,7 +165,10 @@
   {
     "id": "ann-e119-basic-props",
     "proofId": "erdos-119",
-    "range": { "startLine": 82, "endLine": 98 },
+    "range": {
+      "startLine": 82,
+      "endLine": 98
+    },
     "type": "technique",
     "title": "Basic Properties",
     "content": "Proves two base cases for `unitCirclePoly`: at degree 1, $p_1(w) = w - z_0$; at degree 0, $p_0(w) = 1$ (the empty product). Also states as axioms that $M_n \\geq 1$ for $n \\geq 1$ (since evaluating at any root-of-unity gives a product of unit-modulus differences) and that $M_n \\geq 0$ (as a supremum of norms).",
@@ -163,7 +187,10 @@
   {
     "id": "erdos-119-implications",
     "proofId": "erdos-119",
-    "range": { "startLine": 100, "endLine": 115 },
+    "range": {
+      "startLine": 100,
+      "endLine": 115
+    },
     "type": "insight",
     "title": "Implication Chain: Part 3 $\\implies$ Part 2 $\\implies$ Part 1",
     "content": "States the logical relationships between the three parts: Part 3 (cumulative growth) implies Part 2 (polynomial growth of individual terms), which implies Part 1 (unbounded limsup). For Part 3 $\\implies$ Part 2: if $\\sum_{k < n} M_k > n^{1+c}$, then by pigeonhole some $M_k > n^c$. For Part 2 $\\implies$ Part 1: polynomial growth $M_n > n^c$ infinitely often clearly forces $\\limsup M_n = \\infty$. These implications are strict: Part 2 does not imply Part 3.",

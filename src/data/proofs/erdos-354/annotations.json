@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #354**: Completeness of Binary Floor Sequences\n\n**Question**: Given α, β > 0 with α/β irrational, can every large integer be written as a sum of terms from {⌊2ᵏα⌋} ∪ {⌊2ᵏβ⌋}?\n\n**Status**: OPEN in general. Known FALSE for some pairs.\n\n**Key results**:\n- Hegyvári (1989): Complete if α is dyadic, β is not\n- Hegyvári (1989): NOT complete if β = 2ᵏα\n- Van Doorn: Complete if α < 2 < β < 3",
     "mathContext": "This connects representation theory to Diophantine approximation. The floor sequences grow exponentially, so representation questions become subtle.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "floor-function",
       "representation",
@@ -45,7 +45,7 @@
     "title": "Representability and Completeness",
     "content": "**IsRepresentable α β n**:\n  ∃ S T : Finset ℕ, n = (Σ s ∈ S, ⌊2ˢα⌋) + (Σ t ∈ T, ⌊2ᵗβ⌋)\n\n  Meaning: n can be written as a sum of terms from both sequences.\n\n**IsComplete α β**:\n  ∃ N, ∀ n ≥ N, IsRepresentable α β n\n\n  Meaning: All sufficiently large integers are representable.",
     "mathContext": "Completeness is the key property. Unlike binary representation (α = β = 1), general pairs may miss some integers.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Finset.sum",
       "representation"
@@ -79,7 +79,7 @@
     "title": "Hegyvári's Positive Result (1989)",
     "content": "**axiom hegyvari_dyadic_complete**:\n  If α is dyadic rational, β is NOT dyadic, and α/β is irrational,\n  then IsComplete α β.\n\n**Why it works**:\n- Dyadic α gives periodic behavior mod 2ᵏ\n- Non-dyadic β fills in the 'gaps'\n- The irrationality ensures enough variety",
     "mathContext": "This is the strongest positive result. The key insight is that dyadic and non-dyadic numbers behave complementarily.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "hegyvari-1989",
       "periodicity",
@@ -97,7 +97,7 @@
     "title": "Hegyvári's Negative Result (1989)",
     "content": "**axiom hegyvari_not_complete**:\n  If α ≥ 2 and β = 2ᵏ · α for some k ≥ 1, then ¬IsComplete α β.\n\n**Why it fails**:\n- The sequences are 'aligned' (one is a power-of-2 multiple of the other)\n- They miss certain residue classes\n- No amount of summing can fill the gaps",
     "mathContext": "This shows the original conjecture is FALSE. The alignment β = 2ᵏα creates systematic holes in coverage.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "counterexample",
       "alignment",
@@ -150,7 +150,7 @@
     "title": "Main Conjecture (OPEN)",
     "content": "**axiom erdos_354_conjecture**:\n  (∀ α β, 0 < α → 0 < β → HasIrrationalRatio α β → IsComplete α β)\n  ∨\n  (∃ α β, 0 < α ∧ 0 < β ∧ HasIrrationalRatio α β ∧ ¬IsComplete α β)\n\n**Known**: The second disjunct is TRUE (counterexamples exist).\n\n**Open**: Precise characterization of when completeness holds.",
     "mathContext": "The original conjecture (irrational ratio ⟹ complete) is false. The refined question asks for exact conditions.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open-problem",
       "characterization"
@@ -184,7 +184,7 @@
     "title": "Refined Conjecture",
     "content": "**axiom refined_conjecture**:\n  If HasIrrationalRatio α β AND β ≠ 2ᵏ · α for all k ∈ ℤ,\n  then IsComplete α β ∨ ¬IsComplete α β.\n\n**Interpretation**: When we exclude the known counterexamples (β = 2ᵏα), is completeness always achieved?\n\n**Status**: UNKNOWN - This is the refined open question.",
     "mathContext": "Hegyvári conjectured that excluding power-of-2 multiples should suffice. This remains open.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "refined-conjecture",
       "power-exclusion"
@@ -253,7 +253,7 @@
     "title": "Summary and Status",
     "content": "**Erdős Problem #354: OPEN**\n\n**Positive Results**:\n- Dyadic + non-dyadic → complete (Hegyvári)\n- α < 2 < β < 3 → complete (Van Doorn)\n- Ceiling variant with non-dyadic → complete\n\n**Negative Results**:\n- α ≥ 2, β = 2ᵏα → not complete (Hegyvári)\n- 1 < α < 2, β = 2ᵏα for large k → not complete (Jiang-Ma, Fang-He)\n\n**Open**: Precise characterization of complete pairs.",
     "mathContext": "The problem is mostly solved for 'structured' pairs. The general case remains elusive.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "problem-status",
       "open",

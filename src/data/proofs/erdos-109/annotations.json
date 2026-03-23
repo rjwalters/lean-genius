@@ -46,7 +46,7 @@
     "title": "Upper and Lower Density",
     "content": "**Upper density** uses limsup: it captures the 'best case' proportion of A in {1,...,N} as N grows. **Lower density** uses liminf. A set has 'asymptotic density' if these are equal.",
     "mathContext": "Upper density = limsup_{N→∞} |A ∩ {1,...,N}|/N. For the even numbers, both densities equal 1/2. For {1, 10, 100, 1000, ...}, upper density is 0.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "limsup",
       "liminf",
@@ -100,7 +100,7 @@
     "title": "The Erdős Sumset Conjecture",
     "content": "**ErdosSumsetConjecture**: For all A ⊆ ℕ with positive upper density, there exist infinite sets B and C such that B + C ⊆ A. This is the formal statement of Erdős's question.",
     "mathContext": "The conjecture connects two seemingly different concepts: asymptotic density (an analytic notion) and sumset structure (an algebraic notion).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Erdős conjecture",
       "density",
@@ -118,7 +118,7 @@
     "title": "Moreira-Richter-Robertson Theorem",
     "content": "**The main result**: The Erdős Sumset Conjecture is TRUE. This is axiomatized because the proof uses deep ergodic theory: Furstenberg correspondence, IP-sets, and polynomial recurrence.",
     "mathContext": "Published in Ann. of Math. (2) 189(2):605-652, 2019. The 47-page proof uses measure-preserving systems and sophisticated dynamical arguments.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "ergodic theory",
       "Furstenberg correspondence",

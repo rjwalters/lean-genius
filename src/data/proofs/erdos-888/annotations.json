@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #888** asks: What is the maximum size of A ⊆ {1,...,n} such that if a ≤ b ≤ c ≤ d ∈ A and abcd is a perfect square, then ad = bc?\n\n**Status**: Exact answer OPEN; bounds SOLVED\n\nThis is a question of Erdős, Sárközy, and Sós about multiplicative structure in subsets of integers.\n\n**Known bounds**: n/log n ≪ max|A| = o(n)",
     "mathContext": "The problem connects combinatorial number theory with questions about how integers multiply together.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "perfect squares",
       "multiplicative structure",
@@ -29,7 +29,7 @@
     "title": "Square-Product Condition",
     "content": "**squareProductCondition(a, b, c, d)**: The implication\n\n`a ≤ b → b ≤ c → c ≤ d → IsSquare(abcd) → ad = bc`\n\nThis captures when an ordered quadruple (a,b,c,d) satisfies the required constraint: if their product is a perfect square, then the \"outer product\" ad must equal the \"inner product\" bc.\n\n**Intuition**: If a, b, c, d form a geometric progression, then bc = ad automatically. The condition restricts how elements can multiplicatively interact.",
     "mathContext": "The constraint ad = bc relates to geometric progressions: if b/a = c/b = d/c = r, then bc = ar·r²r = ar³ = ad.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "geometric progression",
       "IsSquare",
@@ -83,7 +83,7 @@
     "title": "Sárközy's Upper Bound (SOLVED)",
     "content": "**sarkozy_upper_bound**: For any ε > 0, eventually maxValidSize(n) < εn.\n\nThis is the o(n) upper bound: the maximum valid set size grows sublinearly.\n\n**sarkozy_sublinear**: For any c > 0, eventually c × maxValidSize(n) < n.\n\nSárközy's proof uses multiplicative number theory techniques to count how many quadruples can have square products. Too many elements create too many potential violations.",
     "mathContext": "The o(n) notation means maxValidSize(n)/n → 0 as n → ∞. The set cannot be a positive fraction of {1,...,n}.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "little-o notation",
       "sublinear growth",
@@ -101,7 +101,7 @@
     "title": "Prime Construction (SOLVED)",
     "content": "**primesUpTo(n)** = {p ∈ {1,...,n} : p is prime}\n\n**primes_satisfy_condition**: The set of primes satisfies requiredCondition.\n\n**Why?** If p₁ ≤ p₂ ≤ p₃ ≤ p₄ are primes and p₁p₂p₃p₄ is a perfect square, each prime factor must appear an even number of times. With four primes, this forces some to be equal. Case analysis shows ad = bc holds in all cases.\n\n**primes_valid_construction**: Proves hasValidSetOfSize(n, |primesUpTo(n)|).",
     "mathContext": "By the Prime Number Theorem, |primesUpTo(n)| ~ n/log n, giving the lower bound.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "prime numbers",
       "unique factorization",

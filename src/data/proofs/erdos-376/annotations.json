@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #376**: Central Binomial Coefficients Coprime to 105\n\n**Question**: Are there infinitely many n such that C(2n,n) is coprime to 105?\n\n**Status**: OPEN (for three primes)\n**Prize**: $1000 (Graham)\n\n**Context**: 105 = 3 × 5 × 7 (first three odd primes)\n\n**Known**: EGRS (1975) proved the two-prime case.\n\n**Key Tool**: Kummer's Theorem - coprimality depends on digit restrictions.",
     "mathContext": "The problem connects binomial coefficients to digit representations in multiple bases. OEIS A030979 lists the 105-good integers.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "central-binomial",
       "coprime",
@@ -46,7 +46,7 @@
     "title": "Kummer's Theorem",
     "content": "**HasSmallDigits n p**: All digits of n in base p are ≤ (p-1)/2\n\n**axiom kummer_theorem** (1852):\nThe power of p dividing C(m,k) = #carries when adding k + (m-k) in base p.\n\n**axiom centralBinom_coprime_iff_small_digits**:\n  C(2n,n) coprime to p ⟺ HasSmallDigits n p\n\nNo carries in n + n ⟺ all digits ≤ (p-1)/2.",
     "mathContext": "Kummer's theorem transforms a divisibility question into a digit constraint. This is the key insight connecting number theory to combinatorics.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "kummer-1852",
       "carries",
@@ -82,7 +82,7 @@
     "title": "EGRS Theorem (Verified Corollaries)",
     "content": "**axiom egrs_theorem** (1975):\nFor any two odd primes p, q: infinitely many n have C(2n,n) coprime to pq.\n\n**theorem infinitely_coprime_15** ✓: Infinite for 15 = 3×5\n**theorem infinitely_coprime_21** ✓: Infinite for 21 = 3×7\n**theorem infinitely_coprime_35** ✓: Infinite for 35 = 5×7\n\nAll three corollaries verified by applying egrs_theorem!",
     "mathContext": "EGRS (Erdős-Graham-Ruzsa-Straus) 1975 is the key positive result. The jump from two primes to three is the open frontier.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "egrs-1975",
       "verified",
@@ -100,7 +100,7 @@
     "title": "Main Conjecture (OPEN)",
     "content": "**axiom erdos_376_conjecture**:\n  GoodSet105.Infinite ∨ ¬GoodSet105.Infinite\n\nThe question: is {n | C(2n,n) coprime to 105} infinite?\n\n**axiom erdos_376_positive_answer**:\n  GoodSet105.Infinite\n\nThe expected answer is YES, but this remains OPEN.\n\n**Prize**: Graham offered $1000 for a solution!",
     "mathContext": "The problem has been open since the 1970s. The difficulty is proving the intersection of three infinite sets remains infinite.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open-conjecture",
       "three-primes",
@@ -208,7 +208,7 @@
     "title": "Summary and Status",
     "content": "**Erdős Problem #376: OPEN**\n**Prize: $1000 (Graham)**\n\n**Verified Theorems**:\n- factorization_105 ✓\n- infinitely_coprime_15/21/35 ✓ (EGRS applications)\n- one_is_good ✓, two_not_good ✓, four_not_good ✓\n\n**Key Results**:\n- Two primes: SOLVED (EGRS 1975)\n- Three primes: OPEN\n- Equivalent to: ∩(Base3Good, Base5Good, Base7Good) infinite?",
     "mathContext": "The problem is equivalent to asking whether simultaneous digit constraints in bases 3, 5, 7 admit infinitely many solutions.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "problem-status",
       "open",

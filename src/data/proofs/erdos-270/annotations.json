@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #270: Irrationality of Product-Reciprocal Series**\n\nThe problem asks: for f(n) → ∞, is the series\n$$\\sum_{n \\geq 1} \\frac{1}{(n+1)(n+2)\\cdots(n+f(n))}$$\nalways irrational?\n\n**Surprising Answer:** NO! In fact, for ANY positive real α, there exists f achieving that sum.\n\nThis is a complete disproof in the strongest sense - the series can be rational, irrational, or transcendental.",
     "mathContext": "Crmarić and Kovač (2025) published this in 'On the irrationality of certain super-polynomially decaying series.'",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Irrationality",
       "Series",
@@ -27,7 +27,7 @@
     "type": "definition",
     "title": "Rising Factorial",
     "content": "**risingProduct n k:**\n\nThe product (n+1)(n+2)⋯(n+k), also called the rising factorial or Pochhammer symbol.\n\n**Formula:** (n+k)! / n!\n\n**Examples:**\n- risingProduct(3, 2) = 4 × 5 = 20\n- risingProduct(1, 3) = 2 × 3 × 4 = 24",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Factorial",
       "Pochhammer symbol"
@@ -44,7 +44,7 @@
     "type": "definition",
     "title": "The Series",
     "content": "**productReciprocalSeries f:**\n\nThe infinite sum Σ_{n≥1} 1/((n+1)(n+2)⋯(n+f(n))).\n\nWhen f(n) → ∞, the denominators grow super-exponentially, ensuring convergence.\n\nThe question: what values can this sum take?",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Infinite series",
       "Convergence"
@@ -76,7 +76,7 @@
     "type": "definition",
     "title": "The Original Conjecture",
     "content": "**ErdosGrahamConjecture:**\n\nFor all f with f(n) → ∞, the sum is irrational.\n\nErdős and Graham (1980) wrote: 'the answer is almost surely in the affirmative if f(n) is assumed to be nondecreasing.'\n\nThis turned out to be FALSE in general (but may be true for non-decreasing f).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Conjectures",
       "Irrationality"
@@ -93,7 +93,7 @@
     "title": "Crmarić-Kovač Theorem (2025)",
     "content": "**crmaric_kovac_2025:**\n\nFor ANY α > 0, there exists f: ℕ → ℕ with f(n) → ∞ such that the series equals α exactly.\n\nThis completely disproves the original conjecture:\n- Want sum = 1? There's an f for that.\n- Want sum = π? There's an f for that.\n- Want sum = 1/7? There's an f for that.\n\nThe series can achieve any positive real value.",
     "mathContext": "Published on arXiv in 2025, this resolved a 45-year-old problem.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Disproof",
       "Construction",
@@ -110,7 +110,7 @@
     "type": "theorem",
     "title": "Conjecture Disproved",
     "content": "**erdos_270_disproved:**\n\n```lean\ntheorem erdos_270_disproved : ¬ErdosGrahamConjecture\n```\n\nProof idea: Take α = 1 (a rational). By Crmarić-Kovač, there exists f with sum = 1. But the conjecture says the sum must be irrational. Contradiction!",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Disproof",
       "Contradiction"
@@ -143,7 +143,7 @@
     "title": "Hansen's Transcendental Result",
     "content": "**hansen_1975 and hansen_transcendental:**\n\nFor f(n) = n, the sum equals:\n$$\\frac{1}{3} + \\frac{2\\pi}{3^{5/2}} \\approx 0.536$$\n\nThis is TRANSCENDENTAL (not just irrational)!\n\nThe presence of π guarantees transcendence. Hansen published this in 'A Table of Series and Products' (1975).",
     "mathContext": "This shows certain specific choices of f do give irrational (even transcendental) sums.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Transcendental numbers",
       "π",
@@ -160,7 +160,7 @@
     "type": "concept",
     "title": "Non-decreasing Case (Open)",
     "content": "**NondecreasingConjecture:**\n\nIf f is NON-DECREASING and f(n) → ∞, is the sum always irrational?\n\n**This remains OPEN!**\n\nCrmarić-Kovač showed that non-decreasing sums form a set of Lebesgue measure zero. This suggests:\n- Most reals are NOT achievable with non-decreasing f\n- The conjecture might be true in this restricted case\n\nBut measure zero ≠ empty set!",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Open problems",
       "Monotonicity",
@@ -193,7 +193,7 @@
     "type": "theorem",
     "title": "Summary",
     "content": "**erdos_270_summary:**\n\n**Question:** For f(n) → ∞, is Σ 1/((n+1)⋯(n+f(n))) always irrational?\n\n**Answer:** NO (Crmarić-Kovač, 2025)\n- Any α > 0 is achievable\n- The conjecture is completely false\n\n**Special case:** f(n) = n gives 1/3 + 2π/3^(5/2) (transcendental)\n\n**Open:** Is the sum irrational when f is non-decreasing?",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Main result",
       "Disproof",

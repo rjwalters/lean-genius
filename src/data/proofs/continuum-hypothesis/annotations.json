@@ -9,7 +9,7 @@
     "type": "concept",
     "title": "The First Problem of Hilbert",
     "content": "The Continuum Hypothesis was Cantor's 1878 conjecture about the \"size\" of infinity:\n\n$$|\\mathbb{N}| < |\\mathbb{R}| \\stackrel{?}{=} \\aleph_1$$\n\nHilbert made it **Problem #1** in his famous 1900 list. The resolution—that CH is *independent* of standard set theory—earned Cohen the Fields Medal in 1966.\n\n**Key insight**: This proof shows CH can be neither proven nor disproven from ZFC axioms. Both CH and ¬CH are consistent with mathematics as we know it.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "ZFC axioms",
       "cardinal numbers",
@@ -29,7 +29,7 @@
     "title": "The Continuum",
     "content": "The **continuum** is the cardinality of the real numbers:\n\n$$\\mathfrak{c} = 2^{\\aleph_0} = |\\mathbb{R}| = |\\mathcal{P}(\\mathbb{N})|$$\n\nThis is uncountable (by Cantor's diagonal argument) but we don't know *how* uncountable. Is it the \"next\" infinity after ℵ₀, or is there something between?",
     "mathContext": "$\\mathfrak{c} = 2^{\\aleph_0}$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "power set",
       "cardinal arithmetic",
@@ -65,7 +65,7 @@
     "title": "The Continuum Hypothesis",
     "content": "**Continuum Hypothesis (CH)**:\n\n$$\\mathfrak{c} = 2^{\\aleph_0} = \\aleph_1$$\n\nEquivalently: there is no set with cardinality strictly between ℕ and ℝ.\n\nThis simple statement about infinity resisted proof for nearly a century until we discovered it cannot be proven or disproven from ZFC!",
     "mathContext": "$2^{\\aleph_0} = \\aleph_1$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "continuum",
       "aleph hierarchy",
@@ -117,7 +117,7 @@
     "type": "concept",
     "title": "ZFC Set Theory",
     "content": "**ZFC** (Zermelo-Fraenkel with Choice) is the standard foundation for mathematics:\n\n- **Z**: Extensionality, pairing, union, power set, infinity, separation\n- **F**: Replacement schema\n- **C**: Axiom of Choice\n\nA **model** of ZFC is a structure (Sets, ∈) satisfying all axioms. Different models can disagree on statements like CH!",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "axiomatic set theory",
       "models",
@@ -136,7 +136,7 @@
     "title": "Gödel's Constructible Universe",
     "content": "In 1940, Gödel built the **constructible universe L**:\n\n$$L = \\bigcup_{\\alpha} L_\\alpha$$\n\nwhere:\n- $L_0 = \\emptyset$\n- $L_{\\alpha+1} = \\text{Def}(L_\\alpha)$ (first-order definable subsets)\n- $L_\\lambda = \\bigcup_{\\alpha<\\lambda} L_\\alpha$ for limit $\\lambda$\n\nL is the \"minimal\" model of ZFC. **In L, CH holds** because every real number is definable at a countable stage.",
     "mathContext": "L = ⋃_α L_α",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "transfinite recursion",
       "definability",
@@ -167,7 +167,7 @@
     "title": "Cohen Forcing",
     "content": "In 1963, Cohen invented **forcing** to construct models where CH fails:\n\n1. Start with ground model M\n2. Choose a poset P (partial order of \"conditions\")\n3. Add a generic filter G to get extension M[G]\n4. M[G] satisfies ZFC with new truths\n\nFor ¬CH, use P = Fn(ℵ₂ × ω, 2): this adds ℵ₂ new real numbers, making |ℝ| ≥ ℵ₂ > ℵ₁.",
     "mathContext": "M[G] = forcing extension",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "generic filters",
       "posets",
@@ -216,7 +216,7 @@
     "title": "Gödel's Consistency Result",
     "content": "**Theorem (Gödel, 1940)**:\n\n$$\\text{Con}(ZFC) \\Rightarrow \\text{Con}(ZFC + CH)$$\n\n**Proof**: The constructible universe L is a model of ZFC where CH holds. If ZFC is consistent (has any model), then L exists and satisfies ZFC + CH.\n\nThis showed CH is *not refutable* from ZFC.",
     "mathContext": "Con(ZFC) → Con(ZFC + CH)",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "constructible universe",
       "inner models",
@@ -234,7 +234,7 @@
     "title": "Cohen's Consistency Result",
     "content": "**Theorem (Cohen, 1963)**:\n\n$$\\text{Con}(ZFC) \\Rightarrow \\text{Con}(ZFC + \\neg CH)$$\n\n**Proof**: Starting from any model M, forcing with P = Fn(ℵ₂ × ω, 2) produces M[G] where |ℝ| ≥ ℵ₂. Thus CH fails in M[G].\n\nThis showed CH is *not provable* from ZFC. Combined with Gödel: **CH is independent of ZFC**.",
     "mathContext": "Con(ZFC) → Con(ZFC + ¬CH)",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "forcing",
       "Cohen reals",
@@ -252,7 +252,7 @@
     "title": "Independence of CH",
     "content": "**Main Theorem (Wiedijk #24 / Hilbert #1)**:\n\nThe Continuum Hypothesis is **independent** of ZFC:\n\n1. ∃ model M of ZFC where CH holds (Gödel's L)\n2. ∃ model M of ZFC where ¬CH holds (Cohen extension)\n\nTherefore ZFC ⊬ CH and ZFC ⊬ ¬CH.\n\n**Historical Impact**:\n- Answered Hilbert's first problem (unexpectedly!)\n- Revolutionized set theory with forcing\n- Raised philosophical questions about mathematical truth",
     "mathContext": "ZFC ⊬ CH and ZFC ⊬ ¬CH",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "independence results",
       "metamathematics",

@@ -2,253 +2,449 @@
   {
     "id": "ann-e607-header",
     "proofId": "erdos-607",
-    "range": { "startLine": 1, "endLine": 25 },
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
     "type": "concept",
     "title": "Problem Overview",
     "content": "**Erdős Problem #607: Incidence Signatures of Point Configurations**\n\nFor $n$ points $P \\subset \\mathbb{R}^2$, the incidence signature $A = \\{|\\ell \\cap P|\\}$ records point counts per line. $F(n)$ counts distinct achievable signatures.\n\n**Solved**: $F(n) = \\exp(\\Theta(\\sqrt{n}))$ (Szemerédi-Trotter). Prize: \\$250.",
     "mathContext": "The problem connects the Szemerédi-Trotter incidence theorem ($I \\leq O((nm)^{2/3} + n + m)$) to a counting problem. The $\\sqrt{n}$ growth arises from the Hardy-Ramanujan partition function: signatures correspond to constrained partitions of $\\binom{n}{2}$.",
-    "significance": "critical",
-    "relatedConcepts": ["Szemerédi-Trotter theorem", "Incidence geometry", "Partition function", "Hardy-Ramanujan asymptotic"],
-    "prerequisites": ["Combinatorial geometry basics", "Partition theory"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Szemerédi-Trotter theorem",
+      "Incidence geometry",
+      "Partition function",
+      "Hardy-Ramanujan asymptotic"
+    ],
+    "prerequisites": [
+      "Combinatorial geometry basics",
+      "Partition theory"
+    ]
   },
   {
     "id": "ann-e607-point",
     "proofId": "erdos-607",
-    "range": { "startLine": 34, "endLine": 34 },
+    "range": {
+      "startLine": 34,
+      "endLine": 34
+    },
     "type": "definition",
     "title": "Point",
     "content": "**Point** = `EuclideanSpace ℝ (Fin 2)` — a point in $\\mathbb{R}^2$ with the standard Euclidean metric.",
     "mathContext": "The Mathlib `EuclideanSpace` provides the inner product structure needed for collinearity checks. Points are vectors in $\\mathbb{R}^2$ with componentwise operations.",
     "significance": "supporting",
-    "relatedConcepts": ["Euclidean space", "ℝ²"],
-    "prerequisites": ["Mathlib.Analysis.InnerProductSpace.EuclideanDist"]
+    "relatedConcepts": [
+      "Euclidean space",
+      "ℝ²"
+    ],
+    "prerequisites": [
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+    ]
   },
   {
     "id": "ann-e607-config",
     "proofId": "erdos-607",
-    "range": { "startLine": 37, "endLine": 39 },
+    "range": {
+      "startLine": 37,
+      "endLine": 39
+    },
     "type": "definition",
     "title": "PointConfig",
     "content": "**PointConfig n**: a configuration of $n$ labeled, distinct points in $\\mathbb{R}^2$.\n- `points : Fin n → Point` — indexed point map\n- `distinct : Function.Injective points` — no coincident points\n\nDistinctness ensures every pair determines a well-defined line.",
     "mathContext": "The distinctness condition is essential: coincident points would collapse lines and artificially simplify signatures. The labeling by $\\text{Fin}\\, n$ allows us to use Finset combinatorics.",
-    "significance": "critical",
-    "relatedConcepts": ["Injective functions", "Point configurations"],
-    "prerequisites": ["Fin n", "Function.Injective"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Injective functions",
+      "Point configurations"
+    ],
+    "prerequisites": [
+      "Fin n",
+      "Function.Injective"
+    ]
   },
   {
     "id": "ann-e607-line",
     "proofId": "erdos-607",
-    "range": { "startLine": 42, "endLine": 45 },
+    "range": {
+      "startLine": 42,
+      "endLine": 45
+    },
     "type": "definition",
     "title": "Line",
     "content": "**Line**: a line in $\\mathbb{R}^2$ determined by two distinct points (`point1 ≠ point2`).\n\nThe `ne` field proves the defining points are distinct, ensuring the line is well-defined (not a degenerate 'point').",
     "mathContext": "Lines are the fundamental objects in incidence geometry. Two points determine a unique line; three or more points on the same line create collinearities that affect the incidence signature.",
     "significance": "key",
-    "relatedConcepts": ["Lines in ℝ²", "Incidence geometry"],
-    "prerequisites": ["Point"]
+    "relatedConcepts": [
+      "Lines in ℝ²",
+      "Incidence geometry"
+    ],
+    "prerequisites": [
+      "Point"
+    ]
   },
   {
     "id": "ann-e607-contains",
     "proofId": "erdos-607",
-    "range": { "startLine": 48, "endLine": 49 },
+    "range": {
+      "startLine": 48,
+      "endLine": 49
+    },
     "type": "definition",
     "title": "Line.contains",
     "content": "**Line.contains l p**: point $p$ lies on line $l$ iff $p = p_1 + t(p_2 - p_1)$ for some $t \\in \\mathbb{R}$.\n\nThis is the parametric form: $t=0$ gives $p_1$, $t=1$ gives $p_2$, and other values give other points on the line.",
     "mathContext": "The parametric representation avoids issues with vertical lines that the slope-intercept form $y = mx + b$ would face. It naturally extends to higher dimensions and is compatible with the vector space structure of `EuclideanSpace`.",
     "significance": "key",
-    "relatedConcepts": ["Parametric lines", "Collinearity", "Affine combinations"],
-    "prerequisites": ["Point", "Line", "Vector space operations"]
+    "relatedConcepts": [
+      "Parametric lines",
+      "Collinearity",
+      "Affine combinations"
+    ],
+    "prerequisites": [
+      "Point",
+      "Line",
+      "Vector space operations"
+    ]
   },
   {
     "id": "ann-e607-determined",
     "proofId": "erdos-607",
-    "range": { "startLine": 58, "endLine": 61 },
+    "range": {
+      "startLine": 58,
+      "endLine": 61
+    },
     "type": "definition",
     "title": "determinedLines",
     "content": "**determinedLines config**: the set of all lines through pairs of configuration points.\n\nFor $n$ points, there are at most $\\binom{n}{2}$ lines (when no three are collinear). Collinearities reduce this count.",
     "mathContext": "The number of determined lines is a classic invariant in combinatorial geometry. The Sylvester-Gallai theorem guarantees that for non-collinear configurations, at least one 'ordinary' line passes through exactly 2 points. Beck's theorem (1983) gives a dichotomy: either many points are collinear, or there are $\\Omega(n^2)$ lines.",
-    "significance": "critical",
-    "relatedConcepts": ["Sylvester-Gallai theorem", "Beck's theorem", "Ordinary lines"],
-    "prerequisites": ["PointConfig", "lineThroughPair"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Sylvester-Gallai theorem",
+      "Beck's theorem",
+      "Ordinary lines"
+    ],
+    "prerequisites": [
+      "PointConfig",
+      "lineThroughPair"
+    ]
   },
   {
     "id": "ann-e607-incidence-count",
     "proofId": "erdos-607",
-    "range": { "startLine": 66, "endLine": 67 },
+    "range": {
+      "startLine": 66,
+      "endLine": 67
+    },
     "type": "definition",
     "title": "incidenceCount",
     "content": "**incidenceCount config l**: counts configuration points lying on line $l$.\n\n$|\\ell \\cap P| = |\\{i \\in \\text{Fin}\\, n : \\ell.\\text{contains}(P_i)\\}|$\n\nFor a determined line, always $2 \\leq |\\ell \\cap P| \\leq n$.",
     "mathContext": "The incidence count is the fundamental measure in the Szemerédi-Trotter theorem. The total number of incidences $I = \\sum_\\ell |\\ell \\cap P|$ is bounded by $O((nm)^{2/3} + n + m)$ where $m$ is the number of lines.",
-    "significance": "critical",
-    "relatedConcepts": ["Incidence count", "Szemerédi-Trotter theorem"],
-    "prerequisites": ["PointConfig", "Line.contains", "Finset.filter"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Incidence count",
+      "Szemerédi-Trotter theorem"
+    ],
+    "prerequisites": [
+      "PointConfig",
+      "Line.contains",
+      "Finset.filter"
+    ]
   },
   {
     "id": "ann-e607-signature",
     "proofId": "erdos-607",
-    "range": { "startLine": 70, "endLine": 71 },
+    "range": {
+      "startLine": 70,
+      "endLine": 71
+    },
     "type": "definition",
     "title": "incidenceSignature",
     "content": "**incidenceSignature config**: the `Multiset ℕ` of incidence counts for all determined lines.\n$$A = \\{|\\ell_1 \\cap P|, |\\ell_2 \\cap P|, \\ldots, |\\ell_m \\cap P|\\}$$\n\nThis captures the full collinearity structure of the configuration.",
     "mathContext": "The multiset retains multiplicities: if 5 lines each contain 3 points, the count 3 appears 5 times. The SET form `incidenceSet` ignores multiplicities. The problem asks about the set form $A$ (which values appear), not the multiset (how often each value appears).",
-    "significance": "critical",
-    "relatedConcepts": ["Multisets", "Incidence patterns", "Collinearity structure"],
-    "prerequisites": ["incidenceCount", "determinedLines", "Multiset"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Multisets",
+      "Incidence patterns",
+      "Collinearity structure"
+    ],
+    "prerequisites": [
+      "incidenceCount",
+      "determinedLines",
+      "Multiset"
+    ]
   },
   {
     "id": "ann-e607-F",
     "proofId": "erdos-607",
-    "range": { "startLine": 80, "endLine": 81 },
+    "range": {
+      "startLine": 80,
+      "endLine": 81
+    },
     "type": "definition",
     "title": "F(n)",
     "content": "**F n**: the number of distinct incidence signatures achievable by $n$-point configurations in $\\mathbb{R}^2$.\n\n$F(n) = |\\{\\text{incidenceSignature}(P) : P \\text{ is an } n\\text{-point configuration}\\}|$\n\nDespite infinitely many configurations, $F(n)$ is finite (and surprisingly small).",
     "mathContext": "The finiteness of $F(n)$ is non-obvious: there are uncountably many $n$-point configurations, but the incidence signature can only take finitely many values because each count is in $\\{2, \\ldots, n\\}$ and there are at most $\\binom{n}{2}$ lines.",
-    "significance": "critical",
-    "relatedConcepts": ["Counting function", "Geometric realizability"],
-    "prerequisites": ["incidenceSignature", "PointConfig"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Counting function",
+      "Geometric realizability"
+    ],
+    "prerequisites": [
+      "incidenceSignature",
+      "PointConfig"
+    ]
   },
   {
     "id": "ann-e607-conjecture",
     "proofId": "erdos-607",
-    "range": { "startLine": 90, "endLine": 91 },
+    "range": {
+      "startLine": 90,
+      "endLine": 91
+    },
     "type": "definition",
     "title": "ErdosConjecture607",
     "content": "**ErdosConjecture607**: $\\exists C > 0, \\forall n, F(n) \\leq \\exp(C\\sqrt{n})$.\n\nThe conjecture asks for exponential-in-$\\sqrt{n}$ growth, which is much slower than the naive $\\exp(O(n))$ bound.",
     "mathContext": "The $\\sqrt{n}$ exponent reflects partition-theoretic constraints: the number of integer partitions of $N$ is $\\exp(\\Theta(\\sqrt{N}))$ by the Hardy-Ramanujan formula, and incidence signatures correspond to partitions of $\\binom{n}{2} \\approx n^2/2$. Since $\\sqrt{n^2/2} = n/\\sqrt{2}$, the growth is $\\exp(O(n))$ for unconstrained partitions, but geometric constraints reduce this to $\\exp(O(\\sqrt{n}))$.",
-    "significance": "critical",
-    "relatedConcepts": ["Exponential bounds", "Partition function"],
-    "prerequisites": ["F", "Real.exp", "Real.sqrt"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Exponential bounds",
+      "Partition function"
+    ],
+    "prerequisites": [
+      "F",
+      "Real.exp",
+      "Real.sqrt"
+    ]
   },
   {
     "id": "ann-e607-sz-trotter-solution",
     "proofId": "erdos-607",
-    "range": { "startLine": 94, "endLine": 95 },
+    "range": {
+      "startLine": 94,
+      "endLine": 95
+    },
     "type": "theorem",
     "title": "szemeredi_trotter_607",
     "content": "**szemeredi_trotter_607**: The Erdős conjecture is TRUE.\n\nSzemerédi and Trotter proved $F(n) \\leq \\exp(C\\sqrt{n})$ using their incidence theorem. This earned the \\$250 prize.",
     "mathContext": "The proof uses the Szemerédi-Trotter incidence bound to show that the constraint $\\sum \\binom{k_i}{2} = \\binom{n}{2}$ together with $I \\leq O((nm)^{2/3} + n + m)$ limits the achievable partitions to $\\exp(O(\\sqrt{n}))$ many.",
-    "significance": "critical",
-    "relatedConcepts": ["Szemerédi-Trotter theorem", "Prize problem"],
-    "prerequisites": ["ErdosConjecture607", "szemeredi_trotter_incidence"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Szemerédi-Trotter theorem",
+      "Prize problem"
+    ],
+    "prerequisites": [
+      "ErdosConjecture607",
+      "szemeredi_trotter_incidence"
+    ]
   },
   {
     "id": "ann-e607-at-least-2",
     "proofId": "erdos-607",
-    "range": { "startLine": 100, "endLine": 102 },
+    "range": {
+      "startLine": 100,
+      "endLine": 102
+    },
     "type": "theorem",
     "title": "incidence_at_least_two",
     "content": "**incidence_at_least_two**: Every determined line contains $\\geq 2$ configuration points.\n\nThis is immediate: the line is determined by a pair of points, both of which lie on it.",
     "mathContext": "The lower bound $|\\ell \\cap P| \\geq 2$ means incidence counts live in $\\{2, 3, \\ldots, n\\}$, not $\\{0, 1, \\ldots, n\\}$. This constraint reduces the space of possible signatures.",
     "significance": "key",
-    "relatedConcepts": ["Incidence constraints", "Determined lines"],
-    "prerequisites": ["incidenceCount", "determinedLines"]
+    "relatedConcepts": [
+      "Incidence constraints",
+      "Determined lines"
+    ],
+    "prerequisites": [
+      "incidenceCount",
+      "determinedLines"
+    ]
   },
   {
     "id": "ann-e607-at-most-n",
     "proofId": "erdos-607",
-    "range": { "startLine": 105, "endLine": 107 },
+    "range": {
+      "startLine": 105,
+      "endLine": 107
+    },
     "type": "theorem",
     "title": "incidence_at_most_n",
     "content": "**incidence_at_most_n**: Every line contains $\\leq n$ configuration points (trivially).\n\nEquality $|\\ell \\cap P| = n$ holds only for collinear configurations where all points lie on one line.",
     "mathContext": "The upper bound $n$ is achieved by the collinear configuration, which has signature $A = \\{n\\}$. This is one extreme; the other is general position with $A = \\{2\\}$.",
     "significance": "supporting",
-    "relatedConcepts": ["Collinear configurations", "Trivial bound"],
-    "prerequisites": ["incidenceCount", "PointConfig"]
+    "relatedConcepts": [
+      "Collinear configurations",
+      "Trivial bound"
+    ],
+    "prerequisites": [
+      "incidenceCount",
+      "PointConfig"
+    ]
   },
   {
     "id": "ann-e607-lower-bound",
     "proofId": "erdos-607",
-    "range": { "startLine": 117, "endLine": 123 },
+    "range": {
+      "startLine": 117,
+      "endLine": 123
+    },
     "type": "definition",
     "title": "LowerBoundConjecture and Construction",
     "content": "**LowerBoundConjecture**: $F(n) \\geq \\exp(c\\sqrt{n})$ for some $c > 0$ and large $n$.\n\n**lower_bound_construction**: Explicit configurations achieve this—the upper bound is tight.\n\nCombined: $F(n) = \\exp(\\Theta(\\sqrt{n}))$.",
     "mathContext": "The lower bound is proved by constructing $\\exp(\\Omega(\\sqrt{n}))$ configurations with distinct signatures. The constructions use carefully chosen collinear subsets: by varying which subsets of points are collinear, one generates distinct signatures. The partition-theoretic structure ensures enough distinct patterns exist.",
-    "significance": "critical",
-    "relatedConcepts": ["Lower bound constructions", "Tight bounds"],
-    "prerequisites": ["F", "Real.exp"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Lower bound constructions",
+      "Tight bounds"
+    ],
+    "prerequisites": [
+      "F",
+      "Real.exp"
+    ]
   },
   {
     "id": "ann-e607-collinear",
     "proofId": "erdos-607",
-    "range": { "startLine": 128, "endLine": 129 },
+    "range": {
+      "startLine": 128,
+      "endLine": 129
+    },
     "type": "definition",
     "title": "collinearConfig",
     "content": "**collinearConfig n**: All $n$ points on the $x$-axis: $(0,0), (1,0), \\ldots, (n-1,0)$.\n\nSignature: $A = \\{n\\}$ — one line containing all points. This is the 'most collinear' configuration.",
     "mathContext": "The collinear configuration achieves the minimum number of lines (just 1) and the maximum incidence count ($n$). It's one extreme of the signature space.",
     "significance": "key",
-    "relatedConcepts": ["Collinear points", "Extreme configurations"],
-    "prerequisites": ["PointConfig"]
+    "relatedConcepts": [
+      "Collinear points",
+      "Extreme configurations"
+    ],
+    "prerequisites": [
+      "PointConfig"
+    ]
   },
   {
     "id": "ann-e607-general-position",
     "proofId": "erdos-607",
-    "range": { "startLine": 136, "endLine": 137 },
+    "range": {
+      "startLine": 136,
+      "endLine": 137
+    },
     "type": "definition",
     "title": "generalPositionConfig",
     "content": "**generalPositionConfig n**: Points in general position (no 3 collinear), e.g., on a circle.\n\nSignature: $A = \\{2\\}$ — every line contains exactly 2 points, giving $\\binom{n}{2}$ lines.",
     "mathContext": "General position is the 'generic' case: a random placement of $n$ points is in general position with probability 1. The $\\binom{n}{2}$ lines are all ordinary (containing exactly 2 points). The Sylvester-Gallai theorem guarantees at least one ordinary line in any non-collinear configuration.",
     "significance": "key",
-    "relatedConcepts": ["General position", "Ordinary lines", "Sylvester-Gallai"],
-    "prerequisites": ["PointConfig"]
+    "relatedConcepts": [
+      "General position",
+      "Ordinary lines",
+      "Sylvester-Gallai"
+    ],
+    "prerequisites": [
+      "PointConfig"
+    ]
   },
   {
     "id": "ann-e607-grid",
     "proofId": "erdos-607",
-    "range": { "startLine": 144, "endLine": 145 },
+    "range": {
+      "startLine": 144,
+      "endLine": 145
+    },
     "type": "definition",
     "title": "gridConfig",
     "content": "**gridConfig m**: An $m \\times m$ grid of $m^2$ points.\n\nSignature includes both 2 (diagonal lines) and $m$ (rows and columns). This is an intermediate configuration between collinear and general position.",
     "mathContext": "Grids are the extremal configurations for the Szemerédi-Trotter theorem: $m^2$ points and $2m$ lines (rows and columns) achieve $\\Theta(m^2) = \\Theta((nm)^{2/3} + n + m)$ incidences when $n = m^2$. They also provide rich incidence signatures with multiple distinct values.",
     "significance": "key",
-    "relatedConcepts": ["Grid configurations", "Szemerédi-Trotter extremal"],
-    "prerequisites": ["PointConfig"]
+    "relatedConcepts": [
+      "Grid configurations",
+      "Szemerédi-Trotter extremal"
+    ],
+    "prerequisites": [
+      "PointConfig"
+    ]
   },
   {
     "id": "ann-e607-incidence-bound",
     "proofId": "erdos-607",
-    "range": { "startLine": 154, "endLine": 158 },
+    "range": {
+      "startLine": 154,
+      "endLine": 158
+    },
     "type": "theorem",
     "title": "szemeredi_trotter_incidence",
     "content": "**szemeredi_trotter_incidence**: The famous Szemerédi-Trotter theorem (1983):\n\n$$I(P,L) \\leq C \\cdot (nm)^{2/3} + n + m$$\n\nwhere $I$ counts point-line incidences, $n = |P|$, $m = |L|$.",
     "mathContext": "This is one of the most important results in combinatorial geometry. The proof uses the crossing number inequality: any graph drawn in the plane with $v$ vertices and $e > 4v$ edges has $\\geq e^3/(64v^2)$ crossings. Applying this to the incidence graph yields the $O((nm)^{2/3})$ bound. Alternative proofs use polynomial partitioning (Guth-Katz 2015).",
-    "significance": "critical",
-    "relatedConcepts": ["Crossing number inequality", "Incidence geometry", "Polynomial partitioning"],
-    "prerequisites": ["Point", "Line", "Finset"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Crossing number inequality",
+      "Incidence geometry",
+      "Polynomial partitioning"
+    ],
+    "prerequisites": [
+      "Point",
+      "Line",
+      "Finset"
+    ]
   },
   {
     "id": "ann-e607-partition",
     "proofId": "erdos-607",
-    "range": { "startLine": 171, "endLine": 173 },
+    "range": {
+      "startLine": 171,
+      "endLine": 173
+    },
     "type": "concept",
     "title": "Partition Connection",
     "content": "**Why $\\sqrt{n}$?** Incidence signatures encode constrained integer partitions.\n\nIf lines have incidences $k_1, k_2, \\ldots, k_m$, then $\\sum_i \\binom{k_i}{2} = \\binom{n}{2}$ (each pair of points determines one line).\n\nThe number of such partitions grows as $\\exp(\\Theta(\\sqrt{n}))$ by the Hardy-Ramanujan asymptotic.",
     "mathContext": "Hardy and Ramanujan (1918) proved $p(n) \\sim \\frac{1}{4n\\sqrt{3}} \\exp\\left(\\pi\\sqrt{\\frac{2n}{3}}\\right)$. Here we're partitioning $\\binom{n}{2} \\approx n^2/2$ into parts $\\binom{k_i}{2}$, but the geometric constraints (Szemerédi-Trotter) reduce the effective partition count from $\\exp(O(n))$ to $\\exp(O(\\sqrt{n}))$.",
-    "significance": "critical",
-    "relatedConcepts": ["Hardy-Ramanujan formula", "Integer partitions", "Constrained partitions"],
-    "prerequisites": ["incidenceCount", "Partition theory basics"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Hardy-Ramanujan formula",
+      "Integer partitions",
+      "Constrained partitions"
+    ],
+    "prerequisites": [
+      "incidenceCount",
+      "Partition theory basics"
+    ]
   },
   {
     "id": "ann-e607-main",
     "proofId": "erdos-607",
-    "range": { "startLine": 191, "endLine": 192 },
+    "range": {
+      "startLine": 191,
+      "endLine": 192
+    },
     "type": "theorem",
     "title": "erdos_607",
     "content": "**erdos_607**: The complete solution combining both bounds:\n$$\\exp(c\\sqrt{n}) \\leq F(n) \\leq \\exp(C\\sqrt{n})$$\n\nProved by `⟨szemeredi_trotter_607, lower_bound_construction⟩`.",
     "mathContext": "This gives a tight characterization of $F(n)$ up to constants in the exponent. The upper bound uses the Szemerédi-Trotter incidence theorem; the lower bound uses explicit constructions. The problem is completely resolved: $F(n) = \\exp(\\Theta(\\sqrt{n}))$.",
-    "significance": "critical",
-    "relatedConcepts": ["Tight bounds", "Complete characterization"],
-    "prerequisites": ["szemeredi_trotter_607", "lower_bound_construction"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Tight bounds",
+      "Complete characterization"
+    ],
+    "prerequisites": [
+      "szemeredi_trotter_607",
+      "lower_bound_construction"
+    ]
   },
   {
     "id": "ann-e607-tight",
     "proofId": "erdos-607",
-    "range": { "startLine": 195, "endLine": 199 },
+    "range": {
+      "startLine": 195,
+      "endLine": 199
+    },
     "type": "theorem",
     "title": "erdos_607_tight",
     "content": "**erdos_607_tight**: Restates the tight asymptotic with explicit existential constants:\n\n$\\exists c, C$ with $0 < c < C$ such that eventually $\\exp(c\\sqrt{n}) \\leq F(n) \\leq \\exp(C\\sqrt{n})$.\n\nDefined as `partition_count_growth`.",
     "mathContext": "The exact values of $c$ and $C$ are not determined by the formalization. Finding them is listed as an open question. The gap between $c$ and $C$ reflects the difference between the best known constructions and the best known upper bound.",
     "significance": "key",
-    "relatedConcepts": ["Asymptotic constants", "Eventually filter"],
-    "prerequisites": ["partition_count_growth"]
+    "relatedConcepts": [
+      "Asymptotic constants",
+      "Eventually filter"
+    ],
+    "prerequisites": [
+      "partition_count_growth"
+    ]
   }
 ]

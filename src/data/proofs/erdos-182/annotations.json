@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdos Problem #182**: Maximum Edges Avoiding k-Regular Subgraphs\n\n**Question**: For k >= 3, what is the maximum number of edges a graph on n vertices can have if it contains no k-regular subgraph?\n\n**Status**: SOLVED by Janzer-Sudakov (2023).\n\n**Answer**: The maximum is Theta(n log log n). Both the upper and lower bounds match.",
     "mathContext": "This is a fundamental question in extremal graph theory about the edge-density threshold for regular substructures.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "k-regular-graphs",
       "extremal-graph-theory",
@@ -28,7 +28,7 @@
     "title": "k-Regular Graphs",
     "content": "**IsRegular G k**: Every vertex in G has exactly k neighbors.\n\nFormally: forall v : V, (G.neighborSet v).ncard = k\n\n**Examples**:\n- Complete graph K_n is (n-1)-regular\n- Cycle C_n is 2-regular\n- Petersen graph is 3-regular",
     "mathContext": "Uses ncard (noncomputable cardinality) to avoid decidability requirements. Regular graphs are fundamental structures in algebraic and combinatorial graph theory.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "degree",
       "neighborSet",
@@ -46,7 +46,7 @@
     "title": "k-Regular Subgraph Containment",
     "content": "**HasKRegularSubgraph G k**: There exists a non-empty k-regular graph H that is a subgraph of G.\n\n**Key aspects**:\n- W is the vertex set of the subgraph (a Finset, not all of V)\n- H is a SimpleGraph on W\n- Every edge of H corresponds to an edge in G\n- W must be non-empty",
     "mathContext": "This captures the notion of 'finding' a regular substructure within a larger graph. The subgraph can be on any non-empty subset of vertices.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "subgraph",
       "induced-subgraph",
@@ -99,7 +99,7 @@
     "title": "Janzer-Sudakov Theorem (2023)",
     "content": "**axiom janzer_sudakov_theorem**:\nFor every k >= 3, there exists C = C(k) > 0 such that any graph on n vertices with at least C*n*log(log n) edges contains a k-regular subgraph.\n\n**Significance**: This resolves the upper bound side of Erdos Problem #182.\n\n**Method**: Iterative reduction argument where each step preserves structure. The iteration depth is O(log log n).",
     "mathContext": "The log log n factor is unusual in extremal combinatorics. It arises from the specific iterative structure of the proof.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "janzer-sudakov-2023",
       "iterative-argument",
@@ -134,7 +134,7 @@
     "title": "Pyber-Rodl-Szemeredi Lower Bound (1995)",
     "content": "**axiom pyber_rodl_szemeredi_lower_bound**:\nThere exist graphs on n vertices with Omega(n log log n) edges that contain no 3-regular subgraph.\n\n**Construction**: The proof uses an explicit construction based on careful analysis of degree constraints.\n\n**Significance**: This shows the Janzer-Sudakov bound is tight up to constants.",
     "mathContext": "The lower bound was known for decades before the matching upper bound. The construction shows the log log n factor is necessary, not just sufficient.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "pyber-rodl-szemeredi-1995",
       "lower-bound",
@@ -152,7 +152,7 @@
     "title": "Tight Bounds",
     "content": "**axiom extremal_theta**:\nThe extremal function f(n,k) = Theta(n log log n).\n\nThere exist constants 0 < c < C such that:\n- c * n * log(log n) <= f(n,k) <= C * n * log(log n)\n\n**Interpretation**: The extremal function grows exactly like n log log n, up to constant factors.",
     "mathContext": "Theta notation means both upper and lower bounds match asymptotically. This is the strongest possible characterization.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "big-theta",
       "asymptotic-analysis"
@@ -238,7 +238,7 @@
     "title": "Main Resolution Theorem",
     "content": "**axiom erdos_182_resolved**:\nCombines both directions:\n\n1. **Upper bound**: No k-regular subgraph implies edges <= C*n*log(log n)\n2. **Lower bound**: There exist graphs with edges >= c*n*log(log n) and no k-regular subgraph\n\n**Together**: The extremal function is Theta(n log log n), fully resolving the problem.",
     "mathContext": "This single axiom encapsulates the complete solution to Erdos Problem #182.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "complete-solution",
       "both-bounds"

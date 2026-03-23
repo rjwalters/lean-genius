@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "This header documents **Erdős Problem #219**, which asks whether there exist arbitrarily long arithmetic progressions of primes. The Green-Tao theorem (2008) proves the answer is YES.",
     "mathContext": "An arithmetic progression of primes has the form p, p+d, p+2d, ..., p+(k-1)d where all terms are prime. The question is whether such progressions exist for arbitrarily large k.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Green-Tao theorem",
       "prime numbers",
@@ -46,7 +46,7 @@
     "title": "Prime Arithmetic Progression",
     "content": "A set is a **prime AP** if all its elements are prime AND it forms an arithmetic progression. This combines the structural requirement (AP form) with the number-theoretic requirement (primality).",
     "mathContext": "The predicate IsPrimeAP requires: (1) ∀ p ∈ S, p.Prime, and (2) ∃ a d k, S = arithmeticProg a d k with k ≥ 1, d > 0.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "primality",
       "structural properties",
@@ -100,7 +100,7 @@
     "title": "The Main Question",
     "content": "**Erdős Problem #219**: For every k ≥ 1, does there exist a prime AP of length k? This asks whether we can find arbitrarily long prime APs, not just specific small examples.",
     "mathContext": "Formally: ∀ k ≥ 1, ∃ S : Finset ℕ, S.card = k ∧ IsPrimeAP S. This is a universal statement about existence for ALL k.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "universal quantification",
       "existence",
@@ -118,7 +118,7 @@
     "title": "The Green-Tao Theorem",
     "content": "The **Green-Tao theorem** (2008) proves that primes contain arbitrarily long arithmetic progressions. This is one of the most celebrated results in 21st century mathematics.",
     "mathContext": "The proof combines Szemerédi's theorem (APs in dense sets), ergodic theory, and a pseudorandomness argument to handle the sparseness of primes.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Szemerédi's theorem",
       "ergodic theory",

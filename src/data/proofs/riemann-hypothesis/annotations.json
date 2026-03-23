@@ -28,7 +28,7 @@
     "title": "The Most Important Unsolved Problem in Mathematics",
     "content": "The Riemann Hypothesis was first stated by Bernhard Riemann in 1859 in his only paper on number theory: 'On the Number of Primes Less Than a Given Magnitude.' In just 8 pages, Riemann revolutionized our understanding of prime numbers.\n\nIn 2000, the Clay Mathematics Institute designated RH as one of seven Millennium Prize Problems, offering $1 million for its resolution. As of 2025, it remains unsolved after 166 years.",
     "mathContext": "RH: If $\\zeta(s) = 0$ and $0 < \\text{Re}(s) < 1$, then $\\text{Re}(s) = 1/2$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Riemann's 1859 paper",
       "Millennium Prize",
@@ -46,7 +46,7 @@
     "title": "The Critical Line",
     "content": "The critical line Re(s) = 1/2 is where the Riemann Hypothesis claims all non-trivial zeros lie. This vertical line in the complex plane has a special status: the functional equation ζ(s) = ... ζ(1-s) shows that zeros come in symmetric pairs about this line.",
     "mathContext": "$\\{s \\in \\mathbb{C} : \\text{Re}(s) = 1/2\\}$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "critical strip",
       "functional equation",
@@ -98,7 +98,7 @@
     "title": "The Riemann Hypothesis - Formal Statement",
     "content": "**THE RIEMANN HYPOTHESIS**: All non-trivial zeros of the Riemann zeta function lie on the critical line Re(s) = 1/2.\n\nThis is formalized as: for all s ∈ ℂ, if ζ(s) = 0 and 0 < Re(s) < 1, then Re(s) = 1/2.\n\nProving this would resolve one of the most important open problems in mathematics and earn a $1 million Millennium Prize.",
     "mathContext": "$\\forall s \\in \\mathbb{C}: \\zeta(s) = 0 \\land 0 < \\text{Re}(s) < 1 \\Rightarrow \\text{Re}(s) = 1/2$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Millennium Prize",
       "prime distribution",
@@ -116,7 +116,7 @@
     "title": "The Functional Equation",
     "content": "The completed zeta function Λ(s) = π^(-s/2) Γ(s/2) ζ(s) satisfies Λ(s) = Λ(1-s). This remarkable symmetry about s = 1/2 is why the critical line is at Re(s) = 1/2: if ζ(s₀) = 0 with 0 < Re(s₀) < 1, then ζ(1-s₀) = 0 too, and both zeros are equidistant from Re(s) = 1/2.",
     "mathContext": "$\\Lambda(s) = \\Lambda(1-s)$ where $\\Lambda(s) = \\pi^{-s/2} \\Gamma(s/2) \\zeta(s)$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Gamma function",
       "reflection formula",
@@ -134,7 +134,7 @@
     "title": "Robin's Inequality - An Arithmetic Equivalent",
     "content": "**Robin (1984)**: The Riemann Hypothesis is equivalent to:\n\nσ(n) < e^γ · n · log(log n) for all n > 5040\n\nwhere σ(n) is the sum of divisors and γ ≈ 0.5772 is the Euler-Mascheroni constant.\n\nThis is remarkable: an analytic statement about complex zeros becomes a purely arithmetic inequality about divisor sums! The number 5040 = 7! is the largest known counterexample.",
     "mathContext": "$\\sigma(n) < e^\\gamma n \\log\\log n$ for $n > 5040$\n\n$\\sigma(n) = \\sum_{d|n} d$, $\\gamma = \\lim_{n\\to\\infty} (H_n - \\ln n) \\approx 0.5772$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "divisor function",
       "Euler-Mascheroni",
@@ -170,7 +170,7 @@
     "title": "Prime Counting Error - Why RH Matters for Primes",
     "content": "RH is equivalent to the best possible error term in the Prime Number Theorem:\n\n|π(x) - Li(x)| = O(√x log x)\n\nwhere π(x) counts primes up to x and Li(x) is the logarithmic integral. Without RH, we only know the error is o(x/log x). With RH, we get a precise square-root error bound.",
     "mathContext": "$|\\pi(x) - \\text{Li}(x)| = O(\\sqrt{x} \\log x)$ $\\Leftrightarrow$ RH\n\n$\\pi(x) = |\\{p \\leq x : p \\text{ prime}\\}|$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Prime Number Theorem",
       "logarithmic integral",
@@ -278,7 +278,7 @@
     "title": "What We Know After 166 Years",
     "content": "**Proven without RH**:\n- Trivial zeros at -2, -4, -6, ...\n- No zeros for Re(s) ≥ 1\n- Infinitely many zeros on Re(s) = 1/2\n- >40% of zeros on critical line\n- First 10^13 zeros verified\n\n**Equivalent to RH**:\n- Robin's inequality\n- Mertens bound\n- Prime counting error O(√x log x)\n\n**Still unknown**: Whether ALL zeros are on the critical line.",
     "mathContext": "Open since 1859. $1M prize. Greatest unsolved problem in pure mathematics.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open problems",
       "Millennium Prize",

@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #849**: Binomial Coefficient Multiplicities\n\n**Question**: For every t ≥ 1, does there exist a value a that appears exactly t times in Pascal's triangle?\n\n**Restriction**: We count pairs (n,k) with 1 ≤ k ≤ n/2 to avoid trivial symmetry (C(n,k) = C(n,n-k)).\n\n**Status**: OPEN for t ≥ 5. No known value appears exactly 5 times.\n\n**Connection**: This is essentially **Singmaster's Conjecture** (1971), which asks if multiplicities are bounded.",
     "mathContext": "Pascal's triangle has fascinating structure. Most values appear exactly twice (due to symmetry), but the restriction k ≤ n/2 removes this. Some values like 3003 appear 4 times through different coincidences.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "pascal-triangle",
       "binomial-coefficients",
@@ -97,7 +97,7 @@
     "title": "Singmaster's Conjecture",
     "content": "**axiom singmaster_conjecture**:\n  ∃ N : ℕ, ∀ a : ℕ, binomNMultiplicity a ≤ N\n\n**Meaning**: There's an absolute bound on how many times any value can appear.\n\n**axiom multiplicity_bound_8**:\n  ∀ a : ℕ, binomNMultiplicity a ≤ 8\n\nThe conjectured bound is 8, based on extensive computation. No value is known to appear more than 4 times.",
     "mathContext": "Singmaster originally conjectured this in 1971. The bound 8 is based on probabilistic arguments and computation.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "singmaster-1971",
       "upper-bound",
@@ -133,7 +133,7 @@
     "title": "Multiplicity of 3003 (Verified)",
     "content": "**axiom multiplicity_3003**: binomNMultiplicity 3003 = 4\n\n**Verified computations** ✓:\n- choose_14_6: C(14,6) = 3003 ✓\n- choose_15_5: C(15,5) = 3003 ✓\n- choose_78_2: C(78,2) = 3003 ✓\n- choose_3003_1: C(3003,1) = 3003 ✓\n\n**Remarkable**: 3003 achieves the highest known multiplicity (4) and is the smallest such value.",
     "mathContext": "3003 = 3·7·11·13 = C(14,6) = C(15,5) demonstrates deep coincidences in Pascal's triangle. Finding a value with multiplicity 5 is the key open problem.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "verified",
       "record-holder",
@@ -151,7 +151,7 @@
     "title": "Main Conjecture (OPEN)",
     "content": "**axiom erdos_849_conjecture**:\n  ∀ t ≥ 1, ∃ a : ℕ, binomNMultiplicity a = t\n\n**Interpretation**: Every positive multiplicity is achieved by some value.\n\n**Known cases**:\n- t = 1: a = 2 ✓\n- t = 2: a = 6 ✓ (or many others)\n- t = 3: a = 120 ✓\n- t = 4: a = 3003 ✓\n- t = 5: **UNKNOWN**\n\n**Note**: Both Erdős and Singmaster believed the answer is NO (some t doesn't occur).",
     "mathContext": "If Singmaster's conjecture is true with bound N, then t > N cannot occur. The question is whether all t ≤ N occur.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open-problem",
       "existence",
@@ -273,7 +273,7 @@
     "title": "Summary and Status",
     "content": "**Erdős Problem #849: OPEN**\n\n**Verified Theorems**:\n- appears_at_least_once ✓ (every a >= 2 appears)\n- choose_10_3/16_2/120_1 = 120 ✓\n- choose_14_6/15_5/78_2/3003_1 = 3003 ✓\n- t_equals_1/3/4 ✓ (witnesses exist)\n\n**Key Axioms**:\n- singmaster_conjecture (bounded multiplicities)\n- multiplicity_120 = 3, multiplicity_3003 = 4\n- erdos_849_conjecture (every t occurs)\n\n**Open**: Does t = 5 occur? Is there an absolute multiplicity bound?",
     "mathContext": "The formalization captures the known structure of the problem while clearly marking the open questions as axioms.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "problem-status",
       "open",

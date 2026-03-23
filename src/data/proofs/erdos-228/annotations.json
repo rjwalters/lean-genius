@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "This header documents **Erdős Problem #228**, originally Littlewood's conjecture on flat polynomials. The question: do there exist polynomials P with ±1 coefficients such that |P(z)| ≈ √n for ALL |z|=1? Answer: YES (BBMST 2019).",
     "mathContext": "A 'flat' Littlewood polynomial has magnitude uniformly close to √n on the entire unit circle. This is remarkable because the constraint is global—not just on average, but pointwise everywhere.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Littlewood polynomials",
       "unit circle",
@@ -28,7 +28,7 @@
     "title": "Littlewood Polynomial",
     "content": "A **Littlewood polynomial** has all coefficients in {-1, +1}. These are polynomials P(z) = Σᵢ aᵢzⁱ where each aᵢ = ±1.",
     "mathContext": "IsLittlewoodPolynomial p := ∀ i ≤ p.natDegree, p.coeff i = 1 ∨ p.coeff i = -1. The binary constraint makes these polynomials special objects of study.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "polynomial coefficients",
       "binary constraints",
@@ -46,7 +46,7 @@
     "title": "Flatness on Unit Circle",
     "content": "A polynomial is **flat** on the unit circle if |P(z)| stays between c₁√n and c₂√n for ALL |z|=1, where c₁, c₂ > 0 are constants independent of z and n.",
     "mathContext": "IsFlatOnUnitCircle p c₁ c₂ requires c₁ > 0 ∧ c₂ > 0 ∧ ∀ z with ‖z‖ = 1, c₁√n ≤ ‖p.eval z‖ ≤ c₂√n. This is a very strong uniform bound.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "uniform bounds",
       "magnitude",
@@ -64,7 +64,7 @@
     "title": "The Main Question",
     "content": "**Erdős Problem #228**: For all sufficiently large n, does there exist a flat Littlewood polynomial of degree n? This asks whether 'random' magnitude behavior can be achieved deterministically.",
     "mathContext": "Erdos228Question := ∃ c₁ c₂ > 0, ∀ᶠ n in atTop, ∃ p with degree n, IsLittlewoodPolynomial p ∧ IsFlatOnUnitCircle p c₁ c₂.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "existence",
       "eventually",
@@ -100,7 +100,7 @@
     "title": "The BBMST Theorem",
     "content": "**Theorem** (Balister-Bollobás-Morris-Sahasrabudhe-Tiba, 2019): Flat Littlewood polynomials exist. This resolved Littlewood's 50-year-old conjecture.",
     "mathContext": "axiom bbmst_theorem : Erdos228Question. The proof uses probabilistic construction with sophisticated derandomization, combining harmonic analysis and combinatorics.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "probabilistic method",
       "derandomization",

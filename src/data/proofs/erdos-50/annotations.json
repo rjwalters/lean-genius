@@ -32,7 +32,7 @@
     "title": "Totient Ratio Sublevel Set",
     "content": "The set $\\{n \\in \\mathbb{N} : n > 0,\\; \\varphi(n)/n < c\\}$ for $c \\in [0,1]$. The ratio $\\varphi(n)/n = \\prod_{p \\mid n}(1 - 1/p)$ measures how 'smooth' or 'highly composite' $n$ is: it is small when $n$ has many small prime factors (e.g., primorials $p_k\\# = 2 \\cdot 3 \\cdot 5 \\cdots p_k$) and close to 1 when $n$ is prime.",
     "mathContext": "$\\texttt{totientRatioBelow}(c) = \\{n \\in \\mathbb{N}^+ : \\varphi(n)/n < c\\}$. For $c = 1/2$: includes all even $n > 2$ (since $\\varphi(2k)/(2k) \\leq 1/2$). For $c = 1$: equals $\\{n > 1\\}$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Euler totient",
       "prime factorization",
@@ -79,7 +79,7 @@
     "title": "Schoenberg's Distribution Function $f$",
     "content": "The distribution function $f(c) = d(\\{n : \\varphi(n)/n < c\\})$ gives the natural density of integers whose totient ratio falls below $c$. Isaac Schoenberg proved in 1928 that $f$ is well-defined, continuous, and monotone non-decreasing on $[0,1]$ with $f(0) = 0$ and $f(1) = 1$—making it a continuous CDF of a probability measure $\\mu_f$ on $[0,1]$.",
     "mathContext": "$f(c) = \\lim_{N \\to \\infty} \\frac{|\\{n \\leq N : \\varphi(n)/n < c\\}|}{N}$. As a CDF: $\\mu_f([a,b)) = f(b) - f(a)$. Schoenberg (1928): $f$ is continuous and $f(0) = 0$, $f(1) = 1$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "distribution function",
       "CDF",
@@ -190,7 +190,7 @@
     "title": "Erdős's Pure Singularity Theorem",
     "content": "Erdős proved that $f'(x) = 0$ for Lebesgue-almost every $x \\in [0,1]$: the distribution function $f$ is purely singular. Like the Cantor function, $f$ is continuous and non-decreasing but manages to increase from 0 to 1 while having zero derivative almost everywhere. The increase is concentrated on a Lebesgue-null set—the 'singular support' of $\\mu_f$.",
     "mathContext": "$f'(x) = 0$ for a.e. $x \\in [0,1]$ with respect to Lebesgue measure [Erdős]. Equivalently, $\\mu_f \\perp \\lambda$ where $\\lambda$ is Lebesgue measure. The measure $\\mu_f$ is supported on a set of Lebesgue measure zero, analogous to the Cantor measure on the Cantor set.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "purely singular function",
       "Cantor function",
@@ -214,7 +214,7 @@
     "title": "Erdős Problem #50: The $250 Prize Conjecture",
     "content": "The $250 prize question: is it true that $f'(x) > 0$ for **no** $x$ whatsoever? Erdős proved $f'(x) = 0$ almost everywhere, but 'almost everywhere' allows a measure-zero exceptional set where $f'(x)$ might exist and be positive. The conjecture asks whether this exceptional set is actually empty. The distinction between 'measure-zero exceptions' and 'no exceptions' is subtle but fundamental in analysis.",
     "mathContext": "$\\neg \\exists x \\in \\mathbb{R},\\; \\exists d > 0 : f'(x) = d$. Equivalently: wherever $f$ is differentiable, $f'(x) = 0$. This would mean the singular support of $\\mu_f$ has no points of 'local absolute continuity.'",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "pointwise vs. a.e.",
       "differentiability of singular functions",

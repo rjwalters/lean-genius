@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #295** asks about the efficiency of representing 1 as a sum of Egyptian fractions when all denominators must be large. The function k(N) counts the minimum number of terms needed, and the question is whether k(N) grows faster than (e-1)N by an unbounded amount.",
     "mathContext": "The problem was posed by Erdős and Graham in 1980. Erdős and Straus (1971) proved tight bounds showing k(N) ≈ (e-1)N, but the precise limiting behavior of the difference remains unknown.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Egyptian fractions",
       "Euler's number",
@@ -81,7 +81,7 @@
     "title": "The Function k(N)",
     "content": "**k(N)** is the central object of study: the *minimum* number of distinct unit fractions with denominators ≥ N that sum to 1.\n\nAs N increases, the available fractions (1/N, 1/(N+1), ...) become smaller, so more terms are needed. The question is: exactly how fast does k(N) grow?",
     "mathContext": "We axiomatize k(N) as a function ℕ → ℕ rather than defining it constructively, since computing k(N) requires solving an optimization problem.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "minimum",
       "optimization",
@@ -131,7 +131,7 @@
     "title": "Erdős-Straus Bounds (1971)",
     "content": "The **Erdős-Straus theorem** establishes that k(N) grows like (e-1)N, with an error term bounded above by O(N/log N) and bounded below by a constant:\n\n**-c < k(N) - (e-1)N < O · N/log N**\n\nThis means k(N) is squeezed between (e-1)N - c and (e-1)N + O(N/log N).",
     "mathContext": "The appearance of **e - 1 ≈ 1.718** comes from harmonic series asymptotics. The sum ∑_{n=N}^{M} 1/n ≈ ln(M/N). To sum to 1, we need ln(M/N) ≈ 1, so M ≈ eN, meaning we use about (e-1)N terms from the range [N, eN].",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "harmonic series",
       "Euler's number",
@@ -150,7 +150,7 @@
     "title": "The Open Conjecture",
     "content": "**THE MAIN QUESTION**: Does k(N) - (e-1)N tend to infinity as N → ∞?\n\nThe Erdős-Straus bounds show this difference lies in (-c, O·N/log N). The lower bound is constant, but the upper bound grows (slowly). The conjecture asks whether the actual value tracks the upper bound upward, or stays bounded.",
     "mathContext": "In Lean, this is expressed using `Filter.Tendsto`: the function N ↦ k(N) - (e-1)N tends to +∞ in the filter topology.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open problem",
       "limits",
@@ -167,7 +167,7 @@
     "type": "theorem",
     "title": "Summary Theorem",
     "content": "**erdos_295_summary** combines the key known results: (1) the Erdős-Straus bounds showing -c < k(N) - (e-1)N < O(N/log N), and (2) the fact that e-1 > 0. The main conjecture (does the difference tend to ∞?) remains OPEN.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "erdos_straus_bounds",
       "e_minus_one_positive"

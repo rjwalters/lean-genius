@@ -2,181 +2,352 @@
   {
     "id": "ann-592-imports",
     "proofId": "erdos-592",
-    "range": { "startLine": 23, "endLine": 25 },
+    "range": {
+      "startLine": 23,
+      "endLine": 25
+    },
     "type": "concept",
     "title": "Imports and Dependencies",
     "content": "**Mathlib Ordinal Arithmetic and Cardinal Theory**\n\nImports `SetTheory.Ordinal.Arithmetic` for ordinal exponentiation $\\omega^\\beta$, `SetTheory.Cardinal.Basic` for cardinality bounds (countability), and `Tactic` for proof automation. The ordinal arithmetic library provides the Cantor normal form representation central to the classification.",
     "significance": "supporting",
     "mathContext": "Ordinal arithmetic in Lean/Mathlib represents ordinals as a well-ordered type with operations +, *, ^ defined by transfinite recursion. The key operation here is ordinal exponentiation: $\\omega^\\beta$ is defined inductively, with $\\omega^0 = 1$, $\\omega^{\\beta+1} = \\omega^\\beta \\cdot \\omega$, and $\\omega^\\lambda = \\sup_{\\beta < \\lambda} \\omega^\\beta$ at limits.",
-    "relatedConcepts": ["ordinal arithmetic", "Cantor normal form", "cardinal arithmetic", "transfinite induction"],
-    "prerequisites": ["Mathlib.SetTheory.Ordinal.Arithmetic", "Mathlib.SetTheory.Cardinal.Basic"]
+    "relatedConcepts": [
+      "ordinal arithmetic",
+      "Cantor normal form",
+      "cardinal arithmetic",
+      "transfinite induction"
+    ],
+    "prerequisites": [
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.SetTheory.Cardinal.Basic"
+    ]
   },
   {
     "id": "ann-592-countable",
     "proofId": "erdos-592",
-    "range": { "startLine": 29, "endLine": 31 },
+    "range": {
+      "startLine": 29,
+      "endLine": 31
+    },
     "type": "definition",
     "title": "IsCountableOrdinal",
     "content": "**Countable Ordinal:** An ordinal $\\beta$ with $|\\beta| \\leq \\aleph_0$.\n\nThe problem restricts to countable ordinals because uncountable partition relations involve large cardinal axioms (e.g., $\\omega_1 \\to (\\omega_1, 3)^2$ is independent of ZFC). For countable ordinals, the partition relations are absolute and decidable in ZFC.",
     "significance": "supporting",
     "mathContext": "The first uncountable ordinal $\\omega_1$ satisfies $\\omega_1 \\to (\\omega_1, 3)^2$ (Dushnik-Miller 1941), but this uses AC. The countable case studied here is purely combinatorial and constructive in nature.",
-    "relatedConcepts": ["countable ordinal", "aleph-0", "cardinal arithmetic", "Dushnik-Miller theorem"],
-    "prerequisites": ["ordinal", "cardinal", "cardinality"]
+    "relatedConcepts": [
+      "countable ordinal",
+      "aleph-0",
+      "cardinal arithmetic",
+      "Dushnik-Miller theorem"
+    ],
+    "prerequisites": [
+      "ordinal",
+      "cardinal",
+      "cardinality"
+    ]
   },
   {
     "id": "ann-592-partition",
     "proofId": "erdos-592",
-    "range": { "startLine": 36, "endLine": 36 },
+    "range": {
+      "startLine": 36,
+      "endLine": 36
+    },
     "type": "theorem",
     "title": "ordinalPartition (Ramsey Arrow)",
     "content": "**Ordinal Partition Relation:** $\\alpha \\to (\\alpha, k)^2$ asserts that for any 2-coloring of pairs from $\\alpha$, either there is a monochromatic-red copy of order type $\\alpha$ or a monochromatic-blue copy of size $k$.\n\nThis is the **unbalanced Ramsey arrow** — the two colors have different target sizes. The notation generalizes Ramsey's theorem: $\\omega \\to (\\omega, n)^2$ is equivalent to the infinite Ramsey theorem for pairs.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The ordinary Ramsey arrow $\\alpha \\to (\\beta)^n_k$ means every $k$-coloring of $n$-element subsets of $\\alpha$ yields a monochromatic set of type $\\beta$. The unbalanced version $\\alpha \\to (\\beta, \\gamma)^2$ allows different monochromatic targets for different colors. Erdős-Rado (1956) established the fundamental partition calculus framework.",
-    "relatedConcepts": ["Ramsey arrow", "partition calculus", "Erdős-Rado theorem", "unbalanced Ramsey"],
-    "prerequisites": ["ordinal", "2-coloring", "Ramsey theory"]
+    "relatedConcepts": [
+      "Ramsey arrow",
+      "partition calculus",
+      "Erdős-Rado theorem",
+      "unbalanced Ramsey"
+    ],
+    "prerequisites": [
+      "ordinal",
+      "2-coloring",
+      "Ramsey theory"
+    ]
   },
   {
     "id": "ann-592-partition-ordinal",
     "proofId": "erdos-592",
-    "range": { "startLine": 39, "endLine": 40 },
+    "range": {
+      "startLine": 39,
+      "endLine": 40
+    },
     "type": "definition",
     "title": "IsPartitionOrdinal",
     "content": "**Partition Ordinal (for Triangles):** $\\alpha$ is a partition ordinal if $\\alpha \\to (\\alpha, 3)^2$.\n\nThe choice $k = 3$ (triangles) is the critical threshold. For $k = 2$ (edges), Ramsey's theorem gives $\\omega \\to (\\omega, 2)^2$ trivially. For $k = 3$, the problem becomes highly non-trivial and connects to the Erdős-Rado partition calculus.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The partition ordinal problem for $k = 3$ is the simplest non-trivial case of the general ordinal Ramsey problem. The case $k = 2$ was resolved by Ramsey (1930): every infinite ordinal is a partition ordinal for edges. The case $k \\geq 4$ remains largely open even for $\\omega^2$.",
-    "relatedConcepts": ["partition ordinal", "Ramsey theory", "ordinal Ramsey", "triangle-free coloring"],
-    "prerequisites": ["ordinalPartition", "ordinal"]
+    "relatedConcepts": [
+      "partition ordinal",
+      "Ramsey theory",
+      "ordinal Ramsey",
+      "triangle-free coloring"
+    ],
+    "prerequisites": [
+      "ordinalPartition",
+      "ordinal"
+    ]
   },
   {
     "id": "ann-592-has-partition",
     "proofId": "erdos-592",
-    "range": { "startLine": 43, "endLine": 44 },
+    "range": {
+      "startLine": 43,
+      "endLine": 44
+    },
     "type": "definition",
     "title": "HasPartitionProperty",
     "content": "**Partition Property for $\\omega^\\beta$:** The key predicate asking whether $\\omega^\\beta \\to (\\omega^\\beta, 3)^2$ holds.\n\nBy Galvin-Larson, the study reduces to ordinals of the form $\\omega^\\beta$ where $\\beta$ is itself a power of $\\omega$, making this the central predicate for the classification problem.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The restriction to ordinals of the form $\\omega^\\beta$ is justified by the Galvin-Larson necessary condition: any partition ordinal $\\alpha \\geq \\omega^3$ must be additively indecomposable, hence of the form $\\omega^\\gamma$. The full classification thus reduces to understanding $\\text{HasPartitionProperty}(\\beta)$ for various $\\beta$.",
-    "relatedConcepts": ["ordinal exponentiation", "additively indecomposable", "Galvin-Larson necessary condition"],
-    "prerequisites": ["IsPartitionOrdinal", "ordinal exponentiation"]
+    "relatedConcepts": [
+      "ordinal exponentiation",
+      "additively indecomposable",
+      "Galvin-Larson necessary condition"
+    ],
+    "prerequisites": [
+      "IsPartitionOrdinal",
+      "ordinal exponentiation"
+    ]
   },
   {
     "id": "ann-592-specker-pos",
     "proofId": "erdos-592",
-    "range": { "startLine": 49, "endLine": 49 },
+    "range": {
+      "startLine": 49,
+      "endLine": 49
+    },
     "type": "theorem",
     "title": "Specker's Positive Result (1957)",
     "content": "**Specker (1957):** $\\omega^2 \\to (\\omega^2, 3)^2$.\n\nThe case $\\beta = 2$ holds. Specker's proof uses an intricate induction on the ordinal type of red-homogeneous sets, showing that any 2-coloring of pairs from $\\omega^2$ that avoids blue triangles must contain a red copy of order type $\\omega^2$. This was the first positive result beyond Ramsey's theorem.",
     "significance": "key",
     "mathContext": "Specker's proof introduced the technique of analyzing colorings by the order type of maximal red-homogeneous initial segments. This technique was later refined by Chang and became fundamental to the entire classification program. The proof exploits the product structure $\\omega^2 = \\omega \\cdot \\omega$.",
-    "relatedConcepts": ["ordinal Ramsey theory", "Specker's theorem", "omega-squared", "transfinite induction"],
-    "prerequisites": ["HasPartitionProperty", "ordinal arithmetic"]
+    "relatedConcepts": [
+      "ordinal Ramsey theory",
+      "Specker's theorem",
+      "omega-squared",
+      "transfinite induction"
+    ],
+    "prerequisites": [
+      "HasPartitionProperty",
+      "ordinal arithmetic"
+    ]
   },
   {
     "id": "ann-592-specker-neg",
     "proofId": "erdos-592",
-    "range": { "startLine": 52, "endLine": 53 },
+    "range": {
+      "startLine": 52,
+      "endLine": 53
+    },
     "type": "theorem",
     "title": "Specker's Negative Result (1957)",
     "content": "**Specker (1957):** For finite $n \\geq 3$, $\\omega^n \\not\\to (\\omega^n, 3)^2$.\n\nThis shows the partition property is **not monotone in $\\beta$**: it holds for $\\beta = 2$, fails for $\\beta = 3, 4, 5, \\ldots$, then recovers at $\\beta = \\omega$ (Chang 1972). The counterexample colorings exploit the product structure of $\\omega^n$ to construct triangle-free blue colorings that prevent large red-homogeneous sets.",
     "significance": "key",
     "mathContext": "The non-monotonicity is striking: one might expect that if $\\omega^2$ has the partition property, then $\\omega^3$ should as well (being 'larger'). The failure reveals that ordinal exponentiation interacts subtly with partition properties. The counterexample uses a coloring based on the leading term of the Cantor normal form representation of pairs.",
-    "relatedConcepts": ["non-monotonicity", "counterexample colorings", "ordinal exponentiation", "Cantor normal form"],
-    "prerequisites": ["HasPartitionProperty", "ordinal arithmetic", "Specker positive result"]
+    "relatedConcepts": [
+      "non-monotonicity",
+      "counterexample colorings",
+      "ordinal exponentiation",
+      "Cantor normal form"
+    ],
+    "prerequisites": [
+      "HasPartitionProperty",
+      "ordinal arithmetic",
+      "Specker positive result"
+    ]
   },
   {
     "id": "ann-592-chang",
     "proofId": "erdos-592",
-    "range": { "startLine": 58, "endLine": 58 },
+    "range": {
+      "startLine": 58,
+      "endLine": 58
+    },
     "type": "theorem",
     "title": "Chang's Theorem (1972)",
     "content": "**Chang (1972):** $\\omega^\\omega \\to (\\omega^\\omega, 3)^2$.\n\nDespite the failure for $\\omega^3, \\omega^4, \\ldots$, the partition property recovers at $\\omega^\\omega$. Chang's proof uses a sophisticated tree argument, analyzing the structure of triangle-free colorings on $\\omega^\\omega = \\sup_n \\omega^n$. The limit structure provides enough 'room' for the partition property to hold.",
     "significance": "key",
     "mathContext": "Chang's result was surprising and influential. It showed that the classification problem is genuinely about the **structure** of the exponent $\\beta$, not just its size. The proof technique — analyzing colorings via their behavior on initial segments — became the template for all subsequent work, including Galvin-Larson and Schipperus.",
-    "relatedConcepts": ["Chang's theorem", "limit ordinals", "omega-to-the-omega", "tree arguments"],
-    "prerequisites": ["HasPartitionProperty", "Specker results", "ordinal limits"]
+    "relatedConcepts": [
+      "Chang's theorem",
+      "limit ordinals",
+      "omega-to-the-omega",
+      "tree arguments"
+    ],
+    "prerequisites": [
+      "HasPartitionProperty",
+      "Specker results",
+      "ordinal limits"
+    ]
   },
   {
     "id": "ann-592-indecomposable",
     "proofId": "erdos-592",
-    "range": { "startLine": 64, "endLine": 65 },
+    "range": {
+      "startLine": 64,
+      "endLine": 65
+    },
     "type": "definition",
     "title": "IsAdditivelyIndecomposable",
     "content": "**Additively Indecomposable Ordinal:** $\\beta$ equals $\\omega^\\gamma$ for some $\\gamma$.\n\nEquivalently, $\\beta > 0$ and for all $\\delta_1, \\delta_2 < \\beta$, we have $\\delta_1 + \\delta_2 < \\beta$. These are the ordinals that cannot be decomposed as a non-trivial ordinal sum. They form the 'building blocks' of ordinal arithmetic via Cantor normal form.",
     "significance": "key",
     "mathContext": "Every ordinal $\\alpha > 0$ can be written uniquely in Cantor normal form as $\\alpha = \\omega^{\\beta_1} \\cdot c_1 + \\cdots + \\omega^{\\beta_k} \\cdot c_k$ where $\\beta_1 > \\cdots > \\beta_k$ and $c_i < \\omega$. The additively indecomposable ordinals are exactly the ordinals of the form $\\omega^\\gamma$, and they play the role of 'primes' in ordinal addition.",
-    "relatedConcepts": ["Cantor normal form", "ordinal addition", "indecomposable ordinal", "ordinal prime"],
-    "prerequisites": ["ordinal arithmetic", "ordinal exponentiation"]
+    "relatedConcepts": [
+      "Cantor normal form",
+      "ordinal addition",
+      "indecomposable ordinal",
+      "ordinal prime"
+    ],
+    "prerequisites": [
+      "ordinal arithmetic",
+      "ordinal exponentiation"
+    ]
   },
   {
     "id": "ann-592-galvin-larson",
     "proofId": "erdos-592",
-    "range": { "startLine": 69, "endLine": 71 },
+    "range": {
+      "startLine": 69,
+      "endLine": 71
+    },
     "type": "theorem",
     "title": "Galvin-Larson Necessary Condition (1974)",
     "content": "**Galvin-Larson (1974):** If $\\beta \\geq 3$ has the partition property, then $\\beta$ must be additively indecomposable.\n\nThis powerful necessary condition eliminates most ordinals from consideration. Combined with the fact that additively indecomposable ordinals are exactly $\\omega^\\gamma$, it reduces the classification to: for which $\\gamma$ does $\\omega^{\\omega^\\gamma} \\to (\\omega^{\\omega^\\gamma}, 3)^2$ hold?",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The Galvin-Larson theorem is proved by showing that if $\\beta = \\delta_1 + \\delta_2$ with $\\delta_1, \\delta_2 > 0$ and $\\beta \\geq 3$, one can construct a 2-coloring of pairs from $\\omega^\\beta$ that avoids both blue triangles and red copies of order type $\\omega^\\beta$. The construction uses the additive decomposition to define a coloring that 'separates' the two summands.",
-    "relatedConcepts": ["necessary condition", "additive decomposition", "partition calculus", "Galvin-Larson theorem"],
-    "prerequisites": ["HasPartitionProperty", "IsAdditivelyIndecomposable", "ordinal arithmetic"]
+    "relatedConcepts": [
+      "necessary condition",
+      "additive decomposition",
+      "partition calculus",
+      "Galvin-Larson theorem"
+    ],
+    "prerequisites": [
+      "HasPartitionProperty",
+      "IsAdditivelyIndecomposable",
+      "ordinal arithmetic"
+    ]
   },
   {
     "id": "ann-592-cnf-length",
     "proofId": "erdos-592",
-    "range": { "startLine": 77, "endLine": 77 },
+    "range": {
+      "startLine": 77,
+      "endLine": 77
+    },
     "type": "definition",
     "title": "cantorNFLength",
     "content": "**Cantor Normal Form Length:** The number of indecomposable ordinal summands in the CNF of $\\gamma$.\n\nIf $\\gamma = \\omega^{\\alpha_1} + \\cdots + \\omega^{\\alpha_k}$ (with $\\alpha_1 \\geq \\cdots \\geq \\alpha_k$), then $\\text{cantorNFLength}(\\gamma) = k$. This is the parameter that determines the partition property: length $\\leq 2$ implies partition property, length $\\geq 4$ implies failure.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The CNF length is a natural complexity measure on ordinals. The remarkable aspect of Schipperus's classification is that this single numerical parameter almost completely determines the partition property for ordinals of the form $\\omega^{\\omega^\\gamma}$. The boundary cases are lengths 2 (positive) and 4 (negative), leaving only length 3 unresolved.",
-    "relatedConcepts": ["Cantor normal form", "ordinal complexity", "Schipperus classification", "CNF representation"],
-    "prerequisites": ["ordinal arithmetic", "Cantor normal form"]
+    "relatedConcepts": [
+      "Cantor normal form",
+      "ordinal complexity",
+      "Schipperus classification",
+      "CNF representation"
+    ],
+    "prerequisites": [
+      "ordinal arithmetic",
+      "Cantor normal form"
+    ]
   },
   {
     "id": "ann-592-schipperus-pos",
     "proofId": "erdos-592",
-    "range": { "startLine": 82, "endLine": 83 },
+    "range": {
+      "startLine": 82,
+      "endLine": 83
+    },
     "type": "theorem",
     "title": "Schipperus Positive Result (2010)",
     "content": "**Schipperus (2010):** If $\\gamma$ has CNF-length $\\leq 2$ (i.e., $\\gamma = \\omega^{\\alpha_1} + \\omega^{\\alpha_2}$ or simpler), then $\\omega^{\\omega^\\gamma} \\to (\\omega^{\\omega^\\gamma}, 3)^2$.\n\nThis extends the positive results of Specker ($\\gamma = 0, 1$) and Chang ($\\gamma = \\omega^0 = 1$ in the tower). The proof generalizes Chang's tree method to handle ordinals with two-term CNF exponents.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "Schipperus's positive proof uses an elaborate extension of Chang's technique, analyzing the tree of possible colorings and showing that any triangle-free blue coloring on $\\omega^{\\omega^\\gamma}$ (for short CNF exponents) must admit large red-homogeneous sets. The key insight is that ordinals with short CNF have enough 'self-similarity' to support the inductive argument.",
-    "relatedConcepts": ["Schipperus theorem", "CNF-length classification", "Chang's method", "partition positive"],
-    "prerequisites": ["HasPartitionProperty", "cantorNFLength", "Chang's theorem"]
+    "relatedConcepts": [
+      "Schipperus theorem",
+      "CNF-length classification",
+      "Chang's method",
+      "partition positive"
+    ],
+    "prerequisites": [
+      "HasPartitionProperty",
+      "cantorNFLength",
+      "Chang's theorem"
+    ]
   },
   {
     "id": "ann-592-schipperus-neg",
     "proofId": "erdos-592",
-    "range": { "startLine": 88, "endLine": 89 },
+    "range": {
+      "startLine": 88,
+      "endLine": 89
+    },
     "type": "theorem",
     "title": "Schipperus Negative Result (2010)",
     "content": "**Schipperus (2010):** If $\\gamma$ has CNF-length $\\geq 4$, then $\\omega^{\\omega^\\gamma} \\not\\to (\\omega^{\\omega^\\gamma}, 3)^2$.\n\nThe counterexample constructs a 2-coloring that uses the four (or more) CNF summands of $\\gamma$ to define a coloring avoiding both blue triangles and large red-homogeneous sets. This shows the partition property fails definitively for long CNF exponents.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The negative proof constructs an explicit coloring based on the CNF decomposition of pairs. With 4 or more summands, there are enough 'dimensions' in the ordinal to define a coloring that plays off different summands against each other, preventing both blue triangles and large red sets. The construction generalizes Specker's counterexample for finite exponents.",
-    "relatedConcepts": ["Schipperus counterexample", "CNF-based coloring", "partition negative", "Specker generalization"],
-    "prerequisites": ["HasPartitionProperty", "cantorNFLength", "Specker negative result"]
+    "relatedConcepts": [
+      "Schipperus counterexample",
+      "CNF-based coloring",
+      "partition negative",
+      "Specker generalization"
+    ],
+    "prerequisites": [
+      "HasPartitionProperty",
+      "cantorNFLength",
+      "Specker negative result"
+    ]
   },
   {
     "id": "ann-592-open",
     "proofId": "erdos-592",
-    "range": { "startLine": 96, "endLine": 98 },
+    "range": {
+      "startLine": 96,
+      "endLine": 98
+    },
     "type": "theorem",
     "title": "Open Case: CNF-Length 3 ($1,000 Bounty)",
     "content": "**Open Problem ($1,000):** Does $\\omega^{\\omega^\\gamma} \\to (\\omega^{\\omega^\\gamma}, 3)^2$ hold when $\\text{cantorNFLength}(\\gamma) = 3$?\n\nThis single case is all that remains of the full classification. The axiom states the disjunction — it must be true or false — but neither direction has been proved. The simplest instance is $\\gamma = \\omega^{\\alpha_1} + \\omega^{\\alpha_2} + \\omega^{\\alpha_3}$. Erdős offered $1,000 for resolving this case.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The difficulty of the length-3 case lies in the balance between the positive and negative techniques: Schipperus's positive method (tree analysis) extends to length 2 but not 3, while the negative method (explicit coloring) works for length 4 but not 3. New ideas — possibly involving forcing, large cardinals, or novel combinatorial techniques — may be needed.",
-    "relatedConcepts": ["open problem", "Erdős prize", "CNF-length 3", "partition calculus frontier"],
-    "prerequisites": ["Schipperus positive", "Schipperus negative", "cantorNFLength"]
+    "relatedConcepts": [
+      "open problem",
+      "Erdős prize",
+      "CNF-length 3",
+      "partition calculus frontier"
+    ],
+    "prerequisites": [
+      "Schipperus positive",
+      "Schipperus negative",
+      "cantorNFLength"
+    ]
   },
   {
     "id": "ann-592-classification",
     "proofId": "erdos-592",
-    "range": { "startLine": 110, "endLine": 114 },
+    "range": {
+      "startLine": 110,
+      "endLine": 114
+    },
     "type": "theorem",
     "title": "Partition Ordinal Classification Summary",
     "content": "**Complete Classification (Modulo Length 3):**\n\n| $\\beta$ | Partition Property | Source |\n|---------|-------------------|--------|\n| $0$ | Yes (trivial) | $\\omega^0 = 1$ |\n| $1$ | Yes | Ramsey's theorem |\n| $2$ | Yes | Specker (1957) |\n| $3 \\leq n < \\omega$ | No | Specker (1957) |\n| $\\omega^\\gamma$, CNF-len $\\leq 2$ | Yes | Schipperus (2010) |\n| $\\omega^\\gamma$, CNF-len $\\geq 4$ | No | Schipperus (2010) |\n| $\\omega^\\gamma$, CNF-len $= 3$ | **OPEN** | $1,000 bounty |\n\nThis classification captures the complete state of knowledge on partition ordinals for triangles.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The classification spans over 50 years of work, from Specker (1957) through Schipperus (2010). The remarkable outcome is that a single numerical parameter — the CNF-length of the exponent — determines the partition property in all but one case. This is analogous to how Ramsey numbers are determined by graph parameters in finite combinatorics.",
-    "relatedConcepts": ["classification theorem", "partition ordinal summary", "ordinal Ramsey theory", "Schipperus classification"],
-    "prerequisites": ["all previous results in this file"]
+    "relatedConcepts": [
+      "classification theorem",
+      "partition ordinal summary",
+      "ordinal Ramsey theory",
+      "Schipperus classification"
+    ],
+    "prerequisites": [
+      "all previous results in this file"
+    ]
   }
 ]

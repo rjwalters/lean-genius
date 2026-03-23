@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #401**: Factorial Divisibility with Prime Products\n\n**Question**: Does there exist f(r) → ∞ such that for infinitely many n, there exist a₁, a₂ with a₁ + a₂ > n + f(r)·log(n) where a₁!·a₂! | n!·2ⁿ·3ⁿ·...·pᵣⁿ?\n\n**Status**: PROVED (Barreto-Leeham 2026)\n**Answer**: YES\n\n**Context**: Related to #400 which studied g_k(n). Without extra factors, Erdős-Graham showed a₁ + a₂ ≤ n + O(log n). The question asks if primorial factors allow unbounded excess.\n\n**Counterexample**: Sothanaphan showed the 'for all large n' version is FALSE using n = p_{r+1}^k - 1.",
     "mathContext": "This problem explores how additional divisibility factors affect the structure of factorial arithmetic. The primorial factors 2ⁿ3ⁿ...pᵣⁿ provide extra room that fundamentally changes the problem.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "factorial-divisibility",
       "primorial",
@@ -82,7 +82,7 @@
     "title": "The Conjecture",
     "content": "**def TendsToInfty (f : ℕ → ℝ)**: Prop\n  ∀ M, ∃ r₀, ∀ r ≥ r₀, f(r) ≥ M\n\n**def Erdos401Conjecture**: Prop\n  ∃ f, TendsToInfty f ∧\n  ∀ r, ∃ᶠ n in atTop, ∃ a₁ a₂,\n    FactorialDivides a₁ a₂ n r ∧\n    (a₁ + a₂) > n + f(r) · log(n)\n\n**In words**: Can we find f(r) → ∞ and, for each r, infinitely many n with a₁ + a₂ exceeding n + f(r)·log(n)?",
     "mathContext": "The 'infinitely many n' quantifier (∃ᶠ n in atTop) is crucial. The strong version with 'for all large n' is false!",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "tends-to-infinity",
       "frequently",
@@ -100,7 +100,7 @@
     "title": "Barreto-Leeham Proof",
     "content": "**axiom barreto_leeham_401**: Erdos401Conjecture\n\n**theorem erdos_401_proved**: Erdos401Conjecture := barreto_leeham_401\n\nBarreto and Leeham (2026) proved YES using the same construction as Problem #729.\n\n**Key idea**: Choose n related to primorial structure, set a₂ ≈ n/2 and a₁ ≈ n/2 + excess. The excess grows unboundedly as r increases.\n\n**Technique**: AI-assisted proof via ChatGPT, building on combinatorial number theory.",
     "mathContext": "This is one of several Erdős problems solved via AI assistance. The same construction works for both #401 and #729.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "barreto-leeham-2026",
       "ai-assisted",
@@ -190,7 +190,7 @@
     "title": "Summary and Status",
     "content": "**Erdős Problem #401: PROVED** (Barreto-Leeham 2026)\n\n**Answer**: YES - such f(r) → ∞ exists.\n\n**Key Results**:\n1. Without extra factors: a₁ + a₂ ≤ n + O(log n) (Erdős-Graham)\n2. With primorial factors: can exceed n + f(r)·log(n) for f(r) → ∞\n3. But NOT for ALL large n - only INFINITELY MANY (Sothanaphan)\n\n**Connections**:\n- Related to Problem #400 (g_k function)\n- Same construction as Problem #729\n- AI-assisted proof via ChatGPT\n\n**Technique**: Careful choice of n exploiting primorial structure.",
     "mathContext": "This problem illustrates how additional prime power factors can fundamentally change divisibility constraints, and the importance of exact quantifier formulations.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "problem-status",
       "proved",

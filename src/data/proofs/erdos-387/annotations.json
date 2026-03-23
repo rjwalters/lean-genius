@@ -46,7 +46,7 @@
     "title": "Verified Counterexample",
     "content": "We **computationally verify** that for i ∈ {0,1,...,14}, the integer 99215 - i does not divide C(99215, 15). This is a complete check of all 15 candidates in the interval (99200, 99215].",
     "mathContext": "The proof uses `interval_cases i` to split into 15 cases (i = 0, 1, ..., 14), then `native_decide` to computationally verify each divisibility claim. Lean compiles these checks to native code for efficiency.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "native_decide",
       "interval_cases",
@@ -82,7 +82,7 @@
     "title": "The Easy Divisor Bound",
     "content": "**Theorem**: For any 1 ≤ n and k ≤ n, there exists a divisor d of C(n,k) with n/k ≤ d ≤ n. Specifically, d = gcd(C(n,k), n) works.",
     "mathContext": "The proof has two parts: (1) Show gcd(C(n,k), n) ≥ n/k using the identity n·C(n-1,k-1) = k·C(n,k) (implemented as `Nat.add_one_mul_choose_eq`). (2) Show gcd(C(n,k), n) ≤ n since gcd divides n. The case k=0 is handled separately with `simp_all`.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "gcd properties",
       "Nat.add_one_mul_choose_eq",
@@ -118,7 +118,7 @@
     "title": "Main Conjecture (Axiom)",
     "content": "We state Erdős's conjecture as an **axiom**: there exists c > 0 such that for all 1 ≤ k < n, C(n,k) has a divisor d with cn < d ≤ n. This remains **unproven** as of 2026.",
     "mathContext": "The conjecture is stated formally as: ∃ c : ℝ, 0 < c ∧ ∀ n k : ℕ, 1 ≤ k → k < n → ∃ d : ℕ, d ∈ (c*n, n] ∧ d | C(n,k). We use `Set.Ioc` for the half-open interval (a, b].",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "axiom",
       "open conjecture",

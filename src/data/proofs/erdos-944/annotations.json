@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #944** asks about k-vertex-critical graphs where every critical edge set has size > r.\n\nA **critical vertex** lowers χ when deleted. A **critical edge** lowers χ when deleted.\n\n**The Decoupling Question**: Can vertex-criticality exist without edge-criticality?\n\n**Timeline**:\n- 1970: Dirac conjectures yes for k ≥ 4, r = 1\n- 1992: Brown proves k = 5\n- 2002: Jensen proves all k ≥ 5\n- 2025: Martinsson-Steiner prove large k for any r\n- k = 4 remains **OPEN**",
     "mathContext": "Complete graphs K_k are k-vertex-critical but every edge is critical. The problem asks if we can avoid edge-criticality.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "chromatic number",
       "vertex-critical graphs",
@@ -28,7 +28,7 @@
     "title": "k-Vertex-Critical Graphs",
     "content": "**IsKVertexCritical G k** captures graphs where:\n1. χ(G) = k (chromatic number is exactly k)\n2. For every vertex v, χ(G - v) < k (every vertex is critical)\n\nThis is a **type class** axiomatizing the property without defining graph operations.\n\n**Examples**:\n- K_n is n-vertex-critical\n- Odd cycle C_{2n+1} is 3-vertex-critical\n- Petersen graph is 3-vertex-critical",
     "mathContext": "We use type classes because full graph coloring definitions require extensive infrastructure.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "type classes",
       "chromatic number",
@@ -46,7 +46,7 @@
     "title": "The Erdős944 Property",
     "content": "**IsErdos944Graph G k r** extends k-vertex-critical with:\n- Every critical edge set has more than r edges\n\nA critical edge set is any set of edges whose deletion reduces χ(G).\n\n**Key insight**: This \"decouples\" vertex-criticality from edge-criticality. Every vertex matters, but no small edge set matters.",
     "mathContext": "For r = 1, this means no single edge is critical—you need at least 2 edges to lower χ.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "edge deletion",
       "critical edge sets",
@@ -63,7 +63,7 @@
     "type": "axiom",
     "title": "Main Conjecture (Partially OPEN)",
     "content": "**erdos_944_conjecture**: For k ≥ 4 and r ≥ 1, there exists a graph with the Erdős944 property.\n\nThis is stated as an axiom because the case **k = 4, r = 1 remains OPEN**.\n\n**Status by k**:\n- k ≥ 5: SOLVED (Jensen 2002)\n- k = 4: OPEN since 1970",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open problem",
       "existence conjecture"
@@ -80,7 +80,7 @@
     "title": "Dirac's Conjecture (1970)",
     "content": "**dirac_conjecture**: For k ≥ 4, there exists a k-vertex-critical graph with no critical edges.\n\nThis is the special case r = 1 of the main problem.\n\n**Motivation**: Dirac observed that K_k has *every* edge critical. He asked if this is necessary—can vertex-criticality exist without any individual edge being critical?",
     "mathContext": "Dirac's original 1970 formulation focused on r = 1. The generalization to arbitrary r came later.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Dirac conjecture",
       "no critical edges"
@@ -131,7 +131,7 @@
     "title": "Jensen's Construction (2002)",
     "content": "**jensen_2002**: For **all k ≥ 5**, there exist k-vertex-critical graphs with no critical edges.\n\nThis completely resolves Dirac's conjecture for k ≥ 5, regardless of whether k-1 is prime.\n\nJensen's paper 'Dense critical and vertex-critical graphs' gave a uniform construction that works for all k ≥ 5.",
     "mathContext": "Jensen's result subsumes Lattanzio's. Together with Brown (k=5), all k ≥ 5 are now solved.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "general construction",
       "k ≥ 5 solved"
@@ -165,7 +165,7 @@
     "title": "The Open Case: k = 4",
     "content": "**k_equals_4_open**: Either there exists a 4-vertex-critical graph with no critical edges, or no such graph exists.\n\nThis is the **last remaining case** of Dirac's 1970 conjecture.\n\n**Why k = 4 is hard**:\n- 4-vertex-critical graphs must have minimum degree 3 (tight constraint)\n- High edge density leaves little room for non-critical edges\n- The structural constraints are much tighter than for k ≥ 5",
     "mathContext": "The jump from k = 4 to k = 5 represents a fundamental structural transition that remains unexplained.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open problem",
       "minimum degree constraint"

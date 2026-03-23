@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "This header documents **Erdős Problem #170** (Sparse Rulers). The question: what is the minimum number of marks needed on a ruler of length N to measure every integer distance 1 through N?",
     "mathContext": "F(N) = min{|A| : A ⊆ {0,...,N}, every k ∈ {1,...,N} is a₁-a₀ for some a₀,a₁ ∈ A}. The limit lim F(N)/√N exists and is in [1.56, √3].",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "difference bases",
       "sparse rulers",
@@ -28,7 +28,7 @@
     "title": "Perfect Ruler",
     "content": "An **N-perfect ruler** is a set A such that every k ∈ {1,...,N} can be expressed as a difference a₁ - a₀ for some a₀, a₁ ∈ A.",
     "mathContext": "IsPerfectRuler N A := ∀ k, 1 ≤ k → k ≤ N → ∃ a₀ ∈ A, ∃ a₁ ∈ A, k = a₁ - a₀. This is also called a 'difference basis' for {1,...,N}.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "difference sets",
       "measurement"
@@ -79,7 +79,7 @@
     "title": "The Function F(N)",
     "content": "**F(N)** is the minimum cardinality of a restricted N-perfect ruler. This is the key quantity we want to understand asymptotically.",
     "mathContext": "F N := sInf { m | ∃ A, IsRestrictedPerfectRuler N A ∧ A.card = m }. The infimum is taken over all valid ruler sizes.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "infimum",
       "minimum"
@@ -112,7 +112,7 @@
     "title": "Erdős-Gál Theorem",
     "content": "**Erdős-Gál (1948)**: The limit lim_{N→∞} F(N)/√N exists. This foundational result answers Rédei's question about whether sparse rulers have consistent asymptotic behavior.",
     "mathContext": "axiom erdos_gal_limit_exists : ∃ L, Tendsto (F N / √N) atTop (nhds L). The limit is noncomputable but well-defined.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "limit existence",
       "asymptotic analysis"

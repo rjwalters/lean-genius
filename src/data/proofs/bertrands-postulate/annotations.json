@@ -9,11 +9,15 @@
     "type": "concept",
     "title": "Primes Are Never Far Apart",
     "content": "Bertrand's Postulate guarantees that primes are distributed densely enough that between any positive integer $n$ and its double $2n$, there's always at least one prime.\n\n$$\\forall n > 0, \\exists p \\text{ prime}: n < p \\leq 2n$$\n\nThis means:\n- After 2, the next prime (3) is at most 4\n- After 100, there's a prime before 200\n- Prime gaps grow, but not too fast",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "prime gaps",
       "prime distribution",
       "number theory"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib.NumberTheory.Bertrand"
     ]
   },
   {
@@ -31,6 +35,9 @@
     "relatedConcepts": [
       "history of mathematics",
       "analytic number theory"
+    ],
+    "prerequisites": [
+      "basic number theory"
     ]
   },
   {
@@ -44,10 +51,14 @@
     "title": "The Main Statement",
     "content": "**Bertrand's Postulate**: For any positive natural number $n$, there exists a prime $p$ with $n < p \\leq 2n$.\n\n```lean\ntheorem bertrand_postulate (n : ℕ) (hn : 0 < n) :\n    ∃ p, Nat.Prime p ∧ n < p ∧ p ≤ 2 * n\n```\n\nWe wrap Mathlib's `Nat.exists_prime_lt_and_le_two_mul`, converting the hypothesis from `n ≠ 0` to `0 < n`.",
     "mathContext": "$\\exists p \\text{ prime}: n < p \\leq 2n$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "prime numbers",
       "existence proofs"
+    ],
+    "prerequisites": [
+      "Nat.exists_prime_lt_and_le_two_mul",
+      "Nat.pos_iff_ne_zero"
     ]
   },
   {
@@ -65,6 +76,10 @@
     "relatedConcepts": [
       "prime gaps",
       "consecutive primes"
+    ],
+    "prerequisites": [
+      "bertrand_postulate",
+      "Nat.Prime.pos"
     ]
   },
   {
@@ -81,6 +96,10 @@
     "relatedConcepts": [
       "infinitude of primes",
       "Euclid's theorem"
+    ],
+    "prerequisites": [
+      "bertrand_postulate",
+      "omega tactic"
     ]
   },
   {
@@ -94,10 +113,14 @@
     "title": "Erdős's Central Binomial Approach",
     "content": "For large $n$ (≥ 512), the proof analyzes the **central binomial coefficient** $\\binom{2n}{n}$:\n\n1. **Lower bound**: $\\binom{2n}{n} > \\frac{4^n}{2n}$\n\n2. **Upper bound (if no prime in $(n, 2n]$)**: The prime factorization is constrained by primes ≤ $n$\n\n3. **Contradiction**: These bounds conflict for $n \\geq 512$\n\nThe key insight: primes in $(n, 2n]$ divide $\\binom{2n}{n}$ exactly once, so their absence shrinks the factorization.",
     "mathContext": "Analyze $\\binom{2n}{n} = \\frac{(2n)!}{(n!)^2}$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "binomial coefficients",
       "prime factorization"
+    ],
+    "prerequisites": [
+      "Nat.exists_prime_lt_and_le_two_mul_eventually",
+      "central binomial coefficient properties"
     ]
   },
   {
@@ -114,6 +137,10 @@
     "relatedConcepts": [
       "constructive proofs",
       "explicit bounds"
+    ],
+    "prerequisites": [
+      "basic arithmetic",
+      "primality verification"
     ]
   },
   {
@@ -132,6 +159,51 @@
       "Prime Number Theorem",
       "asymptotic analysis",
       "Riemann Hypothesis"
+    ],
+    "prerequisites": [
+      "Bertrand's Postulate",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-no-largest-prime",
+    "proofId": "bertrands-postulate",
+    "range": {
+      "startLine": 99,
+      "endLine": 106
+    },
+    "type": "theorem",
+    "title": "No Largest Prime (via Bertrand)",
+    "content": "Another formulation of the infinitude of primes: there is no largest prime number. Proved by contradiction — if $p$ were the largest prime, `primes_infinite_via_bertrand` produces a prime $q > p$, contradicting maximality. The `omega` tactic closes the final numerical contradiction $q \\leq p$ vs $q > p$.",
+    "mathContext": "$\\neg\\exists p \\text{ prime}: \\forall q \\text{ prime},\\, q \\leq p$. Equivalent to: $\\forall N, \\exists p > N$ prime.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "infinitude of primes",
+      "proof by contradiction"
+    ],
+    "prerequisites": [
+      "primes_infinite_via_bertrand",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "ann-verification",
+    "proofId": "bertrands-postulate",
+    "range": {
+      "startLine": 156,
+      "endLine": 165
+    },
+    "type": "context",
+    "title": "Key Theorems Summary and Verification",
+    "content": "Type-checks all six theorems via `#check`: `bertrand_postulate`, `bertrand`, `exists_prime_between`, `prime_gap_bounded`, `primes_infinite_via_bertrand`, and `no_largest_prime_via_bertrand`. Closes the `BertrandsPostulate` namespace.",
+    "mathContext": "All six theorems verified: the main postulate, its alias, interval existence, prime gap bounds, infinitude, and no-largest-prime.",
+    "significance": "context",
+    "relatedConcepts": [
+      "type checking",
+      "#check command"
+    ],
+    "prerequisites": [
+      "Lean 4 meta-commands"
     ]
   }
 ]

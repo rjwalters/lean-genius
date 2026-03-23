@@ -10,8 +10,12 @@
     "title": "Problem Overview",
     "content": "This module formalizes **Erdos Problem #906**: Is there a transcendental entire function whose derivative zeros are dense for ANY subsequence? Erdos claimed solved but no proof exists.",
     "mathContext": "An entire function is holomorphic everywhere on C. Transcendental means not a polynomial. The question requires a very strong density property for zeros of arbitrary derivative subsequences.",
-    "significance": "critical",
-    "relatedConcepts": ["entire function", "transcendental", "dense set"]
+    "significance": "key",
+    "relatedConcepts": [
+      "entire function",
+      "transcendental",
+      "dense set"
+    ]
   },
   {
     "id": "ann-e906-imports",
@@ -25,7 +29,11 @@
     "content": "We import **Complex analysis**, **Calculus** for derivatives, **Topology** for density, and **Polynomial** for the trivial case.",
     "mathContext": "Mathlib provides Differentiable for entire functions, Dense for topology, and Polynomial for the counterexample showing why transcendental is required.",
     "significance": "supporting",
-    "relatedConcepts": ["Mathlib", "Complex.exp", "Dense"]
+    "relatedConcepts": [
+      "Mathlib",
+      "Complex.exp",
+      "Dense"
+    ]
   },
   {
     "id": "ann-e906-entire",
@@ -38,8 +46,12 @@
     "title": "Entire Functions",
     "content": "**IsEntire f** means f is differentiable at every point of C. This is equivalent to being holomorphic everywhere, hence 'entire'.",
     "mathContext": "Examples: polynomials, exp, sin, cos. Non-examples: 1/z (pole at 0), log (branch cut). Entire functions are incredibly well-behaved globally.",
-    "significance": "critical",
-    "relatedConcepts": ["Differentiable", "holomorphic", "complex analysis"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Differentiable",
+      "holomorphic",
+      "complex analysis"
+    ]
   },
   {
     "id": "ann-e906-transcendental",
@@ -52,8 +64,12 @@
     "title": "Transcendental Functions",
     "content": "**IsTranscendental f** means f is not equal to any polynomial. This excludes functions like z^2 + 1 but includes exp, sin, cos.",
     "mathContext": "Transcendental entire functions have infinitely many nonzero derivatives (unlike polynomials). The problem requires this because polynomials trivially satisfy the property.",
-    "significance": "critical",
-    "relatedConcepts": ["polynomial", "infinite degree", "non-algebraic"]
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial",
+      "infinite degree",
+      "non-algebraic"
+    ]
   },
   {
     "id": "ann-e906-iterated-deriv",
@@ -67,7 +83,11 @@
     "content": "**iteratedDeriv n f** gives the n-th derivative f^{(n)}. We axiomatize the 0th derivative is f, and (n+1)th is derivative of nth.",
     "mathContext": "For exp, all derivatives equal exp. For polynomials of degree d, the (d+1)th derivative is zero. This captures f', f'', f''', etc.",
     "significance": "key",
-    "relatedConcepts": ["derivative", "recursion", "higher order"]
+    "relatedConcepts": [
+      "derivative",
+      "recursion",
+      "higher order"
+    ]
   },
   {
     "id": "ann-e906-zero-set",
@@ -80,8 +100,12 @@
     "title": "Derivative Zero Set",
     "content": "**derivativeZeroSet f n** = {z : exists k, f^{(n(k))}(z) = 0}. This collects all zeros of derivatives at positions given by sequence n.",
     "mathContext": "If n = (1, 3, 5, ...), we collect zeros of f', f''', f^{(5)}, etc. The union of all these zero sets for the given subsequence.",
-    "significance": "critical",
-    "relatedConcepts": ["zero set", "union", "subsequence"]
+    "significance": "key",
+    "relatedConcepts": [
+      "zero set",
+      "union",
+      "subsequence"
+    ]
   },
   {
     "id": "ann-e906-main-property",
@@ -94,8 +118,12 @@
     "title": "The Dense Zeros Property",
     "content": "**HasDenseDerivativeZeros f** means for ALL strictly increasing sequences n, the derivativeZeroSet f n is dense in C.",
     "mathContext": "This is remarkably strong: no matter how sparse a subsequence of derivatives you pick, their zeros must be dense. This rules out most known functions.",
-    "significance": "critical",
-    "relatedConcepts": ["Dense", "StrictMono", "universal quantifier"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Dense",
+      "StrictMono",
+      "universal quantifier"
+    ]
   },
   {
     "id": "ann-e906-polynomial-trivial",
@@ -109,7 +137,11 @@
     "content": "**polynomial_trivial** shows any polynomial satisfies HasDenseDerivativeZeros. This is why transcendental is required in the problem.",
     "mathContext": "A degree-d polynomial has f^{(n)} = 0 for all n > d. So any subsequence eventually hits zeros everywhere, making the zero set all of C (trivially dense).",
     "significance": "key",
-    "relatedConcepts": ["polynomial degree", "vanishing derivative", "trivial case"]
+    "relatedConcepts": [
+      "polynomial degree",
+      "vanishing derivative",
+      "trivial case"
+    ]
   },
   {
     "id": "ann-e906-open-question",
@@ -122,8 +154,12 @@
     "title": "The Open Question",
     "content": "**erdos_906_open** axiomatizes the unknown: does such a transcendental entire function exist? Erdos claimed YES but no proof is known.",
     "mathContext": "Erdos wrote in 1982 it was 'solved more than ten years ago' but gave no reference. The formal-conjectures project marks this OPEN due to no verified proof.",
-    "significance": "critical",
-    "relatedConcepts": ["open problem", "unclear status", "missing proof"]
+    "significance": "key",
+    "relatedConcepts": [
+      "open problem",
+      "unclear status",
+      "missing proof"
+    ]
   },
   {
     "id": "ann-e906-statement",
@@ -137,7 +173,11 @@
     "content": "**erdos_906_statement** packages the full question: exists f that is entire, nonzero, transcendental, AND has dense derivative zeros.",
     "mathContext": "All four conditions are necessary: nonzero prevents f = 0; transcendental excludes polynomials; entire ensures all derivatives exist; dense zeros is the property.",
     "significance": "key",
-    "relatedConcepts": ["existential", "conjunction", "formal statement"]
+    "relatedConcepts": [
+      "existential",
+      "conjunction",
+      "formal statement"
+    ]
   },
   {
     "id": "ann-e906-exp-entire",
@@ -151,7 +191,11 @@
     "content": "**exp_is_entire** and **exp_is_transcendental** show e^z satisfies two of the required properties.",
     "mathContext": "exp is the quintessential transcendental entire function. Its derivatives all equal itself, so it's infinitely differentiable and not a polynomial.",
     "significance": "key",
-    "relatedConcepts": ["Complex.exp", "entire", "transcendental"]
+    "relatedConcepts": [
+      "Complex.exp",
+      "entire",
+      "transcendental"
+    ]
   },
   {
     "id": "ann-e906-exp-fails",
@@ -165,7 +209,11 @@
     "content": "**exp_deriv_never_zero** and **exp_no_zeros** show that exp does NOT have the dense zeros property - in fact it has NO zeros at all!",
     "mathContext": "Since all derivatives of e^z equal e^z, and e^z != 0 for all z in C, the derivativeZeroSet is empty for any subsequence. This is the opposite of dense.",
     "significance": "key",
-    "relatedConcepts": ["counterexample", "empty set", "no zeros"]
+    "relatedConcepts": [
+      "counterexample",
+      "empty set",
+      "no zeros"
+    ]
   },
   {
     "id": "ann-e906-related",
@@ -179,7 +227,11 @@
     "content": "Connections to **Polya** (zeros of polynomial derivatives) and **Weierstrass factorization** (constructing functions with prescribed zeros).",
     "mathContext": "Polya's shire theorem says polynomial derivative zeros stay in the convex hull of the original zeros. Weierstrass lets you build entire functions with any zero set.",
     "significance": "supporting",
-    "relatedConcepts": ["Polya", "Weierstrass", "zero distribution"]
+    "relatedConcepts": [
+      "Polya",
+      "Weierstrass",
+      "zero distribution"
+    ]
   },
   {
     "id": "ann-e906-properties",
@@ -193,7 +245,11 @@
     "content": "**zero_set_closed** shows derivative zero sets are closed. **individual_zero_sets_discrete** notes individual derivative zeros are isolated for non-constant entire functions.",
     "mathContext": "Each f^{(k)} has isolated zeros (unless identically zero), but the UNION over a subsequence can be dense. This is the subtlety the problem exploits.",
     "significance": "supporting",
-    "relatedConcepts": ["closed set", "discrete set", "isolated zeros"]
+    "relatedConcepts": [
+      "closed set",
+      "discrete set",
+      "isolated zeros"
+    ]
   },
   {
     "id": "ann-e906-summary",
@@ -207,6 +263,10 @@
     "content": "**erdos_906_summary** packages: polynomials satisfy the property, and exp is entire and transcendental (but doesn't satisfy the property).",
     "mathContext": "This demonstrates the gap: polynomials work trivially, exp fails completely. The question is whether some other transcendental entire function works.",
     "significance": "supporting",
-    "relatedConcepts": ["summary", "verified", "gap"]
+    "relatedConcepts": [
+      "summary",
+      "verified",
+      "gap"
+    ]
   }
 ]

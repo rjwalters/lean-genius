@@ -3,108 +3,206 @@
     "id": "erdos-321-imports",
     "proofId": "erdos-321",
     "type": "concept",
-    "range": { "startLine": 19, "endLine": 22 },
+    "range": {
+      "startLine": 19,
+      "endLine": 22
+    },
     "title": "Imports and Dependencies",
     "content": "Imports Mathlib for natural numbers, rationals $\\mathbb{Q}$ (for exact reciprocal sums), reals $\\mathbb{R}$ (for asymptotic bounds involving logarithms), and general tactics. Reciprocal sums are computed over $\\mathbb{Q}$ to avoid rounding — the distinctness of $\\sum 1/n$ over subsets requires exact rational arithmetic.",
     "mathContext": "Subset sums $\\sum_{n \\in S} \\frac{1}{n} \\in \\mathbb{Q}$ are rational for finite $S \\subseteq \\mathbb{N}$. The asymptotic bounds use $\\mathbb{R}$-valued functions like $\\log N$ and iterated logarithms $\\log_i N$.",
     "significance": "supporting",
-    "relatedConcepts": ["rational arithmetic", "exact computation", "asymptotic analysis"],
-    "prerequisites": ["Mathlib.Data.Rat.Basic", "Mathlib.Data.Real.Basic"]
+    "relatedConcepts": [
+      "rational arithmetic",
+      "exact computation",
+      "asymptotic analysis"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.Real.Basic"
+    ]
   },
   {
     "id": "erdos-321-unit-fractions",
     "proofId": "erdos-321",
     "type": "definition",
-    "range": { "startLine": 26, "endLine": 28 },
+    "range": {
+      "startLine": 26,
+      "endLine": 28
+    },
     "title": "Unit Fractions Set",
     "content": "The set $\\{1/n : n \\in \\{1, \\ldots, N\\}\\}$ of unit fractions with denominators up to $N$. These are the building blocks for Egyptian fraction representations. The image of the interval $[1, N]$ under $n \\mapsto 1/n$ gives a Finset of $N$ distinct rationals (since $1/n$ is injective on positive integers).",
     "mathContext": "$\\text{unitFractions}(N) = \\{1/1, 1/2, \\ldots, 1/N\\} \\subseteq \\mathbb{Q}$. These are the **unit fractions** or **Egyptian fractions**: every positive rational can be written as a sum of distinct unit fractions (Fibonacci–Sylvester expansion).",
     "significance": "supporting",
-    "relatedConcepts": ["Egyptian fractions", "Fibonacci–Sylvester expansion", "harmonic numbers"],
-    "prerequisites": ["Finset.image", "Finset.Icc", "rational division"]
+    "relatedConcepts": [
+      "Egyptian fractions",
+      "Fibonacci–Sylvester expansion",
+      "harmonic numbers"
+    ],
+    "prerequisites": [
+      "Finset.image",
+      "Finset.Icc",
+      "rational division"
+    ]
   },
   {
     "id": "erdos-321-distinct-sums",
     "proofId": "erdos-321",
     "type": "definition",
-    "range": { "startLine": 30, "endLine": 34 },
+    "range": {
+      "startLine": 30,
+      "endLine": 34
+    },
     "title": "Distinct Reciprocal Subset Sums",
     "content": "A set $A$ has distinct reciprocal subset sums if for any two distinct subsets $S \\neq T \\subseteq A$, the sums $\\sum_{n \\in S} 1/n \\neq \\sum_{n \\in T} 1/n$. This means all $2^{|A|}$ subset sums are unique rationals. The condition is equivalent to requiring that no non-empty subset $U \\subseteq A$ has $\\sum_{n \\in U} 1/n = 0$ (after sign adjustment), connecting to the theory of zero-sum problems.",
     "mathContext": "$\\text{HasDistinctReciprocalSums}(A) \\iff |\\{\\sum_{n \\in S} 1/n : S \\subseteq A\\}| = 2^{|A|}$. For ordinary subset sums (not reciprocals), the analogous problem was studied by Erdős and Moser; for unit fractions, the denominators create a rich arithmetic structure that constrains which sets can have this property.",
-    "significance": "critical",
-    "relatedConcepts": ["zero-sum theory", "distinct subset sums (integers)", "Erdős–Moser conjecture", "B-sequences"],
-    "prerequisites": ["Finset.sum", "Finset powerset", "rational equality"]
+    "significance": "key",
+    "relatedConcepts": [
+      "zero-sum theory",
+      "distinct subset sums (integers)",
+      "Erdős–Moser conjecture",
+      "B-sequences"
+    ],
+    "prerequisites": [
+      "Finset.sum",
+      "Finset powerset",
+      "rational equality"
+    ]
   },
   {
     "id": "erdos-321-r-function",
     "proofId": "erdos-321",
     "type": "definition",
-    "range": { "startLine": 36, "endLine": 42 },
+    "range": {
+      "startLine": 36,
+      "endLine": 42
+    },
     "title": "R(N) — Maximum Set Size",
     "content": "Defines $R(N)$ as the maximum cardinality of a subset $A \\subseteq \\{1, \\ldots, N\\}$ with distinct reciprocal subset sums. This is the central function whose asymptotics the problem seeks. The definition uses `Finset.sup` over the powerset, making it noncomputable but well-defined. Small values: $R(1) = 1$, $R(2) = 2$, $R(3) = 3$.",
     "mathContext": "$R(N) = \\max\\{|A| : A \\subseteq [N], \\; \\text{all reciprocal subset sums of } A \\text{ distinct}\\}$. The function $R$ is non-decreasing: $R(N) \\leq R(N+1)$. The question is whether $R(N) \\sim c \\cdot N / \\log N$ for some constant $c$, or whether iterated logarithmic corrections persist.",
-    "significance": "critical",
-    "relatedConcepts": ["extremal set theory", "maximum antichain", "Dilworth's theorem"],
-    "prerequisites": ["Finset.sup", "Finset.filter", "Finset.powerset"]
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal set theory",
+      "maximum antichain",
+      "Dilworth's theorem"
+    ],
+    "prerequisites": [
+      "Finset.sup",
+      "Finset.filter",
+      "Finset.powerset"
+    ]
   },
   {
     "id": "erdos-321-main-question",
     "proofId": "erdos-321",
     "type": "theorem",
-    "range": { "startLine": 46, "endLine": 50 },
+    "range": {
+      "startLine": 46,
+      "endLine": 50
+    },
     "title": "The Main Asymptotic Question",
     "content": "Axiomatizes the existence of an asymptotic formula for $R(N)$. The problem asks for the precise growth rate — currently known to be $\\Theta(N/\\log N)$ up to iterated logarithm factors. Even determining whether $R(N)/(N/\\log N)$ converges (and to what) is open. The axiom states existence of a function $f$ matching $R(N)$ exactly, a placeholder for the unknown asymptotic.",
     "mathContext": "$\\exists f : \\mathbb{N} \\to \\mathbb{R}, \\; \\forall N \\geq 2: R(N) = f(N)$. The real question is the form of $f$: is $f(N) \\sim c \\cdot N/\\log N$, or does $f(N)/(N/\\log N)$ grow like a product of iterated logarithms?",
-    "significance": "critical",
-    "relatedConcepts": ["asymptotic analysis", "iterated logarithm", "precise asymptotics"],
-    "prerequisites": ["maxDistinctReciprocal", "Real.log"]
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "iterated logarithm",
+      "precise asymptotics"
+    ],
+    "prerequisites": [
+      "maxDistinctReciprocal",
+      "Real.log"
+    ]
   },
   {
     "id": "erdos-321-lower-bound",
     "proofId": "erdos-321",
     "type": "theorem",
-    "range": { "startLine": 54, "endLine": 59 },
+    "range": {
+      "startLine": 54,
+      "endLine": 59
+    },
     "title": "Bleicher–Erdős Lower Bound (1975)",
     "content": "Bleicher and Erdős proved $R(N) \\geq (N/\\log N) \\cdot \\prod_{i=3}^{k} \\log_i N$ where $\\log_i$ denotes the $i$-fold iterated logarithm and $k$ is the largest level where $\\log_k N > 1$. The construction selects integers $n \\leq N$ whose prime factorization has specific properties ensuring that reciprocal subset sums separate. The product of iterated logs grows extremely slowly — for practical $N$, it contributes a factor of at most $\\sim 10$.",
     "mathContext": "$R(N) \\geq \\frac{N}{\\log N} \\cdot \\prod_{i=3}^{k} \\log_i N$ where $k = \\max\\{i : \\log_i N > 1\\}$ and $\\log_i = \\underbrace{\\log \\circ \\cdots \\circ \\log}_{i}$. The simplified formalization states $R(N) \\geq N/\\log N$, capturing the main term.",
     "significance": "key",
-    "relatedConcepts": ["iterated logarithm", "constructive lower bounds", "smooth numbers", "prime factorization"],
-    "prerequisites": ["maxDistinctReciprocal", "Real.log", "iterated logarithm"]
+    "relatedConcepts": [
+      "iterated logarithm",
+      "constructive lower bounds",
+      "smooth numbers",
+      "prime factorization"
+    ],
+    "prerequisites": [
+      "maxDistinctReciprocal",
+      "Real.log",
+      "iterated logarithm"
+    ]
   },
   {
     "id": "erdos-321-upper-bound",
     "proofId": "erdos-321",
     "type": "theorem",
-    "range": { "startLine": 61, "endLine": 66 },
+    "range": {
+      "startLine": 61,
+      "endLine": 66
+    },
     "title": "Bleicher–Erdős Upper Bound (1976)",
     "content": "Bleicher and Erdős proved $R(N) \\leq (1/\\log 2) \\cdot \\log_r N \\cdot (N/\\log N) \\cdot \\prod_{i=3}^{r} \\log_i N$, where $r$ is the largest level of iterated logarithm exceeding 1. The extra factor $\\log_r N$ compared to the lower bound is the gap that the problem asks to resolve. The upper bound uses a counting argument: the number of distinct reciprocal sums over subsets of $A$ is at most $2^{|A|}$, which must be bounded by the 'resolution' of rationals with denominator $\\text{lcm}(1, \\ldots, N)$.",
     "mathContext": "$R(N) \\leq \\frac{1}{\\log 2} \\cdot \\log_r N \\cdot \\frac{N}{\\log N} \\cdot \\prod_{i=3}^{r} \\log_i N$. The formalization simplifies to $R(N) \\leq C \\cdot (N/\\log N) \\cdot \\log\\log N$ for some constant $C > 0$, capturing the essential structure.",
     "significance": "key",
-    "relatedConcepts": ["counting argument", "lcm of 1 to N", "prime number theorem", "iterated logarithm gap"],
-    "prerequisites": ["maxDistinctReciprocal", "Real.log"]
+    "relatedConcepts": [
+      "counting argument",
+      "lcm of 1 to N",
+      "prime number theorem",
+      "iterated logarithm gap"
+    ],
+    "prerequisites": [
+      "maxDistinctReciprocal",
+      "Real.log"
+    ]
   },
   {
     "id": "erdos-321-main-term",
     "proofId": "erdos-321",
     "type": "theorem",
-    "range": { "startLine": 68, "endLine": 74 },
+    "range": {
+      "startLine": 68,
+      "endLine": 74
+    },
     "title": "Main Term: R(N) = Θ(N/log N)",
     "content": "Combines both Bleicher–Erdős bounds to establish $R(N) = \\Theta(N/\\log N)$ up to slowly-varying factors. The constants $c_1, c_2 > 0$ give $c_1 \\cdot N/\\log N \\leq R(N) \\leq c_2 \\cdot (N/\\log N) \\cdot \\log\\log N$. The gap between lower and upper bounds is the $\\log\\log N$ factor (simplification of the iterated log product). This is the definitive summary of what is known.",
     "mathContext": "$c_1 \\cdot \\frac{N}{\\log N} \\leq R(N) \\leq c_2 \\cdot \\frac{N}{\\log N} \\cdot \\log\\log N$ for constants $c_1, c_2 > 0$ and all $N \\geq 2$. The question is: does $R(N) \\cdot \\log N / N$ converge, diverge, or oscillate?",
     "significance": "key",
-    "relatedConcepts": ["Theta notation", "asymptotic equivalence", "slowly varying functions"],
-    "prerequisites": ["bleicher_erdos_lower", "bleicher_erdos_upper"]
+    "relatedConcepts": [
+      "Theta notation",
+      "asymptotic equivalence",
+      "slowly varying functions"
+    ],
+    "prerequisites": [
+      "bleicher_erdos_lower",
+      "bleicher_erdos_upper"
+    ]
   },
   {
     "id": "erdos-321-egyptian",
     "proofId": "erdos-321",
     "type": "insight",
-    "range": { "startLine": 78, "endLine": 81 },
+    "range": {
+      "startLine": 78,
+      "endLine": 81
+    },
     "title": "Egyptian Fraction Connection",
     "content": "The problem connects deeply to **Egyptian fractions** — representations of rationals as sums of distinct unit fractions $1/n$. The Fibonacci–Sylvester (greedy) algorithm produces such representations, and $R(N)$ measures how many denominators from $\\{1, \\ldots, N\\}$ can be used while keeping all partial representations distinguishable. This links to the Erdős–Straus conjecture ($4/n = 1/a + 1/b + 1/c$) and the general theory of rational decompositions.",
     "mathContext": "Every positive rational $q$ can be written as $q = \\sum_{i=1}^k 1/n_i$ with $n_1 < n_2 < \\cdots < n_k$ (Egyptian fraction). $R(N)$ counts the maximum number of denominators $\\leq N$ that can participate in such representations while maintaining uniqueness of all partial sums.",
     "significance": "supporting",
-    "relatedConcepts": ["Egyptian fractions", "Fibonacci–Sylvester algorithm", "Erdős–Straus conjecture", "Engel expansion"],
-    "prerequisites": ["unit fraction representation", "rational decomposition"]
+    "relatedConcepts": [
+      "Egyptian fractions",
+      "Fibonacci–Sylvester algorithm",
+      "Erdős–Straus conjecture",
+      "Engel expansion"
+    ],
+    "prerequisites": [
+      "unit fraction representation",
+      "rational decomposition"
+    ]
   }
 ]

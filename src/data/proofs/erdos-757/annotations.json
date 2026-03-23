@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #757** asks for the best constant c such that almost-Sidon sets must contain Sidon subsets of linear size.\n\nAn **almost-Sidon set** A has the property that every 4-element subset B satisfies |B - B| ≥ 11. For comparison, a true Sidon set of size 4 has |B - B| = 13.\n\n**Known Bounds** (Gyárfás-Lehel 1995):\n- 1/2 < c < 3/5\n\nThe exact value of c is OPEN.",
     "mathContext": "The condition |B - B| ≥ 11 means at most one 'collision' among differences—a minimal relaxation of the Sidon property.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Sidon sets",
       "difference sets",
@@ -28,7 +28,7 @@
     "title": "Sidon Set Definition",
     "content": "**IsSidon S** means: if a + b = c + d for elements in S, then {a, b} = {c, d}.\n\nThis captures the property that all pairwise sums are distinct. Equivalently, all non-zero differences are distinct.\n\nSidon sets are also called **B₂ sequences** in additive combinatorics.",
     "mathContext": "Named after Simon Sidon, who studied such sets in the context of Fourier analysis.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "B₂ sequences",
       "sum-free sets",
@@ -45,7 +45,7 @@
     "type": "definition",
     "title": "Almost-Sidon Property",
     "content": "**AlmostSidon A** means: every 4-element subset B ⊆ A has |B - B| ≥ 11.\n\nSince a 4-element Sidon set has |B - B| = 13 (0 plus 12 distinct ±differences), requiring ≥ 11 allows at most one collision among differences.\n\nThis is a 'local' condition—each 4-element subset is nearly Sidon.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "difference set cardinality",
       "local-to-global"
@@ -62,7 +62,7 @@
     "title": "Admissible Constants",
     "content": "**IsAdmissible c** means: every finite almost-Sidon set A contains a Sidon subset S with |S| ≥ c|A|.\n\nThe problem asks for sup{c : IsAdmissible c}—the best guaranteed linear fraction of a Sidon subset.",
     "mathContext": "The supremum exists because c = 0 is admissible and c ≤ 1 (can't have more than 100%).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "extremal constants",
       "guaranteed subsets"
@@ -78,7 +78,7 @@
     "type": "axiom",
     "title": "Main Conjecture (OPEN)",
     "content": "**Erdős Problem #757**: Find the exact value of sSup {c | IsAdmissible c}.\n\nThe conjecture asserts this supremum exists in the interval (1/2, 3/5). The exact value is OPEN despite 30+ years of study.\n\nNote: This is stated as an axiom because the problem remains unsolved—we assume the answer exists without proving it.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open problem",
       "supremum",
@@ -96,7 +96,7 @@
     "title": "Lower Bound (Gyárfás-Lehel 1995)",
     "content": "**gyarfas_lehel_lower_bound**: 1/2 < sSup {c | IsAdmissible c}.\n\nThe proof uses a **greedy algorithm**: repeatedly add elements that don't create sum collisions. In almost-Sidon sets, this produces Sidon subsets of size > n/2.\n\nThis improves the earlier Erdős-Sós bound of c ≥ 1/2.",
     "mathContext": "The greedy approach exploits the fact that few collisions exist locally.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "greedy algorithms",
       "constructive bounds"
@@ -113,7 +113,7 @@
     "title": "Upper Bound (Gyárfás-Lehel 1995)",
     "content": "**gyarfas_lehel_upper_bound**: sSup {c | IsAdmissible c} < 3/5.\n\nThe proof exhibits a **counterexample family**: the first n **Fibonacci numbers** form an almost-Sidon set whose largest Sidon subset has size just under 3n/5.\n\nThe Fibonacci structure creates specific difference patterns that limit Sidon subsets.",
     "mathContext": "Fibonacci numbers: 1, 1, 2, 3, 5, 8, 13, ... where F_{n+2} = F_{n+1} + F_n.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Fibonacci sequence",
       "counterexamples",

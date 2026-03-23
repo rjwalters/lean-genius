@@ -10,14 +10,24 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #759**: Cochromatic Number on Surfaces\n\nDetermine the growth rate of z(S_n), the maximum cochromatic number on genus-n surfaces.\n\n**Status**: SOLVED (Gimbel-Thomassen 1997)\n\n**Answer**: z(S_n) ≍ √n / log n\n\n**Key history**: Gimbel (1986) gave initial bounds; Gimbel-Thomassen (1997) proved tight bound.",
     "mathContext": "Cochromatic number generalizes chromatic number by allowing color classes to be cliques (not just independent sets).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Cochromatic number (Lesniak-Straight 1977)",
       "Surface embedding and genus",
       "Asymptotic growth rate $\\Theta(\\sqrt{n}/\\log n)$"
     ],
-    "prerequisites": ["SimpleGraph", "Orientable surfaces", "Cochromatic coloring", "Asymptotic notation"],
-    "tags": ["cochromatic-number", "topological-graph-theory", "surface-embedding", "asymptotic-growth"]
+    "prerequisites": [
+      "SimpleGraph",
+      "Orientable surfaces",
+      "Cochromatic coloring",
+      "Asymptotic notation"
+    ],
+    "tags": [
+      "cochromatic-number",
+      "topological-graph-theory",
+      "surface-embedding",
+      "asymptotic-growth"
+    ]
   },
   {
     "id": "ann-e759-clique-indep",
@@ -30,14 +40,23 @@
     "title": "Cliques and Independent Sets",
     "content": "**isClique G S**: Every pair in S is adjacent.\n\n**isIndependent G S**: No pair in S is adjacent.\n\n**isCochromaticValid G S**: S is a clique OR independent set.\n\n```lean\ndef isCochromaticValid (G : SimpleGraph V) (S : Set V) : Prop :=\n  isClique G S ∨ isIndependent G S\n```\n\nThis is the key generalization from chromatic to cochromatic coloring.",
     "mathContext": "In chromatic coloring, color classes must be independent. In cochromatic coloring, they can also be cliques - a more flexible condition.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Clique definition (complete subgraph)",
       "Independent set (stable set)",
       "Cochromatic partition flexibility"
     ],
-    "prerequisites": ["SimpleGraph.Adj", "Set membership", "Disjunction (∨)"],
-    "tags": ["graph-coloring", "clique", "independent-set", "cochromatic-partition"]
+    "prerequisites": [
+      "SimpleGraph.Adj",
+      "Set membership",
+      "Disjunction (∨)"
+    ],
+    "tags": [
+      "graph-coloring",
+      "clique",
+      "independent-set",
+      "cochromatic-partition"
+    ]
   },
   {
     "id": "ann-e759-cochromatic",
@@ -50,14 +69,23 @@
     "title": "Cochromatic Number",
     "content": "**axiom cochromaticNumber G : ℕ**\n\nThe minimum colors needed so each color class is cochromatic-valid.\n\n**Key property**: ζ(G) ≤ χ(G) always.\n\nEvery proper (chromatic) coloring is a cochromatic coloring since independent sets are cochromatic-valid.\n\nSo cochromatic number is a relaxation of chromatic number.",
     "mathContext": "The cochromatic number was introduced to study graph structure. It can be much smaller than chromatic number for graphs with large cliques.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Cochromatic number as chromatic relaxation",
       "Chromatic number upper bound $\\zeta \\leq \\chi$",
       "Graph partition theory"
     ],
-    "prerequisites": ["isCochromaticValid", "isCochromaticColoring", "Graph coloring basics"],
-    "tags": ["cochromatic-number", "chromatic-number", "graph-coloring", "axiomatized"]
+    "prerequisites": [
+      "isCochromaticValid",
+      "isCochromaticColoring",
+      "Graph coloring basics"
+    ],
+    "tags": [
+      "cochromatic-number",
+      "chromatic-number",
+      "graph-coloring",
+      "axiomatized"
+    ]
   },
   {
     "id": "ann-e759-surface",
@@ -76,8 +104,17 @@
       "Genus and Euler characteristic",
       "Euler's formula for surface embeddings"
     ],
-    "prerequisites": ["Topological surfaces", "Connected sum construction", "Euler's formula"],
-    "tags": ["orientable-surface", "genus", "euler-formula", "topology"]
+    "prerequisites": [
+      "Topological surfaces",
+      "Connected sum construction",
+      "Euler's formula"
+    ],
+    "tags": [
+      "orientable-surface",
+      "genus",
+      "euler-formula",
+      "topology"
+    ]
   },
   {
     "id": "ann-e759-embedding",
@@ -96,7 +133,11 @@
       "planar",
       "kuratowski"
     ],
-    "tags": ["graph-embedding", "planar-graph", "topological-graph-theory"]
+    "tags": [
+      "graph-embedding",
+      "planar-graph",
+      "topological-graph-theory"
+    ]
   },
   {
     "id": "ann-e759-max-cochromatic",
@@ -109,13 +150,18 @@
     "title": "Maximum Cochromatic Number z(S_n)",
     "content": "**axiom maxCochromaticNumber n : ℕ**\n\nz(S_n) = max{ζ(G) : G embeddable on S_n}\n\n**Properties**:\n- maxCochromatic_realizes: The maximum is achieved\n- maxCochromatic_upper: All embeddable G have ζ(G) ≤ z(S_n)\n\nThe question: How does z(S_n) grow with n?",
     "mathContext": "Extremal graph theory asks for maximum values of graph parameters under constraints. Here the constraint is surface embeddability.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "max-cochromatic",
       "extremal",
       "embeddability"
     ],
-    "tags": ["extremal-graph-theory", "cochromatic-number", "surface-embedding", "axiomatized"]
+    "tags": [
+      "extremal-graph-theory",
+      "cochromatic-number",
+      "surface-embedding",
+      "axiomatized"
+    ]
   },
   {
     "id": "ann-e759-question",
@@ -128,13 +174,18 @@
     "title": "The Main Question",
     "content": "**erdos759Question**: Is z(S_n) = Θ(√n / log n)?\n\n```lean\ndef erdos759Question : Prop :=\n  ∃ (c₁ c₂ : ℝ), c₁ > 0 ∧ c₂ > 0 ∧\n    ∀ n : ℕ, n ≥ 2 →\n      c₁ * √n / log n ≤ z(S_n) ≤ c₂ * √n / log n\n```\n\nThis asks for tight asymptotic bounds on z(S_n).",
     "mathContext": "Growth rate questions ask for the correct order of magnitude. Θ-notation means matching upper and lower bounds up to constants.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "growth-rate",
       "theta-notation",
       "asymptotics"
     ],
-    "tags": ["asymptotic-growth", "theta-notation", "cochromatic-number", "open-problem"]
+    "tags": [
+      "asymptotic-growth",
+      "theta-notation",
+      "cochromatic-number",
+      "open-problem"
+    ]
   },
   {
     "id": "ann-e759-gimbel-lower",
@@ -153,7 +204,12 @@
       "lower-bound",
       "high-girth"
     ],
-    "tags": ["lower-bound", "high-girth", "probabilistic-method", "extremal-graph-theory"]
+    "tags": [
+      "lower-bound",
+      "high-girth",
+      "probabilistic-method",
+      "extremal-graph-theory"
+    ]
   },
   {
     "id": "ann-e759-gimbel-upper",
@@ -172,7 +228,12 @@
       "euler-formula",
       "gap"
     ],
-    "tags": ["upper-bound", "euler-formula", "surface-density", "extremal-graph-theory"]
+    "tags": [
+      "upper-bound",
+      "euler-formula",
+      "surface-density",
+      "extremal-graph-theory"
+    ]
   },
   {
     "id": "ann-e759-gimbel-thomassen",
@@ -185,14 +246,25 @@
     "title": "Gimbel-Thomassen Theorem (1997)",
     "content": "**axiom gimbel_thomassen_theorem**: z(S_n) ≍ √n / log n\n\nThey proved the tight upper bound: z(S_n) ≤ C · √n / log n.\n\n**Key insight**: The log n factor in the lower bound is essential!\n\n**theorem erdos759_answer : erdos759Question**\nFollows from gimbel_thomassen_theorem.\n\nThe problem is completely resolved.",
     "mathContext": "The 1997 paper 'Coloring graphs with fixed genus and girth' appeared in Trans. Amer. Math. Soc. The proof uses deep structural arguments about surface embeddings.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Gimbel-Thomassen 1997 (Trans. AMS)",
       "Tight asymptotic bounds",
       "Problem resolution after 11-year gap"
     ],
-    "prerequisites": ["gimbel_lower_bound", "maxCochromaticNumber", "erdos759Question", "Real.sqrt", "Real.log"],
-    "tags": ["tight-bound", "topological-graph-theory", "cochromatic-number", "solved"]
+    "prerequisites": [
+      "gimbel_lower_bound",
+      "maxCochromaticNumber",
+      "erdos759Question",
+      "Real.sqrt",
+      "Real.log"
+    ],
+    "tags": [
+      "tight-bound",
+      "topological-graph-theory",
+      "cochromatic-number",
+      "solved"
+    ]
   },
   {
     "id": "ann-e759-heawood",
@@ -211,7 +283,12 @@
       "ringel-youngs",
       "chromatic-surface"
     ],
-    "tags": ["heawood-number", "ringel-youngs", "chromatic-number", "map-coloring"]
+    "tags": [
+      "heawood-number",
+      "ringel-youngs",
+      "chromatic-number",
+      "map-coloring"
+    ]
   },
   {
     "id": "ann-e759-girth",
@@ -230,7 +307,12 @@
       "sparse-graphs",
       "extremal"
     ],
-    "tags": ["girth", "sparse-graphs", "graph-coloring", "extremal-graph-theory"]
+    "tags": [
+      "girth",
+      "sparse-graphs",
+      "graph-coloring",
+      "extremal-graph-theory"
+    ]
   },
   {
     "id": "ann-e759-intuition",
@@ -249,7 +331,12 @@
       "euler-constraint",
       "girth-factor"
     ],
-    "tags": ["asymptotic-growth", "euler-formula", "girth", "surface-embedding"]
+    "tags": [
+      "asymptotic-growth",
+      "euler-formula",
+      "girth",
+      "surface-embedding"
+    ]
   },
   {
     "id": "ann-e759-planar",
@@ -268,7 +355,11 @@
       "4-color-theorem",
       "bounded"
     ],
-    "tags": ["planar-graph", "four-color-theorem", "cochromatic-number"]
+    "tags": [
+      "planar-graph",
+      "four-color-theorem",
+      "cochromatic-number"
+    ]
   },
   {
     "id": "ann-e759-summary",
@@ -287,7 +378,12 @@
       "tight-bound",
       "resolution"
     ],
-    "tags": ["tight-bound", "cochromatic-number", "surface-embedding", "solved"]
+    "tags": [
+      "tight-bound",
+      "cochromatic-number",
+      "surface-embedding",
+      "solved"
+    ]
   },
   {
     "id": "ann-e759-main",
@@ -300,13 +396,18 @@
     "title": "Main Result: erdos_759",
     "content": "**theorem erdos_759 : erdos759Question**\n\n**Statement**: z(S_n) ≍ √n / log n.\n\nThere exist constants c₁, c₂ > 0 such that for all n ≥ 2:\nc₁ · √n / log n ≤ z(S_n) ≤ c₂ · √n / log n\n\n**Status**: SOLVED (Gimbel-Thomassen 1997)",
     "mathContext": "This is the formal statement that completely determines the growth rate of maximum cochromatic number on surfaces.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "main-theorem",
       "erdos-759",
       "solved"
     ],
-    "tags": ["main-theorem", "asymptotic-growth", "cochromatic-number", "solved"]
+    "tags": [
+      "main-theorem",
+      "asymptotic-growth",
+      "cochromatic-number",
+      "solved"
+    ]
   },
   {
     "id": "ann-e759-imports",
@@ -325,7 +426,12 @@
       "imports",
       "lean4"
     ],
-    "tags": ["lean4", "mathlib", "imports", "formalization"]
+    "tags": [
+      "lean4",
+      "mathlib",
+      "imports",
+      "formalization"
+    ]
   },
   {
     "id": "ann-e759-comparison",
@@ -344,7 +450,12 @@
       "chromatic",
       "cochromatic"
     ],
-    "tags": ["chromatic-number", "cochromatic-number", "surface-embedding", "comparison"]
+    "tags": [
+      "chromatic-number",
+      "cochromatic-number",
+      "surface-embedding",
+      "comparison"
+    ]
   },
   {
     "id": "ann-e759-historical",
@@ -363,6 +474,10 @@
       "timeline",
       "progress"
     ],
-    "tags": ["historical-context", "cochromatic-number", "topological-graph-theory"]
+    "tags": [
+      "historical-context",
+      "cochromatic-number",
+      "topological-graph-theory"
+    ]
   }
 ]

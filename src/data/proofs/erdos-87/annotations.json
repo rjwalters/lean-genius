@@ -7,8 +7,15 @@
     "content": "Imports SimpleGraph.Basic for graph infrastructure, Fin.Basic for finite vertex sets, Filter.Basic for asymptotic notation, and tactics.",
     "mathContext": "The formalization uses `SimpleGraph (Fin n)` to represent finite graphs on $n$ vertices, leveraging Mathlib's `SimpleGraph` infrastructure for the loopless, undirected graph structure. The `Fin n` vertex type makes the vertex count explicit in the type, allowing `chromaticNumber` and `graphRamsey` to carry the graph size. `Filter.Basic` is imported for potential asymptotic formulations.",
     "significance": "supporting",
-    "relatedConcepts": ["SimpleGraph", "Fin n", "Filter"],
-    "prerequisites": ["Mathlib.Combinatorics.SimpleGraph.Basic", "Mathlib.Data.Fin.Basic"],
+    "relatedConcepts": [
+      "SimpleGraph",
+      "Fin n",
+      "Filter"
+    ],
+    "prerequisites": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Fin.Basic"
+    ],
     "range": {
       "startLine": 16,
       "endLine": 21
@@ -21,9 +28,15 @@
     "title": "Diagonal Ramsey Number R(k)",
     "content": "The diagonal Ramsey number R(k): minimum N such that every 2-colouring of K_N contains a monochromatic K_k. Axiomatized with positivity for k ≥ 1.",
     "mathContext": "The **diagonal Ramsey number** $R(k) = R(k,k)$ is the minimum $N$ such that every 2-colouring of the edges of $K_N$ contains a monochromatic $K_k$. Ramsey's theorem (1930) guarantees $R(k)$ is finite. The best known bounds are $(1 + o(1))\\sqrt{2} \\cdot k \\cdot 2^{k/2} \\leq R(k) \\leq 4^k / (k^{1/2 - o(1)})$, with the lower bound from Erdős's probabilistic method (1947) and the upper bound from Erdős-Szekeres (1935) improved by Campos et al. (2023). The axiom `diagonalRamsey_pos` asserts $R(k) > 0$ for $k \\geq 1$.",
-    "significance": "critical",
-    "relatedConcepts": ["Ramsey number", "probabilistic method", "Erdős-Szekeres bound"],
-    "prerequisites": ["Mathlib.Combinatorics.SimpleGraph.Basic"],
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey number",
+      "probabilistic method",
+      "Erdős-Szekeres bound"
+    ],
+    "prerequisites": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
     "range": {
       "startLine": 27,
       "endLine": 30
@@ -36,9 +49,15 @@
     "title": "Graph Ramsey Number R(G)",
     "content": "The graph Ramsey number R(G): smallest N such that every 2-colouring of K_N contains a monochromatic copy of G. Axiomatized with positivity.",
     "mathContext": "The **graph Ramsey number** $R(G) = R(G, G)$ generalizes the diagonal Ramsey number from complete graphs to arbitrary graphs. For a graph $G$ on $n$ vertices with chromatic number $k$, we always have $R(G) \\leq R(k) \\cdot n$ by a simple argument, but much sharper bounds exist. The Chvátal-Rödl-Szemerédi-Trotter theorem (1983) shows $R(G) \\leq c \\cdot n$ for bounded-degree graphs $G$ on $n$ vertices. The axiomatization takes `SimpleGraph (Fin n)` as input, carrying the vertex count in the type.",
-    "significance": "critical",
-    "relatedConcepts": ["graph Ramsey number", "Chvátal-Rödl-Szemerédi-Trotter", "bounded degree"],
-    "prerequisites": ["SimpleGraph"],
+    "significance": "key",
+    "relatedConcepts": [
+      "graph Ramsey number",
+      "Chvátal-Rödl-Szemerédi-Trotter",
+      "bounded degree"
+    ],
+    "prerequisites": [
+      "SimpleGraph"
+    ],
     "range": {
       "startLine": 34,
       "endLine": 37
@@ -51,9 +70,15 @@
     "title": "Chromatic Number χ(G)",
     "content": "The chromatic number of a finite simple graph: minimum colours for a proper vertex colouring. Bounded by n and positive for non-empty graphs.",
     "mathContext": "The **chromatic number** $\\chi(G)$ is the minimum number of colours needed to properly colour the vertices of $G$ (no two adjacent vertices share a colour). It is axiomatized rather than defined constructively because computing $\\chi(G)$ is NP-hard. The bounds $1 \\leq \\chi(G) \\leq n$ (for a graph on $n$ vertices) are axiomatized. The chromatic number connects to Ramsey theory through the key identity: $\\chi(G) = k$ means $G$ is $k$-colourable but not $(k-1)$-colourable, which constrains the structure of $G$ and hence its Ramsey number.",
-    "significance": "critical",
-    "relatedConcepts": ["chromatic number", "graph colouring", "NP-hardness"],
-    "prerequisites": ["SimpleGraph"],
+    "significance": "key",
+    "relatedConcepts": [
+      "chromatic number",
+      "graph colouring",
+      "NP-hardness"
+    ],
+    "prerequisites": [
+      "SimpleGraph"
+    ],
     "range": {
       "startLine": 41,
       "endLine": 48
@@ -66,9 +91,17 @@
     "title": "Weak Form: R(G) > (1-ε)^k · R(k)",
     "content": "For every ε ∈ (0,1), there exists k₀ such that for k ≥ k₀ and all G with χ(G) = k, we have R(G) > (1-ε)^k · R(k).",
     "mathContext": "The **weak form** of Problem 87 states $\\forall \\varepsilon \\in (0,1), \\exists k_0, \\forall k \\geq k_0, \\forall G$ with $\\chi(G) = k$: $R(G) > (1-\\varepsilon)^k \\cdot R(k)$. The factor $(1-\\varepsilon)^k$ decays exponentially, so this allows $R(G)$ to be exponentially smaller than $R(k)$—but not by too much. Since $R(k) \\geq 2^{k/2}$, the bound asks that $R(G) \\gg ((1-\\varepsilon) \\cdot \\sqrt{2})^k$, which is still exponential for $\\varepsilon < 1 - 1/\\sqrt{2}$. The formalization uses `def` (a `Prop`-valued definition) rather than `axiom` to make the statement a well-typed proposition.",
-    "significance": "critical",
-    "relatedConcepts": ["exponential decay", "Ramsey-chromatic conjecture", "asymptotic lower bound"],
-    "prerequisites": ["diagonalRamsey", "graphRamsey", "chromaticNumber"],
+    "significance": "key",
+    "relatedConcepts": [
+      "exponential decay",
+      "Ramsey-chromatic conjecture",
+      "asymptotic lower bound"
+    ],
+    "prerequisites": [
+      "diagonalRamsey",
+      "graphRamsey",
+      "chromaticNumber"
+    ],
     "range": {
       "startLine": 54,
       "endLine": 59
@@ -81,9 +114,17 @@
     "title": "Strong Form: R(G) > c · R(k)",
     "content": "There exists an absolute constant c > 0 such that R(G) > c · R(k) for all large k and all G with χ(G) = k.",
     "mathContext": "The **strong form** asserts $\\exists c > 0, \\exists k_0, \\forall k \\geq k_0, \\forall G$ with $\\chi(G) = k$: $R(G) > c \\cdot R(k)$. This is strictly stronger than the weak form because $c$ is independent of $k$ (the weak form's $(1-\\varepsilon)^k$ factor decays to zero). The strong form would mean that every graph $G$ with $\\chi(G) = k$ has Ramsey number within a constant factor of the complete graph $K_k$—a remarkable claim given that $G$ may have far fewer edges than $K_k$.",
-    "significance": "critical",
-    "relatedConcepts": ["absolute constant", "Ramsey lower bound", "chromatic-Ramsey comparison"],
-    "prerequisites": ["diagonalRamsey", "graphRamsey", "chromaticNumber"],
+    "significance": "key",
+    "relatedConcepts": [
+      "absolute constant",
+      "Ramsey lower bound",
+      "chromatic-Ramsey comparison"
+    ],
+    "prerequisites": [
+      "diagonalRamsey",
+      "graphRamsey",
+      "chromaticNumber"
+    ],
     "range": {
       "startLine": 63,
       "endLine": 68
@@ -97,8 +138,15 @@
     "content": "R(G) ≫ 2^{k/2} for any G with χ(G) = k, from the probabilistic method.",
     "mathContext": "The **probabilistic method** gives $R(G) \\geq R(\\chi(G)) \\geq 2^{\\chi(G)/2}$ since a graph with chromatic number $k$ contains $K_k$ as a subgraph (actually, this is not quite right—the bound $R(G) \\geq R(\\omega(G))$ uses the clique number, and $\\omega(G) \\leq \\chi(G)$ gives a weaker bound). More precisely, random 2-colourings of $K_N$ avoid monochromatic copies of $G$ with positive probability when $N$ is small enough relative to $|V(G)|$ and the edge density. The axiom records $\\exists C > 0$ such that $C \\cdot 2^{k/2} \\leq R(G)$ whenever $\\chi(G) = k$ and $k \\geq 2$.",
     "significance": "key",
-    "relatedConcepts": ["probabilistic method", "random colourings", "first moment method"],
-    "prerequisites": ["graphRamsey", "chromaticNumber"],
+    "relatedConcepts": [
+      "probabilistic method",
+      "random colourings",
+      "first moment method"
+    ],
+    "prerequisites": [
+      "graphRamsey",
+      "chromaticNumber"
+    ],
     "range": {
       "startLine": 73,
       "endLine": 77
@@ -112,8 +160,14 @@
     "content": "The Erdős-Szekeres upper bound on diagonal Ramsey numbers, used to calibrate the conjecture.",
     "mathContext": "The **Erdős-Szekeres bound** (1935) gives $R(k) \\leq \\binom{2k-2}{k-1} \\leq 4^k$. This remained the best upper bound for decades until **Campos, Griffiths, Morris, and Sahasrabudhe** (2023) proved $R(k) \\leq (4 - \\varepsilon)^k$ for some $\\varepsilon > 0$, a major breakthrough. Combined with the exponential lower bound $R(G) \\gg 2^{k/2}$, the ratio $R(G)/R(k)$ lies between $2^{-k/2}$ and $2^{k/2}$ approximately, and the conjecture asks that this ratio stays bounded away from zero.",
     "significance": "key",
-    "relatedConcepts": ["Erdős-Szekeres", "Campos-Griffiths-Morris-Sahasrabudhe", "binomial coefficient"],
-    "prerequisites": ["diagonalRamsey"],
+    "relatedConcepts": [
+      "Erdős-Szekeres",
+      "Campos-Griffiths-Morris-Sahasrabudhe",
+      "binomial coefficient"
+    ],
+    "prerequisites": [
+      "diagonalRamsey"
+    ],
     "range": {
       "startLine": 80,
       "endLine": 81
@@ -126,9 +180,17 @@
     "title": "Faudree-McKay Counterexample",
     "content": "The pentagonal wheel W on 6 vertices has χ(W) = 4 and R(W) = 17, while R(4) = 18, disproving R(G) ≥ R(k).",
     "mathContext": "**Faudree and McKay** showed that the **pentagonal wheel** $W$ (the graph formed by connecting a central vertex to all vertices of $C_5$) has $\\chi(W) = 4$ and $R(W, W) = 17$, while $R(4) = R(4,4) = 18$. This gives the minimal counterexample to Erdős's original conjecture $R(G) \\geq R(\\chi(G))$: the graph $W$ has 6 vertices and 10 edges, yet its Ramsey number falls short of $R(K_4)$ by 1. The axiom uses `SimpleGraph (Fin 6)` for the 6-vertex wheel.",
-    "significance": "critical",
-    "relatedConcepts": ["pentagonal wheel", "Faudree-McKay", "minimal counterexample"],
-    "prerequisites": ["graphRamsey", "diagonalRamsey", "chromaticNumber"],
+    "significance": "key",
+    "relatedConcepts": [
+      "pentagonal wheel",
+      "Faudree-McKay",
+      "minimal counterexample"
+    ],
+    "prerequisites": [
+      "graphRamsey",
+      "diagonalRamsey",
+      "chromaticNumber"
+    ],
     "range": {
       "startLine": 87,
       "endLine": 89

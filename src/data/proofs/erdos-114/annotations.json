@@ -2,169 +2,314 @@
   {
     "id": "monic-poly",
     "proofId": "erdos-114",
-    "range": { "startLine": 30, "endLine": 34 },
+    "range": {
+      "startLine": 30,
+      "endLine": 34
+    },
     "type": "definition",
     "title": "Monic Polynomial",
     "content": "A monic polynomial of degree $n$ over $\\mathbb{C}$: $p(z) = z^n + a_{n-1}z^{n-1} + \\cdots + a_0$. The leading coefficient is fixed at 1, leaving $n$ free complex parameters $(a_0, \\ldots, a_{n-1})$. This normalization is essential—without it, scaling $p$ by a constant $c$ would scale the lemniscate length by $|c|^{1/n}$.",
     "mathContext": "$\\text{MonicPoly}(n) = \\{z^n + \\sum_{k=0}^{n-1} a_k z^k : a_k \\in \\mathbb{C}\\}$, parametrized by $\\text{Fin}(n) \\to \\mathbb{C}$.",
     "significance": "key",
-    "relatedConcepts": ["polynomial ring", "monic normalization", "coefficient space"],
-    "prerequisites": ["complex polynomials", "Lean structures"]
+    "relatedConcepts": [
+      "polynomial ring",
+      "monic normalization",
+      "coefficient space"
+    ],
+    "prerequisites": [
+      "complex polynomials",
+      "Lean structures"
+    ]
   },
   {
     "id": "lemniscate-length",
     "proofId": "erdos-114",
-    "range": { "startLine": 36, "endLine": 38 },
+    "range": {
+      "startLine": 36,
+      "endLine": 38
+    },
     "type": "definition",
     "title": "Lemniscate Length",
     "content": "The arc length of the level curve $\\{z \\in \\mathbb{C} : |p(z)| = 1\\}$, a real algebraic curve in the plane. For $p(z) = z^2 - 1$ this is the classical Bernoulli lemniscate (figure-eight). The curve may have multiple connected components, cusps, and self-intersections. The length is axiomatized since its computation requires complex line integrals.",
     "mathContext": "$L(p) = \\text{length}(\\{z \\in \\mathbb{C} : |p(z)| = 1\\}) = \\oint_{|p(z)|=1} |dz|$.",
-    "significance": "critical",
-    "relatedConcepts": ["arc length", "level set", "real algebraic curve", "Bernoulli lemniscate"],
-    "prerequisites": ["complex analysis", "curve length", "implicit curves"]
+    "significance": "key",
+    "relatedConcepts": [
+      "arc length",
+      "level set",
+      "real algebraic curve",
+      "Bernoulli lemniscate"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "curve length",
+      "implicit curves"
+    ]
   },
   {
     "id": "max-length",
     "proofId": "erdos-114",
-    "range": { "startLine": 40, "endLine": 41 },
+    "range": {
+      "startLine": 40,
+      "endLine": 41
+    },
     "type": "definition",
     "title": "Maximum Lemniscate Length f(n)",
     "content": "The supremum of lemniscate lengths over all monic degree-$n$ polynomials: $f(n) = \\sup_{p \\in \\text{MonicPoly}(n)} L(p)$. The existence of this maximum (compactness argument) is implicit. The central question is whether $f(n) = L(z^n - 1)$.",
     "mathContext": "$f(n) = \\sup\\{L(p) : p \\text{ monic, } \\deg p = n\\}$.",
-    "significance": "critical",
-    "relatedConcepts": ["extremal problem", "supremum", "compactness in coefficient space"],
-    "prerequisites": ["optimization", "supremum existence"]
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal problem",
+      "supremum",
+      "compactness in coefficient space"
+    ],
+    "prerequisites": [
+      "optimization",
+      "supremum existence"
+    ]
   },
   {
     "id": "extremal-poly",
     "proofId": "erdos-114",
-    "range": { "startLine": 43, "endLine": 45 },
+    "range": {
+      "startLine": 43,
+      "endLine": 45
+    },
     "type": "definition",
     "title": "Extremal Polynomial $z^n - 1$",
     "content": "The conjectured maximizer $p(z) = z^n - 1$, defined by $a_0 = -1$ and $a_k = 0$ for $k \\geq 1$. Its lemniscate $\\{|z^n - 1| = 1\\}$ passes through all $n$-th roots of unity and has $n$-fold dihedral symmetry ($D_n$). The length is $\\sim 2n$ for large $n$, with exact formula involving the Gamma function.",
     "mathContext": "$p(z) = z^n - 1 = \\prod_{k=0}^{n-1}(z - e^{2\\pi i k/n})$. Lemniscate: $|z^n - 1| = 1$.",
-    "significance": "critical",
-    "relatedConcepts": ["roots of unity", "dihedral symmetry", "cyclotomic polynomial"],
-    "prerequisites": ["roots of unity", "polynomial factorization"]
+    "significance": "key",
+    "relatedConcepts": [
+      "roots of unity",
+      "dihedral symmetry",
+      "cyclotomic polynomial"
+    ],
+    "prerequisites": [
+      "roots of unity",
+      "polynomial factorization"
+    ]
   },
   {
     "id": "dolzhenko",
     "proofId": "erdos-114",
-    "range": { "startLine": 49, "endLine": 51 },
+    "range": {
+      "startLine": 49,
+      "endLine": 51
+    },
     "type": "theorem",
     "title": "Dolzhenko Upper Bound (1961)",
     "content": "$f(n) \\leq 4\\pi n$. The first non-trivial upper bound, obtained by bounding the lemniscate length in terms of the total variation of $\\arg p(z)$ along the curve. This is a factor of $2\\pi$ away from the conjectured truth $\\sim 2n$.",
     "mathContext": "$f(n) \\leq 4\\pi n$ for all $n \\geq 1$.",
     "significance": "supporting",
-    "relatedConcepts": ["argument principle", "total variation", "winding number"],
-    "prerequisites": ["complex analysis", "argument of a complex function"]
+    "relatedConcepts": [
+      "argument principle",
+      "total variation",
+      "winding number"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "argument of a complex function"
+    ]
   },
   {
     "id": "danchenko",
     "proofId": "erdos-114",
-    "range": { "startLine": 53, "endLine": 55 },
+    "range": {
+      "startLine": 53,
+      "endLine": 55
+    },
     "type": "theorem",
     "title": "Danchenko Upper Bound (2007)",
     "content": "$f(n) \\leq 2\\pi n$, halving Dolzhenko's bound. The constant $2\\pi$ is natural: the unit circle (lemniscate of $z$) has circumference $2\\pi$, and the lemniscate of $z^n$ winds around it $n$ times. Still a factor of $\\pi$ from the truth.",
     "mathContext": "$f(n) \\leq 2\\pi n$ for all $n \\geq 1$.",
     "significance": "key",
-    "relatedConcepts": ["potential theory", "Green's function", "harmonic measure"],
-    "prerequisites": ["complex analysis", "potential theory"]
+    "relatedConcepts": [
+      "potential theory",
+      "Green's function",
+      "harmonic measure"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "potential theory"
+    ]
   },
   {
     "id": "fryntov-nazarov",
     "proofId": "erdos-114",
-    "range": { "startLine": 57, "endLine": 60 },
+    "range": {
+      "startLine": 57,
+      "endLine": 60
+    },
     "type": "theorem",
     "title": "Fryntov-Nazarov Near-Optimal Bound (2009)",
     "content": "$f(n) \\leq 2n + C \\cdot n^{7/8}$ for a constant $C > 0$. This nearly matches the conjectured maximum $\\sim 2n$ from $z^n - 1$, leaving only a sublinear error term. They also proved $z^n - 1$ is a local maximum: the Hessian of $L(p)$ at $z^n - 1$ is negative definite on the tangent space.",
     "mathContext": "$f(n) \\leq 2n + O(n^{7/8})$. The error $O(n^{7/8})$ is $o(n)$, so $f(n)/n \\to 2$.",
-    "significance": "critical",
-    "relatedConcepts": ["variational methods", "second variation", "local optimality", "Hessian"],
-    "prerequisites": ["calculus of variations", "second-order optimality conditions"]
+    "significance": "key",
+    "relatedConcepts": [
+      "variational methods",
+      "second variation",
+      "local optimality",
+      "Hessian"
+    ],
+    "prerequisites": [
+      "calculus of variations",
+      "second-order optimality conditions"
+    ]
   },
   {
     "id": "lower-bound",
     "proofId": "erdos-114",
-    "range": { "startLine": 67, "endLine": 72 },
+    "range": {
+      "startLine": 67,
+      "endLine": 72
+    },
     "type": "theorem",
     "title": "Lower Bound from $z^n - 1$",
     "content": "The lemniscate of $z^n - 1$ has positive length, giving $f(n) \\geq L(z^n - 1) > 0$. The exact length involves the Beta function: $L(z^n - 1) = 2n \\cdot B(1/(2n), 1/2) / \\sqrt{2\\pi}$, which tends to $2n$ as $n \\to \\infty$.",
     "mathContext": "$f(n) \\geq L(z^n - 1) = \\frac{2n \\cdot \\Gamma(1/(2n))^2}{\\sqrt{2\\pi} \\cdot \\Gamma(1/n)} \\sim 2n$.",
     "significance": "key",
-    "relatedConcepts": ["Gamma function", "Beta function", "Stirling's approximation"],
-    "prerequisites": ["special functions", "asymptotic expansion"]
+    "relatedConcepts": [
+      "Gamma function",
+      "Beta function",
+      "Stirling's approximation"
+    ],
+    "prerequisites": [
+      "special functions",
+      "asymptotic expansion"
+    ]
   },
   {
     "id": "main-conjecture",
     "proofId": "erdos-114",
-    "range": { "startLine": 76, "endLine": 79 },
+    "range": {
+      "startLine": 76,
+      "endLine": 79
+    },
     "type": "conjecture",
     "title": "Global Maximality Conjecture ($250 bounty)",
     "content": "$z^n - 1$ uniquely maximizes the lemniscate length among all monic degree-$n$ polynomials, for all $n \\geq 1$. Formally: $f(n) = L(z^n - 1)$. Erdős offered $250 for a proof. The conjecture is resolved for $n = 2$ (Eremenko-Hayman) and for all sufficiently large $n$ (Tao), but the full statement for all $n$ remains open.",
     "mathContext": "$\\forall n \\geq 1, \\forall p \\in \\text{MonicPoly}(n): L(p) \\leq L(z^n - 1)$.",
-    "significance": "critical",
-    "relatedConcepts": ["isoperimetric inequality", "extremal polynomial", "uniqueness of optimizer"],
-    "prerequisites": ["optimization theory", "compactness arguments"]
+    "significance": "key",
+    "relatedConcepts": [
+      "isoperimetric inequality",
+      "extremal polynomial",
+      "uniqueness of optimizer"
+    ],
+    "prerequisites": [
+      "optimization theory",
+      "compactness arguments"
+    ]
   },
   {
     "id": "local-opt",
     "proofId": "erdos-114",
-    "range": { "startLine": 81, "endLine": 84 },
+    "range": {
+      "startLine": 81,
+      "endLine": 84
+    },
     "type": "theorem",
     "title": "Local Optimality of $z^n - 1$ (Fryntov-Nazarov 2009)",
     "content": "The polynomial $z^n - 1$ is a critical point and local maximum of the functional $p \\mapsto L(p)$ on $\\text{MonicPoly}(n)$. Any sufficiently small perturbation of the coefficients decreases the lemniscate length. Axiomatized as `True` since the proof involves detailed second-variation analysis.",
     "mathContext": "$\\exists \\delta > 0: \\|p - (z^n - 1)\\| < \\delta \\implies L(p) \\leq L(z^n - 1)$.",
     "significance": "key",
-    "relatedConcepts": ["critical point", "second variation", "negative definite Hessian"],
-    "prerequisites": ["calculus of variations", "functional analysis"]
+    "relatedConcepts": [
+      "critical point",
+      "second variation",
+      "negative definite Hessian"
+    ],
+    "prerequisites": [
+      "calculus of variations",
+      "functional analysis"
+    ]
   },
   {
     "id": "tao-large-n",
     "proofId": "erdos-114",
-    "range": { "startLine": 86, "endLine": 90 },
+    "range": {
+      "startLine": 86,
+      "endLine": 90
+    },
     "type": "theorem",
     "title": "Tao's Large-$n$ Theorem (2025)",
     "content": "Terence Tao proved that $z^n - 1$ is the unique global maximum for all sufficiently large $n$. There exists $N_0$ such that for $n \\geq N_0$, every monic degree-$n$ polynomial $p$ satisfies $L(p) \\leq L(z^n - 1)$. This major breakthrough reduces the full conjecture to verifying finitely many small cases.",
     "mathContext": "$\\exists N_0: \\forall n \\geq N_0, \\forall p \\in \\text{MonicPoly}(n): L(p) \\leq L(z^n - 1)$.",
-    "significance": "critical",
-    "relatedConcepts": ["asymptotic analysis", "polynomial optimization", "compactness argument"],
-    "prerequisites": ["complex analysis", "potential theory", "harmonic analysis"]
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "polynomial optimization",
+      "compactness argument"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "potential theory",
+      "harmonic analysis"
+    ]
   },
   {
     "id": "eremenko-hayman",
     "proofId": "erdos-114",
-    "range": { "startLine": 92, "endLine": 96 },
+    "range": {
+      "startLine": 92,
+      "endLine": 96
+    },
     "type": "theorem",
     "title": "Eremenko-Hayman $n = 2$ (1999)",
     "content": "For $n = 2$, $z^2 - 1$ uniquely maximizes the lemniscate length. The lemniscate $\\{|z^2 - 1| = 1\\}$ is the classical Bernoulli lemniscate, a figure-eight curve with exact length involving the Gamma function. The proof uses conformal mapping techniques specific to degree 2.",
     "mathContext": "$\\forall p \\in \\text{MonicPoly}(2): L(p) \\leq L(z^2 - 1)$. Length $= \\frac{4\\Gamma(1/4)^2}{\\sqrt{2\\pi} \\cdot \\Gamma(1/2)} \\approx 7.416$.",
     "significance": "key",
-    "relatedConcepts": ["Bernoulli lemniscate", "conformal mapping", "elliptic integral"],
-    "prerequisites": ["conformal mapping", "special functions"]
+    "relatedConcepts": [
+      "Bernoulli lemniscate",
+      "conformal mapping",
+      "elliptic integral"
+    ],
+    "prerequisites": [
+      "conformal mapping",
+      "special functions"
+    ]
   },
   {
     "id": "symmetry",
     "proofId": "erdos-114",
-    "range": { "startLine": 100, "endLine": 103 },
+    "range": {
+      "startLine": 100,
+      "endLine": 103
+    },
     "type": "theorem",
     "title": "Dihedral Symmetry of $z^n - 1$ Lemniscate",
     "content": "The lemniscate $\\{|z^n - 1| = 1\\}$ has $n$-fold dihedral symmetry group $D_n$: it is invariant under rotation by $2\\pi/n$ and under complex conjugation. This high symmetry is a strong hint that $z^n - 1$ is extremal—many isoperimetric-type problems have symmetric optimizers.",
     "mathContext": "If $|z^n - 1| = 1$, then $|(e^{2\\pi i/n} z)^n - 1| = |z^n - 1| = 1$.",
     "significance": "supporting",
-    "relatedConcepts": ["dihedral group", "symmetrization", "isoperimetric inequality"],
-    "prerequisites": ["group theory", "symmetry in optimization"]
+    "relatedConcepts": [
+      "dihedral group",
+      "symmetrization",
+      "isoperimetric inequality"
+    ],
+    "prerequisites": [
+      "group theory",
+      "symmetry in optimization"
+    ]
   },
   {
     "id": "exact-length",
     "proofId": "erdos-114",
-    "range": { "startLine": 110, "endLine": 113 },
+    "range": {
+      "startLine": 110,
+      "endLine": 113
+    },
     "type": "theorem",
     "title": "Exact Length Formula via Gamma Function",
     "content": "The exact length of the $z^n - 1$ lemniscate is $L(z^n - 1) = \\frac{2n \\cdot \\Gamma(1/(2n))^2}{\\sqrt{2\\pi} \\cdot \\Gamma(1/n)}$. For $n = 2$, this gives $4\\Gamma(1/4)^2 / (\\sqrt{2\\pi} \\cdot \\Gamma(1/2))$, the length of the Bernoulli lemniscate. For large $n$, Stirling's approximation gives $L \\sim 2n$.",
     "mathContext": "$L(z^n - 1) = \\frac{2n \\cdot \\Gamma(1/(2n))^2}{\\sqrt{2\\pi} \\cdot \\Gamma(1/n)} \\xrightarrow{n \\to \\infty} 2n$.",
     "significance": "key",
-    "relatedConcepts": ["Gamma function", "Beta function", "Stirling approximation", "elliptic integral"],
-    "prerequisites": ["special functions", "asymptotic analysis"]
+    "relatedConcepts": [
+      "Gamma function",
+      "Beta function",
+      "Stirling approximation",
+      "elliptic integral"
+    ],
+    "prerequisites": [
+      "special functions",
+      "asymptotic analysis"
+    ]
   }
 ]

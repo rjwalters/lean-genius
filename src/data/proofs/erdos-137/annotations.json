@@ -28,7 +28,7 @@
     "title": "Powerful Numbers",
     "content": "**Powerful(n)** means n ≠ 0 and every prime divisor p satisfies p² | n. Equivalently, all prime exponents in the factorization are ≥ 2.",
     "mathContext": "Examples: 1, 4, 8, 9, 16, 25, 27, 32, 36, 72, ... Numbers like 6 = 2 × 3 are NOT powerful (each prime appears exactly once).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "prime factorization",
       "squarefree",
@@ -116,7 +116,7 @@
     "title": "Erdős-Selfridge Theorem (1975)",
     "content": "**Axiomatized theorem**: For n ≥ 1 and k ≥ 2, the product (n+1)···(n+k) is NEVER a perfect power mˡ with l ≥ 2.",
     "mathContext": "Published in Illinois J. Math. 19(2):292-301, 1975. The proof analyzes prime factorization structure and is highly technical.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "perfect powers",
       "prime factorization",
@@ -134,7 +134,7 @@
     "title": "The Powerful Products Conjecture",
     "content": "**ErdosPowerfulConjecture**: For k ≥ 3, the product of k consecutive positive integers is NEVER powerful. This is OPEN but widely believed true.",
     "mathContext": "Strictly weaker than Erdős-Selfridge (perfect powers ⊂ powerful numbers). The gap highlights the subtle difference between these properties.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open conjecture",
       "powerful numbers",

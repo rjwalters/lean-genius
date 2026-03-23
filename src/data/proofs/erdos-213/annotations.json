@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "This header documents **Erdős Problem #213** about integer distance sets in general position. The question asks whether for all n ≥ 4, we can find n points with no three collinear, no four concyclic, and all distances integers.",
     "mathContext": "The 'general position' requirements (no three collinear, no four concyclic) prevent trivial infinite constructions. Anning-Erdős proved such sets must be finite; n=7 is the current record.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "integer distances",
       "general position",
@@ -80,7 +80,7 @@
     "title": "Integer Distances",
     "content": "A set has **integer distances** if for every pair of distinct points, the Euclidean distance is an integer. Combined with general position, this is a severe constraint.",
     "mathContext": "AllDistancesInteger S := S.Pairwise (fun p q => ∃ n : ℤ, dist p q = n). IsIntegerDistanceSetGP combines all three conditions. ExistsIntDistSetGP n asserts existence of an n-point set.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "distance",
       "integers",
@@ -98,7 +98,7 @@
     "title": "Anning-Erdős Theorem",
     "content": "**Anning-Erdős (1945)** proved a fundamental finiteness result: any set in the plane with no three collinear and all distances integers must be finite. This doesn't even need the concyclic condition!",
     "mathContext": "axiom anning_erdos_finite : ∀ S, NoThreeCollinear S → AllDistancesInteger S → S.Finite. This is why finding large examples is hard.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Anning",
       "Erdős",
@@ -116,7 +116,7 @@
     "title": "Main Question",
     "content": "**Erdős Problem #213** asks: for all n ≥ 4, does ExistsIntDistSetGP n hold? That is, can we always find n points satisfying all the constraints? This remains OPEN.",
     "mathContext": "Erdos213Question := ∀ n ≥ 4, ExistsIntDistSetGP n. The status is axiomatized as 'open' since neither proof nor disproof is known.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open problem",
       "existence"
@@ -151,7 +151,7 @@
     "title": "Kreisel-Kurz Record",
     "content": "**Kreisel and Kurz (2008)** achieved the current record: n=7. Their 'integral heptagon' has no three collinear, no four concyclic, and all 21 pairwise distances are integers.",
     "mathContext": "axiom kreisel_kurz_seven : ExistsIntDistSetGP 7. This has been the record for over 15 years. n=8 remains unknown.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Kreisel",
       "Kurz",

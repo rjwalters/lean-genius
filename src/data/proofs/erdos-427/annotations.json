@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdos Problem #427** asks: For every n and d, does there exist k such that d divides the sum p_{n+1} + ... + p_{n+k}, where p_r is the r-th prime?\n\n**Status**: SOLVED by Pilatte using Shiu's theorem.\n\nThe answer is YES - any partial sum of consecutive primes can be made divisible by any given modulus.",
     "mathContext": "This connects prime sums to divisibility in a surprisingly general way. The solution relies on deep results about how primes distribute in arithmetic progressions.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "prime sums",
       "divisibility",
@@ -82,7 +82,7 @@
     "title": "The Main Statement",
     "content": "**erdos_427_statement** formalizes the problem:\n\n```lean\ndef erdos_427_statement : Prop :=\n  ∀ n d : ℕ, d ≠ 0 → ∃ k : ℕ, k ≠ 0 ∧ d ∣ primeSum n k\n```\n\nFor all starting indices n and moduli d (with d nonzero), there exists a nonzero k such that d divides the sum of k consecutive primes starting at index n.",
     "mathContext": "The condition d ≠ 0 is necessary since nothing is divisible by 0. The condition k ≠ 0 ensures we're summing at least one prime.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "universal quantifier",
       "existential quantifier",
@@ -100,7 +100,7 @@
     "title": "Shiu's Theorem",
     "content": "**ShiuTheorem** states that strings of congruent primes exist:\n\n```lean\ndef ShiuTheorem : Prop :=\n  ∀ (k a q : ℕ), 1 ≤ k → 1 ≤ q → Nat.Coprime a q →\n    { m : ℕ | ∀ i ∈ Finset.Ico m (m + k), nthPrime i ≡ a [MOD q] }.Infinite\n```\n\nFor any k ≥ 1 and coprime (a, q), there are **infinitely many** starting points m where k consecutive primes are all congruent to a (mod q).",
     "mathContext": "This is a deep result from analytic number theory (Shiu, 2000). It vastly strengthens Dirichlet's theorem, which only guarantees infinitely many individual primes in each progression.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Dirichlet's theorem",
       "arithmetic progressions",
@@ -155,7 +155,7 @@
     "title": "Main Theorem",
     "content": "**Erdos Problem #427 is SOLVED**:\n\n```lean\naxiom erdos_427_of_shiu : ShiuTheorem → erdos_427_statement\n\ntheorem erdos_427 : erdos_427_statement := erdos_427_of_shiu shiu_theorem\n```\n\nThe answer to Erdos's question is YES: for any n and d ≠ 0, there exists k ≠ 0 such that d divides primeSum(n, k).",
     "mathContext": "The implication erdos_427_of_shiu is axiomatized since the full proof involves technical modular arithmetic manipulations that follow Pilatte's outline.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "solved problem",
       "modus ponens",

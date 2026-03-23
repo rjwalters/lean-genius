@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #306** asks: Can every positive rational a/b with b squarefree be expressed as an Egyptian fraction where each denominator is a product of exactly 2 distinct primes?\n\n**Status**:\n- 2 distinct primes: **OPEN**\n- 3 distinct primes (integers only): **SOLVED** by Butler, Erdős, Graham (2015)\n\n**Historical Note**: The Butler-Erdős-Graham paper appeared 19 years after Erdős's death, making it perhaps his last publication.",
     "mathContext": "Egyptian fractions date to ancient Egypt; this problem adds a modern constraint on prime factorization of denominators.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Egyptian fractions",
       "semiprimes",
@@ -29,7 +29,7 @@
     "title": "Products of k Distinct Primes",
     "content": "**isProductOfKDistinctPrimes(n, k)**: A natural number n is a product of exactly k distinct primes if:\n- ω(n) = k (number of distinct prime divisors)\n- Ω(n) = k (total number of prime factors with multiplicity)\n\nThe condition ω = Ω ensures each prime appears exactly once (no repeated factors).\n\n**Examples for k=2**: 6=2×3, 10=2×5, 14=2×7, 15=3×5, 21=3×7, 35=5×7\n**Non-examples**: 4=2², 12=2²×3 (repeated factors)",
     "mathContext": "Uses Mathlib's ArithmeticFunction.cardDistinctFactors (ω) and cardFactors (Ω) to formalize the constraint.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "omega function",
       "Omega function",
@@ -66,7 +66,7 @@
     "title": "The Main Open Conjecture",
     "content": "**erdos_306_conjecture**: Every positive rational q with Squarefree(q.den) can be expressed as an Egyptian fraction where each denominator is a product of exactly 2 distinct primes.\n\n```lean\ndef erdos_306_conjecture : Prop :=\n  ∀ q : ℚ, 0 < q → Squarefree q.den →\n    ∃ k : ℕ, ∃ repr : EgyptianRepr k,\n      isTwoPrimeRepr repr ∧ repr.sum = q\n```\n\nThis remains **OPEN** - neither proved nor disproved.",
     "mathContext": "The squarefree denominator condition is natural since every reduced fraction has this property.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Squarefree",
       "Rat.den",
@@ -84,7 +84,7 @@
     "title": "Butler-Erdős-Graham Theorem",
     "content": "**butler_erdos_graham_theorem**: Every positive integer can be expressed as an Egyptian fraction where each denominator is a product of exactly 3 distinct primes.\n\n```lean\naxiom butler_erdos_graham_theorem :\n  ∀ m : ℕ, 0 < m →\n    ∃ k : ℕ, k > 0 ∧ ∃ repr : EgyptianRepr k,\n      isThreePrimeRepr repr ∧ repr.sum = m\n```\n\nThis was proved by Butler, Erdős, and Graham in their 2015 paper, appearing 19 years after Erdős's death.",
     "mathContext": "The 3-prime case is easier than 2-prime because products of 3 distinct primes are denser among the integers.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "posthumous publication",
       "density arguments",

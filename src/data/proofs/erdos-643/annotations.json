@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #643** asks about hypergraphs and 'crossed pairs'.\n\nGiven a t-uniform hypergraph, find the minimum number of edges f(n;t) that forces four edges A,B,C,D satisfying:\n- A ∪ B = C ∪ D\n- A ∩ B = C ∩ D = ∅\n\nThe conjecture: f(n;t) = (1+o(1))·C(n,t-1) for t ≥ 3.",
     "mathContext": "f(n;t) = min{m : every t-uniform H with m edges contains a crossed pair}",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "erdos",
       "hypergraphs",
@@ -28,7 +28,7 @@
     "title": "Hypergraph Definitions",
     "content": "**Hypergraph V** is defined as `Set (Finset V)` - a collection of subsets of vertices.\n\n**IsUniform H t** holds if all edges have exactly t vertices.\n\n**edgeCount H** is the number of edges (using Set.ncard for cardinality).",
     "mathContext": "A t-uniform hypergraph is a collection of t-element subsets of a vertex set.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "finset",
       "set",
@@ -46,7 +46,7 @@
     "title": "Crossed Pair Configuration",
     "content": "**IsCrossedPair A B C D** holds when:\n1. A ∪ B = C ∪ D (same union)\n2. A ∩ B = ∅ (first pair disjoint)\n3. C ∩ D = ∅ (second pair disjoint)\n4. {A,B} ≠ {C,D} (different pairing)\n\nThis is the forbidden configuration we're trying to force.",
     "mathContext": "Four edges partition the same 2t-element set in two different ways.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "partition",
       "disjoint",
@@ -64,7 +64,7 @@
     "title": "The Extremal Function",
     "content": "**f(n,t)** is defined as the minimum m such that any t-uniform hypergraph on n vertices with at least m edges must contain a crossed pair.\n\nWe use Nat.find to select the least such m, with existence proven by noting that the total number of t-subsets is finite.",
     "mathContext": "f(n,t) = min{m : ∀H t-uniform on n vertices, |H| ≥ m → HasCrossedPair H}",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Nat.find",
       "extremal",
@@ -82,7 +82,7 @@
     "title": "Case t = 2: Connection to C4",
     "content": "**For graphs (t=2)**, a crossed pair is essentially a 4-cycle!\n\nThe four 2-element edges form an alternating path v1-v2-v3-v4-v1.\n\nThe **Kovari-Sos-Turan theorem** gives f(n,2) = O(n^{3/2}), connecting this to classical extremal graph theory.",
     "mathContext": "C4-free graphs have at most (1/2 + o(1))n^{3/2} edges.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "cycle",
       "kovari-sos-turan",
@@ -100,7 +100,7 @@
     "title": "Pikhurko-Verstrate Bound",
     "content": "**Pikhurko-Verstrate (2009)** proved that for 3-uniform hypergraphs:\n\nf(n,3) <= (13/9)*C(n,2)\n\nThis is the best known upper bound for the 3-uniform case and represents significant progress toward the conjecture.",
     "mathContext": "f(n,3) <= (13/9)*(n choose 2) for all n >= 3",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "upper-bound",
       "3-uniform",
@@ -136,7 +136,7 @@
     "title": "The Main Conjecture",
     "content": "**Erdos Problem #643** (OPEN): For t >= 3,\n\nlim_{n->inf} f(n,t) / C(n,t-1) = 1\n\nEquivalently, f(n,t) = (1 + o(1))*C(n,t-1).\n\nThis would show sunflower constructions are asymptotically optimal.",
     "mathContext": "Erdos643Conjecture := forall t>=3, Tendsto (fun n => f(n,t)/C(n,t-1)) atTop (nhds 1)",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "asymptotic",
       "tendsto",
@@ -154,7 +154,7 @@
     "title": "Sunflower Construction",
     "content": "**SunflowerHypergraph** is the key construction for lower bounds.\n\nAll edges share a common (t-1)-element **core**.\nEach edge adds one unique element from the **petals** set.\n\nThis gives approximately C(n-1,t-1) edges with no crossed pairs.",
     "mathContext": "Edges have form core U {p} for p in petals, where |core| = t-1.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "sunflower",
       "construction",
@@ -172,7 +172,7 @@
     "title": "Sunflowers Have No Crossed Pairs",
     "content": "**Key Insight**: A sunflower cannot contain crossed pairs!\n\n**Proof sketch**: Any two edges in a sunflower intersect in the core. For a crossed pair, we need A cap B = empty. But since t >= 2, the core has size >= 1, so any two edges share at least one vertex.\n\nThis contradiction shows sunflowers are crossed-pair-free.",
     "mathContext": "forall A,B in Sunflower: A cap B contains core != empty",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "contradiction",
       "intersection",

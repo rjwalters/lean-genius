@@ -2,109 +2,212 @@
   {
     "id": "ann-e149-overview",
     "proofId": "erdos-149",
-    "range": { "startLine": 1, "endLine": 29 },
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
     "type": "context",
     "title": "Problem Overview: Strong Chromatic Index",
     "content": "Erdős Problem #149 is the Erdős-Nešetřil conjecture (1985): for any graph $G$ with maximum degree $\\Delta$, is $\\chi'_s(G) \\leq \\frac{5}{4}\\Delta^2$? The strong chromatic index $\\chi'_s(G)$ is the minimum number of colors needed to color edges so that edges within distance 2 in the line graph receive different colors. The blow-up of $C_5$ (replacing each vertex with $\\Delta/2$ copies) achieves exactly $\\frac{5}{4}\\Delta^2$, so the conjecture is tight if true. The best known bound is $1.772\\Delta^2$ (Hurley-de Joannis de Verclos-Kang, 2022). The formalization imports `SimpleGraph.Basic`, `Nat.Basic`, `Finset.Basic`, and `Tactic`.",
     "mathContext": "$\\chi'_s(G) = \\min\\{k : E(G) \\text{ can be } k\\text{-colored with edges at distance } \\leq 2 \\text{ getting distinct colors}\\}$. Conjecture: $\\chi'_s(G) \\leq \\frac{5}{4}\\Delta(G)^2$.",
-    "significance": "critical",
-    "relatedConcepts": ["strong edge coloring", "chromatic index", "maximum degree", "line graph"],
-    "prerequisites": ["graph theory basics", "edge coloring", "SimpleGraph in Mathlib"]
+    "significance": "key",
+    "relatedConcepts": [
+      "strong edge coloring",
+      "chromatic index",
+      "maximum degree",
+      "line graph"
+    ],
+    "prerequisites": [
+      "graph theory basics",
+      "edge coloring",
+      "SimpleGraph in Mathlib"
+    ]
   },
   {
     "id": "ann-e149-defs",
     "proofId": "erdos-149",
-    "range": { "startLine": 31, "endLine": 57 },
+    "range": {
+      "startLine": 31,
+      "endLine": 57
+    },
     "type": "definition",
     "title": "Core Definitions: Max Degree, Distance-2 Edges, Strong Coloring",
     "content": "Four key definitions: (1) `maxDegree G = Finset.sup Finset.univ (fun v => G.degree v)` — the maximum vertex degree. (2) `edgesAtDistance2 G e₁ e₂` — two distinct edges sharing a vertex or both touching a common vertex (simplified; the full definition involves adjacency in $L(G)^2$). (3) `StrongEdgeColoring G` — a structure with a coloring function `color : G.edgeSet → ℕ` and a proof that distance-$\\leq 2$ edges get distinct colors. (4) `strongChromaticIndex G = sInf {k | ∃ c, ∀ e, c.color e < k}` — the minimum number of colors.",
     "mathContext": "$\\Delta(G) = \\max_{v \\in V} \\deg(v)$. Edges $e_1, e_2$ are at distance $\\leq 2$ iff they share a vertex or $\\exists v$ adjacent to both. $\\chi'_s(G) = \\inf\\{k : \\exists \\text{strong } k\\text{-edge-coloring}\\}$.",
     "significance": "key",
-    "relatedConcepts": ["maximum degree", "Finset.sup", "edge distance", "sInf", "Sym2"],
-    "prerequisites": ["SimpleGraph.degree", "Finset supremum", "infimum in ℕ"]
+    "relatedConcepts": [
+      "maximum degree",
+      "Finset.sup",
+      "edge distance",
+      "sInf",
+      "Sym2"
+    ],
+    "prerequisites": [
+      "SimpleGraph.degree",
+      "Finset supremum",
+      "infimum in ℕ"
+    ]
   },
   {
     "id": "ann-e149-conjecture",
     "proofId": "erdos-149",
-    "range": { "startLine": 59, "endLine": 82 },
+    "range": {
+      "startLine": 59,
+      "endLine": 82
+    },
     "type": "definition",
     "title": "The Erdős-Nešetřil Conjecture and C₅ Blow-up Tightness",
     "content": "The conjecture `ErdosNesetrilConjecture` states $\\chi'_s(G) \\leq \\frac{5}{4}\\Delta^2$ universally (quantified over all types, Fintype, DecidableEq instances, and graphs). Two tightness axioms: (1) `conjecture_is_tight` — for every $\\Delta \\geq 2$, a graph achieving exactly $\\frac{5}{4}\\Delta^2$ exists. (2) `c5_blowup_construction` — the explicit construction for even $\\Delta$: replace each vertex of the 5-cycle $C_5$ with $\\Delta/2$ independent copies, connecting copies of adjacent vertices completely. This yields $\\frac{5}{2}\\Delta$ vertices, max degree $\\Delta$, and strong chromatic index $\\frac{5}{4}\\Delta^2$.",
     "mathContext": "Conjecture: $\\forall G,\\, \\chi'_s(G) \\leq \\frac{5}{4}\\Delta(G)^2$. Tight: $C_5[K_{\\Delta/2}]$ has $\\chi'_s = \\frac{5}{4}\\Delta^2$. The $C_5$ blow-up has $5 \\cdot \\binom{\\Delta/2}{1}^2 = \\frac{5}{4}\\Delta^2$ edges at maximum mutual distance, forming a clique in $L(G)^2$.",
     "significance": "core",
-    "relatedConcepts": ["blow-up graph", "cycle graph C₅", "tight bound", "extremal graph"],
-    "prerequisites": ["graph products", "Kneser/blow-up constructions", "rational arithmetic in Lean"]
+    "relatedConcepts": [
+      "blow-up graph",
+      "cycle graph C₅",
+      "tight bound",
+      "extremal graph"
+    ],
+    "prerequisites": [
+      "graph products",
+      "Kneser/blow-up constructions",
+      "rational arithmetic in Lean"
+    ]
   },
   {
     "id": "ann-e149-bounds",
     "proofId": "erdos-149",
-    "range": { "startLine": 84, "endLine": 122 },
+    "range": {
+      "startLine": 84,
+      "endLine": 122
+    },
     "type": "axiom",
     "title": "Progress History: From 2Δ² to 1.772Δ²",
     "content": "Five upper bounds axiomatized in chronological order: (1) **Trivial:** $\\chi'_s(G) \\leq 2\\Delta^2 - 2\\Delta + 1$ — each edge has at most $2(\\Delta - 1)$ neighbors at each endpoint. (2) **Molloy-Reed (1997):** $1.998\\Delta^2$ for large $\\Delta$ — first to break the factor-2 barrier using the Lovász Local Lemma. (3) **Bruhn-Joos (2018):** $1.93\\Delta^2$ — entropy compression method. (4) **Bonamy-Perrett-Postle (2022):** $1.835\\Delta^2$ — refined probabilistic approach. (5) **Hurley-de Joannis de Verclos-Kang (2022):** $1.772\\Delta^2$ — current best, using the cluster expansion method. The theorem `current_gap` is **proved in Lean** by `norm_num`: $1.772 - \\frac{5}{4} = 0.522$.",
     "mathContext": "Trivial: $\\chi'_s \\leq 2\\Delta^2 - 2\\Delta + 1$. Best: $\\chi'_s \\leq 1.772\\Delta^2$ for $\\Delta \\geq \\Delta_0$. Gap: $1.772 - 1.25 = 0.522$.",
     "significance": "core",
-    "relatedConcepts": ["Lovász Local Lemma", "entropy compression", "cluster expansion", "probabilistic method"],
-    "prerequisites": ["probabilistic combinatorics", "asymptotic bounds", "rational arithmetic"]
+    "relatedConcepts": [
+      "Lovász Local Lemma",
+      "entropy compression",
+      "cluster expansion",
+      "probabilistic method"
+    ],
+    "prerequisites": [
+      "probabilistic combinatorics",
+      "asymptotic bounds",
+      "rational arithmetic"
+    ]
   },
   {
     "id": "ann-e149-special",
     "proofId": "erdos-149",
-    "range": { "startLine": 124, "endLine": 144 },
+    "range": {
+      "startLine": 124,
+      "endLine": 144
+    },
     "type": "axiom",
     "title": "Special Graph Classes: C₄-free and Bipartite",
     "content": "Better bounds exist for restricted graph families: (1) **Mahdian:** For $C_4$-free graphs, $\\chi'_s(G) \\leq (2 + o(1))\\Delta^2/\\log \\Delta$. The absence of 4-cycles limits the local density around edges, yielding a logarithmic improvement. (2) **Bipartite graphs:** The conjecture holds with a constant $c < \\frac{5}{4}$, axiomatized without specifying the exact value. These results suggest that the difficulty lies in dense local structures.",
     "mathContext": "$C_4$-free: $\\chi'_s(G) \\leq (2 + \\varepsilon) \\cdot \\Delta^2 / \\log \\Delta$ for $\\Delta \\geq \\Delta_0(\\varepsilon)$. Bipartite: $\\chi'_s(G) \\leq c \\cdot \\Delta^2$ with $c < 5/4$.",
     "significance": "supporting",
-    "relatedConcepts": ["forbidden subgraphs", "girth conditions", "bipartite graphs", "logarithmic improvements"],
-    "prerequisites": ["graph classes", "C₄-free graphs", "bipartiteness"]
+    "relatedConcepts": [
+      "forbidden subgraphs",
+      "girth conditions",
+      "bipartite graphs",
+      "logarithmic improvements"
+    ],
+    "prerequisites": [
+      "graph classes",
+      "C₄-free graphs",
+      "bipartiteness"
+    ]
   },
   {
     "id": "ann-e149-clique",
     "proofId": "erdos-149",
-    "range": { "startLine": 146, "endLine": 166 },
+    "range": {
+      "startLine": 146,
+      "endLine": 166
+    },
     "type": "axiom",
     "title": "Clique Number of L(G)²: A Weaker Problem",
     "content": "Since $\\chi(H) \\geq \\omega(H)$ for any graph $H$, bounding the clique number $\\omega(L(G)^2)$ is a necessary condition for the conjecture. This weaker problem has seen progress: **Śleszyńska-Nowak (2015):** $\\omega(L(G)^2) \\leq \\frac{3}{2}\\Delta^2$. **Faron-Postle (2019):** $\\omega(L(G)^2) \\leq \\frac{4}{3}\\Delta^2$. Note that `cliqueNumber_LineSquare` is introduced as an axiom (not a definition), and `clique_le_chromatic` axiomatizes $\\omega \\leq \\chi'_s$.",
     "mathContext": "$\\omega(L(G)^2) \\leq \\chi'_s(G)$ since $\\chi(H) \\geq \\omega(H)$. Best bound: $\\omega(L(G)^2) \\leq \\frac{4}{3}\\Delta^2$. The conjecture $\\omega \\leq \\frac{5}{4}\\Delta^2$ is open in general.",
     "significance": "key",
-    "relatedConcepts": ["clique number", "line graph", "graph square", "chromatic-clique gap"],
-    "prerequisites": ["graph coloring basics", "clique-chromatic inequality"]
+    "relatedConcepts": [
+      "clique number",
+      "line graph",
+      "graph square",
+      "chromatic-clique gap"
+    ],
+    "prerequisites": [
+      "graph coloring basics",
+      "clique-chromatic inequality"
+    ]
   },
   {
     "id": "ann-e149-independent",
     "proofId": "erdos-149",
-    "range": { "startLine": 168, "endLine": 183 },
+    "range": {
+      "startLine": 168,
+      "endLine": 183
+    },
     "type": "axiom",
     "title": "Strongly Independent Edge Pairs: Chung-Gyárfás-Tuza-Trotter",
     "content": "Two edges are **strongly independent** if they are not at distance $\\leq 2$: they share no vertex and no vertex of one is adjacent to a vertex of the other. `StronglyIndependentEdges` is defined as the negation of `edgesAtDistance2`. **Chung-Gyárfás-Tuza-Trotter (1990):** if $|E(G)| \\geq \\frac{5}{4}\\Delta^2$, then $G$ has two strongly independent edges. This is a weaker version of the conjecture: if the conjecture's bound on colors is right, then certainly there are pairs of non-conflicting edges.",
     "mathContext": "Edges $e_1, e_2$ are strongly independent iff $\\text{dist}_{L(G)}(e_1, e_2) > 2$. If $|E| \\geq \\frac{5}{4}\\Delta^2$, $\\exists$ strongly independent pair.",
     "significance": "supporting",
-    "relatedConcepts": ["independent sets", "edge independence", "Ramsey-type results"],
-    "prerequisites": ["edge distance", "graph density"]
+    "relatedConcepts": [
+      "independent sets",
+      "edge independence",
+      "Ramsey-type results"
+    ],
+    "prerequisites": [
+      "edge distance",
+      "graph density"
+    ]
   },
   {
     "id": "ann-e149-matchings",
     "proofId": "erdos-149",
-    "range": { "startLine": 185, "endLine": 199 },
+    "range": {
+      "startLine": 185,
+      "endLine": 199
+    },
     "type": "definition",
     "title": "Induced Matchings: Partition Characterization of χ'_s",
     "content": "An **induced matching** $M$ is a set of edges that are pairwise strongly independent — forming a matching where no two edges' endpoints are connected. `IsInducedMatching G M` requires all pairs in $M$ to be `StronglyIndependentEdges`. The axiom `strong_chromatic_eq_induced_matchings` states $\\chi'_s(G)$ equals the minimum number of induced matchings partitioning $E(G)$. This equivalence is fundamental: strong edge coloring = partitioning edges into induced matchings.",
     "mathContext": "$\\chi'_s(G) = \\min\\{k : E(G) = M_1 \\sqcup \\cdots \\sqcup M_k,\\, \\text{each } M_i \\text{ an induced matching}\\}$.",
     "significance": "key",
-    "relatedConcepts": ["induced matching", "edge partition", "matching theory", "chromatic number"],
-    "prerequisites": ["matching theory", "graph partitioning"]
+    "relatedConcepts": [
+      "induced matching",
+      "edge partition",
+      "matching theory",
+      "chromatic number"
+    ],
+    "prerequisites": [
+      "matching theory",
+      "graph partitioning"
+    ]
   },
   {
     "id": "ann-e149-summary",
     "proofId": "erdos-149",
-    "range": { "startLine": 201, "endLine": 217 },
+    "range": {
+      "startLine": 201,
+      "endLine": 217
+    },
     "type": "theorem",
     "title": "Summary Theorem: Best Bound and Tightness",
     "content": "The main theorem `erdos_149_summary` combines two results: (1) `hurley_joannis_kang_2022` — the current best bound $\\chi'_s(G) \\leq 1.772\\Delta^2$ for large $\\Delta$, and (2) `conjecture_is_tight` — for every $\\Delta \\geq 2$, graphs achieving exactly $\\frac{5}{4}\\Delta^2$ exist. Proved by `exact ⟨hurley_joannis_kang_2022, conjecture_is_tight⟩`. Together these bound the problem: $\\frac{5}{4}\\Delta^2 \\leq \\chi'_s(G_{\\text{worst}}) \\leq 1.772\\Delta^2$.",
     "mathContext": "$\\frac{5}{4}\\Delta^2 \\leq \\max_G \\chi'_s(G) \\leq 1.772\\Delta^2$ for large $\\Delta$. Gap: $0.522\\Delta^2$.",
     "significance": "core",
-    "relatedConcepts": ["open problems in graph theory", "extremal bounds", "state of the art"],
-    "prerequisites": ["Hurley et al. 2022", "C₅ blow-up construction"]
+    "relatedConcepts": [
+      "open problems in graph theory",
+      "extremal bounds",
+      "state of the art"
+    ],
+    "prerequisites": [
+      "Hurley et al. 2022",
+      "C₅ blow-up construction"
+    ]
   }
 ]

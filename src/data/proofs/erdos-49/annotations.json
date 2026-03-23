@@ -2,133 +2,247 @@
   {
     "id": "ann-49-imports",
     "proofId": "erdos-49",
-    "range": { "startLine": 14, "endLine": 18 },
+    "range": {
+      "startLine": 14,
+      "endLine": 18
+    },
     "type": "concept",
     "title": "Imports",
     "content": "Imports Euler's totient function from Mathlib, prime number basics, finite set operations and cardinality, and general tactics.",
     "mathContext": "Uses `Nat.totient` ($\\varphi(n) = |\\{k \\leq n : \\gcd(k,n) = 1\\}|$), `Nat.Prime`, `Finset.card`, and `Finset.Icc` for interval sets $\\{a, \\ldots, b\\}$.",
     "significance": "supporting",
-    "relatedConcepts": ["Euler totient function", "prime numbers", "finite sets"],
-    "prerequisites": ["Lean 4 imports", "Mathlib number theory"]
+    "relatedConcepts": [
+      "Euler totient function",
+      "prime numbers",
+      "finite sets"
+    ],
+    "prerequisites": [
+      "Lean 4 imports",
+      "Mathlib number theory"
+    ]
   },
   {
     "id": "ann-49-inc-totient",
     "proofId": "erdos-49",
-    "range": { "startLine": 24, "endLine": 25 },
+    "range": {
+      "startLine": 24,
+      "endLine": 25
+    },
     "type": "definition",
     "title": "Increasing Totient Set",
     "content": "IsIncreasingTotientSet A holds when for all a, b ∈ A with a < b, φ(a) < φ(b). This means the map a ↦ φ(a) is strictly order-preserving on A.",
     "mathContext": "$\\text{IsIncreasingTotientSet}(A) :\\equiv \\forall a, b \\in A,\\; a < b \\implies \\varphi(a) < \\varphi(b)$. Equivalently, $\\varphi|_A$ is a strictly increasing function, making $A$ an antichain-free subset under the 'same totient' equivalence.",
-    "significance": "critical",
-    "relatedConcepts": ["strictly increasing function", "order-preserving map", "Euler totient"],
-    "prerequisites": ["Nat.totient", "Finset membership"]
+    "significance": "key",
+    "relatedConcepts": [
+      "strictly increasing function",
+      "order-preserving map",
+      "Euler totient"
+    ],
+    "prerequisites": [
+      "Nat.totient",
+      "Finset membership"
+    ]
   },
   {
     "id": "ann-49-max-size",
     "proofId": "erdos-49",
-    "range": { "startLine": 28, "endLine": 31 },
+    "range": {
+      "startLine": 28,
+      "endLine": 31
+    },
     "type": "definition",
     "title": "Maximum Increasing Totient Set Size",
     "content": "maxIncTotientSize N is the maximum cardinality of an increasing totient set contained in {1,…,N}. Computed by filtering the powerset of Icc 1 N for the increasing totient property and taking the supremum of cardinalities.",
     "mathContext": "$\\text{maxIncTotientSize}(N) = \\max\\{|A| : A \\subseteq \\{1, \\ldots, N\\},\\; \\text{IsIncreasingTotientSet}(A)\\}$. This is a finite optimization problem since $\\{1,\\ldots,N\\}$ is finite.",
-    "significance": "critical",
-    "relatedConcepts": ["extremal set theory", "longest increasing subsequence", "finite optimization"],
-    "prerequisites": ["IsIncreasingTotientSet", "Finset.powerset", "Finset.sup"]
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal set theory",
+      "longest increasing subsequence",
+      "finite optimization"
+    ],
+    "prerequisites": [
+      "IsIncreasingTotientSet",
+      "Finset.powerset",
+      "Finset.sup"
+    ]
   },
   {
     "id": "ann-49-primecounting",
     "proofId": "erdos-49",
-    "range": { "startLine": 36, "endLine": 37 },
+    "range": {
+      "startLine": 36,
+      "endLine": 37
+    },
     "type": "definition",
     "title": "Prime Counting Function",
     "content": "π(N) counts the number of primes in {1,…,N}. By the Prime Number Theorem, π(N) ~ N/ln N.",
     "mathContext": "$\\pi(N) = |\\{p \\in \\{1,\\ldots,N\\} : p \\text{ prime}\\}|$. PNT: $\\pi(N) \\sim N/\\ln N$, so $\\pi(N) = o(N)$ — primes have density zero.",
     "significance": "key",
-    "relatedConcepts": ["prime counting function", "Prime Number Theorem", "prime density"],
-    "prerequisites": ["Nat.Prime", "Finset.filter", "Finset.card"]
+    "relatedConcepts": [
+      "prime counting function",
+      "Prime Number Theorem",
+      "prime density"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Finset.filter",
+      "Finset.card"
+    ]
   },
   {
     "id": "ann-49-primes-inc",
     "proofId": "erdos-49",
-    "range": { "startLine": 43, "endLine": 44 },
+    "range": {
+      "startLine": 43,
+      "endLine": 44
+    },
     "type": "theorem",
     "title": "Primes Form Increasing Totient Set",
     "content": "The set of primes in {1,…,N} is an increasing totient set. Since φ(p) = p-1 for primes and p ↦ p-1 is strictly increasing, the totient values are automatically ordered.",
     "mathContext": "For primes $p < q$: $\\varphi(p) = p - 1 < q - 1 = \\varphi(q)$. Hence $\\{p \\leq N : p \\text{ prime}\\}$ satisfies `IsIncreasingTotientSet`.",
     "significance": "key",
-    "relatedConcepts": ["totient of primes", "strictly increasing", "prime ordering"],
-    "prerequisites": ["IsIncreasingTotientSet", "totient_prime", "Nat.Prime"]
+    "relatedConcepts": [
+      "totient of primes",
+      "strictly increasing",
+      "prime ordering"
+    ],
+    "prerequisites": [
+      "IsIncreasingTotientSet",
+      "totient_prime",
+      "Nat.Prime"
+    ]
   },
   {
     "id": "ann-49-lower",
     "proofId": "erdos-49",
-    "range": { "startLine": 47, "endLine": 48 },
+    "range": {
+      "startLine": 47,
+      "endLine": 48
+    },
     "type": "theorem",
     "title": "Lower Bound: maxIncTotientSize ≥ π(N)",
     "content": "Since primes form an increasing totient set of size π(N), the maximum is at least π(N). This is the matching lower bound for Tao's upper bound.",
     "mathContext": "$\\text{maxIncTotientSize}(N) \\geq \\pi(N)$. Combined with Tao's $\\leq (1+o(1))\\pi(N)$, this gives $\\text{maxIncTotientSize}(N) \\sim \\pi(N)$.",
     "significance": "key",
-    "relatedConcepts": ["extremal lower bound", "witness construction", "primes as extremizers"],
-    "prerequisites": ["primes_increasing_totient", "primeCounting"]
+    "relatedConcepts": [
+      "extremal lower bound",
+      "witness construction",
+      "primes as extremizers"
+    ],
+    "prerequisites": [
+      "primes_increasing_totient",
+      "primeCounting"
+    ]
   },
   {
     "id": "ann-49-tao",
     "proofId": "erdos-49",
-    "range": { "startLine": 57, "endLine": 60 },
+    "range": {
+      "startLine": 57,
+      "endLine": 60
+    },
     "type": "theorem",
     "title": "Tao's Theorem (2023)",
     "content": "For all ε > 0, there exists N₀ such that for N ≥ N₀, maxIncTotientSize(N) ≤ (1+ε)π(N). This resolves Erdős Problem 49, proving primes are asymptotically optimal.",
     "mathContext": "Tao (2023): $\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0: \\text{maxIncTotientSize}(N) \\leq (1+\\varepsilon)\\pi(N)$. The precise bound: $|A| \\leq (1 + O((\\log\\log x)^5/\\log x))\\pi(x)$.",
-    "significance": "critical",
-    "relatedConcepts": ["Selberg sieve", "multiplicative number theory", "smooth numbers", "totient distribution"],
-    "prerequisites": ["maxIncTotientSize", "primeCounting", "asymptotic analysis"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Selberg sieve",
+      "multiplicative number theory",
+      "smooth numbers",
+      "totient distribution"
+    ],
+    "prerequisites": [
+      "maxIncTotientSize",
+      "primeCounting",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-49-problem",
     "proofId": "erdos-49",
-    "range": { "startLine": 66, "endLine": 69 },
+    "range": {
+      "startLine": 66,
+      "endLine": 69
+    },
     "type": "definition",
     "title": "Erdős Problem 49 Statement",
     "content": "The formal statement of Erdős Problem 49: the maximum increasing totient set has size asymptotically π(N). Defined as a Prop for clarity, equivalent to Tao's theorem.",
     "mathContext": "$\\text{ErdosProblem49} :\\equiv \\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0: \\text{maxIncTotientSize}(N) \\leq (1+\\varepsilon)\\pi(N)$.",
-    "significance": "critical",
-    "relatedConcepts": ["asymptotic equivalence", "Erdős problems", "extremal number theory"],
-    "prerequisites": ["maxIncTotientSize", "primeCounting"]
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic equivalence",
+      "Erdős problems",
+      "extremal number theory"
+    ],
+    "prerequisites": [
+      "maxIncTotientSize",
+      "primeCounting"
+    ]
   },
   {
     "id": "ann-49-density",
     "proofId": "erdos-49",
-    "range": { "startLine": 75, "endLine": 78 },
+    "range": {
+      "startLine": 75,
+      "endLine": 78
+    },
     "type": "theorem",
     "title": "Density Zero Corollary",
     "content": "Any increasing totient set has density zero: maxIncTotientSize(N) = o(N). This follows from Tao's bound and the PNT since π(N) ~ N/ln N = o(N).",
     "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0: \\text{maxIncTotientSize}(N) \\leq \\varepsilon N$. Proof: by Tao, $\\leq (1+\\varepsilon)\\pi(N) \\leq (1+\\varepsilon) \\cdot \\frac{2N}{\\ln N} \\leq \\varepsilon' N$ for large $N$.",
     "significance": "key",
-    "relatedConcepts": ["natural density", "Prime Number Theorem", "asymptotic density zero"],
-    "prerequisites": ["tao_increasing_totient", "PNT"]
+    "relatedConcepts": [
+      "natural density",
+      "Prime Number Theorem",
+      "asymptotic density zero"
+    ],
+    "prerequisites": [
+      "tao_increasing_totient",
+      "PNT"
+    ]
   },
   {
     "id": "ann-49-totient-prime",
     "proofId": "erdos-49",
-    "range": { "startLine": 83, "endLine": 84 },
+    "range": {
+      "startLine": 83,
+      "endLine": 84
+    },
     "type": "theorem",
     "title": "Totient of Primes",
     "content": "For any prime p, φ(p) = p - 1. This is the fundamental identity that makes primes a natural increasing totient set: the totient is simply one less than the prime itself.",
     "mathContext": "$\\varphi(p) = p - 1$ for $p$ prime. This follows from the definition: all $k \\in \\{1, \\ldots, p-1\\}$ are coprime to $p$, so $\\varphi(p) = |\\{1, \\ldots, p-1\\}| = p-1$.",
     "significance": "supporting",
-    "relatedConcepts": ["Euler totient", "prime characterization", "coprimality"],
-    "prerequisites": ["Nat.totient", "Nat.Prime"]
+    "relatedConcepts": [
+      "Euler totient",
+      "prime characterization",
+      "coprimality"
+    ],
+    "prerequisites": [
+      "Nat.totient",
+      "Nat.Prime"
+    ]
   },
   {
     "id": "ann-49-totient-le",
     "proofId": "erdos-49",
-    "range": { "startLine": 87, "endLine": 87 },
+    "range": {
+      "startLine": 87,
+      "endLine": 87
+    },
     "type": "theorem",
     "title": "Totient Upper Bound",
     "content": "φ(n) ≤ n for all n. A basic inequality following from the definition: at most n residues can be coprime to n.",
     "mathContext": "$\\varphi(n) \\leq n$ for all $n \\geq 0$. Equality holds only for $n \\leq 1$. For $n \\geq 2$, $\\varphi(n) \\leq n - 1$ since $n$ is not coprime to itself.",
     "significance": "supporting",
-    "relatedConcepts": ["totient bounds", "trivial inequality", "coprime counting"],
-    "prerequisites": ["Nat.totient"]
+    "relatedConcepts": [
+      "totient bounds",
+      "trivial inequality",
+      "coprime counting"
+    ],
+    "prerequisites": [
+      "Nat.totient"
+    ]
   }
 ]

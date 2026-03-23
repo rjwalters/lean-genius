@@ -28,7 +28,7 @@
     "title": "Sidon Set Definition",
     "content": "A **Sidon set** (named after mathematician Simon Sidon) is a set where all pairwise sums are distinct. If you pick any two elements a ≤ b and c ≤ d from the set, and a + b = c + d, then a = c and b = d. This prevents 'collisions' like 1 + 6 = 2 + 5.",
     "mathContext": "Formally: A is Sidon if ∀ a,b,c,d ∈ A, a ≤ b, c ≤ d, a + b = c + d implies a = c and b = d. This is equivalent to requiring the sumset A + A has no repeated elements (except trivial ones).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "B₂ sequences",
       "sum-free sets",
@@ -64,7 +64,7 @@
     "title": "The Main Conjecture",
     "content": "**Erdős Problem #39** (OPEN, $500 prize): Does there exist an infinite Sidon set A such that for every ε > 0, the counting function satisfies A(N) ≥ C_ε · N^{1/2-ε} for all sufficiently large N? This would be optimal since √N growth is impossible.",
     "mathContext": "The statement uses big-Ω notation: A(N) = Ω(N^{1/2-ε}) for all ε > 0. This is formalized as: for all ε > 0, there exist C > 0 and N₀ such that A(N) ≥ C · N^{1/2-ε} for all N ≥ N₀.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open problem",
       "Erdős prizes",
@@ -82,7 +82,7 @@
     "title": "Erdős's Upper Bound",
     "content": "Erdős proved a fundamental limit: for any infinite Sidon set, the limit inferior of A(N)/√N equals zero. This means that while A(N) might occasionally approach √N, it cannot *stay* above c√N for any constant c. The target N^{1/2-ε} is thus the best we could hope for.",
     "mathContext": "Formally: liminf_{N→∞} A(N)/√N = 0. This follows from counting arguments on the sumset. If A(N) ≥ c√N for all large N, there would be too many sums in [1, 2N], leading to collisions.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "limit inferior",
       "upper bounds",
@@ -118,7 +118,7 @@
     "title": "Ruzsa's Construction (1998)",
     "content": "**Imre Ruzsa** achieved the current best construction: an infinite Sidon set with A(N) >> N^{√2-1} ≈ N^{0.414}. This broke the 1/3 barrier and earned $100 from Erdős. The construction uses algebraic techniques from finite fields.",
     "mathContext": "Ruzsa's approach: For prime p, consider {(a, a²) mod p : a ∈ F_p} in F_p × F_p. Lifting to integers and careful analysis gives growth N^{√2-1}. The exponent √2 - 1 ≈ 0.41421 arises from optimization.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "finite fields",
       "algebraic constructions",

@@ -2,133 +2,254 @@
   {
     "id": "ann-142-imports",
     "proofId": "erdos-142",
-    "range": { "startLine": 20, "endLine": 24 },
+    "range": {
+      "startLine": 20,
+      "endLine": 24
+    },
     "type": "concept",
     "title": "Imports and Dependencies",
     "content": "Imports Mathlib's core tactic library, `Finset` operations for finite set manipulation, natural number basics, and `Filter` theory. The formalization relies heavily on `Finset.range`, `Finset.filter`, `Finset.powerset`, and `Finset.sup` for defining arithmetic progressions and computing $r_k(N)$. Real number operations (`Real.exp`, `Real.sqrt`, `Real.log`) are used for the quantitative bounds.",
     "mathContext": "Uses `Finset.range k`, `Finset.image`, `Finset.powerset`, and `Finset.sup` for combinatorial definitions. Real-valued bounds use `Real.exp`, `Real.sqrt`, and `Real.log` from Mathlib.",
     "significance": "supporting",
-    "relatedConcepts": ["Finset", "Real", "Filter", "Mathlib tactics"],
-    "prerequisites": ["Lean 4", "Mathlib"]
+    "relatedConcepts": [
+      "Finset",
+      "Real",
+      "Filter",
+      "Mathlib tactics"
+    ],
+    "prerequisites": [
+      "Lean 4",
+      "Mathlib"
+    ]
   },
   {
     "id": "ann-142-arith-prog",
     "proofId": "erdos-142",
-    "range": { "startLine": 28, "endLine": 29 },
+    "range": {
+      "startLine": 28,
+      "endLine": 29
+    },
     "type": "definition",
     "title": "Arithmetic Progression as Finset",
     "content": "Defines an arithmetic progression of length $k$ starting at $a$ with common difference $d$ as $\\{a, a+d, a+2d, \\ldots, a+(k-1)d\\}$, implemented via `Finset.range k |>.image (fun i => a + i * d)`. This representation is natural for Lean's `Finset` library and enables subset checking via `⊆`.",
     "mathContext": "$\\text{arithProg}(a, d, k) = \\{a + id : 0 \\le i < k\\}$. For $d > 0$ and $k \\ge 3$, this is a non-trivial $k$-term AP.",
     "significance": "supporting",
-    "relatedConcepts": ["arithmetic progression", "Finset.image", "van der Waerden numbers"],
-    "prerequisites": ["Finset.range", "Finset.image"]
+    "relatedConcepts": [
+      "arithmetic progression",
+      "Finset.image",
+      "van der Waerden numbers"
+    ],
+    "prerequisites": [
+      "Finset.range",
+      "Finset.image"
+    ]
   },
   {
     "id": "ann-142-ap-free",
     "proofId": "erdos-142",
-    "range": { "startLine": 33, "endLine": 34 },
+    "range": {
+      "startLine": 33,
+      "endLine": 34
+    },
     "type": "definition",
     "title": "AP-$k$-Free Sets and $r_k(N)$",
     "content": "Two key definitions: (1) **IsAPFree** — a set $S \\subseteq \\{1,\\ldots,N\\}$ is AP-$k$-free if no $k$-term AP with positive common difference is contained in $S$; (2) **$r_k(N)$** — the maximum cardinality of an AP-$k$-free subset of $\\{1,\\ldots,N\\}$, computed as `Finset.sup` over the powerset filtered by `IsAPFree`. The noncomputability arises from the supremum over an exponentially large family.",
     "mathContext": "$r_k(N) = \\max\\{|S| : S \\subseteq [N],\\, S \\text{ contains no } k\\text{-AP}\\}$. For $k = 3$: $r_3(10) = 5$ (e.g., $\\{1,2,6,7,9\\}$). The function $r_k(N)/N \\to 0$ by Szemerédi's theorem.",
-    "significance": "critical",
-    "relatedConcepts": ["AP-free sets", "extremal combinatorics", "Szemerédi's theorem", "Finset.sup"],
-    "prerequisites": ["arithmetic progression", "Finset.powerset", "Finset.filter"]
+    "significance": "key",
+    "relatedConcepts": [
+      "AP-free sets",
+      "extremal combinatorics",
+      "Szemerédi's theorem",
+      "Finset.sup"
+    ],
+    "prerequisites": [
+      "arithmetic progression",
+      "Finset.powerset",
+      "Finset.filter"
+    ]
   },
   {
     "id": "ann-142-szemeredi",
     "proofId": "erdos-142",
-    "range": { "startLine": 47, "endLine": 48 },
+    "range": {
+      "startLine": 47,
+      "endLine": 48
+    },
     "type": "theorem",
     "title": "Szemerédi's Theorem: $r_k(N) = o(N)$",
     "content": "The foundational qualitative result: for every $k \\ge 3$, any subset of $\\{1,\\ldots,N\\}$ of positive density must contain a $k$-term AP. Equivalently, $r_k(N)/N \\to 0$ as $N \\to \\infty$. Proved by Szemerédi (1975) via a combinatorial regularity lemma. Alternative proofs: Furstenberg (1977, ergodic theory, multiple recurrence), Gowers (2001, Fourier analysis and uniformity norms), and hypergraph regularity (Gowers 2007, Nagle–Rödl–Schacht 2006). Axiomatized here since the full proof is extremely long.",
     "mathContext": "$\\forall k \\ge 3,\\, \\forall \\varepsilon > 0,\\, \\exists N_0 : \\forall N \\ge N_0,\\, r_k(N) \\le \\varepsilon N$. The original proof gives tower-type bounds on $N_0(k, \\varepsilon)$; Gowers's proof gives $N_0 \\le 2^{2^{\\varepsilon^{-c_k}}}$.",
-    "significance": "critical",
-    "relatedConcepts": ["Szemerédi regularity lemma", "Furstenberg correspondence", "Gowers uniformity norms", "density Hales-Jewett"],
-    "prerequisites": ["AP-free sets", "rk definition", "o-notation"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Szemerédi regularity lemma",
+      "Furstenberg correspondence",
+      "Gowers uniformity norms",
+      "density Hales-Jewett"
+    ],
+    "prerequisites": [
+      "AP-free sets",
+      "rk definition",
+      "o-notation"
+    ]
   },
   {
     "id": "ann-142-roth",
     "proofId": "erdos-142",
-    "range": { "startLine": 54, "endLine": 55 },
+    "range": {
+      "startLine": 54,
+      "endLine": 55
+    },
     "type": "theorem",
     "title": "Roth's Theorem: The $k = 3$ Case",
     "content": "Roth (1953) proved $r_3(N) = o(N)$ using Fourier analysis on $\\mathbb{Z}/N\\mathbb{Z}$ (the circle method). This was the first case of Szemerédi's theorem to be proved, preceding the general result by over two decades. Successive quantitative improvements: Heath-Brown and Szemerédi ($N/(\\log N)^c$), Bourgain ($N(\\log\\log N)^2/\\log N$), Sanders ($N/(\\log N)^{1-\\varepsilon}$), Bloom ($N/(\\log N)^{1+c}$), Bloom–Sisask, and finally Kelley–Meka.",
     "mathContext": "$r_3(N) = o(N)$. The Fourier-analytic proof decomposes the indicator function of $S$ into structured (major arc) and pseudorandom (minor arc) components, showing both contribute 3-APs when $|S|$ is large.",
     "significance": "key",
-    "relatedConcepts": ["Fourier analysis on finite groups", "circle method", "density increment", "Bloom–Sisask"],
-    "prerequisites": ["AP-free sets", "Szemerédi's theorem"]
+    "relatedConcepts": [
+      "Fourier analysis on finite groups",
+      "circle method",
+      "density increment",
+      "Bloom–Sisask"
+    ],
+    "prerequisites": [
+      "AP-free sets",
+      "Szemerédi's theorem"
+    ]
   },
   {
     "id": "ann-142-behrend",
     "proofId": "erdos-142",
-    "range": { "startLine": 61, "endLine": 63 },
+    "range": {
+      "startLine": 61,
+      "endLine": 63
+    },
     "type": "theorem",
     "title": "Behrend's Lower Bound: $r_3(N) \\ge N \\cdot e^{-C\\sqrt{\\log N}}$",
     "content": "Behrend (1946) constructed AP-3-free sets of size $N \\cdot \\exp(-C\\sqrt{\\log N})$ by embedding $\\{1,\\ldots,N\\}$ into a high-dimensional integer lattice and taking a sphere (which contains no 3-term AP since the midpoint of two points on a sphere lies interior). Elkin (2011) improved the leading constant by a $\\sqrt{\\log N}$ factor. Green and Wolf showed Behrend-type constructions are essentially optimal within their framework.",
     "mathContext": "$r_3(N) \\ge N \\cdot \\exp(-C\\sqrt{\\log N})$. The exponent $\\sqrt{\\log N}$ arises from optimizing the dimension $d \\approx \\sqrt{\\log N}$ in the lattice embedding. The gap from the upper bound $\\exp(-c(\\log N)^{1/12})$ is vast.",
-    "significance": "critical",
-    "relatedConcepts": ["Behrend construction", "sphere in lattice", "Salem–Spencer sets", "Elkin improvement"],
-    "prerequisites": ["AP-free sets", "exponential bounds"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Behrend construction",
+      "sphere in lattice",
+      "Salem–Spencer sets",
+      "Elkin improvement"
+    ],
+    "prerequisites": [
+      "AP-free sets",
+      "exponential bounds"
+    ]
   },
   {
     "id": "ann-142-kelley-meka",
     "proofId": "erdos-142",
-    "range": { "startLine": 69, "endLine": 71 },
+    "range": {
+      "startLine": 69,
+      "endLine": 71
+    },
     "type": "theorem",
     "title": "Kelley–Meka Upper Bound: $r_3(N) \\le N \\cdot e^{-c(\\log N)^{1/12}}$",
     "content": "Kelley and Meka (2023) proved the breakthrough upper bound $r_3(N) \\le N \\cdot \\exp(-c(\\log N)^{1/12})$, the first to achieve sub-polynomial density decay. Their proof uses a novel **spectral method**: instead of the traditional density-increment strategy, they show that AP-free sets must correlate with a structured set, then use a multiscale Fourier analysis. This improved on Bloom–Sisask (2020) by an exponential factor in the exponent.",
     "mathContext": "$r_3(N) \\le N \\cdot \\exp(-c(\\log N)^{1/12})$. The exponent $1/12$ is believed to be suboptimal; the conjectured truth is closer to $\\exp(-c(\\log N)^{1/2})$ (matching Behrend up to constants).",
-    "significance": "critical",
-    "relatedConcepts": ["Kelley–Meka theorem", "spectral method", "Bloom–Sisask", "density increment", "almost periodicity"],
-    "prerequisites": ["Roth's theorem", "Fourier analysis", "AP-free sets"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Kelley–Meka theorem",
+      "spectral method",
+      "Bloom–Sisask",
+      "density increment",
+      "almost periodicity"
+    ],
+    "prerequisites": [
+      "Roth's theorem",
+      "Fourier analysis",
+      "AP-free sets"
+    ]
   },
   {
     "id": "ann-142-erdos-5000",
     "proofId": "erdos-142",
-    "range": { "startLine": 78, "endLine": 80 },
+    "range": {
+      "startLine": 78,
+      "endLine": 80
+    },
     "type": "theorem",
     "title": "Erdős's $\\$5{,}000$ Sub-Question: $r_k(N) = o(N/\\log N)$",
     "content": "Erdős offered $\\$5{,}000$ for showing $r_k(N) = o(N/\\log N)$ for all $k \\ge 3$. For $k = 3$, this follows from Kelley–Meka's exponential-type bound, but for general $k \\ge 5$ it remains open. The axiom states the full generality. For $k = 4$, Green–Tao (2017) proved $r_4(N) \\le N/(\\log N)^{1+c}$, resolving the $k = 4$ case.",
     "mathContext": "$r_k(N) = o(N/\\log N)$ for all $k \\ge 3$. Known: $k = 3$ (Kelley–Meka 2023), $k = 4$ (Green–Tao 2017). Open: $k \\ge 5$ (best bound: Leng–Sah–Sawhney 2024).",
     "significance": "key",
-    "relatedConcepts": ["Erdős prizes", "logarithmic density", "quantitative Szemerédi"],
-    "prerequisites": ["Szemerédi's theorem", "rk definition"]
+    "relatedConcepts": [
+      "Erdős prizes",
+      "logarithmic density",
+      "quantitative Szemerédi"
+    ],
+    "prerequisites": [
+      "Szemerédi's theorem",
+      "rk definition"
+    ]
   },
   {
     "id": "ann-142-asymptotic",
     "proofId": "erdos-142",
-    "range": { "startLine": 88, "endLine": 91 },
+    "range": {
+      "startLine": 88,
+      "endLine": 91
+    },
     "type": "insight",
     "title": "The $\\$10{,}000$ Open Problem: Asymptotic Formula for $r_k(N)$",
     "content": "The central open problem: find an asymptotic formula $f_k(N) \\sim r_k(N)$ such that $r_k(N)/f_k(N) \\to 1$. Erdős called this 'probably unattackable at present' and offered $\\$10{,}000$ — his largest prize for a combinatorics problem. Even for $k = 3$, the correct order of magnitude is unknown: the Behrend lower bound $\\exp(-C\\sqrt{\\log N})$ and Kelley–Meka upper bound $\\exp(-c(\\log N)^{1/12})$ differ by an exponential factor in the exponent. For $k \\ge 5$, the situation is even more dire.",
     "mathContext": "$\\exists f_k : \\mathbb{N} \\to \\mathbb{R}_{>0}$ such that $r_k(N)/f_k(N) \\to 1$ as $N \\to \\infty$. The formalization uses the $\\varepsilon$-$\\delta$ characterization: $\\forall \\varepsilon > 0,\\, \\exists N_0,\\, \\forall N \\ge N_0 : |r_k(N)/f_k(N) - 1| < \\varepsilon$.",
-    "significance": "critical",
-    "relatedConcepts": ["asymptotic formula", "Erdős prizes", "density of AP-free sets", "inverse theorems"],
-    "prerequisites": ["rk definition", "Behrend bound", "Kelley–Meka bound"]
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic formula",
+      "Erdős prizes",
+      "density of AP-free sets",
+      "inverse theorems"
+    ],
+    "prerequisites": [
+      "rk definition",
+      "Behrend bound",
+      "Kelley–Meka bound"
+    ]
   },
   {
     "id": "ann-142-green-tao",
     "proofId": "erdos-142",
-    "range": { "startLine": 97, "endLine": 99 },
+    "range": {
+      "startLine": 97,
+      "endLine": 99
+    },
     "type": "theorem",
     "title": "Green–Tao Bound for $k = 4$",
     "content": "Green and Tao (2017) proved $r_4(N) \\le N/(\\log N)^{1+c}$ for some $c > 0$, using a density-increment argument combined with the arithmetic regularity lemma and inverse theorems for the $U^3$ norm. This resolves Erdős's $\\$5{,}000$ question for $k = 4$ specifically. For $k \\ge 5$, Leng–Sah–Sawhney (2024) obtained the best bounds using novel algebraic methods, but these do not yet reach $o(N/\\log N)$.",
     "mathContext": "$r_4(N) \\le N/(\\log N)^{1+c}$. The proof uses the $U^3$ inverse theorem: sets lacking 4-APs must correlate with a degree-2 polynomial phase, then a density increment is extracted.",
     "significance": "key",
-    "relatedConcepts": ["Green–Tao theorem", "Gowers uniformity norms", "U^3 inverse theorem", "density increment"],
-    "prerequisites": ["Szemerédi's theorem", "Gowers norms"]
+    "relatedConcepts": [
+      "Green–Tao theorem",
+      "Gowers uniformity norms",
+      "U^3 inverse theorem",
+      "density increment"
+    ],
+    "prerequisites": [
+      "Szemerédi's theorem",
+      "Gowers norms"
+    ]
   },
   {
     "id": "ann-142-trivial",
     "proofId": "erdos-142",
-    "range": { "startLine": 102, "endLine": 102 },
+    "range": {
+      "startLine": 102,
+      "endLine": 102
+    },
     "type": "theorem",
     "title": "Trivial Positivity: $r_k(N) \\ge 1$",
     "content": "For $N \\ge 1$, any singleton $\\{a\\} \\subseteq \\{1,\\ldots,N\\}$ is AP-$k$-free, so $r_k(N) \\ge 1$. This trivial lower bound ensures the ratio $r_k(N)/f_k(N)$ in the asymptotic formula is well-defined. Axiomatized for convenience.",
     "mathContext": "$r_k(N) \\ge 1$ for $N \\ge 1$. Any singleton set is vacuously AP-free since $k \\ge 3 > 1$.",
     "significance": "supporting",
-    "relatedConcepts": ["trivial bound", "positivity"],
-    "prerequisites": ["rk definition"]
+    "relatedConcepts": [
+      "trivial bound",
+      "positivity"
+    ],
+    "prerequisites": [
+      "rk definition"
+    ]
   }
 ]

@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #398** is the famous Brocard-Ramanujan conjecture: Are the only solutions to n! + 1 = m² when n = 4, 5, 7?\n\nThis is one of the oldest unsolved problems in number theory, dating to **Brocard (1876)** and independently posed by **Ramanujan**.",
     "mathContext": "The equation n! + 1 = m² asks when a factorial plus one is a perfect square. Only three solutions are known after 140+ years of searching.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Brocard's problem",
       "Ramanujan",
@@ -46,7 +46,7 @@
     "title": "Brown Numbers",
     "content": "A **Brown number** is a pair (n, m) satisfying n! + 1 = m². The definition `IsBrownNumber n m` formalizes this predicate.\n\nThe name comes from a 1974 paper connecting these pairs to the Brocard problem.",
     "mathContext": "The three known Brown numbers are:\n- (4, 5): 4! + 1 = 25 = 5²\n- (5, 11): 5! + 1 = 121 = 11²\n- (7, 71): 7! + 1 = 5041 = 71²",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Brocard problem",
       "perfect squares",
@@ -100,7 +100,7 @@
     "title": "The Brocard Set",
     "content": "**BrocardSet** is the set of all n such that n! + 1 is a perfect square.\n\nWe prove that {4, 5, 7} ⊆ BrocardSet, establishing that all known Brown numbers are in this set.",
     "mathContext": "The conjecture states BrocardSet = {4, 5, 7}, meaning these are the ONLY elements. We can only prove the inclusion, not equality.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "set builder notation",
       "subset relation",
@@ -118,7 +118,7 @@
     "title": "The Open Conjecture",
     "content": "**brocard_ramanujan_conjecture** states that BrocardSet = {4, 5, 7}.\n\nThis is the **OPEN** conjecture: no proof or disproof exists despite 140+ years of effort.\n\nErdős and Graham called it 'almost certainly true but intractable at present.'",
     "mathContext": "The conjecture is defined as a Prop (proposition) rather than proved. Its truth value is unknown.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open problem",
       "conjecture",
@@ -172,7 +172,7 @@
     "title": "Summary Theorem",
     "content": "**erdos_398_summary** combines the key verified results:\n\n1. The three known Brown numbers (4,5), (5,11), (7,71) are verified\n2. {4, 5, 7} ⊆ BrocardSet\n3. 4² < 4! (factorial dominates squares)\n\nThe proof uses exact ⟨brown_4_5, brown_5_11, brown_7_71, known_brocard_elements, factorial_dominates_4⟩.",
     "mathContext": "This summary captures what we CAN prove about the Brocard-Ramanujan problem: the known solutions are verified. The conjecture BrocardSet = {4, 5, 7} remains OPEN.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "summary theorem",
       "verified computation",

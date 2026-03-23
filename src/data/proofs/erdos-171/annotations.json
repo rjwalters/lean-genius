@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #171**: Unit Distance Chromatic Number\n\n**Question**: What is the chromatic number χ(ℝ²) of the unit distance graph?\n\n**Also known as**: The Hadwiger-Nelson problem\n\n**Status**: SOLVED (lower bound improved)\n\n**History**:\n- Nelson (1950): χ ≥ 4 (Moser spindle)\n- Isbell (1950): χ ≤ 7 (hexagonal tiling)\n- de Grey (2018): χ ≥ 5 (breakthrough!)\n\n**Current knowledge**: 5 ≤ χ(ℝ²) ≤ 7",
     "mathContext": "This is one of the most famous problems in combinatorial geometry. The 68-year gap between Nelson/Isbell's bounds and de Grey's improvement shows how difficult progress is.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "hadwiger-nelson",
       "chromatic-number",
@@ -82,7 +82,7 @@
     "title": "de Grey's Theorem (2018)",
     "content": "**axiom de_grey_graph**:\n  ∃ V : Finset ℝ², V.card < 2000 ∧\n  (∀ c : V → Fin 4, ∃ x y ∈ V, dist x y = 1 ∧ c x = c y)\n\nde Grey constructed a unit distance graph with ~1581 vertices that cannot be 4-colored.\n\n**theorem de_grey**: χ(ℝ²) ≥ 5\n  The first improvement to the lower bound in 68 years!\n\n**Note**: de_grey has a `sorry` - the full proof requires the massive graph construction.",
     "mathContext": "Aubrey de Grey's 2018 paper was a sensation. He found a 1581-vertex graph using computer search, later reduced to 553 vertices by Exoo-Ismailescu. The graph uses algebraic coordinates.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "de-grey-2018",
       "breakthrough",
@@ -172,7 +172,7 @@
     "title": "Summary and Status",
     "content": "**Erdős Problem #171: SOLVED** (lower bound improved)\n\n**Verified Theorems** (Aristotle):\n- clique_number_3 ✓: Equilateral triangle exists\n- no_4_clique ✓: No 4-clique in ℝ²\n\n**With Sorries**:\n- lower_bound_4: χ ≥ 4 (Moser spindle)\n- de_grey: χ ≥ 5 (de Grey 2018)\n\n**Key Results**:\n- 5 ≤ χ(ℝ²) ≤ 7\n- ω(unit distance graph) = 3\n- χ_f = 4\n\n**Remaining Open**: Is χ = 5, 6, or 7?",
     "mathContext": "The problem is considered 'solved' in the sense that the lower bound was improved from the 1950 value. However, determining the exact value remains open.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "problem-status",
       "solved",

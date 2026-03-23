@@ -10,7 +10,7 @@
     "title": "Problem Overview and Background",
     "content": "Header documentation for Erdős Problem #1176, providing the full problem statement and known results. This problem was posed by Erdős, Galvin, and Hajnal and concerns the interaction between edge colorings and vertex color classes on graphs with uncountable chromatic number. The key question asks whether, for any graph $G$ with $\\chi(G) = \\aleph_1$, one can color the edges with $\\aleph_1$ colors such that every proper countable vertex coloring has a color class meeting all edge color classes.",
     "mathContext": "Given a graph $G$ with $\\chi(G) = \\aleph_1$, does there exist an edge coloring $c : E(G) \\to \\aleph_1$ such that for every proper coloring $f : V(G) \\to \\mathbb{N}$, there exists $i \\in \\mathbb{N}$ with $c[E(f^{-1}(i))] = \\aleph_1$? Here $c[E(S)]$ denotes the set of edge colors appearing on edges incident to the vertex set $S$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "chromatic number",
       "edge coloring",
@@ -187,7 +187,7 @@
     "title": "The Domination Property",
     "content": "Defines the central concept of the problem: the domination property. Given an edge coloring $c$ and a proper vertex coloring $f : V \\to \\mathbb{N}$, vertex color class $f^{-1}(i)$ 'sees' edge color $c_0$ if some edge of color $c_0$ has an endpoint in $f^{-1}(i)$. The domination property requires that for every proper countable vertex coloring, some vertex class sees ALL edge colors. This captures the idea that the edge coloring 'dominates' any vertex coloring.",
     "mathContext": "$\\text{edgeColorsSeen}(G, c, f, i) = \\{c(e) \\mid e \\in E(G),\\, \\exists v \\in e,\\, f(v) = i\\}$. The domination property states: $\\forall f : V \\to \\mathbb{N}$ proper, $\\exists i \\in \\mathbb{N},\\, \\text{allEdgeColors}(G,c) \\subseteq \\text{edgeColorsSeen}(G,c,f,i)$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "domination in partition calculus",
       "vertex color classes",
@@ -210,7 +210,7 @@
     "title": "Formal Problem Statement",
     "content": "The formal statement of Erdős Problem #1176: for every graph $G$ on any type $V$ with $\\chi(G) = \\aleph_1$, there exists a type $C$ of cardinality $\\aleph_1$ and an edge coloring $c : \\text{Sym2}\\,V \\to C$ satisfying the domination property. The universal quantification over $V$ and $G$ makes this a very strong statement.",
     "mathContext": "$\\text{ErdosProblem1176} \\iff \\forall V, G,\\, \\chi(G) = \\aleph_1 \\implies \\exists C,\\, |C| = \\aleph_1,\\, \\exists c : E(G) \\to C,\\, \\text{HasDominationProperty}(G, c)$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Erdős problems",
       "uncountable chromatic number",
@@ -256,7 +256,7 @@
     "title": "Hajnal-Komjáth Consistency Result",
     "content": "Axiomatizes the Hajnal-Komjáth consistency result: it is consistent with ZFC that Erdős Problem #1176 has a positive answer. This is a metamathematical result proved using set-theoretic forcing — in certain forcing extensions of ZFC, the domination property holds for all graphs with $\\chi(G) = \\aleph_1$. Since this is a statement about models of set theory rather than a theorem of ZFC, it must be taken as an axiom in the Lean formalization.",
     "mathContext": "Hajnal and Komjáth showed $\\text{Con}(\\text{ZFC}) \\implies \\text{Con}(\\text{ZFC} + \\text{ErdosProblem1176})$. In Lean, this metamathematical statement is encoded as `axiom hajnal_komjath_consistency_witness : ErdosProblem1176`.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "set-theoretic forcing",
       "consistency results",
@@ -325,7 +325,7 @@
     "title": "Formal Problem Summary and Open Status",
     "content": "The final section provides two theorem statements. `erdos_1176_from_consistency` derives the problem statement from the Hajnal-Komjáth axiom, showing it holds in appropriate set-theoretic universes. `erdos_1176` states the problem with a sorry, reflecting that it remains open in ZFC alone — the proof cannot be completed without either resolving the conjecture or adding set-theoretic axioms beyond ZFC.",
     "mathContext": "The distinction between `erdos_1176_from_consistency : ErdosProblem1176` (proved from the axiom) and `erdos_1176 : ErdosProblem1176` (sorry, open in ZFC) captures the metamathematical status: the statement is consistent with but possibly independent of ZFC.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "ZFC independence",
       "open problems",

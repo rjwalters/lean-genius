@@ -10,7 +10,7 @@
     "title": "The Main IVT Statement",
     "content": "**Continuous functions on closed intervals hit all intermediate values.**\n\nThis is the core IVT: if $f$ is continuous on $[a, b]$, then the image $f([a, b])$ contains the entire interval $[f(a), f(b)]$.\n\nThe proof is a direct application of Mathlib's `intermediate_value_Icc`.",
     "mathContext": "$f : \\mathbb{R} \\to \\mathbb{R}$ continuous on $[a, b]$\n\n$\\Rightarrow [f(a), f(b)] \\subseteq f([a, b])$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "continuity",
       "closed intervals",
@@ -77,7 +77,7 @@
     "title": "Bolzano's Theorem (Root-Finding)",
     "content": "**If f(a) < 0 < f(b), then f has a root in (a, b).**\n\nThis is the most famous corollary of IVT, often called Bolzano's theorem after Bernard Bolzano who first stated IVT rigorously in 1817.\n\nThe proof shows not just existence in $[a, b]$, but that the root is in the **open** interval $(a, b)$ - it cannot be at the endpoints since $f(a) \\neq 0$ and $f(b) \\neq 0$.",
     "mathContext": "$f(a) < 0$ and $f(b) > 0$\n\n$\\Rightarrow \\exists x \\in (a, b), f(x) = 0$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ivt_main",
       "sign change",
@@ -144,7 +144,7 @@
     "title": "Continuous Images of Connected Sets",
     "content": "**Continuous functions preserve connectedness.**\n\nThis is the topological principle underlying IVT. If $S$ is connected and $f$ is continuous, then $f(S)$ is connected.\n\nFor subsets of $\\mathbb{R}$, connected means 'interval-like': if two points are in the set, all points between them are too.",
     "mathContext": "$S$ connected, $f$ continuous\n\n$\\Rightarrow f(S)$ connected\n\nConnected in $\\mathbb{R}$ = interval",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "connectedness",
       "continuous maps",
@@ -190,7 +190,7 @@
     "title": "Fixed Point Theorem for Intervals",
     "content": "**If f : [a,b] → [a,b] is continuous, it has a fixed point.**\n\nA fixed point is a value $x$ where $f(x) = x$. The proof applies IVT to the function $g(x) = f(x) - x$:\n- At $x = a$: $g(a) = f(a) - a \\geq 0$ (since $f(a) \\geq a$)\n- At $x = b$: $g(b) = f(b) - b \\leq 0$ (since $f(b) \\leq b$)\n\nBy IVT, $g$ has a zero, which is a fixed point of $f$.\n\nThis is the 1-dimensional case of Brouwer's fixed point theorem.",
     "mathContext": "$f : [a, b] \\to [a, b]$ continuous\n\n$\\Rightarrow \\exists x \\in [a, b], f(x) = x$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "bolzano",
       "self-maps of intervals",

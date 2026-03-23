@@ -10,7 +10,7 @@
     "title": "The Regularity Question",
     "content": "Hilbert's 19th problem addresses a fundamental question in analysis: when we find a function that minimizes some energy functional, how smooth is it?\n\nThis isn't automatic - weak solutions (in Sobolev spaces) may exist without being classically differentiable. The breakthrough was showing that for **elliptic** problems, weak solutions are actually smooth.",
     "mathContext": "Minimize $J[u] = \\int F(x, u, \\nabla u) \\, dx$\n\nQuestion: If $F$ is smooth/analytic and elliptic, is the minimizer $u$ also smooth/analytic?",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "calculus of variations",
       "weak solutions",
@@ -46,7 +46,7 @@
     "title": "Euler-Lagrange Equation",
     "content": "Critical points of the action functional satisfy the **Euler-Lagrange equation**:\n\n$$\\frac{\\partial F}{\\partial u} - \\frac{d}{dx}\\frac{\\partial F}{\\partial u'} = 0$$\n\nThis is a second-order ODE (or PDE in higher dimensions) characterizing minimizers.",
     "mathContext": "For $F = \\frac{1}{2}(u')^2 - V(u)$:\n\nEuler-Lagrange gives $u'' = -V'(u)$ (Newton's equation!)",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "calculus of variations",
       "first variation",
@@ -64,7 +64,7 @@
     "title": "Ellipticity Condition",
     "content": "**Ellipticity** is the key structural condition for regularity. A variational problem is elliptic if the Lagrangian is **strictly convex in the gradient variable**:\n\n$$\\frac{\\partial^2 F}{\\partial p^2} > 0$$\n\nThis is also called the **Legendre condition**. It ensures the Euler-Lagrange equation is an elliptic PDE.",
     "mathContext": "For the Dirichlet integral $F = \\frac{1}{2}|p|^2$:\n\n$\\frac{\\partial^2 F}{\\partial p^2} = 1 > 0$ (uniformly elliptic!)",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Legendre condition",
       "convexity",
@@ -82,7 +82,7 @@
     "title": "De Giorgi-Nash-Moser Theorem",
     "content": "The **De Giorgi-Nash-Moser theorem** (1957-60) was the breakthrough:\n\n*Solutions of uniformly elliptic equations in divergence form are Holder continuous.*\n\nThis was revolutionary because it established regularity without differentiating the equation - using only energy estimates.",
     "mathContext": "If $u$ is a weak solution of $\\text{div}(A(x)\\nabla u) = 0$ with uniformly elliptic $A$, then:\n\n$u \\in C^{0,\\alpha}$ for some $\\alpha > 0$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Holder continuity",
       "weak solutions",
@@ -100,7 +100,7 @@
     "title": "Schauder Estimates",
     "content": "**Schauder estimates** (1934) provide the 'bootstrap' to higher regularity:\n\n*If coefficients are $C^{k,\\alpha}$ and the solution is $C^{0,\\alpha}$, then the solution is $C^{k+2,\\alpha}$.*\n\nCombined with De Giorgi-Nash-Moser, this gives full smoothness: iterate to get $C^\\infty$.",
     "mathContext": "$C^{k,\\alpha}$ coefficients $\\Rightarrow$ $C^{k+2,\\alpha}$ solutions\n\nStarting from Holder (De Giorgi), iterate to $C^\\infty$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Holder spaces",
       "regularity bootstrap",
@@ -118,7 +118,7 @@
     "title": "Hilbert 19 Main Theorem",
     "content": "The main theorem resolving Hilbert's 19th problem:\n\n*If F is smooth and uniformly elliptic, then any solution of the Euler-Lagrange equation is smooth.*\n\nThis combines De Giorgi-Nash-Moser (initial Holder regularity) with Schauder estimates (bootstrap to $C^\\infty$).",
     "mathContext": "Uniformly elliptic + smooth data $\\Rightarrow$ smooth solution\n\n$\\text{ContDiff } \\mathbb{R} \\top u$ means $u$ is $C^\\infty$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "elliptic regularity",
       "smooth functions",
@@ -190,7 +190,7 @@
     "title": "Regularity Fails for Systems",
     "content": "A remarkable fact: regularity can **fail** for systems of elliptic equations!\n\nDe Giorgi himself constructed a counterexample: a uniformly elliptic system whose solutions are not continuous.\n\nThis shows the scalar nature is essential for the full regularity theory.",
     "mathContext": "De Giorgi (1968): There exists a uniformly elliptic system\n$\\text{div}(A(x)\\nabla u) = 0$ with $u : \\mathbb{R}^n \\to \\mathbb{R}^m$\n\nwhose weak solutions are unbounded (hence not Holder).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "elliptic systems",
       "counterexamples",
@@ -208,7 +208,7 @@
     "title": "Resolution Summary",
     "content": "Hilbert's 19th problem is **completely resolved** for scalar equations:\n\n1. **Holder regularity**: De Giorgi-Nash-Moser (1957-60)\n2. **Smoothness**: Schauder estimates (1934) + bootstrap\n3. **Analyticity**: If data is analytic, so is the solution\n\nThe key is **uniform ellipticity** - strict convexity in the gradient variable.",
     "mathContext": "Uniformly elliptic + smooth data $\\Rightarrow$ smooth solution\n\nUniformly elliptic + analytic data $\\Rightarrow$ analytic solution",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "elliptic regularity",
       "Hilbert problems",

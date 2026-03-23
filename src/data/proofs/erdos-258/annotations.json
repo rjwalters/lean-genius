@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "Erdős Problem #258 asks about the **irrationality of a specific infinite series** involving the divisor function τ(n). The general case remains OPEN, but two important variants have been solved.",
     "mathContext": "The series is Σ τ(n)/(a₁·...·aₙ) where τ(n) counts divisors and (aₙ) is a sequence tending to infinity. The solved cases are: monotone sequences (Erdős-Straus 1971) and constant t^n denominators (Erdős 1948).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "irrationality",
       "divisor-function",
@@ -118,7 +118,7 @@
     "title": "Monotone Variant (Erdős-Straus)",
     "content": "**Solved (1971)**: If (aₙ) is a monotone increasing sequence of positive integers tending to infinity, then the sum Σ τ(n)/(a₁·...·aₙ) is **irrational**.",
     "mathContext": "This is stated as an `axiom` because the Erdős-Straus proof uses analytic techniques beyond current Mathlib. The key is that monotonicity ensures the denominators grow predictably.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "monotone-sequences",
       "erdos-straus",
@@ -136,7 +136,7 @@
     "title": "Power Variant (Erdős 1948)",
     "content": "**Solved (1948)**: For any integer t ≥ 2, the sum Σ τ(n)/tⁿ is **irrational**. This is the special case where all aₙ = t.",
     "mathContext": "This connects to **Lambert series** Σ xⁿ/(1-xⁿ) which generate divisor-related functions. The proof uses divisibility analysis of partial sums.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "lambert-series",
       "power-series",

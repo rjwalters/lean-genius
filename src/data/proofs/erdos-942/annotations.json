@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #942**: Powerful Numbers Between Consecutive Squares\n\n**Question**: Let h(n) count powerful (squarefull) integers in [n², (n+1)²). Estimate h(n).\n\n**Main Conjecture** (OPEN): Is there c > 0 such that h(n) ~ (log n)^c?\n\n**Key Points**:\n- A powerful number m has p | m implies p² | m (equivalently m = a²b³)\n- limsup h(n) = ∞ is proven (van Doorn)\n- De Koninck-Luca (2004): h(n) ≥ c(log n / log log n)^{1/3} infinitely often\n- The density of n with h(n) = 1 is approximately 27.5%",
     "mathContext": "Powerful numbers are fundamental objects in multiplicative number theory. They form a sparse set (~c√N up to N), yet their distribution in short intervals reveals subtle structure.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "powerful-numbers",
       "squarefull",
@@ -82,7 +82,7 @@
     "title": "The Main Conjecture (OPEN)",
     "content": "**axiom erdos_942_conjecture : Prop**\n\nThe conjecture asks: Is there c > 0 such that\n- h(n) < (log n)^{c+o(1)} eventually, and\n- h(n) > (log n)^{c-o(1)} infinitely often?\n\n**axiom erdos_942_open**:\n  ¬(erdos_942_conjecture ↔ True) ∧ ¬(erdos_942_conjecture ↔ False)\n\nThe conjecture remains neither proven nor disproven.",
     "mathContext": "This is asking whether h(n) has a well-defined 'typical' growth rate on the logarithmic scale. The o(1) terms allow for fluctuations that vanish as n → ∞.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open-problem",
       "growth-rate",
@@ -136,7 +136,7 @@
     "title": "De Koninck-Luca Lower Bound (2004)",
     "content": "**axiom de_koninck_luca_lower**:\n  ∃ c > 0, {n ≥ 3 | h(n) ≥ c}.Infinite\n\n**Full theorem** (De Koninck-Luca 2004):\nFor infinitely many n, h(n) ≥ c(log n / log log n)^{1/3}\n\n**Reference**: De Koninck, J.-M. and Luca, F., \"Sur la proximité des nombres puissants\", Acta Arith. (2004), 149-157.",
     "mathContext": "This result shows h(n) can grow, though sublogarithmically. The (log n / log log n)^{1/3} rate is slower than any power of log n, leaving the main conjecture open.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "de-koninck-luca",
       "lower-bound",
@@ -209,7 +209,7 @@
     "title": "Summary and Status",
     "content": "**theorem erdos_942_status**:\n  ¬(erdos_942_conjecture ↔ True)\n\n**Erdős Problem #942: OPEN**\n\n**What we know**:\n1. h(n) is unbounded (limsup = ∞)\n2. Densities δ_l exist with Σ δ_l = 1\n3. δ_1 ≈ 0.275\n4. h(n) ≥ c(log n / log log n)^{1/3} infinitely often\n\n**What remains open**:\nThe precise growth rate ~ (log n)^c",
     "mathContext": "This problem illustrates a common situation in analytic number theory: we can prove unboundedness and establish partial bounds, but pinning down the exact growth rate requires deeper understanding of how arithmetic structure interacts with interval geometry.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "problem-status",
       "open",

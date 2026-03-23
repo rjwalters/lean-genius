@@ -10,7 +10,7 @@
     "title": "Problem Background and Imports",
     "content": "Erdős Problem #406 asks whether only finitely many powers of 2 have base-3 representations using only digits 0 and 1. Such numbers are simultaneously powers of 2 and sums of distinct powers of 3, living at the intersection of two multiplicatively independent exponential sequences. Only three examples are known: $1 = 2^0$, $4 = 2^2 = 1 + 3$, and $256 = 2^8 = 1 + 3 + 9 + 243$. Saye (2022) verified no further examples exist for $2^n$ with $n \\leq 5.9 \\times 10^{21}$. The file imports `Nat.Digits` for base-$b$ digit extraction, `Nat.Prime.Basic` for primality, `List.Basic` for digit list operations, and `Tactic` for general proof automation.",
     "mathContext": "\\#\\{k \\in \\mathbb{N} : \\text{digits}_3(2^k) \\subseteq \\{0,1\\}\\} < \\infty\\;?: The problem sits at the intersection of S-unit equations (Evertse-Schlickewei), the ABC conjecture, Ridout's theorem on p-adic approximation, and linear forms in logarithms (Baker's theorem). The difficulty arises from the multiplicative independence of 2 and 3.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "S-unit-equations",
       "ABC-conjecture",
@@ -79,7 +79,7 @@
     "title": "ternarySparse: Powers of 2 with Digits {0,1}",
     "content": "The set $\\{n \\in \\mathbb{N} : n = 2^k \\text{ for some } k \\text{ and } \\text{digits}_3(n) \\subseteq \\{0,1\\}\\}$. This is the intersection of two exponentially growing but multiplicatively independent sets: powers of 2 and sums of distinct powers of 3. The central conjecture is that this intersection is finite. The S-unit equation reformulation is: $2^k = \\varepsilon_1 \\cdot 3^{a_1} + \\varepsilon_2 \\cdot 3^{a_2} + \\cdots$ with $\\varepsilon_i \\in \\{0, 1\\}$ has finitely many solutions.",
     "mathContext": "\\text{ternarySparse} = \\{2^k : k \\in \\mathbb{N},\\; \\text{digits}_3(2^k) \\subseteq \\{0,1\\}\\}: Lean: def ternarySparse : Set ℕ := { n | ∃ k : ℕ, n = 2 ^ k ∧ HasOnlyDigits01Base3 n }. The S-unit reformulation connects to the Evertse theorem: the equation x₁ + x₂ + ... + xₙ = 0 in {2,3}-units has finitely many non-degenerate solutions.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "S-unit-equations",
       "Evertse-theorem",
@@ -124,7 +124,7 @@
     "title": "Main Conjecture: Finiteness of ternarySparse",
     "content": "Erdős Problem #406: the set `ternarySparse` is finite. This is equivalent to asking whether there are only finitely many $k$ such that $2^k$ can be written as a sum of distinct powers of 3. The problem remains OPEN despite Saye's massive computational verification. A positive answer would follow from sufficiently strong forms of the ABC conjecture. The formalization states this as a `Prop` definition rather than a theorem, reflecting the open status.",
     "mathContext": "\\text{ternarySparse.Finite} \\;\\Leftrightarrow\\; \\#\\{k : 2^k = \\sum_{i \\in S} 3^i,\\; S \\text{ finite, distinct}\\} < \\infty: Lean: def ErdosProblem406 : Prop := ternarySparse.Finite. Stated as a Prop definition rather than a theorem, since the problem is open. The ABC conjecture would imply that for large k, the radical of 2^k times its ternary representation forces more than two distinct digits.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open-problem",
       "ABC-conjecture",
@@ -190,7 +190,7 @@
     "title": "Saye's Massive Computation (2022)",
     "content": "Saye (2022) verified computationally that for all $16 \\leq n \\leq 5.9 \\times 10^{21}$, the number $2^n$ contains all three ternary digits $\\{0, 1, 2\\}$. This eliminates membership in both ternarySparse and ternaryDense for this enormous range. The verification uses an efficient incremental algorithm: rather than computing the full number $2^n$ (which would have $\\sim 10^{21}$ digits), Saye's method tracks only the base-3 digits of $2^n$ by incrementally multiplying the ternary representation by 2. This axiom captures both the $\\{0,1\\}$ and $\\{1,2\\}$ exclusions as a conjunction.",
     "mathContext": "\\forall\\, n \\in [16,\\, 5.9 \\times 10^{21}],\\; \\{0,1,2\\} \\subseteq \\text{digits}_3(2^n): Lean: axiom saye_computation : ∀ n : ℕ, 16 ≤ n → n ≤ 59 * 10 ^ 20 → ¬HasOnlyDigits01Base3 (2 ^ n) ∧ ¬HasOnlyDigits12Base3 (2 ^ n). The bound 59 * 10^20 approximates 5.9 × 10²¹. Axiomatized as computational evidence from R. Saye, 'On the ternary digits of powers of 2', 2022.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "computational-verification",
       "incremental-algorithm",

@@ -7,8 +7,16 @@
     "content": "Imports Mathlib's SimpleGraph, Clique, and Finset libraries for graph-theoretic definitions.",
     "mathContext": "This formalization uses Mathlib's built-in `SimpleGraph V` type rather than a custom graph structure. The `SimpleGraph.Clique` import provides access to clique-related predicates, while `Finset` supports edge counting and vertex subsets. The `DecidableRel G.Adj` instance enables `edgeFinset.card` for edge counting.",
     "significance": "supporting",
-    "relatedConcepts": ["SimpleGraph", "Mathlib graph theory", "DecidableRel"],
-    "prerequisites": ["SimpleGraph.Basic", "SimpleGraph.Clique", "Finset"],
+    "relatedConcepts": [
+      "SimpleGraph",
+      "Mathlib graph theory",
+      "DecidableRel"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Basic",
+      "SimpleGraph.Clique",
+      "Finset"
+    ],
     "range": {
       "startLine": 17,
       "endLine": 21
@@ -21,9 +29,17 @@
     "title": "K₂,₂,₂ Containment",
     "content": "A graph contains K₂,₂,₂ if there exist six distinct vertices partitioned into three pairs with all 12 cross-edges present.",
     "mathContext": "The complete tripartite graph $K_{2,2,2}$ (the **octahedron**) has vertex set $\\{a_1,a_2\\} \\cup \\{b_1,b_2\\} \\cup \\{c_1,c_2\\}$ with edges between all vertices in different parts. It has 6 vertices, 12 edges, and is $3$-regular. The formalization explicitly enumerates all 12 cross-edges and enforces distinctness via `Finset.card = 6`. The octahedron is self-complementary and is the dual of the cube.",
-    "significance": "critical",
-    "relatedConcepts": ["complete tripartite graphs", "octahedron", "forbidden subgraphs"],
-    "prerequisites": ["SimpleGraph.Adj", "Finset.card", "DecidableEq"],
+    "significance": "key",
+    "relatedConcepts": [
+      "complete tripartite graphs",
+      "octahedron",
+      "forbidden subgraphs"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj",
+      "Finset.card",
+      "DecidableEq"
+    ],
     "range": {
       "startLine": 30,
       "endLine": 38
@@ -37,8 +53,14 @@
     "content": "A graph is K₂,₂,₂-free if it does not contain the octahedron as a subgraph.",
     "mathContext": "The $K_{2,2,2}$-free condition is a **forbidden subgraph** constraint. By the Kruskal-Katona/Turán theory, $K_{2,2,2}$-free graphs on $n$ vertices have at most $(1/8 + o(1))n^2$ edges. This is tighter than the $K_4$-free bound of $n^2/6$ but looser than the $K_3$-free (triangle-free) bound of $n^2/4$.",
     "significance": "key",
-    "relatedConcepts": ["forbidden subgraphs", "Turán density", "extremal graph theory"],
-    "prerequisites": ["SimpleGraph.ContainsK222"],
+    "relatedConcepts": [
+      "forbidden subgraphs",
+      "Turán density",
+      "extremal graph theory"
+    ],
+    "prerequisites": [
+      "SimpleGraph.ContainsK222"
+    ],
     "range": {
       "startLine": 41,
       "endLine": 42
@@ -52,8 +74,16 @@
     "content": "isDense G δ asserts that G has at least δn² edges, where n is the number of vertices.",
     "mathContext": "The density parameter $\\delta \\in (0, 1/8]$ measures the fraction of possible edges present. For $K_{2,2,2}$-free graphs, $\\delta \\leq 1/8 + o(1)$ by the Turán bound. The EHSS result handles $\\delta > 1/8$ (super-Turán density), and the conjecture extends to all $\\delta > 0$.",
     "significance": "key",
-    "relatedConcepts": ["edge density", "graph density", "Turán density"],
-    "prerequisites": ["SimpleGraph", "edgeFinset", "DecidableRel"],
+    "relatedConcepts": [
+      "edge density",
+      "graph density",
+      "Turán density"
+    ],
+    "prerequisites": [
+      "SimpleGraph",
+      "edgeFinset",
+      "DecidableRel"
+    ],
     "range": {
       "startLine": 47,
       "endLine": 48
@@ -66,9 +96,16 @@
     "title": "Independent Set",
     "content": "A set of vertices with no edges between any two members.",
     "mathContext": "An **independent set** (or **stable set**) $S$ satisfies $\\forall u, v \\in S, u \\neq v \\implies \\neg G.\\text{Adj}(u,v)$. Finding large independent sets is dual to finding small vertex covers (by König's theorem in bipartite graphs). The Ramsey number $R(3,t) = \\Theta(t^2/\\log t)$ bounds the independence number of triangle-free graphs, but $K_{2,2,2}$-freeness is a different constraint.",
-    "significance": "critical",
-    "relatedConcepts": ["independent sets", "Ramsey numbers", "vertex covers"],
-    "prerequisites": ["SimpleGraph.Adj", "Finset membership"],
+    "significance": "key",
+    "relatedConcepts": [
+      "independent sets",
+      "Ramsey numbers",
+      "vertex covers"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj",
+      "Finset membership"
+    ],
     "range": {
       "startLine": 51,
       "endLine": 52
@@ -81,9 +118,16 @@
     "title": "Independence Number",
     "content": "The maximum cardinality of an independent set, computed as the supremum over all independent subsets of vertices.",
     "mathContext": "The independence number $\\alpha(G)$ is computed as $\\max\\{|S| : S \\subseteq V, G.\\text{IsIndepSet}(S)\\}$. The conjecture asserts $\\alpha(G) \\geq c(\\delta) \\cdot n$ for $K_{2,2,2}$-free graphs with density $\\delta$. The `noncomputable` annotation reflects that enumerating all subsets to find the maximum is not constructively feasible.",
-    "significance": "critical",
-    "relatedConcepts": ["independence number", "optimization over subsets", "NP-hardness"],
-    "prerequisites": ["SimpleGraph.IsIndepSet", "Finset.sup"],
+    "significance": "key",
+    "relatedConcepts": [
+      "independence number",
+      "optimization over subsets",
+      "NP-hardness"
+    ],
+    "prerequisites": [
+      "SimpleGraph.IsIndepSet",
+      "Finset.sup"
+    ],
     "range": {
       "startLine": 55,
       "endLine": 57
@@ -96,9 +140,18 @@
     "title": "EHSS Result for δ > 1/8",
     "content": "Erdős, Hajnal, Sós, and Szemerédi (1983) proved that for δ > 1/8, K₂,₂,₂-free graphs with ≥ δn² edges have independence number ≥ cn.",
     "mathContext": "The **EHSS theorem** (1983) uses the fact that for $\\delta > 1/8$, a $K_{2,2,2}$-free graph with $\\geq \\delta n^2$ edges exceeds the **Turán number** $\\text{ex}(n; K_{2,2,2})$. This 'super-Turán' density creates structural constraints exploitable by regularity methods. The formalization uses `Filter.atTop` for the 'sufficiently large $n$' quantifier, a clean alternative to explicit bounds.",
-    "significance": "critical",
-    "relatedConcepts": ["EHSS theorem", "super-Turán density", "regularity method", "Filter.atTop"],
-    "prerequisites": ["SimpleGraph.IsK222Free", "isDense", "independenceNumber"],
+    "significance": "key",
+    "relatedConcepts": [
+      "EHSS theorem",
+      "super-Turán density",
+      "regularity method",
+      "Filter.atTop"
+    ],
+    "prerequisites": [
+      "SimpleGraph.IsK222Free",
+      "isDense",
+      "independenceNumber"
+    ],
     "range": {
       "startLine": 63,
       "endLine": 69
@@ -111,9 +164,17 @@
     "title": "Erdős Problem 579: Full Conjecture",
     "content": "For every δ > 0, K₂,₂,₂-free graphs with ≥ δn² edges have independent sets of size ≥ c(δ)·n.",
     "mathContext": "The conjecture extends EHSS from $\\delta > 1/8$ to all $\\delta > 0$. For $\\delta \\leq 1/8$, the graph has *fewer* edges than the Turán extremal graph, so the structural argument changes qualitatively. The problem is analogous to Problem #533 (triangle-free subsets in $K_5$-free graphs) but with $K_{2,2,2}$ replacing $K_5$ and independent sets replacing triangle-free subsets. Both ask whether a forbidden subgraph condition, combined with positive density, forces structured subgraphs of linear size.",
-    "significance": "critical",
-    "relatedConcepts": ["sub-Turán density", "linear independence number", "Erdős Problem 533"],
-    "prerequisites": ["SimpleGraph.IsK222Free", "isDense", "independenceNumber"],
+    "significance": "key",
+    "relatedConcepts": [
+      "sub-Turán density",
+      "linear independence number",
+      "Erdős Problem 533"
+    ],
+    "prerequisites": [
+      "SimpleGraph.IsK222Free",
+      "isDense",
+      "independenceNumber"
+    ],
     "range": {
       "startLine": 76,
       "endLine": 82
@@ -127,8 +188,16 @@
     "content": "The Turán number ex(n; K₂,₂,₂) = (1/8 + o(1))n², establishing the maximum edge count for K₂,₂,₂-free graphs.",
     "mathContext": "The **Turán number** $\\text{ex}(n; H)$ is the maximum number of edges in an $H$-free graph on $n$ vertices. For $K_{2,2,2}$, the extremal graph is the balanced complete $8$-partite graph $T_8(n)$ with $\\lfloor n/8 \\rfloor$-sized parts. The formalization uses a vanishing error function $f : \\mathbb{N} \\to \\mathbb{R}$ with $f(n) \\to 0$ to express the asymptotic bound. The threshold $1/8$ explains why the EHSS proof works above this density: exceeding the Turán number forces structural richness in the graph.",
     "significance": "key",
-    "relatedConcepts": ["Turán's theorem", "extremal numbers", "Turán graph T₈(n)"],
-    "prerequisites": ["SimpleGraph.IsK222Free", "edgeFinset", "Filter.atTop"],
+    "relatedConcepts": [
+      "Turán's theorem",
+      "extremal numbers",
+      "Turán graph T₈(n)"
+    ],
+    "prerequisites": [
+      "SimpleGraph.IsK222Free",
+      "edgeFinset",
+      "Filter.atTop"
+    ],
     "range": {
       "startLine": 89,
       "endLine": 94

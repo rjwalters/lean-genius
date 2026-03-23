@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #939** explores the additive structure of r-powerful numbers.\n\nA number n is **r-powerful** (or r-full) if whenever a prime p divides n, we have p^r dividing n. For example, 8 = 2³ is 3-powerful, and 32 = 2⁵ is 5-powerful.\n\nThe main question: for r ≥ 4, can r-2 coprime r-powerful numbers sum to another r-powerful number?",
     "mathContext": "IsRPowerful(r,n) ⟺ ∀p prime, p|n → p^r|n. The question asks about existence of valid sums.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "erdos",
       "powerful-numbers",
@@ -45,7 +45,7 @@
     "title": "r-Powerful Numbers",
     "content": "**IsRPowerful(r, n)** holds when every prime factor of n appears with exponent at least r.\n\nExamples:\n- 1 is r-powerful for all r (vacuously)\n- 8 = 2³ is 3-powerful (exponent 3 ≥ 3)\n- 12 = 2² × 3 is NOT 3-powerful (exponent 2 < 3)\n\nA **coprime finset** has GCD 1 across all elements.",
     "mathContext": "IsRPowerful r n ⟺ ∀p, p.Prime → p∣n → p^r∣n. FinsetCoprime S ⟺ S.gcd id = 1.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "prime-factorization",
       "divisibility",
@@ -115,7 +115,7 @@
     "title": "Erdős-939 Sums",
     "content": "**IsErdos939Sum(r, S)** captures a valid configuration:\n- S contains exactly r-2 elements\n- The elements are mutually coprime (GCD = 1)\n- Each element is r-powerful\n- Their sum is also r-powerful\n\n**Erdos939Sums(r)** is the set of all valid configurations for a given r.",
     "mathContext": "For r=5: S has 3 elements, all coprime, all 5-powerful, summing to a 5-powerful number.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "finset",
       "coprime",
@@ -133,7 +133,7 @@
     "title": "Existence Conjecture",
     "content": "**Does a valid sum exist for all r ≥ 4?**\n\nCambie found examples for r = 5, 7, 8, but the general existence question remains open. We state it as an axiom since no proof exists.\n\nIf true, it would show r-powerful numbers have rich additive structure.",
     "mathContext": "Erdos939Existence: ∀r≥4, ∃S, IsErdos939Sum(r, S). Currently unproven for all r.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "conjecture",
       "axiom",
@@ -168,7 +168,7 @@
     "title": "Nitaj's Result (1995)",
     "content": "**3-Powerful Triples**: Nitaj proved there are infinitely many coprime 3-powerful numbers a, b, c with a + b = c.\n\nExample: 2³·3⁵·73³ + 271³ = 919³\n\nThis solves a related problem but doesn't directly answer the r ≥ 4 case.",
     "mathContext": "Nitaj used elliptic curve methods. Cohn and Walsh gave alternative constructions.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "nitaj",
       "3-powerful",
@@ -186,7 +186,7 @@
     "title": "Cambie's Examples",
     "content": "**Cambie found explicit solutions** for r = 5, 7, and 8!\n\nFor r = 5: 3761^5 = 2^8·3^{10}·5^7 + 2^{12}·23^6 + 11^5·13^5\n\nThe three summands are coprime and 5-powerful, and their sum is 5-powerful. Similar solutions exist for r = 7 and r = 8.",
     "mathContext": "These examples show existence for specific r values but don't prove existence for all r ≥ 4.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "cambie",
       "explicit-construction",
@@ -222,7 +222,7 @@
     "title": "Lander-Parkin Counterexample",
     "content": "**Lander and Parkin (1967)** disproved Euler's conjecture by finding:\n\n27⁵ + 84⁵ + 110⁵ + 133⁵ = 144⁵\n\nThis was discovered by computer search—one of the first major mathematical results found by computer.\n\nThe proof uses `native_decide` for direct computation.",
     "mathContext": "27^5 + 84^5 + 110^5 + 133^5 = 14348907 + 4182119424 + 16105100000 + 40725541933 = 61917364224 = 144^5.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "lander-parkin",
       "counterexample",
