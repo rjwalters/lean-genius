@@ -154,3 +154,37 @@ triple_count_fourier (sorry) ─────────────────
                                                     │    └→ density_increment_lemma (sorry)
                                                     │         └→ roth_density_bound (PROVED)
 ```
+
+## Session 4 (2026-03-22, researcher-6) - Prove conj_psi
+
+**Mode**: REVISIT (RICH, score 24)
+
+### Work Done
+**Proved conj_psi**: `starRingEnd ℂ (ψ x) = ψ (-x)`
+
+Proof strategy (cancellation argument):
+1. `ψ(x) * ψ(-x) = 1` — from `psi_add` + `add_neg_cancel` + `psi_zero`
+2. `ψ(x) * conj(ψ(x)) = 1` — from `exp_conj` + purely imaginary exponent
+3. Cancel `ψ(x) ≠ 0` to get `conj(ψ(x)) = ψ(-x)`
+
+Key technique for step 2: `conj(exp z) = exp(conj z)`, and for purely imaginary z (z = r·I with real r), `conj(z) = -z`, so `z + conj(z) = 0` and `exp(0) = 1`.
+
+### Sorry Status
+4 sorries remain (was 5):
+- parseval_on_zmod (Medium, conj_psi now available)
+- triple_count_fourier (Hard)
+- fourier_large_coefficient (Medium)
+- density_increment_lemma (Hard)
+
+### Parseval Proof Architecture (for next session)
+```
+∑_r ‖Â(r)‖² = ∑_r Â(r)·conj(Â(r))      [normSq = mul_conj]
+  = ∑_r (∑_{x∈A} ψ(rx)) · conj(∑_{y∈A} ψ(ry))  [expand fourierCoeff]
+  = ∑_r ∑_{x∈A} ∑_{y∈A} ψ(rx)·conj(ψ(ry))       [distribute]
+  = ∑_r ∑_{x,y∈A} ψ(rx)·ψ(-ry)                    [conj_psi]
+  = ∑_r ∑_{x,y∈A} ψ(r(x-y))                        [psi_add]
+  = ∑_{x,y∈A} ∑_r ψ(r(x-y))                        [sum_comm]
+  = ∑_{x,y∈A} N·δ(x,y)                              [char_orthogonality]
+  = ∑_{x∈A} N                                        [diagonal]
+  = |A|·N
+```

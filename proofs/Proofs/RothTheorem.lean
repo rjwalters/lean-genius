@@ -222,7 +222,23 @@ private lemma psi_zero {N : ℕ} [NeZero N] : ψ (0 : ZMod N) = 1 := by
     so by cancellation conj(ψ(x)) = ψ(-x). Needed for parseval_on_zmod. -/
 private lemma conj_psi {N : ℕ} [NeZero N] (x : ZMod N) :
     starRingEnd ℂ (ψ x) = ψ (-x) := by
-  sorry -- Requires: z * star z = ↑(‖z‖²) lemma (Mathlib API name TBD)
+  -- Both conj(ψ x) and ψ(-x) are the multiplicative inverse of ψ(x).
+  -- ψ(x)·ψ(-x) = ψ(0) = 1 and ψ(x)·conj(ψ(x)) = 1 (exp of purely imaginary has norm 1)
+  have hne : ψ x ≠ 0 := by unfold ψ; exact Complex.exp_ne_zero _
+  have h1 : ψ x * ψ (-x) = 1 := by
+    rw [← psi_add, add_neg_cancel, psi_zero]
+  have h2 : ψ x * starRingEnd ℂ (ψ x) = 1 := by
+    unfold ψ
+    rw [← Complex.exp_conj, ← Complex.exp_add]
+    -- exp(z + conj z) = exp(0) = 1 for purely imaginary z
+    suffices h : 2 * ↑Real.pi * Complex.I * (↑(ZMod.val x) / ↑N) +
+        starRingEnd ℂ (2 * ↑Real.pi * Complex.I * (↑(ZMod.val x) / ↑N)) = 0 by
+      rw [h, Complex.exp_zero]
+    -- conj distributes: conj(r * I * q) = r * (-I) * q for real r, q
+    simp only [map_mul, map_div₀, Complex.conj_ofReal, Complex.conj_I, map_natCast,
+      map_ofNat]
+    ring
+  exact (mul_left_cancel₀ hne (h1.trans h2.symm)).symm
 
 /-- ψ(c) ≠ 1 when c ≠ 0: a nontrivial character is not the identity.
     Since val(c) ∈ {1,...,N-1}, we have 2πi·val(c)/N ∉ 2πiℤ. -/
