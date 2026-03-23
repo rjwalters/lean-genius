@@ -397,11 +397,13 @@ theorem parseval_on_zmod {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
   rw [Finset.sum_congr rfl (fun x hx => if_pos hx), Finset.sum_const]; ring
 
 /-- The Fourier identity for AP counting:
-    Λ₃(A) = N⁻¹ · Σ_r Â(r)² · conj(Â(2r))
-    This identity connects the combinatorial AP count to Fourier analysis.
-    It follows from expanding the triple sum and using orthogonality. -/
+    tripleCount(A) + |A| = N⁻¹ · Σ_r Â(r)² · conj(Â(2r))
+    The RHS is the FULL triple count (including degenerate d=0 triples which
+    contribute |A|). The d=0 triples are: for each a ∈ A, (a, a, a) is a
+    3-AP with common difference 0.
+    Proof: expand 1_A via Fourier inversion, swap sums, apply orthogonality. -/
 theorem triple_count_fourier {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
-    (tripleCount A : ℂ) = (↑N)⁻¹ *
+    (tripleCount A : ℂ) + ↑A.card = (↑N)⁻¹ *
       Finset.univ.sum (fun r : ZMod N =>
         fourierCoeff A r ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * r))) := by
   sorry
@@ -413,11 +415,10 @@ theorem triple_count_fourier {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
 /-- If A has no 3-AP and has density delta, then some Fourier coefficient
     is large. This is the key analytic step in Roth's proof.
 
-    Proof sketch: Since A is AP-free, tripleCount A = 0. By the Fourier
-    identity, 0 = N⁻¹ Σ_r Â(r)² conj(Â(2r)). The r=0 term contributes
-    |A|³/N ≥ δ³N². Cancellation with r≠0 terms requires some |Â(r)| to be
-    large. Using Parseval (Σ|Â(r)|² = |A|N) and the bound |Â(r)| ≤ |A|,
-    we get ∃ r ≠ 0 with |Â(r)| ≥ δ²N/2. -/
+    Proof sketch: Since A is AP-free, tripleCount A = 0. By the corrected
+    Fourier identity, |A| = N⁻¹ Σ_r Â(r)² conj(Â(2r)). Separating r=0
+    (contributing |A|³/N) from r≠0: Σ_{r≠0} Â(r)² conj(Â(2r)) = N|A| - |A|³.
+    Using |Â(2r)| ≤ |A| and Parseval, extract a large coefficient. -/
 theorem fourier_large_coefficient {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
     (hAP : APFree A) (delta : ℝ) (hdelta : 0 < delta)
     (hdensity : (A.card : ℝ) ≥ delta * N) :
