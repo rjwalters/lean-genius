@@ -122,12 +122,13 @@
   ],
   "conclusion": {
     "summary": "This formalization demonstrates how inner product spaces provide an elegant algebraic framework for geometric theorems. The Pythagorean theorem emerges naturally from the definition of perpendicularity as zero inner product, combined with the bilinearity property.",
-    "implications": "The inner product approach generalizes seamlessly to higher dimensions and reveals the theorem's true nature: it's not about triangles per se, but about the orthogonal decomposition of vectors. This perspective is foundational in linear algebra, functional analysis, and quantum mechanics.",
+    "implications": "The inner product formulation reveals the Pythagorean theorem as a universal principle of orthogonal decomposition:\n\n1. **Linear Algebra**: Gram-Schmidt orthogonalization, QR decomposition, and the spectral theorem all rely on the Pythagorean theorem for orthogonal projections: $\\|v\\|^2 = \\|\\text{proj}_W v\\|^2 + \\|v - \\text{proj}_W v\\|^2$.\n\n2. **Fourier Analysis**: Parseval's identity $\\|f\\|^2 = \\sum |\\hat{f}(n)|^2$ is the infinite-dimensional Pythagorean theorem for Fourier coefficients — the energy of a signal equals the sum of energies of its frequency components.\n\n3. **Quantum Mechanics**: Born's rule ($P = |\\langle \\phi | \\psi \\rangle|^2$) and the normalization condition ($\\sum_i |c_i|^2 = 1$) are manifestations of the Pythagorean theorem in Hilbert space — probabilities sum to 1 because the state vector has unit norm.\n\n4. **Statistics**: The Pythagorean theorem for variances — $\\text{Var}(X+Y) = \\text{Var}(X) + \\text{Var}(Y)$ when $X, Y$ are uncorrelated — is the statistical analog of orthogonal decomposition.\n\n5. **Metric Geometry**: The Pythagorean theorem characterizes Euclidean spaces among all metric spaces. Schoenberg (1938) showed that a metric space embeds isometrically in Hilbert space iff it satisfies a generalized parallelogram law.",
     "openQuestions": [
-      "What's the simplest possible proof of the Pythagorean theorem? (Candidates include Einstein's similar-triangles proof)",
-      "How many truly distinct proofs exist? Loomis catalogued 367, but the count depends on what 'distinct' means",
-      "What's the analog of the Pythagorean theorem in hyperbolic and spherical geometry?",
-      "Can all Pythagorean triples be found efficiently for very large numbers?"
+      "In 2023, Ne'Kiya Jackson and Calcea Johnson (high school students) presented a trigonometric proof of the Pythagorean theorem without circular reasoning — historically thought impossible since trigonometric identities presuppose $a^2 + b^2 = c^2$. Can their approach (using the law of sines and infinite geometric series) be formalized in Lean?",
+      "The formalization uses `EuclideanSpace ℝ (Fin 2)` which is coordinatized $\\mathbb{R}^2$. Can we formalize a synthetic proof using Tarski's axioms for geometry (points, betweenness, congruence) without coordinates, matching Euclid's original geometric argument more closely?",
+      "The generalized Pythagorean theorem (`pythagorean_sum`) holds for finitely many mutually orthogonal vectors. Can we formalize Parseval's identity — the infinite-dimensional analog $\\|f\\|^2 = \\sum_{n=0}^{\\infty} |\\langle f, e_n \\rangle|^2$ for orthonormal bases in separable Hilbert spaces?",
+      "Pythagorean triples $(a,b,c)$ with $a^2 + b^2 = c^2$ are parameterized by $a = m^2-n^2$, $b = 2mn$, $c = m^2+n^2$. Can we formalize that this parameterization is complete (every primitive triple has this form) and connect it to the norm form $N(m+ni) = m^2+n^2$ in the Gaussian integers $\\mathbb{Z}[i]$?",
+      "The Pythagorean theorem fails in non-Euclidean geometries: $\\cosh c = \\cosh a \\cosh b$ (hyperbolic) and $\\cos c = \\cos a \\cos b$ (spherical). Can we formalize these analogs and show they reduce to $c^2 = a^2 + b^2$ in the flat limit (curvature → 0)?"
     ]
   },
   "references": [
@@ -166,6 +167,26 @@
       "targetId": "cauchy-schwarz",
       "relationship": "related",
       "description": "Both are consequences of inner product space structure: Pythagorean theorem uses orthogonality (⟨v,w⟩=0), Cauchy-Schwarz bounds the general case (|⟨v,w⟩| ≤ ‖v‖‖w‖)"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of $\\sqrt{2}$ follows directly from the Pythagorean theorem: the diagonal of a unit square has length $\\sqrt{1^2 + 1^2} = \\sqrt{2}$, and the Pythagoreans' discovery that this is irrational was a foundational crisis in Greek mathematics. The Pythagorean theorem creates the very quantity whose irrationality had to be confronted"
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "extended-by",
+      "description": "The law of cosines generalizes the Pythagorean theorem: $c^2 = a^2 + b^2 - 2ab\\cos(C)$. When $C = 90°$, $\\cos(C) = 0$ and this reduces to $c^2 = a^2 + b^2$. In inner product form: $\\|u-v\\|^2 = \\|u\\|^2 + \\|v\\|^2 - 2\\langle u,v \\rangle$"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's identity $e^{i\\pi} + 1 = 0$ connects to the Pythagorean theorem via $|e^{i\\theta}|^2 = \\cos^2\\theta + \\sin^2\\theta = 1$ — the Pythagorean identity on the unit circle. The modulus of complex numbers is defined via $|z|^2 = (\\text{Re}\\,z)^2 + (\\text{Im}\\,z)^2$, which is the Pythagorean theorem applied to the Argand plane"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "The integral Cauchy-Schwarz inequality $|\\int fg|^2 \\leq \\int f^2 \\cdot \\int g^2$ is the infinite-dimensional generalization of the same inner product framework. The Pythagorean theorem for $L^2$ functions — $\\|f+g\\|^2 = \\|f\\|^2 + \\|g\\|^2$ when $\\int fg = 0$ — is Parseval's identity in Fourier analysis"
     }
   ],
   "relatedProofs": [
@@ -175,7 +196,11 @@
     "cauchy-schwarz",
     "pythagorean-theorem-oq-03",
     "pythagorean-triples",
-    "pythagorean-triples-oq-01"
+    "pythagorean-triples-oq-01",
+    "sqrt2-irrational",
+    "law-of-cosines",
+    "euler-identity",
+    "cauchy-schwarz-integral"
   ],
   "leanFile": {
     "imports": [
