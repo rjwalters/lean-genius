@@ -120,20 +120,68 @@ axiom fourierCoeff_difference_formula (f : AddCircle T → ℂ) (n : ℤ) (hn : 
         (f x - f (circleTranslate (halfPeriod T n) x)) * fourier (-n) x ∂haarAddCircle
 
 /-- Hölder bound on translation differences:
-    ‖f(x) - f(x + T/(2n))‖ ≤ C · (T/(2|n|))^α -/
-axiom holder_translation_bound (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T → ℂ)
+    ‖f(x) - f(x + T/(2n))‖ ≤ C · (T/(2|n|))^α
+
+    Proof: HolderWith gives dist(fx, fy) ≤ C · dist(x,y)^α.
+    The quotient norm bound gives dist(x, x+↑s) = ‖↑s‖ ≤ |s| = T/(2|n|). -/
+theorem holder_translation_bound (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T → ℂ)
     (hf : IsHolderOnCircle C α f) (n : ℤ) (hn : n ≠ 0) (x : AddCircle T) :
     ‖f x - f (circleTranslate (halfPeriod T n) x)‖ ≤
-      ↑C * (T / (2 * |↑n|)) ^ (α : ℝ)
+      ↑C * (T / (2 * |↑n|)) ^ (α : ℝ) := by
+  unfold circleTranslate halfPeriod
+  simp only [hn, ite_false]
+  set s := T / (2 * (↑n : ℝ)) with hs_def
+  -- |s| = T / (2 * |↑n|) since T > 0
+  have hs_abs : |s| = T / (2 * |(↑n : ℝ)|) := by
+    rw [hs_def, abs_div, abs_of_pos hT.out, abs_mul, abs_of_pos (by positivity : (2 : ℝ) > 0)]
+  -- Quotient norm bound: ‖↑s‖_{AddCircle T} ≤ |s|
+  have h_norm_le : ‖(↑s : AddCircle T)‖ ≤ |s| := by
+    calc ‖(↑s : AddCircle T)‖
+        ≤ ‖s‖ := quotient_norm_mk_le' (AddSubgroup.zmultiples T) s
+      _ = |s| := Real.norm_eq_abs s
+  -- Distance bound: dist x (x + ↑s) = ‖↑s‖ ≤ |s|
+  have h_dist : dist x (x + (↑s : AddCircle T)) ≤ |s| := by
+    rw [dist_eq_norm]
+    have : x - (x + (↑s : AddCircle T)) = -(↑s : AddCircle T) := by group
+    rw [this, norm_neg]
+    exact h_norm_le
+  -- Apply Hölder condition
+  have hle := hf.dist_le_of_le h_dist
+  rw [dist_eq_norm, hs_abs] at hle
+  exact hle
 
 /-- The integral of the product is bounded by the Hölder constant.
     Uses: (1) norm_integral_le_integral_norm, (2) ‖e_{-n}(x)‖ = 1,
     (3) Hölder bound on difference, (4) probability measure total mass 1. -/
-axiom integral_product_bound (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T → ℂ)
+theorem integral_product_bound (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T → ℂ)
     (hf : IsHolderOnCircle C α f) (n : ℤ) (hn : n ≠ 0) :
     ‖∫ x : AddCircle T,
       (f x - f (circleTranslate (halfPeriod T n) x)) * fourier (-n) x ∂haarAddCircle‖ ≤
-      ↑C * (T / (2 * |↑n|)) ^ (α : ℝ)
+      ↑C * (T / (2 * |↑n|)) ^ (α : ℝ) := by
+  -- Step 1: ‖∫ g dx‖ ≤ ∫ ‖g x‖ dx
+  calc ‖∫ x : AddCircle T,
+        (f x - f (circleTranslate (halfPeriod T n) x)) * fourier (-n) x ∂haarAddCircle‖
+      ≤ ∫ x : AddCircle T,
+        ‖(f x - f (circleTranslate (halfPeriod T n) x)) * fourier (-n) x‖ ∂haarAddCircle :=
+        norm_integral_le_integral_norm _
+    _ = ∫ x : AddCircle T,
+        ‖f x - f (circleTranslate (halfPeriod T n) x)‖ * ‖fourier (-n) x‖ ∂haarAddCircle := by
+        congr 1; ext x; exact norm_mul _ _
+    _ = ∫ x : AddCircle T,
+        ‖f x - f (circleTranslate (halfPeriod T n) x)‖ * 1 ∂haarAddCircle := by
+        congr 1; ext x; rw [fourier_norm_one, mul_one]
+    _ = ∫ x : AddCircle T,
+        ‖f x - f (circleTranslate (halfPeriod T n) x)‖ ∂haarAddCircle := by
+        congr 1; ext x; ring
+    _ ≤ ∫ _ : AddCircle T,
+        (↑C * (T / (2 * |↑n|)) ^ (α : ℝ)) ∂haarAddCircle := by
+        apply MeasureTheory.integral_mono_of_nonneg
+        · exact Eventually.of_forall (fun x => norm_nonneg _)
+        · exact integrable_const _
+        · exact Eventually.of_forall (fun x => holder_translation_bound C α f hf n hn x)
+    _ = ↑C * (T / (2 * |↑n|)) ^ (α : ℝ) := by
+        rw [MeasureTheory.integral_const]
+        simp [haarAddCircle_eq_volume, MeasureTheory.IsProbabilityMeasure.measure_univ]
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
