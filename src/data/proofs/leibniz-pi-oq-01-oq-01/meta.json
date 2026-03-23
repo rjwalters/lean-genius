@@ -56,6 +56,20 @@
         "year": "1971",
         "venue": "Golem Press",
         "note": "Chapter 10 discusses Machin's formula and its impact on pi computation"
+      },
+      {
+        "authors": "Størmer, Carl",
+        "title": "Sur l'application de la théorie des nombres entiers complexes à la solution en nombres rationnels",
+        "year": "1899",
+        "venue": "Archiv for Mathematik og Naturvidenskab",
+        "note": "Classifies all two-term Machin-like formulas via Gaussian integer factorizations"
+      },
+      {
+        "authors": "Wetherfield, Michael",
+        "title": "The Enhancement of Machin's Formula by Todd's Process",
+        "year": "1996",
+        "venue": "The Mathematical Gazette",
+        "note": "Discusses optimized multi-term Machin-like formulas for high-precision pi computation"
       }
     ],
     "prerequisites": [
@@ -78,7 +92,8 @@
       "The subtraction arctan(a) - arctan(b) is handled by arctan_neg + arctan_add, converting to arctan(a) + arctan(-b)",
       "All three applications of arctan_add have xy < 1 trivially satisfied (either both factors < 1, or one factor is negative)",
       "The proof technique generalizes: any Machin-like formula pi/4 = sum of c_i * arctan(a_i/b_i) can be verified by iterating arctan_add",
-      "Machin's formula reduces pi computation from O(N) terms (Leibniz) to O(log N) terms: the arctan series at x = 1/5 converges as O(5^{-2N}) and at x = 1/239 as O(239^{-2N}), making each additional term worth many digits"
+      "Machin's formula reduces pi computation from O(N) terms (Leibniz) to O(log N) terms: the arctan series at x = 1/5 converges as O(5^{-2N}) and at x = 1/239 as O(239^{-2N}), making each additional term worth many digits",
+      "The 28561 = 169^2 coincidence is explained by Gaussian integers: $(2+i)^4(239+i)$ is a real multiple of $(1+i)$, so $4\\arg(2+i) + \\arg(239+i) = \\arg(1+i) = \\pi/4$ — Størmer's theorem (1899) classifies all such two-term identities via $\\mathbb{Z}[i]$ factorizations"
     ]
   },
   "sections": [
@@ -124,12 +139,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Machin's formula is derived from scratch using only the arctan addition formula, arctan parity, and arctan(1) = pi/4. The proof is fully verified with 0 sorries and 0 axioms. Each step reduces to pure rational arithmetic verified by norm_num.",
-    "implications": "This resolves the open question from the parent proof (leibniz-pi-oq-01) about deriving Machin's formula from the addition formula. The technique generalizes to any Machin-like formula: each such identity can be verified by iterating arctan_add with norm_num checking the rational arithmetic.\n\nThe proof also demonstrates that Mathlib's arctan API is sufficient for compositional reasoning about arctangent identities, without needing to invoke specialized pre-packaged formulas.",
+    "summary": "Machin's formula is derived from scratch using only the arctan addition formula, arctan parity, and arctan(1) = pi/4. The proof is fully verified with 0 sorries and 0 axioms. Each step reduces to pure rational arithmetic verified by norm_num. The derivation reveals the algebraic coincidence $169^2 = 28561$ that makes the formula work — a fact obscured when citing a pre-packaged identity.",
+    "implications": "This resolves the open question from the parent proof (leibniz-pi-oq-01) about deriving Machin's formula from the addition formula. The technique generalizes to any Machin-like formula: each such identity can be verified by iterating arctan_add with norm_num checking the rational arithmetic.\n\nThe proof also demonstrates that Mathlib's arctan API is sufficient for compositional reasoning about arctangent identities, without needing to invoke specialized pre-packaged formulas.\n\nHistorically, this approach mirrors how Machin-like formulas were discovered: mathematicians searched for integers $a, b$ such that iterating the tangent addition formula on $1/a$ eventually produced a rational close to 1, with $1/b$ as the correction. Størmer (1899) proved that any Machin-like formula with two arctan terms corresponds to a Gaussian integer factorization of $(1+i)^n$.",
     "openQuestions": [
-      "Can the technique be automated to verify arbitrary Machin-like formulas (e.g., Wetherfield's pi/4 = 12*arctan(1/49) + ...)?",
-      "What is the optimal Machin-like formula (minimizing terms for a given accuracy)?",
-      "Can Lean's norm_num be extended to verify Machin-like identities in a single tactic call?"
+      "Can the technique be automated to verify arbitrary Machin-like formulas (e.g., Wetherfield's $\\pi/4 = 12\\arctan(1/49) + 32\\arctan(1/57) - 5\\arctan(1/239) + 12\\arctan(1/110443)$)?",
+      "What is the optimal Machin-like formula minimizing terms for a given accuracy? Hwang (2003) showed that minimizing the number of terms is related to factorizations in $\\mathbb{Z}[i]$.",
+      "Can Lean's norm_num be extended to verify Machin-like identities in a single tactic call, given a list of $(c_k, a_k)$ with $\\sum c_k \\arctan(1/a_k) = \\pi/4$?",
+      "Is there a purely algebraic (non-analytic) proof that $4\\arctan(1/5) - \\arctan(1/239) = \\pi/4$, avoiding the arctan function entirely?"
     ]
   },
   "leanFile": {
@@ -170,6 +186,16 @@
       "targetId": "geometric-series",
       "relationship": "related",
       "description": "The arctan Taylor series arctan(x) = x - x^3/3 + x^5/5 - ... is a variant of the geometric series identity; Machin's formula exploits its rapid convergence at small arguments"
+    },
+    {
+      "targetId": "taylor-theorem",
+      "relationship": "uses-concept",
+      "description": "The arctan series $\\arctan(x) = x - x^3/3 + x^5/5 - \\cdots$ that Machin's formula accelerates is a special case of Taylor expansion"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Both results connect pi to analytic function identities; Euler's identity uses $e^{i\\pi}$ while Machin uses arctan composition — both are ultimately statements about arguments of complex numbers"
     }
   ],
   "relatedProofs": [
@@ -177,6 +203,8 @@
     "leibniz-pi-oq-01",
     "pi-transcendental",
     "basel-problem",
-    "geometric-series"
+    "geometric-series",
+    "taylor-theorem",
+    "euler-identity"
   ]
 }
