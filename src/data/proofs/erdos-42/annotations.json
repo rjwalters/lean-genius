@@ -2,7 +2,7 @@
   {
     "id": "ann-e42-imports",
     "proofId": "erdos-42",
-    "type": "import",
+    "type": "context",
     "title": "Mathlib Foundations",
     "content": "Imports Finset and natural number basics from Mathlib, providing the finite set infrastructure for Sidon set definitions.",
     "mathContext": "Sidon sets are naturally modeled as `Finset ℕ` since they are finite subsets of positive integers. The `Finset.card` function provides the cardinality needed for the size bound $|A|^2 \\leq 2N+1$.",
@@ -134,7 +134,7 @@
   {
     "id": "ann-e42-sidon-size-bound",
     "proofId": "erdos-42",
-    "type": "axiom",
+    "type": "concept",
     "title": "Sidon Set Size Bound",
     "content": "A Sidon set A ⊆ {1,...,N} satisfies |A|² ≤ 2N+1. This is the classical counting argument: the C(|A|,2) + |A| pairwise sums a+b (a ≤ b) must be distinct and lie in {2,...,2N}.",
     "mathContext": "The bound $|A|^2 \\leq 2N + 1$ gives $|A| \\leq \\sqrt{2N+1} \\approx \\sqrt{2N}$. Erdős and Turán (1941) proved this and conjectured $|A| = \\sqrt{N} + O(N^{1/4})$. The best constructions (Ruzsa, Cilleruelo) give $|A| \\geq \\sqrt{N} - O(N^{5/16})$. This bound constrains how many differences a maximal Sidon set can occupy.",
@@ -157,7 +157,7 @@
   {
     "id": "ann-e42-zero-in-diff",
     "proofId": "erdos-42",
-    "type": "axiom",
+    "type": "concept",
     "title": "Zero in Difference Set",
     "content": "For any nonempty set A, 0 ∈ A − A since a − a = 0 for any element a ∈ A.",
     "mathContext": "This trivial fact ensures the disjointness condition $(A-A) \\cap (B-B) = \\{0\\}$ is well-posed: the intersection always contains at least $\\{0\\}$, so we ask that it contains nothing more.",
@@ -178,7 +178,7 @@
   {
     "id": "ann-e42-example",
     "proofId": "erdos-42",
-    "type": "axiom",
+    "type": "concept",
     "title": "Concrete Example",
     "content": "{1, 2, 4} is a maximal Sidon set in {1,...,4}. Its difference set is {−3,−2,−1,0,1,2,3}, and adding 3 would repeat the sum 1+3 = 4 = 2+2 (but 2+2 uses the same element twice, so the failure is 1+4 = 2+3).",
     "mathContext": "Small examples illuminate the problem's structure. In $\\{1,2,4\\}$: sums are $1{+}1=2$, $1{+}2=3$, $1{+}4=5$, $2{+}2=4$, $2{+}4=6$, $4{+}4=8$—all distinct. Adding $3$ gives $1{+}3=4=2{+}2$, violating Sidon. The set $B = \\{3\\}$ has $(A-A) \\cap (B-B) = \\{0\\}$, confirming $M=1$ trivially.",
@@ -199,7 +199,7 @@
   {
     "id": "ann-e42-sedov-M2",
     "proofId": "erdos-42",
-    "type": "axiom",
+    "type": "concept",
     "title": "Sedov's M = 2 Result",
     "content": "For sufficiently large N, every maximal Sidon set in {1,...,N} admits a 2-element companion Sidon set with disjoint differences.",
     "mathContext": "Sedov's proof for $M = 2$ uses a counting argument: a maximal Sidon set $A \\subseteq \\{1,\\ldots,N\\}$ has $|A| \\leq \\sqrt{2N}$, so $|A - A| \\leq 2N$. Among the $\\binom{N}{2}$ pairs in $\\{1,\\ldots,N\\}$, each pair $\\{b_1, b_2\\}$ contributes differences $\\pm(b_1 - b_2)$. For large $N$, a pigeonhole argument guarantees a pair whose differences avoid $A - A$.",
@@ -222,7 +222,7 @@
   {
     "id": "ann-e42-sedov-M3",
     "proofId": "erdos-42",
-    "type": "axiom",
+    "type": "concept",
     "title": "Sedov's M = 3 Result",
     "content": "Sedov extended his M = 2 proof to M = 3 using more sophisticated counting and computational verification for small cases.",
     "mathContext": "The $M = 3$ case is substantially harder: one must find three elements $b_1, b_2, b_3$ such that $\\{b_1, b_2, b_3\\}$ is Sidon and its six nonzero differences all avoid $A - A$. Sedov's approach combines analytic estimates with computational search for small $N$. The jump from $M = 3$ to general $M$ remains the key obstacle.",
@@ -245,7 +245,7 @@
   {
     "id": "ann-e42-main-conjecture",
     "proofId": "erdos-42",
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős Problem 42: General Conjecture",
     "content": "For every M ≥ 1 and sufficiently large N, every maximal Sidon set A ⊆ {1,...,N} admits a companion Sidon set B of size M with (A−A) ∩ (B−B) = {0}.",
     "mathContext": "This is the full **Erdős Problem #42**. The quantifier structure is: $\\forall M \\geq 1, \\exists N_0, \\forall N \\geq N_0, \\forall A$ maximal Sidon in $\\{1,\\ldots,N\\}, \\exists B$ Sidon with $|B| = M$ and $(A-A) \\cap (B-B) = \\{0\\}$. The conjecture asserts that maximal Sidon sets, despite being inclusion-maximal, cannot monopolize the difference structure of $\\{1,\\ldots,N\\}$. This is a deep structural claim about additive combinatorics.",
@@ -268,7 +268,7 @@
   {
     "id": "ann-e42-constructive",
     "proofId": "erdos-42",
-    "type": "axiom",
+    "type": "concept",
     "title": "Constructive Version with Explicit Bounds",
     "content": "Strengthening of Problem 42: there exists an explicit function f(M) such that the conjecture holds for all N ≥ f(M).",
     "mathContext": "The constructive version asks for an **effective bound** $N_0(M) = f(M)$. Even for $M = 2$, the threshold $N_0$ from Sedov's proof is not explicitly computed. Understanding the growth rate of $f(M)$—polynomial? exponential?—would illuminate the difficulty of the problem. This parallels the effective vs. ineffective dichotomy common in combinatorial number theory (cf. Szemerédi's theorem bounds).",

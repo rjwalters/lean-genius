@@ -251,7 +251,7 @@
       "startLine": 84,
       "endLine": 87
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "EFRS Conjecture: Classical Bounds Imply Size Linearity",
     "content": "The central conjecture of Problem #568: if $G$ satisfies both $R(G, T_n) = O(n)$ for all trees and $R(G, K_n) = O(n^2)$ for all cliques, then $G$ is Ramsey size linear. This would establish a **bridge between classical and size Ramsey theory**: the growth rates of $R(G, \\cdot)$ at two extremes (sparse trees and dense cliques) would control the edge-based quantity $\\hat{r}(G, \\cdot)$. The axiom form reflects the open status.",
     "mathContext": "$\\text{LinearTreeRamsey}(G) \\land \\text{QuadraticCliqueRamsey}(G) \\implies \\text{IsRamseySizeLinear}(G)$.",

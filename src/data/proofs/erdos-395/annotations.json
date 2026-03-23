@@ -59,7 +59,7 @@
       "startLine": 84,
       "endLine": 111
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Original Question is FALSE (Carnielli-Carolino 2011)",
     "content": "erdos_original_question: Erdős's original formulation with threshold 1 instead of √2. carnielli_carolino_counterexample: z₁ = 1, zₖ = i for k ≥ 2 (n even). counterexample_always_large: for this configuration, |sum| ≥ √2 always — the real and imaginary parts each contribute at least 1, so the total magnitude is at least √2. erdos_original_is_false: the original threshold-1 question has a negative answer.",
     "mathContext": "The counterexample splits into independent real and imaginary parts: the real part is ±1 (from z₁) and the imaginary part sums n-1 copies of ±i, but the total is always at least √(1² + 1²) = √2.",
@@ -77,7 +77,7 @@
       "startLine": 113,
       "endLine": 141
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "HJNS 2024: Revised Question is TRUE",
     "content": "erdos_395_question: the revised formulation with threshold √2. hjns_2024 (axiom): ∃ c > 0 such that for all n > 0 and all unit vectors z, probSmallSum z ≥ c/n. This is the main result of He-Juškevičius-Narayanan-Spiro (2024), axiomatized because the proof requires Fourier analysis on the Boolean hypercube and concentration inequalities. erdos_395_solved: derives the answer for each fixed n from the universal axiom.",
     "mathContext": "arXiv:2408.11034. The proof technique uses Fourier analysis on {-1,1}ⁿ to analyze the distribution of signed sums.",
@@ -95,7 +95,7 @@
       "startLine": 143,
       "endLine": 156
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Optimality: 1/n Rate is Tight",
     "content": "extremal_example: zₖ = 1 for k ≤ n/2, zₖ = i for k > n/2. This splits the sum into independent real and imaginary parts, each a sum of ±1 with ~n/2 terms. extremal_example_tight (axiom): ∃ c, C > 0 with c/n ≤ probSmallSum ≤ C/n. By CLT, each part is approximately Gaussian with standard deviation ~√(n/2), and landing in a √2-ball requires both parts to be O(1), giving probability Θ(1/n).",
     "mathContext": "The CLT gives each coordinate as approximately N(0, n/2), so the joint probability of both being O(1) is Θ(1/√n · 1/√n) = Θ(1/n).",
@@ -113,7 +113,7 @@
       "startLine": 158,
       "endLine": 195
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Complete Resolution of Erdős #395",
     "content": "erdos_395_summary: restates hjns_2024 directly. erdos_395 (main theorem): combines both directions — erdos_original_is_false (threshold 1 fails) and hjns_2024 (threshold √2 works) — into a single conjunction. This gives the complete picture: the original formulation is false, but the natural revised formulation with the sharp threshold √2 is true with optimal rate 1/n.",
     "significance": "key",

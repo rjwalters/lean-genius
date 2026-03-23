@@ -82,7 +82,7 @@
       "startLine": 94,
       "endLine": 115
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Lovász's Theorem (1968) and Path-Cycle Partitions",
     "content": "`GraphCycle G` requires $\\ge 3$ distinct vertices with wraparound adjacency. `PathCyclePartition` combines paths and cycles. `lovasz_theorem` (axiom): every graph decomposes into $\\le \\lfloor n/2 \\rfloor$ edge-disjoint paths and cycles. `lovasz_corollary` (axiom): every graph with edges decomposes into $\\le n-1$ paths.",
     "significance": "key",
@@ -133,7 +133,7 @@
       "startLine": 144,
       "endLine": 168
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Pyber's and Fan's Theorems: Path Covers",
     "content": "`PathCover G` covers all edges without requiring edge-disjointness. `pyber_theorem` (axiom, 1996): connected graphs admit a path cover of size $n/2 + O(n^{3/4})$. `fan_theorem` (axiom, 2002): connected graphs admit a path cover of size $\\le \\lceil n/2 \\rceil$. `fan_covers_conjecture` records the result.",
     "significance": "key",
@@ -184,7 +184,7 @@
       "startLine": 195,
       "endLine": 205
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Special Cases: Trees, Complete Graphs, and Cycles",
     "content": "`tree_satisfies` (axiom): trees satisfy the conjecture trivially. `complete_graph_satisfies` (axiom): $K_n$ satisfies it for all $n \\ge 1$. `cycle_satisfies` (axiom): 2-regular connected graphs (cycles) satisfy it.",
     "significance": "supporting",
@@ -209,7 +209,7 @@
       "startLine": 213,
       "endLine": 219
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Conjecture Equivalence",
     "content": "`erdos_583_conjecture n`: the conjecture is definitionally equal to its unfolded form — $\\forall V, G,\\, |V| = n \\land G.\\text{Connected} \\implies \\exists P,\\, P.\\text{size} \\le (n+1)/2$. Proved by `Iff.rfl`.",
     "significance": "key",
@@ -233,7 +233,7 @@
       "startLine": 228,
       "endLine": 239
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Lower Bounds and Tightness Examples",
     "content": "`star_needs_few_paths` (axiom): stars $K_{1,n-1}$ decompose easily, showing the bound is not always tight. `bipartite_tight` (axiom): $K_{n,n}$ on $2n$ vertices requires $\\ge n/2$ paths, showing the bound is asymptotically tight.",
     "significance": "key",
@@ -258,7 +258,7 @@
       "startLine": 246,
       "endLine": 258
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "`erdos_583_summary` bundles: (1) the conjecture unfolds correctly (`Iff.rfl`), (2) Lovász's $\\lfloor n/2 \\rfloor$ path+cycle bound, and (3) Fan's $\\lceil n/2 \\rceil$ covering bound. Proved by `exact ⟨fun n => Iff.rfl, lovasz_theorem, fan_theorem⟩`. **Status: OPEN** after 60+ years.",
     "significance": "key",

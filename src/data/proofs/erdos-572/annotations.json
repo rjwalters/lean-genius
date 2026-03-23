@@ -73,7 +73,7 @@
       "startLine": 96,
       "endLine": 108
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bondy-Simonovits Upper Bound",
     "content": "**bondy_simonovits_upper:**\n\nFor k >= 2: ex(n; C_{2k}) <= c * k * n^{1+1/k}\n\n```lean\naxiom bondy_simonovits_upper :\n  forall k : N, k >= 2 ->\n  exists c : R, c > 0 and forall n : N, n >= 1 ->\n    (exCycle n k : R) <= c * k * n^(1 + 1/k)\n```\n\nThis is the best known upper bound (1974).",
     "mathContext": "Proved using the dependent random choice method and careful cycle counting.",
@@ -90,7 +90,7 @@
       "startLine": 109,
       "endLine": 121
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Benson's Theorem for k=3",
     "content": "**benson_k3:**\n\nex(n; C_6) >= c * n^{4/3}\n\nBenson (1966) constructed explicit C_6-free graphs with n^{4/3} edges using generalized hexagons.\n\n```lean\naxiom benson_k3 :\n  exists c : R, c > 0 and forall n >= 1,\n    (exCycle n 3 : R) >= c * n^(4/3)\n```\n\nThe exponent 4/3 = 1 + 1/3 matches the conjecture.",
     "mathContext": "Uses generalized polygons from incidence geometry.",
@@ -103,7 +103,7 @@
       "startLine": 122,
       "endLine": 126
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Benson's Theorem for k=5",
     "content": "**benson_k5:**\n\nex(n; C_{10}) >= c * n^{6/5}\n\nSimilar construction using generalized decagons.\nThe exponent 6/5 = 1 + 1/5 matches the conjecture.",
     "significance": "key"
@@ -115,7 +115,7 @@
       "startLine": 127,
       "endLine": 143
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Lazebnik-Ustimenko-Woldar Bound",
     "content": "**lazebnik_ustimenko_woldar:**\n\nFor all k >= 3:\nex(n; C_{2k}) >= c * n^{1+2/(3k-3+v)}\n\nwhere v = 0 for odd k, v = 1 for even k.\n\n```lean\ndef luwExponent (k : N) : R :=\n  1 + 2 / (3 * k - 3 + if k % 2 = 0 then 1 else 0)\n```\n\nThis is weaker than n^{1+1/k} but works for all k >= 3.",
     "mathContext": "Uses algebraic graph constructions over finite fields.",
@@ -144,7 +144,7 @@
       "startLine": 162,
       "endLine": 179
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Conjecture Proved for k=3",
     "content": "**erdos_572_k3:**\n\nThe conjecture holds for k=3.\n\n```lean\ntheorem erdos_572_k3 : erdosConjectureLowerBound 3 := by\n  unfold erdosConjectureLowerBound\n  obtain (c, hc_pos, hc) := benson_k3\n  use c\n  ...\n```\n\nFollows from Benson's theorem since 4/3 = 1 + 1/3.",
     "significance": "key"
@@ -156,7 +156,7 @@
       "startLine": 180,
       "endLine": 191
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Conjecture Proved for k=5",
     "content": "**erdos_572_k5:**\n\nThe conjecture holds for k=5.\n\nFollows from Benson's theorem since 6/5 = 1 + 1/5.",
     "significance": "key"
@@ -180,7 +180,7 @@
       "startLine": 212,
       "endLine": 218
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "LUW Matches Conjecture for k=3",
     "content": "**luw_matches_k3:**\n\nFor k=3 (odd), the LUW exponent equals the conjectured exponent.\n\nluwExponent 3 = 1 + 2/6 = 4/3 = 1 + 1/3 = conjecturedExponent 3\n\nThis is why LUW gives the optimal bound for k=3.",
     "significance": "key"
@@ -192,7 +192,7 @@
       "startLine": 219,
       "endLine": 225
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Gap for k=4",
     "content": "**luw_gap_k4:**\n\nFor k=4, there is a gap:\n- LUW gives 1 + 2/10 = 1.2\n- Conjecture is 1 + 1/4 = 1.25\n\nThe k=4 case remains open.",
     "significance": "key"
@@ -204,7 +204,7 @@
       "startLine": 239,
       "endLine": 250
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdos-Klein Theorem for C_4",
     "content": "**erdos_klein_c4:**\n\nex(n; C_4) ~ (1/2) * n^{3/2}\n\nThe extremal graphs are related to finite projective planes.\n\n```lean\naxiom erdos_klein_c4 :\n  exists c1 c2, 0 < c1 <= c2 and forall n >= 1,\n    c1 * n^{3/2} <= exCycle n 2 <= c2 * n^{3/2}\n```\n\nThis is the k=2 case, fully resolved.",
     "mathContext": "Connected to the Zarankiewicz problem and projective planes.",
@@ -221,7 +221,7 @@
       "startLine": 262,
       "endLine": 272
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Odd Cycle Extremal Function",
     "content": "**odd_cycle_extremal:**\n\nFor odd cycles: ex(n; C_{2k+1}) = floor(n^2/4)\n\nThe extremal graphs are complete bipartite K_{n/2, n/2}.\n\nThis is because bipartite graphs contain no odd cycles.\n\nOdd cycles are much easier than even cycles!",
     "mathContext": "Bipartite graphs are exactly those with no odd cycles.",
@@ -234,7 +234,7 @@
       "startLine": 277,
       "endLine": 291
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_572_summary:**\n\nCombines the partial results:\n\n```lean\ntheorem erdos_572_summary :\n    erdosConjectureLowerBound 3 and\n    erdosConjectureLowerBound 5 and\n    luwExponent 3 = conjecturedExponent 3\n```\n\n1. Conjecture proved for k=3\n2. Conjecture proved for k=5\n3. LUW bound optimal for k=3",
     "significance": "key"
@@ -246,7 +246,7 @@
       "startLine": 292,
       "endLine": 304
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Best Known Lower Bounds",
     "content": "**best_known_lower_bounds:**\n\nSummarizes all known lower bounds:\n\n1. k=3: n^{4/3} (Benson, optimal)\n2. k=5: n^{6/5} (Benson, optimal)\n3. General k: n^{1+2/(3k-3+v)} (LUW, suboptimal)\n\nThe gap between LUW and the conjecture grows with k.",
     "significance": "key"

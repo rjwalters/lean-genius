@@ -75,7 +75,7 @@
       "startLine": 60,
       "endLine": 81
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Properties of List Chromatic Number",
     "content": "Three key facts about list chromatic number:\n\n1. **`list_chromatic_ge_chromatic`** (sorry'd): $\\chi_L(G) \\ge \\chi(G)$ always. When all lists are identical $\\{1,\\ldots,k\\}$, list coloring reduces to ordinary coloring.\n\n2. **`complete_graph_list_chromatic`** (sorry'd): $\\chi_L(K_n) = n$. For complete graphs, list and ordinary chromatic numbers coincide.\n\n3. **`complete_bipartite_list_chromatic`** (axiomatized): $K_{n,n}$ has $\\chi = 2$ but $\\chi_L > 2$ for $n \\ge 2$. This is the critical observation: list coloring is **strictly harder** than ordinary coloring, even for bipartite graphs.\n\nThe gap $\\chi_L - \\chi$ for $K_{n,n}$ grows as $\\Theta(\\log n)$ (Erdős, Rubin, Taylor 1980).",
     "mathContext": "$$\\chi_L(G) \\ge \\chi(G); \\quad \\chi_L(K_{n,n}) \\ge \\lceil \\log_2 n \\rceil + 1 \\text{ but } \\chi(K_{n,n}) = 2$$",
@@ -121,7 +121,7 @@
       "startLine": 105,
       "endLine": 121
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bipartite Graphs and the List Coloring Gap",
     "content": "**`bipartite_iff_no_odd_cycle`** (sorry'd): $G$ is bipartite iff it has no odd cycle.\n\n**`bipartite_chi_le_2`** (sorry'd): bipartite graphs have $\\chi \\le 2$.\n\n**`bipartite_list_can_exceed_2`** (sorry'd): some bipartite graphs have $\\chi_L > 2$.\n\nExample: $K_{3,3}$ has $\\chi_L = 3$, and $K_{n,n}$ has $\\chi_L \\ge \\lceil \\log_2 n \\rceil + 1$.",
     "mathContext": "$$G \\text{ bipartite} \\implies \\chi(G) \\le 2, \\quad \\text{but } \\chi_L(K_{n,n}) \\to \\infty$$",
@@ -143,7 +143,7 @@
       "startLine": 123,
       "endLine": 138
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Alon–Tarsi Theorem: The Main Result",
     "content": "**`alon_tarsi_theorem`** (axiomatized): every planar bipartite graph is 3-choosable, i.e., $\\chi_L(G) \\le 3$.\n\n**`planar_bipartite_3_choosable`**: equivalent `IsKChoosable G 3` formulation, partially proved.\n\nThe Alon–Tarsi proof uses the graph polynomial and shows a certain coefficient is nonzero for planar bipartite graphs by relating it to even vs. odd Eulerian subgraphs in an appropriate orientation.",
     "mathContext": "$$\\text{planar} \\wedge \\text{bipartite} \\implies \\chi_L(G) \\le 3$$",
@@ -190,7 +190,7 @@
       "startLine": 159,
       "endLine": 172
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sharpness: The Bound 3 is Tight",
     "content": "**`bound_is_tight`** (sorry'd): there exist planar bipartite graphs with $\\chi_L = 3$.\n\n**`k24_list_chromatic`** (axiomatized): $K_{2,4}$ (6 vertices) is planar, bipartite, and has $\\chi_L = 3$.\n\nSo the Alon–Tarsi bound cannot be improved to $\\chi_L \\le 2$.",
     "mathContext": "$$\\chi_L(K_{2,4}) = 3, \\quad K_{2,4} \\text{ is planar and bipartite}$$",
@@ -212,7 +212,7 @@
       "startLine": 174,
       "endLine": 223
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Generalizations and Related Problems",
     "content": "**`nonplanar_bipartite_unbounded`** (sorry'd): without planarity, bipartite $\\chi_L$ is unbounded.\n\n**`complete_bipartite_lower_bound`** (axiomatized): $\\chi_L(K_{n,n}) \\ge \\lceil \\log_2 n \\rceil + 1$.\n\n**`listColoringConjecture`**: OPEN conjecture that $\\chi_L \\le 4$ for all planar graphs.\n\n**Outerplanar**: `IsOuterplanar` (sorry'd), `outerplanar_is_planar` (sorry'd), axiomatized `outerplanar_3_choosable` ($\\chi_L \\le 3$).",
     "mathContext": "$$\\chi_L(K_{n,n}) = \\lceil \\log_2 n \\rceil + 1; \\quad \\text{List Coloring Conjecture}: \\chi_L \\le 4 \\text{ for planar}$$",
@@ -234,7 +234,7 @@
       "startLine": 225,
       "endLine": 254
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Problem Status",
     "content": "`erdos_630_status` packages two results:\n1. $\\chi_L \\le 3$ for all planar bipartite graphs (Alon–Tarsi)\n2. Some planar bipartite graph achieves $\\chi_L = 3$ (tightness)\n\nProved by combining `alon_tarsi_theorem` and `bound_is_tight`.\n\n**Summary**: Problem #630 is **SOLVED**. The Combinatorial Nullstellensatz resolved this combinatorial question through algebra.",
     "mathContext": "$$\\text{erdos\\_630\\_status}:\\; (\\forall G\\text{ planar bip},\\; \\chi_L \\le 3) \\;\\wedge\\; (\\exists G\\text{ planar bip},\\; \\chi_L = 3)$$",

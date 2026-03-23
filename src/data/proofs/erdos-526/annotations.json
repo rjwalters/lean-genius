@@ -194,7 +194,7 @@
       "startLine": 91,
       "endLine": 99
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Shepp's Theorem (1972)",
     "content": "**shepp_1972:**\n\nThe complete characterization of random arc covering.\n\n**Statement:**\n```lean\naxiom shepp_1972 (seq : ArcSequence) :\n    CoversWithProbOne seq ↔ SheppCriterion seq.a\n```\n\n**In words:** Random arcs cover the circle with probability 1 if and only if Σ exp(S_n)/n² = ∞.\n\n**Proof technique:** Shepp used Poisson process methods and careful analysis of the expected number of uncovered points. The exponential captures the cumulative \"coverage power\" of arcs.",
     "mathContext": "Published in 'Covering the circle with random arcs' (1972). This solved a 16-year-old problem of Dvoretzky.",
@@ -303,7 +303,7 @@
       "startLine": 165,
       "endLine": 168
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Dvoretzky's Observation",
     "content": "**dvoretzky_almost_all:**\n\nDvoretzky (1956) observed that under the basic conditions (a_n → 0, Σa_n = ∞), almost all of the circle is covered with probability 1.\n\nMore precisely: the Lebesgue measure of the uncovered set is 0 almost surely.\n\n**The question:** Is the uncovered set empty (full coverage) or just measure zero (missing isolated points)?",
     "mathContext": "This was the starting point. Dvoretzky asked for the exact condition distinguishing full coverage from merely almost-full coverage.",
@@ -330,7 +330,7 @@
       "startLine": 222,
       "endLine": 225
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Harmonic Series Growth",
     "content": "**harmonic_log_growth:**\n\nThe harmonic partial sums satisfy:\n\nH_n = 1 + 1/2 + 1/3 + ... + 1/n ≈ log n + γ\n\nwhere γ ≈ 0.5772 is the Euler-Mascheroni constant.\n\n**Precise bound:**\n|H_n - log n| ≤ γ + 1\n\n**Why this matters:**\nAt a_n = 1/n, S_n = H_n ≈ log n, so exp(S_n) ≈ n.\nThus exp(S_n)/n² ≈ 1/n, and Σ(1/n) = ∞.",
     "mathContext": "The logarithmic growth of harmonic sums is fundamental to understanding why 1/n is the critical boundary.",
@@ -358,7 +358,7 @@
       "startLine": 227,
       "endLine": 228
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Euler-Mascheroni Constant",
     "content": "**euler_mascheroni:**\n\nThe Euler-Mascheroni constant γ is defined as:\n\nγ = lim_{n→∞} (H_n - log n) ≈ 0.5772156649...\n\n**Properties:**\n- It's unknown whether γ is rational or irrational\n- Appears in many areas: number theory, analysis, combinatorics\n- Governs the fine structure of harmonic sums",
     "significance": "supporting",
@@ -382,7 +382,7 @@
       "startLine": 202,
       "endLine": 218
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Computational Examples",
     "content": "**Numerical verification examples:**\n\n1. H_5 = 1 + 1/2 + 1/3 + 1/4 + 1/5 > 2 ✓\n2. exp(1) ≈ 2.718\n3. For a_n = 1/n at n = 10:\n   - S_10 ≈ 2.93\n   - exp(S_10)/100 ≈ 18.7/100 ≈ 0.187\n\nThese demonstrate that Shepp's criterion terms are calculable and the series growth is testable.",
     "significance": "supporting",
@@ -408,7 +408,7 @@
       "startLine": 255,
       "endLine": 264
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem Statement",
     "content": "**erdos_526_statement:**\n\nThe complete answer to Erdős Problem #526:\n\n```lean\ntheorem erdos_526_statement :\n    (∀ seq : ArcSequence, CoversWithProbOne seq ↔ SheppCriterion seq.a) ∧\n    CoversWithProbOne criticalSeq ∧\n    True\n```\n\n**Components:**\n1. Shepp's characterization: coverage ↔ Σ exp(S_n)/n² = ∞\n2. Critical case covers: a_n = 1/n succeeds\n3. Problem status: SOLVED\n\nThis combines all the key results into a single theorem.",
     "mathContext": "Erdős Problem #526 was solved by Shepp in 1972, 16 years after Dvoretzky posed it. The solution reveals a beautiful phase transition at a_n = 1/n.",

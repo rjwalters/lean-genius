@@ -126,7 +126,7 @@
       "startLine": 124,
       "endLine": 135
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Menger's Theorem (Finite Case)",
     "content": "**Menger (1927)**: For finite graphs, max vertex-disjoint A-B paths equals min A-B separator size. This classical result is the finite case of the Erdős-Menger conjecture.",
     "mathContext": "Stated as an axiom since the full proof requires significant finite graph theory infrastructure not built here.",
@@ -143,7 +143,7 @@
       "startLine": 141,
       "endLine": 147
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Aharoni-Berger Theorem (2009)",
     "content": "**The main result**: Aharoni and Berger proved the Erdős-Menger conjecture holds for ALL graphs, including infinite ones. Published in Inventiones Mathematicae, this resolved a 28-year-old conjecture using infinite matroid theory.",
     "mathContext": "The proof technique involves infinite matroid intersection, a deep result in combinatorial optimization that extends finite matroid theory.",
@@ -193,7 +193,7 @@
       "startLine": 191,
       "endLine": 196
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Max-Flow Min-Cut (Vertex Version)",
     "content": "The vertex version of max-flow min-cut: the maximum number of vertex-disjoint A-B paths equals the minimum vertex separator size. This is the quantitative form of Menger's theorem.",
     "significance": "key",
@@ -209,7 +209,7 @@
       "startLine": 216,
       "endLine": 245
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary and Status",
     "content": "**Problem #599 is SOLVED**: YES, Menger's theorem extends to infinite graphs. The timeline spans from Menger (1927) through Erdős (1981) to Aharoni-Berger (2009). This is a major result in infinite combinatorics.",
     "significance": "key",

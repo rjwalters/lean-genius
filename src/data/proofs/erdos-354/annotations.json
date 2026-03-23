@@ -75,7 +75,7 @@
       "startLine": 93,
       "endLine": 101
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Hegyvári's Positive Result (1989)",
     "content": "**axiom hegyvari_dyadic_complete**:\n  If α is dyadic rational, β is NOT dyadic, and α/β is irrational,\n  then IsComplete α β.\n\n**Why it works**:\n- Dyadic α gives periodic behavior mod 2ᵏ\n- Non-dyadic β fills in the 'gaps'\n- The irrationality ensures enough variety",
     "mathContext": "This is the strongest positive result. The key insight is that dyadic and non-dyadic numbers behave complementarily.",
@@ -93,7 +93,7 @@
       "startLine": 103,
       "endLine": 108
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Hegyvári's Negative Result (1989)",
     "content": "**axiom hegyvari_not_complete**:\n  If α ≥ 2 and β = 2ᵏ · α for some k ≥ 1, then ¬IsComplete α β.\n\n**Why it fails**:\n- The sequences are 'aligned' (one is a power-of-2 multiple of the other)\n- They miss certain residue classes\n- No amount of summing can fill the gaps",
     "mathContext": "This shows the original conjecture is FALSE. The alignment β = 2ᵏα creates systematic holes in coverage.",
@@ -111,7 +111,7 @@
       "startLine": 116,
       "endLine": 121
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Van Doorn's Result",
     "content": "**axiom vanDoorn_complete**:\n  If 0 < α < 2 < β < 3 and α/β is irrational, then IsComplete α β.\n\n**Why it works**:\n- The separation 2 ∈ (α, β) ensures the sequences don't align\n- The constraint β < 3 prevents gaps from being too large\n- Interleaving properties guarantee coverage",
     "mathContext": "This is a cleaner sufficient condition that doesn't require dyadic structure. The 'sandwich' around 2 is the key.",
@@ -128,7 +128,7 @@
       "startLine": 129,
       "endLine": 138
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Recent Negative Results (2024-2025)",
     "content": "**axiom jiangMa_not_complete** (2024):\n  For 1 < α < 2, there exists K such that for all k ≥ K,\n  ¬IsComplete α (2ᵏ · α).\n\n**axiom fangHe_not_complete** (2025):\n  For 1 < α < 2 and k ≥ 10, ¬IsComplete α (2ᵏ · α).\n\n**Significance**: Extends Hegyvári's α ≥ 2 result to α ∈ (1, 2).",
     "mathContext": "These recent papers show the alignment phenomenon persists even for small α. The gap between positive and negative results narrows.",
@@ -146,7 +146,7 @@
       "startLine": 146,
       "endLine": 153
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Main Conjecture (OPEN)",
     "content": "**axiom erdos_354_conjecture**:\n  (∀ α β, 0 < α → 0 < β → HasIrrationalRatio α β → IsComplete α β)\n  ∨\n  (∃ α β, 0 < α ∧ 0 < β ∧ HasIrrationalRatio α β ∧ ¬IsComplete α β)\n\n**Known**: The second disjunct is TRUE (counterexamples exist).\n\n**Open**: Precise characterization of when completeness holds.",
     "mathContext": "The original conjecture (irrational ratio ⟹ complete) is false. The refined question asks for exact conditions.",
@@ -163,7 +163,7 @@
       "startLine": 155,
       "endLine": 167
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Counterexamples Exist",
     "content": "**axiom conjecture_is_false**:\n  ∃ α β, 0 < α ∧ 0 < β ∧ HasIrrationalRatio α β ∧ ¬IsComplete α β\n\n**Construction**: Take α > 2 and β such that:\n- α/β is irrational (for the ratio condition)\n- β = 2ᵏ · α for some k (for the non-completeness via Hegyvári)\n\nThis seems contradictory, but careful construction works.",
     "mathContext": "The counterexample construction is technical. One can perturb to get irrational ratio while maintaining the 2ᵏ relationship asymptotically.",
@@ -180,7 +180,7 @@
       "startLine": 163,
       "endLine": 168
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Refined Conjecture",
     "content": "**axiom refined_conjecture**:\n  If HasIrrationalRatio α β AND β ≠ 2ᵏ · α for all k ∈ ℤ,\n  then IsComplete α β ∨ ¬IsComplete α β.\n\n**Interpretation**: When we exclude the known counterexamples (β = 2ᵏα), is completeness always achieved?\n\n**Status**: UNKNOWN - This is the refined open question.",
     "mathContext": "Hegyvári conjectured that excluding power-of-2 multiples should suffice. This remains open.",
@@ -197,7 +197,7 @@
       "startLine": 212,
       "endLine": 217
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Binary Representation Case",
     "content": "**axiom floorSeq_one**: floorSeqTerm 1 k = 2ᵏ\n  For α = 1, the floor sequence is just powers of 2.\n\n**axiom binary_complete**: IsComplete 1 1\n  With α = β = 1, every integer is representable (standard binary).\n\n**This is the base case**: Binary representation shows the concept works for the simplest parameters.",
     "mathContext": "When α = 1, the floor function is trivial: ⌊2ᵏ⌋ = 2ᵏ. The completeness reduces to binary number representation.",
@@ -214,7 +214,7 @@
       "startLine": 207,
       "endLine": 216
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Measure-Theoretic Results",
     "content": "**axiom representable_positive_density**:\n  The set of representable numbers has positive lower density.\n\n**axiom generic_completeness**:\n  'Most' pairs (α, β) give completeness (in a measure-theoretic sense).\n\n**Hegyvári (1991, 1994)**: The exceptional set (non-complete pairs) has cardinality continuum but may have measure zero.",
     "mathContext": "Even when completeness fails, 'many' integers are still representable. The failure is in the tail, not everywhere.",
@@ -232,7 +232,7 @@
       "startLine": 225,
       "endLine": 236
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Base γ Generalization",
     "content": "**GeneralFloorSeq γ α** = {n | ∃ k, n = ⌊γᵏα⌋.toNat}\n  Floor sequence with arbitrary base γ instead of 2.\n\n**axiom generalized_conjecture**:\n  For γ ∈ (1, 2), is the union complete?\n\n**Open**: The base-γ version is even less understood than base-2.",
     "mathContext": "Replacing 2 with γ ∈ (1, 2) changes the growth rate. Smaller bases give denser sequences but different gap patterns.",

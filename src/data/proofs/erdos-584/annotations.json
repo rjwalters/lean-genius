@@ -78,7 +78,7 @@
       "startLine": 126,
       "endLine": 152
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Known Partial Results",
     "content": "**Three known results** are axiomatized. Duke-Erdős (1982) proved H₁ exists for fixed density δ when n is large enough — but this dependence on n for each δ is the key limitation. Duke-Erdős-Rödl (1984) removed the n-dependence but weakened the exponent from δ³ to δ⁵, the best known uniform bound. Fox-Sudakov (2008) proved H₂ but only for δ > n^{-1/5}, leaving the sparse regime open.",
     "mathContext": "The gap between δ⁵ (known) and δ³ (conjectured) for H₁ is significant. Duke-Erdős-Rödl used a variant of the regularity lemma, which inherently loses polynomial factors. Closing this gap likely requires going beyond regularity-based techniques. Fox-Sudakov's threshold n^{-1/5} arises from their counting argument and may not be optimal.",
@@ -114,7 +114,7 @@
       "startLine": 186,
       "endLine": 205
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_584_summary** combines the two H₁ partial results into a single theorem: both Duke-Erdős 1982 (for fixed δ, n large) and Duke-Erdős-Rödl 1984 (uniform δ⁵ bound) hold. The proof is by exact ⟨duke_erdos_1982, duke_erdos_rodl_1984⟩, packaging both axioms as a conjunction. This demonstrates that while the full conjecture is open, substantial progress has been made on the H₁ side.",
     "mathContext": "The summary theorem type-checks that the axiom signatures are compatible with the conjunction. The two results represent different trade-offs: the 1982 result has the optimal δ³ exponent but requires n to be large relative to δ, while the 1984 result is uniform in n but pays a δ⁵ penalty. A resolution of the full conjecture would combine the best of both.",

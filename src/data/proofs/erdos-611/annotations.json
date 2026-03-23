@@ -54,7 +54,7 @@
       "startLine": 114,
       "endLine": 152
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős-Gallai-Tuza Bound and Threshold Lower Bound",
     "content": "**erdos_gallai_tuza_large_cliques** (axiom): if every clique has size $\\geq k$, then $\\tau(G) \\leq n - \\sqrt{kn}$.\n\n**linear_cliques_sublinear**: for $k = cn$, $\\tau \\leq n - \\sqrt{cn^2} = (1 - \\sqrt{c})n$ (sorry).\n\n**question1_positive**: consequence — $\\tau < n$ for any $c > 0$ (sorry).\n\n**threshold_lower_bound** (axiom): $k_c(n) \\geq n^{c'/\\log \\log n}$.\n\n**threshold_grows_slowly**: for any $\\varepsilon > 0$, eventually $k_c(n) \\leq n^\\varepsilon$ (sorry).",
     "mathContext": "The EGT bound $\\tau \\leq n - \\sqrt{kn}$ is proved by a greedy/pigeonhole argument: if a transversal $T$ has size $\\tau$, the remaining $n - \\tau$ vertices are not in $T$, yet each maximal clique has $\\geq k$ vertices, of which at least one must be in $T$. The overlap between cliques and $T$ constrains $\\tau$ via a counting argument involving the $\\sqrt{kn}$ term. The lower bound $k_c(n) \\geq n^{c'/\\log \\log n}$ comes from random graph constructions: $G(n, p)$ with carefully chosen $p$ has maximal cliques of size $\\sim \\log n / \\log(1/p)$ while the transversal number can be controlled. The double-logarithmic exponent $c'/\\log \\log n$ reflects the relationship between clique size in random graphs and the chromatic/transversal structure.",
@@ -78,7 +78,7 @@
       "startLine": 154,
       "endLine": 191
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bollobás-Erdős Threshold for τ = 1 and Special Cases",
     "content": "**bollobas_erdos_threshold** $n = n + 3 - 2\\sqrt{n}$: the critical clique size for $\\tau = 1$.\n\n**bollobas_erdos_tau_one** (axiom): all cliques $\\geq n + 3 - 2\\sqrt{n} \\Rightarrow \\tau = 1$. A single vertex hits every maximal clique.\n\n**bollobas_erdos_optimal** (axiom): the threshold is tight — reducing by any $\\varepsilon$ allows $\\tau \\geq 2$.\n\n**complete_graph_tau**: $\\tau(K_n) = 1$ (sorry). **complete_bipartite_tau**: $\\tau(K_{n/2,n/2}) = n/2$ (sorry). **turan_graph_tau**: $\\tau(T(n,r))$ analysis (sorry).",
     "mathContext": "The Bollobás-Erdős threshold $n + 3 - 2\\sqrt{n}$ for $\\tau = 1$ is a beautiful exact result. When every clique has $\\geq n + 3 - 2\\sqrt{n}$ vertices, any two cliques must share at least one vertex (by a counting argument: two cliques of this size in an $n$-vertex graph must overlap). The '3' is exact and arises from the extremal construction: a graph where two cliques of size $n + 2 - 2\\sqrt{n}$ can be arranged to be almost disjoint. The complete bipartite graph $K_{n/2, n/2}$ is the extreme opposite: clique size 2 (every edge is maximal) and $\\tau = n/2$.",
@@ -102,7 +102,7 @@
       "startLine": 193,
       "endLine": 245
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Probabilistic Lower Bounds, Relation to #610, and Problem Status",
     "content": "**random_graph_clique_transversal** (axiom): random graphs witness $k_c(n) \\geq n^{c/\\log \\log n}$ — there exist graphs with cliques of this size yet $\\tau \\geq (1-c-0.01)n$.\n\n**refines_610**: Problem #611 refines #610 by adding clique size constraints; the $k = 2$ case recovers #610's bound (sorry).\n\n**erdos_611_status**: combines linear_cliques_sublinear ($\\tau \\leq (1-\\sqrt{c})n$) with threshold_lower_bound ($k_c(n) \\geq n^{c'/\\log \\log n}$). Q1 answered, Q2 partially open.",
     "mathContext": "The probabilistic construction works as follows: in $G(n, p)$ with $p = n^{-\\alpha}$ for suitable $\\alpha$, maximal cliques have size $\\Theta(1/\\alpha)$ for constant $\\alpha$, but for $\\alpha$ depending on $n$ (specifically $\\alpha \\sim 1/\\log \\log n$), cliques grow as $n^{c/\\log \\log n}$. Meanwhile, the independence number (and thus the transversal complement) is large: $\\alpha(G) \\approx cn$ with high probability, implying $\\tau \\geq (1-c)n$ since the complement of any transversal must avoid some clique. This shows the lower bound on $k_c(n)$ is essentially tight in order of magnitude.",

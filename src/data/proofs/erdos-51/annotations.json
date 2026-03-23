@@ -75,7 +75,7 @@
       "startLine": 55,
       "endLine": 64
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős Problem #51: Divergent Preimage Ratio",
     "content": "**erdos_51_conjecture**: ∃ infinite A ⊆ ℕ with all elements totient values, such that smallestTotientPreimage(a)/a → ∞ as a → ∞ through A. The ratio of smallest preimage to value can be made arbitrarily large along an infinite subsequence.",
     "significance": "key",
@@ -98,7 +98,7 @@
       "startLine": 68,
       "endLine": 69
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "φ(1) = 1",
     "content": "**totient_one**: Nat.totient 1 = 1. The only integer coprime to 1 in {1,...,1} is 1 itself. Proved by `simp`.",
     "significance": "supporting",
@@ -119,7 +119,7 @@
       "startLine": 71,
       "endLine": 73
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "φ(p) = p − 1 for Prime p",
     "content": "**totient_prime**: For prime p, Nat.totient p = p − 1. All integers in {1,...,p-1} are coprime to p.",
     "significance": "key",
@@ -141,7 +141,7 @@
       "startLine": 85,
       "endLine": 88
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Every Even a ≥ 2 Is a Totient Value",
     "content": "**even_totient_values**: For even a ≥ 2, there exists n with φ(n) = a. The range of φ includes all even numbers ≥ 2.",
     "significance": "key",
@@ -164,7 +164,7 @@
       "startLine": 95,
       "endLine": 99
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős's Carmichael Result",
     "content": "**erdos_carmichael**: If any totient value has exactly one preimage (|φ⁻¹(a)| = 1), then infinitely many do. This is Erdős's 1935 partial result toward Carmichael's conjecture.",
     "significance": "key",
@@ -189,7 +189,7 @@
       "startLine": 103,
       "endLine": 113
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Prime Preimage Ratio Bounds",
     "content": "**prime_preimage_ratio**: For prime p, smallestTotientPreimage(p−1) ≤ p. **prime_minus_one_ratio_bounded**: For prime p ≥ 3, the ratio is at most 2. These show that totient values of the form p−1 have bounded preimage ratios.",
     "significance": "key",
@@ -233,7 +233,7 @@
       "startLine": 119,
       "endLine": 122
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Highly Totient Numbers Exist",
     "content": "**highly_totient_exist**: For any k, some totient value a has at least k preimages (inverseTotientCount(a) ≥ k). The preimage sizes are unbounded.",
     "significance": "supporting",

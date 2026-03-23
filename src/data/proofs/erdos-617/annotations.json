@@ -97,7 +97,7 @@
       "startLine": 129,
       "endLine": 143
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Known Cases: r = 3 and r = 4",
     "content": "**Solved Cases (Erdős-Gyárfás 1999)**\n\nThe conjecture is proved for r = 3 and r = 4:\n\n- **r = 3:** Every 3-colouring of K₁₀ has a K₄ missing a colour. A K₄ has 6 edges; balance requires each colour to appear exactly twice. The counting argument shows this is impossible across all K₄ subgraphs of K₁₀.\n\n- **r = 4:** Every 4-colouring of K₁₇ has a K₅ missing a colour. A K₅ has 10 edges; the argument is similar but more involved.\n\nThe general case r ≥ 5 remains open — the counting arguments become harder to control.",
     "mathContext": "r_3_solved : ∀ c, IsNotBalanced 10 3 c; r_4_solved : ∀ c, IsNotBalanced 17 4 c",
@@ -115,7 +115,7 @@
       "startLine": 145,
       "endLine": 162
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Boundary Cases and Counterexamples",
     "content": "**Why r ≥ 3 and r²+1 Are Both Necessary**\n\nTwo counterexamples show the conjecture's hypotheses are tight:\n\n- **r = 2 fails:** The Petersen graph complement provides a balanced 2-colouring of K₅. Every triangle uses both colours, so the balance condition is satisfied. This shows r ≥ 3 is necessary.\n\n- **K_{r²} can be balanced:** For infinitely many r, balanced r-colourings of K_{r²} exist. This shows the +1 in r²+1 is essential — you need that one extra vertex to force non-balance.",
     "mathContext": "∃ balanced 2-colouring of K₅; ∃ r ≥ 3 with balanced r-colouring of K_{r²}",
@@ -133,7 +133,7 @@
       "startLine": 180,
       "endLine": 211
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**Complete Summary of Known Results**\n\nThe summary theorem erdos_617_summary bundles the three main known results into a single conjunction:\n1. Every 3-colouring of K₁₀ is not balanced (r=3 case)\n2. Every 4-colouring of K₁₇ is not balanced (r=4 case)\n3. A balanced 2-colouring of K₅ exists (r=2 counterexample)\n\nThe general conjecture for r ≥ 5 remains one of the notable open problems in edge-colouring theory.",
     "mathContext": "erdos_617_summary : (∀ c, ¬balanced 10 3 c) ∧ (∀ c, ¬balanced 17 4 c) ∧ (∃ c, balanced 5 2 c)",

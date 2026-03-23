@@ -9,9 +9,14 @@
     },
     "title": "Residue Assignment",
     "content": "A `ResidueAssignment x` is a function assigning to each prime $p \\leq x$ a residue class $a_p$. The assignment determines which integers each prime 'covers': prime $p$ covers $n$ when $n \\equiv a_p \\pmod{p}$.",
-    "significance": "essential",
+    "significance": "key",
     "mathContext": "\\text{ResidueAssignment}(x) : \\{p \\leq x : p \\text{ prime}\\} \\to \\mathbb{Z}/p\\mathbb{Z}: Dependent function type assigning each prime $p \\leq x$ a residue class. Uses natural number residues with congruence checked via $n \\bmod p = a_p \\bmod p$. Each assignment determines which integers each prime 'covers'.",
-    "relatedConcepts": ["covering congruences", "Chinese Remainder Theorem", "dependent function types", "ZMod"]
+    "relatedConcepts": [
+      "covering congruences",
+      "Chinese Remainder Theorem",
+      "dependent function types",
+      "ZMod"
+    ]
   },
   {
     "id": "erdos-467-partition",
@@ -23,9 +28,13 @@
     },
     "title": "Prime Partition Structure",
     "content": "A `PrimePartition x` partitions primes $\\leq x$ into sets $A$ and $B$ via a Boolean classifier `inA`. Both sets must be non-empty (witnessed by existential proofs).",
-    "significance": "essential",
+    "significance": "key",
     "mathContext": "\\{p \\leq x : p \\text{ prime}\\} = A \\sqcup B,\\quad A \\neq \\emptyset,\\, B \\neq \\emptyset: Boolean classifier with non-emptiness witnesses. Uses `Bool` rather than `Prop` for the classifier, enabling computation. The structure packages the partition function together with existential proofs that both parts are non-empty.",
-    "relatedConcepts": ["set partition", "Boolean classification", "non-emptiness witness"]
+    "relatedConcepts": [
+      "set partition",
+      "Boolean classification",
+      "non-emptiness witness"
+    ]
   },
   {
     "id": "erdos-467-coverage-defs",
@@ -37,28 +46,37 @@
     },
     "title": "Coverage and Dual Covering",
     "content": "Defines `CoveredByA`, `CoveredByB`, and `IsDualCovering`. An integer $n$ is covered by $A$ if $\\exists p \\in A,\\, n \\equiv a_p \\pmod{p}$. A dual covering requires every $n < x$ is covered by both $A$ and $B$ independently.",
-    "significance": "essential",
+    "significance": "key",
     "mathContext": "\\text{IsDualCovering} :\\Leftrightarrow \\forall n < x,\\, (\\exists p \\in A,\\, n \\equiv a_p \\pmod{p}) \\wedge (\\exists q \\in B,\\, n \\equiv a_q \\pmod{q}): Universal quantification requiring every integer $n < x$ to be covered by at least one prime from each partition class. This is strictly stronger than a single covering system.",
-    "relatedConcepts": ["covering systems", "exact covering systems", "Helly-type conditions"]
+    "relatedConcepts": [
+      "covering systems",
+      "exact covering systems",
+      "Helly-type conditions"
+    ]
   },
   {
     "id": "erdos-467-conjecture",
     "proofId": "erdos-467",
-    "type": "conjecture",
+    "type": "concept",
     "range": {
       "startLine": 62,
       "endLine": 68
     },
     "title": "Main Conjecture: Erdős Problem 467",
     "content": "For all sufficiently large $x$, there exist a residue assignment and a prime partition achieving dual coverage. The problem asks whether the redundancy in prime residue classes ($\\sum 1/p$ diverges) is enough to split primes into two halves that each cover everything.",
-    "significance": "essential",
+    "significance": "key",
     "mathContext": "\\exists X,\\, \\forall x \\geq X,\\, \\exists (a_p)_{p \\leq x},\\, \\exists A \\sqcup B,\\, \\text{IsDualCovering}(x): Existential statement asking whether primes can be split into two groups that each independently cover all residues. Axiomatized since the problem is open. The quantifier structure ($\\exists X, \\forall x \\geq X, \\exists \\text{assign}, \\exists \\text{part}$) captures 'for sufficiently large $x$'. The divergence of $\\sum 1/p$ (Euler) suggests enough redundancy exists.",
-    "relatedConcepts": ["Erdős covering congruence problems", "Hough's theorem", "Lovász Local Lemma", "prime harmonic series"]
+    "relatedConcepts": [
+      "Erdős covering congruence problems",
+      "Hough's theorem",
+      "Lovász Local Lemma",
+      "prime harmonic series"
+    ]
   },
   {
     "id": "erdos-467-residue-basics",
     "proofId": "erdos-467",
-    "type": "result",
+    "type": "insight",
     "range": {
       "startLine": 74,
       "endLine": 98
@@ -71,7 +89,7 @@
   {
     "id": "erdos-467-zero-assignment",
     "proofId": "erdos-467",
-    "type": "result",
+    "type": "insight",
     "range": {
       "startLine": 110,
       "endLine": 138
@@ -84,7 +102,7 @@
   {
     "id": "erdos-467-partition-props",
     "proofId": "erdos-467",
-    "type": "result",
+    "type": "insight",
     "range": {
       "startLine": 144,
       "endLine": 190
@@ -97,7 +115,7 @@
   {
     "id": "erdos-467-residue-periodicity",
     "proofId": "erdos-467",
-    "type": "result",
+    "type": "insight",
     "range": {
       "startLine": 196,
       "endLine": 209
@@ -110,27 +128,27 @@
   {
     "id": "erdos-467-crt",
     "proofId": "erdos-467",
-    "type": "result",
+    "type": "insight",
     "range": {
       "startLine": 215,
       "endLine": 218
     },
     "title": "CRT for Distinct Primes",
     "content": "For distinct primes $p, q$ and any residues $a, b$, the Chinese Remainder Theorem guarantees $\\exists n,\\, n \\equiv a \\pmod{p} \\wedge n \\equiv b \\pmod{q}$. Axiomatized; provable from `ZMod.chineseRemainder`. CRT implies coverage events from distinct primes are independent.",
-    "significance": "essential",
+    "significance": "key",
     "mathContext": "number theory. LaTeX: p \\neq q \\text{ prime} \\implies \\forall a, b,\\, \\exists n,\\, n \\equiv a \\pmod{p} \\wedge n \\equiv b \\pmod{q}. Lean: axiom crt_for_primes (p q a b : ℕ) (hp : p.Prime) (hq : q.Prime) (hne : p ≠ q) : ∃ n, n % p = a % p ∧ n % q = b % q. Technique: axiomatized (provable via ZMod.chineseRemainder). CRT implies independence: the probability of avoiding coverage by coprime moduli is $\\prod (1 - 1/p)$.. Related: Chinese Remainder Theorem, ZMod.chineseRemainder. Cross-refs: erdos-467-mertens"
   },
   {
     "id": "erdos-467-mertens",
     "proofId": "erdos-467",
-    "type": "result",
+    "type": "insight",
     "range": {
       "startLine": 224,
       "endLine": 229
     },
     "title": "Mertens-type Estimate",
     "content": "By Mertens' third theorem, $\\prod_{p \\leq x} (1 - 1/p) \\sim e^{-\\gamma}/\\log x$, where $\\gamma \\approx 0.5772$ is the Euler-Mascheroni constant. This bounds the 'uncovered probability' — the fraction of integers not hit by any prime's residue class. For dual coverage, both $A$ and $B$ need enough primes that $\\prod_{p \\in A} (1 - 1/p)$ is small enough.",
-    "significance": "essential",
+    "significance": "key",
     "mathContext": "analytic number theory. LaTeX: \\prod_{p \\leq x} \\left(1 - \\frac{1}{p}\\right) \\sim \\frac{e^{-\\gamma}}{\\log x}. Lean: axiom mertens_product : ∃ c : ℝ, c > 0 ∧ .... Technique: axiomatized (Mertens' third theorem). The axiom statement is incomplete — it only asserts positivity rather than the full Mertens asymptotic. A complete formalization would need the Euler-Mascheroni constant.. Related: Mertens' theorems, Euler product for ζ(s), prime harmonic series divergence. Refs: Mertens (1874), Hardy–Wright, An Introduction to the Theory of Numbers. Cross-refs: erdos-467-crt, erdos-467-conjecture"
   }
 ]

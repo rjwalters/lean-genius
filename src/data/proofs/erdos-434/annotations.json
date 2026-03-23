@@ -44,7 +44,7 @@
       "startLine": 53,
       "endLine": 56
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Zero is Always Representable",
     "content": "**zero_representable**: 0 is representable by any set A, using the empty multiset ∅ with sum 0. Proved by `use ∅; simp`.\n\nThis is the identity element of the numerical semigroup: the empty sum convention.",
     "significance": "supporting",
@@ -57,7 +57,7 @@
       "startLine": 58,
       "endLine": 61
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Elements are Self-Representable",
     "content": "**mem_representable**: Any element a ∈ A is representable by A, using the singleton multiset {a}. Proved by `use {a}; simp [ha]`.\n\nThis shows A ⊆ RepresentableSet(A), the generating set embeds into its semigroup.",
     "significance": "supporting",
@@ -70,7 +70,7 @@
       "startLine": 63,
       "endLine": 76
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sum Closure of Representability",
     "content": "**add_representable**: If m and n are both representable by A, then m + n is too. Combine multisets Sm + Sn: membership follows from cases on Multiset.mem_add, and sum follows from Multiset.sum_add.\n\nThis proves the representable set forms a subsemigroup of (ℕ, +). Together with zero_representable, it's a submonoid.",
     "significance": "key",
@@ -173,7 +173,7 @@
       "startLine": 122,
       "endLine": 156
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Small Examples: {2,3}, {3,5}, topK(5,2)",
     "content": "Three concrete examples illustrate the pattern:\n- **{2, 3}**: NonRepresentable = {1}, Frobenius number 1. Small numbers → few gaps.\n- **{3, 5}**: NonRepresentable = {1, 2, 4, 7}, Frobenius number 7. By Sylvester: 3·5 - 3 - 5 = 7, count = (2)(4)/2 = 4.\n- **topK(5, 2) = {4, 5}**: Proved by ext + simp + omega. Many more non-representables.\n\nThe topK example has far more non-representables, illustrating why larger numbers are optimal.",
     "significance": "key",
@@ -186,7 +186,7 @@
       "startLine": 160,
       "endLine": 169
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Kiss's Theorem (2002): topK is Optimal",
     "content": "**kiss_2002**: For 1 ≤ k ≤ n, ExtremalFrobeniusQuestion n k holds — the set {n-k+1,...,n} maximizes nCardNonRepresentable among all k-element subsets of {1,...,n}.\n\nThis is the main result, axiomatized because Kiss's proof requires detailed analysis of representation counts via generating functions and comparison inequalities for different subsets.",
     "significance": "key",
@@ -204,7 +204,7 @@
       "startLine": 171,
       "endLine": 175
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem #434 Answer: YES",
     "content": "**erdos_434_answer**: Direct corollary of kiss_2002. For all valid n, k and any A ⊆ {1,...,n} with |A| = k, nCardNonRepresentable(A) ≤ nCardNonRepresentable(topK n k).\n\nProved by exact application of kiss_2002.",
     "significance": "key",
@@ -217,7 +217,7 @@
       "startLine": 179,
       "endLine": 191
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Larger Numbers Create More Gaps",
     "content": "**larger_numbers_fewer_reps**: For n ≥ 2, nCardNonRepresentable({n-1, n}) > nCardNonRepresentable({1, 2}). Since {1, 2} represents everything (all positive integers), while {n-1, n} leaves many gaps.\n\nWith {1, 2}: all positive integers are representable. With {9, 10}: 1-8 are all non-representable, plus 11-17, etc.",
     "significance": "key",
@@ -230,7 +230,7 @@
       "startLine": 195,
       "endLine": 208
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sylvester-Frobenius Theorem and Count Formula",
     "content": "Two classical results axiomatized:\n- **sylvester_frobenius**: For coprime a, b > 0, frobeniusNumber {a,b} = ab - a - b.\n- **sylvester_count**: The count of non-representables is (a-1)(b-1)/2.\n\nFor {3, 5}: Frobenius number = 15 - 3 - 5 = 7, count = (2)(4)/2 = 4.\n\n**consecutive_count** (sorry): For consecutive integers {n-1, n}, the count is (n-2)(n-1)/2, growing quadratically.",
     "significance": "key",
@@ -262,7 +262,7 @@
       "startLine": 226,
       "endLine": 237
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Finiteness of Non-Representables",
     "content": "**nonrep_finite**: When A has two coprime elements, NonRepresentable A is finite. **topK_finite**: For k ≥ 2 and n ≥ k, NonRepresentable(topK n k) is finite.\n\nBoth are sorry'd. The classical result: if gcd(A) = 1, then all sufficiently large integers are representable (the Frobenius number bounds the non-representable set).",
     "significance": "supporting",
@@ -288,7 +288,7 @@
       "startLine": 257,
       "endLine": 268
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Complete Answer: topK is Optimal",
     "content": "**erdos_434_complete**: For all n ≥ 1, k ≥ 1, k ≤ n, and any A ⊆ {1,...,n} with |A| = k: nCardNonRepresentable(A) ≤ nCardNonRepresentable(topK n k).\n\nProved by exact application of kiss_2002. This is the definitive answer to Erdős Problem #434.",
     "significance": "key",
@@ -301,7 +301,7 @@
       "startLine": 270,
       "endLine": 275
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "topK Achieves Maximum (IsGreatest)",
     "content": "**topK_is_maximum**: Formulates the result using Mathlib's `IsGreatest`: topK achieves the maximum of {nCardNonRepresentable A | A valid}. Sorry'd — requires showing topK is itself valid (⊆ {1,...,n} with |topK| = k) and applying kiss_2002.\n\nThis is the strongest formulation: not just 'all others are ≤' but 'topK is in the set AND is the greatest'.",
     "significance": "key",

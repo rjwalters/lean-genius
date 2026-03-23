@@ -2,7 +2,7 @@
   {
     "id": "ann-e579-imports",
     "proofId": "erdos-579",
-    "type": "import",
+    "type": "context",
     "title": "Mathlib SimpleGraph Imports",
     "content": "Imports Mathlib's SimpleGraph, Clique, and Finset libraries for graph-theoretic definitions.",
     "mathContext": "This formalization uses Mathlib's built-in `SimpleGraph V` type rather than a custom graph structure. The `SimpleGraph.Clique` import provides access to clique-related predicates, while `Finset` supports edge counting and vertex subsets. The `DecidableRel G.Adj` instance enables `edgeFinset.card` for edge counting.",
@@ -136,7 +136,7 @@
   {
     "id": "ann-e579-ehss",
     "proofId": "erdos-579",
-    "type": "axiom",
+    "type": "concept",
     "title": "EHSS Result for δ > 1/8",
     "content": "Erdős, Hajnal, Sós, and Szemerédi (1983) proved that for δ > 1/8, K₂,₂,₂-free graphs with ≥ δn² edges have independence number ≥ cn.",
     "mathContext": "The **EHSS theorem** (1983) uses the fact that for $\\delta > 1/8$, a $K_{2,2,2}$-free graph with $\\geq \\delta n^2$ edges exceeds the **Turán number** $\\text{ex}(n; K_{2,2,2})$. This 'super-Turán' density creates structural constraints exploitable by regularity methods. The formalization uses `Filter.atTop` for the 'sufficiently large $n$' quantifier, a clean alternative to explicit bounds.",
@@ -160,7 +160,7 @@
   {
     "id": "ann-e579-conjecture",
     "proofId": "erdos-579",
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős Problem 579: Full Conjecture",
     "content": "For every δ > 0, K₂,₂,₂-free graphs with ≥ δn² edges have independent sets of size ≥ c(δ)·n.",
     "mathContext": "The conjecture extends EHSS from $\\delta > 1/8$ to all $\\delta > 0$. For $\\delta \\leq 1/8$, the graph has *fewer* edges than the Turán extremal graph, so the structural argument changes qualitatively. The problem is analogous to Problem #533 (triangle-free subsets in $K_5$-free graphs) but with $K_{2,2,2}$ replacing $K_5$ and independent sets replacing triangle-free subsets. Both ask whether a forbidden subgraph condition, combined with positive density, forces structured subgraphs of linear size.",
@@ -183,7 +183,7 @@
   {
     "id": "ann-e579-turanK222",
     "proofId": "erdos-579",
-    "type": "axiom",
+    "type": "concept",
     "title": "Turán Number of K₂,₂,₂",
     "content": "The Turán number ex(n; K₂,₂,₂) = (1/8 + o(1))n², establishing the maximum edge count for K₂,₂,₂-free graphs.",
     "mathContext": "The **Turán number** $\\text{ex}(n; H)$ is the maximum number of edges in an $H$-free graph on $n$ vertices. For $K_{2,2,2}$, the extremal graph is the balanced complete $8$-partite graph $T_8(n)$ with $\\lfloor n/8 \\rfloor$-sized parts. The formalization uses a vanishing error function $f : \\mathbb{N} \\to \\mathbb{R}$ with $f(n) \\to 0$ to express the asymptotic bound. The threshold $1/8$ explains why the EHSS proof works above this density: exceeding the Turán number forces structural richness in the graph.",

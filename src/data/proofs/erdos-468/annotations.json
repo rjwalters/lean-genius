@@ -54,7 +54,7 @@
       "startLine": 46,
       "endLine": 55
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Question 1: New Elements Exist and Grow",
     "content": "Two axioms for Question 1. **new_elements_exist** (lines 48–49): for $n \\geq 2$, the set $D_n \\setminus \\bigcup_{m<n} D_m$ is nonempty — every integer $\\geq 2$ contributes at least one new partial sum. **new_element_count_conjecture** (lines 53–55): $|D_n|$ grows without bound — for any $B$, eventually $|D_n| \\geq B$. This follows from the fact that $d(n)$ (number of divisors) is unbounded, so $|D_n| = d(n) - 1$ grows for highly composite $n$.",
     "mathContext": "**Axiom 1:** $D_n \\setminus \\bigcup_{m<n} D_m \\neq \\emptyset$ for $n \\geq 2$. **Axiom 2:** $\\forall B,\\; \\exists N,\\; \\forall n \\geq N: |D_n| \\geq B$.",
@@ -101,7 +101,7 @@
       "startLine": 69,
       "endLine": 73
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Almost-All Variant of the Conjecture",
     "content": "States $f(N) = o(N)$ for almost all $N$: the density of exceptions $\\{N \\leq M : f(N) > \\varepsilon N\\}$ is $\\leq \\delta M$ for any $\\delta > 0$ and large $M$. This is a natural weakening that may be approachable via averaging: if most $N$ values are covered by some moderately-sized $n$, the average of $f(N)/N$ could be bounded even if some individual values are large. The density-based formulation uses `Finset.filter` and `Finset.card`.",
     "mathContext": "**Weak conjecture (OPEN):** $|\\{N \\leq M : f(N) > \\varepsilon N\\}| = o(M)$, i.e., $f(N) = o(N)$ for density-1 set of $N$.",
@@ -147,7 +147,7 @@
       "startLine": 85,
       "endLine": 95
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Boundary Elements of $D_n$",
     "content": "Two structural axioms. **Smallest element** (lines 87–88): $\\min(D_n) = \\text{minFac}(n)$, the smallest prime factor of $n$, since it is the first divisor $> 1$. **Largest element** (lines 91–92): $\\max(D_n) = \\sigma(n) - 1$, the sum of all divisors minus 1 (the total partial sum excludes the divisor 1). These anchor the set $D_n$ between $\\text{minFac}(n)$ and $\\sigma(n) - 1$. The connection to the OEIS sequences A167485, A387502, A387503 is noted in a comment.",
     "mathContext": "$\\min(D_n) = p_1(n)$ (smallest prime factor), $\\max(D_n) = \\sigma(n) - 1$ where $\\sigma(n) = \\sum_{d \\mid n} d$.",

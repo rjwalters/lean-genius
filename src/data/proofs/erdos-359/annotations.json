@@ -97,7 +97,7 @@
       "startLine": 77,
       "endLine": 92
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Basic Properties",
     "content": "**macmahon_first_term** shows A(0) = 1, **macmahon_strictMono** proves strict monotonicity, and **term_is_achievable** shows each A(i) is achievable as the 'singleton sum' of just itself.",
     "mathContext": "These are direct consequences of the definition. Strict monotonicity follows because A(j+1) > A(j) by construction.",
@@ -133,7 +133,7 @@
       "startLine": 117,
       "endLine": 134
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Why 3 and 6 are Skipped",
     "content": "**three_is_achievable** proves 3 in AchievableSums (since 3 = 1 + 2 = A(0) + A(1)). **six_is_achievable** proves 6 in AchievableSums (since 6 = 2 + 4 = A(1) + A(2)).",
     "mathContext": "These verified theorems show concrete examples of the sequence's construction. Each uses the Finset.sum_Icc_succ_top lemma to compute the sum.",
@@ -151,7 +151,7 @@
       "startLine": 144,
       "endLine": 162
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Growth Rate Conjectures (OPEN)",
     "content": "**Three open conjectures**: (1) a_k/k -> infinity (superlinear), (2) a_k/k^{1+c} -> 0 for c > 0 (subpolynomial), (3) Andrews' conjecture a_k ~ (k log k)/(log log k).",
     "mathContext": "These capture the expected intermediate growth rate - faster than linear but slower than any polynomial > 1. All remain OPEN.",
@@ -169,7 +169,7 @@
       "startLine": 170,
       "endLine": 176
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Porubsky's Upper Bound (1977)",
     "content": "**porubsky_upper** states: for any epsilon > 0, infinitely many k satisfy a_k < (log k)^epsilon * (k log k)/(log log k). This gives partial evidence for Andrews' conjecture.",
     "mathContext": "The bound shows the sequence doesn't grow too much faster than the conjectured rate, at least infinitely often.",
@@ -205,7 +205,7 @@
       "startLine": 186,
       "endLine": 192
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Porubsky's Density Bound",
     "content": "**porubsky_density_bound** states limsup A(x)/pi(x) >= 1/log(2). MacMahon's sequence is denser than primes by at least this factor infinitely often.",
     "mathContext": "Since 1/log(2) ~ 1.44, the sequence has at least 44% more elements than primes (asymptotically, infinitely often).",
@@ -223,7 +223,7 @@
       "startLine": 199,
       "endLine": 204
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "General Starting Value",
     "content": "**general_n_superlinear** conjectures that sequences 'good for n' (starting with any n > 0) also have superlinear growth a_k/k -> infinity.",
     "mathContext": "The problem generalizes beyond n = 1. Different starting values create different sequences but with similar growth behavior.",
@@ -241,7 +241,7 @@
       "startLine": 222,
       "endLine": 235
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_359_summary** bundles basic facts: A(0) = 1 for MacMahon sequences, strict monotonicity holds, and the first and eighth values are 1 and 15 respectively.",
     "mathContext": "A convenience theorem packaging the core verified results for quick reference.",

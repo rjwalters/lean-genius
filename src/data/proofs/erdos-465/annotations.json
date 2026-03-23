@@ -102,7 +102,7 @@
       "startLine": 94,
       "endLine": 109
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sárközy's Theorem (1976)",
     "content": "SarkozyBound axiomatizes N(X,δ) ≤ C·δ⁻³·X/log log X for X ≥ 3. The theorem first_conjecture_holds derives FirstConjecture from SarkozyBound with a sorry (needs log log X → ∞). Sárközy's proof uses analytic number theory and counting arguments on the distribution of distances mod 1.",
     "mathContext": "Sárközy's bound $N(X, \\delta) \\leq C \\cdot \\delta^{-3} \\cdot \\frac{X}{\\log \\log X}$ gives sublinear growth since $\\log \\log X \\to \\infty$, but extremely slowly. The $\\delta^{-3}$ dependence shows the constraint weakens as $\\delta \\to 0$ (smaller buffer zones allow more points). The proof uses the key observation that among $n$ points in a disk, the $\\binom{n}{2}$ pairwise distances have controlled distribution modulo 1, and exponential sum techniques bound how many distances can simultaneously avoid $(-\\delta, \\delta) + \\mathbb{Z}$. The sorry in $\\texttt{first\\_conjecture\\_holds}$ is a calculus step: showing $C \\cdot \\delta^{-3} / \\log \\log X < \\varepsilon$ for large $X$.",
@@ -147,7 +147,7 @@
       "startLine": 121,
       "endLine": 139
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Konyagin's Theorem (2001)",
     "content": "KonyaginBound axiomatizes N(X,δ) ≤ C_δ·X^{1/2} for X ≥ 1. The theorem second_conjecture_holds derives SecondConjecture from KonyaginBound with a sorry (needs C·X^{1/2} < X^{1/2+ε} for large X). Konyagin's proof uses deep Fourier analysis and exponential sum estimates to achieve the optimal exponent.",
     "mathContext": "Konyagin's bound $N(X, \\delta) \\leq C_\\delta \\cdot X^{1/2}$ is a 25-year improvement over Sárközy: the ratio $\\frac{X / \\log \\log X}{X^{1/2}} = X^{1/2} / \\log \\log X \\to \\infty$. The proof strategy: consider the $\\binom{n}{2}$ pairwise distances $d_{ij} = |P_i - P_j|$ and their exponential sums $S(t) = \\sum_{i \\neq j} e^{2\\pi i t d_{ij}}$. The condition $\\|d_{ij}\\| \\geq \\delta$ forces $S(t)$ to be large at integer $t$ (constructive interference), while $S(t)$'s $L^2$ norm is controlled by $n^2 X$, giving $n^2 \\leq O(n^2 X / n^2) \\cdot n$, i.e., $n \\leq O(X^{1/2})$. The sorry in $\\texttt{second\\_conjecture\\_holds}$ needs $C \\cdot X^{1/2} < X^{1/2 + \\varepsilon}$ when $X > C^{2/\\varepsilon}$.",
@@ -192,7 +192,7 @@
       "startLine": 161,
       "endLine": 181
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Lower Bound and Optimality (Problem #466)",
     "content": "LowerBound axiomatizes N(X,δ) ≥ c_δ·X^{1/2}: configurations of ~√X points exist. The axiom problem_466_lower_bound asserts this. exponent_optimal trivially packages both bounds. Together with Konyagin's upper bound, this gives N(X,δ) ≍ X^{1/2} — the exponent 1/2 is tight.",
     "mathContext": "The lower bound $N(X, \\delta) \\geq c_\\delta \\cdot X^{1/2}$ means there EXIST configurations of $\\sim \\sqrt{X}$ points with all distances avoiding integers by $\\delta$. The construction (from Problem #466) uses a perturbation of lattice-like configurations: start with $\\sim \\sqrt{X}$ points on a carefully chosen curve and perturb to ensure $\\|d_{ij}\\| \\geq \\delta$. The matching upper and lower bounds give $N(X, \\delta) \\asymp_\\delta X^{1/2}$, determining the growth exponent exactly. The theorem $\\texttt{exponent\\_optimal}$ packages $\\texttt{KonyaginBound} \\wedge \\texttt{LowerBound} \\to \\texttt{True}$.",
@@ -261,7 +261,7 @@
       "startLine": 243,
       "endLine": 293
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary: erdos_465_solved and erdos_465_summary",
     "content": "erdos_465_solved packages FirstConjecture ∧ SecondConjecture, proved from the two corollary theorems (which use sorry for calculus steps). erdos_465_summary adds KonyaginBound ∧ LowerBound for the full picture. optimal_growth packages the tight bounds. erdos_465_status gives a human-readable string.",
     "mathContext": "The packaging theorems: $\\texttt{erdos\\_465\\_solved} : \\texttt{FirstConjecture} \\wedge \\texttt{SecondConjecture}$ uses $\\texttt{first\\_conjecture\\_holds}$ and $\\texttt{second\\_conjecture\\_holds}$ (both with sorry). $\\texttt{erdos\\_465\\_summary}$ adds the tight asymptotic: $\\texttt{KonyaginBound} \\wedge \\texttt{LowerBound}$ from axioms. $\\texttt{optimal\\_growth}$ directly applies $\\texttt{konyagin\\_2001}$ and $\\texttt{problem\\_466\\_lower\\_bound}$. The two sorry entries are in corollaries that need elementary calculus ($\\log \\log X \\to \\infty$ and $C \\cdot X^{1/2} < X^{1/2 + \\varepsilon}$ for large $X$).",

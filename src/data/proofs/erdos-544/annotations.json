@@ -3,98 +3,162 @@
     "id": "erdos-544-context",
     "proofId": "erdos-544",
     "type": "context",
-    "range": { "startLine": 1, "endLine": 19 },
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
     "title": "Problem Overview: Consecutive Ramsey Differences",
     "content": "**Erdos Problem 544** asks about the growth rate of **consecutive differences** R(3, k+1) - R(3, k) in the diagonal Ramsey numbers. Erdos and Sos conjectured that these differences **diverge to infinity**, and further asked whether they grow **sublinearly** (i.e., as o(k)). The formalization axiomatizes R(3, k) with its known exact values and asymptotic bounds, then states both parts of the conjecture as precise propositions.",
     "mathContext": "The Ramsey number R(3, k) is the smallest n such that every 2-colouring of K_n contains a red triangle or a blue K_k. Understanding the fine structure of R(3, k) -- not just its order of magnitude but the behaviour of consecutive increments -- is a deep question in combinatorics. The best bounds pinpoint R(3, k) = Theta(k^2 / log k), but the difference R(3, k+1) - R(3, k) could in principle fluctuate wildly. This problem asks whether it grows steadily.",
-    "relatedConcepts": ["Ramsey theory", "graph colouring", "asymptotic analysis", "diagonal Ramsey numbers"],
+    "relatedConcepts": [
+      "Ramsey theory",
+      "graph colouring",
+      "asymptotic analysis",
+      "diagonal Ramsey numbers"
+    ],
     "significance": "key"
   },
   {
     "id": "erdos-544-ramsey3",
     "proofId": "erdos-544",
     "type": "definition",
-    "range": { "startLine": 28, "endLine": 31 },
+    "range": {
+      "startLine": 28,
+      "endLine": 31
+    },
     "title": "Ramsey Number R(3, k)",
     "content": "**ramsey3 k** is axiomatised as the minimum n such that every 2-colouring of the edges of K_n contains either a **red triangle** or a **blue K_k**. The axiom includes a monotonicity property: R(3, k) <= R(3, k+1), and a base bound R(3, k) >= 6 for k >= 3.",
     "mathContext": "R(3, k) sits in the off-diagonal regime of Ramsey theory, where one forbidden monochromatic subgraph (triangle) is small and fixed while the other (clique of size k) grows. This asymmetry makes R(3, k) more tractable than the symmetric R(k, k), and its asymptotics are known up to a constant factor thanks to the probabilistic method and algebraic constructions.",
-    "relatedConcepts": ["Ramsey numbers", "graph colouring", "extremal graph theory"],
+    "relatedConcepts": [
+      "Ramsey numbers",
+      "graph colouring",
+      "extremal graph theory"
+    ],
     "significance": "key"
   },
   {
     "id": "erdos-544-known-values",
     "proofId": "erdos-544",
-    "type": "result",
-    "range": { "startLine": 39, "endLine": 60 },
+    "type": "insight",
+    "range": {
+      "startLine": 39,
+      "endLine": 60
+    },
     "title": "Known Exact Values of R(3, k)",
     "content": "Seven exact values are recorded: R(3,3)=6, R(3,4)=9, R(3,5)=14, R(3,6)=18, R(3,7)=23, R(3,8)=28, R(3,9)=36. The **consecutive differences** are 3, 5, 4, 5, 5, 8 -- showing **irregular growth** that already hints at divergence but makes the sublinearity question non-trivial.",
     "mathContext": "Computing exact Ramsey numbers is extremely difficult; R(3, 9) = 36 was established by Grinstead and Roberts in 1982. No exact value beyond R(3, 9) is known. The irregular spacing of these small values shows that consecutive differences do not follow a simple monotone pattern, which makes proving divergence from first principles challenging.",
-    "relatedConcepts": ["computational Ramsey theory", "exact Ramsey numbers", "combinatorial enumeration"],
+    "relatedConcepts": [
+      "computational Ramsey theory",
+      "exact Ramsey numbers",
+      "combinatorial enumeration"
+    ],
     "significance": "supporting"
   },
   {
     "id": "erdos-544-kim-lower",
     "proofId": "erdos-544",
-    "type": "result",
-    "range": { "startLine": 64, "endLine": 67 },
+    "type": "insight",
+    "range": {
+      "startLine": 64,
+      "endLine": 67
+    },
     "title": "Kim's Lower Bound",
     "content": "**Kim (1995)** proved R(3, k) >= c * k^2 / log k for some absolute constant c > 0, using a **semi-random** (triangle-free process) construction. This was later sharpened by Bohman-Keevash and Fiz Pontiveros-Griffiths-Morris.",
     "mathContext": "Kim's result was a breakthrough that matched the order of magnitude of the upper bound up to a constant. The triangle-free process he analysed is a randomised greedy algorithm that adds edges avoiding triangles, and tracking its evolution required sophisticated probabilistic arguments. This lower bound implies the consecutive differences R(3, k+1) - R(3, k) are at least of order k / log k.",
-    "relatedConcepts": ["probabilistic method", "triangle-free process", "semi-random method"],
+    "relatedConcepts": [
+      "probabilistic method",
+      "triangle-free process",
+      "semi-random method"
+    ],
     "significance": "key"
   },
   {
     "id": "erdos-544-shearer-upper",
     "proofId": "erdos-544",
-    "type": "result",
-    "range": { "startLine": 69, "endLine": 72 },
+    "type": "insight",
+    "range": {
+      "startLine": 69,
+      "endLine": 72
+    },
     "title": "Shearer / CGMS Upper Bound",
     "content": "**Shearer (1983)** established the upper bound R(3, k) <= C * k^2 / log k, later improved by **Campos-Griffiths-Morris-Sahasrabudhe (2023)** who obtained a (1+o(1)) leading constant. Together with Kim's lower bound, this pins down R(3, k) = **Theta(k^2 / log k)**.",
     "mathContext": "The CGMS 2023 improvement was a major recent advance, determining the leading constant in R(3, k) up to a factor of 4. Their method combined a new book algorithm with entropy techniques. For the consecutive differences problem, having both bounds at the same order means the differences are at least Omega(k / log k), which already establishes divergence -- but the o(k) sublinearity question remains open.",
-    "relatedConcepts": ["Ramsey upper bounds", "book algorithm", "entropy method", "asymptotic combinatorics"],
+    "relatedConcepts": [
+      "Ramsey upper bounds",
+      "book algorithm",
+      "entropy method",
+      "asymptotic combinatorics"
+    ],
     "significance": "key"
   },
   {
     "id": "erdos-544-ramseyDiff",
     "proofId": "erdos-544",
     "type": "definition",
-    "range": { "startLine": 76, "endLine": 77 },
+    "range": {
+      "startLine": 76,
+      "endLine": 77
+    },
     "title": "Consecutive Difference ramseyDiff",
     "content": "**ramseyDiff k** = R(3, k+1) - R(3, k) is the **central quantity** of this problem. It measures how much the Ramsey number grows with each unit increase in the clique parameter. The formalization uses natural number subtraction, which is safe because R(3, k) is monotone.",
     "mathContext": "$\\text{ramseyDiff}(k) = R(3,k+1) - R(3,k)$. From the asymptotics $R(3,k) = \\Theta(k^2/\\log k)$, the **average** value of ramseyDiff over $[1,K]$ is $R(3,K)/K = \\Theta(K/\\log K) \\to \\infty$, showing infinitely many large differences. Whether every individual difference diverges (pointwise) is the deeper open question.",
-    "relatedConcepts": ["finite differences", "monotone sequences", "Ramsey growth rate"],
+    "relatedConcepts": [
+      "finite differences",
+      "monotone sequences",
+      "Ramsey growth rate"
+    ],
     "significance": "key"
   },
   {
     "id": "erdos-544-divergence",
     "proofId": "erdos-544",
-    "type": "conjecture",
-    "range": { "startLine": 79, "endLine": 83 },
+    "type": "concept",
+    "range": {
+      "startLine": 79,
+      "endLine": 83
+    },
     "title": "Part 1: Divergence Conjecture",
     "content": "**ErdosProblem544_divergence** states that for every bound M, there exists k_0 such that ramseyDiff k >= M for all k >= k_0. In classical notation: R(3, k+1) - R(3, k) tends to **infinity**. This is the primary assertion of the problem.",
     "mathContext": "Divergence follows from the known asymptotic bounds: since R(3, k) = Theta(k^2 / log k), the average consecutive difference over the interval [1, K] is R(3, K)/K = Theta(K / log K), which grows without bound. A more careful argument using monotonicity of the differences (which is not known!) would give pointwise divergence, but even without monotonicity the Theta bounds suffice to show infinitely many large differences.",
-    "relatedConcepts": ["divergence of sequences", "Cesaro averages", "asymptotic growth"],
+    "relatedConcepts": [
+      "divergence of sequences",
+      "Cesaro averages",
+      "asymptotic growth"
+    ],
     "significance": "key"
   },
   {
     "id": "erdos-544-sublinear",
     "proofId": "erdos-544",
-    "type": "conjecture",
-    "range": { "startLine": 85, "endLine": 89 },
+    "type": "concept",
+    "range": {
+      "startLine": 85,
+      "endLine": 89
+    },
     "title": "Part 2: Sublinearity Conjecture",
     "content": "**ErdosProblem544_sublinear** asks whether ramseyDiff k = **o(k)**, i.e., for every epsilon > 0 there exists k_0 with ramseyDiff k < epsilon * k for all k >= k_0. This is a finer question about the growth rate: the differences diverge, but do they stay sublinear?",
     "mathContext": "The asymptotic bounds give R(3, k) = Theta(k^2 / log k), so a smooth interpolation would suggest differences of order 2k / log k - k^2 / (k log^2 k), which is indeed o(k). However, Ramsey numbers need not grow smoothly, and proving sublinearity requires ruling out occasional jumps of size Omega(k). This secondary question remains open and appears harder than the divergence statement.",
-    "relatedConcepts": ["little-o notation", "sublinear growth", "smoothness of Ramsey sequences"],
+    "relatedConcepts": [
+      "little-o notation",
+      "sublinear growth",
+      "smoothness of Ramsey sequences"
+    ],
     "significance": "key"
   },
   {
     "id": "erdos-544-full-problem",
     "proofId": "erdos-544",
-    "type": "conjecture",
-    "range": { "startLine": 91, "endLine": 93 },
+    "type": "concept",
+    "range": {
+      "startLine": 91,
+      "endLine": 93
+    },
     "title": "Full Problem Statement",
     "content": "**ErdosProblem544** combines both parts as a conjunction: the consecutive differences **diverge** AND they are **sublinear**. This captures the full strength of what Erdos and Sos asked: the differences grow to infinity but slower than k.",
-    "relatedConcepts": ["Erdos-Sos conjecture", "Ramsey theory open problems"],
+    "relatedConcepts": [
+      "Erdos-Sos conjecture",
+      "Ramsey theory open problems"
+    ],
     "significance": "key"
   }
 ]

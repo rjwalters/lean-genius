@@ -132,7 +132,7 @@
       "startLine": 91,
       "endLine": 103
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Basic Bounds",
     "content": "**f_lower_bound:** f(n,k) ≥ kn/2 for n > k+2 and k > 0. A double-counting argument: each (k+2)-subset needs a vertex of degree ≥ k, contributing at least k edges.\n\n**f_upper_bound:** The complete graph K_n has n(n-1)/2 edges and trivially has property P(k) for k ≤ n-2, since every induced subgraph of K_n is also complete.",
     "mathContext": "The lower bound follows from averaging: the total degree contributions across all (k+2)-subsets must be sufficient. The upper bound is trivial since K_n[S] = K_{|S|} has max degree |S|-1.",
@@ -150,7 +150,7 @@
       "startLine": 109,
       "endLine": 120
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Special Cases",
     "content": "**f_case_k_eq_1:** f(n,1) ≥ n-2. Every 3-vertex subset must contain at least one edge (no independent triple). A path P_n achieves this with exactly n-1 edges.\n\n**f_max_k:** f(n, n-2) ≥ n(n-1)/2. When k = n-2, the (n-2+2 = n)-vertex induced subgraph is the whole graph, requiring max degree ≥ n-2. Only the complete graph has this.",
     "mathContext": "The k=1 case relates to the Turán number ex(n, K_3) for triangle-free graphs. The k=n-2 case forces the extremal graph to be K_n itself.",
@@ -168,7 +168,7 @@
       "startLine": 126,
       "endLine": 132
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Monotonicity in k",
     "content": "**f_mono_k:** f(n,k) ≤ f(n,k+1). If a graph has property P(k+1), it automatically has property P(k).\n\nReason: if every (k+3)-subset has max degree ≥ k+1, then every (k+2)-subset has max degree ≥ k (take any (k+2)-subset, extend to a (k+3)-subset, and the degree within the smaller subset is at least as large).",
     "mathContext": "The monotonicity follows from the fact that the property condition becomes strictly stronger as k increases: both the required degree and the subset size grow.",
@@ -186,7 +186,7 @@
       "startLine": 138,
       "endLine": 153
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Open Problem",
     "content": "**erdos_614_existence:** The function f(n,k) is well-defined: for all n ≥ k+2 and k > 0, there exists at least one graph achieving property P(k).\n\nThe exact determination of f(n,k) remains OPEN. Unknown: exact values for most n, k; asymptotic behavior; whether f(n,k)/n² has a limit.",
     "mathContext": "The existence follows from the complete graph, but the minimum is the open question. The problem cannot be resolved by finite computation alone.",
@@ -204,7 +204,7 @@
       "startLine": 159,
       "endLine": 175
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_614_summary** combines two key results:\n1. **Existence:** f(n,k) is well-defined for n ≥ k+2 and k > 0\n2. **Upper bound:** The complete graph gives f(n,k) ≤ n(n-1)/2\n\nProved by ⟨erdos_614_existence, f_upper_bound⟩. The exact value remains the open question.",
     "mathContext": "This is the main proved theorem, packaging the well-definedness and trivial upper bound. The lower bound, special cases, and monotonicity are separate axioms.",

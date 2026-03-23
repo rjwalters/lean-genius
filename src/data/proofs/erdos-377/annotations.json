@@ -77,7 +77,7 @@
       "startLine": 58,
       "endLine": 61
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem Statement",
     "content": "**erdos_377**: States the main open question as an equivalence — BoundedConjectureHolds iff the explicit bound exists.",
     "mathContext": "This is definitionally true (rfl) since BoundedConjectureHolds is exactly that condition. The theorem serves as the formal problem statement.",
@@ -113,7 +113,7 @@
       "startLine": 71,
       "endLine": 79
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "EGRS First Moment",
     "content": "**egrs_first_moment**: (1/x)∑_{n≤x} f(n) → γ₀ as x → ∞. The Cesàro mean of f(n) converges to γ₀.",
     "mathContext": "This shows f(n) is 'typically' about γ₀ ≈ 0.794. But average convergence doesn't bound the maximum.",
@@ -131,7 +131,7 @@
       "startLine": 81,
       "endLine": 90
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "EGRS Second Moment",
     "content": "**egrs_second_moment**: (1/x)∑_{n≤x} f(n)² → γ₀² as x → ∞. The Cesàro mean of f(n)² equals the square of the first moment limit.",
     "mathContext": "Combined with the first moment, this implies Var(f) = E[f²] - E[f]² → γ₀² - γ₀² = 0. So f(n) concentrates around γ₀.",
@@ -149,7 +149,7 @@
       "startLine": 92,
       "endLine": 101
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Almost Everywhere Result",
     "content": "**egrs_almost_everywhere**: For almost all n, f(n) = γ₀ + o(1). The function approaches γ₀ for 'most' integers.",
     "mathContext": "This follows from the variance → 0 argument. The cofinite filter captures 'all but finitely many' integers.",
@@ -167,7 +167,7 @@
       "startLine": 103,
       "endLine": 110
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "EGRS Upper Bound",
     "content": "**egrs_upper_bound**: f(n) ≤ c·log(log(n)) for some c < 1 and all large n. This improves the trivial Mertens bound.",
     "mathContext": "Mertens' theorem gives ∑_{p≤n} 1/p ~ log(log n), so f(n) ≤ log(log n) trivially. EGRS improved the constant to c < 1.",
@@ -203,7 +203,7 @@
       "startLine": 129,
       "endLine": 135
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Complementary Sums Lemma",
     "content": "**complementary_sums**: f(n) + g(n) = ∑_{p≤n} 1/p where g is the dividing-prime sum. The two functions partition all primes.",
     "mathContext": "This is straightforward from definitions: each prime p ≤ n either divides C(2n,n) or doesn't, contributing to exactly one sum.",

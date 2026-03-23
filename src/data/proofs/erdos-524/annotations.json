@@ -77,7 +77,7 @@
       "startLine": 40,
       "endLine": 47
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős's Lower Bound: M_n ≫ n^{1/2−ε}",
     "content": "**erdos_lower_bound**: For every ε ∈ (0, 1/2) and a.e. t ∈ (0,1), polyMax(t, n) / n^{1/2−ε} → ∞ as n → ∞. The maximum grows faster than n^{1/2−ε} for any positive ε.",
     "significance": "key",
@@ -102,7 +102,7 @@
       "startLine": 51,
       "endLine": 57
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Chung's Upper Bound: M_n ≤ C√(n/log log n) i.o.",
     "content": "**chung_upper_bound**: ∃ C > 0 such that for a.e. t, for infinitely many n: polyMax(t, n) ≤ C · √(n / log log n). The maximum is occasionally as small as √(n/log log n).",
     "significance": "key",
@@ -127,7 +127,7 @@
       "startLine": 61,
       "endLine": 70
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Salem-Zygmund Comparison for Trigonometric Polynomials",
     "content": "**salem_zygmund_trigonometric**: For random trigonometric polynomials (Σ ε_k cos(kθ) on [0,2π]), the maximum is Θ(√(n log n)) almost surely. The polynomial case on [-1,1] is expected to be different.",
     "significance": "key",
@@ -152,7 +152,7 @@
       "startLine": 74,
       "endLine": 82
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Open Problem: Order of Magnitude of M_n",
     "content": "**erdos_524_order_of_magnitude**: ∃ f : ℕ → ℝ with f(n) > 0 such that for a.e. t, M_n(t) = Θ(f(n)) — i.e., c₁·f(n) ≤ M_n(t) ≤ c₂·f(n) for all large n. The function f is conjectured to be √n.",
     "significance": "key",

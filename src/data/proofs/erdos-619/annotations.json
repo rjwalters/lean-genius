@@ -61,7 +61,7 @@
       "startLine": 99,
       "endLine": 126
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Known Results (Erdős-Gyárfás-Ruszinkó 1998)",
     "content": "**h₃(G) ≤ n:** For any connected triangle-free graph G on n vertices, at most n edges suffice to reduce diameter to 3.\n\n**h₃(G) ≥ n - c:** This bound is tight — there exist graphs needing nearly n edges for diameter 3.\n\n**h₅(G) ≤ (n-1)/2:** Much fewer edges suffice for diameter 5.\n\nThe dramatic drop from h₃ ~ n to h₅ ~ n/2 is what makes the intermediate h₄ case so intriguing.",
     "mathContext": "These results are from Erdős, Gyárfás, and Ruszinkó's 1998 paper that introduced the h_r function.",
@@ -98,7 +98,7 @@
       "startLine": 151,
       "endLine": 161
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Without Triangle-Free Constraint (AGR 2000)",
     "content": "**without_triangle_free_constraint:** When triangles are allowed, n/2 edges always suffice for diameter 4 (Alon-Gyárfás-Ruszinkó 2000).\n\nThis shows the triangle-free constraint fundamentally changes the problem. The most natural shortcut edges often create triangles, so forbidding them makes diameter reduction much harder.",
     "mathContext": "Comparison with the unconstrained case reveals the essential difficulty of the triangle-free requirement.",
@@ -135,7 +135,7 @@
       "startLine": 181,
       "endLine": 189
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "h_r Monotonicity",
     "content": "**h_monotone:** h(G, r) ≥ h(G, r+1) — achieving smaller diameter requires at least as many edges as achieving larger diameter.\n\nThis gives the chain: h₃(G) ≥ h₄(G) ≥ h₅(G).\n\nCombined with the known bounds h₃ ≤ n and h₅ ≤ (n-1)/2, monotonicity constrains h₄ to lie between (n-1)/2 and n.",
     "significance": "key",
@@ -152,7 +152,7 @@
       "startLine": 191,
       "endLine": 227
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary and Partial Results",
     "content": "**erdos_619:** The main open question, defined as erdos_619_question.\n\n**erdos_619_partial_results:** For any connected triangle-free G on n vertices:\n- h(G, 3) ≤ n\n- h(G, 5) ≤ (n-1)/2\n\nProved by combining h3_upper_bound and h5_upper_bound axioms. These are the established bounds from Erdős-Gyárfás-Ruszinkó (1998), with the h₄ gap remaining open.",
     "significance": "key",

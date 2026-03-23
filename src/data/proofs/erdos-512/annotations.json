@@ -127,7 +127,7 @@
       "startLine": 123,
       "endLine": 140
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Solution: Konyagin and McGehee-Pigno-Smith (1981)",
     "content": "**konyagin_theorem (axiom):** Konyagin proved Littlewood's conjecture in 1981 using analytic techniques involving character sums and probabilistic methods.\n\n**mcgehee_pigno_smith_theorem (axiom):** McGehee, Pigno, and Smith independently proved it via a beautiful application of Hardy's inequality. Their proof is considered more elegant: they showed that the $L^1$ norm of an idempotent measure on the circle group satisfies a logarithmic lower bound, which directly implies Littlewood.\n\n**littlewoodConstant = 1/(4π):** An explicit lower bound constant. The optimal constant is believed to be close to $1/\\pi$.\n\n**littlewood_explicit (axiom):** $L^1(A) \\geq \\frac{1}{4\\pi} \\log |A|$ for all $|A| \\geq 2$.",
     "mathContext": "Both proofs establish: $\\exists c > 0$ such that $\\int_0^1 |\\sum_{n \\in A} e^{2\\pi i n\\theta}|\\,d\\theta \\geq c \\log |A|$ for all finite $A \\subset \\mathbb{Z}$. The MPS proof is particularly clean: if $\\mu = \\sum_{n \\in A} \\delta_n$ is a discrete measure, then $\\|\\hat{\\mu}\\|_{L^1(\\mathbb{T})} = \\|S_A\\|_1$, and Hardy's inequality for power series gives $\\|S_A\\|_1 \\geq c \\sum_{k=1}^{N} 1/k \\sim c \\log N$.",
@@ -151,7 +151,7 @@
       "startLine": 142,
       "endLine": 159
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sharpness: log N is Optimal",
     "content": "**littlewood_sharpness (axiom):** There exists $c' > 0$ such that for each $N \\geq 2$, some set $A$ with $|A| = N$ achieves $\\|S_A\\|_1 \\leq c' \\log N$. This shows the lower bound is tight.\n\n**geometricProgression N:** The set $\\{0, 1, \\ldots, N-1\\}$, an arithmetic progression.\n\n**arithmetic_progression_bound (axiom):** For the arithmetic progression $A = \\{0,\\ldots,N-1\\}$, $\\|S_A\\|_1 \\asymp \\log N$ — both upper and lower bounds are $\\Theta(\\log N)$. This is because $S_A(\\theta) = \\sum_{n=0}^{N-1} e^{2\\pi i n\\theta}$ is the Dirichlet kernel, whose $L^1$ norm is the Lebesgue constant $\\sim (4/\\pi^2) \\log N$.",
     "mathContext": "The Dirichlet kernel $D_N(\\theta) = \\sum_{n=0}^{N-1} e^{2\\pi i n\\theta} = \\frac{\\sin(N\\pi\\theta)}{\\sin(\\pi\\theta)}$ has $L^1$ norm $\\|D_N\\|_1 = \\frac{4}{\\pi^2} \\log N + O(1)$. This is the Lebesgue constant from Fourier analysis. It shows that arithmetic progressions are essentially the worst case for Littlewood's bound.",
@@ -175,7 +175,7 @@
       "startLine": 161,
       "endLine": 174
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Hardy's Inequality Connection",
     "content": "**hardy_inequality (axiom):** The discrete Hardy inequality: $\\sum_{n=0}^\\infty \\frac{1}{n+1} \\left(\\sum_{k=0}^n f(k)\\right)^2 \\leq 4 \\sum_{n=0}^\\infty f(n)^2$ for nonneg $f$. The constant 4 is optimal.\n\n**hardyConnection:** Placeholder noting the MPS proof technique. The key insight: Hardy's inequality applied to the Fourier coefficients of $|S_A|$ yields the logarithmic lower bound on $\\|S_A\\|_1$.",
     "mathContext": "Hardy's inequality (1920): if $a_n \\geq 0$ and $\\sum a_n^2 < \\infty$, then $\\sum_{n=1}^\\infty \\frac{1}{n}\\left(\\sum_{k=1}^n a_k\\right)^2 \\leq 4 \\sum_{n=1}^\\infty a_n^2$, with 4 being the best constant. The MPS proof applies this to the Fourier coefficients of the indicator function $\\hat{1}_A$, yielding $\\|S_A\\|_1 \\geq \\sum_{n \\in A} \\frac{1}{|n|+1}$, which is $\\geq c \\log N$ by the harmonic series.",
@@ -199,7 +199,7 @@
       "startLine": 176,
       "endLine": 195
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Related Results: Parseval, Flat Polynomials",
     "content": "**L2_norm (sorry):** The $L^2$ norm of $S_A$ is $\\sqrt{N}$ by Parseval's theorem. This is because $\\int_0^1 |S_A(\\theta)|^2\\,d\\theta = \\sum_{n \\in A} |\\hat{1}_A(n)|^2 = |A| = N$.\n\n**L1_vs_L2_comparison:** The dramatic gap $\\log N \\ll \\sqrt{N}$ between $L^1$ and $L^2$ norms shows that $|S_A(\\theta)|$ is highly non-constant — it must have large peaks near $\\theta = 0$ and deep cancellations elsewhere.\n\n**flatPolynomialProblem:** Littlewood's conjecture implies no trigonometric polynomial with $\\pm 1$ coefficients can be \"flat\" (nearly constant modulus) on the circle.",
     "mathContext": "The norm hierarchy for $S_A$ with $|A| = N$: $\\|S_A\\|_1 \\asymp \\log N$, $\\|S_A\\|_2 = \\sqrt{N}$, $\\|S_A\\|_\\infty = N$. By Hölder: $\\|S_A\\|_1 \\leq \\|S_A\\|_2 = \\sqrt{N}$, but Littlewood's conjecture says $\\|S_A\\|_1$ is only logarithmic, far below the Hölder bound. This means $|S_A(\\theta)|$ is typically small ($\\sim \\sqrt{N}$ at most points) but has a spike of height $N$ near $\\theta = 0$.",
@@ -270,7 +270,7 @@
       "startLine": 232,
       "endLine": 261
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary and Main Theorems",
     "content": "**erdos_512, erdos_512_main:** Littlewood's conjecture is TRUE, from Konyagin's theorem.\n\n**erdos_512_solved:** Packages the result noting two independent proofs.\n\n**konyagin_equals_mps:** The two axioms are logically equivalent (both assert `LittlewoodConjecture`). The proof is trivially by substitution, emphasizing that the two proofs establish the same mathematical fact despite using different techniques.",
     "mathContext": "The final result: $\\exists c > 0$ such that $\\int_0^1 |\\sum_{n \\in A} e^{2\\pi i n\\theta}|\\,d\\theta \\geq c \\log |A|$ for all finite $A \\subset \\mathbb{Z}$ with $|A| \\geq 2$. This is $\\Theta(\\log N)$-tight, with arithmetic progressions achieving the minimum.",

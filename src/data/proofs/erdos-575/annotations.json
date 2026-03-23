@@ -120,7 +120,7 @@
       "startLine": 68,
       "endLine": 76
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős–Stone–Simonovits Theorem",
     "content": "The fundamental theorem of extremal graph theory: for non-bipartite H with χ(H) = r ≥ 3, ex(n; H) = (1 − 1/(r−1) + o(1))·n²/2. This completely determines the Turán density for non-bipartite graphs, leaving the bipartite case as the major open frontier.",
     "mathContext": "For $\\chi(H) \\ge 3$: $\\mathrm{ex}(n; H) = \\left(1 - \\frac{1}{\\chi(H) - 1}\\right)\\frac{n^2}{2} + o(n^2)$. The leading coefficient $1 - \\frac{1}{\\chi(H)-1}$ is the Turán density $\\pi(H)$. For bipartite $H$, $\\pi(H) = 0$, and the exact order of $\\mathrm{ex}(n; H)$ is generally unknown.",
@@ -143,7 +143,7 @@
       "startLine": 78,
       "endLine": 82
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Kővári–Sós–Turán Bound",
     "content": "The Kővári–Sós–Turán theorem (1954) gives ex(n; K_{s,t}) ≤ c·n^{2−1/s} for s ≤ t. This is the best known general upper bound for complete bipartite Turán numbers. For s = 2, 3 the bound is tight (Reiman 1958, Brown 1966), but tightness for s ≥ 4 remains a major open problem.",
     "mathContext": "For $1 \\le s \\le t$: $\\mathrm{ex}(n; K_{s,t}) \\le \\frac{1}{2}(t-1)^{1/s} n^{2 - 1/s} + \\frac{s-1}{2}n$. The Zarankiewicz problem asks for the exact value of $\\mathrm{ex}(n; K_{s,t})$.",

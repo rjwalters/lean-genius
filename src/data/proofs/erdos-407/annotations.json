@@ -89,7 +89,7 @@
       "startLine": 104,
       "endLine": 120
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "w(1) = 0",
     "content": "**w_one_zero:**\n\nNo representation exists for n = 1.\n\n**Proof:** Each term 2^a, 3^b, 2^c·3^d is ≥ 1 (powers of positive integers). Their sum is at least 3, so it can't equal 1.",
     "significance": "supporting",
@@ -105,7 +105,7 @@
       "startLine": 122,
       "endLine": 135
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Representations of 5",
     "content": "**five_has_rep, five_has_rep2:**\n\n5 = 2^0 + 3^1 + 2^0·3^0 = 1 + 3 + 1\n5 = 2^1 + 3^0 + 2^1·3^0 = 2 + 1 + 2\n\nSo w(5) ≥ 2. These are verified computationally with norm_num.",
     "significance": "supporting",
@@ -121,7 +121,7 @@
       "startLine": 141,
       "endLine": 148
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "EGST 1988",
     "content": "**egst_1988:**\n\nThere exists C such that w(n) ≤ C for all n.\n\nThis is the original resolution of Newman's conjecture by Evertse, Győry, Stewart, and Tijdeman using S-unit equation theory.\n\nThe proof uses Baker's method (linear forms in logarithms).",
     "mathContext": "From 'S-unit equations and their applications', New advances in transcendence theory, Durham 1986.",
@@ -138,7 +138,7 @@
       "startLine": 150,
       "endLine": 155
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Tijdeman-Wang 1988",
     "content": "**tijdeman_wang_1988:**\n\nFor sufficiently large n, (DistinctReps n).ncard ≤ 4.\n\nThis quantitative improvement shows that eventually w(n) ≤ 4 when counting distinct term-sets.\n\nPublished in Pacific J. Math. (1988).",
     "significance": "key",
@@ -154,7 +154,7 @@
       "startLine": 157,
       "endLine": 170
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bajpai-Bennett 2024",
     "content": "**Bajpai-Bennett 2024:**\n\n1. w(n) ≤ 4 for n ≥ 131082 (bajpai_bennett_2024_large)\n2. w(n) ≤ 9 for all n (bajpai_bennett_2024_all)\n3. w(299) = 9 (bajpai_bennett_2024_max)\n\nThese are the first fully effective bounds, computed in Acta Arith. (2024).",
     "mathContext": "The threshold 131082 and maximum 9 at n=299 are explicit computational results.",
@@ -187,7 +187,7 @@
       "startLine": 210,
       "endLine": 233
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_407_summary:**\n\nCombines the three main results:\n\n1. w(n) is bounded (EGST 1988)\n2. w(n) ≤ 4 for large n (Tijdeman-Wang 1988)\n3. w(n) ≤ 9 always (Bajpai-Bennett 2024)\n\n**Conclusion:** Newman's conjecture is TRUE with explicit bounds.",
     "significance": "key",

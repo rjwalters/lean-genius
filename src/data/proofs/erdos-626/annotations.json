@@ -103,7 +103,7 @@
       "startLine": 64,
       "endLine": 75
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős 1959: High-χ, High-Girth Graphs Exist",
     "content": "**erdos_high_girth_high_chromatic and g_unbounded:**\n\nErdős's landmark 1959 result: for any $k \\ge 2$ and $g \\ge 3$, there exist graphs with chromatic number $\\ge k$ and girth $> g$. This was a groundbreaking application of the probabilistic method.\n\n**The proof idea:** Consider the random graph $G(n, p)$ with $p = n^{\\alpha - 1}$ for appropriate $\\alpha$. With high probability:\n- Few short cycles exist (girth is large)\n- The independence number is small (chromatic number is high)\nDelete one vertex from each short cycle. The remaining graph has high girth and, since few vertices were removed, still has high chromatic number.\n\nThe consequence `g_unbounded` (sorry'd) states $g_k(n) \\to \\infty$ as $n \\to \\infty$.",
     "mathContext": "$\\forall k \\ge 2,\\; g \\ge 3 : \\exists G$ with $\\chi(G) \\ge k$ and $\\text{girth}(G) > g$. Proof: random $G(n, n^{\\alpha-1})$ with $\\alpha < 1/(g-1)$ and $n$ large.",
@@ -127,7 +127,7 @@
       "startLine": 77,
       "endLine": 92
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős Upper Bound",
     "content": "**erdos_upper_bound and upperCoeff:**\n\nUpper bound: $g_k(n) \\le \\frac{2}{\\log(k-2)} \\cdot \\log n + 1$.\n\nThis limits girth growth: even for $n$-vertex $k$-chromatic graphs, the girth cannot exceed $O(\\log n)$. The proof uses a counting argument: if girth $> m$, the neighborhood ball of radius $\\lfloor m/2 \\rfloor$ around any vertex is a tree. This forces the number of vertices to grow exponentially with $m$, giving $m = O(\\log n)$.\n\nThe coefficient $\\frac{2}{\\log(k-2)}$ decreases as $k$ grows:\n- $k = 4$: $2/\\log 2 \\approx 2.89$\n- $k = 10$: $2/\\log 8 \\approx 0.96$\n- $k = 100$: $2/\\log 98 \\approx 0.44$\n\nHigher chromatic number restricts girth more severely because more edges are needed.",
     "mathContext": "$g_k(n) \\le \\frac{2}{\\log(k-2)} \\log n + 1$. Proof sketch: girth $> m$ implies $n \\ge (k-2)^{m/2}$ by the Moore bound argument, so $m \\le \\frac{2\\log n}{\\log(k-2)}$.",
@@ -151,7 +151,7 @@
       "startLine": 94,
       "endLine": 109
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Kostochka's Lower Bound",
     "content": "**kostochka_lower_bound and lowerCoeff:**\n\nLower bound: $g_k(n) \\ge \\frac{1}{4\\log k} \\cdot \\log n$.\n\nThis guarantees that $k$-chromatic graphs with reasonably large girth exist on $n$ vertices. The proof uses probabilistic constructions refined from Erdős's 1959 method, achieving better constants.\n\nThe coefficient $\\frac{1}{4\\log k}$ also decreases with $k$:\n- $k = 4$: $1/(4\\log 4) \\approx 0.18$\n- $k = 10$: $1/(4\\log 10) \\approx 0.11$\n- $k = 100$: $1/(4\\log 100) \\approx 0.054$\n\nThe lower bound coefficient is always smaller than the upper bound coefficient, consistent with the gap.",
     "mathContext": "$g_k(n) \\ge \\frac{1}{4\\log k} \\log n$ for $k \\ge 4$, $n \\ge 2$. The constant $1/4$ comes from optimizing the probabilistic method parameters.",
@@ -246,7 +246,7 @@
       "startLine": 172,
       "endLine": 202
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Special Cases: k=4 and Triangle-Free Graphs",
     "content": "**k4_bounds, triangle_free_unbounded_chromatic, probabilistic_lower_bound:**\n\nFor $k = 4$: the bounds are $0.18 \\log n \\le g_4(n) \\le 2.89 \\log n + 1$, a ratio of about 16. This is the tightest case but still has a large gap.\n\n`triangle_free_unbounded_chromatic` (sorry'd): for any $k$, triangle-free graphs with $\\chi \\ge k$ exist. This is a special case of Erdős 1959 and perhaps the most counterintuitive consequence — graphs without any triangles can still require arbitrarily many colors. Mycielski's construction (1955) gives explicit examples.\n\n`probabilistic_lower_bound` (sorry'd): the probabilistic method gives graphs with $\\chi \\ge k$ and girth $\\ge c \\log n$ on $n$ vertices.",
     "mathContext": "For $k = 4$: $\\frac{1}{4\\log 4} \\log n \\le g_4(n) \\le \\frac{2}{\\log 2} \\log n + 1$, i.e., $0.18 \\log n \\le g_4(n) \\le 2.89 \\log n + 1$.",
@@ -293,7 +293,7 @@
       "startLine": 217,
       "endLine": 256
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Status: Combined Bounds and Existence",
     "content": "**erdos_626_status:**\n\nThe capstone theorem combines all results:\n1. **Bounds exist**: For all $k \\ge 4$, constants $c_1, c_2 > 0$ exist with $c_1 \\log n \\le g_k(n) \\le c_2 \\log n + 1$.\n2. **High-$\\chi$, high-girth graphs exist**: For all $k \\ge 2$, $g \\ge 3$.\n\nThe proof delegates to the axiomatized bounds and existence results. The status summary confirms that $g_k(n) = \\Theta(\\log n)$ with explicit constants, but the limit question remains open.\n\nThe `#check` statements at the end verify that all key declarations are accessible.",
     "mathContext": "$\\forall k \\ge 4 : \\exists c_1, c_2 > 0 : \\forall n \\ge 2 : c_1 \\log n \\le g_k(n) \\le c_2 \\log n + 1$, and $\\forall k \\ge 2,\\; g \\ge 3 : \\exists G$ with $\\chi(G) \\ge k$, $\\text{girth}(G) > g$.",

@@ -54,7 +54,7 @@
       "startLine": 83,
       "endLine": 101
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Known Bounds: Parsons Upper and BEFRS Lower",
     "content": "**parsons_upper_bound** (1975): $R(C_4, S_n) \\leq n + \\lceil\\sqrt{n}\\rceil + 1$. Uses the Kővári-Sós-Turán theorem: a $C_4$-free graph on $N$ vertices has at most $\\frac{1}{2}(1 + \\sqrt{4N-3})$ edges per vertex on average, so if $N > n + \\lceil\\sqrt{n}\\rceil + 1$, either $G$ contains $C_4$ or $\\bar{G}$ has a vertex of degree $\\geq n$.\n\n**befrs_lower_bound** (1989): $R(C_4, S_n) \\geq n + \\sqrt{n} - 6n^{11/40}$. Uses Huxley's prime gap bound to find prime powers $q$ near $\\sqrt{n}$, then constructs $C_4$-free graphs from projective planes PG(2,$q$) achieving independence number $< n$.\n\n**asymptotic_bounds** combines both: $R(C_4, S_n) = n + \\sqrt{n} + O(n^{11/40})$.",
     "mathContext": "Parsons (1975): $R(C_4, S_n) \\leq n + \\lceil\\sqrt{n}\\rceil + 1$. BEFRS (1989): $R(C_4, S_n) \\geq n + \\sqrt{n} - 6n^{11/40}$, where the exponent $11/40 = 0.275$ comes from Huxley's bound on gaps between consecutive primes: $p_{k+1} - p_k = O(p_k^{11/20})$, and $\\sqrt{n^{11/20}} = n^{11/40}$. The gap between upper and lower bounds is $O(n^{11/40})$, vanishing compared to $\\sqrt{n}$.",
@@ -78,7 +78,7 @@
       "startLine": 103,
       "endLine": 119
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Exact Values for Prime Power Parameters",
     "content": "**exact_value_q2_plus_1**: For $n = q^2 + 1$ ($q$ prime power), $R(C_4, S_n) = n + q = n + \\lceil\\sqrt{n}\\rceil$. The polarity graph of PG(2,$q$) gives a $C_4$-free graph on $q^2 + q + 1$ vertices with minimum degree $q$, achieving the lower bound.\n\n**exact_value_q2**: For $n = q^2$ ($q$ prime power), $R(C_4, S_n) = n + q + 1 = n + \\lceil\\sqrt{n}\\rceil + 1$. The upper bound is tight here.\n\n**exact_value_q2_minus_t**: For $n = q^2 - t$ with $0 \\leq t \\leq q$, $R(C_4, S_n) = q^2 - t + q + 1$.\n\nAll known exact values are either $n + \\lceil\\sqrt{n}\\rceil$ or $n + \\lceil\\sqrt{n}\\rceil + 1$, differing by at most 1.",
     "mathContext": "The projective plane PG(2,$q$) has $q^2 + q + 1$ points. Its polarity graph $G_q$ has $q^2 + q + 1$ vertices, is $C_4$-free (because PG(2,$q$) has no degenerate quadrangles), and has $\\frac{1}{2}q(q+1)^2$ edges. For $n = q^2 + 1$: removing $q$ vertices from $G_q$ gives a $C_4$-free graph on $q^2 + 1$ vertices with independence number $\\leq q^2$, showing $R(C_4, S_{q^2+1}) \\geq q^2 + 1 + q$. Combined with Parsons's upper bound, this gives equality.",
@@ -126,7 +126,7 @@
       "startLine": 136,
       "endLine": 153
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Prime Gap Connection and Cramér's Conjecture",
     "content": "**primeGap** computes the gap between consecutive primes via $\\inf\\{q > p : q \\text{ prime}\\} - p$.\n\n**CramerConjecture**: $\\text{primeGap}(p) = O((\\log p)^2)$. This is one of the most important open problems in analytic number theory.\n\n**cramer_implies_better_bound**: Under Cramér's conjecture, for any $\\varepsilon > 0$, eventually $R(C_4, S_n) \\geq n + \\sqrt{n} - n^\\varepsilon$. The improvement comes from finding a prime power $q$ with $|q - \\sqrt{n}| = O((\\log n)^2)$, so the construction gives $R \\geq n + \\sqrt{n} - O((\\log n)^2) \\geq n + \\sqrt{n} - n^\\varepsilon$.",
     "mathContext": "The connection: exact values occur at $n = q^2 + c$ for prime powers $q$. How close is the nearest prime power $q$ to $\\sqrt{n}$? If $q$ is the nearest prime to $\\sqrt{n}$, then $|q^2 - n| \\leq 2q \\cdot \\text{primeGap}(q)$. Under Cramér: $\\text{primeGap}(q) = O((\\log q)^2) = O((\\log n)^2)$, so $|q^2 - n| = O(\\sqrt{n}(\\log n)^2)$, and the error in $R$ is $O((\\log n)^2) = n^{o(1)}$. Unconditionally, Huxley's bound gives $\\text{primeGap}(q) = O(q^{11/20})$, yielding error $O(n^{11/40})$.",

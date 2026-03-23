@@ -97,11 +97,11 @@
       "startLine": 55,
       "endLine": 67
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Basic Cardinality Bounds",
     "content": "**Two foundational results** (fully proved in Lean):\n\n1. **`card_powerset_eq`**: $|\\mathcal{P}(Y)| = 2^{|Y|}$\n   - Proved from Mathlib's `Finset.card_powerset`\n\n2. **`subsetImage_card_le`**: $|\\text{subsetImage}\\, f\\, Y| \\leq 2^{|Y|}$\n   - Proof: image of a set has at most as many elements as the set itself (`Finset.card_image_le`), composed with the powerset cardinality\n\nThese are the building blocks for the lower bound: if $\\text{subsetImage}\\, f\\, Y = X$, then $|X| \\leq 2^{|Y|}$.",
     "mathContext": "|Y.powerset| = 2^|Y|; |subsetImage f Y| ≤ 2^|Y|",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "cardinality",
       "powerset",
@@ -115,11 +115,11 @@
       "startLine": 69,
       "endLine": 85
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Lower Bound: H(n) ≥ log₂(n)",
     "content": "**`covering_lower_bound`**: If $f$ is $H$-covering for $X$, then $2^H \\geq |X|$.\n\n**Proof sketch** (has `sorry`):\n1. Take any $Y \\subseteq X$ with $|Y| = H$\n2. Since $f$ is $H$-covering: $\\{f(A) : A \\subseteq Y\\} = X$\n3. But $|\\{f(A) : A \\subseteq Y\\}| \\leq 2^{|Y|} = 2^H$\n4. Therefore $|X| \\leq 2^H$\n\n**`coveringNumber_ge_log`**: Concludes $H(n) \\geq \\lceil\\log_2(n)\\rceil$ using `Nat.clog` (ceiling log).\n\nBoth have `sorry` — the proof requires careful handling of the `sInf` definition and subset existence.",
     "mathContext": "covering_lower_bound: IsCoveringFunction X f H → 2^H ≥ |X|; coveringNumber_ge_log: coveringNumber X ≥ Nat.clog 2 |X|",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "counting-argument",
       "logarithm",
@@ -133,7 +133,7 @@
       "startLine": 87,
       "endLine": 97
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Hajnal Upper Bound (1968)",
     "content": "**`erdos_hajnal_upper_bound`** (axiomatized):\n\nFor $n \\geq 4$ and $|X| = n$, there exists $f$ and $H$ with:\n- $f$ is $H$-covering for $X$\n- $H < \\log_2(n) + 3\\log_2(\\log_2(n)) + 10$\n\n**Construction idea**: Use a random function and prove (by probabilistic method) that with positive probability, the covering property holds for $H$ in this range.\n\n**Gap**: Combined with the lower bound, this gives $\\log_2(n) \\leq H(n) < \\log_2(n) + O(\\log\\log n)$. The $O(\\log\\log n)$ gap is what the main conjecture concerns.",
     "mathContext": "∃ f H, IsCoveringFunction X f H ∧ H < log₂(n) + 3·log₂(log₂(n)) + 10",
@@ -151,7 +151,7 @@
       "startLine": 99,
       "endLine": 111
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Main Conjecture (OPEN)",
     "content": "**`MainConjecture`**: $H(n) - \\log_2(n) \\to \\infty$.\n\nFormally: $\\forall C \\in \\mathbb{N},\\, \\exists N,\\, \\forall n > N,\\, \\forall X$ with $|X| = n$: $H(X) > \\log_2(n) + C$.\n\nThis says the gap between $H(n)$ and its lower bound is **unbounded** — no constant suffices. The upper bound shows the gap is at most $O(\\log\\log n)$, so the conjecture asks whether it really does grow.\n\n**`erdos_624_open`**: Axiomatizes the conjecture as true. This is the **core of Erdős Problem #624** and remains open.\n\n**What's known**: Alon's results show the gap is at least a positive constant, but unboundedness is unproven.",
     "mathContext": "MainConjecture := ∀ C, ∃ N, ∀ n > N, ∀ X with |X|=n, coveringNumber X > log₂(n) + C",
@@ -169,11 +169,11 @@
       "startLine": 113,
       "endLine": 122
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Weaker Conjecture (Also OPEN)",
     "content": "**`WeakerConjecture`**: For $n = 2^k$, $H(n) \\geq k + 1$.\n\nThis says even the optimal covering number exceeds $\\log_2(n)$ by at least 1 at powers of 2. It's strictly weaker than the main conjecture (which requires the gap to grow unboundedly).\n\n**Remarkably, even this is OPEN!** We cannot yet prove that $H(n) > \\log_2(n)$ for all $n$.\n\n**Lean**: `WeakerConjecture := ∀ k ≥ 1, ∀ X with |X| = 2^k, coveringNumber X ≥ k + 1`",
     "mathContext": "WeakerConjecture := ∀ k ≥ 1, ∀ X with |X|=2^k, coveringNumber X ≥ k+1",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "open-problem",
       "powers-of-two",
@@ -187,11 +187,11 @@
       "startLine": 124,
       "endLine": 136
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Alon's Upper Bound on Coverage",
     "content": "**`alon_upper_bound`** (axiomatized):\n\nThere exists an absolute constant $c > 0$ such that for *any* function $f: \\mathcal{P}(X) \\to X$ with $|X| = 2^k$, there exists $Y \\subseteq X$ with $|Y| = k$ and:\n$$|\\{f(A) : A \\subseteq Y\\}| < (1-c) \\cdot 2^k$$\n\nThis is a **structural limitation**: no function covers more than a $(1-c)$ fraction of the maximum possible $2^k$ from some subset of size $k$. Every covering function has a \"bad\" subset.\n\n**Significance**: This is the best known evidence toward the main conjecture — it shows covering functions are inherently imperfect.",
     "mathContext": "∃ c > 0, ∀ f, ∃ Y ⊆ X, |Y|=k ∧ |subsetImage f Y| < (1-c)·2^k",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "structural limitation",
       "constant gap",
@@ -205,11 +205,11 @@
       "startLine": 138,
       "endLine": 146
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Alon's Construction",
     "content": "**`alon_lower_construction`** (axiomatized):\n\nFor $k \\geq 2$ and $|X| = 2^k$, there exists $f$ such that for *all* $Y \\subseteq X$ with $|Y| = k$:\n$$|\\{f(A) : A \\subseteq Y\\}| > 2^k / 4$$\n\nThis shows good covering functions exist: the image is always at least $1/4$ of the theoretical maximum.\n\n**Combined with Alon's upper bound**: The image from size-$k$ subsets is always between $2^k/4$ and $(1-c) \\cdot 2^k$. Good functions exist, but none are perfect.",
     "mathContext": "∃ f, ∀ Y ⊆ X, |Y|=k → |subsetImage f Y| > 2^k/4",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "construction",
       "lower-bound",
@@ -227,7 +227,7 @@
     "title": "Summary: State of Knowledge",
     "content": "**Complete picture of Erdős Problem #624**:\n\n| Result | Status | Source |\n|--------|--------|--------|\n| $H(n) \\geq \\lceil\\log_2(n)\\rceil$ | Proved (counting) | This file (2 sorries) |\n| $H(n) < \\log_2(n) + O(\\log\\log n)$ | Proved (construction) | Erdős-Hajnal 1968 |\n| $\\exists c > 0$: gap $\\geq c$ | Proved (structural) | Alon |\n| $H(2^k) \\geq k+1$ | **OPEN** | Weaker conjecture |\n| $H(n) - \\log_2(n) \\to \\infty$ | **OPEN** | Main conjecture |\n\nThe gap $H(n) - \\log_2(n)$ is between a positive constant and $O(\\log\\log n)$. Whether it is bounded or unbounded remains one of the oldest open problems in combinatorial set theory.",
     "mathContext": "log₂(n) + Ω(1) ≤ H(n) < log₂(n) + O(log log n); unboundedness of gap: OPEN",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "summary",
       "open-questions",

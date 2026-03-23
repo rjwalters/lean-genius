@@ -78,7 +78,7 @@
       "startLine": 84,
       "endLine": 136
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Powers of 2 Witness (0, 1)",
     "content": "The pair $(0, 1)$ is valid, witnessed by $a(n) = 2^n$. Three components:\n\n1. **powersOf2_complete** (sorry): Every positive integer has a binary representation — a sum of distinct powers of 2.\n2. **powersOf2_not_1_robust**: Removing index 0 (i.e., $2^0 = 1$) makes 1 unrepresentable (sorry for the final step).\n3. **pair_0_1_valid**: Assembles the witness. Monotonicity is proved via `Nat.pow_lt_pow_right`. 0-robustness is trivial (removing nothing changes nothing).\n\nThe key insight: binary representation is **unique**, so each $2^k$ has exactly one representation — removing it leaves a permanent gap.",
     "mathContext": "Binary representation: $\\forall n \\geq 1$, $\\exists!$ $S \\subseteq \\{2^0, 2^1, \\ldots\\}$ with $n = \\sum_{s \\in S} s$. Uniqueness implies that removing $2^k$ makes $2^k$ itself unrepresentable: no other subset sums to $2^k$.",
@@ -102,7 +102,7 @@
       "startLine": 137,
       "endLine": 165
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Fibonacci Sequence Witnesses (1, 2)",
     "content": "The pair $(1, 2)$ is valid, witnessed by $F_0 = 1, F_1 = 2, F_2 = 3, F_3 = 5, \\ldots$ Three components (all with sorries):\n\n1. **fib_complete**: By Zeckendorf's theorem, every positive integer is a sum of non-consecutive Fibonacci numbers.\n2. **fib_1_robust**: Removing any single $F_k$ leaves enough flexibility — alternative representations exist using nearby Fibonacci numbers.\n3. **fib_not_2_robust**: Removing $F_0 = 1$ and $F_1 = 2$ makes 3 unrepresentable — the remaining terms start at $F_2 = 3$, and $3 = F_2$ is available but any sum involving $F_2 = 3$ and larger terms exceeds 3.\n\nThe Fibonacci sequence's redundancy (multiple representations for most numbers) provides exactly 1-robustness but not 2.",
     "mathContext": "Zeckendorf: $\\forall n \\geq 1$, $\\exists$ unique $S \\subseteq \\{F_i\\}$ with $n = \\sum_{i \\in S} F_i$ and no two consecutive indices in $S$. Non-uniqueness of general (non-Zeckendorf) representations provides the resilience: e.g., $F_k = F_{k-2} + F_{k-3} + \\cdots$ gives alternatives.",
@@ -126,7 +126,7 @@
       "startLine": 166,
       "endLine": 183
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Characterization Conjecture and (2,3) Case",
     "content": "Two axioms capturing the open question:\n\n1. **erdos_348_characterization**: Either $\\text{validPairs} = \\{(m, m+1) : m \\in \\mathbb{N}\\}$ (every consecutive pair is valid), or $\\exists k$ such that valid pairs are exactly those with first component $< k$.\n2. **erdos_348_case_2_3**: The tautology $(2,3) \\in \\text{validPairs} \\lor (2,3) \\notin \\text{validPairs}$ — highlighting that this specific case is the critical unknown.\n\nThe first axiom encodes the two structural possibilities; the second draws attention to the frontier.",
     "mathContext": "Two possibilities: (a) $\\forall m$, $(m, m+1) \\in \\text{validPairs}$ — an infinite hierarchy of robustness levels. (b) $\\exists k$, $\\forall m \\geq k$, $(m, m+1) \\notin \\text{validPairs}$ — a phase transition.",
@@ -148,7 +148,7 @@
       "startLine": 184,
       "endLine": 199
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Van Doorn's Theorem on Strong Completeness",
     "content": "Defines `IsStronglyRobust` (strongly complete after removing any $m$ indices) and states **vanDoorn_theorem**: no monotone, strongly complete sequence is 2-robust. This is a clean negative result: the requirement of representing ALL integers (not just sufficiently large ones) is too rigid to absorb two deletions.\n\nImplication: under strong completeness, the only valid pairs are $(0, n)$ for $n \\geq 1$ and $(1, n)$ for $n \\geq 2$. The problem is only interesting under weak completeness for $m \\geq 2$.",
     "mathContext": "$\\forall a : \\mathbb{N} \\to \\mathbb{N}$ monotone, $\\text{IsStronglyComplete}(\\text{range}(a)) \\implies \\neg\\text{IsStronglyRobust}(a, 2)$. The proof idea: strongly complete sequences must start with 1, 2, and these are indispensable for representing small numbers.",
@@ -195,7 +195,7 @@
       "startLine": 214,
       "endLine": 228
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Gap Property of Complete Sequences",
     "content": "Defines `gap(a, n) = a(n+1) - a(n)` and states **complete_bounded_gaps**: for any monotone, complete sequence, $\\exists N, M$ such that $\\forall n \\geq N$, $\\text{gap}(a, n) \\leq M$. Unbounded gaps would create arbitrarily large intervals with no new elements, making large integers in those intervals unrepresentable.\n\nThis structural constraint means complete sequences must be 'dense enough' — they can't grow faster than linearly in the long run.",
     "mathContext": "If $a_{n+1} - a_n > \\sum_{i \\leq n} a_i + 1$ for some $n$, then the integers in $(\\sum_{i \\leq n} a_i, a_{n+1})$ are unrepresentable. The gap bound is a necessary (but not sufficient) condition for completeness.",
@@ -219,7 +219,7 @@
       "startLine": 229,
       "endLine": 256
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Main Open Problem Statement",
     "content": "The final axiom **erdos_348_main_problem** states the core question as a disjunction:\n\n1. $\\forall m \\in \\mathbb{N}$, $(m, m+1) \\in \\text{validPairs}$ — an infinite hierarchy where every robustness level has a tight example.\n2. $\\exists k$, $\\forall m \\geq k$, $(m, m+1) \\notin \\text{validPairs}$ — a cutoff beyond which $m$-robustness automatically implies $(m+1)$-robustness.\n\nThe docstring provides a self-contained summary: known results ($(0,1)$ and $(1,2)$ valid), Van Doorn's constraint on strong completeness, and the open $(2,3)$ case.",
     "mathContext": "The disjunction: $\\left(\\forall m, (m, m+1) \\in \\text{validPairs}\\right) \\lor \\left(\\exists k, \\forall m \\geq k, (m, m+1) \\notin \\text{validPairs}\\right)$. The first option requires constructing ever-more-resilient sequences; the second requires proving a structural impossibility theorem.",

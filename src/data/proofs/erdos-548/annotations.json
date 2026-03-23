@@ -142,7 +142,7 @@
       "startLine": 118,
       "endLine": 141
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Erdos-Sos Conjecture (Two Forms)",
     "content": "States the conjecture in two equivalent forms. `ErdosSosConjecture` quantifies over arbitrary vertex types with strict inequality $|E| > (k-1)n/2$. `Erdos548Statement` uses Erdos's original phrasing with $|E| \\ge (k-1)n/2 + 1$ on concrete `Fin n` types. The conjecture would completely resolve the tree Turan problem: $\\text{ex}(n, T) \\le (k-1)n/2$ for every tree $T$ with $k$ edges.",
     "mathContext": "$\\forall G,\\, |E(G)| > \\frac{(k-1)n}{2} \\implies \\forall T \\text{ tree with } k+1 \\text{ vertices},\\, T \\subseteq G$",
@@ -164,7 +164,7 @@
       "startLine": 143,
       "endLine": 154
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Trivial Bound",
     "content": "The weakest bound: $n(k-1) + 1$ edges suffice for any tree on $k+1$ vertices. This is roughly $n$ times weaker than the conjecture. The proof uses induction on $k$: find a vertex of degree $\\ge k$ (exists by pigeonhole), embed the tree root there, remove the vertex, and apply the inductive hypothesis to each subtree in the reduced graph.",
     "mathContext": "$|E(G)| \\ge n(k-1) + 1 \\implies T \\subseteq G$ for all trees $T$ with $k+1$ vertices",
@@ -208,7 +208,7 @@
       "startLine": 164,
       "endLine": 173
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Brandt-Dobson (1996): Girth >= 5",
     "content": "The Erdos-Sos conjecture holds for graphs with girth $\\ge 5$. With no triangles or 4-cycles, every pair of adjacent vertices shares no common neighbor, making the graph locally tree-like. This enables a greedy embedding: start by placing any edge of the tree, then extend greedily using the tree-like neighborhood structure. No 'collisions' occur during embedding.",
     "mathContext": "$\\text{girth}(G) \\ge 5 \\land |E(G)| > (k-1)n/2 \\implies T \\subseteq G$",
@@ -230,7 +230,7 @@
       "startLine": 175,
       "endLine": 188
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sacle-Wozniak (1997): C4-Free",
     "content": "The conjecture holds for $C_4$-free graphs. Without 4-cycles, edges cannot form dense bicliques $K_{2,t}$, which would 'waste' edge budget without helping tree embedding. The `C4Free` definition allows either girth $\\ge 5$ or the weaker property that every 4-cycle is degenerate. Sacle-Wozniak's result generalizes Brandt-Dobson by allowing triangles.",
     "mathContext": "$G$ is $C_4$-free $\\land |E(G)| > (k-1)n/2 \\implies T \\subseteq G$",
@@ -252,7 +252,7 @@
       "startLine": 190,
       "endLine": 209
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Wang-Li-Liu (2000): Complement Girth >= 5",
     "content": "The conjecture holds when the complement $\\bar{G}$ has girth $\\ge 5$. If $\\bar{G}$ is sparse (high girth), then $G$ is dense with large neighborhoods. Every pair of non-adjacent vertices in $G$ must share many common neighbors (since $\\bar{G}$ has no short cycles), enabling inductive tree embedding within these large common neighborhoods. The `complement` is constructed explicitly.",
     "mathContext": "$\\text{girth}(\\bar{G}) \\ge 5 \\land |E(G)| > (k-1)n/2 \\implies T \\subseteq G$",
@@ -296,7 +296,7 @@
       "startLine": 224,
       "endLine": 235
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Special Trees: Paths Are Extremal, Stars Are Easy",
     "content": "Two contrasting results. `path_extremal`: $\\text{ex}(n, P_{k+1}) = (k-1)n/2$ exactly, making paths the tightest case (Erdos-Gallai 1959). `star_easier` (sorry): $|E| \\ge kn/2$ guarantees $K_{1,k} \\subseteq G$, since pigeonhole gives a vertex of degree $\\ge k$. Stars need slightly more edges than the conjecture threshold, but are trivial to embed once found.",
     "mathContext": "$\\text{ex}(n, P_{k+1}) = \\frac{(k-1)n}{2}$ (tight); $K_{1,k} \\subseteq G$ if $\\exists v: \\deg(v) \\ge k$",
@@ -318,7 +318,7 @@
       "startLine": 237,
       "endLine": 249
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Komlos-Sos-Szemeredi: Large k",
     "content": "For sufficiently large $k$, the conjecture holds. The approach uses Szemeredi's regularity lemma to decompose the host graph into pseudorandom bipartite pairs, then the blow-up lemma to embed the tree. The regularity lemma partitions vertices so that most pairs of parts behave like random bipartite graphs; the blow-up lemma then embeds bounded-degree subgraphs into regular pairs. The threshold $k_0$ is not explicitly known, and full proof details remain unpublished.",
     "mathContext": "$\\exists k_0 : \\forall k \\ge k_0,\\, |E(G)| > (k-1)n/2 \\implies T \\subseteq G$",
@@ -340,7 +340,7 @@
       "startLine": 251,
       "endLine": 272
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Related: Erdos-Gallai and Turan for Paths",
     "content": "Two classical results providing context. The Erdos-Gallai matching theorem (1959): the maximum edges without a $(k+1)$-edge matching is $\\max\\{\\binom{2k+1}{2}, \\binom{k}{2} + k(n-k)\\}$. The Turan number for paths: $\\text{ex}(n, P_k) = (k-2)(n-1)/2$ for $n \\ge k-1$. These show the Erdos-Sos conjecture fits into a family of extremal results about substructure thresholds.",
     "mathContext": "$\\text{ex}(n, (k+1)K_2) = \\max\\{\\binom{2k+1}{2}, \\binom{k}{2} + k(n-k)\\}$; $\\text{ex}(n, P_k) = \\frac{(k-2)(n-1)}{2}$",

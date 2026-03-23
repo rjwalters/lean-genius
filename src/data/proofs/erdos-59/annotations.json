@@ -54,7 +54,7 @@
       "startLine": 102,
       "endLine": 131
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Results: Erdős-Frankl-Rödl (1986) and Morris-Saxton Counterexample (2016)",
     "content": "**erdos_frankl_rodl_nonbipartite**: For non-bipartite $H$, $|\\{H\\text{-free}\\}| \\leq 2^{(1+o(1))\\text{ex}(n;H)}$. The conjecture holds for the non-bipartite case.\n\n**morris_saxton_c6_counterexample**: $\\exists c > 0$ with $|\\{C_6\\text{-free}\\}| \\geq 2^{(1+c)\\text{ex}(n;C_6)}$ for infinitely many $n$. This DISPROVES the conjecture.\n\n**morris_saxton_conjecture** (OPEN): The weaker bound $2^{O(\\text{ex}(n;H))}$ holds for all $H$. Formalized as `HasPolynomialBound` for all $k$.",
     "mathContext": "Erdős-Frankl-Rödl (1986): their proof uses the Szemerédi regularity lemma. For non-bipartite $H$, the Turán number $\\text{ex}(n; H) = (1 - 1/(\\chi(H)-1) + o(1))\\binom{n}{2}$, so the Turán density is positive. The regularity lemma shows that most $H$-free graphs look like the Turán graph, giving the $2^{(1+o(1))\\text{ex}}$ bound. Morris-Saxton (2016): for $C_6$, $\\text{ex}(n; C_6) = \\Theta(n^{4/3})$ (Kővári-Sós-Turán). They construct $C_6$-free graphs using algebraic methods (incidence geometry over finite fields), showing the count exceeds $2^{(1+c)n^{4/3}}$. The excess comes from the rich structure of $C_6$-free bipartite graphs built from projective planes.",
@@ -78,7 +78,7 @@
       "startLine": 132,
       "endLine": 172
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem Resolution and Bipartiteness of C_6",
     "content": "**erdos_59_disproved** (1 sorry): $\\neg\\forall k, \\text{HasOptimalBound}(\\text{countFreeGraphs}(\\cdot, k), \\text{turanNumber}(\\cdot, k))$. Uses $k = 6$ and `morris_saxton_c6_counterexample` to derive a contradiction with the optimal bound. The sorry is in extracting a specific counterexample $n > N_0$ from the infinite set.\n\n**c6_is_bipartite**: $C_6$ is bipartite (even cycle). **k3_not_bipartite**: $K_3 = C_3$ is not bipartite (odd cycle).",
     "mathContext": "The proof of `erdos_59_disproved` follows the standard contradiction pattern: assume the conjecture holds for all $k$, specialize to $k = 6$, then the optimal bound gives $|\\{C_6\\text{-free}\\}| \\leq 2^{(1+\\varepsilon)\\text{ex}(n;C_6)}$ for large $n$ (any $\\varepsilon > 0$), while Morris-Saxton gives $|\\{C_6\\text{-free}\\}| \\geq 2^{(1+c)\\text{ex}(n;C_6)}$ for infinitely many $n$. Choosing $\\varepsilon = c/2 < c$ yields the contradiction. The sorry is a technical gap: extracting an element from `Set.Infinite` that is also $\\geq N_0$.",
@@ -101,7 +101,7 @@
       "startLine": 174,
       "endLine": 200
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Classical Turán Bounds and Corollaries",
     "content": "**turan_theorem**: $\\text{ex}(n; K_{r+1}) = (1 - 1/r)n^2/2 + O(n)$. The Turán graph $T(n,r)$ is the unique extremal graph.\n\n**kovari_sos_turan**: $\\text{ex}(n; C_{2k}) = O(n^{1+1/k})$ for $k \\geq 2$. This subquadratic bound is what makes the bipartite case qualitatively different.\n\n**non_bipartite_satisfies_conjecture** / **triangle_free_optimal**: Direct applications of `erdos_frankl_rodl_nonbipartite` confirming the conjecture for non-bipartite $H$ and specifically for $K_3$.",
     "mathContext": "For $C_6$: $k = 3$ in KST gives $\\text{ex}(n; C_6) = O(n^{4/3})$. The matching lower bound $\\text{ex}(n; C_6) = \\Omega(n^{4/3})$ comes from incidence structures: the Levi graph of a projective plane $\\text{PG}(2, q)$ is $C_6$-free with $\\Theta(q^{4/3})$ edges (when $n = 2(q^2 + q + 1)$). The same algebraic structure that makes $\\text{ex}(n; C_6)$ large also creates many $C_6$-free graphs — this is the mechanism behind Morris-Saxton's counterexample. For non-bipartite $H$: $\\text{ex}(n; H) = \\Theta(n^2)$ (positive Turán density), so there are $\\sim 2^{\\Theta(n^2)}$ $H$-free graphs — essentially the same order as the Turán graph's neighborhoods.",

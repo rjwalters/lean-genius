@@ -54,7 +54,7 @@
       "startLine": 48,
       "endLine": 56
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sylvester's Theorem: The $k=3$ Case",
     "content": "`sylvester_k3` (axiom): $\\exists C > 0$ such that $|f_3(n) - n^2/6| \\le Cn$ for all $n \\ge 3$. This determines $f_3(n) = n^2/6 + O(n)$, showing the $k=3$ case gives $\\Theta(n^2)$ lines.",
     "significance": "key",
@@ -79,7 +79,7 @@
       "startLine": 62,
       "endLine": 68
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Solymosi-Stojaković Lower Bound",
     "content": "`lower_bound_k4` (axiom): $\\exists c > 0$ such that $f_4(n) \\ge n^{2 - c/\\sqrt{\\log n}}$ for all $n \\ge 3$. This gives $f_4(n) \\ge n^{2-o(1)}$, tantalizingly close to $n^2$ but still consistent with $o(n^2)$.",
     "significance": "key",
@@ -105,7 +105,7 @@
       "startLine": 70,
       "endLine": 79
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Erdős Conjecture: $f_k(n) = o(n^2)$",
     "content": "`erdos_conjecture_k4` (axiom): $\\forall k \\ge 4,\\, \\forall \\varepsilon > 0,\\, \\exists N_0$ such that $f_k(n) \\le \\varepsilon n^2$ for $n \\ge N_0$. This is the $\\varepsilon$-$N$ formulation of $f_k(n) = o(n^2)$.",
     "significance": "key",
@@ -130,7 +130,7 @@
       "startLine": 91,
       "endLine": 94
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem: Resolved $k=3$ Case",
     "content": "`erdos_588`: restates `sylvester_k3` as the main proved result — $f_3(n) = n^2/6 + O(n)$. The $k \\ge 4$ conjecture remains **OPEN**. Proved by `exact sylvester_k3`.",
     "significance": "key",

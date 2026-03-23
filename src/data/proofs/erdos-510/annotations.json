@@ -52,7 +52,7 @@
       "startLine": 35,
       "endLine": 41
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Chowla's Cosine Conjecture (Erdős #510)",
     "content": "**erdos_510_chowla**: ∃ c > 0 such that for all finite A ⊂ ℕ⁺ of size N > 0, ∃ θ with cosineSum(A, θ) < −c√N. The minimum cosine sum of any set of N positive integers is at most −Ω(√N).",
     "significance": "key",
@@ -75,7 +75,7 @@
       "startLine": 45,
       "endLine": 50
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bedert's Polynomial Bound (2025)",
     "content": "**bedert_bound**: ∃ c > 0 such that for all finite A ⊂ ℕ⁺ of size N, ∃ θ with cosineSum(A, θ) < −c · N^{1/7}. The first polynomial bound toward Chowla's conjecture.",
     "significance": "key",
@@ -118,7 +118,7 @@
       "startLine": 60,
       "endLine": 66
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sidon Set Optimality: √N Cannot Be Improved",
     "content": "**sidon_optimality**: For any ε > 0, there exists a finite A ⊂ ℕ⁺ with min_θ cosineSum(A, θ) > −(1+ε)√N. The conjectured exponent 1/2 is best possible.",
     "significance": "key",
