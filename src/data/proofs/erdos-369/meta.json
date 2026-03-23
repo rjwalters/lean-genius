@@ -33,8 +33,8 @@
         "relation": "Erdős #143 studies dilation-avoiding sets, another problem where prime factorization structure controls set density"
       }
     ],
-    "axiomCount": 1,
-    "assumptions": "1 axiom declaration: balog_wooley_infinitely_many (infinitely many consecutive smooth pairs)",
+    "axiomCount": 2,
+    "assumptions": "2 axiom declarations: (1) largestPrimeFactor — definitional axiom positing existence of the largest prime factor function (trivially realizable, used for convenience), (2) balog_wooley_infinitely_many — mathematical assumption encoding the Balog-Wooley 1998 theorem (infinitely many consecutive smooth pairs)",
     "author": "Erdős-Graham (1980), Balog-Wooley (1998)",
     "prerequisites": [
       "smooth-numbers",
@@ -176,7 +176,8 @@
       "**Coprimality barrier**: Consecutive integers $m, m+1$ have $\\gcd = 1$, making their smoothness conditions multiplicatively independent — the hardest case for detecting joint structure",
       "**Three levels of difficulty**: Infinitely many (proved, Balog-Wooley 1998) < positive lower density (open) < all sufficiently large $n$ (open, the full conjecture)",
       "**Sieve method limitations**: The Balog-Wooley proof uses Selberg sieve + exponential sums; these detect infinitely many but cannot show the gaps are $o(n)$",
-      "**abc connection**: Effective forms of the abc conjecture would constrain how simultaneously smooth $n$ and $n+1$ can be, potentially providing alternative approaches"
+      "**abc connection**: Effective forms of the abc conjecture would constrain how simultaneously smooth $n$ and $n+1$ can be, potentially providing alternative approaches",
+      "**Definitional vs. mathematical axioms**: The formalization contains two `axiom` declarations with fundamentally different roles — `largestPrimeFactor` is a definitional convenience (trivially realizable, unused by conjecture statements), while `balog_wooley_infinitely_many` encodes a deep mathematical theorem. This pattern illustrates the distinction between Lean axioms that add mathematical content and those that merely abbreviate computable definitions"
     ],
     "prerequisites": [
       "smooth-numbers",
@@ -222,7 +223,7 @@
     "opens": [],
     "namespace": "Erdos369",
     "lineCount": 131,
-    "axiomCount": 1,
+    "axiomCount": 2,
     "theoremCount": 0,
     "definitionCount": 5
   },
