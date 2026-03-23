@@ -119,7 +119,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1074 asks about the asymptotic densities of EHS numbers and Pillai primes. While both sets are known to be infinite (proved by Erdős, Hardy, and Subbarao), the density questions remain open. Hardy and Subbarao conjectured that EHS numbers have density 1, but this has not been proved.",
-    "implications": "**Theoretical Significance**: **Number-Theoretic Connections**\n\n1. **Wilson's Theorem:** (p-1)! ≡ -1 (mod p) for primes p\n\n2. **Factorial Structure:** m! + 1 can have prime factors not predicted by Wilson\n\n3.\n\n**Broader Connections**: **Residue Classes:** The condition p ≢ 1 (mod m) is about prime distribution\n\n4. **Density Theory:** Asymptotic density of arithmetic sets is subtle\n\n5. **OEIS:** A064164 (EHS numbers) and A063980 (Pillai primes).",
+    "implications": "**Theoretical Significance**: **Number-Theoretic Connections**\n\n1. **Wilson's Theorem:** (p-1)! ≡ -1 (mod p) for primes p\n\n2. **Factorial Structure:** m! + 1 can have prime factors not predicted by Wilson\n\n**3. Residue Classes:** The condition p ≢ 1 (mod m) is about prime distribution\n\n4. **Density Theory:** Asymptotic density of arithmetic sets is subtle\n\n5. **OEIS:** A064164 (EHS numbers) and A063980 (Pillai primes).",
     "openQuestions": [
       "Does the natural density of EHS numbers exist?",
       "If so, is it equal to 1 as conjectured?",

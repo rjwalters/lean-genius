@@ -227,7 +227,8 @@
       "**Two independent proofs**: Maynard (multidimensional sieve) and FGKT (probabilistic + additive combinatorics) solved it simultaneously, suggesting the problem was 'ripe'",
       "**Sieve revolution**: Maynard's approach uses the same multidimensional sieve that proved bounded gaps ($\\liminf g_n \\leq 246$), applied in reverse to prove unbounded gaps",
       "**Upper-lower gap**: Current bounds span from $\\omega(\\log n \\cdot \\log\\log n / \\log\\log\\log n)$ (lower) to $O(n^{0.525})$ (upper) — an enormous range reflecting our ignorance about prime distribution",
-      "**$10,000 still open**: Erdős's stronger conjecture ($g_n > (\\log n)^{1+c}$) remains unresolved and would require fundamentally new ideas beyond current sieve methods"
+      "**$10,000 still open**: Erdős's stronger conjecture ($g_n > (\\log n)^{1+c}$) remains unresolved and would require fundamentally new ideas beyond current sieve methods",
+      "**Potential bound error**: The `improved_stronger` theorem (the file's only sorry) claims $f(n) \\leq f'(n)$ for $n \\geq 100$, but $\\log\\log\\log 100 \\approx 0.83 < 1$, so the inequality may fail at the stated threshold — the correct bound is $n \\geq e^{e^e} \\approx 3{,}814{,}279$. This is a candidate for correction and Aristotle proof search"
     ],
     "prerequisites": [
       "Analytic number theory: the Prime Number Theorem and its consequences",

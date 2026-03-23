@@ -127,7 +127,7 @@
   ],
   "conclusion": {
     "summary": "This formalization provides a comprehensive treatment of the computational complexity of approximate fixed points. In one dimension, binary search achieves optimal O(log 1/epsilon) complexity. For contractions, geometric convergence with explicit error bounds gives the same asymptotic rate. The PPAD formalization captures why higher-dimensional fixed point search is fundamentally harder.",
-    "implications": "**Theoretical Significance**: The stability results show that fixed point computation is robust: approximate function evaluations (oracle model) suffice with controlled error amplification (delta/(1-L)).\n\n**Broader Connections**: The Krasnoselskii-Mann iteration extends applicability to non-contractive maps via damping. Together, these results form the theoretical foundation for numerical fixed point algorithms in optimization, economics (Nash equilibria), and differential equations.",
+    "implications": "**Theoretical Significance**: The stability results show that fixed point computation is robust: approximate function evaluations (oracle model) suffice with controlled error amplification (delta/(1-L)).\n\nThe Krasnoselskii-Mann iteration extends applicability to non-contractive maps via damping. Together, these results form the theoretical foundation for numerical fixed point algorithms in optimization, economics (Nash equilibria), and differential equations.",
     "openQuestions": [
       "Can the PPAD formalization be extended to higher dimensions with a formal Sperner-to-Brouwer reduction?",
       "What is the optimal query complexity for specific function classes (e.g., Holder continuous, smooth)?",

@@ -149,7 +149,7 @@
   ],
   "conclusion": {
     "summary": "This formalization proves A(r) = ∫₀ʳ C(ρ) dρ using the Fundamental Theorem of Calculus, answering the open question from the Circumference from Area gallery entry. The proof uses the companion result dA/dr = C(r) as the antiderivative relationship, then applies FTC Part 2. Together with its companion, it establishes the complete integration-differentiation duality for circle geometry. The proof file contains 153 lines, 0 sorries, 0 axioms.",
-    "implications": "**Theoretical Significance**: The integration-differentiation duality $A' = C$ and $A = \\int C$ is not special to circles — it holds for all dimensions.\n\n**Broader Connections**: The $n$-ball volume $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2+1)$ satisfies $V_n' = S_n$ where $S_n$ is surface area, and $V_n(r) = \\int_0^r S_n(\\rho)\\, d\\rho$. This pattern reflects a deep principle in geometric measure theory: the boundary measure is the variation of the volume measure.",
+    "implications": "**Theoretical Significance**: The integration-differentiation duality $A' = C$ and $A = \\int C$ is not special to circles — it holds for all dimensions.\n\nThe $n$-ball volume $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2+1)$ satisfies $V_n' = S_n$ where $S_n$ is surface area, and $V_n(r) = \\int_0^r S_n(\\rho)\\, d\\rho$. This pattern reflects a deep principle in geometric measure theory: the boundary measure is the variation of the volume measure.",
     "openQuestions": [
       "Can the n-dimensional analogue V_n(r) = ∫₀ʳ S_n(ρ) dρ be formalized for all n?",
       "Can the isoperimetric inequality C² ≥ 4πA (with equality only for circles) be proved?",

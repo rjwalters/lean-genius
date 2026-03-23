@@ -120,7 +120,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #1101 on 'good sequences'—pairwise coprime sequences whose sieved integers have gaps matching the theoretical bound from sieve theory. Erdős proved such sequences exist but conjectured that polynomial growth is impossible while sub-exponential growth is achievable. Both conjectures remain OPEN.",
-    "implications": "**Theoretical Significance**: This problem bridges combinatorial number theory and analytic methods.\n\n**Broader Connections**: Understanding which growth rates allow 'good' sequences would illuminate the interplay between multiplicative structure (coprimality) and additive structure (gaps). Progress here could impact our understanding of prime gaps and sieve methods.",
+    "implications": "**Theoretical Significance**: This problem bridges combinatorial number theory and analytic methods.\n\nUnderstanding which growth rates allow 'good' sequences would illuminate the interplay between multiplicative structure (coprimality) and additive structure (gaps). Progress here could impact our understanding of prime gaps and sieve methods.",
     "openQuestions": [
       "Is there a good sequence with u_n = O(n^k) for some fixed k?",
       "Is there a good sequence with u_n = e^(n^α) for some α < 1?",

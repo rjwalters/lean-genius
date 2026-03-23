@@ -162,7 +162,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #385 defines F(n) = max{m + p(m) : m < n, m composite} and asks whether F(n) > n for all large n (Question 1) and whether F(n) - n → ∞ (Question 2). Both questions remain open. The formalization proves basic properties of least prime divisors, axiomatizes the main conjectures, and connects to the conjectured lower bound F(n) ≥ n + (1 - o(1))√n.",
-    "implications": "**Theoretical Significance**: Resolution of Question 1 would reveal structure in the distribution of composites with small prime factors.\n\n**Broader Connections**: The connection to Siegel zeros (Tao, 2024) shows this seemingly elementary question touches deep analytic number theory. A proof of F(n) > n for large n would also resolve Problem #430.",
+    "implications": "**Theoretical Significance**: Resolution of Question 1 would reveal structure in the distribution of composites with small prime factors.\n\nThe connection to Siegel zeros (Tao, 2024) shows this seemingly elementary question touches deep analytic number theory. A proof of F(n) > n for large n would also resolve Problem #430.",
     "openQuestions": [
       "Is F(n) > n for all sufficiently large n? (Question 1)",
       "Does F(n) - n → ∞? (Question 2)",

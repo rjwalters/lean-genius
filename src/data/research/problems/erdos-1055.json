@@ -1,6 +1,6 @@
 {
   "slug": "erdos-1055",
-  "title": "Erd\u0151s #1055",
+  "title": "Erdős #1055",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -39,9 +39,9 @@
       "All native_decide class values verified (class 1-5, OEIS A005113)"
     ],
     "insights": [
-      "class_of_factor_lt needs fuel convergence: primeClassAux 30 p \u2265 1 + primeClassAux 29 q from definition, but primeClass q = primeClassAux 30 q needs to equal primeClassAux 29 q",
-      "For prime p\u22655 (odd), p+1 is even, so nonSmooth prime factors q of p+1 satisfy q \u2264 (p+1)/2 < p",
-      "primeClassAux f p \u2264 f for all f,p (bounded by fuel) \u2014 needed for convergence argument",
+      "class_of_factor_lt needs fuel convergence: primeClassAux 30 p ≥ 1 + primeClassAux 29 q from definition, but primeClass q = primeClassAux 30 q needs to equal primeClassAux 29 q",
+      "For prime p≥5 (odd), p+1 is even, so nonSmooth prime factors q of p+1 satisfy q ≤ (p+1)/2 < p",
+      "primeClassAux f p ≤ f for all f,p (bounded by fuel) — needed for convergence argument",
       "Fix options: (1) prove convergence by strong induction on p, (2) refactor to well-founded recursion, (3) add convergence hypothesis",
       "primeClassWF: well-founded definition using termination_by p, avoids fuel convergence entirely",
       "nonSmooth_factor_lt proved: for prime p, any nonSmooth prime factor q of (p+1) satisfies q < p",
@@ -57,7 +57,7 @@
       "Prove class_one_iff_smooth using the WF definition (unfold + isEmpty reasoning)",
       "Consider submitting foldl bound to Aristotle as companion file"
     ],
-    "markdown": "# Erd\u0151s #1055 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA prime $p$ is in class $1$ if the only prime divisors of $p+1$ are $2$ or $3$. In general, a prime $p$ is in class $r$ if every prime factor of $p+1$ is in some class $\\leq r-1$, with equality for at least one prime factor.\n\nAre there infinitely many primes in each class? If $p_r$ is the least prime in class $r$, then how does $p_r^{1/r}$ behave?\n\n\n\nA classification due to Erd\\H{o}s and Selfridge. It is easy to prove that the number of primes $\\leq n$ in class $r$ is at most $n^{o(1)}$.\n\nThe sequence $p_r$ begins $2,13,37,73,1021$ (A005113 in the OEIS). Erd\\H{o}s thought $p_r^{1/r}\\to \\infty$, while Selfridge thought it quite likely to be bounded.\n\nA similar question can be asked replacing $p+1$ with $p-1$.\n\nThis is problem A18 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1054\n- Problem #1056\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erdős #1055 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA prime $p$ is in class $1$ if the only prime divisors of $p+1$ are $2$ or $3$. In general, a prime $p$ is in class $r$ if every prime factor of $p+1$ is in some class $\\leq r-1$, with equality for at least one prime factor.\n\nAre there infinitely many primes in each class? If $p_r$ is the least prime in class $r$, then how does $p_r^{1/r}$ behave?\n\n\n\nA classification due to Erd\\H{o}s and Selfridge. It is easy to prove that the number of primes $\\leq n$ in class $r$ is at most $n^{o(1)}$.\n\nThe sequence $p_r$ begins $2,13,37,73,1021$ (A005113 in the OEIS). Erd\\H{o}s thought $p_r^{1/r}\\to \\infty$, while Selfridge thought it quite likely to be bounded.\n\nA similar question can be asked replacing $p+1$ with $p-1$.\n\nThis is problem A18 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1054\n- Problem #1056\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -81,10 +81,10 @@
     {
       "path": "Proofs/Erdos1055Problem.lean",
       "filename": "Erdos1055Problem.lean",
-      "lineCount": 330,
-      "theoremCount": 42,
+      "lineCount": 207,
+      "theoremCount": 31,
       "axiomCount": 4,
-      "defCount": 5,
+      "defCount": 3,
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1055Problem.lean"

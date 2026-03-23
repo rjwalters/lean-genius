@@ -192,7 +192,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #447 is SOLVED. Kleitman (1971) proved that union-free collections have size at most $(1+o(1)) \\binom{n}{\\lfloor n/2 \\rfloor}$, matching the middle layer construction. The formalization axiomatizes 7 deep results and verifies the summary theorem combining upper and lower bounds. The 165-line proof connects to Problem 487 via prime factorization encoding and develops generalizations to $k$-union-free families.",
-    "implications": "**Theoretical Significance**: Kleitman's resolution establishes that union-free families are essentially antichain-like: the Sperner bound $\\binom{n}{\\lfloor n/2 \\rfloor}$ governs their maximum size.\n\n**Broader Connections**: The compression technique became foundational in extremal set theory. The connection to Problem 487 (LCM representations) via prime factorization encoding demonstrates Erdős's signature approach of bridging combinatorics and number theory.",
+    "implications": "**Theoretical Significance**: Kleitman's resolution establishes that union-free families are essentially antichain-like: the Sperner bound $\\binom{n}{\\lfloor n/2 \\rfloor}$ governs their maximum size.\n\nThe compression technique became foundational in extremal set theory. The connection to Problem 487 (LCM representations) via prime factorization encoding demonstrates Erdős's signature approach of bridging combinatorics and number theory.",
     "openQuestions": [
       "What is the exact maximum maxUnionFreeSize(n) for small n? The $(1+o(1))$ factor hides lower-order terms",
       "What is the maximum size of $k$-union-free families for general $k$? (Frankl-Füredi bounds)",

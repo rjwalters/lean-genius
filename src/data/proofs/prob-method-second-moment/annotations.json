@@ -8,9 +8,9 @@
     },
     "type": "context",
     "title": "Module Setup and Namespace",
-    "content": "The file imports the full Mathlib library and works within the `ProbMethod.SecondMoment` namespace. The formalization uses finite probability spaces modeled over `Finset α` with rational-valued random variables (`α → ℚ`), giving exact arithmetic without floating-point concerns. This discrete framework suffices for combinatorial applications where the sample space is finite.",
-    "mathContext": "A finite probability space $(\\Omega, \\Pr)$ is modeled as a `Finset α` with uniform measure: $\\Pr[A] = |A|/|\\Omega|$. Expectations become finite sums: $E[X] = \\frac{1}{|\\Omega|} \\sum_{\\omega \\in \\Omega} X(\\omega)$.",
-    "significance": "context",
+    "content": "The file imports the full Mathlib library and works within the `ProbMethod.SecondMoment` namespace. The formalization uses finite probability spaces modeled over `Finset \u03b1` with rational-valued random variables (`\u03b1 \u2192 \u211a`), giving exact arithmetic without floating-point concerns. This discrete framework suffices for combinatorial applications where the sample space is finite.",
+    "mathContext": "A finite probability space $(\\Omega, \\Pr)$ is modeled as a `Finset \u03b1` with uniform measure: $\\Pr[A] = |A|/|\\Omega|$. Expectations become finite sums: $E[X] = \\frac{1}{|\\Omega|} \\sum_{\\omega \\in \\Omega} X(\\omega)$.",
+    "significance": "supporting",
     "relatedConcepts": [
       "finite probability space",
       "uniform measure",
@@ -54,7 +54,7 @@
     },
     "type": "technique",
     "title": "Paley-Zygmund Inequality",
-    "content": "Formalizes the Paley-Zygmund inequality, which provides a lower bound on $\\Pr[X > 0]$ for non-negative random variables. While Chebyshev bounds deviation probabilities from above, Paley-Zygmund bounds positivity probability from below — making it the key tool for existence proofs. The proof uses the Cauchy-Schwarz inequality: $E[X]^2 = E[X \\cdot \\mathbf{1}_{X>0}]^2 \\leq E[X^2] \\cdot \\Pr[X > 0]$. This formalization states the qualitative version: if $E[X] > 0$ and $X \\geq 0$, then $X$ is positive on a non-empty subset.",
+    "content": "Formalizes the Paley-Zygmund inequality, which provides a lower bound on $\\Pr[X > 0]$ for non-negative random variables. While Chebyshev bounds deviation probabilities from above, Paley-Zygmund bounds positivity probability from below \u2014 making it the key tool for existence proofs. The proof uses the Cauchy-Schwarz inequality: $E[X]^2 = E[X \\cdot \\mathbf{1}_{X>0}]^2 \\leq E[X^2] \\cdot \\Pr[X > 0]$. This formalization states the qualitative version: if $E[X] > 0$ and $X \\geq 0$, then $X$ is positive on a non-empty subset.",
     "mathContext": "Paley-Zygmund: For $X \\geq 0$ with $E[X] > 0$, $\\Pr[X > 0] \\geq \\frac{(E[X])^2}{E[X^2]}$. The quantitative form gives: $\\Pr[X > \\theta E[X]] \\geq (1 - \\theta)^2 \\frac{(E[X])^2}{E[X^2]}$ for $0 \\leq \\theta \\leq 1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -78,7 +78,7 @@
     },
     "type": "technique",
     "title": "Second Moment Existence Theorem",
-    "content": "The main application theorem: if the second moment $E[X^2]$ is at most $2(E[X])^2/|s|$, then at least half the sample space has $X > 0$. This is the workhorse of the second moment method in combinatorics — it converts a variance bound into a quantitative existence guarantee. The factor of 2 comes from the Paley-Zygmund bound: $\\Pr[X > 0] \\geq (E[X])^2/E[X^2] \\geq 1/2$. In random graph theory, this is exactly how one proves that $G(n,p)$ contains a given subgraph with high probability when $p$ is above the threshold.",
+    "content": "The main application theorem: if the second moment $E[X^2]$ is at most $2(E[X])^2/|s|$, then at least half the sample space has $X > 0$. This is the workhorse of the second moment method in combinatorics \u2014 it converts a variance bound into a quantitative existence guarantee. The factor of 2 comes from the Paley-Zygmund bound: $\\Pr[X > 0] \\geq (E[X])^2/E[X^2] \\geq 1/2$. In random graph theory, this is exactly how one proves that $G(n,p)$ contains a given subgraph with high probability when $p$ is above the threshold.",
     "mathContext": "If $E[X^2] \\cdot |s| \\leq 2(E[X])^2$, equivalently $\\frac{E[X^2]}{(E[X])^2} \\leq \\frac{2}{|s|}$, then by Paley-Zygmund: $|\\{a \\in s : X(a) > 0\\}| \\geq |s|/2$. In the random graph setting with $X = \\sum_i X_i$ counting copies of $H$, this requires $\\operatorname{Var}[X] = o((E[X])^2)$.",
     "significance": "key",
     "relatedConcepts": [

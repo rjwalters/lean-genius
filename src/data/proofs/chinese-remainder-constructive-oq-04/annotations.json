@@ -10,7 +10,7 @@
     "title": "Module Overview and Imports",
     "content": "This formalization generalizes the Chinese Remainder Theorem from fixed-size systems (2, 3, 4 moduli in the parent proof `chinese-remainder-constructive`) to arbitrary-length lists. The key insight is that list induction perfectly mirrors the mathematical induction in the classical CRT proof.\n\nThe single `import Mathlib` brings in `Nat.chineseRemainder` (the two-moduli constructive CRT), `Nat.ModEq` (modular congruences), `List.Pairwise` (pairwise relations on lists), and `Nat.Coprime` (coprimality). The `open Nat` directive makes `ModEq`, `Coprime`, and related notation available without qualification.",
     "mathContext": "The general CRT: given pairwise coprime $m_1, \\ldots, m_k$ and any $a_1, \\ldots, a_k$, there exists $x$ with $x \\equiv a_i \\pmod{m_i}$ for all $i$, unique modulo $\\prod m_i$. This file proves both existence and uniqueness by reducing to the two-moduli case at each inductive step.",
-    "significance": "context",
+    "significance": "supporting",
     "prerequisites": [
       "Chinese Remainder Theorem (two-moduli case)",
       "Nat.chineseRemainder from Mathlib",
@@ -32,7 +32,7 @@
     },
     "type": "definition",
     "title": "System Representation: moduli, moduliProd, Satisfies",
-    "content": "Three definitions encode a system of simultaneous congruences as a list of `(remainder, modulus)` pairs:\n\n- `moduli`: Projects the second component of each pair, extracting the list of moduli $[m_1, \\ldots, m_k]$ from the system.\n- `moduliProd`: The product $m_1 \\cdot m_2 \\cdots m_k$ of all moduli, which serves as the modulus for the uniqueness theorem.\n- `Satisfies x sys`: The predicate asserting $x \\equiv a_i \\pmod{m_i}$ for every pair $(a_i, m_i)$ in the system.\n\nThis representation is more flexible than the parent proof's approach of separate theorems for each system size. A system of $k$ congruences is simply a `List (ℕ × ℕ)` of length $k$.",
+    "content": "Three definitions encode a system of simultaneous congruences as a list of `(remainder, modulus)` pairs:\n\n- `moduli`: Projects the second component of each pair, extracting the list of moduli $[m_1, \\ldots, m_k]$ from the system.\n- `moduliProd`: The product $m_1 \\cdot m_2 \\cdots m_k$ of all moduli, which serves as the modulus for the uniqueness theorem.\n- `Satisfies x sys`: The predicate asserting $x \\equiv a_i \\pmod{m_i}$ for every pair $(a_i, m_i)$ in the system.\n\nThis representation is more flexible than the parent proof's approach of separate theorems for each system size. A system of $k$ congruences is simply a `List (\u2115 \u00d7 \u2115)` of length $k$.",
     "mathContext": "Given $\\text{sys} = [(a_1, m_1), \\ldots, (a_k, m_k)]$:\n- $\\text{moduli}(\\text{sys}) = [m_1, \\ldots, m_k]$\n- $\\text{moduliProd}(\\text{sys}) = \\prod_{i=1}^k m_i$\n- $\\text{Satisfies}(x, \\text{sys}) \\iff \\forall i,\\; x \\equiv a_i \\pmod{m_i}$",
     "significance": "key",
     "prerequisites": [

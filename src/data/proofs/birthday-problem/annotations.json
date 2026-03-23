@@ -9,16 +9,16 @@
     "type": "concept",
     "title": "The Birthday Paradox",
     "content": "The **Birthday Problem** asks: How many people must be in a room for there to be a >50% chance that two share a birthday?\n\nThe surprising answer: **just 23 people**.\n\nMost people guess much higher (like 183, half of 365), because they confuse two different questions:\n- 'What's the chance someone shares MY birthday?' (needs ~253 people for 50%)\n- 'What's the chance ANY two people share A birthday?' (needs only 23)\n\nThe second question has many more pairs to check!",
-    "significance": "key",
+    "mathContext": "The probability that at least two of $n$ people share a birthday is $P(n) = 1 - \\prod_{k=0}^{n-1}(1 - k/365)$. The 'paradox' is that $P(23) > 0.5$ despite $23 \\ll 365$.",
+    "significance": "critical",
+    "prerequisites": [
+      "basic probability",
+      "complement rule"
+    ],
     "relatedConcepts": [
       "probability",
       "combinatorics",
       "complement counting"
-    ],
-    "mathContext": "$P(n) = 1 - \\prod_{k=0}^{n-1}\\left(1 - \\frac{k}{365}\\right)$. For $n = 23$: $P(23) \\approx 0.5073 > 1/2$. The key insight: $\\binom{23}{2} = 253$ pairs, each with probability $1/365$ of matching.",
-    "prerequisites": [
-      "complement counting",
-      "falling factorial"
     ]
   },
   {
@@ -28,11 +28,15 @@
       "startLine": 140,
       "endLine": 149
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "The Birthday Formula",
     "content": "**Birthday Problem Formula**:\n\n$$P(\\text{shared birthday among } n \\text{ people}) = 1 - \\frac{365 \\cdot 364 \\cdots (365-n+1)}{365^n}$$\n\nEquivalently:\n$$P(n) = 1 - \\prod_{k=0}^{n-1} \\frac{365-k}{365} = 1 - \\prod_{k=0}^{n-1} \\left(1 - \\frac{k}{365}\\right)$$\n\nThe product represents the probability that each successive person has a unique birthday.",
     "mathContext": "$P(n) = 1 - \\frac{365!}{365^n (365-n)!}$",
-    "significance": "key",
+    "significance": "critical",
+    "prerequisites": [
+      "Nat.descFactorial",
+      "rational arithmetic"
+    ],
     "relatedConcepts": [
       "falling factorial",
       "product formula"
@@ -48,8 +52,12 @@
     "type": "concept",
     "title": "Counting Injective Functions",
     "content": "The number of ways for $n$ people to have **all distinct** birthdays equals the number of **injective functions** from an $n$-element set to a 365-element set.\n\nThis is the **falling factorial**:\n$$365^{\\underline{n}} = 365 \\times 364 \\times \\cdots \\times (365-n+1)$$\n\nIn Lean, this is `Nat.descFactorial 365 n`.\n\n**Why it works**: Person 1 has 365 choices, person 2 has 364 remaining choices, etc.",
-    "mathContext": "$|\\text{injections}| = 365^{\\underline{n}}$",
+    "mathContext": "$|\\text{injections}| = 365^{\\underline{n}} = \\frac{365!}{(365-n)!}$",
     "significance": "key",
+    "prerequisites": [
+      "Nat.descFactorial",
+      "counting principles"
+    ],
     "relatedConcepts": [
       "injective functions",
       "falling factorial",
@@ -63,11 +71,15 @@
       "startLine": 179,
       "endLine": 182
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "The Pigeonhole Case",
     "content": "**When $n > 365$**: By the pigeonhole principle, at least two people MUST share a birthday.\n\nWith 366+ people and only 365 possible birthdays, there's no way to assign distinct birthdays to everyone.\n\nMathematically: `descFactorial 365 n = 0` when $n > 365$, so:\n$$P(n) = 1 - \\frac{0}{365^n} = 1$$\n\nThe probability is exactly 1 (certain).",
-    "mathContext": "If $n > 365$, then $P(n) = 1$",
+    "mathContext": "If $n > 365$, then $365^{\\underline{n}} = 0$ (the falling factorial includes a factor of 0), so $P(n) = 1 - 0/365^n = 1$.",
     "significance": "key",
+    "prerequisites": [
+      "pigeonhole principle",
+      "Nat.descFactorial_eq_zero"
+    ],
     "relatedConcepts": [
       "pigeonhole principle",
       "certainty"
@@ -80,11 +92,15 @@
       "startLine": 192,
       "endLine": 223
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "The 23-Person Threshold",
     "content": "**The Famous Result**: With 23 people, P(shared birthday) > 50%.\n\nNumerically:\n- $P(22) \\approx 0.4757 < 0.5$\n- $P(23) \\approx 0.5073 > 0.5$\n\nSo 23 is the exact threshold where shared birthdays become more likely than not.\n\n**Note**: This is stated as an axiom in Lean because computing the exact rational requires arithmetic on ~50-digit numbers, which native_decide cannot handle efficiently.",
-    "mathContext": "$P(23) \\approx 50.73\\% > 50\\%$",
-    "significance": "key",
+    "mathContext": "$P(23) = 1 - \\frac{365!}{365^{23} \\cdot 342!} \\approx 0.5073 > 0.5$. The exact computation involves $365^{23} \\approx 8.6 \\times 10^{58}$.",
+    "significance": "critical",
+    "prerequisites": [
+      "birthday_problem_formula",
+      "rational arithmetic"
+    ],
     "relatedConcepts": [
       "threshold",
       "probability"
@@ -100,17 +116,16 @@
     "type": "insight",
     "title": "The Birthday Attack",
     "content": "The Birthday Problem has serious implications for **cryptography**:\n\nA **birthday attack** exploits this mathematics to find hash collisions. For a hash function with $n$-bit output:\n- Naive collision search: $O(2^n)$ attempts\n- Birthday attack: $O(2^{n/2})$ attempts\n\nThis is why hash functions need outputs twice as long as the desired security level. A 256-bit hash provides only 128 bits of collision resistance.",
+    "mathContext": "For a hash function $H: \\{0,1\\}^* \\to \\{0,1\\}^n$, the birthday bound gives collision probability $> 50\\%$ after $\\approx 2^{n/2}$ random inputs. This is the square root of the output space, directly analogous to needing $\\sqrt{365} \\approx 19$ people (close to 23) for a birthday collision.",
     "significance": "key",
+    "prerequisites": [
+      "birthday problem formula",
+      "hash function basics"
+    ],
     "relatedConcepts": [
       "cryptography",
       "hash functions",
       "collision resistance"
-    ],
-    "mathContext": "For an $n$-bit hash, a birthday attack finds collisions in $O(2^{n/2})$ trials. This is why a 256-bit hash (SHA-256) provides only 128-bit collision resistance: $\\sqrt{2^{256}} = 2^{128}$ trials suffice for a collision.",
-    "prerequisites": [
-      "hash functions",
-      "collision resistance",
-      "birthday bound"
     ]
   },
   {
@@ -120,62 +135,18 @@
       "startLine": 165,
       "endLine": 171
     },
-    "type": "context",
+    "type": "example",
     "title": "Two People: P = 1/365",
     "content": "With 2 people, the probability they share a birthday is:\n\n$$P(2) = 1 - \\frac{365 \\times 364}{365^2} = 1 - \\frac{364}{365} = \\frac{1}{365}$$\n\nThis makes intuitive sense: once person 1's birthday is fixed, person 2 has a 1/365 chance of matching.\n\nIn Lean: `prob_shared_birthday 2 = 1 / 365`",
     "mathContext": "$P(2) = 1/365 \\approx 0.27\\%$",
     "significance": "supporting",
+    "prerequisites": [
+      "birthday_problem_formula",
+      "Nat.descFactorial"
+    ],
     "relatedConcepts": [
       "base case",
       "complement probability"
-    ]
-  },
-  {
-    "id": "ann-expected-pairs",
-    "proofId": "birthday-problem",
-    "range": {
-      "startLine": 304,
-      "endLine": 356
-    },
-    "type": "insight",
-    "title": "Expected Number of Shared Birthday Pairs",
-    "content": "By **linearity of expectation**, the expected number of birthday-sharing pairs among $n$ people is $\\mathbb{E}[\\text{# matching pairs}] = \\binom{n}{2} \\cdot \\frac{1}{365}$.\n\nThe proof defines an indicator variable $I_{ij}$ for each pair $(i,j)$ with $\\mathbb{E}[I_{ij}] = 1/365$, then sums over all $\\binom{n}{2}$ pairs. Linearity of expectation requires no independence assumption — it works even though the events 'person $i$ and $j$ share a birthday' are not independent.\n\nThe 28-person threshold: $\\binom{28}{2}/365 = 378/365 > 1$, so with 28 people we expect more than one matching pair on average. This is a weaker result than the 23-person collision probability but follows from a simpler argument.",
-    "mathContext": "$\\mathbb{E}[\\text{# pairs}] = \\binom{n}{2}/365 = n(n-1)/730$. For $n = 23$: $\\binom{23}{2}/365 = 253/365 \\approx 0.693$ (less than 1 expected pair). For $n = 28$: $378/365 > 1$. Linearity of expectation: $\\mathbb{E}[\\sum I_{ij}] = \\sum \\mathbb{E}[I_{ij}]$, no independence needed.",
-    "significance": "key",
-    "prerequisites": [
-      "linearity of expectation",
-      "indicator random variables",
-      "Nat.choose"
-    ],
-    "relatedConcepts": [
-      "linearity of expectation",
-      "indicator variables",
-      "probabilistic method",
-      "expected value vs probability"
-    ]
-  },
-  {
-    "id": "ann-99-threshold",
-    "proofId": "birthday-problem",
-    "range": {
-      "startLine": 357,
-      "endLine": 402
-    },
-    "type": "theorem",
-    "title": "The 99% Threshold at 57 People",
-    "content": "With 57 people, the probability of a shared birthday exceeds 99%. The proof provides a **tight bound**: $P(56) < 0.99 < P(57)$, so 57 is the minimum number of people needed for 99% confidence.\n\nBoth inequalities are verified by `native_decide` on integers exceeding 140 digits — Lean's kernel evaluates the exact rational arithmetic at compile time, providing full machine-checked certainty without floating-point approximation.\n\nThe rapid transition from 50% (23 people) to 99% (57 people) illustrates the exponential decay of the complement probability: adding each person reduces $P(\\text{all distinct})$ by a factor of approximately $(1 - n/365)$.",
-    "mathContext": "$P(57) = 1 - \\frac{365!}{365^{57} \\cdot 308!} > 0.99$, verified exactly via $\\text{descFactorial}(365,57) \\cdot 100 < 365^{57}$. The Poisson approximation gives $P(n) \\approx 1 - e^{-n^2/730}$, predicting the 99% threshold at $n \\approx \\sqrt{730 \\ln 100} \\approx 57.0$.",
-    "significance": "key",
-    "prerequisites": [
-      "native_decide tactic",
-      "descFactorial",
-      "exact integer arithmetic"
-    ],
-    "relatedConcepts": [
-      "confidence levels",
-      "Poisson approximation",
-      "exponential decay",
-      "native_decide"
     ]
   }
 ]

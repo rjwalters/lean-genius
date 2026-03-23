@@ -38,7 +38,8 @@
   },
   "tags": [],
   "relatedProofs": [
-    "triangle-inequality"
+    "triangle-inequality",
+    "triangle-inequality-oq-03"
   ],
   "references": {
     "papers": [],
@@ -58,6 +59,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangleInequality.lean"
+    },
+    {
+      "path": "Proofs/TriangleInequalityOQ03.lean",
+      "filename": "TriangleInequalityOQ03.lean",
+      "lineCount": 256,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangleInequalityOQ03.lean"
     }
   ]
 }

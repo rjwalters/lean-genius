@@ -8,11 +8,11 @@
       "endLine": 29
     },
     "title": "Problem Statement, References, and Imports",
-    "content": "Module docstring presenting Erdős Problem #738 (Gyárfás conjecture for triangle-free graphs). Lists key partial results: Kierstead-Penrice (1994) for radius-2 trees, Scott (1997) for caterpillars, and Chudnovsky-Scott-Seymour (2020) for subdivisions. Imports `SimpleGraph.Basic` (adjacency), `SimpleGraph.Clique` (CliqueFree), `SimpleGraph.Coloring` (proper colorings), `Fintype.Basic` (finite types), and `Tactic` (omega, etc.).",
-    "mathContext": "The conjecture asks whether triangle-free graphs with $\\chi(G) = \\infty$ are 'universal' for finite trees under induced subgraph containment. This sits in the broader theory of $\\chi$-bounded graph classes initiated by Gyárfás (1975).",
-    "significance": "context",
+    "content": "Module docstring presenting Erd\u0151s Problem #738 (Gy\u00e1rf\u00e1s conjecture for triangle-free graphs). Lists key partial results: Kierstead-Penrice (1994) for radius-2 trees, Scott (1997) for caterpillars, and Chudnovsky-Scott-Seymour (2020) for subdivisions. Imports `SimpleGraph.Basic` (adjacency), `SimpleGraph.Clique` (CliqueFree), `SimpleGraph.Coloring` (proper colorings), `Fintype.Basic` (finite types), and `Tactic` (omega, etc.).",
+    "mathContext": "The conjecture asks whether triangle-free graphs with $\\chi(G) = \\infty$ are 'universal' for finite trees under induced subgraph containment. This sits in the broader theory of $\\chi$-bounded graph classes initiated by Gy\u00e1rf\u00e1s (1975).",
+    "significance": "supporting",
     "relatedConcepts": [
-      "Gyárfás conjecture",
+      "Gy\u00e1rf\u00e1s conjecture",
       "chi-bounded classes",
       "SimpleGraph library",
       "induced subgraphs"
@@ -32,7 +32,7 @@
       "endLine": 33
     },
     "title": "Triangle-Free Graph",
-    "content": "Defines `IsTriangleFree G` as `G.CliqueFree 3`: $G$ contains no copy of $K_3$ (complete graph on 3 vertices). This is the key structural constraint: triangle-freeness forces the graph's local structure to be tree-like, since neighborhoods induce independent sets. Zykov (1949) showed triangle-free graphs can have arbitrarily large chromatic number, making the Gyárfás conjecture non-vacuous.",
+    "content": "Defines `IsTriangleFree G` as `G.CliqueFree 3`: $G$ contains no copy of $K_3$ (complete graph on 3 vertices). This is the key structural constraint: triangle-freeness forces the graph's local structure to be tree-like, since neighborhoods induce independent sets. Zykov (1949) showed triangle-free graphs can have arbitrarily large chromatic number, making the Gy\u00e1rf\u00e1s conjecture non-vacuous.",
     "mathContext": "$G$ is triangle-free $\\iff$ $\\omega(G) \\leq 2$ $\\iff$ $G.\\text{CliqueFree}\\, 3$",
     "significance": "key",
     "relatedConcepts": [
@@ -151,12 +151,12 @@
       "startLine": 57,
       "endLine": 63
     },
-    "title": "Gyárfás Conjecture (Main)",
+    "title": "Gy\u00e1rf\u00e1s Conjecture (Main)",
     "content": "Axiomatizes `gyarfas_conjecture`: for every triangle-free graph $G$ with $\\chi(G) = \\infty$ and every finite tree $T$ on $n$ vertices, $G$ contains an induced copy of $T$. The statement is universe-polymorphic in $V$ (the vertex type), making it applicable to any graph. This is the central open problem, with only partial results known (paths, stars, radius-2 trees, caterpillars).",
     "mathContext": "$\\forall G \\text{ triangle-free with } \\chi(G) = \\infty,\\, \\forall T \\text{ finite tree},\\, G \\supseteq_{\\text{ind}} T$",
     "significance": "key",
     "relatedConcepts": [
-      "Gyárfás 1975",
+      "Gy\u00e1rf\u00e1s 1975",
       "chi-bounded classes",
       "induced subgraph containment",
       "open problem"
@@ -224,14 +224,14 @@
       "endLine": 84
     },
     "title": "Paths Always Present",
-    "content": "Axiomatizes `infinite_chrom_contains_paths`: triangle-free graphs with $\\chi = \\infty$ contain arbitrarily long induced paths. This follows from Ramsey-type arguments: in a triangle-free graph with high chromatic number, one can greedily extend a path by finding vertices in unused color classes. The result goes back to Gyárfás and is the base case for inductive approaches.",
+    "content": "Axiomatizes `infinite_chrom_contains_paths`: triangle-free graphs with $\\chi = \\infty$ contain arbitrarily long induced paths. This follows from Ramsey-type arguments: in a triangle-free graph with high chromatic number, one can greedily extend a path by finding vertices in unused color classes. The result goes back to Gy\u00e1rf\u00e1s and is the base case for inductive approaches.",
     "mathContext": "$G$ triangle-free, $\\chi(G) = \\infty \\implies \\forall n,\\, G \\supseteq_{\\text{ind}} P_n$",
     "significance": "key",
     "relatedConcepts": [
       "Ramsey theory",
       "greedy path extension",
       "induced path",
-      "Gyárfás 1975"
+      "Gy\u00e1rf\u00e1s 1975"
     ],
     "prerequisites": [
       "pathGraph",

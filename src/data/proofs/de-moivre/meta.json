@@ -54,7 +54,7 @@
   "overview": {
     "historicalContext": "Abraham de Moivre (1667-1754), a French Huguenot mathematician exiled to England, discovered this formula around 1707 while working on trigonometric series. De Moivre communicated results to the Royal Society but never published a clean statement — the formula was implicit in his work on recurrence relations and probability. Euler (1748) gave the modern formulation in the *Introductio in analysin infinitorum*, connecting it to e^{iθ} = cos θ + i sin θ. Roger Cotes (1714) independently found related results. The theorem became foundational for complex analysis: it unifies trigonometric addition formulas, provides nth roots of unity, and underlies the Fourier transform. This is Wiedijk's 100 Theorems #17.",
     "problemStatement": "**De Moivre's Theorem**:\n\n$$(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$$\n\nfor any real θ and natural number n.",
-    "text": "(cos θ + i sin θ)^n = cos(nθ) + i sin(nθ). Connects powers of complex numbers to multiple angle formulas.",
+    "text": "This formalization proves de Moivre's theorem (cos θ + i sin θ)^n = cos(nθ) + i sin(nθ) via Euler's formula: e^(iθ) = cos θ + i sin θ, so (cos θ + i sin θ)^n = e^(inθ) = cos(nθ) + i sin(nθ). The Lean proof applies `Complex.exp_nat_mul_I` from Mathlib.\n\nThe file derives multiple angle formulas (cos(nθ) and sin(nθ) as polynomials in cos θ, sin θ), the nth roots of unity, and the geometric interpretation of complex multiplication as rotation. Commentary connects to Chebyshev polynomials and the discrete Fourier transform.",
     "proofStrategy": "Using Euler's formula e^(iθ) = cos θ + i sin θ, raising both sides to the n-th power gives e^(inθ) = cos(nθ) + i sin(nθ). The key Mathlib lemmas are Complex.exp_mul_I (Euler's formula) and Complex.exp_nat_mul (power rule for exp).",
     "keyInsights": [
       "**Exponential Triviality:** Via Euler's formula, $(e^{i\\theta})^n = e^{in\\theta}$ is just the power rule for $\\exp$. The 'deep' trigonometric identity becomes trivial algebra in the exponential form.",
@@ -73,56 +73,64 @@
       "title": "Introduction and Historical Context",
       "startLine": 1,
       "endLine": 43,
-      "summary": "Module documentation: states De Moivre's formula, proof approach via Euler's formula and exp power rule, status, Mathlib dependencies, and historical note on de Moivre (1667-1754)."
+      "summary": "Module documentation: states De Moivre's formula, proof approach via Euler's formula and exp power rule, status, Mathlib dependencies, and historical note on de Moivre (1667-1754).",
+      "mathContext": "Module documentation: states De Moivre's formula, proof approach via Euler's formula and exp power rule, status, Mathlib dependencies, and historical note on de Moivre (1667-1754)."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: Trigonometric Form",
       "startLine": 45,
       "endLine": 77,
-      "summary": "Proves (cos θ + i sin θ)^n = cos(nθ) + i sin(nθ) by rewriting with Complex.exp_mul_I, applying Complex.exp_nat_mul, then converting back via simp."
+      "summary": "Proves (cos θ + i sin θ)^n = cos(nθ) + i sin(nθ) by rewriting with Complex.exp_mul_I, applying Complex.exp_nat_mul, then converting back via simp.",
+      "mathContext": "Proves (cos θ + i sin θ)^n = cos(nθ) + i sin(nθ) by rewriting with Complex.exp_mul_I, applying Complex.exp_nat_mul, then converting back via simp."
     },
     {
       "id": "exp-form",
       "title": "Exponential Form",
       "startLine": 78,
       "endLine": 96,
-      "summary": "Two equivalent exponential formulations: (exp(θI))^n = exp(nθI) and (exp(Iθ))^n = exp(I·nθ). Both proved by exp_nat_mul plus ring."
+      "summary": "Two equivalent exponential formulations: (exp(θI))^n = exp(nθI) and (exp(Iθ))^n = exp(I·nθ). Both proved by exp_nat_mul plus ring.",
+      "mathContext": "Two equivalent exponential formulations: (exp(θI))^n = exp(nθI) and (exp(Iθ))^n = exp(I·nθ). Both proved by exp_nat_mul plus ring."
     },
     {
       "id": "integer-ext",
       "title": "Integer Exponent Extension",
       "startLine": 97,
       "endLine": 127,
-      "summary": "Extension to integer exponents via Complex.exp_int_mul. Both exponential and trigonometric forms for ℤ-valued n, covering negative powers (reciprocals of complex numbers on the unit circle)."
+      "summary": "Extension to integer exponents via Complex.exp_int_mul. Both exponential and trigonometric forms for ℤ-valued n, covering negative powers (reciprocals of complex numbers on the unit circle).",
+      "mathContext": "Extension to integer exponents via Complex.exp_int_mul. Both exponential and trigonometric forms for ℤ-valued n, covering negative powers (reciprocals of complex numbers on the unit circle)."
     },
     {
       "id": "double-angle",
       "title": "Double Angle Formulas (n = 2)",
       "startLine": 128,
       "endLine": 147,
-      "summary": "Derives double angle formula cos(2θ) + i sin(2θ) = (cos θ + i sin θ)² as the special case n = 2 of the main theorem."
+      "summary": "Derives double angle formula cos(2θ) + i sin(2θ) = (cos θ + i sin θ)² as the special case n = 2 of the main theorem.",
+      "mathContext": "Derives double angle formula cos(2θ) + i sin(2θ) = (cos θ + i sin θ)² as the special case n = 2 of the main theorem."
     },
     {
       "id": "triple-angle",
       "title": "Triple Angle Formulas (n = 3)",
       "startLine": 148,
       "endLine": 163,
-      "summary": "Derives triple angle formula cos(3θ) + i sin(3θ) = (cos θ + i sin θ)³ as the special case n = 3."
+      "summary": "Derives triple angle formula cos(3θ) + i sin(3θ) = (cos θ + i sin θ)³ as the special case n = 3.",
+      "mathContext": "Derives triple angle formula cos(3θ) + i sin(3θ) = (cos θ + i sin θ)³ as the special case n = 3."
     },
     {
       "id": "roots-of-unity",
       "title": "Roots of Unity Connection",
       "startLine": 164,
       "endLine": 190,
-      "summary": "Proves exp(2πik/n)^n = 1 via exp_nat_mul, field_simp to cancel n, then exp(k · 2πi) = (exp(2πi))^k = 1^k = 1. Uses Complex.exp_two_pi_mul_I."
+      "summary": "Proves exp(2πik/n)^n = 1 via exp_nat_mul, field_simp to cancel n, then exp(k · 2πi) = (exp(2πi))^k = 1^k = 1. Uses Complex.exp_two_pi_mul_I.",
+      "mathContext": "Proves exp(2πik/n)^n = 1 via exp_nat_mul, field_simp to cancel n, then exp(k · 2πi) = (exp(2πi))^k = 1^k = 1. Uses Complex.exp_two_pi_mul_I."
     },
     {
       "id": "special-cases",
       "title": "Special Cases and Applications",
       "startLine": 191,
       "endLine": 239,
-      "summary": "n = 0 (trivial: x^0 = 1) and n = 1 (identity) special cases. Concluding discussion of applications in signal processing, electrical engineering, physics, and number theory. Final #check exports."
+      "summary": "n = 0 (trivial: x^0 = 1) and n = 1 (identity) special cases. Concluding discussion of applications in signal processing, electrical engineering, physics, and number theory. Final #check exports.",
+      "mathContext": "n = 0 (trivial: x^0 = 1) and n = 1 (identity) special cases. Concluding discussion of applications in signal processing, electrical engineering, physics, and number theory. Final #check exports."
     }
   ],
   "crossReferences": [

@@ -136,7 +136,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #617 is an open conjecture (proved for r=3,4). The Erdős-Gyárfás conjecture states that for r ≥ 3, no balanced r-colouring of K_{r²+1} exists. The threshold is sharp: K_{r²} can be balanced but K_{r²+1} cannot. The formalization captures the known results and boundary cases.",
-    "implications": "**Theoretical Significance**: This problem reveals a sharp threshold phenomenon in edge colourings of complete graphs.\n\n**Broader Connections**: The single extra vertex beyond r² fundamentally changes the combinatorial landscape, forcing the existence of cliques that avoid at least one colour. The counting-based proof technique for small r connects to broader questions in Ramsey theory about how uniformity constraints interact with graph size.",
+    "implications": "**Theoretical Significance**: This problem reveals a sharp threshold phenomenon in edge colourings of complete graphs.\n\nThe single extra vertex beyond r² fundamentally changes the combinatorial landscape, forcing the existence of cliques that avoid at least one colour. The counting-based proof technique for small r connects to broader questions in Ramsey theory about how uniformity constraints interact with graph size.",
     "openQuestions": [
       "Is the conjecture true for r ≥ 5?",
       "What is the structure of balanced colourings of K_{r²}?",

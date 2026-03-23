@@ -35,7 +35,7 @@
     "title": "Basic 3-Smooth Membership Witnesses",
     "content": "Explicit membership proofs for small 3-smooth numbers: 1 = 2^0\u00b73^0, 2 = 2^1\u00b73^0, 3 = 2^0\u00b73^1, 6 = 2^1\u00b73^1. These provide concrete witnesses for the existential in the smoothNumbers23 definition. The proofs are trivial (simp or norm_num after providing the exponent pair), but they verify the definition is correctly capturing the intended set. The sequence of 3-smooth numbers begins: 1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, 27, 32, 36, ...",
     "mathContext": "The 3-smooth (or regular) numbers form Sloane's A003586. Their counting function $\\psi(x, 3) = |\\{n \\leq x : n = 2^a 3^b\\}|$ satisfies $\\psi(x, 3) \\sim \\frac{(\\log x)^2}{2 \\log 2 \\cdot \\log 3}$ by a standard lattice point counting argument in the $(a,b)$-plane.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "3-smooth numbers",
       "regular numbers",

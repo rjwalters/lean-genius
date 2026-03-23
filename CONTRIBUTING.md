@@ -55,7 +55,7 @@ git checkout -b research/your-topic
 
 ### 2. Run Research
 
-Use the `/research` skill in Claude Code, or manually:
+Use the `/lean-research` skill in Claude Code, or manually:
 
 1. Check available problems:
    ```bash
@@ -218,4 +218,4 @@ pnpm db:rebuild
 
 - Open a GitHub issue for questions
 - Check existing issues and PRs for context
-- Review the `/research` skill documentation in Claude Code
+- Review the `/lean-research` skill documentation in Claude Code

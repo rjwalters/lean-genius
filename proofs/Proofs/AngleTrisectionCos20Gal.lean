@@ -141,20 +141,24 @@ private noncomputable def q_eis_rat : ℚ[X] := X ^ 3 - C 6 * X ^ 2 + C 9 * X - 
 private theorem q_eis_rat_irreducible : Irreducible q_eis_rat := by
   have hprim := q_eis_int_monic.isPrimitive
   have hirr := (IsPrimitive.Int.irreducible_iff_irreducible_map_cast hprim).mp q_eis_int_irreducible
-  convert hirr using 1
-  unfold q_eis_rat q_eis_int
-  simp only [Polynomial.map_sub, Polynomial.map_add, Polynomial.map_mul,
-    Polynomial.map_C, Polynomial.map_X, Polynomial.map_pow]
-  push_cast
-  ring
+  have heq : q_eis_rat = Polynomial.map (Int.castRingHom ℚ) q_eis_int := by
+    unfold q_eis_rat q_eis_int
+    simp only [Polynomial.map_sub, Polynomial.map_add, Polynomial.map_mul,
+      Polynomial.map_C, Polynomial.map_X, Polynomial.map_pow]
+    norm_num
+  rwa [heq]
 
 /-- Key identity: q(2X+2) = p, i.e., the linear substitution Y=2X+2 transforms q into p.
     Verified by expanding: (2X+2)³-6(2X+2)²+9(2X+2)-3 = 8X³-6X-1. -/
 private theorem q_comp_eq_p :
     q_eis_rat.comp (C 2 * X + C 2) = p := by
+  apply Polynomial.funext; intro x
+  simp only [Polynomial.eval_comp, Polynomial.eval_add, Polynomial.eval_mul,
+    Polynomial.eval_C, Polynomial.eval_X]
   unfold q_eis_rat p
-  simp only [Polynomial.sub_comp, Polynomial.add_comp, Polynomial.mul_comp,
-    Polynomial.pow_comp, Polynomial.X_comp, Polynomial.C_comp]
+  simp only [Polynomial.eval_sub, Polynomial.eval_add, Polynomial.eval_mul,
+    Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C, Polynomial.eval_one,
+    Polynomial.eval_ofNat]
   ring
 
 /-- 8X³-6X-1 is irreducible over ℚ.
@@ -184,15 +188,14 @@ private theorem p_irreducible : Irreducible (p : ℚ[X]) := by
     have hq_factor : q_eis_rat = (a.comp ℓ_inv) * (b.comp ℓ_inv) := by
       have h1 : ℓ.comp ℓ_inv = X := by
         ext n
-        simp only [ℓ, ℓ_inv, Polynomial.sub_comp, Polynomial.add_comp,
+        simp only [ℓ, ℓ_inv, Polynomial.add_comp,
           Polynomial.mul_comp, Polynomial.C_comp, Polynomial.X_comp]
-        simp only [coeff_sub, coeff_add, coeff_mul_C, coeff_C_mul, coeff_X, coeff_C]
+        simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X, coeff_C]
         rcases n with _ | _ | _ <;> simp <;> ring
       calc q_eis_rat
-          = q_eis_rat.comp X := (Polynomial.comp_X q_eis_rat).symm
+          = q_eis_rat.comp X := q_eis_rat.comp_X.symm
         _ = q_eis_rat.comp (ℓ.comp ℓ_inv) := by rw [h1]
-        _ = (q_eis_rat.comp ℓ).comp ℓ_inv := by
-            simp only [Polynomial.comp, Polynomial.eval₂_map]
+        _ = (q_eis_rat.comp ℓ).comp ℓ_inv := (q_eis_rat.comp_assoc ℓ ℓ_inv).symm
         _ = (a * b).comp ℓ_inv := by rw [hab]
         _ = (a.comp ℓ_inv) * (b.comp ℓ_inv) := Polynomial.mul_comp a b ℓ_inv
     -- Since q is irreducible, one factor is a unit
@@ -200,35 +203,35 @@ private theorem p_irreducible : Irreducible (p : ℚ[X]) := by
     · -- a.comp ℓ⁻¹ is a unit → a is a unit
       left
       -- A unit in k[X] is a nonzero constant C c
-      rw [Polynomial.isUnit_iff] at ha ⊢
+      rw [Polynomial.isUnit_iff] at ha
       obtain ⟨c, hc_ne, hc_eq⟩ := ha
       -- a = (a.comp ℓ⁻¹).comp ℓ = (C c).comp ℓ = C c
       have h_inv : ℓ_inv.comp ℓ = X := by
         ext n
-        simp only [ℓ, ℓ_inv, Polynomial.sub_comp, Polynomial.add_comp,
+        simp only [ℓ, ℓ_inv, Polynomial.sub_comp,
           Polynomial.mul_comp, Polynomial.C_comp, Polynomial.X_comp]
-        simp only [coeff_sub, coeff_add, coeff_mul_C, coeff_C_mul, coeff_X, coeff_C]
+        simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X, coeff_C]
         rcases n with _ | _ | _ <;> simp <;> ring
       have ha_eq : a = (a.comp ℓ_inv).comp ℓ := by
-        conv_lhs => rw [← Polynomial.comp_X a, ← h_inv]
-        simp only [Polynomial.comp, Polynomial.eval₂_map]
-      rw [ha_eq, hc_eq, Polynomial.C_comp]
-      exact ⟨c, hc_ne, rfl⟩
+        conv_lhs => rw [← a.comp_X, ← h_inv]
+        exact (a.comp_assoc ℓ_inv ℓ).symm
+      rw [Polynomial.isUnit_iff]
+      exact ⟨c, hc_ne, by rw [ha_eq, ← hc_eq, Polynomial.C_comp]⟩
     · -- b.comp ℓ⁻¹ is a unit → b is a unit (symmetric)
       right
-      rw [Polynomial.isUnit_iff] at hb ⊢
+      rw [Polynomial.isUnit_iff] at hb
       obtain ⟨c, hc_ne, hc_eq⟩ := hb
       have h_inv : ℓ_inv.comp ℓ = X := by
         ext n
-        simp only [ℓ, ℓ_inv, Polynomial.sub_comp, Polynomial.add_comp,
+        simp only [ℓ, ℓ_inv, Polynomial.sub_comp,
           Polynomial.mul_comp, Polynomial.C_comp, Polynomial.X_comp]
-        simp only [coeff_sub, coeff_add, coeff_mul_C, coeff_C_mul, coeff_X, coeff_C]
+        simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X, coeff_C]
         rcases n with _ | _ | _ <;> simp <;> ring
       have hb_eq : b = (b.comp ℓ_inv).comp ℓ := by
-        conv_lhs => rw [← Polynomial.comp_X b, ← h_inv]
-        simp only [Polynomial.comp, Polynomial.eval₂_map]
-      rw [hb_eq, hc_eq, Polynomial.C_comp]
-      exact ⟨c, hc_ne, rfl⟩
+        conv_lhs => rw [← b.comp_X, ← h_inv]
+        exact (b.comp_assoc ℓ_inv ℓ).symm
+      rw [Polynomial.isUnit_iff]
+      exact ⟨c, hc_ne, by rw [hb_eq, ← hc_eq, Polynomial.C_comp]⟩
 
 private theorem p_separable : (p : ℚ[X]).Separable :=
   p_irreducible.separable
@@ -461,5 +464,11 @@ theorem cos20_gal_card :
   have hcard := Polynomial.Gal.card_of_separable p_separable
   rw [Nat.card_eq_fintype_card] at hcard
   rw [hcard, splitting_finrank]
+
+/-- The polynomial 8X³-6X-1 is irreducible over ℚ (public interface).
+    Proved via Eisenstein's criterion on the shifted polynomial X³-6X²+9X-3. -/
+theorem trisection_poly_irreducible :
+    Irreducible (8 * X ^ 3 - 6 * X - C 1 : ℚ[X]) :=
+  p_irreducible
 
 end AngleTrisectionCos20Gal

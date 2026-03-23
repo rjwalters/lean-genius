@@ -149,7 +149,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #94, a $44 prize problem solved by Fishburn. The bound $\\sum f(u)^2 = O(n^3)$ is proved for convex polygons and strengthened by Lefmann-Theile to 'no three collinear'. The regular $n$-gon achieves $\\Theta(n^3)$. One theorem ($\\sum f(u) = \\binom{n}{2}$) is fully proved by Aristotle; the remaining 12 results are axiomatized.",
-    "implications": "**Theoretical Significance**: The cubic bound constrains the clustering of distances in convex configurations. Combined with the Cauchy-Schwarz lower bound and Altman's distinct distance count, it pins down $\\sum f(u)^2 = \\Theta(n^3)$ for convex polygons.\n\n**Broader Connections**: The quadruple-counting interpretation connects to incidence geometry and algebraic techniques. The Erdős-Fishburn conjecture, if true, would identify the regular polygon as the unique extremal configuration.",
+    "implications": "**Theoretical Significance**: The cubic bound constrains the clustering of distances in convex configurations. Combined with the Cauchy-Schwarz lower bound and Altman's distinct distance count, it pins down $\\sum f(u)^2 = \\Theta(n^3)$ for convex polygons.\n\nThe quadruple-counting interpretation connects to incidence geometry and algebraic techniques. The Erdős-Fishburn conjecture, if true, would identify the regular polygon as the unique extremal configuration.",
     "openQuestions": [
       "Does the regular $n$-gon maximize $\\sum f(u)^2$ among all convex $n$-gons for sufficiently large $n$ (Erdős-Fishburn conjecture)?",
       "What is the exact asymptotic constant: is $\\sum f(u)^2 \\sim c \\cdot n^3$ for convex $n$-gons, and what is $c$?",

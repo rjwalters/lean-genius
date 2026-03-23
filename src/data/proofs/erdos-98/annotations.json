@@ -8,9 +8,9 @@
     },
     "type": "context",
     "title": "Problem Documentation and Imports",
-    "content": "The header documents Erdős Problem #98 on distinct distances for points in general position ($\\text{no 3 collinear} \\wedge \\text{no 4 concyclic}$). The question is whether $h(n)/n \\to \\infty$, where $h(n)$ is the minimum distinct distances over all $n$-point general-position configurations. Even $h(n) \\ge n$ is unknown. Upper bounds: Pach ($n^{\\log_2 3}$) and EFP ($n \\cdot e^{c\\sqrt{\\log n}}$). Imports Mathlib's inner product spaces, special functions (log, exp, sqrt), Finset, and filters.",
+    "content": "The header documents Erd\u0151s Problem #98 on distinct distances for points in general position ($\\text{no 3 collinear} \\wedge \\text{no 4 concyclic}$). The question is whether $h(n)/n \\to \\infty$, where $h(n)$ is the minimum distinct distances over all $n$-point general-position configurations. Even $h(n) \\ge n$ is unknown. Upper bounds: Pach ($n^{\\log_2 3}$) and EFP ($n \\cdot e^{c\\sqrt{\\log n}}$). Imports Mathlib's inner product spaces, special functions (log, exp, sqrt), Finset, and filters.",
     "mathContext": "$h(n) = \\min\\{|\\{\\|p_i - p_j\\| : i \\ne j\\}| : P \\in \\text{GenPos}(n)\\}$; conjecture: $h(n)/n \\to \\infty$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "distinct distances",
       "general position",
@@ -55,12 +55,12 @@
     },
     "type": "definition",
     "title": "Distinct Distances and the Function $h(n)$",
-    "content": "`numDistinctDistances P` counts the distinct *positive* pairwise distances in the configuration: $|\\{\\|P_i - P_j\\| : i,j \\in [n], \\|P_i - P_j\\| > 0\\}|$. This is computed by imaging all pairs into $\\mathbb{R}$, filtering positive values, then taking the cardinality. `h n` $= \\inf\\{\\text{numDistinctDistances}(P) : P \\in \\text{GenPos}(n)\\}$ via `sInf`. The function $h$ is the central object: Erdős conjectures $h(n)/n \\to \\infty$ but even $h(n) \\ge n$ is open.",
+    "content": "`numDistinctDistances P` counts the distinct *positive* pairwise distances in the configuration: $|\\{\\|P_i - P_j\\| : i,j \\in [n], \\|P_i - P_j\\| > 0\\}|$. This is computed by imaging all pairs into $\\mathbb{R}$, filtering positive values, then taking the cardinality. `h n` $= \\inf\\{\\text{numDistinctDistances}(P) : P \\in \\text{GenPos}(n)\\}$ via `sInf`. The function $h$ is the central object: Erd\u0151s conjectures $h(n)/n \\to \\infty$ but even $h(n) \\ge n$ is open.",
     "mathContext": "$h(n) = \\inf_{P \\in \\text{GenPos}(n)} |\\{\\|P_i - P_j\\| : i \\ne j\\}|$; conjecture: $\\lim_{n \\to \\infty} h(n)/n = \\infty$",
     "significance": "key",
     "relatedConcepts": [
       "distance set",
-      "Erdős distance problem",
+      "Erd\u0151s distance problem",
       "sInf"
     ],
     "prerequisites": [
@@ -99,7 +99,7 @@
       "endLine": 71
     },
     "type": "technique",
-    "title": "Erdős-Füredi-Pach Bound: $h(n) < n \\cdot e^{c\\sqrt{\\log n}}$",
+    "title": "Erd\u0151s-F\u00fcredi-Pach Bound: $h(n) < n \\cdot e^{c\\sqrt{\\log n}}$",
     "content": "The best known upper bound: there exist general-position configurations with fewer than $n \\cdot \\exp(c\\sqrt{\\log n})$ distinct distances for some constant $c > 0$. This is much closer to linear than Pach's $n^{1.585}$, showing that $h(n)$ grows at most slightly superlinearly. Formalized using `Real.exp` and `Real.sqrt` composed with `Real.log`. The construction refines Pach's method using more sophisticated point placements.",
     "mathContext": "$\\exists c > 0: h(n) < n \\cdot e^{c\\sqrt{\\log n}}$ eventually; note $n \\cdot e^{c\\sqrt{\\log n}} = o(n^{1+\\varepsilon})$ for all $\\varepsilon > 0$",
     "significance": "key",
@@ -122,14 +122,14 @@
       "endLine": 82
     },
     "type": "definition",
-    "title": "The Erdős Conjecture: $h(n)/n \\to \\infty$",
+    "title": "The Erd\u0151s Conjecture: $h(n)/n \\to \\infty$",
     "content": "`ErdosProblem98` axiomatizes the main conjecture: $h(n)/n \\to \\infty$ as $n \\to \\infty$, formalized as `Filter.Tendsto (fun n => h(n)/n) Filter.atTop Filter.atTop`. This says that general-position constraints force superlinearly many distinct distances. The conjecture is remarkably strong given the EFP bound: $h(n)$ must grow faster than $n$ but slower than $n \\cdot e^{c\\sqrt{\\log n}}$, leaving a very narrow window.",
     "mathContext": "$\\lim_{n \\to \\infty} h(n)/n = \\infty$; equivalently, $h(n) = \\omega(n)$",
     "significance": "key",
     "relatedConcepts": [
       "Filter.Tendsto",
       "superlinear growth",
-      "Erdős conjecture"
+      "Erd\u0151s conjecture"
     ],
     "prerequisites": [
       "h",
@@ -145,7 +145,7 @@
     },
     "type": "definition",
     "title": "Weak Conjecture: $h(n) \\ge n$",
-    "content": "`erdos_98_weak` axiomatizes the weaker conjecture that $h(n) \\ge n$ for all sufficiently large $n$, via `Filter.atTop`. Even this modest bound—that $n$ general-position points determine at least $n$ distinct distances—is unknown. This shows how far the field is from the full conjecture $h(n)/n \\to \\infty$.",
+    "content": "`erdos_98_weak` axiomatizes the weaker conjecture that $h(n) \\ge n$ for all sufficiently large $n$, via `Filter.atTop`. Even this modest bound\u2014that $n$ general-position points determine at least $n$ distinct distances\u2014is unknown. This shows how far the field is from the full conjecture $h(n)/n \\to \\infty$.",
     "mathContext": "$\\forall^\\infty n: h(n) \\ge n$; strictly weaker than $h(n)/n \\to \\infty$",
     "significance": "key",
     "relatedConcepts": [
@@ -167,7 +167,7 @@
     },
     "type": "technique",
     "title": "Guth-Katz Comparison: $\\Omega(n/\\log n)$ Without General Position",
-    "content": "`guth_katz_comparison` axiomatizes the Guth-Katz theorem (2015): without any general-position assumption, any $n$ distinct points in $\\mathbb{R}^2$ determine $\\Omega(n/\\log n)$ distinct distances. This near-optimal bound (matching Erdős's 1946 conjecture up to $\\sqrt{\\log n}$) uses algebraic geometry—the polynomial partitioning technique. General position should give more, but no one has proved that the Guth-Katz bound can be improved under general-position assumptions.",
+    "content": "`guth_katz_comparison` axiomatizes the Guth-Katz theorem (2015): without any general-position assumption, any $n$ distinct points in $\\mathbb{R}^2$ determine $\\Omega(n/\\log n)$ distinct distances. This near-optimal bound (matching Erd\u0151s's 1946 conjecture up to $\\sqrt{\\log n}$) uses algebraic geometry\u2014the polynomial partitioning technique. General position should give more, but no one has proved that the Guth-Katz bound can be improved under general-position assumptions.",
     "mathContext": "$\\exists c > 0: \\forall n \\ge 2, \\forall P \\text{ injective}: |\\text{dist}(P)| \\ge c \\cdot n / \\log n$",
     "significance": "key",
     "relatedConcepts": [

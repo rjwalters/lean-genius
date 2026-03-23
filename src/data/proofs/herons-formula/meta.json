@@ -132,7 +132,7 @@
   ],
   "conclusion": {
     "summary": "The formalization provides a complete treatment of Heron's formula: the main identity in abstract inner product spaces via Mathlib, computable definitions of the semi-perimeter and Heron product, algebraic expansions proved by `ring`, concrete verifications for classic triangles, and the non-negativity theorem connecting Heron's formula to the triangle inequality. All proofs are complete with zero sorries.",
-    "implications": "**Theoretical Significance**: Heron's formula sits at the intersection of Euclidean geometry, algebra, and analysis. The algebraic expansion form is the basis for numerically stable area computation (Kahan's algorithm).\n\n**Broader Connections**: The connection to the Cayley-Menger determinant generalizes to volumes of simplices in higher dimensions. In algebraic geometry, the formula relates to the discriminant of the triangle viewed as a polynomial system.",
+    "implications": "**Theoretical Significance**: Heron's formula sits at the intersection of Euclidean geometry, algebra, and analysis. The algebraic expansion form is the basis for numerically stable area computation (Kahan's algorithm).\n\nThe connection to the Cayley-Menger determinant generalizes to volumes of simplices in higher dimensions. In algebraic geometry, the formula relates to the discriminant of the triangle viewed as a polynomial system.",
     "openQuestions": [
       "Can Brahmagupta's generalization to cyclic quadrilaterals $\\text{Area} = \\sqrt{(s-a)(s-b)(s-c)(s-d)}$ be formalized in Lean using Mathlib's cyclic polygon infrastructure?",
       "Can the Cayley-Menger determinant formula for simplex volumes be derived as a higher-dimensional generalization?",

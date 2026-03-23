@@ -1,0 +1,132 @@
+{
+  "slug": "chinese-remainder-non-coprime-oq-04",
+  "title": "What are the implications for simultaneous Diophantine approximation",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-23T00:42:35.520Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 0 sorries, 0 axioms, 239 lines, PR #5159",
+    "builtItems": [
+      "dirichlet_approximation in ChineseRemainderNonCoprimeOQ04.lean (0 sorry)",
+      "mediant_between, farey_neighbor_order, lattice_point_exists, golden_ratio_quadratic",
+      "binFn, same_bin_fract_close, fract_sub_eq (helper infrastructure)"
+    ],
+    "insights": [
+      "Dirichlet theorem provable via Fintype.exists_ne_map_eq_of_card_lt pigeonhole on binFn : Fin(N+1) → Fin(N)",
+      "Main challenge: managing Nat/Int/Real casts for nat subtraction and floor differences",
+      "Int.fract x = x - floor(x) by definitional unfolding (show ... = rfl pattern)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "chinese-remainder-non-coprime",
+    "chinese-remainder-non-coprime-oq-01",
+    "chinese-remainder-non-coprime-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-23T00:42:35.520Z",
+  "lastUpdate": "2026-03-23T00:42:35.520Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/ChineseRemainderNonCoprime.lean",
+      "filename": "ChineseRemainderNonCoprime.lean",
+      "lineCount": 306,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprime.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderNonCoprimeOQ01.lean",
+      "filename": "ChineseRemainderNonCoprimeOQ01.lean",
+      "lineCount": 309,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ01.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderNonCoprimeOQ02.lean",
+      "filename": "ChineseRemainderNonCoprimeOQ02.lean",
+      "lineCount": 706,
+      "theoremCount": 55,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ02.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderNonCoprimeOQ03.lean",
+      "filename": "ChineseRemainderNonCoprimeOQ03.lean",
+      "lineCount": 392,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ03.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderNonCoprimeOQ03Aristotle.lean",
+      "filename": "ChineseRemainderNonCoprimeOQ03Aristotle.lean",
+      "lineCount": 238,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ03Aristotle.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderNonCoprimeOQ04.lean",
+      "filename": "ChineseRemainderNonCoprimeOQ04.lean",
+      "lineCount": 240,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ04.lean"
+    }
+  ]
+}

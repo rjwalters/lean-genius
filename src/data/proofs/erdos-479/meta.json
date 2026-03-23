@@ -131,7 +131,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #479, also known as Graham's conjecture. The problem asks whether for every k ≠ 1, there are infinitely many n with 2^n ≡ k (mod n). While special cases have been proved (powers of 2, k = -1), the general conjecture remains open.",
-    "implications": "**Theoretical Significance**: This problem connects exponential functions with modular arithmetic in a way that creates surprising computational difficulty.\n\n**Broader Connections**: The huge minimal solution for k = 3 suggests deep number-theoretic structure that is not yet understood. A resolution would advance our understanding of the interplay between exponential growth and divisibility.",
+    "implications": "**Theoretical Significance**: This problem connects exponential functions with modular arithmetic in a way that creates surprising computational difficulty.\n\nThe huge minimal solution for k = 3 suggests deep number-theoretic structure that is not yet understood. A resolution would advance our understanding of the interplay between exponential growth and divisibility.",
     "openQuestions": [
       "Is SolutionSet(k) infinite for all k > 1? (The main conjecture)",
       "What determines the minimal n for a given k?",

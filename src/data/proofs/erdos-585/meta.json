@@ -93,7 +93,7 @@
   ],
   "conclusion": {
     "summary": "Formalizes Erdős Problem #585 on the maximum edges in a graph avoiding two edge-disjoint cycles on the same vertex set, along with both known bounds and the k-cycle generalization. The gap between Ω(n log log n) and O(n(log n)^C) remains one of the most intriguing open problems at the intersection of extremal graph theory and cycle decomposition.",
-    "implications": "**Theoretical Significance**: Closing the gap would advance our understanding of how cycle structure constrains edge density. If f(n) = Θ(n log log n), the lower bound construction captures the true extremal behavior and the CJMM upper bound has room for improvement.\n\n**Broader Connections**: If f(n) is closer to n(log n)^C, new constructions avoiding edge-disjoint cycles would be needed. Either resolution would yield new techniques in structural graph theory.",
+    "implications": "**Theoretical Significance**: Closing the gap would advance our understanding of how cycle structure constrains edge density. If f(n) = Θ(n log log n), the lower bound construction captures the true extremal behavior and the CJMM upper bound has room for improvement.\n\nIf f(n) is closer to n(log n)^C, new constructions avoiding edge-disjoint cycles would be needed. Either resolution would yield new techniques in structural graph theory.",
     "openQuestions": [
       "Is f(n) = Θ(n log log n), or is the truth closer to n(log n)^C?",
       "Can the CJMM exponent α be reduced to 0, giving an O(n log n) upper bound?",

@@ -383,7 +383,7 @@
   ],
   "conclusion": {
     "summary": "Fully verified (0 sorries, 0 axioms) pedagogical exposition of the A₅ simplicity proof chain in 163 lines with 8 theorems. Each link in the chain from A₅ simplicity to the Abel-Ruffini theorem is named, machine-verified, and documented with historical and mathematical context. The key technical theorem is symmetric_not_solvable, which bridges Mathlib's cardinal-level statement to natural numbers.",
-    "implications": "**Theoretical Significance**: This file serves as a pedagogical bridge between abstract group theory and classical algebra. By making the proof chain explicit — with each step named and independently checkable — it demonstrates that the Abel-Ruffini theorem follows from a single deep fact (A₅ simplicity) through a short chain of elementary implications. The file also highlights the role of Mathlib's typeclass system in automating solvability proofs for small groups.\n\n**Broader Connections**: More broadly, the chain illustrates a general pattern in Galois theory: structural properties of groups (simplicity, solvability) translate into concrete impossibility results about algebraic equations. This paradigm extends to other areas — for example, the impossibility of angle trisection and cube doubling by compass and straightedge follow from analogous Galois-theoretic arguments about field extension degrees. The formalization also connects to modern computational algebra: algorithms for computing Galois groups over ℚ (e.g., Stauduhar's method, van der Waerden's approach, and modern p-adic methods) can decide radical solvability of any specific polynomial, transforming Abel-Ruffini's negative result into a positive algorithmic criterion via its contrapositive. The same group-theoretic paradigm extends to differential Galois theory (Picard-Vessiot theory): a linear ODE is 'solvable by quadratures' iff its differential Galois group has solvable identity component, with Kovacic's algorithm (1986) making this decidable for second-order equations — a direct analogue of how Galois group computation decides radical solvability for polynomials.",
+    "implications": "**Theoretical Significance**: This file serves as a pedagogical bridge between abstract group theory and classical algebra. By making the proof chain explicit — with each step named and independently checkable — it demonstrates that the Abel-Ruffini theorem follows from a single deep fact (A₅ simplicity) through a short chain of elementary implications. The file also highlights the role of Mathlib's typeclass system in automating solvability proofs for small groups.\n\nMore broadly, the chain illustrates a general pattern in Galois theory: structural properties of groups (simplicity, solvability) translate into concrete impossibility results about algebraic equations. This paradigm extends to other areas — for example, the impossibility of angle trisection and cube doubling by compass and straightedge follow from analogous Galois-theoretic arguments about field extension degrees. The formalization also connects to modern computational algebra: algorithms for computing Galois groups over ℚ (e.g., Stauduhar's method, van der Waerden's approach, and modern p-adic methods) can decide radical solvability of any specific polynomial, transforming Abel-Ruffini's negative result into a positive algorithmic criterion via its contrapositive. The same group-theoretic paradigm extends to differential Galois theory (Picard-Vessiot theory): a linear ODE is 'solvable by quadratures' iff its differential Galois group has solvable identity component, with Kovacic's algorithm (1986) making this decidable for second-order equations — a direct analogue of how Galois group computation decides radical solvability for polynomials.",
     "openQuestions": [
       "Formalize the Galois group computation for the generic quintic: Gal(x⁵ + a₁x⁴ + ··· + a₅ / ℚ(a₁,...,a₅)) = S₅",
       "Prove S₂, S₃, S₄ solvable explicitly (not just S₀, S₁) to complete the degree-by-degree picture",
@@ -497,6 +497,36 @@
       "key": "GLS94",
       "citation": "Gorenstein, D., Lyons, R., and Solomon, R., The Classification of the Finite Simple Groups, AMS Mathematical Surveys and Monographs 40.1 (1994–2005).",
       "type": "book"
+    },
+    {
+      "key": "Jo70",
+      "citation": "Jordan, C., Traité des substitutions et des équations algébriques, Gauthier-Villars, Paris (1870). Introduced the Jordan-Hölder theorem and systematic permutation group theory.",
+      "type": "book"
+    },
+    {
+      "key": "La71",
+      "citation": "Lagrange, J.-L., Réflexions sur la résolution algébrique des équations, Nouveaux Mémoires de l'Académie royale des Sciences et Belles-Lettres de Berlin (1770–1771). First systematic analysis of why degree reduction fails for quintics.",
+      "type": "paper"
+    },
+    {
+      "key": "We96",
+      "citation": "Weber, H., Lehrbuch der Algebra, 2 vols., Vieweg, Braunschweig (1895–1896). First modern textbook systematization of Galois theory, making it broadly accessible to the mathematical community.",
+      "type": "book"
+    },
+    {
+      "key": "vdW30",
+      "citation": "van der Waerden, B.L., Moderne Algebra, 2 vols., Springer (1930–1931). Definitive modern treatment that established the abstract algebraic framework (groups, rings, fields, Galois theory) now standard. Based on lectures by Emmy Noether and Emil Artin.",
+      "type": "book"
+    },
+    {
+      "key": "St15",
+      "citation": "Stewart, I., Galois Theory, 4th ed., Chapman & Hall/CRC (2015). Modern pedagogical treatment emphasizing the connection between field extensions, symmetry groups, and polynomial solvability. Includes computational examples and historical context.",
+      "type": "book"
+    },
+    {
+      "key": "Sy44",
+      "citation": "Sylvester, J.J., Elementary researches in the analysis of combinatorial aggregation, Philosophical Magazine 24 (1844), 285–296. First construction of the outer automorphism of S₆ via the combinatorics of 'synthemes' (matchings of six objects).",
+      "type": "paper"
     }
   ],
   "relatedProofs": [

@@ -138,7 +138,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #1003, an OPEN question about whether φ(n) = φ(n+1) has infinitely many solutions. The formalization includes the main conjecture, verified small examples, the stronger k-consecutive conjecture, and known asymptotic bounds.",
-    "implications": "**Theoretical Significance**: This problem connects to fundamental questions about the distribution of totient values and the structure of the integers.\n\n**Broader Connections**: A resolution would illuminate how often multiplicatively defined functions (like φ) can produce equal consecutive values. The connection to Carmichael's Totient Conjecture suggests deep arithmetic structure.",
+    "implications": "**Theoretical Significance**: This problem connects to fundamental questions about the distribution of totient values and the structure of the integers.\n\nA resolution would illuminate how often multiplicatively defined functions (like φ) can produce equal consecutive values. The connection to Carmichael's Totient Conjecture suggests deep arithmetic structure.",
     "openQuestions": [
       "Is ConsecutiveEqualTotients infinite? (The main OPEN question)",
       "For each k ≥ 1, is ConsecutiveKEqualTotients(k) infinite?",

@@ -96,7 +96,7 @@
   ],
   "conclusion": {
     "summary": "Formalizes Erdős Problem #289: decomposing 1 as a sum of reciprocals from disjoint non-adjacent interval blocks. The formalization captures the IntervalBlock structure, non-adjacency constraint, rational reciprocal sums, and the existential threshold conjecture. Key supporting results include the Hickerson–Montgomery example (5 blocks summing to 2), harmonic tail divergence, reciprocal sum bounds, and the spreading constraint.",
-    "implications": "**Theoretical Significance**: A resolution would advance Egyptian fraction theory by revealing whether the non-adjacency constraint fundamentally limits unit fraction decompositions.\n\n**Broader Connections**: A positive answer would require new constructive techniques for rational approximation with constrained harmonic sums. Connection to Croot's work on the Erdős–Graham conjecture suggests possible approaches via dense subset methods.",
+    "implications": "**Theoretical Significance**: A resolution would advance Egyptian fraction theory by revealing whether the non-adjacency constraint fundamentally limits unit fraction decompositions.\n\nA positive answer would require new constructive techniques for rational approximation with constrained harmonic sums. Connection to Croot's work on the Erdős–Graham conjecture suggests possible approaches via dense subset methods.",
     "openQuestions": [
       "What is the smallest threshold K such that valid k-block decompositions of 1 exist for all k ≥ K?",
       "Can the target 1 be replaced by arbitrary positive rationals p/q, and if so, for which p/q?",

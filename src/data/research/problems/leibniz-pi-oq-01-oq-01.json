@@ -64,7 +64,8 @@
   ],
   "relatedProofs": [
     "leibniz-pi",
-    "leibniz-pi-oq-01"
+    "leibniz-pi-oq-01",
+    "leibniz-pi-oq-01-oq-01"
   ],
   "references": {
     "papers": [],
@@ -80,17 +81,6 @@
   "significance": 6,
   "tractability": 7,
   "leanFiles": [
-    {
-      "path": "Proofs/MachinFromAddition.lean",
-      "filename": "MachinFromAddition.lean",
-      "lineCount": 79,
-      "theoremCount": 4,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MachinFromAddition.lean"
-    },
     {
       "path": "Proofs/LeibnizPi.lean",
       "filename": "LeibnizPi.lean",

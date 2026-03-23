@@ -134,7 +134,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #984 is solved affirmatively: ℕ can be 2-colored such that any k-term monochromatic AP starting at a satisfies k ≪_ε a^ε. This improves Spencer's 3-color result and Erdős's partial construction, establishing 2 as the exact chromatic number for this growth condition.",
-    "implications": "**Theoretical Significance**: Hunter's resolution demonstrates that probabilistic methods can push coloring results beyond the barrier that Erdős encountered with deterministic constructions.\n\n**Broader Connections**: The result connects to the broader question of how much structure finite colorings of ℕ must contain: van der Waerden forces monochromatic APs to exist, but their lengths can be made to grow subpolynomially. This places the problem precisely in the landscape between van der Waerden theory (unavoidable structure) and density Ramsey theory (avoidable structure).",
+    "implications": "**Theoretical Significance**: Hunter's resolution demonstrates that probabilistic methods can push coloring results beyond the barrier that Erdős encountered with deterministic constructions.\n\nThe result connects to the broader question of how much structure finite colorings of ℕ must contain: van der Waerden forces monochromatic APs to exist, but their lengths can be made to grow subpolynomially. This places the problem precisely in the landscape between van der Waerden theory (unavoidable structure) and density Ramsey theory (avoidable structure).",
     "openQuestions": [
       "Can an explicit (deterministic) 2-coloring achieving k ≪_ε a^ε be constructed, or is the result inherently probabilistic?",
       "What is the optimal exponent c in Erdős's weaker bound k ≤ C·a^{1-c}?",

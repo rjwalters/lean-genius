@@ -32,7 +32,7 @@
     "title": "Mathlib Imports and Setup",
     "content": "Imports the full Mathlib library and defines an abbreviation `divisorSum` for `ArithmeticFunction.sigma` to avoid naming conflicts. The `BigOperators` notation provides the $\\sum$ syntax, while `Nat` and `Real` open standard namespaces.",
     "mathContext": "Mathlib's `ArithmeticFunction.sigma k n` computes $\\sigma_k(n) = \\sum_{d|n} d^k$. The abbreviation `divisorSum` refers to this with $k$ as a parameter; we use $k=1$ throughout for the classical sum of divisors $\\sigma_1(n) = \\sigma(n)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Arithmetic functions",
       "Mathlib type classes"

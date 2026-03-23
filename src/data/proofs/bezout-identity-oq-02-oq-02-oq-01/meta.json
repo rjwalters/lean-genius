@@ -309,6 +309,11 @@
       "targetId": "chinese-remainder-non-coprime-oq-01",
       "relationship": "related",
       "description": "Computational efficiency improvements for CRT with non-coprime moduli parallel the constructive concerns of this entry: both focus on making number-theoretic existence results computationally effective. The non-coprime CRT uses $\\gcd(m,n) = um + vn$ (the general Bézout output, not just the coprime case) to canonicalize and compute solutions efficiently"
+    },
+    {
+      "targetId": "kummer-theorem",
+      "relationship": "related",
+      "description": "Kummer's theorem on $p$-adic valuations of binomial coefficients ($v_p(\\binom{m+n}{m}) = $ number of carries in base-$p$ addition) uses the same divisibility and GCD machinery formalized here. The extended Euclidean algorithm computes $p$-adic structure implicitly: the Bézout coefficients encode how prime factors distribute across coprime factorizations"
     }
   ],
   "relatedProofs": [
@@ -332,7 +337,8 @@
     "gcd-algorithm-oq-01",
     "factor-remainder-theorem",
     "bezout-identity-oq-03-oq-01",
-    "chinese-remainder-non-coprime-oq-01"
+    "chinese-remainder-non-coprime-oq-01",
+    "kummer-theorem"
   ],
   "references": [
     {
@@ -376,6 +382,13 @@
       "year": "1993",
       "venue": "Springer GTM 138",
       "note": "Standard reference for computational number theory algorithms including the extended Euclidean algorithm, its half-GCD variant, and applications to modular inverse computation and CRT reconstruction"
+    },
+    {
+      "authors": "Lamé, Gabriel",
+      "title": "Note sur la limite du nombre des divisions dans la recherche du plus grand commun diviseur entre deux nombres entiers",
+      "year": "1844",
+      "venue": "Comptes rendus de l'Académie des Sciences, vol. 19, pp. 867–870",
+      "note": "First proof that the Euclidean algorithm requires at most ⌊log_φ(b)⌋ + 1 divisions for inputs a > b, with consecutive Fibonacci numbers achieving the worst case. This established the first rigorous complexity bound for any algorithm, making it arguably the first result in computational complexity theory"
     },
     {
       "authors": "Hardy, G. H.; Wright, E. M.",

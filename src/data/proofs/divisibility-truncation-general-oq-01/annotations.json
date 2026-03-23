@@ -8,7 +8,7 @@
     },
     "type": "definition",
     "title": "The Division-Modulus Identity",
-    "content": "The private helper lemma `div_mod_cast` establishes the fundamental arithmetic identity $(n : \\mathbb{Z}) = 10 \\cdot \\lfloor n/10 \\rfloor + (n \\bmod 10)$ by casting `Nat.div_add_mod` to integers. This identity is the algebraic engine of the entire proof: multiplying the osculator expression by 10 and substituting this identity produces a term where the (10c-1) factor can be isolated. The proof is a one-liner using `push_cast` (to handle the ℕ → ℤ coercion) and `omega` (to verify the linear arithmetic).",
+    "content": "The private helper lemma `div_mod_cast` establishes the fundamental arithmetic identity $(n : \\mathbb{Z}) = 10 \\cdot \\lfloor n/10 \\rfloor + (n \\bmod 10)$ by casting `Nat.div_add_mod` to integers. This identity is the algebraic engine of the entire proof: multiplying the osculator expression by 10 and substituting this identity produces a term where the (10c-1) factor can be isolated. The proof is a one-liner using `push_cast` (to handle the \u2115 \u2192 \u2124 coercion) and `omega` (to verify the linear arithmetic).",
     "mathContext": "$(n : \\mathbb{Z}) = 10 \\cdot \\lfloor n/10 \\rfloor + (n \\bmod 10)$; fundamental to $10(q + c \\cdot r) = n + (10c-1)r$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -79,7 +79,7 @@
     "title": "Concrete Divisibility Rules",
     "content": "All five classical rules recovered from the unified framework:\n\n| Divisor | Osculator | Type | Rule |\n|---------|-----------|------|------|\n| 7 | c=-2 | negative | $7|n \\iff 7|(n/10 - 2(n\\%10))$ |\n| 11 | c=-1 | negative | $11|n \\iff 11|(n/10 - (n\\%10))$ |\n| 13 | c=4 | positive | $13|n \\iff 13|(n/10 + 4(n\\%10))$ |\n| 17 | c=-5 | negative | $17|n \\iff 17|(n/10 - 5(n\\%10))$ |\n| 19 | c=2 | positive | $19|n \\iff 19|(n/10 + 2(n\\%10))$ |\n\nEach instantiation requires two proof obligations: coprimality of $d$ with 10 (discharged by `decide`) and the osculator condition $d | (10c \\pm 1)$ (discharged by providing the explicit witness via `norm_num`). The alternation between positive and negative osculators depends on whether $10^{-1} \\bmod d$ or $-(10^{-1}) \\bmod d$ gives the smaller absolute value.",
     "mathContext": "$c_+ = 10^{-1} \\bmod d$; whether to use $+c$ or $-c$ depends on which gives a smaller multiplier",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "divisibility rules",
       "mental arithmetic",

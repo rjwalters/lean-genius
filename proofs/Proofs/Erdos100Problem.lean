@@ -1,1 +1,386 @@
-ea84fc1a-eedf-46ab-87c0-82ff21023479-output.lean
+/-
+Erdős Problem #100: Point Sets with Restricted Distances
+
+Let A be a set of n points in ℝ² such that all pairwise distances
+are positive integers. Must the diameter of A be ≫ n?
+
+**Status**: OPEN
+
+**Known Lower Bounds**:
+- Trivial: diam(A) ≥ √(n-1) (packing)
+- Kanold: diam(A) ≥ n^(3/4)
+- Guth-Katz (2015): diam(A) ≥ cn/log n (via distinct distances)
+
+**Known Upper Bound**:
+- Piepmeyer: 9 points with integer distances and diameter < 5
+
+**Connection to Erdős #89**: If all pairwise distances are positive integers
+then distinct distances ⊆ {1, 2, ..., ⌊diam⌋}, so #distinct distances ≤ diam.
+Combined with Guth-Katz (≥ cn/log n distinct distances), this gives diam ≥ cn/log n.
+
+Reference: https://erdosproblems.com/100
+-/
+
+import Mathlib
+
+open Filter Set Finset
+open scoped Topology
+
+namespace Erdos100
+
+/-
+## The Plane and Distance
+-/
+
+/--
+Euclidean distance between two points in ℝ².
+-/
+noncomputable def dist (p q : EuclideanSpace ℝ (Fin 2)) : ℝ :=
+  ‖p - q‖
+
+/--
+Distance is symmetric.
+-/
+theorem dist_symm (p q : EuclideanSpace ℝ (Fin 2)) : dist p q = dist q p := by
+  unfold dist
+  rw [← neg_sub, norm_neg]
+
+/--
+Distance is nonneg.
+-/
+theorem dist_nonneg (p q : EuclideanSpace ℝ (Fin 2)) : dist p q ≥ 0 := by
+  unfold dist
+  exact norm_nonneg _
+
+/-
+## Restricted Distance Sets
+
+A **restricted distance set** has all pairwise distances being positive integers.
+This is equivalent to requiring minimum distance ≥ 1 and all distinct distances
+differing by ≥ 1.
+-/
+
+/--
+A point set has **integer distances** if every pairwise distance is a natural number.
+-/
+def hasIntegerDistances (S : Finset (EuclideanSpace ℝ (Fin 2))) : Prop :=
+  ∀ p ∈ S, ∀ q ∈ S, p ≠ q → ∃ k : ℕ, k ≥ 1 ∧ dist p q = k
+
+/--
+The set of all pairwise distances in a point set.
+-/
+noncomputable def pairwiseDistances (S : Finset (EuclideanSpace ℝ (Fin 2))) : Finset ℝ :=
+  (S.offDiag.image fun pq => dist pq.1 pq.2).filter (· > 0)
+
+/--
+Number of distinct distances.
+-/
+noncomputable def numDistinctDistances (S : Finset (EuclideanSpace ℝ (Fin 2))) : ℕ :=
+  (pairwiseDistances S).card
+
+/-
+## Diameter
+
+The **diameter** of a finite point set is the maximum pairwise distance.
+-/
+
+/--
+The **diameter** of a finite point set: the maximum of all pairwise distances.
+Returns 0 for sets with fewer than 2 points.
+-/
+noncomputable def diam (S : Finset (EuclideanSpace ℝ (Fin 2))) : ℝ :=
+  if h : (pairwiseDistances S).Nonempty then
+    (pairwiseDistances S).max' h
+  else
+    0
+
+/--
+The diameter is nonneg.
+-/
+theorem diam_nonneg (S : Finset (EuclideanSpace ℝ (Fin 2))) : diam S ≥ 0 := by
+  unfold diam
+  split
+  · case isTrue h =>
+    -- max' of a set of positive reals is positive
+    have hmem := Finset.max'_mem _ h
+    exact le_of_lt (Finset.mem_filter.mp hmem |>.2)
+  · case isFalse => linarith
+
+/-
+## The Main Conjecture
+-/
+
+/--
+**The minimum diameter** over all n-point restricted distance sets in ℝ².
+This is the extremal function f(n) that Erdős asked about.
+-/
+noncomputable def minDiameterRestrictedSets (n : ℕ) : ℝ :=
+  sInf {diam S | (S : Finset (EuclideanSpace ℝ (Fin 2)))
+    (_ : S.card = n) (_ : hasIntegerDistances S)}
+
+/--
+**Erdős Problem #100 (OPEN)**
+
+Every set of n points in ℝ² with all pairwise distances being positive
+integers has diameter ≥ cn for some constant c > 0.
+
+We state this without asserting its truth.
+-/
+def Erdos100Conjecture : Prop :=
+  ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop,
+    c * n ≤ minDiameterRestrictedSets n
+
+/--
+**Strong Conjecture**: diameter ≥ n - 1 for all n-point restricted distance sets.
+
+Piepmeyer's 9-point construction shows this fails for small n.
+-/
+def Erdos100StrongConjecture : Prop :=
+  ∀ (S : Finset (EuclideanSpace ℝ (Fin 2))),
+    hasIntegerDistances S → S.card ≥ 2 →
+    diam S ≥ S.card - 1
+
+/-
+## Key Connection: Distinct Distances ≤ Diameter
+
+For sets with positive integer distances, the number of distinct distances
+is at most ⌊diam⌋, since all distances lie in {1, 2, ..., ⌊diam⌋}.
+
+This is the crucial bridge to Erdős #89 (Guth-Katz).
+-/
+
+/--
+For integer distance sets, every distance is a positive integer,
+so the set of distinct distances is contained in {1, 2, ..., ⌊diam⌋}.
+Hence #distinct distances ≤ diam.
+-/
+axiom distinctDistances_le_diam (S : Finset (EuclideanSpace ℝ (Fin 2)))
+    (hint : hasIntegerDistances S) (h2 : S.card ≥ 2) :
+    (numDistinctDistances S : ℝ) ≤ diam S
+
+/-
+## Known Lower Bounds
+-/
+
+/--
+**Trivial Lower Bound**
+
+For any n-point set with minimum distance ≥ 1,
+the diameter is at least 1 (provided n ≥ 2).
+-/
+theorem diam_ge_one (S : Finset (EuclideanSpace ℝ (Fin 2)))
+    (hint : hasIntegerDistances S) (h2 : S.card ≥ 2) :
+    diam S ≥ 1 := by
+  -- Extract two distinct points from S
+  obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp (by omega : 1 < S.card)
+  -- Their distance is a positive integer ≥ 1
+  obtain ⟨k, hk_ge, hk_eq⟩ := hint a ha b hb hab
+  have hdist_ge1 : dist a b ≥ 1 := by rw [hk_eq]; exact_mod_cast hk_ge
+  have hdist_pos : dist a b > 0 := by linarith
+  -- dist a b ∈ pairwiseDistances S
+  have hmem : dist a b ∈ pairwiseDistances S := by
+    unfold pairwiseDistances
+    exact Finset.mem_filter.mpr
+      ⟨Finset.mem_image.mpr ⟨(a, b), Finset.mem_offDiag.mpr ⟨ha, hb, hab⟩, rfl⟩, hdist_pos⟩
+  -- diam S = max' (pairwiseDistances S) ... ≥ dist a b ≥ 1
+  have hne : (pairwiseDistances S).Nonempty := ⟨_, hmem⟩
+  unfold diam
+  rw [dif_pos hne]
+  exact le_trans hdist_ge1 (Finset.le_max' _ _ hmem)
+
+/--
+**Kanold's Bound**
+
+For any n-point integer distance set, diameter ≥ n^(3/4).
+
+Proved by pigeonhole counting on distance multiplicities.
+-/
+axiom kanold_bound :
+  ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop,
+    c * (n : ℝ)^(3/4 : ℝ) ≤ minDiameterRestrictedSets n
+
+/--
+**Guth-Katz Distinct Distances Theorem (2015)**
+
+Every set of n points in ℝ² determines at least Ω(n/log n)
+distinct pairwise distances.
+
+This is the key external result we use. (Axiomatized from Erdős #89.)
+-/
+axiom guthKatz_distinct_distances :
+  ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop,
+    ∀ (S : Finset (EuclideanSpace ℝ (Fin 2))), S.card = n →
+      c * n / Real.log n ≤ numDistinctDistances S
+
+/--
+**Main Theorem: Diameter ≥ cn/log n via Guth-Katz**
+
+For any n-point integer distance set in ℝ²:
+  diam(S) ≥ cn/log n
+
+Proof: Guth-Katz gives ≥ cn/log n distinct distances.
+For integer distance sets, distinct distances ≤ diam.
+Combining: diam ≥ cn/log n.
+
+This is a real theorem (not an axiom), conditional on the axiomatized
+Guth-Katz result and the distinct-distances-≤-diam bridge lemma.
+-/
+theorem diam_ge_n_over_log_n :
+    ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop,
+      ∀ (S : Finset (EuclideanSpace ℝ (Fin 2))),
+        S.card = n → hasIntegerDistances S →
+        c * n / Real.log n ≤ diam S := by
+  -- Get the Guth-Katz constant
+  obtain ⟨c, hc_pos, hGK⟩ := guthKatz_distinct_distances
+  use c
+  constructor
+  · exact hc_pos
+  · -- For sufficiently large n, apply the chain:
+    -- cn/log n ≤ #distinct distances ≤ diam
+    filter_upwards [hGK, Filter.eventually_ge_atTop 2] with n hGK_n hn2
+    intro S hcard hint
+    have h2 : S.card ≥ 2 := by omega
+    calc (c * n / Real.log n : ℝ)
+        ≤ numDistinctDistances S := by exact hGK_n S hcard
+      _ ≤ diam S := distinctDistances_le_diam S hint h2
+
+/-
+## Known Upper Bounds
+-/
+
+/--
+**Piepmeyer's Construction (2004)**
+
+There exist 9 points in ℝ² with all pairwise distances being
+positive integers, where the diameter is less than 5.
+
+This shows the strong conjecture (diam ≥ n-1) fails for n = 9.
+-/
+axiom piepmeyer_construction :
+  ∃ (S : Finset (EuclideanSpace ℝ (Fin 2))),
+    S.card = 9 ∧ hasIntegerDistances S ∧ diam S < 5
+
+/--
+**Consequence of Piepmeyer**: The ratio diam/n can be less than 5/9.
+
+This bounds the optimal constant in the linear conjecture:
+if diam ≥ cn then c ≤ 5/9.
+-/
+theorem piepmeyer_ratio_bound :
+    ∃ (S : Finset (EuclideanSpace ℝ (Fin 2))),
+      S.card = 9 ∧ hasIntegerDistances S ∧ diam S / S.card < 5/9 := by
+  obtain ⟨S, hcard, hint, hdiam⟩ := piepmeyer_construction
+  exact ⟨S, hcard, hint, by rw [hcard]; linarith⟩
+
+/--
+**Strong conjecture fails for n = 9**: Piepmeyer's 9 points have
+diameter < 5 < 8 = n - 1.
+-/
+theorem strong_conjecture_fails_at_9 :
+    ∃ (S : Finset (EuclideanSpace ℝ (Fin 2))),
+      S.card = 9 ∧ hasIntegerDistances S ∧ diam S < S.card - 1 := by
+  obtain ⟨S, hcard, hint, hdiam⟩ := piepmeyer_construction
+  exact ⟨S, hcard, hint, by rw [hcard]; push_cast; linarith⟩
+
+/-
+## The Erdős-Anning Theorem
+
+The infinite case is qualitatively different: any infinite set of
+points with all mutual distances being integers must be collinear.
+This motivates the focus on finite point sets.
+-/
+
+/--
+Points are **collinear** if they all lie on a single line.
+-/
+def IsCollinear (S : Set (EuclideanSpace ℝ (Fin 2))) : Prop :=
+  ∃ (a b : EuclideanSpace ℝ (Fin 2)), a ≠ b ∧
+    ∀ p ∈ S, ∃ t : ℝ, p = a + t • (b - a)
+
+/--
+**Erdős-Anning Theorem (1945)**
+
+If an infinite set of points in ℝ² has all pairwise distances
+being integers, then all points are collinear.
+-/
+axiom erdos_anning_theorem (S : Set (EuclideanSpace ℝ (Fin 2)))
+    (hinf : Set.Infinite S)
+    (hint : ∀ p ∈ S, ∀ q ∈ S, p ≠ q → ∃ k : ℕ, k ≥ 1 ∧ ‖p - q‖ = k) :
+    IsCollinear S
+
+/-
+## The Conjecture Implies Kanold
+
+If the linear conjecture holds, then Kanold's sublinear bound follows.
+-/
+
+/--
+The linear conjecture implies Kanold's bound, since n ≫ n^(3/4).
+-/
+theorem conjecture_implies_kanold (h : Erdos100Conjecture) :
+    ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop,
+      c * (n : ℝ)^(3/4 : ℝ) ≤ minDiameterRestrictedSets n := by
+  obtain ⟨c, hc_pos, hconj⟩ := h
+  use c
+  constructor
+  · exact hc_pos
+  · -- For large n, cn ≥ cn^(3/4), so the conjecture gives a stronger bound
+    filter_upwards [hconj, Filter.eventually_ge_atTop 1] with n hn hn1
+    have hn_one : (1 : ℝ) ≤ (n : ℝ) := by exact Nat.one_le_cast.mpr (by omega)
+    calc c * (n : ℝ)^(3/4 : ℝ)
+        ≤ c * (n : ℝ)^(1 : ℝ) := by
+          apply mul_le_mul_of_nonneg_left _ (le_of_lt hc_pos)
+          exact Real.rpow_le_rpow_of_exponent_le hn_one (by norm_num : (3:ℝ)/4 ≤ 1)
+      _ = c * n := by rw [Real.rpow_one]
+      _ ≤ minDiameterRestrictedSets n := hn
+
+/-
+## The Guth-Katz Lower Bound Is Sublinear
+
+The current best lower bound cn/log n is sublinear: for any ε > 0,
+cn/log n < εn for sufficiently large n. This shows the gap between
+what's known (n/log n) and what's conjectured (n).
+-/
+
+/--
+n/log n = o(n) as n → ∞.
+
+For any ε > 0, we have n/log n < εn for sufficiently large n.
+-/
+theorem n_over_log_sublinear :
+    ∀ (ε : ℝ), ε > 0 → ∀ᶠ n : ℕ in atTop,
+      (n : ℝ) / Real.log n < ε * n := by
+  intro ε hε
+  -- log n → ∞ for natural n
+  have hlog_nat : Tendsto (fun n : ℕ => Real.log (n : ℝ)) atTop atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  -- Eventually log n > 1/ε (since log n → ∞)
+  filter_upwards [hlog_nat.eventually (eventually_gt_atTop (1 / ε)),
+                   Filter.eventually_ge_atTop 3] with n hlog_n hn
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by positivity
+  have hlog_pos : 0 < Real.log (n : ℝ) := by
+    calc 0 < 1 / ε := by positivity
+      _ < Real.log (n : ℝ) := hlog_n
+  -- log n > 1/ε implies ε * log n > 1, so ε * n * log n > n
+  rw [div_lt_iff₀ hlog_pos]
+  have hprod : 1 < ε * Real.log (n : ℝ) := by
+    have key : ε * (1 / ε) < ε * Real.log (n : ℝ) := mul_lt_mul_of_pos_left hlog_n hε
+    rw [one_div, mul_inv_cancel₀ (ne_of_gt hε)] at key
+    exact key
+  calc (n : ℝ) = (n : ℝ) * 1 := (mul_one _).symm
+    _ < (n : ℝ) * (ε * Real.log (n : ℝ)) := mul_lt_mul_of_pos_left hprod hn_pos
+    _ = ε * (n : ℝ) * Real.log (n : ℝ) := by ring
+
+/-
+## Historical Development
+
+- 1945: Erdős-Anning prove the infinite case (collinearity)
+- ~1990: Erdős poses Problem #100
+- Kanold: First non-trivial bound diam ≥ n^(3/4)
+- 2004: Piepmeyer constructs 9 points with diam < 5
+- 2015: Guth-Katz prove distinct distances ≥ cn/log n,
+        implying diam ≥ cn/log n for integer distance sets
+- Open: Close the gap between n/log n and n
+-/
+
+end Erdos100

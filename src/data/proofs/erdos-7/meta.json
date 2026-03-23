@@ -173,7 +173,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #7 (Erdős-Selfridge Conjecture), an OPEN problem asking whether there exists a covering system with all moduli odd. The conjecture predicts NO such system exists. Significant partial results are formalized: Hough-Nielsen (2019) proved some modulus must be divisible by 2 or 3, and Balister et al. (2022) ruled out odd squarefree coverings.",
-    "implications": "**Theoretical Significance**: This problem constrains the structure of covering systems.\n\n**Broader Connections**: If proven, it would show that the prime 2 plays a special role in coverings. The partial results already severely limit what an odd covering could look like: it must have non-squarefree moduli, the LCM must be divisible by 9 or 15, and some modulus must be divisible by 3.",
+    "implications": "**Theoretical Significance**: This problem constrains the structure of covering systems.\n\nIf proven, it would show that the prime 2 plays a special role in coverings. The partial results already severely limit what an odd covering could look like: it must have non-squarefree moduli, the LCM must be divisible by 9 or 15, and some modulus must be divisible by 3.",
     "openQuestions": [
       "Does an odd covering system exist? (The main question)",
       "If an odd covering exists, what is its minimum number of classes?",

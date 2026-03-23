@@ -135,7 +135,7 @@
   ],
   "conclusion": {
     "summary": "The answer to bezout-identity-oq-02-oq-02 is definitively YES: `euclids_lemma_int` generalizes completely to any commutative ring, not just Bézout domains. The proof `linear_combination v * hk - c * huv` is a pure ring identity that works universally. Zero sorries.",
-    "implications": "**Theoretical Significance**: This completes the BezoutIdentity open question family. The hierarchy is now clear: (1) In ANY CommRing, IsCoprime → Euclid's lemma by ring axioms alone.\n\n**Broader Connections**: (2) In IsBezout rings, IsRelPrime ↔ IsCoprime connects arithmetic and algebraic coprimality. (3) In DecompositionMonoids, irreducible = prime gives the classical Euclid's lemma. This framework covers ℤ, any k[X], ℤ[i], and more.",
+    "implications": "**Theoretical Significance**: This completes the BezoutIdentity open question family. The hierarchy is now clear: (1) In ANY CommRing, IsCoprime → Euclid's lemma by ring axioms alone.\n\n(2) In IsBezout rings, IsRelPrime ↔ IsCoprime connects arithmetic and algebraic coprimality. (3) In DecompositionMonoids, irreducible = prime gives the classical Euclid's lemma. This framework covers ℤ, any k[X], ℤ[i], and more.",
     "openQuestions": [
       "Can the Bézout coefficients from `BezoutIdentityOQ01.extGcd` be combined with `euclids_lemma_ring` to give a constructive, computable divisibility algorithm — producing explicit quotient witnesses?",
       "Does the `linear_combination` tactic approach scale to Gauss's lemma (the analog for polynomial rings: if f is primitive and f | g·h over ℤ[x], then f | g or f | h)?",

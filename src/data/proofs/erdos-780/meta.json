@@ -161,7 +161,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #780 is SOLVED: the Alon-Frankl-Lovász theorem (1986) determines the exact chromatic number of Kneser hypergraphs. The formalization axiomatizes the main results (since the proofs require topology beyond Mathlib) and proves the summary theorems with 0 sorries. The threshold $n_0 = kr + (t-1)(k-1)$ is tight, with the tightness construction using a partition coloring.",
-    "implications": "**Theoretical Significance**: The AFL theorem established topological combinatorics as a major field.\n\n**Broader Connections**: Lovász's original 1978 proof of Kneser's conjecture demonstrated that the Borsuk-Ulam theorem could solve purely combinatorial problems, inspiring decades of research in topological methods. The Erdős-Ko-Rado connection provides the independence number $\\alpha(KG(n,r)) = \\binom{n-1}{r-1}$, and the fractional chromatic number $\\chi_f(KG(n,r)) = n/r$ gives further structural information.",
+    "implications": "**Theoretical Significance**: The AFL theorem established topological combinatorics as a major field.\n\nLovász's original 1978 proof of Kneser's conjecture demonstrated that the Borsuk-Ulam theorem could solve purely combinatorial problems, inspiring decades of research in topological methods. The Erdős-Ko-Rado connection provides the independence number $\\alpha(KG(n,r)) = \\binom{n-1}{r-1}$, and the fractional chromatic number $\\chi_f(KG(n,r)) = n/r$ gives further structural information.",
     "openQuestions": [
       "Can Matoušek's 2004 combinatorial proof be formalized in Lean using only existing Mathlib?",
       "What is the chromatic number of generalized Kneser-type structures (q-analogs, multipartite versions)?",

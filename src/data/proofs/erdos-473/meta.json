@@ -123,7 +123,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #473 is solved: there exists a permutation of positive integers with all consecutive sums prime (Odlyzko). The greedy algorithm produces such a sequence but may not cover all integers and misses some primes as sums (like 197). The finite version is true for infinitely many n.",
-    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Graph Theory:** Hamilton path problem in infinite graphs — the prime sum graph\n\n2.\n\n**Broader Connections**: **Additive Combinatorics:** Structure of which pairs of integers sum to primes\n\n3. **Goldbach Connection:** Related to the distribution of prime sums among integers\n\n4. **Algorithmic:** Greedy algorithms on infinite structures may produce interesting but incomplete coverings.",
+    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Graph Theory:** Hamilton path problem in infinite graphs — the prime sum graph\n\n**2. Additive Combinatorics:** Structure of which pairs of integers sum to primes\n\n3. **Goldbach Connection:** Related to the distribution of prime sums among integers\n\n4. **Algorithmic:** Greedy algorithms on infinite structures may produce interesting but incomplete coverings.",
     "openQuestions": [
       "Does the greedy algorithm cover all positive integers?",
       "For which n does the finite version work? Is it all n ≥ 2?",

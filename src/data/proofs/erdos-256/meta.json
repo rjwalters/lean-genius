@@ -186,7 +186,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #256 asked whether log f(n) ≫ n^c for some c > 0, where f(n) measures the minimum achievable maximum of products ∏(1-z^{aᵢ}) on the unit circle. Belov and Konyagin (1996) proved the answer is NO: log f(n) ≪ (log n)⁴, meaning f(n) grows only polylogarithmically in n.",
-    "implications": "**Theoretical Significance**: **Analysis Connections:**\n\n1. **Unit circle dynamics:** Products of (1-z^a) have rich structure on |z|=1.\n\n2.\n\n**Broader Connections**: **Harmonic analysis:** Connected to cosine sum problems and trigonometric polynomials.\n\n3. **Bounds gap:** True growth between (1/2)log n and (log n)⁴ remains open.\n\n4. **Distinct case:** Different behavior when exponents must be distinct.",
+    "implications": "**Theoretical Significance**: **Analysis Connections:**\n\n1. **Unit circle dynamics:** Products of (1-z^a) have rich structure on |z|=1.\n\n**2. Harmonic analysis:** Connected to cosine sum problems and trigonometric polynomials.\n\n3. **Bounds gap:** True growth between (1/2)log n and (log n)⁴ remains open.\n\n4. **Distinct case:** Different behavior when exponents must be distinct.",
     "openQuestions": [
       "What is the exact growth rate of $\\log f(n)$? Known: between $\\frac{1}{2}\\log n$ and $(\\log n)^4$.",
       "Is $f(n) = \\exp(\\Theta((\\log n)^\\alpha))$ for some $1 \\leq \\alpha \\leq 4$?",

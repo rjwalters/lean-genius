@@ -79,7 +79,7 @@
   "overview": {
     "historicalContext": "The AM-GM inequality has ancient origins. Euclid implicitly used it in Book VI of the *Elements* (~300 BCE): if you inscribe a right triangle in a semicircle and drop an altitude from the right angle to the hypotenuse, the altitude's length is the geometric mean of the two segments of the hypotenuse. Since the altitude can be no longer than the radius (the arithmetic mean of the two segments), this gives AM ≥ GM geometrically.\n\nThe first general n-variable proof was given by Augustin-Louis Cauchy in his 1821 *Cours d'analyse*. Cauchy's elegant method uses **forward-backward induction**: he first proves the inequality for powers of 2 (by repeatedly applying the two-variable case), then shows that if AM-GM holds for n numbers, it holds for n-1 numbers as well (by setting one variable equal to the mean). This backward step is the clever insight that makes the induction work without needing $n$ to increase by 1 each time.\n\nIndependently, Colin Maclaurin (1729) discovered a hierarchy of symmetric inequalities that imply AM-GM as a special case. His *Maclaurin inequalities* relate the elementary symmetric polynomial means and strictly strengthen AM-GM for distinct values.\n\nGeorge Pólya later gave what many consider the most elegant proof: the exponential inequality $e^{x-1} \\geq x$ (with equality iff $x=1$) applied to each ratio $a_i / G$ (where $G$ is the geometric mean) immediately yields $e^{A/G - 1} \\geq A/G \\geq 1$, hence $A \\geq G$. This proof, featured in Steele's *Cauchy-Schwarz Master Class*, reveals AM-GM as a consequence of the convexity of $e^x$.\n\nToday AM-GM is one of the most ubiquitous tools in mathematical analysis, combinatorics, and optimization. It appears in proofs of the Cauchy-Schwarz inequality, bounds on entropy in information theory, and the isoperimetric inequality. It is #38 on Wiedijk's landmark list of 100 theorems deemed important to formalize in proof assistants.",
     "problemStatement": "**Theorem (Wiedijk #38)**: For non-negative real numbers $a$ and $b$:\n\n$$(a + b) / 2 \\geq \\sqrt{ab}$$\n\n**General Weighted Form**: For a finite index set $\\iota$, weights $w_i \\geq 0$ with $\\sum_i w_i = 1$, and values $z_i \\geq 0$:\n\n$$\\prod_{i} z_i^{w_i} \\leq \\sum_{i} w_i z_i$$\n\n**Classical n-variable Form**: For $n$ non-negative reals:\n\n$$\\frac{a_1 + \\cdots + a_n}{n} \\geq \\sqrt[n]{a_1 \\cdots a_n}$$\n\n**Equality Condition**: Equality holds if and only if all the $a_i$ are equal.",
-    "text": "The AM-GM Inequality: For non-negative real numbers, the arithmetic mean is always greater than or equal to the geometric mean, with equality if and only if all numbers are equal.",
+    "text": "A dual-path formalization of AM-GM (Wiedijk #38) in 225 lines: the elementary two-variable proof via $(\\sqrt{a} - \\sqrt{b})^2 \\geq 0$ with `sq_nonneg`, `Real.sq_sqrt`, and `linarith`; the equality characterization $a = b \\iff (a+b)/2 = \\sqrt{ab}$ via a `calc` chain and `pow_eq_zero`; and the general weighted form $\\prod z_i^{w_i} \\leq \\sum w_i z_i$ delegated to Mathlib's `Real.geom_mean_le_arith_mean_weighted` (proved internally via Jensen's inequality for $-\\log$). Includes the product-sum corollary $ab \\leq ((a+b)/2)^2$, the QM-AM-GM chain alias, a three-variable specialization via `geom_mean_le_arith_mean3_weighted` with equal weights $1/3$, and three concrete verification examples using `norm_num` and `Real.sqrt_sq`. Eight theorems, zero sorries, zero axioms.",
     "proofStrategy": "**Elementary Proof (Two Variables):**\n\nThe key insight is that any square is non-negative:\n1. $(\\sqrt{a} - \\sqrt{b})^2 \\geq 0$\n2. Expanding: $a - 2\\sqrt{ab} + b \\geq 0$\n3. Rearranging: $a + b \\geq 2\\sqrt{ab}$\n4. Dividing by 2: $(a + b)/2 \\geq \\sqrt{ab}$\n\n**Lean Proof Techniques Used:**\n- `sq_nonneg` to assert $(\\sqrt{a} - \\sqrt{b})^2 \\geq 0$\n- `Real.sq_sqrt` to rewrite $(\\sqrt{x})^2 = x$ for $x \\geq 0$\n- `Real.sqrt_mul` to merge $\\sqrt{a} \\cdot \\sqrt{b} = \\sqrt{ab}$\n- `linarith` to close the resulting linear arithmetic goal\n- `calc` chains for the equality characterization\n- `convert` to adapt Mathlib's general Finset-based statements to specific instances\n\n**Mathlib Approach (General Case):**\nThe formalization delegates the weighted general form to `Real.geom_mean_le_arith_mean_weighted`, which is proved in Mathlib via convexity of $-\\log$ (Jensen's inequality). This reduces all n-variable cases to the Mathlib theorem.",
     "keyInsights": [
       "The entire inequality reduces to the single algebraic fact that squares are non-negative: $(\\sqrt{a} - \\sqrt{b})^2 \\geq 0$. This transforms a statement about means into pure linear arithmetic after expansion.",
@@ -165,6 +165,11 @@
       "targetId": "fundamental-theorem-calculus",
       "relationship": "supports",
       "description": "The FTC underlies the proof that $-\\log$ is convex on $(0, \\infty)$: since $(-\\log x)'' = 1/x^2 > 0$, integration via FTC gives convexity, which yields Jensen's inequality for $-\\log$, the standard route to weighted AM-GM in Mathlib. Pólya's elegant proof similarly relies on the convexity of $e^x$ ($(e^x)'' = e^x > 0$)."
+    },
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "supports",
+      "description": "The MVT provides the bridge from derivative conditions to function inequalities: $f''(x) > 0$ (verified via MVT applied to $f'$) implies convexity of $f$, which yields Jensen's inequality, which proves the weighted AM-GM. Specifically, applying MVT to $f(x) = -\\log x$ gives the tangent line bound $-\\log x \\geq -\\log a - (x-a)/a$, a one-line proof of the exponential inequality $e^{x-1} \\geq x$ that Pólya used for AM-GM."
     }
   ],
   "relatedProofs": [
@@ -181,7 +186,8 @@
     "area-of-circle",
     "stirling-formula",
     "binomial-theorem",
-    "fundamental-theorem-calculus"
+    "fundamental-theorem-calculus",
+    "mean-value-theorem"
   ],
   "sections": [
     {
@@ -225,12 +231,20 @@
       "mathContext": "$(1+4)/2 = 5/2 > \\sqrt{4} = 2$; $(2+8)/2 = 5 \\geq \\sqrt{16} = 4$"
     },
     {
-      "id": "corollaries",
-      "title": "Corollaries and Applications",
+      "id": "product-sum-corollary",
+      "title": "Product-Sum Inequality",
       "startLine": 182,
+      "endLine": 194,
+      "summary": "Derives $ab \\leq ((a+b)/2)^2$ by squaring both sides of AM-GM, using `sq_le_sq'` and `Real.sq_sqrt`. This corollary is the key step in proving that the square maximizes area among rectangles with fixed perimeter.",
+      "mathContext": "$ab = (\\sqrt{ab})^2 \\leq ((a+b)/2)^2$, obtained by squaring $(a+b)/2 \\geq \\sqrt{ab}$"
+    },
+    {
+      "id": "mean-chain-and-three-var",
+      "title": "Mean Chain Alias and Three-Variable AM-GM",
+      "startLine": 196,
       "endLine": 218,
-      "summary": "Product-sum inequality $ab \\leq ((a+b)/2)^2$, alias `am_ge_gm`, and three-variable AM-GM via Mathlib's weighted form.",
-      "mathContext": "$ab \\leq ((a+b)/2)^2$ and $\\sqrt[3]{abc} \\leq (a+b+c)/3$"
+      "summary": "The `am_ge_gm` alias places AM-GM in the QM $\\geq$ AM $\\geq$ GM $\\geq$ HM chain. Then `am_gm_three` proves the three-variable case $a^{1/3}b^{1/3}c^{1/3} \\leq (a+b+c)/3$ via Mathlib's `Real.geom_mean_le_arith_mean3_weighted` with equal weights $1/3$.",
+      "mathContext": "$M_{-1} \\leq M_0 \\leq M_1 \\leq M_2$; three-variable: $\\sqrt[3]{abc} \\leq (a+b+c)/3$"
     },
     {
       "id": "check-epilogue",

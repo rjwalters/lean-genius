@@ -31,5 +31,22 @@
       "Connect to Tao's 2019 result on almost all orbits attaining almost bounded values"
     ],
     "progressSummary": "COMPLETE: Fully verified proof with 0 sorries, 0 axioms. Gallery entry created."
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/CollatzStructured.lean",
+      "filename": "CollatzStructured.lean",
+      "lineCount": 208,
+      "theoremCount": 16,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzStructured.lean"
+    }
+  ],
+  "relatedProofs": [
+    "collatz-structured",
+    "collatz-structured-oq-02"
+  ]
 }

@@ -35,9 +35,10 @@
       "REPLACED Classical.choice with northThenEastPath: canonical all-North-then-all-East path constructor. This ensures image paths cross at column 0 under wellFormed.",
       "northThenEast_not_NI PROVED: two northThenEast paths from different sources cross at column 0 when sources(i) ≤ targets(j)",
       "Self-inverse requires CANONICAL crossing (lex-min on (c,y,i,j)), NOT firstNonFixed (shown by 3-cycle counterexample)",
-      "pathMN_cast_val: cast between PathMN with equal n preserves .val (subst + rfl)",
-      "northThenEast_not_NI_general: unified crossing lemma for NTE paths including m=0 edge case",
-      "Finset.sum_involution assembly: 3/4 properties proved (sign, no_fixed, membership); self-inverse blocked by NTE design"
+      "Range expansion in GV tail-swap only adds shared points above y₀ (canonical row) — key for self-inverse preservation",
+      "CRITICAL: cancellable_has_interior_crossing is FALSE — σ=1 tuples CAN have crossings only at the final column. The canonical crossing must handle c=m (final) as well as c<m (interior).",
+      "Self-inverse requires (c,y,i,j) lex ordering with column+row first, NOT just (i,j). The (i,j) lex ordering fails because tail-swap can create new crossings at (i2,j0) with i2<i0 at columns >= c0.",
+      "The correct self-inverse argument: at (c2,y2) < (c0,y0) lex, path prefixes unchanged → same crossings. At (c0,y0), both paths still visit y0 (join point). No (i2,j2) < (i0,j0) newly visits (c0,y0) by minimality."
     ],
     "builtItems": [
       "BallotProblemOQ03OQ02.lean: r×r LGV lemma formalization (~1100 lines, expanded from 1050)",
@@ -61,29 +62,30 @@
       "gvInvolutionFn_fst: first component accessor (PROVED by rfl)",
       "gvInvolution_sign_reversal: sign cancellation (PROVED modulo simp details)",
       "gvInvolution_no_fixed: no fixed points (PROVED modulo simp details)",
-      "cancellable_sum_eq_zero: structured via Finset.sum_involution (2 sorries remain)",
+      "cancellable_sum_eq_zero: structured via Finset.sum_involution (1 sorry remains — self-inverse)",
       "gvNewPerm RIGHT multiplication fix: σ*swap(i,j) instead of swap(i,j)*σ (PROVED)",
       "pathMN_nonempty: Nonempty (PathMN m n) for all m,n (PROVED via pathMN_card + choose_pos)",
-      "northThenEast_not_NI_general (new lemma)",
-      "pathMN_cast_val (cast preservation lemma)",
-      "gvInvolution_membership (PROVED: cast unfolding + NTE crossing)",
-      "cancellable_sum_eq_zero (assembled via Finset.sum_involution, 1 sorry)"
+      "cast_pathMN_val: cast between PathMN types with equal n preserves .val (PROVED)",
+      "gvInvolution_membership: image tuple is cancellable (PROVED via cast_pathMN_val + northThenEast_not_NI)",
+      "northBeforeEast_prefix: prefix determines northBeforeEast (BallotProblemOQ03OQ02.lean:1266)",
+      "colEntry_prefix_eq: prefix determines colEntry (BallotProblemOQ03OQ02.lean:1287)"
     ],
     "openQuestions": [
       "Need canonical (deterministic) crossing pair for self-inverse — current crossingI/J use Classical.choose",
-      "Need specific tail-swapped paths for membership proof (when σ=swap(i,j), image paths must still cross)",
-      "Mathlib version drift: take_at_column_entry/take_east_count_within_column have pre-existing compat errors"
+      "Mathlib version drift: take_at_column_entry/take_east_count_within_column have pre-existing compat errors (~14 errors)"
     ],
     "nextSteps": [
-      "Close membership sorry: unfold PermPathTuple.toPathTuple cast under σ'=1, show it reduces to northThenEast paths, apply northThenEast_not_NI",
-      "Build canonical crossing pair via Finset.min' on lex-ordered (c,y,i,j) crossing quadruples",
-      "Build tail-swap PathMN construction: split at shared (c,y), join prefix+suffix, prove validity",
-      "Prove self-inverse: canonical crossing preserved (prefix unchanged → lex-min same) + double swap = identity",
-      "Fix pre-existing Mathlib compat errors in take_at_column_entry (Bool.false_eq_false unknown)"
+      "Step 1 (~30 lines): Build tailSwapPathMN from prefix+suffix with length+East proofs",
+      "Step 2 (~40 lines): Canonical crossing via Nat encoding + Nat.find (handles c≤m)",
+      "Step 3 (~20 lines): gvProperInvolution using Steps 1-2",
+      "Step 4 (~10 lines): sign_reversal + no_fixed (perm-only, carry over)",
+      "Step 5 (~30 lines): Membership proof (σ≠1 trivial; σ=1 tail-swap still shares crossing)",
+      "Step 6 (~50 lines): Self-inverse via (c,y,i,j) preservation + double tail-swap = id",
+      "Step 7 (~10 lines): Wire into Finset.sum_involution → cancellable_sum_eq_zero"
     ],
-    "progressSummary": "PROGRESS: 2→1 sorries. Proved membership via pathMN_cast_val + northThenEast_not_NI_general. Assembled Finset.sum_involution with 3/4 properties proved. Self-inverse sorry remains (needs tail-swap involution redesign)."
+    "progressSummary": "PROGRESS: Deep analysis of self-inverse completed. Current NTE-based involution cannot be self-inverse (paths lost). Full tail-swap + canonical (c,y,i,j) crossing needed. Critical discovery: final-column crossings must be handled. Estimated ~200 lines remaining."
   },
-  "lastUpdate": "2026-03-23T18:00:00Z",
+  "lastUpdate": "2026-03-23T22:00:00Z",
   "leanFiles": [
     {
       "path": "Proofs/BallotProblem.lean",
@@ -154,11 +156,11 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ02.lean",
       "filename": "BallotProblemOQ03OQ02.lean",
-      "lineCount": 897,
+      "lineCount": 1886,
       "theoremCount": 28,
       "axiomCount": 0,
       "defCount": 23,
-      "sorryCount": 3,
+      "sorryCount": 4,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ02.lean"
     },

@@ -125,7 +125,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #589 asks for the guaranteed size of a general position subset extractable from any planar point set with no 4 collinear. Erdős believed linear growth, but this was disproved. Current bounds: n^(1/2)·log n ≤ g(n) ≤ n^(5/6+o(1)). The exact order of growth remains open.",
-    "implications": "**Theoretical Significance**: The problem connects discrete geometry to extremal combinatorics.\n\n**Broader Connections**: The density Hales-Jewett theorem and container method provide surprising connections. Balogh-Solymosi's paper was the first application of containers to discrete geometry.",
+    "implications": "**Theoretical Significance**: The problem connects discrete geometry to extremal combinatorics.\n\nThe density Hales-Jewett theorem and container method provide surprising connections. Balogh-Solymosi's paper was the first application of containers to discrete geometry.",
     "openQuestions": [
       "What is the exact exponent α such that g(n) = Θ(n^α)?",
       "Is the Balogh-Solymosi bound n^(5/6) optimal?",

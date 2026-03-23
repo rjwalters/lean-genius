@@ -20,6 +20,9 @@ d(A + B) = d(A) + d(B).
 import Mathlib.Data.Real.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Data.Set.Card
+import Mathlib.Data.Set.Finite.Lattice
+import Mathlib.Topology.Basic
+import Mathlib.Topology.Order.Basic
 import Mathlib.Tactic
 
 open Set Filter
@@ -32,7 +35,7 @@ noncomputable def countingFn (A : Set ℕ) (N : ℕ) : ℕ :=
 
 /-- The asymptotic density of A ⊆ ℕ: lim_{N→∞} |A ∩ [1,N]| / N. -/
 noncomputable def asympDensity (A : Set ℕ) : ℝ :=
-  Filter.limUnder atTop (fun N => (countingFn A N : ℝ) / N)
+  limUnder atTop (fun N => (countingFn A N : ℝ) / N)
 
 /-- The density exists (the limit converges). -/
 def DensityExists (A : Set ℕ) : Prop :=
@@ -96,16 +99,40 @@ axiom erdos_335_conjecture :
 
 /- ## Basic Properties -/
 
-/-- Density is non-negative. -/
-axiom density_nonneg (A : Set ℕ) : asympDensity A ≥ 0
+/-- Density is non-negative (when the density exists). -/
+theorem density_nonneg (A : Set ℕ) (hA : DensityExists A) : asympDensity A ≥ 0 := by
+  obtain ⟨d, hd⟩ := hA
+  rw [show asympDensity A = d from hd.limUnder_eq]
+  exact ge_of_tendsto hd (Filter.eventually_atTop.mpr ⟨0, fun N _ =>
+    div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)⟩)
+
+/-- The counting function is at most N. -/
+private lemma countingFn_le (A : Set ℕ) (N : ℕ) : countingFn A N ≤ N := by
+  unfold countingFn
+  calc Set.ncard (A ∩ Set.Icc 1 N)
+      ≤ Set.ncard (Set.Icc 1 N) :=
+        Set.ncard_le_ncard Set.inter_subset_right (Set.finite_Icc 1 N)
+    _ ≤ N := by
+        rw [Set.ncard_eq_toFinset_card']
+        simp only [Set.toFinset_Icc, Nat.card_Icc]
+        omega
 
 /-- Density is at most 1. -/
-axiom density_le_one (A : Set ℕ) (hA : DensityExists A) : asympDensity A ≤ 1
+theorem density_le_one (A : Set ℕ) (hA : DensityExists A) : asympDensity A ≤ 1 := by
+  obtain ⟨d, hd⟩ := hA
+  rw [show asympDensity A = d from hd.limUnder_eq]
+  apply le_of_tendsto hd
+  filter_upwards [Filter.eventually_ge_atTop 1] with N hN
+  rw [div_le_one (by positivity : (0 : ℝ) < N)]
+  exact_mod_cast countingFn_le A N
 
 /-- If d(A + B) = d(A) + d(B), then d(A) + d(B) ≤ 1.
     Otherwise the sumset would have density > 1, a contradiction. -/
-axiom additive_sum_le_one (A B : Set ℕ) :
-  DensityAdditive A B → asympDensity A + asympDensity B ≤ 1
+theorem additive_sum_le_one (A B : Set ℕ) :
+    DensityAdditive A B → asympDensity A + asympDensity B ≤ 1 := by
+  intro ⟨_, _, hAB_exists, heq⟩
+  rw [← heq]
+  exact density_le_one (Sumset A B) hAB_exists
 
 /-- **Plünnecke–Ruzsa lower bound** (simplified):
     d(A + B) ≥ min(d(A) + d(B), 1) for sets with density. -/
@@ -117,6 +144,5 @@ axiom plunnecke_ruzsa_lower (A B : Set ℕ)
 /-- Density additivity implies the Plünnecke–Ruzsa bound is tight. -/
 theorem additive_implies_tight (A B : Set ℕ) (h : DensityAdditive A B) :
     asympDensity (Sumset A B) = min (asympDensity A + asympDensity B) 1 := by
-  obtain ⟨_, _, _, heq⟩ := h
   have hle := additive_sum_le_one A B h
-  rw [heq, min_eq_left hle]
+  rw [h.2.2.2, min_eq_left hle]

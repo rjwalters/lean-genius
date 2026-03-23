@@ -8,9 +8,9 @@
     },
     "type": "context",
     "title": "Analytic Function Theory Perspective on Newton's Binomial Theorem",
-    "content": "This file approaches Newton's generalized binomial theorem through the lens of analytic function theory. Instead of proving convergence directly, it shows that the ODE (1+x)f'(x) = αf(x) with f(0) = 1 uniquely determines f(x) = (1+x)^α. The coefficient recurrence that follows from this ODE is the key to all identities in the file. Mathlib's HasFPowerSeriesOnBall provides the analyticity framework.",
+    "content": "This file approaches Newton's generalized binomial theorem through the lens of analytic function theory. Instead of proving convergence directly, it shows that the ODE (1+x)f'(x) = \u03b1f(x) with f(0) = 1 uniquely determines f(x) = (1+x)^\u03b1. The coefficient recurrence that follows from this ODE is the key to all identities in the file. Mathlib's HasFPowerSeriesOnBall provides the analyticity framework.",
     "mathContext": "The ODE $(1+x)f'(x) = \\alpha f(x)$ with $f(0) = 1$ has unique solution $f(x) = (1+x)^\\alpha$. At the coefficient level: $(k+1)C(\\alpha, k+1) + kC(\\alpha, k) = \\alpha C(\\alpha, k)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "ODE characterization",
       "power series",
@@ -35,13 +35,13 @@
     },
     "type": "technique",
     "title": "ODE Recurrence and Coefficient Uniqueness",
-    "content": "The ODE recurrence (k+1)·C(α,k+1) = (α-k)·C(α,k) is proved directly from the falling factorial definition using field_simp. The uniqueness theorem genBinom_unique_from_ode shows any sequence satisfying this recurrence with a₀ = 1 must equal genBinom. The proof uses induction with mul_left_cancel₀ on the nonzero factor (k+1), which is the discrete analogue of ODE uniqueness (Picard-Lindelöf).",
+    "content": "The ODE recurrence (k+1)\u00b7C(\u03b1,k+1) = (\u03b1-k)\u00b7C(\u03b1,k) is proved directly from the falling factorial definition using field_simp. The uniqueness theorem genBinom_unique_from_ode shows any sequence satisfying this recurrence with a\u2080 = 1 must equal genBinom. The proof uses induction with mul_left_cancel\u2080 on the nonzero factor (k+1), which is the discrete analogue of ODE uniqueness (Picard-Lindel\u00f6f).",
     "mathContext": "$(k+1)\\binom{\\alpha}{k+1} = (\\alpha - k)\\binom{\\alpha}{k}$ uniquely determines $\\binom{\\alpha}{k}$ from $\\binom{\\alpha}{0} = 1$. This is the Lean proof of the coefficient-level ODE identity.",
     "significance": "key",
     "relatedConcepts": [
       "ODE coefficient recurrence",
       "uniqueness of power series",
-      "mul_left_cancel₀"
+      "mul_left_cancel\u2080"
     ],
     "prerequisites": [
       "genBinom definition",
@@ -63,8 +63,8 @@
     },
     "type": "technique",
     "title": "Analyticity from Mathlib",
-    "content": "The generalized binomial series is analytic on the open unit ball, established directly from Mathlib's Real.one_add_rpow_hasFPowerSeriesOnBall_zero. This single line provides the entire analytic framework — HasFPowerSeriesOnBall encodes convergence, uniqueness of coefficients, and validity of term-by-term operations.",
-    "mathContext": "$(1+y)^\\alpha$ has the formal power series `binomialSeries ℝ α` on the ball $|y| < 1$. The `HasFPowerSeriesOnBall` type packages convergence, representation, and analyticity.",
+    "content": "The generalized binomial series is analytic on the open unit ball, established directly from Mathlib's Real.one_add_rpow_hasFPowerSeriesOnBall_zero. This single line provides the entire analytic framework \u2014 HasFPowerSeriesOnBall encodes convergence, uniqueness of coefficients, and validity of term-by-term operations.",
+    "mathContext": "$(1+y)^\\alpha$ has the formal power series `binomialSeries \u211d \u03b1` on the ball $|y| < 1$. The `HasFPowerSeriesOnBall` type packages convergence, representation, and analyticity.",
     "significance": "key",
     "relatedConcepts": [
       "HasFPowerSeriesOnBall",
@@ -89,7 +89,7 @@
     },
     "type": "technique",
     "title": "Functional Equation",
-    "content": "The functional equation (1+x)^α · (1+x)^β = (1+x)^(α+β) follows from Mathlib's rpow_add, which requires 1+x > 0 (i.e., x > -1). The special cases (1+x)^0 = 1 and (1+x)^1 = 1+x establish the group structure of real powers.",
+    "content": "The functional equation (1+x)^\u03b1 \u00b7 (1+x)^\u03b2 = (1+x)^(\u03b1+\u03b2) follows from Mathlib's rpow_add, which requires 1+x > 0 (i.e., x > -1). The special cases (1+x)^0 = 1 and (1+x)^1 = 1+x establish the group structure of real powers.",
     "mathContext": "$(1+x)^\\alpha \\cdot (1+x)^\\beta = (1+x)^{\\alpha+\\beta}$ for $x > -1$. This is the multiplicative version of the additive identity $\\alpha + \\beta$ in the exponent.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -115,7 +115,7 @@
     },
     "type": "technique",
     "title": "Absorption Identity (Derivative Correspondence)",
-    "content": "The absorption identity α·C(α-1,k) = (k+1)·C(α,k+1) is the most significant new result. Analytically, it encodes the derivative formula d/dx[(1+x)^α] = α(1+x)^(α-1) at the coefficient level: the k-th coefficient of the derivative series (k+1)·C(α,k+1) equals α times the k-th coefficient C(α-1,k) of (1+x)^(α-1). The proof uses induction on k, applying the ODE recurrence for both α and α-1 in the inductive step, followed by field_simp and ring.",
+    "content": "The absorption identity \u03b1\u00b7C(\u03b1-1,k) = (k+1)\u00b7C(\u03b1,k+1) is the most significant new result. Analytically, it encodes the derivative formula d/dx[(1+x)^\u03b1] = \u03b1(1+x)^(\u03b1-1) at the coefficient level: the k-th coefficient of the derivative series (k+1)\u00b7C(\u03b1,k+1) equals \u03b1 times the k-th coefficient C(\u03b1-1,k) of (1+x)^(\u03b1-1). The proof uses induction on k, applying the ODE recurrence for both \u03b1 and \u03b1-1 in the inductive step, followed by field_simp and ring.",
     "mathContext": "$\\alpha \\cdot \\binom{\\alpha-1}{k} = (k+1) \\cdot \\binom{\\alpha}{k+1}$. Equivalently: $\\frac{d}{dx}\\sum \\binom{\\alpha}{k}x^k = \\sum (k+1)\\binom{\\alpha}{k+1}x^k = \\alpha \\sum \\binom{\\alpha-1}{k}x^k = \\alpha(1+x)^{\\alpha-1}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -143,7 +143,7 @@
     },
     "type": "technique",
     "title": "Half-Integer Binomial Coefficients and the Square Root Series",
-    "content": "Explicit computation of C(1/2, k) for k = 0,1,2,3 gives the first terms of √(1+x) = 1 + x/2 - x²/8 + x³/16 - ···. The alternating signs for k ≥ 2 reflect the concavity of the square root function. The theorem genBinom_half_ne_zero proves all C(1/2,k) are nonzero by induction: if C(1/2,k+1) = 0, the ODE recurrence forces (1/2-k)·C(1/2,k) = 0, but C(1/2,k) ≠ 0 by the IH and 1/2-k ≠ 0 since 2k ≠ 1 (omega).",
+    "content": "Explicit computation of C(1/2, k) for k = 0,1,2,3 gives the first terms of \u221a(1+x) = 1 + x/2 - x\u00b2/8 + x\u00b3/16 - \u00b7\u00b7\u00b7. The alternating signs for k \u2265 2 reflect the concavity of the square root function. The theorem genBinom_half_ne_zero proves all C(1/2,k) are nonzero by induction: if C(1/2,k+1) = 0, the ODE recurrence forces (1/2-k)\u00b7C(1/2,k) = 0, but C(1/2,k) \u2260 0 by the IH and 1/2-k \u2260 0 since 2k \u2260 1 (omega).",
     "mathContext": "$\\binom{1/2}{0} = 1$, $\\binom{1/2}{1} = 1/2$, $\\binom{1/2}{2} = -1/8$, $\\binom{1/2}{3} = 1/16$. All $\\binom{1/2}{k} \\neq 0$ because $1/2 \\notin \\mathbb{N}$ means no factor $(1/2 - i)$ in the falling product vanishes.",
     "significance": "key",
     "relatedConcepts": [

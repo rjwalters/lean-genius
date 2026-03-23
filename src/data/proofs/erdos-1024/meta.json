@@ -117,7 +117,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1024 asked to estimate the minimum independence number f(n) of 3-uniform linear hypergraphs. Phelps and Rödl (1986) determined f(n) ≍ (n log n)^(1/2), precisely closing the gap in Erdős's bounds n^(1/2) ≪ f(n) ≪ n^(2/3).",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Hypergraph Independence**: Fundamental result on guaranteed independent sets\n\n2.\n\n**Broader Connections**: **Steiner Systems**: Applies to partial Steiner triple systems\n\n3. **Probabilistic Method**: Lower bound via random selection\n\n4. **Log Factor**: Precise asymptotic between polynomial bounds.",
+    "implications": "1. **Hypergraph Independence**: Fundamental result on guaranteed independent sets\n\n**2. Steiner Systems**: Applies to partial Steiner triple systems\n\n3. **Probabilistic Method**: Lower bound via random selection\n\n4. **Log Factor**: Precise asymptotic between polynomial bounds.",
     "openQuestions": [
       "What are the exact constants in the asymptotic?",
       "What about k-uniform linear hypergraphs for k > 3?",

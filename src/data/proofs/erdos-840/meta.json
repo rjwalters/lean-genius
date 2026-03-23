@@ -104,7 +104,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #840 formalizes the quasi-Sidon problem: determine the maximum size of a subset of {1,...,N} with asymptotically optimal sumset size. The formalization axiomatizes the Erdős–Freud bounds, Pikhurko's improvement, and related results on difference sets and classical Sidon bounds.",
-    "implications": "**Theoretical Significance**: Resolution would quantify exactly how much the quasi-Sidon relaxation buys over classical Sidon sets.\n\n**Broader Connections**: The connection to edge-magic graphs (Pikhurko), Ruzsa–Szemerédi theory, and additive energy makes this a nexus problem in additive combinatorics. Closing the 38% gap between bounds would likely require new structural understanding of sets with few sum collisions.",
+    "implications": "**Theoretical Significance**: Resolution would quantify exactly how much the quasi-Sidon relaxation buys over classical Sidon sets.\n\nThe connection to edge-magic graphs (Pikhurko), Ruzsa–Szemerédi theory, and additive energy makes this a nexus problem in additive combinatorics. Closing the 38% gap between bounds would likely require new structural understanding of sets with few sum collisions.",
     "openQuestions": [
       "What is the exact asymptotic constant $c$ such that $f(N) \\sim c\\sqrt{N}$? Is it $2/\\sqrt{3}$ or closer to $1.863$?",
       "Can the reflection construction ($B \\cup \\{N - b\\}$) be improved by using three or more shifted copies of a Sidon set?",

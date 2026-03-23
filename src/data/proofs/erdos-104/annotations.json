@@ -8,14 +8,14 @@
     },
     "type": "context",
     "title": "Imports and Problem Overview",
-    "content": "Module documentation for Erdős Problem #104 on unit circles through three points. The problem asks: given n points in ℝ², how many unit circles contain at least 3 points? The trivial bound is O(n²), Elekes showed Ω(n^{3/2}) is achievable, and the conjecture is O(n^{3/2}). Imports Mathlib for EuclideanSpace, Finset, and Set operations.",
+    "content": "Module documentation for Erd\u0151s Problem #104 on unit circles through three points. The problem asks: given n points in \u211d\u00b2, how many unit circles contain at least 3 points? The trivial bound is O(n\u00b2), Elekes showed \u03a9(n^{3/2}) is achievable, and the conjecture is O(n^{3/2}). Imports Mathlib for EuclideanSpace, Finset, and Set operations.",
     "mathContext": "For a finite point set $P \\subset \\mathbb{R}^2$ with $|P| = n$, let $f_3(P)$ denote the number of distinct unit circles containing at least 3 points of $P$. The problem asks for the maximum order of $f_3(P)$ over all $n$-point sets. Known: $\\Omega(n^{3/2}) \\leq \\max_P f_3(P) \\leq O(n^2)$. Conjecture: $\\max_P f_3(P) = O(n^{3/2})$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "unit circles",
       "incidence geometry",
       "point configurations",
-      "Erdős problems"
+      "Erd\u0151s problems"
     ],
     "prerequisites": [
       "Euclidean geometry",
@@ -32,7 +32,7 @@
     },
     "type": "definition",
     "title": "Point Type",
-    "content": "Points are elements of the 2-dimensional Euclidean space ℝ², defined as EuclideanSpace ℝ (Fin 2). This provides the inner product, norm, and metric structure needed for distance computations and circle definitions.",
+    "content": "Points are elements of the 2-dimensional Euclidean space \u211d\u00b2, defined as EuclideanSpace \u211d (Fin 2). This provides the inner product, norm, and metric structure needed for distance computations and circle definitions.",
     "mathContext": "Points $p \\in \\mathbb{R}^2$ with the standard Euclidean metric $d(p,q) = \\|p - q\\|_2 = \\sqrt{(p_1-q_1)^2 + (p_2-q_2)^2}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -54,7 +54,7 @@
     },
     "type": "definition",
     "title": "Euclidean Distance",
-    "content": "The Euclidean distance dist(p, q) = ‖p - q‖ between two points. This determines which pairs can share a unit circle: two points lie on a common unit circle if and only if their distance is at most 2.",
+    "content": "The Euclidean distance dist(p, q) = \u2016p - q\u2016 between two points. This determines which pairs can share a unit circle: two points lie on a common unit circle if and only if their distance is at most 2.",
     "mathContext": "$d(p,q) = \\|p - q\\|$. Two points lie on a common unit circle iff $d(p,q) \\leq 2$. When $d < 2$, there are exactly 2 such circles; when $d = 2$, exactly 1; when $d > 2$, none. The centers lie on the perpendicular bisector of $\\overline{pq}$ at distance $\\sqrt{1 - d^2/4}$ from it.",
     "significance": "key",
     "relatedConcepts": [
@@ -76,7 +76,7 @@
     },
     "type": "definition",
     "title": "Unit Circle",
-    "content": "A unit circle is a structure determined by its center point in ℝ². The circle itself is {p : dist(p, center) = 1}. Since the radius is always 1, the circle is uniquely determined by the center.",
+    "content": "A unit circle is a structure determined by its center point in \u211d\u00b2. The circle itself is {p : dist(p, center) = 1}. Since the radius is always 1, the circle is uniquely determined by the center.",
     "mathContext": "$C(a) = \\{p \\in \\mathbb{R}^2 : \\|p - a\\| = 1\\}$ for center $a \\in \\mathbb{R}^2$. The set of all unit circles forms a 2-parameter family (parameterized by the center coordinates), isomorphic to $\\mathbb{R}^2$ itself.",
     "significance": "key",
     "relatedConcepts": [
@@ -99,7 +99,7 @@
     "type": "definition",
     "title": "Point on Circle",
     "content": "The incidence relation OnCircle p c holds when dist(p, c.center) = 1. This is the fundamental relation between points and unit circles that the problem counts.",
-    "mathContext": "$p \\in C(a) \\iff \\|p - a\\| = 1$. The number of incidences $I(P, \\mathcal{C}) = |\\{(p, C) : p \\in P, C \\in \\mathcal{C}, p \\in C\\}|$ is the key quantity in Szemerédi-Trotter type bounds.",
+    "mathContext": "$p \\in C(a) \\iff \\|p - a\\| = 1$. The number of incidences $I(P, \\mathcal{C}) = |\\{(p, C) : p \\in P, C \\in \\mathcal{C}, p \\in C\\}|$ is the key quantity in Szemer\u00e9di-Trotter type bounds.",
     "significance": "key",
     "relatedConcepts": [
       "incidence relation",
@@ -141,7 +141,7 @@
     },
     "type": "definition",
     "title": "Circle Contains k Points",
-    "content": "A circle 'contains k points' from P if at least k points of P lie on it. Defined by filtering P to those on the circle and checking cardinality ≥ k. We care about k ≥ 3 (a 'rich' circle).",
+    "content": "A circle 'contains k points' from P if at least k points of P lie on it. Defined by filtering P to those on the circle and checking cardinality \u2265 k. We care about k \u2265 3 (a 'rich' circle).",
     "mathContext": "A unit circle $C$ is $k$-rich with respect to $P$ if $|P \\cap C| \\geq k$. The problem focuses on 3-rich circles. The count $f_k(P) = |\\{C : |P \\cap C| \\geq k\\}|$ generalizes to arbitrary $k$.",
     "significance": "key",
     "relatedConcepts": [
@@ -205,7 +205,7 @@
     },
     "type": "concept",
     "title": "Two Points, Two Circles",
-    "content": "Two distinct points at distance d < 2 determine exactly 2 unit circles passing through both. The centers lie on the perpendicular bisector of the segment pq, at distance √(1 - d²/4) on each side. This is the geometric foundation for the double-counting argument.",
+    "content": "Two distinct points at distance d < 2 determine exactly 2 unit circles passing through both. The centers lie on the perpendicular bisector of the segment pq, at distance \u221a(1 - d\u00b2/4) on each side. This is the geometric foundation for the double-counting argument.",
     "mathContext": "For $0 < d(p,q) < 2$, the two unit circle centers are $m \\pm h\\hat{n}$ where $m$ is the midpoint, $\\hat{n}$ is the unit normal to $\\overline{pq}$, and $h = \\sqrt{1 - d^2/4}$. As $d \\to 2$, $h \\to 0$ and the two circles merge.",
     "significance": "key",
     "relatedConcepts": [
@@ -271,7 +271,7 @@
     },
     "type": "concept",
     "title": "Trivial Upper Bound",
-    "content": "At most n(n-1) unit circles with 3+ points from an n-point set. Each such circle contains at least one pair; each pair determines at most 2 unit circles; there are C(n,2) pairs. This gives 2·C(n,2) = n(n-1).",
+    "content": "At most n(n-1) unit circles with 3+ points from an n-point set. Each such circle contains at least one pair; each pair determines at most 2 unit circles; there are C(n,2) pairs. This gives 2\u00b7C(n,2) = n(n-1).",
     "mathContext": "$f_3(P) \\leq 2\\binom{n}{2} = n(n-1)$. Each 3-rich circle contains a pair $(p,q) \\in \\binom{P}{2}$, and each pair is on at most 2 unit circles. This is the $O(n^2)$ baseline.",
     "significance": "key",
     "relatedConcepts": [
@@ -293,7 +293,7 @@
     },
     "type": "concept",
     "title": "Harborth-Mengersen Bound",
-    "content": "Refinement of the trivial bound to n(n-1)/3 for n ≥ 3. Each 3-rich circle contains at least C(3,2) = 3 pairs of points, so the total pair-circle incidences counted with multiplicity is at least 3·f₃(P). Since the total is at most 2·C(n,2), we get f₃(P) ≤ n(n-1)/3.",
+    "content": "Refinement of the trivial bound to n(n-1)/3 for n \u2265 3. Each 3-rich circle contains at least C(3,2) = 3 pairs of points, so the total pair-circle incidences counted with multiplicity is at least 3\u00b7f\u2083(P). Since the total is at most 2\u00b7C(n,2), we get f\u2083(P) \u2264 n(n-1)/3.",
     "mathContext": "Each 3-rich circle contains $\\geq 3$ pairs from $P$. Total pair-circle incidences: $\\sum_{C \\text{ 3-rich}} \\binom{|P \\cap C|}{2} \\geq 3 f_3(P)$. But also $\\leq 2\\binom{n}{2}$ (each pair on $\\leq 2$ circles). So $f_3(P) \\leq \\frac{2\\binom{n}{2}}{3} = \\frac{n(n-1)}{3}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -314,7 +314,7 @@
     },
     "type": "concept",
     "title": "Elekes Lower Bound",
-    "content": "Elekes (1984) constructed n-point sets achieving Ω(n^{3/2}) 3-rich unit circles, showing the conjectured O(n^{3/2}) bound would be tight. The construction uses a grid-like structure on a circle, exploiting lattice point arrangements.",
+    "content": "Elekes (1984) constructed n-point sets achieving \u03a9(n^{3/2}) 3-rich unit circles, showing the conjectured O(n^{3/2}) bound would be tight. The construction uses a grid-like structure on a circle, exploiting lattice point arrangements.",
     "mathContext": "Elekes showed $f(n) = \\max_{|P|=n} f_3(P) \\geq cn^{3/2}$ for some $c > 0$. The construction places points on intersections of carefully chosen grid lines with circles, creating many triple incidences. This matches the conjectured upper bound up to constants.",
     "significance": "key",
     "relatedConcepts": [
@@ -337,7 +337,7 @@
     },
     "type": "concept",
     "title": "Linear Lower Bound",
-    "content": "A simple Ω(n) lower bound: place n points on a circle of radius 1. Then many unit circles pass through 3 or more of these points, giving at least cn 3-rich circles.",
+    "content": "A simple \u03a9(n) lower bound: place n points on a circle of radius 1. Then many unit circles pass through 3 or more of these points, giving at least cn 3-rich circles.",
     "mathContext": "For $n$ points on the unit circle, each triple of points at appropriate angular separations lies on a common unit circle. A careful count gives $\\Omega(n)$ such 3-rich circles.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -357,11 +357,11 @@
     },
     "type": "definition",
     "title": "Main Conjecture",
-    "content": "The Erdős conjecture: there exists a constant C > 0 such that countUnitCircles3(P) ≤ C · |P|^{3/2} for all finite point sets P. Combined with Elekes's lower bound, this would determine the exact growth rate as Θ(n^{3/2}). Erdős offered $100 for a proof.",
+    "content": "The Erd\u0151s conjecture: there exists a constant C > 0 such that countUnitCircles3(P) \u2264 C \u00b7 |P|^{3/2} for all finite point sets P. Combined with Elekes's lower bound, this would determine the exact growth rate as \u0398(n^{3/2}). Erd\u0151s offered $100 for a proof.",
     "mathContext": "$f_3(P) \\leq C n^{3/2}$ for universal constant $C > 0$. This is equivalent to: the number of unit circles with $\\geq 3$ incidences among $n$ points is $O(n^{3/2})$. Combined with Elekes: $f(n) = \\Theta(n^{3/2})$.",
     "significance": "key",
     "relatedConcepts": [
-      "Erdős conjecture",
+      "Erd\u0151s conjecture",
       "O(n^{3/2})",
       "extremal bound"
     ],
@@ -378,12 +378,12 @@
     },
     "type": "definition",
     "title": "Weak Conjecture",
-    "content": "A weaker statement: the count is o(n²), meaning for any ε > 0, there exists C such that f₃(P) ≤ C · n^{2-ε} for all n-point sets P. Even this weaker form is open — no one has improved the trivial O(n²) bound.",
+    "content": "A weaker statement: the count is o(n\u00b2), meaning for any \u03b5 > 0, there exists C such that f\u2083(P) \u2264 C \u00b7 n^{2-\u03b5} for all n-point sets P. Even this weaker form is open \u2014 no one has improved the trivial O(n\u00b2) bound.",
     "mathContext": "$f_3(P) = o(n^2)$: $\\forall \\varepsilon > 0, \\exists C, \\forall P, f_3(P) \\leq C n^{2-\\varepsilon}$. This is strictly weaker than $O(n^{3/2})$ since $3/2 < 2 - \\varepsilon$ for $\\varepsilon < 1/2$.",
     "significance": "key",
     "relatedConcepts": [
       "weak conjecture",
-      "o(n²)",
+      "o(n\u00b2)",
       "subquadratic"
     ],
     "prerequisites": [
@@ -399,7 +399,7 @@
     },
     "type": "technique",
     "title": "Strong Implies Weak",
-    "content": "The O(n^{3/2}) conjecture implies the o(n²) conjecture, since n^{3/2} < n^{2-ε} for any ε < 1/2 and sufficiently large n. The proof uses a calc block with one sorry for the asymptotic comparison.",
+    "content": "The O(n^{3/2}) conjecture implies the o(n\u00b2) conjecture, since n^{3/2} < n^{2-\u03b5} for any \u03b5 < 1/2 and sufficiently large n. The proof uses a calc block with one sorry for the asymptotic comparison.",
     "mathContext": "$n^{3/2} \\leq n^{2-\\varepsilon}$ iff $n^{3/2 - (2-\\varepsilon)} = n^{\\varepsilon - 1/2} \\leq 1$, which holds for large $n$ when $\\varepsilon < 1/2$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -420,12 +420,12 @@
     },
     "type": "definition",
     "title": "Incidence Count",
-    "content": "The total number of (point, circle) incidence pairs where the point lies on the circle. Szemerédi-Trotter type bounds on this quantity are the main tool for attacking the conjecture.",
+    "content": "The total number of (point, circle) incidence pairs where the point lies on the circle. Szemer\u00e9di-Trotter type bounds on this quantity are the main tool for attacking the conjecture.",
     "mathContext": "$I(P, \\mathcal{C}) = |\\{(p, C) : p \\in P, C \\in \\mathcal{C}, p \\in C\\}|$. For algebraic curves of bounded degree, Pach-Sharir proved $I(P, \\mathcal{C}) = O(|P|^{2/3}|\\mathcal{C}|^{2/3} + |P| + |\\mathcal{C}|)$.",
     "significance": "key",
     "relatedConcepts": [
       "incidence count",
-      "Szemerédi-Trotter",
+      "Szemer\u00e9di-Trotter",
       "point-curve incidences"
     ],
     "prerequisites": [
@@ -442,11 +442,11 @@
     },
     "type": "concept",
     "title": "Circle Incidence Bound",
-    "content": "The Szemerédi-Trotter type bound for circles (due to Clarkson et al.): I(P, C) ≤ O(|P|^{2/3}|C|^{2/3} + |P| + |C|). This is the standard incidence bound for algebraic curves of bounded degree and is a key tool in incidence geometry.",
-    "mathContext": "$I(P, \\mathcal{C}) \\leq C(|P|^{2/3}|\\mathcal{C}|^{2/3} + |P| + |\\mathcal{C}|)$. For circles, the Szemerédi-Trotter bound applies since circles are algebraic curves of degree 2. If all circles are 3-rich, then $I \\geq 3|\\mathcal{C}|$, giving $3|\\mathcal{C}| \\leq C(n^{2/3}|\\mathcal{C}|^{2/3} + n + |\\mathcal{C}|)$, which yields $|\\mathcal{C}| = O(n^2)$ — matching the trivial bound but not improving it.",
+    "content": "The Szemer\u00e9di-Trotter type bound for circles (due to Clarkson et al.): I(P, C) \u2264 O(|P|^{2/3}|C|^{2/3} + |P| + |C|). This is the standard incidence bound for algebraic curves of bounded degree and is a key tool in incidence geometry.",
+    "mathContext": "$I(P, \\mathcal{C}) \\leq C(|P|^{2/3}|\\mathcal{C}|^{2/3} + |P| + |\\mathcal{C}|)$. For circles, the Szemer\u00e9di-Trotter bound applies since circles are algebraic curves of degree 2. If all circles are 3-rich, then $I \\geq 3|\\mathcal{C}|$, giving $3|\\mathcal{C}| \\leq C(n^{2/3}|\\mathcal{C}|^{2/3} + n + |\\mathcal{C}|)$, which yields $|\\mathcal{C}| = O(n^2)$ \u2014 matching the trivial bound but not improving it.",
     "significance": "key",
     "relatedConcepts": [
-      "Szemerédi-Trotter theorem",
+      "Szemer\u00e9di-Trotter theorem",
       "Clarkson et al.",
       "incidence bound",
       "algebraic curves"

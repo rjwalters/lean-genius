@@ -154,7 +154,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #1091 is partially solved. The specific question (two diagonals in K4-free chi=4 graphs) was answered YES by Voss (1982), building on Larson (1979). The pentagonal wheel shows that three diagonals cannot be guaranteed, making Voss's bound tight. The general f(r) question remains OPEN. The formalization includes 4 fully verified theorems and the extremal pentagonal wheel construction.",
-    "implications": "**Theoretical Significance**: The problem reveals deep connections between clique-freeness, chromatic number, and cycle structure in graphs.\n\n**Broader Connections**: The pentagonal wheel serves as an extremal example showing the tightness of Voss's bound. The open general question connects local colorability to global cycle structure, a frontier area in structural graph theory.",
+    "implications": "**Theoretical Significance**: The problem reveals deep connections between clique-freeness, chromatic number, and cycle structure in graphs.\n\nThe pentagonal wheel serves as an extremal example showing the tightness of Voss's bound. The open general question connects local colorability to global cycle structure, a frontier area in structural graph theory.",
     "openQuestions": [
       "Is there f(r) -> infinity for the general locally 3-colorable case?",
       "Can the pentagonal wheel characterization be generalized to other wheel-like constructions?",

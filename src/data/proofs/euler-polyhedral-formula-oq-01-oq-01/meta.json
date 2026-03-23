@@ -113,7 +113,7 @@
   ],
   "conclusion": {
     "summary": "This formalization proves all combinatorial ingredients of the Five Color Theorem: Kempe chain swap correctness (via Equiv.swap), K₅ non-planarity, color counting arguments, and the complete inductive proof structure. The 4 axioms encode planarity-specific facts that Mathlib currently lacks (subgraph planarity, Kempe chain separation, vertex deletion). 0 sorries.",
-    "implications": "**Theoretical Significance**: The Five Color Theorem sits between the elementary Six Color Theorem (fully proved in OQ-01) and the deep Four Color Theorem (requiring computer verification).\n\n**Broader Connections**: The Kempe chain technique formalized here is fundamental to graph coloring theory and is used in various generalizations. The Equiv.swap approach to color transpositions provides a clean, reusable pattern for future coloring formalizations.",
+    "implications": "**Theoretical Significance**: The Five Color Theorem sits between the elementary Six Color Theorem (fully proved in OQ-01) and the deep Four Color Theorem (requiring computer verification).\n\nThe Kempe chain technique formalized here is fundamental to graph coloring theory and is used in various generalizations. The Equiv.swap approach to color transpositions provides a clean, reusable pattern for future coloring formalizations.",
     "openQuestions": [
       "Can vertex deletion with Fintype preservation be formalized in Mathlib to eliminate the five_color_axiom?",
       "Can Kempe chain separation be proved from a formal planarity definition rather than axiomatized?",

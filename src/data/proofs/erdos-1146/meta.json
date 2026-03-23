@@ -149,7 +149,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #1146 — whether {2^m · 3^n} is an essential component — building on the infrastructure from Erdős #37. The file proves structural properties of 3-smooth numbers, applies Mann's theorem to show why only non-strict density inequality follows from existing tools, and connects the conjecture to Ruzsa's 1999 open question. The generalization to k-smooth numbers shows that k = 1 (single prime powers) cannot be essential, making k = 2 (this problem) the simplest open case.",
-    "implications": "**Theoretical Significance**: The essential component question for {2^m · 3^n} is a frontier problem in additive number theory.\n\n**Broader Connections**: Its resolution would illuminate the boundary between sets that are 'additively helpful' and those that are not. The (log N)² growth rate sits exactly at Ruzsa's threshold, making this a natural test case for whether growth rate alone determines essentiality or whether arithmetic structure matters.",
+    "implications": "**Theoretical Significance**: The essential component question for {2^m · 3^n} is a frontier problem in additive number theory.\n\nIts resolution would illuminate the boundary between sets that are 'additively helpful' and those that are not. The (log N)² growth rate sits exactly at Ruzsa's threshold, making this a natural test case for whether growth rate alone determines essentiality or whether arithmetic structure matters.",
     "openQuestions": [
       "Is {2^m · 3^n} an essential component? (THIS problem — Erdős #1146)",
       "For k-smooth numbers {p₁^a₁ · ... · pₖ^aₖ} with counting ~ (log N)^k, for which k is the set essential?",

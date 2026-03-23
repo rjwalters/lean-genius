@@ -173,7 +173,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1109 asks for the maximum size of a set A ⊆ {1,...,N} such that A+A is squarefree. The best bounds are (log log N)(log N)² ≪ f(N) ≪ N^{11/15+o(1)} (Konyagin 2004). The problem remains open, with Erdős-Sárközy conjecturing polylogarithmic growth.",
-    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Multiplicative-Additive Interaction:** The problem probes how multiplicative structure (squarefreeness) interacts with additive structure (sumsets).\n\n2.\n\n**Broader Connections**: **Set Density:** Understanding f(N) reveals constraints on how 'dense' sets can be while maintaining squarefree sumsets.\n\n3. **Infinite Analogues:** Bounds for f(N) directly constrain sequences with squarefree pairwise sums.\n\n4. **Generalizations:** The k-power-free case provides a family of related problems.",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Multiplicative-Additive Interaction:** The problem probes how multiplicative structure (squarefreeness) interacts with additive structure (sumsets).\n\n**2. Set Density:** Understanding f(N) reveals constraints on how 'dense' sets can be while maintaining squarefree sumsets.\n\n3. **Infinite Analogues:** Bounds for f(N) directly constrain sequences with squarefree pairwise sums.\n\n4. **Generalizations:** The k-power-free case provides a family of related problems.",
     "openQuestions": [
       "Is f(N) ≤ N^{o(1)} (subpolynomial)?",
       "Is f(N) ≤ (log N)^{O(1)} (polylogarithmic)?",

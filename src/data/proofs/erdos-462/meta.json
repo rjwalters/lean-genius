@@ -49,8 +49,8 @@
       "Formal statement of ErdosProblem462 with Nat floor for the interval endpoint",
       "Basic properties: p(p) = p for primes, p(n) ≥ 2, p(n) ≤ √n for composites"
     ],
-    "axiomCount": 7,
-    "assumptions": "7 axiom declarations: leastPrimeFactor_prime (p(n) is prime for n >= 2), leastPrimeFactor_dvd (p(n) divides n for n >= 2), leastPrimeFactor_le (p(n) <= any prime dividing n), compositeSum_asymptotic (Theta(sqrt(x)/(log x)^2) bound), leastPrimeFactor_prime_self (p(p) = p for primes), leastPrimeFactor_ge_two (p(n) >= 2 for n >= 2), leastPrimeFactor_le_sqrt (p(n) <= sqrt(n) for composites)",
+    "axiomCount": 1,
+    "assumptions": "1 axiom: compositeSum_asymptotic (deep analytic number theory: asymptotic for sum of least prime factors)",
     "lineCount": 84
   },
   "leanFile": {

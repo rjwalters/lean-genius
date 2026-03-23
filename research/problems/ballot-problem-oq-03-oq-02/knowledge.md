@@ -220,128 +220,211 @@ The self-inverse proof has this structure:
 
 ---
 
-## Session 2026-03-23 (researcher-6) - Membership Proof + sum_involution Assembly
+## Session 2026-03-23 (researcher-1) - Membership Sorry PROVED
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 59)
 **Problem**: ballot-problem-oq-03-oq-02
 **Prior Status**: in-progress, ACT phase, 2 sorries (membership + self-inverse)
 
 ### Work Done
-- Proved `gvInvolution_membership`: the GV involution image is cancellable
-- Added `northThenEast_not_NI_general`: generalized NTE crossing lemma (handles m=0)
-- Added `pathMN_cast_val`: cast between PathMN with equal n preserves .val
-- Assembled `cancellable_sum_eq_zero` using `Finset.sum_involution` with 3/4 properties proved
 
-### Key Technical Insights
-1. **Cast preservation via subst**: `pathMN_cast_val` proves `(cast h P).val = P.val` by `subst hn; intro _; rfl`. Key: provide the natural number equality separately, then Lean's `subst` makes the type equality trivial.
-2. **σ'-identity extraction**: When `hσ : σ' = 1`, use `fun k => by rw [hσ]; rfl` to derive `σ' k = k` for all k. Then `rw [hσ_id k]` propagates through `gvNewPerm` to simplify northThenEast arguments.
-3. **m=0 edge case**: northThenEast_not_NI fails at m=0 (no columns to check). But the final-column condition `targets(i) < sources(j) ∨ targets(j) < sources(i)` contradicts wellFormed.
-4. **wellFormed → NTE crossing bounds**: Need `sources(i) ≤ sources(j) + (targets(j) - sources(j))`, which requires both `hwf i j` (sources(i) ≤ targets(j)) and `source_le_target j` (to undo Nat subtraction).
+1. **PROVED `gvInvolution_membership`**: The GV involution image is cancellable.
+   - Added `cast_pathMN_val` helper lemma: cast between PathMN types with equal n
+     preserves the underlying list (proved via `subst hn; rfl`)
+   - Main proof structure:
+     (a) Extract `gvNewPerm = 1` from hypothesis (σ' = σ * swap(i,j) = 1)
+     (b) Show n parameters match: `targets(σ'(k)) - sources(k) = targets(k) - sources(k)`
+         via `congr 1; simp [hperm_eq]`
+     (c) Show `.val` of cast toPathTuple paths = northThenEastList via `cast_pathMN_val`
+     (d) Rewrite `hpair` to use northThenEastList directly
+     (e) Case split on m > 0:
+         - m > 0: apply `northThenEast_not_NI` with wellFormed conditions (omega for nat sub)
+         - m = 0: derive contradiction from `NonIntersecting` final condition
+           (colEntry = 0, sources ≤ targets from wellFormed, omega closes)
 
-### Remaining: 1 Sorry (Self-Inverse)
-The self-inverse `g(g(t)) = t` cannot be proved with the current `gvInvolutionFn` which replaces ALL paths with northThenEast (destroying original path data).
+2. **Reduced sorry count**: 2 → 1
 
-**Required redesign**: Replace `gvInvolutionFn` with a tail-swap involution:
-1. Find canonical first crossing (lex-min column, y-value across all pairs)
-2. Swap path suffixes at that crossing point (preserving prefixes)
-3. Self-inverse follows because: crossing is the same for t and g(t) (prefix unchanged → same crossing set before the swap point), and double tail-swap = identity.
+### Key Technical Discoveries
+- `cast` between PathMN subtypes preserves `.val` when the n parameter is propositionally
+  equal. Proved via `subst hn; rfl` (Lean 4 proof irrelevance makes cast on same type = id)
+- `northThenEast_not_NI` requires `hy₁n₂ : y₁ ≤ y₂ + n₂` not `y₁ ≤ targets(j)` — need
+  omega with `source_le_target` to bridge natural subtraction: `a + (b - a) ≥ c` from `c ≤ b`
+- m = 0 case handled separately: NonIntersecting final condition gives `targets < sources`
+  which contradicts wellFormed
 
-**Infrastructure in place**: `northBeforeEast_prefix`, `colEntry_prefix_eq` (proves suffix swap doesn't change colEntry at earlier columns).
+### Remaining Sorry
+1. **`cancellable_sum_eq_zero`** (1 sorry): Uses `Finset.sum_involution` which requires
+   self-inverse. Current `gvInvolutionFn` replaces ALL paths with northThenEast, so it's
+   NOT self-inverse (g(g(σ,P)) = (σ, NTE) ≠ (σ, P)).
+
+   **Required construction**: suffix-swap involution (~200 lines):
+   - Canonical crossing pair via Finset.min' on lex-ordered (c, y, i, j)
+   - Split PathMN at shared lattice point into prefix + suffix
+   - Join prefix_i ++ suffix_j → valid PathMN (correct type for new permutation)
+   - Self-inverse: double swap restores originals (prefixes preserved → same crossing found)
+
+   **Pre-existing blockers**: `take_at_column_entry` and `take_east_count_within_column`
+   have Mathlib compat errors (`Bool.false_eq_false` unknown, ~14 errors). These lemmas
+   ARE needed for the suffix-swap construction. Fix these first.
 
 ### Files Modified
-- `proofs/Proofs/BallotProblemOQ03OQ02.lean` (2→1 sorries, +3 new lemmas)
-- `src/data/proofs/ballot-problem-oq-03-oq-02/meta.json`
-- `src/data/research/problems/ballot-problem-oq-03-oq-02.json`
-
-### Pool Status
-- Available: 76, In-progress: 322, Completed: 235
+- `proofs/Proofs/BallotProblemOQ03OQ02.lean` (+30 lines: cast_pathMN_val helper, membership proof)
 
 ---
 
-## Session 2026-03-23 (researcher-6) - Self-Inverse Deep Analysis
+## Session 2026-03-23 (researcher-1, session 2) - Prefix Preservation Infrastructure
 
-**Mode**: REVISIT (depth-first, RICH knowledge score 66)
+**Mode**: REVISIT (depth-first, RICH knowledge score 61)
 **Problem**: ballot-problem-oq-03-oq-02
-**Prior Status**: ACT phase, 1 sorry (self-inverse of GV involution)
+**Prior Status**: in-progress, ACT phase, 1 sorry (cancellable_sum_eq_zero)
 
-### Analysis
+### Work Done
 
-Deep investigation of the self-inverse property for `cancellable_sum_eq_zero`.
+1. **PROVED `northBeforeEast_prefix`**: Key lemma for the tail-swap self-inverse proof.
+   Shows that northBeforeEast depends only on the list prefix when the prefix
+   contains > k East steps. Proof by induction on the prefix list.
+   - false head: decrements k, recurse on tail with k-1
+   - true head: adds 1, recurse with same k (prefix has same East count)
 
-**Why current approach fails**: The existing `gvInvolutionFn` replaces ALL paths with
-`northThenEastPath`. This is fundamentally NOT self-inverse because applying twice gives
-NTE paths (not the original paths). The information about the original paths is destroyed.
+2. **PROVED `colEntry_prefix_eq`**: Direct corollary — colEntry at column k+1
+   depends only on the prefix when it has > k East steps.
 
-**Why tail-swap is necessary**: Any involution that discards original path data cannot be
-self-inverse. The classical GV proof swaps path suffixes at a shared lattice point, which
-is reversible (double-swap = identity).
+3. **Documented full self-inverse proof strategy** in the cancellable_sum_eq_zero
+   docstring, including the key insight about range expansion.
 
-### Solution Architecture
+### Key Mathematical Insight: Range Expansion Only Adds Points Above y₀
 
-**Key encoding**: `key = (c + y) * r² + i * r + j` where (c, y) is a shared lattice point
-between paths i and j. Using `c + y` (not lex on (c, y)) as primary key ensures invariance
-because `c + y` equals the list position proxy.
+The self-inverse proof for the GV tail-swap involution requires showing the
+canonical first crossing (column, shared_row, pair) is preserved. The critical
+observation:
 
-**Invariance proof**: After swapping tails at split positions `k_i = (c₀+y₀) - source(i)`
-and `k_j = (c₀+y₀) - source(j)`:
-1. At shared points with key' < key₀: the visit positions `c'+y'-source` are less than the
-   split positions, so path prefixes are unchanged → shared point status unchanged
-2. At key₀ itself: the shared point (c₀, y₀) is preserved (in the prefix for both paths)
-3. Therefore `Nat.find` returns the same key for t and g(t)
+When the tail-swap extends path i₀'s range at column c₀ (from [a_i₀, b_i₀] to
+[a_i₀, b_j₀] where b_j₀ ≥ b_i₀), any NEW shared lattice points with third
+paths are at y' ≥ b_i₀ + 1 > b_i₀ ≥ y₀. This is because:
+- The expansion only adds points at the TOP (from b_i₀ to b_j₀)
+- y₀ ≤ b_i₀ (since y₀ is in the original range of path i₀)
+- For pairs that didn't overlap in the original: the non-overlapping range gap
+  was above b_i₀, so new overlap starts at > y₀
+- For pairs that already overlapped: their shared row was ≥ y₀ by canonicality
 
-**Self-inverse**: Same key → same crossing pair (i₀, j₀) → same split positions → double
-tail-swap restores original lists (via `List.take_append_drop`) → σ * swap(i,j)² = σ
+Therefore the canonical crossing datum (c₀, y₀, ci, cj) is preserved, and the
+same swap is applied twice, giving σ * swap(ci,cj) * swap(ci,cj) = σ and
+double tail-swap = identity (via List.take_append_drop).
 
-**Double tail-swap identity** (proved in analysis, not yet in Lean):
-```
-(l₁.take k₁ ++ l₂.drop k₂).take k₁ = l₁.take k₁  [by List.take_left]
-(l₂.take k₂ ++ l₁.drop k₁).drop k₂ = l₁.drop k₁  [by List.drop_left]
-∴ result = l₁.take k₁ ++ l₁.drop k₁ = l₁            [by List.take_append_drop]
-```
+### Remaining Sorry
 
-**Validity of swapped paths** (PathMN proofs):
-- East count: `take_east_count_within_column` gives prefix East = c₀,
-  suffix East = m - c₀, total = m ✓
-- North count: prefix North = y₀ - source(i), suffix North = n_j - (y₀ - source(j)),
-  total = n_j + source(j) - source(i) = targets(σ(j)) - source(i) ✓
-- Length follows from East + North counts ✓
+1. **`cancellable_sum_eq_zero`** (1 sorry): The full tail-swap construction requires:
+   - Canonical crossing pair via Finset.min' with (sharedRow, i, j) ordering
+   - Split position computation at the shared lattice point
+   - PathMN validity of swapped paths (length + East count preservation)
+   - Applying Finset.sum_involution with all 4 properties
 
-### Estimated Implementation
+   **Available infrastructure**:
+   - `northBeforeEast_prefix` + `colEntry_prefix_eq` (PROVED this session)
+   - `take_east_count_within_column` (PROVED earlier)
+   - `swapTailsAt` + length preservation (PROVED earlier)
+   - `gvInvolution_sign_reversal` (PROVED, only depends on perm)
+   - `gvInvolution_no_fixed` (PROVED, only depends on perm)
 
-| Component | Lines | Difficulty |
-|-----------|-------|-----------|
-| Shared point infrastructure (pathVisitsPoint, spKey, Nat.find) | ~50 | Medium |
-| Deterministic crossing pair + split positions | ~30 | Medium |
-| New gvInvolutionFn (tail-swap) | ~40 | Hard (dependent types) |
-| Swapped path validity (PathMN proofs) | ~50 | Medium |
-| Key invariance lemma | ~50 | Hard |
-| Self-inverse proof | ~40 | Medium (given invariance) |
-| Re-prove sign/membership/no-fixed | ~40 | Easy (adapt existing) |
-| **Total** | **~300** | |
-
-### Key Technical Challenges
-
-1. **Dependent types**: `PermPathTuple cfg σ` depends on σ. Swapping paths at indices
-   i₀ and j₀ changes their types (PathMN m n with different n). Need careful casts.
-2. **Key invariance**: Need to formalize "colEntry depends only on prefix" — requires
-   showing `colEntry` of `(l.take k ++ l'.drop k')` at columns < c₀ equals `colEntry` of `l`.
-3. **Finset vs Nat.find**: Using `Nat.find` for the min key requires proving the predicate
-   is decidable (or using `Classical.dec`).
-
-### What Would Help
-
-- A Lean 4 helper lemma: `List.take_of_take_append (h : k ≤ l₁.length) : (l₁ ++ l₂).take k = l₁.take k`
-- A Lean 4 helper: `List.drop_of_take_append (h : k = l₁.length) : (l₁ ++ l₂).drop k = l₂`
-- `colEntry_take_prefix`: if `(l.take k).countP false = c` and `c ≤ c'`, then
-  `colEntry (l.take k ++ l'.drop k') c' = colEntry l c'` for `c' ≤ c`
-
-### Next Steps (for future sessions)
-1. Implement `take_drop_swap_involutive` List lemma (cleanest starting point)
-2. Define `pathVisitsPoint` and shared point key infrastructure
-3. Build deterministic crossing pair selection via `Nat.find`
-4. Implement new `gvInvolutionFn` with tail-swap
-5. Prove key invariance and self-inverse
-6. Adapt existing proofs for sign/membership/no-fixed
+   **Estimated remaining**: ~150 lines of path surgery (PathMN construction,
+   canonical crossing finder, self-inverse assembly).
 
 ### Files Modified
-- None (analysis only, no code changes committed)
+- `proofs/Proofs/BallotProblemOQ03OQ02.lean` (+35 lines: northBeforeEast_prefix, colEntry_prefix_eq)
+- `research/problems/ballot-problem-oq-03-oq-02/knowledge.md` (this session)
+
+---
+
+## Session 2026-03-23 (researcher-1, session 3) - Deep Analysis of Self-Inverse
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 62)
+**Problem**: ballot-problem-oq-03-oq-02
+**Prior Status**: in-progress, ACT phase, 1 sorry (cancellable_sum_eq_zero)
+
+### Deep Analysis Performed
+
+Extensive analysis of the self-inverse proof for `cancellable_sum_eq_zero`:
+
+1. **Current gvInvolutionFn is NOT self-inverse**: It replaces ALL paths with
+   `northThenEastPath`, so g(g(t)).2 = NTE ≠ t.2. No workaround exists for NTE —
+   the correct approach MUST use actual tail-swap (prefix + suffix joining).
+
+2. **Tail-swap PathMN construction**: Joining take(P_i, k_i) ++ drop(P_j, k_j) gives
+   a valid PathMN m n' where n' = k_i + n_j - k_j = target(σ(j)) - source(i). ✓
+   - Length: k_i + (m + n_j - k_j) = m + n'
+   - East count: c + (m - c) = m (from take_east_count_within_column + countP_drop)
+   - Double swap: take(take(P,k) ++ drop(Q,k'), k) ++ drop(take(Q,k') ++ drop(P,k), k')
+     = take(P,k) ++ drop(P,k) = P (by List.take_left + List.drop_left + List.take_append_drop)
+
+3. **Canonical crossing ordering — (i,j) lex is INSUFFICIENT**: After tail-swap at (c₀, y₀)
+   between paths i₀ and j₀, a pair (i', j₀) with i' < i₀ can newly cross at column c₀
+   because path j₀'s y-range at c₀ changes (upper bound becomes source(i₀) + colEntry(P_i₀, c₀+1)
+   instead of source(j₀) + colEntry(P_j₀, c₀+1)). So lex-min (i,j) is NOT preserved.
+
+4. **Correct ordering: (c, y, i, j) with column+row first**: After tail-swap at (c₀, y₀):
+   - At (c', y') < (c₀, y₀) lex: path prefixes up to (c₀, y₀) are unchanged → same crossings
+   - (c₀, y₀, i₀, j₀) still valid: both paths have same prefix → same lower bounds at c₀ →
+     same y₀ = max(lower bounds). Both paths visit y₀ (join point of prefix + suffix).
+   - No (c₀, y₀, i', j') < (c₀, y₀, i₀, j₀) newly valid: path i' (or j') either unchanged
+     (if not i₀ or j₀) or didn't visit (c₀, y₀) before (by minimality of canonical crossing).
+   → Canonical crossing (c₀, y₀, i₀, j₀) is PRESERVED. ✓
+
+5. **CRITICAL DISCOVERY: `cancellable_has_interior_crossing` is FALSE**: For σ = 1 with
+   strictly ordered sources/targets, cancellable tuples CAN have crossings only at the
+   final column (c = m), not at any interior column. Example: when path i stays below
+   path j at all interior columns but overlaps at the final column boundary where
+   target(i) ≥ source(j) + colEntry(P_j, m).
+
+   **Fix**: The canonical crossing must include c = m (final column). At c = m, the
+   y-range is [source(i) + colEntry(P_i, m), target(σ(i))]. The upper bound depends
+   on σ (via target), but the LOWER bound (colEntry at m) depends only on the path prefix.
+   The tail-swap at c = m swaps pure-North suffixes, which is valid. Self-inverse works
+   because colEntry at m is preserved (same prefix with m East steps) and y₀ = max(lower
+   bounds at m) is preserved.
+
+6. **Updated docstring** in `cancellable_sum_eq_zero` with full proof strategy and
+   remaining work specification.
+
+### What Was NOT Done (Due to Complexity)
+
+The full tail-swap involution implementation (~200 lines) was not completed due to:
+- Complex type-level Lean 4 code for PathMN construction from tail-swap
+- Need for Finset on (c, y, i, j) quadruples (requires bounded y via Fintype)
+- Self-inverse proof requires careful argument about crossing preservation at both
+  interior and final columns
+
+### Concrete Implementation Plan for Next Session
+
+**Step 1** (~30 lines): Build `tailSwapPathMN` — construct PathMN from prefix+suffix
+- Input: P : PathMN m n₁, Q : PathMN m n₂, split positions k_i, k_j
+- Output: PathMN m (k_i + n₂ - k_j)
+- Needs: List.countP_append, countP_drop helper
+
+**Step 2** (~40 lines): Define canonical crossing using Nat encoding
+- Encode (c, y, i, j) → ℕ with bound B = max(targets) + 1
+- Define predicate "n encodes a crossing quadruple for tuple t"
+- Use Nat.find for canonical choice (deterministic, well-founded)
+
+**Step 3** (~20 lines): Define `gvProperInvolution` using Steps 1-2
+- New permutation: σ * swap(ci, cj)
+- New paths: tail-swap at ci, cj; identity elsewhere
+- Cast between PathMN types (σ'(k) = σ(k) for k ≠ ci, cj)
+
+**Step 4** (~10 lines): Prove sign_reversal and no_fixed
+- Only depend on permutation component, carry over from existing proofs
+
+**Step 5** (~30 lines): Prove membership
+- σ' ≠ 1: trivially cancellable
+- σ' = 1: tail-swapped paths still share (c₀, y₀) → ¬NI
+
+**Step 6** (~50 lines): Prove self-inverse
+- Show Nat.find gives same value for g(t): the key preservation argument
+  (crossings at (c', y') < (c₀, y₀) unchanged; (c₀, y₀, i₀, j₀) preserved)
+- Show double tail-swap = identity: List.take_left + List.drop_left + take_append_drop
+- Combine via Sigma.ext
+
+**Step 7** (~10 lines): Wire into Finset.sum_involution
+
+### Files Modified
+- `proofs/Proofs/BallotProblemOQ03OQ02.lean` (updated docstring for cancellable_sum_eq_zero)
+- `research/problems/ballot-problem-oq-03-oq-02/knowledge.md` (this session)

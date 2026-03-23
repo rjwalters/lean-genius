@@ -93,13 +93,15 @@
       "id": "definitions",
       "title": "Definitions",
       "summary": "Defines IsUnitFractionDecomp as a sorted list of distinct integers > 1 with rational reciprocal sum = 1, and maxGap via zip/tail/foldl over consecutive differences. These are the two core building blocks for stating both the conjecture and the known results.",
+      "mathContext": "$\\text{IsUnitFractionDecomp}(ns) \\iff |ns| \\ge 2 \\land ns \\text{ sorted} \\land (\\forall n \\in ns, n > 1) \\land \\sum_{n \\in ns} 1/n = 1$. $\\text{maxGap}(ns) = \\max_i(n_{i+1} - n_i)$.",
       "startLine": 25,
       "endLine": 41
     },
     {
       "id": "example",
       "title": "The Canonical Example",
-      "summary": "Axiomatizes example_2_3_6: [2, 3, 6] is a valid decomposition with maxGap = 3. This is the simplest representation of 1 and shows the conjectured bound 3 would be tight.",
+      "summary": "Axiomatizes example_2_3_6: [2, 3, 6] is a valid decomposition with maxGap = 3. This is the simplest representation of 1 and shows the conjectured bound 3 would be tight. Note: this axiom is trivially provable by computation (norm_num/decide) — an Aristotle candidate.",
+      "mathContext": "$1/2 + 1/3 + 1/6 = 1$, gaps $= (1, 3)$, maxGap $= 3$. Provable axiom.",
       "startLine": 43,
       "endLine": 49
     },
@@ -107,6 +109,7 @@
       "id": "known-lower-bound",
       "title": "Known Lower Bound: Gap ≥ 2",
       "summary": "Axiomatizes no_consecutive_reciprocals: Erdős's 1932 theorem that consecutive integer reciprocals never sum to 1, implying maxGap ≥ 2 for all representations. The proof uses Bertrand's postulate and p-adic valuation arguments.",
+      "mathContext": "Erdős 1932: $\\sum_{i=n}^{n+k} 1/i \\neq 1$ for $n \\ge 2$. Proof uses Bertrand's postulate: the largest prime $p \\le n+k$ satisfies $v_p(\\text{lcm}(n,\\ldots,n+k)) = 1$.",
       "startLine": 51,
       "endLine": 62
     },
@@ -114,6 +117,7 @@
       "id": "conjecture",
       "title": "The Open Conjecture",
       "summary": "Axiomatizes erdos_287_conjecture: the OPEN conjecture that maxGap ≥ 3 for all representations. Combined with the example [2, 3, 6], this would give a complete characterization: the minimum achievable maximum gap is exactly 3.",
+      "mathContext": "Conjecture: $\\max_i(n_{i+1} - n_i) \\ge 3$ for all representations $\\sum 1/n_i = 1$. OPEN since 1932.",
       "startLine": 64,
       "endLine": 74
     },
@@ -121,13 +125,14 @@
       "id": "main-theorem",
       "title": "Main Theorem",
       "summary": "The theorem erdos_287 proves maxGap ≥ 2 by invoking no_consecutive_reciprocals. This is a genuine Lean theorem (not axiom), recording the strongest proved result on the problem. The file closes the Erdos287 namespace.",
+      "mathContext": "Theorem: $\\text{maxGap}(ns) \\ge 2$ for all valid decompositions. Proof: direct application of $\\text{no\\_consecutive\\_reciprocals}$. The 1-line proof highlights how the formalization cleanly separates the deep number theory (axiomatized) from the logical conclusion (proved).",
       "startLine": 76,
       "endLine": 91
     }
   ],
   "conclusion": {
     "summary": "Erdős Problem #287 asks whether every Egyptian fraction representation of 1 must have a gap of at least 3 between some pair of consecutive denominators. The lower bound of 2 is proved (Erdős 1932, via Bertrand's postulate and p-adic valuation), and the bound 3 is achieved by the canonical example 1 = 1/2 + 1/3 + 1/6. The gap ≥ 3 conjecture remains OPEN after over 90 years. The formalization captures the problem in 92 lines of Lean 4 with 0 sorries, 3 axioms (the example, the gap ≥ 2 theorem, and the open conjecture), and 1 genuine theorem (erdos_287 proving gap ≥ 2).",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**: **Connections to Number Theory and Combinatorics**\n\n1. **Egyptian Fraction Theory:** Problem #287 is part of a broader program studying the structure of Egyptian fraction representations. Erdős and Straus conjectured that 4/n always has a 3-term representation (still open for general n). The gap question adds a geometric/combinatorial dimension to this classical area\n\n2. **Consecutive Integer Reciprocals:** The gap ≥ 2 proof connects to a family of results about sums of consecutive reciprocals.\n\n**Broader Connections**: The harmonic number Hₙ = 1 + 1/2 + ··· + 1/n is never an integer for n ≥ 2 (proved by Theisinger 1915 and extended by many authors), and Erdős's result is a far-reaching generalization\n\n3.\n\n**Broader Connections**: **Bertrand's Postulate Applications:** The use of Bertrand's postulate (there is always a prime between n and 2n) in the gap ≥ 2 proof is a beautiful application of prime distribution to a seemingly unrelated combinatorial problem. Stronger prime distribution results (like the Chen-Iwaniec sieve) might be needed for gap ≥ 3\n\n4. **Prime Pair Conjectures:** The reduction to prime pairs — finding p ∈ [N, 2N] with (p+1)/2 also prime — connects to the broader landscape of prime tuple conjectures. Progress on the twin prime conjecture (Zhang 2013, Maynard 2015) and related problems could eventually impact this question\n\n5. **Computational Verification:** The conjecture has been verified computationally for all representations up to moderate size. Systematic enumeration of Egyptian fraction representations of 1 is itself a rich computational problem, connecting to algorithmic number theory.",
+    "implications": "**1. Egyptian Fraction Theory:** Problem #287 is part of a broader program studying the structure of Egyptian fraction representations. Erdős and Straus conjectured that 4/n always has a 3-term representation (still open for general n). The gap question adds a combinatorial dimension to this classical area.\n\n**2. Consecutive Integer Reciprocals:** The gap ≥ 2 proof connects to a family of results about sums of consecutive reciprocals. The harmonic number $H_n = 1 + 1/2 + \\cdots + 1/n$ is never an integer for $n \\geq 2$ (Theisinger 1915), and Erdős's result is a far-reaching generalization: no contiguous block of unit fractions sums to 1.\n\n**3. Bertrand's Postulate Applications:** The use of Bertrand's postulate in the gap ≥ 2 proof is a beautiful application of prime distribution to a seemingly unrelated combinatorial problem. Stronger prime distribution results (Chen-Iwaniec sieve) might be needed for gap ≥ 3.\n\n**4. Prime Pair Conjectures:** The reduction to prime pairs — finding $p \\in [N, 2N]$ with $(p+1)/2$ also prime — connects to the broader landscape of prime tuple conjectures. Progress on bounded prime gaps (Zhang 2013, Maynard 2015) could eventually impact this question.\n\n**5. Computational Verification:** The conjecture has been verified computationally for all representations up to moderate size. Systematic enumeration of Egyptian fraction representations of 1 is itself a rich computational problem, connecting to algorithmic number theory.",
     "openQuestions": [
       "Is the gap ≥ 3 conjecture true for all Egyptian fraction representations of 1?",
       "What is the smallest number of terms k for which gap ≥ 3 is non-trivial (i.e., not immediately implied by gap ≥ 2)?",
@@ -171,6 +176,16 @@
       "targetId": "sophie-germain",
       "relationship": "related",
       "description": "The conjecture's connection to prime distribution involves primes $p$ where $(p+1)/2$ is also prime — closely related to Sophie Germain primes (where $2p+1$ is prime). Finding such primes in intervals $[N, 2N]$ would resolve #287 for all large denominators"
+    },
+    {
+      "targetId": "erdos-291",
+      "relationship": "related",
+      "description": "Erdős #291 (harmonic number divisibility) and #287 both concern the arithmetic structure of sums $\\sum 1/n$ over structured sets of denominators. The divisibility properties of harmonic numbers (Wolstenholme, Erdős-Graham) constrain which Egyptian fractions can sum to integers"
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "foundational",
+      "description": "The divergence of $\\sum 1/p$ over primes (Euler 1737) ensures that unit fractions with prime denominators alone can approximate any rational. This connects to the gap ≥ 2 theorem: the obstruction from large primes in $(N, 2N)$ is precisely because $1/p$ contributes an irreducible $p$-adic valuation that prevents consecutive denominators from summing to 1"
     }
   ],
   "relatedProofs": [
@@ -180,7 +195,9 @@
     "erdos-288",
     "harmonic-divergence",
     "infinitude-primes",
-    "sophie-germain"
+    "sophie-germain",
+    "erdos-291",
+    "prime-reciprocal-divergence"
   ],
   "leanFile": {
     "imports": [
@@ -216,6 +233,13 @@
       "year": "1964",
       "venue": "Proceedings of the London Mathematical Society 14, pp. 193-207",
       "note": "Systematic study of Egyptian fraction representations; established several structural results"
+    },
+    {
+      "authors": "Croot, Ernie",
+      "title": "On a coloring conjecture about unit fractions",
+      "year": "2003",
+      "venue": "Annals of Mathematics 157(2), pp. 545-556",
+      "note": "Resolved a major conjecture on Egyptian fractions: for any finite coloring of the integers ≥ 2, some color class contains denominators whose unit fractions sum to 1. Uses sophisticated Fourier-analytic and combinatorial arguments, extending the circle of ideas around Erdős #287"
     },
     {
       "authors": "Erdős, Paul; Straus, Ernst G.",

@@ -57,7 +57,7 @@
   "overview": {
     "historicalContext": "Isaac Newton discovered the generalized binomial theorem around 1665 while still a student at Cambridge, publishing it in 1676 in his famous *Epistola Prior* and *Epistola Posterior* to Leibniz via Henry Oldenburg. For natural exponents $n$, the binomial theorem $(1+x)^n = \\sum_{k=0}^{n} \\binom{n}{k} x^k$ was already known to al-Karajī (c. 1000 CE) and Blaise Pascal (1654). Newton's breakthrough was extending this to arbitrary real (and later complex) exponents $\\alpha$, yielding the infinite series $(1+x)^\\alpha = \\sum_{k=0}^{\\infty} \\binom{\\alpha}{k} x^k$ converging for $|x| < 1$.\n\nThe generalized binomial coefficient $\\binom{\\alpha}{k} = \\prod_{i=0}^{k-1} (\\alpha - i) / k!$ reduces to the usual $\\binom{n}{k}$ when $\\alpha = n \\in \\mathbb{N}$ (terminating at $k > n$), but produces infinite non-terminating series for fractional $\\alpha$. Newton used this to compute $\\sqrt{2}$ and $\\pi$ to many decimal places. Abel (1826) gave the first rigorous proof of convergence, and the result became a cornerstone of analysis, appearing in Taylor series theory and the theory of formal power series.",
     "problemStatement": "**Newton's Generalized Binomial Theorem**: For any real α and |x| < 1:\n\n(1 + x)^α = Σ_{k=0}^∞ C(α,k) x^k\n\nwhere C(α,k) = α(α-1)···(α-k+1)/k! is the **generalized binomial coefficient**.\n\nSpecial cases:\n- α = n ∈ ℕ: reduces to standard binomial theorem (finite sum)\n- α = -1: (1+x)^(-1) = Σ (-1)^k x^k (geometric series)\n- α = 1/2: (1+x)^(1/2) = Σ C(1/2,k) x^k (square root series)",
-    "text": "Newton's generalization of the binomial theorem to fractional and negative exponents: for any real α and |x| < 1, (1+x)^α = Σ C(α,k) x^k where C(α,k) = α(α-1)···(α-k+1)/k! are the generalized binomial coefficients.",
+    "text": "This formalization defines the generalized binomial coefficient $\\binom{\\alpha}{k} = \\prod_{i=0}^{k-1}(\\alpha-i)/k!$ for real $\\alpha$ and proves 16 theorems about Newton's generalized binomial series. Key results include: `genBinom_nat_eq_choose` connecting to Mathlib's `Nat.choose`, `genBinom_neg_one` giving $\\binom{-1}{k} = (-1)^k$ (geometric series), `standard_binomial` proving the finite-sum case for natural exponents, and the ODE coefficient identity `genBinom_ode_coeff` showing the series formally satisfies $(1+x)f' = \\alpha f$. The main convergence theorem `newton_generalized_binomial` is axiomatized pending analytic function theory. All coefficient arithmetic is fully verified with 0 sorries.",
     "proofStrategy": "**ODE Uniqueness Approach**: Both f(x) = Σ C(α,k) x^k and g(x) = (1+x)^α satisfy:\n- (1+x)·y' = α·y (the same linear ODE)\n- y(0) = 1\n\nBy ODE uniqueness (Picard-Lindelöf), they are equal on (-1,1).\n\nThe ODE identity for f follows from the coefficient recurrence:\n(k+1)C(α,k+1) + kC(α,k) = αC(α,k)\n\nThis is formalized in `genBinom_ode_coeff`.\n\n**Current Status**: The ODE uniqueness step is axiomatized as `newton_generalized_binomial`. The coefficient arithmetic (16 theorems) is fully proved.",
     "keyInsights": [
       "genBinom generalizes Nat.choose: for natural n and k ≤ n, C(n,k) = Nat.choose n k",
@@ -78,53 +78,76 @@
       "title": "Generalized Binomial Coefficients",
       "startLine": 29,
       "endLine": 67,
-      "summary": "Definition genBinom α k = ∏(α-i)/k! and basic properties: genBinom_zero, genBinom_one, genBinom_two, genBinom_succ recurrence, genBinom_nat_zero_of_gt (terminates for natural n), genBinom_neg_one = (-1)^k."
+      "summary": "Definition genBinom α k = ∏(α-i)/k! and basic properties: genBinom_zero, genBinom_one, genBinom_two, genBinom_succ recurrence, genBinom_nat_zero_of_gt (terminates for natural n), genBinom_neg_one = (-1)^k.",
+      "mathContext": "$\\binom{\\alpha}{k} = \\frac{\\prod_{i=0}^{k-1}(\\alpha - i)}{k!}$. Special values: $\\binom{\\alpha}{0} = 1$, $\\binom{\\alpha}{1} = \\alpha$, $\\binom{-1}{k} = (-1)^k$. For $n \\in \\mathbb{N}$: $\\binom{n}{k} = 0$ when $k > n$."
     },
     {
       "id": "nat-connection",
       "title": "Connection to Nat.choose",
       "startLine": 78,
       "endLine": 92,
-      "summary": "genBinom_nat_eq_choose: C(n,k) = Nat.choose n k for k ≤ n. Proved using Nat.descFactorial_eq_prod_range."
+      "summary": "genBinom_nat_eq_choose: C(n,k) = Nat.choose n k for k ≤ n. Proved using Nat.descFactorial_eq_prod_range.",
+      "mathContext": "For $n \\in \\mathbb{N}$ and $k \\leq n$: $\\binom{n}{k} = \\frac{n!}{k!(n-k)!} = \\texttt{Nat.choose}\\, n\\, k$. Proved via the descending factorial $n(n-1)\\cdots(n-k+1)$."
     },
     {
       "id": "geometric-series",
       "title": "Geometric Series as Special Case",
       "startLine": 96,
       "endLine": 103,
-      "summary": "geometric_series_is_genBinom_neg_one: HasSum (fun k => genBinom (-1) k * x^k) (1/(1+x)). Proved directly from hasSum_geometric_of_norm_lt_one."
+      "summary": "geometric_series_is_genBinom_neg_one: HasSum (fun k => genBinom (-1) k * x^k) (1/(1+x)). Proved directly from hasSum_geometric_of_norm_lt_one.",
+      "mathContext": "$\\alpha = -1$: $(1+x)^{-1} = \\sum_{k=0}^{\\infty} (-1)^k x^k = \\frac{1}{1+x}$ for $|x| < 1$. This is the classical geometric series."
     },
     {
       "id": "standard-binomial",
       "title": "Standard Binomial Theorem (Natural Exponents)",
       "startLine": 107,
       "endLine": 124,
-      "summary": "standard_binomial: (1+x)^n = Σ_{k=0}^{n} genBinom n k * x^k. Proves the connection between genBinom and Mathlib's add_pow."
+      "summary": "standard_binomial: (1+x)^n = Σ_{k=0}^{n} genBinom n k * x^k. Proves the connection between genBinom and Mathlib's add_pow.",
+      "mathContext": "For $n \\in \\mathbb{N}$: $(1+x)^n = \\sum_{k=0}^{n} \\binom{n}{k} x^k$ (finite sum, since $\\binom{n}{k} = 0$ for $k > n$)."
     },
     {
       "id": "ode-characterization",
       "title": "ODE Coefficient Identity",
       "startLine": 128,
       "endLine": 144,
-      "summary": "genBinom_recurrence_deriv and genBinom_ode_coeff: coefficient identity (k+1)C(α,k+1) + kC(α,k) = αC(α,k). Shows the series formally satisfies (1+x)f' = αf."
+      "summary": "genBinom_recurrence_deriv and genBinom_ode_coeff: coefficient identity (k+1)C(α,k+1) + kC(α,k) = αC(α,k). Shows the series formally satisfies (1+x)f' = αf.",
+      "mathContext": "$(k+1)\\binom{\\alpha}{k+1} + k\\binom{\\alpha}{k} = \\alpha\\binom{\\alpha}{k}$. This implies $f(x) = \\sum \\binom{\\alpha}{k} x^k$ satisfies $(1+x)f'(x) = \\alpha f(x)$ formally."
     },
     {
       "id": "main-theorem",
       "title": "Newton's Theorem (Axiomatized) and Consequences",
       "startLine": 148,
       "endLine": 175,
-      "summary": "newton_generalized_binomial axiom: HasSum (fun k => genBinom α k * x^k) ((1+x)^α). Consequences: sqrt_series, genBinom_series_summable, genBinom_series_tsum, geometric_from_newton."
+      "summary": "newton_generalized_binomial axiom: HasSum (fun k => genBinom α k * x^k) ((1+x)^α). Consequences: sqrt_series, genBinom_series_summable, genBinom_series_tsum, geometric_from_newton.",
+      "mathContext": "$(1+x)^\\alpha = \\sum_{k=0}^{\\infty} \\binom{\\alpha}{k} x^k$ for $|x| < 1$. Consequence: $\\sqrt{1+x} = \\sum \\binom{1/2}{k} x^k$."
     }
   ],
   "conclusion": {
     "summary": "This formalization proves 16 theorems about Newton's generalized binomial series with 0 sorries and 1 axiom. The axiom `newton_generalized_binomial` captures the main convergence result; all coefficient arithmetic and special cases (geometric series, square root, natural exponents) are fully proved.",
-    "implications": "**Theoretical Significance**: **Applications:**\n1. **Analysis**: Power series expansions of all real powers (1+x)^α\n2.\n\n**Broader Connections**: **Combinatorics**: Generalization of binomial coefficients to real parameters\n3. **Special functions**: Square root series C(1/2,k), reciprocal series C(-1,k)\n4. **ODE theory**: Connection to Picard-Lindelöf uniqueness theorem.",
+    "implications": "**Theoretical Significance**: **Applications:**\n1. **Analysis**: Power series expansions of all real powers (1+x)^α\n**2. Combinatorics**: Generalization of binomial coefficients to real parameters\n3. **Special functions**: Square root series C(1/2,k), reciprocal series C(-1,k)\n4. **ODE theory**: Connection to Picard-Lindelöf uniqueness theorem.",
     "openQuestions": [
       "Prove newton_generalized_binomial from Mathlib's analytic function theory",
       "ODE uniqueness path: show f and (1+x)^α both satisfy (1+x)y'=αy with y(0)=1",
       "Use HasFPowerSeriesOnBall machinery to extract Taylor coefficients of (1+x)^α"
     ]
   },
+  "references": [
+    {
+      "key": "Ne76",
+      "citation": "Newton, I., Epistola Prior (1676) and Epistola Posterior (1676) to Leibniz via Oldenburg. Contains the first statement of the generalized binomial theorem for fractional exponents.",
+      "type": "paper"
+    },
+    {
+      "key": "Ab26",
+      "citation": "Abel, N.H., Untersuchungen über die Reihe 1 + (m/1)x + m(m-1)/(1·2)x² + ..., Journal für die reine und angewandte Mathematik 1 (1826), 311–339. First rigorous convergence proof of the binomial series.",
+      "type": "paper"
+    },
+    {
+      "key": "Kn97",
+      "citation": "Knuth, D.E., The Art of Computer Programming, Vol. 1: Fundamental Algorithms, 3rd ed., Addison-Wesley (1997), §1.2.6: Binomial coefficients.",
+      "type": "book"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "binomial-theorem",

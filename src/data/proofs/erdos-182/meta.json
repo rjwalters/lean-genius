@@ -166,7 +166,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #182 about maximum edges avoiding k-regular subgraphs. The problem was posed by Erdős and Sauer in 1975 and fully resolved in 2023 by Janzer and Sudakov. The answer is Θ(n log log n): any graph with more than C·n·log(log n) edges must contain a k-regular subgraph, and Pyber-Rödl-Szemerédi showed this bound is tight.",
-    "implications": "**Theoretical Significance**: This resolves a fundamental question in extremal graph theory about the edge-density threshold for regular substructures.\n\n**Broader Connections**: The log log n factor is unusual and arises from an iterative reduction argument. The result connects to structural graph theory and has applications in understanding graph decomposition.",
+    "implications": "**Theoretical Significance**: This resolves a fundamental question in extremal graph theory about the edge-density threshold for regular substructures.\n\nThe log log n factor is unusual and arises from an iterative reduction argument. The result connects to structural graph theory and has applications in understanding graph decomposition.",
     "openQuestions": [
       "Exact constants C(k) in the upper bound for specific k",
       "Tighter bounds for the connected k-regular variant",

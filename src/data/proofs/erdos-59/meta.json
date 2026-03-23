@@ -120,7 +120,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #59 is DISPROVED. The 223-line formalization captures the complete resolution: the Erdős-Frankl-Rödl theorem (1986) proves the bound for non-bipartite H, while the Morris-Saxton counterexample (2016) disproves it for C_6. The main theorem has 1 sorry (a technical extraction from Set.Infinite). Classical Turán bounds, the Morris-Saxton weaker conjecture, and bipartiteness results are also formalized.",
-    "implications": "**Theoretical Significance**: The resolution reveals a fundamental structural dichotomy in extremal graph theory: for non-bipartite forbidden subgraphs, the Turán number essentially determines the count of free graphs (via the regularity lemma).\n\n**Broader Connections**: For bipartite forbidden subgraphs, algebraic structures (projective planes) create additional diversity that the Turán number alone cannot capture. This parallels the KST/Turán divide throughout extremal combinatorics.",
+    "implications": "**Theoretical Significance**: The resolution reveals a fundamental structural dichotomy in extremal graph theory: for non-bipartite forbidden subgraphs, the Turán number essentially determines the count of free graphs (via the regularity lemma).\n\nFor bipartite forbidden subgraphs, algebraic structures (projective planes) create additional diversity that the Turán number alone cannot capture. This parallels the KST/Turán divide throughout extremal combinatorics.",
     "openQuestions": [
       "Does the weaker bound 2^{O(ex(n;G))} hold for all G? (Morris-Saxton Conjecture, OPEN)",
       "For which bipartite graphs H does the original 2^{(1+o(1))ex} bound hold?",

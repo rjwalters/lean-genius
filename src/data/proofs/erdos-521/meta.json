@@ -131,7 +131,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #521 is PARTIALLY SOLVED with the main question OPEN. Erdős-Offord (1956) proved E[Rₙ] = (2/π + o(1))log n. Do (2024) proved the almost sure version for roots in [-1,1], giving Rₙ[-1,1]/log n → 1/π. The full almost sure convergence Rₙ/log n → 2/π remains open.",
-    "implications": "**Theoretical Significance**: This problem connects probability theory with polynomial algebra.\n\n**Broader Connections**: The constant 2/π comes from Kac's integral formula. The difficulty lies in controlling root count fluctuations - expectation doesn't guarantee almost sure convergence.",
+    "implications": "**Theoretical Significance**: This problem connects probability theory with polynomial algebra.\n\nThe constant 2/π comes from Kac's integral formula. The difficulty lies in controlling root count fluctuations - expectation doesn't guarantee almost sure convergence.",
     "openQuestions": [
       "Prove a.s. Rₙ/log n → 2/π for all real roots",
       "Handle roots outside [-1,1] with a.s. convergence",

@@ -153,7 +153,7 @@
   ],
   "conclusion": {
     "summary": "Hilbert's 3rd Problem is resolved by the Dehn invariant: a cube and regular tetrahedron of equal volume cannot be scissors congruent because $D(\\text{cube}) = 0$ while $D(\\text{tetrahedron}) \\neq 0$. The main theorem and several supporting results are fully proved in Lean 4 from 7 axioms (Dehn invariance, Niven's theorem, Sydler's theorem, Bolyai-Gerwien). The formalization covers the full narrative from the 2D/3D contrast to K-theory connections.",
-    "implications": "**Theoretical Significance**: This was the first Hilbert problem solved and introduced algebraic invariants into geometry.\n\n**Broader Connections**: The Dehn invariant connects to algebraic K-theory via the Bloch group: the scissors congruence group $\\mathcal{P}(\\mathbb{R}^3)$ maps to $K_3^{\\text{ind}}(\\mathbb{C})$. Sydler's completeness theorem (1965) shows volume and Dehn invariant classify scissors congruence in $\\mathbb{R}^3$, but the classification in higher dimensions remains open.",
+    "implications": "**Theoretical Significance**: This was the first Hilbert problem solved and introduced algebraic invariants into geometry.\n\nThe Dehn invariant connects to algebraic K-theory via the Bloch group: the scissors congruence group $\\mathcal{P}(\\mathbb{R}^3)$ maps to $K_3^{\\text{ind}}(\\mathbb{C})$. Sydler's completeness theorem (1965) shows volume and Dehn invariant classify scissors congruence in $\\mathbb{R}^3$, but the classification in higher dimensions remains open.",
     "openQuestions": [
       "What are the scissors congruence groups in dimensions ≥ 4, and what additional invariants are needed?",
       "Can Sydler's completeness theorem be formalized in Lean using Mathlib's tensor product machinery?",

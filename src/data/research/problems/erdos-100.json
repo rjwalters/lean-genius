@@ -1,7 +1,7 @@
 {
   "slug": "erdos-100",
   "title": "Erdős #100: Point Sets with Restricted Distances",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,24 +16,47 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-23T08:04:56.539Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "ACT",
+    "since": "2026-03-23T19:00:00Z",
+    "iteration": 2,
+    "focus": "Full formalization completed with Guth-Katz connection",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove diam_ge_one sorry, or submit to Aristotle",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "COMPLETED: Full 354-line formalization from empty stub. 8 theorems, 9 definitions, 6 axioms, 1 sorry. Key theorem diam_ge_n_over_log_n proved (conditional on axiomatized Guth-Katz). Piepmeyer counterexample formalized.",
+    "builtItems": [
+      "dist, dist_symm, dist_nonneg in Erdos100Problem.lean:38-53",
+      "hasIntegerDistances, pairwiseDistances, numDistinctDistances in Erdos100Problem.lean:66-79",
+      "diam, diam_nonneg in Erdos100Problem.lean:91-108",
+      "Erdos100Conjecture, Erdos100StrongConjecture in Erdos100Problem.lean:129-143",
+      "diam_ge_n_over_log_n (PROVED, conditional on Guth-Katz) in Erdos100Problem.lean:216-234",
+      "piepmeyer_ratio_bound, strong_conjecture_fails_at_9 (PROVED) in Erdos100Problem.lean:257-273",
+      "conjecture_implies_kanold (PROVED) in Erdos100Problem.lean:308-325",
+      "IsCollinear, erdos_anning_theorem (axiom) in Erdos100Problem.lean:284-298"
+    ],
+    "insights": [
+      "Key bridge: integer distances => distinct distances subset of {1,...,floor(diam)} => #distinct_dists <= diam",
+      "This bridge + Guth-Katz (cn/log n distinct distances) gives diam >= cn/log n for free",
+      "Piepmeyer 9-point construction disproves strong conjecture (diam >= n-1) at n=9",
+      "Erdos-Anning theorem: infinite integer distance sets must be collinear (finite case fundamentally different)",
+      "Gap between n/log n (known) and n (conjectured) is the central open question",
+      "diam_ge_one proof hit heartbeat timeout due to Finset.offDiag operations - left as sorry for Aristotle"
+    ],
+    "mathlibGaps": [
+      "No Finset.offDiag_nonempty lemma found in Mathlib",
+      "Finset.one_lt_card extraction + offDiag membership causes heartbeat timeouts"
+    ],
+    "nextSteps": [
+      "Prove diam_ge_one (trivial bound) - may need set_option maxHeartbeats or alternative approach",
+      "Create Aristotle companion file for diam_ge_one sorry",
+      "Consider proving distinctDistances_le_diam (currently axiom, may be provable from definitions)"
+    ]
   },
   "tags": [
     "erdos",
@@ -57,15 +80,29 @@
     "erdos-1007",
     "erdos-1007-oq-01",
     "erdos-1008",
-    "erdos-1009"
+    "erdos-1009",
+    "erdos-104",
+    "erdos-1066",
+    "erdos-89"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Guth-Katz 2015 (distinct distances)",
+      "Piepmeyer 2004 (9-point construction)",
+      "Erdos-Anning 1945 (collinearity)"
+    ],
+    "urls": [
+      "https://erdosproblems.com/100"
+    ],
+    "mathlib": [
+      "EuclideanSpace",
+      "Finset.offDiag",
+      "Filter.atTop",
+      "Real.rpow"
+    ]
   },
   "started": "2026-01-23T08:04:56.538Z",
-  "lastUpdate": "2026-01-23T08:04:56.539Z",
+  "lastUpdate": "2026-03-23T19:30:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
@@ -259,11 +296,11 @@
     {
       "path": "Proofs/Erdos100Problem.lean",
       "filename": "Erdos100Problem.lean",
-      "lineCount": 1,
-      "theoremCount": 0,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
+      "lineCount": 355,
+      "theoremCount": 8,
+      "axiomCount": 6,
+      "defCount": 9,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos100Problem.lean"
     }

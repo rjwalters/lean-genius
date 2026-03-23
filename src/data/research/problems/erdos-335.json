@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-13T00:04:50.018Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "3 axioms proved, 4 deep axioms remain",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Proved density_nonneg, density_le_one, additive_sum_le_one (7→4 axioms). Fixed imports (added Topology.Basic for limUnder). Added countingFn_le helper lemma.",
+    "builtItems": [
+      "density_nonneg (PROVED) - ge_of_tendsto + div_nonneg",
+      "density_le_one (PROVED) - le_of_tendsto + countingFn_le",
+      "additive_sum_le_one (PROVED) - from density_le_one + DensityAdditive",
+      "countingFn_le (helper) - Set.ncard_le_ncard + Nat.card_Icc"
+    ],
+    "insights": [
+      "limUnder requires Mathlib.Topology.Basic import (not in original file)",
+      "countingFn A N ≤ N: A∩Icc 1 N ⊆ Icc 1 N, ncard(Icc 1 N) = N",
+      "density_nonneg needs DensityExists assumption for proper statement (limUnder of non-convergent filter is arbitrary)",
+      "additive_sum_le_one follows trivially from density_le_one applied to Sumset A B"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Remaining 4 axioms are deep: weyl_equidistribution, fractional_part_density_additive, erdos_335_conjecture (open), plunnecke_ruzsa_lower"
+    ],
     "markdown": "# Erdős #335 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $d(A)$ denote the density of $A\\subseteq \\mathbb{N}$. Characterise those $A,B\\subseteq \\mathbb{N}$ with positive density such that\\[d(A+B)=d(A)+d(B).\\]\n\n\n\nOne way this can happen is if there exists $\\theta>0$ such that\\[A=\\{ n>0 : \\{ n\\theta\\} \\in X_A\\}\\textrm{ and }B=\\{ n>0 : \\{n\\theta\\} \\in X_B\\}\\]where $\\{x\\}$ denotes the fractional part of $x$ and $X_A,X_B\\subseteq \\mathbb{R}/\\mathbb{Z}$ are such that $\\mu(X_A+X_B)=\\mu(X_A)+\\mu(X_B)$. Are all possible $A$ and $B$ generated in a similar way (using other groups)?\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #334\n- Problem #336\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
@@ -50,16 +62,16 @@
     "mathlib": []
   },
   "started": "2026-01-13T00:04:50.018Z",
-  "lastUpdate": "2026-03-13T07:52:17.046Z",
+  "lastUpdate": "2026-03-23T21:00:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos335Problem.lean",
       "filename": "Erdos335Problem.lean",
-      "lineCount": 123,
-      "theoremCount": 1,
-      "axiomCount": 7,
+      "lineCount": 148,
+      "theoremCount": 4,
+      "axiomCount": 4,
       "defCount": 8,
       "sorryCount": 0,
       "isAristotle": false,

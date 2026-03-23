@@ -129,7 +129,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #871 has been DISPROVED. The conjecture that additive bases with r_A(n) → ∞ can always be partitioned into two disjoint bases is FALSE. Daniel Larsen (2026) constructed a counterexample using a modification of the Erdős-Nathanson blocking technique.",
-    "implications": "**Theoretical Significance**: The result clarifies the boundary between partitionable and non-partitionable bases.\n\n**Broader Connections**: The growth condition r_A(n) → ∞ is insufficient for partition; one needs faster growth like r_A(n) > c log n. This advances understanding of the structure of additive bases.",
+    "implications": "**Theoretical Significance**: The result clarifies the boundary between partitionable and non-partitionable bases.\n\nThe growth condition r_A(n) → ∞ is insufficient for partition; one needs faster growth like r_A(n) > c log n. This advances understanding of the structure of additive bases.",
     "openQuestions": [
       "What is the minimal growth rate of r_A(n) that guarantees partition?",
       "Is r_A(n) = ω(1) but r_A(n) = o(log n) the critical regime?",
