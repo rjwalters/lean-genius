@@ -8,7 +8,7 @@
     "content": "Six Mathlib imports covering calculus (`FDeriv`, `Deriv`), measure-theoretic integration (`IntervalIntegral`, `FundThmCalculus`), the mean value theorem, and topology. Module docstring describes both parts of the FTC with historical context (Newton, Leibniz, Cauchy, Weierstrass). Opens five namespaces for concise notation and declares the `FundamentalTheoremCalculus` namespace.",
     "mathContext": "FTC Part 1: $\\frac{d}{dx}\\int_a^x f(t)\\,dt = f(x)$. FTC Part 2: $\\int_a^b F'(x)\\,dx = F(b) - F(a)$.",
     "significance": "context",
-    "relatedConcepts": ["Mathlib calculus", "interval integral", "measure theory"],
+    "relatedConcepts": ["Mathlib calculus", "interval integral", "measure theory", "Fréchet derivative", "Bochner integral", "Wiedijk 100 #15"],
     "prerequisites": ["Lean 4 imports", "real analysis"]
   },
   {
@@ -32,7 +32,7 @@
     "content": "Two versions of FTC Part 1. `ftc_part1` uses minimal hypotheses (continuity at $b$, integrability on $[a,b]$, strong measurability at $b$), directly applying Mathlib's `integral_hasDerivAt_right`. `ftc_part1_continuous` provides the classical statement for globally continuous $f$: the integral function has derivative $f(x)$ at every point $x$.",
     "mathContext": "If $f$ is continuous at $b$ and integrable on $[a,b]$: $F'(b) = f(b)$ where $F(x) = \\int_a^x f$. Globally: $f$ continuous $\\Rightarrow \\frac{d}{dx}\\int_a^x f = f(x)$ everywhere.",
     "significance": "key",
-    "relatedConcepts": ["HasDerivAt", "integral_hasDerivAt_right", "ContinuousAt"],
+    "relatedConcepts": ["HasDerivAt", "integral_hasDerivAt_right", "ContinuousAt", "strong measurability", "Barrow's theorem"],
     "prerequisites": ["interval integrability", "strong measurability", "HasDerivAt"]
   },
   {
@@ -44,7 +44,7 @@
     "content": "Two versions: `ftc_part2` (with $a \\leq b$) applies `integral_eq_sub_of_hasDerivAt_of_le` requiring continuity of $F$ on $[a,b]$ and differentiability on $(a,b)$. `ftc_part2_general` drops the $a \\leq b$ assumption using `uIcc` (unordered interval), applying `integral_eq_sub_of_hasDeriv_right`.",
     "mathContext": "$\\int_a^b F'(x)\\,dx = F(b) - F(a)$. Hypotheses: $F$ continuous on $[a,b]$, $F' = f$ on $(a,b)$, $f$ integrable.",
     "significance": "key",
-    "relatedConcepts": ["evaluation theorem", "antiderivative", "net change theorem"],
+    "relatedConcepts": ["evaluation theorem", "antiderivative", "net change theorem", "Newton-Leibniz formula", "uIcc"],
     "prerequisites": ["ContinuousOn", "HasDerivAt", "HasDerivWithinAt"]
   },
   {
@@ -68,7 +68,7 @@
     "content": "Two supporting theorems. `hasDerivAt_zero_implies_constant`: a function with everywhere-zero derivative is constant, using `is_const_of_deriv_eq_zero` from Mathlib's mean value theorem infrastructure. `antiderivatives_differ_by_constant`: if $F$ and $G$ are both antiderivatives of $f$, then $F - G$ is constant — proved by showing $(F-G)' = f - f = 0$ and applying the zero-derivative theorem.",
     "mathContext": "If $F' = 0$ everywhere, then $F$ is constant (consequence of MVT). Therefore: $F' = G' = f \\Rightarrow (F-G)' = 0 \\Rightarrow F - G = c$ for some constant $c$.",
     "significance": "key",
-    "relatedConcepts": ["mean value theorem", "constant function", "uniqueness of antiderivatives"],
+    "relatedConcepts": ["mean value theorem", "constant function", "uniqueness of antiderivatives", "kernel of d/dx", "affine subspace"],
     "prerequisites": ["is_const_of_deriv_eq_zero", "HasDerivAt.sub", "linarith"]
   },
   {
