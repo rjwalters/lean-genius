@@ -406,10 +406,33 @@ theorem triple_count_fourier {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
     (tripleCount A : ℂ) + ↑A.card = (↑N)⁻¹ *
       Finset.univ.sum (fun r : ZMod N =>
         fourierCoeff A r ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * r))) := by
-  -- Both sides equal |{(x,y,z) ∈ A³ : x+y=2z}|.
-  -- Part A (Fourier): RHS = Σ_{x,y,z∈A} δ(x+y=2z) via orthogonality
-  -- Part B (Combinatorial): LHS = |{(a,d) : a∈A, a+d∈A, a+2d∈A}| = same count
-  sorry -- Deferred: requires Fourier inversion + combinatorial bijection (~100 lines)
+  have hN : (↑N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
+  rw [eq_comm, inv_mul_eq_div, div_eq_iff hN, eq_comm]
+  -- Part A: Expand the Fourier sum via orthogonality
+  simp_rw [fourierCoeff_eq_sum_psi, sq]
+  simp_rw [map_sum (starRingEnd ℂ), conj_psi]
+  simp_rw [Finset.sum_mul, Finset.mul_sum]
+  simp_rw [← psi_add]
+  simp_rw [show ∀ (r x z y : ZMod N),
+    ψ (r * x + (r * z + -((2 * r) * y))) = ψ (r * (x + z - 2 * y)) from
+    fun _ _ _ _ => congr_arg ψ (by ring)]
+  rw [Finset.sum_comm]
+  conv_lhs => arg 2; ext; rw [Finset.sum_comm]
+  conv_lhs => arg 2; ext; arg 2; ext; rw [Finset.sum_comm]
+  simp_rw [char_orthogonality, sub_eq_zero]
+  simp_rw [show ∀ (P : Prop) [Decidable P],
+    (if P then (↑N : ℂ) else 0) = ↑N * (if P then 1 else 0) from
+    fun P _ => by split_ifs <;> simp]
+  simp_rw [← Finset.mul_sum, ← Finset.mul_sum]
+  rw [← Finset.mul_sum, mul_comm]; congr 1
+  -- Part B: ∑_{x∈A} ∑_{z∈A} ∑_{y∈A} δ(x+z=2y) = tripleCount(A) + |A|
+  -- Rewrite x+z=2y ↔ z=2y-x, swap and collapse z-sum
+  simp_rw [show ∀ (x z y : ZMod N), x + z = 2 * y ↔ z = 2 * y - x from
+    fun x z y => ⟨fun h => by linarith, fun h => by linarith⟩]
+  simp_rw [Finset.sum_comm (s := A) (t := A)]
+  simp_rw [Finset.sum_ite_eq' A]
+  -- ∑_{x∈A} ∑_{y∈A} (if 2y-x ∈ A then 1 else 0) = tripleCount(A) + |A|
+  sorry
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART IV: LARGE FOURIER COEFFICIENT FROM AP-FREENESS
