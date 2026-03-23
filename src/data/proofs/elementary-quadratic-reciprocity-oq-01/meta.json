@@ -180,5 +180,55 @@
     "axiomCount": 0,
     "theoremCount": 31,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "extends",
+      "description": "Extends the base quadratic reciprocity formalization with Zolotarev's 1872 permutation-signature approach: the Legendre symbol equals the sign of the multiplication-by-a permutation on (ZMod p)ˣ"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "complementary",
+      "description": "The elementary Eisenstein (lattice-point) proof of QR; this OQ-01 provides the complementary Zolotarev permutation approach, with both proof methods bundled in two_proof_methods"
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem about (p-1)! ≡ -1 (mod p) uses the same (ZMod p)ˣ group structure; both proofs leverage the cyclic group properties of units mod a prime"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "Base formalization; this OQ-01 adds the Zolotarev permutation proof pathway alongside the existing Gauss/Eisenstein approach"
+    },
+    {
+      "id": "elementary-quadratic-reciprocity",
+      "relationship": "The elementary Eisenstein lattice-point proof; this OQ-01 provides the complementary Zolotarev permutation-signature approach"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Egor Ivanovich Zolotarev",
+      "title": "Nouvelle démonstration de la loi de réciprocité de Legendre",
+      "year": "1872",
+      "venue": "Nouvelles Annales de Mathématiques",
+      "note": "Original permutation-sign proof of quadratic reciprocity"
+    },
+    {
+      "authors": "Georg Frobenius",
+      "title": "Über das quadratische Reziprozitätsgesetz",
+      "year": "1914",
+      "venue": "Sitzungsberichte der Preußischen Akademie der Wissenschaften",
+      "note": "Simplified Zolotarev's argument using character theory on cyclic groups"
+    },
+    {
+      "authors": "George Rousseau",
+      "title": "On the Quadratic Reciprocity Law",
+      "year": "1991",
+      "venue": "American Mathematical Monthly",
+      "note": "Further simplification of Zolotarev's proof, the presentation closest to this formalization"
+    }
+  ]
 }

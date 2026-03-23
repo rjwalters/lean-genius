@@ -136,5 +136,51 @@
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "dissection-of-cubes",
+      "relationship": "extends",
+      "description": "Extends the base impossibility result (Wiedijk #82: no perfect cube dissection) to a quantitative lower bound on the number of colliding cubes (≥ 2)"
+    },
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "The infinite descent argument underlying Littlewood's cascade proof is a classical application of strong induction, a technique formalized here"
+    },
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "related",
+      "description": "Both entries concern geometric decomposition and counting arguments; Euler's formula counts faces/vertices/edges while cube dissections count size repetitions"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "dissection-of-cubes",
+      "relationship": "Base formalization (Wiedijk #82) proving no perfect cube dissection exists; this OQ-01 strengthens it to give the minimum collision count"
+    }
+  ],
+  "references": [
+    {
+      "authors": "John Edensor Littlewood",
+      "title": "A Mathematician's Miscellany",
+      "year": "1953",
+      "venue": "Methuen",
+      "note": "Original infinite descent proof that cube dissections must have repeated sizes (Wiedijk Theorem #82)"
+    },
+    {
+      "authors": "Richard Brooks, Cedric Smith, Arthur Stone, William Tutte",
+      "title": "The Dissection of Rectangles into Squares",
+      "year": "1940",
+      "venue": "Duke Mathematical Journal",
+      "note": "Discovered the first perfect squared square using electrical network theory; the 2D analog has all-different sizes unlike the 3D case"
+    },
+    {
+      "authors": "Freek Wiedijk",
+      "title": "Formalizing 100 Theorems",
+      "year": "2008",
+      "venue": "http://www.cs.ru.nl/~freek/100/",
+      "note": "Theorem #82: the impossibility of perfect cube dissection"
+    }
+  ]
 }

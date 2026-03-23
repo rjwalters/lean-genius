@@ -141,5 +141,55 @@
     "axiomCount": 0,
     "theoremCount": 16,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "desargues-theorem",
+      "relationship": "extends",
+      "description": "Extends the base Desargues formalization to any commutative ring K, replacing the deprecated CrossProduct module with a custom cross product"
+    },
+    {
+      "targetId": "desargues-theorem-oq-02",
+      "relationship": "complementary",
+      "description": "OQ-02 provides the non-Desarguesian counterexample (Moulton plane) showing the theorem depends on the algebraic structure of lines, complementing this algebraic generalization"
+    },
+    {
+      "targetId": "desargues-theorem-oq-04",
+      "relationship": "related",
+      "description": "OQ-04 proves self-duality of Desargues's theorem over commutative rings, building on the same algebraic framework introduced here"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "desargues-theorem",
+      "relationship": "Base formalization that motivated this generalization; uses the deprecated CrossProduct module over ℝ"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "Another classical geometry result formalized algebraically in Lean 4 using Mathlib's linear algebra infrastructure"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Girard Desargues",
+      "title": "Brouillon project d'une atteinte aux événemens des rencontres du Cône avec un Plan",
+      "year": "1639",
+      "venue": "Self-published",
+      "note": "Original statement of the theorem in the context of perspective drawing"
+    },
+    {
+      "authors": "David Hilbert",
+      "title": "Grundlagen der Geometrie",
+      "year": "1899",
+      "venue": "Teubner",
+      "note": "Axiomatic analysis showing Desargues's theorem characterizes planes coordinatizable by a division ring"
+    },
+    {
+      "authors": "Emil Artin",
+      "title": "Geometric Algebra",
+      "year": "1957",
+      "venue": "Interscience Publishers",
+      "note": "Algebraic treatment of projective geometry over division rings and the Hessenberg-Artin theorem"
+    }
+  ]
 }

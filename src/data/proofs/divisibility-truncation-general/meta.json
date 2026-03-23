@@ -136,6 +136,47 @@
       "year": "2008",
       "venue": "Oxford University Press, 6th edition",
       "note": "Standard reference for divisibility properties and their applications"
+    },
+    {
+      "authors": "Herbert S. Zuckerman",
+      "title": "On the Number-Theoretic Functions ν(n) and Ω(n)",
+      "year": "1948",
+      "venue": "Bulletin of the American Mathematical Society",
+      "note": "Early systematic treatment of the osculator (truncation) method for divisibility rules"
+    },
+    {
+      "authors": "Ivan Niven, Herbert S. Zuckerman, Hugh L. Montgomery",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "1991",
+      "venue": "Wiley, 5th edition",
+      "note": "Chapter 1 covers divisibility and the basis for truncation rules; contains the coprime cancellation argument used here"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "extends",
+      "description": "The divisibility-by-3 rule is the simplest digit-sum instance; this entry generalizes the truncation approach to a parametric theorem covering all primes coprime to 10"
+    },
+    {
+      "targetId": "divisibility-by-3-oq-01",
+      "relationship": "related",
+      "description": "OQ-01 proves specific truncation rules for 7, 11, 13, 17, 19 individually; this entry answers its open question by unifying all cases into a single parametric theorem"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "foundational",
+      "description": "The IsCoprime condition (gcd(d,10)=1) enabling the key cancellation step is the same coprimality machinery used in the Chinese Remainder Theorem"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "divisibility-by-3-oq-01",
+      "relationship": "Companion that proves specific truncation rules; this entry provides the unifying parametric theorem answering the open question posed there"
+    },
+    {
+      "id": "divisibility-by-3",
+      "relationship": "Base formalization of divisibility-by-3; the digit-sum approach there is the d=3 case of the general osculator framework here"
     }
   ]
 }

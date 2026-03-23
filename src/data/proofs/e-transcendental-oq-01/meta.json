@@ -195,5 +195,59 @@
     "axiomCount": 1,
     "theoremCount": 18,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "e-transcendental",
+      "relationship": "extends",
+      "description": "Extends the base e-transcendental formalization to the open question of e+π, using Vieta's symmetric polynomial identity and the algebraic closure lemma"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "foundational",
+      "description": "π's transcendence (Lindemann 1882) is one of the two foundational facts; the open question is whether e+π (or eπ) inherits transcendence from its components"
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "foundational",
+      "description": "The Hermite-Lindemann theorem underlies both e-transcendental and pi-transcendental; its formalization is the prerequisite for eliminating the foundational axioms in this entry"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "e-transcendental",
+      "relationship": "Base formalization of e's transcendence (Hermite 1873); this OQ-01 investigates the open question of e+π"
+    },
+    {
+      "id": "pi-transcendental",
+      "relationship": "π's transcendence (Lindemann 1882); together with e-transcendental, provides the two foundational facts for the Vieta argument"
+    },
+    {
+      "id": "hermite-lindemann",
+      "relationship": "The Hermite-Lindemann-Weierstrass theorem, once fully formalized in Mathlib, would eliminate the foundational axioms in this entry"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Charles Hermite",
+      "title": "Sur la fonction exponentielle",
+      "year": "1873",
+      "venue": "Comptes Rendus de l'Académie des Sciences",
+      "note": "First proof of the transcendence of e"
+    },
+    {
+      "authors": "Yuri Nesterenko",
+      "title": "Modular functions and transcendence questions",
+      "year": "1996",
+      "venue": "Matematicheskii Sbornik",
+      "note": "Proved algebraic independence of π, e^π, and Γ(1/4) — the strongest unconditional transcendence result for classical constants"
+    },
+    {
+      "authors": "Serge Lang",
+      "title": "Introduction to Transcendental Numbers",
+      "year": "1966",
+      "venue": "Addison-Wesley",
+      "note": "Standard reference for transcendental number theory including Schanuel's conjecture and its implications for e+π"
+    }
+  ]
 }

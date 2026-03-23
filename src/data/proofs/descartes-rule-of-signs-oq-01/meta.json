@@ -159,5 +159,55 @@
     "axiomCount": 1,
     "theoremCount": 48,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "descartes-rule-of-signs",
+      "relationship": "extends",
+      "description": "Extends the base Descartes rule formalization by developing the parity conjecture, the negSubst framework for negative roots, and the linear tight-bound case"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "foundational",
+      "description": "The Fundamental Theorem of Algebra (complex roots come in conjugate pairs) is the key tool needed to prove the parity result axiomatized here"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "Both entries concern properties of polynomials evaluated at specific constants; Descartes rule governs root counting while e-transcendental concerns the non-existence of polynomial relations"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "descartes-rule-of-signs",
+      "relationship": "Base formalization providing the upper bound; this OQ-01 adds the parity result and negative root framework"
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "The FTA guarantees complex roots come in conjugate pairs, which is the critical ingredient for the parity proof"
+    }
+  ],
+  "references": [
+    {
+      "authors": "René Descartes",
+      "title": "La Géométrie",
+      "year": "1637",
+      "venue": "Appendix to Discours de la Méthode",
+      "note": "Original statement of the rule of signs"
+    },
+    {
+      "authors": "Carl Friedrich Gauss",
+      "title": "Beweis eines algebraischen Lehrsatzes",
+      "year": "1826",
+      "venue": "Journal für die reine und angewandte Mathematik",
+      "note": "Rigorous proof using the Fundamental Theorem of Algebra, establishing the parity result"
+    },
+    {
+      "authors": "Freek Wiedijk",
+      "title": "Formalizing 100 Theorems",
+      "year": "2008",
+      "venue": "http://www.cs.ru.nl/~freek/100/",
+      "note": "Theorem #100 in the list of 100 theorems to formalize; Mathlib has the upper bound, the parity result remains open in Lean"
+    }
+  ]
 }
