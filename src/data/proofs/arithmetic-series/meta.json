@@ -41,7 +41,30 @@
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 68,
     "axiomCount": 0,
-    "lineCount": 187
+    "lineCount": 187,
+    "relatedProblems": [
+      {
+        "id": "arithmetic-series-oq-02",
+        "relationship": "Generalizes to simplicial numbers and higher-dimensional arithmetic sums"
+      },
+      {
+        "id": "arithmetic-series-oq-02-oq-02",
+        "relationship": "Further extensions of simplicial number theory"
+      }
+    ],
+    "leanFile": {
+      "lineCount": 187,
+      "structureCount": 0,
+      "axiomCount": 0,
+      "theoremCount": 11,
+      "lemmaCount": 0,
+      "defCount": 1,
+      "imports": [
+        "Mathlib.Algebra.BigOperators.Intervals",
+        "Mathlib.Algebra.BigOperators.Ring.Finset",
+        "Mathlib.Tactic"
+      ]
+    }
   },
   "overview": {
     "historicalContext": "The formula for 1 + 2 + ... + n = n(n+1)/2 is famously attributed to Carl Friedrich Gauss, who allegedly discovered it as a schoolboy around 1785. The story goes that when his teacher asked the class to sum the numbers 1 to 100 (hoping for a quiet classroom), young Gauss immediately answered 5050.\n\nGauss realized that pairing 1+100, 2+99, 3+98, etc. gives 50 pairs, each summing to 101, yielding 50 x 101 = 5050. This pairing argument is the essence of the proof.\n\nWhile this anecdote may be apocryphal, the formula was known to the ancient Greeks and appears in works by Archimedes. It also appears in Babylonian mathematics and was studied extensively by Indian mathematicians.",
@@ -53,9 +76,22 @@
       "**Triangular Number Recurrence:** $T_n = \\frac{n(n+1)}{2}$ satisfies $T_{n+1} = T_n + (n+1)$ — the inductive structure that Lean proofs exploit. Triangular numbers count pairs: $T_n = \\binom{n+1}{2}$.",
       "**General Arithmetic Series:** $\\sum_{k=0}^{n-1}(a + kd) = na + d\\frac{n(n-1)}{2}$. The formalization derives this from the base case ($d = 1$, $a = 0$) by linearity of summation — Mathlib's `Finset.sum_add_const` and `Finset.sum_mul`.",
       "**Gauss's Original Problem:** $\\sum_{k=1}^{100} k = 100 \\cdot 101/2 = 5050$. The legend of 10-year-old Gauss solving this instantly demonstrates that algebraic insight (pairing) beats brute-force computation — the same principle Lean's `omega` and `ring` tactics mechanize."
+    ],
+    "prerequisites": [
+      "Natural number arithmetic and divisibility",
+      "Finite sums and sigma notation ($\\sum_{k=0}^{n} f(k)$)",
+      "Basic algebraic manipulation (factoring, rearranging)"
     ]
   },
   "sections": [
+    {
+      "id": "header-docs",
+      "title": "Imports and Historical Documentation",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Imports Mathlib's `BigOperators.Intervals` and `BigOperators.Ring.Finset` for finite sum manipulation, plus `Tactic`. Module docstring covering the formula, Gauss anecdote, proof approach (pairing argument), and Wiedijk #68 status.",
+      "mathContext": "The Gauss summation formula $\\sum_{k=1}^{n} k = n(n+1)/2$ is Wiedijk #68. Mathlib provides `Finset.sum_range_id` for the 0-indexed version $\\sum_{k=0}^{n-1} k = n(n-1)/2$."
+    },
     {
       "id": "gauss-formula",
       "title": "Gauss's Summation Formula",
@@ -157,6 +193,11 @@
       "targetId": "triangular-reciprocals",
       "relationship": "related",
       "description": "The reciprocals of triangular numbers $T_n = n(n+1)/2$ telescope to give $\\sum 1/T_n = 2(1 - 1/(n+1))$ — connecting the arithmetic series formula directly to a convergent reciprocal sum via partial fractions"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Euler's solution $\\sum 1/k^2 = \\pi^2/6$ extends the idea of summing natural number expressions from $\\sum k$ (polynomial, closed-form) to $\\sum 1/k^2$ (convergent series, transcendental value) — both are instances of evaluating the Riemann zeta function at integers: $\\zeta(-1) = -1/12$ (regularized $\\sum k$) and $\\zeta(2) = \\pi^2/6$"
     }
   ],
   "relatedProofs": [
@@ -166,7 +207,8 @@
     "arithmetic-series-oq-02",
     "sum-of-kth-powers",
     "harmonic-divergence",
-    "triangular-reciprocals"
+    "triangular-reciprocals",
+    "basel-problem"
   ],
   "references": [
     {

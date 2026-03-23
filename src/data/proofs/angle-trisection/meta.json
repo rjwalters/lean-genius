@@ -56,6 +56,20 @@
       "Basic Galois theory (constructibility criterion)"
     ],
     "lineCount": 389,
+    "relatedProblems": [
+      {
+        "id": "angle-trisection-oq-02",
+        "relationship": "Galois characterization of constructibility extending the degree argument"
+      },
+      {
+        "id": "angle-trisection-oq-02-oq-01",
+        "relationship": "Wantzel-Galois characterization connecting Polynomial.Gal to constructibility"
+      },
+      {
+        "id": "angle-trisection-oq-02-oq-03",
+        "relationship": "Further extensions of the constructibility framework"
+      }
+    ],
     "references": [
       {
         "key": "Wa37",
@@ -213,6 +227,16 @@
       "targetId": "cantor-diagonalization",
       "relationship": "thematic",
       "description": "Both belong to the impossibility proof tradition: Cantor's diagonal argument proves no enumeration reaches all reals (1891), Wantzel's argument proves no compass-straightedge construction trisects all angles (1837). Both show that natural-seeming operations (enumeration, geometric construction) have provable limitations"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-01",
+      "relationship": "extended-by",
+      "description": "Proves the Wantzel-Galois characterization connecting Polynomial.Gal to constructibility — strengthening the degree criterion to a full group-theoretic characterization: α is constructible iff the Galois group of its minimal polynomial is a 2-group"
+    },
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of $\\sqrt[3]{2}$ (a special case of the $n$-th root irrationality) is the simplest instance of the degree-3 obstruction to constructibility: $[\\mathbb{Q}(\\sqrt[3]{2}):\\mathbb{Q}] = 3$, and $3 \\nmid 2^n$. The same argument proves the impossibility of doubling the cube"
     }
   ],
   "overview": {
@@ -324,6 +348,8 @@
     "godel-incompleteness",
     "area-of-circle",
     "vietas-formulas",
-    "cantor-diagonalization"
+    "cantor-diagonalization",
+    "angle-trisection-oq-02-oq-01",
+    "nth-root-irrational"
   ]
 }
