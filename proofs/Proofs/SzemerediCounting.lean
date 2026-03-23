@@ -724,19 +724,171 @@ theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
         have h2 := Finset.card_union_le (R_wp ∪ R_irreg) R_sparse
         have h3 := Finset.card_union_le R_wp R_irreg
         push_cast; linarith
+      -- Shared lemmas for the three edge count bounds
+      have hsum : P.parts.sum Finset.card = n := by
+        rw [hn_def, Fintype.card, ← P.sup_parts]
+        exact (Finset.card_biUnion fun a ha b hb hab =>
+          Finset.disjoint_coe.mp <| P.supIndep.pairwiseDisjoint ha hb hab).symm
+      have hkQ : (0 : ℚ) < ↑k := Nat.cast_pos.mpr (by omega)
+      -- Every part has at most n/k + 1 elements (from equipartition)
+      have hpartub : ∀ S ∈ P.parts, (S.card : ℚ) ≤ ↑n / ↑k + 1 := by
+        intro S hS
+        have h_ge : (↑n : ℚ) ≥ ↑k * ((↑S.card : ℚ) - 1) := by
+          calc (↑n : ℚ) = ↑(P.parts.sum Finset.card) := by exact_mod_cast hsum.symm
+            _ = P.parts.sum (fun T => (↑T.card : ℚ)) := by push_cast; rfl
+            _ ≥ P.parts.sum (fun _ => (↑S.card : ℚ) - 1) :=
+                Finset.sum_le_sum fun T hT => by
+                  have := hequi (Finset.mem_coe.mpr hS) (Finset.mem_coe.mpr hT)
+                  push_cast at this ⊢; linarith
+            _ = ↑k * ((↑S.card : ℚ) - 1) := by
+                simp only [Finset.sum_const, nsmul_eq_mul, hk_def]
+        have h_le : (↑S.card : ℚ) ≤ (↑n + ↑k) / ↑k := by
+          rw [le_div_iff₀ hkQ]; linarith
+        rwa [add_div, div_self (ne_of_gt hkQ)] at h_le
+      have hkd : 8 ≤ delta * ↑k := by rwa [div_le_iff₀ hdelta] at hk_ge_inv_delta
+      have hnd : 8 ≤ delta * ↑n := by rwa [div_le_iff₀ hdelta] at hn_ge_inv_delta
+      have hk_le_n : (↑k : ℚ) ≤ ↑n := Nat.cast_le.mpr (le_trans hkM hn_small)
       -- Step 2: Bound within-part pairs ≤ (δ/4)n²
-      -- |R_wp| = Σ_{S ∈ P.parts} |S|² ≤ max_size · n ≤ (n/k+1)·n = n²/k + n
-      -- With k ≥ 8/δ: n²/k ≤ (δ/8)n². With n ≥ 8/δ: n ≤ (δ/8)n².
-      -- Total: n²/k + n ≤ (δ/4)n².
-      have h_wp : (R_wp.card : ℚ) ≤ (delta / 4) * ↑n ^ 2 := by sorry
+      have h_wp : (R_wp.card : ℚ) ≤ (delta / 4) * ↑n ^ 2 := by
+        -- R_wp ⊆ ⋃_{S ∈ P.parts} (S ×ˢ S)
+        have hsub_wp : R_wp ⊆ P.parts.biUnion (fun S => S ×ˢ S) := by
+          intro x hx
+          simp only [R_wp, Finset.mem_filter, Finset.mem_product, Finset.mem_univ,
+            true_and] at hx
+          obtain ⟨part, hpart, h1, h2⟩ := hx
+          exact Finset.mem_biUnion.mpr ⟨part, hpart, Finset.mem_product.mpr ⟨h1, h2⟩⟩
+        calc (↑R_wp.card : ℚ)
+            ≤ P.parts.sum (fun S => (↑S.card : ℚ) ^ 2) := by
+              have h := le_trans (Finset.card_le_card hsub_wp) Finset.card_biUnion_le
+              calc (R_wp.card : ℚ) ≤ ↑(P.parts.sum fun S => (S ×ˢ S).card) :=
+                    Nat.cast_le.mpr h
+                _ = P.parts.sum (fun S => (↑S.card : ℚ) ^ 2) := by
+                    push_cast; congr 1; ext S; rw [Finset.card_product]; ring
+          _ ≤ (↑n / ↑k + 1) * ↑n := by
+              calc P.parts.sum (fun S => (↑S.card : ℚ) ^ 2)
+                  ≤ P.parts.sum (fun S => (↑n / ↑k + 1) * ↑S.card) :=
+                    Finset.sum_le_sum fun S hS => by
+                      nlinarith [hpartub S hS, Nat.cast_nonneg (α := ℚ) S.card]
+                _ = (↑n / ↑k + 1) * ↑n := by
+                    rw [← Finset.mul_sum]; congr 1; exact_mod_cast hsum
+          _ ≤ (delta / 4) * ↑n ^ 2 := by
+              -- n/k ≤ δn/8 (from k ≥ 8/δ) and 1 ≤ δn/8 (from n ≥ 8/δ)
+              have h1 : (↑n : ℚ) / ↑k ≤ delta * ↑n / 8 := by
+                rw [div_le_div_iff₀ hkQ (by positivity : (0:ℚ) < 8)]
+                nlinarith
+              have h2 : (1 : ℚ) ≤ delta * ↑n / 8 := by
+                rw [le_div_iff₀ (by positivity : (0:ℚ) < 8)]; linarith
+              calc (↑n / ↑k + 1) * ↑n ≤ (delta * ↑n / 4) * ↑n :=
+                    mul_le_mul_of_nonneg_right (by linarith) (Nat.cast_nonneg _)
+                _ = delta / 4 * ↑n ^ 2 := by ring
       -- Step 3: Bound irregular cross-part pairs ≤ (δ/2)n²
-      -- #irregular ordered pairs ≤ ε·k·(k-1), each contributes ≤ (n/k+1)² pairs.
-      -- Total ≤ ε·k²·(n/k+1)² ≤ 4ε·n² ≤ (δ/2)·n² (since ε ≤ δ/8).
-      have h_irreg : (R_irreg.card : ℚ) ≤ (delta / 2) * ↑n ^ 2 := by sorry
+      have h_irreg : (R_irreg.card : ℚ) ≤ (delta / 2) * ↑n ^ 2 := by
+        -- R_irreg ⊆ biUnion over irregular pairs of part products
+        set irreg := (P.parts.product P.parts).filter (fun pq : Finset V × Finset V =>
+          pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2)
+        have hsub_ir : R_irreg ⊆ irreg.biUnion (fun pq => pq.1 ×ˢ pq.2) := by
+          intro x hx
+          simp only [R_irreg, Finset.mem_filter, Finset.mem_product, Finset.mem_univ,
+            true_and] at hx
+          obtain ⟨Pa, hPa, Pb, hPb, hne, h1, h2, hirr⟩ := hx
+          exact Finset.mem_biUnion.mpr ⟨(Pa, Pb),
+            Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨hPa, hPb⟩, hne, hirr⟩,
+            Finset.mem_product.mpr ⟨h1, h2⟩⟩
+        -- Irregular pair count ≤ ε·k·(k-1)
+        have hirregcount : (irreg.card : ℚ) ≤ eps * (↑k * (↑k - 1)) := by
+          have h2 := hreg.2
+          simp only [Nat.cast_mul, Nat.cast_sub (show 1 ≤ k by omega)] at h2
+          exact h2
+        calc (↑R_irreg.card : ℚ)
+            ≤ irreg.sum (fun pq => (↑pq.1.card : ℚ) * ↑pq.2.card) := by
+              have h := le_trans (Finset.card_le_card hsub_ir) Finset.card_biUnion_le
+              calc (R_irreg.card : ℚ) ≤ ↑(irreg.sum fun pq => (pq.1 ×ˢ pq.2).card) :=
+                    Nat.cast_le.mpr h
+                _ = irreg.sum (fun pq => (↑pq.1.card : ℚ) * ↑pq.2.card) := by
+                    push_cast; congr 1; ext pq; rw [Finset.card_product]
+          _ ≤ irreg.sum (fun _ => (↑n / ↑k + 1) ^ 2) :=
+              Finset.sum_le_sum fun pq hpq => by
+                have hm := Finset.mem_filter.mp hpq
+                have h1 := hpartub pq.1 (Finset.mem_product.mp hm.1).1
+                have h2 := hpartub pq.2 (Finset.mem_product.mp hm.1).2
+                nlinarith
+          _ = ↑irreg.card * (↑n / ↑k + 1) ^ 2 := by
+              simp [Finset.sum_const, nsmul_eq_mul]
+          _ ≤ eps * (↑k * (↑k - 1)) * (↑n / ↑k + 1) ^ 2 := by
+              nlinarith [sq_nonneg (↑n / ↑k + 1 : ℚ)]
+          _ ≤ eps * (↑n + ↑k) ^ 2 := by
+              -- k²(n/k+1)² = (k(n/k+1))² = (n+k)² and k(k-1) ≤ k²
+              have hkdiv : ↑k * (↑n / ↑k + 1) = ↑n + ↑k := by
+                rw [mul_add, mul_div_cancel₀ _ (ne_of_gt hkQ), mul_one]
+              have hX_sq : ↑k ^ 2 * (↑n / ↑k + 1) ^ 2 = (↑n + ↑k) ^ 2 := by
+                rw [← mul_pow]; congr 1; exact hkdiv
+              have hkk1 : ↑k * (↑k - 1) ≤ ↑k ^ 2 := by nlinarith
+              nlinarith [sq_nonneg (↑n / ↑k + 1 : ℚ)]
+          _ ≤ 4 * eps * ↑n ^ 2 := by
+              have : (↑n + ↑k : ℚ) ^ 2 ≤ (2 * ↑n) ^ 2 :=
+                pow_le_pow_left (by positivity) (by linarith : ↑n + ↑k ≤ 2 * ↑n) 2
+              nlinarith
+          _ ≤ (delta / 2) * ↑n ^ 2 := by
+              nlinarith [heps_le_delta8, sq_nonneg (↑n : ℚ)]
       -- Step 4: Bound sparse cross-part edges ≤ (δ/4)n²
-      -- Each sparse pair has density < 2ε, so edge count < 2ε·|Vi|·|Vj|.
-      -- Total sparse edges < 2ε · Σ|Vi|·|Vj| ≤ 2ε·n² ≤ (δ/4)·n².
-      have h_sparse : (R_sparse.card : ℚ) ≤ (delta / 4) * ↑n ^ 2 := by sorry
+      have h_sparse : (R_sparse.card : ℚ) ≤ (delta / 4) * ↑n ^ 2 := by
+        -- R_sparse ⊆ biUnion over sparse pairs of edge sets
+        set sprs := (P.parts.product P.parts).filter (fun pq : Finset V × Finset V =>
+          pq.1 ≠ pq.2 ∧ edgeDensity G pq.1 pq.2 < 2 * eps)
+        have hsub_sp : R_sparse ⊆ sprs.biUnion (fun pq =>
+            (pq.1 ×ˢ pq.2).filter (fun p => G.Adj p.1 p.2)) := by
+          intro x hx
+          simp only [R_sparse, Finset.mem_filter, Finset.mem_product, Finset.mem_univ,
+            true_and] at hx
+          obtain ⟨hadj, Pa, hPa, Pb, hPb, hne, h1, h2, hsp⟩ := hx
+          exact Finset.mem_biUnion.mpr ⟨(Pa, Pb),
+            Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨hPa, hPb⟩, hne, hsp⟩,
+            Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨h1, h2⟩, hadj⟩⟩
+        -- Each sparse pair has < 2ε|Pa||Pb| edges (from density < 2ε)
+        have hedge : ∀ pq ∈ sprs,
+            (((pq.1 ×ˢ pq.2).filter (fun p => G.Adj p.1 p.2)).card : ℚ) ≤
+              2 * eps * ↑pq.1.card * ↑pq.2.card := by
+          intro ⟨Pa, Pb⟩ hpq
+          have hd : edgeDensity G Pa Pb < 2 * eps := (Finset.mem_filter.mp hpq).2.2
+          by_cases h0 : (↑Pa.card : ℚ) * ↑Pb.card = 0
+          · -- Product is empty: one part has card 0, so product and RHS are both 0
+            rcases mul_eq_zero.mp h0 with h | h <;> {
+              have := Finset.card_eq_zero.mp (Nat.cast_eq_zero.mp h)
+              simp [this] }
+          · have h0' : (0 : ℚ) < ↑Pa.card * ↑Pb.card :=
+              lt_of_le_of_ne (by positivity) (Ne.symm h0)
+            unfold edgeDensity at hd
+            rw [dif_neg (ne_of_gt h0'), div_lt_iff₀ h0'] at hd
+            linarith
+        -- Bound: |R_sparse| ≤ Σ edge_counts ≤ 2ε·Σ|Pa||Pb| ≤ 2ε·n²
+        calc (↑R_sparse.card : ℚ)
+            ≤ sprs.sum (fun pq =>
+                (((pq.1 ×ˢ pq.2).filter (fun p => G.Adj p.1 p.2)).card : ℚ)) := by
+              exact_mod_cast le_trans (Finset.card_le_card hsub_sp) Finset.card_biUnion_le
+          _ ≤ sprs.sum (fun pq => 2 * eps * ↑pq.1.card * ↑pq.2.card) :=
+              Finset.sum_le_sum hedge
+          _ ≤ 2 * eps * ↑n ^ 2 := by
+              -- Factor out 2ε, then bound Σ|Pa||Pb| ≤ n²
+              -- Each Pa ×ˢ Pb ⊆ univ × univ, and for partition these are disjoint,
+              -- so Σ|Pa||Pb| = |univ × univ| = n². Use ≤ for simplicity.
+              have hfact : sprs.sum (fun pq => 2 * eps * (↑pq.1.card : ℚ) * ↑pq.2.card) =
+                  2 * eps * sprs.sum (fun pq => (↑pq.1.card : ℚ) * ↑pq.2.card) := by
+                rw [← Finset.mul_sum]; congr 1; ext pq; ring
+              rw [hfact]
+              apply mul_le_mul_of_nonneg_left _ (by positivity)
+              -- Σ_{sparse} |Pa|·|Pb| ≤ Σ_{all} |Pa|·|Pb| ≤ n²
+              calc sprs.sum (fun pq => (↑pq.1.card : ℚ) * ↑pq.2.card)
+                  ≤ (P.parts.product P.parts).sum
+                      (fun pq => (↑pq.1.card : ℚ) * ↑pq.2.card) :=
+                    Finset.sum_le_sum_of_subset_of_nonneg
+                      (Finset.filter_subset _ _)
+                      (fun pq _ _ => by positivity)
+                _ = ((P.parts.sum (fun S => (↑S.card : ℚ)))) ^ 2 := by
+                    rw [Finset.sum_product', sq]
+                    congr 1 <;> (simp_rw [← Finset.mul_sum]; rfl)
+                _ = ↑n ^ 2 := by congr 1; exact_mod_cast hsum
+          _ ≤ (delta / 4) * ↑n ^ 2 := by
+              nlinarith [heps_le_delta8, sq_nonneg (↑n : ℚ)]
       -- Step 5: Combine the three bounds
       calc (R.card : ℚ) ≤ ↑R_wp.card + ↑R_irreg.card + ↑R_sparse.card := hR_card
         _ ≤ (delta / 4) * ↑n ^ 2 + (delta / 2) * ↑n ^ 2 +
