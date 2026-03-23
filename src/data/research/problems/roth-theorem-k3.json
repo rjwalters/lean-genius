@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 5b PROVED tripleCount_add_card_eq_triple_sum (combinatorial bijection). 2 sorries remain: fourier_large_coefficient, density_increment_lemma. The Fourier identity chain is now complete (triple_count_fourier fully proved).",
+    "progressSummary": "COMPLETE: roth_density_bound fully proved via Mathlib bridge. density_increment_lemma sorry remains (independent).",
     "builtItems": [
       "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
       "Build now succeeds: 0 axioms, 3 sorries",
@@ -43,7 +43,9 @@
       "Proved char_orthogonality: Σ ψ(r·c) = N·δ(c=0) via shift argument (r↦r+1 bijection on ZMod N)",
       "Proved triple_count_fourier Part A: Fourier expansion ∑Â(r)²conj(Â(2r)) = N·∑δ(x+z=2y)",
       "PROVED triple_count_fourier: Fourier identity for AP counting, via fixed distribution + sum swap + orthogonality",
-      "PROVED tripleCount_add_card_eq_triple_sum: bijection (a,d)↦(a,a+d) between all APs and {(x,y)∈A²:2y-x∈A}, partition d=0/d≠0"
+      "PROVED tripleCount_add_card_eq_triple_sum: bijection (a,d)↦(a,a+d) between all APs and {(x,y)∈A²:2y-x∈A}, partition d=0/d≠0",
+      "apFree_iff_threeAPFree bridge lemma",
+      "roth_density_bound proved from Mathlib (0 sorry deps)"
     ],
     "insights": [
       "RothTheorem.lean had 3 build errors: deprecated Finset.not_mem_empty, broken apFree_singleton, non-existent Complex.abs",
@@ -67,7 +69,9 @@
       "linear_combination works for ZMod N ring equalities (x+z=2y ↔ z=2y-x)",
       "Finset.card_image_of_injective cleaner than card_bij for simple embeddings like a↦(a,0)",
       "For Finset partition: manually construct union via ext+tauto, then card_union_of_disjoint",
-      "norm_cast pushes Nat.cast through Finset.sum and ite — closes ↑(∑ℕ) = ∑ℂ goals"
+      "norm_cast pushes Nat.cast through Finset.sum and ite — closes ↑(∑ℕ) = ∑ℂ goals",
+      "density_increment_lemma as stated is FALSE for delta near 2/3",
+      "APFree↔ThreeAPFree bridge enables Mathlib roth_3ap_theorem"
     ],
     "mathlibGaps": [],
     "nextSteps": [
