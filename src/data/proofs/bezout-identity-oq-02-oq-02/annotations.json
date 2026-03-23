@@ -111,7 +111,6 @@
     },
     "type": "technique",
     "title": "DecompositionMonoid: Irreducible ↔ Prime as Abstract Euclid's Lemma",
-    "body": "Part IV covers `DecompositionMonoid` — the typeclass that gives `irreducible_iff_prime`. In a `CancelCommMonoidWithZero` that is also a `DecompositionMonoid` (which ℤ, k[X], ℤ[i] all are), `irred_iff_prime_decomp` is a direct alias for `irreducible_iff_prime`. `euclids_lemma_irreducible` then uses this iff to convert `Irreducible p` to `Prime p` and apply `.dvd_or_dvd`: if p is irreducible and `p ∣ a*b`, then `p ∣ a ∨ p ∣ b`.",
     "mathContext": "In abstract algebra: $p$ is **prime** if $p \\mid ab \\Rightarrow p \\mid a$ or $p \\mid b$. $p$ is **irreducible** if $p = ab \\Rightarrow$ a or b is a unit. These coincide in UFDs (unique factorization domains) and more generally in **GCD domains** and **Bézout domains**. Lean's `DecompositionMonoid` captures exactly this property. For ℤ: primes are ±2, ±3, ±5, ... and irreducibles coincide. For ℤ[i]: Gaussian primes are (1+i), 2+i, 3, 3+2i, ... and again irreducible = prime. The typeclass `DecompositionMonoid` is Lean's way of saying 'every element factors'.",
     "significance": "key",
     "relatedConcepts": [
@@ -126,7 +125,9 @@
       "Irreducible definition",
       "Prime definition",
       "irreducible_iff_prime (Mathlib)"
-    ]
+    ],
+    "proofId": "bezout-identity-oq-02-oq-02",
+    "content": "Part IV covers `DecompositionMonoid` — the typeclass that gives `irreducible_iff_prime`. In a `CancelCommMonoidWithZero` that is also a `DecompositionMonoid` (which ℤ, k[X], ℤ[i] all are), `irred_iff_prime_decomp` is a direct alias for `irreducible_iff_prime`. `euclids_lemma_irreducible` then uses this iff to convert `Irreducible p` to `Prime p` and apply `.dvd_or_dvd`: if p is irreducible and `p ∣ a*b`, then `p ∣ a ∨ p ∣ b`."
   },
   {
     "id": "ann-instances",
@@ -136,7 +137,6 @@
     },
     "type": "insight",
     "title": "One Proof, Three Rings: ℤ, k[X], ℤ[i] are All One-Liners",
-    "body": "Part V provides `euclids_lemma_int`, `euclids_lemma_poly`, `euclids_lemma_gaussian` — all three are syntactically identical: `euclids_lemma_ring hcop hdvd`. The typeclass inference system handles the rest: ℤ satisfies `CommRing ℤ` (obvious), `Polynomial k` over a field satisfies `CommRing (Polynomial k)`, and `GaussianInt` satisfies `CommRing GaussianInt`. The `inferInstance` examples confirm the full hierarchy: each has `EuclideanDomain` → `IsBezout` instances resolvable by Lean automatically.",
     "mathContext": "The typeclass instances used: $\\mathbb{Z}$: `IsBezout ℤ` (ℤ is a PID, every ideal is principal), `DecompositionMonoid ℤ` (ℤ is a UFD). $k[X]$ over field $k$: `EuclideanDomain (Polynomial k)` (polynomial division algorithm), hence `IsBezout`. $\\mathbb{Z}[i]$: `EuclideanDomain GaussianInt` (norm function $N(a+bi) = a^2+b^2$), hence `IsBezout`. Explicit Bézout coefficient example in ℤ: $\\text{IsCoprime}(3, 7)$ via $(3,7) = (5 \\cdot 3 + (-2) \\cdot 7 = 1)$: `⟨5, -2, by norm_num⟩`.",
     "significance": "key",
     "relatedConcepts": [
@@ -152,7 +152,9 @@
       "Polynomial.instEuclideanDomain",
       "Int.instEuclideanDomain",
       "norm_num for IsCoprime witnesses"
-    ]
+    ],
+    "proofId": "bezout-identity-oq-02-oq-02",
+    "content": "Part V provides `euclids_lemma_int`, `euclids_lemma_poly`, `euclids_lemma_gaussian` — all three are syntactically identical: `euclids_lemma_ring hcop hdvd`. The typeclass inference system handles the rest: ℤ satisfies `CommRing ℤ` (obvious), `Polynomial k` over a field satisfies `CommRing (Polynomial k)`, and `GaussianInt` satisfies `CommRing GaussianInt`. The `inferInstance` examples confirm the full hierarchy: each has `EuclideanDomain` → `IsBezout` instances resolvable by Lean automatically."
   },
   {
     "id": "ann-uniform-principle",
@@ -162,7 +164,6 @@
     },
     "type": "insight",
     "title": "The Uniform Proof Table: How Each Ring Establishes IsCoprime",
-    "body": "Part VI culminates with the uniform principle: `euclids_lemma_uniform` is an alias for `euclids_lemma_ring`, and `euclids_lemma_explicit` is a term-mode proof that makes the ring identity completely transparent. The docstring includes a table: ℤ gets `IsCoprime` via `Nat.Coprime.isCoprime` or Bézout algorithm; k[X] via EuclideanDomain; ℤ[i] via Gaussian integer Euclidean algorithm; IsBezout rings via `isBezout_relPrime_to_isCoprime`; EuclideanDomains via `EuclideanDomain.isCoprime_of_dvd`. The verification section confirms `inferInstance` resolves all typeclasses and the IsRelPrime example for (3,7) in ℤ is proved explicitly.",
     "mathContext": "**Term-mode proof** (lines 250-253): `euclids_lemma_explicit u v huv k hk` takes Bézout coefficients and divisibility witness as explicit arguments, returning `⟨u * c + v * k, by linear_combination v * hk - c * huv⟩`. This is the 'pre-abstracted' form showing no magic is happening — just algebraic manipulation. The `#check` commands at lines 279-283 confirm all theorem types are well-formed. The `IsRelPrime (3 : ℤ) 7` example at line 273-277 shows how to prove arithmetic coprimality directly: compute $3 \\cdot 5 + 7 \\cdot (-2) = 1$, so any common divisor divides 1.",
     "significance": "key",
     "relatedConcepts": [
@@ -178,6 +179,8 @@
       "linear_combination",
       "IsRelPrime proof pattern",
       "Nat.Coprime.isCoprime"
-    ]
+    ],
+    "proofId": "bezout-identity-oq-02-oq-02",
+    "content": "Part VI culminates with the uniform principle: `euclids_lemma_uniform` is an alias for `euclids_lemma_ring`, and `euclids_lemma_explicit` is a term-mode proof that makes the ring identity completely transparent. The docstring includes a table: ℤ gets `IsCoprime` via `Nat.Coprime.isCoprime` or Bézout algorithm; k[X] via EuclideanDomain; ℤ[i] via Gaussian integer Euclidean algorithm; IsBezout rings via `isBezout_relPrime_to_isCoprime`; EuclideanDomains via `EuclideanDomain.isCoprime_of_dvd`. The verification section confirms `inferInstance` resolves all typeclasses and the IsRelPrime example for (3,7) in ℤ is proved explicitly."
   }
 ]

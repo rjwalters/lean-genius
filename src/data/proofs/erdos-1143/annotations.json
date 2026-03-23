@@ -15,7 +15,8 @@
     "prerequisites": [
       "Finset.Ico half-open intervals",
       "existential quantification over Finset"
-    ]
+    ],
+    "proofId": "erdos-1143"
   },
   {
     "id": "covering-function",
@@ -33,7 +34,8 @@
     "prerequisites": [
       "Lattice infimum iInf",
       "coveredInInterval definition"
-    ]
+    ],
+    "proofId": "erdos-1143"
   },
   {
     "id": "expected-density",
@@ -51,7 +53,8 @@
     "prerequisites": [
       "Finset.prod (big operators)",
       "real arithmetic"
-    ]
+    ],
+    "proofId": "erdos-1143"
   },
   {
     "id": "covering-le-k",
@@ -67,7 +70,8 @@
     "prerequisites": [
       "coveredInInterval definition",
       "coveringFunction definition"
-    ]
+    ],
+    "proofId": "erdos-1143"
   },
   {
     "id": "single-prime-bounds",
@@ -86,7 +90,8 @@
       "Nat.Prime",
       "coveringFunction definition",
       "division with remainder"
-    ]
+    ],
+    "proofId": "erdos-1143"
   },
   {
     "id": "density-positivity",
@@ -103,7 +108,8 @@
     "prerequisites": [
       "Nat.Prime implies p >= 2",
       "Finset.prod over (0,1) factors"
-    ]
+    ],
+    "proofId": "erdos-1143"
   },
   {
     "id": "covering-asymptotic",
@@ -122,7 +128,8 @@
       "expectedDensity definition",
       "coveringFunction definition",
       "CRT for coprime moduli"
-    ]
+    ],
+    "proofId": "erdos-1143"
   },
   {
     "id": "erdos-selfridge-exact",
@@ -141,7 +148,8 @@
       "coveringFunction definition",
       "Nat.floor",
       "Finset.max'"
-    ]
+    ],
+    "proofId": "erdos-1143"
   },
   {
     "id": "alpha-gt-3-open",
@@ -160,7 +168,8 @@
       "coveringFunction definition",
       "expectedDensity definition",
       "Finset.card (number of primes)"
-    ]
+    ],
+    "proofId": "erdos-1143"
   },
   {
     "id": "density-two-three",
@@ -177,7 +186,8 @@
     "prerequisites": [
       "expectedDensity definition",
       "rational arithmetic in Lean"
-    ]
+    ],
+    "proofId": "erdos-1143"
   },
   {
     "id": "density-two-three-five",
@@ -195,7 +205,8 @@
     "prerequisites": [
       "expectedDensity definition",
       "Finset.prod with three elements"
-    ]
+    ],
+    "proofId": "erdos-1143"
   },
   {
     "id": "jacobsthal-connection",
@@ -215,6 +226,7 @@
       "coveringFunction definition",
       "complement counting",
       "GCD and coprimality"
-    ]
+    ],
+    "proofId": "erdos-1143"
   }
 ]

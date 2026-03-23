@@ -15,7 +15,8 @@
     "prerequisites": [
       "Nat.choose (binomial coefficients)",
       "Real-valued powers"
-    ]
+    ],
+    "proofId": "binomial-theorem-oq-03"
   },
   {
     "id": "binomial-expansion",
@@ -32,7 +33,8 @@
     "prerequisites": [
       "Mathlib's Commute.add_pow",
       "ring tactic"
-    ]
+    ],
+    "proofId": "binomial-theorem-oq-03"
   },
   {
     "id": "normalization",
@@ -49,7 +51,8 @@
     "prerequisites": [
       "binomial_expansion",
       "add_sub_cancel"
-    ]
+    ],
+    "proofId": "binomial-theorem-oq-03"
   },
   {
     "id": "absorption",
@@ -66,7 +69,8 @@
     "prerequisites": [
       "Nat.choose definition",
       "factorial identities"
-    ]
+    ],
+    "proofId": "binomial-theorem-oq-03"
   },
   {
     "id": "binomial-mean",
@@ -84,7 +88,8 @@
     "prerequisites": [
       "absorption identity",
       "binomPMF_sum_eq_one (normalization)"
-    ]
+    ],
+    "proofId": "binomial-theorem-oq-03"
   },
   {
     "id": "fair-coin",
@@ -101,7 +106,8 @@
     "prerequisites": [
       "binomPMF definition",
       "arithmetic with 1/2"
-    ]
+    ],
+    "proofId": "binomial-theorem-oq-03"
   },
   {
     "id": "binomial-pgf",
@@ -118,7 +124,8 @@
     "prerequisites": [
       "binomial_expansion",
       "ring tactic"
-    ]
+    ],
+    "proofId": "binomial-theorem-oq-03"
   },
   {
     "id": "double-absorption",
@@ -135,7 +142,8 @@
     "prerequisites": [
       "absorption identity (single)",
       "Nat.choose"
-    ]
+    ],
+    "proofId": "binomial-theorem-oq-03"
   },
   {
     "id": "binomial-variance",
@@ -153,7 +161,8 @@
     "prerequisites": [
       "binomial_second_factorial_moment",
       "binomial_mean"
-    ]
+    ],
+    "proofId": "binomial-theorem-oq-03"
   },
   {
     "id": "vandermonde-convolution",
@@ -172,7 +181,8 @@
       "vandermonde_range",
       "binomPMF definition",
       "power laws"
-    ]
+    ],
+    "proofId": "binomial-theorem-oq-03"
   },
   {
     "id": "compound-interest-limit",
@@ -193,7 +203,8 @@
       "Real.hasDerivAt_log",
       "Real.continuous_exp",
       "tendsto_const_div_atTop_nhds_zero_nat"
-    ]
+    ],
+    "proofId": "binomial-theorem-oq-03"
   },
   {
     "id": "poisson-pmf",
@@ -211,7 +222,8 @@
     "prerequisites": [
       "Real.exp",
       "Nat.factorial"
-    ]
+    ],
+    "proofId": "binomial-theorem-oq-03"
   },
   {
     "id": "poisson-limit",
@@ -231,7 +243,8 @@
       "poissonPMF_succ",
       "binomPMF_succ_eq",
       "poisson_ratio_tendsto"
-    ]
+    ],
+    "proofId": "binomial-theorem-oq-03"
   },
   {
     "id": "summary-theorem",
@@ -247,6 +260,7 @@
     ],
     "prerequisites": [
       "All preceding theorems in the file"
-    ]
+    ],
+    "proofId": "binomial-theorem-oq-03"
   }
 ]
