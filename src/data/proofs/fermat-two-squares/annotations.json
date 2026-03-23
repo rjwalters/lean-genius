@@ -17,8 +17,8 @@
       "prime characterization"
     ],
     "prerequisites": [
-      "Mathlib imports",
-      "Lean 4 module system"
+      "Lean 4 import system",
+      "Mathlib SumTwoSquares module"
     ]
   },
   {
@@ -26,7 +26,7 @@
     "proofId": "fermat-two-squares",
     "range": {
       "startLine": 4,
-      "endLine": 20
+      "endLine": 49
     },
     "type": "insight",
     "title": "A Century-Long Mathematical Mystery",
@@ -41,51 +41,52 @@
     ],
     "prerequisites": [
       "number theory history",
-      "Fermat's contributions"
+      "sum of squares problem"
     ]
   },
   {
     "id": "ann-zagier",
     "proofId": "fermat-two-squares",
     "range": {
-      "startLine": 21,
-      "endLine": 35
+      "startLine": 4,
+      "endLine": 49
     },
     "type": "insight",
     "title": "Zagier's One-Sentence Proof",
     "content": "In 1990, Don Zagier published a proof that fits in a single sentence (though understanding it takes considerably longer):\n\n\"The involution on the finite set S = {(x,y,z) ∈ N³ : x² + 4yz = p} defined by (x,y,z) → (x+2z, z, y-x-z) if x < y-z, (2y-x, y, x-y+z) if y-z < x < 2y, (x-2y, x-y+z, y) if x > 2y, has exactly one fixed point, so |S| is odd and the involution (x,y,z) → (x,z,y) also has a fixed point.\"\n\nThe genius is in choosing the right set S and the right involutions.",
     "mathContext": "Zagier's proof exploits: (1) |S| is odd since p is odd, (2) an involution on a set of odd cardinality must have a fixed point.",
-    "significance": "key",
+    "significance": "critical",
     "relatedConcepts": [
       "involutions",
       "combinatorial proof",
       "Zagier"
     ],
     "prerequisites": [
-      "involution proof technique",
-      "fixed points"
+      "involutions on finite sets",
+      "parity arguments",
+      "fixed point theorem"
     ]
   },
   {
     "id": "ann-main-theorem",
     "proofId": "fermat-two-squares",
     "range": {
-      "startLine": 36,
-      "endLine": 53
+      "startLine": 4,
+      "endLine": 49
     },
     "type": "theorem",
     "title": "The Complete Characterization",
     "content": "**A prime p is a sum of two squares iff p % 4 ≠ 3**\n\nThe proof has two directions:\n\n1. **If p = a² + b², then p % 4 ≠ 3**: Squares mod 4 are 0 or 1, so their sum is 0, 1, or 2 - never 3.\n\n2. **If p % 4 ≠ 3, then p = a² + b²**: This is the hard direction, proved by Zagier's involution argument in Mathlib.",
     "mathContext": "$(2k)^2 = 4k^2 \\equiv 0 \\pmod 4$\n$(2k+1)^2 = 4k^2 + 4k + 1 \\equiv 1 \\pmod 4$\n\nSo $a^2 + b^2 \\mod 4 \\in \\{0+0, 0+1, 1+0, 1+1\\} = \\{0, 1, 2\\}$",
-    "significance": "key",
+    "significance": "critical",
     "relatedConcepts": [
       "modular arithmetic",
       "characterization theorem"
     ],
     "prerequisites": [
-      "Nat.Prime",
-      "sum of two squares",
-      "quadratic forms"
+      "modular arithmetic",
+      "Nat.Prime.sq_add_sq",
+      "quadratic residues mod 4"
     ]
   },
   {
@@ -93,7 +94,7 @@
     "proofId": "fermat-two-squares",
     "range": {
       "startLine": 55,
-      "endLine": 75
+      "endLine": 87
     },
     "type": "theorem",
     "title": "The Classic Statement: p ≡ 1 (mod 4)",
@@ -105,15 +106,16 @@
       "prime classification"
     ],
     "prerequisites": [
+      "main theorem (sq_add_sq)",
       "modular arithmetic",
-      "quadratic residues"
+      "Dirichlet's theorem"
     ]
   },
   {
     "id": "ann-two-special",
     "proofId": "fermat-two-squares",
     "range": {
-      "startLine": 76,
+      "startLine": 55,
       "endLine": 87
     },
     "type": "lemma",
@@ -126,8 +128,8 @@
       "edge cases"
     ],
     "prerequisites": [
-      "even prime",
-      "special cases"
+      "main theorem (sq_add_sq)",
+      "Nat.Prime 2"
     ]
   },
   {
@@ -148,7 +150,7 @@
     ],
     "prerequisites": [
       "modular arithmetic",
-      "proof by contradiction"
+      "squares mod 4"
     ]
   },
   {
@@ -168,14 +170,16 @@
       "verification"
     ],
     "prerequisites": [
-      "small prime computations"
+      "factor_theorem",
+      "rfl tactic",
+      "norm_num"
     ]
   },
   {
     "id": "ann-classification",
     "proofId": "fermat-two-squares",
     "range": {
-      "startLine": 117,
+      "startLine": 105,
       "endLine": 134
     },
     "type": "theorem",
@@ -188,15 +192,16 @@
       "complete characterization"
     ],
     "prerequisites": [
-      "complete classification",
-      "prime factorization"
+      "main theorem",
+      "modular arithmetic",
+      "case analysis on p % 4"
     ]
   },
   {
     "id": "ann-gaussian",
     "proofId": "fermat-two-squares",
     "range": {
-      "startLine": 40,
+      "startLine": 4,
       "endLine": 49
     },
     "type": "insight",
@@ -210,8 +215,9 @@
       "quadratic reciprocity"
     ],
     "prerequisites": [
-      "Gaussian integers",
-      "complex number norm"
+      "Gaussian integers Z[i]",
+      "norm in Z[i]",
+      "unique factorization in Z[i]"
     ]
   }
 ]
