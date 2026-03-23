@@ -29,15 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved uniqueProductCount_comm (was axiom), added reprCount_comm. Fixed pre-existing Mathlib calc chain breakage. Axioms: 4→3.",
+    "progressSummary": "COMPLETED: Eliminated uniqueProductCount_comm axiom (proved via reprCount_comm). Axioms: 4→3. Remaining axioms: maxUniqueProducts (function def), maxUniqueProducts_achieved (existence), van_doorn_bounds (deep).",
     "builtItems": [
       "reprCount_comm: reprCount A B m = reprCount B A m (via Finset.card_bij)",
-      "uniqueProductCount_comm: PROVED (was axiom) F(A,B) = F(B,A)"
+      "uniqueProductCount_comm: PROVED (was axiom) F(A,B) = F(B,A)",
+      "theorem reprCount_comm: symmetric representation count (Erdos896Problem.lean)",
+      "theorem uniqueProductCount_comm: F(A,B) = F(B,A) - eliminated 1 axiom"
     ],
     "insights": [
       "uniqueProductCount_comm proved by showing reprCount is symmetric (Finset.card_bij with swap) then image sets are equal (mul_comm)",
       "Pre-existing Mathlib breakage: |>.card calc chain syntax no longer works, fixed by using parentheses",
-      "Remaining 3 axioms: maxUniqueProducts (function def), maxUniqueProducts_achieved (existence), van_doorn_bounds (deep result)"
+      "Remaining 3 axioms: maxUniqueProducts (function def), maxUniqueProducts_achieved (existence), van_doorn_bounds (deep result)",
+      "reprCount_comm proved via Finset.card_bij with swap (a,b)↦(b,a)",
+      "uniqueProductCount_comm proved: image sets equal by mul_comm, filter conditions match by reprCount_comm"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -65,7 +69,7 @@
       "path": "Proofs/Erdos896Problem.lean",
       "filename": "Erdos896Problem.lean",
       "lineCount": 147,
-      "theoremCount": 7,
+      "theoremCount": 10,
       "axiomCount": 3,
       "defCount": 7,
       "sorryCount": 0,
