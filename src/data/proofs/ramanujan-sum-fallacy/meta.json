@@ -152,6 +152,34 @@
     "theoremCount": 13,
     "definitionCount": 3
   },
+  "crossReferences": [
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "foundational",
+      "description": "The divergence of the harmonic series $\\sum 1/n$ is the fundamental example of a divergent series — the Ramanujan sum $1+2+3+\\cdots$ diverges even faster, making the 'equals $-1/12$' claim all the more striking"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Euler's $\\sum 1/n^2 = \\pi^2/6$ is a convergent relative of the Ramanujan sum — the Riemann zeta function $\\zeta(s) = \\sum n^{-s}$ connects both: convergent for $s > 1$ (Basel at $s=2$), needing analytic continuation for $s = -1$ (Ramanujan)"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "thematic",
+      "description": "Euler's identity $e^{i\\pi}+1=0$ connects fundamental constants — similarly, $\\zeta(-1) = -1/12$ connects the integers to the zeta function's analytic continuation, both revealing unexpected structure"
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "thematic",
+      "description": "Both expose limitations of formal systems: Gödel shows not everything true is provable, while the Ramanujan fallacy shows that naive algebraic manipulation of infinite series can produce 'results' that contradict basic analysis"
+    }
+  ],
+  "relatedProofs": [
+    "harmonic-divergence",
+    "basel-problem",
+    "euler-identity",
+    "godel-incompleteness"
+  ],
   "references": [
     {
       "authors": "Ramanujan, Srinivasa",
