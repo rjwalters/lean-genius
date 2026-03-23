@@ -154,6 +154,10 @@
   },
   "crossReferences": [
     {
+      "proofId": "szemeredi-core",
+      "relationship": "Uses shared definitions from the core infrastructure module"
+    },
+    {
       "proofId": "szemeredi-counting",
       "relationship": "The counting and removal lemmas are the primary applications of regularity"
     },
