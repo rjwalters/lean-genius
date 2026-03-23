@@ -127,6 +127,92 @@
       "Is there a connection to the theory of longest increasing subsequences and the Tracy–Widom distribution, given the lattice point characterization of similarly ordered fractions?"
     ]
   },
+  "crossReferences": [
+    {
+      "target": "euler-totient",
+      "relationship": "The Farey sequence $F_n$ has cardinality $1 + \\sum_{k=1}^{n} \\varphi(k) \\sim 3n^2/\\pi^2$, so Euler's totient function directly governs the density of Farey fractions and the proportion that any similarly ordered run can occupy."
+    },
+    {
+      "target": "erdos-1003",
+      "relationship": "Erdős Problem 1003 concerns Farey fractions and their distribution, making it a close companion to Problem 1005 within Erdős's broader program on the structure and spacing of rational approximations."
+    },
+    {
+      "target": "erdos-1004",
+      "relationship": "Erdős Problem 1004 addresses consecutive Farey fraction differences, directly adjacent in Erdős's sequence to Problem 1005 and sharing the combinatorial analysis of runs within the Farey sequence."
+    },
+    {
+      "target": "fundamental-arithmetic",
+      "relationship": "Coprimality of numerator and denominator is the defining constraint of a Farey fraction; the fundamental theorem of arithmetic underpins the unique reduced-fraction representation on which the Farey sequence is built."
+    },
+    {
+      "target": "infinitude-primes",
+      "relationship": "The $3n^2/\\pi^2$ asymptotic for $|F_n|$ depends on the distribution of $\\varphi(k)$, which in turn relies on the infinitude and distribution of primes — a foundational number-theoretic fact connecting Farey density to prime structure."
+    },
+    {
+      "target": "erdos-1",
+      "relationship": "Erdős Problem 1 is emblematic of Erdős's combinatorial number theory and uses probabilistic/extremal arguments that are methodologically analogous to the linear-growth result $f(n) \\gg n$ Erdős proved in 1943 for Farey runs."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "target": "euler-totient",
+      "description": "Farey sequence size formula $|F_n| = 1 + \\sum_{k=1}^{n} \\varphi(k)$ directly uses the totient function; the $3n^2/\\pi^2$ asymptotic is needed to interpret $f(n) \\sim cn$ as a fixed fraction of all Farey fractions."
+    },
+    {
+      "target": "erdos-1003",
+      "description": "Companion Erdős problem on Farey fractions; shares the Farey sequence framework and van Doorn's 2025 bounds paper as a primary source."
+    },
+    {
+      "target": "fundamental-arithmetic",
+      "description": "Unique coprime representation of rational numbers is the foundation of the `FareyFraction` structure formalized in `Erdos1005Problem.lean`."
+    },
+    {
+      "target": "erdos-1049",
+      "description": "Another problem in Erdős's sequence touching on asymptotic combinatorics; shares the challenge of establishing tight constant factors in $\\Theta(n)$ estimates."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["T. van Doorn"],
+      "title": "Consecutive similarly ordered Farey fractions",
+      "year": 2025,
+      "venue": "Preprint",
+      "notes": "Establishes the current best bounds $(1/12 - o(1))n \\leq f(n) \\leq n/4 + O(1)$ and conjectures $f(n)/n \\to 1/4$."
+    },
+    {
+      "authors": ["P. Erdős"],
+      "title": "A note on Farey series",
+      "year": 1943,
+      "venue": "Quarterly Journal of Mathematics",
+      "volume": "14",
+      "pages": "82–85",
+      "notes": "Proves the first linear lower bound $f(n) \\geq cn$ for some constant $c > 0$, establishing that the longest similarly ordered run grows linearly in $n$."
+    },
+    {
+      "authors": ["G. H. Hardy", "E. M. Wright"],
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 1979,
+      "venue": "Oxford University Press",
+      "edition": "5th",
+      "notes": "Chapter 3 covers Farey sequences, the mediant property, and the determinant condition $|ad - bc| = 1$ for adjacent Farey fractions — the structural constraint underlying van Doorn's upper bound."
+    },
+    {
+      "authors": ["R. R. Hall", "G. Tenenbaum"],
+      "title": "On the average and normal orders of Euler's function",
+      "year": 1988,
+      "venue": "Journal of the London Mathematical Society",
+      "volume": "38",
+      "pages": "1–22",
+      "notes": "Asymptotic analysis of $\\sum_{k \\leq n} \\varphi(k) \\sim 3n^2/\\pi^2$ used to determine the density of Farey fractions and interpret $f(n)/n$ as a proportion of $F_n$."
+    },
+    {
+      "authors": ["A. Granville"],
+      "title": "The distribution of the integers in an interval",
+      "year": 1993,
+      "venue": "CMS Conference Proceedings",
+      "notes": "Background on Farey sequence structure and applications of the $GL_2(\\mathbb{Z})$ determinant property to number-theoretic combinatorics."
+    }
+  ],
   "leanFile": {
     "imports": [],
     "opens": [],

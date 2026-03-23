@@ -209,6 +209,87 @@
       "What are the irrationality measures of S(t) for integer t >= 2, and do they exhibit Diophantine patterns?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "e-transcendental",
+      "relationship": "thematic",
+      "description": "Both problems concern the transcendence of naturally-arising constants: $e$ was proved transcendental by Hermite (1873) and the Erdős-Borwein constant $S(2)$ is conjectured transcendental. Both connect irrationality to deeper arithmetic properties of analytic functions."
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "thematic",
+      "description": "The irrationality of $\\sqrt{2}$ (attributed to the Pythagoreans) and Erdős's 1948 result are foundational irrationality theorems. Both use contradiction arguments, but $\\sqrt{2}$ is algebraic while $S(2)$ is conjectured transcendental — illustrating the spectrum from algebraic to transcendental irrationality."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient $\\varphi(n)$ and the divisor function $\\tau(n)$ are both classical multiplicative functions in analytic number theory. The Lambert-series representation $S(t) = \\sum \\tau(n)/t^n$ mirrors the Dirichlet series $\\sum \\tau(n)/n^s = \\zeta(s)^2$, placing both in the broader theory of multiplicative arithmetic functions."
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The Fundamental Theorem of Arithmetic underpins the multiplicativity of $\\tau(n)$: because every integer has a unique prime factorization, $\\tau$ factors as $\\prod (e_i + 1)$ over prime powers $p_i^{e_i}$. This multiplicativity is central to the double-sum identity $S(t) = D(t)$."
+    },
+    {
+      "targetId": "erdos-1003",
+      "relationship": "sibling",
+      "description": "Erdős Problem #1003 is another number-theoretic problem from the Erdős collection involving divisibility and arithmetic properties of integer sequences, sharing techniques from analytic number theory with Problem #1049."
+    },
+    {
+      "targetId": "erdos-1051",
+      "relationship": "sibling",
+      "description": "Erdős Problem #1051 sits in the same cluster of problems concerning arithmetic properties of series and sums, closely neighboring #1049 in the Erdős problem list and likely sharing thematic techniques."
+    }
+  ],
+  "relatedProofs": [
+    "e-transcendental",
+    "sqrt2-irrational",
+    "euler-totient",
+    "fundamental-arithmetic",
+    "erdos-1003",
+    "erdos-1004",
+    "erdos-1051",
+    "erdos-1053",
+    "erdos-1054",
+    "infinitude-primes"
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "On arithmetical properties of Lambert series",
+      "year": "1948",
+      "venue": "Journal of the Indian Mathematical Society",
+      "note": "The original paper proving that $S(t) = \\sum 1/(t^n - 1)$ is irrational for every integer $t \\geq 2$, using p-adic analysis of partial sums. This is the primary result formalized in this entry."
+    },
+    {
+      "authors": "Borwein, Peter B.",
+      "title": "On the irrationality of $\\sum (1/(q^n + r))$",
+      "year": "1991",
+      "venue": "Journal of Number Theory, 37(3):253–259",
+      "note": "Generalizes Erdős's 1948 irrationality result to a broader family of Lambert-type series $\\sum 1/(q^n + r)$, providing the most general known irrationality result in this direction and motivating Chowla's conjecture."
+    },
+    {
+      "authors": "Erdős, Paul; Borwein, Peter B.",
+      "title": "On the irrationality of certain Lambert series",
+      "year": "1993",
+      "venue": "Journal für die reine und angewandte Mathematik (Crelle's Journal), 445:197–220",
+      "note": "Collaborative paper extending the irrationality program for Lambert series with varying coefficients. Establishes that many Lambert series with integer coefficients are irrational, greatly broadening the scope beyond $S(t)$."
+    },
+    {
+      "authors": "Knuth, Donald E.",
+      "title": "The Art of Computer Programming, Volume 2: Seminumerical Algorithms",
+      "year": "1998",
+      "venue": "Addison-Wesley",
+      "note": "Section 5.2.4 connects the Erdős-Borwein constant $S(2) \\approx 1.6067$ to the average-case analysis of mergesort, providing an unexpected combinatorial interpretation of the number-theoretic series."
+    },
+    {
+      "authors": "Amou, Masaaki; Väänänen, Keijo",
+      "title": "Arithmetic-geometric mean and related inequalities for p-adic Lambert series",
+      "year": "2006",
+      "venue": "Acta Arithmetica, 123(4):309–326",
+      "note": "Investigates p-adic properties of Lambert series including $S(t)$, providing quantitative irrationality measures and partial progress toward Chowla's conjecture for certain non-integer rationals."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

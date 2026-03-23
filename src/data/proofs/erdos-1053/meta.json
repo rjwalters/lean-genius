@@ -122,5 +122,85 @@
       "Does a $k = 12$ perfect number exist, or is $k = 11$ the absolute maximum?",
       "Do odd perfect numbers ($k = 2$, $n$ odd) exist? (Open since antiquity, known: if one exists, $n > 10^{1500}$)"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient φ(n) and the sum-of-divisors σ(n) are both fundamental multiplicative arithmetic functions. Their interplay governs the structure of perfect numbers: for primes p, σ(p) = p+1 while φ(p) = p−1, and highly composite numbers extremize both."
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "depends-on",
+      "description": "The multiplicativity of σ — the key property σ(mn) = σ(m)σ(n) for gcd(m,n) = 1 — follows directly from the Fundamental Theorem of Arithmetic. This multiplicativity is what allows the abundancy index σ(n)/n to be analyzed prime-factor by prime-factor."
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Gronwall's extremal bound σ(n)/n ~ e^γ · log log n is achieved along primorial-type numbers (products of the first k primes). The infinitude of primes ensures this sequence grows without bound, setting the asymptotic ceiling that Erdős asks whether k-perfect numbers can approach."
+    },
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Erdős Problem #1054 concerns the distribution and density of multiply-perfect numbers, directly complementing the growth-rate question here. Together they form a two-part study of the k-perfect number sequence."
+    },
+    {
+      "targetId": "erdos-1003",
+      "relationship": "related",
+      "description": "Erdős Problem #1003 concerns the distribution of the abundancy index σ(n)/n over integers, studying when large values occur. The k-perfect numbers — where σ(n)/n is exactly an integer — are a special discrete sub-problem within this continuous distribution question."
+    },
+    {
+      "targetId": "erdos-1004",
+      "relationship": "related",
+      "description": "Erdős Problem #1004 studies the sum ∑ σ(n)/n over structured sets, connecting the local behavior of σ(n)/n at k-perfect numbers to global averaging results. Both problems probe the same extremal arithmetic landscape."
+    }
+  ],
+  "relatedProofs": [
+    "euler-totient",
+    "fundamental-arithmetic",
+    "infinitude-primes",
+    "erdos-1054",
+    "erdos-1003",
+    "erdos-1004",
+    "perfect-numbers",
+    "riemann-hypothesis"
+  ],
+  "references": [
+    {
+      "authors": "Gronwall, T. H.",
+      "title": "Some asymptotic expressions in the theory of numbers",
+      "year": "1913",
+      "venue": "Transactions of the American Mathematical Society, 14(1), 113–122",
+      "note": "Proves lim sup σ(n)/(n log log n) = e^γ, establishing the natural scale for the abundancy index and the ceiling that k-perfect numbers would have to approach."
+    },
+    {
+      "authors": "Robin, G.",
+      "title": "Grandes valeurs de la fonction somme des diviseurs et hypothèse de Riemann",
+      "year": "1984",
+      "venue": "Journal de Mathématiques Pures et Appliquées, 63(2), 187–213",
+      "note": "Shows that σ(n) < e^γ · n · log log n for all n ≥ 5041 is equivalent to the Riemann Hypothesis, giving the conditional k = O(log log n) bound for k-perfect numbers."
+    },
+    {
+      "authors": "Alaoglu, L. and Erdős, P.",
+      "title": "On highly composite and similar numbers",
+      "year": "1944",
+      "venue": "Transactions of the American Mathematical Society, 56(3), 448–469",
+      "note": "Introduces colossally abundant numbers, characterizes the extremal behavior of σ(n)/n, and lays groundwork for understanding which integers can achieve large abundancy indices."
+    },
+    {
+      "authors": "Guy, R. K.",
+      "title": "Unsolved Problems in Number Theory, 3rd edition, Problem B2",
+      "year": "2004",
+      "venue": "Springer, New York",
+      "note": "Surveys the state of k-perfect numbers including the stronger conjecture that each k ≥ 3 has only finitely many k-perfect numbers, and catalogs known examples up to k = 11."
+    },
+    {
+      "authors": "Kanold, H.-J.",
+      "title": "Über mehrfach vollkommene Zahlen",
+      "year": "1956",
+      "venue": "Journal für die reine und angewandte Mathematik, 197, 82–96",
+      "note": "Derives structural necessary conditions for multiply perfect numbers using prime factorization constraints, providing the best unconditional bounds on k available without RH."
+    }
+  ],
+  "leanFile": "Proofs/Erdos1053Problem.lean"
 }
