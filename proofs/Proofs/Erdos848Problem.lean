@@ -39,10 +39,16 @@ axiom maxNonSqfreeSet_le (N : ℕ) : maxNonSqfreeSet N ≤ N
 /- ## Known Results -/
 
 /-- The set {n ∈ {1,...,N} : n ≡ 7 (mod 25)} achieves the property:
-    for a ≡ b ≡ 7 (mod 25), ab + 1 ≡ 50 ≡ 0 (mod 25), so 5² | ab + 1. -/
-axiom mod25_achieves :
+    for a ≡ b ≡ 7 (mod 25), ab + 1 ≡ 50 ≡ 0 (mod 25), so 5² | ab + 1.
+    Proof: a*b ≡ 7*7 = 49 ≡ -1 (mod 25), so a*b+1 ≡ 0 (mod 25). -/
+theorem mod25_achieves :
   ∀ a b : ℕ, a % 25 = 7 → b % 25 = 7 →
-    5 * 5 ∣ a * b + 1
+    5 * 5 ∣ a * b + 1 := by
+  intro a b ha hb
+  show 25 ∣ a * b + 1
+  have : (a * b + 1) % 25 = 0 := by
+    rw [Nat.add_mod, Nat.mul_mod, ha, hb]; norm_num
+  exact Nat.dvd_of_mod_eq_zero this
 
 /-- This gives a lower bound: maxNonSqfreeSet(N) ≥ ⌊N/25⌋. -/
 axiom lower_bound (N : ℕ) (hN : 25 ≤ N) :
