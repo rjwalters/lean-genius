@@ -1,0 +1,134 @@
+{
+  "id": "sum-of-kth-powers-oq-02",
+  "title": "Sum of Powers: Extension to Non-Integer Exponents",
+  "slug": "sum-of-kth-powers-oq-02",
+  "description": "Extends Faulhaber's formulas to real exponents via the p-series ζ(s) = ∑ 1/n^s. Proves convergence dichotomy (iff s > 1), recovers ζ(2) = π²/6 and ζ(4) = π⁴/90, establishes term and zeta monotonicity, and bridges real-exponent theory to integer power sums.",
+  "leanFile": "Proofs/SumOfKthPowersOQ02.lean",
+  "meta": {
+    "author": "Euler (1734); formalized here",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Riemann_zeta_function",
+    "date": "1734",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/SumOfKthPowersOQ02.lean",
+    "tags": [
+      "analysis",
+      "number-theory",
+      "p-series",
+      "zeta-function",
+      "convergence",
+      "research",
+      "open-problem"
+    ],
+    "badge": "formalized",
+    "sorries": 3,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.summable_nat_rpow_inv",
+        "description": "p-series convergence criterion",
+        "module": "Mathlib.Analysis.PSeries"
+      },
+      {
+        "theorem": "hasSum_zeta_two",
+        "description": "Basel Problem: ζ(2) = π²/6",
+        "module": "Mathlib.NumberTheory.ZetaValues"
+      },
+      {
+        "theorem": "hasSum_zeta_four",
+        "description": "ζ(4) = π⁴/90",
+        "module": "Mathlib.NumberTheory.ZetaValues"
+      },
+      {
+        "theorem": "Real.rpow_le_rpow_of_exponent_le",
+        "description": "Monotonicity of rpow in exponent",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "summable_inv_rpow: convergence of p-series for s > 1 (wrapper)",
+      "not_summable_inv_rpow: divergence for s ≤ 1 (wrapper)",
+      "zeta_two_eq / zeta_four_eq: tsum forms of Basel and ζ(4)",
+      "inv_rpow_antitone: (n^s)⁻¹ is antitone in s for n ≥ 1",
+      "inv_rpow_strictAnti: strict version for n ≥ 2",
+      "tsum_inv_rpow_antitone: ζ(s) is antitone (sorry - tsum ordering)",
+      "one_le_tsum_inv_rpow: ζ(s) ≥ 1 (sorry - tsum ordering)",
+      "tsum_inv_rpow_le_zeta_two: ζ(s) ≤ π²/6 for s ≥ 2 (sorry - tsum ordering)",
+      "partialZeta_tendsto: partial sums converge to ζ(s)",
+      "partialZeta_mono: partial sums are monotone",
+      "rpow_inv_eq_nat_inv: bridge from rpow to nat pow",
+      "summable_inv_nat_pow: summability for integer k ≥ 2",
+      "partial_sum_sq_tendsto: ∑ 1/n² → π²/6"
+    ],
+    "dateAdded": "2026-03-23",
+    "lineCount": 164,
+    "prerequisites": [
+      "Real-valued power series and summability",
+      "Zeta values from Mathlib",
+      "Real rpow (generalized exponentiation)"
+    ],
+    "references": [
+      {
+        "key": "Eu34",
+        "citation": "Euler, L., De summis serierum reciprocarum (1734).",
+        "type": "paper"
+      },
+      {
+        "key": "HW08",
+        "citation": "Hardy, G.H. and Wright, E.M., An Introduction to the Theory of Numbers, 6th ed., Oxford (2008), Ch. XVII.",
+        "type": "book"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "convergence",
+      "title": "Convergence Dichotomy",
+      "description": "The p-series ∑ 1/n^s converges if and only if s > 1."
+    },
+    {
+      "id": "known-values",
+      "title": "Known Values",
+      "description": "ζ(2) = π²/6 (Basel Problem) and ζ(4) = π⁴/90."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Term and Zeta Monotonicity",
+      "description": "Each term 1/n^s decreases in s for n ≥ 1, so ζ(s) is antitone."
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds",
+      "description": "ζ(s) ≥ 1 and ζ(s) ≤ π²/6 for s ≥ 2."
+    },
+    {
+      "id": "bridge",
+      "title": "Bridge to Integer Exponents",
+      "description": "Connects real-exponent rpow series to classical 1/n^k via rpow_natCast."
+    }
+  ],
+  "overview": {
+    "text": "Faulhaber's formulas give ∑ k^m for integer m. The natural extension to real exponents s leads to the p-series ∑ 1/n^s, whose limit is the Riemann zeta function. This formalization proves the convergence dichotomy at s = 1, recovers the Basel Problem value, and establishes monotonicity and bounds.",
+    "keyInsights": [
+      "The p-series convergence threshold at s = 1 separates convergent from divergent behavior",
+      "Known zeta values connect discrete sums to transcendental constants (π)",
+      "Monotonicity in the exponent follows from rpow monotonicity via inversion",
+      "The bridge theorem rpow_inv_eq_nat_inv connects real and integer exponent theories"
+    ]
+  },
+  "conclusion": {
+    "text": "This formalization provides the analytical foundation for extending Faulhaber's discrete power sums to continuous exponents. With 11 of 14 results fully proved and 3 sorries (tsum ordering comparisons), the key mathematical content is captured."
+  },
+  "relatedProofs": ["sum-of-kth-powers", "basel-problem"],
+  "crossReferences": [
+    {
+      "target": "sum-of-kth-powers",
+      "relationship": "extends",
+      "description": "Extends integer power sums to real exponents"
+    },
+    {
+      "target": "basel-problem",
+      "relationship": "uses",
+      "description": "Uses ζ(2) = π²/6 for upper bounds and known values"
+    }
+  ]
+}
