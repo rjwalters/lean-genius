@@ -54,7 +54,10 @@
       "**Quantitative version**: Erdős asked about f_k(n) = largest r for n-vertex k-critical graphs. Skottova-Steiner showed n^{1/3} ≪ f_k(n) ≪ n/(log n)^C for k ≥ 5.",
       "**Gap in understanding**: The jump from k = 4 to k = 5 represents a fundamental structural difference that remains unexplained."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

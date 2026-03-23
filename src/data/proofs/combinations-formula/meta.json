@@ -57,7 +57,9 @@
       "The binomial coefficient is always a natural number despite involving division",
       "The generating function (1+x)^n = ∑_k C(n,k) x^k connects binomial coefficients to polynomial algebra, and Vandermonde's identity ∑_j C(m,j)C(n,k-j) = C(m+n,k) encodes convolution of subset counts — making C(n,k) a bridge between combinatorics and generating function calculus"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

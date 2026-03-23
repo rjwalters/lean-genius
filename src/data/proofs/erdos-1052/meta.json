@@ -72,7 +72,10 @@
       "**Product Formula Argument**: The evenness proof (in comments) uses σ*(n) = ∏(1 + pᵢ^{aᵢ}) — a product over prime power components. For odd n, each factor is even, making σ* divisible by 2^ω(n), but σ* = 2n forces at most one factor of 2.",
       "**Only 5 Known**: Despite computational searches to very large bounds, only 5 unitary perfect numbers are known. The conjecture of finiteness remains one of the accessible open problems in number theory."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "leanFile": {
     "imports": [

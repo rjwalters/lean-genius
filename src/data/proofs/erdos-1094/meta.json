@@ -33,7 +33,10 @@
       "Kummer's theorem (the p-adic valuation of $\\binom{n}{k}$ counts base-p carries) explains why even binomial coefficients trivially satisfy the bound: there is always a carry in base 2",
       "The formalization verifies 12 of 14 exceptions via native_decide, demonstrating Lean's kernel can evaluate $\\operatorname{minFac}$ for binomial coefficients up to $\\binom{95}{10} \\approx 10^{10}$, while $\\binom{241}{16} \\approx 10^{27}$ exceeds feasibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

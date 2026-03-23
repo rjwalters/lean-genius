@@ -61,7 +61,10 @@
       "**Lower bound construction:** The tight lower bound $f(n,k) \\geq (k-1)^n$ uses a product construction: partition elements into $n$ blocks of size $k-1$ and take all transversals. This family of $(k-1)^n$ sets avoids $k$-sunflowers.",
       "**Broad TCS impact:** Sunflower bounds connect to the matrix multiplication exponent via the Cohn-Umans framework, to ACC$^0$ circuit lower bounds via Razborov's method, and to property testing through characterizations of testable set properties."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

@@ -63,7 +63,10 @@
       "**Discrepancy Theory Connection:** The failure of Khintchine's conjecture is intimately related to discrepancy theory: the discrepancy $D_n(\\alpha, E) = |\\frac{1}{n}\\sum \\mathbf{1}_{\\{k\\alpha\\} \\in E} - \\lambda(E)|$ may not tend to zero for specially constructed $E$",
       "**A Template for Quantifier Failure:** This problem serves as a canonical example in analysis of why $\\forall x\\; \\forall^{\\text{a.e.}} y\\; P(x,y)$ does not imply $\\forall^{\\text{a.e.}} y\\; \\forall x\\; P(x,y)$, even when $P$ is 'nice' (equidistribution)"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

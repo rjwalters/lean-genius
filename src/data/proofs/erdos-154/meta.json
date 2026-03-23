@@ -64,7 +64,10 @@
       "**Kolountzakis extension**: The distribution holds for moduli up to $m \\leq N^{1/4-\\varepsilon}$, not just fixed $m$, showing the pseudorandomness extends to non-constant moduli",
       "**Connection to Freiman-Ruzsa**: While the Freiman-Ruzsa theorem says small sumsets imply structure, this result shows that *large* sumsets (as in Sidon sets) imply pseudorandomness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

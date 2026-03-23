@@ -83,7 +83,13 @@
       "**Bertrand's postulate as a weak baseline**: Bertrand's postulate guarantees a prime in $(n, 2n]$, an interval of length $n$. Erdős's conjecture asks for the expected prime count in intervals potentially as short as $C(\\log x)^2$ — exponentially shorter than what Bertrand provides.",
       "**Cramér's probabilistic model**: Cramér modeled primes via independent random variables with $\\Pr[n \\text{ is prime}] = 1/\\log n$. Under this model, the maximal gap below $x$ is $(\\log x)^2$ with probability 1, and the short interval count obeys the PNT. Erdős's conjecture essentially asks whether the 'real' primes behave like Cramér's model at this fine scale."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Combinatorics (counting, extremal problems)",
+      "Probability theory",
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

@@ -57,7 +57,9 @@
       "**Linear arithmetic does the work**: All corollaries follow from $\\alpha + \\beta + \\gamma = \\pi$ by linear algebra — no geometric reasoning needed once the main identity is established. The `linarith` tactic automates this completely",
       "**Angular defect and curvature**: The quantity $\\pi - (\\alpha + \\beta + \\gamma)$ is the *angular defect*, which equals the integral of Gaussian curvature over the triangle (Gauss-Bonnet theorem). For Euclidean space, curvature is zero, so the defect is zero — recovering our theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Geometry (Euclidean, combinatorial)"
+    ]
   },
   "sections": [
     {

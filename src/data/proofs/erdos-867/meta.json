@@ -71,7 +71,10 @@
       "**Coppersmith-Phillips refinement**: The gap between $13/24 \\approx 0.5417$ (lower) and $2/3 - 1/512 \\approx 0.6647$ (upper) remains open. Determining the exact maximum density is a fundamental question in additive combinatorics.",
       "**Finitary vs. infinite**: Problem #867 is the finite version of Problem #839, which asks about asymptotic density of infinite consecutive sum-free sets. The $2/3$ upper bound carries over to the infinite setting."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

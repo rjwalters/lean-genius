@@ -34,7 +34,10 @@
       "The problem connects to the classical Chebyshev problem of minimizing $\\max_{|z|=1} |p(z)|$ for monic polynomials, but with the constraint that roots lie ON the unit circle rather than inside or outside it.",
       "The use of `Filter.Eventually` and `EReal.limsup` provides a clean Lean formalization of the asymptotic statements, avoiding explicit $\\varepsilon$-$N$ arguments."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Complex analysis"
+    ]
   },
   "sections": [
     {

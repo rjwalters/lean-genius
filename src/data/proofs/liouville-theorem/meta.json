@@ -52,7 +52,9 @@
       "The Liouville constant $L = \\sum 10^{-n!}$ achieves superpolynomial approximation because factorial gaps in the decimal expansion make partial sums extraordinarily close to $L$",
       "Roth's theorem (1955) dramatically improved the exponent from $n$ to $2 + \\varepsilon$, showing algebraic irrationals are even harder to approximate than Liouville's bound suggests"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

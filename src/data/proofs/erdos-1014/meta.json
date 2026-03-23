@@ -106,7 +106,12 @@
       "**Difference reformulation**: Equivalently, the discrete increment $R(k,l+1) - R(k,l)$ is $o(R(k,l))$, connecting to finite difference methods in number theory",
       "**Monotonicity constraint**: Since $R(k,l) \\leq R(k,l+1)$, the ratio is always $\\geq 1$, so convergence to 1 means the ratio decreases toward 1 from above"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "conclusion": {
     "summary": "Erdős Problem #1014 remains open. The smooth growth conjecture R(k,l+1)/R(k,l) → 1 is a fundamental question about Ramsey number regularity. Even for k=3, where R(3,l) = Θ(l²/log l) is completely determined up to constants, the ratio convergence has not been established. The formalization captures the complete logical structure: axioms, bounds, the main conjecture, its equivalence with the difference formulation, and the reduction to power-law asymptotics. 0 sorries.",

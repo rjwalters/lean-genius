@@ -92,7 +92,9 @@
       "**Extends Thue's theorem**: Just as the triangular lattice maximizes packing density, the conjecture asserts it maximizes pair counts — a stronger optimality property for the hexagonal lattice",
       "**Boundary effects**: The formulation requires $n \\ge N$ because finite lattice patches have fewer pairs per point near the boundary; the conjecture is asymptotic in nature"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory"
+    ]
   },
   "conclusion": {
     "summary": "Formalizes Erdős Problem #662 on the optimality of the triangular lattice for maximizing distance-constrained pair counts in 1-separated planar point sets. The formalization establishes the Loeschian distance formula, known coordination shell values, and proves the contact number bound (3n) for the t = 1 case via the 2D kissing number argument.",

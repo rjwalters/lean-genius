@@ -85,7 +85,10 @@
       "**Smooth numbers give limit point 1:** When n+1 has only small prime factors, all factors in the product are near 1, so the ratio → 1",
       "**Topological structure of the limit set:** {1} ∪ {1 + 1/k : k ≥ 1} is homeomorphic to $\\omega + 1$, a compact countable metric space with 1 as its unique accumulation point — a natural example from the Cantor–Bendixson classification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "leanFile": {
     "path": "Proofs/Erdos419Problem.lean",

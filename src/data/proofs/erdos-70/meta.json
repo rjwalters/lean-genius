@@ -35,7 +35,11 @@
       "**Ordinal arithmetic**: $\\omega + n$, $\\omega^2$, and $\\omega^\\omega$ are all countable, proved via $|\\omega + n| = \\aleph_0$, $|\\omega^2| = \\aleph_0 \\cdot \\aleph_0 = \\aleph_0$",
       "**Connection to CH**: Under GCH ($\\mathfrak{c} = \\aleph_1$), stronger partition relations hold by the Erdős-Rado theorem. The problem in ZFC alone is more delicate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Set theory and cardinality",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "sections": [
     {

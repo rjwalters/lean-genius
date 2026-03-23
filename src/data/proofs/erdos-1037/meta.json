@@ -37,7 +37,11 @@
       "**Multiplicity Generalization:** For multiplicity ≤ k (each degree appears at most k times), the maximum distinct degrees is bounded by roughly (1 - 1/(2k))n, extending the multiplicity-2 analysis to arbitrary constraints",
       "**Connection to Non-Ramsey Graphs:** Like Problems 1036 and 1031, this problem explores when combinatorial constraints force (or fail to force) large homogeneous subgraphs beyond the Ramsey baseline"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Combinatorics and number theory",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "sections": [
     {

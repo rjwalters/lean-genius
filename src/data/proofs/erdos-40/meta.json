@@ -84,7 +84,11 @@
       "**Probabilistic barrier**: Random sets of density $\\sqrt{N}/g(N)$ have $\\mathbb{E}[r_A(n)] \\sim 1/g(N)^2 \\to 0$, so the conjecture cannot hold via first-moment methods — it requires structural or second-moment arguments about large deviations",
       "**$500 bounty reflects centrality**: This is among Erdős's highest-value bounties, signaling its importance as a bridge between density estimates and structural results in additive number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #40 on the weakest density condition forcing unbounded sum representations. The file formalizes the representation count, additive basis, density condition, the strongest form of the conjecture (all $g \\to \\infty$), the implication to the Erdős-Turán conjecture, Sidon and $B_2[g]$ density bounds, and probabilistic heuristics. The $\\sqrt{N}$ density threshold emerges as the natural boundary, with Sidon sets on one side and additive bases on the other.",

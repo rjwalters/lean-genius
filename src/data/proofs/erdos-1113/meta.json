@@ -87,7 +87,10 @@
       "The `problem_equivalence` theorem (verified via `push_neg`) shows Problem #1113 is exactly the negation of `AllSierpinskiHaveCoverings`, reducing an existential question to a universal one",
       "The **FFK power result** shows that for any $l \\geq 1$, there exists $m$ where $2^k \\cdot m^i + 1$ is composite for all $1 \\leq i \\leq l$ and $k \\geq 0$, demonstrating deep simultaneous compositeness phenomena"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

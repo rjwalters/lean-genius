@@ -69,7 +69,10 @@
       "**Uniform $\\forall n$ quantification:** The conjecture requires the bound for ALL starting points, not just typical ones — substantially stronger than an average-case statement",
       "**Smooth-rough decomposition as key tool:** The factorization $n = s_t(n) \\cdot r_t(n)$ where $\\gcd(s_t(n), r_t(n)) = 1$ underlies the maximality proof strategy"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

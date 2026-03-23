@@ -68,7 +68,9 @@
       "Mathlib 4.26.0 API change: Finset.min'_le and Finset.le_max' no longer take an explicit Nonempty argument — signature changed from (s hne b hb) to (s b hb)",
       "The 246 bound is tight for the 50-tuple approach — improving requires either larger k-tuples or new sieve techniques"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

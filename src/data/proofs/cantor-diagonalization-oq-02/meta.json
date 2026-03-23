@@ -96,7 +96,9 @@
       "**ℵ₁ Minimality**: ℵ₁ is not just uncountable but the MINIMUM uncountable cardinal: any uncountable κ satisfies ℵ₁ ≤ κ.",
       "**Universe Subtlety**: The set {α : Ordinal.{0} | α.card ≤ ℵ₀} lives in Type 1, so its cardinality is Cardinal.{1}. The key result ω₁.card = aleph 1 remains in Cardinal.{0} and is proved directly."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set theory and cardinality"
+    ]
   },
   "sections": [
     {

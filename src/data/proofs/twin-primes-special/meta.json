@@ -50,7 +50,9 @@
       "Both $p$ and $p+2$ must avoid being divisible by 2 or 3; since all primes $> 3$ are $\\equiv \\pm 1 \\pmod{6}$, twin primes must straddle a multiple of 6",
       "**Hardy-Littlewood conjecture**: The number of twin primes up to $N$ is asymptotically $2C_2 N/(\\ln N)^2$ where $C_2 = \\prod_{p \\geq 3}(1 - 1/(p-1)^2) \\approx 0.6602$ is the twin prime constant — this uses the same sieving ideas as the $6k \\pm 1$ structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

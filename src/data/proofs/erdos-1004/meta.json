@@ -34,7 +34,10 @@
       "**The gap between upper and lower bounds**: The EPS bound allows runs up to $n/\\exp(c(\\log n)^{1/3})$ but the conjecture only asks for $(\\log n)^c$ — an enormous gap. The difficulty is showing that *somewhere* in $[1, x]$ there's a collision-free stretch of logarithmic length",
       "**Parallel structure with divisor function**: Problem 945 asks the identical question for $\\tau(n)$. Both $\\varphi$ and $\\tau$ are multiplicative, but their collision patterns differ: $\\tau$ has more collisions at small values (many $n$ with 2 divisors), while $\\varphi$ collides differently (even values dominate)"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

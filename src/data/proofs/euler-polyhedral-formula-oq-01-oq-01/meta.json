@@ -60,7 +60,10 @@
       "**Mathlib's SimpleGraph API gap**: The main barrier to a fully axiom-free proof is vertex deletion with Fintype/DecidableRel preservation, not the mathematical argument itself",
       "**Four vs Five Color**: The five color theorem uses essentially the same Kempe chain technique as the four color theorem, but avoids the massive case analysis — making it an ideal formalization target that captures the key ideas without combinatorial explosion"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Point-set topology"
+    ]
   },
   "sections": [
     {

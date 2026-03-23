@@ -32,7 +32,10 @@
       "The D4 dihedral group (symmetries of the square) reduces the 13+ trillion tours to ~1.7 trillion equivalence classes",
       "Among all these equivalence classes, exactly ONE achieves the minimum of 4 oblique turns - 'It's a beauty' (Knuth)"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

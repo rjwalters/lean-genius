@@ -97,7 +97,9 @@
       "**No Flat Trigonometric Polynomials:** The result implies that no polynomial $P(z) = \\sum_{n \\in A} z^n$ with $|A| = N$ can have $|P(z)|$ nearly constant on $|z| = 1$. The $L^1$ norm must grow at least logarithmically.",
       "**Explicit Constant c = 1/(4π):** The formalization includes an explicit constant. The optimal constant is believed to be close to $1/\\pi \\approx 0.318$, and improving it remains an active research topic."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

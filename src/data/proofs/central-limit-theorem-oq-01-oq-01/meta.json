@@ -65,7 +65,10 @@
       "**The classical CLT is a special case**: finite variance corresponds to $\\alpha = 2$ with $L$ constant, recovering $n^{1/2}$ normalization and Gaussian limits",
       "**Stable self-similarity** $[e^{-|t/n^{1/\\alpha}|^\\alpha}]^n = e^{-|t|^\\alpha}$ encodes why stable distributions are 'stable' under normalized convolution — the defining algebraic identity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probability theory",
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

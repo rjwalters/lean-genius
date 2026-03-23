@@ -36,7 +36,10 @@
       "**Two-part open problem**: Part 1 asks for the growth rate of the smallest missing gap; Part 2 asks whether the number of distinct gap values is proportional to the maximal gap",
       "**Computable vs axiomatized**: the coprime residue set is defined computationally via `Finset.filter`, while the sorted enumeration and gap set are axiomatized to separate the combinatorial structure from computational concerns"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

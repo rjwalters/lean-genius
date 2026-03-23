@@ -35,7 +35,11 @@
       "**The degree vs. structure tension:** Stars only need one high-degree vertex; paths need a long alternating chain; balanced trees need branching with expansion. The conjecture asserts that the single edge-density condition $(k-1)n/2$ suffices for all these structural requirements simultaneously -- a remarkably strong claim.",
       "**Falsifiability:** Unlike many conjectures in combinatorics, the Erdos-Sos conjecture could be disproved by a single finite counterexample: a specific graph $G$ and tree $T$ where $|E(G)| > (k-1)n/2$ but $T \\not\\subseteq G$. Exhaustive computer searches for small $n$ and $k$ have found no such counterexample."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Extremal graph theory (Turán-type problems)",
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

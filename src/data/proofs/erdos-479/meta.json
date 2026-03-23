@@ -64,7 +64,10 @@
       "**Chinese Remainder Theorem**: The congruence 2^n ≡ k (mod n) can be analyzed prime by prime, but the constraints from different primes interact in complex ways.",
       "**Connection to Carmichael function**: The multiplicative order of 2 mod n is related to the Carmichael function λ(n), but the constraint that the modulus equals the exponent creates unique difficulties."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

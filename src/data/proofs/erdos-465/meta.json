@@ -100,7 +100,11 @@
       "Konyagin's proof uses exponential sums S(t) = Σ e^{2πi t d_{ij}}: distance avoidance creates constructive interference at integer t, while L² estimates bound total energy, giving n ≤ O(X^{1/2})",
       "The two sorry entries are elementary calculus steps (log log X → ∞ and C·X^{1/2} < X^{1/2+ε} for large X), not deep mathematical content"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

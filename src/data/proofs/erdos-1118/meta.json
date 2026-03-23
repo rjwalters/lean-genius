@@ -88,7 +88,10 @@
       "**Half-plane geometry of $e^z$:** The key example $T(e^z) = \\emptyset$ follows because $\\{z : |e^z| > c\\} = \\{z : \\text{Re}(z) > \\log c\\}$ is a half-plane with infinite Lebesgue measure for every $c > 0$, showing that order-1 growth is too slow",
       "**Connection to Nevanlinna theory:** The maximum modulus $M(r)$ and growth integral connect to the order $\\rho = \\limsup_{r\\to\\infty} \\log\\log M(r)/\\log r$ and type of entire functions, placing the problem within the classical Nevanlinna-Wiman-Valiron framework of value distribution theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Complex analysis"
+    ]
   },
   "sections": [
     {

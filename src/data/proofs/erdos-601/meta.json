@@ -190,7 +190,11 @@
       "**Ramsey-type dichotomy:** The problem generalizes the infinite Ramsey theorem from $\\omega$ to arbitrary ordinals with order type requirements",
       "**Two-tier prize:** $250 for the critical case $P(\\omega_1^{\\omega+2})$, $500 for the full generalization to all limit ordinals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Set theory and cardinality"
+    ]
   },
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #601 on the path-vs-independent-set dichotomy for ordinal graphs. The Erdős-Hajnal-Milner theorem (1970) establishes $P(\\alpha)$ for $\\alpha < \\omega_1^{\\omega+2}$, and Larson (1990) extends this under Martin's Axiom. The critical case $\\alpha = \\omega_1^{\\omega+2}$ and the general conjecture for all limit ordinals remain open, with $250 and $500 prizes respectively.",

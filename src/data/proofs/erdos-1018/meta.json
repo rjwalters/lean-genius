@@ -39,7 +39,10 @@
       "**Probabilistic method**: The proof samples random vertex subsets to reduce the graph while preserving density, then applies extremal arguments (Mader-type) to find $K_5$ subdivisions in the reduced graph",
       "**Kuratowski reduction**: By Kuratowski's theorem, finding any non-planar subgraph reduces to finding $K_5$ or $K_{3,3}$ subdivisions, and the explicit $C_\\varepsilon \\sim 1/\\varepsilon^2$ bound quantifies the size of these obstructions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

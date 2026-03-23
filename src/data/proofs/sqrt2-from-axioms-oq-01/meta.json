@@ -54,7 +54,9 @@
       "**Modular arithmetic verification**: Small primes (2, 3, 5) are verified as EuclidPrime by checking that nonzero residues mod p form a multiplicative group (no zero divisors)",
       "**Prime vs irreducible distinction**: In general rings, \"prime\" (Euclid's criterion: p | ab → p | a or p | b) and \"irreducible\" (only trivial factorizations) are different properties. They coincide for ℕ (and all UFDs), but this proof reveals that it is the *prime* property—not irreducibility—that drives irrationality arguments"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

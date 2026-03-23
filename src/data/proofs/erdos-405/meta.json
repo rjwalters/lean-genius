@@ -107,7 +107,10 @@
       "**Ramanujan-Nagell connection**: The $p = 3$ case $2 + a^2 = 3^k$ is a generalized Ramanujan-Nagell equation. The classical Ramanujan-Nagell equation $x^2 + 7 = 2^n$ has exactly 5 solutions; the $p = 3$ case here has similar finite character.",
       "**Brocard's problem link**: The solution $4! + 1 = 25 = 5^2$ is a Brocard-type coincidence ($n! + 1$ being a perfect square). Brocard's problem asks for all $n$ with $n! + 1 = m^2$; only $n = 4, 5, 7$ are known, and finiteness is unproved."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

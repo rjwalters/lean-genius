@@ -66,7 +66,10 @@
       "**nlinarith for Polynomial Inequalities**: The `nlinarith` tactic handles goals like `n³ < (n+1)*n*n!` when given `n²<n!` and `0<n`, demonstrating how this tactic bridges polynomial arithmetic with factorial bounds.",
       "**Explicit Proof Steps for Asymptotic**: The asymptotic proof uses an explicit chain of `have` steps with `mul_le_mul_right'` and `mul_lt_mul_of_pos_left`, since `nlinarith` cannot directly handle products of three hypotheses involving K, n, and n!."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Linear algebra",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

@@ -74,7 +74,11 @@
       "**The gap property constrains complete sequences**: A complete sequence must have eventually bounded gaps — if $a_{n+1} - a_n \\to \\infty$, then large integers in the gap cannot be represented. This structural constraint limits the design space for robust sequences",
       "**The $(2,3)$ case is the critical test**: If $(2, 3)$ is valid, it suggests all $(m, m+1)$ might be valid (perhaps via increasingly complex constructions). If not, it would establish a phase transition at $m = 2$ where robustness becomes qualitatively different"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

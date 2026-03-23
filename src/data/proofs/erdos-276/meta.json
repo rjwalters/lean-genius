@@ -97,7 +97,10 @@
       "**Exponential Search Space:** Finding small initial values is computationally hard. Graham's 34-digit values were reduced to Vsemirnov's 12-digit record over 40 years. The search requires checking that the covering system is valid and the initial terms are coprime composites.",
       "**Connection to Erdős Minimum Modulus Conjecture:** The structure of covering systems is constrained by results on minimum moduli (Erdős #2, solved by Hough 2015). These constraints limit what covering constructions are possible, indirectly bounding the primefree sequence problem."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

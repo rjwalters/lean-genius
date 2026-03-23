@@ -55,7 +55,9 @@
       "The proof architecture cleanly separates the analytic content (Abel's theorem, axiomatized) from the algebraic content (partial fractions, fully verified), making the axiom boundary precise",
       "The Lean formalization handles the n=0 edge case explicitly via if-then-else, since ℕ-indexed series must account for 0 even though the mathematical series starts at n=1"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

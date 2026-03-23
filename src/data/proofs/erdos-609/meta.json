@@ -61,7 +61,10 @@
       "**Cycle Ramsey connection:** For fixed odd $k$, $R(C_k; r) \\asymp 2^r$. Since $2^n + 1 > R(C_k; n)$ for large $n$ (fixed $k$), specific short cycles are forced. But the problem asks about the minimum $k$ that cannot be avoided, which grows with $n$",
       "**Recent rapid progress:** From Chung's basic question (1997) to Day-Johnson's answer (2017) to Janzer-Yip's sharp upper bound (2025), the problem has seen dramatic advances, yet the gap remains exponential — suggesting fundamental new ideas are needed"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "sections": [
     {

@@ -65,7 +65,10 @@
       "**Algebraic methods don't generalize:** The Guth-Katz proof for $d = 2$ relies on the algebraic geometry of ruled surfaces in $\\mathbb{R}^3$, which has no known analogue for higher dimensions, explaining why $d \\geq 3$ remains open",
       "**The $\\varepsilon$-formulation:** Formalizing '$o(1)$' as '$\\forall \\varepsilon > 0$, ...' is the standard rigorous rendering of subpolynomial factors, capturing the conjecture precisely in Lean's type theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Geometry (Euclidean, combinatorial)"
+    ]
   },
   "sections": [
     {

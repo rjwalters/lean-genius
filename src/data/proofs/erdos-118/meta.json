@@ -74,7 +74,11 @@
       "**Independent disproofs signal robustness**: Schipperus and Darby independently found counterexamples in 1999, using different techniques. This independent discovery suggests the failure is not a pathological edge case but a fundamental feature of the ordinal partition landscape.",
       "**One proved theorem among axioms**: Unusually for this gallery, the file has 0 sorry's and contains one genuinely proved result (`erdos_118_disproved`). The proof is constructive in the sense that given the axiomatized counterexample, the disproof follows by simple logic — `intro h; have h5 := h ... 5 ...; exact counter_not_partition_5 h5`."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Set theory and cardinality",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "conclusion": {
     "summary": "Erdős Problem #118 asked whether $\\alpha \\to (\\alpha, 3)^2$ implies $\\alpha \\to (\\alpha, n)^2$ for all finite $n$. This was disproved by Schipperus and Darby (1999), with Larson providing the explicit counterexample $\\omega^{\\omega^2}$. The formalization axiomatizes the counterexample properties and derives the formal disproof as a proved theorem — one of the few fully-proved results in the gallery. The partition threshold $\\text{thr}(\\omega^{\\omega^2}) \\in \\{3, 4\\}$ remains to be determined exactly.",

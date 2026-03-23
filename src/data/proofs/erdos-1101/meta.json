@@ -67,7 +67,10 @@
       "**Sub-exponential might work**: Sequences growing like uₙ = e^(n^α) for α < 1 might achieve the good property.",
       "**Prime squares special case**: Problem #208 asks if uᵢ = pᵢ² (prime squares) is good. This has polynomial growth, so resolving it would resolve question 1."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

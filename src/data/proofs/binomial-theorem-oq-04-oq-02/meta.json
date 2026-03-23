@@ -88,7 +88,10 @@
       "Pascal's rule C(n+1, r+1) = C(n,r) + C(n, r+1) is the m=1 case of Vandermonde, unifying the recursive structure of Pascal's triangle with the convolution formula.",
       "The self-convolution case m=n gives C(2n,r) = Σ C(n,i)·C(n,j), which for r=n yields the Chu-Vandermonde identity C(2n,n) = Σ C(n,k)², connecting to central binomial coefficients."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)",
+      "Abstract algebra"
+    ]
   },
   "sections": [
     {

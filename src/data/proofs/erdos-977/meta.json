@@ -34,7 +34,10 @@
       "**Mersenne prime extremes**: When $M_n = 2^n - 1$ is prime, $P(M_n) = 2^n - 1 \\gg 2^n$, exponentially exceeding any polynomial bound — these are the extreme cases where the greatest prime factor is as large as possible",
       "**Open analogue $P(n!+1)$**: The question $P(n!+1)/(n\\log n) \\to \\infty$ remains open despite Lai's 2021 partial result; the factorial structure resists the cyclotomic decomposition that enables Stewart's approach for $2^n - 1$"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

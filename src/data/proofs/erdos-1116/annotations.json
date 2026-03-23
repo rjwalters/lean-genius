@@ -118,7 +118,8 @@
     "type": "technique",
     "title": "Erdős #1116: SOLVED",
     "content": "**erdos_1116:**\n\n```lean\ntheorem erdos_1116 :\n    ∃ f : ℂ → ℂ, IsEntire f ∧ HasExtremeValueDistribution f :=\n  goldberg_toppila_existence\n```\n\nThe answer to Erdős's question is YES: such entire functions exist.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of erdős #1116: solved"
   },
   {
     "id": "ann-e1116-deficiency",
@@ -202,6 +203,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_1116_summary:**\n\nCombines the main results:\n\n```lean\ntheorem erdos_1116_summary :\n    (∃ f : ℂ → ℂ, IsEntire f ∧ HasExtremeValueDistribution f) ∧\n    ¬ HasExtremeValueDistribution expFunction\n```\n\n- Such functions exist (Gol'dberg-Toppila)\n- But the exponential is NOT such a function",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of summary theorem"
   }
 ]

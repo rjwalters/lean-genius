@@ -88,7 +88,11 @@
       "**Complete bipartite graphs as hard cases:** $K_{n,n}$ on $2n$ vertices has $n^2$ edges. Each path uses at most $2n - 1$ edges, so $\\ge n^2/(2n-1) \\approx n/2$ paths are needed. This approaches the conjectured bound $\\lceil 2n/2 \\rceil = n$ and shows the conjecture is tight. The difficulty is constructing an explicit path partition achieving $n$ paths for $K_{n,n}$.",
       "**Connection to Hajos' conjecture:** The related Hajos conjecture (every Eulerian graph decomposes into $\\le \\lfloor n/2 \\rfloor$ edge-disjoint cycles) is the 'dual' problem for even-degree graphs. Since Eulerian graphs have Euler circuits, the question reduces to decomposing a single closed walk into short cycles. Both conjectures have been open for decades, suggesting a common structural barrier in graph decomposition theory."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

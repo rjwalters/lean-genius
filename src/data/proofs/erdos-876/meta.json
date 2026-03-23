@@ -75,7 +75,10 @@
       "**Reciprocal Sum as Structure Measure:** The convergence $\\sum 1/a < 4$ (Sullivan) quantifies sparsity differently from density: it says elements grow fast enough that their reciprocals converge. Sullivan's conjecture that the supremum is $\\approx 2$ would determine the precise balance between density and growth.",
       "**Powers of 2 as Base Case:** $\\{1, 2, 4, 8, \\ldots\\}$ is sum-free by uniqueness of binary representation: $2^n$ cannot equal any sum of distinct smaller powers of $2$ since each power contributes to a unique bit. This gives exponential gaps ($2^{n+1} - 2^n = 2^n$), far from linear."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

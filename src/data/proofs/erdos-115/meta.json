@@ -55,7 +55,10 @@
       "**Pommerenke's bound was the key intermediate step**: His 1961 result $\\max |p'| \\leq (e/2)n^2$ established the quadratic growth rate, leaving only the constant to be optimized. Eremenko-Lempert improved the constant from $e/2 \\approx 1.359$ to $1/2 + o(1)$",
       "**The sharpness proof is constructive**: The formalization's only non-axiom theorem constructs explicit witnesses (Chebyshev polynomials) achieving the lower bound $(1/2 - \\varepsilon)n^2$, using the asymptotic axiom and `omega` for the degree bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

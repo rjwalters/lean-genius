@@ -92,7 +92,11 @@
       "**Ramsey Number Consequence:** For triangle-free graphs, the AKS bound implies $R(3, k) \\geq c \\cdot k^2/\\log k$. Kim (1995) proved the matching upper bound $R(3, k) \\leq c' \\cdot k^2/\\log k$, determining $R(3, k)$ up to a constant factor. This is one of the most celebrated results in Ramsey theory.",
       "**Local vs Global Conditions:** Alon's 1996 result reveals that the conjecture holds if the *local* structure is sparse enough (neighborhoods are $(r-2)$-colorable), even though the *global* $K_r$-freeness alone is insufficient for the full bound when $r \\geq 4$. This highlights the importance of local structure in extremal combinatorics."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "sections": [
     {

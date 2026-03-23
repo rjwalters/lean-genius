@@ -42,7 +42,9 @@
       "The opaque/axiom approach cleanly separates computational results (D(50) = 246 by exhaustive search) from the mathematical framework (Maynard-Tao sieve theory), reflecting the actual structure of the proof in the literature",
       "The twin prime conjecture is the k=2 case of this framework: it asks whether D(2) = 2 is 'achievable' — whether the gap 2 occurs infinitely often, not just whether an admissible pair of diameter 2 exists"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

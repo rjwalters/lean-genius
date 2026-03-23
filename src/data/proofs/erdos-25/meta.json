@@ -34,7 +34,11 @@
       "Under pairwise coprimality of moduli, CRT independence gives $\\delta_\\ell(A) \\approx \\prod(1 - 1/n_i)$, connecting to Euler product convergence. The general case without coprimality is harder due to arithmetic correlations between exclusion events",
       "The formalization uses Lean's `StrictMono` and `Int.ModEq` to capture the sieve structure cleanly, with the proved monotonicity theorem as verified mathematical content"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Asymptotic density and counting"
+    ]
   },
   "sections": [
     {

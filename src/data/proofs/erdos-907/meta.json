@@ -85,7 +85,10 @@
       "**The x² example illustrates both triviality and non-triviality**: f(x) = x² is continuous, so its differences are trivially continuous and its decomposition is trivial (g = x², φ = 0). The interesting cases are discontinuous f with continuous differences—these are exactly f = (continuous) + (additive).",
       "**Extension to measurable differences connects to erdos-908**: The axiom `measurable_differences_decomposition` foreshadows erdos-908, where Laczkovich showed that measurable differences yield a finer decomposition. The framework of difference operators and additive functions unifies both problems."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

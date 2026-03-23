@@ -88,7 +88,8 @@
     "type": "technique",
     "title": "Trivial Bounds",
     "content": "**trivial_bounds:**\n\nFor u ≥ 2: u + 2 ≤ f(u) ≤ u².\n\nThis captures the basic range of f(u).",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of trivial bounds"
   },
   {
     "id": "ann-e459-prime",
@@ -183,7 +184,8 @@
     "type": "concept",
     "title": "Example: f(2) = 4",
     "content": "**f_2:**\n\nf(2) = 4 = 2².\n\nThe only numbers smooth w.r.t. 2 are powers of 2. The first > 2 is 4.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of example: f(2) = 4"
   },
   {
     "id": "ann-e459-f6",
@@ -195,7 +197,8 @@
     "type": "concept",
     "title": "Example: f(6) = 8",
     "content": "**f_6:**\n\nf(6) = 8.\n\n6 = 2·3, so smooth numbers are products of 2s and 3s: 1, 2, 3, 4, 6, 8, 9, 12, ...\n\nThe first > 6 is 8 = 2³.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of example: f(6) = 8"
   },
   {
     "id": "ann-e459-solved",

@@ -112,7 +112,12 @@
       "**Small cases are misleading**: $R(3)/R(2) = R(4)/R(3) = 3$, both suggesting $c \\approx 2$. But with only two non-trivial exact values known, this pattern may break for $R(5)/R(4)$. The ratio could vary wildly for small $n$ before stabilizing (if it stabilizes at all)",
       "**Connection to the 2023 breakthrough**: Campos-Griffiths-Morris-Sahasrabudhe proved $R(n) \\leq (4-\\varepsilon)^n$, the first upper bound improvement in 90 years. This affects the possible range of the ratio limit but does not directly address consecutive differences, leaving Problem #812 untouched"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Ramsey theory (partition regularity)",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

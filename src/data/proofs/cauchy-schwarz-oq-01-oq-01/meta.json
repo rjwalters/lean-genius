@@ -93,7 +93,11 @@
       "**Pythagoras + norm manipulation**: The forward direction reduces to showing a sum of non-negative reals equals zero, which forces each summand to zero. This is the key algebraic step.",
       "**Connection to quantum mechanics**: In projective Hilbert spaces, CS equality precisely identifies when two state vectors are physically equivalent — proportional vectors with $|c| = 1$ represent the same quantum state (global phase invariance)."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical analysis",
+      "Linear algebra",
+      "Complex analysis"
+    ]
   },
   "sections": [
     {

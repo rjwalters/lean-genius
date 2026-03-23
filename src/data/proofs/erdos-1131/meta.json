@@ -37,7 +37,9 @@
       "**Chebyshev vs Legendre nodes**: Both give $I \\approx 2 - c/n$ but with different constants — neither is optimal for the $L^2$ problem",
       "**Gram matrix trace**: $I = \\operatorname{tr}(G)$ where $G_{jk} = \\int l_j l_k \\, dx$ connects the problem to spectral theory of interpolation operators"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

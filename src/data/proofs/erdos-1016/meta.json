@@ -35,7 +35,9 @@
       "**Even $h(n) - \\log_2 n \\to \\infty$ is open**: Erdos could not prove the correction term diverges, despite believing it should be $\\sim \\log^* n$. This makes the problem unusual — the answer is nearly determined yet the proof seems out of reach",
       "**Bondy's quadratic threshold is far from tight**: the classic result that $n^2/4$ edges suffice for pancyclicity or bipartiteness gives a threshold of $\\Theta(n^2)$, vastly exceeding the true threshold of $n + O(\\log n)$"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

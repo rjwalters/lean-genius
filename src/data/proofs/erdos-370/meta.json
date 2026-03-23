@@ -128,7 +128,10 @@
       "**The Dickman-de Bruijn function**: $\\rho(u)$ satisfies $\\rho(u) = 1$ for $u \\leq 1$ and the delay-differential equation $u\\rho'(u) = -\\rho(u-1)$. Its values $\\rho(2) = 1 - \\ln 2 \\approx 0.307$ and $\\rho(\\sqrt{e}) = 1/2$ govern smooth number statistics.",
       "**Aristotle's contribution**: Automated proof search verified 4 of 6 non-axiom theorems, demonstrating that concrete number-theoretic computations (like $\\operatorname{gpf}(63) = 7 < \\sqrt{63}$) are within reach of current proof search technology."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

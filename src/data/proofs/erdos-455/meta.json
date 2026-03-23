@@ -72,7 +72,10 @@
       "**The conjecture asks for strictly superquadratic growth**: Not just $q_n \\geq cn^2$ but $q_n/n^2 \\to \\infty$. A simple asymptotic like $q_n \\sim cn^2$ would refute the conjecture.",
       "**Connection to the Prime Number Theorem**: The PNT gives average prime gap $\\sim \\log p$, so the $n$-th prime is $\\sim n \\log n$. A monotone-gap subsequence must grow much faster than the typical prime."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

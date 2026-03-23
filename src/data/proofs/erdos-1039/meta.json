@@ -37,7 +37,10 @@
       "**Random vs Worst Case:** Random polynomials have E[ρ] ~ 1/√n, far from the worst-case Θ(1/n), showing that extremal configurations (like roots of unity) are atypical — the problem is about worst-case geometry, not typical behavior",
       "**Open Gap:** The remaining obstacle is eliminating the √(log n) factor: proving ρ(f) ≥ c/n from the current ρ(f) ≥ c/(n√(log n)). This may require new ideas beyond the area approach, perhaps direct conformal mapping estimates"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complex analysis",
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

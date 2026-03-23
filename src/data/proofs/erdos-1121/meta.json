@@ -55,7 +55,10 @@
       "Overlapping circles always satisfy the no-separating-line condition: if all pairs overlap (d(centers) ≤ r₁+r₂), no separating line can exist since the line would have to pass between overlapping circles",
       "Connection to Helly's theorem (1923): Helly says a family of convex sets in ℝᵈ has a common point iff every d+1 of them do; Goodman-Goodman can be seen as a radius-aware generalization, replacing 'common point exists' with 'common covering ball of controlled radius exists'"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Geometry (Euclidean, combinatorial)"
+    ]
   },
   "sections": [
     {

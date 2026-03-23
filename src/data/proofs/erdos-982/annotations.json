@@ -27,7 +27,8 @@
     "type": "definition",
     "title": "Euclidean Plane",
     "content": "**Plane:**\n\nWe define the 2-dimensional Euclidean plane using Mathlib's EuclideanSpace:\n\n```lean\nabbrev Plane : Type := EuclideanSpace R (Fin 2)\n```\n\nThis gives us the full metric space structure with the standard Euclidean distance.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of euclidean plane"
   },
   {
     "id": "ann-e982-distinct-distances",
@@ -52,7 +53,8 @@
     "type": "definition",
     "title": "Maximum Distinct Distances",
     "content": "**maxDistinctDistances:**\n\nThe maximum number of distinct distances achieved by any vertex in the polygon.\n\n```lean\ndef maxDistinctDistances (S : Finset Plane) : N :=\n  S.sup (fun p => distinctDistancesFrom p (S.erase p))\n```\n\nThe conjecture asks: is this at least floor(n/2)?",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of maximum distinct distances"
   },
   {
     "id": "ann-e982-convex-position",
@@ -77,7 +79,8 @@
     "type": "definition",
     "title": "Guaranteed Distinct Distances f(n)",
     "content": "**guaranteedDistinctDistances:**\n\nf(n) is the largest k such that EVERY convex n-gon has a vertex with at least k distinct distances.\n\nThis is the extremal quantity - the conjecture states f(n) >= floor(n/2).\n\n**Known bounds:**\n- f(n) >= ceil(n/3) (Moser 1952)\n- f(n) <= ceil(n/2) (regular polygon)",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of guaranteed distinct distances f(n)"
   },
   {
     "id": "ann-e982-conjecture",
@@ -119,7 +122,8 @@
     "type": "concept",
     "title": "Erdos-Fishburn Bound (1994)",
     "content": "**erdos_fishburn_bound:**\n\nErdos and Fishburn improved Moser's bound to f(n) >= floor(n/3 + 1).\n\nPublished in \"A postscript on distances in convex n-gons\" (1994).\n\nThis is a small but significant improvement over Moser's ceil(n/3).",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of erdos-fishburn bound (1994)"
   },
   {
     "id": "ann-e982-dumitrescu",
@@ -131,7 +135,8 @@
     "type": "concept",
     "title": "Dumitrescu's Bound (2006)",
     "content": "**dumitrescu_bound:**\n\nAdrian Dumitrescu proved f(n) >= ceil((13n-6)/36) in 2006.\n\nThis is approximately 0.361n, a substantial improvement over the n/3 bounds.\n\nPublished in \"On distinct distances from a vertex of a convex polygon\".",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of dumitrescu's bound (2006)"
   },
   {
     "id": "ann-e982-nppz",
@@ -174,7 +179,8 @@
     "type": "technique",
     "title": "Triangle Case (n=3)",
     "content": "**triangle_case:**\n\nEvery triangle vertex has at least 1 distinct distance.\n\nThe conjecture requires floor(3/2) = 1.\n\n**Proof:** In a triangle, each vertex sees exactly 2 other vertices, giving at least 1 distinct distance (and usually 2).",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of triangle case (n=3)"
   },
   {
     "id": "ann-e982-pentagon",
@@ -186,7 +192,8 @@
     "type": "technique",
     "title": "Pentagon Case (n=5)",
     "content": "**pentagon_case:**\n\nEvery convex pentagon has a vertex with at least 2 distinct distances.\n\nThe conjecture requires floor(5/2) = 2.\n\n**Proof:** Direct from Moser's bound: (5+2)/3 = 2.\n\n```lean\nexact moser_bound 5 (by norm_num) S hcard hconv\n```",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of pentagon case (n=5)"
   },
   {
     "id": "ann-e982-stronger-false",
@@ -228,7 +235,8 @@
     "type": "concept",
     "title": "Weakened Curve Result",
     "content": "**barany_roldan_pensado:**\n\nBarany and Roldan-Pensado proved a weaker version: for any convex body, there's a boundary point p where circles centered at p hit the boundary in O(1) points (constant depending on the body).\n\nThey conjecture this can be bounded by an absolute constant - a potential new direction.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of weakened curve result"
   },
   {
     "id": "ann-e982-gap",
@@ -266,6 +274,7 @@
     "type": "technique",
     "title": "Final Summary",
     "content": "**erdos_982_summary:**\n\nThe complete summary theorem:\n\n1. f(n) >= n/3 + 1 for all n >= 3 (Erdos-Fishburn)\n2. The conjecture f(n) >= n/2 remains OPEN\n3. The stronger \"no equidistant triples\" conjecture is FALSE\n\nThis encapsulates 80 years of work on this beautiful geometric problem.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of final summary"
   }
 ]

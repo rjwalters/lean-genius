@@ -66,7 +66,11 @@
       "The achievability result — that every finite size $s$ is realized by infinitely many $(m,n)$ — shows the divisor-function upper bound is essentially tight. The construction uses number-theoretic arguments to produce pairs $(m,n)$ with prescribed intersection sizes.",
       "The connection to sieve methods is through Hegyvári's use of divisibility constraints: if $k(m-k) = l(n-l)$, then $k \\mid ln$ or $(n-l) \\mid (m-k)$. Combining these constraints with sieve estimates controls the solution count."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

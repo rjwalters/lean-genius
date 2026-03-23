@@ -71,7 +71,9 @@
       "SLLN implies WLLN via `tendstoInMeasure_of_tendsto_ae`: almost sure convergence is strictly stronger than convergence in probability",
       "Cauchy distribution (no finite moments at all) is the canonical LLN failure: by 1-stability, the sample mean's distribution is Cauchy(0,1) for ALL n"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probability theory"
+    ]
   },
   "sections": [
     {

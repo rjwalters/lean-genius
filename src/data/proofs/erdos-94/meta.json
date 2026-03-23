@@ -74,7 +74,11 @@
       "**Regular $n$-gon achieves $\\Theta(n^3)$**: The $\\lfloor n/2 \\rfloor$ distinct distances in a regular $n$-gon each have multiplicity $n$, giving $\\sum f(u)^2 \\approx n^2 \\cdot n/2 = \\Theta(n^3)$. This shows Fishburn's bound is tight.",
       "**Lefmann-Theile weakens the hypothesis**: The $O(n^3)$ bound holds even without convexity — it suffices that no three points are collinear. This suggests the distance clustering phenomenon is controlled by general position rather than convexity per se."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Geometry (Euclidean, combinatorial)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

@@ -77,7 +77,10 @@
       "**BFS Structure:** In high-girth graphs, BFS trees have no cross-edges within distance s, creating structure.",
       "**Chromatic Extension:** The result also holds for chromatic number ≥ k instead of minimum degree."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

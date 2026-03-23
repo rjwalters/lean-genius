@@ -159,7 +159,10 @@
       "**Proved Theorems:** Unusually for this collection, two nontrivial theorems are fully proved: `k_not_sublogarithmic` (by uniqueness of limits in Hausdorff spaces) and `k_infinitely_often_large` (constructive, using the Hunter-Sawhney lower bound).",
       "**Sunflower Method Comparison:** The sunflower lemma gives $N \\cdot e^{-O(\\sqrt{\\log N})}$ disjoint sets with equal (not unit) sums. This is weaker than the $\\log N$ answer for unit sums, showing that Bloom's specific density result is essential."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "conclusion": {
     "summary": "Erdős asked whether $k(N) = o(\\log N)$. The answer is NO: Hunter and Sawhney, using Bloom's 2021 density result on unit fractions, proved $k(N) = (1 - o(1)) \\log N$. The formalization captures the full framework: unit fraction definitions, packing structures, the function $k(N)$, all bounds from trivial to sharp, and two fully proved theorems answering the question. The 174-line Lean file has 0 sorries.",

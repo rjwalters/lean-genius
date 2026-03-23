@@ -35,7 +35,10 @@
       "**Property B bridge**: The inequality $m(k) \\leq n(k) \\leq m(k+1)$ connects list coloring of bipartite graphs to Property B of set families, reducing questions about $n(k)$ to hypergraph 2-coloring thresholds",
       "**Galvin's theorem context**: $\\chi_L(K_{n,n}) = \\lceil\\log_2 n\\rceil + 1$ (Galvin 1995) via the kernel method shows that for balanced complete bipartite graphs, the list chromatic number grows logarithmically — a key structural result underlying the bounds on $n(k)$"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

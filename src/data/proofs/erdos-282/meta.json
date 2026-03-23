@@ -137,7 +137,10 @@
       "**Divergence vs Convergence Dichotomy:** Odd integers have divergent harmonic sum ($\\sum 1/(2k-1) = \\infty$), so representability is not an issue. Squares have convergent harmonic sum ($\\sum 1/k^2 = \\pi^2/6$), limiting representability. This dichotomy explains why termination is expected for odds but not for squares.",
       "**Representability ≠ Greedy Termination:** Graham's theorem settles which rationals are representable with congruence-class denominators, but says nothing about whether the *greedy* strategy finds such representations. This gap between existence and algorithms is the heart of Problem #282."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "conclusion": {
     "summary": "Erdős Problem #282 asks whether the greedy Egyptian fraction algorithm terminates for odd-denominator rationals using only odd denominators. The formalization captures the full framework: Egyptian fraction representations, the greedy algorithm and its properties, Fibonacci's classical termination theorem, Stein's odd-denominator conjecture (the main OPEN question), Graham's representability theorem for congruence classes, and the contrasting Erdős-Graham conjecture for square denominators. The 113-line Lean file has 0 sorries, with all major results axiomatized.",

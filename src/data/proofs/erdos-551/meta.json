@@ -35,7 +35,11 @@
       "The triangle case $R(C_k, K_3) = 2k - 1$ for $k \\geq 4$ follows from Dirac's theorem: a graph on $2k-1$ vertices with no triangle in the complement has minimum degree $\\geq k$, hence a Hamiltonian cycle",
       "Aristotle formally verified `kls_improves`: for $n \\geq 100$, $\\log n / \\log \\log n < 4n + 2$, using $e < 3$ proved via Taylor expansion bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "sections": [
     {

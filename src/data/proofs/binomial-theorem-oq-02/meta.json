@@ -69,7 +69,10 @@
       "**Definitional reduction avoids Bool equality issues**: Instead of `if b = false then x else y` (which requires `true ≠ false` to evaluate symbolically), using `if b then y else x` reduces definitionally for Bool values, enabling clean `rfl`-level proofs in simp",
       "**Multinomial coefficients telescope to factorials**: The recurrence `multinomial(insert a s, k) = C(k(a)+Σk, k(a)) · multinomial(s, k)` applied $m$ times to reduce from $m$ variables to 0 yields a telescoping product that equals $n! / (k_1! \\cdots k_m!)$, the combinatorial formula for arrangements of a multiset. This makes the formal multinomial coefficient definition consistent with the combinatorial interpretation."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Abstract algebra",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

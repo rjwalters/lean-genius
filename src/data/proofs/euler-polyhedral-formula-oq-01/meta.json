@@ -64,7 +64,10 @@
       "**The Heawood formula H(g) = ⌊(5+√(1+48g))/2⌋ bounds chromatic number for genus-g surfaces**: Formalized as arithmetic bounds on E ≤ 3V + 6g - 6 and degeneracy",
       "**Double counting on faces unifies all edge bounds**: The theorem `face_edge_double_count` with parameter d (minimum face size) subsumes planar (d=3, E ≤ 3V-6), bipartite planar (d=4, E ≤ 2V-4), and high-girth planar (d=6, 2E ≤ 3V-6) bounds as special cases of a single arithmetic identity (d-2)E ≤ d(V-2)"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Point-set topology"
+    ]
   },
   "sections": [
     {

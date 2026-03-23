@@ -70,7 +70,13 @@
       "The structural result $\\chi(G) = \\aleph_1 \\implies$ no proper $\\mathbb{N}$-coloring exists is proved cleanly using `ciInf₂_le` and the strict inequality $\\aleph_0 < \\aleph_1$, showing that any countable vertex coloring must fail to be proper.",
       "Two reformulations — strong domination (every nonempty class sees all colors) and domination via color classes (some class intersects every nonempty edge color class) — illuminate different structural aspects and connect to infinite partition calculus."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Graph theory (vertices, edges, colorings)",
+      "Set theory and cardinality",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "sections": [
     {

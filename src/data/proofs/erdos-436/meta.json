@@ -36,7 +36,10 @@
       "**Rapid growth of $\\Lambda(k,2)$**: The sequence $9, 77, 1224, 7888, 202124, 1649375$ grows apparently super-polynomially with irregular ratios",
       "**Genuine Lean proofs**: Fermat's little theorem proved from $\\texttt{ZMod.pow\\_card\\_sub\\_one\\_eq\\_one}$; Euler's criterion forward direction proved via calc chain"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

@@ -61,7 +61,10 @@
       "**Concrete example**: 1 = 1/2 + 1/3 + 1/6 shows k(2) ≤ 3. Finding k(N) exactly for small N is computationally tractable; understanding asymptotic behavior is hard.",
       "**The greedy algorithm**: One can always find an Egyptian fraction representation by repeatedly taking the largest possible unit fraction. This proves existence but doesn't minimize the number of terms."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

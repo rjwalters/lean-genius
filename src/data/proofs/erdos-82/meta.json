@@ -73,7 +73,12 @@
       "Exact values F(1..15) = 1,2,2,3,3,3,4,4,4,4,4,5,5,5,5 from OEIS A120414 show slow initial growth",
       "The 2023 Ramsey diagonal improvement marginally improves the lower bound constant but not the growth rate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)",
+      "Extremal graph theory (Turán-type problems)"
+    ]
   },
   "sections": [
     {

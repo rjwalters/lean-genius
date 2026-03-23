@@ -88,7 +88,10 @@
       "**Structural rigidity**: All known $r = 2$ solutions have the form $n = 2^l \\cdot p$ for small primes $p \\in \\{2, 3, 5, 7, 35, 47\\}$ (Cambie's conjecture), suggesting the solution set is highly constrained",
       "**Parity constraint**: Even preservation under $g$ (for $n > 2$) via $\\varphi(n)$ being even restricts orbits to even numbers, a structural constraint from Mathlib's `Nat.totient_even`"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

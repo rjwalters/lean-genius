@@ -85,7 +85,10 @@
       "**Bipartite obstruction**: $K_{n,n}$ has only $O((n!)^2) = o(2^{2n})$ cycle-spanned subsets because bipartiteness forces all cycles to alternate parts, with $\\ln(n!) \\ll 2n \\ln 2$ by Stirling's approximation",
       "**Dirac threshold exceeded**: The degree $n+1 > n = |V|/2$ exceeds Dirac's threshold, guaranteeing Hamiltonicity and suggesting the abundance of shorter cycles that drives the exponential cycle-spanned count"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

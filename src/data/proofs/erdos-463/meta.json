@@ -72,7 +72,10 @@
       "**Constructive composite witness:** $m = 2(n+1)$ always provides a composite above $n$, but with $p(m) = 2$ it's useless for the conjecture—finding composites with large $p(m)$ is the real challenge",
       "**All 9 theorems fully proved:** No sorries remain; the file provides a complete structural analysis of the conjecture's constraints using Mathlib's $\\texttt{Nat.minFac}$ API"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

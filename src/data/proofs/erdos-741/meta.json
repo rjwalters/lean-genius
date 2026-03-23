@@ -79,7 +79,11 @@
       "**Proved structural theory**: The formalization proves 20+ structural results including sumset commutativity, monotonicity, basis infiniteness, syndetic set properties, and the Part 2 → Part 1 connection — all with 0 sorries",
       "**Filter-based density**: Upper density is formalized using Mathlib's Filter.limsup, and IsBasisOrder2 uses Filter.Eventually, leveraging Mathlib's topological infrastructure for clean asymptotic statements"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)",
+      "Asymptotic density and counting"
+    ]
   },
   "sections": [
     {

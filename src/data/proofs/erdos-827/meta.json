@@ -79,7 +79,10 @@
       "**Massive Gap Between Bounds:** $k \\leq n_k \\leq Ck^9$ leaves the true growth rate unknown across 8 orders of magnitude in the exponent. Even determining whether $n_k$ grows linearly ($\\Theta(k)$), quadratically ($\\Theta(k^2)$), or with a higher polynomial would be a significant advance.",
       "**Geometric Ramsey Theory:** This problem exemplifies geometric Ramsey theory: seeking unavoidable 'structured' subsets (all circumradii distinct) within large point configurations. The general position assumption is the geometric analog of coloring constraints in classical Ramsey theory."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Geometry (Euclidean, combinatorial)"
+    ]
   },
   "sections": [
     {

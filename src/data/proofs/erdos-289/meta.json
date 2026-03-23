@@ -34,7 +34,9 @@
       "Reciprocal sum bounds $\\frac{|I|}{\\max(I)} \\le S(I) \\le \\frac{|I|}{\\min(I)}$ show that blocks at large $n$ contribute small amounts, requiring many blocks for target $1$ — a tension between having enough blocks and precise arithmetic",
       "The spreading lemma ($\\max(I_i) \\ge k$ for some block) quantifies how non-adjacency forces blocks to occupy large integers, connecting to interval packing and scheduling problems in combinatorial optimization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

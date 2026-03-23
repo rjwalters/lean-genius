@@ -33,7 +33,9 @@
       "**Proved monotonicity**: $R_k(N)$ is monotone in $N$ (larger interval has more AP-free subsets) and anti-monotone in $k$ ($l$-AP-free implies $k$-AP-free for $k \\leq l$), both verified in Lean",
       "**$\\varepsilon$-$N_0$ formalization**: The conjecture uses $\\mathbb{Q}$ for the $(1 + \\varepsilon)$ bound, avoiding real analysis while precisely capturing the asymptotic ratio"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

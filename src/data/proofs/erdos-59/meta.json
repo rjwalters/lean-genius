@@ -36,7 +36,11 @@
       "Turán's theorem gives ex(n;K_{r+1}) exactly, while Kővári-Sós-Turán gives ex(n;C_{2k}) = O(n^{1+1/k}) — the subquadratic growth for bipartite graphs is what makes their counting behavior different",
       "The sorry in erdos_59_disproved is a technical gap (extracting n ≥ N₀ from Set.Infinite), not a mathematical one — the argument is complete modulo this Lean extraction step"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Extremal graph theory (Turán-type problems)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

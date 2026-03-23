@@ -34,7 +34,12 @@
       "The upper density bound $\\overline{d}(C) \\leq 0.696$ reveals genuine number-theoretic obstructions: certain residue classes modulo powers of 3 and 4 are underrepresented in $C$. This means the density, if positive, lies strictly between 0 and 0.696.",
       "The generalization to $k$ bases with $\\sum_{i=1}^k \\log_{n_i}(2) > 1$ connects to a broad conjecture in fractal additive combinatorics. For three or more bases exceeding the dimension threshold, the problem is wide open — even the counting function bounds have not been established."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Asymptotic density and counting",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

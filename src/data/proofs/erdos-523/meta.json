@@ -70,7 +70,11 @@
       "**Chaining vs. moments**: The upper bound uses the chaining technique (entropy integral), while the lower bound uses the second moment method. This two-pronged approach is paradigmatic in the theory of suprema of stochastic processes",
       "**Almost sure convergence**: The result holds with probability 1, not just in probability. This stronger statement uses Borel-Cantelli arguments and requires careful control of the probability tails"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Mathematical analysis",
+      "Probability theory"
+    ]
   },
   "sections": [
     {

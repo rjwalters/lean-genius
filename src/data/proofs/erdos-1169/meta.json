@@ -75,7 +75,13 @@
       "The ordinal $\\omega_1^2$ has **richer order structure** than $\\omega_1$ despite having the same cardinality $\\aleph_1$. It consists of $\\omega_1$-many copies of $\\omega_1$ in sequence, and this structure is essential for the partition relation to potentially hold.",
       "The problem sits at the **boundary of independence**: results that hold under CH but whose ZFC status is open often turn out to be independent. Whether $\\omega_1^2 \\to (\\omega_1^2, 3)^2$ is independent of ZFC (like the Continuum Hypothesis itself) is a major open question."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Set theory and cardinality",
+      "Combinatorics (counting, extremal problems)",
+      "Ramsey theory (partition regularity)",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

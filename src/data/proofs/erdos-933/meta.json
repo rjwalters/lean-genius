@@ -87,7 +87,10 @@
       "**5-sorry architecture with clean axiom boundaries**: Axiomatized: Mahler's bound (S-unit theory), Erdős's lower bound (original claim), Steinerberger's proof (main result), LTE application (divisibility), power2_mod3. Fully proved: consecutive_coprime, steinerberger_n_plus_1, examples. Sorry gaps: limsup_infinite (2, ratio manipulation), power2/3_consecutive (factorization additivity).",
       "**Connection to abc conjecture**: If abc holds, much stronger bounds on smooth parts of consecutive products follow. The open question 'connections to abc conjecture?' is natural—abc would give S(n(n+1)) < n^{1+ε} with effective constants and sharper thresholds."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

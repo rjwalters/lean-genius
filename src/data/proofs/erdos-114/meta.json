@@ -69,7 +69,10 @@
       "**Tao's reduction to finite verification:** Tao (2025) proved global optimality for $n \\geq N_0$, meaning the full conjecture reduces to checking finitely many small $n$. The value of $N_0$ is not explicitly determined.",
       "**Dihedral symmetry as optimality heuristic:** The lemniscate $\\{|z^n - 1| = 1\\}$ has symmetry group $D_n$ (rotation by $2\\pi/n$ and conjugation). Many isoperimetric problems have symmetric optimizers, lending heuristic support to the conjecture."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Complex analysis"
+    ]
   },
   "sections": [
     {

@@ -52,7 +52,10 @@
       "The bound is one-sided (upper on distinct, lower on collision) — the matching lower bound requires a second-order correction $O(k^3/d^2)$ from the Taylor remainder of $\\ln(1-x)$",
       "Monotonicity of collision probability is a simple consequence of each new factor being at most 1, but it establishes the intuitive fact that more people can only increase collision likelihood"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)",
+      "Probability theory"
+    ]
   },
   "sections": [
     {

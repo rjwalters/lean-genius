@@ -35,7 +35,10 @@
       "**Computational evidence**: The first 8 terms from [3, 5] are exactly the odd primes 3, 5, 7, 11, 13, 17, 19, 23—all verified by native_decide",
       "**Gap bound**: Consecutive terms differ by at least 2 (except possibly 2 → 3), constraining the growth rate to at least linear in n"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

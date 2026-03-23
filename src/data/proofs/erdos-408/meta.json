@@ -65,7 +65,10 @@
       "The Elliott-Halberstam conjecture enters because controlling $f(n)$ for typical $n$ requires understanding how $\\phi$ distributes values across residue classes modulo small primes. The Bombieri-Vinogradov theorem gives level $1/2$, but the EGPS sieve argument needs level arbitrarily close to 1 — exactly the Elliott-Halberstam assertion.",
       "Question 3 (largest prime factor of $\\phi_k(n)$ for $k \\approx \\log\\log n$) probes the 'smoothing' effect of iterated totient: repeated application cascades large prime factors down to smaller ones, with $\\log\\log n$ iterations being the natural threshold where this cascade completes."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

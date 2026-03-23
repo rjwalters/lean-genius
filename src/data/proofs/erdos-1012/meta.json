@@ -36,7 +36,10 @@
       "**Ore and Bondy improve small $k$**: For $k=0$, Ore gives $f(0)=1$ while Woodall gives $n \\ge 3$; for $k=1$, Bondy gives $f(1)=1$ while Woodall gives $n \\ge 5$. The general bound is optimal only for $k \\ge 2$.",
       "**Clean axiom architecture**: The file uses 5 axioms (not sorry) for deep results and proves 29 theorems from them. This cleanly separates what requires deep graph theory from what follows by combinatorial analysis."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

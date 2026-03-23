@@ -77,7 +77,11 @@
       "**Connection to equidistribution**: The failure relates to the distribution of αn² mod 1, which for generic α has specific gap statistics.",
       "**Proved erdos_1147_false without sorry**: The disproof follows from the √2 counterexample axiom, with the key numerical bound log(3) > 1 proved via Real.exp_one_lt_d9."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

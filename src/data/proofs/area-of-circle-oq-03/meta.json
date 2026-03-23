@@ -65,7 +65,11 @@
       "**Uniqueness from Tendsto**: `tendsto_nhds_unique` closes the uniqueness theorem in one line: any other limit of the same sequence must equal πr².",
       "**Riemann sum connection**: The inscribed area formula $n \\cdot r^2/2 \\cdot \\sin(2\\pi/n)$ is exactly the Riemann sum for $\\int_0^{2\\pi} r^2/2 \\, d\\theta$ in polar coordinates, making Archimedes' geometric construction a concrete instance of integration 1900 years before its invention."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Geometry (Euclidean, combinatorial)",
+      "Mathematical analysis",
+      "Limits and convergence"
+    ]
   },
   "sections": [
     {

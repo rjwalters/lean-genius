@@ -44,7 +44,9 @@
       "**Quadratic forms are special**: the Selmer curve $3x^3 + 4y^3 + 5z^3 = 0$ shows the Hasse principle fails for cubics; for quadratic forms the Brauer-Manin obstruction vanishes, explaining why local-global works",
       "**Hilbert reciprocity** $\\prod_v (a,b)_v = 1$: the product of all Hilbert symbols equals 1, generalizing quadratic reciprocity and connecting quadratic forms to class field theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

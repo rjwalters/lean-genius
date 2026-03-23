@@ -68,7 +68,11 @@
       "**Sándor's construction**: The set $A = \\{2^i + m \\cdot 2^m : 0 \\leq i < m\\}$ uses a large common offset to separate magnitude classes, while the binary perturbations $2^i$ ensure distinctness within each class.",
       "**Greedy gives only $\\log_3 n$**: Each greedy step can at most triple the count of reachable sums, showing that clever algebraic constructions (not just greedy avoidance) are needed to approach $\\log_2 n$."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

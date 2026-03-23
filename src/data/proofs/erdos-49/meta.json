@@ -34,7 +34,9 @@
       "**Non-injectivity of $\\varphi$**: The totient function is far from injective ($\\varphi(n) = \\varphi(2n)$ for odd $n$), which creates competition among elements for distinct totient values and limits set size",
       "**Sieve-theoretic approach**: Tao's proof uses the Selberg sieve to control the number of integers with prescribed totient value ranges, converting the combinatorial problem into an analytic one about the distribution of $\\varphi$-values"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

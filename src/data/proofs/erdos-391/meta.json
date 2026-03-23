@@ -73,7 +73,10 @@
       "**Second-Order Term:** The correction -c₀/log(n) with c₀ ≈ 0.3044 shows that t(n)/n approaches 1/e from below, answering both questions simultaneously",
       "**Sharp Threshold 43632:** The lower bound t(n) ≥ n/3 holds for n ≥ 43632 and this threshold is optimal — a remarkably precise explicit result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

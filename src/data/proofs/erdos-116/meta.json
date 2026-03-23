@@ -33,7 +33,9 @@
       "The remaining gap between the lower bound $c/\\log n$ and the KLR upper bound $C/\\log\\log n$ is a genuinely open problem: it is unknown whether the true minimum is $\\Theta(1/\\log n)$ or $\\Theta(1/\\log\\log n)$ or something in between.",
       "The `UnitDiskPoly` structure elegantly bundles the roots and their disk containment proofs, avoiding the need to work with the polynomial ring directly and instead treating the polynomial through its root factorization $p(z) = \\prod(z - z_i)$."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

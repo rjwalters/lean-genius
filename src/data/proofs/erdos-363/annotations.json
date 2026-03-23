@@ -27,7 +27,8 @@
     "type": "definition",
     "title": "ConsecutiveInterval Structure",
     "content": "**ConsecutiveInterval:**\n\nAn interval of consecutive integers [a, a+1, ..., a+k-1] defined by:\n- `start`: The first integer in the interval\n- `length`: The number of integers (must be positive)\n\nThe product is computed as ∏_{m ∈ I} m.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of consecutiveinterval structure"
   },
   {
     "id": "ann-e363-collection",
@@ -52,7 +53,8 @@
     "type": "definition",
     "title": "Perfect Squares",
     "content": "**isPerfectSquare(z):**\n\nAn integer z is a perfect square if z = n² for some integer n.\n\n**squareCollections:**\n\nThe set of all disjoint interval collections with:\n- All intervals have size ≥ 4\n- The total product is a perfect square",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of perfect squares"
   },
   {
     "id": "ann-e363-conjecture",
@@ -64,7 +66,8 @@
     "type": "definition",
     "title": "The Erdős Conjecture",
     "content": "**erdosConjecture363:**\n\nThe set squareCollections is finite.\n\nErdős conjectured that only finitely many collections of size-≥4 disjoint intervals can have a square product.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of the erdős conjecture"
   },
   {
     "id": "ann-e363-pomerance",
@@ -142,7 +145,8 @@
     "type": "technique",
     "title": "Infinitely Many Size-4 Collections",
     "content": "**Theorem infinitely_many_size4_collections:**\n\nThere are infinitely many collections where all intervals have size 4 and the product is a perfect square.\n\nProof: Apply Ulas's theorem for n = 4, then project to forget the constraint on n.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of infinitely many size-4 collections"
   },
   {
     "id": "ann-e363-false",
@@ -154,7 +158,8 @@
     "type": "technique",
     "title": "The Conjecture is FALSE",
     "content": "**Theorem erdosConjecture363_false:**\n\n¬erdosConjecture363\n\n**Proof**: The set of size-4 collections is a subset of squareCollections (since size-4 ≥ 4). We have infinitely many size-4 collections. An infinite subset of a finite set is a contradiction.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of the conjecture is false"
   },
   {
     "id": "ann-e363-main",
@@ -166,7 +171,8 @@
     "type": "technique",
     "title": "Main Theorem (erdos_363)",
     "content": "**Theorem erdos_363:**\n\n¬erdosConjecture363\n\nThe answer to Erdős Problem #363 is NO - the conjecture is FALSE.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of main theorem (erdos_363)"
   },
   {
     "id": "ann-e363-ulas-conj",
@@ -178,7 +184,8 @@
     "type": "definition",
     "title": "Ulas's Conjecture",
     "content": "**ulas_conjecture:**\n\nFor any fixed interval size k ≥ 4, there are infinitely many solutions provided n (the number of intervals) is sufficiently large.\n\nThis remains open but is supported by the existing results for k = 4 and k = 5.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of ulas's conjecture"
   },
   {
     "id": "ann-e363-selfridge",
@@ -207,6 +214,7 @@
     "type": "technique",
     "title": "Summary",
     "content": "**Theorem erdos_363_summary:**\n\n1. The conjecture is FALSE (infinitely many square-product collections exist)\n2. Pomerance showed |Iᵢ| ≥ 4 is needed (size-3 gives trivial counterexamples)\n3. Ulas + Bauer-Bennett cover all n ≥ 3 for size-4 intervals\n4. Bennett-Van Luijk extended to size-5 intervals\n5. Ulas's conjecture (any size k for large n) remains open",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of summary"
   }
 ]

@@ -38,7 +38,11 @@
       "**Prömel-Rödl universality**: non-Ramsey graphs are $c'\\log n$-universal — they contain ALL graphs on $O(\\log n)$ vertices as induced subgraphs, far stronger than just regular subgraphs",
       "**Regularity from universality**: since $C_k$ (a 2-regular non-trivial graph) has $k$ vertices, any $k$-universal graph contains it as an induced subgraph, resolving the Erdős-Fajtlowicz-Staton question"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)",
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

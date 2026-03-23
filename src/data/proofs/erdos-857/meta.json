@@ -92,7 +92,10 @@
       "**Matrix Multiplication Connection:** Alon, Shpilka, and Umans (2013) showed that proving $m(n,3) \\leq 2^{cn}$ for $c < 1$ would imply new matrix multiplication algorithms. The Naslund-Sawin result ($c \\approx 0.917$) partially realized this but the algorithmic implications remain under investigation.",
       "**Alweiss–Lovett–Wu–Zhang (2019):** Proved an improved sunflower lemma with bound $(C \\log(k\\ell))^\\ell$ for $\\ell$-uniform families, exponentially improving the Erdős-Rado bound in $k$. This was the biggest advance toward the Sunflower Conjecture in 59 years, though the weak version of the conjecture remains open."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

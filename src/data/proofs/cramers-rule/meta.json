@@ -64,7 +64,9 @@
       "**Invertible vs Field:** The formalization uses the `Invertible` typeclass rather than requiring a `Field`. This works in any ring where $\\det(A)$ has a two-sided inverse, a subtler algebraic condition.",
       "**Cofactor Expansion:** Each $\\text{cramer}(A,b)_i$ is a cofactor expansion along column $i$ using the entries of $b$ instead of $A$. This is why the determinant $\\det(A_i)$ arises naturally."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Linear algebra"
+    ]
   },
   "sections": [
     {

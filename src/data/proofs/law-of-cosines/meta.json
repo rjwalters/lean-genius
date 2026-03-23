@@ -57,7 +57,10 @@
       "**Parallelogram Law:** $\\|u+v\\|^2 + \\|u-v\\|^2 = 2\\|u\\|^2 + 2\\|v\\|^2$. The sum of squared diagonals equals the sum of squared sides. This characterizes inner product spaces among normed spaces.",
       "**Triangle Form:** For sides $a, b, c$ opposite angles $A, B, C$: $c^2 = a^2 + b^2 - 2ab\\cos C$. Setting $\\cos C = 0$ gives Pythagoras; the cosine correction captures how non-right angles stretch or shrink the hypotenuse."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Geometry (Euclidean, combinatorial)",
+      "Linear algebra"
+    ]
   },
   "sections": [
     {

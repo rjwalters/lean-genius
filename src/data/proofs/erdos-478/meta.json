@@ -78,7 +78,10 @@
       "**Klurman–Munsch 2017:** The conjecture holds on average: $\\sum_{p \\leq x} |A_p| / \\sum_{p \\leq x} p \\to 1 - 1/e$, providing strong evidence for the pointwise conjecture",
       "**Wilson's constraint:** $(p-1)! \\equiv -1 \\pmod{p}$ ensures $A_p \\subseteq \\{1, \\ldots, p-1\\}$ with $|A_p| \\leq p-2$ for $p > 5$"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

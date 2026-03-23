@@ -92,7 +92,10 @@
       "**Steinhaus's Theorem as Key Tool:** Laczkovich's proof relies on Steinhaus's theorem: if $A \\subseteq \\mathbb{R}$ has positive Lebesgue measure, then $A - A$ contains an interval around $0$. This connects measure-theoretic properties to topological/algebraic structure, bridging the gap between the three components of the decomposition.",
       "**de Bruijn's Broader Program:** The result answers one instance of de Bruijn's 1951 question: which function classes $C$ are \"difference closed\"? For $C = \\{\\text{measurable}\\}$, the answer is yes with the $g + h + r$ decomposition. The question remains open for many other classes (e.g., $L^p$, Baire measurable, bounded variation)."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

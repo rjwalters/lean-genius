@@ -71,7 +71,9 @@
       "**Finite vs Infinite Points:** With finitely many distinct values, Dirichlet's approximation theorem forces near-alignment at some k, giving Aₖ ≫ k^{1-ε} — the gap nearly closes to O(k^ε). The infinite case is fundamentally harder.",
       "**Discrepancy Duality:** The Erdős-Turán inequality shows exponential sums control sequence regularity. If Aₖ = o(k), the sequence would have a specific balance between Fourier regularity and spatial distribution."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory"
+    ]
   },
   "leanFile": {
     "imports": [

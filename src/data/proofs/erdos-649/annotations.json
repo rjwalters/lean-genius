@@ -27,7 +27,8 @@
     "type": "concept",
     "title": "GPF Properties",
     "content": "**Key Properties of P(m):**\n\n1. **gpf_prime**: P(p) = p for prime p\n2. **gpf_prime_power**: P(p^k) = p for k ≥ 1\n3. **gpf_mul**: P(m·n) = max(P(m), P(n)) for m,n > 1\n4. **gpf_divides**: P(m) | m for m > 1\n5. **gpf_is_prime**: P(m) is prime for m > 1\n6. **gpf_one**: P(1) = 0 by convention\n\nThese capture the essential behavior of the greatest prime factor function.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of gpf properties"
   },
   {
     "id": "ann-e649-conjecture",
@@ -52,7 +53,8 @@
     "type": "concept",
     "title": "Powers of 2 Characterization",
     "content": "**gpf_eq_two_iff:**\n\nFor n > 1: P(n) = 2 ⟺ n = 2^k for some k ≥ 1\n\n**Intuition:**\n- If P(n) = 2, then 2 is the largest prime dividing n\n- This means n has no odd prime factors\n- Therefore n must be a power of 2\n\nThis is the first step in analyzing the (2, 7) case.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of powers of 2 characterization"
   },
   {
     "id": "ann-e649-mod7-cycle",
@@ -82,7 +84,8 @@
     "type": "concept",
     "title": "Seven Non-Divisibility",
     "content": "**seven_not_divide_two_pow_plus_one:**\n\n7 ∤ (2^k + 1) for all k.\n\n**Proof:**\n- 7 | (2^k + 1) ⟺ 2^k ≡ -1 (mod 7)\n- But 2^k cycles through {1, 2, 4} mod 7\n- None of these equal 6 ≡ -1\n- Therefore 7 never divides 2^k + 1\n\nThis is the crucial divisibility obstruction for the (2, 7) counterexample.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of seven non-divisibility"
   },
   {
     "id": "ann-e649-no-solution-2-7",
@@ -112,7 +115,8 @@
       "Primitive roots",
       "Multiplicative order",
       "Quadratic residues"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of primitive root obstruction"
   },
   {
     "id": "ann-e649-tong",
@@ -137,7 +141,8 @@
     "type": "concept",
     "title": "Counterexample: (19, 2)",
     "content": "**no_solution_19_2:**\n\nNo n exists with P(n) = 19 and P(n+1) = 2.\n\n**Why it fails:**\n- P(n+1) = 2 means n + 1 = 2^k\n- So n = 2^k - 1 (Mersenne-like number)\n- P(2^k - 1) = 19 requires 19 | (2^k - 1)\n- But 2 is a primitive root mod 19\n- ord₁₉(2) = 18, so 2^k ≡ 1 (mod 19) only when 18 | k\n- Additional constraints prevent this from working",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of counterexample: (19, 2)"
   },
   {
     "id": "ann-e649-positive-2-3",
@@ -149,7 +154,8 @@
     "type": "technique",
     "title": "Positive Case: (2, 3)",
     "content": "**solution_2_3:**\n\nn = 8 satisfies P(n) = 2 and P(n+1) = 3.\n\n**Verification:**\n- P(8) = P(2³) = 2 ✓\n- P(9) = P(3²) = 3 ✓\n\n**In Lean:**\n```lean\ntheorem solution_2_3 : ∃ n : ℕ, n > 0 ∧ P(n) = 2 ∧ P(n + 1) = 3 := by\n  use 8\n  constructor\n  · norm_num\n  constructor\n  · have : (8 : ℕ) = 2 ^ 3 := by norm_num\n    rw [this]\n    exact gpf_prime_power 2 3 Nat.prime_two (by norm_num)\n  · ...\n```\n\nThis shows some pairs DO work.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of positive case: (2, 3)"
   },
   {
     "id": "ann-e649-positive-3-2",
@@ -161,7 +167,8 @@
     "type": "technique",
     "title": "Positive Case: (3, 2)",
     "content": "**solution_3_2:**\n\nn = 3 satisfies P(n) = 3 and P(n+1) = 2.\n\n**Verification:**\n- P(3) = 3 (prime) ✓\n- P(4) = P(2²) = 2 ✓\n\nThis demonstrates the conjecture isn't universally false - many pairs work, but not all.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of positive case: (3, 2)"
   },
   {
     "id": "ann-e649-mahler",
@@ -204,7 +211,8 @@
     "type": "technique",
     "title": "Odd Order Implies No -1",
     "content": "**odd_order_no_minus_one:**\n\n∀ k : ℕ, (2^k : ZMod 7) ≠ -1\n\n**Proof:**\n- We have (-1 : ZMod 7) = 6\n- Apply two_power_mod_seven\n\n**General Principle:**\nIf ord_q(a) is odd, then a^k ≡ -1 (mod q) has no solution.\n(Because -1 has order 2, so would need order divisible by 2.)",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of odd order implies no -1"
   },
   {
     "id": "ann-e649-main-theorem",
@@ -216,7 +224,8 @@
     "type": "technique",
     "title": "Main Result: Conjecture Disproved",
     "content": "**erdos_649: ¬ErdosConjecture649**\n\n**Proof:**\n1. Assume ErdosConjecture649 holds\n2. The conjecture claims all (p, q) pairs work\n3. Instantiate with p = 2, q = 7\n4. Get n with P(n) = 2 and P(n+1) = 7\n5. But no_solution_2_7 says no such n exists\n6. Contradiction\n\n**In Lean:**\n```lean\ntheorem erdos_649 : ¬ErdosConjecture649 := by\n  intro hconj\n  have hp7 : Nat.Prime 7 := by native_decide\n  have h27 := hconj 2 7 Nat.prime_two hp7\n  obtain ⟨n, hn_pos, hPn, hPn1⟩ := h27\n  have hfalse := no_solution_2_7\n  exact hfalse ⟨n, hn_pos, hPn, hPn1⟩\n```",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of main result: conjecture disproved"
   },
   {
     "id": "ann-e649-some-work",
@@ -228,7 +237,8 @@
     "type": "technique",
     "title": "Some Pairs Work",
     "content": "**some_pairs_work:**\n\nBoth (2, 3) and (3, 2) have solutions.\n\n**Statement:**\n```lean\ntheorem some_pairs_work :\n  (∃ n : ℕ, n > 0 ∧ P(n) = 2 ∧ P(n + 1) = 3) ∧\n  (∃ n : ℕ, n > 0 ∧ P(n) = 3 ∧ P(n + 1) = 2) :=\n  ⟨solution_2_3, solution_3_2⟩\n```\n\nThis emphasizes the conjecture is not trivially false - characterizing which pairs work is an open problem.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of some pairs work"
   },
   {
     "id": "ann-e649-infinite-failures",
@@ -240,6 +250,7 @@
     "type": "technique",
     "title": "Infinitely Many Failures",
     "content": "**infinitely_many_failures:**\n\nFor any prime p, infinitely many primes q fail.\n\n**Statement:**\n```lean\ntheorem infinitely_many_failures :\n  ∀ p : ℕ, p.Prime → ∃ Q : Set ℕ, Q.Infinite ∧\n    ∀ q ∈ Q, q.Prime ∧ ¬∃ n : ℕ, n > 0 ∧ P(n) = p ∧ P(n + 1) = q\n```\n\nThis follows from Tong's theorem and shows the phenomenon is pervasive.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of infinitely many failures"
   }
 ]

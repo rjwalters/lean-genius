@@ -80,7 +80,11 @@
       "**Ternary tree structure of $A$:** Every element of $A$ corresponds to a node in a ternary tree rooted at 1, where the three children of a node $x$ are $2x+1$, $3x+1$, $6x+1$. The density question asks whether this tree is 'thick' enough to capture a positive fraction of $\\mathbb{N}$.",
       "**Open variant resists analysis:** Klarner's variant $A' = \\langle 0; 2x, 3x+2, 6x+3 \\rangle$ remains unsolved. The map $x \\mapsto 2x$ (multiplication by 2, no additive constant) fundamentally changes the overlap structure, preventing the same geometric series technique."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Asymptotic density and counting",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

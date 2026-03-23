@@ -87,7 +87,9 @@
       "The negative root formulation via `negSubst p = p.comp (−X)` is elegant: `r < 0` is a root of `p` iff `−r > 0` is a root of `negSubst p`. This lets us apply the same machinery to negative roots.",
       "For the combined rule (upper bound + parity), even the simplified statement `descartes_rule_combined` is useful: it gives exact count modulo 2, and `one_sign_variation_one_positive_root` derives the exact count 1 from signVariations = 1."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Abstract algebra"
+    ]
   },
   "sections": [
     {

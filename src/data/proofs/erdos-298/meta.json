@@ -77,7 +77,12 @@
       "**Complete formalization**: The Lean 3 formalization (~10,000 lines) demonstrates that cutting-edge mathematical results can be fully verified.",
       "**Connection to Egyptian fractions**: Every positive rational has an Egyptian fraction representation (ancient result). This problem asks about constrained representations."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Asymptotic density and counting",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

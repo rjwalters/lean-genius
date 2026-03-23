@@ -64,7 +64,10 @@
       "**ABC conjecture implication:** An effective ABC conjecture would force the radical of $2^k - \\sum 3^{a_i}$ to grow, eventually requiring all three ternary digits.",
       "**Saye's massive computation (2022):** Verified no new examples for $n \\leq 5.9 \\times 10^{21}$ using incremental ternary digit extraction — avoiding full computation of $2^n$, only tracking its base-3 digits."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "leanFile": {
     "imports": [

@@ -75,7 +75,10 @@
       "**Triangle-Free Constraint as Obstacle:** In an unconstrained setting, achieving diameter 2 is trivial (add all missing edges). The triangle-free requirement is what makes the problem hard — each new edge must avoid creating K₃.",
       "**Probabilistic Method:** Alon's proof exemplifies how random constructions can solve problems where deterministic methods fail. The degree constraint n^{1/2-ε} provides the 'slack' needed to control triangle probabilities."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "leanFile": {
     "imports": [

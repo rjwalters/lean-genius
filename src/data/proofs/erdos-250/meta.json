@@ -59,7 +59,10 @@
       "**Transcendence Over Irrationality**: Nesterenko proved the far stronger result that the sum is transcendental. His algebraic independence theorem for $P(q)$, $Q(q)$, $R(q)$ at algebraic $q$ implies that $P(1/2)$ is transcendental, and hence so is $(1 - P(1/2))/24 = \\sum \\sigma(n)/2^n$.",
       "**Lambert Series Identity**: The classical identity $\\sum \\sigma(n) q^n = \\sum nq^n/(1-q^n)$, known to Euler and Jacobi, provides an alternative computational formula. It follows by expanding each $nq^n/(1-q^n)$ as a geometric series and noting that each divisor $d$ of $m$ contributes $d$ to $\\sigma(m)$."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

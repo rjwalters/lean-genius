@@ -58,7 +58,10 @@
       "**Parallelizable Spheres:** The existence of $n$-square identities is equivalent to the parallelizability of $S^{n-1}$. By Bott–Milnor and Kervaire (1958), only $S^0, S^1, S^3, S^7$ are parallelizable, giving a topological proof of Hurwitz's algebraic theorem",
       "**The `ring` Tactic Showcase:** The 1- and 2-square identities are verified by Lean's `ring` tactic, which automatically expands and checks polynomial identities—a striking example of automated algebraic reasoning handling identities that took centuries to discover"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Abstract algebra",
+      "Point-set topology"
+    ]
   },
   "sections": [
     {

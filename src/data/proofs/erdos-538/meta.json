@@ -35,7 +35,9 @@
       "The multiplicative energy bound $r^2|A|$ is FALSE (counterexample: $A$ = first 5 primes, $r=2$, gives 25 pairs > 20); the trivial bound $|A|^2$ is proved instead",
       "Erdős's upper bound is now proved from Mertens' second theorem (axiom) and a double counting inequality (sorry). The proof chains: reciprocalSum·(c·log log N) ≤ reciprocalSum·primeReciprocalSum ≤ r·(1+2·log N) ≤ 3r·log N, then divides by c·log log N"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

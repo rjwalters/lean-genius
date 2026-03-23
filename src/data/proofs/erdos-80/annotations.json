@@ -32,7 +32,8 @@
       "Adjacency",
       "Clique",
       "K_3"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of triangle definition"
   },
   {
     "id": "ann-e80-triangle-saturated",
@@ -63,7 +64,8 @@
     "type": "definition",
     "title": "Book Size",
     "content": "**bookSize:** The number of triangles sharing an edge (u, v).\n\nThe edge (u,v) is the 'spine' of a book, and each triangle {u,v,w} is a 'page'. A book of size m means m triangles share the same edge.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of book size"
   },
   {
     "id": "ann-e80-f-function",
@@ -88,7 +90,8 @@
     "type": "concept",
     "title": "Alon-Trotter Upper Bound",
     "content": "**alon_trotter_bound:** For c < 1/4: f_c(n) ≪ n^{1/2}\n\nAlon and Trotter constructed triangle-saturated graphs with cn² edges where the maximum book size is only O(√n).",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of alon-trotter upper bound"
   },
   {
     "id": "ann-e80-fox-loh",
@@ -113,7 +116,8 @@
     "type": "concept",
     "title": "Polynomial Conjecture: DISPROVED",
     "content": "**erdos_polynomial_conjecture_false:** Erdős asked: Is f_c(n) > n^ε for some ε > 0?\n\n**Answer: NO** (for c < 1/4). Fox-Loh's n^{O(1/log log n)} bound eventually falls below any n^ε.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of polynomial conjecture: disproved"
   },
   {
     "id": "ann-e80-linear-bound",
@@ -138,7 +142,8 @@
     "type": "concept",
     "title": "Regularity Lower Bound",
     "content": "**regularity_lower_bound:** For all c > 0: f_c(n) → ∞ as n → ∞.\n\nSzemerédi's regularity lemma implies book size must grow unboundedly.\n\n**Weakness:** The bounds from regularity are 'tower-type' — extremely weak. The gap between this and Fox-Loh is enormous.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of regularity lower bound"
   },
   {
     "id": "ann-e80-threshold",
@@ -167,7 +172,8 @@
     "type": "definition",
     "title": "Erdős's Weaker Conjecture: OPEN",
     "content": "**erdos_log_conjecture:** Is f_c(n) ≫ log n for c < 1/4?\n\n**Status: OPEN**\n\nWeaker than the polynomial growth conjecture (disproved). Asks whether book sizes grow at least logarithmically. The answer remains unknown.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of erdős's weaker conjecture: open"
   },
   {
     "id": "ann-e80-summary",
@@ -179,6 +185,7 @@
     "type": "technique",
     "title": "Main Results Summary",
     "content": "**erdos_80_summary:** Complete characterization of what is known:\n\n1. f_c(n) → ∞ for all c > 0 (regularity)\n2. f_c(n) ≥ n/6 for c > 1/4 (linear)\n3. f_c(n) ≤ n^{O(1/log log n)} for c < 1/4 (Fox-Loh)\n4. Polynomial growth DISPROVED for c < 1/4\n5. Logarithmic growth OPEN\n\n**The Gap:** For c < 1/4, the true growth rate lies between 'tending to infinity' and n^{o(1)}.\n\nThe summary theorem is proved directly from the axiomatized results.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of main results summary"
   }
 ]

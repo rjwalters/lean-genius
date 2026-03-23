@@ -76,7 +76,11 @@
       "**De Koninck-Luca lower bound**: The (log n / log log n)^{1/3} growth rate shows h(n) can grow, but the precise asymptotic remains unknown.",
       "**The question is about fluctuations**: How much does h(n) vary? Is (log n)^c the right scale for both upper and lower bounds?"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Asymptotic density and counting"
+    ]
   },
   "sections": [
     {

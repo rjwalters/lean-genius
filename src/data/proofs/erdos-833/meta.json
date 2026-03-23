@@ -109,7 +109,10 @@
       "**Connection to Property B:** A 3-chromatic hypergraph is one that fails Property B (Bernstein 1908). Erdős's 1963 bound says $|E| < 2^{r-1}$ implies Property B. The Erdős–Lovász result strengthens this: not just few edges, but low *maximum degree* suffices for Property B. This degree-based refinement is much more powerful than the edge-count version.",
       "**Higher Chromatic Numbers:** For $\\chi(H) = k \\geq 4$, analogous questions about minimum degree bounds become even harder. The LLL gives weaker bounds as $k$ grows, and the exact threshold for $k$-chromaticity forcing high degree is unknown for general $k$."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

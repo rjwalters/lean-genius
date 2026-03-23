@@ -71,7 +71,12 @@
       "**Milner-Larson: clique size is irrelevant:** Once the Ramsey property holds for triangles ($m = 3$), it holds for arbitrary finite clique sizes ($m$) as the second color target. The proof bootstraps from $m = 3$ by iterating: given a coloring avoiding blue $K_m$, find a large monochromatic set in the first color, and repeat. The ordinal $\\omega^\\omega$ is 'rich enough' that this iteration does not exhaust the monochromatic set.",
       "**The open frontier:** Problem #591 asks about $\\omega^{\\omega^2} \\to (\\omega^{\\omega^2}, 3)^2$ and Problem #592 asks whether the pattern extends to all limit exponents: $\\omega^\\alpha \\to (\\omega^\\alpha, 3)^2$ for every limit $\\alpha$. If the pattern holds, it would establish a deep structural principle: the Ramsey property for $\\omega^\\alpha$ depends precisely on whether $\\alpha$ is 0, 1, or a limit ordinal."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Set theory and cardinality",
+      "Ramsey theory (partition regularity)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

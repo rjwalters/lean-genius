@@ -81,7 +81,10 @@
       "**The $N^{1/3}$ heuristic**: If $|A| = s$, the set covers roughly $s^2$ sums in $A + A$ and each sum 'blocks' $O(s)$ potential additions, giving coverage of $\\sim s^3$ elements. Requiring $s^3 \\sim N$ yields $s \\sim N^{1/3}$, explaining why this exponent is natural",
       "**Ruzsa's recursive construction**: Ruzsa's breakthrough builds maximal Sidon sets by starting with a Sidon set $S$ in a smaller interval and recursively extending it to fill gaps, ensuring maximality. The extra $\\varepsilon$ in the exponent comes from logarithmic factors in the recursive depth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

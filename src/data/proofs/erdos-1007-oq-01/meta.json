@@ -184,7 +184,11 @@
       "**Conditional theorems** (conjecture implies consequence) establish logical structure among open problems without resolving any.",
       "Parallel with **Ramsey numbers**: both $R(s,t)$ and $\\text{minEdges}(d)$ are extremal functions known exactly for small parameters with general asymptotics established but exact values unknown."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "conclusion": {
     "summary": "We significantly extend the minEdges formalization with a constructive simplex embedding (K_n in ℝⁿ), prove the complete graph optimality conjecture implies monotonicity, introduce and analyze the deficiency function, and verify d=4 is the unique anomaly for d≤5. All theorems are fully proved (no sorries), with 10 axioms for the minEdges function and known values.",

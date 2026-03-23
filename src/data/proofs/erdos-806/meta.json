@@ -67,7 +67,10 @@
       "**Tight Result:** Both upper and lower bounds are Θ((log log n / log n) · √n), so this is optimal.",
       "**Kakeya Connection:** The proof uses ideas from discrete Kakeya problems - unexpected geometry in number theory!"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

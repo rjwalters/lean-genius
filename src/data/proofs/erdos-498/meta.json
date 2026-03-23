@@ -84,7 +84,11 @@
       "**Hilbert space universality**: Kleitman's 1970 generalization to $\\|v_i\\| \\geq 1$ in any Hilbert space shows the result depends only on the norm condition, not the ambient dimension — it is fundamentally a combinatorial property of sign patterns",
       "**Inverse Littlewood–Offord theory**: Tao and Vu (2006) proved that if nearly $\\binom{n}{\\lfloor n/2 \\rfloor}$ signed sums concentrate in a disc, then most $z_i$ must be close to an arithmetic progression — characterizing the near-extremal case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Mathematical analysis"
+    ]
   },
   "conclusion": {
     "summary": "This formalization captures the complex Littlewood–Offord problem (Erdős Problem #498), recording Kleitman's 1965 sharp bound $\\binom{n}{\\lfloor n/2 \\rfloor}$ for signed sum concentration in discs, the historical progression from Erdős's real case (1945) through his weak complex bound (1961), and the Hilbert space generalization (1970). The connection to Sperner's antichain theorem is the unifying theme.",

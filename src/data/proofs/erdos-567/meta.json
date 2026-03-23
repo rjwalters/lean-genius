@@ -99,7 +99,11 @@
       "**Bipartite specialization**: $K_{3,3}$ is both bipartite and non-planar (Kuratowski), and bipartite Ramsey theory has its own rich structure (Zarankiewicz, Kővári–Sós–Turán), potentially offering alternative proof strategies",
       "**Symmetry as evidence**: $Q_3$ is vertex-transitive, edge-transitive, and arc-transitive — highly symmetric graphs often have favorable Ramsey properties, providing heuristic evidence for linearity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "conclusion": {
     "summary": "This formalization captures the three concrete open questions of Erdős Problem #567 — whether $Q_3$, $K_{3,3}$, and $H_5$ are Ramsey size linear — alongside partial results that bracket the current state of knowledge. Each graph is constructed explicitly in Lean with proved symmetry and irreflexivity, providing a rigorous foundation for future proof attempts.",

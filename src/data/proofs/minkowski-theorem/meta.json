@@ -47,7 +47,10 @@
       "Foundation for the geometry of numbers, connecting volume-based existence proofs to Diophantine approximation and algebraic number theory",
       "**Blichfeldt's generalization**: if $\\text{vol}(S) > k \\cdot 2^n \\cdot \\text{covol}(L)$, then $S$ contains at least $k+1$ lattice points, recovering Minkowski as the $k=1$ case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)",
+      "Geometry (Euclidean, combinatorial)"
+    ]
   },
   "sections": [
     {

@@ -67,7 +67,8 @@
     "relatedConcepts": [
       "Rational arithmetic",
       "Denominator bounds"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of bounded denominator property"
   },
   {
     "id": "ann-e310-conjecture",
@@ -137,7 +138,8 @@
     "relatedConcepts": [
       "Egyptian fractions",
       "Unit fraction sums"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of classic egyptian fraction"
   },
   {
     "id": "ann-e310-examples",
@@ -153,7 +155,8 @@
     "relatedConcepts": [
       "Rational arithmetic",
       "Unit fractions"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of unit fraction sum examples"
   },
   {
     "id": "ann-e310-full-density",
@@ -165,7 +168,8 @@
     "type": "technique",
     "title": "Full Density Trivial Case",
     "content": "**full_density_trivial:**\n\nIf A = {1, 2, ..., N} (the full set with density 1), then S = {1} gives unit fraction sum 1/1 = 1.\n\nThis shows the problem is trivial for density 1. The interesting case is when alpha < 1.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of full density trivial case"
   },
   {
     "id": "ann-e310-sharpness",
@@ -229,7 +233,8 @@
     "type": "technique",
     "title": "Erdos-Straus Examples",
     "content": "**Verified cases of Erdos-Straus:**\n\n- n = 3: 4/3 = 1/1 + 1/3\n- n = 5: 4/5 = 1/2 + 1/4 + 1/20\n\nThese demonstrate the conjecture for small values. The proofs use norm_num for computational verification.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of erdos-straus examples"
   },
   {
     "id": "ann-e310-main-theorem",
@@ -258,7 +263,8 @@
     "type": "technique",
     "title": "The Answer is YES",
     "content": "**erdos_310_answer:**\n\nExistential witness that erdosGrahamConjecture holds.\n\n```lean\ntheorem erdos_310_answer :\n  exists _ : erdosGrahamConjecture, True :=\n  (erdos_310, trivial)\n```\n\nThis packages the result as an existence statement.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of the answer is yes"
   },
   {
     "id": "ann-e310-croot",
@@ -288,6 +294,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_310_summary:**\n\nCombines the main results:\n\n1. erdosGrahamConjecture holds (the main theorem)\n2. For any alpha in (0, 1/2], there exists C such that alpha-dense sets have subsets with bounded denominator unit fraction sums\n\nThis provides a complete summary of what was proved about Erdos #310.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of summary theorem"
   }
 ]

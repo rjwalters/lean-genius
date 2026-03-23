@@ -74,7 +74,10 @@
       "The proof is constructive: it doesn't just show a good cut exists, it shows the algorithm's expected performance.",
       "This 1/2-approximation is tight for the algorithm: a path graph achieves exactly this ratio."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Probability theory"
+    ]
   },
   "sections": [
     {

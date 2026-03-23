@@ -60,7 +60,10 @@
       "**Bipartite generalization**: The result extends to $H$-free subgraphs for any bipartite graph $H$, via the Kővári-Sós-Turán theorem and bipartite Ramsey numbers. The non-bipartite case is harder and connects to Problem #108.",
       "**Connection to Ramsey numbers**: The proof fundamentally relies on $R(3,t) = \\Theta(t^2/\\log t)$ (Kim 1995), with iterated applications producing the tower growth. This illustrates how polynomial Ramsey bounds compose into tower-type bounds."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

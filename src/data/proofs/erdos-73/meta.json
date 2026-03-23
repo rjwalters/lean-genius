@@ -87,7 +87,10 @@
       "**Quantifier structure**: The bound $f(k)$ depends only on $k$, not on $|V(G)|$ — this uniformity is the deep content of the theorem",
       "**Exponential gap**: Reed's bound $f(k) \\le 2^k$ is likely not optimal — whether polynomial bounds suffice is open"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

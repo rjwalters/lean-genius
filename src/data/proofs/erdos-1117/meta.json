@@ -71,7 +71,10 @@
       "**The $(1-\\varepsilon)$ barrier**: Glücksam and Pardo-Simón showed that **near**-maximum points ($|f(z)| \\ge (1-\\varepsilon)M(r)$) can be made plentiful on every circle. But the exact maximum is achieved on a measure-zero subset of the circle, and perturbing from near-maximum to exact maximum requires fundamentally different techniques.",
       "**No sorry's — pure axiomatization**: Unusually for this gallery, the file has 0 sorry's because all mathematical content is axiomatized rather than proved. This reflects the current state of Lean's complex analysis library — entire function theory is not yet formalized enough for constructive proofs."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Complex analysis"
+    ]
   },
   "conclusion": {
     "summary": "Erdős Problem #1117 formalizes a two-part question about the growth of maximum modulus point counts on circles for non-monomial entire functions. Part 1 ($\\limsup \\nu(r) = \\infty$) was solved by Herzog–Piranian in 1968 via lacunary series constructions. Part 2 ($\\liminf \\nu(r) = \\infty$) remains open after more than 50 years, with the best partial result being the 2024 approximate answer by Glücksam–Pardo-Simón showing that near-maximum points can be made abundant on every circle.",

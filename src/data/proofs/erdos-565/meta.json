@@ -66,7 +66,11 @@
       "**Random graphs as worst case:** A random graph $G(n, 1/2)$ has roughly $2^{\\binom{n}{2}/2}$ possible adjacency patterns on any $n$-vertex subset. Any host $H$ that works for ALL such $G$ must contain induced copies of all possible $n$-vertex graphs. By a counting argument, this requires $|V(H)| \\ge 2^{\\Omega(n)}$. This establishes tightness of the $2^{O(n)}$ upper bound.",
       "**From existence to optimality in 50 years:** The timeline illustrates a common pattern in Ramsey theory: existence proofs (1970s) used non-constructive combinatorial arguments; first bounds (1990s) introduced regularity methods; improvements (2000s-2010s) refined probabilistic techniques; and the final optimal result (2025) required a fundamentally new construction bypassing all previous approaches."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Ramsey theory (partition regularity)",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

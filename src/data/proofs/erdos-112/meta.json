@@ -102,7 +102,11 @@
       "**Path variant has exact solution**: Replacing 'transitive tournament' with 'directed path' yields the exact answer $(n-1)(m-1)+1$, showing that the transitivity requirement is what makes the problem genuinely difficult",
       "**Irreflexivity suffices**: The formalization uses irreflexive relations rather than tournament-specific axioms, capturing the more general directed graph setting where non-edges (independent set vertices) and tournament structure coexist"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #112 — the directed Ramsey problem for independent sets versus transitive tournaments — by axiomatizing the function $k(n,m)$ and its known bounds in Lean 4. The formalization faithfully represents the Ramsey lower bound, Hunter's 3-color upper bound, the Larson–Mitchell quadratic estimate for $m=3$, and the original 1967 Erdős–Rado bound, providing a formal foundation for one of the central open problems in directed Ramsey theory.",

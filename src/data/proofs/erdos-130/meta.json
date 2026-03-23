@@ -99,7 +99,10 @@
       "**Connection to Hadwiger–Nelson**: The integer distance graph is a subgraph of the unit distance graph scaled by integer factors, linking to the chromatic number of the plane",
       "**Quantitative diameter bound**: Any finite non-collinear integer distance set has $|S| \\leq O(\\text{diam}(S)^2)$, bounding achievable clique sizes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "conclusion": {
     "summary": "Erdős Problem #130 asks whether the chromatic number of the integer distance graph on a general-position point set can be infinite. While the Anning–Erdős theorem (1945) forces the clique number to be finite, the chromatic number remains unconstrained — geometric distance graphs need not satisfy $\\chi \\leq f(\\omega)$.",

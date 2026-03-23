@@ -71,7 +71,10 @@
       "The gap between $\\limsup = \\infty$ (Kovac-Luca) and $\\lim = \\infty$ (the conjecture) requires showing the ratio cannot persistently drop back, which seems to need new ideas about Mersenne factorizations",
       "Computational evidence ($f(8)/f(4) = 3$, verified values) supports divergence, but the erratic behavior of $\\tau(2^k - 1)$ prevents simple asymptotic arguments"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

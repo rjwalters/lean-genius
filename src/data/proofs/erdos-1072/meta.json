@@ -36,7 +36,10 @@
       "The function $f(p)$ connects to the multiplicative structure of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$: the sequence $1!, 2!, \\ldots, (p-2)!$ modulo $p$ traces a path through the cyclic group, and $f(p) = p-1$ means this path avoids $-1$ until the final step forced by Wilson's theorem",
       "Heuristically, if factorial residues modulo $p$ behaved like random elements of $\\{1, \\ldots, p-1\\}$, the probability of maximality would be $(1 - 1/(p-1))^{p-2} \\to e^{-1} \\approx 0.37$—suggesting positive density, contradicting the Hardy-Subbarao conjecture. The discrepancy highlights hidden structure in factorial residue sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

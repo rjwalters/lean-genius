@@ -82,7 +82,10 @@
       "**Croft's Annular Refinement:** By using annular regions instead of full discs, Croft squeezed out extra density. The annuli $\\{x : r_1 < \\|x - c\\| < r_2\\}$ with $r_2 - r_1 < 1$ avoid unit distances internally while covering more area per lattice cell than discs of radius $1/2$.",
       "**Persistent Gap:** Despite 60 years of work, the exact value of $m_1$ is unknown. The gap $[0.22936, 0.247]$ of width $\\approx 0.018$ awaits either improved constructions or sharper LP bounds. Whether $m_1$ is rational or algebraic is completely open."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Asymptotic density and counting"
+    ]
   },
   "sections": [
     {

@@ -74,7 +74,11 @@
       "**Maynard's sieve revolution**: The DEKKM (2022) improvement to $\\ge 0.868$ uses the same multi-dimensional sieve techniques that Maynard (2015) developed for bounded gaps between primes. The sieve detects integers $n$ in an interval where every prime $p \\equiv 3 \\pmod{4}$ up to some bound divides $n$ to an odd power.",
       "**The conjectured limsup equals 1**: It is believed that $\\limsup(\\text{gap}_k / \\log n_k) = 1$, matching the heuristic from the Cramér-type model where an integer $n$ is a sum of two squares independently with probability $\\sim c/\\sqrt{\\log n}$."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Asymptotic density and counting"
+    ]
   },
   "sections": [
     {

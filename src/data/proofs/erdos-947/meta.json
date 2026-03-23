@@ -80,7 +80,10 @@
       "**Verified construction**: `exactCoveringWithRepeats` proves that $\\{0 \\pmod{2}, 1 \\pmod{2}\\}$ is an exact covering, showing the distinct moduli constraint is essential",
       "**Structural insight**: The $\\exists!$ quantifier in `isExact` formalizes the partition property, distinguishing exact from ordinary coverings"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

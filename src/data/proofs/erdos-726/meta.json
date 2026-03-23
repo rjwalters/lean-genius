@@ -101,7 +101,10 @@
       "**Partition symmetry**: $U(n) + L(n) = M(n)$ exactly, so proving the conjecture for either half automatically gives the other — a rare case where two asymptotic statements are equivalent",
       "**Rich proof structure**: The Lean formalization proves 8 theorems (not just axioms), including monotonicity, positivity, and sum bounds, giving computational verification of the algebraic framework"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "conclusion": {
     "summary": "Formalizes Erdős Problem #726 on the equidistribution of prime reciprocal sums across residue halves. The EGRS conjecture (1975) asserts that primes where n has an upper-half residue contribute exactly (log log n)/2 — half of Mertens' total. The formalization proves 8 structural theorems and states the conjecture alongside its heuristic motivation.",

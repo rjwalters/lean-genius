@@ -54,7 +54,11 @@
       "Sidon sets are NOT sum-free: $\\{1, 2, 4\\}$ is Sidon but $1 + 1 = 2 \\in S$; this corrects a previous unsound axiom in the formalization",
       "The density gap between Sidon and sum-free sets ($\\sqrt{n}$ vs. $n/2$ in $[n]$) is the fundamental obstacle to extending the Sidon technique to the general case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Set theory and cardinality",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

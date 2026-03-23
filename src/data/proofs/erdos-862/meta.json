@@ -77,7 +77,10 @@
       "**Resolving Both Questions Simultaneously:** The bound $A_1(N) \\geq 2^{0.16\\sqrt{N}}$ is strong enough to answer both: Q2 (YES) because $0.16\\sqrt{N} > N^c$ for any $c < 1/2$, and Q1 (NO) because $0.16\\sqrt{N}$ is not $o(\\sqrt{N})$ — it is $\\Theta(\\sqrt{N})$.",
       "**B_h Generalization:** Sidon sets are $B_2$ sequences (h=2). The definition `IsBhSet h S` generalizes to $h$-wise sum distinctness. Counting maximal $B_h$ sets for $h \\geq 3$ remains open; the container method applies but the hypergraph structure becomes $(2h)$-uniform, and asymptotic bounds on $B_h$ set sizes are less precise."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

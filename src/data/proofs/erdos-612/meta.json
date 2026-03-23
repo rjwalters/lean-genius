@@ -89,7 +89,10 @@
       "**Counterexample via blow-ups:** The Czabarka-Singgih-Székely counterexamples use iterated blow-ups: replace each vertex of a base graph with a large independent set, creating a $K_{2r}$-free graph with many vertices but a long diameter forced by the base graph's structure. This technique exploits the gap between global clique-freeness and local expansion rate.",
       "**The degree-diameter trade-off as a spectrum:** The problem reveals a continuous spectrum from the path graph ($D = n-1$, $d = 1$) to the complete graph ($D = 1$, $d = n-1$). The coefficient $\\alpha(k)$ parametrizes this trade-off for $K_{k+1}$-free graphs. Finding $\\alpha^*(k)$ exactly for each $k$ remains the central open problem."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

@@ -72,7 +72,10 @@
       "**2D vs 3D is the dramatic contrast**: In 2D, all polygon angles become multiples of $\\pi$ under dissection (the 'Dehn invariant' is trivially zero), so only area matters (Bolyai-Gerwien). In 3D, irrational-multiple-of-$\\pi$ dihedral angles create non-trivial obstructions.",
       "**Sydler's completeness (1965)**: Volume and Dehn invariant are not only necessary but **sufficient** for scissors congruence in $\\mathbb{R}^3$, giving a complete classification. In $\\mathbb{R}^n$ for $n \\geq 4$, additional invariants exist."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Geometry (Euclidean, combinatorial)",
+      "Point-set topology"
+    ]
   },
   "sections": [
     {

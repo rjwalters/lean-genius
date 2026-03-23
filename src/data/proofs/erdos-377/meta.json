@@ -65,7 +65,10 @@
       "**The trivial bound**: By Mertens' theorem, ∑_{p≤n} 1/p ~ log(log(n)), so f(n) ≤ log(log n) + O(1). EGRS improved this to c·log(log n) for c < 1.",
       "**Complementary question**: A positive answer would imply ∑_{p|C(2n,n)} 1/p = (1-o(1))log(log n), which EGRS consider 'undoubtedly true'."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

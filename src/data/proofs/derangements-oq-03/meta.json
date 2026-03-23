@@ -77,7 +77,10 @@
       "**Alternating Property from Sign of Leading Term**: For even $n$, the tail starts with $(-1)^{2n+1}/(2n+1)! < 0$ (first odd term), so the error is negative: $D(2n)/(2n)! > 1/e$. For odd $n$, the tail starts positive, giving $D(2n+1)/(2n+1)! < 1/e$.",
       "**Factorial Convergence**: Convergence $1/(n+1)! \\to 0$ follows from `summable_altFactTerm.tendsto_atTop_zero` with a shift, connecting naturally to the tail bound."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)",
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

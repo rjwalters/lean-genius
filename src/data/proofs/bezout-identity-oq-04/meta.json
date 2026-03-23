@@ -87,7 +87,9 @@
       "**Three variables by induction on Bezout**: bezout_three reduces to two Bezout applications: gcd(a,b) = ax₀+by₀, then gcd(gcd(a,b),c) = gcd(a,b)*u + c*v, giving the three-variable combination.",
       "**Ideal characterization = double divisibility**: d = gcd(a,b) iff (d achievable → gcd ∣ d) AND (d divides gcd → d ∣ gcd) → d = gcd by Nat.dvd_antisymm."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

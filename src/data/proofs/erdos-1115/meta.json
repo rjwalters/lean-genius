@@ -64,7 +64,10 @@
       "**Filter-based formalization:** The escape path condition $|f(\\gamma(t))| \\to \\infty$ is naturally captured by Lean's `Filter.Tendsto` framework, demonstrating the utility of filters for complex analysis",
       "**Negative results in formal mathematics:** The formalization shows how to capture disproof by counterexample in Lean: the main theorem is an existence statement (there exists a function violating the conjecture)"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Complex analysis"
+    ]
   },
   "sections": [
     {

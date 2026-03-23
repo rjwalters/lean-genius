@@ -89,7 +89,10 @@
       "**The g(7)=none Proof is Genuine:** Unlike most axioms in this formalization, g_7_not_exists is actually proved in Lean by unfolding the definition of g, applying Horton's axiom to get a counterexample of arbitrary size, and deriving a contradiction with the supposed threshold",
       "**Growth Rate Asymmetry:** The known values g(3)=3, g(4)=5, g(5)=10, g(6)=30 show accelerating growth (ratios 5/3, 2, 3), yet the function abruptly ceases to exist at k=7. This 'explosion then extinction' pattern is unusual in Ramsey-type problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "sections": [
     {

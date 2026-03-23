@@ -87,7 +87,10 @@
       "**The general $f(r)$ question** explores the frontier between local and global colorability: how does the local structure (small subgraphs 3-colorable) constrain global cycle structure?",
       "**Three verified theorems** (voss_implies_larson, three_diagonals_not_guaranteed, erdos_1091_summary) demonstrate non-trivial mathematical reasoning in Lean"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

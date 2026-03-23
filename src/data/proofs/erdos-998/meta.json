@@ -72,7 +72,10 @@
       "**Kesten's converse via continued fractions:** Kesten showed that if an endpoint $u$ is NOT of the form $\\{k\\alpha\\}$, it falls in the interior of a gap, disrupting the count by an amount that grows with the continued fraction denominators.",
       "**Connection to Ostrowski representation:** Every positive integer $n$ has a unique representation using continued fraction denominators of $\\alpha$ (Ostrowski numeration). This number-theoretic structure underlies the precise counting arguments in both Hecke-Ostrowski and Kesten's proofs."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

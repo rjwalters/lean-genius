@@ -33,7 +33,10 @@
       "The B₃ problem sits at the threshold where Fourier-analytic methods (effective for B₂/Sidon sets) become insufficient: the lack of a B₃ analogue of the Erdős–Turán $N^{1/2} + O(N^{1/4})$ bound reflects deeper structural obstacles",
       "The formalization distinguishes between the ordered-triple definition (used here, closer to the counting argument) and the multiset definition (equivalent but harder to formalize), a meaningful design choice for the Lean representation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

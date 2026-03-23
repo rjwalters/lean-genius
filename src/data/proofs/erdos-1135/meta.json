@@ -80,7 +80,10 @@
       "**Conway's undecidability barrier (1972)**: Generalized Collatz-type functions are Turing-complete, so no algorithm can decide convergence for the general class — the original conjecture may be independent of ZFC",
       "**Compressed vs. standard form**: Using $f(n) = (3n+1)/2$ for odd $n$ eliminates a trivial halving step, halving orbit lengths and simplifying the formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "conclusion": {
     "summary": "This formalization captures the Collatz conjecture (Erdős Problem #1135) in Lean 4 with fully computable definitions and axiomatized deep results. The constructive core — the Collatz map, its iteration, and the ReachesOne predicate — can be evaluated by Lean's kernel for any concrete input. The partial results of Tao and Krasikov–Lagarias are stated as axioms, honestly reflecting the formalization gap between published mathematics and current proof assistant libraries.",

@@ -87,7 +87,10 @@
       "**Triangle Inequality Derivation:** Cauchy-Schwarz immediately implies $\\|u+v\\| \\leq \\|u\\|+\\|v\\|$ by expanding $\\|u+v\\|^2$ and bounding the cross term $\\langle u,v\\rangle \\leq \\|u\\|\\|v\\|$.",
       "**Correlation Bound:** Dividing both sides by $\\|u\\|\\|v\\|$ gives $|\\rho| \\leq 1$, the fundamental bound on the Pearson correlation coefficient in statistics."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical analysis",
+      "Linear algebra"
+    ]
   },
   "sections": [
     {

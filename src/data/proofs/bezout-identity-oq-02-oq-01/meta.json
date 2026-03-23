@@ -81,7 +81,9 @@
       "**Products and permutations**: `List.Perm.prod_eq` and `Nat.eq_of_mul_eq_mul_left` handle the algebraic manipulation of products under permutation.",
       "**Nat.primeFactorsList provides existence for free**: Mathlib already has the existence direction, so we only need to add uniqueness via our inductive proof."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

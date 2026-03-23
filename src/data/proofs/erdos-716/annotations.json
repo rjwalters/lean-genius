@@ -31,7 +31,8 @@
     "type": "definition",
     "title": "Spanned Vertices",
     "content": "**spannedVertices H S** computes the union of all vertices in a set of hyperedges. The (6,3)-problem forbids 3 edges that together span only 6 vertices.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "Formal statement of spanned vertices as described in the annotation content"
   },
   {
     "id": "ann-716-3",
@@ -43,7 +44,8 @@
     "type": "definition",
     "title": "(v,e)-Configuration",
     "content": "**hasConfiguration H v e** means H contains e edges spanning at most v vertices. This generalizes the (6,3) condition to arbitrary parameters, leading to the Brown-Erdős-Sós conjecture.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "Formal statement of (v,e)-configuration as described in the annotation content"
   },
   {
     "id": "ann-716-4",
@@ -55,7 +57,8 @@
     "type": "definition",
     "title": "(6,3)-Configuration",
     "content": "**has63Configuration** is the specific forbidden structure: 3 hyperedges spanning at most 6 vertices. This is the central object in Erdős Problem #716.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "Formal statement of (6,3)-configuration as described in the annotation content"
   },
   {
     "id": "ann-716-5",
@@ -67,7 +70,8 @@
     "type": "definition",
     "title": "(6,3)-Free",
     "content": "**is63Free H** means H avoids the (6,3) configuration. The extremal question: what is the maximum edges in a (6,3)-free hypergraph?",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "Formal statement of (6,3)-free as described in the annotation content"
   },
   {
     "id": "ann-716-6",
@@ -84,7 +88,8 @@
       "Turán numbers",
       "Extremal graph theory",
       "Hypergraph regularity"
-    ]
+    ],
+    "mathContext": "Formal statement of extremal number as described in the annotation content"
   },
   {
     "id": "ann-716-7",
@@ -109,7 +114,8 @@
     "type": "definition",
     "title": "Unique Triangle Property",
     "content": "**edgeInUniqueTriangle** means an edge uv has exactly one common neighbor w forming triangle uvw. This is the graph-theoretic reformulation of the (6,3) problem.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "Formal statement of unique triangle property as described in the annotation content"
   },
   {
     "id": "ann-716-9",
@@ -126,7 +132,8 @@
       "Triangle-free graphs",
       "Extremal graph theory",
       "Property testing"
-    ]
+    ],
+    "mathContext": "Formal statement of rs graph as described in the annotation content"
   },
   {
     "id": "ann-716-10",
@@ -138,7 +145,8 @@
     "type": "definition",
     "title": "Little-o Notation",
     "content": "**isLittleO f g** means f(n) = o(g(n)): the ratio f(n)/g(n) → 0 as n → ∞. The main theorem is ex63(n) = o(n²), meaning subquadratic growth.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "Formal statement of little-o notation as described in the annotation content"
   },
   {
     "id": "ann-716-11",
@@ -212,7 +220,8 @@
     "type": "definition",
     "title": "3-AP Free Set",
     "content": "**is3APFree S** means S contains no 3-term arithmetic progression (a, a+d, a+2d). This connects to the RS problem via Behrend's construction of large 3-AP-free sets.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "Formal statement of 3-ap free set as described in the annotation content"
   },
   {
     "id": "ann-716-16",
@@ -255,7 +264,8 @@
     "type": "definition",
     "title": "Brown-Erdős-Sós Conjecture",
     "content": "**brownErdosSosConjecture k** generalizes (6,3) to (k+3, k): f^(3)(n; k+3, k) = o(n²). Erdős #716 is the k=3 case. The full conjecture was proved by Delcourt-Postle (2024).",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "Formal statement of brown-erdős-sós conjecture as described in the annotation content"
   },
   {
     "id": "ann-716-19",
@@ -267,7 +277,8 @@
     "type": "technique",
     "title": "k=3 Case",
     "content": "**erdos716_is_bes_k3** shows Erdős #716 is the k=3 case of Brown-Erdős-Sós. With k+3=6 and k=3, this is exactly the (6,3) problem solved by Ruzsa-Szemerédi.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "Formal statement of k=3 case as described in the annotation content"
   },
   {
     "id": "ann-716-20",
@@ -279,6 +290,7 @@
     "type": "technique",
     "title": "Solution",
     "content": "**erdos_716** proves the problem using Ruzsa-Szemerédi's theorem. The maximum edges in a (6,3)-free 3-uniform hypergraph is subquadratic in n.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "Formal statement of solution as described in the annotation content"
   }
 ]

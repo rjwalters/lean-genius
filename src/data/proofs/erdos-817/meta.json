@@ -71,7 +71,10 @@
       "**Polynomial gap**: The Erdős-Sárközy bound $g_3(n) \\gg 3^n/n^{O(1)}$ loses a polynomial factor. Closing this gap is the main open question — it requires understanding whether the polynomial correction reflects a genuine phenomenon or a limitation of current techniques.",
       "**Proved upper bound on max**: The theorem `max_subsetSums_le` rigorously bounds $\\max(\\langle A \\rangle) \\leq |A| \\cdot N$ for $A \\subseteq \\{1,\\ldots,N\\}$, using `Finset.sum_le_card_nsmul`. This is a key ingredient in the density heuristic."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

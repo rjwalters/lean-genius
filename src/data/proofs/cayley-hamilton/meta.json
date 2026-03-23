@@ -56,7 +56,9 @@
       "**$2 \\times 2$ Case:** $A^2 - \\text{tr}(A) \\cdot A + \\det(A) \\cdot I = 0$. For invertible $A$: $A^{-1} = \\frac{1}{\\det(A)}(\\text{tr}(A) \\cdot I - A)$. This gives the classical adjugate formula directly.",
       "**Minimal vs. Characteristic:** The minimal polynomial $m_A$ divides $p_A$ (by Cayley-Hamilton), so $\\deg(m_A) \\leq n$. Equality holds iff $A$ has a cyclic vector. The gap between $m_A$ and $p_A$ measures the 'redundancy' in the eigenvalue structure."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Linear algebra"
+    ]
   },
   "sections": [
     {

@@ -99,7 +99,10 @@
       "The proof uses telescoping ratios $\\text{count}/N = (\\text{count}/\\text{coprime}) \\cdot (\\text{coprime}/\\text{sector}) \\cdot (\\text{sector}/N)$ and the continuity of multiplication for filters to compose the three limits",
       "Row-level analysis reveals a structural dichotomy: for even $m$, all coprime pairs are EO; for odd $m \\ge 3$, the involution gives exact OE = OO equality per row"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

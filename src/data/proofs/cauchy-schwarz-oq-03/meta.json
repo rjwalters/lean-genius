@@ -65,7 +65,10 @@
       "**HolderConjugate 2 2 by norm_num**: The verification that $p = q = 2$ are Hölder conjugates reduces to $1/2 + 1/2 = 1$, proved by `norm_num`. This makes the bridge completely automatic.",
       "**Three levels of abstraction**: The formalization progresses from concrete (finite sums over NNReal) through intermediate (signed reals, abstract inner product spaces) to abstract (Lebesgue integrals on measure spaces), demonstrating how the same algebraic idea — Young's pointwise bound summed over a domain — scales across mathematical frameworks"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical analysis",
+      "Inequalities and optimization"
+    ]
   },
   "sections": [
     {

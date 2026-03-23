@@ -41,7 +41,10 @@
       "**Behrend's sphere trick**: Embed $[N]$ into $\\mathbb{Z}^d$ for $d \\approx \\sqrt{\\log N}$, then a sphere in this lattice is AP-free since the midpoint of two sphere points lies strictly interior — a beautifully geometric construction",
       "**Kelley–Meka's spectral innovation**: Instead of density increment (finding a subprogression where $S$ is denser), they use a spectral argument showing AP-free sets must correlate with structured sets, achieving an exponential improvement"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

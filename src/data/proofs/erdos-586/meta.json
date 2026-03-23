@@ -62,7 +62,11 @@
       "**The $k$-covering extension:** The density obstruction works uniformly for all multiplicities: if a system with antichain moduli cannot 1-cover $\\mathbb{Z}$, it certainly cannot $k$-cover. More precisely, if the uncovered density is $\\delta > 0$, then a positive fraction of integers are covered by fewer than $k$ classes for any fixed $k$, so $k$-covering also fails.",
       "**Antichain as extremal condition:** In the divisibility poset $(\\mathbb{N}^+, \\mid)$, antichains are the 'maximally spread' sets -- they maximize the number of elements while minimizing divisibility relations. Dilworth's theorem guarantees large antichains exist, but BBMST shows they cannot form covering systems, revealing that covering requires 'structured' (non-extremal) sets of moduli."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

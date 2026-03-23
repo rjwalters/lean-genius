@@ -79,7 +79,10 @@
       "The full two-variable Minkowski integral inequality ‖∫F(·,y)dν‖_{Lp} ≤ ∫‖F(·,y)‖_{Lp}dν follows from norm_integral_le_integral_norm for Lp-valued Bochner integrals",
       "The hierarchy CS ⊂ Hölder ⊂ Minkowski is formalized: abs_real_inner_le_norm → NNReal.inner_le_Lp_mul_Lq → norm_add_le → norm_integral_le_integral_norm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical analysis",
+      "Inequalities and optimization"
+    ]
   },
   "sections": [
     {

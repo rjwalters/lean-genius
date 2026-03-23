@@ -49,7 +49,9 @@
       "Newton's identities extend Vieta's: the power sums p_k = Σrᵢᵏ satisfy p_k = e₁p_{k-1} - e₂p_{k-2} + ... ± k·eₖ, providing a recursive bridge between 'sum of k-th powers' and 'elementary symmetric polynomials'",
       "Foundation for Galois theory: the Galois group of a polynomial *permutes its roots* while fixing all coefficients — which are symmetric functions of roots by Vieta — so the Galois group embeds into the symmetric group Sₙ, making Vieta's formulas the conceptual basis for studying solvability by radicals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Abstract algebra"
+    ]
   },
   "sections": [
     {

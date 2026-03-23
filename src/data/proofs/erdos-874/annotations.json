@@ -31,7 +31,8 @@
     "relatedConcepts": [
       "Subset sums",
       "Combinatorics"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of sum set s_r"
   },
   {
     "id": "ann-e874-disjoint",
@@ -47,7 +48,8 @@
     "relatedConcepts": [
       "Disjointness",
       "Unique decomposition"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of disjoint sums property"
   },
   {
     "id": "ann-e874-admissible",
@@ -63,7 +65,8 @@
     "relatedConcepts": [
       "Straus",
       "Unique sums"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of admissible sets"
   },
   {
     "id": "ann-e874-bounded",
@@ -101,7 +104,8 @@
     "relatedConcepts": [
       "Extremal function",
       "Maximum"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of the function k(n)"
   },
   {
     "id": "ann-e874-straus-construction",
@@ -136,7 +140,8 @@
       "Upper bound",
       "liminf",
       "limsup"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of straus bounds (1966)"
   },
   {
     "id": "ann-e874-ens",
@@ -151,7 +156,8 @@
     "significance": "key",
     "relatedConcepts": [
       "Erdős-Nicolas-Sárközy"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of ens improvement (1991)"
   },
   {
     "id": "ann-e874-df-main",
@@ -184,7 +190,8 @@
     "relatedConcepts": [
       "Limit",
       "Convergence"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of the limit is 2"
   },
   {
     "id": "ann-e874-optimal-interval",
@@ -199,7 +206,8 @@
     "significance": "key",
     "relatedConcepts": [
       "Interval optimality"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of optimal sets are often intervals"
   },
   {
     "id": "ann-e874-examples",
@@ -211,7 +219,8 @@
     "type": "concept",
     "title": "Examples",
     "content": "**N = 4:** A = {3, 4} is admissible with S₁ = {3, 4}, S₂ = {7} (disjoint). **N = 9:** We expect k(9) ≈ 2√9 = 6, and {4, 5, 6, 7, 8, 9} is an admissible candidate.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of examples"
   },
   {
     "id": "ann-e874-properties",
@@ -227,7 +236,8 @@
     "relatedConcepts": [
       "Cardinality bounds",
       "Sum ranges"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of sum set properties"
   },
   {
     "id": "ann-e874-main",
@@ -242,7 +252,8 @@
     "significance": "key",
     "relatedConcepts": [
       "Main theorem"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of main result: erdos_874"
   },
   {
     "id": "ann-e874-answer",
@@ -258,6 +269,7 @@
     "relatedConcepts": [
       "Explicit bounds",
       "Resolution"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of the answer: conjecture is true"
   }
 ]

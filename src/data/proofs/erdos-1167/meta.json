@@ -79,7 +79,12 @@
       "**Consistency with established results**: The infinite Ramsey theorem (ℵ₀ → (ℵ₀)^r_k) and the Erdős-Rado theorem ((2^κ)⁺ → (κ⁺)²_κ) are axiomatized as reference points. The formalization verifies that these are consistent with the conjecture and that structural lemmas interact correctly with the axioms.",
       "**70 years unsolved**: Posed in 1956, this is among the longest-standing open problems in infinite combinatorics. The difficulty reflects the fundamental asymmetry between stepping up (constructive) and stepping down (requires information-theoretic arguments about colorings)."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Set theory and cardinality",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "sections": [
     {

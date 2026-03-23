@@ -66,7 +66,10 @@
       "Question 1 is answered (τ ≤ (1-√c)n), but the answer is Θ(n) not o(n) — the bound is sublinear only in the ratio τ/n < 1, not in absolute terms",
       "The relationship to #610: setting k = 2 (trivial clique size) recovers the general τ bound, while larger k progressively improves it"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

@@ -72,7 +72,11 @@
       "**Typical vs Exceptional:** The conjecture is true for 'generic' integers (whose divisors spread across many dyadic bins) but fails on an exceptional set of positive density.  This illustrates a recurring theme in multiplicative number theory: 'typical' behavior does not capture the full picture.",
       "**Zero Sorries:** The formalization has 0 sorries — all substantive results (Cauchy-Schwarz bound, Problem 448 consequence, disproof) are axiomatized, and the summary theorem is formally proved from these axioms."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Asymptotic density and counting"
+    ]
   },
   "sections": [
     {

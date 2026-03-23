@@ -93,7 +93,10 @@
       "**m-Avoiding vs Sum-Free**: m-avoiding allows MUCH larger sets than sum-free (n/(2 log n) vs n/3), because we only need to avoid one specific sum rather than all internal sums.",
       "**Bertrand's Postulate**: Guarantees existence of a prime in (n, 2n], ensuring the construction always works. The PNT gives the precise asymptotic."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

@@ -52,7 +52,9 @@
       "The Monte Carlo connection goes deeper than estimation: Buffon's problem demonstrates that randomness can be a computational tool. This philosophical insight anticipated the development of Monte Carlo methods by Ulam, von Neumann, and Metropolis at Los Alamos in the 1940s",
       "The Lean formalization uses `field_simp` and `ring` to handle the algebraic manipulation $\\ell/(\\pi d/2) = 2\\ell/(\\pi d)$, which is the step where the geometric computation becomes the clean formula"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probability theory"
+    ]
   },
   "sections": [
     {

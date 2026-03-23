@@ -113,7 +113,10 @@
       "**Geometry Resolves Arithmetic:** Pomerance's short proof is a masterclass in converting a number-theoretic question ($p_n^2$ vs $p_{n+i}p_{n-i}$) into a geometric one (convex hull vertices of a planar curve).",
       "**Mutual Exclusivity in Lean:** `conjectures_mutually_exclusive` is a genuine Lean proof (no axioms) using `omega` — the only fully proved result aside from `counterexample_set_infinite` and `log_convexity_iff_vertex`."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

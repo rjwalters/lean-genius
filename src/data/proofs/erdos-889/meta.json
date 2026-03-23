@@ -71,7 +71,10 @@
       "The exact power variant $V(n,k)$ uses $p$-adic valuation ($p^{v_p(n+k)} \\nmid n+i$) instead of bare divisibility ($p \\nmid n+i$), giving $V \\ge v$ and potentially being more tractable",
       "The problem connects to the distribution of smooth numbers: if $n+k$ has many large prime factors, most will be 'new' since large primes are unlikely to divide nearby integers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

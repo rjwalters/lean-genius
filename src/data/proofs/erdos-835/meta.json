@@ -57,7 +57,11 @@
       "**Connection to Kneser graphs**: The Kneser graph $K(n,k)$ connects disjoint $k$-subsets, while $J(n,k)$ connects nearly-equal ones. Lovász proved $\\chi(K(n,k)) = n - 2k + 2$ using the Borsuk-Ulam theorem, but Johnson graph chromatic numbers lack such clean formulas.",
       "**Only $k = 2$ works**: $J(4,2)$ is isomorphic to $K_3 \\square K_2$ (the octahedron graph) with $\\chi = 3 = 2 + 1$. For all $k \\geq 3$, the additional structure forces higher chromatic numbers."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

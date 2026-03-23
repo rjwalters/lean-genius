@@ -74,7 +74,10 @@
       "**Thin Annulus Strategy:** The formalization shows that restricting to annuli of thickness $\\delta < 1$ eliminates all integer distances $> 1$ automatically, reducing the problem to avoiding a single distance—this 'localization' technique is central to constructive lower bounds",
       "**The General Framework:** The `AvoidsForbiddenDistances` predicate unifies integer avoidance ($D = \\mathbb{Z}$) with unit avoidance ($D = \\{1\\}$) and other variants, revealing the problem's place in a hierarchy of forbidden distance problems with varying difficulty"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Geometry (Euclidean, combinatorial)"
+    ]
   },
   "sections": [
     {

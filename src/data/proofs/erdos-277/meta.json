@@ -73,7 +73,10 @@
       "**Multiplicative Structure**: Since $\\sigma$ is multiplicative, $\\sigma(n)/n = \\prod_{p^k \\| n} (1 + 1/p + \\cdots + 1/p^k)$. Products of many distinct primes maximize abundancy but have too-sparse divisor sets for covering",
       "**Covering System Cluster**: Part of Erdős's #273-#279 investigation into covering congruences, connecting to the Herzog-Schönheim conjecture (#274), Hough's theorem on minimum modulus, and Egyptian fraction representations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

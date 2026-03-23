@@ -69,7 +69,10 @@
       "**Equitable coloring duality**: Kierstead–Kostochka's modern proof works by equitably $r$-coloring the complement $\\overline{G}$; equal-size color classes in $\\overline{G}$ correspond to $K_r$'s in $G$",
       "**Perfect factor vs disjoint cliques**: `HasMDisjointRCliques` gives $m$ disjoint $K_r$'s using $rm$ vertices total, while `HasPerfectKrFactor` requires `biUnion = univ`, a covering condition that needs additional cardinality reasoning"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "crossReferences": [
     {

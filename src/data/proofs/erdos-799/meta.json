@@ -94,7 +94,10 @@
       "**Adversarial Lower Bound (1999):** To show $\\chi_L \\geq C_2 \\cdot n/\\log n$, AKS construct lists of size $c \\cdot n/\\log n$ that defeat every coloring. The construction exploits the fact that in $G(n,1/2)$, every set of $\\Theta(\\log n)$ vertices shares a common neighbor, preventing the coloring from reusing colors across neighborhoods.",
       "**The Factor $2/\\ln 2 \\approx 2.885$:** Since $\\chi(G) \\sim n/(2\\log_2 n)$ and $\\chi_L(G) \\asymp n/\\log n = n\\ln 2/\\ln n$, their ratio converges to $2/\\ln 2 \\approx 2.885$. For random graphs, list coloring costs a constant factor more than ordinary coloring, unlike the worst case where the gap is unbounded."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

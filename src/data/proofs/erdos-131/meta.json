@@ -90,7 +90,11 @@
       "**ELRSS to Pham-Zakharov: exponent halved:** The upper bound exponent dropped from $1/2$ (ELRSS: $F < 3\\sqrt{N}+1$) to $1/4$ (Pham-Zakharov: $F \\leq N^{1/4+o(1)}$). This halving was enough to resolve the original question.",
       "**Formalization challenge: $\\mathbb{Q}$-to-$\\mathbb{N}$ lifting:** The non-averaging definition requires rational arithmetic ($a = \\text{avg}(S)$), but divisibility lives in $\\mathbb{N}$. The sorry in `nondividing_implies_nonaveraging` is precisely this type-theoretic gap."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

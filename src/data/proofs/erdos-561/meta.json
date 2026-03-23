@@ -72,7 +72,12 @@
       "Stars are 'Ramsey-efficient' due to their simple structure — Beck (1983) showed bounded-degree graphs have linear size Ramsey numbers",
       "The formalization bridges axiomatized deep results (BEFRS78) with constructive Lean proofs (uniform_case), demonstrating how to formalize partially-solved combinatorial problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Ramsey theory (partition regularity)",
+      "Graph theory (vertices, edges, colorings)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

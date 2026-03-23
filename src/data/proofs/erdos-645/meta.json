@@ -66,7 +66,11 @@
       "**Natural generalization to k-APs**: One can ask the same question for longer progressions: does every 2-coloring have a monochromatic k-AP with d > x?",
       "**Finite threshold exists**: There exists some N₀ such that any 2-coloring of {1, ..., N₀} already contains the desired progression. Finding this N₀ exactly is a harder combinatorial problem."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "sections": [
     {

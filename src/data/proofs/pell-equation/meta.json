@@ -56,7 +56,9 @@
       "**Non-Square Necessity:** When $D = k^2$, the equation factors as $(x-ky)(x+ky) = 1$, forcing $y = 0$ by unique factorization in $\\mathbb{Z}$",
       "**Computational Complexity:** The fundamental solution can be exponentially large in $D$: for $D = 61$, the solution has 10 digits, discovered by Bhaskara II in the 12th century"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

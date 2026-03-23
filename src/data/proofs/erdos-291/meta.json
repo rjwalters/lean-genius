@@ -65,7 +65,10 @@
       "The connection to Schanuel's conjecture is surprising: proving Part 1 unconditionally may require progress on this deep conjecture in transcendence theory, which asserts that $n$ algebraically independent complex numbers have at least $n$ algebraically independent values among their exponentials.",
       "The formalization is unusually computational for an Erdős problem: Steinerberger's criterion is proved (not axiomatized), Part 2 is constructively witnessed, and GCD values are computed via `native_decide` for $n \\le 10$, providing a 932-line proof with many verified theorems."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

@@ -52,7 +52,10 @@
       "**Constructibility barrier**: Constructible numbers lie in iterated quadratic extensions of $\\mathbb{Q}$, hence are algebraic with degree $2^n$. Since $\\pi$ is not even algebraic, $\\sqrt{\\pi}$ is transcendental and squaring the circle is impossible",
       "**Hierarchy of number properties**: Transcendence ($\\pi \\notin \\overline{\\mathbb{Q}}$) is strictly stronger than irrationality ($\\pi \\notin \\mathbb{Q}$), which is strictly stronger than non-constructibility. The Lean file makes these distinctions explicit"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)",
+      "Geometry (Euclidean, combinatorial)"
+    ]
   },
   "sections": [
     {

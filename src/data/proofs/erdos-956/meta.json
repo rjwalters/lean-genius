@@ -87,7 +87,11 @@
       "The best lower bound $\\Omega(n \\log n / \\log\\log n)$ comes from placing translates at integer lattice points in $[1, \\sqrt{n}]^2$ and exploiting the classical lattice point result on sums of two squares",
       "The formalization separates the problem into definitions (set distance, configurations) and axiomatized bounds, cleanly distinguishing what Lean can verify structurally from deep analytic results that require external justification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Geometry (Euclidean, combinatorial)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

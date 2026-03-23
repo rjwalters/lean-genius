@@ -45,7 +45,9 @@
       "The `#eval` demonstrations at the end serve as computational certificates: they prove that Lean's kernel can actually evaluate the function, confirming the absence of any hidden noncomputable dependencies",
       "This technique generalizes beyond integers: in any Euclidean domain where division is computable, classical choice can be replaced with explicit division to make constructive proofs executable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

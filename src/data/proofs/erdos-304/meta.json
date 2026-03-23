@@ -64,7 +64,10 @@
       "**Connection to Problem #293**: The special case N(b-1, b) (representing (b-1)/b = 1 - 1/b) connects to the smallest denominator missing from unit fraction representations of 1.",
       "**The greedy algorithm is suboptimal**: The standard greedy algorithm uses O(log b) terms - much worse than the optimal O(√(log b)) - showing that finding minimal representations requires more sophisticated techniques."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

@@ -119,7 +119,10 @@
       "**Monotonicity is surprisingly non-trivial to formalize:** Adding an empty piece to go from $N$ to $N+1$ pieces requires re-indexing from `Fin n` to `Fin (n+1)` and re-establishing disjointness and union conditions for the extended family, involving careful case splits on index bounds.",
       "**The 3-piece lower bound hides deep topology:** The impossibility of 2-piece decomposition requires showing that a disk and square cannot be homeomorphically decomposed into 2 matching pieces while preserving the translation constraint — this involves the Jordan curve theorem and is axiomatized rather than proved."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Geometry (Euclidean, combinatorial)",
+      "Combinatorics and number theory"
+    ]
   },
   "conclusion": {
     "summary": "This formalization provides a rigorous framework for studying the minimum piece count in Tarski's circle-squaring problem. It includes 5 fully verified theorems (reflexivity, symmetry, monotonicity, 0-piece and 1-piece impossibility, transitivity) and 9 axioms encoding the deep results of Laczkovich, GMP, and Marks-Unger. The culminating bound chain $3 \\leq \\text{minPieceCount} \\leq 10^{50}$ is fully justified by combining the verified impossibility results with the axiomatized bounds.",

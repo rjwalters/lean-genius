@@ -79,7 +79,10 @@
       "**Mertens' theorem connection:** The vanishing of $\\varphi(n)/n$ along primorials follows from $\\prod_{p \\leq x}(1-1/p) \\sim 2e^{-\\gamma}/\\log x \\to 0$, connecting Schoenberg's function to prime distribution theory",
       "**Singular measures in nature:** Unlike the Cantor function (which is constructed artificially), Schoenberg's $f$ arises naturally from number-theoretic data—a rare example of a 'natural' singular distribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

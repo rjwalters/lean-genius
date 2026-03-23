@@ -62,7 +62,9 @@
       "**omega handles the arithmetic**: After extracting the key Bertrand witness, omega resolves the natural number inequalities automatically.",
       "**Empty set handling**: csSup_empty (alpha := Nat) = 0, which is <= x for all x, making the empty case trivial."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

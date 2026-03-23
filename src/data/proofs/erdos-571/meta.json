@@ -75,7 +75,10 @@
       "**Family vs single graph:** The Bukh-Conlon result for families highlights a fundamental structural gap. A family $\\mathcal{F} = \\{G_1, \\ldots, G_k\\}$ forbids EACH $G_i$ simultaneously: a graph is $\\mathcal{F}$-free iff it avoids all of $G_1, \\ldots, G_k$. This allows 'complementary' forbidden structures that constrain the extremal graph from multiple angles. For single graphs, all the constraint must come from one forbidden pattern, which is far more restrictive.",
       "**Algebraic graph theory as the key tool:** Nearly all modern constructions of Turan-exponent witnesses use algebraic geometry over finite fields. The template is: vertices are elements of $\\mathbb{F}_q^d$, adjacency is defined by a polynomial equation $P(x,y) = 0$, and the degree and structure of $P$ control the exponent. Conlon-Janzer's condition $b \\ge (a-1)^2$ arises because a polynomial of degree $a-1$ has at most $(a-1)^2$ roots in an appropriate extension, bounding the $K_{s,t}$ that appears as a subgraph."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Extremal graph theory (Turán-type problems)"
+    ]
   },
   "sections": [
     {

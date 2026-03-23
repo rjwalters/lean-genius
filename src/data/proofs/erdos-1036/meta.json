@@ -39,7 +39,11 @@
       "**Random-Like Behavior:** Non-Ramsey graphs satisfy i(G) = 2^{Θ(n)}, qualitatively matching random graphs G(n,1/2) which have i(G) = (1-o(1))·2^n",
       "**Shelah's Technique:** The proof uses a sophisticated partition argument and the Hales-Jewett theorem to extract exponentially many distinct induced patterns"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)",
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

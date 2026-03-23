@@ -72,7 +72,11 @@
       "**Balanced partition optimality**: among all complete bipartite graphs $K_{a,b}$ with $a+b = n$, the balanced partition maximizes $a \\cdot b$ by AM-GM, giving exactly $\\lfloor n^2/4 \\rfloor$ edges",
       "**Generalization to higher diameter**: for diameter $d \\ge 3$, the extremal problem has fundamentally different answers — the formalization includes `IsDiameterCritical` as a framework for future work"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Extremal graph theory (Turán-type problems)"
+    ]
   },
   "sections": [
     {

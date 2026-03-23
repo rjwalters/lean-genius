@@ -100,7 +100,11 @@
       "**Unicyclic bridge**: Graphs with $\\le n+1$ edges have cyclomatic number $\\le 1$ (trees plus at most one cycle), and the EFRS proof exploits this structure — the gap to $(2k-3)$-sparse graphs requires handling multiple cycles",
       "**Implication hierarchy**: Problem #566 implies Problem #567, which asks about specific $(2k-3)$-sparse graphs ($Q_3$, $K_{3,3}$, $H_5$), illustrating how a general density criterion would resolve concrete cases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "conclusion": {
     "summary": "This formalization captures the landscape of Erdős Problem #566: the conjecture that $(2k-3)$-sparsity characterizes Ramsey size linearity. The Lean file axiomatizes the core definitions (graph, sparsity, size Ramsey number), states the open conjecture, and records the three pillars of current knowledge — the EFRS positive result for unicyclic-or-simpler graphs, the tightness counterexample at $2n-2$ edges, and the classical result that trees are Ramsey size linear.",

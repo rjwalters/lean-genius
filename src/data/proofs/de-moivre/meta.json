@@ -61,7 +61,9 @@
       "**Roots of Unity:** The $n$th roots of unity $\\omega_k = e^{2\\pi ik/n}$ satisfy $\\omega_k^n = 1$ by De Moivre. They form the cyclic group $\\mathbb{Z}/n\\mathbb{Z}$ under multiplication, evenly spaced on the unit circle.",
       "**Algebra-Geometry Bridge:** Powers of complex numbers correspond to iterated rotations: $z^n$ rotates by $n\\theta$ and scales by $|z|^n$. De Moivre connects polynomial root-finding (algebra) to angular motion (geometry)."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complex analysis"
+    ]
   },
   "sections": [
     {

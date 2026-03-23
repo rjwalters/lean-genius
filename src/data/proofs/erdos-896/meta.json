@@ -67,7 +67,10 @@
       "**Trivial vs Optimal:** The trivial bound $F(A,B) \\leq N^2$ loses only a $\\log N$ factor compared to the conjectured optimum $\\Theta(N^2/\\log N)$. This small gap reflects the fact that most products of integers in $[N]$ already have few representations — the logarithmic saving comes from products with $\\geq 2$ representations.",
       "**Symmetry Reduction:** $F(A,B) = F(B,A)$ by commutativity of multiplication. This means the optimization can be restricted to the 'diagonal' case $A = B$ without loss of generality (up to constant factors), since the extremal sets in known constructions satisfy $A \\approx B$."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

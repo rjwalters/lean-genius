@@ -55,7 +55,10 @@
       "A connected graph with 2 odd-degree vertices has an Eulerian path (between those vertices)",
       "Any other number of odd-degree vertices means no Eulerian path exists"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

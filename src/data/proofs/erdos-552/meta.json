@@ -36,7 +36,12 @@
       "All known exact values are in $\\{n + \\lceil\\sqrt{n}\\rceil, n + \\lceil\\sqrt{n}\\rceil + 1\\}$ — a range of width 1, suggesting the true answer oscillates between two values depending on number-theoretic properties of $n$",
       "The Erdős question ($\\$100$) asks whether $\\liminf_{n \\to \\infty}(R(C_4, S_n) - n - \\sqrt{n}) = -\\infty$, which would mean the smaller value $n + \\lceil\\sqrt{n}\\rceil$ occurs with $\\lceil\\sqrt{n}\\rceil$ arbitrarily close to $\\sqrt{n}$"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

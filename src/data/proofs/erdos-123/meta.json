@@ -67,7 +67,11 @@
       "**Doubling preserves antichains**: If S is a divisibility antichain, then 2S is also an antichain (by cancellation: a|b iff 2a|2b). This structural lemma is the engine of the even-case induction.",
       "**General case resists the parity trick**: For odd triples like {5,7,11}, no generator has a parity role. The Erdős-Lewin proof of {3,5,7} uses Chinese Remainder Theorem-style residue analysis, but a uniform approach for all coprime triples remains elusive."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

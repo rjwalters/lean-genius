@@ -75,7 +75,11 @@
       "The bit-level formalization of hypercube adjacency via $\\exists! i : \\text{Fin } n$ with $(x / 2^i) \\bmod 2 \\neq (y / 2^i) \\bmod 2$ captures the Hamming distance-1 condition using integer arithmetic on `Fin (2^n)`",
       "The Erdős-Sós question ($R(Q_n)/2^n \\to \\infty$?) is logically complementary to the conjecture: if the conjecture holds, the ratio is bounded; if the ratio diverges, the conjecture is false"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "sections": [
     {

@@ -34,7 +34,11 @@
       "**Parallel to Problem 533**: Both problems ask whether forbidden subgraph + positive density forces structured subsets of linear size, with K₅ (Problem 533) and K₂,₂,₂ (Problem 579) as the forbidden graphs",
       "**Filter.atTop formalization**: Using Mathlib's Filter.atTop for 'sufficiently large n' avoids explicit bounds and keeps the statement clean"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Extremal graph theory (Turán-type problems)"
+    ]
   },
   "sections": [
     {

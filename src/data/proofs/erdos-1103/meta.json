@@ -53,7 +53,11 @@
       "**Konyagin's finite-set bound** $|A| \\le C \\cdot N^{11/15}$ uses large sieve techniques for squarefree residues: the exponent $11/15 \\approx 0.733$ quantifies the sparsity forced by the squarefree-sumset constraint",
       "The formalization axiomatizes **enumSet** as a strictly monotone surjection onto $A$, which is the standard Lean approach for discussing growth rates of infinite sets without constructive well-ordering machinery"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

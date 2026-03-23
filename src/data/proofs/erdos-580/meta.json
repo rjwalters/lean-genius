@@ -76,7 +76,10 @@
       "**Difficulty Hierarchy Among Trees:** Paths and stars embed easily under the LKS condition (greedy arguments suffice), but 'broom' trees (a path with a star attached) and caterpillar trees require the full regularity machinery, revealing a complexity gradient among tree structures",
       "**From Asymptotic to Exact:** The progression from the AKS result (needing $(1+\\varepsilon)n/2$) to Zhao's exact $n/2$ threshold illustrates how regularity-based proofs can be sharpened by careful analysis of the reduced graph structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

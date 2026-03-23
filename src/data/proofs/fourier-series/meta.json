@@ -90,7 +90,9 @@
       "**Completeness via Stone-Weierstrass**: The Fourier monomials span a dense subspace of continuous functions on the circle, which extends to $L^2$ completeness via the Hilbert space structure.",
       "**Uniqueness from completeness**: If $f$ and $g$ have the same Fourier coefficients, their Fourier series converge to the same limit, so $f = g$ in $L^2$. The proof uses `HasSum.unique`."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

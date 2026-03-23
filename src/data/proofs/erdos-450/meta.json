@@ -63,7 +63,11 @@
       "**Rational $\\varepsilon$ encoding:** The formalization avoids real arithmetic by encoding $\\varepsilon = \\varepsilon_{\\text{Num}}/\\varepsilon_{\\text{Den}}$ and cross-multiplying, keeping all proofs in $\\mathbb{N}$",
       "**Proved contradiction:** `not_forAll_in_general` combines Cambie's axiom with a logical argument to formally prove the universal version fails"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Asymptotic density and counting"
+    ]
   },
   "sections": [
     {

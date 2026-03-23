@@ -34,7 +34,10 @@
       "**Rich Lean Proofs:** Many properties (monotonicity, boundedness, $f(0) = 0$, Cramér continuity and monotonicity) are fully proved in Lean, not axiomatized — demonstrating real formal reasoning about prime gap distributions.",
       "**Small and Large Gap Extremes:** The axiomatized partial results capture the state of the art: GPY/Maynard–Tao for small gaps ($\\liminf g_n/\\log p_n = 0$) and FGKT/Maynard for large gaps ($\\limsup g_n/\\log n = \\infty$), bounding the distribution from both sides."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

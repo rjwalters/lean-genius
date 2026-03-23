@@ -63,7 +63,11 @@
       "**Sidon vs dissociated**: Sidon sets require distinct pairwise sums a+b. Dissociated sets require ALL subset sums to be distinct - a much stronger condition.",
       "**Hanson-Steele-Stenger**: The generalization to 1/n^s shows this is not just about reciprocals but a fundamental property of dissociated sets."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

@@ -59,7 +59,10 @@
       "**Inductive proof strategy:** Crittenden and Vanden Eynden's proof proceeds by induction on $r$, partitioning the congruences by their behavior modulo 2. The key step reduces an $r$-congruence problem to an $(r-1)$-congruence problem on even or odd integers.",
       "**Connection to Erdős's covering system program:** This is one of many problems (#2, #7, #275–281) in Erdős's systematic study of covering systems, which also produced his famous $1000 conjecture on odd covering systems (recently refuted for the 'all odd' version by Hough–Nielsen 2019)."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

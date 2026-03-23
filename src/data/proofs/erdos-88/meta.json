@@ -87,7 +87,11 @@
       "**δ(ε) extraction via Classical.choose**: The KSSS theorem is existential (∃δ > 0), and the formalization extracts a concrete function δ(ε) using Lean's `Classical.choose`. The positivity `delta_pos` is proved from `Classical.choose_spec`, demonstrating how to work with nonconstructive existence results in Lean 4.",
       "**$100 Erdős prize reflects the problem's stature**: Among Erdős's 1500+ problems with prizes from $25 to $10,000, the $100 award places this as moderately difficult but highly significant—a 30-year open problem solved by a team of four using novel probabilistic techniques."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)",
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

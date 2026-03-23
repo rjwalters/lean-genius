@@ -78,7 +78,10 @@
       "**Parity-dependent thresholds**: $f(c) = 0$ extends further for odd $n$ ($c < 2$) than even $n$ ($c < 3/2$) because the unbalanced Turán graph $K_{(n-1)/2,(n+1)/2}$ has different structural properties",
       "**Gyori's quadratic bound**: $f(c) \\leq Cc^2$ is proved via dependent random choice and Kővári-Sós-Turán; the quadratic growth rate matches the $K_{1,m,m}$ lower bound up to constants"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

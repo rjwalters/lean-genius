@@ -69,7 +69,9 @@
       "**intervalIntegral is the right abstraction**: Mathlib's intervalIntegral handles signed intervals and satisfies FTC directly, making the proof much simpler than using Lebesgue integrals.",
       "**The proof generalizes**: The same 8-step proof works for any rectangle — the specific dimensions [a,b]×[c,d] are all parameters."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

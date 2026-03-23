@@ -78,7 +78,10 @@
       "**The Gap:** Between Mangerel's O(X/(log X)^{2+c}) and the conjecture's o(X) lies the open problem. The `hasBoundedPrimeValues` condition in Mangerel's theorem is an additional restriction not present in the conjecture.",
       "**omega as Counterexample:** ω(n) = |{p : p | n}| is additive but not logarithmic, showing additivity alone doesn't force logarithmic form — some monotonicity condition is essential."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "leanFile": {
     "imports": [

@@ -76,7 +76,9 @@
       "**calc Chains**: The proofs use Lean 4's `calc` blocks extensively for clear algebraic reasoning: rewrite with identities, substitute hypotheses, simplify with `ring`. This mirrors the classical hand-computation approach.",
       "**Omega Primitivity**: Proving ω ≠ 1 requires extracting sin(2π/3) = √3/2 from the complex exponential — the most technically demanding proof in the file, using `exp_mul_I` and `positivity`."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Abstract algebra"
+    ]
   },
   "leanFile": {
     "imports": [

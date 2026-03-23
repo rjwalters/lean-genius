@@ -62,7 +62,10 @@
       "**Crossing Number as Bridge:** Székely's 1997 proof of Szemerédi-Trotter via the crossing number inequality $\\text{cr}(G) \\geq m^3/(64n^2)$ elegantly bridges graph theory and geometry. The incidence graph is drawn in the plane using the given points and lines, and crossings correspond to non-incidence pairs, yielding the bound through a simple probabilistic deletion argument.",
       "**Rich Lines and the Inverse Problem:** The rich lines bound $O(n^2/r^3 + n/r)$ captures a fundamental inverse principle: if a line contains many points, it 'uses up' pairs that cannot contribute to other lines. This is the quantitative version of the pigeonhole principle applied to point-line incidences, and is crucial for resolving the dichotomy in Beck's proof."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

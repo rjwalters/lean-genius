@@ -79,7 +79,10 @@
       "**Abstraction via rational coordinates**: Using $\\mathbb{Q} \\times \\mathbb{Q}$ instead of $\\mathbb{R}^2$ and axiomatizing the unit-length constraint is a pragmatic choice that avoids the computational complexity of real arithmetic while preserving the logical structure of the packing problem.",
       "**The endpoint-touching variant changes the blocking game**: Allowing segments to share endpoints means fan-like configurations (segments radiating from one point) become valid, potentially enabling more efficient blocking. But new segments can also touch existing ones at endpoints, so the blocking condition is subtly different."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Geometry (Euclidean, combinatorial)"
+    ]
   },
   "sections": [
     {

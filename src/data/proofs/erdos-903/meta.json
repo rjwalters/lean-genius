@@ -100,7 +100,10 @@
       "**Broken projective planes**: The only designs with t in [n+p, n+⌈1.148p⌉) come from breaking one line of a projective plane into singletons. This yields exactly t = n + q blocks (replacing one (q+1)-block by q+1 singletons).",
       "**Fisher's inequality connection**: For uniform block designs (2-designs), Fisher's inequality b ≥ v is equivalent to de Bruijn-Erdős. Fisher's proof uses the incidence matrix NN^T = (r-λ)I + λJ and rank arguments."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

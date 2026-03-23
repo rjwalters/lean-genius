@@ -66,7 +66,11 @@
       "**The factorial threshold is sharp:** Below $s = (t-1)!+1$, the norm graph construction fails because the norm equation can have up to $(t-1)!$ solutions, allowing monochromatic $K_{s,t}$. The resulting gap in the exponent (e.g., $R(K_{2,3}; k)$ has exponent between $5/3$ and $2$) represents genuinely open mathematics.",
       "**Connection to Zarankiewicz problem:** The lower bound exponent $(st-1)/(s+t)$ comes from the Kovari-Sos-Turan theorem on $K_{s,t}$-free bipartite graphs: $z(m; s, t) \\le c \\cdot m^{2-1/s}$. Distributing edges across $k$ colors and applying this bound in each color class yields the Chung-Graham lower bound."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Ramsey theory (partition regularity)",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

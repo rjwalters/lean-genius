@@ -35,7 +35,11 @@
       "The local-to-global nature of the problem connects to a rich hierarchy: Brooks' theorem (degree $\\to$ chromatic number), Johansson's theorem (girth $\\to$ chromatic bound), regularity methods (approximate structure $\\to$ global properties), and this problem (approximate colorability $\\to$ global colorability)",
       "A negative answer to Question 1 (which Rödl's evidence suggests) would mean that local near-bipartiteness does not strongly constrain global 3-colorability, revealing a fundamental limit of local-to-global reasoning in graph coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Extremal graph theory (Turán-type problems)"
+    ]
   },
   "sections": [
     {

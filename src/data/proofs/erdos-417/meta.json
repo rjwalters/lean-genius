@@ -67,7 +67,10 @@
       "**Ford's precise asymptotics**: $V(x) = \\frac{x}{\\log x} \\exp(C_1(\\log_3 x)^2 + C_2 \\log_3 x + C_3)$ gives the exact order of the totient value counting function, but the analogous formula for $V'(x)$ is unknown",
       "**Connection to Carmichael's conjecture**: The open conjecture that every totient value has multiplicity $\\ge 2$ (i.e., $|\\varphi^{-1}(n)| \\ne 1$ for all $n$) is related to the structure of preimages that drives the $V/V'$ ratio"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

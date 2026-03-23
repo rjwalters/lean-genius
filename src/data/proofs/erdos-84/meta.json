@@ -69,7 +69,10 @@
       "**Exponent improvement trajectory:** The upper bound exponent savings progressed from $n^{1/10}$ (Verstraëte 2004) to $n^{1/2-o(1)}$ (Nenadov 2025). The natural barrier is $n/2$, where the upper bound would match the lower bound order. Whether the savings can reach $\\Theta(n)$ is a key open question.",
       "**Connection to graph realization problems:** This problem is an instance of the broader question: which combinatorial properties can be simultaneously realized by a single graph? Similar questions arise for degree sequences (Erdős-Gallai), chromatic numbers, and clique spectra."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

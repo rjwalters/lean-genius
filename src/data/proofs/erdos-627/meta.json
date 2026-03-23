@@ -70,7 +70,10 @@
       "**Perfect graphs give ratio 1:** The Strong Perfect Graph Theorem (2006) characterizes when $\\chi = \\omega$ for all induced subgraphs, showing extremal graphs must contain odd holes or antiholes.",
       "**Limit bounds $(\\log 2)^2 \\cdot [1/4, 1]$:** The upper bound comes from $R(k,k) \\leq 4^k$ (giving $\\omega \\geq \\frac{1}{2}\\log_2 n$); the lower bound from explicit constructions. The $4\\times$ gap remains open."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

@@ -86,7 +86,10 @@
       "**The exponent 1-2^{-k} comes from induction**: The general upper bound proceeds by induction on k: given k-1 witnesses, the remaining density suffices to find the k-th. Each inductive step squares the deficiency (from N^α to N^{(1+α)/2}), giving the geometric approach to exponent 1.",
       "**The gap between bounds is the main open problem**: For large k, the upper exponent 1-2^{-k} and lower exponent 1-ε don't match. Finding the true exponent α_k with g_k(N) = N^{α_k+o(1)} is the central challenge."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Additive combinatorics (sumsets, density)",
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

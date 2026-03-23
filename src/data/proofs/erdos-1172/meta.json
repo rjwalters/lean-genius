@@ -79,7 +79,12 @@
       "The stepping-up lemma transfers negative partition results upward: if $\\kappa \\not\\to (\\alpha, \\beta)^2$, there exist targets making $\\kappa + 1 \\not\\to (\\alpha', \\beta')^2$ fail, showing that counterexamples propagate through the ordinal hierarchy.",
       "Question 4 under CH is naturally 'balanced' ($\\omega_2 \\to (\\omega_1 + \\omega)_2^2$), meaning both colors must admit the same order type, which is a strictly stronger requirement than the unbalanced case."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Set theory and cardinality",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "sections": [
     {

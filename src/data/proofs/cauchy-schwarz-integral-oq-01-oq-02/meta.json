@@ -75,7 +75,9 @@
       "**Hausdorff-Young follows by interpolating L¹→L∞ and L²→L²**: The Fourier transform satisfies ‖f̂‖_∞ ≤ ‖f‖_1 (trivial) and ‖f̂‖_2 = ‖f‖_2 (Plancherel). Riesz-Thorin interpolates to get ‖f̂‖_{p'} ≤ ‖f‖_p for 1 ≤ p ≤ 2.",
       "**The three-lines lemma gap**: The key missing piece for a full proof is the Hadamard three-lines lemma, which bounds the maximum of an analytic function on a strip by its boundary values."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

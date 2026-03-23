@@ -44,7 +44,9 @@
       "**Generalizes to abstract spaces**: Mathlib's formalization works in any real inner product space, not just $\\mathbb{R}^2$ or $\\mathbb{R}^3$, using the abstract `dist` and `angle` functions from `EuclideanGeometry`",
       "**Algebraic proof by `ring`**: The key algebraic identity reducing Heron's product to the expanded form is closed entirely by Lean's `ring` tactic, demonstrating the power of verified algebraic computation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Geometry (Euclidean, combinatorial)"
+    ]
   },
   "sections": [
     {

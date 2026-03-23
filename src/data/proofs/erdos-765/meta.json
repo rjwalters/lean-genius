@@ -91,7 +91,11 @@
       "**Ma-Yang Disproof (2023)**: The coefficient 1/4 in the second-order term is NOT tight. For a positive density of n, the coefficient can be improved to 1/4 - c. The exact second-order behavior remains open.",
       "**Pre-Turan History**: This problem predates Turan's famous theorem by 5 years, making it one of the earliest extremal graph theory results. The connection between forbidden subgraphs and edge density was not yet a field."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Extremal graph theory (Turán-type problems)"
+    ]
   },
   "sections": [
     {

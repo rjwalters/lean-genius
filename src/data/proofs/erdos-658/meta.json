@@ -70,7 +70,11 @@
       "**Axis-Aligned vs Tilted:** Graham's original problem was for axis-aligned squares; tilted squares also exist but require different methods",
       "**Higher Dimensions:** The result generalizes to d-dimensional cubes in {1,...,N}ᵈ"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)",
+      "Asymptotic density and counting"
+    ]
   },
   "sections": [
     {

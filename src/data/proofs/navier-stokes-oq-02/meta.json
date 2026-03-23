@@ -72,7 +72,9 @@
       "The NSSolutionPair2D structure abstracts away PDE details: the Ladyzhenskaya stability estimate W'(t) ≤ C·E(t)·W(t) is a hypothesis, not derived from Sobolev spaces, making the proof modular",
       "Continuous dependence gives an explicit stability threshold δ = ε·exp(-C·E(0)·T) that decreases with time horizon T and initial enstrophy E(0)"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical analysis"
+    ]
   },
   "sections": [
     {

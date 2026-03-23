@@ -85,7 +85,11 @@
       "The PPT threshold exponent $1/2$ arises from $s(n) \\leq n \\cdot O(\\log\\log n)$: since $s$ maps $[1,x]$ into $[1, O(x \\log\\log x)]$, sets growing slower than $\\sqrt{x}$ in the range cannot capture enough fibers",
       "Each partial result (primes, sums of two squares, sparse sets) requires completely different analytic techniques, suggesting no simple unified approach exists"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Asymptotic density and counting"
+    ]
   },
   "sections": [
     {

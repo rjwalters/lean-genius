@@ -70,7 +70,11 @@
       "**Dimension generalization:** Jackson-Mauldin's result extends to all dimensions $n \\geq 2$: for $\\mathbb{Z}^n \\subset \\mathbb{R}^n$, Steinhaus sets exist. The proof generalizes because $|\\text{Isom}(\\mathbb{R}^n)| = \\mathfrak{c}$ for all finite $n$. The $n = 1$ case is trivially positive: $[0, 1)$ works.",
       "**Connection to descriptive set theory:** The problem sits at the intersection of geometric combinatorics and descriptive set theory. The orbits of $\\mathbb{Z}^2$ under $E(2)$ form a smooth equivalence relation, and the Steinhaus property asks for a Borel (or at least measurable) cross-section — which Jackson-Mauldin show exists non-constructively."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Geometry (Euclidean, combinatorial)",
+      "Set theory and cardinality"
+    ]
   },
   "sections": [
     {

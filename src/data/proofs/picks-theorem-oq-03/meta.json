@@ -98,7 +98,10 @@
       "**Cross-polytope h*-polynomial is (1+z)^d**: The h*-vector of the d-dimensional cross-polytope consists of binomial coefficients C(d,k), making it the simplest possible palindromic h*-vector. This connects reflexive polytope theory to the binomial theorem",
       "**Interior shift property**: For cross-polytopes, L*(n) = L(n-1), meaning interior point counts of the n-th dilate equal total counts of the (n-1)-th dilate. This is a consequence of the cross-polytope being simplicial and reflexive"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Geometry (Euclidean, combinatorial)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

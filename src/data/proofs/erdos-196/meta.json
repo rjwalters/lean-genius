@@ -34,7 +34,10 @@
       "**Erdős–Szekeres gap**: The theorem guarantees long monotone subsequences of length $\\Theta(\\sqrt{n})$ but provides no arithmetic structure — a monotone subsequence need not contain a 4-AP",
       "**Proved implication**: The 4-AP conjecture implies the 3-AP theorem, verified in Lean by extracting three terms from a 4-AP and using `omega` for the arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

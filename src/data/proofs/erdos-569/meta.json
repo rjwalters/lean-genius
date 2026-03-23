@@ -66,7 +66,12 @@
       "**EFRS93**: The general bound R ≤ c·k·m is the best known. The open question is whether the k factor can be absorbed into a constant c_k.",
       "**Lower Bound from Stars**: K_{1,m} has m edges, and R(C_{2k+1}, K_{1,m}) ≥ 2m + 1 shows c_k ≥ 2."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Ramsey theory (partition regularity)",
+      "Graph theory (vertices, edges, colorings)",
+      "Extremal graph theory (Turán-type problems)"
+    ]
   },
   "sections": [
     {

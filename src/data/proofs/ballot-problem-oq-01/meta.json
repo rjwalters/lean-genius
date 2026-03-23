@@ -54,7 +54,10 @@
       "The proof uses a **sandwich argument**: an injection into $\\{0, \\ldots, S-1\\}$ gives $|\\text{goodRotations}| \\leq S$, while a surjection via `levelPos` (a discrete IVT argument exploiting $+1$ steps) gives $|\\text{goodRotations}| \\geq S$",
       "The **rightmost minimum** of the prefix sum sequence is always a good rotation, providing the existence base case that bootstraps the full counting argument"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)",
+      "Probability theory"
+    ]
   },
   "sections": [
     {

@@ -65,7 +65,11 @@
       "**Computational verification**: Deaconescu checked $n \\leq 1000$, providing strong numerical evidence. Note $a(6) = 17 < a(5) = 23$, so the sequence is not monotone.",
       "**Divisibility obstruction**: Since every prime $p_k \\leq p_n$ divides $P$, the sum $P + p$ is divisible by $p_k$ whenever $p_k \\mid p$. This means only primes $p > p_n$ can possibly yield $P + p$ prime — the lower bound in the conjecture is forced, not arbitrary."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

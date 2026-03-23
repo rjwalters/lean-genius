@@ -50,7 +50,9 @@
       "The contrapositive technique generalizes directly to √p for any prime p: replace 'divisible by 2' with 'divisible by p', and the same argument shows p|a² → p|a (using the prime property), then p|b — contradiction with coprimality",
       "This ~200-line pedagogical proof illustrates the trade-off in formalization: Mathlib's one-liner `exact irrational_sqrt_two` hides real number construction, the square root definition, and the actual irrationality argument — this file makes all of that structure explicit"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

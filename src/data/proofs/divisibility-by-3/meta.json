@@ -63,7 +63,9 @@
       "**Digital Root:** Iterating the digit sum gives the digital root $\\text{dr}(n) \\equiv n \\pmod{9}$, and $\\text{dr}(n) \\in \\{1,\\ldots,9\\}$ for $n > 0$. The Lean formalization captures this as `digitSumCongruence`.",
       "**Lean Proof Technique:** The proof works over `Nat.digits 10 n` (Mathlib's digit decomposition) and uses `Finset.sum_congr` with the congruence $10^k \\equiv 1$, reducing the problem to summing digits modulo 3."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

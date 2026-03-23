@@ -60,7 +60,10 @@
       "**AlphaProof's construction**: A = {n! + n} works because factorials are divisible by all smaller numbers.",
       "**Why it works**: For AP with difference d, element (a+d+1)! + (a+d) ≡ a (mod d) since d | (a+d+1)!."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

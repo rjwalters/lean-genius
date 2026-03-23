@@ -45,7 +45,11 @@
       "**Fermat's characterization underlies Landau:** Landau's theorem ultimately rests on Fermat's result that $n$ is a sum of two squares iff every prime $p \\equiv 3 \\pmod{4}$ appears to an even power in the factorization of $n$. This arithmetic constraint is what makes sums of two squares sparse.",
       "**The exponent gap as a measure of ignorance:** The gap between exponents $2/3$ and $1 - o(1)$ reflects fundamental limitations: the lower bound uses no structure of squares beyond cardinality, while the upper bound uses only the sparsity of sums of two squares. Closing the gap likely requires understanding finer additive structure of the set of perfect squares."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

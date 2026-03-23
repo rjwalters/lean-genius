@@ -77,7 +77,10 @@
       "Properness via col.valid is the only coloring property needed: lt_or_gt_of_ne on col.valid hadj splits each edge into exactly one direction",
       "Zero axioms, zero sorries: Mathlib's graph theory library (colorable_of_fintype, Coloring.valid) is sufficient for the full proof without any axiomatization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
   },
   "sections": [
     {

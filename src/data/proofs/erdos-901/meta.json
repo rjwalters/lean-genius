@@ -75,7 +75,10 @@
       "**Radhakrishnan-Srinivasan resampling**: The best lower bound $m(n) \\gg \\sqrt{n/\\log n} \\cdot 2^n$ uses an iterative recoloring strategy: start with a random coloring, identify monochromatic edges, and randomly recolor their vertices. The analysis bounds the number of rounds before all edges are properly colored.",
       "**Fano plane and $m(3) = 7$**: The Fano plane $PG(2, 2)$ — the unique Steiner triple system $S(2, 3, 7)$ with 7 points and 7 lines of 3 points each — is the smallest 3-uniform hypergraph without Property B. Every 2-coloring of its 7 points creates a monochromatic triple."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "crossReferences": [
     {

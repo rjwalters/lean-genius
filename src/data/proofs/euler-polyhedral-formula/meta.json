@@ -46,7 +46,10 @@
       "**Platonic Solid Bound:** The Schläfli inequality $2p + 2q > pq$ (from Euler + double counting: $pF = 2E = qV$) limits $\\{p,q\\}$-regular polyhedra to exactly 5 solutions: $\\{3,3\\}, \\{3,4\\}, \\{4,3\\}, \\{3,5\\}, \\{5,3\\}$ — the tetrahedron, octahedron, cube, icosahedron, dodecahedron.",
       "**Beyond Polyhedra:** $\\chi$ connects to algebraic topology: $\\chi = \\sum(-1)^k \\text{rank}(H_k)$ (alternating sum of Betti numbers), linking combinatorial counting to homology groups — the Euler-Poincaré theorem."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Point-set topology",
+      "Geometry (Euclidean, combinatorial)"
+    ]
   },
   "sections": [
     {

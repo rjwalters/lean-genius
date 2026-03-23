@@ -61,7 +61,11 @@
       "**Two vs three terms**: The two-term case f_{k,2}(x) ≫ x^{2/k} was proved in 1938. Three terms is significantly harder.",
       "**Asymptotic notation**: We use Mathlib's `IsBigO` to express f ≫ g as 'g = O(f)', meaning f grows at least as fast as g."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
   },
   "sections": [
     {

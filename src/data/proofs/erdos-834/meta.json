@@ -66,7 +66,10 @@
       "The Lean proof of the negative answer is an elegant 3-line contradiction: assume $\\delta \\ge 7$, apply Li's bound to get $\\delta \\le 6$, close with `omega`",
       "This problem beautifully illustrates how formalization forces precision—the two interpretations, easily conflated in natural language, become clearly distinct in Lean's type system"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

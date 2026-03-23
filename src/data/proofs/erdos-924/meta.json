@@ -106,7 +106,11 @@
       "**Shift graph construction**: Folkman's original proof used shift graphs — vertices are l-element subsets with adjacency from interlacing. This controls clique size (via pigeonhole on minimum elements) while the ordered structure forces Ramsey properties.",
       "**Structural Ramsey theory**: This result is foundational to the broader program of understanding which forbidden subgraph constraints are compatible with Ramsey-type forcing."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Ramsey theory (partition regularity)",
+      "Combinatorics (counting, extremal problems)"
+    ]
   },
   "sections": [
     {

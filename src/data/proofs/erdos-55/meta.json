@@ -35,7 +35,12 @@
       "**Powers are Ramsey complete**: The $k$-th powers $\\{1^k, 2^k, \\ldots\\}$ are Ramsey $r$-complete (Burr), but with polynomial growth far above the logarithmic optimum",
       "**Probabilistic method throughout**: Both the construction (upper bound) and the impossibility proof (lower bound) rely on probabilistic arguments over colorings"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Ramsey theory (partition regularity)",
+      "Additive combinatorics (sumsets, density)",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

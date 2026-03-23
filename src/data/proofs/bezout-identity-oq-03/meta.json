@@ -73,7 +73,9 @@
       "**Integer CRT vs Natural Number CRT**: Working over ℤ avoids the need to reduce modulo m*n for existence (unlike the natural number version which uses Nat.chineseRemainder). The integer formulation is cleaner and more general.",
       "**Divisibility-based proof**: Using `Int.modEq_iff_dvd` converts congruences to divisibility, which is the natural language for the algebraic argument from Bézout's identity."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

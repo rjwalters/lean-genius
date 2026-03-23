@@ -64,7 +64,11 @@
       "**The degeneracy ordering enables greedy embedding**: A $d$-degenerate graph has an ordering $v_1, \\ldots, v_n$ where each $v_i$ has at most $d$ neighbors among $v_{i+1}, \\ldots, v_n$. This ordering allows embedding vertices one by one, each time extending into at most $d$ neighborhoods — a greedy strategy that only works when the host graph is sufficiently pseudo-random.",
       "**Chromatic number refinement**: Lee also proved $R(H) \\le 2^{d \\cdot 2^{O(\\chi(H))}} \\cdot n$, showing that bounded chromatic number further reduces the Ramsey number. For bipartite $d$-degenerate graphs ($\\chi = 2$), this gives $R(H) \\le 2^{O(d)} \\cdot n$, matching the conjectured optimal."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "sections": [
     {

@@ -35,7 +35,9 @@
       "**Ratio convergence is strictly weaker**: $h_3(k+1)/h_3(k) \\to 1$ follows from any asymptotic formula $h_3(k) \\sim f(k)$ with $f(k+1)/f(k) \\to 1$, but might be provable without determining the constant",
       "**Extremal graphs reveal structure**: $h_3(3) = 5$ (unique: $C_5$), $h_3(4) = 11$ (unique: Grotzsch graph), $h_3(5) = 22$; the extremal graphs become less structured as $k$ grows"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory"
+    ]
   },
   "sections": [
     {

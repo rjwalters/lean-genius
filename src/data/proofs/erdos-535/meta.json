@@ -36,7 +36,10 @@
       "**Additive-Multiplicative Dichotomy:** The fundamental barrier: $\\gcd$ is multiplicative but cardinality counting is additive, preventing direct application of either additive or multiplicative number theory tools",
       "**Smooth Number Constructions:** The lower bound uses numbers with $\\leq k$ prime factors (smooth numbers) for $k \\sim \\log \\log N$, exploiting the multiplicative structure to avoid $\\gcd$-cliques while maximizing set size"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
   },
   "sections": [
     {

@@ -35,7 +35,11 @@
       "**Probabilistic evidence**: random colourings give $R(G) \\gg 2^{k/2}$, and since $R(k) \\leq 4^k$, the ratio $R(G)/R(k) \\gg 2^{-k/2}$ is already known—far from the $(1-\\varepsilon)^k$ demanded by the weak form",
       "**Campos et al. breakthrough**: the 2023 improvement $R(k) \\leq (4-\\varepsilon)^k$ narrows the gap between the lower bound on $R(G)$ and the upper bound on $R(k)$"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)"
+    ]
   },
   "sections": [
     {
