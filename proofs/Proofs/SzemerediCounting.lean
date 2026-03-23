@@ -728,7 +728,88 @@ theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
       -- |R_wp| = Σ_{S ∈ P.parts} |S|² ≤ max_size · n ≤ (n/k+1)·n = n²/k + n
       -- With k ≥ 8/δ: n²/k ≤ (δ/8)n². With n ≥ 8/δ: n ≤ (δ/8)n².
       -- Total: n²/k + n ≤ (δ/4)n².
-      have h_wp : (R_wp.card : ℚ) ≤ (delta / 4) * ↑n ^ 2 := by sorry
+      have h_wp : (R_wp.card : ℚ) ≤ (delta / 4) * ↑n ^ 2 := by
+        -- Step A: |R_wp| ≤ Σ_{S ∈ P.parts} |S ×ˢ S|
+        have h_sub_wp : R_wp ⊆ P.parts.biUnion (fun S => S ×ˢ S) := by
+          intro ⟨u, v⟩ huv
+          simp only [R_wp, Finset.mem_filter] at huv
+          obtain ⟨_, part, hp, hu, hv⟩ := huv
+          exact Finset.mem_biUnion.mpr ⟨part, hp, Finset.mem_product.mpr ⟨hu, hv⟩⟩
+        -- Step B: Σ|S ×ˢ S| = Σ|S|²; bound via biUnion_le
+        have h_card_wp : (R_wp.card : ℚ) ≤ P.parts.sum (fun S => (S.card : ℚ) ^ 2) := by
+          have h1 := Finset.card_le_card h_sub_wp
+          have h2 := @Finset.card_biUnion_le _ _ P.parts (fun S => S ×ˢ S)
+          calc (R_wp.card : ℚ)
+              ≤ ↑(P.parts.sum fun S => (S ×ˢ S).card) := by
+                push_cast; exact_mod_cast le_trans h1 h2
+            _ = P.parts.sum (fun S => (S.card : ℚ) ^ 2) := by
+                push_cast; congr 1; ext S; rw [Finset.card_product]; push_cast; ring
+        -- Step C: Partition sum = n
+        have hsum : P.parts.sum Finset.card = n := by
+          rw [hn_def, Fintype.card, ← P.sup_parts]
+          exact (Finset.card_biUnion fun a ha b hb hab =>
+            Finset.disjoint_coe.mp <| P.supIndep.pairwiseDisjoint ha hb hab).symm
+        -- Step D: Every part size ≤ n/k + 1 (from equipartition + sum = n)
+        have hmax_part : ∀ S ∈ P.parts, (S.card : ℚ) ≤ (n : ℚ) / k + 1 := by
+          intro S hS
+          have hS_ne : S ≠ ∅ := fun h => absurd (h ▸ hS) P.not_bot_mem
+          have hS_pos : 0 < S.card := Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hS_ne)
+          have hkq : (0 : ℚ) < k := by exact_mod_cast (show 0 < k by omega)
+          -- Equipartition: ∀ T, S.card ≤ T.card + 1
+          have hge : ∀ T ∈ P.parts, S.card ≤ T.card + 1 :=
+            fun T hT => hequi (Finset.mem_coe.mpr hS) (Finset.mem_coe.mpr hT)
+          -- So T.card ≥ S.card - 1 for all T, hence n = Σ T.card ≥ k*(S.card - 1)
+          have hn_ge : k * (S.card - 1) ≤ n := by
+            calc k * (S.card - 1)
+                = P.parts.sum (fun _ => S.card - 1) := by
+                  simp [Finset.sum_const, hk_def]
+              _ ≤ P.parts.sum Finset.card :=
+                  Finset.sum_le_sum fun T hT => by omega
+              _ = n := hsum
+          -- Convert: k * (S.card - 1) ≤ n in ℚ, so S.card ≤ n/k + 1
+          rw [div_add_one (ne_of_gt hkq), le_div_iff₀ hkq]
+          push_cast
+          have : (↑(S.card - 1) : ℚ) = (S.card : ℚ) - 1 := by
+            rw [Nat.cast_sub hS_pos]
+          linarith [show (k : ℚ) * ((S.card : ℚ) - 1) ≤ (n : ℚ) by
+            rw [← this]; exact_mod_cast hn_ge]
+        -- Step E: Σ|S|² ≤ (n/k + 1) · n
+        have h_sq_bound : P.parts.sum (fun S => (S.card : ℚ) ^ 2) ≤
+            ((n : ℚ) / k + 1) * n := by
+          calc P.parts.sum (fun S => (S.card : ℚ) ^ 2)
+              = P.parts.sum (fun S => (S.card : ℚ) * S.card) := by
+                congr 1; ext S; ring
+            _ ≤ P.parts.sum (fun S => ((n : ℚ) / k + 1) * S.card) :=
+                Finset.sum_le_sum fun S hS => by
+                  apply mul_le_mul_of_nonneg_right (hmax_part S hS)
+                  exact Nat.cast_nonneg _
+            _ = ((n : ℚ) / k + 1) * P.parts.sum (fun S => (S.card : ℚ)) := by
+                rw [← Finset.mul_sum]
+            _ = ((n : ℚ) / k + 1) * n := by
+                congr 1; push_cast; exact_mod_cast hsum
+        -- Step F: (n/k + 1) · n = n²/k + n ≤ (δ/8)n² + (δ/8)n² = (δ/4)n²
+        have hkq : (0 : ℚ) < k := by exact_mod_cast (show 0 < k by omega)
+        -- n²/k ≤ (δ/8)n²: since k ≥ 8/δ, 1/k ≤ δ/8
+        have h_nk : (n : ℚ) ^ 2 / k ≤ delta / 8 * (n : ℚ) ^ 2 := by
+          rw [div_le_iff₀ hkq]
+          have hdk : delta / 8 * k ≥ 1 := by
+            rw [ge_iff_le, ← div_le_iff₀ (by positivity : (0:ℚ) < delta / 8)]
+            calc (1 : ℚ) / (delta / 8) = 8 / delta := by ring
+              _ ≤ k := hk_ge_inv_delta
+          nlinarith [sq_nonneg (n : ℚ)]
+        -- n ≤ (δ/8)n²: since n ≥ 8/δ, δn/8 ≥ 1, so (δ/8)n² ≥ n
+        have h_nn : (n : ℚ) ≤ delta / 8 * (n : ℚ) ^ 2 := by
+          have hdn : delta / 8 * n ≥ 1 := by
+            rw [ge_iff_le, ← div_le_iff₀ (by positivity : (0:ℚ) < delta / 8)]
+            calc (1 : ℚ) / (delta / 8) = 8 / delta := by ring
+              _ ≤ n := hn_ge_inv_delta
+          nlinarith [sq_nonneg (n : ℚ)]
+        calc (R_wp.card : ℚ)
+            ≤ P.parts.sum (fun S => (S.card : ℚ) ^ 2) := h_card_wp
+          _ ≤ ((n : ℚ) / k + 1) * n := h_sq_bound
+          _ = (n : ℚ) ^ 2 / k + n := by ring
+          _ ≤ delta / 8 * (n : ℚ) ^ 2 + delta / 8 * (n : ℚ) ^ 2 := by linarith
+          _ = delta / 4 * (n : ℚ) ^ 2 := by ring
       -- Step 3: Bound irregular cross-part pairs ≤ (δ/2)n²
       -- #irregular ordered pairs ≤ ε·k·(k-1), each contributes ≤ (n/k+1)² pairs.
       -- Total ≤ ε·k²·(n/k+1)² ≤ 4ε·n² ≤ (δ/2)·n² (since ε ≤ δ/8).
