@@ -110,7 +110,34 @@
       "Commutative ring axioms and integral domains",
       "Lean 4 well-founded recursion and termination proofs"
     ],
-    "lineCount": 200
+    "lineCount": 200,
+    "leanFile": {
+      "lineCount": 200,
+      "structureCount": 0,
+      "axiomCount": 0,
+      "theoremCount": 11,
+      "lemmaCount": 0,
+      "defCount": 2,
+      "imports": [
+        "Mathlib.Data.Nat.GCD.Basic",
+        "Mathlib.Data.Int.GCD",
+        "Mathlib.Tactic"
+      ]
+    },
+    "relatedProblems": [
+      {
+        "id": "bezout-identity-oq-02-oq-02",
+        "relationship": "Parent formalization: Euclid's lemma generalized to commutative rings. This entry adds the constructive quotient computation"
+      },
+      {
+        "id": "bezout-identity-oq-02",
+        "relationship": "Grandparent formalization: the OQ about whether Euclid's lemma can be generalized and made constructive"
+      },
+      {
+        "id": "bezout-identity",
+        "relationship": "Root formalization: Bézout's identity au + bv = gcd(a,b), the foundation this entire chain builds upon"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "The **extended Euclidean algorithm** has roots in Euclid's *Elements* (~300 BCE, Book VII, Propositions 1-2), where the alternating subtraction method computes GCDs. The extension to computing Bézout coefficients was first published by **Bachet de Méziriac** in *Problèmes plaisants et délectables* (1624), well before Bézout's own treatise (1779). The Indian mathematician **Aryabhata** (5th century CE) independently described a similar algorithm (*kuṭṭaka*) for solving linear Diophantine equations.\n\nThe algorithm has $O(\\log \\min(a,b))$ bit complexity, making it one of the oldest known efficient algorithms. Knuth (1997) gives a thorough modern treatment, and the algorithm is foundational in computational number theory: it underlies RSA key generation (computing modular inverses), the Chinese Remainder Theorem, and continued fraction expansions.\n\nWhile Euclid's lemma (if $\\gcd(a,b) = 1$ and $a \\mid bc$, then $a \\mid c$, Elements VII.30) is classical, its **constructive content** — actually computing the quotient $c/a$ — is often overlooked in standard treatments. This formalization makes the construction explicit: given Bézout coefficients $u, v$ and a divisibility witness $k$, the quotient $q = uc + vk$ is extracted by a simple algebraic formula valid in any commutative ring. The core formula $q = uc + vk$ (where $ua + vb = 1$ and $bc = ak$) works in any commutative ring, and is instantiated over $\\mathbb{N}/\\mathbb{Z}$ via the extended GCD.",
@@ -262,20 +289,38 @@
       "targetId": "wilsons-theorem",
       "relationship": "related",
       "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ can be proved by pairing each $a \\in (ℤ/pℤ)^*$ with its modular inverse $a^{-1}$. The extended Euclidean algorithm constructively computes these inverses — the pairing argument is constructive when the inverse computation is"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Gauss's quadratic reciprocity law concerns when $a$ is a square modulo $p$. The extended Euclidean algorithm provides the modular inverse needed to compute Legendre symbols and reduce quadratic congruences — the constructive machinery here underpins computational approaches to reciprocity"
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "related",
+      "description": "Primitive roots generate the cyclic group $(\\mathbb{Z}/p\\mathbb{Z})^*$. The Bézout coefficient $u$ with $ua + pv = 1$ gives $a^{-1} \\bmod p$, directly connecting to the group structure: computing discrete logarithms and testing primitivity require modular inverse operations"
+    },
+    {
+      "targetId": "bezout-identity-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling open question from the Bézout identity chain, exploring different extensions of the core identity — together these entries map the space of constructive number-theoretic algorithms derivable from the extended Euclidean algorithm"
     }
   ],
   "relatedProofs": [
     "bezout-identity",
     "bezout-identity-oq-02",
+    "bezout-identity-oq-02-oq-02",
+    "bezout-identity-oq-03",
     "chinese-remainder-constructive",
+    "chinese-remainder-non-coprime",
     "infinitude-primes",
     "fermat-two-squares",
-    "bezout-identity-oq-02-oq-02",
     "gcd-algorithm",
     "fundamental-arithmetic",
     "euler-totient",
-    "chinese-remainder-non-coprime",
-    "wilsons-theorem"
+    "wilsons-theorem",
+    "quadratic-reciprocity",
+    "primitive-roots"
   ],
   "leanFile": {
     "imports": [
