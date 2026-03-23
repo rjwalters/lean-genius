@@ -118,6 +118,106 @@
       "What is the structure of extremal triangle-free $k$-chromatic graphs for large $k$ — are they random-like or algebraically structured?"
     ]
   },
+  "crossReferences": [
+    {
+      "target": "erdos-1104",
+      "relationship": "dual problem",
+      "note": "Erdős Problem #1104 asks for the maximum chromatic number $f(n)$ of a triangle-free graph on $n$ vertices — the inverse of $h_3(k)$. The two functions satisfy $h_3(f(n)) \\leq n < h_3(f(n)+1)$, so progress on one directly constrains the other. The known bound $f(n) = \\Theta(\\sqrt{n/\\log n})$ is equivalent to $h_3(k) = \\Theta(k^2 \\log k)$."
+    },
+    {
+      "target": "erdos-920",
+      "relationship": "generalization",
+      "note": "Erdős Problem #920 concerns $h_r(k)$, the smallest $n$ such that a $K_r$-free graph on $n$ vertices can have chromatic number $k$. Problem #1013 is the $r = 3$ special case. The general problem requires understanding Ramsey numbers $R(r,k)$, making it considerably harder for $r \\geq 4$."
+    },
+    {
+      "target": "erdos-1014",
+      "relationship": "structural analogy",
+      "note": "Erdős Problem #1014 asks whether $R(k, l+1)/R(k, l) \\to 1$ as $l \\to \\infty$ for fixed $k$. The ratio convergence question here — whether $h_3(k+1)/h_3(k) \\to 1$ — is structurally identical and similarly open for $k = 3$. Both ask whether the relevant combinatorial threshold grows smoothly."
+    },
+    {
+      "target": "ramseys-theorem",
+      "relationship": "key tool",
+      "note": "Shearer's 1983 bound $R(3,k) \\leq (1+o(1))k^2/(2\\log k)$ on Ramsey numbers is what yields the lower bound $h_3(k) \\geq (1/2 - o(1))k^2 \\log k$: any triangle-free graph must have an independent set of size $\\sim k$, so $n \\geq R(3,k)$. Understanding Problem #1013 requires tight Ramsey bounds."
+    },
+    {
+      "target": "prob-method-expectation",
+      "relationship": "proof technique",
+      "note": "The first-moment probabilistic method underlies the Graver–Yackel lower bound $h_3(k) \\gg k^2 \\log k / \\log \\log k$ (1968): a random graph on $n$ vertices with edge probability $p$ can be shown to have high chromatic number while containing few triangles, which are then deleted without destroying the chromatic number."
+    },
+    {
+      "target": "prob-method-alteration",
+      "relationship": "proof technique",
+      "note": "The alteration method (random construction followed by deterministic deletion of obstructions) is the standard tool for proving upper and lower bounds on $h_3(k)$. Constructing triangle-free graphs with high chromatic number proceeds by taking a random graph and removing edges in triangles while tracking the chromatic number."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "target": "roth-theorem-k3",
+      "relationship": "shared triangle-free theme",
+      "note": "Roth's theorem on 3-term arithmetic progressions is closely related in spirit: both problems concern how 'dense' or 'chromatic' a structure can be while forbidding triangles. Roth's theorem is the additive combinatorics analogue of the triangle-free chromatic threshold problem."
+    },
+    {
+      "target": "four-color-theorem",
+      "relationship": "chromatic number context",
+      "note": "The Four Color Theorem establishes an absolute chromatic number bound for planar graphs. Problem #1013 explores the opposite extreme: how high can the chromatic number go when only triangle-freeness is imposed? Together they bracket the landscape of graph coloring."
+    },
+    {
+      "target": "prob-method-lovasz-local",
+      "relationship": "related technique",
+      "note": "The Lovász Local Lemma provides an alternative to the first-moment method for constructing triangle-free graphs with controlled chromatic number. It is used in sharper versions of the probabilistic lower bounds for $h_3(k)$."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Jan Mycielski"],
+      "title": "Sur le coloriage des graphes",
+      "venue": "Colloquium Mathematicum",
+      "year": 1955,
+      "volume": "3",
+      "pages": "161–162",
+      "note": "The foundational paper proving that triangle-free graphs of arbitrarily high chromatic number exist via the Mycielski inductive construction. Proves $h_3(k) < \\infty$ for all $k$."
+    },
+    {
+      "authors": ["James B. Shearer"],
+      "title": "A note on the independence number of triangle-free graphs",
+      "venue": "Discrete Mathematics",
+      "year": 1983,
+      "volume": "46",
+      "issue": "1",
+      "pages": "83–87",
+      "doi": "10.1016/0012-365X(83)90273-X",
+      "note": "Proves $R(3,k) \\leq (1+o(1))k^2/(2\\log k)$ via an entropy argument, establishing the lower bound $h_3(k) \\geq (1/2 - o(1))k^2 \\log k$."
+    },
+    {
+      "authors": ["John E. Graver", "James Yackel"],
+      "title": "Some graph theoretic results associated with Ramsey's theorem",
+      "venue": "Journal of Combinatorial Theory",
+      "year": 1968,
+      "volume": "4",
+      "issue": "2",
+      "pages": "125–175",
+      "doi": "10.1016/S0021-9800(68)80035-1",
+      "note": "First quantitative lower bound on $h_3(k)$: proves $h_3(k) \\gg k^2 \\log k / \\log \\log k$ using probabilistic deletion, the predecessor to the sharper Ramsey-theoretic bound."
+    },
+    {
+      "authors": ["Noga Alon", "Joel H. Spencer"],
+      "title": "The Probabilistic Method",
+      "venue": "Wiley-Interscience",
+      "year": 2016,
+      "edition": "4th",
+      "note": "The standard reference for the probabilistic method in combinatorics. Chapter 8 covers triangle-free graphs with high chromatic number, including the Mycielski construction, random graph constructions, and the connection to Ramsey numbers relevant to Problem #1013."
+    },
+    {
+      "authors": ["Zdeněk Dvořák", "Luke Postle"],
+      "title": "Correspondence coloring and its application to list-coloring planar graphs without cycles of lengths 4 to 8",
+      "venue": "Journal of Combinatorial Theory, Series B",
+      "year": 2018,
+      "volume": "129",
+      "pages": "38–54",
+      "doi": "10.1016/j.jctb.2017.09.001",
+      "note": "Introduces correspondence (DP) coloring, a strengthening of list coloring that has become a key tool in studying chromatic thresholds for graph families defined by forbidden subgraphs, including triangle-free graphs."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",

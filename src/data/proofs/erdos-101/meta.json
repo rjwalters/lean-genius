@@ -96,6 +96,114 @@
       "Does the answer change for higher-dimensional point sets (e.g., points in $\\mathbb{R}^3$ with no five coplanar)?"
     ]
   },
+  "crossReferences": [
+    {
+      "target": "erdos-102",
+      "relationship": "companion",
+      "description": "Erdős Problem #102 asks for the maximum collinearity forced when n points contain cn² four-rich lines—the direct structural companion to #101's question about whether such dense configurations can exist at all."
+    },
+    {
+      "target": "erdos-588",
+      "relationship": "generalization",
+      "description": "Erdős Problem #588 generalizes #101: is f_k(n) = o(n²) for all k ≥ 4? The Solymosi–Stojaković n^{2−o(1)} lower bound applies to both problems, and resolving one would likely resolve the other."
+    },
+    {
+      "target": "erdos-669",
+      "relationship": "related",
+      "description": "Erdős Problem #669 (Orchard Problem) studies lines through exactly k points—the same combinatorial object as #101 but asks for the maximum rather than whether the count is o(n²)."
+    },
+    {
+      "target": "erdos-107",
+      "relationship": "related",
+      "description": "Erdős Problem #107 (Happy Ending Problem) also concerns finite planar point sets in general position; both problems study extremal configurations under collinearity constraints in ℝ²."
+    },
+    {
+      "target": "erdos-100",
+      "relationship": "related",
+      "description": "Erdős Problem #100 studies planar point sets with restricted pairwise distances, sharing the combinatorial geometry setting and the use of incidence-theoretic techniques."
+    },
+    {
+      "target": "szemeredi-theorem",
+      "relationship": "tool",
+      "description": "The Szemerédi–Trotter incidence theorem (formalized in this project) is the primary upper-bound tool referenced in #101: it bounds point-line incidences but yields only O(n²) for four-point lines without further structural input."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "slug": "erdos-102",
+      "title": "Erdős Problem #102: Maximum Collinear Points Forced by Many Rich Lines",
+      "relevance": "Structural converse: if cn² four-rich lines exist, how many points must be maximally collinear?"
+    },
+    {
+      "slug": "erdos-588",
+      "title": "Erdős Problem #588: k-Point Lines in General Position",
+      "relevance": "Generalization of #101 to arbitrary k ≥ 4; shares the Solymosi–Stojaković lower bound and the o(n²) conjecture."
+    },
+    {
+      "slug": "erdos-669",
+      "title": "Erdős Problem #669: k-Point Lines and the Orchard Problem",
+      "relevance": "Companion extremal problem: maximize lines through exactly k points, with the same combinatorial objects as #101."
+    },
+    {
+      "slug": "erdos-107",
+      "title": "Erdős Problem #107: The Happy Ending Problem",
+      "relevance": "Shares the finite planar point set setting and general-position conditions; both involve extremal combinatorial geometry in ℝ²."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["P. Erdős"],
+      "title": "Some combinatorial problems in geometry",
+      "venue": "Geometry and Differential Geometry, Lecture Notes in Mathematics",
+      "volume": "792",
+      "pages": "46–53",
+      "year": 1980,
+      "publisher": "Springer",
+      "note": "Early statement of the four-point lines question"
+    },
+    {
+      "authors": ["E. Szemerédi", "W. T. Trotter Jr."],
+      "title": "Extremal problems in discrete geometry",
+      "venue": "Combinatorica",
+      "volume": "3",
+      "issue": "3–4",
+      "pages": "381–392",
+      "year": 1983,
+      "doi": "10.1007/BF02579194",
+      "note": "Proves the incidence bound I(P,L) = O(m^{2/3}n^{2/3} + m + n); the key tool for upper bounds in #101"
+    },
+    {
+      "authors": ["J. Solymosi", "M. Stojaković"],
+      "title": "Many Collinear k-Tuples with no k+1 Collinear Points",
+      "venue": "Discrete and Computational Geometry",
+      "volume": "50",
+      "issue": "4",
+      "pages": "811–820",
+      "year": 2013,
+      "doi": "10.1007/s00454-013-9523-z",
+      "note": "Constructs n^{2−O(1/√log n)} four-point lines with no five collinear, disproving Erdős's Θ(n^{3/2}) conjecture"
+    },
+    {
+      "authors": ["B. Grünbaum"],
+      "title": "Arrangements and Hyperplanes",
+      "venue": "CBMS Regional Conference Series in Mathematics",
+      "volume": "18",
+      "year": 1972,
+      "publisher": "American Mathematical Society",
+      "note": "Contains the Ω(n^{3/2}) construction for four-point lines that established the lower bound for decades"
+    },
+    {
+      "authors": ["L. Guth", "N. H. Katz"],
+      "title": "On the Erdős distinct distances problem in the plane",
+      "venue": "Annals of Mathematics",
+      "volume": "181",
+      "issue": "1",
+      "pages": "155–190",
+      "year": 2015,
+      "doi": "10.4007/annals.2015.181.1.2",
+      "note": "Polynomial method breakthrough in discrete geometry; closely related techniques are expected to play a role in resolving #101"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Finset.Card",

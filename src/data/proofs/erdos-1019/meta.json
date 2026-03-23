@@ -134,6 +134,88 @@
       "What is the minimum number of saturated planar subgraphs (on $> 3$ vertices) in a graph with $\\lfloor n^2/4 \\rfloor + k$ edges? This is the supersaturation version of Problem #1019."
     ]
   },
+  "crossReferences": [
+    {
+      "target": "erdos-1010",
+      "relation": "Triangle Supersaturation — the direct predecessor in the same supersaturation program. #1010 counts how many triangles are forced when edge count exceeds ⌊n²/4⌋; #1019 asks which *topological* structures (saturated planar subgraphs) are forced at ⌊n²/4⌋ + ⌊(n+1)/2⌋."
+    },
+    {
+      "target": "erdos-1011",
+      "relation": "Triangles in Graphs with High Chromatic Number — shares the Turán threshold ⌊n²/4⌋ as the baseline. Both problems study what happens just above this threshold, with #1011 focusing on chromatic-structural consequences and #1019 on planarity-structural ones."
+    },
+    {
+      "target": "erdos-1012",
+      "relation": "Long Cycles in Dense Graphs — Woodall's result that dense graphs are pancyclic (contain cycles of every length up to n-k) is thematically parallel: both problems show that exceeding a Turán-type threshold forces rich substructure (long cycles or saturated planar subgraphs). Both use stability-style arguments."
+    },
+    {
+      "target": "erdos-1014",
+      "relation": "Ramsey Number Ratio Convergence — tangentially related via the extremal/Ramsey duality: the K₄ forced by Simonovits's theorem connects to Ramsey multiplicity questions. Both are part of the Erdős extremal graph theory cluster."
+    },
+    {
+      "target": "erdos-1018",
+      "relation": "Non-Planar Subgraphs in Dense Graphs — the most direct companion problem. #1018 asks when graphs force non-planar subgraphs on O(1) vertices (Kostochka-Pyber, K₅ subdivisions); #1019 asks when they force *saturated planar* subgraphs on >3 vertices. Together they bracket planarity from both sides."
+    },
+    {
+      "target": "erdos-1020",
+      "relation": "The Erdős Matching Conjecture — neighboring problem in the Erdős catalogue sharing the extremal-combinatorics tag and the Turán-type threshold framework. Both ask for the precise edge/structure threshold in the hypergraph/graph setting."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "target": "ramseys-theorem",
+      "relation": "Ramsey's Theorem underpins the extremal framework: K₄ forced by Simonovits is a Ramsey-type guaranteed complete subgraph. The connection between Turán-type theorems and Ramsey theory is foundational to Problem #1019's structure."
+    },
+    {
+      "target": "erdos-szekeres",
+      "relation": "Erdős–Szekeres Theorem is an archetype for threshold arguments in combinatorics. The 1-edge tight threshold in #1019 echoes the precision of the Erdős-Szekeres bound."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["M. Simonovits"],
+      "title": "A method for solving extremal problems in graph theory, stability problems",
+      "venue": "Theory of Graphs (Proc. Colloq., Tihany, 1966)",
+      "year": 1968,
+      "pages": "279–319",
+      "publisher": "Academic Press",
+      "note": "Contains Simonovits's stability theorem and the PhD-thesis result resolving Problem #1019."
+    },
+    {
+      "authors": ["P. Turán"],
+      "title": "On an extremal problem in graph theory",
+      "venue": "Matematikai és Fizikai Lapok",
+      "year": 1941,
+      "volume": 48,
+      "pages": "436–452",
+      "note": "Original Turán theorem establishing ex(n, K_r) and the Turán graph T(n,r-1); forms the ⌊n²/4⌋ baseline threshold in Problem #1019."
+    },
+    {
+      "authors": ["P. Erdős", "M. Simonovits"],
+      "title": "A limit theorem in graph theory",
+      "venue": "Studia Scientiarum Mathematicarum Hungarica",
+      "year": 1966,
+      "volume": 1,
+      "pages": "51–57",
+      "note": "Erdős-Simonovits stability theorem: near-extremal graphs are structurally close to the Turán graph. Direct precursor to the supersaturation regime studied in Problem #1019."
+    },
+    {
+      "authors": ["R. Diestel"],
+      "title": "Graph Theory",
+      "venue": "Graduate Texts in Mathematics, vol. 173",
+      "year": 2017,
+      "edition": "5th",
+      "publisher": "Springer",
+      "note": "Chapters 4 and 7 cover planar graphs (Euler's formula, Kuratowski's theorem), saturated planar graphs, and extremal graph theory; provides background for the planarity framework in the formalization."
+    },
+    {
+      "authors": ["B. Bollobás"],
+      "title": "Extremal Graph Theory",
+      "venue": "London Mathematical Society Monographs, vol. 11",
+      "year": 1978,
+      "publisher": "Academic Press",
+      "note": "Comprehensive treatment of Turán-type and supersaturation problems; includes the Erdős-Simonovits stability results and the supersaturation regime directly relevant to Problem #1019."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",

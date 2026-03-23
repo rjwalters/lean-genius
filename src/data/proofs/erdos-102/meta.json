@@ -130,11 +130,72 @@
       "Can Hunter's lattice construction be extended to give $h_c(n) = O(1)$ for some $c > 0$, fully disproving divergence?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-101",
+      "relationship": "companion",
+      "description": "Problem #101 asks whether a planar point set with no 5 collinear points can have cn² four-point lines. The bridge theorem in this file shows that if h_c(n) → ∞ (Problem #102), then the four-point line count must be o(n²), directly resolving Problem #101 for the no-five-collinear case."
+    },
+    {
+      "targetId": "erdos-588",
+      "relationship": "generalizes",
+      "description": "Problem #588 studies k-rich lines (lines containing ≥ k points) in general position. Erdős #102 is the specialization to k = 4 with the density condition cn² lines, while #588 treats the general k and asks about the extremal configurations."
+    },
+    {
+      "targetId": "erdos-669",
+      "relationship": "related",
+      "description": "The Orchard Problem (#669) asks for the maximum number of 3-point lines among n points — the k = 3 analogue. The Szemerédi–Trotter bound appears in both problems, and the lattice constructions used in Hunter's counterexample to #102 are variants of orchard-optimal configurations."
+    },
+    {
+      "targetId": "desargues-theorem",
+      "relationship": "foundational",
+      "description": "Desargues's theorem characterizes collinearity in projective planes and underlies the algebraic structure of collinear point sets. The cross-product collinearity test used in this formalization is the affine analogue of the Desarguesian incidence relation."
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "thematic",
+      "description": "Szemerédi's theorem (on arithmetic progressions) and the Szemerédi–Trotter incidence theorem are distinct results by the same author. The incidence theorem is the key upper bound tool for Problem #102; the regularity lemma underlying both results connects discrete geometry to combinatorics."
+    },
+    {
+      "targetId": "erdos-100",
+      "relationship": "related",
+      "description": "Problem #100 on point sets with restricted distances and Problem #102 on rich lines both belong to Erdős's combinatorial geometry program of the 1970s–80s. Both ask how density conditions on geometric incidences constrain extremal substructures."
+    }
+  ],
   "relatedProofs": [
     "erdos-101",
     "erdos-588",
     "erdos-669",
-    "desargues-theorem"
+    "desargues-theorem",
+    "szemeredi-theorem",
+    "erdos-100"
+  ],
+  "references": [
+    {
+      "key": "ST83",
+      "citation": "Szemerédi, E. and Trotter, W.T., Extremal problems in discrete geometry, Combinatorica 3(3–4) (1983), 381–392.",
+      "type": "paper"
+    },
+    {
+      "key": "EP78",
+      "citation": "Erdős, P. and Purdy, G., Some extremal problems in geometry, Journal of Combinatorial Theory, Series A 25(2) (1978), 167–175.",
+      "type": "paper"
+    },
+    {
+      "key": "Sz97",
+      "citation": "Székely, L.A., Crossing numbers and hard Erdős problems in discrete geometry, Combinatorics, Probability and Computing 6(3) (1997), 353–358.",
+      "type": "paper"
+    },
+    {
+      "key": "Hu22",
+      "citation": "Hunter, Z., Improved bounds for the sunflower lemma and related problems, arXiv:2210.05412 (2022). Contains the lattice construction disproving Erdős's √n lower bound for h_c(n).",
+      "type": "paper"
+    },
+    {
+      "key": "PS98",
+      "citation": "Pach, J. and Sharir, M., On the number of incidences between points and curves, Combinatorics, Probability and Computing 7(1) (1998), 121–127.",
+      "type": "paper"
+    }
   ],
   "leanFile": {
     "imports": [

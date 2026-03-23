@@ -122,6 +122,98 @@
       "What if we forbid unions of exactly k sets?"
     ]
   },
+  "crossReferences": [
+    {
+      "target": "erdos-447",
+      "relationship": "Hunter observed that Problem #1023 follows directly from Problem #447 (2-union-free families), since every union-free family is 2-union-free and both have the same extremal answer C(n, n/2)."
+    },
+    {
+      "target": "erdos-703",
+      "relationship": "Forbidden intersection families are a dual extremal question: instead of bounding unions, one restricts intersection sizes. Both problems use layered/antichain structure and Katona-style arguments."
+    },
+    {
+      "target": "erdos-1022",
+      "relationship": "Problem #1022 studies Property B of sparse set families; both #1022 and #1023 belong to the cluster of extremal set-family problems Erdős posed around the same period."
+    },
+    {
+      "target": "erdos-1062",
+      "relationship": "Problem #1062 maximizes sets where no element divides two others — an arithmetic analogue of the antichain condition. Both problems are solved by the middle-layer / maximum-antichain argument."
+    },
+    {
+      "target": "stirling-formula",
+      "relationship": "Stirling's approximation is the analytic tool that converts the exact answer C(n, n/2) into the asymptotic form √(2/π) · 2^n / √n appearing in Problem #1023."
+    },
+    {
+      "target": "binomial-theorem",
+      "relationship": "The binomial theorem and properties of central binomial coefficients C(n, n/2) are the combinatorial backbone of the exact formula F(n) = C(n, n/2)."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "erdos-447",
+      "description": "2-Union-Free Families (the problem from which #1023 follows via Hunter's observation)"
+    },
+    {
+      "id": "stirling-formula",
+      "description": "Stirling's Formula (provides the asymptotic expansion C(n,n/2) ~ √(2/π) · 2^n/√n)"
+    },
+    {
+      "id": "erdos-703",
+      "description": "Forbidden r-Intersection Families (related extremal set-system problem using antichain/layer structure)"
+    },
+    {
+      "id": "erdos-1022",
+      "description": "Property B and Sparse Set Families (neighboring Erdős extremal set-family problem)"
+    },
+    {
+      "id": "binomial-theorem",
+      "description": "Binomial Theorem (foundational result for central binomial coefficient identities)"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["P. Erdős", "D. J. Kleitman"],
+      "title": "On combinations of sets",
+      "venue": "Nordisk Matematisk Tidskrift",
+      "year": 1968,
+      "volume": "16",
+      "pages": "20–25",
+      "notes": "Original paper establishing F(n) = C(n, ⌊n/2⌋) by proving the matching upper bound."
+    },
+    {
+      "authors": ["E. Sperner"],
+      "title": "Ein Satz über Untermengen einer endlichen Menge",
+      "venue": "Mathematische Zeitschrift",
+      "year": 1928,
+      "volume": "27",
+      "pages": "544–548",
+      "notes": "The foundational Sperner's theorem: the largest antichain in 2^[n] is the middle layer C(n, ⌊n/2⌋). The lower bound F(n) ≥ C(n, n/2) follows immediately."
+    },
+    {
+      "authors": ["B. Bollobás"],
+      "title": "Combinatorics: Set Systems, Hypergraphs, Families of Vectors and Combinatorial Probability",
+      "venue": "Cambridge University Press",
+      "year": 1986,
+      "notes": "Standard reference covering Sperner's theorem, union-free families, and the Erdős–Kleitman result in the context of extremal set theory."
+    },
+    {
+      "authors": ["P. Frankl"],
+      "title": "Extremal set systems",
+      "venue": "Handbook of Combinatorics (eds. R. Graham, M. Grötschel, L. Lovász), Elsevier",
+      "year": 1995,
+      "pages": "1293–1329",
+      "notes": "Comprehensive survey of extremal set systems including union-free families, antichains, and their connections to compression and shifting methods."
+    },
+    {
+      "authors": ["D. J. Kleitman"],
+      "title": "On a combinatorial conjecture of Erdős",
+      "venue": "Journal of Combinatorial Theory",
+      "year": 1966,
+      "volume": "1",
+      "pages": "209–214",
+      "notes": "Early Kleitman paper on Erdős combinatorial conjectures related to set families and antichain bounds."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Finset.Basic",
