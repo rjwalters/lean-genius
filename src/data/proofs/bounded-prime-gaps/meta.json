@@ -67,7 +67,13 @@
         "relationship": "Bertrand's postulate: prime gaps ≤ n; bounded prime gaps is a stronger result about infinitely many small gaps"
       }
     ],
-    "axiomCount": 4,
+    "axiomCount": 3,
+    "prerequisites": [
+      "Analytic number theory: sieve methods and the Maynard-Tao GPY sieve",
+      "Prime number theory: Bertrand's postulate, nthPrime, prime gaps",
+      "Combinatorics: admissible k-tuples and residue class conditions",
+      "Elementary number theory: divisibility, factorial, ZMod"
+    ],
     "assumptions": [
       "maynard_tao_m_tuples: For any m ≥ 2, there are infinitely many bounded intervals containing m primes (Maynard-Tao 2015)",
       "maynard_tao_sieve: The Maynard-Tao sieve reduction — any admissible 50-tuple of diameter D gives infinitely many prime gaps ≤ D",
@@ -95,49 +101,56 @@
       "title": "Imports and Overview",
       "startLine": 1,
       "endLine": 55,
-      "summary": "Header explaining the bounded prime gaps theorem and its context. Imports: Nat.Prime, Nth, Finset.Card, ZMod, NumberTheory.Bertrand, and Proofs.PrimeGapBounds."
+      "summary": "Header explaining the bounded prime gaps theorem and its context. Imports: Nat.Prime, Nth, Finset.Card, ZMod, NumberTheory.Bertrand, and Proofs.PrimeGapBounds.",
+      "mathContext": "The central theorem: $\\liminf_{n \\to \\infty}(p_{n+1} - p_n) \\leq 246$ (Polymath 8b, 2014). Three axioms encode deep sieve-theoretic results; all combinatorial infrastructure is proved from Mathlib. The `open Nat Finset` declarations bring prime-number and finite-set operations into scope."
     },
     {
       "id": "admissible-definition",
       "title": "Admissible Tuples: Definition and Basic Properties",
       "startLine": 57,
       "endLine": 105,
-      "summary": "Defines IsAdmissible: a Finset ℕ is admissible if for every prime p, its image mod p has fewer than p elements. Proves basic properties: empty set, singletons, subsets, and sets with card < 2 are all admissible."
+      "summary": "Defines IsAdmissible: a Finset ℕ is admissible if for every prime p, its image mod p has fewer than p elements. Proves basic properties: empty set, singletons, subsets, and sets with card < 2 are all admissible.",
+      "mathContext": "`IsAdmissible H` $\\iff \\forall p$ prime, $|\\{h \\bmod p : h \\in H\\}| < p$. This ensures $H$ doesn't cover all residue classes mod any prime — the combinatorial condition guaranteeing that no single prime can obstruct all translates $n + H$ from containing primes. Example: $\\{0, 2\\}$ is admissible because $\\{0, 2\\} \\bmod 2 = \\{0\\}$ has size 1 < 2, and for $p > 2$, $|\\{0, 2\\}| = 2 < p$."
     },
     {
       "id": "specific-admissible-tuples",
       "title": "Specific Admissible Tuples",
       "startLine": 107,
       "endLine": 215,
-      "summary": "Proves admissibility of {0,2} (twin primes), {0,2,6}, {0,4,6}, {0,2,6,8} via case analysis over small primes. Proves non-admissibility of {0,1} and {0,1,2} (cover all residues mod 2 and 3 respectively)."
+      "summary": "Proves admissibility of {0,2} (twin primes), {0,2,6}, {0,4,6}, {0,2,6,8} via case analysis over small primes. Proves non-admissibility of {0,1} and {0,1,2} (cover all residues mod 2 and 3 respectively).",
+      "mathContext": "$\\{0, 2\\}$: admissible (twin prime tuple). $\\{0, 2, 6\\}$: admissible (prime triple). $\\{0, 1\\}$: NOT admissible ($\\{0, 1\\} \\bmod 2 = \\{0, 1\\}$, covers all residues mod 2). $\\{0, 1, 2\\}$: NOT admissible ($\\{0, 1, 2\\} \\bmod 3 = \\{0, 1, 2\\}$, covers all residues mod 3). Admissibility is verified by `decide` or `interval_cases` + `omega` over primes $p \\leq |H|$."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorems and Axioms",
       "startLine": 216,
       "endLine": 265,
-      "summary": "Three axioms state the deep sieve-theoretic results: polymath_bounded_gaps_246 (Polymath 8b), maynard_tao_m_tuples (m-tuple generalization), bounded_gaps_conditional_EH (gap ≤ 12 under Elliott-Halberstam). Derives zhang_bounded_gaps_70M, infinitely_many_small_gaps, liminf_prime_gaps_finite, bounded_intervals_k_primes from the axioms."
+      "summary": "Three axioms state the deep sieve-theoretic results: maynard_tao_m_tuples (m-tuple generalization), maynard_tao_sieve (k≥50 admissible tuple → bounded gaps ≤ diameter), maynard_tao_sieve_eh (EH-conditional variant). Derives zhang_bounded_gaps_70M, infinitely_many_small_gaps, liminf_prime_gaps_finite.",
+      "mathContext": "Axiom 1 (`maynard_tao_m_tuples`): $\\forall m \\geq 2$, $\\exists C_m$, infinitely many intervals of length $C_m$ contain $m$ primes. Axiom 2 (`maynard_tao_sieve`): admissible $H$ with $|H| \\geq 50$ and diameter $D$ $\\Rightarrow \\liminf(p_{n+1} - p_n) \\leq D$. Axiom 3 (`maynard_tao_sieve_eh`): same under Elliott-Halberstam with $|H| \\geq 6$. Key derivation: apply axiom 2 to the Engelsma 50-tuple of diameter 246."
     },
     {
       "id": "dickson-conjecture",
       "title": "Dickson Conjecture and Consequences",
       "startLine": 263,
       "endLine": 380,
-      "summary": "Formalizes DicksonConjecture (admissible tuples have infinitely many prime translates). Derives: twin primes (from {0,2} admissibility), prime triples (from {0,2,6}), and maynard_tao_consecutive_gaps. Constructs a 50-element admissible tuple with diameter ≤ 246 (exists_admissible_50_tuple_246)."
+      "summary": "Formalizes DicksonConjecture (admissible tuples have infinitely many prime translates). Derives: twin primes (from {0,2} admissibility), prime triples (from {0,2,6}), and maynard_tao_consecutive_gaps. Constructs a 50-element admissible tuple with diameter ≤ 246 (exists_admissible_50_tuple_246).",
+      "mathContext": "Dickson's conjecture: for admissible $H = \\{h_1,\\ldots,h_k\\}$, $\\exists^\\infty n$, all $n + h_i$ are prime. Twin prime conjecture = Dickson for $\\{0, 2\\}$. The 50-tuple $\\{0, 2, 8, 14, 18, 20, \\ldots, 246\\}$ (Engelsma's optimized set) has `card = 50` and `diameter = 246`, proved by `native_decide`. Applying `maynard_tao_sieve` to this tuple gives $\\liminf(p_{n+1} - p_n) \\leq 246$."
     },
     {
       "id": "prime-gap-infrastructure",
       "title": "Prime Gap Infrastructure",
       "startLine": 379,
       "endLine": 640,
-      "summary": "Establishes: nthPrime properties (primality, strict monotonicity, positivity, p₀=2, p₁=3), primeGap properties (positivity, evenness for n≥1, gap ≥ 2), admissibility criteria (not_admissible_range, admissible_card_lt_of_prime), eh_implies_polymath, and maynard_tao_consecutive_gaps."
+      "summary": "Establishes: nthPrime properties (primality, strict monotonicity, positivity, p₀=2, p₁=3), primeGap properties (positivity, evenness for n≥1, gap ≥ 2), admissibility criteria (not_admissible_range, admissible_card_lt_of_prime), eh_implies_polymath, and maynard_tao_consecutive_gaps.",
+      "mathContext": "$p_n$ = `Nat.nth Nat.Prime n` (the $n$-th prime). $g_n = p_{n+1} - p_n$ (prime gap). Properties: $g_n \\geq 1$ (primes are distinct), $g_n$ is even for $n \\geq 1$ (both primes are odd), $g_n \\geq 2$ for $n \\geq 1$. Non-admissibility: $\\{0,1,\\ldots,p-1\\}$ is not admissible for any prime $p$ (covers all residues). EH implication: `maynard_tao_sieve_eh` on $\\{0,2,6,8,12\\}$ (admissible 5-tuple of diameter 12) gives $\\liminf g_n \\leq 12$."
     },
     {
       "id": "oscillation-more-tuples",
       "title": "Gap Oscillation and Additional Admissible Tuples",
       "startLine": 641,
       "endLine": 1462,
-      "summary": "Proves prime_gaps_unbounded via factorial construction (N!+k is composite for 2≤k≤N), prime_gaps_oscillate (bounded liminf but infinite gaps exist). Additional admissible sextuples: {0,2,6,8,12,18}, {0,4,6,10,12,16}. Further admissibility/non-admissibility results."
+      "summary": "Proves prime_gaps_unbounded via factorial construction (N!+k is composite for 2≤k≤N), prime_gaps_oscillate (bounded liminf but infinite gaps exist). Additional admissible sextuples: {0,2,6,8,12,18}, {0,4,6,10,12,16}. Further admissibility/non-admissibility results.",
+      "mathContext": "Unbounded gaps: $N! + k$ is composite for $2 \\leq k \\leq N$ (since $k \\mid N! + k$), giving a gap of $\\geq N - 1$ after $p = $ the largest prime $\\leq N!+1$. Therefore $\\limsup_{n \\to \\infty} g_n = \\infty$. Combined with $\\liminf g_n \\leq 246$: prime gaps oscillate — they are infinitely often $\\leq 246$ yet infinitely often arbitrarily large."
     }
   ],
   "conclusion": {
@@ -174,6 +187,21 @@
       "targetId": "riemann-hypothesis",
       "relationship": "related",
       "description": "RH implies much stronger prime gap bounds (Cramér's conjecture: gaps O(log²p)) but remains unproved. Zhang's result is unconditional and does not depend on RH — one of its most remarkable features"
+    },
+    {
+      "targetId": "twin-primes-special",
+      "relationship": "related",
+      "description": "The twin prime conjecture ($\\liminf g_n = 2$) is the ultimate target. This formalization shows $\\liminf g_n \\leq 246$ (Polymath 8b) and $\\liminf g_n \\leq 12$ (conditional on Elliott-Halberstam). The Dickson conjecture for $\\{0,2\\}$ implies twin primes; the gap from 246 to 2 remains one of analytic number theory's deepest challenges"
+    },
+    {
+      "targetId": "bounded-prime-gaps-oq-03",
+      "relationship": "extended-by",
+      "description": "Sub-entry exploring extensions, further admissible tuple computations, or refined gap bounds"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "foundational",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions is a prerequisite for the Bombieri-Vinogradov theorem, which is the key input to Zhang's bounded gaps proof. The equidistribution of primes in residue classes is what makes sieve methods effective for detecting prime clusters"
     }
   ],
   "relatedProofs": [
@@ -181,7 +209,10 @@
     "infinitude-primes",
     "prime-number-theorem",
     "prime-reciprocal-divergence",
-    "riemann-hypothesis"
+    "riemann-hypothesis",
+    "twin-primes-special",
+    "bounded-prime-gaps-oq-03",
+    "dirichlets-theorem"
   ],
   "leanFile": {
     "imports": [
@@ -202,18 +233,7 @@
       "Nat",
       "Finset",
       "Filter",
-      "Real",
-      "in",
-      "Real",
-      "in",
-      "Real",
-      "in",
-      "Real",
-      "in",
-      "Real",
-      "in",
-      "Real",
-      "in"
+      "Real"
     ],
     "namespace": "BoundedPrimeGaps",
     "lineCount": 2017,
