@@ -65,6 +65,7 @@
       "Main theorem combining all results"
     ],
     "axiomCount": 18,
+    "assumptions": "18 axiom declarations: CoversWithProbOne (coverage predicate), shepp_1972 (Shepp criterion iff coverage), superCriticalSeq (a_n=(1+c)/n sequence), kahane_erdos_supercritical (supercritical covers), criticalSeq (a_n=1/n sequence), erdos_critical (critical case covers), subCriticalSeq (a_n=(1-c)/n sequence), erdos_subcritical (subcritical fails), shepp_check_supercritical (Shepp holds supercritical), shepp_check_critical (Shepp holds at 1/n), shepp_check_subcritical (Shepp fails subcritical), dvoretzky_almost_all (almost-all coverage), shepp_poisson_technique (Poisson process method), expected_uncovered_relation (expected uncovered points), harmonic_diverges (sum 1/n diverges), basel_converges (sum 1/n^2 converges), harmonic_log_growth (H_n ~ log n), euler_mascheroni (gamma ~ 0.577)",
     "prerequisites": [
       "Probability theory: independent random variables and almost sure events",
       "Series convergence and divergence (harmonic series, p-series)",
