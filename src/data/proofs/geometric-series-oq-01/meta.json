@@ -1,0 +1,56 @@
+{
+  "id": "geometric-series-oq-01",
+  "title": "Geometric Series at the Boundary: |r| = 1",
+  "slug": "geometric-series-oq-01",
+  "description": "What happens to the geometric series at the critical boundary |r| = 1? The series transitions from convergent to divergent: at r = 1 the partial sums grow without bound, at r = -1 they oscillate (Grandi's series), and for any |r| ≥ 1 the series is not summable. However, Cesàro summability rescues Grandi's series: the averages of partial sums converge to 1/2.",
+  "meta": {
+    "author": "Grandi, Euler, Cesàro (formalized in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Grandi%27s_series",
+    "date": "1703",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ01.lean",
+    "tags": [
+      "analysis",
+      "series",
+      "convergence",
+      "summability",
+      "cesaro",
+      "wiedijk-100",
+      "classic",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "mul_neg_geom_sum",
+        "description": "Finite geometric sum: (1-r) * ∑ r^k = 1 - r^n",
+        "module": "Mathlib.Algebra.GeomSum"
+      },
+      {
+        "theorem": "Summable.tendsto_atTop_zero",
+        "description": "Summable series have terms tending to zero",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum"
+      },
+      {
+        "theorem": "one_le_pow₀",
+        "description": "1 ≤ a^n when 1 ≤ a",
+        "module": "Mathlib.Algebra.Order.Monoid"
+      }
+    ],
+    "originalContributions": [
+      "Divergence proof at r = 1: partial sums Sₙ = n → ∞",
+      "Grandi's series oscillation: S_{2m} = 0 and S_{2m+1} = 1",
+      "Non-summability for |r| ≥ 1 via term-doesn't-vanish argument",
+      "Cesàro summability: σₙ → 1/2 via squeeze with bound |σₙ - 1/2| ≤ 1/(2n)",
+      "Complete characterization of boundary behavior at |r| = 1"
+    ]
+  },
+  "openQuestion": {
+    "id": "geometric-series-oq-01",
+    "parentProof": "geometric-series",
+    "question": "What happens at exactly |r| = 1? (Series diverges, but behavior varies)",
+    "answer": "At r = 1, partial sums diverge to infinity. At r = -1, partial sums oscillate between 0 and 1 (Grandi's series), but the Cesàro mean converges to 1/2. For all |r| ≥ 1, the series is not summable because terms don't tend to zero."
+  }
+}
