@@ -179,12 +179,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #414 remains OPEN. The conjecture that all orbits of h(n) = n + τ(n) eventually merge is supported by overwhelming computational evidence and plausible heuristics, but no proof exists. The difficulty is fundamentally about controlling the cumulative irregularity of the divisor function along different trajectories to guarantee an exact collision.",
-    "implications": [
-      "A resolution would advance the theory of arithmetic dynamics — understanding when simple number-theoretic iterations have universal limiting behavior",
-      "The problem connects divisor function regularity (Dirichlet divisor problem), additive combinatorics (collision conditions), and discrete dynamical systems (orbit coalescence)",
-      "Techniques developed for this problem could apply to the broader family of 'n + f(n)' iterations for multiplicative arithmetic functions f",
-      "The collision mechanism h(a) = h(b) when τ(a) - τ(b) = b - a connects to the distribution of values of τ, a classical topic in multiplicative number theory"
-    ],
+    "implications": "A resolution would advance the theory of arithmetic dynamics — understanding when simple number-theoretic iterations have universal limiting behavior. The problem connects divisor function regularity (Dirichlet divisor problem), additive combinatorics (collision conditions), and discrete dynamical systems (orbit coalescence). Techniques developed for this problem could apply to the broader family of 'n + f(n)' iterations for multiplicative arithmetic functions f. The collision mechanism h(a) = h(b) when τ(a) - τ(b) = b - a connects to the distribution of values of τ, a classical topic in multiplicative number theory",
     "openQuestions": [
       "Does the merging conjecture hold? Can any pair of orbits be shown to collide?",
       "Even weaker: can orbits be shown to get arbitrarily close (|h^i(m) − h^j(n)| < D for any D)?",

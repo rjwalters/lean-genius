@@ -143,12 +143,7 @@
   ],
   "conclusion": {
     "summary": "Formalizes Erdős Problem #1097 on common differences in 3-term APs, developing 14 proven infrastructure lemmas alongside axiomatized research bounds. Captures the O(n^{3/2}) conjecture, four lower bounds (Erdős-Spencer, Erdős-Ruzsa, Lemm, AlphaEvolve), the Katz-Tao upper bound, and the deep connection to Bourgain's sums-differences problem via Chan's equivalence.",
-    "implications": [
-      "Progress on this problem would directly impact the Kakeya conjecture through Bourgain's arithmetic approach and Chan's equivalence theorem",
-      "The 14 proven infrastructure lemmas (translation invariance, dilation covariance, symmetry) provide a reusable foundation for future Lean-based work in additive combinatorics",
-      "The gap between n^{1.778} and n^{11/6} remains one of the central open problems connecting discrete combinatorics to harmonic analysis and geometric measure theory",
-      "AI-assisted methods (AlphaEvolve) achieving marginal improvements suggests this problem is amenable to computational search, potentially yielding further bounds"
-    ],
+    "implications": "Progress on this problem would directly impact the Kakeya conjecture through Bourgain's arithmetic approach and Chan's equivalence theorem. The 14 proven infrastructure lemmas (translation invariance, dilation covariance, symmetry) provide a reusable foundation for future Lean-based work in additive combinatorics. The gap between n^{1.778} and n^{11/6} remains one of the central open problems connecting discrete combinatorics to harmonic analysis and geometric measure theory. AI-assisted methods (AlphaEvolve) achieving marginal improvements suggests this problem is amenable to computational search, potentially yielding further bounds",
     "openQuestions": [
       "Is the true exponent 3/2 as Erdős conjectured, or is Lemm's n^{1.778} closer to the truth?",
       "Can the Katz-Tao 11/6 upper bound be improved using recent decoupling techniques?",
