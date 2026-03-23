@@ -394,6 +394,70 @@ case "${1:-}" in
         fi
         attach_agent "$2"
         ;;
+    --slot)
+        if [[ -z "${2:-}" ]]; then
+            print_error "Usage: $0 --slot <agent-number>"
+            exit 1
+        fi
+        local slot_num="$2"
+        if [[ $slot_num -lt 1 || $slot_num -gt $MAX_AGENTS ]]; then
+            print_error "Slot must be between 1 and $MAX_AGENTS (got: $slot_num)"
+            exit 1
+        fi
+        check_deps
+        mkdir -p "$LOGS_DIR" "$WORKTREES_DIR" "$SIGNALS_DIR"
+        mkdir -p "$REPO_ROOT/.lean/state/enrichment-claims"
+        if [[ ! -f "$REPO_ROOT/src/data/proofs/enrichment-tracker.json" ]]; then
+            echo '{"version": 1, "entries": {}}' > "$REPO_ROOT/src/data/proofs/enrichment-tracker.json"
+        fi
+        print_info "Updating main branch..."
+        git fetch origin main 2>/dev/null || true
+        git checkout main 2>/dev/null || true
+        git pull origin main 2>/dev/null || true
+
+        local i="$slot_num"
+        local session="$SESSION_PREFIX-$i"
+        local log_file="$LOGS_DIR/$session.log"
+        local enricher_id="enricher-$i"
+        local worktree_path
+        worktree_path=$(create_agent_worktree "$i")
+        tmux kill-session -t "$session" 2>/dev/null || true
+        tmux new-session -d -s "$session" -c "$worktree_path"
+        tmux send-keys -t "$session" "export ENRICHER_ID='$enricher_id'" Enter
+        tmux send-keys -t "$session" "export CLAIM_TTL='$CLAIM_TTL'" Enter
+        tmux send-keys -t "$session" "export REPO_ROOT='$REPO_ROOT'" Enter
+        local prompt_file="$LOGS_DIR/$session-prompt.md"
+        cat > "$prompt_file" << PROMPT_EOF
+# Proof Enrichment Agent $enricher_id
+
+You are working in an isolated git worktree with your own branch.
+
+**Your worktree:** $worktree_path
+**Your branch:** feature/enricher-$i
+**Claim script:** \$REPO_ROOT/scripts/enricher/claim-target.sh
+
+## Quick Start
+
+1. Read the full instructions: \`cat .lean/roles/enricher.md\`
+2. **Check for stop signal before each iteration:**
+   \`[[ -f \$REPO_ROOT/.loom/signals/stop-all ]] && echo "Stopping" && exit 0\`
+3. Claim a target: \`\$REPO_ROOT/scripts/enricher/claim-target.sh claim-next\`
+4. Enrich it (improve meta.json, annotations.json - add depth, cross-refs, context)
+5. Build: \`pnpm build\`
+6. Commit: \`git add src/data/proofs/<id>/ && git commit -m "Enrich <title>: add depth"\`
+7. Push: \`git push -u origin feature/enricher-$i\`
+8. Create PR: \`gh pr create --title "Enrich <title>" --body "Enrichment pass" --label enrichment\`
+9. Mark complete: \`\$REPO_ROOT/scripts/enricher/claim-target.sh complete <id>\`
+10. Reset for next: \`git checkout main && git pull && git checkout -B feature/enricher-$i main\`
+11. Repeat from step 2
+
+Start now by running step 1 to read the full instructions, then claim and enrich a target.
+PROMPT_EOF
+        local simple_prompt="You are $enricher_id. Read $prompt_file for your instructions, then start the enrichment workflow."
+        local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
+        tmux send-keys -t "$session" "$wrapper_script --prompt '$simple_prompt' --log '$log_file' --max-retries 5" Enter
+        print_success "Launched $session (worktree: $worktree_path)"
+        ;;
     --help|-h)
         cat << EOF
 Parallel Proof Enrichment (with Worktree Isolation)
@@ -403,6 +467,7 @@ Each agent works in its own git worktree with a dedicated branch.
 
 Usage:
   $0 [count]            Launch N agents (default: $DEFAULT_AGENTS, max: $MAX_AGENTS)
+  $0 --slot N           Launch a single agent at slot N
   $0 --status           Show running agents, worktrees, and claims
   $0 --graceful-stop    Signal agents to stop after current work
   $0 --graceful-stop N  Signal agent N to stop after current work
