@@ -65,52 +65,59 @@
   "sections": [
     {
       "id": "header",
-      "title": "Introduction",
+      "title": "Introduction and Historical Context",
       "startLine": 1,
       "endLine": 41,
-      "summary": "Overview of the Cayley-Hamilton theorem, its historical context, and the approach using Mathlib."
+      "summary": "Module docstring covering the Wiedijk #49 reference, Cayley-Hamilton statement, Mathlib approach via adjugate identity, and historical notes on Cayley (1858), Hamilton (1853), and Frobenius (1878).",
+      "mathContext": "Every $n \\times n$ matrix $A$ over a commutative ring $R$ satisfies $p_A(A) = 0$ where $p_A(\\lambda) = \\det(\\lambda I - A)$. The proof uses $\\text{adj}(XI - A) \\cdot (XI - A) = p_A(X) \\cdot I$ in $\\text{Mat}_n(R[X])$, evaluated at $X = A$."
     },
     {
       "id": "charpoly",
       "title": "The Characteristic Polynomial",
       "startLine": 43,
       "endLine": 71,
-      "summary": "Definition and properties of the characteristic polynomial: monic and degree equals dimension."
+      "summary": "Proves `charpoly_is_monic` (via `Matrix.charpoly_monic`) and `charpoly_degree` ($\\deg p_A = n$ via `Matrix.charpoly_natDegree_eq_dim`). Both properties are fundamental: monicity ensures the leading term is $\\lambda^n$, and degree $n$ ensures Cayley-Hamilton gives a relation on $A^n$.",
+      "mathContext": "$p_A(\\lambda) = \\lambda^n - \\text{tr}(A)\\lambda^{n-1} + \\cdots + (-1)^n \\det(A)$. The coefficient of $\\lambda^{n-k}$ is $(-1)^k e_k(\\lambda_1, \\ldots, \\lambda_n)$ where $e_k$ are the elementary symmetric polynomials in the eigenvalues."
     },
     {
       "id": "main-theorem",
       "title": "The Cayley-Hamilton Theorem",
       "startLine": 73,
       "endLine": 103,
-      "summary": "The main theorem statement: every matrix satisfies its characteristic polynomial."
+      "summary": "The main theorem `cayley_hamilton`: $p_A(A) = 0$, delegating to Mathlib's `Matrix.aeval_self_charpoly`. Also proves `eigenvalue_is_root` ($Av = \\lambda v \\Rightarrow p_A(\\lambda) = 0$) and `minimal_poly_divides_charpoly`.",
+      "mathContext": "Lean: `Matrix.aeval_self_charpoly : (Matrix.charpoly M).aeval M = 0`. The evaluation homomorphism `aeval : R[X] →+* \\text{Mat}_n(R)` sends $X \\mapsto M$ and $r \\mapsto rI$, so `aeval M p` computes $p(M)$ in the matrix ring."
     },
     {
       "id": "examples",
-      "title": "Examples",
+      "title": "Examples and Special Cases",
       "startLine": 105,
       "endLine": 140,
-      "summary": "Concrete examples: identity matrix, nilpotent matrices, scalar matrices, zero matrix."
+      "summary": "Concrete instantiations: identity matrix ($p_I(\\lambda) = (\\lambda - 1)^n$), nilpotent matrices ($N^n = 0$), scalar matrices ($p_{cI}(\\lambda) = (\\lambda - c)^n$), zero matrix ($p_0(\\lambda) = \\lambda^n$).",
+      "mathContext": "The identity matrix has $p_I(\\lambda) = (\\lambda-1)^n$, so Cayley-Hamilton gives $(I-I)^n = 0$ (trivially). A nilpotent $N$ has $p_N(\\lambda) = \\lambda^n$ (all eigenvalues 0), giving $N^n = 0$ — the nilpotency index is at most $n$."
     },
     {
       "id": "consequences",
-      "title": "Consequences",
+      "title": "Consequences and Applications",
       "startLine": 142,
       "endLine": 162,
-      "summary": "Applications: polynomial annihilation, bounds on matrix dimension."
+      "summary": "Proves that every matrix polynomial of degree $\\geq n$ reduces modulo $p_A$ to degree $< n$, and that the minimal polynomial divides the characteristic polynomial.",
+      "mathContext": "The commutative algebra $R[A] = \\{p(A) : p \\in R[X]\\} \\cong R[X]/(p_A)$ has dimension $\\leq n$ over $R$. The minimal polynomial $m_A$ is the generator of the ideal $\\{p \\in R[X] : p(A) = 0\\}$, and $m_A \\mid p_A$ by Cayley-Hamilton."
     },
     {
       "id": "2x2-case",
-      "title": "The 2×2 Case",
+      "title": "The 2×2 Case: Trace and Determinant",
       "startLine": 164,
       "endLine": 187,
-      "summary": "The explicit formula for 2×2 matrices and connection to trace and determinant."
+      "summary": "Explicit $2 \\times 2$ Cayley-Hamilton: $A^2 - \\text{tr}(A) \\cdot A + \\det(A) \\cdot I = 0$. Derives the inverse formula $A^{-1} = \\frac{1}{\\det(A)}(\\text{tr}(A) \\cdot I - A)$ when $\\det(A) \\neq 0$. Verified with concrete $2 \\times 2$ matrices via `native_decide`.",
+      "mathContext": "For $A = \\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}$: $\\text{tr}(A) = a+d$, $\\det(A) = ad-bc$, and $A^2 - (a+d)A + (ad-bc)I = 0$. Rearranging: $A^{-1} = \\frac{1}{ad-bc}\\begin{pmatrix} d & -b \\\\ -c & a \\end{pmatrix}$ — the classical adjugate formula."
     },
     {
       "id": "significance",
-      "title": "Theoretical Significance",
+      "title": "Theoretical Significance and Commentary",
       "startLine": 189,
       "endLine": 250,
-      "summary": "Why Cayley-Hamilton matters: applications to linear algebra, control theory, and eigenvalue theory."
+      "summary": "Doc sections on applications (matrix powers, exponentials, control theory), the minimal polynomial, eigenvalue factorization $(A-\\lambda_1 I)\\cdots(A-\\lambda_n I) = 0$, and historical notes on Cayley, Hamilton, and Frobenius.",
+      "mathContext": "Key applications: (1) $A^k$ for $k \\geq n$ reduces to a degree $< n$ polynomial in $A$; (2) $e^{At} = \\sum_{k=0}^{n-1} \\alpha_k(t) A^k$ for computing state transitions in control theory; (3) the minimal polynomial $m_A \\mid p_A$ determines the Jordan structure."
     }
   ],
   "conclusion": {
