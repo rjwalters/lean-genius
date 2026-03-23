@@ -147,7 +147,7 @@
   },
   "conclusion": {
     "summary": "Erdős Problem #432 asks how dense the sumset A + B can be when all its elements are pairwise coprime. The pairwise coprime constraint forces disjoint prime factorizations, limiting density to at most π(n) + 1 ∼ n/log n. Whether the sumset structure forces a strictly smaller bound remains completely open.",
-    "implications": "A resolution would illuminate the fundamental interplay between additive structure (sumsets) and multiplicative structure (coprimality) in the integers. The problem connects to the broader 'sum-product phenomenon' — the principle that additive and multiplicative structure cannot coexist extensively. Techniques developed here could apply to other problems combining additive and multiplicative constraints.",
+    "implications": "**Theoretical Significance**: A resolution would illuminate the fundamental interplay between additive structure (sumsets) and multiplicative structure (coprimality) in the integers.\n\n**Broader Connections**: The problem connects to the broader 'sum-product phenomenon' — the principle that additive and multiplicative structure cannot coexist extensively. Techniques developed here could apply to other problems combining additive and multiplicative constraints.",
     "openQuestions": [
       "Is there a density bound of the form |A + B ∩ [1,n]| = o(π(n))?",
       "Can infinite A, B be constructed with coprime sumset achieving density Θ(π(n))?",
