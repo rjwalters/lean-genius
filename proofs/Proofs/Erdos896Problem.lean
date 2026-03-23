@@ -97,18 +97,47 @@ axiom van_doorn_bounds : VanDoornLowerBound ∧ VanDoornUpperBound
 theorem uniqueProductCount_le_product (A B : Finset ℕ) :
     uniqueProductCount A B ≤ A.card * B.card := by
   unfold uniqueProductCount
-  calc ((A ×ˢ B).image (fun p => p.1 * p.2)).filter
-        (fun m => reprCount A B m = 1) |>.card
+  calc (((A ×ˢ B).image (fun p => p.1 * p.2)).filter
+        (fun m => reprCount A B m = 1)).card
       ≤ ((A ×ˢ B).image (fun p => p.1 * p.2)).card :=
         Finset.card_filter_le _ _
     _ ≤ (A ×ˢ B).card := Finset.card_image_le
     _ = A.card * B.card := Finset.card_product A B
 
+/-- Representation count is symmetric: reprCount A B m = reprCount B A m.
+    The swap (a,b) ↦ (b,a) bijects {(a,b) ∈ A×B : ab=m} to {(b,a) ∈ B×A : ba=m}. -/
+theorem reprCount_comm (A B : Finset ℕ) (m : ℕ) :
+    reprCount A B m = reprCount B A m := by
+  unfold reprCount
+  apply Finset.card_bij (fun p _ => (p.2, p.1))
+  · intro ⟨a, b⟩ h
+    simp only [Finset.mem_filter, Finset.mem_product] at h ⊢
+    exact ⟨⟨h.1.2, h.1.1⟩, by rw [mul_comm]; exact h.2⟩
+  · intro ⟨a1, b1⟩ _ ⟨a2, b2⟩ _ h
+    simp only [Prod.mk.injEq] at h; exact Prod.ext h.2 h.1
+  · intro ⟨b, a⟩ h
+    simp only [Finset.mem_filter, Finset.mem_product] at h
+    exact ⟨(a, b), by simp [Finset.mem_filter, Finset.mem_product, mul_comm, h.1.2, h.1.1, h.2], rfl⟩
+
 /-- F(A, B) = F(B, A) by commutativity of multiplication.
     The bijection (a,b) ↦ (b,a) maps A×B to B×A while preserving
     the product, so representation counts and unique product counts agree. -/
-axiom uniqueProductCount_comm (A B : Finset ℕ) :
-    uniqueProductCount A B = uniqueProductCount B A
+theorem uniqueProductCount_comm (A B : Finset ℕ) :
+    uniqueProductCount A B = uniqueProductCount B A := by
+  unfold uniqueProductCount
+  -- Image sets are equal: {ab : (a,b) ∈ A×B} = {ba : (b,a) ∈ B×A}
+  have himg : (A ×ˢ B).image (fun p => p.1 * p.2) =
+              (B ×ˢ A).image (fun p => p.1 * p.2) := by
+    ext m; simp only [Finset.mem_image, Finset.mem_product, Prod.exists]
+    constructor
+    · rintro ⟨a, b, ⟨ha, hb⟩, hab⟩; exact ⟨b, a, ⟨hb, ha⟩, by rw [mul_comm]; exact hab⟩
+    · rintro ⟨b, a, ⟨hb, ha⟩, hba⟩; exact ⟨a, b, ⟨ha, hb⟩, by rw [mul_comm]; exact hba⟩
+  -- reprCount is symmetric
+  have hrepr : ∀ m, reprCount A B m = reprCount B A m := reprCount_comm A B
+  -- Combine: filter by reprCount=1 gives the same result
+  congr 1; rw [himg]; ext m
+  simp only [Finset.mem_filter]; exact ⟨fun ⟨hm, hc⟩ => ⟨hm, by rw [← hrepr]; exact hc⟩,
+    fun ⟨hm, hc⟩ => ⟨hm, by rw [hrepr]; exact hc⟩⟩
 
 /-- The empty set gives F = 0. -/
 theorem uniqueProductCount_empty_left (B : Finset ℕ) :
