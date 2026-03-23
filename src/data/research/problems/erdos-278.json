@@ -29,19 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved single_modulus_density (axiom→theorem). File: 5 theorems, 9 lemmas, 3 axioms, 0 sorries. Infrastructure: dvd_systemLCM, init_dvd_foldl_lcm, coverageDensity_eq helpers.",
+    "progressSummary": "PROGRESS: Proved equal_residues_minimize (axiom->theorem) via cyclic shift bijection. File: 6 theorems, 2 lemmas, 2 axioms, 0 sorries.",
     "builtItems": [
       "Proved erdos_278_density_le_one (axiom → theorem) via csSup_le",
       "Fixed foldl_lcm_pos: updated List.mem_cons_self/mem_cons_of_mem to simp",
       "Proved single_modulus_density: for singleton {n}, maxCoverageDensity = 1/n (via systemLCM_singleton + coverageDensity_singleton)",
       "Added dvd_systemLCM: each modulus divides the system LCM (via init_dvd_foldl_lcm + mem_dvd_foldl_lcm)",
-      "Added coverageDensity_eq: unfolds coverageDensity without the let binding"
+      "Added coverageDensity_eq: unfolds coverageDensity without the let binding",
+      "Proved equal_residues_minimize: constant residue a gives same density as residue 0, via cyclic shift m->(m+a)%L bijection (Erdos278Problem.lean:234)"
     ],
     "insights": [
       "erdos_278_open_question was trivially provable: maxCoverageDensity is sSup of densities, each ≤ 1",
       "csSup_le + density_le_one eliminates the axiom in 3 lines",
       "List.mem_cons_self deprecated in current Mathlib - use simp instead",
-      "equal_residues_minimize proof strategy: cyclic shift bijection m↦(m+a)%L on {0,...,L-1}. Need add_mod_injOn (prove via by_contra + Nat.mul_le_mul_left for quotient equality), then dvd_mul_of_dvd_left for n|(a+c). Blocked on Lean omega not handling nonlinear L*(q₁-q₂)"
+      "equal_residues_minimize proof strategy: cyclic shift bijection m↦(m+a)%L on {0,...,L-1}. Need add_mod_injOn (prove via by_contra + Nat.mul_le_mul_left for quotient equality), then dvd_mul_of_dvd_left for n|(a+c). Blocked on Lean omega not handling nonlinear L*(q₁-q₂)",
+      "Cyclic shift bijection: (L-a%L)+a = L*(1+a/L) makes shift_inverse clean",
+      "Modular addition cancellation via Euclidean division + interval_cases on quotients"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -72,8 +75,8 @@
       "path": "Proofs/Erdos278Problem.lean",
       "filename": "Erdos278Problem.lean",
       "lineCount": 246,
-      "theoremCount": 5,
-      "axiomCount": 3,
+      "theoremCount": 6,
+      "axiomCount": 2,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
