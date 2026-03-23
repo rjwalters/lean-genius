@@ -24,18 +24,19 @@
       "dist_circleTranslate_le: dist x (x + ↑s) ≤ |s| on AddCircle (quotient norm bound)",
       "holderWith_dist_le: HolderWith edist → dist conversion for ℝ≥0∞ → ℝ",
       "holder_translation_bound: ‖f(x) - f(x+T/(2n))‖ ≤ C·(T/(2|n|))^α (from HolderWith + quotient dist)",
-      "integral_product_bound: ‖∫ (f-f∘τ)·e dμ‖ ≤ C·(T/(2|n|))^α (from norm_integral_le + holder_bound + prob measure)"
+      "integral_product_bound: ‖∫ (f-f∘τ)·e dμ‖ ≤ C·(T/(2|n|))^α (from norm_integral_le + holder_bound + prob measure)",
+      "fourierCoeff_difference_formula: 2·ĉ_n = ∫ (f-f∘τ)·e dμ (from Haar translation + half-period)"
     ],
     "open": [
-      "Prove remaining 8 axioms: difference formula, summability, Riemann-Lebesgue, optimality, converse, C^k/C^∞/analytic decay"
+      "Prove remaining 7 axioms: summability, Riemann-Lebesgue, optimality, converse, C^k/C^∞/analytic decay"
     ],
     "goal": "Prove fourierCoeff_difference_formula (requires Haar translation invariance + integrability machinery)"
   },
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-23T20:00:00Z",
-    "iteration": 3,
-    "focus": "Proved holder_translation_bound + integral_product_bound + 2 helper theorems. Axiom count reduced from 10 to 8.",
+    "iteration": 4,
+    "focus": "Proved 3 core axioms + 2 helpers. 7 axioms remain (summability, R-L, optimality, converse, C^k/C^∞/analytic).",
     "blockers": [
       "fourierCoeff_difference_formula needs integral_add_right_eq_self + integral_sub (integrability hypotheses)",
       "fourierCoeff_sq_summable_of_holder needs comparison test with zeta function"
@@ -48,14 +49,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced axiom count from 10 to 8 (originally 12). Proved key analytical infrastructure: quotient distance bound, HolderWith dist conversion, Hölder translation bound, integral product bound.",
+    "progressSummary": "PROGRESS: Reduced axiom count from 10 to 7. Proved holder_translation_bound, integral_product_bound, fourierCoeff_difference_formula + helpers.",
     "builtItems": [
       "fourier_norm_one: proved via simp [fourier_apply] — toCircle maps to unit circle",
       "fourier_translate_halfperiod: proved via fourier_neg + fourier_add_half_inv_index + map_neg",
       "dist_circleTranslate_le: proved via dist_eq_norm + add_sub_cancel_left + quotient_norm_mk_le + Real.norm_eq_abs",
       "holderWith_dist_le: proved via edist_dist + ENNReal.toReal_le_toReal + ENNReal.toReal_rpow conversions",
       "holder_translation_bound: proved via holderWith_dist_le + dist_circleTranslate_le + rpow monotonicity",
-      "integral_product_bound: proved via norm_integral_le_integral_norm + fourier_norm_one + holder_translation_bound + IsProbabilityMeasure"
+      "integral_product_bound: proved via norm_integral_le_integral_norm + fourier_norm_one + holder_translation_bound + IsProbabilityMeasure",
+      "fourierCoeff_difference_formula: proved via integral_add_right_eq_self (Haar translation invariance) + integral_sub + half-period identity"
     ],
     "insights": [
       "fourier_apply unfolds to ↑(n • x).toCircle, which immediately gives unit norm via simp",
@@ -66,7 +68,9 @@
       "ENNReal → ℝ conversion for HolderWith: use edist_dist rewrite, then ENNReal.toReal_le_toReal + finiteness proofs",
       "integral_product_bound: chain norm_integral_le → pointwise bound → integral_mono_of_nonneg → integral_const on probability measure",
       "integral_add_right_eq_self exists in Mathlib for IsAddRightInvariant measures — needed for difference formula",
-      "|halfPeriod T n| = T/(2|n|) via abs_div + abs_of_pos + abs_mul + Int.abs_cast"
+      "|halfPeriod T n| = T/(2|n|) via abs_div + abs_of_pos + abs_mul + Int.abs_cast",
+      "Continuous.integrable gives integrability on compact AddCircle for Bochner integral_sub",
+      "circleTranslate s is continuous via continuous_id.add continuous_const"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -106,9 +110,9 @@
     {
       "path": "Proofs/FourierSeriesOQ02.lean",
       "filename": "FourierSeriesOQ02.lean",
-      "lineCount": 364,
-      "theoremCount": 13,
-      "axiomCount": 8,
+      "lineCount": 404,
+      "theoremCount": 14,
+      "axiomCount": 7,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
