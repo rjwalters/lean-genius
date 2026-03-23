@@ -247,6 +247,21 @@
       "targetId": "fundamental-arithmetic",
       "relationship": "related",
       "description": "Unique prime factorization relies on Euclid's lemma (if p | ab and p prime, then p | a or p | b) — the constructive version here gives the explicit quotient"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's theorem $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$ for $\\gcd(a,n) = 1$ uses coprimality as its hypothesis. The Bézout coefficient $u$ with $au + nv = 1$ is the modular inverse of $a$ mod $n$, directly connecting the constructive algorithm here to the group (ℤ/nℤ)* whose order is $\\varphi(n)$"
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "complementary",
+      "description": "Extends CRT to non-coprime moduli, where Bézout's identity gives $\\gcd(m,n) = um + vn$ rather than $1 = um + vn$. The extended GCD from this file computes the same coefficients but the quotient formula requires the coprimality normalization $\\gcd = 1$"
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ can be proved by pairing each $a \\in (ℤ/pℤ)^*$ with its modular inverse $a^{-1}$. The extended Euclidean algorithm constructively computes these inverses — the pairing argument is constructive when the inverse computation is"
     }
   ],
   "relatedProofs": [
@@ -257,7 +272,10 @@
     "fermat-two-squares",
     "bezout-identity-oq-02-oq-02",
     "gcd-algorithm",
-    "fundamental-arithmetic"
+    "fundamental-arithmetic",
+    "euler-totient",
+    "chinese-remainder-non-coprime",
+    "wilsons-theorem"
   ],
   "leanFile": {
     "imports": [
