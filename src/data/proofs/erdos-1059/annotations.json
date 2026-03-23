@@ -92,7 +92,7 @@
     "content": "The open conjecture: the set $\\{p \\in \\mathbb{N} : p\\text{ prime} \\wedge \\text{AllFactorialSubtractionsComposite}(p)\\}$ is infinite. Axiomatized using `Set.Infinite`. The probabilistic heuristic suggests most large primes satisfy this, so the set should have positive density among primes.",
     "mathContext": "$\\text{Set.Infinite}\\{p : \\mathbb{N} \\mid p.\\text{Prime} \\wedge \\text{AllFactorialSubtractionsComposite}(p)\\}$.",
     "significance": "key",
-    "relatedConcepts": ["Set.Infinite", "open problem", "prime density"],
+    "relatedConcepts": ["Set.Infinite", "open problem", "prime density", "Bunyakovsky conjecture", "Bateman-Horn conjecture"],
     "prerequisites": ["AllFactorialSubtractionsComposite", "Set.Infinite"]
   },
   {
@@ -116,7 +116,7 @@
     "content": "Erdős suggested a potentially easier variant: infinitely many $n$ in $(l!, (l+1)!]$ have (1) all prime factors $> l$ (i.e., $n$ has no small prime factors), and (2) $n - k!$ is composite for all $1 \\leq k \\leq l$. This drops the primality requirement on $n$, replacing it with a smooth-number condition that may be more amenable to sieve theory.",
     "mathContext": "$\\text{Set.Infinite}\\{n : \\exists l, l! < n \\leq (l+1)! \\wedge (\\forall p\\text{ prime}, p \\mid n \\implies p > l) \\wedge (\\forall k, 1 \\leq k \\leq l \\implies \\neg(n-k!)\\text{.Prime} \\wedge n-k! \\geq 2)\\}$.",
     "significance": "key",
-    "relatedConcepts": ["smooth numbers", "sieve theory", "rough numbers", "prime factor lower bounds"],
+    "relatedConcepts": ["smooth numbers", "sieve theory", "rough numbers", "prime factor lower bounds", "Dickman rho function", "Selberg sieve"],
     "prerequisites": ["factorial intervals", "smooth number theory"]
   },
   {
