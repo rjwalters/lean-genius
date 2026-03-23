@@ -126,28 +126,32 @@
       "title": "The Main Theorem",
       "startLine": 49,
       "endLine": 66,
-      "summary": "Section docstring and main theorem `binomial_theorem`: for `CommSemiring R`, $(x+y)^n = \\sum_{k \\in \\text{range}(n+1)} \\binom{n}{k} \\cdot x^k \\cdot y^{n-k}$. Proof: `rw [add_pow]; congr 1; ext k; ring` normalizes the summand ordering."
+      "summary": "Section docstring and main theorem `binomial_theorem`: for `CommSemiring R`, $(x+y)^n = \\sum_{k \\in \\text{range}(n+1)} \\binom{n}{k} \\cdot x^k \\cdot y^{n-k}$. Proof: `rw [add_pow]; congr 1; ext k; ring` normalizes the summand ordering.",
+      "mathContext": "$(x + y)^n = \\sum_{k=0}^n \\binom{n}{k} x^k y^{n-k}$. Each term counts the $\\binom{n}{k}$ ways to choose which $k$ of the $n$ factors $(x+y)$ contribute $x$."
     },
     {
       "id": "coefficient-sum",
       "title": "Sum of Binomial Coefficients",
       "startLine": 67,
       "endLine": 81,
-      "summary": "Proves `sum_binomial_coefficients`: $\\sum_{k=0}^n \\binom{n}{k} = 2^n$ via `Nat.sum_range_choose`. Corresponds to setting $x = y = 1$ in the binomial theorem, counting all subsets of an $n$-element set."
+      "summary": "Proves `sum_binomial_coefficients`: $\\sum_{k=0}^n \\binom{n}{k} = 2^n$ via `Nat.sum_range_choose`. Corresponds to setting $x = y = 1$ in the binomial theorem, counting all subsets of an $n$-element set.",
+      "mathContext": "$\\sum_{k=0}^n \\binom{n}{k} = 2^n$. Setting $x = y = 1$: $(1+1)^n = 2^n = \\sum \\binom{n}{k} \\cdot 1^k \\cdot 1^{n-k}$."
     },
     {
       "id": "alternating-sum",
       "title": "Alternating Sum of Binomial Coefficients",
       "startLine": 82,
       "endLine": 97,
-      "summary": "Proves `alternating_sum_binomial`: for $n \\geq 1$, $\\sum (-1)^k \\binom{n}{k} = 0$. Uses `Int.alternating_sum_range_choose` (which returns `if n = 0 then 1 else 0`) and eliminates the $n = 0$ case using the positivity hypothesis."
+      "summary": "Proves `alternating_sum_binomial`: for $n \\geq 1$, $\\sum (-1)^k \\binom{n}{k} = 0$. Uses `Int.alternating_sum_range_choose` (which returns `if n = 0 then 1 else 0`) and eliminates the $n = 0$ case using the positivity hypothesis.",
+      "mathContext": "$\\sum_{k=0}^n (-1)^k \\binom{n}{k} = 0$ for $n \\geq 1$. Setting $x = 1, y = -1$: $(1-1)^n = 0^n = 0$. Equivalently: even-indexed and odd-indexed coefficients sum equally, each to $2^{n-1}$."
     },
     {
       "id": "pascal-symmetry",
       "title": "Pascal's Identity, Symmetry, and Boundary Values",
       "startLine": 98,
       "endLine": 131,
-      "summary": "Four structural theorems: `pascal_identity` ($\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}$), `binomial_symmetry` ($\\binom{n}{k} = \\binom{n}{n-k}$), `binomial_zero` ($\\binom{n}{0} = 1$), `binomial_self` ($\\binom{n}{n} = 1$). All one-line wrappers around Mathlib lemmas."
+      "summary": "Four structural theorems: `pascal_identity` ($\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}$), `binomial_symmetry` ($\\binom{n}{k} = \\binom{n}{n-k}$), `binomial_zero` ($\\binom{n}{0} = 1$), `binomial_self` ($\\binom{n}{n} = 1$). All one-line wrappers around Mathlib lemmas.",
+      "mathContext": "Pascal's identity $\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}$ and the boundary values $\\binom{n}{0} = \\binom{n}{n} = 1$ uniquely determine all binomial coefficients via recursion. The symmetry $\\binom{n}{k} = \\binom{n}{n-k}$ reflects that choosing $k$ items is equivalent to choosing $n-k$ to exclude."
     },
     {
       "id": "special-cases",
