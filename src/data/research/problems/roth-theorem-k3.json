@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 5b PROVED tripleCount_add_card_eq_triple_sum (combinatorial bijection). 2 sorries remain: fourier_large_coefficient, density_increment_lemma. The Fourier identity chain is now complete (triple_count_fourier fully proved).",
+    "progressSummary": "PROGRESS: Session 7 decomposed fourier_large_coefficient into 2 cases. Case 1 (δ²N<2) FULLY PROVED via Parseval pigeonhole. Case 2 (δ²N≥2) proved modulo single norm bound sorry (AM-GM + Parseval argument documented). Added 3 helper lemmas (apFree_card_lt, parseval_nonzero, fourierCoeff_zero). Changed signature to hN:1<N. Sorry count unchanged at 2 but significant proof architecture added.",
     "builtItems": [
       "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
       "Build now succeeds: 0 axioms, 3 sorries",
@@ -43,7 +43,12 @@
       "Proved char_orthogonality: Σ ψ(r·c) = N·δ(c=0) via shift argument (r↦r+1 bijection on ZMod N)",
       "Proved triple_count_fourier Part A: Fourier expansion ∑Â(r)²conj(Â(2r)) = N·∑δ(x+z=2y)",
       "PROVED triple_count_fourier: Fourier identity for AP counting, via fixed distribution + sum swap + orthogonality",
-      "PROVED tripleCount_add_card_eq_triple_sum: bijection (a,d)↦(a,a+d) between all APs and {(x,y)∈A²:2y-x∈A}, partition d=0/d≠0"
+      "PROVED tripleCount_add_card_eq_triple_sum: bijection (a,d)↦(a,a+d) between all APs and {(x,y)∈A²:2y-x∈A}, partition d=0/d≠0",
+      "apFree_card_lt in RothTheorem.lean",
+      "parseval_nonzero in RothTheorem.lean",
+      "fourierCoeff_zero in RothTheorem.lean",
+      "fourier_large_coefficient Case 1 proof in RothTheorem.lean",
+      "fourier_large_coefficient Case 2 setup (Fourier identity separation, norm computation) in RothTheorem.lean"
     ],
     "insights": [
       "RothTheorem.lean had 3 build errors: deprecated Finset.not_mem_empty, broken apFree_singleton, non-existent Complex.abs",
@@ -67,7 +72,13 @@
       "linear_combination works for ZMod N ring equalities (x+z=2y ↔ z=2y-x)",
       "Finset.card_image_of_injective cleaner than card_bij for simple embeddings like a↦(a,0)",
       "For Finset partition: manually construct union via ext+tauto, then card_union_of_disjoint",
-      "norm_cast pushes Nat.cast through Finset.sum and ite — closes ↑(∑ℕ) = ∑ℂ goals"
+      "norm_cast pushes Nat.cast through Finset.sum and ite — closes ↑(∑ℕ) = ∑ℂ goals",
+      "fourier_large_coefficient: Case 1 (δ²N<2) fully proved via Parseval pigeonhole — max‖Â(r)‖≥1>δ²N/2",
+      "fourier_large_coefficient: Case 2 (δ²N≥2) reduced to single norm bound sorry via AM-GM+Parseval argument",
+      "apFree_card_lt proved: AP-free sets cannot be full ZMod N for N≥2 (uses {0,1,2} or {0,1,0} 3-AP)",
+      "parseval_nonzero proved: Σ_{r≠0}‖Â(r)‖² = n(N-n) as helper lemma",
+      "fourierCoeff_zero proved: Â(0) = |A|",
+      "Theorem signature changed to hN:1<N (was 0<N) since ZMod 1 has no r≠0"
     ],
     "mathlibGaps": [],
     "nextSteps": [
