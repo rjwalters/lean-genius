@@ -179,11 +179,63 @@ theorem holder_translation_bound (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T �
 
     2 · ĉ_n(f) = ∫ (f(x) - f(x + T/(2n))) · e_{-n}(x) dx
 
-    From translation invariance of Haar measure and the half-period identity. -/
-axiom fourierCoeff_difference_formula (f : AddCircle T → ℂ) (n : ℤ) (hn : n ≠ 0) :
+    From translation invariance of Haar measure and the half-period identity.
+    Requires continuity for integrability (Bochner integral needs measurability). -/
+theorem fourierCoeff_difference_formula (f : AddCircle T → ℂ) (n : ℤ) (hn : n ≠ 0)
+    (hf_cont : Continuous f) :
     2 * fourierCoeff f n =
       ∫ x : AddCircle T,
-        (f x - f (circleTranslate (halfPeriod T n) x)) * fourier (-n) x ∂haarAddCircle
+        (f x - f (circleTranslate (halfPeriod T n) x)) * fourier (-n) x ∂haarAddCircle := by
+  -- Set up notation
+  set a : AddCircle T := ↑(halfPeriod T n) with ha_def
+  -- c_n = ∫ e_{-n}(x) * f(x) dμ
+  have hfc : fourierCoeff f n =
+      ∫ x : AddCircle T, fourier (-n) x * f x ∂haarAddCircle := rfl
+  -- Integrability: continuous f on compact AddCircle with probability measure
+  have hf_int1 : Integrable (fun x => f x * fourier (-n) x) haarAddCircle :=
+    (hf_cont.mul (map_continuous (fourier (-n)))).integrable
+  have hf_int2 : Integrable (fun x => f (circleTranslate (halfPeriod T n) x) *
+      fourier (-n) x) haarAddCircle :=
+    ((hf_cont.comp (continuous_id.add continuous_const)).mul
+      (map_continuous (fourier (-n)))).integrable
+  -- By translation invariance: ∫ g(x + a) dμ = ∫ g(x) dμ
+  have htrans : ∫ x : AddCircle T, (fun y => fourier (-n) y * f y) (x + a) ∂haarAddCircle =
+      ∫ x : AddCircle T, fourier (-n) x * f x ∂haarAddCircle :=
+    integral_add_right_eq_self (fun y => fourier (-n) y * f y) a
+  -- Apply half-period: fourier(-n)(x + a) = -fourier(-n)(x)
+  have hneg : ∀ x : AddCircle T,
+      fourier (-n) (x + a) = -(fourier (-n) x) := fun x =>
+    fourier_translate_halfperiod n hn x
+  simp_rw [hneg, neg_mul] at htrans
+  -- htrans: -∫ e_{-n}(x) * f(x+a) dμ = ∫ e_{-n}(x) * f(x) dμ
+  -- So: ∫ e_{-n}(x) * f(x+a) dμ = -∫ e_{-n}(x) * f(x) dμ = -c_n
+  -- RHS = ∫ (f(x) - f(x+a)) * e_{-n}(x) dμ
+  --      = ∫ f(x) * e_{-n}(x) dμ - ∫ f(x+a) * e_{-n}(x) dμ  (by integral_sub)
+  rw [show (2 : ℂ) * fourierCoeff f n = fourierCoeff f n + fourierCoeff f n from by ring,
+      hfc]
+  -- Rewrite RHS integral by distributing subtraction
+  have hsub : ∫ x : AddCircle T,
+      (f x - f (circleTranslate (halfPeriod T n) x)) * fourier (-n) x ∂haarAddCircle =
+      ∫ x, f x * fourier (-n) x ∂haarAddCircle -
+      ∫ x, f (circleTranslate (halfPeriod T n) x) * fourier (-n) x ∂haarAddCircle := by
+    rw [← integral_sub hf_int1 hf_int2]
+    congr 1; ext x; ring
+  rw [hsub]
+  -- Now: ∫ef + ∫ef = ∫(fe) - ∫(f'e)
+  -- From htrans: -∫ e*f' = ∫ e*f, so ∫ e*f' = -∫ e*f
+  -- i.e., ∫ f'*e = -∫ f*e (by commutativity)
+  have hkey : ∫ x, f (circleTranslate (halfPeriod T n) x) * fourier (-n) x ∂haarAddCircle =
+      -(∫ x, fourier (-n) x * f x ∂haarAddCircle) := by
+    have := htrans
+    -- htrans: -(∫ e*f') = ∫ e*f => ∫ e*f' = -(∫ e*f)
+    rw [show ∀ x : AddCircle T,
+      -(fourier (-n) x) * f (x + a) = -(fourier (-n) x * f (x + a)) from fun x => by ring,
+      integral_neg] at this
+    rw [show ∀ x : AddCircle T,
+      f (circleTranslate (halfPeriod T n) x) * fourier (-n) x =
+      fourier (-n) x * f (x + a) from fun x => by unfold circleTranslate; ring]
+    linarith
+  rw [hkey]; ring
 
 /-- The integral of the product is bounded by the Hölder constant.
     Uses: (1) norm_integral_le_integral_norm, (2) ‖e_{-n}(x)‖ = 1,
@@ -235,9 +287,9 @@ PART IV: MAIN THEOREM — FOURIER COEFFICIENT DECAY
     2. Bound the integral: ‖...‖ ≤ C · (T/(2|n|))^α
     3. Divide by 2: ‖ĉ_n‖ ≤ (C/2) · (T/(2|n|))^α -/
 theorem fourierCoeff_holder_decay (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T → ℂ)
-    (hf : IsHolderOnCircle C α f) (n : ℤ) (hn : n ≠ 0) :
+    (hf : IsHolderOnCircle C α f) (hα : 0 < α) (n : ℤ) (hn : n ≠ 0) :
     ‖fourierCoeff f n‖ ≤ (↑C / 2) * (T / (2 * |↑n|)) ^ (α : ℝ) := by
-  have hdiff := fourierCoeff_difference_formula f n hn
+  have hdiff := fourierCoeff_difference_formula f n hn (hf.continuous hα)
   have hbound : ‖2 * fourierCoeff f n‖ ≤
       ↑C * (T / (2 * |↑n|)) ^ (α : ℝ) := by
     rw [hdiff]
@@ -255,7 +307,7 @@ PART V: COROLLARIES
 theorem fourierCoeff_lipschitz_decay (C : ℝ≥0) (f : AddCircle T → ℂ)
     (hf : LipschitzWith C f) (n : ℤ) (hn : n ≠ 0) :
     ‖fourierCoeff f n‖ ≤ (↑C / 2) * (T / (2 * |↑n|)) := by
-  have h := fourierCoeff_holder_decay C 1 f (lipschitz_is_holder_one hf) n hn
+  have h := fourierCoeff_holder_decay C 1 f (lipschitz_is_holder_one hf) one_pos n hn
   simp only [NNReal.coe_one, Real.rpow_one] at h
   exact h
 
@@ -339,9 +391,9 @@ theorem holder_parseval_range :
 
 /-- Synonym: quantitative Riemann-Lebesgue with explicit rate. -/
 theorem quantitative_riemannLebesgue (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T → ℂ)
-    (hf : IsHolderOnCircle C α f) (n : ℤ) (hn : n ≠ 0) :
+    (hf : IsHolderOnCircle C α f) (hα : 0 < α) (n : ℤ) (hn : n ≠ 0) :
     ‖fourierCoeff f n‖ ≤ (↑C / 2) * (T / (2 * |↑n|)) ^ (α : ℝ) :=
-  fourierCoeff_holder_decay C α f hf n hn
+  fourierCoeff_holder_decay C α f hf hα n hn
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
