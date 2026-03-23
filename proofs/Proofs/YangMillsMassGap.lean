@@ -2343,11 +2343,16 @@ structure OsterwalderSchraderAxioms where
   /-- Positivity: S₂(0) ≥ 0 -/
   S2_nonneg_at_zero : S2 0 ≥ 0
   /-- Reflection positivity for the 2-point function:
-      ∫ f(x) S₂(θx - y) f(y) dx dy ≥ 0 for test functions supported in ℝ₊⁴.
-      This is the key axiom: it guarantees unitarity of the reconstructed QFT. -/
+      ∫∫ f(x) S₂(θx - y) f(y) dx dy ≥ 0 for test functions f supported in ℝ₊⁴.
+      This is the key axiom: it guarantees unitarity of the reconstructed QFT.
+      For any two test functions f, g supported on positive time,
+      the bilinear form (f, g) ↦ ∫∫ f(x) S₂(θx - y) g(y) dx dy is
+      positive semi-definite, yielding a Hilbert space via GNS. -/
   reflection_positive_2pt : ∀ (f : EuclideanSpacetime → ℝ),
     (∀ x, x ∉ positiveTimeHalfSpace → f x = 0) →
-    True -- (Full integral form requires measure-theoretic setup; structural placeholder)
+    ∀ (g : EuclideanSpacetime → ℝ),
+    (∀ x, x ∉ positiveTimeHalfSpace → g x = 0) →
+    0 ≤ ∫ x, ∫ y, f x * S2 (fun μ => timeReflection x μ - y μ) * g y
   /-- Cluster decomposition: S₂(x) → 0 as |x| → ∞ -/
   cluster_decomposition : Filter.Tendsto
     (fun (r : ℝ) => S2 (fun _ => r)) Filter.atTop (nhds 0)
@@ -7409,7 +7414,12 @@ structure OSReconstruction where
   uniqueness : Prop
 
 /-- The Wightman axioms for relativistic QFT in Minkowski spacetime.
-    These are what the OS reconstruction produces. -/
+    These are what the OS reconstruction produces.
+
+    **DEPRECATED**: This is a thin Prop bundle with no mathematical content.
+    Use `WightmanQFT` (line 335) which carries a real Hilbert space, vacuum,
+    and Hamiltonian with typed constraints. -/
+@[deprecated WightmanQFT (since := "2026-03")]
 structure WightmanAxioms where
   /-- W0: Relativistic quantum mechanics — Hilbert space + Poincaré group -/
   relativistic_qm : Prop
@@ -7425,7 +7435,13 @@ structure WightmanAxioms where
 /-- The spectral condition and mass gap.
     In a Wightman QFT, the joint spectrum of the energy-momentum
     operators (P₀, P⃗) lies in the forward light cone. The mass gap
-    Δ > 0 means the spectrum above the vacuum is bounded below by Δ. -/
+    Δ > 0 means the spectrum above the vacuum is bounded below by Δ.
+
+    **DEPRECATED**: This is a thin Prop bundle with no mathematical content.
+    Use `WightmanQFT.hamiltonian` (line 342) for the typed Hamiltonian whose
+    spectrum encodes the spectral condition, and `hasMassGap` (line 362) for
+    the typed mass gap definition. -/
+@[deprecated hasMassGap (since := "2026-03")]
 structure SpectralCondition where
   /-- Spectrum lies in forward light cone: P₀ ≥ |P⃗| -/
   forward_light_cone : Prop
@@ -7440,7 +7456,14 @@ structure SpectralCondition where
 
 /-- For Yang-Mills specifically, the OS axioms must be supplemented
     with gauge invariance. The Schwinger functions are built from
-    gauge-invariant observables (Wilson loops, etc.). -/
+    gauge-invariant observables (Wilson loops, etc.).
+
+    **DEPRECATED**: This is a thin Prop bundle with no mathematical content.
+    Use `OSBridge.SatisfiesAllOS` (OSBridge.lean line 282) for the typed OS
+    axiom bundle over a `ProbabilityMeasure EFieldConfiguration`, and
+    `OSBridge.YangMillsContinuumLimit` (OSBridge.lean line 422) for the full
+    continuum limit + clustering existential. -/
+@[deprecated OsterwalderSchraderAxioms (since := "2026-03")]
 structure YangMillsOS where
   /-- The gauge group G (compact, simple, e.g., SU(N)) -/
   gauge_group : Prop
@@ -7455,21 +7478,12 @@ structure YangMillsOS where
   /-- Mass gap Δ > 0 in the continuum limit -/
   mass_gap_positive : Prop
 
-/-- The constructive QFT program for Yang-Mills.
-    Steps that need to be completed for the Millennium Prize. -/
-structure ConstructiveProgram where
-  /-- Step 1: Define Wilson lattice action S_W[U] -/
-  wilson_action : Prop
-  /-- Step 2: Prove lattice theory satisfies OS axioms (known for finite lattice) -/
-  lattice_os : Prop
-  /-- Step 3: Take continuum limit a → 0 with renormalization -/
-  continuum_limit : Prop
-  /-- Step 4: Show limiting Schwinger functions satisfy OS axioms -/
-  continuum_os : Prop
-  /-- Step 5: Prove mass gap Δ > 0 persists in the limit -/
-  mass_gap_survives : Prop
-  /-- Status: Steps 1-2 known, Steps 3-5 completely open -/
-  status : Prop
+/- `ConstructiveProgram` was deleted (2026-03).
+   It was a narrative checklist of the constructive QFT program encoded as bare
+   `Prop` fields -- not a mathematical formalization. The typed replacement for
+   the continuum-limit content is `OSBridge.YangMillsContinuumLimit`
+   (OSBridge.lean line 422), which bundles `SatisfiesAllOS` and
+   `hasExponentialClustering` over a real `ProbabilityMeasure`. -/
 
 /-- **PROVED: The OS axioms are precisely 5 conditions.** -/
 theorem os_axiom_count : (5 : ℕ) = 5 := rfl
@@ -27877,7 +27891,13 @@ This part formalizes the precise mathematical requirements and known partial res
 section ClayPrize
 
 /-- The Wightman axioms for the Clay Prize statement.
-    These axioms define what it MEANS for a QFT to "exist". -/
+    These axioms define what it MEANS for a QFT to "exist".
+
+    **DEPRECATED**: This is a thin Prop bundle with no mathematical content.
+    Use `WightmanQFT` (line 335) which carries a real Hilbert space, vacuum,
+    and Hamiltonian with typed constraints. The `hilbert_dim : ℕ` field here
+    is a dimension "indicator" that does not constrain anything. -/
+@[deprecated WightmanQFT (since := "2026-03")]
 structure ClayWightmanAxioms where
   /-- A Hilbert space H of states -/
   hilbert_dim : ℕ  -- abstractly: dimension indicator
@@ -27904,7 +27924,13 @@ structure MassGapProperty where
 
 /-- The full Clay Millennium Prize statement: existence + mass gap.
     For any compact simple gauge group G, quantum Yang-Mills theory in 4D
-    satisfies the Wightman axioms AND has a mass gap. -/
+    satisfies the Wightman axioms AND has a mass gap.
+
+    **DEPRECATED**: Inherits thinness from `ClayWightmanAxioms`. The proper
+    typed formulation combines `WightmanQFT` (line 335) with `hasMassGap`
+    (line 362), or equivalently `QuantumYangMillsTheory` (line 351) with
+    `hasSomeMassGap` (line 368). -/
+@[deprecated hasSomeMassGap (since := "2026-03")]
 structure MillenniumPrizeYM where
   /-- The Wightman axioms are satisfied -/
   wightman : ClayWightmanAxioms
