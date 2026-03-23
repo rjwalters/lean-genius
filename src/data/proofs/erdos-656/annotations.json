@@ -27,7 +27,17 @@
     "type": "concept",
     "title": "Lower Density",
     "content": "The **lower density** is:\n\nd̲(A) = liminf_{n→∞} |A ∩ [1,n]| / n\n\nWhen d̄(A) = d̲(A), the set has a well-defined **natural density**.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "$\\underline{d}(A) = \\liminf_{n \\to \\infty} \\frac{|A \\cap [1,n]|}{n}$",
+    "relatedConcepts": [
+      "Upper density",
+      "Natural density",
+      "Liminf"
+    ],
+    "prerequisites": [
+      "Filter.liminf",
+      "atTop filter"
+    ]
   },
   {
     "id": "ann-e656-positive-density",
@@ -39,7 +49,16 @@
     "type": "definition",
     "title": "Positive Upper Density",
     "content": "A set has **positive upper density** if d̄(A) > 0.\n\nThis is the key hypothesis in Erdős's conjecture. Examples:\n- Even numbers: d̄ = 1/2\n- Primes: d̄ = 0 (too sparse!)\n- {1, 2, ..., n, 2n, 2n+1, ..., 3n, ...}: d̄ = 1/2 but d̲ = 0",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "$\\bar{d}(A) > 0$, i.e., there exists $\\epsilon > 0$ such that infinitely many $n$ satisfy $|A \\cap [1,n]|/n > \\epsilon$",
+    "relatedConcepts": [
+      "Upper density",
+      "Szemerédi's theorem",
+      "Positive measure"
+    ],
+    "prerequisites": [
+      "Upper density definition"
+    ]
   },
   {
     "id": "ann-e656-density-bounds",
@@ -51,7 +70,15 @@
     "type": "concept",
     "title": "Density Bounds",
     "content": "For any A ⊆ ℕ:\n\n0 ≤ d̲(A) ≤ d̄(A) ≤ 1\n\nThe bounds follow from the definition: |A ∩ [1,n]| / n is always in [0,1].",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "$0 \\leq \\underline{d}(A) \\leq \\bar{d}(A) \\leq 1$ for all $A \\subseteq \\mathbb{N}$",
+    "relatedConcepts": [
+      "Density bounds",
+      "Counting function"
+    ],
+    "prerequisites": [
+      "Upper and lower density"
+    ]
   },
   {
     "id": "ann-e656-sumset",
@@ -80,7 +107,16 @@
     "type": "definition",
     "title": "Shifted Sumset",
     "content": "The **shifted sumset** B + B + t adds a constant:\n\nB + B + t = {b₁ + b₂ + t : b₁, b₂ ∈ B}\n\nThe shift t ∈ ℤ can be negative! This is crucial: some sets with positive density require t ≠ 0.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "$B + B + t = \\{b_1 + b_2 + t : b_1, b_2 \\in B\\}$ for $t \\in \\mathbb{Z}$",
+    "relatedConcepts": [
+      "Sumset",
+      "Translate",
+      "Minkowski sum"
+    ],
+    "prerequisites": [
+      "Sumset definition"
+    ]
   },
   {
     "id": "ann-e656-finite-sums",
@@ -96,7 +132,8 @@
     "relatedConcepts": [
       "Hindman's theorem",
       "IP sets"
-    ]
+    ],
+    "mathContext": "$\\text{FS}(B) = \\{\\sum_{i \\in I} b_i : I \\subseteq B, I \\text{ finite nonempty}\\}$"
   },
   {
     "id": "ann-e656-coloring",
@@ -108,7 +145,17 @@
     "type": "definition",
     "title": "Coloring",
     "content": "A **k-coloring** of ℕ is a function c : ℕ → Fin k.\n\nIn Ramsey theory, we ask: given any coloring, must some structure be monochromatic?",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "$c : \\mathbb{N} \\to \\text{Fin}\\,k$ assigns each natural number one of $k$ colors",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "Partition regularity",
+      "Schur's theorem"
+    ],
+    "prerequisites": [
+      "Fin k",
+      "Ramsey theory basics"
+    ]
   },
   {
     "id": "ann-e656-monochromatic",
@@ -120,7 +167,16 @@
     "type": "definition",
     "title": "Monochromatic Set",
     "content": "A set S is **monochromatic** under coloring c if all elements have the same color:\n\n∃ color, ∀ n ∈ S, c(n) = color\n\nHindman's theorem guarantees monochromatic FS(B).",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "$\\exists \\text{color} \\in \\text{Fin}\\,k, \\forall n \\in S, c(n) = \\text{color}$",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "Hindman's theorem",
+      "Van der Waerden's theorem"
+    ],
+    "prerequisites": [
+      "Coloring definition"
+    ]
   },
   {
     "id": "ann-e656-hindman",
@@ -150,7 +206,17 @@
     "title": "The Erdős Conjecture",
     "content": "**Erdős's Conjecture (1975):**\n\nIf A ⊆ ℕ has positive upper density, then there exists an infinite B ⊆ ℕ and integer t such that B + B + t ⊆ A.\n\nThis is a 'density version' of Hindman: instead of coloring, use density > 0.\n\nNote: We only get B + B + t, not all of FS(B). The density condition is weaker than 'one color class', so we get a weaker conclusion.",
     "mathContext": "$\\bar{d}(A) > 0 \\Rightarrow \\exists B \\subseteq \\mathbb{N}$ infinite, $\\exists t \\in \\mathbb{Z}: B + B + t \\subseteq A$, where $B + B = \\{b_1 + b_2 : b_1, b_2 \\in B\\}$.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [
+      "Density Hindman",
+      "Furstenberg correspondence",
+      "B+B+t conjecture"
+    ],
+    "prerequisites": [
+      "Upper density",
+      "Sumset definition",
+      "Hindman's theorem"
+    ]
   },
   {
     "id": "ann-e656-kmrr",
@@ -162,7 +228,17 @@
     "type": "technique",
     "title": "Kra-Moreira-Richter-Robertson Theorem",
     "content": "**The Erdős Conjecture is TRUE!**\n\nProved by Kra, Moreira, Richter, and Robertson in 2024.\n\nThe proof uses:\n1. Furstenberg correspondence (density → measure)\n2. Ergodic theory on nilmanifolds\n3. Structure theory for dynamical systems\n\nReference: 'A proof of Erdős's B+B+t conjecture', Commun. Am. Math. Soc. (2024)",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "$\\bar{d}(A) > 0 \\implies \\exists B \\subseteq \\mathbb{N}$ infinite, $\\exists t \\in \\mathbb{Z}: B + B + t \\subseteq A$ (KMRR 2024)",
+    "relatedConcepts": [
+      "Ergodic theory",
+      "Nilmanifolds",
+      "Furstenberg correspondence"
+    ],
+    "prerequisites": [
+      "Ergodic theory on nilmanifolds",
+      "Furstenberg correspondence"
+    ]
   },
   {
     "id": "ann-e656-high-density",
@@ -174,7 +250,16 @@
     "type": "concept",
     "title": "High Density Case",
     "content": "**High Density Simplification:**\n\nIf d̄(A) > 1/2, then we can take t = 0:\n\n∃ infinite B, B + B ⊆ A\n\nIntuitively: if A is 'more than half' of ℕ, the sumset will hit A without needing a shift.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "$\\bar{d}(A) > 1/2 \\implies \\exists B \\subseteq \\mathbb{N}$ infinite: $B + B \\subseteq A$ (no shift needed)",
+    "relatedConcepts": [
+      "Density threshold",
+      "Sumset containment"
+    ],
+    "prerequisites": [
+      "Upper density",
+      "Pigeonhole principle"
+    ]
   },
   {
     "id": "ann-e656-erdos-172",
@@ -189,6 +274,11 @@
     "significance": "supporting",
     "relatedConcepts": [
       "Hindman's theorem"
+    ],
+    "mathContext": "Erdős #172 = Hindman's theorem: for any finite coloring of $\\mathbb{N}$, $\\exists$ infinite $B$ with $\\text{FS}(B)$ monochromatic",
+    "prerequisites": [
+      "Coloring",
+      "FS definition"
     ]
   },
   {
@@ -205,7 +295,8 @@
     "relatedConcepts": [
       "Furstenberg-Sárközy theorem",
       "Density theorems"
-    ]
+    ],
+    "mathContext": "$\\bar{d}(A) > 0 \\implies \\exists a_1, a_2 \\in A, \\exists k > 0: a_1 - a_2 = k^2$ (Sárközy 1978)"
   },
   {
     "id": "ann-e656-furstenberg",
@@ -221,7 +312,12 @@
     "relatedConcepts": [
       "Ergodic theory",
       "Measure-preserving systems"
-    ]
+    ],
+    "prerequisites": [
+      "Measure theory",
+      "Ergodic theory basics"
+    ],
+    "mathContext": "$\\bar{d}(A) > 0 \\iff \\exists$ measure-preserving system $(X, \\mu, T)$ and measurable $E$ with $\\mu(E) > 0$ encoding $A$"
   },
   {
     "id": "ann-e656-main",
@@ -233,7 +329,17 @@
     "type": "technique",
     "title": "Main Result",
     "content": "**Erdős Problem #656: SOLVED**\n\nAnswer: YES, every set with positive upper density contains B + B + t for some infinite B and integer t.\n\nThe theorem follows from the Kra-Moreira-Richter-Robertson result (2024).",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "$\\bar{d}(A) > 0 \\implies \\exists$ infinite $B \\subseteq \\mathbb{N}$, $\\exists t \\in \\mathbb{Z}: B + B + t \\subseteq A$",
+    "relatedConcepts": [
+      "Density Hindman",
+      "KMRR theorem",
+      "Additive combinatorics"
+    ],
+    "prerequisites": [
+      "KMRR theorem",
+      "Furstenberg correspondence"
+    ]
   },
   {
     "id": "ann-e656-shift-necessary",
@@ -245,7 +351,16 @@
     "type": "technique",
     "title": "Shift is Necessary",
     "content": "**The shift t is sometimes necessary.**\n\nThere exist sets A with positive density such that B + B ⊈ A for any infinite B.\n\nExample intuition: Take A to be 'spread out' so that sums always miss certain residue classes.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "$\\exists A \\subseteq \\mathbb{N}$ with $\\bar{d}(A) > 0$ such that $\\forall$ infinite $B$: $B + B \\not\\subseteq A$",
+    "relatedConcepts": [
+      "Shift necessity",
+      "Counterexample construction"
+    ],
+    "prerequisites": [
+      "Sumset containment",
+      "Density"
+    ]
   },
   {
     "id": "ann-e656-quantitative",
@@ -257,6 +372,14 @@
     "type": "concept",
     "title": "Quantitative Version",
     "content": "**Quantitative strengthening:**\n\nThe infinite set B can be chosen to also have positive density.\n\nThis gives a 'density-preserving' version of the theorem.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "$\\bar{d}(A) > 0 \\implies \\exists$ infinite $B$ with $\\bar{d}(B) > 0$ and $t \\in \\mathbb{Z}: B + B + t \\subseteq A$",
+    "relatedConcepts": [
+      "Quantitative density",
+      "Density-preserving extraction"
+    ],
+    "prerequisites": [
+      "KMRR theorem"
+    ]
   }
 ]

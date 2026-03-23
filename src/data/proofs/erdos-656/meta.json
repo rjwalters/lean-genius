@@ -63,7 +63,13 @@
       "**High Density Simplification:** If d̄(A) > 1/2, then t = 0 suffices (no shift needed)",
       "**Hindman is Stronger:** Hindman gives all of FS(B) monochromatic; density only gives B + B + t"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Upper and lower density (limsup/liminf of counting functions)",
+      "Sumsets and Minkowski sums (B + B = {b₁ + b₂})",
+      "Hindman's theorem (monochromatic finite sums)",
+      "Furstenberg correspondence principle (density ↔ measure)",
+      "Ergodic theory and measure-preserving systems"
+    ]
   },
   "sections": [
     {
