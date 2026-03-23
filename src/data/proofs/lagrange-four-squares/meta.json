@@ -100,32 +100,45 @@
     "summary": "Lagrange's four squares theorem is one of the most beautiful results in number theory, revealing a deep connection between arithmetic and algebra. The proof's reliance on Euler's identity - which is secretly quaternion multiplication - explains why four squares succeed where three fail.\n\nThis formalization uses Mathlib's complete proof of the theorem, while providing pedagogical annotations that highlight the quaternion connection and the significance of the result.",
     "implications": "The four squares theorem has far-reaching implications:\n\n**1. Quaternion Theory**\nThe theorem is intimately connected to Hamilton's quaternions. Euler's identity is the statement that quaternion norm is multiplicative.\n\n**2. Division Algebras**\nThe success of four squares and failure of three reflects Frobenius's theorem: the only finite-dimensional associative division algebras over the reals are R (1D), C (2D), and H (4D).\n\n**3. Modular Forms**\nModern proofs use theta functions and modular forms, connecting to the Langlands program.\n\n**4. Cryptography**\nQuaternion arithmetic has applications in computer graphics and cryptographic protocols.",
     "openQuestions": [
-      "What is the computational complexity of finding a four-square representation?",
-      "How do representations distribute among the possible orderings?",
-      "What are the connections to the theory of modular forms and theta functions?"
+      "Formalize Rabin-Shallit's algorithm (1986) for computing four-square representations in polynomial time — it uses random modular square roots and runs in $O(\\log^2 n)$ expected time",
+      "Formalize Jacobi's four-square theorem: the number of representations $r_4(n) = 8 \\sum_{4 \\nmid d | n} d$ — connecting representation counts to divisor sums and theta functions $\\theta(q)^4$",
+      "Prove Waring's problem for fourth powers: every sufficiently large integer is a sum of at most 19 fourth powers ($g(4) = 19$, proved by Balasubramanian-Deshouillers-Dress 1986) — extending Lagrange from squares to higher powers",
+      "Formalize the three-square theorem (Legendre/Gauss): $n = a^2 + b^2 + c^2$ iff $n \\neq 4^a(8b+7)$ — the precise characterization of which integers need four squares vs three"
     ]
   },
   "crossReferences": [
     {
       "targetId": "fermat-two-squares",
       "relationship": "contrasts",
-      "description": "Two squares vs four: Fermat's theorem restricts which numbers are sums of two squares (only primes ≡ 1 mod 4), while Lagrange's theorem says all are sums of four"
+      "description": "Two squares vs four: Fermat's theorem restricts which numbers are sums of two squares (only primes $p \\equiv 1 \\pmod{4}$), while Lagrange's theorem says ALL positive integers are sums of four. The contrast reveals the arithmetic structure: $\\mathbb{Z}[i]$ (Gaussian integers) handles two squares, but quaternions $\\mathbb{H}$ are needed for four"
     },
     {
       "targetId": "quadratic-reciprocity",
       "relationship": "related",
-      "description": "Quadratic residues modulo p determine which primes are sums of two squares and play a role in the four-square proof's descent step"
+      "description": "Quadratic residues modulo $p$ determine which primes are sums of two squares ($p = a^2 + b^2 \\iff p \\equiv 1 \\pmod{4}$) and play a role in the four-square proof's descent step via the characterization of $-1$ as a quadratic residue"
     },
     {
       "targetId": "hurwitz-theorem",
       "relationship": "related",
-      "description": "Hurwitz's theorem on composition algebras explains why sum-of-squares identities exist only for 1, 2, 4, and 8 squares (connected to R, C, H, O)"
+      "description": "Hurwitz's 1898 theorem on composition algebras explains why sum-of-squares identities exist only for 1, 2, 4, and 8 squares, connected to the normed division algebras $\\mathbb{R}, \\mathbb{C}, \\mathbb{H}, \\mathbb{O}$ — Euler's four-square identity is the quaternion norm being multiplicative"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization is essential to the proof strategy: Euler's identity reduces the problem to proving every prime is a sum of four squares, then the multiplicativity extends to all positive integers via $n = p_1^{a_1} \\cdots p_k^{a_k}$"
+    },
+    {
+      "targetId": "perfect-numbers",
+      "relationship": "related",
+      "description": "Both results connect to the multiplicative structure of $\\mathbb{N}$: Lagrange shows every $n$ decomposes as $a^2 + b^2 + c^2 + d^2$, while perfect numbers satisfy $\\sigma(n) = 2n$. Both use descent arguments and the factorization of integers into primes"
     }
   ],
   "relatedProofs": [
     "fermat-two-squares",
     "quadratic-reciprocity",
-    "hurwitz-theorem"
+    "hurwitz-theorem",
+    "fundamental-arithmetic",
+    "perfect-numbers"
   ],
   "leanFile": {
     "imports": [
@@ -153,6 +166,20 @@
       "year": "2008",
       "venue": "Oxford University Press, 6th edition, Chapter 20",
       "note": "Contains the classical proof using Euler's four-square identity and descent"
+    },
+    {
+      "authors": "Jacobi, Carl Gustav Jacob",
+      "title": "Fundamenta nova theoriae functionum ellipticarum",
+      "year": "1829",
+      "venue": "Königsberg",
+      "note": "Contains Jacobi's four-square theorem giving the exact number of representations r₄(n) = 8∑(d|n, 4∤d) d via theta functions — a foundational result connecting number theory to modular forms"
+    },
+    {
+      "authors": "Conway, John H.; Sloane, Neil J.A.",
+      "title": "The Sensual (Quadratic) Form",
+      "year": "1997",
+      "venue": "MAA Carus Mathematical Monographs 26",
+      "note": "Modern treatment of quadratic forms including the four-square theorem from the perspective of lattices, quaternions, and the Hurwitz integers"
     }
   ]
 }

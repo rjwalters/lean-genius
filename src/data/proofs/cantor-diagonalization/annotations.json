@@ -53,13 +53,15 @@
     },
     "type": "definition",
     "title": "The Diagonal Construction",
-    "content": "Given an enumeration $f : \\mathbb{N} \\to \\text{BinarySeq}$, the diagonal function constructs a new sequence by flipping the $n$-th bit of the $n$-th sequence: `diagonal f n = !(f n n)`. This ensures the constructed sequence differs from $f(n)$ at position $n$ for every $n$ — the core idea of Cantor's argument.",
-    "mathContext": "$\\text{diagonal}(f)(n) = \\neg f(n)(n)$. The bit flip guarantees $\\text{diagonal}(f) \\neq f(n)$ for all $n$.",
+    "content": "Given an enumeration $f : \\mathbb{N} \\to \\text{BinarySeq}$, the diagonal function constructs a new sequence by flipping the $n$-th bit of the $n$-th sequence: `diagonal f n = !(f n n)`. This ensures the constructed sequence differs from $f(n)$ at position $n$ for every $n$ — the core idea of Cantor's argument.\n\n**The diagonal as a fixed-point-free map:** The diagonal construction can be understood as applying the 'negation' endomorphism $\\neg : \\text{Bool} \\to \\text{Bool}$ to the diagonal entries of the matrix $M_{n,k} = f(n)(k)$. Since $\\neg$ has no fixed point ($\\neg b \\neq b$), the resulting sequence must disagree with every row. This perspective generalizes: Lawvere's fixed-point theorem (1969) shows that whenever an endomorphism has no fixed point, a diagonal argument succeeds — unifying Cantor, Gödel, Turing, and Russell as instances of one categorical principle.",
+    "mathContext": "$\\text{diagonal}(f)(n) = \\neg f(n)(n)$. The bit flip guarantees $\\text{diagonal}(f) \\neq f(n)$ for all $n$. The key is that $\\neg : \\text{Bool} \\to \\text{Bool}$ is fixed-point-free.",
     "significance": "key",
     "relatedConcepts": [
       "diagonal argument",
       "boolean negation",
-      "self-reference"
+      "self-reference",
+      "Lawvere fixed-point theorem",
+      "fixed-point-free map"
     ],
     "prerequisites": [
       "boolean negation",
@@ -120,13 +122,15 @@
     },
     "type": "technique",
     "title": "No Surjection from ℕ to Binary Sequences",
-    "content": "Reformulation: there is no surjective function from $\\mathbb{N}$ to `BinarySeq`. Assumes a surjection $(f, h_f)$ exists, uses `cantor_diagonalization` to get a sequence $s$ not in the range of $f$, then uses surjectivity to find $n$ with $f(n) = s$ — a contradiction.",
+    "content": "Reformulation: there is no surjective function from $\\mathbb{N}$ to `BinarySeq`. Assumes a surjection $(f, h_f)$ exists, uses `cantor_diagonalization` to get a sequence $s$ not in the range of $f$, then uses surjectivity to find $n$ with $f(n) = s$ — a contradiction.\n\n**This reformulation is logically stronger** than the main theorem: `cantor_diagonalization` says every $f$ misses something (constructive), while `no_surjection_nat_to_binary` says no surjection exists (classical negation). In constructive mathematics, the distinction matters: the former is valid without excluded middle, while this negation-based formulation uses classical reasoning.",
     "mathContext": "$\\neg\\exists f : \\mathbb{N} \\to 2^{\\mathbb{N}},\\, f \\text{ surjective}$. Proof by contradiction using the main theorem.",
     "significance": "supporting",
     "relatedConcepts": [
       "surjectivity",
       "Function.Surjective",
-      "proof by contradiction"
+      "proof by contradiction",
+      "constructive vs classical",
+      "excluded middle"
     ],
     "prerequisites": [
       "cantor_diagonalization",

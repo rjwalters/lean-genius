@@ -121,9 +121,10 @@
     "summary": "This formalization wraps Mathlib's complete proof of Bertrand's Postulate, which follows the elementary approach of Erdős. The proof demonstrates that advanced results in number theory can be established without complex analysis.\n\nThe key insight is that the central binomial coefficient's prime factorization is constrained by the distribution of primes—if there were no prime between n and 2n, the factorization would be too \"sparse\" to match the coefficient's known magnitude.",
     "implications": "Bertrand's Postulate has several important applications:\n\n**1. Prime Gaps**\nProvides an explicit bound on gaps between consecutive primes—the gap after prime p is at most p.\n\n**2. Algorithmic Applications**\nGuarantees a prime can always be found in a known range, useful for primality-related algorithms.\n\n**3. Foundation for Stronger Results**\nLeads to refinements like Nagura's theorem (1952): for n > 25, there's a prime between n and (1.2)n.\n\n**4. Historical Significance**\nErdős's proof at age 19 launched a legendary career with over 1,500 papers.",
     "openQuestions": [
-      "Cramér's Conjecture: Are prime gaps bounded by O((log p)²)?",
-      "Is there always a prime between n² and (n+1)² (Legendre's conjecture)?",
-      "What is the precise density of primes in short intervals?"
+      "Formalize Cramér's conjecture: are prime gaps bounded by $O((\\log p)^2)$? The strongest unconditional bound is Baker-Harman-Pintz's $p_{n+1} - p_n = O(p_n^{0.525})$, far from Cramér's prediction",
+      "Formalize Legendre's conjecture: is there always a prime between $n^2$ and $(n+1)^2$? This would imply $p_{n+1} - p_n = O(\\sqrt{p_n})$, much stronger than Bertrand",
+      "Prove the Bertrand-type bound for prime $k$-tuples: does there always exist a prime pair $(p, p+2)$ in $(n, cn]$ for some constant $c$?",
+      "Formalize Erdős's proof directly in Lean (rather than via Mathlib's opaque proof) to make each step of the central binomial coefficient analysis visible and independently checkable"
     ]
   },
   "crossReferences": [
