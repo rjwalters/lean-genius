@@ -16,7 +16,11 @@ import type { ResearchListing, ResearchProblem } from '@/types/research'
 import listingsData from './research-listings.json'
 
 // Lightweight listings for ResearchPage - does not pull in full problem data
-export const researchListings: ResearchListing[] = listingsData as ResearchListing[]
+// Ensure tags always exists (defensive - build.ts should provide it)
+export const researchListings: ResearchListing[] = (listingsData as ResearchListing[]).map(l => ({
+  ...l,
+  tags: l.tags ?? [],
+}))
 
 /**
  * Asynchronously load research problem data for a given slug.
