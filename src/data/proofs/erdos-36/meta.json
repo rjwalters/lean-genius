@@ -153,7 +153,7 @@
       "id": "observations",
       "title": "Observations and Techniques",
       "startLine": 80,
-      "endLine": 92,
+      "endLine": 91,
       "summary": "Discusses Erdős's disproved $c = 1/2$ conjecture, White's Fourier analytic method (autocorrelation → convex optimization), and connections to additive combinatorics and discrepancy theory.",
       "mathContext": "Write $f = 1_A - 1/2$. Then $\\text{overlap}(A,B,k) = N/2 - \\sum_j f(j)f(j+k)$. By Parseval: $\\max_k |\\hat{f}(k)|^2 \\geq \\|f\\|_2^2/2N$, giving the Fourier lower bound."
     }
