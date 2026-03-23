@@ -612,9 +612,10 @@ theorem fourier_parseval_pigeonhole {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
     so 2 is a unit in ZMod N. -/
 private lemma two_mul_eq_zero_of_odd {N : ℕ} [NeZero N] (hNodd : Odd N)
     (r : ZMod N) (h : 2 * r = 0) : r = 0 := by
-  have h2 : IsUnit (2 : ZMod N) := by
-    rw [ZMod.isUnit_natCast_iff]
-    exact Nat.Coprime.symm (Odd.nat_coprime_two hNodd)
+  have hcop : Nat.Coprime 2 N := by
+    have hndvd : ¬(2 ∣ N) := by obtain ⟨k, hk⟩ := hNodd; omega
+    exact (Nat.Prime.coprime_iff_not_dvd Nat.prime_two).mpr hndvd
+  have h2 : IsUnit (2 : ZMod N) := ⟨ZMod.unitOfCoprime 2 hcop, rfl⟩
   exact h2.mul_left_cancel (h.trans (mul_zero 2).symm)
 
 /-- AP-free subsets of ZMod N have strictly fewer than N elements when N > 1.
@@ -622,11 +623,18 @@ private lemma two_mul_eq_zero_of_odd {N : ℕ} [NeZero N] (hNodd : Odd N)
 private lemma apFree_card_lt {N : ℕ} [NeZero N] (hN : 1 < N) (A : Finset (ZMod N))
     (hAP : APFree A) : A.card < N := by
   by_contra h; push_neg at h
-  have hAfull : A = Finset.univ :=
-    Finset.eq_univ_of_card A (le_antisymm (card_le_nat A) h)
+  have hAfull : A = Finset.univ := by
+    apply Finset.eq_univ_of_card
+    have := Finset.card_le_univ A
+    rw [ZMod.card] at this ⊢
+    omega
   -- 1 ≠ 0 in ZMod N when N > 1 (since N ∤ 1)
   have h1ne : (1 : ZMod N) ≠ 0 := by
-    rw [Ne, ← Nat.cast_one, ZMod.natCast_zmod_eq_zero_iff_dvd]; omega
+    haveI : Fact (1 < N) := ⟨hN⟩
+    intro h1
+    have := ZMod.val_one (n := N)
+    rw [h1, ZMod.val_zero] at this
+    omega
   -- The 3-AP (0, 1, 2) with d = 1 contradicts AP-freeness of univ
   exact hAP 0 1 h1ne (hAfull ▸ Finset.mem_univ _) (hAfull ▸ Finset.mem_univ _)
     (hAfull ▸ Finset.mem_univ _)
@@ -662,8 +670,9 @@ theorem fourier_large_coefficient {N : ℕ} (hN : 1 < N) (hNodd : Odd N)
     refine ⟨r, hr, ?_⟩
     -- |A|·(N-|A|) ≥ N-1 for 1 ≤ |A| ≤ N-1 (minimum of a(N-a) on this interval)
     have hAcard_le : (A.card : ℝ) ≤ ↑N - 1 := by
-      have : A.card ≤ N - 1 := Nat.lt_iff_le_pred (by omega) |>.mp hAcard_lt
-      exact_mod_cast this
+      have h := Nat.lt_iff_le_pred (by omega) |>.mp hAcard_lt
+      have : (A.card : ℝ) ≤ ↑(N - 1) := Nat.cast_le.mpr h
+      rwa [Nat.cast_sub (Nat.one_le_of_lt hN), Nat.cast_one] at this
     have h_prod_ge : (A.card : ℝ) * (↑N - ↑A.card) ≥ ↑N - 1 := by
       -- a(N-a) - (N-1) = (a-1)(N-1-a) ≥ 0 for 1 ≤ a ≤ N-1
       have ha1 : (1 : ℝ) ≤ ↑A.card := Nat.one_le_cast.mpr hAcard_pos
@@ -826,6 +835,128 @@ theorem fourier_large_coefficient {N : ℕ} (hN : 1 < N) (hNodd : Odd N)
       linarith
     -- But δ²N ≥ 2 gives δ²(N+1) = δ²N + δ² > 2
     linarith
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART IV-B: DIRECT FOURIER BOUND ON AP-FREE SETS
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Direct Fourier bound: any AP-free subset A of ZMod N (N odd, N > 1)
+    satisfies 2·|A|² ≤ N·(|A|+1).
+
+    This follows from the Fourier identity for AP-free sets
+    (N·|A| = |A|³ + Σ_{r≠0} Â(r)²·conj(Â(2r))) by bounding the nonzero
+    sum via triangle inequality, the pointwise bound ‖Â(2r)‖ ≤ |A|,
+    and Parseval. No density increment or iteration is needed.
+
+    Tight for N = 3: {0,1} ⊆ Z/3Z is AP-free with 2·4 = 8 ≤ 9 = 3·3. -/
+theorem apFree_card_quadratic_bound {N : ℕ} (hN : 1 < N)
+    (A : Finset (ZMod N)) (hAP : APFree A) :
+    2 * (A.card : ℝ) ^ 2 ≤ ↑N * (↑A.card + 1) := by
+  haveI : NeZero N := ⟨by omega⟩
+  have hNpos : (0 : ℝ) < ↑N := Nat.cast_pos.mpr (by omega)
+  have hN_ne : (↑N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
+  -- Handle empty set
+  by_cases hAempty : A = ∅
+  · simp [hAempty]
+  -- A is nonempty
+  have hAne : A.Nonempty := Finset.nonempty_iff_ne_empty.mpr hAempty
+  have hAcard_pos : 0 < A.card := Finset.card_pos.mpr hAne
+  have hA_pos : (0 : ℝ) < ↑A.card := Nat.cast_pos.mpr hAcard_pos
+  have hAcard_lt : A.card < N := apFree_card_lt hN A hAP
+  have hA_lt : (A.card : ℝ) < ↑N := Nat.cast_lt.mpr hAcard_lt
+  -- Set up Fourier identity
+  have hcount : tripleCount A = 0 := (apFree_iff_tripleCount_zero A).mp hAP
+  set f := fun r : ZMod N =>
+    fourierCoeff A r ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * r)) with hf_def
+  -- Σ_r f(r) = N·|A|
+  have hsum_eq : Finset.univ.sum f = (↑N : ℂ) * ↑A.card := by
+    have hid : (↑A.card : ℂ) = (↑N)⁻¹ * Finset.univ.sum f := by
+      have h := triple_count_fourier A
+      rw [hcount, Nat.cast_zero, zero_add] at h; exact h
+    rw [hid, ← mul_assoc, mul_inv_cancel₀ hN_ne, one_mul]
+  -- Split at r = 0
+  have hsplit : Finset.univ.sum f =
+      f 0 + (Finset.univ.erase (0 : ZMod N)).sum f :=
+    (Finset.add_sum_erase _ _ (Finset.mem_univ 0)).symm
+  -- f(0) = |A|³
+  have hf0 : f 0 = (↑A.card : ℂ) ^ 3 := by
+    simp only [hf_def, mul_zero, fourierCoeff_zero]
+    rw [map_natCast (starRingEnd ℂ)]; ring
+  -- Nonzero sum = N·|A| - |A|³
+  have hnonzero : (Finset.univ.erase (0 : ZMod N)).sum f =
+      (↑N : ℂ) * ↑A.card - (↑A.card : ℂ) ^ 3 := by
+    have h := hsum_eq; rw [hsplit, hf0] at h; linear_combination h
+  -- Bound each ‖f(r)‖ ≤ ‖Â(r)‖² · |A| (using ‖Â(2r)‖ ≤ |A|)
+  have hnorm_term : ∀ r : ZMod N,
+      ‖f r‖ ≤ ‖fourierCoeff A r‖ ^ 2 * ↑A.card := by
+    intro r
+    simp only [hf_def]
+    calc ‖fourierCoeff A r ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * r))‖
+        = ‖fourierCoeff A r‖ ^ 2 * ‖fourierCoeff A (2 * r)‖ := by
+          rw [norm_mul, norm_pow]; congr 1; exact norm_star _
+      _ ≤ ‖fourierCoeff A r‖ ^ 2 * ↑A.card := by
+          apply mul_le_mul_of_nonneg_left (fourierCoeff_norm_le A (2 * r)) (sq_nonneg _)
+  -- Sum the bound: Σ_{r≠0} ‖f(r)‖ ≤ |A| · Σ_{r≠0} ‖Â(r)‖² = |A|²·(N-|A|)
+  have hsum_norms : (Finset.univ.erase (0 : ZMod N)).sum (fun r => ‖f r‖) ≤
+      (A.card : ℝ) ^ 2 * (↑N - ↑A.card) := by
+    calc (Finset.univ.erase (0 : ZMod N)).sum (fun r => ‖f r‖)
+        ≤ (Finset.univ.erase (0 : ZMod N)).sum
+            (fun r => ‖fourierCoeff A r‖ ^ 2 * ↑A.card) :=
+          Finset.sum_le_sum (fun r _ => hnorm_term r)
+      _ = ↑A.card * (Finset.univ.erase (0 : ZMod N)).sum
+            (fun r => ‖fourierCoeff A r‖ ^ 2) := by
+          rw [← Finset.sum_mul, mul_comm]
+      _ = ↑A.card * (↑A.card * (↑N - ↑A.card)) := by
+          congr 1; rw [← Finset.filter_ne']; exact parseval_nonzero A
+      _ = ↑A.card ^ 2 * (↑N - ↑A.card) := by ring
+  -- Triangle inequality
+  have htri : ‖(Finset.univ.erase (0 : ZMod N)).sum f‖ ≤
+      (Finset.univ.erase (0 : ZMod N)).sum (fun r => ‖f r‖) :=
+    norm_sum_le _ _
+  -- The sum is real-valued
+  set a := (A.card : ℝ) with ha_def
+  have hsum_real : (Finset.univ.erase (0 : ZMod N)).sum f =
+      ((↑N * a - a ^ 3 : ℝ) : ℂ) := by
+    rw [hnonzero]; simp only [ha_def]; push_cast; ring
+  -- Combine: |N·a - a³| ≤ a²·(N-a)
+  have habs_ineq : |↑N * a - a ^ 3| ≤ a ^ 2 * (↑N - a) := by
+    have hnorm_eq : ‖(Finset.univ.erase (0 : ZMod N)).sum f‖ = |↑N * a - a ^ 3| := by
+      rw [hsum_real, Complex.norm_real, Real.norm_eq_abs]
+    linarith [hnorm_eq, htri, hsum_norms]
+  -- Case split to derive 2a² ≤ N(a+1)
+  have ha_ge_1 : (1 : ℝ) ≤ a := Nat.one_le_cast.mpr hAcard_pos
+  by_cases ha_sq : a ^ 2 ≤ ↑N
+  · -- Case 1: a² ≤ N. Then 2a² ≤ 2N ≤ N(a+1) since a ≥ 1.
+    nlinarith
+  · -- Case 2: a² > N. Then Na - a³ < 0, so |Na-a³| = a³-Na.
+    push_neg at ha_sq
+    have hval : |↑N * a - a ^ 3| = -(↑N * a - a ^ 3) := by
+      rw [abs_of_neg]; nlinarith
+    rw [hval] at habs_ineq
+    -- a³ - Na ≤ a²(N-a) = a²N - a³
+    -- So 2a³ ≤ Na + a²N = Na(1+a)
+    -- Since a > 0, cancel: 2a² ≤ N(1+a)
+    have hkey : a * (2 * a ^ 2) ≤ a * (↑N * (a + 1)) := by nlinarith
+    exact le_of_mul_le_mul_left hkey hA_pos
+
+/-- Corollary: any AP-free subset of ZMod N (N odd, N > 1) has at most
+    (N+1)/2 elements, i.e., 2·|A| ≤ N + 1. -/
+theorem apFree_card_le_half {N : ℕ} (hN : 1 < N)
+    (A : Finset (ZMod N)) (hAP : APFree A) :
+    2 * A.card ≤ N + 1 := by
+  -- From the quadratic bound (in ℝ): 2a² ≤ N(a+1)
+  have hq := apFree_card_quadratic_bound hN A hAP
+  -- Cast to ℕ
+  have hq_nat : 2 * A.card ^ 2 ≤ N * (A.card + 1) := by exact_mod_cast hq
+  -- Contradiction: if 2k > N+1 then k(2k-N) ≥ 2k ≥ N+2 > N ≥ k(2k-N)
+  by_contra h; push_neg at h
+  have h1 : N + 2 ≤ 2 * A.card := by omega
+  -- From h1: k·(N+2) ≤ k·(2k) = 2k²
+  have h2 : (N + 2) * A.card ≤ 2 * A.card ^ 2 := by nlinarith [h1]
+  -- Chain: (N+2)·k ≤ 2k² ≤ N·(k+1) = Nk+N, so 2k ≤ N
+  have h3 : 2 * A.card ≤ N := by nlinarith [h2, hq_nat]
+  -- But 2k ≥ N+2 > N. Contradiction.
+  omega
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART V: DENSITY INCREMENT LEMMA
