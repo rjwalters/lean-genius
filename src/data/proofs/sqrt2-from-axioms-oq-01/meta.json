@@ -155,29 +155,29 @@
   },
   "crossReferences": [
     {
-      "proofId": "sqrt2-from-axioms",
       "relationship": "generalizes",
-      "description": "This proof generalizes the parent √2 formalization to all primes, replacing Even/Odd with general divisibility by p"
+      "description": "This proof generalizes the parent √2 formalization to all primes, replacing Even/Odd with general divisibility by p",
+      "targetId": "sqrt2-from-axioms"
     },
     {
-      "proofId": "sqrt2-irrational",
       "relationship": "alternative-approach",
-      "description": "Uses Mathlib's irrational_sqrt_natCast_iff for a different approach to square root irrationality, covering non-square composites as well"
+      "description": "Uses Mathlib's irrational_sqrt_natCast_iff for a different approach to square root irrationality, covering non-square composites as well",
+      "targetId": "sqrt2-irrational"
     },
     {
-      "proofId": "bezout-identity",
       "relationship": "related",
-      "description": "Bézout's identity is the key theorem needed to prove equivalence of Euclid's criterion with the classical prime definition, which this proof deliberately avoids"
+      "description": "Bézout's identity is the key theorem needed to prove equivalence of Euclid's criterion with the classical prime definition, which this proof deliberately avoids",
+      "targetId": "bezout-identity"
     },
     {
-      "proofId": "nth-root-irrational",
       "relationship": "extends-to",
-      "description": "The nth root irrationality proof extends beyond square roots, using similar descent arguments for higher powers"
+      "description": "The nth root irrationality proof extends beyond square roots, using similar descent arguments for higher powers",
+      "targetId": "nth-root-irrational"
     },
     {
-      "proofId": "infinitude-primes",
       "relationship": "uses-concept",
-      "description": "Both proofs rely on fundamental properties of prime numbers—this one uses the multiplicative (Euclid) property, while infinitude uses the divisor property"
+      "description": "Both proofs rely on fundamental properties of prime numbers—this one uses the multiplicative (Euclid) property, while infinitude uses the divisor property",
+      "targetId": "infinitude-primes"
     }
   ]
 }

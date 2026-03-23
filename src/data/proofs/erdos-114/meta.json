@@ -125,28 +125,28 @@
   },
   "crossReferences": [
     {
-      "proofId": "erdos-115",
-      "relationship": "Direct companion problem: erdos-115 asks for bounds on |p'(z)| on connected lemniscates (Eremenko-Lempert, Chebyshev extremals), while erdos-114 asks which monic polynomial maximizes the lemniscate arc length; both are solved for special cases and share the Eremenko authorship"
+      "relationship": "Direct companion problem: erdos-115 asks for bounds on |p'(z)| on connected lemniscates (Eremenko-Lempert, Chebyshev extremals), while erdos-114 asks which monic polynomial maximizes the lemniscate arc length; both are solved for special cases and share the Eremenko authorship",
+      "targetId": "erdos-115"
     },
     {
-      "proofId": "erdos-1044",
-      "relationship": "Closely parallel extremal question: erdos-1044 asks for the infimum of the maximum boundary length of connected components of {|f(z)| < 1}, the complementary minimization problem to erdos-114's maximization of total arc length of {|p(z)| = 1}"
+      "relationship": "Closely parallel extremal question: erdos-1044 asks for the infimum of the maximum boundary length of connected components of {|f(z)| < 1}, the complementary minimization problem to erdos-114's maximization of total arc length of {|p(z)| = 1}",
+      "targetId": "erdos-1044"
     },
     {
-      "proofId": "erdos-1042",
-      "relationship": "erdos-1042 studies the number of connected components of polynomial lemniscates {|f(z)| < 1} as a function of transfinite diameter; understanding lemniscate topology (connected vs. disconnected) is prerequisite to the length maximization in erdos-114"
+      "relationship": "erdos-1042 studies the number of connected components of polynomial lemniscates {|f(z)| < 1} as a function of transfinite diameter; understanding lemniscate topology (connected vs. disconnected) is prerequisite to the length maximization in erdos-114",
+      "targetId": "erdos-1042"
     },
     {
-      "proofId": "erdos-1046",
-      "relationship": "erdos-1046 (Pommerenke 1959) proves that connected lemniscates {|f(z)| < 1} are contained in a disc of radius 2; this containment result constrains the geometry of the extremal lemniscate in erdos-114 and uses the same potential-theoretic techniques"
+      "relationship": "erdos-1046 (Pommerenke 1959) proves that connected lemniscates {|f(z)| < 1} are contained in a disc of radius 2; this containment result constrains the geometry of the extremal lemniscate in erdos-114 and uses the same potential-theoretic techniques",
+      "targetId": "erdos-1046"
     },
     {
-      "proofId": "erdos-509",
-      "relationship": "erdos-509 asks whether {|f(z)| ≤ 1} can be covered by discs with total radius ≤ 2 (Cartan: 2e; Pommerenke: 2); the disc-covering and arc-length problems are dual perspectives on lemniscate size, both central to the Erdős-Herzog-Piranian program"
+      "relationship": "erdos-509 asks whether {|f(z)| ≤ 1} can be covered by discs with total radius ≤ 2 (Cartan: 2e; Pommerenke: 2); the disc-covering and arc-length problems are dual perspectives on lemniscate size, both central to the Erdős-Herzog-Piranian program",
+      "targetId": "erdos-509"
     },
     {
-      "proofId": "isoperimetric-theorem",
-      "relationship": "erdos-114 is an isoperimetric-type problem for polynomial lemniscates: among all monic degree-n polynomials, find the one whose level set has maximum arc length. The classical isoperimetric theorem (circle maximizes area for fixed perimeter) provides the philosophical template and suggests symmetric (z^n-1) extremizers"
+      "relationship": "erdos-114 is an isoperimetric-type problem for polynomial lemniscates: among all monic degree-n polynomials, find the one whose level set has maximum arc length. The classical isoperimetric theorem (circle maximizes area for fixed perimeter) provides the philosophical template and suggests symmetric (z^n-1) extremizers",
+      "targetId": "isoperimetric-theorem"
     }
   ],
   "relatedProofs": [

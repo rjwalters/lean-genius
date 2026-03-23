@@ -153,12 +153,12 @@
   },
   "crossReferences": [
     {
-      "proofId": "erdos-1",
-      "relationship": "The distinct subset sums problem (Erdős #1) provides the upper bound for Problem #882, since divisibility-free subset sums must be distinct. The ELRSS construction also satisfies the distinct sums property."
+      "relationship": "The distinct subset sums problem (Erdős #1) provides the upper bound for Problem #882, since divisibility-free subset sums must be distinct. The ELRSS construction also satisfies the distinct sums property.",
+      "targetId": "erdos-1"
     },
     {
-      "proofId": "erdos-13",
-      "relationship": "Sidon sets (Erdős #13) require distinct pairwise sums, a related but different additive constraint. Both problems study extremal sizes of subsets of {1,...,n} with restricted additive structure, but Sidon sets have maximum size ~√n vs ~log n here."
+      "relationship": "Sidon sets (Erdős #13) require distinct pairwise sums, a related but different additive constraint. Both problems study extremal sizes of subsets of {1,...,n} with restricted additive structure, but Sidon sets have maximum size ~√n vs ~log n here.",
+      "targetId": "erdos-13"
     }
   ],
   "leanFile": {

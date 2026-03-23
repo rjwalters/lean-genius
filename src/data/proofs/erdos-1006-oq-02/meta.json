@@ -125,16 +125,16 @@
   },
   "crossReferences": [
     {
-      "proofId": "erdos-1006-oq-02-oq-03",
-      "relationship": "Direct FFLLW proof via coloring orientations; proves the theorem referenced as an axiom in this file"
+      "relationship": "Direct FFLLW proof via coloring orientations; proves the theorem referenced as an axiom in this file",
+      "targetId": "erdos-1006-oq-02-oq-03"
     },
     {
-      "proofId": "erdos-1006",
-      "relationship": "Parent formalization of Erdos Problem #1006 on robustly acyclic orientations"
+      "relationship": "Parent formalization of Erdos Problem #1006 on robustly acyclic orientations",
+      "targetId": "erdos-1006"
     },
     {
-      "proofId": "prob-method-lovasz-local",
-      "relationship": "Lovasz Local Lemma is used in Nesetril-Rodl constructions of high-girth high-chromatic graphs that motivate the non-robust orientation question"
+      "relationship": "Lovasz Local Lemma is used in Nesetril-Rodl constructions of high-girth high-chromatic graphs that motivate the non-robust orientation question",
+      "targetId": "prob-method-lovasz-local"
     }
   ],
   "references": [

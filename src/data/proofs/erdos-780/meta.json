@@ -67,7 +67,7 @@
   "overview": {
     "historicalContext": "Erdős Problem #780 generalizes the famous Kneser conjecture to hypergraphs. **Kneser (1955)** conjectured that $\\chi(KG(n,r)) = n - 2r + 2$, i.e., any $(n - 2r + 1)$-coloring of the $r$-subsets of $[n]$ must contain two disjoint sets of the same color. This remained open until **Lovász's landmark 1978 proof** (*J. Comb. Theory A* 25, 319-324), which was the **first major application of algebraic topology to combinatorics**, using the Borsuk-Ulam theorem via the neighborhood complex $\\mathcal{N}(KG(n,r))$. Schrijver simultaneously found a vertex-critical subgraph (the stable Kneser graph) with the same chromatic number.\n\n**Alon, Frankl, and Lovász (1986)** extended this to $r$-uniform hypergraphs (*Trans. AMS* 298, 359-370): if $n \\geq kr + (t-1)(k-1)$, any $t$-coloring of $\\binom{[n]}{r}$ contains $k$ pairwise disjoint monochromatic edges. Their proof generalizes the topological approach using the independence complex and a Borsuk-Ulam-type argument via the Lusternik-Schnirelmann category. **Matoušek (2004)** later gave a purely combinatorial proof using Tucker's lemma. The problem connects to the Erdős-Ko-Rado theorem (1961): the maximum intersecting family gives $\\alpha(KG(n,r)) = \\binom{n-1}{r-1}$, and the fractional chromatic number is $\\chi_f(KG(n,r)) = n/r$.",
     "problemStatement": "**Theorem (Alon-Frankl-Lovász 1986):** Suppose $n \\geq kr + (t-1)(k-1)$ with $r \\geq 1$, $k \\geq 2$, $t \\geq 1$. If the edges of the complete $r$-uniform hypergraph $K_n^{(r)}$ are $t$-colored, some color class contains $k$ pairwise disjoint edges.\n\n**Equivalently:** $\\chi(KG^r(n,k)) = \\lceil (n - r(k-1))/(k-1) \\rceil$.\n\n**Special case ($k = 2$):** Kneser's conjecture: $\\chi(KG(n,r)) = n - 2r + 2$ for $n \\geq 2r$.\n\n**Status:** SOLVED. The bound $n_0 = kr + (t-1)(k-1)$ is tight.",
-    "text": "If n \u2265 kr + (t-1)(k-1) and edges of the complete r-uniform hypergraph on n vertices are t-colored, some color class contains k pairwise disjoint edges. SOLVED by Alon-Frankl-Lov\u00e1sz (1986), generalizing Lov\u00e1sz's proof of Kneser's conjecture.",
+    "text": "If n ≥ kr + (t-1)(k-1) and edges of the complete r-uniform hypergraph on n vertices are t-colored, some color class contains k pairwise disjoint edges. SOLVED by Alon-Frankl-Lovász (1986), generalizing Lovász's proof of Kneser's conjecture.",
     "proofStrategy": "The formalization axiomatizes the main theorems (AFL 1986, Kneser's conjecture, tightness construction, Erdős-Ko-Rado) since the proofs require topological methods not in Mathlib. The structure layer is fully defined: `UniformHypergraph`, `PairwiseDisjoint`, `EdgeColoring`, `KneserHypergraph`, `threshold`. Two summary theorems (`erdos_780_main`, `erdos_780_summary`) are proved from the axioms. Small cases (Petersen graph, $KG(7,3)$, $KG(2r,r)$, $KG(2r+1,r)$) are axiomatized as concrete instances.",
     "keyInsights": [
       "**Exact threshold:** $n_0 = kr + (t-1)(k-1)$ is both necessary and sufficient — the tightness construction partitions $[n_0 - 1] = X_1 \\cup \\cdots \\cup X_t$ with $|X_1| = kr - 1$, $|X_i| = k-1$, coloring by first intersection",
@@ -151,12 +151,12 @@
   ],
   "crossReferences": [
     {
-      "proofId": "borsuk-ulam",
-      "relationship": "The Borsuk-Ulam theorem is the key topological tool in Lovász's 1978 proof of Kneser's conjecture and the AFL 1986 generalization. The topological argument shows the neighborhood/independence complex has high connectivity, forcing the chromatic lower bound."
+      "relationship": "The Borsuk-Ulam theorem is the key topological tool in Lovász's 1978 proof of Kneser's conjecture and the AFL 1986 generalization. The topological argument shows the neighborhood/independence complex has high connectivity, forcing the chromatic lower bound.",
+      "targetId": "borsuk-ulam"
     },
     {
-      "proofId": "ramseys-theorem",
-      "relationship": "Both are Ramsey-type results: Ramsey's theorem guarantees monochromatic complete subgraphs in colored complete graphs, while the AFL theorem guarantees monochromatic matchings in colored hypergraphs. Both establish unavoidable monochromatic substructures."
+      "relationship": "Both are Ramsey-type results: Ramsey's theorem guarantees monochromatic complete subgraphs in colored complete graphs, while the AFL theorem guarantees monochromatic matchings in colored hypergraphs. Both establish unavoidable monochromatic substructures.",
+      "targetId": "ramseys-theorem"
     }
   ],
   "conclusion": {

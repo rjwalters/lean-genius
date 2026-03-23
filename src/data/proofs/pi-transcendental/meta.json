@@ -143,34 +143,34 @@
   },
   "crossReferences": [
     {
-      "proofId": "hermite-lindemann",
       "relationship": "generalizes",
-      "description": "The Hermite-Lindemann theorem ($e^\\alpha$ transcendental for algebraic $\\alpha \\neq 0$) is the key lemma axiomatized here; π's transcendence is a direct corollary"
+      "description": "The Hermite-Lindemann theorem ($e^\\alpha$ transcendental for algebraic $\\alpha \\neq 0$) is the key lemma axiomatized here; π's transcendence is a direct corollary",
+      "targetId": "hermite-lindemann"
     },
     {
-      "proofId": "e-transcendental",
       "relationship": "related",
-      "description": "Hermite's 1873 proof of $e$'s transcendence introduced the auxiliary polynomial method that Lindemann extended to prove $\\pi$ transcendental in 1882"
+      "description": "Hermite's 1873 proof of $e$'s transcendence introduced the auxiliary polynomial method that Lindemann extended to prove $\\pi$ transcendental in 1882",
+      "targetId": "e-transcendental"
     },
     {
-      "proofId": "euler-identity",
       "relationship": "uses",
-      "description": "Euler's identity $e^{i\\pi} = -1$ is the critical bridge: it converts the transcendence of exponentials into a statement about $\\pi$"
+      "description": "Euler's identity $e^{i\\pi} = -1$ is the critical bridge: it converts the transcendence of exponentials into a statement about $\\pi$",
+      "targetId": "euler-identity"
     },
     {
-      "proofId": "gelfond-schneider",
       "relationship": "related",
-      "description": "The Gelfond-Schneider theorem (1934) extended transcendence theory beyond exponentials to $\\alpha^\\beta$, resolving Hilbert's 7th problem"
+      "description": "The Gelfond-Schneider theorem (1934) extended transcendence theory beyond exponentials to $\\alpha^\\beta$, resolving Hilbert's 7th problem",
+      "targetId": "gelfond-schneider"
     },
     {
-      "proofId": "angle-trisection",
       "relationship": "parallel",
-      "description": "Another classical impossibility result using field-theoretic arguments; angle trisection fails because some angles require degree-3 extensions, while circle squaring fails because $\\pi$ is transcendental"
+      "description": "Another classical impossibility result using field-theoretic arguments; angle trisection fails because some angles require degree-3 extensions, while circle squaring fails because $\\pi$ is transcendental",
+      "targetId": "angle-trisection"
     },
     {
-      "proofId": "sqrt2-irrational",
       "relationship": "foundation",
-      "description": "Irrationality of $\\sqrt{2}$ is the simplest case of showing a number is not rational; transcendence of $\\pi$ is the much stronger statement that $\\pi$ is not algebraic"
+      "description": "Irrationality of $\\sqrt{2}$ is the simplest case of showing a number is not rational; transcendence of $\\pi$ is the much stronger statement that $\\pi$ is not algebraic",
+      "targetId": "sqrt2-irrational"
     }
   ],
   "references": [

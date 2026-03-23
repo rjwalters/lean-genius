@@ -165,28 +165,28 @@
   },
   "crossReferences": [
     {
-      "proofId": "erdos-481",
-      "relationship": "Klarner's 1982 theorem on affine sequence iteration: for maps {x ↦ aᵢx + bᵢ} with Σ(1/aᵢ) > 1, iterating from {1} must produce repeated elements. Problem #1134 sits at the critical threshold Σ(1/mᵢ) = 1/2 + 1/3 + 1/6 = 1 where Klarner's semigroup theory yields only trivial density bounds, motivating the Crampin-Hilton refinement."
+      "relationship": "Klarner's 1982 theorem on affine sequence iteration: for maps {x ↦ aᵢx + bᵢ} with Σ(1/aᵢ) > 1, iterating from {1} must produce repeated elements. Problem #1134 sits at the critical threshold Σ(1/mᵢ) = 1/2 + 1/3 + 1/6 = 1 where Klarner's semigroup theory yields only trivial density bounds, motivating the Crampin-Hilton refinement.",
+      "targetId": "erdos-481"
     },
     {
-      "proofId": "erdos-1135",
-      "relationship": "The Collatz conjecture studies the orbit of every n under the deterministic map f(n) = n/2 or (3n+1)/2. Lagarias observed that Klarner's problems (including #1134) are structurally related: both concern iteration of piecewise affine maps on ℕ, with the key difference that Klarner's maps are applied non-deterministically (any map may be used), while Collatz applies maps based on parity."
+      "relationship": "The Collatz conjecture studies the orbit of every n under the deterministic map f(n) = n/2 or (3n+1)/2. Lagarias observed that Klarner's problems (including #1134) are structurally related: both concern iteration of piecewise affine maps on ℕ, with the key difference that Klarner's maps are applied non-deterministically (any map may be used), while Collatz applies maps based on parity.",
+      "targetId": "erdos-1135"
     },
     {
-      "proofId": "erdos-1110",
-      "relationship": "Concerns representability as sums of p^k q^l with p=2, q=3 — the same two primes that appear as primary multipliers in #1134 (maps x↦2x+1 and x↦3x+1). The 3-smooth structure and the factorization 6 = 2×3 underlie both problems: in #1134 the coincidence 6 = 2×3 enables the Crampin-Hilton trick, while in #1110 the interaction of powers of 2 and 3 governs which integers can be represented."
+      "relationship": "Concerns representability as sums of p^k q^l with p=2, q=3 — the same two primes that appear as primary multipliers in #1134 (maps x↦2x+1 and x↦3x+1). The 3-smooth structure and the factorization 6 = 2×3 underlie both problems: in #1134 the coincidence 6 = 2×3 enables the Crampin-Hilton trick, while in #1110 the interaction of powers of 2 and 3 governs which integers can be represented.",
+      "targetId": "erdos-1110"
     },
     {
-      "proofId": "erdos-125",
-      "relationship": "Asks whether a set defined by digit restrictions (base-3 digits ∈ {0,1} summed with base-4 digits ∈ {0,1}) has positive density. Known lower bound |A+B ∩ [1,x]| ≫ x^{0.9777} is qualitatively similar to #1134's exponent τ ≈ 0.9006 < 1. Both problems feature sets with sub-linear but super-polynomial growth where the density question turns on fine analytic estimates."
+      "relationship": "Asks whether a set defined by digit restrictions (base-3 digits ∈ {0,1} summed with base-4 digits ∈ {0,1}) has positive density. Known lower bound |A+B ∩ [1,x]| ≫ x^{0.9777} is qualitatively similar to #1134's exponent τ ≈ 0.9006 < 1. Both problems feature sets with sub-linear but super-polynomial growth where the density question turns on fine analytic estimates.",
+      "targetId": "erdos-125"
     },
     {
-      "proofId": "erdos-1146",
-      "relationship": "Asks whether the 3-smooth numbers B = {2^m · 3^n} form an essential component (a set that boosts Schnirelmann density when added to any positive-density set). The counting function |B ∩ [1,N]| ~ C(log N)² places B exactly at Ruzsa's threshold. Problem #1134 uses the multiplicative structure of 2 and 3 in a complementary way: the factorization 6 = 2×3 among generating multipliers produces a sharp growth exponent, linking both problems to the arithmetic of 3-smooth numbers."
+      "relationship": "Asks whether the 3-smooth numbers B = {2^m · 3^n} form an essential component (a set that boosts Schnirelmann density when added to any positive-density set). The counting function |B ∩ [1,N]| ~ C(log N)² places B exactly at Ruzsa's threshold. Problem #1134 uses the multiplicative structure of 2 and 3 in a complementary way: the factorization 6 = 2×3 among generating multipliers produces a sharp growth exponent, linking both problems to the arithmetic of 3-smooth numbers.",
+      "targetId": "erdos-1146"
     },
     {
-      "proofId": "erdos-845",
-      "relationship": "Studies sums of 3-smooth numbers b₁ < ... < bₜ with bounded ratio bₜ/b₁ ≤ C. The 3-smooth numbers {2^m · 3^n} are exactly the values reachable by iterating multiplication by 2 and 3 — a multiplicative analogue of the additive iteration in #1134. Disproval of #845 (all integers representable with C = 6) contrasts with #1134's result that the additive-affine orbit has density zero."
+      "relationship": "Studies sums of 3-smooth numbers b₁ < ... < bₜ with bounded ratio bₜ/b₁ ≤ C. The 3-smooth numbers {2^m · 3^n} are exactly the values reachable by iterating multiplication by 2 and 3 — a multiplicative analogue of the additive iteration in #1134. Disproval of #845 (all integers representable with C = 6) contrasts with #1134's result that the additive-affine orbit has density zero.",
+      "targetId": "erdos-845"
     }
   ],
   "relatedProofs": [
