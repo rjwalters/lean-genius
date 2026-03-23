@@ -62,6 +62,12 @@
       "The genuine Lean proof of cyclotomic Galois commutativity uses the group isomorphism Gal ≅ (ℤ/nℤ)× via autEquivPow",
       "Real quadratic fields lack an analogue of CM theory, making Hilbert 12 genuinely open there",
       "Stark conjectures attempt to replace elliptic functions with L-function special values as the source of explicit generators"
+    ],
+    "prerequisites": [
+      "Algebraic number theory: number fields $K/\\mathbb{Q}$, rings of integers $\\mathcal{O}_K$, and abelian extensions — the generalization of cyclotomic fields",
+      "The Kronecker-Weber theorem: every abelian extension of $\\mathbb{Q}$ is contained in a cyclotomic field $\\mathbb{Q}(\\zeta_n)$ — the base case of Hilbert's 12th problem",
+      "Complex multiplication (CM): elliptic curves $E$ with $\\text{End}(E) \\cong \\mathcal{O}_K$ for imaginary quadratic $K$, whose $j$-invariants and torsion points generate abelian extensions of $K$",
+      "Class field theory: the Artin reciprocity map $\\text{Gal}(K^{\\text{ab}}/K) \\cong \\widehat{\\mathcal{O}_K}^\\times / K^\\times$ classifying all abelian extensions of a number field $K$"
     ]
   },
   "sections": [
