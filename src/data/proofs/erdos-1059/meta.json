@@ -98,7 +98,8 @@
       "**Probabilistic argument:** Each $n - k!$ is prime with probability $\\sim 1/\\ln n$. With $\\sim \\log n / \\log \\log n$ independent checks, the probability all are composite is $(1 - 1/\\ln n)^{\\log n / \\log \\log n} \\to 1$, suggesting most large primes qualify.",
       "**Factorial growth bounds verification:** The proofs use auxiliary lemmas (`factorial_lt_bound`, `factorial_lt_bound_211`) to bound $k$ from the assumption $k! < n$, enabling exhaustive case analysis via `interval_cases`.",
       "**Erdős's smooth-number variant:** By dropping the primality requirement on $n$ and instead requiring all prime factors $> l$, the problem may be approachable via sieve theory and smooth number estimates.",
-      "**Computational decidability:** The property is decidable for any fixed $n$, and both examples and the counterexample are fully verified by Lean's `decide` tactic, demonstrating the power of computational verification in number theory."
+      "**Computational decidability:** The property is decidable for any fixed $n$, and both examples and the counterexample are fully verified by Lean's `decide` tactic, demonstrating the power of computational verification in number theory.",
+      "**Covering system connection:** For each small factorial $k!$, the residue $p \\bmod k!$ determines whether $p - k!$ has a small factor. A covering system argument could show that for all $p$ in certain residue classes, every $p - k!$ is divisible by some small prime — but known covering systems (e.g., Erdős's 1950 construction) do not align with factorial moduli, making this approach difficult."
     ],
     "prerequisites": [
       "Elementary number theory: primes, factorials, compositeness",
@@ -224,6 +225,16 @@
       "targetId": "derangements",
       "relationship": "related",
       "description": "The derangement formula $D(n) = n! \\sum_{k=0}^{n} (-1)^k/k! \\approx n!/e$ provides another perspective on factorial arithmetic: the ratio $D(n)/n! \\to 1/e$ shows how inclusion-exclusion interacts with factorial growth. This combinatorial aspect of factorials complements the number-theoretic factorial-prime interactions studied in Erdős #1059"
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "thematic",
+      "description": "Zhang's theorem (2013) and Maynard-Tao improvements prove infinitely many bounded prime gaps. Both concern the fine structure of prime distribution: bounded gaps asks whether primes cluster, while Erdős #1059 asks whether primes avoid factorial offsets. The sieve methods used for bounded gaps (GPY sieve, Maynard-Tao weights) may be relevant to the smooth-number variant of this problem"
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "foundational",
+      "description": "The divergence of $\\sum 1/p$ (Euler 1737) quantifies the abundance of primes and underpins the probabilistic heuristic for this problem: the expected number of prime factorial subtractions $\\sum_{k! < p} 1/\\ln(p - k!)$ diverges logarithmically, but with only $O(\\log p / \\log \\log p)$ terms, each individual sum is bounded — explaining why the conjecture predicts density 1 among primes"
     }
   ],
   "relatedProofs": [
@@ -238,7 +249,9 @@
     "prime-number-theorem",
     "stirling-formula",
     "twin-primes-special",
-    "derangements"
+    "derangements",
+    "bounded-prime-gaps",
+    "prime-reciprocal-divergence"
   ],
   "leanFile": {
     "imports": [
