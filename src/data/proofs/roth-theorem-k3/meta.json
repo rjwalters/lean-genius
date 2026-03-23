@@ -17,7 +17,7 @@
       "marquee-phase-3"
     ],
     "badge": "formalized",
-    "sorries": 4,
+    "sorries": 3,
     "mathlibDependencies": [
       {
         "theorem": "Finset.card",
@@ -77,7 +77,7 @@
       "title": "Part III: Fourier Analysis on Z/NZ",
       "startLine": 93,
       "endLine": 124,
-      "summary": "Defines fourierCoeff. Proves norm bound via triangle inequality. States Parseval identity and AP-Fourier identity (2 sorries)."
+      "summary": "Defines fourierCoeff and ψ character. Proves norm bound, conj_psi, char_orthogonality, char_sum_int, and Parseval identity. States AP-Fourier identity (1 sorry: triple_count_fourier)."
     },
     {
       "id": "large-coeff",
@@ -139,7 +139,7 @@
     ],
     "opens": [],
     "namespace": "Szemeredi.Roth",
-    "lineCount": 373,
+    "lineCount": 561,
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 3
