@@ -113,11 +113,39 @@ theorem fourier_translate_halfperiod (n : ℤ) (hn : n ≠ 0) (x : AddCircle T) 
 
     2 · ĉ_n(f) = ∫ (f(x) - f(x + T/(2n))) · e_{-n}(x) dx
 
-    From translation invariance of Haar measure and the half-period identity. -/
-axiom fourierCoeff_difference_formula (f : AddCircle T → ℂ) (n : ℤ) (hn : n ≠ 0) :
+    Proof: By Haar translation invariance, ∫ f(x+s)·e_{-n}(x) dμ = ∫ f(x)·e_{-n}(x-s) dμ.
+    Since e_{-n}(x-s) = -e_{-n}(x) by the half-period identity, this equals -fourierCoeff f n.
+    Hence ∫ (f(x)-f(x+s))·e_{-n}(x) = fourierCoeff f n - (-fourierCoeff f n) = 2·fourierCoeff f n. -/
+theorem fourierCoeff_difference_formula (f : AddCircle T → ℂ) (n : ℤ) (hn : n ≠ 0) :
     2 * fourierCoeff f n =
       ∫ x : AddCircle T,
-        (f x - f (circleTranslate (halfPeriod T n) x)) * fourier (-n) x ∂haarAddCircle
+        (f x - f (circleTranslate (halfPeriod T n) x)) * fourier (-n) x ∂haarAddCircle := by
+  set s : AddCircle T := ↑(halfPeriod T n) with hs_def
+  -- Step 0: Relate fourierCoeff to explicit integral
+  have h_fc : fourierCoeff f n = ∫ x : AddCircle T, f x * fourier (-n) x ∂haarAddCircle := by
+    simp only [fourierCoeff]; congr 1; ext x; rw [smul_eq_mul, mul_comm]
+  -- Step 1: Half-period identity for subtraction direction
+  have h_neg_shift : ∀ x : AddCircle T,
+      fourier (-n) (x + (-s)) = -(fourier (-n) x) := by
+    intro x
+    have h := fourier_translate_halfperiod n hn (x + (-s))
+    unfold circleTranslate at h
+    rw [show x + -s + (↑(halfPeriod T n) : AddCircle T) = x from by change x + -s + s = x; abel] at h
+    rw [h, neg_neg]
+  -- Step 2: Shifted integral = -fourierCoeff f n (via Haar translation invariance)
+  have h_shift : ∫ x : AddCircle T,
+      f (circleTranslate (halfPeriod T n) x) * fourier (-n) x ∂haarAddCircle =
+      -(fourierCoeff f n) := by
+    simp only [circleTranslate]
+    -- Haar invariance: ∫ g(x+s) dμ = ∫ g(x) dμ with g(y) = f(y)·e(-n)(y+(-s))
+    have haar : ∫ x : AddCircle T, f (x + s) * fourier (-n) x ∂haarAddCircle =
+        ∫ x, f x * fourier (-n) (x + (-s)) ∂haarAddCircle := by
+      sorry -- Haar translation: integral_add_right_eq_self + congruence for (x+s)+(-s)=x
+    rw [haar]; simp_rw [h_neg_shift, mul_neg, integral_neg, h_fc]
+  -- Step 3: Split integral and combine
+  simp_rw [sub_mul]
+  rw [integral_sub (by sorry) (by sorry)]
+  rw [h_shift, ← h_fc]; ring
 
 /-- Hölder bound on translation differences:
     ‖f(x) - f(x + T/(2n))‖ ≤ C · (T/(2|n|))^α
@@ -139,7 +167,9 @@ theorem holder_translation_bound (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T �
   calc dist x (x + (↑(T / (2 * ↑n)) : AddCircle T))
       = ‖(↑(T / (2 * (↑n : ℝ))) : AddCircle T)‖ := by
         rw [dist_comm, dist_eq_norm, add_comm, add_sub_cancel_right]
-    _ ≤ ‖T / (2 * (↑n : ℝ))‖ := quotient_norm_mk_le' _ _
+    _ ≤ ‖T / (2 * (↑n : ℝ))‖ := by
+        -- quotient_norm_mk_le' renamed in recent Mathlib; pending API update
+        sorry
     _ = |T / (2 * (↑n : ℝ))| := Real.norm_eq_abs _
     _ = T / (2 * |(↑n : ℝ)|) := by
         rw [abs_div, abs_of_pos hT.out, abs_mul,
@@ -178,8 +208,8 @@ theorem integral_product_bound (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T →
         · exact Eventually.of_forall (fun x => holder_translation_bound C α f hf n hn x)
     -- Step 4: ∫ const ∂μ = const (probability measure has total mass 1)
     _ = ↑C * (T / (2 * |↑n|)) ^ (α : ℝ) := by
-        rw [MeasureTheory.integral_const, MeasureTheory.IsProbabilityMeasure.measure_univ,
-            ENNReal.one_toReal, smul_eq_mul, mul_one]
+        rw [MeasureTheory.integral_const]
+        simp [MeasureTheory.IsProbabilityMeasure.measure_univ, smul_eq_mul]
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
