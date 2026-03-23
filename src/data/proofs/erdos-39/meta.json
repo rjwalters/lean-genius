@@ -48,7 +48,13 @@
       "Verified computational facts about square roots establishing the gap"
     ],
     "axiomCount": 5,
-    "lineCount": 194
+    "lineCount": 194,
+    "prerequisites": [
+      "Sidon sets (B₂ sequences) and pairwise distinct sums",
+      "Counting functions and asymptotic growth rates",
+      "Probabilistic method in combinatorics",
+      "Basic analytic number theory (square root barriers)"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #39 asks one of the central questions in additive combinatorics: how dense can an infinite Sidon set be? A Sidon set (also called a B₂ sequence) is a set where all pairwise sums are distinct. For finite Sidon sets in {1,...,N}, the maximum size is approximately √N (see Problem #30). But for infinite Sidon sets, the situation is more subtle.\n\nErdős proved a fundamental upper bound: for any infinite Sidon set A, the limit inferior of A(N)/√N equals zero. This means no infinite Sidon set can have counting function consistently above c√N. The natural question is whether we can achieve A(N) >> N^{1/2-ε} for all ε > 0.\n\nProgress has been slow but steady. The trivial greedy algorithm gives N^{1/3}. Ajtai, Komlós, and Szemerédi (1981) achieved (N log N)^{1/3}, earning $25 from Erdős. Ruzsa (1998) broke the 1/3 barrier with N^{√2-1} ≈ N^{0.414}, earning $100. The gap to N^{1/2-ε} remains open, with a $500 prize.",
@@ -130,6 +136,70 @@
       "What role do perfect difference sets play in optimal constructions?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "The Erdős-Turán conjecture on additive bases (Problem #28) asks whether bases must have unbounded representation. Sidon sets have minimal representation ($r \\leq 1$) and are too sparse to be bases — Problem #39 asks exactly how sparse they must be"
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Problem #1 (distinct subset sums) generalizes the Sidon condition from pairwise sums to all subset sums. Both concern the fundamental question of how density forces additive collisions"
+    },
+    {
+      "targetId": "erdos-41",
+      "relationship": "extends",
+      "description": "Problem #41 on $B_h$ sequence density bounds generalizes Sidon sets ($B_2$) to higher-order representation constraints. The growth rate question of Problem #39 has natural analogs for $B_h$ sets"
+    },
+    {
+      "targetId": "erdos-42",
+      "relationship": "related",
+      "description": "Problem #42 asks about Sidon sets with disjoint difference sets, exploring structural constraints beyond density. Both concern the fine structure of Sidon sets"
+    },
+    {
+      "targetId": "erdos-44",
+      "relationship": "related",
+      "description": "Problem #44 on extending Sidon sets asks whether finite Sidon sets can always be extended. The infinite Sidon set growth question of Problem #39 is the asymptotic version of this extensibility question"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Turán, Paul",
+      "title": "On a problem of Sidon in additive number theory, and on some related problems",
+      "year": "1941",
+      "venue": "Journal of the London Mathematical Society, vol. 16, pp. 212–215",
+      "note": "Initiated the systematic study of Sidon sets and their density, proving the finite upper bound √N + O(N^{1/4})"
+    },
+    {
+      "authors": "Ruzsa, Imre Z.",
+      "title": "An infinite Sidon sequence",
+      "year": "1998",
+      "venue": "Journal of Number Theory, vol. 68, no. 1, pp. 63–71",
+      "note": "Constructed an infinite Sidon set with counting function N^{√2-1-o(1)} ≈ N^{0.414}, breaking the 1/3 barrier"
+    },
+    {
+      "authors": "Ajtai, Miklós; Komlós, János; Szemerédi, Endre",
+      "title": "A dense infinite Sidon sequence",
+      "year": "1981",
+      "venue": "European Journal of Combinatorics, vol. 2, no. 1, pp. 1–11",
+      "note": "Achieved counting function (N log N)^{1/3}, the first improvement over the greedy N^{1/3}"
+    },
+    {
+      "authors": "Cilleruelo, Javier",
+      "title": "Infinite Sidon sets",
+      "year": "2010",
+      "venue": "Advances in Mathematics, vol. 225, no. 5, pp. 2786–2802",
+      "note": "Simplified and extended Ruzsa's construction, establishing the algebraic framework used in modern approaches"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-28",
+    "erdos-41",
+    "erdos-42",
+    "erdos-44"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
