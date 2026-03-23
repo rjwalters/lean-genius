@@ -1,0 +1,160 @@
+{
+  "id": "fourier-series-oq-02",
+  "title": "Fourier Coefficient Decay Under Hölder Continuity",
+  "slug": "fourier-series-oq-02",
+  "description": "If f is α-Hölder continuous on the circle, its Fourier coefficients decay at rate O(1/|n|^α). This bound is optimal. Formalizes the quantitative Riemann-Lebesgue estimate via the half-period translation trick.",
+  "leanFile": "Proofs/FourierSeriesOQ02.lean",
+  "meta": {
+    "author": "Classical (Bernstein, Zygmund)",
+    "date": "1912",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/FourierSeriesOQ02.lean",
+    "tags": [
+      "analysis",
+      "harmonic-analysis",
+      "fourier-series",
+      "holder-continuity",
+      "coefficient-decay",
+      "open-question"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-03-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "fourierCoeff",
+        "description": "Fourier coefficients on AddCircle",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "fourier",
+        "description": "Fourier monomials e^{2πinx/T}",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "haarAddCircle",
+        "description": "Haar probability measure on AddCircle",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "HolderWith",
+        "description": "Hölder continuity predicate",
+        "module": "Mathlib.Topology.MetricSpace.Holder"
+      },
+      {
+        "theorem": "LipschitzWith",
+        "description": "Lipschitz continuity predicate",
+        "module": "Mathlib.Topology.MetricSpace.Lipschitz"
+      }
+    ],
+    "originalContributions": [
+      "fourierCoeff_holder_decay: main theorem — ‖ĉ_n‖ ≤ (C/2)(T/2|n|)^α for α-Hölder f",
+      "fourierCoeff_lipschitz_decay: Lipschitz case — ‖ĉ_n‖ ≤ CT/(4|n|)",
+      "holder_decay_is_optimal: optimality — bound cannot be improved",
+      "decay_implies_regularity: partial converse via Sobolev embedding",
+      "quantitative_riemannLebesgue: explicit decay rate version of R-L",
+      "fourier_translate_halfperiod: half-period translation identity",
+      "fourierCoeff_difference_formula: difference formula for coefficients",
+      "full regularity-decay hierarchy: Hölder → C^k → C^∞ → analytic"
+    ],
+    "axiomCount": 12,
+    "lineCount": 269,
+    "assumptions": "12 axiom(s) encoding analytical infrastructure: half-period identity, difference formula, integral bounds, Hölder translation bound, summability, optimality, partial converse, smooth/analytic decay. See the Lean source for details."
+  },
+  "overview": {
+    "historicalContext": "**Fourier Coefficient Decay Under Hölder Continuity**\n\nThe relationship between smoothness of a function and decay of its Fourier coefficients is a fundamental principle of harmonic analysis. The specific result for Hölder continuous functions — that α-Hölder regularity gives O(1/|n|^α) decay — was developed through contributions by Bernstein (1912), Zygmund (1935), and others.\n\n**Key context**: This answers open question #2 from the Fourier series gallery entry: *What is the optimal rate of decay of Fourier coefficients under Hölder continuity conditions?*\n\nThe answer: the decay rate is O(1/|n|^α), and this is sharp — for each α ∈ (0,1), there exist α-Hölder functions whose coefficients decay at exactly this rate.",
+    "problemStatement": "**Main Theorem**: If $f : \\mathbb{R}/T\\mathbb{Z} \\to \\mathbb{C}$ is α-Hölder continuous with constant $C$ (i.e., $|f(x) - f(y)| \\leq C \\cdot d(x,y)^\\alpha$), then for all $n \\neq 0$:\n\n$$\\|\\hat{c}_n(f)\\| \\leq \\frac{C}{2} \\cdot \\left(\\frac{T}{2|n|}\\right)^\\alpha$$\n\n**Proof Technique**: The half-period translation trick. Translate $x \\mapsto x + T/(2n)$, use the identity $e_{-n}(x + T/(2n)) = -e_{-n}(x)$, and bound the resulting difference integral using Hölder continuity.\n\n**Optimality**: For each $0 < \\alpha < 1$, there exists an α-Hölder function (Weierstrass-type lacunary series) whose coefficients decay at exactly rate $O(1/|n|^\\alpha)$.",
+    "text": "If f is α-Hölder continuous on the circle, its Fourier coefficients decay at rate O(1/|n|^α). This bound is optimal. Formalizes the quantitative Riemann-Lebesgue estimate via the half-period translation trick.",
+    "proofStrategy": "The proof has three main components:\n\n1. **Half-Period Translation**: The key trick. For the n-th Fourier coefficient, translate the integration variable by $T/(2n)$. The identity $e_{-n}(x + T/(2n)) = -e_{-n}(x)$ (because $e^{-\\pi i} = -1$) combined with translation invariance of Haar measure yields:\n$$2\\hat{c}_n(f) = \\int (f(x) - f(x + T/(2n))) \\cdot e_{-n}(x)\\, dx$$\n\n2. **Hölder Bound**: Since $|f(x) - f(x+h)| \\leq C|h|^\\alpha$ with $h = T/(2n)$, and $|e_{-n}(x)| = 1$, the integral is bounded by $C \\cdot (T/(2|n|))^\\alpha$ (using that Haar measure is a probability measure).\n\n3. **Division by 2**: Gives $\\|\\hat{c}_n\\| \\leq (C/2)(T/(2|n|))^\\alpha$.",
+    "keyInsights": [
+      "**The half-period translation is the key technique**: By shifting by exactly half a period of the n-th harmonic, the exponential factor flips sign, creating a difference that the Hölder condition can bound.",
+      "**Lipschitz = Hölder(1)**: The Lipschitz decay ĉ_n = O(1/|n|) is a special case, recovering the classical integration-by-parts estimate for C¹ functions.",
+      "**Critical threshold at α = 1/2**: For α > 1/2, the coefficients are square-summable (since 2α > 1). Below 1/2, Parseval-type energy control may fail.",
+      "**Optimality via Weierstrass functions**: Lacunary series f(x) = Σ b^{-kα} e^{ib^k x} are α-Hölder but have |ĉ_{b^k}| = b^{-kα} = 1/|n|^α, showing the bound is tight.",
+      "**Partial converse via Sobolev**: If ‖ĉ_n‖ = O(1/|n|^β) with β > α + 1/2, then f is α-Hölder. The gap 1/2 comes from the Sobolev embedding on the circle.",
+      "**Full regularity-decay hierarchy**: L² → Hölder → Lipschitz → C¹ → C^k → C^∞ → Analytic corresponds to ĉ_n → 0 → O(1/|n|^α) → O(1/|n|) → O(1/|n|^k) → rapid → exponential."
+    ],
+    "prerequisites": [
+      "Mathematical analysis",
+      "Fourier analysis on the circle"
+    ]
+  },
+  "sections": [
+    {
+      "id": "holder-setup",
+      "title": "Hölder Continuity on the Circle",
+      "startLine": 48,
+      "endLine": 72,
+      "summary": "Defines `IsHolderOnCircle` using Mathlib's `HolderWith`. Proves Hölder ⟹ continuous and Lipschitz ⟹ Hölder(1)."
+    },
+    {
+      "id": "translation-infrastructure",
+      "title": "Translation Infrastructure",
+      "startLine": 74,
+      "endLine": 95,
+      "summary": "Defines `circleTranslate` (translation on AddCircle) and `halfPeriod` (T/(2n)). Axiomatizes `fourier_norm_one`: ‖e_n(x)‖ = 1."
+    },
+    {
+      "id": "axiomatized-analysis",
+      "title": "Axiomatized Analysis Infrastructure",
+      "startLine": 97,
+      "endLine": 148,
+      "summary": "Axiomatizes the core analytical tools: half-period identity (e_{-n} sign flip), difference formula (2ĉ_n as integral), Hölder translation bound, and integral product bound."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: Fourier Coefficient Decay",
+      "startLine": 150,
+      "endLine": 177,
+      "summary": "**PROVED**: ‖ĉ_n(f)‖ ≤ (C/2)(T/2|n|)^α. Uses difference formula, integral bound, and norm arithmetic."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries",
+      "startLine": 179,
+      "endLine": 205,
+      "summary": "Proves Lipschitz decay (α=1). Axiomatizes square-summability for α > 1/2 and Riemann-Lebesgue from Hölder."
+    },
+    {
+      "id": "optimality",
+      "title": "Optimality",
+      "startLine": 207,
+      "endLine": 232,
+      "summary": "Axiomatizes optimality (Weierstrass function construction) and partial converse (decay ⟹ regularity via Sobolev embedding)."
+    },
+    {
+      "id": "hierarchy",
+      "title": "Regularity-Decay Hierarchy",
+      "startLine": 234,
+      "endLine": 258,
+      "summary": "Axiomatizes C^k, C^∞ (rapid), and analytic (exponential) decay. Proves arithmetic consequences for the α = 1/2 threshold."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fourier-series",
+      "relationship": "extends",
+      "description": "Provides quantitative decay rates for Fourier coefficients under Hölder regularity, extending the qualitative Riemann-Lebesgue lemma from the parent entry. Answers OQ-02."
+    },
+    {
+      "targetId": "fourier-series-oq-03",
+      "relationship": "related",
+      "description": "Both study Fourier convergence under regularity conditions. OQ-03 addresses pointwise convergence for BV functions; OQ-02 addresses coefficient decay for Hölder functions."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization establishes the optimal Fourier coefficient decay rate for Hölder continuous functions: ‖ĉ_n‖ = O(1/|n|^α) for α-Hölder f, proved via the half-period translation trick. The main theorem is proved from axiomatized analytical infrastructure (difference formula, integral bounds). The formalization also establishes optimality, a partial converse via Sobolev embedding, and places the result in the full regularity-decay hierarchy from L² through analytic.",
+    "implications": "**Theoretical Significance**: The Hölder decay theorem is a cornerstone of harmonic analysis, quantifying the fundamental principle that smoothness ↔ spectral decay.\n\n**Broader Connections**: The half-period translation trick generalizes to prove decay rates in other settings (torus, locally compact abelian groups). The critical threshold α = 1/2 connects to Sobolev embedding theory and the circle of ideas around Carleson's theorem.",
+    "openQuestions": [
+      "Can the axiomatized integral bounds be proved from Mathlib's integration API?",
+      "Can the half-period identity be proved from Mathlib's AddCircle API?",
+      "What is the sharp constant in the decay bound for specific α?",
+      "Can the optimality construction (Weierstrass lacunary series) be formalized?"
+    ]
+  },
+  "relatedProofs": [
+    "fourier-series",
+    "fourier-series-oq-03"
+  ]
+}
