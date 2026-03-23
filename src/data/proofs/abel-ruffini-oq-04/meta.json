@@ -108,6 +108,7 @@
       "cantor-diagonalization",
       "lagrange-theorem-oq-03",
       "angle-trisection-oq-02",
+      "angle-trisection-oq-02-oq-01",
       "quadratic-reciprocity",
       "kroneckers-jugendtraum",
       "hilbert-10",
@@ -243,6 +244,11 @@
       "targetId": "fermats-last-theorem",
       "relationship": "thematic",
       "description": "Two landmark impossibility results that drove algebraic innovation across centuries: Abel-Ruffini (1824) proves no radical formula solves all quintics via the non-solvability of S₅, spawning Galois theory; FLT (1995) proves aⁿ + bⁿ = cⁿ has no positive integer solutions for n > 2, proved via the modularity of elliptic curves. Both transformed their fields — Abel-Ruffini led from equation-solving to structural algebra, while FLT connected number theory to the Langlands program"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Both use Galois-theoretic obstructions to prove impossibility via parallel strategies: this file shows Gal(generic quintic) ≅ S₅ is not solvable, blocking radical solutions; OQ-02-OQ-01 proves that constructibility requires the Galois group to be a 2-group (natDegree divides |Gal|), blocking compass-and-straightedge constructions. Both reduce geometric/algebraic impossibility to a group-theoretic property check"
     }
   ],
   "overview": {
@@ -331,7 +337,8 @@
       "Formalize Galois's criterion: a polynomial is solvable by radicals iff its Galois group is solvable",
       "Exhibit specific solvable quintics (e.g., x⁵ - 1 with cyclic Galois group) to illustrate the generic/specific distinction",
       "Formalize the effective decision procedure: given a polynomial f ∈ ℚ[x], compute Gal(f/ℚ) as a transitive subgroup of Sₙ and check its solvability — connecting Abel-Ruffini's impossibility to a constructive algorithm",
-      "Formalize the Jordan-Hölder theorem applied to Sₙ: show that the composition factors of S₅ are {ℤ/2ℤ, A₅} and prove that a group is solvable iff all its composition factors are cyclic of prime order — giving an alternative proof path for Abel-Ruffini"
+      "Formalize the Jordan-Hölder theorem applied to Sₙ: show that the composition factors of S₅ are {ℤ/2ℤ, A₅} and prove that a group is solvable iff all its composition factors are cyclic of prime order — giving an alternative proof path for Abel-Ruffini",
+      "Formalize the Bring-Jerrard reduction: every quintic can be transformed to the form x⁵ + px + q by Tschirnhaus transformations, and while this normal form is not solvable by the four basic radicals (Abel-Ruffini), it IS solvable using the Bring radical BR(a) (the unique real root of x⁵ + x + a) — showing that the impossibility is specifically about the four arithmetic radicals, not about closed-form solutions in general"
     ]
   },
   "leanFile": {

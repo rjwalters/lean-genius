@@ -307,7 +307,7 @@
     },
     "type": "technique",
     "title": "Proof Chain Steps 3–5: From Group Theory to Algebra",
-    "content": "Steps 3–5 propagate the non-solvability of A₅ into the impossibility of a radical quintic formula. Step 3 (this file's `symmetric_not_solvable`): Aₙ ◁ Sₙ is normal (kernel of the sign homomorphism), and Aₙ contains A₅ for n ≥ 5 via the natural embedding Fin 5 → Fin n. If Sₙ were solvable, Aₙ would be too (subgroups of solvable groups are solvable), contradicting A₅'s non-solvability. Step 4 (Galois bridge via `solvableByRad.isSolvable'`): radical solvability implies a solvable Galois group, so the contrapositive gives the algebraic impossibility. Step 5 (field theory): the generic quintic x⁵ + a₁x⁴ + ··· + a₅ over ℚ(a₁,...,a₅) has Galois group S₅, which is not solvable by Step 3.",
+    "content": "Steps 3–5 propagate the non-solvability of A₅ into the impossibility of a radical quintic formula. Step 3 (this file's `symmetric_not_solvable`): Aₙ ◁ Sₙ is normal (kernel of the sign homomorphism), and Aₙ contains A₅ for n ≥ 5 via the natural embedding Fin 5 → Fin n. If Sₙ were solvable, Aₙ would be too (subgroups of solvable groups are solvable), contradicting A₅'s non-solvability. Step 4 (Galois bridge via `solvableByRad.isSolvable'`): radical solvability implies a solvable Galois group, so the contrapositive gives the algebraic impossibility. Step 5 (field theory): the generic quintic x⁵ + a₁x⁴ + ··· + a₅ over ℚ(a₁,...,a₅) has Galois group S₅, which is not solvable by Step 3.\n\n**Generalization to differential equations:** The same paradigm extends to differential Galois theory (Picard-Vessiot theory): a linear ODE is 'solvable by quadratures' (integrals, exponentials, algebraic functions) iff its differential Galois group (a linear algebraic group) has solvable identity component. Kovacic's algorithm (1986) makes this decidable for second-order equations, just as Galois group computation makes radical solvability decidable for polynomials.",
     "mathContext": "Step 3: $A_n \\trianglelefteq S_n$ with $A_5 \\leq A_n$ for $n \\geq 5$, so $S_n$ not solvable. Step 4: solvable by radicals $\\Rightarrow$ solvable Galois group. Step 5: $\\text{Gal}(x^5 + a_1 x^4 + \\cdots + a_5 / \\mathbb{Q}(a_1,\\ldots,a_5)) \\cong S_5$.",
     "significance": "key",
     "relatedConcepts": [
@@ -316,7 +316,9 @@
       "sign homomorphism",
       "solvableByRad",
       "Vieta's formulas",
-      "elementary symmetric polynomials"
+      "elementary symmetric polynomials",
+      "differential Galois theory",
+      "Picard-Vessiot theory"
     ],
     "prerequisites": [
       "Galois theory",
@@ -358,7 +360,7 @@
     },
     "type": "context",
     "title": "The Crucial Asymmetry — Degree-by-Degree Radical Solvability",
-    "content": "A comparison table showing radical solvability by polynomial degree, from linear through quintic. Degrees 1–4 have explicit radical formulas: the quadratic formula (antiquity), Cardano's cubic formula (1545), and Ferrari's quartic method (1540). At degree 5, the Galois group can be S₅ (which is not solvable), so no general radical formula exists. The table concludes with the crucial distinction: specific quintics like x⁵ - 1 have solvable Galois groups (cyclic, in this case), so the Abel-Ruffini theorem is about the non-existence of a *general* formula, not the unsolvability of every individual quintic.",
+    "content": "A comparison table showing radical solvability by polynomial degree, from linear through quintic. Degrees 1–4 have explicit radical formulas: the quadratic formula (antiquity), Cardano's cubic formula (1545), and Ferrari's quartic method (1540). At degree 5, the Galois group can be S₅ (which is not solvable), so no general radical formula exists. The table concludes with the crucial distinction: specific quintics like x⁵ - 1 have solvable Galois groups (cyclic, in this case), so the Abel-Ruffini theorem is about the non-existence of a *general* formula, not the unsolvability of every individual quintic.\n\n**Beyond radicals:** The Bring-Jerrard theorem (1786/1834) shows every quintic reduces to the normal form x⁵ + px + q via Tschirnhaus transformations. While this normal form has no solution in the four basic radicals (Abel-Ruffini), it IS solvable using the Bring radical BR(a) — the unique real root of x⁵ + x + a. This shows the impossibility is specifically about the four arithmetic radicals (±, ×, ÷, ⁿ√), not about closed-form expressions in general. Analogously, Hermite (1858) showed quintics are solvable using elliptic modular functions, and Kronecker gave solutions via hypergeometric functions.",
     "mathContext": "Degree $n$ solvable by radicals for all polynomials $\\iff$ $S_n$ solvable $\\iff$ $n \\leq 4$. Specific solvable quintics exist: $\\text{Gal}(x^5 - 1/\\mathbb{Q}) \\cong \\mathbb{Z}/5\\mathbb{Z}$ is cyclic, hence solvable.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -366,7 +368,10 @@
       "Ferrari's method",
       "quadratic formula",
       "cyclotomic polynomial",
-      "generic vs specific solvability"
+      "generic vs specific solvability",
+      "Bring radical",
+      "Bring-Jerrard normal form",
+      "Tschirnhaus transformation"
     ],
     "prerequisites": [
       "field theory",
