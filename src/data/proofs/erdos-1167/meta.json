@@ -40,13 +40,6 @@
         "module": "Mathlib.Tactic"
       }
     ],
-    "references": [
-      "Erdős, Hajnal, Rado (1956): A partition calculus in set theory — original problem formulation",
-      "Ramsey (1929): On a problem of formal logic — finite Ramsey theorem",
-      "Erdős, Rado (1956): (2^κ)⁺ → (κ⁺)²_κ — the classical stepping-up result",
-      "[Va99, 7.79]: Vaughan's survey cataloguing the problem",
-      "https://erdosproblems.com/1167"
-    ],
     "originalContributions": [
       "RSubset",
       "Coloring",
@@ -157,5 +150,12 @@
     "axiomCount": 3,
     "theoremCount": 15,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    "Erdős, Hajnal, Rado (1956): A partition calculus in set theory — original problem formulation",
+    "Ramsey (1929): On a problem of formal logic — finite Ramsey theorem",
+    "Erdős, Rado (1956): (2^κ)⁺ → (κ⁺)²_κ — the classical stepping-up result",
+    "[Va99, 7.79]: Vaughan's survey cataloguing the problem",
+    "https://erdosproblems.com/1167"
+  ]
 }

@@ -9,7 +9,6 @@
     "date": "1822",
     "status": "verified",
     "proofRepoPath": "Proofs/FeuerbachsTheoremDefs.lean",
-    "leanFile": "proofs/Proofs/FeuerbachsTheoremDefs.lean",
     "tags": [
       "geometry",
       "euclidean-geometry",
@@ -50,23 +49,6 @@
       "Tangency definitions: internal and external circle tangency",
       "Numerical verification: 3-4-5 right triangle with computed circumradius, inradius, incircle Feuerbach tangency"
     ],
-    "references": [
-      {
-        "key": "Fe22",
-        "citation": "Feuerbach, K. W. (1822). Eigenschaften einiger merkwuerdigen Punkte des geradlinigen Dreiecks und mehrerer durch sie bestimmten Linien und Figuren.",
-        "type": "paper"
-      },
-      {
-        "key": "Co67",
-        "citation": "Coxeter, H. S. M. (1967). Geometry Revisited. Mathematical Association of America.",
-        "type": "book"
-      },
-      {
-        "key": "BP21",
-        "citation": "Brianchon, C. J. and Poncelet, J. V. (1821). Recherches sur la détermination d'une hyperbole équilatère. Annales de Mathématiques, 11, 205-220.",
-        "type": "paper"
-      }
-    ],
     "relatedProofs": [
       "feuerbachs-theorem-oq-01",
       "feuerbachs-theorem"
@@ -92,12 +74,6 @@
       "Circumcenter equidistance is proved via the perpendicular bisector condition, which is LINEAR in O (much easier than the quadratic distance equations)",
       "The 3-4-5 right triangle is the simplest non-trivial test case: R = 5/2 (half the hypotenuse), r = 1, orthocenter at the right-angle vertex, confirming all formulas",
       "Non-degeneracy (the signed area is nonzero) is the single structural hypothesis needed for all computations"
-    ],
-    "prerequisites": [
-      "Coordinate geometry: points in R^2, distance formula, midpoint formula",
-      "Triangle special points: circumcenter via perpendicular bisector intersection, orthocenter via Euler line",
-      "The nine-point circle: center is midpoint of circumcenter and orthocenter, radius is half the circumradius",
-      "Lean tactics: field_simp for clearing denominators, ring for polynomial identities, nlinarith for nonlinear arithmetic"
     ]
   },
   "sections": [
@@ -207,11 +183,31 @@
       "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
       "Mathlib.Tactic"
     ],
-    "opens": ["Real", "EuclideanGeometry"],
+    "opens": [
+      "Real",
+      "EuclideanGeometry"
+    ],
     "namespace": "FeuerbachsTheorem",
     "lineCount": 687,
     "axiomCount": 0,
     "theoremCount": 38,
     "definitionCount": 35
-  }
+  },
+  "references": [
+    {
+      "key": "Fe22",
+      "citation": "Feuerbach, K. W. (1822). Eigenschaften einiger merkwuerdigen Punkte des geradlinigen Dreiecks und mehrerer durch sie bestimmten Linien und Figuren.",
+      "type": "paper"
+    },
+    {
+      "key": "Co67",
+      "citation": "Coxeter, H. S. M. (1967). Geometry Revisited. Mathematical Association of America.",
+      "type": "book"
+    },
+    {
+      "key": "BP21",
+      "citation": "Brianchon, C. J. and Poncelet, J. V. (1821). Recherches sur la détermination d'une hyperbole équilatère. Annales de Mathématiques, 11, 205-220.",
+      "type": "paper"
+    }
+  ]
 }

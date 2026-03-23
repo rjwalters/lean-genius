@@ -41,23 +41,6 @@
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       }
     ],
-    "references": [
-      {
-        "key": "KSSS2022",
-        "citation": "Kwan, M., Sah, A., Sauermann, L., and Sawhney, M. (2022). Anticoncentration in Ramsey graphs and a proof of the Erdős-McKay conjecture. arXiv:2206.01068.",
-        "type": "paper"
-      },
-      {
-        "key": "ErdosMcKay1990",
-        "citation": "Erdős, P. and McKay, B. (1990). The Erdős-McKay conjecture on induced subgraph edge counts.",
-        "type": "paper"
-      },
-      {
-        "key": "ErdosSzemeredi1972",
-        "citation": "Erdős, P. and Szemerédi, E. (1972). On a Ramsey type theorem. Periodica Math. Hungarica 2, 295-299.",
-        "type": "paper"
-      }
-    ],
     "originalContributions": [
       "Formal definition of ε-Ramsey graphs via bounded clique and independence numbers in ℕ∞",
       "Full Lean 4 statement of the Erdős-McKay conjecture as `ErdosMcKayConjecture : Prop`",
@@ -200,5 +183,22 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 21
-  }
+  },
+  "references": [
+    {
+      "key": "KSSS2022",
+      "citation": "Kwan, M., Sah, A., Sauermann, L., and Sawhney, M. (2022). Anticoncentration in Ramsey graphs and a proof of the Erdős-McKay conjecture. arXiv:2206.01068.",
+      "type": "paper"
+    },
+    {
+      "key": "ErdosMcKay1990",
+      "citation": "Erdős, P. and McKay, B. (1990). The Erdős-McKay conjecture on induced subgraph edge counts.",
+      "type": "paper"
+    },
+    {
+      "key": "ErdosSzemeredi1972",
+      "citation": "Erdős, P. and Szemerédi, E. (1972). On a Ramsey type theorem. Periodica Math. Hungarica 2, 295-299.",
+      "type": "paper"
+    }
+  ]
 }

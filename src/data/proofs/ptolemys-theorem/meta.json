@@ -31,27 +31,6 @@
     ],
     "dateAdded": "2025-12-27",
     "wiedijkNumber": 95,
-    "references": [
-      {
-        "authors": "Claudius Ptolemy",
-        "title": "Almagest (Μαθηματικὴ Σύνταξις)",
-        "year": "c. 150 AD",
-        "note": "Book I, Ch. 10: original statement and proof of Ptolemy's theorem for chord computation"
-      },
-      {
-        "authors": "F. Wiedijk",
-        "title": "Formalizing 100 Theorems",
-        "year": "2021",
-        "note": "Ptolemy's theorem is #95 on the list of 100 famous theorems formalized in proof assistants"
-      },
-      {
-        "authors": "R. Hartshorne",
-        "title": "Geometry: Euclid and Beyond",
-        "year": "2000",
-        "venue": "Springer",
-        "note": "Modern treatment of Ptolemy's theorem in the context of Euclidean and non-Euclidean geometry"
-      }
-    ],
     "relatedProofs": [
       "cauchy-schwarz",
       "herons-formula",
@@ -188,5 +167,26 @@
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Claudius Ptolemy",
+      "title": "Almagest (Μαθηματικὴ Σύνταξις)",
+      "year": "c. 150 AD",
+      "note": "Book I, Ch. 10: original statement and proof of Ptolemy's theorem for chord computation"
+    },
+    {
+      "authors": "F. Wiedijk",
+      "title": "Formalizing 100 Theorems",
+      "year": "2021",
+      "note": "Ptolemy's theorem is #95 on the list of 100 famous theorems formalized in proof assistants"
+    },
+    {
+      "authors": "R. Hartshorne",
+      "title": "Geometry: Euclid and Beyond",
+      "year": "2000",
+      "venue": "Springer",
+      "note": "Modern treatment of Ptolemy's theorem in the context of Euclidean and non-Euclidean geometry"
+    }
+  ]
 }

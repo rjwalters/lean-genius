@@ -59,29 +59,6 @@
       "Extension: integral is zero over any measurable set, not just [0,1]",
       "Proof that the Dirichlet function is nowhere continuous (discontinuous at every point)"
     ],
-    "references": [
-      {
-        "authors": "Henri Lebesgue",
-        "title": "Intégrale, longueur, aire",
-        "year": "1902",
-        "venue": "Doctoral dissertation, Sorbonne",
-        "note": "The Dirichlet function was a motivating example for Lebesgue's integral"
-      },
-      {
-        "authors": "Peter G. Dirichlet",
-        "title": "Sur la convergence des séries trigonométriques",
-        "year": "1829",
-        "venue": "Journal für die reine und angewandte Mathematik",
-        "note": "Original introduction of the everywhere-discontinuous indicator function"
-      },
-      {
-        "authors": "Bernhard Riemann",
-        "title": "Über die Darstellbarkeit einer Function durch eine trigonometrische Reihe",
-        "year": "1854",
-        "venue": "Habilitationsschrift, Göttingen (published 1867)",
-        "note": "Formulated the Riemann integral, under which the Dirichlet function is not integrable"
-      }
-    ],
     "historicalContext": "Peter Gustav Lejeune Dirichlet introduced his indicator function 𝟙_ℚ in 1829 as an example of a function that cannot be integrated by Riemann's method: the upper Darboux sum is always 1 and the lower sum always 0 on any interval, since both rationals and irrationals are dense. This exposed a fundamental limitation of Riemann's 1854 integral. Henri Lebesgue's 1902 integral resolved this by measuring the range rather than the domain — since ℚ is countable and hence has Lebesgue measure zero, the function equals zero almost everywhere, yielding ∫₀¹ 𝟙_ℚ = 0. Lebesgue's criterion (1901) later gave a complete characterization: a bounded function is Riemann integrable iff its discontinuity set has measure zero. Since the Dirichlet function is discontinuous everywhere, it is not Riemann integrable — but it is Lebesgue integrable.",
     "axiomCount": 0,
     "lineCount": 197
@@ -221,5 +198,28 @@
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 1
-  }
+  },
+  "references": [
+    {
+      "authors": "Henri Lebesgue",
+      "title": "Intégrale, longueur, aire",
+      "year": "1902",
+      "venue": "Doctoral dissertation, Sorbonne",
+      "note": "The Dirichlet function was a motivating example for Lebesgue's integral"
+    },
+    {
+      "authors": "Peter G. Dirichlet",
+      "title": "Sur la convergence des séries trigonométriques",
+      "year": "1829",
+      "venue": "Journal für die reine und angewandte Mathematik",
+      "note": "Original introduction of the everywhere-discontinuous indicator function"
+    },
+    {
+      "authors": "Bernhard Riemann",
+      "title": "Über die Darstellbarkeit einer Function durch eine trigonometrische Reihe",
+      "year": "1854",
+      "venue": "Habilitationsschrift, Göttingen (published 1867)",
+      "note": "Formulated the Riemann integral, under which the Dirichlet function is not integrable"
+    }
+  ]
 }

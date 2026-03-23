@@ -53,43 +53,6 @@
         "module": "Mathlib.Topology.Basic"
       }
     ],
-    "references": [
-      {
-        "key": "EFRS1978",
-        "citation": "Erdős, P., Faudree, R.J., Rousseau, C.C., Schelp, R.H. (1978). The size Ramsey number. Periodica Mathematica Hungarica 9, 145–161.",
-        "type": "paper"
-      },
-      {
-        "key": "Be1983",
-        "citation": "Beck, J. (1983). On size Ramsey number of paths, trees, and circuits I. Journal of Graph Theory 7, 115–129.",
-        "type": "paper"
-      },
-      {
-        "key": "DP2017",
-        "citation": "Dudek, A., Prałat, P. (2017). An alternative proof of the linearity of the size-Ramsey number of paths. Combinatorics, Probability and Computing 24, 551–555.",
-        "type": "paper"
-      },
-      {
-        "key": "FP1987",
-        "citation": "Friedman, J., Pippenger, N. (1987). Expanding graphs contain all small trees. Combinatorica 7, 71–76.",
-        "type": "paper"
-      },
-      {
-        "key": "GG1967",
-        "citation": "Gerencsér, L., Gyárfás, A. (1967). On Ramsey-type problems. Annales Universitatis Scientiarum Budapestinensis 10, 167–170.",
-        "type": "paper"
-      },
-      {
-        "key": "KRSS2011",
-        "citation": "Kohayakawa, Y., Rödl, V., Schacht, M., Szemerédi, E. (2011). Sparse partition universal graphs for graphs of bounded degree. Advances in Mathematics 226, 5041–5065.",
-        "type": "paper"
-      },
-      {
-        "key": "ErdosProblems",
-        "citation": "Erdős Problems. Problem #720.",
-        "type": "website"
-      }
-    ],
     "originalContributions": [
       "GraphOnN, numEdges: graph basics with SimpleGraph (Fin n)",
       "PathGraph, CycleGraph: path and cycle definitions with adjacency |i-j|=1",
@@ -246,5 +209,42 @@
     "axiomCount": 12,
     "theoremCount": 3,
     "definitionCount": 20
-  }
+  },
+  "references": [
+    {
+      "key": "EFRS1978",
+      "citation": "Erdős, P., Faudree, R.J., Rousseau, C.C., Schelp, R.H. (1978). The size Ramsey number. Periodica Mathematica Hungarica 9, 145–161.",
+      "type": "paper"
+    },
+    {
+      "key": "Be1983",
+      "citation": "Beck, J. (1983). On size Ramsey number of paths, trees, and circuits I. Journal of Graph Theory 7, 115–129.",
+      "type": "paper"
+    },
+    {
+      "key": "DP2017",
+      "citation": "Dudek, A., Prałat, P. (2017). An alternative proof of the linearity of the size-Ramsey number of paths. Combinatorics, Probability and Computing 24, 551–555.",
+      "type": "paper"
+    },
+    {
+      "key": "FP1987",
+      "citation": "Friedman, J., Pippenger, N. (1987). Expanding graphs contain all small trees. Combinatorica 7, 71–76.",
+      "type": "paper"
+    },
+    {
+      "key": "GG1967",
+      "citation": "Gerencsér, L., Gyárfás, A. (1967). On Ramsey-type problems. Annales Universitatis Scientiarum Budapestinensis 10, 167–170.",
+      "type": "paper"
+    },
+    {
+      "key": "KRSS2011",
+      "citation": "Kohayakawa, Y., Rödl, V., Schacht, M., Szemerédi, E. (2011). Sparse partition universal graphs for graphs of bounded degree. Advances in Mathematics 226, 5041–5065.",
+      "type": "paper"
+    },
+    {
+      "key": "ErdosProblems",
+      "citation": "Erdős Problems. Problem #720.",
+      "type": "website"
+    }
+  ]
 }

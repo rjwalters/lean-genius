@@ -41,18 +41,6 @@
       ],
       "significance": "Determines the minimum guaranteed divisibility coverage in intervals. The Erdős-Sarányi lower bound f(m) ≥ c√m (1959) via counting arguments is established; the matching upper bound f(m) ≤ C√m remains open after 60+ years. Resolution would precisely characterize the covering efficiency of divisor sets."
     },
-    "references": [
-      {
-        "key": "ES59",
-        "citation": "Erdős, P. and Sarányi, Gy., On divisibility properties of integers (1959).",
-        "type": "paper"
-      },
-      {
-        "key": "erdos650",
-        "citation": "Erdős Problems, Problem #650, https://erdosproblems.com/650",
-        "type": "website"
-      }
-    ],
     "relatedProofs": [
       {
         "id": "erdos-644",
@@ -169,5 +157,17 @@
     "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    {
+      "key": "ES59",
+      "citation": "Erdős, P. and Sarányi, Gy., On divisibility properties of integers (1959).",
+      "type": "paper"
+    },
+    {
+      "key": "erdos650",
+      "citation": "Erdős Problems, Problem #650, https://erdosproblems.com/650",
+      "type": "website"
+    }
+  ]
 }

@@ -67,36 +67,6 @@
       "Strict monotonicity from positive derivative (proved via scalar MVT)",
       "Antiderivative uniqueness: same derivative implies constant difference (proved via vector MVT)"
     ],
-    "references": [
-      {
-        "authors": "Jean Dieudonné",
-        "title": "Foundations of Modern Analysis",
-        "year": "1960",
-        "venue": "Academic Press",
-        "note": "Section 8.5: The mean value theorem for vector-valued functions, establishing the inequality form as the correct generalization"
-      },
-      {
-        "authors": "Serge Lang",
-        "title": "Real and Functional Analysis",
-        "year": "1993",
-        "venue": "Springer Graduate Texts in Mathematics",
-        "note": "Theorem 4.2: Mean value inequality in Banach spaces, emphasizing the role in nonlinear analysis"
-      },
-      {
-        "authors": "Klaus Deimling",
-        "title": "Nonlinear Functional Analysis",
-        "year": "1985",
-        "venue": "Springer",
-        "note": "Proposition 5.1: MVT inequality as foundation for fixed-point theorems and ODE theory in Banach spaces"
-      },
-      {
-        "authors": "Joseph-Louis Lagrange",
-        "title": "Leçons sur le calcul des fonctions",
-        "year": "1801",
-        "venue": "Paris",
-        "note": "Original statement of the scalar mean value theorem (Lagrange's MVT)"
-      }
-    ],
     "historicalContext": "The classical Mean Value Theorem — that f'(c) = (f(b)-f(a))/(b-a) for some c ∈ (a,b) — was formulated by Lagrange (1801) building on earlier work by Rolle (1691). When analysis moved to vector-valued and Banach-space-valued functions in the 20th century, mathematicians discovered this equality form has no analogue: the intermediate value theorem, which underpins the scalar MVT, fails in higher dimensions. Dieudonné (1960) emphasized that the correct generalization is the mean value inequality ‖f(b)-f(a)‖ ≤ sup‖f'‖·(b-a). This inequality, though weaker than equality, suffices for all major applications: Lipschitz estimates, ODE uniqueness (Picard-Lindelöf), contraction mappings, and the implicit/inverse function theorems in Banach spaces.",
     "dateAdded": "2026-03-06",
     "parentProof": "mean-value-theorem",
@@ -223,5 +193,35 @@
     "axiomCount": 0,
     "theoremCount": 17,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Jean Dieudonné",
+      "title": "Foundations of Modern Analysis",
+      "year": "1960",
+      "venue": "Academic Press",
+      "note": "Section 8.5: The mean value theorem for vector-valued functions, establishing the inequality form as the correct generalization"
+    },
+    {
+      "authors": "Serge Lang",
+      "title": "Real and Functional Analysis",
+      "year": "1993",
+      "venue": "Springer Graduate Texts in Mathematics",
+      "note": "Theorem 4.2: Mean value inequality in Banach spaces, emphasizing the role in nonlinear analysis"
+    },
+    {
+      "authors": "Klaus Deimling",
+      "title": "Nonlinear Functional Analysis",
+      "year": "1985",
+      "venue": "Springer",
+      "note": "Proposition 5.1: MVT inequality as foundation for fixed-point theorems and ODE theory in Banach spaces"
+    },
+    {
+      "authors": "Joseph-Louis Lagrange",
+      "title": "Leçons sur le calcul des fonctions",
+      "year": "1801",
+      "venue": "Paris",
+      "note": "Original statement of the scalar mean value theorem (Lagrange's MVT)"
+    }
+  ]
 }

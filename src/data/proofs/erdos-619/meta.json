@@ -54,18 +54,6 @@
       "h_monotone axiom: h_r ≥ h_{r+1}",
       "erdos_619_partial_results theorem: combines h₃ and h₅ bounds"
     ],
-    "references": [
-      {
-        "key": "EGR98",
-        "citation": "Erdős, P., Gyárfás, A., Ruszinkó, M. (1998)",
-        "type": "paper"
-      },
-      {
-        "key": "AGR00",
-        "citation": "Alon, N., Gyárfás, A., Ruszinkó, M. (2000)",
-        "type": "paper"
-      }
-    ],
     "axiomCount": 7,
     "lineCount": 227
   },
@@ -163,5 +151,17 @@
     "axiomCount": 7,
     "theoremCount": 1,
     "definitionCount": 11
-  }
+  },
+  "references": [
+    {
+      "key": "EGR98",
+      "citation": "Erdős, P., Gyárfás, A., Ruszinkó, M. (1998)",
+      "type": "paper"
+    },
+    {
+      "key": "AGR00",
+      "citation": "Alon, N., Gyárfás, A., Ruszinkó, M. (2000)",
+      "type": "paper"
+    }
+  ]
 }

@@ -19,16 +19,6 @@
     "erdosNumber": 115,
     "erdosUrl": "https://erdosproblems.com/115",
     "erdosProblemStatus": "proved",
-    "references": [
-      {
-        "key": "EL07",
-        "citation": "A. Eremenko, L. Lempert, 'An extremal problem for polynomials', Proceedings of the AMS (2007)"
-      },
-      {
-        "key": "Pom61",
-        "citation": "Ch. Pommerenke, 'On the derivative of a polynomial', Michigan Mathematical Journal (1961)"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "Nat.Basic",
@@ -146,5 +136,15 @@
     "axiomCount": 15,
     "theoremCount": 1,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "key": "EL07",
+      "citation": "A. Eremenko, L. Lempert, 'An extremal problem for polynomials', Proceedings of the AMS (2007)"
+    },
+    {
+      "key": "Pom61",
+      "citation": "Ch. Pommerenke, 'On the derivative of a polynomial', Michigan Mathematical Journal (1961)"
+    }
+  ]
 }

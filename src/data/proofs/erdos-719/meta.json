@@ -50,28 +50,6 @@
         "module": "Mathlib.Data.Nat.Choose.Basic"
       }
     ],
-    "references": [
-      {
-        "key": "ES81",
-        "citation": "Erdős, P. and Sauer, N. (1981). Problem on hypergraph decomposition into cliques.",
-        "type": "paper"
-      },
-      {
-        "key": "Tu41",
-        "citation": "Turán, P. (1941). Eine Extremalaufgabe aus der Graphentheorie. Mat. Fiz. Lapok, 48, 436–452.",
-        "type": "paper"
-      },
-      {
-        "key": "ESS66",
-        "citation": "Erdős, P. and Simonovits, M. (1966). A limit theorem in graph theory. Studia Sci. Math. Hungar., 1, 51–57.",
-        "type": "paper"
-      },
-      {
-        "key": "Ke11",
-        "citation": "Keevash, P. (2011). Hypergraph Turán problems. In Surveys in Combinatorics 2011, London Math. Soc. Lecture Note Ser. 392, 83–139.",
-        "type": "paper"
-      }
-    ],
     "originalContributions": [
       "RUniformHypergraph structure with edges and uniformity proof",
       "completeClique via powerset filtering for K_{r+1}^r",
@@ -182,5 +160,27 @@
     "axiomCount": 2,
     "theoremCount": 5,
     "definitionCount": 7
-  }
+  },
+  "references": [
+    {
+      "key": "ES81",
+      "citation": "Erdős, P. and Sauer, N. (1981). Problem on hypergraph decomposition into cliques.",
+      "type": "paper"
+    },
+    {
+      "key": "Tu41",
+      "citation": "Turán, P. (1941). Eine Extremalaufgabe aus der Graphentheorie. Mat. Fiz. Lapok, 48, 436–452.",
+      "type": "paper"
+    },
+    {
+      "key": "ESS66",
+      "citation": "Erdős, P. and Simonovits, M. (1966). A limit theorem in graph theory. Studia Sci. Math. Hungar., 1, 51–57.",
+      "type": "paper"
+    },
+    {
+      "key": "Ke11",
+      "citation": "Keevash, P. (2011). Hypergraph Turán problems. In Surveys in Combinatorics 2011, London Math. Soc. Lecture Note Ser. 392, 83–139.",
+      "type": "paper"
+    }
+  ]
 }

@@ -49,36 +49,6 @@
       "Cycle graphs and modular arithmetic on Fin n",
       "Flag algebra computations (for understanding best known bounds)"
     ],
-    "references": [
-      {
-        "authors": "Erdős, Paul",
-        "title": "Some problems in graph theory",
-        "year": "1971",
-        "venue": "Proceedings of the Second Louisiana Conference on Graph Theory",
-        "note": "Original statement of Problem #23: triangle-free graphs on 5n vertices can be made bipartite by deleting ≤ n² edges"
-      },
-      {
-        "authors": "Balogh, József; Clemen, Frank Christian; Lidický, Bernard",
-        "title": "Making triangle-free graphs bipartite",
-        "year": "2021",
-        "venue": "arXiv preprint",
-        "note": "Best known bound: ≤ 1.064n² edge deletions suffice, using flag algebra computations"
-      },
-      {
-        "authors": "Mantel, Willem",
-        "title": "Problem 28",
-        "year": "1907",
-        "venue": "Wiskundige Opgaven",
-        "note": "Triangle-free graphs on n vertices have ≤ n²/4 edges; the first result in extremal graph theory"
-      },
-      {
-        "authors": "Erdős, Paul",
-        "title": "Some of my favourite problems in various branches of combinatorics",
-        "year": "1992",
-        "venue": "Matematiche (Catania) 47, pp. 231-240",
-        "note": "Generalized conjecture for odd girth ≥ 2k+1 on (2k+1)n vertices"
-      }
-    ],
     "lineCount": 287
   },
   "overview": {
@@ -200,5 +170,35 @@
   "relatedProofs": [
     "",
     ""
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "Some problems in graph theory",
+      "year": "1971",
+      "venue": "Proceedings of the Second Louisiana Conference on Graph Theory",
+      "note": "Original statement of Problem #23: triangle-free graphs on 5n vertices can be made bipartite by deleting ≤ n² edges"
+    },
+    {
+      "authors": "Balogh, József; Clemen, Frank Christian; Lidický, Bernard",
+      "title": "Making triangle-free graphs bipartite",
+      "year": "2021",
+      "venue": "arXiv preprint",
+      "note": "Best known bound: ≤ 1.064n² edge deletions suffice, using flag algebra computations"
+    },
+    {
+      "authors": "Mantel, Willem",
+      "title": "Problem 28",
+      "year": "1907",
+      "venue": "Wiskundige Opgaven",
+      "note": "Triangle-free graphs on n vertices have ≤ n²/4 edges; the first result in extremal graph theory"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Some of my favourite problems in various branches of combinatorics",
+      "year": "1992",
+      "venue": "Matematiche (Catania) 47, pp. 231-240",
+      "note": "Generalized conjecture for odd girth ≥ 2k+1 on (2k+1)n vertices"
+    }
   ]
 }

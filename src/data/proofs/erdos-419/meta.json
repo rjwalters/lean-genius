@@ -70,33 +70,6 @@
       "limit_set_properties proved theorem",
       "erdos_419_summary combining characterization, existence, and uniqueness"
     ],
-    "references": [
-      {
-        "authors": "P. Erdős, R. L. Graham, A. Ivić, C. Pomerance",
-        "title": "On the number of divisors of n!",
-        "year": "1996",
-        "venue": "Analytic Number Theory: Proceedings of a Conference in Honor of Heini Halberstam",
-        "note": "Complete solution proving the limit points are {1} ∪ {1 + 1/k}"
-      },
-      {
-        "authors": "P. Erdős, R. L. Graham",
-        "title": "Old and New Problems and Results in Combinatorial Number Theory",
-        "year": "1980",
-        "venue": "Monographies de L'Enseignement Mathématique",
-        "note": "Original problem statement"
-      },
-      {
-        "authors": "A.-M. Legendre",
-        "title": "Essai sur la théorie des nombres",
-        "year": "1808",
-        "note": "Legendre's formula for p-adic valuation of factorials: vₚ(n!) = Σ⌊n/pⁱ⌋"
-      },
-      {
-        "authors": "M. Sawhney",
-        "title": "Independent rediscovery of the characterization",
-        "note": "Elegant presentation of the small/large prime decomposition argument"
-      }
-    ],
     "axiomCount": 21,
     "lineCount": 252
   },
@@ -284,5 +257,32 @@
     "erdos-400",
     "dirichlets-theorem",
     "prime-number-theorem"
+  ],
+  "references": [
+    {
+      "authors": "P. Erdős, R. L. Graham, A. Ivić, C. Pomerance",
+      "title": "On the number of divisors of n!",
+      "year": "1996",
+      "venue": "Analytic Number Theory: Proceedings of a Conference in Honor of Heini Halberstam",
+      "note": "Complete solution proving the limit points are {1} ∪ {1 + 1/k}"
+    },
+    {
+      "authors": "P. Erdős, R. L. Graham",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique",
+      "note": "Original problem statement"
+    },
+    {
+      "authors": "A.-M. Legendre",
+      "title": "Essai sur la théorie des nombres",
+      "year": "1808",
+      "note": "Legendre's formula for p-adic valuation of factorials: vₚ(n!) = Σ⌊n/pⁱ⌋"
+    },
+    {
+      "authors": "M. Sawhney",
+      "title": "Independent rediscovery of the characterization",
+      "note": "Elegant presentation of the small/large prime decomposition argument"
+    }
   ]
 }

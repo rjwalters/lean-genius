@@ -44,24 +44,6 @@
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "references": [
-      {
-        "key": "RS78",
-        "citation": "I. Z. Ruzsa and E. Szemerédi, Triple systems with no six points carrying three triangles, Combinatorics (Keszthely, 1976), Colloq. Math. Soc. János Bolyai 18 (1978), 939–945."
-      },
-      {
-        "key": "KS96",
-        "citation": "J. Komlós and M. Simonovits, Szemerédi's regularity lemma and its applications in graph theory, Combinatorics: Paul Erdős is Eighty, vol. 2, Bolyai Soc. Math. Studies 2, 1996, pp. 295–352."
-      },
-      {
-        "key": "Fox11",
-        "citation": "J. Fox, A new proof of the graph removal lemma, Ann. of Math. (2) 174 (2011), 561–579."
-      },
-      {
-        "key": "Sze78",
-        "citation": "E. Szemerédi, Regular partitions of graphs, Problèmes combinatoires et théorie des graphes (Orsay, 1976), Colloq. Internat. CNRS 260, Paris, 1978, pp. 399–401."
-      }
-    ],
     "prerequisites": [
       "Szemerédi Regularity Lemma",
       "Epsilon-regular pairs and edge density",
@@ -196,5 +178,23 @@
     "axiomCount": 0,
     "theoremCount": 13,
     "definitionCount": 7
-  }
+  },
+  "references": [
+    {
+      "key": "RS78",
+      "citation": "I. Z. Ruzsa and E. Szemerédi, Triple systems with no six points carrying three triangles, Combinatorics (Keszthely, 1976), Colloq. Math. Soc. János Bolyai 18 (1978), 939–945."
+    },
+    {
+      "key": "KS96",
+      "citation": "J. Komlós and M. Simonovits, Szemerédi's regularity lemma and its applications in graph theory, Combinatorics: Paul Erdős is Eighty, vol. 2, Bolyai Soc. Math. Studies 2, 1996, pp. 295–352."
+    },
+    {
+      "key": "Fox11",
+      "citation": "J. Fox, A new proof of the graph removal lemma, Ann. of Math. (2) 174 (2011), 561–579."
+    },
+    {
+      "key": "Sze78",
+      "citation": "E. Szemerédi, Regular partitions of graphs, Problèmes combinatoires et théorie des graphes (Orsay, 1976), Colloq. Internat. CNRS 260, Paris, 1978, pp. 399–401."
+    }
+  ]
 }

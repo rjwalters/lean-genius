@@ -19,12 +19,6 @@
     "erdosNumber": 265,
     "erdosUrl": "https://erdosproblems.com/265",
     "erdosProblemStatus": "open",
-    "references": [
-      {
-        "key": "KoTa24",
-        "citation": "V. Kovač, T. Tao, 'Sequences with doubly exponential growth and rational sums', Annals of Mathematics (2024)"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "Filter.Tendsto",
@@ -142,5 +136,11 @@
     "axiomCount": 9,
     "theoremCount": 1,
     "definitionCount": 11
-  }
+  },
+  "references": [
+    {
+      "key": "KoTa24",
+      "citation": "V. Kovač, T. Tao, 'Sequences with doubly exponential growth and rational sums', Annals of Mathematics (2024)"
+    }
+  ]
 }

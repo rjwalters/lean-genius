@@ -50,22 +50,6 @@
       "Asymptotic superiority: for any K, ∃N, ∀n≥N, K·n³ < (n+1)·n·n!",
       "Correction of naive intuition: Gaussian beats Cramer for ALL n ≥ 1 in the n³ model"
     ],
-    "references": [
-      {
-        "authors": "G. Cramer",
-        "title": "Introduction à l'Analyse des lignes Courbes algébriques",
-        "year": "1750",
-        "venue": "Geneva",
-        "note": "Original presentation of the determinant-based rule for solving linear systems"
-      },
-      {
-        "authors": "W. H. Press et al.",
-        "title": "Numerical Recipes: The Art of Scientific Computing",
-        "year": "2007",
-        "venue": "Cambridge University Press",
-        "note": "Standard reference for the O(n³/3) complexity of Gaussian elimination"
-      }
-    ],
     "dateAdded": "2026-02-26",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
@@ -167,5 +151,21 @@
     "axiomCount": 0,
     "theoremCount": 16,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    {
+      "authors": "G. Cramer",
+      "title": "Introduction à l'Analyse des lignes Courbes algébriques",
+      "year": "1750",
+      "venue": "Geneva",
+      "note": "Original presentation of the determinant-based rule for solving linear systems"
+    },
+    {
+      "authors": "W. H. Press et al.",
+      "title": "Numerical Recipes: The Art of Scientific Computing",
+      "year": "2007",
+      "venue": "Cambridge University Press",
+      "note": "Standard reference for the O(n³/3) complexity of Gaussian elimination"
+    }
+  ]
 }

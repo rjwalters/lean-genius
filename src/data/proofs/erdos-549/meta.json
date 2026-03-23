@@ -56,29 +56,6 @@
         "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
       }
     ],
-    "references": [
-      {
-        "authors": "Norin, Sergey; Li, Zhentao; Zhao, Yufei",
-        "title": "The Ramsey number of the double star",
-        "year": "2022",
-        "venue": "Combinatorica",
-        "note": "Disproved Erdős's conjecture: R(double star) ≥ 4.2k > 4k - 1, with upper bound 4.21526k via flag algebras"
-      },
-      {
-        "authors": "Razborov, Alexander",
-        "title": "Flag algebras",
-        "year": "2007",
-        "venue": "Journal of Symbolic Logic, 72(4), pp. 1239-1282",
-        "note": "Introduced the flag algebra framework for extremal graph theory, enabling the 4.21526k upper bound"
-      },
-      {
-        "authors": "Chvátal, Václav; Harary, Frank",
-        "title": "Generalized Ramsey theory for graphs, III. Small off-diagonal numbers",
-        "year": "1972",
-        "venue": "Pacific Journal of Mathematics, 41(2), pp. 335-345",
-        "note": "Proved R(T) ≤ 2n - 2 for any tree on n vertices"
-      }
-    ],
     "crossReferences": [
       {
         "targetId": "erdos-535",
@@ -222,5 +199,28 @@
     "axiomCount": 0,
     "theoremCount": 16,
     "definitionCount": 14
-  }
+  },
+  "references": [
+    {
+      "authors": "Norin, Sergey; Li, Zhentao; Zhao, Yufei",
+      "title": "The Ramsey number of the double star",
+      "year": "2022",
+      "venue": "Combinatorica",
+      "note": "Disproved Erdős's conjecture: R(double star) ≥ 4.2k > 4k - 1, with upper bound 4.21526k via flag algebras"
+    },
+    {
+      "authors": "Razborov, Alexander",
+      "title": "Flag algebras",
+      "year": "2007",
+      "venue": "Journal of Symbolic Logic, 72(4), pp. 1239-1282",
+      "note": "Introduced the flag algebra framework for extremal graph theory, enabling the 4.21526k upper bound"
+    },
+    {
+      "authors": "Chvátal, Václav; Harary, Frank",
+      "title": "Generalized Ramsey theory for graphs, III. Small off-diagonal numbers",
+      "year": "1972",
+      "venue": "Pacific Journal of Mathematics, 41(2), pp. 335-345",
+      "note": "Proved R(T) ≤ 2n - 2 for any tree on n vertices"
+    }
+  ]
 }

@@ -73,29 +73,6 @@
         "module": "Mathlib.Data.Set.Card"
       }
     ],
-    "references": [
-      {
-        "authors": "Vitaly Bergelson, Florian K. Richter",
-        "title": "Multiplicative richness of additively large sets in Zd",
-        "year": "2017",
-        "venue": "Journal d'Analyse Mathématique",
-        "note": "Proved the main result using multiplicative functions along polynomial sequences"
-      },
-      {
-        "authors": "Paul Erdős",
-        "title": "Some problems on number theory",
-        "year": "1969",
-        "venue": "Analytic and elementary number theory (Marseille, 1983), Publ. Math. Orsay",
-        "note": "Original statement of Problem #1149: density of coprime floor-powers"
-      },
-      {
-        "authors": "Leonhard Euler",
-        "title": "Introductio in analysin infinitorum",
-        "year": "1748",
-        "venue": "Lausanne",
-        "note": "Euler product formula ζ(2) = π²/6 and the coprime probability 6/π² = ∏_p(1-1/p²)"
-      }
-    ],
     "axiomCount": 2,
     "prerequisites": [
       "Natural number coprimality (Nat.Coprime, gcd)",
@@ -118,13 +95,6 @@
       "Integer α is degenerate: ⌊n^k⌋ = n^k, so gcd(n, n^k) = n, and only n=1 is coprime — the non-integer hypothesis is necessary, not just convenient",
       "The proof uses π > 3 (available in Mathlib) to show 6/π² < 1, though the weaker π > √6 ≈ 2.449 would suffice",
       "The axiomatization is well-motivated: Bergelson-Richter's proof requires ergodic theory and multiplicative function theory far beyond current Mathlib"
-    ],
-    "prerequisites": [
-      "Natural number coprimality (Nat.Coprime, gcd)",
-      "Floor function and real exponentiation (Nat.floor, rpow)",
-      "Natural density via Filter.Tendsto at atTop",
-      "Bounds on π (Real.pi_pos, Real.pi_gt_three)",
-      "Divisibility and powers (dvd_pow_self)"
     ]
   },
   "sections": [
@@ -201,5 +171,28 @@
     "axiomCount": 2,
     "theoremCount": 5,
     "definitionCount": 4
-  }
+  },
+  "references": [
+    {
+      "authors": "Vitaly Bergelson, Florian K. Richter",
+      "title": "Multiplicative richness of additively large sets in Zd",
+      "year": "2017",
+      "venue": "Journal d'Analyse Mathématique",
+      "note": "Proved the main result using multiplicative functions along polynomial sequences"
+    },
+    {
+      "authors": "Paul Erdős",
+      "title": "Some problems on number theory",
+      "year": "1969",
+      "venue": "Analytic and elementary number theory (Marseille, 1983), Publ. Math. Orsay",
+      "note": "Original statement of Problem #1149: density of coprime floor-powers"
+    },
+    {
+      "authors": "Leonhard Euler",
+      "title": "Introductio in analysin infinitorum",
+      "year": "1748",
+      "venue": "Lausanne",
+      "note": "Euler product formula ζ(2) = π²/6 and the coprime probability 6/π² = ∏_p(1-1/p²)"
+    }
+  ]
 }

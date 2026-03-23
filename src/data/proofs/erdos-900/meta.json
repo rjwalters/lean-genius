@@ -40,23 +40,6 @@
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       }
     ],
-    "references": [
-      {
-        "key": "AKS1981",
-        "citation": "Ajtai, M., Komlós, J., and Szemerédi, E. (1981). The longest path in a random graph. Combinatorica 1, 1-12.",
-        "type": "paper"
-      },
-      {
-        "key": "Erdos1982",
-        "citation": "Erdős, P. (1982). Problems and results on graphs and hypergraphs. [Er82e]",
-        "type": "paper"
-      },
-      {
-        "key": "ErdosRenyi1960",
-        "citation": "Erdős, P. and Rényi, A. (1960). On the evolution of random graphs. Publ. Math. Inst. Hungar. Acad. Sci. 5, 17-61.",
-        "type": "paper"
-      }
-    ],
     "originalContributions": [
       "Formal definition of the Erdős-Rényi random graph model G(n, m)",
       "Definition of paths and longest path length",
@@ -201,5 +184,22 @@
     "axiomCount": 19,
     "theoremCount": 2,
     "definitionCount": 18
-  }
+  },
+  "references": [
+    {
+      "key": "AKS1981",
+      "citation": "Ajtai, M., Komlós, J., and Szemerédi, E. (1981). The longest path in a random graph. Combinatorica 1, 1-12.",
+      "type": "paper"
+    },
+    {
+      "key": "Erdos1982",
+      "citation": "Erdős, P. (1982). Problems and results on graphs and hypergraphs. [Er82e]",
+      "type": "paper"
+    },
+    {
+      "key": "ErdosRenyi1960",
+      "citation": "Erdős, P. and Rényi, A. (1960). On the evolution of random graphs. Publ. Math. Inst. Hungar. Acad. Sci. 5, 17-61.",
+      "type": "paper"
+    }
+  ]
 }

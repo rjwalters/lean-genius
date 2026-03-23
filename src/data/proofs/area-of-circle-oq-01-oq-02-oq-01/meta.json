@@ -61,29 +61,6 @@
       "Surface-to-volume ratio S_n/V_n = n/r",
       "Explicit formulas: S₂ = 2πr, S₃ = 4πr², V₃ = (4π/3)r³"
     ],
-    "references": [
-      {
-        "authors": "Archimedes",
-        "title": "On the Sphere and Cylinder",
-        "year": "-225",
-        "venue": "Classical geometry",
-        "note": "First proof that the volume of a sphere is (4/3)πr³ and its surface area is 4πr², via the method of exhaustion"
-      },
-      {
-        "authors": "L. Schläfli",
-        "title": "Theorie der vielfachen Kontinuität",
-        "year": "1852",
-        "venue": "Denkschriften der Schweizerischen Naturforschenden Gesellschaft",
-        "note": "First computation of the volume of the n-dimensional ball using the Gamma function"
-      },
-      {
-        "authors": "Keith Ball",
-        "title": "An Elementary Introduction to Modern Convex Geometry",
-        "year": "1997",
-        "venue": "Flavors of Geometry, MSRI Publications",
-        "note": "Modern treatment of high-dimensional volume and the concentration of measure phenomenon"
-      }
-    ],
     "historicalContext": "The relationship between the volume and surface area of n-dimensional balls is a fundamental result in geometric analysis. In 2D, the area of a circle equals the integral of its circumference: A(r) = ∫₀ʳ 2πρ dρ = πr². This generalizes to all dimensions via V_n(r) = ω_n r^n and the polynomial structure of the volume function. The n-ball volume formula ω_n = π^(n/2)/Γ(n/2+1) was first computed by Schläfli (1852) and exhibits the surprising behavior of vanishing as n → ∞.",
     "dateAdded": "2026-03-11",
     "axiomCount": 0,
@@ -238,5 +215,28 @@
     "axiomCount": 0,
     "theoremCount": 26,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    {
+      "authors": "Archimedes",
+      "title": "On the Sphere and Cylinder",
+      "year": "-225",
+      "venue": "Classical geometry",
+      "note": "First proof that the volume of a sphere is (4/3)πr³ and its surface area is 4πr², via the method of exhaustion"
+    },
+    {
+      "authors": "L. Schläfli",
+      "title": "Theorie der vielfachen Kontinuität",
+      "year": "1852",
+      "venue": "Denkschriften der Schweizerischen Naturforschenden Gesellschaft",
+      "note": "First computation of the volume of the n-dimensional ball using the Gamma function"
+    },
+    {
+      "authors": "Keith Ball",
+      "title": "An Elementary Introduction to Modern Convex Geometry",
+      "year": "1997",
+      "venue": "Flavors of Geometry, MSRI Publications",
+      "note": "Modern treatment of high-dimensional volume and the concentration of measure phenomenon"
+    }
+  ]
 }

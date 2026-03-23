@@ -22,14 +22,6 @@
     "erdosNumber": 58,
     "erdosUrl": "https://erdosproblems.com/58",
     "erdosProblemStatus": "solved",
-    "references": [
-      "Bollobás-Erdős: original conjecture",
-      "Bollobás-Shelah: confirmed k=1 case (χ ≤ 4)",
-      "Gyárfás (1992): 'Graphs with k odd cycle lengths' — full solution",
-      "Gao-Huo-Ma (2021): 'A strengthening on odd cycles in graphs of given chromatic number'",
-      "https://erdosproblems.com/58"
-    ],
-    "leanFile": "Proofs/Erdos58Problem.lean",
     "axiomCount": 6,
     "lineCount": 165,
     "prerequisites": [
@@ -152,7 +144,12 @@
       "year": "1987",
       "venue": "Applicationes Mathematicae, vol. 19, pp. 413–441",
       "note": "Survey including problems on chromatic number vs. cycle structure"
-    }
+    },
+    "Bollobás-Erdős: original conjecture",
+    "Bollobás-Shelah: confirmed k=1 case (χ ≤ 4)",
+    "Gyárfás (1992): 'Graphs with k odd cycle lengths' — full solution",
+    "Gao-Huo-Ma (2021): 'A strengthening on odd cycles in graphs of given chromatic number'",
+    "https://erdosproblems.com/58"
   ],
   "relatedProofs": [
     "erdos-19",

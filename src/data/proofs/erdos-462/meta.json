@@ -42,22 +42,6 @@
         "module": "Mathlib.Data.Finset.Basic"
       }
     ],
-    "references": [
-      {
-        "key": "erdosgraham1980",
-        "title": "Old and New Problems and Results in Combinatorial Number Theory",
-        "author": "P. Erdős, R.L. Graham",
-        "year": 1980,
-        "pages": "p.92"
-      },
-      {
-        "key": "alladi-erdos1977",
-        "title": "On an additive arithmetic function",
-        "author": "K. Alladi, P. Erdős",
-        "year": 1977,
-        "journal": "Pacific Journal of Mathematics"
-      }
-    ],
     "originalContributions": [
       "leastPrimeFactor definition via Nat.minFac with axiomatized primality, divisibility, and minimality",
       "Separate compositeSum (filtering primes) and intervalSum (full interval) for distinct analytical roles",
@@ -168,5 +152,21 @@
     "erdos-463",
     "erdos-460",
     "prime-number-theorem"
+  ],
+  "references": [
+    {
+      "key": "erdosgraham1980",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "author": "P. Erdős, R.L. Graham",
+      "year": 1980,
+      "pages": "p.92"
+    },
+    {
+      "key": "alladi-erdos1977",
+      "title": "On an additive arithmetic function",
+      "author": "K. Alladi, P. Erdős",
+      "year": 1977,
+      "journal": "Pacific Journal of Mathematics"
+    }
   ]
 }

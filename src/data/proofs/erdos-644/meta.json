@@ -42,28 +42,6 @@
       ],
       "significance": "Determines the precise covering efficiency of k-uniform set families under r-wise pair coherence. The known exact values f(k,3)=2k through f(k,6)=k reveal a decreasing coefficient sequence c₃=2, c₄=3/2, c₅=5/4, c₆=1. The open questions ask whether c₇=3/4 (crossing below the natural barrier c=1) and whether the linear-in-k behavior persists for all r."
     },
-    "references": [
-      {
-        "key": "EFKT92",
-        "citation": "Erdős, P., Fon-Der-Flaass, D. G., Kostochka, A. V., and Tuza, Zs., Covering and independence in triangle structures and set systems, in: Sets, Graphs, and Numbers, Colloq. Math. Soc. János Bolyai 60, North-Holland, 1992, pp. 237-252.",
-        "type": "paper"
-      },
-      {
-        "key": "ALWZ20",
-        "citation": "Alweiss, R., Lovett, S., Wu, K., and Zhang, J., Improved bounds for the sunflower lemma, Ann. Math. 194 (2021), 795-815.",
-        "type": "paper"
-      },
-      {
-        "key": "ER60",
-        "citation": "Erdős, P. and Rado, R., Intersection theorems for systems of sets, J. London Math. Soc. 35 (1960), 85-90.",
-        "type": "paper"
-      },
-      {
-        "key": "erdos644",
-        "citation": "Erdős Problems, Problem #644, https://erdosproblems.com/644",
-        "type": "website"
-      }
-    ],
     "relatedProofs": [
       {
         "id": "erdos-621",
@@ -216,5 +194,27 @@
     "axiomCount": 0,
     "theoremCount": 0,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "key": "EFKT92",
+      "citation": "Erdős, P., Fon-Der-Flaass, D. G., Kostochka, A. V., and Tuza, Zs., Covering and independence in triangle structures and set systems, in: Sets, Graphs, and Numbers, Colloq. Math. Soc. János Bolyai 60, North-Holland, 1992, pp. 237-252.",
+      "type": "paper"
+    },
+    {
+      "key": "ALWZ20",
+      "citation": "Alweiss, R., Lovett, S., Wu, K., and Zhang, J., Improved bounds for the sunflower lemma, Ann. Math. 194 (2021), 795-815.",
+      "type": "paper"
+    },
+    {
+      "key": "ER60",
+      "citation": "Erdős, P. and Rado, R., Intersection theorems for systems of sets, J. London Math. Soc. 35 (1960), 85-90.",
+      "type": "paper"
+    },
+    {
+      "key": "erdos644",
+      "citation": "Erdős Problems, Problem #644, https://erdosproblems.com/644",
+      "type": "website"
+    }
+  ]
 }

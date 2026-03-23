@@ -9,7 +9,6 @@
     "date": "2026",
     "status": "verified",
     "proofRepoPath": "Proofs/PrimeGapBounds.lean",
-    "leanFile": "proofs/Proofs/PrimeGapBounds.lean",
     "tags": [
       "number-theory",
       "primes",
@@ -52,23 +51,6 @@
       "nth_prime_le_two_pow_succ: p_n <= 2^(n+1) proved by induction from Bertrand",
       "nth_prime_le_two_pow: 1-indexed variant p_n <= 2^n"
     ],
-    "references": [
-      {
-        "key": "Be45",
-        "citation": "Bertrand, J. (1845). Memoire sur le nombre de valeurs que peut prendre une fonction quand on y permute les lettres qu'elle renferme. Journal de l'Ecole Royale Polytechnique, 30, 123-140.",
-        "type": "paper"
-      },
-      {
-        "key": "Ch52",
-        "citation": "Chebyshev, P. L. (1852). Memoire sur les nombres premiers. Journal de Mathematiques Pures et Appliquees, 17, 366-390.",
-        "type": "paper"
-      },
-      {
-        "key": "Er32",
-        "citation": "Erdős, P. (1932). Beweis eines Satzes von Tschebyschef. Acta Scientiarum Mathematicarum (Szeged), 5, 194-198.",
-        "type": "paper"
-      }
-    ],
     "relatedProofs": [
       "bounded-prime-gaps",
       "bertrands-postulate-oq-03",
@@ -96,12 +78,6 @@
       "The exponential bound p_n <= 2^(n+1) is tight enough for many applications while being elementary to prove",
       "The key lemma nth_prime_succ_le_of_prime_gt captures the order-preserving enumeration of primes, essential for the inductive step",
       "Small value computations (pi(10) = 4, etc.) serve as sanity checks verified by Lean's kernel"
-    ],
-    "prerequisites": [
-      "Bertrand's postulate: for n >= 1, there exists a prime p with n < p <= 2n",
-      "The prime counting function pi(n) = |{p <= n : p prime}|",
-      "The n-th prime function (0-indexed): p_0 = 2, p_1 = 3, p_2 = 5, ...",
-      "Basic properties of Nat.count and Nat.nth from Mathlib"
     ]
   },
   "sections": [
@@ -192,11 +168,30 @@
       "Mathlib.Data.Nat.Prime.Nth",
       "Mathlib.Tactic"
     ],
-    "opens": ["Nat"],
+    "opens": [
+      "Nat"
+    ],
     "namespace": "PrimeGapBounds",
     "lineCount": 202,
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "key": "Be45",
+      "citation": "Bertrand, J. (1845). Memoire sur le nombre de valeurs que peut prendre une fonction quand on y permute les lettres qu'elle renferme. Journal de l'Ecole Royale Polytechnique, 30, 123-140.",
+      "type": "paper"
+    },
+    {
+      "key": "Ch52",
+      "citation": "Chebyshev, P. L. (1852). Memoire sur les nombres premiers. Journal de Mathematiques Pures et Appliquees, 17, 366-390.",
+      "type": "paper"
+    },
+    {
+      "key": "Er32",
+      "citation": "Erdős, P. (1932). Beweis eines Satzes von Tschebyschef. Acta Scientiarum Mathematicarum (Szeged), 5, 194-198.",
+      "type": "paper"
+    }
+  ]
 }

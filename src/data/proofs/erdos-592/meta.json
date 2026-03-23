@@ -14,39 +14,6 @@
       "combinatorics",
       "open"
     ],
-    "references": [
-      {
-        "key": "Sp57",
-        "citation": "Specker, Ernst, Teilmengen von Mengen mit Relationen, Comment. Math. Helv. 31 (1957), 302-314.",
-        "type": "paper"
-      },
-      {
-        "key": "Ch72",
-        "citation": "Chang, C. C., A partition theorem for the complete graph on ω^ω, J. Combin. Theory Ser. A 12 (1972), 396-452.",
-        "type": "paper"
-      },
-      {
-        "key": "GL74",
-        "citation": "Galvin, Fred and Larson, Jean A., Pinning countable ordinals, Fund. Math. 82 (1974), 357-361.",
-        "type": "paper"
-      },
-      {
-        "key": "Sc10",
-        "citation": "Schipperus, Rene, Countable partition ordinals, Ann. Pure Appl. Logic 161 (2010), 1195-1215.",
-        "type": "paper"
-      },
-      {
-        "key": "ER56",
-        "citation": "Erdős, Paul and Rado, Richard, A partition calculus in set theory, Bull. Amer. Math. Soc. 62 (1956), 427-489.",
-        "type": "paper"
-      },
-      {
-        "key": "EP",
-        "citation": "Erdős Problems, Problem #592, https://erdosproblems.com/592.",
-        "type": "website"
-      }
-    ],
-    "leanFile": "Proofs/Erdos592Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/592",
     "erdosUrl": "https://erdosproblems.com/592",
@@ -182,5 +149,37 @@
       "Can the classification be extended to k ≥ 4 in the Ramsey arrow α → (α, k)²?",
       "Is the CNF-length 3 case independent of ZFC, or is it provable/refutable?"
     ]
-  }
+  },
+  "references": [
+    {
+      "key": "Sp57",
+      "citation": "Specker, Ernst, Teilmengen von Mengen mit Relationen, Comment. Math. Helv. 31 (1957), 302-314.",
+      "type": "paper"
+    },
+    {
+      "key": "Ch72",
+      "citation": "Chang, C. C., A partition theorem for the complete graph on ω^ω, J. Combin. Theory Ser. A 12 (1972), 396-452.",
+      "type": "paper"
+    },
+    {
+      "key": "GL74",
+      "citation": "Galvin, Fred and Larson, Jean A., Pinning countable ordinals, Fund. Math. 82 (1974), 357-361.",
+      "type": "paper"
+    },
+    {
+      "key": "Sc10",
+      "citation": "Schipperus, Rene, Countable partition ordinals, Ann. Pure Appl. Logic 161 (2010), 1195-1215.",
+      "type": "paper"
+    },
+    {
+      "key": "ER56",
+      "citation": "Erdős, Paul and Rado, Richard, A partition calculus in set theory, Bull. Amer. Math. Soc. 62 (1956), 427-489.",
+      "type": "paper"
+    },
+    {
+      "key": "EP",
+      "citation": "Erdős Problems, Problem #592, https://erdosproblems.com/592.",
+      "type": "website"
+    }
+  ]
 }

@@ -50,22 +50,6 @@
       "inscribed_le_circumscribed: sandwich inequality with sin(2x) = 2sin(x)cos(x) decomposition",
       "archimedes_exhaustion_unique: πr² uniquely determined as limit of inscribed areas"
     ],
-    "references": [
-      {
-        "authors": "Archimedes",
-        "title": "Measurement of a Circle (Κύκλου μέτρησις)",
-        "year": "c. 250 BCE",
-        "venue": "Classical Geometry",
-        "note": "Original proof by method of exhaustion: inscribing 96-gons to bound π between 3+10/71 and 3+1/7"
-      },
-      {
-        "authors": "T. L. Heath",
-        "title": "The Works of Archimedes",
-        "year": "1897",
-        "venue": "Cambridge University Press",
-        "note": "Translation and commentary of Archimedes' method of exhaustion"
-      }
-    ],
     "dateAdded": "2026-02-26",
     "axiomCount": 0,
     "lineCount": 366
@@ -177,5 +161,21 @@
     "axiomCount": 0,
     "theoremCount": 17,
     "definitionCount": 2
-  }
+  },
+  "references": [
+    {
+      "authors": "Archimedes",
+      "title": "Measurement of a Circle (Κύκλου μέτρησις)",
+      "year": "c. 250 BCE",
+      "venue": "Classical Geometry",
+      "note": "Original proof by method of exhaustion: inscribing 96-gons to bound π between 3+10/71 and 3+1/7"
+    },
+    {
+      "authors": "T. L. Heath",
+      "title": "The Works of Archimedes",
+      "year": "1897",
+      "venue": "Cambridge University Press",
+      "note": "Translation and commentary of Archimedes' method of exhaustion"
+    }
+  ]
 }

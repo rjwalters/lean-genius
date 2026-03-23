@@ -36,36 +36,6 @@
       "Hierarchy of related growth rate conjectures (quotient, difference, exponential)",
       "Proof schema: main conjecture implies ExponentialDiverges"
     ],
-    "references": [
-      {
-        "authors": "Bartel L. van der Waerden",
-        "title": "Beweis einer Baudetschen Vermutung",
-        "year": "1927",
-        "venue": "Nieuw Archief voor Wiskunde",
-        "note": "Original proof of the van der Waerden theorem"
-      },
-      {
-        "authors": "Elwyn R. Berlekamp",
-        "title": "A construction for partitions which avoid long arithmetic progressions",
-        "year": "1968",
-        "venue": "Canadian Mathematical Bulletin",
-        "note": "Finite field construction giving W(p+1) ≥ p·2^p for primes p"
-      },
-      {
-        "authors": "W. Timothy Gowers",
-        "title": "A new proof of Szemerédi's theorem",
-        "year": "2001",
-        "venue": "Geometric and Functional Analysis",
-        "note": "Analytic proof yielding tower-of-height-5 upper bound"
-      },
-      {
-        "authors": "Jakub Kozik, Dmitry Shabanov",
-        "title": "Improved algorithms for colorings of simple hypergraphs and applications",
-        "year": "2016",
-        "venue": "Journal of Combinatorial Theory, Series B",
-        "note": "Best general lower bound W(k) ≫ 2^k via Lovász Local Lemma"
-      }
-    ],
     "badge": "axiom",
     "sorries": 5,
     "erdosNumber": 138,
@@ -154,5 +124,35 @@
     "axiomCount": 8,
     "theoremCount": 3,
     "definitionCount": 8
-  }
+  },
+  "references": [
+    {
+      "authors": "Bartel L. van der Waerden",
+      "title": "Beweis einer Baudetschen Vermutung",
+      "year": "1927",
+      "venue": "Nieuw Archief voor Wiskunde",
+      "note": "Original proof of the van der Waerden theorem"
+    },
+    {
+      "authors": "Elwyn R. Berlekamp",
+      "title": "A construction for partitions which avoid long arithmetic progressions",
+      "year": "1968",
+      "venue": "Canadian Mathematical Bulletin",
+      "note": "Finite field construction giving W(p+1) ≥ p·2^p for primes p"
+    },
+    {
+      "authors": "W. Timothy Gowers",
+      "title": "A new proof of Szemerédi's theorem",
+      "year": "2001",
+      "venue": "Geometric and Functional Analysis",
+      "note": "Analytic proof yielding tower-of-height-5 upper bound"
+    },
+    {
+      "authors": "Jakub Kozik, Dmitry Shabanov",
+      "title": "Improved algorithms for colorings of simple hypergraphs and applications",
+      "year": "2016",
+      "venue": "Journal of Combinatorial Theory, Series B",
+      "note": "Best general lower bound W(k) ≫ 2^k via Lovász Local Lemma"
+    }
+  ]
 }

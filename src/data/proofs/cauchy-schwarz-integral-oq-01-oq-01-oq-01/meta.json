@@ -55,29 +55,6 @@
         "module": "Mathlib.Algebra.Order.Field.Basic"
       }
     ],
-    "references": [
-      {
-        "authors": "Cauchy, Augustin-Louis",
-        "title": "Cours d'analyse de l'École Royale Polytechnique",
-        "year": "1821",
-        "venue": "Paris",
-        "note": "First statement of the discrete Cauchy inequality for finite sums"
-      },
-      {
-        "authors": "Schwarz, Hermann Amandus",
-        "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem der Variationsrechnung",
-        "year": "1885",
-        "venue": "Acta Societatis Scientiarum Fennicae 15, pp. 315-362",
-        "note": "Extended Cauchy's inequality to the integral (L²) setting"
-      },
-      {
-        "authors": "Nesbitt, A. M.",
-        "title": "Problem 15114",
-        "year": "1903",
-        "venue": "Educational Times",
-        "note": "Original statement of the inequality a/(b+c)+b/(a+c)+c/(a+b) ≥ 3/2"
-      }
-    ],
     "lineCount": 139
   },
   "overview": {
@@ -180,5 +157,28 @@
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Cauchy, Augustin-Louis",
+      "title": "Cours d'analyse de l'École Royale Polytechnique",
+      "year": "1821",
+      "venue": "Paris",
+      "note": "First statement of the discrete Cauchy inequality for finite sums"
+    },
+    {
+      "authors": "Schwarz, Hermann Amandus",
+      "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem der Variationsrechnung",
+      "year": "1885",
+      "venue": "Acta Societatis Scientiarum Fennicae 15, pp. 315-362",
+      "note": "Extended Cauchy's inequality to the integral (L²) setting"
+    },
+    {
+      "authors": "Nesbitt, A. M.",
+      "title": "Problem 15114",
+      "year": "1903",
+      "venue": "Educational Times",
+      "note": "Original statement of the inequality a/(b+c)+b/(a+c)+c/(a+b) ≥ 3/2"
+    }
+  ]
 }

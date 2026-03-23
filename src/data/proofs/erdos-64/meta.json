@@ -43,33 +43,6 @@
       ],
       "significance": "One of the most prominent open problems in extremal graph theory, carrying a $1000 Erdős prize. The set {2^k : k ≥ 2} is exponentially sparse yet conjectured to be unavoidable for minimum degree 3. Liu-Montgomery (2020) resolved the large-degree case by showing every graph with δ(G) ≥ D contains all even cycle lengths in a geometric range, but the critical case δ = 3 remains completely open. The difficulty is concentrated entirely in the sparse regime."
     },
-    "references": [
-      {
-        "key": "EG96",
-        "citation": "Erdős, P. and Gyárfás, A., A variant of the classical Ramsey problem, Combinatorica 17 (1997), 459-467.",
-        "type": "paper"
-      },
-      {
-        "key": "LM20",
-        "citation": "Liu, H. and Montgomery, R., A solution to Erdős and Hajnal's odd cycle problem, J. Amer. Math. Soc. 36 (2023), 1191-1234. (Also resolves the Erdős-Gyárfás conjecture for large degree.)",
-        "type": "paper"
-      },
-      {
-        "key": "Dir52",
-        "citation": "Dirac, G.A., Some theorems on abstract graphs, Proc. London Math. Soc. 3 (1952), 69-81.",
-        "type": "paper"
-      },
-      {
-        "key": "Bon71",
-        "citation": "Bondy, J.A., Pancyclic graphs, J. Combin. Theory Ser. B 11 (1971), 80-84.",
-        "type": "paper"
-      },
-      {
-        "key": "erdos64",
-        "citation": "Erdős Problems, Problem #64, https://erdosproblems.com/64",
-        "type": "website"
-      }
-    ],
     "relatedProofs": [
       {
         "id": "erdos-63",

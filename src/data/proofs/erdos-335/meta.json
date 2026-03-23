@@ -10,7 +10,6 @@
     "date": "1980",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos335Problem.lean",
-    "leanFile": "Proofs/Erdos335Problem.lean",
     "tags": [
       "erdos",
       "additive-combinatorics",
@@ -66,14 +65,6 @@
       "erdos_335_conjecture: all density-additive pairs arise from group rotations (OPEN, axiomatized)",
       "Basic properties: density_nonneg, density_le_one, additive_sum_le_one, plunnecke_ruzsa_lower",
       "additive_implies_tight: PROVED — density additivity implies Plünnecke–Ruzsa is tight"
-    ],
-    "references": [
-      "Erdős, Graham (1980): 'Old and New Problems and Results in Combinatorial Number Theory', Monographies de l'Enseignement Mathématique 28, p. 51",
-      "Plünnecke (1970): 'Eine zahlentheoretische Anwendung der Graphentheorie', J. Reine Angew. Math. 243, 171–183",
-      "Ruzsa (1989): 'An application of graph theory to additive number theory', Scientia 3, 97–109",
-      "Weyl (1916): 'Über die Gleichverteilung von Zahlen mod. Eins', Math. Annalen 77, 313–352",
-      "Nathanson (1996): 'Additive Number Theory: Inverse Problems and the Geometry of Sumsets', Graduate Texts in Mathematics 165",
-      "https://erdosproblems.com/335"
     ],
     "crossReferences": [
       {
@@ -191,5 +182,13 @@
     "axiomCount": 7,
     "theoremCount": 1,
     "definitionCount": 8
-  }
+  },
+  "references": [
+    "Erdős, Graham (1980): 'Old and New Problems and Results in Combinatorial Number Theory', Monographies de l'Enseignement Mathématique 28, p. 51",
+    "Plünnecke (1970): 'Eine zahlentheoretische Anwendung der Graphentheorie', J. Reine Angew. Math. 243, 171–183",
+    "Ruzsa (1989): 'An application of graph theory to additive number theory', Scientia 3, 97–109",
+    "Weyl (1916): 'Über die Gleichverteilung von Zahlen mod. Eins', Math. Annalen 77, 313–352",
+    "Nathanson (1996): 'Additive Number Theory: Inverse Problems and the Geometry of Sumsets', Graduate Texts in Mathematics 165",
+    "https://erdosproblems.com/335"
+  ]
 }

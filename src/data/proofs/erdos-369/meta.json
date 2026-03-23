@@ -21,17 +21,8 @@
     "erdosUrl": "https://erdosproblems.com/369",
     "sourceUrl": "https://erdosproblems.com/369",
     "erdosProblemStatus": "open",
-    "leanFile": "Proofs/Erdos369Problem.lean",
     "proofRepoPath": "Proofs/Erdos369Problem.lean",
     "dateAdded": "2026-01-23",
-    "references": [
-      "Erdős, P. and Graham, R.L. (1980): 'Old and New Problems and Results in Combinatorial Number Theory', p.69 — original problem statement",
-      "Balog, A. and Wooley, T.D. (1998): 'On strings of consecutive integers with no large prime factors', J. Austral. Math. Soc. Ser. A 64, 266–276",
-      "Hildebrand, A. and Tenenbaum, G. (1986): 'On integers free of large prime factors', Trans. Amer. Math. Soc. 296, 265–290 — Dickman function asymptotics",
-      "de Bruijn, N.G. (1951): 'On the number of positive integers ≤ x and free of prime factors > y', Nederl. Akad. Wetensch. Proc. Ser. A 54",
-      "Guy, R.K.: 'Unsolved Problems in Number Theory', related to B33",
-      "https://erdosproblems.com/369"
-    ],
     "relatedProblems": [
       {
         "id": "erdos-370",
@@ -169,11 +160,6 @@
       "**Three levels of difficulty**: Infinitely many (proved, Balog-Wooley 1998) < positive lower density (open) < all sufficiently large $n$ (open, the full conjecture)",
       "**Sieve method limitations**: The Balog-Wooley proof uses Selberg sieve + exponential sums; these detect infinitely many but cannot show the gaps are $o(n)$",
       "**abc connection**: Effective forms of the abc conjecture would constrain how simultaneously smooth $n$ and $n+1$ can be, potentially providing alternative approaches"
-    ],
-    "prerequisites": [
-      "Analytic number theory: prime distribution",
-      "Additive combinatorics: sumsets and representation functions",
-      "Asymptotic density of integer sequences"
     ]
   },
   "conclusion": {
@@ -211,5 +197,13 @@
     "axiomCount": 1,
     "theoremCount": 0,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    "Erdős, P. and Graham, R.L. (1980): 'Old and New Problems and Results in Combinatorial Number Theory', p.69 — original problem statement",
+    "Balog, A. and Wooley, T.D. (1998): 'On strings of consecutive integers with no large prime factors', J. Austral. Math. Soc. Ser. A 64, 266–276",
+    "Hildebrand, A. and Tenenbaum, G. (1986): 'On integers free of large prime factors', Trans. Amer. Math. Soc. 296, 265–290 — Dickman function asymptotics",
+    "de Bruijn, N.G. (1951): 'On the number of positive integers ≤ x and free of prime factors > y', Nederl. Akad. Wetensch. Proc. Ser. A 54",
+    "Guy, R.K.: 'Unsolved Problems in Number Theory', related to B33",
+    "https://erdosproblems.com/369"
+  ]
 }

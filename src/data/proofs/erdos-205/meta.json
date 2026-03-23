@@ -51,50 +51,6 @@
       "12 concrete Ω computations via native_decide",
       "Main disproof theorem erdos_205_disproved from axiomatized counterexample"
     ],
-    "references": [
-      {
-        "authors": "Romanoff, N. P.",
-        "title": "Über einige Sätze der additiven Zahlentheorie",
-        "year": "1934",
-        "venue": "Mathematische Annalen 109, pp. 668-678",
-        "note": "Proved a positive density of integers can be written as 2^k + p for prime p"
-      },
-      {
-        "authors": "Erdős, Paul",
-        "title": "On integers of the form 2^k + p and some related problems",
-        "year": "1950",
-        "venue": "Summa Brasiliensis Mathematicae 2, pp. 113-123",
-        "note": "Used covering systems to show a positive density of odd integers are NOT of the form 2^k + p"
-      },
-      {
-        "authors": "Hardy, G. H.; Ramanujan, S.",
-        "title": "The normal number of prime factors of a number n",
-        "year": "1917",
-        "venue": "Quarterly Journal of Mathematics 48, pp. 76-92",
-        "note": "Proved the average order of Ω(n) is log log n — the threshold in Erdős's conjecture"
-      },
-      {
-        "authors": "Erdős, Paul; Kac, Mark",
-        "title": "The Gaussian law of errors in the theory of additive number theoretic functions",
-        "year": "1940",
-        "venue": "American Journal of Mathematics 62, pp. 738-742",
-        "note": "Proved Ω(n) is asymptotically Gaussian around log log n — explains why the log log m threshold seemed natural"
-      },
-      {
-        "authors": "de Polignac, Alphonse",
-        "title": "Recherches nouvelles sur les nombres premiers",
-        "year": "1849",
-        "venue": "Comptes Rendus de l'Académie des Sciences 29, pp. 397-401",
-        "note": "Conjectured every odd number is 2^k + p for some prime p; the first conjecture in this family"
-      },
-      {
-        "authors": "Crocker, R.",
-        "title": "On a sum of a prime and two powers of two",
-        "year": "1971",
-        "venue": "Pacific Journal of Mathematics 36, pp. 103-107",
-        "note": "Extended Erdős's covering system method to show infinitely many odd n ≠ 2^a + 2^b + p"
-      }
-    ],
     "axiomCount": 6,
     "prerequisites": [
       "Prime factorization and the fundamental theorem of arithmetic",
@@ -249,5 +205,49 @@
     "axiomCount": 6,
     "theoremCount": 44,
     "definitionCount": 9
-  }
+  },
+  "references": [
+    {
+      "authors": "Romanoff, N. P.",
+      "title": "Über einige Sätze der additiven Zahlentheorie",
+      "year": "1934",
+      "venue": "Mathematische Annalen 109, pp. 668-678",
+      "note": "Proved a positive density of integers can be written as 2^k + p for prime p"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "On integers of the form 2^k + p and some related problems",
+      "year": "1950",
+      "venue": "Summa Brasiliensis Mathematicae 2, pp. 113-123",
+      "note": "Used covering systems to show a positive density of odd integers are NOT of the form 2^k + p"
+    },
+    {
+      "authors": "Hardy, G. H.; Ramanujan, S.",
+      "title": "The normal number of prime factors of a number n",
+      "year": "1917",
+      "venue": "Quarterly Journal of Mathematics 48, pp. 76-92",
+      "note": "Proved the average order of Ω(n) is log log n — the threshold in Erdős's conjecture"
+    },
+    {
+      "authors": "Erdős, Paul; Kac, Mark",
+      "title": "The Gaussian law of errors in the theory of additive number theoretic functions",
+      "year": "1940",
+      "venue": "American Journal of Mathematics 62, pp. 738-742",
+      "note": "Proved Ω(n) is asymptotically Gaussian around log log n — explains why the log log m threshold seemed natural"
+    },
+    {
+      "authors": "de Polignac, Alphonse",
+      "title": "Recherches nouvelles sur les nombres premiers",
+      "year": "1849",
+      "venue": "Comptes Rendus de l'Académie des Sciences 29, pp. 397-401",
+      "note": "Conjectured every odd number is 2^k + p for some prime p; the first conjecture in this family"
+    },
+    {
+      "authors": "Crocker, R.",
+      "title": "On a sum of a prime and two powers of two",
+      "year": "1971",
+      "venue": "Pacific Journal of Mathematics 36, pp. 103-107",
+      "note": "Extended Erdős's covering system method to show infinitely many odd n ≠ 2^a + 2^b + p"
+    }
+  ]
 }

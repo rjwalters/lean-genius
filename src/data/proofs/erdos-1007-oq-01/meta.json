@@ -68,43 +68,6 @@
       "Under optimality conjecture, successive differences equal d+1",
       "Linear lower bound from rigidity and quadratic upper bound from complete graphs"
     ],
-    "references": [
-      {
-        "authors": "P. Erdős, F. Harary, W. T. Tutte",
-        "title": "On the dimension of a graph",
-        "year": "1965",
-        "venue": "Mathematika, 12(2), 118–122",
-        "note": "Foundational paper defining graph dimension as the minimum Euclidean dimension for unit-distance embedding"
-      },
-      {
-        "authors": "H. Maehara",
-        "title": "Note on induced subgraphs of the unit distance graph Eⁿ",
-        "year": "1991",
-        "venue": "Discrete & Computational Geometry, 6, 281–284",
-        "note": "Results on embeddability of graphs as unit-distance subgraphs; related bounds on graph dimension"
-      },
-      {
-        "authors": "S. J. Einhorn, I. J. Schoenberg",
-        "title": "On Euclidean sets having only two distances between points",
-        "year": "1966",
-        "venue": "Indag. Math., 28, 479–488",
-        "note": "Early work on distance constraints in Euclidean embeddings, relevant to graph dimension"
-      },
-      {
-        "authors": "J. House",
-        "title": "Graphs of dimension 4",
-        "year": "2013",
-        "venue": "Preprint",
-        "note": "Proved minEdges(4) = 9 via K_{3,3}, establishing the first anomaly in the complete graph pattern"
-      },
-      {
-        "authors": "J. Chaffee, M. Noble",
-        "title": "The dimension of the unit distance graph",
-        "year": "2016",
-        "venue": "Preprint",
-        "note": "Proved minEdges(5) = 15, showing d=5 returns to the complete graph pattern"
-      }
-    ],
     "relatedProofs": [
       {
         "id": "erdos-1007",
@@ -267,5 +230,42 @@
     "axiomCount": 0,
     "theoremCount": 89,
     "definitionCount": 13
-  }
+  },
+  "references": [
+    {
+      "authors": "P. Erdős, F. Harary, W. T. Tutte",
+      "title": "On the dimension of a graph",
+      "year": "1965",
+      "venue": "Mathematika, 12(2), 118–122",
+      "note": "Foundational paper defining graph dimension as the minimum Euclidean dimension for unit-distance embedding"
+    },
+    {
+      "authors": "H. Maehara",
+      "title": "Note on induced subgraphs of the unit distance graph Eⁿ",
+      "year": "1991",
+      "venue": "Discrete & Computational Geometry, 6, 281–284",
+      "note": "Results on embeddability of graphs as unit-distance subgraphs; related bounds on graph dimension"
+    },
+    {
+      "authors": "S. J. Einhorn, I. J. Schoenberg",
+      "title": "On Euclidean sets having only two distances between points",
+      "year": "1966",
+      "venue": "Indag. Math., 28, 479–488",
+      "note": "Early work on distance constraints in Euclidean embeddings, relevant to graph dimension"
+    },
+    {
+      "authors": "J. House",
+      "title": "Graphs of dimension 4",
+      "year": "2013",
+      "venue": "Preprint",
+      "note": "Proved minEdges(4) = 9 via K_{3,3}, establishing the first anomaly in the complete graph pattern"
+    },
+    {
+      "authors": "J. Chaffee, M. Noble",
+      "title": "The dimension of the unit distance graph",
+      "year": "2016",
+      "venue": "Preprint",
+      "note": "Proved minEdges(5) = 15, showing d=5 returns to the complete graph pattern"
+    }
+  ]
 }

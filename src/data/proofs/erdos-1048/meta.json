@@ -45,18 +45,6 @@
         "module": "Mathlib.Topology.MetricSpace.Bounded"
       }
     ],
-    "references": [
-      {
-        "key": "EHP58",
-        "citation": "Erdős, P., Herzog, F., and Piranian, G. (1958). Metric properties of polynomials. Journal d'Analyse Mathématique, p. 142.",
-        "type": "paper"
-      },
-      {
-        "key": "Po61",
-        "citation": "Pommerenke, Ch. (1961). On the derivative of a polynomial. Michigan Math. J., 8:23-27.",
-        "type": "paper"
-      }
-    ],
     "originalContributions": [
       "Formal definition of polynomial lemniscate L(f, c)",
       "Structure for bounded monic polynomials",
@@ -236,5 +224,17 @@
     "axiomCount": 10,
     "theoremCount": 12,
     "definitionCount": 13
-  }
+  },
+  "references": [
+    {
+      "key": "EHP58",
+      "citation": "Erdős, P., Herzog, F., and Piranian, G. (1958). Metric properties of polynomials. Journal d'Analyse Mathématique, p. 142.",
+      "type": "paper"
+    },
+    {
+      "key": "Po61",
+      "citation": "Pommerenke, Ch. (1961). On the derivative of a polynomial. Michigan Math. J., 8:23-27.",
+      "type": "paper"
+    }
+  ]
 }

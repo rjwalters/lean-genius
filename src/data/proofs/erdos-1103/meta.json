@@ -39,34 +39,6 @@
         "module": "Mathlib.Order.Monotone.Basic"
       }
     ],
-    "references": [
-      {
-        "authors": "P. Erdős",
-        "title": "Some problems on number theory",
-        "year": "1973",
-        "venue": "Proceedings of the Number Theory Conference, Boulder",
-        "note": "Original statement of the squarefree sumset growth problem"
-      },
-      {
-        "authors": "S. van Doorn, T. Tao",
-        "title": "Bounds on squarefree sumset sequences",
-        "year": "2025",
-        "note": "Proved polynomial lower bound a_j > 0.24·j^{4/3} and subexponential upper bound a_j < exp(5j/log j)"
-      },
-      {
-        "authors": "S. V. Konyagin",
-        "title": "On squarefree sumsets in finite intervals",
-        "year": "c. 2000s",
-        "note": "Finite-set bound |A ∩ [1,N]| ≤ C·N^{11/15}"
-      },
-      {
-        "authors": "P. Erdős, A. Sárközy",
-        "title": "On the divisibility properties of sequences of integers",
-        "year": "1970",
-        "venue": "Journal of the London Mathematical Society",
-        "note": "Early work connecting additive and multiplicative structure of integer sequences"
-      }
-    ],
     "axiomCount": 6,
     "lineCount": 91
   },
@@ -188,5 +160,33 @@
     "axiomCount": 6,
     "theoremCount": 3,
     "definitionCount": 2
-  }
+  },
+  "references": [
+    {
+      "authors": "P. Erdős",
+      "title": "Some problems on number theory",
+      "year": "1973",
+      "venue": "Proceedings of the Number Theory Conference, Boulder",
+      "note": "Original statement of the squarefree sumset growth problem"
+    },
+    {
+      "authors": "S. van Doorn, T. Tao",
+      "title": "Bounds on squarefree sumset sequences",
+      "year": "2025",
+      "note": "Proved polynomial lower bound a_j > 0.24·j^{4/3} and subexponential upper bound a_j < exp(5j/log j)"
+    },
+    {
+      "authors": "S. V. Konyagin",
+      "title": "On squarefree sumsets in finite intervals",
+      "year": "c. 2000s",
+      "note": "Finite-set bound |A ∩ [1,N]| ≤ C·N^{11/15}"
+    },
+    {
+      "authors": "P. Erdős, A. Sárközy",
+      "title": "On the divisibility properties of sequences of integers",
+      "year": "1970",
+      "venue": "Journal of the London Mathematical Society",
+      "note": "Early work connecting additive and multiplicative structure of integer sequences"
+    }
+  ]
 }

@@ -46,29 +46,6 @@
       "Algebraic converse over integral domains via zero-product property",
       "swap_swap: double swap is identity (rfl)"
     ],
-    "references": [
-      {
-        "authors": "Girard Desargues",
-        "title": "Brouillon project d'une atteinte aux événemens des rencontres du Cône avec un Plan",
-        "year": "1639",
-        "venue": "Self-published",
-        "note": "Original statement of the theorem"
-      },
-      {
-        "authors": "Jean-Victor Poncelet",
-        "title": "Traité des propriétés projectives des figures",
-        "year": "1822",
-        "venue": "Bachelier, Paris",
-        "note": "Systematic development of projective duality"
-      },
-      {
-        "authors": "David Hilbert",
-        "title": "Grundlagen der Geometrie",
-        "year": "1899",
-        "venue": "Teubner",
-        "note": "Axiomatic analysis of Desargues's theorem and its role in geometry"
-      }
-    ],
     "historicalContext": "Girard Desargues stated his theorem in the 1639 'Brouillon project,' but his cryptic notation delayed its recognition until rediscovery by Poncelet (1822). Projective duality — systematically developed by Poncelet and Gergonne in the 1820s — states that every theorem in projective geometry has a dual, obtained by interchanging 'point' and 'line'. Desargues's theorem is the premier example of a self-dual theorem: its dual is its own converse. Hilbert's 'Grundlagen der Geometrie' (1899) showed that Desargues's theorem characterizes Desarguesian planes (those embeddable in projective 3-space), establishing a deep connection between incidence geometry and coordinatization by division rings. Moulton's non-Desarguesian plane (1902) demonstrated that Desargues's theorem is genuinely independent of the other projective axioms in dimension 2.",
     "dateAdded": "2026-03-12",
     "axiomCount": 0,
@@ -197,13 +174,6 @@
       "**The Desargues identity is symmetric**: det(P,Q,R) = det(AA',BB',CC') · det(ABC) · det(A'B'C') has the two triangle determinants as a commutative product, making the identity invariant under triangle swap.",
       "**Anticommutativity gives neg, but det=0 is preserved**: Under swap, each cross product row negates, giving an overall factor of (-1)³ = -1 in the determinant. Since -0 = 0, the zero condition is preserved.",
       "**Integral domains give the converse**: The forward direction works over any CommRing, but the converse requires IsDomain to apply the zero-product property. Over rings with zero divisors, non-degenerate triangles can be in perspective from a line without being in perspective from a point."
-    ],
-    "prerequisites": [
-      "Projective geometry basics",
-      "Homogeneous coordinates",
-      "Cross product in K³",
-      "Determinant of 3×3 matrices",
-      "Desargues's theorem (parent proofs)"
     ]
   },
   "conclusion": {
@@ -244,6 +214,29 @@
       "targetId": "desargues-theorem",
       "relationship": "extends",
       "description": "The base Desargues formalization; this entry adds self-duality (collinear = concurrent by rfl in homogeneous coordinates) as a new structural insight"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Girard Desargues",
+      "title": "Brouillon project d'une atteinte aux événemens des rencontres du Cône avec un Plan",
+      "year": "1639",
+      "venue": "Self-published",
+      "note": "Original statement of the theorem"
+    },
+    {
+      "authors": "Jean-Victor Poncelet",
+      "title": "Traité des propriétés projectives des figures",
+      "year": "1822",
+      "venue": "Bachelier, Paris",
+      "note": "Systematic development of projective duality"
+    },
+    {
+      "authors": "David Hilbert",
+      "title": "Grundlagen der Geometrie",
+      "year": "1899",
+      "venue": "Teubner",
+      "note": "Axiomatic analysis of Desargues's theorem and its role in geometry"
     }
   ]
 }

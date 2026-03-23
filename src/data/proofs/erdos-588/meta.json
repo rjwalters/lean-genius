@@ -57,23 +57,6 @@
       "problem_101: connection to k=4 case",
       "szemeredi_trotter: incidence theorem"
     ],
-    "references": [
-      {
-        "key": "Ka63",
-        "citation": "Kárteszi, F., Sylvester egy tételéről és Erdős egy sejtéséről, Mat. Lapok (1963)",
-        "type": "paper"
-      },
-      {
-        "key": "Gr76",
-        "citation": "Grünbaum, B., New views on old questions of combinatorial geometry, Colloquio Internazionale (1976)",
-        "type": "paper"
-      },
-      {
-        "key": "SoSt13",
-        "citation": "Solymosi, J. and Stojaković, M., Many collinear k-tuples with no k+1 collinear points, DCG (2013)",
-        "type": "paper"
-      }
-    ],
     "dateUpdated": "2026-02-12",
     "mathContext": {
       "field": "Discrete Geometry",
@@ -174,5 +157,22 @@
     "axiomCount": 4,
     "theoremCount": 1,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "key": "Ka63",
+      "citation": "Kárteszi, F., Sylvester egy tételéről és Erdős egy sejtéséről, Mat. Lapok (1963)",
+      "type": "paper"
+    },
+    {
+      "key": "Gr76",
+      "citation": "Grünbaum, B., New views on old questions of combinatorial geometry, Colloquio Internazionale (1976)",
+      "type": "paper"
+    },
+    {
+      "key": "SoSt13",
+      "citation": "Solymosi, J. and Stojaković, M., Many collinear k-tuples with no k+1 collinear points, DCG (2013)",
+      "type": "paper"
+    }
+  ]
 }

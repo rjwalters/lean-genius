@@ -47,29 +47,6 @@
       "Algebraic proof structure: coefficient comparison of exponent law",
       "Symmetry, special cases, Pascal's rule as corollaries"
     ],
-    "references": [
-      {
-        "authors": "Vandermonde, Alexandre-Théophile",
-        "title": "Mémoire sur des irrationnelles de différens ordres avec une application au cercle",
-        "year": "1772",
-        "venue": "Mémoires de l'Académie Royale des Sciences de Paris",
-        "note": "First explicit statement of the convolution identity for binomial coefficients"
-      },
-      {
-        "authors": "Chu, Shih-Chieh",
-        "title": "Precious Mirror of the Four Elements (四元玉鉴)",
-        "year": "1303",
-        "venue": "Yuan dynasty China",
-        "note": "Contains early instances of the identity, predating Vandermonde by nearly 500 years"
-      },
-      {
-        "authors": "Knuth, Donald E.",
-        "title": "The Art of Computer Programming, Vol. 1: Fundamental Algorithms",
-        "year": "1968",
-        "venue": "Addison-Wesley",
-        "note": "Section 1.2.6: comprehensive treatment of binomial coefficient identities including Vandermonde"
-      }
-    ],
     "dateAdded": "2026-03-22",
     "axiomCount": 0,
     "crossReferences": [
@@ -206,5 +183,28 @@
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Vandermonde, Alexandre-Théophile",
+      "title": "Mémoire sur des irrationnelles de différens ordres avec une application au cercle",
+      "year": "1772",
+      "venue": "Mémoires de l'Académie Royale des Sciences de Paris",
+      "note": "First explicit statement of the convolution identity for binomial coefficients"
+    },
+    {
+      "authors": "Chu, Shih-Chieh",
+      "title": "Precious Mirror of the Four Elements (四元玉鉴)",
+      "year": "1303",
+      "venue": "Yuan dynasty China",
+      "note": "Contains early instances of the identity, predating Vandermonde by nearly 500 years"
+    },
+    {
+      "authors": "Knuth, Donald E.",
+      "title": "The Art of Computer Programming, Vol. 1: Fundamental Algorithms",
+      "year": "1968",
+      "venue": "Addison-Wesley",
+      "note": "Section 1.2.6: comprehensive treatment of binomial coefficient identities including Vandermonde"
+    }
+  ]
 }

@@ -51,23 +51,6 @@
       "small_cases_exist theorem: n = 4..8 work",
       "ErdosConjecture217: impossibility for large n"
     ],
-    "references": [
-      {
-        "key": "Er83c",
-        "citation": "Erdős, P., Combinatorial problems in geometry (1983), 35-54.",
-        "type": "paper"
-      },
-      {
-        "key": "Pa89",
-        "citation": "Palásti, I., Lattice-point examples for a question of Erdős, Periodica Mathematica Hungarica 20 (1989), 231-235.",
-        "type": "paper"
-      },
-      {
-        "key": "GK15",
-        "citation": "Guth, L. and Katz, N.H., On the Erdős distinct distances problem in the plane, Annals of Mathematics 181 (2015), 155-190.",
-        "type": "paper"
-      }
-    ],
     "crossReferences": [
       {
         "proofId": "erdos-98",
@@ -181,5 +164,22 @@
     "axiomCount": 4,
     "theoremCount": 1,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    {
+      "key": "Er83c",
+      "citation": "Erdős, P., Combinatorial problems in geometry (1983), 35-54.",
+      "type": "paper"
+    },
+    {
+      "key": "Pa89",
+      "citation": "Palásti, I., Lattice-point examples for a question of Erdős, Periodica Mathematica Hungarica 20 (1989), 231-235.",
+      "type": "paper"
+    },
+    {
+      "key": "GK15",
+      "citation": "Guth, L. and Katz, N.H., On the Erdős distinct distances problem in the plane, Annals of Mathematics 181 (2015), 155-190.",
+      "type": "paper"
+    }
+  ]
 }

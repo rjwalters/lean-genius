@@ -61,75 +61,6 @@
       "Proved powers of 3 are lacunary",
       "Noted connection to Strong Law of Large Numbers"
     ],
-    "references": [
-      {
-        "id": "erdos-1949",
-        "authors": [
-          "Paul Erdős"
-        ],
-        "title": "On the strong law of large numbers",
-        "year": 1949,
-        "venue": "Transactions of the American Mathematical Society",
-        "volume": "67",
-        "pages": "51-56",
-        "description": "Established the lower bound: constructed lacunary sequences where ∑f({αn_k}) grows as fast as N(log log N)^{1/2-ε}, proving the sum cannot always be o(N(log log N)^{1/2})",
-        "relevance": "primary"
-      },
-      {
-        "id": "kac-1946",
-        "authors": [
-          "Mark Kac"
-        ],
-        "title": "On the distribution of values of sums of the type ∑f(2^k t)",
-        "year": 1946,
-        "venue": "Annals of Mathematics",
-        "volume": "47",
-        "pages": "33-49",
-        "description": "Proved the Central Limit Theorem for lacunary trigonometric sums: ∑cos(2πn_kα)/√N → N(0,1/2), establishing quasi-independence of lacunary terms",
-        "relevance": "primary"
-      },
-      {
-        "id": "salem-zygmund-1954",
-        "authors": [
-          "Raphaël Salem",
-          "Antoni Zygmund"
-        ],
-        "title": "Some properties of trigonometric series whose terms have random signs",
-        "year": 1954,
-        "venue": "Acta Mathematica",
-        "volume": "91",
-        "pages": "245-301",
-        "description": "Extended Kac's CLT to general lacunary trigonometric series and established connections between lacunary series and random Fourier series",
-        "relevance": "foundational"
-      },
-      {
-        "id": "berkes-1975",
-        "authors": [
-          "István Berkes"
-        ],
-        "title": "On the central limit theorem for lacunary trigonometric series",
-        "year": 1975,
-        "venue": "Analysis Mathematica",
-        "volume": "1",
-        "pages": "27-39",
-        "description": "Improved upper bounds for lacunary sums in special cases, advancing partial results toward closing the gap between (log log N)^{1/2} and (log N)^{1/2}",
-        "relevance": "supporting"
-      },
-      {
-        "id": "aistleitner-berkes-2010",
-        "authors": [
-          "Christoph Aistleitner",
-          "István Berkes"
-        ],
-        "title": "On the central limit theorem for f(n_k x)",
-        "year": 2010,
-        "venue": "Probability Theory and Related Fields",
-        "volume": "146",
-        "pages": "267-289",
-        "description": "Most recent significant progress on the gap: improved upper bounds under additional conditions on the lacunary sequence and the function f",
-        "relevance": "supporting"
-      }
-    ],
     "crossReferences": [
       {
         "targetId": "erdos-996",
@@ -293,5 +224,74 @@
     "axiomCount": 5,
     "theoremCount": 5,
     "definitionCount": 12
-  }
+  },
+  "references": [
+    {
+      "id": "erdos-1949",
+      "authors": [
+        "Paul Erdős"
+      ],
+      "title": "On the strong law of large numbers",
+      "year": 1949,
+      "venue": "Transactions of the American Mathematical Society",
+      "volume": "67",
+      "pages": "51-56",
+      "description": "Established the lower bound: constructed lacunary sequences where ∑f({αn_k}) grows as fast as N(log log N)^{1/2-ε}, proving the sum cannot always be o(N(log log N)^{1/2})",
+      "relevance": "primary"
+    },
+    {
+      "id": "kac-1946",
+      "authors": [
+        "Mark Kac"
+      ],
+      "title": "On the distribution of values of sums of the type ∑f(2^k t)",
+      "year": 1946,
+      "venue": "Annals of Mathematics",
+      "volume": "47",
+      "pages": "33-49",
+      "description": "Proved the Central Limit Theorem for lacunary trigonometric sums: ∑cos(2πn_kα)/√N → N(0,1/2), establishing quasi-independence of lacunary terms",
+      "relevance": "primary"
+    },
+    {
+      "id": "salem-zygmund-1954",
+      "authors": [
+        "Raphaël Salem",
+        "Antoni Zygmund"
+      ],
+      "title": "Some properties of trigonometric series whose terms have random signs",
+      "year": 1954,
+      "venue": "Acta Mathematica",
+      "volume": "91",
+      "pages": "245-301",
+      "description": "Extended Kac's CLT to general lacunary trigonometric series and established connections between lacunary series and random Fourier series",
+      "relevance": "foundational"
+    },
+    {
+      "id": "berkes-1975",
+      "authors": [
+        "István Berkes"
+      ],
+      "title": "On the central limit theorem for lacunary trigonometric series",
+      "year": 1975,
+      "venue": "Analysis Mathematica",
+      "volume": "1",
+      "pages": "27-39",
+      "description": "Improved upper bounds for lacunary sums in special cases, advancing partial results toward closing the gap between (log log N)^{1/2} and (log N)^{1/2}",
+      "relevance": "supporting"
+    },
+    {
+      "id": "aistleitner-berkes-2010",
+      "authors": [
+        "Christoph Aistleitner",
+        "István Berkes"
+      ],
+      "title": "On the central limit theorem for f(n_k x)",
+      "year": 2010,
+      "venue": "Probability Theory and Related Fields",
+      "volume": "146",
+      "pages": "267-289",
+      "description": "Most recent significant progress on the gap: improved upper bounds under additional conditions on the lacunary sequence and the function f",
+      "relevance": "supporting"
+    }
+  ]
 }

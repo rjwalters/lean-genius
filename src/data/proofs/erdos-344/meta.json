@@ -58,36 +58,6 @@
       "Constructive proof that complete implies subcomplete",
       "Open conjecture about optimal √(2N) threshold"
     ],
-    "references": [
-      {
-        "authors": "Szemerédi, E. and Vu, V.",
-        "title": "Long arithmetic progressions in sumsets: thresholds and bounds",
-        "year": "2006",
-        "venue": "J. Amer. Math. Soc. 19(1), 119-169",
-        "note": "Main result: √N density suffices for subcompleteness"
-      },
-      {
-        "authors": "Erdős, P.",
-        "title": "On the representation of large integers as sums of distinct summands taken from a fixed set",
-        "year": "1962",
-        "venue": "Acta Arith. 7, 345-354",
-        "note": "Optimality example: A with A(N) < √(2N) and ¬IsSubcomplete(A)"
-      },
-      {
-        "authors": "Folkman, J.",
-        "title": "On the representation of integers as sums of distinct terms from a fixed sequence",
-        "year": "1966",
-        "venue": "Canad. J. Math. 18, 643-655",
-        "note": "First density result: N^{1/2+ε} suffices"
-      },
-      {
-        "authors": "Erdős, P. and Graham, R.",
-        "title": "Old and New Problems and Results in Combinatorial Number Theory",
-        "year": "1980",
-        "venue": "Monographies de L'Enseignement Mathématique 28",
-        "note": "Problem 344 statement (p.54)"
-      }
-    ],
     "dateAdded": "2026-01-19",
     "axiomCount": 4,
     "lineCount": 213
@@ -189,5 +159,35 @@
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 9
-  }
+  },
+  "references": [
+    {
+      "authors": "Szemerédi, E. and Vu, V.",
+      "title": "Long arithmetic progressions in sumsets: thresholds and bounds",
+      "year": "2006",
+      "venue": "J. Amer. Math. Soc. 19(1), 119-169",
+      "note": "Main result: √N density suffices for subcompleteness"
+    },
+    {
+      "authors": "Erdős, P.",
+      "title": "On the representation of large integers as sums of distinct summands taken from a fixed set",
+      "year": "1962",
+      "venue": "Acta Arith. 7, 345-354",
+      "note": "Optimality example: A with A(N) < √(2N) and ¬IsSubcomplete(A)"
+    },
+    {
+      "authors": "Folkman, J.",
+      "title": "On the representation of integers as sums of distinct terms from a fixed sequence",
+      "year": "1966",
+      "venue": "Canad. J. Math. 18, 643-655",
+      "note": "First density result: N^{1/2+ε} suffices"
+    },
+    {
+      "authors": "Erdős, P. and Graham, R.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "note": "Problem 344 statement (p.54)"
+    }
+  ]
 }

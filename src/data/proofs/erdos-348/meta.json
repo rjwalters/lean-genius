@@ -22,20 +22,6 @@
     "erdosNumber": 348,
     "erdosUrl": "https://erdosproblems.com/348",
     "erdosProblemStatus": "open",
-    "references": [
-      {
-        "key": "ErGr80",
-        "citation": "P. Erdős, R. L. Graham, 'Old and New Problems and Results in Combinatorial Number Theory', Monographies de L'Enseignement Mathématique (1980)"
-      },
-      {
-        "key": "Zec72",
-        "citation": "E. Zeckendorf, 'Représentation des nombres naturels par une somme de nombres de Fibonacci ou de nombres de Lucas', Bulletin de la Société Royale des Sciences de Liège (1972)"
-      },
-      {
-        "key": "VD24",
-        "citation": "W. van Doorn, 'On strongly complete sequences', preprint (2024)"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum",
@@ -175,5 +161,19 @@
     "axiomCount": 5,
     "theoremCount": 8,
     "definitionCount": 14
-  }
+  },
+  "references": [
+    {
+      "key": "ErGr80",
+      "citation": "P. Erdős, R. L. Graham, 'Old and New Problems and Results in Combinatorial Number Theory', Monographies de L'Enseignement Mathématique (1980)"
+    },
+    {
+      "key": "Zec72",
+      "citation": "E. Zeckendorf, 'Représentation des nombres naturels par une somme de nombres de Fibonacci ou de nombres de Lucas', Bulletin de la Société Royale des Sciences de Liège (1972)"
+    },
+    {
+      "key": "VD24",
+      "citation": "W. van Doorn, 'On strongly complete sequences', preprint (2024)"
+    }
+  ]
 }

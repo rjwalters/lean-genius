@@ -65,28 +65,6 @@
       "primitive_root_lower_bound axiom",
       "bounds_summary axiom"
     ],
-    "references": [
-      {
-        "key": "ES59",
-        "citation": "Erdős, P. and Szekeres, G., On the product ∏(1-z^{aᵢ}), Acad. Serbe Sci. Publ. Inst. Math. (1959). Initiated the study; proved f(n) > √(2n).",
-        "type": "paper"
-      },
-      {
-        "key": "At61",
-        "citation": "Atkinson, F.V., On a problem of Erdős and Szekeres, Acta Sci. Math. (Szeged) (1961). Upper bound: log f(n) ≪ n^{1/2} log n.",
-        "type": "paper"
-      },
-      {
-        "key": "BK96",
-        "citation": "Belov, A.S. and Konyagin, S.V., On an Erdős-Szekeres problem (1996). Definitive answer: log f(n) ≪ (log n)⁴.",
-        "type": "paper"
-      },
-      {
-        "key": "BC18",
-        "citation": "Bourgain, J. and Chang, M.-C., On a multilinear character sum of Burgess, Comptes Rendus Mathématique (2018). Bounds for distinct exponents case.",
-        "type": "paper"
-      }
-    ],
     "relatedProofs": [
       {
         "id": "erdos-510",
@@ -220,5 +198,27 @@
     "axiomCount": 10,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "references": [
+    {
+      "key": "ES59",
+      "citation": "Erdős, P. and Szekeres, G., On the product ∏(1-z^{aᵢ}), Acad. Serbe Sci. Publ. Inst. Math. (1959). Initiated the study; proved f(n) > √(2n).",
+      "type": "paper"
+    },
+    {
+      "key": "At61",
+      "citation": "Atkinson, F.V., On a problem of Erdős and Szekeres, Acta Sci. Math. (Szeged) (1961). Upper bound: log f(n) ≪ n^{1/2} log n.",
+      "type": "paper"
+    },
+    {
+      "key": "BK96",
+      "citation": "Belov, A.S. and Konyagin, S.V., On an Erdős-Szekeres problem (1996). Definitive answer: log f(n) ≪ (log n)⁴.",
+      "type": "paper"
+    },
+    {
+      "key": "BC18",
+      "citation": "Bourgain, J. and Chang, M.-C., On a multilinear character sum of Burgess, Comptes Rendus Mathématique (2018). Bounds for distinct exponents case.",
+      "type": "paper"
+    }
+  ]
 }

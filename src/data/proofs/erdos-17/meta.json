@@ -43,22 +43,6 @@
       "Connection to prime gaps formalized",
       "OEIS A038133 cluster prime sequence listed"
     ],
-    "references": [
-      {
-        "authors": "Blecksmith, Richard; Erdős, Paul; Selfridge, John L.",
-        "title": "Cluster primes",
-        "year": "1999",
-        "venue": "American Mathematical Monthly",
-        "note": "Established upper bounds showing cluster primes have density 0: count ≪ x/(log x)^A for all A"
-      },
-      {
-        "authors": "Elsholtz, Christian",
-        "title": "Cluster primes and other additive prime number properties",
-        "year": "2003",
-        "venue": "Journal of Number Theory",
-        "note": "Improved upper bound: count ≪ x·exp(-c(log log x)²) with c < 1/8"
-      }
-    ],
     "dateAdded": "2025-01-14",
     "axiomCount": 12,
     "prerequisites": [
@@ -217,5 +201,21 @@
     "axiomCount": 12,
     "theoremCount": 3,
     "definitionCount": 8
-  }
+  },
+  "references": [
+    {
+      "authors": "Blecksmith, Richard; Erdős, Paul; Selfridge, John L.",
+      "title": "Cluster primes",
+      "year": "1999",
+      "venue": "American Mathematical Monthly",
+      "note": "Established upper bounds showing cluster primes have density 0: count ≪ x/(log x)^A for all A"
+    },
+    {
+      "authors": "Elsholtz, Christian",
+      "title": "Cluster primes and other additive prime number properties",
+      "year": "2003",
+      "venue": "Journal of Number Theory",
+      "note": "Improved upper bound: count ≪ x·exp(-c(log log x)²) with c < 1/8"
+    }
+  ]
 }

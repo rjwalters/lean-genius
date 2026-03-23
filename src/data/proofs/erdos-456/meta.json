@@ -62,35 +62,6 @@
       "Formalized all three conjectures as ErdosProblem456_Part1/2/3",
       "Stated part2_implies_part1 and part1_implies_infinitely_many (with sorry)"
     ],
-    "references": [
-      {
-        "authors": "P. Erdős",
-        "title": "Problem statement on comparing pₙ and mₙ",
-        "venue": "erdosproblems.com/456",
-        "note": "Original three-part conjecture"
-      },
-      {
-        "authors": "P. G. L. Dirichlet",
-        "title": "Beweis des Satzes, dass jede unbegrenzte arithmetische Progression...",
-        "year": "1837",
-        "venue": "Abhandlungen der Königlich Preußischen Akademie der Wissenschaften",
-        "note": "Proved infinitely many primes in any arithmetic progression with gcd(a,d)=1"
-      },
-      {
-        "authors": "Yu. V. Linnik",
-        "title": "On the least prime in an arithmetic progression",
-        "year": "1944",
-        "venue": "Rec. Math. [Mat. Sbornik] N.S.",
-        "note": "Proved p(n) ≤ n^L for some absolute constant L (Linnik's theorem)"
-      },
-      {
-        "authors": "T. Xylouris",
-        "title": "Über die Nullstellen der Dirichletschen L-Funktionen und die kleinste Primzahl in einer arithmetischen Progression",
-        "year": "2011",
-        "venue": "PhD thesis, Universität Bonn",
-        "note": "Best known Linnik constant L ≤ 5.18"
-      }
-    ],
     "mathContext": {
       "field": "Number Theory",
       "subfield": "Analytic Number Theory / Arithmetic Functions",
@@ -221,5 +192,34 @@
     "axiomCount": 12,
     "theoremCount": 2,
     "definitionCount": 6
-  }
+  },
+  "references": [
+    {
+      "authors": "P. Erdős",
+      "title": "Problem statement on comparing pₙ and mₙ",
+      "venue": "erdosproblems.com/456",
+      "note": "Original three-part conjecture"
+    },
+    {
+      "authors": "P. G. L. Dirichlet",
+      "title": "Beweis des Satzes, dass jede unbegrenzte arithmetische Progression...",
+      "year": "1837",
+      "venue": "Abhandlungen der Königlich Preußischen Akademie der Wissenschaften",
+      "note": "Proved infinitely many primes in any arithmetic progression with gcd(a,d)=1"
+    },
+    {
+      "authors": "Yu. V. Linnik",
+      "title": "On the least prime in an arithmetic progression",
+      "year": "1944",
+      "venue": "Rec. Math. [Mat. Sbornik] N.S.",
+      "note": "Proved p(n) ≤ n^L for some absolute constant L (Linnik's theorem)"
+    },
+    {
+      "authors": "T. Xylouris",
+      "title": "Über die Nullstellen der Dirichletschen L-Funktionen und die kleinste Primzahl in einer arithmetischen Progression",
+      "year": "2011",
+      "venue": "PhD thesis, Universität Bonn",
+      "note": "Best known Linnik constant L ≤ 5.18"
+    }
+  ]
 }

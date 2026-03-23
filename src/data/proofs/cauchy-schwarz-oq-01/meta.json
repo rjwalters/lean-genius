@@ -51,29 +51,6 @@
       "Triangle inequality for inner products: ‖⟪u,v⟫+⟪v,w⟫‖ ≤ ‖u‖·‖v‖+‖v‖·‖w‖",
       "Pythagorean theorem from orthogonality: ⟪u,v⟫=0 → ‖u+v‖²=‖u‖²+‖v‖²"
     ],
-    "references": [
-      {
-        "authors": "A.-L. Cauchy",
-        "title": "Cours d'Analyse",
-        "year": "1821",
-        "venue": "Imprimerie Royale, Paris",
-        "note": "Original finite sum form of the inequality"
-      },
-      {
-        "authors": "H. A. Schwarz",
-        "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem der Variationsrechnung",
-        "year": "1885",
-        "venue": "Acta Societatis Scientiarum Fennicae",
-        "note": "Continuous/integral form; led to the inner product space formulation"
-      },
-      {
-        "authors": "V. Y. Bunyakovsky",
-        "title": "Sur quelques inegalites concernant les integrales ordinaires",
-        "year": "1859",
-        "venue": "Memoires de l'Academie Imperiale des Sciences de St.-Petersbourg",
-        "note": "Independent discovery of the integral form"
-      }
-    ],
     "dateAdded": "2026-02-24",
     "axiomCount": 0,
     "lineCount": 138
@@ -158,5 +135,28 @@
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "A.-L. Cauchy",
+      "title": "Cours d'Analyse",
+      "year": "1821",
+      "venue": "Imprimerie Royale, Paris",
+      "note": "Original finite sum form of the inequality"
+    },
+    {
+      "authors": "H. A. Schwarz",
+      "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem der Variationsrechnung",
+      "year": "1885",
+      "venue": "Acta Societatis Scientiarum Fennicae",
+      "note": "Continuous/integral form; led to the inner product space formulation"
+    },
+    {
+      "authors": "V. Y. Bunyakovsky",
+      "title": "Sur quelques inegalites concernant les integrales ordinaires",
+      "year": "1859",
+      "venue": "Memoires de l'Academie Imperiale des Sciences de St.-Petersbourg",
+      "note": "Independent discovery of the integral form"
+    }
+  ]
 }

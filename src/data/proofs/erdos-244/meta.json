@@ -71,36 +71,6 @@
       "Three constructive representability proofs",
       "Density vs universality connection to Erdős Problem #10"
     ],
-    "references": [
-      {
-        "authors": "Romanoff, N. P.",
-        "title": "Über einige Sätze der additiven Zahlentheorie",
-        "year": "1934",
-        "venue": "Math. Ann. 109, 668-678",
-        "note": "Proved {p + C^k} has positive density for integer C ≥ 2"
-      },
-      {
-        "authors": "Ding, Y.",
-        "title": "On a Romanoff type problem of Erdős and Kalmár",
-        "year": "2025",
-        "venue": "arXiv:2503.22700",
-        "note": "Proved the conjecture for Lebesgue-almost-all C > 1"
-      },
-      {
-        "authors": "Erdős, P. and Graham, R.",
-        "title": "Old and New Problems and Results in Combinatorial Number Theory",
-        "year": "1980",
-        "venue": "Monographies de L'Enseignement Mathématique 28",
-        "note": "Problem statement and historical context"
-      },
-      {
-        "authors": "de Polignac, A.",
-        "title": "Recherches nouvelles sur les nombres premiers",
-        "year": "1849",
-        "venue": "C. R. Acad. Sci. Paris 29, 738-739",
-        "note": "Conjectured every odd number is p + 2^k; counterexamples (Crocker numbers) exist"
-      }
-    ],
     "dateAdded": "2026-01-19",
     "axiomCount": 2,
     "lineCount": 233
@@ -194,5 +164,35 @@
     "axiomCount": 2,
     "theoremCount": 9,
     "definitionCount": 8
-  }
+  },
+  "references": [
+    {
+      "authors": "Romanoff, N. P.",
+      "title": "Über einige Sätze der additiven Zahlentheorie",
+      "year": "1934",
+      "venue": "Math. Ann. 109, 668-678",
+      "note": "Proved {p + C^k} has positive density for integer C ≥ 2"
+    },
+    {
+      "authors": "Ding, Y.",
+      "title": "On a Romanoff type problem of Erdős and Kalmár",
+      "year": "2025",
+      "venue": "arXiv:2503.22700",
+      "note": "Proved the conjecture for Lebesgue-almost-all C > 1"
+    },
+    {
+      "authors": "Erdős, P. and Graham, R.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "note": "Problem statement and historical context"
+    },
+    {
+      "authors": "de Polignac, A.",
+      "title": "Recherches nouvelles sur les nombres premiers",
+      "year": "1849",
+      "venue": "C. R. Acad. Sci. Paris 29, 738-739",
+      "note": "Conjectured every odd number is p + 2^k; counterexamples (Crocker numbers) exist"
+    }
+  ]
 }

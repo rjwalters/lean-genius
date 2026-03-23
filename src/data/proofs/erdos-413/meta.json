@@ -27,20 +27,6 @@
     "oeis": [
       "A005236"
     ],
-    "references": [
-      {
-        "key": "Er79d",
-        "citation": "P. Erdős, 'Problems and results on consecutive integers', Publicationes Mathematicae Debrecen (1979)"
-      },
-      {
-        "key": "ErGr80",
-        "citation": "P. Erdős, R. L. Graham, 'Old and New Problems and Results in Combinatorial Number Theory', Monographies de L'Enseignement Mathématique (1980)"
-      },
-      {
-        "key": "Gu04",
-        "citation": "R. K. Guy, 'Unsolved Problems in Number Theory', 3rd ed., Springer (2004)"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "Nat.primeFactors",
@@ -259,5 +245,19 @@
     "erdos-412",
     "euler-totient",
     "fundamental-arithmetic"
+  ],
+  "references": [
+    {
+      "key": "Er79d",
+      "citation": "P. Erdős, 'Problems and results on consecutive integers', Publicationes Mathematicae Debrecen (1979)"
+    },
+    {
+      "key": "ErGr80",
+      "citation": "P. Erdős, R. L. Graham, 'Old and New Problems and Results in Combinatorial Number Theory', Monographies de L'Enseignement Mathématique (1980)"
+    },
+    {
+      "key": "Gu04",
+      "citation": "R. K. Guy, 'Unsolved Problems in Number Theory', 3rd ed., Springer (2004)"
+    }
   ]
 }

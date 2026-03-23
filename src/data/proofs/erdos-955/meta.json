@@ -9,7 +9,6 @@
     "date": "1990",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos955Problem.lean",
-    "leanFile": "Proofs/Erdos955Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -49,28 +48,6 @@
         "theorem": "Real.log",
         "description": "Natural logarithm",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
-      }
-    ],
-    "references": [
-      {
-        "key": "EGPS90",
-        "citation": "Erdős, P., Granville, A., Pomerance, C., and Spiro, C. (1990). On the normal behavior of the iterates of some arithmetic functions. Analytic Number Theory (Allerton Park, IL, 1989), Progress in Mathematics 85, Birkhäuser, 165-204.",
-        "type": "paper"
-      },
-      {
-        "key": "Po14b",
-        "citation": "Pollack, P. (2014). Some arithmetic properties of the sum of proper divisors and the sum of prime factors. Illinois Journal of Mathematics, 58(1), 125-147.",
-        "type": "paper"
-      },
-      {
-        "key": "Tr20",
-        "citation": "Troupe, L. (2020). On the number of prime factors of values of the sum-of-proper-divisors function. Journal of Number Theory, 208, 189-206.",
-        "type": "paper"
-      },
-      {
-        "key": "PPT18",
-        "citation": "Pollack, P., Pomerance, C., and Thompson, L. (2018). Divisor-sum fibers. Mathematika, 64(2), 330-342.",
-        "type": "paper"
       }
     ],
     "originalContributions": [
@@ -211,5 +188,27 @@
     "axiomCount": 13,
     "theoremCount": 2,
     "definitionCount": 14
-  }
+  },
+  "references": [
+    {
+      "key": "EGPS90",
+      "citation": "Erdős, P., Granville, A., Pomerance, C., and Spiro, C. (1990). On the normal behavior of the iterates of some arithmetic functions. Analytic Number Theory (Allerton Park, IL, 1989), Progress in Mathematics 85, Birkhäuser, 165-204.",
+      "type": "paper"
+    },
+    {
+      "key": "Po14b",
+      "citation": "Pollack, P. (2014). Some arithmetic properties of the sum of proper divisors and the sum of prime factors. Illinois Journal of Mathematics, 58(1), 125-147.",
+      "type": "paper"
+    },
+    {
+      "key": "Tr20",
+      "citation": "Troupe, L. (2020). On the number of prime factors of values of the sum-of-proper-divisors function. Journal of Number Theory, 208, 189-206.",
+      "type": "paper"
+    },
+    {
+      "key": "PPT18",
+      "citation": "Pollack, P., Pomerance, C., and Thompson, L. (2018). Divisor-sum fibers. Mathematika, 64(2), 330-342.",
+      "type": "paper"
+    }
+  ]
 }

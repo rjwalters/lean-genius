@@ -50,29 +50,6 @@
       "Error estimates: π within 1/497 of both bounds (fully proved)",
       "General inscribed polygon bound: n·sin(π/n) < π for all n ≥ 1 (fully proved)"
     ],
-    "references": [
-      {
-        "authors": "Archimedes",
-        "title": "Measurement of a Circle",
-        "year": "c. 250 BCE",
-        "venue": "Syracuse",
-        "note": "Original computation using inscribed/circumscribed 96-gons to bound π"
-      },
-      {
-        "authors": "Dalzell, D.P.",
-        "title": "On 22/7",
-        "year": "1944",
-        "venue": "Journal of the London Mathematical Society",
-        "note": "Discovered the integral ∫₀¹ t⁴(1-t)⁴/(1+t²) dt = 22/7 − π"
-      },
-      {
-        "authors": "Niven, Ivan",
-        "title": "A simple proof that π is irrational",
-        "year": "1947",
-        "venue": "Bulletin of the American Mathematical Society",
-        "note": "Independently discovered the Dalzell integral; also proved π irrational"
-      }
-    ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
     "assumptions": [],
@@ -201,5 +178,28 @@
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Archimedes",
+      "title": "Measurement of a Circle",
+      "year": "c. 250 BCE",
+      "venue": "Syracuse",
+      "note": "Original computation using inscribed/circumscribed 96-gons to bound π"
+    },
+    {
+      "authors": "Dalzell, D.P.",
+      "title": "On 22/7",
+      "year": "1944",
+      "venue": "Journal of the London Mathematical Society",
+      "note": "Discovered the integral ∫₀¹ t⁴(1-t)⁴/(1+t²) dt = 22/7 − π"
+    },
+    {
+      "authors": "Niven, Ivan",
+      "title": "A simple proof that π is irrational",
+      "year": "1947",
+      "venue": "Bulletin of the American Mathematical Society",
+      "note": "Independently discovered the Dalzell integral; also proved π irrational"
+    }
+  ]
 }

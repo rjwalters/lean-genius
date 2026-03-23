@@ -42,28 +42,6 @@
       ],
       "significance": "Probes the exact threshold of the Erdős-Turán phenomenon. Sidon sets show bounded r(n) is compatible with sparse sumsets. The Erdős-Turán conjecture asserts full bases must have unbounded r(n). Problem #749 asks about the boundary: can near-bases (density close to 1) still have bounded r(n)? The answer determines whether the Erdős-Turán obstruction is a sharp phase transition at density 1 or a gradual phenomenon."
     },
-    "references": [
-      {
-        "key": "E94",
-        "citation": "Erdős, Paul, Some of my favourite unsolved problems, in: A Tribute to Paul Erdős (A. Baker et al., eds.), Cambridge Univ. Press, 1994, 467-478.",
-        "type": "paper"
-      },
-      {
-        "key": "ET41",
-        "citation": "Erdős, P. and Turán, P., On a problem of Sidon in additive number theory, and on some related problems, J. London Math. Soc. 16 (1941), 212-215.",
-        "type": "paper"
-      },
-      {
-        "key": "HR66",
-        "citation": "Halberstam, H. and Roth, K.F., Sequences, Oxford Univ. Press, 1966 (reprinted Springer 1983).",
-        "type": "book"
-      },
-      {
-        "key": "erdos749",
-        "citation": "Erdős Problems, Problem #749, https://erdosproblems.com/749",
-        "type": "website"
-      }
-    ],
     "relatedProofs": [
       {
         "id": "erdos-28",
@@ -193,5 +171,27 @@
     "axiomCount": 9,
     "theoremCount": 0,
     "definitionCount": 4
-  }
+  },
+  "references": [
+    {
+      "key": "E94",
+      "citation": "Erdős, Paul, Some of my favourite unsolved problems, in: A Tribute to Paul Erdős (A. Baker et al., eds.), Cambridge Univ. Press, 1994, 467-478.",
+      "type": "paper"
+    },
+    {
+      "key": "ET41",
+      "citation": "Erdős, P. and Turán, P., On a problem of Sidon in additive number theory, and on some related problems, J. London Math. Soc. 16 (1941), 212-215.",
+      "type": "paper"
+    },
+    {
+      "key": "HR66",
+      "citation": "Halberstam, H. and Roth, K.F., Sequences, Oxford Univ. Press, 1966 (reprinted Springer 1983).",
+      "type": "book"
+    },
+    {
+      "key": "erdos749",
+      "citation": "Erdős Problems, Problem #749, https://erdosproblems.com/749",
+      "type": "website"
+    }
+  ]
 }

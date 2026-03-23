@@ -41,28 +41,6 @@
       ],
       "significance": "Characterizes the sum of consecutive divisor ratios G(n), showing it is controlled by τ(n) via Tao's bounds τ(n/m)/m ≤ G(n) ≤ τ(n). The Erdős-Tenenbaum theorem that G(n)/τ(n) has a continuous distribution function reveals deep statistical structure in divisor sequences. The asymptotic formula Σ G(n) ~ c X log X parallels the classical Dirichlet divisor sum."
     },
-    "references": [
-      {
-        "key": "ET82",
-        "citation": "Erdős, P. and Tenenbaum, G., Sur les fonctions arithmétiques liées aux diviseurs consécutifs, J. Number Theory 31 (1989), 285-311.",
-        "type": "paper"
-      },
-      {
-        "key": "Tao",
-        "citation": "Tao, T., A remark on the consecutive divisor ratio problem, MathOverflow/Blog, establishing τ(n/m)/m ≤ G(n) ≤ τ(n).",
-        "type": "paper"
-      },
-      {
-        "key": "HW08",
-        "citation": "Hardy, G. H. and Wright, E. M., An Introduction to the Theory of Numbers, 6th ed., Oxford University Press, 2008. Chapter 18: divisor function properties.",
-        "type": "book"
-      },
-      {
-        "key": "erdos673",
-        "citation": "Erdős Problems, Problem #673, https://erdosproblems.com/673",
-        "type": "website"
-      }
-    ],
     "relatedProofs": [
       {
         "id": "erdos-693",
@@ -227,5 +205,27 @@
     "axiomCount": 0,
     "theoremCount": 21,
     "definitionCount": 8
-  }
+  },
+  "references": [
+    {
+      "key": "ET82",
+      "citation": "Erdős, P. and Tenenbaum, G., Sur les fonctions arithmétiques liées aux diviseurs consécutifs, J. Number Theory 31 (1989), 285-311.",
+      "type": "paper"
+    },
+    {
+      "key": "Tao",
+      "citation": "Tao, T., A remark on the consecutive divisor ratio problem, MathOverflow/Blog, establishing τ(n/m)/m ≤ G(n) ≤ τ(n).",
+      "type": "paper"
+    },
+    {
+      "key": "HW08",
+      "citation": "Hardy, G. H. and Wright, E. M., An Introduction to the Theory of Numbers, 6th ed., Oxford University Press, 2008. Chapter 18: divisor function properties.",
+      "type": "book"
+    },
+    {
+      "key": "erdos673",
+      "citation": "Erdős Problems, Problem #673, https://erdosproblems.com/673",
+      "type": "website"
+    }
+  ]
 }

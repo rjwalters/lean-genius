@@ -61,50 +61,6 @@
       "Defined Cramér's conjecture and Firoozbakht's conjecture as Prop",
       "Proved erdos_4_solved via maynard_theorem"
     ],
-    "references": [
-      {
-        "authors": "Rankin, Robert A.",
-        "title": "The difference between consecutive prime numbers",
-        "year": "1938",
-        "venue": "Journal of the London Mathematical Society 13, pp. 242-247",
-        "note": "Original lower bound with constant C = e^γ/3, unimproved for 75 years"
-      },
-      {
-        "authors": "Maynard, James",
-        "title": "Large gaps between primes",
-        "year": "2016",
-        "venue": "Annals of Mathematics 183, pp. 915-933",
-        "note": "Proved the full Erdős conjecture (∀ C > 0) using multidimensional sieve weights"
-      },
-      {
-        "authors": "Ford, Kevin; Green, Ben; Konyagin, Sergei; Tao, Terence",
-        "title": "Large gaps between consecutive prime numbers",
-        "year": "2016",
-        "venue": "Annals of Mathematics 183, pp. 935-974",
-        "note": "Independent proof of the Erdős conjecture using probabilistic methods and hypergraph covering"
-      },
-      {
-        "authors": "Ford, Kevin; Green, Ben; Konyagin, Sergei; Maynard, James; Tao, Terence",
-        "title": "Long gaps between primes",
-        "year": "2018",
-        "venue": "Journal of the American Mathematical Society 31, pp. 65-105",
-        "note": "Improved bound replacing (log log log n)² with log log log n, combining both teams' techniques"
-      },
-      {
-        "authors": "Baker, Roger C.; Harman, Glyn; Pintz, János",
-        "title": "The difference between consecutive primes, II",
-        "year": "2001",
-        "venue": "Proceedings of the London Mathematical Society 83, pp. 532-562",
-        "note": "Best unconditional upper bound on prime gaps: g_n ≤ n^0.525"
-      },
-      {
-        "authors": "Cramér, Harald",
-        "title": "On the order of magnitude of the difference between consecutive prime numbers",
-        "year": "1936",
-        "venue": "Acta Arithmetica 2, pp. 23-46",
-        "note": "Conjectured g_n = O((log p_n)²) based on a probabilistic model of primes"
-      }
-    ],
     "axiomCount": 9,
     "prerequisites": [
       "Analytic number theory: the Prime Number Theorem and its consequences",
@@ -252,12 +208,6 @@
       "**Sieve revolution**: Maynard's approach uses the same multidimensional sieve that proved bounded gaps ($\\liminf g_n \\leq 246$), applied in reverse to prove unbounded gaps",
       "**Upper-lower gap**: Current bounds span from $\\omega(\\log n \\cdot \\log\\log n / \\log\\log\\log n)$ (lower) to $O(n^{0.525})$ (upper) — an enormous range reflecting our ignorance about prime distribution",
       "**$10,000 still open**: Erdős's stronger conjecture ($g_n > (\\log n)^{1+c}$) remains unresolved and would require fundamentally new ideas beyond current sieve methods"
-    ],
-    "prerequisites": [
-      "Prime number theorem and the distribution of primes",
-      "Sieve theory (Selberg sieve, large sieve)",
-      "Iterated logarithms and Rankin's construction",
-      "Analytic number theory: Cramér's model and probabilistic heuristics"
     ]
   },
   "conclusion": {
@@ -355,5 +305,49 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 16
-  }
+  },
+  "references": [
+    {
+      "authors": "Rankin, Robert A.",
+      "title": "The difference between consecutive prime numbers",
+      "year": "1938",
+      "venue": "Journal of the London Mathematical Society 13, pp. 242-247",
+      "note": "Original lower bound with constant C = e^γ/3, unimproved for 75 years"
+    },
+    {
+      "authors": "Maynard, James",
+      "title": "Large gaps between primes",
+      "year": "2016",
+      "venue": "Annals of Mathematics 183, pp. 915-933",
+      "note": "Proved the full Erdős conjecture (∀ C > 0) using multidimensional sieve weights"
+    },
+    {
+      "authors": "Ford, Kevin; Green, Ben; Konyagin, Sergei; Tao, Terence",
+      "title": "Large gaps between consecutive prime numbers",
+      "year": "2016",
+      "venue": "Annals of Mathematics 183, pp. 935-974",
+      "note": "Independent proof of the Erdős conjecture using probabilistic methods and hypergraph covering"
+    },
+    {
+      "authors": "Ford, Kevin; Green, Ben; Konyagin, Sergei; Maynard, James; Tao, Terence",
+      "title": "Long gaps between primes",
+      "year": "2018",
+      "venue": "Journal of the American Mathematical Society 31, pp. 65-105",
+      "note": "Improved bound replacing (log log log n)² with log log log n, combining both teams' techniques"
+    },
+    {
+      "authors": "Baker, Roger C.; Harman, Glyn; Pintz, János",
+      "title": "The difference between consecutive primes, II",
+      "year": "2001",
+      "venue": "Proceedings of the London Mathematical Society 83, pp. 532-562",
+      "note": "Best unconditional upper bound on prime gaps: g_n ≤ n^0.525"
+    },
+    {
+      "authors": "Cramér, Harald",
+      "title": "On the order of magnitude of the difference between consecutive prime numbers",
+      "year": "1936",
+      "venue": "Acta Arithmetica 2, pp. 23-46",
+      "note": "Conjectured g_n = O((log p_n)²) based on a probabilistic model of primes"
+    }
+  ]
 }

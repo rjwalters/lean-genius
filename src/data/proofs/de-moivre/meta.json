@@ -45,43 +45,6 @@
       "Double and triple angle formula derivations",
       "Roots of unity connection via exp(2πik/n)"
     ],
-    "references": [
-      {
-        "authors": "A. de Moivre",
-        "title": "Aequationum quarundam Potestatis tertiae, quintae, septimae...",
-        "year": "1707",
-        "venue": "Philosophical Transactions",
-        "note": "Earliest implicit form of de Moivre's formula"
-      },
-      {
-        "authors": "L. Euler",
-        "title": "Introductio in analysin infinitorum",
-        "year": "1748",
-        "venue": "Lausanne",
-        "note": "Modern formulation connecting e^{iθ} = cos θ + i sin θ to de Moivre's theorem"
-      },
-      {
-        "authors": "T. Needham",
-        "title": "Visual Complex Analysis",
-        "year": "1997",
-        "venue": "Oxford University Press",
-        "note": "Geometric interpretation of de Moivre as iterated rotation"
-      },
-      {
-        "authors": "de Moivre, Abraham",
-        "title": "Miscellanea Analytica de Seriebus et Quadraturis",
-        "year": "1730",
-        "venue": "London: Tonson & Watts",
-        "note": "Contains de Moivre's mature treatment of his formula relating powers of trigonometric expressions to multiple-angle formulas, building on his 1707 result"
-      },
-      {
-        "authors": "Smith, David Eugene",
-        "title": "A Source Book in Mathematics",
-        "year": "1929",
-        "venue": "McGraw-Hill (reprinted by Dover, 1959)",
-        "note": "Collects primary source translations including de Moivre's original work, providing historical context for the development of complex number theory"
-      }
-    ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 17,
     "axiomCount": 0,
@@ -203,5 +166,42 @@
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "A. de Moivre",
+      "title": "Aequationum quarundam Potestatis tertiae, quintae, septimae...",
+      "year": "1707",
+      "venue": "Philosophical Transactions",
+      "note": "Earliest implicit form of de Moivre's formula"
+    },
+    {
+      "authors": "L. Euler",
+      "title": "Introductio in analysin infinitorum",
+      "year": "1748",
+      "venue": "Lausanne",
+      "note": "Modern formulation connecting e^{iθ} = cos θ + i sin θ to de Moivre's theorem"
+    },
+    {
+      "authors": "T. Needham",
+      "title": "Visual Complex Analysis",
+      "year": "1997",
+      "venue": "Oxford University Press",
+      "note": "Geometric interpretation of de Moivre as iterated rotation"
+    },
+    {
+      "authors": "de Moivre, Abraham",
+      "title": "Miscellanea Analytica de Seriebus et Quadraturis",
+      "year": "1730",
+      "venue": "London: Tonson & Watts",
+      "note": "Contains de Moivre's mature treatment of his formula relating powers of trigonometric expressions to multiple-angle formulas, building on his 1707 result"
+    },
+    {
+      "authors": "Smith, David Eugene",
+      "title": "A Source Book in Mathematics",
+      "year": "1929",
+      "venue": "McGraw-Hill (reprinted by Dover, 1959)",
+      "note": "Collects primary source translations including de Moivre's original work, providing historical context for the development of complex number theory"
+    }
+  ]
 }

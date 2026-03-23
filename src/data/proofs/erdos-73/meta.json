@@ -44,28 +44,6 @@
         "module": "Mathlib.Data.Finset.Card"
       }
     ],
-    "references": [
-      {
-        "key": "Re1999",
-        "citation": "Reed, B. (1999). Mangoes and Blueberries. Combinatorica 19(2), 267–296.",
-        "type": "paper"
-      },
-      {
-        "key": "EP1965",
-        "citation": "Erdős, P. and Pósa, L. (1965). On independent circuits contained in a graph. Canadian Journal of Mathematics 17, 347–352.",
-        "type": "paper"
-      },
-      {
-        "key": "Gy1987",
-        "citation": "Gyárfás, A. (1987). Problems from the world surrounding perfect graphs. Zastosowania Matematyki 19, 413–441.",
-        "type": "paper"
-      },
-      {
-        "key": "ErdosProblems",
-        "citation": "Erdős Problems. Problem #73.",
-        "type": "website"
-      }
-    ],
     "originalContributions": [
       "Formal definition of IsIndependentSet and independenceNumber for SimpleGraph",
       "Definition of k-independence condition (satisfiesIndependenceCondition)",
@@ -210,5 +188,27 @@
     "axiomCount": 8,
     "theoremCount": 9,
     "definitionCount": 10
-  }
+  },
+  "references": [
+    {
+      "key": "Re1999",
+      "citation": "Reed, B. (1999). Mangoes and Blueberries. Combinatorica 19(2), 267–296.",
+      "type": "paper"
+    },
+    {
+      "key": "EP1965",
+      "citation": "Erdős, P. and Pósa, L. (1965). On independent circuits contained in a graph. Canadian Journal of Mathematics 17, 347–352.",
+      "type": "paper"
+    },
+    {
+      "key": "Gy1987",
+      "citation": "Gyárfás, A. (1987). Problems from the world surrounding perfect graphs. Zastosowania Matematyki 19, 413–441.",
+      "type": "paper"
+    },
+    {
+      "key": "ErdosProblems",
+      "citation": "Erdős Problems. Problem #73.",
+      "type": "website"
+    }
+  ]
 }

@@ -57,21 +57,6 @@
       "Coprimality infrastructure (3 lemmas, all proved)",
       "Schur-Zassenhaus complement existence, disjointness, and generation (from Mathlib)"
     ],
-    "references": [
-      {
-        "authors": "P. Hall",
-        "title": "A note on soluble groups",
-        "year": "1928",
-        "venue": "J. London Math. Soc."
-      },
-      {
-        "authors": "J. Rotman",
-        "title": "An Introduction to the Theory of Groups",
-        "year": "2012",
-        "venue": "Springer GTM",
-        "note": "Chapter 5: Sylow and Hall subgroups"
-      }
-    ],
     "dateAdded": "2026-03-11",
     "mathlib_version": "4.26.0",
     "axioms": 3,
@@ -205,5 +190,20 @@
     "axiomCount": 2,
     "theoremCount": 27,
     "definitionCount": 1
-  }
+  },
+  "references": [
+    {
+      "authors": "P. Hall",
+      "title": "A note on soluble groups",
+      "year": "1928",
+      "venue": "J. London Math. Soc."
+    },
+    {
+      "authors": "J. Rotman",
+      "title": "An Introduction to the Theory of Groups",
+      "year": "2012",
+      "venue": "Springer GTM",
+      "note": "Chapter 5: Sylow and Hall subgroups"
+    }
+  ]
 }

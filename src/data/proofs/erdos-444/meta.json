@@ -17,22 +17,11 @@
       "highly-composite-numbers",
       "solved"
     ],
-    "references": [
-      "Erdős, P. and Graham, R.L. (1980): 'Old and new problems and results in combinatorial number theory', Monographies de L'Enseignement Mathématique 28, p. 88",
-      "Erdős, P. and Sárközy, A. (1980): 'Some asymptotic formulas on generalized divisor functions IV'",
-      "Ramanujan, S. (1915): 'Highly composite numbers', Proc. London Math. Soc. 14, 347–409",
-      "Wigert, S. (1907): 'Sur l'ordre de grandeur du nombre des diviseurs d'un entier', Arkiv för Matematik 3(18), 1–9",
-      "Hardy, G.H. and Ramanujan, S. (1917): 'The normal number of prime factors of a number n', Quart. J. Math. 48, 76–92",
-      "Mertens, F. (1874): 'Ein Beitrag zur analytischen Zahlentheorie', J. Reine Angew. Math. 78, 46–62",
-      "Erdős, P. and Kac, M. (1940): 'The Gaussian law of errors in the theory of additive number theoretic functions', Amer. J. Math. 62, 738–742",
-      "https://erdosproblems.com/444"
-    ],
     "badge": "axiom",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/444",
     "erdosUrl": "https://erdosproblems.com/444",
     "erdosProblemStatus": "solved",
-    "leanFile": "Proofs/Erdos444Problem.lean",
     "proofRepoPath": "Proofs/Erdos444Problem.lean",
     "date": "1980",
     "dateAdded": "2026-01-18",
@@ -229,5 +218,15 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 6
-  }
+  },
+  "references": [
+    "Erdős, P. and Graham, R.L. (1980): 'Old and new problems and results in combinatorial number theory', Monographies de L'Enseignement Mathématique 28, p. 88",
+    "Erdős, P. and Sárközy, A. (1980): 'Some asymptotic formulas on generalized divisor functions IV'",
+    "Ramanujan, S. (1915): 'Highly composite numbers', Proc. London Math. Soc. 14, 347–409",
+    "Wigert, S. (1907): 'Sur l'ordre de grandeur du nombre des diviseurs d'un entier', Arkiv för Matematik 3(18), 1–9",
+    "Hardy, G.H. and Ramanujan, S. (1917): 'The normal number of prime factors of a number n', Quart. J. Math. 48, 76–92",
+    "Mertens, F. (1874): 'Ein Beitrag zur analytischen Zahlentheorie', J. Reine Angew. Math. 78, 46–62",
+    "Erdős, P. and Kac, M. (1940): 'The Gaussian law of errors in the theory of additive number theoretic functions', Amer. J. Math. 62, 738–742",
+    "https://erdosproblems.com/444"
+  ]
 }

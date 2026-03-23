@@ -67,29 +67,6 @@
       "Isobarycentric point theorem for odd functions from BU",
       "Equivariant map hierarchy: existence iff source_dim <= target_dim"
     ],
-    "references": [
-      {
-        "authors": "K. Borsuk",
-        "title": "Drei Satze uber die n-dimensionale euklidische Sphare",
-        "year": "1933",
-        "venue": "Fundamenta Mathematicae",
-        "note": "Original Borsuk-Ulam theorem"
-      },
-      {
-        "authors": "A. W. Tucker",
-        "title": "Some topological properties of disk and sphere",
-        "year": "1946",
-        "venue": "Proceedings of the First Canadian Mathematical Congress",
-        "note": "Tucker's combinatorial lemma, discrete analog of BU"
-      },
-      {
-        "authors": "J. Matousek",
-        "title": "Using the Borsuk-Ulam Theorem",
-        "year": "2003",
-        "venue": "Universitext, Springer",
-        "note": "Comprehensive reference for BU applications"
-      }
-    ],
     "dateAdded": "2026-02-26",
     "mathlib_version": "4.26.0",
     "axioms": 4,
@@ -228,5 +205,28 @@
     "axiomCount": 2,
     "theoremCount": 233,
     "definitionCount": 35
-  }
+  },
+  "references": [
+    {
+      "authors": "K. Borsuk",
+      "title": "Drei Satze uber die n-dimensionale euklidische Sphare",
+      "year": "1933",
+      "venue": "Fundamenta Mathematicae",
+      "note": "Original Borsuk-Ulam theorem"
+    },
+    {
+      "authors": "A. W. Tucker",
+      "title": "Some topological properties of disk and sphere",
+      "year": "1946",
+      "venue": "Proceedings of the First Canadian Mathematical Congress",
+      "note": "Tucker's combinatorial lemma, discrete analog of BU"
+    },
+    {
+      "authors": "J. Matousek",
+      "title": "Using the Borsuk-Ulam Theorem",
+      "year": "2003",
+      "venue": "Universitext, Springer",
+      "note": "Comprehensive reference for BU applications"
+    }
+  ]
 }

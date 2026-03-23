@@ -58,43 +58,6 @@
       "Proof that optimal constant c = 1",
       "LIS/LDS bounds as corollaries"
     ],
-    "references": [
-      {
-        "authors": "P. Erdős, G. Szekeres",
-        "title": "A combinatorial problem in geometry",
-        "year": "1935",
-        "venue": "Compositio Mathematica, 2, 463–470",
-        "note": "The foundational theorem: every sequence of (r-1)(s-1)+1 elements has a monotonic subsequence of length r or s"
-      },
-      {
-        "authors": "H. Hanani",
-        "title": "On the number of monotonic subsequences",
-        "year": "1957",
-        "venue": "Bull. Research Council of Israel, 7F, 41–45",
-        "note": "Proved decomposition into ≤ ⌈√(2n)⌉ monotonic subsequences, giving initial lower bound c ≥ 1/√2"
-      },
-      {
-        "authors": "J. Tidor, P. Wang, D. Yang",
-        "title": "1-color avoiding paths",
-        "year": "2016",
-        "venue": "Preprint",
-        "note": "Proved the weighted Erdős-Szekeres theorem, establishing optimal constant c = 1"
-      },
-      {
-        "authors": "J. M. Steele",
-        "title": "Variations on the monotone subsequence theme of Erdős and Szekeres",
-        "year": "1995",
-        "venue": "IMA Volumes in Mathematics, 72, 111–131",
-        "note": "Survey of probabilistic and extremal aspects of monotonic subsequence problems"
-      },
-      {
-        "authors": "S. Cambie",
-        "title": "Monotonic subsequence sums",
-        "year": "2016",
-        "venue": "Unpublished",
-        "note": "Conjectured the weighted ES theorem and proved the upper bound c ≤ 1 via explicit construction"
-      }
-    ],
     "crossReferences": [
       {
         "proofId": "erdos-1026-oq-01",
@@ -287,6 +250,20 @@
       "year": "2007",
       "venue": "Proceedings of the International Congress of Mathematicians, Madrid, pp. 545–579",
       "note": "Surveys the deep connections between longest increasing subsequences, Young tableaux, the RSK correspondence, and random matrix theory; provides broad context for weighted subsequence problems"
+    },
+    {
+      "authors": "H. Hanani",
+      "title": "On the number of monotonic subsequences",
+      "year": "1957",
+      "venue": "Bull. Research Council of Israel, 7F, 41–45",
+      "note": "Proved decomposition into ≤ ⌈√(2n)⌉ monotonic subsequences, giving initial lower bound c ≥ 1/√2"
+    },
+    {
+      "authors": "S. Cambie",
+      "title": "Monotonic subsequence sums",
+      "year": "2016",
+      "venue": "Unpublished",
+      "note": "Conjectured the weighted ES theorem and proved the upper bound c ≤ 1 via explicit construction"
     }
   ],
   "leanFile": {

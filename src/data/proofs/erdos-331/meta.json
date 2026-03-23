@@ -22,29 +22,6 @@
     "erdosNumber": 331,
     "erdosUrl": "https://erdosproblems.com/331",
     "erdosProblemStatus": "solved",
-    "references": [
-      {
-        "authors": "Ruzsa, Imre Z.",
-        "title": "Additive completion of lacunary sequences",
-        "year": "1992",
-        "venue": "Combinatorica 12, pp. 225-233",
-        "note": "Contains the binary digit separation construction disproving the conjecture"
-      },
-      {
-        "authors": "Erdős, Paul; Sárközy, András",
-        "title": "On differences and sums of integers, II",
-        "year": "1977",
-        "venue": "Bulletin of the Greek Mathematical Society 18, pp. 204-223",
-        "note": "Earlier positive results on common differences at higher densities"
-      },
-      {
-        "authors": "Tao, Terence; Vu, Van",
-        "title": "Additive Combinatorics",
-        "year": "2006",
-        "venue": "Cambridge University Press",
-        "note": "Standard reference; Chapter 2 covers sumset estimates and density conditions for additive structure"
-      }
-    ],
     "dateAdded": "2026-01-23",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
@@ -279,5 +256,28 @@
     "axiomCount": 9,
     "theoremCount": 5,
     "definitionCount": 17
-  }
+  },
+  "references": [
+    {
+      "authors": "Ruzsa, Imre Z.",
+      "title": "Additive completion of lacunary sequences",
+      "year": "1992",
+      "venue": "Combinatorica 12, pp. 225-233",
+      "note": "Contains the binary digit separation construction disproving the conjecture"
+    },
+    {
+      "authors": "Erdős, Paul; Sárközy, András",
+      "title": "On differences and sums of integers, II",
+      "year": "1977",
+      "venue": "Bulletin of the Greek Mathematical Society 18, pp. 204-223",
+      "note": "Earlier positive results on common differences at higher densities"
+    },
+    {
+      "authors": "Tao, Terence; Vu, Van",
+      "title": "Additive Combinatorics",
+      "year": "2006",
+      "venue": "Cambridge University Press",
+      "note": "Standard reference; Chapter 2 covers sumset estimates and density conditions for additive structure"
+    }
+  ]
 }

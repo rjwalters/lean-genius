@@ -13,15 +13,6 @@
       "size-ramsey",
       "open"
     ],
-    "references": [
-      "Erdős, Faudree, Rousseau & Schelp (1993): Ramsey size linear graphs",
-      "Erdős, Faudree, Rousseau & Schelp (1978): Size Ramsey numbers involving matchings",
-      "Beck (1983): On size Ramsey number of paths, trees, and circuits I",
-      "Bradač, Gishboliner & Sudakov (2024): Size Ramsey numbers of K₄-subdivisions",
-      "Special case of Problem #566",
-      "https://erdosproblems.com/567"
-    ],
-    "leanFile": "Proofs/Erdos567Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/567",
     "erdosUrl": "https://erdosproblems.com/567",
@@ -118,5 +109,13 @@
       "Can bipartite Ramsey techniques (Zarankiewicz bounds, dependent random choice) be adapted to prove size Ramsey linearity for $K_{3,3}$?",
       "Is there a unified approach to all three cases exploiting their shared $(2k-3)$-sparsity?"
     ]
-  }
+  },
+  "references": [
+    "Erdős, Faudree, Rousseau & Schelp (1993): Ramsey size linear graphs",
+    "Erdős, Faudree, Rousseau & Schelp (1978): Size Ramsey numbers involving matchings",
+    "Beck (1983): On size Ramsey number of paths, trees, and circuits I",
+    "Bradač, Gishboliner & Sudakov (2024): Size Ramsey numbers of K₄-subdivisions",
+    "Special case of Problem #566",
+    "https://erdosproblems.com/567"
+  ]
 }

@@ -16,16 +16,6 @@
       "probabilistic-method",
       "open"
     ],
-    "references": [
-      "Ramsey (1930): original theorem on monochromatic subsets",
-      "Erdős–Szekeres (1935): R(k) ≤ C(2k-2, k-1) < 4^k via recurrence",
-      "Erdős (1947): R(k) > k·2^{k/2}/e, birth of the probabilistic method",
-      "Paley (1933): Paley graphs achieve clique/independence number √n",
-      "Cohen (2015): explicit graph, no clique/indep set 2^{(log log n)^C}",
-      "Li (2023): improved to (log n)^C, current state of the art",
-      "Campos–Griffiths–Morris–Sahasrabudhe (2023): R(k) ≤ (4-ε)^k, breaking the 4^k barrier",
-      "https://erdosproblems.com/78"
-    ],
     "crossReferences": [
       {
         "id": "ramseys-theorem",
@@ -48,7 +38,6 @@
         "description": "Problem #986 concerns off-diagonal Ramsey lower bounds R(k,n), a generalization of the diagonal case"
       }
     ],
-    "leanFile": "Proofs/Erdos78Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/78",
     "erdosUrl": "https://erdosproblems.com/78",
@@ -136,5 +125,15 @@
     "axiomCount": 9,
     "theoremCount": 0,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    "Ramsey (1930): original theorem on monochromatic subsets",
+    "Erdős–Szekeres (1935): R(k) ≤ C(2k-2, k-1) < 4^k via recurrence",
+    "Erdős (1947): R(k) > k·2^{k/2}/e, birth of the probabilistic method",
+    "Paley (1933): Paley graphs achieve clique/independence number √n",
+    "Cohen (2015): explicit graph, no clique/indep set 2^{(log log n)^C}",
+    "Li (2023): improved to (log n)^C, current state of the art",
+    "Campos–Griffiths–Morris–Sahasrabudhe (2023): R(k) ≤ (4-ε)^k, breaking the 4^k barrier",
+    "https://erdosproblems.com/78"
+  ]
 }

@@ -52,26 +52,6 @@
       "SchurMod/SchurGapFull characterization: proved schurMod_no_zero_mod3 (no parts divisible by 3 in SchurMod), schurGapFull_div3_gap4 (parts divisible by 3 require gap ≥ 4), schurGapFull_with_div3_not_in_schurMod (gap partitions with div-3 parts are disjoint from mod partitions)",
       "Extended computational verification: all three identities verified for n=0..12 (60+ native_decide examples)"
     ],
-    "references": [
-      {
-        "authors": "L. J. Rogers",
-        "title": "Second memoir on the expansion of certain infinite products",
-        "year": "1894",
-        "venue": "Proc. London Math. Soc."
-      },
-      {
-        "authors": "I. Schur",
-        "title": "Ein Beitrag zur additiven Zahlentheorie und zur Theorie der Kettenbrüche",
-        "year": "1926",
-        "venue": "S.-B. Preuss. Akad. Wiss. Phys.-Math. Kl."
-      },
-      {
-        "authors": "G. E. Andrews",
-        "title": "The Theory of Partitions",
-        "year": "1976",
-        "venue": "Cambridge University Press"
-      }
-    ],
     "dateAdded": "2026-03-11",
     "mathlib_version": "4.26.0",
     "axioms": 3,
@@ -254,5 +234,25 @@
     "axiomCount": 3,
     "theoremCount": 143,
     "definitionCount": 40
-  }
+  },
+  "references": [
+    {
+      "authors": "L. J. Rogers",
+      "title": "Second memoir on the expansion of certain infinite products",
+      "year": "1894",
+      "venue": "Proc. London Math. Soc."
+    },
+    {
+      "authors": "I. Schur",
+      "title": "Ein Beitrag zur additiven Zahlentheorie und zur Theorie der Kettenbrüche",
+      "year": "1926",
+      "venue": "S.-B. Preuss. Akad. Wiss. Phys.-Math. Kl."
+    },
+    {
+      "authors": "G. E. Andrews",
+      "title": "The Theory of Partitions",
+      "year": "1976",
+      "venue": "Cambridge University Press"
+    }
+  ]
 }

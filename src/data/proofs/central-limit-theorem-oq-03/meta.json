@@ -40,15 +40,6 @@
       "Cramér's theorem: Gaussian is prime/indecomposable in the convolution monoid",
       "Gaussian stability under normalized convolution powers"
     ],
-    "references": [
-      {
-        "authors": "H. Cramér",
-        "title": "Über eine Eigenschaft der normalen Verteilungsfunktion",
-        "year": "1936",
-        "venue": "Mathematische Zeitschrift",
-        "note": "If X+Y is Gaussian with X,Y independent, then X and Y are Gaussian"
-      }
-    ],
     "historicalContext": "The algebraic structure of probability distributions under convolution has been studied since Lévy (1925). Cramér's theorem (1936) revealed that the Gaussian is 'indecomposable' in this structure, and the CLT can be interpreted as a convergence statement in the convolution monoid.",
     "axiomCount": 15,
     "lineCount": 241
@@ -159,5 +150,14 @@
     "axiomCount": 14,
     "theoremCount": 8,
     "definitionCount": 4
-  }
+  },
+  "references": [
+    {
+      "authors": "H. Cramér",
+      "title": "Über eine Eigenschaft der normalen Verteilungsfunktion",
+      "year": "1936",
+      "venue": "Mathematische Zeitschrift",
+      "note": "If X+Y is Gaussian with X,Y independent, then X and Y are Gaussian"
+    }
+  ]
 }

@@ -9,7 +9,6 @@
     "date": "1962",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos224Problem.lean",
-    "leanFile": "Proofs/Erdos224Problem.lean",
     "tags": [
       "erdos",
       "geometry",
@@ -26,13 +25,6 @@
     "erdosUrl": "https://erdosproblems.com/224",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-23",
-    "references": [
-      "Danzer, Grünbaum (1962): 'Über zwei Probleme bezüglich konvexer Körper von P. Erdős und von V. L. Klee', Mathematische Zeitschrift 79, 95–99",
-      "Erdős, Füredi (1983): 'The greatest angle among n points in the d-dimensional Euclidean space', Annals of Discrete Mathematics 17, 275–283",
-      "Kuiper, Boerdijk: Unpublished proof for d = 3 (9 points in ℝ³)",
-      "Barvinok, Lee, Novik (2013): Acute sets and related problems in discrete geometry",
-      "https://erdosproblems.com/224"
-    ],
     "relatedProblems": [
       {
         "id": "erdos-225",
@@ -150,5 +142,12 @@
     "axiomCount": 7,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "references": [
+    "Danzer, Grünbaum (1962): 'Über zwei Probleme bezüglich konvexer Körper von P. Erdős und von V. L. Klee', Mathematische Zeitschrift 79, 95–99",
+    "Erdős, Füredi (1983): 'The greatest angle among n points in the d-dimensional Euclidean space', Annals of Discrete Mathematics 17, 275–283",
+    "Kuiper, Boerdijk: Unpublished proof for d = 3 (9 points in ℝ³)",
+    "Barvinok, Lee, Novik (2013): Acute sets and related problems in discrete geometry",
+    "https://erdosproblems.com/224"
+  ]
 }

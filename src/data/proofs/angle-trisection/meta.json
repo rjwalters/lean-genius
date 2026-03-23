@@ -69,43 +69,6 @@
         "id": "angle-trisection-oq-02-oq-03",
         "relationship": "Further extensions of the constructibility framework"
       }
-    ],
-    "references": [
-      {
-        "key": "Wa37",
-        "citation": "Wantzel, P.L., Recherches sur les moyens de reconnaître si un Problème de Géométrie peut se résoudre avec la règle et le compas, Journal de Mathématiques Pures et Appliquées 2 (1837), 366–372.",
-        "type": "paper"
-      },
-      {
-        "key": "Ma70",
-        "citation": "Martin, G.E., Geometric Constructions, Springer (1998), Chapters 2–5.",
-        "type": "book"
-      },
-      {
-        "key": "St04",
-        "citation": "Stewart, I., Galois Theory, 3rd ed., Chapman & Hall/CRC (2004), Chapter 6: Ruler-and-compass constructions.",
-        "type": "book"
-      },
-      {
-        "key": "Pe07",
-        "citation": "Petersen, P., Classical and Computational Constructive Geometry, in: Geometric Constructions (2007). Contains the polynomial approach to constructibility.",
-        "type": "book"
-      },
-      {
-        "key": "Ga01",
-        "citation": "Gauss, C.F., Disquisitiones Arithmeticae, Leipzig (1801), Section VII. Established that the regular 17-gon is constructible and characterized constructible regular polygons in terms of Fermat primes.",
-        "type": "book"
-      },
-      {
-        "key": "Li82",
-        "citation": "Lindemann, F., Über die Zahl π, Mathematische Annalen 20 (1882), 213–225. Proved π is transcendental, settling the squaring of the circle — the third classical Greek problem resolved in this formalization.",
-        "type": "paper"
-      },
-      {
-        "key": "DM72",
-        "citation": "De Morgan, A., A Budget of Paradoxes, Longmans, Green & Co. (1872, posthumous; 2nd ed. 1915). Catalogues angle trisection and circle squaring claims from amateur mathematicians, documenting the persistence of these problems long after their impossibility was proved.",
-        "type": "book"
-      }
     ]
   },
   "leanFile": {
@@ -251,12 +214,6 @@
       "The same technique proves doubling the cube is impossible: ∛2 satisfies x³ - 2 = 0, giving degree 3",
       "Some angles CAN be trisected (like 90° → 30°, since cos(30°) = √3/2 is constructible)",
       "The trisection polynomial $4x^3 - 3x$ is exactly the Chebyshev polynomial $T_3(x)$: the identity $\\cos(n\\theta) = T_n(\\cos\\theta)$ means $n$-section of an angle reduces to solving $T_n(x) = c$ for the $n$-th Chebyshev polynomial. For $n$ prime, $T_n$ is irreducible over $\\mathbb{Q}(c)$ for generic $c$, so degree $n \\neq 2^k$ blocks constructibility. This reveals angle $n$-section as a family of problems indexed by Chebyshev polynomials"
-    ],
-    "prerequisites": [
-      "Field extensions and the tower law: $[L:K] = [L:F][F:K]$ for $K \\subseteq F \\subseteq L$",
-      "Polynomial irreducibility: rational root theorem and its application to cubics over $\\mathbb{Q}$",
-      "Trigonometric identities: the triple angle formula $\\cos(3\\theta) = 4\\cos^3(\\theta) - 3\\cos(\\theta)$",
-      "Constructibility criterion (Wantzel 1837): constructible numbers have degree $2^n$ over $\\mathbb{Q}$"
     ]
   },
   "sections": [
@@ -351,5 +308,42 @@
     "cantor-diagonalization",
     "angle-trisection-oq-02-oq-01",
     "nth-root-irrational"
+  ],
+  "references": [
+    {
+      "key": "Wa37",
+      "citation": "Wantzel, P.L., Recherches sur les moyens de reconnaître si un Problème de Géométrie peut se résoudre avec la règle et le compas, Journal de Mathématiques Pures et Appliquées 2 (1837), 366–372.",
+      "type": "paper"
+    },
+    {
+      "key": "Ma70",
+      "citation": "Martin, G.E., Geometric Constructions, Springer (1998), Chapters 2–5.",
+      "type": "book"
+    },
+    {
+      "key": "St04",
+      "citation": "Stewart, I., Galois Theory, 3rd ed., Chapman & Hall/CRC (2004), Chapter 6: Ruler-and-compass constructions.",
+      "type": "book"
+    },
+    {
+      "key": "Pe07",
+      "citation": "Petersen, P., Classical and Computational Constructive Geometry, in: Geometric Constructions (2007). Contains the polynomial approach to constructibility.",
+      "type": "book"
+    },
+    {
+      "key": "Ga01",
+      "citation": "Gauss, C.F., Disquisitiones Arithmeticae, Leipzig (1801), Section VII. Established that the regular 17-gon is constructible and characterized constructible regular polygons in terms of Fermat primes.",
+      "type": "book"
+    },
+    {
+      "key": "Li82",
+      "citation": "Lindemann, F., Über die Zahl π, Mathematische Annalen 20 (1882), 213–225. Proved π is transcendental, settling the squaring of the circle — the third classical Greek problem resolved in this formalization.",
+      "type": "paper"
+    },
+    {
+      "key": "DM72",
+      "citation": "De Morgan, A., A Budget of Paradoxes, Longmans, Green & Co. (1872, posthumous; 2nd ed. 1915). Catalogues angle trisection and circle squaring claims from amateur mathematicians, documenting the persistence of these problems long after their impossibility was proved.",
+      "type": "book"
+    }
   ]
 }

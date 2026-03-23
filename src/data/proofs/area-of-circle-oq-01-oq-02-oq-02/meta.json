@@ -42,22 +42,6 @@
       "Periodicity kills boundary term: f(2π) - f(0) = 0 simplifies IBP to a clean algebraic identity",
       "Full field_simp/ring closure of the Fourier coefficient algebra"
     ],
-    "references": [
-      {
-        "authors": "A. Hurwitz",
-        "title": "Sur quelques applications géométriques des séries de Fourier",
-        "year": "1902",
-        "venue": "Annales scientifiques de l'École Normale Supérieure",
-        "note": "First Fourier-analytic proof of the isoperimetric inequality, using this IBP formula as a key step"
-      },
-      {
-        "authors": "E. M. Stein, R. Shakarchi",
-        "title": "Fourier Analysis: An Introduction",
-        "year": "2003",
-        "venue": "Princeton Lectures in Analysis",
-        "note": "Modern treatment of Fourier series including the derivative formula for Fourier coefficients"
-      }
-    ],
     "historicalContext": "The relationship between differentiation and Fourier coefficients is fundamental to harmonic analysis. For a smooth periodic function, differentiation in the time domain corresponds to multiplication by in in the frequency domain. This formula, a discrete analogue of the Fourier transform property, was central to Hurwitz's 1902 Fourier-analytic proof of the isoperimetric inequality.",
     "dateAdded": "2026-03-22",
     "axiomCount": 0,
@@ -199,5 +183,21 @@
     "axiomCount": 0,
     "theoremCount": 2,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "A. Hurwitz",
+      "title": "Sur quelques applications géométriques des séries de Fourier",
+      "year": "1902",
+      "venue": "Annales scientifiques de l'École Normale Supérieure",
+      "note": "First Fourier-analytic proof of the isoperimetric inequality, using this IBP formula as a key step"
+    },
+    {
+      "authors": "E. M. Stein, R. Shakarchi",
+      "title": "Fourier Analysis: An Introduction",
+      "year": "2003",
+      "venue": "Princeton Lectures in Analysis",
+      "note": "Modern treatment of Fourier series including the derivative formula for Fourier coefficients"
+    }
+  ]
 }

@@ -19,15 +19,6 @@
     "erdosNumber": 1093,
     "erdosUrl": "https://erdosproblems.com/1093",
     "erdosProblemStatus": "open",
-    "references": [
-      "Erdős, Lacampagne & Selfridge (1988), 'Selfridge's conjecture on binomial coefficients'",
-      "Erdős, Lacampagne & Selfridge (1993), 'Estimates of the least prime factor of a binomial coefficient'",
-      "West Coast Number Theory Conference (1986), problem presentation",
-      "Kummer (1852), theorem on prime factorization of binomial coefficients",
-      "Dickman (1930), distribution of smooth numbers",
-      "OEIS: related sequences on smooth numbers in consecutive ranges",
-      "https://erdosproblems.com/1093"
-    ],
     "axiomCount": 5,
     "lineCount": 107
   },
@@ -157,7 +148,11 @@
   ],
   "references": [
     {
-      "authors": ["Erdős, P.", "Lacampagne, C. B.", "Selfridge, J. L."],
+      "authors": [
+        "Erdős, P.",
+        "Lacampagne, C. B.",
+        "Selfridge, J. L."
+      ],
       "title": "Estimates of the Least Prime Factor of a Binomial Coefficient",
       "venue": "Mathematics of Computation",
       "year": 1993,
@@ -168,14 +163,20 @@
       "note": "Primary source for the ELS upper bound n ≤ C · 2^k √k and the computational census of deficiency-1 pairs including the record d(284,28)=9."
     },
     {
-      "authors": ["Erdős, P.", "Lacampagne, C. B.", "Selfridge, J. L."],
+      "authors": [
+        "Erdős, P.",
+        "Lacampagne, C. B.",
+        "Selfridge, J. L."
+      ],
       "title": "Selfridge's Conjecture about Primorial Numbers",
       "venue": "West Coast Number Theory Conference Proceedings",
       "year": 1988,
       "note": "Earlier presentation of the deficiency conjecture; establishes the basic framework of smooth-number deficiency in falling factorials of binomial coefficients."
     },
     {
-      "authors": ["Kummer, E. E."],
+      "authors": [
+        "Kummer, E. E."
+      ],
       "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
       "venue": "Journal für die reine und angewandte Mathematik",
       "year": 1852,
@@ -184,7 +185,9 @@
       "note": "Proves that v_p(C(n,k)) equals the number of carries when adding k and n-k in base p; the NoSmallPrimeFactors condition is the carry-free case for all p ≤ k."
     },
     {
-      "authors": ["Dickman, K."],
+      "authors": [
+        "Dickman, K."
+      ],
       "title": "On the Frequency of Numbers Containing Prime Factors of a Certain Relative Magnitude",
       "venue": "Arkiv för Matematik, Astronomi och Fysik",
       "year": 1930,
@@ -194,14 +197,23 @@
       "note": "Introduces the Dickman function ρ(u) characterizing the asymptotic density of B-smooth numbers up to x; provides the analytic framework for estimating the deficiency distribution."
     },
     {
-      "authors": ["Granville, A."],
+      "authors": [
+        "Granville, A."
+      ],
       "title": "Smooth Numbers: Computational Number Theory and Beyond",
       "venue": "Algorithmic Number Theory: Lattices, Number Fields, Curves and Cryptography (MSRI Publications)",
       "year": 2008,
       "volume": "44",
       "pages": "267–323",
       "note": "Comprehensive survey of smooth-number theory covering Dickman's function, the Canfield–Erdős–Pomerance theorem, and connections to sieve methods; essential background for the distribution analysis in Problem #1093."
-    }
+    },
+    "Erdős, Lacampagne & Selfridge (1988), 'Selfridge's conjecture on binomial coefficients'",
+    "Erdős, Lacampagne & Selfridge (1993), 'Estimates of the least prime factor of a binomial coefficient'",
+    "West Coast Number Theory Conference (1986), problem presentation",
+    "Kummer (1852), theorem on prime factorization of binomial coefficients",
+    "Dickman (1930), distribution of smooth numbers",
+    "OEIS: related sequences on smooth numbers in consecutive ranges",
+    "https://erdosproblems.com/1093"
   ],
   "leanFile": {
     "imports": [

@@ -61,29 +61,7 @@
       }
     ],
     "axiomCount": 9,
-    "lineCount": 194,
-    "references": [
-      {
-        "key": "Cr01",
-        "citation": "Croot, E.S., On a coloring conjecture about unit fractions, Annals of Mathematics 157(2) (2003), 545–556.",
-        "type": "paper"
-      },
-      {
-        "key": "Er50",
-        "citation": "Erdős, P., On a Diophantine equation, Proceedings of the National Academy of Sciences 36 (1950), 252–255.",
-        "type": "paper"
-      },
-      {
-        "key": "Gu04",
-        "citation": "Guy, R.K., Unsolved Problems in Number Theory, 3rd ed., Springer (2004), Section D11: Egyptian fractions.",
-        "type": "book"
-      },
-      {
-        "key": "GS55",
-        "citation": "Graham, R.L., On finite sums of unit fractions, Proceedings of the London Mathematical Society 14(3) (1964), 193–207.",
-        "type": "paper"
-      }
-    ]
+    "lineCount": 194
   },
   "overview": {
     "historicalContext": "Erdős Problem #284 asks about the asymptotic behavior of Egyptian fraction decompositions of 1. An Egyptian fraction representation of 1 is an equation 1 = 1/n₁ + 1/n₂ + ... + 1/nₖ with distinct positive integers n₁ < n₂ < ... < nₖ. The function f(k) denotes the maximum possible first denominator n₁ in such a k-term representation.\n\nThe upper bound f(k) ≤ (1+o(1))·k/(e-1) follows from a simple counting argument: if the first denominator is u, the harmonic sum over [u, eu] is approximately 1 (since ∫₁ᵉ 1/x dx = 1), so we need about (e-1)u terms. Hence k ≥ (e-1-o(1))u, giving u ≤ (1+o(1))k/(e-1).\n\nThe matching lower bound was proved by Croot in 2001. He showed that for any N > 1, one can find distinct integers in the interval (N, eN] whose reciprocals sum to exactly 1. This constructive result implies f(k) ≥ (1-o(1))·k/(e-1), completing the asymptotic determination. The constant 1/(e-1) ≈ 0.582 arises from the integral identity ∫₁ᵉ 1/x dx = 1.",
@@ -194,6 +172,28 @@
       "targetId": "e-transcendental",
       "relationship": "thematic",
       "description": "The constant e appears naturally in the solution f(k) = (1+o(1))·k/(e-1): this connects Egyptian fractions to the exponential function through the relation 1/(e-1) = Σ_{n≥1} 1/n! and related series identities"
+    }
+  ],
+  "references": [
+    {
+      "key": "Cr01",
+      "citation": "Croot, E.S., On a coloring conjecture about unit fractions, Annals of Mathematics 157(2) (2003), 545–556.",
+      "type": "paper"
+    },
+    {
+      "key": "Er50",
+      "citation": "Erdős, P., On a Diophantine equation, Proceedings of the National Academy of Sciences 36 (1950), 252–255.",
+      "type": "paper"
+    },
+    {
+      "key": "Gu04",
+      "citation": "Guy, R.K., Unsolved Problems in Number Theory, 3rd ed., Springer (2004), Section D11: Egyptian fractions.",
+      "type": "book"
+    },
+    {
+      "key": "GS55",
+      "citation": "Graham, R.L., On finite sums of unit fractions, Proceedings of the London Mathematical Society 14(3) (1964), 193–207.",
+      "type": "paper"
     }
   ]
 }

@@ -38,22 +38,6 @@
       "parallel_vandermonde: Σ_{i+j=n} C(i+a,a)·C(j+b,b) = C(n+a+b+1, a+b+1) — proved by nested induction",
       "hockey_stick_2d: Σ_{i+j≤n} C(i+a,a)·C(j+b,b) = C(n+a+b+2, a+b+2) — composed from 1D hockey stick + parallel Vandermonde"
     ],
-    "references": [
-      {
-        "authors": "Vandermonde, Alexandre-Théophile",
-        "title": "Mémoire sur des irrationnelles de différens ordres avec une application au cercle",
-        "year": "1772",
-        "venue": "Mémoires de l'Académie Royale des Sciences de Paris",
-        "note": "Original Vandermonde convolution identity Σ C(m,j)·C(s,r-j) = C(m+s,r)"
-      },
-      {
-        "authors": "Gould, Henry W.",
-        "title": "Combinatorial Identities",
-        "year": "1972",
-        "venue": "Morgantown Printing and Binding Co.",
-        "note": "Comprehensive catalog including parallel Vandermonde and hockey stick generalizations"
-      }
-    ],
     "dateAdded": "2026-03-22",
     "axiomCount": 0,
     "prerequisites": [
@@ -196,5 +180,21 @@
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 1
-  }
+  },
+  "references": [
+    {
+      "authors": "Vandermonde, Alexandre-Théophile",
+      "title": "Mémoire sur des irrationnelles de différens ordres avec une application au cercle",
+      "year": "1772",
+      "venue": "Mémoires de l'Académie Royale des Sciences de Paris",
+      "note": "Original Vandermonde convolution identity Σ C(m,j)·C(s,r-j) = C(m+s,r)"
+    },
+    {
+      "authors": "Gould, Henry W.",
+      "title": "Combinatorial Identities",
+      "year": "1972",
+      "venue": "Morgantown Printing and Binding Co.",
+      "note": "Comprehensive catalog including parallel Vandermonde and hockey stick generalizations"
+    }
+  ]
 }

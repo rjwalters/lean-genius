@@ -42,29 +42,7 @@
       "Proof that omega(p)=1 for any prime p"
     ],
     "axiomCount": 1,
-    "lineCount": 133,
-    "references": [
-      {
-        "key": "Er35",
-        "citation": "Erdős, P., On the normal number of prime factors of p-1 and some related problems concerning Euler's φ-function, Quarterly Journal of Mathematics 6 (1935), 205–213.",
-        "type": "paper"
-      },
-      {
-        "key": "EK40",
-        "citation": "Erdős, P. and Kac, M., The Gaussian law of errors in the theory of additive number theoretic functions, American Journal of Mathematics 62(1) (1940), 738–742.",
-        "type": "paper"
-      },
-      {
-        "key": "HW08",
-        "citation": "Hardy, G.H. and Wright, E.M., An Introduction to the Theory of Numbers, 6th ed., Oxford University Press (2008), Chapter 22: The number of prime factors.",
-        "type": "book"
-      },
-      {
-        "key": "HR74",
-        "citation": "Halberstam, H. and Richert, H.-E., Sieve Methods, Academic Press (1974).",
-        "type": "book"
-      }
-    ]
+    "lineCount": 133
   },
   "overview": {
     "historicalContext": "Erdős Problem #248 was posed by Erdős and Graham in their 1980 monograph 'Old and new problems and results in combinatorial number theory.' They asked whether there exist infinitely many integers n such that the prime omega function ω(n+k) grows at most linearly in k for all k >= 1.\n\nErdős and Graham famously wrote about this problem: 'we just know too little about sieves to be able to handle such a question' - referring to the collective knowledge of mathematics at the time. The problem remained open for 45 years.\n\nIn December 2025, Terence Tao and Joni Teräväinen resolved this problem affirmatively in their paper 'Quantitative correlations and some problems on prime factors of consecutive integers' (arXiv:2512.01739). They proved that there exists an absolute constant C > 0 such that for infinitely many n, ω(n+k) <= C*k for all k >= 1.",
@@ -177,6 +155,28 @@
       "targetId": "euler-totient",
       "relationship": "related",
       "description": "Euler's totient φ(n) = n ∏_{p|n} (1 - 1/p) connects directly to ω(n): more prime factors mean smaller φ(n)/n. Erdős's 1935 paper studied the normal order of ω(p-1), linking prime factor counts to the structure of the totient function"
+    }
+  ],
+  "references": [
+    {
+      "key": "Er35",
+      "citation": "Erdős, P., On the normal number of prime factors of p-1 and some related problems concerning Euler's φ-function, Quarterly Journal of Mathematics 6 (1935), 205–213.",
+      "type": "paper"
+    },
+    {
+      "key": "EK40",
+      "citation": "Erdős, P. and Kac, M., The Gaussian law of errors in the theory of additive number theoretic functions, American Journal of Mathematics 62(1) (1940), 738–742.",
+      "type": "paper"
+    },
+    {
+      "key": "HW08",
+      "citation": "Hardy, G.H. and Wright, E.M., An Introduction to the Theory of Numbers, 6th ed., Oxford University Press (2008), Chapter 22: The number of prime factors.",
+      "type": "book"
+    },
+    {
+      "key": "HR74",
+      "citation": "Halberstam, H. and Richert, H.-E., Sieve Methods, Academic Press (1974).",
+      "type": "book"
     }
   ]
 }

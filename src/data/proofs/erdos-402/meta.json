@@ -46,26 +46,6 @@
         "module": "Mathlib.Data.Finset.GCD"
       }
     ],
-    "references": [
-      {
-        "cite": "Graham 1970",
-        "title": "Unsolved problem 5749",
-        "year": 1970,
-        "relevance": "Original conjecture on GCD bounds in finite sets"
-      },
-      {
-        "cite": "Szegedy 1986",
-        "title": "On a conjecture of R. L. Graham",
-        "year": 1986,
-        "relevance": "Proved the conjecture for sufficiently large sets"
-      },
-      {
-        "cite": "Balasubramanian–Soundararajan 1996",
-        "title": "On a conjecture of R. L. Graham",
-        "year": 1996,
-        "relevance": "Complete proof of the conjecture for all finite sets of positive integers"
-      }
-    ],
     "originalContributions": [
       "Main conjecture formalization with Finset and Nat.gcd",
       "MinGcdRatio equivalent rational formulation",
@@ -182,5 +162,25 @@
   },
   "relatedProofs": [
     ""
+  ],
+  "references": [
+    {
+      "cite": "Graham 1970",
+      "title": "Unsolved problem 5749",
+      "year": 1970,
+      "relevance": "Original conjecture on GCD bounds in finite sets"
+    },
+    {
+      "cite": "Szegedy 1986",
+      "title": "On a conjecture of R. L. Graham",
+      "year": 1986,
+      "relevance": "Proved the conjecture for sufficiently large sets"
+    },
+    {
+      "cite": "Balasubramanian–Soundararajan 1996",
+      "title": "On a conjecture of R. L. Graham",
+      "year": 1996,
+      "relevance": "Complete proof of the conjecture for all finite sets of positive integers"
+    }
   ]
 }

@@ -46,22 +46,6 @@
       "crt_unique: uniqueness of CRT solutions modulo I ∩ J",
       "isCoprime_of_coprime_inf: coprimality inheritance I⊥J ∧ I⊥K ⟹ I⊥(J∩K)"
     ],
-    "references": [
-      {
-        "authors": "Atiyah, Michael; Macdonald, Ian",
-        "title": "Introduction to Commutative Algebra",
-        "year": "1969",
-        "venue": "Addison-Wesley",
-        "note": "Proposition 1.10: the ideal-theoretic CRT for pairwise coprime ideals"
-      },
-      {
-        "authors": "Lang, Serge",
-        "title": "Algebra",
-        "year": "2002",
-        "venue": "Springer Graduate Texts in Mathematics",
-        "note": "Chapter II §2: CRT for ideals in commutative rings"
-      }
-    ],
     "dateAdded": "2026-03-22",
     "axiomCount": 0,
     "lineCount": 161
@@ -159,5 +143,21 @@
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    {
+      "authors": "Atiyah, Michael; Macdonald, Ian",
+      "title": "Introduction to Commutative Algebra",
+      "year": "1969",
+      "venue": "Addison-Wesley",
+      "note": "Proposition 1.10: the ideal-theoretic CRT for pairwise coprime ideals"
+    },
+    {
+      "authors": "Lang, Serge",
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Springer Graduate Texts in Mathematics",
+      "note": "Chapter II §2: CRT for ideals in commutative rings"
+    }
+  ]
 }

@@ -59,26 +59,6 @@
       "Evans-Krylov + Schauder regularity chain (proved from axioms)",
       "Bellman equation convexity (sup of affine is convex, proved)"
     ],
-    "references": [
-      {
-        "authors": "L. C. Evans",
-        "title": "Classical solutions of fully nonlinear, convex, second-order elliptic equations",
-        "year": "1982",
-        "venue": "Comm. Pure Appl. Math."
-      },
-      {
-        "authors": "N. V. Krylov",
-        "title": "Boundedly nonhomogeneous elliptic and parabolic equations",
-        "year": "1982",
-        "venue": "Izv. Akad. Nauk SSSR"
-      },
-      {
-        "authors": "L. Caffarelli, X. Cabré",
-        "title": "Fully Nonlinear Elliptic Equations",
-        "year": "1995",
-        "venue": "AMS Colloquium Publications"
-      }
-    ],
     "dateAdded": "2026-03-11",
     "mathlib_version": "4.26.0",
     "axioms": 2,
@@ -213,5 +193,25 @@
     "axiomCount": 4,
     "theoremCount": 18,
     "definitionCount": 10
-  }
+  },
+  "references": [
+    {
+      "authors": "L. C. Evans",
+      "title": "Classical solutions of fully nonlinear, convex, second-order elliptic equations",
+      "year": "1982",
+      "venue": "Comm. Pure Appl. Math."
+    },
+    {
+      "authors": "N. V. Krylov",
+      "title": "Boundedly nonhomogeneous elliptic and parabolic equations",
+      "year": "1982",
+      "venue": "Izv. Akad. Nauk SSSR"
+    },
+    {
+      "authors": "L. Caffarelli, X. Cabré",
+      "title": "Fully Nonlinear Elliptic Equations",
+      "year": "1995",
+      "venue": "AMS Colloquium Publications"
+    }
+  ]
 }

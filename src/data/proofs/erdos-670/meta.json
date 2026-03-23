@@ -77,12 +77,6 @@
       "Arithmetic progressions {0, n, 2n, ..., (n-1)n} show the n² bound is tight",
       "Higher dimensions may allow tighter packing, potentially weakening the bound",
       "Gap ≥ 1 implies all distances are distinct, connecting to Erdős's 1946 distinct distances problem"
-    ],
-    "prerequisites": [
-      "Euclidean distance and metric geometry: pairwise distances in $\\mathbb{R}^d$, diameter of point sets",
-      "Distinct distances problem (Erdős 1946): minimum number of distinct pairwise distances from $n$ points",
-      "Combinatorial counting: binomial coefficient $\\binom{n}{2}$ pairs, pigeonhole principle",
-      "Real analysis: ordering on $\\mathbb{R}$ (crucial for the $d=1$ proof), supremum"
     ]
   },
   "sections": [

@@ -57,34 +57,7 @@
       "Real power function (rpow) arithmetic and monotonicity",
       "Finset product and sum operations"
     ],
-    "lineCount": 372,
-    "references": [
-      {
-        "key": "HLP34",
-        "citation": "Hardy, G.H., Littlewood, J.E., and Pólya, G., Inequalities, Cambridge University Press (1934), Chapter II.",
-        "type": "book"
-      },
-      {
-        "key": "BB65",
-        "citation": "Beckenbach, E.F. and Bellman, R., Inequalities, Springer (1965), Chapter 2.",
-        "type": "book"
-      },
-      {
-        "key": "Bu03",
-        "citation": "Bullen, P.S., Handbook of Means and Their Inequalities, Kluwer Academic (2003), Chapter III.",
-        "type": "book"
-      },
-      {
-        "key": "St04",
-        "citation": "Steele, J.M., The Cauchy-Schwarz Master Class, Cambridge University Press (2004), Chapter 4.",
-        "type": "book"
-      },
-      {
-        "key": "Re61",
-        "citation": "Rényi, A., On measures of entropy and information, Proceedings of the Fourth Berkeley Symposium on Mathematical Statistics and Probability 1 (1961), 547–561.",
-        "type": "paper"
-      }
-    ]
+    "lineCount": 372
   },
   "crossReferences": [
     {
@@ -150,12 +123,6 @@
       "General monotonicity for negative r (HM ≤ GM is the r=-1 to r=0 case) remains open in Mathlib4",
       "Lean 4 parsing: ∑ i ∈ s, BODY is greedy — always parenthesize: (∑ i ∈ s, BODY) * c, not ∑ i ∈ s, BODY * c",
       "Power means are the $L^p$ norms in disguise: $M_p(z,w) = \\|z\\|_{p,w}$ where $\\|z\\|_{p,w} = (\\sum w_i |z_i|^p)^{1/p}$ is the weighted $L^p$ norm. The Minkowski inequality $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ for $p \\geq 1$ follows from power mean monotonicity via homogeneity, making power means the discrete foundation of $L^p$ space geometry"
-    ],
-    "prerequisites": [
-      "Weighted AM-GM inequality: $\\prod z_i^{w_i} \\leq \\sum w_i z_i$ for $w_i \\geq 0$, $\\sum w_i = 1$ (from Mathlib)",
-      "Jensen's inequality for convex functions: $(\\sum w_i z_i)^p \\leq \\sum w_i z_i^p$ for $p \\geq 1$ (from Mathlib)",
-      "Real power function arithmetic: `Real.rpow` properties including `rpow_mul`, `rpow_le_rpow`, `inv_rpow`, `rpow_neg`",
-      "Finset operations: `sum`, `prod`, `prod_mul_distrib`, and positivity lemmas"
     ]
   },
   "sections": [
@@ -251,5 +218,32 @@
     "triangle-inequality",
     "shannon-entropy",
     "sum-of-kth-powers"
+  ],
+  "references": [
+    {
+      "key": "HLP34",
+      "citation": "Hardy, G.H., Littlewood, J.E., and Pólya, G., Inequalities, Cambridge University Press (1934), Chapter II.",
+      "type": "book"
+    },
+    {
+      "key": "BB65",
+      "citation": "Beckenbach, E.F. and Bellman, R., Inequalities, Springer (1965), Chapter 2.",
+      "type": "book"
+    },
+    {
+      "key": "Bu03",
+      "citation": "Bullen, P.S., Handbook of Means and Their Inequalities, Kluwer Academic (2003), Chapter III.",
+      "type": "book"
+    },
+    {
+      "key": "St04",
+      "citation": "Steele, J.M., The Cauchy-Schwarz Master Class, Cambridge University Press (2004), Chapter 4.",
+      "type": "book"
+    },
+    {
+      "key": "Re61",
+      "citation": "Rényi, A., On measures of entropy and information, Proceedings of the Fourth Berkeley Symposium on Mathematical Statistics and Probability 1 (1961), 547–561.",
+      "type": "paper"
+    }
   ]
 }

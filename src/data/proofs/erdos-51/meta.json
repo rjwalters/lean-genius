@@ -8,7 +8,6 @@
     "sourceUrl": "https://erdosproblems.com/51",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos51Problem.lean",
-    "leanFile": "Proofs/Erdos51Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -25,17 +24,6 @@
     "erdosProblemStatus": "open",
     "date": "1995",
     "dateAdded": "2026-01-23",
-    "references": [
-      "Erdős, P. (1995): Problem #51 — posed the question of divergent totient preimage ratios",
-      "Erdős, P. (1935): Proved that if any totient value has a unique preimage, infinitely many do — partial result toward Carmichael's conjecture",
-      "Carmichael, R.D. (1907): Conjectured that no totient value has a unique preimage (|φ⁻¹(a)| ≠ 1 for all a)",
-      "Ford, K. (1998): 'The distribution of totients' — proved for any k, infinitely many a have |φ⁻¹(a)| = k",
-      "Guy, R.K. (2004): Unsolved Problems in Number Theory, B36 (Euler's totient), B39 (Carmichael's conjecture)",
-      "OEIS A002202: Totient values (range of Euler's totient function)",
-      "OEIS A014197: Inverse totient counting function |{n : φ(n) = a}|",
-      "OEIS A058277: Smallest n with φ(n) = a for totient values a",
-      "https://erdosproblems.com/51"
-    ],
     "relatedProblems": [
       {
         "id": "erdos-50",
@@ -169,7 +157,16 @@
       "year": "1945",
       "venue": "Acta Arithmetica, vol. 1, pp. 3–19",
       "note": "Early study of the range and preimage properties of φ(n)"
-    }
+    },
+    "Erdős, P. (1995): Problem #51 — posed the question of divergent totient preimage ratios",
+    "Erdős, P. (1935): Proved that if any totient value has a unique preimage, infinitely many do — partial result toward Carmichael's conjecture",
+    "Carmichael, R.D. (1907): Conjectured that no totient value has a unique preimage (|φ⁻¹(a)| ≠ 1 for all a)",
+    "Ford, K. (1998): 'The distribution of totients' — proved for any k, infinitely many a have |φ⁻¹(a)| = k",
+    "Guy, R.K. (2004): Unsolved Problems in Number Theory, B36 (Euler's totient), B39 (Carmichael's conjecture)",
+    "OEIS A002202: Totient values (range of Euler's totient function)",
+    "OEIS A014197: Inverse totient counting function |{n : φ(n) = a}|",
+    "OEIS A058277: Smallest n with φ(n) = a for totient values a",
+    "https://erdosproblems.com/51"
   ],
   "relatedProofs": [
     "erdos-48",

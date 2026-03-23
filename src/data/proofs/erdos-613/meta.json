@@ -50,23 +50,6 @@
       "Small cases n=3,4 verified"
     ],
     "mathlib_version": "4.15.0",
-    "references": [
-      {
-        "key": "EFRS78",
-        "citation": "Erdős, P., Faudree, R., Rousseau, C., and Schelp, R. (1978). The size Ramsey number. Periodica Mathematica Hungarica, 9(1-2), 145-161.",
-        "type": "paper"
-      },
-      {
-        "key": "Pik",
-        "citation": "Pikhurko, O. Size Ramsey numbers of stars versus 3-chromatic graphs. Combinatorica.",
-        "type": "paper"
-      },
-      {
-        "key": "Tao",
-        "citation": "Tao, T. Lean verification of counterexample to Erdős Problem #613 at n = 5.",
-        "type": "software"
-      }
-    ],
     "relatedProblems": [
       {
         "id": "ramseys-theorem",
@@ -208,5 +191,22 @@
     "axiomCount": 4,
     "theoremCount": 11,
     "definitionCount": 14
-  }
+  },
+  "references": [
+    {
+      "key": "EFRS78",
+      "citation": "Erdős, P., Faudree, R., Rousseau, C., and Schelp, R. (1978). The size Ramsey number. Periodica Mathematica Hungarica, 9(1-2), 145-161.",
+      "type": "paper"
+    },
+    {
+      "key": "Pik",
+      "citation": "Pikhurko, O. Size Ramsey numbers of stars versus 3-chromatic graphs. Combinatorica.",
+      "type": "paper"
+    },
+    {
+      "key": "Tao",
+      "citation": "Tao, T. Lean verification of counterexample to Erdős Problem #613 at n = 5.",
+      "type": "software"
+    }
+  ]
 }

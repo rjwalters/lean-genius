@@ -59,29 +59,6 @@
       "erdos_249_iff_not_rational: equivalence with ¬isRational (proved by rfl)",
       "partial_sum_2: first two nonzero terms sum to 3/4 (proved)"
     ],
-    "references": [
-      {
-        "authors": "Erdős, Paul; Graham, Ronald L.",
-        "title": "Old and New Problems and Results in Combinatorial Number Theory",
-        "year": "1980",
-        "venue": "Monographies de L'Enseignement Mathématique 28",
-        "note": "[ErGr80, p.61] where Problem 249 appears"
-      },
-      {
-        "authors": "Erdős, Paul",
-        "title": "Some problems and results on combinatorial number theory",
-        "year": "1988",
-        "venue": "Graph Theory and its Applications, pp. 1-12",
-        "note": "[Er88c, p.102] revisiting the irrationality question"
-      },
-      {
-        "authors": "OEIS Foundation",
-        "title": "A256936: Decimal expansion of Sum_{n>=1} phi(n)/2^n",
-        "year": "2015",
-        "venue": "OEIS (Online Encyclopedia of Integer Sequences)",
-        "note": "Numerical value ≈ 1.3240..."
-      }
-    ],
     "axiomCount": 0,
     "prerequisites": [
       "Euler's totient function and its basic properties (φ(n) ≤ n)",
@@ -201,5 +178,28 @@
     "axiomCount": 0,
     "theoremCount": 13,
     "definitionCount": 4
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "note": "[ErGr80, p.61] where Problem 249 appears"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Some problems and results on combinatorial number theory",
+      "year": "1988",
+      "venue": "Graph Theory and its Applications, pp. 1-12",
+      "note": "[Er88c, p.102] revisiting the irrationality question"
+    },
+    {
+      "authors": "OEIS Foundation",
+      "title": "A256936: Decimal expansion of Sum_{n>=1} phi(n)/2^n",
+      "year": "2015",
+      "venue": "OEIS (Online Encyclopedia of Integer Sequences)",
+      "note": "Numerical value ≈ 1.3240..."
+    }
+  ]
 }

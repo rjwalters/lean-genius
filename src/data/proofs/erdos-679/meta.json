@@ -42,28 +42,6 @@
       ],
       "significance": "Probes the simultaneous distribution of ω across arithmetic progressions n-k. The main conjecture is open after 45+ years and cannot be resolved by finite computation. The disproved stronger version (O(1) error) shows the (1+ε) multiplicative slack is essential. Resolution would reveal deep structure in the correlation of prime factor counts across consecutive differences."
     },
-    "references": [
-      {
-        "key": "HR17",
-        "citation": "Hardy, G. H. and Ramanujan, S., The normal number of prime factors of a number n, Quart. J. Math. 48 (1917), 76-92.",
-        "type": "paper"
-      },
-      {
-        "key": "EK40",
-        "citation": "Erdős, P. and Kac, M., The Gaussian law of errors in the theory of additive number theoretic functions, Amer. J. Math. 62 (1940), 738-742.",
-        "type": "paper"
-      },
-      {
-        "key": "HT88",
-        "citation": "Hall, R. R. and Tenenbaum, G., Divisors, Cambridge Tracts in Mathematics 90, Cambridge University Press, 1988.",
-        "type": "book"
-      },
-      {
-        "key": "erdos679",
-        "citation": "Erdős Problems, Problem #679, https://erdosproblems.com/679",
-        "type": "website"
-      }
-    ],
     "relatedProofs": [
       {
         "id": "erdos-248",
@@ -264,6 +242,26 @@
       "author": "Hall, R. R. and Tenenbaum, G.",
       "year": 1988,
       "description": "Comprehensive reference on divisor functions and additive number theory, including large deviation estimates for ω"
+    },
+    {
+      "key": "HR17",
+      "citation": "Hardy, G. H. and Ramanujan, S., The normal number of prime factors of a number n, Quart. J. Math. 48 (1917), 76-92.",
+      "type": "paper"
+    },
+    {
+      "key": "EK40",
+      "citation": "Erdős, P. and Kac, M., The Gaussian law of errors in the theory of additive number theoretic functions, Amer. J. Math. 62 (1940), 738-742.",
+      "type": "paper"
+    },
+    {
+      "key": "HT88",
+      "citation": "Hall, R. R. and Tenenbaum, G., Divisors, Cambridge Tracts in Mathematics 90, Cambridge University Press, 1988.",
+      "type": "book"
+    },
+    {
+      "key": "erdos679",
+      "citation": "Erdős Problems, Problem #679, https://erdosproblems.com/679",
+      "type": "website"
     }
   ],
   "leanFile": {

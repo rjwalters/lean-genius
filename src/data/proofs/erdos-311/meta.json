@@ -41,24 +41,6 @@
         "module": "Mathlib.Algebra.BigOperators.Group.Finset"
       }
     ],
-    "references": [
-      {
-        "cite": "Erdős–Graham 1980",
-        "title": "Old and New Problems and Results in Combinatorial Number Theory",
-        "year": 1980,
-        "relevance": "Original source of the conjecture about exponential decay rate of δ(N)"
-      },
-      {
-        "cite": "Tang",
-        "title": "Upper bound on δ(N)",
-        "relevance": "Best known upper bound: exp(-cN/(log N · log log N)³)"
-      },
-      {
-        "cite": "Kovac",
-        "title": "Equivalence of subset-sum-to-1 variant",
-        "relevance": "Showed the variant asking about exact representation of 1 is equivalent"
-      }
-    ],
     "originalContributions": [
       "unitFracSum definition",
       "delta and delta_pos axioms",
@@ -161,5 +143,23 @@
   "relatedProofs": [
     "",
     ""
+  ],
+  "references": [
+    {
+      "cite": "Erdős–Graham 1980",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": 1980,
+      "relevance": "Original source of the conjecture about exponential decay rate of δ(N)"
+    },
+    {
+      "cite": "Tang",
+      "title": "Upper bound on δ(N)",
+      "relevance": "Best known upper bound: exp(-cN/(log N · log log N)³)"
+    },
+    {
+      "cite": "Kovac",
+      "title": "Equivalence of subset-sum-to-1 variant",
+      "relevance": "Showed the variant asking about exact representation of 1 is equivalent"
+    }
   ]
 }

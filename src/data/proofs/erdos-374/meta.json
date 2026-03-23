@@ -8,7 +8,6 @@
     "sourceUrl": "https://erdosproblems.com/374",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos374Problem.lean",
-    "leanFile": "proofs/Proofs/Erdos374Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -37,13 +36,6 @@
       "HasSquareFactorialProduct: formal condition for factorial products being perfect squares",
       "bigF: axiomatized F(m), the minimum k for factorial square products",
       "inDk: membership predicate for the sets Dₖ"
-    ],
-    "references": [
-      {
-        "key": "EG76",
-        "citation": "Erdős, P. and Graham, R.L., On products of factorials, Bulletin of the AMS 82 (1976), 151–153. Original study of factorial products as perfect squares.",
-        "type": "paper"
-      }
     ],
     "prerequisites": [
       "Number theory: factorials, perfect squares, p-adic valuations",
@@ -78,11 +70,6 @@
       "The smallest element of D₆ is 527, showing D₆ is sparse — the computation requires checking all m ≤ 527 and verifying F(527) = 6",
       "D₃ grows slower than D₄, indicating non-monotone behavior in k — the growth rate is controlled by the density of integers whose factorial's prime factorization has specific parity patterns",
       "The key obstacle is understanding how Legendre's formula v_p(n!) = ∑⌊n/pⁱ⌋ interacts with parity constraints across multiple factorials — the carrying structure in base-p representations of the aᵢ determines which products can be squares"
-    ],
-    "prerequisites": [
-      "Number theory: factorials $n!$, perfect squares, and $p$-adic valuations $v_p$",
-      "Legendre's formula: $v_p(n!) = \\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$ — determines prime factorizations of factorials",
-      "Combinatorics: counting integers satisfying arithmetic parity constraints"
     ]
   },
   "sections": [
@@ -148,5 +135,12 @@
     "axiomCount": 7,
     "theoremCount": 0,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    {
+      "key": "EG76",
+      "citation": "Erdős, P. and Graham, R.L., On products of factorials, Bulletin of the AMS 82 (1976), 151–153. Original study of factorial products as perfect squares.",
+      "type": "paper"
+    }
+  ]
 }

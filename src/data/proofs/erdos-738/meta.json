@@ -55,29 +55,6 @@
       "gyarfas_finite_version: Finite quantitative version with explicit chromatic threshold N(T)",
       "scott_caterpillars: The conjecture holds for caterpillars and spiders (Scott 1997)"
     ],
-    "references": [
-      {
-        "authors": "Gyárfás, András",
-        "title": "On Ramsey covering-numbers",
-        "year": "1975",
-        "venue": "Infinite and Finite Sets, Colloq. Math. Soc. János Bolyai, vol. 10",
-        "note": "Original statement of the conjecture that χ-bounded classes must contain all trees as induced subgraphs"
-      },
-      {
-        "authors": "Kierstead, Henry A.; Penrice, Stephen G.",
-        "title": "Radius two trees specify χ-bounded classes",
-        "year": "1994",
-        "venue": "Journal of Graph Theory, 18(2), pp. 119-129",
-        "note": "Proved the Gyárfás conjecture for trees of radius at most 2"
-      },
-      {
-        "authors": "Scott, Alex",
-        "title": "Induced trees in graphs of large chromatic number",
-        "year": "1997",
-        "venue": "Journal of Graph Theory, 24(4), pp. 297-311",
-        "note": "Extended the result to caterpillars and spiders with at most 3 legs"
-      }
-    ],
     "dateAdded": "2025-12-22",
     "prerequisites": [
       "SimpleGraph type and adjacency from Mathlib",
@@ -189,5 +166,28 @@
     "axiomCount": 7,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "references": [
+    {
+      "authors": "Gyárfás, András",
+      "title": "On Ramsey covering-numbers",
+      "year": "1975",
+      "venue": "Infinite and Finite Sets, Colloq. Math. Soc. János Bolyai, vol. 10",
+      "note": "Original statement of the conjecture that χ-bounded classes must contain all trees as induced subgraphs"
+    },
+    {
+      "authors": "Kierstead, Henry A.; Penrice, Stephen G.",
+      "title": "Radius two trees specify χ-bounded classes",
+      "year": "1994",
+      "venue": "Journal of Graph Theory, 18(2), pp. 119-129",
+      "note": "Proved the Gyárfás conjecture for trees of radius at most 2"
+    },
+    {
+      "authors": "Scott, Alex",
+      "title": "Induced trees in graphs of large chromatic number",
+      "year": "1997",
+      "venue": "Journal of Graph Theory, 24(4), pp. 297-311",
+      "note": "Extended the result to caterpillars and spiders with at most 3 legs"
+    }
+  ]
 }

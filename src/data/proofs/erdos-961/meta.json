@@ -8,7 +8,6 @@
     "sourceUrl": "https://erdosproblems.com/961",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos961Problem.lean",
-    "leanFile": "Proofs/Erdos961Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -48,28 +47,6 @@
         "theorem": "Filter.atTop",
         "description": "Filter for asymptotic analysis",
         "module": "Mathlib.Order.Filter.AtTopBot"
-      }
-    ],
-    "references": [
-      {
-        "key": "Er34",
-        "citation": "Erdős, P. (1934). A theorem of Sylvester and Schur. Journal of the London Mathematical Society, 9, 282-288.",
-        "type": "paper"
-      },
-      {
-        "key": "Er55d",
-        "citation": "Erdős, P. (1955). On consecutive integers. Nieuw Archief voor Wiskunde, 3, 124-128.",
-        "type": "paper"
-      },
-      {
-        "key": "Ju74",
-        "citation": "Jutila, M. (1974). On numbers with a large prime factor II. Journal of the Indian Mathematical Society, 38, 125-130.",
-        "type": "paper"
-      },
-      {
-        "key": "RaSh73",
-        "citation": "Ramachandra, K. and Shorey, T.N. (1973). On gaps between numbers with a large prime factor. Acta Arithmetica, 24, 99-111.",
-        "type": "paper"
       }
     ],
     "originalContributions": [
@@ -211,5 +188,27 @@
     "axiomCount": 4,
     "theoremCount": 11,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    {
+      "key": "Er34",
+      "citation": "Erdős, P. (1934). A theorem of Sylvester and Schur. Journal of the London Mathematical Society, 9, 282-288.",
+      "type": "paper"
+    },
+    {
+      "key": "Er55d",
+      "citation": "Erdős, P. (1955). On consecutive integers. Nieuw Archief voor Wiskunde, 3, 124-128.",
+      "type": "paper"
+    },
+    {
+      "key": "Ju74",
+      "citation": "Jutila, M. (1974). On numbers with a large prime factor II. Journal of the Indian Mathematical Society, 38, 125-130.",
+      "type": "paper"
+    },
+    {
+      "key": "RaSh73",
+      "citation": "Ramachandra, K. and Shorey, T.N. (1973). On gaps between numbers with a large prime factor. Acta Arithmetica, 24, 99-111.",
+      "type": "paper"
+    }
+  ]
 }

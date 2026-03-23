@@ -49,25 +49,6 @@
         "module": "Mathlib.Logic.Fin.Basic"
       }
     ],
-    "references": [
-      {
-        "title": "Solution to Erdős Problem #13",
-        "author": "Benjamin Bedert",
-        "year": 2023,
-        "url": "https://erdosproblems.com/13"
-      },
-      {
-        "title": "Erdős Problems",
-        "author": "Thomas Bloom",
-        "url": "https://erdosproblems.com/13"
-      },
-      {
-        "title": "Unsolved Problems in Number Theory",
-        "author": "Richard K. Guy",
-        "venue": "Springer, 3rd edition",
-        "year": 2004
-      }
-    ],
     "originalContributions": [
       "IsBadTriple: definition of forbidden divisibility triples",
       "DivisibilityFree: predicate for sets without bad triples",
@@ -209,6 +190,23 @@
       "year": "1928",
       "venue": "Mathematische Zeitschrift, vol. 27, pp. 544–548",
       "note": "Sperner's theorem on antichains in the subset lattice, the combinatorial analog of divisibility-free set bounds"
+    },
+    {
+      "title": "Solution to Erdős Problem #13",
+      "author": "Benjamin Bedert",
+      "year": 2023,
+      "url": "https://erdosproblems.com/13"
+    },
+    {
+      "title": "Erdős Problems",
+      "author": "Thomas Bloom",
+      "url": "https://erdosproblems.com/13"
+    },
+    {
+      "title": "Unsolved Problems in Number Theory",
+      "author": "Richard K. Guy",
+      "venue": "Springer, 3rd edition",
+      "year": 2004
     }
   ],
   "relatedProofs": [

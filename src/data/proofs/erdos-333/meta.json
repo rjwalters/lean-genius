@@ -53,22 +53,6 @@
       "isSidonSet definition",
       "erdos_newman_theorem2 axiom"
     ],
-    "references": [
-      {
-        "authors": "Erdős, Paul; Newman, Donald J.",
-        "title": "Bases for sets of integers",
-        "year": "1977",
-        "venue": "Journal of Number Theory 9(3), pp. 420-425",
-        "note": "Theorem 2 implies counterexamples to Problem 333 exist; also showed squares admit sparse bases"
-      },
-      {
-        "authors": "Erdős, Paul; Graham, Ronald L.",
-        "title": "Old and New Problems and Results in Combinatorial Number Theory",
-        "year": "1980",
-        "venue": "Monographies de L'Enseignement Mathématique 28",
-        "note": "[ErGr80] where Problem 333 appears, apparently overlooking the implicit negative answer in Erdős-Newman 1977"
-      }
-    ],
     "axiomCount": 11,
     "prerequisites": [
       "Natural density and asymptotic density of subsets of the natural numbers",
@@ -201,5 +185,21 @@
     "axiomCount": 11,
     "theoremCount": 3,
     "definitionCount": 14
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Newman, Donald J.",
+      "title": "Bases for sets of integers",
+      "year": "1977",
+      "venue": "Journal of Number Theory 9(3), pp. 420-425",
+      "note": "Theorem 2 implies counterexamples to Problem 333 exist; also showed squares admit sparse bases"
+    },
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "note": "[ErGr80] where Problem 333 appears, apparently overlooking the implicit negative answer in Erdős-Newman 1977"
+    }
+  ]
 }

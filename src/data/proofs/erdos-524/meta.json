@@ -16,16 +16,6 @@
       "law-of-iterated-logarithm",
       "open"
     ],
-    "references": [
-      "Salem, R. and Zygmund, A. (1954): Maximum of random trigonometric polynomials — Θ(√(n log n)) on [0,2π]",
-      "Erdős, P. (unpublished): M_n(t)/n^{1/2-ε} → ∞ a.e. for every ε > 0",
-      "Chung, K.L.: M_n(t) ≤ C√(n/log log n) for infinitely many n, a.e.",
-      "Erdős, P. [Er61, p.253]: Original problem statement",
-      "Kac, M. (1943): On the average number of real roots of random polynomials",
-      "Littlewood, J.E. and Offord, A.C. (1940s): On the number of real roots of random algebraic equations",
-      "https://erdosproblems.com/524"
-    ],
-    "leanFile": "Proofs/Erdos524Problem.lean",
     "proofRepoPath": "Proofs/Erdos524Problem.lean",
     "badge": "axiom",
     "sorries": 0,
@@ -120,5 +110,14 @@
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    "Salem, R. and Zygmund, A. (1954): Maximum of random trigonometric polynomials — Θ(√(n log n)) on [0,2π]",
+    "Erdős, P. (unpublished): M_n(t)/n^{1/2-ε} → ∞ a.e. for every ε > 0",
+    "Chung, K.L.: M_n(t) ≤ C√(n/log log n) for infinitely many n, a.e.",
+    "Erdős, P. [Er61, p.253]: Original problem statement",
+    "Kac, M. (1943): On the average number of real roots of random polynomials",
+    "Littlewood, J.E. and Offord, A.C. (1940s): On the number of real roots of random algebraic equations",
+    "https://erdosproblems.com/524"
+  ]
 }

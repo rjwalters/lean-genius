@@ -38,22 +38,6 @@
       "halting_reduction_contradiction: Technical axiom for the halting-to-H10 reduction",
       "exponential_is_diophantine: Exponential relations can be represented by polynomial equations — key step proved by Matiyasevich using Fibonacci/Pell equations",
       "linear_diophantine_decidable: Linear Diophantine equations are decidable — used as contrast with the general case"
-    ],
-    "references": [
-      {
-        "authors": "Matiyasevich, Yuri V.",
-        "title": "Enumerable sets are Diophantine",
-        "year": "1970",
-        "venue": "Doklady Akademii Nauk SSSR, 191(2), pp. 279-282",
-        "note": "The breakthrough paper completing the MRDP theorem by proving exponential relations are Diophantine"
-      },
-      {
-        "authors": "Davis, Martin",
-        "title": "Hilbert's tenth problem is unsolvable",
-        "year": "1973",
-        "venue": "The American Mathematical Monthly, 80(3), pp. 233-269",
-        "note": "Accessible exposition of the complete proof, covering the work of all four contributors"
-      }
     ]
   },
   "overview": {
@@ -157,5 +141,21 @@
     "halting-problem",
     "godel-incompleteness",
     "pell-equation"
+  ],
+  "references": [
+    {
+      "authors": "Matiyasevich, Yuri V.",
+      "title": "Enumerable sets are Diophantine",
+      "year": "1970",
+      "venue": "Doklady Akademii Nauk SSSR, 191(2), pp. 279-282",
+      "note": "The breakthrough paper completing the MRDP theorem by proving exponential relations are Diophantine"
+    },
+    {
+      "authors": "Davis, Martin",
+      "title": "Hilbert's tenth problem is unsolvable",
+      "year": "1973",
+      "venue": "The American Mathematical Monthly, 80(3), pp. 233-269",
+      "note": "Accessible exposition of the complete proof, covering the work of all four contributors"
+    }
   ]
 }

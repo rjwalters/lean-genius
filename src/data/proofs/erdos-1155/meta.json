@@ -22,14 +22,6 @@
     "erdosNumber": 1155,
     "erdosUrl": "https://erdosproblems.com/1155",
     "erdosProblemStatus": "open",
-    "references": [
-      "Erdős: original problem",
-      "Grable (1997): f(n) ≤ n^{7/4+o(1)} via differential equations method",
-      "Bohman-Frieze-Lubetzky (2015): f(n) = n^{3/2+o(1)} almost surely",
-      "Mantel (1907): triangle-free graphs have at most ⌊n²/4⌋ edges",
-      "Turán (1941): generalization of Mantel to K_r-free graphs",
-      "https://erdosproblems.com/1155"
-    ],
     "axiomCount": 7,
     "lineCount": 184
   },
@@ -126,5 +118,13 @@
     "axiomCount": 7,
     "theoremCount": 6,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    "Erdős: original problem",
+    "Grable (1997): f(n) ≤ n^{7/4+o(1)} via differential equations method",
+    "Bohman-Frieze-Lubetzky (2015): f(n) = n^{3/2+o(1)} almost surely",
+    "Mantel (1907): triangle-free graphs have at most ⌊n²/4⌋ edges",
+    "Turán (1941): generalization of Mantel to K_r-free graphs",
+    "https://erdosproblems.com/1155"
+  ]
 }

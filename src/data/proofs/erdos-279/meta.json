@@ -28,29 +28,7 @@
       }
     ],
     "axiomCount": 4,
-    "lineCount": 86,
-    "references": [
-      {
-        "key": "Er50",
-        "citation": "Erdős, P., On integers of the form 2^k + p and some related problems, Summa Brasiliensis Mathematicae 2 (1950), 113–123.",
-        "type": "paper"
-      },
-      {
-        "key": "He34",
-        "citation": "Heuristic: Halberstam, H. and Richert, H.-E., Sieve Methods, Academic Press (1974), Chapter 5: Covering systems.",
-        "type": "book"
-      },
-      {
-        "key": "CH07",
-        "citation": "Croot, E. and Helfgott, H.A., On Erdős and Sárközy's problem regarding products of prime powers, preprint (2007).",
-        "type": "paper"
-      },
-      {
-        "key": "Gu04",
-        "citation": "Guy, R.K., Unsolved Problems in Number Theory, 3rd ed., Springer (2004), Section F13: Covering congruences.",
-        "type": "book"
-      }
-    ]
+    "lineCount": 86
   },
   "overview": {
     "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory'. The question asks whether arithmetic progressions with prime moduli can cover all large integers when the starting index is shifted by at least k steps. For k = 1 or k = 2, classical results on divergence of the harmonic sum over primes (Σ 1/p = ∞, proved by Euler in 1737) suffice to show covering. The case k ≥ 3 introduces a qualitatively different obstacle: the constraint t ≥ k means each prime p can only cover integers n ≡ aₚ (mod p) that are at least kp above the base residue, creating a 'gap' of size kp near the beginning of each progression. Erdős noted that even k = 3 seems difficult. The generalization to arbitrary dense sets (with prime-like counting function and log-log reciprocal divergence) was proposed to isolate the essential density condition from the specific arithmetic properties of primes.",
@@ -151,6 +129,28 @@
       "targetId": "quadratic-reciprocity",
       "relationship": "related",
       "description": "Quadratic reciprocity and its generalizations constrain which residue classes are achievable modulo different primes. The structure of (ℤ/pℤ)* and quadratic residues affects the design of covering systems"
+    }
+  ],
+  "references": [
+    {
+      "key": "Er50",
+      "citation": "Erdős, P., On integers of the form 2^k + p and some related problems, Summa Brasiliensis Mathematicae 2 (1950), 113–123.",
+      "type": "paper"
+    },
+    {
+      "key": "He34",
+      "citation": "Heuristic: Halberstam, H. and Richert, H.-E., Sieve Methods, Academic Press (1974), Chapter 5: Covering systems.",
+      "type": "book"
+    },
+    {
+      "key": "CH07",
+      "citation": "Croot, E. and Helfgott, H.A., On Erdős and Sárközy's problem regarding products of prime powers, preprint (2007).",
+      "type": "paper"
+    },
+    {
+      "key": "Gu04",
+      "citation": "Guy, R.K., Unsolved Problems in Number Theory, 3rd ed., Springer (2004), Section F13: Covering congruences.",
+      "type": "book"
     }
   ]
 }

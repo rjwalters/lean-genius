@@ -49,35 +49,6 @@
       "Non-coprime counterexample (2^φ(4) ≠ 1 mod 4)",
       "Totient of prime power formula"
     ],
-    "references": [
-      {
-        "authors": "L. Euler",
-        "title": "Theoremata circa residua ex divisione potestatum relicta",
-        "year": "1763",
-        "venue": "Novi Commentarii Academiae Scientiarum Petropolitanae",
-        "note": "Original proof of a^φ(n) ≡ 1 (mod n) for coprime a, n"
-      },
-      {
-        "authors": "P. de Fermat",
-        "title": "Letter to Frénicle de Bessy",
-        "year": "1640",
-        "note": "Statement (without proof) of a^(p-1) ≡ 1 (mod p) for prime p"
-      },
-      {
-        "authors": "R. Rivest, A. Shamir, L. Adleman",
-        "title": "A method for obtaining digital signatures and public-key cryptosystems",
-        "year": "1978",
-        "venue": "Communications of the ACM",
-        "note": "RSA cryptosystem relying on Euler's theorem for correctness"
-      },
-      {
-        "authors": "G. H. Hardy, E. M. Wright",
-        "title": "An Introduction to the Theory of Numbers",
-        "year": "1938",
-        "venue": "Oxford University Press",
-        "note": "Standard reference for the totient function and its properties"
-      }
-    ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 10,
     "relatedProofs": [
@@ -202,5 +173,34 @@
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "L. Euler",
+      "title": "Theoremata circa residua ex divisione potestatum relicta",
+      "year": "1763",
+      "venue": "Novi Commentarii Academiae Scientiarum Petropolitanae",
+      "note": "Original proof of a^φ(n) ≡ 1 (mod n) for coprime a, n"
+    },
+    {
+      "authors": "P. de Fermat",
+      "title": "Letter to Frénicle de Bessy",
+      "year": "1640",
+      "note": "Statement (without proof) of a^(p-1) ≡ 1 (mod p) for prime p"
+    },
+    {
+      "authors": "R. Rivest, A. Shamir, L. Adleman",
+      "title": "A method for obtaining digital signatures and public-key cryptosystems",
+      "year": "1978",
+      "venue": "Communications of the ACM",
+      "note": "RSA cryptosystem relying on Euler's theorem for correctness"
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "1938",
+      "venue": "Oxford University Press",
+      "note": "Standard reference for the totient function and its properties"
+    }
+  ]
 }

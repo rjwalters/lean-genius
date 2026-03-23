@@ -14,13 +14,6 @@
       "discrete-geometry",
       "open"
     ],
-    "references": [
-      "Erdős–Pach (1990): bipartite distinct distances problem",
-      "Guth–Katz (2015): f(2n) ≳ n/log n for general point sets",
-      "Lenz: ℝ⁴ construction with one bipartite distance",
-      "https://erdosproblems.com/661"
-    ],
-    "leanFile": "Proofs/Erdos661Problem.lean",
     "badge": "axiom",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/661",
@@ -122,5 +115,11 @@
     "axiomCount": 3,
     "theoremCount": 0,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    "Erdős–Pach (1990): bipartite distinct distances problem",
+    "Guth–Katz (2015): f(2n) ≳ n/log n for general point sets",
+    "Lenz: ℝ⁴ construction with one bipartite distance",
+    "https://erdosproblems.com/661"
+  ]
 }

@@ -22,14 +22,6 @@
     "erdosNumber": 57,
     "erdosUrl": "https://erdosproblems.com/57",
     "erdosProblemStatus": "solved",
-    "references": [
-      "Erdős-Hajnal (1966): original conjecture on odd cycle lengths",
-      "Erdős (1981): upper density conjecture for odd cycle lengths",
-      "Erdős (1995-96): half density speculation (≥ 1/2)",
-      "Liu-Montgomery (2020): 'A solution to Erdős and Hajnal's odd cycle problem'",
-      "https://erdosproblems.com/57"
-    ],
-    "leanFile": "Proofs/Erdos57Problem.lean",
     "axiomCount": 1,
     "lineCount": 166
   },
@@ -168,5 +160,12 @@
     "axiomCount": 1,
     "theoremCount": 5,
     "definitionCount": 8
-  }
+  },
+  "references": [
+    "Erdős-Hajnal (1966): original conjecture on odd cycle lengths",
+    "Erdős (1981): upper density conjecture for odd cycle lengths",
+    "Erdős (1995-96): half density speculation (≥ 1/2)",
+    "Liu-Montgomery (2020): 'A solution to Erdős and Hajnal's odd cycle problem'",
+    "https://erdosproblems.com/57"
+  ]
 }

@@ -53,36 +53,6 @@
       "CRT injectivity as foundation for ring isomorphism",
       "Modular arithmetic preservation (add, mul, pow)"
     ],
-    "references": [
-      {
-        "authors": "Sun Zi",
-        "title": "Sunzi Suanjing (The Mathematical Classic of Sun Zi)",
-        "year": "~400 CE",
-        "venue": "Chinese mathematical treatise",
-        "note": "Earliest known statement of the Chinese Remainder Theorem as a concrete problem"
-      },
-      {
-        "authors": "C. F. Gauss",
-        "title": "Disquisitiones Arithmeticae",
-        "year": "1801",
-        "venue": "Leipzig: Gerh. Fleischer",
-        "note": "Sections 32-36: systematic treatment of simultaneous congruences and the CRT"
-      },
-      {
-        "authors": "O. Ore",
-        "title": "The general Chinese remainder theorem",
-        "year": "1952",
-        "venue": "Amer. Math. Monthly, 59(6), 365-370",
-        "note": "Extension of CRT to non-coprime moduli via compatibility conditions"
-      },
-      {
-        "authors": "K. Ireland, M. Rosen",
-        "title": "A Classical Introduction to Modern Number Theory",
-        "year": "1990",
-        "venue": "Springer GTM 84, Chapter 3",
-        "note": "Standard modern treatment of CRT with ring-theoretic perspective"
-      }
-    ],
     "crossReferences": [
       {
         "proofId": "bezout-identity",
@@ -321,6 +291,20 @@
       "year": "2009",
       "venue": "Cambridge University Press, 2nd edition",
       "note": "Algorithmic perspective on CRT: the constructive Bezout-based formula, its complexity, and applications to RSA-CRT and residue number systems"
+    },
+    {
+      "authors": "Sun Zi",
+      "title": "Sunzi Suanjing (The Mathematical Classic of Sun Zi)",
+      "year": "~400 CE",
+      "venue": "Chinese mathematical treatise",
+      "note": "Earliest known statement of the Chinese Remainder Theorem as a concrete problem"
+    },
+    {
+      "authors": "O. Ore",
+      "title": "The general Chinese remainder theorem",
+      "year": "1952",
+      "venue": "Amer. Math. Monthly, 59(6), 365-370",
+      "note": "Extension of CRT to non-coprime moduli via compatibility conditions"
     }
   ]
 }

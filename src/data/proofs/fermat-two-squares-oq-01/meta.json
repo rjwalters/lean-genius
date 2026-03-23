@@ -41,36 +41,6 @@
       "three_not_two_squares: proof that 3 is not a sum of two squares",
       "Connection between Fermat two-squares (conditional) and Lagrange four-squares (universal)"
     ],
-    "references": [
-      {
-        "authors": "J.-L. Lagrange",
-        "title": "Démonstration d'un théorème d'arithmétique",
-        "year": "1770",
-        "venue": "Nouveaux Mémoires de l'Académie Royale",
-        "note": "Original proof of the four-squares theorem"
-      },
-      {
-        "authors": "L. Euler",
-        "title": "Demonstratio theorematis Fermatiani",
-        "year": "1748",
-        "venue": "Commentarii Academiae Scientiarum Petropolitanae",
-        "note": "Four-square identity (quaternion norm multiplicativity)"
-      },
-      {
-        "authors": "A.-M. Legendre",
-        "title": "Essai sur la theorie des nombres",
-        "year": "1798",
-        "venue": "",
-        "note": "Three-square theorem: n is a sum of three squares iff n is not of the form 4^a(8b+7)"
-      },
-      {
-        "authors": "A. Hurwitz",
-        "title": "Uber die Composition der quadratischen Formen von beliebig vielen Variablen",
-        "year": "1898",
-        "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu Gottingen",
-        "note": "Composition algebras exist only in dimensions 1, 2, 4, 8"
-      }
-    ],
     "dateAdded": "2026-03-19",
     "lineCount": 254
   },
@@ -175,5 +145,35 @@
     "axiomCount": 0,
     "theoremCount": 13,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    {
+      "authors": "J.-L. Lagrange",
+      "title": "Démonstration d'un théorème d'arithmétique",
+      "year": "1770",
+      "venue": "Nouveaux Mémoires de l'Académie Royale",
+      "note": "Original proof of the four-squares theorem"
+    },
+    {
+      "authors": "L. Euler",
+      "title": "Demonstratio theorematis Fermatiani",
+      "year": "1748",
+      "venue": "Commentarii Academiae Scientiarum Petropolitanae",
+      "note": "Four-square identity (quaternion norm multiplicativity)"
+    },
+    {
+      "authors": "A.-M. Legendre",
+      "title": "Essai sur la theorie des nombres",
+      "year": "1798",
+      "venue": "",
+      "note": "Three-square theorem: n is a sum of three squares iff n is not of the form 4^a(8b+7)"
+    },
+    {
+      "authors": "A. Hurwitz",
+      "title": "Uber die Composition der quadratischen Formen von beliebig vielen Variablen",
+      "year": "1898",
+      "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu Gottingen",
+      "note": "Composition algebras exist only in dimensions 1, 2, 4, 8"
+    }
+  ]
 }

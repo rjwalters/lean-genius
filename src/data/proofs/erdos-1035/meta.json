@@ -27,28 +27,6 @@
       "Graph density and extremal graph theory",
       "Turán-type bounds"
     ],
-    "references": [
-      {
-        "title": "Erdős Problem 1035",
-        "url": "https://erdosproblems.com/1035",
-        "type": "source"
-      },
-      {
-        "title": "Conlon (2009): Embedding partite hypergraphs",
-        "url": "https://doi.org/10.1007/s00493-009-2440-4",
-        "type": "related"
-      },
-      {
-        "title": "Komlós, Sárközy, Szemerédi (1995): Proof of a packing conjecture of Bollobás",
-        "url": "https://doi.org/10.1017/S0963548300001705",
-        "type": "related"
-      },
-      {
-        "title": "Sudakov, Tomon (2022): The extremal number of tight cycles",
-        "url": "https://doi.org/10.1093/imrn/rnab139",
-        "type": "related"
-      }
-    ],
     "crossReferences": [
       {
         "id": "erdos-576",
@@ -205,6 +183,26 @@
       "year": "1978",
       "venue": "Academic Press, London Mathematical Society Monographs, vol. 11",
       "note": "Standard reference for extremal graph theory. Chapter 6 covers the Turán-type and minimum-degree results that frame #1035, including Dirac's theorem (δ ≥ n/2 forces a Hamiltonian cycle) as the prototype for minimum-degree spanning subgraph results."
+    },
+    {
+      "title": "Erdős Problem 1035",
+      "url": "https://erdosproblems.com/1035",
+      "type": "source"
+    },
+    {
+      "title": "Conlon (2009): Embedding partite hypergraphs",
+      "url": "https://doi.org/10.1007/s00493-009-2440-4",
+      "type": "related"
+    },
+    {
+      "title": "Komlós, Sárközy, Szemerédi (1995): Proof of a packing conjecture of Bollobás",
+      "url": "https://doi.org/10.1017/S0963548300001705",
+      "type": "related"
+    },
+    {
+      "title": "Sudakov, Tomon (2022): The extremal number of tight cycles",
+      "url": "https://doi.org/10.1093/imrn/rnab139",
+      "type": "related"
     }
   ],
   "leanFile": {

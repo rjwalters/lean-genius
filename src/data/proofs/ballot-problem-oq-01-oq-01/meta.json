@@ -47,29 +47,6 @@
       "cycle_lemma_lower_bound_via_ivt: informal derivation showing how ballot_discrete_ivt gives the lower bound |goodRotations l| ≥ l.sum in the cycle lemma",
       "rightmost_is_good_sketch: formal sketch showing why the rightmost position at each level is a good rotation (non-wrapping and wrapping cases)"
     ],
-    "references": [
-      {
-        "authors": "A. Dvoretzky, T. Motzkin",
-        "title": "A problem of arrangements",
-        "year": "1947",
-        "venue": "Duke Mathematical Journal, 14(2), 305–313",
-        "note": "Original statement and proof of the cycle lemma: exactly a − kb of a+b cyclic rotations of a {+1,−k}-sequence have all partial sums positive"
-      },
-      {
-        "authors": "J. Bertrand",
-        "title": "Solution d'un problème",
-        "year": "1887",
-        "venue": "Comptes Rendus de l'Académie des Sciences, 105, 369",
-        "note": "Original ballot problem: probability that candidate A stays ahead throughout the count is (a−b)/(a+b) — the k=1 special case of the cycle lemma"
-      },
-      {
-        "authors": "A. Dvoretzky",
-        "title": "Sur les permutations circulaires",
-        "year": "1943",
-        "venue": "Comptes Rendus de l'Académie des Sciences (Paris)",
-        "note": "Early version of the cycle lemma approach, preceding the 1947 joint paper with Motzkin"
-      }
-    ],
     "dateAdded": "2026-02-23",
     "prerequisites": [
       "Prefix sums and ballot sequences",
@@ -186,5 +163,28 @@
     "axiomCount": 0,
     "theoremCount": 3,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "A. Dvoretzky, T. Motzkin",
+      "title": "A problem of arrangements",
+      "year": "1947",
+      "venue": "Duke Mathematical Journal, 14(2), 305–313",
+      "note": "Original statement and proof of the cycle lemma: exactly a − kb of a+b cyclic rotations of a {+1,−k}-sequence have all partial sums positive"
+    },
+    {
+      "authors": "J. Bertrand",
+      "title": "Solution d'un problème",
+      "year": "1887",
+      "venue": "Comptes Rendus de l'Académie des Sciences, 105, 369",
+      "note": "Original ballot problem: probability that candidate A stays ahead throughout the count is (a−b)/(a+b) — the k=1 special case of the cycle lemma"
+    },
+    {
+      "authors": "A. Dvoretzky",
+      "title": "Sur les permutations circulaires",
+      "year": "1943",
+      "venue": "Comptes Rendus de l'Académie des Sciences (Paris)",
+      "note": "Early version of the cycle lemma approach, preceding the 1947 joint paper with Motzkin"
+    }
+  ]
 }

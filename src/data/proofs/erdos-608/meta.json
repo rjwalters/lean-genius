@@ -59,38 +59,6 @@
       "Stability: structural characterization placeholder",
       "countC5: C₅ subgraph count"
     ],
-    "references": [
-      {
-        "key": "FM",
-        "citation": "Füredi, Zoltán and Maleki, Dániel, The minimum number of edges in C₅-saturated graphs, manuscript.",
-        "type": "paper"
-      },
-      {
-        "key": "GHV",
-        "citation": "Grzesik, Andrzej, Hu, Ping, and Volec, Jan, Minimum number of edges that occur in odd cycles, J. Combin. Theory Ser. B 148 (2021), 126-153.",
-        "type": "paper"
-      },
-      {
-        "key": "Er62",
-        "citation": "Erdős, Paul, On a theorem of Rademacher-Turán, Illinois J. Math. 6 (1962), 122-127.",
-        "type": "paper"
-      },
-      {
-        "key": "EFR86",
-        "citation": "Erdős, Paul, Faudree, Ralph J., and Rousseau, Cecil C., Extremal problems involving vertices and edges on odd cycles, Discrete Math. 101 (1992), 23-31.",
-        "type": "paper"
-      },
-      {
-        "key": "Ra07",
-        "citation": "Razborov, Alexander A., Flag algebras, J. Symbolic Logic 72 (2007), no. 4, 1239-1282.",
-        "type": "paper"
-      },
-      {
-        "key": "EP",
-        "citation": "Erdős Problems, Problem #608, https://erdosproblems.com/608.",
-        "type": "website"
-      }
-    ],
     "relatedProofs": [
       {
         "id": "erdos-60",
@@ -250,5 +218,37 @@
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 15
-  }
+  },
+  "references": [
+    {
+      "key": "FM",
+      "citation": "Füredi, Zoltán and Maleki, Dániel, The minimum number of edges in C₅-saturated graphs, manuscript.",
+      "type": "paper"
+    },
+    {
+      "key": "GHV",
+      "citation": "Grzesik, Andrzej, Hu, Ping, and Volec, Jan, Minimum number of edges that occur in odd cycles, J. Combin. Theory Ser. B 148 (2021), 126-153.",
+      "type": "paper"
+    },
+    {
+      "key": "Er62",
+      "citation": "Erdős, Paul, On a theorem of Rademacher-Turán, Illinois J. Math. 6 (1962), 122-127.",
+      "type": "paper"
+    },
+    {
+      "key": "EFR86",
+      "citation": "Erdős, Paul, Faudree, Ralph J., and Rousseau, Cecil C., Extremal problems involving vertices and edges on odd cycles, Discrete Math. 101 (1992), 23-31.",
+      "type": "paper"
+    },
+    {
+      "key": "Ra07",
+      "citation": "Razborov, Alexander A., Flag algebras, J. Symbolic Logic 72 (2007), no. 4, 1239-1282.",
+      "type": "paper"
+    },
+    {
+      "key": "EP",
+      "citation": "Erdős Problems, Problem #608, https://erdosproblems.com/608.",
+      "type": "website"
+    }
+  ]
 }

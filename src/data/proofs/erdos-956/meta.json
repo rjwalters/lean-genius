@@ -9,7 +9,6 @@
     "date": "ongoing",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos956Problem.lean",
-    "leanFile": "Proofs/Erdos956Problem.lean",
     "tags": [
       "erdos",
       "geometry",
@@ -44,28 +43,6 @@
         "theorem": "Metric.dist",
         "description": "Distance function in metric spaces",
         "module": "Mathlib.Topology.MetricSpace.Basic"
-      }
-    ],
-    "references": [
-      {
-        "key": "ErPa90",
-        "citation": "Erdős, P. and Pach, J. (1990). Variations on the theme of repeated distances. Combinatorica, 10(3), 261-269.",
-        "type": "paper"
-      },
-      {
-        "key": "SST83",
-        "citation": "Spencer, J., Szemerédi, E., and Trotter, W. (1983). Unit distances in the Euclidean plane. Graph Theory and Combinatorics (ed. B. Bollobás), Academic Press, 293-303.",
-        "type": "paper"
-      },
-      {
-        "key": "Pa04",
-        "citation": "Pach, J. and Agarwal, P. K. (2004). Combinatorial Geometry. Wiley-Interscience.",
-        "type": "book"
-      },
-      {
-        "key": "Er46",
-        "citation": "Erdős, P. (1946). On sets of distances of n points. American Mathematical Monthly, 53, 248-250.",
-        "type": "paper"
       }
     ],
     "originalContributions": [
@@ -222,5 +199,27 @@
     "axiomCount": 9,
     "theoremCount": 14,
     "definitionCount": 13
-  }
+  },
+  "references": [
+    {
+      "key": "ErPa90",
+      "citation": "Erdős, P. and Pach, J. (1990). Variations on the theme of repeated distances. Combinatorica, 10(3), 261-269.",
+      "type": "paper"
+    },
+    {
+      "key": "SST83",
+      "citation": "Spencer, J., Szemerédi, E., and Trotter, W. (1983). Unit distances in the Euclidean plane. Graph Theory and Combinatorics (ed. B. Bollobás), Academic Press, 293-303.",
+      "type": "paper"
+    },
+    {
+      "key": "Pa04",
+      "citation": "Pach, J. and Agarwal, P. K. (2004). Combinatorial Geometry. Wiley-Interscience.",
+      "type": "book"
+    },
+    {
+      "key": "Er46",
+      "citation": "Erdős, P. (1946). On sets of distances of n points. American Mathematical Monthly, 53, 248-250.",
+      "type": "paper"
+    }
+  ]
 }

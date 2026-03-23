@@ -45,23 +45,6 @@
         "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
       }
     ],
-    "references": [
-      {
-        "key": "Bo91",
-        "citation": "Borwein, P. (1991). On the irrationality of certain series. Math. Proc. Cambridge Philos. Soc., 112:141-146.",
-        "type": "paper"
-      },
-      {
-        "key": "Er48",
-        "citation": "Erdős, P. (1948). On arithmetical properties of Lambert series. J. Indian Math. Soc., 12:63-66.",
-        "type": "paper"
-      },
-      {
-        "key": "ErGr80",
-        "citation": "Erdős, P. and Graham, R. (1980). Old and new problems and results in combinatorial number theory, p. 62.",
-        "type": "book"
-      }
-    ],
     "originalContributions": [
       "General series T(q, r) = ∑ 1/(q^n + r)",
       "Specific series S = ∑ 1/(2^n - 3)",
@@ -213,5 +196,22 @@
     "axiomCount": 0,
     "theoremCount": 0,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "key": "Bo91",
+      "citation": "Borwein, P. (1991). On the irrationality of certain series. Math. Proc. Cambridge Philos. Soc., 112:141-146.",
+      "type": "paper"
+    },
+    {
+      "key": "Er48",
+      "citation": "Erdős, P. (1948). On arithmetical properties of Lambert series. J. Indian Math. Soc., 12:63-66.",
+      "type": "paper"
+    },
+    {
+      "key": "ErGr80",
+      "citation": "Erdős, P. and Graham, R. (1980). Old and new problems and results in combinatorial number theory, p. 62.",
+      "type": "book"
+    }
+  ]
 }

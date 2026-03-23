@@ -35,28 +35,6 @@
         "module": "Mathlib.Data.Finset.Card"
       }
     ],
-    "references": [
-      {
-        "key": "Mathialagan2021",
-        "citation": "Mathialagan, S. (2021). Few distinct distances implies no heavy lines or circles. Discrete & Computational Geometry 66, 1-31.",
-        "type": "paper"
-      },
-      {
-        "key": "GuthKatz2015",
-        "citation": "Guth, L. and Katz, N. H. (2015). On the Erdős distinct distances problem in the plane. Annals of Mathematics 181(1), 155-190.",
-        "type": "paper"
-      },
-      {
-        "key": "Elekes2002",
-        "citation": "Elekes, G. (2002). Circle grids and bipartite graphs of distances. Combinatorica 22, 367-382.",
-        "type": "paper"
-      },
-      {
-        "key": "Erdos1946",
-        "citation": "Erdős, P. (1946). On sets of distances of n points. American Mathematical Monthly 53(5), 248-250.",
-        "type": "paper"
-      }
-    ],
     "originalContributions": [
       "Formal definitions of Point, PointSet, and distinctDistances in Lean 4",
       "Definition of R function counting distinct distances per point",
@@ -250,5 +228,27 @@
     "axiomCount": 14,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "references": [
+    {
+      "key": "Mathialagan2021",
+      "citation": "Mathialagan, S. (2021). Few distinct distances implies no heavy lines or circles. Discrete & Computational Geometry 66, 1-31.",
+      "type": "paper"
+    },
+    {
+      "key": "GuthKatz2015",
+      "citation": "Guth, L. and Katz, N. H. (2015). On the Erdős distinct distances problem in the plane. Annals of Mathematics 181(1), 155-190.",
+      "type": "paper"
+    },
+    {
+      "key": "Elekes2002",
+      "citation": "Elekes, G. (2002). Circle grids and bipartite graphs of distances. Combinatorica 22, 367-382.",
+      "type": "paper"
+    },
+    {
+      "key": "Erdos1946",
+      "citation": "Erdős, P. (1946). On sets of distances of n points. American Mathematical Monthly 53(5), 248-250.",
+      "type": "paper"
+    }
+  ]
 }

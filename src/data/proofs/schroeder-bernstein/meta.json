@@ -60,12 +60,6 @@
       "The orbit partition approach shows every element has a well-defined 'origin'",
       "This theorem fails for many other structures (e.g., groups, rings)",
       "The result is equivalent to the law of excluded middle (assuming infinity axiom)"
-    ],
-    "prerequisites": [
-      "Set theory: injections $f: A \\hookrightarrow B$, surjections, bijections, and the Cantor-Bernstein ordering $|A| \\leq |B|$ iff $\\exists$ injection $A \\to B$",
-      "Cardinal arithmetic: the antisymmetry property $|A| \\leq |B|$ and $|B| \\leq |A|$ implies $|A| = |B|$ (which is exactly this theorem)",
-      "Fixed-point theory: the proof constructs a fixed point of a monotone operator on $\\mathcal{P}(A)$ using the Knaster-Tarski theorem or explicit iteration",
-      "Classical logic: the result requires the law of excluded middle (it is not constructively valid without choice-like axioms)"
     ]
   },
   "sections": [

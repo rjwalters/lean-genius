@@ -8,7 +8,6 @@
     "sourceUrl": "https://erdosproblems.com/536",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos536Problem.lean",
-    "leanFile": "Proofs/Erdos536Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -38,22 +37,6 @@
         "theorem": "Finset.Icc",
         "description": "Closed intervals as finite sets",
         "module": "Mathlib.Data.Finset.Card"
-      }
-    ],
-    "references": [
-      {
-        "authors": "Erdős, Paul",
-        "title": "Some remarks on number theory",
-        "year": "1964",
-        "venue": "Israel Journal of Mathematics, 3, pp. 6-12",
-        "note": "Early discussion of LCM patterns in dense integer sets"
-      },
-      {
-        "authors": "Erdős, Paul; Graham, Ronald L.",
-        "title": "Old and New Problems and Results in Combinatorial Number Theory",
-        "year": "1980",
-        "venue": "Monographies de L'Enseignement Mathématique 28, Université de Genève",
-        "note": "Comprehensive collection including the LCM triple conjecture and related problems"
       }
     ],
     "originalContributions": [
@@ -149,5 +132,21 @@
     "axiomCount": 5,
     "theoremCount": 0,
     "definitionCount": 2
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "Some remarks on number theory",
+      "year": "1964",
+      "venue": "Israel Journal of Mathematics, 3, pp. 6-12",
+      "note": "Early discussion of LCM patterns in dense integer sets"
+    },
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28, Université de Genève",
+      "note": "Comprehensive collection including the LCM triple conjecture and related problems"
+    }
+  ]
 }

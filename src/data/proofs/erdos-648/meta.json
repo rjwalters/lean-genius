@@ -44,33 +44,6 @@
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       }
     ],
-    "references": [
-      {
-        "key": "Ca25b",
-        "citation": "Cambie, S. (2025). On Erdős problem #648. arXiv:2503.22691.",
-        "type": "paper"
-      },
-      {
-        "key": "Er95c",
-        "citation": "Erdős, P. Original problem statement.",
-        "type": "paper"
-      },
-      {
-        "key": "A391750",
-        "citation": "OEIS A391750: Values of g(n).",
-        "type": "database"
-      },
-      {
-        "key": "dB51",
-        "citation": "de Bruijn, N.G. (1951). On the number of positive integers ≤ x and free of prime factors > y. Nederl. Akad. Wetensch. Proc. Ser. A 54, 50-60.",
-        "type": "paper"
-      },
-      {
-        "key": "Di30",
-        "citation": "Dickman, K. (1930). On the frequency of numbers containing prime factors of a certain relative magnitude. Ark. Mat. Astr. Fys. 22, 1-14.",
-        "type": "paper"
-      }
-    ],
     "originalContributions": [
       "Formal definition of greatest prime factor function P(n)",
       "Definition of smooth numbers and counting function Ψ(x,y)",
@@ -242,5 +215,32 @@
     "axiomCount": 18,
     "theoremCount": 19,
     "definitionCount": 9
-  }
+  },
+  "references": [
+    {
+      "key": "Ca25b",
+      "citation": "Cambie, S. (2025). On Erdős problem #648. arXiv:2503.22691.",
+      "type": "paper"
+    },
+    {
+      "key": "Er95c",
+      "citation": "Erdős, P. Original problem statement.",
+      "type": "paper"
+    },
+    {
+      "key": "A391750",
+      "citation": "OEIS A391750: Values of g(n).",
+      "type": "database"
+    },
+    {
+      "key": "dB51",
+      "citation": "de Bruijn, N.G. (1951). On the number of positive integers ≤ x and free of prime factors > y. Nederl. Akad. Wetensch. Proc. Ser. A 54, 50-60.",
+      "type": "paper"
+    },
+    {
+      "key": "Di30",
+      "citation": "Dickman, K. (1930). On the frequency of numbers containing prime factors of a certain relative magnitude. Ark. Mat. Astr. Fys. 22, 1-14.",
+      "type": "paper"
+    }
+  ]
 }

@@ -58,23 +58,6 @@
       "IsDiameterCritical: general diameter-critical definition",
       "balanced_bipartite_edges axiom: (n/2)*((n+1)/2) = n²/4"
     ],
-    "references": [
-      {
-        "key": "CaHa79",
-        "citation": "Caccetta, L. and Häggkvist, R., On diameter critical graphs, Discrete Math. 28 (1979), 223-229.",
-        "type": "paper"
-      },
-      {
-        "key": "Fu92",
-        "citation": "Füredi, Z., The maximum number of edges in a minimal graph of diameter 2, J. Graph Theory 16 (1992), 81-98.",
-        "type": "paper"
-      },
-      {
-        "key": "Ma07",
-        "citation": "Mantel, W., Problem 28, Wiskundige Opgaven 10 (1907), 60-61.",
-        "type": "paper"
-      }
-    ],
     "axiomCount": 7,
     "lineCount": 226
   },
@@ -187,5 +170,22 @@
     "axiomCount": 7,
     "theoremCount": 3,
     "definitionCount": 14
-  }
+  },
+  "references": [
+    {
+      "key": "CaHa79",
+      "citation": "Caccetta, L. and Häggkvist, R., On diameter critical graphs, Discrete Math. 28 (1979), 223-229.",
+      "type": "paper"
+    },
+    {
+      "key": "Fu92",
+      "citation": "Füredi, Z., The maximum number of edges in a minimal graph of diameter 2, J. Graph Theory 16 (1992), 81-98.",
+      "type": "paper"
+    },
+    {
+      "key": "Ma07",
+      "citation": "Mantel, W., Problem 28, Wiskundige Opgaven 10 (1907), 60-61.",
+      "type": "paper"
+    }
+  ]
 }

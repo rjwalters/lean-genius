@@ -8,7 +8,6 @@
     "sourceUrl": "https://erdosproblems.com/947",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos947Problem.lean",
-    "leanFile": "Proofs/Erdos947Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -48,23 +47,6 @@
         "theorem": "BigOperators",
         "description": "Finite sums for density sum Σ 1/nᵢ",
         "module": "Mathlib.Algebra.BigOperators.Group.Finset"
-      }
-    ],
-    "references": [
-      {
-        "key": "MiNe",
-        "citation": "Mirsky, L. and Newman, D.J. On an exact covering system (unpublished but widely cited through Erdős's references).",
-        "type": "paper"
-      },
-      {
-        "key": "DaRa",
-        "citation": "Davenport, H. and Rado, R. On an exact covering system (unpublished, independent proof via LCM methods).",
-        "type": "paper"
-      },
-      {
-        "key": "Er77c",
-        "citation": "Erdős, P. (1977). Problems and results on combinatorial number theory III. In Number Theory Day, Springer Lecture Notes in Mathematics 626, 43-72.",
-        "type": "paper"
       }
     ],
     "originalContributions": [
@@ -172,5 +154,22 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 6
-  }
+  },
+  "references": [
+    {
+      "key": "MiNe",
+      "citation": "Mirsky, L. and Newman, D.J. On an exact covering system (unpublished but widely cited through Erdős's references).",
+      "type": "paper"
+    },
+    {
+      "key": "DaRa",
+      "citation": "Davenport, H. and Rado, R. On an exact covering system (unpublished, independent proof via LCM methods).",
+      "type": "paper"
+    },
+    {
+      "key": "Er77c",
+      "citation": "Erdős, P. (1977). Problems and results on combinatorial number theory III. In Number Theory Day, Springer Lecture Notes in Mathematics 626, 43-72.",
+      "type": "paper"
+    }
+  ]
 }

@@ -45,38 +45,6 @@
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       }
     ],
-    "references": [
-      {
-        "key": "CES96",
-        "citation": "Chen, G., Erdős, P., and Staton, W. (1996). Proof of a conjecture on the number of edges in a graph with a given cycle-diagonal property. Combinatorica (attributed).",
-        "type": "paper"
-      },
-      {
-        "key": "DMMS24",
-        "citation": "Draganić, N., Methuku, A., Munhá Correia, D., and Sudakov, B. (2024). Cycles with many chords. Random Structures & Algorithms 65: 3–16.",
-        "type": "paper"
-      },
-      {
-        "key": "Er97d",
-        "citation": "Erdős, P. (1997). Problem collection mentioning this problem.",
-        "type": "paper"
-      },
-      {
-        "key": "BMMS24",
-        "citation": "Bradač, D., Methuku, A., and Sudakov, B. (2024). The extremal number of cycles with all diagonals. IMRN 12: 9728–9742.",
-        "type": "paper"
-      },
-      {
-        "key": "KST1954",
-        "citation": "Kővári, T., Sós, V. T., and Turán, P. (1954). On a problem of K. Zarankiewicz. Colloquium Mathematicae, 3(1), 50–57.",
-        "type": "paper"
-      },
-      {
-        "key": "Reiman1958",
-        "citation": "Reiman, I. (1958). Über ein Problem von K. Zarankiewicz. Acta Mathematica Academiae Scientiarum Hungaricae, 9(3–4), 269–273.",
-        "type": "paper"
-      }
-    ],
     "originalContributions": [
       "Formal definition of cycles as structures with ordered vertex lists, adjacency closure, and no-repeat conditions",
       "Definition of diagonals via CycleAdjacent modular arithmetic and IsDiagonal predicate on Sym2 edges",
@@ -211,5 +179,37 @@
     "axiomCount": 4,
     "theoremCount": 12,
     "definitionCount": 14
-  }
+  },
+  "references": [
+    {
+      "key": "CES96",
+      "citation": "Chen, G., Erdős, P., and Staton, W. (1996). Proof of a conjecture on the number of edges in a graph with a given cycle-diagonal property. Combinatorica (attributed).",
+      "type": "paper"
+    },
+    {
+      "key": "DMMS24",
+      "citation": "Draganić, N., Methuku, A., Munhá Correia, D., and Sudakov, B. (2024). Cycles with many chords. Random Structures & Algorithms 65: 3–16.",
+      "type": "paper"
+    },
+    {
+      "key": "Er97d",
+      "citation": "Erdős, P. (1997). Problem collection mentioning this problem.",
+      "type": "paper"
+    },
+    {
+      "key": "BMMS24",
+      "citation": "Bradač, D., Methuku, A., and Sudakov, B. (2024). The extremal number of cycles with all diagonals. IMRN 12: 9728–9742.",
+      "type": "paper"
+    },
+    {
+      "key": "KST1954",
+      "citation": "Kővári, T., Sós, V. T., and Turán, P. (1954). On a problem of K. Zarankiewicz. Colloquium Mathematicae, 3(1), 50–57.",
+      "type": "paper"
+    },
+    {
+      "key": "Reiman1958",
+      "citation": "Reiman, I. (1958). Über ein Problem von K. Zarankiewicz. Acta Mathematica Academiae Scientiarum Hungaricae, 9(3–4), 269–273.",
+      "type": "paper"
+    }
+  ]
 }

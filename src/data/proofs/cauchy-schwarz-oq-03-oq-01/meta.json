@@ -73,36 +73,6 @@
       "Integral Young deficit identity and Hölder equality (normalized, measure-theoretic)",
       "General integral Hölder equality: normalization reduction to get f^p =ᵃᵉ c·g^q"
     ],
-    "references": [
-      {
-        "authors": "Joseph-Louis Lagrange",
-        "title": "Identity for 2×2 determinants",
-        "year": "1773",
-        "venue": "Recherches d'arithmétique",
-        "note": "The Lagrange identity relating cross-terms to the Cauchy-Schwarz deficit"
-      },
-      {
-        "authors": "G. H. Hardy, J. E. Littlewood, G. Pólya",
-        "title": "Inequalities",
-        "year": "1934",
-        "venue": "Cambridge University Press",
-        "note": "Chapter 2, Theorem 15: equality conditions for Hölder and Cauchy-Schwarz"
-      },
-      {
-        "authors": "Augustin-Louis Cauchy",
-        "title": "Cours d'analyse de l'École Royale Polytechnique",
-        "year": "1821",
-        "venue": "Imprimerie Royale",
-        "note": "Original statement of the Cauchy inequality for finite sums; equality case noted as proportionality"
-      },
-      {
-        "authors": "William Henry Young",
-        "title": "On classes of summable functions and their Fourier series",
-        "year": "1912",
-        "venue": "Proceedings of the Royal Society A",
-        "note": "Young's inequality ab ≤ a^p/p + b^q/q for conjugate exponents"
-      }
-    ],
     "axiomCount": 0,
     "lineCount": 835
   },
@@ -214,5 +184,35 @@
     "axiomCount": 0,
     "theoremCount": 29,
     "definitionCount": 1
-  }
+  },
+  "references": [
+    {
+      "authors": "Joseph-Louis Lagrange",
+      "title": "Identity for 2×2 determinants",
+      "year": "1773",
+      "venue": "Recherches d'arithmétique",
+      "note": "The Lagrange identity relating cross-terms to the Cauchy-Schwarz deficit"
+    },
+    {
+      "authors": "G. H. Hardy, J. E. Littlewood, G. Pólya",
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press",
+      "note": "Chapter 2, Theorem 15: equality conditions for Hölder and Cauchy-Schwarz"
+    },
+    {
+      "authors": "Augustin-Louis Cauchy",
+      "title": "Cours d'analyse de l'École Royale Polytechnique",
+      "year": "1821",
+      "venue": "Imprimerie Royale",
+      "note": "Original statement of the Cauchy inequality for finite sums; equality case noted as proportionality"
+    },
+    {
+      "authors": "William Henry Young",
+      "title": "On classes of summable functions and their Fourier series",
+      "year": "1912",
+      "venue": "Proceedings of the Royal Society A",
+      "note": "Young's inequality ab ≤ a^p/p + b^q/q for conjugate exponents"
+    }
+  ]
 }

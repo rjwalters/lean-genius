@@ -68,45 +68,6 @@
       "Greedy construction equals topK (rfl)",
       "Proved zero_representable, mem_representable, add_representable"
     ],
-    "references": [
-      {
-        "title": "On the extremal Frobenius problem in a new aspect",
-        "authors": [
-          "G. Kiss"
-        ],
-        "year": 2002,
-        "venue": "Ann. Univ. Sci. Budapest. Eötvös Sect. Math.",
-        "relevance": "Proved that {n-k+1,...,n} maximizes the count of non-representable integers (the main result)"
-      },
-      {
-        "title": "Old and New Problems and Results in Combinatorial Number Theory",
-        "authors": [
-          "P. Erdős",
-          "R.L. Graham"
-        ],
-        "year": 1980,
-        "venue": "L'Enseignement Mathématique, Monograph No. 28",
-        "relevance": "Original source of Problems #433 and #434 on extremal Frobenius problems"
-      },
-      {
-        "title": "Mathematical Questions with their Solutions, Educational Times",
-        "authors": [
-          "J.J. Sylvester"
-        ],
-        "year": 1884,
-        "venue": "Educational Times",
-        "relevance": "Classical formula: for coprime a, b, the Frobenius number is ab-a-b and the count is (a-1)(b-1)/2"
-      },
-      {
-        "title": "The Diophantine Frobenius Problem",
-        "authors": [
-          "J.L. Ramírez-Alfonsín"
-        ],
-        "year": 2005,
-        "venue": "Oxford University Press",
-        "relevance": "Comprehensive survey proving NP-hardness for ≥ 3 elements and collecting known results"
-      }
-    ],
     "axiomCount": 4,
     "lineCount": 310
   },
@@ -244,5 +205,44 @@
   },
   "relatedProofs": [
     "erdos-433"
+  ],
+  "references": [
+    {
+      "title": "On the extremal Frobenius problem in a new aspect",
+      "authors": [
+        "G. Kiss"
+      ],
+      "year": 2002,
+      "venue": "Ann. Univ. Sci. Budapest. Eötvös Sect. Math.",
+      "relevance": "Proved that {n-k+1,...,n} maximizes the count of non-representable integers (the main result)"
+    },
+    {
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "authors": [
+        "P. Erdős",
+        "R.L. Graham"
+      ],
+      "year": 1980,
+      "venue": "L'Enseignement Mathématique, Monograph No. 28",
+      "relevance": "Original source of Problems #433 and #434 on extremal Frobenius problems"
+    },
+    {
+      "title": "Mathematical Questions with their Solutions, Educational Times",
+      "authors": [
+        "J.J. Sylvester"
+      ],
+      "year": 1884,
+      "venue": "Educational Times",
+      "relevance": "Classical formula: for coprime a, b, the Frobenius number is ab-a-b and the count is (a-1)(b-1)/2"
+    },
+    {
+      "title": "The Diophantine Frobenius Problem",
+      "authors": [
+        "J.L. Ramírez-Alfonsín"
+      ],
+      "year": 2005,
+      "venue": "Oxford University Press",
+      "relevance": "Comprehensive survey proving NP-hardness for ≥ 3 elements and collecting known results"
+    }
   ]
 }

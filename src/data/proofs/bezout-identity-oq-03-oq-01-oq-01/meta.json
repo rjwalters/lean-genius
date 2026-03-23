@@ -48,29 +48,6 @@
       "totient_prod_pairwise_coprime: k-fold Euler totient multiplicativity",
       "zmod_one_equiv_punit: ZMod 1 ≅ PUnit as the base case ring isomorphism"
     ],
-    "references": [
-      {
-        "authors": "Gauss, Carl Friedrich",
-        "title": "Disquisitiones Arithmeticae",
-        "year": "1801",
-        "venue": "Gerhard Fleischer, Leipzig",
-        "note": "Articles 32-36: systematic treatment of congruences and the Chinese Remainder Theorem"
-      },
-      {
-        "authors": "Sunzi",
-        "title": "Sunzi Suanjing (孫子算經)",
-        "year": "c. 3rd century",
-        "venue": "China",
-        "note": "Earliest known statement of the CRT: 'There is an unknown number which gives remainders 2, 3, 2 when divided by 3, 5, 7 respectively. Find the number.'"
-      },
-      {
-        "authors": "Ireland, Kenneth; Rosen, Michael",
-        "title": "A Classical Introduction to Modern Number Theory",
-        "year": "1990",
-        "venue": "Springer Graduate Texts in Mathematics",
-        "note": "Chapter 3: the CRT as a ring isomorphism, with applications to Euler's totient"
-      }
-    ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
     "lineCount": 249
@@ -203,5 +180,28 @@
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 8
-  }
+  },
+  "references": [
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Gerhard Fleischer, Leipzig",
+      "note": "Articles 32-36: systematic treatment of congruences and the Chinese Remainder Theorem"
+    },
+    {
+      "authors": "Sunzi",
+      "title": "Sunzi Suanjing (孫子算經)",
+      "year": "c. 3rd century",
+      "venue": "China",
+      "note": "Earliest known statement of the CRT: 'There is an unknown number which gives remainders 2, 3, 2 when divided by 3, 5, 7 respectively. Find the number.'"
+    },
+    {
+      "authors": "Ireland, Kenneth; Rosen, Michael",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": "1990",
+      "venue": "Springer Graduate Texts in Mathematics",
+      "note": "Chapter 3: the CRT as a ring isomorphism, with applications to Euler's totient"
+    }
+  ]
 }

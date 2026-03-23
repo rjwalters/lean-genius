@@ -50,34 +50,7 @@
       "ejs_refinement axiom: for q < φ, only need m = 2"
     ],
     "axiomCount": 14,
-    "lineCount": 198,
-    "references": [
-      {
-        "key": "EJK90",
-        "citation": "Erdős, P., Joó, I., and Komornik, V., Characterization of the unique expansions 1 = Σ q^{-n_i} and related problems, Bulletin de la Société Mathématique de France 118(3) (1990), 377–390.",
-        "type": "paper"
-      },
-      {
-        "key": "Bu96",
-        "citation": "Bugeaud, Y., On a property of Pisot numbers and related questions, Acta Mathematica Hungarica 73(1–2) (1996), 33–39.",
-        "type": "paper"
-      },
-      {
-        "key": "EJS96",
-        "citation": "Erdős, P., Joó, I., and Schnitzer, F.J., On Pisot numbers, Annales Universitatis Scientiarum Budapestinensis de Rolando Eötvös Nominatae, Sectio Mathematica 39 (1996), 95–99.",
-        "type": "paper"
-      },
-      {
-        "key": "Be38",
-        "citation": "Bertin, M.-J. et al., Pisot and Salem Numbers, Birkhäuser (1992). Comprehensive survey of Pisot-Vijayaraghavan numbers and their properties.",
-        "type": "book"
-      },
-      {
-        "key": "Si44",
-        "citation": "Siegel, C.L., Algebraic integers whose conjugates lie in the unit circle, Duke Mathematical Journal 11 (1944), 597–602. Early characterization of Pisot numbers.",
-        "type": "paper"
-      }
-    ]
+    "lineCount": 198
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1096** was posed by Erdős and Joó at the 1991 Great Western Number Theory conference. It concerns the structure of q-expansions: numbers that can be written as finite sums Σ q^i.\n\n**Key Historical Developments:**\n- **1990 (Erdős-Joó-Komornik):** Proved Pisot-Vijayaraghavan numbers cannot have gaps → 0. Also showed universal bound: gaps ≤ 1 for 1 < q ≤ 2.\n- **1991 (Great Western):** Erdős and Joó posed the problem, conjecturing the threshold is q₀ ≈ 1.3247.\n- **1996 (Bugeaud):** Characterized Pisot numbers via gap behavior in m-digit expansions.\n- **1996 (Erdős-Joó-Schnitzer):** Refined characterization for q < φ.\n\nThe smallest Pisot number q₀ is the real root of x³ = x + 1, a remarkable algebraic integer discovered by Le Lionnais in 1983.",
@@ -213,6 +186,33 @@
       "targetId": "fundamental-arithmetic",
       "relationship": "foundational",
       "description": "Unique prime factorization underlies the algebraic number theory needed to study Pisot numbers: the minimal polynomial of q₀ (x³ - x - 1) is irreducible over ℚ, and its factorization properties in ℤ[q₀] determine the expansion structure"
+    }
+  ],
+  "references": [
+    {
+      "key": "EJK90",
+      "citation": "Erdős, P., Joó, I., and Komornik, V., Characterization of the unique expansions 1 = Σ q^{-n_i} and related problems, Bulletin de la Société Mathématique de France 118(3) (1990), 377–390.",
+      "type": "paper"
+    },
+    {
+      "key": "Bu96",
+      "citation": "Bugeaud, Y., On a property of Pisot numbers and related questions, Acta Mathematica Hungarica 73(1–2) (1996), 33–39.",
+      "type": "paper"
+    },
+    {
+      "key": "EJS96",
+      "citation": "Erdős, P., Joó, I., and Schnitzer, F.J., On Pisot numbers, Annales Universitatis Scientiarum Budapestinensis de Rolando Eötvös Nominatae, Sectio Mathematica 39 (1996), 95–99.",
+      "type": "paper"
+    },
+    {
+      "key": "Be38",
+      "citation": "Bertin, M.-J. et al., Pisot and Salem Numbers, Birkhäuser (1992). Comprehensive survey of Pisot-Vijayaraghavan numbers and their properties.",
+      "type": "book"
+    },
+    {
+      "key": "Si44",
+      "citation": "Siegel, C.L., Algebraic integers whose conjugates lie in the unit circle, Duke Mathematical Journal 11 (1944), 597–602. Early characterization of Pisot numbers.",
+      "type": "paper"
     }
   ]
 }

@@ -61,29 +61,6 @@
       "derangements_alternating_odd: D(2n+1)/(2n+1)! ≤ e^{-1} (odd partial sums undershoot)",
       "Concrete error bounds for n=0,1,2,3: |error| ≤ 1, 1/2, 1/6, 1/24"
     ],
-    "references": [
-      {
-        "authors": "Montmort, P. R.",
-        "title": "Essay d'analyse sur les jeux de hasard",
-        "year": "1708",
-        "venue": "Paris",
-        "note": "First systematic study of derangements"
-      },
-      {
-        "authors": "Euler, L.",
-        "title": "Calcul de la probabilité dans le jeu de rencontre",
-        "year": "1751",
-        "venue": "Mémoires de l'Académie des Sciences de Berlin",
-        "note": "D(n) = n! ∑_{k=0}^n (-1)^k/k! formula"
-      },
-      {
-        "authors": "Wiedijk, F.",
-        "title": "Formalizing 100 Theorems",
-        "year": "2008",
-        "venue": "https://www.cs.ru.nl/~freek/100/",
-        "note": "Theorem #88: Derangements Formula (extended by this convergence rate result)"
-      }
-    ],
     "dateAdded": "2026-02-26",
     "axiomCount": 0,
     "lineCount": 405
@@ -191,5 +168,28 @@
     "axiomCount": 0,
     "theoremCount": 22,
     "definitionCount": 2
-  }
+  },
+  "references": [
+    {
+      "authors": "Montmort, P. R.",
+      "title": "Essay d'analyse sur les jeux de hasard",
+      "year": "1708",
+      "venue": "Paris",
+      "note": "First systematic study of derangements"
+    },
+    {
+      "authors": "Euler, L.",
+      "title": "Calcul de la probabilité dans le jeu de rencontre",
+      "year": "1751",
+      "venue": "Mémoires de l'Académie des Sciences de Berlin",
+      "note": "D(n) = n! ∑_{k=0}^n (-1)^k/k! formula"
+    },
+    {
+      "authors": "Wiedijk, F.",
+      "title": "Formalizing 100 Theorems",
+      "year": "2008",
+      "venue": "https://www.cs.ru.nl/~freek/100/",
+      "note": "Theorem #88: Derangements Formula (extended by this convergence rate result)"
+    }
+  ]
 }

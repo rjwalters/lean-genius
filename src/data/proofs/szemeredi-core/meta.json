@@ -9,7 +9,6 @@
     "date": "1975",
     "status": "verified",
     "proofRepoPath": "Proofs/SzemerediCore.lean",
-    "leanFile": "proofs/Proofs/SzemerediCore.lean",
     "tags": [
       "szemeredi",
       "combinatorics",
@@ -43,33 +42,6 @@
       "Size-weighted partition energy following Komlos-Simonovits (1996)",
       "Proved: edgeDensity_nonneg, edgeDensity_le_one, partitionEnergy_nonneg"
     ],
-    "references": [
-      {
-        "key": "Sz75",
-        "citation": "Szemerédi, E., On sets of integers containing no k elements in arithmetic progression, Acta Arithmetica 27 (1975), 199–245.",
-        "type": "paper"
-      },
-      {
-        "key": "KS96",
-        "citation": "Komlós, J. and Simonovits, M., Szemerédi's Regularity Lemma and its applications in graph theory, in: Combinatorics, Paul Erdős is Eighty, Vol. 2, Bolyai Society Mathematical Studies 2 (1996), 295–352.",
-        "type": "paper"
-      },
-      {
-        "key": "Sz78",
-        "citation": "Szemerédi, E., Regular partitions of graphs, in: Problèmes combinatoires et théorie des graphes (Colloq. Internat. CNRS, Orsay 1976), Colloq. Internat. CNRS 260 (1978), 399–401.",
-        "type": "paper"
-      },
-      {
-        "key": "Go10",
-        "citation": "Gowers, W.T., Decompositions, approximate structure, transference, and the Hahn-Banach theorem, Bulletin of the London Mathematical Society 42(4) (2010), 573–606.",
-        "type": "paper"
-      },
-      {
-        "key": "Ta06",
-        "citation": "Tao, T., Szemerédi's regularity lemma revisited, Contributions to Discrete Mathematics 1(1) (2006), 8–28.",
-        "type": "paper"
-      }
-    ],
     "relatedProofs": [
       "szemeredi-regularity",
       "szemeredi-counting",
@@ -98,11 +70,6 @@
       "Partition energy is the key potential function: bounded above by 1 and increasing with each refinement step, so at most $1/\\varepsilon^5$ refinements are possible",
       "The epsilon-regularity definition captures pseudorandomness: an epsilon-regular pair behaves like a random bipartite graph with density $d(A,B)$ for the purposes of counting subgraphs",
       "The equitability condition in IsRegularPartition (parts differ in size by at most 1) is essential for the energy increment argument — without it, concentrating vertices in one part could defeat the potential function"
-    ],
-    "prerequisites": [
-      "Graph theory: simple graphs, vertex subsets, bipartite edge counts, and the adjacency relation $G.\\text{Adj}$",
-      "Rational arithmetic: division, positivity arguments, and the $[0,1]$ bound via `div_le_one`",
-      "Finite combinatorics: Cartesian products `A \\times B$, `Finset.card_filter_le`, `Finset.card_product`, and `Finset.sum_nonneg`"
     ]
   },
   "sections": [
@@ -193,11 +160,40 @@
     "imports": [
       "Mathlib"
     ],
-    "opens": ["Classical"],
+    "opens": [
+      "Classical"
+    ],
     "namespace": "Szemeredi.Core",
     "lineCount": 110,
     "axiomCount": 0,
     "theoremCount": 3,
     "definitionCount": 4
-  }
+  },
+  "references": [
+    {
+      "key": "Sz75",
+      "citation": "Szemerédi, E., On sets of integers containing no k elements in arithmetic progression, Acta Arithmetica 27 (1975), 199–245.",
+      "type": "paper"
+    },
+    {
+      "key": "KS96",
+      "citation": "Komlós, J. and Simonovits, M., Szemerédi's Regularity Lemma and its applications in graph theory, in: Combinatorics, Paul Erdős is Eighty, Vol. 2, Bolyai Society Mathematical Studies 2 (1996), 295–352.",
+      "type": "paper"
+    },
+    {
+      "key": "Sz78",
+      "citation": "Szemerédi, E., Regular partitions of graphs, in: Problèmes combinatoires et théorie des graphes (Colloq. Internat. CNRS, Orsay 1976), Colloq. Internat. CNRS 260 (1978), 399–401.",
+      "type": "paper"
+    },
+    {
+      "key": "Go10",
+      "citation": "Gowers, W.T., Decompositions, approximate structure, transference, and the Hahn-Banach theorem, Bulletin of the London Mathematical Society 42(4) (2010), 573–606.",
+      "type": "paper"
+    },
+    {
+      "key": "Ta06",
+      "citation": "Tao, T., Szemerédi's regularity lemma revisited, Contributions to Discrete Mathematics 1(1) (2006), 8–28.",
+      "type": "paper"
+    }
+  ]
 }

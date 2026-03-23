@@ -24,13 +24,6 @@
     "erdosProblemStatus": "open",
     "mathlib_version": "v4.x",
     "dateAdded": "2026-02-05",
-    "references": [
-      "Erdős–Gallai (1966): original conjecture and O(n log n) bound",
-      "Conlon–Fox–Sudakov (2014): O(n) for dense graphs, Annals of Math. 180(3), 1121–1174",
-      "Bucić–Montgomery (2022): O(n log* n) bound, arXiv:2209.01051",
-      "Erdős (1971): 'Some unsolved problems in graph theory'",
-      "https://erdosproblems.com/184"
-    ],
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -178,5 +171,12 @@
     "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "references": [
+    "Erdős–Gallai (1966): original conjecture and O(n log n) bound",
+    "Conlon–Fox–Sudakov (2014): O(n) for dense graphs, Annals of Math. 180(3), 1121–1174",
+    "Bucić–Montgomery (2022): O(n log* n) bound, arXiv:2209.01051",
+    "Erdős (1971): 'Some unsolved problems in graph theory'",
+    "https://erdosproblems.com/184"
+  ]
 }

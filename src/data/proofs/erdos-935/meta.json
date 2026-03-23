@@ -64,20 +64,6 @@
       "mahler_lower_bound: lim sup Q₂(n···(n+ℓ))/n² ≥ 1 (Mahler)",
       "erdos935_part1: Q₂(n···(n+ℓ)) < n^{2+ε} for large n (conjecture)",
       "erdos935_part2_and_3: lim sup Q₂/n² = ∞ for ℓ≥2; Q₂/n^{ℓ+1} → 0 (conjecture)"
-    ],
-    "references": [
-      {
-        "title": "Some problems and results on consecutive integers",
-        "author": "Erdős, P.",
-        "year": 1975,
-        "citation": "Erdős, P. (1975). Problems and results on consecutive integers. Publicationes Mathematicae Debrecen."
-      },
-      {
-        "title": "On the greatest prime factor of a product of consecutive integers",
-        "author": "Mahler, K.",
-        "year": 1935,
-        "citation": "Mahler, K. (1935). On the greatest prime factor of consecutive integers. Mathematika."
-      }
     ]
   },
   "overview": {
@@ -168,5 +154,19 @@
     "axiomCount": 6,
     "theoremCount": 0,
     "definitionCount": 6
-  }
+  },
+  "references": [
+    {
+      "title": "Some problems and results on consecutive integers",
+      "author": "Erdős, P.",
+      "year": 1975,
+      "citation": "Erdős, P. (1975). Problems and results on consecutive integers. Publicationes Mathematicae Debrecen."
+    },
+    {
+      "title": "On the greatest prime factor of a product of consecutive integers",
+      "author": "Mahler, K.",
+      "year": 1935,
+      "citation": "Mahler, K. (1935). On the greatest prime factor of consecutive integers. Mathematika."
+    }
+  ]
 }

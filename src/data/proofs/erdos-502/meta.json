@@ -15,15 +15,6 @@
       "combinatorial geometry",
       "polynomial method"
     ],
-    "references": [
-      "Erdős (1961): original problem, posed by Coxeter",
-      "Kelly (1947): early two-distance results in the plane",
-      "Bannai–Bannai–Stanton (1983): upper bound C(n+2,2) via polynomial method",
-      "Blokhuis (1984): simplified BBS proof using linear algebra",
-      "Petrov–Pohoata (2021): simpler proof via Croot–Lev–Pach polynomial method",
-      "https://erdosproblems.com/502"
-    ],
-    "leanFile": "Proofs/Erdos502Problem.lean",
     "sorries": 0,
     "badge": "axiom",
     "erdosUrl": "https://erdosproblems.com/502",
@@ -125,5 +116,13 @@
     "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    "Erdős (1961): original problem, posed by Coxeter",
+    "Kelly (1947): early two-distance results in the plane",
+    "Bannai–Bannai–Stanton (1983): upper bound C(n+2,2) via polynomial method",
+    "Blokhuis (1984): simplified BBS proof using linear algebra",
+    "Petrov–Pohoata (2021): simpler proof via Croot–Lev–Pach polynomial method",
+    "https://erdosproblems.com/502"
+  ]
 }

@@ -42,28 +42,6 @@
       ],
       "significance": "Resolves the Erdős-Sós conjecture on singleton intersection avoidance: the maximum k-uniform family avoiding |A ∩ B| = 1 has exactly C(n-2, k-2) sets (achieved by fixing two common elements). Frankl's proof via shifting established a paradigm for extremal set theory. The sharp threshold at k = 4 reveals a structural boundary — the theorem fails for k = 3 due to designs like Steiner triple systems."
     },
-    "references": [
-      {
-        "key": "Fr77",
-        "citation": "Frankl, Péter, On families of finite sets no two of which intersect in a singleton, Bull. Austral. Math. Soc. 17 (1977), 125-134.",
-        "type": "paper"
-      },
-      {
-        "key": "Fr87",
-        "citation": "Frankl, P. and Füredi, Z., Forbidding just one intersection, J. Combin. Theory Ser. A 39 (1985), 160-176.",
-        "type": "paper"
-      },
-      {
-        "key": "EKR61",
-        "citation": "Erdős, P., Ko, C., and Rado, R., Intersection theorems for systems of finite sets, Quart. J. Math. Oxford 12 (1961), 313-320.",
-        "type": "paper"
-      },
-      {
-        "key": "erdos702",
-        "citation": "Erdős Problems, Problem #702, https://erdosproblems.com/702",
-        "type": "website"
-      }
-    ],
     "relatedProofs": [
       {
         "id": "erdos-703",
@@ -203,5 +181,27 @@
     "axiomCount": 4,
     "theoremCount": 1,
     "definitionCount": 8
-  }
+  },
+  "references": [
+    {
+      "key": "Fr77",
+      "citation": "Frankl, Péter, On families of finite sets no two of which intersect in a singleton, Bull. Austral. Math. Soc. 17 (1977), 125-134.",
+      "type": "paper"
+    },
+    {
+      "key": "Fr87",
+      "citation": "Frankl, P. and Füredi, Z., Forbidding just one intersection, J. Combin. Theory Ser. A 39 (1985), 160-176.",
+      "type": "paper"
+    },
+    {
+      "key": "EKR61",
+      "citation": "Erdős, P., Ko, C., and Rado, R., Intersection theorems for systems of finite sets, Quart. J. Math. Oxford 12 (1961), 313-320.",
+      "type": "paper"
+    },
+    {
+      "key": "erdos702",
+      "citation": "Erdős Problems, Problem #702, https://erdosproblems.com/702",
+      "type": "website"
+    }
+  ]
 }

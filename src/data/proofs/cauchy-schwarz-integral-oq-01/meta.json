@@ -51,29 +51,6 @@
       "Cauchy-Schwarz for real-valued functions (cauchy_schwarz_real_from_holder)",
       "Minkowski's inequality for L2 (norm_add_le for Lp ℝ 2 μ)"
     ],
-    "references": [
-      {
-        "authors": "O. Hölder",
-        "title": "Über einen Mittelwerthssatz",
-        "year": "1889",
-        "venue": "Nachrichten von der Königl. Gesellschaft der Wissenschaften und der Georg-Augusts-Universität zu Göttingen",
-        "note": "Original proof of Hölder's inequality"
-      },
-      {
-        "authors": "H. Minkowski",
-        "title": "Geometrie der Zahlen",
-        "year": "1896",
-        "venue": "Teubner, Leipzig",
-        "note": "Minkowski's inequality (Lp triangle inequality) derived from Hölder"
-      },
-      {
-        "authors": "V. Y. Bunyakovsky",
-        "title": "Sur quelques inegalites concernant les integrales ordinaires et les integrales aux differences finies",
-        "year": "1859",
-        "venue": "Memoires de l'Academie Imperiale des Sciences de St.-Petersbourg",
-        "note": "First integral form of Cauchy-Schwarz (the p=q=2 case)"
-      }
-    ],
     "dateAdded": "2026-02-23",
     "axiomCount": 0,
     "lineCount": 228
@@ -205,5 +182,28 @@
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "O. Hölder",
+      "title": "Über einen Mittelwerthssatz",
+      "year": "1889",
+      "venue": "Nachrichten von der Königl. Gesellschaft der Wissenschaften und der Georg-Augusts-Universität zu Göttingen",
+      "note": "Original proof of Hölder's inequality"
+    },
+    {
+      "authors": "H. Minkowski",
+      "title": "Geometrie der Zahlen",
+      "year": "1896",
+      "venue": "Teubner, Leipzig",
+      "note": "Minkowski's inequality (Lp triangle inequality) derived from Hölder"
+    },
+    {
+      "authors": "V. Y. Bunyakovsky",
+      "title": "Sur quelques inegalites concernant les integrales ordinaires et les integrales aux differences finies",
+      "year": "1859",
+      "venue": "Memoires de l'Academie Imperiale des Sciences de St.-Petersbourg",
+      "note": "First integral form of Cauchy-Schwarz (the p=q=2 case)"
+    }
+  ]
 }

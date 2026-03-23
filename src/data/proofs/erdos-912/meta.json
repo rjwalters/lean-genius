@@ -51,29 +51,6 @@
       "Connection to Legendre's formula",
       "Proved erdos_selfridge_asymptotic by combining axiomatized bounds with max threshold"
     ],
-    "references": [
-      {
-        "authors": "Erdős, P.",
-        "title": "Miscellaneous problems in number theory",
-        "year": "1982",
-        "venue": "Congr. Numer. 34, 25-45",
-        "note": "Proved h(n) ≍ √(n/log n) with Selfridge"
-      },
-      {
-        "authors": "Legendre, A.-M.",
-        "title": "Essai sur la théorie des nombres",
-        "year": "1808",
-        "venue": "Courcier, Paris",
-        "note": "Legendre's formula for v_p(n!) = Σ floor(n/p^j)"
-      },
-      {
-        "authors": "Cramér, H.",
-        "title": "On the order of magnitude of the difference between consecutive prime numbers",
-        "year": "1936",
-        "venue": "Acta Arith. 2, 23-46",
-        "note": "Random model for primes underlying Tao's heuristic"
-      }
-    ],
     "dateAdded": "2026-01-19",
     "axiomCount": 9,
     "lineCount": 248
@@ -175,5 +152,28 @@
     "axiomCount": 9,
     "theoremCount": 3,
     "definitionCount": 8
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, P.",
+      "title": "Miscellaneous problems in number theory",
+      "year": "1982",
+      "venue": "Congr. Numer. 34, 25-45",
+      "note": "Proved h(n) ≍ √(n/log n) with Selfridge"
+    },
+    {
+      "authors": "Legendre, A.-M.",
+      "title": "Essai sur la théorie des nombres",
+      "year": "1808",
+      "venue": "Courcier, Paris",
+      "note": "Legendre's formula for v_p(n!) = Σ floor(n/p^j)"
+    },
+    {
+      "authors": "Cramér, H.",
+      "title": "On the order of magnitude of the difference between consecutive prime numbers",
+      "year": "1936",
+      "venue": "Acta Arith. 2, 23-46",
+      "note": "Random model for primes underlying Tao's heuristic"
+    }
+  ]
 }

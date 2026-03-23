@@ -9,7 +9,6 @@
     "date": "1946",
     "status": "verified",
     "proofRepoPath": "Proofs/BorsukUlamOQ03OQ01OQ01.lean",
-    "leanFile": "proofs/Proofs/BorsukUlamOQ03OQ01OQ01.lean",
     "tags": [
       "topology",
       "combinatorics",
@@ -49,28 +48,6 @@
       "tucker_2d_from_parity: combines parity with 1D Tucker for full 2D result",
       "even_card_odd_degree_vertices: general graph theory result — any finite simple graph has even count of odd-degree vertices",
       "tucker_parity_from_graph: strengthened Tucker parity eliminating handshaking hypothesis via SimpleGraph structure"
-    ],
-    "references": [
-      {
-        "key": "Tu46",
-        "citation": "Tucker, A.W., Some topological properties of disk and sphere, Proceedings of the First Canadian Mathematical Congress (1946), 285-309.",
-        "type": "paper"
-      },
-      {
-        "key": "Ma03",
-        "citation": "Matousek, J., Using the Borsuk-Ulam Theorem, Springer (2003), Chapter 2.",
-        "type": "book"
-      },
-      {
-        "key": "Fr82",
-        "citation": "Freund, R.M. and Todd, M.J., A constructive proof of Tucker's combinatorial lemma, Journal of Combinatorial Theory, Series A 30 (1981), 321-325.",
-        "type": "paper"
-      },
-      {
-        "key": "Zi95",
-        "citation": "Ziegler, G., Lectures on Polytopes, Springer GTM 152 (1995), Chapter 5 on triangulations.",
-        "type": "book"
-      }
     ],
     "relatedProofs": [
       {
@@ -194,5 +171,27 @@
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    {
+      "key": "Tu46",
+      "citation": "Tucker, A.W., Some topological properties of disk and sphere, Proceedings of the First Canadian Mathematical Congress (1946), 285-309.",
+      "type": "paper"
+    },
+    {
+      "key": "Ma03",
+      "citation": "Matousek, J., Using the Borsuk-Ulam Theorem, Springer (2003), Chapter 2.",
+      "type": "book"
+    },
+    {
+      "key": "Fr82",
+      "citation": "Freund, R.M. and Todd, M.J., A constructive proof of Tucker's combinatorial lemma, Journal of Combinatorial Theory, Series A 30 (1981), 321-325.",
+      "type": "paper"
+    },
+    {
+      "key": "Zi95",
+      "citation": "Ziegler, G., Lectures on Polytopes, Springer GTM 152 (1995), Chapter 5 on triangulations.",
+      "type": "book"
+    }
+  ]
 }

@@ -45,24 +45,6 @@
         "module": "Mathlib.Analysis.Convex.Basic"
       }
     ],
-    "references": [
-      {
-        "key": "pomerance1979",
-        "title": "The prime number graph",
-        "author": "C. Pomerance",
-        "year": 1979,
-        "journal": "Mathematics of Computation",
-        "volume": "33",
-        "pages": "399-408"
-      },
-      {
-        "key": "guy2004",
-        "title": "Unsolved Problems in Number Theory (Problem A14)",
-        "author": "R.K. Guy",
-        "year": 2004,
-        "publisher": "Springer"
-      }
-    ],
     "originalContributions": [
       "nthPrime definition and prime sequence properties",
       "ErdosStrausConjecture and SelfridgeConjecture formal definitions",
@@ -213,5 +195,23 @@
     "erdos-233",
     "erdos-218",
     "erdos-203"
+  ],
+  "references": [
+    {
+      "key": "pomerance1979",
+      "title": "The prime number graph",
+      "author": "C. Pomerance",
+      "year": 1979,
+      "journal": "Mathematics of Computation",
+      "volume": "33",
+      "pages": "399-408"
+    },
+    {
+      "key": "guy2004",
+      "title": "Unsolved Problems in Number Theory (Problem A14)",
+      "author": "R.K. Guy",
+      "year": 2004,
+      "publisher": "Springer"
+    }
   ]
 }

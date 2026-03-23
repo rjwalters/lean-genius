@@ -94,23 +94,6 @@
         "relationship": "Ramsey number R(3,k) bounds use the probabilistic method; related extremal combinatorics"
       }
     ],
-    "references": [
-      {
-        "key": "ErLo75",
-        "citation": "Erdős, P. and Lovász, L., Problems and results on 3-chromatic hypergraphs and some related questions, in: Infinite and Finite Sets, Colloq. Math. Soc. J. Bolyai 10 (1975), 609-627.",
-        "type": "paper"
-      },
-      {
-        "key": "Lov75",
-        "citation": "Lovász, L., On the ratio of optimal integral and fractional covers, Discrete Math. 13 (1975), 383-390.",
-        "type": "paper"
-      },
-      {
-        "key": "AS16",
-        "citation": "Alon, N. and Spencer, J., The Probabilistic Method, 4th ed., Wiley (2016), Chapter 5: The Lovász Local Lemma.",
-        "type": "book"
-      }
-    ],
     "axiomCount": 11,
     "lineCount": 265
   },
@@ -227,5 +210,22 @@
     "axiomCount": 11,
     "theoremCount": 2,
     "definitionCount": 10
-  }
+  },
+  "references": [
+    {
+      "key": "ErLo75",
+      "citation": "Erdős, P. and Lovász, L., Problems and results on 3-chromatic hypergraphs and some related questions, in: Infinite and Finite Sets, Colloq. Math. Soc. J. Bolyai 10 (1975), 609-627.",
+      "type": "paper"
+    },
+    {
+      "key": "Lov75",
+      "citation": "Lovász, L., On the ratio of optimal integral and fractional covers, Discrete Math. 13 (1975), 383-390.",
+      "type": "paper"
+    },
+    {
+      "key": "AS16",
+      "citation": "Alon, N. and Spencer, J., The Probabilistic Method, 4th ed., Wiley (2016), Chapter 5: The Lovász Local Lemma.",
+      "type": "book"
+    }
+  ]
 }
