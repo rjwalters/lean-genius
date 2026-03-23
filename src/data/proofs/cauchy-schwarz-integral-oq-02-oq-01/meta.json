@@ -74,7 +74,8 @@
       "amgm-inequality",
       "cauchy-schwarz-oq-01",
       "triangle-inequality"
-    ]
+    ],
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "crossReferences": [
     {
@@ -106,7 +107,7 @@
   "overview": {
     "historicalContext": "Hermann Minkowski introduced his inequality in 'Geometrie der Zahlen' (1896), establishing $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ for $L^p$ spaces. The equality characterization — that equality holds iff the vectors are non-negatively proportional — was understood early in the theory but its clean formalization connects to the Cauchy-Schwarz equality case. Cauchy proved the discrete inequality in 1821 ('Cours d'Analyse'), Schwarz extended it to integrals in 1885, and Viktor Bunyakovsky independently proved the integral form in 1859 in 'Sur quelques inégalités concernant les intégrales ordinaires et les intégrales aux différences finies'. The equality characterization $\\langle f,g \\rangle = \\|f\\|\\|g\\|$ iff $f, g$ are proportional was made precise by Frigyes Riesz in the early 20th century as part of his foundational work on $L^p$ spaces and abstract Hilbert spaces. John von Neumann's axiomatic treatment of Hilbert spaces (1929) placed the inner product inequality and its equality case at the center of functional analysis. This formalization works in the abstract setting of real inner product spaces, encompassing $\\mathbb{R}^n$, $L^2$ function spaces, and infinite-dimensional Hilbert spaces simultaneously.",
     "problemStatement": "**Open Question (cauchy-schwarz-integral-oq-02-oq-01)**: Can the strict form of Minkowski (equality iff f and g are proportional) be derived as a corollary of the equality case of CS?\n\n**Answer: YES** — The proof has two directions:\n\n**Forward (‖f+g‖ = ‖f‖+‖g‖ → proportional)**:\nSquaring both sides and using ‖f+g‖² = ‖f‖² + 2⟪f,g⟫ + ‖g‖² gives ⟪f,g⟫ = ‖f‖·‖g‖.\nThen ‖‖f‖•g - ‖g‖•f‖² = 2‖f‖²‖g‖² - 2‖f‖·‖g‖·⟪f,g⟫ = 0.\n\n**Backward (proportional → ‖f+g‖ = ‖f‖+‖g‖)**:\n‖f‖•g = ‖g‖•f implies ⟪f,g⟫ = ‖f‖·‖g‖ (by taking ⟪f,·⟫ of both sides).\nThen ‖f+g‖² = (‖f‖+‖g‖)² and both sides are non-negative.",
-    "text": "Equality in the triangle inequality \u2016f+g\u2016 = \u2016f\u2016+\u2016g\u2016 holds in a real inner product space if and only if the vectors are non-negatively proportional: \u2016f\u2016\u2022g = \u2016g\u2016\u2022f. The proof reduces to Cauchy-Schwarz equality via squaring, then characterizes proportionality through \u2016\u2016f\u2016\u2022g - \u2016g\u2016\u2022f\u2016\u00b2 = 0.",
+    "text": "Equality in the triangle inequality ‖f+g‖ = ‖f‖+‖g‖ holds in a real inner product space if and only if the vectors are non-negatively proportional: ‖f‖•g = ‖g‖•f. The proof reduces to Cauchy-Schwarz equality via squaring, then characterizes proportionality through ‖‖f‖•g - ‖g‖•f‖² = 0.",
     "proofStrategy": "The key reduction is: Minkowski equality ↔ CS equality ↔ proportionality.\n\n1. **Minkowski → CS**: Squaring ‖f+g‖ = ‖f‖+‖g‖ and expanding via norm_add_sq_real yields ⟪f,g⟫ = ‖f‖·‖g‖.\n2. **CS → Proportional**: Compute ‖‖f‖•g - ‖g‖•f‖² = 0 using inner product bilinearity.\n3. **Proportional → CS**: Take ⟪f,·⟫ of ‖f‖•g = ‖g‖•f, use ⟪f,f⟫ = ‖f‖² and field_simp.\n4. **CS → Minkowski**: Substitute CS equality into norm_add_sq_real, factor (a-b)(a+b)=0.",
     "keyInsights": [
       "**Squaring reduction:** The forward direction squares $\\|f+g\\| = \\|f\\| + \\|g\\|$ and uses `norm_add_sq_real` to reduce to $\\langle f,g \\rangle = \\|f\\|\\|g\\|$ (CS equality) — a standard analytic technique",
