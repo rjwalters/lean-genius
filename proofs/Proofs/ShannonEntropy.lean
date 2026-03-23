@@ -218,17 +218,66 @@ theorem entropy_le_log_card {α : Type*} [Fintype α] [DecidableEq α]
   rw [h1, hsum, mul_one, Real.log_inv, neg_neg]
 
 -- ============================================================
--- Log-Sum Inequality (sorry — candidate for Aristotle)
+-- Log-Sum Inequality
 -- ============================================================
 
 -- Log-sum inequality: Σ aᵢ log(aᵢ/bᵢ) ≥ (Σ aᵢ) log(Σ aᵢ / Σ bᵢ)
+-- Proof: Rescale reference measure by A/B so bounds sum to zero,
+-- then apply kl_term_bound pointwise.
 theorem log_sum_inequality {n : ℕ} {a b : Fin n → ℝ}
     (ha : ∀ i, 0 ≤ a i) (hb : ∀ i, 0 < b i) :
     ∑ i, a i * Real.log (a i / b i) ≥
-    (∑ i, a i) * Real.log ((∑ i, a i) / ∑ i, b i) := by sorry
+    (∑ i, a i) * Real.log ((∑ i, a i) / ∑ i, b i) := by
+  -- Handle n = 0: empty sums, trivial
+  rcases n with _ | n
+  · simp
+  -- Abbreviations
+  set A := ∑ i : Fin (n + 1), a i with hA_def
+  set B := ∑ i : Fin (n + 1), b i with hB_def
+  have hA_nn : 0 ≤ A := Finset.sum_nonneg (fun i _ => ha i)
+  have hB_pos : 0 < B := Finset.sum_pos (fun i _ => hb i) Finset.univ_nonempty
+  -- Suffices to show: ∑ aᵢ·log(aᵢ/bᵢ) - A·log(A/B) ≥ 0
+  suffices hsuff : (∑ i, a i * Real.log (a i / b i)) - A * Real.log (A / B) ≥ 0 by
+    linarith
+  -- Expand as sum of per-term differences
+  have hexpand : (∑ i, a i * Real.log (a i / b i)) - A * Real.log (A / B) =
+      ∑ i, (a i * Real.log (a i / b i) - a i * Real.log (A / B)) := by
+    rw [hA_def, Finset.sum_mul, ← Finset.sum_sub_distrib]
+  rw [hexpand]
+  -- Each term ≥ aᵢ - bᵢ·(A/B), and these bounds sum to 0
+  have hzero : ∑ i : Fin (n + 1), (a i - b i * (A / B)) = 0 := by
+    rw [Finset.sum_sub_distrib, ← Finset.sum_mul]
+    have hB_ne : (B : ℝ) ≠ 0 := ne_of_gt hB_pos
+    field_simp; ring
+  calc (0 : ℝ) = ∑ i, (a i - b i * (A / B)) := hzero.symm
+    _ ≤ ∑ i, (a i * Real.log (a i / b i) - a i * Real.log (A / B)) := by
+        apply Finset.sum_le_sum; intro i _
+        by_cases hai : a i = 0
+        · -- aᵢ = 0: 0 - 0 ≥ 0 - bᵢ·(A/B)
+          have h0 : 0 ≤ b i * (A / B) :=
+            mul_nonneg (le_of_lt (hb i)) (div_nonneg hA_nn (le_of_lt hB_pos))
+          simp [hai]; linarith
+        · -- aᵢ > 0: use kl_term_bound with q = bᵢ·(A/B)
+          have hai_pos : 0 < a i := lt_of_le_of_ne (ha i) (Ne.symm hai)
+          have hA_pos : 0 < A :=
+            lt_of_lt_of_le hai_pos
+              (Finset.single_le_sum (fun j _ => ha j) (Finset.mem_univ i))
+          have hq_pos : 0 < b i * (A / B) :=
+            mul_pos (hb i) (div_pos hA_pos hB_pos)
+          -- kl_term_bound: aᵢ·log(aᵢ/(bᵢ·A/B)) ≥ aᵢ - bᵢ·A/B
+          have hkl := kl_term_bound hai_pos hq_pos
+          -- Connect: log(aᵢ/(bᵢ·A/B)) = log(aᵢ/bᵢ) - log(A/B)
+          have heq : a i * Real.log (a i / (b i * (A / B))) =
+              a i * Real.log (a i / b i) - a i * Real.log (A / B) := by
+            rw [show a i / (b i * (A / B)) = a i / b i / (A / B) from
+              (div_div _ _ _).symm]
+            rw [Real.log_div (ne_of_gt (div_pos hai_pos (hb i)))
+                             (ne_of_gt (div_pos hA_pos hB_pos))]
+            ring
+          linarith
 
 -- ============================================================
--- Mutual Information and Conditioning (sorry — candidates for Aristotle)
+-- Mutual Information and Conditioning
 -- ============================================================
 
 -- Marginal is positive when joint is positive at some point

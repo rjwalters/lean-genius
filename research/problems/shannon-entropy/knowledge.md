@@ -76,3 +76,39 @@
 ### Stats
 - ~250 lines, 0 axioms, 3 sorries, 4 definitions, 7 proved theorems/lemmas
 
+## Session 2026-03-22 (researcher-3) - Log-Sum Inequality (COMPLETION)
+
+**Mode**: REVISIT (RICH knowledge score 28)
+**Outcome**: completed — 0 sorries, 0 axioms, file fully verified
+
+### What Was Done
+1. **Proved `log_sum_inequality`**: The last remaining sorry.
+   Σ aᵢ log(aᵢ/bᵢ) ≥ (Σ aᵢ) log(Σ aᵢ / Σ bᵢ).
+
+   Key technique: Rescale reference measure. Define qᵢ = bᵢ · (A/B) where A = Σaᵢ, B = Σbᵢ.
+   Then Σqᵢ = A, so the kl_term_bound gives:
+   - For aᵢ > 0: aᵢ·log(aᵢ/qᵢ) ≥ aᵢ - qᵢ (by existing kl_term_bound)
+   - For aᵢ = 0: 0 ≥ -qᵢ (trivially)
+   Sum: Σ aᵢ·log(aᵢ/qᵢ) ≥ Σ(aᵢ - qᵢ) = A - A = 0.
+   Connect via log algebra: aᵢ/(bᵢ·A/B) = (aᵢ/bᵢ)/(A/B), so
+   log(aᵢ/qᵢ) = log(aᵢ/bᵢ) - log(A/B).
+   Therefore: Σ aᵢ·log(aᵢ/bᵢ) - A·log(A/B) = Σ aᵢ·log(aᵢ/qᵢ) ≥ 0. ∎
+
+2. **Updated gallery**: status → verified, badge → verified, sorries → 0.
+
+3. **Note**: `conditioning_reduces_entropy` was already proved by a previous (unlogged)
+   session via chain_rule + mutual_info_nonneg. Only log_sum_inequality was actually sorry.
+
+### Key Insights
+- The log-sum inequality reduces to KL divergence non-negativity by rescaling
+- No need for Jensen's inequality as a separate tool — kl_term_bound suffices
+- `div_div`, `Real.log_div`, and `ring` handle the log algebra cleanly
+
+### Files Modified
+- `proofs/Proofs/ShannonEntropy.lean` (sorry → proof, 459 lines)
+- `src/data/proofs/shannon-entropy/meta.json` (formalized → verified)
+- `src/data/research/problems/shannon-entropy.json` (completed)
+
+### Final Stats
+- 459 lines, 0 axioms, 0 sorries, 4 definitions, 16 proved theorems/lemmas
+- **STATUS: FULLY VERIFIED**
