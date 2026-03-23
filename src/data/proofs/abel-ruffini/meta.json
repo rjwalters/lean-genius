@@ -328,6 +328,16 @@
       "targetId": "fermat-two-squares",
       "relationship": "related",
       "description": "Fermat's two-squares theorem ($p = a^2 + b^2$ iff $p \\equiv 1 \\pmod{4}$) uses the Gaussian integers $\\mathbb{Z}[i]$, a prototype for the algebraic number rings central to Galois theory. The splitting behavior of primes in $\\mathbb{Z}[i]$ foreshadows the Langlands program, which generalizes both quadratic reciprocity and the abelian case of Galois's solvability criterion that underpins Abel-Ruffini"
+    },
+    {
+      "targetId": "angle-trisection-oq-02",
+      "relationship": "related",
+      "description": "Both are impossibility results proved via Galois theory using parallel strategies: Abel-Ruffini shows Gal(generic quintic) ≅ S₅ is not solvable, blocking radical solutions; the Wantzel characterization shows constructibility requires the minimal polynomial's degree to be a power of 2, blocking compass-and-straightedge constructions for cos(20°). Both reduce geometric/algebraic impossibility to a group-theoretic property of the Galois group"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-01",
+      "relationship": "related",
+      "description": "The Wantzel-Galois characterization connects Polynomial.Gal to constructibility: natDegree divides |Gal| for irreducible polynomials. This parallels Abel-Ruffini's use of Polynomial.Gal to connect radical solvability to group solvability — both derive impossibility results by analyzing the Galois group structure of the polynomial whose roots would need to be expressible in the restricted framework (radicals or compass-and-straightedge)"
     }
   ],
   "relatedProofs": [
@@ -366,7 +376,9 @@
     "factor-remainder-theorem",
     "cayley-hamilton-minpoly",
     "wilsons-theorem",
-    "fermat-two-squares"
+    "fermat-two-squares",
+    "angle-trisection-oq-02",
+    "angle-trisection-oq-02-oq-01"
   ],
   "references": [
     {
@@ -459,6 +471,20 @@
       "year": "1858",
       "venue": "Comptes rendus de l'Académie des Sciences, vol. 46, pp. 508–515",
       "note": "Showed the general quintic CAN be solved using elliptic modular functions, bypassing the radical barrier by expanding the class of allowed operations — directly relevant to the open question about formalizing the 'elliptic solution of the quintic' in Lean"
+    },
+    {
+      "authors": "Bring, Erland Samuel",
+      "title": "Meletemata quaedam mathematica circa transformationem aequationum algebraicarum",
+      "year": "1786",
+      "venue": "Lund University doctoral dissertation",
+      "note": "First showed that any quintic can be reduced to the form x⁵ + px + q via Tschirnhaus transformations, establishing the Bring normal form. The Bring radical BR(a) — the unique real root of x⁵ + x + a — then solves the general quintic in a framework beyond the four basic radicals, demonstrating that Abel-Ruffini's impossibility is specifically about ⁿ√ operations"
+    },
+    {
+      "authors": "Jerrard, George Birch",
+      "title": "An essay on the resolution of equations",
+      "year": "1859",
+      "venue": "Taylor and Francis, London",
+      "note": "Independently rediscovered and popularized Bring's reduction of the quintic to x⁵ + px + q (now called the Bring-Jerrard form). Jerrard's 1834 paper first brought this result to wider attention, though Bring's priority was later established by Hermite"
     }
   ],
   "leanFile": {
