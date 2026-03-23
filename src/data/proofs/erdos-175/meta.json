@@ -83,7 +83,8 @@
       "**Power-of-2 case requires odd primes**: When $n = 2^k$, the 2-adic valuation gives only $v_2 = 1$, so the squarefreeness obstruction must come from odd primes — this is the hard case resolved by Granville–Ramaré",
       "**The exponent gap $(\\log n)^{1/4}$ to $\\log n$ persists**: Despite Sander's and Erdős–Kolesnik's improvements, the true growth rate of $f(n)$ remains unknown — it is $\\Theta(\\log n)$ for almost all $n$ but potentially smaller for special values",
       "**Threshold at n = 786**: Computational searches show $n = 786$ is the largest value where $\\binom{2n}{n}$ has no odd prime square factor, suggesting a phase transition in the prime power structure of central binomials"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

@@ -49,7 +49,8 @@
       "The Mathlib formalization uses `Cospherical` (points on a common sphere) rather than 'inscribed in a circle', making the theorem valid in any dimension. Four points on a sphere in $\\mathbb{R}^n$ satisfy Ptolemy's equality at the diagonal intersection point.",
       "The converse characterizes cyclic quadrilaterals: $AC \\cdot BD = AB \\cdot CD + AD \\cdot BC$ holds if and only if the four points are concyclic. The inequality $AC \\cdot BD \\leq AB \\cdot CD + AD \\cdot BC$ holds for all four-point configurations (Ptolemy's inequality).",
       "Historically, Ptolemy used the theorem to derive chord addition formulas: $\\text{chord}(\\alpha \\pm \\beta)$ from $\\text{chord}(\\alpha)$ and $\\text{chord}(\\beta)$. These are the ancient versions of the sine and cosine addition formulas, which are the foundation of trigonometry."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -135,7 +136,7 @@
   ],
   "conclusion": {
     "summary": "This formalization verifies Ptolemy's Theorem (Wiedijk #95) using Mathlib's cospherical geometry framework. It provides the main theorem, three alternative formulations, a diagonal-product corollary, three numerical examples (including the Pythagorean theorem as a special case), and discusses the converse characterization and Ptolemy's inequality.",
-    "implications": "Ptolemy's theorem bridges ancient and modern mathematics. It yields the trigonometric addition formulas (the foundation of trigonometry), generalizes the Pythagorean theorem, and characterizes cyclic quadrilaterals. The complex-number proof reveals connections to conformal mappings and inversive geometry. Ptolemy's inequality generalizes to higher dimensions and is related to the positive semidefiniteness of the Cayley-Menger determinant.",
+    "implications": "**Theoretical Significance**: Ptolemy's theorem bridges ancient and modern mathematics. It yields the trigonometric addition formulas (the foundation of trigonometry), generalizes the Pythagorean theorem, and characterizes cyclic quadrilaterals.\n\n**Broader Connections**: The complex-number proof reveals connections to conformal mappings and inversive geometry. Ptolemy's inequality generalizes to higher dimensions and is related to the positive semidefiniteness of the Cayley-Menger determinant.",
     "openQuestions": [
       "Can Ptolemy's inequality (AC·BD ≤ AB·CD + AD·BC for arbitrary four points) be formalized, with equality characterized by concyclicity?",
       "Can the complex-number proof be formalized, showing that Ptolemy's theorem follows from the algebraic identity (z₁-z₃)(z₂-z₄) = (z₁-z₂)(z₃-z₄) + (z₁-z₄)(z₂-z₃) applied to points on a circle?",

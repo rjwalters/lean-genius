@@ -88,7 +88,8 @@
       "Even proving a weaker linear bound $|\\Delta^+| \\geq cn$ for any constant $c > 0$ remains open in 3D",
       "The face lattice of a convex polyhedron (Euler's formula: $V - E + F = 2$) constrains which vertex pairs can be close, but this has not been sufficient to prove the conjecture",
       "The problem connects to the broader question of how geometric constraints (convexity, general position, etc.) affect the distance spectrum of point configurations"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -136,7 +137,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #660 remains open. The conjecture that convex polyhedron vertices in $\\mathbb{R}^3$ determine at least $(1-o(1)) \\cdot n/2$ distinct distances extends Altman's solved 2D result ($\\geq \\lfloor n/2 \\rfloor$ for convex polygons) to three dimensions. The formalization captures the conjecture using extreme points of convex hulls and little-o asymptotics, with Platonic solids as concrete test cases and the Guth-Katz theorem providing context from the general distinct distances problem.",
-    "implications": "Resolution would establish that the convexity constraint forces a clean linear distance count in 3D, without the logarithmic loss present in the general Guth-Katz bound. This would illuminate the fundamental question of how geometric structure (convex position vs. arbitrary position) affects distance distributions. The 2D → 3D transition is a key test case for understanding how dimension affects combinatorial geometry problems, and progress here could inform analogous questions in higher dimensions.",
+    "implications": "**Theoretical Significance**: Resolution would establish that the convexity constraint forces a clean linear distance count in 3D, without the logarithmic loss present in the general Guth-Katz bound. This would illuminate the fundamental question of how geometric structure (convex position vs.\n\n**Broader Connections**: arbitrary position) affects distance distributions. The 2D → 3D transition is a key test case for understanding how dimension affects combinatorial geometry problems, and progress here could inform analogous questions in higher dimensions.",
     "openQuestions": [
       "Does the conjecture hold with constant exactly $1/2$, or only asymptotically approaching $1/2$?",
       "Can even the weaker bound $|\\Delta^+| \\geq cn$ for some absolute constant $c > 0$ be proved in 3D?",

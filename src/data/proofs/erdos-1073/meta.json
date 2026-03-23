@@ -34,7 +34,8 @@
       "The question is whether the count of such composites is subpolynomial",
       "Connected to OEIS A256519",
       "All prime factors of u must exceed n when u | n!+1, forcing composite solutions to be products of large primes relative to the factorial index"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -137,7 +138,12 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "R. L. Graham", "I. Z. Ruzsa", "E. G. Straus"],
+      "authors": [
+        "P. Erdős",
+        "R. L. Graham",
+        "I. Z. Ruzsa",
+        "E. G. Straus"
+      ],
       "title": "On the prime factors of C(2n, n)",
       "venue": "Mathematics of Computation",
       "year": 1975,
@@ -147,7 +153,9 @@
       "note": "Foundational work on factorials and prime factors that informs the sparsity arguments for composites dividing n!+1."
     },
     {
-      "authors": ["M. V. Subbarao"],
+      "authors": [
+        "M. V. Subbarao"
+      ],
       "title": "On two congruences for primality",
       "venue": "Pacific Journal of Mathematics",
       "year": 1974,
@@ -157,7 +165,10 @@
       "note": "Introduces Wilson pseudoprimes and connects the factorial-plus-one divisibility condition to primality testing, directly motivating OEIS A256519."
     },
     {
-      "authors": ["R. Crandall", "C. Pomerance"],
+      "authors": [
+        "R. Crandall",
+        "C. Pomerance"
+      ],
       "title": "Prime Numbers: A Computational Perspective",
       "venue": "Springer",
       "year": 2005,
@@ -166,7 +177,10 @@
       "note": "Chapter 3 covers Wilson's theorem, factorial congruences, and pseudoprimality, providing background for the composite divisibility problem."
     },
     {
-      "authors": ["P. Erdős", "M. B. Nathanson"],
+      "authors": [
+        "P. Erdős",
+        "M. B. Nathanson"
+      ],
       "title": "Problems in Combinatorial Number Theory",
       "venue": "Annals of the New York Academy of Sciences",
       "year": 1976,
@@ -176,7 +190,9 @@
       "note": "Survey of Erdős open problems including factorial arithmetic questions related to Problem 1073."
     },
     {
-      "authors": ["N. J. A. Sloane"],
+      "authors": [
+        "N. J. A. Sloane"
+      ],
       "title": "OEIS A256519: Composite numbers that divide n! + 1 for some n",
       "venue": "The On-Line Encyclopedia of Integer Sequences",
       "year": 2015,

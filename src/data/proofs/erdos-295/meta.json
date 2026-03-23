@@ -60,7 +60,8 @@
       "**The gap question**: Erdős-Straus proved k(N) lies between (e-1)N - c and (e-1)N + O(N/log N). The upper bound grows slowly, but does k(N) actually track it upward?",
       "**Concrete example**: 1 = 1/2 + 1/3 + 1/6 shows k(2) ≤ 3. Finding k(N) exactly for small N is computationally tractable; understanding asymptotic behavior is hard.",
       "**The greedy algorithm**: One can always find an Egyptian fraction representation by repeatedly taking the largest possible unit fraction. This proves existence but doesn't minimize the number of terms."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -129,7 +130,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #295, an OPEN question about Egyptian fractions. The problem asks whether k(N) - (e-1)N → ∞, where k(N) is the minimum number of distinct unit fractions with denominators ≥ N that sum to 1. We state the Erdős-Straus bounds as an axiom and define the open conjecture as a proposition.",
-    "implications": "This problem connects ancient Egyptian mathematics to modern analytic number theory. The appearance of Euler's number e in the asymptotic behavior k(N) ≈ (e-1)N reveals a deep connection between Egyptian fractions and the harmonic series. A resolution either way would advance our understanding of representations of rationals.",
+    "implications": "**Theoretical Significance**: This problem connects ancient Egyptian mathematics to modern analytic number theory.\n\n**Broader Connections**: The appearance of Euler's number e in the asymptotic behavior k(N) ≈ (e-1)N reveals a deep connection between Egyptian fractions and the harmonic series. A resolution either way would advance our understanding of representations of rationals.",
     "openQuestions": [
       "Does k(N) - (e-1)N → ∞? (The main conjecture)",
       "Can one compute k(N) exactly for small N by exhaustive search?",

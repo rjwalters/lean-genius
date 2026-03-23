@@ -55,7 +55,8 @@
       "The **inner product space formulation** generalizes Pons Asinorum beyond $\\mathbb{R}^2$: the theorem holds in any real inner product space of any dimension, showing the result depends only on the metric structure",
       "The **vector form** $\\|x\\| = \\|y\\| \\implies \\angle(x, x-y) = \\angle(y, y-x)$ reveals the theorem as a statement about the geometry of equal-norm vectors and their differences — a perspective useful in functional analysis and physics",
       "The **biconditional form** (equal sides $\\iff$ equal base angles) gives a complete characterization of isosceles triangles among non-degenerate triangles, combining Euclid I.5 and I.6 into a single equivalence"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -132,7 +133,7 @@
   ],
   "conclusion": {
     "summary": "The isosceles triangle theorem (Pons Asinorum, Euclid I.5, Wiedijk #65) is fully formalized with zero sorries: the forward direction, converse with non-degeneracy condition, biconditional characterization, and a vector formulation in arbitrary inner product spaces. All proofs delegate to Mathlib's Euclidean geometry library.",
-    "implications": "The formalization demonstrates that Pons Asinorum holds in any real inner product space — not just the Euclidean plane. This generalization connects elementary geometry to functional analysis (Hilbert spaces) and physics (quantum state spaces). The biconditional form provides a complete algebraic characterization of isosceles triangles, useful in computational geometry and triangle classification algorithms.",
+    "implications": "**Theoretical Significance**: The formalization demonstrates that Pons Asinorum holds in any real inner product space — not just the Euclidean plane.\n\n**Broader Connections**: This generalization connects elementary geometry to functional analysis (Hilbert spaces) and physics (quantum state spaces). The biconditional form provides a complete algebraic characterization of isosceles triangles, useful in computational geometry and triangle classification algorithms.",
     "openQuestions": [
       "Formalize Euclid's original proof (I.5) with auxiliary constructions and compare its complexity to Pappus's self-congruence argument",
       "Prove the isosceles triangle theorem in hyperbolic and spherical geometry, where the inner product space structure is unavailable",

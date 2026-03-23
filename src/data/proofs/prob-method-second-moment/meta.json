@@ -62,6 +62,13 @@
       "For indicator sums, the variance splits into individual variances plus pairwise covariances, making it computable for structured random variables",
       "Threshold phenomena in random graphs emerge naturally from second moment calculations on subgraph counts",
       "The gap between first and second moment methods is precisely the role of dependencies: the first moment ignores them, the second moment accounts for them"
+    ],
+    "prerequisites": [
+      "Variance and second moments of random variables",
+      "Chebyshev's inequality and concentration",
+      "Paley-Zygmund inequality for lower tail bounds",
+      "Random graphs G(n,p) and threshold functions",
+      "Indicator random variables and covariance"
     ]
   },
   "sections": [

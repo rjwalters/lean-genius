@@ -75,7 +75,8 @@
       "**Valtr's obstruction** (2005) is a fundamental barrier: he constructed a non-Euclidean semimetric $d$ on $\\mathbb{R}^2$ where $n$ points achieve $\\Theta(n^{4/3})$ $d$-unit distances, proving that the SST incidence approach — which works for any convex curve, not just circles — cannot break the $n^{4/3}$ barrier alone",
       "The **weak conjecture** $u(n) = n^{1+o(1)}$ would already be a major breakthrough, requiring the exponent of the upper bound to approach 1. Even this weaker form has resisted all known techniques for 80 years",
       "The problem is closely related to the **Erdős distinct distances problem** (how few distinct distances can $n$ points determine?), solved by Guth–Katz (2015) using polynomial partitioning — but those algebraic methods have not yet yielded progress on unit distances"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -130,7 +131,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #90 formalizes the complete logical structure of the unit distance problem: the extremal function u(n) defined via offDiag filtering, the Spencer–Szemerédi–Trotter O(n^{4/3}) upper bound (1984), the lattice lower bound n^{1+c/log log n}, the main conjecture (with $500 prize), the weak form ($250–300 prize), and Valtr's fundamental obstruction showing that breaking n^{4/3} requires Euclidean-specific methods. The file has 0 sorries and 6 axioms (all representing deep results or open conjectures).",
-    "implications": "Resolution would transform combinatorial geometry. The unit distance problem is intimately connected to the Erdős distinct distances problem (solved by Guth–Katz 2015), Kakeya-type problems, and the algebraic structure of Euclidean distance. Valtr's obstruction shows that purely topological or incidence-theoretic methods are insufficient; progress requires exploiting the algebraic nature of circles in the Euclidean plane, perhaps via polynomial methods as in the distinct distances solution.",
+    "implications": "**Theoretical Significance**: Resolution would transform combinatorial geometry.\n\n**Broader Connections**: The unit distance problem is intimately connected to the Erdős distinct distances problem (solved by Guth–Katz 2015), Kakeya-type problems, and the algebraic structure of Euclidean distance. Valtr's obstruction shows that purely topological or incidence-theoretic methods are insufficient; progress requires exploiting the algebraic nature of circles in the Euclidean plane, perhaps via polynomial methods as in the distinct distances solution.",
     "openQuestions": [
       "Can the O(n^{4/3}) upper bound be improved at all, even to O(n^{4/3 - ε}) for some ε > 0?",
       "What specific property of Euclidean distance (beyond convexity of unit circles) would enable progress?",

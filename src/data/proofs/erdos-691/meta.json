@@ -34,7 +34,8 @@
       "**Tenenbaum's log 2 threshold**: For block sequences with η_k = (k+1)^{-β}, the Behrend threshold is β₀ = log 2, not β₀ = 1—the geometric growth of block positions creates a correction factor",
       "**Filter-based density**: Using Mathlib's limsup/liminf on Filter.atTop gives a clean, topological definition of upper/lower density that avoids explicit ε-N quantifiers",
       "**Existential formulation**: The open problem is stated as ∃ P, ∀ A, IsBehrend A ↔ P(A)—asking for the existence of a universal characterization that specializes to Σ 1/a = ∞ for coprime sets"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

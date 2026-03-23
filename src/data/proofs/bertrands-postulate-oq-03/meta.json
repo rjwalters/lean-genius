@@ -2,9 +2,9 @@
   "id": "bertrands-postulate-oq-03",
   "title": "What Is the Precise Density of Primes in Short Intervals?",
   "slug": "bertrands-postulate-oq-03",
-  "description": "Bertrand's Postulate guarantees a prime in every (n, 2n], but how dense are primes in much shorter intervals? This formalization establishes a logarithmic lower bound \u03c0(n) \u2265 log\u2082(n) from iterated Bertrand, surveys Baker-Harman-Pintz's x^0.525 record, and formally captures the open Cram\u00e9r and Legendre conjectures.",
+  "description": "Bertrand's Postulate guarantees a prime in every (n, 2n], but how dense are primes in much shorter intervals? This formalization establishes a logarithmic lower bound π(n) ≥ log₂(n) from iterated Bertrand, surveys Baker-Harman-Pintz's x^0.525 record, and formally captures the open Cramér and Legendre conjectures.",
   "meta": {
-    "author": "Bertrand (1845), Chebyshev (1852), Erd\u0151s (1932), Baker-Harman-Pintz (2001)",
+    "author": "Bertrand (1845), Chebyshev (1852), Erdős (1932), Baker-Harman-Pintz (2001)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Bertrand%27s_postulate",
     "date": "1845",
     "status": "axiomatized",
@@ -24,54 +24,55 @@
     "mathlibDependencies": [
       {
         "theorem": "Nat.bertrand",
-        "description": "Bertrand's postulate: for any n \u2265 1 there exists a prime p with n < p \u2264 2*n",
+        "description": "Bertrand's postulate: for any n ≥ 1 there exists a prime p with n < p ≤ 2*n",
         "module": "Mathlib.NumberTheory.Bertrand"
       },
       {
         "theorem": "Nat.primeCounting",
-        "description": "The prime counting function \u03c0(n)",
+        "description": "The prime counting function π(n)",
         "module": "Mathlib.NumberTheory.PrimeCounting"
       },
       {
         "theorem": "Nat.pow_log_le_self",
-        "description": "2^(log\u2082 n) \u2264 n \u2014 used to connect log bound to prime count",
+        "description": "2^(log₂ n) ≤ n — used to connect log bound to prime count",
         "module": "Mathlib.Data.Nat.Log"
       },
       {
         "theorem": "PrimeGapBounds.primeCounting_double_ge_succ",
-        "description": "\u03c0(2n) \u2265 \u03c0(n) + 1 \u2014 a strengthened Bertrand for prime counting",
+        "description": "π(2n) ≥ π(n) + 1 — a strengthened Bertrand for prime counting",
         "module": "Proofs.PrimeGapBounds"
       },
       {
         "theorem": "PrimeGapBounds.primeCounting_pow_two_mul",
-        "description": "\u03c0(2^k * n) \u2265 \u03c0(n) + k \u2014 k iterated Bertrand applications",
+        "description": "π(2^k * n) ≥ π(n) + k — k iterated Bertrand applications",
         "module": "Proofs.PrimeGapBounds"
       }
     ],
     "originalContributions": [
-      "Formal definition of primeCountInInterval as \u03c0(hi) - \u03c0(lo)",
-      "Proved \u03c0(2^m) \u2265 m via iterated Bertrand (every doubling adds \u2265 1 prime)",
-      "Proved logarithmic lower bound \u03c0(n) \u2265 log\u2082(n) for n \u2265 2",
-      "Formal definition of PrimeGapConjecture(\u03b8): every [x, x+x^\u03b8] has a prime for x \u2265 2",
-      "Proved PrimeGapConjecture is monotone in \u03b8",
-      "Survey of open landscape: BHP (\u03b8=0.525 proved), Legendre (\u03b8=1/2+\u03b5 open), Cram\u00e9r (\u03b8\u21920 open)"
+      "Formal definition of primeCountInInterval as π(hi) - π(lo)",
+      "Proved π(2^m) ≥ m via iterated Bertrand (every doubling adds ≥ 1 prime)",
+      "Proved logarithmic lower bound π(n) ≥ log₂(n) for n ≥ 2",
+      "Formal definition of PrimeGapConjecture(θ): every [x, x+x^θ] has a prime for x ≥ 2",
+      "Proved PrimeGapConjecture is monotone in θ",
+      "Survey of open landscape: BHP (θ=0.525 proved), Legendre (θ=1/2+ε open), Cramér (θ→0 open)"
     ],
     "dateAdded": "2026-02-22",
     "axiomCount": 5,
     "lineCount": 308
   },
   "overview": {
-    "historicalContext": "Bertrand conjectured in 1845 that every interval (n, 2n] contains at least one prime. Chebyshev verified this in 1852, and Erd\u0151s gave an elegant elementary proof in 1932 using central binomial coefficients. But the deeper question is: how precisely are primes distributed in much shorter intervals? The Prime Number Theorem (PNT) gives \u03c0(x) ~ x/ln(x), predicting ~h/ln(x) primes in [x, x+h] for 'large' h. The question of how small h can be while guaranteeing a prime is one of the central problems in analytic number theory.",
-    "problemStatement": "**Open Question**: What is the smallest \u03b8 such that every interval [x, x+x^\u03b8] contains a prime for all sufficiently large x?\n\n**Known**: Baker-Harman-Pintz (2001) proved \u03b8 = 0.525 works.\n**Open**: Does \u03b8 < 1/2 work? Does \u03b8 \u2192 0 work with a poly-log correction (Cram\u00e9r's conjecture)? Does every [n\u00b2, (n+1)\u00b2] contain a prime (Legendre's conjecture)?",
-    "proofStrategy": "Start with Bertrand's Postulate (prime in (n, 2n]) and iterate: if \u03c0(n) counts primes up to n, then \u03c0(2n) \u2265 \u03c0(n) + 1 by Bertrand. Iterating k times gives \u03c0(2^k * n) \u2265 \u03c0(n) + k. Setting n=1 gives \u03c0(2^m) \u2265 m. Since 2^(log\u2082 n) \u2264 n, this yields the logarithmic bound \u03c0(n) \u2265 log\u2082(n). The short-interval question (the open part) is then captured via axioms for Baker-Harman-Pintz, Cram\u00e9r, and Legendre.",
+    "historicalContext": "Bertrand conjectured in 1845 that every interval (n, 2n] contains at least one prime. Chebyshev verified this in 1852, and Erdős gave an elegant elementary proof in 1932 using central binomial coefficients. But the deeper question is: how precisely are primes distributed in much shorter intervals? The Prime Number Theorem (PNT) gives π(x) ~ x/ln(x), predicting ~h/ln(x) primes in [x, x+h] for 'large' h. The question of how small h can be while guaranteeing a prime is one of the central problems in analytic number theory.",
+    "problemStatement": "**Open Question**: What is the smallest θ such that every interval [x, x+x^θ] contains a prime for all sufficiently large x?\n\n**Known**: Baker-Harman-Pintz (2001) proved θ = 0.525 works.\n**Open**: Does θ < 1/2 work? Does θ → 0 work with a poly-log correction (Cramér's conjecture)? Does every [n², (n+1)²] contain a prime (Legendre's conjecture)?",
+    "proofStrategy": "Start with Bertrand's Postulate (prime in (n, 2n]) and iterate: if π(n) counts primes up to n, then π(2n) ≥ π(n) + 1 by Bertrand. Iterating k times gives π(2^k * n) ≥ π(n) + k. Setting n=1 gives π(2^m) ≥ m. Since 2^(log₂ n) ≤ n, this yields the logarithmic bound π(n) ≥ log₂(n). The short-interval question (the open part) is then captured via axioms for Baker-Harman-Pintz, Cramér, and Legendre.",
     "keyInsights": [
-      "Iterating Bertrand k times shows \u03c0(2^k * n) \u2265 \u03c0(n) + k \u2014 a multiplicative density statement",
-      "This gives \u03c0(n) \u2265 log\u2082(n) \u2014 a logarithmic lower bound, weaker than PNT but proved from Bertrand alone",
-      "The prime gap exponent \u03b8 = 1 (Bertrand) is easy; getting \u03b8 < 1 requires deep sieve theory",
-      "Baker-Harman-Pintz (2001) achieved \u03b8 = 0.525 using Harman's sieve \u2014 the current record",
-      "Cram\u00e9r's model predicts the optimal is \u03b8 \u2192 0 with gaps O((log p)\u00b2) but this is far from proved",
-      "Legendre's conjecture (prime in [n\u00b2, (n+1)\u00b2]) would give \u03b8 just above 1/2 \u2014 still open after 180 years"
-    ]
+      "Iterating Bertrand k times shows π(2^k * n) ≥ π(n) + k — a multiplicative density statement",
+      "This gives π(n) ≥ log₂(n) — a logarithmic lower bound, weaker than PNT but proved from Bertrand alone",
+      "The prime gap exponent θ = 1 (Bertrand) is easy; getting θ < 1 requires deep sieve theory",
+      "Baker-Harman-Pintz (2001) achieved θ = 0.525 using Harman's sieve — the current record",
+      "Cramér's model predicts the optimal is θ → 0 with gaps O((log p)²) but this is far from proved",
+      "Legendre's conjecture (prime in [n², (n+1)²]) would give θ just above 1/2 — still open after 180 years"
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -79,88 +80,88 @@
       "title": "Module Header and Problem Setup",
       "startLine": 1,
       "endLine": 65,
-      "summary": "Imports, the density hierarchy table (from x^(log x)\u00b2 to 2n), and the key new result \u03c0(2^m) \u2265 m."
+      "summary": "Imports, the density hierarchy table (from x^(log x)² to 2n), and the key new result π(2^m) ≥ m."
     },
     {
       "id": "definitions",
-      "title": "Definitions \u2014 Prime Count in Intervals",
+      "title": "Definitions — Prime Count in Intervals",
       "startLine": 67,
       "endLine": 89,
-      "summary": "primeCountInInterval as \u03c0(hi) - \u03c0(lo), with monotonicity and the key conversion lemma."
+      "summary": "primeCountInInterval as π(hi) - π(lo), with monotonicity and the key conversion lemma."
     },
     {
       "id": "bertrand-bounds",
       "title": "Bertrand Lower Bounds",
       "startLine": 90,
       "endLine": 124,
-      "summary": "bertrand_interval_nonempty (every (n,2n] has \u22651 prime), \u03c0(2^m) \u2265 m, and iterated Bertrand giving \u03c0(2^k*n) \u2265 \u03c0(n)+k."
+      "summary": "bertrand_interval_nonempty (every (n,2n] has ≥1 prime), π(2^m) ≥ m, and iterated Bertrand giving π(2^k*n) ≥ π(n)+k."
     },
     {
       "id": "log-lower-bound",
-      "title": "Logarithmic Lower Bound \u03c0(n) \u2265 log\u2082(n)",
+      "title": "Logarithmic Lower Bound π(n) ≥ log₂(n)",
       "startLine": 125,
       "endLine": 148,
-      "summary": "From \u03c0(2^m) \u2265 m and 2^(log\u2082 n) \u2264 n, proved: \u03c0(n) \u2265 log\u2082(n) for all n \u2265 2."
+      "summary": "From π(2^m) ≥ m and 2^(log₂ n) ≤ n, proved: π(n) ≥ log₂(n) for all n ≥ 2."
     },
     {
       "id": "pnt-axioms",
       "title": "PNT Asymptotic Density (Axioms)",
       "startLine": 149,
       "endLine": 172,
-      "summary": "pnt_ratio_form (\u03c0(x) ~ x/ln x) and pnt_medium_interval_density \u2014 PNT-derived results axiomatized since PNT is not in base Mathlib."
+      "summary": "pnt_ratio_form (π(x) ~ x/ln x) and pnt_medium_interval_density — PNT-derived results axiomatized since PNT is not in base Mathlib."
     },
     {
       "id": "bhp-theorem",
-      "title": "Baker-Harman-Pintz (2001) \u2014 The Record \u03b8=0.525",
+      "title": "Baker-Harman-Pintz (2001) — The Record θ=0.525",
       "startLine": 174,
       "endLine": 192,
-      "summary": "bhp_short_interval axiom: for x \u2265 1 and h \u2265 x^0.525, the interval [x, x+h] contains a prime. The current best proved bound."
+      "summary": "bhp_short_interval axiom: for x ≥ 1 and h ≥ x^0.525, the interval [x, x+h] contains a prime. The current best proved bound."
     },
     {
       "id": "open-conjectures",
-      "title": "Open Conjectures \u2014 Cram\u00e9r and Legendre",
+      "title": "Open Conjectures — Cramér and Legendre",
       "startLine": 193,
       "endLine": 227,
-      "summary": "cramer_conjecture (max prime gap O((log p)\u00b2)) and legendre_conjecture (prime in [n\u00b2,(n+1)\u00b2]) \u2014 both open since the 19th century."
+      "summary": "cramer_conjecture (max prime gap O((log p)²)) and legendre_conjecture (prime in [n²,(n+1)²]) — both open since the 19th century."
     },
     {
       "id": "prime-gap-conjecture",
-      "title": "The Prime Gap Conjecture \u2014 Formal Definition",
+      "title": "The Prime Gap Conjecture — Formal Definition",
       "startLine": 228,
       "endLine": 329,
-      "summary": "PrimeGapConjecture(\u03b8) defined formally, monotonicity proved, BHP gives \u03b8=0.525, density_question_status summarizes the full landscape."
+      "summary": "PrimeGapConjecture(θ) defined formally, monotonicity proved, BHP gives θ=0.525, density_question_status summarizes the full landscape."
     }
   ],
   "conclusion": {
-    "summary": "Starting from Bertrand's Postulate, we prove \u03c0(n) \u2265 log\u2082(n) via iterated doubling \u2014 a simple but concrete lower bound. The question of the optimal short-interval exponent \u03b8 remains one of the deepest open problems in analytic number theory.",
-    "implications": "Baker-Harman-Pintz (2001) holds the record at \u03b8 = 0.525 using sophisticated sieve methods. Cram\u00e9r's conjecture would push \u03b8 to zero with only a (log p)\u00b2 correction, and Legendre's conjecture asks for primes in every [n\u00b2, (n+1)\u00b2] \u2014 both open after more than a century.",
+    "summary": "Starting from Bertrand's Postulate, we prove π(n) ≥ log₂(n) via iterated doubling — a simple but concrete lower bound. The question of the optimal short-interval exponent θ remains one of the deepest open problems in analytic number theory.",
+    "implications": "Baker-Harman-Pintz (2001) holds the record at θ = 0.525 using sophisticated sieve methods. Cramér's conjecture would push θ to zero with only a (log p)² correction, and Legendre's conjecture asks for primes in every [n², (n+1)²] — both open after more than a century.",
     "openQuestions": [
-      "What is the smallest \u03b8 for which every sufficiently large interval [x, x+x^\u03b8] contains a prime? (BHP gives \u03b8=0.525; is \u03b8<1/2 achievable?)",
-      "Does every interval [n\u00b2, (n+1)\u00b2] contain a prime? (Legendre's Conjecture \u2014 open since 1845)",
-      "Are prime gaps O((log p)\u00b2)? (Cram\u00e9r's Conjecture \u2014 open since 1936)",
-      "Can the PNT-based asymptotic \u03c0(x+h) - \u03c0(x) ~ h/ln(x) be proved for h = x^(1/2+\u03b5) unconditionally?"
+      "What is the smallest θ for which every sufficiently large interval [x, x+x^θ] contains a prime? (BHP gives θ=0.525; is θ<1/2 achievable?)",
+      "Does every interval [n², (n+1)²] contain a prime? (Legendre's Conjecture — open since 1845)",
+      "Are prime gaps O((log p)²)? (Cramér's Conjecture — open since 1936)",
+      "Can the PNT-based asymptotic π(x+h) - π(x) ~ h/ln(x) be proved for h = x^(1/2+ε) unconditionally?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "bertrands-postulate",
       "relationship": "extends",
-      "description": "Parent entry proving Bertrand's postulate (a prime between n and 2n) \u2014 this file extends to the precise density question: how small can \u03b8 be such that [x, x+x^\u03b8] always contains a prime?"
+      "description": "Parent entry proving Bertrand's postulate (a prime between n and 2n) — this file extends to the precise density question: how small can θ be such that [x, x+x^θ] always contains a prime?"
     },
     {
       "targetId": "prime-number-theorem",
       "relationship": "foundational",
-      "description": "PNT (\u03c0(x) ~ x/ln x) provides the asymptotic framework for understanding prime density in short intervals \u2014 Bertrand's postulate is the crude \u03b8=1 case"
+      "description": "PNT (π(x) ~ x/ln x) provides the asymptotic framework for understanding prime density in short intervals — Bertrand's postulate is the crude θ=1 case"
     },
     {
       "targetId": "bounded-prime-gaps",
       "relationship": "related",
-      "description": "Both address prime distribution: bounded gaps (Zhang-Maynard-Tao) shows infinitely many gaps \u2264 246, while this entry studies the weakest \u03b8 guaranteeing primes in every interval [x, x+x^\u03b8]"
+      "description": "Both address prime distribution: bounded gaps (Zhang-Maynard-Tao) shows infinitely many gaps ≤ 246, while this entry studies the weakest θ guaranteeing primes in every interval [x, x+x^θ]"
     },
     {
       "targetId": "infinitude-primes",
       "relationship": "ancestor",
-      "description": "The foundational result that primes are infinite \u2014 this entry quantifies their distribution in short intervals"
+      "description": "The foundational result that primes are infinite — this entry quantifies their distribution in short intervals"
     },
     {
       "targetId": "twin-primes-special",
@@ -175,17 +176,17 @@
     {
       "targetId": "stirling-formula",
       "relationship": "related",
-      "description": "Stirling's approximation $n! \\approx \\sqrt{2\\pi n}(n/e)^n$ is needed for asymptotic estimates in prime counting: Chebyshev's proof of Bertrand's postulate uses binomial coefficient bounds that depend on Stirling-type estimates, and the prime number theorem's proof via the Selberg-Erd\u0151s elementary method uses factorial asymptotics"
+      "description": "Stirling's approximation $n! \\approx \\sqrt{2\\pi n}(n/e)^n$ is needed for asymptotic estimates in prime counting: Chebyshev's proof of Bertrand's postulate uses binomial coefficient bounds that depend on Stirling-type estimates, and the prime number theorem's proof via the Selberg-Erdős elementary method uses factorial asymptotics"
     },
     {
       "targetId": "quadratic-reciprocity",
       "relationship": "related",
-      "description": "Quadratic reciprocity governs the splitting behavior of primes in quadratic fields, connecting to the Chebotarev density theorem \u2014 a generalization of the prime number theorem to arithmetic progressions and number fields. The density of primes in short intervals (this entry) and the density of primes in arithmetic progressions (Dirichlet's theorem, generalized by Chebotarev) are two perspectives on the same underlying regularity of prime distribution"
+      "description": "Quadratic reciprocity governs the splitting behavior of primes in quadratic fields, connecting to the Chebotarev density theorem — a generalization of the prime number theorem to arithmetic progressions and number fields. The density of primes in short intervals (this entry) and the density of primes in arithmetic progressions (Dirichlet's theorem, generalized by Chebotarev) are two perspectives on the same underlying regularity of prime distribution"
     },
     {
       "targetId": "prime-reciprocal-divergence",
       "relationship": "related",
-      "description": "The divergence of $\\sum 1/p$ (over primes) establishes that primes are 'dense enough' that their reciprocals diverge. This is a weaker result than prime density in short intervals (which this file addresses), but provides foundational evidence that primes are not sparse \u2014 the divergence rate $\\sum_{p \\leq x} 1/p \\sim \\log\\log x$ is the crudest measure of prime distribution"
+      "description": "The divergence of $\\sum 1/p$ (over primes) establishes that primes are 'dense enough' that their reciprocals diverge. This is a weaker result than prime density in short intervals (which this file addresses), but provides foundational evidence that primes are not sparse — the divergence rate $\\sum_{p \\leq x} 1/p \\sim \\log\\log x$ is the crudest measure of prime distribution"
     }
   ],
   "relatedProofs": [

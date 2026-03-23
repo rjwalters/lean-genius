@@ -63,7 +63,8 @@
       "**Sparsity from EPS**: The bound x/exp((log x)^(1/3)) shows that among the first x integers, very few satisfy φ(n) = φ(n+1). This is much sparser than 1/√x or even 1/log x.",
       "**Connection to Carmichael's conjecture**: The related Carmichael's Totient Conjecture asks whether every value of φ is achieved at least twice. This is also open and would impact the likelihood of consecutive matches.",
       "**OEIS A001274**: The sequence of solutions begins 1, 3, 15, 104, 164, 194, 255, 495, 584, 975, 2204, 2625, 2834, 3255, 3705, 5186, 5187, ..."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -132,7 +133,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #1003, an OPEN question about whether φ(n) = φ(n+1) has infinitely many solutions. The formalization includes the main conjecture, verified small examples, the stronger k-consecutive conjecture, and known asymptotic bounds.",
-    "implications": "This problem connects to fundamental questions about the distribution of totient values and the structure of the integers. A resolution would illuminate how often multiplicatively defined functions (like φ) can produce equal consecutive values. The connection to Carmichael's Totient Conjecture suggests deep arithmetic structure.",
+    "implications": "**Theoretical Significance**: This problem connects to fundamental questions about the distribution of totient values and the structure of the integers.\n\n**Broader Connections**: A resolution would illuminate how often multiplicatively defined functions (like φ) can produce equal consecutive values. The connection to Carmichael's Totient Conjecture suggests deep arithmetic structure.",
     "openQuestions": [
       "Is ConsecutiveEqualTotients infinite? (The main OPEN question)",
       "For each k ≥ 1, is ConsecutiveKEqualTotients(k) infinite?",
@@ -187,7 +188,11 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "C. Pomerance", "A. Sárközy"],
+      "authors": [
+        "P. Erdős",
+        "C. Pomerance",
+        "A. Sárközy"
+      ],
       "title": "On locally repeated values of certain arithmetic functions, I",
       "venue": "Journal of Number Theory",
       "year": 1987,
@@ -197,7 +202,11 @@
       "note": "Proves the upper bound x/exp((log x)^{1/3}) on solutions to φ(n)=φ(n+1) ≤ x; the three authors give this problem its EPS label."
     },
     {
-      "authors": ["K. Ford", "F. Luca", "C. Pomerance"],
+      "authors": [
+        "K. Ford",
+        "F. Luca",
+        "C. Pomerance"
+      ],
       "title": "Common values of the arithmetic functions φ and σ",
       "venue": "Bulletin of the London Mathematical Society",
       "year": 2010,
@@ -207,7 +216,9 @@
       "note": "Establishes a lower bound of x^{1-ε} on the count of solutions to φ(n)=φ(n+1) ≤ x, implying the solution set is infinite conditional on the bound being tight."
     },
     {
-      "authors": ["R. D. Carmichael"],
+      "authors": [
+        "R. D. Carmichael"
+      ],
       "title": "Note on Euler's φ-function",
       "venue": "Bulletin of the American Mathematical Society",
       "year": 1922,
@@ -217,7 +228,9 @@
       "note": "States Carmichael's Totient Conjecture (every totient value is achieved ≥ 2 times), directly related to the likelihood of consecutive equal totients."
     },
     {
-      "authors": ["K. Ford"],
+      "authors": [
+        "K. Ford"
+      ],
       "title": "The distribution of totients",
       "venue": "Ramanujan Journal",
       "year": 1998,
@@ -227,7 +240,10 @@
       "note": "Characterizes the distribution of values of φ; foundational for understanding how often φ(n)=φ(n+1) can occur."
     },
     {
-      "authors": ["P. Erdős", "C. Pomerance"],
+      "authors": [
+        "P. Erdős",
+        "C. Pomerance"
+      ],
       "title": "On the normal number of prime factors of φ(n)",
       "venue": "Rocky Mountain Journal of Mathematics",
       "year": 1985,

@@ -164,7 +164,8 @@
       "**Parity as fundamental obstruction**: Even determining whether $\\lfloor (3/2)^n \\rfloor$ is odd infinitely often remains open — this basic question about one specific sequence blocks progress on the general completeness characterization",
       "**Waring's problem connection**: The Ideal Waring formula $g(k) = 2^k + \\lfloor (3/2)^k \\rfloor - 2$ ties exponential floor values directly to classical number theory, giving Problem #349 deep connections beyond combinatorics",
       "**Lacunary gap condition**: For $\\alpha > \\varphi$, the sequence eventually satisfies $a_{n+1} > a_1 + a_2 + \\cdots + a_n$, making completeness impossible — the golden ratio is the precise boundary where this gap condition first fails"
-    ]
+    ],
+    "prerequisites": []
   },
   "conclusion": {
     "summary": "Erdős Problem #349 formalizes the deep question of characterizing completeness for exponential floor sequences ⌊tα^n⌋. The Lean formalization captures the core definitions (additive completeness, good pairs), the golden ratio conjecture, Graham's structural theorem on disjoint completeness intervals, and the fundamental parity obstructions for ⌊(3/2)^n⌋ — all stated as axioms reflecting the open status of this 45-year-old problem.",

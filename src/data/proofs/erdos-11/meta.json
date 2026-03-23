@@ -58,7 +58,8 @@
       "**Computational verification:** Hercher (2024) verified all odd n up to 2^50 ≈ 1.12 × 10^15.",
       "**Almost all n work:** Erdős proved the conjecture holds for density-1 of odd integers.",
       "**Weaker version:** Erdős also asked about n not divisible by 4 (allows some even numbers)."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -127,7 +128,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #11, an OPEN conjecture asking whether every odd $n > 1$ can be written as $s + 2^k$ with $s$ squarefree. The Lean file defines all key concepts, proves small examples ($n = 3, 5, 7, 9$), defines Wieferich primes, and axiomatizes the Granville-Soundararajan connection, computational verification bounds (up to $2^{50}$), and Erdős's density-1 result.",
-    "implications": "This problem sits at a remarkable intersection of additive and multiplicative number theory. The Granville-Soundararajan connection means resolving Problem #11 would also resolve whether infinitely many primes are non-Wieferich — a question related to Fermat's Last Theorem (Wieferich's criterion shows $x^p + y^p = z^p$ with $p \\nmid xyz$ requires $p$ to be Wieferich). The squarefree density of $6/\\pi^2$ provides the heuristic expectation, while the computational verification up to $2^{50}$ with no counterexamples strongly supports the conjecture.",
+    "implications": "**Theoretical Significance**: This problem sits at a remarkable intersection of additive and multiplicative number theory.\n\n**Broader Connections**: The Granville-Soundararajan connection means resolving Problem #11 would also resolve whether infinitely many primes are non-Wieferich — a question related to Fermat's Last Theorem (Wieferich's criterion shows $x^p + y^p = z^p$ with $p \\nmid xyz$ requires $p$ to be Wieferich). The squarefree density of $6/\\pi^2$ provides the heuristic expectation, while the computational verification up to $2^{50}$ with no counterexamples strongly supports the conjecture.",
     "openQuestions": [
       "Prove the conjecture for all odd $n > 1$ — the main open problem. No theoretical approach has succeeded despite the density-1 result",
       "Are there infinitely many Wieferich primes? Only 1093 and 3511 are known; if the answer is no, Erdős #11 follows from the Granville-Soundararajan connection",

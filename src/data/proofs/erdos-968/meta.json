@@ -66,7 +66,8 @@
       "**Total variation**: Σ|u_{n+1} - u_n| ~ (log x)² means the cumulative change grows quadratically in log x, indicating substantial oscillation.",
       "**The asymmetry puzzle**: Why do decreasing steps provably have positive density while increasing steps remain open? The sets are complementary (mod negligible flat set).",
       "**Prime gap connection**: u_{n+1} > u_n ⟺ prime gap p_{n+1} - p_n > u_n ~ log n. So increasing steps happen when gaps exceed the 'expected' log n."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -142,7 +143,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #968 on the normalized prime sequence u_n = p_n/n. Erdős-Prachar (1961) proved that decreasing steps have positive density and the total variation grows like (log x)². The main question - whether increasing steps also have positive density - remains open.",
-    "implications": "This problem connects to:\n\n1. **Prime gap distribution**: The behavior of u_n reflects prime gap statistics\n2. **Analytic number theory**: The (log x)² total variation uses sieve methods\n3. **Ergodic questions**: Does the 'random walk' of u_n have balanced increments?\n4. **Comparative prime theory**: Similar questions for p_n/log n or p_n/π(n)",
+    "implications": "**Theoretical Significance**: This problem connects to:\n\n1. **Prime gap distribution**: The behavior of u_n reflects prime gap statistics\n2.\n\n**Broader Connections**: **Analytic number theory**: The (log x)² total variation uses sieve methods\n3. **Ergodic questions**: Does the 'random walk' of u_n have balanced increments?\n4. **Comparative prime theory**: Similar questions for p_n/log n or p_n/π(n).",
     "openQuestions": [
       "Does the set {n : u_n < u_{n+1}} have positive density?",
       "Are there infinitely many increasing triples u_n < u_{n+1} < u_{n+2}?",

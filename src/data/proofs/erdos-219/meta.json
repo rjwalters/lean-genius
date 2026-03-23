@@ -60,7 +60,8 @@
       "**Szemerédi's theorem connection**: Green-Tao builds on Szemerédi's theorem about APs in dense sets.",
       "**Current record**: k = 23 (as of 2019). Finding longer progressions is computationally intensive.",
       "**Open problem**: Are there arbitrarily long APs of CONSECUTIVE primes? The longest known has 10 terms."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -108,7 +109,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #219, which asks whether there exist arbitrarily long arithmetic progressions of primes. The Green-Tao theorem (2008) proves the answer is YES. We axiomatize this deep result and verify concrete examples for k = 3 and k = 5.",
-    "implications": "The Green-Tao theorem is a cornerstone of modern additive combinatorics. It shows that primes, despite being 'sparse' (density 1/log n), still contain enough structure to guarantee arbitrarily long arithmetic progressions. This has inspired significant research in ergodic methods for number theory.",
+    "implications": "**Theoretical Significance**: The Green-Tao theorem is a cornerstone of modern additive combinatorics.\n\n**Broader Connections**: It shows that primes, despite being 'sparse' (density 1/log n), still contain enough structure to guarantee arbitrarily long arithmetic progressions. This has inspired significant research in ergodic methods for number theory.",
     "openQuestions": [
       "Are there arbitrarily long APs of CONSECUTIVE primes?",
       "What is the smallest first term of a k-term prime AP?",

@@ -214,6 +214,12 @@
       "The same technique proves doubling the cube is impossible: ∛2 satisfies x³ - 2 = 0, giving degree 3",
       "Some angles CAN be trisected (like 90° → 30°, since cos(30°) = √3/2 is constructible)",
       "The trisection polynomial $4x^3 - 3x$ is exactly the Chebyshev polynomial $T_3(x)$: the identity $\\cos(n\\theta) = T_n(\\cos\\theta)$ means $n$-section of an angle reduces to solving $T_n(x) = c$ for the $n$-th Chebyshev polynomial. For $n$ prime, $T_n$ is irreducible over $\\mathbb{Q}(c)$ for generic $c$, so degree $n \\neq 2^k$ blocks constructibility. This reveals angle $n$-section as a family of problems indexed by Chebyshev polynomials"
+    ],
+    "prerequisites": [
+      "Field extensions and algebraic degree",
+      "Polynomial rings and irreducibility over Q",
+      "Trigonometric identities (triple angle formula)",
+      "Basic Galois theory (constructibility criterion)"
     ]
   },
   "sections": [

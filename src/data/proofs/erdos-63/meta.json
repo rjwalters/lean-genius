@@ -39,6 +39,12 @@
       "The uncountable case (Penman's observation) is much easier: Erdős-Hajnal gives K_{m,m} subgraphs for all m, which trivially contain all even cycles. The hard case is exactly ℵ₀ chromatic number.",
       "Powers of 2 satisfy the right arithmetic: 2^n is even (fitting Bondy-Simonovits's range) and grows exponentially (so arbitrarily high minimum degree captures all desired lengths).",
       "The generalization to other sequences f(n) remains open—the key question is what growth rate is needed for infinite chromatic number to force C_{f(n)} for infinitely many n."
+    ],
+    "prerequisites": [
+      "Infinite graph theory",
+      "Cycle lengths in graphs",
+      "Powers of 2 in combinatorics",
+      "Ramsey theory for infinite structures"
     ]
   },
   "sections": [
@@ -108,7 +114,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the full structure of Erdős Problem #63, solved by Liu and Montgomery in 2020. The three-step proof strategy—de Bruijn-Erdős compactness, Liu-Montgomery's chromatic-to-degree conversion, and Bondy-Simonovits's cycle theorem—is axiomatized with the arithmetic glue (2^n is even and sufficiently large) proved directly in Lean. The distinction between the easy uncountable case (Penman via Erdős-Hajnal) and the hard countable case (requiring Liu-Montgomery) is clearly delineated.",
-    "implications": "This result demonstrates that infinite chromatic number imposes strong structural constraints on cycle spectra. The technique of reducing chromatic number to minimum degree via Liu-Montgomery has broader applications, including to Mader's conjecture on clique subdivisions. The connection to the Bondy-Simonovits theorem illustrates how extremal graph theory interacts with chromatic theory. The formalization also highlights the role of compactness principles (de Bruijn-Erdős) in bridging infinite and finite combinatorics.",
+    "implications": "**Theoretical Significance**: This result demonstrates that infinite chromatic number imposes strong structural constraints on cycle spectra. The technique of reducing chromatic number to minimum degree via Liu-Montgomery has broader applications, including to Mader's conjecture on clique subdivisions.\n\n**Broader Connections**: The connection to the Bondy-Simonovits theorem illustrates how extremal graph theory interacts with chromatic theory. The formalization also highlights the role of compactness principles (de Bruijn-Erdős) in bridging infinite and finite combinatorics.",
     "openQuestions": [
       "Can 2^n be replaced by n² or other polynomial sequences? What growth rate is truly necessary?",
       "What is the optimal function f(n) such that infinite χ guarantees C_{f(n)} for infinitely many n?",

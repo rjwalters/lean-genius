@@ -69,7 +69,8 @@
       "**Sieve Methods Unnecessary:** The problem allowed too much freedom in choosing (nₖ, aₖ)",
       "**Optimal Bound:** The (1+ε)k log k threshold matches prime growth (PNT)",
       "**Open Variants:** Coprime or prime moduli may restore interesting behavior"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -117,7 +118,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #280 is disproved by Cambie's trivial counterexample. Taking nₖ = 2^k and aₖ = 2^(k-1)+1, only m = 1 avoids all congruence classes, giving count = 1 instead of the conjectured Ω(k).",
-    "implications": "**Significance**\n\n1. **Elementary Resolution:** Erdős expected sieve methods would be needed, but a trivial counterexample sufficed\n\n2. **Problem Design Lesson:** The conjecture allowed too much freedom in choosing moduli and residues\n\n3. **Binary Covering:** Powers of 2 create efficient covering systems via binary representation\n\n4. **Open Variants:** Adding constraints (coprime moduli, prime moduli) may yield difficult open problems",
+    "implications": "**Theoretical Significance**: **Significance**\n\n1. **Elementary Resolution:** Erdős expected sieve methods would be needed, but a trivial counterexample sufficed\n\n2.\n\n**Broader Connections**: **Problem Design Lesson:** The conjecture allowed too much freedom in choosing moduli and residues\n\n3. **Binary Covering:** Powers of 2 create efficient covering systems via binary representation\n\n4. **Open Variants:** Adding constraints (coprime moduli, prime moduli) may yield difficult open problems.",
     "openQuestions": [
       "Does the conjecture hold if the moduli nₖ must be pairwise coprime?",
       "What if the moduli must be prime numbers?",

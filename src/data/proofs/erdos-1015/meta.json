@@ -34,7 +34,8 @@
       "**The minimax structure is essential**: $f(t) = \\sup_n \\max_c \\min_P \\text{leftover}(P)$ is a three-level optimization: Nature picks $n$, the adversary picks the coloring $c$, and we optimize the partition $P$. The BES result shows this stabilizes for large $n$, collapsing the first level. The formalization captures this via nested `sInf`/`sSup` over set-builder notation.",
       "**Both Erdős questions answered negatively**: $f(t)^{1/t} \\to 4$ (not 1) and $f(t) \\ge 2^{\\Omega(t)}$ (not $O(t)$). The exponential growth comes from the Erdős probabilistic lower bound $R(t, t-1) \\ge 2^{(t-1)/2}$, showing the leftover is inherently exponential in $t$.",
       "**Modular correction from divisibility**: The term $x \\in \\{0, 1, \\ldots, t-1\\}$ in $f(t) = R(t,t-1) + x$ arises because each clique $K_t$ consumes exactly $t$ vertices. When $n - R(t,t-1) + 1$ is not divisible by $t$, the remainder determines $x$. This is a parity/divisibility phenomenon, not a Ramsey-theoretic one."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -96,7 +97,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #1015 on partitioning 2-colored complete graphs into monochromatic cliques. The 155-line Lean file builds a complete framework: from the definition of 2-colorings and the `CliquePartition` structure, through the three-level minimax definition of $f(t)$, to the axiomatized BES exact formula $f(t) = R(t, t-1) + x$ with $0 \\le x < t$. Both of Erdős's original questions are formally resolved: $f(t)^{1/t} \\to 4$ and $f(t) \\ne O(t)$, with 0 sorries and 8 axioms encoding the deep Ramsey-theoretic results.",
-    "implications": "The Burr-Erdős-Spencer theorem has several important consequences and connections:\n\n1. **Ramsey multiplicity**: The BES formula shows that off-diagonal Ramsey numbers $R(t, t-1)$, not diagonal ones, control the clique packing problem. This insight informed later work on Ramsey multiplicity—counting the minimum number of monochromatic cliques rather than just finding one.\n\n2. **Algorithmic graph theory**: The problem of finding an optimal clique partition is computationally hard in general (subsuming graph coloring), but the BES theorem gives a precise target value. This motivates approximation algorithms for monochromatic clique packing.\n\n3. **Regularity and packing**: The BES proof technique—analyzing leftover vertices as a Ramsey-type subgraph—anticipates the regularity method approach to graph packing problems developed by Szemerédi, Komlós, and others in the 1990s.\n\n4. **Multicolor generalizations**: The formalization axiomatizes the 2-color case. For $k \\ge 3$ colors, the analogous function $f_k(t)$ involves multicolor Ramsey numbers, and exact formulas remain open for most cases.",
+    "implications": "**Theoretical Significance**: The Burr-Erdős-Spencer theorem has several important consequences and connections:\n\n1. **Ramsey multiplicity**: The BES formula shows that off-diagonal Ramsey numbers $R(t, t-1)$, not diagonal ones, control the clique packing problem. This insight informed later work on Ramsey multiplicity—counting the minimum number of monochromatic cliques rather than just finding one.\n\n2. **Algorithmic graph theory**: The problem of finding an optimal clique partition is computationally hard in general (subsuming graph coloring), but the BES theorem gives a precise target value.\n\n**Broader Connections**: This motivates approximation algorithms for monochromatic clique packing.\n\n3. **Regularity and packing**: The BES proof technique—analyzing leftover vertices as a Ramsey-type subgraph—anticipates the regularity method approach to graph packing problems developed by Szemerédi, Komlós, and others in the 1990s.\n\n4. **Multicolor generalizations**: The formalization axiomatizes the 2-color case. For $k \\ge 3$ colors, the analogous function $f_k(t)$ involves multicolor Ramsey numbers, and exact formulas remain open for most cases.",
     "openQuestions": [
       "What are the exact values of $f(t)$ for small $t \\ge 4$? Computing $f(4)$ requires knowing $R(4,3) = 9$, giving $f(4) \\in \\{9, 10, 11, 12\\}$.",
       "What is the computational complexity of finding an optimal monochromatic clique partition in a 2-colored $K_n$? Is it NP-hard, or does the BES structure provide polynomial-time algorithms?",
@@ -141,35 +142,50 @@
   ],
   "references": [
     {
-      "authors": ["S. A. Burr", "P. Erdős", "J. H. Spencer"],
+      "authors": [
+        "S. A. Burr",
+        "P. Erdős",
+        "J. H. Spencer"
+      ],
       "title": "Ramsey theorems for multiple copies of graphs",
       "year": 1975,
       "venue": "Transactions of the American Mathematical Society",
       "note": "The primary source. Proves the exact formula f(t) = R(t, t-1) + x with 0 ≤ x < t, resolving both Erdős questions about f(t)^{1/t} and the O(t) growth rate."
     },
     {
-      "authors": ["J. W. Moon"],
+      "authors": [
+        "J. W. Moon"
+      ],
       "title": "On sets of consistent arcs in a tournament",
       "year": 1966,
       "venue": "Canadian Mathematical Bulletin",
       "note": "Establishes f(3) = 4—the base case of the BES formula. Moon's proof that at most 4 vertices remain when packing monochromatic triangles in any 2-colored K_n (n ≥ 8) motivated the general problem."
     },
     {
-      "authors": ["P. Erdős", "G. Szekeres"],
+      "authors": [
+        "P. Erdős",
+        "G. Szekeres"
+      ],
       "title": "A combinatorial problem in geometry",
       "year": 1935,
       "venue": "Compositio Mathematica",
       "note": "Proves the classical upper bound R(s,t) ≤ C(s+t-2, s-1) ≤ 4^t via double induction, establishing the exponential growth that underlies f(t) < R(t,t) ≤ 4^t in the BES framework."
     },
     {
-      "authors": ["F. P. Ramsey"],
+      "authors": [
+        "F. P. Ramsey"
+      ],
       "title": "On a problem of formal logic",
       "year": 1930,
       "venue": "Proceedings of the London Mathematical Society",
       "note": "The foundational paper establishing that any 2-coloring of a sufficiently large complete graph contains a monochromatic clique. The Ramsey numbers R(t, t-1) at the heart of the BES formula are instances of this theorem."
     },
     {
-      "authors": ["R. L. Graham", "B. L. Rothschild", "J. H. Spencer"],
+      "authors": [
+        "R. L. Graham",
+        "B. L. Rothschild",
+        "J. H. Spencer"
+      ],
       "title": "Ramsey Theory",
       "year": 1990,
       "venue": "John Wiley & Sons (2nd edition)",

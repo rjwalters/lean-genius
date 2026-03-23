@@ -33,7 +33,8 @@
       "**Dependent random choice**: The key probabilistic technique: choose a random $r$-tuple, examine its common neighborhood $S$. This $S$ has controlled size and high codegree properties useful for embedding $H_k$.",
       "**Füredi (1991) to AKS (2003)**: The improvement from $\\mathrm{ex}(n; H_k) \\leq C(kn)^{3/2}$ to $\\mathrm{ex}(n; H_k) \\leq Ck \\cdot n^{3/2}$ saves a factor of $\\sqrt{k}$, significant for large $k$.",
       "**Bipartite structure**: $H_k$ is bipartite with parts $\\{x\\} \\cup \\{z_{ij}\\}$ and $\\{y_1, \\ldots, y_k\\}$, enabling Kővári-Sós-Turán type arguments."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

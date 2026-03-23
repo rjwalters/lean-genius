@@ -174,11 +174,17 @@
       "**The Desargues identity is symmetric**: det(P,Q,R) = det(AA',BB',CC') · det(ABC) · det(A'B'C') has the two triangle determinants as a commutative product, making the identity invariant under triangle swap.",
       "**Anticommutativity gives neg, but det=0 is preserved**: Under swap, each cross product row negates, giving an overall factor of (-1)³ = -1 in the determinant. Since -0 = 0, the zero condition is preserved.",
       "**Integral domains give the converse**: The forward direction works over any CommRing, but the converse requires IsDomain to apply the zero-product property. Over rings with zero divisors, non-degenerate triangles can be in perspective from a line without being in perspective from a point."
+    ],
+    "prerequisites": [
+      "projective geometry",
+      "linear algebra",
+      "cross product",
+      "determinants"
     ]
   },
   "conclusion": {
     "summary": "We formalize the self-duality of Desargues's theorem with 28 theorems and 0 sorries. The key results — collinear = concurrent and dual(perspFromPoint) = perspFromLine — are both proved by rfl, showing that self-duality is a definitional consequence of working in homogeneous coordinates.",
-    "implications": "This formalization shows that projective duality, far from being a mysterious principle, is a trivial consequence of the representation choice. In homogeneous coordinates, points and lines are the same type and the fundamental predicates are identical. The 'deep' content is not the duality but the Desargues identity itself — an algebraic identity in 18 variables that holds over any commutative ring.",
+    "implications": "**Theoretical Significance**: This formalization shows that projective duality, far from being a mysterious principle, is a trivial consequence of the representation choice.\n\n**Broader Connections**: In homogeneous coordinates, points and lines are the same type and the fundamental predicates are identical. The 'deep' content is not the duality but the Desargues identity itself — an algebraic identity in 18 variables that holds over any commutative ring.",
     "openQuestions": [
       "Can axiomatic projective planes be formalized in Lean 4, distinguishing Desarguesian from non-Desarguesian planes?",
       "Can the equivalence between Desargues's theorem and embeddability in projective 3-space be formalized?",

@@ -70,6 +70,13 @@
       "**Automatic Lowest Terms**: In Cantor's diagonal enumeration, one must skip non-reduced fractions (like 2/4, 3/6, etc.) or reduce them. The Stern-Brocot tree produces every fraction already in lowest terms, with coprimality following algebraically from the determinant invariant rather than from explicit gcd computation.",
       "**Euclidean Algorithm Connection**: Finding a rational p/q in the tree exactly mimics the Euclidean algorithm. Comparing p/q with the mediant and choosing L or R is equivalent to subtracting the smaller from the larger. The path length equals the sum of the continued fraction coefficients.",
       "**Continued Fraction Encoding**: The run-length encoding of a Stern-Brocot path gives the continued fraction expansion. Path [R,R,L,L,L,R] = R^2 L^3 R^1 encodes [2; 3, 1]. This means the tree simultaneously provides a canonical enumeration of rationals AND their continued fraction representations."
+    ],
+    "prerequisites": [
+      "Countability and enumerability of the rationals",
+      "Continued fractions and Farey sequences",
+      "Coprimality and the GCD",
+      "Binary trees and structural induction",
+      "Mediants and the Stern-Brocot sequence"
     ]
   },
   "crossReferences": [

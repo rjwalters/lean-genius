@@ -66,7 +66,8 @@
       "**Current gap**: 8/31 ≤ lim g(n)/n ≤ 5/16, a gap of 27/496 ≈ 0.054",
       "**Lower bounds use geometric structure**: Swanepoel's proof exploits specific properties of planar unit distance graphs",
       "**Higher dimensions**: g_d(n) ~ n/d is the conjectured behavior"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -172,14 +173,19 @@
   ],
   "references": [
     {
-      "authors": ["K.J. Swanepoel"],
+      "authors": [
+        "K.J. Swanepoel"
+      ],
       "title": "Independence numbers of planar contact graphs",
       "venue": "Graphs and Combinatorics",
       "year": 2002,
       "note": "Proves the current best lower bound g(n) ≥ (8/31)n for independence numbers of unit distance graphs in the plane."
     },
     {
-      "authors": ["J. Pach", "G. Tóth"],
+      "authors": [
+        "J. Pach",
+        "G. Tóth"
+      ],
       "title": "Graphs drawn with few crossings per edge",
       "venue": "Combinatorica",
       "volume": "17",
@@ -188,7 +194,11 @@
       "note": "Establishes the upper bound g(n) ≤ (5/16)n via a sparse crossing-number argument."
     },
     {
-      "authors": ["F.R.K. Chung", "R.L. Graham", "J. Pach"],
+      "authors": [
+        "F.R.K. Chung",
+        "R.L. Graham",
+        "J. Pach"
+      ],
       "title": "On the independence number of unit distance graphs",
       "venue": "Graphs and Combinatorics",
       "volume": "7",
@@ -197,7 +207,9 @@
       "note": "Disproves the Erdős conjecture g(n) ~ n/3 and shows g(n) ≤ (6/19)n."
     },
     {
-      "authors": ["G. Csizmadia"],
+      "authors": [
+        "G. Csizmadia"
+      ],
       "title": "On the independence number of minimum distance graphs",
       "venue": "Discrete and Computational Geometry",
       "volume": "20",
@@ -206,7 +218,9 @@
       "note": "Improves Pollack's planar lower bound to g(n) ≥ (9/35)n using structural properties of unit distance graphs."
     },
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "Combinatorial problems in geometry",
       "venue": "Mathematics Chronicle",
       "volume": "12",

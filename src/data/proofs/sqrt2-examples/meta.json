@@ -97,6 +97,11 @@
       "The `ring` tactic automates polynomial identity verification, here proving $n \\cdot n = (-n) \\cdot (-n)$ without manual expansion",
       "Backward reasoning via `apply` in the transitivity proof mirrors natural deduction style, reducing the goal step by step until it matches a hypothesis",
       "These two examples together showcase Lean's two main proof modes: tactic-driven computation (square_nonneg) and logical deduction (imp_trans)"
+    ],
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "Integer arithmetic",
+      "Basic propositional logic"
     ]
   },
   "sections": [
@@ -138,7 +143,7 @@
   ],
   "conclusion": {
     "summary": "These pedagogical examples demonstrate two fundamental modes of formal reasoning in Lean 4: tactic-driven computation for algebraic properties and backward logical deduction for propositional logic. Despite their simplicity, they showcase core techniques — case analysis, calculational proofs, and function application — that recur throughout advanced formalizations.",
-    "implications": "The non-negativity of squares is a building block for ordering properties of integers and reals, underpinning results from the AM-GM inequality to the theory of quadratic forms. Implication transitivity is the logical foundation for proof composition, allowing complex arguments to be built from simpler lemmas. Mastering these basic tactics is essential for formalizing deeper results in Lean.",
+    "implications": "**Theoretical Significance**: The non-negativity of squares is a building block for ordering properties of integers and reals, underpinning results from the AM-GM inequality to the theory of quadratic forms.\n\n**Broader Connections**: Implication transitivity is the logical foundation for proof composition, allowing complex arguments to be built from simpler lemmas. Mastering these basic tactics is essential for formalizing deeper results in Lean.",
     "openQuestions": [
       "Can square_nonneg be generalized to arbitrary linearly ordered rings in Lean without additional axioms?",
       "What is the minimal set of Lean tactics needed to prove all propositional tautologies?",

@@ -115,7 +115,8 @@
       "**Gap irregularity drives deviations**: If $p_{n+i} - p_n > p_n - p_{n-i}$ (the rightward gap exceeds the leftward gap), then $p_{n+i} + p_{n-i} > 2p_n$. Simultaneously large forward gaps and small backward gaps at ALL scales $i$ produce positive deviation",
       "**Pomerance's graph-chromatic argument**: The proof that $\\limsup \\ge 2$ uses the chromatic number of the Prime Number Graph. If the graph has low chromatic number, one can find positions $n$ where all symmetric sums avoid certain residue classes, forcing deviations $\\ge 2$",
       "**Connection to Goldbach**: The Prime Number Graph has an edge $n$-$m$ when $p_n + p_m$ is prime. Dense edges suggest many symmetric sums are prime, constraining the minimum — relating this problem to Goldbach-type questions about prime sums"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -205,7 +206,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #454 on symmetric prime sum deviations. The problem asks whether f(n) - 2p_n can be arbitrarily large, where f(n) = min_{i<n}(p_{n+i} + p_{n-i}) is the minimum symmetric prime sum. Pomerance (1979) proved the limsup is at least 2 using his Prime Number Graph, but whether it's infinite remains open.",
-    "implications": "The problem connects to fundamental questions about prime gap distribution and the fine structure of the prime sequence. If gaps were regular (averaging log p by the Prime Number Theorem), symmetric sums would cancel to 2p_n. The existence of deviations reflects gap irregularity — the same phenomenon captured by Maier's theorem and the Cramér conjecture. Resolving this would shed light on whether primes can be simultaneously 'too far apart' on the right and 'too close together' on the left at all scales around a position n.",
+    "implications": "**Theoretical Significance**: The problem connects to fundamental questions about prime gap distribution and the fine structure of the prime sequence. If gaps were regular (averaging log p by the Prime Number Theorem), symmetric sums would cancel to 2p_n.\n\n**Broader Connections**: The existence of deviations reflects gap irregularity — the same phenomenon captured by Maier's theorem and the Cramér conjecture. Resolving this would shed light on whether primes can be simultaneously 'too far apart' on the right and 'too close together' on the left at all scales around a position n.",
     "openQuestions": [
       "Is limsup(f(n) - 2p_n) finite or infinite? (The main conjecture)",
       "Can Pomerance's lower bound 2 be improved to any explicit larger value?",

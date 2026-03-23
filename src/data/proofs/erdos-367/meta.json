@@ -77,6 +77,13 @@
       "van Doorn: for k = 3, ∏B₂(m) can be ≫ n²·log n, so strong bound fails",
       "The weak bound n^{2+o(1)} remains open — the gap is the logarithmic factor",
       "The problem generalizes to r-full parts B_r(n) for r ≥ 3"
+    ],
+    "prerequisites": [
+      "Prime factorization and p-adic valuations",
+      "Squarefree numbers and powerful (k-full) numbers",
+      "Asymptotic analysis (big-O, little-o notation)",
+      "Multiplicative number theory (multiplicative functions)",
+      "Basic real analysis (logarithms, limits, sequences)"
     ]
   },
   "sections": [
@@ -163,7 +170,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #367 asks whether products of 2-full parts over k consecutive integers grow at most as n^{2+o(1)}. The strong n² bound fails for k ≥ 3 (van Doorn), but the weak bound remains open.",
-    "implications": "**Why this matters:**\n\n1. **Consecutive integer structure:** The problem probes how 'square content' distributes among consecutive integers — a fundamental question about the multiplicative structure of $\\mathbb{Z}$.\n\n2. **Average vs worst case:** The average $B_2(n)$ is $O(1)$, but the worst-case product over $k$ consecutive integers can exceed $n^2$. Understanding this gap is central to analytic number theory.\n\n3. **The logarithmic barrier:** van Doorn's $n^2 \\log n$ lower bound shows the exponent 2 is sharp but the implied constant must grow. Whether it grows polynomially, logarithmically, or sublogarithmically is unknown.\n\n4. **Connections to powerful numbers:** The $r$-full generalization connects to the distribution of powerful numbers (Golomb 1970) and to questions about $abc$-triples and Szpiro's conjecture.",
+    "implications": "**Theoretical Significance**: **Why this matters:**\n\n1. **Consecutive integer structure:** The problem probes how 'square content' distributes among consecutive integers — a fundamental question about the multiplicative structure of $\\mathbb{Z}$.\n\n2. **Average vs worst case:** The average $B_2(n)$ is $O(1)$, but the worst-case product over $k$ consecutive integers can exceed $n^2$.\n\n**Broader Connections**: Understanding this gap is central to analytic number theory.\n\n3. **The logarithmic barrier:** van Doorn's $n^2 \\log n$ lower bound shows the exponent 2 is sharp but the implied constant must grow. Whether it grows polynomially, logarithmically, or sublogarithmically is unknown.\n\n4. **Connections to powerful numbers:** The $r$-full generalization connects to the distribution of powerful numbers (Golomb 1970) and to questions about $abc$-triples and Szpiro's conjecture.",
     "openQuestions": [
       "Does ∏_{n ≤ m < n+k} B₂(m) ≪ n^{2+o(1)} hold for all k?",
       "What is the true growth rate for k = 3?",

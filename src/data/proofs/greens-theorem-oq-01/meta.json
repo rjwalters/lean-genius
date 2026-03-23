@@ -68,7 +68,8 @@
       "**ring closes the arithmetic**: Once FTC is applied and Fubini is used, the four boundary terms assemble into the line integral by pure ring arithmetic. No analysis needed for the final step.",
       "**intervalIntegral is the right abstraction**: Mathlib's intervalIntegral handles signed intervals and satisfies FTC directly, making the proof much simpler than using Lebesgue integrals.",
       "**The proof generalizes**: The same 8-step proof works for any rectangle — the specific dimensions [a,b]×[c,d] are all parameters."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -116,7 +117,7 @@
   ],
   "conclusion": {
     "summary": "This formalization answers greens-theorem-oq-01 affirmatively: YES, the abstract stubs in GreensTheorem.lean can be replaced with genuine Mathlib intervalIntegral objects. The proof uses FTC twice (once in each variable) plus Fubini (as hypothesis), plus pure ring arithmetic. Zero sorries. The one explicit hypothesis (Fubini) identifies the deep analysis step transparently.",
-    "implications": "Shows that Mathlib's intervalIntegral machinery is expressive enough for multivariable calculus theorems. The concrete definitions (rectLineIntegral, rectDoubleIntegral) can serve as templates for formalizing Stokes' theorem in higher dimensions. The proof structure (FTC + Fubini + ring) generalizes beyond rectangles to any domain where these tools apply.",
+    "implications": "**Theoretical Significance**: Shows that Mathlib's intervalIntegral machinery is expressive enough for multivariable calculus theorems.\n\n**Broader Connections**: The concrete definitions (rectLineIntegral, rectDoubleIntegral) can serve as templates for formalizing Stokes' theorem in higher dimensions. The proof structure (FTC + Fubini + ring) generalizes beyond rectangles to any domain where these tools apply.",
     "openQuestions": [
       "Can Fubini be proved from Mathlib's MeasureTheory.integral_integral_swap, giving a fully self-contained proof with 0 hypotheses about integration order?",
       "Can the proof generalize to smooth curves (not just rectangular boundaries) using Mathlib's path integration machinery?",

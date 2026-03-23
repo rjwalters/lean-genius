@@ -70,7 +70,8 @@
       "**Sign determines direction**: projCoeff > 0 when inner(u,v) > 0 (same direction), projCoeff < 0 when inner(u,v) < 0 (opposite direction). This geometric interpretation follows from the sign of the inner product divided by the positive quantity norm(v)^2.",
       "**Lagrange identity for finite sums**: The cross-term vanishing condition a_i*b_j = a_j*b_i is extracted from the identity sum_ij (a_i*b_j - a_j*b_i)^2 = 2*(sum a_i^2 * sum b_i^2 - (sum a_i*b_i)^2), giving the exact ratio a_i/b_i = sum(a*b)/sum(b^2) for all i.",
       "**Bridge to OQ-03 (Hölder)**: The equality condition for Cauchy-Schwarz (p=q=2) is a special case of Hölder equality — the general case requires $f_i^p/g_i^q$ constant. At p=q=2 this reduces to proportionality $f_i/g_i = c$, unifying the geometric (projection) and analytic (Hölder) perspectives"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -144,7 +145,7 @@
   ],
   "conclusion": {
     "summary": "Complete formalization of the exact proportionality constant in Cauchy-Schwarz equality. The proof is fully verified (0 sorries, 0 axioms) and covers: abstract inner product spaces (biconditional characterization via residual norm decomposition), projection coefficient algebra (linearity, normalization), geometric interpretation (same/opposite direction), finite-dimensional sums (via Lagrange identity), and the canonical bridge to the existential form.",
-    "implications": "**Implications**:\n\n1. **Regression Theory**: The projection coefficient projCoeff(u,v) = inner(u,v)/norm(v)^2 is the simple linear regression coefficient. This formalization verifies its optimality.\n\n2. **Signal Processing**: In matched filtering, the projection coefficient gives the optimal scaling of a template signal to match an observed signal.\n\n3. **Orthogonal Decomposition**: The residual norm characterization (equality iff residual = 0) is the foundation of Gram-Schmidt orthogonalization and QR factorization.\n\n4. **Unique Determination**: The bridge theorem shows the proportionality constant is uniquely determined, closing the gap between 'exists c' and 'c equals this specific value'.",
+    "implications": "**Theoretical Significance**: **Implications**:\n\n1. **Regression Theory**: The projection coefficient projCoeff(u,v) = inner(u,v)/norm(v)^2 is the simple linear regression coefficient. This formalization verifies its optimality.\n\n2.\n\n**Broader Connections**: **Signal Processing**: In matched filtering, the projection coefficient gives the optimal scaling of a template signal to match an observed signal.\n\n3. **Orthogonal Decomposition**: The residual norm characterization (equality iff residual = 0) is the foundation of Gram-Schmidt orthogonalization and QR factorization.\n\n4. **Unique Determination**: The bridge theorem shows the proportionality constant is uniquely determined, closing the gap between 'exists c' and 'c equals this specific value'.",
     "openQuestions": [
       "Can the finite sum version be extended to weighted inner products sum(w_i * a_i * b_i)?",
       "Can the projection coefficient be connected to Mathlib's orthogonalProjection for Hilbert subspaces?"

@@ -67,6 +67,12 @@
       "The χ = 3 → χ = 4 gap is the core difficulty: odd cycles (χ = 3) come 'for free' from EHS, but forcing χ = 4 common subgraphs would require fundamentally new techniques — no Ramsey-type argument is known to suffice",
       "HasChromaticAleph1 is defined as ¬IsCountablyColorable, which in ZFC means χ ≥ ℵ₁ (could be larger). This is a deliberate simplification appropriate for the problem statement",
       "The generalization to finite collections uses Fin n-indexed families of types and graphs, a clean Lean 4 pattern for universal quantification over finite sets"
+    ],
+    "prerequisites": [
+      "Common subgraphs and graph isomorphism",
+      "Extremal graph theory",
+      "Ramsey theory",
+      "Graph density and structure"
     ]
   },
   "sections": [
@@ -143,7 +149,7 @@
   ],
   "conclusion": {
     "summary": "This 208-line formalization captures Erdős Problem #62 with 0 sorries. The custom InfGraph structure supports uncountable vertex sets. The chromatic hierarchy (finite/ℵ₀/ℵ₁) is cleanly stratified. The EHS theorem is axiomatized and odd_cycles_are_common is fully proved, establishing χ = 3 common subgraphs. The gap to χ = 4 (chi_gap_problem) captures the exact open frontier.",
-    "implications": "This problem probes the deep structure of graphs with uncountable chromatic number. A positive answer would reveal that χ = ℵ₁ graphs are 'universally rich' — forced to contain complex common structures. A negative answer would exhibit graphs with the same uncountable chromatic number but fundamentally different subgraph profiles. The problem connects to partition calculus, Ramsey theory on uncountable sets, and the compactness/incompactness phenomena in infinite combinatorics.",
+    "implications": "**Theoretical Significance**: This problem probes the deep structure of graphs with uncountable chromatic number. A positive answer would reveal that χ = ℵ₁ graphs are 'universally rich' — forced to contain complex common structures.\n\n**Broader Connections**: A negative answer would exhibit graphs with the same uncountable chromatic number but fundamentally different subgraph profiles. The problem connects to partition calculus, Ramsey theory on uncountable sets, and the compactness/incompactness phenomena in infinite combinatorics.",
     "openQuestions": [
       "Does there exist a common subgraph with χ = 4? (The strong conjecture)",
       "Does there exist a common subgraph with χ = ℵ₀? (The weak conjecture)",

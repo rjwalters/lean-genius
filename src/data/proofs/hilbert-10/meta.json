@@ -50,6 +50,12 @@
       "The diagonal argument from computability theory applies to number theory",
       "Some very natural mathematical questions have no algorithmic solution",
       "**Fibonacci-Pell connection**: Matiyasevich's breakthrough used the identity $F_{2n} = F_n L_n$ and properties of Pell equations to show that exponential growth can be captured by polynomial equations — the critical missing piece for 20 years"
+    ],
+    "prerequisites": [
+      "Computability theory and Turing machines",
+      "Diophantine equations and polynomial solutions",
+      "DPRM theorem (Davis-Putnam-Robinson-Matiyasevich)",
+      "Decidability and recursive functions"
     ]
   },
   "sections": [
@@ -112,7 +118,7 @@
   ],
   "conclusion": {
     "summary": "Hilbert's Tenth Problem is undecidable. No algorithm can determine whether an arbitrary polynomial equation with integer coefficients has integer solutions. This result, proven 70 years after Hilbert posed the question, reveals deep connections between number theory and computability.\n\nThe MRDP theorem shows that Diophantine sets are exactly the recursively enumerable sets - a surprising equivalence between ancient number theory and modern computability theory.",
-    "implications": "The undecidability of H10 has profound implications:\n\n1. **Number Theory**: Many natural questions about integers have no algorithmic solution. The simple question 'does this equation have solutions?' is in general unanswerable.\n\n2. **Decidability Hierarchy**: H10 over integers is undecidable, but over rationals remains open! Different number systems have different computational properties.\n\n3. **Universal Computation**: Polynomials over integers can encode arbitrary computation, making them a 'universal' computational model.\n\n4. **Open Problems**: Whether H10 is decidable over the rationals (or other number fields) remains one of the major open problems in mathematics.",
+    "implications": "**Theoretical Significance**: The undecidability of H10 has profound implications:\n\n1. **Number Theory**: Many natural questions about integers have no algorithmic solution. The simple question 'does this equation have solutions?' is in general unanswerable.\n\n2.\n\n**Broader Connections**: **Decidability Hierarchy**: H10 over integers is undecidable, but over rationals remains open! Different number systems have different computational properties.\n\n3. **Universal Computation**: Polynomials over integers can encode arbitrary computation, making them a 'universal' computational model.\n\n4. **Open Problems**: Whether H10 is decidable over the rationals (or other number fields) remains one of the major open problems in mathematics.",
     "openQuestions": [
       "Is H10 decidable over the rationals?",
       "What is the computational complexity of H10 restricted to bounded degree polynomials?",

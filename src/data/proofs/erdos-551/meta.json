@@ -34,7 +34,8 @@
       "For $n = 100$: Bondy-Erdős needs $k \\geq 9999$, Nikiforov needs $k \\geq 402$, KLS needs $k \\geq 3C$ — the improvement is thousandfold",
       "The triangle case $R(C_k, K_3) = 2k - 1$ for $k \\geq 4$ follows from Dirac's theorem: a graph on $2k-1$ vertices with no triangle in the complement has minimum degree $\\geq k$, hence a Hamiltonian cycle",
       "Aristotle formally verified `kls_improves`: for $n \\geq 100$, $\\log n / \\log \\log n < 4n + 2$, using $e < 3$ proved via Taylor expansion bounds"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -131,7 +132,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #551 on R(C_k, K_n) = (k-1)(n-1) + 1 is SOLVED for sufficiently large parameters. The 604-line formalization captures the full 48-year progression: Bondy-Erdős (1973, quadratic threshold), Nikiforov (2005, linear threshold), and KLS (2021, near-logarithmic threshold). The lower bound construction via disjoint cliques, the (3,3) exception, the triangle case R(C_k, K_3) = 2k-1, monotonicity properties, and the path-cycle upper bound method are all formalized. Aristotle formally proved kls_improves and formula_mono; formula_wrong_at_3_3 was verified by native_decide.",
-    "implications": "The near-logarithmic threshold from KLS essentially closes the problem: for any fixed n, the formula holds for all but at most O(log n / log log n) values of k. The linear dependence on n in the formula (k-1)(n-1)+1 has a clean structural explanation via the disjoint cliques lower bound. The progression from quadratic to near-logarithmic thresholds illustrates how spectral methods (Nikiforov) and stability methods (KLS) can dramatically improve on classical combinatorial arguments (Bondy-Erdős).",
+    "implications": "**Theoretical Significance**: The near-logarithmic threshold from KLS essentially closes the problem: for any fixed n, the formula holds for all but at most O(log n / log log n) values of k.\n\n**Broader Connections**: The linear dependence on n in the formula (k-1)(n-1)+1 has a clean structural explanation via the disjoint cliques lower bound. The progression from quadratic to near-logarithmic thresholds illustrates how spectral methods (Nikiforov) and stability methods (KLS) can dramatically improve on classical combinatorial arguments (Bondy-Erdős).",
     "openQuestions": [
       "For fixed n, what is the exact smallest k₀(n) where R(C_k, K_n) = (k-1)(n-1)+1 for all k ≥ k₀(n)?",
       "Can the KLS constant C be determined explicitly, and what is its optimal value?",

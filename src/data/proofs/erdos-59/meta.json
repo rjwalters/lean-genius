@@ -35,7 +35,8 @@
       "The gap between 2^{(1+o(1))ex} and 2^{O(ex)} is the key open question: the Morris-Saxton conjecture posits 2^{O(ex)} always holds, but 2^{(1+o(1))ex} fails for bipartite H",
       "Turán's theorem gives ex(n;K_{r+1}) exactly, while Kővári-Sós-Turán gives ex(n;C_{2k}) = O(n^{1+1/k}) — the subquadratic growth for bipartite graphs is what makes their counting behavior different",
       "The sorry in erdos_59_disproved is a technical gap (extracting n ≥ N₀ from Set.Infinite), not a mathematical one — the argument is complete modulo this Lean extraction step"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -113,7 +114,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #59 is DISPROVED. The 223-line formalization captures the complete resolution: the Erdős-Frankl-Rödl theorem (1986) proves the bound for non-bipartite H, while the Morris-Saxton counterexample (2016) disproves it for C_6. The main theorem has 1 sorry (a technical extraction from Set.Infinite). Classical Turán bounds, the Morris-Saxton weaker conjecture, and bipartiteness results are also formalized.",
-    "implications": "The resolution reveals a fundamental structural dichotomy in extremal graph theory: for non-bipartite forbidden subgraphs, the Turán number essentially determines the count of free graphs (via the regularity lemma). For bipartite forbidden subgraphs, algebraic structures (projective planes) create additional diversity that the Turán number alone cannot capture. This parallels the KST/Turán divide throughout extremal combinatorics.",
+    "implications": "**Theoretical Significance**: The resolution reveals a fundamental structural dichotomy in extremal graph theory: for non-bipartite forbidden subgraphs, the Turán number essentially determines the count of free graphs (via the regularity lemma).\n\n**Broader Connections**: For bipartite forbidden subgraphs, algebraic structures (projective planes) create additional diversity that the Turán number alone cannot capture. This parallels the KST/Turán divide throughout extremal combinatorics.",
     "openQuestions": [
       "Does the weaker bound 2^{O(ex(n;G))} hold for all G? (Morris-Saxton Conjecture, OPEN)",
       "For which bipartite graphs H does the original 2^{(1+o(1))ex} bound hold?",

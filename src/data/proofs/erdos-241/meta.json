@@ -32,7 +32,8 @@
       "The gap between constants 1 and 1.519 is fundamentally about whether algebraic constructions from finite fields are the densest possible, or whether non-algebraic constructions could do better",
       "The B₃ problem sits at the threshold where Fourier-analytic methods (effective for B₂/Sidon sets) become insufficient: the lack of a B₃ analogue of the Erdős–Turán $N^{1/2} + O(N^{1/4})$ bound reflects deeper structural obstacles",
       "The formalization distinguishes between the ordered-triple definition (used here, closer to the counting argument) and the multiset definition (equivalent but harder to formalize), a meaningful design choice for the Lean representation"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -87,7 +88,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the full structure of Erdős Problem 241: the B₃ set definition, the extremal function f(N), the precise asymptotic conjecture, both the Bose–Chowla lower bound and Green's upper bound, and the natural generalization to Bₕ sequences. The $100 prize problem reduces to closing the gap between upper bound constant $(7/2)^{1/3} \\approx 1.519$ and the conjectured value of 1.",
-    "implications": "**Additive Combinatorics**: Resolution would determine whether algebraic (finite field) constructions are optimal among all B₃ sets, a question at the heart of the polynomial method in combinatorics. **Coding Theory**: B₃ sets are equivalent to certain constant-weight codes with restricted Hamming distances; the answer determines fundamental limits of such codes. **General Bₕ Conjecture**: Progress on B₃ would likely inform techniques for all $h \\ge 3$, where the gap between Bose–Chowla lower bounds and best upper bounds persists. **Fourier Analysis**: New upper bound techniques would likely require advances beyond current additive energy methods, potentially developing higher-order Fourier analysis for $B_h$ problems.",
+    "implications": "**Theoretical Significance**: **Additive Combinatorics**: Resolution would determine whether algebraic (finite field) constructions are optimal among all B₃ sets, a question at the heart of the polynomial method in combinatorics. **Coding Theory**: B₃ sets are equivalent to certain constant-weight codes with restricted Hamming distances; the answer determines fundamental limits of such codes.\n\n**Broader Connections**: **General Bₕ Conjecture**: Progress on B₃ would likely inform techniques for all $h \\ge 3$, where the gap between Bose–Chowla lower bounds and best upper bounds persists. **Fourier Analysis**: New upper bound techniques would likely require advances beyond current additive energy methods, potentially developing higher-order Fourier analysis for $B_h$ problems.",
     "openQuestions": [
       "Can the upper bound constant for B₃ sets be reduced below $(7/2)^{1/3} \\approx 1.519$?",
       "Does $\\lim_{N \\to \\infty} f(N)/N^{1/3}$ exist, or do the limsup and liminf differ?",

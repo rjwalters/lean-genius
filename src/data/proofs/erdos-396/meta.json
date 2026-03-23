@@ -33,7 +33,8 @@
       "Pomerance's density bound of $1/3$ shows that **even single-factor divisibility is rare**: the set $\\{n : (n-k) \\mid \\binom{2n}{n}\\}$ has upper density $< 1/3$, far from the density-1 behavior of the ascending case.",
       "The **Catalan number connection** provides the starting point: $C_n = \\binom{2n}{n}/(n+1)$ is always an integer, but the sequence $\\binom{2n}{n}/[n(n-1)\\cdots(n-k)]$ need not be, making the divisibility condition genuinely non-trivial.",
       "The problem sits in the tradition of **Erdős divisibility questions** about binomial coefficients, connecting to the Erdős–Kac theorem, Granville's work on binomial coefficients modulo primes, and the general study of the prime factorization of $\\binom{2n}{n}$."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

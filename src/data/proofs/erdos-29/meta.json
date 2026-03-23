@@ -41,6 +41,12 @@
       "**Aristotle Disproves a Theorem:** The claimed lower bound $|A \\cap [1,N]| \\geq \\sqrt{N}$ for any basis $A$ is **FALSE**. Aristotle constructed the counterexample $A = \\{0,1\\} \\cup \\{n \\geq 3\\}$ which is a basis but has $|A \\cap [1,2]| = 1 < \\sqrt{2}$ for $N=2$. The theorem remains in the file as `sorry`, illustrating how automated verification catches errors.",
       "**Derandomization:** JPSZ's breakthrough converts Erdős's probabilistic argument into a deterministic algorithm. The key technique is finding a hash function $h : \\mathbb{N} \\to [0,1]$ such that $n \\in A \\iff h(n) \\leq p_n$ has the same coverage and sparsity properties as the random set. `ExplicitSet` in Lean formalizes this: `DecidablePred (· ∈ A)` ensures membership is algorithmically checkable.",
       "**90 Years, $100:** From Sidon's question (1932) to JPSZ's answer (2024) — 92 years. The formalization covers the full mathematical landscape: Erdős's non-constructive proof (`erdos_probabilistic_existence`), the 2024 explicit construction (`JPSZ_set`, `JPSZ_is_basis`, `JPSZ_is_economical`), and four Lean-verified supporting theorems (`economical_equiv`, `univ_not_economical`, `squares_not_basis`, `sidon_not_basis`)."
+    ],
+    "prerequisites": [
+      "Additive bases and Waring's problem",
+      "Explicit vs. probabilistic constructions",
+      "Schnirelmann density",
+      "Computational number theory"
     ]
   },
   "sections": [

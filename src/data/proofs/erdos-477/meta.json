@@ -33,7 +33,8 @@
       "The linear case $f(x) = x$ is trivially solvable ($A = \\{0\\}$), showing the degree $\\geq 2$ condition is essential, not an artifact",
       "For degree $d \\geq 2$, the complement $A$ must have density $\\to 1$ since $|f(\\mathbb{Z}) \\cap [-N,N]| = O(N^{1/d})$, yet $A$ must avoid all difference-set conflicts with $f(\\mathbb{Z})$",
       "The file proves 12 theorems from scratch (not axioms), making it one of the most complete formalizations in the gallery"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -95,7 +96,7 @@
   ],
   "conclusion": {
     "summary": "The formalization captures Erdős Problem 477 with a rich development of perfect complement theory: 12 proved theorems establishing structural properties (difference sets, symmetries, finiteness, gap analysis) alongside 3 axiomatized conjectures. This is one of the most substantially proved entries in the gallery.",
-    "implications": "Resolution of this conjecture would deepen our understanding of which subsets of $\\mathbb{Z}$ can tile by translation. It connects to the Coven-Meyerowitz conjecture (which characterizes finite sets tiling $\\mathbb{Z}$), Hajós's theorem on factorizations of abelian groups, and the broader theory of sumsets in additive combinatorics. A positive answer (some polynomial tiles) would be remarkable; the expected negative answer would confirm a fundamental rigidity of polynomial images.",
+    "implications": "**Theoretical Significance**: Resolution of this conjecture would deepen our understanding of which subsets of $\\mathbb{Z}$ can tile by translation.\n\n**Broader Connections**: It connects to the Coven-Meyerowitz conjecture (which characterizes finite sets tiling $\\mathbb{Z}$), Hajós's theorem on factorizations of abelian groups, and the broader theory of sumsets in additive combinatorics. A positive answer (some polynomial tiles) would be remarkable; the expected negative answer would confirm a fundamental rigidity of polynomial images.",
     "openQuestions": [
       "Does the Erdős-Graham conjecture hold: is it true that no polynomial $f$ of degree $\\geq 2$ admits $A$ with $A \\oplus f(\\mathbb{Z}) = \\mathbb{Z}$?",
       "Can the difference set constraint $(A-A) \\cap (f(\\mathbb{Z})-f(\\mathbb{Z})) = \\{0\\}$ be leveraged for a general proof?",

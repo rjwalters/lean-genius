@@ -71,7 +71,8 @@
       "**Minimal Growth:** f(2^k - 2) = 2^k because 2^k = (2^k - 2) + 2 and 2^k is smooth w.r.t. any even number",
       "**Almost-Sure Linear:** For 'almost all' n (density 1), f(n) = (1 + o(1))n - growth is linear on average",
       "**Irregular Growth:** Infinitely many cases of both minimal (u+2) and maximal (u²) growth - no regular pattern"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -140,7 +141,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #459 asked to estimate f(u), the gap until the next smooth number. Cambie's observations provide a complete picture: trivial bounds u+2 ≤ f(u) ≤ u², exact values for primes (f(p) = p²) and special even numbers, and the crucial insight that f(n) = (1+o(1))n for almost all n while exhibiting highly irregular growth for specific families.",
-    "implications": "**Connections and Applications**\n\n1. **Smooth Number Theory:** Understanding gaps in smooth numbers is fundamental to algorithms in computational number theory\n\n2. **Factoring Algorithms:** Smooth numbers are central to the quadratic sieve and number field sieve\n\n3. **Additive Combinatorics:** The function captures structure in multiplicative number theory\n\n4. **Asymptotic Density:** The 'almost all' result connects to probabilistic number theory\n\n5. **OEIS A289280:** The sequence documents computational verification",
+    "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **Smooth Number Theory:** Understanding gaps in smooth numbers is fundamental to algorithms in computational number theory\n\n2. **Factoring Algorithms:** Smooth numbers are central to the quadratic sieve and number field sieve\n\n3.\n\n**Broader Connections**: **Additive Combinatorics:** The function captures structure in multiplicative number theory\n\n4. **Asymptotic Density:** The 'almost all' result connects to probabilistic number theory\n\n5. **OEIS A289280:** The sequence documents computational verification.",
     "openQuestions": [
       "What is the exact distribution of f(n)/n for random n?",
       "Can we characterize all u with f(u) = u + 2 beyond powers of 2 minus 2?",

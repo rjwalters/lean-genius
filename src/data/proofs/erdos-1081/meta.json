@@ -73,7 +73,8 @@
       "**Faster Growth:** A(x) grows faster than expected because squarefull numbers cluster",
       "**Quadratic Forms:** Blomer-Granville used binary quadratic form theory for tight bounds",
       "**Historical Note:** This is one of several Erdős conjectures that were disproved"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -142,7 +143,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1081 asked whether A(x), the count of integers up to x expressible as sums of two squarefull numbers, satisfies A(x) ~ c·x/√(log x). The answer is NO, disproved by Odoni in 1981. The correct asymptotic is A(x) ~ x/(log x)^α where α = 1 - 2^(-1/3) ≈ 0.206, meaning A(x) grows significantly faster than Erdős expected.",
-    "implications": "**Implications in Analytic Number Theory**\n\n1. **Probabilistic Heuristics:** Naive models can fail when underlying sets have structure\n\n2. **Quadratic Forms:** Deep connection to representation theory of binary forms\n\n3. **Exponent Discovery:** The unexpected exponent α = 1 - 2^(-1/3) has number-theoretic significance\n\n4. **Related Problems:** Connected to Problem #940 about similar counting questions\n\n5. **Methodological:** Blomer-Granville's approach exemplifies modern analytic techniques",
+    "implications": "**Theoretical Significance**: **Implications in Analytic Number Theory**\n\n1. **Probabilistic Heuristics:** Naive models can fail when underlying sets have structure\n\n2. **Quadratic Forms:** Deep connection to representation theory of binary forms\n\n3.\n\n**Broader Connections**: **Exponent Discovery:** The unexpected exponent α = 1 - 2^(-1/3) has number-theoretic significance\n\n4. **Related Problems:** Connected to Problem #940 about similar counting questions\n\n5. **Methodological:** Blomer-Granville's approach exemplifies modern analytic techniques.",
     "openQuestions": [
       "Exact leading constant in A(x) asymptotic",
       "Higher order terms in the expansion of A(x)",
@@ -212,7 +213,9 @@
   ],
   "references": [
     {
-      "authors": ["R. W. K. Odoni"],
+      "authors": [
+        "R. W. K. Odoni"
+      ],
       "title": "On the norms of algebraic integers",
       "journal": "Mathematika",
       "volume": "22",
@@ -221,7 +224,10 @@
       "note": "Contains Odoni's foundational work leading to the 1981 disproof; provides the lower bound showing A(x) grows faster than c·x/√(log x)."
     },
     {
-      "authors": ["R. C. Baker", "J. Brüdern"],
+      "authors": [
+        "R. C. Baker",
+        "J. Brüdern"
+      ],
       "title": "Sums of two squareful numbers",
       "journal": "Acta Arithmetica",
       "volume": "69",
@@ -230,7 +236,9 @@
       "note": "Establishes intermediate bounds for A(x) improving on Odoni; a key step between the original disproof and the Blomer-Granville refinement."
     },
     {
-      "authors": ["V. Blomer"],
+      "authors": [
+        "V. Blomer"
+      ],
       "title": "Ternary quadratic forms with rational zeros",
       "journal": "Journal de Théorie des Nombres de Bordeaux",
       "volume": "16",
@@ -239,7 +247,10 @@
       "note": "Blomer's solo work using quadratic forms to tighten bounds on A(x); directly precedes the 2006 joint paper with Granville."
     },
     {
-      "authors": ["V. Blomer", "A. Granville"],
+      "authors": [
+        "V. Blomer",
+        "A. Granville"
+      ],
       "title": "Estimates for representation numbers of quadratic forms",
       "journal": "Duke Mathematical Journal",
       "volume": "135",
@@ -249,7 +260,9 @@
       "note": "Definitive paper proving the correct exponent α = 1 − 2^(−1/3) for A(x) ~ x/(log x)^α via representation theory of binary quadratic forms."
     },
     {
-      "authors": ["G. Tenenbaum"],
+      "authors": [
+        "G. Tenenbaum"
+      ],
       "title": "Introduction to Analytic and Probabilistic Number Theory",
       "publisher": "Cambridge University Press",
       "edition": "3rd",

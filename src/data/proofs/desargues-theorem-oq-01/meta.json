@@ -58,7 +58,8 @@
       "The core algebraic identity (degree-9 in 18 variables) is verified by Lean's ring tactic in ~400s with maxHeartbeats 400000000",
       "The converse requires IntegralDomain (no zero divisors) to cancel the non-degeneracy factor",
       "Corollaries for ℚ, ℤ, 𝔽_p, and polynomial rings follow immediately with zero additional proof"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -120,7 +121,7 @@
   ],
   "conclusion": {
     "summary": "The open question is answered affirmatively: the full algebraic proof of Desargues's theorem can be completed in Lean 4 without sorries, without the deprecated CrossProduct module, and moreover the proof generalizes to any commutative ring. The key ingredient is a custom cross product definition that bypasses the deprecated module, combined with the Lagrange identity which encodes intersection points as linear combinations.",
-    "implications": "This formalization demonstrates that Desargues's theorem is fundamentally algebraic rather than geometric — it holds in any commutative ring where points are elements of a free module of rank 3. This connects to the classical theorem that projective planes are Desarguesian if and only if they are coordinatizable by a division ring. The generalization to polynomial rings K[x] shows the theorem holds in infinite-dimensional algebraic geometry contexts.",
+    "implications": "**Theoretical Significance**: This formalization demonstrates that Desargues's theorem is fundamentally algebraic rather than geometric — it holds in any commutative ring where points are elements of a free module of rank 3.\n\n**Broader Connections**: This connects to the classical theorem that projective planes are Desarguesian if and only if they are coordinatizable by a division ring. The generalization to polynomial rings K[x] shows the theorem holds in infinite-dimensional algebraic geometry contexts.",
     "openQuestions": [
       "Can we formalize non-Desarguesian projective planes in Lean to demonstrate when the theorem fails?",
       "What is the relationship between Desargues's theorem and the fundamental theorem of projective geometry in a formal setting?",

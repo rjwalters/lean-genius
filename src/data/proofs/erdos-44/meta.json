@@ -64,6 +64,12 @@
       "**Powers of 2 are Sidon**: 2^a + 2^b = 2^c + 2^d implies {a,b} = {c,d} by binary uniqueness",
       "**Extension difficulty**: Adding elements while preserving the Sidon property is non-trivial",
       "**Probabilistic method**: Erdős used his probabilistic method to prove $F(N) \\geq (1+o(1))\\sqrt{N}$, showing random constructions match the trivial upper bound — the gap between constructive and existential bounds is a central theme in additive combinatorics"
+    ],
+    "prerequisites": [
+      "Sidon sets (B₂ sequences) and pairwise distinct sums",
+      "Greedy algorithms in combinatorics",
+      "Finite field constructions (for dense Sidon sets)",
+      "Counting arguments and asymptotic analysis"
     ]
   },
   "sections": [

@@ -102,6 +102,12 @@
       "**Doubly exponential bounds are tight**: n_k ≈ exp(C^k) because σ_{-1}(n) grows only as log log n for 'optimal' n (via Mertens), so achieving σ_{-1} ≥ k forces n ≥ exp(exp(k))",
       "**Highly composite numbers are optimal**: numbers with many small prime factors (like 120 = 2³·3·5) maximize the reciprocal sum for their size",
       "**Aristotle proved one lemma**: the bound d ≤ Π d' for Egyptian fractions was automatically proved via Finset.dvd_prod_of_mem"
+    ],
+    "prerequisites": [
+      "Egyptian fractions and unit fraction decompositions",
+      "Ramsey theory and monochromatic structures",
+      "Number theory (divisibility, harmonic sums)",
+      "Coloring theorems"
     ]
   },
   "conclusion": {

@@ -72,7 +72,8 @@
       "**Lost Proof:** Erdős-Selfridge-Straus claimed to prove the limit but the proof died with Straus — one of the most famous 'lost proofs' in mathematics",
       "**Second-Order Term:** The correction -c₀/log(n) with c₀ ≈ 0.3044 shows that t(n)/n approaches 1/e from below, answering both questions simultaneously",
       "**Sharp Threshold 43632:** The lower bound t(n) ≥ n/3 holds for n ≥ 43632 and this threshold is optimal — a remarkably precise explicit result"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -141,7 +142,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #391 asked for the asymptotic behavior of t(n)/n, where t(n) is the maximum of the minimum factor over all factorizations of n! into n non-decreasing parts. The formalization captures the complete resolution by Alexeev et al. (2025): the limit equals 1/e, with a precise second-order correction of -c₀/log(n), and explicit upper and lower bounds confirming the Guy-Selfridge conjectures.",
-    "implications": "This result connects combinatorial optimization (balanced factorization) with analytic number theory (Stirling's formula, prime distribution in factorials). The explicit constant c₀ ≈ 0.3044 and the sharp threshold 43632 demonstrate that highly precise quantitative results are achievable even for problems that remained open for decades. The problem also illustrates the interplay between computational and theoretical mathematics.",
+    "implications": "**Theoretical Significance**: This result connects combinatorial optimization (balanced factorization) with analytic number theory (Stirling's formula, prime distribution in factorials).\n\n**Broader Connections**: The explicit constant c₀ ≈ 0.3044 and the sharp threshold 43632 demonstrate that highly precise quantitative results are achievable even for problems that remained open for decades. The problem also illustrates the interplay between computational and theoretical mathematics.",
     "openQuestions": [
       "Exact value of c₀ and whether it has a closed-form expression",
       "Analogous results when factors are restricted to prime powers (Alladi-Grinstead direction)",

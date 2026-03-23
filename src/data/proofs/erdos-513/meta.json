@@ -42,6 +42,11 @@
       "The gap between 1/2 and 2/π remains one of the most precise open intervals in classical analysis",
       "The problem connects to the central index ν(r) (the n maximizing |aₙ|rⁿ) via Wiman-Valiron theory: when μ(r)/M(r) is large, the function f(z) is dominated by the single term aᵥ(r)zᵥ(r) near |z| = r",
       "For lacunary series f(z) = Σ aₙ z^{n_k} with large gaps n_{k+1}/n_k → ∞, μ(r)/M(r) → 1 for most r, but the liminf can be forced down to any value > 1/2"
+    ],
+    "prerequisites": [
+      "Complex analysis: entire functions, maximum modulus principle, power series",
+      "Wiman-Valiron theory: maximum term μ(r), central index, and their relation to M(r)",
+      "Lacunary series: gap series with controlled coefficient growth"
     ]
   },
   "sections": [

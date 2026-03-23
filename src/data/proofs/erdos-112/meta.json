@@ -101,7 +101,8 @@
       "**Quadratic vs exponential gap**: The Larson–Mitchell bound $k(n,3) \\leq n^2$ is quadratic in $n$, while the general Erdős–Rado bound $k(n,m) \\leq O(2^m \\cdot n^m)$ is exponential in $m$ — closing this gap for $m \\geq 4$ is the central open question",
       "**Path variant has exact solution**: Replacing 'transitive tournament' with 'directed path' yields the exact answer $(n-1)(m-1)+1$, showing that the transitivity requirement is what makes the problem genuinely difficult",
       "**Irreflexivity suffices**: The formalization uses irreflexive relations rather than tournament-specific axioms, capturing the more general directed graph setting where non-edges (independent set vertices) and tournament structure coexist"
-    ]
+    ],
+    "prerequisites": []
   },
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #112 — the directed Ramsey problem for independent sets versus transitive tournaments — by axiomatizing the function $k(n,m)$ and its known bounds in Lean 4. The formalization faithfully represents the Ramsey lower bound, Hunter's 3-color upper bound, the Larson–Mitchell quadratic estimate for $m=3$, and the original 1967 Erdős–Rado bound, providing a formal foundation for one of the central open problems in directed Ramsey theory.",

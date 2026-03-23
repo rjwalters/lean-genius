@@ -116,7 +116,8 @@
       "**Pairing argument for the upper bound**: For each $2^k$, the involution $a \\mapsto 2^k - a$ pairs complementary integers. Any set avoiding power-of-two sums picks at most one from each pair, giving density $\\leq 1/2$ --- a clean double-counting argument.",
       "**Factor-of-3/2 improvement**: Müller showed the true threshold is $1/2$, a 50% improvement over the trivial bound of $1/3$. The gap illustrates how binary structure provides much finer control than divisibility arguments alone.",
       "**Verified vs axiomatized division**: The trivial bound proof and main existence/optimality theorems are fully verified in Lean; only Müller's binary-digit analysis (carry propagation) and the density computation are axiomatized."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -164,7 +165,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1136 was solved by Müller in 2011. The maximum density for a set of natural numbers where no two elements sum to a power of 2 is exactly $1/2$, achieved by the set of integers with consecutive 1-bits in binary ($n \\equiv 3 \\cdot 2^i \\pmod{2^{i+2}}$). The formalization verifies the main existence and optimality theorems from axiomatized construction properties, with the trivial multiples-of-3 proof fully verified in Lean.",
-    "implications": "The result reveals that the constraint '$a + b \\neq 2^k$' is fundamentally about binary digit patterns, not divisibility. Müller's construction exploits carry propagation in binary addition, a technique with potential applications to other additive problems over powers of a fixed base. The pairing argument for the upper bound is a clean instance of the probabilistic/counting method in combinatorics, partitioning a universe into complementary pairs and bounding the maximum independent set.",
+    "implications": "**Theoretical Significance**: The result reveals that the constraint '$a + b \\neq 2^k$' is fundamentally about binary digit patterns, not divisibility.\n\n**Broader Connections**: Müller's construction exploits carry propagation in binary addition, a technique with potential applications to other additive problems over powers of a fixed base. The pairing argument for the upper bound is a clean instance of the probabilistic/counting method in combinatorics, partitioning a universe into complementary pairs and bounding the maximum independent set.",
     "openQuestions": [
       "What is the optimal density for avoiding sums equal to $3^k$, or more generally $p^k$ for a fixed prime $p$? The binary structure argument does not directly generalize to other bases.",
       "Can Müller's binary-digit technique be extended to higher-order constraints such as $a + b + c = 2^k$ (three-term power-of-two sums)?",

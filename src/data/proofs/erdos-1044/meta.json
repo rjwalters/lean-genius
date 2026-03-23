@@ -35,7 +35,8 @@
       "**Potential theory connection**: $\\log|f(z)| = \\sum_i \\log|z - z_i|$ is the logarithmic potential of the root configuration. The sublevel set $\\{|f| < 1\\}$ is the set where this potential is negative. Minimizing $\\Lambda$ is equivalent to finding root configurations whose negative-potential region has components with short boundaries—a problem in quantitative potential theory.",
       "**The degree-1 baseline**: For $f(z) = z - z_0$, $\\{|f| < 1\\}$ is a unit disk with $\\Lambda = 2\\pi \\approx 6.28$. This is $\\pi$ times the infimum, showing that the infimum requires high degree. The progression from $2\\pi$ toward $2$ as degree increases reflects how distributing roots around the circle creates smaller, more efficient petals.",
       "**Infimum-not-minimum phenomenon**: Like the distance from an open set to a point outside it, the infimum $2$ is not achieved. This is because any polynomial level set boundary is a real-analytic curve (hence smooth), and any smooth closed curve enclosing positive area has length $> 2$. The limit $\\Lambda \\to 2$ corresponds to petals collapsing to segments."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -76,7 +77,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1044 asks for the infimum of the maximum boundary length of polynomial level sets with roots in the unit disk. Tang proved the answer is exactly 2, approached but never achieved by any polynomial. The formalization captures Tang's theorem, the roots-of-unity conjecture, and the degree-1 case in ~128 lines with 0 sorries (all deep results axiomatized).",
-    "implications": "**Theoretical Significance**\n\n1. **Polynomial lemniscate geometry**: The result gives a sharp metric bound on how 'small' the boundary of a polynomial sublevel set can be, connecting to the classical theory of lemniscates going back to Bernoulli.\n\n2. **Extremal problems in potential theory**: Minimizing $\\Lambda$ is equivalent to finding root configurations whose logarithmic potential landscape has short level curves—a quantitative potential-theory problem.\n\n3. **Infimum-not-minimum phenomenon**: An instructive example of an optimization problem where the extremal value exists but is not achieved, requiring a limiting construction.\n\n4. **Symmetry in extremal problems**: Tang's conjecture that $z^n - 1$ is optimal for each degree reflects the deep principle that extremal configurations in geometric function theory tend to be maximally symmetric.",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Polynomial lemniscate geometry**: The result gives a sharp metric bound on how 'small' the boundary of a polynomial sublevel set can be, connecting to the classical theory of lemniscates going back to Bernoulli.\n\n2.\n\n**Broader Connections**: **Extremal problems in potential theory**: Minimizing $\\Lambda$ is equivalent to finding root configurations whose logarithmic potential landscape has short level curves—a quantitative potential-theory problem.\n\n3. **Infimum-not-minimum phenomenon**: An instructive example of an optimization problem where the extremal value exists but is not achieved, requiring a limiting construction.\n\n4. **Symmetry in extremal problems**: Tang's conjecture that $z^n - 1$ is optimal for each degree reflects the deep principle that extremal configurations in geometric function theory tend to be maximally symmetric.",
     "openQuestions": [
       "Prove Tang's conjecture: does z^n - 1 minimize Λ among degree-n polynomials for all n ≥ 3?",
       "What is the exact value of Λ(z^n - 1) as a function of n? The asymptotic Λ(z^n - 1) → 2 is known but the exact formula may involve elliptic integrals.",
@@ -141,7 +142,9 @@
   ],
   "references": [
     {
-      "authors": ["Quanyu Tang"],
+      "authors": [
+        "Quanyu Tang"
+      ],
       "title": "On the infimum of the length of the boundary of polynomial sublevel sets",
       "venue": "Proceedings of the American Mathematical Society",
       "year": 2021,
@@ -149,7 +152,11 @@
       "notes": "The primary source. Tang proves that inf Λ(f) = 2 and that the infimum is not achieved; also states the conjecture that z^n − 1 minimizes Λ for fixed degree n."
     },
     {
-      "authors": ["Paul Erdős", "Fritz Herzog", "George Piranian"],
+      "authors": [
+        "Paul Erdős",
+        "Fritz Herzog",
+        "George Piranian"
+      ],
       "title": "Metric properties of polynomials",
       "venue": "Journal d'Analyse Mathématique",
       "volume": "6",
@@ -159,7 +166,9 @@
       "notes": "The founding paper for the entire cluster of problems #1038–#1048. Introduces Λ(f) and poses the question that Tang later resolved."
     },
     {
-      "authors": ["Thomas Ransford"],
+      "authors": [
+        "Thomas Ransford"
+      ],
       "title": "Potential Theory in the Complex Plane",
       "venue": "London Mathematical Society Student Texts, Cambridge University Press",
       "volume": "28",
@@ -168,7 +177,9 @@
       "notes": "Standard reference for logarithmic capacity, transfinite diameter, and subharmonic functions — the potential-theoretic framework underlying the proof."
     },
     {
-      "authors": ["Lars Ahlfors"],
+      "authors": [
+        "Lars Ahlfors"
+      ],
       "title": "Complex Analysis",
       "venue": "McGraw-Hill",
       "edition": "3rd",
@@ -177,7 +188,9 @@
       "notes": "Background for analytic function theory, level sets, and lemniscates; Chapter 5 covers harmonic functions and the Dirichlet problem relevant to potential-theory arguments."
     },
     {
-      "authors": ["Igor Pritsker"],
+      "authors": [
+        "Igor Pritsker"
+      ],
       "title": "Chebyshev polynomials on compact sets",
       "venue": "Potential Analysis",
       "volume": "40",

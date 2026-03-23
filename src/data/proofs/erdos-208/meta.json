@@ -65,7 +65,8 @@
       "**Gap bounds**: Current best is s_n^{1/5-c} (Pandey 2024), far from the conjectured subpolynomial bound.",
       "**Optimal lower bound**: Erdős showed infinitely many gaps achieve (π²/6)·log(sₙ)/log(log(sₙ)), so this would be tight.",
       "**ABC connection**: Granville showed the ε-bound follows from the ABC conjecture, connecting to deep number theory."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -120,7 +121,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #208 about gaps between consecutive squarefree numbers. Both questions remain open: whether gaps are always subpolynomial (Question 1), and whether they satisfy a precise log/log-log bound (Question 2). We axiomatize the known partial results including the best unconditional bound (Pandey 2024) and the ABC-conditional result (Granville 1998).",
-    "implications": "This problem connects to fundamental questions about the distribution of squarefree numbers and the structure of integers. The connection to ABC conjecture suggests deep arithmetic content. Progress on this problem would improve our understanding of how 'random' the distribution of squarefree numbers is at various scales.",
+    "implications": "**Theoretical Significance**: This problem connects to fundamental questions about the distribution of squarefree numbers and the structure of integers.\n\n**Broader Connections**: The connection to ABC conjecture suggests deep arithmetic content. Progress on this problem would improve our understanding of how 'random' the distribution of squarefree numbers is at various scales.",
     "openQuestions": [
       "Does s_{n+1} - sₙ ≪ sₙ^ε hold for all ε > 0?",
       "Is the (π²/6)·log(sₙ)/log(log(sₙ)) bound achievable?",

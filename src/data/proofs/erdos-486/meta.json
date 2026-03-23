@@ -93,6 +93,13 @@
       "**Davenport-Erdős Foundation**: The 1936 theorem proves the special case X_n = {0}, establishing logarithmic density for non-divisibility sets.",
       "**Generalization Hierarchy**: This problem (#486) generalizes #25 (single forbidden class per modulus), which in turn generalizes divisibility avoidance.",
       "**Sieve-Theoretic Connection**: The avoidance set construction is intimately related to sieve methods in analytic number theory. The Selberg sieve and Brun's sieve both analyze sets defined by modular exclusion conditions, and Problem #486 asks whether the density-existence property persists even when sieve conditions become arbitrarily complex."
+    ],
+    "prerequisites": [
+      "Modular arithmetic and ZMod type from Mathlib",
+      "Limits and Filter.Tendsto from Mathlib",
+      "Finset operations (filter, sum, range)",
+      "Logarithmic and natural density concepts",
+      "Classical logic for decidability instances"
     ]
   },
   "sections": [

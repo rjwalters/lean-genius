@@ -71,6 +71,13 @@
       "Extremal set (multiples of 2 or 3) has size = threshold but no triangles",
       "Above threshold, odd cycles of length proportional to n exist (Erdős-Sárkőzy)",
       "Sárkőzy showed (1,l,l) tripartite subgraphs with l proportional to log n / log log n"
+    ],
+    "prerequisites": [
+      "Graph theory: simple graphs, adjacency, subgraph structure",
+      "Number theory: coprimality (gcd), divisibility, primes",
+      "Combinatorics: inclusion-exclusion principle, pigeonhole principle",
+      "Extremal graph theory: Turán-type thresholds, triangle-free graphs",
+      "Cycle theory: odd cycles, Hamiltonian-type conditions"
     ]
   },
   "sections": [

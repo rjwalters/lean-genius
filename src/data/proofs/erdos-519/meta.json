@@ -73,6 +73,13 @@
       "The gap between the proved lower bound $c > 1/2$ (Biró 2000) and the conjectured optimal $c \\approx 0.7$ is one of the main remaining challenges, requiring fundamentally new analytic techniques",
       "Turán's power sum method connects this combinatorial problem to the theory of the Riemann zeta function: understanding which power sums can be simultaneously small has implications for zero-free regions of $L$-functions",
       "The formalization axiomatizes the deep analytic results while proving structural facts (trivial case, summary composition) directly, illustrating how formal verification can capture both known results and their logical dependencies"
+    ],
+    "prerequisites": [
+      "Complex number arithmetic and absolute value",
+      "Finite sums over indexed families (Finset.sum)",
+      "Basic properties of roots of unity",
+      "Symmetric polynomials and Newton's identities",
+      "Extremal problems in complex analysis"
     ]
   },
   "sections": [
@@ -151,7 +158,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #519 is SOLVED: YES, there exists an absolute constant $c > 0$ such that $\\max_{1 \\le k \\le n} |\\sum_i z_i^k| > c$ whenever $z_1 = 1$, regardless of $n$ and the choice of complex numbers. The best proved bound is $c > 1/2$ (Biró 2000), while computational evidence suggests the optimal constant is approximately $0.7$.",
-    "implications": "This result establishes a fundamental rigidity property of power sums: no matter how cleverly one distributes complex numbers on the plane (with one fixed at 1), some power $k$ must produce a sum bounded away from zero. This connects to Turán's power sum method, which has applications to the distribution of primes and the zero-free region of the Riemann zeta function. The formalization captures the logical structure of the problem's resolution — from Turán's initial $n$-dependent bound through three progressively stronger absolute bounds — illustrating how a sequence of refinements in analytic number theory can be organized as a chain of axiomatized results with a verified logical skeleton.",
+    "implications": "**Theoretical Significance**: This result establishes a fundamental rigidity property of power sums: no matter how cleverly one distributes complex numbers on the plane (with one fixed at 1), some power $k$ must produce a sum bounded away from zero.\n\n**Broader Connections**: This connects to Turán's power sum method, which has applications to the distribution of primes and the zero-free region of the Riemann zeta function. The formalization captures the logical structure of the problem's resolution — from Turán's initial $n$-dependent bound through three progressively stronger absolute bounds — illustrating how a sequence of refinements in analytic number theory can be organized as a chain of axiomatized results with a verified logical skeleton.",
     "openQuestions": [
       "What is the exact value of the optimal constant $c^*$? Computational evidence suggests $c^* \\approx 0.7$, but no rigorous proof pins down even one decimal place beyond $c^* > 0.5$",
       "Can the extremal configurations (minimizing $\\max_k |S_k|$) be characterized? The structure of near-optimal $z$-configurations is largely unknown",

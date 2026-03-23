@@ -78,7 +78,8 @@
       "The three-level decomposition — (1) 1D Tucker on boundary, (2) parity principle, (3) triangulation existence — makes the proof modular and each layer independently verifiable.",
       "The typeclass-based boundary classification (HasBoundary) abstracts away the specific triangulation, making the parity argument applicable to any triangulated 2-manifold with boundary.",
       "The exhaustive classification of complementary pairs (only 4 possibilities from {±1, ±2}) constrains the combinatorial structure: each triangle has at most 2 complementary edges, ensuring the Tucker graph has maximum degree 2."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -147,7 +148,7 @@
   ],
   "conclusion": {
     "summary": "Formalizes the combinatorial core of Tucker's 2D lemma with 434 lines, 10 theorems, 3 definitions, 0 axioms, and 0 sorries. All theorems are fully machine-checked. The modular architecture separates labeling definitions, pair classification, triangulated complex structure, parity argument, and graph-theoretic handshaking connection.",
-    "implications": "The modular decomposition (1D Tucker → parity → 2D Tucker) provides a clean proof architecture that separates topological content (triangulation existence) from combinatorial content (parity counting). The path-following interpretation gives algorithmic content: the proof is not just existential but describes a procedure to find the complementary edge. This connects Tucker's lemma to the broader program of constructive combinatorial topology.",
+    "implications": "**Theoretical Significance**: The modular decomposition (1D Tucker → parity → 2D Tucker) provides a clean proof architecture that separates topological content (triangulation existence) from combinatorial content (parity counting).\n\n**Broader Connections**: The path-following interpretation gives algorithmic content: the proof is not just existential but describes a procedure to find the complementary edge. This connects Tucker's lemma to the broader program of constructive combinatorial topology.",
     "openQuestions": [
       "Reformulate parent tucker_2d axiom to use TriangulatedComplex (current statement is too broad for arbitrary graphs)",
       "Formalize the path-following algorithm as a constructive proof with a termination argument",

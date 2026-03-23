@@ -75,6 +75,14 @@
       "E is connected ⟺ E contains all zeros of f'",
       "The width conjecture is FALSE: width can exceed √3·2^{1/3} ≈ 2.18",
       "The diameter is at most 2 (sharper than the 4 implied by disc containment)"
+    ],
+    "prerequisites": [
+      "Complex polynomial evaluation and roots",
+      "Topological connectedness in ℂ",
+      "Polynomial derivative and critical points",
+      "Complex absolute value (modulus)",
+      "Basic potential theory",
+      "Vieta's formulas for monic polynomials"
     ]
   },
   "sections": [
@@ -144,7 +152,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1046 is SOLVED: YES, if E = {z : |f(z)| < 1} is connected, then E is contained in a disc of radius 2 centered at the root centroid. However, the related width conjecture is FALSE (Pommerenke's counterexample).",
-    "implications": "This result shows the subtle geometry of polynomial sublevel sets. While they fit in a disc of radius 2, they can be elongated (width > 2). The connectivity condition is characterized by critical points.",
+    "implications": "**Theoretical Significance**: This result shows the subtle geometry of polynomial sublevel sets.\n\n**Broader Connections**: While they fit in a disc of radius 2, they can be elongated (width > 2). The connectivity condition is characterized by critical points.",
     "openQuestions": [
       "What is the sharp bound on width for connected sublevel sets?",
       "How does the geometry depend on the degree of f?",
@@ -202,7 +210,11 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "F. Herzog", "G. Piranian"],
+      "authors": [
+        "P. Erdős",
+        "F. Herzog",
+        "G. Piranian"
+      ],
       "title": "On the geometric properties of level curves of polynomials",
       "journal": "Illinois Journal of Mathematics",
       "volume": "2",
@@ -211,7 +223,9 @@
       "description": "Original paper posing the disc containment and width conjectures for connected lemniscates of monic polynomials."
     },
     {
-      "authors": ["Ch. Pommerenke"],
+      "authors": [
+        "Ch. Pommerenke"
+      ],
       "title": "On the derivative of a polynomial",
       "journal": "Michigan Mathematical Journal",
       "volume": "6",
@@ -220,7 +234,9 @@
       "description": "Proves the disc containment theorem (E ⊆ D(centroid, 2)) and provides a counterexample disproving the width conjecture."
     },
     {
-      "authors": ["Ch. Pommerenke"],
+      "authors": [
+        "Ch. Pommerenke"
+      ],
       "title": "On the coefficients and Hankel determinants of univalent functions",
       "journal": "Journal of the London Mathematical Society",
       "volume": "41",
@@ -229,7 +245,9 @@
       "description": "Subsequent work by Pommerenke on polynomial geometry and function theory in the complex plane, building on the lemniscate results."
     },
     {
-      "authors": ["M. Marden"],
+      "authors": [
+        "M. Marden"
+      ],
       "title": "Geometry of Polynomials",
       "journal": "Mathematical Surveys and Monographs, American Mathematical Society",
       "volume": "3",
@@ -238,7 +256,9 @@
       "description": "Comprehensive reference on the geometry of polynomial zero sets, including lemniscate containment, critical points, and the Gauss–Lucas theorem used in characterizing connectivity."
     },
     {
-      "authors": ["T. Ransford"],
+      "authors": [
+        "T. Ransford"
+      ],
       "title": "Potential Theory in the Complex Plane",
       "journal": "London Mathematical Society Student Texts, Cambridge University Press",
       "volume": "28",

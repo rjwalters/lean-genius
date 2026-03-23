@@ -73,7 +73,8 @@
       "**The $n^{1/4}$ upper bound reflects 2-dimensional geometry**: The Bambah-Chowla bound uses the fact that lattice points $(a,b)$ with $a^2 + b^2 \\le n$ are distributed on a disk of radius $\\sqrt{n}$. The annular region between radii $\\sqrt{n}$ and $\\sqrt{n + n^{1/4}}$ has area $\\sim n^{1/4} \\cdot \\pi$, guaranteeing at least one lattice point.",
       "**Maynard's sieve revolution**: The DEKKM (2022) improvement to $\\ge 0.868$ uses the same multi-dimensional sieve techniques that Maynard (2015) developed for bounded gaps between primes. The sieve detects integers $n$ in an interval where every prime $p \\equiv 3 \\pmod{4}$ up to some bound divides $n$ to an odd power.",
       "**The conjectured limsup equals 1**: It is believed that $\\limsup(\\text{gap}_k / \\log n_k) = 1$, matching the heuristic from the Cramér-type model where an integer $n$ is a sum of two squares independently with probability $\\sim c/\\sqrt{\\log n}$."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -128,7 +129,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the complete state of Erdős Problem #222, from Fermat's characterization of sums of two squares through Landau's density theorem to the modern gap bounds. The summary theorem proves that gaps are at most $O(n^{1/4})$ (Bambah-Chowla) and infinitely often at least $\\Omega(\\log n / \\sqrt{\\log \\log n})$ (Erdős), with the best limsup constant $\\ge 0.868$ (DEKKM 2022).",
-    "implications": "The gap structure of sums of two squares illustrates how arithmetic constraints (Fermat's criterion via primes $\\equiv 3 \\pmod{4}$) interact with geometric facts (lattice point distribution on circles). The polynomial upper bound $n^{1/4}$ contrasts sharply with prime gaps, where the best unconditional bound is $n^{0.525}$. The problem also demonstrates how Maynard's sieve techniques, originally developed for prime gaps, transfer to other number-theoretic sequences.",
+    "implications": "**Theoretical Significance**: The gap structure of sums of two squares illustrates how arithmetic constraints (Fermat's criterion via primes $\\equiv 3 \\pmod{4}$) interact with geometric facts (lattice point distribution on circles).\n\n**Broader Connections**: The polynomial upper bound $n^{1/4}$ contrasts sharply with prime gaps, where the best unconditional bound is $n^{0.525}$. The problem also demonstrates how Maynard's sieve techniques, originally developed for prime gaps, transfer to other number-theoretic sequences.",
     "openQuestions": [
       "Is $\\limsup(\\text{gap}_k / \\log n_k) = 1$? The current best lower bound is $0.868$; the heuristic from probabilistic models predicts 1.",
       "Can the Bambah-Chowla exponent $1/4$ be improved? The exponent arises from the 2-dimensional lattice point count, so improvement would require new geometric or analytic ideas.",

@@ -86,7 +86,8 @@
       "The **Erdos-Graham observation** creates a powerful contrapositive: disproving uncovered Sierpinski numbers would prove infinitely many Fermat primes, which no known technique can establish",
       "The `problem_equivalence` theorem (verified via `push_neg`) shows Problem #1113 is exactly the negation of `AllSierpinskiHaveCoverings`, reducing an existential question to a universal one",
       "The **FFK power result** shows that for any $l \\geq 1$, there exists $m$ where $2^k \\cdot m^i + 1$ is composite for all $1 \\leq i \\leq l$ and $k \\geq 0$, demonstrating deep simultaneous compositeness phenomena"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -155,7 +156,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #1113 remains OPEN. The formalization captures the full landscape: Sierpinski numbers via covering systems (78557 with its 7-element covering set), Izotov's conjectured uncovered candidate ($734110615000775^4$, verified as a perfect 4th power), the FFK Conjecture refining the question to perfect powers, and the deep connection to Fermat primes. The verified summary theorem combines Izotov's Sierpinski property, perfect power status, and FFK compatibility into a single result.",
-    "implications": "Resolution of Problem #1113 would have far-reaching consequences. An affirmative answer (uncovered Sierpinski numbers exist) would demonstrate that covering systems are not the sole mechanism for universal compositeness, opening new directions in analytic number theory. A negative answer would imply infinitely many Fermat primes via the Erdos-Graham connection -- a result that would revolutionize our understanding of Fermat numbers and would likely require entirely new techniques in prime distribution theory.",
+    "implications": "**Theoretical Significance**: Resolution of Problem #1113 would have far-reaching consequences.\n\n**Broader Connections**: An affirmative answer (uncovered Sierpinski numbers exist) would demonstrate that covering systems are not the sole mechanism for universal compositeness, opening new directions in analytic number theory. A negative answer would imply infinitely many Fermat primes via the Erdos-Graham connection -- a result that would revolutionize our understanding of Fermat numbers and would likely require entirely new techniques in prime distribution theory.",
     "openQuestions": [
       "Does Izotov's candidate $m = 734110615000775^4$ truly lack a covering set, or can one be found computationally?",
       "Is the FFK Conjecture true -- are perfect powers the only possible uncovered Sierpinski numbers?",

@@ -34,7 +34,8 @@
       "**Probabilistic lower bound**: The proof that $2^{k-1} < n(k)$ uses a random 2-partition of colors — if $|V| < 2^k$, the union bound shows with positive probability every vertex has a usable color from its partition side",
       "**Property B bridge**: The inequality $m(k) \\leq n(k) \\leq m(k+1)$ connects list coloring of bipartite graphs to Property B of set families, reducing questions about $n(k)$ to hypergraph 2-coloring thresholds",
       "**Galvin's theorem context**: $\\chi_L(K_{n,n}) = \\lceil\\log_2 n\\rceil + 1$ (Galvin 1995) via the kernel method shows that for balanced complete bipartite graphs, the list chromatic number grows logarithmically — a key structural result underlying the bounds on $n(k)$"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -110,7 +111,7 @@
   ],
   "conclusion": {
     "summary": "This 907-line formalization captures Erdős Problem #629 on list chromatic numbers of bipartite graphs. Aristotle proved 6 of the 14 key results, including the unboundedness of $\\chi_L$ for bipartite graphs, $n(2) = 6$, monotonicity of $n$, and the lower bound $2^{k-1} < n(k)$ via the probabilistic method. The 8 remaining sorries cover the upper bound, improved bounds, $n(3) = 14$, Property B connection, and asymptotic behavior.",
-    "implications": "The gap between $\\chi(G)$ and $\\chi_L(G)$ for bipartite graphs reveals that list coloring is a fundamentally different problem from ordinary coloring. The connection to Property B links this to hypergraph coloring theory and Erdős Problem #901. Understanding the exact asymptotics of $n(k)$ would clarify the probabilistic-vs-structural boundary in extremal combinatorics. The formalization demonstrates that even for 'simple' graph classes (bipartite), list coloring problems can be remarkably deep.",
+    "implications": "**Theoretical Significance**: The gap between $\\chi(G)$ and $\\chi_L(G)$ for bipartite graphs reveals that list coloring is a fundamentally different problem from ordinary coloring. The connection to Property B links this to hypergraph coloring theory and Erdős Problem #901.\n\n**Broader Connections**: Understanding the exact asymptotics of $n(k)$ would clarify the probabilistic-vs-structural boundary in extremal combinatorics. The formalization demonstrates that even for 'simple' graph classes (bipartite), list coloring problems can be remarkably deep.",
     "openQuestions": [
       "What is the exact asymptotic exponent $\\alpha$ in $n(k) = \\Theta(2^k \\cdot k^\\alpha)$? Current bounds: $\\alpha \\in [1/2, 2]$",
       "Can $n(4)$ be computed exactly? ($n(2) = 6$, $n(3) = 14$ are known)",

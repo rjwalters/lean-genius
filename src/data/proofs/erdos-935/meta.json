@@ -76,6 +76,13 @@
       "**Three-Level Structure**: Part 1 (upper bound n^{2+ε}) → Part 2 (lim sup diverges for ℓ ≥ 2) → Part 3 (ratio vanishes against n^{ℓ+1}) forms a coherent picture of Q₂'s growth",
       "**Consecutive Integer Structure**: Products of consecutive integers are coprime in pairs, but their powerful parts interact through shared prime power divisors",
       "**Multiplicativity**: Q₂(ab) = Q₂(a)·Q₂(b) for coprime a,b — this is the key algebraic property enabling analysis"
+    ],
+    "prerequisites": [
+      "Prime factorization and powerful numbers",
+      "Finset.range and Finset.prod for consecutive products",
+      "Asymptotic analysis (lim sup, little-o notation)",
+      "Multiplicative functions and coprimality",
+      "Rational number arithmetic for bounds"
     ]
   },
   "sections": [

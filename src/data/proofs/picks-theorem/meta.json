@@ -62,7 +62,8 @@
       "**Minimal area $= 1/2$**: The unit right triangle ($i=0, b=3$) has the smallest possible area among non-degenerate lattice polygons, since $A \\geq 0 + 3/2 - 1 = 1/2$",
       "**Fails in 3D**: Reeve tetrahedra with same lattice counts but different volumes show no Pick-like formula exists in dimension $\\geq 3$; Ehrhart polynomials provide the correct generalization",
       "**Euler characteristic connection**: Pick's formula can be derived from Euler's formula $V - E + F = 2$ for planar graphs, linking lattice geometry to graph theory"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -145,7 +146,7 @@
   ],
   "conclusion": {
     "summary": "Pick's theorem is formalized with an axiomatized SimpleLatticePolygon structure, algebraic rearrangements, and verification on unit triangles and rectangles. The additivity theorem provides the key inductive step of the classical proof. A 3D counterexample (Reeve tetrahedra) demonstrates the formula's dimension-specific nature.",
-    "implications": "The formalization provides a clean framework for lattice geometry in Lean. The additivity theorem could serve as the foundation for a full constructive proof via triangulation. The Reeve tetrahedra counterexample motivates formalizing Ehrhart theory for higher-dimensional lattice polytope enumeration.",
+    "implications": "**Theoretical Significance**: The formalization provides a clean framework for lattice geometry in Lean.\n\n**Broader Connections**: The additivity theorem could serve as the foundation for a full constructive proof via triangulation. The Reeve tetrahedra counterexample motivates formalizing Ehrhart theory for higher-dimensional lattice polytope enumeration.",
     "openQuestions": [
       "Can the picks_theorem axiom be proved constructively via triangulation into unit right triangles and the additivity lemma?",
       "Can the GCD boundary formula (lattice points on a segment = gcd(Δx, Δy) + 1) be formalized and used to compute boundary counts?",

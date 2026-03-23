@@ -45,7 +45,8 @@
       "The |S| ≥ 2 constraint excludes the trivial representation n/2^n = n/2^n (using S = {n}), forcing genuine decompositions — this is a non-triviality condition essential to making the problem interesting",
       "The continuum conjecture encodes into Lean via an injection from [0,1] ⊂ ℝ into representation space, where each real parameter t determines a distinct infinite sequence — this is stronger than countably many representations since [0,1] is uncountable",
       "Computational verification up to n = 10000 suggests universality but cannot prove it — the representations become increasingly complex for larger n, and no pattern uniform enough for a general proof has been found"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

@@ -65,7 +65,8 @@
       "The growth rate $m^{C/\\log\\log m}$ occupies a rare intermediate position: it is subpolynomial ($o(m^\\varepsilon)$ for all $\\varepsilon > 0$) yet super-polylogarithmic ($\\omega((\\log m)^A)$ for all $A$). This is characteristic of problems controlled by the divisor function.",
       "The achievability result — that every finite size $s$ is realized by infinitely many $(m,n)$ — shows the divisor-function upper bound is essentially tight. The construction uses number-theoretic arguments to produce pairs $(m,n)$ with prescribed intersection sizes.",
       "The connection to sieve methods is through Hegyvári's use of divisibility constraints: if $k(m-k) = l(n-l)$, then $k \\mid ln$ or $(n-l) \\mid (m-k)$. Combining these constraints with sieve estimates controls the solution count."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -148,7 +149,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #443 is SOLVED (Hegyvári 2025, Cambie). Both questions are answered YES: $|A_m \\cap B_n|$ can achieve any finite value, yet is bounded by $m^{O(1/\\log\\log m)}$ — the maximal order of the divisor function. The 249-line formalization with 0 sorries axiomatizes the deep results (Hegyvári's bound, achievability, divisibility constraints, difference-of-squares reformulation) and proves the summary theorems by assembling them.",
-    "implications": "This problem exemplifies the Erdős-Graham philosophy of discovering deep structure in elementary-looking questions. The resolution connects products of complementary parts to the divisor function — one of the most studied objects in multiplicative number theory. The bound $m^{O(1/\\log\\log m)}$, identical to the maximal order of $d(n)$, suggests that this is the 'correct' answer rather than an artifact of the proof method. The 45-year gap between problem and solution (1980-2025) underscores the difficulty of tight Diophantine intersection bounds.",
+    "implications": "**Theoretical Significance**: This problem exemplifies the Erdős-Graham philosophy of discovering deep structure in elementary-looking questions. The resolution connects products of complementary parts to the divisor function — one of the most studied objects in multiplicative number theory.\n\n**Broader Connections**: The bound $m^{O(1/\\log\\log m)}$, identical to the maximal order of $d(n)$, suggests that this is the 'correct' answer rather than an artifact of the proof method. The 45-year gap between problem and solution (1980-2025) underscores the difficulty of tight Diophantine intersection bounds.",
     "openQuestions": [
       "What is the exact maximum of $|A_m \\cap B_n|$ over all $n < m$ for fixed $m$? Is it $\\Theta(m^{C/\\log\\log m})$ for some explicit constant $C$, matching the divisor-function bound?",
       "Can the constant $C$ in Hegyvári's bound $m^{C/\\log\\log m}$ be made explicit? The current proof inherits the constant from Wigert's divisor-function estimate.",

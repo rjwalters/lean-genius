@@ -69,6 +69,13 @@
       "The $n = 1$ case reduces to the Intermediate Value Theorem: $g(\\theta) = f(\\theta) - f(\\theta + \\pi)$ satisfies $g(0) + g(\\pi) = 0$, so $g$ has a zero by IVT. Borsuk-Ulam is the higher-dimensional generalization of IVT.",
       "The proof is inherently non-constructive (proof by contradiction via `by_contra`): we know antipodal pairs exist but cannot compute where they are. Finding approximate antipodal pairs is a problem in computational topology.",
       "Lovász's 1978 proof of Kneser's conjecture applied Borsuk-Ulam to graph coloring, founding the field of topological combinatorics and demonstrating that purely topological tools can solve discrete mathematical problems."
+    ],
+    "prerequisites": [
+      "Algebraic topology: fundamental groups and covering spaces",
+      "Continuous functions on spheres and antipodal maps",
+      "Real projective space RP^n and the Z_2 action",
+      "Odd functions and equivariant maps",
+      "Basic topology: compactness and connectedness"
     ]
   },
   "sections": [

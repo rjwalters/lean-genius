@@ -65,7 +65,8 @@
       "**Conjugate-linearity is handled**: In Mathlib, complex inner products are built with conjugate-linearity in the first argument by convention. The `norm_inner_le_norm` inequality correctly bounds the complex modulus, handling the conjugation automatically.",
       "**Self-inner product elaboration**: `inner_self_eq_norm_sq_to_K` gives `⟪u,u⟫_𝕜 = (↑‖u‖)^2` where the coercion is `‖u‖ : ℝ → 𝕜`. For `𝕜 = ℂ`, this is `(↑‖u‖ : ℂ)^2 = (Complex.ofReal ‖u‖)^2`, whose imaginary part is 0 by `Complex.mul_im` and `Complex.ofReal_im`.",
       "**Concrete instantiation**: The EuclideanSpace ℝ n specialization demonstrates that abstract inner product theorems apply to $\\mathbb{R}^n$ with the standard dot product, bridging abstract and concrete linear algebra"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -113,7 +114,7 @@
   ],
   "conclusion": {
     "summary": "The open question is answered affirmatively: Cauchy-Schwarz for complex inner product spaces follows directly from Mathlib's `norm_inner_le_norm`, which is parameterized by `[RCLike 𝕜]` and thus works uniformly for ℝ and ℂ. All 10 theorems are proved with 0 sorries.",
-    "implications": "**Implications and Connections**\n\n1. **Unified Framework**: The `[RCLike 𝕜]` abstraction means ℝ and ℂ are treated uniformly. There is no need for separate proofs for the two cases.\n\n2. **Quantum Mechanics**: Complex inner product spaces are the mathematical foundation of quantum mechanics (Hilbert spaces). This Cauchy-Schwarz inequality is used to prove the Heisenberg uncertainty principle: `ΔA · ΔB ≥ |⟨[A,B]⟩|/2`.\n\n3. **Functional Analysis**: The inequality characterizes bounded linear functionals via the Riesz representation theorem: every bounded functional on a Hilbert space is of the form `u ↦ ⟪f, u⟫` for some `f`, with norm `‖f‖`.\n\n4. **Connection to CauchySchwarz.lean**: That file proves the real version `|⟪u,v⟫_ℝ| ≤ ‖u‖·‖v‖`. This file extends it to complex spaces and the general RCLike framework.\n\n5. **Bridge to CauchySchwarzIntegralOQ01.lean**: The discrete (inner product space) Cauchy-Schwarz shown here is the abstract version; Hölder's inequality in the integral file generalizes it to L² spaces.",
+    "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **Unified Framework**: The `[RCLike 𝕜]` abstraction means ℝ and ℂ are treated uniformly. There is no need for separate proofs for the two cases.\n\n2. **Quantum Mechanics**: Complex inner product spaces are the mathematical foundation of quantum mechanics (Hilbert spaces).\n\n**Broader Connections**: This Cauchy-Schwarz inequality is used to prove the Heisenberg uncertainty principle: `ΔA · ΔB ≥ |⟨[A,B]⟩|/2`.\n\n3. **Functional Analysis**: The inequality characterizes bounded linear functionals via the Riesz representation theorem: every bounded functional on a Hilbert space is of the form `u ↦ ⟪f, u⟫` for some `f`, with norm `‖f‖`.\n\n4. **Connection to CauchySchwarz.lean**: That file proves the real version `|⟪u,v⟫_ℝ| ≤ ‖u‖·‖v‖`. This file extends it to complex spaces and the general RCLike framework.\n\n5. **Bridge to CauchySchwarzIntegralOQ01.lean**: The discrete (inner product space) Cauchy-Schwarz shown here is the abstract version; Hölder's inequality in the integral file generalizes it to L² spaces.",
     "openQuestions": [
       "Can the equality characterization (‖⟪u,v⟫_ℂ‖ = ‖u‖·‖v‖ ↔ u and v are linearly dependent) be stated and proved for complex inner product spaces?",
       "Can the complex Gram-Schmidt process be formalized using this Cauchy-Schwarz bound?",

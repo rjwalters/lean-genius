@@ -70,7 +70,8 @@
       "**Intersecting Family:** Squarefree numbers where any two share a prime form an 'intersecting family'",
       "**Chvátal's Result:** Maximum intersecting family = all multiples of a fixed prime (optimally: 2)",
       "**Density:** The optimal set has density 1 - 4/π² ≈ 0.595 (complement of odd squarefree)"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -139,7 +140,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #844 asked whether the maximum subset A ⊆ {1,...,N} with non-squarefree products ab for all a,b ∈ A is achieved by taking even numbers and odd non-squarefree numbers. Weisenberg proved YES by reducing to Chvátal's result on intersecting families. The key insight: among squarefree numbers, pairs must share a prime, which is maximized by even squarefree numbers.",
-    "implications": "**Connections and Applications**\n\n1. **Intersecting Family Theory:** Shows power of Chvátal's hypergraph result in number theory\n\n2. **Squarefree Density:** The odd squarefree numbers have density 4/π² ≈ 0.405\n\n3. **Multiplicative Structure:** Illustrates how multiplicative constraints determine extremal sets\n\n4. **Related Problems:** Problem 848 asks a related squarefree product question",
+    "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **Intersecting Family Theory:** Shows power of Chvátal's hypergraph result in number theory\n\n2.\n\n**Broader Connections**: **Squarefree Density:** The odd squarefree numbers have density 4/π² ≈ 0.405\n\n3. **Multiplicative Structure:** Illustrates how multiplicative constraints determine extremal sets\n\n4. **Related Problems:** Problem 848 asks a related squarefree product question.",
     "openQuestions": [
       "What is the exact structure of extremal sets for small N?",
       "Are there other natural characterizations of the optimal set?",

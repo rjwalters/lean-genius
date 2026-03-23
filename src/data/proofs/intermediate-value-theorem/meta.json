@@ -56,7 +56,8 @@
       "**Existence Without Uniqueness:** $f(x) = c$ may have many solutions in $[a,b]$. The bisection method finds ONE root in $O(\\log(1/\\epsilon))$ steps by repeatedly halving the interval — the most robust root-finding algorithm.",
       "**Bolzano's Theorem:** The special case $f(a) < 0 < f(b) \\Rightarrow \\exists x \\in (a,b),\\; f(x) = 0$ — the root-finding version. This is the foundation of numerical analysis: bisection, Newton's method, and Brent's method all exploit this existence guarantee.",
       "**Topological Generalization:** IVT holds for any continuous $f: X \\to Y$ where $X$ is connected and $Y$ is ordered. In Mathlib, `IsPreconnected.intermediate_value` captures this at full generality."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

@@ -69,7 +69,8 @@
       "**Non-Subadditivity:** sigma is generally NOT subadditive, making equality special",
       "**Linear Growth Question:** Asking if S(x) ~ cx tests whether solutions have positive density",
       "**OEIS Connection:** A110177 catalogs the sums a + b of solution pairs"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -145,7 +146,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #1061 asks whether the count of ordered pairs (a,b) satisfying sigma(a)+sigma(b)=sigma(a+b) with a+b<=x grows linearly as ~cx for some c>0. This remains an OPEN problem. We formalize the question, verify known solutions like (1,2), and establish basic bounds.",
-    "implications": "**Number-Theoretic Significance**\n\n1. **Divisor Structure:** The equation probes how the divisor function behaves under addition\n\n2. **Density Questions:** Positive c would mean solutions are \"common\" in a precise sense\n\n3. **Computational Aspects:** Finding solutions requires checking divisor sums\n\n4. **OEIS Connection:** Results feed into sequence A110177\n\n5. **Open Status:** Resolution could reveal deep structure in divisor behavior",
+    "implications": "**Theoretical Significance**: **Number-Theoretic Significance**\n\n1. **Divisor Structure:** The equation probes how the divisor function behaves under addition\n\n2. **Density Questions:** Positive c would mean solutions are \"common\" in a precise sense\n\n3.\n\n**Broader Connections**: **Computational Aspects:** Finding solutions requires checking divisor sums\n\n4. **OEIS Connection:** Results feed into sequence A110177\n\n5. **Open Status:** Resolution could reveal deep structure in divisor behavior.",
     "openQuestions": [
       "Does S(x) grow linearly, i.e., is there c > 0 with S(x) ~ cx?",
       "What is the density of solutions among pairs with a + b = n for fixed n?",
@@ -200,28 +201,38 @@
   ],
   "references": [
     {
-      "authors": ["Richard K. Guy"],
+      "authors": [
+        "Richard K. Guy"
+      ],
       "title": "Unsolved Problems in Number Theory, 3rd ed., Problem B15",
       "venue": "Springer",
       "year": 2004,
       "description": "Original source recording the problem: how many ordered pairs (a,b) satisfy σ(a)+σ(b)=σ(a+b) with a+b ≤ x?"
     },
     {
-      "authors": ["Paul Erdős", "Carl Pomerance"],
+      "authors": [
+        "Paul Erdős",
+        "Carl Pomerance"
+      ],
       "title": "On the normal number of prime factors of φ(n)",
       "venue": "Rocky Mountain Journal of Mathematics",
       "year": 1985,
       "description": "Establishes analytic techniques for counting solutions to arithmetic-function equations that underpin the linear-growth question in #1061"
     },
     {
-      "authors": ["Gerard Abelian", "Heinrich-Wolfgang Leopoldt"],
+      "authors": [
+        "Gerard Abelian",
+        "Heinrich-Wolfgang Leopoldt"
+      ],
       "title": "On additive properties of the sum-of-divisors function",
       "venue": "Acta Arithmetica",
       "year": 1975,
       "description": "Early study of when σ(a)+σ(b) can equal σ(n) for various n; context for the Erdős problem"
     },
     {
-      "authors": ["Neil J. A. Sloane"],
+      "authors": [
+        "Neil J. A. Sloane"
+      ],
       "title": "The On-Line Encyclopedia of Integer Sequences, A110177",
       "venue": "OEIS Foundation",
       "year": 2005,
@@ -229,7 +240,9 @@
       "description": "Catalogs integers n = a+b for which σ(a)+σ(b) = σ(a+b); the OEIS sequence directly referenced in the Lean formalization"
     },
     {
-      "authors": ["Kevin Ford"],
+      "authors": [
+        "Kevin Ford"
+      ],
       "title": "The distribution of integers with a divisor in a given interval",
       "venue": "Annals of Mathematics",
       "year": 2008,

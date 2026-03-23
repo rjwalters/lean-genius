@@ -40,6 +40,12 @@
       "**Essential component**: Weaker than basis - just needs to increase density when added to any set",
       "**The gap**: Erdős asks if the density-boost property (even stronger than essential) can hold without being a basis",
       "**Known**: Bases have density-boost; some non-bases are essential components; unknown if non-bases can have density-boost"
+    ],
+    "prerequisites": [
+      "Essential components in additive number theory",
+      "Density boosting in sumsets",
+      "Schnirelmann density",
+      "Freiman's theorem"
     ]
   },
   "sections": [
@@ -81,7 +87,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #38, which asks whether the density-boosting property for translates can exist without being an additive basis. The problem probes the gap between 'essential components' (which can fail to be bases) and the stronger translate-based density improvement.",
-    "implications": "This problem is fundamental to understanding the structure of additive bases. A positive answer would show that density-boosting is genuinely weaker than being a basis. A negative answer would give a new characterization of additive bases.",
+    "implications": "**Theoretical Significance**: This problem is fundamental to understanding the structure of additive bases.\n\n**Broader Connections**: A positive answer would show that density-boosting is genuinely weaker than being a basis. A negative answer would give a new characterization of additive bases.",
     "openQuestions": [
       "Does the density-boosting property imply being an additive basis?",
       "What is the optimal function f(α) for additive bases?",

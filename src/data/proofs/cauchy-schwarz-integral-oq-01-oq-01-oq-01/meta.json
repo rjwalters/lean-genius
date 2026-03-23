@@ -67,7 +67,8 @@
       "AM-GM requires two distinct proofs: the square root form needs sqrt_le_sqrt (monotonicity), while the quadratic form is purely algebraic",
       "Titu's lemma is the 'Schur complement' of Cauchy-Schwarz: applying CS to vectors $(a_i/\\sqrt{b_i})$ and $(\\sqrt{b_i})$",
       "Nesbitt's proof strategy — rewrite as (sum) - 3/2 ≥ 0, clear denominators via field_simp, then apply nlinarith — generalizes to many symmetric inequality problems"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

@@ -34,7 +34,8 @@
       "**Mycielski's exponential vs polynomial**: the Mycielski construction gives $|V(M_k)| = 3 \\cdot 2^{k-2} - 1$ vertices, exponentially worse than optimal $\\Theta(k^2 \\log k)$; better constructions use algebraic methods",
       "**Ratio convergence is strictly weaker**: $h_3(k+1)/h_3(k) \\to 1$ follows from any asymptotic formula $h_3(k) \\sim f(k)$ with $f(k+1)/f(k) \\to 1$, but might be provable without determining the constant",
       "**Extremal graphs reveal structure**: $h_3(3) = 5$ (unique: $C_5$), $h_3(4) = 11$ (unique: Grotzsch graph), $h_3(5) = 22$; the extremal graphs become less structured as $k$ grows"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -110,7 +111,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdos Problem #1013 on the triangle-free chromatic threshold $h_3(k)$. The problem asks for the exact asymptotic constant $c$ in $h_3(k) \\sim c \\cdot k^2 \\log k$, currently known only to satisfy $c \\in [1/2, 1]$, and whether $h_3(k+1)/h_3(k) \\to 1$. The Lean formalization encodes the definitions, both conjectures, the key bounds, Graver-Yackel's historical result, monotonicity, explicit small cases, and Mycielski's finiteness construction.",
-    "implications": "Determining the constant $c$ would resolve a fundamental question about the quantitative interplay between local structure (triangle-freeness) and global structure (chromatic number). The answer would reveal whether extremal triangle-free high-chromatic graphs are closer to Ramsey-theoretic random graphs ($c = 1/2$) or to algebraic constructions ($c = 1$). Progress here would likely require new ideas combining Ramsey theory, the probabilistic method, and algebraic combinatorics.",
+    "implications": "**Theoretical Significance**: Determining the constant $c$ would resolve a fundamental question about the quantitative interplay between local structure (triangle-freeness) and global structure (chromatic number).\n\n**Broader Connections**: The answer would reveal whether extremal triangle-free high-chromatic graphs are closer to Ramsey-theoretic random graphs ($c = 1/2$) or to algebraic constructions ($c = 1$). Progress here would likely require new ideas combining Ramsey theory, the probabilistic method, and algebraic combinatorics.",
     "openQuestions": [
       "What is the exact asymptotic constant $c$ in $h_3(k) \\sim c \\cdot k^2 \\log k$? Is $c = 1/2$ (matching the Ramsey lower bound)?",
       "Is $h_3(k+1)/h_3(k) \\to 1$? Can this be proved without determining the full asymptotic?",
@@ -169,7 +170,9 @@
   ],
   "references": [
     {
-      "authors": ["Jan Mycielski"],
+      "authors": [
+        "Jan Mycielski"
+      ],
       "title": "Sur le coloriage des graphes",
       "venue": "Colloquium Mathematicum",
       "year": 1955,
@@ -178,7 +181,9 @@
       "note": "The foundational paper proving that triangle-free graphs of arbitrarily high chromatic number exist via the Mycielski inductive construction. Proves $h_3(k) < \\infty$ for all $k$."
     },
     {
-      "authors": ["James B. Shearer"],
+      "authors": [
+        "James B. Shearer"
+      ],
       "title": "A note on the independence number of triangle-free graphs",
       "venue": "Discrete Mathematics",
       "year": 1983,
@@ -189,7 +194,10 @@
       "note": "Proves $R(3,k) \\leq (1+o(1))k^2/(2\\log k)$ via an entropy argument, establishing the lower bound $h_3(k) \\geq (1/2 - o(1))k^2 \\log k$."
     },
     {
-      "authors": ["John E. Graver", "James Yackel"],
+      "authors": [
+        "John E. Graver",
+        "James Yackel"
+      ],
       "title": "Some graph theoretic results associated with Ramsey's theorem",
       "venue": "Journal of Combinatorial Theory",
       "year": 1968,
@@ -200,7 +208,10 @@
       "note": "First quantitative lower bound on $h_3(k)$: proves $h_3(k) \\gg k^2 \\log k / \\log \\log k$ using probabilistic deletion, the predecessor to the sharper Ramsey-theoretic bound."
     },
     {
-      "authors": ["Noga Alon", "Joel H. Spencer"],
+      "authors": [
+        "Noga Alon",
+        "Joel H. Spencer"
+      ],
       "title": "The Probabilistic Method",
       "venue": "Wiley-Interscience",
       "year": 2016,
@@ -208,7 +219,10 @@
       "note": "The standard reference for the probabilistic method in combinatorics. Chapter 8 covers triangle-free graphs with high chromatic number, including the Mycielski construction, random graph constructions, and the connection to Ramsey numbers relevant to Problem #1013."
     },
     {
-      "authors": ["Zdeněk Dvořák", "Luke Postle"],
+      "authors": [
+        "Zdeněk Dvořák",
+        "Luke Postle"
+      ],
       "title": "Correspondence coloring and its application to list-coloring planar graphs without cycles of lengths 4 to 8",
       "venue": "Journal of Combinatorial Theory, Series B",
       "year": 2018,

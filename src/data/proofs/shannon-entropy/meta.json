@@ -63,6 +63,13 @@
       "The chain rule H(X,Y) = H(X) + H(Y|X) reflects the sequential nature of information: first learn X, then learn Y given X",
       "Mutual information I(X;Y) = D(p(x,y) || p(x)p(y)) measures departure from independence via KL divergence",
       "Shannon entropy is the unique function satisfying the grouping axiom, continuity, and monotonicity in the uniform case"
+    ],
+    "prerequisites": [
+      "Probability distributions and discrete random variables",
+      "Logarithm and convexity (Jensen's inequality)",
+      "Gibbs inequality and relative entropy (KL divergence)",
+      "Conditional entropy and mutual information",
+      "Data processing inequality and sufficient statistics"
     ]
   },
   "sections": [

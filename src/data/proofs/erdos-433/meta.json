@@ -64,7 +64,8 @@
       "**Sylvester-Frobenius:** The k=2 case has exact formula G({a,b}) = ab - a - b",
       "**Gap Symmetry:** Gaps are symmetric around (G(A)+1)/2",
       "**NP-Hardness:** For 3+ generators, computing G is NP-hard (Ramirez Alfonsin)"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -140,7 +141,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #433 asks about maximizing the Frobenius number over k-element coprime subsets of {1,...,n}. Dixmier (1990) proved g(k,n) ~ n²/(k-1), confirming the Erdős-Graham conjecture with precise bounds.",
-    "implications": "**Mathematical Connections**\n\n1. **Numerical Semigroups:** Foundation of commutative algebra\n\n2. **Coin Problem:** Practical applications in currency systems\n\n3. **Computational Complexity:** NP-hard for ≥3 generators\n\n4. **Algebraic Geometry:** Connection to Weierstrass semigroups\n\n5. **Related Problems:** See Erdős #434 for additional Frobenius questions",
+    "implications": "**Theoretical Significance**: **Mathematical Connections**\n\n1. **Numerical Semigroups:** Foundation of commutative algebra\n\n2. **Coin Problem:** Practical applications in currency systems\n\n3.\n\n**Broader Connections**: **Computational Complexity:** NP-hard for ≥3 generators\n\n4. **Algebraic Geometry:** Connection to Weierstrass semigroups\n\n5. **Related Problems:** See Erdős #434 for additional Frobenius questions.",
     "openQuestions": [
       "Exact formula for g(k,n) when (k-1) does not divide n, n-1, or n-2",
       "Average value of G(A) over random k-subsets",

@@ -62,6 +62,13 @@
       "The achievability proof is constructive: encode typical sequences with fixed-length codes and flag atypical ones",
       "The converse uses a counting argument: too few codewords cannot cover enough probability mass",
       "Block coding (encoding sequences rather than individual symbols) is essential: per-symbol optimal codes exist (Huffman) but block coding achieves the limit"
+    ],
+    "prerequisites": [
+      "Shannon entropy as information content",
+      "Asymptotic Equipartition Property (AEP)",
+      "Typical sets and typical sequences",
+      "Prefix-free codes and Kraft's inequality",
+      "Law of large numbers for information"
     ]
   },
   "sections": [

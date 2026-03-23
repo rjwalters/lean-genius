@@ -60,6 +60,12 @@
       "**Taylor Series Miracle:** Replacing $x$ by $ix$ in $e^x = \\sum x^n/n!$: the powers $i^n$ cycle through $1, i, -1, -i$, perfectly separating real parts ($\\cos$) from imaginary parts ($\\sin$). This is why $e^{ix} = \\cos(x) + i\\sin(x)$.",
       "**Five Constants, One Equation:** $e^{i\\pi} + 1 = 0$ connects $e$ (analysis), $i$ (algebra), $\\pi$ (geometry), $1$ (multiplicative identity), and $0$ (additive identity). These are not independent — they are bound by the structure of $\\mathbb{C}$.",
       "**Physical Ubiquity:** $e^{i\\omega t}$ describes oscillations: AC circuits ($V = V_0 e^{i\\omega t}$), quantum mechanics ($\\psi = Ae^{i(kx - \\omega t)}$), Fourier analysis ($\\hat{f}(\\xi) = \\int f(x)e^{-2\\pi i \\xi x}dx$). Euler's formula is the reason complex exponentials appear everywhere in physics."
+    ],
+    "prerequisites": [
+      "Complex exponential function and Taylor series",
+      "Trigonometric functions (sin, cos)",
+      "Complex numbers from Mathlib",
+      "Real.pi definition"
     ]
   },
   "sections": [
@@ -146,7 +152,7 @@
   ],
   "conclusion": {
     "summary": "Euler's Identity e^(iπ) + 1 = 0 is now fully verified using Mathlib's complex analysis library. The proof requires no axioms—everything derives from Mathlib's foundational definitions of real numbers, complex numbers, and the exponential function.",
-    "implications": "The identity is more than a curiosity: it's the tip of an iceberg. Complex exponentials unify exponential growth, oscillation, and rotation. This unification powers Fourier analysis, quantum mechanics, electrical engineering, and much of modern physics. The 'beauty' mathematicians see is really the recognition of deep structural unity.",
+    "implications": "**Theoretical Significance**: The identity is more than a curiosity: it's the tip of an iceberg. Complex exponentials unify exponential growth, oscillation, and rotation.\n\n**Broader Connections**: This unification powers Fourier analysis, quantum mechanics, electrical engineering, and much of modern physics. The 'beauty' mathematicians see is really the recognition of deep structural unity.",
     "openQuestions": [
       "Why do e, i, and π—defined so differently—combine so simply? Is there a deeper explanation?",
       "What makes certain equations 'beautiful'? Can mathematical aesthetics be formalized?",

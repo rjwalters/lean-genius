@@ -33,7 +33,8 @@
       "**Turán bound constraint**: K₅-freeness limits density to δ ≤ 3/8 by Turán's theorem, so the problem lives in the range 0 < δ ≤ 3/8",
       "**Blow-up obstruction**: The Erdős-Rogers K₇ counterexample uses iterated Ramsey blow-ups that force triangles in every large subset while avoiding K₇",
       "**Linear vs sublinear**: The conjecture asks for a triangle-free subset of linear size Ω(n), not just ω(1)—a much stronger structural guarantee"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -95,7 +96,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem 533 tests whether K₅-freeness is strong enough to force large triangle-free subsets at all positive densities. The EHSSS result handles δ > 1/16, K₄-free graphs work for all δ, but K₇-free graphs fail at δ = 1/4. The problem asks whether K₅ lies on the 'good' side of this phase transition.",
-    "implications": "Resolution would clarify the relationship between clique exclusion and structured subgraph extraction. An affirmative answer would strengthen connections between the Szemerédi regularity lemma, Ramsey-Turán theory, and the Erdős-Hajnal conjecture. A negative answer would require novel dense graph constructions.",
+    "implications": "**Theoretical Significance**: Resolution would clarify the relationship between clique exclusion and structured subgraph extraction.\n\n**Broader Connections**: An affirmative answer would strengthen connections between the Szemerédi regularity lemma, Ramsey-Turán theory, and the Erdős-Hajnal conjecture. A negative answer would require novel dense graph constructions.",
     "openQuestions": [
       "Does the result extend to all δ > 0 for K₅-free graphs?",
       "What about K₆-free graphs — does the result hold for all δ > 0?",

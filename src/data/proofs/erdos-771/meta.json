@@ -92,7 +92,8 @@
       "**Exact Constant 1/2**: The factor 1/2 = 1/(2 * 1) arises because the smallest prime not dividing m is about 2 log m by PNT (the factor 2 comes from the prime counting function pi(x) ~ x/log x).",
       "**m-Avoiding vs Sum-Free**: m-avoiding allows MUCH larger sets than sum-free (n/(2 log n) vs n/3), because we only need to avoid one specific sum rather than all internal sums.",
       "**Bertrand's Postulate**: Guarantees existence of a prime in (n, 2n], ensuring the construction always works. The PNT gives the precise asymptotic."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -168,7 +169,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #771 asks whether f(n) = (1/2+o(1))n/log n, where f(n) is the maximum size of a subset of {1,...,n} that can avoid any prescribed sum m. The conjecture is TRUE: Erdos-Graham proved the lower bound using prime multiples, and Alon-Freiman (1988) proved the matching upper bound using an LCM argument. The formalization has 7 sorries in construction lemmas and epsilon-delta bridges, with the key results axiomatized.",
-    "implications": "**Theoretical Significance**\n\n1. **Prime Number Theory**: The constant 1/2 arises directly from prime density via PNT, connecting additive combinatorics to analytic number theory\n\n2. **LCM Estimates**: The upper bound uses lcm{1,...,s} ~ e^s, a fundamental estimate in multiplicative number theory\n\n3. **Subset Sum Problems**: Part of the broader study of which target sums can be avoided by large subsets of integers\n\n4. **Sum-Free Comparison**: The contrast f(n) ~ n/(2 log n) vs n/3 quantifies the gap between avoiding one sum and avoiding all internal sums",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Prime Number Theory**: The constant 1/2 arises directly from prime density via PNT, connecting additive combinatorics to analytic number theory\n\n2.\n\n**Broader Connections**: **LCM Estimates**: The upper bound uses lcm{1,...,s} ~ e^s, a fundamental estimate in multiplicative number theory\n\n3. **Subset Sum Problems**: Part of the broader study of which target sums can be avoided by large subsets of integers\n\n4. **Sum-Free Comparison**: The contrast f(n) ~ n/(2 log n) vs n/3 quantifies the gap between avoiding one sum and avoiding all internal sums.",
     "openQuestions": [
       "What are explicit constants in the o(1) term for f(n)?",
       "What about simultaneously avoiding multiple target sums?",

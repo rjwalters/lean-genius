@@ -89,7 +89,8 @@
       "**Uniform convergence requires more**: While $L^2$ convergence is free, uniform convergence needs $\\sum|c_n| < \\infty$, which requires smoothness (e.g., $C^1$ gives $c_n = O(1/n)$ via integration by parts).",
       "**Completeness via Stone-Weierstrass**: The Fourier monomials span a dense subspace of continuous functions on the circle, which extends to $L^2$ completeness via the Hilbert space structure.",
       "**Uniqueness from completeness**: If $f$ and $g$ have the same Fourier coefficients, their Fourier series converge to the same limit, so $f = g$ in $L^2$. The proof uses `HasSum.unique`."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -213,7 +214,7 @@
   ],
   "conclusion": {
     "summary": "This formalization of Fourier series (Wiedijk #76) leverages Mathlib's `AddCircle` framework to prove $L^2$ convergence, Parseval's theorem ($\\sum|c_n|^2 = \\|f\\|^2$), Bessel's inequality, uniform convergence for summable coefficients, uniqueness, and the Riemann-Lebesgue lemma. The key insight is that the Fourier monomials form a Hilbert basis for $L^2(\\mathbb{R}/T\\mathbb{Z})$, making all results flow from orthonormality and completeness.",
-    "implications": "Fourier series are foundational for signal processing, PDEs (heat, wave, Laplace equations), quantum mechanics, image compression (JPEG/DCT), and analytic number theory (modular forms). The $L^2$ theory led to functional analysis, distribution theory, and modern harmonic analysis. Carleson's 1966 theorem on almost-everywhere convergence remains one of the deepest results in analysis.",
+    "implications": "**Theoretical Significance**: Fourier series are foundational for signal processing, PDEs (heat, wave, Laplace equations), quantum mechanics, image compression (JPEG/DCT), and analytic number theory (modular forms).\n\n**Broader Connections**: The $L^2$ theory led to functional analysis, distribution theory, and modern harmonic analysis. Carleson's 1966 theorem on almost-everywhere convergence remains one of the deepest results in analysis.",
     "openQuestions": [
       "Can Carleson's theorem ($L^2$ Fourier series converge pointwise a.e.) be formalized in Lean/Mathlib?",
       "What is the optimal rate of decay of Fourier coefficients under Hölder continuity conditions?",

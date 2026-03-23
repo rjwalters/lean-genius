@@ -47,6 +47,12 @@
       "The conjecture asks for a **universal constant** $c$ independent of $n$, which is surprisingly strong given $Q_n$'s exponential growth",
       "**Relation to KSS**: a positive answer would extend the Komlós–Sárközy–Szemerédi framework to hypercubes as spanning subgraphs",
       "**Two fallback formulations**: (1) relax to $m > 2^n$ vertices (non-spanning), (2) find exact threshold sequence $u_n$"
+    ],
+    "prerequisites": [
+      "SimpleGraph and graph homomorphisms from Mathlib",
+      "Hypercube graphs and their properties",
+      "Graph density and extremal graph theory",
+      "Turán-type bounds"
     ]
   },
   "sections": [

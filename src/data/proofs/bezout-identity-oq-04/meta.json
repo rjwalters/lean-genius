@@ -86,7 +86,8 @@
       "**gcd(a/d, b/d) = 1 via ideal**: Prove gcd(a',b') ∣ 1 by showing gcd(a',b') divides the Bezout combination a'*u + b'*v = 1, then use Nat.dvd_one.",
       "**Three variables by induction on Bezout**: bezout_three reduces to two Bezout applications: gcd(a,b) = ax₀+by₀, then gcd(gcd(a,b),c) = gcd(a,b)*u + c*v, giving the three-variable combination.",
       "**Ideal characterization = double divisibility**: d = gcd(a,b) iff (d achievable → gcd ∣ d) AND (d divides gcd → d ∣ gcd) → d = gcd by Nat.dvd_antisymm."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

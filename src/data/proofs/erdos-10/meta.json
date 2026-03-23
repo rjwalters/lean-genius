@@ -45,6 +45,13 @@
       "**Covering congruences (Erdős 1950)**: Infinitely many even integers are not in $S_2$. The same technique Erdős used against odd perfect covering systems applies here.",
       "**Romanoff (1934)**: $\\underline{d}(S_1) > 0$ — a positive fraction of integers are $p + 2^a$. One of the first results on primes as additive bases with lacunary sequences.",
       "**Parity barrier**: Odd $n = p + 2^a + 2^b + 2^c$ forces $p$ odd (prime candidate), but even $n$ requires $p = 2$ or careful modular arithmetic with the powers of 2."
+    ],
+    "prerequisites": [
+      "Prime numbers and their distribution",
+      "Density of sets of integers (lower density, natural density)",
+      "Sieve methods (for Romanoff's theorem)",
+      "Covering congruences (for the exception construction)",
+      "Large sieve inequality (for Gallagher's theorem)"
     ]
   },
   "sections": [
@@ -107,7 +114,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #10 is formalized comprehensively with all major results axiomatized: the Erdős-Graham conjecture ($\\neg \\exists k: \\{n > 1\\} \\subseteq S_k$), Gallagher's density theorem ($\\underline{d}(S_k) \\to 1$), Granville-Soundararajan conjectures ($k = 3$ for odd, $k = 4$ for even), Grechuk's counterexample ($1117175146 \\notin S_3$), covering congruence exceptions, and Romanoff's positive density. The parity barrier between odd and even integers is a central theme. All results are axiomatized (no proved theorems), reflecting the depth of the underlying number theory.",
-    "implications": "Resolution would require advances in sieve methods beyond Gallagher's large sieve, or new techniques for handling lacunary additive bases. The covering congruence argument connects to Erdős's work on covering systems. Understanding how well powers of 2 complement the primes illuminates fundamental questions in additive number theory and the distribution of primes in arithmetic progressions.",
+    "implications": "**Theoretical Significance**: Resolution would require advances in sieve methods beyond Gallagher's large sieve, or new techniques for handling lacunary additive bases.\n\n**Broader Connections**: The covering congruence argument connects to Erdős's work on covering systems. Understanding how well powers of 2 complement the primes illuminates fundamental questions in additive number theory and the distribution of primes in arithmetic progressions.",
     "openQuestions": [
       "Does there exist any finite $k$ that works for all sufficiently large integers? (The main open question.)",
       "Is the Granville-Soundararajan conjecture ($k = 3$ for odd integers) true?",

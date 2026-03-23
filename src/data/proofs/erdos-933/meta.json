@@ -86,7 +86,8 @@
       "**The LTE Lemma is the computational engine**: v_p(a^n + b^n) = v_p(a+b) + v_p(n) for odd p with p | a+b, p ∤ a,b. Applied with p=3, a=2, b=1, n=3^r: v_3(2^{3^r}+1) = 1 + r. This is the single arithmetic fact that makes Steinerberger's proof work.",
       "**5-sorry architecture with clean axiom boundaries**: Axiomatized: Mahler's bound (S-unit theory), Erdős's lower bound (original claim), Steinerberger's proof (main result), LTE application (divisibility), power2_mod3. Fully proved: consecutive_coprime, steinerberger_n_plus_1, examples. Sorry gaps: limsup_infinite (2, ratio manipulation), power2/3_consecutive (factorization additivity).",
       "**Connection to abc conjecture**: If abc holds, much stronger bounds on smooth parts of consecutive products follow. The open question 'connections to abc conjecture?' is natural—abc would give S(n(n+1)) < n^{1+ε} with effective constants and sharper thresholds."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -162,7 +163,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #933 asks whether the {2,3}-smooth part of n(n+1) can exceed n·log n infinitely often. The answer is YES, proved by Steinerberger using the explicit construction n = 2^{3^r}: the Lifting the Exponent Lemma gives v₃(2^{3^r}+1) = r+1, so the smooth part is ≥ n·3^{r+1}. The formalization axiomatizes Mahler's S-unit upper bound, Erdős's claim, Steinerberger's proof, and the LTE divisibility, while fully proving consecutive_coprime and computing examples by native_decide.",
-    "implications": "This problem illustrates the interplay between elementary number theory (LTE Lemma, coprimality) and deep transcendence theory (Mahler's S-unit bounds). Steinerberger's construction shows that doubly-exponential sequences can serve as extremal examples in smooth number problems. The gap between the n·log n lower bound and n^{1+o(1)} upper bound remains: determining the exact growth rate of the limsup is open. The connection to the abc conjecture suggests that stronger bounds would follow from this central conjecture in number theory.",
+    "implications": "**Theoretical Significance**: This problem illustrates the interplay between elementary number theory (LTE Lemma, coprimality) and deep transcendence theory (Mahler's S-unit bounds). Steinerberger's construction shows that doubly-exponential sequences can serve as extremal examples in smooth number problems.\n\n**Broader Connections**: The gap between the n·log n lower bound and n^{1+o(1)} upper bound remains: determining the exact growth rate of the limsup is open. The connection to the abc conjecture suggests that stronger bounds would follow from this central conjecture in number theory.",
     "openQuestions": [
       "What is the exact growth rate of limsup 2^k·3^l/(n·log n)? Is it polynomial, or slower?",
       "Are there extremal constructions besides Steinerberger's n = 2^{3^r}? What about n = 3^{2^r}?",

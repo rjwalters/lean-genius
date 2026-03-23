@@ -58,7 +58,8 @@
       "**Sorted canonical form**: requiring $p_1 \\le p_2 \\le \\cdots$ makes the factorization absolutely unique (not just up to permutation), which Mathlib's `primeFactorsList` provides automatically",
       "The **coprime disjoint factors** theorem ($\\gcd(m,n) = 1 \\Rightarrow$ factor lists are disjoint) demonstrates that coprimality has a clean characterization in terms of prime factorizations",
       "The **Finsupp representation** `Nat.factorization` maps each prime to its exponent, giving $n \\mapsto (p \\mapsto v_p(n))$ — this is often more convenient than the list representation for multiplicative arithmetic"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

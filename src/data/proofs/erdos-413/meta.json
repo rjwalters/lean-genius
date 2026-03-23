@@ -74,7 +74,8 @@
       "**Barrier hierarchy: $F \\gg \\omega \\gg \\Omega$**: The exponent product $F(n) = 1$ for all squarefree $n$ (about $6/\\pi^2 \\approx 61\\%$ of integers), so $F$-barriers are abundant — Erdős proved positive density. $\\Omega \\geq \\omega$ makes $\\Omega$-barriers rarer: only 4 exist below 5 vs 9 for $\\omega$ below 32",
       "**Dynamical systems interpretation**: Barriers are fixed points of a discrete dynamical system. The iteration $n \\mapsto n + \\omega(n)$ defines orbits, and barriers are values no orbit can jump over. Erdős problem #412 asks whether all orbits eventually merge — a question about the attractor structure of this system",
       "**Computational verification builds confidence**: Machine-verified barriers up to 128 (15 values) and barrier counts up to 121 match OEIS A005236, providing empirical evidence for the conjecture. The gap between consecutive barriers grows but never appears to terminate"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -192,7 +193,7 @@
   ],
   "conclusion": {
     "summary": "This formalization provides a comprehensive treatment of Erdős Problem #413 on barriers for the ω function. It defines barriers for general arithmetic functions, proves structural constraints (predecessors must be prime powers, φ and σ₁ cannot have large barriers), machine-verifies specific barriers up to 128, establishes a barrier hierarchy F >> ω >> Ω, and connects barriers to the iterated dynamics of n ↦ n + ω(n). The 1100-line file includes 50+ theorems, a decidable barrier-checking framework, and extensive computational verification.",
-    "implications": "Resolution of the barrier conjecture would illuminate the distribution of prime factors among consecutive integers and clarify the dynamical structure of additive arithmetic iterations. The barrier concept bridges additive number theory and discrete dynamics — infinite barriers would imply a kind of 'recurrence' in the prime factorization structure of integers. The ε-variant connects to the fine distribution of smooth numbers and the Erdős-Kac theorem on the normal order of ω.",
+    "implications": "**Theoretical Significance**: Resolution of the barrier conjecture would illuminate the distribution of prime factors among consecutive integers and clarify the dynamical structure of additive arithmetic iterations.\n\n**Broader Connections**: The barrier concept bridges additive number theory and discrete dynamics — infinite barriers would imply a kind of 'recurrence' in the prime factorization structure of integers. The ε-variant connects to the fine distribution of smooth numbers and the Erdős-Kac theorem on the normal order of ω.",
     "openQuestions": [
       "Are there infinitely many ω-barriers? What is their asymptotic density?",
       "Does there exist ε > 0 with infinitely many ε-barriers for ω?",

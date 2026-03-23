@@ -35,7 +35,8 @@
       "The bipartite structure of K_{3,3} creates rigid constraints forcing 4D",
       "For dimension 5, the minimum is 15 edges (achieved by K₆ and K_{1,3,3})",
       "Graph dimension connects combinatorics with Euclidean geometry"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -89,7 +90,7 @@
   ],
   "conclusion": {
     "summary": "The minimum number of edges in a dimension-4 graph is exactly 9, achieved uniquely by K_{3,3}. This beautiful result connects graph combinatorics with Euclidean geometry through unit-distance embeddings.",
-    "implications": "Graph dimension is a natural geometric invariant of graphs. The K_{3,3} result shows that bipartite graphs can have high dimension despite their simple structure. The uniqueness of K_{3,3} is remarkable.",
+    "implications": "**Theoretical Significance**: Graph dimension is a natural geometric invariant of graphs.\n\n**Broader Connections**: The K_{3,3} result shows that bipartite graphs can have high dimension despite their simple structure. The uniqueness of K_{3,3} is remarkable.",
     "openQuestions": [
       "What is the minimum edges for dimension d in general?",
       "Characterize all graphs achieving the minimum for each dimension",

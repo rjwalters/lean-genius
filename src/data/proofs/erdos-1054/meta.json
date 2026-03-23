@@ -57,7 +57,8 @@
       "**Tao's density bound**: The set {n : f(n) ≤ δn} has density O(δ²), showing many 'hard' values exist where f(n) ≈ n.",
       "**Connection to Goldbach**: If every even n ≥ 6 is a sum of two primes p + q, then f(n) might be achievable via m = pq with divisors {1, p, q, pq}.",
       "**OEIS sequence**: Values of f(n) are recorded in A167485."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -105,7 +106,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #1054, an OPEN question about the function f(n) that computes the minimal m whose k smallest divisors sum to n. The problem asks three related questions about the asymptotic behavior of f(n)/n. Tao disproved the strongest claim (Part I), but the 'almost all' version and limsup question remain unresolved.",
-    "implications": "This problem connects divisor structure to density questions in number theory. A full resolution would illuminate how efficiently divisor sums can 'target' arbitrary values. The connection to Goldbach's conjecture (via prime products) suggests deep arithmetic structure underlies the problem.",
+    "implications": "**Theoretical Significance**: This problem connects divisor structure to density questions in number theory.\n\n**Broader Connections**: A full resolution would illuminate how efficiently divisor sums can 'target' arbitrary values. The connection to Goldbach's conjecture (via prime products) suggests deep arithmetic structure underlies the problem.",
     "openQuestions": [
       "Is f(n) = o(n) for almost all n? (Part II, OPEN)",
       "Is limsup f(n)/n = ∞? (Part III, OPEN)",

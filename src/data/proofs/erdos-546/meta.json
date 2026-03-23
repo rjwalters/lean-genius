@@ -131,7 +131,8 @@
       "**Tight for dense graphs, loose for sparse**: Complete graphs $K_n$ achieve $R(K_n) = 2^{\\Theta(\\sqrt{m})}$, matching the bound, while paths satisfy $R(P_n) = O(n) = O(m)$, showing the bound is exponentially loose for sparse graphs",
       "**Multi-color gap**: The 2-color proof exploits $G \\cup \\overline{G} = K_N$ (complementation), which fails for $r \\geq 3$ colors — extending to 3+ colors requires fundamentally new ideas and remains one of the main open problems in Ramsey theory",
       "**Connection to Problem #545**: The precise exponent question asks whether $\\log_2 R(G) \\leq (1/2 + o(1)) \\log_2 m$, a subtle refinement of Sudakov's $O(\\sqrt{m})$ that would pin down the exact growth rate"
-    ]
+    ],
+    "prerequisites": []
   },
   "conclusion": {
     "summary": "Erdős Problem #546 on Ramsey numbers and edge count is solved in the 2-color case by Sudakov (2011): R(G) ≤ 2^{O(√m)} for all graphs G with m edges and no isolated vertices. The formalization captures the complete picture including tightness via Erdős's 1947 probabilistic argument, the earlier AKS bipartite result (2003), linear bounds for sparse graphs, and the open multi-color conjecture.",

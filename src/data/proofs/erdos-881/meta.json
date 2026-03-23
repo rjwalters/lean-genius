@@ -68,7 +68,8 @@
       "**Weak Version:** Order increases by some finite m (implied by strong version)",
       "**Lagrange Example:** Squares form a basis of order 4 (four-square theorem)",
       "**Monotonicity:** Higher order bases are strictly weaker requirements"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -130,7 +131,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #881 asks whether minimal additive bases of order k always admit an infinite subset whose removal yields a basis of order exactly k+1. This elegant structural question about the 'graceful degradation' of minimal bases remains open.",
-    "implications": "**Significance:**\n\n1. **Structural Understanding:** Would reveal regularity in minimal additive bases\n\n2. **Additive Number Theory:** Connects to Waring's problem and representation theory\n\n3. **Combinatorial Structure:** Understanding 'tightness' of minimal bases\n\n4. **Erdős-Turán Connection:** Related to conjectures on additive basis structure",
+    "implications": "**Theoretical Significance**: **Significance:**\n\n1. **Structural Understanding:** Would reveal regularity in minimal additive bases\n\n2.\n\n**Broader Connections**: **Additive Number Theory:** Connects to Waring's problem and representation theory\n\n3. **Combinatorial Structure:** Understanding 'tightness' of minimal bases\n\n4. **Erdős-Turán Connection:** Related to conjectures on additive basis structure.",
     "openQuestions": [
       "Are there minimal bases where no removal increases order by exactly 1?",
       "What is the structure of minimal bases for small orders (k=2,3,4)?",

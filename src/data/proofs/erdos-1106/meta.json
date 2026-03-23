@@ -34,7 +34,8 @@
       "Ono's 2000 theorem ($\\forall p \\in \\mathbb{P},\\; \\exists n : p \\mid p(n)$) uses Hecke operators on spaces of modular forms and shows the partition function has universal divisibility — every prime eventually appears as a factor.",
       "The gap between $F(n) \\gg \\log n$ and the conjecture $F(n) > n$ is a factor of $n/\\log n$, reflecting how difficult it is to control the prime factorization of products of arithmetic functions defined combinatorially rather than multiplicatively.",
       "Ramanujan's congruences $p(5n+4) \\equiv 0 \\pmod{5}$, $p(7n+5) \\equiv 0 \\pmod{7}$, $p(11n+6) \\equiv 0 \\pmod{11}$ were the first hints that $p(n)$ has rich arithmetic structure — Ono's work shows this extends to all primes."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -103,7 +104,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdos Problem #1106 on prime factors of partition products. The first part ($F(n) \\to \\infty$) is a proved theorem from the 1970s-1990s, combining the Hardy-Ramanujan asymptotic formula with Tijdeman's results on prime factors of fast-growing sequences. The second part ($F(n) > n$ eventually) remains one of the open problems in the arithmetic theory of partitions, with the current best bound $F(n) \\gg \\log n$ falling far short of the conjectured linear growth. Small values are verified computationally, providing concrete evidence for the conjecture.",
-    "implications": "Understanding the prime factorization of partition numbers connects to deep questions in analytic number theory and the theory of modular forms. Ono's 2000 result that every prime divides some $p(n)$ — proved via Hecke operators and Galois representations — was a major breakthrough showing that the partition function has universal arithmetic structure. The gap between $\\log n$ and $n$ for $F(n)$ suggests that new ideas are needed, possibly involving the distribution of prime factors across the individual $p(k)$ values rather than just the product.",
+    "implications": "**Theoretical Significance**: Understanding the prime factorization of partition numbers connects to deep questions in analytic number theory and the theory of modular forms.\n\n**Broader Connections**: Ono's 2000 result that every prime divides some $p(n)$ — proved via Hecke operators and Galois representations — was a major breakthrough showing that the partition function has universal arithmetic structure. The gap between $\\log n$ and $n$ for $F(n)$ suggests that new ideas are needed, possibly involving the distribution of prime factors across the individual $p(k)$ values rather than just the product.",
     "openQuestions": [
       "Is $F(n) > n$ for all sufficiently large $n$? This is the main open part of Erdos's question.",
       "What is the true growth rate of $F(n)$? The heuristic $F(n) \\approx cn^{3/2}/\\log n$ from the Erdos-Kac theorem suggests $F(n)/n \\to \\infty$, but can this be proved?",
@@ -167,7 +168,10 @@
   ],
   "references": [
     {
-      "authors": ["G.H. Hardy", "S. Ramanujan"],
+      "authors": [
+        "G.H. Hardy",
+        "S. Ramanujan"
+      ],
       "title": "Asymptotic formulæ in combinatory analysis",
       "journal": "Proceedings of the London Mathematical Society",
       "volume": "17",
@@ -177,7 +181,9 @@
       "note": "Introduces the circle method and derives the asymptotic p(n) ~ (1/4n√3)exp(π√(2n/3)); the sub-exponential growth rate is the starting point for Tijdeman's argument used in Part 1 of Erdős #1106."
     },
     {
-      "authors": ["R. Tijdeman"],
+      "authors": [
+        "R. Tijdeman"
+      ],
       "title": "On integers with many small prime factors",
       "journal": "Compositio Mathematica",
       "volume": "26",
@@ -187,7 +193,10 @@
       "note": "Proves that sequences growing at least exponentially must have F(n) → ∞; combined with the Hardy-Ramanujan asymptotic this resolves the first part of Erdős Problem #1106."
     },
     {
-      "authors": ["A. Schinzel", "E. Wirsing"],
+      "authors": [
+        "A. Schinzel",
+        "E. Wirsing"
+      ],
       "title": "Multiplicative properties of the partition function",
       "journal": "Acta Arithmetica",
       "volume": "52",
@@ -196,7 +205,9 @@
       "note": "Establishes the quantitative lower bound F(n) ≫ log n for the number of distinct prime factors of the partition product, currently the best known result toward the open conjecture F(n) > n."
     },
     {
-      "authors": ["K. Ono"],
+      "authors": [
+        "K. Ono"
+      ],
       "title": "Distribution of the partition function modulo m",
       "journal": "Annals of Mathematics",
       "volume": "151",
@@ -206,7 +217,10 @@
       "note": "Proves that every prime p divides p(n) for a positive density set of n, generalizing Ramanujan's classical congruences; this shows the partition function has universal arithmetic structure and is cited as an axiom in the Lean formalization."
     },
     {
-      "authors": ["P. Erdős", "A. Ivić"],
+      "authors": [
+        "P. Erdős",
+        "A. Ivić"
+      ],
       "title": "The distribution of values of a certain class of arithmetic functions at consecutive integers",
       "journal": "Colloquia Mathematica Societatis János Bolyai",
       "volume": "51",

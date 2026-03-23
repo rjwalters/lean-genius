@@ -54,7 +54,8 @@
       "The result 4·ln(2) - 2 ≈ 0.7726 shows the alternating sum converges to a transcendental number, unlike the non-alternating case which equals exactly 2 (rational)",
       "The proof architecture cleanly separates the analytic content (Abel's theorem, axiomatized) from the algebraic content (partial fractions, fully verified), making the axiom boundary precise",
       "The Lean formalization handles the n=0 edge case explicitly via if-then-else, since ℕ-indexed series must account for 0 even though the mathematical series starts at n=1"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

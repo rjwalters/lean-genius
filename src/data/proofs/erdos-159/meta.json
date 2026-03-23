@@ -69,7 +69,8 @@
       "**Regularity lemma bottleneck:** Szemerédi's proof uses the regularity lemma, whose quantitative bounds are notoriously weak (tower-type). Any power saving would likely require avoiding the regularity lemma entirely, using more direct structural analysis of $C_4$-free graphs.",
       "**Even cycle Ramsey numbers:** The problem generalizes to $R(C_{2k}, K_n)$ for longer even cycles. For $k = 2$ ($C_4$), the tight connection to the Zarankiewicz problem makes it the most natural starting point. For general $k$, bounds involve the extremal number $\\text{ex}(n, C_{2k})$.",
       "**Threshold specification:** The formalization uses the complete min-max characterization: `ramseyC4Kn_spec` asserts BOTH directions (sufficiency and necessity), making $R(C_4, K_n)$ the exact threshold rather than just an upper bound. The complement `Gᶜ` turns clique-finding into independence-number questions."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -117,7 +118,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #159 asks whether the off-diagonal Ramsey number $R(C_4, K_n)$ admits a power saving: $R(C_4, K_n) \\leq C \\cdot n^{2-c}$ for some $c > 0$. The known bounds $\\Omega(n^{3/2}/(\\log n)^{3/2}) \\leq R(C_4, K_n) \\leq O(n^2/(\\log n)^2)$ leave an exponent gap from $3/2$ to $2$. The 91-line formalization axiomatizes the Ramsey number with full threshold specification and both bounds.",
-    "implications": "**Connections**\n\n1. **Zarankiewicz Problem:** $R(C_4, K_n)$ is closely tied to $z(n; 2, 2)$, the maximum edges in a $C_4$-free bipartite graph. The Kővári-Sós-Turán bound $z(n; 2, 2) = O(n^{3/2})$ is the key ingredient in Spencer's lower bound.\n\n2. **Finite Geometry:** Algebraic $C_4$-free constructions from projective planes and generalized quadrangles achieve extremal edge counts, suggesting deep connections between Ramsey theory and algebraic combinatorics.\n\n3. **Regularity Lemma Limitations:** Szemerédi's upper bound relies on the regularity lemma, whose quantitative inefficiency may be the primary obstacle to a power saving. Bypassing regularity for structured forbidden-subgraph problems is a major theme in modern combinatorics.\n\n4. **Off-Diagonal Ramsey Theory:** The problem is a prototype for understanding $R(H, K_n)$ for sparse graphs $H$, where the interaction between graph structure and independence number creates rich combinatorial phenomena.",
+    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Zarankiewicz Problem:** $R(C_4, K_n)$ is closely tied to $z(n; 2, 2)$, the maximum edges in a $C_4$-free bipartite graph. The Kővári-Sós-Turán bound $z(n; 2, 2) = O(n^{3/2})$ is the key ingredient in Spencer's lower bound.\n\n2.\n\n**Broader Connections**: **Finite Geometry:** Algebraic $C_4$-free constructions from projective planes and generalized quadrangles achieve extremal edge counts, suggesting deep connections between Ramsey theory and algebraic combinatorics.\n\n3. **Regularity Lemma Limitations:** Szemerédi's upper bound relies on the regularity lemma, whose quantitative inefficiency may be the primary obstacle to a power saving. Bypassing regularity for structured forbidden-subgraph problems is a major theme in modern combinatorics.\n\n4. **Off-Diagonal Ramsey Theory:** The problem is a prototype for understanding $R(H, K_n)$ for sparse graphs $H$, where the interaction between graph structure and independence number creates rich combinatorial phenomena.",
     "openQuestions": [
       "Does R(C₄, Kₙ) ≤ C·n^{2-c} for some c > 0? (The main conjecture)",
       "What is the correct exponent α such that R(C₄, Kₙ) = Θ(n^α / (log n)^β)?",

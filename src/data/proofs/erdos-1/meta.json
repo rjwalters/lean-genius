@@ -63,6 +63,12 @@
       "**Maximum element bound**: If $\\max(A) = M$, then sums including $M$ and sums excluding $M$ must interleave, forcing $M \\geq 2^{n-1}$. The Lean proof reduces to `erdos_1_lower_bound` via `Finset.le_max'`.",
       "**Dubroff-Fox-Xu (2021)**: The best known lower bound is $N \\geq \\sqrt{2/\\pi} \\cdot 2^n / \\sqrt{n}$, using probabilistic and entropy methods. The $1/\\sqrt{n}$ gap to $c \\cdot 2^n$ remains.",
       "**Conway-Guy construction**: The upper bound $N < 0.22002 \\cdot 2^n$ uses a greedy algorithm with a specific recursion. The Conway-Guy conjecture (that their construction is optimal) is also open."
+    ],
+    "prerequisites": [
+      "Finite set theory (Finset operations, powerset, filter)",
+      "Injective functions and the pigeonhole principle",
+      "Basic combinatorics (subset counting, cardinality bounds)",
+      "Natural number arithmetic (powers of 2, inequalities)"
     ]
   },
   "sections": [

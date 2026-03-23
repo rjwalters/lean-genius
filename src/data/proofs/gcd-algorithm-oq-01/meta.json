@@ -68,7 +68,8 @@
       "**Fibonacci-to-logarithm bridge**: The chain $\\text{fib}(2n+1) \\geq 2^n$ converts the Fibonacci bound into the logarithmic bound $\\text{steps} \\leq 2\\log_2(b) + 2$, confirming $O(\\log b)$ complexity without the golden ratio.",
       "**5-digit bound via $\\text{fib}(5k+2) \\geq 10^k$**: Lamé's classical digit bound follows from the more precise comparison of Fibonacci numbers with powers of 10, verified computationally for $k \\leq 20$ using `interval_cases` and `native_decide`.",
       "**Dixon's theorem is ergodic**: The average-case constant $12\\ln 2/\\pi^2$ arises from the invariant measure of the Gauss map $T(x) = \\{1/x\\}$, connecting number theory to dynamical systems. Formalizing this requires continued fractions and Birkhoff's ergodic theorem, neither available in Mathlib."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

@@ -62,6 +62,13 @@
       "The general LLL with witness values x_i is strictly stronger than the symmetric form and necessary for many applications",
       "The LLL is non-constructive in its original form: it guarantees existence without providing an algorithm to find the good outcome",
       "Moser-Tardos (2010) made the LLL constructive: repeatedly resample any violated event, and the process terminates in expected O(n) steps"
+    ],
+    "prerequisites": [
+      "Probabilistic method and independence of events",
+      "Dependency graphs and near-independence",
+      "Symmetric and asymmetric LLL conditions",
+      "k-SAT satisfiability and clause independence",
+      "Moser-Tardos resampling algorithm (constructive LLL)"
     ]
   },
   "sections": [

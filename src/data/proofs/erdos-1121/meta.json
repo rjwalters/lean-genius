@@ -54,7 +54,8 @@
       "The result generalizes to balls in higher dimensions: balls B₁,...,Bₙ in ℝᵈ with no separating hyperplane can be covered by a ball of radius r₁ + ... + rₙ, with the same proof strategy",
       "Overlapping circles always satisfy the no-separating-line condition: if all pairs overlap (d(centers) ≤ r₁+r₂), no separating line can exist since the line would have to pass between overlapping circles",
       "Connection to Helly's theorem (1923): Helly says a family of convex sets in ℝᵈ has a common point iff every d+1 of them do; Goodman-Goodman can be seen as a radius-aware generalization, replacing 'common point exists' with 'common covering ball of controlled radius exists'"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

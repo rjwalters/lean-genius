@@ -65,7 +65,8 @@
       "**Coordinate vector construction:** Alweiss's $\\{e_i + e_j\\}$ construction achieves $\\binom{n+1}{2}$ points, with the isosceles property following from the symmetric distance structure: $\\|e_i + e_j - e_k - e_l\\|^2 \\in \\{2, 4\\}$ for distinct indices",
       "**Linear gap:** The gap $\\binom{n+2}{2} - \\binom{n+1}{2} - 1 = n$ between bounds grows linearly—for large $n$, the relative gap shrinks as $O(1/n)$, suggesting the bounds are close to tight",
       "**Neither bound tight for $n = 3$:** Since $f(3) = 8$ while the bounds give $[7, 10]$, neither Blokhuis nor Weisenberg is tight, suggesting the true answer may require dimension-specific constructions"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

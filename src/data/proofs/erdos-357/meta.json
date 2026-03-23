@@ -59,7 +59,8 @@
       "**Monotonicity phase transition**: Without monotonicity, $g(n) = \\Theta(n)$ (Hegyvári). With strict monotonicity, $f(n)$ is conjectured $o(n)$. This dramatic gap shows monotonicity is the fundamental constraint, not the distinctness condition itself.",
       "**Density conjectures for infinite sets**: Lower density 0 is proved, but full density 0 and convergence of $\\sum 1/a_k$ remain open. The counting bound $a_k \\gg k\\log k$ for infinitely many $k$ establishes sparsity.",
       "**Distinctness hierarchy**: Distinct subset sums $\\subset$ distinct consecutive sums $\\subset$ B₂ sequences, forming a chain of decreasingly restrictive conditions on integer sequences."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -200,7 +201,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #357 on distinct consecutive sums across 304 lines and 12 sections. The main question — whether f(n) = o(n) — remains open. Known bounds: f(n) ≥ (2+o(1))√n (Weisenberg, via B₂ sequences). The non-monotone variant g(n) = Θ(n) (Hegyvári 1986). Three variants (f, g, h) with increasing generality are formalized, along with infinite-set density conjectures and connections to B₂/Sidon sets and subset sum problems.",
-    "implications": "The problem connects to Sidon sets (additive combinatorics), sequence density (analytic number theory), and subset sums (combinatorics). The gap between √n and n bounds is the heart of the open question. Resolution would clarify the role of monotonicity in additive combinatorial extremal problems.",
+    "implications": "**Theoretical Significance**: The problem connects to Sidon sets (additive combinatorics), sequence density (analytic number theory), and subset sums (combinatorics).\n\n**Broader Connections**: The gap between √n and n bounds is the heart of the open question. Resolution would clarify the role of monotonicity in additive combinatorial extremal problems.",
     "openQuestions": [
       "Can f_le_n, f_ge_one, f_ge_two be proved from the definitions (converting sorries to proofs)?",
       "Can B2_implies_distinct_consecutive be proved via the partial-sums argument?",

@@ -45,7 +45,8 @@
       "The conjecture **f(N) = (1/2+o(1))N** requires closing the gap between 1/2 and 25/28",
       "EgyptFractionFree sets form an **abstract simplicial complex** (hereditary/downward-closed family)",
       "Related to **Problem 327** (sum-divides-product) via the identity $\\frac{1}{a} = \\frac{1}{b_1} + \\cdots + \\frac{1}{b_k}$ iff $a | \\prod b_i$"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -93,7 +94,7 @@
   ],
   "conclusion": {
     "summary": "The formalization captures Erdős Problem 301 on Egyptian fraction avoidance sets, with lower bound N/2, upper bound 25/28 * N, and the conjecture f(N) ~ N/2. Two theorems are fully proved (empty set and hereditary property), four results are axiomatized. Zero sorries.",
-    "implications": "Resolution would pin down the exact density of unit-fraction-free sets. The hereditary structure suggests connections to Kruskal-Katona type bounds. Progress likely requires new tools for detecting forced Egyptian fraction patterns in dense sets, potentially drawing on techniques from additive combinatorics (sum-free sets, Schur numbers).",
+    "implications": "**Theoretical Significance**: Resolution would pin down the exact density of unit-fraction-free sets.\n\n**Broader Connections**: The hereditary structure suggests connections to Kruskal-Katona type bounds. Progress likely requires new tools for detecting forced Egyptian fraction patterns in dense sets, potentially drawing on techniques from additive combinatorics (sum-free sets, Schur numbers).",
     "openQuestions": [
       "Is f(N) = (1/2+o(1))N, or is the true density strictly greater than 1/2?",
       "Can the 25/28 upper bound be improved toward 1/2?",

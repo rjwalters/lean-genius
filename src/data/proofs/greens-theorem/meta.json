@@ -69,7 +69,8 @@
       "**Fubini + FTC strategy**: For rectangles, the double integral splits via Fubini into iterated integrals. The FTC evaluates each inner integral at the endpoints, recovering boundary integrals along the four edges.",
       "**Cauchy's integral theorem as corollary**: For holomorphic $f = u + iv$, the Cauchy-Riemann equations force $\\text{curl} = 0$, so $\\oint_C f\\,dz = 0$. This connects vector calculus to complex analysis.",
       "**Generalized Stokes' theorem**: Green's theorem is $\\int_{\\partial D} \\omega = \\int_D d\\omega$ for the 1-form $\\omega = P\\,dx + Q\\,dy$ with exterior derivative $d\\omega = (\\partial_x Q - \\partial_y P)\\,dx \\wedge dy$. The 3D version is the classical Stokes' theorem; the 1D version is the FTC."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -131,7 +132,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Green's theorem (Wiedijk #21) as the foundational connection between line integrals and double integrals in the plane. The rectangular case is axiomatized with a clear Fubini + FTC proof strategy. Rectangle properties (positivity of width, height, area) and concrete area computations (unit square, rectangle) are fully proved. Three area vector fields demonstrate the elegant application $\\text{Area} = \\oint x\\,dy$, and connections to Stokes' theorem, the divergence theorem, and Cauchy's integral theorem are formalized.",
-    "implications": "Green's theorem is foundational to electromagnetism (Maxwell's equations in integral form), fluid dynamics (Kelvin's circulation theorem), and complex analysis (Cauchy's integral theorem/formula). The formalization framework — abstract integral functions with axiomatic equality — provides a template for formalizing other Stokes-type theorems. Full proof would require Mathlib support for path integrals and oriented measure theory.",
+    "implications": "**Theoretical Significance**: Green's theorem is foundational to electromagnetism (Maxwell's equations in integral form), fluid dynamics (Kelvin's circulation theorem), and complex analysis (Cauchy's integral theorem/formula).\n\n**Broader Connections**: The formalization framework — abstract integral functions with axiomatic equality — provides a template for formalizing other Stokes-type theorems. Full proof would require Mathlib support for path integrals and oriented measure theory.",
     "openQuestions": [
       "Can the abstract lineIntegral and doubleIntegralCurl be replaced with Mathlib's Lebesgue integral machinery?",
       "What is the minimal regularity needed — does Green's theorem hold for Lipschitz curves and L¹ curl?",

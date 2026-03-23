@@ -72,7 +72,8 @@
       "Beker's lcm divisibility condition $\\mathrm{lcm}(1, \\ldots, n-k) \\mid k$ provides a precise arithmetic characterization of which orders $k$ can achieve the maximum count",
       "The function lcmRange$(m) = \\mathrm{lcm}(1, \\ldots, m)$ grows like $e^m$ by the prime number theorem ($\\log \\mathrm{lcm}(1,\\ldots,m) \\sim m$), controlling how the maximizer $k$ relates to $n$",
       "The number of $n$-cycles in $S_n$ is exactly $(n-1)!$, and this serves as both the asymptotic value of the maximum and a key structural benchmark"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -113,7 +114,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #1161 in full: the definition of $f_k(n)$ counting permutations of order $k$, Beker's resolution showing $\\max_k f_k(n) \\sim (n-1)!$ with the maximizer characterized by the lcm divisibility condition $\\mathrm{lcm}(1,\\ldots,n-k) \\mid k$, basic properties proved directly in Lean (order divides $n!$, identity has order 1), and structural lemmas about the lcm function.",
-    "implications": "**Theoretical Significance**\n\n1. **Probabilistic Group Theory**: Connects to the Erdős-Turán law on the distribution of permutation orders, now complemented by precise extremal results\n\n2. **Analytic Combinatorics**: The asymptotic $(n-1)!$ reveals that the most common order has an exponentially large count, nearly matching the count of $n$-cycles\n\n3. **Number Theory Meets Combinatorics**: The characterization via $\\mathrm{lcm}(1,\\ldots,m)$ divisibility is a surprising connection between the arithmetic of the lcm function and the cycle structure of permutations\n\n4. **Prime Number Theorem Connection**: Since $\\log \\mathrm{lcm}(1,\\ldots,m) \\sim m$ (by PNT), the lcm condition controls which orders $k$ can be maximizers, linking this problem to deep results in analytic number theory",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Probabilistic Group Theory**: Connects to the Erdős-Turán law on the distribution of permutation orders, now complemented by precise extremal results\n\n2.\n\n**Broader Connections**: **Analytic Combinatorics**: The asymptotic $(n-1)!$ reveals that the most common order has an exponentially large count, nearly matching the count of $n$-cycles\n\n3. **Number Theory Meets Combinatorics**: The characterization via $\\mathrm{lcm}(1,\\ldots,m)$ divisibility is a surprising connection between the arithmetic of the lcm function and the cycle structure of permutations\n\n4. **Prime Number Theorem Connection**: Since $\\log \\mathrm{lcm}(1,\\ldots,m) \\sim m$ (by PNT), the lcm condition controls which orders $k$ can be maximizers, linking this problem to deep results in analytic number theory.",
     "openQuestions": [
       "What is the exact second-order term in max_k f_k(n) - (n-1)!?",
       "How many values of k achieve f_k(n) ≥ (n-1)! for a given n?",

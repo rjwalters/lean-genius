@@ -71,7 +71,8 @@
       "**Square-root bound:** $p(m)^2 \\leq m$ for composites forces $p(m) \\leq \\sqrt{m}$, giving the gap $m - p(m) \\geq m - \\sqrt{m}$; the $\\sqrt{n}$ in Erdős's asymptotic question reflects this bound",
       "**Constructive composite witness:** $m = 2(n+1)$ always provides a composite above $n$, but with $p(m) = 2$ it's useless for the conjecture—finding composites with large $p(m)$ is the real challenge",
       "**All 9 theorems fully proved:** No sorries remain; the file provides a complete structural analysis of the conjecture's constraints using Mathlib's $\\texttt{Nat.minFac}$ API"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

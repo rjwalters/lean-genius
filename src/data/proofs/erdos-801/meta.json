@@ -80,6 +80,13 @@
       "**Log factor is tight**: Paley graph constructions show $\\sqrt{n}\\log n$ cannot be improved to $\\sqrt{n}(\\log n)^{1+\\varepsilon}$ — the bound is sharp up to constants",
       "**Vertex budget is optimal**: Reducing the subset size to $\\varepsilon\\sqrt{n}$ drops the achievable edge count below $\\sqrt{n}$, not just below $\\sqrt{n}\\log n$",
       "**Ramsey connection**: $\\alpha(G) \\leq \\sqrt{n}$ is equivalent to $R(3, \\sqrt{n}) \\leq n$ type constraints, linking to classical Ramsey theory"
+    ],
+    "prerequisites": [
+      "Graph theory fundamentals (vertices, edges, adjacency)",
+      "Independence number and Ramsey theory basics",
+      "Probabilistic method (random subsets, expected value arguments)",
+      "Asymptotic notation and logarithmic growth",
+      "Lean 4 / Mathlib: SimpleGraph, Finset, Filter.atTop"
     ]
   },
   "sections": [

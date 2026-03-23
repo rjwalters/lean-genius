@@ -72,6 +72,12 @@
       "**Tight Bound:** √n is optimal - lower bound exists requiring √n - 1 paths",
       "**Complete Graph:** K_n has all possible edges, making path construction flexible",
       "**Historical Arc:** 1967 (mixed colors) → 1995 (conjecture + 2√n) → 2024 (√n proved)"
+    ],
+    "prerequisites": [
+      "Ramsey theory fundamentals",
+      "Graph theory: complete graphs and edge colorings",
+      "Path covers and vertex partitions",
+      "Combinatorial lower bound constructions"
     ]
   },
   "sections": [
@@ -158,7 +164,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #518 is SOLVED. Pokrovskiy, Versteegen, and Williams (2024) confirmed the Erdős-Gyárfás conjecture: any two-coloring of K_n can be covered by √n monochromatic paths of the same color. This bound is tight.",
-    "implications": "**What This Means:**\n\n1. The √n bound is achievable and optimal for same-color path covers\n2. There's a fundamental gap between mixed colors (2 paths) and same color (√n paths)\n3. The problem joins a rich tradition of Ramsey-type covering problems\n4. Techniques from the proof may apply to related path-covering questions",
+    "implications": "**Theoretical Significance**: **What This Means:**\n\n1. The √n bound is achievable and optimal for same-color path covers\n2.\n\n**Broader Connections**: There's a fundamental gap between mixed colors (2 paths) and same color (√n paths)\n3. The problem joins a rich tradition of Ramsey-type covering problems\n4. Techniques from the proof may apply to related path-covering questions.",
     "openQuestions": [
       "What about k-colorings of K_n with k > 2?",
       "Can similar bounds be achieved for cycle covers instead of path covers?",

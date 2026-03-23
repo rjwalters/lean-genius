@@ -76,7 +76,8 @@
       "The subharmonic generalization is the deepest insight: the proof uses only the sub-mean-value property and maximum principle of $\\log|f|$, not holomorphicity. This means the result holds for $e^u$ where $u$ is any subharmonic function on $\\mathbb{C}$ tending to $\\infty$.",
       "For finite-order functions, Zhang's proof exploits the controlled zero density (by Jensen's formula, the number of zeros in $|z| < r$ is $O(r^\\rho)$) to route the path between zero clusters. For infinite-order functions, the zeros can be much denser, requiring the more delicate potential-theoretic approach of LRW.",
       "The three-stage resolution (Huber 1957, Zhang 1977, LRW 1984) spanning 27 years reflects the increasing difficulty: each step required fundamentally new ideas, from potential-theoretic estimates to controlled zero-avoidance to the full maximum-principle argument."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -145,7 +146,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #515 is SOLVED (Lewis-Rossi-Weitsman, 1984). For every transcendental entire function $f$, there exists a single locally rectifiable path $C \\to \\infty$ such that $\\int_C |f(z)|^{-\\lambda} \\, dz < \\infty$ for all $\\lambda > 0$ simultaneously. The 290-line formalization with 0 sorries captures the quantifier structure ($\\exists \\gamma \\, \\forall \\lambda$ vs. $\\forall \\lambda \\, \\exists \\gamma$), axiomatizes the three historical milestones (Huber 1957, Zhang 1977, LRW 1984), and proves summary theorems by assembling them.",
-    "implications": "The LRW theorem reveals a deep structural property of subharmonic functions: despite their values being unbounded below (near zeros), the maximal growth direction always dominates sufficiently for inverse-power integrability. The subharmonic generalization places the result in potential theory rather than complex analysis, suggesting connections to heat kernel estimates and Brownian motion on Riemannian manifolds (via Huber's original geometric motivation). The quantifier swap from Huber to Erdős illustrates a recurring theme in analysis: uniformity is harder than pointwise results, but often holds due to structural reasons.",
+    "implications": "**Theoretical Significance**: The LRW theorem reveals a deep structural property of subharmonic functions: despite their values being unbounded below (near zeros), the maximal growth direction always dominates sufficiently for inverse-power integrability.\n\n**Broader Connections**: The subharmonic generalization places the result in potential theory rather than complex analysis, suggesting connections to heat kernel estimates and Brownian motion on Riemannian manifolds (via Huber's original geometric motivation). The quantifier swap from Huber to Erdős illustrates a recurring theme in analysis: uniformity is harder than pointwise results, but often holds due to structural reasons.",
     "openQuestions": [
       "Can the universal path be constructed explicitly for specific functions like $e^{e^z}$ or lacunary series? The LRW proof is existential (via the maximum principle), not constructive.",
       "Among all paths $C \\to \\infty$ satisfying the integrability condition, is there an 'optimal' path minimizing $\\int_C |f|^{-\\lambda}$ for a given $\\lambda$? How does this optimal path depend on $\\lambda$?",

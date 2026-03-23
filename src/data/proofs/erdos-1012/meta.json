@@ -35,7 +35,8 @@
       "**Bondy's metaconjecture confirmed**: Woodall proved not just the asked-for long cycle, but the full pancyclicity spectrum from $3$ to $n-k$. This is a dramatic strengthening—one threshold condition forces an entire family of cycles.",
       "**Ore and Bondy improve small $k$**: For $k=0$, Ore gives $f(0)=1$ while Woodall gives $n \\ge 3$; for $k=1$, Bondy gives $f(1)=1$ while Woodall gives $n \\ge 5$. The general bound is optimal only for $k \\ge 2$.",
       "**Clean axiom architecture**: The file uses 5 axioms (not sorry) for deep results and proves 29 theorems from them. This cleanly separates what requires deep graph theory from what follows by combinatorial analysis."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -97,7 +98,7 @@
   ],
   "conclusion": {
     "summary": "This 345-line formalization captures Erdős Problem #1012 on long cycles in dense graphs. The layered approach uses 5 axioms for deep graph theory results (Ore, Bondy, Woodall) and proves 29 structural theorems analyzing the edge threshold. Woodall's 1972 solution gives $f(k) \\le 2k+3$ with the bonus pancyclicity result, confirming Bondy's metaconjecture. The threshold $\\binom{n-k-1}{2} + \\binom{k+2}{2} + 1$ is shown to be tight via extremal constructions.",
-    "implications": "This result sits at the intersection of several major themes in combinatorics:\n\n1. **Extremal graph theory**: Determines the exact edge threshold for $(n-k)$-cycle containment, extending the Turán-type program to cycle problems.\n2. **Hamiltonian cycle theory**: Generalizes Ore's classical theorem (1961) from $k=0$ to all $k$, establishing a complete hierarchy of long cycle conditions.\n3. **Pancyclicity phenomenon**: Confirms Bondy's metaconjecture—conditions forcing long cycles actually force the complete cycle spectrum, revealing deep structural consequences of edge density.\n4. **Threshold symmetry**: The boundary formula $T(2k+3,k) = 2\\binom{k+2}{2}+1$ exhibits an elegant duality between the 'large component' and 'small component' terms.",
+    "implications": "**Theoretical Significance**: This result sits at the intersection of several major themes in combinatorics:\n\n1. **Extremal graph theory**: Determines the exact edge threshold for $(n-k)$-cycle containment, extending the Turán-type program to cycle problems.\n2.\n\n**Broader Connections**: **Hamiltonian cycle theory**: Generalizes Ore's classical theorem (1961) from $k=0$ to all $k$, establishing a complete hierarchy of long cycle conditions.\n3. **Pancyclicity phenomenon**: Confirms Bondy's metaconjecture—conditions forcing long cycles actually force the complete cycle spectrum, revealing deep structural consequences of edge density.\n4. **Threshold symmetry**: The boundary formula $T(2k+3,k) = 2\\binom{k+2}{2}+1$ exhibits an elegant duality between the 'large component' and 'small component' terms.",
     "openQuestions": [
       "What are the exact values of $f(k)$ for $k \\ge 2$? Woodall gives $f(k) \\le 2k+3$, but the true values may be smaller.",
       "Can the pancyclicity be strengthened to 'vertex-pancyclicity' (pancyclic through any given vertex)?",
@@ -142,35 +143,46 @@
   ],
   "references": [
     {
-      "authors": ["D. R. Woodall"],
+      "authors": [
+        "D. R. Woodall"
+      ],
       "title": "Sufficient conditions for circuits in graphs",
       "year": 1972,
       "venue": "Proceedings of the London Mathematical Society",
       "note": "The primary source: proves f(k) ≤ 2k+3 and the pancyclicity result from 3 to n−k, solving Erdős Problem #1012."
     },
     {
-      "authors": ["J. A. Bondy"],
+      "authors": [
+        "J. A. Bondy"
+      ],
       "title": "Pancyclic graphs I",
       "year": 1971,
       "venue": "Journal of Combinatorial Theory, Series B",
       "note": "Introduces the pancyclicity concept, resolves the k=1 case (f(1)=1), and formulates Bondy's metaconjecture that Hamiltonian conditions imply pancyclicity—confirmed by Woodall for this setting."
     },
     {
-      "authors": ["O. Ore"],
+      "authors": [
+        "O. Ore"
+      ],
       "title": "Note on Hamiltonian circuits",
       "year": 1960,
       "venue": "American Mathematical Monthly",
       "note": "Proves the classical Ore condition: if deg(u)+deg(v) ≥ n for all non-adjacent u,v, then the graph is Hamiltonian. This is the k=0 case (f(0)=1) of Erdős Problem #1012."
     },
     {
-      "authors": ["J. A. Bondy", "U. S. R. Murty"],
+      "authors": [
+        "J. A. Bondy",
+        "U. S. R. Murty"
+      ],
       "title": "Graph Theory with Applications",
       "year": 1976,
       "venue": "Macmillan Press",
       "note": "Standard reference for Hamiltonian graph theory, Ore's theorem, and the extremal results on long cycles and pancyclicity. Chapter 9 covers the cycle structure results relevant to this problem."
     },
     {
-      "authors": ["B. Bollobás"],
+      "authors": [
+        "B. Bollobás"
+      ],
       "title": "Extremal Graph Theory",
       "year": 1978,
       "venue": "Academic Press",

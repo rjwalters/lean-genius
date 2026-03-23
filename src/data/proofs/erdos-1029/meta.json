@@ -36,7 +36,8 @@
       "Upper bound ≈ 4^k/√k grows much faster than lower bound",
       "Huge gap: √2 ≈ 1.4 vs 4 in the base of exponential",
       "Erdős was confident the conjecture is true but offered $1000 for disproof"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -135,7 +136,10 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "G. Szekeres"],
+      "authors": [
+        "P. Erdős",
+        "G. Szekeres"
+      ],
       "title": "A combinatorial problem in geometry",
       "venue": "Compositio Mathematica",
       "year": 1935,
@@ -144,7 +148,9 @@
       "note": "Establishes the upper bound R(k) ≤ C(2k-2, k-1) and the lower bound R(k) ≥ 2^{k/2} by induction and construction."
     },
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "Some remarks on the theory of graphs",
       "venue": "Bulletin of the American Mathematical Society",
       "year": 1947,
@@ -154,7 +160,9 @@
       "note": "First probabilistic proof of the lower bound R(k) > 2^{k/2}; foundational paper for the probabilistic method in combinatorics."
     },
     {
-      "authors": ["J. Spencer"],
+      "authors": [
+        "J. Spencer"
+      ],
       "title": "Ramsey's theorem — a new lower bound",
       "venue": "Journal of Combinatorial Theory, Series A",
       "year": 1975,
@@ -164,7 +172,9 @@
       "note": "Applies the Lovász Local Lemma to sharpen the constant in the lower bound to √2/e, giving R(k) ≥ (√2/e) k 2^{k/2}."
     },
     {
-      "authors": ["D. Conlon"],
+      "authors": [
+        "D. Conlon"
+      ],
       "title": "A new upper bound for diagonal Ramsey numbers",
       "venue": "Annals of Mathematics",
       "year": 2009,
@@ -175,7 +185,9 @@
       "note": "Gives the best known improvement to the upper bound via a probabilistic deletion argument, reducing the constant factor but not the exponential base 4^k."
     },
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "Problems and results on graphs and hypergraphs: similarities and differences",
       "venue": "Mathematics of Ramsey Theory (Algorithms and Combinatorics 5, eds. J. Nešetřil and V. Rödl)",
       "year": 1990,

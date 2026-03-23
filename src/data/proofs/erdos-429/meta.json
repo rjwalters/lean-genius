@@ -71,7 +71,8 @@
       "**Covering Congruences**: Weisenberg's construction ensures every potential shift n has some a ∈ A with n + a divisible by a specific prime, blocking all shifts simultaneously",
       "**Lacunary Strengthening**: Even sets where consecutive ratios a_{n+1}/a_n → ∞ can fail, showing that no growth-rate condition rescues the conjecture",
       "**Finite vs Infinite Gap**: The Hardy-Littlewood conjecture predicts infinitely many prime shifts for finite admissible tuples, but this breaks down completely in the infinite case"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -119,7 +120,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #429 is DISPROVED. Weisenberg (2024) showed that even arbitrarily sparse admissible sets can fail to have any prime shift, by constructing explicit counterexamples using covering congruence techniques.",
-    "implications": "The result reveals a fundamental gap between finite and infinite admissible sets. While the Hardy-Littlewood conjecture predicts infinitely many prime shifts for finite admissible tuples, infinite admissible sets behave very differently even under extreme sparsity constraints. The technique of covering congruences provides a powerful obstruction mechanism.",
+    "implications": "**Theoretical Significance**: The result reveals a fundamental gap between finite and infinite admissible sets.\n\n**Broader Connections**: While the Hardy-Littlewood conjecture predicts infinitely many prime shifts for finite admissible tuples, infinite admissible sets behave very differently even under extreme sparsity constraints. The technique of covering congruences provides a powerful obstruction mechanism.",
     "openQuestions": [
       "What additional conditions beyond admissibility guarantee a prime shift for infinite sets?",
       "Is the Hardy-Littlewood prime tuples conjecture true for all finite admissible sets?",

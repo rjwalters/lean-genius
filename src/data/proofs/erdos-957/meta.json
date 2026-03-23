@@ -71,7 +71,8 @@
       "**Convex Hull Connection:** A stronger form involves the number of convex hull vertices m",
       "**Regular Polygons:** Odd regular n-gons have f(d) >= n for ALL distances, not just extremes",
       "**Dumitrescu's Proof (2019):** Uses careful geometric analysis and case splitting"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -140,7 +141,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #957 asked whether the product of minimum and maximum distance frequencies in a planar point set is bounded by (9/8 + o(1))n^2. Dumitrescu (2019) proved YES with the precise bound (9/8)n^2 + O(n). Makai's construction shows 9/8 is the optimal constant.",
-    "implications": "**Connections**\n\n1. **Distance Problems:** Part of Erdos's extensive work on distances in point sets\n\n2. **Extremal Geometry:** Constrains the structure of planar point configurations\n\n3. **Related Problems:** Connected to #132 and #756 on repeated distances\n\n4. **Unit Distance Problem:** Related to counting pairs at a fixed distance",
+    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Distance Problems:** Part of Erdos's extensive work on distances in point sets\n\n2.\n\n**Broader Connections**: **Extremal Geometry:** Constrains the structure of planar point configurations\n\n3. **Related Problems:** Connected to #132 and #756 on repeated distances\n\n4. **Unit Distance Problem:** Related to counting pairs at a fixed distance.",
     "openQuestions": [
       "What is the best constant c in the sum inequality f(d_1) + f(d_k) <= 3n - c*sqrt(n)?",
       "Is the stronger convex hull conjecture true?",

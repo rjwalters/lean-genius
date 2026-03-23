@@ -63,7 +63,8 @@
       "**Even-odd balance as special case**: The $m = 2$ case is the most intuitive: if $A$ has $\\approx |A|/2$ even and odd elements, then $A+A$ has $\\approx |A+A|/2$ even sums ($\\text{even}+\\text{even}$ or $\\text{odd}+\\text{odd}$) and $\\approx |A+A|/2$ odd sums ($\\text{even}+\\text{odd}$)",
       "**Kolountzakis extension**: The distribution holds for moduli up to $m \\leq N^{1/4-\\varepsilon}$, not just fixed $m$, showing the pseudorandomness extends to non-constant moduli",
       "**Connection to Freiman-Ruzsa**: While the Freiman-Ruzsa theorem says small sumsets imply structure, this result shows that *large* sumsets (as in Sidon sets) imply pseudorandomness"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

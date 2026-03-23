@@ -65,7 +65,8 @@
       "**Lucas' Theorem**: Binomial coefficients C(m,n) mod p depend only on the base-p digits. When m = 3^{2^k} (a 1 followed by 2^k zeros in base 3), this structure forces divisibility.",
       "**Connection to Problem #175**: Related problem about binomial coefficient divisibility properties.",
       "**Lean Verification**: This is one of few Erdos problems with computer-verified proofs, providing high confidence in the solution."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -120,7 +121,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdos Problem #379 about uniform prime power divisibility of binomial coefficients. The answer is YES: limsup S(n) = infinity. The key construction uses n = 3^{2^m}, which gives S(n) >= m by Lucas' theorem analysis of base-3 representations.",
-    "implications": "This problem demonstrates several important themes:\n\n1. **Universal vs Existential Quantifiers**: The difference between 'for all k' (hard) and 'for some k' (easy) in divisibility questions.\n\n2. **Lucas' Theorem Applications**: Base-p representations provide powerful tools for analyzing binomial coefficients modulo primes.\n\n3. **Computer-Verified Mathematics**: The Lean formalization by Cambie, Kovac, and Tao represents a gold standard for proof reliability.",
+    "implications": "**Theoretical Significance**: This problem demonstrates several important themes:\n\n1. **Universal vs Existential Quantifiers**: The difference between 'for all k' (hard) and 'for some k' (easy) in divisibility questions.\n\n2.\n\n**Broader Connections**: **Lucas' Theorem Applications**: Base-p representations provide powerful tools for analyzing binomial coefficients modulo primes.\n\n3. **Computer-Verified Mathematics**: The Lean formalization by Cambie, Kovac, and Tao represents a gold standard for proof reliability.",
     "openQuestions": [
       "What is the exact growth rate of S(n)?",
       "Can the construction 3^{2^m} be improved to give faster-growing S(n)?",

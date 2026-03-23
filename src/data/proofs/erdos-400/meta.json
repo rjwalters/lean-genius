@@ -83,7 +83,8 @@
         "proofId": "erdos-399",
         "relationship": "Factorial Diophantine: erdos-399 asks about $n! = x^k \\pm y^k$, another constraint on factorial divisibility structure"
       }
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -138,7 +139,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #400 asks for precise asymptotics of $g_k(n) = \\max\\{\\sum a_i - n : \\prod a_i! \\mid n!\\}$. The Erdős-Graham upper bound $g_k(n) = O(\\log n)$ establishes the correct order of magnitude via Legendre's formula, but the exact constants $c_k$ and concentration behavior remain open. The $k = 2$ case connects to binomial coefficients and Kummer's theorem on carries.",
-    "implications": "**Mathematical Connections**\n\n1. **$p$-adic number theory:** The logarithmic bound comes from Legendre's formula $v_p(n!) = (n - s_p(n))/(p-1)$\n2. **Erdős-Kac phenomena:** The concentration conjecture mirrors the sharp typicality of additive functions\n3. **Multinomial combinatorics:** Generalizes the integrality of multinomial coefficients beyond $\\sum a_i = n$\n4. **Factorial factorization:** Part of a family including erdos-392 (optimal factorization) and erdos-401 (prime-augmented divisibility)",
+    "implications": "**Theoretical Significance**: **Mathematical Connections**\n\n1. **$p$-adic number theory:** The logarithmic bound comes from Legendre's formula $v_p(n!) = (n - s_p(n))/(p-1)$\n2.\n\n**Broader Connections**: **Erdős-Kac phenomena:** The concentration conjecture mirrors the sharp typicality of additive functions\n3. **Multinomial combinatorics:** Generalizes the integrality of multinomial coefficients beyond $\\sum a_i = n$\n4. **Factorial factorization:** Part of a family including erdos-392 (optimal factorization) and erdos-401 (prime-augmented divisibility).",
     "openQuestions": [
       "Does the average $\\sum_{n \\le x} g_k(n) / (x \\log x)$ converge to a constant $c_k$ for each $k \\ge 2$?",
       "Is $g_k(n)$ concentrated around $c_k \\log n$ for almost all $n$ (in the density sense)?",

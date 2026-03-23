@@ -108,7 +108,7 @@
   ],
   "conclusion": {
     "summary": "The formalization captures all three questions of Erdős Problem 1100 about τ⊥(n), the count of coprime consecutive divisor pairs. The known results — the trivial lower bound, its infinite tightness, and the Erdős–Hall and Erdős–Simonovits bounds — are axiomatized, and the exponential growth theorem for g(k) is partially proved with two remaining sorries for limit arguments.",
-    "implications": "Understanding τ⊥(n) would illuminate the fine structure of divisor lattices and how prime factorizations constrain the ordering of divisors. The function τ⊥ connects to questions about the complexity of divisor sequences that arise in multiplicative number theory and combinatorial optimization on Boolean lattices. Determining the exact exponential base for g(k) would resolve a question at the intersection of extremal combinatorics and number theory.",
+    "implications": "**Theoretical Significance**: Understanding τ⊥(n) would illuminate the fine structure of divisor lattices and how prime factorizations constrain the ordering of divisors.\n\n**Broader Connections**: The function τ⊥ connects to questions about the complexity of divisor sequences that arise in multiplicative number theory and combinatorial optimization on Boolean lattices. Determining the exact exponential base for g(k) would resolve a question at the intersection of extremal combinatorics and number theory.",
     "openQuestions": [
       "Does $\\tau^{\\perp}(n)/\\omega(n) \\to \\infty$ for almost all $n$? By the Hardy–Ramanujan theorem, $\\omega(n) \\approx \\log \\log n$ for almost all $n$, so this asks whether $\\tau^{\\perp}(n)$ typically exceeds $\\log \\log n$ by an unbounded factor.",
       "Is $\\tau^{\\perp}(n) < \\exp((\\log n)^{o(1)})$ for all $n$? The Erdős–Hall bound shows the maximum grows at least as $\\exp((\\log \\log x)^{2-\\varepsilon})$, leaving a large gap.",
@@ -168,7 +168,10 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "R. R. Hall"],
+      "authors": [
+        "P. Erdős",
+        "R. R. Hall"
+      ],
       "title": "On some unconventional problems on the divisors of integers",
       "venue": "Journal of the Australian Mathematical Society (Series A)",
       "year": 1978,
@@ -178,7 +181,10 @@
       "note": "Original paper posing the three questions on τ⊥(n). Hall collaborated with Erdős on several problems in multiplicative number theory at the University of York."
     },
     {
-      "authors": ["P. Erdős", "M. Simonovits"],
+      "authors": [
+        "P. Erdős",
+        "M. Simonovits"
+      ],
       "title": "On the number of complete subgraphs and circuits contained in graphs",
       "venue": "Časopis pro pěstování matematiky",
       "year": 1984,
@@ -187,7 +193,10 @@
       "note": "Contains the Erdős–Simonovits exponential bounds $\\sqrt{2}^k \\lesssim g(k) \\lesssim (2-c)^k$ for the maximum coprime consecutive divisor count over squarefree integers with k prime factors. The upper bound uses a combinatorial argument on Boolean lattices."
     },
     {
-      "authors": ["G. Hardy", "S. Ramanujan"],
+      "authors": [
+        "G. Hardy",
+        "S. Ramanujan"
+      ],
       "title": "The normal number of prime factors of a number n",
       "venue": "Quarterly Journal of Mathematics",
       "year": 1917,
@@ -196,7 +205,9 @@
       "note": "Proves the Hardy–Ramanujan theorem: ω(n) ~ log log n for almost all n. This is the baseline denominator in Question 1, which asks whether τ⊥(n)/ω(n) → ∞ for almost all n."
     },
     {
-      "authors": ["G. Tenenbaum"],
+      "authors": [
+        "G. Tenenbaum"
+      ],
       "title": "Introduction to Analytic and Probabilistic Number Theory",
       "venue": "Cambridge University Press",
       "year": 2015,
@@ -205,7 +216,10 @@
       "note": "Comprehensive reference for the analytic and probabilistic methods underlying the study of τ⊥(n): divisor distributions, the Hardy–Ramanujan theorem, Turán's method, and Sathe–Selberg-type results for multiplicative functions."
     },
     {
-      "authors": ["P. Erdős", "R. R. Hall"],
+      "authors": [
+        "P. Erdős",
+        "R. R. Hall"
+      ],
       "title": "Distinct values of Euler's φ function",
       "venue": "Mathematika",
       "year": 1976,

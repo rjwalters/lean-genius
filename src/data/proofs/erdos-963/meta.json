@@ -33,7 +33,8 @@
       "**Greedy exclusion counting**: At step $k$ of the greedy algorithm, each new candidate $a$ is excluded only if $a$ equals a difference of two existing subset sums; there are at most $3^k - 1$ such forbidden values (from $\\pm$ combinations), yielding $f(n) \\ge \\lfloor\\log_3 n\\rfloor$",
       "**The log-base gap**: The conjecture asks whether the base of the logarithm can be improved from 3 to 2 — a seemingly small change that represents a fundamental question about the structure of exclusion patterns in the greedy process",
       "**Connection to $B_h$ sequences**: Dissociated sets are $B_1$ sequences in the additive combinatorics hierarchy; $B_2$ (Sidon) sets require distinct pairwise sums and have density $\\sim \\sqrt{n}$, while $B_1$ sets require distinct *all*-subset sums and have density $\\sim \\log n$"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

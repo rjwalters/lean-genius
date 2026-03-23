@@ -68,7 +68,8 @@
       "**Bipartite Containment:** Such graphs also contain all finite bipartite graphs",
       "**Thomassen Strengthening:** Cycles can be found through any specified edge",
       "**Triangle-Free Graphs:** Can have arbitrarily large chromatic number but still satisfy the theorem for odd cycles ≥ 5"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -130,7 +131,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #594 is SOLVED. Every graph with chromatic number ≥ ℵ₁ contains all sufficiently large odd cycles. This was proved by Erdős, Hajnal, and Shelah in 1974, improving their earlier result for ℵ₂. The threshold ℵ₁ is optimal - graphs with countable chromatic number need not have this property.",
-    "implications": "**Graph Theory Connections**\n\n1. **Infinite Chromatic Numbers:** Understanding when infinite chromatic number forces substructures\n\n2. **Cycle Structure:** Rich connectivity in uncountably-chromatic graphs\n\n3. **Set-Theoretic Methods:** Cardinal arithmetic in graph theory\n\n4. **Hypergraph Extensions:** Problem #593 asks the analogous question for 3-uniform hypergraphs ($500 prize, OPEN)\n\n5. **Edge-Specific Cycles:** Thomassen (1983) showed cycles pass through any given edge",
+    "implications": "**Theoretical Significance**: **Graph Theory Connections**\n\n1. **Infinite Chromatic Numbers:** Understanding when infinite chromatic number forces substructures\n\n2. **Cycle Structure:** Rich connectivity in uncountably-chromatic graphs\n\n3.\n\n**Broader Connections**: **Set-Theoretic Methods:** Cardinal arithmetic in graph theory\n\n4. **Hypergraph Extensions:** Problem #593 asks the analogous question for 3-uniform hypergraphs ($500 prize, OPEN)\n\n5. **Edge-Specific Cycles:** Thomassen (1983) showed cycles pass through any given edge.",
     "openQuestions": [
       "Problem #593: Characterize 3-uniform hypergraphs appearing in all χ > ℵ₀ hypergraphs ($500)",
       "Can the threshold N₀ be bounded uniformly in terms of graph invariants?",

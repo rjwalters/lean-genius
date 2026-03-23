@@ -71,7 +71,8 @@
       "**Edge-minimality vs vertex-minimality**: the problem asks about edge-minimal spanning subgraphs with diameter 2, not vertex-minimal subgraphs — this distinction is crucial and the formalization makes it explicit through `AllEdgesCritical`",
       "**Balanced partition optimality**: among all complete bipartite graphs $K_{a,b}$ with $a+b = n$, the balanced partition maximizes $a \\cdot b$ by AM-GM, giving exactly $\\lfloor n^2/4 \\rfloor$ edges",
       "**Generalization to higher diameter**: for diameter $d \\ge 3$, the extremal problem has fundamentally different answers — the formalization includes `IsDiameterCritical` as a framework for future work"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

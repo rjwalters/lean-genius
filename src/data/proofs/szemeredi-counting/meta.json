@@ -63,6 +63,13 @@
       "Triangle removal implies Roth's theorem: encode {a, a+d, a+2d} as triangles in a carefully constructed tripartite graph",
       "The error propagation through the counting lemma is the key technical challenge: regularity in each pair gives controlled error in triangle count",
       "The quantitative tower-type bounds arise from the regularity lemma application; improving them is a major open problem"
+    ],
+    "prerequisites": [
+      "Szemerédi Regularity Lemma",
+      "Epsilon-regular pairs and edge density",
+      "SimpleGraph and Finset in Mathlib",
+      "Triangle counting and subgraph enumeration",
+      "Roth's theorem on 3-term arithmetic progressions"
     ]
   },
   "sections": [

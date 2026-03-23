@@ -91,11 +91,12 @@
       "The Mycielski construction gives $f(n) \\geq \\Omega(\\log n)$—exponentially weaker than the true $\\Theta(\\sqrt{n/\\log n})$—highlighting the power of probabilistic over deterministic constructions",
       "Davies-Illingworth's upper bound uses fractional chromatic number analysis: since $\\chi_f(G) \\leq \\chi(G)$ and fractional chromatic number is more tractable, they bound $\\chi_f$ and transfer the result",
       "The gap between constants 1 and 2 reflects our incomplete understanding of the triangle-free process: the lower bound comes from constructive methods while the upper bound uses counting arguments, and the true constant likely requires understanding the process's final state"
-    ]
+    ],
+    "prerequisites": []
   },
   "conclusion": {
     "summary": "This formalization captures the complete state of knowledge for Erdős Problem 1104: the order of magnitude $f(n) = \\Theta(\\sqrt{n/\\log n})$ is established with constants 1 (lower) and 2 (upper), the Ramsey duality is formalized, the Mycielski construction provides a concrete lower bound, and the edge variant extends the theory. One sorry remains in establishing $f(n) \\geq 1$ for $n \\geq 1$.",
-    "implications": "Determining the exact constant $c^*$ would resolve one of the most fundamental questions in extremal graph theory and probabilistic combinatorics. It would also pin down the Ramsey number $R(3,k)$ up to a constant, with implications for random graph theory, the probabilistic method, and the behavior of the triangle-free process. The technique of using fractional relaxation (Davies-Illingworth) versus probabilistic construction (Hefty et al.) exemplifies a broader duality in combinatorial optimization.",
+    "implications": "**Theoretical Significance**: Determining the exact constant $c^*$ would resolve one of the most fundamental questions in extremal graph theory and probabilistic combinatorics.\n\n**Broader Connections**: It would also pin down the Ramsey number $R(3,k)$ up to a constant, with implications for random graph theory, the probabilistic method, and the behavior of the triangle-free process. The technique of using fractional relaxation (Davies-Illingworth) versus probabilistic construction (Hefty et al.) exemplifies a broader duality in combinatorial optimization.",
     "openQuestions": [
       "What is the exact leading constant $c^*$ in $f(n) \\sim c^*\\sqrt{n/\\log n}$? Is it 1, 2, $\\sqrt{2}$, or something else?",
       "Can the fractional chromatic number approach of Davies-Illingworth be pushed below constant 2?",

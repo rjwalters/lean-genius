@@ -60,7 +60,8 @@
       "**Positive density:** A set S ⊆ ℕ has positive density if approximately a constant fraction of integers belong to S.",
       "**Parity observation:** For even n ≥ 2, n + φ(n) is always even. For odd primes p, p + φ(p) = 2p-1 is odd. Both even and odd values appear.",
       "**Related problems:** The same result holds for n + σ(n), n + τ(n), and n + ω(n), showing a general phenomenon."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -108,7 +109,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem 822, which asks about the density of integers representable as n + φ(n). The affirmative answer, proved by Gabdullin, Iudelevich, and Luca in 2024, shows that a positive fraction of all integers can be written in this form.",
-    "implications": "The resolution of this problem has implications for understanding the distribution of arithmetic functions. The techniques developed connect to broader questions about how multiplicative functions behave on average. The same authors proved analogous results for other functions (σ, τ, ω), suggesting a unified phenomenon.",
+    "implications": "**Theoretical Significance**: The resolution of this problem has implications for understanding the distribution of arithmetic functions.\n\n**Broader Connections**: The techniques developed connect to broader questions about how multiplicative functions behave on average. The same authors proved analogous results for other functions (σ, τ, ω), suggesting a unified phenomenon.",
     "openQuestions": [
       "What is the exact density of integers representable as n + φ(n)?",
       "Can the density be computed for n + f(n) for other arithmetic functions f?",

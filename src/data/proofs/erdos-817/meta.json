@@ -70,7 +70,8 @@
       "**Density argument**: By Roth's theorem, any subset of $\\{1,\\ldots,M\\}$ of density $> c/\\log\\log M$ contains a 3-AP. Since $\\langle A \\rangle \\subseteq \\{0,\\ldots,nN\\}$ has $\\leq 2^n$ elements, AP-avoidance requires $2^n/(nN)$ to be small, forcing $N$ exponential in $n$.",
       "**Polynomial gap**: The Erdős-Sárközy bound $g_3(n) \\gg 3^n/n^{O(1)}$ loses a polynomial factor. Closing this gap is the main open question — it requires understanding whether the polynomial correction reflects a genuine phenomenon or a limitation of current techniques.",
       "**Proved upper bound on max**: The theorem `max_subsetSums_le` rigorously bounds $\\max(\\langle A \\rangle) \\leq |A| \\cdot N$ for $A \\subseteq \\{1,\\ldots,N\\}$, using `Finset.sum_le_card_nsmul`. This is a key ingredient in the density heuristic."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -168,7 +169,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #817, which asks about the extremal function g₃(n): the minimal N such that {1,...,N} contains an n-element set whose subset sums avoid 3-term arithmetic progressions. We define the key concepts (AP-free sets, subset sums, the g function), state the main conjecture g₃(n) ≫ 3ⁿ, and include the Erdős-Sárközy partial result g₃(n) ≫ 3ⁿ/n^{O(1)} as an axiom.",
-    "implications": "This problem connects extremal combinatorics to the structure of subset sums. A positive answer would show that avoiding APs in subset sum sets requires exponentially large universes. The techniques could apply to other questions about additive structure in combinatorial constructions.",
+    "implications": "**Theoretical Significance**: This problem connects extremal combinatorics to the structure of subset sums.\n\n**Broader Connections**: A positive answer would show that avoiding APs in subset sum sets requires exponentially large universes. The techniques could apply to other questions about additive structure in combinatorial constructions.",
     "openQuestions": [
       "Is g₃(n) ≫ 3ⁿ, or is there a polynomial correction factor?",
       "What is the behavior of g_k(n) for larger k?",

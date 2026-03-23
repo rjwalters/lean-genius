@@ -68,7 +68,8 @@
       "**Finite vs. Infinite:** Classical Ramsey theory guarantees finite monochromatic structures. At uncountable cardinals, these guarantees collapse.",
       "**Dimensional Failure:** Even the 2D case ℵ₁² ↛ (ℵ₀)²₂ fails — the negative result is not specific to three dimensions.",
       "**Unpublished Mathematics:** The Prikry-Mills proof was never formally published but survived through the mathematical community's collective knowledge, documented by Todorčević and Komjáth."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -123,7 +124,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1128 was DISPROVED by Prikry and Mills in 1978. The partition property ℵ₁³ → (ℵ₀)³₂ fails: there exists a 2-coloring of ℵ₁ × ℵ₁ × ℵ₁ with no countably infinite monochromatic cube.",
-    "implications": "This negative result demonstrates a fundamental boundary of infinite Ramsey theory. While finite combinatorics guarantees monochromatic structures, the jump to uncountable cardinals allows colorings that defeat all countable sub-cubes. The failure extends to lower dimensions (2D) and motivates the study of which cardinal partition relations do hold — a central theme in set-theoretic combinatorics.",
+    "implications": "**Theoretical Significance**: This negative result demonstrates a fundamental boundary of infinite Ramsey theory.\n\n**Broader Connections**: While finite combinatorics guarantees monochromatic structures, the jump to uncountable cardinals allows colorings that defeat all countable sub-cubes. The failure extends to lower dimensions (2D) and motivates the study of which cardinal partition relations do hold — a central theme in set-theoretic combinatorics.",
     "openQuestions": [
       "What is the minimum cardinality κ such that κ³ → (ℵ₀)³₂ holds (if any)?",
       "Do large cardinal axioms (e.g., measurable cardinals) recover positive partition relations?",

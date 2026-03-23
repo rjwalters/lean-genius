@@ -33,7 +33,8 @@
       "**Cauchy–Schwarz lower bound**: By Cauchy–Schwarz, $\\sum (s_{i+1}-s_i)^2 \\ge (\\text{range})^2/(t-1)$, so if the range grows faster than $t$, the sum of squared gaps must be large. For Sidon sets both are $\\Theta(N)$, making this bound insufficient",
       "**Connection to additive energy**: The gap variance is inversely related to the additive energy $E(A+A)$. Proving the gaps are irregular would constrain how 'structured' the sumset can be, with implications for sum-product type estimates",
       "**Erdős–Sárközy–Sós (1994) established the baseline**: They proved $\\bar{G}(A) \\ge c > 0$ for sufficiently large Sidon sets, confirming gaps are not perfectly uniform, but the full divergence remains open after three decades"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

@@ -64,6 +64,12 @@
       "**The gap**: Davenport-Erdős showed Behrend ⇒ thick, but the converse fails. Thickness is necessary but not sufficient for density 1 coverage.",
       "**Ruzsa's construction**: Uses n_l ≡ -(k-1) (mod p_k) for primes p_k, ensuring each shift avoids some prime's multiples.",
       "**Open variant**: Tenenbaum's weaker question (density ≥ 1-ε for any ε > 0) remains open."
+    ],
+    "prerequisites": [
+      "Arithmetic progressions and AP-free sets",
+      "Behrend's construction (sphere method)",
+      "Asymptotic density of integer sequences",
+      "Extremal combinatorics"
     ]
   },
   "sections": [

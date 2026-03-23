@@ -77,6 +77,13 @@
       "**Favorite Distance Pairs:** Swanepoel's stronger result bounds Σ 1_{|x-y|=d(x)} ≤ (1/2)n² + O(n) for ANY distance assignment d(x).",
       "**Tight Bounds:** The answer is f(n) = n/2 + Θ(1), determined up to an additive constant.",
       "**Sphere Intersections:** In ℝ⁴, two 3-spheres generically intersect in a 2-sphere, giving rich equidistance structure."
+    ],
+    "prerequisites": [
+      "Euclidean geometry in ℝᵈ",
+      "Metric spaces and distance functions",
+      "Finite combinatorics (Finset, cardinality)",
+      "Extremal combinatorial geometry",
+      "Asymptotic notation (O, Θ)"
     ]
   },
   "sections": [
@@ -132,7 +139,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #754 asked whether f(n) ≤ n/2 + O(1) for 'favorite distances' in ℝ⁴. Swanepoel (2013) proved YES, completing the picture started by Avis-Erdős-Pach (1988). The tight answer is f(n) = n/2 + Θ(1).",
-    "implications": "**Connections and Applications**\n\n1. **Combinatorial Geometry:** Fundamental result about distance structure in high dimensions\n\n2. **Related to Problem 223:** Maximum diameter pairs - another distance extremal problem\n\n3. **Unit Distance Problem:** Different question but same spirit: counting distance occurrences\n\n4. **Higher Dimensions:** Swanepoel extended to all d ≥ 4 with analogous bounds",
+    "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **Combinatorial Geometry:** Fundamental result about distance structure in high dimensions\n\n2.\n\n**Broader Connections**: **Related to Problem 223:** Maximum diameter pairs - another distance extremal problem\n\n3. **Unit Distance Problem:** Different question but same spirit: counting distance occurrences\n\n4. **Higher Dimensions:** Swanepoel extended to all d ≥ 4 with analogous bounds.",
     "openQuestions": [
       "Exact value of the additive constant in f(n) = n/2 + O(1)?",
       "Structure of extremal configurations achieving f(n)?",

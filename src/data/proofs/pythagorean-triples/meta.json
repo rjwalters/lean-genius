@@ -59,7 +59,8 @@
       "**Coprimality and parity as essential constraints**: Without requiring $\\gcd(m, n) = 1$ and $m - n$ odd, the parametrization would produce non-primitive triples and miss the bijection. The `even_odd_of_coprime` theorem formalizes that exactly one leg of a primitive triple is even",
       "**Scaling completes the classification**: Every Pythagorean triple is a scalar multiple of a primitive one, so the full classification reduces to classifying primitive triples. This factorization through GCD is a recurring pattern in Diophantine equations",
       "**From Babylonian tablets to formal verification**: The same result computed by hand on clay tablets 3800 years ago is now machine-verified in Lean, demonstrating how formal proof assistants connect ancient mathematics to modern computer science"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -128,7 +129,7 @@
   ],
   "conclusion": {
     "summary": "This formalization provides the complete classification of Pythagorean triples (Wiedijk #23): every primitive triple arises from the parametric formula with coprime parameters of opposite parity, and every triple is a scalar multiple of a primitive one. The proof leverages Mathlib's PythagoreanTriple module for the deep classification theorems while providing original algebraic verifications and five concrete examples.",
-    "implications": "The Pythagorean triple formula is the simplest non-trivial case of Diophantine analysis — classifying all integer solutions to a polynomial equation. The same techniques (rational parametrization, coprimality reduction, parity arguments) extend to classifying integer points on conics, and the failure of these techniques for higher-degree equations motivated centuries of research culminating in Fermat's Last Theorem. In computational number theory, the parametric formula provides an efficient algorithm for generating all triples up to a given bound.",
+    "implications": "**Theoretical Significance**: The Pythagorean triple formula is the simplest non-trivial case of Diophantine analysis — classifying all integer solutions to a polynomial equation.\n\n**Broader Connections**: The same techniques (rational parametrization, coprimality reduction, parity arguments) extend to classifying integer points on conics, and the failure of these techniques for higher-degree equations motivated centuries of research culminating in Fermat's Last Theorem. In computational number theory, the parametric formula provides an efficient algorithm for generating all triples up to a given bound.",
     "openQuestions": [
       "Can Lean verify the density result that the number of primitive Pythagorean triples with hypotenuse ≤ N is asymptotic to N/(2π)?",
       "How does the Pythagorean triple formula generalize to Gaussian integers, where a² + b² = c² factors as (a + bi)(a - bi) = c²?",

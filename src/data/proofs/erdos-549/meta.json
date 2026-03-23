@@ -98,6 +98,12 @@
       "**Lower bound always holds**: R(T) >= 4k - 1 for ALL bipartite (k, 2k) trees — the conjecture fails only as an upper bound",
       "**Bounded degree saves the conjecture**: For fixed max degree Delta, the original formula R(T) = 4k - 1 holds for large k; the Szemerédi regularity lemma drives these results",
       "**Flag algebras as proof tool**: The upper bound 4.21526 is computed via semidefinite programming, not by hand — a modern trend in extremal combinatorics"
+    ],
+    "prerequisites": [
+      "Ramsey numbers and their bounds",
+      "Bipartite graphs and trees",
+      "SimpleGraph from Mathlib",
+      "Graph coloring and chromatic number"
     ]
   },
   "sections": [
@@ -176,7 +182,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #549 conjectured R(T) = 4k - 1 for bipartite (k, 2k) trees. This was DISPROVED by Norin, Sun, and Zhao using the double star counterexample, which has R(T) >= 4.2k. Flag algebra methods give the tight upper bound 4.21526k. The conjecture remains true for bounded-degree trees and brooms. The formalization captures the counterexample, both bounds, special cases, the general lower bound construction, and classical context from Chvátal-Harary and Burr-Erdős.",
-    "implications": "This result demonstrates a recurring theme in Ramsey theory: natural conjectures about exact values can fail when high-degree vertices create unexpected coloring flexibility. The resolution via flag algebras (semidefinite programming) exemplifies modern computational methods in extremal combinatorics, complementing classical probabilistic and algebraic techniques. The survival of the conjecture for bounded-degree trees shows that vertex degree is the critical parameter controlling tree Ramsey numbers.",
+    "implications": "**Theoretical Significance**: This result demonstrates a recurring theme in Ramsey theory: natural conjectures about exact values can fail when high-degree vertices create unexpected coloring flexibility.\n\n**Broader Connections**: The resolution via flag algebras (semidefinite programming) exemplifies modern computational methods in extremal combinatorics, complementing classical probabilistic and algebraic techniques. The survival of the conjecture for bounded-degree trees shows that vertex degree is the critical parameter controlling tree Ramsey numbers.",
     "openQuestions": [
       "What is the exact limiting constant for R(double star)/k? (Currently known to lie in [4.2, 4.21526])",
       "Are there other bipartite (k, 2k) trees violating 4k - 1 besides the double star family?",

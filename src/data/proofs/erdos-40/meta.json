@@ -83,11 +83,12 @@
       "**$B_2[g]$ sets and the density-representation tradeoff**: Sets with $r_A(n) \\leq g$ satisfy $A(N) \\leq c_g\\sqrt{N}$, showing that bounded representation always implies the $\\sqrt{N}$ density barrier — the contrapositive suggests density above $\\sqrt{N}$ should break the barrier",
       "**Probabilistic barrier**: Random sets of density $\\sqrt{N}/g(N)$ have $\\mathbb{E}[r_A(n)] \\sim 1/g(N)^2 \\to 0$, so the conjecture cannot hold via first-moment methods — it requires structural or second-moment arguments about large deviations",
       "**$500 bounty reflects centrality**: This is among Erdős's highest-value bounties, signaling its importance as a bridge between density estimates and structural results in additive number theory"
-    ]
+    ],
+    "prerequisites": []
   },
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #40 on the weakest density condition forcing unbounded sum representations. The file formalizes the representation count, additive basis, density condition, the strongest form of the conjecture (all $g \\to \\infty$), the implication to the Erdős-Turán conjecture, Sidon and $B_2[g]$ density bounds, and probabilistic heuristics. The $\\sqrt{N}$ density threshold emerges as the natural boundary, with Sidon sets on one side and additive bases on the other.",
-    "implications": "Resolving Problem #40 would either prove the Erdős-Turán conjecture (if all $g \\to \\infty$ work) or identify a sharp phase transition in the density-representation relationship. The problem connects to Fourier-analytic methods in additive combinatorics (via generating functions and exponential sums), the theory of Sidon and $B_h$ sets, and probabilistic combinatorics. Understanding the threshold function $g^*$ would illuminate the fundamental question of how density interacts with additive structure.",
+    "implications": "**Theoretical Significance**: Resolving Problem #40 would either prove the Erdős-Turán conjecture (if all $g \\to \\infty$ work) or identify a sharp phase transition in the density-representation relationship.\n\n**Broader Connections**: The problem connects to Fourier-analytic methods in additive combinatorics (via generating functions and exponential sums), the theory of Sidon and $B_h$ sets, and probabilistic combinatorics. Understanding the threshold function $g^*$ would illuminate the fundamental question of how density interacts with additive structure.",
     "openQuestions": [
       "Does the conjecture hold for $g(N) = (\\log N)^\\epsilon$ for any $\\epsilon > 0$? This would be a major advance toward the full conjecture.",
       "Is there a counterexample set $A$ with $A(N) \\sim \\sqrt{N}/g(N)$ for some slowly growing $g$ where $r_A(n)$ stays bounded?",

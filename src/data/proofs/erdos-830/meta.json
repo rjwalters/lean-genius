@@ -98,6 +98,12 @@
       "**Density Bounds**: Pomerance's bounds show amicable pairs are extremely rare—A(x) grows slower than x/exp(√(log x · log log x)).",
       "**Computational Search**: Over 1.2 billion amicable pairs are known, but this doesn't prove infinitude—the pattern could theoretically stop.",
       "**Connection to Perfect Numbers**: Amicable pairs generalize perfect numbers (σ(n) = 2n). While Euclid-Euler characterized even perfect numbers, the analogous classification for amicable pairs remains entirely open, and no structural pattern like the Mersenne prime connection has been found."
+    ],
+    "prerequisites": [
+      "Divisor sum function σ(n) from Mathlib",
+      "Amicable and perfect numbers",
+      "Multiplicative functions",
+      "Asymptotic density of number-theoretic sets"
     ]
   },
   "sections": [
@@ -152,7 +158,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #830, one of the oldest unsolved problems in number theory: are there infinitely many amicable pairs? We define amicable pairs formally, verify several concrete examples, and state both the open conjectures and the proven upper bounds on the counting function A(x).",
-    "implications": "Resolving this problem would have significant implications for understanding the structure of the divisor function. A proof of infinitude might reveal new patterns in how divisors interact across numbers. The Pomerance bounds suggest that if amicable pairs are infinite, they are astonishingly rare — sparser than primes, twin primes, or even Carmichael numbers — making any existence proof necessarily deep.",
+    "implications": "**Theoretical Significance**: Resolving this problem would have significant implications for understanding the structure of the divisor function.\n\n**Broader Connections**: A proof of infinitude might reveal new patterns in how divisors interact across numbers. The Pomerance bounds suggest that if amicable pairs are infinite, they are astonishingly rare — sparser than primes, twin primes, or even Carmichael numbers — making any existence proof necessarily deep.",
     "openQuestions": [
       "Are there infinitely many amicable pairs?",
       "Can the Pomerance upper bound be improved further?",

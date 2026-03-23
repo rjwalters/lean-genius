@@ -61,7 +61,8 @@
       "**Density vs structure**: High density forces additive structure—this parallels Szemerédi (APs) but gives sumsets instead.",
       "**Ergodic theory connection**: The proof uses dynamics to translate the combinatorial problem to measure theory.",
       "**Consequences**: A corollary shows positive density sets are necessarily infinite (since they contain infinite sumsets)."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -102,7 +103,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #109, the Sumset Conjecture, which asks whether positive density sets contain infinite sumsets B + C. The answer is YES, proved by Moreira-Richter-Robertson in 2019. We provide a complete density framework, axiomatize the main theorem, derive key consequences, and verify concrete examples.",
-    "implications": "This result establishes a deep connection between asymptotic density and additive structure. It shows that positive density is not just about 'being large'—it forces specific algebraic structure (infinite sumsets). The ergodic-theoretic proof technique has broad applications in combinatorics.",
+    "implications": "**Theoretical Significance**: This result establishes a deep connection between asymptotic density and additive structure.\n\n**Broader Connections**: It shows that positive density is not just about 'being large'—it forces specific algebraic structure (infinite sumsets). The ergodic-theoretic proof technique has broad applications in combinatorics.",
     "openQuestions": [
       "Can we strengthen to find B, C with specific gap conditions?",
       "What is the minimal density threshold for various sumset structures?",
@@ -169,7 +170,11 @@
   ],
   "references": [
     {
-      "authors": ["Joel Moreira", "Florian K. Richter", "Donald Robertson"],
+      "authors": [
+        "Joel Moreira",
+        "Florian K. Richter",
+        "Donald Robertson"
+      ],
       "title": "A proof of a sumset conjecture of Erdős",
       "journal": "Annals of Mathematics",
       "volume": "189",
@@ -180,7 +185,10 @@
       "note": "The primary source proving the conjecture; uses Furstenberg correspondence and polynomial ergodic recurrence."
     },
     {
-      "authors": ["Vitaly Bergelson", "Alexander Leibman"],
+      "authors": [
+        "Vitaly Bergelson",
+        "Alexander Leibman"
+      ],
       "title": "Polynomial extensions of van der Waerden's and Szemerédi's theorems",
       "journal": "Journal of the American Mathematical Society",
       "volume": "9",
@@ -191,7 +199,9 @@
       "note": "Foundational ergodic theory paper on polynomial recurrence; key precursor to the Moreira–Richter–Robertson proof."
     },
     {
-      "authors": ["Hillel Furstenberg"],
+      "authors": [
+        "Hillel Furstenberg"
+      ],
       "title": "Ergodic behavior of diagonal measures and a theorem of Szemerédi on arithmetic progressions",
       "journal": "Journal d'Analyse Mathématique",
       "volume": "31",
@@ -201,7 +211,9 @@
       "note": "Introduces the Furstenberg correspondence principle connecting combinatorial density to measure-theoretic recurrence; central tool in the sumset conjecture proof."
     },
     {
-      "authors": ["Endre Szemerédi"],
+      "authors": [
+        "Endre Szemerédi"
+      ],
       "title": "On sets of integers containing no k elements in arithmetic progression",
       "journal": "Acta Arithmetica",
       "volume": "27",
@@ -211,7 +223,12 @@
       "note": "Szemerédi's theorem: positive-density sets contain k-term arithmetic progressions; the parallel density-forces-structure result whose proof technique influenced Problem #109."
     },
     {
-      "authors": ["Bryna Kra", "Joel Moreira", "Florian K. Richter", "Donald Robertson"],
+      "authors": [
+        "Bryna Kra",
+        "Joel Moreira",
+        "Florian K. Richter",
+        "Donald Robertson"
+      ],
       "title": "Infinite sumsets in sets with positive density",
       "journal": "Journal of the European Mathematical Society",
       "volume": "26",

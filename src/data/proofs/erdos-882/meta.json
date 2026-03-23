@@ -67,7 +67,8 @@
       "**ELRSS construction**: Taking $A = [2^{m-1}, 2^m - 1]$ ensures all elements have $m$ binary digits. Subset sums of different cardinalities lie in disjoint magnitude ranges, preventing divisibility.",
       "**Sándor's construction**: The set $A = \\{2^i + m \\cdot 2^m : 0 \\leq i < m\\}$ uses a large common offset to separate magnitude classes, while the binary perturbations $2^i$ ensure distinctness within each class.",
       "**Greedy gives only $\\log_3 n$**: Each greedy step can at most triple the count of reachable sums, showing that clever algebraic constructions (not just greedy avoidance) are needed to approach $\\log_2 n$."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -136,7 +137,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #882 asks for the maximum $|A|$ such that $A \\subseteq \\{1,\\ldots,n\\}$ and the non-empty subset sums $\\Sigma(A)$ form an antichain under divisibility. The answer is $f(n) = (1+o(1))\\log_2 n$, with the ELRSS (1999) construction achieving the lower bound $\\log_2 n - 1$ and the connection to distinct subset sums (Erdős #1) providing the upper bound $\\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + O(1)$.",
-    "implications": "This problem reveals a deep connection between divisibility avoidance and subset sum distinctness: requiring no two sums to divide each other automatically forces all sums to be distinct. The formalization demonstrates that Problem #882 reduces to Problem #1 via this implication, inheriting both the construction techniques (binary arithmetic) and the upper bound machinery (counting arguments + pigeonhole). The result also connects to the broader landscape of extremal problems on $\\{1,\\ldots,n\\}$, including Sidon sets (Erdős #13) and sum-free sets.",
+    "implications": "**Theoretical Significance**: This problem reveals a deep connection between divisibility avoidance and subset sum distinctness: requiring no two sums to divide each other automatically forces all sums to be distinct.\n\n**Broader Connections**: The formalization demonstrates that Problem #882 reduces to Problem #1 via this implication, inheriting both the construction techniques (binary arithmetic) and the upper bound machinery (counting arguments + pigeonhole). The result also connects to the broader landscape of extremal problems on $\\{1,\\ldots,n\\}$, including Sidon sets (Erdős #13) and sum-free sets.",
     "openQuestions": [
       "Is $f(n) = \\log_2 n + O(1)$? This is equivalent to the Erdős-Moser conjecture on distinct subset sums.",
       "What is the exact leading constant: is there a construction with $|A| \\geq \\log_2 n + c$ for some positive constant $c$?",

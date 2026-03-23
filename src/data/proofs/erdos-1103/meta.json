@@ -52,7 +52,8 @@
       "The **subexponential upper construction** $a_j < \\exp(5j/\\log j)$ shows that exponential growth is not the only option — this is slower than any $C^j$ for $C > 1$, since $5j/\\log j = o(j)$",
       "**Konyagin's finite-set bound** $|A| \\le C \\cdot N^{11/15}$ uses large sieve techniques for squarefree residues: the exponent $11/15 \\approx 0.733$ quantifies the sparsity forced by the squarefree-sumset constraint",
       "The formalization axiomatizes **enumSet** as a strictly monotone surjection onto $A$, which is the standard Lean approach for discussing growth rates of infinite sets without constructive well-ordering machinery"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

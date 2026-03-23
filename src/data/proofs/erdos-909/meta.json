@@ -68,7 +68,8 @@
       "The Anderson-Keisler construction for general n uses absolute Borel sets from descriptive set theory to select subsets with controlled cover interactions",
       "The MetrizableSpace witness in the axiomatization is stronger than needed — erdos_909 drops it, showing the problem only requires TopologicalSpace structure",
       "Covering dimension, small inductive dimension, and large inductive dimension all agree for separable metrizable spaces (Katětov-Morita theorem)"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -116,7 +117,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #909 is SOLVED. For every n ≥ 1, separable metric spaces exist with dim(S) = n and dim(S×S) = n, showing the product dimension inequality can fail maximally. Anderson and Keisler (1967) proved this using descriptive set theory, while the n=1 case has the explicit witness ℓ²(ℚ). The formalization axiomatizes covering dimension (absent from Mathlib) and proves the main result from the Anderson-Keisler axiom.",
-    "implications": "This result reveals that dimension theory contains deep surprises: while 'nice' spaces like cubes satisfy dim(X×Y) = dim(X)+dim(Y), carefully constructed spaces can violate this maximally. The construction connects topology to descriptive set theory (absolute Borel sets) and raises questions about which topological properties are preserved under products. The gap between the concrete n=1 case (elementary) and the general case (deep set theory) illustrates how difficulty can increase non-uniformly with the dimension parameter.",
+    "implications": "**Theoretical Significance**: This result reveals that dimension theory contains deep surprises: while 'nice' spaces like cubes satisfy dim(X×Y) = dim(X)+dim(Y), carefully constructed spaces can violate this maximally.\n\n**Broader Connections**: The construction connects topology to descriptive set theory (absolute Borel sets) and raises questions about which topological properties are preserved under products. The gap between the concrete n=1 case (elementary) and the general case (deep set theory) illustrates how difficulty can increase non-uniformly with the dimension parameter.",
     "openQuestions": [
       "Characterize all topological spaces S with dim(S × S) = dim(S) — is there a structural criterion?",
       "What is dim(S_n^k) for the Anderson-Keisler space S_n when k > 2? Does dim(S_n^k) = n for all k?",

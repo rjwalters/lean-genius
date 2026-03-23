@@ -69,7 +69,8 @@
       "**h_2 Formula:** The exact formula 5d²/4 + 1 was a major achievement (CGTT 1990).",
       "**h_3 Conjecture:** Expected to be d³ - d² + d + 2 with equality at d = p^k + 1.",
       "**Polynomial Growth:** h_t(d) grows like d^t with leading coefficient approaching 1."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -145,7 +146,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #934 asks to estimate h_t(d), the minimum edges in a max-degree-d graph forcing two t-separated edges. The problem is solved for t=1 (h_1(d)=d+1) and t=2 (h_2(d)=⌊5d²/4⌋+1). For t=3, specific values like h_3(3)=23 are known, with a conjectured formula. General bounds show h_t(d) = Θ(d^t) with coefficient approaching 1.",
-    "implications": "**Implications for Graph Theory**\n\n1. **2K₂-Free Graphs:** The h_2 case completely characterizes extremal 2K₂-free bounded-degree graphs.\n\n2. **Line Graph Theory:** Connects to diameter problems in line graphs.\n\n3. **Projective Planes:** Extremal constructions relate to finite geometry.\n\n4. **Ramsey-Type Results:** Forces structure (separated edges) from size constraints.",
+    "implications": "**Theoretical Significance**: **Implications for Graph Theory**\n\n1. **2K₂-Free Graphs:** The h_2 case completely characterizes extremal 2K₂-free bounded-degree graphs.\n\n2.\n\n**Broader Connections**: **Line Graph Theory:** Connects to diameter problems in line graphs.\n\n3. **Projective Planes:** Extremal constructions relate to finite geometry.\n\n4. **Ramsey-Type Results:** Forces structure (separated edges) from size constraints.",
     "openQuestions": [
       "What is the exact formula for h_3(d)?",
       "Is h_3(d) = d³ - d² + d + 2 for d = p^k + 1?",

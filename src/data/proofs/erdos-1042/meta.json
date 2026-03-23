@@ -62,7 +62,8 @@
       "**GR 2024, d < 1:** At most (1-c)n components — geometry provides a barrier",
       "**GR 2024, d ≤ 1/4 connected:** Only ONE component — very restrictive",
       "**Geometry ≠ diameter:** Disc(1/2) always 1 component, [-1,1] can give many — same diameter"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -172,7 +173,11 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "G. Herzog", "G. Piranian"],
+      "authors": [
+        "P. Erdős",
+        "G. Herzog",
+        "G. Piranian"
+      ],
       "title": "Metric properties of polynomials",
       "journal": "Journal d'Analyse Mathématique",
       "volume": "6",
@@ -182,7 +187,10 @@
       "description": "The original 1958 paper posing the lemniscate component problem; proves that f(z) = zⁿ + 1 yields n components for the unit disc."
     },
     {
-      "authors": ["S. Ghosh", "N. Ramachandran"],
+      "authors": [
+        "S. Ghosh",
+        "N. Ramachandran"
+      ],
       "title": "Connected components of polynomial lemniscates",
       "journal": "arXiv preprint",
       "year": 2024,
@@ -190,7 +198,9 @@
       "description": "Solves Erdős #1042 completely: proves the (1-c)n bound for d < 1, the single-component result for d ≤ 1/4 with F connected, and the geometric counterexample separating disc(1/2) from [-1,1]."
     },
     {
-      "authors": ["C. Pommerenke"],
+      "authors": [
+        "C. Pommerenke"
+      ],
       "title": "On the derivative of a polynomial",
       "journal": "The Michigan Mathematical Journal",
       "volume": "6",
@@ -200,7 +210,9 @@
       "description": "Establishes fundamental geometric properties of polynomial lemniscates, including the disc-containment theorem for connected lemniscates (relevant to #1046 and the GR 2024 proof)."
     },
     {
-      "authors": ["T. Ransford"],
+      "authors": [
+        "T. Ransford"
+      ],
       "title": "Potential Theory in the Complex Plane",
       "publisher": "Cambridge University Press",
       "year": 1995,
@@ -208,7 +220,9 @@
       "description": "Comprehensive reference for logarithmic capacity (transfinite diameter), Green functions, and their relationship to polynomial approximation — the foundational potential-theoretic background for #1042."
     },
     {
-      "authors": ["N. S. Landkof"],
+      "authors": [
+        "N. S. Landkof"
+      ],
       "title": "Foundations of Modern Potential Theory",
       "publisher": "Springer",
       "year": 1972,

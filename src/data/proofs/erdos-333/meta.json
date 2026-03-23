@@ -73,6 +73,13 @@
       "**Squares work:** Erdős-Newman showed squares admit sparse sumset bases",
       "**Not universal:** Some zero-density sets are 'too dense' for sparse covering",
       "**Overlooked implication:** The negative answer was implicit in Erdős-Newman 1977"
+    ],
+    "prerequisites": [
+      "Natural density and asymptotic density of subsets of the natural numbers",
+      "Sumsets (Minkowski sums) in additive combinatorics",
+      "Little-o notation and asymptotic growth rates",
+      "Basic properties of Sidon sets (B2 sequences)",
+      "Covering and representation problems in additive number theory"
     ]
   },
   "sections": [
@@ -142,7 +149,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #333 asked whether all zero-density sets admit exceptionally sparse sumset bases. The answer is NO - while squares and sets with polynomial gaps do admit sparse bases (Erdős-Newman 1977), general zero-density sets may require |B| ≈ √N. This negative answer was implicit in Erdős-Newman Theorem 2 but was overlooked.",
-    "implications": "**Sumset Theory Connections:**\n\n1. **Covering complexity:** Not all sparse sets can be covered by sparse sumsets.\n\n2. **Sidon sets:** B₂ sequences have exactly √N growth - they're on the boundary.\n\n3. **Density hierarchies:** Being zero-density doesn't constrain sumset covering enough.\n\n4. **Additive structure:** The counterexamples reveal subtle additive structure in 'barely sparse' sets.",
+    "implications": "**Theoretical Significance**: **Sumset Theory Connections:**\n\n1. **Covering complexity:** Not all sparse sets can be covered by sparse sumsets.\n\n2.\n\n**Broader Connections**: **Sidon sets:** B₂ sequences have exactly √N growth - they're on the boundary.\n\n3. **Density hierarchies:** Being zero-density doesn't constrain sumset covering enough.\n\n4. **Additive structure:** The counterexamples reveal subtle additive structure in 'barely sparse' sets.",
     "openQuestions": [
       "Characterize which zero-density sets admit sparse sumset bases",
       "What is the optimal exponent for general zero-density sets?",

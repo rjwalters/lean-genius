@@ -72,6 +72,13 @@
       "Equal weights α_i = β_i correspond to the 'medial' case where each cevian bisects the arc",
       "The inner product space formulation works for ANY sphere (any dimension), not just S²",
       "The proof uses field_simp + nlinarith extensively for algebraic identities, and Real.sqrt_mul for splitting square roots"
+    ],
+    "prerequisites": [
+      "Ceva's theorem for planar triangles",
+      "Spherical geometry and great circle arcs",
+      "Inner product spaces and unit vectors",
+      "Trigonometry: arccos, arcsin, sin-ratio formula",
+      "Projective and barycentric coordinates"
     ]
   },
   "sections": [

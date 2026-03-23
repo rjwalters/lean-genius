@@ -97,7 +97,8 @@
       "**The alternating sum requires careful case analysis**: `Int.alternating_sum_range_choose` returns `if n = 0 then 1 else 0`, so the $n \\geq 1$ hypothesis is genuinely needed. For $n = 0$: $\\binom{0}{0} \\cdot (-1)^0 = 1 \\neq 0$",
       "**Pascal's triangle encodes the full theorem**: Pascal's identity $\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}$ recursively defines all binomial coefficients, and with the boundary values $\\binom{n}{0} = \\binom{n}{n} = 1$, completely determines the expansion coefficients. The symmetry $\\binom{n}{k} = \\binom{n}{n-k}$ reflects the symmetry of the triangle",
       "**The binomial theorem is the ur-generating function identity**: viewing $(1+x)^n = \\sum \\binom{n}{k} x^k$ as a generating function for the binomial coefficients is the prototype for all of enumerative combinatorics — exponential generating functions, $q$-binomial coefficients (Gaussian binomials counting subspaces of $\\mathbb{F}_q^n$), and the umbral calculus all generalize this single identity"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

@@ -55,7 +55,8 @@
       "**Squared Form:** The squared inequality $(\\int fg)^2 \\leq \\|f\\|^2 \\|g\\|^2$ follows directly from the absolute value form, avoiding square roots entirely.",
       "**Equality = Linear Dependence in L2:** Equality holds iff $\\exists c: f = c \\cdot g$ in $L^2$, meaning $f(x) = c \\cdot g(x)$ almost everywhere.",
       "**Measure-theoretic generality:** The formalization works for arbitrary $\\sigma$-finite measure spaces $(\\Omega, \\mathcal{F}, \\mu)$, not just Lebesgue measure on $\\mathbb{R}$ — encompassing counting measure (recovering the discrete Cauchy-Schwarz) and probability measures (covariance bounds)"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -96,7 +97,7 @@
   ],
   "conclusion": {
     "summary": "The formalization proves the Bunyakovsky-Schwarz integral inequality by exploiting Mathlib's L2 inner product space structure. The key insight is that the bridge theorem `L2_inner_eq_integral` connecting abstract inner products to concrete integrals turns the abstract Cauchy-Schwarz into the integral form in a single rewrite. All proofs are complete with zero sorries.",
-    "implications": "**Implications and Connections**\n\n1. **Hilbert Space Theory:** The inequality is the fundamental tool showing that $L^2(\\mu)$ is a Hilbert space, with $\\langle f, g \\rangle = \\int fg \\, d\\mu$ as a well-defined inner product.\n\n2. **Quantum Mechanics:** The Heisenberg uncertainty principle $\\Delta x \\cdot \\Delta p \\geq \\hbar/2$ is a direct consequence of this inequality applied to wave functions.\n\n3. **Probability Theory:** For random variables $X, Y$ with finite variance, $\\text{Cov}(X,Y)^2 \\leq \\text{Var}(X) \\cdot \\text{Var}(Y)$, bounding the correlation coefficient.\n\n4. **Signal Processing:** The matched filter theorem, showing that correlation detection is optimal, is a consequence of Cauchy-Schwarz in $L^2$.\n\n5. **Extends Cauchy-Schwarz Gallery:** This proof completes the Cauchy-Schwarz trilogy: discrete (finite sums), abstract (inner product spaces), and integral (measure-theoretic $L^2$).",
+    "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **Hilbert Space Theory:** The inequality is the fundamental tool showing that $L^2(\\mu)$ is a Hilbert space, with $\\langle f, g \\rangle = \\int fg \\, d\\mu$ as a well-defined inner product.\n\n2. **Quantum Mechanics:** The Heisenberg uncertainty principle $\\Delta x \\cdot \\Delta p \\geq \\hbar/2$ is a direct consequence of this inequality applied to wave functions.\n\n3.\n\n**Broader Connections**: **Probability Theory:** For random variables $X, Y$ with finite variance, $\\text{Cov}(X,Y)^2 \\leq \\text{Var}(X) \\cdot \\text{Var}(Y)$, bounding the correlation coefficient.\n\n4. **Signal Processing:** The matched filter theorem, showing that correlation detection is optimal, is a consequence of Cauchy-Schwarz in $L^2$.\n\n5. **Extends Cauchy-Schwarz Gallery:** This proof completes the Cauchy-Schwarz trilogy: discrete (finite sums), abstract (inner product spaces), and integral (measure-theoretic $L^2$).",
     "openQuestions": [
       "Can Holder's inequality be formalized as a generalization, recovering Cauchy-Schwarz for p=q=2?",
       "Can the Minkowski inequality for integrals be derived as a corollary?",

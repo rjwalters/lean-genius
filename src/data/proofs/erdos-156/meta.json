@@ -80,7 +80,8 @@
       "**Maximality forces coverage**: A maximal Sidon set must 'cover' every absent element: for each $x \\notin A$, there must exist $a, b \\in A$ with $a + b = x + c$ for some $c \\in A$ (or similar collision). This coverage requirement creates the tension between sparsity and maximality",
       "**The $N^{1/3}$ heuristic**: If $|A| = s$, the set covers roughly $s^2$ sums in $A + A$ and each sum 'blocks' $O(s)$ potential additions, giving coverage of $\\sim s^3$ elements. Requiring $s^3 \\sim N$ yields $s \\sim N^{1/3}$, explaining why this exponent is natural",
       "**Ruzsa's recursive construction**: Ruzsa's breakthrough builds maximal Sidon sets by starting with a Sidon set $S$ in a smaller interval and recursively extending it to fill gaps, ensuring maximality. The extra $\\varepsilon$ in the exponent comes from logarithmic factors in the recursive depth"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -156,7 +157,7 @@
   ],
   "conclusion": {
     "summary": "This 261-line formalization of Erdős Problem #156 defines Sidon sets with two equivalent characterizations (proved equivalent via detailed case analysis), constructs greedy Sidon sets with an inductive Sidon-ness proof, and states the main conjecture about minimal maximal Sidon sets. Classical bounds (Erdős-Turán, greedy), Ruzsa's N^{1/3+ε} breakthrough, and two equivalent formulations of the open problem (via constants and via infimum) provide a complete formal framework. Three sorries remain in structural proofs.",
-    "implications": "Resolution would determine the exact sparsity threshold for Sidon-type coverage: how few elements suffice to 'block' all possible extensions in {1,...,N}. An affirmative answer (O(N^{1/3}) achievable) would require new constructions beyond Ruzsa's recursive method, potentially using algebraic or probabilistic techniques. A negative answer would establish a fundamental barrier separating the combinatorial notion of maximality from pure counting arguments.",
+    "implications": "**Theoretical Significance**: Resolution would determine the exact sparsity threshold for Sidon-type coverage: how few elements suffice to 'block' all possible extensions in {1,...,N}.\n\n**Broader Connections**: An affirmative answer (O(N^{1/3}) achievable) would require new constructions beyond Ruzsa's recursive method, potentially using algebraic or probabilistic techniques. A negative answer would establish a fundamental barrier separating the combinatorial notion of maximality from pure counting arguments.",
     "openQuestions": [
       "Does the growth exponent α = lim log(minMaximalSidonSize N)/log N exist, and if so, is it exactly 1/3?",
       "Can Ruzsa's construction be derandomized or simplified to remove the ε in the exponent?",

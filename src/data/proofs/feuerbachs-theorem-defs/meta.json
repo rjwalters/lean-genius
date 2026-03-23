@@ -74,6 +74,12 @@
       "Circumcenter equidistance is proved via the perpendicular bisector condition, which is LINEAR in O (much easier than the quadratic distance equations)",
       "The 3-4-5 right triangle is the simplest non-trivial test case: R = 5/2 (half the hypotenuse), r = 1, orthocenter at the right-angle vertex, confirming all formulas",
       "Non-degeneracy (the signed area is nonzero) is the single structural hypothesis needed for all computations"
+    ],
+    "prerequisites": [
+      "Euclidean geometry in R^2 (coordinates, distance formula)",
+      "Triangle geometry (circumcenter, orthocenter, incenter, excircles)",
+      "The nine-point circle and its properties",
+      "Coordinate geometry computations (field_simp, ring, nlinarith)"
     ]
   },
   "sections": [
@@ -166,7 +172,7 @@
   ],
   "conclusion": {
     "summary": "This module provides comprehensive, fully verified infrastructure (687 lines, 38 theorems/lemmas, 35 definitions, 1 structure, 0 axioms, 0 sorries) for Feuerbach's Theorem. All 9 special points are proved to lie on the nine-point circle, the Euler line relation is established, and the 3-4-5 triangle serves as a numerical verification. This is the largest infrastructure entry in the gallery.",
-    "implications": "The coordinate geometry approach, while algebraically intensive, makes the nine-point circle properties fully constructive and computationally verifiable. The factored ninepoint_membership lemma provides a reusable proof pattern that could be extended to other circle membership proofs. The numerical verification with the 3-4-5 triangle demonstrates that all formulas are consistent.",
+    "implications": "**Theoretical Significance**: The coordinate geometry approach, while algebraically intensive, makes the nine-point circle properties fully constructive and computationally verifiable.\n\n**Broader Connections**: The factored ninepoint_membership lemma provides a reusable proof pattern that could be extended to other circle membership proofs. The numerical verification with the 3-4-5 triangle demonstrates that all formulas are consistent.",
     "openQuestions": [
       "Can the altitude foot proofs be optimized to require fewer heartbeats (currently 25.6M)?",
       "Extend to prove the nine-point circle is the unique circle through all 9 points",

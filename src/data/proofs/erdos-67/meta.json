@@ -66,7 +66,8 @@
       "**Tao's key insight**: The problem reduces to multiplicative functions, where analytic number theory applies.",
       "**The Elliott connection**: Tao proved a variant of the Elliott conjecture to handle multiplicative functions.",
       "**Complex generalization**: The result holds even for f taking values anywhere on the unit circle, not just ±1."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -176,7 +177,9 @@
   ],
   "references": [
     {
-      "authors": ["Terence Tao"],
+      "authors": [
+        "Terence Tao"
+      ],
       "title": "The Erdős discrepancy problem",
       "venue": "Discrete Analysis",
       "year": 2016,
@@ -187,7 +190,10 @@
       "notes": "The definitive paper proving the Erdős Discrepancy Conjecture using the Elliott conjecture on multiplicative functions."
     },
     {
-      "authors": ["Terence Tao", "Joni Teräväinen"],
+      "authors": [
+        "Terence Tao",
+        "Joni Teräväinen"
+      ],
       "title": "The structure of logarithmically averaged correlations of multiplicative functions, with applications to the Chowla and Elliott conjectures",
       "venue": "Duke Mathematical Journal",
       "year": 2019,
@@ -198,7 +204,10 @@
       "notes": "Establishes the logarithmic Elliott conjecture used as a key step in Tao's discrepancy proof."
     },
     {
-      "authors": ["Alexey Lisitsa", "Boris Konev"],
+      "authors": [
+        "Alexey Lisitsa",
+        "Boris Konev"
+      ],
       "title": "A SAT attack on the Erdős discrepancy conjecture",
       "venue": "arXiv preprint",
       "year": 2014,
@@ -206,7 +215,9 @@
       "notes": "Used SAT solvers to verify the conjecture up to C = 2, providing strong computational evidence that ultimately preceded Tao's proof."
     },
     {
-      "authors": ["Paul Erdős"],
+      "authors": [
+        "Paul Erdős"
+      ],
       "title": "Some unsolved problems",
       "venue": "Michigan Mathematical Journal",
       "year": 1957,
@@ -216,7 +227,9 @@
       "notes": "One of the original sources containing Erdős's formulation of the discrepancy problem and related open questions."
     },
     {
-      "authors": ["Polymath5 Project"],
+      "authors": [
+        "Polymath5 Project"
+      ],
       "title": "The Erdős discrepancy problem",
       "venue": "Polymath Project Wiki / arXiv:1509.05363",
       "year": 2010,

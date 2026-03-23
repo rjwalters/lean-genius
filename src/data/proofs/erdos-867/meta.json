@@ -70,7 +70,8 @@
       "**The critical fraction $19/36$**: Freud's explicit construction achieves density $19/36 = 0.5278\\ldots > 1/2$, disproving Erdős's conjecture. The Lean proof `nineteen_thirty_sixth_gt_half` verifies this inequality via `norm_num`.",
       "**Coppersmith-Phillips refinement**: The gap between $13/24 \\approx 0.5417$ (lower) and $2/3 - 1/512 \\approx 0.6647$ (upper) remains open. Determining the exact maximum density is a fundamental question in additive combinatorics.",
       "**Finitary vs. infinite**: Problem #867 is the finite version of Problem #839, which asks about asymptotic density of infinite consecutive sum-free sets. The $2/3$ upper bound carries over to the infinite setting."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -139,7 +140,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #867 asked whether consecutive sum-free subsets of $\\{1, \\ldots, N\\}$ have size at most $N/2 + O(1)$. The answer is NO. The Lean formalization includes genuine proofs of `upperHalf_card` (cardinality via `Finset.card_Ioc`), `nineteen_thirty_sixth_gt_half` ($19/36 > 1/2$ via `norm_num`), `best_bounds_fractions` ($13/24 < 2/3 - 1/512$), the main `erdos_867` theorem packaging the bounds, `erdos_867_answer` witnessing $c = 13/24 > 1/2$, and three computational examples. Deep results (Freud's construction, Coppersmith-Phillips bounds, Adenwalla's dyadic argument) are axiomatized.",
-    "implications": "Resolution of the exact maximum density would advance the theory of additive combinatorics and sum-free sets. Adenwalla's dyadic technique connects to harmonic analysis methods, while Freud's and Coppersmith-Phillips' explicit constructions demonstrate that probabilistic methods alone do not suffice for tight bounds. The finitary-infinite correspondence with Problem #839 links density questions in $\\{1, \\ldots, N\\}$ to asymptotic density theory for infinite subsets of $\\mathbb{N}$.",
+    "implications": "**Theoretical Significance**: Resolution of the exact maximum density would advance the theory of additive combinatorics and sum-free sets.\n\n**Broader Connections**: Adenwalla's dyadic technique connects to harmonic analysis methods, while Freud's and Coppersmith-Phillips' explicit constructions demonstrate that probabilistic methods alone do not suffice for tight bounds. The finitary-infinite correspondence with Problem #839 links density questions in $\\{1, \\ldots, N\\}$ to asymptotic density theory for infinite subsets of $\\mathbb{N}$.",
     "openQuestions": [
       "What is the exact maximum density of consecutive sum-free sets in $\\{1, \\ldots, N\\}$?",
       "Can the gap between $13/24$ and $2/3 - 1/512$ be narrowed from either side?",

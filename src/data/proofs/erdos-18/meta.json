@@ -100,6 +100,12 @@
       "**Practical twins (PROVEN):** Unlike twin primes, infinitely many (p, p+2) both practical",
       "**The h(m) question:** How few divisors suffice? Known: h(n!) < n (Erdos), h(m) <= C*sqrt(log m) for some m (Vose)",
       "**Why hard:** Finding minimum representing subset is computationally difficult; factorials have special structure"
+    ],
+    "prerequisites": [
+      "Divisors and divisibility in number theory",
+      "Factorial function and its divisor structure",
+      "Representation of integers as sums of divisors",
+      "Analytic number theory (growth rates of arithmetic functions)"
     ]
   },
   "sections": [
@@ -204,7 +210,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #18 remains OPEN with a $250 prize. The formalization covers the complete theory of practical numbers: definition, characterization via Stewart-Sierpinski, density bounds, and the main conjectures about h(n!). Notably, practical numbers satisfy proven analogues of Goldbach's conjecture and the twin prime conjecture.",
-    "implications": "**Connections:**\n\n1. **Subset sum problems:** h(m) relates to finding minimum generating sets for [1, m-1]\n\n2. **Divisor structure:** Understanding h(n!) requires deep knowledge of factorial divisors\n\n3. **Egyptian fractions:** Practical numbers connect to ancient fractional representation\n\n4. **Additive combinatorics:** Practical Goldbach and twins show divisor-based numbers are well-distributed",
+    "implications": "**Theoretical Significance**: **Connections:**\n\n1. **Subset sum problems:** h(m) relates to finding minimum generating sets for [1, m-1]\n\n2.\n\n**Broader Connections**: **Divisor structure:** Understanding h(n!) requires deep knowledge of factorial divisors\n\n3. **Egyptian fractions:** Practical numbers connect to ancient fractional representation\n\n4. **Additive combinatorics:** Practical Goldbach and twins show divisor-based numbers are well-distributed.",
     "openQuestions": [
       "Is h(n!) < n^o(1)? (Main conjecture, $250 prize)",
       "Is h(n!) < (log n)^O(1)? (Stronger form)",

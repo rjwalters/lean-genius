@@ -66,7 +66,8 @@
       "**4 is the Threshold:** 3 letters suffice for squarefree (Thue), but 4 are needed for abelian-square-free (Keränen).",
       "**The Keränen Morphism:** A substitution μ where each letter maps to 85 letters, preserving abelian-square-freeness.",
       "**Connection to #192:** Problem #192 asks about infinite abelian-square-free sequences - same answer."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -135,7 +136,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #231 was disproved by Keränen in 1992. For k ≥ 4, strings of length 2^k - 1 over k letters need NOT contain abelian squares. Keränen constructed an infinite abelian-square-free string over 4 letters using an 85-letter morphism.",
-    "implications": "The result shows that 4 is the threshold alphabet size for avoiding abelian squares. While Thue showed squarefree strings exist over 3 letters, the stronger property of being abelian-square-free requires 4 letters. This connects to deep questions in combinatorics on words.",
+    "implications": "**Theoretical Significance**: The result shows that 4 is the threshold alphabet size for avoiding abelian squares.\n\n**Broader Connections**: While Thue showed squarefree strings exist over 3 letters, the stronger property of being abelian-square-free requires 4 letters. This connects to deep questions in combinatorics on words.",
     "openQuestions": [
       "What is the minimum length abelian-square-free string over 4 letters for each length?",
       "Can simpler constructions than Keränen's 85-letter morphism work?",

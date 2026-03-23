@@ -78,6 +78,13 @@
       "The 'structure vs randomness' decomposition is the conceptual heart: separate any graph into a structured part (partition) and random part (regular pairs)",
       "Bridging to Mathlib's regularity avoids re-proving the full energy increment argument, which is the most technical step — the bridge theorems convert between our ℚ-valued definitions and Mathlib's ℝ-valued ones",
       "The density-squared convexity lemma is the Cauchy-Schwarz inequality specialized to edge densities: splitting a vertex set can only increase the weighted sum of squared densities"
+    ],
+    "prerequisites": [
+      "Graph theory: edge density and bipartite subgraphs",
+      "Equipartitions and the energy increment argument",
+      "Pseudo-randomness and epsilon-regular pairs",
+      "Cauchy-Schwarz inequality (for density convexity)",
+      "Szemerédi core definitions (edgeDensity, IsEpsilonRegular, etc.)"
     ]
   },
   "sections": [

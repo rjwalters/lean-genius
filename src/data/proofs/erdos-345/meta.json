@@ -64,6 +64,12 @@
       "**Waring completeness**: every $k$-th power sequence is complete (all sufficiently large integers are sums of distinct $k$-th powers), making $T(n^k)$ well-defined for all $k$",
       "**Counterintuitive conjecture**: sparser sequences ($k+1$ powers) could have smaller thresholds — Erdős–Graham suggest $k = 2^t$ as candidates where extreme sparsity creates favorable additive structure",
       "**Strict monotonicity** $T(n) < T(n^2) < T(n^3) < T(n^4) < T(n^5)$ in the computable range — any reversal must occur for $k \\ge 5$ where thresholds are computationally infeasible"
+    ],
+    "prerequisites": [
+      "Complete sequences and subset sum theory",
+      "Power sequences and their growth rates",
+      "Finset and subset operations",
+      "Induction and well-ordering"
     ]
   },
   "sections": [

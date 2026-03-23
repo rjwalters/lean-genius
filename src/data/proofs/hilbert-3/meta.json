@@ -71,7 +71,8 @@
       "**Niven's theorem is the key number-theoretic input**: If $\\cos(q\\pi)$ is rational for rational $q$, then $\\cos(q\\pi) \\in \\{0, \\pm 1/2, \\pm 1\\}$. Since $\\cos(\\arccos(1/3)) = 1/3$ is not in this set, $\\arccos(1/3)/\\pi$ is irrational.",
       "**2D vs 3D is the dramatic contrast**: In 2D, all polygon angles become multiples of $\\pi$ under dissection (the 'Dehn invariant' is trivially zero), so only area matters (Bolyai-Gerwien). In 3D, irrational-multiple-of-$\\pi$ dihedral angles create non-trivial obstructions.",
       "**Sydler's completeness (1965)**: Volume and Dehn invariant are not only necessary but **sufficient** for scissors congruence in $\\mathbb{R}^3$, giving a complete classification. In $\\mathbb{R}^n$ for $n \\geq 4$, additional invariants exist."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -147,7 +148,7 @@
   ],
   "conclusion": {
     "summary": "Hilbert's 3rd Problem is resolved by the Dehn invariant: a cube and regular tetrahedron of equal volume cannot be scissors congruent because $D(\\text{cube}) = 0$ while $D(\\text{tetrahedron}) \\neq 0$. The main theorem and several supporting results are fully proved in Lean 4 from 7 axioms (Dehn invariance, Niven's theorem, Sydler's theorem, Bolyai-Gerwien). The formalization covers the full narrative from the 2D/3D contrast to K-theory connections.",
-    "implications": "This was the first Hilbert problem solved and introduced algebraic invariants into geometry. The Dehn invariant connects to algebraic K-theory via the Bloch group: the scissors congruence group $\\mathcal{P}(\\mathbb{R}^3)$ maps to $K_3^{\\text{ind}}(\\mathbb{C})$. Sydler's completeness theorem (1965) shows volume and Dehn invariant classify scissors congruence in $\\mathbb{R}^3$, but the classification in higher dimensions remains open.",
+    "implications": "**Theoretical Significance**: This was the first Hilbert problem solved and introduced algebraic invariants into geometry.\n\n**Broader Connections**: The Dehn invariant connects to algebraic K-theory via the Bloch group: the scissors congruence group $\\mathcal{P}(\\mathbb{R}^3)$ maps to $K_3^{\\text{ind}}(\\mathbb{C})$. Sydler's completeness theorem (1965) shows volume and Dehn invariant classify scissors congruence in $\\mathbb{R}^3$, but the classification in higher dimensions remains open.",
     "openQuestions": [
       "What are the scissors congruence groups in dimensions ≥ 4, and what additional invariants are needed?",
       "Can Sydler's completeness theorem be formalized in Lean using Mathlib's tensor product machinery?",

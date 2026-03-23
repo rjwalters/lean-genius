@@ -57,7 +57,8 @@
       "**Root constraint**: Restricting roots to [-1,1] ensures the polynomial oscillates within a bounded region",
       "**Potential theory connection**: The measure relates to logarithmic capacity and equilibrium measures",
       "**Chebyshev connection**: The problem connects to Chebyshev polynomials, which minimize sup-norm on [-1,1]"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -168,7 +169,11 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "G. Herzog", "G. Piranian"],
+      "authors": [
+        "P. Erdős",
+        "G. Herzog",
+        "G. Piranian"
+      ],
       "title": "Metric properties of polynomials",
       "venue": "Journal d'Analyse Mathématique",
       "year": 1958,
@@ -178,7 +183,9 @@
       "note": "Original paper posing the problem; proved sup ≤ 2√2 for roots in {-1,1} and upper-bounded the infimum."
     },
     {
-      "authors": ["T. Tao"],
+      "authors": [
+        "T. Tao"
+      ],
       "title": "Sublevel set measure for monic polynomials",
       "venue": "arXiv preprint",
       "year": 2025,
@@ -186,7 +193,9 @@
       "note": "Resolved the supremum: proved sup = 2√2 for monic polynomials with all roots in [-1,1], as announced December 2025."
     },
     {
-      "authors": ["C. Pommerenke"],
+      "authors": [
+        "C. Pommerenke"
+      ],
       "title": "On the derivative of a polynomial",
       "venue": "Michigan Mathematical Journal",
       "year": 1959,
@@ -196,14 +205,18 @@
       "note": "Classical work on lemniscate geometry and polynomial sublevel sets; provides bounds relevant to the infimum question."
     },
     {
-      "authors": ["N. S. Landkof"],
+      "authors": [
+        "N. S. Landkof"
+      ],
       "title": "Foundations of Modern Potential Theory",
       "venue": "Springer-Verlag, Berlin",
       "year": 1972,
       "note": "Standard reference for logarithmic capacity, transfinite diameter, and equilibrium measures used in Tao's proof."
     },
     {
-      "authors": ["T. Ransford"],
+      "authors": [
+        "T. Ransford"
+      ],
       "title": "Potential Theory in the Complex Plane",
       "venue": "Cambridge University Press",
       "year": 1995,

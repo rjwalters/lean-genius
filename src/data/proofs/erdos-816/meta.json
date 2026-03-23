@@ -81,7 +81,8 @@
       "**Edge Threshold:** Adding one edge beyond K_{n,n+1} (to n² + n + 1) breaks the bipartite obstruction and forces the equal-degree path-3 pair.",
       "**Path Length 3 is Natural:** Path length 3 creates the tension with bipartite structure—it traverses both parts and returns, unlike paths of length 1 or 2.",
       "**Very Recent Result:** Chen-Ma's 2025 paper (arXiv:2503.19569) resolves a decades-old Erdős-Hajnal problem with a stronger characterization."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -143,7 +144,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #816 asks whether graphs with 2n+1 vertices and n² + n + 1 edges must contain equal-degree vertices joined by a path of length 3. The answer is YES, proved by Chen and Ma in 2025. The complete bipartite graph K_{n,n+1} (with n² + n edges) is the unique obstruction.",
-    "implications": "**Connections to Other Areas**\n\n1. **Turán-type Problems:** This is a Turán problem for the 'equal-degree path-3' property\n\n2. **Extremal Graph Theory:** K_{n,n+1} emerges as the unique extremal graph\n\n3. **Degree Sequences:** Connects degree distributions to path structure\n\n4. **Bipartite Structure:** The bipartite obstruction explains why K_{n,n+1} is special\n\n5. **Recent Progress:** One of the most recently solved Erdős problems (2025)",
+    "implications": "**Theoretical Significance**: **Connections to Other Areas**\n\n1. **Turán-type Problems:** This is a Turán problem for the 'equal-degree path-3' property\n\n2. **Extremal Graph Theory:** K_{n,n+1} emerges as the unique extremal graph\n\n3.\n\n**Broader Connections**: **Degree Sequences:** Connects degree distributions to path structure\n\n4. **Bipartite Structure:** The bipartite obstruction explains why K_{n,n+1} is special\n\n5. **Recent Progress:** One of the most recently solved Erdős problems (2025).",
     "openQuestions": [
       "Remove the n ≥ 600 restriction from Chen-Ma's stronger result",
       "Characterize graphs with n² + n edges that contain equal-degree path-3 pairs",

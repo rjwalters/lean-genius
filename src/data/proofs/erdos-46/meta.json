@@ -69,6 +69,12 @@
       "**Rational generalization**: every positive rational $q$ admits a monochromatic Egyptian fraction representation — follows from the infinitely-many version by combining solutions",
       "**Non-constructive proof**: Croot's argument gives no explicit bounds on the size of the denominators or number of colours needed",
       "**Minimum representation**: $|S| \\ge 2$ for any unit fraction representation (e.g., $1/2 + 1/3 + 1/6 = 1$ is minimal with 3 terms)"
+    ],
+    "prerequisites": [
+      "Unit fractions and Egyptian fractions",
+      "Ramsey theory and colorings",
+      "Finset.sum for fraction sums",
+      "Partition regularity"
     ]
   },
   "sections": [

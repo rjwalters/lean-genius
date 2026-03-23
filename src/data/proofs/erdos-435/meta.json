@@ -83,7 +83,8 @@
       "**Per-prime-factor decomposition**: The formula decomposes as $g = \\sum_{p \\mid n} (\\sum_{d=1}^{v_p(n)} \\binom{n}{p^d})(p-1) - n$, with each prime contributing independently via its power-of-$p$ binomial coefficients",
       "**Closed form from p-adic analysis**: The Hwang-Song proof uses the **Apéry set** of the numerical semigroup and **Granville's generalization** of Lucas' theorem to determine exactly which residues modulo each prime are non-representable",
       "**Rare multi-generator Frobenius formula**: While the general multi-generator Frobenius problem is NP-hard (Ramírez Alfonsín, 1996), the special algebraic structure of binomial coefficients yields an explicit closed form — one of very few known infinite families with exact solutions"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

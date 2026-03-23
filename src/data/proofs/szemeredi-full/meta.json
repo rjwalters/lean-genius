@@ -64,6 +64,13 @@
       "The regularity lemma provides the 'structure vs randomness' decomposition needed at each inductive step: any dense graph can be partitioned so that most pairs of parts behave pseudo-randomly, enabling counting arguments.",
       "Axiom isolation at k=4 is a deliberate architectural choice. The full theorem compiles and type-checks with a single axiom, meaning future Mathlib additions (hypergraph regularity or ergodic methods) can replace the axiom without touching any other code.",
       "The quantitative bounds are tower-type in $1/\\delta$, with tower height depending on $k$. Gowers (1997) showed this tower-type dependence is unavoidable for regularity-based proofs, motivating the search for alternative approaches with better bounds."
+    ],
+    "prerequisites": [
+      "Arithmetic progressions and upper density of integer sets",
+      "Roth's theorem (k=3 case via Fourier analysis or corners)",
+      "Szemeredi regularity lemma and pseudorandom graphs",
+      "Furstenberg's ergodic correspondence principle",
+      "Van der Waerden's theorem on monochromatic APs"
     ]
   },
   "sections": [

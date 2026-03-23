@@ -33,7 +33,8 @@
       "The **girth variant** (replacing triangle-free with girth $\\geq g$) forms a natural hierarchy of increasingly difficult problems, since Erdős (1959) showed high-girth high-chromatic finite graphs exist by the probabilistic method",
       "The **contradiction structure** of the Shelah proof is elegantly captured: if every $\\aleph_1$-chromatic graph had a triangle-free subgraph with $\\chi \\geq \\aleph_1$, Shelah's graph would too — but its triangle-free subgraphs all have $\\chi \\leq \\aleph_0 < \\aleph_1$",
       "The **cardinal chromatic number** is axiomatized rather than defined as an infimum, sidestepping universe polymorphism and decidability issues that arise when minimizing over a potentially proper class of cardinals"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -95,7 +96,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the full landscape of Erdős Problem #1175: cardinal-indexed graph coloring is axiomatized to handle uncountable chromatic numbers, the main conjecture is stated universally, Shelah's consistency result shows the problem is set-theoretically independent at $\\kappa = \\aleph_1$, positive results for finite cardinals are recorded (Mycielski, Erdős 1959), and a natural girth generalization is formalized.",
-    "implications": "The set-theoretic independence demonstrated by Shelah's result places this problem in a fundamentally different category from most combinatorial questions. Resolution for general uncountable $\\kappa$ would require either new forcing techniques or the discovery of additional set-theoretic axioms (beyond ZFC) that determine the answer. The girth variant hierarchy provides a rich family of related open questions.",
+    "implications": "**Theoretical Significance**: The set-theoretic independence demonstrated by Shelah's result places this problem in a fundamentally different category from most combinatorial questions.\n\n**Broader Connections**: Resolution for general uncountable $\\kappa$ would require either new forcing techniques or the discovery of additional set-theoretic axioms (beyond ZFC) that determine the answer. The girth variant hierarchy provides a rich family of related open questions.",
     "openQuestions": [
       "Is the conjecture true for $\\kappa = \\aleph_2$ (or any uncountable cardinal beyond $\\aleph_1$) under ZFC?",
       "Can the girth variant be resolved for any specific $g \\geq 4$ and uncountable $\\kappa$?",

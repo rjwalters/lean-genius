@@ -69,7 +69,8 @@
       "The bound reduces to Chvátal when G = Kₘ",
       "Burr's conjecture for bounded-degree trees is proved",
       "For fixed m, R(T_n, Kₘ) ~ (m-1)n asymptotically"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -159,7 +160,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #550 on Ramsey numbers for trees and complete multipartite graphs. The conjecture extends Chvátal's exact result R(T,Kₘ) = (m-1)(n-1)+1 to multipartite graphs using a recursive bound involving the chromatic number.",
-    "implications": "The problem connects tree embedding with Ramsey theory. Chvátal's theorem provides the complete answer for complete graphs, but the extension to multipartite graphs remains open. Special cases like bounded-degree trees (Burr's conjecture) have been resolved.",
+    "implications": "**Theoretical Significance**: The problem connects tree embedding with Ramsey theory.\n\n**Broader Connections**: Chvátal's theorem provides the complete answer for complete graphs, but the extension to multipartite graphs remains open. Special cases like bounded-degree trees (Burr's conjecture) have been resolved.",
     "openQuestions": [
       "Does the conjectured bound hold for all sufficiently large n?",
       "What is the exact value of R(T, K_{m,m}) for general trees?",

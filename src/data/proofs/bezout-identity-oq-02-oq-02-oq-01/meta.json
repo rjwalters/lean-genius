@@ -117,6 +117,13 @@
       "**Computational verification**: native_decide confirms the extGcd implementation matches expected values for small inputs.",
       "**Agreement with Mathlib**: The abstract version reduces to Mathlib's IsCoprime.dvd_of_dvd_mul_left, confirming consistency.",
       "**Historical algorithm-proof duality**: The kuṭṭaka algorithm (Aryabhata, 499 CE) and Bachet's extended algorithm (1624) are the same computation — this formalization shows that the 2300-year-old Euclidean algorithm already *contained* the constructive proof of Euclid's lemma, centuries before the abstract algebraic formulation"
+    ],
+    "prerequisites": [
+      "The Euclidean algorithm and GCD computation",
+      "Bézout's identity: au + bv = gcd(a,b)",
+      "Coprimality and Euclid's lemma",
+      "Commutative ring axioms and integral domains",
+      "Lean 4 well-founded recursion and termination proofs"
     ]
   },
   "sections": [

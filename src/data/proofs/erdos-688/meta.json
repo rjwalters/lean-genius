@@ -103,7 +103,8 @@
       "**Covering vs. sieving duality**: Including one class per prime to cover is dual to excluding one class per prime to sieve; this connects to Legendre's sieve and the Brun-Selberg machinery",
       "**CRT independence**: By the Chinese Remainder Theorem, residues modulo distinct primes are independent, making probabilistic arguments viable — a random assignment covers each $m$ with probability $1 - \\prod(1-1/p)$",
       "**Connected cluster**: Problems #687, #688, #689 form a family studying covering by prime congruence classes with different range restrictions"
-    ]
+    ],
+    "prerequisites": []
   },
   "conclusion": {
     "summary": "Formalizes Erdős Problem #688 on covering intervals [1, n] using one residue class per prime in (n^ε, n]. The covering exponent εₙ measures how 'local' the primes can be while maintaining coverage. Erdős's iterated-logarithm lower bound εₙ ≫ (log log log n)/(log log n) is the best known; whether εₙ → 0 remains open after 47 years.",

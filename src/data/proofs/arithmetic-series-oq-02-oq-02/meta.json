@@ -83,6 +83,11 @@
       "The 2D hockey stick is the functional composition hockey_stick $\\circ$ parallel_vandermonde — a two-line proof demonstrating the power of modular theorem composition.",
       "The proof carefully avoids natural number subtraction pitfalls: $n + 1 - i = (n - i) + 1$ is verified by `omega` rather than assumed, since $\\mathbb{N}$ subtraction is truncated.",
       "The identity has a generating function interpretation: $(1-x)^{-(a+1)} \\cdot (1-x)^{-(b+1)} = (1-x)^{-(a+b+2)}$, which encodes the convolution as a product of formal power series."
+    ],
+    "prerequisites": [
+      "Binomial coefficients",
+      "Pascal's identity",
+      "Simplicial numbers"
     ]
   },
   "sections": [
@@ -131,7 +136,7 @@
   ],
   "conclusion": {
     "summary": "12 theorems with 0 sorries and 0 axioms. The parallel Vandermonde convolution identity is the key new result, established by nested induction on b then n using Pascal's recurrence. The 2D hockey stick follows as a two-line composition of parallel Vandermonde with the 1D hockey stick — a clean demonstration of modular proof architecture.",
-    "implications": "**Applications:**\n1. **Lattice path counting**: The parallel Vandermonde counts monotone lattice paths decomposed by which column they cross a threshold, a technique used in ballot problems and Catalan number theory.\n2. **Probability**: The convolution of negative binomial distributions NB(a+1, p) * NB(b+1, p) = NB(a+b+2, p) follows directly.\n3. **Combinatorial identities**: Provides a unified framework for deriving hockey stick generalizations to arbitrary dimension.\n4. **Formal methods**: The nested induction pattern (outer on a parameter, inner on the summation bound) is a reusable template for similar convolution identities in Lean.",
+    "implications": "**Theoretical Significance**: **Applications:**\n1. **Lattice path counting**: The parallel Vandermonde counts monotone lattice paths decomposed by which column they cross a threshold, a technique used in ballot problems and Catalan number theory.\n2.\n\n**Broader Connections**: **Probability**: The convolution of negative binomial distributions NB(a+1, p) * NB(b+1, p) = NB(a+b+2, p) follows directly.\n3. **Combinatorial identities**: Provides a unified framework for deriving hockey stick generalizations to arbitrary dimension.\n4. **Formal methods**: The nested induction pattern (outer on a parameter, inner on the summation bound) is a reusable template for similar convolution identities in Lean.",
     "openQuestions": [
       "Prove the k-dimensional hockey stick identity by induction on dimension, using the 2D case as the inductive step.",
       "Connect to the standard Vandermonde identity Σ C(m,j)·C(s,r-j) = C(m+s,r) via generating functions or a direct combinatorial bijection.",

@@ -64,6 +64,13 @@
       "For C > 1, H_C(x) ≍ x^{α}/log x where α = e^{1-C} < 1—sublinear growth",
       "The exponent α = e^{1-C} comes from analyzing optimal sieving sets",
       "Schinzel-Szekeres showed x/(log x)^c bound is best possible for C = 1"
+    ],
+    "prerequisites": [
+      "Sieve theory fundamentals (Eratosthenes sieve, inclusion-exclusion)",
+      "Reciprocal sums and the harmonic series",
+      "Asymptotic analysis (Big-O, Big-Theta notation)",
+      "Analytic number theory basics (divisibility, prime distributions)",
+      "Real analysis (exponential and logarithmic functions)"
     ]
   },
   "sections": [

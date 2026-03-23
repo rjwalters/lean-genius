@@ -35,7 +35,8 @@
       "Brouwer's construction loses a factor of 2^{O(n)} from the naive bound",
       "Bradač-Christoph show even the naive bound is unachievable",
       "Quantitatively: o(1) = O(log log log n / log log n)"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -104,7 +105,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #426 asked whether graphs can have many unique subgraphs (~ all non-isomorphic graphs). Bradač-Christoph (2024) proved the answer is NO: f(n) = o(2^(n choose 2)/n!). The $25 prize was awarded for proving impossibility.",
-    "implications": "The result shows that unique subgraphs are fundamentally rare. Most graphs have structural regularities (automorphisms, repeated patterns) that create multiple embeddings of any subgraph. This has implications for graph reconstruction and identification.",
+    "implications": "**Theoretical Significance**: The result shows that unique subgraphs are fundamentally rare.\n\n**Broader Connections**: Most graphs have structural regularities (automorphisms, repeated patterns) that create multiple embeddings of any subgraph. This has implications for graph reconstruction and identification.",
     "openQuestions": [
       "What is the exact asymptotic behavior of f(n)?",
       "Can the quantitative bound O(log log log n / log log n) be improved?",

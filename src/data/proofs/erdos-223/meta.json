@@ -71,7 +71,8 @@
       "**Diameter Graph Structure:** Viewing diameter pairs as edges reveals the constraint: in 2D, max degree 2; in 3D, still restricted; in 4D+, much freer.",
       "**The Coefficient (p-1)/(2p):** For p = ⌊d/2⌋, this approaches 1/2 as d → ∞. So asymptotically, we can have almost n²/4 diameter pairs.",
       "**Swanepoel's Completion:** The 2009 paper gave exact formulas and explicit extremal configurations for all d ≥ 4 and large n."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -147,7 +148,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #223 asked for the maximum number of diameter pairs f_d(n) in n-point configurations. The answer depends dramatically on dimension: f₂(n) = n, f₃(n) = 2n - 2, and f_d(n) ~ cn² for d ≥ 4. This phase transition is one of the most striking phenomena in discrete geometry.",
-    "implications": "**Connections and Applications**\n\n1. **Discrete Geometry:** Fundamental extremal problem about point configurations\n\n2. **Graph Theory:** Diameter graphs have constrained structure in low dimensions\n\n3. **Convex Geometry:** Related to diameter problems for convex bodies\n\n4. **Coding Theory:** Connections to spherical codes and kissing numbers\n\n5. **Computational Geometry:** Algorithms for computing diameter graphs",
+    "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **Discrete Geometry:** Fundamental extremal problem about point configurations\n\n2. **Graph Theory:** Diameter graphs have constrained structure in low dimensions\n\n3.\n\n**Broader Connections**: **Convex Geometry:** Related to diameter problems for convex bodies\n\n4. **Coding Theory:** Connections to spherical codes and kissing numbers\n\n5. **Computational Geometry:** Algorithms for computing diameter graphs.",
     "openQuestions": [
       "Exact formulas for small n in each dimension?",
       "Characterization of all extremal configurations?",

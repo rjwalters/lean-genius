@@ -80,7 +80,8 @@
       "**ofSubtype_apply_of_not_mem**: The correct lemma name is `Equiv.Perm.ofSubtype_apply_of_not_mem` (not `ofSubtype_apply_not_mem`). Used to show that `ofSubtype τ` fixes elements outside S.",
       "**card_support_ne_one**: `Equiv.Perm.card_support_ne_one σ : σ.support.card ≠ 1` is the key for proving S(n,n-1) = 0. Usage: `absurd hsupp (Equiv.Perm.card_support_ne_one σ)`.",
       "**Bijection proof structure**: `permSupportEqEquiv` proves the Equiv by using `ofSubtype_subtypePerm` for left_inv (providing only the h2 hypothesis, as h1 is automatic) and plain `simp` for right_inv."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -135,7 +136,7 @@
   ],
   "conclusion": {
     "summary": "The partial derangement formula S(n,k) = C(n,k)·D(n-k) is fully proved in Lean 4 with 0 sorries. The proof uses an explicit Equiv between {σ | σ.support = S} and derangements ↑S, combined with a biUnion decomposition over all (n-k)-element subsets. Special cases (S(n,0), S(n,n), S(n,n-1)) and the summation identity ∑S(n,k) = n! are also proved. Eleven concrete values are verified by native_decide.",
-    "implications": "**Implications and Connections**\n\n1. **Connection to Derangements**: This generalizes the basic derangement count. `permsWithZeroFixed_eq_derangement_count` gives S(n,0) = D(n) as an immediate corollary, connecting to Mathlib's `numDerangements`.\n\n2. **Probability Distribution**: The partial derangement formula gives the full probability distribution of fixed-point counts under a uniform random permutation: P(exactly k fixed points) = C(n,k)·D(n-k)/n!. This converges to a Poisson(1) distribution as n→∞.\n\n3. **Inclusion-Exclusion**: The classical proof via inclusion-exclusion is equivalent to the bijective proof used here. The bijective approach is more amenable to Lean formalization because it avoids alternating sums.\n\n4. **Mathlib API Discoveries**: This formalization uncovered several current Mathlib API subtleties: `subtypePerm` takes reversed iff direction, `powersetLen` → `powersetCard` rename, and `ofSubtype_apply_of_not_mem` naming.",
+    "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **Connection to Derangements**: This generalizes the basic derangement count. `permsWithZeroFixed_eq_derangement_count` gives S(n,0) = D(n) as an immediate corollary, connecting to Mathlib's `numDerangements`.\n\n2. **Probability Distribution**: The partial derangement formula gives the full probability distribution of fixed-point counts under a uniform random permutation: P(exactly k fixed points) = C(n,k)·D(n-k)/n!.\n\n**Broader Connections**: This converges to a Poisson(1) distribution as n→∞.\n\n3. **Inclusion-Exclusion**: The classical proof via inclusion-exclusion is equivalent to the bijective proof used here. The bijective approach is more amenable to Lean formalization because it avoids alternating sums.\n\n4. **Mathlib API Discoveries**: This formalization uncovered several current Mathlib API subtleties: `subtypePerm` takes reversed iff direction, `powersetLen` → `powersetCard` rename, and `ofSubtype_apply_of_not_mem` naming.",
     "openQuestions": [
       "Extend to arbitrary finite types: prove S(α, k) = C(|α|, k)·D(|α|-k) for α : Type* [Fintype α]",
       "Prove the generating function ∑_k S(n,k)·x^k = D(n)·(1+x/(n-k)) or the exponential generating function",

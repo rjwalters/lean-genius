@@ -80,7 +80,8 @@
       "**Sieve Theory Connection**: Proving F(n) > n requires understanding the distribution of composites with small prime factors near n, which runs into the parity problem in sieve theory.",
       "**Siegel Zeros**: Terry Tao (2024) showed that the existence of Siegel zeros would have implications for this problem, connecting it to deep questions in analytic number theory.",
       "**Example**: F(10) = 12, achieved by m = 9 with p(9) = 3, so 9 + 3 = 12 > 10."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -156,7 +157,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #385 defines F(n) = max{m + p(m) : m < n, m composite} and asks whether F(n) > n for all large n (Question 1) and whether F(n) - n → ∞ (Question 2). Both questions remain open. The formalization proves basic properties of least prime divisors, axiomatizes the main conjectures, and connects to the conjectured lower bound F(n) ≥ n + (1 - o(1))√n.",
-    "implications": "Resolution of Question 1 would reveal structure in the distribution of composites with small prime factors. The connection to Siegel zeros (Tao, 2024) shows this seemingly elementary question touches deep analytic number theory. A proof of F(n) > n for large n would also resolve Problem #430.",
+    "implications": "**Theoretical Significance**: Resolution of Question 1 would reveal structure in the distribution of composites with small prime factors.\n\n**Broader Connections**: The connection to Siegel zeros (Tao, 2024) shows this seemingly elementary question touches deep analytic number theory. A proof of F(n) > n for large n would also resolve Problem #430.",
     "openQuestions": [
       "Is F(n) > n for all sufficiently large n? (Question 1)",
       "Does F(n) - n → ∞? (Question 2)",

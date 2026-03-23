@@ -95,6 +95,12 @@
       "**Beyond Primes**: Gao-Hamidoune-Wang's generalization to arbitrary moduli n shows the phenomenon is arithmetic rather than purely prime-specific.",
       "**Erdős-Ginzburg-Ziv Link**: The EGZ theorem (2n-1 integers contain n summing to 0 mod n) provides the foundation for zero-sum theory.",
       "**Davenport Constant Connection**: The Davenport constant $D(G)$ is the smallest $\\ell$ such that every sequence of length $\\ell$ over an abelian group $G$ contains a nonempty zero-sum subsequence. Graham's problem asks a complementary question: when zero-sum subsequences exist but are all the same length, what structure is forced on the sequence?"
+    ],
+    "prerequisites": [
+      "Zero-sum theory and Davenport constant",
+      "Modular arithmetic and ZMod",
+      "Finset operations for subsequences",
+      "Erdős-Ginzburg-Ziv theorem"
     ]
   },
   "sections": [

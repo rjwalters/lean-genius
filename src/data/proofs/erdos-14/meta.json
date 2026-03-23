@@ -39,6 +39,12 @@
       "The distinction between `∀ᶠ` (eventually: for all $N \\geq N_0$) and `∃ᶠ` (frequently: for infinitely many $N$) is mathematically crucial. The ESS lower bound $N^{1/3-\\varepsilon}$ holds only frequently, while conjecture (a) requires an eventual lower bound — a much stronger statement.",
       "The Erdős-Freud constant $2^{3/2} = 2\\sqrt{2} \\approx 2.83$ in the finite analogue provides a concrete target. If it is optimal, it suggests that the non-unique count cannot be made smaller than $\\sim \\sqrt{N}$ even with the best finite constructions.",
       "The problem cannot be resolved by finite computation (as noted on erdosproblems.com), since it asks about the behavior of $f_A(N)$ as $N \\to \\infty$ for all infinite sets $A$. This is fundamentally an asymptotic question requiring analytical or structural methods."
+    ],
+    "prerequisites": [
+      "Additive combinatorics (sumsets and representation functions)",
+      "Finite set theory",
+      "Extremal combinatorics",
+      "Probabilistic method"
     ]
   },
   "sections": [
@@ -101,7 +107,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #14 in 104 lines of Lean 4, encoding the unique-sum representation problem with both finite and infinite versions, the two open conjectures, ESS bounds ($O(N^{1/2+\\varepsilon})$ eventually, $\\Omega(N^{1/3-\\varepsilon})$ frequently), the Erdős-Freud finite analogue, and structural observations about Sidon sets. Zero sorries; all deep results axiomatized.",
-    "implications": "Resolution would clarify the fundamental limits of unique representation in additive combinatorics. If conjecture (a) holds, it establishes $\\sqrt{N}$ as a universal barrier — no set can achieve better than $\\sim \\sqrt{N}$ non-unique sums. This connects to the broader theory of additive bases, Sidon sets, and the probabilistic method in combinatorial number theory.",
+    "implications": "**Theoretical Significance**: Resolution would clarify the fundamental limits of unique representation in additive combinatorics.\n\n**Broader Connections**: If conjecture (a) holds, it establishes $\\sqrt{N}$ as a universal barrier — no set can achieve better than $\\sim \\sqrt{N}$ non-unique sums. This connects to the broader theory of additive bases, Sidon sets, and the probabilistic method in combinatorial number theory.",
     "openQuestions": [
       "Is $f_A(N) \\gg N^{1/2-\\varepsilon}$ for all $A$ and all large $N$? This is conjecture (a), the main open question.",
       "Can $f_A(N) = o(\\sqrt{N})$ for some $A$? This is conjecture (b), which if true would refute (a).",

@@ -50,7 +50,8 @@
       "Bertrand's postulate guarantees a prime $n < p \\leq 2n$ dividing $\\binom{2n}{n}$ exactly once (since $p$ appears once in $(2n)!$ but not in $(n!)^2$)",
       "The exponential lower bound $\\binom{2n}{n} \\geq 4^n/(2n+1)$ implies $\\binom{2n}{n}$ has many prime divisors, so the least non-divisor must be relatively large",
       "Small primes almost always divide $\\binom{2n}{n}$: for fixed $p$, the density of $n$ with $p \\nmid \\binom{2n}{n}$ decreases as $(1/2)^{\\log n / \\log p} \\to 0$"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

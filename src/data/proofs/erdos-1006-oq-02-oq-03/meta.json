@@ -76,7 +76,8 @@
       "FFLLW under rank-based formulation is a corollary of the stronger theorem: every finite graph (not just χ < girth) admits a robust orientation, via colorable_of_fintype",
       "Properness via col.valid is the only coloring property needed: lt_or_gt_of_ne on col.valid hadj splits each edge into exactly one direction",
       "Zero axioms, zero sorries: Mathlib's graph theory library (colorable_of_fintype, Coloring.valid) is sufficient for the full proof without any axiomatization"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -117,7 +118,7 @@
   ],
   "conclusion": {
     "summary": "The FFLLW chromatic number bound is proved directly in Lean 4 using Mathlib primitives, with zero axioms and zero sorries. Key theorems: (1) coloringOrientation_robustlyAcyclic — the coloring orientation is always robust under rank-based formulation, (2) ffllw_direct — FFLLW follows immediately, (3) every_finite_graph_has_robust — the stronger result holds for all finite graphs.",
-    "implications": "For combinatorics formalization: Mathlib's SimpleGraph.Coloring API (colorable_of_fintype and Coloring.valid) is sufficient for non-trivial graph theory results. For Erdős problem #1006: the rank-based formulation resolves the problem completely for finite graphs. The classical version (path-based robust acyclicity) may genuinely require the girth condition. Pedagogically: the proof illustrates how choosing the right abstraction can make a hard theorem trivial.",
+    "implications": "**Theoretical Significance**: For combinatorics formalization: Mathlib's SimpleGraph.Coloring API (colorable_of_fintype and Coloring.valid) is sufficient for non-trivial graph theory results. For Erdős problem #1006: the rank-based formulation resolves the problem completely for finite graphs.\n\n**Broader Connections**: The classical version (path-based robust acyclicity) may genuinely require the girth condition. Pedagogically: the proof illustrates how choosing the right abstraction can make a hard theorem trivial.",
     "openQuestions": [
       "Prove the equivalence between rank-based and path-based robustly acyclic orientation in Lean 4",
       "Formalize the classical FFLLW theorem with path-based definition, where girth condition is genuinely needed",

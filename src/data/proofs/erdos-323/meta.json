@@ -63,6 +63,12 @@
       "For k > 2, it is unknown whether f_{k,k}(x) has positive density — the Hardy-Littlewood circle method fails when the number of summands equals the power",
       "The conjectured lower bounds x^{1-ε} (m = k) and x^{m/k} (m < k) reflect a dimensional heuristic: m summands each up to x^{1/k} should produce ~x^{m/k} distinct sums, but controlling collisions is the key difficulty",
       "The two parts have different quantifier structures: Part 1 requires an ε-dependent bound (near-density), while Part 2 gives a clean power law x^{m/k}, reflecting their fundamentally different mathematical characters"
+    ],
+    "prerequisites": [
+      "Waring's problem and sums of powers",
+      "Counting representations r_k(n)",
+      "Asymptotic analysis and Filter.atTop",
+      "Finset.card for counting"
     ]
   },
   "sections": [

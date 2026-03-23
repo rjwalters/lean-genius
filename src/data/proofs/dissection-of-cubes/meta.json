@@ -77,6 +77,12 @@
       "The key geometric step (3D surrounding) is axiomatized: the smallest cube on any floor has its top face as a new interior floor",
       "The proved `chain_length_bounded` lemma reduces the problem to pigeonhole: a strictly decreasing chain is injective, so its length is bounded by the number of cubes",
       "The impossibility generalizes to all dimensions >= 3 and to dissection of rectangular boxes"
+    ],
+    "prerequisites": [
+      "Elementary geometry (cubes, volume)",
+      "Well-ordering principle and infinite descent",
+      "Combinatorial arguments in discrete geometry",
+      "Basic real analysis (volume decomposition)"
     ]
   },
   "sections": [

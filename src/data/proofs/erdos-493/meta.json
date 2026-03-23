@@ -68,6 +68,12 @@
       "The proof is purely constructive: given $n$, the witness $(2, n+2)$ is computed immediately",
       "This is one of very few Erdős problems with a complete formal proof (0 axioms, 0 sorries)",
       "The original problem may have had additional constraints from Schinzel not recorded by Erdős"
+    ],
+    "prerequisites": [
+      "Basic integer arithmetic (ℤ)",
+      "Product and sum over Fin k (BigOperators)",
+      "Existential quantification in Lean 4",
+      "ring, linarith, fin_cases tactics"
     ]
   },
   "sections": [
@@ -122,7 +128,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #493 is solved: k = 2 suffices. The identity 2(n+2) - (2+(n+2)) = n provides a constructive witness for every n ≥ 0. The proof is fully verified in Lean with 0 axioms and 0 sorries.",
-    "implications": "**Why this matters:**\n\n1. **Algebraic simplicity:** The reduction $ab - (a+b) = (a-1)(b-1) - 1$ shows the problem is essentially about factoring $n+1$, which is trivially possible. This illustrates how algebraic reformulation can make hard-looking problems immediate.\n\n2. **Constructive formalization:** This is one of the cleanest Erdős problem formalizations: no axioms, no sorry, fully constructive. It serves as a model for what fully verified Erdős problem proofs look like.\n\n3. **Lost constraints:** The original problem attributed to Schinzel likely had additional constraints (perhaps distinct $a_i$, or $a_i$ prime). The simple k=2 solution suggests the recorded version is incomplete.",
+    "implications": "**Theoretical Significance**: **Why this matters:**\n\n1. **Algebraic simplicity:** The reduction $ab - (a+b) = (a-1)(b-1) - 1$ shows the problem is essentially about factoring $n+1$, which is trivially possible. This illustrates how algebraic reformulation can make hard-looking problems immediate.\n\n2.\n\n**Broader Connections**: **Constructive formalization:** This is one of the cleanest Erdős problem formalizations: no axioms, no sorry, fully constructive. It serves as a model for what fully verified Erdős problem proofs look like.\n\n3. **Lost constraints:** The original problem attributed to Schinzel likely had additional constraints (perhaps distinct $a_i$, or $a_i$ prime). The simple k=2 solution suggests the recorded version is incomplete.",
     "openQuestions": [
       "What were Schinzel's original additional constraints?",
       "If we require distinct ai, what is the minimal k?",

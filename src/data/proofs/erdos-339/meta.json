@@ -71,7 +71,8 @@
       "**Two Conjectures:** The basis conjecture (lower density) and the density preservation conjecture (upper density) are both true.",
       "**Application to Squares:** Since squares are a basis of order 4 (Lagrange), sums of 4 distinct squares have positive density.",
       "**Connection to Sidon Sets:** Sidon sets have unique sum representations - the opposite extreme from bases."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -147,7 +148,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #339 asked whether distinct-element sums from a basis have positive density. Hegyvári-Hennecart-Plagne (2003) proved YES: both lower density for bases and upper density preservation hold. The key insight is that representations with repetition can be 'perturbed' to distinct representations.",
-    "implications": "**Connections and Applications**\n\n1. **Additive Combinatorics:** Shows robustness of additive structure under restrictions\n\n2. **Waring's Problem:** Applies to classical bases like squares (order 4), cubes (order 9)\n\n3. **Density Theory:** New techniques for transferring density between related sets\n\n4. **Combinatorial Number Theory:** Connections to Sidon sets and B_h sequences",
+    "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **Additive Combinatorics:** Shows robustness of additive structure under restrictions\n\n2.\n\n**Broader Connections**: **Waring's Problem:** Applies to classical bases like squares (order 4), cubes (order 9)\n\n3. **Density Theory:** New techniques for transferring density between related sets\n\n4. **Combinatorial Number Theory:** Connections to Sidon sets and B_h sequences.",
     "openQuestions": [
       "What is the optimal density constant? (How much density is lost?)",
       "Does the result extend to other algebraic structures?",

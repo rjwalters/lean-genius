@@ -171,11 +171,17 @@
       "**Remarkable gap:** Even proving $\\geq 2$ copies from one extra edge is open, highlighting the difficulty of exact-threshold supersaturation",
       "**He-Ma-Yang (2021):** Confirmed the conjecture for even projective plane orders by exploiting the algebraic structure of the unique extremal graph",
       "**Aristotle contribution:** Automatically proved that the main conjecture implies the two-copies conjecture via contraposition"
+    ],
+    "prerequisites": [
+      "Extremal graph theory (Turán-type problems)",
+      "4-cycles (C₄) in graphs",
+      "Kővári-Sós-Turán theorem",
+      "Zarankiewicz problem"
     ]
   },
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #60, an open supersaturation problem in extremal graph theory. The conjecture asserts that exceeding $\\text{ex}(n; C_4) \\sim \\frac{1}{2}n^{3/2}$ edges forces $\\Omega(n^{1/2})$ copies of $C_4$. He-Ma-Yang (2021) confirmed this for projective plane orders with even $q$. Even the weaker claim of $\\geq 2$ copies remains open. Aristotle proved the logical implication between the conjectures.",
-    "implications": "**Implications**\n\n1. **Exact-threshold supersaturation:** Would establish precise quantitative behavior at the Turán threshold for $C_4$, a model case for general forbidden subgraph problems.\n2. **Extremal stability:** The conjecture is deeply connected to the uniqueness and rigidity of extremal $C_4$-free graphs.\n3. **Incidence geometry connections:** Resolution likely requires understanding the algebraic structure of polarity graphs and their perturbations.\n4. **General theory:** Could inform supersaturation bounds for other forbidden subgraphs beyond the Erdős-Simonovits constant-factor framework.",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Exact-threshold supersaturation:** Would establish precise quantitative behavior at the Turán threshold for $C_4$, a model case for general forbidden subgraph problems.\n2.\n\n**Broader Connections**: **Extremal stability:** The conjecture is deeply connected to the uniqueness and rigidity of extremal $C_4$-free graphs.\n3. **Incidence geometry connections:** Resolution likely requires understanding the algebraic structure of polarity graphs and their perturbations.\n4. **General theory:** Could inform supersaturation bounds for other forbidden subgraphs beyond the Erdős-Simonovits constant-factor framework.",
     "openQuestions": [
       "Prove the full Ω(n^{1/2}) bound for all n (the main conjecture)",
       "Prove even ≥ 2 copies are guaranteed — remarkably still open",

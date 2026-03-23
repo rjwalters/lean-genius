@@ -95,7 +95,8 @@
       "**Clipping Technique**: The surjection proof clips f to countable values (g n = if f n < omega1 then f n else 0), making the diagonal argument apply cleanly.",
       "**ℵ₁ Minimality**: ℵ₁ is not just uncountable but the MINIMUM uncountable cardinal: any uncountable κ satisfies ℵ₁ ≤ κ.",
       "**Universe Subtlety**: The set {α : Ordinal.{0} | α.card ≤ ℵ₀} lives in Type 1, so its cardinality is Cardinal.{1}. The key result ω₁.card = aleph 1 remains in Cardinal.{0} and is proved directly."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -150,7 +151,7 @@
   ],
   "conclusion": {
     "summary": "The formalization proves that the set of all countable ordinals is uncountable via a diagonal argument, and that ω₁ (the first uncountable ordinal) has cardinality exactly ℵ₁. The key chain: ω₁ = (aleph 1).ord → ω₁.card = aleph 1 → ℵ₁ > ℵ₀ → no countable enumeration covers all countable ordinals (diagonal). All theorems are fully proved from Mathlib with 0 axioms and 0 sorries. Key Mathlib bridges: Cardinal.lt_ord for the ordinal/cardinal threshold, Cardinal.isRegular_aleph_one + Ordinal.iSup_lt_ord for the regularity argument.",
-    "implications": "**Implications**\n\n1. **ℵ₁ Characterization**: The set of countable ordinals is the canonical representative of cardinality ℵ₁ — it has exactly ℵ₁ elements, making it 'maximally countable'.\n\n2. **Regularity of ω₁**: The proof uses (as an axiom) that ω₁ is regular — a countable union of countable ordinals is countable. This is a profound set-theoretic fact.\n\n3. **CH Connection**: From OQ-01, ℵ₁ ≤ 2^ℵ₀. The Continuum Hypothesis asks: is ℵ₁ = 2^ℵ₀? This is independent of ZFC (Gödel, Cohen). The current result establishes ℵ₁ as the minimum uncountable cardinal.\n\n4. **Ordinal Arithmetic**: The proof demonstrates ordinal successor (β + 1) and conditional supremum (sSup) working together, a key pattern in transfinite induction.",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **ℵ₁ Characterization**: The set of countable ordinals is the canonical representative of cardinality ℵ₁ — it has exactly ℵ₁ elements, making it 'maximally countable'.\n\n2. **Regularity of ω₁**: The proof uses (as an axiom) that ω₁ is regular — a countable union of countable ordinals is countable. This is a profound set-theoretic fact.\n\n3.\n\n**Broader Connections**: **CH Connection**: From OQ-01, ℵ₁ ≤ 2^ℵ₀. The Continuum Hypothesis asks: is ℵ₁ = 2^ℵ₀? This is independent of ZFC (Gödel, Cohen). The current result establishes ℵ₁ as the minimum uncountable cardinal.\n\n4. **Ordinal Arithmetic**: The proof demonstrates ordinal successor (β + 1) and conditional supremum (sSup) working together, a key pattern in transfinite induction.",
     "openQuestions": [
       "ANSWERED: The three previously axiomatized facts (lt_omega1_iff_countable, omega1_isLimit, countable_sup_lt_omega1) are now fully proved using Cardinal.lt_ord, Ordinal.card_succ, and Ordinal.iSup_lt_ord respectively.",
       "Can the cardinality equality #{countable ordinals} = aleph 1 be proved directly in Lean without universe lifting?",

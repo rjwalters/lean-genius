@@ -41,6 +41,12 @@
       "**Logical, Not Computational:** No amount of computational power, time, or cleverness can solve the halting problem. The impossibility is logical (self-referential contradiction), not resource-limited. A quantum computer, a faster algorithm, or infinite memory cannot help.",
       "**Rice's Theorem Generalization:** ANY non-trivial semantic property of programs is undecidable. If $P$ is a property such that some programs have $P$ and some don't, then $\\{n : \\text{program } n \\text{ has } P\\}$ is undecidable. The halting problem is just the simplest case ($P$ = 'halts on all inputs').",
       "**Practical Impact:** No static analyzer can detect all infinite loops. No compiler can optimize away all non-terminating code. No verification system can prove termination for all programs. These are provable limitations, not engineering shortcomings."
+    ],
+    "prerequisites": [
+      "Computability theory and Turing machines",
+      "Decidability predicates in Lean",
+      "Proof by contradiction (diagonal argument)",
+      "Function types and higher-order functions"
     ]
   },
   "sections": [
@@ -87,7 +93,7 @@
   ],
   "conclusion": {
     "summary": "The undecidability of the halting problem is one of the most important results in computer science. Using the elegant technique of diagonalization, Turing showed that computation has inherent limits - some questions about programs simply cannot be answered algorithmically.\n\nThe formalization captures the essence of the proof: given any proposed oracle, we can construct a diagonal program that the oracle must get wrong. This is not a failure of our current algorithms; it's a fundamental logical barrier.",
-    "implications": "The halting problem has profound implications across computer science:\n\n1. Static Analysis Limits - No tool can detect all bugs, infinite loops, or security vulnerabilities. Tools must either miss some problems or report false positives.\n\n2. Rice's Theorem - Generalizes halting: any non-trivial semantic property of programs is undecidable. You can't build a perfect \"does this program do X?\" checker.\n\n3. Verification Limits - Fully automatic program verification is impossible. Interactive theorem provers require human guidance.\n\n4. Compiler Optimizations - Some optimizations (like removing unreachable code) are undecidable in general. Compilers use approximations.\n\n5. The Church-Turing Thesis - This result helped establish that Turing machines capture our intuitive notion of 'algorithm'. The undecidability is about any mechanical procedure.",
+    "implications": "**Theoretical Significance**: The halting problem has profound implications across computer science:\n\n1. Static Analysis Limits - No tool can detect all bugs, infinite loops, or security vulnerabilities. Tools must either miss some problems or report false positives.\n\n2. Rice's Theorem - Generalizes halting: any non-trivial semantic property of programs is undecidable. You can't build a perfect \"does this program do X?\" checker.\n\n3.\n\n**Broader Connections**: Verification Limits - Fully automatic program verification is impossible. Interactive theorem provers require human guidance.\n\n4. Compiler Optimizations - Some optimizations (like removing unreachable code) are undecidable in general. Compilers use approximations.\n\n5. The Church-Turing Thesis - This result helped establish that Turing machines capture our intuitive notion of 'algorithm'. The undecidability is about any mechanical procedure.",
     "openQuestions": [
       "What is the computational complexity of approximating the halting problem?",
       "How do real-world static analyzers balance precision and recall?",
@@ -197,8 +203,8 @@
       "authors": "Rice, Henry Gordon",
       "title": "Classes of Recursively Enumerable Sets and Their Decision Problems",
       "year": "1953",
-      "venue": "Transactions of the American Mathematical Society, vol. 74, pp. 358\u2013366",
-      "note": "Rice's theorem: every non-trivial semantic property of programs is undecidable. This is the most powerful generalization of the halting problem \u2014 it shows that undecidability is not a quirk of the halting predicate but a universal feature of program behavior"
+      "venue": "Transactions of the American Mathematical Society, vol. 74, pp. 358–366",
+      "note": "Rice's theorem: every non-trivial semantic property of programs is undecidable. This is the most powerful generalization of the halting problem — it shows that undecidability is not a quirk of the halting predicate but a universal feature of program behavior"
     },
     {
       "authors": "Hodges, Andrew",
@@ -212,7 +218,7 @@
       "title": "Theory of Recursive Functions and Effective Computability",
       "year": "1967",
       "venue": "McGraw-Hill (reprinted MIT Press, 1987)",
-      "note": "Graduate-level reference for recursion theory: covers the halting problem, the arithmetical hierarchy, the recursion theorem, and Post's problem \u2014 the standard for the full theory of computability"
+      "note": "Graduate-level reference for recursion theory: covers the halting problem, the arithmetical hierarchy, the recursion theorem, and Post's problem — the standard for the full theory of computability"
     }
   ]
 }

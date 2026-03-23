@@ -67,7 +67,8 @@
       "**Semiprime concentration:** Near-optimal sets for $g_3$ consist primarily of semiprimes ($\\Omega(m) = 2$), confirming that the extremal problem is governed by the fine distribution of integers with exactly 2 prime factors.",
       "**Second-order hardness:** Pinning the error to $\\Theta(n/(\\log n)^2)$ requires only upper and lower bound arguments, but determining whether the ratio $E_3(n) \\cdot (\\log n)^2 / n$ converges requires understanding oscillatory behavior in the distribution of semiprimes -- a fundamentally harder analytic question.",
       "**Parallel with the PNT:** The $k = 2$ case gives $g_2(n) \\sim n/\\log n$, mirroring the Prime Number Theorem. Problem #425 asks the analogous second-order question for $g_2$, where the error relates to the prime-counting error $\\pi(n) - \\mathrm{li}(n)$ and ultimately to the Riemann Hypothesis."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -136,7 +137,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #796 remains OPEN. The formalization establishes the complete first-order picture: $g_3(n) \\sim (\\log\\log n / \\log n) \\cdot n$, proved by specializing Erdős's general 1964 result. The second-order error is bounded as $\\Theta(n/(\\log n)^2)$, but whether the normalized error converges to a specific constant $c$ is unknown. The summary theorem cleanly bundles the two established results, while the open conjecture is formally stated as a convergence condition using Lean's filter framework.",
-    "implications": "Resolving this problem would reveal the fine structure of how semiprimes distribute among integers, analogous to how the prime-counting error $\\pi(n) - \\mathrm{li}(n)$ encodes information about zeta zeros. A positive answer (convergence to $c$) would suggest a rigid regularity in the extremal sets, while a negative answer (oscillation) would indicate subtle number-theoretic irregularities at the second-order level. The techniques needed would likely advance the Selberg-Delange method or introduce new sieve-theoretic ideas applicable to multiplicative representation problems.",
+    "implications": "**Theoretical Significance**: Resolving this problem would reveal the fine structure of how semiprimes distribute among integers, analogous to how the prime-counting error $\\pi(n) - \\mathrm{li}(n)$ encodes information about zeta zeros.\n\n**Broader Connections**: A positive answer (convergence to $c$) would suggest a rigid regularity in the extremal sets, while a negative answer (oscillation) would indicate subtle number-theoretic irregularities at the second-order level. The techniques needed would likely advance the Selberg-Delange method or introduce new sieve-theoretic ideas applicable to multiplicative representation problems.",
     "openQuestions": [
       "Does the normalized error $E_3(n) \\cdot (\\log n)^2 / n$ converge as $n \\to \\infty$?",
       "If convergence holds, what is the exact value of $c$? Can it be expressed in terms of known constants?",

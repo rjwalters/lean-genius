@@ -56,7 +56,8 @@
       "**Erdős's conditional infinitude**: If Carmichael is wrong even once, it's wrong infinitely often. This uses the fact that if φ(m) = n is unique, then certain multiples of m lead to more unique preimages.",
       "**The ratio question**: How spread out can the preimage be? The ratio f_max(n)/f_min(n) measures this spread.",
       "**Small examples**: φ(1) = φ(2) = 1 and φ(3) = φ(4) = φ(6) = 2, so 1 and 2 have multiple preimages."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -132,7 +133,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #694 on the spread of totient preimages. The problem asks about max f_max(n)/f_min(n) and connects to Carmichael's 1907 conjecture that every totient value has multiple preimages. We prove that small totient values (1 and 2) are not Carmichael totients, and axiomatize Erdős's result that if any Carmichael totient exists, infinitely many must.",
-    "implications": "This problem connects several areas:\n\n1. **Multiplicative number theory**: The structure of Euler's totient function\n2. **Computational number theory**: Ford's bounds show direct search is impossible\n3. **Algebraic number theory**: The behavior of φ under multiplication\n4. **Combinatorial number theory**: Counting preimages of arithmetic functions",
+    "implications": "**Theoretical Significance**: This problem connects several areas:\n\n1. **Multiplicative number theory**: The structure of Euler's totient function\n2.\n\n**Broader Connections**: **Computational number theory**: Ford's bounds show direct search is impossible\n3. **Algebraic number theory**: The behavior of φ under multiplication\n4. **Combinatorial number theory**: Counting preimages of arithmetic functions.",
     "openQuestions": [
       "Is Carmichael's conjecture true? (No n with unique preimage)",
       "How does max f_max(n)/f_min(n) grow with x?",

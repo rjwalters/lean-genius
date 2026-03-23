@@ -79,6 +79,13 @@
       "Shifting from 'compute the Galois group order' to 'derive a divisibility contradiction' parallels the number-theoretic approach in OQ-01 and exemplifies a broader algebraic strategy: structural arguments replacing explicit computation",
       "The chain natDegree | |Gal| → natDegree | 2^n → natDegree = 2^k requires three separate mathematical ingredients: Galois theory (tower law), group theory (2-group characterization), and number theory (prime factorization of powers of 2)",
       "This file is fully verified (0 axioms, 0 sorries) despite addressing constructibility — possible because it proves the structural implication (2-group Gal ⇒ degree is 2^k) without needing to assert any specific polynomial is irreducible"
+    ],
+    "prerequisites": [
+      "Galois theory and Galois groups of polynomials",
+      "Field extensions and the tower law",
+      "p-groups and Sylow theory",
+      "Minimal polynomials and irreducibility",
+      "Compass-and-straightedge constructibility criteria"
     ]
   },
   "sections": [
@@ -125,7 +132,7 @@
   ],
   "conclusion": {
     "summary": "This formalization proves that the axiom `galois_2group_implies_degree_pow2` from OQ-02 is unnecessary: the tower law on $F \\subset F(\\alpha) \\subset \\text{SplittingField}(p)$ gives $\\deg(p) \\mid |\\text{Gal}(p)|$ for all irreducible $p$, and combined with $|\\text{Gal}| = 2^n$ (2-group hypothesis), elementary number theory yields $\\deg(p) = 2^k$. The file contains 4 fully verified theorems with 0 axioms and 0 sorries.",
-    "implications": "This work answers one of OQ-02's open questions affirmatively: the degree-divides-power-of-2 implication CAN be proved from Mathlib's existing Polynomial.Gal infrastructure. The key theorem `natDegree_dvd_card_gal` is strictly more general than Mathlib's `prime_degree_dvd_card` (which requires prime degree), working for all irreducible polynomials. The tower law approach could be contributed upstream to Mathlib to strengthen the existing API.",
+    "implications": "**Theoretical Significance**: This work answers one of OQ-02's open questions affirmatively: the degree-divides-power-of-2 implication CAN be proved from Mathlib's existing Polynomial.Gal infrastructure.\n\n**Broader Connections**: The key theorem `natDegree_dvd_card_gal` is strictly more general than Mathlib's `prime_degree_dvd_card` (which requires prime degree), working for all irreducible polynomials. The tower law approach could be contributed upstream to Mathlib to strengthen the existing API.",
     "openQuestions": [
       "Can natDegree_dvd_card_gal be contributed upstream to Mathlib as a generalization of prime_degree_dvd_card? The proof is self-contained and uses only standard Mathlib APIs",
       "Can the remaining OQ-02 axioms (polynomial irreducibility, Galois group order computations) be eliminated using similar structural arguments from Mathlib?",

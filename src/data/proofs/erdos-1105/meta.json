@@ -72,7 +72,8 @@
       "**Path Formula:** Explicit with two cases depending on n and k, involving binomial terms",
       "**Turán Connection:** AR(n,H) ≥ ex(n,H) + 1 links to extremal graph theory",
       "**Recent Progress:** Yuan (2021) announced full path formula proof for n ≥ k ≥ 5"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -208,7 +209,11 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "M. Simonovits", "V. T. Sós"],
+      "authors": [
+        "P. Erdős",
+        "M. Simonovits",
+        "V. T. Sós"
+      ],
       "title": "Anti-Ramsey theorems",
       "venue": "Infinite and Finite Sets (Colloq., Keszthely, 1973), Vol. II",
       "year": 1975,
@@ -218,7 +223,10 @@
       "notes": "Founding paper of anti-Ramsey theory. Proves AR(n, C_3) = n - 1, introduces the general framework, and states the cycle formula conjecture."
     },
     {
-      "authors": ["R. Haas", "M. Young"],
+      "authors": [
+        "R. Haas",
+        "M. Young"
+      ],
       "title": "The anti-Ramsey number of perfect matching",
       "venue": "Discrete Mathematics",
       "year": 2012,
@@ -229,7 +237,10 @@
       "notes": "Determines anti-Ramsey numbers for perfect matchings; the matching case provides context for the path and cycle cases studied in Problem #1105."
     },
     {
-      "authors": ["Z. Jin", "X. Li"],
+      "authors": [
+        "Z. Jin",
+        "X. Li"
+      ],
       "title": "Anti-Ramsey numbers for graphs with independent cycles",
       "venue": "Electronic Journal of Combinatorics",
       "year": 2009,
@@ -239,7 +250,9 @@
       "notes": "Studies anti-Ramsey numbers for graphs consisting of independent cycles, directly related to the cycle case AR(n, C_k) in Problem #1105."
     },
     {
-      "authors": ["L. Yuan"],
+      "authors": [
+        "L. Yuan"
+      ],
       "title": "Anti-Ramsey numbers of paths",
       "venue": "arXiv preprint",
       "year": 2021,
@@ -247,7 +260,10 @@
       "notes": "Announced the complete determination of the anti-Ramsey number for paths AR(n, P_k) for n ≥ k ≥ 5, as referenced in the formalization via the yuan_path_announced axiom."
     },
     {
-      "authors": ["C. Montellano-Ballesteros", "V. Neumann-Lara"],
+      "authors": [
+        "C. Montellano-Ballesteros",
+        "V. Neumann-Lara"
+      ],
       "title": "An anti-Ramsey theorem",
       "venue": "Combinatorica",
       "year": 2002,

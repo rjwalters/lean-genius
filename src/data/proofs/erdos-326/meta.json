@@ -59,7 +59,8 @@
       "**Cassels' counterexample**: The original question (does every basis have divergent bₖ/k²?) was answered NO by Cassels in 1957. He constructed a basis where the ratio converges.",
       "**The sub-basis question**: The modified question asks about sub-bases, which is more subtle. Can we always extract a 'bad' sub-basis even from a 'nice' basis?",
       "**Why this is hard**: Finding a non-convergent sub-basis requires controlling the density of the subsequence while maintaining the basis property."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -107,7 +108,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #326, an open question about whether every additive basis of order 2 contains a sub-basis with non-convergent growth rate. The problem connects additive combinatorics with analysis through the study of sequence growth rates. We include Cassels' 1957 result which resolved the weaker original formulation.",
-    "implications": "This problem sits at the intersection of additive combinatorics and asymptotic analysis. A positive answer would show that 'nice' growth behavior cannot be inherited by all sub-bases. A negative answer (counterexample) would exhibit a special basis where every sub-basis has a definite growth rate.",
+    "implications": "**Theoretical Significance**: This problem sits at the intersection of additive combinatorics and asymptotic analysis.\n\n**Broader Connections**: A positive answer would show that 'nice' growth behavior cannot be inherited by all sub-bases. A negative answer (counterexample) would exhibit a special basis where every sub-basis has a definite growth rate.",
     "openQuestions": [
       "Is there an order 2 basis A such that every sub-basis B has convergent bₖ/k²?",
       "What conditions on A guarantee the existence of a non-convergent sub-basis?",

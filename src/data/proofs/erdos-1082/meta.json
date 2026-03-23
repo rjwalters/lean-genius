@@ -67,7 +67,8 @@
       "**Conjecture Gap:** The gap between n/3 (proven) and n/2 (conjectured) remains open",
       "**Xichuan's Counterexample:** 42 points, each with only 20 distances, kills the single-point form",
       "**Connection to Distinct Distances:** Related to Erdős #89, solved by Guth-Katz with Ω(n/log n)"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -136,7 +137,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1082 asks whether n points in general position determine at least n/2 distinct distances. Szemerédi proved n/3 is achievable. The stronger form (single point with n/2 distances) was disproved by Xichuan with a 42-point counterexample. The total distance conjecture (n/2) remains open.",
-    "implications": "**Implications**\n\n1. **Geometry-Combinatorics Interface:** The problem bridges discrete geometry and extremal combinatorics.\n\n2. **Counterexample Construction:** Xichuan's 42-point example shows sophisticated symmetric constructions can evade distance bounds.\n\n3. **Open Territory:** The gap between n/3 (proven) and n/2 (conjectured) is a fertile area for research.\n\n4. **Higher Dimensions:** The 3D analogues have different behavior depending on convexity and planarity conditions.",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Geometry-Combinatorics Interface:** The problem bridges discrete geometry and extremal combinatorics.\n\n2.\n\n**Broader Connections**: **Counterexample Construction:** Xichuan's 42-point example shows sophisticated symmetric constructions can evade distance bounds.\n\n3. **Open Territory:** The gap between n/3 (proven) and n/2 (conjectured) is a fertile area for research.\n\n4. **Higher Dimensions:** The 3D analogues have different behavior depending on convexity and planarity conditions.",
     "openQuestions": [
       "Does every n-point set in general position determine at least n/2 distinct distances?",
       "What is the optimal constant c such that general position implies cn distinct distances?",
@@ -196,7 +197,9 @@
   ],
   "references": [
     {
-      "authors": ["Paul Erdős"],
+      "authors": [
+        "Paul Erdős"
+      ],
       "title": "On some problems of elementary and combinatorial geometry",
       "venue": "Annali di Matematica Pura ed Applicata",
       "year": 1975,
@@ -206,7 +209,10 @@
       "note": "Original source of the n/2 conjecture for points in general position (no three collinear)."
     },
     {
-      "authors": ["Larry Guth", "Nets Hawk Katz"],
+      "authors": [
+        "Larry Guth",
+        "Nets Hawk Katz"
+      ],
       "title": "On the Erdős distinct distances problem in the plane",
       "venue": "Annals of Mathematics",
       "year": 2015,
@@ -217,7 +223,10 @@
       "note": "Proves Ω(n/log n) distinct distances for all n-point sets; the strongest known lower bound for Problem #89, contextualizing the n/2 threshold for general position."
     },
     {
-      "authors": ["Endre Szemerédi", "William T. Trotter Jr."],
+      "authors": [
+        "Endre Szemerédi",
+        "William T. Trotter Jr."
+      ],
       "title": "Extremal problems in discrete geometry",
       "venue": "Combinatorica",
       "year": 1983,
@@ -228,7 +237,9 @@
       "note": "Szemerédi–Trotter incidence theorem, foundational to distance counting arguments including Szemerédi's unpublished n/3 bound cited in Problem #1082."
     },
     {
-      "authors": ["Emanuel Altman"],
+      "authors": [
+        "Emanuel Altman"
+      ],
       "title": "On a problem of Erdős",
       "venue": "The American Mathematical Monthly",
       "year": 1963,
@@ -239,7 +250,10 @@
       "note": "Proves that the vertices of a convex n-gon determine at least ⌊n/2⌋ distinct distances, establishing the resolved analogue of the open Problem #1082."
     },
     {
-      "authors": ["József Solymosi", "Csaba D. Tóth"],
+      "authors": [
+        "József Solymosi",
+        "Csaba D. Tóth"
+      ],
       "title": "Distinct distances in the plane",
       "venue": "Discrete & Computational Geometry",
       "year": 2001,

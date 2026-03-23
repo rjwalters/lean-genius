@@ -87,6 +87,12 @@
       "The r-sum generalization to N/(r+1) remains open for r ≥ 3; the upper fraction r/(r+1) is the candidate",
       "Bedert's 2023 solution earned the $100 Erdős prize",
       "The key proof technique: r=2 case of the r-sum conjecture reduces directly to Bedert's theorem"
+    ],
+    "prerequisites": [
+      "Divisibility and the divisor lattice",
+      "Extremal set theory",
+      "Antichain theory in partially ordered sets",
+      "Multiplicative number theory"
     ]
   },
   "sections": [
@@ -142,7 +148,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #13, asking whether divisibility-free sets A ⊆ {1,...,N} satisfy |A| ≤ N/3 + O(1). Bedert (2023) proved this affirmatively, earning the $100 prize. The upper third (2N/3, N] is simultaneously divisibility-free, sum-free, and optimal up to O(1).",
-    "implications": "Bedert's solution closes one of Erdős's combinatorial number theory problems. The formalization includes the natural r-sum generalization, connecting to extremal combinatorics and sum-free set theory. The r ≥ 3 case remains an active open problem.",
+    "implications": "**Theoretical Significance**: Bedert's solution closes one of Erdős's combinatorial number theory problems.\n\n**Broader Connections**: The formalization includes the natural r-sum generalization, connecting to extremal combinatorics and sum-free set theory. The r ≥ 3 case remains an active open problem.",
     "openQuestions": [
       "Is |A| ≤ N/(r+1) + O(1) for the r-sum version when r ≥ 3?",
       "What is the exact constant in the O(1) term of Bedert's bound?",

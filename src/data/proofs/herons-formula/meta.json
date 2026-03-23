@@ -43,7 +43,8 @@
       "**Triangle inequality encoded**: The product $s(s-a)(s-b)(s-c) \\geq 0$ if and only if the triangle inequality holds. Each factor $s-a = (b+c-a)/2$ is non-negative precisely when $a \\leq b+c$",
       "**Generalizes to abstract spaces**: Mathlib's formalization works in any real inner product space, not just $\\mathbb{R}^2$ or $\\mathbb{R}^3$, using the abstract `dist` and `angle` functions from `EuclideanGeometry`",
       "**Algebraic proof by `ring`**: The key algebraic identity reducing Heron's product to the expanded form is closed entirely by Lean's `ring` tactic, demonstrating the power of verified algebraic computation"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -127,7 +128,7 @@
   ],
   "conclusion": {
     "summary": "The formalization provides a complete treatment of Heron's formula: the main identity in abstract inner product spaces via Mathlib, computable definitions of the semi-perimeter and Heron product, algebraic expansions proved by `ring`, concrete verifications for classic triangles, and the non-negativity theorem connecting Heron's formula to the triangle inequality. All proofs are complete with zero sorries.",
-    "implications": "Heron's formula sits at the intersection of Euclidean geometry, algebra, and analysis. The algebraic expansion form is the basis for numerically stable area computation (Kahan's algorithm). The connection to the Cayley-Menger determinant generalizes to volumes of simplices in higher dimensions. In algebraic geometry, the formula relates to the discriminant of the triangle viewed as a polynomial system.",
+    "implications": "**Theoretical Significance**: Heron's formula sits at the intersection of Euclidean geometry, algebra, and analysis. The algebraic expansion form is the basis for numerically stable area computation (Kahan's algorithm).\n\n**Broader Connections**: The connection to the Cayley-Menger determinant generalizes to volumes of simplices in higher dimensions. In algebraic geometry, the formula relates to the discriminant of the triangle viewed as a polynomial system.",
     "openQuestions": [
       "Can Brahmagupta's generalization to cyclic quadrilaterals $\\text{Area} = \\sqrt{(s-a)(s-b)(s-c)(s-d)}$ be formalized in Lean using Mathlib's cyclic polygon infrastructure?",
       "Can the Cayley-Menger determinant formula for simplex volumes be derived as a higher-dimensional generalization?",

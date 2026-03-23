@@ -40,7 +40,8 @@
       "**Method barriers by $k$**: Fourier analysis works for $k = 3$ (Roth/Kelley–Meka), $U^{k-1}$ norms for $k = 4$ (Green–Tao), but $k \\ge 5$ requires fundamentally different algebraic techniques (Leng–Sah–Sawhney 2024)",
       "**Behrend's sphere trick**: Embed $[N]$ into $\\mathbb{Z}^d$ for $d \\approx \\sqrt{\\log N}$, then a sphere in this lattice is AP-free since the midpoint of two sphere points lies strictly interior — a beautifully geometric construction",
       "**Kelley–Meka's spectral innovation**: Instead of density increment (finding a subprogression where $S$ is denser), they use a spectral argument showing AP-free sets must correlate with structured sets, achieving an exponential improvement"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -116,7 +117,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #142 asks for an asymptotic formula for r_k(N), the maximum size of a k-AP-free subset of {1,...,N}. Despite extraordinary progress — Szemerédi's theorem (1975), Roth's Fourier method (1953), Kelley–Meka's breakthrough (2023) — even the correct order of magnitude of r_3(N) is unknown. The formalization axiomatizes the state of the art: Behrend's lower bound, Kelley–Meka's upper bound, Green–Tao for k=4, and the main open question with Erdős's $10,000 prize.",
-    "implications": "An asymptotic formula for r_k(N) would represent a complete understanding of the density threshold for arithmetic progressions in the integers. It would resolve a central question spanning additive combinatorics, harmonic analysis, ergodic theory, and theoretical computer science (connections to PCP and property testing). The techniques required would likely yield deep structural insights into the interplay between additive and multiplicative structure in the integers.",
+    "implications": "**Theoretical Significance**: An asymptotic formula for r_k(N) would represent a complete understanding of the density threshold for arithmetic progressions in the integers.\n\n**Broader Connections**: It would resolve a central question spanning additive combinatorics, harmonic analysis, ergodic theory, and theoretical computer science (connections to PCP and property testing). The techniques required would likely yield deep structural insights into the interplay between additive and multiplicative structure in the integers.",
     "openQuestions": [
       "What is the true order of magnitude of r_3(N)? Is the Behrend-type lower bound exp(-C√(log N)) or the Kelley–Meka-type upper bound exp(-c(log N)^{1/12}) closer to the truth?",
       "Is r_k(N) = o(N/log N) for all k ≥ 5? ($5,000 Erdős prize, known for k ≤ 4)",

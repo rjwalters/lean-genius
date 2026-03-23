@@ -69,7 +69,8 @@
       "The gap between the proven quadratic upper bound $a_k = O(k^2)$ and the conjectured $k^2/\\log k$ is only a logarithmic factor, yet closing it has resisted all approaches. The $\\log k$ savings in the denominator would require understanding cancellations in the greedy process.",
       "The connection between AP-freeness and base representations is specific to base 3: a set $S \\subseteq \\{0, 1, 2\\}^n$ (viewed in $\\mathbb{Z}/3\\mathbb{Z}$) is AP-free iff it is a cap set. The $A(1)$ characterization is the infinite analog of cap sets in $\\mathbb{F}_3^n$.",
       "Stanley sequences differ fundamentally from random AP-free sets: the greedy construction imposes a rigid deterministic structure that may explain the dichotomy. Understanding why greediness forces exactly two growth rates is the central challenge."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -138,7 +139,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #271 is PARTIALLY SOLVED. The sequence $A(1)$ has a complete base-3 characterization ($n \\in A(1)$ iff no digit 2 in base 3), with analogous results for $A(3^k)$ and $A(2 \\cdot 3^k)$. Universal upper bounds are proven: $a_k \\le (1/2+\\varepsilon)k^2$ eventually (Moy 2011) and $a_k \\le (k-1)(k+2)/2 + n$ for all $k$ (van Doorn-Sothanaphan). The Odlyzko-Stanley dichotomy conjecture — that every Stanley sequence has growth rate either $k^{\\log_2 3}$ or $k^2/\\log k$ — remains OPEN.",
-    "implications": "Stanley sequences sit at the intersection of additive combinatorics, digital representations, and greedy algorithms. The $A(1)$ characterization reveals a self-similar Cantor-set structure connecting AP-avoidance to base-3 digit restrictions, while the dichotomy conjecture suggests a sharp phase transition between structured and chaotic behavior in greedy AP-free constructions. The connection to cap sets in $\\mathbb{F}_3^n$ links this problem to the Ellenberg-Gijswijt breakthrough and modern additive combinatorics.",
+    "implications": "**Theoretical Significance**: Stanley sequences sit at the intersection of additive combinatorics, digital representations, and greedy algorithms.\n\n**Broader Connections**: The $A(1)$ characterization reveals a self-similar Cantor-set structure connecting AP-avoidance to base-3 digit restrictions, while the dichotomy conjecture suggests a sharp phase transition between structured and chaotic behavior in greedy AP-free constructions. The connection to cap sets in $\\mathbb{F}_3^n$ links this problem to the Ellenberg-Gijswijt breakthrough and modern additive combinatorics.",
     "openQuestions": [
       "Prove the Odlyzko-Stanley dichotomy conjecture: is it true that every $A(n)$ has growth rate either $k^{\\log_2 3}$ or $k^2/\\log k$, with no intermediate rates?",
       "Prove rigorously that $A(4)$ has quadratic-log growth $a_k \\sim k^2/\\log k$ — currently supported only by computational evidence (Lindhurst 1990).",

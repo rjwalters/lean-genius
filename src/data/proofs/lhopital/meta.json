@@ -63,6 +63,13 @@
       "Works for limits at $\\pm\\infty$ via `Tendsto f atTop (𝓝 0)`, not just at finite points",
       "The underlying mechanism is Cauchy's Mean Value Theorem: $\\frac{f(b)-f(a)}{g(b)-g(a)} = \\frac{f'(c)}{g'(c)}$",
       "The rule does NOT apply when $\\lim f'/g'$ fails to exist — even if $\\lim f/g$ exists (e.g., $f(x) = x + \\sin x$, $g(x) = x$)"
+    ],
+    "prerequisites": [
+      "Limits and indeterminate forms (0/0 and ∞/∞)",
+      "Differentiability and the Cauchy Mean Value Theorem",
+      "One-sided limits and limits at infinity",
+      "Continuity and differentiability on open intervals",
+      "Basic real analysis: squeeze theorem and limit arithmetic"
     ]
   },
   "sections": [

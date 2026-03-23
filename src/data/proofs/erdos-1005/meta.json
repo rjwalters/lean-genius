@@ -35,7 +35,8 @@
       "**Determinant obstruction**: Adjacent Farey fractions satisfy $|ad - bc| = 1$, a $GL_2(\\mathbb{Z})$ condition that severely constrains the geometry of consecutive fractions. van Doorn's $n/4$ upper bound exploits this rigidity: the determinant condition forces eventual violations of the pairwise comparability condition",
       "**Euler totient connection**: The Farey sequence $F_n$ has $|F_n| \\sim 3n^2/\\pi^2$ elements via $\\sum_{k=1}^{n} \\varphi(k)$, so $f(n) \\sim cn$ means similarly ordered runs comprise $\\sim c\\pi^2/(3n)$ fraction of all elements — a vanishing but linearly-scaling proportion",
       "**Mediant insertion mechanism**: $F_{n+1}$ is obtained from $F_n$ by inserting mediants $(a+c)/(b+d)$ between adjacent fractions $a/b, c/d$ when $b+d = n+1$. Understanding how mediant insertion affects similarly ordered runs is central to closing the gap between $1/12$ and $1/4$"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -118,7 +119,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the full state of Erdős Problem 1005: the Farey fraction framework, the similarly ordered relation (proved symmetric and reflexive, crucially non-transitive), the Mayer–Erdős function $f(n)$, historical results from Mayer (1942) through van Doorn (2025), the open conjecture on the asymptotic constant, the geometric interpretation via product order on $\\mathbb{Z}^2$, and the mediant/determinant structure underlying the bounds. The 3:1 gap between the lower bound $1/12$ and upper bound $1/4$ remains the key open challenge.",
-    "implications": "Resolution would reveal deep structure in how Farey fractions are organized beyond their classical ordering. The product order characterization connects to Dilworth's theorem and Ramsey theory, while the $GL_2(\\mathbb{Z})$ determinant property ties to the modular group and hyperbolic geometry. Understanding the asymptotic constant $c$ would also illuminate the balance between local order (the mediant insertion mechanism that builds $F_{n+1}$ from $F_n$) and global disorder (the non-transitivity that eventually breaks long runs).",
+    "implications": "**Theoretical Significance**: Resolution would reveal deep structure in how Farey fractions are organized beyond their classical ordering.\n\n**Broader Connections**: The product order characterization connects to Dilworth's theorem and Ramsey theory, while the $GL_2(\\mathbb{Z})$ determinant property ties to the modular group and hyperbolic geometry. Understanding the asymptotic constant $c$ would also illuminate the balance between local order (the mediant insertion mechanism that builds $F_{n+1}$ from $F_n$) and global disorder (the non-transitivity that eventually breaks long runs).",
     "openQuestions": [
       "Is $c = 1/4$ the correct asymptotic constant, as van Doorn conjectures? This would require improving the lower bound by a factor of 3, likely through more sophisticated explicit constructions of similarly ordered runs.",
       "Can the lower bound $1/12$ be improved using the mediant insertion structure of Farey sequences? The current construction does not fully exploit how $F_{n+1}$ is built from $F_n$.",
@@ -173,14 +174,18 @@
   ],
   "references": [
     {
-      "authors": ["T. van Doorn"],
+      "authors": [
+        "T. van Doorn"
+      ],
       "title": "Consecutive similarly ordered Farey fractions",
       "year": 2025,
       "venue": "Preprint",
       "notes": "Establishes the current best bounds $(1/12 - o(1))n \\leq f(n) \\leq n/4 + O(1)$ and conjectures $f(n)/n \\to 1/4$."
     },
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "A note on Farey series",
       "year": 1943,
       "venue": "Quarterly Journal of Mathematics",
@@ -189,7 +194,10 @@
       "notes": "Proves the first linear lower bound $f(n) \\geq cn$ for some constant $c > 0$, establishing that the longest similarly ordered run grows linearly in $n$."
     },
     {
-      "authors": ["G. H. Hardy", "E. M. Wright"],
+      "authors": [
+        "G. H. Hardy",
+        "E. M. Wright"
+      ],
       "title": "An Introduction to the Theory of Numbers",
       "year": 1979,
       "venue": "Oxford University Press",
@@ -197,7 +205,10 @@
       "notes": "Chapter 3 covers Farey sequences, the mediant property, and the determinant condition $|ad - bc| = 1$ for adjacent Farey fractions — the structural constraint underlying van Doorn's upper bound."
     },
     {
-      "authors": ["R. R. Hall", "G. Tenenbaum"],
+      "authors": [
+        "R. R. Hall",
+        "G. Tenenbaum"
+      ],
       "title": "On the average and normal orders of Euler's function",
       "year": 1988,
       "venue": "Journal of the London Mathematical Society",
@@ -206,7 +217,9 @@
       "notes": "Asymptotic analysis of $\\sum_{k \\leq n} \\varphi(k) \\sim 3n^2/\\pi^2$ used to determine the density of Farey fractions and interpret $f(n)/n$ as a proportion of $F_n$."
     },
     {
-      "authors": ["A. Granville"],
+      "authors": [
+        "A. Granville"
+      ],
       "title": "The distribution of the integers in an interval",
       "year": 1993,
       "venue": "CMS Conference Proceedings",

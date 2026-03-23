@@ -64,7 +64,8 @@
       "The sharp formula (r-1)n - ⌈sn/(2s-1)⌉ with s = ⌊r/2⌋ captures parity exactly",
       "Asymptotically ⌈sn/(2s-1)⌉ ≈ n/2, giving the (r - 3/2)n threshold",
       "The savings of n/2 per part come from parity-based extremal constructions"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -189,7 +190,9 @@
   ],
   "references": [
     {
-      "authors": ["P.E. Haxell"],
+      "authors": [
+        "P.E. Haxell"
+      ],
       "title": "A Note on Vertex List Colouring",
       "venue": "Combinatorics, Probability and Computing",
       "year": 2001,
@@ -199,7 +202,10 @@
       "note": "Proves the BES conjecture: minimum degree ≥ (r − 3/2 − o(1))n in a balanced r-partite graph forces K_r."
     },
     {
-      "authors": ["P.E. Haxell", "T. Szabó"],
+      "authors": [
+        "P.E. Haxell",
+        "T. Szabó"
+      ],
       "title": "Odd Independent Transversals Are Odd",
       "venue": "Combinatorics, Probability and Computing",
       "year": 2006,
@@ -209,7 +215,11 @@
       "note": "Determines the exact sharp threshold (r − 1)n − ⌈sn/(2s−1)⌉ and proves optimality via parity-based extremal constructions."
     },
     {
-      "authors": ["B. Bollobás", "P. Erdős", "E. Szemerédi"],
+      "authors": [
+        "B. Bollobás",
+        "P. Erdős",
+        "E. Szemerédi"
+      ],
       "title": "On Complete Subgraphs of r-Chromatic Graphs",
       "venue": "Discrete Mathematics",
       "year": 1975,
@@ -219,7 +229,9 @@
       "note": "Original 1975 paper by Bollobás–Erdős–Szemerédi conjecturing the (r − 3/2)n threshold and giving the extremal constructions showing sharpness of the constant."
     },
     {
-      "authors": ["P.E. Haxell"],
+      "authors": [
+        "P.E. Haxell"
+      ],
       "title": "On the Strong Chromatic Number",
       "venue": "Combinatorics, Probability and Computing",
       "year": 2004,
@@ -229,7 +241,9 @@
       "note": "Connects the BES conjecture to strong chromatic numbers and independent transversals; the list-coloring reduction central to the 2001 proof is elaborated here."
     },
     {
-      "authors": ["R. Häggkvist"],
+      "authors": [
+        "R. Häggkvist"
+      ],
       "title": "On the Structure of Non-Hamiltonian Graphs I",
       "venue": "Combinatorica",
       "year": 1992,

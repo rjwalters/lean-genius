@@ -81,7 +81,8 @@
       "**Upper bound via counting**: There are $2^{|A|}$ subsets but only $\\text{lcm}(1, \\ldots, N) \\approx e^N$ possible distinct values for $\\sum 1/n$, giving $|A| \\leq \\log_2(\\text{lcm}(1, \\ldots, N)) \\approx N/\\log 2$ — refined with prime number theorem estimates",
       "**Egyptian fraction roots**: The problem connects to ancient mathematics — the Rhind Papyrus (1650 BCE) contains Egyptian fraction tables, and the question of which denominators can coexist with unique partial sums is a modern formalization of this tradition",
       "**Gap is exactly one iterated log**: The difference between upper and lower bounds is the factor $\\log_r N$ at the deepest level of iterated logarithm. Closing this gap requires understanding whether the construction or the counting argument is tighter"
-    ]
+    ],
+    "prerequisites": []
   },
   "conclusion": {
     "summary": "This formalization captures the Bleicher–Erdős framework for $R(N)$: the definition of distinct reciprocal subset sums, the matching bounds $\\Theta(N/\\log N)$ up to iterated log factors, and the connections to Egyptian fractions and extremal combinatorics. The gap between upper and lower bounds — a single iterated logarithm factor — remains one of the most precisely bounded yet unresolved asymptotic questions in number theory.",

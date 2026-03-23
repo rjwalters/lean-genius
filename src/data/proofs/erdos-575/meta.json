@@ -34,7 +34,8 @@
       "Monotonicity $\\mathrm{ex}(n; \\mathcal{F}) \\le \\min_{H \\in \\mathcal{F}} \\mathrm{ex}(n; H)$ provides one direction; the conjecture asserts the reverse (up to constants) holds for some bipartite member",
       "Connected to the rational exponent conjecture: if $\\mathrm{ex}(n; H) = \\Theta(n^{1+a/b})$ for rational $a/b$, then Problem #575 would imply the same rational exponent structure for families",
       "Related to Problem #180 on Turán densities for families, which addresses the complementary question for non-bipartite forbidden graphs"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -75,7 +76,7 @@
   ],
   "conclusion": {
     "summary": "Formalizes Erdős Problem #575 on whether a single bipartite graph in a finite forbidden family controls the order of magnitude of the family extremal function. The formalization provides the definitional framework (Turán number, family extremal function, bipartite predicate) and supporting context (Erdős–Stone–Simonovits for the non-bipartite regime, Kővári–Sós–Turán for bipartite bounds).",
-    "implications": "A positive answer would yield a powerful structural reduction in extremal graph theory: the Turán problem for any family containing a bipartite graph would reduce to determining ex(n; G) for a single bipartite G. This mirrors how the Erdős–Stone–Simonovits theorem reduces the non-bipartite family Turán problem to chromatic number. It would also imply that the rational exponent structure (if it exists for individual bipartite graphs) extends to families.",
+    "implications": "**Theoretical Significance**: A positive answer would yield a powerful structural reduction in extremal graph theory: the Turán problem for any family containing a bipartite graph would reduce to determining ex(n; G) for a single bipartite G.\n\n**Broader Connections**: This mirrors how the Erdős–Stone–Simonovits theorem reduces the non-bipartite family Turán problem to chromatic number. It would also imply that the rational exponent structure (if it exists for individual bipartite graphs) extends to families.",
     "openQuestions": [
       "Does a single bipartite member always dominate the family extremal function, as Erdős and Simonovits conjectured in 1982?",
       "For which specific families can the controlling bipartite member be identified explicitly?",

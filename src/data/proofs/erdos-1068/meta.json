@@ -33,7 +33,8 @@
       "**De Bruijn–Erdős compactness**: $\\chi(G) \\geq \\aleph_1$ implies finite subgraphs with arbitrarily large $\\chi$. This compactness bridge between infinite and finite ensures rich local structure, which might be leveraged to construct countable infinitely connected subgraphs",
       "**Set-theoretic boundary**: Komjáth (2013) showed related questions are ZFC-independent, suggesting Problem 1068 lives near the boundary of what standard set theory can decide. The answer may depend on axioms like $\\diamondsuit$, $\\text{MA}$, or forcing axioms",
       "**Ladder system technology**: Both Soukup (2015) and Bowler–Pitz (2024) use ladder systems on ordinal trees to control connectivity. Understanding these constructions is key to determining whether countable subgraphs can escape the finite-connectivity trap"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -144,7 +145,10 @@
   ],
   "references": [
     {
-      "authors": ["Paul Erdős", "András Hajnal"],
+      "authors": [
+        "Paul Erdős",
+        "András Hajnal"
+      ],
       "title": "On chromatic number of graphs and set-systems",
       "journal": "Acta Mathematica Academiae Scientiarum Hungaricae",
       "volume": "17",
@@ -154,7 +158,9 @@
       "note": "Foundational Erdős–Hajnal paper establishing the program connecting chromatic number with structural graph properties; origin of the conjecture formalized in Problem 1068."
     },
     {
-      "authors": ["Lajos Soukup"],
+      "authors": [
+        "Lajos Soukup"
+      ],
       "title": "A note on a problem of Erdős and Hajnal",
       "journal": "Combinatorica",
       "volume": "35",
@@ -165,7 +171,10 @@
       "note": "Constructs in ZFC an uncountably chromatic graph where every uncountable vertex set is only finitely connected, disproving Problem 1067 and isolating Problem 1068 as the key open case."
     },
     {
-      "authors": ["Ron Aharoni", "Eli Berger"],
+      "authors": [
+        "Ron Aharoni",
+        "Eli Berger"
+      ],
       "title": "Menger's theorem for infinite graphs",
       "journal": "Inventiones Mathematicae",
       "volume": "176",
@@ -176,7 +185,9 @@
       "note": "Proves the infinite Menger theorem: infinite vertex-connectivity is equivalent to the absence of finite vertex separators. This characterization is used in the formalization's no-finite-separator axiom."
     },
     {
-      "authors": ["Péter Komjáth"],
+      "authors": [
+        "Péter Komjáth"
+      ],
       "title": "A note on set theory",
       "journal": "Israel Journal of Mathematics",
       "volume": "196",
@@ -187,7 +198,10 @@
       "note": "Shows a related chromatic-connectivity question is independent of ZFC, indicating that Problem 1068 lies near the boundary of standard set theory and may depend on forcing axioms or diamond principles."
     },
     {
-      "authors": ["Nathan Bowler", "Max Pitz"],
+      "authors": [
+        "Nathan Bowler",
+        "Max Pitz"
+      ],
       "title": "A simplified construction of an uncountably chromatic graph with no uncountably connected subgraph",
       "journal": "Electronic Journal of Combinatorics",
       "volume": "31",

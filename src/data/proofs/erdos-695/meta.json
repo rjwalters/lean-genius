@@ -78,6 +78,13 @@
       "**Exponential Lower:** Any prime chain grows at least exponentially: p_k ≥ c^k",
       "**Cunningham Chains:** p, 2p+1, 4p+3,... are prime chains when all terms are prime",
       "**Gap:** Large gap between known lower (c^k) and upper (exp(exp(Ck))) bounds"
+    ],
+    "prerequisites": [
+      "Elementary number theory (primes, divisibility, modular arithmetic)",
+      "Analytic number theory (Linnik's theorem, primes in arithmetic progressions)",
+      "Real analysis (limits, exponential and logarithmic functions)",
+      "Asymptotic notation (big-O, little-o)",
+      "Lean 4 / Mathlib (Filter.Tendsto, Asymptotics.IsLittleO, Nat.Prime)"
     ]
   },
   "sections": [

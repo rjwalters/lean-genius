@@ -70,6 +70,12 @@
       "Partition energy is the key potential function: bounded above by 1 and increasing with each refinement step, so at most $1/\\varepsilon^5$ refinements are possible",
       "The epsilon-regularity definition captures pseudorandomness: an epsilon-regular pair behaves like a random bipartite graph with density $d(A,B)$ for the purposes of counting subgraphs",
       "The equitability condition in IsRegularPartition (parts differ in size by at most 1) is essential for the energy increment argument — without it, concentrating vertices in one part could defeat the potential function"
+    ],
+    "prerequisites": [
+      "Graph theory (simple graphs, adjacency, vertex subsets)",
+      "Rational arithmetic (division, positivity, bounds)",
+      "Finite combinatorics (Cartesian products, cardinality, filters)",
+      "Familiarity with Lean 4 and Mathlib"
     ]
   },
   "sections": [
@@ -148,7 +154,7 @@
   ],
   "conclusion": {
     "summary": "This module provides the shared mathematical vocabulary for the Szemerédi regularity pipeline in 110 lines with 4 definitions and 3 proved lemmas (0 sorries, 0 axioms). All definitions are verified and basic properties (density bounds, energy non-negativity) are established.",
-    "implications": "By centralizing edge density, epsilon-regularity, regular partitions, and partition energy in a single module, the full Szemerédi pipeline (regularity, counting, removal, and the main theorem) shares definitions without drift. The partition energy potential function $q(\\mathcal{P}) \\in [0,1]$ with energy increment $\\geq \\varepsilon^5$ is the engine that drives the regularity lemma's termination argument — this module establishes its non-negativity, while the regularity module proves the increment and upper bound. The same definitions extend to applications far beyond Szemerédi's original theorem: the graph removal lemma, property testing, the hypergraph regularity lemma (Gowers 2007, Rödl-Skokan 2004), and the Green-Tao theorem on primes in arithmetic progressions.",
+    "implications": "**Theoretical Significance**: By centralizing edge density, epsilon-regularity, regular partitions, and partition energy in a single module, the full Szemerédi pipeline (regularity, counting, removal, and the main theorem) shares definitions without drift.\n\n**Broader Connections**: The partition energy potential function $q(\\mathcal{P}) \\in [0,1]$ with energy increment $\\geq \\varepsilon^5$ is the engine that drives the regularity lemma's termination argument — this module establishes its non-negativity, while the regularity module proves the increment and upper bound. The same definitions extend to applications far beyond Szemerédi's original theorem: the graph removal lemma, property testing, the hypergraph regularity lemma (Gowers 2007, Rödl-Skokan 2004), and the Green-Tao theorem on primes in arithmetic progressions.",
     "openQuestions": [
       "Formalize the energy increment lemma: if a partition has an irregular pair, the refinement increases energy by at least $\\varepsilon^5$",
       "Extend these definitions to the strong regularity lemma (Alon-Fischer-Krivelevich-Szegedy 2000), which achieves a regular partition where almost all pairs are very regular",

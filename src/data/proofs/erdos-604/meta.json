@@ -71,6 +71,14 @@
       "**Katz-Tardos Bound:** Best known lower bound achieves exponent c = (48-14e)/(55-16e) ≈ 0.864, far from the conjectured 1.",
       "**Harborth's Counterexample:** Erdős initially thought the sum of pinned distances equaled total distinct distances; Harborth showed these differ.",
       "**Prize Ambiguity:** The $500 prize's exact condition (one point or many points with high pinned count) remains unclear."
+    ],
+    "prerequisites": [
+      "Euclidean distance and metric spaces",
+      "Finite set combinatorics (cardinality, image, filter)",
+      "Asymptotic notation and exponent bounds",
+      "Incidence geometry (Szemerédi-Trotter theorem)",
+      "Crossing number inequality",
+      "Number theory (sums of two squares, Landau's theorem)"
     ]
   },
   "sections": [
@@ -119,7 +127,7 @@
   ],
   "conclusion": {
     "summary": "We formalize the pinned distance problem, defining the conjecture that every n-point set has a point seeing nearly n^(1-o(1)) distinct distances. The Katz-Tardos bound (exponent 0.864) is stated, and basic structural properties are proved. The main conjecture remains one of the deepest open problems in discrete geometry.",
-    "implications": "This problem connects to:\n\n1. **Distinct Distances (#89):** The 'unpinned' version solved by Guth-Katz\n2. **Sum-Product Phenomena:** Additive/multiplicative structure in distance sets\n3. **Incidence Geometry:** Connections to point-line incidences\n4. **Algebraic Methods:** Polynomial method techniques from Elekes, Guth-Katz",
+    "implications": "**Theoretical Significance**: This problem connects to:\n\n1. **Distinct Distances (#89):** The 'unpinned' version solved by Guth-Katz\n2.\n\n**Broader Connections**: **Sum-Product Phenomena:** Additive/multiplicative structure in distance sets\n3. **Incidence Geometry:** Connections to point-line incidences\n4. **Algebraic Methods:** Polynomial method techniques from Elekes, Guth-Katz.",
     "openQuestions": [
       "Prove the exponent approaches 1 (the $500 prize!)",
       "Prove the strong form with n/√(log n) distances",

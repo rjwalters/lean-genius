@@ -62,7 +62,8 @@
       "**Kleitman's Resolution**: log₂(D(n)) = (1+o(1))·C(n, ⌊n/2⌋), proved using correlation inequalities. The trivial upper bound is essentially tight",
       "**Concentration Near Middle**: Most antichains consist primarily of sets near size n/2, a phenomenon that drives the asymptotic formula",
       "**Computational Difficulty**: Even with the asymptotic formula known, computing exact values of D(n) is extremely hard — D(9) was only computed in 2023"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

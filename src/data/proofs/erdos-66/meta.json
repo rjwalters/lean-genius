@@ -66,7 +66,8 @@
       "**Random sets almost work**: With the right density, random A gives E[r_A(n)] ~ log(n), but variance creates exceptions.",
       "**Erdős-Sárközy obstruction**: The error |r_A(n) - log(n)| cannot shrink faster than √log(n). Fluctuations are inherent.",
       "**The stronger conjecture**: Erdős suggested limsup and liminf of r_A(n)/log(n) are always separated by an absolute constant."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

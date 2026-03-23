@@ -34,7 +34,8 @@
       "The upper bound progression $n^{5/3} \\to n^{8/5} \\to n^{3/2}$ uses increasingly refined sparse regularity methods, but the $n^{3/2}$ barrier seems hard to break",
       "The Friedman-Pippenger tree result uses a beautiful connection to expander graphs: good expanders with $O(n)$ edges contain every tree with $n$ vertices",
       "The gap between $n^{1+o(1)}$ and $n^{3/2+o(1)}$ for degree-3 graphs is one of the most important open problems in size Ramsey theory"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -96,7 +97,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #559 on size Ramsey numbers for bounded-degree graphs was DISPROVED for d ≥ 3 by Rödl-Szemerédi (2000). The 238-line formalization captures the full landscape: the conjecture and its negation, positive results for paths (Beck 1983), trees (Friedman-Pippenger 1987), and cycles (Haxell-Kohayakawa-Luczak 1995), counterexamples from Rödl-Szemerédi and Tikhomirov, and the upper bound progression from n^{5/3} to n^{3/2}. The sharp transition at Δ = 3 between linear and superlinear behavior is a fundamental phenomenon in size Ramsey theory.",
-    "implications": "The disproof reveals that bounded degree alone does not guarantee linear size Ramsey numbers — global graph structure matters even when local structure is constrained. The gap between n^{1+o(1)} and n^{3/2+o(1)} for degree-3 graphs highlights a fundamental limitation of current techniques: probabilistic lower bounds give barely-superlinear growth, while regularity-based upper bounds give polynomial growth. New methods are needed on both sides.",
+    "implications": "**Theoretical Significance**: The disproof reveals that bounded degree alone does not guarantee linear size Ramsey numbers — global graph structure matters even when local structure is constrained.\n\n**Broader Connections**: The gap between n^{1+o(1)} and n^{3/2+o(1)} for degree-3 graphs highlights a fundamental limitation of current techniques: probabilistic lower bounds give barely-superlinear growth, while regularity-based upper bounds give polynomial growth. New methods are needed on both sides.",
     "openQuestions": [
       "What is the true growth rate of R̂(G) for degree-3 graphs? Is it n^{1+o(1)} or n^{3/2} or something in between?",
       "Can the gap between lower bound n·exp(c√(log n)) and upper bound n^{3/2+o(1)} be closed?",

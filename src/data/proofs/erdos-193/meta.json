@@ -33,7 +33,8 @@
       "**Integer parallelism**: Collinearity is formalized as $a(q-p) = b(r-p)$ coordinatewise, the integer analogue of the cross product condition $(q-p) \\times (r-p) = 0$",
       "**Injectivity is essential**: Without requiring $w$ to be injective, any walk revisiting a point gives a trivially collinear triple — the problem is non-trivial only for self-avoiding walks",
       "**Finite step set constraint**: The finiteness of $S$ ensures that asymptotically, the walk cannot escape to infinity fast enough to avoid all collinear configurations — but proving this in 3D remains open"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

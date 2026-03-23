@@ -103,6 +103,12 @@
       "The Erdos-Borwein constant S(2) ~ 1.606695 appears in combinatorics as the average number of 1s in binary representations related to mergesort analysis",
       "The transcendental conjecture (S(t) transcendental for algebraic t > 1) is strictly stronger than Chowla's, since transcendental implies irrational",
       "Lambert series sum a_n q^n/(1-q^n) provide a systematic framework; S(t) is the special case a_n = 1, q = 1/t"
+    ],
+    "prerequisites": [
+      "Analytic number theory: divisor function and Lambert series",
+      "Irrationality and transcendence theory",
+      "Infinite series convergence (tsum)",
+      "p-adic analysis (for understanding Erdős's proof technique)"
     ]
   },
   "sections": [
@@ -189,7 +195,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #1049 asks whether S(t) = sum 1/(t^n - 1) is irrational for rational t > 1. The classical identity S(t) = sum tau(n)/t^n connects this to the divisor function. Erdos (1948) proved irrationality for integer t >= 2 using p-adic analysis of partial sums. Chowla's conjecture extending this to all rational t > 1 remains open. The formalization axiomatizes Erdos's result, states both Chowla's conjecture and stronger transcendentality conjectures, and connects the series to Lambert series theory.",
-    "implications": "The problem sits at the intersection of analytic number theory, irrationality theory, and Lambert series. Erdos's 1948 techniques pioneered the use of p-adic methods for irrationality proofs of naturally-arising series. The Erdos-Borwein constant S(2) ~ 1.606695 appears unexpectedly in the analysis of algorithms (average-case mergesort complexity). Resolution of Chowla's conjecture would advance understanding of the arithmetic nature of Lambert series values. The transcendental conjecture connects to the broader program of determining the transcendence of values of classical analytic functions at algebraic points.",
+    "implications": "**Theoretical Significance**: The problem sits at the intersection of analytic number theory, irrationality theory, and Lambert series. Erdos's 1948 techniques pioneered the use of p-adic methods for irrationality proofs of naturally-arising series.\n\n**Broader Connections**: The Erdos-Borwein constant S(2) ~ 1.606695 appears unexpectedly in the analysis of algorithms (average-case mergesort complexity). Resolution of Chowla's conjecture would advance understanding of the arithmetic nature of Lambert series values. The transcendental conjecture connects to the broader program of determining the transcendence of values of classical analytic functions at algebraic points.",
     "openQuestions": [
       "Is S(t) irrational for all rational t > 1? (Chowla's conjecture, the central open question)",
       "Is S(t) transcendental for algebraic t > 1? (strictly stronger than Chowla's conjecture)",

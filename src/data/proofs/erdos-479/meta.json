@@ -63,7 +63,8 @@
       "**OEIS A036236**: This sequence gives minimal n for each k. The values are highly irregular: A036236(2) = 3, A036236(3) = 4700063497, A036236(4) = 6.",
       "**Chinese Remainder Theorem**: The congruence 2^n ≡ k (mod n) can be analyzed prime by prime, but the constraints from different primes interact in complex ways.",
       "**Connection to Carmichael function**: The multiplicative order of 2 mod n is related to the Carmichael function λ(n), but the constraint that the modulus equals the exponent creates unique difficulties."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -125,7 +126,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #479, also known as Graham's conjecture. The problem asks whether for every k ≠ 1, there are infinitely many n with 2^n ≡ k (mod n). While special cases have been proved (powers of 2, k = -1), the general conjecture remains open.",
-    "implications": "This problem connects exponential functions with modular arithmetic in a way that creates surprising computational difficulty. The huge minimal solution for k = 3 suggests deep number-theoretic structure that is not yet understood. A resolution would advance our understanding of the interplay between exponential growth and divisibility.",
+    "implications": "**Theoretical Significance**: This problem connects exponential functions with modular arithmetic in a way that creates surprising computational difficulty.\n\n**Broader Connections**: The huge minimal solution for k = 3 suggests deep number-theoretic structure that is not yet understood. A resolution would advance our understanding of the interplay between exponential growth and divisibility.",
     "openQuestions": [
       "Is SolutionSet(k) infinite for all k > 1? (The main conjecture)",
       "What determines the minimal n for a given k?",

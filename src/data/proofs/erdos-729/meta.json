@@ -57,7 +57,8 @@
       "The relaxed condition allows multiplying by a factor $k$ with only small prime factors, but this cannot help: for primes $p > C$, the constraint $v_p(a!) + v_p(b!) \\leq v_p(n!)$ is unaffected by $k$",
       "Large primes carry the full strength of the divisibility constraint, making the bound robust to ignoring any finite set of primes",
       "The problem connects to Problem #728 (a similar question about multinomial coefficients) and reveals the rigidity of factorial arithmetic under prime localization"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

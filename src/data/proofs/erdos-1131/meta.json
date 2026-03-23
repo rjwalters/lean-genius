@@ -36,7 +36,8 @@
       "**Logarithmic gap**: ESVV94 proved $2 - O((\\log n)^2/n) \\le \\min I \\le 2 - 2/(2n-1)$, leaving a $(\\log n)^2$ factor unresolved",
       "**Chebyshev vs Legendre nodes**: Both give $I \\approx 2 - c/n$ but with different constants — neither is optimal for the $L^2$ problem",
       "**Gram matrix trace**: $I = \\operatorname{tr}(G)$ where $G_{jk} = \\int l_j l_k \\, dx$ connects the problem to spectral theory of interpolation operators"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

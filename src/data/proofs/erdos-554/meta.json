@@ -65,7 +65,8 @@
       "**Chromatic Number Paradox**: Odd cycles and triangles both have chromatic number 3, yet the conjecture predicts very different Ramsey behavior, suggesting Ramsey complexity depends on graph structure beyond just chromatic number",
       "**Known Bounds**: R(K_3; k) >= 2^k (exponential) while R(C_{2n+1}; 2) = 4n+1 (linear in n for fixed colors), but the multicolor growth rates are not well understood",
       "**2-Color Benchmark**: Bondy-Erdős (1973) completely solved the 2-color case: R(C_{2n+1}; 2) = 4n + 1, establishing that odd cycle Ramsey numbers are small relative to triangle Ramsey numbers"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -120,7 +121,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #554 conjectures that R(C_{2n+1}; k) / R(K_3; k) -> 0 as k -> infinity for any n >= 2. This open problem, posed by Erdős and Graham in 1981, asserts that odd cycles are asymptotically much easier to find monochromatically than triangles. We formalize the conjecture, state known bounds, verify classical 2-color results, and connect the problem to chromatic number questions.",
-    "implications": "Resolution would fundamentally advance our understanding of multicolor Ramsey theory. It would demonstrate that Ramsey-theoretic complexity of graphs is not determined by chromatic number alone, and would quantify how graph structure (cycles vs. cliques) affects the growth of multicolor Ramsey numbers.",
+    "implications": "**Theoretical Significance**: Resolution would fundamentally advance our understanding of multicolor Ramsey theory.\n\n**Broader Connections**: It would demonstrate that Ramsey-theoretic complexity of graphs is not determined by chromatic number alone, and would quantify how graph structure (cycles vs. cliques) affects the growth of multicolor Ramsey numbers.",
     "openQuestions": [
       "Does R(C_5; k) / R(K_3; k) -> 0 as k -> infinity? (simplest open case)",
       "What is the exact growth rate of R(C_{2n+1}; k) for k >= 3 colors?",

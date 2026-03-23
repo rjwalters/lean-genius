@@ -78,6 +78,12 @@
       "**The 50% Threshold at 23:** $P(23) = 1 - \\frac{365!}{365^{23} \\cdot 342!} \\approx 0.5073$. At 70 people, $P \\approx 0.999$. The rapid transition from unlikely to near-certain happens because $\\prod(1 - i/365) \\approx e^{-k^2/(2 \\cdot 365)}$ (Poisson approximation).",
       "**Psychological Paradox:** The 'paradox' is a mismatch between the question people answer (probability of matching MY birthday, $\\approx k/365$) and the actual question (ANY pair matching, $\\approx k^2/730$). The quadratic blowup in pair count is the source of surprise.",
       "**Cryptographic Birthday Attack:** In hash collision search over $N$ outputs, a birthday attack finds a collision in $O(\\sqrt{N})$ trials rather than $O(N)$. A 128-bit hash needs $2^{64}$ trials — this is why cryptographic hashes need at least 256 bits for 128-bit security."
+    ],
+    "prerequisites": [
+      "Probability theory and finite sample spaces",
+      "Finset.card for counting outcomes",
+      "Product formulas and falling factorials",
+      "Real number division and comparison"
     ]
   },
   "sections": [

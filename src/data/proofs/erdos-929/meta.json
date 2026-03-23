@@ -33,7 +33,8 @@
       "The FGKMT upper bound $S(k) \\ll k \\cdot (\\log\\log\\log k)/(\\log\\log k \\cdot \\log\\log\\log\\log k)$ connects smooth numbers to prime gaps via the surprising fact that long prime-free intervals are rich in smooth numbers",
       "The formalization uses Lean's filter theory to express asymptotic bounds cleanly — `∀ᶠ (k : ℕ) in atTop` captures \"for all sufficiently large $k$\" without specifying explicit constants",
       "The monotonicity $S(k_1) \\leq S(k_2)$ for $k_1 \\leq k_2$ follows from set inclusion of smooth block sets, a structural observation that constrains the growth of $S(k)$"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -81,7 +82,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #929 on the smoothness threshold for consecutive integers. It builds a clean definitional framework (smooth numbers, smooth blocks, upper density, threshold function) and states the main conjecture alongside three tiers of bounds: the elementary trivial bound, the sieve-theoretic Rosser bound, and the deep FGKMT bound from prime gap theory.",
-    "implications": "The problem sits at the intersection of multiplicative number theory (smooth number distribution), sieve theory (Rosser–Iwaniec bounds), and the recent revolution in prime gap research (Maynard–Tao methods). Closing the gap between the known lower bound $k^{1/2-o(1)}$ and the conjectured $k^{1-o(1)}$ would likely require fundamentally new ideas about how smooth numbers cluster in short intervals. Progress on this problem could also impact computational number theory, where smooth number distribution is central to the complexity of integer factorization algorithms.",
+    "implications": "**Theoretical Significance**: The problem sits at the intersection of multiplicative number theory (smooth number distribution), sieve theory (Rosser–Iwaniec bounds), and the recent revolution in prime gap research (Maynard–Tao methods).\n\n**Broader Connections**: Closing the gap between the known lower bound $k^{1/2-o(1)}$ and the conjectured $k^{1-o(1)}$ would likely require fundamentally new ideas about how smooth numbers cluster in short intervals. Progress on this problem could also impact computational number theory, where smooth number distribution is central to the complexity of integer factorization algorithms.",
     "openQuestions": [
       "Is the true order of $S(k)$ closer to $k$ (as Erdős conjectured) or to $k^{1/2}$ (the current lower bound)?",
       "Can the Rosser sieve lower bound $k^{1/2-o(1)}$ be improved, perhaps using the Maynard–Tao sieve or other modern techniques?",

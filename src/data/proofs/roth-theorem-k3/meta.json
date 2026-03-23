@@ -55,7 +55,8 @@
       "**Density Increment:** A large Fourier coefficient implies $A$ has density $\\geq \\delta + c\\delta^2$ on some arithmetic progression of length $\\geq N^{2/3}$. The set is 'denser than expected' on a structured subset.",
       "**Iteration Bound:** The density increment step can repeat at most $O(1/\\delta)$ times before density exceeds 1 — impossible. This forces a 3-AP to exist in any set of density $\\delta \\gg 1/\\log N$ (Roth's bound).",
       "**Paradigm for Additive Combinatorics:** Roth's density increment method (1953) pioneered the approach used by Szemerédi (1975, regularity lemma) and Green-Tao (2004, primes contain arbitrarily long APs). The dichotomy 'structured or pseudorandom' is the central theme."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

@@ -60,6 +60,13 @@
       "The independent set bound n^2/(2m+n) is tight for regular graphs and was the best known for general sparse graphs for decades",
       "Property B results demonstrate that the alteration method applies beyond graph theory to hypergraph coloring",
       "The alteration method can be derandomized via the method of conditional expectations, converting the existence proof into an efficient deterministic algorithm — this is the algorithmic significance of keeping the alteration step simple"
+    ],
+    "prerequisites": [
+      "Probabilistic method and first moment principle",
+      "Independent sets in graphs and vertex deletion",
+      "Linearity of expectation",
+      "Property B and hypergraph 2-colorability",
+      "Optimization of probability parameters"
     ]
   },
   "sections": [

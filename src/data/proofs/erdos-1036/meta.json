@@ -38,7 +38,8 @@
       "**Universality Connection:** Prömel-Rödl (Problem 1031) shows non-Ramsey graphs are c·log(n)-universal, giving a weaker 2^{Ω((log n)²)} bound via a cleaner argument",
       "**Random-Like Behavior:** Non-Ramsey graphs satisfy i(G) = 2^{Θ(n)}, qualitatively matching random graphs G(n,1/2) which have i(G) = (1-o(1))·2^n",
       "**Shelah's Technique:** The proof uses a sophisticated partition argument and the Hales-Jewett theorem to extract exponentially many distinct induced patterns"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -156,7 +157,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1036 asks whether non-Ramsey graphs must contain exponentially many non-isomorphic induced subgraphs. Shelah (1998) proved YES: i(G) ≥ 2^{c'n}. The formalization captures the full history from Erdős-Hajnal 1989 through Alon-Hajnal 1991 to Shelah 1998, includes complement symmetry arguments, and connects to Prömel-Rödl universality (Problem 1031) for an alternative proof path.",
-    "implications": "Shelah's theorem reveals a deep connection between Ramsey-theoretic structure avoidance and combinatorial complexity. Graphs that lack homogeneous structure must compensate with exponential diversity in their induced subgraph patterns. This connects to quasi-randomness (non-Ramsey graphs share properties with random graphs), the Erdős-Hajnal conjecture (on induced subgraphs in H-free graphs), and computational complexity (graph isomorphism testing in structured graph classes).",
+    "implications": "**Theoretical Significance**: Shelah's theorem reveals a deep connection between Ramsey-theoretic structure avoidance and combinatorial complexity.\n\n**Broader Connections**: Graphs that lack homogeneous structure must compensate with exponential diversity in their induced subgraph patterns. This connects to quasi-randomness (non-Ramsey graphs share properties with random graphs), the Erdős-Hajnal conjecture (on induced subgraphs in H-free graphs), and computational complexity (graph isomorphism testing in structured graph classes).",
     "openQuestions": [
       "What is the optimal constant c' = c'(c) in Shelah's theorem 2^{c'n}? Current methods do not give explicit bounds.",
       "Can non-Ramsey graphs be efficiently constructed, and can their distinct induced subgraphs be efficiently enumerated?",

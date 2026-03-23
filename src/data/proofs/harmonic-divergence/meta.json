@@ -61,6 +61,12 @@
       "The divergence is extremely slow: $H_n \\approx \\ln(n) + \\gamma$ where $\\gamma \\approx 0.5772$ is the Euler-Mascheroni constant",
       "Slight modification to $\\sum 1/n^p$ converges for any $p > 1$—the harmonic series is at the boundary",
       "**Multiplicative number theory connection**: The harmonic sum $H_n \\sim \\ln n$ underlies the natural density and logarithmic density of number-theoretic sets; the divergence of $\\sum 1/p$ over primes (Euler's theorem) is a refinement of harmonic divergence"
+    ],
+    "prerequisites": [
+      "Real analysis and series convergence",
+      "Comparison tests for series",
+      "Finset.sum and partial sums from Mathlib",
+      "Logarithmic bounds and integral test"
     ]
   },
   "sections": [

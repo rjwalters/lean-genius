@@ -38,6 +38,12 @@
       "Erdős-Szemerédi upper bound $\\exp(c(\\log|A|)^2 \\log\\log|A|)$ shows the growth is subexponential — so the true rate is between polynomial and subexponential",
       "For distinct primes, $|\\text{subsetProducts}(A)| = 2^{|A|} - 1$ (unique factorization), showing multiplicative richness; but their sums may collide",
       "The problem embodies the 'sum-product phenomenon': a set cannot simultaneously have additive structure (few subset sums) and multiplicative structure (few subset products)"
+    ],
+    "prerequisites": [
+      "Sumsets and product sets",
+      "Additive vs multiplicative structure",
+      "Combinatorial number theory",
+      "Arithmetic combinatorics"
     ]
   },
   "sections": [

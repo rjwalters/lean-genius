@@ -42,6 +42,13 @@
       "k≥4 requires hypergraph regularity lemma, not available in Mathlib",
       "Quantitative bounds: Kelley-Meka (2023) gives r₃(N) ≤ N·exp(-c(log N)^{1/12})",
       "Lower bound: Behrend (1946) shows r₃(N) ≥ N·exp(-c√(log N))"
+    ],
+    "prerequisites": [
+      "Basic combinatorics and finite set theory",
+      "Arithmetic progressions and additive number theory",
+      "Density and asymptotic analysis (o-notation, limits)",
+      "Szemerédi regularity lemma (for understanding the proof chain)",
+      "Roth's theorem and the corners theorem (k=3 case)"
     ]
   },
   "sections": [

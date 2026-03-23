@@ -230,7 +230,7 @@
   ],
   "conclusion": {
     "summary": "V3 CONCLUSION: We identify the precise structural obstruction to ruling out Type II blowup — the SCALE MISMATCH between the parabolic scale √(T*-t) and the diffusion scale R_diff = √(ν/Ω). The Bubble Persistence hypothesis B′ is the MINIMAL condition bridging this gap.\n\nThe conditional theorem is:\n• CKN ε-regularity (PROVEN)\n• Enstrophy ODE bound (PROVEN)\n• Scale bridge via B′ (HYPOTHESIS)\n• Type I concentration (PROVEN for Type I)\n• Backward uniqueness (PROVEN)\n\nResult: B′ → Type I only → ESŠ → regularity",
-    "implications": "WHAT V3 REVEALS:\n\n1. DIAGNOSTIC VALUE: This is not 'just conditional.' Any unconditional proof MUST rule out failure of B′ (cascade/escape mechanisms).\n\n2. MINIMAL HYPOTHESIS: B′ is strictly weaker than Seregin's LPS condition but still captures the essential anti-escape requirement.\n\n3. SCALE INVARIANCE: The quantity A(r) = (1/r)∫|∇u|² is scale-invariant under NS scaling, making B′ a structural condition.\n\n4. COMPARISON:\n   • Barker-Prange: Type I only (scales match)\n   • Seregin: LPS condition (stronger than B′)\n   • Our B′: Minimal scale-bridging (weaker, more tractable?)\n\n5. MILLENNIUM PRIZE: Still UNSOLVED. We've clarified what it would take to solve it.",
+    "implications": "**Theoretical Significance**: WHAT V3 REVEALS:\n\n1. DIAGNOSTIC VALUE: This is not 'just conditional.' Any unconditional proof MUST rule out failure of B′ (cascade/escape mechanisms).\n\n2. MINIMAL HYPOTHESIS: B′ is strictly weaker than Seregin's LPS condition but still captures the essential anti-escape requirement.\n\n3.\n\n**Broader Connections**: SCALE INVARIANCE: The quantity A(r) = (1/r)∫|∇u|² is scale-invariant under NS scaling, making B′ a structural condition.\n\n4. COMPARISON:\n   • Barker-Prange: Type I only (scales match)\n   • Seregin: LPS condition (stronger than B′)\n   • Our B′: Minimal scale-bridging (weaker, more tractable?)\n\n5. MILLENNIUM PRIZE: Still UNSOLVED. We've clarified what it would take to solve it.",
     "openQuestions": [
       "Can B′ be proven in restricted settings (axisymmetric, periodic, finite energy)?",
       "Can B′ be weakened to finitely many dyadic scales?",
@@ -241,18 +241,46 @@
   },
   "references": [
     {
-      "authors": "Navier, Claude-Louis",
+      "authors": "Navier, C.L.M.H.",
       "title": "Mémoire sur les lois du mouvement des fluides",
-      "year": "1823",
-      "venue": "Mémoires de l'Académie Royale des Sciences de l'Institut de France 6, 389–440",
-      "note": "First derivation of the Navier-Stokes equations from molecular considerations"
+      "year": "1822",
+      "venue": "Mémoires de l'Académie Royale des Sciences de l'Institut de France",
+      "note": "First derivation of the equations of motion for viscous fluids"
     },
     {
-      "authors": "Fefferman, Charles L.",
-      "title": "Existence and Smoothness of the Navier-Stokes Equation",
-      "year": "2000",
-      "venue": "Clay Mathematics Institute Millennium Problems",
-      "note": "Official problem statement for the $1 million Clay prize — global regularity in 3D remains open"
+      "authors": "Stokes, G.G.",
+      "title": "On the theories of the internal friction of fluids in motion",
+      "year": "1845",
+      "venue": "Transactions of the Cambridge Philosophical Society 8, 287–305",
+      "note": "Established the modern form of the equations now bearing both names"
+    },
+    {
+      "authors": "Leray, J.",
+      "title": "Sur le mouvement d'un liquide visqueux emplissant l'espace",
+      "year": "1934",
+      "venue": "Acta Mathematica 63, 193–248",
+      "note": "Foundational paper proving existence of weak solutions and introducing the blowup scenario — the starting point for the regularity problem"
+    },
+    {
+      "authors": "Caffarelli, L.; Kohn, R.; Nirenberg, L.",
+      "title": "Partial regularity of suitable weak solutions of the Navier-Stokes equations",
+      "year": "1982",
+      "venue": "Communications on Pure and Applied Mathematics 35(6), 771–831",
+      "note": "The CKN ε-regularity theorem: singular sets have 1-dimensional parabolic Hausdorff measure zero — the key tool used in the conditional regularity analysis"
+    },
+    {
+      "authors": "Escauriaza, L.; Seregin, G.; Šverák, V.",
+      "title": "L₃,∞-solutions of Navier-Stokes equations and backward uniqueness",
+      "year": "2003",
+      "venue": "Russian Mathematical Surveys 58(2), 211–250",
+      "note": "Proved Type I blowup exclusion via backward uniqueness — the ESŠ theorem that closes the proof chain when concentration at parabolic scale is established"
+    },
+    {
+      "authors": "Ladyzhenskaya, O.A.",
+      "title": "The Mathematical Theory of Viscous Incompressible Flow",
+      "year": "1969",
+      "venue": "Gordon and Breach, 2nd edition",
+      "note": "Proved global existence and uniqueness for 2D Navier-Stokes — the unconditional result formalized in this file"
     }
   ],
   "crossReferences": [
@@ -312,49 +340,5 @@
     "navier-stokes-oq-02",
     "lebesgue-measure",
     "fourier-series"
-  ],
-  "references": [
-    {
-      "authors": "Navier, C.L.M.H.",
-      "title": "Mémoire sur les lois du mouvement des fluides",
-      "year": "1822",
-      "venue": "Mémoires de l'Académie Royale des Sciences de l'Institut de France",
-      "note": "First derivation of the equations of motion for viscous fluids"
-    },
-    {
-      "authors": "Stokes, G.G.",
-      "title": "On the theories of the internal friction of fluids in motion",
-      "year": "1845",
-      "venue": "Transactions of the Cambridge Philosophical Society 8, 287–305",
-      "note": "Established the modern form of the equations now bearing both names"
-    },
-    {
-      "authors": "Leray, J.",
-      "title": "Sur le mouvement d'un liquide visqueux emplissant l'espace",
-      "year": "1934",
-      "venue": "Acta Mathematica 63, 193–248",
-      "note": "Foundational paper proving existence of weak solutions and introducing the blowup scenario — the starting point for the regularity problem"
-    },
-    {
-      "authors": "Caffarelli, L.; Kohn, R.; Nirenberg, L.",
-      "title": "Partial regularity of suitable weak solutions of the Navier-Stokes equations",
-      "year": "1982",
-      "venue": "Communications on Pure and Applied Mathematics 35(6), 771–831",
-      "note": "The CKN ε-regularity theorem: singular sets have 1-dimensional parabolic Hausdorff measure zero — the key tool used in the conditional regularity analysis"
-    },
-    {
-      "authors": "Escauriaza, L.; Seregin, G.; Šverák, V.",
-      "title": "L₃,∞-solutions of Navier-Stokes equations and backward uniqueness",
-      "year": "2003",
-      "venue": "Russian Mathematical Surveys 58(2), 211–250",
-      "note": "Proved Type I blowup exclusion via backward uniqueness — the ESŠ theorem that closes the proof chain when concentration at parabolic scale is established"
-    },
-    {
-      "authors": "Ladyzhenskaya, O.A.",
-      "title": "The Mathematical Theory of Viscous Incompressible Flow",
-      "year": "1969",
-      "venue": "Gordon and Breach, 2nd edition",
-      "note": "Proved global existence and uniqueness for 2D Navier-Stokes — the unconditional result formalized in this file"
-    }
   ]
 }

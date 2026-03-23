@@ -138,12 +138,19 @@
       "**TypeII regions** (horizontally simple) are the dual of TypeI: D = {(x,y) | c≤y≤d, h(y)≤x≤k(y)} — enables the Q contribution via symmetric FTC",
       "**Disk membership** (x,y)∈disk ↔ x²+y²≤r²: proved via abs_le + sqrt_le_sqrt + sq_le_sq' for both directions",
       "**Semicircle area from disk**: disk integrand 2√(r²-x²) = 2 × semicircle integrand √(r²-x²), so semicircle_area = disk_area/2 = πr²/2"
+    ],
+    "prerequisites": [
+      "Green's theorem: line integral to double integral",
+      "Iterated integrals and Fubini's theorem",
+      "Fundamental theorem of calculus for interval integrals",
+      "Simply-connected planar regions (Type I and Type II)",
+      "Partial derivatives and continuously differentiable functions"
     ]
   },
   "conclusion": {
     "summary": "OQ-03 is answered YES with substantial proof content: 31 theorems, 3 axioms, 0 sorries. The abstract GreenRegion is replaced by both TypeI and TypeII concrete region structures. The Inner FTC is proved for both region types — the P contribution (TypeI) and Q contribution (TypeII) — which are the two halves of the standard Green's theorem proof. Disk and semicircle are concrete examples with full membership characterization.",
     "significance": "Proves the two FTC halves of Green's theorem (the P and Q contributions) completely, with zero axioms. The remaining axiom is only for combining them (requires Fubini for variable limits). Demonstrates Lean 4 can model the Apostol/Rudin textbook proof structure.",
-    "implications": "Enables formalization of vector calculus on curved-boundary domains. TypeI+TypeII framework covers rectangles, disks, and convex regions. The inner FTC results are reusable infrastructure for any Green's theorem application.",
+    "implications": "**Theoretical Significance**: Enables formalization of vector calculus on curved-boundary domains.\n\n**Broader Connections**: TypeI+TypeII framework covers rectangles, disks, and convex regions. The inner FTC results are reusable infrastructure for any Green's theorem application.",
     "openQuestions": [
       "Prove the remaining axiom: full Green's theorem for TypeI regions (combining P+Q contributions requires Fubini for variable limits)",
       "Prove disk_area_eq_pi: ∫_{-r}^{r} 2√(r²-x²) dx = πr² (requires antiderivative x√(r²-x²)/2 + r²arcsin(x/r)/2)",

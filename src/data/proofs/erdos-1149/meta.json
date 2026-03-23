@@ -95,6 +95,13 @@
       "Integer α is degenerate: ⌊n^k⌋ = n^k, so gcd(n, n^k) = n, and only n=1 is coprime — the non-integer hypothesis is necessary, not just convenient",
       "The proof uses π > 3 (available in Mathlib) to show 6/π² < 1, though the weaker π > √6 ≈ 2.449 would suffice",
       "The axiomatization is well-motivated: Bergelson-Richter's proof requires ergodic theory and multiplicative function theory far beyond current Mathlib"
+    ],
+    "prerequisites": [
+      "Natural number coprimality (Nat.Coprime, gcd)",
+      "Floor function and real exponentiation (Nat.floor, rpow)",
+      "Natural density via Filter.Tendsto",
+      "Bounds on pi (Real.pi_pos, Real.pi_gt_three)",
+      "Divisibility and powers (dvd_pow_self)"
     ]
   },
   "sections": [

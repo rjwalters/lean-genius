@@ -87,7 +87,8 @@
       "**Decidable representability via brute-force search**: The checker iterates over all $(x,y,z) \\in \\{0, \\ldots, \\lfloor\\sqrt{b}\\rfloor\\}^3$ with proved soundness and completeness, enabling kernel-verified computation within Lean for specific values of $n$",
       "**Reformulation avoids $\\mathbb{N}$ subtraction**: The equation $x^2 + y^2 = z^2 + n$ rather than $x^2 + y^2 - z^2 = n$ sidesteps truncated subtraction in natural numbers, a common formalization pitfall in Lean",
       "**The search space is $O(n^{3/2})$**: Since $\\max(x^2, y^2, z^2) \\leq n$ implies $x, y, z \\leq \\lfloor\\sqrt{n}\\rfloor$, the brute-force checker runs in time $O(n^{3/2})$, which is feasible for moderate $n$ but insufficient for resolving the conjecture computationally"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

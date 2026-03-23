@@ -73,7 +73,8 @@
       "In the small-$c$ regime ($c < 1$), for large $n$ the maximum sum $\\sum_{i=1}^{\\lfloor cn \\rfloor} i = \\lfloor cn \\rfloor(\\lfloor cn \\rfloor + 1)/2 < n$, so every subset is non-representing and the answer is simply $\\lfloor cn \\rfloor$",
       "Subset monotonicity (`NonRepresenting` is downward-closed) means the extremal sets achieving the maximum size have a hereditary structure amenable to matroid-theoretic analysis",
       "The NP-completeness of the subset sum problem means computing `maxNonReprSize c n` exactly is computationally intractable, motivating the search for asymptotic bounds rather than exact formulas"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -114,7 +115,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #361 with precise definitions of the subset sum and non-representation predicates, the extremal function `maxNonReprSize` via powerset filtration, the irregularity and growth conjectures, asymptotic bounds using Mathlib's `IsBigO`/`IsTheta`, and three proved structural properties (empty set, subset monotonicity, singleton bound).",
-    "implications": "**Theoretical Significance**\n\n1. **Additive Combinatorics**: Understanding the maximum non-representing subset size connects to Freiman's theorem on sumsets and the structure of sets avoiding prescribed sums\n\n2. **Subset Sum Theory**: The problem is a continuous parameterization of the subset sum avoidance question, bridging combinatorial number theory and computational complexity\n\n3. **Irregularity Phenomena**: A positive answer to the irregularity question would demonstrate that extremal quantities in additive combinatorics can exhibit non-monotone behavior driven by arithmetic structure\n\n4. **Asymptotic Analysis**: The $\\Theta(\\sqrt{n})$ conjecture, if proved, would establish a precise threshold for subset sum saturation in bounded ranges",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Additive Combinatorics**: Understanding the maximum non-representing subset size connects to Freiman's theorem on sumsets and the structure of sets avoiding prescribed sums\n\n2.\n\n**Broader Connections**: **Subset Sum Theory**: The problem is a continuous parameterization of the subset sum avoidance question, bridging combinatorial number theory and computational complexity\n\n3. **Irregularity Phenomena**: A positive answer to the irregularity question would demonstrate that extremal quantities in additive combinatorics can exhibit non-monotone behavior driven by arithmetic structure\n\n4. **Asymptotic Analysis**: The $\\Theta(\\sqrt{n})$ conjecture, if proved, would establish a precise threshold for subset sum saturation in bounded ranges.",
     "openQuestions": [
       "What is the precise growth rate of maxNonReprSize c n? Is it Θ(√n)?",
       "Is the dependence on n truly irregular (non-monotone)?",

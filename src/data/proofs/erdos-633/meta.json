@@ -76,7 +76,8 @@
       "**Integral independence of angles**: If no non-trivial integer relation holds between the angles, dissection constraints force square-only counts. Dependent angles (like equilateral: α = β = γ) allow non-square dissections",
       "**Similar vs congruent**: For similar (not congruent) dissections, the problem is solved: every n except 2, 3, 5 works. The congruent case is much harder",
       "**Open classification**: The precise characterization of square-only triangles is worth $25 — conjectured to be integral independence"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -138,7 +139,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #633 asks for a classification of triangles that can only be dissected into perfect square numbers of congruent triangles. Soifer showed the triangle (√2, √3, √4) has this property, connected to the concept of integrally independent angles. Counterexamples include equilateral (3 pieces) and right isosceles (2 pieces) triangles, whose angle dependence enables non-square dissections. The complete classification remains OPEN with a $25 prize.",
-    "implications": "This problem sits at the intersection of combinatorial geometry, tiling theory, and algebraic number theory. The constraint that dissection counts must be perfect squares arises from algebraic relationships between triangle side lengths and angles, connecting to linear independence over the rationals. The contrast between the solved similar case (n ≠ 2,3,5) and the open congruent case highlights how congruence constraints add significant complexity to tiling problems.",
+    "implications": "**Theoretical Significance**: This problem sits at the intersection of combinatorial geometry, tiling theory, and algebraic number theory.\n\n**Broader Connections**: The constraint that dissection counts must be perfect squares arises from algebraic relationships between triangle side lengths and angles, connecting to linear independence over the rationals. The contrast between the solved similar case (n ≠ 2,3,5) and the open congruent case highlights how congruence constraints add significant complexity to tiling problems.",
     "openQuestions": [
       "Give a complete characterization of square-only triangles (the $25 prize!)",
       "Is integral independence of angles both necessary and sufficient for the square-only property?",

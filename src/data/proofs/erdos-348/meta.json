@@ -73,7 +73,8 @@
       "**Strong vs weak completeness matters**: Van Doorn's theorem shows that strong completeness (all integers representable) is too rigid to allow 2-robustness. But weak completeness (all sufficiently large integers) may be more flexible, since the finitely many exceptions can absorb some of the damage from deletions",
       "**The gap property constrains complete sequences**: A complete sequence must have eventually bounded gaps — if $a_{n+1} - a_n \\to \\infty$, then large integers in the gap cannot be represented. This structural constraint limits the design space for robust sequences",
       "**The $(2,3)$ case is the critical test**: If $(2, 3)$ is valid, it suggests all $(m, m+1)$ might be valid (perhaps via increasingly complex constructions). If not, it would establish a phase transition at $m = 2$ where robustness becomes qualitatively different"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -142,7 +143,7 @@
   ],
   "conclusion": {
     "summary": "This 256-line formalization of Erdős Problem #348 defines completeness, robustness, and the valid pairs set, then constructs witnesses for (0,1) via powers of 2 and (1,2) via Fibonacci numbers. Van Doorn's theorem constrains the strongly complete case. The representation count and gap property provide structural context. The main conjecture is formalized as a disjunction about whether all (m, m+1) pairs are valid. Seven sorries remain, mostly in the Zeckendorf-based arguments.",
-    "implications": "Resolution would reveal whether completeness robustness has a finite or infinite hierarchy. An infinite hierarchy (all (m, m+1) valid) would require constructing increasingly resilient sequences — possibly using number-theoretic constructions with growing redundancy. A finite cutoff would establish a phase transition where robustness becomes qualitatively different, connecting to the theory of additive bases of finite order.",
+    "implications": "**Theoretical Significance**: Resolution would reveal whether completeness robustness has a finite or infinite hierarchy.\n\n**Broader Connections**: An infinite hierarchy (all (m, m+1) valid) would require constructing increasingly resilient sequences — possibly using number-theoretic constructions with growing redundancy. A finite cutoff would establish a phase transition where robustness becomes qualitatively different, connecting to the theory of additive bases of finite order.",
     "openQuestions": [
       "Is (2, 3) valid for weak completeness — does there exist a complete sequence surviving any 2 deletions but not some 3?",
       "Is (m, m+1) valid for all m ∈ ℕ, or is there a cutoff k?",

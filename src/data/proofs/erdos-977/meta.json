@@ -33,7 +33,8 @@
       "**Zsygmondy's primitive divisors**: For $n > 6$, $2^n - 1$ has a prime factor $p \\nmid 2^k - 1$ for all $k < n$; such $p$ has $\\text{ord}_p(2) = n$, so $p \\equiv 1 \\pmod{n}$, giving $P(2^n-1) \\ge n+1$ — the starting point for all stronger bounds",
       "**Mersenne prime extremes**: When $M_n = 2^n - 1$ is prime, $P(M_n) = 2^n - 1 \\gg 2^n$, exponentially exceeding any polynomial bound — these are the extreme cases where the greatest prime factor is as large as possible",
       "**Open analogue $P(n!+1)$**: The question $P(n!+1)/(n\\log n) \\to \\infty$ remains open despite Lai's 2021 partial result; the factorial structure resists the cyclotomic decomposition that enables Stewart's approach for $2^n - 1$"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

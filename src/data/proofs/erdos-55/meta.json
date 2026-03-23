@@ -34,7 +34,8 @@
       "**36-year Burr-Erdős gap closed**: For $r=2$, the gap between $(\\log N)^2$ and $(\\log N)^3$ from 1985 is now resolved to $(\\log N)^2$",
       "**Powers are Ramsey complete**: The $k$-th powers $\\{1^k, 2^k, \\ldots\\}$ are Ramsey $r$-complete (Burr), but with polynomial growth far above the logarithmic optimum",
       "**Probabilistic method throughout**: Both the construction (upper bound) and the impossibility proof (lower bound) rely on probabilistic arguments over colorings"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -127,7 +128,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the complete resolution of Erdős Problem #55, a $250 prize problem open for 36 years. The key definitions — Ramsey r-completeness via colorings, monochromatic subsets, and finite sums — lead to the Conlon-Fox-Pham (2021) characterization: the optimal growth rate is Θ(r(log N)²). The Lean proof combines the upper and lower bounds directly, and derives the historically significant r=2 corollary that closes the Burr-Erdős (log N)² vs (log N)³ gap.",
-    "implications": "The tight Θ(r(log N)²) bound establishes the precise relationship between set density and Ramsey-theoretic robustness in additive combinatorics. The linear factor r quantifies the exact cost of additional colors. The techniques — probabilistic constructions and adversarial coloring arguments — have influenced subsequent work on subset sum problems and partition regularity.",
+    "implications": "**Theoretical Significance**: The tight Θ(r(log N)²) bound establishes the precise relationship between set density and Ramsey-theoretic robustness in additive combinatorics.\n\n**Broader Connections**: The linear factor r quantifies the exact cost of additional colors. The techniques — probabilistic constructions and adversarial coloring arguments — have influenced subsequent work on subset sum problems and partition regularity.",
     "openQuestions": [
       "What is the exact value of the universal constant c in the lower bound cr(log N)²?",
       "Can deterministic (non-probabilistic) constructions achieve the Θ(r(log N)²) growth rate?",

@@ -75,6 +75,12 @@
       "**Only 5 known Fermat primes**: $F_0 = 3, F_1 = 5, F_2 = 17, F_3 = 257, F_4 = 65537$. Euler showed $F_5 = 641 \\times 6700417$ in 1732. Whether finitely or infinitely many Fermat primes exist is one of the oldest open problems in number theory.",
       "**The $(\\mathbb{Z}/n\\mathbb{Z})^*$ bridge**: `units_zmod_is_2group_iff` proves that the unit group is a 2-group $\\iff$ $\\varphi(n) = 2^k$, directly connecting OQ02's Galois criterion to the totient criterion without going through field theory.",
       "**The axiom gap**: The Gauss-Wantzel theorem is axiomatized because Mathlib has the ingredients (`IsCyclotomicExtension`, `ZMod.unitsEquivCoprime`, cyclotomic degree) but not the assembled statement. Estimated ~300 lines to prove from existing Mathlib infrastructure."
+    ],
+    "prerequisites": [
+      "Euler's totient function and its basic properties",
+      "Fermat primes and their characterization",
+      "Galois theory (cyclotomic extensions, 2-groups)",
+      "Compass-and-straightedge constructibility criteria (from OQ-01, OQ-02)"
     ]
   },
   "sections": [

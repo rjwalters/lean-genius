@@ -83,6 +83,12 @@
       "For n ≥ 3, -1 ≠ 1 in (ℤ/nℤ)* because n | 2 fails, giving a non-trivial order-2 automorphism",
       "Chebyshev polynomials Tₙ(cos θ) = cos(nθ) provide the polynomial framework for cos(2π/n)",
       "[RESOLVED] All former axioms (maximal_real_subfield_degree, cos_minimal_poly_degree, cos_extension_is_galois) have been fully proved — the file now has 0 axioms"
+    ],
+    "prerequisites": [
+      "Cyclotomic polynomials and their properties",
+      "Unit group of ZMod n and its structure",
+      "Chebyshev polynomials and cos(2pi/n)",
+      "Galois theory of cyclotomic extensions"
     ]
   },
   "sections": [
@@ -137,7 +143,7 @@
   ],
   "conclusion": {
     "summary": "This file bridges the Gauss-Wantzel constructibility theorem to Mathlib's cyclotomic infrastructure. All former axioms have been fully eliminated — 0 axioms, 0 sorries in 740 lines. Key results include cos(2π/n) algebraicity via Chebyshev polynomials and complex conjugation as order-2 automorphism via galCyclotomicEquivUnitsZMod.",
-    "implications": "**Mathematical Significance**\n\n1. **Infrastructure bridge**: Connects two independently developed parts of the formalization (constructibility theory and cyclotomic fields).\n2. **Galois theory application**: The complex_conj_order_two proof demonstrates practical use of galCyclotomicEquivUnitsZMod.\n3. **Clear axiom roadmap**: The 3 remaining axioms have well-defined proof strategies and effort estimates.\n4. **Chebyshev connection**: Shows how Chebyshev polynomials provide the algebraic framework for trigonometric constructibility.",
+    "implications": "**Theoretical Significance**: **Mathematical Significance**\n\n1. **Infrastructure bridge**: Connects two independently developed parts of the formalization (constructibility theory and cyclotomic fields).\n2.\n\n**Broader Connections**: **Galois theory application**: The complex_conj_order_two proof demonstrates practical use of galCyclotomicEquivUnitsZMod.\n3. **Clear axiom roadmap**: The 3 remaining axioms have well-defined proof strategies and effort estimates.\n4. **Chebyshev connection**: Shows how Chebyshev polynomials provide the algebraic framework for trigonometric constructibility.",
     "openQuestions": [
       "Can maximal_real_subfield_degree be proved from the tower law and complex conjugation order?",
       "Can the explicit minimal polynomial of cos(2π/n) be computed via the Chebyshev substitution in Φₙ?",
@@ -223,7 +229,9 @@
       "Mathlib",
       "Proofs.AngleTrisectionEmbedding"
     ],
-    "opens": ["Polynomial"],
+    "opens": [
+      "Polynomial"
+    ],
     "namespace": "AngleTrisectionOQ02OQ03OQ01",
     "lineCount": 740,
     "axiomCount": 0,

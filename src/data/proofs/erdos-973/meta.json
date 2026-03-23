@@ -71,7 +71,8 @@
       "**L. Erdős 1992:** Tight bounds (1.746)^{-n} < M₂ < (1.745)^{-n} for unit circle",
       "**Turán's bound:** (2e)^{-(1+o(1))n} ≈ (5.44)^{-(1+o(1))n} for |z_i| ≥ 1",
       "**Dirichlet connection:** Power sums of n^{it} yield Dirichlet sums, linking to L-function theory"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -140,7 +141,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #973 asks about minimizing power sums max|∑z_i^k| for sequences with z₁ = 1 and modulus constraints. The original question (|z_i| ≥ 1) remains open, but three partial results are formalized: Erdős's C ≈ 1.32 for the unit disk, L. Erdős's optimal C ≈ 1.7455 for the unit circle, and Turán's (2e)^{-n} lower bound for the exterior.",
-    "implications": "Turán's power sum method is fundamental in analytic number theory. Power sum bounds directly relate to Dirichlet polynomial estimates, L-function zero-free regions, and equidistribution theory. The three-regime structure illustrates how geometry constrains extremal behavior.",
+    "implications": "**Theoretical Significance**: Turán's power sum method is fundamental in analytic number theory.\n\n**Broader Connections**: Power sum bounds directly relate to Dirichlet polynomial estimates, L-function zero-free regions, and equidistribution theory. The three-regime structure illustrates how geometry constrains extremal behavior.",
     "openQuestions": [
       "Does C > 1 exist for the original |z_i| ≥ 1 question?",
       "Sharper bounds between 1.745 and 1.746 for unit circle?",

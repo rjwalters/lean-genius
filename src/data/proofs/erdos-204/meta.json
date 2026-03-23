@@ -68,7 +68,8 @@
       "**Covering Necessity:** To cover all integers, one must use 'enough' divisors. The pigeonhole principle (via $\\sum 1/d_i \\geq 1$) means many pairs of divisors must be used, and divisibility among them is unavoidable.",
       "**Density Question:** Even though full covering is impossible, maximizing the density of covered integers under the disjointness constraint remains an interesting optimization problem.",
       "**Hough's Theorem Connection:** Hough (2015) showed that covering systems with distinct moduli $> 1$ satisfy $\\sum 1/d_i \\geq 1$. This reciprocal-sum constraint interacts with the divisibility structure."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -158,7 +159,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #204 is SOLVED. Adenwalla (2025) proved that no n > 1 admits a covering system by its divisors that is 'as disjoint as possible' (overlaps only for coprime moduli). The key obstruction is that divisibility among divisors forces gcd(d, d') > 1, violating the disjointness requirement. The formalization includes the verified obstruction proof (divisor_pair_not_coprime) and derives the universal failure from the axiomatized main theorem.",
-    "implications": "**Connections and Implications**\n\n1. **Covering System Theory:** This resolves a 45-year-old conjecture of Erdős and Graham (1980), deepening our understanding of the constraints on covering systems\n\n2. **Hough's Theorem (2015):** Related resolution of another Erdős conjecture: covering systems with distinct moduli $> 1$ satisfy $\\sum 1/d_i \\geq 1$. Both results show that covering constraints are quite restrictive\n\n3. **Chinese Remainder Theorem:** The CRT is central: for coprime moduli, residue classes are independent; for non-coprime moduli, they interact. The disjointness constraint demands independence, but divisibility prevents it\n\n4. **Optimization Variant:** The related problem of maximizing covered density under the disjointness constraint remains open and interesting\n\n5. **Computational Verification:** The n = 6 example is verified by `native_decide`, and the obstruction for divisible pairs is formally proved",
+    "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Covering System Theory:** This resolves a 45-year-old conjecture of Erdős and Graham (1980), deepening our understanding of the constraints on covering systems\n\n2. **Hough's Theorem (2015):** Related resolution of another Erdős conjecture: covering systems with distinct moduli $> 1$ satisfy $\\sum 1/d_i \\geq 1$. Both results show that covering constraints are quite restrictive\n\n3.\n\n**Broader Connections**: **Chinese Remainder Theorem:** The CRT is central: for coprime moduli, residue classes are independent; for non-coprime moduli, they interact. The disjointness constraint demands independence, but divisibility prevents it\n\n4. **Optimization Variant:** The related problem of maximizing covered density under the disjointness constraint remains open and interesting\n\n5. **Computational Verification:** The n = 6 example is verified by `native_decide`, and the obstruction for divisible pairs is formally proved.",
     "openQuestions": [
       "For given n, what is the maximum density of integers coverable by a 'disjoint' assignment to divisors of n?",
       "If we allow some non-divisor moduli in addition to divisors of n, can disjoint covering be achieved?",

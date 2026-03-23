@@ -36,7 +36,8 @@
       "The optimal density threshold for Ramsey completeness is (log N)²",
       "Conlon-Fox-Pham improved Burr-Erdős's (log N)³ bound to the optimal (log N)²",
       "Lagrange's four squares theorem is related but doesn't directly imply Ramsey completeness"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -98,7 +99,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #843 asked whether the perfect squares are Ramsey 2-complete: in any 2-coloring, can every large integer be written as a monochromatic sum of distinct squares? The answer is YES, proved by Conlon, Fox, and Pham (2021) via a stronger result about sparse Ramsey complete subsequences of k-th powers.",
-    "implications": "The resolution establishes that squares (and all k-th powers) have the strong Ramsey completeness property. The (log N)² density bound is optimal, answering questions about the sparsest possible Ramsey complete sequences. This connects number theory (sums of powers) with Ramsey theory (colorings).",
+    "implications": "**Theoretical Significance**: The resolution establishes that squares (and all k-th powers) have the strong Ramsey completeness property.\n\n**Broader Connections**: The (log N)² density bound is optimal, answering questions about the sparsest possible Ramsey complete sequences. This connects number theory (sums of powers) with Ramsey theory (colorings).",
     "openQuestions": [
       "Are there other natural sequences (beyond k-th powers) that are Ramsey r-complete?",
       "What is the exact constant in the (log N)² density bound?",

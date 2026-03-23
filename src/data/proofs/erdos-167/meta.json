@@ -41,6 +41,12 @@
       "Best general bound: τ ≤ (3 - 3/23)ν ≈ 2.87ν (Haxell-Kohayakawa)",
       "Fractional version is true: τ* ≤ 2ν*",
       "Proven for special classes: K₄-free, planar, random graphs"
+    ],
+    "prerequisites": [
+      "graph theory fundamentals",
+      "triangle packing and covering",
+      "extremal combinatorics",
+      "linear programming relaxation"
     ]
   },
   "sections": [
@@ -96,7 +102,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #167 (Tuza's Conjecture) is PARTIALLY SOLVED. This formalization includes three Aristotle-verified theorems: the trivial 3ν bound and tightness examples K₄ and K₅. The conjecture τ ≤ 2ν remains open for general graphs.",
-    "implications": "Tuza's conjecture sits at the intersection of extremal graph theory, combinatorial optimization, and polyhedral combinatorics. The fractional version $\\tau^* = 2\\nu^*$ (proved via LP duality) shows the conjecture holds 'on average' — the obstruction is purely an integrality gap question. If the conjecture holds, it would give a tight characterization of the packing-covering tradeoff for triangles, analogous to König's theorem for bipartite matchings.",
+    "implications": "**Theoretical Significance**: Tuza's conjecture sits at the intersection of extremal graph theory, combinatorial optimization, and polyhedral combinatorics.\n\n**Broader Connections**: The fractional version $\\tau^* = 2\\nu^*$ (proved via LP duality) shows the conjecture holds 'on average' — the obstruction is purely an integrality gap question. If the conjecture holds, it would give a tight characterization of the packing-covering tradeoff for triangles, analogous to König's theorem for bipartite matchings.",
     "openQuestions": [
       "Does $\\tau(G) \\leq 2\\nu(G)$ hold for all graphs? (The main conjecture, open since 1981)",
       "Can the Haxell-Kohayakawa bound $\\tau \\leq 2.87\\nu$ be improved below $2.5\\nu$?",

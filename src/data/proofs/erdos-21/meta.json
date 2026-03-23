@@ -75,6 +75,12 @@
       "**Kahn's Method:** Probabilistic selection of O(n) lines covers all (n-1)-sets",
       "**Conjectured Exact Bound:** f(n) = 3n + O(1)",
       "**Known Values:** f(1)=1, f(2)=3, f(3)=6, f(4)=9, f(5)=13"
+    ],
+    "prerequisites": [
+      "Hypergraph theory and set systems",
+      "Covering numbers and matching in hypergraphs",
+      "Extremal set theory",
+      "Turán-type problems"
     ]
   },
   "sections": [
@@ -144,7 +150,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #21 asked whether an intersecting family of n-sets that covers all (n-1)-sets can have size O(n). Kahn (1994) proved YES, winning the $500 prize. The exact bound is conjectured to be f(n) = 3n + O(1).",
-    "implications": "**Implications**\n\n1. **Probabilistic Combinatorics:** Kahn's proof demonstrates the power of probabilistic methods.\n\n2. **Projective Geometry:** Connections between set families and finite geometry.\n\n3. **Covering Codes:** Applications to covering designs and codes.\n\n4. **Gap Problem:** The gap between lower bound (8/3)n and conjectured 3n remains.",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Probabilistic Combinatorics:** Kahn's proof demonstrates the power of probabilistic methods.\n\n2.\n\n**Broader Connections**: **Projective Geometry:** Connections between set families and finite geometry.\n\n3. **Covering Codes:** Applications to covering designs and codes.\n\n4. **Gap Problem:** The gap between lower bound (8/3)n and conjectured 3n remains.",
     "openQuestions": [
       "Determine the exact leading constant: is f(n) = 3n + O(1)?",
       "Compute f(6) exactly (currently 13 ≤ f(6) ≤ 18)",

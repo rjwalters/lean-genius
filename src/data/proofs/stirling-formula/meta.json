@@ -119,6 +119,12 @@
       "The relative error is approximately $1/(12n)$ for large $n$, with the full asymptotic expansion having rational coefficients in powers of $1/n$",
       "The Wallis product $\\pi/2 = \\prod_{n=1}^\\infty \\frac{4n^2}{4n^2-1}$ is the key: it connects factorial ratios to $\\pi$, explaining why $\\sqrt{\\pi}$ appears as the limit of the Stirling sequence",
       "Stirling's formula extends to the Gamma function: $\\Gamma(x+1) \\sim \\sqrt{2\\pi x}(x/e)^x$ for large real $x$, making it a cornerstone of asymptotic analysis in complex analysis and probability theory"
+    ],
+    "prerequisites": [
+      "Real analysis: limits, asymptotic equivalence (~), sequences",
+      "Factorials and the Gamma function: n! = Γ(n+1)",
+      "The Wallis product: π/2 = ∏(4n²)/(4n²-1)",
+      "Logarithmic approximation: log(n!) ≈ n log n - n + (1/2)log(2πn)"
     ]
   },
   "sections": [

@@ -63,7 +63,8 @@
       "**Phase transition in function theory:** This is one of the cleanest examples of a sharp threshold in complex analysis, where a single parameter completely determines qualitative geometric behavior",
       "**Filter-based formalization:** The escape path condition $|f(\\gamma(t))| \\to \\infty$ is naturally captured by Lean's `Filter.Tendsto` framework, demonstrating the utility of filters for complex analysis",
       "**Negative results in formal mathematics:** The formalization shows how to capture disproof by counterexample in Lean: the main theorem is an existence statement (there exists a function violating the conjecture)"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -104,7 +105,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1115 was **disproved** by Gol'dberg and Eremenko in 1979. While Hayman (1960) showed that escape paths with $\\ell(r) = O(r)$ exist when $\\log M(r) \\ll (\\log r)^2$, counterexamples exist for any growth rate arbitrarily close to this threshold. The formalization captures both the positive result and the counterexample, with the main theorem providing the disproof.",
-    "implications": "The $(\\log r)^2$ threshold reveals a fundamental phase transition in the geometry of entire functions. Below this growth rate, the level curves of $|f|$ are tame enough to allow straight paths to infinity. Above it, the complex-analytic structure permits level curves that wind unboundedly, forcing all escape paths to spiral. This has implications for Wiman-Valiron theory (the study of entire functions near their maximum modulus points) and for understanding the topology of level sets of analytic functions.",
+    "implications": "**Theoretical Significance**: The $(\\log r)^2$ threshold reveals a fundamental phase transition in the geometry of entire functions. Below this growth rate, the level curves of $|f|$ are tame enough to allow straight paths to infinity.\n\n**Broader Connections**: Above it, the complex-analytic structure permits level curves that wind unboundedly, forcing all escape paths to spiral. This has implications for Wiman-Valiron theory (the study of entire functions near their maximum modulus points) and for understanding the topology of level sets of analytic functions.",
     "openQuestions": [
       "What is the exact minimum growth rate of $\\ell(r)$ for Gol'dberg-Eremenko counterexamples? Is it $r \\log r$, $r \\log \\log r$, or something else?",
       "Can the counterexample construction be made explicit for specific orders, giving computable entire functions?",

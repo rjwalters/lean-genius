@@ -105,7 +105,8 @@
       "**Hales-Jewett connection**: The Nešetřil-Rödl proof embeds clique structure into combinatorial lines in high-dimensional cubes [m]^n, using Hales-Jewett to guarantee monochromatic combinatorial lines in any coloring.",
       "**Shift graph construction**: Folkman's original proof used shift graphs — vertices are l-element subsets with adjacency from interlacing. This controls clique size (via pigeonhole on minimum elements) while the ordered structure forces Ramsey properties.",
       "**Structural Ramsey theory**: This result is foundational to the broader program of understanding which forbidden subgraph constraints are compatible with Ramsey-type forcing."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -174,7 +175,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #924 asked whether K_{l+1}-free graphs can force monochromatic K_l in every k-coloring of edges. The answer is YES, proved by Folkman (1970) for k=2 and Nešetřil-Rödl (1976) for general k. The formalization captures the complete solution: erdos_924 is defined directly as nesetril_rodl_1976, and a summary theorem combines the general result, Folkman's special case, and f(3;2) existence.",
-    "implications": "This result is foundational to structural Ramsey theory — the study of which combinatorial structures are Ramsey. It shows that Ramsey-type phenomena are not artifacts of having dense subgraphs (like complete graphs) but can emerge from carefully constructed sparse graphs. The Folkman numbers f(l;k) provide quantitative measures of the 'cost' of avoiding large cliques while maintaining Ramsey forcing. Applications extend to bounds on Ramsey numbers, graph coloring complexity, hypergraph extensions (r-uniform hypergraph Folkman numbers), and the broader theory of partition regularity.",
+    "implications": "**Theoretical Significance**: This result is foundational to structural Ramsey theory — the study of which combinatorial structures are Ramsey. It shows that Ramsey-type phenomena are not artifacts of having dense subgraphs (like complete graphs) but can emerge from carefully constructed sparse graphs.\n\n**Broader Connections**: The Folkman numbers f(l;k) provide quantitative measures of the 'cost' of avoiding large cliques while maintaining Ramsey forcing. Applications extend to bounds on Ramsey numbers, graph coloring complexity, hypergraph extensions (r-uniform hypergraph Folkman numbers), and the broader theory of partition regularity.",
     "openQuestions": [
       "What are exact Folkman numbers for larger parameters (e.g., f(4; 2), f(3; 3))?",
       "Can explicit, efficiently constructible Folkman graphs with near-optimal vertex count be found?",

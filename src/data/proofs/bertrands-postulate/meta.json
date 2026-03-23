@@ -57,7 +57,8 @@
       "Erdős's proof is entirely elementary—no complex analysis or calculus required; it was his first published paper, written at age 19, and established a template for elementary proofs in analytic number theory",
       "Nagura's 1952 refinement strengthened Bertrand: for $n > 25$, there is always a prime between $n$ and $6n/5$, reducing the gap ratio from 2 to 1.2; further refinements by Baker-Harman-Pintz (2001) show a prime always exists in $(x, x + x^{0.525})$, much tighter than $[x, 2x]$",
       "Erdős's proof is a prototype of the 'combinatorial sieve' method: bound a combinatorial quantity ($\\binom{2n}{n}$) from below using a global estimate ($\\geq 4^n/2n$) and from above by analyzing its prime factorization — then conclude that the factorization must include primes from the target interval to match. This upper/lower bound 'squeeze' is a recurring motif in analytic and combinatorial number theory"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

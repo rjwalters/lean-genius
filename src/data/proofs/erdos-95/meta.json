@@ -78,7 +78,8 @@
       "**Elekes-Sharir reduction**: The distance problem transforms to a 3D incidence problem: pairs at distance $d$ correspond to lines in $\\mathbb{R}^3$ (parameterizing rigid motions). Distance multiplicities become line concurrencies, which polynomial partitioning can control",
       "**Polynomial partitioning**: Given $n$ points in $\\mathbb{R}^3$, a degree-$D$ polynomial partitions space into $O(D^3)$ cells with $O(n/D^3)$ points each. Optimizing $D$ gives incidence bounds that defeat the trivial $O(n^2)$ estimate",
       "**Convex case is simpler**: In convex position, $O(n)$ distinct distances with multiplicity $O(n)$ gives $\\sum f(d)^2 = O(n^3)$ — no $\\log n$ factor, no polynomial method needed. The general case requires the algebraic machinery"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -140,7 +141,7 @@
   ],
   "conclusion": {
     "summary": "The formalization captures Erdős Problem #95 on the sum of squared distance multiplicities. Guth and Katz (2015) proved ∑f(d)² ≪ n³ log n, strictly stronger than the conjectured n^{3+ε}. The formalization defines the Euclidean plane setup (Point, PointConfig, distanceSet, multiplicity), the target quantity (sumSquaredMultiplicities), Erdős's conjecture, the Guth-Katz axiom, the derivation (1 sorry for log n = o(n^ε)), the convex special case (Fishburn/Altman axiom), and the combined main theorem. 2 sorries. $500 prize collected.",
-    "implications": "**Connections to Combinatorial Geometry**\n\n1. **Distinct Distances**: The Cauchy-Schwarz duality links ∑f(d)² to the distinct distances count — the Guth-Katz bound recovers Ω(n/log n) distinct distances\n2. **Polynomial Method**: Established polynomial partitioning as a fundamental tool in combinatorics, spawning results in incidence geometry, harmonic analysis, and CS theory\n3. **Elekes-Sharir Framework**: The reduction from distances to 3D incidences created a new paradigm for attacking geometric combinatorics problems\n4. **Algebraic Geometry in Combinatorics**: Showed that deep algebraic tools (ruled surfaces, Bezout's theorem) can resolve hard combinatorial problems\n5. **Higher Dimensions**: The techniques extend to higher-dimensional distance problems, though optimal bounds remain open in ℝ³ and beyond",
+    "implications": "**Theoretical Significance**: **Connections to Combinatorial Geometry**\n\n1. **Distinct Distances**: The Cauchy-Schwarz duality links ∑f(d)² to the distinct distances count — the Guth-Katz bound recovers Ω(n/log n) distinct distances\n2. **Polynomial Method**: Established polynomial partitioning as a fundamental tool in combinatorics, spawning results in incidence geometry, harmonic analysis, and CS theory\n3.\n\n**Broader Connections**: **Elekes-Sharir Framework**: The reduction from distances to 3D incidences created a new paradigm for attacking geometric combinatorics problems\n4. **Algebraic Geometry in Combinatorics**: Showed that deep algebraic tools (ruled surfaces, Bezout's theorem) can resolve hard combinatorial problems\n5. **Higher Dimensions**: The techniques extend to higher-dimensional distance problems, though optimal bounds remain open in ℝ³ and beyond.",
     "openQuestions": [
       "Is the $\\log n$ factor in the Guth-Katz bound necessary, or can it be removed for non-lattice configurations?",
       "What is the tight constant $C$ in $\\sum f(d)^2 \\le C \\cdot n^3 \\log n$?",

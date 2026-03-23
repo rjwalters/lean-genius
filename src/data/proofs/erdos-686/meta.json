@@ -43,6 +43,14 @@
       "k ≥ 2 excludes trivial single-factor case",
       "The ratio C(m+k,k)/C(n+k,k) must be an integer — subtle divisibility",
       "For fixed n, k, the representable set is infinite (ratio increases with m)"
+    ],
+    "prerequisites": [
+      "Nat.factorial",
+      "Nat.choose",
+      "Finset.prod",
+      "Rational arithmetic (ℚ)",
+      "Set.Infinite",
+      "native_decide"
     ]
   },
   "sections": [

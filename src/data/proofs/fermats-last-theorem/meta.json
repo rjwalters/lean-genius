@@ -52,6 +52,12 @@
       "**Galois Representations:** The $p$-torsion $E[p]$ gives a 2-dimensional $\\text{Gal}(\\overline{\\mathbb{Q}}/\\mathbb{Q})$-representation. Modularity means this representation 'comes from' a modular form — the bridge between geometry and number theory.",
       "**Taylor-Wiles Patching:** Wiles' proof of modularity uses deformation theory: parameterize all Galois representations with fixed residual $\\bar{\\rho}$ and show the deformation ring $R$ equals the Hecke algebra $\\mathbb{T}$ ($R = \\mathbb{T}$ theorem). Patching constructs auxiliary primes to control Selmer groups.",
       "**Scope of Modularity:** Wiles proved modularity for semistable curves. The full modularity theorem (Breuil-Conrad-Diamond-Taylor, 2001) extends to ALL elliptic curves over $\\mathbb{Q}$."
+    ],
+    "prerequisites": [
+      "Algebraic number theory and ideal class groups",
+      "Modular forms and elliptic curves",
+      "Galois representations and modularity lifting",
+      "Nat.Prime and ring theory from Mathlib"
     ]
   },
   "sections": [

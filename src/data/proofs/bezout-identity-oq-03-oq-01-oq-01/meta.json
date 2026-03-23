@@ -63,7 +63,8 @@
       "Explicit crt3/crt4 use ring to prove associativity a*b*c = a*(b*c) at the ℕ level",
       "All coprimality conditions are decidable, so examples use `by decide`",
       "The k-fold totient multiplicativity φ(∏nᵢ) = ∏φ(nᵢ) is a 'free' corollary: the CRT isomorphism preserves units, so |(ℤ/∏nᵢℤ)*| = ∏|(ℤ/nᵢℤ)*| — the algebraic proof is more natural than the number-theoretic one"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

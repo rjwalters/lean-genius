@@ -55,7 +55,8 @@
       "**Polynomial Inverse:** When $\\det(A) = c_0 \\neq 0$: rearranging $p(A) = 0$ gives $A^{-1} = -c_0^{-1}(A^{n-1} - c_{n-1}A^{n-2} - \\cdots - c_1 I)$. The inverse is a polynomial in $A$ — no Gaussian elimination needed.",
       "**$2 \\times 2$ Case:** $A^2 - \\text{tr}(A) \\cdot A + \\det(A) \\cdot I = 0$. For invertible $A$: $A^{-1} = \\frac{1}{\\det(A)}(\\text{tr}(A) \\cdot I - A)$. This gives the classical adjugate formula directly.",
       "**Minimal vs. Characteristic:** The minimal polynomial $m_A$ divides $p_A$ (by Cayley-Hamilton), so $\\deg(m_A) \\leq n$. Equality holds iff $A$ has a cyclic vector. The gap between $m_A$ and $p_A$ measures the 'redundancy' in the eigenvalue structure."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

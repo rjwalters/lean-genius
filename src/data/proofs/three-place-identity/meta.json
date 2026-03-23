@@ -48,7 +48,8 @@
       "This formalizes Gian-Carlo Rota's slogan 'Identity precedes existence' with mathematical precision",
       "The construction parallels Dedekind's derivation of reals from rationals—sets don't disappear, but their foundational status changes",
       "Connects to Quine's insight: Id_mem(x,y,z) iff (y in x iff z in x)—identity as indistinguishability relative to a predicate"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -124,7 +125,7 @@
   ],
   "conclusion": {
     "summary": "We have formalized Etter's Universality Theorem: three-place relative identity suffices as a foundation for mathematics. The two bridges D1 and D2 establish mutual interpretability with ZF set theory, with the round-trip recovering original membership when Foundation holds. This is not merely a technical curiosity—it demonstrates that perspectival indistinguishability may be more fundamental than absolute existence.",
-    "implications": "The result has deep philosophical consequences. It makes rigorous Rota's 'identity precedes existence': we don't first posit objects then ask if they're identical—rather, identity structures induce what exists. This resonates with constructive mathematics (existence requires construction), category theory (objects defined up to isomorphism), and quantum mechanics (observer-dependence of outcomes). The loss of absolute identity may resolve puzzles about identity through time and across possible worlds.",
+    "implications": "**Theoretical Significance**: The result has deep philosophical consequences. It makes rigorous Rota's 'identity precedes existence': we don't first posit objects then ask if they're identical—rather, identity structures induce what exists.\n\n**Broader Connections**: This resonates with constructive mathematics (existence requires construction), category theory (objects defined up to isomorphism), and quantum mechanics (observer-dependence of outcomes). The loss of absolute identity may resolve puzzles about identity through time and across possible worlds.",
     "openQuestions": [
       "What happens with non-well-founded set theories (Aczel's AFA)? The round-trip uses Foundation essentially.",
       "Etter's 'Stereo Equality Theorem' claims two separate equality predicates suffice—can this be formalized?",

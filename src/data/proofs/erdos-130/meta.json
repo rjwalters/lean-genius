@@ -98,7 +98,8 @@
       "**General position is essential**: Without the no-3-collinear constraint, infinite integer distance sets exist trivially (e.g., $\\mathbb{Z}$ on a line)",
       "**Connection to Hadwiger–Nelson**: The integer distance graph is a subgraph of the unit distance graph scaled by integer factors, linking to the chromatic number of the plane",
       "**Quantitative diameter bound**: Any finite non-collinear integer distance set has $|S| \\leq O(\\text{diam}(S)^2)$, bounding achievable clique sizes"
-    ]
+    ],
+    "prerequisites": []
   },
   "conclusion": {
     "summary": "Erdős Problem #130 asks whether the chromatic number of the integer distance graph on a general-position point set can be infinite. While the Anning–Erdős theorem (1945) forces the clique number to be finite, the chromatic number remains unconstrained — geometric distance graphs need not satisfy $\\chi \\leq f(\\omega)$.",

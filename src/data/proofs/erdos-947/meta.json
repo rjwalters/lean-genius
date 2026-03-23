@@ -79,7 +79,8 @@
       "**Sharp boundary**: Ordinary covering systems with distinct moduli exist (Erdős's example with moduli $\\{2, 3, 4, 6, 12\\}$), so the impossibility is specific to the exactness requirement",
       "**Verified construction**: `exactCoveringWithRepeats` proves that $\\{0 \\pmod{2}, 1 \\pmod{2}\\}$ is an exact covering, showing the distinct moduli constraint is essential",
       "**Structural insight**: The $\\exists!$ quantifier in `isExact` formalizes the partition property, distinguishing exact from ordinary coverings"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -127,7 +128,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #947 with complete definitions of covering systems, exact coverings, and distinct moduli. It axiomatizes the Mirsky-Newman / Davenport-Rado impossibility theorem with two substantive proof technique axioms, proves the contrapositive formulation, verifies an exact covering with repeated moduli, and proves a summary theorem combining impossibility with existence of ordinary coverings.",
-    "implications": "**Theoretical Significance**\n\n1. **Partition vs. covering**: The result reveals a fundamental asymmetry — $\\mathbb{Z}$ can be covered but not partitioned by congruences with distinct moduli\n\n2. **Density constraints**: The necessary condition $\\sum 1/n_i = 1$ is not sufficient, illustrating that global density does not determine local partition structure\n\n3. **Covering system theory**: This impossibility is foundational for the broader theory of covering systems, which connects to the Hanna Neumann conjecture, the odd perfect number problem, and Schinzel's conjecture\n\n4. **Two proof paradigms**: The Mirsky-Newman analytic approach and Davenport-Rado algebraic approach illustrate complementary techniques in combinatorial number theory",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Partition vs. covering**: The result reveals a fundamental asymmetry — $\\mathbb{Z}$ can be covered but not partitioned by congruences with distinct moduli\n\n2.\n\n**Broader Connections**: **Density constraints**: The necessary condition $\\sum 1/n_i = 1$ is not sufficient, illustrating that global density does not determine local partition structure\n\n3. **Covering system theory**: This impossibility is foundational for the broader theory of covering systems, which connects to the Hanna Neumann conjecture, the odd perfect number problem, and Schinzel's conjecture\n\n4. **Two proof paradigms**: The Mirsky-Newman analytic approach and Davenport-Rado algebraic approach illustrate complementary techniques in combinatorial number theory.",
     "openQuestions": [
       "What is the minimum overlap in a covering system with distinct moduli?",
       "How close to exact can a distinct-moduli covering system get in terms of the maximum number of times any integer is covered?",

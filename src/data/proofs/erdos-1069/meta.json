@@ -68,7 +68,8 @@
       "**Dyadic decomposition:** Partition lines by incidence count into levels [2^i, 2^{i+1}), apply Szemerédi-Trotter to each level, then sum",
       "**Lattice lower bound:** The m×m integer lattice has ≥ 2m many m-rich lines (horizontal + vertical), showing O(n²/k³) is nearly tight",
       "**Point-line duality:** The dual statement about k-rich points follows by symmetry"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -187,7 +188,10 @@
   ],
   "references": [
     {
-      "authors": ["Endre Szemerédi", "William T. Trotter Jr."],
+      "authors": [
+        "Endre Szemerédi",
+        "William T. Trotter Jr."
+      ],
       "title": "Extremal problems in discrete geometry",
       "venue": "Combinatorica",
       "year": 1983,
@@ -197,7 +201,9 @@
       "note": "Original proof of the Szemerédi-Trotter incidence theorem, establishing I(P,L) = O(|P|^{2/3}|L|^{2/3} + |P| + |L|)."
     },
     {
-      "authors": ["László Székely"],
+      "authors": [
+        "László Székely"
+      ],
       "title": "Crossing numbers and hard Erdős problems in discrete geometry",
       "venue": "Combinatorics, Probability and Computing",
       "year": 1997,
@@ -207,7 +213,9 @@
       "note": "Short, elegant re-proof of the Szemerédi-Trotter theorem via the crossing number inequality."
     },
     {
-      "authors": ["György Elekes"],
+      "authors": [
+        "György Elekes"
+      ],
       "title": "On the number of sums and products",
       "venue": "Acta Arithmetica",
       "year": 1997,
@@ -217,7 +225,9 @@
       "note": "Applies Szemerédi-Trotter to deduce max(|A+A|,|A·A|) ≫ |A|^{5/4}, connecting incidence geometry to the sum-product phenomenon."
     },
     {
-      "authors": ["Jozsef Beck"],
+      "authors": [
+        "Jozsef Beck"
+      ],
       "title": "On the lattice property of the plane and some problems of Dirac, Motzkin, and Erdős in combinatorial geometry",
       "venue": "Combinatorica",
       "year": 1983,
@@ -227,7 +237,10 @@
       "note": "Beck's theorem on lines determined by point sets; proved alongside Szemerédi-Trotter and uses similar crossing number methods."
     },
     {
-      "authors": ["Larry Guth", "Nets Hawk Katz"],
+      "authors": [
+        "Larry Guth",
+        "Nets Hawk Katz"
+      ],
       "title": "On the Erdős distinct distances problem in the plane",
       "venue": "Annals of Mathematics",
       "year": 2015,

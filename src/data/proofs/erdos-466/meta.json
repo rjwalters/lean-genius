@@ -87,11 +87,18 @@
       "**Sárközy's polynomial leap**: the improvement from O(log X) to X^{1/2−ε} shows the problem has algebraic, not logarithmic, character — carefully chosen point sets can exploit arithmetic structure",
       "**The 465-466 duality**: matching upper (Konyagin) and lower (Sárközy) bounds at X^{1/2} reveal the natural scale, with the remaining gap only in the δ-dependence",
       "**Threshold exponent 1/2**: heuristically, area πX² of the disk gives √(area) ≈ X independent distance classes modulo integers, suggesting X^{1/2} as the natural extremal count"
+    ],
+    "prerequisites": [
+      "Diophantine approximation: fractional parts and distance to integers",
+      "Discrete geometry: point configurations in disks and distance constraints",
+      "The pigeonhole principle and extremal counting",
+      "Analytic number theory: exponential sum estimates",
+      "Geometry of numbers and lattice point estimates"
     ]
   },
   "conclusion": {
     "summary": "Erdős Problem #466 is SOLVED: there exists δ > 0 such that N(X, δ) → ∞. Graham proved the logarithmic bound N(X, 1/10) ≥ (log X)/10, and Sárközy (1976) proved the polynomial bound N(X, δ) > X^{1/2 − δ^{1/7}} for small δ, nearly matching Konyagin's upper bound X^{1/2} from Problem #465.",
-    "implications": "The result reveals a deep connection between Euclidean distance geometry and Diophantine approximation. The growth rate Θ(X^{1/2}) shows that the integer-avoidance constraint is significant but not prohibitive: it reduces the maximum from O(X²) (no constraint) to O(X^{1/2}) (integer-avoidance). The techniques connect analytic number theory (exponential sums, circle method) with combinatorial geometry (packing, configuration counting).",
+    "implications": "**Theoretical Significance**: The result reveals a deep connection between Euclidean distance geometry and Diophantine approximation.\n\n**Broader Connections**: The growth rate Θ(X^{1/2}) shows that the integer-avoidance constraint is significant but not prohibitive: it reduces the maximum from O(X²) (no constraint) to O(X^{1/2}) (integer-avoidance). The techniques connect analytic number theory (exponential sums, circle method) with combinatorial geometry (packing, configuration counting).",
     "openQuestions": [
       "What is the exact δ-dependence: is N(X, δ) = Θ(X^{1/2}) with a constant depending on δ, or does the exponent itself depend on δ?",
       "Can the gap between Sárközy's exponent 1/2 − δ^{1/7} and Konyagin's 1/2 be closed?",

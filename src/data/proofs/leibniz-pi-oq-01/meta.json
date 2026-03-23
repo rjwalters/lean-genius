@@ -51,7 +51,8 @@
       "**Rate sharpness**: |S(n+1) - S(n)| = 1/(2n+1) proves no faster rate is achievable for this series",
       "**Exponential alternative**: Machin's formula uses arctan(1/5) whose Taylor series has terms O(1/5^(2n+1)), giving ~1.4 digits per term vs Leibniz's ~0 digits per term",
       "**Optimal tradeoff**: The 'best' arctangent formula minimizes max(1/m_i²) across all arguments while maintaining Σ c_i·arctan(1/m_i) = π/4"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

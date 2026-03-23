@@ -71,7 +71,8 @@
       "**Richter's bound $\\liminf q_n/n^2 > 0.352$**: Proved in 1976 using prime distribution estimates. This establishes quadratic growth as a lower bound but falls short of the superquadratic conjecture.",
       "**The conjecture asks for strictly superquadratic growth**: Not just $q_n \\geq cn^2$ but $q_n/n^2 \\to \\infty$. A simple asymptotic like $q_n \\sim cn^2$ would refute the conjecture.",
       "**Connection to the Prime Number Theorem**: The PNT gives average prime gap $\\sim \\log p$, so the $n$-th prime is $\\sim n \\log n$. A monotone-gap subsequence must grow much faster than the typical prime."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -143,7 +144,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the open Erdős Problem #455 about prime sequences with monotonically non-decreasing gaps. Richter's 1976 result shows such sequences must grow at least quadratically ($\\liminf q_n/n^2 > 0.352$), but the question of whether they must grow strictly faster than $n^2$ remains open after nearly 50 years.",
-    "implications": "The problem connects prime distribution theory with discrete convexity. A resolution would shed light on how the distribution of primes constrains specially structured subsequences. The monotone-gap condition is a discrete analogue of convexity, and understanding its consequences for prime subsequences touches on deep questions about the regularity of the prime sequence.",
+    "implications": "**Theoretical Significance**: The problem connects prime distribution theory with discrete convexity.\n\n**Broader Connections**: A resolution would shed light on how the distribution of primes constrains specially structured subsequences. The monotone-gap condition is a discrete analogue of convexity, and understanding its consequences for prime subsequences touches on deep questions about the regularity of the prime sequence.",
     "openQuestions": [
       "Must $\\lim q_n/n^2 = \\infty$ for all monotone-gap prime sequences, or does some sequence have $q_n = O(n^2)$?",
       "What is the exact value of Richter's liminf constant — is $0.352$ optimal or can it be improved?",

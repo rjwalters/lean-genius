@@ -35,7 +35,8 @@
       "Erdős correctly predicted other configurations exist",
       "Clemen-Dumitrescu-Liu (2025) proved the disproof with arc+center counterexamples",
       "The center has distance 1 to all arc points, giving the right multiplicity structure"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -83,7 +84,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #958 is SOLVED. The conjectured characterization (special distance pattern ⟺ equidistant on line or circle) is FALSE. Clemen, Dumitrescu, and Liu (2025) found counterexamples: equidistant points on a short arc of a unit circle plus the center satisfy the pattern but are not standard configurations.",
-    "implications": "Understanding which distance patterns characterize point configurations. The special pattern alone does not uniquely determine configuration type. Arc + center is a new family of solutions that Erdős predicted would exist.",
+    "implications": "**Theoretical Significance**: Understanding which distance patterns characterize point configurations.\n\n**Broader Connections**: The special pattern alone does not uniquely determine configuration type. Arc + center is a new family of solutions that Erdős predicted would exist.",
     "openQuestions": [
       "Are there other families of configurations with the special pattern?",
       "What is the complete characterization of sets with this pattern?",

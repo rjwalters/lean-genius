@@ -61,6 +61,13 @@
       "The ruin time distribution has exponential tails governed by cos(π/N). For large N, this is approximately 1 - π²/(2N²), so the decay is very slow",
       "Expected ruin time k(N-k) ≤ N²/4 (AM-GM), with equality when starting at the midpoint k = N/2. The poor gambler (k=1) faces linear expected time N-1",
       "The harmonic property E[T|k] = 1 + (E[T|k-1] + E[T|k+1])/2 connects ruin times to discrete harmonic functions and potential theory"
+    ],
+    "prerequisites": [
+      "Martingale theory and the Optional Stopping Theorem",
+      "Random walks and Gambler's Ruin",
+      "Stopping times and absorbing barriers",
+      "Characteristic functions and spectral analysis of Markov chains",
+      "Discrete harmonic functions and potential theory"
     ]
   },
   "sections": [

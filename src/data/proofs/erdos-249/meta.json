@@ -78,6 +78,12 @@
       "The formalization has 0 axioms — all convergence and bound results are fully proved from Mathlib",
       "The irrationality question connects to deep open problems about the arithmetic nature of sums involving multiplicative functions",
       "Known irrationality techniques (Apéry-style, continued fractions, Padé approximations) have not yet been adapted to totient sums"
+    ],
+    "prerequisites": [
+      "Euler's totient function and its basic properties (φ(n) ≤ n)",
+      "Infinite series and convergence (comparison test)",
+      "Irrationality: definition and equivalent characterizations",
+      "Real analysis: summability and tsum in Mathlib"
     ]
   },
   "sections": [

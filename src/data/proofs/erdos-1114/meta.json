@@ -70,7 +70,8 @@
       "**Center Clustering:** Critical points cluster toward the center of the root interval, making outer gaps larger than inner gaps",
       "**Convexity Arguments:** The proof uses convexity properties of auxiliary functions to establish the monotonicity",
       "**Higher Derivative Extension:** Lorch (1976) showed the same pattern holds for f'', f''', etc., with gaps of the k-th derivative zeros also increasing outward"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -125,7 +126,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1114 is PROVED. Bálint (1960) showed that for polynomials with evenly spaced real roots, the gaps between consecutive critical points of the derivative increase monotonically as one moves from the midpoint of the root interval toward the endpoints. Lorch (1976) generalized this to higher derivatives.",
-    "implications": "**Mathematical Connections**\n\n1. **Root-Derivative Relationships:** Reveals precise structure in how polynomial differentiation transforms root distributions\n\n2. **Symmetry Exploitation:** The arithmetic progression structure provides the symmetry needed for the monotonicity result\n\n3. **Higher Derivatives:** Lorch's generalization shows the pattern is preserved through repeated differentiation\n\n4. **Polynomial Geometry:** Connects algebraic properties (AP roots) to geometric properties (gap monotonicity) of polynomial curves",
+    "implications": "**Theoretical Significance**: **Mathematical Connections**\n\n1. **Root-Derivative Relationships:** Reveals precise structure in how polynomial differentiation transforms root distributions\n\n2.\n\n**Broader Connections**: **Symmetry Exploitation:** The arithmetic progression structure provides the symmetry needed for the monotonicity result\n\n3. **Higher Derivatives:** Lorch's generalization shows the pattern is preserved through repeated differentiation\n\n4. **Polynomial Geometry:** Connects algebraic properties (AP roots) to geometric properties (gap monotonicity) of polynomial curves.",
     "openQuestions": [
       "Can the result be extended to polynomials with geometric progression roots?",
       "What is the exact rate of growth of the gaps as one moves outward?",
@@ -194,7 +195,9 @@
   ],
   "references": [
     {
-      "authors": ["Bálint, V."],
+      "authors": [
+        "Bálint, V."
+      ],
       "title": "On a property of polynomials",
       "year": 1960,
       "journal": "Acta Mathematica Academiae Scientiarum Hungaricae",
@@ -203,7 +206,9 @@
       "notes": "Original proof that the gaps between consecutive zeros of f' increase monotonically outward from the midpoint when f has equally spaced real roots."
     },
     {
-      "authors": ["Lorch, L."],
+      "authors": [
+        "Lorch, L."
+      ],
       "title": "Derivatives of Polynomials with Only Real Zeros",
       "year": 1976,
       "journal": "Proceedings of the American Mathematical Society",
@@ -213,7 +218,9 @@
       "notes": "Generalizes Bálint's result to higher derivatives: zeros of f^(k) also exhibit outward gap monotonicity for polynomials with arithmetic progression roots."
     },
     {
-      "authors": ["Schur, I."],
+      "authors": [
+        "Schur, I."
+      ],
       "title": "Über algebraische Gleichungen, die nur reelle Wurzeln besitzen",
       "year": 1933,
       "journal": "Zeitschrift für Angewandte Mathematik und Mechanik",
@@ -222,7 +229,9 @@
       "notes": "Early study of polynomials constrained to have only real roots; provides background for the symmetry arguments used in Bálint's proof."
     },
     {
-      "authors": ["Marden, M."],
+      "authors": [
+        "Marden, M."
+      ],
       "title": "Geometry of Polynomials",
       "year": 1966,
       "publisher": "American Mathematical Society",
@@ -232,7 +241,10 @@
       "notes": "Comprehensive reference for the geometry of polynomial zeros and their derivatives; the Gauss–Lucas theorem and related results provide the broader context for Bálint's monotonicity theorem."
     },
     {
-      "authors": ["Pólya, G.", "Szegő, G."],
+      "authors": [
+        "Pólya, G.",
+        "Szegő, G."
+      ],
       "title": "Problems and Theorems in Analysis II",
       "year": 1976,
       "publisher": "Springer-Verlag",

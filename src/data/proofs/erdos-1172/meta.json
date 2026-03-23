@@ -78,7 +78,8 @@
       "Todorcevic's 1989 result that $\\omega_1 \\not\\to (\\omega_1, \\omega + 2)^2$ is consistent with ZFC demonstrates that partition relations can be independent of the standard axioms, motivating the need for GCH/CH hypotheses.",
       "The stepping-up lemma transfers negative partition results upward: if $\\kappa \\not\\to (\\alpha, \\beta)^2$, there exist targets making $\\kappa + 1 \\not\\to (\\alpha', \\beta')^2$ fail, showing that counterexamples propagate through the ordinal hierarchy.",
       "Question 4 under CH is naturally 'balanced' ($\\omega_2 \\to (\\omega_1 + \\omega)_2^2$), meaning both colors must admit the same order type, which is a strictly stronger requirement than the unbalanced case."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -161,7 +162,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the four open partition relations of Erdős Problem #1172 in Lean 4, establishes their logical structure within the Erdős-Hajnal partition calculus framework, proves several weak consequences from classical results (Erdős-Dushnik-Miller, monotonicity), and contextualizes the difficulty by exhibiting the ZFC-independence of related partition relations at ω₁.",
-    "implications": "The formalization demonstrates how axiomatic frameworks can effectively encode open problems in infinitary combinatorics. The derivation of weak forms from EDM shows the precise gap that remains: bridging from ω to ω₁ + 2 in the second target requires fundamentally new coloring arguments beyond classical monotonicity. The independence results at ω₁ suggest that GCH/CH may play an essential role, as the behavior of partition relations is sensitive to set-theoretic hypotheses.",
+    "implications": "**Theoretical Significance**: The formalization demonstrates how axiomatic frameworks can effectively encode open problems in infinitary combinatorics.\n\n**Broader Connections**: The derivation of weak forms from EDM shows the precise gap that remains: bridging from ω to ω₁ + 2 in the second target requires fundamentally new coloring arguments beyond classical monotonicity. The independence results at ω₁ suggest that GCH/CH may play an essential role, as the behavior of partition relations is sensitive to set-theoretic hypotheses.",
     "openQuestions": [
       "Does ω₃ → (ω₂, ω₁ + 2)² hold under GCH? This is the core of Q1 and the most natural starting point, as EDM already gives the weak form ω₃ → (ω₂, ω)².",
       "Can the stepping-up lemma be refined to give negative results at ω₂ under specific combinatorial hypotheses, potentially resolving Q3 or Q4?",

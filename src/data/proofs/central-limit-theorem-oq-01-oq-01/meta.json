@@ -64,7 +64,8 @@
       "**Tail balance** $(p, q)$ determines the skewness parameter $\\beta = (p-q)/(p+q)$ of the limiting stable law — symmetric tails ($p = q$) give symmetric stable distributions",
       "**The classical CLT is a special case**: finite variance corresponds to $\\alpha = 2$ with $L$ constant, recovering $n^{1/2}$ normalization and Gaussian limits",
       "**Stable self-similarity** $[e^{-|t/n^{1/\\alpha}|^\\alpha}]^n = e^{-|t|^\\alpha}$ encodes why stable distributions are 'stable' under normalized convolution — the defining algebraic identity"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

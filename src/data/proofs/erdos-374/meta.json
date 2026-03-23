@@ -70,6 +70,11 @@
       "The smallest element of D₆ is 527, showing D₆ is sparse — the computation requires checking all m ≤ 527 and verifying F(527) = 6",
       "D₃ grows slower than D₄, indicating non-monotone behavior in k — the growth rate is controlled by the density of integers whose factorial's prime factorization has specific parity patterns",
       "The key obstacle is understanding how Legendre's formula v_p(n!) = ∑⌊n/pⁱ⌋ interacts with parity constraints across multiple factorials — the carrying structure in base-p representations of the aᵢ determines which products can be squares"
+    ],
+    "prerequisites": [
+      "Number theory: factorials, perfect squares, p-adic valuations",
+      "Legendre's formula: v_p(n!) = ∑_{i≥1} ⌊n/pⁱ⌋ for prime p",
+      "Combinatorics: partitions and set counting"
     ]
   },
   "sections": [

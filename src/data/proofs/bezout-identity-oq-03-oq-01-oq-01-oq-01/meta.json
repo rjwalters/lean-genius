@@ -60,7 +60,8 @@
       "The element-level proof of I∩J = I·J uses x = x·1 = x·(a+b) = x·a + x·b decomposition",
       "Coprimality inheritance uses IsCoprime.mul_right plus J·K ≤ J∩K (Ideal.mul_le_inf)",
       "The formalization's value lies not in the CRT itself (one Mathlib call) but in making coprimality explicit, connecting ∩ with ·, and proving closure properties needed for applications"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

@@ -78,7 +78,8 @@
       "Nordhaus-Gaddum bounds 2sqrt(n) <= chi(G) + chi(G^c) <= n+1 for ordinary chromatic number motivated the ERT conjecture, but the list version fails",
       "The probabilistic method via G(n, 1/2) exploits self-complementarity in distribution: G and G^c have identical statistics, forcing both chi_L values to be similar",
       "Alon's bound chi_L(G) + chi_L(G^c) <= O(sqrt(n log n)) is essentially tight up to the logarithmic factor; closing this gap remains open"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -147,7 +148,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #753 is SOLVED/DISPROVED. Alon (1992) showed that the conjectured lower bound χ_L(G) + χ_L(G^c) > n^{1/2+c} fails: for every n, there exist graphs where the sum is only O((n log n)^{1/2}). The counterexamples come from random graphs near the threshold p = 1/2, where G and G^c have similar structure. The formalization has 1 sorry (in the asymptotic contradiction step).",
-    "implications": "**Theoretical Significance**\n\n1. **List Coloring Theory**: The result shows that Nordhaus-Gaddum type bounds do not extend to list chromatic numbers in the hoped-for way, revealing a fundamental difference between chi and chi_L\n\n2. **Probabilistic Method**: Alon's proof is a landmark application of random graphs to disprove combinatorial conjectures, exploiting the self-complementary structure of G(n,1/2)\n\n3. **Open Gap**: The remaining gap between sqrt(n) (lower bound from Ramsey) and sqrt(n log n) (Alon's upper bound) is a natural open problem\n\n4. **Choosability vs Colorability**: The result adds to the growing understanding that list chromatic number can differ fundamentally from ordinary chromatic number",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **List Coloring Theory**: The result shows that Nordhaus-Gaddum type bounds do not extend to list chromatic numbers in the hoped-for way, revealing a fundamental difference between chi and chi_L\n\n2.\n\n**Broader Connections**: **Probabilistic Method**: Alon's proof is a landmark application of random graphs to disprove combinatorial conjectures, exploiting the self-complementary structure of G(n,1/2)\n\n3. **Open Gap**: The remaining gap between sqrt(n) (lower bound from Ramsey) and sqrt(n log n) (Alon's upper bound) is a natural open problem\n\n4. **Choosability vs Colorability**: The result adds to the growing understanding that list chromatic number can differ fundamentally from ordinary chromatic number.",
     "openQuestions": [
       "What is the correct order of magnitude: is chi_L(G) + chi_L(G^c) = Theta(sqrt(n)) or Theta(sqrt(n log n))?",
       "Can the logarithmic factor in Alon's bound be removed?",

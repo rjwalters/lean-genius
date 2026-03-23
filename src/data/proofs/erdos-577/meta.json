@@ -56,7 +56,8 @@
       "**Cycle partition hierarchy**: Corrádi-Hajnal (1963, triangles) → Erdős-Faudree (1985/2010, quadrilaterals) → El-Zahar (1984, general, still open)",
       "**25-year proof gap**: The conjecture required 25 years and a 45-page proof by Wang, reflecting the difficulty of upgrading Hamiltonicity to cycle partitions",
       "**Structural method**: Wang's proof uses minimal counterexample analysis and neighborhood structure — no algebraic or probabilistic techniques"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -141,7 +142,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #577 (the Erdős-Faudree conjecture) was SOLVED by Hong Wang in 2010 after 25 years open. The result establishes that graphs with 4k vertices and minimum degree at least 2k contain k vertex-disjoint 4-cycles. The Lean formalization defines the FourCycle structure, disjointness predicates, and the conjecture as a universally quantified Prop, with Wang's theorem axiomatized and the final resolution derived. The degree bound 2k is proved sharp.",
-    "implications": "Wang's theorem confirms the C₄ case of the cycle partition program, validating a special case of El-Zahar's general conjecture. The result shows that the Dirac threshold δ ≥ n/2 — originally sufficient only for Hamiltonicity — actually guarantees the much stronger partition-into-quadrilaterals property. The structural proof technique (minimal counterexample with neighborhood analysis) has influenced subsequent work on cycle decomposition problems.",
+    "implications": "**Theoretical Significance**: Wang's theorem confirms the C₄ case of the cycle partition program, validating a special case of El-Zahar's general conjecture.\n\n**Broader Connections**: The result shows that the Dirac threshold δ ≥ n/2 — originally sufficient only for Hamiltonicity — actually guarantees the much stronger partition-into-quadrilaterals property. The structural proof technique (minimal counterexample with neighborhood analysis) has influenced subsequent work on cycle decomposition problems.",
     "openQuestions": [
       "Does El-Zahar's conjecture hold in full generality for all cycle length sequences (n₁, ..., nₖ)?",
       "Can Wang's proof be simplified or shortened from its current 45 pages?",

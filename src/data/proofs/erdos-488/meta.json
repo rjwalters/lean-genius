@@ -33,7 +33,8 @@
       "**Optimality via floor function jumps**: For $A = \\{a\\}$, the density ratio at $N = 2a - 1$ is $\\lfloor(2a-1)/a\\rfloor/(2a-1) = 1/(2a-1)$, while at $N = 2a$ it is $2/(2a)= 1/a$, giving a ratio approaching $2$ as $a \\to \\infty$",
       "**Davenport's density theorem**: The natural density $\\delta(B(A)) = \\lim_{N \\to \\infty} |B \\cap [1,N]|/N$ exists for any finite $A$ and equals the inclusion-exclusion sum $\\sum_{\\emptyset \\neq S \\subseteq A} (-1)^{|S|+1} / \\operatorname{lcm}(S)$",
       "**Connection to Besicovitch's counterexample**: For infinite sets, multiples need not have asymptotic density (Besicovitch, 1935), making the finite-set hypothesis essential to the problem"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

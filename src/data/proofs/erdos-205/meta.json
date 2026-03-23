@@ -74,6 +74,14 @@
       "The counterexample threshold √(log n / log log n) grows faster than log log n",
       "The disproof chain Ω(m) ≥ minΩ(n) ≥ c·threshold(n) > log log n ≥ log log m uses four lemmas, each isolating one mathematical fact — a clean modular proof architecture",
       "De Polignac numbers (127, 149, ...) are finite witnesses to covering system obstructions, verified by exhaustive compositeness checks via native_decide"
+    ],
+    "prerequisites": [
+      "Prime factorization and the fundamental theorem of arithmetic",
+      "The big-omega function Ω(n) (prime factor count with multiplicity)",
+      "Basic real analysis: logarithms, monotonicity, asymptotic growth",
+      "Covering systems and modular arithmetic",
+      "Romanoff's theorem on 2^k + prime representations",
+      "Hardy-Ramanujan and Erdős-Kac theorems on average/typical Ω(n)"
     ]
   },
   "sections": [
@@ -136,7 +144,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #205 is DISPROVED. The formalization proves ¬Erdos205Conjecture from axiomatized counterexample results, with 0 sorries and only 6 axioms (all deep analytic results). Three previously-axiomatized properties (Ω(p^k)=k, Ω(ab)=Ω(a)+Ω(b), and the Finset.inf' bound) are now proved from Mathlib.",
-    "implications": "Even the very weak bound $\\Omega(m) < \\log\\log m$ is insufficient to guarantee $2^k + m$ representations for all large integers. This is surprising because $\\Omega(n) \\approx \\log\\log n$ for 'almost all' $n$ by the Erdős-Kac theorem, so the condition excludes only atypically smooth numbers — yet the counterexamples force every remainder to be atypically rough. The covering system technique, pioneered by Erdős for the $2^k + p$ case, extends to this more general setting. The result suggests a fundamental limitation of additive decomposition into powers of 2 and arithmetically constrained summands: the 'wrong' residue structure can force all remainders to have correlated, elevated prime factor counts.",
+    "implications": "**Theoretical Significance**: Even the very weak bound $\\Omega(m) < \\log\\log m$ is insufficient to guarantee $2^k + m$ representations for all large integers. This is surprising because $\\Omega(n) \\approx \\log\\log n$ for 'almost all' $n$ by the Erdős-Kac theorem, so the condition excludes only atypically smooth numbers — yet the counterexamples force every remainder to be atypically rough.\n\n**Broader Connections**: The covering system technique, pioneered by Erdős for the $2^k + p$ case, extends to this more general setting. The result suggests a fundamental limitation of additive decomposition into powers of 2 and arithmetically constrained summands: the 'wrong' residue structure can force all remainders to have correlated, elevated prime factor counts.",
     "openQuestions": [
       "Do arbitrarily large ODD counterexamples exist? (Current construction uses n divisible by large powers of 2)",
       "What is the optimal growth rate f(n) such that all large n have representation with Ω(m) < f(n)?",

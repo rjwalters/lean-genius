@@ -47,7 +47,8 @@
       "For equilateral triangles, $R = 2r$ so $R/2 = r$: the nine-point circle and incircle coincide, giving the degenerate case of the tangency",
       "The Feuerbach point lies on the nine-point circle and is the 12th entry (X(11)) in Kimberling's Encyclopedia of Triangle Centers",
       "The formalization proves all four distance relations by direct coordinate computation, reducing each to polynomial identities via Heron's formula, extended law of sines, and bilinear expansion"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -130,7 +131,7 @@
   ],
   "conclusion": {
     "summary": "Fully formalizes Feuerbach's Theorem (Wiedijk #29) in coordinate geometry with 0 axioms and 0 sorries. All four tangency relations proved by direct coordinate computation. The formalization develops a complete triangle geometry framework and proves all nine-point circle memberships, Euler line relations, and Feuerbach distance relations.",
-    "implications": "Feuerbach's theorem inspired the systematic study of triangle centers, leading to Clark Kimberling's Encyclopedia of Triangle Centers (now containing over 60,000 entries). The Feuerbach point X(11) is one of the most important triangle centers. The theorem connects to inversive geometry (inversion centered at the Feuerbach point maps the nine-point circle to the incircle) and to the theory of pencils of circles. Modern generalizations extend to tetrahedra and non-Euclidean geometries.",
+    "implications": "**Theoretical Significance**: Feuerbach's theorem inspired the systematic study of triangle centers, leading to Clark Kimberling's Encyclopedia of Triangle Centers (now containing over 60,000 entries). The Feuerbach point X(11) is one of the most important triangle centers.\n\n**Broader Connections**: The theorem connects to inversive geometry (inversion centered at the Feuerbach point maps the nine-point circle to the incircle) and to the theory of pencils of circles. Modern generalizations extend to tetrahedra and non-Euclidean geometries.",
     "openQuestions": [
       "RESOLVED: All distance relations proved by coordinate computation in FeuerbachsTheoremOQ01.lean",
       "What is the 3D analogue of Feuerbach's theorem for tetrahedra?",

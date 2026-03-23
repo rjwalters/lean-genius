@@ -63,6 +63,13 @@
       "Joint typicality is the channel coding analogue of typical sequences in source coding, connecting the two fundamental theorems",
       "Fano's inequality converts an information-theoretic quantity (conditional entropy) into an operational one (error probability), enabling the converse",
       "The gap between existence (Shannon's proof) and construction (practical codes) drove 60 years of coding theory, culminating in capacity-achieving polar codes (Arikan, 2009)"
+    ],
+    "prerequisites": [
+      "Shannon entropy and mutual information",
+      "Discrete memoryless channels and capacity",
+      "Jointly typical sequences and joint AEP",
+      "Random coding and maximum likelihood decoding",
+      "Fano's inequality and the channel coding converse"
     ]
   },
   "sections": [

@@ -67,7 +67,8 @@
       "**Digit intersection**: 105-good ≡ Base3Good ∩ Base5Good ∩ Base7Good. Each individual set is infinite, but intersection may be finite.",
       "**Small cases**: n = 1 is 105-good (C(2,1) = 2). n = 2 fails (C(4,2) = 6 divisible by 3). n = 4 fails (C(8,4) = 70 divisible by 5 and 7).",
       "**Why three primes is harder**: More constraints must be satisfied simultaneously. The digit sets become increasingly sparse."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

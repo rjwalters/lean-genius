@@ -102,7 +102,8 @@
       "**Trade-off in optimal j**: Larger j gives more 2qᵢ terms (each capturing many even multiples of qᵢ) but makes q₁⋯qⱼ larger (fewer multiples); the balance depends on N's arithmetic structure",
       "**EKR connection**: This is an arithmetic Erdős-Ko-Rado problem — the shift from set intersection to gcd intersection preserves the extremal flavor but changes the answer",
       "**Prime powers are degenerate**: For N = p^k with only one prime factor, the answer p^(k-1) is trivial; the interesting structure emerges with multiple prime factors"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -150,7 +151,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #534 is SOLVED. The original Erdős-Graham conjecture was wrong — Ahlswede and Khachatrian found a counterexample in 1992 and proved the correct characterization in 1996. For N = q₁^k₁⋯qᵣ^kᵣ, the maximum GCD-intersecting set containing N uses multiples of elements from {2q₁,...,2qⱼ, q₁⋯qⱼ} for the optimal j. The formalization captures all three stages: the disproved conjecture, the counterexample, and the correct theorem.",
-    "implications": "This problem sits at the intersection of extremal combinatorics and number theory. The Ahlswede-Khachatrian solution exemplifies a pattern seen in several EKR-type problems: natural first conjectures about extremal sets can fail, and the true optimizers have richer algebraic structure. The same authors later proved the Complete Intersection Theorem for classical EKR, which similarly revealed that naive conjectures about maximum t-intersecting families were wrong. The connection to OEIS sequences A387543, A387698 provides computational access to the extremal values.",
+    "implications": "**Theoretical Significance**: This problem sits at the intersection of extremal combinatorics and number theory. The Ahlswede-Khachatrian solution exemplifies a pattern seen in several EKR-type problems: natural first conjectures about extremal sets can fail, and the true optimizers have richer algebraic structure.\n\n**Broader Connections**: The same authors later proved the Complete Intersection Theorem for classical EKR, which similarly revealed that naive conjectures about maximum t-intersecting families were wrong. The connection to OEIS sequences A387543, A387698 provides computational access to the extremal values.",
     "openQuestions": [
       "Efficient algorithms to compute the optimal j for a given N",
       "Weighted generalizations: maximize ∑f(a) over GCD-intersecting sets for various weight functions f",

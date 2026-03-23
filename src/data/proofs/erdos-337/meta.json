@@ -88,7 +88,8 @@
         "proofId": "erdos-328",
         "relationship": "Related additive combinatorics problem on partitioning sets with bounded representation function"
       }
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -178,7 +179,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #337 is SOLVED with answer NO. Turjányi (1984) constructed a sparse additive basis where |A+A ∩ [1,N]|/|A ∩ [1,N]| stays bounded, disproving the Erdős conjecture. Ruzsa and Turjányi (1985) generalized this to h-fold sumsets while proving the positive result that the scaled ratio |3A ∩ [1,3N]|/|A ∩ [1,N]| → ∞.",
-    "implications": "The result reveals that sparsity alone does not force sumset expansion—carefully constructed bases can have maximal collisions in A+A. This highlights the gap between Plünnecke-Ruzsa upper bounds and the lack of matching lower bounds for infinite sets. The open scaled conjecture for |2A ∩ [1,2N]| remains the current frontier.",
+    "implications": "**Theoretical Significance**: The result reveals that sparsity alone does not force sumset expansion—carefully constructed bases can have maximal collisions in A+A.\n\n**Broader Connections**: This highlights the gap between Plünnecke-Ruzsa upper bounds and the lack of matching lower bounds for infinite sets. The open scaled conjecture for |2A ∩ [1,2N]| remains the current frontier.",
     "openQuestions": [
       "Does |A+A ∩ [1,2N]| / |A ∩ [1,N]| → ∞ for all sparse additive bases? (Ruzsa-Turjányi conjecture, still open)",
       "What is the structure of Turjányi's counterexample—can it be made explicit with specific density estimates?",

@@ -86,7 +86,8 @@
       "The matrix similarity result from OQ-02 (proved from scratch) becomes a one-line corollary of the abstract Mathlib result",
       "Subalgebra inclusions preserve minpoly: the minpoly computed within a subalgebra agrees with the full algebra",
       "Composition of conjugations satisfies conjAlgEquiv(P).trans(conjAlgEquiv(Q)) = conjAlgEquiv(PQ), making P ↦ conjAlgEquiv P a group homomorphism"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -127,7 +128,7 @@
   ],
   "conclusion": {
     "summary": "This formalization answers the open question definitively: YES, minimal polynomial theory generalizes from matrices to abstract K-algebras. Mathlib's minpoly.algEquiv_eq proves invariance under algebra isomorphisms, and even under any injective algebra homomorphism. Matrix similarity is a special case where conjugation defines an AlgEquiv. All results compile with 0 sorries.",
-    "implications": "**Mathematical Significance**\n\n1. **K-Algebra Invariant**: The minimal polynomial is fundamentally an invariant of K-algebra elements, not of matrices. Any injective algebra map preserves it.\n\n2. **Abstraction Hierarchy**: The progression OQ-02 → OQ-02-OQ-01 demonstrates a key proof pattern: concrete matrix results become one-line corollaries when lifted to the abstract algebra level.\n\n3. **AlgEquiv vs AlgHom**: Upgrading conjugation from AlgHom to AlgEquiv is not just aesthetics — it enables direct application of Mathlib's AlgEquiv-specific results and makes the invertibility of the map explicit.\n\n4. **Subalgebra Independence**: The minpoly of an element is independent of which subalgebra you compute it in, as long as the inclusion is injective. This is important for representation theory.\n\n5. **Group Homomorphism**: The map P ↦ conjAlgEquiv P is a group homomorphism from the unit group to the automorphism group, connecting group theory with algebra theory.",
+    "implications": "**Theoretical Significance**: **Mathematical Significance**\n\n1. **K-Algebra Invariant**: The minimal polynomial is fundamentally an invariant of K-algebra elements, not of matrices. Any injective algebra map preserves it.\n\n2. **Abstraction Hierarchy**: The progression OQ-02 → OQ-02-OQ-01 demonstrates a key proof pattern: concrete matrix results become one-line corollaries when lifted to the abstract algebra level.\n\n3.\n\n**Broader Connections**: **AlgEquiv vs AlgHom**: Upgrading conjugation from AlgHom to AlgEquiv is not just aesthetics — it enables direct application of Mathlib's AlgEquiv-specific results and makes the invertibility of the map explicit.\n\n4. **Subalgebra Independence**: The minpoly of an element is independent of which subalgebra you compute it in, as long as the inclusion is injective. This is important for representation theory.\n\n5. **Group Homomorphism**: The map P ↦ conjAlgEquiv P is a group homomorphism from the unit group to the automorphism group, connecting group theory with algebra theory.",
     "openQuestions": [
       "Can the Skolem-Noether theorem be formalized: every K-algebra automorphism of Mat(n,K) is inner (i.e., conjugation by some invertible matrix)?",
       "Can we characterize exactly when minpoly is invariant under non-injective algebra homomorphisms?",

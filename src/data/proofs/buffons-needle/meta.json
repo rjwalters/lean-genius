@@ -51,7 +51,8 @@
       "Buffon's Needle is a special case of the Cauchy-Crofton formula: for any rectifiable curve of length $L$ dropped on lines spaced $d$ apart, the expected number of crossings is $2L/(\\pi d)$. A straight needle of length $\\ell$ has $L = \\ell$, recovering Buffon's result",
       "The Monte Carlo connection goes deeper than estimation: Buffon's problem demonstrates that randomness can be a computational tool. This philosophical insight anticipated the development of Monte Carlo methods by Ulam, von Neumann, and Metropolis at Los Alamos in the 1940s",
       "The Lean formalization uses `field_simp` and `ring` to handle the algebraic manipulation $\\ell/(\\pi d/2) = 2\\ell/(\\pi d)$, which is the step where the geometric computation becomes the clean formula"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

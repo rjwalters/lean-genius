@@ -33,7 +33,8 @@
       "The minimization question (whether K_{r,s} is optimal) remains open",
       "Connection to Zarankiewicz problem via forbidden subgraph techniques",
       "Liu-Montgomery (2020) proved the sharp constant (1/2 - o(1))log k, confirming the GKS bound is tight"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -152,7 +153,11 @@
   ],
   "references": [
     {
-      "authors": ["A. Gyárfás", "J. Komlós", "E. Szemerédi"],
+      "authors": [
+        "A. Gyárfás",
+        "J. Komlós",
+        "E. Szemerédi"
+      ],
       "title": "On a problem of K. Zarankiewicz",
       "venue": "Acta Mathematica Hungarica",
       "year": 1984,
@@ -161,7 +166,10 @@
       "note": "Proves Σ 1/aᵢ ≥ c·log(e/n) for graphs with e edges; the GKS theorem axiomatized in this formalization."
     },
     {
-      "authors": ["H. Liu", "R. Montgomery"],
+      "authors": [
+        "H. Liu",
+        "R. Montgomery"
+      ],
       "title": "A solution to Erdős and Hajnal's odd cycle problem",
       "venue": "Journal of the American Mathematical Society",
       "year": 2023,
@@ -170,21 +178,28 @@
       "note": "Proves the sharp constant (1/2 − o(1)) log k for the reciprocal sum, fully resolving the quantitative part of Problem 65."
     },
     {
-      "authors": ["P. Erdős", "A. Hajnal"],
+      "authors": [
+        "P. Erdős",
+        "A. Hajnal"
+      ],
       "title": "On the structure of graphs without cycles of given lengths",
       "venue": "Colloquium Mathematicum Societatis János Bolyai",
       "year": 1966,
       "note": "Original problem statement by Erdős and Hajnal posing both the logarithmic lower bound and the minimization question."
     },
     {
-      "authors": ["B. Bollobás"],
+      "authors": [
+        "B. Bollobás"
+      ],
       "title": "Extremal Graph Theory",
       "venue": "Academic Press",
       "year": 1978,
       "note": "Standard reference for extremal graph theory including Kővári-Sós-Turán theorem and Zarankiewicz problem techniques used in this formalization."
     },
     {
-      "authors": ["E. Szemerédi"],
+      "authors": [
+        "E. Szemerédi"
+      ],
       "title": "Regular Partitions of Graphs",
       "venue": "Problèmes Combinatoires et Théorie des Graphes (Colloq. Internat. CNRS)",
       "year": 1978,

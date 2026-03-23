@@ -91,7 +91,8 @@
       "**Non-commutativity of ordinal multiplication**: ω₁·ω ≠ ω·ω₁. The former is ω copies of ω₁ (countable cofinality), while the latter is ω₁ copies of ω (cofinality ω₁). The proof that ω₁ < ω₁·ω < ω₁² relies on left-cancellation of ordinal multiplication, which requires the left factor to be positive.",
       "**MA vs CH for partition calculus**: Baumgartner's result under MA uses techniques specific to the source ω₁·ω, while Hajnal's CH result works for the larger source ω₁². The gap between MA and CH for k ≥ 2 reflects a genuine mathematical difficulty, not just a proof-theoretic limitation.",
       "**Lean 4 formalization of set-theoretic independence**: The formalization captures a problem whose answer depends on the set-theoretic universe. By using axioms for CH and MA as hypotheses, the Lean code faithfully represents that the CH case is resolved while the ZFC case remains open."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -181,7 +182,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #1171 — the multicolor partition relation ω₁² → (ω₁·ω, 3, …, 3)²_{k+1} — in 289 lines of Lean 4 code with 14 axioms and 10 theorems. The key mathematical content includes the ordinal hierarchy ω₁ < ω₁·ω < ω₁², the full CH resolution via Hajnal's theorem and color merging, and Baumgartner's MA-conditional proof of the k=1 case. Seven theorems have non-trivial proofs using Mathlib's ordinal and cardinal API.",
-    "implications": "The formalization demonstrates how set-theoretic independence manifests in combinatorics: the same problem is trivially resolved under CH but remains open in ZFC. The target-color tradeoff (weaker target ω₁·ω in exchange for more colors) represents a precise mathematical question about whether the weaker homogeneity requirement suffices to escape independence. Resolving #1171 in ZFC would advance our understanding of partition relations at ω₁² and potentially separate CH-dependent from ZFC-provable partition calculus.",
+    "implications": "**Theoretical Significance**: The formalization demonstrates how set-theoretic independence manifests in combinatorics: the same problem is trivially resolved under CH but remains open in ZFC.\n\n**Broader Connections**: The target-color tradeoff (weaker target ω₁·ω in exchange for more colors) represents a precise mathematical question about whether the weaker homogeneity requirement suffices to escape independence. Resolving #1171 in ZFC would advance our understanding of partition relations at ω₁² and potentially separate CH-dependent from ZFC-provable partition calculus.",
     "openQuestions": [
       "Does ω₁² → (ω₁·ω, 3, …, 3)²_{k+1} hold in ZFC for all finite k, or is it independent?",
       "Can Baumgartner's MA technique for k=1 be extended to k ≥ 2 under MA?",

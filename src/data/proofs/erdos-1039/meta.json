@@ -36,7 +36,8 @@
       "**KLR Area Method Breakthrough:** Krishnapur-Lundberg-Ramachandran (2025) proved area(Ωf) ≥ π/(n² log n), then converted to ρ(f) ≥ c/(n√(log n)) via the isoperimetric bound area ≥ πρ², nearly closing the gap to a √(log n) factor",
       "**Random vs Worst Case:** Random polynomials have E[ρ] ~ 1/√n, far from the worst-case Θ(1/n), showing that extremal configurations (like roots of unity) are atypical — the problem is about worst-case geometry, not typical behavior",
       "**Open Gap:** The remaining obstacle is eliminating the √(log n) factor: proving ρ(f) ≥ c/n from the current ρ(f) ≥ c/(n√(log n)). This may require new ideas beyond the area approach, perhaps direct conformal mapping estimates"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -133,7 +134,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1039 asks whether monic polynomials with roots in the unit disc always have sublevel sets containing a disc of radius at least c/n. The best known lower bound is c/(n√(log n)) by Krishnapur-Lundberg-Ramachandran (2025), dramatically improving Pommerenke's 1/(2en²) from 1961. The benchmark upper bound π/(2n) from roots of unity shows the conjectured 1/n rate cannot be improved. The formalization captures the full hierarchy of bounds, the area approach of KLR, special cases, and random polynomial behavior.",
-    "implications": "The EHP conjecture sits at the intersection of complex analysis, potential theory, and geometric function theory. A resolution would advance understanding of polynomial sublevel set geometry, with applications to approximation theory (how well can polynomials approximate on irregular domains?), numerical analysis (stability of polynomial root-finding), and complex dynamics (Julia sets of polynomial iterates). The area approach of KLR connects to isoperimetric problems and logarithmic capacity estimates that have independent interest in potential theory.",
+    "implications": "**Theoretical Significance**: The EHP conjecture sits at the intersection of complex analysis, potential theory, and geometric function theory.\n\n**Broader Connections**: A resolution would advance understanding of polynomial sublevel set geometry, with applications to approximation theory (how well can polynomials approximate on irregular domains?), numerical analysis (stability of polynomial root-finding), and complex dynamics (Julia sets of polynomial iterates). The area approach of KLR connects to isoperimetric problems and logarithmic capacity estimates that have independent interest in potential theory.",
     "openQuestions": [
       "Is ρ(f) ≫ 1/n for all monic polynomials with roots in the unit disc? Can the √(log n) factor in the KLR bound be eliminated?",
       "What is the extremal polynomial configuration minimizing ρ(f) for each degree n? Is it always the roots of unity polynomial zⁿ - 1?",

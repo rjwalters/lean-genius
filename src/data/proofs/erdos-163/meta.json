@@ -63,7 +63,8 @@
       "**Regularity lemma + dependent random choice**: Lee's proof combines two of the most powerful tools in extremal combinatorics. The regularity lemma (Szemerédi, 1975) decomposes large graphs into pseudo-random parts, while dependent random choice (Fox–Sudakov) finds large subsets with many common neighbors. The doubly exponential constant arises from the tower-type bounds in the regularity lemma.",
       "**The degeneracy ordering enables greedy embedding**: A $d$-degenerate graph has an ordering $v_1, \\ldots, v_n$ where each $v_i$ has at most $d$ neighbors among $v_{i+1}, \\ldots, v_n$. This ordering allows embedding vertices one by one, each time extending into at most $d$ neighborhoods — a greedy strategy that only works when the host graph is sufficiently pseudo-random.",
       "**Chromatic number refinement**: Lee also proved $R(H) \\le 2^{d \\cdot 2^{O(\\chi(H))}} \\cdot n$, showing that bounded chromatic number further reduces the Ramsey number. For bipartite $d$-degenerate graphs ($\\chi = 2$), this gives $R(H) \\le 2^{O(d)} \\cdot n$, matching the conjectured optimal."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -139,7 +140,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the full story of Erdős Problem #163: from Burr and Erdős's 1975 conjecture through Lee's 2017 resolution. The Lean 4 proof verifies that Lee's theorem implies the conjecture, with the main theorem `burr_erdos_solved` being a direct consequence of `lee_theorem`. The formalization also records the gap between the proven bound ($2^{2^{O(d)}} \\cdot n$) and the conjectured optimal ($2^{O(d)} \\cdot n$).",
-    "implications": "The Burr-Erdős Conjecture confirms that degeneracy — a local sparseness condition — is the fundamental graph parameter controlling linear Ramsey growth. This separates degenerate graphs (linear $R$) from cliques (exponential $R$) and establishes a clear structural dichotomy in Ramsey theory. The result has practical implications for algorithms that find monochromatic subgraphs, as the linear bound implies polynomial-time embedding in pseudo-random graphs.",
+    "implications": "**Theoretical Significance**: The Burr-Erdős Conjecture confirms that degeneracy — a local sparseness condition — is the fundamental graph parameter controlling linear Ramsey growth.\n\n**Broader Connections**: This separates degenerate graphs (linear $R$) from cliques (exponential $R$) and establishes a clear structural dichotomy in Ramsey theory. The result has practical implications for algorithms that find monochromatic subgraphs, as the linear bound implies polynomial-time embedding in pseudo-random graphs.",
     "openQuestions": [
       "Can the doubly exponential constant $C_d = 2^{2^{O(d)}}$ be improved to the conjectured singly exponential $2^{O(d)}$? This is the main remaining open problem.",
       "Is there a proof avoiding the regularity lemma? Regularity-free proofs might yield better quantitative bounds, as the regularity lemma inherently introduces tower-type dependencies.",

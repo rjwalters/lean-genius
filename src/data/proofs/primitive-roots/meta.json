@@ -66,6 +66,13 @@
       "**Partition by order**: The identity $\\sum_{d \\mid n} \\varphi(d) = n$ partitions a cyclic group of order $n$ by element orders. Setting $d = n$ gives $\\varphi(n)$ generators.",
       "**Computational**: $\\varphi(p-1)$ is computed from the prime factorization of $p-1$ via $\\varphi(n) = n \\prod_{p \\mid n}(1 - 1/p)$. Finding an actual primitive root is harder — no deterministic polynomial-time algorithm is known.",
       "**Essentially a two-line proof**: The entire argument is: (1) $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic (integral domain theorem), (2) apply cyclic group counting ($\\varphi(d)$ elements of order $d$). This showcases the power of structural algebra over ad-hoc arguments."
+    ],
+    "prerequisites": [
+      "Cyclic groups and generators",
+      "Euler's totient function",
+      "The multiplicative group (Z/pZ)* for prime p",
+      "Group theory: order of elements, subgroups",
+      "Finite fields and integral domains"
     ]
   },
   "sections": [
@@ -137,7 +144,7 @@
   ],
   "conclusion": {
     "summary": "This formalization demonstrates the power of structural group theory. Rather than analyzing primitive roots combinatorially, we leverage two deep facts: (1) finite unit groups in integral domains are cyclic, and (2) cyclic groups have predictable element counts by order. The main theorem follows in essentially two lines!\n\nThe proof showcases how modern formalization can capture classical results cleanly. Euler and Gauss developed these ideas over decades; we verify them in a few lines of Lean by standing on Mathlib's shoulders.",
-    "implications": "**Cryptographic Applications**\n\n1. **Discrete Logarithms**: If g is a primitive root mod p, every non-zero a mod p can be written as a ≡ g^k for unique k. Computing k from a is the discrete log problem—believed to be hard.\n\n2. **Diffie-Hellman**: Public-key cryptography often uses primitive roots. Alice and Bob share g^ab mod p without revealing a or b, because discrete logs are hard to compute.\n\n3. **Digital Signatures**: DSA and related schemes use primitive roots in their construction.\n\n**Number-Theoretic Applications**\n\n1. **Quadratic Residues**: An element a is a quadratic residue mod p iff its discrete log (base g) is even.\n\n2. **Artin's Conjecture**: Is 2 a primitive root mod p for infinitely many primes p? (Still open!)\n\n3. **Index Calculus**: Modern algorithms for discrete logs exploit primitive root structure.",
+    "implications": "**Theoretical Significance**: **Cryptographic Applications**\n\n1. **Discrete Logarithms**: If g is a primitive root mod p, every non-zero a mod p can be written as a ≡ g^k for unique k. Computing k from a is the discrete log problem—believed to be hard.\n\n2. **Diffie-Hellman**: Public-key cryptography often uses primitive roots.\n\n**Broader Connections**: Alice and Bob share g^ab mod p without revealing a or b, because discrete logs are hard to compute.\n\n3. **Digital Signatures**: DSA and related schemes use primitive roots in their construction.\n\n**Number-Theoretic Applications**\n\n1. **Quadratic Residues**: An element a is a quadratic residue mod p iff its discrete log (base g) is even.\n\n2. **Artin's Conjecture**: Is 2 a primitive root mod p for infinitely many primes p? (Still open!)\n\n3. **Index Calculus**: Modern algorithms for discrete logs exploit primitive root structure.",
     "openQuestions": [
       "Artin's Primitive Root Conjecture: For any non-square integer a ≠ -1, is a a primitive root mod p for infinitely many primes p?",
       "How can we efficiently find a primitive root mod p? (No polynomial-time algorithm is known for general p)",

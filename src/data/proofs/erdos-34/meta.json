@@ -67,6 +67,13 @@
       "**Quarter bound is achievable**: Konieczny's construction gives S(pi) >= n^2/4.",
       "**Tight bounds known**: max_pi S(pi) lies between 0.286n^2 and 0.446n^2.",
       "**Minimum is also studied**: min_pi S(pi) >> n^(3/2), possibly n^(2-o(1))."
+    ],
+    "prerequisites": [
+      "Permutations and symmetric groups",
+      "Asymptotic notation (little-o, big-O, big-Theta)",
+      "Finite sums and summation over intervals",
+      "Basic combinatorics and counting arguments",
+      "Cardinality of finite sets"
     ]
   },
   "sections": [

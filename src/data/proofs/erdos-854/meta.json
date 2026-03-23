@@ -35,7 +35,8 @@
       "**Lacampagne-Selfridge disproof**: computational verification for $n_6 = 30030$ (with $\\varphi(30030) = 5760$ coprime residues) showed that not all even integers up to $g(30030)$ appear as gaps, disproving Erdős's original strong conjecture",
       "**Two-part open problem**: Part 1 asks for the growth rate of the smallest missing gap; Part 2 asks whether the number of distinct gap values is proportional to the maximal gap",
       "**Computable vs axiomatized**: the coprime residue set is defined computationally via `Finset.filter`, while the sorted enumeration and gap set are axiomatized to separate the combinatorial structure from computational concerns"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

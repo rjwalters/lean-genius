@@ -113,7 +113,8 @@
       "**$k$-Tuple Connection**: The Hardy-Littlewood prime $k$-tuple conjecture implies the limsup variant via the Erdős-Graham construction using greedy admissible tuples",
       "**Subset Antitonicity**: `AllOffsetsPrime` is antitone under subset inclusion (`allOffsetsPrime_mono`), so finding large offset sets is the challenge -- shrinking $A$ makes `AllOffsetsPrime` easier but density harder",
       "**Prime Distribution**: The problem fundamentally asks how regular the distribution of primes is when viewed through arithmetic translations, connecting analytic number theory to combinatorics"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -168,7 +169,7 @@
   ],
   "conclusion": {
     "summary": "The formalization captures Erdős Problem #428 on prime offsets with positive density. Seven theorems are fully verified (including the key `erdos428_requires_infinite` and `liminf_implies_limsup`), and two deep results are axiomatized (`erdos_graham_limsup` and `finite_set_zero_density`). The 131-line proof has 0 sorries.",
-    "implications": "A positive resolution would demonstrate remarkable regularity in prime distribution through arithmetic translations. The problem connects analytic number theory ($\\pi(x)$, liminf/limsup analysis), additive combinatorics (translation-invariant properties of sets), and the Hardy-Littlewood circle method (via the $k$-tuple conjecture). The antitonicity result shows the fundamental tension: larger sets are harder to make `AllOffsetsPrime` but easier to give positive density.",
+    "implications": "**Theoretical Significance**: A positive resolution would demonstrate remarkable regularity in prime distribution through arithmetic translations.\n\n**Broader Connections**: The problem connects analytic number theory ($\\pi(x)$, liminf/limsup analysis), additive combinatorics (translation-invariant properties of sets), and the Hardy-Littlewood circle method (via the $k$-tuple conjecture). The antitonicity result shows the fundamental tension: larger sets are harder to make `AllOffsetsPrime` but easier to give positive density.",
     "openQuestions": [
       "Can the limsup result be strengthened to liminf unconditionally, or does the $k$-tuple conjecture imply the full liminf version?",
       "What is the maximal achievable $\\liminf |A \\cap [1,x]|/\\pi(x)$ for prime-generating offset sets?",

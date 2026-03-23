@@ -34,7 +34,8 @@
       "All known examples have k ≤ 6 and n ≤ 21; whether large k can produce such products is unknown and would require C(n,k) to have no prime gaps in its factorization",
       "The tension between C(n,k) ~ n^k/k! (polynomial growth in n) and the spacing of primorial quotients (roughly exponential in the prime gap) makes large examples increasingly rare",
       "The Lean formalization uses the 'for every threshold N, there exists n ≥ N' idiom to express infinitude, avoiding direct use of Filter.atTop"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -89,7 +90,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem 386 asks whether binomial coefficients C(n,k) can equal products of consecutive primes infinitely often. Five known examples are axiomatized, the main conjecture is formalized as ErdosProblem386, and the structural consequence of squarefreeness is proved. The problem remains open, with no known examples beyond n = 21.",
-    "implications": "**Prime Factorization of Binomials**: A positive answer would reveal that the prime factorization of C(n,k) can be 'maximally structured' — consisting of consecutive primes with no gaps — infinitely often, a remarkable constraint. **Primorial Theory**: Resolution would connect the distribution of primorial quotients (products of consecutive primes) to the combinatorial structure of factorials, potentially advancing our understanding of both. **Computational Number Theory**: Even a negative answer (finitely many examples) would be significant, as it would require proving that the 'gap-free factorization' property eventually fails for all large enough n. **Kummer's Theorem Connection**: Since v_p(C(n,k)) counts carries in base-p addition of k and n-k, the problem asks when these carry patterns produce exactly the exponent 1 for each prime in a consecutive range and 0 elsewhere.",
+    "implications": "**Theoretical Significance**: **Prime Factorization of Binomials**: A positive answer would reveal that the prime factorization of C(n,k) can be 'maximally structured' — consisting of consecutive primes with no gaps — infinitely often, a remarkable constraint. **Primorial Theory**: Resolution would connect the distribution of primorial quotients (products of consecutive primes) to the combinatorial structure of factorials, potentially advancing our understanding of both.\n\n**Broader Connections**: **Computational Number Theory**: Even a negative answer (finitely many examples) would be significant, as it would require proving that the 'gap-free factorization' property eventually fails for all large enough n. **Kummer's Theorem Connection**: Since v_p(C(n,k)) counts carries in base-p addition of k and n-k, the problem asks when these carry patterns produce exactly the exponent 1 for each prime in a consecutive range and 0 elsewhere.",
     "openQuestions": [
       "Does C(n,k) equal a product of consecutive primes for infinitely many n (for any fixed k ≥ 2)?",
       "Are there examples with k > 6 or n > 21?",

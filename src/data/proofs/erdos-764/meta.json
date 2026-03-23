@@ -87,7 +87,8 @@
       "**The 1/4 exponent is critical**: The error must exceed N^{1/4}/(log N)^{1/2} infinitely often (Vaughan). Montgomery-Vaughan showed even o(N^{1/4}) is impossible, and the exponent 1/4 cannot be improved.",
       "**Generalizes to all h-fold**: Vaughan's argument works for any h >= 2, not just h = 2 or h = 3. The impossibility is universal for all additive representation functions.",
       "**Error oscillates both ways**: The error term must be both large positive and large negative infinitely often — it cannot even stay on one side of zero."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -149,7 +150,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #764 asks whether the 3-fold convolution sum can have bounded error. Vaughan (1972) proved the answer is NO, and even the weaker bound o(N^{1/4}/(log N)^{1/2}) is impossible. The formalization axiomatizes the major theorems (Erdos-Fuchs, Vaughan, Montgomery-Vaughan) and proves two results from these axioms: squares_not_linear and erdos_764_summary. The error bound hierarchy cleanly separates three levels of impossibility.",
-    "implications": "**Theoretical Significance**\n\n1. **Representation functions must fluctuate**: No additive set can have regular representation counts. This is a fundamental limit in additive combinatorics.\n\n2. **Universal for all orders**: The impossibility applies to h-fold convolutions for all h >= 2, not just the 2-fold or 3-fold case.\n\n3. **Optimal exponent**: The 1/4 exponent is best possible (Montgomery-Vaughan 1990), connecting the error term to L^2 norm bounds in Fourier analysis.\n\n4. **Waring's problem connection**: The representation count r_3(n) for perfect squares relates to sums of three squares, whose arithmetic structure is governed by class numbers and modular forms.",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Representation functions must fluctuate**: No additive set can have regular representation counts. This is a fundamental limit in additive combinatorics.\n\n2.\n\n**Broader Connections**: **Universal for all orders**: The impossibility applies to h-fold convolutions for all h >= 2, not just the 2-fold or 3-fold case.\n\n3. **Optimal exponent**: The 1/4 exponent is best possible (Montgomery-Vaughan 1990), connecting the error term to L^2 norm bounds in Fourier analysis.\n\n4. **Waring's problem connection**: The representation count r_3(n) for perfect squares relates to sums of three squares, whose arithmetic structure is governed by class numbers and modular forms.",
     "openQuestions": [
       "Is the 1/4 exponent exactly tight for 3-fold convolutions (not just 2-fold)?",
       "What is the optimal constant in front of N^{1/4} for the lower bound?",

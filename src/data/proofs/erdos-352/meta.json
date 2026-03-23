@@ -66,7 +66,8 @@
       "**Compact convex case**: Freiling-Mauldin proved the conjecture for compact convex sets. The non-convex case remains open.",
       "**Reduction to finite unions**: Mauldin showed the general problem reduces to unions of finitely many compact convex interiors. Freiling-Mauldin verified this for n <= 3.",
       "**Triangle area formula**: Area = (1/2)|x1(y2-y3) + x2(y3-y1) + x3(y1-y2)| = (1/2)|cross product|."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -142,7 +143,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #352 on finding triangles of area 1 in measurable sets of R^2. The question asks whether there exists c > 0 such that measure >= c guarantees a unit triangle. Erdős conjectured c = 4pi/sqrt(27), optimal by the critical circle example. Known results cover infinite measure, unbounded sets, and compact convex sets. The general case remains open.",
-    "implications": "This problem connects to:\n\n1. **Geometric measure theory**: How measure constrains geometric configurations\n2. **Lebesgue density theorem**: Key tool for special cases\n3. **Convex geometry**: Simpler for convex sets, harder for non-convex\n4. **Extremal geometry**: Finding optimal thresholds for geometric properties\n5. **Combinatorial geometry**: Related to Helly-type theorems",
+    "implications": "**Theoretical Significance**: This problem connects to:\n\n1. **Geometric measure theory**: How measure constrains geometric configurations\n2. **Lebesgue density theorem**: Key tool for special cases\n3.\n\n**Broader Connections**: **Convex geometry**: Simpler for convex sets, harder for non-convex\n4. **Extremal geometry**: Finding optimal thresholds for geometric properties\n5. **Combinatorial geometry**: Related to Helly-type theorems.",
     "openQuestions": [
       "Does c = 4pi/sqrt(27) suffice for all measurable sets?",
       "Can the reduction to finite unions be extended beyond n = 3?",

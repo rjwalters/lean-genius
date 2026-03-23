@@ -84,7 +84,8 @@
       "Bézout coefficients give the explicit inverse: if mu + nv = 1, then x = a·nv + b·mu solves x ≡ a (mod m), x ≡ b (mod n)",
       "Euler totient multiplicativity φ(mn) = φ(m)φ(n) follows immediately from the ring isomorphism preserving units",
       "An element is a unit mod mn iff its image in both factors is a unit — this characterizes (ℤ/mnℤ)× ≅ (ℤ/mℤ)× × (ℤ/nℤ)×"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -139,7 +140,7 @@
   ],
   "conclusion": {
     "summary": "This formalization proves the CRT ring isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ with 0 sorries and 0 axioms. It wraps Mathlib's ZMod.chineseRemainder and develops substantial applications: orthogonal idempotent decomposition, explicit Bézout-based solutions, cardinality preservation, Euler totient multiplicativity, and a complete unit group characterization.",
-    "implications": "**Mathematical Significance**\n\n1. **Ring decomposition**: The CRT isomorphism decomposes ℤ/mnℤ into a direct product, revealing its algebraic structure.\n2. **Idempotent lifting**: The orthogonal idempotents e₁, e₂ are the building blocks for ring decomposition and have applications in algebraic geometry (étale algebras).\n3. **Computational number theory**: The explicit Bézout-based formula gives an efficient algorithm for solving simultaneous congruences.\n4. **Unit group structure**: The characterization (ℤ/mnℤ)× ≅ (ℤ/mℤ)× × (ℤ/nℤ)× is fundamental to multiplicative number theory and cryptography (RSA).",
+    "implications": "**Theoretical Significance**: **Mathematical Significance**\n\n1. **Ring decomposition**: The CRT isomorphism decomposes ℤ/mnℤ into a direct product, revealing its algebraic structure.\n2.\n\n**Broader Connections**: **Idempotent lifting**: The orthogonal idempotents e₁, e₂ are the building blocks for ring decomposition and have applications in algebraic geometry (étale algebras).\n3. **Computational number theory**: The explicit Bézout-based formula gives an efficient algorithm for solving simultaneous congruences.\n4. **Unit group structure**: The characterization (ℤ/mnℤ)× ≅ (ℤ/mℤ)× × (ℤ/nℤ)× is fundamental to multiplicative number theory and cryptography (RSA).",
     "openQuestions": [
       "Can the CRT be extended to k-fold products ℤ/(n₁···nₖ)ℤ ≅ ∏ᵢ ℤ/nᵢℤ for pairwise coprime nᵢ?",
       "Can the non-coprime case be formalized: ℤ/mnℤ ↪ ℤ/mℤ × ℤ/nℤ with characterization of the image?",

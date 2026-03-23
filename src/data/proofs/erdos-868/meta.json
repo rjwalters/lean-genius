@@ -72,7 +72,8 @@
       "**The Erdős-Nathanson constant**: The threshold (log 4/3)⁻¹ ≈ 3.476 arises from a probabilistic deletion argument. Below this threshold, the method fails.",
       "**Pathological bases exist**: Härtter and Nathanson constructed bases where you can always remove something while preserving the basis property - no subbasis is minimal.",
       "**Representation growth matters**: The key insight is that HOW FAST f(n) grows determines structural properties of A, not just whether f(n) is bounded or unbounded."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -134,7 +135,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #868 on additive bases and minimal subbases. The problem asks: what growth rate of the representation function f(n) guarantees that a basis contains a minimal subbasis? We capture the known sufficient condition (f(n) > 3.476 log n), the known counterexamples (constant f(n) insufficient), and the open questions (f(n) → ∞, f(n) > ε log n).",
-    "implications": "This problem sits at the intersection of additive combinatorics and analytic number theory. The gap between constant and logarithmic growth reveals deep structural questions about how sets of integers combine under addition. Understanding this gap could illuminate the transition from 'chaotic' to 'structured' behavior in additive bases.",
+    "implications": "**Theoretical Significance**: This problem sits at the intersection of additive combinatorics and analytic number theory.\n\n**Broader Connections**: The gap between constant and logarithmic growth reveals deep structural questions about how sets of integers combine under addition. Understanding this gap could illuminate the transition from 'chaotic' to 'structured' behavior in additive bases.",
     "openQuestions": [
       "Does f(n) → ∞ guarantee a minimal subbasis? (Main open question)",
       "Does f(n) > ε log n for any ε > 0 guarantee a minimal subbasis?",

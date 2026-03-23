@@ -63,7 +63,8 @@
       "**Quadratic growth of $f_d(3)$:** The leading term $d^2/2$ in $f_d(3) = d^2/2 + O(d)$ reflects that squared distances in $\\mathbb{R}^d$ are sums of $d$ squares, with about $d^2/2$ distinct possible values for bounded coordinates",
       "**Subexponential vs exponential gap:** The conjecture $f_d(n) = 2^{o(d)}$ asks whether the Erdős-Straus bound $c_n^d$ is essentially tight, or whether high-dimensional geometry provides structural advantages that mere counting arguments miss",
       "**Connection to Sidon sets:** The 1D case $f_1(n) \\asymp n^2$ is equivalent to the question of how large a set of real numbers must be to contain an $n$-element Sidon set (all pairwise differences distinct)"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -104,7 +105,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #1088 on guaranteed distinct-distance subsets in high dimensions. The constructive `AllDistancesDistinct` predicate using squared Euclidean distance provides a clean definition, while the known results ($f_1(n) \\asymp n^2$, $f_2(3) = 7$, $f_3(3) = 9$, $f_d(3) = d^2/2 + O(d)$, $f_d(n) \\leq c_n^d$) and the open conjecture ($f_d(n) = 2^{o(d)}$) are axiomatized as separate statements.",
-    "implications": "Resolving the subexponential conjecture would have implications for high-dimensional discrete geometry and Ramsey theory. A positive answer ($f_d(n) = 2^{o(d)}$) would mean high-dimensional space provides a structural advantage for finding distinct-distance subsets beyond what counting arguments predict. A negative answer would establish a fundamental exponential barrier in the relationship between dimension and combinatorial complexity.",
+    "implications": "**Theoretical Significance**: Resolving the subexponential conjecture would have implications for high-dimensional discrete geometry and Ramsey theory.\n\n**Broader Connections**: A positive answer ($f_d(n) = 2^{o(d)}$) would mean high-dimensional space provides a structural advantage for finding distinct-distance subsets beyond what counting arguments predict. A negative answer would establish a fundamental exponential barrier in the relationship between dimension and combinatorial complexity.",
     "openQuestions": [
       "Is $f_d(n) = 2^{o(d)}$ for fixed $n \\geq 3$? This is the main conjecture.",
       "What is $f_d(4)$ asymptotically? The $n = 4$ case is the first unknown beyond the quadratic $n = 3$ result.",
@@ -169,7 +170,10 @@
   ],
   "references": [
     {
-      "authors": ["Paul Erdős", "Paul Turán"],
+      "authors": [
+        "Paul Erdős",
+        "Paul Turán"
+      ],
       "title": "On a Problem in the Elementary Theory of Numbers",
       "venue": "American Mathematical Monthly",
       "year": 1941,
@@ -179,7 +183,9 @@
       "note": "Introduces B₂ (Sidon) sets; foundational for the 1D case f_1(n) ≍ n² via Sidon set theory."
     },
     {
-      "authors": ["Paul Erdős"],
+      "authors": [
+        "Paul Erdős"
+      ],
       "title": "On Sets of Distances of n Points",
       "venue": "American Mathematical Monthly",
       "year": 1946,
@@ -189,7 +195,9 @@
       "note": "Erdős's original distinct distances paper; establishes the Ω(n^{1/2}) lower bound for planar point sets and motivates the higher-dimensional distinct-distance program."
     },
     {
-      "authors": ["Hallard T. Croft"],
+      "authors": [
+        "Hallard T. Croft"
+      ],
       "title": "On 6-Point Configurations in 3-Space",
       "venue": "Journal of the London Mathematical Society",
       "year": 1962,
@@ -199,7 +207,10 @@
       "note": "Proves f_3(3) = 9 by showing the cube (8 vertices) avoids three fully distinct distances and that any 9 points in ℝ³ contain a fully distinct-distance triple."
     },
     {
-      "authors": ["Paul Erdős", "Ernst G. Straus"],
+      "authors": [
+        "Paul Erdős",
+        "Ernst G. Straus"
+      ],
       "title": "How Abelian is a Finite Group?",
       "venue": "Linear and Multilinear Algebra",
       "year": 1976,
@@ -209,7 +220,10 @@
       "note": "Contains the Erdős-Straus exponential upper bound f_d(n) ≤ c_n^d that the formalization axiomatizes as its main result."
     },
     {
-      "authors": ["Larry Guth", "Nets Hawk Katz"],
+      "authors": [
+        "Larry Guth",
+        "Nets Hawk Katz"
+      ],
       "title": "On the Erdős Distinct Distances Problem in the Plane",
       "venue": "Annals of Mathematics",
       "year": 2015,

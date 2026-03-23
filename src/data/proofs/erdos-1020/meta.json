@@ -133,7 +133,7 @@
   ],
   "conclusion": {
     "summary": "The Erdős Matching Conjecture predicts the exact maximum edges in an r-uniform hypergraph avoiding k disjoint edges. The formula max(C(rk-1,r), C(n,r)-C(n-k+1,r)) is proven for r=2,3 and verified in various regimes for larger r. Frankl's upper bound (k-1)C(n-1,r-1) is always true. The conjecture remains open for r ≥ 4 despite substantial partial progress.",
-    "implications": "This conjecture sits at the heart of extremal set theory, connecting to Turán-type problems for hypergraphs, the Erdős-Ko-Rado theorem on intersecting families, and the sunflower conjecture. A resolution would advance our understanding of when dense hypergraphs must contain large matchings. The techniques developed around this problem — shifting, container methods, dependent random choice — have found broad applications in combinatorics, coding theory, and combinatorial design theory.",
+    "implications": "**Theoretical Significance**: This conjecture sits at the heart of extremal set theory, connecting to Turán-type problems for hypergraphs, the Erdős-Ko-Rado theorem on intersecting families, and the sunflower conjecture.\n\n**Broader Connections**: A resolution would advance our understanding of when dense hypergraphs must contain large matchings. The techniques developed around this problem — shifting, container methods, dependent random choice — have found broad applications in combinatorics, coding theory, and combinatorial design theory.",
     "openQuestions": [
       "Is the conjecture true for r = 4? This is the smallest open case and likely requires new ideas beyond existing methods.",
       "Can the gap between the small n and large n regimes be closed for general r?",

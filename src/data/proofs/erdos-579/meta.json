@@ -33,7 +33,8 @@
       "**Octahedron geometry**: K₂,₂,₂ is the octahedron (6 vertices, 12 edges, 3-regular), a highly symmetric graph whose absence restricts local edge density in a specific pattern",
       "**Parallel to Problem 533**: Both problems ask whether forbidden subgraph + positive density forces structured subsets of linear size, with K₅ (Problem 533) and K₂,₂,₂ (Problem 579) as the forbidden graphs",
       "**Filter.atTop formalization**: Using Mathlib's Filter.atTop for 'sufficiently large n' avoids explicit bounds and keeps the statement clean"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {

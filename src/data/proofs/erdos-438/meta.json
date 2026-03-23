@@ -124,7 +124,8 @@
       "**Graph theory connection**: Finding the optimal residue set is equivalent to finding a maximum independent set in the graph where vertices are residues mod $32$ and edges connect pairs whose sum is a quadratic residue. This is a finite combinatorial optimization problem",
       "**Regularity transfer**: Szemerédi's regularity lemma bridges the gap between modular and integer density bounds. The key idea: a dense set in $\\{1,\\ldots,N\\}$ must 'look like' a union of residue classes at some scale, and the modular bound constrains the density",
       "**Furstenberg-Sárközy contrast**: While the Furstenberg-Sárközy theorem says dense sets must have square differences ($A - A \\ni \\square$), this problem asks how dense $A$ can be while avoiding square sums ($A + A \\not\\ni \\square$). The sum version has a definite answer; the difference version is about thresholds"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -179,7 +180,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #438 asks for the maximum size of A ⊆ {1,...,N} with A+A square-free. The answer is |A| = (11/32 + o(1))N, achieved by the Massias construction (11 residue classes mod 32) and proved tight by Khalfalah-Lodha-Szemerédi (2002) using the Szemerédi regularity lemma.",
-    "implications": "The result demonstrates the power of the regularity method for transferring modular density bounds to integer settings. It shows that the optimal density for sumset avoidance problems can be determined by finite combinatorial optimization (maximum independent set in a graph defined by quadratic residues). The exact value 11/32 is a consequence of the 2-adic structure of perfect squares.",
+    "implications": "**Theoretical Significance**: The result demonstrates the power of the regularity method for transferring modular density bounds to integer settings.\n\n**Broader Connections**: It shows that the optimal density for sumset avoidance problems can be determined by finite combinatorial optimization (maximum independent set in a graph defined by quadratic residues). The exact value 11/32 is a consequence of the 2-adic structure of perfect squares.",
     "openQuestions": [
       "What is the exact formula for max|A| for small N (before asymptotics dominate)?",
       "What is the optimal density for A+A avoiding kth powers (Problem #439)?",

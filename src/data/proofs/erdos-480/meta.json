@@ -66,7 +66,8 @@
       "**√5 vs c**: Newman asked about 1/√5 ≈ 0.447, but Chung-Graham proved the tighter bound 1/c ≈ 0.394. Since c ≈ 2.535 > √5 ≈ 2.236, their result is stronger.",
       "**Extremal sequences**: The sequences achieving the worst case are related to Sturmian sequences - binary sequences encoding irrational rotations on the circle.",
       "**Universality**: The result holds for ALL sequences in [0,1] - there's no escape from having infinitely many good approximation pairs."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -135,7 +136,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #480 on sequence approximation in [0,1]. For any sequence, infinitely many pairs (m,n) satisfy |x_{m+n} - x_m| ≤ 1/(C·n). Newman conjectured C = √5; Chung-Graham proved the optimal C ≈ 2.535 via Fibonacci numbers. The golden ratio's poor approximability underlies this result.",
-    "implications": "This problem connects several beautiful areas:\n\n1. **Diophantine approximation**: The golden ratio is the 'worst' irrational to approximate\n2. **Fibonacci sequences**: Appear naturally in the optimal constant\n3. **Ergodic theory**: Extremal sequences relate to irrational rotations\n4. **Discrepancy theory**: Measures how uniformly sequences can be distributed",
+    "implications": "**Theoretical Significance**: This problem connects several beautiful areas:\n\n1. **Diophantine approximation**: The golden ratio is the 'worst' irrational to approximate\n2.\n\n**Broader Connections**: **Fibonacci sequences**: Appear naturally in the optimal constant\n3. **Ergodic theory**: Extremal sequences relate to irrational rotations\n4. **Discrepancy theory**: Measures how uniformly sequences can be distributed.",
     "openQuestions": [
       "What is the exact rate of convergence to the liminf?",
       "How does the result change for sequences in higher dimensions?",

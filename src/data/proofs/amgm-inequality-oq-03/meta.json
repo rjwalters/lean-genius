@@ -123,6 +123,12 @@
       "General monotonicity for negative r (HM ≤ GM is the r=-1 to r=0 case) remains open in Mathlib4",
       "Lean 4 parsing: ∑ i ∈ s, BODY is greedy — always parenthesize: (∑ i ∈ s, BODY) * c, not ∑ i ∈ s, BODY * c",
       "Power means are the $L^p$ norms in disguise: $M_p(z,w) = \\|z\\|_{p,w}$ where $\\|z\\|_{p,w} = (\\sum w_i |z_i|^p)^{1/p}$ is the weighted $L^p$ norm. The Minkowski inequality $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ for $p \\geq 1$ follows from power mean monotonicity via homogeneity, making power means the discrete foundation of $L^p$ space geometry"
+    ],
+    "prerequisites": [
+      "Weighted AM-GM inequality (Mathlib)",
+      "Jensen's inequality for convex functions",
+      "Real power function (rpow) arithmetic and monotonicity",
+      "Finset product and sum operations"
     ]
   },
   "sections": [

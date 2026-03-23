@@ -82,7 +82,8 @@
       "**Normal Distribution:** The constant c₁ in the dense case relates to the standard normal CDF Φ(c₁) = c",
       "**Graph-Theoretic Proof:** The original proof uses hypergraph covering techniques",
       "**Algorithmic Relevance:** Smooth numbers are central to subexponential factorization algorithms"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -137,7 +138,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #983 asked whether 2π(√n) - f(π(n)+1, n) → ∞. The answer is NO. Erdős and Straus (1970) proved that f(π(n)+1, n) = 2π(√n) + o(√n/(log n)^A) for any A > 0, meaning the difference is small (sublinear in √n). For denser sets with f(cn, n), the function grows only as log log n.",
-    "implications": "**Number-Theoretic Connections**\n\n1. **Smooth Number Theory:** Characterizes prime coverage for smooth numbers\n\n2. **Prime Counting:** Deep connection between π(n), π(√n), and covering properties\n\n3. **Factorization:** Smooth numbers are key to quadratic sieve and number field sieve\n\n4. **Cryptography:** Understanding smooth number density affects cryptanalysis\n\n5. **Combinatorics:** Original proof used hypergraph covering techniques",
+    "implications": "**Theoretical Significance**: **Number-Theoretic Connections**\n\n1. **Smooth Number Theory:** Characterizes prime coverage for smooth numbers\n\n2. **Prime Counting:** Deep connection between π(n), π(√n), and covering properties\n\n3.\n\n**Broader Connections**: **Factorization:** Smooth numbers are key to quadratic sieve and number field sieve\n\n4. **Cryptography:** Understanding smooth number density affects cryptanalysis\n\n5. **Combinatorics:** Original proof used hypergraph covering techniques.",
     "openQuestions": [
       "Can the error term o(√n/(log n)^A) be made more explicit?",
       "What are optimal constructions achieving the bound?",

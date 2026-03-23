@@ -33,7 +33,8 @@
       "The gap between $\\log \\log n$ and $(\\log n)^C$ is surprisingly hard to close — neither improvement of the construction nor the decomposition method has been sufficient",
       "The k-cycle generalization shows the polylogarithmic threshold is robust: for any fixed $k \\ge 2$, the same $O(n(\\log n)^C)$ upper bound forces $k$ pairwise edge-disjoint cycles on some vertex set",
       "The problem connects cycle decomposition theory to extremal graph theory, bridging Hamiltonian graph theory and Turán-type questions"
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -88,7 +89,7 @@
   ],
   "conclusion": {
     "summary": "Formalizes Erdős Problem #585 on the maximum edges in a graph avoiding two edge-disjoint cycles on the same vertex set, along with both known bounds and the k-cycle generalization. The gap between Ω(n log log n) and O(n(log n)^C) remains one of the most intriguing open problems at the intersection of extremal graph theory and cycle decomposition.",
-    "implications": "Closing the gap would advance our understanding of how cycle structure constrains edge density. If f(n) = Θ(n log log n), the lower bound construction captures the true extremal behavior and the CJMM upper bound has room for improvement. If f(n) is closer to n(log n)^C, new constructions avoiding edge-disjoint cycles would be needed. Either resolution would yield new techniques in structural graph theory.",
+    "implications": "**Theoretical Significance**: Closing the gap would advance our understanding of how cycle structure constrains edge density. If f(n) = Θ(n log log n), the lower bound construction captures the true extremal behavior and the CJMM upper bound has room for improvement.\n\n**Broader Connections**: If f(n) is closer to n(log n)^C, new constructions avoiding edge-disjoint cycles would be needed. Either resolution would yield new techniques in structural graph theory.",
     "openQuestions": [
       "Is f(n) = Θ(n log log n), or is the truth closer to n(log n)^C?",
       "Can the CJMM exponent α be reduced to 0, giving an O(n log n) upper bound?",

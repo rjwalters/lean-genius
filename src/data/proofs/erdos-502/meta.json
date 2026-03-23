@@ -90,11 +90,12 @@
       "**Tight quadratic growth**: The gap $\\binom{n+2}{2} - \\binom{n+1}{2} = n+1$ is small, so $f(n) = \\frac{n^2}{2} + O(n)$ — the answer is known up to a linear correction",
       "**Exceptional small cases**: $f(2) = 5$ (regular pentagon, beating $\\binom{3}{2} = 3$) shows the lower bound is not always tight; by $n = 3$, $f(3) = 6 = \\binom{4}{2}$ matches the lower bound exactly",
       "**Evolution of proof techniques**: From Erdős's failed polynomial attempt (1961) through BBS's Gram matrix method (1983) to Petrov–Pohoata's Croot–Lev–Pach approach (2021) — each generation simplified the argument using new algebraic tools"
-    ]
+    ],
+    "prerequisites": []
   },
   "conclusion": {
     "summary": "Erdős Problem #502 asks for the maximum two-distance set in $\\mathbb{R}^n$. The answer is $\\Theta(n^2)$: the Bannai–Bannai–Stanton upper bound $\\binom{n+2}{2}$ and the projection lower bound $\\binom{n+1}{2}$ sandwich $f(n)$ with an additive gap of $n+1$. The formalization captures both bounds, the binary vector construction, exact small-case values, and the historical resolution of Coxeter's polynomial growth question.",
-    "implications": "The polynomial method, first applied here by Bannai–Bannai–Stanton, became one of the most powerful tools in combinatorial geometry. Its descendant, the Croot–Lev–Pach method (2016), resolved the cap set problem and led to Petrov–Pohoata's simplified proof. The two-distance problem is a prototype for the general $k$-distance problem, where the polynomial method gives $f_k(n) \\leq \\binom{n+k}{k}$.",
+    "implications": "**Theoretical Significance**: The polynomial method, first applied here by Bannai–Bannai–Stanton, became one of the most powerful tools in combinatorial geometry.\n\n**Broader Connections**: Its descendant, the Croot–Lev–Pach method (2016), resolved the cap set problem and led to Petrov–Pohoata's simplified proof. The two-distance problem is a prototype for the general $k$-distance problem, where the polynomial method gives $f_k(n) \\leq \\binom{n+k}{k}$.",
     "openQuestions": [
       "Is $f(n) = \\binom{n+1}{2}$ for all sufficiently large $n$? This would close the linear gap between upper and lower bounds",
       "What is the structure of extremal two-distance sets? Are they related to strongly regular graphs or spherical designs?",

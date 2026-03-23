@@ -60,7 +60,8 @@
       "**Factorial vs exponential**: Erdős could prove Σ pₙᵏ/n! irrational because n! grows much faster than 2ⁿ, allowing tail analysis. The 2ⁿ case is harder.",
       "**General conjecture**: Erdős conjectured that for any slowly-growing sequence gₙ ≥ 2 with gₙ = o(pₙ), the sum Σ pₙ/(g₁·...·gₙ) is irrational.",
       "**Computational evidence**: The first 5 terms sum to 101/32 ≈ 3.15625, already within 0.5 of the limit."
-    ]
+    ],
+    "prerequisites": []
   },
   "sections": [
     {
@@ -136,7 +137,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #251, which asks whether Σ pₙ/2ⁿ is irrational. The sum converges to approximately 3.59686 (OEIS A098990), but its arithmetic nature remains unknown. We state the conjecture formally, axiomatize related results by Erdős, and verify explicit partial sums.",
-    "implications": "This problem connects several areas of mathematics:\n\n1. **Transcendence theory**: Understanding the arithmetic nature of explicit constants\n2. **Prime distribution**: The irregularity of primes makes irrationality proofs difficult\n3. **Series analysis**: Comparing with factorial denominators where irrationality is provable\n4. **Computational number theory**: The constant is computed to high precision but remains mysterious",
+    "implications": "**Theoretical Significance**: This problem connects several areas of mathematics:\n\n1. **Transcendence theory**: Understanding the arithmetic nature of explicit constants\n2.\n\n**Broader Connections**: **Prime distribution**: The irregularity of primes makes irrationality proofs difficult\n3. **Series analysis**: Comparing with factorial denominators where irrationality is provable\n4. **Computational number theory**: The constant is computed to high precision but remains mysterious.",
     "openQuestions": [
       "Is Σ pₙ/2ⁿ irrational? (The main conjecture)",
       "Is Σ pₙᵏ/2ⁿ irrational for all k ≥ 1? (Erdős's generalization)",
