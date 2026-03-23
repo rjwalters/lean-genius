@@ -308,6 +308,16 @@
       "targetId": "nth-root-irrational",
       "relationship": "foundational",
       "description": "The irrationality of $m^{1/n}$ for non-perfect-power $m$ is the simplest instance of the radical extension phenomenon central to Abel-Ruffini: adjoining $\\sqrt[n]{m}$ to $\\mathbb{Q}$ creates a genuine field extension of degree $n$, and each such radical step contributes a cyclic Galois group quotient. Abel-Ruffini's impossibility arises precisely because the composition of such cyclic quotients cannot produce $S_5$ — the solvability constraint on Galois groups built from radical towers"
+    },
+    {
+      "targetId": "factor-remainder-theorem",
+      "relationship": "foundational",
+      "description": "The factor theorem ($\\alpha$ is a root of $p(x)$ iff $(x - \\alpha)$ divides $p(x)$) is the starting point for the Galois theory used in Abel-Ruffini: roots of a polynomial correspond to linear factors in the splitting field, and the Galois group acts by permuting these roots/factors. The entire bridge theorem (`galois_bridge`) rests on this factorization structure — the Galois group is defined as the group of automorphisms permuting the roots, which are precisely the factors"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "related",
+      "description": "The minimal polynomial, central to the `galois_bridge` theorem ($\\alpha$ solvable by radicals $\\Rightarrow$ $\\text{Gal}(\\text{minpoly}_F(\\alpha))$ solvable), is closely related to the Cayley-Hamilton framework. The minimal polynomial of $\\alpha$ over $F$ is the unique monic irreducible polynomial vanishing at $\\alpha$, and its Galois group captures the symmetries of $\\alpha$'s conjugates — the key object whose solvability determines radical expressibility"
     }
   ],
   "relatedProofs": [
@@ -342,7 +352,9 @@
     "hilbert-9-reciprocity",
     "euler-totient",
     "gelfond-schneider",
-    "nth-root-irrational"
+    "nth-root-irrational",
+    "factor-remainder-theorem",
+    "cayley-hamilton-minpoly"
   ],
   "references": [
     {
