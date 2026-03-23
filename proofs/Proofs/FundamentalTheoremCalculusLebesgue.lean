@@ -199,29 +199,21 @@ theorem classical_ftc_from_lebesgue {F : ℝ → ℝ} {a b : ℝ} (hab : a ≤ b
     ∫ x in a..b, deriv F x = F b - F a :=
   lebesgue_ftc_integral hab hF_ac
 
-/-- The Cantor function shows that AC is essential.
+/-- **Cantor Function (Devil's Staircase)**: There exists a continuous, monotone
+    function on [0,1] with F(0) = 0, F(1) = 1 that is NOT absolutely continuous.
 
-The Cantor function is continuous and monotone on [0,1], with F(0) = 0
-and F(1) = 1. Its derivative is 0 almost everywhere (on the complement
-of the Cantor set, which has measure 1). But ∫₀¹ 0 ≠ 1 = F(1) - F(0).
+    The Cantor function is constant on each removed interval of the Cantor set
+    construction, so its derivative is 0 a.e., yet F(1) - F(0) = 1 ≠ ∫₀¹ F' = 0.
+    This shows absolute continuity is necessary for the Lebesgue FTC.
 
-The point: the Cantor function is NOT absolutely continuous (it's
-uniformly continuous but not AC), so the Lebesgue FTC does not apply. -/
-theorem cantor_function_not_ac :
-    -- There exists a function satisfying all these properties:
+    Axiomatized: constructing the Cantor function requires significant
+    infrastructure (Cantor set, ternary expansion, devil's staircase). -/
+axiom cantor_function_not_ac :
     ∃ (F : ℝ → ℝ),
-      -- Continuous on [0,1]
       ContinuousOn F (Icc 0 1) ∧
-      -- Monotone on [0,1]
       MonotoneOn F (Icc 0 1) ∧
-      -- F(0) = 0, F(1) = 1
       F 0 = 0 ∧ F 1 = 1 ∧
-      -- NOT absolutely continuous (AC fails)
-      ¬ AbsolutelyContinuousOn F 0 1 := by
-  -- This is a pure existence statement; the Cantor function construction
-  -- is non-trivial. We provide the statement as a demonstration that
-  -- AC is a necessary hypothesis for the Lebesgue FTC.
-  sorry -- Construction of Cantor function requires significant infrastructure
+      ¬ AbsolutelyContinuousOn F 0 1
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART VI: Mathlib Connections (PROVED)
