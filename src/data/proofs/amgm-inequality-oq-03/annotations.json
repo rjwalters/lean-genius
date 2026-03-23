@@ -12,6 +12,18 @@
     "prerequisites": ["weighted inequalities", "real analysis", "Lean 4 Mathlib imports"]
   },
   {
+    "id": "ann-amgm-oq03-01b-variables",
+    "proofId": "amgm-inequality-oq-03",
+    "range": { "startLine": 57, "endLine": 58 },
+    "type": "context",
+    "title": "Shared Variables: Abstract Index Type and Weight/Value Functions",
+    "content": "The variable block declares the abstract index type ι (with implicit [DecidableEq ι] and [Fintype ι] from the Finset API), the finite index set s : Finset ι, and the weight and value functions w z : ι → ℝ. This polymorphic setup allows the power mean theorems to work for any finite collection of real numbers with any indexing scheme — a common Mathlib pattern that avoids committing to Fin n or a specific concrete type. The hypotheses on w and z (non-negativity, positivity, weight normalization) are stated in each theorem individually rather than as variable-level assumptions.",
+    "mathContext": "The abstract setup: $s \\subseteq \\iota$ (finite index set), $w : \\iota \\to \\mathbb{R}$ (weights, typically $w_i \\geq 0$, $\\sum w_i = 1$), $z : \\iota \\to \\mathbb{R}$ (values, typically $z_i > 0$). All power mean results are parametric in these choices.",
+    "significance": "context",
+    "relatedConcepts": ["Lean 4 variable blocks", "parametric polymorphism", "Finset abstraction"],
+    "prerequisites": ["Lean 4 type theory", "Finset API"]
+  },
+  {
     "id": "ann-amgm-oq03-02-definitions",
     "proofId": "amgm-inequality-oq-03",
     "range": { "startLine": 59, "endLine": 71 },
