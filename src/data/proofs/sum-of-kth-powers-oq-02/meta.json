@@ -81,54 +81,126 @@
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Module Setup",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Imports, noncomputable section, maxHeartbeats.",
+      "mathContext": "Dependencies: summable_nat_rpow_inv, hasSum_zeta_two/four, rpow_le_rpow_of_exponent_le."
+    },
+    {
       "id": "convergence",
-      "title": "Convergence Dichotomy",
-      "description": "The p-series ∑ 1/n^s converges if and only if s > 1."
+      "title": "Part I: Convergence Dichotomy",
+      "startLine": 39,
+      "endLine": 49,
+      "summary": "p-series converges iff s > 1.",
+      "mathContext": "Sum n^{-s} converges iff s > 1."
     },
     {
       "id": "known-values",
-      "title": "Known Values",
-      "description": "ζ(2) = π²/6 (Basel Problem) and ζ(4) = π⁴/90."
+      "title": "Part II: Known Values",
+      "startLine": 51,
+      "endLine": 59,
+      "summary": "zeta(2) = pi^2/6, zeta(4) = pi^4/90.",
+      "mathContext": "Basel problem and zeta(4)."
     },
     {
-      "id": "monotonicity",
-      "title": "Term and Zeta Monotonicity",
-      "description": "Each term 1/n^s decreases in s for n ≥ 1, so ζ(s) is antitone."
+      "id": "term-monotonicity",
+      "title": "Part III: Term Monotonicity",
+      "startLine": 61,
+      "endLine": 83,
+      "summary": "(n^s)^-1 antitone in s.",
+      "mathContext": "Pointwise antitonicity via rpow monotonicity."
+    },
+    {
+      "id": "zeta-monotonicity",
+      "title": "Part IV: Zeta Monotonicity",
+      "startLine": 85,
+      "endLine": 91,
+      "summary": "zeta(s) antitone (sorry).",
+      "mathContext": "tsum ordering comparison."
     },
     {
       "id": "bounds",
-      "title": "Bounds",
-      "description": "ζ(s) ≥ 1 and ζ(s) ≤ π²/6 for s ≥ 2."
+      "title": "Parts V-VI: Bounds",
+      "startLine": 93,
+      "endLine": 107,
+      "summary": "zeta(s) >= 1, zeta(s) <= pi^2/6 for s>=2 (sorry).",
+      "mathContext": "Lower and upper bounds."
+    },
+    {
+      "id": "partial-sums",
+      "title": "Part VII: Partial Sums",
+      "startLine": 109,
+      "endLine": 126,
+      "summary": "partialZeta convergence and monotonicity.",
+      "mathContext": "Partial sums converge to zeta(s)."
     },
     {
       "id": "bridge",
-      "title": "Bridge to Integer Exponents",
-      "description": "Connects real-exponent rpow series to classical 1/n^k via rpow_natCast."
+      "title": "Part VIII: Bridge",
+      "startLine": 128,
+      "endLine": 145,
+      "summary": "rpow to nat pow via rpow_natCast.",
+      "mathContext": "Connects real to integer exponents."
+    },
+    {
+      "id": "verification",
+      "title": "Verification",
+      "startLine": 147,
+      "endLine": 164,
+      "summary": "Type-checks all 14 results.",
+      "mathContext": "11 proved, 3 sorry."
     }
   ],
   "overview": {
-    "text": "Faulhaber's formulas give ∑ k^m for integer m. The natural extension to real exponents s leads to the p-series ∑ 1/n^s, whose limit is the Riemann zeta function. This formalization proves the convergence dichotomy at s = 1, recovers the Basel Problem value, and establishes monotonicity and bounds.",
+    "historicalContext": "Faulhaber (1631) published formulas for sum k^m. Euler (1734) extended to real exponents, computing zeta(2) = pi^2/6. The convergence dichotomy at s=1 connects to the prime number theorem via the Euler product.",
+    "problemStatement": "Extend Faulhaber integer power sums to real exponents via zeta(s) = sum 1/n^s.",
+    "proofStrategy": "Eight parts: convergence dichotomy, known values, term monotonicity, zeta monotonicity, bounds, partial sums, bridge to integers. Three sorries in tsum ordering.",
     "keyInsights": [
-      "The p-series convergence threshold at s = 1 separates convergent from divergent behavior",
-      "Known zeta values connect discrete sums to transcendental constants (π)",
-      "Monotonicity in the exponent follows from rpow monotonicity via inversion",
-      "The bridge theorem rpow_inv_eq_nat_inv connects real and integer exponent theories"
+      "P-series threshold at s=1 separates convergent from divergent power-law decay",
+      "Basel problem zeta(2)=pi^2/6 connects discrete arithmetic to geometry",
+      "General formula zeta(2k) involves Bernoulli numbers; no closed form for odd values",
+      "Bridge rpow_inv_eq_nat_inv connects real-exponent analysis to integer combinatorics",
+      "Three remaining sorries are routine tsum ordering comparisons"
+    ],
+    "prerequisites": [
+      "Real summability",
+      "Zeta values from Mathlib",
+      "Real rpow"
     ]
   },
   "conclusion": {
-    "text": "This formalization provides the analytical foundation for extending Faulhaber's discrete power sums to continuous exponents. With 11 of 14 results fully proved and 3 sorries (tsum ordering comparisons), the key mathematical content is captured."
+    "summary": "11 of 14 results proved. 3 sorries remain in tsum ordering comparisons.",
+    "implications": "Bridge from Faulhaber to zeta(s). Sorries are routine and Aristotle-provable.",
+    "openQuestions": [
+      "Close 3 tsum ordering sorries using tsum_le_tsum and le_tsum",
+      "Extend to zeta(6), zeta(8) via Bernoulli numbers",
+      "Formalize Euler product",
+      "Prove functional equation"
+    ]
   },
-  "relatedProofs": ["sum-of-kth-powers", "basel-problem"],
+  "relatedProofs": [
+    "sum-of-kth-powers",
+    "basel-problem",
+    "basel-problem-oq-01",
+    "riemann-hypothesis"
+  ],
   "crossReferences": [
     {
-      "target": "sum-of-kth-powers",
+      "targetId": "sum-of-kth-powers",
       "relationship": "extends",
       "description": "Extends integer power sums to real exponents"
     },
     {
-      "target": "basel-problem",
+      "targetId": "basel-problem",
       "relationship": "uses",
-      "description": "Uses ζ(2) = π²/6 for upper bounds and known values"
+      "description": "Uses zeta(2) = pi^2/6 for upper bounds"
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "foundational",
+      "description": "Basic properties of zeta(s) for real s > 1"
     }
   ]
 }
