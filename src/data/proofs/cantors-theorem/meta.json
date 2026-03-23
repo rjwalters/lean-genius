@@ -139,13 +139,25 @@
       "targetId": "halting-problem",
       "relationship": "related",
       "description": "The halting problem's undecidability proof is structurally identical to Cantor's theorem: the 'diagonal machine' that asks 'does this machine halt on itself?' is the Turing machine analog of the set {x : x ∉ f(x)}"
+    },
+    {
+      "targetId": "cantors-theorem-oq-01",
+      "relationship": "extended-by",
+      "description": "Investigates the cardinality of $\\mathcal{P}(\\mathbb{R})$ — iterated application of Cantor's theorem gives the tower $|\\mathbb{N}| < |\\mathcal{P}(\\mathbb{N})| = |\\mathbb{R}| < |\\mathcal{P}(\\mathbb{R})| < \\cdots$, and the Continuum Hypothesis asks about gaps in this hierarchy"
+    },
+    {
+      "targetId": "cantors-theorem-oq-02",
+      "relationship": "extended-by",
+      "description": "Lawvere's fixed-point theorem provides a categorical generalization of Cantor's diagonal argument: in any cartesian closed category, if $Y^{Y^X}$ has a surjection from $X$, then every endomorphism of $Y$ has a fixed point — unifying Cantor's theorem, the halting problem, and Gödel incompleteness under one framework"
     }
   ],
   "relatedProofs": [
     "cantor-diagonalization",
     "continuum-hypothesis",
     "schroeder-bernstein",
-    "halting-problem"
+    "halting-problem",
+    "cantors-theorem-oq-01",
+    "cantors-theorem-oq-02"
   ],
   "references": [
     {
