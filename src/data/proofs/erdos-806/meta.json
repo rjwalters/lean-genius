@@ -150,7 +150,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #806 asked whether sets A ⊆ {1,...,n} of size at most √n can always be covered by sumsets B + B where B has size o(√n). Alon, Bukh, and Sudakov (2009) answered YES, achieving the tight bound Θ((log log n / log n) · √n) that matches the Erdős-Newman lower bound from 1977.",
-    "implications": "**Theoretical Significance**: **Implications for Additive Combinatorics**\n\n1. **Efficient Bases:** Even \"random-looking\" small sets have surprisingly efficient sumset representations.\n\n2.\n\n**Broader Connections**: **Kakeya Connection:** The proof reveals deep connections between additive combinatorics and discrete geometry.\n\n3. **Optimal Bounds:** The matching upper and lower bounds close this problem completely.\n\n4. **Related Problems:** Similar techniques apply to Erdős Problem #333 and other basis questions.",
+    "implications": "**Theoretical Significance**: **Implications for Additive Combinatorics**\n\n1. **Efficient Bases:** Even \"random-looking\" small sets have surprisingly efficient sumset representations.\n\n2. **Kakeya Connection:** The proof reveals deep connections between additive combinatorics and discrete geometry.\n\n3. **Optimal Bounds:** The matching upper and lower bounds close this problem completely.\n\n4. **Related Problems:** Similar techniques apply to Erdős Problem #333 and other basis questions.",
     "openQuestions": [
       "What is the exact leading constant in the optimal bound?",
       "Can the result be extended to larger sets A (|A| > √n)?",

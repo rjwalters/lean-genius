@@ -155,7 +155,7 @@
   ],
   "conclusion": {
     "summary": "This formalization provides a complete axiomatic framework for the continuous-time ballot problem via Brownian motion. The key results — reflection principle, first passage distributions, and arcsine law — are stated as axioms since Mathlib 4.26.0 lacks full BM formalization. All theorems now build without sorry: the firstPassageTime_eq_maxEvent axiom captures the path-continuity argument cleanly, and path_continuous was added as a BrownianMotion structure field.",
-    "implications": "**Theoretical Significance**: **Applications:**\n\n1. **Mathematical finance**: Barrier option pricing via first passage distributions\n2.\n\n**Broader Connections**: **Physics**: 1D diffusion hitting times\n3. **Statistics**: Sequential analysis and stopping times\n4. **Probability**: Foundation for stochastic calculus and Itô's formula.",
+    "implications": "**Theoretical Significance**: **Applications:**\n\n1. **Mathematical finance**: Barrier option pricing via first passage distributions\n2. **Physics**: 1D diffusion hitting times\n3. **Statistics**: Sequential analysis and stopping times\n4. **Probability**: Foundation for stochastic calculus and Itô's formula.",
     "openQuestions": [
       "Prove the reflection principle from the strong Markov property (requires full BM Markov theory)",
       "Prove firstPassageTime_eq_maxEvent from path_continuous (requires csInf theory for closed sets)",

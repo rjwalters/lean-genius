@@ -124,7 +124,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #828 asks whether totientDivisors(a) is infinite for every integer a. The a = 0 case is fully characterized (3-smooth numbers), and the a = -1 case is Lehmer's famous 1932 conjecture. The formalization proves φ(p) | p - 1 constructively and axiomatizes the characterization and infiniteness results.",
-    "implications": "**Theoretical Significance**: **Number Theory Connections**\n\n1. **Lehmer's Conjecture:** The a = -1 case is one of the most famous open problems about the totient function\n\n2.\n\n**Broader Connections**: **Totient Arithmetic:** Resolution would illuminate the divisibility structure of Euler's totient at a deep level\n\n3. **Carmichael's Conjecture:** Related conjecture that φ(n) = φ(m) always has a solution m ≠ n\n\n4. **Unification:** The problem unifies infinitely many specific divisibility questions into one conjecture.",
+    "implications": "**Theoretical Significance**: **Number Theory Connections**\n\n1. **Lehmer's Conjecture:** The a = -1 case is one of the most famous open problems about the totient function\n\n2. **Totient Arithmetic:** Resolution would illuminate the divisibility structure of Euler's totient at a deep level\n\n3. **Carmichael's Conjecture:** Related conjecture that φ(n) = φ(m) always has a solution m ≠ n\n\n4. **Unification:** The problem unifies infinitely many specific divisibility questions into one conjecture.",
     "openQuestions": [
       "Are there composite Lehmer numbers (φ(n) | n - 1 with n > 1 composite)?",
       "What is the density of solutions for each fixed a?",

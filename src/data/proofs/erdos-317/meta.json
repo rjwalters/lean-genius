@@ -119,7 +119,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #317 remains OPEN. Question 1 asks whether signed unit fraction sums can be made exponentially small (< c/2^n). Kovac-van Doorn achieved a weaker sub-exponential bound. Question 2 about the 1/lcm strict lower bound fails for small n. The summary theorem packages the weak inequality with the small-n counterexample.",
-    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Diophantine Approximation:** Making linear combinations of 1/k close to zero\n\n2.\n\n**Broader Connections**: **Egyptian Fractions:** Structure of subset sums of unit fractions\n\n3. **Number Theory:** lcm(1,...,n) ~ e^n by the Prime Number Theorem\n\n4. **Combinatorics:** 3^n sign choices make the search space exponentially large.",
+    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Diophantine Approximation:** Making linear combinations of 1/k close to zero\n\n2. **Egyptian Fractions:** Structure of subset sums of unit fractions\n\n3. **Number Theory:** lcm(1,...,n) ~ e^n by the Prime Number Theorem\n\n4. **Combinatorics:** 3^n sign choices make the search space exponentially large.",
     "openQuestions": [
       "Is there c > 0 achieving 0 < |∑δ_k/k| < c/2^n for all n?",
       "Is the Kovac-van Doorn bound optimal?",

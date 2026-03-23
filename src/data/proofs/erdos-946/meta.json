@@ -105,7 +105,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem 946, which asks about consecutive integers with equal divisor counts. Heath-Brown's 1984 proof showed infinitely many such pairs exist. We formalize this and the quantitative bounds showing the count is roughly x/√(log log x).",
-    "implications": "**Theoretical Significance**: The resolution has implications for understanding arithmetic functions:\n\n1. **Divisor function distribution:** The function τ(n) varies enough that consecutive values often match.\n\n2.\n\n**Broader Connections**: **Multiplicative functions:** Similar questions for φ, σ, and other functions.\n\n3. **Quantitative refinements:** Ongoing work by Tao-Teräväinen pins down the exact asymptotic.",
+    "implications": "**Theoretical Significance**: The resolution has implications for understanding arithmetic functions:\n\n1. **Divisor function distribution:** The function τ(n) varies enough that consecutive values often match.\n\n2. **Multiplicative functions:** Similar questions for φ, σ, and other functions.\n\n3. **Quantitative refinements:** Ongoing work by Tao-Teräväinen pins down the exact asymptotic.",
     "openQuestions": [
       "What is the exact constant c in the asymptotic c·x/√(log log x)?",
       "How long can runs of consecutive n with equal τ(n) be?",

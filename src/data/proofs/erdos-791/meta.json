@@ -146,7 +146,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #791 asked whether the minimum size g(n) of an additive 2-basis for {0,...,n} satisfies g(n) ~ 2√n. The answer is NO. Mrose (1979) disproved this by constructing bases with g(n)² ≤ 3.5n. The current best bounds are 2.181n ≤ g(n)² ≤ 3.458n (Yu 2015, Kohonen 2017).",
-    "implications": "**Theoretical Significance**: **Significance**\n\n1. **Additive Combinatorics:** Shows the optimal construction of sumset representations is more efficient than naive bounds suggest.\n\n2.\n\n**Broader Connections**: **Algorithmic Applications:** Additive bases are used in data structures and coding theory.\n\n3. **Open Problem:** The exact asymptotic constant for g(n)² is still unknown (between 2.181 and 3.458).\n\n4. **Connection to Other Problems:** Related to Sidon sets and B_h sequences.",
+    "implications": "**Theoretical Significance**: **Significance**\n\n1. **Additive Combinatorics:** Shows the optimal construction of sumset representations is more efficient than naive bounds suggest.\n\n2. **Algorithmic Applications:** Additive bases are used in data structures and coding theory.\n\n3. **Open Problem:** The exact asymptotic constant for g(n)² is still unknown (between 2.181 and 3.458).\n\n4. **Connection to Other Problems:** Related to Sidon sets and B_h sequences.",
     "openQuestions": [
       "What is the exact asymptotic constant for g(n)²?",
       "Can the gap between 2.181 and 3.458 be narrowed further?",

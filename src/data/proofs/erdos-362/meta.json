@@ -137,7 +137,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #362 asks about concentration of subset sums. Both questions were answered affirmatively: for any finite set A of size N and target t, the number of subsets summing to t is O(2^N/N^(3/2)) (Sárközy-Szemerédi 1965), and with fixed cardinality O(2^N/N²) (Halász 1977). Stanley showed the symmetric set maximizes concentration using algebraic geometry.",
-    "implications": "**Theoretical Significance**: **Implications for Combinatorics**\n\n1. **Concentration Inequalities:** Fundamental bounds on how concentrated subset sums can be.\n\n2.\n\n**Broader Connections**: **Random Sums:** Most subset sums cluster near the mean, with Gaussian-like distribution.\n\n3. **Algorithmic Applications:** Bounds help design approximate counting algorithms.\n\n4. **Structural Implications:** High concentration implies arithmetic structure in the set.",
+    "implications": "**Theoretical Significance**: **Implications for Combinatorics**\n\n1. **Concentration Inequalities:** Fundamental bounds on how concentrated subset sums can be.\n\n2. **Random Sums:** Most subset sums cluster near the mean, with Gaussian-like distribution.\n\n3. **Algorithmic Applications:** Bounds help design approximate counting algorithms.\n\n4. **Structural Implications:** High concentration implies arithmetic structure in the set.",
     "openQuestions": [
       "What is the exact constant in the 2^N/N^(3/2) bound?",
       "Can the extremal result be proved without algebraic geometry?",

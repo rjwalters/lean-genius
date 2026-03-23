@@ -151,7 +151,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #32, the question of how sparse an additive complement of the primes can be. The problem is PARTIALLY SOLVED: Ruzsa (1998) showed that O(ω(N)·log N) is achievable for any ω → ∞, but also that e^γ·log N is a fundamental lower bound. The $50 question of whether exactly O(log N) is achievable remains open, with Erdős conjecturing it is not.",
-    "implications": "**Theoretical Significance**: This problem sits at the intersection of additive combinatorics and analytic number theory:\n\n1. **Sieve theory**: Understanding prime complements requires understanding prime gaps\n2.\n\n**Broader Connections**: **Probabilistic methods**: Ruzsa's upper bound construction uses random sets\n3. **Mertens' theorems**: The appearance of e^γ connects to classical prime number theory\n4. **Approximation theory**: The ω(N) factor represents the 'almost but not quite' nature of current bounds.",
+    "implications": "**Theoretical Significance**: This problem sits at the intersection of additive combinatorics and analytic number theory:\n\n1. **Sieve theory**: Understanding prime complements requires understanding prime gaps\n2. **Probabilistic methods**: Ruzsa's upper bound construction uses random sets\n3. **Mertens' theorems**: The appearance of e^γ connects to classical prime number theory\n4. **Approximation theory**: The ω(N) factor represents the 'almost but not quite' nature of current bounds.",
     "openQuestions": [
       "Can O(log N) density be achieved? (Erdős's $50 prize)",
       "Is the constant e^γ ≈ 1.781 sharp for the liminf?",

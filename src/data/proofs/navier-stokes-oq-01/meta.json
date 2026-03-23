@@ -84,7 +84,7 @@
     "prerequisites": [
       "Real analysis (continuity, differentiability, integration)",
       "ODE theory (Gronwall-type inequalities, integrating factors)",
-      "Functional analysis (Poincar\u00e9 inequality, Sobolev spaces)",
+      "Functional analysis (Poincaré inequality, Sobolev spaces)",
       "Fluid dynamics (enstrophy, palinstrophy, vorticity)",
       "Familiarity with Lean 4 and Mathlib"
     ]
@@ -135,7 +135,7 @@
   ],
   "conclusion": {
     "summary": "This formalization answers the open question affirmatively: all three quantitative results — inter-time decay, integrated energy identity, and total dissipation bound — can be formalized in Lean 4 with 0 axioms and 0 sorries. The key tools are the integrating factor method (for decay between arbitrary times) and the FTC via `intervalIntegral.integral_eq_sub_of_hasDerivAt_of_le` (for the integrated identity).",
-    "implications": "**Theoretical Significance**: **For 2D fluid mechanics**: The enstrophy_uniform_decay theorem provides a precise Lyapunov function argument: g(t) = E(t)·exp(2νμ₁t) is nonincreasing, certifying exponential stability of the zero state.\n\n**For Mathlib**: The correct FTC lemma for enstrophy integration is `integral_eq_sub_of_hasDerivAt_of_le` (not the simpler `integral_eq_sub_of_hasDerivAt`), because the enstrophy ODE holds for t > 0 but not necessarily at t = 0.\n\n**Broader Connections**: This version requires ContinuousOn on the closed interval [0,T] and HasDerivAt only on the open interval (0,T).\n\n**For Navier-Stokes research**: These results form part of the infrastructure for more advanced 2D results, such as proving the Ladyzhenskaya inequality in Lean 4 and connecting 2D global regularity to Fourier space energy cascades.\n\n**For the 3D problem**: The 2D results demonstrate that the enstrophy framework works cleanly in Lean 4. The 3D case differs because vortex stretching prevents the Poincaré bound P ≥ μ₁E from giving exponential decay.",
+    "implications": "**Theoretical Significance**: **For 2D fluid mechanics**: The enstrophy_uniform_decay theorem provides a precise Lyapunov function argument: g(t) = E(t)·exp(2νμ₁t) is nonincreasing, certifying exponential stability of the zero state.\n\n**For Mathlib**: The correct FTC lemma for enstrophy integration is `integral_eq_sub_of_hasDerivAt_of_le` (not the simpler `integral_eq_sub_of_hasDerivAt`), because the enstrophy ODE holds for t > 0 but not necessarily at t = 0. This version requires ContinuousOn on the closed interval [0,T] and HasDerivAt only on the open interval (0,T).\n\n**For Navier-Stokes research**: These results form part of the infrastructure for more advanced 2D results, such as proving the Ladyzhenskaya inequality in Lean 4 and connecting 2D global regularity to Fourier space energy cascades.\n\n**For the 3D problem**: The 2D results demonstrate that the enstrophy framework works cleanly in Lean 4. The 3D case differs because vortex stretching prevents the Poincaré bound P ≥ μ₁E from giving exponential decay.",
     "openQuestions": [
       "Can the Ladyzhenskaya inequality ‖u‖₄ ≤ C‖u‖₂^{1/2}‖∇u‖₂^{1/2} be formalized in Lean 4 using Mathlib's Sobolev space infrastructure?",
       "Can the 2D Navier-Stokes existence theorem be stated and proved axiom-free? (Requires weak solutions, Galerkin approximation, compactness arguments)",
@@ -199,12 +199,12 @@
     {
       "targetId": "fundamental-theorem-calculus",
       "relationship": "foundational",
-      "description": "The enstrophy integral identity directly applies the FTC (integral_eq_sub_of_hasDerivAt_of_le) to convert the pointwise ODE E'(t) = -2\u03bdP(t) into the global identity \u222b\u2080\u1d40 -2\u03bdP = E(T) - E(0)"
+      "description": "The enstrophy integral identity directly applies the FTC (integral_eq_sub_of_hasDerivAt_of_le) to convert the pointwise ODE E'(t) = -2νP(t) into the global identity ∫₀ᵀ -2νP = E(T) - E(0)"
     },
     {
       "targetId": "navier-stokes-existence",
       "relationship": "related",
-      "description": "Existence theory for Navier-Stokes solutions \u2014 the solutions whose enstrophy decay properties are formalized here"
+      "description": "Existence theory for Navier-Stokes solutions — the solutions whose enstrophy decay properties are formalized here"
     },
     {
       "targetId": "cauchy-schwarz-integral",

@@ -119,7 +119,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1023 asked whether the maximum union-free family has size ~ c · 2^n / √n. The answer is YES: F(n) = C(n, n/2) ~ √(2/π) · 2^n / √n. The middle layer achieves this bound, and Erdős-Kleitman proved it's optimal.",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Extremal Set Theory**: Tight bound on union-free families\n\n2.\n\n**Broader Connections**: **Connection to Antichains**: Sperner's theorem is the key ingredient\n\n3. **Stirling's Approximation**: Converts exact bound to asymptotic form\n\n4. **Problem 447 Link**: Hunter's observation connects related problems.",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Extremal Set Theory**: Tight bound on union-free families\n\n2. **Connection to Antichains**: Sperner's theorem is the key ingredient\n\n3. **Stirling's Approximation**: Converts exact bound to asymptotic form\n\n4. **Problem 447 Link**: Hunter's observation connects related problems.",
     "openQuestions": [
       "What about union-free families with additional constraints?",
       "Analogous problems for other operations (intersection, difference)?",

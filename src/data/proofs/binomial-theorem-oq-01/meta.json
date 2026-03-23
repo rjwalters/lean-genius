@@ -124,7 +124,7 @@
   ],
   "conclusion": {
     "summary": "This formalization proves 16 theorems about Newton's generalized binomial series with 0 sorries and 1 axiom. The axiom `newton_generalized_binomial` captures the main convergence result; all coefficient arithmetic and special cases (geometric series, square root, natural exponents) are fully proved.",
-    "implications": "**Theoretical Significance**: **Applications:**\n1. **Analysis**: Power series expansions of all real powers (1+x)^α\n2.\n\n**Broader Connections**: **Combinatorics**: Generalization of binomial coefficients to real parameters\n3. **Special functions**: Square root series C(1/2,k), reciprocal series C(-1,k)\n4. **ODE theory**: Connection to Picard-Lindelöf uniqueness theorem.",
+    "implications": "**Theoretical Significance**: **Applications:**\n1. **Analysis**: Power series expansions of all real powers (1+x)^α\n2. **Combinatorics**: Generalization of binomial coefficients to real parameters\n3. **Special functions**: Square root series C(1/2,k), reciprocal series C(-1,k)\n4. **ODE theory**: Connection to Picard-Lindelöf uniqueness theorem.",
     "openQuestions": [
       "Prove newton_generalized_binomial from Mathlib's analytic function theory",
       "ODE uniqueness path: show f and (1+x)^α both satisfy (1+x)y'=αy with y(0)=1",

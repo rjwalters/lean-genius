@@ -175,7 +175,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #717 asks whether χ(G) ≤ C · (√n/log n) · σ(G) for all n-vertex graphs. Fox, Lee, and Sudakov (2013) proved YES, matching the Erdős-Fajtlowicz lower bound. This resolves the question of how much larger χ(G) can be compared to σ(G): the ratio is Θ(√n/log n).",
-    "implications": "**Theoretical Significance**: **Connections and Impact**\n\n1. **Hajós Conjecture:** Decisively refuted; best possible replacement found\n\n2. **Hadwiger Conjecture:** Still open; uses minors instead of subdivisions\n\n3.\n\n**Broader Connections**: **Graph Coloring:** Tight bounds on χ vs structural parameters\n\n4. **Random Graphs:** Extremal behavior achieved by random graphs\n\n5. **Topological Graph Theory:** Relationship between subdivisions and minors.",
+    "implications": "**Theoretical Significance**: **Connections and Impact**\n\n1. **Hajós Conjecture:** Decisively refuted; best possible replacement found\n\n2. **Hadwiger Conjecture:** Still open; uses minors instead of subdivisions\n\n3. **Graph Coloring:** Tight bounds on χ vs structural parameters\n\n4. **Random Graphs:** Extremal behavior achieved by random graphs\n\n5. **Topological Graph Theory:** Relationship between subdivisions and minors.",
     "openQuestions": [
       "Optimal constant in Fox-Lee-Sudakov bound",
       "Hadwiger conjecture for k ≥ 7",

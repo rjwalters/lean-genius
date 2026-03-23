@@ -144,7 +144,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #522 on random polynomial roots in the unit disk. For polynomials with ±1 coefficients, we ask whether R_n/(n/2) → 1 almost surely, where R_n is the root count in {|z| ≤ 1}. Yakir (2021) proved convergence in probability with error bound O(n^{9/10}). The Erdős-Offord theorem (1956) shows (2/π) log n real roots. Almost sure convergence remains open.",
-    "implications": "**Theoretical Significance**: This problem connects several areas:\n\n1. **Random matrix theory**: Eigenvalue distributions have similar questions about concentration\n2. **Complex analysis**: Root distributions of analytic functions\n3.\n\n**Broader Connections**: **Probability theory**: Almost sure vs. in-probability convergence\n4. **Mahler measure**: Direct application to height theory of polynomials\n5. **Signal processing**: Littlewood polynomials appear in filter design.",
+    "implications": "**Theoretical Significance**: This problem connects several areas:\n\n1. **Random matrix theory**: Eigenvalue distributions have similar questions about concentration\n2. **Complex analysis**: Root distributions of analytic functions\n3. **Probability theory**: Almost sure vs. in-probability convergence\n4. **Mahler measure**: Direct application to height theory of polynomials\n5. **Signal processing**: Littlewood polynomials appear in filter design.",
     "openQuestions": [
       "Does R_n/(n/2) → 1 almost surely for Rademacher polynomials?",
       "What is the variance of R_n? (Central limit theorem?)",

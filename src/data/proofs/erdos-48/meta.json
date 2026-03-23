@@ -162,7 +162,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #48 asked whether infinitely many pairs (n,m) exist with phi(n) = sigma(m). The answer is YES, proved by Ford, Luca, and Pomerance in 2010. Garaev improved the density bounds in 2011. The problem has deep connections to twin primes - if the twin prime conjecture is true, Erdos #48 follows immediately.",
-    "implications": "**Theoretical Significance**: **Number-Theoretic Connections**\n\n1. **Twin Primes:** phi(p+2) = sigma(p) = p+1 for twin primes\n\n2. **Value Ranges:** Understanding which values are in Im(phi) and Im(sigma)\n\n3.\n\n**Broader Connections**: **Multiplicativity:** Both functions are multiplicative\n\n4. **Perfect Numbers:** sigma(n) = 2n gives special pairs\n\n5. **Density Estimates:** Common values have positive density.",
+    "implications": "**Theoretical Significance**: **Number-Theoretic Connections**\n\n1. **Twin Primes:** phi(p+2) = sigma(p) = p+1 for twin primes\n\n2. **Value Ranges:** Understanding which values are in Im(phi) and Im(sigma)\n\n3. **Multiplicativity:** Both functions are multiplicative\n\n4. **Perfect Numbers:** sigma(n) = 2n gives special pairs\n\n5. **Density Estimates:** Common values have positive density.",
     "openQuestions": [
       "Exact characterization of common values",
       "Optimal density bounds for common values",

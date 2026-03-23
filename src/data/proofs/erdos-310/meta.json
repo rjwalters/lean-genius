@@ -159,7 +159,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #310 asked whether dense subsets of {1,...,N} always contain a subset whose unit fractions sum to a rational with bounded denominator. The answer is YES, proved by Liu and Sawhney in 2024 building on Bloom's 2021 work. The bound b <= exp(O(1/alpha)) is optimal.",
-    "implications": "**Theoretical Significance**: **Significance**\n\n1. **Egyptian Fraction Theory:** Advances our understanding of which sets contain useful unit fraction sums\n\n2. **Density Methods:** Demonstrates the power of density arguments in number theory\n\n3.\n\n**Broader Connections**: **Optimal Bounds:** The sharp characterization b <= exp(O(1/alpha)) gives complete quantitative understanding\n\n4. **Historical Resolution:** Closes a problem from Erdos and Graham's influential 1980 book\n\n5. **Connection to Open Problems:** Related to Erdos-Straus and other unit fraction conjectures.",
+    "implications": "**Theoretical Significance**: **Significance**\n\n1. **Egyptian Fraction Theory:** Advances our understanding of which sets contain useful unit fraction sums\n\n2. **Density Methods:** Demonstrates the power of density arguments in number theory\n\n3. **Optimal Bounds:** The sharp characterization b <= exp(O(1/alpha)) gives complete quantitative understanding\n\n4. **Historical Resolution:** Closes a problem from Erdos and Graham's influential 1980 book\n\n5. **Connection to Open Problems:** Related to Erdos-Straus and other unit fraction conjectures.",
     "openQuestions": [
       "Explicit constructions of subsets achieving the optimal bound",
       "Extension to other arithmetic progressions beyond {1,...,N}",

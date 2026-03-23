@@ -139,7 +139,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1132 poses two open questions about Lebesgue functions for infinite node sequences in polynomial interpolation. Question 1 asks whether every sequence has a 'witness' point with large Lebesgue function infinitely often. Question 2 asks whether the optimal growth rate holds for almost all points. We know good points are dense (Bernstein), but the measure-theoretic question remains open.",
-    "implications": "**Theoretical Significance**: **Connections to Other Areas**\n\n1. **Numerical Analysis:** Lebesgue constants determine polynomial interpolation stability\n\n2. **Approximation Theory:** The (2/π)log(n) bound is fundamental to polynomial approximation\n\n3.\n\n**Broader Connections**: **Measure Theory:** Question 2 asks about measure-theoretic vs topological density\n\n4. **Complex Analysis:** Runge phenomenon connects to singularities in the complex plane\n\n5. **Computational Mathematics:** Node selection affects numerical algorithms.",
+    "implications": "**Theoretical Significance**: **Connections to Other Areas**\n\n1. **Numerical Analysis:** Lebesgue constants determine polynomial interpolation stability\n\n2. **Approximation Theory:** The (2/π)log(n) bound is fundamental to polynomial approximation\n\n3. **Measure Theory:** Question 2 asks about measure-theoretic vs topological density\n\n4. **Complex Analysis:** Runge phenomenon connects to singularities in the complex plane\n\n5. **Computational Mathematics:** Node selection affects numerical algorithms.",
     "openQuestions": [
       "Question 1: Does every infinite sequence have a 'witness' point?",
       "Question 2: Is the growth property satisfied almost everywhere?",

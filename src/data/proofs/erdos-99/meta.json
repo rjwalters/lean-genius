@@ -136,7 +136,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #99 asks whether diameter-minimizing n-point sets with minimum distance 1 must contain unit equilateral triangles for large n. The formalization axiomatizes the triangular lattice structure, Thue's packing consequence, and the key small cases (n=3 forced, n=4 avoids). The problem remains open.",
-    "implications": "**Theoretical Significance**: **Geometric Connections**\n\n1. **Packing Theory:** Tests whether optimal packings must exhibit local triangular lattice structure\n\n2.\n\n**Broader Connections**: **Global vs Local:** Asks if global optimization (diameter) forces local structure (equilateral triangles)\n\n3. **Transition Behavior:** The n=4 square shows that non-lattice optimal configurations exist for small n, raising the question of when lattice structure becomes forced\n\n4. **Higher Dimensions:** Generalizations to optimal packings in ℝ^d remain unexplored.",
+    "implications": "**Theoretical Significance**: **Geometric Connections**\n\n1. **Packing Theory:** Tests whether optimal packings must exhibit local triangular lattice structure\n\n2. **Global vs Local:** Asks if global optimization (diameter) forces local structure (equilateral triangles)\n\n3. **Transition Behavior:** The n=4 square shows that non-lattice optimal configurations exist for small n, raising the question of when lattice structure becomes forced\n\n4. **Higher Dimensions:** Generalizations to optimal packings in ℝ^d remain unexplored.",
     "openQuestions": [
       "Prove or disprove the conjecture (main problem, prize unclaimed)",
       "What is the smallest n for which equilateral triangles are forced?",

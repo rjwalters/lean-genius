@@ -107,7 +107,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem 899, which asks about the growth rate of difference sets for sparse sets. Ruzsa's 1978 theorem shows that if A has zero density, the difference set A - A must grow much faster than A itself. This is a fundamental result in additive combinatorics with connections to Freiman's theorem and the structure of sets with small doubling.",
-    "implications": "**Theoretical Significance**: Ruzsa's result has significant implications:\n\n1. **Structure of sparse sets:** Sparse sets cannot have concentrated difference sets.\n\n2.\n\n**Broader Connections**: **Inverse problems:** If A - A is small relative to A, then A must have positive density (i.e., be \"large\").\n\n3. **Foundation for Freiman:** This connects to Freiman's theorem characterizing sets with small sumsets.",
+    "implications": "**Theoretical Significance**: Ruzsa's result has significant implications:\n\n1. **Structure of sparse sets:** Sparse sets cannot have concentrated difference sets.\n\n2. **Inverse problems:** If A - A is small relative to A, then A must have positive density (i.e., be \"large\").\n\n3. **Foundation for Freiman:** This connects to Freiman's theorem characterizing sets with small sumsets.",
     "openQuestions": [
       "What is the optimal growth rate of |A - A| / |A| for sets of given density?",
       "How does the answer change for A + A instead of A - A? (Problem 245)",

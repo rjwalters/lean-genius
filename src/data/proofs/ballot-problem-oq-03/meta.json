@@ -195,7 +195,7 @@
   ],
   "conclusion": {
     "summary": "Comprehensive formalization of 2D lattice path combinatorics. Proves the Crossing Lemma, path count formula, Catalan numbers, ballot theorem, Vandermonde identity, binomial coefficient symmetry via path flip bijection, LGV determinant algebra, and Catalan-Ballot unification. The Lindström involution infrastructure is in place for the full LGV proof.",
-    "implications": "**Theoretical Significance**: **Applications:**\n1. **Combinatorics**: LGV lemma is the foundation for counting plane partitions, standard Young tableaux, and Aztec diamond tilings\n2.\n\n**Broader Connections**: **Algebra**: Determinantal identities for Schur polynomials follow from LGV\n3. **Probability**: Ballot problem and Catalan numbers via lattice path bijections\n4. **Geometry**: Non-intersecting path counting generalizes to higher-dimensional reflection principles.",
+    "implications": "**Theoretical Significance**: **Applications:**\n1. **Combinatorics**: LGV lemma is the foundation for counting plane partitions, standard Young tableaux, and Aztec diamond tilings\n2. **Algebra**: Determinantal identities for Schur polynomials follow from LGV\n3. **Probability**: Ballot problem and Catalan numbers via lattice path bijections\n4. **Geometry**: Non-intersecting path counting generalizes to higher-dimensional reflection principles.",
     "openQuestions": [
       "Complete lgv_lemma_2x2: formalize the Lindström involution bijection (swapTails at first meeting column creates an involution between intersecting identity pairs and all crossing pairs)",
       "Extend to r×r LGV lemma for r > 2 paths using the general Lindström-Gessel-Viennot determinant",

@@ -166,7 +166,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #991 asked whether optimal logarithmic energy point configurations on the sphere have small cap discrepancy. The answer is YES: the discrepancy is o(n), meaning optimal points distribute uniformly in the limit. Brauchart (2008) gave the first quantitative bound of O(n^{3/4}), which Marzo-Mas (2021) improved to O(n^{2/3}).",
-    "implications": "**Theoretical Significance**: **Mathematical Connections**\n\n1. **Potential Theory:** Equidistribution of Fekete points is a classical result in logarithmic potential theory\n\n2. **Approximation Theory:** Fekete points are optimal for polynomial interpolation on spheres\n\n3.\n\n**Broader Connections**: **Numerical Integration:** Low-discrepancy point sets give accurate quadrature rules on spheres\n\n4. **Riesz Energy:** Results extend to general Riesz s-energy, not just logarithmic (s → 0)\n\n5. **Higher Dimensions:** Similar questions can be asked for spheres in higher dimensions.",
+    "implications": "**Theoretical Significance**: **Mathematical Connections**\n\n1. **Potential Theory:** Equidistribution of Fekete points is a classical result in logarithmic potential theory\n\n2. **Approximation Theory:** Fekete points are optimal for polynomial interpolation on spheres\n\n3. **Numerical Integration:** Low-discrepancy point sets give accurate quadrature rules on spheres\n\n4. **Riesz Energy:** Results extend to general Riesz s-energy, not just logarithmic (s → 0)\n\n5. **Higher Dimensions:** Similar questions can be asked for spheres in higher dimensions.",
     "openQuestions": [
       "What is the optimal discrepancy exponent? Is O(n^{2/3}) tight?",
       "Can explicit constructions achieve the optimal discrepancy?",

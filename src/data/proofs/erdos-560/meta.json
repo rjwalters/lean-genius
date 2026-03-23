@@ -144,7 +144,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #560 asks for the exact size Ramsey number of complete bipartite graphs K_{n,n}. Known bounds place it between (1/60)n^2*2^n (Erdos-Rousseau 1993) and (3/2)n^3*2^n (EFRS 1978). The gap is O(n). Conlon-Fox-Wigderson (2023) conjecture the answer is Theta(n^3*2^n), matching the upper bound up to constants.",
-    "implications": "**Theoretical Significance**: **Connections to Ramsey Theory**\n\n1. **Size Complexity:** Understanding edge-minimal Ramsey graphs\n\n2. **Classical vs Size:** Size Ramsey numbers can be much smaller than edges in K_{R(G)}\n\n3.\n\n**Broader Connections**: **Probabilistic Methods:** Both bounds use probabilistic and counting arguments\n\n4. **Bipartite Graphs:** K_{n,n} is a natural test case for bipartite Ramsey theory\n\n5. **Recent Progress:** CFW 2023 shows active research continues.",
+    "implications": "**Theoretical Significance**: **Connections to Ramsey Theory**\n\n1. **Size Complexity:** Understanding edge-minimal Ramsey graphs\n\n2. **Classical vs Size:** Size Ramsey numbers can be much smaller than edges in K_{R(G)}\n\n3. **Probabilistic Methods:** Both bounds use probabilistic and counting arguments\n\n4. **Bipartite Graphs:** K_{n,n} is a natural test case for bipartite Ramsey theory\n\n5. **Recent Progress:** CFW 2023 shows active research continues.",
     "openQuestions": [
       "Determine exact value or tighter bounds for R_hat(K_{n,n})",
       "Prove or disprove CFW conjecture that R_hat(K_{n,n}) ~ n^3*2^n",

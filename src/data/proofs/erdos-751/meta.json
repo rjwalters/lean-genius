@@ -119,7 +119,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #751 asked whether graphs with chromatic number 4 can have arbitrarily large gaps between consecutive cycle lengths. The answer is NO: Bondy and Vince (1998) proved that minimum degree >= 3 implies two cycles differ by at most 2, and chi(G) = 4 forces minimum degree >= 3. Large girth doesn't help.",
-    "implications": "**Theoretical Significance**: **Graph Theory Connections**\n\n1. **Chromatic Structure:** Chromatic number constrains cycle structure\n\n2. **Degree-Cycle Relationship:** Minimum degree controls cycle length gaps\n\n3.\n\n**Broader Connections**: **Girth Independence:** The result is independent of girth\n\n4. **Tight Bounds:** Gap of 2 is achievable (K_4 has cycles 3, 4)\n\n5. **Generalization:** Result holds beyond 4-chromatic graphs.",
+    "implications": "**Theoretical Significance**: **Graph Theory Connections**\n\n1. **Chromatic Structure:** Chromatic number constrains cycle structure\n\n2. **Degree-Cycle Relationship:** Minimum degree controls cycle length gaps\n\n3. **Girth Independence:** The result is independent of girth\n\n4. **Tight Bounds:** Gap of 2 is achievable (K_4 has cycles 3, 4)\n\n5. **Generalization:** Result holds beyond 4-chromatic graphs.",
     "openQuestions": [
       "Exact characterization of cycle length spectra for k-chromatic graphs",
       "What happens for chromatic number 3?",

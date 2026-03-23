@@ -140,7 +140,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #874 asked whether k(N) ~ 2√N, where k(N) is the maximum size of an admissible subset of {1,...,N}. The conjecture was proved by Deshouillers-Freiman in 1999, confirming that the limit k(N)/√N equals 2. The proof built on earlier bounds by Straus (1966) and Erdős-Nicolas-Sárközy (1991).",
-    "implications": "**Theoretical Significance**: **Extremal Set Theory Connections:**\n\n1. **Subset Sum Structure:** Understanding when sums determine their decomposition.\n2. **Greedy Constructions:** Intervals often achieve extremal bounds.\n3.\n\n**Broader Connections**: **Growth Rates:** The √N growth is natural for sum-disjointness constraints.\n4. **Additive Combinatorics:** Relates to Sidon sets and B_h sequences.\n5. **Computational Aspects:** Finding optimal admissible sets for given N.",
+    "implications": "**Theoretical Significance**: **Extremal Set Theory Connections:**\n\n1. **Subset Sum Structure:** Understanding when sums determine their decomposition.\n2. **Greedy Constructions:** Intervals often achieve extremal bounds.\n3. **Growth Rates:** The √N growth is natural for sum-disjointness constraints.\n4. **Additive Combinatorics:** Relates to Sidon sets and B_h sequences.\n5. **Computational Aspects:** Finding optimal admissible sets for given N.",
     "openQuestions": [
       "Exact values of k(N) for small N",
       "When is the interval (N-k, N] exactly optimal vs approximately optimal?",

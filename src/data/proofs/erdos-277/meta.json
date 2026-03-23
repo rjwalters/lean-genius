@@ -240,7 +240,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #277 asked whether highly abundant numbers (large σ(n)/n) can still be \"uncoverable\" - having no covering system with all moduli as divisors. Haight (1979) proved YES: for every abundancy threshold c, such numbers exist. This reveals a fundamental disconnect between divisor count and covering system structure.",
-    "implications": "**Theoretical Significance**: **Number Theory Insights**\n\n1. **Divisor Structure:** The pattern of divisors matters, not just their sum\n\n2.\n\n**Broader Connections**: **Covering Systems:** Highly constrained by reciprocal sum and Chinese Remainder Theorem\n\n3. **Superabundant Numbers:** Related to Haight's constructions\n\n4. **Computational:** Finding explicit examples for given c is non-trivial.",
+    "implications": "**Theoretical Significance**: **Number Theory Insights**\n\n1. **Divisor Structure:** The pattern of divisors matters, not just their sum\n\n2. **Covering Systems:** Highly constrained by reciprocal sum and Chinese Remainder Theorem\n\n3. **Superabundant Numbers:** Related to Haight's constructions\n\n4. **Computational:** Finding explicit examples for given c is non-trivial.",
     "openQuestions": [
       "What is the growth rate of the minimal uncoverable n as a function of c? Is it polynomial or exponential in c?",
       "Can the definition sorries (σ(p) = p+1, σ(n) ≥ n, lcm divisibility) be proved from Mathlib's Nat.divisors API?",

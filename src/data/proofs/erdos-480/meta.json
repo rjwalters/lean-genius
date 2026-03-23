@@ -140,7 +140,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #480 on sequence approximation in [0,1]. For any sequence, infinitely many pairs (m,n) satisfy |x_{m+n} - x_m| ≤ 1/(C·n). Newman conjectured C = √5; Chung-Graham proved the optimal C ≈ 2.535 via Fibonacci numbers. The golden ratio's poor approximability underlies this result.",
-    "implications": "**Theoretical Significance**: This problem connects several beautiful areas:\n\n1. **Diophantine approximation**: The golden ratio is the 'worst' irrational to approximate\n2.\n\n**Broader Connections**: **Fibonacci sequences**: Appear naturally in the optimal constant\n3. **Ergodic theory**: Extremal sequences relate to irrational rotations\n4. **Discrepancy theory**: Measures how uniformly sequences can be distributed.",
+    "implications": "**Theoretical Significance**: This problem connects several beautiful areas:\n\n1. **Diophantine approximation**: The golden ratio is the 'worst' irrational to approximate\n2. **Fibonacci sequences**: Appear naturally in the optimal constant\n3. **Ergodic theory**: Extremal sequences relate to irrational rotations\n4. **Discrepancy theory**: Measures how uniformly sequences can be distributed.",
     "openQuestions": [
       "What is the exact rate of convergence to the liminf?",
       "How does the result change for sequences in higher dimensions?",

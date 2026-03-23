@@ -118,7 +118,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures both parts of Erdős Problem 1064. Luca-Pomerance showed φ(n) > φ(n - φ(n)) has density 1, while Grytczuk-Luca-Wójtowicz showed the reverse inequality holds for infinitely many n (including all n = 15·2^k). We state both results as axioms and verify concrete examples.",
-    "implications": "**Theoretical Significance**: The resolution has implications for understanding iterated arithmetic functions:\n\n1. **Typical vs exceptional:** Density-1 sets can have infinite complements with special structure.\n\n2.\n\n**Broader Connections**: **Multiplicative structure:** The pattern 15·2^k exploits multiplicativity of φ.\n\n3. **Related problems:** Similar questions for σ(n) vs σ(n - σ(n)) lead to different behavior.",
+    "implications": "**Theoretical Significance**: The resolution has implications for understanding iterated arithmetic functions:\n\n1. **Typical vs exceptional:** Density-1 sets can have infinite complements with special structure.\n\n2. **Multiplicative structure:** The pattern 15·2^k exploits multiplicativity of φ.\n\n3. **Related problems:** Similar questions for σ(n) vs σ(n - σ(n)) lead to different behavior.",
     "openQuestions": [
       "What is the density of A₌ where φ(n) = φ(n - φ(n))?",
       "Can we characterize all n with φ(n) < φ(n - φ(n))?",

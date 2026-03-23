@@ -145,7 +145,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #511 asked whether the number of large-diameter components of polynomial lemniscates is bounded independently of degree. The answer is NO, as proved by Pommerenke in 1961. For any diameter threshold d < 4, arbitrarily many components exceeding that threshold can exist. However, no component can ever exceed diameter 4 (Pólya, 1928), and this bound is sharp.",
-    "implications": "**Theoretical Significance**: **Geometric Complexity of Polynomials**\n\n1. **No Uniform Bound:** The topology of lemniscates can be arbitrarily complex\n\n2. **Degree Matters:** Higher degree polynomials can have more large components\n\n3.\n\n**Broader Connections**: **Sharp Threshold:** The value 4 marks a phase transition in possible geometries\n\n4. **Perturbation Sensitivity:** Small changes in roots can dramatically change connectivity\n\n5. **Metric vs Topological:** While components can't be too large, there can be many of them.",
+    "implications": "**Theoretical Significance**: **Geometric Complexity of Polynomials**\n\n1. **No Uniform Bound:** The topology of lemniscates can be arbitrarily complex\n\n2. **Degree Matters:** Higher degree polynomials can have more large components\n\n3. **Sharp Threshold:** The value 4 marks a phase transition in possible geometries\n\n4. **Perturbation Sensitivity:** Small changes in roots can dramatically change connectivity\n\n5. **Metric vs Topological:** While components can't be too large, there can be many of them.",
     "openQuestions": [
       "Explicit constructions achieving k components of diameter d for given k, d < 4",
       "Rate of growth of number of large components as a function of degree",

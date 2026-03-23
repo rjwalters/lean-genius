@@ -143,7 +143,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #531 asks to estimate F(k), the Folkman number for monochromatic subset sums. Folkman's theorem guarantees F(k) is finite for all k. The best known lower bound is F(k) ≥ 2^{2^{k-1}/k} (Balogh et al. 2017), showing doubly-exponential growth. The exact growth rate remains open.",
-    "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **Ramsey Theory:** Generalizes Schur numbers to subset sums\n\n2. **Rado's Theorem:** Special case of partition regularity\n\n3.\n\n**Broader Connections**: **Additive Combinatorics:** Structure of sum-free sets and colorings\n\n4. **Extremal Combinatorics:** Tower-type bounds in combinatorial problems\n\n5. **Computational Complexity:** Computing F(k) for small k is very hard.",
+    "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **Ramsey Theory:** Generalizes Schur numbers to subset sums\n\n2. **Rado's Theorem:** Special case of partition regularity\n\n3. **Additive Combinatorics:** Structure of sum-free sets and colorings\n\n4. **Extremal Combinatorics:** Tower-type bounds in combinatorial problems\n\n5. **Computational Complexity:** Computing F(k) for small k is very hard.",
     "openQuestions": [
       "Determine the exact growth rate of F(k)",
       "Close the gap between lower and upper bounds",

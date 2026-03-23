@@ -151,7 +151,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #499 asks if every doubly stochastic matrix has a diagonal with product at least n^{-n}. This was proved by Marcus and Minc in 1962. The problem is related to the van der Waerden conjecture on permanents, which provides an even stronger bound and was proved in 1981 by Egorychev and Falikman.",
-    "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Optimization:** Finding optimal assignments in weighted bipartite matching problems\n\n2. **Probability Theory:** Doubly stochastic matrices model transition probabilities with conservation laws\n\n3.\n\n**Broader Connections**: **Birkhoff Polytope:** Understanding the geometry of convex polytopes\n\n4. **Permanent Computation:** While computing the permanent is #P-complete, bounds like van der Waerden's have algorithmic applications\n\n5. **Algebraic Combinatorics:** Connections to symmetric functions and representation theory.",
+    "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Optimization:** Finding optimal assignments in weighted bipartite matching problems\n\n2. **Probability Theory:** Doubly stochastic matrices model transition probabilities with conservation laws\n\n3. **Birkhoff Polytope:** Understanding the geometry of convex polytopes\n\n4. **Permanent Computation:** While computing the permanent is #P-complete, bounds like van der Waerden's have algorithmic applications\n\n5. **Algebraic Combinatorics:** Connections to symmetric functions and representation theory.",
     "openQuestions": [
       "Efficient algorithms for finding the best diagonal in a doubly stochastic matrix",
       "Generalizations to rectangular stochastic matrices",

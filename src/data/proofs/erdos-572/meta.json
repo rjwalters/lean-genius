@@ -128,7 +128,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #572 asks for a lower bound ex(n; C_{2k}) >> n^{1+1/k} for k >= 3. Benson (1966) proved this for k=3 and k=5 using generalized polygons. The general case remains open, with the best known bound being the LUW result n^{1+2/(3k-3+ν)} from 1995.",
-    "implications": "**Theoretical Significance**: **Implications in Extremal Graph Theory**\n\n1. **Turán-type Problems:** This is a fundamental question about graph density vs forbidden substructures.\n\n2. **Algebraic Constructions:** Optimal constructions come from incidence geometry and algebraic graphs.\n\n3.\n\n**Broader Connections**: **Girth Problems:** Related to the cage problem - finding smallest regular graphs of given girth.\n\n4. **Random Graphs:** Probabilistic methods give non-constructive existence but not optimal bounds.\n\n5. **Zarankiewicz Problem:** The C_4 case connects to bipartite graph problems.",
+    "implications": "**Theoretical Significance**: **Implications in Extremal Graph Theory**\n\n1. **Turán-type Problems:** This is a fundamental question about graph density vs forbidden substructures.\n\n2. **Algebraic Constructions:** Optimal constructions come from incidence geometry and algebraic graphs.\n\n3. **Girth Problems:** Related to the cage problem - finding smallest regular graphs of given girth.\n\n4. **Random Graphs:** Probabilistic methods give non-constructive existence but not optimal bounds.\n\n5. **Zarankiewicz Problem:** The C_4 case connects to bipartite graph problems.",
     "openQuestions": [
       "Prove ex(n; C_8) >> n^{5/4} (the k=4 case)",
       "Prove ex(n; C_{2k}) >> n^{1+1/k} for general k >= 6",

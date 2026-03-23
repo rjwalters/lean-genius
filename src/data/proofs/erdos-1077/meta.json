@@ -105,7 +105,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem 1077 about balanced subgraphs in dense graphs. The original conjecture (as literally stated) was false due to a likely typo. Jiang and Longbrake (2025) resolved the corrected question, showing the optimal number of vertices in a guaranteed D-balanced subgraph is Θ(n^α).",
-    "implications": "**Theoretical Significance**: The resolution has implications for extremal graph theory:\n\n1. **Regularity methods:** Finding balanced subgraphs is key to many regularity-based arguments.\n\n2.\n\n**Broader Connections**: **Bipartite extremality:** Complete bipartite graphs are extremal for this problem.\n\n3. **Explicit constants:** The constant 6 in the lower bound may be improvable.",
+    "implications": "**Theoretical Significance**: The resolution has implications for extremal graph theory:\n\n1. **Regularity methods:** Finding balanced subgraphs is key to many regularity-based arguments.\n\n2. **Bipartite extremality:** Complete bipartite graphs are extremal for this problem.\n\n3. **Explicit constants:** The constant 6 in the lower bound may be improvable.",
     "openQuestions": [
       "What is the optimal value of D in the lower bound (is 6 best possible)?",
       "How does the answer change for hypergraphs?",

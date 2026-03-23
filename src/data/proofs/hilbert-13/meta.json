@@ -111,7 +111,7 @@
   ],
   "conclusion": {
     "summary": "Hilbert's 13th Problem asked whether the degree-7 equation requires functions of three variables. The Kolmogorov-Arnold theorem (1956-57) gave a surprising negative answer: every continuous function of any number of variables can be represented using only one-variable functions! However, Vitushkin showed that for smooth functions, Hilbert's intuition was correct.",
-    "implications": "**Theoretical Significance**: The Kolmogorov-Arnold theorem has profound implications:\n\n1. **Analysis**: Continuous functions are extremely flexible - dimension is not a fundamental obstruction\n\n2.\n\n**Broader Connections**: **Neural Networks**: The theorem provides theoretical justification for the expressive power of neural networks with one hidden layer\n\n3. **Approximation Theory**: While the representation is exact, the outer functions may be highly irregular\n\n4. **Smooth Functions**: The dichotomy between continuous and smooth reveals fundamental differences in function spaces.",
+    "implications": "**Theoretical Significance**: The Kolmogorov-Arnold theorem has profound implications:\n\n1. **Analysis**: Continuous functions are extremely flexible - dimension is not a fundamental obstruction\n\n2. **Neural Networks**: The theorem provides theoretical justification for the expressive power of neural networks with one hidden layer\n\n3. **Approximation Theory**: While the representation is exact, the outer functions may be highly irregular\n\n4. **Smooth Functions**: The dichotomy between continuous and smooth reveals fundamental differences in function spaces.",
     "openQuestions": [
       "What is the optimal smoothness of the outer functions for smooth input?",
       "How can the representation be computed efficiently?",
@@ -156,7 +156,11 @@
       "description": "Hilbert's 13th problem was motivated by the unsolvability of the general septic by radicals (Abel-Ruffini); the Bring-Jerrard reduction of the degree-7 polynomial directly links to the algebraic impossibility results"
     }
   ],
-  "relatedProofs": ["hilbert-14", "hilbert-23", "abel-ruffini"],
+  "relatedProofs": [
+    "hilbert-14",
+    "hilbert-23",
+    "abel-ruffini"
+  ],
   "references": [
     {
       "authors": "Kolmogorov, Andrey N.",

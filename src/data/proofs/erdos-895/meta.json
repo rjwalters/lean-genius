@@ -128,7 +128,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #895 asks whether triangle-free graphs on {1,...,n} must contain independent additive triples a, b, a+b. The answer is YES for n ≥ 18, verified computationally by Ben Barber. Our formalization captures the main theorem, the sharp threshold, connections to Ramsey theory and Schur numbers, and Hajnal's open generalization.",
-    "implications": "**Theoretical Significance**: This problem connects to:\n\n1. **Ramsey Theory:** Triangle-free graphs and independence numbers\n2. **Additive Combinatorics:** Schur's theorem and sum-free sets\n3.\n\n**Broader Connections**: **Hindman's Theorem:** Finite sums in partition regular structures\n4. **Computational Methods:** SAT solver verification of combinatorial conjectures\n5. **Arithmetic Ramsey Theory:** Combining graph and number-theoretic constraints.",
+    "implications": "**Theoretical Significance**: This problem connects to:\n\n1. **Ramsey Theory:** Triangle-free graphs and independence numbers\n2. **Additive Combinatorics:** Schur's theorem and sum-free sets\n3. **Hindman's Theorem:** Finite sums in partition regular structures\n4. **Computational Methods:** SAT solver verification of combinatorial conjectures\n5. **Arithmetic Ramsey Theory:** Combining graph and number-theoretic constraints.",
     "openQuestions": [
       "Prove Hajnal's generalization: do large triangle-free graphs always contain an independent Hindman set (all finite sums of a finite base)?",
       "Find an explicit combinatorial or algebraic proof of Barber's theorem that doesn't require SAT verification — is there a human-understandable argument?",

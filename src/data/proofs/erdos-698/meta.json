@@ -175,7 +175,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #698, posed by Erdős and Szekeres in 1978, asks whether the minimum GCD of binomial coefficients C(n,i) and C(n,j) for valid pairs 2 ≤ i < j ≤ n/2 grows unboundedly. Bergman (2011) proved YES: gcd ≫ n^{1/2} · 2^i / i^{3/2}, showing the minimum grows like Ω(√n).",
-    "implications": "**Theoretical Significance**: **Connections and Impact**\n\n1. **Pascal's Triangle Structure:** Middle entries share non-trivial common factors\n\n2. **Kummer's Theorem:** p-adic valuations via carry counting\n\n3.\n\n**Broader Connections**: **Lucas' Theorem:** Modular structure of binomial coefficients\n\n4. **Multinomial Generalization:** Bergman proved broader results\n\n5. **Number Theory:** Connects to prime factor distribution.",
+    "implications": "**Theoretical Significance**: **Connections and Impact**\n\n1. **Pascal's Triangle Structure:** Middle entries share non-trivial common factors\n\n2. **Kummer's Theorem:** p-adic valuations via carry counting\n\n3. **Lucas' Theorem:** Modular structure of binomial coefficients\n\n4. **Multinomial Generalization:** Bergman proved broader results\n\n5. **Number Theory:** Connects to prime factor distribution.",
     "openQuestions": [
       "Optimal constant in Bergman's bound",
       "Exact asymptotic behavior of minimum GCD",

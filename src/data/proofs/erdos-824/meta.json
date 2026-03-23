@@ -136,7 +136,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #824 asks whether coprime pairs with equal sum of divisors are nearly as common as all pairs. The counting function h(x) is known to grow faster than linear (Pollack-Pomerance 2016), but the strong conjecture h(x) > x^{2-o(1)} remains open. The gap between known and conjectured bounds is enormous.",
-    "implications": "**Theoretical Significance**: **Implications for Number Theory**\n\n1. **Divisor Function Statistics:** Understanding h(x) reveals how often σ takes the same value on coprime arguments.\n\n2.\n\n**Broader Connections**: **Multiplicative Structure:** The coprimality constraint probes the multiplicative structure of σ-equal pairs.\n\n3. **Density Questions:** This is part of a broader program on the distribution and collisions of arithmetic functions.\n\n4. **Amicable Connections:** Related to questions about amicable and sociable numbers.",
+    "implications": "**Theoretical Significance**: **Implications for Number Theory**\n\n1. **Divisor Function Statistics:** Understanding h(x) reveals how often σ takes the same value on coprime arguments.\n\n2. **Multiplicative Structure:** The coprimality constraint probes the multiplicative structure of σ-equal pairs.\n\n3. **Density Questions:** This is part of a broader program on the distribution and collisions of arithmetic functions.\n\n4. **Amicable Connections:** Related to questions about amicable and sociable numbers.",
     "openQuestions": [
       "Does h(x) > x^{1+δ} hold for any fixed δ > 0?",
       "What is the true growth rate of h(x)?",

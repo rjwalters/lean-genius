@@ -138,7 +138,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #651 asked whether f_k(n) > (1 + c_k)^n for some c_k > 0, conjecturing exponential lower bounds for finding convex polyhedra in higher dimensions. The answer is NO. Pohoata and Zakharov (2022) proved f_3(n) ≤ 2^{o(n)}, a subexponential bound that contradicts any exponential lower bound for k ≥ 3.",
-    "implications": "**Theoretical Significance**: **Geometric Ramsey Theory Connections**\n\n1. **Erdős-Szekeres Generalization:** Problem #107 asks about k = 2; this extends to higher dimensions\n\n2.\n\n**Broader Connections**: **Dimension Matters:** The jump from exponential (k=2) to subexponential (k≥3) is fundamental\n\n3. **Convex Position:** Higher dimensions provide more \"room\" for points to be in convex position\n\n4. **Ramsey-Type Bounds:** Shows Ramsey functions can have different asymptotics by dimension.",
+    "implications": "**Theoretical Significance**: **Geometric Ramsey Theory Connections**\n\n1. **Erdős-Szekeres Generalization:** Problem #107 asks about k = 2; this extends to higher dimensions\n\n2. **Dimension Matters:** The jump from exponential (k=2) to subexponential (k≥3) is fundamental\n\n3. **Convex Position:** Higher dimensions provide more \"room\" for points to be in convex position\n\n4. **Ramsey-Type Bounds:** Shows Ramsey functions can have different asymptotics by dimension.",
     "openQuestions": [
       "What are the precise asymptotics of f_k(n) for k ≥ 3?",
       "Is f_k(n) subexponential for all k ≥ 3?",

@@ -120,7 +120,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1021 asks whether extremal numbers for the bipartite pair graphs G_k satisfy ex(n, G_k) ≪ n^(3/2 - c_k) for some c_k > 0. Even the weaker statement ex(n, G_k) = o(n^(3/2)) is unknown. The k = 3 case (C_6) is solved with exponent 7/6.",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Extremal Graph Theory**: Fundamental question about Turán-type bounds\n\n2.\n\n**Broader Connections**: **Bipartite Graphs**: Specific structure of G_k challenges current techniques\n\n3. **Connections**: Related to Problem 572 (C_6) and Problem 926 (H_k)\n\n4. **Limit Behavior**: c_k → 0 shows bounds degrade for larger k.",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Extremal Graph Theory**: Fundamental question about Turán-type bounds\n\n2. **Bipartite Graphs**: Specific structure of G_k challenges current techniques\n\n3. **Connections**: Related to Problem 572 (C_6) and Problem 926 (H_k)\n\n4. **Limit Behavior**: c_k → 0 shows bounds degrade for larger k.",
     "openQuestions": [
       "Does ex(n, G_k) = o(n^(3/2)) hold for any k ≥ 4?",
       "What is the optimal c_k for small values of k?",

@@ -140,7 +140,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #448 asked whether τ⁺(n) < ε·τ(n) for almost all n, where τ⁺(n) counts dyadic intervals containing a divisor. This was DISPROVED by Erdős-Tenenbaum (1981), who showed exceptions have positive density ≍ ε^(1-o(1)). Hall-Tenenbaum (1988) refined this and proved τ⁺(n)/τ(n) has a distribution function. Ford (2008) found the asymptotic for Στ⁺(n) with constant α ≈ 0.08607.",
-    "implications": "**Theoretical Significance**: **Number-Theoretic Significance**\n\n1. **Divisor Distribution**: Divisors don't concentrate into few dyadic intervals as much as expected\n\n2. **Density Results**: The disproof gave precise bounds on how often concentration fails\n\n3.\n\n**Broader Connections**: **Distribution Functions**: The ratio τ⁺(n)/τ(n) has statistical regularity\n\n4. **Asymptotic Growth**: The Ford constant α captures the growth rate of total dyadic spread\n\n5. **Method**: Uses sophisticated analytic number theory techniques.",
+    "implications": "**Theoretical Significance**: **Number-Theoretic Significance**\n\n1. **Divisor Distribution**: Divisors don't concentrate into few dyadic intervals as much as expected\n\n2. **Density Results**: The disproof gave precise bounds on how often concentration fails\n\n3. **Distribution Functions**: The ratio τ⁺(n)/τ(n) has statistical regularity\n\n4. **Asymptotic Growth**: The Ford constant α captures the growth rate of total dyadic spread\n\n5. **Method**: Uses sophisticated analytic number theory techniques.",
     "openQuestions": [
       "Exact determination of the distribution function for τ⁺(n)/τ(n)",
       "Finer bounds on the density of counterexamples",

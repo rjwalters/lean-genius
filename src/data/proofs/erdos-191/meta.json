@@ -179,7 +179,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #191 asked whether for any C > 0, large enough n guarantees a monochromatic subset X in any 2-coloring of K({2,...,n}) with Σ(1/log x) ≥ C. Rödl proved YES in 2003. Conlon-Fox-Sudakov (2013) established tight bounds: the optimal achievable sum is Θ(log log log n).",
-    "implications": "**Theoretical Significance**: **Mathematical Connections**\n\n1. **Ramsey Theory Extension:** Generalizes Ramsey-type results from counting to weighted measures\n\n2. **Analytic Number Theory:** The 1/log x weight connects to prime number theory asymptotics\n\n3.\n\n**Broader Connections**: **Graph Coloring:** Demonstrates deep structure in edge-colored complete graphs\n\n4. **Triple Logarithm:** One of few natural problems with log log log n threshold\n\n5. **Extremal Combinatorics:** Shows how explicit constructions can match existential bounds.",
+    "implications": "**Theoretical Significance**: **Mathematical Connections**\n\n1. **Ramsey Theory Extension:** Generalizes Ramsey-type results from counting to weighted measures\n\n2. **Analytic Number Theory:** The 1/log x weight connects to prime number theory asymptotics\n\n3. **Graph Coloring:** Demonstrates deep structure in edge-colored complete graphs\n\n4. **Triple Logarithm:** One of few natural problems with log log log n threshold\n\n5. **Extremal Combinatorics:** Shows how explicit constructions can match existential bounds.",
     "openQuestions": [
       "What is the optimal constant in the lower bound (currently 2^{-8})?",
       "How does the threshold change for r > 2 colors?",

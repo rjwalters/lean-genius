@@ -166,7 +166,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #437 asked whether the maximum number of square partial products L(x) can exceed x^(1-ε) for any ε > 0. The answer is YES, proved by Bui-Pratt-Zaharescu (2024). Tao established precise bounds showing L(x) is between x·exp(-(√2+o(1))u(x)) and x·exp(-(1/√2+o(1))u(x)) where u(x) = √(log x · log log x).",
-    "implications": "**Theoretical Significance**: **Mathematical Connections**\n\n1. **Siegel's Theorem:** Implies L(x) = o(x) via finiteness of integral points on elliptic curves\n\n2. **Hyperelliptic Curves:** The precise bounds come from analyzing y² = product polynomial\n\n3.\n\n**Broader Connections**: **Multiplicative Number Theory:** Connects to distribution of squarefree parts\n\n4. **Related to #841:** Companion problem on related multiplicative structures\n\n5. **Subexponential Growth:** L(x)/x decays like exp(-c√(log x · log log x)).",
+    "implications": "**Theoretical Significance**: **Mathematical Connections**\n\n1. **Siegel's Theorem:** Implies L(x) = o(x) via finiteness of integral points on elliptic curves\n\n2. **Hyperelliptic Curves:** The precise bounds come from analyzing y² = product polynomial\n\n3. **Multiplicative Number Theory:** Connects to distribution of squarefree parts\n\n4. **Related to #841:** Companion problem on related multiplicative structures\n\n5. **Subexponential Growth:** L(x)/x decays like exp(-c√(log x · log log x)).",
     "openQuestions": [
       "What is the exact leading constant in the exponent?",
       "Can we construct explicit sequences achieving L(x)?",

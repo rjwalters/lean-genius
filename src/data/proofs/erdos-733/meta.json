@@ -168,7 +168,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #733 asked for bounds on the number of line-compatible sequences. Szemeredi and Trotter (1983) proved the upper bound exp(O(sqrt(n))), matching Erdos's 'easy' lower bound. The count is exp(Theta(sqrt(n))). Erdos also asked about the limiting constant lim log(f(n))/sqrt(n), which remains an interesting follow-up.",
-    "implications": "**Theoretical Significance**: **Combinatorial Geometry Significance**\n\n1. **Incidence Theory:** Showcases the power of Szemeredi-Trotter\n\n2.\n\n**Broader Connections**: **Exponential Counting:** Growth is faster than polynomial but slower than 2^n\n\n3. **Grid Extremality:** Grids are near-optimal for generating sequences\n\n4. **Related Problems:** Connects to #607 (without multiplicities) and #732.",
+    "implications": "**Theoretical Significance**: **Combinatorial Geometry Significance**\n\n1. **Incidence Theory:** Showcases the power of Szemeredi-Trotter\n\n2. **Exponential Counting:** Growth is faster than polynomial but slower than 2^n\n\n3. **Grid Extremality:** Grids are near-optimal for generating sequences\n\n4. **Related Problems:** Connects to #607 (without multiplicities) and #732.",
     "openQuestions": [
       "What is the exact value of lim log(f(n)) / sqrt(n)?",
       "Can the constants c and C be determined explicitly?",

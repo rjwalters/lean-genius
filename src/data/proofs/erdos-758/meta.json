@@ -151,7 +151,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #758 asked to determine z(n), the maximum cochromatic number over n-vertex graphs, for small values. The key question was whether z(12) = 4. Bhavik Mehta answered YES by computationally finding the unique (up to complement) graph on 12 vertices that maximizes cochromatic number. Gimbel established the asymptotic z(n) ~ n/log n.",
-    "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **Ramsey Theory:** z(n) is constrained by Ramsey numbers R(k,k)\n\n2.\n\n**Broader Connections**: **Extremal Graph Theory:** Understanding which graphs maximize cochromatic number\n\n3. **Chromatic Theory:** Cochromatic number interpolates between chromatic and clique cover numbers\n\n4. **Computational Methods:** Demonstrates power of exhaustive search for small cases.",
+    "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **Ramsey Theory:** z(n) is constrained by Ramsey numbers R(k,k)\n\n2. **Extremal Graph Theory:** Understanding which graphs maximize cochromatic number\n\n3. **Chromatic Theory:** Cochromatic number interpolates between chromatic and clique cover numbers\n\n4. **Computational Methods:** Demonstrates power of exhaustive search for small cases.",
     "openQuestions": [
       "What is z(20)? (Known to be 6 or 7)",
       "What is the structure of extremal graphs achieving z(n) for large n?",

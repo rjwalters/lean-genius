@@ -166,7 +166,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #246 asks whether {a^k b^l : gcd(a,b) = 1, k,l ≥ 0} is a complete sequence. Birch (1959) proved YES: every sufficiently large integer is a sum of distinct elements from this set. Extensions include Cassels' general criterion, Davenport's bounded-l observation, and explicit bounds by Hegyvári and Fang-Chen.",
-    "implications": "**Theoretical Significance**: **Implications for Additive Combinatorics**\n\n1. **Complete Sequences:** Characterizes which multiplicatively-generated sets are complete.\n\n2. **Density Threshold:** Logarithmic density suffices for completeness (Cassels criterion).\n\n3.\n\n**Broader Connections**: **Bounded Parameters:** Finite restrictions on parameters don't break completeness.\n\n4. **Algorithmic Aspects:** Greedy algorithms eventually produce valid representations.\n\n5. **Contrast Principle:** Single-base powers lack the diversity needed for completeness.",
+    "implications": "**Theoretical Significance**: **Implications for Additive Combinatorics**\n\n1. **Complete Sequences:** Characterizes which multiplicatively-generated sets are complete.\n\n2. **Density Threshold:** Logarithmic density suffices for completeness (Cassels criterion).\n\n3. **Bounded Parameters:** Finite restrictions on parameters don't break completeness.\n\n4. **Algorithmic Aspects:** Greedy algorithms eventually produce valid representations.\n\n5. **Contrast Principle:** Single-base powers lack the diversity needed for completeness.",
     "openQuestions": [
       "What is the optimal bound on l in terms of a and b?",
       "Can the triply exponential bound of Fang-Chen be improved?",

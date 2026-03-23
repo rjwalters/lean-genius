@@ -128,7 +128,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #745 asked about the second largest component of G(n, 1/n). Erdős conjectured it is O(log n), which was proved by Komlós, Sulyok, and Szemerédi in 1980. The answer is Θ(log n) - dramatically smaller than the giant component of size Θ(n^{2/3}).",
-    "implications": "**Theoretical Significance**: **Impact on Random Graph Theory**\n\n1. **Phase Transitions:** Demonstrates the dramatic nature of the critical threshold\n\n2. **Winner Takes All:** At criticality, one component dominates all others\n\n3.\n\n**Broader Connections**: **Scaling Exponents:** The exponents 2/3 (giant) and log (others) are universal\n\n4. **Percolation Theory:** Foundational for understanding mean-field critical phenomena\n\n5. **Algorithmic Applications:** Finding the giant component is a key subroutine.",
+    "implications": "**Theoretical Significance**: **Impact on Random Graph Theory**\n\n1. **Phase Transitions:** Demonstrates the dramatic nature of the critical threshold\n\n2. **Winner Takes All:** At criticality, one component dominates all others\n\n3. **Scaling Exponents:** The exponents 2/3 (giant) and log (others) are universal\n\n4. **Percolation Theory:** Foundational for understanding mean-field critical phenomena\n\n5. **Algorithmic Applications:** Finding the giant component is a key subroutine.",
     "openQuestions": [
       "Exact distribution of the second largest component size",
       "Joint distribution of multiple large components",
