@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 987 lines, 2 sorries remain (h_irreg line 816, h_sparse line 820). Full counting lemma proved. Triangle removal skeleton complete with within-part budget proved. Both remaining sorries are partition cleanup budget lemmas — same pattern, use generic sum_pairCount_le helper.",
+    "progressSummary": "COMPLETED: All 13 theorems proved, 0 sorries, 0 axioms. 1196 lines. Counting lemma, triangle removal, quantitative removal all fully verified.",
     "builtItems": [
       "counting_lemma: fully proved (Part I, ~200 lines)",
       "bad_vertices_small: fully proved (key bridge lemma)",
@@ -85,11 +85,11 @@
     {
       "path": "Proofs/SzemerediCounting.lean",
       "filename": "SzemerediCounting.lean",
-      "lineCount": 841,
+      "lineCount": 1196,
       "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 7,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCounting.lean"
     }
