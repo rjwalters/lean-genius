@@ -83,6 +83,7 @@
     "type": "definition",
     "title": "Lebesgue Constant",
     "content": "**lebesgueConstant**\n\n$$\\Lambda_n = \\max_{x \\in [-1,1]} \\lambda_n(x)$$\n\nThe worst-case amplification factor over the entire interval.\n\n**Growth rates:**\n- Chebyshev nodes: Lambda_n ~ (2/pi) log n (optimal)\n- Equidistant nodes: Lambda_n ~ 2^n / n (exponential)",
+    "mathContext": "$\\Lambda_n = \\max_{x \\in [-1,1]} \\lambda_n(x)$",
     "significance": "key"
   },
   {
@@ -193,6 +194,7 @@
     "type": "technique",
     "title": "Positive Measure Divergence",
     "content": "**positive_measure_divergence**\n\nFor any point sequence, there exists a continuous f such that the set where |L^n f(x)| -> infinity has positive measure.\n\nCombined with Erdos-Vertesi (a.e. divergence), this shows how widespread divergence can be.",
+    "mathContext": "Formalizes the concept of positive measure divergence",
     "significance": "key"
   },
   {

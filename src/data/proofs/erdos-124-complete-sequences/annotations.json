@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "The First AI-Solved Open Problem",
     "content": "**Erdos Problem #124** (November 2025)\n\nThis proof marks a historic milestone: the **first open mathematical conjecture solved autonomously by AI**.\n\n**The Story**:\n- 1996: Burr, Erdos, Graham, Li pose the problem\n- 1997: Erdos reformulates, accidentally creating ambiguity\n- 2025: Harmonic's Aristotle solves it in 6 hours\n- Lean verifies the proof in 1 minute\n\n**Key Quote** (Terence Tao): \"Aristotle solved 'a' version of this problem (indeed, with an olympiad-style proof), but not 'the' version.\"\n\nThe \"weak\" version (including $d^0 = 1$) was solved. The \"strong\" version remains open.",
+    "mathContext": "$d^0 = 1$",
     "significance": "key",
     "relatedConcepts": [
       "Erdos problems",
@@ -62,6 +63,7 @@
     "type": "context",
     "title": "The AI Story",
     "content": "**Harmonic's Aristotle: First AI Mathematician**\n\n**Timeline**:\n- Boris Alexeev selects several Erdos problems\n- Launches Aristotle beta, goes to sleep\n- Wakes up to email: \"Problem 124 resolved\"\n\n**His reaction**: \"Not emotionally prepared to wake up to an email that Aristotle had successfully resolved Problem 124.\"\n\n**The Numbers**:\n- 6 hours solving time\n- 1 minute verification in Lean\n- 100% autonomy - no human assistance\n\n**What Aristotle found**: An elegant proof using Brown's criterion - a classic result that combines perfectly with the greedy construction. The proof is \"olympiad-style\" - something a skilled human could have found, but didn't for 30 years.\n\n**Vlad Tenev** (Harmonic founder): \"Vibe proving is here.\"",
+    "mathContext": "Formalizes the concept of the ai story",
     "significance": "key",
     "relatedConcepts": [
       "Harmonic",

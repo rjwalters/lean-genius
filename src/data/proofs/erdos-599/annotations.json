@@ -78,6 +78,7 @@
     "type": "definition",
     "title": "Path Families",
     "content": "A **PathFamily** is a set of paths all going from A to B, with a **pairwiseDisjoint** property requiring all pairs to be internally vertex-disjoint.",
+    "mathContext": "Lean: `def PathFamily.pairwiseDisjoint {V : Type*} {G : Graph V} {A B : Set V}`",
     "significance": "key",
     "relatedConcepts": [
       "path-family",
@@ -112,6 +113,7 @@
     "type": "definition",
     "title": "The Erdős-Menger Conjecture",
     "content": "**The formal statement**: For any graph G with disjoint independent sets A, B, there exist vertex-disjoint A-B paths P and a set S that is both a transversal of P and a separator for all A-B paths. This is the central object of the formalization.",
+    "mathContext": "Lean: `def ErdosMengerConjecture : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "erdos",
@@ -163,6 +165,7 @@
     "type": "concept",
     "title": "Proof Techniques",
     "content": "The Aharoni-Berger proof uses **infinite matroid theory** — a generalization of finite matroids to infinite ground sets. The connection to well-quasi-ordering provides the compactness arguments needed for the infinite case.",
+    "mathContext": "Formalizes the concept of proof techniques",
     "significance": "key",
     "relatedConcepts": [
       "matroid-theory",
@@ -196,6 +199,7 @@
     "type": "technique",
     "title": "Max-Flow Min-Cut (Vertex Version)",
     "content": "The vertex version of max-flow min-cut: the maximum number of vertex-disjoint A-B paths equals the minimum vertex separator size. This is the quantitative form of Menger's theorem.",
+    "mathContext": "Lean: `axiom maxflow_mincut_vertex {V : Type*} [Fintype V] (G : Graph V) (A B : Set V) :`",
     "significance": "key",
     "relatedConcepts": [
       "max-flow-min-cut",
@@ -212,6 +216,7 @@
     "type": "technique",
     "title": "Summary and Status",
     "content": "**Problem #599 is SOLVED**: YES, Menger's theorem extends to infinite graphs. The timeline spans from Menger (1927) through Erdős (1981) to Aharoni-Berger (2009). This is a major result in infinite combinatorics.",
+    "mathContext": "Lean: `theorem erdos_599_solved : ErdosMengerConjecture`",
     "significance": "key",
     "relatedConcepts": [
       "erdos",

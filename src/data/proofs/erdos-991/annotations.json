@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Unit Sphere",
     "content": "**UnitSphere:**\n\nThe set of points in R³ at unit distance from the origin:\n```lean\ndef UnitSphere : Set (Fin 3 → ℝ) :=\n  {w : Fin 3 → ℝ | ∑ i, (w i)^2 = 1}\n```\n\nThis is the 2-dimensional sphere S² embedded in 3-dimensional space. Points are represented as functions from Fin 3 (indices 0, 1, 2) to real numbers.",
+    "mathContext": "Lean: `def UnitSphere : Set (Fin 3 → ℝ) :=`",
     "significance": "key",
     "relatedConcepts": [
       "Euclidean space",
@@ -43,6 +44,7 @@
     "type": "definition",
     "title": "Chordal Distance",
     "content": "**sphereDist:**\n\nThe Euclidean (chordal) distance between two points on the sphere:\n```lean\ndef sphereDist (w₁ w₂ : Fin 3 → ℝ) : ℝ :=\n  Real.sqrt (∑ i, (w₁ i - w₂ i)^2)\n```\n\nThis measures the straight-line distance through the interior of the sphere, not the geodesic (great circle) distance along the surface. For points on S², the chordal distance ranges from 0 to 2.",
+    "mathContext": "Lean: `def sphereDist (w₁ w₂ : Fin 3 → ℝ) : ℝ :=`",
     "significance": "key",
     "relatedConcepts": [
       "Euclidean distance",
@@ -77,6 +79,7 @@
     "type": "definition",
     "title": "Optimal Configurations",
     "content": "**IsOptimalConfig:**\n\nA configuration is optimal if it minimizes logarithmic energy among all n-point sets on the sphere:\n```lean\ndef IsOptimalConfig (points : Finset (Fin 3 → ℝ)) : Prop :=\n  (∀ p ∈ points, p ∈ UnitSphere) ∧\n  ∀ other, other.card = points.card →\n    (∀ p ∈ other, p ∈ UnitSphere) →\n    logEnergy points ≤ logEnergy other\n```\n\n**Fekete points:** Optimal configurations are called Fekete points in approximation theory. They arise in polynomial interpolation on spheres.",
+    "mathContext": "Lean: `def IsOptimalConfig (points : Finset (Fin 3 → ℝ)) : Prop :=`",
     "significance": "key",
     "relatedConcepts": [
       "Fekete points",
@@ -93,6 +96,7 @@
     "type": "definition",
     "title": "Spherical Caps",
     "content": "**SphericalCap:**\n\nA spherical cap is the portion of S² above a certain latitude:\n```lean\ndef SphericalCap (center : Fin 3 → ℝ) (cosAngle : ℝ) : Set (Fin 3 → ℝ) :=\n  {w ∈ UnitSphere | ∑ i, (center i) * (w i) ≥ cosAngle}\n```\n\n**Parameters:**\n- center: direction of the cap's center (north pole of the cap)\n- cosAngle: cosine of the angular radius (cosAngle = 1 is just the center, cosAngle = -1 is the whole sphere)\n\nThe cap includes all points whose dot product with the center is at least cosAngle.",
+    "mathContext": "Lean: `def SphericalCap (center : Fin 3 → ℝ) (cosAngle : ℝ) : Set (Fin 3 → ℝ) :=`",
     "significance": "key",
     "relatedConcepts": [
       "Spherical geometry",
@@ -109,6 +113,7 @@
     "type": "definition",
     "title": "Normalized Cap Area",
     "content": "**normalizedCapArea:**\n\nThe area of a spherical cap, normalized so the full sphere has area 1:\n```lean\ndef normalizedCapArea (cosAngle : ℝ) : ℝ :=\n  (1 - cosAngle) / 2\n```\n\n**Examples:**\n- cosAngle = 1: area = 0 (just a point)\n- cosAngle = 0: area = 1/2 (hemisphere)\n- cosAngle = -1: area = 1 (full sphere)\n\nThe actual area is 2π(1 - cos θ); normalizing by 4π gives (1 - cos θ)/2.",
+    "mathContext": "Lean: `def normalizedCapArea (cosAngle : ℝ) : ℝ :=`",
     "significance": "key",
     "relatedConcepts": [
       "Spherical area",
@@ -125,6 +130,7 @@
     "type": "definition",
     "title": "Cap Count",
     "content": "**capCount:**\n\nThe number of points from a configuration that fall within a cap:\n```lean\ndef capCount (points : Finset (Fin 3 → ℝ)) (cap : Set (Fin 3 → ℝ)) : ℕ :=\n  (points.filter (· ∈ cap)).card\n```\n\nFor uniform distribution, we expect capCount ≈ αC · n where αC is the cap's normalized area and n is the total number of points.",
+    "mathContext": "Lean: `def capCount (points : Finset (Fin 3 → ℝ)) (cap : Set (Fin 3 → ℝ)) : ℕ :=`",
     "significance": "key"
   },
   {
@@ -137,6 +143,7 @@
     "type": "definition",
     "title": "Small Discrepancy Property",
     "content": "**HasSmallDiscrepancy:**\n\nA point set has small discrepancy if the deviation from uniform distribution is sublinear in n:\n```lean\ndef HasSmallDiscrepancy (points : Finset (Fin 3 → ℝ)) : Prop :=\n  ∀ center cosAngle, ... →\n  ∃ bound : ℕ → ℝ, (∀ n, bound n / n → 0) ∧\n    ||A ∩ C| - αC · n| ≤ bound(n)\n```\n\n**Intuition:** If n points were perfectly uniform, each cap C would contain exactly αC · n points. The discrepancy measures the worst-case deviation. Being o(n) means this deviation grows slower than n itself.",
+    "mathContext": "Lean: `def HasSmallDiscrepancy (points : Finset (Fin 3 → ℝ)) : Prop :=`",
     "significance": "key",
     "relatedConcepts": [
       "Discrepancy theory",
@@ -179,6 +186,7 @@
     "type": "technique",
     "title": "Main Theorem: Erdős #991",
     "content": "**erdos_991:**\n\nOptimal logarithmic energy points have o(n) discrepancy:\n```lean\ntheorem erdos_991 :\n    ∀ points, IsOptimalConfig points →\n    HasSmallDiscrepancy points\n```\n\n**Answer to Erdős:** YES, optimal configurations distribute uniformly.\n\n**Proof sketch:** Uses marzo_mas_bound to get O(n^{2/3}), which is o(n) since 2/3 < 1.",
+    "mathContext": "Lean: `theorem erdos_991 :`",
     "significance": "key"
   },
   {
@@ -191,6 +199,7 @@
     "type": "definition",
     "title": "Fekete Points",
     "content": "**FeketePoints:**\n\nThe set of optimal n-point configurations:\n```lean\ndef FeketePoints (n : ℕ) : Set (Finset (Fin 3 → ℝ)) :=\n  {points | points.card = n ∧ IsOptimalConfig points}\n```\n\n**Named after:** Michael Fekete (1886-1957), Hungarian mathematician.\n\n**Applications:**\n- Polynomial interpolation on spheres\n- Numerical integration (quadrature)\n- Sampling for computer graphics",
+    "mathContext": "Lean: `def FeketePoints (n : ℕ) : Set (Finset (Fin 3 → ℝ)) :=`",
     "significance": "key",
     "relatedConcepts": [
       "Polynomial interpolation",
@@ -237,6 +246,7 @@
     "type": "technique",
     "title": "Hemisphere Approximation",
     "content": "**hemisphere_approx:**\n\nFor the hemisphere (cosAngle = 0), approximately half the points fall in each half:\n```lean\ntheorem hemisphere_approx : ... →\n  ||A ∩ hemisphere| - n/2| ≤ C · n^(2/3)\n```\n\n**Proof:** Follows from marzo_mas_bound with cosAngle = 0, since normalizedCapArea(0) = 1/2.\n\n**Intuition:** Optimal points are roughly symmetric - you can't bunch too many on one side without increasing energy.",
+    "mathContext": "Lean: `theorem hemisphere_approx : ... →`",
     "significance": "supporting"
   },
   {
@@ -249,6 +259,7 @@
     "type": "technique",
     "title": "Improvement Factor",
     "content": "**improvement_factor:**\n\nMerge-Mas improves on Brauchart by n^{1/12}:\n```lean\ntheorem improvement_factor :\n  n^(3/4) / n^(2/3) = n^(1/12)\n```\n\n**Verification:** 3/4 - 2/3 = 9/12 - 8/12 = 1/12.\n\n**Significance:** For n = 10^12 points, this is a factor of 10 improvement. For practical n, the improvement is modest but theoretically significant.",
+    "mathContext": "Lean: `theorem improvement_factor :`",
     "significance": "supporting"
   },
   {
@@ -261,6 +272,7 @@
     "type": "technique",
     "title": "Summary: Erdős #991 SOLVED",
     "content": "**erdos_991_summary:**\n\nCombines the main results into one theorem:\n1. Qualitative: optimal points have o(n) discrepancy (erdos_991)\n2. Quantitative: the bound is O(n^{2/3}) (marzo_mas_bound)\n\nThe answer to Erdős Problem #991 is **YES**: optimal logarithmic energy point configurations on S² distribute uniformly in the limit, with quantitative bounds of O(n^{2/3}).",
+    "mathContext": "Lean: `theorem erdos_991_summary :`",
     "significance": "key"
   }
 ]

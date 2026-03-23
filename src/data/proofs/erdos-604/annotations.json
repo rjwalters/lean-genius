@@ -9,6 +9,7 @@
     "type": "definition",
     "title": "Euclidean Distance",
     "content": "The standard Euclidean distance between two points p and q in ℝ²:\n\nd(p,q) = √((p₁-q₁)² + (p₂-q₂)²)\n\nThis is the L² metric that gives the plane its familiar geometry.",
+    "mathContext": "$d(p,q) = √((p₁-q₁)² + (p₂-q₂)²)$",
     "significance": "supporting",
     "tags": [
       "euclidean-geometry",
@@ -50,6 +51,7 @@
     "type": "definition",
     "title": "Pinned Distance Count",
     "content": "The cardinality of the pinned distance set. This is the number of distinct distances that point x 'sees' to other points in A.\n\nFor a point in general position, this could be as high as n-1 (all distances distinct). The conjecture asks: must some point achieve close to this maximum?",
+    "mathContext": "Formalizes the concept of pinned distance count",
     "significance": "key",
     "tags": [
       "cardinality",
@@ -90,6 +92,7 @@
     "type": "definition",
     "title": "Strong Pinned Distance Conjecture",
     "content": "**Strong Form:**\n\nThere exists c > 0 such that every n-point set has a point seeing at least c·n/√(log n) distinct distances.\n\nThis matches the integer lattice construction, suggesting it's the truth. If true, the weak form follows immediately.",
+    "mathContext": "Formalizes the concept of strong pinned distance conjecture",
     "significance": "key",
     "tags": [
       "open-problem",
@@ -149,6 +152,7 @@
     "type": "technique",
     "title": "Trivial Lower Bound",
     "content": "Every point in a set of 2+ points sees at least 1 distinct distance.\n\nThis is trivial: if |A| ≥ 2 and x ∈ A, there exists y ∈ A with y ≠ x, giving d(x,y) > 0.",
+    "mathContext": "$This is trivial: if |A| ≥ 2 and x ∈ A, there \\exists y ∈ A with y ≠ x, giving d(x,y) > 0.$",
     "significance": "supporting",
     "tags": [
       "elementary-bound",
@@ -208,6 +212,7 @@
     "type": "definition",
     "title": "Pinned Distance Sum Conjecture",
     "content": "**Erdős's Sum Conjecture:**\n\nΣ_x |{d(x,y) : y ∈ A}| ≫ n²/√log n\n\nThe total count of pinned distances, summed over all points, should be at least n²/√log n.\n\nErdős initially thought this equaled the distinct distance count, but Harborth showed they differ.",
+    "mathContext": "$Σ_x |{d(x,y) : y ∈ A}| ≫ n²/√log n$",
     "significance": "key",
     "tags": [
       "open-problem",
@@ -225,6 +230,7 @@
     "type": "definition",
     "title": "All Distinct Distances",
     "content": "The set of all pairwise distinct distances in A:\n\n{d(p,q) : p,q ∈ A, p ≠ q}\n\nThis is the 'unpinned' distinct distance set studied in Erdős Problem #89, famously solved by Guth-Katz (2015) who proved it has size ≫ n/log n.",
+    "mathContext": "${d(p,q) : p,q ∈ A, p ≠ q}$",
     "significance": "supporting",
     "relatedConcepts": [
       "Erdős Problem #89",
@@ -264,6 +270,7 @@
     "type": "technique",
     "title": "Open Problem Marker",
     "content": "**Status: OPEN**\n\nThis reflexive statement `pinnedDistanceConjecture ↔ pinnedDistanceConjecture` serves as a marker that the conjecture remains unproven.\n\nThe $500 prize awaits whoever proves the exponent approaches 1.",
+    "mathContext": "Formalizes the concept of open problem marker",
     "significance": "key",
     "tags": [
       "open-problem",

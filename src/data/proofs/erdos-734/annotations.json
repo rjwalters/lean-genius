@@ -151,6 +151,7 @@
     "type": "concept",
     "title": "Near-Uniform Designs",
     "content": "**near_uniform_designs_exist (axiom):** For some n ≥ 10, there exist non-trivial PBDs with at most 3 different block sizes.\n\nThese show block size diversity is achievable, but if one size dominates the frequency, they still fail Erdős's condition. The challenge is achieving BOTH size diversity AND frequency bounds.",
+    "mathContext": "Lean: `axiom near_uniform_designs_exist :`",
     "significance": "key",
     "relatedConcepts": [
       "Near-uniform designs",

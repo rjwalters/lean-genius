@@ -27,6 +27,7 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import:\n- **Nat.Totient**: Euler's totient function φ\n- **Set.Finite.Basic**: Predicates for infinite sets\n- **Filter.AtTopBot**: The 'eventually' quantifier for asymptotic statements\n- **SpecialFunctions.Pow.Real**: Real exponentiation for bounds\n- **SpecialFunctions.Log.Basic**: Logarithms for the EPS bound",
+    "mathContext": "Formalizes the concept of mathlib imports",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
@@ -98,6 +99,7 @@
     "type": "definition",
     "title": "The Main Conjecture",
     "content": "**erdos_1003_conjecture** is the proposition that ConsecutiveEqualTotients is infinite:\n\n```\ndef erdos_1003_conjecture : Prop := \n  ConsecutiveEqualTotients.Infinite\n```\n\nThis remains an OPEN problem despite extensive computational evidence.",
+    "mathContext": "Lean: `def erdos_1003_conjecture : Prop := `",
     "significance": "key",
     "relatedConcepts": [
       "Set.Infinite",
@@ -169,6 +171,7 @@
     "type": "concept",
     "title": "OEIS A001274",
     "content": "The sequence of n where φ(n) = φ(n+1) begins:\n\n1, 3, 15, 104, 164, 194, 255, 495, 584, 975, 2204, 2625, 2834, 3255, 3705, **5186, 5187**, 10604, 11715, 13365, ...\n\nNote: **5186 and 5187** are consecutive members, meaning φ(5186) = φ(5187) = φ(5188). This is a triple!",
+    "mathContext": "$The sequence of n where φ(n) = φ(n+1) begins:$",
     "significance": "supporting",
     "relatedConcepts": [
       "OEIS",
@@ -222,6 +225,7 @@
     "type": "concept",
     "title": "Why φ(104) = φ(105)",
     "content": "**The 104/105 coincidence**:\n\n- 104 = 2³ × 13 → φ(104) = 4 × 12 = **48**\n- 105 = 3 × 5 × 7 → φ(105) = 2 × 4 × 6 = **48**\n\nHere a prime power (2³) paired with prime 13 matches a product of three small primes.",
+    "mathContext": "Formalizes the concept of why φ(104) = φ(105)",
     "significance": "supporting",
     "relatedConcepts": [
       "totient computation",

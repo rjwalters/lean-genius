@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Residue Class Coverage",
     "content": "**CoversResidue** and **CoversAllResidues**:\n\nA set A *covers* residue r mod m if some element a ∈ A satisfies a ≡ r (mod m). A set *covers all residues* mod m if every r < m is covered.\n\nFor example, {0, 1, 2, 3, 4} covers all residues mod 5. But {0, 2, 4} does not cover all residues mod 5 (it misses 1 and 3).\n\nThese are the building blocks for the admissibility definition: a set that covers all residues mod some prime p cannot possibly have a prime shift.",
+    "mathContext": "Lean: `def CoversResidue (A : Set ℕ) (m : ℕ) (r : ℕ) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Modular arithmetic",
@@ -79,6 +80,7 @@
     "type": "definition",
     "title": "Prime Shifts",
     "content": "**AllPrimesInShift** and **HasPrimeShift**:\n\nAllPrimesInShift A n means every element of {n + a : a ∈ A} is prime. HasPrimeShift A asserts the existence of such an n.\n\nFor finite sets like {0, 2} (the twin prime pattern), the Hardy-Littlewood conjecture predicts infinitely many n with both n and n + 2 prime. For the set {0, 2, 6} it predicts infinitely many prime triplets. Problem #429 asks whether this phenomenon extends to infinite sparse sets.",
+    "mathContext": "Lean: `def AllPrimesInShift (A : Set ℕ) (n : ℕ) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Twin primes",
@@ -131,6 +133,7 @@
     "type": "concept",
     "title": "The Erdős Conjecture",
     "content": "**ErdosConjecture429**:\n\nFormalizes the conjecture as: ∀ A, HasZeroDensity A → IsAdmissible A → HasPrimeShift A.\n\nThis states that any set which is both sparse and admissible must have a prime shift. The conjecture seemed plausible because both conditions are favorable: admissibility removes the obvious mod-p obstruction, and sparsity means fewer primality constraints to satisfy simultaneously.",
+    "mathContext": "$Formalizes the conjecture as: ∀ A, HasZeroDensity A → IsAdmissible A → HasPrimeShift A.$",
     "significance": "key"
   },
   {
@@ -196,6 +199,7 @@
     "type": "concept",
     "title": "Admissibility is Necessary",
     "content": "**admissibility_necessary** (axiom):\n\nIf A has a prime shift and A is nonempty, then A must be admissible. This is the easy direction: if A covered all residues mod some prime p, then for any n, some n + a ≡ 0 (mod p), making n + a composite (assuming n + a > p).\n\nThis axiom completes the picture: admissibility is necessary but not sufficient for prime shifts.",
+    "mathContext": "Lean: `axiom admissibility_necessary (A : Set ℕ) (hne : A.Nonempty) :`",
     "significance": "supporting",
     "relatedConcepts": [
       "Necessary conditions",

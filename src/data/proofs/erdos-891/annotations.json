@@ -45,6 +45,7 @@
     "type": "definition",
     "title": "Little Omega Function",
     "content": "**littleOmega(n):** Counts DISTINCT prime factors.\n\nAlso written as $\\omega(n)$ in number theory.\n\n**Examples:**\n- $\\omega(12) = \\omega(2^2 \\cdot 3) = 2$ (two distinct primes: 2 and 3)\n- $\\omega(8) = \\omega(2^3) = 1$ (only one prime: 2)\n- $\\omega(30) = \\omega(2 \\cdot 3 \\cdot 5) = 3$\n\n**Note:** $\\omega(n) \\leq \\Omega(n)$ always, with equality iff n is squarefree.",
+    "mathContext": "$\\omega(n)$",
     "significance": "key"
   },
   {
@@ -57,6 +58,7 @@
     "type": "definition",
     "title": "The k-th Prime",
     "content": "**nthPrime(k):** Returns the k-th prime (1-indexed).\n\n**Values:**\n- nthPrime(1) = 2\n- nthPrime(2) = 3\n- nthPrime(3) = 5\n- nthPrime(4) = 7\n- nthPrime(5) = 11\n\nUsed to define the primorial and state the conjecture precisely.",
+    "mathContext": "Lean: `theorem bigOmega_eight : bigOmega 8 = 3`",
     "significance": "key"
   },
   {
@@ -87,6 +89,7 @@
     "type": "definition",
     "title": "HasManyFactors Predicate",
     "content": "**HasManyFactors(n, k):** The interval [n, n + primorial(k)) contains an integer m with Ω(m) > k.\n\nThis is the core property that Erdős #891 conjectures holds for all sufficiently large n.\n\n**For k = 2:** Asks if [n, n+6) contains an integer with ≥ 3 prime factors.",
+    "mathContext": "Lean: `theorem primorialComp_five : primorialComp 5 = 2310`",
     "significance": "key"
   },
   {
@@ -99,6 +102,7 @@
     "type": "concept",
     "title": "The Main Conjecture",
     "content": "**erdos891_conjecture(k):** For k ≥ 2, there exists N such that HasManyFactors(n, k) holds for all n ≥ N.\n\nIn other words: every primorial-length interval eventually contains an integer with many prime factors.\n\n**Status:** OPEN for all k ≥ 2.",
+    "mathContext": "Lean: `def HasManyFactorsComp (n k : ℕ) : Prop`",
     "significance": "key"
   },
   {
@@ -111,6 +115,7 @@
     "type": "concept",
     "title": "The k = 2 Case",
     "content": "**erdos891_k_equals_2:** The conjecture for k = 2.\n\nThis is the simplest open case. It asks:\n\n*Does every interval of 6 consecutive integers (for large n) contain a number with at least 3 prime factors?*\n\n**Examples that work:**\n- [8, 14): Contains 8 = 2³ with Ω(8) = 3\n- [12, 18): Contains 12 = 2² · 3 with Ω(12) = 3\n\nBut proving this for ALL large n remains open.",
+    "mathContext": "Lean: `def hasThreeFactorsInSix (n : ℕ) : Bool`",
     "significance": "key"
   },
   {
@@ -123,6 +128,7 @@
     "type": "technique",
     "title": "Verified Examples",
     "content": "**Concrete computations** using native_decide:\n\n- Ω(8) = 3 (since 8 = 2³)\n- Ω(12) = 3 (since 12 = 2² · 3)\n- Ω(18) = 3 (since 18 = 2 · 3²)\n- Ω(24) = 4 (since 24 = 2³ · 3)\n\n**example_interval_8_14:** Shows [8, 14) satisfies the k=2 condition since 8 has 3 prime factors.\n\nThese examples demonstrate the conjecture works for specific intervals.",
+    "mathContext": "Lean: `theorem k2_verified_range : ∀ n : Fin 1000, hasThreeFactorsInSix (n.val + 3) = true`",
     "significance": "key"
   },
   {
@@ -135,6 +141,7 @@
     "type": "concept",
     "title": "Schinzel's Theorem",
     "content": "**schinzel_theorem:** A weaker version of the conjecture IS provable.\n\nIf we use $p_1 \\cdots p_{k-1} \\cdot p_{k+1}$ instead of $p_1 \\cdots p_k$ (skipping the k-th prime), then the statement holds.\n\n**Proof idea:** Uses Pólya's theorem on unbounded gaps in k-smooth number sequences.\n\nThis shows the conjecture is \"almost\" true - just with a slightly larger interval.",
+    "mathContext": "$p_1 \\cdots p_{k-1} \\cdot p_{k+1}$",
     "significance": "key"
   },
   {
@@ -165,6 +172,7 @@
     "type": "concept",
     "title": "Weisenberg's Counterexample",
     "content": "**weisenberg_conditional:** Under Dickson's conjecture, the statement FAILS with interval length $p_1 \\cdots p_k - 1$.\n\nThis shows:\n1. The exact primorial length is critical\n2. Subtracting just 1 breaks the conjecture\n3. The problem has deep connections to prime constellations\n\nConditionally, infinitely many intervals of length primorial(k) - 1 have NO integer with > k factors.",
+    "mathContext": "$p_1 \\cdots p_k - 1$",
     "significance": "key"
   },
   {
@@ -177,6 +185,7 @@
     "type": "definition",
     "title": "Smooth Numbers and Pólya's Theorem",
     "content": "**isSmooth(n, k):** n is k-smooth if all prime factors are ≤ pₖ.\n\n**Examples of 2-smooth numbers:** 1, 2, 4, 8, 16, ... (powers of 2)\n**Examples of 3-smooth numbers:** 1, 2, 3, 4, 6, 8, 9, 12, ...\n\n**Pólya's Theorem:** The gaps between consecutive k-smooth numbers are unbounded.\n\nThis is key to Schinzel's result: eventually there are arbitrarily long stretches without k-smooth numbers, forcing numbers with more prime factors.",
+    "mathContext": "Lean: `axiom dicksons_conjecture : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Friable numbers",
@@ -194,6 +203,7 @@
     "type": "technique",
     "title": "Problem Summary",
     "content": "**erdos_891_summary:** Complete status of Erdős Problem #891.\n\n**What's proven:**\n- Concrete examples work (intervals containing 8, 12, 24)\n- Schinzel's weaker version with modified primorial\n\n**What's open:**\n- Main conjecture for any k ≥ 2\n- Even the k = 2 case (intervals of length 6)\n\n**What's conditionally resolved:**\n- Weisenberg: primorial - 1 fails (under Dickson's conjecture)",
+    "mathContext": "Lean: `def isSmoothComp (n : ℕ) (bound : ℕ) : Prop`",
     "significance": "key"
   }
 ]

@@ -28,6 +28,7 @@
     "type": "definition",
     "title": "Graph Abbreviation",
     "content": "**Graph (V : Type*) := SimpleGraph V**\n\nFor finite types V, a Graph is just a SimpleGraph from Mathlib.\n\n```lean\nabbrev Graph (V : Type*) [Fintype V] := SimpleGraph V\n```\n\nSimpleGraph represents undirected graphs without self-loops or multi-edges.",
+    "mathContext": "Lean: `abbrev Graph (V : Type*) [Fintype V] := SimpleGraph V`",
     "significance": "supporting",
     "relatedConcepts": [
       "SimpleGraph",
@@ -154,6 +155,7 @@
     "type": "definition",
     "title": "Range of Interest",
     "content": "**inRangeOfInterest k l:** k < l ≤ k²/4\n\n```lean\ndef inRangeOfInterest (k l : ℕ) : Prop :=\n  k < l ∧ l ≤ maxBipartiteEdges k\n```\n\n**Why This Range?**\n- l ≤ k: Graphs are very sparse (forests possible)\n- k < l ≤ k²/4: Graphs have moderate density, may or may not be bipartite\n- l > k²/4: All graphs contain triangles → ex drops to ≈ n²/4\n\nThe range k < l ≤ k²/4 is where the interesting \"interpolation\" behavior occurs.",
+    "mathContext": "Lean: `def inRangeOfInterest (k l : ℕ) : Prop :=`",
     "significance": "key",
     "relatedConcepts": [
       "sparse graphs",
@@ -225,6 +227,7 @@
     "type": "concept",
     "title": "f is Non-Decreasing",
     "content": "**f_nondecreasing:** The weak monotonicity result.\n\n```lean\naxiom f_nondecreasing (n k l₁ l₂ : ℕ) (hl : l₁ ≤ l₂)\n    (h1 : inRangeOfInterest k l₁) (h2 : inRangeOfInterest k l₂) :\n    f n k l₁ ≤ f n k l₂\n```\n\n**Meaning:** l₁ ≤ l₂ implies f(n; k, l₁) ≤ f(n; k, l₂).\n\nThis is the known (weak) result. The STRICT inequality (l₁ < l₂ → f < f) remains open.",
+    "mathContext": "Lean: `axiom f_nondecreasing (n k l₁ l₂ : ℕ) (hl : l₁ ≤ l₂)`",
     "significance": "key",
     "relatedConcepts": [
       "weak monotonicity",
@@ -331,6 +334,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_766_summary:**\n\nCombines the two main known results:\n1. Dirac-Erdős theorem at bipartite threshold\n2. f is non-decreasing in l (weak monotonicity)\n\n```lean\ntheorem erdos_766_summary :\n    (∀ n k, k ≥ 3 → n ≥ k → f n k (maxBipartiteEdges k + 1) ≤ n * n / 4 + 1) ∧\n    (∀ n k l₁ l₂, l₁ ≤ l₂ → inRangeOfInterest k l₁ → inRangeOfInterest k l₂ →\n      f n k l₁ ≤ f n k l₂)\n```\n\n**Known:**\n- Dirac-Erdős: f(n; k, ⌊k²/4⌋+1) ≤ ⌊n²/4⌋+1\n- f is non-decreasing in l\n- f(n; 3, 3) = ⌊n²/4⌋\n\n**Open:**\n1. Good estimates for f(n; k, l) when k < l ≤ k²/4\n2. Is f(n; k, l) STRICTLY monotone in l?",
+    "mathContext": "Lean: `theorem erdos_766_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "open problems",

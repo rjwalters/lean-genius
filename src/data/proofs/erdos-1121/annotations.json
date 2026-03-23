@@ -28,6 +28,7 @@
     "type": "definition",
     "title": "Circle and Line Structures",
     "content": "Circle: center (x,y) ∈ ℝ² and radius r > 0. Contains point p iff (p₁-x)² + (p₂-y)² ≤ r² (closed disk). Line: {(x,y) : ax + by = c} with (a,b) ≠ (0,0). A line is disjoint from a circle if it doesn't intersect the closed disk.",
+    "mathContext": "Lean: `def Line.contains (l : Line) (p : ℝ × ℝ) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "disk",
@@ -99,6 +100,7 @@
     "type": "definition",
     "title": "Special Cases: Two Circles and Overlapping",
     "content": "two_circles_case (axiom): two inseparable circles can be covered by a circle of radius r₁+r₂. CirclesOverlap: distance between centers ≤ r₁+r₂. overlap_implies_connected (axiom): if all pairs overlap, no separating line exists — overlapping is a sufficient condition for connected configuration.",
+    "mathContext": "Lean: `axiom two_circles_case (C₁ C₂ : Circle) :`",
     "significance": "key",
     "relatedConcepts": [
       "overlap",
@@ -116,6 +118,7 @@
     "type": "technique",
     "title": "Summary: SOLVED",
     "content": "erdos_1121_summary: ErdosConjecture1121 := goodman_goodman_theorem. The Erdős conjecture is TRUE. Connected circle configurations (no separating line) can be covered by a single circle of radius equal to the sum of all radii.",
+    "mathContext": "Lean: `theorem erdos_1121_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "summary",

@@ -27,6 +27,7 @@
     },
     "title": "Perfect Square",
     "content": "**`IsSquare n`** holds when n = m² for some m. This is the target property that k-element products must avoid.",
+    "mathContext": "Lean: `def IsSquare (n : ℕ) : Prop`",
     "significance": "supporting",
     "relatedConcepts": [
       "perfect-square",
@@ -96,6 +97,7 @@
     },
     "title": "F_3 Has Full Density",
     "content": "F_3(N) = (1 - o(1))N: for 3-element products, almost all integers can be included. The density loss is o(1), so asymptotically the full set works.",
+    "mathContext": "Lean: `axiom f3_full_density :`",
     "significance": "key",
     "relatedConcepts": [
       "full-density",
@@ -164,6 +166,7 @@
     },
     "title": "Monotonicity Properties",
     "content": "F_k is monotone in N (more elements available) and anti-monotone in k (more elements required to form a product makes squares easier to avoid). Both are axiomatized.",
+    "mathContext": "Lean: `axiom squareFreeMax_mono_N (k M N : ℕ) (h : M ≤ N) :`",
     "significance": "supporting",
     "relatedConcepts": [
       "monotonicity",

@@ -27,6 +27,7 @@
     },
     "title": "Imports and Setup",
     "content": "Imports `Nat.Prime.Basic` for primality definitions and `Tactic` for proof automation. The formalization builds on Mathlib's `Nat.minFac` function.",
+    "mathContext": "Formalizes the concept of imports and setup",
     "significance": "supporting",
     "relatedConcepts": [
       "mathlib",
@@ -77,6 +78,7 @@
     },
     "title": "Existence of Least Prime Factor",
     "content": "Every composite number m ≥ 2 has a least prime factor. This is axiomatized since the constructive proof via `Nat.minFac` requires showing the predicate is satisfied.",
+    "mathContext": "Lean: `theorem minFac_is_lpf (m : ℕ) (hm : 2 ≤ m) :`",
     "significance": "supporting",
     "relatedConcepts": [
       "fundamental-theorem",
@@ -145,6 +147,7 @@
     },
     "title": "Nat.minFac Connection",
     "content": "**`Nat.minFac`** gives the least prime factor for m ≥ 2, connecting the Mathlib API to the IsLeastPrimeFactor predicate used throughout the formalization.",
+    "mathContext": "Lean: `theorem leastPrimeFactor_eq_minFac (m : ℕ) (hm : 2 ≤ m) :`",
     "significance": "supporting",
     "relatedConcepts": [
       "mathlib-api",

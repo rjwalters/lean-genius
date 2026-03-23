@@ -163,6 +163,7 @@
     "type": "technique",
     "title": "Summary",
     "content": "erdos_274_summary: The abelian case of the Herzog-Schönheim conjecture is proved via Sun's theorem. The general case remains OPEN.",
+    "mathContext": "Lean: `theorem erdos_274_summary (G : Type*) [CommGroup G] [Fintype G] :`",
     "significance": "key",
     "relatedConcepts": [
       "open-problems",

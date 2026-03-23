@@ -45,6 +45,7 @@
     "type": "definition",
     "title": "Completely Additive and Its Relation to Additive",
     "content": "**IsCompletelyAdditive f** strengthens additivity: f(ab) = f(a) + f(b) for ALL pairs a, b, not just coprime ones. The natural logarithm is the canonical example: log(ab) = log(a) + log(b) always.\n\n**completely_additive_is_additive** proves the obvious implication: completely additive functions are additive (the coprimality hypothesis is simply dropped).",
+    "mathContext": "Lean: `def IsCompletelyAdditive (f : ℕ → ℝ) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Completely additive",
@@ -114,6 +115,7 @@
     "type": "technique",
     "title": "Erdős Problem #491: Main Theorems",
     "content": "**erdos_491** is the main entry point: additive + bounded differences implies f = c'·log + O(1). It is a direct application of wirsing_theorem.\n\n**erdos_491_explicit** unpacks the existential to make the bound M explicit: ∃ c' M, M > 0 ∧ ∀ n ≥ 1, |f(n) - c'·log(n)| ≤ M.",
+    "mathContext": "Lean: `theorem erdos_491 (f : ℕ → ℝ) (hf : IsAdditive f)`",
     "significance": "key",
     "relatedConcepts": [
       "Problem resolution",
@@ -130,6 +132,7 @@
     "type": "concept",
     "title": "Properties of the Characterization",
     "content": "**wirsing_constant_unique:** The coefficient c' in f = c'·log + O(1) is unique. If f is within O(1) of both c'·log and c''·log, then c' = c''.\n\n**wirsing_monotone_nonneg:** For monotone additive functions, c' ≥ 0 (the function grows like a non-negative multiple of log).\n\n**log_unique_completely_additive:** For completely additive functions, the characterization sharpens to f = c'·log exactly (no O(1) error), since complete additivity provides enough structure to eliminate the bounded perturbation.",
+    "mathContext": "Lean: `axiom wirsing_constant_unique (f : ℕ → ℝ) (hf : IsAdditive f)`",
     "significance": "key",
     "relatedConcepts": [
       "Uniqueness",
@@ -147,6 +150,7 @@
     "type": "concept",
     "title": "Examples and Non-Examples",
     "content": "**log_satisfies_hypothesis** (axiom): The logarithm itself satisfies bounded consecutive differences, confirming the hypothesis is non-vacuous.\n\n**nonExample:** f(n) = n is a non-additive function with bounded differences (|1| < 2) that does NOT satisfy f = c·log + O(1), since n grows much faster than any c·log(n). This shows that the additivity hypothesis is essential — bounded differences alone don't force logarithmic behavior.\n\n**non_example_bounded_diff** (theorem): Verified by norm_num that f(n) = n has HasBoundedDifferences with c = 2.",
+    "mathContext": "Lean: `axiom log_satisfies_hypothesis :`",
     "significance": "key",
     "relatedConcepts": [
       "Necessity of additivity",
@@ -180,6 +184,7 @@
     "type": "concept",
     "title": "Rate of Convergence and Non-Vanishing Error",
     "content": "**wirsing_explicit_bound:** The O(1) constant M can be bounded explicitly: |f(n) - c'·log(n)| ≤ 10c for n ≥ 2, where c is the difference bound.\n\n**deviation_bounded_not_zero:** There exist additive functions with bounded differences where the O(1) error genuinely does not vanish — the function oscillates around c'·log(n) without converging to it. This shows that Wirsing's O(1) conclusion cannot be strengthened to o(1) in general, distinguishing it from Erdős's 1946 result.",
+    "mathContext": "Lean: `axiom wirsing_explicit_bound (f : ℕ → ℝ) (hf : IsAdditive f)`",
     "significance": "key",
     "relatedConcepts": [
       "Explicit bounds",
@@ -196,6 +201,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_491_summary** packages all main results into a conjunction: (1) Wirsing's theorem (bounded differences ⟹ f = c'·log + O(1)), (2) Erdős's 1946 result (vanishing differences ⟹ exact f = c·log), and (3) uniqueness of the coefficient c'.\n\n**erdos_491_answer:** Final restatement that Erdős Problem #491 is SOLVED by Wirsing (1970). The answer is YES — additive + bounded differences implies f = c'·log + O(1).",
+    "mathContext": "Lean: `theorem erdos_491_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "Problem resolution",

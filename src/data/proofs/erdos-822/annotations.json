@@ -152,6 +152,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_822_summary** combines the two main results: (1) the positive density axiom, and (2) the trivial lower bound n + φ(n) ≥ n. The proof is simply `⟨nPlusTotientValues_hasPosDensity, nPlusTotient_ge⟩`.",
+    "mathContext": "Lean: `theorem erdos_822_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "Erdős problems",

@@ -28,6 +28,7 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import:\n- **GCD/LCM basics**: For lcm function and properties\n- **BigOperators**: For finite sums over sets\n- **SpecialFunctions**: For Real.log and Real.exp\n- **Filter**: For limits (Tendsto, atTop)\n- **Classical**: For decidability on arbitrary sets",
+    "mathContext": "Formalizes the concept of mathlib imports",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
@@ -62,6 +63,7 @@
     "type": "technique",
     "title": "Log⁺ Properties",
     "content": "**logPlus_ge_one**: log⁺(x) ≥ 1 for all x. This is immediate from the max definition.\n\n**logPlus_eq_log**: For x ≥ e, we have log⁺(x) = log(x). The proof shows log(x) ≥ 1 when x ≥ e, so the max equals log(x).",
+    "mathContext": "Lean: `theorem logPlus_ge_one (x : ℝ) : logPlus x ≥ 1`",
     "significance": "supporting",
     "relatedConcepts": [
       "max",
@@ -222,6 +224,7 @@
     "type": "technique",
     "title": "Verified Examples",
     "content": "We verify LCM computations:\n- **lcm(6, 10) = 30**: 6 = 2·3, 10 = 2·5, so lcm = 2·3·5 = 30\n- **gcd(6, 10) = 2**: The shared factor\n- **lcm(3, 5) = 15**: Coprime case, lcm = product\n\nThese are checked by `native_decide`, which computes the values.",
+    "mathContext": "Formalizes the concept of verified examples",
     "significance": "supporting",
     "relatedConcepts": [
       "native_decide",
@@ -256,6 +259,7 @@
     "type": "concept",
     "title": "Historical Significance",
     "content": "This formalization captures a 44-year-old problem from Erdős-Graham (1980), resolved by Terence Tao in July 2024.\n\n**Key takeaways**:\n1. The threshold exp(C√(log log x)·log log log x) is exact\n2. Structure (controlled prime factorizations) can defeat density\n3. The construction uses sophisticated smooth number techniques\n\nThe arXiv paper (2407.04226) contains the full details.",
+    "mathContext": "Formalizes the concept of historical significance",
     "significance": "supporting",
     "relatedConcepts": [
       "history",

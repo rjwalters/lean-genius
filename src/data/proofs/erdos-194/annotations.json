@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Arithmetic Progression (3-term)",
     "content": "**isArithmeticProgression3(x, y, z):**\n\nThree real numbers form an arithmetic progression if the middle term is the average of the other two.\n\n**Definition:**\n```lean\ndef isArithmeticProgression3 (x y z : R) : Prop :=\n  y - x = z - y\n```\n\n**Examples:**\n- 1, 2, 3 form an AP (2-1 = 3-2 = 1)\n- 3, 7, 11 form an AP (7-3 = 11-7 = 4)\n- 1, 2, 4 do NOT form an AP (2-1 != 4-2)",
+    "mathContext": "Three values $x, y, z \\in \\mathbb{R}$ form a 3-term arithmetic progression when $y - x = z - y$, i.e., the common difference is constant. Equivalently, $y = \\frac{x+z}{2}$. In Lean 4 this is encoded as `isArithmeticProgression3 (x y z : ℝ) : Prop := y - x = z - y`.",
     "significance": "key",
     "relatedConcepts": [
       "Arithmetic sequences",
@@ -43,6 +44,7 @@
     "type": "technique",
     "title": "AP Characterization",
     "content": "**ap3_iff_avg:**\n\nx, y, z form an AP if and only if 2y = x + z.\n\n**Proof:**\nFrom y - x = z - y, adding y to both sides gives 2y - x = z, hence 2y = x + z.\n\nThis equivalent form is often easier to check computationally.",
+    "mathContext": "The equivalence $y - x = z - y \\iff 2y = x + z$ is proved by `linarith` in both directions. The $2y = x + z$ form is standard in combinatorial number theory since it makes the averaging condition explicit: $y$ is the arithmetic mean of $x$ and $z$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Arithmetic mean"
@@ -58,6 +60,7 @@
     "type": "definition",
     "title": "Increasing and Decreasing APs",
     "content": "**isIncreasingAP3(x, y, z):**\nAn AP where x < y < z (values strictly increase).\n\n**isDecreasingAP3(x, y, z):**\nAn AP where x > y > z (values strictly decrease).\n\n**Note:** These are the \"natural\" orderings of an AP. The problem asks about the relationship between this value ordering and the enumeration ordering.",
+    "mathContext": "An increasing AP requires both the AP condition $y - x = z - y$ and strict ordering $x < y < z$. The decreasing variant requires $x > y > z$. In the Lean formalization, `isIncreasingAP3 x y z` is the conjunction `isArithmeticProgression3 x y z ∧ x < y ∧ y < z`, capturing that values are ordered as well as evenly spaced.",
     "significance": "key",
     "relatedConcepts": [
       "Ordering",
@@ -91,6 +94,7 @@
     "type": "definition",
     "title": "Monotone Increasing AP in Enumeration",
     "content": "**hasMonotoneIncreasingAP3(e):**\n\nAn enumeration e has a monotone increasing AP if there exist indices i < j < k such that:\n- The values e(i) < e(j) < e(k) form an increasing sequence\n- These same values form an arithmetic progression\n\n```lean\ndef hasMonotoneIncreasingAP3 (e : Enumeration S) : Prop :=\n  exists i j k, i < j and j < k and\n    isIncreasingAP3 (e.toFun i) (e.toFun j) (e.toFun k)\n```\n\n**Key Point:** Both the index order AND the value order must be increasing.",
+    "mathContext": "A monotone increasing AP in an enumeration $e : \\mathbb{N} \\to \\mathbb{R}$ requires indices $i < j < k$ such that the values $e(i), e(j), e(k)$ form an increasing AP: $e(i) < e(j) < e(k)$ and $e(j) - e(i) = e(k) - e(j)$. The index order and value order must agree simultaneously.",
     "significance": "key",
     "relatedConcepts": [
       "Monotonicity",
@@ -107,6 +111,7 @@
     "type": "definition",
     "title": "Monotone Decreasing AP in Enumeration",
     "content": "**hasMonotoneDecreasingAP3(e):**\n\nAn enumeration e has a monotone decreasing AP if there exist indices i < j < k such that:\n- The values e(i) > e(j) > e(k) form a decreasing sequence\n- These same values form an arithmetic progression\n\n**Note:** The indices still increase (i < j < k), but the values decrease. This captures \"seeing a decreasing AP as you traverse the enumeration.\"",
+    "mathContext": "A monotone decreasing AP requires indices $i < j < k$ with values $e(i) > e(j) > e(k)$ forming an AP. Note the indices still increase while values decrease. Together with the increasing case, `hasMonotoneAP3 e` is defined as the disjunction `hasMonotoneIncreasingAP3 e ∨ hasMonotoneDecreasingAP3 e`.",
     "significance": "key",
     "relatedConcepts": [
       "Decreasing sequences"
@@ -122,6 +127,7 @@
     "type": "definition",
     "title": "Chaotic Ordering",
     "content": "**isChaotic(e):**\n\nAn enumeration is chaotic if it contains NO monotone 3-term arithmetic progression of either kind.\n\n```lean\ndef isChaotic (e : Enumeration S) : Prop :=\n  not(hasMonotoneAP3 e)\n```\n\n**The Name:** \"Chaotic\" captures the idea that the ordering is so scrambled that natural patterns (APs) never align with the enumeration order.",
+    "mathContext": "A chaotic ordering is an enumeration $e$ satisfying $\\neg\\,\\texttt{hasMonotoneAP3}(e)$, meaning no triple of indices $i < j < k$ yields a monotone 3-term AP in either direction. This is a strong combinatorial avoidance property: the enumeration must scramble value-order relative to index-order enough to break all APs.",
     "significance": "key",
     "relatedConcepts": [
       "Pattern avoidance",
@@ -155,6 +161,7 @@
     "type": "technique",
     "title": "Erdos Problem #194: Main Result",
     "content": "**erdos_194:**\n\nThere exists an infinite set S and an enumeration of S that is chaotic.\n\n```lean\ntheorem erdos_194 :\n    exists S : Set R, S.Infinite and exists e : Enumeration S, isChaotic e\n```\n\n**Answer to Erdos:** The question asked \"must any ordering contain a monotone AP?\" This proves the answer is NO.",
+    "mathContext": "The main theorem proves $\\exists\\, S \\subseteq \\mathbb{R},\\; S\\text{ infinite} \\;\\wedge\\; \\exists\\, e : \\texttt{Enumeration}(S),\\; \\texttt{isChaotic}(e)$. The proof instantiates $S = \\{x \\in \\mathbb{R} \\mid \\exists q \\in \\mathbb{Q},\\, x = q\\}$, shows this is infinite via `Set.infinite_range_of_injective Rat.cast_injective`, then applies the axiom `chaotic_ordering_rationals`.",
     "significance": "key",
     "relatedConcepts": [
       "Counterexample",
@@ -171,6 +178,7 @@
     "type": "concept",
     "title": "Natural Ordering Has APs",
     "content": "**natural_ordering_has_AP:**\n\nIf an enumeration is order-preserving (n < m implies e(n) < e(m)), then it DOES have monotone APs.\n\n**Intuition:** The \"natural\" way to list rationals (by size) trivially has monotone APs - any three rationals in increasing order that happen to form an AP will also have increasing indices.\n\nSo chaotic orderings must be quite \"unnatural\" - they scramble the order relationship.",
+    "mathContext": "The axiom `natural_ordering_has_AP` states that any order-preserving enumeration of $\\mathbb{Q}$ (where $n < m \\Rightarrow e(n) < e(m)$) must contain a monotone AP. This is immediate: any three rationals $e(i) < e(j) < e(k)$ with $e(j) - e(i) = e(k) - e(j)$ automatically have $i < j < k$. So chaotic orderings must be far from order-preserving.",
     "significance": "key",
     "relatedConcepts": [
       "Order-preserving",
@@ -204,6 +212,7 @@
     "type": "concept",
     "title": "Extension to k-term APs",
     "content": "**chaotic_ordering_k_term:**\n\nThe construction works for ANY k >= 3, not just k = 3.\n\nThere exist orderings of Q that avoid monotone k-term APs for any k.\n\n**Significance:** The k = 3 case is not special - the construction is robust enough to avoid longer progressions as well.",
+    "mathContext": "The generalization `chaotic_ordering_k_term` asserts that for any $k \\geq 3$, there exists a bijection $\\texttt{ordering} : \\mathbb{Q} \\to \\mathbb{N}$ such that no increasing $k$-term AP $(a_0, a_1, \\ldots, a_{k-1})$ with common difference $d$ has its ordering values also increasing. The Lean statement uses `Fin k \\to \\mathbb{Q}` with explicit AP and monotonicity conditions.",
     "significance": "key",
     "relatedConcepts": [
       "Generalization",
@@ -220,6 +229,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_194_summary:**\n\nCombines the main results:\n1. Chaotic orderings exist for infinite sets\n2. The construction extends to all k >= 3\n\n**Historical Note:** This result disproves the natural conjecture that any enumeration of a dense set must contain monotone APs. The construction is counterintuitive and elegant.",
+    "mathContext": "The summary theorem combines both results into a single conjunction: (1) $\\exists$ an infinite chaotic set, and (2) $\\forall k \\geq 3$, $\\exists$ a bijection $\\mathbb{Q} \\to \\mathbb{N}$ avoiding monotone $k$-APs. The proof delegates to `erdos_194` and `chaotic_ordering_k_term` respectively.",
     "significance": "key",
     "relatedConcepts": [
       "Summary",
@@ -236,6 +246,7 @@
     "type": "technique",
     "title": "The Answer: Disproof",
     "content": "**erdos_194_answer:**\n\nExplicitly states that the conjecture is FALSE.\n\n```lean\ntheorem erdos_194_answer : \n    not(forall (S : Set R) (e : Enumeration S), S.Infinite -> hasMonotoneAP3 e)\n```\n\n**Proof:** By contradiction using the existence of chaotic orderings.\n\nThis is the formal disproof of the original Erdos question.",
+    "mathContext": "The final theorem $\\neg(\\forall S\\, \\forall e,\\; S\\text{ infinite} \\to \\texttt{hasMonotoneAP3}(e))$ is proved by contradiction: assuming the universal statement, applying it to the chaotic set from `erdos_194`, and deriving a contradiction with the chaoticity witness. This formally disproves Erdős’s conjecture.",
     "significance": "key",
     "relatedConcepts": [
       "Disproof",

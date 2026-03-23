@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Divisibility by 3 Rule",
     "content": "A natural number is divisible by 3 if and only if the sum of its decimal digits is divisible by 3:\n\n$$3 | n \\iff 3 | (d_0 + d_1 + d_2 + \\cdots)$$\n\nThis is one of the most practical divisibility tests, easily performed mentally.\n\nThis is Wiedijk's 100 Theorems #85.",
+    "mathContext": "$3 | n \\iff 3 | (d_0 + d_1 + d_2 + \\cdots)$",
     "significance": "key",
     "relatedConcepts": [
       "divisibility",

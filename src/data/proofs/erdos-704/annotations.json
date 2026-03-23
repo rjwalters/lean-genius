@@ -45,6 +45,7 @@
     "type": "definition",
     "title": "Chromatic Number χ(Gₙ)",
     "content": "**chi(n):**\n\nThe chromatic number χ(Gₙ) = minimum number of colors to color all points of ℝⁿ so that no two points at distance 1 have the same color.\n\n```lean\nnoncomputable def chi (n : ℕ) : ℕ := (UnitDistanceGraph n).chromaticNumber\n```\n\nFor an infinite graph, this is still well-defined as the minimum over all valid colorings.",
+    "mathContext": "Lean: `noncomputable def chi (n : ℕ) : ℕ := (UnitDistanceGraph n).chromaticNumber`",
     "significance": "key",
     "relatedConcepts": [
       "Graph coloring",
@@ -78,6 +79,7 @@
     "type": "concept",
     "title": "Larman-Rogers Upper Bound (1972)",
     "content": "**larman_rogers_1972:**\n\nχ(Gₙ) ≤ (3+o(1))ⁿ\n\nThis uses lattice tilings: partition ℝⁿ using Voronoi cells of the Aₙ lattice, where each cell has diameter < 1.\n\n**Reference:** Larman, D. G. and Rogers, C. A., \"The realization of distances within sets in Euclidean space\", Mathematika (1972).",
+    "mathContext": "$χ(Gₙ) ≤ (3+o(1))ⁿ$",
     "significance": "key",
     "relatedConcepts": [
       "Lattices",
@@ -95,6 +97,7 @@
     "type": "definition",
     "title": "Conjectured Base",
     "content": "**conjecturedBase:**\n\nLarman and Rogers conjecture: χ(Gₙ) ≈ (2^{3/2})ⁿ ≈ 2.828ⁿ\n\nThis is between the known bounds of 1.2 and 3.\n\nThe factor 2^{3/2} = 2√2 arises from geometric considerations.",
+    "mathContext": "$The factor 2^{3/2} = 2√2 arises from geometric considerations.$",
     "significance": "key",
     "relatedConcepts": [
       "Conjectures",
@@ -129,6 +132,7 @@
     "type": "technique",
     "title": "Hadwiger-Nelson Bounds",
     "content": "**hadwiger_nelson_bounds:**\n\n5 ≤ χ(G₂) ≤ 7\n\nThe plane chromatic number is 5, 6, or 7. After 70+ years, the exact value is unknown!\n\n- Lower bound 5: de Grey's graph (2018)\n- Upper bound 7: Hexagonal tiling",
+    "mathContext": "$5 ≤ χ(G₂) ≤ 7$",
     "significance": "key",
     "relatedConcepts": [
       "Plane coloring",
@@ -145,6 +149,7 @@
     "type": "definition",
     "title": "Chromatic Limit",
     "content": "**chromaticLimit:**\n\nlim_{n→∞} χ(Gₙ)^{1/n}\n\nIf this limit exists, it equals the exponential base of χ(Gₙ).\n\nThe known bounds show: 1.2 ≤ chromaticLimit ≤ 3\n\n**Open:** Does this limit even exist?",
+    "mathContext": "$lim_{n→∞} χ(Gₙ)^{1/n}$",
     "significance": "key",
     "relatedConcepts": [
       "Limits",
@@ -178,6 +183,7 @@
     "type": "concept",
     "title": "Proof Techniques",
     "content": "**Lower Bound (Frankl-Wilson):**\n1. Consider ±1 vectors with n/2 ones\n2. Analyze distances: √2 or 2\n3. Apply intersection theorems to bound independent sets\n4. Get χ(Gₙ) ≥ 1.2ⁿ\n\n**Upper Bound (Larman-Rogers):**\n1. Use the Aₙ lattice\n2. Voronoi cells have diameter < 1\n3. Color by cell membership\n4. Get χ(Gₙ) ≤ 3ⁿ",
+    "mathContext": "$4. Get χ(Gₙ) ≥ 1.2ⁿ$",
     "significance": "key",
     "relatedConcepts": [
       "Intersection theorems",
@@ -195,6 +201,7 @@
     "type": "technique",
     "title": "Main Result",
     "content": "**erdos_704_solved:**\n\nCombines both bounds:\n- ∀ε>0: χ(Gₙ) ≥ (1-ε)·1.2ⁿ for large n\n- ∀ε>0: χ(Gₙ) ≤ (3+ε)ⁿ for large n\n\nThis establishes exponential growth, resolving part of the problem.\n\nThe exact base remains open.",
+    "mathContext": "Lean: `theorem erdos_704_solved :`",
     "significance": "key",
     "relatedConcepts": [
       "Exponential bounds",

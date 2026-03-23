@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Point and Line Definitions",
     "content": "**Point and Line in R²:**\n\n- **Point** = Fin 2 → ℝ (a function from {0,1} to reals, representing coordinates)\n- **Line** = {a, b, c : ℝ | (a,b) ≠ (0,0)} representing ax + by = c\n- **OnLine p ℓ**: a point lies on a line when ℓ.a * p₀ + ℓ.b * p₁ = ℓ.c\n- **pointsOnLine P ℓ**: count of points from finite set P on line ℓ\n\nThe Line structure requires the non-degeneracy condition a ≠ 0 ∨ b ≠ 0 to ensure it represents an actual line.",
+    "mathContext": "Lean: `def OnLine (p : Point) (ℓ : Line) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Analytic geometry",
@@ -43,6 +44,7 @@
     "type": "definition",
     "title": "Counting Functions f_k and F_k",
     "content": "**The Two Counting Functions:**\n\n- **ExactlyKPoints ℓ P k**: line ℓ passes through exactly k points of P\n- **AtLeastKPoints ℓ P k**: line ℓ passes through at least k points of P\n- **f_k(k, n)** = sup over all n-point sets P of the number of exactly-k-point lines\n- **F_k(k, n)** = sup over all n-point sets P of the number of at-least-k-point lines\n\nBoth are defined via sSup (supremum) over all possible point configurations of size n.\n\n**Key Relation:** f_k(n) ≤ F_k(n) trivially, since exactly k implies at least k.",
+    "mathContext": "Lean: `def ExactlyKPoints (ℓ : Line) (P : Finset Point) (k : ℕ) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Extremal combinatorics",
@@ -93,6 +95,7 @@
     "type": "technique",
     "title": "The General Conjecture",
     "content": "**Conjecture: lim f_k(n)/n² = lim F_k(n)/n² = 1/(k(k-1))**\n\nThis says the trivial upper bound is asymptotically tight for all k.\n\n**Verification for k=3:** 1/(3·2) = 1/6, which matches BGS.\n\nThe theorem `k3_conjecture_true` proves that the conjecture holds for k=3 by directly applying the k3_limit axiom. This is the only fully resolved case.\n\nFor k ≥ 4, the conjecture remains open.",
+    "mathContext": "$For k ≥ 4, the conjecture remains open.$",
     "significance": "key",
     "relatedConcepts": [
       "Open conjectures",
@@ -126,6 +129,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_669_summary:**\n\n```lean\ntheorem erdos_669_summary :\n    (Filter.Tendsto (fun n => (f_k 3 n : ℝ) / n^2) Filter.atTop (nhds (1/6))) ∧\n    (Filter.Tendsto (fun n => (F_k 3 n : ℝ) / n^2) Filter.atTop (nhds (1/6)))\n```\n\nThis theorem captures what is known:\n- f_3(n)/n² → 1/6 as n → ∞\n- F_3(n)/n² → 1/6 as n → ∞\n\nThe proof directly invokes k3_limit. For general k, the analogous statement remains conjectural.",
+    "mathContext": "Lean: `theorem erdos_669_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

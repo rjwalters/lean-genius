@@ -27,6 +27,7 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import **real analysis** modules for the exponential function Real.exp (giving us e ≈ 2.718) and logarithms. We also import **filter theory** for expressing limits like 'tends to infinity' (atTop) and **big operators** for summing over finite sets.",
+    "mathContext": "Formalizes the concept of mathlib imports",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
@@ -98,6 +99,7 @@
     "type": "concept",
     "title": "k(N) Achieves a Representation",
     "content": "This axiom states that k(N) is not just a theoretical minimum—there actually exists a sequence of k(N) distinct integers n₁ < n₂ < ... < nₖ, all at least N, whose reciprocals sum to exactly 1.",
+    "mathContext": "Lean: `axiom k_achieves (N : ℕ) (hN : N ≥ 1) :`",
     "significance": "supporting",
     "relatedConcepts": [
       "existence",
@@ -114,6 +116,7 @@
     "type": "concept",
     "title": "Minimality of k(N)",
     "content": "This axiom captures that k(N) is truly the *minimum*: any other representation of 1 using unit fractions with denominators ≥ N must use at least k(N) terms.",
+    "mathContext": "Lean: `axiom k_minimal (N : ℕ) (m : ℕ) (n : Fin m → ℕ)`",
     "significance": "supporting",
     "relatedConcepts": [
       "minimality",
@@ -167,6 +170,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_295_summary** combines the key known results: (1) the Erdős-Straus bounds showing -c < k(N) - (e-1)N < O(N/log N), and (2) the fact that e-1 > 0. The main conjecture (does the difference tend to ∞?) remains OPEN.",
+    "mathContext": "Lean: `theorem erdos_295_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "erdos_straus_bounds",
@@ -201,6 +205,7 @@
     "type": "technique",
     "title": "Alternative Example: N = 2",
     "content": "Another representation: **1 = 1/2 + 1/4 + 1/5 + 1/20**.\n\nThis uses 4 terms instead of 3, showing that Egyptian fraction representations are not unique. The k(N) function finds the *minimum* number of terms.",
+    "mathContext": "$Another representation: **1 = 1/2 + 1/4 + 1/5 + 1/20**.$",
     "significance": "supporting",
     "relatedConcepts": [
       "non-uniqueness",
@@ -217,6 +222,7 @@
     "type": "technique",
     "title": "Example: N = 3",
     "content": "For larger N, we need more terms: **1 = 1/3 + 1/4 + 1/5 + 1/6 + 1/20**.\n\nWith denominators restricted to ≥ 3, we can't use 1/2, so more smaller fractions are needed to reach 1.",
+    "mathContext": "$For larger N, we need more terms: **1 = 1/3 + 1/4 + 1/5 + 1/6 + 1/20**.$",
     "significance": "supporting",
     "relatedConcepts": [
       "constraint satisfaction",

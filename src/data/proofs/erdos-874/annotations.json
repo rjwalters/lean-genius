@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Sum Set S_r",
     "content": "**sumSet(A, r)** is the set of all sums of exactly r distinct elements from A. For example, if A = {1, 2, 3}, then S₁ = {1, 2, 3}, S₂ = {3, 4, 5}, S₃ = {6}. Note S₁ ∩ S₂ = {3}, so A = {1, 2, 3} is NOT admissible.",
+    "mathContext": "$S_r(A) = \\{ a_1 + \\cdots + a_r : a_1 < \\cdots < a_r \\in A \\}$. In Lean: `sumSet A r = \\{ s \\mid \\exists B \\subseteq A,\\; B.\\text{card} = r \\land s = \\sum_{b \\in B} b \\}`.",
     "significance": "key",
     "relatedConcepts": [
       "Subset sums",
@@ -43,6 +44,7 @@
     "type": "definition",
     "title": "Disjoint Sums Property",
     "content": "**hasDisjointSums(A)** requires S_r ∩ S_s = ∅ whenever r ≠ s. The key property: given a sum value, you can uniquely determine how many elements produced it. This makes admissible sets useful in coding theory and unique representation problems.",
+    "mathContext": "$\\forall\\, r \\neq s,\\; r,s \\ge 1 \\Rightarrow S_r(A) \\cap S_s(A) = \\varnothing$. In Lean: `hasDisjointSums A` requires `sumSet A r \\cap sumSet A s = \\emptyset` for all distinct $r, s \\ge 1$.",
     "significance": "key",
     "relatedConcepts": [
       "Disjointness",
@@ -59,6 +61,7 @@
     "type": "definition",
     "title": "Admissible Sets",
     "content": "**Admissible(A)** means A has the disjoint sums property. Straus (1966) introduced this terminology. These sets are 'allowed' for applications requiring unique sum decomposition.",
+    "mathContext": "`Admissible A` is defined as `hasDisjointSums A`, i.e., $S_r \\cap S_s = \\varnothing$ for all $r \\neq s$ with $r, s \\ge 1$.",
     "significance": "key",
     "relatedConcepts": [
       "Straus",
@@ -97,6 +100,7 @@
     "type": "definition",
     "title": "The Function k(N)",
     "content": "**k(N)** is the maximum size of an admissible subset of {1,...,N}. Defined as the supremum of |A| over all admissible A in the powerset of {0,...,N}. This is the central quantity of the problem.",
+    "mathContext": "$k(N) = \\max\\{ |A| : A \\subseteq \\{0, \\ldots, N\\},\\; A \\text{ admissible}\\}$. Defined via `Finset.sup` over the powerset of `Finset.range (N+1)` filtered by `BoundedAdmissible`.",
     "significance": "key",
     "relatedConcepts": [
       "Extremal function",
@@ -130,6 +134,7 @@
     "type": "concept",
     "title": "Straus Bounds (1966)",
     "content": "**straus_lower_bound:** liminf k(N)/√N ≥ 2 (from the interval construction).\n**straus_upper_bound:** limsup k(N)/√N ≤ 4/√3 ≈ 2.309.\n\nThe gap between 2 and 2.309 motivated further research. The constant 4/√3 arises from a counting argument bounding how many disjoint sum sets can fit in the available range.",
+    "mathContext": "Lower: $\\forall\\,\\varepsilon > 0,\\;\\exists\\,N_0,\\;\\forall\\,N \\ge N_0,\\; k(N) \\ge (2 - \\varepsilon)\\sqrt{N}$. Upper: $k(N) \\le \\bigl(\\tfrac{4}{\\sqrt{3}} + \\varepsilon\\bigr)\\sqrt{N}$. The constant $\\tfrac{4}{\\sqrt{3}} \\approx 2.309$.",
     "significance": "key",
     "relatedConcepts": [
       "Lower bound",
@@ -148,6 +153,7 @@
     "type": "concept",
     "title": "ENS Improvement (1991)",
     "content": "**ensConstant = √(143/27) ≈ 2.301.** Erdős-Nicolas-Sárközy (1991) improved Straus's upper bound from 4/√3 ≈ 2.309 to √(143/27) ≈ 2.301. The axiom **ens_improves_straus** confirms this is strictly better. This narrowed the gap toward the true limit of 2.",
+    "mathContext": "ENS constant $= \\sqrt{143/27} \\approx 2.301$. The axiom `ens_upper_bound` states $\\forall\\,\\varepsilon > 0,\\;\\exists\\,N_0,\\;\\forall\\,N \\ge N_0,\\; k(N) \\le (\\sqrt{143/27} + \\varepsilon)\\sqrt{N}$. Strictly better than Straus since $\\sqrt{143/27} < 4/\\sqrt{3}$.",
     "significance": "key",
     "relatedConcepts": [
       "Erdős-Nicolas-Sárközy"
@@ -180,6 +186,7 @@
     "type": "concept",
     "title": "The Limit is 2",
     "content": "**k_limit_is_two:** The topological limit statement: k(N)/√N → 2 as N → ∞ via Filter.Tendsto. This is equivalent to the ε-δ statement in deshouillers_freiman_main.",
+    "mathContext": "`Filter.Tendsto (fun N => (k N : \\mathbb{R}) / \\sqrt{N}) Filter.atTop (nhds\\; 2)` -- the ratio $k(N)/\\sqrt{N}$ converges to $2$ in the topological sense.",
     "significance": "key",
     "relatedConcepts": [
       "Limit",
@@ -196,6 +203,7 @@
     "type": "concept",
     "title": "Optimal Sets are Often Intervals",
     "content": "**optimal_often_interval:** For infinitely many N, the optimal admissible set has the form (N-k, N] ∩ ℕ. This justifies Straus's intuition that intervals are 'natural' admissible sets.",
+    "mathContext": "$\\exists^{\\infty}\\, N,\\;\\exists\\, A$ with $A$ optimal and $A = (N - m,\\, N] \\cap \\mathbb{N}$ for some $m$. Formalized with `Filter.Frequently` (`\\exists^\\infty`).",
     "significance": "key",
     "relatedConcepts": [
       "Interval optimality"
@@ -211,6 +219,7 @@
     "type": "concept",
     "title": "Examples",
     "content": "**N = 4:** A = {3, 4} is admissible with S₁ = {3, 4}, S₂ = {7} (disjoint). **N = 9:** We expect k(9) ≈ 2√9 = 6, and {4, 5, 6, 7, 8, 9} is an admissible candidate.",
+    "mathContext": "$N = 4$: $A = \\{3,4\\}$, $S_1 = \\{3,4\\}$, $S_2 = \\{7\\}$, disjoint. $N = 9$: $A = \\{4,5,6,7,8,9\\}$, expecting $k(9) \\approx 2\\sqrt{9} = 6$.",
     "significance": "supporting"
   },
   {
@@ -223,6 +232,7 @@
     "type": "concept",
     "title": "Sum Set Properties",
     "content": "**sumSet_card_bound:** |S_r| ≤ C(|A|, r) since each r-subset gives at most one sum. **total_sums_bounded:** For A ⊆ {1,...,N}, r-element sums lie in [r, r·N], bounding the range. These constraints explain why k(N) grows as √N: disjoint sum sets must fit in bounded range.",
+    "mathContext": "$|S_r(A)| \\le \\binom{|A|}{r}$ (each $r$-subset yields at most one sum). For $A \\subseteq \\{1,\\ldots,N\\}$, sums at level $r$ lie in $[r,\\, rN]$, giving $|S_r| \\le rN$. Disjointness forces $\\sum_r \\binom{|A|}{r} \\lesssim N \\cdot |A|$, which constrains $|A| = O(\\sqrt{N})$.",
     "significance": "key",
     "relatedConcepts": [
       "Cardinality bounds",
@@ -239,6 +249,7 @@
     "type": "technique",
     "title": "Main Result: erdos_874",
     "content": "**erdos_874:** k(N)/√N → 2 as N → ∞. This is the complete resolution of Problem #874, following directly from k_limit_is_two.",
+    "mathContext": "`erdos_874 : Filter.Tendsto (fun N => (k N : \\mathbb{R}) / \\sqrt{N}) Filter.atTop (nhds\\; 2)`, proved directly from `k_limit_is_two`.",
     "significance": "key",
     "relatedConcepts": [
       "Main theorem"
@@ -254,6 +265,7 @@
     "type": "technique",
     "title": "The Answer: Conjecture is TRUE",
     "content": "**erdos_874_answer:** For any ε > 0 and large enough N, (2-ε)√N ≤ k(N) ≤ (2+ε)√N. This is proved from the main theorem using abs_sub_lt_iff and the non-negativity of √N. The proof is constructive given the axiomatized main theorem.",
+    "mathContext": "$\\forall\\,\\varepsilon > 0,\\;\\exists\\,N_0,\\;\\forall\\,N \\ge N_0,\\; (2 - \\varepsilon)\\sqrt{N} \\le k(N) \\le (2 + \\varepsilon)\\sqrt{N}$. Derived from `deshouillers_freiman_main` using `abs_sub_lt_iff` and `sqrt_nonneg`.",
     "significance": "key",
     "relatedConcepts": [
       "Explicit bounds",

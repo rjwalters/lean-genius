@@ -64,6 +64,7 @@
     "type": "definition",
     "title": "Point Set",
     "content": "**PointSet := Finset Point**\n\nA finite set of points in the plane.\n\n```lean\nabbrev PointSet := Finset Point\n```\n\nUsing Finset ensures finiteness and gives access to cardinality |A| = A.card.",
+    "mathContext": "Lean: `abbrev PointSet := Finset Point`",
     "significance": "key",
     "relatedConcepts": [
       "finite sets",
@@ -135,6 +136,7 @@
     "type": "definition",
     "title": "Number of Rich Distances",
     "content": "**numRichDistances A:**\n\nCount of distances with multiplicity > |A|.\n\n```lean\nnoncomputable def numRichDistances (A : PointSet) : ℕ :=\n  ((allDistances A).filter (IsRichDistance A)).card\n```\n\nThe main question is: how large can numRichDistances be as a function of n = |A|?",
+    "mathContext": "Lean: `noncomputable def numRichDistances (A : PointSet) : ℕ :=`",
     "significance": "key",
     "relatedConcepts": [
       "counting rich distances",
@@ -187,6 +189,7 @@
     "type": "definition",
     "title": "Maximum Distance",
     "content": "**maxDistance A:**\n\nThe largest distance occurring in point set A.\n\n```lean\nnoncomputable def maxDistance (A : PointSet) : ℝ :=\n  (allDistances A).sup' (by sorry) id\n```\n\nThis is the diameter of the point set.\n\n**Geometric Meaning:** The maximum distance is achieved by points on the convex hull of A.",
+    "mathContext": "Lean: `noncomputable def maxDistance (A : PointSet) : ℝ :=`",
     "significance": "key",
     "relatedConcepts": [
       "diameter",
@@ -329,6 +332,7 @@
     "type": "technique",
     "title": "Upper Bounds",
     "content": "**multiplicity_trivial_upper:**\n\nTrivial bound: any distance has multiplicity ≤ n².\n\n```lean\ntheorem multiplicity_trivial_upper (A : PointSet) (d : ℝ) :\n    distanceMultiplicity A d ≤ A.card * A.card\n```\n\n**Proof:** The multiplicity counts pairs from A × A, which has n² elements.\n\n**rich_distances_trivial_upper:**\nNumber of rich distances ≤ number of distinct distances.",
+    "mathContext": "Lean: `theorem multiplicity_trivial_upper (A : PointSet) (d : ℝ) :`",
     "significance": "supporting",
     "relatedConcepts": [
       "trivial bounds",

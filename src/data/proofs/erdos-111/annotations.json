@@ -155,6 +155,7 @@
     "type": "concept",
     "title": "Linear Lower Bound",
     "content": "**h_at_least_linear:**\n\nFor graphs with χ(G) = ℵ₁, the edge deletion function h_G(n) grows at least linearly.\n\n**Axiom:**\n```lean\naxiom h_at_least_linear {V : Type*} (G : SimpleGraph V)\n    (hχ : hasAleph1ChromaticNumber G) :\n    ∀ c : ℕ, ∃ N : ℕ, ∀ n ≥ N, edgeDeletionFunction G n ≥ c * n\n```\n\nThis follows from the vertex-disjoint cycles: n/(2r+1) cycles means at least n/(2r+1) edges to delete.",
+    "mathContext": "Lean: `axiom h_at_least_linear {V : Type*} (G : SimpleGraph V)`",
     "significance": "key"
   },
   {

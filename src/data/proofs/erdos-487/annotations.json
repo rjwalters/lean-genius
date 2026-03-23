@@ -34,6 +34,7 @@
     "type": "definition",
     "title": "Density Definitions",
     "content": "**HasPositiveUpperDensity A:** lim sup |A ∩ [1,n]| / n > 0.\n\n**HasPositiveLowerDensity A:** lim inf |A ∩ [1,n]| / n > 0.\n\nPositive upper density is the relevant hypothesis: infinitely many n have |A ∩ [1,n]| ≥ δn.",
+    "mathContext": "$Positive upper density is the relevant hypothesis: infinitely many n have |A ∩ [1,n]| ≥ δn.$",
     "significance": "key",
     "relatedConcepts": [
       "Density",
@@ -57,6 +58,7 @@
     "type": "definition",
     "title": "LCM Triple",
     "content": "**IsLCMTriple a b c:** a ≠ b ∧ b ≠ c ∧ a ≠ c ∧ lcm(a,b) = c.\n\nThree distinct elements where the LCM of two equals the third. The distinctness requirement is essential - otherwise lcm(a,a) = a would be trivial.",
+    "mathContext": "Lean: `def IsLCMTriple (a b c : ℕ) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "LCM",
@@ -78,6 +80,7 @@
     "type": "definition",
     "title": "Divisibility Chain",
     "content": "**IsDivisibilityChain f:** f(i) < f(i+1) for all i, and f(i) | f(j) for i < j.\n\nAn infinite strictly increasing sequence where earlier terms divide later terms. Davenport-Erdős showed dense sets contain such chains.",
+    "mathContext": "Lean: `def IsDivisibilityChain (f : ℕ → ℕ) : Prop`",
     "significance": "supporting",
     "relatedConcepts": [
       "Divisibility",
@@ -193,6 +196,7 @@
     "type": "technique",
     "title": "Main Theorem",
     "content": "**lcm_triple_in_dense_set:**\n\nIf A ⊆ ℕ has positive upper density, then A contains distinct a, b, c with lcm(a,b) = c.\n\n**infinitely_many_lcm_triples:**\n\nIn fact, there are infinitely many such triples.\n\nThese are the main results resolving Erdős Problem #487.",
+    "mathContext": "$If A ⊆ ℕ has positive upper density, then A contains distinct a, b, c with lcm(a,b) = c.$",
     "significance": "key",
     "relatedConcepts": [
       "LCM",
@@ -216,6 +220,7 @@
     "type": "technique",
     "title": "Example: Multiples of 6",
     "content": "**multiples_of_6_example:** IsLCMTriple 12 18 36\n\nA = {6, 12, 18, 24, ...} has density 1/6.\n\nlcm(12, 18) = 36 ∈ A gives an explicit LCM triple.\n\nVerified computationally with native_decide.",
+    "mathContext": "$A = {6, 12, 18, 24, ...} has density 1/6.$",
     "significance": "supporting",
     "relatedConcepts": [
       "Examples",
@@ -260,6 +265,7 @@
     "type": "technique",
     "title": "Example: Even Numbers",
     "content": "**even_numbers_example:** IsLCMTriple 4 6 12\n\nA = {2, 4, 6, 8, ...} has density 1/2.\n\nlcm(4, 6) = 12 ∈ A gives an explicit LCM triple.\n\nThe even numbers have many LCM triples due to their density.",
+    "mathContext": "$A = {2, 4, 6, 8, ...} has density 1/2.$",
     "significance": "supporting",
     "relatedConcepts": [
       "Examples",
@@ -304,6 +310,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_487_summary:**\n\nCombines both main results:\n\n1. Dense sets contain LCM triples (main result)\n2. Kleitman's bound on union-free collections (the tool)\n\n**Conclusion:** Erdős Problem #487 is SOLVED affirmatively.",
+    "mathContext": "Lean: `theorem erdos_487_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

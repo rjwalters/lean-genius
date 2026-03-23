@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Hilbert's 13th Problem",
     "content": "**Hilbert's 13th Problem (1900)**:\n\n> Can the general degree-7 equation be solved using functions of only 2 variables?\n\n**Hilbert's Conjecture**: NO — some functions genuinely need 3 variables.\n\n**SURPRISE! Kolmogorov-Arnold (1956-57)**: Not only CAN it, but ANY continuous function of n variables can be represented using functions of only **ONE** variable!\n\nHilbert's conjecture was completely wrong for continuous functions.",
+    "mathContext": "Formalizes the concept of hilbert's 13th problem",
     "significance": "key",
     "relatedConcepts": [
       "superposition",
@@ -62,6 +63,7 @@
     "type": "concept",
     "title": "The Septic Connection",
     "content": "**Original Motivation**: Solving polynomial equations.\n\n**Bring-Jerrard Form** for degree 7:\n$$x^7 + ax^3 + bx^2 + cx + 1 = 0$$\n\nA general degree-7 equation can be reduced to this 3-parameter form.\n\nHilbert asked: Can roots be expressed with functions of ≤2 variables?\n\n**By Abel-Ruffini**: No radical formula exists. But continuous solutions? Yes!",
+    "mathContext": "$x^7 + ax^3 + bx^2 + cx + 1 = 0$",
     "significance": "key",
     "relatedConcepts": [
       "Bring-Jerrard",
@@ -115,6 +117,7 @@
     "type": "concept",
     "title": "Neural Network Connection",
     "content": "**Modern Applications**:\n\n1. **Neural Networks**: The theorem explains why 3-layer networks are universal approximators\n\n2. **KANs (2024)**: \"Kolmogorov-Arnold Networks\" — a new architecture inspired by the theorem\n\n3. **Dimension Reduction**: n-dimensional data can be \"encoded\" using only univariate functions\n\n**Caveat**: The outer functions Φ_q may be highly irregular (possibly nowhere differentiable).",
+    "mathContext": "Lean: `def neuralNetworkConnection : Prop`",
     "significance": "supporting",
     "relatedConcepts": [
       "neural networks",
@@ -132,6 +135,7 @@
     "type": "concept",
     "title": "Historical Timeline",
     "content": "**Timeline**:\n- **1900**: Hilbert poses problem at ICM Paris\n- **1954**: Vitushkin studies smooth superpositions\n- **1956**: Kolmogorov disproves conjecture for continuous!\n- **1957**: Arnold proves universality of inner functions\n- **1964-77**: Vitushkin completes smooth theory\n- **2024**: Kolmogorov-Arnold Networks in ML\n\nA 56-year journey from problem to surprising resolution!",
+    "mathContext": "Lean: `def historicalTimeline : List (ℕ × String)`",
     "significance": "supporting",
     "relatedConcepts": [
       "ICM 1900",
@@ -149,6 +153,7 @@
     "type": "concept",
     "title": "Problem Status",
     "content": "**Hilbert 13: SOLVED (with a twist!)**\n\n**For Continuous Functions**:\n- Hilbert WRONG — everything reduces to 1 variable\n- Kolmogorov-Arnold (1956-57)\n\n**For Smooth Functions**:\n- Hilbert RIGHT — some functions need 3+ variables\n- Vitushkin (1954-77)\n\n**Open**: Full classification for algebraic functions, optimal smoothness bounds.",
+    "mathContext": "Lean: `theorem hilbert13_summary : (1 : ℕ) + 1 = 2`",
     "significance": "supporting",
     "relatedConcepts": [
       "solved problems",

@@ -27,6 +27,7 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import **natural number basics** for divisibility, **real numbers** for asymptotic statements involving ratios like f(n)/n, and **Finset.Card** for counting elements in finite sets (needed for density statements).",
+    "mathContext": "Formalizes the concept of mathlib imports",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
@@ -134,6 +135,7 @@
     "type": "technique",
     "title": "f(2) = 0 and f(5) = 0",
     "content": "These theorems follow immediately from:\n1. The axioms `not_representable_2` and `not_representable_5`\n2. The axiom `f_undefined` that says f(n) = 0 when n is not representable\n\nThe proofs are one-liners applying the f_undefined axiom.",
+    "mathContext": "$2. The axiom `f_undefined` that says f(n) = 0 when n is not representable$",
     "significance": "supporting",
     "relatedConcepts": [
       "modus ponens",
@@ -150,6 +152,7 @@
     "type": "technique",
     "title": "Concrete Examples",
     "content": "We record specific values of f(n) as axioms:\n\n| n | f(n) | Explanation |\n|---|------|-------------|\n| 1 | 1 | divisors of 1 = {1}, sum = 1 |\n| 3 | 2 | divisors of 2 = {1,2}, 1+2 = 3 |\n| 4 | 3 | divisors of 3 = {1,3}, 1+3 = 4 |\n| 6 | 6 | divisors of 6 = {1,2,3,6}, 1+2+3 = 6 |\n\nThese examples illustrate how f(n) can sometimes be much smaller than n (f(3) = 2) and sometimes equal to n (f(6) = 6).",
+    "mathContext": "$| 1 | 1 | divisors of 1 = {1}, sum = 1 |$",
     "significance": "supporting",
     "relatedConcepts": [
       "concrete instances",
@@ -202,6 +205,7 @@
     "type": "definition",
     "title": "Open Question III: limsup = ∞?",
     "content": "**erdos_1054_part_iii** asks: Is limsup f(n)/n = ∞?\n\nThis means: for any constant C, there exist arbitrarily large n with f(n) ≥ Cn.\n\n**STATUS: OPEN** — Related to Part II; if true, it implies Part I fails (which we know) and gives information about the 'worst case' behavior.",
+    "mathContext": "$This means: for any constant C, there exist arbitrarily large n with f(n) ≥ Cn.$",
     "significance": "key",
     "relatedConcepts": [
       "limsup",
@@ -255,6 +259,7 @@
     "type": "concept",
     "title": "Divisor Sum Table",
     "content": "The documentation includes a table of partial sums for small m:\n\n| m | divisors | partial sums |\n|---|----------|-------------|\n| 1 | [1] | 1 |\n| 2 | [1,2] | 1, 3 |\n| 3 | [1,3] | 1, 4 |\n| 4 | [1,2,4] | 1, 3, 7 |\n| 5 | [1,5] | 1, 6 |\n| 6 | [1,2,3,6] | 1, 3, 6, 12 |\n\nNotice 2 and 5 never appear in the 'partial sums' column!",
+    "mathContext": "Lean: `theorem sortedDivisors_cons (m : ℕ) (hm : m ≥ 1) :`",
     "significance": "supporting",
     "relatedConcepts": [
       "tabulation",

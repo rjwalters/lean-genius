@@ -46,6 +46,7 @@
     "type": "definition",
     "title": "r-Powerful Numbers",
     "content": "**IsRPowerful:**\n\nGeneralization: n is r-powerful if p|n implies p^r|n.\n\n**Definition:**\n```lean\ndef IsRPowerful (r : ℕ) (n : ℕ) : Prop :=\n  n ≥ 1 ∧ ∀ p : ℕ, p.Prime → p ∣ n → p^r ∣ n\n```\n\n- 2-powerful = powerful (squarefull)\n- 3-powerful = cubefull\n- r-powerful numbers become sparser as r increases",
+    "mathContext": "Lean: `def IsRPowerful (r : ℕ) (n : ℕ) : Prop :=`",
     "significance": "key",
     "relatedConcepts": [
       "Powerful numbers",
@@ -63,6 +64,7 @@
     "type": "technique",
     "title": "Verified Examples",
     "content": "**Concrete powerful number examples:**\n\n- **one_is_powerful:** 1 is powerful (vacuously, no prime divisors)\n- **four_is_powerful:** 4 = 2² is powerful\n- **eight_is_powerful:** 8 = 2³ is powerful\n- **nine_is_powerful:** 9 = 3² is powerful\n- **seventytwo_is_powerful:** 72 = 2³ · 3² is powerful\n\n**Key theorem:**\n```lean\ntheorem square_is_powerful (n : ℕ) (hn : n ≥ 1) : IsPowerful (n^2)\n```\n\nEvery perfect square is powerful.",
+    "mathContext": "Lean: `theorem square_is_powerful (n : ℕ) (hn : n ≥ 1) : IsPowerful (n^2)`",
     "significance": "key"
   },
   {
@@ -75,6 +77,7 @@
     "type": "definition",
     "title": "Arithmetic Progressions",
     "content": "**Arithmetic Progression Definitions:**\n\n**IsFourTermAP:** Four numbers a, b, c, d form an AP if b - a = c - b = d - c.\n```lean\ndef IsFourTermAP (a b c d : ℕ) : Prop :=\n  b > a ∧ c > b ∧ d > c ∧\n  (b : ℤ) - a = (c : ℤ) - b ∧ (c : ℤ) - b = (d : ℤ) - c\n```\n\n**IsThreeTermAP:** Three numbers a, b, c form an AP if b - a = c - b (i.e., 2b = a + c).\n\nThe problem asks about 4-term APs, which are harder than 3-term.",
+    "mathContext": "Lean: `def IsFourTermAP (a b c d : ℕ) : Prop :=`",
     "significance": "key",
     "relatedConcepts": [
       "Arithmetic sequences",
@@ -109,6 +112,7 @@
     "type": "definition",
     "title": "Main Theorem Sets",
     "content": "**coprimePowerfulFourTermAPs:**\n\nThe set of 4-tuples (a,b,c,d) where:\n1. All four are powerful\n2. They form an arithmetic progression\n3. They are pairwise coprime\n\n```lean\ndef coprimePowerfulFourTermAPs : Set (ℕ × ℕ × ℕ × ℕ) :=\n  {t | IsPowerful t.1 ∧ IsPowerful t.2.1 ∧ IsPowerful t.2.2.1 ∧ \n       IsPowerful t.2.2.2 ∧ CoprimeFourTermAP t.1 t.2.1 t.2.2.1 t.2.2.2}\n```\n\nThe main theorem shows this set is infinite.",
+    "mathContext": "Lean: `def coprimePowerfulFourTermAPs : Set (ℕ × ℕ × ℕ × ℕ) :=`",
     "significance": "key"
   },
   {
@@ -187,6 +191,7 @@
     "type": "technique",
     "title": "Main Result: Erdős #937 Solved",
     "content": "**erdos_937:**\n\n```lean\ntheorem erdos_937 : coprimePowerfulFourTermAPs.Infinite :=\n  bajpai_bennett_chan_four_term\n```\n\n**Answer: YES**\n\nThere are infinitely many four-term arithmetic progressions of pairwise coprime powerful numbers.\n\nProved by Bajpai, Bennett, and Chan in 2024.",
+    "mathContext": "Lean: `theorem erdos_937 : coprimePowerfulFourTermAPs.Infinite :=`",
     "significance": "key"
   },
   {
@@ -199,6 +204,7 @@
     "type": "technique",
     "title": "Contrast with Fermat",
     "content": "**squares_vs_powerful:**\n\n```lean\ntheorem squares_vs_powerful :\n    (¬∃ (a b c d : ℕ), a < b ∧ b < c ∧ c < d ∧\n      IsFourTermAP (a^2) (b^2) (c^2) (d^2)) ∧\n    coprimePowerfulFourTermAPs.Infinite\n```\n\n**Contrast:**\n- **Squares:** No four in AP (Fermat)\n- **Powerful numbers:** Infinitely many coprime 4-term APs\n\nPowerful numbers are richer than perfect squares.",
+    "mathContext": "Lean: `theorem squares_vs_powerful :`",
     "significance": "key",
     "relatedConcepts": [
       "Fermat's theorems",

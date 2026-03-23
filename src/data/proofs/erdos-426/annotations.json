@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Subgraph Copy",
     "content": "**SubgraphCopy G H f:**\n\nf : W → V is a subgraph copy of H in G if:\n1. f is injective\n2. f preserves edges: H.Adj x y → G.Adj (f x) (f y)\n\nThis defines how H 'appears' in G.",
+    "mathContext": "$f : W → V is a subgraph copy of H in G if:$",
     "significance": "key",
     "relatedConcepts": [
       "Graph embedding",
@@ -43,6 +44,7 @@
     "type": "definition",
     "title": "Count Subgraph Copies",
     "content": "**CountSubgraphCopies G H:**\n\nThe number of distinct ways to embed H as a subgraph of G.\n\nThis counts all injective edge-preserving maps from H to G.",
+    "mathContext": "Formalizes the concept of count subgraph copies",
     "significance": "key",
     "relatedConcepts": [
       "Subgraph enumeration",
@@ -93,6 +95,7 @@
     "type": "definition",
     "title": "Maximum Unique Subgraphs",
     "content": "**maxUniqueSubgraphs n:**\n\nf(n) = maximum number of unique subgraphs achievable by any graph on n vertices.\n\nThe question asks: Is f(n) = Ω(nonIsomorphicGraphs n)?",
+    "mathContext": "$f(n) = maximum number of unique subgraphs achievable by any graph on n vertices.$",
     "significance": "key",
     "relatedConcepts": [
       "Extremal functions",
@@ -109,6 +112,7 @@
     "type": "concept",
     "title": "Entringer-Erdős (1972)",
     "content": "**entringer_erdos_1972:**\n\nFirst construction achieving 2^{(n choose 2) - O(n^{3/2+o(1)})} unique subgraphs.\n\nThis was the starting point for the problem.",
+    "mathContext": "Formalizes the concept of entringer-erdős (1972)",
     "significance": "key",
     "relatedConcepts": [
       "Original construction",
@@ -142,6 +146,7 @@
     "type": "definition",
     "title": "Original Question",
     "content": "**OriginalQuestion:**\n\n∃ c > 0 such that f(n) ≥ c · 2^(n choose 2)/n! for all large n.\n\nEquivalently: Can we achieve a constant fraction of all non-isomorphic graphs as unique subgraphs?",
+    "mathContext": "$∃ c > 0 such that f(n) ≥ c · 2^(n choose 2)/n! for all large n.$",
     "significance": "key",
     "relatedConcepts": [
       "Main conjecture",
@@ -192,6 +197,7 @@
     "type": "concept",
     "title": "Quantitative Bound",
     "content": "**bradac_christoph_quantitative:**\n\nThe o(1) factor is explicitly O(log log log n / log log n).\n\nThis is a very slowly decreasing function, showing uniqueness decays gradually.",
+    "mathContext": "Lean: `axiom bradac_christoph_quantitative :`",
     "significance": "key",
     "relatedConcepts": [
       "Explicit bounds",
@@ -208,6 +214,7 @@
     "type": "technique",
     "title": "Problem Resolved",
     "content": "**original_question_false, erdos_426_resolved:**\n\n¬OriginalQuestion\n\nThe answer to Erdős's question is NO. Unique subgraphs are rare - they cannot approach the total count of non-isomorphic graphs.",
+    "mathContext": "Lean: `axiom original_question_false : ¬OriginalQuestion`",
     "significance": "key",
     "relatedConcepts": [
       "Resolution",
@@ -224,6 +231,7 @@
     "type": "concept",
     "title": "Why Unique Subgraphs Are Rare",
     "content": "**Key Insights:**\n\n1. **Automorphisms:** Graphs with symmetries create multiple embeddings\n2. **Structural regularity:** Repeated patterns prevent uniqueness\n3. **The gap:** Brouwer loses 2^{O(n)} from the naive bound\n4. **Unavoidable:** Even the naive bound is unreachable\n\nUniqueness requires that every embedding produces a distinct 'fingerprint'.",
+    "mathContext": "Formalizes the concept of why unique subgraphs are rare",
     "significance": "key",
     "relatedConcepts": [
       "Graph symmetry",
@@ -240,6 +248,7 @@
     "type": "definition",
     "title": "Automorphisms and Asymmetry",
     "content": "**HasAutomorphism, IsAsymmetric:**\n\nAn automorphism is a bijection σ : V → V preserving adjacency.\n\nA graph is asymmetric if its only automorphism is the identity.\n\n**Key fact:** Almost all graphs are asymmetric (Erdős-Rényi), yet unique subgraphs are still rare - the obstacle is deeper than just symmetry.",
+    "mathContext": "$An automorphism is a bijection σ : V → V preserving adjacency.$",
     "significance": "key",
     "relatedConcepts": [
       "Graph automorphisms",
@@ -256,6 +265,7 @@
     "type": "technique",
     "title": "Problem Summary",
     "content": "**erdos_426_summary:**\n\n| Aspect | Result |\n|--------|--------|\n| Question | Can f(n) = Ω(2^(n choose 2)/n!)? |\n| Answer | NO (Bradač-Christoph 2024) |\n| Upper bound | f(n) = o(2^(n choose 2)/n!) |\n| Best construction | 2^{(n choose 2) - O(n)}/n! (Brouwer) |\n| Prize | $25 for impossibility proof |",
+    "mathContext": "$| Question | Can f(n) = Ω(2^(n choose 2)/n!)? |$",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

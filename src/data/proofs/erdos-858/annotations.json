@@ -28,6 +28,7 @@
     "type": "definition",
     "title": "Smallest Prime Factor",
     "content": "**smallestPrimeFactor:**\n\nThe smallest prime factor of n > 1, or 0 if n ≤ 1.\n\n```lean\nnoncomputable def smallestPrimeFactor (n : ℕ) : ℕ :=\n  if h : n > 1 then n.minFac else 0\n```\n\nThis uses Mathlib's `minFac` function which computes the smallest prime divisor.",
+    "mathContext": "Lean: `noncomputable def smallestPrimeFactor (n : ℕ) : ℕ :=`",
     "significance": "key"
   },
   {
@@ -53,6 +54,7 @@
     "type": "definition",
     "title": "Primitive Sets",
     "content": "**IsPrimitive:**\n\nA set A is primitive if no element divides another (except itself).\n\n```lean\ndef IsPrimitive (A : Finset ℕ) : Prop :=\n  ∀ a b : ℕ, a ∈ A → b ∈ A → a ∣ b → a = b\n```\n\nPrimitive sets automatically satisfy the multiplicative condition.",
+    "mathContext": "Lean: `def IsPrimitive (A : Finset ℕ) : Prop :=`",
     "significance": "key"
   },
   {
@@ -65,6 +67,7 @@
     "type": "technique",
     "title": "Primitive Implies Condition",
     "content": "**primitive_satisfies_condition:**\n\nEvery primitive set satisfies the multiplicative condition.\n\n```lean\ntheorem primitive_satisfies_condition (A : Finset ℕ) (hA : IsPrimitive A) :\n    SatisfiesCondition A\n```\n\n**Proof idea:** If a | b in a primitive set, then a = b, so t = 1 (contradiction with t > 1).",
+    "mathContext": "Lean: `theorem primitive_satisfies_condition (A : Finset ℕ) (hA : IsPrimitive A) :`",
     "significance": "key"
   },
   {
@@ -77,6 +80,7 @@
     "type": "definition",
     "title": "Reciprocal Sum",
     "content": "**reciprocalSum:**\n\nThe sum Σ_{n ∈ A} 1/n.\n\n```lean\nnoncomputable def reciprocalSum (A : Finset ℕ) : ℝ :=\n  ∑ n ∈ A.filter (· > 0), (1 : ℝ) / n\n```\n\nWe filter out 0 to avoid division issues.",
+    "mathContext": "Lean: `noncomputable def reciprocalSum (A : Finset ℕ) : ℝ :=`",
     "significance": "key"
   },
   {
@@ -153,6 +157,7 @@
     "type": "definition",
     "title": "Example Construction",
     "content": "**exampleSet:**\n\nIntegers in [√N, N] divisible by some prime > √N.\n\n```lean\ndef exampleSet (N : ℕ) : Finset ℕ :=\n  (range (N + 1)).filter (fun n =>\n    n ≥ Nat.sqrt N ∧ ∃ p : ℕ, p.Prime ∧ p > Nat.sqrt N ∧ p ∣ n)\n```\n\nThis set satisfies the condition and achieves a relatively large weighted sum, showing the o(1) bound cannot be significantly improved.",
+    "mathContext": "Lean: `def exampleSet (N : ℕ) : Finset ℕ :=`",
     "significance": "supporting"
   },
   {
@@ -165,6 +170,7 @@
     "type": "technique",
     "title": "Erdős Problem #858: SOLVED",
     "content": "**erdos_858_solution:**\n\nThe maximum of (1/log N) Σ 1/n over sets satisfying the condition is o(1).\n\n```lean\ntheorem erdos_858_solution :\n    ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,\n    ∀ A : Finset ℕ, InRange A N → SatisfiesCondition A →\n    weightedSum A N < ε :=\n  alexander_1966\n```\n\nThe solution follows directly from Alexander's result.",
+    "mathContext": "Lean: `theorem erdos_858_solution :`",
     "significance": "key"
   },
   {
@@ -193,6 +199,7 @@
     "type": "technique",
     "title": "Summary",
     "content": "**erdos_858_summary:**\n\nCombines the main results.\n\n```lean\ntheorem erdos_858_summary :\n    (∀ A, IsPrimitive A → SatisfiesCondition A) ∧\n    (∀ ε > 0, ∃ N₀, ∀ N ≥ N₀, ∀ A, InRange A N → SatisfiesCondition A →\n     weightedSum A N < ε)\n```\n\n**Key Results:**\n1. Primitive ⟹ Condition\n2. Maximum weighted sum is o(1)\n3. Behrend: O(1/√(log log N)) for primitive sets\n\n**Status:** SOLVED",
+    "mathContext": "Lean: `theorem erdos_858_summary :`",
     "significance": "key"
   }
 ]

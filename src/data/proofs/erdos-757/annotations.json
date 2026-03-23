@@ -45,6 +45,7 @@
     "type": "definition",
     "title": "Almost-Sidon Property",
     "content": "**AlmostSidon A** means: every 4-element subset B ⊆ A has |B - B| ≥ 11.\n\nSince a 4-element Sidon set has |B - B| = 13 (0 plus 12 distinct ±differences), requiring ≥ 11 allows at most one collision among differences.\n\nThis is a 'local' condition—each 4-element subset is nearly Sidon.",
+    "mathContext": "Lean: `def AlmostSidon (A : Set ℝ) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "difference set cardinality",
@@ -78,6 +79,7 @@
     "type": "concept",
     "title": "Main Conjecture (OPEN)",
     "content": "**Erdős Problem #757**: Find the exact value of sSup {c | IsAdmissible c}.\n\nThe conjecture asserts this supremum exists in the interval (1/2, 3/5). The exact value is OPEN despite 30+ years of study.\n\nNote: This is stated as an axiom because the problem remains unsolved—we assume the answer exists without proving it.",
+    "mathContext": "Lean: `axiom erdos_757_conjecture :`",
     "significance": "key",
     "relatedConcepts": [
       "open problem",
@@ -130,6 +132,7 @@
     "type": "concept",
     "title": "Difference Set Cardinality",
     "content": "**sidon_difference_count**: A Sidon set of size n has |S - S| = n(n-1)/2 + n + 1.\n\n**sidon_4_difference_count**: For n = 4, a Sidon set has |S - S| = 13.\n\nA 4-element set has C(4,2) = 6 pairs. Each gives a distinct positive difference (and its negative), plus 0. So 12 non-zero values plus 0 = 13 total.",
+    "mathContext": "Lean: `axiom sidon_difference_count :`",
     "significance": "key",
     "relatedConcepts": [
       "difference set structure",
@@ -146,6 +149,7 @@
     "type": "technique",
     "title": "Basic Sidon Properties",
     "content": "**sidon_subset**: Any subset of a Sidon set is Sidon.\n\n**sidon_empty**: The empty set is Sidon (vacuously true).\n\n**sidon_singleton**: Singletons {x} are Sidon (only x + x = 2x possible).\n\n**sidon_pair**: Pairs {x, y} with x ≠ y are Sidon.\n\nThese provide base cases for inductive arguments.",
+    "mathContext": "Lean: `axiom sidon_subset :`",
     "significance": "supporting",
     "relatedConcepts": [
       "closure properties",
@@ -162,6 +166,7 @@
     "type": "technique",
     "title": "Difference Set Properties",
     "content": "**zero_mem_differenceSet**: For nonempty A, 0 ∈ A - A (since a - a = 0).\n\n**differenceSet_symmetric**: x ∈ A - A ↔ -x ∈ A - A (since a - b = x implies b - a = -x).\n\nThese structural properties hold for any set, not just Sidon sets.",
+    "mathContext": "Lean: `theorem zero_mem_differenceSet (A : Set ℝ) (hA : A.Nonempty) :`",
     "significance": "supporting",
     "relatedConcepts": [
       "symmetry",
@@ -195,6 +200,7 @@
     "type": "technique",
     "title": "Properties of Admissible Constants",
     "content": "**zero_admissible**: c = 0 is admissible (empty set is Sidon, |∅| ≥ 0 · n).\n\n**neg_admissible**: c < 0 is admissible (0 ≥ c · n for c < 0, n ≥ 0).\n\n**admissible_bounded_above**: The set of admissible constants is bounded above (by 1, since |S| ≤ |A|).\n\n**admissible_nonempty**: The set is nonempty (contains 0).\n\nThese ensure sSup exists by completeness of ℝ.",
+    "mathContext": "Lean: `theorem zero_admissible : IsAdmissible 0`",
     "significance": "supporting",
     "relatedConcepts": [
       "well-definedness",

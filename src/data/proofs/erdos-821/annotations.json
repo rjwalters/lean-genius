@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Totient and Preimage Count",
     "content": "phi: Euler's totient φ(n), defined as Nat.totient. g(n): a partial preimage count using Finset.filter (lower bound). preimageCount(n) = Nat.card {m : φ(m) = n}: the full preimage count. preimageCount_finite (axiom): g(n) < n² for all n, ensuring the count is bounded.",
+    "mathContext": "Lean: `def phi : ℕ → ℕ`",
     "significance": "key",
     "relatedConcepts": [
       "Nat.totient",
@@ -98,6 +99,7 @@
     "type": "concept",
     "title": "Upper Bounds and Examples",
     "content": "preimageCount_upper_bound (axiom): g(n) ≤ C · n^{1.01} for all n ≥ 2. average_preimageCount (axiom): the average of g(n) over [1,N] is O(log N). preimage_of_1 (theorem): φ(1) = φ(2) = 1, so g(1) ≥ 2. The upper bound shows the conjecture asks for near-maximal behavior.",
+    "mathContext": "Lean: `axiom preimageCount_upper_bound :`",
     "significance": "supporting",
     "relatedConcepts": [
       "Upper bound",
@@ -115,6 +117,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "erdos_821 combines three partial results: (1) Lichtman's best known bound g(n) > n^{0.71568} infinitely often, (2) Erdős's 1935 power-law growth for some c > 0, and (3) the reduction showing the smooth primes condition implies the full conjecture. Proved by exact ⟨lichtman_theorem, erdos_1935, smooth_implies_conjecture⟩.",
+    "mathContext": "Lean: `theorem erdos_821 :`",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

@@ -46,6 +46,7 @@
     "type": "definition",
     "title": "Chromatic Number and Girth",
     "content": "**chromaticNumber'(G):** The minimum number of colors for a proper coloring of G. Axiomatized since computing χ requires combinatorial optimization.\n\n**girth'(G):** Length of the shortest cycle. Convention: 0 for acyclic graphs (infinite girth).\n\n**hasGirthAtLeast(G, k):** g(G) ≥ k or G is acyclic. This captures 'no short cycles' including the forest case.",
+    "mathContext": "Lean: `axiom chromaticNumber' {V : Type*} [Fintype V] (G : SimpleGraph V) : ℕ`",
     "significance": "key",
     "relatedConcepts": [
       "graph coloring",
@@ -81,6 +82,7 @@
     "type": "concept",
     "title": "The Erdős Conjecture",
     "content": "**erdos_705_conjecture:** ∃ k, ∀ finite V ⊆ ℝ², girth(UDG(V)) ≥ k → χ(UDG(V)) ≤ 3.\n\nThis asks for a universal girth threshold k that forces 3-colorability for ALL finite unit distance graphs.\n\n**erdos_705_negation:** The opposite — for every k, some 4-chromatic UDG with girth ≥ k exists. This would mean geometry alone cannot prevent high-girth 4-chromatic UDGs.\n\nSince Wormald's construction has girth 5 and χ = 4, any such k must be ≥ 6.",
+    "mathContext": "$Since Wormald's construction has girth 5 and χ = 4, any such k must be ≥ 6.$",
     "significance": "key",
     "relatedConcepts": [
       "universal threshold",
@@ -98,6 +100,7 @@
     "type": "technique",
     "title": "Consequences of Known Constructions",
     "content": "Three theorems derived from the construction axioms:\n\n**girth_3_chi_4:** 4-chromatic UDGs exist (from Moser spindle).\n**girth_4_chi_4:** 4-chromatic UDGs with girth ≥ 4 exist (from O'Donnell).\n**girth_5_chi_4:** 4-chromatic UDGs with girth ≥ 5 exist (from Wormald).\n\nEach proof extracts the relevant properties from the axioms. Together, they show the conjecture's threshold k must be at least 6.",
+    "mathContext": "Lean: `theorem girth_3_chi_4 :`",
     "significance": "key",
     "relatedConcepts": [
       "lower bound on k",
@@ -150,6 +153,7 @@
     "type": "concept",
     "title": "Vertex Count Growth",
     "content": "**vertexCountGrowth:** The sizes of known 4-chromatic UDGs by girth:\n- Girth 3: 7 vertices\n- Girth 4: 47 vertices\n- Girth 5: 6448 vertices\n- Girth 6: Unknown!\n\nThe growth is roughly exponential: each step up in girth requires ~100× more vertices. This suggests a natural barrier: constructing girth-6 examples might require millions of carefully placed points, or may be outright impossible.",
+    "mathContext": "Lean: `def vertexCountGrowth : List (ℕ × ℕ)`",
     "significance": "key",
     "relatedConcepts": [
       "exponential growth",

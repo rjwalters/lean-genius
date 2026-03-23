@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Descartes' Rule of Signs: Wiedijk #100",
     "content": "**Descartes' Rule of Signs (1637)**:\n\nFor polynomial $p(x) = a_n x^n + a_{n-1} x^{n-1} + \\cdots + a_0$:\n\n1. Count **sign changes** in $(a_n, a_{n-1}, \\ldots, a_0)$, ignoring zeros\n2. Number of **positive real roots** $\\leq$ this count\n3. The difference is **even**\n\nFor **negative roots**: Apply the rule to $p(-x)$.\n\n**Historical**: Published in *La Géométrie* (1637), appendix to *Discours de la méthode*. One of the first systematic methods for determining root properties without solving.\n\n**Applications**: Root isolation algorithms, existence tests, computational algebra.",
+    "mathContext": "$p(x) = a_n x^n + a_{n-1} x^{n-1} + \\cdots + a_0$",
     "significance": "key",
     "relatedConcepts": [
       "polynomial roots",
@@ -152,6 +153,7 @@
     "type": "context",
     "title": "Applications and Significance",
     "content": "**Why Descartes' Rule Matters**:\n\n1. **Root Bounds**: Upper bound on positive/negative roots without solving\n\n2. **Existence Tests**:\n   - Sign changes = 1 → exactly 1 positive root\n   - Sign changes = 0 → no positive roots\n\n3. **Historical**: Predates Fundamental Theorem of Algebra; early general root result\n\n4. **Algorithms**: Foundation for:\n   - Sturm's theorem (exact root counting)\n   - Vincent's theorem (root isolation)\n   - Real root computation\n\n5. **Education**: Beautiful connection between algebraic (coefficients) and analytic (roots) properties",
+    "mathContext": "Lean: `theorem alternating_signs_max_roots (p : ℝ[X]) (hp : p ≠ 0)`",
     "significance": "supporting",
     "relatedConcepts": [
       "Sturm's theorem",

@@ -27,6 +27,7 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import **ordinal arithmetic** from Mathlib's set theory library. This gives us the ordinal ω and ordinal exponentiation ω^α.",
+    "mathContext": "Formalizes the concept of mathlib imports",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
@@ -116,6 +117,7 @@
     "type": "concept",
     "title": "Chang's Theorem (ω^ω works)",
     "content": "**Chang** proved that ω^ω → (ω^ω, 3)² holds! Despite ω³, ω⁴, ... all failing, the limit ordinal ω^ω restores the Ramsey property.\n\nThis is Erdős Problem #590 and suggests a pattern: perhaps limit ordinal exponents restore the property that successor exponents destroy.",
+    "mathContext": "Lean: `axiom chang_omega_omega :`",
     "significance": "key",
     "relatedConcepts": [
       "Chang",
@@ -133,6 +135,7 @@
     "type": "concept",
     "title": "The Solved Problem Context",
     "content": "The known results now complete the pattern:\n- ω² works (Specker)\n- ω³, ω⁴, ..., ω^n fail for n ≥ 3 (Specker)\n- ω^ω works (Chang)\n- ω^(ω²) works (Schipperus 2010, Darby)\n\nThe pattern is confirmed: limit ordinal exponents restore the Ramsey property!",
+    "mathContext": "Formalizes the concept of the solved problem context",
     "significance": "key",
     "relatedConcepts": [
       "pattern confirmed",
@@ -168,6 +171,7 @@
     "type": "technique",
     "title": "ω² = ω · ω",
     "content": "We verify that ω² equals ω · ω using Mathlib's `pow_two` lemma. This is the ordinal that Specker showed has the Ramsey property.\n\nIntuitively, ω² is the order type of pairs (a, b) of natural numbers ordered lexicographically.",
+    "mathContext": "Lean: `theorem omega_squared_eq_mul : ω ^ 2 = ω * ω`",
     "significance": "supporting",
     "relatedConcepts": [
       "ordinal arithmetic",
@@ -184,6 +188,7 @@
     "type": "technique",
     "title": "ω³ = ω · ω · ω",
     "content": "We verify ω³ = ω · ω · ω. This is the **smallest ordinal** where Specker's negative result applies - the Ramsey property fails starting here.",
+    "mathContext": "Lean: `theorem omega_cubed_eq : ω ^ 3 = ω * ω * ω`",
     "significance": "supporting",
     "relatedConcepts": [
       "ordinal arithmetic",
@@ -200,6 +205,7 @@
     "type": "technique",
     "title": "ω^ω is Positive",
     "content": "We prove 0 < ω^ω using Mathlib's `opow_pos` lemma. The ordinal ω^ω is the supremum of all ω^n for finite n - it's the first ordinal that 'escapes' the pattern of failures.",
+    "mathContext": "Lean: `theorem omega_to_omega_positive : 0 < ω ^ ω`",
     "significance": "supporting",
     "relatedConcepts": [
       "limit ordinals",
@@ -216,6 +222,7 @@
     "type": "concept",
     "title": "The Pattern Summary",
     "content": "The documentation summarizes the complete results in a table:\n\n| Ordinal | Property holds? | Reference |\n|---------|-----------------|----------------------|\n| ω² | Yes | Specker |\n| ω^n (n≥3) | No | Specker |\n| ω^ω | Yes | Chang |\n| ω^(ω²) | Yes | Schipperus, Darby |\n\nThe pattern is confirmed: limit ordinal exponents restore the property.",
+    "mathContext": "$| ω^n (n≥3) | No | Specker |$",
     "significance": "key",
     "relatedConcepts": [
       "summary",

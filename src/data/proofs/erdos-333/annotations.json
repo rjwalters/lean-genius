@@ -33,6 +33,7 @@
     "type": "definition",
     "title": "Counting Function",
     "content": "**countingFunction(A, N):**\n\nThe number of elements of A up to N.\n\n```lean\nnoncomputable def countingFunction (A : Set N) (N : N) : N :=\n  (Finset.filter (. in A) (Finset.range (N + 1))).card\n```\n\n**Notation:** Often written A(N) or |A cap [1,N]|.",
+    "mathContext": "Defines the counting function $A(N) = |A \\cap [0, N]|$ as $\\texttt{countingFunction}(A, N) := |\\{a \\in A : a \\leq N\\}|$, implemented via $\\texttt{Finset.filter}$ over $\\texttt{Finset.range}(N+1)$.",
     "significance": "key",
     "relatedConcepts": [
       "Cardinality",
@@ -54,6 +55,7 @@
     "type": "definition",
     "title": "Natural Density",
     "content": "**hasNaturalDensity(A, d), hasZeroDensity(A):**\n\nThe natural density of A is lim_{N->inf} A(N)/N if it exists.\n\n```lean\ndef hasZeroDensity (A : Set N) : Prop :=\n  hasNaturalDensity A 0\n```\n\n**Examples:**\n- Squares: density 0 (A(N) ~ sqrt(N))\n- Primes: density 0 (A(N) ~ N/log N)\n- Even numbers: density 1/2",
+    "mathContext": "The natural density of $A \\subseteq \\mathbb{N}$ is $d(A) = \\lim_{N \\to \\infty} \\frac{A(N)}{N}$, formalized as $\\texttt{Filter.Tendsto}$ of $\\frac{\\texttt{countingFunction}(A, N)}{N}$ to $d$ along $\\texttt{atTop}$. Zero density means $d(A) = 0$, equivalently $A(N) = o(N)$.",
     "significance": "key",
     "relatedConcepts": [
       "Asymptotic density",
@@ -76,6 +78,7 @@
     "type": "definition",
     "title": "Sumset B + B",
     "content": "**sumset(B) = B + B:**\n\nThe set of all pairwise sums from B.\n\n```lean\ndef sumset (B : Set N) : Set N :=\n  {n : N | exists b1 b2, b1 in B and b2 in B and n = b1 + b2}\n```\n\n**Key property:** |B+B| <= |B|^2, with equality for Sidon sets.",
+    "mathContext": "The sumset $B + B = \\{b_1 + b_2 : b_1, b_2 \\in B\\}$ is the set of all pairwise sums. In Lean: $\\texttt{sumset}(B) = \\{n \\in \\mathbb{N} \\mid \\exists\\, b_1, b_2 \\in B,\\; n = b_1 + b_2\\}$. For any finite $B$, $|B + B| \\leq |B|^2$.",
     "significance": "key",
     "relatedConcepts": [
       "Additive combinatorics",
@@ -97,6 +100,7 @@
     "type": "definition",
     "title": "Sumset Covering",
     "content": "**isCoveredBySumset(A, B):**\n\nA is covered by B+B if every element of A is a sum of two elements from B.\n\n```lean\ndef isCoveredBySumset (A B : Set N) : Prop :=\n  A <= sumset B\n```\n\n**Question:** How sparse can B be while still covering A?",
+    "mathContext": "Sumset covering $A \\subseteq B + B$ means every $a \\in A$ has a representation $a = b_1 + b_2$ with $b_1, b_2 \\in B$. Formalized as set inclusion: $\\texttt{isCoveredBySumset}(A, B) :\\Leftrightarrow A \\subseteq \\texttt{sumset}(B)$.",
     "significance": "key",
     "relatedConcepts": [
       "Covering",
@@ -119,6 +123,7 @@
     "type": "definition",
     "title": "Sub-sqrt Growth",
     "content": "**hasSubsqrtGrowth(B):**\n\nThe condition |B cap [1,N]| = o(sqrt(N)).\n\n```lean\ndef hasSubsqrtGrowth (B : Set N) : Prop :=\n  (fun N => countingFunction B N) =o[atTop] (fun N => sqrt N)\n```\n\n**Meaning:** B is 'exceptionally sparse' - sparser than sqrt(N).",
+    "mathContext": "The sub-$\\sqrt{N}$ growth condition requires $|B \\cap [0, N]| = o(\\sqrt{N})$, formalized using Mathlib's $\\texttt{IsLittleO}$: $\\texttt{countingFunction}(B, N) =o_{N \\to \\infty}(\\sqrt{N})$. This means $\\lim_{N \\to \\infty} \\frac{|B \\cap [0,N]|}{\\sqrt{N}} = 0$.",
     "significance": "key",
     "relatedConcepts": [
       "Little-o",
@@ -141,6 +146,7 @@
     "type": "definition",
     "title": "The Main Conjecture",
     "content": "**ErdosConjecture333:**\n\nFor any zero-density A, does there exist B with A <= B+B and |B| = o(sqrt(N))?\n\n```lean\ndef ErdosConjecture333 : Prop :=\n  forall A, hasZeroDensity A ->\n    exists B, isCoveredBySumset A B and hasSubsqrtGrowth B\n```\n\n**Status: DISPROVED**",
+    "mathContext": "The conjecture states $\\forall A \\subseteq \\mathbb{N},\\; d(A) = 0 \\implies \\exists B\\; (A \\subseteq B + B \\wedge |B \\cap [0,N]| = o(\\sqrt{N}))$. Formalized as $\\texttt{ErdosConjecture333} := \\forall A,\\; \\texttt{hasZeroDensity}(A) \\to \\exists B,\\; \\texttt{isCoveredBySumset}(A, B) \\wedge \\texttt{hasSubsqrtGrowth}(B)$.",
     "significance": "key",
     "relatedConcepts": [
       "Erdos problems",
@@ -163,6 +169,7 @@
     "type": "concept",
     "title": "Sumset Counting Bound",
     "content": "**sumset_counting_bound:**\n\nIf |B cap [1,N]| <= f(N), then |B+B cap [1,2N]| <= f(N)^2.\n\n```lean\naxiom sumset_counting_bound (B : Set N) (f : N -> R) :\n    (forall N, countingFunction B N <= f N) ->\n    forall N, countingFunction (sumset B) (2*N) <= (f N)^2\n```\n\n**Key implication:** Sparse B implies sparse B+B.",
+    "mathContext": "If $|B \\cap [0, N]| \\leq f(N)$ for all $N$, then $|(B+B) \\cap [0, 2N]| \\leq f(N)^2$. Formalized as an axiom: $\\forall N,\\; \\texttt{countingFunction}(B, N) \\leq f(N) \\implies \\texttt{countingFunction}(\\texttt{sumset}(B), 2N) \\leq f(N)^2$.",
     "significance": "key",
     "relatedConcepts": [
       "Upper bounds",
@@ -207,6 +214,7 @@
     "type": "technique",
     "title": "The Conjecture is FALSE",
     "content": "**erdos_333_false:**\n\nErdos Conjecture #333 is DISPROVED.\n\n```lean\ntheorem erdos_333_false : not ErdosConjecture333 := by\n  intro h\n  obtain <A, hA_density, hA_counter> := existence_of_counterexample\n  obtain <B, hcover, hsparse> := h A hA_density\n  exact hA_counter B hcover hsparse\n```\n\n**The proof:** Apply the counterexample to contradict the conjecture.",
+    "mathContext": "The disproof proceeds by contradiction: assume $\\texttt{ErdosConjecture333}$, obtain the counterexample $A$ with $d(A)=0$ where no sparse $B$ covers $A$, then apply the conjecture to get $B$ with $A \\subseteq B+B$ and $|B| = o(\\sqrt{N})$, contradicting the counterexample property. In Lean: $\\texttt{exact hA\\_counter B hcover hsparse}$.",
     "significance": "key",
     "relatedConcepts": [
       "Disproof",
@@ -252,6 +260,7 @@
     "type": "concept",
     "title": "Polynomial Gaps",
     "content": "**hasPolynomialGaps, polynomial_gap_positive:**\n\nSets with large gaps between consecutive elements admit sparse sumset bases.\n\n```lean\ndef hasPolynomialGaps (A : Set N) (alpha : R) : Prop :=\n  alpha > 1 and forall n in A, forall m in A, n < m -> m - n >= n^(1/alpha)\n```\n\n**Result:** If gaps grow polynomially with exponent alpha > 2, sparse bases exist.",
+    "mathContext": "A set $A$ has polynomial gaps with exponent $\\alpha > 1$ if consecutive elements $n < m$ in $A$ satisfy $m - n \\geq n^{1/\\alpha}$. When $\\alpha > 2$, such sets admit sparse sumset bases: $\\exists B,\\; A \\subseteq B+B \\wedge |B \\cap [0,N]| = o(\\sqrt{N})$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Gap conditions",
@@ -273,6 +282,7 @@
     "type": "concept",
     "title": "Covering Lower Bound",
     "content": "**covering_lower_bound:**\n\nIf A <= B+B, then |B|^2 >= |A|.\n\n```lean\naxiom covering_lower_bound (A B : Set N) (N : N) :\n    isCoveredBySumset A B ->\n    (countingFunction B N)^2 >= countingFunction A (2*N)\n```\n\n**Implication:** Dense A forces large B.",
+    "mathContext": "A fundamental counting argument: if $A \\subseteq B + B$, then $|B \\cap [0, N]|^2 \\geq |A \\cap [0, 2N]|$ since each pair in $B$ produces at most one sum. Formalized: $\\texttt{countingFunction}(B, N)^2 \\geq \\texttt{countingFunction}(A, 2N)$.",
     "significance": "key",
     "relatedConcepts": [
       "Lower bounds",
@@ -294,6 +304,7 @@
     "type": "definition",
     "title": "Sidon Sets",
     "content": "**isSidonSet(B):**\n\nA set where all pairwise sums are distinct.\n\n```lean\ndef isSidonSet (B : Set N) : Prop :=\n  forall a b c d in B, a <= b -> c <= d -> a + b = c + d -> (a = c and b = d)\n```\n\n**Growth:** Sidon sets have |B cap [1,N]| = O(sqrt(N)).\n**Sumset:** |B+B| = |B|^2/2 + |B|/2 exactly.",
+    "mathContext": "A Sidon set (or $B_2$ sequence) $B$ satisfies: if $a + b = c + d$ with $a \\leq b$ and $c \\leq d$, then $a = c$ and $b = d$. All pairwise sums are distinct, giving $|B + B| = \\binom{|B|}{2} + |B|$. Sidon sets satisfy $|B \\cap [1,N]| = O(\\sqrt{N})$.",
     "significance": "supporting",
     "relatedConcepts": [
       "B2 sequences",
@@ -339,6 +350,7 @@
     "type": "technique",
     "title": "Summary",
     "content": "**Erdos Problem #333: DISPROVED**\n\n**Question:** For any zero-density A, does there exist B with A <= B+B and |B| = o(sqrt(N))?\n\n**Answer: NO**\n\n**Positive cases:**\n- Squares (Erdos-Newman 1977)\n- Sets with polynomial gaps (alpha > 2)\n\n**Negative:** General zero-density sets may require |B| ~ sqrt(N).\n\n**Key insight:** Zero density alone is too weak - some sets are 'barely sparse'.",
+    "mathContext": "Erdos Problem #333 is disproved: $\\neg\\texttt{ErdosConjecture333}$. The summary theorem combines three facts: (1) the conjecture is false, (2) squares admit sparse bases ($\\exists B,\\; \\texttt{squares} \\subseteq B+B \\wedge |B| = o(\\sqrt{N})$), and (3) counterexamples exist ($\\exists A,\\; d(A) = 0 \\wedge \\forall B,\\; A \\subseteq B+B \\implies |B| \\neq o(\\sqrt{N})$).",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

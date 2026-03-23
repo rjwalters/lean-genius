@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Integer Sequence Structure",
     "content": "**IntegerSequence:**\n\nA strictly increasing sequence of integers greater than 1.\n\n```lean\nstructure IntegerSequence where\n  seq : ℕ → ℕ\n  strictly_increasing : ∀ n, seq n < seq (n + 1)\n  all_greater_than_one : ∀ n, seq n > 1\n```",
+    "mathContext": "Lean: `structure IntegerSequence where`",
     "significance": "key"
   },
   {
@@ -70,6 +71,7 @@
     "type": "definition",
     "title": "Reciprocal Power Term",
     "content": "**reciprocalPow(a, t) = 1/a^(1+it):**\n\nThe term in the generalized Dirichlet sum. Has magnitude 1/a and phase -t·log(a).",
+    "mathContext": "Formalizes the concept of reciprocal power term",
     "significance": "key"
   },
   {
@@ -116,6 +118,7 @@
     "type": "definition",
     "title": "Finite Sequence Conjecture",
     "content": "**finiteSequenceConjecture:**\n\nDoes 1 + ∑ₖ 1/aₖ^(1+it) ≠ 0 hold for all FINITE sequences?\n\nThis remains OPEN even after Yip's work.",
+    "mathContext": "Lean: `def finiteSequenceConjecture : Prop`",
     "significance": "key"
   },
   {
@@ -196,6 +199,7 @@
     "type": "technique",
     "title": "The Conjecture is FALSE",
     "content": "**Theorem erdosInghamConjecture_false:**\n\n¬erdosInghamConjecture\n\n**Proof**: Take any t ≠ 0 (say t = 1). By Yip's theorem, there exists a sequence a where the sum equals 0. But the conjecture claims the sum is never 0. Contradiction.",
+    "mathContext": "Lean: `theorem erdosInghamConjecture_false : ¬erdosInghamConjecture`",
     "significance": "key"
   },
   {
@@ -208,6 +212,7 @@
     "type": "technique",
     "title": "Main Theorem (erdos_967)",
     "content": "**Theorem erdos_967:**\n\n¬erdosInghamConjecture\n\nThe answer to Erdős Problem #967 is NO - the conjecture is FALSE.",
+    "mathContext": "Lean: `theorem erdos_967 : ¬erdosInghamConjecture`",
     "significance": "key"
   },
   {
@@ -220,6 +225,7 @@
     "type": "definition",
     "title": "Open Question: Finite Case",
     "content": "**openQuestion_finiteCase:**\n\nDoes the conjecture hold for FINITE sequences?\n\nYip's counterexamples are infinite sequences. The finite case, including {2,3,5}, remains unsolved.",
+    "mathContext": "Lean: `def openQuestion_finiteCase : Prop`",
     "significance": "key"
   },
   {
@@ -288,6 +294,7 @@
     "type": "technique",
     "title": "Powers of 2 Convergent",
     "content": "**Theorem powers_of_2_convergent:**\n\nhasConvergentReciprocalSum geometricSequence\n\nVerifies that {2, 4, 8, ...} satisfies the convergence condition required by the problem.",
+    "mathContext": "Lean: `theorem powers_of_2_convergent : hasConvergentReciprocalSum geometricSequence`",
     "significance": "supporting"
   },
   {
@@ -300,6 +307,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**Theorem erdos_967_summary:**\n\n1. The Erdős-Ingham conjecture (1964) is FALSE for infinite sequences\n2. Yip (2025) provided counterexamples for every nonzero t\n3. The finite sequence case remains OPEN\n4. The {2,3,5} case connects to the Four Exponentials conjecture",
+    "mathContext": "Lean: `theorem erdos_967_summary :`",
     "significance": "key"
   }
 ]

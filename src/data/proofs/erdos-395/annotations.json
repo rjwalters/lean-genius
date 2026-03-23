@@ -28,6 +28,7 @@
     "type": "definition",
     "title": "Core Definitions: Unit Vectors, Signs, and Sums",
     "content": "isUnitVector z: all components lie on the complex unit circle (|zᵢ| = 1). isSignVector ε: each εᵢ ∈ {-1, 1}, representing random Rademacher variables. signedSum z ε = Σ εᵢzᵢ: the random signed combination. signedSumAbs: the magnitude |Σ εᵢzᵢ|, measuring distance from the origin.",
+    "mathContext": "Lean: `def isUnitVector (z : Fin n → ℂ) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Unit circle",
@@ -45,6 +46,7 @@
     "type": "definition",
     "title": "Probability of Small Sums",
     "content": "countSmallSums z: the number of sign vectors ε with |Σ εᵢzᵢ| ≤ √2, out of 2ⁿ total. probSmallSum z = countSmallSums / 2ⁿ: the probability under uniform random signs. The central question is whether this probability is always at least c/n for unit vectors.",
+    "mathContext": "Formalizes the concept of probability of small sums",
     "significance": "key",
     "relatedConcepts": [
       "Probability",
@@ -116,6 +118,7 @@
     "type": "technique",
     "title": "Complete Resolution of Erdős #395",
     "content": "erdos_395_summary: restates hjns_2024 directly. erdos_395 (main theorem): combines both directions — erdos_original_is_false (threshold 1 fails) and hjns_2024 (threshold √2 works) — into a single conjunction. This gives the complete picture: the original formulation is false, but the natural revised formulation with the sharp threshold √2 is true with optimal rate 1/n.",
+    "mathContext": "Lean: `theorem erdos_395_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

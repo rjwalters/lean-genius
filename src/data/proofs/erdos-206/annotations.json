@@ -28,6 +28,7 @@
     "type": "definition",
     "title": "Egyptian Fraction and Valid Denominators",
     "content": "**EgyptianFraction S** computes the sum of unit fractions with denominators from a finite set S:\n  sum_{m in S} 1/m\n\n**Examples:**\n- {2, 3, 7} -> 1/2 + 1/3 + 1/7 = 41/42\n- {3, 4, 5} -> 1/3 + 1/4 + 1/5 = 47/60\n\n**validDenominators** ensures all denominators are positive. These representations date to ancient Egyptian papyri.",
+    "mathContext": "Lean: `def EgyptianFraction (S : Finset ℕ) : ℝ`",
     "significance": "key",
     "relatedConcepts": [
       "Unit fractions",
@@ -63,6 +64,7 @@
     "type": "definition",
     "title": "Eventually Greedy Property",
     "content": "**EventuallyGreedy x:** x is eventually greedy if there exists N such that for all n >= N:\n  R_{n+1}(x) = R_n(x) + 1/m\nwhere m is the smallest valid denominator (the greedy choice).\n\n**EventuallyGreedySet** = { x > 0 : EventuallyGreedy x }.\n\n**Intuition:** After some point, the optimal strategy coincides with the simple greedy approach. The question is whether this happens for 'most' real numbers.",
+    "mathContext": "$R_{n+1}(x) = R_n(x) + 1/m$",
     "significance": "key",
     "relatedConcepts": [
       "Greedy algorithms",
@@ -80,6 +82,7 @@
     "type": "concept",
     "title": "Curtiss and Erdős: Early Positive Results",
     "content": "**curtiss_theorem (1922):** x = 1 is eventually greedy. The first result of this type.\n\n**erdos_unit_fractions (1950):** For all positive m, x = 1/m is eventually greedy.\n\n**nathanson_theorem (2023):** a/b is eventually greedy when a | b+1.\n\nExamples of Nathanson's condition: 1/2 (1|3), 2/5 (2|6), 3/8 (3|9).\n\nThese results suggested the conjecture might be true, but Kovač showed it fails for almost all x.",
+    "mathContext": "Lean: `axiom curtiss_theorem : EventuallyGreedy 1`",
     "significance": "key",
     "relatedConcepts": [
       "Unit fractions",
@@ -97,6 +100,7 @@
     "type": "concept",
     "title": "Chu's Extension (2023)",
     "content": "**chu_extension:** There exists a predicate P on pairs (a, b) such that:\n1. P(a, b) implies a/b is eventually greedy\n2. P extends Nathanson's condition: a | b+1 implies P(a, b)\n\nChu found a broader class of rationals with the greedy property, providing the most general sufficient condition before Kovač's negative result.",
+    "mathContext": "Lean: `axiom chu_extension :`",
     "significance": "key",
     "relatedConcepts": [
       "Sufficient conditions",
@@ -131,6 +135,7 @@
     "type": "concept",
     "title": "Open Questions",
     "content": "**all_rationals_eventually_greedy:** Is every positive rational x eventually greedy?\nKnown for specific classes but unresolved in general.\n\n**explicit_nongreedy_example_exists:** Can we construct an explicit x that is NOT eventually greedy?\n\nDespite Kovač proving almost all x are non-greedy, no concrete example exists. Erdős and Graham claimed it is 'not difficult' to construct one, but never gave a proof. This highlights the gap between existence and construction.",
+    "mathContext": "Lean: `def all_rationals_eventually_greedy : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Constructive mathematics",
@@ -148,6 +153,7 @@
     "type": "concept",
     "title": "The 11/24 Example",
     "content": "**non_greedy_at_step_two:** Greedy fails at step 2 for 11/24:\n\nR_1(11/24) = 1/3 (largest unit fraction below 11/24)\nR_2(11/24) = 1/4 + 1/5 = 0.45\n\nIf greedy continued from 1/3: need 1/m < 11/24 - 1/3 = 1/8, so m >= 9.\nGreedy gives 1/3 + 1/9 = 4/9 ≈ 0.444.\nBut 1/4 + 1/5 = 0.45 > 0.444.\n\nThis shows optimal ≠ greedy at finite steps, but doesn't preclude eventual greedy behavior.",
+    "mathContext": "$R_1(11/24) = 1/3 (largest unit fraction below 11/24)$",
     "significance": "key",
     "relatedConcepts": [
       "Counterexamples",
@@ -183,6 +189,7 @@
     "type": "technique",
     "title": "Summary and Main Theorem",
     "content": "**erdos_206_summary** combines the key results:\n1. volume(EventuallyGreedySet) = 0 (the answer is NO)\n2. EventuallyGreedy 1 (x = 1 is greedy)\n3. For all m > 0, EventuallyGreedy(1/m) (unit fractions are greedy)\n\n**erdos_206** restates the final answer: SOLVED (Disproved).\n\nThe proof of the summary theorem uses kovac_theorem, curtiss_theorem, and erdos_unit_fractions.",
+    "mathContext": "$1. volume(EventuallyGreedySet) = 0 (the answer is NO)$",
     "significance": "key",
     "relatedConcepts": [
       "Summary theorems",

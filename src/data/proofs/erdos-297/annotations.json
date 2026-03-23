@@ -46,6 +46,7 @@
     "type": "definition",
     "title": "Egyptian Representation",
     "content": "**IsEgyptianRepresentation** defines when a set A represents 1 as a sum of unit fractions:\n\n1. harmonicSum(A) = 1 (the reciprocals sum to 1)\n2. All elements n ∈ A satisfy n ≥ 1 (positive integers only)\n\nExamples: {1}, {2,3,6}, {2,4,5,20} are all Egyptian representations of 1.",
+    "mathContext": "$1. harmonicSum(A) = 1 (the reciprocals sum to 1)$",
     "significance": "key",
     "relatedConcepts": [
       "Egyptian fractions",
@@ -79,6 +80,7 @@
     "type": "technique",
     "title": "Verified Examples",
     "content": "**Concrete Egyptian representations of 1:**\n\n- **{1}:** The trivial case, 1/1 = 1 (proved by simp)\n- **{2, 3, 6}:** The classic 1/2 + 1/3 + 1/6 = 1\n- **{2, 4, 5, 20}:** 1/2 + 1/4 + 1/5 + 1/20 = 1\n- **{2, 3, 7, 42}:** 1/2 + 1/3 + 1/7 + 1/42 = 1\n\nThe multi-element examples are axiomatized because proving rational arithmetic equalities over Finset.sum requires careful decidability handling.\n\n**at_least_three_representations** bundles the first three examples into a single theorem.",
+    "mathContext": "Lean: `theorem singleton_one_is_egyptian : harmonicSum {1} = 1`",
     "significance": "key",
     "relatedConcepts": [
       "Egyptian fractions",
@@ -95,6 +97,7 @@
     "type": "concept",
     "title": "Elementary Bounds",
     "content": "**Basic bounds on egyptianCount(N):**\n\n1. **egyptianCount_finite:** The count is at most 2^{N+1} (number of subsets of {0,...,N})\n2. **trivial_upper_bound:** At most 2^N as a real number (subsets of an N-element set)\n3. **trivial_lower_bound:** At least 1 for N ≥ 1, since {1} always works\n\nThese frame the question: is the count closer to 1 or to 2^N?",
+    "mathContext": "$3. **trivial_lower_bound:** At least 1 for N ≥ 1, since {1} always works$",
     "significance": "supporting",
     "relatedConcepts": [
       "Power set cardinality",
@@ -111,6 +114,7 @@
     "type": "definition",
     "title": "The Central Question",
     "content": "**hasSubexponentialGrowth** formalizes Erdős's question:\n\nDoes there exist c < 1 and C > 0 such that egyptianCount(N) ≤ C · 2^{cN} for all N?\n\nIf YES, the exponential growth rate is strictly less than 1 — meaning exponentially fewer subsets work than the naive bound suggests.\n\n**Answer: YES**, with c ≈ 0.91...",
+    "mathContext": "$Does there exist c < 1 and C > 0 such that egyptianCount(N) ≤ C · 2^{cN} for all N?$",
     "significance": "key",
     "relatedConcepts": [
       "Exponential growth",
@@ -196,6 +200,7 @@
     "type": "concept",
     "title": "MathOverflow Precedent (2017)",
     "content": "**The ≤ 1 variant:**\n\nIn 2017, Mikhail Tikhomirov asked on MathOverflow about subsets with harmonic sum ≤ 1 (not = 1).\n\nLucia, RaphaelB4, and js21 sketched proofs showing the same asymptotic structure: the count grows like 2^{cN} with c < 1.\n\nThis earlier work provided important intuition and partial results for the exact-sum problem solved in 2024.",
+    "mathContext": "$In 2017, Mikhail Tikhomirov asked on MathOverflow about subsets with harmonic sum ≤ 1 (not = 1).$",
     "significance": "supporting",
     "relatedConcepts": [
       "MathOverflow",
@@ -230,6 +235,7 @@
     "type": "technique",
     "title": "Main Theorem",
     "content": "**erdos_297_main:**\n\nThere exists c ∈ (0.9, 0.93) such that for all ε > 0, eventually:\n  2^{(c-ε)N} ≤ egyptianCount(N) ≤ 2^{(c+ε)N}\n\n**Proof:** Uses liuSawhneyConstant as the witness. The bounds on c come from liuSawhney_constant_bounds, and the asymptotic from liuSawhney_asymptotic. This is one of the few theorems with a complete (non-axiom) proof in the file.",
+    "mathContext": "$There \\exists c ∈ (0.9, 0.93) such that for all ε > 0, eventually:$",
     "significance": "key",
     "relatedConcepts": [
       "Asymptotic characterization",
@@ -246,6 +252,7 @@
     "type": "concept",
     "title": "The Answer: YES",
     "content": "**erdos_297_answer:**\n\nhasSubexponentialGrowth holds — YES, there exists c < 1 with egyptianCount(N) ≤ C · 2^{cN}.\n\nSpecifically, c = 0.93 (Steinerberger's constant) suffices for the upper bound. The optimal constant is c ≈ 0.91... (Liu-Sawhney).\n\nThis resolves the long-standing question of Erdős and Graham.",
+    "mathContext": "$hasSubexponentialGrowth holds — YES, there \\exists c < 1 with egyptianCount(N) ≤ C · 2^{cN}.$",
     "significance": "key",
     "relatedConcepts": [
       "Problem resolution",
@@ -262,6 +269,7 @@
     "type": "concept",
     "title": "Summary and Status",
     "content": "**Erdős Problem #297: SOLVED (2024)**\n\n- **Question:** How many A ⊆ {1,...,N} have Σ 1/n = 1?\n- **Answer:** 2^{(0.91... + o(1))N}\n- **Key Insight:** c < 1, so count << 2^N\n- **Solved by:** Steinerberger, Liu-Sawhney, Conlon et al. (three independent teams, 2024)\n- **Why:** Most random subsets overshoot since the expected sum grows like (log N)/2\n\n**erdos_297_solved** packages the answer as a final summary theorem.",
+    "mathContext": "Lean: `theorem erdos_297_solved : hasSubexponentialGrowth`",
     "significance": "key",
     "relatedConcepts": [
       "Problem resolution",

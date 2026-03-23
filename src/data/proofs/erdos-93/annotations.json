@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Problem Overview",
     "content": "**Erdős Problem #93: Distinct Distances in Convex Polygons**\n\nIf n distinct points form a convex polygon, they determine at least ⌊n/2⌋ distinct distances.\n\n**Status**: SOLVED by Altman (1963)\n\n**Tightness**: Regular n-gons achieve exactly ⌊n/2⌋ distances.\n\n**Open variants**: Problem #982 (single vertex), Fishburn's conjecture, Problem #1082 (no collinear).",
+    "mathContext": "Formalizes the concept of problem overview",
     "significance": "key",
     "relatedConcepts": [
       "Distinct distances",
@@ -75,6 +76,7 @@
     "type": "definition",
     "title": "Stronger Variant (Problem #982, OPEN)",
     "content": "**distancesFrom(p, S)**: Distinct distances from point p to other points in S.\n\n**numDistancesFrom(p, S)**: How many distinct distances p 'sees'.\n\n**StrongerVariant**: In a convex n-gon, does some vertex determine ≥ ⌊n/2⌋ distinct distances?\n\nThis is strictly stronger than Altman's theorem (which counts total distinct distances). Status: OPEN.",
+    "mathContext": "Lean: `def StrongerVariant : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Problem #982",
@@ -110,6 +112,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_93_summary (proved from axioms):**\n\nCombines:\n1. Altman's theorem: convex n-gon has ≥ ⌊n/2⌋ distinct distances\n2. Fishburn's conjecture implies the stronger single-vertex variant\n\nProved by: `⟨altman_theorem, fishburn_implies_stronger⟩`",
+    "mathContext": "$1. Altman's theorem: convex n-gon has ≥ ⌊n/2⌋ distinct distances$",
     "significance": "key"
   }
 ]

@@ -44,6 +44,7 @@
     "type": "definition",
     "title": "Counting Functions",
     "content": "**T₆ᵘ(n):**\n\nMaximum number of unit equilateral triangles formed by n points in ℝ⁶.\n\n**T₆(n):**\n\nMaximum number of equilateral triangles of ANY size formed by n points in ℝ⁶.\n\n**T_d(n):**\n\nGeneral dimension version for d-dimensional space.\n\nThese are defined as suprema over all n-point configurations.",
+    "mathContext": "Formalizes the concept of counting functions",
     "significance": "key",
     "relatedConcepts": [
       "Extremal geometry",
@@ -78,6 +79,7 @@
     "type": "definition",
     "title": "Erdős's Conjecture",
     "content": "**erdos_conjecture_unit:**\n\nT₆ᵘ(n) ≤ (1/27 + o(1))n³\n\nThe Lenz construction is asymptotically optimal for unit triangles.\n\n**erdos_conjecture_any_size:**\n\nT₆(n) ≤ (1/27 + o(1))n³\n\nErdős believed the same bound should hold for triangles of ANY size.",
+    "mathContext": "$T₆ᵘ(n) ≤ (1/27 + o(1))n³$",
     "significance": "key",
     "relatedConcepts": [
       "Asymptotic bounds",
@@ -111,6 +113,7 @@
     "type": "technique",
     "title": "Corollaries",
     "content": "**erdos_conjecture_unit_true:**\n\nThe unit triangles conjecture follows from the any-size result since T₆ᵘ(n) ≤ T₆(n).\n\n**erdos_conjecture_any_size_true:**\n\nThe any-size conjecture follows directly from cdl_2025_main.\n\nThe key implication: |T₆(n) - n³/27| ≤ εn³ implies T₆(n) ≤ (1/27 + ε)n³.",
+    "mathContext": "$The unit triangles conjecture follows from the any-size result since T₆ᵘ(n) ≤ T₆(n).$",
     "significance": "key",
     "relatedConcepts": [
       "Logical implications",
@@ -127,6 +130,7 @@
     "type": "concept",
     "title": "Higher Dimensions",
     "content": "**cdl_general_dimension:**\n\nFor all even d ≥ 6, there exists c_d > 0 such that T_d(n) = (c_d + o(1))n³.\n\n**c6_equals_one_27th:**\n\nFor d = 6: c₆ = 1/27.\n\nCDL found exact formulas for the constant c_d in all even dimensions d ≥ 6.",
+    "mathContext": "$For all even d ≥ 6, there \\exists c_d > 0 such that T_d(n) = (c_d + o(1))n³.$",
     "significance": "key",
     "relatedConcepts": [
       "General dimensions",
@@ -143,6 +147,7 @@
     "type": "concept",
     "title": "Why 1/27?",
     "content": "**The Constant Explained:**\n\nIn the optimal Lenz construction:\n- Place n/3 points on each of 3 orthogonal circles\n- Each choice of one point from each circle forms an equilateral triangle\n- Total triangles: (n/3) × (n/3) × (n/3) = n³/27\n\nThe constant 1/27 = 1/3³ arises from the optimal partition into 3 equal groups.",
+    "mathContext": "$The constant 1/27 = 1/3³ arises from the optimal partition into 3 equal groups.$",
     "significance": "key",
     "relatedConcepts": [
       "Optimal partitioning",
@@ -159,6 +164,7 @@
     "type": "concept",
     "title": "Dimension Behavior",
     "content": "**Growth Rates by Dimension:**\n\n- d = 2: T₂(n) = O(n) (linear)\n- d = 3: T₃(n) = Θ(n²) (quadratic)\n- d = 4, 5: Intermediate behavior\n- d ≥ 6 even: T_d(n) = Θ(n³) (cubic)\n\nThe transition to cubic growth at d = 6 is a significant threshold in discrete geometry.",
+    "mathContext": "$The transition to cubic growth at d = 6 is a significant threshold in discrete geometry.$",
     "significance": "supporting",
     "relatedConcepts": [
       "Dimension dependence",
@@ -175,6 +181,7 @@
     "type": "technique",
     "title": "Problem Summary",
     "content": "**erdos_755_summary:**\n\nThe complete answer to Erdős Problem #755.\n\n**Results:**\n1. erdos_conjecture_unit (unit triangles): TRUE\n2. erdos_conjecture_any_size (any-size): TRUE\n3. The answer is YES\n\n**Key Insight:**\nThe Lenz construction with three orthogonal circles achieves the optimal constant 1/27 = 1/3³.",
+    "mathContext": "$The Lenz construction with three orthogonal circles achieves the optimal constant 1/27 = 1/3³.$",
     "significance": "key",
     "relatedConcepts": [
       "Erdős problems",

@@ -46,6 +46,7 @@
     "type": "definition",
     "title": "Node Constraints",
     "content": "**DistinctNodes:**\nAll interpolation nodes must be distinct to avoid division by zero in the Lagrange formula.\n\n**NodesInInterval:**\nFor this problem, all nodes must lie in [-1, 1]. This is the standard interval for Chebyshev theory.\n\n```lean\ndef DistinctNodes (nodes : Fin n -> R) : Prop :=\n  forall i j, i != j -> nodes i != nodes j\n\ndef NodesInInterval (nodes : Fin n -> R) : Prop :=\n  forall i, -1 <= nodes i and nodes i <= 1\n```",
+    "mathContext": "Lean: `def DistinctNodes (nodes : Fin n -> R) : Prop :=`",
     "significance": "supporting"
   },
   {
@@ -133,6 +134,7 @@
     "type": "concept",
     "title": "Chebyshev Upper Bound",
     "content": "**chebyshev_upper_bound:**\n\nChebyshev nodes achieve the optimal asymptotic:\n$$\\Lambda(\\text{Chebyshev}) \\leq \\frac{2}{\\pi} \\log n + O(1)$$\n\nCombined with Erdos's lower bound, this shows Chebyshev nodes are asymptotically optimal:\n$$(2/\\pi) \\log n - O(1) \\leq \\Lambda_{\\text{opt}} \\leq (2/\\pi) \\log n + O(1)$$\n\nThe constant 2/pi ~ 0.6366 is the best possible.",
+    "mathContext": "$\\Lambda(\\text{Chebyshev}) \\leq \\frac{2}{\\pi} \\log n + O(1)$",
     "significance": "key"
   },
   {
@@ -202,6 +204,7 @@
     "type": "technique",
     "title": "Optimal Nodes for n=2",
     "content": "**optimal_n2:**\n\nFor n = 2, the optimal nodes are {-1, 1} with Lambda = 1.\n\nThis is trivial: with only two nodes at the endpoints, the Lagrange basis functions are:\n- l_1(x) = (x - 1) / (-1 - 1) = (1 - x) / 2\n- l_2(x) = (x + 1) / (1 + 1) = (1 + x) / 2\n\nThen |l_1(x)| + |l_2(x)| = (1-x)/2 + (1+x)/2 = 1 for all x in [-1, 1].",
+    "mathContext": "$For n = 2, the optimal nodes are {-1, 1} with Lambda = 1.$",
     "significance": "supporting"
   },
   {
@@ -253,6 +256,7 @@
     "type": "definition",
     "title": "Roots of Unity",
     "content": "**RootsOfUnity:**\n\nThe n-th roots of unity: omega_k = e^(2*pi*i*k/n) for k = 0, ..., n-1.\n\nThese are uniformly spaced on the unit circle, separated by angle 2*pi/n.\n\n```lean\ndef RootsOfUnity (n : N) (hn : n > 0) (k : Fin n) : C :=\n  Complex.exp (2 * pi * I * k / n)\n```",
+    "mathContext": "Lean: `def RootsOfUnity (n : N) (hn : n > 0) (k : Fin n) : C :=`",
     "significance": "key"
   },
   {
@@ -278,6 +282,7 @@
     "type": "technique",
     "title": "Erdos's Complex Conjecture: PROVED",
     "content": "**erdos_complex_conjecture:**\n\nFor all n, roots of unity minimize the complex Lebesgue constant.\n\n```lean\ntheorem erdos_complex_conjecture (n : N) (hn : n > 0) :\n    forall nodes, (forall k, |nodes k| = 1) ->\n    ComplexLebesgueConstant (RootsOfUnity n hn) <= ComplexLebesgueConstant nodes\n```\n\nThe proof cases on whether n is even or odd, applying the appropriate theorem.",
+    "mathContext": "Lean: `theorem erdos_complex_conjecture (n : N) (hn : n > 0) :`",
     "significance": "key"
   },
   {
@@ -303,6 +308,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_1129_summary:**\n\nCombines all results:\n\n1. For any n > 0, optimal interpolation nodes exist in [-1, 1]\n2. For any n > 0, roots of unity are optimal on the unit circle\n\n```lean\ntheorem erdos_1129_summary :\n    (forall n > 0, optimal nodes exist) and\n    (forall n > 0, roots of unity are optimal for complex case)\n```\n\nThe answer to Erdos's question is complete.",
+    "mathContext": "Lean: `theorem erdos_1129_summary :`",
     "significance": "key"
   }
 ]

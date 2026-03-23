@@ -78,6 +78,7 @@
     "type": "definition",
     "title": "The Function g(k, n)",
     "content": "**g k n:**\n\nThe maximum Frobenius number over all:\n- k-element subsets A of {1, ..., n}\n- with gcd(A) = 1 (coprimality condition)\n\n```lean\nnoncomputable def g (k n : ℕ) : ℕ :=\n  sSup {G(A) | A ⊆ range(n+1), |A| = k, gcd(A) = 1}\n```",
+    "mathContext": "Lean: `noncomputable def g (k n : ℕ) : ℕ :=`",
     "significance": "key",
     "relatedConcepts": [
       "Extremal problems",
@@ -129,6 +130,7 @@
     "type": "definition",
     "title": "Asymptotic Formula",
     "content": "**AsymptoticFormula:**\n\nFor fixed k ≥ 2, as n → ∞:\n  g(k, n) ~ n²/(k-1)\n\nMeaning: for any ε > 0, eventually:\n  (1-ε)·n²/(k-1) ≤ g(k,n) ≤ (1+ε)·n²/(k-1)\n\nThis is the main result of Erdős Problem #433.",
+    "mathContext": "$For fixed k ≥ 2, as n → ∞:$",
     "significance": "key",
     "relatedConcepts": [
       "Asymptotic analysis",
@@ -145,6 +147,7 @@
     "type": "technique",
     "title": "Special Case k = 2",
     "content": "**g_two:**\n\nFor n ≥ 3:\n  g(2, n) = n² - 3n + 1\n\nThe maximum is achieved by A = {n-1, n}, which are always coprime.\n\nUsing Sylvester-Frobenius:\n  G({n-1, n}) = (n-1)n - (n-1) - n = n² - 3n + 1",
+    "mathContext": "$For n ≥ 3:$",
     "significance": "key",
     "relatedConcepts": [
       "Sylvester-Frobenius",
@@ -161,6 +164,7 @@
     "type": "technique",
     "title": "Extremal Set Structure",
     "content": "**extremal_set_structure:**\n\nThe sets achieving g(k, n) are concentrated near the top:\n  A ⊆ {n-k+1, ..., n}\n\n**Why?** Larger elements create more gaps:\n- Smaller coefficients can be used\n- Linear combinations are more spread out\n- More integers are left non-representable",
+    "mathContext": "$A ⊆ {n-k+1, ..., n}$",
     "significance": "key",
     "relatedConcepts": [
       "Extremal combinatorics",
@@ -228,6 +232,7 @@
     "type": "technique",
     "title": "Summary",
     "content": "**Erdős Problem #433: SOLVED**\n\n**Result:** g(k,n) ~ n²/(k-1) as n → ∞\n\n**Proof:** Dixmier (1990) via precise bounds\n\n**Key Insights:**\n1. Extremal sets use elements near n\n2. Sylvester-Frobenius handles k = 2\n3. Dixmier's bounds bracket the asymptotic\n4. Computing G is NP-hard for ≥ 3 generators",
+    "mathContext": "$2. Sylvester-Frobenius handles k = 2$",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

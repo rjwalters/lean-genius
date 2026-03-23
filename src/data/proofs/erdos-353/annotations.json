@@ -62,6 +62,7 @@
     "type": "definition",
     "title": "Isosceles Triangle",
     "content": "**IsIsoscelesTriangle p q r:**\n\nA triangle with at least two equal sides:\n- dist(p,q) = dist(p,r), OR\n- dist(p,q) = dist(q,r), OR\n- dist(p,r) = dist(q,r)\n\nThe vertex opposite the unique side is the apex.",
+    "mathContext": "Lean: `def IsIsoscelesTriangle (p q r : EuclideanSpace ℝ (Fin 2)) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Distance",
@@ -112,6 +113,7 @@
     "type": "definition",
     "title": "Parallelogram",
     "content": "**IsParallelogram p q r s:**\n\nBoth pairs of opposite sides are parallel and equal:\n- q - p = r - s (top ∥ bottom)\n- s - p = r - q (left ∥ right)\n\n**Important:** Kovač showed parallelograms of area 1 need NOT exist in infinite measure sets!",
+    "mathContext": "Lean: `def IsParallelogram (p q r s : EuclideanSpace ℝ (Fin 2)) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Vector equality",
@@ -128,6 +130,7 @@
     "type": "definition",
     "title": "Cyclic Quadrilateral",
     "content": "**IsCyclicQuadrilateral p q r s:**\n\nAll four vertices lie on a common circle:\n∃ center, radius > 0 such that:\n- dist(center, p) = radius\n- dist(center, q) = radius\n- dist(center, r) = radius\n- dist(center, s) = radius\n\nKovač-Predojević (2024): These always exist with area 1!",
+    "mathContext": "$∃ center, radius > 0 such that:$",
     "significance": "key",
     "relatedConcepts": [
       "Circumscribed circle",
@@ -178,6 +181,7 @@
     "type": "concept",
     "title": "Cyclic Quadrilaterals Exist",
     "content": "**kovac_predojevic_cyclic:**\n\nEvery set with infinite measure contains four points on a circle forming a quadrilateral of area 1.\n\n**Reference:** Kovač-Predojević (2024) arXiv:2412.11725",
+    "mathContext": "Lean: `axiom kovac_predojevic_cyclic (A : Set (EuclideanSpace ℝ (Fin 2)))`",
     "significance": "key",
     "relatedConcepts": [
       "Cyclic quadrilateral",
@@ -194,6 +198,7 @@
     "type": "technique",
     "title": "Scaling Property",
     "content": "**scaling_property:**\n\nIf infinite measure sets contain configurations of area 1, they contain configurations of ANY positive area t.\n\n**Proof idea:** Scale the set by factor √t. The scaled set still has infinite measure, so it contains area-1 configurations. Scaling back gives area-t configurations in the original set.",
+    "mathContext": "Lean: `theorem scaling_property (A : Set (EuclideanSpace ℝ (Fin 2)))`",
     "significance": "key",
     "relatedConcepts": [
       "Scaling",
@@ -210,6 +215,7 @@
     "type": "technique",
     "title": "Summary",
     "content": "**Erdős Problem #353: SOLVED**\n\n**Results:**\n- Isosceles trapezoid: YES (Koizumi 2025)\n- Isosceles triangle: YES (Koizumi 2025)\n- Right triangle: YES (Koizumi 2025)\n- Cyclic quadrilateral: YES (Kovač-Predojević 2024)\n- Parallelogram: NO (counterexample exists)\n\n**Key Insight:** One parallel pair (trapezoid) is weak enough to guarantee existence, but two parallel pairs (parallelogram) can fail.",
+    "mathContext": "Lean: `theorem erdos_353_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

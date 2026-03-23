@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Problem Overview",
     "content": "**Erdős Problem #665** asks: can pairwise balanced designs always have blocks close to √n in size?\n\nA PBD on {1,...,n} is a collection of blocks where every pair appears in exactly one block, with block sizes between 2 and n-1.\n\n**The question**: Does h(n) = O(1), where h(n) measures how far below √n the smallest block must be?\n\n**Status**: OPEN. The answer depends on projective plane existence and prime gap bounds.",
+    "mathContext": "Formalizes the concept of problem overview",
     "significance": "key",
     "relatedConcepts": [
       "pairwise balanced designs",
@@ -44,6 +45,7 @@
     "type": "definition",
     "title": "The Erdős Question and h(n)",
     "content": "**ErdosQuestion**: ∃ C, ∀ n ≥ 10, ∃ PBD with all blocks > √n - C.\n\n**h(n)** (axiomatized): the minimum deficiency — the smallest value k such that a PBD exists with all blocks > √n - k.\n\n**h_spec**: h(n) is the infimum of deficiencies over all PBDs on n points.\n\nThe question reduces to: is h(n) bounded?",
+    "mathContext": "Lean: `def ErdosQuestion : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "deficiency function",
@@ -113,6 +115,7 @@
     "type": "concept",
     "title": "Special Case Constructions",
     "content": "**perfect_square_case (axiom):** For n = q² with q prime, the affine plane AG(2,q) gives a PBD with all blocks of size exactly q = √n. Perfect result — h(q²) = 0.\n\n**near_square_case (axiom):** For n = q² + k (k ≤ q), blocks of size ≥ q-1 are achievable. The deficiency is at most 1.",
+    "mathContext": "Lean: `axiom perfect_square_case :`",
     "significance": "key",
     "relatedConcepts": [
       "affine planes",
@@ -130,6 +133,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_665_summary (proved from axioms):**\n\nCombines three key results:\n1. Erdős-Larson: h(n) ≤ n^{1/2-c} unconditionally\n2. Prime power planes ⟹ h(n) unbounded (negative answer)\n3. h(n) correlates with largest prime gap H(n)\n\nProved by: `⟨erdos_larson_bound, prime_power_planes_implies_unbounded, h_correlates_with_prime_gap⟩`",
+    "mathContext": "$1. Erdős-Larson: h(n) ≤ n^{1/2-c} unconditionally$",
     "significance": "key"
   }
 ]

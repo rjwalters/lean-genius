@@ -28,6 +28,7 @@
     "type": "definition",
     "title": "Fractional Part",
     "content": "**frac:**\n\nThe fractional part of x is x - ⌊x⌋, always in [0, 1).\n\n**Definition:**\n```lean\nnoncomputable def frac (x : ℝ) : ℝ := x - ⌊x⌋\n```\n\nThis is the key operation for studying {αn} sequences modulo 1.",
+    "mathContext": "Lean: `noncomputable def frac (x : ℝ) : ℝ := x - ⌊x⌋`",
     "significance": "key",
     "relatedConcepts": [
       "floor function",
@@ -46,6 +47,7 @@
     "type": "technique",
     "title": "Fractional Part Range",
     "content": "**frac_mem_Ico:**\n\nThe fractional part of any real number lies in [0, 1).\n\nThis is proven directly from properties of the floor function: x - ⌊x⌋ ≥ 0 and x - ⌊x⌋ < 1.",
+    "mathContext": "$This is proven directly from properties of the floor function: x - ⌊x⌋ ≥ 0 and x - ⌊x⌋ < 1.$",
     "significance": "supporting"
   },
   {
@@ -58,6 +60,7 @@
     "type": "definition",
     "title": "Counting Function",
     "content": "**countInInterval:**\n\nCounts elements of a sequence in range (n, n+k] that fall in interval I.\n\n**Definition:**\n```lean\nnoncomputable def countInInterval (x : UnitSequence) (n k : ℕ) (I : Set ℝ) : ℕ :=\n  Finset.card (Finset.filter (fun m => x m ∈ I) (Finset.Ioc n (n + k)))\n```\n\nThis is the building block for measuring distribution.",
+    "mathContext": "Lean: `noncomputable def countInInterval (x : UnitSequence) (n k : ℕ) (I : Set ℝ) : ℕ :=`",
     "significance": "key"
   },
   {
@@ -89,6 +92,7 @@
     "type": "concept",
     "title": "Well vs Equidistribution",
     "content": "**well_distributed_implies_equidistributed:**\n\nWell-distribution is strictly stronger than equidistribution:\n- **Equidistribution:** lim_{n→∞} (1/n)#{m ≤ n : xₘ ∈ I} = |I|\n- **Well-distribution:** This holds uniformly from any starting point\n\nEvery well-distributed sequence is equidistributed, but not conversely.",
+    "mathContext": "Lean: `axiom well_distributed_implies_equidistributed :`",
     "significance": "key"
   },
   {
@@ -101,6 +105,7 @@
     "type": "definition",
     "title": "Prime Sequence",
     "content": "**primeSequence:**\n\nThe nth prime, using Mathlib's Nat.nth function.\n\n**Definition:**\n```lean\nnoncomputable def primeSequence (n : ℕ) : ℕ := Nat.nth Nat.Prime n\n```\n\np(1) = 2, p(2) = 3, p(3) = 5, etc.",
+    "mathContext": "Lean: `noncomputable def primeSequence (n : ℕ) : ℕ := Nat.nth Nat.Prime n`",
     "significance": "key"
   },
   {
@@ -113,6 +118,7 @@
     "type": "definition",
     "title": "Prime Multiple Sequence",
     "content": "**primeMultipleSequence:**\n\nGiven α, the sequence n ↦ {α · pₙ} of fractional parts.\n\n**Definition:**\n```lean\nnoncomputable def primeMultipleSequence (α : ℝ) : UnitSequence :=\n  fun n => frac (α * primeSequence n)\n```\n\nThis is the central object of Erdős's question.",
+    "mathContext": "Lean: `noncomputable def primeMultipleSequence (α : ℝ) : UnitSequence :=`",
     "significance": "key"
   },
   {
@@ -138,6 +144,7 @@
     "type": "concept",
     "title": "Erdős Lacunary Theorem",
     "content": "**erdos_lacunary_theorem:**\n\nFor any lacunary sequence (nₖ), the sequence {α·nₖ} is not well-distributed for almost all α.\n\nThis is a measure-theoretic result: the exceptional set has measure zero.\n\nHowever, primes are not lacunary (pₙ₊₁/pₙ → 1), so this doesn't directly apply.",
+    "mathContext": "$However, primes are not lacunary (pₙ₊₁/pₙ → 1), so this doesn't directly apply.$",
     "significance": "key"
   },
   {
@@ -150,6 +157,7 @@
     "type": "concept",
     "title": "Erdős's Retracted Claim",
     "content": "**erdos_1964_retracted_claim:**\n\nIn 1964, Erdős claimed to have proven existence of an irrational α for which {αpₙ} is not well-distributed.\n\nIn 1985, he wrote: \"The theorem is no doubt correct and perhaps will not be difficult to prove but I never was able to reconstruct my 'proof' which perhaps never existed.\"\n\nThis honest retraction is characteristic of Erdős's integrity.",
+    "mathContext": "Lean: `axiom erdos_1964_retracted_claim :`",
     "significance": "supporting"
   },
   {
@@ -181,6 +189,7 @@
     "type": "definition",
     "title": "Erdős 997 Conjecture",
     "content": "**Erdos997Conjecture:**\n\nThe full conjecture: for ALL α, {αpₙ} is not well-distributed.\n\n**Definition:**\n```lean\ndef Erdos997Conjecture : Prop :=\n  ∀ α : ℝ, ¬WellDistributed (primeMultipleSequence α)\n```\n\nThe 2024 result proves ∃, but the ∀ statement remains OPEN.",
+    "mathContext": "Lean: `def Erdos997Conjecture : Prop :=`",
     "significance": "key",
     "relatedConcepts": [
       "Erdos997Conjecture",
@@ -199,6 +208,7 @@
     "type": "concept",
     "title": "Rational Case",
     "content": "**rational_case:**\n\nFor rational α = p/q, the sequence {αpₙ} has only finitely many distinct values modulo 1 (at most q values), so cannot be well-distributed.\n\nThis is the easy case of the conjecture.",
+    "mathContext": "Lean: `axiom rational_case :`",
     "significance": "supporting"
   },
   {
@@ -224,6 +234,7 @@
     "type": "definition",
     "title": "Discrepancy",
     "content": "**discrepancy:**\n\nThe discrepancy measures deviation from uniform distribution:\nDₙ = sup_I |#{m ≤ n : xₘ ∈ I}/n - |I||\n\n**Definition:**\n```lean\nnoncomputable def discrepancy (x : UnitSequence) (N : ℕ) : ℝ :=\n  ⨆ (a : ℝ) (b : ℝ) (_ : 0 ≤ a) (_ : b ≤ 1) (_ : a < b),\n    |↑(countInInterval x 0 N (Ioc a b)) / ↑N - (b - a)|\n```\n\nWell-distribution requires uniform discrepancy bounds from all starting points.",
+    "mathContext": "Lean: `noncomputable def discrepancy (x : UnitSequence) (N : ℕ) : ℝ :=`",
     "significance": "key"
   },
   {
@@ -236,6 +247,7 @@
     "type": "technique",
     "title": "Current Status",
     "content": "**current_status:**\n\nSummary of known results:\n1. ∃ irrational α: {αpₙ} not well-distributed [CLLW 2024]\n2. For lacunary sequences: not well-distributed for almost all α [Erdős]\n3. Primes are not lacunary (pₙ₊₁/pₙ → 1)\n4. Universal statement for all α: OPEN\n\n**Statement:**\n```lean\ntheorem current_status :\n    (∃ α : ℝ, Irrational α ∧ ¬WellDistributed (primeMultipleSequence α))\n    := CLLW_theorem\n```",
+    "mathContext": "Lean: `theorem current_status :`",
     "significance": "key"
   },
   {
@@ -248,6 +260,7 @@
     "type": "technique",
     "title": "Summary",
     "content": "**erdos_997_summary:**\n\n**Question:** Is {αpₙ} non-well-distributed for all α?\n\n**Status:** OPEN\n\n**Known:**\n- 2024: Existence proved (CLLW)\n- Rational α: trivially not well-distributed\n- Lacunary sequences: almost all α work\n\n**Open:**\n- Does it hold for all irrational α?\n- What is the measure of exceptional α?\n- Can CLLW be generalized?",
+    "mathContext": "Lean: `theorem erdos_997_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "erdos_997_summary",

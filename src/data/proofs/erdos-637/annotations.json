@@ -33,6 +33,7 @@
     "type": "definition",
     "title": "Vertex Degree",
     "content": "**vertexDegree(G, v):**\n\nThe degree of vertex v in graph G - the number of neighbors of v.\n\n```lean\nnoncomputable def vertexDegree (G : SimpleGraph V) (v : V) : ℕ :=\n  (G.neighborFinset v).card\n```",
+    "mathContext": "$\\deg_G(v) = |N_G(v)|$, the number of neighbors of vertex $v$ in $G$. Formalized as $(\\texttt{G.neighborFinset}\\ v).\\texttt{card}$.",
     "significance": "key",
     "relatedConcepts": [
       "Neighborhood",
@@ -55,6 +56,7 @@
     "type": "definition",
     "title": "Distinct Degrees",
     "content": "**distinctDegrees(G), numDistinctDegrees(G):**\n\nThe set and count of distinct degree values in graph G.\n\n```lean\nnoncomputable def distinctDegrees (G : SimpleGraph V) : Finset ℕ :=\n  Finset.image (vertexDegree G) Finset.univ\n```\n\nA regular graph has 1 distinct degree; most graphs have many.",
+    "mathContext": "$D(G) = \\{\\deg_G(v) : v \\in V(G)\\}$ and $|D(G)| = \\texttt{numDistinctDegrees}(G)$. Built via $\\texttt{Finset.image}$ of $\\texttt{vertexDegree}$ over $\\texttt{Finset.univ}$.",
     "significance": "key",
     "relatedConcepts": [
       "Degree sequence",
@@ -77,6 +79,7 @@
     "type": "definition",
     "title": "Clique and Independence Numbers",
     "content": "**cliqueNumber(G), independenceNumber(G):**\n\n- ω(G) = maximum clique size\n- α(G) = maximum independent set size = ω(Gᶜ)\n\nThese measure the 'most structured' parts of G.",
+    "mathContext": "$\\omega(G) = \\max\\{|S| : S \\subseteq V,\\ G[S] \\text{ is a clique}\\}$. Independence number $\\alpha(G) = \\omega(\\overline{G})$, formalized as $\\texttt{cliqueNumber}\\ G^c$.",
     "significance": "key",
     "relatedConcepts": [
       "Clique",
@@ -123,6 +126,7 @@
     "type": "definition",
     "title": "Induced Subgraphs",
     "content": "**inducedSubgraph(G, S):**\n\nThe induced subgraph on vertex set S - keeps only edges within S.\n\n**inducedDistinctDegrees(G, S):** Count of distinct degrees in G[S].\n\n**HasLargeInducedWithManyDegrees:** There exists S with |S| ≥ vertexBound and many distinct degrees.",
+    "mathContext": "$G[S]$ is the induced subgraph on $S \\subseteq V$: edges $\\{u,v\\} \\in E(G)$ with $u,v \\in S$. $\\texttt{inducedDistinctDegrees}\\ G\\ S$ counts $|D(G[S])|$.",
     "significance": "key",
     "relatedConcepts": [
       "Induced subgraph",
@@ -145,6 +149,7 @@
     "type": "definition",
     "title": "Original Conjecture",
     "content": "**OriginalConjecture (Erdős-Faudree-Sós):**\n\nRamsey graphs contain induced subgraphs on ≫ n vertices with ≫ √n distinct degrees.\n\n```lean\ndef OriginalConjecture : Prop :=\n  ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ...\n    HasLargeInducedWithManyDegrees G ⌈c₁ * n⌉₊ ⌈c₂ * Real.sqrt n⌉₊\n```\n\n**Status: SOLVED** by Bukh-Sudakov (2007).",
+    "mathContext": "$\\exists\\, c_1, c_2 > 0$ such that every Ramsey graph $G$ on $n$ vertices satisfies $\\texttt{HasLargeInducedWithManyDegrees}\\ G\\ \\lceil c_1 n \\rceil\\ \\lceil c_2 \\sqrt{n}\\,\\rceil$. That is, $G$ has an induced subgraph on $\\Omega(n)$ vertices with $\\Omega(\\sqrt{n})$ distinct degrees.",
     "significance": "key",
     "relatedConcepts": [
       "Erdős-Faudree-Sós",
@@ -191,6 +196,7 @@
     "type": "definition",
     "title": "Strengthened Conjecture",
     "content": "**StrengthenedConjecture:**\n\nRamsey graphs have ≫ n^{2/3} distinct degrees (in the WHOLE graph, no vertex restriction).\n\n```lean\ndef StrengthenedConjecture : Prop :=\n  ∃ c : ℝ, c > 0 ∧ ...\n    (numDistinctDegrees G : ℝ) ≥ c * n^(2/3 : ℝ)\n```\n\nStronger than original: applies to G itself, not just induced subgraphs.",
+    "mathContext": "$\\exists\\, c > 0$ such that $\\omega(G), \\alpha(G) = O(\\log n) \\Rightarrow |D(G)| \\geq c \\cdot n^{2/3}$. Formalized: $(\\texttt{numDistinctDegrees}\\ G : \\mathbb{R}) \\geq c \\cdot n^{2/3}$. No induced subgraph restriction needed.",
     "significance": "key",
     "relatedConcepts": [
       "Improved bounds",
@@ -237,6 +243,7 @@
     "type": "definition",
     "title": "Optimality",
     "content": "**OptimalityConjecture:**\n\nThe exponent 2/3 is believed to be optimal.\n\nThere exist constructions showing you cannot do better than n^{2/3+o(1)}.\n\nSo JKLY's bound is essentially tight.",
+    "mathContext": "$\\forall\\, \\varepsilon > 0,\\ \\exists$ a Ramsey graph $G$ with $|D(G)| \\leq n^{2/3 + \\varepsilon}$. So the exponent $2/3$ in JKLY cannot be improved beyond $o(1)$.",
     "significance": "key",
     "relatedConcepts": [
       "Tight bounds",
@@ -259,6 +266,7 @@
     "type": "technique",
     "title": "Regular Graphs",
     "content": "**IsRegular, regular_one_degree:**\n\nA k-regular graph has all degrees equal to k, so only 1 distinct degree.\n\n**ramsey_not_too_regular:** Ramsey graphs cannot be too regular - they must have at least 2 distinct degrees for large n.\n\nRamsey property forces degree diversity.",
+    "mathContext": "$G$ is $k$-regular iff $\\deg_G(v) = k$ for all $v$, giving $|D(G)| = 1$. Theorem $\\texttt{ramsey\\_not\\_too\\_regular}$: $\\omega(G),\\alpha(G) = O(\\log n)$ and $n \\geq 100$ implies $|D(G)| \\geq 2$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Regular graphs",
@@ -281,6 +289,7 @@
     "type": "technique",
     "title": "Random Graphs",
     "content": "**Random G(n, 1/2) properties:**\n\n- Typically a Ramsey graph (ω, α ~ 2 log n)\n- Has many distinct degrees (≈ n)\n- Degrees concentrate around n/2\n\nRandom graphs are the prototypical Ramsey graphs.",
+    "mathContext": "In $G(n, 1/2)$, each $\\deg(v) \\sim \\mathrm{Bin}(n-1, 1/2)$ concentrates around $n/2$. Almost surely $\\omega(G), \\alpha(G) \\sim 2\\log_2 n$, making $G(n,1/2)$ a canonical Ramsey graph.",
     "significance": "supporting",
     "relatedConcepts": [
       "Erdős-Rényi",
@@ -303,6 +312,7 @@
     "type": "technique",
     "title": "Ramsey Connections",
     "content": "**Ramsey number connections:**\n\n- R(k,k) ≥ 2^{k/2} (probabilistic lower bound)\n- If ω(G), α(G) ≤ k then n ≤ R(k+1, k+1)\n\nThe Ramsey graph condition constrains graph size.",
+    "mathContext": "$R(k,k) \\geq 2^{k/2}$ (Erd\\H{o}s 1947 probabilistic bound). If $\\omega(G) \\leq k$ and $\\alpha(G) \\leq k$, then $n \\leq R(k+1, k+1)$, bounding the order of the graph.",
     "significance": "supporting",
     "relatedConcepts": [
       "Ramsey numbers",
@@ -325,6 +335,7 @@
     "type": "technique",
     "title": "Summary",
     "content": "**Erdős Problem #637: SOLVED**\n\n**Timeline:**\n1. Erdős-Faudree-Sós: Conjecture (≫ √n degrees)\n2. Bukh-Sudakov (2007): Proved original conjecture\n3. JKLY (2020): Strengthened to ≫ n^{2/3} degrees\n\n**Key insight:** Ramsey graphs (no large cliques/independent sets) must have high degree diversity.",
+    "mathContext": "$\\sqrt{n}$ (Bukh-Sudakov 2007) $\\to$ $n^{2/3}$ (JKLY 2020). Formalized as $\\texttt{OriginalConjecture} \\wedge \\texttt{StrengthenedConjecture}$, proved via $\\texttt{original\\_conjecture\\_solved}$ and $\\texttt{jkly\\_strengthened}$.",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

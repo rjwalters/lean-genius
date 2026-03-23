@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Triangle Graph K₃",
     "content": "TriangleGraph is the complete graph on 3 vertices (Fin 3) where adjacency is the not-equal relation. The theorem triangle_is_complete confirms every distinct pair is adjacent, and the axiom triangle_chromatic_number states χ(K₃) = 3. This is the building block: the construction starts with n copies of this graph.",
+    "mathContext": "Lean: `def TriangleGraph : SimpleGraph (Fin 3)`",
     "significance": "key",
     "relatedConcepts": [
       "Complete graph",
@@ -98,6 +99,7 @@
     "type": "technique",
     "title": "Graph Properties and Special Cases",
     "content": "vertex_count confirms |V| = 3n via Fintype.card_fin. max_degree_bound (axiom): each vertex has degree ≤ 4 (2 from its triangle, 2 from the Hamiltonian cycle). Special cases: case_n_eq_1 (3 vertices, just K₃) and case_n_eq_2 (6 vertices, two triangles plus cycle) both follow directly from fleischner_stiebitz.",
+    "mathContext": "Lean: `theorem vertex_count (n : ℕ) : Fintype.card (Fin (3 * n)) = 3 * n`",
     "significance": "supporting",
     "relatedConcepts": [
       "Vertex count",
@@ -115,6 +117,7 @@
     "type": "technique",
     "title": "Complete Resolution",
     "content": "erdos_842 combines both key results into a single theorem: the Triangle-Hamiltonian Graph admits a proper 3-coloring AND has chromatic number exactly 3. Proved by exact ⟨thg_3_colorable n hn, fleischner_stiebitz n hn⟩. This completely answers Erdős's question: YES, the graph has chromatic number at most 3 (and in fact exactly 3).",
+    "mathContext": "Lean: `theorem erdos_842 (n : ℕ) (hn : n > 0) :`",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

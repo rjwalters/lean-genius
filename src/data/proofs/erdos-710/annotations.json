@@ -135,6 +135,7 @@
     "type": "concept",
     "title": "Erdős #710: OPEN",
     "content": "**erdos_710_open:**\n\nThe problem asks for an explicit asymptotic formula: f(n) ~ C · n · g(n) for some constant C and function g(n).\n\n**Three possibilities:**\n1. f(n) ~ C · n · √(log n) (upper bound is tight)\n2. f(n) ~ C · n · √(log n / log log n) (lower bound is tight)\n3. Something in between\n\n**Prize:** 2000 rupees (~$78 in 1992)",
+    "mathContext": "Lean: `axiom erdos_710_open :`",
     "significance": "key"
   },
   {
@@ -147,6 +148,7 @@
     "type": "technique",
     "title": "Example: n = 1",
     "content": "**example_n1:**\n\nFor n = 1, we need one integer a₁ in (1, 1+f(1)) with 1 | a₁.\n\nSince every integer is divisible by 1, we just need any integer > 1.\n\nf(1) = 1 works: use a₁ = 2.\n\n```lean\ntheorem example_n1 : IntervalAdmitsSelection 1 1 2\n```",
+    "mathContext": "Lean: `theorem example_n1 : IntervalAdmitsSelection 1 1 2`",
     "significance": "supporting"
   },
   {
@@ -159,6 +161,7 @@
     "type": "technique",
     "title": "Example: n = 2",
     "content": "**example_n2:**\n\nFor n = 2, we need distinct a₁, a₂ in (2, 2+f(2)) with:\n- 1 | a₁ (anything works)\n- 2 | a₂ (must be even)\n\nf(2) = 2 works: use a₁ = 3, a₂ = 4.\n\n```lean\ntheorem example_n2 : IntervalAdmitsSelection 2 2 3\n```",
+    "mathContext": "Lean: `theorem example_n2 : IntervalAdmitsSelection 2 2 3`",
     "significance": "supporting"
   },
   {
@@ -171,6 +174,7 @@
     "type": "technique",
     "title": "Example: n = 3",
     "content": "**example_n3:**\n\nFor n = 3, we need distinct a₁, a₂, a₃ in (3, 3+f(3)) with:\n- 1 | a₁ (anything)\n- 2 | a₂ (even)\n- 3 | a₃ (multiple of 3)\n\nf(3) = 3 works: use a₁ = 5, a₂ = 4, a₃ = 6.\n\nNote: 6 is both even and divisible by 3, so we assign it to position 3.",
+    "mathContext": "$For n = 3, we need distinct a₁, a₂, a₃ in (3, 3+f(3)) with:$",
     "significance": "supporting"
   },
   {
@@ -219,6 +223,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_710_summary:**\n\nCombines all main results:\n\n```lean\ntheorem erdos_710_summary :\n    -- Lower bound established\n    (∀ ε > 0, ∃ N, ∀ n ≥ N,\n      (2/√e - ε) * n * √(log n / log log n) ≤ f(n)) ∧\n    -- Upper bound established  \n    (∀ ε > 0, ∃ N, ∀ n ≥ N,\n      f(n) ≤ (1.7398 + ε) * n * √(log n)) ∧\n    -- Small examples verified\n    IntervalAdmitsSelection 1 1 2 ∧\n    IntervalAdmitsSelection 2 2 3 ∧\n    IntervalAdmitsSelection 3 3 4\n```\n\n**Status:** Bounds known, exact asymptotics OPEN.",
+    "mathContext": "Lean: `theorem erdos_710_summary :`",
     "significance": "key"
   }
 ]

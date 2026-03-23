@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "Three key imports: `Mathlib.NumberTheory.Real.Irrational` for `irrational_nrt_of_notint_nrt`, `Mathlib.Analysis.SpecialFunctions.Pow.Real` for real-valued power operations (`rpow`), and `Mathlib.Tactic` for proof automation.",
+    "mathContext": "Formalizes the concept of mathlib imports",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
@@ -143,6 +144,7 @@
     "type": "context",
     "title": "Concrete Corollaries",
     "content": "Each specific irrationality result is a one-line application of the general theorem: `irrational_nthRoot n m (by norm_num) <not_perfect_power_proof>`. The pattern is completely uniform across square roots, cube roots, fourth roots, and fifth roots.",
+    "mathContext": "Lean: `theorem irrational_sqrt2 : Irrational (nthRoot 2 2)`",
     "significance": "supporting",
     "prerequisites": [
       "ann-nrt-general"

@@ -45,6 +45,7 @@
     "type": "definition",
     "title": "Abelian Equivalence",
     "content": "**abelianEquiv x y:**\n\nx and y have the same Parikh vector.\n\nEquivalently, y is a permutation of x.",
+    "mathContext": "Lean: `def abelianEquiv (x y : List α) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Parikh vector",
@@ -79,6 +80,7 @@
     "type": "definition",
     "title": "Contains Abelian Square",
     "content": "**containsAbelianSquare w:**\n\nw has a factor (consecutive subword) that is an abelian square.\n\nThis is what Erdős asked about.",
+    "mathContext": "Lean: `def containsAbelianSquare (w : List α) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Factor",
@@ -96,6 +98,7 @@
     "type": "definition",
     "title": "Abelian-Square-Free",
     "content": "**isAbelianSquareFree w:**\n\nw contains no abelian squares.\n\nThis is a stronger property than being squarefree.",
+    "mathContext": "Lean: `def isAbelianSquareFree (w : List α) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Avoidance",
@@ -112,6 +115,7 @@
     "type": "definition",
     "title": "Square",
     "content": "**isSquare w:**\n\nw = xx for some nonempty x.\n\nA square is an exact repetition; abelian squares are more general.",
+    "mathContext": "$w = xx for some nonempty x.$",
     "significance": "key",
     "relatedConcepts": [
       "Repetition",
@@ -146,6 +150,7 @@
     "type": "definition",
     "title": "Erdős's Question",
     "content": "**erdos_231_question k:**\n\nFor strings of length 2^k - 1 over k letters, must the string contain an abelian square?\n\nErdős conjectured YES, but this was disproved for k ≥ 4.",
+    "mathContext": "$Erdős conjectured YES, but this was disproved for k ≥ 4.$",
     "significance": "key",
     "relatedConcepts": [
       "Main question",
@@ -180,6 +185,7 @@
     "type": "concept",
     "title": "3 Letters Not Enough",
     "content": "**three_letters_not_enough:**\n\nFor abelian-square-free, 3 letters are NOT enough.\n\nAll sufficiently long strings over 3 letters contain abelian squares.",
+    "mathContext": "Lean: `axiom three_letters_not_enough :`",
     "significance": "key",
     "relatedConcepts": [
       "Lower bound",
@@ -232,6 +238,7 @@
     "type": "concept",
     "title": "Conjecture Disproved",
     "content": "**erdos_231_disproved:**\n\nFor k ≥ 4, Erdős's conjecture is FALSE.\n\nStrings of length 2^k - 1 over k letters CAN avoid abelian squares.",
+    "mathContext": "$For k ≥ 4, Erdős's conjecture is FALSE.$",
     "significance": "key",
     "relatedConcepts": [
       "Disproof",
@@ -248,6 +255,7 @@
     "type": "technique",
     "title": "k = 2 Case",
     "content": "**k_equals_2_abelian_square:**\n\nFor k = 2 (binary alphabet), all strings of length ≥ 4 contain abelian squares.\n\nSo Erdős's conjecture holds for k = 2.",
+    "mathContext": "$For k = 2 (binary alphabet), all strings of length ≥ 4 contain abelian squares.$",
     "significance": "supporting",
     "relatedConcepts": [
       "Binary",
@@ -264,6 +272,7 @@
     "type": "concept",
     "title": "k = 3 Case",
     "content": "**k_equals_3_contains:**\n\nFor k = 3, all strings of length 7 = 2³ - 1 contain abelian squares.\n\nSo Erdős's conjecture holds for k = 3.",
+    "mathContext": "$For k = 3, all strings of length 7 = 2³ - 1 contain abelian squares.$",
     "significance": "supporting",
     "relatedConcepts": [
       "Ternary",
@@ -280,6 +289,7 @@
     "type": "technique",
     "title": "Example: abba",
     "content": "**example: isAbelianSquare ['a', 'b', 'b', 'a']:**\n\n\"abba\" = \"ab\" + \"ba\" where \"ba\" is a permutation of \"ab\".\n\nSo \"abba\" is an abelian square.",
+    "mathContext": "$\"abba\" = \"ab\" + \"ba\" where \"ba\" is a permutation of \"ab\".$",
     "significance": "supporting",
     "relatedConcepts": [
       "Concrete example",
@@ -313,6 +323,7 @@
     "type": "technique",
     "title": "Connection to #192",
     "content": "**connection_to_192:**\n\nProblem #192 asks about infinite abelian-square-free sequences.\n\nKeränen's result answers both problems.",
+    "mathContext": "Formalizes the concept of connection to #192",
     "significance": "supporting",
     "relatedConcepts": [
       "Problem #192",
@@ -329,6 +340,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_231_summary:**\n\nErdős's conjecture was disproved for k ≥ 4.\n\nThe Keränen construction provides infinite counterexamples.",
+    "mathContext": "$Erdős's conjecture was disproved for k ≥ 4.$",
     "significance": "key",
     "relatedConcepts": [
       "Main result",
@@ -345,6 +357,7 @@
     "type": "technique",
     "title": "Problem Resolved",
     "content": "**erdos_231_resolved:**\n\nErdős Problem #231 was completely resolved by Keränen in 1992.",
+    "mathContext": "Formalizes the concept of problem resolved",
     "significance": "supporting",
     "relatedConcepts": [
       "Resolved",

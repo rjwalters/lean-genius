@@ -97,6 +97,7 @@
     },
     "title": "Tightness Near n",
     "content": "For k > n^{1-ε}, the trivial lower bound is asymptotically tight: ω(C(n,k)) ≤ (1+ε) · log C(n,k) / log n. This shows the conjecture's range restriction n^ε < k ≤ n^{1-ε} is necessary.",
+    "mathContext": "Lean: `axiom omega_choose_tight_near_n :`",
     "significance": "supporting",
     "relatedConcepts": [
       "tightness",
@@ -130,6 +131,7 @@
     },
     "title": "Characterization of ω = 0",
     "content": "ω(n) = 0 if and only if n ≤ 1. This axiom connects the prime divisor count to the structure of small numbers.",
+    "mathContext": "Lean: `axiom omega_eq_zero_iff (n : ℕ) : omega n = 0 ↔ n ≤ 1`",
     "significance": "supporting",
     "relatedConcepts": [
       "characterization",

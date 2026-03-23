@@ -27,6 +27,7 @@
     "type": "concept",
     "title": "Imports and Setup",
     "content": "We import Mathlib and open namespaces for **MeasureTheory** (probability measures, integration), **ProbabilityTheory** (independence), **Nat** (natural numbers), **Real** (logarithms), and **Filter** (limits).",
+    "mathContext": "Formalizes the concept of imports and setup",
     "significance": "supporting",
     "relatedConcepts": [
       "measure theory",
@@ -62,6 +63,7 @@
     "type": "definition",
     "title": "Partial Sum",
     "content": "**partialSum f N ω** computes S_N(ω) = ∑_{m ∈ [1,N]} f(m, ω).\n\nThis is the main object of study. Its fluctuations around zero are controlled by the multiplicative structure.",
+    "mathContext": "Formalizes the concept of partial sum",
     "significance": "key",
     "relatedConcepts": [
       "summatory functions",
@@ -167,6 +169,7 @@
     "type": "concept",
     "title": "Values in {-1, 0, 1}",
     "content": "Rademacher multiplicative functions take values only in {-1, 0, 1}:\n\n- **0** for non-square-free n\n- **±1** for square-free n (product of ±1 from each prime factor)",
+    "mathContext": "Lean: `axiom rademacher_values (f : ℕ → Ω → ℝ) (hf : IsRademacherMultiplicative f) :`",
     "significance": "supporting",
     "relatedConcepts": [
       "range of function",
@@ -183,6 +186,7 @@
     "type": "concept",
     "title": "Mean Zero",
     "content": "**rademacher_mean_zero**: E[f(n)] = 0 for all n > 1.\n\nFor square-free n, f(n) = ±1 with equal probability 1/2, so E[f(n)] = 0.\nFor non-square-free n, f(n) = 0 deterministically.",
+    "mathContext": "$For square-free n, f(n) = ±1 with equal probability 1/2, so E[f(n)] = 0.$",
     "significance": "key",
     "relatedConcepts": [
       "expectation",
@@ -199,6 +203,7 @@
     "type": "concept",
     "title": "Uncorrelated Values",
     "content": "**rademacher_uncorrelated**: For distinct square-free n ≠ m,\n\nE[f(n)f(m)] = 0\n\nThis is because n and m have at least one prime factor that differs, and independence + mean zero gives the result.",
+    "mathContext": "$E[f(n)f(m)] = 0$",
     "significance": "key",
     "relatedConcepts": [
       "uncorrelation",
@@ -234,6 +239,7 @@
     "type": "concept",
     "title": "Uniform on Square-Frees",
     "content": "For square-free n > 1, f(n) is uniformly distributed on {-1, 1}.\n\nThis is because f(n) = f(p₁)...f(pᵣ) where each f(pᵢ) = ±1 independently. The product of k independent ±1 variables is still uniformly ±1.",
+    "mathContext": "Lean: `axiom squarefree_uniform (f : ℕ → Ω → ℝ) (hf : IsRademacherMultiplicative f) :`",
     "significance": "supporting",
     "relatedConcepts": [
       "product of independent variables",

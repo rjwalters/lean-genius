@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Core Definitions: Legendre Symbol and Stabilization",
     "content": "legendreInt n p: Legendre symbol (n/p) as integer (+1, -1, or 0). characterSum N p: partial sum ∑_{n<N} (n/p). isBoundedFrom ε p m: |characterSum N p| < εN for all N ≥ m. fEps ε p: smallest m satisfying the bound (stabilization threshold). These definitions formalize when character sum cancellation becomes permanently effective.",
+    "mathContext": "Lean: `def isBoundedFrom (ε : ℝ) (p m : ℕ) [Fact (Nat.Prime p)] : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Legendre symbol",
@@ -98,6 +99,7 @@
     "type": "definition",
     "title": "Quadratic Residues and Complete Sums",
     "content": "isQuadraticResidue a p: ∃ x, x² ≡ a (mod p). Exactly (p-1)/2 residues and (p-1)/2 non-residues exist among nonzero classes mod p. complete_sum_zero: ∑_{n=0}^{p-1} (n/p) = 0, since QRs and NQRs cancel perfectly over a full period. This periodicity constrains the growth of partial character sums.",
+    "mathContext": "Lean: `axiom complete_sum_zero (p : ℕ) [hp : Fact (Nat.Prime p)] :`",
     "significance": "key",
     "relatedConcepts": [
       "Quadratic residue",
@@ -133,6 +135,7 @@
     "type": "technique",
     "title": "Complete Resolution",
     "content": "erdos_981 (main theorem): combines Elliott's asymptotic and Tang-Zhang's alternative into a conjunction. Proved by exact ⟨elliott_1969 ε hε, tang_zhang_2025 ε hε⟩. Both the original stabilization and the first-passage formulation have PNT-form asymptotics ∑_{p<x} f(p) ~ c · x/log x.",
+    "mathContext": "Lean: `theorem erdos_981 (ε : ℝ) (hε : ε > 0) :`",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

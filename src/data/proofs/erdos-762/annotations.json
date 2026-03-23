@@ -226,6 +226,7 @@
     "type": "technique",
     "title": "Gap is Bounded",
     "content": "**chi_zeta_gap_bounded:**\n\nThe gap χ(G) - ζ(G) can be bounded in terms of clique number.\n\n**Theorem:**\n```lean\ntheorem chi_zeta_gap_bounded :\n    ∀ n : ℕ, n > 2 → ∃ f : ℕ,\n      ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),\n        cliqueNumber G < n → chromaticNumber G - cochromaticNumber G ≤ f\n```\n\nDerived from the general EGS theorem.",
+    "mathContext": "Lean: `theorem chi_zeta_gap_bounded :`",
     "significance": "key",
     "relatedConcepts": [
       "Chromatic number",
@@ -249,6 +250,7 @@
     "type": "concept",
     "title": "Gap Lower Bound",
     "content": "**steiner_gap_lower_bound:**\n\nThe gap χ - ζ can be at least 3 for K₅-free graphs.\n\n**Axiom:**\n```lean\naxiom steiner_gap_lower_bound :\n  ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),\n    cliqueNumber G = 4 ∧ chromaticNumber G - cochromaticNumber G ≥ 3\n```\n\nSteiner's example shows χ - ζ = 7 - 4 = 3.",
+    "mathContext": "Lean: `axiom steiner_gap_lower_bound :`",
     "significance": "supporting",
     "relatedConcepts": [
       "Lower bound",
@@ -271,6 +273,7 @@
     "type": "technique",
     "title": "Summary",
     "content": "**erdos_762_summary:**\n\nCombines all results:\n1. The EGS conjecture (χ ≤ ζ + 2 for K₅-free graphs) is FALSE\n2. The general bounded gap theorem (χ - ζ bounded by f(ω)) is TRUE\n\n**Theorem:**\n```lean\ntheorem erdos_762_summary :\n    ¬egs_conjecture ∧\n    (∀ n > 2, ∃ f : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),\n      cliqueNumber G < n → chromaticNumber G ≤ cochromaticNumber G + f)\n```",
+    "mathContext": "Lean: `theorem erdos_762_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "Disproof",

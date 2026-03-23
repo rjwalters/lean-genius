@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "n-Sum-Free Sets",
     "content": "**IsNSumFree(n, S):**\n\nA set S ⊆ {1,...,n-1} is **n-sum-free** if no subset of distinct elements from S sums to exactly n.\n\n**Definition:**\n```lean\ndef IsNSumFree (n : ℕ) (S : Finset ℕ) : Prop :=\n  ∀ T : Finset ℕ, T ⊆ S → T.sum id ≠ n\n```\n\n**Examples:**\n- {1} is 2-sum-free (single element can't sum to 2)\n- {2, 3} is 4-sum-free (2+3=5≠4, and neither alone equals 4)\n- {1, 3} is NOT 4-sum-free (1+3=4)",
+    "mathContext": "Lean: `def IsNSumFree (n : ℕ) (S : Finset ℕ) : Prop :=`",
     "significance": "key",
     "relatedConcepts": [
       "Subset sums",
@@ -43,6 +44,7 @@
     "type": "definition",
     "title": "Valid Partitions",
     "content": "**IsValidPartition(n, parts):**\n\nA valid partition of {1,...,n-1} must satisfy four conditions:\n\n1. **Elements from correct range:** All elements are in {1,...,n-1}\n2. **Disjointness:** Parts don't overlap\n3. **Coverage:** Every element 1 to n-1 is in some part\n4. **n-sum-free:** Each part avoids having subsets sum to n\n\nThis captures the combinatorial structure of the problem.",
+    "mathContext": "Lean: `def IsValidPartition (n : ℕ) (parts : Finset (Finset ℕ)) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Partitions",
@@ -60,6 +62,7 @@
     "type": "definition",
     "title": "The Function f(n)",
     "content": "**f(n) = minimum valid partition size:**\n\n```lean\nnoncomputable def f (n : ℕ) : ℕ := sInf (ValidPartitionSizes n)\n```\n\nThis takes the infimum (minimum) over all valid partition sizes. The function is noncomputable because finding the minimum partition is computationally hard (related to NP-complete problems).\n\n**The central question:** How does f(n) grow as n → ∞?",
+    "mathContext": "Lean: `noncomputable def f (n : ℕ) : ℕ := sInf (ValidPartitionSizes n)`",
     "significance": "key",
     "relatedConcepts": [
       "Infimum",
@@ -94,6 +97,7 @@
     "type": "concept",
     "title": "Vu (2007)",
     "content": "**Improved Lower Bound:**\n\n$$f(n) \\gg \\frac{n^{1/3}}{\\log n}$$\n\nVu improved the lower bound from n^{1/3}/(log n)^{4/3} to n^{1/3}/log n, closing the gap between upper and lower bounds.\n\n**Reference:** Vu, V.H., \"Some new results on subset sums\", J. Number Theory (2007), 229-233.",
+    "mathContext": "$f(n) \\gg \\frac{n^{1/3}}{\\log n}$",
     "significance": "key",
     "relatedConcepts": [
       "Lower bounds",
@@ -127,6 +131,7 @@
     "type": "concept",
     "title": "Why Cube-Root Growth?",
     "content": "**Intuition for n^{1/3}:**\n\nIf a class contains elements up to size ~n^{1/3}, then choosing 3 such elements can easily sum to n. This gives a rough lower bound of n^{1/3} classes.\n\n**The n/φ(n) Factor:**\n\nWhen n has many small prime factors:\n- φ(n) is much smaller than n\n- n/φ(n) becomes large\n- More arithmetic progressions with common factors create sum constraints\n- More partitions are needed\n\n**Example:** For primorials (products of first k primes), n/φ(n) ~ log log n.",
+    "mathContext": "Formalizes the concept of why cube-root growth?",
     "significance": "key",
     "relatedConcepts": [
       "Greedy bounds",
@@ -144,6 +149,7 @@
     "type": "technique",
     "title": "Prime Totient Ratio",
     "content": "**prime_totient_ratio:**\n\nFor a prime p, φ(p) = p - 1, so:\n\n$$\\frac{p}{\\phi(p)} = \\frac{p}{p-1} \\approx 1$$\n\nThis means for prime n, the n/φ(n) factor contributes little to f(n). The complexity comes from composite n with many factors.",
+    "mathContext": "$\\frac{p}{\\phi(p)} = \\frac{p}{p-1} \\approx 1$",
     "significance": "supporting",
     "relatedConcepts": [
       "Prime numbers",
@@ -160,6 +166,7 @@
     "type": "technique",
     "title": "Small Cases",
     "content": "**Explicit Values:**\n\n- **f(2) = 1:** {1} is 2-sum-free (single element can't sum to 2)\n- **f(3) = 1:** {1,2} needs careful analysis - subsets are ∅, {1}, {2}, {1,2} with sums 0, 1, 2, 3\n- **f(4) = 2:** Need 2 classes because {1,3} sums to 4\n\nThese small cases illustrate the basic structure of the problem before asymptotic behavior dominates.",
+    "mathContext": "Lean: `theorem f_2 : f 2 = 1`",
     "significance": "supporting",
     "relatedConcepts": [
       "Base cases",
@@ -176,6 +183,7 @@
     "type": "concept",
     "title": "Connections to Related Problems",
     "content": "**Related Problems:**\n\n1. **Sum-free sets:** Sets where no element is a sum of two others (x + y ≠ z)\n\n2. **Schur numbers:** Minimum k such that {1,...,n} can be k-colored avoiding monochromatic x + y = z\n\n3. **Complete sequences:** Sequences where every sufficiently large n is representable as a sum\n\n4. **Subset sum problem:** NP-complete decision problem\n\nThe logarithmic correction terms (log n)^{1/3}(log log n)^{2/3} reflect deep analytic structure.",
+    "mathContext": "Formalizes the concept of connections to related problems",
     "significance": "key",
     "relatedConcepts": [
       "Schur numbers",

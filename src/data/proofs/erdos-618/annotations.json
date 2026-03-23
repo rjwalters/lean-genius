@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Core Definitions",
     "content": "IsTriangleFree G: no K₃ subgraph (CliqueFree 3). maxDegree G: maximum vertex degree. DiameterAtMostTwo G: every pair has a common neighbor. IsSubgraphOf G H: edge inclusion. edgeDiff G H: edges in H not in G. These definitions set up the framework for measuring the cost of diameter reduction.",
+    "mathContext": "Lean: `def IsTriangleFree (G : SimpleGraph V) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "CliqueFree",
@@ -62,6 +63,7 @@
     "type": "concept",
     "title": "Erdős-Gyárfás-Ruszinkó Results (1998)",
     "content": "simonovits_example: ∃ triangle-free graphs with Δ ≫ √n and h₂(G) ≫ n². This shows the √n threshold is sharp from above. bounded_degree_result: for Δ = O(1) with no isolated vertices, h₂(G) = O(n log n). These partial results from the original paper established the landscape before Alon's full solution.",
+    "mathContext": "Lean: `axiom simonovits_example :`",
     "significance": "key",
     "relatedConcepts": [
       "Simonovits",
@@ -97,6 +99,7 @@
     "type": "definition",
     "title": "Asymptotic Formulation",
     "content": "DegreeIsLittleO f: ∀ε > 0, eventually f(n) ≤ ε√n. H2IsLittleO f: ∀ε > 0, eventually f(n) ≤ εn². MainConjecture: if degree sequence is o(√n), then h₂ values are o(n²). main_conjecture_proved axiom: Alon proved the MainConjecture. This gives the clean asymptotic statement of the result.",
+    "mathContext": "Lean: `def DegreeIsLittleO (f : ℕ → ℕ) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Little-o notation",
@@ -132,6 +135,7 @@
     "type": "technique",
     "title": "Complete Resolution",
     "content": "erdos_618 (main theorem): MainConjecture ∧ (below-threshold bound from threshold_is_sharp). Proved by exact ⟨main_conjecture_proved, threshold_is_sharp.1⟩. This combines Alon's proof that Δ = o(√n) implies h₂ = o(n²) with the quantitative below-threshold bound, giving the complete resolution of Problem #618.",
+    "mathContext": "Lean: `theorem erdos_618 :`",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

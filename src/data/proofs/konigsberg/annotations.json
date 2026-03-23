@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "The Birth of Graph Theory",
     "content": "The Seven Bridges of Königsberg is one of the most famous problems in mathematics. The question seems simple: can you walk through the city crossing each bridge exactly once?\n\nEuler's 1736 solution didn't just answer this question - it created an entirely new field of mathematics. He realized that the physical layout doesn't matter; only the **connections** matter.\n\nThis abstraction - representing places as points and connections as lines - is the essence of graph theory.",
+    "mathContext": "Formalizes the concept of the birth of graph theory",
     "significance": "key",
     "relatedConcepts": [
       "graph theory",
@@ -44,6 +45,7 @@
     "type": "definition",
     "title": "Edge List",
     "content": "The edges are defined as pairs connecting landmasses to their adjacent bridges:\n\n- **V1** connects to 5 bridges (B1, B2, B3, B4, B5)\n- **V2** connects to 3 bridges (B1, B2, B6)\n- **V3** connects to 3 bridges (B4, B5, B7)\n- **V4** connects to 3 bridges (B3, B6, B7)\n\nEach bridge vertex has exactly 2 edges (to its two endpoints).\n\nNote: We only list each edge once; the graph is made symmetric in the adjacency definition.",
+    "mathContext": "Lean: `def edges : List (Verts × Verts)`",
     "significance": "supporting",
     "relatedConcepts": [
       "edge list",
@@ -60,6 +62,7 @@
     "type": "definition",
     "title": "Symmetric Adjacency",
     "content": "The adjacency relation checks if `(v, w)` or `(w, v)` appears in the edge list:\n\n```lean\ndef adj (v w : Verts) : Bool := (v, w) ∈ edges || (w, v) ∈ edges\n```\n\nThis makes the graph **undirected** - if you can walk from A to B, you can walk from B to A.",
+    "mathContext": "Lean: `def adj (v w : Verts) : Bool := (v, w) ∈ edges || (w, v) ∈ edges`",
     "significance": "supporting",
     "relatedConcepts": [
       "undirected graph",
@@ -112,6 +115,7 @@
     "type": "technique",
     "title": "Degree Verification",
     "content": "We prove that `graph.degree v = degree v` for all vertices.\n\nThe proof is by case analysis: `by cases v <;> rfl`\n\nThis unfolds the definition for each of the 11 vertices and confirms the computed degree matches the graph's actual degree.",
+    "mathContext": "$We prove that `graph.degree v = degree v` for all vertices.$",
     "significance": "supporting",
     "relatedConcepts": [
       "case analysis",
@@ -189,6 +193,7 @@
     "type": "concept",
     "title": "Historical Impact",
     "content": "Euler's solution had far-reaching consequences:\n\n**Birth of Graph Theory**: The idea that structure matters, not geometry, became graph theory - now essential in computer science, biology, and social sciences.\n\n**Early Topology**: Euler called this 'geometry of position' (analysis situs). The problem depends on connectivity, not distances - a topological property.\n\n**Modern Applications**:\n- **DNA sequencing**: Assembling genome fragments\n- **Circuit design**: Drawing circuits without lifting the pen\n- **Route optimization**: Garbage trucks, mail delivery, snow plowing\n- **Network analysis**: Understanding connectivity in social networks",
+    "mathContext": "Formalizes the concept of historical impact",
     "significance": "key",
     "relatedConcepts": [
       "history of mathematics",

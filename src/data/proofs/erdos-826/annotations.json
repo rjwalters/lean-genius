@@ -63,6 +63,7 @@
     "type": "definition",
     "title": "The Linear Bound Condition",
     "content": "**linearBoundCondition(n, C):** τ(n+k) ≤ C·k for all k ≥ 1.\n\nThis says divisor counts along the sequence n+1, n+2, n+3, ... grow at most linearly. The bound becomes:\n- k=1: τ(n+1) ≤ C (very restrictive!)\n- k=2: τ(n+2) ≤ 2C\n- k=10: τ(n+10) ≤ 10C (much more permissive)\n\n**goodStartingPoints(C):** The set of all n satisfying this condition. Problem #826 asks whether this set is infinite for some C.",
+    "mathContext": "Lean: `def linearBoundCondition (n : ℕ) (C : ℝ) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "linear growth",
@@ -98,6 +99,7 @@
     "type": "technique",
     "title": "Relation to Problem #248",
     "content": "**erdos_826_implies_248:** Problem #826 implies the weaker Problem #248.\n\nProblem #248 concerns similar growth conditions on the divisor function along shifts, but with weaker requirements. Any solution to #826 automatically solves #248.\n\nThe proof is immediate since the conditions of #826 are strictly stronger.",
+    "mathContext": "Lean: `def erdos_248_weaker : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "problem hierarchy",
@@ -115,6 +117,7 @@
     "type": "concept",
     "title": "The k=1 Constraint and Primes",
     "content": "**The bottleneck at k=1:**\n\nThe hardest constraint is at k=1: τ(n+1) ≤ C. This means n+1 must have few divisors.\n\n**prime_satisfies_bound:** If n+1 is prime, then τ(n+1) = 2, which satisfies the bound for any C ≥ 2. So primes p give candidates n = p-1.\n\nBut having n+1 prime is not enough — we also need τ(n+2), τ(n+3), ... to satisfy their respective bounds. This simultaneous requirement is what makes the problem hard.",
+    "mathContext": "$The hardest constraint is at k=1: τ(n+1) ≤ C. This means n+1 must have few divisors.$",
     "significance": "key",
     "relatedConcepts": [
       "prime numbers",
@@ -150,6 +153,7 @@
     "type": "definition",
     "title": "Connection to Smooth Numbers",
     "content": "**Smooth numbers** are integers whose prime factors are all small. Numbers with controlled divisor counts tend to have specific factorization patterns.\n\n**hasControlledDivisors(m, bound):** σ₀(m) ≤ bound.\n\nThe problem connects to the distribution of smooth numbers in short intervals: we need many consecutive integers to have restricted factorizations.",
+    "mathContext": "Lean: `def hasControlledDivisors (m : ℕ) (bound : ℝ) : Prop`",
     "significance": "supporting",
     "relatedConcepts": [
       "smooth numbers",

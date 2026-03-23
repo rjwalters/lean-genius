@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Desargues's Theorem: Wiedijk #87",
     "content": "**Desargues's Theorem (1639)**:\n\nIf two triangles $ABC$ and $A'B'C'$ are **in perspective from a point** (lines $AA', BB', CC'$ meet at a common point $O$), then they are **in perspective from a line** (the intersections $P = AB \\cap A'B'$, $Q = BC \\cap B'C'$, $R = CA \\cap C'A'$ are collinear).\n\n**The converse also holds**: If the intersections are collinear, the connecting lines are concurrent.\n\n**Why Remarkable**:\n1. **Self-dual** in projective geometry (point/line swap gives same theorem)\n2. Characterizes **Desarguesian planes** — some planes violate it!\n3. Equivalent to coordinatization by a division ring\n\n**Applications**: Computer graphics, computer vision, perspective drawing, 3D reconstruction.",
+    "mathContext": "$ABC$",
     "significance": "key",
     "relatedConcepts": [
       "projective geometry",
@@ -188,6 +189,7 @@
     "type": "context",
     "title": "Special Cases",
     "content": "**Shared Vertex Case**:\n\nWhen $A = A'$, the triangles trivially satisfy perspective from that point.\n\n```lean\ntheorem shared_vertex_perspective (A B C B' C' : ProjPoint) :\n    perspectiveFromPoint A B C A B' C'\n```\n\n**Proof**: $A \\times A = 0$ by `crossProduct_self`, making the concurrence determinant 0.\n\n**Degenerate Cases**:\n- Three collinear points: determinant = 0\n- Repeated points: always collinear\n\n```lean\ntheorem collinear_repeated (p q : ProjPoint) : collinear p p q\n```",
+    "mathContext": "$A = A'$",
     "significance": "supporting",
     "relatedConcepts": [
       "degenerate",
@@ -205,6 +207,7 @@
     "type": "context",
     "title": "Projective Duality and Context",
     "content": "**Self-Duality**:\n\nDesargues's theorem is **self-dual**: swapping points↔lines and collinear↔concurrent gives the same theorem!\n\n**Non-Desarguesian Planes**:\n\nNot all projective planes satisfy Desargues:\n- The **Moulton plane** violates it\n- Certain finite planes of order $p^2$ are non-Desarguesian\n\nA plane is **Desarguesian** iff it can be coordinatized by a division ring.\n\n**Related Theorems**:\n- **Pappus's Theorem**: Special case for configurations on two lines\n- **Pascal's Theorem**: Related result for hexagons in conics\n\n**Applications**:\n- 3D rendering and perspective projection\n- Camera calibration\n- Architectural drawing\n- Art: understanding perspective",
+    "mathContext": "$p^2$",
     "significance": "supporting",
     "relatedConcepts": [
       "duality",

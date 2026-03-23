@@ -45,6 +45,7 @@
     "type": "definition",
     "title": "Factorial Divisor Count",
     "content": "**tauFactorial:**\n\nThe number of divisors of n!.\n\n```lean\ndef tauFactorial (n : ℕ) : ℕ := tau n.factorial\n```\n\n**Growth:** τ(n!) grows like exp(n · log 2 / log log n) - extremely fast!\n\n**Formula:** By Legendre, n! = ∏_p p^{e_p} where e_p = ⌊n/p⌋ + ⌊n/p²⌋ + ...\nSo τ(n!) = ∏_{p≤n} (1 + e_p)",
+    "mathContext": "Lean: `def tauFactorial (n : ℕ) : ℕ := tau n.factorial`",
     "significance": "key",
     "relatedConcepts": [
       "Legendre's formula",
@@ -62,6 +63,7 @@
     "type": "definition",
     "title": "The F Function",
     "content": "**F(f, n):**\n\nThe ratio of divisor counts for extended factorials.\n\n```lean\nnoncomputable def F (f : ℕ → ℝ) (n : ℕ) : ℝ :=\n  (tauFactorial (n + ⌊f n⌋.toNat) : ℝ) / (tauFactorial n : ℝ)\n```\n\n**Interpretation:** F measures how many \"new divisor factors\" appear when extending n! to (n+k)!.\n\n**Always ≥ 1:** Since (n+k)! is divisible by n!, we have τ((n+k)!) ≥ τ(n!).",
+    "mathContext": "Lean: `noncomputable def F (f : ℕ → ℝ) (n : ℕ) : ℝ :=`",
     "significance": "key",
     "relatedConcepts": [
       "Factorial growth",
@@ -78,6 +80,7 @@
     "type": "concept",
     "title": "Easy Result: F(√n, n) → ∞",
     "content": "**sqrt_gives_infinity:**\n\nWhen f(n) = √n, the ratio F grows without bound.\n\n**Statement:**\n```lean\naxiom sqrt_gives_infinity :\n    ∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → F (√·) n > M\n```\n\nErdős and Graham note this is \"easy to show.\" The exponent 1/2 can even be reduced to 1/2 - c for some small c > 0.\n\n**Intuition:** √n new integers contribute many new prime factors to the factorial.",
+    "mathContext": "Lean: `axiom sqrt_gives_infinity :`",
     "significance": "key",
     "relatedConcepts": [
       "Polynomial growth",
@@ -183,6 +186,7 @@
     "type": "technique",
     "title": "Corollary of Zhang's Theorem",
     "content": "**bounded_gaps_consequence:**\n\nZhang's theorem implies limsup F(g(n), n) = ∞ for any g(n) → ∞.\n\n```lean\ntheorem bounded_gaps_consequence :\n    ∀ g : ℕ → ℝ, (∀ M, ∃ N, ∀ n ≥ N, g n > M) →\n      ∀ M : ℝ, ∃ᶠ n, F g n > M\n```\n\n**This is a theorem, not an axiom!** It follows from zhang_bounded_gaps and bounded_gaps_implies_limsup_infinity.",
+    "mathContext": "Lean: `theorem bounded_gaps_consequence :`",
     "significance": "key",
     "relatedConcepts": [
       "Consequence",
@@ -216,6 +220,7 @@
     "type": "concept",
     "title": "Open Questions",
     "content": "**Three Partially Open Questions:**\n\n1. **Question 1:** Does lim F((log n)^C, n) = ∞ for large C?\n   - Unknown for specific C values\n\n2. **Question 2:** Is F(log n, n) dense in (1, ∞)?\n   - We know liminf = 1, but density is open\n\n3. **Question 3:** For monotonic f ≤ log n with f → ∞, is F(f,n) dense in (1, ∞)?\n\nThe gap between (log n)^C and n^{4/9} remains mysterious.",
+    "mathContext": "$1. **Question 1:** Does lim F((log n)^C, n) = ∞ for large C?$",
     "significance": "key",
     "relatedConcepts": [
       "Open problems",
@@ -232,6 +237,7 @@
     "type": "technique",
     "title": "Erdős Problem #420: Partially Solved",
     "content": "**erdos_420:**\n\nThe problem is partially solved.\n\n**What's Known:**\n- liminf F(c log n, n) = 1 for any c > 0\n- lim F(n^{4/9}, n) = ∞\n- F ≈ 1 almost always for f = o((log n)²)\n\n**What's Open:**\n- Behavior for f between log n and n^{4/9}\n- Density questions",
+    "mathContext": "Lean: `axiom tau_factorial_formula :`",
     "significance": "key",
     "relatedConcepts": [
       "Main theorem",
@@ -248,6 +254,7 @@
     "type": "concept",
     "title": "Mathematical Significance",
     "content": "**Why This Problem Matters:**\n\n1. **Divisor Growth:** τ(n!) encodes deep prime factorization information\n\n2. **Prime Connection:** F behavior is tied to prime gap distribution\n\n3. **Density Questions:** Whether F takes all values in (1,∞) is subtle\n\n4. **Multiplicativity:** τ's multiplicative nature makes analysis tractable\n\nThe connection to prime gaps (via Zhang's theorem) shows how progress in one area impacts another.",
+    "mathContext": "Lean: `theorem erdos_420_summary :`",
     "significance": "supporting",
     "relatedConcepts": [
       "Number theory connections",

@@ -81,6 +81,7 @@
     "type": "definition",
     "title": "Symmetric Coloring Structure",
     "content": "A **symmetric coloring** packages a color function f : V → V → C with a proof that f(v,w) = f(w,v). This reflects the fact that edge colorings assign a single color to each unordered edge {v,w}. The structure ensures well-definedness without needing to work with unordered pairs directly.",
+    "mathContext": "Formalizes the concept of symmetric coloring structure",
     "significance": "supporting",
     "relatedConcepts": [
       "edge coloring",
@@ -115,6 +116,7 @@
     "type": "definition",
     "title": "Erdős-Hajnal Finite Property",
     "content": "The **Erdős-Hajnal finite property** combines two conditions: (1) G is K₄-free, and (2) every symmetric edge coloring of G with countably many colors contains a monochromatic triangle. A graph satisfying both conditions would answer part (a) affirmatively. The tension is that K₄-freeness limits graph density, while the coloring property demands enough structure to force monochromatic triangles.",
+    "mathContext": "Lean: `def ErdosHajnalFiniteProperty {V : Type*} (G : SimpleGraph V) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Erdős-Hajnal conjecture",
@@ -132,6 +134,7 @@
     "type": "definition",
     "title": "Problem 1174 Part (a)",
     "content": "**erdos_1174a** is the formal statement of part (a): there exists some type V and some simple graph G on V satisfying the Erdős-Hajnal finite property. The existential quantification over the vertex type V means we are not restricted to graphs on ℕ or any fixed set—the graph could have any cardinality.",
+    "mathContext": "Lean: `def erdos_1174a : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "existential statement",
@@ -167,6 +170,7 @@
     "type": "definition",
     "title": "Erdős-Hajnal Infinite Property and Part (b)",
     "content": "The **Erdős-Hajnal infinite property** requires: (1) G has no clique of cardinality ℵ₁, and (2) every countable coloring yields a monochromatic K_{ℵ₀}. This is the transfinite analog of the finite property, replacing K₄-free with K_{ℵ₁}-free and monochromatic K₃ with monochromatic K_{ℵ₀}. The formal statement **erdos_1174b** asserts the existence of such a graph.",
+    "mathContext": "Lean: `def ErdosHajnalInfiniteProperty {V : Type*} (G : SimpleGraph V) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "infinite combinatorics",
@@ -274,6 +278,7 @@
     "type": "concept",
     "title": "Open Status Summary",
     "content": "Both parts of Problem 1174 remain **open in ZFC**. The known landscape: (1) Nešetřil-Rödl handles finitely many colors, (2) Shelah shows consistency, (3) no ZFC proof or refutation is known. The problem connects three major areas: finite Ramsey theory (partition properties of sparse graphs), infinite combinatorics (transfinite generalizations), and set-theoretic independence (forcing and consistency).",
+    "mathContext": "Formalizes the concept of open status summary",
     "significance": "key",
     "relatedConcepts": [
       "open problem",

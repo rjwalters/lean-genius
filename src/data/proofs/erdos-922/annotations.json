@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Independence Number",
     "content": "**independenceNumber G = α(G):**\n\nThe size of the largest independent set in G.\n\n**Properties:**\n- α(Kₙ) = 1 (complete graph: only singletons)\n- α(empty graph on n vertices) = n\n- χ(G) ≥ n/α(G) (lower bound on chromatic number)",
+    "mathContext": "Formalizes the concept of independence number",
     "significance": "key",
     "relatedConcepts": [
       "Clique number",
@@ -44,6 +45,7 @@
     "type": "definition",
     "title": "Proper Coloring",
     "content": "**IsProperColoring c:**\n\nA coloring c : V → ℕ is proper if adjacent vertices have different colors.\n\n**Definition:**\n```lean\ndef IsProperColoring (c : V → ℕ) : Prop :=\n  ∀ u v, G.Adj u v → c u ≠ c v\n```\n\nEach color class in a proper coloring is an independent set.",
+    "mathContext": "Lean: `def IsProperColoring (c : V → ℕ) : Prop :=`",
     "significance": "key"
   },
   {
@@ -92,6 +94,7 @@
     "type": "definition",
     "title": "The k = 0 Case",
     "content": "**hasFolkmanPropertyZero:**\n\nEvery subgraph has α ≥ n/2.\n\n**Key observation:** This forces the graph to be bipartite!\n\n**Why:** An odd cycle Cₙ has α = (n-1)/2 < n/2, so odd cycles are forbidden.",
+    "mathContext": "$Every subgraph has α ≥ n/2.$",
     "significance": "key"
   },
   {
@@ -104,6 +107,7 @@
     "type": "technique",
     "title": "k = 0 Implies Bipartiteness",
     "content": "**folkman_zero_implies_bipartite:**\n\nIf every subgraph has α ≥ n/2, then χ(G) ≤ 2.\n\n**Proof idea:**\n- No odd cycles exist (they violate the condition)\n- A graph is bipartite iff it has no odd cycles\n- Bipartite graphs are 2-colorable",
+    "mathContext": "$If every subgraph has α ≥ n/2, then χ(G) ≤ 2.$",
     "significance": "key"
   },
   {
@@ -129,6 +133,7 @@
     "type": "technique",
     "title": "Erdős Problem #922: SOLVED",
     "content": "**erdos_922:**\n\nThe statement of the problem, now a theorem:\n\n∀ k ≥ 0, Folkman property with k → χ(G) ≤ k+2\n\n**Answer: YES** - proved by Folkman (1970).",
+    "mathContext": "$∀ k ≥ 0, Folkman property with k → χ(G) ≤ k+2$",
     "significance": "key"
   },
   {
@@ -141,6 +146,7 @@
     "type": "concept",
     "title": "The Bound is Tight",
     "content": "**folkman_bound_tight:**\n\nFor every k ≥ 0, there exist graphs achieving χ(G) = k+2 while satisfying the Folkman property.\n\nThe bound k+2 cannot be improved in general.",
+    "mathContext": "$For every k ≥ 0, there exist graphs achieving χ(G) = k+2 while satisfying the Folkman property.$",
     "significance": "key"
   },
   {
@@ -153,6 +159,7 @@
     "type": "technique",
     "title": "The k = 1 Case",
     "content": "**folkman_k1:**\n\nFor k = 1: Folkman property implies χ(G) ≤ 3.\n\nThis is the first non-trivial case that Erdős and Hajnal couldn't prove themselves.",
+    "mathContext": "$For k = 1: Folkman property implies χ(G) ≤ 3.$",
     "significance": "key"
   },
   {
@@ -165,6 +172,7 @@
     "type": "definition",
     "title": "Independence Ratio",
     "content": "**independenceRatio:**\n\nα(G)/n - the fraction of vertices in a maximum independent set.\n\nThe Folkman property with k says: for all subgraphs H on m vertices, α(H)/m ≥ (m-k)/(2m).",
+    "mathContext": "$The Folkman property with k says: for all subgraphs H on m vertices, α(H)/m ≥ (m-k)/(2m).$",
     "significance": "supporting"
   },
   {
@@ -177,6 +185,7 @@
     "type": "concept",
     "title": "Greedy Coloring Bound",
     "content": "**greedy_coloring_bound:**\n\nχ(G) ≤ Δ(G) + 1 where Δ(G) is the maximum degree.\n\nGreedy coloring always uses at most Δ+1 colors. Folkman graphs have special degree structure.",
+    "mathContext": "$χ(G) ≤ Δ(G) + 1 where Δ(G) is the maximum degree.$",
     "significance": "supporting"
   },
   {
@@ -202,6 +211,7 @@
     "type": "concept",
     "title": "Ramsey Connection",
     "content": "**ramsey_connection:**\n\nLarge graphs have either large cliques or large independent sets.\n\nThis Ramsey-type principle underlies why the Folkman property constrains chromatic number.",
+    "mathContext": "Lean: `axiom ramsey_connection (n k : ℕ) :`",
     "significance": "supporting",
     "relatedConcepts": [
       "Ramsey theorem",
@@ -231,6 +241,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_922_summary:**\n\nCombines the main results:\n1. Folkman's theorem: property with k → χ ≤ k+2\n2. Tightness: bound is achieved for all k\n3. Special case: k=0 gives bipartiteness\n\nThe answer to Erdős Problem #922 is YES.",
+    "mathContext": "$1. Folkman's theorem: property with k → χ ≤ k+2$",
     "significance": "key"
   }
 ]

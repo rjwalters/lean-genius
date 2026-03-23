@@ -17,6 +17,7 @@
     "type": "definition",
     "title": "Strict Lemniscate",
     "content": "The **strict lemniscate** uses < instead of ≤:\n\n{z : |f(z)| < c}\n\nThis is the interior of the lemniscate. The distinction matters for topological properties like connectedness.",
+    "mathContext": "Defines the open sublevel set $\\{z \\in \\mathbb{C} : |f(z)| < c\\}$. In Lean this is `{z : ℂ | ‖f.eval z‖ < c}`, using strict inequality `<` on the norm. This is the topological interior of the lemniscate $\\{z : |f(z)| \\le c\\}$.",
     "significance": "supporting"
   },
   {
@@ -26,6 +27,7 @@
     "type": "definition",
     "title": "Lemniscate Boundary",
     "content": "The **lemniscate boundary** is the level curve:\n\n{z : |f(z)| = c}\n\nThis is an algebraic curve of degree 2n where n = deg(f). The topology of this curve changes as c passes through critical values of |f|.",
+    "mathContext": "The boundary $\\{z \\in \\mathbb{C} : |f(z)| = c\\}$ is an algebraic curve of degree $2n$ where $n = \\deg(f)$. Writing $f(z) = \\sum a_k z^k$ and $|f(z)|^2 = f(z)\\overline{f(z)}$, the equation $|f(z)|^2 = c^2$ is a real polynomial of degree $2n$ in $(\\operatorname{Re} z, \\operatorname{Im} z)$. In Lean: `{z : ℂ | ‖f.eval z‖ = c}`.",
     "significance": "supporting"
   },
   {
@@ -35,6 +37,7 @@
     "type": "technique",
     "title": "Lemniscates are Closed",
     "content": "The lemniscate {z : |f(z)| ≤ c} is a closed set.\n\nThis follows from continuity: the preimage of a closed set [0,c] under the continuous function |f| is closed.",
+    "mathContext": "The map $z \\mapsto |f(z)|$ is continuous, and $[0, c]$ is closed in $\\mathbb{R}$, so the preimage $\\{z : |f(z)| \\le c\\} = |f|^{-1}([0, c])$ is closed. In Lean this is stated as `IsClosed (lemniscate f c)` using the `lemniscate_isClosed` axiom.",
     "significance": "supporting"
   },
   {
@@ -44,6 +47,7 @@
     "type": "context",
     "title": "Lemniscates are Compact",
     "content": "For polynomials of positive degree, lemniscates are **compact** (closed and bounded).\n\nBoundedness: As |z| → ∞, |f(z)| → ∞ for non-constant f, so the lemniscate is contained in some large disk.",
+    "mathContext": "For $\\deg(f) \\ge 1$, $|f(z)| \\to \\infty$ as $|z| \\to \\infty$, so $\\{z : |f(z)| \\le c\\}$ is bounded. Combined with closedness this gives compactness (Heine--Borel). In Lean: `IsCompact (lemniscate f c)` given `f.natDegree > 0` and `c > 0`.",
     "significance": "key"
   },
   {
@@ -53,6 +57,7 @@
     "type": "technique",
     "title": "Component Counting",
     "content": "For sufficiently small c, the lemniscate has exactly m connected components, where m is the number of distinct roots.\n\nEach root gets its own 'island'. As c increases, these islands may merge when c passes a critical value (a saddle point of |f|).",
+    "mathContext": "If $f$ is monic with $m$ distinct roots $z_1, \\dots, z_m$, then for sufficiently small $c > 0$ the lemniscate $\\{z : |f(z)| \\le c\\}$ has exactly $m$ connected components. In Lean this is axiomatized with `m = f.roots.toFinset.card` and existence of a threshold $c_0 > 0$ below which the component count equals $m$.",
     "significance": "key",
     "relatedConcepts": ["Connected components", "Morse theory"]
   },
@@ -84,6 +89,7 @@
     "type": "technique",
     "title": "Grunsky Conjecture is FALSE",
     "content": "The Grunsky conjecture is **disproved**.\n\nCounterexamples show that lemniscate components can be non-convex, even for small c. The interaction between multiple roots can create 'pinching' effects.",
+    "mathContext": "The negation $\\lnot\\text{grunskyConjecture}$ is axiomatized as `grunskyConjecture_false`. This asserts $\\exists f$ monic, $\\exists c > 0$ small, $\\exists z_0 \\in \\{z : |f(z)| \\le c\\}$ such that the connected component containing $z_0$ is not convex. The main theorem `erdos_1047` is definitionally equal to this axiom.",
     "significance": "key",
     "relatedConcepts": ["Disproved conjecture", "Counterexample", "Potential theory"]
   },
@@ -104,6 +110,7 @@
     "type": "technique",
     "title": "Pommerenke's Parameter Choice",
     "content": "For k ≥ 10, choosing:\n\na = (1 + 1/k) · k^(1/(k+1))\n\ngives a non-convex lemniscate component around 0 at level c = 1.\n\nThe value of a is approximately 1 + 1/k for large k, placing the simple root just outside the unit circle.",
+    "mathContext": "Pommerenke showed that for $k \\ge 10$, setting $a = \\bigl(1 + \\tfrac{1}{k}\\bigr)\\, k^{1/(k+1)}$ makes the component of $\\{z : |z^k(z - a)| \\le 1\\}$ around $0$ non-convex. In Lean: `pommerenke_parameter` asserts, for any $k \\ge 10$, existence of $a$ and a witness $z_0$ with $\\lnot\\text{IsConvexComplex}$ on the component at level $c = 1$.",
     "significance": "key"
   },
   {
@@ -113,6 +120,7 @@
     "type": "definition",
     "title": "Goodman's Polynomial",
     "content": "**Goodman's example (1966):**\n\nf(z) = (z² + 1)(z - 2)²\n\nThis has roots at ±i and a double root at 2. Degree 4, with one non-simple root.",
+    "mathContext": "Goodman's polynomial $f(z) = (z^2 + 1)(z - 2)^2$ has roots at $z = \\pm i$ (simple) and $z = 2$ (double), giving $\\deg(f) = 4$. In Lean: `goodmanPolynomial := (X ^ 2 + 1) * (X - 2) ^ 2`.",
     "significance": "key"
   },
   {
@@ -122,6 +130,7 @@
     "type": "definition",
     "title": "Goodman's Critical Value",
     "content": "The critical level:\n\nc = 5^(3/2) / 4 ≈ 2.795\n\nAt this level, the lemniscate has three components (around i, -i, and 2), and one of them is non-convex.",
+    "mathContext": "The critical value is $c = \\frac{5^{3/2}}{4} = \\frac{5\\sqrt{5}}{4} \\approx 2.795$. In Lean: `goodmanCriticalValue : ℝ := 5 ^ (3/2 : ℝ) / 4`. At this level the lemniscate $\\{z : |(z^2+1)(z-2)^2| \\le c\\}$ has three components, at least one of which is non-convex.",
     "significance": "key"
   },
   {
@@ -131,6 +140,7 @@
     "type": "technique",
     "title": "Goodman's Counterexample",
     "content": "**Goodman (1966):**\n\nThe polynomial (z²+1)(z-2)² at level c = 5^(3/2)/4 has a non-convex component.\n\nGoodman also constructed an example with only simple roots of degree 4.",
+    "mathContext": "Goodman proved $\\exists z_0 \\in \\{z : |(z^2+1)(z-2)^2| \\le 5^{3/2}/4\\}$ whose connected component is not convex (`goodman_counterexample`). He further showed there exists a degree-4 polynomial with all simple roots ($f'(z_j) \\ne 0$ at each root $z_j$) that also admits a non-convex lemniscate component (`goodman_simple_roots_example`).",
     "significance": "key"
   },
   {
@@ -140,6 +150,7 @@
     "type": "technique",
     "title": "Referee's Example",
     "content": "**Anonymous referee of Goodman's paper:**\n\nf(z) = z(z⁵ - 1) with c = 5.6^(-6/5)\n\nThis polynomial has roots at 0 and the 5th roots of unity. The symmetric arrangement creates an interesting non-convex component.",
+    "mathContext": "The referee's polynomial is $f(z) = z(z^5 - 1)$, monic of degree 6, with roots at $0$ and the five 5th roots of unity $e^{2\\pi i k/5}$, $k = 0,\\dots,4$. At level $c = 5.6^{-6/5}$ the lemniscate has a non-convex component. In Lean: `refereePolynomial := X * (X ^ 5 - 1)` with `refereeCriticalValue := (5.6 : ℝ) ^ (-(6/5 : ℝ))`.",
     "significance": "key"
   },
   {
@@ -149,6 +160,7 @@
     "type": "definition",
     "title": "Goodman's Open Question",
     "content": "**Open Problem:**\n\nWhat is the maximum number of non-convex components for a degree d polynomial?\n\nDefine maxNonConvexComponents(d) as this supremum. We know:\n- maxNonConvexComponents(d) ≥ 1 for d ≥ 4\n- The exact function is unknown",
+    "mathContext": "Define $M(d) = \\sup_f \\max_c \\#\\{\\text{non-convex components of } \\{z : |f(z)| \\le c\\}\\}$ over monic $f$ of degree $d$. It is known that $M(d) \\ge 1$ for $d \\ge 4$ (`nonconvex_exists_degree_ge_4`). The exact function $d \\mapsto M(d)$ remains an open question (`goodmanOpenQuestion`).",
     "significance": "key"
   },
   {
@@ -158,6 +170,7 @@
     "type": "technique",
     "title": "Single Root is Convex",
     "content": "**Positive result:**\n\nFor f(z) = (z - a)^k, the lemniscate is:\n\n{z : |z - a|^k ≤ c} = {z : |z - a| ≤ c^(1/k)}\n\nThis is a disk centered at a, which is convex.",
+    "mathContext": "For $f(z) = (z - a)^k$ with $k \\ge 1$, the lemniscate is $\\{z : |z - a|^k \\le c\\} = \\overline{B}(a,\\, c^{1/k})$, a closed disk, hence convex. In Lean: `single_root_convex` states `IsConvexComplex (lemniscate ((X - C a) ^ k) c)` for all $a \\in \\mathbb{C}$, $k \\ge 1$, $c > 0$.",
     "significance": "supporting"
   },
   {
@@ -167,6 +180,7 @@
     "type": "technique",
     "title": "Main Result",
     "content": "**Erdős Problem #1047: SOLVED**\n\nAnswer: NO, lemniscate components need not be convex.\n\nThe Grunsky conjecture is false, with explicit counterexamples from Pommerenke (1961) and Goodman (1966).",
+    "mathContext": "The main theorem `erdos_1047 : ¬grunskyConjecture` asserts $\\lnot(\\forall f\\text{ monic},\\, \\exists c_0 > 0,\\, \\forall c < c_0,\\, \\text{all components convex})$. The constructive witness `erdos_1047_counterexample` provides a monic $f$ of positive degree, a level $c > 0$, and a point $z_0$ in the lemniscate whose connected component is not convex.",
     "significance": "key"
   }
 ]

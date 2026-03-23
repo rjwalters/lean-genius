@@ -136,6 +136,7 @@
     "type": "technique",
     "title": "Erdős #514 Part 1: SOLVED",
     "content": "**erdos_514_part1:**\n\n```lean\ntheorem erdos_514_part1 (f : ℂ → ℂ) (hf : IsTranscendental f) :\n    ∃ γ : ℝ → ℂ, IsPathToInfinity γ ∧ HasSuperPolynomialGrowth f γ :=\n  boas_existence f hf\n```\n\nThe answer to Part 1 is YES: such a path always exists.",
+    "mathContext": "Lean: `theorem erdos_514_part1 (f : ℂ → ℂ) (hf : IsTranscendental f) :`",
     "significance": "key"
   },
   {
@@ -184,6 +185,7 @@
     "type": "concept",
     "title": "Part 3: Faster Than M^ε (OPEN)",
     "content": "**faster_than_max_modulus_conjecture:**\n\nDoes there exist a path γ for every transcendental f such that |f(γ(t))| grows faster than M(|γ(t)|)^ε for any ε > 0?\n\n```lean\naxiom faster_than_max_modulus_conjecture (f : ℂ → ℂ) (hf : IsTranscendental f) :\n    ∃ γ : ℝ → ℂ, IsPathToInfinity γ ∧ DominatesMaxModulusPower f γ\n```\n\n**Status:** OPEN. This would be remarkable: the path would find points where f is exceptionally large even compared to its maximum modulus at that radius.",
+    "mathContext": "Lean: `axiom faster_than_max_modulus_conjecture (f : ℂ → ℂ) (hf : IsTranscendental f) :`",
     "significance": "key"
   },
   {
@@ -232,6 +234,7 @@
     "type": "concept",
     "title": "Properties of M(r)",
     "content": "**Key properties of the maximum modulus function:**\n\n1. **Monotonicity:** M(r) is non-decreasing for entire f\n   (Maximum Modulus Principle)\n\n2. **Lower bound:** M(r) ≥ |f(0)| for all r ≥ 0\n\n3. **Transcendental growth:** For transcendental f, M(r) → ∞\n\n**Axioms:**\n- maxModulus_monotone\n- maxModulus_ge_origin\n- maxModulus_tendsto_infinity",
+    "mathContext": "$2. **Lower bound:** M(r) ≥ |f(0)| for all r ≥ 0$",
     "significance": "supporting",
     "relatedConcepts": [
       "Maximum modulus principle",
@@ -249,6 +252,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_514_summary:**\n\nPart 1 is resolved: for any transcendental entire function, a path with super-polynomial growth exists.\n\n```lean\ntheorem erdos_514_summary :\n    ∀ f : ℂ → ℂ, IsTranscendental f →\n      ∃ γ : ℝ → ℂ, IsPathToInfinity γ ∧ HasSuperPolynomialGrowth f γ :=\n  fun f hf => erdos_514_part1 f hf\n```\n\n**Status:**\n- Part 1: SOLVED (Boas) — formalized as erdos_514_part1\n- Parts 2, 3: OPEN — formalized as conjectures",
+    "mathContext": "Lean: `theorem erdos_514_summary :`",
     "significance": "key"
   },
   {

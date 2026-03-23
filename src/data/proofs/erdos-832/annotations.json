@@ -45,6 +45,7 @@
     "type": "definition",
     "title": "Erdős's Conjecture (Disproved)",
     "content": "**erdosConjecture(r, k):** For r ≥ 3, every r-uniform hypergraph with chromatic number ≥ k has at least C((r-1)(k-1)+1, r) edges. The conjectured extremal example is the complete r-uniform hypergraph on (r-1)(k-1)+1 vertices.\n\nThis conjecture is FALSE for r ≥ 4 (Alon 1985) and for r = 3, k = 3 (Fano plane).",
+    "mathContext": "$This conjecture is FALSE for r ≥ 4 (Alon 1985) and for r = 3, k = 3 (Fano plane).$",
     "significance": "key",
     "relatedConcepts": [
       "Extremal problems",
@@ -98,6 +99,7 @@
     "type": "technique",
     "title": "Open Questions and Examples",
     "content": "**r3_open_question:** Whether the conjecture holds for r = 3 with sufficiently large k remains open.\n\n**Concrete computations** verified by norm_num:\n- 7 < C(5,3) = 10: Fano plane has fewer edges than predicted\n- (7/8)^4 < 0.6: Alon's factor gives ~41% reduction for r = 4",
+    "mathContext": "Lean: `def r3_open_question : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Open problems",
@@ -114,6 +116,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_832** packages two key results:\n1. Alon's disproof: ∃ C, for r ≥ C and k ≥ C·r, counterexample hypergraphs exist\n2. Cherkashin-Petrov: m(r,k)/k^r → c_r for each r ≥ 3\n\nProved by `⟨alon_disproof, cherkashin_petrov_limit⟩`.",
+    "mathContext": "$1. Alon's disproof: ∃ C, for r ≥ C and k ≥ C·r, counterexample hypergraphs exist$",
     "significance": "key",
     "relatedConcepts": [
       "Summary theorem",

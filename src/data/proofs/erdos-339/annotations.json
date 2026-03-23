@@ -44,6 +44,7 @@
     "type": "definition",
     "title": "r-Element Sums (rSums)",
     "content": "**rSums A r:**\n\nThe set rA = {a₁ + a₂ + ... + aᵣ : aᵢ ∈ A} of all r-element sums, where elements may repeat.\n\nFor a basis of order r, this set contains all sufficiently large integers by definition.\n\nFormalized as: {n | ∃ f : Fin r → ℕ, (∀ i, f i ∈ A) ∧ (Σ f i) = n}",
+    "mathContext": "$The set rA = {a₁ + a₂ + ... + aᵣ : aᵢ ∈ A} of all r-element sums, where elements may repeat.$",
     "significance": "key",
     "relatedConcepts": [
       "Sumsets",
@@ -128,6 +129,7 @@
     "type": "technique",
     "title": "Distinct Sums Are a Subset",
     "content": "**distinct_subset_general:**\n\n```lean\ntheorem distinct_subset_general (A : Set ℕ) (r : ℕ) :\n    rDistinctSums A r ⊆ rSums A r\n```\n\n**Observation:** Every sum of distinct elements is also a sum (trivially).\n\nThe proof just drops the injectivity constraint.\n\n**The surprise:** Despite being a strict subset, density is preserved!",
+    "mathContext": "Lean: `theorem distinct_subset_general (A : Set ℕ) (r : ℕ) :`",
     "significance": "key",
     "relatedConcepts": [
       "Subset relations",
@@ -161,6 +163,7 @@
     "type": "technique",
     "title": "Special Case r = 2",
     "content": "**case_r_equals_2 and case_r_equals_2_distinct:**\n\nFor r = 2:\n- rSums A 2 = A + A = {a + b : a, b ∈ A} (ordinary sumset)\n- rDistinctSums A 2 = A +̂ A = {a + b : a, b ∈ A, a ≠ b} (restricted sumset)\n\nThe theorem proves these characterizations explicitly.\n\n**Note:** The restricted sumset A +̂ A is also written Â + A in some literature.",
+    "mathContext": "$For r = 2:$",
     "significance": "key",
     "relatedConcepts": [
       "Sumsets",
@@ -194,6 +197,7 @@
     "type": "definition",
     "title": "Related: Sidon Sets and Bₕ Sets",
     "content": "**IsSidonSet and IsBhSet:**\n\n**Sidon sets:** All pairwise sums a + b (a ≤ b) are distinct.\n- These are very sparse (at most ~√n elements up to n)\n- The opposite extreme from dense bases\n\n**Bₕ sets:** Generalization - all h-element sums are distinct.\n\nThese connect to problems about unique representation, whereas Erdős 339 is about existence of distinct representations.",
+    "mathContext": "Lean: `theorem erdos_339_solved :`",
     "significance": "supporting",
     "relatedConcepts": [
       "Sidon sets",
@@ -210,6 +214,7 @@
     "type": "technique",
     "title": "Summary: Erdős Problem #339 SOLVED",
     "content": "**erdos_339_solved and erdos_339_summary:**\n\nBoth Erdős conjectures are TRUE (HHP 2003):\n\n1. **Basis → Positive Density:** If A is basis of order r, then r distinct sums have positive lower density.\n\n2. **Density Preservation:** If r-sums have positive upper density, then r distinct sums do too.\n\n**Key Insight:** The perturbation argument shows representations transfer from general to distinct.\n\n**The surprise:** Fewer sums, same density!",
+    "mathContext": "Formalizes the concept of summary: erdős problem #339 solved",
     "significance": "key",
     "relatedConcepts": [
       "Solved problems",

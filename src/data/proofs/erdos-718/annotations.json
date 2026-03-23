@@ -119,6 +119,7 @@
     "type": "technique",
     "title": "Main Results and Summary",
     "content": "**erdos_718_solved**: MaderConjecture is true (via Komlós-Szemerédi). **erdos_718_summary** and **erdos_718**: combine the quadratic bound with the earlier exponential bound, proved via exact ⟨komlos_szemeredi_1996, mader_1967⟩. The trivial True := trivial pattern has been replaced with a meaningful summary.",
+    "mathContext": "Lean: `theorem erdos_718_solved : MaderConjecture`",
     "significance": "key"
   }
 ]

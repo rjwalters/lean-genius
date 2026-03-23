@@ -9,6 +9,7 @@
     "type": "definition",
     "title": "gcdQuotient",
     "content": "The GCD-reduced quotient a / gcd(a, b).",
+    "mathContext": "Lean: `def gcdQuotient (a b : ℕ) : ℕ`",
     "significance": "key",
     "tags": [
       "gcd",
@@ -36,6 +37,7 @@
     "type": "technique",
     "title": "gcdQuotient_pos",
     "content": "gcdQuotient is always positive for positive inputs.",
+    "mathContext": "Lean: `theorem gcdQuotient_pos (a b : ℕ) (ha : a > 0) (hb : b > 0) :`",
     "significance": "key",
     "tags": [
       "positivity",
@@ -62,6 +64,7 @@
     "type": "technique",
     "title": "gcdQuotient_is_nat",
     "content": "gcdQuotient a b * gcd(a,b) = a.",
+    "mathContext": "$gcdQuotient a b * gcd(a,b) = a.$",
     "significance": "key",
     "tags": [
       "divisibility",
@@ -88,6 +91,7 @@
     "type": "definition",
     "title": "gcdQuotientSet",
     "content": "The set { a/gcd(a,b) : a,b ∈ A }.",
+    "mathContext": "$The set { a/gcd(a,b) : a,b ∈ A }.$",
     "significance": "key",
     "tags": [
       "finite-sets",
@@ -115,6 +119,7 @@
     "type": "definition",
     "title": "gcdQuotientSize",
     "content": "Cardinality of the quotient set.",
+    "mathContext": "Lean: `def gcdQuotientSize (A : Finset ℕ) : ℕ`",
     "significance": "key",
     "tags": [
       "cardinality",
@@ -141,6 +146,7 @@
     "type": "definition",
     "title": "h",
     "content": "h(n) = minimum quotient set size over n-sets.",
+    "mathContext": "$h(n) = minimum quotient set size over n-sets.$",
     "significance": "key",
     "tags": [
       "extremal-function",
@@ -168,6 +174,7 @@
     "type": "technique",
     "title": "gcdQuotient_self",
     "content": "gcdQuotient a a = 1 for a > 0.",
+    "mathContext": "$gcdQuotient a a = 1 for a > 0.$",
     "significance": "key",
     "tags": [
       "gcd",
@@ -194,6 +201,7 @@
     "type": "technique",
     "title": "one_in_quotient_set",
     "content": "1 is always in the quotient set.",
+    "mathContext": "Lean: `theorem one_in_quotient_set (A : Finset ℕ) (hne : A.Nonempty) (hpos : ∀ a ∈ A, a > 0) :`",
     "significance": "key",
     "tags": [
       "membership",
@@ -220,6 +228,7 @@
     "type": "technique",
     "title": "erdos_szemeredi_lower",
     "content": "Erdős-Szemerédi: h(n) ≥ c·n^{1/2}.",
+    "mathContext": "$Erdős-Szemerédi: h(n) ≥ c·n^{1/2}.$",
     "significance": "key",
     "tags": [
       "lower-bound",
@@ -247,6 +256,7 @@
     "type": "technique",
     "title": "erdos_szemeredi_upper",
     "content": "Erdős-Szemerédi: h(n) ≤ n^{1-c}.",
+    "mathContext": "$Erdős-Szemerédi: h(n) ≤ n^{1-c}.$",
     "significance": "key",
     "tags": [
       "upper-bound",
@@ -274,6 +284,7 @@
     "type": "definition",
     "title": "ErdosSzemeredi_Bounds",
     "content": "Combined: n^{1/2} ≪ h(n) ≪ n^{1-c}.",
+    "mathContext": "Lean: `def ErdosSzemeredi_Bounds : Prop`",
     "significance": "key",
     "tags": [
       "bounds",
@@ -300,6 +311,7 @@
     "type": "technique",
     "title": "freiman_lev_upper",
     "content": "Freiman-Lev: h(n) ≤ C·n^{2/3}.",
+    "mathContext": "$Freiman-Lev: h(n) ≤ C·n^{2/3}.$",
     "significance": "key",
     "tags": [
       "upper-bound",
@@ -327,6 +339,7 @@
     "type": "definition",
     "title": "ImprovedBounds",
     "content": "n^{1/2} ≪ h(n) ≪ n^{2/3}.",
+    "mathContext": "Lean: `def ImprovedBounds : Prop`",
     "significance": "key",
     "tags": [
       "bounds",
@@ -354,6 +367,7 @@
     "type": "definition",
     "title": "arithmeticProgression",
     "content": "AP: {a, 2a, ..., na}.",
+    "mathContext": "Lean: `def arithmeticProgression (a n : ℕ) : Finset ℕ`",
     "significance": "supporting",
     "tags": [
       "arithmetic-progression",
@@ -380,6 +394,7 @@
     "type": "definition",
     "title": "geometricProgression",
     "content": "GP: {1, a, a², ..., a^{n-1}}.",
+    "mathContext": "Formalizes the concept of geometricprogression",
     "significance": "supporting",
     "tags": [
       "geometric-progression",
@@ -570,6 +585,7 @@
     "type": "concept",
     "title": "erdos_539_open: Problem Remains Open",
     "content": "**OPEN:** The exact exponent α with h(n) = Θ(n^α) is unknown. This axiom asserts that such an exponent exists in [1/2, 2/3], which is the core open question of Erdős Problem #539.",
+    "mathContext": "Lean: `axiom erdos_539_open : ErdosQuestion539`",
     "significance": "key",
     "tags": [
       "open-problem",

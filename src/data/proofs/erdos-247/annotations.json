@@ -99,6 +99,7 @@
     "type": "technique",
     "title": "Factorial Strict Monotonicity",
     "content": "**factorial_strictMono**: The sequence k ↦ (k+1)! is strictly increasing. This is needed to apply Erdős's theorem, which requires the index sequence to be strictly increasing. Proof uses Nat.factorial_lt_of_lt.",
+    "mathContext": "Lean: `axiom erdos_transcendence_strong (n : ℕ → ℕ)`",
     "significance": "supporting",
     "relatedConcepts": [
       "factorial",
@@ -116,6 +117,7 @@
     "type": "technique",
     "title": "Powers of 2 Strict Monotonicity",
     "content": "**pow2_strictMono**: The sequence k ↦ 2^k is strictly increasing. Another example of a sequence with strong growth that can serve as the index for a transcendental lacunary sum.",
+    "mathContext": "Lean: `theorem factorial_strictMono : StrictMono (fun k => (k + 1).factorial)`",
     "significance": "supporting",
     "relatedConcepts": [
       "exponential function",
@@ -133,6 +135,7 @@
     "type": "definition",
     "title": "Growth Axioms",
     "content": "**factorial_strong_growth** and **pow2_strong_growth** (axioms): Both k! and 2^k grow faster than any polynomial. These facts are axiomatized here; proving them formally would require analysis of growth rates. Both k!/k^t → ∞ and 2^k/k^t → ∞ for any fixed t.",
+    "mathContext": "Lean: `theorem pow2_strictMono : StrictMono (fun k => 2^k)`",
     "significance": "key",
     "relatedConcepts": [
       "asymptotic analysis",
@@ -150,6 +153,7 @@
     "type": "technique",
     "title": "Transcendental Lacunary Sums",
     "content": "**factorial_sum_transcendental** and **pow2_sum_transcendental**: As corollaries of Erdős's theorem, both Σ 1/2^{k!} and Σ 1/2^{2^k} are transcendental. These are famous examples of explicit transcendental numbers.",
+    "mathContext": "Formalizes the concept of transcendental lacunary sums",
     "significance": "key",
     "relatedConcepts": [
       "Liouville constant",
@@ -167,6 +171,7 @@
     "type": "concept",
     "title": "The Gap: Quadratic Sequence",
     "content": "**squareSeq** and **square_sum**: The sequence n_k = k² is the simplest example in the 'gap' between weak and strong growth. It grows faster than linear (satisfies weak growth) but NOT faster than quadratic (fails strong growth). Whether Σ 1/2^{k²} is transcendental remains OPEN.",
+    "mathContext": "Lean: `theorem pow2_strong_growth : HasStrongGrowth (fun k => 2 ^ k)`",
     "significance": "key",
     "relatedConcepts": [
       "open problems",
@@ -184,6 +189,7 @@
     "type": "technique",
     "title": "Square Sequence Monotonicity",
     "content": "**square_strictMono**: The sequence k ↦ (k+1)² is strictly increasing. This shows the square sequence is a valid index sequence for Erdős's problem, even though we can't prove transcendence of the resulting sum.",
+    "mathContext": "Formalizes the concept of square sequence monotonicity",
     "significance": "supporting",
     "relatedConcepts": [
       "StrictMono",
@@ -201,6 +207,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**problem_247_summary**: Packages the main results: (1) Erdős's theorem for strong growth, (2) transcendence of the factorial sum, (3) transcendence of the double-exponential sum. This provides a clean interface to the file's main contributions.",
+    "mathContext": "Formalizes the concept of summary theorem",
     "significance": "key",
     "relatedConcepts": [
       "API design",

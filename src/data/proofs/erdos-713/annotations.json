@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Core Definitions",
     "content": "isBipartite G: vertices can be 2-colored with no monochromatic edges. isGFree H G: H contains no subgraph isomorphic to G. extremalNumber n G (axiom): maximum edges in n-vertex G-free graph. extremalNumber_bound: ex(n; G) ≤ n(n-1)/2. These set up the extremal graph theory framework.",
+    "mathContext": "Lean: `def isBipartite (G : SimpleGraph V) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Bipartite graph",
@@ -44,6 +45,7 @@
     "type": "definition",
     "title": "Growth Conditions",
     "content": "hasPowerLawGrowth G c α: ex(n; G)/n^α → c (strong form, exact asymptotic). hasPowerLawOrder G α: c₁·n^α ≤ ex(n; G) ≤ c₂·n^α for large n (weak form, only the order of growth). Both require α ∈ [1,2) and positive constants. The strong form implies the weak form.",
+    "mathContext": "Lean: `def hasPowerLawGrowth (G : ℕ → ℕ) (c α : ℝ) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Asymptotic analysis",
@@ -133,6 +135,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "erdos_713 combines two established results: (1) the original conjecture is false (Erdős-Simonovits), and (2) complete bipartite graphs have rational exponents. Proved by exact ⟨erdos_simonovits_counterexample, complete_bipartite_exponent⟩. The main questions about existence and rationality of exponents for general bipartite graphs remain open.",
+    "mathContext": "Lean: `theorem erdos_713 :`",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

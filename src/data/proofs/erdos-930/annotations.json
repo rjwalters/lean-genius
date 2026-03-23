@@ -27,6 +27,7 @@
     "type": "concept",
     "title": "Imports and Setup",
     "content": "We import Mathlib and open the **Finset** namespace for interval operations and **Nat** for natural number arithmetic. Products over intervals use `Finset.prod` and `Finset.Icc`.",
+    "mathContext": "Formalizes the concept of imports and setup",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
@@ -62,6 +63,7 @@
     "type": "definition",
     "title": "Interval Helpers",
     "content": "**intervalProduct a b** computes the product of all integers in [a, b], i.e., a·(a+1)·...·b.\n\n**intervalLength a b** gives the number of integers in [a, b], which is b - a + 1.",
+    "mathContext": "Lean: `def intervalLength (a b : ℕ) : ℕ`",
     "significance": "supporting",
     "relatedConcepts": [
       "products",
@@ -151,6 +153,7 @@
     "type": "technique",
     "title": "Basic Perfect Power Facts",
     "content": "We verify elementary facts about perfect powers:\n- **0** is a perfect power (0 = 0²)\n- **1** is a perfect power (1 = 1²)\n- Any **n²** is a perfect power\n- Any **n³** is a perfect power",
+    "mathContext": "Lean: `theorem zero_isPower : IsPower 0`",
     "significance": "supporting",
     "relatedConcepts": [
       "squares",
@@ -168,6 +171,7 @@
     "type": "concept",
     "title": "Verified Examples",
     "content": "We verify specific perfect powers:\n- **4 = 2²** is a perfect power\n- **8 = 2³** is a perfect power\n- **27 = 3³** is a perfect power",
+    "mathContext": "Formalizes the concept of verified examples",
     "significance": "supporting",
     "relatedConcepts": [
       "examples",

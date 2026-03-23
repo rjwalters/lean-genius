@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Edge Coloring",
     "content": "**EdgeColoring:**\n\nA 2-coloring of edges assigns each edge a color (True or False, representing red/blue).\n\n**Definition:**\n```lean\ndef EdgeColoring (G : SimpleGraph V) := G.edgeSet -> Bool\n```\n\nThis is the fundamental object for Ramsey-type problems.",
+    "mathContext": "Lean: `def EdgeColoring (G : SimpleGraph V) := G.edgeSet -> Bool`",
     "significance": "key",
     "relatedConcepts": [
       "Graph coloring",
@@ -116,6 +117,7 @@
     "type": "technique",
     "title": "Combined Size Ramsey Bounds",
     "content": "**size_ramsey_bounds:**\n\nCombines both bounds into a single theorem for n >= 6:\n\n(1/60)*n^2*2^n < R_hat(K_{n,n}) < (3/2)*n^3*2^n\n\nThe ratio of upper to lower bound is 90n, showing the gap is O(n).",
+    "mathContext": "$Combines both bounds into a single theorem for n >= 6:$",
     "significance": "key",
     "relatedConcepts": [
       "Bound analysis",
@@ -168,6 +170,7 @@
     "type": "concept",
     "title": "Basic Properties",
     "content": "**Size Ramsey Properties:**\n\n1. **Monotonicity:** G subgraph of G' implies R_hat(G) <= R_hat(G')\n\n2. **Lower bound:** R_hat(G) >= |E(G)| (need at least as many edges)\n\n3. **K_{1,1} case:** R_hat(K_{1,1}) = 1 (single edge)\n\n4. **Path linear:** R_hat(P_n) = O(n) (linear in path length)\n\nThese basic properties establish the framework for size Ramsey theory.",
+    "mathContext": "$1. **Monotonicity:** G subgraph of G' implies R_hat(G) <= R_hat(G')$",
     "significance": "key",
     "relatedConcepts": [
       "Monotonicity",
@@ -203,6 +206,7 @@
     "type": "technique",
     "title": "Bounds Gap Analysis",
     "content": "**bounds_gap:**\n\nThe ratio between upper and lower bounds:\n\n(3/2)*n^3*2^n / ((1/60)*n^2*2^n) = 90*n\n\nSo the gap is O(n) - a linear factor of uncertainty remains.\n\n**Implication:** If CFW conjecture is true (R_hat ~ n^3*2^n), then the lower bound can be improved by factor n while upper bound is optimal.",
+    "mathContext": "$(3/2)*n^3*2^n / ((1/60)*n^2*2^n) = 90*n$",
     "significance": "key",
     "relatedConcepts": [
       "Gap analysis",
@@ -220,6 +224,7 @@
     "type": "technique",
     "title": "Main Results Summary",
     "content": "**erdos_560_summary:**\n\nCombines all main results for n >= 6:\n\n1. **Lower bound:** (1/60)*n^2*2^n (Erdos-Rousseau 1993)\n2. **Upper bound:** (3/2)*n^3*2^n (EFRS 1978)\n3. **Monotonicity:** m <= n implies R_hat(K_{m,m}) <= R_hat(K_{n,n})\n\n**Status:** OPEN - exact value unknown, O(n) gap between bounds\n\n**Conjecture:** R_hat(K_{n,n}) = Theta(n^3*2^n) (CFW 2023)",
+    "mathContext": "$Combines all main results for n >= 6:$",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Chromatic Number and k-Critical Graphs",
     "content": "chromaticNumber G: the minimum number of colors for a proper coloring, defined via Nat.find on Colorable. IsKChromatic G k: the chromatic number is exactly k. IsKCritical G k: the graph is k-chromatic AND removing any edge decreases the chromatic number. These are the 'minimal' k-chromatic graphs — every edge is essential for maintaining the chromatic number.",
+    "mathContext": "Lean: `def IsKChromatic (G : SimpleGraph V) (k : ℕ) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Colorable",
@@ -136,6 +137,7 @@
     "type": "technique",
     "title": "Main Summary Theorem",
     "content": "erdos_917 combines all partial results: (1) Question 1 is answered YES for all k ≥ 4 (Toft), (2) Question 3 is FALSE for k ≢ 0 (mod 3) (Stiebitz), and (3) quadratic growth f_k(n) ≥ c·n² holds for all k ≥ 4. Proved by exact ⟨question1_answered, stiebitz_1987_disproof, toft_1970⟩. The problem remains PARTIALLY SOLVED: Question 2 and Question 3 for k ≡ 0 (mod 3) are still open.",
+    "mathContext": "Lean: `theorem erdos_917 :`",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

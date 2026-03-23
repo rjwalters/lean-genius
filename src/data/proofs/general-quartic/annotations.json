@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Quartic Formula: Wiedijk #46",
     "content": "**Ferrari's Method (1540)**:\n\nEvery quartic equation\n$$x^4 + ax^3 + bx^2 + cx + d = 0$$\ncan be solved by radicals.\n\n**Algorithm**:\n1. **Depress**: $y = x + a/4$ eliminates $x^3$ term\n2. **Resolvent cubic**: Find auxiliary parameter $m$\n3. **Factor**: Quartic splits into two quadratics\n4. **Solve**: Apply quadratic formula twice\n\n**Historical**: Lodovico Ferrari (age 18!) discovered this in 1540. Published in Cardano's *Ars Magna* (1545).",
+    "mathContext": "$x^4 + ax^3 + bx^2 + cx + d = 0$",
     "significance": "key",
     "relatedConcepts": [
       "Ferrari",
@@ -134,6 +135,7 @@
     "type": "concept",
     "title": "Why Quartic Works (Galois)",
     "content": "**Galois Theory Explanation**:\n\nThe symmetric group $S_4$ is **solvable**:\n$$S_4 \\triangleright A_4 \\triangleright V_4 \\triangleright \\{e\\}$$\n\nEach quotient is abelian, enabling radical solutions.\n\n**Tower of Formulas**:\n- Quadratic: Direct formula\n- Cubic: Cardano's formula\n- Quartic: Ferrari's method (uses cubic)\n- **Quintic: NO general formula!** (Abel-Ruffini, 1824)\n\n**Why quintic fails**: $S_5$ is not solvable - $A_5$ is simple.\n\nSee Wiedijk #16 (Abel-Ruffini) for the impossibility proof.",
+    "mathContext": "$S_4$",
     "significance": "key",
     "relatedConcepts": [
       "Galois theory",
@@ -152,6 +154,7 @@
     "type": "context",
     "title": "Historical Race (1515-1545)",
     "content": "**The Renaissance Algebra Race**:\n\n| Year | Mathematician | Achievement |\n|------|--------------|-------------|\n| c.1515 | del Ferro | First cubic solution (secret) |\n| 1535 | Tartaglia | Rediscovered cubic |\n| 1539 | Cardano | Learned Tartaglia's method |\n| 1540 | **Ferrari** | Solved quartic (age 18!) |\n| 1545 | Cardano | Published *Ars Magna* |\n\n**Drama**: Tartaglia taught Cardano under oath of secrecy. Cardano broke the oath when he learned del Ferro had priority.\n\nFerrari's quartic solution used Cardano's cubic - creating an elegant tower.",
+    "mathContext": "Formalizes the concept of historical race (1515-1545)",
     "significance": "supporting",
     "relatedConcepts": [
       "Cardano",

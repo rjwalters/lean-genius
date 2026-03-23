@@ -46,6 +46,7 @@
     "type": "definition",
     "title": "The P-smooth Sequence",
     "content": "**smoothSeq P:** Enumeration of P-smooth numbers.\n\n```lean\nnoncomputable def smoothSeq (P : Set N) : N -> N :=\n  Nat.nth (IsPSmooth P)\n```\n\n**For P = {2, 3}:**\n- smoothSeq P 0 = 1\n- smoothSeq P 1 = 2\n- smoothSeq P 2 = 3\n- smoothSeq P 3 = 4\n- smoothSeq P 4 = 6\n- ...\n\nThe sequence is strictly increasing and exhausts all P-smooth numbers.",
+    "mathContext": "Lean: `noncomputable def smoothSeq (P : Set N) : N -> N :=`",
     "significance": "key",
     "relatedConcepts": [
       "enumeration",
@@ -81,6 +82,7 @@
     "type": "definition",
     "title": "The LCM Series",
     "content": "**lcmSeries P = sum 1/L_n**\n\n```lean\nnoncomputable def lcmSeries (P : Set N) : R :=\n  tsum (fun n => (1 : R) / (partialLcm P n))\n```\n\n**Properties:**\n- Always converges (L_n grows at least exponentially)\n- Always positive\n- For P = {2,3}: S ~ 1 + 1/2 + 1/6 + 1/12 + 1/12 + ...\n\nThe series includes duplicate terms when L_n = L_{n-1}.",
+    "mathContext": "Lean: `noncomputable def lcmSeries (P : Set N) : R :=`",
     "significance": "key",
     "relatedConcepts": [
       "infinite series",
@@ -134,6 +136,7 @@
     "type": "concept",
     "title": "Example: P = {2, 3}",
     "content": "**The 3-smooth Numbers:**\n\n```lean\ndef twoThreeSmooth : Set N := {2, 3}\n```\n\n**Sequence:** 1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, 27, ...\n\n**Partial LCMs:**\n- L_1 = 1\n- L_2 = 2\n- L_3 = lcm(2,3) = 6\n- L_4 = lcm(6,4) = 12\n- L_5 = lcm(12,6) = 12 (duplicate!)\n- L_6 = lcm(12,8) = 24\n- ...\n\n**Note:** a_4 = 6 divides L_3 = 6, so L_4 = L_5.",
+    "mathContext": "Lean: `def twoThreeSmooth : Set N := {2, 3}`",
     "significance": "key",
     "relatedConcepts": [
       "3-smooth numbers",
@@ -187,6 +190,7 @@
     "type": "technique",
     "title": "Summary",
     "content": "**Erdos Problem #269: Summary**\n\n```lean\ntheorem erdos_269_summary :\n    -- Infinite case is solved\n    (forall P, primes in P -> P.Infinite -> Irrational (lcmSeries P)) and\n    -- Distinct case is solved\n    (forall P finite primes, |P|>=2 -> Irrational (distinctLcmSeries P)) and\n    -- General finite case is open\n    True\n```\n\n**State of Knowledge:**\n1. Infinite P: SOLVED (irrational)\n2. Finite P, distinct: SOLVED (irrational)\n3. Finite P, full: OPEN",
+    "mathContext": "Lean: `theorem erdos_269_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "open problems",

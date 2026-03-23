@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Line in ℝ²",
     "content": "**Line2D:**\n\nA line is represented by coefficients (a, b, c) where:\n$$ax + by + c = 0$$\n\nwith (a, b) ≠ (0, 0).\n\n**Examples:**\n- y = 2x + 1 → -2x + y - 1 = 0, so (a, b, c) = (-2, 1, -1)\n- x = 3 (vertical) → 1x + 0y - 3 = 0, so (a, b, c) = (1, 0, -3)",
+    "mathContext": "$ax + by + c = 0$",
     "significance": "key",
     "relatedConcepts": [
       "Implicit form",
@@ -43,6 +44,7 @@
     "type": "definition",
     "title": "Parallel Lines",
     "content": "**areParallel l₁ l₂:**\n\nTwo lines are parallel if their direction vectors are proportional:\n$$a_1 \\cdot b_2 = b_1 \\cdot a_2$$\n\nGeometrically: same slope, or both vertical.\n\nParallel lines never intersect in ℝ² (they intersect \"at infinity\" in projective geometry).",
+    "mathContext": "$a_1 \\cdot b_2 = b_1 \\cdot a_2$",
     "significance": "key",
     "relatedConcepts": [
       "Slope",
@@ -60,6 +62,7 @@
     "type": "definition",
     "title": "Line Arrangement",
     "content": "**LineArrangement:**\n\nA finite set of lines in the plane. The study of line arrangements is central to incidence geometry.\n\n**Key properties to consider:**\n- How many lines?\n- Are any parallel?\n- How many lines pass through each point?",
+    "mathContext": "Lean: `def LineArrangement`",
     "significance": "key",
     "relatedConcepts": [
       "Incidence geometry",
@@ -76,6 +79,7 @@
     "type": "definition",
     "title": "No Four Concurrent",
     "content": "**NoFourConcurrent A:**\n\nNo point lies on 4 or more lines from the arrangement.\n\nThis is a \"general position\" constraint: points where many lines meet create special structure that we want to avoid.\n\nEquivalently: at most 3 lines pass through any point.",
+    "mathContext": "Lean: `def NoFourConcurrent (A : LineArrangement) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "General position",
@@ -92,6 +96,7 @@
     "type": "definition",
     "title": "Ordinary Point",
     "content": "**IsOrdinaryPoint A p:**\n\nA point p is ordinary if exactly 2 lines from the arrangement pass through it.\n\n**Sylvester-Gallai guarantees:** At least one ordinary point exists in any non-trivial line arrangement.\n\n**Key insight:** Ordinary points exist, but they might not form triangles!",
+    "mathContext": "Lean: `def IsOrdinaryPoint (A : LineArrangement) (p : ℝ × ℝ) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Sylvester-Gallai",
@@ -108,6 +113,7 @@
     "type": "definition",
     "title": "3-Rich Point",
     "content": "**Is3RichPoint A p:**\n\nA point p is 3-rich if at least 3 lines from the arrangement pass through it.\n\n**Why this matters:** If a triangle vertex is 3-rich (not ordinary), the triangle is NOT a Gallai triangle.\n\n**Counterexample strategy:** Arrange lines so every triangle has at least one 3-rich vertex.",
+    "mathContext": "Lean: `def Is3RichPoint (A : LineArrangement) (p : ℝ × ℝ) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Blocking triangles",
@@ -192,6 +198,7 @@
     "type": "technique",
     "title": "Main Theorem",
     "content": "**erdos_209:**\n\n```lean\ntheorem erdos_209 :\n    ∀ d ≥ 4, ∃ A : LineArrangement,\n      A.card = d ∧ NoParallels A ∧ NoFourConcurrent A ∧ ¬HasGallaiTriangle A\n```\n\n**The answer to Erdős's question is NO.**\n\nCounterexamples exist for every d ≥ 4. The proof uses Escudero's 2016 construction.",
+    "mathContext": "Lean: `theorem erdos_209 :`",
     "significance": "key",
     "relatedConcepts": [
       "Erdős Problem #209",
@@ -208,6 +215,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_209_summary:**\n\nThe summary theorem restates the complete disproof: for every d ≥ 4, there exists a d-line arrangement with no parallels, no 4-concurrent points, and no Gallai triangle. This is proved as a direct consequence of Escudero's 2016 construction.\n\n**Key takeaway:** While Sylvester-Gallai guarantees ordinary points exist, three such points need not form a triangle. The counterexamples use algebraic configurations where 3-rich points block every potential Gallai triangle.",
+    "mathContext": "Lean: `theorem erdos_209_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "Main result",

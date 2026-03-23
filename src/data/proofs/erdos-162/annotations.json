@@ -27,6 +27,7 @@
     "type": "concept",
     "title": "Imports and Setup",
     "content": "**Mathlib imports:**\n\n- `Mathlib.Data.Nat.Choose.Basic` — binomial coefficients C(n, k), used to count edges in complete graphs\n- `Mathlib.Tactic` — standard Lean 4 tactic library\n\nThe namespace `Erdos162` encapsulates all definitions to avoid name collisions.",
+    "mathContext": "Formalizes the concept of imports and setup",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",

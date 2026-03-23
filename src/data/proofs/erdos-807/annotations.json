@@ -45,6 +45,7 @@
     "type": "definition",
     "title": "Complete Bipartite Subgraph",
     "content": "**CompleteBipartite:**\n\nA structure representing a complete bipartite subgraph of G.\n\n**Fields:**\n- left, right: Disjoint vertex sets\n- disjoint: Proof that left and right are disjoint\n- edges_complete: Every vertex in left is adjacent to every vertex in right\n\nThese are the building blocks for bipartite decomposition.",
+    "mathContext": "Formalizes the concept of complete bipartite subgraph",
     "significance": "key",
     "relatedConcepts": [
       "Bipartite graphs",
@@ -62,6 +63,7 @@
     "type": "definition",
     "title": "Edge-Disjoint Bipartite Cover",
     "content": "**BipartiteCover:**\n\nA collection of complete bipartite subgraphs that:\n1. Are pairwise edge-disjoint (no edge in multiple subgraphs)\n2. Cover all edges of G (union equals G)\n\nThe bipartition number is the minimum size of such a cover.",
+    "mathContext": "Formalizes the concept of edge-disjoint bipartite cover",
     "significance": "key",
     "relatedConcepts": [
       "Edge covering",
@@ -125,6 +127,7 @@
     "type": "technique",
     "title": "ERW Conjecture is False",
     "content": "**erw_conjecture_false:**\n\nThe ERW conjecture is false.\n\n```lean\ntheorem erw_conjecture_false : not (forall n, ERW_conjecture n)\n```\n\n**Proof:** Since tau(G) <= n - alpha(G) - 1 < n - alpha(G) almost surely, the equality fails.",
+    "mathContext": "Lean: `theorem erw_conjecture_false : not (forall n, ERW_conjecture n)`",
     "significance": "key"
   },
   {
@@ -167,6 +170,7 @@
     "type": "concept",
     "title": "Independence Number of Random Graphs",
     "content": "**independence_number_random_graph:**\n\nFor random graphs G in G(n, 1/2):\n\nAlmost surely, alpha(G) is approximately 2 log_2(n).\n\nThis is a classical result in random graph theory, proved using first and second moment methods.",
+    "mathContext": "Lean: `axiom independence_number_random_graph (n : ℕ) (hn : n ≥ 2) :`",
     "significance": "supporting",
     "relatedConcepts": [
       "Random graphs",
@@ -196,6 +200,7 @@
     "type": "technique",
     "title": "Answer Statement",
     "content": "**erdos_807_answer:**\n\nErdos #807 asked if tau(G) = n - alpha(G) almost surely.\n\n**Answer: NO**\n\nThe bipartition number is strictly smaller than expected for random graphs.",
+    "mathContext": "$Erdos #807 asked if tau(G) = n - alpha(G) almost surely.$",
     "significance": "key"
   },
   {
@@ -208,6 +213,7 @@
     "type": "definition",
     "title": "Clique Cover Number",
     "content": "**cliqueCoverNumber:**\n\nThe minimum number of cliques needed to cover all edges.\n\n**Relation:** tau(G) <= cliqueCover(G) since every clique can be decomposed into complete bipartite subgraphs.\n\nThe clique cover number is another measure of graph complexity.",
+    "mathContext": "Lean: `def cliqueCoverNumber (G : SimpleGraph V) : ℕ`",
     "significance": "supporting",
     "relatedConcepts": [
       "Clique",
@@ -224,6 +230,7 @@
     "type": "concept",
     "title": "Probabilistic Method",
     "content": "**The Probabilistic Method:**\n\nAlon's proof uses the probabilistic method, pioneered by Erdos himself.\n\n**Key idea:** Show that a random bipartite subgraph covers many edges in expectation, then use this to construct an efficient decomposition.\n\nThis is a powerful technique where existence is proved by showing a random object has the desired property with positive probability.",
+    "mathContext": "Lean: `axiom probabilistic_method_bipartition :`",
     "significance": "key",
     "relatedConcepts": [
       "Random graphs",
@@ -241,6 +248,7 @@
     "type": "concept",
     "title": "Concentration Inequalities",
     "content": "**Concentration Inequalities:**\n\nThe \"almost surely\" statements use concentration inequalities:\n\n- Chernoff bounds for sums of independent random variables\n- Azuma-Hoeffding for martingales\n- Talagrand's inequality for complex dependencies\n\nThese show that random variables are close to their expectation with high probability.",
+    "mathContext": "Lean: `axiom concentration_for_random_graphs :`",
     "significance": "supporting",
     "relatedConcepts": [
       "Probability theory",

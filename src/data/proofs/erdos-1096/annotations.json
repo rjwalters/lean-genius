@@ -52,6 +52,7 @@
     "type": "technique",
     "title": "Basic Examples",
     "content": "**Immediate q-representable numbers:**\n\n- `zero_q_representable`: 0 ∈ QRepresentable q (empty sum)\n- `one_q_representable`: 1 ∈ QRepresentable q (S = {0})\n- `q_q_representable`: q ∈ QRepresentable q (S = {1})\n\nThese form the beginning of the ordered sequence when q < 2. The proofs use `Finset.sum` on empty or singleton sets.",
+    "mathContext": "Lean: `theorem one_q_representable (q : ℝ) : (1 : ℝ) ∈ QRepresentable q`",
     "significance": "supporting",
     "relatedConcepts": [
       "Empty sum",
@@ -183,6 +184,7 @@
     "type": "concept",
     "title": "Density Near 1",
     "content": "**density_near_one:**\n\nAs q approaches 1 from above, the q-representable numbers become arbitrarily dense:\n\n∀ ε > 0, ∀ N > 0, ∃ q ∈ (1, 1+ε) such that QRepresentable(q) ∩ [0,N] is ε-dense.\n\n**Intuition:** For q very close to 1, the powers 1, q, q², ... are nearly equal, so their sums cover [0, N] densely.\n\nThis explains why the gap property should hold for q sufficiently close to 1.",
+    "mathContext": "$∀ ε > 0, ∀ N > 0, ∃ q ∈ (1, 1+ε) such that QRepresentable(q) ∩ [0,N] is ε-dense.$",
     "significance": "supporting",
     "relatedConcepts": [
       "Dense sets",
@@ -203,6 +205,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_1096_summary:**\n\nThe formalization captures the state of knowledge in three parts:\n\n1. **Pisot → No Gap Property:** All Pisot numbers fail to have gaps → 0\n2. **Universal Bound:** For 1 < q ≤ 2, gaps are at most 1\n3. **Smallest Pisot:** q₀ specifically fails the gap property\n\n**What remains open:** Does every 1 < q < q₀ have the gap property?\n\nThe conjecture says yes, but this is unproved.",
+    "mathContext": "$1. **Pisot → No Gap Property:** All Pisot numbers fail to have gaps → 0$",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

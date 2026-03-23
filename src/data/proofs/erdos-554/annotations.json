@@ -45,6 +45,7 @@
     "type": "definition",
     "title": "Triangle and Odd Cycle Ramsey Numbers",
     "content": "**triangleRamsey k** = R(K_3; k): the k-color triangle Ramsey number.\n**oddCycleRamsey n k** = R(C_{2n+1}; k): the k-color Ramsey number of the odd (2n+1)-cycle.\n\nThe triangle (3 vertices) and odd cycles (2n+1 vertices) both have chromatic number 3, yet the conjecture predicts their Ramsey numbers behave very differently.",
+    "mathContext": "Lean: `def triangleRamsey (k : ℕ) : ℕ`",
     "significance": "key",
     "relatedConcepts": [
       "Complete graphs",
@@ -98,6 +99,7 @@
     "type": "concept",
     "title": "Odd Cycle Ramsey Bounds",
     "content": "**oddCycle_ramsey_upper**: R(C_{2n+1}; k) <= (2n+1)^k.\nThe upper bound is exponential with base 2n+1, the cycle length.\n\n**oddCycle_ramsey_lower**: R(C_{2n+1}; k) >= k*(2n) + 1.\nThe lower bound is linear in k (for fixed n), much weaker than exponential.\n\nThe gap between these bounds is where the conjecture lives: if the true growth rate is subexponential or has a smaller exponential base than triangles, the ratio tends to 0.",
+    "mathContext": "Lean: `axiom oddCycle_ramsey_upper :`",
     "significance": "key",
     "relatedConcepts": [
       "Upper bounds",
@@ -169,6 +171,7 @@
     "type": "concept",
     "title": "Main Result: erdos_554",
     "content": "**erdos_554** axiomatizes the full conjecture as an axiom, since the problem is OPEN.\n\nThis is the standard formalization approach for open problems: state the conjecture precisely and axiomatize it, allowing downstream reasoning to proceed conditionally.\n\nIf/when the conjecture is proved, this axiom can be replaced with a theorem.",
+    "mathContext": "Lean: `axiom erdos_554 : erdosConjecture554`",
     "significance": "key",
     "relatedConcepts": [
       "Open problems",

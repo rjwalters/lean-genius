@@ -46,6 +46,7 @@
     "type": "definition",
     "title": "Hypergraph Turán Number",
     "content": "**turanNumber n r k** is ex_r(n, K_k^r): the maximum number of edges in a K_k^r-free r-uniform hypergraph on n vertices. Defined via sSup (supremum) over all valid hypergraphs.\n\n**turan_upper_trivial** provides the obvious upper bound: ex_r(n, K_k^r) ≤ C(n,r), the total number of r-subsets.",
+    "mathContext": "Lean: `def turanNumberDef (n r k : ℕ) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Extremal numbers",
@@ -99,6 +100,7 @@
     "type": "concept",
     "title": "The K_4^3 Case: Turán's Conjecture",
     "content": "**turanConjectureK43 = 5/9 ≈ 0.556** is the conjectured density. The Turán hypergraph T(n,4,3) — obtained by partitioning n vertices into 4 balanced parts and taking 3-edges meeting at least 2 parts — achieves this density and is K_4^3-free.\n\n**K43_lower_bound:** π_3(K_4^3) ≥ 5/9 (from the construction).\n**K43_upper_bound_razborov:** π_3(K_4^3) ≤ 0.5616 (Razborov, flag algebras, 2010).\n\nThe gap between 5/9 ≈ 0.556 and 0.5616 is one of the most stubborn gaps in combinatorics.",
+    "mathContext": "Lean: `def turanConjectureK43 : ℝ`",
     "significance": "key",
     "relatedConcepts": [
       "Turán's conjecture",
@@ -136,6 +138,7 @@
     "type": "technique",
     "title": "Erdős Problem #712: Main Theorem",
     "content": "**erdos_712** is the main entry-point theorem, FULLY PROVEN from the axioms. It establishes two facts:\n\n1. The Turán density exists with 0 < π < 1 (using turan_density_positive and kruskal_katona_upper)\n2. The exact value is unknown (using erdos_712_open)\n\nThe proof of π < 1 uses the Kruskal-Katona bound and positivity of k. This is one of the few theorems with actual tactic proofs (calc, linarith, positivity).",
+    "mathContext": "Lean: `theorem erdos_712 (r k : ℕ) (hr : r > 2) (hk : k > r) :`",
     "significance": "key",
     "relatedConcepts": [
       "Problem statement",
@@ -153,6 +156,7 @@
     "type": "concept",
     "title": "Related Conjectures",
     "content": "**extremal_structure_conjecture:** For each r, k, the extremal hypergraph should be 'nice' — specifically, a balanced k-partition construction analogous to the Turán graph. This is unproven for any r > 2.\n\n**mubayi_K53_conjecture:** π_3(K_5^3) = 3/4, the next simplest case after K_4^3.",
+    "mathContext": "Lean: `axiom extremal_structure_conjecture (r k : ℕ) (hr : r ≥ 2) (hk : k > r) :`",
     "significance": "key",
     "relatedConcepts": [
       "Extremal structure",
@@ -169,6 +173,7 @@
     "type": "concept",
     "title": "Computational Bounds",
     "content": "**flag_algebra_method** axiomatizes Razborov's flag algebra framework, which provides computable upper bounds on Turán densities via semidefinite programming.\n\n**computed_bounds** records the best known bounds for small cases:\n- K_4^3: 5/9 ≤ π ≤ 0.562\n- K_5^3: 0.75 ≤ π ≤ 0.769",
+    "mathContext": "Lean: `axiom flag_algebra_method (r k : ℕ) :`",
     "significance": "key",
     "relatedConcepts": [
       "Flag algebras",
@@ -186,6 +191,7 @@
     "type": "concept",
     "title": "Connections to Ramsey Theory and Coding Theory",
     "content": "**ramsey_connection:** The Turán density being < 1 is equivalent to saying that sufficiently dense hypergraphs must contain K_k^r — a Ramsey-type statement.\n\n**coding_connection:** Turán-type hypergraphs relate to covering codes and designs in coding theory, where the intersection properties of edges correspond to codeword distance constraints.",
+    "mathContext": "Lean: `axiom ramsey_connection (r k : ℕ) (hr : r ≥ 2) (hk : k > r) :`",
     "significance": "key",
     "relatedConcepts": [
       "Ramsey theory",
@@ -203,6 +209,7 @@
     "type": "technique",
     "title": "Summary: Problem OPEN",
     "content": "**erdos_712_summary** packages the key results:\n1. Graph case (r=2) solved by Turán: π_2(K_k) = (1-1/(k-1))/2\n2. Hypergraph case (r>2) is open for ALL k > r\n3. Best known for K_4^3: π_3(K_4^3) ≥ 5/9\n\nPrize: $500 for any case with k > r > 2, $1000 for the complete solution.",
+    "mathContext": "$500 for any case with k > r > 2, $",
     "significance": "key",
     "relatedConcepts": [
       "Problem summary",

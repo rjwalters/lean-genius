@@ -46,6 +46,7 @@
     "type": "definition",
     "title": "Equal-Degree Path-3 Pair",
     "content": "**sameDegree:** Two vertices have the same degree in graph G.\n\n**hasEqualDegreePath3Pair:** The main property: existence of distinct vertices with same degree connected by path of length 3. This is what the problem asks whether dense graphs must have.",
+    "mathContext": "Lean: `def sameDegree (G : SimpleGraph V) (u v : V) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "degree sequences",
@@ -64,6 +65,7 @@
     "type": "definition",
     "title": "Erdős-Hajnal and Chen-Ma Conditions",
     "content": "**satisfiesEH816:** A graph has 2n+1 vertices and n² + n + 1 edges (original problem).\n\n**satisfiesWeakerEH816:** A graph has 2n+1 vertices and at least n² + n edges (Chen-Ma's stronger version). With this weaker condition, only K_{n,n+1} fails.",
+    "mathContext": "Lean: `def satisfiesEH816 (G : SimpleGraph V) [DecidableRel G.Adj] (n : ℕ) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Erdős-Hajnal conditions",
@@ -114,6 +116,7 @@
     "type": "concept",
     "title": "Pigeonhole for Degrees",
     "content": "**pigeonhole_degrees:** In any graph with at least 2 vertices, some pair of vertices must share a degree. There are only n possible degrees (0 to n-1) among n vertices, so by pigeonhole, at least two coincide.",
+    "mathContext": "Lean: `axiom pigeonhole_degrees (G : SimpleGraph V) :`",
     "significance": "supporting"
   },
   {
@@ -126,6 +129,7 @@
     "type": "technique",
     "title": "Summary",
     "content": "**erdos_816_summary:** The complete resolution: for all n, graphs with 2n+1 vertices and n² + n + 1 edges contain equal-degree vertices joined by path of length 3.\n\n**Stronger Result:** For n ≥ 600, even n² + n edges suffice, except K_{n,n+1}.\n\n**Threshold:** K_{n,n+1} has exactly n² + n edges and fails. One more edge forces the property.",
+    "mathContext": "Lean: `theorem erdos_816_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "complete bipartite graphs",

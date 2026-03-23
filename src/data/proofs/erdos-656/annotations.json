@@ -27,6 +27,7 @@
     "type": "concept",
     "title": "Lower Density",
     "content": "The **lower density** is:\n\nd̲(A) = liminf_{n→∞} |A ∩ [1,n]| / n\n\nWhen d̄(A) = d̲(A), the set has a well-defined **natural density**.",
+    "mathContext": "$\\underline{d}(A) = \\liminf_{n \\to \\infty} \\frac{|A \\cap [1,n]|}{n}$",
     "significance": "supporting"
   },
   {
@@ -39,6 +40,7 @@
     "type": "definition",
     "title": "Positive Upper Density",
     "content": "A set has **positive upper density** if d̄(A) > 0.\n\nThis is the key hypothesis in Erdős's conjecture. Examples:\n- Even numbers: d̄ = 1/2\n- Primes: d̄ = 0 (too sparse!)\n- {1, 2, ..., n, 2n, 2n+1, ..., 3n, ...}: d̄ = 1/2 but d̲ = 0",
+    "mathContext": "$\\text{HasPositiveUpperDensity}(A) \\iff \\bar{d}(A) > 0$",
     "significance": "key"
   },
   {
@@ -51,6 +53,7 @@
     "type": "concept",
     "title": "Density Bounds",
     "content": "For any A ⊆ ℕ:\n\n0 ≤ d̲(A) ≤ d̄(A) ≤ 1\n\nThe bounds follow from the definition: |A ∩ [1,n]| / n is always in [0,1].",
+    "mathContext": "$0 \\le \\underline{d}(A) \\le \\bar{d}(A) \\le 1$",
     "significance": "supporting"
   },
   {
@@ -80,6 +83,7 @@
     "type": "definition",
     "title": "Shifted Sumset",
     "content": "The **shifted sumset** B + B + t adds a constant:\n\nB + B + t = {b₁ + b₂ + t : b₁, b₂ ∈ B}\n\nThe shift t ∈ ℤ can be negative! This is crucial: some sets with positive density require t ≠ 0.",
+    "mathContext": "$B + B + t = \\{(b_1 : \\mathbb{Z}) + b_2 + t \\mid b_1, b_2 \\in B\\}$, with $t \\in \\mathbb{Z}$",
     "significance": "key"
   },
   {
@@ -92,6 +96,7 @@
     "type": "definition",
     "title": "Finite Sums Set",
     "content": "The **finite sums set** FS(B) consists of all sums of distinct elements:\n\nFS(B) = {Σᵢ∈I bᵢ : I finite nonempty, elements distinct}\n\nFor B = {1, 2, 4}, FS(B) = {1, 2, 4, 3, 5, 6, 7}.\n\nThis is much larger than B + B since it includes sums of any number of terms.",
+    "mathContext": "$\\text{FS}(B) = \\{\\sum_{i \\in I} b_i \\mid I \\subseteq B \\text{ finite nonempty}\\}$",
     "significance": "key",
     "relatedConcepts": [
       "Hindman's theorem",
@@ -108,6 +113,7 @@
     "type": "definition",
     "title": "Coloring",
     "content": "A **k-coloring** of ℕ is a function c : ℕ → Fin k.\n\nIn Ramsey theory, we ask: given any coloring, must some structure be monochromatic?",
+    "mathContext": "$c : \\mathbb{N} \\to \\text{Fin}\\,k$",
     "significance": "supporting"
   },
   {
@@ -120,6 +126,7 @@
     "type": "definition",
     "title": "Monochromatic Set",
     "content": "A set S is **monochromatic** under coloring c if all elements have the same color:\n\n∃ color, ∀ n ∈ S, c(n) = color\n\nHindman's theorem guarantees monochromatic FS(B).",
+    "mathContext": "$\\exists \\text{color} \\in \\text{Fin}\\,k,\\; \\forall n \\in S,\\; c(n) = \\text{color}$",
     "significance": "supporting"
   },
   {
@@ -162,6 +169,7 @@
     "type": "technique",
     "title": "Kra-Moreira-Richter-Robertson Theorem",
     "content": "**The Erdős Conjecture is TRUE!**\n\nProved by Kra, Moreira, Richter, and Robertson in 2024.\n\nThe proof uses:\n1. Furstenberg correspondence (density → measure)\n2. Ergodic theory on nilmanifolds\n3. Structure theory for dynamical systems\n\nReference: 'A proof of Erdős's B+B+t conjecture', Commun. Am. Math. Soc. (2024)",
+    "mathContext": "Axiomatized as `kra_moreira_richter_robertson : ErdosConjecture656`. The proof relies on Host-Kra structure theory for $\\mathbb{Z}$-actions.",
     "significance": "key"
   },
   {
@@ -174,6 +182,7 @@
     "type": "concept",
     "title": "High Density Case",
     "content": "**High Density Simplification:**\n\nIf d̄(A) > 1/2, then we can take t = 0:\n\n∃ infinite B, B + B ⊆ A\n\nIntuitively: if A is 'more than half' of ℕ, the sumset will hit A without needing a shift.",
+    "mathContext": "$\\bar{d}(A) > \\frac{1}{2} \\implies \\exists B \\text{ infinite},\\; B + B \\subseteq A$",
     "significance": "key"
   },
   {
@@ -186,6 +195,7 @@
     "type": "technique",
     "title": "Erdős Problem #172",
     "content": "**Erdős Problem #172** is Hindman's theorem itself.\n\nThese problems are closely related: #656 is the density analogue of #172.",
+    "mathContext": "$\\forall k \\ge 1,\\; \\forall c : \\mathbb{N} \\to \\text{Fin}\\,k,\\; \\exists B \\text{ infinite},\\; \\text{FS}(B) \\text{ monochromatic}$",
     "significance": "supporting",
     "relatedConcepts": [
       "Hindman's theorem"
@@ -201,6 +211,7 @@
     "type": "concept",
     "title": "Sárközy's Theorem",
     "content": "**Sárközy's Theorem (1978):**\n\nIf A has positive upper density, then A contains two elements differing by a perfect square:\n\n∃ a₁, a₂ ∈ A, ∃ k > 0, a₁ - a₂ = k²\n\nThis is another density theorem in the same family as Erdős's conjecture.",
+    "mathContext": "$\\bar{d}(A) > 0 \\implies \\exists a_1, a_2 \\in A,\\; \\exists k > 0,\\; a_1 - a_2 = k^2$",
     "significance": "key",
     "relatedConcepts": [
       "Furstenberg-Sárközy theorem",
@@ -217,6 +228,7 @@
     "type": "definition",
     "title": "Furstenberg Correspondence",
     "content": "The **Furstenberg correspondence principle** translates density statements into ergodic-theoretic ones.\n\nGiven A ⊆ ℕ with positive density, there exists a measure-preserving system where:\n- Positive density corresponds to positive measure\n- Sumset containment corresponds to recurrence\n\nThis is the key tool connecting combinatorics to dynamics.",
+    "mathContext": "$\\bar{d}(A) > 0 \\implies \\exists (X, \\mathcal{B}, \\mu, T)$ measure-preserving, $\\exists E \\in \\mathcal{B}$ with $\\mu(E) = \\bar{d}(A)$",
     "significance": "key",
     "relatedConcepts": [
       "Ergodic theory",
@@ -233,6 +245,7 @@
     "type": "technique",
     "title": "Main Result",
     "content": "**Erdős Problem #656: SOLVED**\n\nAnswer: YES, every set with positive upper density contains B + B + t for some infinite B and integer t.\n\nThe theorem follows from the Kra-Moreira-Richter-Robertson result (2024).",
+    "mathContext": "`erdos_656 : ErdosConjecture656 := kra_moreira_richter_robertson`",
     "significance": "key"
   },
   {
@@ -242,9 +255,10 @@
       "startLine": 230,
       "endLine": 234
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Shift is Necessary",
     "content": "**The shift t is sometimes necessary.**\n\nThere exist sets A with positive density such that B + B ⊈ A for any infinite B.\n\nExample intuition: Take A to be 'spread out' so that sums always miss certain residue classes.",
+    "mathContext": "$\\exists A$ with $\\bar{d}(A) > 0$ such that $\\forall B$ infinite, $B + B \\not\\subseteq A$",
     "significance": "key"
   },
   {
@@ -257,6 +271,7 @@
     "type": "concept",
     "title": "Quantitative Version",
     "content": "**Quantitative strengthening:**\n\nThe infinite set B can be chosen to also have positive density.\n\nThis gives a 'density-preserving' version of the theorem.",
+    "mathContext": "$\\bar{d}(A) > 0 \\implies \\exists B$ infinite with $\\bar{d}(B) > 0$ and $\\exists t,\\; B + B + t \\subseteq A$",
     "significance": "supporting"
   }
 ]

@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Point Configuration",
     "content": "**PointSet:**\n\nA finite set of points in the plane R^2.\n\n**Type:** Finset (R x R)\n\nThe basic object of study - we count line-compatible sequences for n-point configurations.",
+    "mathContext": "Formalizes the concept of point configuration",
     "significance": "key",
     "relatedConcepts": [
       "discrete geometry",
@@ -45,6 +46,7 @@
     "type": "definition",
     "title": "Lines and Incidences",
     "content": "**lineThrough, pointsOnLine:**\n\n- lineThrough(p, q): The line through points p and q\n- pointsOnLine(P, L): Count of points from P that lie on line L\n\nThese define the incidence structure between points and lines.",
+    "mathContext": "Lean: `def lineThrough (p q : ℝ × ℝ) : Set (ℝ × ℝ)`",
     "significance": "key",
     "relatedConcepts": [
       "Collinearity",
@@ -74,6 +76,7 @@
     "type": "definition",
     "title": "Counting Function f(n)",
     "content": "**countLineCompatible f(n):**\n\nThe number of distinct line-compatible sequences for n points.\n\nThe problem asks for bounds on f(n).",
+    "mathContext": "Formalizes the concept of counting function f(n)",
     "significance": "key"
   },
   {
@@ -103,6 +106,7 @@
     "type": "concept",
     "title": "Rich Lines Bound",
     "content": "**rich_lines_bound:**\n\nThe number of k-rich lines (lines with >= k points) is O(n^2/k^3 + n/k).\n\nThis is a corollary of Szemeredi-Trotter and controls the possible sequence patterns.",
+    "mathContext": "$The number of k-rich lines (lines with >= k points) is O(n^2/k^3 + n/k).$",
     "significance": "key"
   },
   {
@@ -115,6 +119,7 @@
     "type": "concept",
     "title": "Lower Bound (Erdos)",
     "content": "**lower_bound:**\n\nf(n) >= exp(c * sqrt(n))\n\nErdos considered this 'easy'.\n\n**Construction:** A sqrt(n) x sqrt(n) grid has Theta(n) lines through it. Selecting different subsets of lines gives exponentially many sequences.",
+    "mathContext": "$f(n) >= exp(c * sqrt(n))$",
     "significance": "key"
   },
   {
@@ -127,6 +132,7 @@
     "type": "insight",
     "title": "Grid Construction",
     "content": "**grid_gives_lower:**\n\nA sqrt(n) x sqrt(n) integer grid has:\n- n points total\n- Theta(sqrt(n)) horizontal lines\n- Theta(sqrt(n)) vertical lines\n- Many diagonal lines\n\nTotal: Theta(n) lines, giving 2^{Theta(sqrt(n))} subsequences.",
+    "mathContext": "Lean: `theorem grid_gives_lower (n : ℕ) (hn : n ≥ 4) :`",
     "significance": "key"
   },
   {
@@ -152,6 +158,7 @@
     "type": "insight",
     "title": "Tight Bounds",
     "content": "**tight_bounds:**\n\nexp(c*sqrt(n)) <= f(n) <= exp(C*sqrt(n))\n\nCombines lower and upper bounds to show f(n) = exp(Theta(sqrt(n))).",
+    "mathContext": "$exp(c*sqrt(n)) <= f(n) <= exp(C*sqrt(n))$",
     "significance": "key"
   },
   {
@@ -164,6 +171,7 @@
     "type": "insight",
     "title": "Erdos Problem #733: SOLVED",
     "content": "**erdos_733:**\n\nComplete solution: f(n) = exp(Theta(sqrt(n)))\n\nFor n >= 4, there exist c, C > 0 such that:\nexp(c*sqrt(n)) <= f(n) <= exp(C*sqrt(n))\n\nThe Szemeredi-Trotter theorem is the key tool.",
+    "mathContext": "$Complete solution: f(n) = exp(Theta(sqrt(n)))$",
     "significance": "key"
   },
   {
@@ -189,6 +197,7 @@
     "type": "insight",
     "title": "Complete Summary",
     "content": "**erdos_733_summary:**\n\n1. Line-compatible sequences counted by f(n)\n2. Lower: f(n) >= exp(c*sqrt(n)) (grid construction)\n3. Upper: f(n) <= exp(C*sqrt(n)) (Szemeredi-Trotter)\n4. Together: f(n) = exp(Theta(sqrt(n)))\n\n**erdos_733_answer:** Confirms the complete bounds.",
+    "mathContext": "$2. Lower: f(n) >= exp(c*sqrt(n)) (grid construction)$",
     "significance": "key"
   }
 ]

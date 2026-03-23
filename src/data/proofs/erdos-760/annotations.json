@@ -94,6 +94,7 @@
     "type": "technique",
     "title": "Complete Graph Bounds",
     "content": "**Complete graphs show tightness:**\n\nFor Kₘ: χ(Kₘ) = m but ζ(Kₘ) = O(log m) (group into doubling cliques).\n\nThis means subgraphs H can only achieve ζ(H) ~ m / log m at best, showing the AKS bound is optimal.",
+    "mathContext": "$For Kₘ: χ(Kₘ) = m but ζ(Kₘ) = O(log m) (group into doubling cliques).$",
     "significance": "key",
     "relatedConcepts": [
       "complete_graph_cochromatic",
@@ -163,6 +164,7 @@
     "type": "concept",
     "title": "Ramsey-Theoretic Tools",
     "content": "**ramsey_for_cochromatic** and **ramsey_number_bound:**\n\nAny graph on n vertices has a homogeneous set of size ≥ log₂ n (Ramsey). More precisely, R(k,k) ≤ 4^k gives homogeneous sets of size log₄ n.\n\nThis logarithmic bound explains the log factor in the main theorem: each iteration of the recursive decomposition finds a log-sized piece.",
+    "mathContext": "Lean: `axiom ramsey_for_cochromatic :`",
     "significance": "key",
     "relatedConcepts": [
       "Ramsey number",
@@ -186,6 +188,7 @@
     "type": "technique",
     "title": "Main Result",
     "content": "**erdos_760:**\n\nA genuine theorem combining the AKS result: ∃c > 0 such that χ(G) = m implies G has subgraph H with ζ(H) ≥ cm / log m. Proved via `aks_theorem`.\n\n**Timeline:**\n- 1993: Erdős-Gimbel prove √(m / log m)\n- 1997: AKS prove optimal m / log m",
+    "mathContext": "Lean: `theorem erdos_760 :`",
     "significance": "key",
     "relatedConcepts": [
       "aks_theorem",

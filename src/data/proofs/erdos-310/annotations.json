@@ -63,6 +63,7 @@
     "type": "definition",
     "title": "Bounded Denominator Property",
     "content": "**hasBoundedDenom:**\n\nA rational a/b has bounded denominator if b <= C for some constant C.\n\n**Definition:**\n```lean\ndef hasBoundedDenom (q : Q) (bound : N) : Prop :=\n  q.den <= bound and q.num.natAbs <= q.den\n```\n\nThe key question is whether C can depend only on alpha, not on N.",
+    "mathContext": "Lean: `def hasBoundedDenom (q : Q) (bound : N) : Prop :=`",
     "significance": "key",
     "relatedConcepts": [
       "Rational arithmetic",
@@ -133,6 +134,7 @@
     "type": "technique",
     "title": "Classic Egyptian Fraction",
     "content": "**classic_egyptian_one:**\n\n1/2 + 1/3 + 1/6 = 1\n\nThis is the most famous Egyptian fraction representation of 1, known since antiquity.\n\nVerified computationally using norm_num.",
+    "mathContext": "$1/2 + 1/3 + 1/6 = 1$",
     "significance": "supporting",
     "relatedConcepts": [
       "Egyptian fractions",
@@ -149,6 +151,7 @@
     "type": "technique",
     "title": "Unit Fraction Sum Examples",
     "content": "**Unit fraction sum verifications:**\n\n- 1/2 + 1/4 = 3/4\n- 1/3 + 1/6 = 1/2\n- 1/2 + 1/3 = 5/6\n- 1/4 + 1/5 + 1/20 = 1/2\n\nThese demonstrate various ways to achieve rational sums from unit fractions, all verified by norm_num.",
+    "mathContext": "Lean: `theorem unit_sum_example1 : (1 : ℚ) / 2 + 1 / 4 = 3 / 4`",
     "significance": "supporting",
     "relatedConcepts": [
       "Rational arithmetic",
@@ -165,6 +168,7 @@
     "type": "technique",
     "title": "Full Density Trivial Case",
     "content": "**full_density_trivial:**\n\nIf A = {1, 2, ..., N} (the full set with density 1), then S = {1} gives unit fraction sum 1/1 = 1.\n\nThis shows the problem is trivial for density 1. The interesting case is when alpha < 1.",
+    "mathContext": "$If A = {1, 2, ..., N} (the full set with density 1), then S = {1} gives unit fraction sum 1/1 = 1.$",
     "significance": "supporting"
   },
   {
@@ -229,6 +233,7 @@
     "type": "technique",
     "title": "Erdos-Straus Examples",
     "content": "**Verified cases of Erdos-Straus:**\n\n- n = 3: 4/3 = 1/1 + 1/3\n- n = 5: 4/5 = 1/2 + 1/4 + 1/20\n\nThese demonstrate the conjecture for small values. The proofs use norm_num for computational verification.",
+    "mathContext": "Lean: `theorem erdos_straus_3 : (4 : ℚ) / 3 = 1 / 1 + 1 / 3`",
     "significance": "supporting"
   },
   {
@@ -258,6 +263,7 @@
     "type": "technique",
     "title": "The Answer is YES",
     "content": "**erdos_310_answer:**\n\nExistential witness that erdosGrahamConjecture holds.\n\n```lean\ntheorem erdos_310_answer :\n  exists _ : erdosGrahamConjecture, True :=\n  (erdos_310, trivial)\n```\n\nThis packages the result as an existence statement.",
+    "mathContext": "Lean: `theorem erdos_310_answer :`",
     "significance": "key"
   },
   {
@@ -288,6 +294,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_310_summary:**\n\nCombines the main results:\n\n1. erdosGrahamConjecture holds (the main theorem)\n2. For any alpha in (0, 1/2], there exists C such that alpha-dense sets have subsets with bounded denominator unit fraction sums\n\nThis provides a complete summary of what was proved about Erdos #310.",
+    "mathContext": "Lean: `theorem erdos_310_summary :`",
     "significance": "key"
   }
 ]

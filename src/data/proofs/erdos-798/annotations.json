@@ -50,6 +50,7 @@
     "type": "definition",
     "title": "Line Through Points",
     "content": "**lineThroughPoints:**\n\nThe line determined by two distinct points p and q.\n\n**Definition:** All points r such that r is collinear with p and q.\n\nFormally: r = p + t*(q - p) for some real t.",
+    "mathContext": "$Formally: r = p + t*(q - p) for some real t.$",
     "significance": "key",
     "relatedConcepts": [
       "Collinearity",
@@ -66,6 +67,7 @@
     "type": "definition",
     "title": "Points Cover Grid",
     "content": "**pointsCoversGrid:**\n\nA set S of points covers {1,...,n}^2 if every lattice point lies on some line determined by S.\n\n**Definition:**\n```lean\ndef pointsCoversGrid (S : Set (Z x Z)) (n : N) : Prop :=\n  forall r in latticeGrid n, exists p q in S, p != q and\n    r in lineThroughPoints p q\n```",
+    "mathContext": "Lean: `def pointsCoversGrid (S : Set (Z x Z)) (n : N) : Prop :=`",
     "significance": "key"
   },
   {
@@ -91,6 +93,7 @@
     "type": "concept",
     "title": "Erdos-Purdy Lower Bound",
     "content": "**erdos_purdy_lower_bound:**\n\nt(n) >= c * n^{2/3}\n\n**Counting argument:**\n- k points give <= k^2/2 lines\n- Each line covers <= n lattice points\n- Total coverage <= k^2 * n / 2\n- Need k^2 * n >= n^2\n- So k >= n^{2/3}",
+    "mathContext": "$t(n) >= c * n^{2/3}$",
     "significance": "key"
   },
   {
@@ -116,6 +119,7 @@
     "type": "concept",
     "title": "Alon's Explicit Construction",
     "content": "**alon_construction:**\n\nFor any n >= 2, there exists a set S of points with:\n- S is contained in {1,...,n}^2\n- S covers all lattice points via its lines\n- |S| <= 10 * n^{2/3} * log n\n\nThe construction is probabilistic but can be derandomized.",
+    "mathContext": "$For any n >= 2, there \\exists a set S of points with:$",
     "significance": "key"
   },
   {
@@ -150,6 +154,7 @@
     "type": "technique",
     "title": "t(n) = o(n)",
     "content": "**t_is_o_n:**\n\nThe answer to Erdos's question is YES.\n\n**Proof outline:**\nt(n) <= C * n^{2/3} * log n\n\nFor any epsilon > 0, eventually:\nC * n^{2/3} * log n < epsilon * n\n\nThis holds because n^{2/3} * log n = o(n) (since 2/3 < 1).",
+    "mathContext": "$t(n) <= C * n^{2/3} * log n$",
     "significance": "key"
   },
   {
@@ -162,6 +167,7 @@
     "type": "technique",
     "title": "Small Examples",
     "content": "**Bounds for small n:**\n\n- t(2) <= 3: Three points cover the 4 lattice points\n- t(3) <= 4: Four points cover the 9 lattice points\n\nThese show the covering is efficient even for small grids.",
+    "mathContext": "Lean: `theorem t_2_bound : t 2 ≤ 3`",
     "significance": "supporting"
   },
   {
@@ -187,6 +193,7 @@
     "type": "technique",
     "title": "Erdos Problem #798: SOLVED",
     "content": "**erdos_798:**\n\nComplete solution to the problem:\n\n1. t(n) = o(n) (YES to Erdos's question)\n2. t(n) >= c * n^{2/3} (lower bound)\n3. t(n) <= C * n^{2/3} * log n (upper bound)\n\nTogether: t(n) = Theta(n^{2/3} log n) (up to the log factor uncertainty).",
+    "mathContext": "$1. t(n) = o(n) (YES to Erdos's question)$",
     "significance": "key"
   },
   {
@@ -199,6 +206,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_798_summary:**\n\nThe minimum points needed to cover {1,...,n}^2 satisfies:\n\nc * n^{2/3} <= t(n) <= C * n^{2/3} * log n\n\n**erdos_798_answer:** Confirms t(n) = o(n).\n\nThe problem is completely resolved with matching bounds up to a log factor.",
+    "mathContext": "$c * n^{2/3} <= t(n) <= C * n^{2/3} * log n$",
     "significance": "key"
   }
 ]

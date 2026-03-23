@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "2-Coloring of ℝ",
     "content": "**TwoColoring:**\n\nA 2-coloring assigns each real number a color (Bool: true=Red, false=Blue).\n\n```lean\ndef TwoColoring := ℝ → Bool\n```\n\nThis is the basic structure we study for Ramsey properties.",
+    "mathContext": "Lean: `def TwoColoring := ℝ → Bool`",
     "significance": "key",
     "relatedConcepts": [
       "Colorings",
@@ -43,6 +44,7 @@
     "type": "definition",
     "title": "Pairwise Sums",
     "content": "**PairwiseSums A:**\n\nThe set of all sums a + b where a ≠ b and both a, b ∈ A.\n\n```lean\ndef PairwiseSums (A : Set ℝ) : Set ℝ :=\n  { x | ∃ a b, a ∈ A ∧ b ∈ A ∧ a ≠ b ∧ x = a + b }\n```\n\nThe question asks if these sums can all be the same color.",
+    "mathContext": "Lean: `def PairwiseSums (A : Set ℝ) : Set ℝ :=`",
     "significance": "key",
     "relatedConcepts": [
       "Sum sets",
@@ -59,6 +61,7 @@
     "type": "definition",
     "title": "Monochromatic Set",
     "content": "**IsMonochromatic c S:**\n\nA set S is monochromatic if all elements have the same color under c.\n\n```lean\ndef IsMonochromatic (c : TwoColoring) (S : Set ℝ) : Prop :=\n  (∀ x ∈ S, c x = true) ∨ (∀ x ∈ S, c x = false)\n```",
+    "mathContext": "Lean: `def IsMonochromatic (c : TwoColoring) (S : Set ℝ) : Prop :=`",
     "significance": "key",
     "relatedConcepts": [
       "Monochromatic",
@@ -93,6 +96,7 @@
     "type": "definition",
     "title": "The Original Conjecture",
     "content": "**ErdosConjecture965:**\n\nFor any 2-coloring of ℝ, there exists a set A with |A| = ℵ₁ such that PairwiseSums(A) is monochromatic.\n\n```lean\ndef ErdosConjecture965 : Prop :=\n  ∀ c : TwoColoring, ∃ A : Set ℝ,\n    HasCardinalityAleph1 A ∧ IsMonochromatic c (PairwiseSums A)\n```\n\nThis conjecture turns out to be FALSE.",
+    "mathContext": "Lean: `def ErdosConjecture965 : Prop :=`",
     "significance": "key",
     "relatedConcepts": [
       "Conjecture",
@@ -126,6 +130,7 @@
     "type": "technique",
     "title": "Conjecture Disproved",
     "content": "**erdos_965_disproved:**\n\nThe conjecture is FALSE.\n\n```lean\ntheorem erdos_965_disproved : ¬ ErdosConjecture965 := by\n  intro hConj\n  obtain ⟨c, hc⟩ := counterexample_exists\n  obtain ⟨A, hA_card, hA_mono⟩ := hConj c\n  exact hc A hA_card hA_mono\n```\n\nProof: The counterexample coloring contradicts the conjecture.",
+    "mathContext": "Lean: `theorem erdos_965_disproved : ¬ ErdosConjecture965 := by`",
     "significance": "key",
     "relatedConcepts": [
       "Main theorem",
@@ -142,6 +147,7 @@
     "type": "definition",
     "title": "Generalized k-Sums",
     "content": "**KSums, hindman_leader_strauss_ch:**\n\nKSums extends pairwise sums to k distinct elements.\n\nHindman, Leader, and Strauss (2017) proved under CH: for any k ≥ 1, there's a coloring defeating all uncountable k-sum sets.\n\nThis is strictly stronger than the original problem.",
+    "mathContext": "Lean: `def KSums (A : Set ℝ) (k : ℕ) : Set ℝ`",
     "significance": "key",
     "relatedConcepts": [
       "Generalization",
@@ -176,6 +182,7 @@
     "type": "technique",
     "title": "Countable vs Uncountable",
     "content": "**countable_ramsey_possible, countable_vs_uncountable:**\n\nThe key contrast:\n- **Countable:** For ANY coloring, there EXISTS a countable infinite set with monochromatic pairwise sums\n- **Uncountable:** There EXISTS a coloring where NO uncountable set has monochromatic pairwise sums\n\nThe transition from countable to uncountable is where Ramsey properties break down.",
+    "mathContext": "Lean: `axiom countable_ramsey_possible :`",
     "significance": "key",
     "relatedConcepts": [
       "Countable",
@@ -193,6 +200,7 @@
     "type": "concept",
     "title": "Partition Calculus",
     "content": "**Erdős-Hajnal-Rado Methods:**\n\nErdős's original proof used partition calculus techniques from his work with Hajnal and Rado on infinite combinatorics.\n\nPartition calculus studies how infinite structures can be colored to achieve or avoid certain patterns.",
+    "mathContext": "Lean: `def PartitionCalculus : Prop`",
     "significance": "supporting",
     "relatedConcepts": [
       "Partition calculus",
@@ -209,6 +217,7 @@
     "type": "technique",
     "title": "Problem Summary",
     "content": "**erdos_965_summary, erdos_965_answer_no:**\n\n| Aspect | Result |\n|--------|--------|\n| Question | Uncountable monochromatic sums? |\n| Answer | NO |\n| Original | Erdős (1975) under CH |\n| Final | Komjáth (2016) unconditionally |\n| Contrast | Countable sets: YES |",
+    "mathContext": "Lean: `theorem erdos_965_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

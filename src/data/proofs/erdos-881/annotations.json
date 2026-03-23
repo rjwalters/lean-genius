@@ -78,6 +78,7 @@
     "type": "concept",
     "title": "Minimal Bases Are Infinite",
     "content": "**minimal_basis_infinite**: Every minimal basis must be infinite. A finite set can only produce finitely many sums, so it cannot be a basis of any order. Axiomatized since the full proof requires careful analysis of finite sum bounds.",
+    "mathContext": "Lean: `def IsMinimalAsymptoticAddBasisOfOrder (k : ℕ) (A : Set ℕ) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "infinite sets",
@@ -111,6 +112,7 @@
     "type": "definition",
     "title": "Weak Version",
     "content": "**erdos881Weak**: A weaker question asks if we can increase the order by SOME finite amount m > 0, not necessarily 1. This is easier than the main conjecture but still open.",
+    "mathContext": "Formalizes the concept of weak version",
     "significance": "key",
     "relatedConcepts": [
       "weak version",
@@ -127,6 +129,7 @@
     "type": "technique",
     "title": "Strong Implies Weak",
     "content": "**strong_implies_weak**: The main conjecture (m=1) implies the weak version (any m). This is proved by taking m=1 and using the strong conjecture's witness. A clean, fully proved theorem.",
+    "mathContext": "Formalizes the concept of strong implies weak",
     "significance": "key",
     "relatedConcepts": [
       "implication",
@@ -177,6 +180,7 @@
     "type": "technique",
     "title": "Subset Property",
     "content": "**basis_subset**: If A ⊆ A' and A is a basis of order k, then A' is also a basis of order k. Adding more elements can only improve or maintain representability. Fully proved.",
+    "mathContext": "Lean: `def erdos881Weak : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "subset",
@@ -193,6 +197,7 @@
     "type": "technique",
     "title": "Summary",
     "content": "**erdos_881_summary**: Erdős Problem #881 remains OPEN. The summary theorem shows the conjecture is definitionally equal to its natural language form. Related to Waring's problem, Sidon sets, and the Erdős-Turán conjecture.",
+    "mathContext": "Lean: `theorem (every positive integer is a sum of four squares).`",
     "significance": "key",
     "relatedConcepts": [
       "summary",

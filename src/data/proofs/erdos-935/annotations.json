@@ -32,6 +32,7 @@
     },
     "title": "Imports and Setup",
     "content": "Uses `Nat.Basic`, `Finset.Basic`, and `Rat.Basic` for natural number operations, finite set products, and rational arithmetic for the asymptotic comparisons.",
+    "mathContext": "Formalizes the concept of imports and setup",
     "significance": "supporting",
     "relatedConcepts": [
       "mathlib",
@@ -188,6 +189,7 @@
     },
     "title": "Combined Statement",
     "content": "**`ErdosProblem935`** is the conjunction of all three parts. Together they characterize the powerful part of consecutive products: it grows like n² (up to subpolynomial factors), diverges relative to n² for l ≥ 2, but is o(n^{l+1}).",
+    "mathContext": "Lean: `def ErdosProblem935 : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "complete-characterization",

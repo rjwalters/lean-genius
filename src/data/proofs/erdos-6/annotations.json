@@ -44,6 +44,7 @@
     "type": "technique",
     "title": "Primes Are Infinite",
     "content": "**Euclid's Theorem**: The set of prime numbers is infinite. This fundamental result from `Nat.infinite_setOf_prime` is needed for the nth prime to be well-defined for all n.",
+    "mathContext": "Lean: `theorem primes_infinite : (setOf Nat.Prime).Infinite`",
     "significance": "supporting",
     "relatedConcepts": [
       "Euclid's theorem",
@@ -60,6 +61,7 @@
     "type": "technique",
     "title": "Strict Monotonicity",
     "content": "`nthPrime_strictMono`: The prime enumeration is strictly increasing. This follows from `Nat.nth_strictMono` applied to the infinite set of primes.",
+    "mathContext": "Lean: `theorem nthPrime_strictMono : StrictMono nthPrime`",
     "significance": "key",
     "relatedConcepts": [
       "strict monotonicity",
@@ -76,6 +78,7 @@
     "type": "technique",
     "title": "Prime Gaps Are Positive",
     "content": "Since primes are strictly increasing (p_{n+1} > p_n for all n), all prime gaps d_n are positive. The proof uses strict monotonicity and omega.",
+    "mathContext": "Lean: `theorem primeGap_pos (n : ℕ) : primeGap n > 0`",
     "significance": "supporting",
     "relatedConcepts": [
       "strict monotonicity",
@@ -92,6 +95,7 @@
     "type": "technique",
     "title": "First Prime Gaps",
     "content": "`primeGap_zero = 1` (gap between 2 and 3) and `primeGap_one = 2` (gap between 3 and 5). These are proved using Mathlib's concrete values for small primes.",
+    "mathContext": "Lean: `theorem primeGap_zero : primeGap 0 = 1`",
     "significance": "supporting",
     "relatedConcepts": [
       "concrete computation",
@@ -125,6 +129,7 @@
     "type": "definition",
     "title": "Decreasing Gap Sequences",
     "content": "`HasDecreasingGaps n m` means the m consecutive gaps starting at n form a strictly decreasing sequence: d_n > d_{n+1} > ... > d_{n+m}.",
+    "mathContext": "Lean: `def HasDecreasingGaps (n m : ℕ) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "monotone sequences"
@@ -192,6 +197,7 @@
     "type": "technique",
     "title": "Decreasing Version",
     "content": "The decreasing analogue also holds: infinitely many n have d_n > d_{n+1} > ... > d_{n+m} for any m. Prime gaps oscillate in both directions.",
+    "mathContext": "Lean: `axiom banks_freiberg_turnage_butterbaugh_decreasing (m : ℕ) (hm : m ≥ 1) :`",
     "significance": "key",
     "relatedConcepts": [
       "oscillation",
@@ -260,6 +266,7 @@
     "type": "technique",
     "title": "Arbitrarily Long Monotone Runs",
     "content": "A beautiful corollary: not just triples, but arbitrarily long increasing (or decreasing) sequences of prime gaps exist. There are infinitely many runs of length 10, 100, or any m.",
+    "mathContext": "Lean: `theorem arbitrarily_long_increasing_runs :`",
     "significance": "key",
     "relatedConcepts": [
       "generalization",

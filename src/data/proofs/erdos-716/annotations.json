@@ -31,6 +31,7 @@
     "type": "definition",
     "title": "Spanned Vertices",
     "content": "**spannedVertices H S** computes the union of all vertices in a set of hyperedges. The (6,3)-problem forbids 3 edges that together span only 6 vertices.",
+    "mathContext": "Formalizes the concept of spanned vertices",
     "significance": "supporting"
   },
   {
@@ -43,6 +44,7 @@
     "type": "definition",
     "title": "(v,e)-Configuration",
     "content": "**hasConfiguration H v e** means H contains e edges spanning at most v vertices. This generalizes the (6,3) condition to arbitrary parameters, leading to the Brown-Erdős-Sós conjecture.",
+    "mathContext": "Formalizes the concept of (v,e)-configuration",
     "significance": "key"
   },
   {
@@ -55,6 +57,7 @@
     "type": "definition",
     "title": "(6,3)-Configuration",
     "content": "**has63Configuration** is the specific forbidden structure: 3 hyperedges spanning at most 6 vertices. This is the central object in Erdős Problem #716.",
+    "mathContext": "Formalizes the concept of (6,3)-configuration",
     "significance": "key"
   },
   {
@@ -67,6 +70,7 @@
     "type": "definition",
     "title": "(6,3)-Free",
     "content": "**is63Free H** means H avoids the (6,3) configuration. The extremal question: what is the maximum edges in a (6,3)-free hypergraph?",
+    "mathContext": "Lean: `def ex63 (n : ℕ) : ℕ`",
     "significance": "key"
   },
   {
@@ -79,6 +83,7 @@
     "type": "concept",
     "title": "Extremal Number",
     "content": "**extremalHypergraph n v e** = f^(3)(n; v, e) is the maximum edges in an n-vertex 3-uniform hypergraph with no e edges spanning v vertices. Computing these is a major challenge in extremal combinatorics.",
+    "mathContext": "Formalizes the concept of extremal number",
     "significance": "key",
     "relatedConcepts": [
       "Turán numbers",
@@ -109,6 +114,7 @@
     "type": "definition",
     "title": "Unique Triangle Property",
     "content": "**edgeInUniqueTriangle** means an edge uv has exactly one common neighbor w forming triangle uvw. This is the graph-theoretic reformulation of the (6,3) problem.",
+    "mathContext": "Formalizes the concept of unique triangle property",
     "significance": "key"
   },
   {
@@ -121,6 +127,7 @@
     "type": "definition",
     "title": "RS Graph",
     "content": "**isRSGraph G** means every edge belongs to exactly one triangle. These 'Ruzsa-Szemerédi graphs' are central to the problem. Maximum edges in an RS graph is 3·ex63(n).",
+    "mathContext": "Formalizes the concept of rs graph",
     "significance": "key",
     "relatedConcepts": [
       "Triangle-free graphs",
@@ -138,6 +145,7 @@
     "type": "definition",
     "title": "Little-o Notation",
     "content": "**isLittleO f g** means f(n) = o(g(n)): the ratio f(n)/g(n) → 0 as n → ∞. The main theorem is ex63(n) = o(n²), meaning subquadratic growth.",
+    "mathContext": "Formalizes the concept of little-o notation",
     "significance": "supporting"
   },
   {
@@ -212,6 +220,7 @@
     "type": "definition",
     "title": "3-AP Free Set",
     "content": "**is3APFree S** means S contains no 3-term arithmetic progression (a, a+d, a+2d). This connects to the RS problem via Behrend's construction of large 3-AP-free sets.",
+    "mathContext": "Formalizes the concept of 3-ap free set",
     "significance": "key"
   },
   {
@@ -255,6 +264,7 @@
     "type": "definition",
     "title": "Brown-Erdős-Sós Conjecture",
     "content": "**brownErdosSosConjecture k** generalizes (6,3) to (k+3, k): f^(3)(n; k+3, k) = o(n²). Erdős #716 is the k=3 case. The full conjecture was proved by Delcourt-Postle (2024).",
+    "mathContext": "Formalizes the concept of brown-erdős-sós conjecture",
     "significance": "key"
   },
   {
@@ -267,6 +277,7 @@
     "type": "technique",
     "title": "k=3 Case",
     "content": "**erdos716_is_bes_k3** shows Erdős #716 is the k=3 case of Brown-Erdős-Sós. With k+3=6 and k=3, this is exactly the (6,3) problem solved by Ruzsa-Szemerédi.",
+    "mathContext": "Formalizes the concept of k=3 case",
     "significance": "supporting"
   },
   {
@@ -279,6 +290,7 @@
     "type": "technique",
     "title": "Solution",
     "content": "**erdos_716** proves the problem using Ruzsa-Szemerédi's theorem. The maximum edges in a (6,3)-free 3-uniform hypergraph is subquadratic in n.",
+    "mathContext": "Formalizes the concept of solution",
     "significance": "key"
   }
 ]

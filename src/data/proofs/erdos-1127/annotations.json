@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Distinct Distances Property",
     "content": "**HasDistinctDistances S:**\n\nA set S has the distinct distances property if every two distinct pairs of points have different distances.\n\nFormally: If {p₁, p₂} ≠ {p₃, p₄} are pairs in S, then dist(p₁, p₂) ≠ dist(p₃, p₄).",
+    "mathContext": "Lean: `def HasDistinctDistances {n : ℕ} (S : Set (Point n)) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "distinct distances problem",
@@ -45,6 +46,7 @@
     "type": "definition",
     "title": "Countable Decomposition",
     "content": "**CountableDecomposition X P:**\n\nA set X admits a countable decomposition with property P if X can be written as a disjoint union ⋃ᵢ Sᵢ where each Sᵢ satisfies P.\n\nThe key question: can this be done with P = HasDistinctDistances?",
+    "mathContext": "$The key question: can this be done with P = HasDistinctDistances?$",
     "significance": "key"
   },
   {
@@ -106,6 +108,7 @@
     "type": "technique",
     "title": "Davies' Theorem (1972)",
     "content": "**davies_theorem:**\n\nAssuming CH, ℝ² can be decomposed into countably many sets with distinct pairwise distances.\n\nThis extended Erdős-Kakutani from dimension 1 to dimension 2.",
+    "mathContext": "Formalizes the concept of davies' theorem (1972)",
     "significance": "key"
   },
   {
@@ -118,6 +121,7 @@
     "type": "technique",
     "title": "Kunen's Theorem (1987)",
     "content": "**kunen_theorem:**\n\nAssuming CH, ℝⁿ can be decomposed into countably many sets with distinct pairwise distances, for ALL dimensions n.\n\nThis completely solves the problem under CH.",
+    "mathContext": "Lean: `axiom davies_theorem : ContinuumHypothesis → Erdos1127Question' 2`",
     "significance": "key"
   },
   {
@@ -143,6 +147,7 @@
     "type": "technique",
     "title": "Main Result",
     "content": "**erdos_1127:**\n\nCH → ∀n, Erdos1127Question' n\n\nAssuming the Continuum Hypothesis, ℝⁿ can be decomposed into countably many sets with distinct pairwise distances, for every dimension n.\n\nThis follows immediately from Kunen's theorem.",
+    "mathContext": "$CH → ∀n, Erdos1127Question' n$",
     "significance": "key"
   }
 ]

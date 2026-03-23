@@ -45,6 +45,7 @@
     "type": "concept",
     "title": "Perfect Squares Have 0 in D(n)",
     "content": "**zero_mem_factorDifferenceSet_of_sq**: If n is a perfect square (n = k²), then 0 ∈ D(n).\n\n**Proof idea**: n = k × k, so |k - k| = 0.\n\n**Examples**:\n- D(4) contains 0 (from 2×2)\n- D(9) contains 0 (from 3×3)\n- D(6) does NOT contain 0 (not a perfect square)",
+    "mathContext": "Lean: `axiom zero_mem_factorDifferenceSet_of_sq (n : ℕ) (hn : IsSquare n) :`",
     "significance": "supporting",
     "relatedConcepts": [
       "IsSquare",
@@ -61,6 +62,7 @@
     "type": "concept",
     "title": "D(n) Always Contains n-1",
     "content": "**pred_mem_factorDifferenceSet**: For n > 0, n - 1 ∈ D(n).\n\n**Proof**: From the factorization n = 1 × n, we get |1 - n| = n - 1.\n\nThis is the **maximum element** of D(n).",
+    "mathContext": "Lean: `axiom pred_mem_factorDifferenceSet (n : ℕ) (hn : 0 < n) :`",
     "significance": "supporting",
     "relatedConcepts": [
       "trivial factorization"
@@ -93,6 +95,7 @@
     "type": "concept",
     "title": "Main Conjecture (Partially OPEN)",
     "content": "**erdos_885_conjecture**: For all k ≥ 1, there exists a k-common set.\n\nThis is stated as an axiom because k ≥ 5 remains OPEN.\n\nThe conjecture asks whether the existence of k-common sets is unbounded.",
+    "mathContext": "$This is stated as an axiom because k ≥ 5 remains OPEN.$",
     "significance": "key",
     "relatedConcepts": [
       "open problem",
@@ -126,6 +129,7 @@
     "type": "concept",
     "title": "Jiménez-Urroz (1999): k = 3",
     "content": "**jimenez_urroz_k3**: There exists a 3-common set.\n\nJiménez-Urroz extended the result to k = 3 by finding three highly composite numbers with at least 3 common factor differences.\n\nThe construction becomes significantly more constrained.",
+    "mathContext": "Lean: `axiom jimenez_urroz_k3 : ∃ Ns : Finset ℕ, IsKCommonSet 3 Ns`",
     "significance": "key",
     "relatedConcepts": [
       "highly composite numbers"
@@ -141,6 +145,7 @@
     "type": "concept",
     "title": "Bremner (2019): k = 4",
     "content": "**bremner_k4**: There exists a 4-common set.\n\nBremner used computational search combined with number-theoretic techniques. This is the current frontier—the largest k for which a solution is known.\n\n20 years passed between k = 3 and k = 4, illustrating the difficulty.",
+    "mathContext": "$20 years passed between k = 3 and k = 4, illustrating the difficulty.$",
     "significance": "key",
     "relatedConcepts": [
       "computational search",
@@ -174,6 +179,7 @@
     "type": "concept",
     "title": "Size of D(n)",
     "content": "**card_factorDifferenceSet**: |D(n)| = ⌈d(n)/2⌉ where d(n) is the number of divisors.\n\nEach divisor pair (a, n/a) contributes one element to D(n). Since pairs are symmetric, we get half the divisor count (rounded up for perfect squares).\n\n**Examples**:\n- d(12) = 6, so |D(12)| = 3\n- d(6) = 4, so |D(6)| = 2",
+    "mathContext": "Lean: `axiom card_factorDifferenceSet (n : ℕ) (hn : 0 < n) :`",
     "significance": "key",
     "relatedConcepts": [
       "divisor function",
@@ -190,6 +196,7 @@
     "type": "concept",
     "title": "Divisor Characterization",
     "content": "**mem_factorDifferenceSet_iff_divisor**: d ∈ D(n) iff there exists a divisor a of n with |a - n/a| = d.\n\nThis connects factor difference sets directly to the divisor structure:\n- Each divisor a gives the element |a - n/a|\n- Divisors come in pairs (a, n/a) that give the same difference",
+    "mathContext": "Lean: `axiom mem_factorDifferenceSet_iff_divisor (n : ℕ) (hn : 0 < n) (d : ℕ) :`",
     "significance": "key",
     "relatedConcepts": [
       "Nat.divisors",

@@ -45,6 +45,7 @@
     "type": "definition",
     "title": "Asymptotic Notation",
     "content": "**AsymptoticLowerBound (≫):**\n\nf ≫ g means f(n) ≥ c·g(n) for some constant c > 0 and all sufficiently large n.\n\n**AsymptoticUpperBound (≪):**\n\nf ≪ g means f(n) ≤ c·g(n) for some constant c > 0 and all sufficiently large n.\n\nThese capture 'big-Omega' and 'big-O' asymptotic behavior.",
+    "mathContext": "$f ≫ g means f(n) ≥ c·g(n) for some constant c > 0 and all sufficiently large n.$",
     "significance": "key",
     "relatedConcepts": [
       "Big-O notation",
@@ -170,6 +171,7 @@
     "type": "technique",
     "title": "Problem Summary",
     "content": "**erdos_986_summary:**\n\nCombines all known results about the conjecture.\n\n**Status Table:**\n\n| k | Status | Who/When |\n|---|--------|----------|\n| 3 | **YES** | Spencer, 1977 |\n| 4 | **YES** | Mattheus-Verstraete, 2023 |\n| ≥5 | **OPEN** | - |\n\n**Key insight:** The 46-year gap between solving k=3 and k=4 shows the difficulty of these problems.",
+    "mathContext": "$| ≥5 | **OPEN** | - |$",
     "significance": "key",
     "relatedConcepts": [
       "Erdős problems",

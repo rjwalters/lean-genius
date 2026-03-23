@@ -55,6 +55,7 @@
     "type": "technique",
     "title": "σ(1) = 1",
     "content": "**sigma_one:**\n\nThe only divisor of 1 is 1 itself, so σ(1) = 1.\n\n```lean\ntheorem sigma_one : sigma 1 = 1\n```",
+    "mathContext": "Lean: `theorem sigma_one : sigma 1 = 1`",
     "significance": "supporting"
   },
   {
@@ -67,6 +68,7 @@
     "type": "technique",
     "title": "σ(p) = p + 1 for primes",
     "content": "**sigma_prime:**\n\nFor prime p, the only divisors are 1 and p, so σ(p) = 1 + p.\n\n```lean\ntheorem sigma_prime (p : N) (hp : p.Prime) : sigma p = p + 1\n```",
+    "mathContext": "Lean: `theorem sigma_prime (p : N) (hp : p.Prime) : sigma p = p + 1`",
     "significance": "key"
   },
   {
@@ -79,6 +81,7 @@
     "type": "definition",
     "title": "Product Function g(k)",
     "content": "**g:**\n\nThe product function g(k) = k · σ(k).\n\n```lean\ndef g (k : N) : N := k * sigma k\n```\n\nThis is the central function of the problem. The question is: how many k give g(k) = n?",
+    "mathContext": "Lean: `def g (k : N) : N := k * sigma k`",
     "significance": "key"
   },
   {
@@ -113,6 +116,7 @@
     "type": "definition",
     "title": "Solution Set",
     "content": "**solutionSet:**\n\nThe set of k such that k·σ(k) = n.\n\n```lean\ndef solutionSet (n : N) : Set N := {k : N | g k = n}\n```\n\nThis set is what we count to get f(n).",
+    "mathContext": "Lean: `def solutionSet (n : N) : Set N := {k : N | g k = n}`",
     "significance": "key"
   },
   {
@@ -125,6 +129,7 @@
     "type": "definition",
     "title": "Counting Function f(n)",
     "content": "**f:**\n\nf(n) = number of solutions to k·σ(k) = n.\n\n```lean\nnoncomputable def f (n : N) : N := (solutionSet n).ncard\n```\n\nThis is the main object of study. The conjectures bound f(n).",
+    "mathContext": "Lean: `noncomputable def f (n : N) : N := (solutionSet n).ncard`",
     "significance": "key"
   },
   {
@@ -176,6 +181,7 @@
     "type": "definition",
     "title": "OEIS A327153",
     "content": "**oeis_A327153:**\n\nThe set of n for which f(n) > 0 (i.e., k·σ(k) = n has a solution).\n\n```lean\ndef oeis_A327153 : Set N := {n : N | f n > 0}\n```\n\nThis is the range of the function g(k) = k·σ(k).",
+    "mathContext": "Lean: `def oeis_A327153 : Set N := {n : N | f n > 0}`",
     "significance": "key",
     "relatedConcepts": [
       "OEIS",
@@ -192,6 +198,7 @@
     "type": "technique",
     "title": "Example: g(2) = 6",
     "content": "**Example:**\n\nn = 6: k = 2 gives 2·σ(2) = 2·3 = 6.\n\n```lean\nexample : g 2 = 6\n```\n\nVerified by native_decide.",
+    "mathContext": "Lean: `example : g 2 = 6`",
     "significance": "supporting"
   },
   {
@@ -204,6 +211,7 @@
     "type": "technique",
     "title": "Example: g(3) = 12",
     "content": "**Example:**\n\nn = 12: k = 3 gives 3·σ(3) = 3·4 = 12.\n\n```lean\nexample : g 3 = 12\n```",
+    "mathContext": "Lean: `example : g 3 = 12`",
     "significance": "supporting"
   },
   {
@@ -216,6 +224,7 @@
     "type": "technique",
     "title": "Example: g(6) = 72",
     "content": "**Example:**\n\nn = 72: k = 6 gives 6·σ(6) = 6·12 = 72.\n\nNote: σ(6) = 1+2+3+6 = 12.",
+    "mathContext": "$n = 72: k = 6 gives 6·σ(6) = 6·12 = 72.$",
     "significance": "supporting"
   },
   {
@@ -228,6 +237,7 @@
     "type": "technique",
     "title": "Prime Examples",
     "content": "**Prime examples:**\n\nFor prime p, g(p) = p(p+1):\n- g(5) = 30\n- g(7) = 56\n\nThis gives infinitely many values in the range of g.",
+    "mathContext": "$For prime p, g(p) = p(p+1):$",
     "significance": "key"
   }
 ]

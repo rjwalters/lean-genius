@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Divisor Function",
     "content": "**tau(n):**\n\nThe number of positive divisors of n.\n\n```lean\ndef tau (n : N) : N :=\n  (Nat.divisors n).card\n```\n\n**Examples:**\n- tau(1) = 1\n- tau(p) = 2 for prime p\n- tau(p^k) = k+1\n- tau(12) = 6",
+    "mathContext": "Lean: `def tau (n : N) : N :=`",
     "significance": "key",
     "relatedConcepts": [
       "Divisors",
@@ -43,6 +44,7 @@
     "type": "technique",
     "title": "Basic Properties of tau",
     "content": "**tau_one, tau_prime, tau_prime_power, tau_multiplicative:**\n\n- tau(1) = 1\n- tau(p) = 2 for prime p\n- tau(p^k) = k + 1\n- tau(mn) = tau(m)*tau(n) when gcd(m,n) = 1\n\n**Multiplicativity:** The key property enabling the proof.",
+    "mathContext": "Lean: `theorem tau_one : tau 1 = 1`",
     "significance": "key",
     "relatedConcepts": [
       "Multiplicative functions",
@@ -59,6 +61,7 @@
     "type": "definition",
     "title": "Divisor Ratio",
     "content": "**divisorRatio(n) = tau(n+1)/tau(n):**\n\nThe ratio of divisor counts for consecutive integers.\n\n```lean\nnoncomputable def divisorRatio (n : N) : R :=\n  if tau n != 0 then (tau (n + 1) : R) / (tau n : R) else 0\n```\n\n**Question:** What values can this ratio take?",
+    "mathContext": "Lean: `noncomputable def divisorRatio (n : N) : R :=`",
     "significance": "key",
     "relatedConcepts": [
       "Consecutive integers",
@@ -120,6 +123,7 @@
     "type": "definition",
     "title": "The Erdos Conjecture",
     "content": "**ErdosConjecture964:**\n\nIs ratioSet dense in (0, infinity)?\n\n```lean\ndef ErdosConjecture964 : Prop :=\n  isDenseInPositives ratioSet\n```\n\n**Status: PROVED** by Eberhard (2025).",
+    "mathContext": "Lean: `def ErdosConjecture964 : Prop :=`",
     "significance": "key",
     "relatedConcepts": [
       "Erdos problems",
@@ -154,6 +158,7 @@
     "type": "technique",
     "title": "The Conjecture is TRUE",
     "content": "**erdos_964_true:**\n\nThe density conjecture follows from Eberhard's theorem.\n\n```lean\ntheorem erdos_964_true : ErdosConjecture964 := by\n  intro r hr eps heps\n  -- Rationals are dense in (0, infinity)\n  -- All rationals are in ratioSet by Eberhard\n  -- Therefore ratioSet is dense\n```\n\n**Logic:** rationals dense + all rationals achieved = density.",
+    "mathContext": "Lean: `theorem erdos_964_true : ErdosConjecture964 := by`",
     "significance": "key",
     "relatedConcepts": [
       "Main result",
@@ -170,6 +175,7 @@
     "type": "technique",
     "title": "Examples",
     "content": "**Small examples of divisor ratios:**\n\n- tau(2)/tau(1) = 2/1 = 2\n- tau(3)/tau(2) = 2/2 = 1\n- tau(4)/tau(3) = 3/2\n- tau(5)/tau(4) = 2/3\n- tau(6)/tau(5) = 4/2 = 2\n\n**Variety:** Even small n give diverse ratios.",
+    "mathContext": "Formalizes the concept of examples",
     "significance": "supporting",
     "relatedConcepts": [
       "Examples",
@@ -186,6 +192,7 @@
     "type": "concept",
     "title": "Extreme Ratios",
     "content": "**small_ratios_exist, large_ratios_exist:**\n\nThe ratio tau(n+1)/tau(n) can be arbitrarily small or arbitrarily large.\n\n```lean\naxiom small_ratios_exist : forall eps > 0, exists n >= 1, divisorRatio n < eps\naxiom large_ratios_exist : forall M, exists n >= 1, divisorRatio n > M\n```\n\n**Intuition:** Choose n = 2^k - 1 (many divisors) followed by 2^k (few divisors), or vice versa.",
+    "mathContext": "Lean: `axiom small_ratios_exist : forall eps > 0, exists n >= 1, divisorRatio n < eps`",
     "significance": "supporting",
     "relatedConcepts": [
       "Extreme values",
@@ -219,6 +226,7 @@
     "type": "definition",
     "title": "All Rationals Appear",
     "content": "**AllRationalsAppear:**\n\nEvery positive rational p/q is achieved as tau(n+1)/tau(n).\n\n```lean\ndef AllRationalsAppear : Prop :=\n  forall p q >= 1,\n    exists n >= 1, divisorRatio n = (p : R) / q\n```\n\n**Significance:** Stronger than density - exact representation of all rationals.",
+    "mathContext": "Lean: `def AllRationalsAppear : Prop :=`",
     "significance": "key",
     "relatedConcepts": [
       "Surjectivity",
@@ -235,6 +243,7 @@
     "type": "concept",
     "title": "Average Ratio",
     "content": "**average_ratio_is_one:**\n\nThe average value of tau(n+1)/tau(n) is 1.\n\n```lean\naxiom average_ratio_is_one :\n    Tendsto averageRatio atTop (nhds 1)\n```\n\n**Intuition:** On average, tau(n+1) ~ tau(n).",
+    "mathContext": "Lean: `axiom average_ratio_is_one :`",
     "significance": "supporting",
     "relatedConcepts": [
       "Averages",
@@ -251,6 +260,7 @@
     "type": "technique",
     "title": "Summary",
     "content": "**Erdos Problem #964: SOLVED**\n\n**Question:** Is {tau(n+1)/tau(n)} dense in (0, infinity)?\n\n**Answer: YES** (Eberhard 2025)\n\n**Stronger:** ALL positive rationals appear.\n\n**Key insight:** Consecutive integers can be chosen so their divisor counts have any prescribed ratio.\n\n**Related:** Problem #946, prime k-tuple conjecture.",
+    "mathContext": "Lean: `theorem erdos_964 : ErdosConjecture964`",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

@@ -45,6 +45,7 @@
     "type": "technique",
     "title": "Concrete Primitive Set Example",
     "content": "**{6, 10, 15}** is primitive: 6 = 2·3, 10 = 2·5, 15 = 3·5. None divides another since each pair shares exactly one prime factor but not both. Proved by case analysis with `omega` finishing each case.",
+    "mathContext": "Formalizes the concept of concrete primitive set example",
     "significance": "supporting",
     "relatedConcepts": [
       "primitive sets",
@@ -115,6 +116,7 @@
     "type": "definition",
     "title": "Generalization Framework",
     "content": "**IsMaximizedByPrimes** captures the broader question: for which weight functions g : ℕ → ℝ is Σ g(n) over primitive sets maximized by primes? The theorem **f_maximized_by_primes** confirms f(n) = 1/(n log n) satisfies this property. This framework opens the door to studying other weight functions.",
+    "mathContext": "Lean: `def IsMaximizedByPrimes (g : ℕ → ℝ) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "extremal combinatorics",
@@ -132,6 +134,7 @@
     "type": "technique",
     "title": "Summary: Erdős #164 SOLVED",
     "content": "**erdos_164_main** packages the complete answer: (1) primes maximize Σ 1/(n log n), and (2) primes are the unique maximizer. Proved by combining lichtman_theorem and lichtman_uniqueness in a conjunction.",
+    "mathContext": "Lean: `theorem erdos_164_main :`",
     "significance": "key",
     "relatedConcepts": [
       "Erdős problems",

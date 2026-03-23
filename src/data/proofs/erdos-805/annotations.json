@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Cliques and Independent Sets",
     "content": "**IsClique(G, S):** Every two distinct vertices in S are adjacent in G. Represents a complete subgraph.\n\n**IsIndependentSet(G, S):** No two distinct vertices in S are adjacent. The complement of a clique in the complement graph: α(G) = ω(Ḡ).",
+    "mathContext": "Lean: `def IsClique (G : SimpleGraph ℕ) (S : Finset ℕ) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Clique number",
@@ -98,6 +99,7 @@
     "type": "definition",
     "title": "Erdős-Hajnal Conjecture for (log n)³",
     "content": "**ErdosHajnalConjecture805:** The conjecture that g(n) = (log n)³ is too small — no graph should exist with the everywhere-Ramsey property at this threshold. Formalized as ¬ExistsEverywhereRamseyGraph(fun n => (log₂ n)³).\n\nThis is UNRESOLVED: Alon-Sudakov came close (within a log log n factor) but did not settle the exact (log n)³ case.",
+    "mathContext": "Lean: `def ErdosHajnalConjecture805 : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Erdős-Hajnal conjecture",
@@ -115,6 +117,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_805** packages both main results:\n1. Negative: ∃ c > 0, no graph for g(n) = c(log n)³/(log log n) (Alon-Sudakov)\n2. Positive: graph exists for g(n) ≤ 2^{2^{√(log log n)}} (Alon-Bucić-Sudakov)\n\nProved by `⟨alon_sudakov_2007, alon_bucic_sudakov_2021⟩`.\n\nThe enormous gap between these bounds — polynomial in log n vs doubly exponential in √(log log n) — shows the exact threshold requires fundamentally new techniques.",
+    "mathContext": "$1. Negative: ∃ c > 0, no graph for g(n) = c(log n)³/(log log n) (Alon-Sudakov)$",
     "significance": "key",
     "relatedConcepts": [
       "Summary theorem",

@@ -27,6 +27,7 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import **NumberTheory.Divisors** for the divisor function, **Data.Real.Irrational** for the irrationality predicate, and **InfiniteSum.Real** for infinite series over real numbers.",
+    "mathContext": "Formalizes the concept of mathlib imports",
     "significance": "supporting",
     "relatedConcepts": [
       "mathlib",
@@ -170,6 +171,7 @@
     "type": "technique",
     "title": "Divisors of 28",
     "content": "The number 28 has exactly 6 divisors: {1, 2, 4, 7, 14, 28}. As a perfect number (28 = 1+2+4+7+14), it illustrates the divisor function on highly composite numbers.",
+    "mathContext": "Formalizes the concept of divisors of 28",
     "significance": "supporting",
     "relatedConcepts": [
       "perfect-numbers",

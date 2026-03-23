@@ -28,6 +28,7 @@
     "type": "definition",
     "title": "Triangle-Free Graph",
     "content": "**IsTriangleFree:**\n\nA graph G is triangle-free if no three vertices form a complete triangle (K₃).\n\nFormally: ∀ a b c, ¬(Adj(a,b) ∧ Adj(b,c) ∧ Adj(a,c))",
+    "mathContext": "$Formally: ∀ a b c, ¬(Adj(a,b) ∧ Adj(b,c) ∧ Adj(a,c))$",
     "relatedConcepts": [
       "Turán's theorem",
       "K₃-free graphs",
@@ -46,6 +47,7 @@
     "type": "definition",
     "title": "Bipartite Graph",
     "content": "**IsBipartite:**\n\nA graph is bipartite if vertices partition into two sets with all edges between them.\n\nV = A ∪ B with A ∩ B = ∅ and all edges go A ↔ B.",
+    "mathContext": "$V = A ∪ B with A ∩ B = ∅ and all edges go A ↔ B.$",
     "relatedConcepts": [
       "2-colorability",
       "graph partitioning",
@@ -83,6 +85,7 @@
     "type": "concept",
     "title": "Trivial Lower Bound",
     "content": "**half_edges_bipartite:**\n\nEvery graph has a bipartite subgraph with ≥ m/2 edges.\n\n**Proof:** Random 2-coloring has expected m/2 bichromatic edges.\n\nThis is the baseline - triangle-freeness should help.",
+    "mathContext": "$Every graph has a bipartite subgraph with ≥ m/2 edges.$",
     "relatedConcepts": [
       "probabilistic method",
       "random 2-coloring",
@@ -101,6 +104,7 @@
     "type": "concept",
     "title": "Alon's Upper Bound",
     "content": "**alon_upper_bound:**\n\n∃ c₂ > 0 such that f(m) ≤ m/2 + c₂·m^{4/5}\n\nThis comes from constructing triangle-free graphs where the maximum bipartite subgraph is bounded.\n\nThe constant c₂ is extracted via Classical.choose and proved positive.",
+    "mathContext": "$∃ c₂ > 0 such that f(m) ≤ m/2 + c₂·m^{4/5}$",
     "relatedConcepts": [
       "extremal constructions",
       "m^{4/5} exponent",
@@ -119,6 +123,7 @@
     "type": "concept",
     "title": "Alon's Lower Bound",
     "content": "**alon_lower_bound:**\n\n∃ c₁ > 0 such that f(m) ≥ m/2 + c₁·m^{4/5}\n\nTriangle-free graphs MUST have bipartite subgraphs significantly larger than m/2.\n\nThe constant c₁ is extracted via Classical.choose and proved positive.",
+    "mathContext": "$∃ c₁ > 0 such that f(m) ≥ m/2 + c₁·m^{4/5}$",
     "relatedConcepts": [
       "probabilistic method",
       "algebraic constructions",
@@ -156,6 +161,7 @@
     "type": "concept",
     "title": "Related Classical Results",
     "content": "Three related results are axiomatized:\n\n1. **general_graph_bound**: Any graph has a bipartite subgraph with ≥ m/2 edges.\n2. **mantel_theorem** (1907): Triangle-free graphs on n vertices have ≤ n²/4 edges.\n3. **KST_bound** (Kővári-Sós-Turán): |E(G)| ≤ (1/2)n^{3/2} + (1/4)n for triangle-free G.\n\nThese classical results constrain the structure of triangle-free graphs and help explain the 4/5 exponent.",
+    "mathContext": "$1. **general_graph_bound**: Any graph has a bipartite subgraph with ≥ m/2 edges.$",
     "relatedConcepts": [
       "Mantel's theorem 1907",
       "Kővári-Sós-Turán theorem",

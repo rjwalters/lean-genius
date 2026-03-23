@@ -28,6 +28,7 @@
     "type": "concept",
     "title": "Imports and Setup",
     "content": "We import Mathlib and open namespaces for **Polynomial** (complex polynomials), **MeasureTheory** (Hausdorff measure for path length), **ENNReal** (extended non-negative reals), **Metric** (distance and diameter), and **Topology** (continuous paths).",
+    "mathContext": "Formalizes the concept of imports and setup",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
@@ -117,6 +118,7 @@
     "type": "context",
     "title": "Diameter Bound",
     "content": "The diameter of the root set is less than 2. Since all roots lie in the open unit disk and the unit disk has diameter 2, no two roots can be 2 or more apart.\n\nThis gives hope that a short path exists—we just need to find one in the sublevel set.",
+    "mathContext": "Lean: `axiom roots_diameter_bound :`",
     "significance": "key",
     "relatedConcepts": [
       "metric diameter",
@@ -187,6 +189,7 @@
     "type": "technique",
     "title": "Distance Bound in Unit Disk",
     "content": "**dist_in_unit_disk**: If |z₁| < 1 and |z₂| < 1, then |z₁ - z₂| < 2.\n\nProof by triangle inequality:\n`|z₁ - z₂| ≤ |z₁| + |z₂| < 1 + 1 = 2`\n\nThis is why 2 is the critical constant in the conjecture.",
+    "mathContext": "$`|z₁ - z₂| ≤ |z₁| + |z₂| < 1 + 1 = 2`$",
     "significance": "supporting",
     "relatedConcepts": [
       "triangle inequality",
@@ -221,6 +224,7 @@
     "type": "technique",
     "title": "Unit Disk Diameter",
     "content": "**unit_disk_diameter_bound**: The diameter of the open unit disk ball(0, 1) is at most 2.\n\nThis uses the general formula diam(ball(x, r)) ≤ 2r. For the unit disk (r = 1), this gives diameter ≤ 2.\n\nThe bound 2 in the conjecture is thus geometrically sharp.",
+    "mathContext": "Lean: `theorem unit_disk_diameter_bound : Metric.diam (Metric.ball (0 : ℂ) 1) ≤ 2`",
     "significance": "supporting",
     "relatedConcepts": [
       "metric diameter",

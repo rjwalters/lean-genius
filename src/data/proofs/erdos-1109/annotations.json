@@ -57,6 +57,7 @@
     "type": "definition",
     "title": "The Sumset and Squarefree Sumset Predicate",
     "content": "**Sumset Definition:**\n```lean\ndef sumset (A : Finset ℕ) : Finset ℕ :=\n  (A ×ˢ A).image (fun p => p.1 + p.2)\n```\n\nThis computes A + A = {a + b : a, b ∈ A}.\n\n**Squarefree Sumset Predicate:**\n```lean\ndef hasSquarefreeSumset (A : Finset ℕ) : Prop :=\n  ∀ s ∈ sumset A, isSquarefree s\n```\n\n**Size Explosion:** If |A| = m, then |A + A| can be as large as m(m+1)/2. For ALL these sums to be squarefree is an extremely strong constraint that severely limits how large A can be.",
+    "mathContext": "Lean: `def sumset (A : Finset ℕ) : Finset ℕ :=`",
     "significance": "key",
     "relatedConcepts": [
       "Minkowski sum",
@@ -79,6 +80,7 @@
     "type": "definition",
     "title": "The Function f(N)",
     "content": "**Definition:**\n```lean\nnoncomputable def f (N : ℕ) : ℕ :=\n  sSup { A.card | A : Finset ℕ // A ⊆ range (N + 1) ∧ hasSquarefreeSumset A }\n```\n\n**In words:** f(N) is the maximum cardinality of a subset A ⊆ {1, 2, ..., N} such that every element of A + A is squarefree.\n\n**The central question:** What is the growth rate of f(N) as N → ∞?\n\n- Is f(N) bounded by N^{o(1)} (subpolynomial)?\n- Is f(N) bounded by (log N)^{O(1)} (polylogarithmic)?\n\nThe answer remains unknown despite decades of research.",
+    "mathContext": "Lean: `noncomputable def f (N : ℕ) : ℕ :=`",
     "significance": "key",
     "relatedConcepts": [
       "extremal set theory",
@@ -145,6 +147,7 @@
     "type": "concept",
     "title": "The Open Questions",
     "content": "**Question 1 (Weaker):** Is f(N) ≤ N^{o(1)}?\n```lean\ndef question1_subpolynomial : Prop :=\n  ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀, f N ≤ N^ε\n```\nThis asks: does f(N) grow slower than ANY polynomial?\n\n**Question 2 (Stronger):** Is f(N) ≤ (log N)^{O(1)}?\n```lean\ndef question2_polylogarithmic : Prop :=\n  ∃ k : ℕ, ∃ C > 0, ∀ N ≥ 2, f N ≤ C * (Real.log N)^k\n```\nThis asks: is f(N) bounded by some fixed power of log N?\n\n**Erdős-Sárközy Conjecture:** Question 2 is true—f(N) is polylogarithmic.\n\n**Status:** BOTH QUESTIONS REMAIN OPEN. We don't even know if f(N) is subpolynomial!",
+    "mathContext": "Lean: `def question1_subpolynomial : Prop :=`",
     "significance": "key",
     "relatedConcepts": [
       "subpolynomial growth",
@@ -184,6 +187,7 @@
     "type": "insight",
     "title": "Why Squarefree Sumsets Must Be Small",
     "content": "**Intuition for the Upper Bound:**\n\n**1. Sumset Explosion:** If |A| = m, then A + A has roughly m² elements.\n\n**2. Avoiding 4 = 2²:** Every element of A + A must avoid being divisible by 4.\n- If a + b ≡ 0 (mod 4), that's forbidden\n- This forces A into special residue classes mod 4\n\n**3. Multiple Primes:** A + A must simultaneously avoid p² for EVERY prime p.\n- Avoiding 4 = 2² is one constraint\n- Avoiding 9 = 3² is another constraint\n- Avoiding 25 = 5² is another... and so on!\n\nAt each prime p, the constraint forces A into at most p/2 + 1 residue classes mod p². These constraints interact multiplicatively, severely limiting the size of A.",
+    "mathContext": "Lean: `axiom erdos_sarkozy_conjecture : question2_polylogarithmic`",
     "significance": "key",
     "relatedConcepts": [
       "Chinese Remainder Theorem",
@@ -206,6 +210,7 @@
     "type": "technique",
     "title": "Main Results Summary",
     "content": "**Erdős Problem #1109: Complete Timeline**\n\n| Year | Authors | Lower Bound | Upper Bound |\n|------|---------|-------------|-------------|\n| 1987 | Erdős-Sárközy | log N | N^{3/4} log N |\n| 2001 | Gyarmati | log N (alt. proof) | — |\n| 2004 | Konyagin | (log log N)(log N)² | N^{11/15+o(1)} |\n\n**The Summary Theorem:**\n```lean\ntheorem erdos_1109_summary :\n    (∀ N ≥ 16, ∃ C > 0, f N ≥ C * Real.log (Real.log N) * (Real.log N)^2) ∧\n    (∀ N ≥ 2, ∃ C > 0, ∃ ε > 0, f N ≤ C * N^(11/15 + ε : ℝ)) := ...\n```\n\nThis combines Konyagin's lower and upper bounds into a single summary theorem.\n\n**Status:** OPEN. The gap between polylogarithmic and polynomial growth represents one of the fundamental open questions in additive combinatorics.",
+    "mathContext": "Lean: `theorem erdos_1109_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "additive combinatorics timeline",

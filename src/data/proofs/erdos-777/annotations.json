@@ -63,6 +63,7 @@
     "type": "definition",
     "title": "Base Set and Power Set",
     "content": "**baseSet and powerSetOfBase:**\n\n- baseSet(n) = {0, 1, ..., n-1} = Finset.range n\n- powerSetOfBase(n) = all subsets of baseSet(n)\n\n**Key theorem:**\n```lean\ntheorem powerSet_card (n : ℕ) : (powerSetOfBase n).card = 2^n\n```\n\nThe power set has 2^n elements, which is the maximum possible family size.",
+    "mathContext": "Lean: `theorem powerSet_card (n : ℕ) : (powerSetOfBase n).card = 2^n`",
     "significance": "key",
     "relatedConcepts": [
       "Finite sets",
@@ -152,6 +153,7 @@
     "type": "definition",
     "title": "Chains and Antichains",
     "content": "**IsChain and IsAntichain:**\n\n- **Chain:** Every two elements are comparable\n- **Antichain:** No two distinct elements are comparable\n\n**Definitions:**\n```lean\ndef IsChain (F : Finset (Finset α)) : Prop :=\n  ∀ A ∈ F, ∀ B ∈ F, Comparable A B\n\ndef IsAntichain (F : Finset (Finset α)) : Prop :=\n  ∀ A ∈ F, ∀ B ∈ F, A ≠ B → ¬Comparable A B\n```\n\nChains have maximum edges; antichains have zero edges.",
+    "mathContext": "Lean: `def IsChain (F : Finset (Finset α)) : Prop :=`",
     "significance": "key",
     "relatedConcepts": [
       "Totally ordered sets",
@@ -187,6 +189,7 @@
     "type": "technique",
     "title": "Comparability Examples",
     "content": "**Concrete Examples:**\n\n1. **singleton_comparable:** Two distinct singletons {a} and {b} are NOT comparable (neither contains the other)\n\n2. **empty_comparable:** The empty set ∅ is comparable to every set (∅ ⊆ A for all A)\n\n3. **full_comparable:** Every subset A of a base set B is comparable to B (A ⊆ B)\n\nThese illustrate the basic behavior of comparability.",
+    "mathContext": "$2. **empty_comparable:** The empty set ∅ is comparable to every set (∅ ⊆ A for all A)$",
     "significance": "supporting",
     "relatedConcepts": [
       "Singletons",
@@ -222,6 +225,7 @@
     "type": "technique",
     "title": "Main Results Summary",
     "content": "**erdos_777_summary:**\n\nCombines all three main results:\n\n1. **Question 1 (YES):** Small families have bounded edges\n2. **Question 2 (NO):** Quadratic density does not imply small family\n3. **Question 3 (YES):** Subquadratic threshold exists\n\n```lean\ntheorem erdos_777_summary :\n    (∀ ε : ℝ, ε > 0 → ...) ∧  -- Q1\n    (∃ (f : ℕ → ...), ...) ∧   -- Q2\n    (∀ ε : ℝ, ε > 0 → ...)    -- Q3\n```\n\nErdos Problem #777 is completely resolved.",
+    "mathContext": "Lean: `theorem erdos_777_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "Summary theorem",

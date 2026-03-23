@@ -63,6 +63,7 @@
     "type": "definition",
     "title": "The Ramsey Property",
     "content": "**hasRamseyProperty:**\n\nA graph G has the Ramsey property for (K3, 2) if every 2-coloring of its edges contains a monochromatic triangle.\n\n```lean\ndef hasRamseyProperty (G : SimpleGraph V) : Prop :=\n  forall c : EdgeColoring G, hasClique (monochromaticSubgraph G c true) 3 or\n                             hasClique (monochromaticSubgraph G c false) 3\n```\n\nThis captures: 'no matter how you color the edges red/blue, you get a single-color triangle.'",
+    "mathContext": "Lean: `def hasRamseyProperty (G : SimpleGraph V) : Prop :=`",
     "significance": "key",
     "relatedConcepts": [
       "Ramsey numbers",
@@ -131,6 +132,7 @@
     "type": "concept",
     "title": "Historical Timeline",
     "content": "**Bound Improvement Timeline:**\n\n- 1970 Folkman: Existence (astronomical)\n- 1986 Frankl-Rodl: <= 7 x 10^11\n- 1988 Spencer: <= 3 x 10^9 (won $100)\n- 2007 Lu: <= 9697 (explicit)\n- 2008 Dudek-Rodl: <= 941 (current)\n\n```lean\ntheorem bounds_improvement :\n    folkmanNumber_2_3_4 <= 941 and\n    941 <= 9697 and\n    9697 <= 3 * 10^9 and\n    3 * 10^9 <= 7 * 10^11\n```\n\nEach improvement was a significant achievement in combinatorics.",
+    "mathContext": "Lean: `theorem bounds_improvement :`",
     "significance": "key",
     "relatedConcepts": [
       "Historical progress",
@@ -200,6 +202,7 @@
     "type": "technique",
     "title": "Main Results Summary",
     "content": "**erdos_582_summary:**\n\nCombines all main results:\n1. Such graphs exist (Folkman 1970)\n2. 19 <= f(2,3,4) <= 941 (current bounds)\n3. Conjecture: f(2,3,4) <= 127\n\n```lean\ntheorem erdos_582_summary :\n    (exists ... isFolkmanGraph G) and\n    19 <= folkmanNumber_2_3_4 and\n    folkmanNumber_2_3_4 <= 941\n```",
+    "mathContext": "Lean: `theorem erdos_582_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

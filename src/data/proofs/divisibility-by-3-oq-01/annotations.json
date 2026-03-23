@@ -135,6 +135,7 @@
     "type": "technique",
     "title": "Master Summary",
     "content": "A single theorem collecting all major divisibility rules:\n\n- 3 digit-sum rules (3, 9, 37, 99 in various bases)\n- 5 last-digit rules (2, 4, 8, 5, 25)\n- 2 power generalizations (2^k, 5^k)\n\nAll verified in one theorem statement.",
+    "mathContext": "Lean: `theorem eleven_dvd_truncation (n : ℕ) :`",
     "significance": "supporting",
     "relatedConcepts": [
       "summary",

@@ -45,6 +45,7 @@
     "type": "definition",
     "title": "IsPlusMinusOne",
     "content": "**IsPlusMinusOne f:**\n\nf(n) in {-1, 1} for all n >= 1.\n\nThis real-valued constraint is crucial. For complex values on the unit circle, convergence can fail (see Wintner counterexample).",
+    "mathContext": "$f(n) in {-1, 1} for all n >= 1.$",
     "significance": "key",
     "relatedConcepts": [
       "Real-valued functions",
@@ -61,6 +62,7 @@
     "type": "definition",
     "title": "MultPlusMinusOne",
     "content": "**MultPlusMinusOne:**\n\nThe set of functions that are both multiplicative AND take values in {-1, 1}.\n\nExamples: Liouville function, constant 1, Legendre symbols.",
+    "mathContext": "Lean: `def MultPlusMinusOne : Set (ℕ → ℤ)`",
     "significance": "key",
     "relatedConcepts": [
       "Liouville function",
@@ -77,6 +79,7 @@
     "type": "definition",
     "title": "partialSum",
     "content": "**partialSum f N:**\n\nsum_{n=1}^N f(n)\n\nThe cumulative sum of function values up to N.",
+    "mathContext": "$sum_{n=1}^N f(n)$",
     "significance": "supporting",
     "relatedConcepts": [
       "Summation",
@@ -93,6 +96,7 @@
     "type": "definition",
     "title": "meanValue",
     "content": "**meanValue f N:**\n\n(1/N) sum_{n<=N} f(n)\n\nThe average value of f over {1, 2, ..., N}. The key question is whether this converges as N -> infinity.",
+    "mathContext": "$(1/N) sum_{n<=N} f(n)$",
     "significance": "key",
     "relatedConcepts": [
       "Cesaro mean",
@@ -109,6 +113,7 @@
     "type": "definition",
     "title": "HasConvergentMean",
     "content": "**HasConvergentMean f:**\n\nThere exists L such that meanValue f N -> L as N -> infinity.\n\nFormally: for all epsilon > 0, exists N0 such that for N >= N0, |meanValue f N - L| < epsilon.",
+    "mathContext": "$Formally: for all epsilon > 0, \\exists N0 such that for N >= N0, |meanValue f N - L| < epsilon.$",
     "significance": "key",
     "relatedConcepts": [
       "Limit",
@@ -144,6 +149,7 @@
     "type": "definition",
     "title": "IsCompletelyMultiplicative",
     "content": "**IsCompletelyMultiplicative f:**\n\nf(mn) = f(m)f(n) for ALL m, n (not just coprime).\n\nEvery completely multiplicative function is multiplicative, but not vice versa. The Liouville function is completely multiplicative.",
+    "mathContext": "$f(mn) = f(m)f(n) for ALL m, n (not just coprime).$",
     "significance": "key",
     "relatedConcepts": [
       "Multiplicativity",
@@ -213,6 +219,7 @@
     "type": "technique",
     "title": "Erdos Problem #239: SOLVED",
     "content": "**erdos_239:**\n\nFor all f in MultPlusMinusOne, f has a convergent mean.\n\n```lean\ntheorem erdos_239 (f : N -> Z) (hf : f in MultPlusMinusOne) :\n    HasConvergentMean f\n```\n\nDirect application of Wirsing's theorem.",
+    "mathContext": "Lean: `theorem erdos_239 (f : N -> Z) (hf : f in MultPlusMinusOne) :`",
     "significance": "key",
     "relatedConcepts": [
       "Wirsing theorem",
@@ -247,6 +254,7 @@
     "type": "technique",
     "title": "Constant One Function",
     "content": "**constOne = 1 everywhere**\n\nThe trivial example:\n- Completely multiplicative (1 * 1 = 1)\n- Takes value 1 (which is in {-1, 1})\n- Mean value is exactly 1 for all N >= 1\n\nThis is the simplest multiplicative {-1, 1} function.",
+    "mathContext": "Lean: `def constOne : ℕ → ℤ`",
     "significance": "supporting",
     "relatedConcepts": [
       "Trivial function",
@@ -298,6 +306,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_239_summary:**\n\nCombines all main results:\n1. All multiplicative {-1,1} functions have convergent mean (main theorem)\n2. constOne is in MultPlusMinusOne (trivial example)\n3. liouville is in MultPlusMinusOne (nontrivial example with mean 0)\n\nThe summary demonstrates both the theorem and concrete examples.",
+    "mathContext": "Lean: `theorem erdos_239_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "Main results",
@@ -314,6 +323,7 @@
     "type": "definition",
     "title": "The Answer",
     "content": "**erdos_239_answer:**\n\n\"YES - Every multiplicative {-1,1}-valued function has a convergent mean (Wirsing 1967)\"\n\nThe problem is completely solved.",
+    "mathContext": "Formalizes the concept of the answer",
     "significance": "key",
     "relatedConcepts": [
       "Solved problems",

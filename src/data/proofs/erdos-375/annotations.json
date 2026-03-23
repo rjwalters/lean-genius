@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Composite Numbers and Blocks",
     "content": "**isComposite:**\n\nA natural number n is composite if n > 1 and n is not prime.\n\n```lean\ndef isComposite (n : N) : Prop := n > 1 and not n.Prime\n```\n\n**isCompositeBlock:**\n\nThe integers n+1, n+2, ..., n+k are all composite.\n\n```lean\ndef isCompositeBlock (n k : N) : Prop :=\n  forall i : N, 1 <= i -> i <= k -> isComposite (n + i)\n```",
+    "mathContext": "Lean: `def isComposite (n : N) : Prop := n > 1 and not n.Prime`",
     "significance": "key",
     "relatedConcepts": [
       "Prime numbers",
@@ -43,6 +44,7 @@
     "type": "definition",
     "title": "Prime Divisor Assignments",
     "content": "**PrimeDivisorAssignment:**\n\nA function assigning a prime to each position in a composite block.\n\n```lean\ndef PrimeDivisorAssignment (n k : N) := Fin k -> N\n```\n\n**isValidAssignment:**\n\nAn assignment is valid if:\n1. Each assigned number is prime\n2. Each prime divides its corresponding composite\n3. All assigned primes are distinct\n\nThe third condition is the key challenge!",
+    "mathContext": "Lean: `def PrimeDivisorAssignment (n k : N) := Fin k -> N`",
     "significance": "key",
     "relatedConcepts": [
       "Divisibility",
@@ -76,6 +78,7 @@
     "type": "technique",
     "title": "Trivial Cases: k <= 2",
     "content": "**k = 1 Case:**\nAny composite n+1 has at least one prime divisor. Just pick that prime.\n\n**k = 2 Case:**\nConsecutive integers n+1 and n+2 are coprime (gcd = 1).\nSo they have distinct prime factors, and we can pick one from each.\n\nThese cases are \"trivial\" - the real difficulty starts at k >= 3.",
+    "mathContext": "$Consecutive integers n+1 and n+2 are coprime (gcd = 1).$",
     "significance": "key",
     "relatedConcepts": [
       "Coprimality",
@@ -126,6 +129,7 @@
     "type": "technique",
     "title": "Example: 24, 25, 26",
     "content": "**example_24_25_26:**\n\n24, 25, 26 are consecutive composites (between primes 23 and 29).\n\n**Factorizations:**\n- 24 = 2^3 x 3\n- 25 = 5^2\n- 26 = 2 x 13\n\n**Valid Assignment:**\np_1 = 2 (divides 24)\np_2 = 5 (divides 25)\np_3 = 13 (divides 26)\n\nDistinct primes: 2, 5, 13 - verified!",
+    "mathContext": "$p_1 = 2 (divides 24)$",
     "significance": "supporting",
     "relatedConcepts": [
       "Concrete examples",
@@ -142,6 +146,7 @@
     "type": "technique",
     "title": "Example: 90-95",
     "content": "**example_90_to_95:**\n\n90 through 95 are 6 consecutive composites (between primes 89 and 97).\n\n**Factorizations:**\n- 90 = 2 x 3^2 x 5\n- 91 = 7 x 13\n- 92 = 2^2 x 23\n- 93 = 3 x 31\n- 94 = 2 x 47\n- 95 = 5 x 19\n\n**Valid Assignment:** 5, 7, 23, 31, 47, 19\n\nNote: Many share factor 2 or 3, but we can find 6 distinct primes.",
+    "mathContext": "Lean: `theorem example_90_to_95 :`",
     "significance": "supporting",
     "relatedConcepts": [
       "Longer composite runs",
@@ -158,6 +163,7 @@
     "type": "concept",
     "title": "Counting Arguments",
     "content": "**prime_factor_bound:**\n\nA composite n has at least 1 prime factor, at most log_2(n) distinct prime factors.\n\n**small_prime_divisor:**\n\nEvery composite n has a prime divisor p <= sqrt(n).\n\n**Why This Makes Grimm Hard:**\nMany consecutive composites share small primes (2, 3, 5...).\nAs k grows, finding k DISTINCT primes becomes difficult.",
+    "mathContext": "$Every composite n has a prime divisor p <= sqrt(n).$",
     "significance": "key",
     "relatedConcepts": [
       "Prime factor counting",
@@ -192,6 +198,7 @@
     "type": "technique",
     "title": "Summary",
     "content": "**erdos_375_summary:**\n\n1. Trivial cases k <= 2 are provable\n2. Best partial result: k << (log n / log log n)^3\n3. The general conjecture is open\n\n```lean\ntheorem erdos_375_summary :\n    True and  -- trivial cases\n    (exists c ...) and  -- RST bound\n    True  -- open status\n```",
+    "mathContext": "Lean: `theorem erdos_375_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

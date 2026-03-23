@@ -46,6 +46,7 @@
     "type": "definition",
     "title": "Chromatic and Clique Numbers",
     "content": "**inducedChromaticNumber G S = chi(G[S]):**\nChromatic number of the induced subgraph on vertex set S.\n\n**cliqueNumber G = omega(G):**\nMaximum clique size in G (largest complete subgraph).\n\nThe problem concerns graphs with high chi but low omega - these must have complex structure.",
+    "mathContext": "Formalizes the concept of chromatic and clique numbers",
     "significance": "key",
     "relatedConcepts": [
       "Graph coloring",

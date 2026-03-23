@@ -38,6 +38,7 @@
     "type": "definition",
     "title": "Color Type",
     "content": "**Color:**\n\nAn inductive type with two constructors:\n- `Color.Red`\n- `Color.Blue`\n\nThis models the two colors available for edge coloring. The `deriving DecidableEq` clause enables decidable equality checking.",
+    "mathContext": "Formalizes the concept of color type",
     "significance": "supporting",
     "relatedConcepts": [
       "Inductive types",
@@ -116,6 +117,7 @@
     "type": "definition",
     "title": "Path Vertex Set",
     "content": "**Path.vertexSet:**\n\nConverts a path's vertex list to a finite set:\n\n`p.vertexSet := p.vertices.toFinset`\n\nThis is used to check if paths are disjoint and if all vertices are covered.",
+    "mathContext": "$`p.vertexSet := p.vertices.toFinset`$",
     "significance": "supporting",
     "relatedConcepts": [
       "Finite sets",
@@ -195,6 +197,7 @@
     "type": "definition",
     "title": "Monochromatic Cover",
     "content": "**IsMonochromaticCover c cover col:**\n\nA path cover is monochromatic if ALL paths in the cover have the same color:\n\n`∀ p ∈ cover.paths, IsMonochromaticPath c p col`\n\nThis is the crucial constraint in the problem: we need same-color paths, not a mix of red and blue paths.",
+    "mathContext": "$`∀ p ∈ cover.paths, IsMonochromaticPath c p col`$",
     "significance": "key",
     "relatedConcepts": [
       "Uniform coloring",
@@ -353,6 +356,7 @@
     "type": "technique",
     "title": "Conjecture Confirmed",
     "content": "**erdos_gyarfas_conjecture_true:**\n\n```lean\ntheorem erdos_gyarfas_conjecture_true : ErdosGyarfasConjecture :=\n  pokrovskiy_versteegen_williams\n```\n\nDirect assignment of the axiom to the conjecture type.",
+    "mathContext": "Lean: `theorem erdos_gyarfas_conjecture_true : ErdosGyarfasConjecture :=`",
     "significance": "key",
     "relatedConcepts": [
       "Axiom application",
@@ -377,6 +381,7 @@
     "type": "technique",
     "title": "Explicit Main Result",
     "content": "**main_result:**\n\n```lean\ntheorem main_result (n : ℕ) (hn : n ≥ 1) (c : TwoColoring n) :\n    ∃ (cover : PathCover n) (col : Color),\n      IsMonochromaticCover c cover col ∧\n      cover.size ≤ Nat.sqrt n :=\n  erdos_gyarfas_conjecture_true n hn c\n```\n\nAn explicit statement that any coloring of K_n admits a √n same-color path cover.",
+    "mathContext": "Lean: `theorem main_result (n : ℕ) (hn : n ≥ 1) (c : TwoColoring n) :`",
     "significance": "key",
     "relatedConcepts": [
       "Explicit statements",
@@ -456,6 +461,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_518_summary:**\n\nCombines all results into a single theorem:\n\n1. **The conjecture is true:** ErdosGyarfasConjecture holds\n2. **Mixed colors:** 2 paths always suffice\n3. **Same color:** √n is essentially optimal (lower bound √n - 1)\n\n**Historical resolution:**\n- 1967: Gerencsér-Gyárfás (2 mixed paths)\n- 1995: Erdős-Gyárfás (2√n same-color, conjecture √n)\n- 2024: Pokrovskiy-Versteegen-Williams (√n confirmed)",
+    "mathContext": "Lean: `theorem erdos_518_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

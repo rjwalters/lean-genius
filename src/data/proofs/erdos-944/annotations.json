@@ -63,6 +63,7 @@
     "type": "concept",
     "title": "Main Conjecture (Partially OPEN)",
     "content": "**erdos_944_conjecture**: For k ≥ 4 and r ≥ 1, there exists a graph with the Erdős944 property.\n\nThis is stated as an axiom because the case **k = 4, r = 1 remains OPEN**.\n\n**Status by k**:\n- k ≥ 5: SOLVED (Jensen 2002)\n- k = 4: OPEN since 1970",
+    "mathContext": "$This is stated as an axiom because the case **k = 4, r = 1 remains OPEN**.$",
     "significance": "key",
     "relatedConcepts": [
       "open problem",
@@ -181,6 +182,7 @@
     "type": "concept",
     "title": "Minimum Degree Property",
     "content": "**vertex_critical_min_degree**: A k-vertex-critical graph has minimum degree at least k-1.\n\n**Proof idea**: If deg(v) < k-1, then v has at most k-2 neighbors. When coloring G - v with k-1 colors, we can extend to v using a color not appearing among its neighbors.\n\nFor k = 4, this means every vertex has degree ≥ 3.",
+    "mathContext": "$For k = 4, this means every vertex has degree ≥ 3.$",
     "significance": "supporting",
     "relatedConcepts": [
       "minimum degree",
@@ -197,6 +199,7 @@
     "type": "concept",
     "title": "Connectivity Property",
     "content": "**vertex_critical_connected**: A k-vertex-critical graph is connected.\n\n**Proof idea**: If G = G₁ ∪ G₂ (disconnected), then χ(G) = max(χ(G₁), χ(G₂)). Removing a vertex from the smaller chromatic component doesn't change χ(G), contradicting vertex-criticality.",
+    "mathContext": "Lean: `axiom vertex_critical_connected (G : Type) [IsKVertexCritical G k] (hk : 2 ≤ k) :`",
     "significance": "supporting",
     "relatedConcepts": [
       "connectivity",
@@ -213,6 +216,7 @@
     "type": "concept",
     "title": "Standard Examples",
     "content": "**complete_graph_vertex_critical**: K_n is n-vertex-critical.\n\n**odd_cycle_vertex_critical**: C_{2n+1} (odd cycles) are 3-vertex-critical.\n\n**Note**: While K_k is k-vertex-critical, it fails the Erdős944 property—*every* edge is critical. The challenge is finding graphs that are vertex-critical without being edge-critical.",
+    "mathContext": "Lean: `axiom complete_graph_vertex_critical (n : ℕ) (hn : 1 ≤ n) :`",
     "significance": "supporting",
     "relatedConcepts": [
       "complete graphs",

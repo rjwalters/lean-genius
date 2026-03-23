@@ -44,6 +44,7 @@
     "type": "definition",
     "title": "AP Containment and AP-Free Sets",
     "content": "**containsAPOfLength A k:**\n\nA set A contains a k-term AP if there exist a, d with d > 0 such that all elements a, a+d, ..., a+(k-1)d are in A.\n\n**APFreeOfLength A k:**\n\nA set is k-AP-free if it contains NO such progression.\n\nThese predicates capture the central constraint: avoiding long APs while allowing shorter ones.",
+    "mathContext": "Lean: `def containsAPOfLength (A : Set ℕ) (k : ℕ) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "AP-free sets",
@@ -77,6 +78,7 @@
     "type": "definition",
     "title": "Monochromatic APs and Ramsey Property",
     "content": "**hasMonochromaticAP A r f k:**\n\nThere exists a color class (under coloring f) that contains a k-term AP.\n\n**forcesMonochromaticAP A r k:**\n\nEVERY r-coloring of A has a monochromatic k-term AP.\n\nThis is the \"Ramsey property\" - no matter how you color, you can't avoid the pattern.",
+    "mathContext": "Lean: `def hasMonochromaticAP (A : Set ℕ) (r : ℕ) (f : Coloring r) (k : ℕ) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Ramsey theory",
@@ -110,6 +112,7 @@
     "type": "technique",
     "title": "Erdős Problem #966: SOLVED",
     "content": "**erdos_966:**\n\n```lean\ntheorem erdos_966 (k r : ℕ) (hk : k ≥ 2) (hr : r ≥ 2) :\n    ∃ A : Set ℕ,\n      APFreeOfLength A (k + 1) ∧\n      forcesMonochromaticAP A r k :=\n  spencer_theorem k r hk hr\n```\n\n**The answer is YES** for all k, r ≥ 2. Such sets exist!",
+    "mathContext": "Lean: `theorem erdos_966 (k r : ℕ) (hk : k ≥ 2) (hr : r ≥ 2) :`",
     "significance": "key",
     "relatedConcepts": [
       "Existence theorem",
@@ -143,6 +146,7 @@
     "type": "concept",
     "title": "Connection to Erdős Problem #924",
     "content": "**Graph-Theoretic Analogue:**\n\nErdős Problem #924 asks: Does there exist a graph G with no (k+1)-clique, yet every r-coloring has a monochromatic k-clique?\n\n**Answer:** YES (Folkman's theorem)\n\nProblem #966 is the **arithmetic progression analogue**:\n- Graphs → Sets of integers\n- Cliques → Arithmetic progressions\n\nBoth have affirmative answers!",
+    "mathContext": "Lean: `axiom erdos_966_analogue_of_924 :`",
     "significance": "key",
     "relatedConcepts": [
       "Folkman numbers",
@@ -160,6 +164,7 @@
     "type": "technique",
     "title": "Specific Instantiations",
     "content": "**case_k2_r2:**\nThere exists A with no 3-AP, but every 2-coloring has a monochromatic 2-AP.\n(Note: Any 2 distinct elements form a \"2-AP\", so this is nearly trivial.)\n\n**case_k3_r2:**\nThere exists A with no 4-AP, but every 2-coloring has a monochromatic 3-AP.\nThis is more interesting - avoiding 4-APs while forcing 3-APs in any 2-coloring.",
+    "mathContext": "Lean: `theorem case_k2_r2 : ∃ A : Set ℕ, APFreeOfLength A 3 ∧ forcesMonochromaticAP A 2 2`",
     "significance": "supporting",
     "relatedConcepts": [
       "Instantiation",
@@ -194,6 +199,7 @@
     "type": "technique",
     "title": "Singleton Sets are AP-Free",
     "content": "**singleton_AP_free:**\n\nAny singleton {n} is trivially k-AP-free for k ≥ 2.\n\n**Proof Idea:**\nA k-AP with d > 0 has at least 2 distinct elements: a and a+d. A singleton can't contain both.\n\nThis shows the base case: extreme AP-avoidance is easy (just use tiny sets).",
+    "mathContext": "$Any singleton {n} is trivially k-AP-free for k ≥ 2.$",
     "significance": "supporting",
     "relatedConcepts": [
       "Base cases",
@@ -210,6 +216,7 @@
     "type": "technique",
     "title": "AP Cardinality",
     "content": "**AP_card:**\n\nAn arithmetic progression {a, a+d, ..., a+(k-1)d} with d > 0 has exactly k elements.\n\n**Proof:**\nThe map i ↦ a + i·d is injective when d > 0 (different i give different values). So the image of {0, ..., k-1} has cardinality k.",
+    "mathContext": "Lean: `theorem AP_card (a d k : ℕ) (hd : d > 0) :`",
     "significance": "supporting",
     "relatedConcepts": [
       "Cardinality",
@@ -226,6 +233,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_966_summary:**\n\nCombines all main results:\n1. Existence of the required set A\n2. A is (k+1)-AP-free\n3. A forces monochromatic k-APs in any r-coloring\n4. A has zero upper density\n\nThis captures the complete solution to Erdős Problem #966.",
+    "mathContext": "Lean: `theorem erdos_966_summary (k r : ℕ) (hk : k ≥ 2) (hr : r ≥ 2) :`",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

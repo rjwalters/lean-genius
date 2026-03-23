@@ -80,6 +80,7 @@
     "type": "technique",
     "title": "Alon-Kleitman Bound",
     "content": "**alon_kleitman_bound**: Alon and Kleitman (1990) improved to f(n) >= (n+1)/3. A refinement of Erdős's bound using probabilistic arguments.",
+    "mathContext": "Lean: `axiom alon_kleitman_bound : ∀ n : ℕ, n ≥ 1 → f n ≥ (n + 1) / 3`",
     "significance": "key",
     "relatedConcepts": [
       "improvement",
@@ -96,6 +97,7 @@
     "type": "technique",
     "title": "Bourgain Bound",
     "content": "**bourgain_bound**: Bourgain (1997) proved f(n) >= (n+2)/3. Another incremental improvement showing the difficulty of improving beyond n/3.",
+    "mathContext": "Lean: `axiom bourgain_bound : ∀ n : ℕ, n ≥ 1 → f n ≥ (n + 2) / 3`",
     "significance": "key",
     "relatedConcepts": [
       "Bourgain",
@@ -181,6 +183,7 @@
     "type": "technique",
     "title": "Summary Theorems",
     "content": "Two proved theorems: **erdos_792_bounds** combines the Bedert lower bound and EGM upper bound into one statement, proved directly from the axioms. **erdos_792_lower_bound_chain** shows the chain of lower bounds, derived from the Erdős axiom. These are the only non-axiom theorems, demonstrating that the bounds compose correctly.",
+    "mathContext": "Lean: `theorem erdos_792_bounds :`",
     "significance": "key",
     "relatedConcepts": [
       "summary",

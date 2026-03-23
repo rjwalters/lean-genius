@@ -37,6 +37,7 @@
     "type": "concept",
     "title": "Graph Properties (Axiomatised)",
     "content": "**Axiomatised predicates:**\n\n- `vertexCount G` — number of vertices\n- `IsClique G C` / `IsMaximalClique G C` — clique and maximality predicates\n- `IsIndependent G I` — independent set predicate\n- `IsTriangleFree G` / `IsK4Free G` — graph structure constraints\n\nThese are axiomatised since the Lean formalization works with abstract graph types rather than Mathlib's SimpleGraph.",
+    "mathContext": "Lean: `axiom vertexCount : Type → ℕ`",
     "significance": "supporting",
     "relatedConcepts": [
       "axiom",

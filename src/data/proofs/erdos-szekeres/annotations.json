@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Erdős–Szekeres Theorem: Wiedijk #73",
     "content": "**Erdős–Szekeres Theorem (1935)**:\n\nAny sequence of at least $(r-1)(s-1) + 1$ distinct real numbers contains:\n- An **increasing** subsequence of length $r$, OR\n- A **decreasing** subsequence of length $s$\n\n**Classic Form**: Any sequence of $n^2 + 1$ distinct elements has a monotonic subsequence of length $n + 1$.\n\n**Historical**: Paul Erdős and George Szekeres (1935), published when Erdős was 22. Originated from the \"Happy Ending Problem\" about convex polygons.\n\n**Applications**: Ramsey theory, sorting algorithms, computational geometry.",
+    "mathContext": "$(r-1)(s-1) + 1$",
     "significance": "key",
     "relatedConcepts": [
       "Ramsey theory",

@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Problem Overview",
     "content": "**Erdős Problem #819** asks: For a set A ⊆ [1,N] of size √N, what is the maximum size of the restricted sumset (A+A) ∩ [1,N]?\n\n**The Setup:**\n- A has exactly ⌊√N⌋ elements from [1,N]\n- We look at pairwise sums a+b that stay within [1,N]\n- f(N) = maximum such count over all valid A\n\n**Known Bounds (Erdős-Freud 1991):**\n(3/8 - o(1))N ≤ f(N) ≤ (1/2 + o(1))N\n\n**Status:** The gap between 0.375N and 0.5N is OPEN.",
+    "mathContext": "$(3/8 - o(1))N ≤ f(N) ≤ (1/2 + o(1))N$",
     "significance": "key",
     "relatedConcepts": [
       "Additive combinatorics",

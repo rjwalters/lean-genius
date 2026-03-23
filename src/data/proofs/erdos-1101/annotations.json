@@ -27,6 +27,7 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import all of Mathlib for access to **Nat.nth** (enumerating elements satisfying a predicate), **Summable** (convergent series), **StrictMono** (strictly increasing functions), and **Nat.Coprime** (coprimality).",
+    "mathContext": "Formalizes the concept of mathlib imports",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
@@ -62,6 +63,7 @@
     "type": "definition",
     "title": "Enumeration Function A",
     "content": "**A u n** gives the (n+1)-th element of ASet u in increasing order, using Mathlib's **Nat.nth** function.\n\nThis lets us talk about gaps between consecutive elements: the gap at position k is A(k+1) - A(k).",
+    "mathContext": "Formalizes the concept of enumeration function a",
     "significance": "key",
     "relatedConcepts": [
       "enumeration",
@@ -114,6 +116,7 @@
     "type": "concept",
     "title": "Conjecture 1: No Polynomial Growth",
     "content": "Erdős conjectured that **NO good sequence can have polynomial growth** uₙ = O(n^k).\n\nThe intuition is that polynomial-growth sequences don't have enough 'room' between their terms to satisfy the gap bound. This is axiomatized because it remains an **OPEN problem**.",
+    "mathContext": "$Erdős conjectured that **NO good sequence can have polynomial growth** uₙ = O(n^k).$",
     "significance": "key",
     "relatedConcepts": [
       "polynomial growth",
@@ -131,6 +134,7 @@
     "type": "concept",
     "title": "Conjecture 2: Sub-exponential Growth Possible",
     "content": "Erdős conjectured that there **IS** a good sequence with sub-exponential growth: log(uₙ) = o(n).\n\nThis means uₙ grows slower than any exponential e^(cn). The gap between polynomial (too slow) and sub-exponential (achievable) is the heart of the problem.",
+    "mathContext": "$Erdős conjectured that there **IS** a good sequence with sub-exponential growth: log(uₙ) = o(n).$",
     "significance": "key",
     "relatedConcepts": [
       "sub-exponential",
@@ -148,6 +152,7 @@
     "type": "concept",
     "title": "Erdős's Existence Theorem",
     "content": "Erdős proved that **SOME good sequence exists**—specifically, the sequence of all primes works.\n\nThis establishes that the 'good' condition is not vacuous. However, the primes grow like n log n (slower than any polynomial n^(1+ε)), so this doesn't resolve the growth rate questions.",
+    "mathContext": "Lean: `axiom erdos_good_sequence_exists : ∃ u, IsGood u`",
     "significance": "key",
     "relatedConcepts": [
       "existence",
@@ -183,6 +188,7 @@
     "type": "definition",
     "title": "Connection to Problem #208",
     "content": "**Problem #208** (strong form) asks whether the sequence of prime squares uᵢ = pᵢ² is good.\n\nSince pₙ ~ n log n, we have pₙ² ~ n² log² n, which is polynomial growth. If prime squares form a good sequence, **Conjecture 1 is FALSE**. This makes Problem #208 a key test case.",
+    "mathContext": "Lean: `axiom prime_squares_good_conjecture : IsGood primeSquares`",
     "significance": "key",
     "relatedConcepts": [
       "prime squares",

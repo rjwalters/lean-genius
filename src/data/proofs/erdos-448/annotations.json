@@ -79,6 +79,7 @@
     "type": "technique",
     "title": "Basic Properties",
     "content": "**Key Properties:**\n\n1. **tau_one**: τ(1) = 1\n2. **tau_pos**: τ(n) ≥ 1 for n ≥ 1\n3. **tau_prime**: τ(p) = 2 for prime p\n4. **tauPlus_one**: τ⁺(1) = 1\n5. **tauPlus_le_tau**: τ⁺(n) ≤ τ(n)\n6. **tauPlus_le_log**: τ⁺(n) ≤ log₂(n) + 1\n\n**Intuition:**\n- τ⁺(n) ≤ τ(n) because each occupied interval needs a divisor\n- Multiple divisors can share one interval (like 2 and 3 both in [2,4))",
+    "mathContext": "$1. **tau_one**: τ(1) = 1$",
     "significance": "key",
     "relatedConcepts": [
       "Function bounds",
@@ -181,6 +182,7 @@
     "type": "technique",
     "title": "Example: n = 6",
     "content": "**example_six:**\n\nFor n = 6 = 2 · 3:\n- Divisors: 1, 2, 3, 6\n- τ(6) = 4\n\n**Dyadic distribution:**\n- [1, 2): contains 1\n- [2, 4): contains 2, 3\n- [4, 8): contains 6\n\nτ⁺(6) = 3 (three intervals occupied)\n\nRatio: τ⁺(6)/τ(6) = 3/4 = 0.75",
+    "mathContext": "$For n = 6 = 2 · 3:$",
     "significance": "supporting",
     "relatedConcepts": [
       "Concrete examples",
@@ -197,6 +199,7 @@
     "type": "technique",
     "title": "Example: n = 12",
     "content": "**example_twelve:**\n\nFor n = 12 = 2² · 3:\n- Divisors: 1, 2, 3, 4, 6, 12\n- τ(12) = 6\n\n**Dyadic distribution:**\n- [1, 2): 1\n- [2, 4): 2, 3\n- [4, 8): 4, 6\n- [8, 16): 12\n\nτ⁺(12) = 4 (four intervals occupied)\n\nRatio: τ⁺(12)/τ(12) = 4/6 ≈ 0.67",
+    "mathContext": "$For n = 12 = 2² · 3:$",
     "significance": "supporting",
     "relatedConcepts": [
       "Concrete examples"
@@ -212,6 +215,7 @@
     "type": "technique",
     "title": "Powers of Two",
     "content": "**tau_power_of_two:**\n\nFor n = 2^k:\n- Divisors: 1, 2, 4, 8, ..., 2^k (all powers of 2)\n- τ(2^k) = k + 1\n\nEach divisor 2^j is in its own interval [2^j, 2^(j+1))!\n\nSo τ⁺(2^k) = k + 1 as well.\n\n**Ratio:** τ⁺(2^k)/τ(2^k) = 1 (maximum possible)\n\nPowers of 2 have maximally spread divisors.",
+    "mathContext": "$For n = 2^k:$",
     "significance": "key",
     "relatedConcepts": [
       "Prime powers",
@@ -228,6 +232,7 @@
     "type": "concept",
     "title": "Example: n = 210",
     "content": "**example_210:**\n\nFor n = 210 = 2 · 3 · 5 · 7 (product of first 4 primes):\n- τ(210) = 2⁴ = 16 divisors\n- τ⁺(210) = 8 intervals occupied\n\nRatio: τ⁺(210)/τ(210) = 8/16 = 0.5\n\nMultiple divisors share intervals (e.g., 2 and 3 in [2,4), 5 and 6 and 7 in [4,8)).",
+    "mathContext": "$For n = 210 = 2 · 3 · 5 · 7 (product of first 4 primes):$",
     "significance": "supporting",
     "relatedConcepts": [
       "Primorials",
@@ -244,6 +249,7 @@
     "type": "concept",
     "title": "Related Problems",
     "content": "**Connections to Other Erdős Problems:**\n\n**Problem #446:**\nAsks about the maximum value of τ⁺(n)/τ(n).\nThe disproof of #448 shows this ratio doesn't go to 0.\n\n**Problem #449:**\nAsks about divisors in short intervals [y, 2y).\nThe dyadic case is a special case of this more general question.\n\n**Common Theme:**\nAll three problems study how divisors are distributed across intervals of various types.",
+    "mathContext": "Lean: `axiom problem_446_connection :`",
     "significance": "supporting",
     "relatedConcepts": [
       "Problem #446",
@@ -261,6 +267,7 @@
     "type": "technique",
     "title": "Summary",
     "content": "**erdos_448_summary:**\n\n```lean\ntheorem erdos_448_summary :\n    (∃ ε, ε > 0 ∧ ...) ∧\n    (∀ n ≥ 1, τ⁺(n) ≤ τ(n)) ∧\n    (0.086 < fordAlpha ∧ fordAlpha < 0.087)\n```\n\n**Summary of Results:**\n\n1. **Conjecture FALSE**: Exceptions have positive density\n2. **Basic bound**: τ⁺(n) ≤ τ(n) always holds\n3. **Ford constant**: α ≈ 0.08607 governs growth\n\n**The Answer:** Divisors do NOT cluster into few dyadic intervals for almost all integers.",
+    "mathContext": "Lean: `theorem erdos_448_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "Summary theorems",
@@ -277,6 +284,7 @@
     "type": "technique",
     "title": "The Final Answer",
     "content": "**erdos_448_answer:**\n\n```lean\ntheorem erdos_448_answer : ∃ (counterexampleDensity : ℝ → ℝ),\n    ∀ ε, 0 < ε → ε < 1/2 →\n      counterexampleDensity ε > 0\n```\n\n**Conclusion:**\nFor any ε > 0, a positive proportion of integers n satisfy τ⁺(n) ≥ ε·τ(n).\n\nThe conjecture that divisors concentrate is definitively FALSE.",
+    "mathContext": "Lean: `theorem erdos_448_answer : ∃ (counterexampleDensity : ℝ → ℝ),`",
     "significance": "key",
     "relatedConcepts": [
       "Final answer",

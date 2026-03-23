@@ -80,6 +80,7 @@
     "type": "technique",
     "title": "Monotonicity of TwoPowAddSet",
     "content": "**twoPowAddSet_mono**: If r ≤ s, then TwoPowAddSet r ⊆ TwoPowAddSet s.\n\n**Proof**: If m = 2^k + n with n having ≤ r prime factors, then certainly n has ≤ s prime factors.\n\n**Consequence**: As we allow more prime factors, we can represent more integers. The density is non-decreasing in r.",
+    "mathContext": "Lean: `theorem twoPowAddSet_mono {r s : ℕ} (h : r ≤ s) : TwoPowAddSet r ⊆ TwoPowAddSet s`",
     "significance": "key",
     "relatedConcepts": [
       "subset relation",
@@ -130,6 +131,7 @@
     "type": "concept",
     "title": "Romanoff Density Bounds",
     "content": "**romanoff_density_value**: 0.08 < lowerDensity(TwoPowAddSet 1) < 0.10\n\nErdős and Odlyzko (1979) computed sharper bounds. The exact value is approximately 0.0868.\n\n**Interpretation**: Only about 8.7% of integers can be written as 2^k + p for some prime p. This leaves ~91% uncovered, motivating Erdős's question about larger r.",
+    "mathContext": "Lean: `axiom romanoff_density_value :`",
     "significance": "key",
     "relatedConcepts": [
       "Erdős-Odlyzko",
@@ -163,6 +165,7 @@
     "type": "concept",
     "title": "Density Monotonicity",
     "content": "**density_mono**: If r ≤ s, then lowerDensity(TwoPowAddSet r) ≤ lowerDensity(TwoPowAddSet s).\n\nThis follows from TwoPowAddSet monotonicity: larger sets have larger (or equal) density.\n\n**Consequence**: The sequence of densities is non-decreasing. The conjecture asks if it converges to 1.",
+    "mathContext": "Lean: `axiom density_mono (r s : ℕ) (hr : r ≤ s) :`",
     "significance": "supporting",
     "relatedConcepts": [
       "monotone sequence",
@@ -179,6 +182,7 @@
     "type": "concept",
     "title": "Conjecture Equivalence",
     "content": "**conjecture_iff_limit_one**: The main conjecture is equivalent to: ∀ ε > 0, ∃ r₀, ∀ r ≥ r₀, 1 - ε < lowerDensity(TwoPowAddSet r).\n\n**In other words**: The conjecture is true iff lim_{r→∞} density(r) = 1.\n\nThis is a standard ε-δ reformulation of limit convergence.",
+    "mathContext": "Lean: `axiom conjecture_iff_limit_one :`",
     "significance": "key",
     "relatedConcepts": [
       "limit definition",
@@ -195,6 +199,7 @@
     "type": "concept",
     "title": "Uncovered by Primes",
     "content": "**uncovered_by_primes_positive**: The complement (TwoPowAddSet 1)^c has positive density.\n\n**Meaning**: A positive proportion of integers CANNOT be written as 2^k + p for any prime p.\n\n**This is known**: Since Romanoff density is ~0.0868, the uncovered proportion is ~0.9132.",
+    "mathContext": "Lean: `axiom uncovered_by_primes_positive :`",
     "significance": "supporting",
     "relatedConcepts": [
       "complement",
@@ -211,6 +216,7 @@
     "type": "concept",
     "title": "Erdős-Odlyzko (1979)",
     "content": "**erdos_odlyzko_bound**: 0.0868 < lowerDensity(TwoPowAddSet 1)\n\nThis refined Romanoff's original bound. Their paper 'On the density of odd integers of the form (p-1)/2^n and related questions' established tighter estimates using sieve methods.",
+    "mathContext": "Lean: `axiom erdos_odlyzko_bound :`",
     "significance": "supporting",
     "relatedConcepts": [
       "historical results",
@@ -261,6 +267,7 @@
     "type": "concept",
     "title": "Historical Context",
     "content": "**Timeline**:\n- 1934: Romanoff proves positive density for 2^k + p\n- 1979: Erdős-Odlyzko refine bounds to ~0.0868\n- Present: Main conjecture remains OPEN\n\n**Connections**:\n- Additive number theory\n- Sieve methods (for counting)\n- Density of arithmetically defined sets\n\n**Key references**:\n- Romanoff, 'Über einige Sätze der additiven Zahlentheorie' (1934)\n- Erdős-Odlyzko, 'On the density of odd integers...' (1979)",
+    "mathContext": "Formalizes the concept of historical context",
     "significance": "key",
     "relatedConcepts": [
       "Romanoff",

@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Complete Bipartite Subgraph",
     "content": "**containsCompleteBipartite:**\n\nG contains K_{r,s} if there exist disjoint sets A, B with |A|=r, |B|=s, and all edges between A and B present.\n\n```lean\ndef containsCompleteBipartite (G : SimpleGraph V) [Fintype V] (r s : N) : Prop :=\n  exists (A B : Finset V), A.card = r and B.card = s and Disjoint A B and\n    forall a in A, forall b in B, G.Adj a b\n```",
+    "mathContext": "Lean: `def containsCompleteBipartite (G : SimpleGraph V) [Fintype V] (r s : N) : Prop :=`",
     "significance": "key"
   },
   {
@@ -39,6 +40,7 @@
     "type": "definition",
     "title": "K_{r,r}-Free Property",
     "content": "**isKrrFree:**\n\nA graph is K_{r,r}-free if it contains no complete bipartite K_{r,r}.\n\n```lean\ndef isKrrFree (G : SimpleGraph V) [Fintype V] (r : N) : Prop :=\n  not containsCompleteBipartite G r r\n```",
+    "mathContext": "Lean: `def isKrrFree (G : SimpleGraph V) [Fintype V] (r : N) : Prop :=`",
     "significance": "key"
   },
   {
@@ -81,6 +83,7 @@
     "type": "definition",
     "title": "The KST Exponent",
     "content": "**kstExponent:**\n\nThe exponent 2 - 1/r:\n- r=2: 3/2 = 1.5\n- r=3: 5/3 = 1.667\n- r=4: 7/4 = 1.75\n- As r -> infinity: exponent -> 2",
+    "mathContext": "Lean: `def kstExponent (r : ℕ) : ℝ`",
     "significance": "key"
   },
   {
@@ -93,6 +96,7 @@
     "type": "definition",
     "title": "The Erdos Conjecture",
     "content": "**erdosConjectureLowerBound:**\n\nFor all r >= 2: ex(n; K_{r,r}) >> n^{2-1/r}\n\n```lean\ndef erdosConjectureLowerBound (r : N) : Prop :=\n  exists c > 0, forall n >= 1, exKrr n r >= c * n^{2-1/r}\n```\n\nThis asks if the KST upper bound is tight.",
+    "mathContext": "Lean: `def erdosConjectureLowerBound (r : N) : Prop :=`",
     "significance": "key"
   },
   {
@@ -136,6 +140,7 @@
     "type": "technique",
     "title": "Conjecture Proved for r=2",
     "content": "**erdos_714_r2:**\n\n```lean\ntheorem erdos_714_r2 : erdosConjectureLowerBound 2 := by\n  unfold erdosConjectureLowerBound\n  obtain (c1, c2, hc1, _, hbounds) := zarankiewicz_r2\n  use c1\n  ...\n```\n\nFollows from zarankiewicz_r2 since 3/2 = 2 - 1/2.",
+    "mathContext": "Lean: `theorem erdos_714_r2 : erdosConjectureLowerBound 2 := by`",
     "significance": "key"
   },
   {
@@ -148,6 +153,7 @@
     "type": "technique",
     "title": "Conjecture Proved for r=3",
     "content": "**erdos_714_r3:**\n\nFollows from Brown's theorem since 5/3 = 2 - 1/3.\n\nThe construction uses generalized hexagons.",
+    "mathContext": "$Follows from Brown's theorem since 5/3 = 2 - 1/3.$",
     "significance": "key"
   },
   {
@@ -160,6 +166,7 @@
     "type": "concept",
     "title": "r=4 Case: OPEN",
     "content": "**best_known_lower_bound_r4:**\n\nNo construction achieving ex(n; K_{4,4}) >> n^{7/4} is known.\n\nThe best known lower bound gives only n^{3/2}, strictly weaker than the conjectured n^{7/4}.\n\nThis is one of the most famous open problems in extremal combinatorics.",
+    "mathContext": "Lean: `axiom best_known_lower_bound_r4 :`",
     "significance": "key"
   },
   {
@@ -189,6 +196,7 @@
     "type": "concept",
     "title": "Generalized Hexagons",
     "content": "**generalized_hexagon_construction:**\n\nFor r=3, constructions use generalized hexagons (girth-12 cages from incidence geometry).\n\nWhen q is a prime power, these give K_{3,3}-free graphs on O(q^3) vertices with O(q^5) edges, matching the n^{5/3} bound.",
+    "mathContext": "$For r=3, constructions use generalized hexagons (girth-12 cages from incidence geometry).$",
     "significance": "key"
   },
   {
@@ -231,6 +239,7 @@
     "type": "concept",
     "title": "Matrix Formulation",
     "content": "**zarankiewicz_matrix_connection:**\n\nThe Zarankiewicz problem z(m,n;r,s) asks for the maximum 1s in an m x n 0-1 matrix with no all-1s r x s submatrix.\n\nThe connection: ex(n; K_{r,r}) <= c * n^{2-1/r} + r*n/2, matching the KST bound.",
+    "mathContext": "$The connection: ex(n; K_{r,r}) <= c * n^{2-1/r} + r*n/2, matching the KST bound.$",
     "significance": "supporting"
   },
   {
@@ -243,6 +252,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_714_summary:**\n\n```lean\ntheorem erdos_714_summary :\n    erdosConjectureLowerBound 2 and\n    erdosConjectureLowerBound 3\n```\n\n1. r=2: SOLVED (exact asymptotics)\n2. r=3: SOLVED (Brown 1966)\n3. r>=4: OPEN",
+    "mathContext": "Lean: `theorem erdos_714_summary :`",
     "significance": "key"
   },
   {
@@ -255,6 +265,7 @@
     "type": "technique",
     "title": "Zarankiewicz Problem Status",
     "content": "**zarankiewicz_status:**\n\nCombines all results:\n1. KST upper bound for all r >= 2\n2. Lower bound matching upper bound for r=2,3\n3. Gap remains for r >= 4\n\nOne of the most famous open problems in extremal combinatorics.",
+    "mathContext": "$1. KST upper bound for all r >= 2$",
     "significance": "key"
   }
 ]

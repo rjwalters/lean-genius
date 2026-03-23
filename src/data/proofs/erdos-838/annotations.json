@@ -135,6 +135,7 @@
     "type": "concept",
     "title": "Growth Rate Properties",
     "content": "**f_superpolynomial:** For any k, f(n) > n^k for large n. The quasi-polynomial growth eventually dominates any fixed polynomial.\n\n**f_subexponential:** For any c > 1, f(n) < c^n for large n. The growth is strictly slower than exponential.\n\nTogether these characterize f(n) as having intermediate (quasi-polynomial) growth.",
+    "mathContext": "Lean: `axiom f_superpolynomial :`",
     "significance": "key",
     "relatedConcepts": [
       "superpolynomial growth",

@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Counting Subsets",
     "content": "The number of subsets of an n-element set is exactly $2^n$:\n\n$$|S| = n \\implies |\\mathcal{P}(S)| = 2^n$$\n\n**Why 2^n?**\n- Each element is either IN or OUT of a subset\n- That's 2 choices per element\n- With n elements: $2 \\times 2 \\times \\cdots \\times 2 = 2^n$\n\nThis is Wiedijk's 100 Theorems #52.",
+    "mathContext": "$2^n$",
     "significance": "key",
     "relatedConcepts": [
       "power set",

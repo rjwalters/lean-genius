@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Point and Distance",
     "content": "**Point and dist:**\n\nPoints are pairs (x, y) ∈ ℝ². Distance is Euclidean:\n\n```lean\nabbrev Point := ℝ × ℝ\n\nnoncomputable def dist (p q : Point) : ℝ :=\n  Real.sqrt ((p.1 - q.1)^2 + (p.2 - q.2)^2)\n```",
+    "mathContext": "Lean: `abbrev Point := ℝ × ℝ`",
     "significance": "supporting",
     "relatedConcepts": [
       "Euclidean distance",
@@ -60,6 +61,7 @@
     "type": "definition",
     "title": "Optimal Configurations",
     "content": "**IsOptimal A:**\n\nA configuration A is optimal if it achieves the minimum number of distinct distances among all |A|-point sets.\n\n```lean\ndef IsOptimal (A : Finset Point) : Prop :=\n  A.card > 0 ∧ numDistinctDistances A = minDistinctDistances A.card\n```",
+    "mathContext": "Lean: `def IsOptimal (A : Finset Point) : Prop :=`",
     "significance": "key",
     "relatedConcepts": [
       "Extremal configurations",
@@ -93,6 +95,7 @@
     "type": "concept",
     "title": "n=3: Equilateral Triangle Unique",
     "content": "**n3_unique:**\n\nThe equilateral triangle is the unique optimal 3-point configuration.\n\nIt achieves 1 distinct distance, which is the minimum possible for 3 points.",
+    "mathContext": "Lean: `axiom n3_unique :`",
     "significance": "key",
     "relatedConcepts": [
       "Equilateral triangle",
@@ -109,6 +112,7 @@
     "type": "concept",
     "title": "n=4: Two Non-Similar Optima",
     "content": "**n4_two_optima:**\n\nTwo non-similar 4-point configurations achieve the minimum 2 distinct distances:\n1. **Square:** side s, diagonal s√2\n2. **Bowtie:** Two equilateral triangles sharing an edge\n\nThis is the first case of non-uniqueness.",
+    "mathContext": "Lean: `axiom n4_two_optima :`",
     "significance": "key",
     "relatedConcepts": [
       "Square",
@@ -144,6 +148,7 @@
     "type": "concept",
     "title": "n=6-9: Non-Uniqueness Holds",
     "content": "**n6_to_9_nonunique:**\n\nFor each n from 6 to 9, there exist at least two non-similar optimal configurations.\n\nErdős verified this for these small cases, but the pattern for all large n is unknown.",
+    "mathContext": "Lean: `axiom n6_to_9_nonunique :`",
     "significance": "key",
     "relatedConcepts": [
       "Small cases",
@@ -177,6 +182,7 @@
     "type": "technique",
     "title": "Problem Summary",
     "content": "**erdos_91_summary:**\n\nCombines the known results:\n\n| n | Status | Configuration |\n|---|--------|---------------|\n| 3 | UNIQUE | Equilateral triangle |\n| 4 | NON-UNIQUE | Square, Bowtie |\n| 5 | UNIQUE | Regular pentagon (Kovács 2024) |\n| 6-9 | NON-UNIQUE | Multiple examples |\n| Large | OPEN | Conjectured non-unique |",
+    "mathContext": "Lean: `theorem erdos_91_summary :`",
     "significance": "key",
     "relatedConcepts": [
       "Known results",

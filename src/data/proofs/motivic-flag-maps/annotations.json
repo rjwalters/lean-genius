@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Namespace and Imports",
     "content": "We work in the `MotivicFlagMaps` namespace and open `BigOperators` for sum/product notation (∑, ∏).",
+    "mathContext": "Formalizes the concept of namespace and imports",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
@@ -131,6 +132,7 @@
     "type": "definition",
     "title": "Triangular Numbers",
     "content": "The **triangular number** n(n-1)/2 counts pairs (i,j) with 1 ≤ i < j ≤ n. It appears in the GL_n formula as the dimension of strictly upper triangular matrices.",
+    "mathContext": "Lean: `def triangular (n : ℕ) : ℕ`",
     "significance": "supporting",
     "relatedConcepts": [
       "combinatorics",

@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Collinearity Definitions",
     "content": "**Collinear3 p q r:**\n\nThree points are collinear if they lie on a common line. Uses determinant criterion.\n\n**Collinear4 p q r s:**\n\nFour points are collinear if all lie on a common line (pairwise collinearity of triples).",
+    "mathContext": "Lean: `def Collinear3 (p q r : Point) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Determinant",
@@ -43,6 +44,7 @@
     "type": "definition",
     "title": "General and Almost General Position",
     "content": "**InGeneralPosition S:**\n\nNo three points of S are collinear.\n\n**InAlmostGeneralPosition S:**\n\nNo four points of S are collinear (but three may be).\n\nThe problem: extract general position from almost general position.",
+    "mathContext": "Lean: `def InGeneralPosition (S : Set Point) : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "General position",
@@ -93,6 +95,7 @@
     "type": "concept",
     "title": "Greedy Lower Bound",
     "content": "**greedy_lower_bound, trivial_lower_bound:**\n\ng(n) ≥ c·√n for some constant c > 0.\n\n**Algorithm:** Pick points one by one, always choosing a point that doesn't form a collinear triple with any two already chosen.\n\nThis is the 'trivial' bound improved by Füredi.",
+    "mathContext": "$g(n) ≥ c·√n for some constant c > 0.$",
     "significance": "key",
     "relatedConcepts": [
       "Greedy algorithm",
@@ -160,6 +163,7 @@
     "type": "technique",
     "title": "Current Best Bounds",
     "content": "**current_bounds:**\n\nn^(1/2)·log n ≪ g(n) ≤ n^(5/6+o(1))\n\nThe gap between exponents 1/2 and 5/6 remains open.",
+    "mathContext": "$n^(1/2)·log n ≪ g(n) ≤ n^(5/6+o(1))$",
     "significance": "key",
     "relatedConcepts": [
       "Current state",
@@ -176,6 +180,7 @@
     "type": "definition",
     "title": "Generalized Problem",
     "content": "**g_kl(k, l, n):**\n\nFor k > l ≥ 3, the generalized function where we extract l-general position from k-general position.\n\nThe original problem is g(n) = g_{4,3}(n).",
+    "mathContext": "$The original problem is g(n) = g_{4,3}(n).$",
     "significance": "supporting",
     "relatedConcepts": [
       "Generalization",
@@ -192,6 +197,7 @@
     "type": "concept",
     "title": "Open Questions",
     "content": "**ExactGrowthOpen, balogh_solymosi_conjecture:**\n\n**Main open question:** What is the exact exponent α such that g(n) = Θ(n^α)?\n\nIs it 1/2, 5/6, or something in between?\n\nBalogh-Solymosi suggest 5/6 might be correct.",
+    "mathContext": "Lean: `def ExactGrowthOpen : Prop`",
     "significance": "key",
     "relatedConcepts": [
       "Open problems",
@@ -208,6 +214,7 @@
     "type": "technique",
     "title": "Problem Summary",
     "content": "**erdos_589_summary:**\n\n| Aspect | Result |\n|--------|--------|\n| Question | Estimate g(n) |\n| Erdős's belief | g(n) = Ω(n) (WRONG) |\n| Lower bound | c·√n·log n (Füredi) |\n| Upper bound | n^(5/6+o(1)) (Balogh-Solymosi) |\n| Key tools | DHJ, Container method |\n| Status | Partially resolved |",
+    "mathContext": "$| Erdős's belief | g(n) = Ω(n) (WRONG) |$",
     "significance": "key",
     "relatedConcepts": [
       "Summary",

@@ -155,6 +155,7 @@
     },
     "title": "Full Problem Statement",
     "content": "**ErdosProblem544** combines both parts as a conjunction: the consecutive differences **diverge** AND they are **sublinear**. This captures the full strength of what Erdos and Sos asked: the differences grow to infinity but slower than k.",
+    "mathContext": "Lean: `def ErdosProblem544 : Prop`",
     "relatedConcepts": [
       "Erdos-Sos conjecture",
       "Ramsey theory open problems"

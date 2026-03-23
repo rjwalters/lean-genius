@@ -27,6 +27,7 @@
     "type": "concept",
     "title": "Graph Properties (Axiomatised)",
     "content": "**Axiomatised functions:**\n\n- `vertexCount G` — number of vertices\n- `minDegree G` — minimum degree δ(G)\n- `chromaticNumber G` — chromatic number χ(G)\n- `edgeCount G` — number of edges\n\nThese are axiomatised because Lean 4's Mathlib does not have a built-in chromatic number for general graphs parametrised over Type.",
+    "mathContext": "Lean: `axiom vertexCount : Type → ℕ`",
     "significance": "supporting",
     "relatedConcepts": [
       "axiom",

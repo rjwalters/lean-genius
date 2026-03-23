@@ -44,6 +44,7 @@
     "type": "definition",
     "title": "Doubling (A + A)",
     "content": "**doubling:**\n\nThe doubling of a set A is A + A, all pairwise sums of elements.\n\n```lean\ndef doubling (A : Set ℕ) : Set ℕ := sumset A A\n```\n\n**For basis order 2:**\nA is a basis of order 2 means A + A contains all large integers.\n\nThis is the key set to study for additive bases.",
+    "mathContext": "Lean: `def doubling (A : Set ℕ) : Set ℕ := sumset A A`",
     "significance": "key",
     "relatedConcepts": [
       "Sumset",
@@ -94,6 +95,7 @@
     "type": "definition",
     "title": "Essential Elements",
     "content": "**isEssential:**\n\nAn element a ∈ A is essential if removing it from A leaves infinitely many integers unrepresentable.\n\n```lean\ndef isEssential (A : Set ℕ) (a : ℕ) : Prop :=\n  a ∈ A ∧ ¬containsAllLarge (doubling (A \\ {a}))\n```\n\n**Intuition:**\nEssential elements are \"necessary\" for the basis property.\nWithout them, infinitely many sums are lost.\n\n**Minimal basis:** Every element is essential.",
+    "mathContext": "Lean: `def isEssential (A : Set ℕ) (a : ℕ) : Prop :=`",
     "significance": "key",
     "relatedConcepts": [
       "Minimality",
@@ -110,6 +112,7 @@
     "type": "definition",
     "title": "Minimal Additive Basis",
     "content": "**isMinimalBasis:**\n\nAn additive basis is minimal if every element is essential.\n\n```lean\ndef isMinimalBasis (A : Set ℕ) : Prop :=\n  isAdditiveBasis2 A ∧ ∀ a ∈ A, isEssential A a\n```\n\n**Meaning:**\nYou cannot remove ANY element without breaking the basis property.\nEvery element is pulling its weight.\n\n**The question:** Do minimal bases always exist as sub-bases?",
+    "mathContext": "Lean: `def isMinimalBasis (A : Set ℕ) : Prop :=`",
     "significance": "key",
     "relatedConcepts": [
       "Minimality",
@@ -126,6 +129,7 @@
     "type": "definition",
     "title": "Contains a Minimal Basis",
     "content": "**containsMinimalBasis:**\n\nA set A contains a minimal additive basis if there exists B ⊆ A with B minimal.\n\n```lean\ndef containsMinimalBasis (A : Set ℕ) : Prop :=\n  ∃ B : Set ℕ, B ⊆ A ∧ isMinimalBasis B\n```\n\n**The surprise (Härtter-Nathanson):**\nNot every basis contains a minimal sub-basis!\n\n**The question:** Does being a union of disjoint bases change this?",
+    "mathContext": "Lean: `def containsMinimalBasis (A : Set ℕ) : Prop :=`",
     "significance": "key",
     "relatedConcepts": [
       "Subset",
@@ -142,6 +146,7 @@
     "type": "definition",
     "title": "Disjoint Additive Bases",
     "content": "**areDisjointBases:**\n\nA₁ and A₂ are disjoint additive bases if:\n1. A₁ ∩ A₂ = ∅ (no common elements)\n2. Both A₁ and A₂ are additive bases of order 2\n\n```lean\ndef areDisjointBases (A₁ A₂ : Set ℕ) : Prop :=\n  areDisjoint A₁ A₂ ∧ isAdditiveBasis2 A₁ ∧ isAdditiveBasis2 A₂\n```\n\n**Key property:**\nThe union A = A₁ ∪ A₂ is also a basis, with extra \"cross-sums\" a₁ + a₂.",
+    "mathContext": "Lean: `def areDisjointBases (A₁ A₂ : Set ℕ) : Prop :=`",
     "significance": "key",
     "relatedConcepts": [
       "Disjoint sets",
@@ -192,6 +197,7 @@
     "type": "technique",
     "title": "Union of Disjoint Bases is a Basis",
     "content": "**union_of_bases:**\n\nIf A₁, A₂ are disjoint bases, then A = A₁ ∪ A₂ is also a basis.\n\n```lean\ntheorem union_of_bases (A₁ A₂ : Set ℕ)\n    (h : areDisjointBases A₁ A₂) :\n    isAdditiveBasis2 (A₁ ∪ A₂)\n```\n\n**Why?**\n- A + A ⊇ A₁ + A₁ (which is already cofinite)\n- Plus extra cross-terms A₁ + A₂\n\nSo the union is \"at least as good\" as each piece.",
+    "mathContext": "Lean: `theorem union_of_bases (A₁ A₂ : Set ℕ)`",
     "significance": "key",
     "relatedConcepts": [
       "Union",
@@ -208,6 +214,7 @@
     "type": "technique",
     "title": "Basis Monotonicity",
     "content": "**basis_monotone:**\n\nIf A is a basis and A ⊆ B, then B is also a basis.\n\n```lean\ntheorem basis_monotone {A B : Set ℕ}\n    (hA : isAdditiveBasis2 A) (hAB : A ⊆ B) :\n    isAdditiveBasis2 B\n```\n\n**Intuition:**\nAdding elements can only add more sums, never lose them.\nSo supersets of bases are bases.",
+    "mathContext": "Lean: `theorem basis_monotone {A B : Set ℕ}`",
     "significance": "supporting",
     "relatedConcepts": [
       "Monotonicity",
@@ -224,6 +231,7 @@
     "type": "concept",
     "title": "Powers of 2 Not a Basis",
     "content": "**powersOfTwo_not_basis:**\n\nThe set {1, 2, 4, 8, 16, ...} = {2^n : n ∈ ℕ} is NOT a basis of order 2.\n\n```lean\naxiom powersOfTwo_not_basis :\n    ¬isAdditiveBasis2 powersOfTwo\n```\n\n**Why not?**\nMany integers are not sums of two powers of 2.\nFor example: 3 = 1 + 2 (ok), but what about 5? 5 = 4 + 1 (ok).\nActually 7 = 4 + 2 + 1 needs 3 terms, but 7 = ? + ? with two powers... 7 is not a sum of two distinct powers, but 7 = 4 + 2 + 1. Wait, 7 = 4 + 2 + 1 but as two elements: no way.\n\nActually powers of 2 DO work as a basis! Every positive integer is a sum of at most ⌈log₂(n)⌉ powers of 2. For order 2 specifically, we need careful analysis.",
+    "mathContext": "Lean: `axiom powersOfTwo_not_basis :`",
     "significance": "supporting",
     "relatedConcepts": [
       "Examples",
@@ -240,6 +248,7 @@
     "type": "concept",
     "title": "Disjoint Bases Exist",
     "content": "**disjoint_bases_exist:**\n\nThere exist disjoint additive bases A₁ and A₂.\n\n```lean\naxiom disjoint_bases_exist :\n    ∃ A₁ A₂ : Set ℕ, areDisjointBases A₁ A₂\n```\n\n**Construction idea:**\nPartition ℕ into two sets (like evens and odds) and adjust to make each a basis.\n\nThis shows the question is non-trivial: disjoint bases do exist.",
+    "mathContext": "Lean: `axiom disjoint_bases_exist :`",
     "significance": "key",
     "relatedConcepts": [
       "Existence",
@@ -256,6 +265,7 @@
     "type": "concept",
     "title": "Cross-Sums Matter",
     "content": "**cross_sums_matter:**\n\nWhen A₁ and A₂ are disjoint, the union A₁ ∪ A₂ has \"cross-sums\" a₁ + a₂ with a₁ ∈ A₁, a₂ ∈ A₂.\n\n```lean\naxiom cross_sums_matter :\n    ∀ A₁ A₂, areDisjoint A₁ A₂ →\n      sumset A₁ A₂ ⊆ doubling (A₁ ∪ A₂)\n```\n\n**Key point:**\nThese cross-sums are \"new\" representations not coming from either A₁ + A₁ or A₂ + A₂.\nMaybe this extra structure helps ensure minimal sub-bases exist?",
+    "mathContext": "Lean: `axiom cross_sums_matter :`",
     "significance": "key",
     "relatedConcepts": [
       "Cross terms",
@@ -272,6 +282,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_869_status:**\n\nSummarizes what we know:\n\n```lean\ntheorem erdos_869_status :\n    (∃ A₁ A₂, areDisjointBases A₁ A₂) ∧\n    (∃ A, isAdditiveBasis2 A ∧ ¬containsMinimalBasis A) ∧\n    (∀ A₁ A₂, areDisjointBases A₁ A₂ →\n      isAdditiveBasis2 (A₁ ∪ A₂))\n```\n\n1. Disjoint bases exist\n2. Some bases lack minimal sub-bases (Härtter-Nathanson)\n3. Union of disjoint bases is always a basis\n\nThe question: Does (3)'s special structure overcome (2)?",
+    "mathContext": "Lean: `theorem erdos_869_status :`",
     "significance": "key",
     "relatedConcepts": [
       "Summary",
@@ -288,6 +299,7 @@
     "type": "technique",
     "title": "The Open Question",
     "content": "**erdos_869_open:**\n\nFormalizes that the conjecture is precisely stated.\n\n```lean\ntheorem erdos_869_open : erdos_869_conjecture ↔\n    (∀ A₁ A₂, areDisjointBases A₁ A₂ →\n      containsMinimalBasis (A₁ ∪ A₂))\n```\n\n**The Question:**\nDoes the special origin of A (as a union of disjoint bases) force it to contain a minimal sub-basis?\n\n**Status: OPEN** - Cannot be resolved by finite computation.",
+    "mathContext": "Lean: `theorem erdos_869_open : erdos_869_conjecture ↔`",
     "significance": "key",
     "relatedConcepts": [
       "Open problems",
