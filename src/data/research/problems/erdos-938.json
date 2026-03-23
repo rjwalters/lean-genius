@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ORIENT",
     "since": "2026-01-15T11:50:52.409Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Surveyed: 4 of 7 axioms eliminable via proper enumeration",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "SURVEY: 7 axioms (4 eliminable via proper enumeration definition, 3 deep/open). 0 sorries. File structure is clean. Priority: define nthPowerful properly to eliminate 4 axioms.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "7 axioms total: 4 are enumeration axioms (nthPowerful + properties), 3 are deep/open results",
+      "The 4 enumeration axioms CAN be eliminated: define nthPowerful using Nat.nth or Set.Nat.nth from Mathlib if available, or build from well-ordering",
+      "powerfulSet is provably infinite: contains all perfect squares k² (if p|k² then p|k so p²|k²)",
+      "Powerful is decidable for fixed n: check primes up to n for p²|n condition",
+      "erdos_938 (open conjecture), erdos_364_conjecture (open), powerful_count_asymptotic (deep analytic NT) cannot be proved from Mathlib",
+      "The file has 0 sorries despite metadata claiming 1 - the open problem uses axiom, not sorry"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Define nthPowerful using Mathlib enumeration (Nat.nth or Set.Nat.nth): noncomputable def nthPowerful := Set.Nat.nth powerfulSet",
+      "Prove powerfulSet.Infinite from squares_subset: ∀ k≥1, Powerful (k²)",
+      "Derive nthPowerful_strictMono, nthPowerful_mem, nthPowerful_surj from Set.Nat.nth API",
+      "Alternative: use Nat.find iteratively if Set.Nat.nth unavailable"
+    ],
     "markdown": "# Erdős #938 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{n_1<n_2<\\cdots\\}$ be the sequence of powerful numbers (if $p\\mid n$ then $p^2\\mid n$).\n\nAre there only finitely many three-term progressions of consecutive terms $n_k,n_{k+1},n_{k+2}$?\n\n\n\nErd\\H{o}s also conjectured (see [364]) that there are no triples of powerful numbers of the shape $n,n+1,n+2$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #364\n- Problem #937\n- Problem #939\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er76d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
