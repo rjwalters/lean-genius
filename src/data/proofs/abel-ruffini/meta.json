@@ -433,6 +433,11 @@
       "targetId": "platonic-solids",
       "relationship": "related",
       "description": "The classification of exactly five Platonic solids connects to Abel-Ruffini through the icosahedron: $A_5$ is isomorphic to the rotation group of the regular icosahedron (60 rotational symmetries matching $|A_5| = 60$). Klein (1884) exploited this isomorphism to solve the general quintic via the icosahedral equation — while no radical formula exists (Abel-Ruffini), the quintic IS solvable using functions adapted to icosahedral symmetry. The icosahedron is the most symmetric Platonic solid with a non-abelian rotation group, making the connection between five Platonic solids and the degree-5 threshold structurally meaningful"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions (1837) uses Dirichlet characters — group homomorphisms $\\chi: (\\mathbb{Z}/n\\mathbb{Z})^{\\times} \\to \\mathbb{C}^{\\times}$ — which are precisely the representations of the Galois group $\\text{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^{\\times}$. This abelian Galois group is always solvable (in fact cyclic or a product of cyclics), which is why cyclotomic extensions are solvable by radicals. Dirichlet's analytic proof via L-functions launched the program of using Galois representations in number theory — the same program that, through Artin L-functions and the Langlands correspondence, generalizes the abelian/solvable distinction central to Abel-Ruffini to non-abelian settings"
     }
   ],
   "relatedProofs": [
@@ -490,7 +495,8 @@
     "gcd-algorithm",
     "erdos-226",
     "solution-of-cubic-oq-03",
-    "platonic-solids"
+    "platonic-solids",
+    "dirichlets-theorem"
   ],
   "references": [
     {
