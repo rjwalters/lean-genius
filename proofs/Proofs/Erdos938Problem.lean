@@ -23,14 +23,9 @@ integers can all be powerful.
 The asymptotic count of powerful numbers ≤ x is (ζ(3/2)/ζ(3))·√x ≈ 2.17·√x.
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Defs
-import Mathlib.Order.Filter.Basic
-import Mathlib.Topology.Order.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Data.Finset.Card
+import Mathlib
 
-open Nat Finset Filter
+open Nat Finset Filter Classical
 
 namespace Erdos938
 
@@ -57,45 +52,64 @@ def powerfulSet : Set ℕ := {n | Powerful n}
 
 /-- 1 is powerful (vacuously: no prime divides 1). -/
 example : Powerful 1 := ⟨le_refl 1, fun p hp hdiv => by
-  have := Nat.Prime.one_lt hp
+  have h1 := hp.one_lt
+  have h2 := Nat.le_of_dvd (by omega) hdiv
   omega⟩
 
 /-- 4 = 2² is powerful. -/
 example : Powerful 4 := ⟨by omega, fun p hp hdiv => by
-  have h4 : 4 = 2 ^ 2 := rfl
-  interval_cases p <;> simp_all⟩
+  have h1 := hp.one_lt
+  have h2 := Nat.le_of_dvd (by omega) hdiv
+  interval_cases p <;> simp_all; exact absurd hp (by decide)⟩
 
 /-- 8 = 2³ is powerful. -/
 example : Powerful 8 := ⟨by omega, fun p hp hdiv => by
-  have h8 : 8 = 2 ^ 3 := rfl
-  interval_cases p <;> simp_all⟩
+  have h1 := hp.one_lt
+  have h2 := Nat.le_of_dvd (by omega) hdiv
+  interval_cases p <;> simp_all <;> exact absurd hp (by decide)⟩
 
 /-- 9 = 3² is powerful. -/
 example : Powerful 9 := ⟨by omega, fun p hp hdiv => by
-  have h9 : 9 = 3 ^ 2 := rfl
-  interval_cases p <;> simp_all⟩
+  have h1 := hp.one_lt
+  have h2 := Nat.le_of_dvd (by omega) hdiv
+  interval_cases p <;> simp_all; exact absurd hp (by decide)⟩
 
 /-
 ## Enumeration of Powerful Numbers
 
-We define an enumeration of powerful numbers using a noncomputable choice function.
-The n-th powerful number P(n) is the (n+1)-th smallest element of powerfulSet.
+We define an enumeration of powerful numbers using Mathlib's `Nat.nth` function,
+which enumerates elements of an infinite subset of ℕ in increasing order.
 -/
+
+/-- The set of powerful numbers is infinite (every perfect square k² is powerful). -/
+theorem infinite_powerful : (setOf Powerful).Infinite := by
+  intro hfin
+  obtain ⟨M, hM⟩ := hfin.bddAbove
+  have hpow : (M + 1) ^ 2 ∈ setOf Powerful := by
+    constructor
+    · exact pow_pos (Nat.succ_pos M) 2
+    · intro p hp hdvd
+      exact pow_dvd_pow_of_dvd (hp.dvd_of_dvd_pow hdvd) 2
+  have := hM hpow
+  nlinarith
 
 /-- The ordered enumeration of powerful numbers (0-indexed).
     P(0) = 1, P(1) = 4, P(2) = 8, P(3) = 9, ...
-    Axiomatized since the enumeration function is defined by ordering
-    an irregular subset of ℕ. -/
-axiom nthPowerful : ℕ → ℕ
+    Defined via Mathlib's Nat.nth, which enumerates elements of an infinite
+    subset of ℕ in increasing order. -/
+noncomputable def nthPowerful (n : ℕ) : ℕ := Nat.nth Powerful n
 
 /-- nthPowerful is strictly increasing. -/
-axiom nthPowerful_strictMono : StrictMono nthPowerful
+theorem nthPowerful_strictMono : StrictMono nthPowerful :=
+  Nat.nth_strictMono infinite_powerful
 
 /-- Every value of nthPowerful is powerful. -/
-axiom nthPowerful_mem : ∀ n, Powerful (nthPowerful n)
+theorem nthPowerful_mem : ∀ n, Powerful (nthPowerful n) :=
+  Nat.nth_mem_of_infinite infinite_powerful
 
 /-- Every powerful number appears in the enumeration. -/
-axiom nthPowerful_surj : ∀ m, Powerful m → ∃ n, nthPowerful n = m
+theorem nthPowerful_surj : ∀ m, Powerful m → ∃ n, nthPowerful n = m :=
+  fun m hm => ⟨Nat.count Powerful m, Nat.nth_count hm⟩
 
 /-
 ## Arithmetic Progression Condition

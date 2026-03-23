@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős [Er76d]",
     "sourceUrl": "https://erdosproblems.com/938",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos938Problem.lean",
     "tags": [
       "erdos",
@@ -17,7 +17,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 938,
     "erdosUrl": "https://erdosproblems.com/938",
     "erdosProblemStatus": "open",
@@ -59,9 +59,9 @@
       "differences_finite_of_indices_finite lemma: derived finiteness result",
       "Concrete examples: 1, 4, 8, 9 verified as powerful"
     ],
-    "axiomCount": 7,
-    "lineCount": 203,
-    "assumptions": "7 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "axiomCount": 3,
+    "lineCount": 217,
+    "assumptions": "3 axioms: erdos_938 (open conjecture), erdos_364_conjecture (open conjecture), powerful_count_asymptotic (deep analytic number theory). 4 former enumeration axioms now proved via Mathlib's Nat.nth."
   },
   "overview": {
     "historicalContext": "Erdős Problem #938 was posed by Paul Erdős in 1976 [Er76d] and concerns the distribution of powerful numbers (also called squarefull numbers). A positive integer n is powerful if p | n implies p² | n for every prime p, or equivalently n = a²b³ for some positive integers a, b. The sequence of powerful numbers begins 1, 4, 8, 9, 16, 25, 27, 32, 36, 49, ... (OEIS A001694).\n\nThe problem sits at the intersection of multiplicative number theory and additive combinatorics. While the global distribution of powerful numbers is well understood — the count up to x is asymptotically (ζ(3/2)/ζ(3))·√x ≈ 2.17·√x — the local structure of gaps between consecutive powerful numbers is far more mysterious. The question of whether three consecutive powerful numbers can form an arithmetic progression infinitely often probes this local irregularity.\n\nThe problem is closely related to Erdős Problem #364, which makes the stronger conjecture that no three consecutive integers n, n+1, n+2 can all be powerful. If Problem #364 is true, it would forbid the simplest type of three-term AP (with common difference 1) among consecutive powerful numbers. Problem #938 remains open and cannot be resolved by finite computation alone.",
@@ -113,7 +113,7 @@
     {
       "id": "enumeration",
       "title": "Enumeration of Powerful Numbers",
-      "summary": "nthPowerful with axioms for monotonicity, membership, surjectivity",
+      "summary": "infinite_powerful theorem, nthPowerful via Nat.nth with proved monotonicity, membership, surjectivity",
       "startLine": 78,
       "endLine": 96
     },
@@ -166,22 +166,18 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Prime.Basic",
-      "Mathlib.Data.Nat.Defs",
-      "Mathlib.Order.Filter.Basic",
-      "Mathlib.Topology.Order.Basic",
-      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
-      "Mathlib.Data.Finset.Card"
+      "Mathlib"
     ],
     "opens": [
       "Nat",
       "Finset",
-      "Filter"
+      "Filter",
+      "Classical"
     ],
     "namespace": "Erdos938",
-    "lineCount": 203,
-    "axiomCount": 7,
-    "theoremCount": 2,
+    "lineCount": 217,
+    "axiomCount": 3,
+    "theoremCount": 6,
     "definitionCount": 9
   }
 }
