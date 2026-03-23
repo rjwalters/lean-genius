@@ -1,0 +1,88 @@
+{
+  "id": "vietas-formulas-oq-03",
+  "title": "Newton's Identities: Power Sums and Elementary Symmetric Polynomials",
+  "slug": "vietas-formulas-oq-03",
+  "description": "Newton's identities express power sums pₖ = Σxᵢᵏ in terms of elementary symmetric polynomials eⱼ. Proved for 2, 3, and 4 variables: the recursive form pₖ = Σ(-1)^{i-1} eᵢ pₖ₋ᵢ + (-1)^{k-1} k eₖ, plus the inversion formulas recovering eₖ from power sums. Applications to discriminants, matrix traces, and the sum-of-cubes factorization.",
+  "meta": {
+    "author": "Isaac Newton (1707); formalized here",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Newton%27s_identities",
+    "date": "1707",
+    "status": "verified",
+    "proofRepoPath": "Proofs/VietasFormulasOQ03.lean",
+    "tags": [
+      "algebra",
+      "symmetric-functions",
+      "polynomials",
+      "research",
+      "open-problem",
+      "newtons-identities",
+      "power-sums"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 31,
+    "defCount": 15,
+    "lineCount": 383,
+    "mathlibDependencies": [
+      {
+        "theorem": "ring",
+        "description": "Ring tactic for polynomial identity verification",
+        "module": "Mathlib.Tactic"
+      },
+      {
+        "theorem": "field_simp",
+        "description": "Field simplification for clearing denominators",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "Newton's identities for 2 variables: p₁ through p₆ via recurrence pₖ = e₁·pₖ₋₁ − e₂·pₖ₋₂",
+      "Newton's identities for 3 variables: p₁ through p₅ via recurrence pₖ = e₁·pₖ₋₁ − e₂·pₖ₋₂ + e₃·pₖ₋₃",
+      "Newton's identities for 4 variables: p₂, p₃, p₄ via the full 4-variable recurrence",
+      "Pure expressions: pₖ in terms of elementary symmetric polynomials only (eliminating intermediate power sums)",
+      "Inversion formulas: recover e₂ and e₃ from power sums p₁, p₂, p₃ over a field",
+      "Discriminant formulas: quadratic and cubic discriminants via elementary symmetric polynomials",
+      "Matrix trace connection: characteristic polynomial coefficients from traces via Newton's identities",
+      "Sum-of-cubes factorization: x³ + y³ + z³ − 3xyz = (x+y+z)(x²+y²+z² − xy − xz − yz)"
+    ],
+    "significance": 8,
+    "notes": "Newton's identities are fundamental to symmetric function theory. They bridge Vieta's formulas (coefficients ↔ roots) with power sum invariants, and underpin the Cayley-Hamilton theorem, characteristic polynomial computation, and Galois theory."
+  },
+  "sections": [
+    {
+      "title": "Two Variables",
+      "description": "Newton's identities for elementary symmetric polynomials e₁ = x+y, e₂ = xy and power sums pₖ = xᵏ+yᵏ. The recurrence pₖ = e₁·pₖ₋₁ − e₂·pₖ₋₂ proved for k = 1 through 6."
+    },
+    {
+      "title": "Three Variables",
+      "description": "Newton's identities for e₁, e₂, e₃ and power sums in three variables. Both recursive form (pₖ via previous power sums) and pure form (pₖ via elementary symmetric polynomials only)."
+    },
+    {
+      "title": "Four Variables",
+      "description": "Newton's identities for four variables, including the full fourth identity p₄ = e₁·p₃ − e₂·p₂ + e₃·p₁ − 4·e₄."
+    },
+    {
+      "title": "Inversion",
+      "description": "Recovering elementary symmetric polynomials from power sums: e₂ = (p₁² − p₂)/2 and e₃ = (p₁³ − 3p₁p₂ + 2p₃)/6."
+    },
+    {
+      "title": "Applications",
+      "description": "Discriminant formulas (quadratic and cubic), matrix trace identities, Cayley-Hamilton in trace form, and the sum-of-cubes factorization."
+    }
+  ],
+  "overview": {
+    "what": "Newton's identities express power sums pₖ = Σxᵢᵏ as explicit polynomials in the elementary symmetric polynomials eⱼ, and vice versa.",
+    "whyMatters": "These identities are foundational to symmetric function theory and connect polynomial coefficients (Vieta's formulas) to trace-like invariants. They underpin the Cayley-Hamilton theorem, spectral theory, and are essential in Galois theory.",
+    "approach": "Direct algebraic verification using the ring tactic for 2, 3, and 4 variables. Each Newton identity is a polynomial identity that ring closes automatically. Inversion uses field_simp + ring.",
+    "keyInsight": "The recurrence pₖ = Σᵢ₌₁ⁿ (−1)^{i−1} eᵢ · pₖ₋ᵢ is a universal identity that holds for any number of variables n. For k > n, the eₖ term vanishes and the recurrence simplifies."
+  },
+  "conclusion": {
+    "summary": "All 31 theorems proved with 0 sorries and 0 axioms. Newton's identities verified for 2, 3, and 4 variables in both recursive and pure forms, with applications to discriminants and matrix traces.",
+    "futureWork": [
+      "Generalize to n variables using MvPolynomial.esymm and Finset.powersum",
+      "Prove the general Newton identity via formal derivative of the generating function",
+      "Connect to Mathlib's Polynomial.Vieta infrastructure"
+    ]
+  }
+}
