@@ -43,7 +43,7 @@
     ],
     "dateAdded": "2025-12-27",
     "axiomCount": 0,
-    "lineCount": 246,
+    "lineCount": 247,
     "leanFile": {
       "imports": [
         "Mathlib.GroupTheory.Sylow",
@@ -72,54 +72,99 @@
       "**Sylow II via Orbit-Stabilizer:** Let $P$ act on $G/Q$. If $P \\neq Q$, then $|P \\cap Q| < |P|$ so all $P$-orbits have size $> 1$. Since $P$ is a $p$-group, orbit sizes are $p$-powers, so $|G/Q| \\equiv 0 \\pmod{p}$ — but $|G/Q| = m$ with $p \\nmid m$. Contradiction: $P = gQg^{-1}$.",
       "**Arithmetic Classification:** $n_p \\equiv 1 \\pmod{p}$ and $n_p \\mid m$ severely constrain group structure. For $|G| = 15 = 3 \\cdot 5$: $n_3 \\mid 5$ and $n_3 \\equiv 1 \\pmod{3}$ force $n_3 = 1$; similarly $n_5 = 1$. Both Sylow subgroups are normal $\\Rightarrow$ $G \\cong \\mathbb{Z}/15\\mathbb{Z}$.",
       "**Normality Criterion:** $n_p = 1 \\iff P \\trianglelefteq G$ (unique conjugate = self-conjugate = normal). This is the primary method for establishing normality in finite group theory — check the arithmetic constraints from Sylow III.",
-      "Sylow's theorems are a blueprint for the Classification of Finite Simple Groups: any simple group must have n_p > 1 for every prime p dividing its order (otherwise a normal Sylow subgroup exists), and Sylow counting constraints then force |G| to be extremely large — ruling out all 'small' orders from being simple"
+      "Sylow's theorems are a blueprint for the Classification of Finite Simple Groups: any simple group must have n_p > 1 for every prime p dividing its order (otherwise a normal Sylow subgroup exists), and Sylow counting constraints then force |G| to be extremely large — ruling out all 'small' orders from being simple",
+      "**Wielandt's proof** (1959) derives Sylow I purely combinatorially: G acts on the set $\\binom{G}{p^k}$ of subsets of size $p^k$. The key is $\\binom{|G|}{p^k} \\not\\equiv 0 \\pmod{p}$ (by Kummer's theorem), so some orbit has size not divisible by $p$, and its stabilizer has order divisible by $p^k$ — giving a Sylow subgroup. This avoids induction entirely."
+    ],
+    "prerequisites": [
+      "Finite group theory: subgroups, normal subgroups, quotient groups, Lagrange's theorem ($|H|$ divides $|G|$)",
+      "Group actions: orbits, stabilizers, orbit-stabilizer theorem, fixed-point counting",
+      "Prime factorization: $p$-adic valuation $\\nu_p(n)$, the factorization $|G| = p^k m$ with $\\gcd(p, m) = 1$",
+      "Lean 4 and Mathlib: `Sylow p G` type, `Subgroup`, `Fintype`, coercions, and typeclass resolution"
     ]
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 71,
+      "summary": "Imports six Mathlib modules covering Sylow theory, cosets, indices, element orders, and prime factorization. The docstring documents all three Sylow theorems, their historical origin (Sylow 1872), and a worked classification example (groups of order 15 are cyclic). Part of Wiedijk's 100 Theorems (#72).",
+      "mathContext": "Dependencies: `Sylow p G`, `Subgroup.index`, `orderOf`, `Nat.factorization` from Mathlib's group theory library."
+    },
+    {
+      "id": "sylow-type",
+      "title": "The Sylow Type in Mathlib",
+      "startLine": 73,
+      "endLine": 79,
+      "summary": "Documents Mathlib's representation of Sylow subgroups as a type `Sylow p G`, with coercion to `Subgroup G`. This type-theoretic approach enables reasoning about the collection of all Sylow p-subgroups as a first-class object.",
+      "mathContext": "`Sylow p G : Type*` — the type of all Sylow $p$-subgroups of $G$. `Fintype (Sylow p G)` for finite groups; `Nat.card (Sylow p G) = n_p$."
+    },
     {
       "id": "existence",
       "title": "First Sylow Theorem (Existence)",
       "startLine": 80,
       "endLine": 103,
-      "summary": "For any prime p, a finite group has at least one Sylow p-subgroup."
+      "summary": "States and proves Sylow I: for any prime p, a finite group G has at least one Sylow p-subgroup. Also proves that the order of a Sylow p-subgroup equals p^(v_p(|G|)) where v_p is the p-adic valuation.",
+      "mathContext": "$\\exists P \\leq G$ with $|P| = p^{\\nu_p(|G|)}$. Proof: `Sylow.nonempty` from Mathlib, internally via induction on $|G|$ and the class equation."
     },
     {
       "id": "conjugacy",
       "title": "Second Sylow Theorem (Conjugacy)",
       "startLine": 105,
       "endLine": 128,
-      "summary": "All Sylow p-subgroups are conjugate to each other."
+      "summary": "States Sylow II: all Sylow p-subgroups are conjugate, with a corollary that all Sylow p-subgroups are isomorphic. Uses Mathlib's `MulAction.exists_smul_eq` for conjugacy and `Sylow.equiv` for the isomorphism.",
+      "mathContext": "$P, Q \\in \\text{Syl}_p(G) \\Rightarrow \\exists g \\in G,\\, Q = gPg^{-1} \\Rightarrow P \\cong Q$."
     },
     {
       "id": "counting",
       "title": "Third Sylow Theorem (Counting)",
       "startLine": 130,
       "endLine": 148,
-      "summary": "The number of Sylow p-subgroups is congruent to 1 mod p."
+      "summary": "States Sylow III: the number n_p of Sylow p-subgroups satisfies n_p ≡ 1 (mod p) and n_p divides the index [G:P]. These two constraints together severely restrict possible group structures.",
+      "mathContext": "$n_p \\equiv 1 \\pmod{p}$, $n_p \\mid [G:P] = m$ where $|G| = p^k m$."
     },
     {
       "id": "uniqueness",
       "title": "Uniqueness and Normality",
       "startLine": 150,
-      "endLine": 180,
-      "summary": "A unique Sylow p-subgroup is normal."
+      "endLine": 181,
+      "summary": "Establishes the biconditional: a Sylow p-subgroup is normal iff it is the unique Sylow p-subgroup. Three theorems: normality from fixed-point condition, normality from uniqueness (Subsingleton), and uniqueness from normality.",
+      "mathContext": "$n_p = 1 \\iff P \\trianglelefteq G$. Proof: unique $\\Rightarrow$ conjugation-invariant $\\Rightarrow$ normalizer is all of $G$."
     },
     {
       "id": "cauchy",
-      "title": "Cauchy's Theorem",
+      "title": "Cauchy's Theorem as Corollary",
       "startLine": 182,
-      "endLine": 195,
-      "summary": "If p divides |G|, then G has an element of order p."
+      "endLine": 196,
+      "summary": "Derives Cauchy's theorem from Sylow I: if prime p divides |G|, then G has an element of order p. The Sylow p-subgroup has order p^k ≥ p, so it contains an element whose order is a power of p.",
+      "mathContext": "$p \\mid |G| \\Rightarrow \\exists g \\in G,\\, \\text{ord}(g) = p$. Cauchy (1845) predates Sylow (1872); Sylow I generalizes Cauchy."
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Applications",
+      "startLine": 197,
+      "endLine": 233,
+      "summary": "Proves groups of prime order are cyclic (via isCyclic_of_prime_card). The documentation summarizes all results in a table and demonstrates classification applications: groups of order pq (unique normal Sylow q-subgroup), groups of order p² (abelian), and simple group obstruction arguments.",
+      "mathContext": "$|G| = p$ prime $\\Rightarrow G \\cong \\mathbb{Z}/p\\mathbb{Z}$. For $|G| = pq$ ($p < q$): $n_q \\mid p$ and $n_q \\equiv 1 \\pmod{q}$ force $n_q = 1$."
+    },
+    {
+      "id": "verification",
+      "title": "Verification",
+      "startLine": 234,
+      "endLine": 247,
+      "summary": "Type-checks all 10 theorems and 1 definition: sylow_existence, sylow_card, sylow_conjugacy, sylow_isomorphic, sylow_count_mod_p, sylow_count_dvd_index, sylow_normal_of_eq, sylow_normal_of_unique, sylow_unique_of_normal, cauchy_from_sylow, group_of_prime_order_cyclic.",
+      "mathContext": "All theorems verified via `#check`: existence, cardinality, conjugacy, isomorphism, counting mod $p$, divisibility, two normality directions, Cauchy, and prime-order cyclicity."
     }
   ],
   "conclusion": {
-    "summary": "The Sylow theorems are indispensable for understanding finite group structure. They combine existence, uniqueness up to conjugacy, and counting constraints into a powerful toolkit for analyzing groups.",
-    "implications": "**Applications:**\n\n**1. Groups of order pq**\nSylow shows n_q = 1 when q > p.\n\n**2. Groups of order p^2**\nMust be abelian.\n\n**3. Simple group classification**\nRules out many possible orders.\n\n**4. Burnside's theorem**\nGroups of order p^a * q^b are solvable.",
+    "summary": "Fully verified (0 sorries, 0 axioms) formalization of all three Sylow theorems with 10 theorems and 1 definition in 247 lines. The formalization covers existence (Sylow I), conjugacy (Sylow II), counting (Sylow III), the normality-uniqueness biconditional, Cauchy's theorem as a corollary, and prime-order cyclicity. Each theorem wraps Mathlib's Sylow API with pedagogical documentation and classical notation.",
+    "implications": "The Sylow theorems are the primary structural tool for finite group theory, with applications cascading across algebra. **Classification**: For groups of order pq (p < q primes), Sylow III forces n_q = 1, giving a normal Sylow q-subgroup — this classifies all such groups as cyclic or semidirect products. Groups of order p² are always abelian (either ℤ/p² or (ℤ/p)²). **Simple group obstruction**: A finite simple group must have n_p > 1 for every prime p dividing its order, since n_p = 1 implies a normal (hence trivial or whole-group) Sylow subgroup. Sylow counting eliminates most orders from admitting simple groups — the first step in the Classification of Finite Simple Groups (CFSG). **Burnside's p^a q^b theorem** (1904): every group of order p^a · q^b is solvable, proved using Sylow subgroups and character theory. This was later subsumed by the Feit-Thompson odd-order theorem (1963). **Representation theory**: Sylow subgroups control modular representation theory — the representation theory of G over a field of characteristic p is determined by the Sylow p-subgroup via the Brauer correspondence and Green's indecomposable modules.",
     "openQuestions": [
-      "Can we formalize the classification of groups of small order using Sylow? E.g., every group of order $pq$ ($p < q$, $p \\nmid q-1$) is cyclic; every group of order $p^2$ is abelian ($\\mathbb{Z}/p^2$ or $(\\mathbb{Z}/p)^2$). These follow directly from Sylow's counting constraints.",
-      "Wielandt's combinatorial proof (1959) derives Sylow I from the action of $G$ on $\\binom{G}{p^k}$ (subsets of size $p^k$). Can we formalize this proof, which is more elementary than the orbit-counting approach?",
-      "The Sylow theorems for infinite groups fail in general. Can we formalize the pro-$p$ Sylow theorem for profinite groups, which recovers an analog via inverse limits?",
-      "Can we formalize the connection to the classification of finite simple groups? Sylow analysis is the first step in ruling out possible simple group orders — e.g., showing no simple group of order 132 exists (since Sylow forces $n_{11} = 1$, giving a normal Sylow 11-subgroup)."
+      "Formalize the classification of groups of small order using Sylow: every group of order $pq$ ($p < q$, $p \\nmid q-1$) is cyclic; every group of order $p^2$ is abelian ($\\mathbb{Z}/p^2$ or $(\\mathbb{Z}/p)^2$). These follow directly from Sylow III counting constraints.",
+      "Formalize Wielandt's combinatorial proof (1959): $G$ acts on $\\binom{G}{p^k}$, and since $\\binom{p^k m}{p^k} \\not\\equiv 0 \\pmod{p}$ (by Kummer's theorem), some orbit has size coprime to $p$, yielding a Sylow subgroup as the stabilizer. This avoids induction entirely.",
+      "The Sylow theorems fail for infinite groups. Formalize the pro-$p$ Sylow theorem for profinite groups, which recovers existence and conjugacy of maximal pro-$p$ subgroups via inverse limits of finite Sylow subgroups.",
+      "Formalize the Sylow-based simplicity proof for $A_5$: |$A_5$| = 60 = 2²·3·5, Sylow counting gives $n_2 \\in \\{1,3,5,15\\}$, $n_3 \\in \\{1,4,10\\}$, $n_5 \\in \\{1,6\\}$, and the conjugacy class sizes {1,12,12,15,20} show no proper non-trivial union divides 60.",
+      "Formalize the connection between Sylow subgroups and transfer theory: the transfer homomorphism $G \\to P/[P,P]$ (where $P$ is a Sylow $p$-subgroup) detects elements in the kernel of $G \\to G/O^p(G)$, providing a bridge between Sylow structure and normal subgroup theory"
     ]
   },
   "crossReferences": [
@@ -152,32 +197,87 @@
       "targetId": "fermats-last-theorem",
       "relationship": "related",
       "description": "Wiles's proof uses the structure of Galois representations $\\text{Gal}(\\overline{\\mathbb{Q}}/\\mathbb{Q}) \\to GL_2(\\mathbb{Z}_p)$. The analysis of deformation rings and Hecke algebras requires detailed knowledge of $p$-adic group structure, where Sylow-type arguments (pro-$p$ subgroups) are fundamental"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "related",
+      "description": "Sylow analysis of A₅ is fundamental to proving its simplicity: |A₅| = 60 = 2²·3·5, and Sylow counting shows the conjugacy class sizes are {1, 12, 12, 15, 20}. Any normal subgroup must be a union of conjugacy classes including {e} with order dividing 60, and the only valid sub-sums are 1 and 60 — proving A₅ is simple, the cornerstone of the Abel-Ruffini theorem"
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem — (p−1)! ≡ −1 (mod p) — is a statement about the group (ℤ/pℤ)* of order p−1. The Sylow p-subgroups of (ℤ/nℤ)* are cyclic, and Wilson's theorem can be derived by pairing each element with its inverse in the group product. The Sylow structure of (ℤ/nℤ)* underlies the Chinese Remainder decomposition"
+    },
+    {
+      "targetId": "derangements",
+      "relationship": "related",
+      "description": "Derangements are fixed-point-free permutations in Sₙ. The Sylow p-subgroups of Sₙ have a recursive wreath product structure: Syl_p(Sₚₙ) ≅ (ℤ/pℤ) ≀ Syl_p(Sₙ). The proportion of derangements (~1/e) is independent of the Sylow structure, illustrating how different group-theoretic properties (fixed-point statistics vs. p-subgroup structure) can be orthogonal"
+    },
+    {
+      "targetId": "partition-theorem",
+      "relationship": "related",
+      "description": "Integer partitions of n index the conjugacy classes of Sₙ by cycle type. Sylow counting in Sₙ depends on the prime factorization of n!, and the sizes of conjugacy classes (determined by cycle-type partitions) are central to Sylow-based simplicity proofs — e.g., proving A₅ is simple requires the conjugacy class sizes, which are determined by the partition structure of 5"
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "related",
+      "description": "The inverse Galois problem asks which groups occur as Galois groups over ℚ. Sylow subgroups constrain realizability: if G is realizable over ℚ, so are all its Sylow subgroups (as Galois groups of subextensions). The Shafarevich conjecture asserts every solvable group is an inverse Galois group — the solvable case reduces to understanding towers of abelian extensions, where the Sylow structure controls each layer"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic reciprocity governs the structure of (ℤ/pℤ)*, whose Sylow 2-subgroup determines the quadratic residue structure. The Legendre symbol (a/p) detects membership in the unique subgroup of index 2 (the quadratic residues), which is the Sylow 2-complement when p ≡ 1 (mod 4) or relates to the Sylow 2-subgroup when p ≡ 3 (mod 4)"
     }
   ],
   "references": [
     {
-      "authors": "Sylow, Ludwig",
-      "title": "Theoremes sur les groupes de substitutions",
-      "year": "1872",
-      "venue": "Mathematische Annalen, Vol. 5",
-      "note": "Original paper proving the three Sylow theorems for permutation groups"
+      "key": "Sy72",
+      "citation": "Sylow, L., Théorèmes sur les groupes de substitutions, Mathematische Annalen 5 (1872), 584–594.",
+      "type": "paper"
     },
     {
-      "authors": "Wielandt, Helmut",
-      "title": "Ein Beweis fur die Existenz der Sylowgruppen",
-      "year": "1959",
-      "venue": "Archiv der Mathematik, Vol. 10",
-      "note": "Elegant combinatorial proof of Sylow's first theorem using group actions on subsets"
+      "key": "Wi59",
+      "citation": "Wielandt, H., Ein Beweis für die Existenz der Sylowgruppen, Archiv der Mathematik 10 (1959), 401–402.",
+      "type": "paper"
+    },
+    {
+      "key": "Ro95",
+      "citation": "Rotman, J.J., An Introduction to the Theory of Groups, 4th ed., Springer GTM 148 (1995), Chapter 4: The Sylow Theorems.",
+      "type": "book"
+    },
+    {
+      "key": "DF04",
+      "citation": "Dummit, D.S. and Foote, R.M., Abstract Algebra, 3rd ed., Wiley (2004), Section 4.5: The Sylow Theorems.",
+      "type": "book"
+    },
+    {
+      "key": "Fr87",
+      "citation": "Frobenius, G., Neuer Beweis des Sylowschen Satzes, Journal für die reine und angewandte Mathematik 100 (1887), 179–181.",
+      "type": "paper"
+    },
+    {
+      "key": "Bu04",
+      "citation": "Burnside, W., On groups of order p^α q^β, Proceedings of the London Mathematical Society 2(1) (1904), 388–392.",
+      "type": "paper"
+    },
+    {
+      "key": "Wu07",
+      "citation": "Wussing, H., The Genesis of the Abstract Group Concept, Dover (2007, reprint of 1984 MIT Press edition).",
+      "type": "book"
     }
   ],
   "relatedProofs": [
     "lagrange-theorem",
     "abel-ruffini-oq-04",
-    "angle-trisection-oq-02",
     "abel-ruffini",
     "fundamental-arithmetic",
     "euler-totient",
     "cayley-hamilton",
-    "fermats-last-theorem"
+    "fermats-last-theorem",
+    "wilsons-theorem",
+    "derangements",
+    "partition-theorem",
+    "inverse-galois",
+    "quadratic-reciprocity"
   ]
 }

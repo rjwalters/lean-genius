@@ -143,7 +143,9 @@
       "puiseux-theorem",
       "elementary-quadratic-reciprocity-oq-01",
       "derangements",
-      "partition-theorem"
+      "partition-theorem",
+      "wilsons-theorem",
+      "euler-totient"
     ],
     "prerequisites": [
       "Group theory (normal subgroups, derived series, solvability)",
@@ -298,6 +300,16 @@
       "targetId": "partition-theorem",
       "relationship": "related",
       "description": "Integer partitions of n index the conjugacy classes of Sₙ by cycle type — a partition λ = (λ₁, λ₂, ...) corresponds to the class of permutations with cycle lengths λ₁, λ₂, etc. The conjugacy class sizes of A₅ (1, 12, 12, 15, 20, corresponding to cycle types (1⁵), (2²1), (3 1²), (5), (5) split) are the raw data for proving A₅ simplicity: a normal subgroup must be a union of conjugacy classes including {e}, and the only sub-sums of {1, 12, 12, 15, 20} that divide 60 are 1 and 60. Euler's partition theorem (odd parts ↔ distinct parts) thus connects to group theory through the cycle-type encoding"
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem — (p−1)! ≡ −1 (mod p) for prime p — is a statement about the group (ℤ/pℤ)* of order p−1. The product of all elements in a finite abelian group equals the product of its order-2 elements; for (ℤ/pℤ)* the only such element is −1, giving Wilson's theorem. This connects to Abel-Ruffini through the structure of unit groups: (ℤ/pℤ)* is cyclic (hence solvable), and cyclotomic extensions ℚ(ζₚ)/ℚ have Galois group (ℤ/pℤ)* — precisely the solvable extensions that form the building blocks of radical towers. Wilson's theorem thus witnesses the abelian (solvable) structure of prime-order unit groups, the opposite pole from the non-solvable S₅ that drives Abel-Ruffini"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient φ(n) = |(ℤ/nℤ)*| computes the order of the multiplicative unit group modulo n. The structure theorem (ℤ/nℤ)* ≅ ∏ (ℤ/pᵢᵉⁱℤ)* shows this group is always a product of cyclic groups — hence always solvable. This solvability of unit groups is why cyclotomic extensions (adjoining nth roots of unity) are always radical: their Galois groups are subgroups of (ℤ/nℤ)*, which are abelian. The Abel-Ruffini impossibility arises precisely when the Galois group escapes this abelian world — the generic quintic has Galois group S₅, which is not a subgroup of any (ℤ/nℤ)* and is not solvable. Euler's totient thus quantifies the 'solvable side' of the radical solvability dichotomy"
     }
   ],
   "overview": {
