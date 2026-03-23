@@ -222,6 +222,11 @@
       "targetId": "mean-value-theorem",
       "relationship": "related",
       "description": "Both guarantee existence of special points for continuous functions. The 1D Brouwer theorem follows from IVT (which also implies MVT): for $f:[a,b] \\to [a,b]$ continuous, $g(x) = f(x) - x$ satisfies $g(a) \\geq 0 \\geq g(b)$, so IVT gives $g(c) = 0$, i.e., $f(c) = c$"
+    },
+    {
+      "targetId": "brouwer-fixed-point-oq-02",
+      "relationship": "extended-by",
+      "description": "Explores the computational complexity of finding approximate fixed points (PPAD-completeness) — the constructive dimension of Brouwer's inherently non-constructive existence result, with implications for Nash equilibrium computation"
     }
   ],
   "relatedProofs": [
@@ -231,6 +236,7 @@
     "cantor-diagonalization",
     "schauder-fixed-point",
     "poincare-conjecture",
-    "mean-value-theorem"
+    "mean-value-theorem",
+    "brouwer-fixed-point-oq-02"
   ]
 }
