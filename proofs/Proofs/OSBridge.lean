@@ -491,7 +491,7 @@ def GaugeInvariant (_dμ : ProbabilityMeasure EFieldConfiguration) : Prop :=
 
     Reference: Glimm-Jaffe, Quantum Physics, Section 6.1 (Wick's theorem);
     Simon (1974), The P(phi)_2 Euclidean QFT, Ch. II. -/
-def NonTrivial (dμ : ProbabilityMeasure EFieldConfiguration) : Prop :=
+def HasNonGaussianCorrelations (dμ : ProbabilityMeasure EFieldConfiguration) : Prop :=
   ∃ (f : Fin 4 → ETestFunction),
     schwingerFunction dμ 4 f ≠
       schwingerFunction dμ 2 ![f 0, f 1] * schwingerFunction dμ 2 ![f 2, f 3] +
@@ -552,7 +552,7 @@ def YangMillsContinuumLimitFull (G : Type*) [Group G] [TopologicalSpace G]
   ∃ (dμ : ProbabilityMeasure EFieldConfiguration),
     SatisfiesAllOS dμ ∧
     GaugeInvariant dμ ∧
-    NonTrivial dμ ∧
+    HasNonGaussianCorrelations dμ ∧
     ∃ Δ : ℝ, hasExponentialClustering dμ Δ
 
 /-- **The Yang-Mills Millennium Prize theorem** (full chain).
@@ -596,7 +596,7 @@ For Yang-Mills (an interacting, non-abelian gauge theory), proving `SatisfiesAll
 is the core mathematical challenge. The lattice gauge theory approach
 (Wilson 1974) provides strong numerical evidence but no rigorous proof.
 
-The `NonTrivial` condition additionally rules out the Gaussian free field as
+The `HasNonGaussianCorrelations` condition additionally rules out the Gaussian free field as
 a solution to the Yang-Mills continuum limit problem: it requires the connected
 4-point function to be non-vanishing, which fails for any Gaussian measure
 by Wick's theorem. -/
