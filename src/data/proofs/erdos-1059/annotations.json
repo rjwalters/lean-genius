@@ -53,7 +53,7 @@
     "range": { "startLine": 72, "endLine": 75 },
     "type": "insight",
     "title": "Example: p = 101 (Verified)",
-    "content": "Fully verified proof that $101$ satisfies the factorial-subtraction property. After bounding $k \\leq 4$, `interval_cases` splits into 5 cases: $101 - 0! = 100 = 4 \\times 25$, $101 - 1! = 100$, $101 - 2! = 99 = 9 \\times 11$, $101 - 3! = 95 = 5 \\times 19$, $101 - 4! = 77 = 7 \\times 11$. Each compositeness check is resolved by `decide`.",
+    "content": "Fully verified proof that $101$ satisfies the factorial-subtraction property. After bounding $k \\leq 4$, `interval_cases` splits into 5 cases: $101 - 0! = 100 = 4 \\times 25$, $101 - 1! = 100$, $101 - 2! = 99 = 9 \\times 11$, $101 - 3! = 95 = 5 \\times 19$, $101 - 4! = 77 = 7 \\times 11$. Each compositeness check is resolved by `decide`.\n\n**Why 101 is the smallest qualifying prime:** Below 101, the primes that fail include 89 ($89 - 6 = 83$ prime), 71 ($71 - 6 = 65 = 5 \\times 13$, $71 - 24 = 47$ prime), 53 ($53 - 6 = 47$ prime), and many others. The $k = 3$ case ($k! = 6$) is the most common obstruction: since $p - 6$ is prime for many primes $p$ (this is the prime-gap-6 phenomenon, related to twin primes mod 6), finding primes where *all* factorial subtractions avoid primality requires escaping multiple primality obstructions simultaneously.",
     "mathContext": "$101 - 0! = 100$, $101 - 1! = 100$, $101 - 2! = 99$, $101 - 3! = 95$, $101 - 4! = 77$. All composite.",
     "significance": "key",
     "relatedConcepts": ["interval_cases tactic", "decide tactic", "compositeness verification"],
