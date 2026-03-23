@@ -109,10 +109,46 @@
     "summary": "The power sum formulas demonstrate beautiful closed-form expressions for sums that grow polynomially. The Nicomachus theorem - that the sum of cubes equals the square of the sum - is one of the most elegant identities in mathematics.",
     "implications": "**Applications:**\n\n**1. Analysis**\nBuilding blocks for Riemann sums and integrals.\n\n**2. Combinatorics**\nCounting arguments involving powers.\n\n**3. Number theory**\nConnections to Bernoulli numbers.\n\n**4. Computer science**\nAlgorithm analysis with polynomial sums.",
     "openQuestions": [
-      "Formalization of general Faulhaber formula with Bernoulli numbers",
-      "Extensions to non-integer exponents"
+      "Can the general Faulhaber formula $\\sum_{i=0}^n i^k = \\frac{1}{k+1} \\sum_{j=0}^{k} \\binom{k+1}{j} B_j \\, n^{k+1-j}$ be formalized in Lean using Mathlib's `Polynomial.bernoulli`, proving all power sum formulas as special cases of a single unified identity?",
+      "The Bernoulli number connection $\\zeta(1-k) = -B_k/k$ links these combinatorial sums to the Riemann zeta function. Can this relationship be formalized, connecting `SumOfKthPowers` to analytic number theory in Lean?",
+      "Nicomachus's theorem $\\sum i^3 = (\\sum i)^2$ has a beautiful visual proof via partitioning odd numbers. Can this visual/combinatorial proof be formalized alongside the algebraic one, giving two independent proofs of the same result?",
+      "The Euler-Maclaurin formula generalizes power sums to integrals plus correction terms involving Bernoulli numbers. Can this be formalized in Lean to provide asymptotic formulas for $\\sum i^k$ as $n \\to \\infty$?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The binomial theorem is used in the inductive proofs of power sum formulas: expanding $(i+1)^{k+1} - i^{k+1}$ via the binomial theorem and telescoping yields the recurrence relating $\\sum i^k$ to lower-order sums"
+    },
+    {
+      "targetId": "arithmetic-series",
+      "relationship": "complementary",
+      "description": "The arithmetic series formula $\\sum_{i=1}^n i = n(n+1)/2$ (Gauss's formula) is the $k=1$ case of Faulhaber's formulas — the simplest power sum and the foundation on which the Nicomachus theorem builds"
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "related",
+      "description": "While geometric series $\\sum r^i = (r^{n+1}-1)/(r-1)$ sums powers of a fixed ratio, Faulhaber sums $\\sum i^k$ raise the index to a fixed power. Both have elegant closed forms but arise from different generating functions"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The divisibility lemmas in the power sum formulas (e.g., $6 \\mid n(n+1)(2n+1)$) rely on properties of products of consecutive integers, which connect to unique factorization and modular arithmetic"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function connects to Bernoulli numbers via the von Staudt-Clausen theorem: the denominator of $B_{2k}$ is $\\prod_{p-1 \\mid 2k} p$, involving primes whose relationship to $\\phi$ governs the arithmetic of power sums"
+    }
+  ],
+  "relatedProofs": [
+    "binomial-theorem",
+    "arithmetic-series",
+    "geometric-series",
+    "fundamental-arithmetic",
+    "euler-totient"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Algebra.BigOperators.Intervals",
@@ -145,6 +181,27 @@
       "year": "1993",
       "venue": "Mathematics of Computation 61(203), 277–294",
       "note": "Historical analysis of Faulhaber's contribution to power sum formulas"
+    },
+    {
+      "authors": "Bernoulli, Jakob",
+      "title": "Ars Conjectandi",
+      "year": "1713",
+      "venue": "Basel (posthumous)",
+      "note": "Discovered the unifying pattern behind Faulhaber's formulas using what are now called Bernoulli numbers — the general formula Σi^k = (1/(k+1))Σ C(k+1,j) B_j n^(k+1-j)"
+    },
+    {
+      "authors": "Conway, John H.; Guy, Richard K.",
+      "title": "The Book of Numbers",
+      "year": "1996",
+      "venue": "Copernicus/Springer-Verlag",
+      "note": "Accessible exposition of power sum formulas, the Nicomachus theorem, and their visual proofs via partitioning odd numbers"
+    },
+    {
+      "authors": "Graham, Ronald L.; Knuth, Donald E.; Patashnik, Oren",
+      "title": "Concrete Mathematics",
+      "year": "1994",
+      "venue": "Addison-Wesley, 2nd edition",
+      "note": "Comprehensive treatment of finite sums including power sums, Bernoulli numbers, and the Euler-Maclaurin formula — the standard reference for discrete mathematics"
     }
   ]
 }
