@@ -71,7 +71,7 @@ Use your judgment. If it would interest someone who follows #LeanProver or #Form
 ## Rate Limits
 
 - **Max 1 post per scan cycle** (6 hours default)
-- **Max 2 posts per calendar day (UTC)** (reduced from 4 — quality over quantity)
+- **Max 4 posts per calendar day (UTC)**
 - If multiple results exist, **consolidate into one richer post** or save for next cycle
 - Prefer 1 substantial post over 3 thin announcements
 
