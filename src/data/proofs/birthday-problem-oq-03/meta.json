@@ -44,7 +44,7 @@
     "dateAdded": "2026-03-23"
   },
   "overview": {
-    "historicalContext": "The birthday problem, first stated by von Mises (1939), asks how many people are needed for a >50% chance of a shared birthday. The natural generalization asks about k-way coincidences: when do k people share a birthday? This connects to the occupancy problem in combinatorics, hash table collision analysis, and the generalized pigeonhole principle. The threshold scales roughly as d^{(k-1)/k}, so while k=2 needs ~23 people for 365 days, k=3 needs ~88 and k=4 needs ~187.",
+    "historicalContext": "The birthday problem, first posed by Richard von Mises in 1939, asks how many people are needed for a >50% chance of a shared birthday. The natural generalization to k-way coincidences — when do k people share a birthday? — was studied systematically by Flajolet, Gardy, and Thimonier (1992) using analytic combinatorics. The k-way threshold scales as $d^{(k-1)/k} \\cdot (k!)^{1/k}$, giving approximately 23, 88, and 187 people for k=2, 3, 4 with d=365. This connects to the classical occupancy problem studied by Feller (1968): distributing n balls into d urns and analyzing the maximum occupancy. In computer science, k-way collisions arise in hash table analysis, distributed load balancing (ensuring no server receives more than k requests), and cryptographic multi-collision attacks studied by Suzuki, Tonien, Kurosawa, and Honda (2006). The generalized pigeonhole principle (Dirichlet's box principle) provides the deterministic threshold: n > (k-1)d guarantees a k-way coincidence regardless of the assignment.",
     "problemStatement": "Formalize k-way birthday coincidences: given n people and d days, prove the generalized pigeonhole bound (n > (k-1)*d implies a k-way coincidence is certain), and show the k=2 case recovers the classical birthday problem.",
     "proofStrategy": "The proof uses fiber decomposition: each assignment f : Fin n -> Fin d partitions people into fibers by day. The fiber sizes sum to n (partition of unity). The generalized pigeonhole follows by contradiction: if every fiber has < k elements, then n <= (k-1)*d. The classical recovery connects 2-way coincidences to non-injectivity by showing fibers of size >= 2 correspond to collisions.",
     "keyInsights": [
@@ -52,9 +52,16 @@
       "The generalized pigeonhole follows from a simple averaging argument: n people in d bins with each bin having < k means n < k*d",
       "The k=2 classical recovery uses Finset.one_lt_card to extract two distinct elements from a fiber, connecting fiber size >= 2 to non-injectivity",
       "Monotonicity in k is immediate: if some day has >= k people, it certainly has >= k' people for k' <= k",
-      "The probability monotonicity follows from set containment: fewer safe assignments for smaller k means higher collision probability"
+      "The probability monotonicity follows from set containment: fewer safe assignments for smaller k means higher collision probability",
+      "The population bounds (n < k implies probability 0, n > (k-1)d implies probability 1) completely characterize the two extremes, leaving the interesting regime as (k-1) ≤ n ≤ (k-1)d where the probability transitions from 0 to 1"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finite sets and their cardinality (Finset, Fintype)",
+      "Fiber decomposition of finite functions",
+      "The pigeonhole principle (Dirichlet box principle)",
+      "Function injectivity",
+      "Basic rational arithmetic and probability as counting"
+    ]
   },
   "sections": [
     {
@@ -130,7 +137,7 @@
   ],
   "conclusion": {
     "summary": "Provides a complete formalization of k-way birthday coincidences with 0 axioms and 0 sorries. The 25 theorems cover the generalized pigeonhole principle, classical recovery, monotonicity, probability formulas, and counting results.",
-    "implications": "This generalization is relevant to hash function security (k-way collisions), load balancing (ensuring no server gets more than k requests), and the occupancy problem in combinatorics. The generalized pigeonhole bound gives hard capacity limits.",
+    "implications": "The k-way birthday framework has direct applications in cryptography (multi-collision resistance of hash functions, where Suzuki et al. showed k-collision attacks scale as $O(n^{1-1/k})$ queries), distributed systems (load balancing with maximum-load guarantees), and probabilistic combinatorics (the occupancy problem and its Poisson approximation). The deterministic pigeonhole bound provides hard capacity limits: a hash table with $d$ buckets and $n > (k-1)d$ entries must have a bucket with $k+$ items, regardless of the hash function. The fiber decomposition technique demonstrated here is reusable across occupancy-type problems.",
     "openQuestions": [
       "Can the exact threshold for k=3 (approximately n=88 for d=365) be computed using multinomial coefficient sums?",
       "Can the Poisson approximation for k-way coincidences be formalized, connecting to Mathlib's probability theory?",
@@ -141,16 +148,28 @@
     {
       "targetId": "birthday-problem",
       "relationship": "generalizes",
-      "description": "Generalizes from 2-way to k-way coincidences"
+      "description": "Generalizes from 2-way to k-way coincidences; the classical recovery theorem proves the k=2 case is equivalent to the original birthday problem"
     },
     {
       "targetId": "birthday-problem-oq-02",
       "relationship": "related",
-      "description": "The asymptotic bound formalization complements this combinatorial approach"
+      "description": "The tight collision asymptotics (exp(-k(k-1)/(2n)) bound) complement this combinatorial approach with precise probability estimates"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "related",
+      "description": "The counting of injective functions (descending factorial) that underlies the birthday probability connects directly to the combinations formula C(d,n)"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both are instances of the pigeonhole principle at different levels: birthday collisions partition people by days, Ramsey theory partitions edges by colors"
     }
   ],
   "relatedProofs": [
     "birthday-problem",
-    "birthday-problem-oq-02"
+    "birthday-problem-oq-02",
+    "combinations-formula",
+    "ramseys-theorem"
   ]
 }
