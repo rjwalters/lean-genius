@@ -162,6 +162,21 @@
       "targetId": "quadratic-reciprocity",
       "relationship": "related",
       "description": "Quadratic reciprocity concerns the structure of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, specifically whether elements are quadratic residues. By Lagrange's theorem, $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ has order $p-1$, and the quadratic residues form a subgroup of index 2 (order $(p-1)/2$). This index-2 subgroup structure is the foundation for the Legendre symbol and reciprocity"
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "related",
+      "description": "The existence of primitive roots modulo $p$ — generators of the cyclic group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ — is a consequence of the structure theorem for finite abelian groups combined with Lagrange's theorem. By Lagrange, the polynomial $x^d - 1$ has at most $d$ roots in $\\mathbb{Z}/p\\mathbb{Z}$, which forces $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ to be cyclic"
+    },
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem is typically proved by establishing that cosets partition the group, then counting. The well-ordering principle and induction on group order are used in many extensions (Cauchy's theorem, Sylow's theorems) that build on Lagrange's foundational partition argument"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Lagrange's theorem applied to $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ gives $a^{p-1} \\equiv 1$ (Fermat's Little Theorem), which provides a primality test. The infinitude of primes ensures this test applies to infinitely many moduli, and Dirichlet used it as a key tool in proving infinitely many primes in arithmetic progressions"
     }
   ],
   "relatedProofs": [
@@ -175,7 +190,10 @@
     "angle-trisection",
     "inverse-galois",
     "wilsons-theorem",
-    "quadratic-reciprocity"
+    "quadratic-reciprocity",
+    "primitive-roots",
+    "mathematical-induction",
+    "infinitude-primes"
   ],
   "references": [
     {
