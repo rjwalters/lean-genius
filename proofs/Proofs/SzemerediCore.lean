@@ -55,13 +55,17 @@ def IsRegularPartition (G : SimpleGraph V) [DecidableRel G.Adj]
     pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2)).card ≤
     eps * (parts.card * (parts.card - 1))
 
-/-- The energy of a partition: E(P) = (1/k^2) * Sigma_{i,j} d(Vi, Vj)^2.
-    Energy lies in [0,1] and increases under refinement. -/
+/-- The size-weighted energy of a partition:
+    q(P) = Σ_{i,j} (|Pᵢ|·|Pⱼ| / n²) · d(Pᵢ,Pⱼ)²
+    where n = |V|. Energy lies in [0,1] for valid partitions and is
+    monotone under refinement (splitting a part never decreases energy).
+    This is the standard definition from Komlós-Simonovits (1996). -/
 noncomputable def partitionEnergy (G : SimpleGraph V) [DecidableRel G.Adj]
     (parts : Finset (Finset V)) : ℚ :=
-  if h : parts.card = 0 then 0
-  else (1 : ℚ) / (parts.card ^ 2) *
-    (parts.product parts).sum (fun pq => (edgeDensity G pq.1 pq.2) ^ 2)
+  let n := (Fintype.card V : ℚ)
+  if n = 0 then 0
+  else (parts.product parts).sum (fun pq =>
+    (pq.1.card : ℚ) * pq.2.card / n ^ 2 * (edgeDensity G pq.1 pq.2) ^ 2)
 
 /-- Edge density is non-negative. -/
 theorem edgeDensity_nonneg (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -92,10 +96,15 @@ theorem partitionEnergy_nonneg (G : SimpleGraph V) [DecidableRel G.Adj]
     (parts : Finset (Finset V)) :
     0 ≤ partitionEnergy G parts := by
   unfold partitionEnergy
+  simp only
   split_ifs with h
   · exact le_refl 0
-  · apply mul_nonneg
-    · positivity
-    · exact Finset.sum_nonneg (fun _ _ => sq_nonneg _)
+  · apply Finset.sum_nonneg
+    intro x _
+    apply mul_nonneg
+    · apply div_nonneg
+      · exact mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+      · exact sq_nonneg _
+    · exact sq_nonneg _
 
 end Szemeredi.Core
