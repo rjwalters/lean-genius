@@ -158,6 +158,11 @@
       "targetId": "solution-of-cubic",
       "relationship": "complementary",
       "description": "Cardano's cubic formula solves cubics by radicals (S₃ is solvable), but cos(20°) satisfies the cubic 8x³-6x-1=0 yet is NOT constructible — because S₃ is solvable but not a 2-group. This is the key distinction: solvability by radicals (solvable Galois group) is strictly weaker than constructibility (2-group Galois group). Cardano's formula gives cos(20°) in terms of cube roots, confirming it is solvable by radicals, yet the Galois 2-group criterion blocks constructibility"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-03-oq-01",
+      "relationship": "extended-by",
+      "description": "Bridges the Gauss-Wantzel constructibility theorem to Mathlib's cyclotomic field infrastructure. Connects the 2-group Galois criterion proved here to the concrete setting of $\\zeta_n = e^{2\\pi i/n}$ and Chebyshev polynomials, showing how the abstract group-theoretic characterization manifests in the cyclotomic world that governs regular polygon constructibility"
     }
   ],
   "overview": {
@@ -295,7 +300,8 @@
     "euler-totient",
     "nth-root-irrational",
     "e-transcendental",
-    "solution-of-cubic"
+    "solution-of-cubic",
+    "angle-trisection-oq-02-oq-03-oq-01"
   ],
   "references": [
     {
