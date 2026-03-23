@@ -49,6 +49,21 @@ theorem apFree_subset {N : ℕ} {A B : Finset (ZMod N)} (h : B ⊆ A) (hA : APFr
     APFree B :=
   fun a d hd ha had hadd => hA a d hd (h ha) (h had) (h hadd)
 
+/-- Preimage of an AP-free set under the affine map j ↦ a + j*q is AP-free,
+    when q is not a zero divisor (multiplication by q is injective).
+    This is the key lemma for preserving AP-freeness when restricting to
+    arithmetic subprogressions in the density increment argument. -/
+theorem apFree_filter_affine {N : ℕ} {A : Finset (ZMod N)} (hA : APFree A)
+    (a q : ZMod N) (hq : ∀ x : ZMod N, x * q = 0 → x = 0) :
+    APFree (Finset.univ.filter (fun j : ZMod N => a + j * q ∈ A)) := by
+  intro x d hd hx hxd
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hx hxd ⊢
+  have hdq : d * q ≠ 0 := fun h => hd (hq d h)
+  have h2 : a + x * q + d * q ∈ A := by
+    rwa [show a + x * q + d * q = a + (x + d) * q from by ring]
+  have h3 := hA (a + x * q) (d * q) hdq hx h2
+  rwa [show a + x * q + 2 * (d * q) = a + (x + 2 * d) * q from by ring] at h3
+
 /-- The cardinality of any subset of ZMod N is at most N. -/
 theorem card_le_nat {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
     A.card ≤ N := by
@@ -985,9 +1000,24 @@ private lemma mul_L_r_eq_zero {N : ℕ} [NeZero N] (r : ZMod N) :
   have hdvd : N ∣ L * ZMod.val r := by
     obtain ⟨s, hs⟩ := hg_dvd_r
     rw [hs, show L = N / g from rfl, ← mul_assoc, Nat.div_mul_cancel hgN]
-  -- ↑L * r = ↑(L * val(r)) = 0 since N | L * val(r)
-  -- (Needs: ↑(val(r)) = r in ZMod N, standard ZMod property)
-  sorry
+  -- Step 1: ↑(L * val(r)) = 0 in ZMod N (since N | L * val(r))
+  have h0 : (↑(L * ZMod.val r) : ZMod N) = 0 :=
+    (ZMod.natCast_zmod_eq_zero_iff_dvd _ _).mpr hdvd
+  -- Step 2: ↑(L * val(r)) = ↑L * ↑(val(r))
+  rw [Nat.cast_mul] at h0
+  -- Step 3: ↑(val(r)) = r in ZMod N (round-trip via injectivity of val)
+  have hval_eq : (↑(ZMod.val r) : ZMod N) = r := by
+    have hround := ZMod.val_natCast_of_lt (ZMod.val_lt r)
+    -- hround : ZMod.val (↑(ZMod.val r) : ZMod N) = ZMod.val r
+    -- ZMod.val is injective for N > 0: ZMod (n+1) = Fin (n+1)
+    have h_inj : Function.Injective (ZMod.val (n := N)) := by
+      intro a b hab
+      cases N with
+      | zero => exact absurd rfl (NeZero.ne 0)
+      | succ n => exact Fin.ext hab
+    exact h_inj hround
+  rw [hval_eq] at h0
+  exact h0
 
 /-- ψ(r·) is constant on cosets of ⟨L⟩ where L = N/gcd(val(r),N).
     For any x in coset C_t, ψ(rx) = ψ(rt), because L·r = 0 in ZMod N. -/
