@@ -74,6 +74,12 @@
       "**Chromatic number formula:** $\\chi(KG^r(n,k)) = \\lceil (n - r(k-1))/(k-1) \\rceil$ generalizes $\\chi(KG(n,r)) = n - 2r + 2$",
       "**Petersen graph as prototype:** $KG(5,2)$ is the Petersen graph with $\\chi = 3$, the smallest non-trivial example of the Kneser conjecture",
       "**Schrijver refinement:** There exists a vertex-critical subgraph (the stable Kneser graph) achieving the same chromatic number"
+    ],
+    "prerequisites": [
+      "Graph coloring and chromatic number: the minimum number of colors needed to properly color a graph, fractional chromatic number, and basic bounds relating chromatic number to clique number and independence number",
+      "Hypergraph theory: r-uniform hypergraphs, matchings (sets of pairwise disjoint edges), and the Kneser hypergraph KG^r(n,k) whose vertices are r-subsets and edges are k-tuples of pairwise disjoint subsets",
+      "Algebraic topology in combinatorics: the Borsuk-Ulam theorem, simplicial complexes (neighborhood complex, independence complex), and the Lusternik-Schnirelmann category as tools for proving chromatic lower bounds",
+      "Extremal set theory: the Erdos-Ko-Rado theorem on maximum intersecting families of r-subsets, the relationship between intersecting families and independent sets in Kneser graphs, and binomial coefficient identities"
     ]
   },
   "sections": [
