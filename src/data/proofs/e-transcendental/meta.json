@@ -61,8 +61,10 @@
       "**Auxiliary Polynomial Template:** Hermite's construction $f(x) = x^{p-1}(x{-}1)^p \\cdots (x{-}n)^p / (p{-}1)!$ — controlling divisibility at integer points while maintaining integrality — became the blueprint for Baker's theorem (1966) on linear forms in logarithms."
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)",
-      "Mathematical analysis"
+      "Abstract algebra (algebraic vs transcendental elements, minimal polynomials over $\\mathbb{Z}$)",
+      "Real analysis (exponential function, Taylor series, integral estimates $\\int_0^n f(t)e^{-t}dt$)",
+      "Number theory (prime selection, divisibility by $(p-1)!$, $p$-adic valuation arguments)",
+      "Polynomial theory (evaluation at integer points, degree bounds, auxiliary polynomial construction)"
     ]
   },
   "crossReferences": [
@@ -98,56 +100,64 @@
       "title": "Imports and Module Documentation",
       "startLine": 1,
       "endLine": 44,
-      "summary": "Imports Mathlib's algebraic and analytic infrastructure: `Transcendental` from ring theory, `Real.exp` and exponential bounds, `Irrational` definition, and `Complex.Analytic` for the exponential function's analytic theory."
+      "summary": "Imports Mathlib's algebraic and analytic infrastructure: `Transcendental` from ring theory, `Real.exp` and exponential bounds, `Irrational` definition, and `Complex.Analytic` for the exponential function's analytic theory.",
+      "mathContext": "Wiedijk #67: $e$ is transcendental, i.e., $\\text{Transcendental}\\ \\mathbb{Z}\\ (\\exp(1))$. Hermite (1873) was first to prove this. The main theorem is axiomatized pending Lindemann-Weierstrass in Mathlib."
     },
     {
       "id": "definitions-background",
       "title": "Definitions and Background",
       "startLine": 46,
       "endLine": 66,
-      "summary": "Reviews the definition of transcendental numbers ($\\nexists P \\in R[X] \\setminus \\{0\\}: P(x) = 0$), the distinction from irrationality, and Cantor's result that most reals are transcendental. Uses `#check` to verify Mathlib provides `Transcendental` and `Real.exp 1`."
+      "summary": "Reviews the definition of transcendental numbers ($\\nexists P \\in R[X] \\setminus \\{0\\}: P(x) = 0$), the distinction from irrationality, and Cantor's result that most reals are transcendental. Uses `#check` to verify Mathlib provides `Transcendental` and `Real.exp 1`.",
+      "mathContext": "$x$ is transcendental over $R$ iff $\\nexists P \\in R[X] \\setminus \\{0\\},\\ P(x) = 0$. Equivalently, $x$ is not algebraic: $\\neg\\text{IsAlgebraic}\\ R\\ x$. Transcendental $\\implies$ irrational (since $p/q$ satisfies $qX - p = 0$), but not conversely ($\\sqrt{2}$ is irrational but algebraic)."
     },
     {
       "id": "e-properties",
       "title": "Key Properties of e from Mathlib",
       "startLine": 67,
       "endLine": 83,
-      "summary": "Establishes $e > 0$, $e > 1$, and $e < 3$ using Mathlib's `exp_pos`, `one_lt_exp_iff`, and `exp_one_lt_d9`. These bounds verify the exponential constant lies in $(1, 3)$."
+      "summary": "Establishes $e > 0$, $e > 1$, and $e < 3$ using Mathlib's `exp_pos`, `one_lt_exp_iff`, and `exp_one_lt_d9`. These bounds verify the exponential constant lies in $(1, 3)$.",
+      "mathContext": "$e = \\exp(1) \\in (1, 3)$. Verified via Mathlib: `exp_pos` gives $e > 0$, `one_lt_exp_iff` and positivity gives $e > 1$, and `exp_one_lt_d9` bounds $e < 2.7182818286$ which implies $e < 3$."
     },
     {
       "id": "hermite-proof",
       "title": "Hermite's Proof Strategy (1873)",
       "startLine": 84,
       "endLine": 128,
-      "summary": "Detailed exposition of Hermite's proof outline: (1) assume $\\sum a_i e^i = 0$, (2) construct auxiliary polynomial $f(x) = x^{p-1}\\prod(x-k)^p / (p-1)!$, (3) define key integrals $I_k = \\int_0^k f(x)e^x dx$, (4) show the sum $S = \\sum a_k I_k$ is simultaneously small and a nonzero multiple of $p$—contradiction."
+      "summary": "Detailed exposition of Hermite's proof outline: (1) assume $\\sum a_i e^i = 0$, (2) construct auxiliary polynomial $f(x) = x^{p-1}\\prod(x-k)^p / (p-1)!$, (3) define key integrals $I_k = \\int_0^k f(x)e^x dx$, (4) show the sum $S = \\sum a_k I_k$ is simultaneously small and a nonzero multiple of $p$—contradiction.",
+      "mathContext": "Hermite's auxiliary polynomial: $f(x) = \\frac{x^{p-1}(x-1)^p \\cdots (x-n)^p}{(p-1)!}$ for large prime $p$. The integral $I_k = \\int_0^k f(t)e^{k-t} dt$ satisfies: (1) $\\sum a_k I_k \\equiv a_0 \\cdot (-1)^n n!^p \\pmod{p}$ (nonzero for $p > \\max(|a_0|, n)$), and (2) $|\\sum a_k I_k| \\to 0$ as $p \\to \\infty$ (factorial denominator dominates). Contradiction."
     },
     {
       "id": "main-axioms",
       "title": "Main Theorem (Axiomatized)",
       "startLine": 130,
       "endLine": 157,
-      "summary": "Axiomatizes `Transcendental ℤ (Real.exp 1)` and the equivalent `Transcendental ℚ (Real.exp 1)`, pending formalization of the Lindemann-Weierstrass theorem in Mathlib. Notes that clearing denominators converts $\\mathbb{Q}$-algebraicity to $\\mathbb{Z}$-algebraicity."
+      "summary": "Axiomatizes `Transcendental ℤ (Real.exp 1)` and the equivalent `Transcendental ℚ (Real.exp 1)`, pending formalization of the Lindemann-Weierstrass theorem in Mathlib. Notes that clearing denominators converts $\\mathbb{Q}$-algebraicity to $\\mathbb{Z}$-algebraicity.",
+      "mathContext": "Axiom: $\\text{Transcendental}\\ \\mathbb{Z}\\ (\\exp(1))$, i.e., $\\nexists P \\in \\mathbb{Z}[X] \\setminus \\{0\\},\\ P(e) = 0$. Equivalently $\\text{Transcendental}\\ \\mathbb{Q}\\ (\\exp(1))$, since any $\\mathbb{Q}$-polynomial can be cleared to a $\\mathbb{Z}$-polynomial by multiplying by the LCM of denominators."
     },
     {
       "id": "corollaries",
       "title": "Corollaries: Irrationality and Closure Properties",
       "startLine": 158,
       "endLine": 200,
-      "summary": "Derives (via axioms) that $e$ is irrational, $e^n$ is transcendental for $n \\neq 0$, $1/e$ is transcendental, and $e+1$ is transcendental. Each follows from the closure of transcendental numbers under polynomial substitutions."
+      "summary": "Derives (via axioms) that $e$ is irrational, $e^n$ is transcendental for $n \\neq 0$, $1/e$ is transcendental, and $e+1$ is transcendental. Each follows from the closure of transcendental numbers under polynomial substitutions.",
+      "mathContext": "Corollaries: (1) $e$ irrational (transcendental $\\implies$ irrational). (2) $e^n$ transcendental for $n \\geq 1$ (Lindemann-Weierstrass: $e^\\alpha$ transcendental for algebraic $\\alpha \\neq 0$). (3) $1/e = e^{-1}$ transcendental. (4) $e + 1$ transcendental (if $e + 1$ were algebraic, then $e$ would be algebraic)."
     },
     {
       "id": "connections",
       "title": "Connections to Other Results",
       "startLine": 201,
       "endLine": 231,
-      "summary": "Surveys generalizations: Lindemann-Weierstrass (1882), Gelfond-Schneider (1934, Hilbert's 7th problem), Baker's theorem (1966), and the open Schanuel's conjecture. Notes that $e + \\pi$ and $e^e$ transcendence remain open."
+      "summary": "Surveys generalizations: Lindemann-Weierstrass (1882), Gelfond-Schneider (1934, Hilbert's 7th problem), Baker's theorem (1966), and the open Schanuel's conjecture. Notes that $e + \\pi$ and $e^e$ transcendence remain open.",
+      "mathContext": "Generalization hierarchy: Hermite ($e$ transcendental) $\\subset$ Lindemann ($e^\\alpha$ for algebraic $\\alpha \\neq 0$) $\\subset$ Gelfond-Schneider ($\\alpha^\\beta$ for algebraic $\\alpha \\neq 0,1$, irrational algebraic $\\beta$) $\\subset$ Baker (linear forms in logarithms). Schanuel's conjecture would subsume all of these."
     },
     {
       "id": "significance",
       "title": "Historical and Mathematical Significance",
       "startLine": 233,
       "endLine": 267,
-      "summary": "Discusses the revolutionary impact of Hermite's 1873 proof, its implications for constructibility and algebraic relations, and open problems including whether $e + \\pi$ is transcendental, whether $e$ is normal, and the irrationality of the Euler-Mascheroni constant $\\gamma$."
+      "summary": "Discusses the revolutionary impact of Hermite's 1873 proof, its implications for constructibility and algebraic relations, and open problems including whether $e + \\pi$ is transcendental, whether $e$ is normal, and the irrationality of the Euler-Mascheroni constant $\\gamma$.",
+      "mathContext": "Open problems: Is $e + \\pi$ transcendental? Is $e \\cdot \\pi$? (At least one must be transcendental, but we don't know which.) Is $e^e$ transcendental? Is $e$ normal (each digit sequence equally frequent in every base)? The continued fraction $e = [2; 1, 2, 1, 1, 4, 1, 1, 6, \\ldots]$ has the striking pattern $[2; 1, 2k, 1]_{k=1}^\\infty$."
     }
   ],
   "conclusion": {
