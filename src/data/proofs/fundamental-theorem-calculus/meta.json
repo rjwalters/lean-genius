@@ -120,12 +120,54 @@
       "targetId": "euler-identity",
       "relationship": "related",
       "description": "Euler's formula e^(ix) = cos(x) + i·sin(x) is proved via Taylor series of exp, which are defined using the derivatives that FTC relates to integrals"
+    },
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "foundational",
+      "description": "IVT is used in the proof of FTC Part I: the antiderivative $F(x) = \\int_a^x f(t)\\,dt$ is continuous by construction, and IVT guarantees that continuous functions on intervals attain intermediate values — a key property used in the proof that $F'(x) = f(x)$ for continuous $f$"
+    },
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "related",
+      "description": "MVT is the key tool in proving FTC Part II: $F(b) - F(a) = \\int_a^b F'(x)\\,dx$ uses $F(x_{i+1}) - F(x_i) = F'(c_i)(x_{i+1} - x_i)$ on each partition interval. The MVT converts a difference of function values into an integral of the derivative"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "FTC connects to the Pythagorean theorem through arc length: $L = \\int_a^b \\sqrt{1 + (f'(x))^2}\\,dx$ where $\\sqrt{1 + (f')^2}$ is the Pythagorean theorem applied infinitesimally to the right triangle with legs $dx$ and $f'(x)\\,dx$"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "related",
+      "description": "The divergence of the harmonic series $\\sum 1/n$ can be proved via FTC by comparison with $\\int_1^N 1/x\\,dx = \\ln N \\to \\infty$. FTC provides the integral test that connects series convergence to improper integrals"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "The integral Cauchy-Schwarz inequality $(\\int fg)^2 \\leq (\\int f^2)(\\int g^2)$ uses the Lebesgue integral, which is the modern generalization of the Riemann integral whose foundations FTC establishes. FTC bridges pointwise differentiation with integral computation"
+    },
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "related",
+      "description": "Repeated application of FTC gives the Taylor series: $f(x) = \\sum_{k=0}^n f^{(k)}(a)(x-a)^k/k! + R_n(x)$ where $R_n = \\int_a^x f^{(n+1)}(t)(x-t)^n/n!\\,dt$. Each integration step uses FTC, and induction on $n$ builds the full Taylor expansion"
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "The 1D Brouwer fixed point theorem follows directly from IVT, which is closely tied to FTC. For $f:[0,1] \\to [0,1]$ continuous, $g(x) = f(x) - x$ satisfies $g(0) \\geq 0 \\geq g(1)$, so IVT gives $g(c) = 0$, establishing the existence of a fixed point"
     }
   ],
   "relatedProofs": [
     "area-of-circle",
     "basel-problem",
-    "euler-identity"
+    "euler-identity",
+    "intermediate-value-theorem",
+    "mean-value-theorem",
+    "pythagorean-theorem",
+    "harmonic-divergence",
+    "cauchy-schwarz-integral",
+    "mathematical-induction",
+    "brouwer-fixed-point"
   ],
   "references": [
     {
