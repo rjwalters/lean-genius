@@ -64,12 +64,12 @@ private lemma foldl_lcm_pos (init : ℕ) (hinit : 0 < init)
   | cons a t ih =>
     simp only [List.foldl_cons]
     apply ih
-    · have ha : 0 < a := hl a (List.mem_cons_self _ _)
+    · have ha : 0 < a := hl a (by simp)
       exact Nat.pos_of_ne_zero (by
         intro h
         have := Nat.lcm_eq_zero_iff.mp h
         omega)
-    · intro x hx; exact hl x (List.mem_cons_of_mem _ hx)
+    · intro x hx; exact hl x (by simp [hx])
 
 /-- The LCM period is always positive. -/
 lemma systemLCM_pos (sys : CongruenceSystem) : 0 < systemLCM sys := by
@@ -137,9 +137,13 @@ axiom max_density_coprime_case (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0
     (hcop : ∀ m ∈ moduli, ∀ n ∈ moduli, m ≠ n → Nat.Coprime m n) :
     maxCoverageDensity moduli hpos = moduli.sum (fun n => (1 : ℝ) / n)
 
-/-- The main open part of Problem #278: what is the maximum density? -/
-axiom erdos_278_open_question (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n) :
-    maxCoverageDensity moduli hpos ≤ 1
+/-- The maximum coverage density is at most 1 (follows from density_le_one). -/
+theorem erdos_278_density_le_one (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n) :
+    maxCoverageDensity moduli hpos ≤ 1 := by
+  unfold maxCoverageDensity
+  apply csSup_le
+  · exact ⟨_, ⟨fun _ => 0, rfl⟩⟩
+  · rintro d ⟨r, rfl⟩; exact density_le_one _
 
 -- ## Single Modulus Case
 

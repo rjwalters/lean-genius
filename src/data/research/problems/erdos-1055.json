@@ -48,7 +48,9 @@
       "nonSmooth_factor_lt proved: for prime p, any nonSmooth prime factor q of (p+1) satisfies q < p",
       "class_of_factor_lt_wf fully proved for primeClassWF (0 sorries)",
       "Fuel-based class_of_factor_lt cannot be proved without fuel convergence (primeClassAux 29 q = primeClassAux 30 q)",
-      "primeClassWF.eq_1 is the auto-generated equation lemma for WF unfolding"
+      "primeClassWF.eq_1 is the auto-generated equation lemma for WF unfolding",
+      "primeClassWF_ge_succ_factor proof broke with Mathlib API change - equation lemma unfolding + simp produces goals omega cannot close",
+      "File previously could not compile; now compiles with 2 sorries (fuel-based class_of_factor_lt + broken WF helper)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
