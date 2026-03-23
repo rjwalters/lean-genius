@@ -176,6 +176,83 @@
       "What is the behavior of the A+B analogue?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "The infinite analogue of #1109: if every pairwise sum a+b (a,b ∈ A, a ≠ b) is squarefree, how fast must A grow? A polylogarithmic upper bound f(N) ≤ (log N)^{O(1)} for the finite problem would imply polynomial lower bounds for infinite sequences in #1103."
+    },
+    {
+      "targetId": "erdos-1108",
+      "relationship": "related",
+      "description": "Adjacent Erdős problem (#1108) on factorial sums and perfect powers, part of the same series on multiplicative constraints on sumsets and structured sequences."
+    },
+    {
+      "targetId": "erdos-1110",
+      "relationship": "related",
+      "description": "Adjacent Erdős problem (#1110) on representability by sums of p^k q^l, part of the same series exploring how multiplicative structure (power-free, k-th power) interacts with additive combinatorics."
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "The squarefree density 6/π² = 1/ζ(2) connects directly to the Basel problem ∑ 1/k² = π²/6: the probability that a random integer is squarefree equals the reciprocal of ζ(2), linking squarefree combinatorics to the Basel sum."
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate guarantees a prime in every interval [n, 2n], providing the density information about prime distribution that underpins sieve estimates for squarefree numbers used in the Erdős-Sárközy and Konyagin bounds."
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The prime number theorem governs the asymptotic density of primes and, via Euler's product formula, determines that the density of squarefree integers is 6/π². The sieve-theoretic estimates for f(N) rely on uniform prime distribution results that follow from the PNT."
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1103",
+    "erdos-1108",
+    "erdos-1110",
+    "basel-problem",
+    "bertrands-postulate",
+    "prime-number-theorem"
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Sárközy, András",
+      "title": "On a problem of Straus",
+      "year": "1987",
+      "venue": "Disorder in Physical Systems, Oxford University Press, pp. 55–66",
+      "note": "The original 1987 paper introducing the squarefree sumset problem. Erdős and Sárközy prove the initial bounds log N ≪ f(N) ≪ N^{3/4} log N and conjecture polylogarithmic growth."
+    },
+    {
+      "authors": "Konyagin, Sergei V.",
+      "title": "On the number of solutions of an equation with squarefree values",
+      "year": "2004",
+      "venue": "Proceedings of the Steklov Institute of Mathematics, vol. 245, pp. 163–173",
+      "note": "Current best bounds: (log log N)(log N)² ≪ f(N) ≪ N^{11/15+o(1)}. Konyagin's upper bound exponent 11/15 ≈ 0.733 improves on the original Erdős-Sárközy bound of 3/4."
+    },
+    {
+      "authors": "Sárközy, András",
+      "title": "On sets of integers, the elements of which have no k-th power common divisor",
+      "year": "1992",
+      "venue": "Acta Mathematica Hungarica, vol. 60, no. 1–2, pp. 127–144",
+      "note": "Generalizes the squarefree sumset problem to k-power-free sumsets A+B, and extends the methods from the Erdős-Sárközy 1987 paper to the A+B (asymmetric) setting."
+    },
+    {
+      "authors": "Gyarmati, Katalin",
+      "title": "On a problem of Diophantine approximation",
+      "year": "2001",
+      "venue": "Acta Arithmetica, vol. 97, no. 1, pp. 53–65",
+      "note": "Provides an alternative proof of the logarithmic lower bound for f(N) with new results for A+B squarefree sumsets, extending the Erdős-Sárközy approach."
+    },
+    {
+      "authors": "Tenenbaum, Gérald",
+      "title": "Introduction to Analytic and Probabilistic Number Theory",
+      "year": "1995",
+      "venue": "Cambridge University Press, Cambridge Studies in Advanced Mathematics 46",
+      "note": "Standard reference for the analytic number theory background used throughout: squarefree density, sieve methods, Euler products, and the distribution of k-free integers. Section I.4 covers squarefree numbers in detail."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

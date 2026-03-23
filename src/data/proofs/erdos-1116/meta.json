@@ -152,6 +152,83 @@
       "What constraints on the deficiency set {a : δ(a) > 0} are compatible with extreme value distribution?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-517",
+      "relationship": "related",
+      "description": "Erdős #517 concerns lacunary entire functions (Fabry gaps) and whether they assume every value infinitely often. Erdős #1116 uses lacunary series as the primary construction tool to build functions with extreme value distribution — directly applying the structural properties that #517 investigates."
+    },
+    {
+      "targetId": "erdos-1117",
+      "relationship": "related",
+      "description": "Erdős #1117 studies maximum-modulus points on circles |z|=r, another fine-grained measure of how extreme value distribution can be. Both problems probe the limits of Nevanlinna theory and were partly resolved by Gol'dberg and collaborators in the same 1968–1978 period."
+    },
+    {
+      "targetId": "erdos-1118",
+      "relationship": "related",
+      "description": "Erdős #1118 characterizes entire functions by the measure of their superlevel sets, also solved by Camera and Gol'dberg (1977–1979). The two problems together show how Gol'dberg's school systematically explored extremal behavior in entire function theory during the same era."
+    },
+    {
+      "targetId": "erdos-1115",
+      "relationship": "related",
+      "description": "Erdős #1115 on path length for entire functions was disproved by Gol'dberg–Eremenko (1979), one year after Gol'dberg's construction for #1116. Both problems appear in Hayman's survey [Ha74] and involve the same circle of ideas about how entire functions can behave pathologically near infinity."
+    },
+    {
+      "targetId": "erdos-516",
+      "relationship": "foundational",
+      "description": "Erdős #516 on gap series and the minimum modulus problem (Fabry gaps, solved by Fuchs 1963) establishes that lacunary power series have tightly controlled minimum modulus. The Weierstrass products and lacunary series used to construct the Gol'dberg–Toppila example in #1116 rely on this same structural theory."
+    },
+    {
+      "targetId": "erdos-514",
+      "relationship": "related",
+      "description": "Erdős #514 on growth of entire functions along paths (Boas) studies how fast f(z) can grow along curves to infinity. The oscillation between n(r,a) and n(r,b) in #1116 is intimately linked to growth-rate behavior along radii, making both problems part of the same broader study of asymptotic behavior of entire functions."
+    }
+  ],
+  "relatedProofs": [
+    "erdos-517",
+    "erdos-1117",
+    "erdos-1118",
+    "erdos-1115",
+    "erdos-516",
+    "erdos-514"
+  ],
+  "references": [
+    {
+      "authors": "Gol'dberg, A. A.",
+      "title": "Counting functions of sequences of a-points for entire functions",
+      "year": "1978",
+      "venue": "Sibirsk. Mat. Zh. 19 (1978), no. 1, 28–36 (Russian); English transl. Siberian Math. J. 19 (1978), 19–25",
+      "note": "Constructs an entire function for which lim sup n(r,a)/n(r,b) = ∞ for every pair a ≠ b, resolving Erdős Problem #1116 affirmatively. The construction uses lacunary Weierstrass products with carefully spaced zeros."
+    },
+    {
+      "authors": "Toppila, S.",
+      "title": "On the counting function for the a-values of a meromorphic function",
+      "year": "1976",
+      "venue": "Ann. Acad. Sci. Fenn. Ser. A I Math. 2 (1976), 565–572",
+      "note": "Independent construction of a meromorphic (and entire) function with extreme value distribution, published two years before Gol'dberg's paper. The Toppila construction provides a different route to the same conclusion via direct series manipulation."
+    },
+    {
+      "authors": "Hayman, W. K.",
+      "title": "Research Problems in Function Theory",
+      "year": "1967",
+      "venue": "Athlone Press, London",
+      "note": "The original source for the problem (Problem 1.25 in the 1967 edition, later updated in [Ha74]). Hayman's problem collection drove a generation of research in classical function theory, and Problem #1116 appears under the heading of value distribution."
+    },
+    {
+      "authors": "Hayman, W. K.",
+      "title": "Research Problems in Function Theory: New Problems",
+      "year": "1974",
+      "venue": "Symposium on Complex Analysis, Canterbury 1973, London Math. Soc. Lecture Note Ser. 12, Cambridge Univ. Press, pp. 155–180",
+      "note": "The 1974 update (cited as [Ha74] in the Erdős problems source) that records the status of Problem 1.25 (Erdős #1116) before Gol'dberg's and Toppila's solutions appeared. Attributes the problem to Erdős."
+    },
+    {
+      "authors": "Nevanlinna, Rolf",
+      "title": "Zur Theorie der meromorphen Funktionen",
+      "year": "1925",
+      "venue": "Acta Math. 46 (1925), 1–99",
+      "note": "Foundational paper establishing the two fundamental theorems of Nevanlinna theory, including the deficiency relation ∑δ(a,f) ≤ 2. The contrast between the integrated counting function N(r,a) (controlled by Nevanlinna's theory) and the pointwise n(r,a) (shown by #1116 to be wild) is the central mathematical surprise of Erdős #1116."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.Complex.Basic",

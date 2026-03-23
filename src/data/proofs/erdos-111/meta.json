@@ -173,6 +173,101 @@
       "Is there a constructive characterization of graphs with small h_G(n)?"
     ]
   },
+  "crossReferences": [
+    {
+      "slug": "erdos-74",
+      "title": "Erdős Problem #74: Almost Bipartite Graphs with High Chromatic Number",
+      "relationship": "Direct companion problem: #74 asks whether infinite-chromatic graphs can have every n-vertex subgraph made bipartite by deleting ≤ f(n) edges, which is essentially the same quantity h_G(n) studied in #111 but for countably-infinite chromatic number rather than χ = ℵ₁."
+    },
+    {
+      "slug": "erdos-75",
+      "title": "Erdős Problem #75: Uncountable Chromatic Number and Large Independent Sets",
+      "relationship": "Companion problem on ℵ₁ chromatic graphs: #75 asks about large independent sets in finite subgraphs of χ = ℵ₁ graphs, connecting the local independence structure to the same EHS (Erdős-Hajnal-Szemerédi 1982) framework used in #111."
+    },
+    {
+      "slug": "erdos-57",
+      "title": "Erdős Problem #57: Odd Cycles in Graphs with Infinite Chromatic Number",
+      "relationship": "Odd cycles are the core obstruction to bipartiteness; #57 characterizes their lengths when χ(G) is infinite, directly underpinning the odd-cycle structure exploited in the EHS lower bound for h_G(n) in #111."
+    },
+    {
+      "slug": "erdos-594",
+      "title": "Erdős Problem #594: Graphs with Chromatic Number ≥ ℵ₁ and Odd Cycles",
+      "relationship": "Proves that every graph with χ ≥ ℵ₁ contains all sufficiently large odd cycles (Erdős-Hajnal-Shelah 1974), which is the structural backbone for the vertex-disjoint odd cycle result that gives the h_G(n) ≫ n lower bound in #111."
+    },
+    {
+      "slug": "erdos-750",
+      "title": "Erdős Problem #750: Almost Bipartite Graphs with Infinite Chromatic Number",
+      "relationship": "Directly adjacent problem: asks whether infinite-chromatic graphs can have subgraphs with independent sets of size ≥ m/2 − f(m), a bipartiteness measure closely related to h_G(n). The EHS 1982 paper that bounds h_G(n) in #111 also settles the linear-f(m) case of #750."
+    },
+    {
+      "slug": "erdos-110",
+      "title": "Erdős Problem #110: Chromatic Number Growth in Uncountable Graphs",
+      "relationship": "Neighboring problem on the behavior of chromatic number in uncountable graphs; shares the set-theoretic framework (ℵ₁ cardinals, infinite combinatorics) and the Erdős-Hajnal research program that produced the results cited in #111."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "slug": "erdos-58",
+      "title": "Erdős Problem #58: Chromatic Number vs Odd Cycle Lengths",
+      "connection": "Establishes that the number of distinct odd cycle lengths controls χ(G) (Gyárfás 1992), complementing #111's use of odd cycles as the measure of deviation from bipartiteness."
+    },
+    {
+      "slug": "erdos-62",
+      "title": "Erdős Problem #62: Common Subgraphs of Graphs with Chromatic Number ℵ₁",
+      "connection": "Investigates shared subgraph structure among χ = ℵ₁ graphs; the common-subgraph questions and the edge-deletion questions in #111 both arise from asking what local finite structure is forced by large chromatic number."
+    },
+    {
+      "slug": "ramseys-theorem",
+      "title": "Ramsey's Theorem",
+      "connection": "Ramsey-theoretic reasoning underlies the EHS construction: the n^(3/2) upper bound graph is built using probabilistic/Ramsey methods, and the lower bound uses the infinite Ramsey property of ℵ₁ graphs."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["P. Erdős", "A. Hajnal", "E. Szemerédi"],
+      "title": "On almost bipartite large chromatic graphs",
+      "venue": "Annals of Discrete Mathematics",
+      "volume": "12",
+      "year": 1982,
+      "pages": "117–123",
+      "note": "The primary source: proves h_G(n) ≫ n for χ = ℵ₁ (vertex-disjoint odd cycles) and constructs the n^(3/2) upper-bound graph."
+    },
+    {
+      "authors": ["P. Erdős", "A. Hajnal", "S. Shelah"],
+      "title": "On some general properties of chromatic number",
+      "venue": "Topics in Topology (Proc. Colloq., Keszthely, 1972), Colloq. Math. Soc. János Bolyai",
+      "volume": "8",
+      "year": 1974,
+      "pages": "243–255",
+      "note": "Proves that every graph with chromatic number ≥ ℵ₁ contains all sufficiently large odd cycles, the key tool for the lower bound in Problem #111."
+    },
+    {
+      "authors": ["P. Erdős", "A. Hajnal"],
+      "title": "Chromatic number of finite and infinite graphs and hypergraphs",
+      "venue": "Discrete Mathematics",
+      "volume": "53",
+      "year": 1985,
+      "pages": "281–285",
+      "note": "Survey by Erdős and Hajnal on chromatic numbers of infinite graphs, placing Problem #111 in the broader context of uncountably chromatic graph theory."
+    },
+    {
+      "authors": ["A. Gyárfás"],
+      "title": "Problems from the world surrounding perfect graphs",
+      "venue": "Zastosowania Matematyki (Applicationes Mathematicae)",
+      "volume": "19",
+      "year": 1987,
+      "pages": "413–441",
+      "note": "Contains Gyárfás's work on chromatic number, odd cycles, and bipartite substructure, closely related to the odd-cycle machinery in Problem #111."
+    },
+    {
+      "authors": ["R. L. Graham", "B. L. Rothschild", "J. H. Spencer"],
+      "title": "Ramsey Theory",
+      "venue": "Wiley-Interscience Series in Discrete Mathematics and Optimization",
+      "year": 1990,
+      "edition": "2nd",
+      "note": "Standard reference for the Ramsey-theoretic background underpinning the probabilistic construction in the EHS upper-bound graph."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",
