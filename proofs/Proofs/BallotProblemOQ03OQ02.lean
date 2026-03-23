@@ -23,7 +23,7 @@ where e(A,B) = C(dx + dy, dx) is the number of lattice paths from A to B.
 The identity permutation contributes ∏ e(Aᵢ,Bᵢ). Non-identity permutations
 cancel via a sign-reversing involution (Gessel-Viennot involution).
 
-## Status (0 axioms, 1 sorry)
+## Status (0 axioms, 2 sorries)
 - [x] Path tuple and non-intersecting definitions (closed-interval formulation)
 - [x] Path weight matrix using Matrix.det
 - [x] Permutation path tuples and signed counts
@@ -40,7 +40,9 @@ cancel via a sign-reversing involution (Gessel-Viennot involution).
 - [x] Crossing lemma: discrete IVT for lattice paths (PROVED)
 - [x] NonIntersecting definition fixed: closed intervals + final column
 - [x] colEntry monotonicity and bound lemmas (proved)
-- [ ] GV involution cancellation (1 sorry: involution bookkeeping)
+- [x] GV cancellation structure: split = NI part + cancellable part (proved)
+- [ ] NI counting bijection (card_nonCancellable_eq_niTupleCount)
+- [ ] GV sign-reversing involution on cancellable tuples (cancellable_sum_eq_zero)
 
 ## References
 - Lindström (1973): "On the Vector Representations of Induced Matroids"
@@ -111,15 +113,13 @@ def colEntry (l : LPath) : ℕ → ℕ
 /-- northBeforeEast is non-decreasing in k. -/
 private lemma northBeforeEast_mono (l : LPath) (k : ℕ) :
     northBeforeEast l k ≤ northBeforeEast l (k + 1) := by
-  induction l with
+  induction l generalizing k with
   | nil => simp [northBeforeEast]
   | cons b xs ih =>
     cases b with
     | false =>
       cases k with
-      | zero =>
-        simp [northBeforeEast]
-        exact Nat.zero_le _
+      | zero => simp [northBeforeEast]
       | succ k' =>
         simp only [northBeforeEast]
         exact ih k'
@@ -130,13 +130,20 @@ private lemma northBeforeEast_mono (l : LPath) (k : ℕ) :
 /-- colEntry is non-decreasing: colEntry l x ≤ colEntry l (x + 1). -/
 lemma colEntry_mono (l : LPath) (x : ℕ) : colEntry l x ≤ colEntry l (x + 1) := by
   cases x with
-  | zero => simp [colEntry]; exact Nat.zero_le _
+  | zero => simp [colEntry]
   | succ k => exact northBeforeEast_mono l k
+
+/-- countP complement sum: countP false + countP true = length. -/
+private lemma bool_countP_sum' (l : List Bool) :
+    l.countP (· = false) + l.countP (· = true) = l.length := by
+  induction l with
+  | nil => simp
+  | cons b xs ih => cases b <;> simp_all [List.countP_cons, List.length_cons] <;> omega
 
 /-- northBeforeEast l k ≤ total number of North (true) steps in l. -/
 private lemma northBeforeEast_le_countP_true (l : LPath) (k : ℕ) :
     northBeforeEast l k ≤ l.countP (· = true) := by
-  induction l with
+  induction l generalizing k with
   | nil => simp [northBeforeEast]
   | cons b xs ih =>
     cases b with
@@ -144,19 +151,24 @@ private lemma northBeforeEast_le_countP_true (l : LPath) (k : ℕ) :
       cases k with
       | zero => simp [northBeforeEast]
       | succ k' =>
-        simp only [northBeforeEast, List.countP_cons, decide_false, Bool.false_eq_true,
-          ite_false, Nat.zero_add]
-        exact ih k'
+        simp only [northBeforeEast]
+        have h1 := ih k'
+        have h2 : (false :: xs).countP (· = true) = xs.countP (· = true) := by
+          simp [List.countP_cons]
+        omega
     | true =>
-      simp only [northBeforeEast, List.countP_cons, decide_true, ite_true]
-      exact Nat.add_le_add_left (ih k) 1
+      simp only [northBeforeEast]
+      have h1 := ih k
+      have h2 : (true :: xs).countP (· = true) = xs.countP (· = true) + 1 := by
+        simp [List.countP_cons]
+      omega
 
 /-- For PathMN m n, the total number of North (true) steps equals n. -/
 private lemma pathMN_countP_true {m n : ℕ} (P : PathMN m n) :
     P.val.countP (· = true) = n := by
   have hlen := P.property.1
   have heast := P.property.2
-  have hsum := bool_countP_sum P.val
+  have hsum := bool_countP_sum' P.val
   omega
 
 /-- For PathMN m n, colEntry P.val k ≤ n for any column k. -/
@@ -642,15 +654,15 @@ private lemma crossing_column_exists {m : ℕ} (p q : ℕ → ℕ)
     by_contra h
     push_neg at h
     have hmem : S.max' hS + 1 ∈ S := by
-      simp only [S, Finset.mem_filter, Finset.mem_range]
-      constructor
-      · by_contra hge
+      have h_range : S.max' hS + 1 < m := by
+        by_contra hge
         push_neg at hge
-        have : S.max' hS + 1 = m := by
-          have := Finset.mem_range.mp ((Finset.filter_subset _ _) (Finset.max'_mem S hS))
-          omega
-        omega
-      · exact h
+        have hmax_lt := Finset.mem_range.mp
+          ((Finset.filter_subset _ _) (Finset.max'_mem S hS))
+        have heq : S.max' hS + 1 = m := by omega
+        rw [heq] at h
+        exact absurd hfin (not_le.mpr h)
+      exact Finset.mem_filter.mpr ⟨Finset.mem_range.mpr h_range, h⟩
     exact absurd (Finset.le_max' S _ hmem) (by omega)
 
 /-- **Crossing lemma for lattice paths (discrete IVT).**
@@ -797,23 +809,11 @@ theorem nonid_perm_paths_cross {r : ℕ} (cfg : LGVConfig r)
 -- PART 7g: GV Involution Cancellation (Structured Proof)
 -- ============================================================
 
-/-- **Gessel-Viennot involution cancellation** (the combinatorial heart).
-
-    The signed sum of permutation path tuple cardinalities equals
-    the number of non-intersecting identity path tuples.
-
-    **Proof structure** (3 components):
+/-  GV involution cancellation proof structure:
     1. `sum_tagged_eq_sum_perm`: reformulate as sum over tagged sigma type
     2. `nonid_perm_paths_cross`: non-identity tuples always have crossings
     3. Sign-reversing involution on tagged tuples (tail-swap at first crossing)
-
-    The involution maps (σ, P) ↦ (σ ∘ (i j), P') where (i,j) is the
-    first crossing pair and P' is the tail-swapped tuple. Fixed points
-    are exactly non-intersecting identity tuples.
-
-    Components 1-2 are proved above. Component 3 (the involution
-    bookkeeping) requires defining "first crossing point" and proving
-    the tail-swap preserves path validity. -/
+    Components 1-2 are proved. Component 3 is in `cancellable_sum_eq_zero`. -/
 /-- **Helper**: A tagged tuple is "non-cancellable" iff it is an NI identity tuple.
     All other tagged tuples (σ ≠ 1, or σ = 1 with crossings) are paired and cancelled
     by the GV involution. -/
@@ -833,13 +833,32 @@ private theorem nonCancellable_weight {r : ℕ} {cfg : LGVConfig r}
   obtain ⟨h1, _⟩ := ht
   simp [taggedWeight, h1, Equiv.Perm.sign_one]
 
-/-- **Helper**: The number of non-cancellable tagged tuples equals niTupleCount. -/
+/-- **Helper**: The number of non-cancellable tagged tuples equals niTupleCount.
+
+    Both count the same thing: non-intersecting identity path tuples.
+    - LHS: tagged tuples ⟨σ, paths⟩ with σ = 1 and paths NI
+    - RHS: path tuples with NI property
+    The bijection is trivial since PermPathTuple cfg 1 = PathTuple cfg. -/
 private theorem card_nonCancellable_eq_niTupleCount {r : ℕ} (cfg : LGVConfig r) :
     ((Finset.univ.filter (fun t : TaggedPathTuple cfg => isNonCancellable t)).card : ℤ) =
     ↑(niTupleCount cfg) := by
-  -- Both count NI identity tuples, just with different packaging.
-  -- A non-cancellable tagged tuple is ⟨1, paths⟩ where paths is NI.
-  -- niTupleCount counts {paths : PathTuple // IsNonIntersecting paths}.
+  -- Counting bijection between two equivalent finite types.
+  -- {⟨1, p⟩ : Σ σ, PermPathTuple cfg σ | p NI} ≃ {p : PathTuple cfg // p NI}
+  sorry
+
+/-- The signed sum over cancellable (non-NI) tagged tuples is zero,
+    by the GV sign-reversing involution.
+    This is the combinatorial engine of the LGV lemma. -/
+private theorem cancellable_sum_eq_zero {r : ℕ} (cfg : LGVConfig r)
+    (hwf : cfg.wellFormed) :
+    (Finset.sum (Finset.univ.filter
+      (fun t : TaggedPathTuple cfg => ¬isNonCancellable t)) taggedWeight) = 0 := by
+  -- The GV involution: find first crossing among all path pairs,
+  -- swap tails there. This pairs each cancellable tuple with one of
+  -- opposite sign (gessel_viennot_transposition_sign).
+  -- The involution is self-inverse because the swap doesn't change
+  -- paths before the crossing point, so the same crossing is found again.
+  -- Key inputs: nonid_perm_paths_cross, swapTailsAt, lattice_paths_must_cross.
   sorry
 
 theorem gv_involution_cancellation {r : ℕ} (cfg : LGVConfig r)
@@ -847,20 +866,24 @@ theorem gv_involution_cancellation {r : ℕ} (cfg : LGVConfig r)
     ∑ σ : Equiv.Perm (Fin r),
       (↑(Equiv.Perm.sign σ) : ℤ) * ↑(Fintype.card (PermPathTuple cfg σ)) =
     ↑(niTupleCount cfg) := by
-  -- Step 1: Reformulate as sum over tagged tuples
   rw [← sum_tagged_eq_sum_perm]
-  -- Step 2: Split sum into non-cancellable (NI identity) and cancellable parts
+  -- Split: (∑ NI) + (∑ cancel) = ∑ all
   have hsplit := Finset.sum_filter_add_sum_filter_not Finset.univ
     (fun t : TaggedPathTuple cfg => isNonCancellable t) taggedWeight
-  -- Step 3: The cancellable part sums to 0 via the GV sign-reversing involution.
-  -- This requires constructing the involution (tail-swap at first crossing)
-  -- and verifying involutivity + sign reversal on non-fixed-point tagged tuples.
-  -- The key inputs are:
-  --   • nonid_perm_paths_cross hwf: non-id σ always has crossing paths
-  --   • swapTailsAt: tail swap preserves path length
-  --   • gessel_viennot_transposition_sign: sign changes under swap
-  -- Step 4: The NI part sums to niTupleCount (each NI identity tuple has weight 1).
-  sorry
+  -- Cancellable part = 0
+  have hcancel := cancellable_sum_eq_zero cfg hwf
+  -- NI part: each has weight 1, count = niTupleCount
+  have hni : Finset.sum (Finset.univ.filter
+      (fun t : TaggedPathTuple cfg => isNonCancellable t)) taggedWeight =
+      ↑(niTupleCount cfg) := by
+    have hw : ∀ t, t ∈ Finset.univ.filter
+        (fun t : TaggedPathTuple cfg => isNonCancellable t) →
+        taggedWeight t = (1 : ℤ) :=
+      fun t ht => nonCancellable_weight t ((Finset.mem_filter.mp ht).2)
+    rw [Finset.sum_congr rfl hw, Finset.sum_const, nsmul_eq_mul, mul_one]
+    exact card_nonCancellable_eq_niTupleCount cfg
+  -- Combine
+  linarith [hsplit.symm]
 
 /-- **The r×r LGV Lemma** (Lindström 1973, Gessel-Viennot 1985):
 
