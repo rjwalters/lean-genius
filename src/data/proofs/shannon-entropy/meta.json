@@ -7,7 +7,7 @@
     "author": "Claude Shannon (1948), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Entropy_(information_theory)",
     "date": "1948",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/ShannonEntropy.lean",
     "tags": [
       "information-theory",
@@ -15,8 +15,8 @@
       "probability",
       "advanced"
     ],
-    "badge": "formalized",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Analysis.SpecialFunctions.Log.Basic",
@@ -103,7 +103,7 @@
       "title": "Log-Sum Inequality",
       "startLine": 42,
       "endLine": 48,
-      "summary": "The log-sum inequality: sum a_i log(a_i/b_i) >= (sum a_i) log((sum a_i)/(sum b_i)). A generalization of the Gibbs inequality. Sorry'd — proof via convexity of x·log(x).",
+      "summary": "The log-sum inequality: sum a_i log(a_i/b_i) >= (sum a_i) log((sum a_i)/(sum b_i)). Proved by rescaling the reference measure to make bounds sum to zero, then applying kl_term_bound pointwise.",
       "mathContext": "$\\sum_i a_i \\ln \\frac{a_i}{b_i} \\geq \\left(\\sum_i a_i\\right) \\ln \\frac{\\sum_i a_i}{\\sum_i b_i}$"
     },
     {
@@ -167,9 +167,9 @@
     ],
     "opens": [],
     "namespace": "InformationTheory",
-    "lineCount": 410,
+    "lineCount": 459,
     "axiomCount": 0,
-    "theoremCount": 15,
+    "theoremCount": 16,
     "definitionCount": 4
   },
   "references": [
