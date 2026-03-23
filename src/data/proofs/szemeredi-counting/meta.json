@@ -69,7 +69,7 @@
       "Triangle counting and subgraph enumeration",
       "Roth's theorem on 3-term arithmetic progressions"
     ],
-    "lineCount": 735
+    "lineCount": 1001
   },
   "overview": {
     "historicalContext": "The counting lemma and triangle removal lemma are the key applications of the Szemeredi Regularity Lemma. The counting lemma, implicit in Szemeredi's 1975 work, states that epsilon-regular triples contain approximately the expected number of triangles (as if edges were random). The triangle removal lemma, proved by Ruzsa and Szemeredi in 1978, says that a graph with few triangles can be made triangle-free by removing few edges.\n\nThe profound connection between the triangle removal lemma and additive combinatorics was recognized by Ruzsa and Szemeredi: encoding a 3-AP-free set as a tripartite graph, the removal lemma implies Roth's theorem. This connection was later generalized by Solymosi and by Fox to give new proofs of Szemeredi's theorem via hypergraph removal.\n\nFox (2011) proved the best known quantitative bounds for the triangle removal lemma, showing that the dependence of gamma on delta can be made a tower of bounded height (rather than the tower of height polynomial in 1/delta coming from a direct application of regularity). The optimal bounds remain an important open problem.",
@@ -119,10 +119,26 @@
     {
       "id": "graph-removal",
       "title": "Part III: General Graph Removal Lemma",
-      "startLine": 153,
-      "endLine": 168,
-      "summary": "States the general graph removal lemma for arbitrary subgraph $H$ on $h \\geq 3$ vertices. Currently a stub proving only $\\exists \\gamma > 0$ without the full removal property. Closes namespace.",
+      "startLine": 496,
+      "endLine": 509,
+      "summary": "States the general graph removal lemma for arbitrary subgraph $H$ on $h \\geq 3$ vertices. Currently a stub proving only $\\exists \\gamma > 0$ without the full removal property.",
       "mathContext": "$\\forall H$ on $h$ vertices, $\\forall \\delta > 0, \\exists \\gamma > 0$: $\\text{copies}(H, G) \\leq \\gamma n^h \\Rightarrow$ removable to $H$-free with $\\leq \\delta n^2$ edges."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Triangle Count Monotonicity",
+      "startLine": 511,
+      "endLine": 536,
+      "summary": "**Proved.** `triangleCount_mono`: triangle count is monotone in all three vertex sets ($A_1 \\subseteq A_2, B_1 \\subseteq B_2, C_1 \\subseteq C_2 \\Rightarrow T(A_1,B_1,C_1) \\leq T(A_2,B_2,C_2)$). Corollary `triangleCount_le_total`: triangles in subsets bounded by total. Both proved via `Finset.card_le_card` on filtered products.",
+      "mathContext": "Monotonicity: $A_1 \\subseteq A_2, B_1 \\subseteq B_2, C_1 \\subseteq C_2 \\Rightarrow T(A_1,B_1,C_1) \\leq T(A_2,B_2,C_2)$."
+    },
+    {
+      "id": "quantitative-removal",
+      "title": "Quantitative Triangle Removal via Regularity",
+      "startLine": 537,
+      "endLine": 1001,
+      "summary": "The main quantitative result: `triangle_removal_quantitative` constructs explicit $\\gamma(\\delta)$ using the Regularity Lemma. Applies `regularity_with_finpartition` to get a Finpartition, removes edges from irregular and sparse pairs, then uses `counting_lemma` to show any remaining triangle yields many triangles — contradicting the $\\gamma n^3$ bound. Uses part-size lower bounds from equitability.",
+      "mathContext": "$\\forall \\delta > 0, \\exists \\gamma = \\gamma(\\delta, M(\\varepsilon))$: $T(G) \\leq \\gamma n^3$ implies $G$ can be made triangle-free by removing $\\leq \\delta n^2$ edges. The proof is constructive: $\\gamma$ depends on the regularity bound $M(\\varepsilon)$ and $\\varepsilon = \\delta/6$."
     }
   ],
   "crossReferences": [
@@ -158,20 +174,25 @@
     ]
   },
   "relatedProofs": [
+    "szemeredi-core",
     "szemeredi-regularity",
+    "szemeredi-full",
+    "szemeredi-theorem",
     "roth-theorem-k3",
-    "szemeredi-full"
+    "ramseys-theorem"
   ],
   "leanFile": {
     "imports": [
       "Mathlib",
+      "Proofs.SzemerediCore",
       "Proofs.SzemerediRegularity"
     ],
     "opens": [
-      "Classical"
+      "Classical",
+      "Szemeredi.Core"
     ],
     "namespace": "Szemeredi.Counting",
-    "lineCount": 735,
+    "lineCount": 1001,
     "axiomCount": 0,
     "theoremCount": 13,
     "definitionCount": 7
