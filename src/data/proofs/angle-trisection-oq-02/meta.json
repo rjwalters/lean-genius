@@ -59,7 +59,7 @@
       "constructible_implies_degree_dvd_pow2: Galois 2-group criterion implies the degree criterion (OQ-01)"
     ],
     "dateAdded": "2026-02-24",
-    "axiomCount": 2,
+    "axiomCount": 1,
     "prerequisites": [
       "Galois theory (Galois groups, Galois correspondence)",
       "p-groups and their characterization via order",
@@ -286,11 +286,11 @@
     }
   ],
   "conclusion": {
-    "summary": "The Galois group characterization of constructibility answers OQ-02 definitively: α is constructible iff Gal(minpoly(ℚ,α)) is a 2-group. 15 proved theorems with only 2 axioms remaining (the main Wantzel biconditional and cos(20°) Galois group order). Includes complete proofs of |Gal(x²-2/ℚ)| = 2 via divisibility squeeze and galois_2group_implies_degree_pow2 via the tower law.",
+    "summary": "The Galois group characterization of constructibility answers OQ-02 definitively: α is constructible iff Gal(minpoly(ℚ,α)) is a 2-group. 21 proved theorems/lemmas with only 1 axiom remaining (the Wantzel-Galois biconditional). The cos(20°) Galois group order was previously axiomatized but is now proved in AngleTrisectionCos20Gal.lean. Includes complete proofs of |Gal(x²-2/ℚ)| = 2 via divisibility squeeze and galois_2group_implies_degree_pow2 via the tower law.",
     "implications": "This characterization has broad consequences:\n\n**For classical impossibility proofs**: Angle trisection (cos(60°) = 1/2, but cos(20°) requires solving 8x³-6x-1=0 with Galois group S₃), cube doubling (∛2 requires Gal(x³-2) ≅ S₃), and regular polygon construction (Gauss-Wantzel: n-gon constructible iff φ(n) is a power of 2).\n\n**For field theory**: The characterization connects compass-and-straightedge geometry to group theory via the Galois correspondence, one of the deepest connections in 19th century mathematics.\n\n**For Lean/Mathlib**: The main gap is the Galois correspondence formalization. Once `Mathlib.FieldTheory.Galois` supports the full Galois correspondence for infinite families of extensions, `wantzel_galois_characterization` could be proved.",
     "openQuestions": [
       "Can wantzel_galois_characterization be proved from Mathlib's existing Galois theory infrastructure?",
-      "Can cos20_gal_order (|Gal(8x³-6x-1/ℚ)| = 3) be proved? The discriminant 72² is a perfect square, so this follows from the criterion for cubic Galois groups.",
+      "[RESOLVED] cos20_gal_order (|Gal(8x³-6x-1/ℚ)| = 3) is now proved in AngleTrisectionCos20Gal.lean via Eisenstein criterion and splitting field analysis, eliminating the former axiom.",
       "Can the Gauss-Wantzel theorem (regular n-gon constructible ↔ φ(n) = 2^k) be formalized in Lean 4?",
       "Can we formalize the connection between the Fermat prime conjecture and constructible regular polygons? Since only 5 Fermat primes are known (3, 5, 17, 257, 65537) and the conjecture that there are finitely many remains open, a formalization could establish the conditional: if there are only finitely many Fermat primes, then only finitely many odd-sided regular polygons are constructible"
     ]
@@ -306,7 +306,7 @@
     "opens": ["Polynomial", "IntermediateField", "FiniteDimensional"],
     "namespace": null,
     "lineCount": 298,
-    "axiomCount": 2,
+    "axiomCount": 1,
     "theoremCount": 15,
     "definitionCount": 1
   },

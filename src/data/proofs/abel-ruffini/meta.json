@@ -2,7 +2,7 @@
   "id": "abel-ruffini",
   "title": "Abel-Ruffini Theorem",
   "slug": "abel-ruffini",
-  "description": "Galois's profound theorem that there is no general algebraic solution to polynomial equations of degree five or higher, connecting field theory to group theory through the unsolvability of the symmetric group S₅. Wiedijk 100 theorem #16 — a landmark impossibility result formalized in Lean 4 via Mathlib's Galois theory infrastructure.",
+  "description": "The Abel-Ruffini theorem: there is no general algebraic solution in radicals to polynomial equations of degree five or higher. First proved by Abel (1824), building on Ruffini's incomplete 1799 attempt, and later recast by Galois (1832) via the profound connection between field theory and group theory — the symmetric group S₅ is not solvable because A₅ is simple. Wiedijk 100 theorem #16, formalized in Lean 4 via Mathlib's Galois theory infrastructure.",
   "meta": {
     "author": "Niels Henrik Abel (1824), Evariste Galois (1832)",
     "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/FieldTheory/AbelRuffini.html",

@@ -218,12 +218,28 @@
       "mathContext": "$\\frac{\\log(\\sum w_i z_i^r)}{r} = \\frac{f(r) - f(0)}{r - 0} \\to f'(0) = \\sum w_i \\log z_i$. Then $M_r = \\exp(f(r)/r) \\to \\exp(\\sum w_i \\log z_i) = \\text{GM}$."
     },
     {
-      "id": "identities-and-chain",
-      "title": "Supporting Identities and HM ≤ GM ≤ AM",
-      "startLine": 202,
+      "id": "supporting-identities",
+      "title": "Supporting Identities: GM via exp/log and M_r Representation",
+      "startLine": 173,
+      "endLine": 214,
+      "summary": "geomMean_eq_exp_sum_log: GM = exp(∑ wᵢ log zᵢ) via Real.log_prod and Real.log_rpow. powerMean_one_eq_arithMean: M₁ = AM via rpow_one. powerMean_eq_exp_log: M_r = exp((1/r)·log(∑ wᵢzᵢ^r)) for r ≠ 0 via rpow_def_of_pos.",
+      "mathContext": "$\\text{GM} = \\prod z_i^{w_i} = \\exp(\\sum w_i \\log z_i)$ via `log_prod` + `log_rpow`. The exp/log representation $M_r = \\exp(f(r)/r)$ connects the power mean to the slope limit, making the main theorem's proof a composition of continuity and the derivative result."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: lim_{r→0} M_r = GM",
+      "startLine": 216,
+      "endLine": 247,
+      "summary": "tendsto_powerMean_zero: the headline result proving Filter.Tendsto (fun r => (∑ wᵢzᵢ^r)^(1/r)) (nhdsWithin 0 {0}ᶜ) (nhds (∏ zᵢ^wᵢ)). Proof: rewrite both sides to exp form, compose the slope limit with Real.continuous_exp.",
+      "mathContext": "$\\lim_{r \\to 0} M_r = \\lim_{r \\to 0} e^{f(r)/r} = e^{\\sum w_i \\log z_i} = \\prod z_i^{w_i} = \\text{GM}$. The proof is a 4-step composition: (1) get the slope limit, (2) rewrite GM to exp form, (3) rewrite M_r to exp form via congr, (4) apply continuity of exp."
+    },
+    {
+      "id": "hm-gm-am-chain",
+      "title": "HM ≤ GM ≤ AM and Summary",
+      "startLine": 249,
       "endLine": 316,
-      "summary": "geomMean_eq_exp_sum_log: GM = exp(∑ wᵢ log zᵢ). powerMean_one_eq_arithMean: M₁ = AM. powerMean_eq_exp_log: M_r exp form. powerMean_neg1_le_geomMean_le_arithMean: HM ≤ GM ≤ AM.",
-      "mathContext": "$\\text{GM} = \\prod z_i^{w_i} = \\exp(\\sum w_i \\log z_i)$ via `log_prod` + `log_rpow`. The chain $\\text{HM} \\leq \\text{GM} \\leq \\text{AM}$ follows from AM-GM on inverse values."
+      "summary": "powerMean_neg1_le_geomMean_le_arithMean: HM ≤ GM (via AM-GM on inverses with the inversion trick) and GM ≤ AM (direct from Mathlib's Real.geom_mean_le_arith_mean_weighted). Summary section inventories all 10 proved results with the linear dependency graph.",
+      "mathContext": "The inversion trick: apply AM-GM to $z^{-1}$, getting $\\text{GM}(z^{-1}) \\leq \\text{AM}(z^{-1})$, i.e., $\\text{GM}(z)^{-1} \\leq \\sum w_i/z_i = \\text{HM}(z)^{-1}$, hence $\\text{HM} \\leq \\text{GM}$. Combined with GM ≤ AM, we get the complete chain $M_{-1} \\leq M_0 \\leq M_1$."
     }
   ],
   "conclusion": {
@@ -232,7 +248,8 @@
     "openQuestions": [
       "Generalize to M_r ≤ M_s for all r < 0 < s (crossing zero case — handled by combining OQ03 with this limit)",
       "Add this to Mathlib as a proper contribution filling the existing TODO in MeanInequalitiesPow",
-      "Extend to p-power means on measure spaces (continuous index case)"
+      "Extend to p-power means on measure spaces (continuous index case)",
+      "Formalize the extreme limits $\\lim_{r \\to -\\infty} M_r = \\min(z)$ and $\\lim_{r \\to +\\infty} M_r = \\max(z)$, completing the full power mean interpolation from minimum through HM, GM, AM to maximum — these limits use different techniques (dominance of extremal terms) rather than the derivative approach used here"
     ]
   },
   "leanFile": {
