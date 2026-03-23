@@ -136,6 +136,10 @@
       {
         "id": "bezout-identity",
         "relationship": "Root formalization: Bézout's identity au + bv = gcd(a,b), the foundation this entire chain builds upon"
+      },
+      {
+        "id": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
+        "relationship": "Child entry resolving OQ-01: removes the noncomputable annotation by replacing classical choice with computable integer division"
       }
     ]
   },
@@ -304,6 +308,16 @@
       "targetId": "bezout-identity-oq-03",
       "relationship": "sibling",
       "description": "Sibling open question from the Bézout identity chain, exploring different extensions of the core identity — together these entries map the space of constructive number-theoretic algorithms derivable from the extended Euclidean algorithm"
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Child entry that resolves the first open question: removes the noncomputable annotation from constructive_div by replacing classical choice (hdvd.choose) with computable integer division, making the full algorithm executable"
+    },
+    {
+      "targetId": "bezout-identity-oq-04",
+      "relationship": "sibling",
+      "description": "Complete parametric solution set of linear Diophantine equations ax + by = c: solutions form a 1D lattice {(x₀ + (b/d)t, y₀ - (a/d)t) : t ∈ ℤ}. Extends the single-solution Bézout computation here to the full solution family, using the same extended GCD infrastructure"
     }
   ],
   "relatedProofs": [
@@ -320,7 +334,9 @@
     "euler-totient",
     "wilsons-theorem",
     "quadratic-reciprocity",
-    "primitive-roots"
+    "primitive-roots",
+    "bezout-identity-oq-02-oq-02-oq-01-oq-01",
+    "bezout-identity-oq-04"
   ],
   "leanFile": {
     "imports": [

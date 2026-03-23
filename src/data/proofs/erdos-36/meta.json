@@ -264,6 +264,11 @@
       "targetId": "erdos-37",
       "relationship": "related",
       "description": "Neighboring Erdős problem on essential components and lacunary sets in additive number theory. Both #36 and #37 probe the structural constraints that additive combinatorics imposes on subsets of integers"
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Szemerédi's theorem on arithmetic progressions in dense sets and the regularity lemma underpin potential approaches to the minimum overlap problem. The open question of whether regularity methods can provide an alternative lower bound connects directly to this machinery — both problems concern the unavoidable additive structure in dense subsets of integers"
     }
   ],
   "relatedProofs": [
@@ -274,6 +279,7 @@
     "erdos-37",
     "fourier-series",
     "erdos-1",
-    "roth-theorem-k3"
+    "roth-theorem-k3",
+    "szemeredi-theorem"
   ]
 }

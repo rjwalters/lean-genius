@@ -128,8 +128,8 @@
     "content": "Proves `prime_101` and `prime_211` using Lean's `decide` tactic, which compiles the primality test to native code and evaluates it at kernel level. This produces a proof term — stronger than `#eval` — confirming the computation is correct. These primality proofs are prerequisites for the summary theorem.",
     "mathContext": "$101$ and $211$ are prime. Lean's `decide` performs trial division up to $\\sqrt{n}$ at compile time, producing a certified proof.",
     "significance": "supporting",
-    "relatedConcepts": ["decide-tactic", "certified-computation", "primality-testing"],
-    "prerequisites": ["nat-prime", "decidable-prime"]
+    "relatedConcepts": ["decide tactic", "certified computation", "primality testing", "trial division"],
+    "prerequisites": ["Nat.Prime", "Decidable instance for primality"]
   },
   {
     "id": "ann-1059-witnesses",
