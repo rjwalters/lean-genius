@@ -104,7 +104,7 @@
       "id": "transitivity",
       "title": "Transitivity and Bound Chain (Proved)",
       "startLine": 427,
-      "endLine": 477,
+      "endLine": 454,
       "summary": "Proves transitivity of translation congruence (composing translations via $v + w$) and assembles the complete bound chain $3 \\leq \\text{minPieceCount}(r,s) \\leq 10^{50}$ using case analysis with `omega` over $\\{0,1,2\\}$."
     }
   ],
@@ -138,16 +138,16 @@
   },
   "crossReferences": [
     {
-      "proofId": "erdos-1124",
-      "relationship": "Parent formalization of Laczkovich's circle-squaring theorem; this OQ-01 investigates the minimum piece count"
+      "relationship": "Parent formalization of Laczkovich's circle-squaring theorem; this OQ-01 investigates the minimum piece count",
+      "targetId": "erdos-1124"
     },
     {
-      "proofId": "area-of-circle",
-      "relationship": "Foundational formalization of the area of a circle (pi*r^2), the equal-area condition central to this equidecomposition problem"
+      "relationship": "Foundational formalization of the area of a circle (pi*r^2), the equal-area condition central to this equidecomposition problem",
+      "targetId": "area-of-circle"
     },
     {
-      "proofId": "lebesgue-measure",
-      "relationship": "Lebesgue measure theory underpins the measurability distinctions (non-measurable vs Borel pieces) in the upper bound progression"
+      "relationship": "Lebesgue measure theory underpins the measurability distinctions (non-measurable vs Borel pieces) in the upper bound progression",
+      "targetId": "lebesgue-measure"
     }
   ],
   "references": [
@@ -191,5 +191,10 @@
     "axiomCount": 5,
     "theoremCount": 22,
     "definitionCount": 8
-  }
+  },
+  "relatedProofs": [
+    "erdos-1124",
+    "area-of-circle",
+    "lebesgue-measure"
+  ]
 }

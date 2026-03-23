@@ -49,70 +49,70 @@
       "title": "Fractional Part",
       "summary": "$\\{x\\} = x - \\lfloor x \\rfloor$ fractional part definition and basic properties",
       "startLine": 24,
-      "endLine": 37
+      "endLine": 1
     },
     {
       "id": "weighted-sum",
       "title": "The Weighted Sum f(α, n)",
       "summary": "$S(\\alpha, n) = \\sum_{k=1}^{n}(1/2 - \\{\\alpha k\\})$ and $f(\\alpha, n) = S(\\alpha, n)/\\log n$",
       "startLine": 39,
-      "endLine": 54
+      "endLine": 1
     },
     {
       "id": "distribution-functions",
       "title": "Distribution Functions",
       "summary": "$g : \\mathbb{R} \\to [0,1]$ non-decreasing with $g(-\\infty) = 0$, $g(+\\infty) = 1$",
       "startLine": 56,
-      "endLine": 68
+      "endLine": 1
     },
     {
       "id": "asymptotic-distribution",
       "title": "Asymptotic Distribution",
       "summary": "Level set $L(n,c) = \\{\\alpha : f(\\alpha,n) \\le c\\}$ and $\\mu(L(n,c)) \\to g(c)$ convergence",
       "startLine": 70,
-      "endLine": 88
+      "endLine": 1
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture (OPEN)",
       "summary": "OPEN: $\\exists\\, g,\\; \\mu(\\{\\alpha : f(\\alpha,n) \\le c\\}) \\to g(c)$ as $n \\to \\infty$",
       "startLine": 90,
-      "endLine": 101
+      "endLine": 1
     },
     {
       "id": "kesten-theorem",
       "title": "Kesten's Theorem (1960)",
       "summary": "Kesten (1960): $f(\\alpha, \\beta, n)$ has Cauchy limit $g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + \\frac{1}{2}$",
       "startLine": 103,
-      "endLine": 133
+      "endLine": 1
     },
     {
       "id": "relationship",
       "title": "Relationship Between Problems",
       "summary": "$f(\\alpha, n) = f(\\alpha, 0, n)$: one-parameter case is $\\beta = 0$ specialization",
       "startLine": 135,
-      "endLine": 145
+      "endLine": 1
     },
     {
       "id": "difficulty",
       "title": "Why the Problem is Difficult",
       "summary": "Fixing $\\beta = 0$ destroys ergodic independence; Weyl equidistribution and oscillation for fixed $\\alpha$",
       "startLine": 147,
-      "endLine": 166
+      "endLine": 1
     },
     {
       "id": "partial-results",
       "title": "Partial Results",
       "summary": "$|f(\\alpha, n)| \\le C(\\alpha)$ boundedness and $|S(\\alpha, n)| \\le C \\log n$ continued fraction bound",
       "startLine": 168,
-      "endLine": 182
+      "endLine": 1
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Full problem formalization with 0 sorries; main conjecture OPEN (mathematical gap, not formalization gap)",
       "startLine": 184,
-      "endLine": 208
+      "endLine": 1
     }
   ],
   "conclusion": {

@@ -83,7 +83,7 @@
       "id": "conjectures",
       "title": "The Erdős Problem and Generalization",
       "startLine": 61,
-      "endLine": 87,
+      "endLine": 86,
       "summary": "States ErdosProblem279 for general k ≥ 3 (existence of a covering residue choice), ErdosProblem279_k3 for the specific k = 3 case, the GeneralizedCovering definition using a choice function on an arbitrary set A, and ErdosProblem279_generalized asserting that any set with prime-like density and log-log divergence admits a covering."
     }
   ],
@@ -154,5 +154,11 @@
       "citation": "Guy, R.K., Unsolved Problems in Number Theory, 3rd ed., Springer (2004), Section F13: Covering congruences.",
       "type": "book"
     }
+  ],
+  "relatedProofs": [
+    "infinitude-primes",
+    "bertrands-postulate",
+    "bounded-prime-gaps",
+    "quadratic-reciprocity"
   ]
 }

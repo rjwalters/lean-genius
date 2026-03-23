@@ -130,14 +130,14 @@
   },
   "crossReferences": [
     {
-      "proofId": "dissection-of-cubes",
       "relationship": "extends",
-      "description": "Base impossibility result for cube dissection (Wiedijk #82). This OQ-02 extends with the Dehn invariant approach and dimensional contrast."
+      "description": "Base impossibility result for cube dissection (Wiedijk #82). This OQ-02 extends with the Dehn invariant approach and dimensional contrast.",
+      "targetId": "dissection-of-cubes"
     },
     {
-      "proofId": "dissection-of-cubes-oq-01",
       "relationship": "sibling",
-      "description": "Studies the minimum collision number in cube dissections, a quantitative refinement of the dissection impossibility."
+      "description": "Studies the minimum collision number in cube dissections, a quantitative refinement of the dissection impossibility.",
+      "targetId": "dissection-of-cubes-oq-01"
     }
   ],
   "leanFile": {

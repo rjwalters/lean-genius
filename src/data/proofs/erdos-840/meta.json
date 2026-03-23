@@ -49,56 +49,56 @@
       "id": "header",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 38,
+      "endLine": 1,
       "summary": "Header documenting Erdős Problem #840 on quasi-Sidon subsets, posed by Erdős and Freud (1991). Imports Mathlib modules for Finsets, natural arithmetic, and combinatorics."
     },
     {
       "id": "definitions",
       "title": "Sumsets and Sidon Sets",
       "startLine": 39,
-      "endLine": 57,
+      "endLine": 1,
       "summary": "Defines the interval set $\\{1, \\ldots, N\\}$, the sumset $A + A = \\{a + b : a, b \\in A\\}$, and Sidon sets where all pairwise sums $a_1 + a_2 = a_3 + a_4$ imply $\\{a_1, a_2\\} = \\{a_3, a_4\\}$. Sidon sets achieve $|A+A| = \\binom{|A|}{2} + |A|$."
     },
     {
       "id": "quasi-sidon",
       "title": "Quasi-Sidon Definition",
       "startLine": 59,
-      "endLine": 78,
+      "endLine": 1,
       "summary": "Defines little-$o$ notation for integer sequences and the quasi-Sidon condition: $|A_n + A_n| = (1 + o(1)) \\binom{|A_n|}{2}$ as $|A_n| \\to \\infty$. This allows a vanishing fraction of sum collisions."
     },
     {
       "id": "f-function",
       "title": "The Function $f(N)$",
       "startLine": 80,
-      "endLine": 91,
+      "endLine": 1,
       "summary": "Axiomatizes $f(N)$ as the maximum quasi-Sidon subset size in $\\{1, \\ldots, N\\}$, with witness and optimality axioms. The growth rate $f(N) = \\Theta(\\sqrt{N})$ is known."
     },
     {
       "id": "lower-bound",
       "title": "Erdős–Freud Lower Bound",
       "startLine": 93,
-      "endLine": 118,
+      "endLine": 1,
       "summary": "Axiomatizes the lower bound $f(N) \\geq (2/\\sqrt{3} + o(1))\\sqrt{N} \\approx 1.155\\sqrt{N}$. The construction takes a Sidon set $B \\subseteq [1, N/3]$ and forms $A = B \\cup \\{N - b : b \\in B\\}$."
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "startLine": 120,
-      "endLine": 138,
+      "endLine": 1,
       "summary": "Axiomatizes the original Erdős–Freud upper bound $f(N) \\leq 2\\sqrt{N}$ and Pikhurko's improvement $f(N) \\leq c_P \\sqrt{N}$ where $c_P = (1/4 + 1/(\\pi+2)^2)^{-1/2} \\approx 1.863$."
     },
     {
       "id": "open-question",
       "title": "The Open Question",
       "startLine": 140,
-      "endLine": 152,
+      "endLine": 1,
       "summary": "States the main open question: determine the exact asymptotic constant $c$ with $f(N) \\sim c\\sqrt{N}$. Currently $2/\\sqrt{3} \\leq c \\leq 1.863$."
     },
     {
       "id": "related",
       "title": "Related Results and Gap Analysis",
       "startLine": 154,
-      "endLine": 195,
+      "endLine": 1,
       "summary": "Axiomatizes Cilleruelo's result for difference sets ($f_{\\text{diff}}(N) \\sim \\sqrt{N}$), the classical Sidon bound $\\sqrt{N} + O(N^{1/4})$, and computes the gap ratio $(c_P - 2/\\sqrt{3}) / c_P \\approx 38\\%$."
     }
   ],

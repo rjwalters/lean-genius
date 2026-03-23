@@ -51,77 +51,77 @@
       "title": "Problem Documentation and Imports",
       "summary": "Documents Erdős Problem #1027 on the abundance of good sets for bounded $n$-uniform families. Imports Mathlib modules for `Finset`, `Fintype`, `Powerset`, and `Real`.",
       "startLine": 1,
-      "endLine": 21
+      "endLine": 1
     },
     {
       "id": "set-families",
       "title": "Set Family Infrastructure",
       "summary": "Defines `SetFamily α` as `Finset (Finset α)`, `familyUnion F` as $\\bigcup \\mathcal{F}$ via `Finset.sup`, and `isNUniform F n` requiring $|A| = n$ for all $A \\in \\mathcal{F}$. These parametrize the $n$-uniform hypergraph.",
       "startLine": 24,
-      "endLine": 41
+      "endLine": 1
     },
     {
       "id": "intersecting",
       "title": "Good Sets: Intersecting All, Containing None",
       "summary": "Defines `intersectsAll B F` ($B \\cap A \\ne \\emptyset$ for all $A$), `containsNone B F` ($A \\not\\subseteq B$ for all $A$), `isGoodSet` (both conditions), and `goodSets F` (all good $B \\subseteq X$). A good set corresponds to the 'true' class of a proper 2-coloring.",
       "startLine": 43,
-      "endLine": 64
+      "endLine": 1
     },
     {
       "id": "property-b",
       "title": "Property B and 2-Colorability",
       "summary": "Defines `hasPropertyB` ($\\exists$ good set), `is2Colorable` ($\\exists$ proper 2-coloring), and proves `propertyB_iff_2colorable`: a good set $B$ defines the coloring $f(x) = (x \\in B)$.",
       "startLine": 66,
-      "endLine": 85
+      "endLine": 1
     },
     {
       "id": "main-question",
       "title": "The Main Conjecture: Exponential Abundance",
       "summary": "Defines `goodSetCount` via `Finset.filter` on the powerset. States `erdos_1027_conjecture`: for $c > 0$, $\\exists \\delta > 0, N$ such that every large enough bounded $n$-uniform family has $\\ge \\delta \\cdot 2^{|X|}$ good sets.",
       "startLine": 87,
-      "endLine": 104
+      "endLine": 1
     },
     {
       "id": "solution",
       "title": "Koishi Chan's Theorem",
       "summary": "Axiomatizes `erdos_1027_solution` (the affirmative answer) and derives `erdos_1027_solved`: a $\\delta(c)$-fraction of all subsets of $X$ are good for bounded families.",
       "startLine": 106,
-      "endLine": 123
+      "endLine": 1
     },
     {
       "id": "problem-901",
       "title": "Connection to Problem #901",
       "summary": "Links to Erdős Problem #901: `problem_901_connection` states property B $\\iff$ 2-colorability universally. Problem #1027 is a quantitative supersaturation of #901.",
       "startLine": 125,
-      "endLine": 139
+      "endLine": 1
     },
     {
       "id": "existence",
       "title": "Existence and Amplification",
       "summary": "Axiomatizes `propertyB_for_bounded` (one good set exists) and proves `single_implies_many`: from one good set, local perturbations produce exponentially many. This amplification is the core structural insight.",
       "startLine": 141,
-      "endLine": 160
+      "endLine": 1
     },
     {
       "id": "probabilistic",
       "title": "Probabilistic Intuition",
       "summary": "Defines `probIntersects n` $= 1 - 2^{-n}$, `probNotContains n` $= 1 - 2^{-n}$, and `expectedGoodSets`. Proves `expected_good_positive`: the expected count is positive for large $n$, giving $\\mathbb{E} \\approx e^{-2c} \\cdot 2^{|X|}$.",
       "startLine": 162,
-      "endLine": 188
+      "endLine": 1
     },
     {
       "id": "density",
       "title": "Density of Good Sets",
       "summary": "Defines `goodSetDensity` $= |\\text{good}| / 2^{|X|}$ and axiomatizes `goodSetDensity_lower`: density $\\ge \\delta(c) > 0$ for bounded families. The strongest form of the result.",
       "startLine": 190,
-      "endLine": 207
+      "endLine": 1
     },
     {
       "id": "special-cases",
       "title": "Special Cases and Counting",
       "summary": "Verifies base cases: empty family ($2^{|\\alpha|}$ good sets), singleton family ($\\ge 2^{n-1}$), and an inclusion-exclusion lower bound $|\\text{good}| \\ge \\frac{1}{4} \\cdot 2^{|X|} - |\\mathcal{F}| \\cdot 2^{|X|-1}$.",
       "startLine": 209,
-      "endLine": 235
+      "endLine": 1
     }
   ],
   "conclusion": {
@@ -166,7 +166,8 @@
     "erdos-901",
     "prob-method-lovasz-local",
     "prob-method-expectation",
-    "prob-method-alteration"
+    "prob-method-alteration",
+    "prob-method-applications"
   ],
   "references": [
     {

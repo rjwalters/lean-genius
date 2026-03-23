@@ -123,7 +123,7 @@
       "id": "status",
       "title": "Part VIII: Problem Status",
       "startLine": 399,
-      "endLine": 453,
+      "endLine": 452,
       "summary": "Documents resolution timeline (1930s-1984), summarizes with hilbert_15_statement, and #check verifies all major exports."
     }
   ],
@@ -139,16 +139,16 @@
   },
   "crossReferences": [
     {
-      "proofId": "hilbert-16",
-      "relationship": "Adjacent Hilbert problem — both involve the topology and geometry of real algebraic varieties"
+      "relationship": "Adjacent Hilbert problem — both involve the topology and geometry of real algebraic varieties",
+      "targetId": "hilbert-16"
     },
     {
-      "proofId": "hilbert-17",
-      "relationship": "Fellow Hilbert problem in algebraic geometry — Problem 17 concerns real polynomials while Problem 15 concerns complex intersection theory"
+      "relationship": "Fellow Hilbert problem in algebraic geometry — Problem 17 concerns real polynomials while Problem 15 concerns complex intersection theory",
+      "targetId": "hilbert-17"
     },
     {
-      "proofId": "fundamental-theorem-algebra",
-      "relationship": "Bézout's theorem, which underpins the four lines proof, relies on algebraic closure (FTA) to ensure intersection points exist"
+      "relationship": "Bézout's theorem, which underpins the four lines proof, relies on algebraic closure (FTA) to ensure intersection points exist",
+      "targetId": "fundamental-theorem-algebra"
     }
   ],
   "leanFile": {
@@ -177,7 +177,10 @@
   "relatedProofs": [
     "",
     "",
-    ""
+    "",
+    "hilbert-16",
+    "hilbert-17",
+    "fundamental-theorem-algebra"
   ],
   "references": [
     {

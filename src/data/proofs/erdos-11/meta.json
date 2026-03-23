@@ -129,7 +129,7 @@
       "title": "Density Result",
       "summary": "Axiomatizes Erdős's proof that the set of odd $n$ satisfying the conjecture has natural density 1, using `Filter.Tendsto` to express the limiting density.",
       "startLine": 110,
-      "endLine": 118
+      "endLine": 117
     }
   ],
   "conclusion": {
@@ -144,24 +144,24 @@
   },
   "crossReferences": [
     {
-      "proofId": "infinitude-primes",
       "relationship": "foundation",
-      "description": "Euclid's infinitude of primes is a prerequisite; the Wieferich prime connection requires understanding prime distribution"
+      "description": "Euclid's infinitude of primes is a prerequisite; the Wieferich prime connection requires understanding prime distribution",
+      "targetId": "infinitude-primes"
     },
     {
-      "proofId": "prime-reciprocal-divergence",
       "relationship": "related",
-      "description": "The divergence of $\\sum 1/p$ relates to squarefree density: the density of squarefree numbers is $\\prod_p (1 - 1/p^2) = 6/\\pi^2$"
+      "description": "The divergence of $\\sum 1/p$ relates to squarefree density: the density of squarefree numbers is $\\prod_p (1 - 1/p^2) = 6/\\pi^2$",
+      "targetId": "prime-reciprocal-divergence"
     },
     {
-      "proofId": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate ensures primes in $(n, 2n]$; Erdős gave elementary proofs of both this and the density result for Problem #11"
+      "description": "Bertrand's postulate ensures primes in $(n, 2n]$; Erdős gave elementary proofs of both this and the density result for Problem #11",
+      "targetId": "bertrands-postulate"
     },
     {
-      "proofId": "erdos-1",
       "relationship": "sibling",
-      "description": "Another Erdős problem formalization; Problem #1 concerns infinite Sidon sets, also connecting combinatorics with number theory"
+      "description": "Another Erdős problem formalization; Problem #1 concerns infinite Sidon sets, also connecting combinatorics with number theory",
+      "targetId": "erdos-1"
     }
   ],
   "leanFile": {
@@ -182,6 +182,10 @@
     "",
     "",
     "",
-    ""
+    "",
+    "infinitude-primes",
+    "prime-reciprocal-divergence",
+    "bertrands-postulate",
+    "erdos-1"
   ]
 }

@@ -114,7 +114,7 @@
       "id": "density-comparison",
       "title": "Part 7: Density Comparison",
       "startLine": 380,
-      "endLine": 431,
+      "endLine": 430,
       "summary": "Axiomatizes hexagonal_gt_fcc and fcc_gt_e8, then proves density_decreases_with_dimension: δ₂D > δ₃D > δ₈D. Exports section verifies all major results."
     }
   ],
@@ -130,16 +130,16 @@
   },
   "crossReferences": [
     {
-      "proofId": "hilbert-17",
-      "relationship": "Fellow Hilbert problem — both are fundamental questions about geometric/algebraic structure that required centuries to resolve"
+      "relationship": "Fellow Hilbert problem — both are fundamental questions about geometric/algebraic structure that required centuries to resolve",
+      "targetId": "hilbert-17"
     },
     {
-      "proofId": "hilbert-15",
-      "relationship": "Fellow Hilbert problem — Problem 15 involves counting geometric configurations while Problem 18 involves optimizing geometric arrangements"
+      "relationship": "Fellow Hilbert problem — Problem 15 involves counting geometric configurations while Problem 18 involves optimizing geometric arrangements",
+      "targetId": "hilbert-15"
     },
     {
-      "proofId": "fundamental-theorem-algebra",
-      "relationship": "The sphere packing problem connects to algebraic structures (lattices, root systems) whose theory builds on fundamental algebraic closure results"
+      "relationship": "The sphere packing problem connects to algebraic structures (lattices, root systems) whose theory builds on fundamental algebraic closure results",
+      "targetId": "fundamental-theorem-algebra"
     }
   ],
   "leanFile": {
@@ -160,7 +160,10 @@
   "relatedProofs": [
     "",
     "",
-    ""
+    "",
+    "hilbert-17",
+    "hilbert-15",
+    "fundamental-theorem-algebra"
   ],
   "references": [
     {

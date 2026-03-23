@@ -103,14 +103,14 @@
       "title": "Known Bounds",
       "summary": "Four key bounds axiomatized: trivial D(b) ≥ b, prime lower bound D(p) ≫ p log p, Bleicher-Erdős D(b) ≪ b(log b)², Yokota D(b) ≪ b(log b)(log log b)⁴(log log log b)², and Liu-Sawhney D(b) ≪ b(log b)(log log b)³. Plus the conjecture formalization and solution (sorry for asymptotic comparison).",
       "startLine": 119,
-      "endLine": 189
+      "endLine": 186
     },
     {
       "id": "greedy",
       "title": "The Greedy Algorithm",
       "summary": "Implements greedyStep (ceiling division + remainder computation), axiomatizes termination, and demonstrates suboptimality via the 2/9 = 1/5 + 1/45 vs 1/6 + 1/18 example.",
       "startLine": 191,
-      "endLine": 228
+      "endLine": 186
     }
   ],
   "conclusion": {

@@ -179,7 +179,7 @@
       "id": "algebra-tower",
       "title": "Section VII: Algebra Tower Reduction",
       "startLine": 166,
-      "endLine": 239,
+      "endLine": 232,
       "summary": "For towers $K \\subseteq L \\subseteq A$: integrality lifts, $\\mu_L(x) | \\text{map}(\\mu_K(x))$, and $\\deg(\\mu_L(x)) \\le \\deg(\\mu_K(x))$. Equality holds when the mapped polynomial stays irreducible (1 sorry remaining)",
       "mathContext": "In the tower $K \\subset L \\subset A$, the minimal polynomial over $L$ divides the base change of the one over $K$: more polynomials are available over $L$, so the degree can only decrease. Equality $\\mu_L = \\text{map}(\\mu_K)$ holds iff $\\mu_K$ stays irreducible over $L$."
     }

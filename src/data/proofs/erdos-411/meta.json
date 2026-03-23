@@ -142,7 +142,7 @@
       "id": "structural-properties",
       "title": "Structural Properties",
       "startLine": 85,
-      "endLine": 109,
+      "endLine": 108,
       "summary": "Proved: even preservation $2 \\mid n \\wedge n > 2 \\implies 2 \\mid g(n)$ via `Nat.totient_even`. Cambie's conjecture: $r = 2$ solutions have form $n = 2^l \\cdot p$, $p \\in \\{2, 3, 5, 7, 35, 47\\}$. Monotonicity: $g(n) \\geq n$ by `omega`."
     }
   ],

@@ -136,16 +136,16 @@
   },
   "crossReferences": [
     {
-      "proofId": "erdos-970",
-      "relationship": "Jacobsthal's function -- the dual question about coprime elements in intervals; uncovered = k - covered connects the two problems"
+      "relationship": "Jacobsthal's function -- the dual question about coprime elements in intervals; uncovered = k - covered connects the two problems",
+      "targetId": "erdos-970"
     },
     {
-      "proofId": "infinitude-primes",
-      "relationship": "The infinitude of primes ensures the covering problem is well-defined for arbitrarily large prime sets"
+      "relationship": "The infinitude of primes ensures the covering problem is well-defined for arbitrarily large prime sets",
+      "targetId": "infinitude-primes"
     },
     {
-      "proofId": "chinese-remainder-non-coprime",
-      "relationship": "The Chinese Remainder Theorem underpins the asymptotic density formula 1 - prod(1 - 1/p_i) for covered integers"
+      "relationship": "The Chinese Remainder Theorem underpins the asymptotic density formula 1 - prod(1 - 1/p_i) for covered integers",
+      "targetId": "chinese-remainder-non-coprime"
     }
   ],
   "leanFile": {
@@ -191,5 +191,10 @@
       "venue": "Demonstratio Mathematica",
       "note": "Best known bounds for Jacobsthal's function, related to the covering problem"
     }
+  ],
+  "relatedProofs": [
+    "erdos-970",
+    "infinitude-primes",
+    "chinese-remainder-non-coprime"
   ]
 }

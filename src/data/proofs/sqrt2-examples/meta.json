@@ -73,19 +73,19 @@
   },
   "crossReferences": [
     {
-      "proofId": "sqrt2-irrational",
       "relationship": "related",
-      "description": "Companion proof about sqrt(2): demonstrates basic tactics here, proves irrationality there"
+      "description": "Companion proof about sqrt(2): demonstrates basic tactics here, proves irrationality there",
+      "targetId": "sqrt2-irrational"
     },
     {
-      "proofId": "sqrt2-from-axioms",
       "relationship": "related",
-      "description": "Alternative sqrt(2) formalization built from first principles rather than Mathlib"
+      "description": "Alternative sqrt(2) formalization built from first principles rather than Mathlib",
+      "targetId": "sqrt2-from-axioms"
     },
     {
-      "proofId": "amgm-inequality",
       "relationship": "related",
-      "description": "AM-GM inequality relies on non-negativity of squares as a building block"
+      "description": "AM-GM inequality relies on non-negativity of squares as a building block",
+      "targetId": "amgm-inequality"
     }
   ],
   "overview": {
@@ -166,7 +166,10 @@
   "relatedProofs": [
     "",
     "",
-    ""
+    "",
+    "sqrt2-irrational",
+    "sqrt2-from-axioms",
+    "amgm-inequality"
   ],
   "references": [
     {

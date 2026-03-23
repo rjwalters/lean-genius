@@ -123,7 +123,7 @@
       "id": "generalization",
       "title": "Generalized Pythagorean Theorem",
       "startLine": 154,
-      "endLine": 215,
+      "endLine": 214,
       "summary": "Part 7: `pythagorean_sum` — for mutually perpendicular vectors $\\{v_i\\}$, $\\|\\sum v_i\\|^2 = \\sum \\|v_i\\|^2$. Proved by `Finset.induction_on` with the key step showing $\\langle v_a, \\sum_{s'} v_i \\rangle = 0$ via `inner_sum`.",
       "mathContext": "The $n$-dimensional Pythagorean theorem: $\\|\\sum_{i=1}^k v_i\\|^2 = \\sum_{i=1}^k \\|v_i\\|^2$ when $\\langle v_i, v_j \\rangle = 0$ for $i \\neq j$. This is the foundation of Parseval's identity in Hilbert spaces."
     }

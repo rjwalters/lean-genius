@@ -158,16 +158,16 @@
   },
   "crossReferences": [
     {
-      "proofId": "erdos-520",
-      "relationship": "Erdos Problem #520 studies partial sums restricted to squarefree integers; both concern growth rates of partial sums of multiplicative functions"
+      "relationship": "Erdos Problem #520 studies partial sums restricted to squarefree integers; both concern growth rates of partial sums of multiplicative functions",
+      "targetId": "erdos-520"
     },
     {
-      "proofId": "prime-number-theorem",
-      "relationship": "The prime number theorem provides the asymptotic framework for understanding the distribution of primes that define the random multiplicative function"
+      "relationship": "The prime number theorem provides the asymptotic framework for understanding the distribution of primes that define the random multiplicative function",
+      "targetId": "prime-number-theorem"
     },
     {
-      "proofId": "riemann-hypothesis",
-      "relationship": "The Riemann hypothesis implies stronger bounds on partial sums of the Liouville function; random multiplicative functions model the 'generic' behavior"
+      "relationship": "The Riemann hypothesis implies stronger bounds on partial sums of the Liouville function; random multiplicative functions model the 'generic' behavior",
+      "targetId": "riemann-hypothesis"
     }
   ],
   "references": [
@@ -207,5 +207,10 @@
     "axiomCount": 1,
     "theoremCount": 8,
     "definitionCount": 5
-  }
+  },
+  "relatedProofs": [
+    "erdos-520",
+    "prime-number-theorem",
+    "riemann-hypothesis"
+  ]
 }

@@ -80,56 +80,56 @@
       "id": "incircle-excircles",
       "title": "Incircle and Excircles",
       "startLine": 159,
-      "endLine": 210,
+      "endLine": 164,
       "summary": "Incenter I via barycentric coordinates (weights a:b:c), inradius r = Area/s. Three excenters via signed weights, exradii r_k = Area/(s-k)."
     },
     {
       "id": "tangency-defs",
       "title": "Tangency Definitions",
       "startLine": 212,
-      "endLine": 224,
+      "endLine": 164,
       "summary": "Internal tangency (d = |r₁-r₂|) and external tangency (d = r₁+r₂) for circles."
     },
     {
       "id": "euler-line",
       "title": "Euler Line Relations (Proved)",
       "startLine": 226,
-      "endLine": 243,
+      "endLine": 164,
       "summary": "Proves G = (O+2H)/3 (Euler line relation) and N = midpoint(O,H) by coordinate computation with ring tactic."
     },
     {
       "id": "distance-relations",
       "title": "Feuerbach Distance Relations (Proved)",
       "startLine": 245,
-      "endLine": 270,
+      "endLine": 164,
       "summary": "Four theorems proved by coordinate computation: d(N,I) = |R/2-r| (incircle), d(N,I_k) = R/2+r_k for k=a,b,c (excircles). Proofs in FeuerbachsTheoremOQ01.lean."
     },
     {
       "id": "nine-point-props",
       "title": "Nine-Point Circle Membership (Proved)",
       "startLine": 272,
-      "endLine": 302,
+      "endLine": 164,
       "summary": "All nine points proved to lie on the nine-point circle: d(N,P) = R/2 for side midpoints, Euler points, and altitude feet."
     },
     {
       "id": "main-theorem",
       "title": "Feuerbach's Theorem: Complete Statement",
       "startLine": 304,
-      "endLine": 364,
+      "endLine": 164,
       "summary": "Combines the four proved distance relations into the full theorem: internal tangency with incircle ∧ external tangency with all three excircles. Fully proved."
     },
     {
       "id": "equilateral",
       "title": "Equilateral Triangle Special Case",
       "startLine": 366,
-      "endLine": 403,
+      "endLine": 164,
       "summary": "Proves R = 2r for equilateral triangles via coordinate computation, implying the nine-point circle and incircle coincide (degenerate tangency)."
     },
     {
       "id": "numerical",
       "title": "Numerical Verification: 3-4-5 Triangle",
       "startLine": 405,
-      "endLine": 453,
+      "endLine": 164,
       "summary": "Fully proves area = 6, semiperimeter = 6, inradius = 1 for the 3-4-5 right triangle using norm_num and sqrt computations."
     }
   ],

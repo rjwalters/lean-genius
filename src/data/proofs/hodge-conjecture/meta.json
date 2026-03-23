@@ -171,16 +171,16 @@
   ],
   "crossReferences": [
     {
-      "proofId": "yang-mills-mass-gap",
-      "relationship": "Fellow Millennium Prize Problem. Hodge theory connects to the de Rham cohomology of gauge bundles; the Hodge decomposition underlies the Yang-Mills equations on compact manifolds."
+      "relationship": "Fellow Millennium Prize Problem. Hodge theory connects to the de Rham cohomology of gauge bundles; the Hodge decomposition underlies the Yang-Mills equations on compact manifolds.",
+      "targetId": "yang-mills-mass-gap"
     },
     {
-      "proofId": "riemann-hypothesis",
-      "relationship": "Fellow Millennium Prize Problem. The Weil conjectures (proved by Deligne) relate to both: they concern the zeta function of varieties over finite fields and use Hodge-theoretic methods."
+      "relationship": "Fellow Millennium Prize Problem. The Weil conjectures (proved by Deligne) relate to both: they concern the zeta function of varieties over finite fields and use Hodge-theoretic methods.",
+      "targetId": "riemann-hypothesis"
     },
     {
-      "proofId": "birch-swinnerton-dyer",
-      "relationship": "Fellow Millennium Prize Problem. Both concern algebraic cycles: BSD relates to 0-cycles on elliptic curves, while Hodge concerns general algebraic cycles on projective varieties."
+      "relationship": "Fellow Millennium Prize Problem. Both concern algebraic cycles: BSD relates to 0-cycles on elliptic curves, while Hodge concerns general algebraic cycles on projective varieties.",
+      "targetId": "birch-swinnerton-dyer"
     }
   ],
   "conclusion": {
@@ -208,5 +208,10 @@
       "venue": "Cambridge University Press, Cambridge Studies in Advanced Mathematics 76–77",
       "note": "Modern treatment including counterexamples to the integral Hodge conjecture and current state of knowledge"
     }
+  ],
+  "relatedProofs": [
+    "yang-mills-mass-gap",
+    "riemann-hypothesis",
+    "birch-swinnerton-dyer"
   ]
 }

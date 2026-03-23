@@ -143,7 +143,7 @@
       "id": "generalization",
       "title": "Generalization to k-Smooth Numbers",
       "startLine": 212,
-      "endLine": 242,
+      "endLine": 238,
       "summary": "Defines smoothNumbers for arbitrary prime sets and proves single_prime_not_essential: powers of a single prime are not essential (using lacunary → not essential from #37)."
     }
   ],
@@ -173,16 +173,16 @@
   },
   "crossReferences": [
     {
-      "proofId": "erdos-37",
-      "relationship": "Parent problem -- Erdos #37 resolves the lacunary case and provides all infrastructure (Schnirelmann density, essential components, sumsets)"
+      "relationship": "Parent problem -- Erdos #37 resolves the lacunary case and provides all infrastructure (Schnirelmann density, essential components, sumsets)",
+      "targetId": "erdos-37"
     },
     {
-      "proofId": "erdos-30",
-      "relationship": "Sidon sets (B2 sets) concern additive structure of sparse sets; both ask how sparse a set can be while maintaining a strong additive property"
+      "relationship": "Sidon sets (B2 sets) concern additive structure of sparse sets; both ask how sparse a set can be while maintaining a strong additive property",
+      "targetId": "erdos-30"
     },
     {
-      "proofId": "erdos-35",
-      "relationship": "Schnirelmann density improvements for additive bases; closely related density concepts and techniques"
+      "relationship": "Schnirelmann density improvements for additive bases; closely related density concepts and techniques",
+      "targetId": "erdos-35"
     }
   ],
   "references": [
@@ -224,5 +224,10 @@
     "axiomCount": 2,
     "theoremCount": 13,
     "definitionCount": 2
-  }
+  },
+  "relatedProofs": [
+    "erdos-37",
+    "erdos-30",
+    "erdos-35"
+  ]
 }

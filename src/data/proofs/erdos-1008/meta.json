@@ -49,49 +49,49 @@
       "title": "Imports and Problem Overview",
       "summary": "Module documentation, imports for SimpleGraph, Finset, and real arithmetic",
       "startLine": 1,
-      "endLine": 37
+      "endLine": 1
     },
     {
       "id": "c4-definition",
       "title": "4-Cycles and C₄-Freeness",
       "summary": "hasC4 (4-cycle detection) and isC4Free predicates; C₄ = K_{2,2}",
       "startLine": 45,
-      "endLine": 57
+      "endLine": 1
     },
     {
       "id": "subgraph",
       "title": "Subgraphs and Edge Count",
       "summary": "Subgraph relation, edge counting, problem formulation",
       "startLine": 59,
-      "endLine": 69
+      "endLine": 1
     },
     {
       "id": "trivial-bound",
       "title": "Trivial Bound: m^{1/2}",
       "summary": "The easy Ω(√m) bound via Kővári-Sós-Turán and greedy deletion",
       "startLine": 71,
-      "endLine": 86
+      "endLine": 1
     },
     {
       "id": "folkman",
       "title": "Folkman's Counterexample",
       "summary": "K_{n,n²} disproves m^{3/4} and proves optimality of 2/3 exponent",
       "startLine": 88,
-      "endLine": 102
+      "endLine": 1
     },
     {
       "id": "main-result",
       "title": "Main Result: m^{2/3}",
       "summary": "Conlon-Fox-Sudakov theorem: Ω(m^{2/3}) C₄-free edges always exist",
       "startLine": 104,
-      "endLine": 122
+      "endLine": 1
     },
     {
       "id": "generalization",
       "title": "Generalization to K_{s,t}",
       "summary": "Extension to K_{s,t}-free subgraphs with exponent 1-1/s; Zarankiewicz connection",
       "startLine": 124,
-      "endLine": 146
+      "endLine": 1
     }
   ],
   "conclusion": {

@@ -128,34 +128,34 @@
   },
   "crossReferences": [
     {
-      "proofId": "infinitude-primes",
       "relationship": "strengthens",
-      "description": "The divergence of $\\sum 1/p$ is a quantitative strengthening of Euclid's theorem: not only infinitely many primes, but dense enough for reciprocal divergence"
+      "description": "The divergence of $\\sum 1/p$ is a quantitative strengthening of Euclid's theorem: not only infinitely many primes, but dense enough for reciprocal divergence",
+      "targetId": "infinitude-primes"
     },
     {
-      "proofId": "harmonic-divergence",
       "relationship": "related",
-      "description": "The prime reciprocal sum is a sparse sub-sum of the harmonic series; both diverge but $\\sum 1/p \\sim \\ln \\ln n$ grows far slower than $H_n \\sim \\ln n$"
+      "description": "The prime reciprocal sum is a sparse sub-sum of the harmonic series; both diverge but $\\sum 1/p \\sim \\ln \\ln n$ grows far slower than $H_n \\sim \\ln n$",
+      "targetId": "harmonic-divergence"
     },
     {
-      "proofId": "basel-problem",
       "relationship": "related",
-      "description": "The Basel problem ($\\sum 1/n^2 = \\pi^2/6$) connects to the prime zeta function $P(2) = \\sum 1/p^2 \\approx 0.4522$; both relate to $\\zeta(s)$"
+      "description": "The Basel problem ($\\sum 1/n^2 = \\pi^2/6$) connects to the prime zeta function $P(2) = \\sum 1/p^2 \\approx 0.4522$; both relate to $\\zeta(s)$",
+      "targetId": "basel-problem"
     },
     {
-      "proofId": "prime-number-theorem",
       "relationship": "related",
-      "description": "The PNT ($\\pi(n) \\sim n/\\ln n$) is equivalent to Mertens-type estimates; prime reciprocal divergence is a weaker consequence of the PNT"
+      "description": "The PNT ($\\pi(n) \\sim n/\\ln n$) is equivalent to Mertens-type estimates; prime reciprocal divergence is a weaker consequence of the PNT",
+      "targetId": "prime-number-theorem"
     },
     {
-      "proofId": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate ($\\exists$ prime in $(n, 2n]$) and prime reciprocal divergence both quantify how dense primes are; Erdős proved both elementarily"
+      "description": "Bertrand's postulate ($\\exists$ prime in $(n, 2n]$) and prime reciprocal divergence both quantify how dense primes are; Erdős proved both elementarily",
+      "targetId": "bertrands-postulate"
     },
     {
-      "proofId": "dirichlets-theorem",
       "relationship": "related",
-      "description": "Dirichlet's theorem on primes in arithmetic progressions uses similar analytic techniques; the divergence of $\\sum 1/p$ for $p \\equiv a \\pmod{q}$ with $\\gcd(a,q) = 1$ is a key ingredient"
+      "description": "Dirichlet's theorem on primes in arithmetic progressions uses similar analytic techniques; the divergence of $\\sum 1/p$ for $p \\equiv a \\pmod{q}$ with $\\gcd(a,q) = 1$ is a key ingredient",
+      "targetId": "dirichlets-theorem"
     }
   ],
   "leanFile": {
@@ -177,7 +177,13 @@
     "",
     "",
     "",
-    ""
+    "",
+    "infinitude-primes",
+    "harmonic-divergence",
+    "basel-problem",
+    "prime-number-theorem",
+    "bertrands-postulate",
+    "dirichlets-theorem"
   ],
   "references": [
     {

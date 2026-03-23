@@ -74,7 +74,7 @@
   "overview": {
     "historicalContext": "Walter Taylor conjectured that if a graph G has chromatic number ℵ₁, then its finite subgraphs are 'rich enough' to build graphs of any chromatic number. Komjáth and Shelah (2005) proved this is independent of ZFC, showing in some models there exists a counterexample where the bound is ℵ₂. The background to this problem lies in the De Bruijn-Erdős theorem (1951), which established that for finite chromatic numbers, colorability is determined entirely by finite subgraphs. Erdős was fascinated by whether similar compactness principles extend to uncountable chromatic numbers, and Taylor's conjecture was one attempt to make that precise at the ℵ₁ level. The Komjáth-Shelah independence result places this question firmly at the boundary between combinatorics and set-theoretic forcing.",
     "problemStatement": "Let G be a graph with chromatic number ℵ₁. Is there, for every cardinal m, some graph G_m of chromatic number m such that every finite subgraph of G_m is a subgraph of G?",
-    "text": "Taylor's conjecture: If G has chromatic number \u2135\u2081, can we build graphs of any chromatic number using only finite subgraphs of G? Komj\u00e1th-Shelah showed this is independent of ZFC - it can fail in some models.",
+    "text": "Taylor's conjecture: If G has chromatic number ℵ₁, can we build graphs of any chromatic number using only finite subgraphs of G? Komjáth-Shelah showed this is independent of ZFC - it can fail in some models.",
     "proofStrategy": "The formalization defines chromatic number for infinite graphs, states Taylor's conjecture formally, and axiomatizes the Komjáth-Shelah consistency result showing independence from ZFC.",
     "keyInsights": [
       "The problem connects finite combinatorics to infinite graph theory",
@@ -143,7 +143,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 228,
-      "endLine": 267,
+      "endLine": 242,
       "summary": "Main theorem statements and key insight",
       "mathContext": "$\\text{ZFC} \\nvdash \\text{Taylor's conjecture} \\wedge \\text{ZFC} \\nvdash \\neg\\text{Taylor's conjecture}$. The answer depends on set-theoretic axioms beyond ZFC, placing this combinatorial problem at the foundations of mathematics."
     }

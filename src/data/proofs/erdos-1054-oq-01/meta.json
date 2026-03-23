@@ -141,16 +141,16 @@
   },
   "crossReferences": [
     {
-      "proofId": "erdos-1054",
-      "relationship": "Parent formalization of Erdos Problem #1054; this OQ-01 tackles the 'almost all' version that remains open after Tao's disproof"
+      "relationship": "Parent formalization of Erdos Problem #1054; this OQ-01 tackles the 'almost all' version that remains open after Tao's disproof",
+      "targetId": "erdos-1054"
     },
     {
-      "proofId": "prime-number-theorem",
-      "relationship": "The prime number theorem underpins the asymptotic analysis of sigma(m)/m via Mertens' theorem for primorials"
+      "relationship": "The prime number theorem underpins the asymptotic analysis of sigma(m)/m via Mertens' theorem for primorials",
+      "targetId": "prime-number-theorem"
     },
     {
-      "proofId": "dirichlets-theorem",
-      "relationship": "Dirichlet's theorem on primes in arithmetic progressions relates to the distribution of divisors used in the sigma bound approach"
+      "relationship": "Dirichlet's theorem on primes in arithmetic progressions relates to the distribution of divisors used in the sigma bound approach",
+      "targetId": "dirichlets-theorem"
     }
   ],
   "references": [
@@ -196,5 +196,10 @@
     "axiomCount": 2,
     "theoremCount": 16,
     "definitionCount": 4
-  }
+  },
+  "relatedProofs": [
+    "erdos-1054",
+    "prime-number-theorem",
+    "dirichlets-theorem"
+  ]
 }

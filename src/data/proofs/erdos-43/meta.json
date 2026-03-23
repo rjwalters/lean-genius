@@ -166,7 +166,7 @@
       "id": "counting",
       "title": "Counting Arguments",
       "startLine": 117,
-      "endLine": 130,
+      "endLine": 129,
       "summary": "`sidon_diff_count` (sorry): $|A - A| = |A|^2 - |A| + 1$ for Sidon sets ($|A|(|A|-1)$ distinct nonzero differences plus $0$). `disjoint_diff_total` (sorry): inclusion-exclusion gives $|A-A \\cup B-B| \\ge |A|^2 + |B|^2 - |A| - |B| + 1$ under disjoint differences."
     }
   ],
@@ -183,20 +183,20 @@
   },
   "crossReferences": [
     {
-      "proofId": "erdos-40",
-      "relationship": "Erdős #40 studies the representation function r_A(n) for B_2 sets (sets where every integer has at most one representation as a pairwise sum), directly connected to the density and structure theory underlying Problem #43"
+      "relationship": "Erdős #40 studies the representation function r_A(n) for B_2 sets (sets where every integer has at most one representation as a pairwise sum), directly connected to the density and structure theory underlying Problem #43",
+      "targetId": "erdos-40"
     },
     {
-      "proofId": "erdos-41",
-      "relationship": "Erdős #41 asks about B_3 sequences (distinct triple sums), a natural generalization of B_2/Sidon sets; the density bound liminf |A∩{1,…,N}|/N^{1/3}=0 is the B_3 analogue of f(N)~√N for Sidon sets"
+      "relationship": "Erdős #41 asks about B_3 sequences (distinct triple sums), a natural generalization of B_2/Sidon sets; the density bound liminf |A∩{1,…,N}|/N^{1/3}=0 is the B_3 analogue of f(N)~√N for Sidon sets",
+      "targetId": "erdos-41"
     },
     {
-      "proofId": "erdos-1",
-      "relationship": "Erdős #1 (distinct subset sums, $500 prize) is a sibling extremal problem: both ask how large a set with a distinctness condition on its arithmetic structure can be, with the answer controlled by powers of 2 vs. √N"
+      "relationship": "Erdős #1 (distinct subset sums, $500 prize) is a sibling extremal problem: both ask how large a set with a distinctness condition on its arithmetic structure can be, with the answer controlled by powers of 2 vs. √N",
+      "targetId": "erdos-1"
     },
     {
-      "proofId": "binomial-theorem",
-      "relationship": "The conjecture is stated entirely in terms of binomial coefficients C(|A|,2) and C(f(N),2); the binomial theorem and properties of C(n,2) = n(n-1)/2 are essential for interpreting the pair-counting bound"
+      "relationship": "The conjecture is stated entirely in terms of binomial coefficients C(|A|,2) and C(f(N),2); the binomial theorem and properties of C(n,2) = n(n-1)/2 are essential for interpreting the pair-counting bound",
+      "targetId": "binomial-theorem"
     }
   ],
   "relatedProofs": [
@@ -211,7 +211,11 @@
     {
       "proofId": "erdos-30",
       "relationship": "Erdős #30 ($1000 prize) asks whether f(N)=√N+O(N^ε) for all ε>0, sharpening the f(N)~√N asymptotic that underpins Problem #43's conjectured bound"
-    }
+    },
+    "erdos-40",
+    "erdos-41",
+    "erdos-1",
+    "binomial-theorem"
   ],
   "references": [
     {

@@ -69,7 +69,7 @@
   "overview": {
     "historicalContext": "Smooth numbers — integers whose prime factors are all 'small' — have been central to analytic number theory since Karl Dickman's 1930 paper 'On the frequency of numbers containing prime factors of a certain relative magnitude', which established the density $\\rho(1/\\alpha)$ for $\\alpha$-smooth numbers. The Dickman function $\\rho$ was later studied rigorously by Nicolaas de Bruijn (1951), who gave precise asymptotic expansions. Erdős Problem #928 asks about a natural bivariate extension: when both $n$ and $n+1$ are smooth. The heuristic that consecutive integers should behave independently (since $\\gcd(n, n+1) = 1$) suggests density $\\rho(1/\\alpha)\\rho(1/\\beta)$. Andrzej Schinzel (1967) proved infinitely many such pairs exist using sieve methods applied to $P(n(n+1))$. The breakthrough came from Joni Teräväinen (2018), who established the logarithmic density using the pretentious approach to multiplicative functions developed by Granville and Soundararajan. Zhiwei Wang (2021) proved the natural density conditionally, assuming the Elliott-Halberstam conjecture for friable integers. The unconditional natural density remains one of the most natural open questions in the theory of smooth numbers.",
     "problemStatement": "**Problem Statement (Open)**\n\nLet α, β ∈ (0,1) and P(n) = largest prime factor of n.\n\nDoes the density of integers n such that P(n) < n^α and P(n+1) < (n+1)^β exist?\n\n**Equivalently:** Is the event 'n is α-smooth' independent of 'n+1 is β-smooth'?\n\n**Conjectured Density:** ρ(1/α) · ρ(1/β) where ρ is the Dickman function.\n\n**Known:**\n- Logarithmic density exists and equals ρ(1/α)ρ(1/β) (Teräväinen)\n- Natural density equals ρ(1/α)ρ(1/β) under EH (Wang)\n\n**Open:** Unconditional natural density existence",
-    "text": "Does the natural density of n with P(n) < n^\u03b1 and P(n+1) < (n+1)^\u03b2 exist? Logarithmic density = \u03c1(1/\u03b1)\u03c1(1/\u03b2) (Ter\u00e4v\u00e4inen 2018). Natural density conditional on Elliott-Halberstam (Wang 2021). OPEN unconditionally.",
+    "text": "Does the natural density of n with P(n) < n^α and P(n+1) < (n+1)^β exist? Logarithmic density = ρ(1/α)ρ(1/β) (Teräväinen 2018). Natural density conditional on Elliott-Halberstam (Wang 2021). OPEN unconditionally.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Prime Factors:** Define largestPrimeFactor P(n)\n\n2. **Smoothness:** isSmooth α n := P(n) < n^α\n\n3. **Dickman Function:** Axiomatize ρ(u) with properties\n\n4. **Dickman's Theorem:** Ψ(x, x^α)/x → ρ(1/α)\n\n5. **Main Problem:**\n   - densityExists: natural density limit exists\n   - erdos928Question: ∀ α,β ∈ (0,1), densityExists α β\n\n6. **Results:**\n   - infinitely_many_exist (Schinzel/Meza)\n   - teravainen_log_density (2018)\n   - wang_conditional (2021 under EH)",
     "keyInsights": [
       "**Dickman Function:** ρ(u) = 1 for u ≤ 1, then satisfies uρ'(u) = -ρ(u-1)",
@@ -161,16 +161,16 @@
   ],
   "crossReferences": [
     {
-      "proofId": "bounded-prime-gaps",
-      "relationship": "Both concern the distribution of primes in structured patterns — bounded gaps uses sieve methods and the Elliott-Halberstam conjecture, the same conjecture that Wang uses for Erdős #928"
+      "relationship": "Both concern the distribution of primes in structured patterns — bounded gaps uses sieve methods and the Elliott-Halberstam conjecture, the same conjecture that Wang uses for Erdős #928",
+      "targetId": "bounded-prime-gaps"
     },
     {
-      "proofId": "erdos-1055",
-      "relationship": "Both study prime factorization structure of integers — #1055 classifies primes by P(p+1) factorization while #928 studies the density of smooth consecutive pairs"
+      "relationship": "Both study prime factorization structure of integers — #1055 classifies primes by P(p+1) factorization while #928 studies the density of smooth consecutive pairs",
+      "targetId": "erdos-1055"
     },
     {
-      "proofId": "erdos-10",
-      "relationship": "Both concern additive/multiplicative structure involving primes — #10 asks about sums of primes and powers of 2 while #928 concerns smooth number density"
+      "relationship": "Both concern additive/multiplicative structure involving primes — #10 asks about sums of primes and powers of 2 while #928 concerns smooth number density",
+      "targetId": "erdos-10"
     }
   ],
   "conclusion": {
@@ -206,6 +206,9 @@
   "relatedProofs": [
     "",
     "",
-    ""
+    "",
+    "bounded-prime-gaps",
+    "erdos-1055",
+    "erdos-10"
   ]
 }

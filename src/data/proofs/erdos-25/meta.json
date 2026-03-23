@@ -82,7 +82,7 @@
       "id": "monotonicity",
       "title": "Monotonicity Properties",
       "startLine": 107,
-      "endLine": 119,
+      "endLine": 118,
       "summary": "Proves `sieve_monotone`: removing any modulus from the sieve enlarges the sieved set ($A(\\sigma) \\subseteq A(\\sigma \\setminus \\{k\\})$). A one-line proof via `exact hm i`."
     }
   ],

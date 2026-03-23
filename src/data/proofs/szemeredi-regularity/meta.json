@@ -69,7 +69,7 @@
   "overview": {
     "historicalContext": "The Szemerédi Regularity Lemma, proved by Endre Szemerédi in 1975 as a key tool in his proof of Szemerédi's theorem, has become one of the most important and widely-used results in combinatorics. It provides a universal structural decomposition for graphs: any sufficiently large graph can be partitioned into a bounded number of parts such that the edges between almost all pairs of parts behave pseudo-randomly.\n\nThe lemma's power lies in reducing arbitrary graph problems to problems about dense random-like bipartite graphs. This 'structure vs randomness' paradigm has transformed graph theory, additive combinatorics, and theoretical computer science.\n\nGowers (1997) showed that the tower-type bound on the number of parts is unavoidable: the partition size must grow as a tower of exponentials in 1/epsilon. Despite this, the lemma's qualitative power is undiminished, and it remains the primary tool for transferring results from random graphs to arbitrary graphs.\n\nThe regularity lemma has inspired numerous variants: the strong regularity lemma (Alon-Fischer-Krivelevich-Szegedy), weak regularity (Frieze-Kannan), arithmetic regularity (Green), and hypergraph regularity (Gowers, Rödl-Skokan). This formalization develops reusable energy machinery (density convexity, split identities, energy bounds) from scratch and provides a compatibility bridge that exposes Mathlib's complete regularity lemma through our combinatorics-oriented definitions. The core energy increment iteration and tower bound are not re-proved here — they come from Mathlib's comprehensive implementation.",
     "problemStatement": "For every $\\varepsilon > 0$ and integer $m \\geq 1$, there exists $M = M(\\varepsilon, m)$ such that every graph $G$ on $n \\geq M$ vertices admits an $\\varepsilon$-regular partition into at most $M$ parts.\n\nA pair $(V_i, V_j)$ is $\\varepsilon$-regular if for all $A \\subseteq V_i$, $B \\subseteq V_j$ with $|A| \\geq \\varepsilon|V_i|$, $|B| \\geq \\varepsilon|V_j|$: $|d(A,B) - d(V_i,V_j)| \\leq \\varepsilon$, where $d(X,Y) = e(X,Y)/(|X||Y|)$ is the edge density.",
-    "text": "Energy machinery (density convexity, split identities) and compatibility bridge exposing Mathlib's Szemer\u00e9di regularity lemma through a combinatorics-oriented API.",
+    "text": "Energy machinery (density convexity, split identities) and compatibility bridge exposing Mathlib's Szemerédi regularity lemma through a combinatorics-oriented API.",
     "proofStrategy": "The formalization has three parts:\n\n**Part II (Energy Machinery)**: Proves the Cauchy-Schwarz ingredient (`density_sq_convex`): splitting a vertex set A into disjoint A₁ ∪ A₂ increases the sum of squared densities. The proof reduces to the algebraic identity $n_1 d_1^2 + n_2 d_2^2 - (n_1+n_2)((n_1 d_1 + n_2 d_2)/(n_1+n_2))^2 = n_1 n_2 (d_1-d_2)^2/(n_1+n_2) \\geq 0$. Also proves `partitionEnergy_le_one` via the bound $d(V_i,V_j)^2 \\leq 1$.\n\n**Part III (Main Result)**: First proves a vacuous form (`regularity_lemma`) using the trivial one-part partition {V}. Then bridges to Mathlib via compatibility theorems: `edgeDensity_eq_mathlib` (our density matches Mathlib's), `mathlib_uniform_imp_regular` (Mathlib's strict uniformity implies our regularity), and `irregular_subset_nonuniform` (our irregular pairs are a subset of Mathlib's). These bridges yield the strong form (`regularity_lemma_strong`, with m₀ ≤ k ≤ M) and full form (`regularity_lemma_full`, with partition coverage and disjointness).",
     "keyInsights": [
       "Epsilon-regularity captures pseudo-randomness: regular pairs behave like random bipartite graphs for subgraph counting",
@@ -219,5 +219,14 @@
       "citation": "Alon, N., Duke, R.A., Lefmann, H., Rödl, V., and Yuster, R., The algorithmic aspects of the regularity lemma, JCSS 52 (1996), 480-491.",
       "type": "paper"
     }
+  ],
+  "relatedProofs": [
+    "szemeredi-core",
+    "szemeredi-counting",
+    "szemeredi-full",
+    "szemeredi-theorem",
+    "roth-theorem-k3",
+    "ramseys-theorem",
+    "prob-method-alteration"
   ]
 }
