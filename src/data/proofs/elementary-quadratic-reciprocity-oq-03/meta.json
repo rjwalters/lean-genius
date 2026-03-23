@@ -112,10 +112,74 @@
       "summary": "Catalogs the 7 theorems: 3 fully proved (Jacobi-Legendre agreement, non-residue detection, prime residuacity) and 4 with sorries (multiplicativity, first supplement, second supplement, main reciprocity). Notes all sorries correspond to known Mathlib API results."
     }
   ],
-  "crossRefs": [
+  "crossReferences": [
+    {
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "extends",
+      "description": "Parent proof establishing elementary quadratic reciprocity for prime moduli. This OQ-03 extends the Legendre symbol to the Jacobi symbol for composite moduli"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-01",
+      "relationship": "related",
+      "description": "Sibling open question exploring Zolotarev's proof of quadratic reciprocity via the sign homomorphism on symmetric groups, providing an alternative approach to the same theorem"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "The main quadratic reciprocity formalization using Mathlib's infrastructure, which this elementary approach complements with a more self-contained proof path"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's totient φ(n) = |(ℤ/nℤ)*| counts units modulo n, the domain of the Jacobi symbol. The CRT decomposition (ℤ/nℤ)* ≅ ∏(ℤ/pᵢᵉⁱℤ)* connects the Jacobi symbol's multiplicativity to unit group structure"
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "foundational",
+      "description": "Primitive roots establish that (ℤ/pℤ)* is cyclic, fundamental to the Legendre symbol: a is a QR mod p iff a^((p-1)/2) ≡ 1 (Euler's criterion)"
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem (p-1)! ≡ -1 (mod p) connects to the first supplement of QR: (-1/p) = (-1)^((p-1)/2). Both characterize the multiplicative structure of (ℤ/pℤ)*"
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Fermat's two-squares theorem (p = a² + b² iff p ≡ 1 mod 4) follows from (-1/p) = 1 iff p ≡ 1 mod 4, the first supplement extended by this formalization"
+    }
+  ],
+  "relatedProofs": [
     "elementary-quadratic-reciprocity",
     "elementary-quadratic-reciprocity-oq-01",
-    "quadratic-reciprocity"
+    "quadratic-reciprocity",
+    "euler-totient",
+    "primitive-roots",
+    "wilsons-theorem",
+    "fermat-two-squares"
+  ],
+  "references": [
+    {
+      "authors": "Ireland, Kenneth; Rosen, Michael",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": "1990",
+      "venue": "Springer GTM 84, 2nd edition",
+      "note": "Chapter 5 develops QR for the Legendre symbol; Chapter 9 extends to the Jacobi symbol with supplements and primality testing applications"
+    },
+    {
+      "authors": "Lemmermeyer, Franz",
+      "title": "Reciprocity Laws: From Euler to Eisenstein",
+      "year": "2000",
+      "venue": "Springer Monographs in Mathematics",
+      "note": "Comprehensive account of 233 published proofs of quadratic reciprocity, including the Jacobi symbol generalization and higher reciprocity laws"
+    },
+    {
+      "authors": "Hardy, G. H.; Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th edition",
+      "note": "Chapter 6 covers the Legendre and Jacobi symbols with elementary proofs of the supplements and reciprocity for composite moduli"
+    }
   ],
   "parentProof": "elementary-quadratic-reciprocity",
   "openQuestion": "Can we formalize alternative QR proof approaches, including extensions to composite moduli?",
