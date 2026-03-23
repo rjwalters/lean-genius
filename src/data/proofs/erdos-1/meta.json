@@ -69,10 +69,11 @@
   "sections": [
     {
       "id": "header",
-      "title": "Problem Statement and Aristotle Header",
+      "title": "Aristotle Header and Problem Statement",
       "startLine": 1,
       "endLine": 46,
-      "summary": "Aristotle proof header documenting three proved theorems. Problem statement: if $A \\subseteq \\{1, \\ldots, N\\}$ with $|A| = n$ has all $2^n$ subset sums distinct, then $N \\geq 2^{n-1}$. Imports full Mathlib and opens `Finset` namespace."
+      "summary": "Aristotle proof search results (lines 1-24) documenting three proved theorems with full type signatures. Problem statement docstring (lines 26-41): if $A \\subseteq \\{1, \\ldots, N\\}$ with $|A| = n$ has all $2^n$ subset sums distinct, then $N \\geq 2^{n-1}$. Erdos posed this as his 'first serious problem' (1931) with a \\$500 prize for the stronger conjecture $N \\geq c \\cdot 2^n$. Imports full Mathlib (line 43) and opens `Finset` namespace (line 46).",
+      "mathContext": "Three results proved by Aristotle: $2^{|A|-1} \\leq N$ (main bound), $2^{|A|-1} \\leq \\max(A)$ (corollary), and the spacing property $S \\neq T \\Rightarrow \\sum S \\neq \\sum T$ for $S, T \\subseteq A$."
     },
     {
       "id": "definition",
@@ -143,6 +144,16 @@
       "targetId": "erdos-123",
       "relationship": "complementary",
       "description": "$d$-complete sequences ask when every sufficiently large integer is representable as a sum of distinct elements from a sequence. This complements Problem #1: complete sequences have redundant (non-distinct) subset sums covering all integers, while Problem #1 studies sets whose subset sums are maximally spread out (all distinct)"
+    },
+    {
+      "targetId": "erdos-340-greedy-sidon",
+      "relationship": "related",
+      "description": "Sidon sets ($B_2$ sequences) require all pairwise sums $a + b$ to be distinct. Distinct subset sums is the much stronger requirement that all $2^n$ subset sums are distinct. Problem #340 studies greedy Sidon constructions, while Problem #1 asks about extremal sizes of the stronger distinct-subset-sum condition. Both are central to additive combinatorics"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The binomial theorem gives $|\\mathcal{P}(A)| = 2^{|A|}$ (the number of subsets of an $n$-element set). This cardinality is the source of the exponential lower bound in Problem #1: if all $2^n$ subset sums are distinct non-negative integers in $\\{0, \\ldots, nN\\}$, then $nN \\geq 2^n - 1$, which drives the bound $N \\geq 2^{n-1}$"
     }
   ],
   "references": [
@@ -197,7 +208,9 @@
     "erdos-347",
     "erdos-533",
     "erdos-867",
-    "erdos-1179"
+    "erdos-1179",
+    "erdos-340-greedy-sidon",
+    "binomial-theorem"
   ],
   "leanFile": {
     "imports": [
