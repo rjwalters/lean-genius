@@ -64,43 +64,6 @@
       "constructive_quotient_unique: Quotient uniqueness in integral domains",
       "abstract_euclids_lemma: Shows the construction agrees with Mathlib's IsCoprime.dvd_of_dvd_mul_left"
     ],
-    "references": [
-      {
-        "authors": "Euclid",
-        "title": "Elements, Books VII and X",
-        "year": "-300",
-        "venue": "Classical mathematics",
-        "note": "The Euclidean algorithm for computing GCD and Euclid's lemma (VII.30)"
-      },
-      {
-        "authors": "Étienne Bézout",
-        "title": "Théorie générale des équations algébriques",
-        "year": "1779",
-        "venue": "Paris",
-        "note": "Formalized the identity au + bv = gcd(a,b) that bears his name"
-      },
-      {
-        "authors": "Claude-Gaspard Bachet de Méziriac",
-        "title": "Problèmes plaisants et délectables",
-        "year": "1624",
-        "venue": "Lyon",
-        "note": "First published description of the extended Euclidean algorithm for computing Bézout coefficients"
-      },
-      {
-        "authors": "Donald E. Knuth",
-        "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
-        "year": "1997",
-        "venue": "Addison-Wesley",
-        "note": "Section 4.5.2: Modern treatment of the extended Euclidean algorithm with complexity analysis"
-      },
-      {
-        "authors": "Aryabhata",
-        "title": "Aryabhatiya, Ganitapada",
-        "year": "499",
-        "venue": "Classical Indian mathematics",
-        "note": "The kuṭṭaka (pulverizer) algorithm for linear Diophantine equations, independently equivalent to the extended Euclidean algorithm"
-      }
-    ],
     "dateAdded": "2026-03-06",
     "axiomCount": 0,
     "prerequisites": [
@@ -154,12 +117,6 @@
       "**Computational verification**: native_decide confirms the extGcd implementation matches expected values for small inputs.",
       "**Agreement with Mathlib**: The abstract version reduces to Mathlib's IsCoprime.dvd_of_dvd_mul_left, confirming consistency.",
       "**Historical algorithm-proof duality**: The kuṭṭaka algorithm (Aryabhata, 499 CE) and Bachet's extended algorithm (1624) are the same computation — this formalization shows that the 2300-year-old Euclidean algorithm already *contained* the constructive proof of Euclid's lemma, centuries before the abstract algebraic formulation"
-    ],
-    "prerequisites": [
-      "Extended Euclidean algorithm and Bézout's identity",
-      "CommRing axioms (ring, one_mul)",
-      "Integral domain and cancellation law",
-      "IsCoprime type class in Mathlib"
     ]
   },
   "sections": [
@@ -337,6 +294,50 @@
     "primitive-roots",
     "bezout-identity-oq-02-oq-02-oq-01-oq-01",
     "bezout-identity-oq-04"
+  ],
+  "references": [
+    {
+      "authors": "Euclid",
+      "title": "Elements, Books VII and X",
+      "year": "-300",
+      "venue": "Classical mathematics",
+      "note": "The Euclidean algorithm for computing GCD (VII.1-2) and Euclid's lemma (VII.30): if p is prime and p | ab, then p | a or p | b"
+    },
+    {
+      "authors": "Bézout, Étienne",
+      "title": "Théorie générale des équations algébriques",
+      "year": "1779",
+      "venue": "Paris",
+      "note": "Formalized the identity au + bv = gcd(a,b) that bears his name, though Bachet had described the computational method 155 years earlier"
+    },
+    {
+      "authors": "Bachet de Méziriac, Claude-Gaspard",
+      "title": "Problèmes plaisants et délectables qui se font par les nombres",
+      "year": "1624",
+      "venue": "Lyon",
+      "note": "First published description of the extended Euclidean algorithm for computing Bézout coefficients, predating Bézout's own treatise by over a century"
+    },
+    {
+      "authors": "Knuth, Donald E.",
+      "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
+      "year": "1997",
+      "venue": "Addison-Wesley, 3rd edition",
+      "note": "Section 4.5.2: Modern treatment of the extended Euclidean algorithm with complexity analysis O(log min(a,b)), historical notes, and applications to modular arithmetic"
+    },
+    {
+      "authors": "Aryabhata",
+      "title": "Aryabhatiya, Ganitapada",
+      "year": "499",
+      "venue": "Classical Indian mathematics",
+      "note": "The kuṭṭaka (pulverizer) algorithm for solving linear Diophantine equations ax + by = c, independently equivalent to the extended Euclidean algorithm — shows the constructive content of Bézout's identity was recognized 1200 years before Bézout"
+    },
+    {
+      "authors": "Cohen, Henri",
+      "title": "A Course in Computational Algebraic Number Theory",
+      "year": "1993",
+      "venue": "Springer GTM 138",
+      "note": "Standard reference for computational number theory algorithms including the extended Euclidean algorithm, its half-GCD variant, and applications to modular inverse computation and CRT reconstruction"
+    }
   ],
   "leanFile": {
     "imports": [
