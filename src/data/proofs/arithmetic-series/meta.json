@@ -61,35 +61,40 @@
       "title": "Gauss's Summation Formula",
       "startLine": 50,
       "endLine": 70,
-      "summary": "The fundamental formulas for summing 0..n-1 and 0..n."
+      "summary": "The fundamental formulas for summing 0..n-1 and 0..n.",
+      "mathContext": "$\\sum_{k=0}^{n-1} k = \\frac{n(n-1)}{2}$ and $\\sum_{k=0}^{n} k = \\frac{n(n+1)}{2}$. In Lean, `Finset.sum_range_id` gives $\\sum_{k \\in \\text{range}\\,n} k = n(n-1)/2$. The off-by-one between $\\sum_0^{n-1}$ and $\\sum_0^n$ is handled by the `sum_range_succ` lemma."
     },
     {
       "id": "pairing-argument",
       "title": "The Pairing Argument",
       "startLine": 72,
       "endLine": 94,
-      "summary": "The algebraic heart of Gauss's proof: 2S = n(n+1)."
+      "summary": "The algebraic heart of Gauss's proof: 2S = n(n+1).",
+      "mathContext": "Write $S = 0 + 1 + 2 + \\cdots + n$ and $S = n + (n-1) + \\cdots + 0$. Adding term-by-term: $2S = n + n + \\cdots + n = (n+1) \\cdot n$, so $S = n(n+1)/2$. This is the same pairing trick used in Wilson's theorem, where elements pair with their inverses."
     },
     {
       "id": "general-series",
       "title": "General Arithmetic Series",
       "startLine": 96,
       "endLine": 108,
-      "summary": "Generalization to arithmetic progressions with arbitrary first term and difference."
+      "summary": "Generalization to arithmetic progressions with arbitrary first term and difference.",
+      "mathContext": "$\\sum_{k=0}^{n-1} (a + kd) = na + d \\cdot \\frac{n(n-1)}{2} = \\frac{n(2a + (n-1)d)}{2}$. This factors as $n \\cdot \\frac{\\text{first} + \\text{last}}{2}$: the number of terms times the average of first and last. The Lean proof unfolds this from `Finset.sum_range_id` using `mul_comm` and `ring`."
     },
     {
       "id": "special-cases",
       "title": "Famous Special Cases",
       "startLine": 110,
       "endLine": 139,
-      "summary": "Gauss's original 1-100 problem, sum of odd numbers, and sum of even numbers."
+      "summary": "Gauss's original 1-100 problem, sum of odd numbers, and sum of even numbers.",
+      "mathContext": "Gauss: $\\sum_{k=1}^{100} k = 5050 = 100 \\cdot 101 / 2$. Odd numbers: $\\sum_{k=0}^{n-1}(2k+1) = n^2$ (the $n$-th triangular gnomon). Even numbers: $\\sum_{k=1}^{n} 2k = n(n+1)$. The sum-of-odd-numbers formula $1+3+5+\\cdots+(2n-1) = n^2$ has a beautiful geometric proof: each odd number is an L-shaped gnomon completing a square."
     },
     {
       "id": "triangular-numbers",
       "title": "Triangular Numbers",
       "startLine": 141,
       "endLine": 178,
-      "summary": "Definition and properties of triangular numbers."
+      "summary": "Definition and properties of triangular numbers.",
+      "mathContext": "$T_n = \\frac{n(n+1)}{2} = \\binom{n+1}{2}$. The $n$-th triangular number counts pairs from $n+1$ objects. Properties: $T_n + T_{n-1} = n^2$ (two consecutive triangulars make a square), $8T_n + 1 = (2n+1)^2$ (a square), and $T_n = \\sum_{k=1}^{n} k$ (definition as partial sum)."
     }
   ],
   "conclusion": {
@@ -177,6 +182,20 @@
       "year": "1919",
       "venue": "Carnegie Institution of Washington",
       "note": "Historical survey of results on sums and series, including arithmetic progressions"
+    },
+    {
+      "authors": "Knuth, Donald E.",
+      "title": "The Art of Computer Programming, Vol. 1: Fundamental Algorithms",
+      "year": "1997",
+      "venue": "Addison-Wesley, 3rd edition",
+      "note": "Section 1.2.3 covers sums and recurrences, including the arithmetic series and its role in algorithm analysis (the formula gives the exact number of comparisons in selection sort)"
+    },
+    {
+      "authors": "Conway, John H.; Guy, Richard K.",
+      "title": "The Book of Numbers",
+      "year": "1996",
+      "venue": "Springer-Verlag",
+      "note": "Accessible treatment of triangular numbers, figurate numbers, and the connection between arithmetic series and combinatorial identities"
     }
   ]
 }
