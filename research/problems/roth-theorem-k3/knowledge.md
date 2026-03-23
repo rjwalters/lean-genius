@@ -291,3 +291,56 @@ All AP-freeness preservation infrastructure is now in place. The sole remaining 
 1. Try Approach B with Q = N^{2/3}, handle small N separately
 2. OR try Approach A with refined Fourier analysis using the EXACT identity (not just magnitude bounds)
 3. The density boost is the deepest mathematical step — may require 2+ sessions
+
+## Session 8 (2026-03-23, researcher-1)
+
+### What Was Done
+1. **Discovered density_increment_lemma is FALSE as stated** — for δ ∈ (0.663, 2/3]:
+   - The hypothesis (AP-free A with density ≥ δ in Z/NZ) IS satisfiable (N=3, A={0,1})
+   - The conclusion (AP-free B with density ≥ δ+δ²/100 in Z/MZ, M>1) is IMPOSSIBLE
+   - Max AP-free density across all Z/MZ with M>1 is 2/3 (achieved at M=3 with B={0,1})
+   - For δ=2/3: target density 2/3 + 4/900 ≈ 0.671 > 0.667 = 2/3
+   - The "take B={0,1} in Z/3Z" trick works for δ < 0.663 but fails near 2/3
+2. **Proved `apFree_iff_threeAPFree`** — bridge between our APFree and Mathlib's ThreeAPFree
+   - Forward: APFree → ThreeAPFree via contrapositive (d = b-a, algebraic rearrangement)
+   - Backward: ThreeAPFree → APFree via add_left_cancel (a = a+d implies d = 0)
+3. **Proved `roth_density_bound` from Mathlib** — bypasses density_increment_lemma entirely
+   - Uses `roth_3ap_theorem` for ZMod N (finite abelian group)
+   - N₀ = max 2 (cornersTheoremBound delta)
+   - Direct: APFree → ThreeAPFree → roth_3ap_theorem gives ¬ThreeAPFree → contradiction
+4. **Main theorem is now fully proved** — no sorry dependencies in roth_density_bound
+
+### Key Technical Discoveries
+- `sub_eq_zero.mp` converts `x - y = 0` to `x = y` in any AddGroup
+- `add_left_cancel` works in ZMod N (it's an AddGroup): `a + d = a + 0 → d = 0`
+- `Finset.mem_coe.mp/mpr` converts between Finset and Set membership
+- `ZMod.card N` gives `Fintype.card (ZMod N) = N` for NeZero N
+- `roth_3ap_theorem` signature: ε hε hG A hAε → ¬ThreeAPFree ↑A
+
+### Proof Architecture (Updated Session 8)
+```
+Fourier-analytic approach (infrastructure complete, density_increment sorry):
+  char_orthogonality (PROVED)
+  parseval_on_zmod (PROVED)
+  triple_count_fourier (PROVED)
+  fourier_large_coefficient (PROVED)
+  apFree_coset_slice (PROVED)
+  density_increment_lemma (SORRY — statement is FALSE for δ near 2/3)
+    → density_increment_step (proved from sorry)
+    → density_iteration (proved from sorry)
+
+Mathlib bridge approach (fully proved, no sorries):
+  apFree_iff_threeAPFree (PROVED)
+  roth_3ap_theorem (Mathlib — via corners/regularity)
+  → roth_density_bound (PROVED — 0 sorries)
+```
+
+### Analysis: Why density_increment_lemma Fails
+The statement allows M to be ANY value > 1 with no relation to N. This means the iteration can "collapse" to M=3, B={0,1} (density 2/3). Once density approaches 2/3, no further boost is possible because max AP-free density in all Z/MZ is 2/3. The CORRECT formulation would either:
+- Require M ≥ f(N) for some growing function (prevents collapse)
+- Use a density boost proportional to 1/N (decreases with modulus)
+- Add a condition N ≥ g(δ) (makes hypothesis vacuous near the ceiling)
+
+### Files Modified
+- `proofs/Proofs/RothTheorem.lean` — +45 lines: bridge lemma, new roth_density_bound proof
+- `research/problems/roth-theorem-k3/knowledge.md` — Session 8 notes

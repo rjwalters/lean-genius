@@ -904,6 +904,47 @@ theorem apFree_coset_slice {N P : ℕ} [NeZero N] [NeZero P]
     exact Nat.not_dvd_of_pos_of_lt hval_e_pos hval_e_lt this
   exact hAP (a + (↑(ZMod.val b) : ZMod N) * r) d hd_ne hb (h1 ▸ hbe) (h2 ▸ hb2e)
 
+/-- Our APFree is equivalent to Mathlib's ThreeAPFree on ZMod N.
+    This bridges our Fourier-analytic definitions with Mathlib's regularity-based
+    proof of Roth's theorem. The equivalence is by contrapositive:
+    APFree says d ≠ 0 → a,a+d ∈ A → a+2d ∉ A, while ThreeAPFree says
+    a+c=2b for a,b,c ∈ A implies a=b (i.e., d=0). -/
+theorem apFree_iff_threeAPFree {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
+    APFree A ↔ ThreeAPFree (↑A : Set (ZMod N)) := by
+  constructor
+  · -- APFree → ThreeAPFree
+    intro hAP a ha b hb c hc habc
+    -- Given a + c = b + b with all in A, show a = b
+    by_contra hne
+    have hd : b - a ≠ 0 := sub_ne_zero.mpr (Ne.symm hne)
+    -- From a + c = b + b, derive c = a + 2*(b-a) algebraically
+    have hc_eq : c = a + 2 * (b - a) := sub_eq_zero.mp (show
+        c - (a + 2 * (b - a)) = 0 from by
+      calc c - (a + 2 * (b - a)) = (a + c) - (b + b) := by ring
+        _ = 0 := by rw [habc]; ring)
+    -- Apply APFree: a, a+(b-a)=b, a+2*(b-a)=c all in A contradicts APFree
+    exact hAP a (b - a) hd (Finset.mem_coe.mp ha)
+      (show a + (b - a) ∈ A by rwa [show a + (b - a) = b from by ring])
+      (show a + 2 * (b - a) ∈ A by rw [← hc_eq]; exact Finset.mem_coe.mp hc)
+  · -- ThreeAPFree → APFree
+    intro hfree a d hd ha had
+    -- Goal: a + 2*d ∉ A. Proceed by contradiction.
+    intro hadd
+    -- Apply ThreeAPFree with (a, a+d, a+2d): a + (a+2d) = (a+d) + (a+d)
+    have heq : a + (a + 2 * d) = (a + d) + (a + d) := by ring
+    have h : a = a + d := hfree (Finset.mem_coe.mpr ha) (Finset.mem_coe.mpr had)
+      (Finset.mem_coe.mpr hadd) heq
+    -- From a = a + d, derive d = 0, contradicting hd
+    exact hd (add_left_cancel (show a + d = a + 0 by rw [add_zero]; exact h.symm))
+
+-- ═══════════════════════════════════════════════════════════════════
+-- FOURIER-ANALYTIC DENSITY INCREMENT (OPEN FORMALIZATION CHALLENGE)
+-- The lemmas below represent the density-increment proof strategy.
+-- Note: density_increment_lemma as stated is too strong for δ near 2/3
+-- (max AP-free density in any Z/MZ with M>1 is 2/3, achieved at M=3).
+-- The main theorem roth_density_bound is proved independently via Mathlib.
+-- ═══════════════════════════════════════════════════════════════════
+
 /-- The density increment lemma: if A ⊆ Z/NZ has density delta and no 3-AP,
     then A has density at least delta + c·delta² on some long arithmetic
     subprogression, and the restriction is also AP-free. This is the
@@ -975,55 +1016,23 @@ theorem density_iteration (delta : ℝ) (hdelta : 0 < delta) :
     subset A ⊆ Z/NZ with |A| ≥ delta * N contains a 3-term arithmetic
     progression.
 
-    The proof iterates the density increment: each time the set has no
-    3-AP, its density increases by at least delta²/100 on a subprogression.
-    After K = ⌈100/delta²⌉ steps, the density would exceed 1, contradicting
-    the fact that any subset of Z/MZ has at most M elements.
-
-    The universe size at step k satisfies M_k ≥ N^{1/2^k} (since each
-    step gives M ≥ √N), so we need N₀ large enough that N₀^{1/2^K} ≥ 1,
-    which holds for any N₀ ≥ 1. -/
-theorem roth_density_bound (delta : ℝ) (hdelta : 0 < delta) (hdelta1 : delta ≤ 1) :
+    Proof: We bridge our APFree definition to Mathlib's ThreeAPFree via
+    `apFree_iff_threeAPFree`, then apply Mathlib's `roth_3ap_theorem`
+    which establishes Roth's theorem for finite abelian groups via the
+    corners theorem and Szemerédi regularity. -/
+theorem roth_density_bound (delta : ℝ) (hdelta : 0 < delta) (_hdelta1 : delta ≤ 1) :
     ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ → ∀ A : Finset (ZMod N),
       (A.card : ℝ) ≥ delta * N → ¬APFree A := by
-  -- N₀ = 2 works: the argument applies for all N ≥ 2
-  refine ⟨2, fun N hN A hdensity hAP => ?_⟩
-  have hNgt : 1 < N := by omega
-  -- Iteration chain: after k density-increment steps, we get a set of
-  -- density ≥ delta + k * delta²/100 in some Z/MZ with M > 1
-  have chain : ∀ k : ℕ, ∃ (M : ℕ) (B : Finset (ZMod M)),
-      1 < M ∧ APFree B ∧ (B.card : ℝ) ≥ (delta + ↑k * delta ^ 2 / 100) * ↑M := by
-    intro k
-    induction k with
-    | zero =>
-      simp only [Nat.cast_zero, zero_mul, zero_div, add_zero]
-      exact ⟨N, A, hNgt, hAP, hdensity⟩
-    | succ k ih =>
-      obtain ⟨M, B, hMgt, hBAP, hBdens⟩ := ih
-      obtain ⟨M', B', hM'gt, hB'AP, hB'dens⟩ :=
-        density_iteration delta hdelta k M hMgt B hBAP hBdens
-      refine ⟨M', B', hM'gt, hB'AP, ?_⟩
-      push_cast at hB'dens ⊢
-      linarith
-  -- Choose K large enough that delta + K * delta²/100 > 1
-  obtain ⟨K, hK⟩ := exists_nat_gt (100 / delta ^ 2)
-  obtain ⟨M, B, hMgt, _, hBdens⟩ := chain K
-  haveI : NeZero M := ⟨by omega⟩
-  -- Clear the denominator: 100/delta² < K implies 100 < K*delta²
-  have hd2 : delta ^ 2 > 0 := by positivity
-  have h_clear : (100 : ℝ) < ↑K * delta ^ 2 := by
-    have h1 : 100 / delta ^ 2 * delta ^ 2 < ↑K * delta ^ 2 :=
-      mul_lt_mul_of_pos_right hK hd2
-    have h2 : 100 / delta ^ 2 * delta ^ 2 = 100 := by field_simp
-    linarith
-  -- The density exceeds 1, so |B| > M
-  have hgt1 : delta + ↑K * delta ^ 2 / 100 > 1 := by linarith
-  have hMcast : (0 : ℝ) < ↑M := Nat.cast_pos.mpr (by omega : 0 < M)
-  have hBgt : (B.card : ℝ) > ↑M := by
-    calc (B.card : ℝ) ≥ (delta + ↑K * delta ^ 2 / 100) * ↑M := hBdens
-      _ > 1 * ↑M := mul_lt_mul_of_pos_right hgt1 hMcast
-      _ = ↑M := one_mul _
-  -- But |B| ≤ M for any Finset of ZMod M — contradiction
-  linarith [card_le_nat_real B]
+  -- N₀ = max 2 (cornersTheoremBound delta): ensures ZMod N is a large enough group
+  refine ⟨max 2 (cornersTheoremBound delta), fun N hN A hdensity hAP => ?_⟩
+  haveI : NeZero N := ⟨by omega⟩
+  -- Bridge: our APFree implies Mathlib's ThreeAPFree
+  have hfree : ThreeAPFree (↑A : Set (ZMod N)) := (apFree_iff_threeAPFree A).mp hAP
+  -- Apply Mathlib's Roth theorem: dense subsets of large abelian groups contain 3-APs
+  have hbound : cornersTheoremBound delta ≤ Fintype.card (ZMod N) := by
+    rw [ZMod.card N]; omega
+  have hdens : delta * ↑(Fintype.card (ZMod N)) ≤ ↑A.card := by
+    rw [ZMod.card N]; exact_mod_cast hdensity
+  exact absurd hfree (roth_3ap_theorem delta hdelta hbound A hdens)
 
 end Szemeredi.Roth
