@@ -98,6 +98,10 @@
       "For composites, 2 ≤ p(n) ≤ √n, giving 2/n ≤ p(n)/n ≤ 1/√n; the upper bound explains the √x factor in the asymptotics",
       "This parallels asking if π(x+h) - π(x) ~ h/log x for h = x^{1/2+ε}, but on a much coarser scale making equidistribution potentially easier",
       "The sum is connected to the Dickman-de Bruijn ρ-function via decomposition by least prime factor"
+    ],
+    "prerequisites": [
+      "Number theory fundamentals",
+      "Combinatorial analysis"
     ]
   },
   "sections": [

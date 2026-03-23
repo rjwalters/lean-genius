@@ -53,6 +53,13 @@
       "Expected time to ruin is infinite despite certain ruin: $E[\\tau] = \\infty$ while $P(\\tau < \\infty) = 1$. This is a classic example where the event is almost sure but takes 'forever' on average.",
       "No betting strategy can beat a fair game: the Optional Stopping Theorem says $E[X_\\tau] = E[X_0]$ for any bounded stopping time $\\tau$, so clever strategies cannot change expected outcomes — only redistribute variance.",
       "Connection to financial mathematics: arbitrage-free prices are martingales under a risk-neutral measure by the First Fundamental Theorem of Asset Pricing (Harrison-Pliska 1979). The fair games theorem is thus the foundation of modern option pricing theory (Black-Scholes, 1973)."
+    ],
+    "prerequisites": [
+      "Martingales and the Optional Stopping Theorem",
+      "Random walks and recurrence (Polya's theorem)",
+      "Probability theory: expectation and conditional expectation",
+      "Gambler's ruin and absorbing Markov chains",
+      "Filtrations and stopping times"
     ]
   },
   "sections": [

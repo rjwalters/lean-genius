@@ -105,6 +105,10 @@
       "**Energy Viewpoint:** Distinct products is equivalent to minimal multiplicative energy $E^\\times(A,B) = |A||B|$. This connects to the Balog-Szemerédi-Gowers framework: low energy implies large product sets.",
       "**The Open Limit:** Does the normalized ratio $\\max |A||B| \\cdot \\log N / N^2$ converge? This is surprisingly delicate — it depends on the fine structure of primes in short intervals and the distribution of smooth numbers.",
       "**Sum-Product Duality:** Problem #490 is the multiplicative counterpart of questions about distinct sums (Problem #425). The Erdős-Szemerédi conjecture suggests sums and products cannot both be constrained simultaneously."
+    ],
+    "prerequisites": [
+      "Number theory fundamentals",
+      "Combinatorial analysis"
     ]
   },
   "sections": [
@@ -181,7 +185,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #490 asked whether sets A, B ⊆ {1,...,N} with distinct products satisfy |A||B| ≪ N²/log N. Szemerédi (1976) proved YES using a divisor-counting argument. The formalization captures the upper bound (axiomatized), the matching lower bound via the prime construction A = [1, N/2], B = primes in (N/2, N] (achieving ~N²/(4 log N)), and the open limit question about whether max|A||B|·log N/N² converges.",
-    "implications": "This result reveals how the multiplicative structure of integers — specifically the density of primes and the divisor function — constrains extremal combinatorial configurations. The prime number theorem is essential to both the upper bound (via divisor sums) and the lower bound (via prime density in intervals). The multiplicative energy framework connects to modern additive combinatorics (Balog-Szemerédi-Gowers theorem), and the sum-product duality links to the Erdős-Szemerédi conjecture. The open limit question touches on deep number-theoretic issues about oscillations in prime distribution.",
+    "implications": "**Theoretical Significance**: This result reveals how the multiplicative structure of integers — specifically the density of primes and the divisor function — constrains extremal combinatorial configurations. The prime number theorem is essential to both the upper bound (via divisor sums) and the lower bound (via prime density in intervals).\n\n**Broader Connections**: The multiplicative energy framework connects to modern additive combinatorics (Balog-Szemerédi-Gowers theorem), and the sum-product duality links to the Erdős-Szemerédi conjecture. The open limit question touches on deep number-theoretic issues about oscillations in prime distribution.",
     "openQuestions": [
       "Does lim max|A||B|·log N/N² exist? (Erdős's refined question, still open)",
       "What is the exact limit if it exists? Van Doorn shows it must be ≥ 1",
