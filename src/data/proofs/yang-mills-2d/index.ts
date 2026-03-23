@@ -1,8 +1,7 @@
-import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion } from '@/types/proof'
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
 
-// Type assertion for JSON import
 const meta = metaJson as {
   id: string
   title: string
@@ -12,10 +11,10 @@ const meta = metaJson as {
   sections: ProofSection[]
   overview?: ProofOverview
   conclusion?: ProofConclusion
+  crossReferences?: CrossReference[]
 }
 
-// Import the Lean source file
-const leanSource = () => import('../../../../proofs/Proofs/YangMillsMassGap.lean?raw')
+const leanSource = () => import('../../../../proofs/Proofs/YangMills/Exploration.lean?raw')
 
 export const proof: Proof = {
   id: meta.id,
@@ -24,13 +23,13 @@ export const proof: Proof = {
   description: meta.description,
   meta: meta.meta,
   sections: meta.sections,
-  source: '', // Loaded dynamically
+  source: '',
   overview: meta.overview,
   conclusion: meta.conclusion,
+  crossReferences: meta.crossReferences,
 }
 
-const rawAnnotations = annotationsJson as unknown as { annotations: Annotation[] } | Annotation[]
-export const annotations: Annotation[] = Array.isArray(rawAnnotations) ? rawAnnotations : rawAnnotations.annotations
+export const annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const proofData: ProofData = {
   proof,

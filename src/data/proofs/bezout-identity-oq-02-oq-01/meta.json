@@ -140,7 +140,7 @@
   ],
   "conclusion": {
     "summary": "This formalization answers bezout-identity-oq-02-oq-01 affirmatively: YES, the Fundamental Theorem of Arithmetic can be derived explicitly from euclids_lemma_prime. The proof chain (Bézout → Euclid's Lemma → FTA) is made completely transparent. Zero sorries, zero axioms.",
-    "implications": "**Theoretical Significance**: Completes the bezout-identity family: BezoutIdentity → BezoutIdentityOQ02 (Euclid's Lemma) → BezoutIdentityOQ02OQ01 (FTA).\n\n**Broader Connections**: The uniqueness of prime factorization is the cornerstone of elementary number theory, underlying the theory of GCDs, LCMs, congruences, and Dirichlet series. The algebraic structure (UFDs) abstracts this to polynomial rings and beyond.",
+    "implications": "**Theoretical Significance**: Completes the bezout-identity family: BezoutIdentity → BezoutIdentityOQ02 (Euclid's Lemma) → BezoutIdentityOQ02OQ01 (FTA).\n\nThe uniqueness of prime factorization is the cornerstone of elementary number theory, underlying the theory of GCDs, LCMs, congruences, and Dirichlet series. The algebraic structure (UFDs) abstracts this to polynomial rings and beyond.",
     "openQuestions": [
       "Can fta_uniqueness be adapted to prove uniqueness in polynomial rings (over a field), giving the Fundamental Theorem for k[X]?",
       "Can the approach generalize to Euclidean domains or PIDs using Mathlib's UniqueFactorizationDomain typeclass?",

@@ -151,7 +151,7 @@
   ],
   "conclusion": {
     "summary": "Pick's theorem is formalized with an axiomatized SimpleLatticePolygon structure, algebraic rearrangements, and verification on unit triangles and rectangles. The additivity theorem provides the key inductive step of the classical proof. A 3D counterexample (Reeve tetrahedra) demonstrates the formula's dimension-specific nature.",
-    "implications": "**Theoretical Significance**: The formalization provides a clean framework for lattice geometry in Lean.\n\n**Broader Connections**: The additivity theorem could serve as the foundation for a full constructive proof via triangulation. The Reeve tetrahedra counterexample motivates formalizing Ehrhart theory for higher-dimensional lattice polytope enumeration.",
+    "implications": "**Theoretical Significance**: The formalization provides a clean framework for lattice geometry in Lean.\n\nThe additivity theorem could serve as the foundation for a full constructive proof via triangulation. The Reeve tetrahedra counterexample motivates formalizing Ehrhart theory for higher-dimensional lattice polytope enumeration.",
     "openQuestions": [
       "Can the picks_theorem axiom be proved constructively via triangulation into unit right triangles and the additivity lemma?",
       "Can the GCD boundary formula (lattice points on a segment = gcd(Δx, Δy) + 1) be formalized and used to compute boundary counts?",

@@ -155,7 +155,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1099 asked whether, for α > 1, the liminf of h_α(n) = Σ((d_{i+1}/dᵢ) - 1)^α is bounded. Vose (1984) answered YES by constructing a specific sequence of integers with evenly-spaced divisors. The problem reveals deep structure in divisor gaps: while primes and prime powers have poor divisor regularity, there exist integers with remarkably smooth divisor distributions.",
-    "implications": "**Theoretical Significance**: **Implications for Number Theory**\n\n1. **Divisor Structure:** Some integers have much more regular divisor distributions than others.\n\n2.\n\n**Broader Connections**: **Smooth Numbers:** The solution relates to studying numbers whose prime factors are small and evenly distributed.\n\n3. **Open Directions:** The specific cases of n! and lcm{1,...,n} remain intriguing open problems.\n\n4. **Related Problems:** Connects to Problem #673 and broader questions about multiplicative structure.",
+    "implications": "**Theoretical Significance**: **Implications for Number Theory**\n\n1. **Divisor Structure:** Some integers have much more regular divisor distributions than others.\n\n**2. Smooth Numbers:** The solution relates to studying numbers whose prime factors are small and evenly distributed.\n\n3. **Open Directions:** The specific cases of n! and lcm{1,...,n} remain intriguing open problems.\n\n4. **Related Problems:** Connects to Problem #673 and broader questions about multiplicative structure.",
     "openQuestions": [
       "Does h_α(n!) remain bounded as n → ∞?",
       "Does h_α(lcm{1,...,n}) remain bounded as n → ∞?",

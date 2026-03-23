@@ -6,6 +6,7 @@
   "leanFile": "Proofs/FourierSeriesOQ03.lean",
   "meta": {
     "author": "Peter Gustav Lejeune Dirichlet (1829)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Dirichlet%27s_theorem_on_Fourier_series",
     "date": "1829",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/FourierSeriesOQ03.lean",
@@ -69,7 +70,9 @@
       "**The Dirichlet kernel has rich structure**: We prove D_N(0) = 2N+1, conjugate symmetry D_N(-t) = conj(D_N(t)), and continuity. These are used in the localization argument."
     ],
     "prerequisites": [
-      "Mathematical analysis"
+      "Real analysis (Lebesgue integration, bounded variation)",
+      "Fourier analysis (Fourier coefficients, Dirichlet kernel)",
+      "Familiarity with Lean 4 and Mathlib"
     ]
   },
   "sections": [
@@ -128,11 +131,21 @@
       "targetId": "fourier-series",
       "relationship": "extends",
       "description": "Extends the L2 convergence theory to pointwise convergence under BV conditions. Answers OQ-03 from the Fourier series entry."
+    },
+    {
+      "targetId": "fourier-series-oq-02",
+      "relationship": "related",
+      "description": "Sibling OQ analyzing Fourier coefficient decay rates under Hölder continuity. Both study regularity-decay relationships: OQ-02 focuses on coefficient decay, OQ-03 on pointwise convergence."
+    },
+    {
+      "targetId": "taylor-sincos-convergence",
+      "relationship": "related",
+      "description": "Both formalize convergence of function expansions: Taylor series converge uniformly on compact sets for analytic functions, while Fourier series converge pointwise for BV functions — different regularity assumptions yield different convergence modes."
     }
   ],
   "conclusion": {
     "summary": "This formalization of Dirichlet's pointwise convergence theorem establishes that Fourier partial sums of bounded variation functions converge pointwise to the midpoint of one-sided limits. The main theorem is proved by chaining four axiomatized analytical ingredients: BV limit existence, convolution representation, kernel normalization, and the Dirichlet localization lemma (which encapsulates integral splitting and Riemann-Lebesgue). The Dirichlet kernel infrastructure (value at zero, conjugate symmetry) is fully proved from Mathlib.",
-    "implications": "**Theoretical Significance**: Dirichlet's theorem is the foundational result for pointwise Fourier analysis.\n\n**Broader Connections**: It tells us that 'well-behaved' (BV) functions have convergent Fourier series at every point. This is the starting point for studying: Gibbs phenomenon at discontinuities, optimal convergence rates, and extensions to higher regularity classes.",
+    "implications": "**Theoretical Significance**: Dirichlet's theorem is the foundational result for pointwise Fourier analysis.\n\nIt tells us that 'well-behaved' (BV) functions have convergent Fourier series at every point. This is the starting point for studying: Gibbs phenomenon at discontinuities, optimal convergence rates, and extensions to higher regularity classes.",
     "openQuestions": [
       "Can the axiomatized convolution representation be proved from Mathlib's integral API?",
       "Can the Riemann-Lebesgue lemma for BV functions be proved in Lean using integration by parts?",
@@ -141,6 +154,25 @@
     ]
   },
   "relatedProofs": [
-    "fourier-series"
+    "fourier-series",
+    "fourier-series-oq-02",
+    "taylor-sincos-convergence"
+  ],
+  "references": [
+    {
+      "key": "Di29",
+      "citation": "Dirichlet, P.G.L., Sur la convergence des séries trigonométriques qui servent à représenter une fonction arbitraire, Journal für die reine und angewandte Mathematik 4 (1829), 157–169.",
+      "type": "paper"
+    },
+    {
+      "key": "Zy59",
+      "citation": "Zygmund, A., Trigonometric Series, 2nd ed., Cambridge University Press (1959), Chapters II–III.",
+      "type": "book"
+    },
+    {
+      "key": "Ka04",
+      "citation": "Katznelson, Y., An Introduction to Harmonic Analysis, 3rd ed., Cambridge University Press (2004), Chapter I.",
+      "type": "book"
+    }
   ]
 }

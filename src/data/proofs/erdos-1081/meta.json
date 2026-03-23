@@ -148,7 +148,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1081 asked whether A(x), the count of integers up to x expressible as sums of two squarefull numbers, satisfies A(x) ~ c·x/√(log x). The answer is NO, disproved by Odoni in 1981. The correct asymptotic is A(x) ~ x/(log x)^α where α = 1 - 2^(-1/3) ≈ 0.206, meaning A(x) grows significantly faster than Erdős expected.",
-    "implications": "**Theoretical Significance**: **Implications in Analytic Number Theory**\n\n1. **Probabilistic Heuristics:** Naive models can fail when underlying sets have structure\n\n2. **Quadratic Forms:** Deep connection to representation theory of binary forms\n\n3.\n\n**Broader Connections**: **Exponent Discovery:** The unexpected exponent α = 1 - 2^(-1/3) has number-theoretic significance\n\n4. **Related Problems:** Connected to Problem #940 about similar counting questions\n\n5. **Methodological:** Blomer-Granville's approach exemplifies modern analytic techniques.",
+    "implications": "**Theoretical Significance**: **Implications in Analytic Number Theory**\n\n1. **Probabilistic Heuristics:** Naive models can fail when underlying sets have structure\n\n2. **Quadratic Forms:** Deep connection to representation theory of binary forms\n\n**3. Exponent Discovery:** The unexpected exponent α = 1 - 2^(-1/3) has number-theoretic significance\n\n4. **Related Problems:** Connected to Problem #940 about similar counting questions\n\n5. **Methodological:** Blomer-Granville's approach exemplifies modern analytic techniques.",
     "openQuestions": [
       "Exact leading constant in A(x) asymptotic",
       "Higher order terms in the expansion of A(x)",

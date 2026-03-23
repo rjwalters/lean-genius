@@ -148,7 +148,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #979 on counting representations of integers as sums of k-th powers of primes. Using multisets to represent solutions and extended naturals to count them, we axiomatize Erdős's results that this count is unbounded for k=2 (proved 1937) and k=3 (unpublished). Concrete examples verify the definitions: 8 = 2^2 + 2^2 and 24 = 2^3 + 2^3 + 2^3.",
-    "implications": "**Theoretical Significance**: This problem connects several major areas:\n\n1. **Additive number theory**: Variants of Goldbach and Waring problems restricted to prime bases\n2.\n\n**Broader Connections**: **Analytic number theory**: The circle method for counting solutions to Diophantine equations\n3. **Prime distribution**: The density of primes determines the frequency of representations\n4. **Combinatorics**: Using multisets to handle repeated elements in sums.",
+    "implications": "**Theoretical Significance**: This problem connects several major areas:\n\n1. **Additive number theory**: Variants of Goldbach and Waring problems restricted to prime bases\n**2. Analytic number theory**: The circle method for counting solutions to Diophantine equations\n3. **Prime distribution**: The density of primes determines the frequency of representations\n4. **Combinatorics**: Using multisets to handle repeated elements in sums.",
     "openQuestions": [
       "Is lim sup f_k(n) = infinity for all k >= 4?",
       "What is the growth rate of max_n f_k(n) as a function of the search bound?",

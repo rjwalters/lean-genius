@@ -8,13 +8,13 @@
     },
     "type": "context",
     "title": "Problem Overview and References",
-    "content": "Erdős Problem #799 asks whether the list chromatic number $\\chi_L(G) = o(n)$ for almost all graphs on $n$ vertices. The header documents the full resolution: Alon (1992) gave the first sublinear bound $\\chi_L(G) \\ll \\frac{\\log\\log n}{\\log n} \\cdot n$, and Alon-Krivelevich-Sudakov (1999) determined the precise order $\\chi_L(G) \\asymp \\frac{n}{\\log n}$. The references [Al92] and [AKS99] are the two key papers.",
+    "content": "Erd\u0151s Problem #799 asks whether the list chromatic number $\\chi_L(G) = o(n)$ for almost all graphs on $n$ vertices. The header documents the full resolution: Alon (1992) gave the first sublinear bound $\\chi_L(G) \\ll \\frac{\\log\\log n}{\\log n} \\cdot n$, and Alon-Krivelevich-Sudakov (1999) determined the precise order $\\chi_L(G) \\asymp \\frac{n}{\\log n}$. The references [Al92] and [AKS99] are the two key papers.",
     "mathContext": "$\\chi_L(G) = o(n)$ for $G \\in G(n, 1/2)$; resolved with $\\chi_L(G) \\asymp \\frac{n}{\\log n}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "list chromatic number",
       "choice number",
-      "Erdős-Rényi random graph",
+      "Erd\u0151s-R\u00e9nyi random graph",
       "sublinear growth"
     ],
     "prerequisites": [
@@ -144,7 +144,7 @@
       "endLine": 90
     },
     "type": "insight",
-    "title": "χ_L(G) ≥ χ(G): List Coloring is Harder",
+    "title": "\u03c7_L(G) \u2265 \u03c7(G): List Coloring is Harder",
     "content": "The list chromatic number is always at least the ordinary chromatic number. The proof idea is simple: if we assign every vertex the same list $\\{1, 2, \\ldots, \\chi(G)\\}$, then a valid list coloring is exactly a proper $\\chi(G)$-coloring. So $k$-choosability implies $k$-colorability, giving $\\chi_L(G) \\geq \\chi(G)$. This is axiomatized here because the formal proof requires connecting Mathlib's `chromaticNumber` to the custom `listChromaticNumber` definition.",
     "mathContext": "$\\chi_L(G) \\geq \\chi(G)$, since uniform lists $L(v) = \\{1,\\ldots,k\\}$ reduce list coloring to ordinary coloring",
     "significance": "key",
@@ -167,13 +167,13 @@
       "endLine": 99
     },
     "type": "insight",
-    "title": "The Gap χ_L − χ Can Be Arbitrarily Large",
-    "content": "While $\\chi_L(G) \\geq \\chi(G)$ always, the gap can be unbounded. The complete bipartite graph $K_{n,n}$ is bipartite so $\\chi(K_{n,n}) = 2$, but Erdős, Rubin, and Taylor (1979) proved $\\chi_L(K_{n,n}) \\geq \\lfloor\\log_2 n\\rfloor + 1$. More precisely, Galvin (1995) showed $\\chi_L(K_{n,n}) = \\lceil\\log_2 n\\rceil + 1$ for line graphs of bipartite graphs. This axiom captures the key qualitative fact: for any $k$, there exists a bipartite graph with choice number $\\geq k$.",
+    "title": "The Gap \u03c7_L \u2212 \u03c7 Can Be Arbitrarily Large",
+    "content": "While $\\chi_L(G) \\geq \\chi(G)$ always, the gap can be unbounded. The complete bipartite graph $K_{n,n}$ is bipartite so $\\chi(K_{n,n}) = 2$, but Erd\u0151s, Rubin, and Taylor (1979) proved $\\chi_L(K_{n,n}) \\geq \\lfloor\\log_2 n\\rfloor + 1$. More precisely, Galvin (1995) showed $\\chi_L(K_{n,n}) = \\lceil\\log_2 n\\rceil + 1$ for line graphs of bipartite graphs. This axiom captures the key qualitative fact: for any $k$, there exists a bipartite graph with choice number $\\geq k$.",
     "mathContext": "$\\forall k,\\; \\exists G \\text{ bipartite}: \\chi(G) = 2 \\text{ and } \\chi_L(G) \\geq k$; specifically $\\chi_L(K_{n,n}) \\geq \\lfloor\\log_2 n\\rfloor + 1$",
     "significance": "key",
     "relatedConcepts": [
       "complete bipartite graph",
-      "Erdős-Rubin-Taylor theorem",
+      "Erd\u0151s-Rubin-Taylor theorem",
       "Galvin's theorem",
       "list coloring conjecture"
     ],
@@ -192,11 +192,11 @@
     },
     "type": "definition",
     "title": "listChromaticRandom: Axiomatized Random Graph Behavior",
-    "content": "Rather than formalizing the full Erdős-Rényi probability space $G(n, 1/2)$, the formalization axiomatizes `listChromaticRandom n` as a function $\\mathbb{N} \\to \\mathbb{N}$ representing the almost-sure value of $\\chi_L(G)$ for a random graph on $n$ vertices. This is a pragmatic choice: the probabilistic machinery for random graphs (measure theory on graph spaces, almost-sure convergence) is far beyond Mathlib's current scope.",
+    "content": "Rather than formalizing the full Erd\u0151s-R\u00e9nyi probability space $G(n, 1/2)$, the formalization axiomatizes `listChromaticRandom n` as a function $\\mathbb{N} \\to \\mathbb{N}$ representing the almost-sure value of $\\chi_L(G)$ for a random graph on $n$ vertices. This is a pragmatic choice: the probabilistic machinery for random graphs (measure theory on graph spaces, almost-sure convergence) is far beyond Mathlib's current scope.",
     "mathContext": "$\\chi_L^{\\text{rand}}(n)$ represents $\\chi_L(G)$ for $G \\sim G(n, 1/2)$ (almost-sure value)",
     "significance": "key",
     "relatedConcepts": [
-      "Erdős-Rényi model",
+      "Erd\u0151s-R\u00e9nyi model",
       "almost sure convergence",
       "axiomatized probability",
       "random graph theory"
@@ -216,16 +216,16 @@
     },
     "type": "concept",
     "title": "Chromatic Number of Random Graphs",
-    "content": "The ordinary chromatic number of $G(n, 1/2)$ satisfies $\\chi(G) \\asymp \\frac{n}{2\\log_2 n}$ almost surely. This classical result, due to Bollobás (1988) and Łuczak (1991), provides the baseline against which the list chromatic number is compared. The axiom states a lower bound $\\chi^{\\text{rand}}(n) \\geq c_1 \\cdot n / \\log n$ for some constant $c_1 > 0$.",
+    "content": "The ordinary chromatic number of $G(n, 1/2)$ satisfies $\\chi(G) \\asymp \\frac{n}{2\\log_2 n}$ almost surely. This classical result, due to Bollob\u00e1s (1988) and \u0141uczak (1991), provides the baseline against which the list chromatic number is compared. The axiom states a lower bound $\\chi^{\\text{rand}}(n) \\geq c_1 \\cdot n / \\log n$ for some constant $c_1 > 0$.",
     "mathContext": "$\\chi(G(n, 1/2)) \\asymp \\frac{n}{2\\log_2 n}$, so $\\chi(G) \\geq c_1 \\cdot \\frac{n}{\\log n}$ for large $n$",
     "significance": "supporting",
     "relatedConcepts": [
-      "Bollobás chromatic number theorem",
-      "Łuczak refinement",
+      "Bollob\u00e1s chromatic number theorem",
+      "\u0141uczak refinement",
       "concentration of chromatic number"
     ],
     "prerequisites": [
-      "Erdős-Rényi random graph",
+      "Erd\u0151s-R\u00e9nyi random graph",
       "chromatic number",
       "logarithmic asymptotics"
     ]
@@ -239,17 +239,17 @@
     },
     "type": "technique",
     "title": "Alon's 1992 Theorem: First Sublinear Bound",
-    "content": "Alon's 1992 paper \"Choice numbers of graphs: a probabilistic approach\" established the first sublinear bound: $\\chi_L(G) \\leq C \\cdot \\frac{\\log\\log n}{\\log n} \\cdot n$ almost surely for $G \\in G(n, 1/2)$. The proof uses the Lovász Local Lemma (LLL): given lists of size $k$, for each vertex $v$ the \"bad event\" $A_v$ is that $v$ cannot be properly colored. The LLL shows that if $k$ is large enough relative to the maximum degree, all bad events can be simultaneously avoided. For random graphs with $\\Delta \\approx n/2$, this yields the $n \\log\\log n / \\log n$ bound.",
+    "content": "Alon's 1992 paper \"Choice numbers of graphs: a probabilistic approach\" established the first sublinear bound: $\\chi_L(G) \\leq C \\cdot \\frac{\\log\\log n}{\\log n} \\cdot n$ almost surely for $G \\in G(n, 1/2)$. The proof uses the Lov\u00e1sz Local Lemma (LLL): given lists of size $k$, for each vertex $v$ the \"bad event\" $A_v$ is that $v$ cannot be properly colored. The LLL shows that if $k$ is large enough relative to the maximum degree, all bad events can be simultaneously avoided. For random graphs with $\\Delta \\approx n/2$, this yields the $n \\log\\log n / \\log n$ bound.",
     "mathContext": "$\\chi_L(G(n,1/2)) \\leq C \\cdot \\frac{\\log\\log n}{\\log n} \\cdot n$ a.s., proving $\\chi_L = o(n)$",
     "significance": "key",
     "relatedConcepts": [
-      "Lovász Local Lemma",
+      "Lov\u00e1sz Local Lemma",
       "probabilistic method",
       "choice number upper bounds",
       "random coloring"
     ],
     "prerequisites": [
-      "Lovász Local Lemma",
+      "Lov\u00e1sz Local Lemma",
       "random graph maximum degree",
       "list coloring"
     ]
@@ -262,8 +262,8 @@
       "endLine": 141
     },
     "type": "insight",
-    "title": "Sublinearity Corollary: χ_L(G) = o(n)",
-    "content": "This axiom restates Alon's result in the $o(n)$ formulation directly answering Erdős's question. For any $\\varepsilon > 0$, there exists $N_0$ such that $\\chi_L(G) \\leq \\varepsilon n$ for all $n \\geq N_0$. This is a formal way of saying $\\chi_L(G) / n \\to 0$, confirming the affirmative answer to Problem #799.",
+    "title": "Sublinearity Corollary: \u03c7_L(G) = o(n)",
+    "content": "This axiom restates Alon's result in the $o(n)$ formulation directly answering Erd\u0151s's question. For any $\\varepsilon > 0$, there exists $N_0$ such that $\\chi_L(G) \\leq \\varepsilon n$ for all $n \\geq N_0$. This is a formal way of saying $\\chi_L(G) / n \\to 0$, confirming the affirmative answer to Problem #799.",
     "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall n \\geq N_0:\\; \\chi_L(G(n,1/2)) \\leq \\varepsilon n$, i.e., $\\chi_L = o(n)$",
     "significance": "key",
     "relatedConcepts": [
@@ -284,13 +284,13 @@
       "endLine": 159
     },
     "type": "technique",
-    "title": "Alon-Krivelevich-Sudakov 1999: Tight Θ(n/log n) Bound",
-    "content": "The 1999 paper by Alon, Krivelevich, and Sudakov determined the precise order of magnitude: $\\chi_L(G(n,1/2)) \\asymp n/\\log n$. The upper bound uses the semi-random method (Rödl nibble): iteratively color a fraction of vertices using random choices, then handle the remainder. The lower bound constructs adversarial lists of size $c \\cdot n / \\log n$ that defeat any coloring strategy, using a probabilistic argument on the structure of $G(n,1/2)$. Together they give two-sided bounds: $C_2 \\cdot n/\\log n \\leq \\chi_L(G) \\leq C_1 \\cdot n/\\log n$.",
+    "title": "Alon-Krivelevich-Sudakov 1999: Tight \u0398(n/log n) Bound",
+    "content": "The 1999 paper by Alon, Krivelevich, and Sudakov determined the precise order of magnitude: $\\chi_L(G(n,1/2)) \\asymp n/\\log n$. The upper bound uses the semi-random method (R\u00f6dl nibble): iteratively color a fraction of vertices using random choices, then handle the remainder. The lower bound constructs adversarial lists of size $c \\cdot n / \\log n$ that defeat any coloring strategy, using a probabilistic argument on the structure of $G(n,1/2)$. Together they give two-sided bounds: $C_2 \\cdot n/\\log n \\leq \\chi_L(G) \\leq C_1 \\cdot n/\\log n$.",
     "mathContext": "$C_2 \\frac{n}{\\log n} \\leq \\chi_L(G(n,1/2)) \\leq C_1 \\frac{n}{\\log n}$ a.s., i.e., $\\chi_L \\asymp \\frac{n}{\\log n}$",
     "significance": "key",
     "relatedConcepts": [
       "semi-random method",
-      "Rödl nibble",
+      "R\u00f6dl nibble",
       "adversarial list construction",
       "tight asymptotic bounds"
     ],
@@ -308,7 +308,7 @@
       "endLine": 176
     },
     "type": "insight",
-    "title": "Asymptotic Ratio χ_L/χ → 2/ln 2",
+    "title": "Asymptotic Ratio \u03c7_L/\u03c7 \u2192 2/ln 2",
     "content": "For $G \\in G(n,1/2)$, the ordinary chromatic number satisfies $\\chi(G) \\sim \\frac{n}{2\\log_2 n}$ while the list chromatic number satisfies $\\chi_L(G) \\asymp \\frac{n}{\\log n} = \\frac{n}{\\ln n / \\ln 2} = \\frac{n \\ln 2}{\\ln n}$. Taking the ratio: $\\frac{\\chi_L(G)}{\\chi(G)} \\to \\frac{n/(\\ln n / \\ln 2)}{n/(2 \\ln n / \\ln 2)} = \\frac{2}{\\ln 2} \\approx 2.885$. So for random graphs, list coloring is about 2.885 times harder than ordinary coloring. The axiom formalizes a weaker statement: $\\chi_L(G) \\sim n/\\log n$ (ratio $\\to 1$).",
     "mathContext": "$\\frac{\\chi_L(G)}{\\chi(G)} \\to \\frac{2}{\\ln 2} \\approx 2.885$ as $n \\to \\infty$ for $G \\sim G(n,1/2)$",
     "significance": "key",
@@ -331,12 +331,12 @@
       "endLine": 201
     },
     "type": "technique",
-    "title": "Erdős 799: Main Theorem and Resolution",
-    "content": "The main theorem `erdos_799` states that $\\chi_L(G(n,1/2)) \\asymp n/\\log n$ almost surely, directly implying the affirmative answer to Problem #799 ($\\chi_L = o(n)$). The proof is simply `alon_krivelevich_sudakov_1999`, since the tight $\\Theta(n/\\log n)$ bound from the 1999 paper subsumes all earlier results. This is a clean example of a resolved Erdős problem where the answer is YES with precise quantitative bounds.",
+    "title": "Erd\u0151s 799: Main Theorem and Resolution",
+    "content": "The main theorem `erdos_799` states that $\\chi_L(G(n,1/2)) \\asymp n/\\log n$ almost surely, directly implying the affirmative answer to Problem #799 ($\\chi_L = o(n)$). The proof is simply `alon_krivelevich_sudakov_1999`, since the tight $\\Theta(n/\\log n)$ bound from the 1999 paper subsumes all earlier results. This is a clean example of a resolved Erd\u0151s problem where the answer is YES with precise quantitative bounds.",
     "mathContext": "$\\exists C_1, C_2 > 0 : \\forall n \\geq 2,\\; C_2 \\frac{n}{\\log n} \\leq \\chi_L(G(n,1/2)) \\leq C_1 \\frac{n}{\\log n}$",
     "significance": "key",
     "relatedConcepts": [
-      "resolved Erdős problem",
+      "resolved Erd\u0151s problem",
       "asymptotic bounds",
       "choice number characterization"
     ],

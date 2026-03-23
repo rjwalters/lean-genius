@@ -8,7 +8,7 @@
     },
     "type": "context",
     "title": "Problem Overview and Background",
-    "content": "Header documentation for Erdős Problem #1176, providing the full problem statement and known results. This problem was posed by Erdős, Galvin, and Hajnal and concerns the interaction between edge colorings and vertex color classes on graphs with uncountable chromatic number. The key question asks whether, for any graph $G$ with $\\chi(G) = \\aleph_1$, one can color the edges with $\\aleph_1$ colors such that every proper countable vertex coloring has a color class meeting all edge color classes.",
+    "content": "Header documentation for Erd\u0151s Problem #1176, providing the full problem statement and known results. This problem was posed by Erd\u0151s, Galvin, and Hajnal and concerns the interaction between edge colorings and vertex color classes on graphs with uncountable chromatic number. The key question asks whether, for any graph $G$ with $\\chi(G) = \\aleph_1$, one can color the edges with $\\aleph_1$ colors such that every proper countable vertex coloring has a color class meeting all edge color classes.",
     "mathContext": "Given a graph $G$ with $\\chi(G) = \\aleph_1$, does there exist an edge coloring $c : E(G) \\to \\aleph_1$ such that for every proper coloring $f : V(G) \\to \\mathbb{N}$, there exists $i \\in \\mathbb{N}$ with $c[E(f^{-1}(i))] = \\aleph_1$? Here $c[E(S)]$ denotes the set of edge colors appearing on edges incident to the vertex set $S$.",
     "significance": "key",
     "relatedConcepts": [
@@ -36,7 +36,7 @@
     "title": "Imports and Namespace Setup",
     "content": "Imports cardinal arithmetic from Mathlib (Ordinal and Cofinality modules for $\\aleph$ numbers) and SimpleGraph.Basic for the graph theory infrastructure. The namespace opens Cardinal, Set, and SimpleGraph for convenient access to key definitions.",
     "mathContext": "The formalization builds on Mathlib's cardinal hierarchy, where $\\aleph_0 = |\\mathbb{N}|$ and $\\aleph_1$ is the next infinite cardinal, along with the SimpleGraph type for undirected graphs without self-loops.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib cardinal hierarchy",
       "SimpleGraph"
@@ -55,7 +55,7 @@
     },
     "type": "concept",
     "title": "Graph Coloring Definitions (Cardinal-Valued)",
-    "content": "Defines cardinal-valued graph coloring: a proper vertex coloring requires adjacent vertices to receive distinct colors, $\\kappa$-colorability asks for a proper coloring into a type of cardinality $\\kappa$, and the chromatic number $\\chi(G)$ is defined as the infimum over all cardinals admitting a proper coloring. This parallels the approach in Erdős #919 but uses a type parameter $C$ rather than Cardinal.toType to avoid Lean API issues.",
+    "content": "Defines cardinal-valued graph coloring: a proper vertex coloring requires adjacent vertices to receive distinct colors, $\\kappa$-colorability asks for a proper coloring into a type of cardinality $\\kappa$, and the chromatic number $\\chi(G)$ is defined as the infimum over all cardinals admitting a proper coloring. This parallels the approach in Erd\u0151s #919 but uses a type parameter $C$ rather than Cardinal.toType to avoid Lean API issues.",
     "mathContext": "A proper coloring $f : V \\to C$ satisfies $f(u) \\neq f(v)$ whenever $u \\sim v$. The chromatic number is $\\chi(G) = \\inf\\{\\kappa : G \\text{ is } \\kappa\\text{-colorable}\\}$. Using $\\text{IsCardColorable}(G, \\kappa) \\iff \\exists C,\\, |C| = \\kappa,\\, \\exists f : V \\to C$ proper.",
     "significance": "key",
     "relatedConcepts": [
@@ -208,11 +208,11 @@
     },
     "type": "concept",
     "title": "Formal Problem Statement",
-    "content": "The formal statement of Erdős Problem #1176: for every graph $G$ on any type $V$ with $\\chi(G) = \\aleph_1$, there exists a type $C$ of cardinality $\\aleph_1$ and an edge coloring $c : \\text{Sym2}\\,V \\to C$ satisfying the domination property. The universal quantification over $V$ and $G$ makes this a very strong statement.",
+    "content": "The formal statement of Erd\u0151s Problem #1176: for every graph $G$ on any type $V$ with $\\chi(G) = \\aleph_1$, there exists a type $C$ of cardinality $\\aleph_1$ and an edge coloring $c : \\text{Sym2}\\,V \\to C$ satisfying the domination property. The universal quantification over $V$ and $G$ makes this a very strong statement.",
     "mathContext": "$\\text{ErdosProblem1176} \\iff \\forall V, G,\\, \\chi(G) = \\aleph_1 \\implies \\exists C,\\, |C| = \\aleph_1,\\, \\exists c : E(G) \\to C,\\, \\text{HasDominationProperty}(G, c)$",
     "significance": "key",
     "relatedConcepts": [
-      "Erdős problems",
+      "Erd\u0151s problems",
       "uncountable chromatic number",
       "partition calculus"
     ],
@@ -231,7 +231,7 @@
     },
     "type": "technique",
     "title": "Structural Results: Uncountable Chromatic Number Consequences",
-    "content": "Three structural results establishing basic consequences of $\\chi(G) = \\aleph_1$. First, $\\aleph_0 < \\aleph_1$ (from Mathlib). Second, such a graph is not $\\aleph_0$-colorable: if it were, then $\\chi(G) \\leq \\aleph_0 < \\aleph_1$, contradicting $\\chi(G) = \\aleph_1$. Third, such a graph has no proper $\\mathbb{N}$-coloring, since $|\\mathbb{N}| = \\aleph_0$. The second theorem uses `ciInf₂_le` to show the infimum is at most $\\aleph_0$.",
+    "content": "Three structural results establishing basic consequences of $\\chi(G) = \\aleph_1$. First, $\\aleph_0 < \\aleph_1$ (from Mathlib). Second, such a graph is not $\\aleph_0$-colorable: if it were, then $\\chi(G) \\leq \\aleph_0 < \\aleph_1$, contradicting $\\chi(G) = \\aleph_1$. Third, such a graph has no proper $\\mathbb{N}$-coloring, since $|\\mathbb{N}| = \\aleph_0$. The second theorem uses `ciInf\u2082_le` to show the infimum is at most $\\aleph_0$.",
     "mathContext": "$\\aleph_0 < \\aleph_1$ implies $\\chi(G) = \\aleph_1 \\implies \\neg\\,\\text{IsCardColorable}(G, \\aleph_0)$, since colorability at $\\aleph_0$ would give $\\chi(G) \\leq \\aleph_0 < \\aleph_1$. Since $|\\mathbb{N}| = \\aleph_0$, no proper $\\mathbb{N}$-coloring can exist for such $G$.",
     "significance": "key",
     "relatedConcepts": [
@@ -241,7 +241,7 @@
     ],
     "prerequisites": [
       "Cardinal.aleph0_lt_aleph_one",
-      "ciInf₂_le",
+      "ciInf\u2082_le",
       "Cardinal.mk_nat"
     ]
   },
@@ -253,9 +253,9 @@
       "endLine": 161
     },
     "type": "insight",
-    "title": "Hajnal-Komjáth Consistency Result",
-    "content": "Axiomatizes the Hajnal-Komjáth consistency result: it is consistent with ZFC that Erdős Problem #1176 has a positive answer. This is a metamathematical result proved using set-theoretic forcing — in certain forcing extensions of ZFC, the domination property holds for all graphs with $\\chi(G) = \\aleph_1$. Since this is a statement about models of set theory rather than a theorem of ZFC, it must be taken as an axiom in the Lean formalization.",
-    "mathContext": "Hajnal and Komjáth showed $\\text{Con}(\\text{ZFC}) \\implies \\text{Con}(\\text{ZFC} + \\text{ErdosProblem1176})$. In Lean, this metamathematical statement is encoded as `axiom hajnal_komjath_consistency_witness : ErdosProblem1176`.",
+    "title": "Hajnal-Komj\u00e1th Consistency Result",
+    "content": "Axiomatizes the Hajnal-Komj\u00e1th consistency result: it is consistent with ZFC that Erd\u0151s Problem #1176 has a positive answer. This is a metamathematical result proved using set-theoretic forcing \u2014 in certain forcing extensions of ZFC, the domination property holds for all graphs with $\\chi(G) = \\aleph_1$. Since this is a statement about models of set theory rather than a theorem of ZFC, it must be taken as an axiom in the Lean formalization.",
+    "mathContext": "Hajnal and Komj\u00e1th showed $\\text{Con}(\\text{ZFC}) \\implies \\text{Con}(\\text{ZFC} + \\text{ErdosProblem1176})$. In Lean, this metamathematical statement is encoded as `axiom hajnal_komjath_consistency_witness : ErdosProblem1176`.",
     "significance": "key",
     "relatedConcepts": [
       "set-theoretic forcing",
@@ -323,7 +323,7 @@
     },
     "type": "insight",
     "title": "Formal Problem Summary and Open Status",
-    "content": "The final section provides two theorem statements. `erdos_1176_from_consistency` derives the problem statement from the Hajnal-Komjáth axiom, showing it holds in appropriate set-theoretic universes. `erdos_1176` states the problem with a sorry, reflecting that it remains open in ZFC alone — the proof cannot be completed without either resolving the conjecture or adding set-theoretic axioms beyond ZFC.",
+    "content": "The final section provides two theorem statements. `erdos_1176_from_consistency` derives the problem statement from the Hajnal-Komj\u00e1th axiom, showing it holds in appropriate set-theoretic universes. `erdos_1176` states the problem with a sorry, reflecting that it remains open in ZFC alone \u2014 the proof cannot be completed without either resolving the conjecture or adding set-theoretic axioms beyond ZFC.",
     "mathContext": "The distinction between `erdos_1176_from_consistency : ErdosProblem1176` (proved from the axiom) and `erdos_1176 : ErdosProblem1176` (sorry, open in ZFC) captures the metamathematical status: the statement is consistent with but possibly independent of ZFC.",
     "significance": "key",
     "relatedConcepts": [
@@ -333,7 +333,7 @@
     ],
     "prerequisites": [
       "metamathematics",
-      "Hajnal-Komjáth axiom"
+      "Hajnal-Komj\u00e1th axiom"
     ]
   }
 ]

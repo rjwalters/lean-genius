@@ -40,7 +40,7 @@
   "overview": {
     "historicalContext": "Karl Wilhelm Feuerbach discovered this theorem in 1822 at age 22, publishing it in his monograph 'Eigenschaften einiger merkwürdigen Punkte des geradlinigen Dreiecks' (Properties of some remarkable points of a rectilinear triangle). Feuerbach died in 1834 at just 34, never knowing the full impact of his work. The nine-point circle itself was independently discovered by Charles-Julien Brianchon and Jean-Victor Poncelet (1821) and by Feuerbach (1822). While the nine-point circle was known to pass through 9 special points, Feuerbach's remarkable contribution was proving the tangency with the incircle and excircles. The theorem can be proved by inversion, by complex numbers (using the unit circle model), or by direct coordinate computation. The modern proof via Euler's identity $OI^2 = R^2 - 2Rr$ is particularly elegant, giving $NI = |R/2 - r|$ immediately.",
     "problemStatement": "**Feuerbach's Theorem**: The nine-point circle of any triangle is tangent to the incircle and to each of the three excircles.\n\nMore precisely: if $(N, R/2)$ is the nine-point circle, $(I, r)$ the incircle, and $(I_k, r_k)$ the excircles, then $d(N,I) = |R/2 - r|$ (internal tangency) and $d(N, I_k) = R/2 + r_k$ (external tangency).\n\nThe point of tangency with the incircle is called the **Feuerbach point**.",
-    "text": "The nine-point circle of a triangle is tangent to its incircle and all three excircles. A beautiful result in triangle geometry.",
+    "text": "A 164-line formalization of Feuerbach's Theorem with 14 declarations, 0 sorries, 0 axioms. Imports `FeuerbachsTheoremOQ01` (the computational core). Defines `Triangle` structure with non-degeneracy in $\\mathbb{R}^2$, computes circumcenter, orthocenter, nine-point center $N = (O+H)/2$, incenter, and excenters explicitly. Proves all four tangencies: `feuerbach_incircle` ($d(N,I) = R/2 - r$, internal tangency) and `feuerbach_excircle_k` ($d(N,I_k) = R/2 + r_k$, external tangency for each $k$) by coordinate computation via `field_simp` and `ring` on expanded bilinear forms. Uses Heron's formula and extended law of sines. The Feuerbach point is the unique tangency point with the incircle.",
     "proofStrategy": "The formalization uses coordinate geometry in $\\mathbb{R}^2$. It defines the Triangle structure with non-degeneracy, computes all special points (circumcenter, orthocenter, centroid, incenter, excenters) and their radii explicitly. All four Feuerbach distance relations are proved by direct coordinate computation: expressing NI and NI_k vectors in terms of circumcenter offsets, expanding bilinear forms, and reducing to polynomial identities via field_simp + ring. The proof chain uses Heron's formula, extended law of sines, and algebraic core lemmas.",
     "keyInsights": [
       "Feuerbach's theorem reveals a hidden tangency between the nine-point circle and the four tangent circles of a triangle — a connection unknown for over 2000 years of Euclidean geometry",
@@ -60,82 +60,93 @@
       "title": "Triangle Configuration in R²",
       "startLine": 55,
       "endLine": 93,
-      "summary": "Defines Point (R²), Triangle structure with non-degeneracy, side lengths a, b, c via distance formula, semi-perimeter, and area via shoelace formula."
+      "summary": "Defines Point (R²), Triangle structure with non-degeneracy, side lengths a, b, c via distance formula, semi-perimeter, and area via shoelace formula.",
+      "mathContext": "A triangle $\\triangle ABC$ in $\\mathbb{R}^2$ with vertices $A, B, C$ (non-collinear). Side lengths $a = |BC|$, $b = |CA|$, $c = |AB|$. Semiperimeter $s = (a+b+c)/2$. Area $\\Delta = \\sqrt{s(s-a)(s-b)(s-c)}$ (Heron's formula)."
     },
     {
       "id": "special-points",
       "title": "Special Points of a Triangle",
       "startLine": 94,
       "endLine": 136,
-      "summary": "Defines midpoints, circumcenter O (via perpendicular bisector intersection), circumradius R, orthocenter H (via H = A+B+C-2O), and centroid G."
+      "summary": "Defines midpoints, circumcenter O (via perpendicular bisector intersection), circumradius R, orthocenter H (via H = A+B+C-2O), and centroid G.",
+      "mathContext": "Circumcenter $O$: intersection of perpendicular bisectors, equidistant from all vertices with $R = |OA| = |OB| = |OC|$. Orthocenter $H$: intersection of altitudes, satisfying $\\vec{OH} = \\vec{OA} + \\vec{OB} + \\vec{OC}$. Centroid $G = (A+B+C)/3$."
     },
     {
       "id": "nine-point-circle",
       "title": "The Nine-Point Circle",
       "startLine": 138,
       "endLine": 157,
-      "summary": "Nine-point center N = midpoint(O,H), nine-point radius R₉ = R/2, and the three Euler points (midpoints of AH, BH, CH)."
+      "summary": "Nine-point center N = midpoint(O,H), nine-point radius R₉ = R/2, and the three Euler points (midpoints of AH, BH, CH).",
+      "mathContext": "The nine-point circle passes through 9 special points: side midpoints $M_a, M_b, M_c$, altitude feet $H_a, H_b, H_c$, and Euler points (midpoints of $AH, BH, CH$). Center $N = (O+H)/2$ (midpoint of circumcenter and orthocenter), radius $R_9 = R/2$."
     },
     {
       "id": "incircle-excircles",
       "title": "Incircle and Excircles",
       "startLine": 159,
       "endLine": 164,
-      "summary": "Incenter I via barycentric coordinates (weights a:b:c), inradius r = Area/s. Three excenters via signed weights, exradii r_k = Area/(s-k)."
+      "summary": "Incenter I via barycentric coordinates (weights a:b:c), inradius r = Area/s. Three excenters via signed weights, exradii r_k = Area/(s-k).",
+      "mathContext": "Incenter $I$ at barycentric coordinates $(a:b:c)$, inradius $r = \\Delta/s$. Excenter $I_a$ opposite $A$ at $(-a:b:c)$, exradius $r_a = \\Delta/(s-a)$. Similarly for $I_b, I_c$. The incircle is internally tangent to all three sides; each excircle is externally tangent to one side and internally tangent to the extensions of the other two."
     },
     {
       "id": "tangency-defs",
       "title": "Tangency Definitions",
       "startLine": 212,
       "endLine": 164,
-      "summary": "Internal tangency (d = |r₁-r₂|) and external tangency (d = r₁+r₂) for circles."
+      "summary": "Internal tangency (d = |r₁-r₂|) and external tangency (d = r₁+r₂) for circles.",
+      "mathContext": "Two circles are **internally tangent** if $d(O_1, O_2) = |r_1 - r_2|$ (one inside the other, touching at exactly one point). **Externally tangent** if $d(O_1, O_2) = r_1 + r_2$ (touching at one point, neither inside the other)."
     },
     {
       "id": "euler-line",
       "title": "Euler Line Relations (Proved)",
       "startLine": 226,
       "endLine": 164,
-      "summary": "Proves G = (O+2H)/3 (Euler line relation) and N = midpoint(O,H) by coordinate computation with ring tactic."
+      "summary": "Proves G = (O+2H)/3 (Euler line relation) and N = midpoint(O,H) by coordinate computation with ring tactic.",
+      "mathContext": "The Euler line passes through $O$, $G$, $H$, $N$ with ratios $OG:GH = 1:2$ and $N = (O+H)/2$. Proved by coordinate computation: if $O$ is the origin, then $H = A+B+C$ and $G = (A+B+C)/3 = H/3 = (O + 2H)/3$."
     },
     {
       "id": "distance-relations",
       "title": "Feuerbach Distance Relations (Proved)",
       "startLine": 245,
       "endLine": 164,
-      "summary": "Four theorems proved by coordinate computation: d(N,I) = |R/2-r| (incircle), d(N,I_k) = R/2+r_k for k=a,b,c (excircles). Proofs in FeuerbachsTheoremOQ01.lean."
+      "summary": "Four theorems proved by coordinate computation: d(N,I) = |R/2-r| (incircle), d(N,I_k) = R/2+r_k for k=a,b,c (excircles). Proofs in FeuerbachsTheoremOQ01.lean.",
+      "mathContext": "The four Feuerbach distances: $d(N, I) = |R/2 - r|$ (tangent to incircle), $d(N, I_a) = R/2 + r_a$, $d(N, I_b) = R/2 + r_b$, $d(N, I_c) = R/2 + r_c$ (tangent to excircles). Since $R_9 = R/2$: incircle tangency is internal ($d = |R_9 - r|$), excircle tangencies are external ($d = R_9 + r_k$)."
     },
     {
       "id": "nine-point-props",
       "title": "Nine-Point Circle Membership (Proved)",
       "startLine": 272,
       "endLine": 164,
-      "summary": "All nine points proved to lie on the nine-point circle: d(N,P) = R/2 for side midpoints, Euler points, and altitude feet."
+      "summary": "All nine points proved to lie on the nine-point circle: d(N,P) = R/2 for side midpoints, Euler points, and altitude feet.",
+      "mathContext": "Membership proofs: for each of the 9 points $P$, show $d(N, P) = R/2$ by coordinate computation. For side midpoints: $M_a = (B+C)/2$ and $d((O+H)/2, (B+C)/2) = R/2$. Similar for Euler points and altitude feet."
     },
     {
       "id": "main-theorem",
       "title": "Feuerbach's Theorem: Complete Statement",
       "startLine": 304,
       "endLine": 164,
-      "summary": "Combines the four proved distance relations into the full theorem: internal tangency with incircle ∧ external tangency with all three excircles. Fully proved."
+      "summary": "Combines the four proved distance relations into the full theorem: internal tangency with incircle ∧ external tangency with all three excircles. Fully proved.",
+      "mathContext": "**Feuerbach's Theorem (1822)**: The nine-point circle of any triangle is internally tangent to the incircle and externally tangent to all three excircles. Formally: $d(N,I) = |R/2 - r|$ and $d(N,I_k) = R/2 + r_k$ for $k = a, b, c$. The tangent point with the incircle is the **Feuerbach point** $X(11)$ in Kimberling's notation."
     },
     {
       "id": "equilateral",
       "title": "Equilateral Triangle Special Case",
       "startLine": 366,
       "endLine": 164,
-      "summary": "Proves R = 2r for equilateral triangles via coordinate computation, implying the nine-point circle and incircle coincide (degenerate tangency)."
+      "summary": "Proves R = 2r for equilateral triangles via coordinate computation, implying the nine-point circle and incircle coincide (degenerate tangency).",
+      "mathContext": "For equilateral triangles: $R = 2r$ (circumradius = twice inradius), so $d(N, I) = |R/2 - r| = |r - r| = 0$, meaning the nine-point circle and incircle coincide. This is the degenerate case where internal tangency becomes coincidence. Also $O = H = I = G = N$ (all centers coincide)."
     },
     {
       "id": "numerical",
       "title": "Numerical Verification: 3-4-5 Triangle",
       "startLine": 405,
       "endLine": 164,
-      "summary": "Fully proves area = 6, semiperimeter = 6, inradius = 1 for the 3-4-5 right triangle using norm_num and sqrt computations."
+      "summary": "Fully proves area = 6, semiperimeter = 6, inradius = 1 for the 3-4-5 right triangle using norm_num and sqrt computations.",
+      "mathContext": "3-4-5 right triangle: $a = 3, b = 4, c = 5$, $s = 6$, $\\Delta = 6$, $r = \\Delta/s = 1$, $R = c/2 = 5/2$ (right triangle formula). Feuerbach: $d(N, I) = |5/4 - 1| = 1/4 = R/2 - r = 5/4 - 1$. Verified by `norm_num` in Lean."
     }
   ],
   "conclusion": {
     "summary": "Fully formalizes Feuerbach's Theorem (Wiedijk #29) in coordinate geometry with 0 axioms and 0 sorries. All four tangency relations proved by direct coordinate computation. The formalization develops a complete triangle geometry framework and proves all nine-point circle memberships, Euler line relations, and Feuerbach distance relations.",
-    "implications": "**Theoretical Significance**: Feuerbach's theorem inspired the systematic study of triangle centers, leading to Clark Kimberling's Encyclopedia of Triangle Centers (now containing over 60,000 entries). The Feuerbach point X(11) is one of the most important triangle centers.\n\n**Broader Connections**: The theorem connects to inversive geometry (inversion centered at the Feuerbach point maps the nine-point circle to the incircle) and to the theory of pencils of circles. Modern generalizations extend to tetrahedra and non-Euclidean geometries.",
+    "implications": "**Theoretical Significance**: Feuerbach's theorem inspired the systematic study of triangle centers, leading to Clark Kimberling's Encyclopedia of Triangle Centers (now containing over 60,000 entries). The Feuerbach point X(11) is one of the most important triangle centers.\n\nThe theorem connects to inversive geometry (inversion centered at the Feuerbach point maps the nine-point circle to the incircle) and to the theory of pencils of circles. Modern generalizations extend to tetrahedra and non-Euclidean geometries.",
     "openQuestions": [
       "RESOLVED: All distance relations proved by coordinate computation in FeuerbachsTheoremOQ01.lean",
       "What is the 3D analogue of Feuerbach's theorem for tetrahedra?",

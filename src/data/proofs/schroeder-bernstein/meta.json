@@ -145,7 +145,7 @@
   ],
   "conclusion": {
     "summary": "The Schroeder-Bernstein theorem is now fully verified using Mathlib's cardinality infrastructure. We provide multiple formulations (function, embedding, equivalence, cardinal) and explain the classical orbit-based proof strategy.",
-    "implications": "**Theoretical Significance**: This theorem is essential for comparing infinite cardinalities.\n\n**Broader Connections**: It allows us to prove |R| = |P(N)| by finding injections in both directions, without explicitly constructing a bijection. The result also shows that cardinal arithmetic is well-behaved: we can use inequalities to establish equalities.",
+    "implications": "**Theoretical Significance**: This theorem is essential for comparing infinite cardinalities.\n\nIt allows us to prove |R| = |P(N)| by finding injections in both directions, without explicitly constructing a bijection. The result also shows that cardinal arithmetic is well-behaved: we can use inequalities to establish equalities.",
     "openQuestions": [
       "Why does this theorem fail for other mathematical structures like groups?",
       "Can we characterize exactly which structures satisfy the 'Schroeder-Bernstein property'?",

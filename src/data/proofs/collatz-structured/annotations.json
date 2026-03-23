@@ -15,6 +15,11 @@
       "Collatz conjecture",
       "3n+1 problem",
       "dynamical systems"
+    ],
+    "prerequisites": [
+      "natural number arithmetic",
+      "iteration",
+      "Lean 4 basics"
     ]
   },
   {
@@ -33,6 +38,11 @@
       "piecewise function",
       "iteration",
       "dynamics"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "natural number division",
+      "if-then-else"
     ]
   },
   {
@@ -51,6 +61,11 @@
       "predicate",
       "existential",
       "orbit"
+    ],
+    "prerequisites": [
+      "collatz function",
+      "Function.iterate",
+      "existential quantifier"
     ]
   },
   {
@@ -69,6 +84,11 @@
       "induction",
       "powers of 2",
       "main theorem"
+    ],
+    "prerequisites": [
+      "mathematical induction",
+      "collatz_even",
+      "Nat.pow_succ"
     ]
   },
   {
@@ -87,6 +107,11 @@
       "closure",
       "induction",
       "reduction"
+    ],
+    "prerequisites": [
+      "collatz_pow_two",
+      "ReachesOne",
+      "mathematical induction"
     ]
   },
   {
@@ -103,7 +128,13 @@
     "significance": "supporting",
     "relatedConcepts": [
       "verification",
-      "native_decide"
+      "native_decide",
+      "Collatz trajectory"
+    ],
+    "prerequisites": [
+      "ReachesOne",
+      "native_decide tactic",
+      "Decidable instances"
     ]
   },
   {
@@ -121,7 +152,12 @@
     "relatedConcepts": [
       "27",
       "long trajectory",
-      "maximum value"
+      "maximum value",
+      "stopping time"
+    ],
+    "prerequisites": [
+      "ReachesOne",
+      "native_decide tactic"
     ]
   },
   {
@@ -139,7 +175,12 @@
     "relatedConcepts": [
       "axiom",
       "open problem",
-      "Erdos"
+      "Erdos",
+      "undecidability"
+    ],
+    "prerequisites": [
+      "ReachesOne",
+      "axiom keyword in Lean 4"
     ]
   }
 ]

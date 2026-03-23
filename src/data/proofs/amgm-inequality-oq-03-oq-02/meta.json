@@ -69,7 +69,17 @@
       "Filter.Tendsto and nhdsWithin for limit formalization",
       "Weighted AM-GM inequality (Mathlib)"
     ],
-    "lineCount": 316
+    "lineCount": 316,
+    "relatedProblems": [
+      {
+        "id": "amgm-inequality-oq-03",
+        "relationship": "Parent entry containing power mean definitions and monotonicity for r > 0 and r < 0"
+      },
+      {
+        "id": "amgm-inequality",
+        "relationship": "Root AM-GM inequality; this limit establishes M₀ = GM, the bridge between AM and HM in the power mean chain"
+      }
+    ]
   },
   "crossReferences": [
     {
@@ -156,7 +166,7 @@
   "overview": {
     "historicalContext": "The power mean $M_r(z,w) = (\\sum w_i z_i^r)^{1/r}$ is undefined at $r = 0$, but the limit exists and equals the geometric mean $\\text{GM} = \\prod z_i^{w_i}$. This was established by Hardy, Littlewood, and Pólya (*Inequalities*, 1934, §2.9) and makes the power mean a continuous interpolation between min ($r \\to -\\infty$), HM ($r=-1$), GM ($r=0$), AM ($r=1$), and max ($r \\to +\\infty$).\n\nThe result has deep connections to information theory. The expression $\\sum w_i \\log z_i$ appearing in the limit is exactly the negative of the Kullback-Leibler divergence $D_{KL}(w \\| \\text{uniform})$ applied to $\\log z$, and more broadly, the Rényi entropy $H_\\alpha = \\frac{1}{1-\\alpha}\\log\\sum p_i^\\alpha$ (Rényi, 1961) satisfies $\\lim_{\\alpha \\to 1} H_\\alpha = H_1 = -\\sum p_i \\log p_i$ (Shannon entropy) by the same derivative-at-zero technique used here. The power mean limit is thus a special case of the Rényi-to-Shannon entropy limit.\n\nIn 1930, Kolmogorov and Nagumo independently proved that the power mean family is (essentially) the unique class of quasi-arithmetic means satisfying continuity, strict monotonicity, and homogeneity. The r→0 limit is the continuity condition at the singular point that makes the power mean a smooth one-parameter interpolation. Without it, the family would have a gap at r=0, and the Kolmogorov-Nagumo characterization would not hold.\n\nThe proof uses the definition of derivative: $f(r) = \\log(\\sum w_i z_i^r)$ satisfies $f(0) = 0$ and $f'(0) = \\sum w_i \\log z_i$. Therefore $f(r)/r \\to f'(0)$ by the definition of derivative, and $M_r = \\exp(f(r)/r) \\to \\exp(\\sum w_i \\log z_i) = \\text{GM}$ by continuity of exp. The Lean 4 formalization uses `hasDerivAt_iff_tendsto_slope` as the key bridge, avoiding explicit L'Hôpital machinery.",
     "problemStatement": "**Open Question (amgm-inequality-oq-03-oq-02)**: Formalize the limit lim_{r→0} M_r(z,w) = GM(z,w) in Lean 4.\n\n**Definitions**:\n- M_r(z,w) = (∑ wᵢzᵢ^r)^(1/r)  for r ≠ 0, wᵢ ≥ 0, ∑ wᵢ = 1, zᵢ > 0\n- GM(z,w) = ∏ zᵢ^wᵢ (weighted geometric mean)\n\n**The Limit**: Filter.Tendsto (fun r => (∑ wᵢzᵢ^r)^(1/r)) (nhdsWithin 0 {0}ᶜ) (nhds (∏ zᵢ^wᵢ))\n\n**Proof sketch**: f(r) = log(∑ wᵢzᵢ^r), f(0) = 0, f'(0) = ∑ wᵢ log zᵢ, so M_r = exp(f(r)/r) → exp(∑ wᵢ log zᵢ) = GM.",
-    "text": "The weighted power mean M_r(z,w) = (∑ wᵢzᵢ^r)^(1/r) has a well-known singularity at r = 0. The classical theorem states that lim_{r→0} M_r(z,w) = ∏ zᵢ^wᵢ = GM(z,w). This is the continuous extension making the chain HM = M_{-1} ≤ M_0 = GM ≤ M_1 = AM complete. Fully verified with 0 sorries and 0 axioms. The proof uses the exp/log representation: M_r = exp(f(r)/r) where f(r) = log(∑ wᵢzᵢ^r), then f(0) = 0 and f'(0) = ∑ wᵢ log zᵢ so f(r)/r → ∑ wᵢ log zᵢ = log GM.",
+    "text": "This formalization resolves the singularity of the weighted power mean $M_r = (\\sum w_i z_i^r)^{1/r}$ at $r = 0$ by proving $\\lim_{r \\to 0} M_r = \\prod z_i^{w_i} = \\text{GM}$. The proof is a clean 5-step chain through Mathlib's calculus API: (1) establish $\\sum w_i z_i^r > 0$ for the domain; (2) differentiate under the sum to get $f'(0) = \\sum w_i \\log z_i$; (3) compose with $\\log$ via the chain rule; (4) convert the derivative to a slope limit via `hasDerivAt_iff_tendsto_slope`; (5) pass through $\\exp$ by continuity. The key Lean insight is that `hasDerivAt_iff_tendsto_slope` directly gives $f(r)/r \\to f'(0)$ when $f(0) = 0$, avoiding explicit L'Hôpital machinery. As a corollary, the file also proves $\\text{HM} \\leq \\text{GM} \\leq \\text{AM}$ via an inversion trick (apply AM-GM to $z^{-1}$). All 10 theorems are fully verified with 0 sorries.",
     "proofStrategy": "**Step 1**: Establish M_r = exp((1/r)·log(∑ wᵢzᵢ^r)) for zᵢ > 0 via Real.rpow_def_of_pos.\n\n**Step 2**: Prove d/dr[∑ wᵢzᵢ^r]|_{r=0} = ∑ wᵢ log zᵢ:\n- Each term: HasDerivAt (fun r => zᵢ^r) (log zᵢ) 0 via Real.hasStrictDerivAt_const_rpow + rpow_zero\n- Apply HasDerivAt.const_mul and HasDerivAt.sum\n\n**Step 3**: Establish g(r) = log(∑ wᵢzᵢ^r) has g(0) = 0 and g'(0) = ∑ wᵢ log zᵢ:\n- Chain rule: Real.hasDerivAt_log composed with step 2\n- g(0) = log(1) = 0 since ∑ wᵢzᵢ^0 = ∑ wᵢ = 1\n\n**Step 4**: Conclude g(r)/r → g'(0) via hasDerivAt_iff_tendsto_slope (congr on slope formula).\n\n**Step 5**: Apply Real.continuous_exp.continuousAt to get M_r = exp(g(r)/r) → exp(∑ wᵢ log zᵢ) = GM.",
     "keyInsights": [
       "Key API: hasDerivAt_iff_tendsto_slope — connects HasDerivAt to the slope limit f(r)/r → f'(0) when f(0) = 0",
@@ -164,7 +174,8 @@
       "GM = exp(∑ wᵢ log zᵢ) proved via Real.log_prod (on positive terms) + Real.log_rpow",
       "The rpow_def_of_pos identity rewrites both M_r and the limit target to the exp form, making congr' close the goal",
       "Once limit is established, HM ≤ GM ≤ AM follows from AM-GM on inverse values",
-      "This limit is structurally identical to $\\lim_{\\alpha \\to 1} H_\\alpha = H_1$ (Rényi entropy converges to Shannon entropy): both use the derivative of $\\log(\\sum p_i^\\alpha)$ at the singular point, with $f(1) = 0$ and $f'(1) = \\sum p_i \\log p_i$. The `hasDerivAt_iff_tendsto_slope` technique applies verbatim to formalize the Rényi-to-Shannon limit in Lean"
+      "This limit is structurally identical to $\\lim_{\\alpha \\to 1} H_\\alpha = H_1$ (Rényi entropy converges to Shannon entropy): both use the derivative of $\\log(\\sum p_i^\\alpha)$ at the singular point, with $f(1) = 0$ and $f'(1) = \\sum p_i \\log p_i$. The `hasDerivAt_iff_tendsto_slope` technique applies verbatim to formalize the Rényi-to-Shannon limit in Lean",
+      "**Kolmogorov-Nagumo uniqueness:** The power mean family is essentially the unique class of quasi-arithmetic means satisfying continuity, strict monotonicity, and homogeneity (Kolmogorov 1930, Nagumo 1930, independently). The $r \\to 0$ limit proved here is the continuity condition at the singular point that makes the power mean a smooth one-parameter interpolation from $\\min$ ($r \\to -\\infty$) through $\\text{HM}$ ($r=-1$), $\\text{GM}$ ($r=0$), $\\text{AM}$ ($r=1$) to $\\max$ ($r \\to +\\infty$). Without this limit, the family would have a discontinuity at $r=0$ and the uniqueness characterization would fail — making this result not just a computation but a foundational continuity requirement"
     ],
     "prerequisites": [
       "Derivatives in Mathlib (HasDerivAt, hasDerivAt_iff_tendsto_slope)",
@@ -233,7 +244,7 @@
   ],
   "conclusion": {
     "summary": "This formalization proves the Power Mean Limit Theorem: lim_{r→0} M_r(z,w) = GM(z,w) with 0 sorries. The proof chain — derivative of ∑ wᵢzᵢ^r at r=0, chain rule for log composition, slope limit via hasDerivAt_iff_tendsto_slope, and exp continuity — is fully verified in Lean 4 using Mathlib. Additionally proves HM ≤ GM ≤ AM as corollaries. Together with AmgmInequalityOQ03.lean (power mean monotonicity), this completes the full chain HM = M_{-1} ≤ M_0 = GM ≤ M_1 = AM ≤ M_2 ≤ ...",
-    "implications": "**Theoretical Significance**: **For the power mean chain**: The limit establishes M_0 = GM, making the power mean family M_r continuous at r = 0.\n\n**Broader Connections**: Combined with monotonicity for r > 0 and r < 0 (proved in OQ03), this gives the complete chain.\n\n**For Mathlib**: This is the 'r=0 case' explicitly listed as a TODO in Mathlib.Analysis.MeanInequalitiesPow. This formalization fills that known gap and could be contributed upstream.\n\n**Key technique**: The `hasDerivAt_iff_tendsto_slope` lemma provides a clean bridge: 'f differentiable at 0 with f(0) = 0' immediately gives 'f(r)/r → f'(0)', which is the standard L'Hôpital-style step formalized without any division issues.",
+    "implications": "**Theoretical Significance**: **For the power mean chain**: The limit establishes M_0 = GM, making the power mean family M_r continuous at r = 0.\n\nCombined with monotonicity for r > 0 and r < 0 (proved in OQ03), this gives the complete chain.\n\n**For Mathlib**: This is the 'r=0 case' explicitly listed as a TODO in Mathlib.Analysis.MeanInequalitiesPow. This formalization fills that known gap and could be contributed upstream.\n\n**Key technique**: The `hasDerivAt_iff_tendsto_slope` lemma provides a clean bridge: 'f differentiable at 0 with f(0) = 0' immediately gives 'f(r)/r → f'(0)', which is the standard L'Hôpital-style step formalized without any division issues.",
     "openQuestions": [
       "Generalize to M_r ≤ M_s for all r < 0 < s (crossing zero case — handled by combining OQ03 with this limit)",
       "Add this to Mathlib as a proper contribution filling the existing TODO in MeanInequalitiesPow",

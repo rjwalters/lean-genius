@@ -110,7 +110,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #776 is formalized with 5 definitions, 1 proved theorem, and 6 axioms. The theorem `erdos_trotter_exact` is genuinely proved from the upper and lower bound axioms. The open question is to determine the threshold $N(r)$ as a function of $r$, which would complete the characterization of multiplicity-constrained antichains.",
-    "implications": "**Theoretical Significance**: Resolution would advance the extremal theory of antichains in Boolean lattices beyond classical Sperner-type results.\n\n**Broader Connections**: The threshold $N(r)$ likely depends on the growth of $\\binom{n}{k}$ near the extremes, connecting to concentration phenomena for binomial coefficients. A precise formula would extend the Griggs result ($r = 1$, max $= n - 2$) to the full multiplicity spectrum.",
+    "implications": "**Theoretical Significance**: Resolution would advance the extremal theory of antichains in Boolean lattices beyond classical Sperner-type results.\n\nThe threshold $N(r)$ likely depends on the growth of $\\binom{n}{k}$ near the extremes, connecting to concentration phenomena for binomial coefficients. A precise formula would extend the Griggs result ($r = 1$, max $= n - 2$) to the full multiplicity spectrum.",
     "openQuestions": [
       "What is the precise threshold $N(r)$ as a function of $r$? Is it polynomial, exponential, or something else?",
       "Does $N(r)$ grow like $\\Theta(r)$, matching the point where $\\binom{n}{2} \\geq r$ stabilizes?",

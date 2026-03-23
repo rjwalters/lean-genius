@@ -116,7 +116,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #856 formalizes the maximum harmonic sum of k-LCM-free subsets. The Lean file proves LCM properties and the divisor set lemma, axiomatizes Erdős's 1970 bound, Tang–Zhang's 2025 improvement, and the sunflower equivalence. The formalization covers 10 sections across 307 lines.",
-    "implications": "**Theoretical Significance**: Resolution would bridge combinatorial number theory and the sunflower conjecture.\n\n**Broader Connections**: The equivalence c_k < 1 ⟺ sunflower conjecture shows that progress on either problem implies progress on the other. The Alweiss–Lovett–Wu–Zhang (2021) sunflower breakthrough may lead to improved bounds on f_k(N).",
+    "implications": "**Theoretical Significance**: Resolution would bridge combinatorial number theory and the sunflower conjecture.\n\nThe equivalence c_k < 1 ⟺ sunflower conjecture shows that progress on either problem implies progress on the other. The Alweiss–Lovett–Wu–Zhang (2021) sunflower breakthrough may lead to improved bounds on f_k(N).",
     "openQuestions": [
       "What is the precise growth exponent $c_k$ for $f_k(N) \\sim (\\log N)^{c_k}$? Is it rational?",
       "Can the Tang–Zhang gap for $k = 3$ ($0.438 \\leq c_3 \\leq 0.889$) be narrowed?",

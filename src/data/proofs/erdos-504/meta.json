@@ -3,7 +3,23 @@
   "title": "Erdős Problem #504: Maximum Angle in Point Sets",
   "slug": "erdos-504",
   "description": "Determine α_n, the supremum of angles α such that every n-point set in the plane contains three points forming an angle at least α.",
-  "leanFile": "Proofs/Erdos504Problem.lean",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Real",
+      "Set"
+    ],
+    "namespace": "Erdos504",
+    "lineCount": 255,
+    "axiomCount": 15,
+    "theoremCount": 1,
+    "definitionCount": 5
+  },
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/504",
@@ -152,7 +168,7 @@
   ],
   "conclusion": {
     "summary": "The maximum angle problem was completely solved by Blagovest Sendov in 1993 after over fifty years of partial results. The solution reveals a surprising dependence on binary representation: the formula for $\\alpha_N$ changes at the threshold $N = 5 \\cdot 2^{n-3}$ within each dyadic interval $(2^{n-1}, 2^n]$, with two distinct optimal configurations for the upper and lower ranges.",
-    "implications": "**Theoretical Significance**: Sendov's solution connects discrete geometry to number theory through the binary structure of $N$.\n\n**Broader Connections**: It demonstrates that natural-looking generalizations (like the Erdős–Szekeres conjecture extending $\\alpha_{2^n} = \\pi(1-1/n)$ to all $N$) can fail even when every special case works perfectly. The role of convex position in optimal configurations links to the broader Erdős–Szekeres Happy Ending theorem on convex subsets of point sets.",
+    "implications": "**Theoretical Significance**: Sendov's solution connects discrete geometry to number theory through the binary structure of $N$.\n\nIt demonstrates that natural-looking generalizations (like the Erdős–Szekeres conjecture extending $\\alpha_{2^n} = \\pi(1-1/n)$ to all $N$) can fail even when every special case works perfectly. The role of convex position in optimal configurations links to the broader Erdős–Szekeres Happy Ending theorem on convex subsets of point sets.",
     "openQuestions": [
       "What is the higher-dimensional analogue: given n points in $\\mathbb{R}^d$ for $d \\ge 3$, what is the maximum solid angle guaranteed among any d+1 points?",
       "Can the binary threshold phenomenon be understood via a deeper structural principle, perhaps related to Turán-type extremal theory?",
@@ -168,23 +184,6 @@
     "pythagorean-theorem",
     "area-of-circle"
   ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
-      "Mathlib.Topology.MetricSpace.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Real.Basic"
-    ],
-    "opens": [
-      "Real",
-      "Set"
-    ],
-    "namespace": "Erdos504",
-    "lineCount": 255,
-    "axiomCount": 15,
-    "theoremCount": 1,
-    "definitionCount": 5
-  },
   "references": [
     {
       "authors": "Erdős, Paul; Szekeres, George",

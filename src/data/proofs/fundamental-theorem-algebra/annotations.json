@@ -6,7 +6,7 @@
       "startLine": 6,
       "endLine": 40
     },
-    "type": "context",
+    "type": "example",
     "title": "Degree of a Polynomial",
     "content": "The **degree** of a polynomial is the highest power of the variable with a non-zero coefficient.\n\nFor $z^2 + 1$, the degree is 2. The polynomial $z^3 - 2z + 5$ has degree 3.\n\nDegree 0 means a constant polynomial. The fundamental theorem requires degree at least 1 (non-constant).",
     "mathContext": "$\\deg(z^n + \\text{lower terms}) = n$\n\n$\\deg(c) = 0$ for constant $c \\neq 0$\n\n$\\deg(0) = -\\infty$ (by convention)",
@@ -29,11 +29,11 @@
       "startLine": 75,
       "endLine": 77
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "The Fundamental Theorem of Algebra",
     "content": "**Every non-constant polynomial with complex coefficients has at least one complex root.**\n\nThis seemingly simple statement has profound consequences:\n- No need to extend numbers beyond the complexes for algebra\n- Every polynomial equation is solvable (has solutions)\n- The complex numbers are 'algebraically complete'\n\nDespite the name 'algebra', every known proof uses analysis or topology.",
     "mathContext": "$\\forall p \\in \\mathbb{C}[z], \\deg p \\geq 1 \\Rightarrow \\exists z_0 \\in \\mathbb{C}, p(z_0) = 0$",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [
       "complex numbers",
       "polynomial degree",
@@ -53,20 +53,24 @@
       "startLine": 81,
       "endLine": 100
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Contrapositive Form",
-    "content": "An equivalent statement of FTA: **if a polynomial has no roots, it must be constant.**\n\nThis is the contrapositive of the main theorem:\n- Original: $\\deg p \\geq 1 \\Rightarrow \\exists$ root\n- Contrapositive: no roots $\\Rightarrow \\deg p = 0$\n\nBoth say the same thing logically, but this form is sometimes more useful.",
-    "mathContext": "$(\\deg p \\geq 1 \\Rightarrow \\exists z, p(z) = 0)$\n\n$\\equiv$\n\n$(\\forall z, p(z) \\neq 0 \\Rightarrow \\deg p = 0)$",
+    "content": "An equivalent statement of FTA: **if a polynomial has no roots, it must be constant.**\n\nThis is the contrapositive of the main theorem:\n- Original: $\\deg p \\geq 1 \\Rightarrow \\exists$ root\n- Contrapositive: no roots $\\Rightarrow \\deg p = 0$\n\nBoth say the same thing logically, but this form is sometimes more useful.\n\nThis contrapositive is the natural formulation for the Liouville proof: assume $p(z) \\neq 0$ everywhere; then $f(z) = 1/p(z)$ is entire (holomorphic on all of $\\mathbb{C}$). Since $|p(z)| \\to \\infty$ as $|z| \\to \\infty$, the function $f$ is bounded. Liouville's theorem then forces $f$ — and hence $p$ — to be constant.",
+    "mathContext": "$(\\deg p \\geq 1 \\Rightarrow \\exists z, p(z) = 0)$\n\n$\\equiv$\n\n$(\\forall z, p(z) \\neq 0 \\Rightarrow \\deg p = 0)$\n\nThe proof mechanism: if $p$ has no roots, define $f = 1/p$. Then:\n- $f$ is entire: holomorphic everywhere on $\\mathbb{C}$\n- $f$ is bounded: $|f(z)| = 1/|p(z)| \\to 0$ as $|z| \\to \\infty$\n- Liouville: bounded entire $\\Rightarrow$ constant, so $p$ is constant\n\nThis is why algebraic statements about polynomials require analytic tools: the completeness of $\\mathbb{R}$ (encoded in Liouville's theorem) is essential. No purely algebraic proof of FTA exists.",
     "significance": "key",
     "prerequisites": [
       "fundamental_theorem_of_algebra",
       "contrapositive reasoning",
-      "polynomial degree"
+      "polynomial degree",
+      "Liouville's theorem",
+      "entire functions"
     ],
     "relatedConcepts": [
       "contrapositive",
       "logical equivalence",
-      "constant polynomial"
+      "constant polynomial",
+      "Liouville's theorem",
+      "bounded entire function"
     ]
   },
   {
@@ -76,20 +80,25 @@
       "startLine": 116,
       "endLine": 117
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Complete Splitting",
-    "content": "Every complex polynomial **splits** into linear factors.\n\nThis means for any $p \\in \\mathbb{C}[z]$ of degree $n$:\n$p(z) = c(z - r_1)(z - r_2)\\cdots(z - r_n)$\n\nwhere $c$ is the leading coefficient and $r_1, \\ldots, r_n$ are the roots.\n\nThis is immediate from algebraic closure: keep factoring out roots until nothing's left.",
-    "mathContext": "A polynomial *splits* over $K$ if:\n\n$p = c \\prod_i (x - r_i)$ where $r_i \\in K$\n\nEvery polynomial splits over its algebraic closure.",
+    "content": "Every complex polynomial **splits** into linear factors.\n\nThis means for any $p \\in \\mathbb{C}[z]$ of degree $n$:\n$p(z) = c(z - r_1)(z - r_2)\\cdots(z - r_n)$\n\nwhere $c$ is the leading coefficient and $r_1, \\ldots, r_n$ are the roots.\n\nThis is immediate from algebraic closure: keep factoring out roots until nothing's left.\n\n**The key contrast with Abel-Ruffini**: FTA guarantees these roots $r_1, \\ldots, r_n$ *exist* in $\\mathbb{C}$. The Abel-Ruffini theorem (for $n \\geq 5$) shows they cannot in general be *expressed* using radicals $+, -, \\times, \\div, \\sqrt[k]{\\cdot}$ applied to the coefficients. Existence and explicit expressibility are very different things.\n\n**Why splitting matters**: Over non-algebraically-closed fields, polynomials may be irreducible of degree $> 1$ (e.g., $x^2 + 1$ is irreducible over $\\mathbb{R}$). The algebraic closure $\\overline{K}$ is exactly the smallest extension where every polynomial splits — and FTA says $\\mathbb{C} = \\overline{\\mathbb{R}}$.",
+    "mathContext": "A polynomial *splits* over $K$ if:\n\n$p = c \\prod_i (x - r_i)$ where $r_i \\in K$\n\nEvery polynomial splits over its algebraic closure.\n\nMathlib: `IsAlgClosed.splits_codomain p` gives `Splits (RingHom.id ℂ) p` for any `p : ℂ[X]`.\n\nFTA implies $\\mathbb{C}$ is algebraically closed, so `IsAlgClosed ℂ` holds and every `p : ℂ[X]` splits. Iterating root extraction: given $p$ of degree $n$, FTA gives root $r_1$, so $p = (z - r_1) q$ with $\\deg q = n-1$; apply FTA to $q$, etc. This induction on degree gives the complete factorization $p = c \\prod_{i=1}^n (z - r_i)$.\n\nContrast: Over $\\mathbb{R}$, $x^2 + 1$ does not split ($\\pm i \\notin \\mathbb{R}$); over $\\mathbb{Q}$, $x^2 - 2$ does not split. The algebraic closure $\\overline{\\mathbb{Q}}$ is a countable subfield of $\\mathbb{C}$ — 'most' complex numbers are transcendental.",
     "significance": "key",
     "prerequisites": [
       "algebraic closure",
       "IsAlgClosed.splits_codomain",
-      "polynomial splitting"
+      "polynomial splitting",
+      "Abel-Ruffini theorem",
+      "algebraic closure of R"
     ],
     "relatedConcepts": [
       "Splits",
       "linear factors",
-      "factorization"
+      "factorization",
+      "IsAlgClosed",
+      "algebraic closure",
+      "Abel-Ruffini"
     ]
   },
   {
@@ -99,11 +108,11 @@
       "startLine": 132,
       "endLine": 140
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Counting Roots",
     "content": "**A degree-n polynomial has exactly n roots, counted with multiplicity.**\n\nMultiplicity: if $(z - r)^k$ divides $p$ but $(z - r)^{k+1}$ doesn't, then $r$ has multiplicity $k$.\n\nExample: $z^3 - z^2 = z^2(z-1)$ has:\n- Root 0 with multiplicity 2\n- Root 1 with multiplicity 1\n- Total: 2 + 1 = 3 = degree",
     "mathContext": "For $p \\neq 0$: $\\sum_{r : p(r) = 0} \\text{mult}_r(p) = \\deg p$\n\nMathlib represents this via multisets: $|\\text{roots}(p)| = \\deg p$",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [
       "splits_over_complex",
       "polynomial roots multiset",
@@ -119,10 +128,10 @@
     "id": "ann-monic-factorization",
     "proofId": "fundamental-theorem-algebra",
     "range": {
-      "startLine": 142,
-      "endLine": 155
+      "startLine": 102,
+      "endLine": 110
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Monic Polynomial Factorization",
     "content": "A **monic** polynomial (leading coefficient 1) equals the product of its root factors.\n\nIf $p(z) = z^n + a_{n-1}z^{n-1} + \\cdots + a_0$ and $r_1, \\ldots, r_n$ are its roots:\n\n$p(z) = (z - r_1)(z - r_2)\\cdots(z - r_n)$\n\nThis gives a complete representation of any monic polynomial in terms of its roots.",
     "mathContext": "For monic $p$:\n\n$p = \\prod_{r \\in \\text{roots}(p)} (X - r)$\n\nwhere the product is over the multiset of roots (with repetition)",
@@ -142,10 +151,10 @@
     "id": "ann-quadratic-case",
     "proofId": "fundamental-theorem-algebra",
     "range": {
-      "startLine": 174,
-      "endLine": 208
+      "startLine": 119,
+      "endLine": 128
     },
-    "type": "context",
+    "type": "example",
     "title": "Quadratics Always Have Roots",
     "content": "As a special case: **every quadratic $az^2 + bz + c$ (with $a \\neq 0$) has roots.**\n\nThe famous quadratic formula gives them explicitly:\n$z = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$\n\nIn the complex numbers, $\\sqrt{b^2 - 4ac}$ always exists (complex square roots exist), so roots always exist.\n\nThe proof here derives this from the general FTA.",
     "mathContext": "Quadratic formula: $z = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$\n\nDiscriminant $\\Delta = b^2 - 4ac$:\n- $\\Delta > 0$: two real roots\n- $\\Delta = 0$: one repeated root\n- $\\Delta < 0$: two complex conjugate roots",
@@ -159,51 +168,6 @@
       "quadratic formula",
       "discriminant",
       "complex square roots"
-    ]
-  },
-  {
-    "id": "ann-examples",
-    "proofId": "fundamental-theorem-algebra",
-    "range": {
-      "startLine": 56,
-      "endLine": 63
-    },
-    "type": "context",
-    "title": "Worked Examples: z²+1 and Its Root i",
-    "content": "Two concrete examples anchor the abstraction: (1) `degree (X^2 + 1 : ℂ[X]) = 2` demonstrates polynomial degree computation using `degree_add_eq_left_of_degree_lt`; (2) `IsRoot (X^2 + 1 : ℂ[X]) Complex.I` verifies that $i$ is a root of $z^2 + 1$, using `Complex.I_sq` ($i^2 = -1$) and `norm_num`.\n\nHistorically, $z^2 + 1 = 0$ is the equation that forced the invention of complex numbers — Bombelli (1572) first computed with $\\sqrt{-1}$ systematically.",
-    "mathContext": "$z^2 + 1 = 0 \\iff z = \\pm i$ where $i^2 = -1$. In $\\mathbb{R}[z]$ this polynomial is irreducible; in $\\mathbb{C}[z]$ it factors as $(z-i)(z+i)$. This is the simplest instance of FTA: a degree-2 polynomial with no real roots that has complex roots.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "imaginary unit",
-      "polynomial evaluation",
-      "degree computation"
-    ],
-    "prerequisites": [
-      "complex numbers",
-      "polynomial degree"
-    ]
-  },
-  {
-    "id": "ann-significance",
-    "proofId": "fundamental-theorem-algebra",
-    "range": {
-      "startLine": 157,
-      "endLine": 172
-    },
-    "type": "context",
-    "title": "Why FTA Matters: Consequences and Connections",
-    "content": "The documentary commentary highlights four consequences: (1) algebraic completeness — no further number system extension is needed; (2) linear algebra — every complex matrix has an eigenvalue (characteristic polynomial has degree $n \\geq 1$, so FTA gives a root $\\lambda$); (3) algebraic closure — $\\mathbb{C}$ is the algebraic closure of both $\\mathbb{R}$ and $\\mathbb{Q}$; (4) the algebra-analysis bridge — the proof requires completeness of $\\mathbb{R}$, showing algebra and analysis are intertwined.\n\nThe Jordan normal form follows from repeated application of FTA: factor $\\det(A - \\lambda I)$ completely over $\\mathbb{C}$ to get eigenvalues, then decompose the matrix into Jordan blocks.",
-    "mathContext": "FTA $\\Rightarrow$ $\\det(A - \\lambda I) = 0$ has solutions for any $A \\in M_n(\\mathbb{C})$. The characteristic polynomial $\\chi_A(\\lambda) = \\det(A - \\lambda I)$ has degree $n$, so by FTA it factors as $\\prod_{i=1}^{k}(\\lambda - \\lambda_i)^{m_i}$ with $\\sum m_i = n$. This gives the eigenvalue decomposition that underpins spectral theory.",
-    "significance": "context",
-    "relatedConcepts": [
-      "eigenvalues",
-      "Jordan normal form",
-      "algebraic closure",
-      "spectral theorem"
-    ],
-    "prerequisites": [
-      "linear algebra",
-      "characteristic polynomial"
     ]
   }
 ]

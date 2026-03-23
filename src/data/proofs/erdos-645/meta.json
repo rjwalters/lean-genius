@@ -141,7 +141,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #645, which asks whether every 2-coloring of ℕ contains a monochromatic 3-term arithmetic progression x, x+d, x+2d where the common difference d exceeds the first term x. The answer is YES, proven by Ramsey-type combinatorial arguments.",
-    "implications": "**Theoretical Significance**: This problem illustrates how Ramsey theory constrains the structure of colorings.\n\n**Broader Connections**: Even with the additional requirement d > x, monochromatic progressions cannot be avoided. The result connects to broader questions about density and structure in arithmetic combinatorics.",
+    "implications": "**Theoretical Significance**: This problem illustrates how Ramsey theory constrains the structure of colorings.\n\nEven with the additional requirement d > x, monochromatic progressions cannot be avoided. The result connects to broader questions about density and structure in arithmetic combinatorics.",
     "openQuestions": [
       "What is the smallest N₀ such that every 2-coloring of {1, ..., N₀} contains a monochromatic 3-AP with d > x?",
       "Does the statement generalize to r-colorings for r > 2?",

@@ -69,35 +69,40 @@
       "title": "The Main Theorem",
       "startLine": 55,
       "endLine": 72,
-      "summary": "The fundamental formula C(n,k) = n! / (k!(n-k)!) and divisibility property."
+      "summary": "The fundamental formula C(n,k) = n! / (k!(n-k)!) and divisibility property.",
+      "mathContext": "The fundamental formula C(n,k) = n! / (k!(n-k)!) and divisibility property."
     },
     {
       "id": "properties",
       "title": "Properties of Binomial Coefficients",
       "startLine": 74,
       "endLine": 99,
-      "summary": "Symmetry, boundary cases (k=0, k=n, k=1), and their combinatorial interpretations."
+      "summary": "Symmetry, boundary cases (k=0, k=n, k=1), and their combinatorial interpretations.",
+      "mathContext": "Symmetry, boundary cases (k=0, k=n, k=1), and their combinatorial interpretations."
     },
     {
       "id": "pascal",
       "title": "Pascal's Triangle Relationship",
       "startLine": 101,
       "endLine": 109,
-      "summary": "Pascal's identity: each entry is the sum of two entries above it."
+      "summary": "Pascal's identity: each entry is the sum of two entries above it.",
+      "mathContext": "Pascal's identity: each entry is the sum of two entries above it."
     },
     {
       "id": "factorial-interpretation",
       "title": "Factorial Interpretation",
       "startLine": 111,
       "endLine": 128,
-      "summary": "Connection between permutations P(n,k) and combinations C(n,k) via the falling factorial."
+      "summary": "Connection between permutations P(n,k) and combinations C(n,k) via the falling factorial.",
+      "mathContext": "Connection between permutations P(n,k) and combinations C(n,k) via the falling factorial."
     },
     {
       "id": "examples",
       "title": "Verification Examples",
       "startLine": 130,
       "endLine": 163,
-      "summary": "Concrete examples verifying the formula and properties for specific values."
+      "summary": "Concrete examples verifying the formula and properties for specific values.",
+      "mathContext": "Concrete examples verifying the formula and properties for specific values."
     }
   ],
   "conclusion": {

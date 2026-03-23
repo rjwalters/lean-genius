@@ -57,7 +57,7 @@
   "overview": {
     "historicalContext": "Rene Descartes published this rule in his groundbreaking work \"La Geometrie\" (1637), which was an appendix to his philosophical treatise \"Discours de la methode.\" This was one of the first systematic methods for determining properties of polynomial roots without explicitly solving the equation.\n\nThe rule was later refined by Carl Friedrich Gauss, who provided a rigorous proof and characterized exactly when the bound is achieved. Jean-Baptiste Fourier and Jacques Charles Francois Sturm extended these ideas to develop complete algorithms for real root isolation.",
     "problemStatement": "**Descartes' Rule of Signs**: For a polynomial $p(x) = a_n x^n + a_{n-1} x^{n-1} + \\cdots + a_1 x + a_0$ with real coefficients:\n\n1. Count the **sign changes** in the sequence $(a_n, a_{n-1}, \\ldots, a_1, a_0)$, ignoring zero coefficients.\n\n2. The number of **positive real roots** (counted with multiplicity) is either equal to this count, or less than it by an even positive integer.\n\n**Corollary for Negative Roots**: Apply the rule to $p(-x)$ to bound negative roots.\n\nThis is Wiedijk's 100 Theorems #100.",
-    "text": "The number of positive real roots of a polynomial is either equal to the number of sign changes in the coefficient sequence, or less than it by an even number.",
+    "text": "This formalization proves Descartes' rule of signs: the number of positive real roots of a polynomial (counted with multiplicity) equals the number of sign changes in its coefficient sequence, or is less by an even positive integer. The proof uses induction on degree with Rolle's theorem providing the key step: between consecutive roots of f, there exists a root of f', connecting the sign changes of f to those of f' via the derivative.\n\nThe file establishes the rule for both positive roots (via direct coefficients) and negative roots (via the substitution x → -x), the special case for polynomials with all positive coefficients (no positive roots), and concrete verified examples. Commentary connects to Budan's theorem (counting roots in intervals), Sturm's theorem (exact root counting via Sturm chains), and the limitations of Descartes' rule (it gives bounds, not exact counts).",
     "proofStrategy": "**The Classical Proof via Rolle's Theorem:**\n\n**Step 1: Induction on Degree**\nFor degree 0, there are no positive roots and no sign changes. Assume true for degree < n.\n\n**Step 2: Relate p to p'**\nBy Rolle's theorem, between any two positive roots of p, there is a positive root of p'.\n\n**Step 3: Sign Change Analysis**\nWhen passing from p to p', the number of sign changes decreases by at least one for each root \"lost\". More precisely:\n- If p has k positive roots, p' has at least k-1 positive roots between them\n- The sign changes in p' relate to those in p in a controlled way\n\n**Step 4: Parity Preservation**\nComplex roots come in conjugate pairs, so the count of real roots has the same parity as the degree. Combined with the sign change analysis, the difference must be even.",
     "keyInsights": [
       "Sign changes provide an algebraic proxy for analytic root behavior",
@@ -76,56 +76,64 @@
       "title": "Sign Change Definitions",
       "startLine": 61,
       "endLine": 86,
-      "summary": "Formal definitions of sign, opposite sign, and sign changes between sequence elements."
+      "summary": "Formal definitions of sign, opposite sign, and sign changes between sequence elements.",
+      "mathContext": "A sign change between consecutive nonzero coefficients $a_i, a_j$ occurs when $a_i \\cdot a_j < 0$. Zero coefficients are skipped: in $(1, 0, -1)$, there is one sign change between $1$ and $-1$."
     },
     {
       "id": "coefficient-sign-changes",
       "title": "Coefficient Sign Changes",
       "startLine": 88,
       "endLine": 102,
-      "summary": "Definitions for extracting coefficient sequences from polynomials and counting their sign changes."
+      "summary": "Definitions for extracting coefficient sequences from polynomials and counting their sign changes.",
+      "mathContext": "The coefficient sequence $\\text{coeffSeq}(p)$ extracts $(a_n, a_{n-1}, \\ldots, a_0)$ from $p(x) = \\sum a_k x^k$. Sign changes in this sequence bound the number of positive roots."
     },
     {
       "id": "positive-roots",
       "title": "Positive Roots",
       "startLine": 104,
       "endLine": 124,
-      "summary": "Definitions for positive roots and root multiplicity counting."
+      "summary": "Definitions for positive roots and root multiplicity counting.",
+      "mathContext": "`countPositiveRoots p` counts positive real roots of $p$ with multiplicity. By Descartes' rule, this is bounded by `signChanges (coeffSeq p)` with even difference."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "startLine": 126,
       "endLine": 165,
-      "summary": "The main Descartes' Rule of Signs theorems: upper bound, parity, and combined form."
+      "summary": "The main Descartes' Rule of Signs theorems: upper bound, parity, and combined form.",
+      "mathContext": "Main results: `descartes_upper_bound` ($\\text{posRoots}(p) \\leq \\text{signChanges}(p)$) and `descartes_parity` ($\\text{signChanges}(p) - \\text{posRoots}(p) \\equiv 0 \\pmod{2}$). The combined form `descartes_rule` states both simultaneously."
     },
     {
       "id": "negative-roots",
       "title": "Negative Roots",
       "startLine": 167,
       "endLine": 198,
-      "summary": "Extension to negative roots via p(-x) substitution."
+      "summary": "Extension to negative roots via p(-x) substitution.",
+      "mathContext": "Negative roots of $p(x)$ are positive roots of $p(-x)$. The substitution $x \\mapsto -x$ transforms $a_k x^k \\mapsto a_k (-1)^k x^k$, so sign changes in the modified sequence count negative roots."
     },
     {
       "id": "examples",
       "title": "Sign Change Examples",
       "startLine": 200,
       "endLine": 220,
-      "summary": "Concrete examples demonstrating sign change counting on specific polynomials."
+      "summary": "Concrete examples demonstrating sign change counting on specific polynomials.",
+      "mathContext": "Concrete verifications: e.g., $x^3 - 6x^2 + 11x - 6 = (x-1)(x-2)(x-3)$ has 3 sign changes and 3 positive roots (the bound is tight)."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 222,
       "endLine": 245,
-      "summary": "Special cases: all positive coefficients (no positive roots) and alternating signs (maximum roots)."
+      "summary": "Special cases: all positive coefficients (no positive roots) and alternating signs (maximum roots).",
+      "mathContext": "If all coefficients are positive ($a_k > 0$ for all $k$), there are 0 sign changes and hence 0 positive roots. If signs alternate ($a_k > 0$ for even $k$, $a_k < 0$ for odd $k$), sign changes equal the degree and all roots are positive."
     },
     {
       "id": "rolle-connection",
       "title": "Connection to Rolle's Theorem",
       "startLine": 247,
       "endLine": 265,
-      "summary": "The key lemma from Rolle's theorem used in the proof, and its effect on sign changes."
+      "summary": "The key lemma from Rolle's theorem used in the proof, and its effect on sign changes.",
+      "mathContext": "Rolle's theorem: if $p(a) = p(b) = 0$ with $a < b$, then $p'(c) = 0$ for some $c \\in (a,b)$. Each pair of consecutive positive roots produces a root of $p'$, and differentiating reduces sign changes by at most 1, giving the inductive step."
     }
   ],
   "conclusion": {

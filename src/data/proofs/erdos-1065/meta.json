@@ -146,7 +146,7 @@
   },
   "conclusion": {
     "summary": "This formalization captures both variants of Erdős Problem #1065, establishes their logical hierarchy, and provides extensive computational evidence. The $k = 1$ case connects to the safe primes conjecture, a cornerstone of modern cryptography. All structural theorems (Form A ⊆ Form B, smooth factorization, implication chain) are fully proved in Lean 4.",
-    "implications": "**Theoretical Significance**: A resolution would illuminate the factorization structure of $p - 1$ for primes $p$, connecting to Artin's primitive root conjecture, the distribution of smooth numbers, and the security assumptions underlying Diffie–Hellman cryptography.\n\n**Broader Connections**: Understanding when $p - 1$ can be nearly a prime power is fundamental to both analytic and computational number theory.",
+    "implications": "**Theoretical Significance**: A resolution would illuminate the factorization structure of $p - 1$ for primes $p$, connecting to Artin's primitive root conjecture, the distribution of smooth numbers, and the security assumptions underlying Diffie-Hellman cryptography.\n\nUnderstanding when $p - 1$ can be nearly a prime power is fundamental to both analytic and computational number theory. The problem is a special case of Schinzel's Hypothesis H (1958): if $f_1(n), \\ldots, f_s(n)$ are irreducible polynomials with no fixed prime divisor, then they are simultaneously prime infinitely often. For Conjecture A, taking $f_1(q) = q$ and $f_2(q) = 2^k q + 1$ (with fixed $k$) yields a Hypothesis H instance. The Bateman-Horn conjecture gives a quantitative prediction for the count.\n\n**Cryptographic Impact**: The safe primes conjecture ($k = 1$) is foundational to modern cryptography. Without a proof, the security of Diffie-Hellman key exchange rests on an unproven number-theoretic assumption about prime distribution. The broader Conjecture A (arbitrary $k$) would provide a richer supply of cryptographically useful primes with structured group orders.",
     "openQuestions": [
       "Are there infinitely many primes $p = 2^k \\cdot q + 1$ (Conjecture A)?",
       "Are there infinitely many safe primes $p = 2q + 1$? (Open, implies Conjecture A)",
@@ -278,6 +278,13 @@
       "year": "1980",
       "venue": "Mathematika 27, 84-89",
       "note": "Smooth-shifted primes and the distribution of Euler's totient values"
+    },
+    {
+      "authors": "Schinzel, Andrzej; Sierpiński, Wacław",
+      "title": "Sur certaines hypothèses concernant les nombres premiers",
+      "year": "1958",
+      "venue": "Acta Arithmetica 4, 185-208",
+      "note": "Hypothesis H: if polynomials f₁,...,fₛ with positive leading coefficients are irreducible and have no fixed prime divisor, then they represent primes simultaneously infinitely often. Erdős #1065 (for fixed k) is a Hypothesis H instance with f₁(q) = q and f₂(q) = 2^k·q + 1"
     },
     {
       "authors": "OEIS Foundation",

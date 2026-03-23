@@ -142,7 +142,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #786, the question of how dense a multiplicative cardinality set can be. The problem remains OPEN: Selfridge achieved density 1/e - ε using consecutive primes, but whether arbitrarily high density is achievable is unknown. Ruzsa claimed an upper bound showing density 1 is impossible, but his proof was never published.",
-    "implications": "**Theoretical Significance**: This problem connects number theory and combinatorics:\n\n1. **Multiplicative structure**: Understanding which sets preserve factor count information\n2.\n\n**Broader Connections**: **Prime distribution**: Selfridge's construction uses prime reciprocal sums\n3. **Density methods**: Techniques for proving density bounds on structured sets\n4. **Open research**: The gap between 1/e and (1-c) density remains unexplored.",
+    "implications": "**Theoretical Significance**: This problem connects number theory and combinatorics:\n\n1. **Multiplicative structure**: Understanding which sets preserve factor count information\n**2. Prime distribution**: Selfridge's construction uses prime reciprocal sums\n3. **Density methods**: Techniques for proving density bounds on structured sets\n4. **Open research**: The gap between 1/e and (1-c) density remains unexplored.",
     "openQuestions": [
       "Can density > 1/e be achieved?",
       "What is the optimal constant c in Ruzsa's bound?",

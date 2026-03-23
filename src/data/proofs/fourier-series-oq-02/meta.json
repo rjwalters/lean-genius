@@ -6,6 +6,7 @@
   "leanFile": "Proofs/FourierSeriesOQ02.lean",
   "meta": {
     "author": "Classical (Bernstein, Zygmund)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fourier_series#Rate_of_convergence",
     "date": "1912",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/FourierSeriesOQ02.lean",
@@ -73,7 +74,7 @@
       "fourierCoeff_difference_formula: difference formula for coefficients",
       "full regularity-decay hierarchy: Hölder → C^k → C^∞ → analytic"
     ],
-    "axiomCount": 10,
+    "axiomCount": 9,
     "lineCount": 280,
     "assumptions": "10 axiom(s) encoding analytical infrastructure: difference formula, integral bounds, Hölder translation bound, summability, optimality, partial converse, smooth/analytic decay. Two formerly axiomatized results now proved: fourier_norm_one (‖e_n(x)‖ = 1 via toCircle) and fourier_translate_halfperiod (half-period negation via fourier_add_half_inv_index)."
   },
@@ -91,8 +92,10 @@
       "**Full regularity-decay hierarchy**: L² → Hölder → Lipschitz → C¹ → C^k → C^∞ → Analytic corresponds to ĉ_n → 0 → O(1/|n|^α) → O(1/|n|) → O(1/|n|^k) → rapid → exponential."
     ],
     "prerequisites": [
-      "Mathematical analysis",
-      "Fourier analysis on the circle"
+      "Real analysis (Lebesgue integration, L^p spaces)",
+      "Fourier analysis on the circle (Fourier coefficients, Haar measure)",
+      "Hölder continuity and moduli of continuity",
+      "Familiarity with Lean 4 and Mathlib"
     ]
   },
   "sections": [
@@ -167,7 +170,7 @@
   ],
   "conclusion": {
     "summary": "This formalization establishes the optimal Fourier coefficient decay rate for Hölder continuous functions: ‖ĉ_n‖ = O(1/|n|^α) for α-Hölder f, proved via the half-period translation trick. The main theorem is proved from axiomatized analytical infrastructure (difference formula, integral bounds). The formalization also establishes optimality, a partial converse via Sobolev embedding, and places the result in the full regularity-decay hierarchy from L² through analytic.",
-    "implications": "**Theoretical Significance**: The Hölder decay theorem is a cornerstone of harmonic analysis, quantifying the fundamental principle that smoothness ↔ spectral decay.\n\n**Broader Connections**: The half-period translation trick generalizes to prove decay rates in other settings (torus, locally compact abelian groups). The critical threshold α = 1/2 connects to Sobolev embedding theory and the circle of ideas around Carleson's theorem.",
+    "implications": "**Theoretical Significance**: The Hölder decay theorem is a cornerstone of harmonic analysis, quantifying the fundamental principle that smoothness ↔ spectral decay.\n\nThe half-period translation trick generalizes to prove decay rates in other settings (torus, locally compact abelian groups). The critical threshold α = 1/2 connects to Sobolev embedding theory and the circle of ideas around Carleson's theorem.",
     "openQuestions": [
       "Can the axiomatized integral bounds be proved from Mathlib's integration API?",
       "Can the half-period identity be proved from Mathlib's AddCircle API?",

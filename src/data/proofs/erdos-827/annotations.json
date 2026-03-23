@@ -8,9 +8,9 @@
     },
     "type": "context",
     "title": "Problem Overview and Imports",
-    "content": "Erdős Problem #827 is a Ramsey-type problem in discrete geometry: determine $n_k$, the minimal number of points in general position in $\\mathbb{R}^2$ such that some $k$-element subset has all $\\binom{k}{3}$ triples with distinct circumradii. Erdős posed this in 1975, claimed an explicit bound in 1978 (with errors), and Martinez-Roldán-Pensado corrected it to $n_k \\ll k^9$. Imports Mathlib's real numbers and finite sets.",
+    "content": "Erd\u0151s Problem #827 is a Ramsey-type problem in discrete geometry: determine $n_k$, the minimal number of points in general position in $\\mathbb{R}^2$ such that some $k$-element subset has all $\\binom{k}{3}$ triples with distinct circumradii. Erd\u0151s posed this in 1975, claimed an explicit bound in 1978 (with errors), and Martinez-Rold\u00e1n-Pensado corrected it to $n_k \\ll k^9$. Imports Mathlib's real numbers and finite sets.",
     "mathContext": "$n_k = \\min\\{n : \\forall S \\subseteq \\mathbb{R}^2$ in general position with $|S| = n$, $\\exists T \\subseteq S$ with $|T| = k$ and all $\\binom{k}{3}$ circumradii distinct$\\}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Ramsey-type problem",
       "discrete geometry",
@@ -103,8 +103,8 @@
       "endLine": 84
     },
     "type": "concept",
-    "title": "Erdős Problem #827: Main Statement",
-    "content": "`ErdosProblem827` states that $n_k$ exists for all $k \\geq 3$. This is the qualitative version of the problem. The quantitative challenge — determining the growth rate of $n_k$ — is captured by the bounds section. The existence follows from a compactness/Ramsey argument, but the growth rate is the deep question.",
+    "title": "Erd\u0151s Problem #827: Main Statement",
+    "content": "`ErdosProblem827` states that $n_k$ exists for all $k \\geq 3$. This is the qualitative version of the problem. The quantitative challenge \u2014 determining the growth rate of $n_k$ \u2014 is captured by the bounds section. The existence follows from a compactness/Ramsey argument, but the growth rate is the deep question.",
     "mathContext": "$\\forall k \\geq 3$: $n_k$ exists (equivalently, $\\text{NkExists}(k)$)",
     "significance": "key",
     "relatedConcepts": [
@@ -114,7 +114,7 @@
     ],
     "prerequisites": [
       "NkExists definition",
-      "k ≥ 3 assumption"
+      "k \u2265 3 assumption"
     ]
   },
   {
@@ -125,14 +125,14 @@
       "endLine": 98
     },
     "type": "insight",
-    "title": "Known Bounds: Martinez-Roldán-Pensado",
-    "content": "`MartinezBound` states $\\exists C > 0$ such that $n_k \\leq C \\cdot k^9$ for all $k \\geq 3$. The function `erdosClaimedBound` computes Erdős's original (incorrect) bound $k + 2\\binom{k-1}{2}\\binom{k-1}{3}$, which grows as $\\Theta(k^6)$. The axiom `martinez_roldan_pensado` asserts the corrected $k^9$ bound. The gap between the corrected $k^9$ and Erdős's $k^6$ claim suggests the error involved losing polynomial factors, not the overall approach.",
-    "mathContext": "$n_k \\leq C \\cdot k^9$ (Martinez-Roldán-Pensado); Erdős claimed $n_k \\leq k + 2\\binom{k-1}{2}\\binom{k-1}{3} = \\Theta(k^6)$ (incorrect)",
+    "title": "Known Bounds: Martinez-Rold\u00e1n-Pensado",
+    "content": "`MartinezBound` states $\\exists C > 0$ such that $n_k \\leq C \\cdot k^9$ for all $k \\geq 3$. The function `erdosClaimedBound` computes Erd\u0151s's original (incorrect) bound $k + 2\\binom{k-1}{2}\\binom{k-1}{3}$, which grows as $\\Theta(k^6)$. The axiom `martinez_roldan_pensado` asserts the corrected $k^9$ bound. The gap between the corrected $k^9$ and Erd\u0151s's $k^6$ claim suggests the error involved losing polynomial factors, not the overall approach.",
+    "mathContext": "$n_k \\leq C \\cdot k^9$ (Martinez-Rold\u00e1n-Pensado); Erd\u0151s claimed $n_k \\leq k + 2\\binom{k-1}{2}\\binom{k-1}{3} = \\Theta(k^6)$ (incorrect)",
     "significance": "key",
     "relatedConcepts": [
       "polynomial upper bound",
       "corrected proof",
-      "Erdős conjecture error"
+      "Erd\u0151s conjecture error"
     ],
     "prerequisites": [
       "minimalNk",
@@ -149,7 +149,7 @@
     },
     "type": "technique",
     "title": "Trivial Cases and Basic Properties",
-    "content": "Three axioms capture basic properties: `nk_three` ($n_3 = 3$, since any 3 non-collinear points form one triangle with one circumradius — trivially 'all distinct'), `nk_monotone` ($k_1 \\leq k_2 \\Rightarrow n_{k_1} \\leq n_{k_2}$, since a good $k_2$-subset contains a good $k_1$-subset), and `nk_ge_k` ($n_k \\geq k$, since we need at least $k$ points to have a $k$-subset).",
+    "content": "Three axioms capture basic properties: `nk_three` ($n_3 = 3$, since any 3 non-collinear points form one triangle with one circumradius \u2014 trivially 'all distinct'), `nk_monotone` ($k_1 \\leq k_2 \\Rightarrow n_{k_1} \\leq n_{k_2}$, since a good $k_2$-subset contains a good $k_1$-subset), and `nk_ge_k` ($n_k \\geq k$, since we need at least $k$ points to have a $k$-subset).",
     "mathContext": "$n_3 = 3$; $k_1 \\leq k_2 \\Rightarrow n_{k_1} \\leq n_{k_2}$; $n_k \\geq k$",
     "significance": "supporting",
     "relatedConcepts": [

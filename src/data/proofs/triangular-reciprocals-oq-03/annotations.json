@@ -32,7 +32,7 @@
     },
     "type": "definition",
     "title": "Alternating Harmonic Series Axiom",
-    "content": "The first axiom states $\\sum_{n=1}^\\infty (-1)^{n+1}/n = \\ln 2$. This is the Mercator series (1668) evaluated at $x=1$. The $n=0$ case is defined to be $0$ to handle the natural number indexing — the mathematical series starts at $n=1$. The sign pattern $(-1)^{n+1}$ ensures the first nonzero term ($n=1$) is positive.",
+    "content": "The first axiom states $\\sum_{n=1}^\\infty (-1)^{n+1}/n = \\ln 2$. This is the Mercator series (1668) evaluated at $x=1$. The $n=0$ case is defined to be $0$ to handle the natural number indexing \u2014 the mathematical series starts at $n=1$. The sign pattern $(-1)^{n+1}$ ensures the first nonzero term ($n=1$) is positive.",
     "mathContext": "$\\texttt{HasSum}\\; f\\; s$ means $\\sum_{n=0}^{\\infty} f(n) = s$ in the topology of $\\mathbb{R}$",
     "significance": "key",
     "relatedConcepts": [
@@ -208,9 +208,9 @@
     },
     "type": "insight",
     "title": "Finite Partial Sum Verification",
-    "content": "Four partial sums are verified by `norm_num`: $S_1 = 1$, $S_2 = 2/3$, $S_3 = 5/6$, $S_4 = 11/15$. These oscillate around the limit $4\\ln 2 - 2 \\approx 0.7726$ — odd partial sums overshoot, even ones undershoot. This oscillation is characteristic of alternating series (guaranteed by the Leibniz alternating series test). The denominators $1, 3, 6, 15$ are related to products of consecutive integers.",
+    "content": "Four partial sums are verified by `norm_num`: $S_1 = 1$, $S_2 = 2/3$, $S_3 = 5/6$, $S_4 = 11/15$. These oscillate around the limit $4\\ln 2 - 2 \\approx 0.7726$ \u2014 odd partial sums overshoot, even ones undershoot. This oscillation is characteristic of alternating series (guaranteed by the Leibniz alternating series test). The denominators $1, 3, 6, 15$ are related to products of consecutive integers.",
     "mathContext": "$S_1 = 1 > 0.7726 > S_2 = \\tfrac{2}{3} < S_4 = \\tfrac{11}{15} < 0.7726 < S_3 = \\tfrac{5}{6}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Leibniz alternating series test",
       "oscillating partial sums",

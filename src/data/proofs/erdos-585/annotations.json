@@ -8,9 +8,9 @@
     },
     "type": "context",
     "title": "Problem Statement and Imports",
-    "content": "The header states Erdős Problem #585: determine the maximum number of edges in an n-vertex graph with no two edge-disjoint cycles on the same vertex set. Known bounds are Ω(n log log n) from Pyber–Rödl–Szemerédi (1995) and O(n(log n)^C) from Chakraborti–Janzer–Methuku–Montgomery (2024). Imports include Mathlib's SimpleGraph, Finset, and Filter modules.",
+    "content": "The header states Erd\u0151s Problem #585: determine the maximum number of edges in an n-vertex graph with no two edge-disjoint cycles on the same vertex set. Known bounds are \u03a9(n log log n) from Pyber\u2013R\u00f6dl\u2013Szemer\u00e9di (1995) and O(n(log n)^C) from Chakraborti\u2013Janzer\u2013Methuku\u2013Montgomery (2024). Imports include Mathlib's SimpleGraph, Finset, and Filter modules.",
     "mathContext": "The extremal function $f(n) = \\max\\{|E(G)| : |V(G)| = n,\\; G \\text{ has no two edge-disjoint cycles on the same vertex set}\\}$ satisfies $\\Omega(n \\log \\log n) \\le f(n) \\le O(n (\\log n)^C)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "extremal graph theory",
       "cycle decomposition",
@@ -54,7 +54,7 @@
     },
     "type": "definition",
     "title": "Edge-Disjoint Cycles on Same Vertex Set",
-    "content": "Two cycles on the same vertex set S are edge-disjoint if they traverse S using at least one different edge. This requires the subgraph induced on S to be sufficiently edge-rich to support two distinct Hamiltonian cycles — a strong structural property related to the theory of cycle decompositions and edge-disjoint Hamiltonian paths.",
+    "content": "Two cycles on the same vertex set S are edge-disjoint if they traverse S using at least one different edge. This requires the subgraph induced on S to be sufficiently edge-rich to support two distinct Hamiltonian cycles \u2014 a strong structural property related to the theory of cycle decompositions and edge-disjoint Hamiltonian paths.",
     "mathContext": "Given $S \\subseteq V(G)$ with $|S| = k$, two Hamiltonian cycles $C_1, C_2$ on $S$ are edge-disjoint if $E(C_1) \\ne E(C_2)$, i.e., there exists an edge in one cycle not present in the other. The forbidden configuration is the existence of any such $S$ supporting two edge-disjoint Hamiltonian cycles.",
     "significance": "key",
     "relatedConcepts": [
@@ -78,10 +78,10 @@
     "type": "definition",
     "title": "Extremal Function f(n)",
     "content": "Defines f(n) as the supremum of edge counts over all n-vertex simple graphs that avoid the forbidden configuration. The definition uses Lean's sSup on the set of edge counts of graphs lacking two edge-disjoint cycles on any common vertex set.",
-    "mathContext": "$f(n) = \\max\\{|E(G)| : G \\text{ is a simple graph on } n \\text{ vertices with no two edge-disjoint cycles on any common vertex set}\\}$. Unlike classical Turán-type problems, the forbidden configuration here involves a global structural condition rather than a fixed subgraph.",
+    "mathContext": "$f(n) = \\max\\{|E(G)| : G \\text{ is a simple graph on } n \\text{ vertices with no two edge-disjoint cycles on any common vertex set}\\}$. Unlike classical Tur\u00e1n-type problems, the forbidden configuration here involves a global structural condition rather than a fixed subgraph.",
     "significance": "key",
     "relatedConcepts": [
-      "Turán number",
+      "Tur\u00e1n number",
       "extremal function",
       "forbidden configuration"
     ],
@@ -99,8 +99,8 @@
       "endLine": 65
     },
     "type": "technique",
-    "title": "Pyber–Rödl–Szemerédi Lower Bound",
-    "content": "The lower bound f(n) ≥ c·n·log log n was proved by Pyber, Rödl, and Szemerédi in 1995. Their construction uses probabilistic methods combined with Ramsey-theoretic ideas to build dense graphs avoiding the forbidden configuration. The iterated logarithm growth rate suggests the extremal function is only barely superlinear.",
+    "title": "Pyber\u2013R\u00f6dl\u2013Szemer\u00e9di Lower Bound",
+    "content": "The lower bound f(n) \u2265 c\u00b7n\u00b7log log n was proved by Pyber, R\u00f6dl, and Szemer\u00e9di in 1995. Their construction uses probabilistic methods combined with Ramsey-theoretic ideas to build dense graphs avoiding the forbidden configuration. The iterated logarithm growth rate suggests the extremal function is only barely superlinear.",
     "mathContext": "$\\exists c > 0$ such that $f(n) \\ge c \\cdot n \\cdot \\log \\log n$ for all sufficiently large $n$. The statement uses Lean's `Filter.atTop` for the \"eventually\" quantifier, capturing the asymptotic nature of the bound.",
     "significance": "key",
     "relatedConcepts": [
@@ -123,7 +123,7 @@
     },
     "type": "technique",
     "title": "CJMM Upper Bound (2024)",
-    "content": "Chakraborti, Janzer, Methuku, and Montgomery proved in 2024 that f(n) ≤ C·n·(log n)^α for constants C, α > 0. This was a major breakthrough, dramatically improving the previous best upper bound of O(n√(log n)) and nearly closing the gap with the lower bound. Their method uses structural decomposition and dependent random choice techniques.",
+    "content": "Chakraborti, Janzer, Methuku, and Montgomery proved in 2024 that f(n) \u2264 C\u00b7n\u00b7(log n)^\u03b1 for constants C, \u03b1 > 0. This was a major breakthrough, dramatically improving the previous best upper bound of O(n\u221a(log n)) and nearly closing the gap with the lower bound. Their method uses structural decomposition and dependent random choice techniques.",
     "mathContext": "$\\exists C_0 > 0,\\; \\alpha > 0$ such that $f(n) \\le C_0 \\cdot n \\cdot (\\log n)^\\alpha$ for all sufficiently large $n$. The gap between $\\log \\log n$ and $(\\log n)^\\alpha$ remains the central open question.",
     "significance": "key",
     "relatedConcepts": [
@@ -145,14 +145,14 @@
       "endLine": 89
     },
     "type": "insight",
-    "title": "Combined Bounds — The Open Gap",
-    "content": "The formal statement of Erdős Problem #585 combines both bounds into a single axiom: Ω(n log log n) ≤ f(n) ≤ O(n(log n)^C). The gap between the iterated logarithm and a power of the logarithm is the fundamental open question. Closing this gap would require either improving the Pyber–Rödl–Szemerédi construction or strengthening the CJMM decomposition approach.",
+    "title": "Combined Bounds \u2014 The Open Gap",
+    "content": "The formal statement of Erd\u0151s Problem #585 combines both bounds into a single axiom: \u03a9(n log log n) \u2264 f(n) \u2264 O(n(log n)^C). The gap between the iterated logarithm and a power of the logarithm is the fundamental open question. Closing this gap would require either improving the Pyber\u2013R\u00f6dl\u2013Szemer\u00e9di construction or strengthening the CJMM decomposition approach.",
     "mathContext": "$\\exists c, C, \\alpha > 0$ such that eventually $c \\cdot n \\cdot \\log \\log n \\le f(n) \\le C \\cdot n \\cdot (\\log n)^\\alpha$. The ratio of the upper to lower bound is $(\\log n)^\\alpha / \\log \\log n$, which grows to infinity but very slowly.",
     "significance": "key",
     "relatedConcepts": [
       "extremal gap",
       "asymptotic tightness",
-      "Erdős problems"
+      "Erd\u0151s problems"
     ],
     "prerequisites": [
       "asymptotic analysis",
@@ -168,7 +168,7 @@
     },
     "type": "technique",
     "title": "k-Cycle Generalization (CJMM 2024)",
-    "content": "Chakraborti et al. also proved a generalization: for any k ≥ 2, graphs with more than C·n·(log n)^α edges must contain k pairwise edge-disjoint cycles on some common vertex set. This shows the upper bound is robust — the polylogarithmic threshold is not specific to k = 2 but holds for any fixed number of edge-disjoint cycles.",
+    "content": "Chakraborti et al. also proved a generalization: for any k \u2265 2, graphs with more than C\u00b7n\u00b7(log n)^\u03b1 edges must contain k pairwise edge-disjoint cycles on some common vertex set. This shows the upper bound is robust \u2014 the polylogarithmic threshold is not specific to k = 2 but holds for any fixed number of edge-disjoint cycles.",
     "mathContext": "For every $k \\ge 2$, $\\exists C_0, \\alpha > 0$ such that any $n$-vertex graph with more than $C_0 \\cdot n \\cdot (\\log n)^\\alpha$ edges contains $k$ pairwise edge-disjoint Hamiltonian cycles on some common vertex subset.",
     "significance": "key",
     "relatedConcepts": [

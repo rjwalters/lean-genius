@@ -151,7 +151,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #820 studies the function H(n) = min{l : ∃k<l with gcd(k^n-1, l^n-1)=1}. The main conjecture asks if H(n)=3 infinitely often (equivalent to gcd(2^n-1, 3^n-1)=1 infinitely often). Erdős also conjectured precise growth bounds involving iterated logarithms. Van Doorn improved Erdős's 1974 lower bound, but the main conjectures remain OPEN.",
-    "implications": "**Theoretical Significance**: **Implications in Number Theory**\n\n1. **Multiplicative Structure:** The problem reveals deep structure in how primes divide expressions k^n-1.\n\n2. **Primitive Roots:** Related to distribution of multiplicative orders modulo primes.\n\n3.\n\n**Broader Connections**: **Exponential GCDs:** Foundational for understanding when Mersenne-like numbers are coprime.\n\n4. **Analytic Number Theory:** Known bounds require sophisticated estimates on prime distributions.\n\n5. **Computational Interest:** OEIS A263647 provides computational data supporting the conjecture.",
+    "implications": "**Theoretical Significance**: **Implications in Number Theory**\n\n1. **Multiplicative Structure:** The problem reveals deep structure in how primes divide expressions k^n-1.\n\n2. **Primitive Roots:** Related to distribution of multiplicative orders modulo primes.\n\n**3. Exponential GCDs:** Foundational for understanding when Mersenne-like numbers are coprime.\n\n4. **Analytic Number Theory:** Known bounds require sophisticated estimates on prime distributions.\n\n5. **Computational Interest:** OEIS A263647 provides computational data supporting the conjecture.",
     "openQuestions": [
       "Is H(n)=3 for infinitely many n?",
       "What is the precise constant c in the growth bounds?",

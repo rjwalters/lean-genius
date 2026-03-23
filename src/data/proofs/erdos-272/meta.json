@@ -138,7 +138,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #272 was resolved by Szabó (1999): the maximum t is N²/2 + O(N^{5/3}(log N)³). The Erdős-Graham conjecture was disproved by Simonovits-Sós, who showed that small sets through a fixed element outperform APs through the middle.",
-    "implications": "**Theoretical Significance**: **Combinatorial Significance**\n\n1. **Extremal Set Theory:** Shows that intersection constraints on set families lead to precise quadratic bounds\n\n2.\n\n**Broader Connections**: **Small Sets are Powerful:** The key insight that sets of size ≤ 3 beat structured APs was unexpected\n\n3. **Common Element Structure:** Szabó's conjecture suggests extremal families have a star-like structure\n\n4. **Arithmetic Progression Theory:** Connects the algebraic structure of APs to combinatorial optimization.",
+    "implications": "**Theoretical Significance**: **Combinatorial Significance**\n\n1. **Extremal Set Theory:** Shows that intersection constraints on set families lead to precise quadratic bounds\n\n**2. Small Sets are Powerful:** The key insight that sets of size ≤ 3 beat structured APs was unexpected\n\n3. **Common Element Structure:** Szabó's conjecture suggests extremal families have a star-like structure\n\n4. **Arithmetic Progression Theory:** Connects the algebraic structure of APs to combinatorial optimization.",
     "openQuestions": [
       "Is the exact answer t = C(N,2) + O(N)? (Szabó's conjecture)",
       "Does every extremal family have a common element? (Szabó's structural conjecture)",

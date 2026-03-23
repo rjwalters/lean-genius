@@ -117,7 +117,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1002 asks whether the weighted fractional part sum f(α,n) = (1/log n) Σ (1/2 - {αk}) has an asymptotic distribution function. While Kesten (1960) proved the two-parameter variant has Cauchy distribution, the one-parameter case (fixing β = 0) remains open. The difficulty lies in the loss of independence when the shift parameter is fixed.",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Diophantine Approximation**: Connects distribution theory to number-theoretic properties of real numbers\n\n2.\n\n**Broader Connections**: **Ergodic Theory**: Relates to geodesic flows and mixing properties on modular surfaces\n\n3. **Probability Theory**: Tests limits of central limit theorem-type results for dependent sequences\n\n4. **Continued Fractions**: The answer may distinguish between different Diophantine types of α.",
+    "implications": "1. **Diophantine Approximation**: Connects distribution theory to number-theoretic properties of real numbers\n\n**2. Ergodic Theory**: Relates to geodesic flows and mixing properties on modular surfaces\n\n3. **Probability Theory**: Tests limits of central limit theorem-type results for dependent sequences\n\n4. **Continued Fractions**: The answer may distinguish between different Diophantine types of α.",
     "openQuestions": [
       "Does f(α,n) have an asymptotic distribution for Lebesgue-almost all α?",
       "If a distribution exists, is it the same Cauchy distribution as Kesten's result?",

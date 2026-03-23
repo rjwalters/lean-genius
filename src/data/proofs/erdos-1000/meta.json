@@ -118,7 +118,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #1000 on generalized totients and Cesàro averages. Cassels introduced φ_A to study Diophantine approximation; Erdős proved individual ratios cannot converge to 0 and established a liminf/limsup dichotomy; Haight then showed the Cesàro average CAN vanish, contradicting Erdős' conjecture. The construction exploits the gap between pointwise divergence and averaged convergence using highly composite numbers.",
-    "implications": "**Theoretical Significance**: The result illustrates a fundamental theme in analytic number theory: averaging can tame oscillation.\n\n**Broader Connections**: While φ_A(k)/n_k must oscillate between 0 and 1, the average can still converge to 0 if the 'large' values become sufficiently sparse. This connects to broader questions about the behavior of arithmetic functions under Cesàro summation and the role of highly composite numbers as extremal objects.",
+    "implications": "**Theoretical Significance**: The result illustrates a fundamental theme in analytic number theory: averaging can tame oscillation.\n\nWhile φ_A(k)/n_k must oscillate between 0 and 1, the average can still converge to 0 if the 'large' values become sufficiently sparse. This connects to broader questions about the behavior of arithmetic functions under Cesàro summation and the role of highly composite numbers as extremal objects.",
     "openQuestions": [
       "Can explicit Haight-type sequences be constructed, or is the existence proof non-constructive?",
       "What is the optimal rate of convergence of C_A(N) to 0?",

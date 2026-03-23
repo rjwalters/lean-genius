@@ -29,69 +29,78 @@
       "title": "Imports and Setup",
       "startLine": 32,
       "endLine": 36,
-      "summary": "Imports from Mathlib: `InnerProductSpace.Basic` for the Euclidean metric on $\\mathbb{R}^d$, `Data.Real.Sqrt` for $\\sqrt{12n-3}$ in Harborth's formula, and general tactics."
+      "summary": "Imports from Mathlib: `InnerProductSpace.Basic` for the Euclidean metric on $\\mathbb{R}^d$, `Data.Real.Sqrt` for $\\sqrt{12n-3}$ in Harborth's formula, and general tactics.",
+      "mathContext": "Imports: `InnerProductSpace` for $\\|x - y\\|$, `Real.sqrt` for Harborth's $\\lfloor 3n - \\sqrt{12n-3} \\rfloor$."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 39,
       "endLine": 53,
-      "summary": "Defines `SeparatedConfig d n` (points in $\\mathbb{R}^d$ with pairwise distance $\\ge 1$), `unitDistPairs` (edge count of unit-distance graph), and $f_d(n) = \\max$ unit pairs over all configurations."
+      "summary": "Defines `SeparatedConfig d n` (points in $\\mathbb{R}^d$ with pairwise distance $\\ge 1$), `unitDistPairs` (edge count of unit-distance graph), and $f_d(n) = \\max$ unit pairs over all configurations.",
+      "mathContext": "$f_d(n) = \\max \\{|\\{(i,j): \\|p_i - p_j\\| = 1\\}| : \\|p_i - p_j\\| \\geq 1\\}$ over $n$-point configs in $\\mathbb{R}^d$."
     },
     {
       "id": "one-dimensional-setup",
       "title": "1D Configuration and Helpers",
       "startLine": 62,
       "endLine": 72,
-      "summary": "Specialized `SeparatedConfig1D` using $\\mathbb{R}$ directly with $|x - y| \\ge 1$, avoiding the overhead of `EuclideanSpace ℝ (Fin 1)`. Enables direct absolute value case analysis."
+      "summary": "Specialized `SeparatedConfig1D` using $\\mathbb{R}$ directly with $|x - y| \\ge 1$, avoiding the overhead of `EuclideanSpace ℝ (Fin 1)`. Enables direct absolute value case analysis.",
+      "mathContext": "1D specialization: $|x_i - x_j| \\geq 1$ for $i \\neq j$, using $\\mathbb{R}$ directly."
     },
     {
       "id": "triangle-lemma",
       "title": "1D Triangle Lemma (Proved)",
       "startLine": 79,
       "endLine": 92,
-      "summary": "**Machine-verified**: If $|x-y| = |x-z| = 1$ and $|y-z| \\ge 1$, then $|y-z| = 2$. Unit neighbors of $x$ must be on opposite sides. Proof by 4-case analysis on signs of $x-y$ and $x-z$, using `abs_eq` and `linarith`."
+      "summary": "**Machine-verified**: If $|x-y| = |x-z| = 1$ and $|y-z| \\ge 1$, then $|y-z| = 2$. Unit neighbors of $x$ must be on opposite sides. Proof by 4-case analysis on signs of $x-y$ and $x-z$, using `abs_eq` and `linarith`.",
+      "mathContext": "Proved: $|x-y| = |x-z| = 1 \\wedge |y-z| \\geq 1 \\Rightarrow |y-z| = 2$. I.e., $y = x-1, z = x+1$ or vice versa."
     },
     {
       "id": "degree-bound",
       "title": "1D Degree Bound (Proved)",
       "startLine": 100,
       "endLine": 126,
-      "summary": "**Machine-verified**: A point in $\\mathbb{R}$ cannot have 3 unit neighbors among separated points. Exhausts all $2^3 = 8$ sign combinations; in each case, pigeonhole forces two neighbors equal, contradicting separation $\\ge 1$."
+      "summary": "**Machine-verified**: A point in $\\mathbb{R}$ cannot have 3 unit neighbors among separated points. Exhausts all $2^3 = 8$ sign combinations; in each case, pigeonhole forces two neighbors equal, contradicting separation $\\ge 1$.",
+      "mathContext": "Proved: $\\deg(x) \\leq 2$ in the unit-distance graph. Exhaustive $2^3 = 8$ case analysis."
     },
     {
       "id": "one-dimensional-exact",
       "title": "1D Exact Result: $f_1(n) = n-1$",
       "startLine": 136,
       "endLine": 146,
-      "summary": "Upper bound: unit-distance graph is a forest ($\\le n-1$ edges). Achievability: $\\{0, 1, \\ldots, n-1\\}$ gives $n-1$ unit pairs. Combined: $f_1(n) = n-1$."
+      "summary": "Upper bound: unit-distance graph is a forest ($\\le n-1$ edges). Achievability: $\\{0, 1, \\ldots, n-1\\}$ gives $n-1$ unit pairs. Combined: $f_1(n) = n-1$.",
+      "mathContext": "$f_1(n) = n - 1$. Upper: max degree 2 gives forest ($\\leq n-1$ edges). Lower: $\\{0,1,\\ldots,n-1\\}$."
     },
     {
       "id": "two-dimensional",
       "title": "Two-Dimensional Case",
       "startLine": 151,
       "endLine": 166,
-      "summary": "Erdős's bound $f_2(n) < 3n - c\\sqrt{n}$, Harborth's exact formula $f_2(n) = \\lfloor 3n - \\sqrt{12n-3} \\rfloor$ (1974), triangular lattice optimality, and the trivial bound $f_2(n) < 3n$ from kissing number $\\tau(2) = 6$."
+      "summary": "Erdős's bound $f_2(n) < 3n - c\\sqrt{n}$, Harborth's exact formula $f_2(n) = \\lfloor 3n - \\sqrt{12n-3} \\rfloor$ (1974), triangular lattice optimality, and the trivial bound $f_2(n) < 3n$ from kissing number $\\tau(2) = 6$.",
+      "mathContext": "$f_2(n) = \\lfloor 3n - \\sqrt{12n-3} \\rfloor$ (Harborth 1974). Trivial: $f_2(n) \\leq \\tau(2) \\cdot n/2 = 3n$."
     },
     {
       "id": "three-dimensional",
       "title": "Three-Dimensional Case",
       "startLine": 171,
       "endLine": 185,
-      "summary": "Leading coefficient $f_3(n)/n \\to 6$ from $\\tau(3) = 12$, Bezdek–Reid upper bound $f_3(n) < 6n - 0.926 n^{2/3}$ (2013), and Erdős's conjecture $f_3(n) = 6n - \\Theta(n^{2/3})$ — the central open question."
+      "summary": "Leading coefficient $f_3(n)/n \\to 6$ from $\\tau(3) = 12$, Bezdek–Reid upper bound $f_3(n) < 6n - 0.926 n^{2/3}$ (2013), and Erdős's conjecture $f_3(n) = 6n - \\Theta(n^{2/3})$ — the central open question.",
+      "mathContext": "Conjecture: $f_3(n) = 6n - \\Theta(n^{2/3})$. Known: $f_3(n) < 6n - 0.926n^{2/3}$ (Bezdek-Reid 2013)."
     },
     {
       "id": "general-dimension",
       "title": "General Dimension Bounds",
       "startLine": 190,
       "endLine": 198,
-      "summary": "Lower bound $f_d(n) \\ge (d - o(1))n$ from $\\mathbb{Z}^d$ lattice, upper bound $f_d(n) \\le 2^{O(d)} n$ from Kabatyansky–Levenshtein (1978). Exponential gap in $d$ remains open."
+      "summary": "Lower bound $f_d(n) \\ge (d - o(1))n$ from $\\mathbb{Z}^d$ lattice, upper bound $f_d(n) \\le 2^{O(d)} n$ from Kabatyansky–Levenshtein (1978). Exponential gap in $d$ remains open.",
+      "mathContext": "$dn \\lesssim f_d(n) \\leq \\tau(d) \\cdot n/2 \\leq 2^{0.401d} \\cdot n$. Exponential gap in $d$."
     }
   ],
   "overview": {
     "historicalContext": "Erdős introduced this problem in 1946, asking how many 'contacts' (unit-distance pairs) can occur among n non-overlapping unit spheres in ℝ^d. The problem connects sphere packing theory, the classical Newton–Gregory kissing number dispute (1694), and extremal graph theory. For d = 2, the kissing number τ(2) = 6 gives f₂(n) ≤ 3n; Harborth (1974) found the exact formula f₂(n) = ⌊3n - √(12n-3)⌋ using the triangular lattice A₂, one of the most elegant results in combinatorial geometry. For d = 3, Newton proved τ(3) = 12 (confirmed by Schütte–van der Waerden 1953), giving f₃(n) ~ 6n. Bezdek and Reid (2013) proved the n^{2/3} correction: f₃(n) < 6n - 0.926·n^{2/3}, establishing the surface-to-volume isoperimetric deficit for finite sphere packings. The matching lower bound remains open and is related to the Kepler conjecture (Hales 2005). In high dimensions, the Kabatyansky–Levenshtein bound (1978) gives τ(d) ≤ 2^{0.401d}, but the true behavior of f_d(n) for large d remains mysterious.",
     "problemStatement": "Estimate f_d(n), the maximum number of unit-distance pairs among n points in ℝ^d with pairwise distances ≥ 1.",
-    "text": "Let f_d(n) be the maximum number of unit-distance pairs among n points in \u211d^d with all pairwise distances \u2265 1. For d=2, Harborth gave the exact formula. For d=3, Erd\u0151s conjectured f_3(n) = 6n - \u0398(n^{2/3}). Status: OPEN (d \u2265 3).",
+    "text": "Let f_d(n) be the maximum number of unit-distance pairs among n points in ℝ^d with all pairwise distances ≥ 1. For d=2, Harborth gave the exact formula. For d=3, Erdős conjectured f_3(n) = 6n - Θ(n^{2/3}). Status: OPEN (d ≥ 3).",
     "proofStrategy": "The Lean formalization defines separated configurations and unit-distance pair counting in arbitrary dimension d. For d = 1, two key lemmas are fully machine-verified: the triangle lemma (unit neighbors must be on opposite sides) and the degree bound (at most 2 unit neighbors). These establish f₁(n) = n - 1. The d = 2 and d = 3 results are formalized as axioms capturing Harborth's formula, the Bezdek-Reid bound, and Erdős's conjecture. General dimension bounds use kissing number estimates.",
     "keyInsights": [
       "**Kissing number controls the leading coefficient**: $f_d(n) \\le \\tau(d) \\cdot n / 2$ by double-counting. Known values $\\tau(1) = 2$, $\\tau(2) = 6$, $\\tau(3) = 12$ give leading terms $n$, $3n$, $6n$",
@@ -101,13 +110,15 @@
       "**Exponential gap** in general $d$: between $f_d(n) \\ge dn$ from $\\mathbb{Z}^d$ and $f_d(n) \\le 2^{O(d)} n$ from Kabatyansky–Levenshtein — closing this is a major open problem"
     ],
     "prerequisites": [
-      "Number theory fundamentals",
-      "Combinatorial analysis"
+      "Euclidean geometry: distance in $\\mathbb{R}^d$, inner product spaces",
+      "Combinatorial geometry: kissing numbers, sphere packing, lattices",
+      "Graph theory: degree bounds, extremal graph counting",
+      "Familiarity with Lean 4 and Mathlib's EuclideanSpace API"
     ]
   },
   "conclusion": {
     "summary": "Erdős Problem #1084 asks for the maximum number of unit-distance pairs among separated points. The problem is fully solved for d = 1 (f₁(n) = n - 1, with key lemmas machine-verified) and d = 2 (Harborth's elegant formula using the triangular lattice). For d = 3, the leading coefficient 6 is established via the kissing number τ(3) = 12, and Bezdek–Reid proved the n^{2/3} correction in the upper bound, but the matching lower bound — Erdős's conjecture f₃(n) = 6n - Θ(n^{2/3}) — remains open.",
-    "implications": "**Theoretical Significance**: Understanding f_d(n) precisely would reveal the fine structure of finite sphere packings, connect to the Kepler conjecture and sphere packing rigidity, and illuminate the transition between lattice and non-lattice optimal packings.\n\n**Broader Connections**: The exponential gap between upper and lower bounds in high dimensions is intimately connected to the long-standing open problem of determining the kissing number τ(d) for large d.",
+    "implications": "**Theoretical Significance**: Understanding f_d(n) precisely would reveal the fine structure of finite sphere packings, connect to the Kepler conjecture and sphere packing rigidity, and illuminate the transition between lattice and non-lattice optimal packings.\n\nThe exponential gap between upper and lower bounds in high dimensions is intimately connected to the long-standing open problem of determining the kissing number τ(d) for large d.",
     "openQuestions": [
       "Is f₃(n) = 6n - Θ(n^{2/3})? Specifically, does the lower bound f₃(n) ≥ 6n - c₁·n^{2/3} hold?",
       "What are the exact constants c₁, c₂ in the 3D correction term?",

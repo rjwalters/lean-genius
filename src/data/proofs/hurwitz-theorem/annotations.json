@@ -52,7 +52,7 @@
     "title": "N-Square Identity Structure",
     "content": "An NSquareIdentity n consists of a bilinear multiplication 'mul' such that normSq(a) * normSq(b) = normSq(mul a b). This formalizes: 'the product of two sums of n squares is again a sum of n squares with bilinear coordinates'.",
     "mathContext": "This is the Lean encoding of the classical composition of quadratic forms problem studied by Hurwitz (1898). The bilinearity requirement is crucial -- without it, trivial identities exist for all n. The structure encodes the norm-multiplicativity that defines normed division algebras: |xy| = |x| * |y|.",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [
       "normSq",
       "Fin"
@@ -71,7 +71,7 @@
       "startLine": 95,
       "endLine": 100
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "The 1-Square Identity",
     "content": "The trivial identity x^2 * y^2 = (xy)^2. Defines oneMul a b = (a_0 * b_0) and proves one_square_identity via the ring tactic. Corresponds to R as a 1-dimensional normed division algebra.",
     "mathContext": "The real numbers R are the unique 1-dimensional normed division algebra. The multiplication is ordinary scalar multiplication, and norm-multiplicativity is |xy| = |x||y| for real numbers.",
@@ -93,7 +93,7 @@
       "startLine": 125,
       "endLine": 133
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Brahmagupta-Fibonacci Identity (n = 2)",
     "content": "The identity (a^2+b^2)(c^2+d^2) = (ac-bd)^2 + (ad+bc)^2, discovered by Brahmagupta in 628 CE (Brahma-sphuta-siddhanta) and rediscovered by Fibonacci in 1202 (Liber Abaci). Encodes complex number multiplication: (a+bi)(c+di) = (ac-bd)+(ad+bc)i. Verified by the ring tactic.",
     "mathContext": "This identity is equivalent to the multiplicativity of the Gaussian integer norm N(z1*z2) = N(z1)*N(z2) where N(a+bi) = a^2 + b^2. It is the algebraic heart of Fermat's two-square theorem: a prime p = 1 (mod 4) is a sum of two squares.",
@@ -140,7 +140,7 @@
       "startLine": 191,
       "endLine": 197
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Euler's Four-Square Identity",
     "content": "Euler discovered this 64-term polynomial identity in 1748, nearly 100 years before Hamilton's quaternions (1843). The ring tactic expands and verifies the identity automatically. Constructs fourSquareIdentity : NSquareIdentity 4.",
     "mathContext": "Euler's identity is the algebraic backbone of Lagrange's four-square theorem (1770): every positive integer is a sum of four squares. The identity reduces the proof to primes, since (sum x_i^2)(sum y_i^2) = sum z_i^2 with bilinear z_i.",
@@ -186,7 +186,7 @@
       "startLine": 244,
       "endLine": 245
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "8-Square Identity (Degen's Identity)",
     "content": "Axiomatizes eight_square_identity_exists : NSquareIdentity 8. The full formula (Degen's identity, 1818) has 8 output components, each a sum of 8 products of the 16 input variables -- too complex to write explicitly. Corresponds to octonion multiplication.",
     "mathContext": "Ferdinand Degen published the 8-square identity in 1818. John Graves discovered octonions independently in 1843, and Arthur Cayley rediscovered them in 1845. Octonions are the largest normed division algebra: they are non-associative but alternative (x(xy) = x^2 y). Their automorphism group is the exceptional Lie group G_2.",
@@ -213,7 +213,7 @@
     "title": "Why n = 3 Fails: Setup and Orthonormality",
     "content": "Defines inner products <u,v> = sum_i u_i*v_i, standard basis e_i, and derives that the 9 vectors m_ij = mul(e_i, e_j) form orthonormal rows and columns. The cross product in R^3 has |a x b| = |a||b|sin(theta) != |a||b| for non-perpendicular vectors, giving intuition for the obstruction.",
     "mathContext": "The orthonormality of m_ij follows from substituting basis vectors into the norm-multiplicativity identity. Setting a = e_i, b = e_j gives ||m_ij|| = 1. Setting a = e_i + e_k gives the orthogonality <m_ij, m_kj> = 0 for i != k.",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [
       "NSquareIdentity",
       "normSq",
@@ -233,11 +233,11 @@
       "startLine": 581,
       "endLine": 589
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Parseval Identity in R^3",
     "content": "For any orthonormal basis {v1, v2, v3} of R^3: ||w||^2 = <w, v1>^2 + <w, v2>^2 + <w, v3>^2. Proved via the key lemma that a vector orthogonal to all three vectors of an orthonormal triple must be zero (using matrix invertibility).",
     "mathContext": "The Parseval identity is the finite-dimensional version of Parseval's theorem in Fourier analysis. In R^n, it states ||w||^2 = sum_i |<w, v_i>|^2 for any orthonormal basis. The proof uses the fact that a 3x3 matrix with orthonormal rows has determinant +/-1, hence is invertible.",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [
       "innerProd",
       "orthonormality of m_ij",
@@ -257,11 +257,11 @@
       "startLine": 801,
       "endLine": 806
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "The n = 3 Contradiction (Core Proof)",
     "content": "The core impossibility argument (no_three_square_identity_proof). The 9 unit vectors m_ij from a hypothetical 3-square identity satisfy overdetermined constraints: Parseval forces m_13 = +/-m_21 and m_23 = +/-m_11, but column-3 orthogonality <m_13, m_23> = 0 then requires <m_21, m_11> = 0 -- contradicting row orthogonality.",
     "mathContext": "This is an original ~370-line proof using purely algebraic/linear-algebraic methods. Most classical proofs of this impossibility use topology (parallelizability of spheres) or representation theory (Clifford algebras). The Parseval-based approach is more elementary and fully formalizable in Lean without topology libraries.",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [
       "parseval_identity",
       "unit_ortho_pm_third",
@@ -280,11 +280,11 @@
       "startLine": 1169,
       "endLine": 1179
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "No 3-Square Identity Theorem",
     "content": "no_three_square_identity : forall f : NSquareIdentity 3, False. The definitive negative result: there is NO bilinear 3-square identity. Hamilton searched for 15 years (1828-1843) before realizing he needed 4 dimensions. Hurwitz (1898) proved this impossibility in full generality.",
     "mathContext": "This theorem explains why there is no 3-dimensional normed division algebra. The proof wraps the earlier no_three_square_identity_proof into a universal statement. Combined with the constructive identities for n = 1, 2, 4, 8, it establishes half of Hurwitz's theorem.",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [
       "no_three_square_identity_proof"
     ],
@@ -305,7 +305,7 @@
     "title": "Admissible Dimensions",
     "content": "admissibleDimensions : Set N := {1, 2, 4, 8}. The set of dimensions for which n-square identities exist. These are exactly the dimensions of the four normed division algebras: R (1), C (2), H (4), O (8).",
     "mathContext": "These dimensions are all powers of 2, reflecting the Cayley-Dickson doubling construction. By Bott-Milnor and Kervaire (1958), they also correspond to the parallelizable spheres S^0, S^1, S^3, S^7. The fact that only these four dimensions work is one of the most surprising results in algebra.",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [],
     "relatedConcepts": [
       "Cayley-Dickson construction",
@@ -320,11 +320,11 @@
       "startLine": 1583,
       "endLine": 1592
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Hurwitz's Main Theorem",
     "content": "hurwitz_theorem: For n > 0, Nonempty(NSquareIdentity n) <-> n in {1, 2, 4, 8}. The complete biconditional. The forward direction is constructive: we built identities for each admissible n. The reverse direction uses hurwitz_only_if (axiomatized for the general case beyond n = 3).",
     "mathContext": "Hurwitz published this in 1898 in the Nachrichten der Gesellschaft der Wissenschaften zu Gottingen. The forward direction (only if) is the hard part: for n not in {1,2,4,8}, one must show no bilinear composition formula can exist. The n = 3 case is proved in full; the general case is axiomatized pending Clifford algebra machinery in Mathlib.",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [
       "identities_exist_for_admissible",
       "hurwitz_only_if",

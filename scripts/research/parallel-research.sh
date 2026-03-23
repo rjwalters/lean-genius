@@ -3,7 +3,8 @@
 # parallel-research.sh - Launch parallel research agents
 #
 # Usage:
-#   ./parallel-research.sh [count]           Launch N agents (default: 2, max: 7)
+#   ./parallel-research.sh [count]           Launch N agents (default: 2, max: 16)
+#   ./parallel-research.sh --slot N          Launch a single agent at slot N
 #   ./parallel-research.sh --status          Show running agents and claims
 #   ./parallel-research.sh --graceful-stop   Signal agents to stop after current work
 #   ./parallel-research.sh --stop            Force stop all agents immediately
@@ -242,8 +243,8 @@ launch_agents() {
     local wait_interval="${RESEARCHER_WAIT_INTERVAL:-15}"
 
     # Validate count
-    if [[ $count -lt 1 || $count -gt 7 ]]; then
-        print_error "Agent count must be between 1 and 5 (got: $count)"
+    if [[ $count -lt 1 || $count -gt 16 ]]; then
+        print_error "Agent count must be between 1 and 16 (got: $count)"
         exit 1
     fi
 
@@ -443,6 +444,24 @@ case "${1:-}" in
         fi
         attach_to_agent "$2"
         ;;
+    --slot)
+        if [[ -z "${2:-}" ]]; then
+            print_error "Usage: $0 --slot <agent-number>"
+            exit 1
+        fi
+        local slot_num="$2"
+        if [[ $slot_num -lt 1 || $slot_num -gt 16 ]]; then
+            print_error "Slot must be between 1 and 16 (got: $slot_num)"
+            exit 1
+        fi
+        check_deps
+        mkdir -p "$WORKTREES_DIR" "$LOGS_DIR" "$SIGNALS_DIR"
+        print_info "Updating main branch..."
+        git fetch origin main 2>/dev/null || true
+        git checkout main 2>/dev/null || true
+        git pull origin main 2>/dev/null || true
+        launch_agent "$slot_num"
+        ;;
     --help|-h)
         cat << EOF
 Parallel Research Agents (with Worktree Isolation)
@@ -451,7 +470,8 @@ Launch multiple Claude Code agents to work on research problems concurrently.
 Each agent works in its own git worktree with a dedicated branch.
 
 Usage:
-  ./parallel-research.sh [count]            Launch N agents (default: 2, max: 7)
+  ./parallel-research.sh [count]            Launch N agents (default: 2, max: 16)
+  ./parallel-research.sh --slot N           Launch a single agent at slot N
   ./parallel-research.sh --status           Show running agents and claims
   ./parallel-research.sh --continue         Resume all agents after API limits reset
   ./parallel-research.sh --continue N       Resume agent N specifically

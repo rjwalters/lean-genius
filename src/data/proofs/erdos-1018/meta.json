@@ -120,7 +120,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1018 asked whether dense graphs (n^(1+ε) edges) must contain non-planar subgraphs of bounded size. Kostochka and Pyber (1988) proved yes: such graphs contain K₅ subdivisions on O_ε(1) vertices. The bound C_ε grows as ε → 0, reflecting that sparser graphs hide non-planarity in larger structures.",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Topological Graph Theory**: Quantifies how density forces non-planar structure\n\n2.\n\n**Broader Connections**: **Extremal Combinatorics**: Connects edge density to topological properties\n\n3. **Kuratowski Theory**: Shows obstructions appear in bounded-size subgraphs\n\n4. **Algorithmic Applications**: Bounds on finding non-planar subgraphs.",
+    "implications": "1. **Topological Graph Theory**: Quantifies how density forces non-planar structure\n\n**2. Extremal Combinatorics**: Connects edge density to topological properties\n\n3. **Kuratowski Theory**: Shows obstructions appear in bounded-size subgraphs\n\n4. **Algorithmic Applications**: Bounds on finding non-planar subgraphs.",
     "openQuestions": [
       "What is the optimal bound on C_ε as a function of ε?",
       "Can similar results be proved for other surfaces (torus, etc.)?",

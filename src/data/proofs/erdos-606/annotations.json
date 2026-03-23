@@ -8,7 +8,7 @@
     },
     "type": "context",
     "title": "Problem Statement and References",
-    "content": "Erdős Problem #606: Given $n$ distinct points in $\\mathbb{R}^2$, what values can $f(n)$ take, where $f(n)$ is the number of distinct lines determined by these points? The Erdős-Salamon theorem gives a complete characterization for large $n$: the achievable values are $\\{1\\} \\cup [n, \\binom{n}{2}] \\setminus \\{\\binom{n}{2}-1, \\binom{n}{2}-3\\}$.",
+    "content": "Erd\u0151s Problem #606: Given $n$ distinct points in $\\mathbb{R}^2$, what values can $f(n)$ take, where $f(n)$ is the number of distinct lines determined by these points? The Erd\u0151s-Salamon theorem gives a complete characterization for large $n$: the achievable values are $\\{1\\} \\cup [n, \\binom{n}{2}] \\setminus \\{\\binom{n}{2}-1, \\binom{n}{2}-3\\}$.",
     "mathContext": "The problem asks for the exact set $\\mathcal{A}(n) = \\{k \\in \\mathbb{N} : \\exists \\text{ config } P \\text{ of } n \\text{ points with } f(P) = k\\}$. The answer involves the binomial coefficient $\\binom{n}{2} = \\frac{n(n-1)}{2}$, which counts the maximum number of lines when no three points are collinear.",
     "significance": "key",
     "relatedConcepts": [
@@ -32,9 +32,9 @@
     },
     "type": "context",
     "title": "Mathlib Imports",
-    "content": "Imports from Mathlib for inner product spaces (defining $\\mathbb{R}^2$ as `EuclideanSpace ℝ (Fin 2)`), finite set cardinality, affine independence, and general tactics. The use of `EuclideanSpace` provides a concrete model of the Euclidean plane with the standard inner product.",
-    "mathContext": "The type `EuclideanSpace ℝ (Fin 2)` is isomorphic to $\\mathbb{R}^2$ with the $\\ell^2$ norm, providing the geometric structure needed for points and lines.",
-    "significance": "context",
+    "content": "Imports from Mathlib for inner product spaces (defining $\\mathbb{R}^2$ as `EuclideanSpace \u211d (Fin 2)`), finite set cardinality, affine independence, and general tactics. The use of `EuclideanSpace` provides a concrete model of the Euclidean plane with the standard inner product.",
+    "mathContext": "The type `EuclideanSpace \u211d (Fin 2)` is isomorphic to $\\mathbb{R}^2$ with the $\\ell^2$ norm, providing the geometric structure needed for points and lines.",
+    "significance": "supporting",
     "relatedConcepts": [
       "Euclidean space",
       "inner product space",
@@ -54,7 +54,7 @@
     },
     "type": "definition",
     "title": "Point Configuration",
-    "content": "A point in the plane is defined as an element of `EuclideanSpace ℝ (Fin 2)`. A point configuration bundles $n$ points with a proof of injectivity (distinctness). The `Function.Injective` constraint ensures $|P| = n$ exactly — without it, repeated points could artificially deflate line counts.",
+    "content": "A point in the plane is defined as an element of `EuclideanSpace \u211d (Fin 2)`. A point configuration bundles $n$ points with a proof of injectivity (distinctness). The `Function.Injective` constraint ensures $|P| = n$ exactly \u2014 without it, repeated points could artificially deflate line counts.",
     "mathContext": "A configuration is a map $P: \\{1, \\ldots, n\\} \\to \\mathbb{R}^2$ with $P(i) \\neq P(j)$ for $i \\neq j$. The injectivity condition $P(i) = P(j) \\Rightarrow i = j$ formalizes distinctness.",
     "significance": "key",
     "relatedConcepts": [
@@ -98,7 +98,7 @@
     },
     "type": "definition",
     "title": "Counting Distinct Lines",
-    "content": "The `distinctPairs` function enumerates ordered pairs $(i,j)$ with $i < j$, giving $\\binom{n}{2}$ pairs. The function `numDistinctLines` counts equivalence classes of lines under `Line.equiv` — this is the key quantity $f(n)$ in the problem. The `maxLines` function computes the upper bound $\\binom{n}{2}$.",
+    "content": "The `distinctPairs` function enumerates ordered pairs $(i,j)$ with $i < j$, giving $\\binom{n}{2}$ pairs. The function `numDistinctLines` counts equivalence classes of lines under `Line.equiv` \u2014 this is the key quantity $f(n)$ in the problem. The `maxLines` function computes the upper bound $\\binom{n}{2}$.",
     "mathContext": "$|\\{(i,j) : 1 \\le i < j \\le n\\}| = \\binom{n}{2} = \\frac{n(n-1)}{2}$. When no three points are collinear, each pair determines a unique line, so $f(n) = \\binom{n}{2}$. In general $f(n) \\le \\binom{n}{2}$ with equality iff points are in general position.",
     "significance": "key",
     "relatedConcepts": [
@@ -121,7 +121,7 @@
     "type": "definition",
     "title": "Collinearity and General Position",
     "content": "Three points are collinear if they share a common line. `AllCollinear` means every triple is collinear (all $n$ points on one line), giving $f(n) = 1$. `GeneralPosition` means no triple is collinear, giving $f(n) = \\binom{n}{2}$. These are the two extremes of the problem, and the theorems `all_collinear_one_line` and `general_position_max_lines` confirm these boundary values.",
-    "mathContext": "Points $p, q, r$ are collinear iff $\\det(q - p, r - p) = 0$, equivalently iff the vectors $q - p$ and $r - p$ are linearly dependent. General position ($\\forall i \\neq j \\neq k$, not collinear) is a generic condition — it holds for a dense open subset of $(\\mathbb{R}^2)^n$.",
+    "mathContext": "Points $p, q, r$ are collinear iff $\\det(q - p, r - p) = 0$, equivalently iff the vectors $q - p$ and $r - p$ are linearly dependent. General position ($\\forall i \\neq j \\neq k$, not collinear) is a generic condition \u2014 it holds for a dense open subset of $(\\mathbb{R}^2)^n$.",
     "significance": "key",
     "relatedConcepts": [
       "linear dependence",
@@ -143,7 +143,7 @@
     },
     "type": "definition",
     "title": "Ordinary Line",
-    "content": "An ordinary line passes through exactly 2 points of the configuration. The Sylvester-Gallai theorem guarantees at least one such line whenever the points are not all collinear. This notion is central to the Erdős-Salamon analysis because ordinary lines are the 'simplest' incidence pattern.",
+    "content": "An ordinary line passes through exactly 2 points of the configuration. The Sylvester-Gallai theorem guarantees at least one such line whenever the points are not all collinear. This notion is central to the Erd\u0151s-Salamon analysis because ordinary lines are the 'simplest' incidence pattern.",
     "mathContext": "A line $\\ell$ is ordinary for configuration $P$ if $|\\ell \\cap P| = 2$. Equivalently, $\\ell$ is determined by exactly one pair of points from $P$. The dual notion is a $k$-rich line with $|\\ell \\cap P| = k \\ge 3$.",
     "significance": "key",
     "relatedConcepts": [
@@ -164,7 +164,7 @@
     },
     "type": "technique",
     "title": "Sylvester-Gallai Theorem and Minimum Lines",
-    "content": "The Sylvester-Gallai theorem (1893/1944): if $n \\ge 3$ points are not all collinear, they determine at least one ordinary line. This is axiomatized here since its full proof requires non-trivial arguments (Gallai's proof uses an extremal distance argument). The corollary `min_lines_noncollinear` shows non-collinear points determine $\\ge n$ lines — a key lower bound for the Erdős-Salamon characterization.",
+    "content": "The Sylvester-Gallai theorem (1893/1944): if $n \\ge 3$ points are not all collinear, they determine at least one ordinary line. This is axiomatized here since its full proof requires non-trivial arguments (Gallai's proof uses an extremal distance argument). The corollary `min_lines_noncollinear` shows non-collinear points determine $\\ge n$ lines \u2014 a key lower bound for the Erd\u0151s-Salamon characterization.",
     "mathContext": "Sylvester-Gallai: $\\neg\\text{AllCollinear}(P) \\Rightarrow \\exists \\ell, |\\ell \\cap P| = 2$. The minimum lines bound $f(n) \\ge n$ for non-collinear configurations follows by induction: remove an ordinary line's 2 points, apply to the remaining $n-2$ points, and account for the new lines created.",
     "significance": "key",
     "relatedConcepts": [
@@ -187,8 +187,8 @@
     },
     "type": "concept",
     "title": "Achievable Line Counts and Main Problem",
-    "content": "The set `AchievableLineCounts(n)` formalizes the central question: which integers $k$ can equal $f(n)$ for some configuration of $n$ points? The `Erdos606Statement` captures the structure of the answer — it includes 1 (collinear case) and almost all values in $[n, \\binom{n}{2}]$, with the two specific exceptions.",
-    "mathContext": "$\\mathcal{A}(n) = \\{k \\in \\mathbb{N} : \\exists P \\text{ with } |P| = n, f(P) = k\\}$. The Erdős-Salamon theorem states: for $n \\ge N_0$, $\\mathcal{A}(n) = \\{1\\} \\cup \\{k : n \\le k \\le \\binom{n}{2}\\} \\setminus \\{\\binom{n}{2} - 1, \\binom{n}{2} - 3\\}$.",
+    "content": "The set `AchievableLineCounts(n)` formalizes the central question: which integers $k$ can equal $f(n)$ for some configuration of $n$ points? The `Erdos606Statement` captures the structure of the answer \u2014 it includes 1 (collinear case) and almost all values in $[n, \\binom{n}{2}]$, with the two specific exceptions.",
+    "mathContext": "$\\mathcal{A}(n) = \\{k \\in \\mathbb{N} : \\exists P \\text{ with } |P| = n, f(P) = k\\}$. The Erd\u0151s-Salamon theorem states: for $n \\ge N_0$, $\\mathcal{A}(n) = \\{1\\} \\cup \\{k : n \\le k \\le \\binom{n}{2}\\} \\setminus \\{\\binom{n}{2} - 1, \\binom{n}{2} - 3\\}$.",
     "significance": "key",
     "relatedConcepts": [
       "spectrum problem",
@@ -273,9 +273,9 @@
       "endLine": 176
     },
     "type": "technique",
-    "title": "Erdős Density Result",
-    "content": "Erdős showed that all integers in $[cn^{3/2}, \\binom{n}{2} - 4]$ are achievable for some constant $c > 0$. The constructions use algebraic curves and careful perturbation arguments. The lower bound $cn^{3/2}$ comes from constructing configurations with controlled collinearity patterns using lattice-like structures.",
-    "mathContext": "For each $k \\in [cn^{3/2}, \\binom{n}{2} - 4]$, there exists a configuration $P$ of $n$ points with $f(P) = k$. The gap between $n$ and $cn^{3/2}$ is filled by more delicate constructions in the Erdős-Salamon paper, showing all of $[n, \\binom{n}{2} - 4]$ is achievable.",
+    "title": "Erd\u0151s Density Result",
+    "content": "Erd\u0151s showed that all integers in $[cn^{3/2}, \\binom{n}{2} - 4]$ are achievable for some constant $c > 0$. The constructions use algebraic curves and careful perturbation arguments. The lower bound $cn^{3/2}$ comes from constructing configurations with controlled collinearity patterns using lattice-like structures.",
+    "mathContext": "For each $k \\in [cn^{3/2}, \\binom{n}{2} - 4]$, there exists a configuration $P$ of $n$ points with $f(P) = k$. The gap between $n$ and $cn^{3/2}$ is filled by more delicate constructions in the Erd\u0151s-Salamon paper, showing all of $[n, \\binom{n}{2} - 4]$ is achievable.",
     "significance": "key",
     "relatedConcepts": [
       "algebraic constructions",
@@ -322,7 +322,7 @@
     "mathContext": "Beck's theorem: either $\\exists \\ell$ with $|\\ell \\cap P| \\ge n/100$, or $f(P) \\ge n^2/10000$. The constant $1/100$ can be replaced by any $\\epsilon > 0$ with a corresponding constant $c(\\epsilon)$ for the line bound.",
     "significance": "key",
     "relatedConcepts": [
-      "Szemerédi-Trotter theorem",
+      "Szemer\u00e9di-Trotter theorem",
       "incidence bounds",
       "sum-product estimates"
     ],
@@ -339,8 +339,8 @@
       "endLine": 244
     },
     "type": "technique",
-    "title": "Szemerédi-Trotter Incidence Bound",
-    "content": "The Szemerédi-Trotter theorem (1983) bounds the number of point-line incidences: at most $O((nm)^{2/3} + n + m)$ incidences between $n$ points and $m$ lines. This is tight and has been called 'the most important theorem in incidence geometry.' The corollary shows that if no line is too rich ($|\\ell \\cap P| \\le \\sqrt{n}$), then $f(P) = \\Omega(n^2 / \\log n)$.",
+    "title": "Szemer\u00e9di-Trotter Incidence Bound",
+    "content": "The Szemer\u00e9di-Trotter theorem (1983) bounds the number of point-line incidences: at most $O((nm)^{2/3} + n + m)$ incidences between $n$ points and $m$ lines. This is tight and has been called 'the most important theorem in incidence geometry.' The corollary shows that if no line is too rich ($|\\ell \\cap P| \\le \\sqrt{n}$), then $f(P) = \\Omega(n^2 / \\log n)$.",
     "mathContext": "Let $I(P, L) = |\\{(p, \\ell) \\in P \\times L : p \\in \\ell\\}|$ count incidences. Then $I(P, L) \\le C((|P| \\cdot |L|)^{2/3} + |P| + |L|)$. When each line has $\\le \\sqrt{n}$ points, total incidences $\\le \\sqrt{n} \\cdot f(P)$, giving $f(P) \\ge \\Omega(n^2/\\log n)$ by the bound.",
     "significance": "key",
     "relatedConcepts": [
@@ -361,8 +361,8 @@
       "endLine": 258
     },
     "type": "concept",
-    "title": "Erdős-Salamon Complete Characterization",
-    "content": "The Erdős-Salamon theorem (1988) completely characterizes the achievable line counts for sufficiently large $n$. The result is stated using set notation: $\\mathcal{A}(n) = \\{1\\} \\cup ([n, \\binom{n}{2}] \\setminus \\{\\binom{n}{2}-1, \\binom{n}{2}-3\\})$. The proof combines the impossibility results (gap at $-1$ and $-3$) with construction results showing every other value is achievable.",
+    "title": "Erd\u0151s-Salamon Complete Characterization",
+    "content": "The Erd\u0151s-Salamon theorem (1988) completely characterizes the achievable line counts for sufficiently large $n$. The result is stated using set notation: $\\mathcal{A}(n) = \\{1\\} \\cup ([n, \\binom{n}{2}] \\setminus \\{\\binom{n}{2}-1, \\binom{n}{2}-3\\})$. The proof combines the impossibility results (gap at $-1$ and $-3$) with construction results showing every other value is achievable.",
     "mathContext": "In Lean, the characterization is: $\\exists N, \\forall n \\ge N, \\mathcal{A}(n) = \\{1\\} \\cup (\\text{Set.Icc } n \\, (\\text{maxLines } n) \\setminus \\{\\text{maxLines } n - 1, \\text{maxLines } n - 3\\})$. The existential $N$ means the result holds for 'sufficiently large' $n$, leaving the exact threshold as an open question.",
     "significance": "key",
     "relatedConcepts": [
@@ -384,7 +384,7 @@
     },
     "type": "insight",
     "title": "Main Theorem: Problem Solved",
-    "content": "The culminating theorem `erdos_606_solved` derives from the Erdős-Salamon characterization. It extracts the two key consequences: (1) $1 \\in \\mathcal{A}(n)$ (collinear case always works), and (2) every $k \\in [n, \\binom{n}{2}]$ except $\\binom{n}{2}-1$ and $\\binom{n}{2}-3$ is achievable. The proof unwraps the set characterization using membership in the union and difference of sets.",
+    "content": "The culminating theorem `erdos_606_solved` derives from the Erd\u0151s-Salamon characterization. It extracts the two key consequences: (1) $1 \\in \\mathcal{A}(n)$ (collinear case always works), and (2) every $k \\in [n, \\binom{n}{2}]$ except $\\binom{n}{2}-1$ and $\\binom{n}{2}-3$ is achievable. The proof unwraps the set characterization using membership in the union and difference of sets.",
     "mathContext": "The proof structure: obtain $N$ from `erdos_salamon_characterization`, then for $n \\ge N$, rewrite $\\mathcal{A}(n)$ and show $1 \\in \\{1\\} \\cup \\ldots$ (trivially) and $k \\in [n, \\binom{n}{2}] \\setminus \\{\\text{gaps}\\}$ (by set difference membership). The Lean proof uses `Set.mem_diff`, `Set.mem_Icc`, and `Set.mem_singleton_iff`.",
     "significance": "key",
     "relatedConcepts": [

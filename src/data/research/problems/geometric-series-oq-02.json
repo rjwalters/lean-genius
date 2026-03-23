@@ -43,6 +43,7 @@
   ],
   "relatedProofs": [
     "geometric-series",
+    "geometric-series-oq-01",
     "geometric-series-oq-02"
   ],
   "references": {
@@ -66,6 +67,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeries.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ01.lean",
+      "filename": "GeometricSeriesOQ01.lean",
+      "lineCount": 251,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ01.lean"
     },
     {
       "path": "Proofs/GeometricSeriesOQ02.lean",

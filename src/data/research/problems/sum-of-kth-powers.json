@@ -45,7 +45,8 @@
     "extension"
   ],
   "relatedProofs": [
-    "sum-of-kth-powers"
+    "sum-of-kth-powers",
+    "sum-of-kth-powers-oq-02"
   ],
   "references": {
     "papers": [],
@@ -68,6 +69,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfKthPowers.lean"
+    },
+    {
+      "path": "Proofs/SumOfKthPowersOQ02.lean",
+      "filename": "SumOfKthPowersOQ02.lean",
+      "lineCount": 176,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfKthPowersOQ02.lean"
     }
   ]
 }

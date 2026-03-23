@@ -103,7 +103,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #492 asked whether a generalized fractional part function f(αn) is uniformly distributed for almost all α. Schmidt (1969) disproved the general conjecture, but it holds under additional conditions: monotonic gaps (Davenport-LeVeque) or polynomial growth aₙ >> n^{1/2+ε} (Davenport-Erdős).",
-    "implications": "**Theoretical Significance**: The problem reveals the subtle interplay between sequence structure and equidistribution.\n\n**Broader Connections**: Gap oscillations can destroy uniform distribution even when consecutive ratios approach 1. This connects to Diophantine approximation and measure-theoretic dynamics.",
+    "implications": "**Theoretical Significance**: The problem reveals the subtle interplay between sequence structure and equidistribution.\n\nGap oscillations can destroy uniform distribution even when consecutive ratios approach 1. This connects to Diophantine approximation and measure-theoretic dynamics.",
     "openQuestions": [
       "What is the exact characterization of sequences for which the conjecture holds?",
       "Can the polynomial growth exponent 1/2+ε be improved?",

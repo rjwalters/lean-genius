@@ -99,7 +99,7 @@
   },
   "conclusion": {
     "summary": "This formalization captures Donald Knuth's surprising 2025 discovery about knight's tours. The lower bound of 4 oblique turns is fully proved using a corner-forcing argument: each of the 4 board corners has only 2 knight-adjacent squares, forcing an oblique turn when the tour passes through. The uniqueness relies on Knuth's computational verification as an axiom.",
-    "implications": "**Theoretical Significance**: The result demonstrates how discrete geometry, group theory, and computational methods combine in modern combinatorics.\n\n**Broader Connections**: The winding number technique may apply to other Hamiltonian cycle problems. The uniqueness of the minimal-oblique tour suggests deeper structural properties of knight's tours waiting to be discovered.",
+    "implications": "**Theoretical Significance**: The result demonstrates how discrete geometry, group theory, and computational methods combine in modern combinatorics.\n\nThe winding number technique may apply to other Hamiltonian cycle problems. The uniqueness of the minimal-oblique tour suggests deeper structural properties of knight's tours waiting to be discovered.",
     "openQuestions": [
       "Can similar oblique-angle bounds be proven for larger n x n boards?",
       "What is the distribution of oblique counts across all 13+ trillion knight's tours?",

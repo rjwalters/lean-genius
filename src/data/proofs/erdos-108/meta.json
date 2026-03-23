@@ -106,7 +106,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #108, which asks whether high chromatic number forces highly chromatic subgraphs of large girth. The answer is YES, first proved by Rödl for the r=4 case in 1977. We axiomatize the general Erdős-Hajnal-Rödl theorem and derive the key special cases.",
-    "implications": "**Theoretical Significance**: This result reveals a deep connection between global (chromatic number) and local (girth) graph properties.\n\n**Broader Connections**: It shows that chromatic complexity cannot be 'explained away' by local density—even locally tree-like subgraphs can require many colors. The proof techniques (probabilistic method, Ramsey theory) are central to modern combinatorics.",
+    "implications": "**Theoretical Significance**: This result reveals a deep connection between global (chromatic number) and local (girth) graph properties.\n\nIt shows that chromatic complexity cannot be 'explained away' by local density—even locally tree-like subgraphs can require many colors. The proof techniques (probabilistic method, Ramsey theory) are central to modern combinatorics.",
     "openQuestions": [
       "What are the best explicit bounds for f(k,r)?",
       "Does every graph of infinite chromatic number contain a subgraph of infinite chromatic number and girth > k for all k?",

@@ -10,7 +10,7 @@
     "title": "Imports and Setup",
     "content": "The formalization imports Mathlib's SimpleGraph module for graph-theoretic structures, Cardinal for infinite cardinal arithmetic, and basic set operations. The `open Cardinal SimpleGraph` command brings cardinal and graph notations into scope, and the `Erdos740` namespace isolates the formalization.",
     "mathContext": "We work with `SimpleGraph V` (symmetric irreflexive relations on vertex type $V$) and `Cardinal` (the type of cardinals in ZFC set theory, including transfinite cardinals like $\\aleph_0, \\aleph_1, \\ldots$).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "SimpleGraph",
       "Cardinal arithmetic",

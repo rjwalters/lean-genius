@@ -134,7 +134,7 @@
   ],
   "conclusion": {
     "summary": "The Hajnal–Szemerédi Theorem (1970) completely resolves Erdős Problem #914: every graph on $rm$ vertices with $\\delta(G) \\ge m(r-1)$ contains $m$ vertex-disjoint copies of $K_r$, and the minimum degree condition is tight. The formalization axiomatizes the theorem, its special cases ($r = 2, 3$), and the optimality of the degree bound.",
-    "implications": "**Theoretical Significance**: The theorem establishes that the Turán density $(1-1/r)$ governs not only subgraph existence (Turán's theorem) but also the far stronger property of spanning structures ($K_r$-factors).\n\n**Broader Connections**: The connection to equitable colorings (Kierstead–Kostochka 2008) reveals deep links between graph coloring and graph decomposition. The result has been generalized to arbitrary $H$-factors by Komlós, Sárközy, and Szemerédi (2001) using the regularity method.",
+    "implications": "**Theoretical Significance**: The theorem establishes that the Turán density $(1-1/r)$ governs not only subgraph existence (Turán's theorem) but also the far stronger property of spanning structures ($K_r$-factors).\n\nThe connection to equitable colorings (Kierstead–Kostochka 2008) reveals deep links between graph coloring and graph decomposition. The result has been generalized to arbitrary $H$-factors by Komlós, Sárközy, and Szemerédi (2001) using the regularity method.",
     "openQuestions": [
       "What is the exact minimum degree threshold for perfect $H$-factors for arbitrary graphs $H$? The KSS theorem gives asymptotic answers but exact thresholds are known only for special cases.",
       "Can the $O(n^5)$ algorithm for finding $K_r$-factors be improved, perhaps to near-linear time?",

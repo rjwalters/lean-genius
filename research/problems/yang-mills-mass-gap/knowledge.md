@@ -1,5 +1,92 @@
 # Knowledge Base: Yang-Mills Existence and Mass Gap
 
+## Reference: Douglas et al. "Formalization of QFT" (arXiv:2603.15770, March 2026)
+
+**Added**: 2026-03-23
+**Repository**: `research/references/OSforGFF` (git submodule from https://github.com/mrdouglasny/OSforGFF)
+
+### What They Proved
+
+Douglas, Hoback, Mei, and Nissim formalized free bosonic QFT (massive Gaussian Free Field) in 4D Euclidean spacetime in Lean 4 + Mathlib. They proved ALL 5 Osterwalder-Schrader/Glimm-Jaffe axioms:
+
+- **OS0 (Analyticity)**: Generating functional S(f) = exp(-1/2 C(f,f)) is entire
+- **OS1 (Regularity)**: Growth bounds on characteristic functional via Plancherel
+- **OS2 (Euclidean Invariance)**: Covariance depends only on |x-y|
+- **OS3 (Reflection Positivity)**: Via Schur-Hadamard theorem
+- **OS4 (Ergodicity/Clustering)**: Polynomial decay, L2 convergence
+
+**Stats**: ~32,000 lines, 47 files, 0 sorries, 0 axioms. Apache 2.0 license.
+
+### Key Infrastructure (proven in Lean 4)
+
+- Schwartz space S(R^4) as nuclear space
+- Tempered distributions S'(R^4) via weak dual
+- Minlos theorem (probability measures from characteristic functionals on nuclear spaces)
+- Gaussian measure construction on S'(R^4)
+- Bessel function covariance kernel: C(x,y) = (m/4pi^2|x-y|) K1(m|x-y|)
+- Euclidean group actions on test functions
+
+### Dependencies
+
+- **Mathlib**: core math library
+- **bochner** (mrdouglasny/bochner): Nuclear space theory, Minlos theorem
+- **gaussian-field** (mrdouglasny/gaussian-field): Schwartz space nuclearity
+- **kolmogorov_extension4** (remydegenne): Kolmogorov extension theorem
+
+### Version Mismatch
+
+- OSforGFF uses Lean v4.29.0-rc6 with Mathlib at commit 82ff5788d387
+- Our project uses Lean v4.26.0 with Mathlib v4.26.0
+- Cannot add as Lake dependency without upgrading our toolchain
+- Added as git submodule for reference; full integration requires Mathlib upgrade
+
+### Relevance to Our Yang-Mills Formalization
+
+1. **Axiom alignment**: Our `ClayWightmanAxioms` should be compared with their proven OS axioms
+2. **OS->Wightman reconstruction**: They identify this as a key next step; would validate our Wightman structures
+3. **Infrastructure reuse**: Their Schwartz space, nuclear spaces, measures could replace our axiomatized versions
+4. **2D Yang-Mills bridge**: Our Migdal formula formalization + their free field = potential 2D YM construction
+5. **Lattice connection**: Our Wilson lattice gauge theory + their continuum limit framework
+
+### Douglas's Nature Reviews Physics Article
+
+"The Yang-Mills Millennium problem", Nature Reviews Physics 8, 86-97 (2026).
+DOI: 10.1038/s42254-025-00909-2
+
+Review of mass gap problem from physics perspective. Surveys:
+- Physical background of Yang-Mills theory
+- Constructive QFT program (successes and limitations)
+- Lattice gauge theory evidence
+- Promising recent approaches
+- The precise mathematical statement of the Clay problem
+
+### Woit's Critique (important counterpoint)
+
+Peter Woit (Not Even Wrong blog) argues:
+- Free scalar field formalization is "well-understood since the 1970s"
+- The Glimm-Jaffe axiom framework "only fits the real scalar field QFT"
+- Excludes gauge fields and fermionic spinor fields
+- "One needs a different definition of QFT than as a measure on a space of distributions" for Yang-Mills
+- 50-year history of constructive QFT program hasn't reached 4D Yang-Mills
+
+### Strategic Assessment
+
+The Douglas formalization is a proof-of-concept, not a direct path to Yang-Mills. However:
+- It establishes that axiomatic QFT CAN be formalized in Lean 4
+- The infrastructure (Schwartz space, distributions, measures) is genuinely useful
+- OS reconstruction theorem would bridge Euclidean->Minkowski frameworks
+- Their AI methodology (Claude Code + cross-model validation) matches ours
+
+### Next Steps
+
+1. Study OSforGFF code structure (especially OS/ directory for axiom definitions)
+2. Compare our ClayWightmanAxioms with their OS axiom Lean structures
+3. Plan Mathlib upgrade path (v4.26.0 -> v4.29.0) for eventual Lake integration
+4. Explore importing their bochner/gaussian-field deps independently
+5. Consider formalizing OS->Wightman reconstruction as a bridge theorem
+
+---
+
 ## Session 2026-03-22 (researcher-4) - Build Error Fix Marathon (~40 errors fixed)
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 239)

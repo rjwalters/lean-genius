@@ -38,7 +38,8 @@
   },
   "tags": [],
   "relatedProofs": [
-    "vietas-formulas"
+    "vietas-formulas",
+    "vietas-formulas-oq-03"
   ],
   "references": {
     "papers": [],
@@ -58,6 +59,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VietasFormulas.lean"
+    },
+    {
+      "path": "Proofs/VietasFormulasOQ03.lean",
+      "filename": "VietasFormulasOQ03.lean",
+      "lineCount": 384,
+      "theoremCount": 31,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VietasFormulasOQ03.lean"
     }
   ]
 }

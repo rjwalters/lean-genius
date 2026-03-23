@@ -8,9 +8,9 @@
     },
     "type": "context",
     "title": "Problem Overview and References",
-    "content": "Erdős Problem #802 asks whether $K_r$-free graphs on $n$ vertices with average degree $t$ must contain an independent set of size $\\gg_r (\\log t / t) \\cdot n$. This is the AEKS conjecture (Ajtai-Erdős-Komlós-Szemerédi, 1981). The header documents the resolution timeline: AKS (1980) proved the full bound for $r = 3$ (triangle-free graphs), AEKS (1981) proved a weaker $(\\log\\log t / t) \\cdot n$ bound for general $r$, Shearer (1995) improved to $(\\log t / (\\log\\log t \\cdot t)) \\cdot n$, and Alon (1996) proved the full bound under stronger local sparsity assumptions.",
+    "content": "Erd\u0151s Problem #802 asks whether $K_r$-free graphs on $n$ vertices with average degree $t$ must contain an independent set of size $\\gg_r (\\log t / t) \\cdot n$. This is the AEKS conjecture (Ajtai-Erd\u0151s-Koml\u00f3s-Szemer\u00e9di, 1981). The header documents the resolution timeline: AKS (1980) proved the full bound for $r = 3$ (triangle-free graphs), AEKS (1981) proved a weaker $(\\log\\log t / t) \\cdot n$ bound for general $r$, Shearer (1995) improved to $(\\log t / (\\log\\log t \\cdot t)) \\cdot n$, and Alon (1996) proved the full bound under stronger local sparsity assumptions.",
     "mathContext": "$\\alpha(G) \\geq c_r \\cdot \\frac{\\log t}{t} \\cdot n$ for $K_r$-free graphs with average degree $t$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "AEKS conjecture",
       "independence number",
@@ -61,7 +61,7 @@
     "relatedConcepts": [
       "average degree",
       "edge density",
-      "Turán's theorem",
+      "Tur\u00e1n's theorem",
       "triangle-free graph"
     ],
     "prerequisites": [
@@ -108,7 +108,7 @@
     "significance": "key",
     "relatedConcepts": [
       "Ramsey multiplicity",
-      "Turán density",
+      "Tur\u00e1n density",
       "probabilistic lower bounds",
       "extremal graph theory"
     ],
@@ -128,13 +128,13 @@
     },
     "type": "technique",
     "title": "AEKS (1981): First Bound with Double Logarithm",
-    "content": "Ajtai, Erdős, Komlós, and Szemerédi (1981) proved $\\alpha(G) \\geq c \\cdot (\\log\\log(t+1) / t) \\cdot n$ for $K_r$-free graphs. This was the first bound showing that forbidding $K_r$ forces independence numbers significantly larger than the trivial $n/t$ (which follows from the greedy algorithm). The double-logarithm factor ($\\log\\log t$ vs $\\log t$) left a gap that would take 14 years to close.",
+    "content": "Ajtai, Erd\u0151s, Koml\u00f3s, and Szemer\u00e9di (1981) proved $\\alpha(G) \\geq c \\cdot (\\log\\log(t+1) / t) \\cdot n$ for $K_r$-free graphs. This was the first bound showing that forbidding $K_r$ forces independence numbers significantly larger than the trivial $n/t$ (which follows from the greedy algorithm). The double-logarithm factor ($\\log\\log t$ vs $\\log t$) left a gap that would take 14 years to close.",
     "mathContext": "$\\alpha(G) \\geq c \\cdot \\frac{\\log\\log(t+1)}{t} \\cdot n$ for $K_r$-free $G$ with average degree $t$",
     "significance": "key",
     "relatedConcepts": [
       "greedy independent set",
       "double logarithm",
-      "sparse Turán theorem"
+      "sparse Tur\u00e1n theorem"
     ],
     "prerequisites": [
       "AEKS conjecture",
@@ -172,7 +172,7 @@
     },
     "type": "technique",
     "title": "AKS (1980): Triangle-Free Case Solved",
-    "content": "Ajtai, Komlós, and Szemerédi (1980) proved the full conjectured bound $\\alpha(G) \\geq c \\cdot (\\log t / t) \\cdot n$ for triangle-free graphs ($r = 3$). This was actually proved *before* the general conjecture was formally stated. The proof pioneered the use of the semi-random method in combinatorics. The derived theorem `conjecture_true_for_r3` shows that `AEKSConjecture 3` follows directly, with the proof simply unwrapping the triangle-free definition.",
+    "content": "Ajtai, Koml\u00f3s, and Szemer\u00e9di (1980) proved the full conjectured bound $\\alpha(G) \\geq c \\cdot (\\log t / t) \\cdot n$ for triangle-free graphs ($r = 3$). This was actually proved *before* the general conjecture was formally stated. The proof pioneered the use of the semi-random method in combinatorics. The derived theorem `conjecture_true_for_r3` shows that `AEKSConjecture 3` follows directly, with the proof simply unwrapping the triangle-free definition.",
     "mathContext": "$G$ triangle-free with $\\bar{d}(G) = t \\Rightarrow \\alpha(G) \\geq c \\cdot \\frac{\\log t}{t} \\cdot n$; this proves $\\text{AEKS}_3$",
     "significance": "key",
     "relatedConcepts": [

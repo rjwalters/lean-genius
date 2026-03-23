@@ -176,7 +176,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #616 asks for the optimal function t(r) bounding the covering number of r-uniform hypergraphs satisfying a local intersection condition. The formalization captures the complete mathematical framework: r-uniform hypergraphs, covering numbers, induced subhypergraphs, and the local condition τ ≤ 1 for small subgraphs. The known bounds (3/16)r ≤ t(r) ≤ (1/5)r from Erdős-Hajnal-Tuza (1991) are axiomatized, and the kernel equivalence theorem provides the key structural insight connecting covering theory to intersection theory.",
-    "implications": "**Theoretical Significance**: Understanding this local-to-global relationship has implications across combinatorial optimization (approximation algorithms for Set Cover benefit from structural bounds on transversals), probability (the probabilistic method used in the upper bound connects to random covering arguments), and theoretical computer science (hypergraph covering is fundamental to constraint satisfaction and database theory).\n\n**Broader Connections**: The problem exemplifies a broader theme in extremal combinatorics: how local constraints propagate to global structure, connecting to Helly-type theorems, Ramsey theory, and the regularity method.",
+    "implications": "**Theoretical Significance**: Understanding this local-to-global relationship has implications across combinatorial optimization (approximation algorithms for Set Cover benefit from structural bounds on transversals), probability (the probabilistic method used in the upper bound connects to random covering arguments), and theoretical computer science (hypergraph covering is fundamental to constraint satisfaction and database theory).\n\nThe problem exemplifies a broader theme in extremal combinatorics: how local constraints propagate to global structure, connecting to Helly-type theorems, Ramsey theory, and the regularity method.",
     "openQuestions": [
       "What is the exact asymptotic coefficient c where t(r) ~ cr? Is it 3/16, 1/5, or something in between?",
       "Can the lower bound construction be improved? The current (3/16)r + 7/8 construction may not be optimal.",
@@ -188,19 +188,23 @@
   "crossReferences": [
     {
       "targetId": "ramseys-theorem",
-      "relationship": "Ramsey theory provides the broader framework for local-to-global combinatorial phenomena"
+      "relationship": "related",
+      "description": "Ramsey theory provides the broader framework for local-to-global combinatorial phenomena, paralleling the local covering condition in Erdős #616"
     },
     {
       "targetId": "erdos-610",
-      "relationship": "Another Erdős problem on covering and transversal properties of hypergraphs"
+      "relationship": "related",
+      "description": "Sister Erdős problem on covering and transversal properties of hypergraphs"
     },
     {
       "targetId": "erdos-20",
-      "relationship": "The sunflower lemma (Erdős-Ko-Rado), whose structural insights about set intersections underlie the local condition"
+      "relationship": "related",
+      "description": "The sunflower lemma (Erdős-Ko-Rado), whose structural insights about set intersections underlie the local covering condition"
     },
     {
       "targetId": "erdos-644",
-      "relationship": "Related extremal problem on covering numbers in combinatorial settings"
+      "relationship": "related",
+      "description": "Related extremal problem on covering numbers in combinatorial settings"
     }
   ],
   "leanFile": {
@@ -218,13 +222,39 @@
     "definitionCount": 11
   },
   "relatedProofs": [
-    "",
-    "",
-    "",
-    "",
     "ramseys-theorem",
     "erdos-610",
     "erdos-20",
     "erdos-644"
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Gallai, Tibor",
+      "title": "On the minimal number of vertices representing the edges of a graph",
+      "year": "1961",
+      "venue": "Magyar Tud. Akad. Mat. Kutató Int. Közl. 6, pp. 181-203",
+      "note": "Foundational work on covering numbers (vertex covers / transversals) in graphs, establishing the framework extended to hypergraphs in Problem #616"
+    },
+    {
+      "authors": "Lovász, László",
+      "title": "On the ratio of optimal integral and fractional covers",
+      "year": "1975",
+      "venue": "Discrete Mathematics 13(4), pp. 383-390",
+      "note": "Establishes the relationship between integer and fractional covering numbers, proving τ(G) ≤ τ*(G) · (1 + ln(Δ)) where Δ is the maximum degree — a key tool for bounding covering numbers in hypergraphs"
+    },
+    {
+      "authors": "Alon, Noga",
+      "title": "Transversal numbers of uniform hypergraphs",
+      "year": "1990",
+      "venue": "Graphs and Combinatorics 6(1), pp. 1-4",
+      "note": "Sharp bounds on covering numbers for uniform hypergraphs, directly relevant to the local-to-global question in Problem #616"
+    },
+    {
+      "authors": "Guy, Richard K.",
+      "title": "Unsolved Problems in Number Theory",
+      "year": "2004",
+      "venue": "Springer, 3rd edition",
+      "note": "Contains related problems on covering and packing in combinatorial settings"
+    }
   ]
 }

@@ -149,7 +149,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #1085 on the unit distance problem across all dimensions. For d≥4, the problem is essentially solved with f_d(n) ≈ (p-1)/(2p)·n². For d=2,3, significant gaps remain between upper and lower bounds, with the d=2 case being one of the most famous open problems in combinatorial geometry.",
-    "implications": "**Theoretical Significance**: The unit distance problem sits at the intersection of combinatorics, geometry, and graph theory.\n\n**Broader Connections**: The breakthrough upper bound of Spencer-Szemerédi-Trotter introduced crossing number techniques that have had wide influence. The contrast between the clean high-dimensional answers and the stubborn low-dimensional gaps illustrates how geometry becomes more rigid in higher dimensions.",
+    "implications": "**Theoretical Significance**: The unit distance problem sits at the intersection of combinatorics, geometry, and graph theory.\n\nThe breakthrough upper bound of Spencer-Szemerédi-Trotter introduced crossing number techniques that have had wide influence. The contrast between the clean high-dimensional answers and the stubborn low-dimensional gaps illustrates how geometry becomes more rigid in higher dimensions.",
     "openQuestions": [
       "Is f_2(n) = O(n^(1+c/log log n))? (Main open question - 80 years old)",
       "Is f_3(n) = O(n^(4/3) log log n)? (3D tight bound)",

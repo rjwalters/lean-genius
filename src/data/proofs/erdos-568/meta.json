@@ -103,7 +103,7 @@
   },
   "conclusion": {
     "summary": "This formalization captures the EFRS conjecture (Problem #568) that linear tree Ramsey numbers and quadratic clique Ramsey numbers together imply Ramsey size linearity. The Lean file cleanly separates the classical Ramsey conditions from the size Ramsey conclusion, axiomatizing both Ramsey variants and stating the open implication.",
-    "implications": "**Theoretical Significance**: A positive resolution would establish that the growth rate of classical Ramsey numbers at two extremes (trees and cliques) fully determines size Ramsey linearity.\n\n**Broader Connections**: This would provide a practical sufficient condition for size linearity, since classical Ramsey bounds are often easier to establish than size Ramsey bounds. It would also unify the tree Ramsey theory (Chvátal-Harary) and bounded-degree Ramsey theory (Chvátal-Rödl-Szemerédi-Trotter) with Beck's size Ramsey program.",
+    "implications": "**Theoretical Significance**: A positive resolution would establish that the growth rate of classical Ramsey numbers at two extremes (trees and cliques) fully determines size Ramsey linearity.\n\nThis would provide a practical sufficient condition for size linearity, since classical Ramsey bounds are often easier to establish than size Ramsey bounds. It would also unify the tree Ramsey theory (Chvátal-Harary) and bounded-degree Ramsey theory (Chvátal-Rödl-Szemerédi-Trotter) with Beck's size Ramsey program.",
     "openQuestions": [
       "Is the quadratic clique condition necessary, or does linear tree Ramsey alone suffice for size linearity?",
       "Conversely, does size linearity imply either or both of the classical conditions?",

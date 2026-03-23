@@ -61,40 +61,45 @@
       "title": "Quadratic Case",
       "startLine": 29,
       "endLine": 44,
-      "summary": "For x^2 - bx + c = 0 with roots r, s: sum = b, product = c."
+      "summary": "For x^2 - bx + c = 0 with roots r, s: sum = b, product = c.",
+      "mathContext": "For x^2 - bx + c = 0 with roots r, s: sum = b, product = c."
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 46,
       "endLine": 92,
-      "summary": "Verification with specific polynomials and their roots."
+      "summary": "Verification with specific polynomials and their roots.",
+      "mathContext": "Verification with specific polynomials and their roots."
     },
     {
       "id": "general",
       "title": "General Polynomial Case",
       "startLine": 94,
       "endLine": 114,
-      "summary": "The core Vieta relation for polynomials of any degree."
+      "summary": "The core Vieta relation for polynomials of any degree.",
+      "mathContext": "The core Vieta relation for polynomials of any degree."
     },
     {
       "id": "applications",
       "title": "Applications",
       "startLine": 116,
       "endLine": 141,
-      "summary": "Reconstructing polynomials from roots and vice versa."
+      "summary": "Reconstructing polynomials from roots and vice versa.",
+      "mathContext": "Reconstructing polynomials from roots and vice versa."
     },
     {
       "id": "sign-pattern",
       "title": "Sign Pattern",
       "startLine": 143,
       "endLine": 157,
-      "summary": "The alternating sign (-1)^k in Vieta's formulas explained: each coefficient collects products of k roots with appropriate sign."
+      "summary": "The alternating sign (-1)^k in Vieta's formulas explained: each coefficient collects products of k roots with appropriate sign.",
+      "mathContext": "The alternating sign (-1)^k in Vieta's formulas explained: each coefficient collects products of k roots with appropriate sign."
     }
   ],
   "conclusion": {
     "summary": "Vieta's formulas provide a fundamental bridge between the coefficients of a polynomial and the algebraic properties of its roots. The quadratic case (sum and product of roots) is the most familiar, but the pattern extends to polynomials of any degree.\n\nThis formalization uses Mathlib's elementary symmetric polynomial machinery, providing both the abstract theorem and concrete computational examples.",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\nVieta's formulas are foundational to:\n\n1. **Galois Theory**: The coefficients are invariant under permutations of roots, leading to the study of symmetric functions and permutation groups\n\n2. **Abel-Ruffini Theorem**: Understanding which symmetric combinations of roots can be expressed in radicals\n\n3.\n\n**Broader Connections**: **Newton's Identities**: Relating power sums to elementary symmetric functions\n\n**Practical Applications**\n\n1. **Root Finding**: Check proposed roots without fully factoring\n2. **Polynomial Construction**: Build polynomial from known roots\n3. **Numerical Analysis**: Relate rounding errors in coefficients to errors in roots.",
+    "implications": "Vieta's formulas are foundational to:\n\n1. **Galois Theory**: The coefficients are invariant under permutations of roots, leading to the study of symmetric functions and permutation groups\n\n2. **Abel-Ruffini Theorem**: Understanding which symmetric combinations of roots can be expressed in radicals\n\n**3. Newton's Identities**: Relating power sums to elementary symmetric functions\n\n**Practical Applications**\n\n1. **Root Finding**: Check proposed roots without fully factoring\n2. **Polynomial Construction**: Build polynomial from known roots\n3. **Numerical Analysis**: Relate rounding errors in coefficients to errors in roots.",
     "openQuestions": [
       "How do perturbations in coefficients affect root locations?",
       "What are the analogous formulas for multivariate polynomials?",

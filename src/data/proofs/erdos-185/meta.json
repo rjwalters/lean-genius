@@ -170,7 +170,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #185 asked whether f₃(n) = o(3^n), where f₃(n) is the maximum cap set in {0,1,2}^n. The answer is YES, proved as a corollary of the density Hales-Jewett theorem (Furstenberg-Katznelson 1991). More recent work by Ellenberg-Gijswijt (2016) showed f₃(n) ≤ c^n with c < 3, a major quantitative improvement.",
-    "implications": "**Theoretical Significance**: **Additive Combinatorics Connections:**\n\n1. **Cap Set Problem:** Central problem in finite geometry and coding theory.\n\n2. **Hales-Jewett Theorem:** Fundamental result in Ramsey theory.\n\n3.\n\n**Broader Connections**: **Polynomial Method:** Ellenberg-Gijswijt's proof revolutionized the field.\n\n4. **Sunflower Conjecture:** Cap set bounds have implications for other problems.\n\n5. **Coding Theory:** Cap sets relate to error-correcting codes over F₃.",
+    "implications": "**Theoretical Significance**: **Additive Combinatorics Connections:**\n\n1. **Cap Set Problem:** Central problem in finite geometry and coding theory.\n\n2. **Hales-Jewett Theorem:** Fundamental result in Ramsey theory.\n\n**3. Polynomial Method:** Ellenberg-Gijswijt's proof revolutionized the field.\n\n4. **Sunflower Conjecture:** Cap set bounds have implications for other problems.\n\n5. **Coding Theory:** Cap sets relate to error-correcting codes over F₃.",
     "openQuestions": [
       "What is $\\lim_{n\\to\\infty} f_3(n)^{1/n}$? Known: between $\\approx 2.217$ (Edel lower bound) and $\\approx 2.756$ (Ellenberg-Gijswijt)",
       "Can the Croot-Lev-Pach polynomial method be improved to match the lower bound?",

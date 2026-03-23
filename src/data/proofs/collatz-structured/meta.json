@@ -56,40 +56,45 @@
       "title": "The Collatz Function",
       "startLine": 32,
       "endLine": 55,
-      "summary": "Definition of f(n) and basic properties for even/odd inputs."
+      "summary": "Defines `collatz n := if n % 2 = 0 then n / 2 else 3 * n + 1`. Proves basic properties: `collatz_zero`, `collatz_one`, `collatz_even`, `collatz_odd`, and `collatz_double` ($f(2n) = n$).",
+      "mathContext": "$f(n) = \\begin{cases} n/2 & n \\equiv 0 \\pmod{2} \\\\ 3n+1 & n \\equiv 1 \\pmod{2} \\end{cases}$. Key property: $f(2n) = n$ for all $n$, since $2n$ is always even. This means every even number immediately reduces, so the interesting dynamics occur at odd numbers."
     },
     {
       "id": "reaches-one",
       "title": "Reaching 1",
       "startLine": 57,
       "endLine": 76,
-      "summary": "The ReachesOne predicate and iteration machinery."
+      "summary": "Defines `collatzIter k n := f^k(n)` via `Function.iterate` and `ReachesOne n := ∃ k, collatzIter k n = 1`. Proves the iteration unfold lemma `collatzIter_succ`.",
+      "mathContext": "`ReachesOne n` asserts $\\exists k \\in \\mathbb{N},\\, f^{(k)}(n) = 1$ where $f^{(k)}$ denotes $k$-fold iteration. The Collatz conjecture is: $\\forall n \\geq 1,\\, \\text{ReachesOne}(n)$."
     },
     {
       "id": "powers-of-two",
       "title": "Powers of 2 Reach 1",
       "startLine": 78,
       "endLine": 109,
-      "summary": "The main theorem: 2^k reaches 1 in k steps."
+      "summary": "Proves `collatz_pow_two`: for $k \\geq 1$, $f^{(k)}(2^k) = 1$, by induction on $k$. Base: $f(2) = 1$. Step: $f(2^{k+1}) = 2^k$ since $2^{k+1}$ is even, then apply the induction hypothesis.",
+      "mathContext": "$f^{(k)}(2^k) = 1$ for $k \\geq 1$. The trajectory is purely halving: $2^k \\to 2^{k-1} \\to \\cdots \\to 2 \\to 1$. This is the simplest infinite family for which the conjecture holds — every Collatz trajectory that reaches a power of 2 will then descend to 1."
     },
     {
       "id": "closure",
       "title": "Closure Properties",
       "startLine": 111,
       "endLine": 133,
-      "summary": "If n reaches 1, then 2^m * n also reaches 1."
+      "summary": "Proves `reaches_one_double` (if ReachesOne n then ReachesOne (2*n)) and `reaches_one_pow_two_mul` (if ReachesOne n then ReachesOne (2^m * n)). The key insight: $f(2n) = n$, so doubling adds exactly one step.",
+      "mathContext": "If $f^{(k)}(n) = 1$, then $f^{(k+m)}(2^m \\cdot n) = 1$, because $f(2^m \\cdot n) = 2^{m-1} \\cdot n$, $f^{(2)}(2^m \\cdot n) = 2^{m-2} \\cdot n$, etc. This means verifying ReachesOne for odd numbers suffices — all their even multiples are automatically covered."
     },
     {
       "id": "verified-cases",
       "title": "Verified Small Values",
       "startLine": 135,
       "endLine": 181,
-      "summary": "Computational verification for 3, 5, 6, 7, 9, 27."
+      "summary": "Computational verification via `native_decide` for specific values: 3 (7 steps), 5 (5 steps), 6 (8 steps), 7 (16 steps), 9 (19 steps), 27 (111 steps, reaching max value 9232).",
+      "mathContext": "The trajectory of 27: $27 \\to 82 \\to 41 \\to 124 \\to \\cdots \\to 9232 \\to \\cdots \\to 1$ takes 111 steps and reaches a maximum of 9232 — over 340 times the starting value. The `native_decide` tactic compiles the iteration to native code, efficiently verifying all 111 steps."
     }
   ],
   "conclusion": {
     "summary": "This formalization proves the Collatz conjecture for an important infinite family: all numbers of the form 2^m * n where we've verified n reaches 1. The closure property is key—once we verify any odd number, all its multiples by powers of 2 are covered.\n\nThe proof for powers of 2 is clean and illustrative: each application of the Collatz function halves the value until we reach 1. The specific verifications (especially 27's 111 steps) demonstrate how Lean's native_decide can handle substantial computations.",
-    "implications": "**Theoretical Significance**: **Computational Verification**\n\nThis approach scales well: once we verify one odd number reaches 1, infinitely many even numbers are covered.\n\n**Broader Connections**: The hard cases are odd numbers that grow before eventually descending.\n\n**The 27 Example**\n\n27 is famous because it takes 111 steps despite being small:\n27 -> 82 -> 41 -> 124 -> 62 -> 31 -> 94 -> 47 -> 142 -> 71 -> 214 -> 107 -> 322 -> ... -> 1\n\nThe maximum value in the trajectory is 9232, showing how even small starting values can have dramatic orbits.",
+    "implications": "**Theoretical Significance**: **Computational Verification**\n\nThis approach scales well: once we verify one odd number reaches 1, infinitely many even numbers are covered.\n\nThe hard cases are odd numbers that grow before eventually descending.\n\n**The 27 Example**\n\n27 is famous because it takes 111 steps despite being small:\n27 -> 82 -> 41 -> 124 -> 62 -> 31 -> 94 -> 47 -> 142 -> 71 -> 214 -> 107 -> 322 -> ... -> 1\n\nThe maximum value in the trajectory is 9232, showing how even small starting values can have dramatic orbits.",
     "openQuestions": [
       "Does every positive integer reach 1? (The full Collatz conjecture)",
       "Are there cycles other than 4 -> 2 -> 1?",

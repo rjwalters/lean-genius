@@ -173,7 +173,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #901 on Property B and hypergraph coloring. The function $m(n)$ — the minimum edges in an $n$-uniform hypergraph without Property B — is bounded by $\\sqrt{n/\\log n} \\cdot 2^n \\ll m(n) \\ll n^2 \\cdot 2^n$. The formalization includes the full chain of lower bounds (Erdős, Beck, Pluhár, Radhakrishnan-Srinivasan), exact values for small $n$, the Erdős-Lovász conjecture, the Lovász Local Lemma, and connections to chromatic number theory.",
-    "implications": "**Theoretical Significance**: Property B is a foundational concept in combinatorics, connecting hypergraph coloring, the probabilistic method, and the Lovász Local Lemma.\n\n**Broader Connections**: Understanding $m(n)$ has implications for discrepancy theory, derandomization, and the algorithmic aspects of the LLL (via Moser-Tardos). The gap between $\\sqrt{n/\\log n}$ and $n$ in the coefficient is one of the most important open problems in probabilistic combinatorics.",
+    "implications": "**Theoretical Significance**: Property B is a foundational concept in combinatorics, connecting hypergraph coloring, the probabilistic method, and the Lovász Local Lemma.\n\nUnderstanding $m(n)$ has implications for discrepancy theory, derandomization, and the algorithmic aspects of the LLL (via Moser-Tardos). The gap between $\\sqrt{n/\\log n}$ and $n$ in the coefficient is one of the most important open problems in probabilistic combinatorics.",
     "openQuestions": [
       "Is $m(n) = \\Theta(n \\cdot 2^n)$ as the Erdős-Lovász conjecture predicts? Even proving $m(n) = \\omega(\\sqrt{n} \\cdot 2^n)$ would be a breakthrough.",
       "What is $m(5)$? No exact value is known for $n \\geq 5$.",

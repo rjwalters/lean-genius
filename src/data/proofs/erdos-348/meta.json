@@ -149,7 +149,7 @@
   ],
   "conclusion": {
     "summary": "This 256-line formalization of Erdős Problem #348 defines completeness, robustness, and the valid pairs set, then constructs witnesses for (0,1) via powers of 2 and (1,2) via Fibonacci numbers. Van Doorn's theorem constrains the strongly complete case. The representation count and gap property provide structural context. The main conjecture is formalized as a disjunction about whether all (m, m+1) pairs are valid. Seven sorries remain, mostly in the Zeckendorf-based arguments.",
-    "implications": "**Theoretical Significance**: Resolution would reveal whether completeness robustness has a finite or infinite hierarchy.\n\n**Broader Connections**: An infinite hierarchy (all (m, m+1) valid) would require constructing increasingly resilient sequences — possibly using number-theoretic constructions with growing redundancy. A finite cutoff would establish a phase transition where robustness becomes qualitatively different, connecting to the theory of additive bases of finite order.",
+    "implications": "**Theoretical Significance**: Resolution would reveal whether completeness robustness has a finite or infinite hierarchy.\n\nAn infinite hierarchy (all (m, m+1) valid) would require constructing increasingly resilient sequences — possibly using number-theoretic constructions with growing redundancy. A finite cutoff would establish a phase transition where robustness becomes qualitatively different, connecting to the theory of additive bases of finite order.",
     "openQuestions": [
       "Is (2, 3) valid for weak completeness — does there exist a complete sequence surviving any 2 deletions but not some 3?",
       "Is (m, m+1) valid for all m ∈ ℕ, or is there a cutoff k?",

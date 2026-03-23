@@ -64,77 +64,88 @@
       "title": "Historical Introduction and Documentation",
       "startLine": 8,
       "endLine": 72,
-      "summary": "Module documentation covering the historical significance of Liouville's 1844 result as the first explicit transcendental number, theorem statements, Mathlib dependencies, and references."
+      "summary": "Module documentation covering the historical significance of Liouville's 1844 result as the first explicit transcendental number, theorem statements, Mathlib dependencies, and references.",
+      "mathContext": "Liouville's theorem (1844): if $\\alpha$ is algebraic of degree $n \\geq 2$, then $\\exists c > 0$ such that $|\\alpha - p/q| > c/q^n$ for all $p/q \\in \\mathbb{Q}$. A **Liouville number** violates this bound for every $n$, hence is transcendental. The Liouville constant $L = \\sum_{k=1}^{\\infty} 10^{-k!} = 0.110001000000000000000001\\ldots$ was the first explicit transcendental (Wiedijk #18)."
     },
     {
       "id": "definitions",
       "title": "Background and Definitions",
       "startLine": 74,
       "endLine": 104,
-      "summary": "Core definitions: algebraic and transcendental numbers via Mathlib's IsAlgebraic and Transcendental, plus the Liouville number definition capturing superpolynomial rational approximability."
+      "summary": "Core definitions: algebraic and transcendental numbers via Mathlib's IsAlgebraic and Transcendental, plus the Liouville number definition capturing superpolynomial rational approximability.",
+      "mathContext": "$\\alpha \\in \\mathbb{R}$ is **algebraic** of degree $n$ if it is a root of an irreducible polynomial $p \\in \\mathbb{Z}[x]$ of degree $n$. It is **transcendental** if not algebraic. A **Liouville number** $\\alpha$ satisfies: $\\forall n \\in \\mathbb{N}, \\exists p, q \\in \\mathbb{Z}, q > 1: 0 < |\\alpha - p/q| < 1/q^n$. In Mathlib: `Liouville α` means `∀ n, ∃ p q, 1 < q ∧ 0 < |α - p/q| ∧ |α - p/q| < 1/q^n`."
     },
     {
       "id": "approximation-theorem",
       "title": "Liouville's Approximation Theorem",
       "startLine": 105,
       "endLine": 163,
-      "summary": "The approximation bound: algebraic numbers of degree n resist rational approximation beyond c/q^n. Stated as an axiom with the full proof outline via minimal polynomials and the Mean Value Theorem."
+      "summary": "The approximation bound: algebraic numbers of degree n resist rational approximation beyond c/q^n. Stated as an axiom with the full proof outline via minimal polynomials and the Mean Value Theorem.",
+      "mathContext": "If $\\alpha$ is algebraic of degree $n$ with minimal polynomial $f$, then for $p/q \\neq \\alpha$: $|f(p/q)| \\geq 1/q^n$ (since $q^n f(p/q) \\in \\mathbb{Z} \\setminus \\{0\\}$). By the Mean Value Theorem: $|f(p/q)| = |f(p/q) - f(\\alpha)| \\leq M|p/q - \\alpha|$ where $M = \\max_{|x-\\alpha|\\leq 1}|f'(x)|$. Combining: $|\\alpha - p/q| \\geq 1/(Mq^n)$. Setting $c = 1/M$ gives Liouville's bound."
     },
     {
       "id": "transcendence",
       "title": "Transcendence of Liouville Numbers",
       "startLine": 165,
       "endLine": 204,
-      "summary": "Main result: Liouville numbers are transcendental. Proved via Mathlib's Liouville.transcendental, with an alternative formulation showing non-algebraicity explicitly."
+      "summary": "Main result: Liouville numbers are transcendental. Proved via Mathlib's Liouville.transcendental, with an alternative formulation showing non-algebraicity explicitly.",
+      "mathContext": "Proof by contradiction: suppose $\\alpha$ is Liouville and algebraic of degree $n$. By the approximation theorem, $|\\alpha - p/q| > c/q^n$ for all $p/q$. But the Liouville property gives $|\\alpha - p/q| < 1/q^{n+1}$ for some $p/q$ with $q$ large enough that $1/q^{n+1} < c/q^n$ (i.e., $q > 1/c$). Contradiction. Therefore $\\alpha$ is transcendental."
     },
     {
       "id": "liouville-constant",
       "title": "The Liouville Constant",
       "startLine": 206,
       "endLine": 257,
-      "summary": "Explicit construction of the first transcendental number L = Σ 10^(-n!), with Lean proofs that it is Liouville, transcendental, and irrational."
+      "summary": "Explicit construction of the first transcendental number L = Σ 10^(-n!), with Lean proofs that it is Liouville, transcendental, and irrational.",
+      "mathContext": "$L = \\sum_{k=1}^{\\infty} 10^{-k!} = 0.1100010000000000000000010\\ldots$ The rational approximation $p_n/q_n = \\sum_{k=1}^{n} 10^{-k!}$ with $q_n = 10^{n!}$ satisfies $|L - p_n/q_n| = \\sum_{k=n+1}^{\\infty} 10^{-k!} < 2 \\cdot 10^{-(n+1)!} = 2/q_n^{n+1}$. Since $(n+1)! \\geq (n+1) \\cdot n!$, this beats $c/q_n^m$ for any fixed $m$, proving $L$ is Liouville."
     },
     {
       "id": "properties",
       "title": "Properties of Liouville Numbers",
       "startLine": 259,
       "endLine": 297,
-      "summary": "Algebraic closure properties: Liouville numbers are closed under rational translation and nonzero rational scaling, and the set is uncountable."
+      "summary": "Algebraic closure properties: Liouville numbers are closed under rational translation and nonzero rational scaling, and the set is uncountable.",
+      "mathContext": "If $\\alpha$ is Liouville and $r \\in \\mathbb{Q}$, then $\\alpha + r$ is Liouville (shifting rational approximations). If $r \\neq 0$, then $r\\alpha$ is Liouville (scaling). The set of Liouville numbers is uncountable: $\\{\\sum b_k \\cdot 10^{-k!} : b_k \\in \\{1, 2\\}\\}$ has cardinality $2^{\\aleph_0}$ and consists entirely of Liouville numbers."
     },
     {
       "id": "roth-theorem",
       "title": "Roth's Theorem and Generalizations",
       "startLine": 299,
       "endLine": 346,
-      "summary": "The Thue-Siegel-Roth progression improving the approximation exponent from n to 2+ε, culminating in Roth's optimal result (Fields Medal 1958)."
+      "summary": "The Thue-Siegel-Roth progression improving the approximation exponent from n to 2+ε, culminating in Roth's optimal result (Fields Medal 1958).",
+      "mathContext": "The progression: Liouville (1844) $|\\alpha - p/q| > c/q^n$; Thue (1909) $> c/q^{n/2+1}$; Siegel (1921) $> c/q^{2\\sqrt{n}}$; Dyson (1947) $> c/q^{\\sqrt{2n}}$; Roth (1955) $> c/q^{2+\\varepsilon}$ for any $\\varepsilon > 0$. Roth's bound is optimal: Dirichlet's theorem gives $|\\alpha - p/q| < 1/q^2$ for infinitely many $p/q$, so the exponent cannot be reduced below 2."
     },
     {
       "id": "connections",
       "title": "Connections to Other Results",
       "startLine": 348,
       "endLine": 373,
-      "summary": "Relationships to Hermite-Lindemann, Gelfond-Schneider, Baker's theorem, and Diophantine approximation (Dirichlet, Hurwitz, continued fractions)."
+      "summary": "Relationships to Hermite-Lindemann, Gelfond-Schneider, Baker's theorem, and Diophantine approximation (Dirichlet, Hurwitz, continued fractions).",
+      "mathContext": "The transcendence hierarchy: Liouville (1844, Diophantine approximation) $\\to$ Hermite (1873, $e$ transcendental) $\\to$ Lindemann (1882, $\\pi$ transcendental) $\\to$ Gelfond-Schneider (1934, $\\alpha^\\beta$ transcendental for algebraic $\\alpha \\neq 0,1$ and irrational algebraic $\\beta$) $\\to$ Baker (1966, linear independence of logarithms). Each method is strictly more powerful than its predecessors."
     },
     {
       "id": "examples",
       "title": "Examples and Computations",
       "startLine": 375,
       "endLine": 386,
-      "summary": "Generalization: Σ b^(-n!) is transcendental for any base b ≥ 2, with Lean proofs for b=2 and arbitrary b."
+      "summary": "Generalization: Σ b^(-n!) is transcendental for any base b ≥ 2, with Lean proofs for b=2 and arbitrary b.",
+      "mathContext": "For any integer $b \\geq 2$: $L_b = \\sum_{k=1}^{\\infty} b^{-k!}$ is Liouville, hence transcendental. The proof is identical to the $b = 10$ case: $|L_b - p_n/b^{n!}| < 2b^{-(n+1)!}$ and $(n+1)!/n! = n+1 \\to \\infty$. Examples: $L_2 = 0.110001000000000000000001\\ldots_2$, $L_{10}$ is the classical Liouville constant."
     },
     {
       "id": "measure-theory",
       "title": "Measure-Theoretic Perspective",
       "startLine": 388,
       "endLine": 411,
-      "summary": "Liouville numbers form a measure-zero yet uncountable G-delta dense set — topologically generic but measure-theoretically negligible."
+      "summary": "Liouville numbers form a measure-zero yet uncountable G-delta dense set — topologically generic but measure-theoretically negligible.",
+      "mathContext": "The set of Liouville numbers $\\mathcal{L}$ has Lebesgue measure zero ($\\lambda(\\mathcal{L}) = 0$) but is a dense $G_\\delta$ set (countable intersection of open dense sets), hence comeagre by the Baire category theorem. This is a striking example of measure-category duality: $\\mathcal{L}$ is 'large' topologically (residual) but 'small' measure-theoretically (null). Almost all reals are transcendental but not Liouville; the 'generic' transcendental (like $e$ or $\\pi$) is well-approximable but not superpolynomially so."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 413,
       "endLine": 444,
-      "summary": "Recap of Wiedijk #18: the approximation bound, Liouville numbers, transcendence proof, explicit example, historical impact, and Mathlib formalization status."
+      "summary": "Recap of Wiedijk #18: the approximation bound, Liouville numbers, transcendence proof, explicit example, historical impact, and Mathlib formalization status.",
+      "mathContext": "Wiedijk #18 complete: Liouville's approximation theorem (algebraic $\\alpha$ of degree $n$ satisfies $|\\alpha - p/q| > c/q^n$), Liouville number transcendence (contrapositive of approximation theorem), explicit transcendental $L = \\sum 10^{-k!}$, and connections to the Thue-Siegel-Roth hierarchy. The Lean proof uses Mathlib's `Liouville.transcendental` for the main theorem and `Nat.factorial_lt` for the factorial growth bounds."
     }
   ],
   "crossReferences": [
@@ -181,7 +192,7 @@
   ],
   "conclusion": {
     "summary": "Liouville's theorem opened the field of transcendence theory by providing the first explicit transcendental numbers. The technique of bounding rational approximations remains fundamental to Diophantine approximation, and the approximation exponent problem spawned a century of improvements culminating in Roth's optimal result.",
-    "implications": "**Theoretical Significance**: The theorem evolved into Roth's theorem (Fields Medal 1958), which gives optimal exponent $2+\\varepsilon$. This connects to Baker's theorem on linear forms in logarithms (Fields Medal 1970), Schmidt's subspace theorem, and modern transcendence theory.\n\n**Broader Connections**: The measure-theoretic perspective — that Liouville numbers are simultaneously uncountable and measure-zero — foreshadows the Baire category vs. measure duality that pervades real analysis.",
+    "implications": "**Theoretical Significance**: The theorem evolved into Roth's theorem (Fields Medal 1958), which gives optimal exponent $2+\\varepsilon$. This connects to Baker's theorem on linear forms in logarithms (Fields Medal 1970), Schmidt's subspace theorem, and modern transcendence theory.\n\nThe measure-theoretic perspective — that Liouville numbers are simultaneously uncountable and measure-zero — foreshadows the Baire category vs. measure duality that pervades real analysis.",
     "openQuestions": [
       "Is there an effective version of Roth's theorem that gives computable constants?",
       "What is the irrationality measure of specific constants like e, π, or ln(2)?",

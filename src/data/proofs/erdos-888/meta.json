@@ -132,7 +132,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #888, which asks for the maximum size of A ⊆ {1,...,n} such that ordered quadruples with square product satisfy ad = bc. The exact answer is OPEN, but we capture the known bounds: Sárközy's o(n) upper bound and the prime construction giving n/log n lower bound.",
-    "implications": "**Theoretical Significance**: This problem connects combinatorial number theory with multiplicative structure.\n\n**Broader Connections**: The constraint ad = bc relates to geometric progressions and imposes strong restrictions on how elements can interact multiplicatively. Understanding the exact maximum would reveal deep facts about the distribution of square-free numbers and prime factorizations.",
+    "implications": "**Theoretical Significance**: This problem connects combinatorial number theory with multiplicative structure.\n\nThe constraint ad = bc relates to geometric progressions and imposes strong restrictions on how elements can interact multiplicatively. Understanding the exact maximum would reveal deep facts about the distribution of square-free numbers and prime factorizations.",
     "openQuestions": [
       "What is the exact asymptotic formula for maxValidSize(n)?",
       "Is there a construction better than primes achieving ω(n/log n)?",

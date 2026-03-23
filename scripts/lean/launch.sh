@@ -390,7 +390,10 @@ cmd_start() {
     local tester=$DEFAULT_TESTER
     local herald=$DEFAULT_HERALD
 
-    # Parse options
+    # Apply time-based schedule (overrides defaults before CLI args)
+    apply_schedule
+
+    # Parse options (explicit CLI args override schedule)
     while [[ $# -gt 0 ]]; do
         case "$1" in
             --enricher)
@@ -1551,7 +1554,10 @@ cmd_daemon() {
     local herald=$DEFAULT_HERALD
     local monitor_only=false
 
-    # Parse options
+    # Apply time-based schedule (overrides defaults before CLI args)
+    apply_schedule
+
+    # Parse options (explicit CLI args override schedule)
     while [[ $# -gt 0 ]]; do
         case "$1" in
             --monitor-only)
@@ -2165,10 +2171,9 @@ cmd_spawn() {
             # Find next available slot
             for i in 1 2 3 4 5; do
                 if ! tmux has-session -t "enricher-$i" 2>/dev/null; then
-                    # Spawn single enricher
-                    ./scripts/enricher/parallel-enrich.sh 1 &
+                    ./scripts/enricher/parallel-enrich.sh --slot "$i" &
                     sleep 2
-                    echo -e "${GREEN}✓ Enricher spawned${NC}"
+                    echo -e "${GREEN}✓ Enricher spawned (slot $i)${NC}"
                     exit 0
                 fi
             done
@@ -2188,9 +2193,9 @@ cmd_spawn() {
             echo -e "${BLUE}Spawning additional Researcher...${NC}"
             for i in $(seq 1 $MAX_RESEARCHER); do
                 if ! tmux has-session -t "researcher-$i" 2>/dev/null; then
-                    ./scripts/research/parallel-research.sh 1 &
+                    ./scripts/research/parallel-research.sh --slot "$i" &
                     sleep 2
-                    echo -e "${GREEN}✓ Researcher spawned${NC}"
+                    echo -e "${GREEN}✓ Researcher spawned (slot $i)${NC}"
                     exit 0
                 fi
             done
@@ -2236,9 +2241,21 @@ cmd_spawn() {
                 echo -e "${GREEN}✓ Herald agent spawned${NC}"
             fi
             ;;
+        peer-reviewer)
+            echo -e "${BLUE}Spawning Peer Reviewer...${NC}"
+            for i in 1 2; do
+                if ! tmux has-session -t "peer-reviewer-$i" 2>/dev/null; then
+                    ./scripts/peer-reviewer/launch-agent.sh --slot "$i" &
+                    sleep 2
+                    echo -e "${GREEN}✓ Peer Reviewer spawned (slot $i)${NC}"
+                    exit 0
+                fi
+            done
+            echo -e "${YELLOW}All Peer Reviewer slots are full (max: 2)${NC}"
+            ;;
         *)
             echo -e "${RED}Unknown agent type: $agent_type${NC}" >&2
-            echo "Valid types: enricher, aristotle, researcher, seeker, deployer, tester, herald"
+            echo "Valid types: enricher, aristotle, researcher, seeker, deployer, tester, herald, peer-reviewer"
             exit 1
             ;;
     esac
@@ -2307,8 +2324,15 @@ cmd_scale() {
                 local to_add=$((count - current))
                 echo -e "${BLUE}Scaling Enrichers from $current to $count (adding $to_add)...${NC}"
                 update_daemon_config "enricher" "$count"
-                ./scripts/enricher/parallel-enrich.sh "$to_add" &
-                sleep 2
+                local added=0
+                for i in 1 2 3 4 5; do
+                    [[ $added -ge $to_add ]] && break
+                    if ! tmux has-session -t "enricher-$i" 2>/dev/null; then
+                        ./scripts/enricher/parallel-enrich.sh --slot "$i" &
+                        sleep 2
+                        added=$((added + 1))
+                    fi
+                done
                 echo -e "${GREEN}✓ Scaled to $count Enrichers${NC}"
             elif [[ $count -lt $current ]]; then
                 scale_down_multi "enricher" "enricher" "$current" "$count"
@@ -2333,8 +2357,15 @@ cmd_scale() {
                 local to_add=$((count - current))
                 echo -e "${BLUE}Scaling Researchers from $current to $count (adding $to_add)...${NC}"
                 update_daemon_config "researcher" "$count"
-                ./scripts/research/parallel-research.sh "$to_add" &
-                sleep 2
+                local added=0
+                for i in $(seq 1 $MAX_RESEARCHER); do
+                    [[ $added -ge $to_add ]] && break
+                    if ! tmux has-session -t "researcher-$i" 2>/dev/null; then
+                        ./scripts/research/parallel-research.sh --slot "$i" &
+                        sleep 2
+                        added=$((added + 1))
+                    fi
+                done
                 echo -e "${GREEN}✓ Scaled to $count Researchers${NC}"
             elif [[ $count -lt $current ]]; then
                 scale_down_multi "researcher" "researcher" "$current" "$count"

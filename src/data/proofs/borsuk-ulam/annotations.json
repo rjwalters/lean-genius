@@ -151,7 +151,7 @@
       "startLine": 136,
       "endLine": 150
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "The Topological Obstruction (Axiom)",
     "content": "**The axiom** `no_continuous_odd_nonzero_on_sphere`: For $n \\geq 1$, there is no continuous function $h: \\mathbb{R}^{n+1} \\to \\mathbb{R}^n$ that is simultaneously continuous, odd ($h(-x) = -h(x)$), and nonzero on $S^n$.\n\nThis is the deep topological result that powers Borsuk-Ulam. The classical proof uses covering spaces:\n- Normalize to get $\\hat{h}: S^n \\to S^{n-1}$\n- Since $\\hat{h}$ is odd, it descends to $\\bar{h}: \\mathbb{R}P^n \\to \\mathbb{R}P^{n-1}$\n- $\\bar{h}_*: \\pi_1(\\mathbb{R}P^n) \\to \\pi_1(\\mathbb{R}P^{n-1})$ must be injective (covering theory)\n- But $S^n$ simply connected ($n \\geq 2$) forces $\\bar{h}_*$ trivial — contradiction\n- For $n = 1$: $S^1$ connected, $S^0 = \\{\\pm 1\\}$ discrete, no continuous odd surjection\n\n**Why axiomatized**: Mathlib lacks covering space theory, fundamental groups of projective spaces, and lifting criteria.",
     "mathContext": "For $n \\geq 1$: $\\nexists h: \\mathbb{R}^{n+1} \\to \\mathbb{R}^n$ continuous, odd, nonzero on $S^n$. Uses $\\bar{h}_*: \\pi_1(\\mathbb{R}P^n) \\to \\pi_1(\\mathbb{R}P^{n-1})$ injective yet trivial.",
@@ -176,7 +176,7 @@
       "startLine": 191,
       "endLine": 214
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "The Borsuk-Ulam Theorem: Main Proof",
     "content": "**`borsuk_ulam`**: For $n \\geq 1$ and continuous $f: S^n \\to \\mathbb{R}^n$, there exists $x \\in S^n$ with $f(x) = f(-x)$.\n\n**Proof** (by contradiction via `by_contra`):\n1. Assume $\\neg$`HasAntipodalPair n f`\n2. Construct $g = $ `gadget n f` (the difference function)\n3. $g$ is continuous (`gadget_continuous`)\n4. $g$ is nonzero on $S^n$ (`gadget_nonzero_of_no_antipodal` — uses `push_neg` to transform $\\neg\\exists$ into $\\forall\\neg$)\n5. $g$ is odd (`gadget_odd`)\n6. But `no_odd_map_to_lower_sphere` says no such $g$ exists!\n7. Contradiction: package $\\langle g, \\text{hcont}, \\text{hnonzero}, \\text{hodd}\\rangle$ as witness\n\nThe proof is clean and modular: each property of $g$ is established by a separate lemma, and the final contradiction just packages them together.",
     "mathContext": "Assume $\\forall x \\in S^n,\\; f(x) \\neq f(-x)$. Then $g = f(x) - f(-x)$ is continuous, odd, nonzero on $S^n$. Contradicts `no_continuous_odd_nonzero_on_sphere`. Therefore $\\exists x \\in S^n,\\; f(x) = f(-x)$.",

@@ -111,82 +111,93 @@
       "title": "Imports",
       "startLine": 1,
       "endLine": 3,
-      "summary": "Imports `Nat.GCD.Basic` (natural number GCD and Bézout coefficients), `Int.GCD` (integer GCD), and `Tactic` (general tactics)."
+      "summary": "Imports `Nat.GCD.Basic` (natural number GCD and Bézout coefficients), `Int.GCD` (integer GCD), and `Tactic` (general tactics).",
+      "mathContext": "Three Mathlib imports provide the foundation: `Nat.GCD.Basic` supplies `Nat.gcd`, `Nat.gcdA`, `Nat.gcdB`, and `Nat.gcd_eq_gcd_ab`; `Int.GCD` provides the integer analogues; `Tactic` enables `linarith`, `ring`, `norm_num`, and `native_decide`."
     },
     {
       "id": "module-docstring",
       "title": "Module Docstring",
       "startLine": 5,
       "endLine": 63,
-      "summary": "Extensive documentation covering: the Bézout identity statement, Mathlib dependencies (gcd_eq_gcd_ab, gcdA, gcdB), proof status, historical note on Étienne Bézout (1730–1783), applications (modular inverses, Diophantine equations, CRT, RSA), explanation of the extended Euclidean algorithm, and Wiedijk #60 reference."
+      "summary": "Extensive documentation covering: the Bézout identity statement, Mathlib dependencies (gcd_eq_gcd_ab, gcdA, gcdB), proof status, historical note on Étienne Bézout (1730–1783), applications (modular inverses, Diophantine equations, CRT, RSA), explanation of the extended Euclidean algorithm, and Wiedijk #60 reference.",
+      "mathContext": "Bézout's identity: $\\forall a, b \\in \\mathbb{Z}, \\exists x, y \\in \\mathbb{Z}: ax + by = \\gcd(a, b)$. The extended Euclidean algorithm computes $x, y$ in $O(\\log(\\min(a,b)))$ steps by tracking the back-substitution through Euclid's algorithm: if $a = qb + r$, and $\\gcd(b, r) = bx' + ry'$, then $\\gcd(a, b) = a \\cdot y' + b \\cdot (x' - qy')$."
     },
     {
       "id": "namespace",
       "title": "Namespace Declaration",
       "startLine": 65,
       "endLine": 65,
-      "summary": "Opens the `BezoutIdentity` namespace enclosing all theorems and examples."
+      "summary": "Opens the `BezoutIdentity` namespace enclosing all theorems and examples.",
+      "mathContext": "The `BezoutIdentity` namespace scopes 12 theorems, 6 examples, and documentation sections covering the full development from basic identity to Diophantine solvability."
     },
     {
       "id": "bezout-nat",
       "title": "Bézout's Identity for Natural Numbers",
       "startLine": 67,
       "endLine": 88,
-      "summary": "Section header and two theorems. `bezout_nat`: for $a, b \\in \\mathbb{N}$, $\\exists x, y \\in \\mathbb{Z}: \\gcd(a,b) = ax + by$, proved by providing `gcdA` and `gcdB` as witnesses. `bezout_nat_explicit`: the non-existential form directly stating $\\gcd(a,b) = a \\cdot \\text{gcdA} + b \\cdot \\text{gcdB}$."
+      "summary": "Section header and two theorems. `bezout_nat`: for $a, b \\in \\mathbb{N}$, $\\exists x, y \\in \\mathbb{Z}: \\gcd(a,b) = ax + by$, proved by providing `gcdA` and `gcdB` as witnesses. `bezout_nat_explicit`: the non-existential form directly stating $\\gcd(a,b) = a \\cdot \\text{gcdA} + b \\cdot \\text{gcdB}$.",
+      "mathContext": "For $a, b \\in \\mathbb{N}$: $\\gcd(a, b) = a \\cdot \\text{gcdA}(a, b) + b \\cdot \\text{gcdB}(a, b)$ where `gcdA`, `gcdB` $\\in \\mathbb{Z}$ are the Bézout coefficients computed by the extended Euclidean algorithm. Note the coefficients must be integers even for natural number inputs (e.g., $\\gcd(12, 8) = 12 \\cdot 1 + 8 \\cdot (-1) = 4$)."
     },
     {
       "id": "bezout-int",
       "title": "Bézout's Identity for Integers",
       "startLine": 89,
       "endLine": 103,
-      "summary": "Two theorems extending to $\\mathbb{Z}$. `bezout_int`: for $a, b \\in \\mathbb{Z}$, $\\exists x, y: \\gcd(a,b) = ax + by$. `bezout_int_explicit`: non-existential form. Both use `Int.gcdA`, `Int.gcdB`, and `Int.gcd_eq_gcd_ab`."
+      "summary": "Two theorems extending to $\\mathbb{Z}$. `bezout_int`: for $a, b \\in \\mathbb{Z}$, $\\exists x, y: \\gcd(a,b) = ax + by$. `bezout_int_explicit`: non-existential form. Both use `Int.gcdA`, `Int.gcdB`, and `Int.gcd_eq_gcd_ab`.",
+      "mathContext": "The integer version: $\\forall a, b \\in \\mathbb{Z}, \\gcd(a, b) = a \\cdot \\text{gcdA}(a, b) + b \\cdot \\text{gcdB}(a, b)$. In $\\mathbb{Z}$, $\\gcd(a, b) = \\gcd(|a|, |b|) \\geq 0$ by convention. The identity holds for negative arguments: e.g., $\\gcd(-6, 4) = 2 = (-6) \\cdot (-1) + 4 \\cdot (-1)$."
     },
     {
       "id": "extended-euclidean",
       "title": "Extended Euclidean Algorithm",
       "startLine": 104,
       "endLine": 117,
-      "summary": "Section documenting how Bézout coefficients are computed. `extended_gcd_components` packages `gcdA`, `gcdB`, and `gcd` into a single let-binding theorem showing $g = ax + by$ with named components."
+      "summary": "Section documenting how Bézout coefficients are computed. `extended_gcd_components` packages `gcdA`, `gcdB`, and `gcd` into a single let-binding theorem showing $g = ax + by$ with named components.",
+      "mathContext": "The extended Euclidean algorithm runs in $O(\\log(\\min(a,b)))$ steps (same as the standard algorithm), computing $\\gcd(a,b)$ and the coefficients $x, y$ simultaneously. For $a = 35, b = 15$: $35 = 2 \\cdot 15 + 5$, $15 = 3 \\cdot 5 + 0$. Back-substitution: $5 = 35 - 2 \\cdot 15 = 35 \\cdot 1 + 15 \\cdot (-2)$."
     },
     {
       "id": "coprimality",
       "title": "Coprimality Characterization",
       "startLine": 118,
       "endLine": 149,
-      "summary": "The most substantial proof in the file. `coprime_iff_linear_combination`: $\\text{Nat.Coprime}\\, a\\, b \\iff \\exists x, y: ax + by = 1$. Forward: substitute gcd = 1 into Bézout. Reverse: show gcd divides $ax + by = 1$ via `dvd_add` and `dvd_mul_of_dvd_left`, then `Nat.eq_one_of_dvd_one`."
+      "summary": "The most substantial proof in the file. `coprime_iff_linear_combination`: $\\text{Nat.Coprime}\\, a\\, b \\iff \\exists x, y: ax + by = 1$. Forward: substitute gcd = 1 into Bézout. Reverse: show gcd divides $ax + by = 1$ via `dvd_add` and `dvd_mul_of_dvd_left`, then `Nat.eq_one_of_dvd_one`.",
+      "mathContext": "$\\gcd(a, b) = 1 \\iff \\exists x, y \\in \\mathbb{Z}: ax + by = 1$. The reverse direction: let $d = \\gcd(a, b)$. Then $d \\mid a$ and $d \\mid b$, so $d \\mid (ax + by) = 1$, hence $d = 1$. This characterization is the key to Euclid's lemma: if $p \\mid ab$ and $p \\nmid a$, then $\\gcd(p, a) = 1$, so $px + ay = 1$, multiplying by $b$ gives $pbx + aby = b$, and $p \\mid pbx$ and $p \\mid ab$ imply $p \\mid b$."
     },
     {
       "id": "modular-inverse",
       "title": "Modular Inverse Existence",
       "startLine": 150,
       "endLine": 164,
-      "summary": "Proves `modular_inverse_exists`: if $\\gcd(a, n) = 1$ and $n \\neq 0$, then $\\exists x: (ax) \\% n = 1 \\% n$. From Bézout $ax + ny = 1$, rewrite $ax = 1 - ny$ and use `Int.sub_emod` and `Int.mul_emod_right` to reduce modulo $n$."
+      "summary": "Proves `modular_inverse_exists`: if $\\gcd(a, n) = 1$ and $n \\neq 0$, then $\\exists x: (ax) \\% n = 1 \\% n$. From Bézout $ax + ny = 1$, rewrite $ax = 1 - ny$ and use `Int.sub_emod` and `Int.mul_emod_right` to reduce modulo $n$.",
+      "mathContext": "From $ax + ny = 1$: $ax = 1 - ny \\equiv 1 \\pmod{n}$. So $x$ (reduced mod $n$) is the modular inverse $a^{-1} \\pmod{n}$. In RSA: given public key $(e, n)$ with $\\gcd(e, \\phi(n)) = 1$, the private key $d = e^{-1} \\pmod{\\phi(n)}$ is computed by the extended Euclidean algorithm in $O(\\log \\phi(n))$ time."
     },
     {
       "id": "diophantine",
       "title": "Linear Diophantine Equations",
       "startLine": 165,
       "endLine": 192,
-      "summary": "Proves `diophantine_solvable`: $\\exists x, y: ax + by = c \\iff \\gcd(a,b) \\mid c$. Forward: gcd divides both $a$ and $b$, hence any linear combination. Reverse: scale Bézout coefficients by $c/\\gcd$ using a `calc` block with `ring`."
+      "summary": "Proves `diophantine_solvable`: $\\exists x, y: ax + by = c \\iff \\gcd(a,b) \\mid c$. Forward: gcd divides both $a$ and $b$, hence any linear combination. Reverse: scale Bézout coefficients by $c/\\gcd$ using a `calc` block with `ring`.",
+      "mathContext": "The linear Diophantine equation $ax + by = c$ has integer solutions iff $\\gcd(a,b) \\mid c$. If $\\gcd(a,b) = d$ and $ax_0 + by_0 = d$ (Bézout), then $x = (c/d)x_0$, $y = (c/d)y_0$ is a particular solution. The general solution is $x = x_0' + (b/d)t$, $y = y_0' - (a/d)t$ for $t \\in \\mathbb{Z}$, forming a lattice of solutions."
     },
     {
       "id": "examples",
       "title": "Worked Examples",
       "startLine": 193,
       "endLine": 213,
-      "summary": "Six verified examples: $\\gcd(12,8) = 4$, $\\gcd(35,15) = 5$, $\\gcd(17,5) = 1$ (all via `native_decide`), and three linear combinations $17 \\cdot 3 + 5 \\cdot (-10) = 1$, $12 \\cdot 1 + 8 \\cdot (-1) = 4$, $35 \\cdot 1 + 15 \\cdot (-2) = 5$ (all via `norm_num`)."
+      "summary": "Six verified examples: $\\gcd(12,8) = 4$, $\\gcd(35,15) = 5$, $\\gcd(17,5) = 1$ (all via `native_decide`), and three linear combinations $17 \\cdot 3 + 5 \\cdot (-10) = 1$, $12 \\cdot 1 + 8 \\cdot (-1) = 4$, $35 \\cdot 1 + 15 \\cdot (-2) = 5$ (all via `norm_num`).",
+      "mathContext": "Concrete verifications: $\\gcd(17, 5) = 1$ and $17 \\cdot 3 + 5 \\cdot (-10) = 51 - 50 = 1$ (coprime). $\\gcd(12, 8) = 4$ and $12 \\cdot 1 + 8 \\cdot (-1) = 4$. $\\gcd(35, 15) = 5$ and $35 \\cdot 1 + 15 \\cdot (-2) = 35 - 30 = 5$. The `native_decide` tactic evaluates GCD computations, while `norm_num` verifies the arithmetic identities."
     },
     {
       "id": "connections",
       "title": "Connections to Other Theorems",
       "startLine": 214,
       "endLine": 237,
-      "summary": "Documentation section explaining how Bézout underpins: (1) Euclid's lemma ($p \\mid ab \\implies p \\mid a$ or $p \\mid b$), (2) unique factorization (FTA), (3) Chinese Remainder Theorem, (4) RSA cryptography. Closes with `#check` verification of the four main theorems and `end BezoutIdentity`."
+      "summary": "Documentation section explaining how Bézout underpins: (1) Euclid's lemma ($p \\mid ab \\implies p \\mid a$ or $p \\mid b$), (2) unique factorization (FTA), (3) Chinese Remainder Theorem, (4) RSA cryptography. Closes with `#check` verification of the four main theorems and `end BezoutIdentity`.",
+      "mathContext": "The dependency chain: Bézout $\\Rightarrow$ coprimality characterization $\\Rightarrow$ Euclid's lemma ($p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$) $\\Rightarrow$ unique factorization (FTA). Separately: Bézout $\\Rightarrow$ modular inverse $\\Rightarrow$ CRT ($x \\equiv a_i \\pmod{n_i}$ has a unique solution mod $\\prod n_i$ when the $n_i$ are pairwise coprime) $\\Rightarrow$ RSA key generation."
     }
   ],
   "conclusion": {
     "summary": "This 238-line formalization of Bézout's identity (Wiedijk #60) builds substantially on Mathlib's GCD infrastructure: it provides Bézout's identity for both ℕ and ℤ, proves the coprimality characterization as a full iff, derives modular inverse existence, establishes the complete Diophantine solvability criterion, and verifies six numerical examples. With 0 sorries and multiple original proofs (coprimality, modular inverse, Diophantine criterion), it demonstrates how a foundational number-theoretic result connects to cryptography and equation solving.",
-    "implications": "**Theoretical Significance**: Bézout's identity is the computational backbone of number theory. Its formalization enables downstream proofs of Euclid's lemma, unique factorization, and the Chinese Remainder Theorem.\n\n**Broader Connections**: The modular inverse theorem is directly applicable to formalizing RSA key generation. The Diophantine solvability criterion provides a decision procedure for linear Diophantine equations that could be extended to systems of congruences.",
+    "implications": "**Theoretical Significance**: Bézout's identity is the computational backbone of number theory. Its formalization enables downstream proofs of Euclid's lemma, unique factorization, and the Chinese Remainder Theorem.\n\nThe modular inverse theorem is directly applicable to formalizing RSA key generation. The Diophantine solvability criterion provides a decision procedure for linear Diophantine equations that could be extended to systems of congruences.",
     "openQuestions": [
       "Can the extended Euclidean algorithm itself be formalized as a computable function with a correctness proof?",
       "Can Euclid's lemma be proved formally using the coprime_iff_linear_combination theorem?",

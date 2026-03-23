@@ -151,7 +151,7 @@
   ],
   "conclusion": {
     "summary": "This 208-line formalization captures Erdős Problem #62 with 0 sorries. The custom InfGraph structure supports uncountable vertex sets. The chromatic hierarchy (finite/ℵ₀/ℵ₁) is cleanly stratified. The EHS theorem is axiomatized and odd_cycles_are_common is fully proved, establishing χ = 3 common subgraphs. The gap to χ = 4 (chi_gap_problem) captures the exact open frontier.",
-    "implications": "**Theoretical Significance**: This problem probes the deep structure of graphs with uncountable chromatic number. A positive answer would reveal that χ = ℵ₁ graphs are 'universally rich' — forced to contain complex common structures.\n\n**Broader Connections**: A negative answer would exhibit graphs with the same uncountable chromatic number but fundamentally different subgraph profiles. The problem connects to partition calculus, Ramsey theory on uncountable sets, and the compactness/incompactness phenomena in infinite combinatorics.",
+    "implications": "**Theoretical Significance**: This problem probes the deep structure of graphs with uncountable chromatic number. A positive answer would reveal that χ = ℵ₁ graphs are 'universally rich' — forced to contain complex common structures.\n\nA negative answer would exhibit graphs with the same uncountable chromatic number but fundamentally different subgraph profiles. The problem connects to partition calculus, Ramsey theory on uncountable sets, and the compactness/incompactness phenomena in infinite combinatorics.",
     "openQuestions": [
       "Does there exist a common subgraph with χ = 4? (The strong conjecture)",
       "Does there exist a common subgraph with χ = ℵ₀? (The weak conjecture)",

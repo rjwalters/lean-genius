@@ -162,7 +162,7 @@
   ],
   "conclusion": {
     "summary": "This module provides fully verified infrastructure (202 lines, 13 theorems/lemmas, 0 axioms, 0 sorries) deriving explicit prime bounds from Bertrand's postulate. The crown result is the exponential bound p_n <= 2^(n+1), proved by elementary induction. It serves as shared infrastructure for the Bounded Prime Gaps and Bertrand's Postulate gallery entries.",
-    "implications": "**Theoretical Significance**: The exponential bound p_n <= 2^(n+1) is the strongest elementary bound on primes achievable from Bertrand's postulate alone.\n\n**Broader Connections**: While much weaker than the PNT bound p_n ~ n log n, it requires no analytic machinery and is sufficient for many combinatorial applications in number theory. The iterated doubling framework demonstrates how a single existence result (Bertrand) can be amplified into quantitative density statements.",
+    "implications": "**Theoretical Significance**: The exponential bound p_n <= 2^(n+1) is the strongest elementary bound on primes achievable from Bertrand's postulate alone.\n\nWhile much weaker than the PNT bound p_n ~ n log n, it requires no analytic machinery and is sufficient for many combinatorial applications in number theory. The iterated doubling framework demonstrates how a single existence result (Bertrand) can be amplified into quantitative density statements.",
     "openQuestions": [
       "Formalize Dusart-type bounds p_n <= n(ln n + ln ln n) from the Prime Number Theorem",
       "Prove the Rosser-Schoenfeld bounds on pi(n) from explicit zero-free regions",
