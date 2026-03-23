@@ -56,8 +56,12 @@
     ],
     "relatedProblems": [
       {
-        "id": "cantors-theorem-oq-03",
-        "relationship": "This proof"
+        "id": "cantors-theorem-oq-02",
+        "relationship": "Predecessor in the OQ chain — Lawvere's FPT (Level 1)"
+      },
+      {
+        "id": "cantor-diagonalization-oq-01",
+        "relationship": "König's inequality constrains answers to the Continuum Hypothesis"
       }
     ]
   },
@@ -125,18 +129,40 @@
   ],
   "conclusion": {
     "summary": "The diagonal argument is not one technique but a hierarchy of three levels: Lawvere (uniform dodge via fixed-point-free map), Coordinate (pointwise dodge), and König (heterogeneous types and dodges). König captures cardinal arithmetic, Cantor and Lawvere are special cases, and the argument works on any type with a fixed-point-free endomorphism.",
-    "significance": "Formalizes the complete hierarchy of diagonal arguments in Lean 4 with 0 axioms and 0 sorries. Shows König's theorem as the natural generalization of Cantor's diagonal to indexed families, connecting type theory to cardinal arithmetic."
+    "significance": "Formalizes the complete hierarchy of diagonal arguments in Lean 4 with 0 axioms and 0 sorries. Shows König's theorem as the natural generalization of Cantor's diagonal to indexed families, connecting type theory to cardinal arithmetic.",
+    "implications": "This hierarchy provides a principled framework for classifying ALL diagonal arguments: any new diagonal construction can be placed at Level 1 (uniform), Level 2 (pointwise), or Level 3 (heterogeneous). The master theorem characterizes exactly which types support diagonalization — those admitting fixed-point-free endomorphisms — giving a type-theoretic criterion for non-enumerability. The König–Lawvere connection also bridges cardinal arithmetic and category theory: König's cardinal inequality becomes a statement about surjectivity of dependent type maps.",
+    "openQuestions": [
+      "Is there a Level 4 beyond König? Could allowing the INDEX type to vary (e.g., transfinite induction over ordinal-indexed families) yield strictly stronger diagonal arguments?",
+      "Can the fixed-point-free characterization be extended to higher-order types — does the diagonal argument for (α → β) → γ require a different structural condition than g : β → β with no fixed point?",
+      "What is the constructive content of König's theorem? The classical proof uses choice to extract dodge elements — does a fully constructive version require weaker hypotheses or yield weaker conclusions?",
+      "Can this hierarchy be lifted to an ∞-categorical setting? Lawvere's theorem generalizes to cartesian closed categories, but does König's heterogeneous version have a natural topos-theoretic formulation?"
+    ]
   },
   "crossReferences": [
     {
       "targetId": "cantors-theorem",
       "relationship": "extends",
-      "description": "Cantor's theorem is Level 1 of the hierarchy (Lawvere with negation)"
+      "description": "Cantor's theorem (|A| < |P(A)|) is Level 1 of the hierarchy — the Lawvere instantiation with Bool/Prop negation"
     },
     {
       "targetId": "cantors-theorem-oq-02",
       "relationship": "extends",
-      "description": "OQ-02's Lawvere framework is Level 1; OQ-03 adds Levels 2 (Coordinate) and 3 (König)"
+      "description": "OQ-02 formalizes Lawvere's FPT (Level 1); OQ-03 adds Level 2 (Coordinate Diagonal) and Level 3 (König's heterogeneous principle)"
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "generalizes",
+      "description": "Cantor's 1891 diagonalization of binary sequences is the Bool instantiation of the coordinate diagonal (Level 2)"
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-01",
+      "relationship": "related",
+      "description": "The Continuum Hypothesis asks what lies between ℵ₀ and 2^ℵ₀ — König's inequality Σκᵢ < Πλᵢ constrains possible answers"
+    },
+    {
+      "targetId": "cantors-theorem-oq-01",
+      "relationship": "related",
+      "description": "OQ-01 studies |P(ℝ)| = ℶ₂ — König's theorem constrains its aleph-index via the cofinality bound"
     }
   ],
   "references": [
