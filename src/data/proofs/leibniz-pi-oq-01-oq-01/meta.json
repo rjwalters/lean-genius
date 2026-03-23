@@ -77,14 +77,23 @@
       "The key numerical coincidence: 120*239 - 119 = 119*239 + 120 = 28561 = 169^2, making the final fraction exactly 1",
       "The subtraction arctan(a) - arctan(b) is handled by arctan_neg + arctan_add, converting to arctan(a) + arctan(-b)",
       "All three applications of arctan_add have xy < 1 trivially satisfied (either both factors < 1, or one factor is negative)",
-      "The proof technique generalizes: any Machin-like formula pi/4 = sum of c_i * arctan(a_i/b_i) can be verified by iterating arctan_add"
+      "The proof technique generalizes: any Machin-like formula pi/4 = sum of c_i * arctan(a_i/b_i) can be verified by iterating arctan_add",
+      "Machin's formula reduces pi computation from O(N) terms (Leibniz) to O(log N) terms: the arctan series at x = 1/5 converges as O(5^{-2N}) and at x = 1/239 as O(239^{-2N}), making each additional term worth many digits"
     ]
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Imports, Module Documentation, and Namespace",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Imports Mathlib's arctan API (`Arctan`, `ArctanDeriv`) and general tactics. The module docstring outlines the three-step strategy for deriving Machin's formula from the addition formula alone, without using Mathlib's pre-packaged identity. Opens the `Real` namespace for direct access to `arctan`, `arctan_add`, `arctan_neg`, and `arctan_one`.",
+      "mathContext": "Dependencies: $\\arctan(x) + \\arctan(y) = \\arctan\\!\\left(\\frac{x+y}{1-xy}\\right)$ for $xy < 1$, $\\arctan(-x) = -\\arctan(x)$, and $\\arctan(1) = \\pi/4$."
+    },
+    {
       "id": "step1",
       "title": "Step 1: Doubling arctan(1/5)",
-      "startLine": 34,
+      "startLine": 40,
       "endLine": 49,
       "summary": "Proves $\\arctan(1/5) + \\arctan(1/5) = \\arctan(5/12)$ via the addition formula with $xy = 1/25 < 1$. The rational arithmetic $(2/5)/(24/25) = 5/12$ is verified by `norm_num`.",
       "mathContext": "$\\arctan\\frac{1}{5} + \\arctan\\frac{1}{5} = \\arctan\\frac{5}{12}$ via $\\frac{2/5}{1 - 1/25} = \\frac{2/5}{24/25} = \\frac{5}{12}$."
@@ -146,10 +155,28 @@
       "targetId": "leibniz-pi",
       "relationship": "extends",
       "description": "Provides a constructive derivation of the faster-converging alternative to the Leibniz series"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "Both concern fundamental properties of pi; Machin's formula accelerates the computation of a number whose transcendence was proved by Lindemann in 1882"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Another classical identity involving pi (pi^2/6 = sum of 1/n^2); both demonstrate exact closed-form evaluations via analytic methods"
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "related",
+      "description": "The arctan Taylor series arctan(x) = x - x^3/3 + x^5/5 - ... is a variant of the geometric series identity; Machin's formula exploits its rapid convergence at small arguments"
     }
   ],
   "relatedProofs": [
     "leibniz-pi",
-    "leibniz-pi-oq-01"
+    "leibniz-pi-oq-01",
+    "pi-transcendental",
+    "basel-problem",
+    "geometric-series"
   ]
 }
