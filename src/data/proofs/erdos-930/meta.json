@@ -61,6 +61,12 @@
       "**The key technical lemma**: For k ≥ 3 and sufficiently large n, there exists a prime p ≥ k such that l ∤ ord_p((n+1)...(n+k)).",
       "**Why intervals must be long**: For r=2 with short intervals, counterexamples exist—the length constraint prevents pathological cases.",
       "**Connection to factorials**: This problem relates to the structure of prime factorizations in factorial-like products."
+    ],
+    "prerequisites": [
+      "Prime factorization: unique factorization of integers, prime multiplicities, and $p$-adic valuations",
+      "Perfect powers: the definition $n = m^l$ for $l > 1$, and criteria for detecting perfect powers via prime exponents",
+      "Products of consecutive integers: binomial coefficients, factorials, and the arithmetic of $(n+1)(n+2)\\cdots(n+k)$",
+      "Elementary number theory: divisibility, the fundamental theorem of arithmetic, and Bertrand's postulate for primes in intervals"
     ]
   },
   "sections": [
