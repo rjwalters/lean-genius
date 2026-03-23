@@ -22,7 +22,13 @@
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$100",
     "axiomCount": 8,
-    "lineCount": 454
+    "lineCount": 454,
+    "prerequisites": [
+      "Additive bases and Waring's problem",
+      "Explicit vs. probabilistic constructions",
+      "Schnirelmann density",
+      "Computational number theory"
+    ]
   },
   "overview": {
     "historicalContext": "In 1932, the Hungarian mathematician Simon Sidon posed a question to Paul Erdős: can one explicitly construct a set $A \\subseteq \\mathbb{N}$ that is simultaneously an additive basis of order 2 ($A + A = \\mathbb{N}$) and 'economical' (the representation function $r_A(n)$ grows slower than any polynomial)?\n\nErdős, one of the most prolific mathematicians of the 20th century, proved that such sets **exist** using the probabilistic method: include $n \\in A$ with probability $p_n \\approx n^{-1/2+o(1)}$. A second-moment calculation shows that with positive probability, the random set satisfies both properties simultaneously. However, this argument is **non-constructive** — it guarantees existence without providing an algorithm to compute $A$.\n\nFor 90+ years, no explicit construction was known. The problem appeared on Erdős's list of $100 prize problems. The difficulty is that the two requirements — coverage (basis) and sparsity (economical) — pull in opposite directions: making $A$ denser helps coverage but hurts the representation count.\n\nIn 2024, Siddharth Jain, Huy Tuan Pham, Mehtaab Sawhney, and Dmitriy Zakharov (JPSZ) solved the problem with a breakthrough construction (arXiv:2405.08650). Their approach derandomizes Erdős's probabilistic argument using a carefully designed hash function, yielding a computable set with $r_A(n) \\leq \\exp(C\\sqrt{\\log n})$ — far stronger than the required $o(n^\\varepsilon)$ for all $\\varepsilon > 0$. This resolved a 90+ year open problem and claimed Erdős's $100 prize.",
@@ -149,5 +155,37 @@
     "axiomCount": 8,
     "theoremCount": 10,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "Problem #28 asks about representation functions of bases. Problem #29 asks for explicit economical bases — both concern the fundamental structure of additive bases of order 2"
+    },
+    {
+      "targetId": "erdos-35",
+      "relationship": "related",
+      "description": "Problem #35 on Schnirelmann density and additive bases is directly related: Schnirelmann's theorem guarantees bases exist, but Problem #29 asks for explicit economical constructions"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Schnirelmann, Lev G.",
+      "title": "Über additive Eigenschaften von Zahlen",
+      "year": "1933",
+      "venue": "Mathematische Annalen, vol. 107, pp. 649–690",
+      "note": "Proved every set with positive Schnirelmann density is an additive basis, motivating the search for explicit thin bases"
+    },
+    {
+      "authors": "Nathanson, Melvyn B.",
+      "title": "Additive Number Theory: The Classical Bases",
+      "year": "1996",
+      "venue": "Springer GTM 164",
+      "note": "Standard reference for additive bases including explicit constructions and their density properties"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-28",
+    "erdos-35"
+  ]
 }

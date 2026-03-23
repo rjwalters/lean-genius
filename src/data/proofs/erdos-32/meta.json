@@ -56,7 +56,13 @@
       "Connection to Goldbach's conjecture"
     ],
     "axiomCount": 7,
-    "lineCount": 258
+    "lineCount": 258,
+    "prerequisites": [
+      "Prime number theorem and prime distribution",
+      "Additive complements",
+      "Sumset theory",
+      "Sieve methods"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #32, proposed around 1954, asks about the sparsest possible 'additive complement' of the primes. A set A is an additive complement if every sufficiently large integer n can be written as p + a for some prime p and a ∈ A.\n\nThe problem has a rich history of progressive improvements:\n- **Lorentz**: First showed O((log N)³) is achievable\n- **Erdős (1954)**: Improved to O((log N)²)\n- **Wolke (1996)**: Achieved (log N)^(1+o(1)) for almost all integers\n- **Kolountzakis (1996)**: Achieved O((log N)(log log N))\n- **Ruzsa (1998)**: The breakthrough — O(ω(N)·log N) for any ω(N) → ∞\n- **Ruzsa (1998)**: Lower bound liminf ≥ e^γ ≈ 1.781 times log N\n\nThe gap between Ruzsa's upper bound (any function going to infinity times log N) and his lower bound (constant times log N) remains unresolved. Erdős offered $50 for determining whether O(log N) is achievable.",
@@ -164,5 +170,43 @@
     "axiomCount": 7,
     "theoremCount": 3,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-31",
+      "relationship": "specializes",
+      "description": "Problem #31 asks about additive complements in general; Problem #32 specializes to additive complements of the primes"
+    },
+    {
+      "targetId": "erdos-33",
+      "relationship": "related",
+      "description": "Problem #33 (complements of squares) is the parallel question for a different structured set. Both ask: how thin can a complement of a natural sequence be?"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The distribution of primes (density ~1/log N) determines the minimum density of their additive complements"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "Some results on additive number theory",
+      "year": "1954",
+      "venue": "Proceedings of the American Mathematical Society, vol. 5, pp. 847–853",
+      "note": "Studied additive complements of primes and thin sets"
+    },
+    {
+      "authors": "Vinogradov, Ivan M.",
+      "title": "Representation of an odd number as a sum of three primes",
+      "year": "1937",
+      "venue": "Doklady Akademii Nauk SSSR, vol. 15, pp. 291–294",
+      "note": "Goldbach-type results showing primes are nearly self-complementary"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-31",
+    "erdos-33",
+    "infinitude-primes"
+  ]
 }

@@ -136,5 +136,30 @@
     "axiomCount": 8,
     "theoremCount": 2,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Problem #1 (distinct subset sums) and Problem #34 (consecutive sums in permutations) both concern how sums of structured subsets behave. Both ask when additive properties can be simultaneously satisfied"
+    },
+    {
+      "targetId": "erdos-867",
+      "relationship": "related",
+      "description": "Problem #867 on sum-free sets and Problem #34 on consecutive sums both concern constraints on sums of elements in a set/permutation"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Ginzburg, Abraham; Ziv, Abraham",
+      "title": "A theorem in additive number theory",
+      "year": "1961",
+      "venue": "Bulletin of the Research Council of Israel, Section F, vol. 10F, pp. 41–43",
+      "note": "The Erdős-Ginzburg-Ziv theorem on zero-sum subsequences, related to consecutive sum properties in permutations"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-867"
+  ]
 }
