@@ -8,7 +8,7 @@
     },
     "type": "definition",
     "title": "The Function h(n) = n + τ(n)",
-    "content": "**h(n) = n + τ(n)** where τ(n) = |{d : d | n}| counts divisors. Since τ(n) ≥ 1 for all n ≥ 1, we have h(n) > n always — the map is strictly increasing. For n = 12: τ(12) = 6 (divisors: 1,2,3,4,6,12), so h(12) = 18. For primes p, τ(p) = 2, so h(p) = p + 2.",
+    "content": "**h(n) = n + τ(n)** where τ(n) = |{d : d | n}| counts divisors (related to `euler-totient` — Euler's totient $\\varphi(n)$ counts coprime residues while $\\tau(n)$ counts all divisors). Since τ(n) ≥ 1 for all n ≥ 1, we have h(n) > n always — the map is strictly increasing. For n = 12: τ(12) = 6 (divisors: 1,2,3,4,6,12), so h(12) = 18. For primes p, τ(p) = 2, so h(p) = p + 2.",
     "significance": "key",
     "mathContext": "The map n ↦ n + τ(n) is a natural example from **arithmetic dynamics** — the study of number-theoretic functions iterated as dynamical systems. Unlike the Collatz map (which can decrease), h is strictly increasing, eliminating cycles and fixed points. The divisor function τ is multiplicative: τ(mn) = τ(m)τ(n) for gcd(m,n) = 1, and τ(p^a) = a + 1 for prime powers. Its irregularity (τ oscillates between 2 at primes and large values at highly composite numbers) creates the complex orbit structure central to Problem #414.",
     "relatedConcepts": [
@@ -97,7 +97,7 @@
     },
     "type": "concept",
     "title": "Erdős Problem #414: All Orbits Merge (OPEN)",
-    "content": "**Conjecture**: For any m, n ≥ 1, there exist i, j ∈ ℕ with h^i(m) = h^j(n). Equivalently, all forward orbits of h eventually coalesce into a single infinite trajectory. Erdős and Graham believed the answer is YES.",
+    "content": "**Conjecture**: For any m, n ≥ 1, there exist i, j ∈ ℕ with h^i(m) = h^j(n). Equivalently, all forward orbits of h eventually coalesce into a single infinite trajectory. Erdős and Graham believed the answer is YES. This is analogous to the Collatz conjecture (all orbits merge at 1), but with a key simplification: h is strictly increasing, so there are no cycles — the question is purely about coalescence, not about convergence to a fixed point.",
     "significance": "key",
     "mathContext": "This is an **orbit coalescence** problem: does the directed graph on ℕ defined by n → h(n) have a single connected component when viewed 'forward in time'? The graph is a forest of infinite rays, and the question is whether all rays merge into one. Computationally, orbits starting from different values merge very quickly — orbits from 1 through 10^6 all merge within the first few hundred steps. However, no proof exists because: (1) controlling exact collisions requires understanding the joint distribution of τ along two different orbits, and (2) the divisor function's irregularity makes it hard to prove two specific values coincide. The problem appears in Erdős-Graham [ErGr80], p. 82, alongside the related Problems #412 and #413 about n + φ(n) and n - φ(n).",
     "relatedConcepts": [
