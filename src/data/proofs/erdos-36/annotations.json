@@ -143,7 +143,7 @@
     },
     "type": "technique",
     "title": "Erdős (1955): Trivial Lower Bound 1/4",
-    "content": "**erdos_lower_quarter**: $M(N)/N > 1/4$ for all $N \\geq 1$. Erdős's original 1955 lower bound.",
+    "content": "**erdos_lower_quarter**: $M(N)/N > 1/4$ for all $N \\geq 1$. Erdős's original 1955 lower bound, obtained by a straightforward pigeonhole/double-counting argument. The total number of pairs $(a, b) \\in A \\times B$ is $N^2$, distributed over at most $4N - 1$ possible difference values $a - b$. By pigeonhole, some difference occurs at least $N^2/(4N-1) > N/4$ times. This bound is far from sharp — it ignores the partition structure $A \\cup B = \\{1,\\ldots,2N\\}$ entirely.",
     "significance": "key",
     "mathContext": "The $1/4$ bound follows from a pigeonhole/double-counting argument: the total number of pairs is $|A| \\cdot |B| = N^2$, and the differences range over at most $4N - 1$ values (from $-(2N-1)$ to $2N-1$). By pigeonhole, the maximum overlap is $\\geq N^2/(4N-1) > N/4$. This can also be derived from the Cauchy-Schwarz inequality applied to the representation function. The bound is loose because it ignores the partition constraint $A \\cup B = \\{1,\\ldots,2N\\}$.",
     "relatedConcepts": [
@@ -164,7 +164,7 @@
     },
     "type": "technique",
     "title": "Scherk (1955): Improved Lower Bound 1 − 1/√2",
-    "content": "**scherk_lower**: $M(N)/N > 1 - 1/\\sqrt{2} \\approx 0.293$. Scherk's improvement exploits the structure of consecutive-integer partitions.",
+    "content": "**scherk_lower**: $M(N)/N > 1 - 1/\\sqrt{2} \\approx 0.293$. Scherk's 1955 improvement exploits the Fourier-analytic structure of partitions of consecutive integers. By analyzing the discrete Fourier transform of the indicator function $1_A$ and applying Parseval's identity together with the constraint $1_A + 1_B = 1_{\\{1,\\ldots,2N\\}}$, Scherk showed the maximum overlap must exceed $(1 - 1/\\sqrt{2})N$. This was the first application of harmonic analysis to the minimum overlap problem, establishing a methodology that White and subsequent researchers would refine.",
     "significance": "key",
     "mathContext": "Scherk improved on Erdős's bound by analyzing the Fourier transform of the indicator function of $A$. For a partition of $\\{1,\\ldots,2N\\}$, the characteristic function $\\hat{1}_A(\\xi)$ satisfies $|\\hat{1}_A(0)| = N$ and the constraint $\\hat{1}_A + \\hat{1}_B = \\hat{1}_{\\{1,\\ldots,2N\\}}$. Using Parseval's identity and the specific structure of the full set's transform, Scherk showed the maximum overlap exceeds $(1 - 1/\\sqrt{2})N$. This was the first application of Fourier methods to the minimum overlap problem.",
     "relatedConcepts": [
