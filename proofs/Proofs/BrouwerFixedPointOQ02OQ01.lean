@@ -687,17 +687,6 @@ noncomputable def displacementColoring (n : ℕ)
   else if d1 ≤ d2 then 1
   else 2
 
--- The tie-breaking condition in displacementColoring implies f(v)=v, which contradicts hno_fix
-private lemma displacementColoring_no_tie {n : ℕ} {f : ℝ × ℝ → ℝ × ℝ}
-    (v : GridVertex n) (hne : f (gridToReal n v) ≠ gridToReal n v) :
-    ¬(-((f (gridToReal n v)).1 - (gridToReal n v).1 +
-        ((f (gridToReal n v)).2 - (gridToReal n v).2)) =
-      (f (gridToReal n v)).1 - (gridToReal n v).1 ∧
-      (f (gridToReal n v)).1 - (gridToReal n v).1 =
-      (f (gridToReal n v)).2 - (gridToReal n v).2) := by
-  rintro ⟨h1, h2⟩
-  exact hne (Prod.ext (by linarith) (by linarith))
-
 -- Helper: grid vertices map into the simplex
 private lemma gridToReal_in_simplex {n : ℕ} (hn : 0 < n) (v : GridVertex n) :
     (gridToReal n v).1 ≥ 0 ∧ (gridToReal n v).2 ≥ 0 ∧
@@ -722,157 +711,193 @@ private lemma displacementColoring_isSperner (n : ℕ) (hn : 0 < n)
   have hn' : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
   -- (1) c(0,0) = 0: at origin, d1=f₁≥0, d2=f₂≥0, d0=-(f₁+f₂)≤0 is the minimum
-  · simp only [displacementColoring]
-    rw [if_neg (displacementColoring_no_tie ⟨0, 0, by omega⟩ (hno_fix ⟨0, 0, by omega⟩))]
-    simp only [gridToReal, Nat.cast_zero, zero_div, sub_zero]
+  · simp only [displacementColoring, gridToReal, Nat.cast_zero, zero_div, sub_zero]
     obtain ⟨hf1, hf2, _⟩ := hrange (0, 0) le_rfl le_rfl (by norm_num)
-    rw [if_pos ⟨by linarith, by linarith⟩]
+    by_cases htie : -((f (0, 0)).1 + (f (0, 0)).2) = (f (0, 0)).1 ∧
+        (f (0, 0)).1 = (f (0, 0)).2
+    · rw [if_pos htie]; simp
+    · rw [if_neg htie, if_pos ⟨by linarith, by linarith⟩]
   -- (2) c(n,0) = 1: d1=f₁-1≤0, d2=f₂≥0, so d1≤d2. d0≤d1 iff f=(1,0) (fixed point).
-  · simp only [displacementColoring]
-    rw [if_neg (displacementColoring_no_tie ⟨n, 0, by omega⟩ (hno_fix ⟨n, 0, by omega⟩))]
-    simp only [gridToReal, Nat.cast_zero, zero_div, sub_zero, div_self hn']
+  · simp only [displacementColoring, gridToReal, Nat.cast_zero, zero_div, sub_zero, div_self hn']
     obtain ⟨hf1, hf2, hf12⟩ := hrange (1, 0) (by norm_num) le_rfl (by norm_num)
-    rw [if_neg, if_pos (show (f (1, 0)).1 - 1 ≤ (f (1, 0)).2 by linarith)]
-    intro ⟨h_le, _⟩
-    have hf1_eq : (f (1, 0)).1 = 1 := by nlinarith
-    have hf2_eq : (f (1, 0)).2 = 0 := by linarith
-    exact absurd (show f (gridToReal n ⟨n, 0, by omega⟩) = gridToReal n ⟨n, 0, by omega⟩ from by
-      simp only [gridToReal, Nat.cast_zero, zero_div, div_self hn']
-      exact Prod.ext hf1_eq hf2_eq) (hno_fix ⟨n, 0, by omega⟩)
+    by_cases htie : -((f (1, 0)).1 - 1 + (f (1, 0)).2) = (f (1, 0)).1 - 1 ∧
+        (f (1, 0)).1 - 1 = (f (1, 0)).2
+    · -- Tie means f=(1,0), contradicting hno_fix
+      exfalso
+      have hf1_eq : (f (1, 0)).1 = 1 := by nlinarith [htie.1, htie.2]
+      have hf2_eq : (f (1, 0)).2 = 0 := by linarith [htie.2]
+      exact hno_fix ⟨n, 0, by omega⟩ (by
+        simp only [gridToReal, Nat.cast_zero, zero_div, div_self hn']
+        exact Prod.ext hf1_eq hf2_eq)
+    · rw [if_neg htie, if_neg, if_pos (show (f (1, 0)).1 - 1 ≤ (f (1, 0)).2 by linarith)]
+      intro ⟨h_le, _⟩
+      have hf1_eq : (f (1, 0)).1 = 1 := by nlinarith
+      have hf2_eq : (f (1, 0)).2 = 0 := by linarith
+      exact absurd (show f (gridToReal n ⟨n, 0, by omega⟩) = gridToReal n ⟨n, 0, by omega⟩ from by
+        simp only [gridToReal, Nat.cast_zero, zero_div, div_self hn']
+        exact Prod.ext hf1_eq hf2_eq) (hno_fix ⟨n, 0, by omega⟩)
   -- (3) c(0,n) = 2: d1=f₁≥0, d2=f₂-1≤0, d0=1-f₁-f₂≥0. Neither if-branch unless fixed pt.
-  · simp only [displacementColoring]
-    rw [if_neg (displacementColoring_no_tie ⟨0, n, by omega⟩ (hno_fix ⟨0, n, by omega⟩))]
-    simp only [gridToReal, Nat.cast_zero, zero_div, sub_zero, div_self hn']
+  · simp only [displacementColoring, gridToReal, Nat.cast_zero, zero_div, sub_zero, div_self hn']
     obtain ⟨hf1, hf2, hf12⟩ := hrange (0, 1) le_rfl (by norm_num) (by norm_num)
-    rw [if_neg, if_neg]
-    · -- ¬(d1 ≤ d2): f₁ > f₂-1, unless f=(0,1) (fixed point)
-      intro h_le
-      have hf2_eq : (f (0, 1)).2 = 1 := by nlinarith
-      have hf1_eq : (f (0, 1)).1 = 0 := by linarith
-      exact absurd (show f (gridToReal n ⟨0, n, by omega⟩) = gridToReal n ⟨0, n, by omega⟩ from by
+    by_cases htie : -((f (0, 1)).1 + ((f (0, 1)).2 - 1)) = (f (0, 1)).1 ∧
+        (f (0, 1)).1 = (f (0, 1)).2 - 1
+    · -- Tie means f=(0,1), contradicting hno_fix
+      exfalso
+      have hf2_eq : (f (0, 1)).2 = 1 := by nlinarith [htie.1, htie.2]
+      have hf1_eq : (f (0, 1)).1 = 0 := by linarith [htie.2]
+      exact hno_fix ⟨0, n, by omega⟩ (by
         simp only [gridToReal, Nat.cast_zero, zero_div, div_self hn']
-        exact Prod.ext hf1_eq hf2_eq) (hno_fix ⟨0, n, by omega⟩)
-    · -- ¬(d0 ≤ d1 ∧ d0 ≤ d2): d0 ≤ d2 requires f₂=1, f₁=0 (fixed point)
-      intro ⟨_, h_le⟩
-      have hf2_eq : (f (0, 1)).2 = 1 := by nlinarith
-      have hf1_eq : (f (0, 1)).1 = 0 := by linarith
-      exact absurd (show f (gridToReal n ⟨0, n, by omega⟩) = gridToReal n ⟨0, n, by omega⟩ from by
-        simp only [gridToReal, Nat.cast_zero, zero_div, div_self hn']
-        exact Prod.ext hf1_eq hf2_eq) (hno_fix ⟨0, n, by omega⟩)
+        exact Prod.ext hf1_eq hf2_eq)
+    · rw [if_neg htie, if_neg, if_neg]
+      · -- ¬(d1 ≤ d2): f₁ > f₂-1, unless f=(0,1) (fixed point)
+        intro h_le
+        have hf2_eq : (f (0, 1)).2 = 1 := by nlinarith
+        have hf1_eq : (f (0, 1)).1 = 0 := by linarith
+        exact absurd (show f (gridToReal n ⟨0, n, by omega⟩) = gridToReal n ⟨0, n, by omega⟩ from by
+          simp only [gridToReal, Nat.cast_zero, zero_div, div_self hn']
+          exact Prod.ext hf1_eq hf2_eq) (hno_fix ⟨0, n, by omega⟩)
+      · -- ¬(d0 ≤ d1 ∧ d0 ≤ d2): d0 ≤ d2 requires f₂=1, f₁=0 (fixed point)
+        intro ⟨_, h_le⟩
+        have hf2_eq : (f (0, 1)).2 = 1 := by nlinarith
+        have hf1_eq : (f (0, 1)).1 = 0 := by linarith
+        exact absurd (show f (gridToReal n ⟨0, n, by omega⟩) = gridToReal n ⟨0, n, by omega⟩ from by
+          simp only [gridToReal, Nat.cast_zero, zero_div, div_self hn']
+          exact Prod.ext hf1_eq hf2_eq) (hno_fix ⟨0, n, by omega⟩)
   -- (4) Bottom edge: j=0, 0<i<n → c ≠ 2
   -- Color=2 requires d1>d2≥0 (since d2=f₂-0=f₂≥0), giving d1>0.
   -- But d0>d1 or d0>d2 then gives f₂<0, contradicting hrange.
   · intro v hj hi0 hin heq
     simp only [displacementColoring] at heq
-    rw [if_neg (displacementColoring_no_tie v (hno_fix v))] at heq
-    split_ifs at heq with h1 h2
-    · exact absurd heq (by decide)
-    · exact absurd heq (by decide)
-    · -- h1: ¬(d0 ≤ d1 ∧ d0 ≤ d2), h2: ¬(d1 ≤ d2)
-      -- Since d2=f₂≥0 and d1>d2≥0, both d1,d2>0, so d0=-(d1+d2)<0≤d1,d2.
-      -- Hence d0≤d1 ∧ d0≤d2, contradicting h1.
-      have hv := gridToReal_in_simplex hn v
-      obtain ⟨_, hf2, _⟩ := hrange _ hv.1 hv.2.1 hv.2.2
-      have hpj : (gridToReal n v).2 = 0 := by
-        simp [gridToReal, hj, Nat.cast_zero, zero_div]
-      have hd2 : (f (gridToReal n v)).2 - (gridToReal n v).2 ≥ 0 := by linarith [hpj]
-      push_neg at h2 -- h2: d2 < d1
-      exact h1 ⟨by linarith, by linarith⟩
+    by_cases htie : -((f (gridToReal n v)).1 - (gridToReal n v).1 +
+        ((f (gridToReal n v)).2 - (gridToReal n v).2)) =
+        (f (gridToReal n v)).1 - (gridToReal n v).1 ∧
+      (f (gridToReal n v)).1 - (gridToReal n v).1 =
+        (f (gridToReal n v)).2 - (gridToReal n v).2
+    · -- Tie case: on bottom edge (j=0, 0<i<n), tie-breaking gives color 0 ≠ 2
+      rw [if_pos htie] at heq
+      -- On bottom edge with i>0, i<n, j=0: ¬(i=0∧j=0), ¬(j=0∧i+j=n) iff ¬(i=n)
+      -- If i<n: ¬(j=0∧i+j=n), ¬(i=0∧i+j=n), ¬(i+j=n), ¬(i=0) → else → color 0
+      have : ¬(v.i = 0 ∧ v.j = 0) := by omega
+      have : ¬(v.j = 0 ∧ v.i + v.j = n) := by omega
+      have : ¬(v.i = 0 ∧ v.i + v.j = n) := by omega
+      have : ¬(v.i + v.j = n) := by omega
+      have : ¬(v.i = 0) := by omega
+      simp_all
+    · rw [if_neg htie] at heq
+      split_ifs at heq with h2 h3
+      · exact absurd heq (by decide)
+      · exact absurd heq (by decide)
+      · -- ¬(d0 ≤ d1 ∧ d0 ≤ d2), ¬(d1 ≤ d2), color = 2
+        have hv := gridToReal_in_simplex hn v
+        obtain ⟨_, hf2, _⟩ := hrange _ hv.1 hv.2.1 hv.2.2
+        have hpj : (gridToReal n v).2 = 0 := by
+          simp [gridToReal, hj, Nat.cast_zero, zero_div]
+        have hd2 : (f (gridToReal n v)).2 - (gridToReal n v).2 ≥ 0 := by linarith [hpj]
+        push_neg at h3 -- h3: d2 < d1
+        exact h2 ⟨by linarith, by linarith⟩
   -- (5) Left edge: i=0, 0<j<n → c ≠ 1
   -- Symmetric to bottom edge: d1=f₁-0=f₁≥0, d1≤d2, d0>d1 or d0>d2 gives f₁<0.
-  · intro v hi hj0 hjn heq
+  · intro v hvi hj0 hjn heq
     simp only [displacementColoring] at heq
-    rw [if_neg (displacementColoring_no_tie v (hno_fix v))] at heq
-    split_ifs at heq with h1 h2
-    · exact absurd heq (by decide)
-    · -- h1: ¬(d0 ≤ d1 ∧ d0 ≤ d2), h2: d1 ≤ d2 (TRUE from split_ifs)
-      -- Since d1=f₁≥0 and d2≥d1≥0, d0=-(d1+d2)≤0≤d1,d2.
-      -- Hence d0≤d1 ∧ d0≤d2, contradicting h1.
-      have hv := gridToReal_in_simplex hn v
-      obtain ⟨hf1, _, _⟩ := hrange _ hv.1 hv.2.1 hv.2.2
-      have hpi : (gridToReal n v).1 = 0 := by
-        simp [gridToReal, hi, Nat.cast_zero, zero_div]
-      have hd1 : (f (gridToReal n v)).1 - (gridToReal n v).1 ≥ 0 := by linarith [hpi]
-      exact h1 ⟨by linarith, by linarith⟩
-    · exact absurd heq (by decide)
+    -- Handle tie-breaking case first
+    by_cases htie : -((f (gridToReal n v)).1 - (gridToReal n v).1 +
+        ((f (gridToReal n v)).2 - (gridToReal n v).2)) =
+        (f (gridToReal n v)).1 - (gridToReal n v).1 ∧
+      (f (gridToReal n v)).1 - (gridToReal n v).1 =
+        (f (gridToReal n v)).2 - (gridToReal n v).2
+    · -- Tie case: on left edge (i=0, j>0, j<n), tie-breaking gives color 2
+      rw [if_pos htie] at heq
+      -- On left edge with j>0, j<n: ¬(i=0∧j=0), ¬(j=0∧i+j=n), ¬(i=0∧i+j=n), ¬(i+j=n), i=0 → color 2
+      have : ¬(v.i = 0 ∧ v.j = 0) := by omega
+      have : ¬(v.j = 0 ∧ v.i + v.j = n) := by omega
+      have : ¬(v.i = 0 ∧ v.i + v.j = n) := by omega
+      have : ¬(v.i + v.j = n) := by omega
+      have : v.i = 0 := hvi
+      simp_all
+    · rw [if_neg htie] at heq
+      split_ifs at heq with h2 h3
+      · exact absurd heq (by decide)
+      · -- d1 ≤ d2, color = 1. Derive contradiction: d0 ≤ d1 ∧ d0 ≤ d2.
+        have hv := gridToReal_in_simplex hn v
+        obtain ⟨hf1, _, _⟩ := hrange _ hv.1 hv.2.1 hv.2.2
+        have hpi : (gridToReal n v).1 = 0 := by
+          simp [gridToReal, hvi, Nat.cast_zero, zero_div]
+        have hd1 : (f (gridToReal n v)).1 - (gridToReal n v).1 ≥ 0 := by linarith [hpi]
+        exact h2 ⟨by linarith, by linarith⟩
+      · exact absurd heq (by decide)
   -- (6) Hypotenuse: i+j=n, i>0, j>0 → c ≠ 0
   -- d0=1-f₁-f₂≥0. d0≤d1∧d0≤d2 forces f₁+f₂=1 and f₁=p₁, f₂=p₂, i.e. fixed point.
   · intro v hsum hi0 hj0 heq
     simp only [displacementColoring] at heq
-    rw [if_neg (displacementColoring_no_tie v (hno_fix v))] at heq
-    split_ifs at heq with h1 h2
-    · have hv := gridToReal_in_simplex hn v
-      obtain ⟨hf1, hf2, hf12⟩ := hrange _ hv.1 hv.2.1 hv.2.2
-      have hpsum : (gridToReal n v).1 + (gridToReal n v).2 = 1 := by
-        have : (gridToReal n v).1 + (gridToReal n v).2 = (↑v.i + ↑v.j : ℝ) / ↑n := by
-          simp only [gridToReal]; ring
-        rw [this, div_eq_one_iff_eq hn']
-        exact_mod_cast hsum
-      obtain ⟨h_le1, h_le2⟩ := h1
-      have hfsum : (f (gridToReal n v)).1 + (f (gridToReal n v)).2 = 1 := by nlinarith
-      have hf1_eq : (f (gridToReal n v)).1 = (gridToReal n v).1 := by nlinarith
-      have hf2_eq : (f (gridToReal n v)).2 = (gridToReal n v).2 := by nlinarith
-      exact absurd (Prod.ext hf1_eq hf2_eq) (hno_fix v)
-    · exact absurd heq (by decide)
-    · exact absurd heq (by decide)
+    by_cases htie : -((f (gridToReal n v)).1 - (gridToReal n v).1 +
+        ((f (gridToReal n v)).2 - (gridToReal n v).2)) =
+        (f (gridToReal n v)).1 - (gridToReal n v).1 ∧
+      (f (gridToReal n v)).1 - (gridToReal n v).1 =
+        (f (gridToReal n v)).2 - (gridToReal n v).2
+    · -- Tie case: on hypotenuse (i+j=n, i>0, j>0), tie-breaking gives color 1 ≠ 0
+      rw [if_pos htie] at heq
+      -- On hypotenuse with i>0, j>0: ¬(i=0∧j=0), ¬(j=0∧i+j=n), ¬(i=0∧i+j=n), i+j=n → color 1
+      have : ¬(v.i = 0 ∧ v.j = 0) := by omega
+      have : ¬(v.j = 0 ∧ v.i + v.j = n) := by omega
+      have : ¬(v.i = 0 ∧ v.i + v.j = n) := by omega
+      have : v.i + v.j = n := hsum
+      simp_all
+    · rw [if_neg htie] at heq
+      split_ifs at heq with h2 h3
+      · -- d0 ≤ d1 ∧ d0 ≤ d2, color = 0. Derive fixed point contradiction.
+        have hv := gridToReal_in_simplex hn v
+        obtain ⟨hf1, hf2, hf12⟩ := hrange _ hv.1 hv.2.1 hv.2.2
+        have hpsum : (gridToReal n v).1 + (gridToReal n v).2 = 1 := by
+          have : (gridToReal n v).1 + (gridToReal n v).2 = (↑v.i + ↑v.j : ℝ) / ↑n := by
+            simp only [gridToReal]; ring
+          rw [this, div_eq_one_iff_eq hn']
+          exact_mod_cast hsum
+        obtain ⟨h_le1, h_le2⟩ := h2
+        have hfsum : (f (gridToReal n v)).1 + (f (gridToReal n v)).2 = 1 := by nlinarith
+        have hf1_eq : (f (gridToReal n v)).1 = (gridToReal n v).1 := by nlinarith
+        have hf2_eq : (f (gridToReal n v)).2 = (gridToReal n v).2 := by nlinarith
+        exact absurd (Prod.ext hf1_eq hf2_eq) (hno_fix v)
+      · exact absurd heq (by decide)
+      · exact absurd heq (by decide)
 
--- Coordinate bounds for vertices of a grid triangle
-private lemma triangle_vertex_i_sub_le {n : ℕ} {t : GridTriangle n} (a b : Fin 3) :
-    (t.vertices a).i ≤ (t.vertices b).i + 1 := by
-  rcases t with ⟨ti, tj, ty, hv⟩
-  cases ty <;> fin_cases a <;> fin_cases b <;>
-    simp [GridTriangle.vertices, lowerVertices, upperVertices] <;> omega
-
-private lemma triangle_vertex_j_sub_le {n : ℕ} {t : GridTriangle n} (a b : Fin 3) :
-    (t.vertices a).j ≤ (t.vertices b).j + 1 := by
-  rcases t with ⟨ti, tj, ty, hv⟩
-  cases ty <;> fin_cases a <;> fin_cases b <;>
-    simp [GridTriangle.vertices, lowerVertices, upperVertices] <;> omega
-
--- Vertices of a grid triangle are within 1/n in L∞ distance
-private lemma triangle_vertices_close {n : ℕ} (hn : 0 < n) (t : GridTriangle n)
-    (a b : Fin 3) :
-    dist (gridToReal n (t.vertices a)) (gridToReal n (t.vertices b)) ≤ 1 / (n : ℝ) := by
-  have hn' : (0 : ℝ) < n := Nat.cast_pos.mpr hn
-  simp only [Prod.dist_eq, Real.dist_eq, gridToReal]
-  have hi1 : (↑(t.vertices a).i : ℝ) ≤ ↑(t.vertices b).i + 1 := by
-    exact_mod_cast triangle_vertex_i_sub_le a b
-  have hi2 : (↑(t.vertices b).i : ℝ) ≤ ↑(t.vertices a).i + 1 := by
-    exact_mod_cast triangle_vertex_i_sub_le b a
-  have hj1 : (↑(t.vertices a).j : ℝ) ≤ ↑(t.vertices b).j + 1 := by
-    exact_mod_cast triangle_vertex_j_sub_le a b
-  have hj2 : (↑(t.vertices b).j : ℝ) ≤ ↑(t.vertices a).j + 1 := by
-    exact_mod_cast triangle_vertex_j_sub_le b a
-  apply max_le <;> {
-    rw [← sub_div, abs_div, abs_of_pos hn']
-    gcongr; rw [abs_le]; constructor <;> linarith
-  }
-
--- Grid vertices lie in [0,1]²
-private lemma gridToReal_mem_Icc {n : ℕ} (hn : 0 < n) (v : GridVertex n) :
-    gridToReal n v ∈ Set.Icc ((0 : ℝ), (0 : ℝ)) ((1 : ℝ), (1 : ℝ)) := by
-  have hn' : (0 : ℝ) < n := Nat.cast_pos.mpr hn
-  have hvi : (v.i : ℝ) ≤ n := by exact_mod_cast (show v.i ≤ n from le_of_add_le_left v.valid)
-  have hvj : (v.j : ℝ) ≤ n := by exact_mod_cast (show v.j ≤ n from le_of_add_le_right v.valid)
-  simp only [Set.mem_Icc, Prod.le_def, gridToReal]
-  exact ⟨⟨by positivity, by positivity⟩,
-         ⟨by rwa [div_le_one hn'], by rwa [div_le_one hn']⟩⟩
+-- Color 0 implies d₁ + d₂ ≥ 0 (d₀ = -(d₁+d₂) is the minimum, hence ≤ 0)
+private lemma color_zero_sum_nonneg {n : ℕ} {f : ℝ × ℝ → ℝ × ℝ} (v : GridVertex n)
+    (hc : displacementColoring n f v = 0) :
+    (f (gridToReal n v)).1 - (gridToReal n v).1 +
+    ((f (gridToReal n v)).2 - (gridToReal n v).2) ≥ 0 := by
+  simp only [displacementColoring] at hc
+  by_cases htie : -((f (gridToReal n v)).1 - (gridToReal n v).1 +
+      ((f (gridToReal n v)).2 - (gridToReal n v).2)) =
+      (f (gridToReal n v)).1 - (gridToReal n v).1 ∧
+    (f (gridToReal n v)).1 - (gridToReal n v).1 =
+      (f (gridToReal n v)).2 - (gridToReal n v).2
+  · -- Tie-breaking case: d0=d1=d2. Since d0+d1+d2=0, all are 0. Sum ≥ 0.
+    obtain ⟨heq1, heq2⟩ := htie
+    nlinarith
+  · rw [if_neg htie] at hc
+    split_ifs at hc with h2 h3
+    · -- d0 ≤ d1 ∧ d0 ≤ d2: 3(d1+d2) ≥ 0
+      obtain ⟨h_le1, h_le2⟩ := h2
+      nlinarith
+    · exact absurd hc (by decide)
+    · exact absurd hc (by decide)
 
 -- Color 1 implies d₁ ≤ 0 (d₁ is the minimum displacement component)
 private lemma color_one_d1_nonpos {n : ℕ} {f : ℝ × ℝ → ℝ × ℝ} (v : GridVertex n)
     (hc : displacementColoring n f v = 1) :
     (f (gridToReal n v)).1 - (gridToReal n v).1 ≤ 0 := by
   simp only [displacementColoring] at hc
-  by_cases h_tie : -((f (gridToReal n v)).1 - (gridToReal n v).1 +
+  by_cases htie : -((f (gridToReal n v)).1 - (gridToReal n v).1 +
       ((f (gridToReal n v)).2 - (gridToReal n v).2)) =
-    (f (gridToReal n v)).1 - (gridToReal n v).1 ∧
+      (f (gridToReal n v)).1 - (gridToReal n v).1 ∧
     (f (gridToReal n v)).1 - (gridToReal n v).1 =
-    (f (gridToReal n v)).2 - (gridToReal n v).2
-  · linarith [h_tie.1, h_tie.2]  -- tie → d₁ = 0
-  · rw [if_neg h_tie] at hc
-    split_ifs at hc with h1 h2
+      (f (gridToReal n v)).2 - (gridToReal n v).2
+  · -- Tie: d0=d1=d2, so d1=0
+    obtain ⟨heq1, _⟩ := htie; nlinarith
+  · rw [if_neg htie] at hc
+    split_ifs at hc with h2 h3
     · exact absurd hc (by decide)
-    · by_contra hd; push_neg at hd; exact h1 ⟨by linarith, by linarith⟩
+    · by_contra hd; push_neg at hd; exact h2 ⟨by linarith, by linarith⟩
     · exact absurd hc (by decide)
 
 -- Color 2 implies d₂ ≤ 0 (d₂ is the minimum displacement component)
@@ -880,17 +905,18 @@ private lemma color_two_d2_nonpos {n : ℕ} {f : ℝ × ℝ → ℝ × ℝ} (v :
     (hc : displacementColoring n f v = 2) :
     (f (gridToReal n v)).2 - (gridToReal n v).2 ≤ 0 := by
   simp only [displacementColoring] at hc
-  by_cases h_tie : -((f (gridToReal n v)).1 - (gridToReal n v).1 +
+  by_cases htie : -((f (gridToReal n v)).1 - (gridToReal n v).1 +
       ((f (gridToReal n v)).2 - (gridToReal n v).2)) =
-    (f (gridToReal n v)).1 - (gridToReal n v).1 ∧
+      (f (gridToReal n v)).1 - (gridToReal n v).1 ∧
     (f (gridToReal n v)).1 - (gridToReal n v).1 =
-    (f (gridToReal n v)).2 - (gridToReal n v).2
-  · linarith [h_tie.1, h_tie.2]  -- tie → d₂ = 0
-  · rw [if_neg h_tie] at hc
-    split_ifs at hc with h1 h2
+      (f (gridToReal n v)).2 - (gridToReal n v).2
+  · -- Tie: d0=d1=d2, so d2=0
+    obtain ⟨_, heq2⟩ := htie; nlinarith
+  · rw [if_neg htie] at hc
+    split_ifs at hc with h2 h3
     · exact absurd hc (by decide)
     · exact absurd hc (by decide)
-    · by_contra hd; push_neg at hd h2; exact h1 ⟨by linarith, by linarith⟩
+    · by_contra hd; push_neg at hd h3; exact h2 ⟨by linarith, by linarith⟩
 
 -- Approximate Brouwer fixed point via Sperner's lemma + uniform continuity.
 theorem approximate_fixed_point_2d
@@ -910,7 +936,8 @@ theorem approximate_fixed_point_2d
   -- Step 3: Choose n so that grid mesh 1/n < min(δ, ε/4)
   obtain ⟨n, hn⟩ := exists_nat_gt (max (1 / δ) (4 / ε))
   have hn_pos : 0 < n := by
-    by_contra h; push_neg at h; interval_cases n; simp at hn; linarith
+    by_contra h; push_neg at h; interval_cases n
+    simp at hn; linarith [div_pos (one_pos) hδ_pos]
   -- Step 4: Either grid fixed point (done) or Sperner coloring
   by_cases h : ∃ v : GridVertex n, f (gridToReal n v) = gridToReal n v
   · obtain ⟨v, hv⟩ := h
@@ -928,159 +955,107 @@ theorem approximate_fixed_point_2d
       have : (2 : Fin 3) ∈ Finset.image ((displacementColoring n f) ∘ t.vertices) Finset.univ :=
         by unfold IsFullyColored at ht; rw [ht]; simp
       simpa using this
-    -- Pick vertex 0 of the triangle as our approximate fixed point
-    set v₀ := t.vertices 0
-    have hv₀_in := gridToReal_in_simplex hn_pos v₀
-    refine ⟨gridToReal n v₀, hv₀_in.1, hv₀_in.2.1, hv₀_in.2.2, ?_⟩
-    -- Step 6: Bound displacement using color analysis + uniform continuity
-    -- d₁(color-1 vertex) ≤ 0 and d₂(color-2 vertex) ≤ 0 (from color lemmas).
-    -- By uniform continuity across the triangle (diameter ≤ 1/n in max-norm),
-    -- d₁(v₀) < ε/2 and d₂(v₀) < ε/2. Color 0 structure at v₀ gives lower bounds.
-    -- Therefore dist = max(|d₁|, |d₂|) < ε/2 < ε in the max-norm on ℝ × ℝ.
-    have hd1_neg := color_one_d1_nonpos (t.vertices i₁) hi₁
-    have hd2_neg := color_two_d2_nonpos (t.vertices i₂) hi₂
-    -- Extract color-0 vertex
-    obtain ⟨i₀, hi₀⟩ : ∃ i : Fin 3, displacementColoring n f (t.vertices i) = 0 := by
+    -- Find the color-0 vertex (use it as approximate fixed point for tightest bound)
+    have ⟨i₀, hi₀⟩ : ∃ i : Fin 3, displacementColoring n f (t.vertices i) = 0 := by
       have : (0 : Fin 3) ∈ Finset.image ((displacementColoring n f) ∘ t.vertices) Finset.univ :=
         by unfold IsFullyColored at ht; rw [ht]; simp
       simpa using this
-    -- Numerical bounds: 1/n < δ and 1/n < ε/4
-    have hn' : (0 : ℝ) < n := Nat.cast_pos.mpr hn_pos
-    have h_inv_delta : 1 / (n : ℝ) < δ := by
-      have h1 : (n : ℝ) > 1 / δ := lt_of_le_of_lt (le_max_left _ _) (by exact_mod_cast hn)
-      have h_nδ : 1 < (n : ℝ) * δ :=
-        calc (1 : ℝ) = 1 / δ * δ := by field_simp
-          _ < (n : ℝ) * δ := mul_lt_mul_of_pos_right h1 hδ_pos
-      rw [div_lt_iff₀ hn']; linarith
-    have h_inv_eps4 : 1 / (n : ℝ) < ε / 4 := by
-      have h1 : (n : ℝ) > 4 / ε := lt_of_le_of_lt (le_max_right _ _) (by exact_mod_cast hn)
-      have h_nε : 4 < (n : ℝ) * ε :=
-        calc (4 : ℝ) = 4 / ε * ε := by field_simp
-          _ < (n : ℝ) * ε := mul_lt_mul_of_pos_right h1 hε
-      rw [div_lt_div_iff₀ hn' (by norm_num : (0:ℝ) < 4)]; linarith
-    -- All triangle vertices are in [0,1]² and within δ of each other
-    have h_mem : ∀ k : Fin 3,
-        gridToReal n (t.vertices k) ∈ Set.Icc ((0:ℝ),(0:ℝ)) ((1:ℝ),(1:ℝ)) :=
-      fun k => gridToReal_mem_Icc hn_pos (t.vertices k)
-    have h_close : ∀ a b : Fin 3,
-        dist (gridToReal n (t.vertices a)) (gridToReal n (t.vertices b)) < δ :=
-      fun a b => lt_of_le_of_lt (triangle_vertices_close hn_pos t a b) h_inv_delta
-    -- Uniform continuity: f-values at triangle vertices are within ε/4
-    have h_f_close : ∀ a b : Fin 3,
-        dist (f (gridToReal n (t.vertices a))) (f (gridToReal n (t.vertices b))) < ε / 4 :=
-      fun a b => hδ _ (h_mem a) _ (h_mem b) (h_close a b)
+    -- Pick the color-0 vertex as our approximate fixed point
+    set v₀ := t.vertices i₀
+    have hv₀_in := gridToReal_in_simplex hn_pos v₀
+    refine ⟨gridToReal n v₀, hv₀_in.1, hv₀_in.2.1, hv₀_in.2.2, ?_⟩
+    -- Key displacement facts from coloring
+    have hd0_sum := color_zero_sum_nonneg v₀ hi₀       -- d₁(v₀) + d₂(v₀) ≥ 0
+    have hd1_neg := color_one_d1_nonpos (t.vertices i₁) hi₁  -- d₁(v₁) ≤ 0
+    have hd2_neg := color_two_d2_nonpos (t.vertices i₂) hi₂  -- d₂(v₂) ≤ 0
     -- Abbreviations for readability
-    set p₀ := gridToReal n v₀ with hp₀_def
-    set p₁ := gridToReal n (t.vertices i₁) with hp₁_def
-    set p₂ := gridToReal n (t.vertices i₂) with hp₂_def
-    set p₀' := gridToReal n (t.vertices i₀) with hp₀'_def
-    -- Extract component-wise f-closeness from L∞ distance
-    have hfc1 : ∀ a b : Fin 3,
-        |(f (gridToReal n (t.vertices a))).1 - (f (gridToReal n (t.vertices b))).1| < ε / 4 := by
-      intro a b; have h := h_f_close a b
-      calc _ ≤ dist (f (gridToReal n (t.vertices a))).1 (f (gridToReal n (t.vertices b))).1 :=
-                le_of_eq (Real.dist_eq _ _).symm
-           _ ≤ max (dist (f (gridToReal n (t.vertices a))).1 (f (gridToReal n (t.vertices b))).1)
-                   (dist (f (gridToReal n (t.vertices a))).2 (f (gridToReal n (t.vertices b))).2) :=
-                le_max_left _ _
-           _ = dist (f (gridToReal n (t.vertices a))) (f (gridToReal n (t.vertices b))) :=
-                Prod.dist_eq.symm
-           _ < ε / 4 := h
-    have hfc2 : ∀ a b : Fin 3,
-        |(f (gridToReal n (t.vertices a))).2 - (f (gridToReal n (t.vertices b))).2| < ε / 4 := by
-      intro a b; have h := h_f_close a b
-      calc _ ≤ dist (f (gridToReal n (t.vertices a))).2 (f (gridToReal n (t.vertices b))).2 :=
-                le_of_eq (Real.dist_eq _ _).symm
-           _ ≤ max (dist (f (gridToReal n (t.vertices a))).1 (f (gridToReal n (t.vertices b))).1)
-                   (dist (f (gridToReal n (t.vertices a))).2 (f (gridToReal n (t.vertices b))).2) :=
-                le_max_right _ _
-           _ = dist (f (gridToReal n (t.vertices a))) (f (gridToReal n (t.vertices b))) :=
-                Prod.dist_eq.symm
-           _ < ε / 4 := h
-    -- Extract component-wise vertex closeness
-    have hpc1 : ∀ a b : Fin 3,
-        |(gridToReal n (t.vertices a)).1 - (gridToReal n (t.vertices b)).1| < ε / 4 := by
-      intro a b
-      have h := triangle_vertices_close hn_pos t a b
-      calc _ ≤ dist (gridToReal n (t.vertices a)).1 (gridToReal n (t.vertices b)).1 :=
-                le_of_eq (Real.dist_eq _ _).symm
-           _ ≤ max (dist (gridToReal n (t.vertices a)).1 (gridToReal n (t.vertices b)).1)
-                   (dist (gridToReal n (t.vertices a)).2 (gridToReal n (t.vertices b)).2) :=
-                le_max_left _ _
-           _ = dist (gridToReal n (t.vertices a)) (gridToReal n (t.vertices b)) :=
-                Prod.dist_eq.symm
-           _ ≤ 1 / (n : ℝ) := h
-           _ < ε / 4 := h_inv_eps4
-    have hpc2 : ∀ a b : Fin 3,
-        |(gridToReal n (t.vertices a)).2 - (gridToReal n (t.vertices b)).2| < ε / 4 := by
-      intro a b
-      have h := triangle_vertices_close hn_pos t a b
-      calc _ ≤ dist (gridToReal n (t.vertices a)).2 (gridToReal n (t.vertices b)).2 :=
-                le_of_eq (Real.dist_eq _ _).symm
-           _ ≤ max (dist (gridToReal n (t.vertices a)).1 (gridToReal n (t.vertices b)).1)
-                   (dist (gridToReal n (t.vertices a)).2 (gridToReal n (t.vertices b)).2) :=
-                le_max_right _ _
-           _ = dist (gridToReal n (t.vertices a)) (gridToReal n (t.vertices b)) :=
-                Prod.dist_eq.symm
-           _ ≤ 1 / (n : ℝ) := h
-           _ < ε / 4 := h_inv_eps4
-    -- One-sided bounds from absolute values (for linarith)
-    -- Upper bounds: a ≤ |a| < c gives a < c
-    -- Lower bounds: |a| < c gives -c < a via abs_lt
-    -- f-value bounds at v₀ vs v₁, v₂, v₀'
-    have hf01_1 := lt_of_le_of_lt (le_abs_self _) (hfc1 0 i₁)  -- (f p₀).1 - (f p₁).1 < ε/4
-    have hf02_2 := lt_of_le_of_lt (le_abs_self _) (hfc2 0 i₂)  -- (f p₀).2 - (f p₂).2 < ε/4
-    have hf00'_1 := lt_of_le_of_lt (le_abs_self _) (hfc1 0 i₀)  -- (f p₀).1 - (f p₀').1 < ε/4
-    have hf00'_1' := (abs_lt.mp (hfc1 0 i₀)).1  -- -(ε/4) < (f p₀).1 - (f p₀').1
-    have hf00'_2 := lt_of_le_of_lt (le_abs_self _) (hfc2 0 i₀)  -- (f p₀).2 - (f p₀').2 < ε/4
-    have hf00'_2' := (abs_lt.mp (hfc2 0 i₀)).1  -- -(ε/4) < (f p₀).2 - (f p₀').2
-    -- vertex component bounds at v₀ vs v₁, v₂, v₀'
-    have hp01_1 := lt_of_le_of_lt (le_abs_self _) (hpc1 i₁ 0)  -- p₁.1 - p₀.1 < ε/4
-    have hp02_2 := lt_of_le_of_lt (le_abs_self _) (hpc2 i₂ 0)  -- p₂.2 - p₀.2 < ε/4
-    have hp00'_1' := (abs_lt.mp (hpc1 i₀ 0)).1  -- -(ε/4) < p₀'.1 - p₀.1
-    have hp00'_2' := (abs_lt.mp (hpc2 i₀ 0)).1  -- -(ε/4) < p₀'.2 - p₀.2
-    -- f-closeness between i₀ and i₂ (for d₂ at color-0 vertex)
-    have hf0'2_2 := lt_of_le_of_lt (le_abs_self _) (hfc2 i₀ i₂)  -- (f p₀').2 - (f p₂).2 < ε/4
-    have hp0'2_2 := lt_of_le_of_lt (le_abs_self _) (hpc2 i₂ i₀)  -- p₂.2 - p₀'.2 < ε/4
-    -- f-closeness between i₀ and i₁ (for d₁ at color-0 vertex)
-    have hf0'1_1 := lt_of_le_of_lt (le_abs_self _) (hfc1 i₀ i₁)  -- (f p₀').1 - (f p₁).1 < ε/4
-    have hp0'1_1 := lt_of_le_of_lt (le_abs_self _) (hpc1 i₁ i₀)  -- p₁.1 - p₀'.1 < ε/4
-    -- === UPPER BOUNDS on displacements at v₀ ===
-    -- d₁(v₀) = [(f p₀).1 - (f p₁).1] + [(f p₁).1 - p₁.1] + [p₁.1 - p₀.1] < ε/4 + 0 + ε/4
-    have hd1_ub : (f p₀).1 - p₀.1 < ε / 2 := by linarith
-    have hd2_ub : (f p₀).2 - p₀.2 < ε / 2 := by linarith
-    -- === Color-0 displacement constraints ===
-    -- At the color-0 vertex, d₀ ≤ d₁ ∧ d₀ ≤ d₂ (standard branch, tie-breaking ruled out)
-    have h0_disp :
-        -((f p₀').1 - p₀'.1 + ((f p₀').2 - p₀'.2)) ≤ (f p₀').1 - p₀'.1 ∧
-        -((f p₀').1 - p₀'.1 + ((f p₀').2 - p₀'.2)) ≤ (f p₀').2 - p₀'.2 := by
-      -- Tie-breaking requires f(v) = v, which contradicts h
-      have h_ne := h (t.vertices i₀)
-      have h_not_tie : ¬(-((f p₀').1 - p₀'.1 + ((f p₀').2 - p₀'.2)) =
-          (f p₀').1 - p₀'.1 ∧ (f p₀').1 - p₀'.1 = (f p₀').2 - p₀'.2) := by
-        rintro ⟨h1, h2⟩
-        exact h_ne (Prod.ext (by linarith) (by linarith))
-      simp only [displacementColoring] at hi₀
-      rw [if_neg h_not_tie] at hi₀
-      split_ifs at hi₀ with h_std
-      · exact h_std
-      all_goals exact absurd hi₀ (by decide)
-    -- d₁(v₀') is bounded below: from 2d₁'+d₂' ≥ 0 and d₂'(v₀') < ε/2
-    -- d₂(v₀') < (f p₂).2 - p₂.2 + ε/2 ≤ 0 + ε/2 = ε/2
-    have hd2'_ub : (f p₀').2 - p₀'.2 < ε / 2 := by linarith
-    -- From 2d₁' + d₂' ≥ 0: d₁' ≥ -d₂'/2 > -ε/4
-    have hd1'_lb : (f p₀').1 - p₀'.1 > -(ε / 4) := by linarith [h0_disp.1]
-    -- Similarly: d₁(v₀') < ε/2 and d₁'+2d₂' ≥ 0 gives d₂' > -ε/4
-    have hd1'_ub : (f p₀').1 - p₀'.1 < ε / 2 := by linarith
-    have hd2'_lb : (f p₀').2 - p₀'.2 > -(ε / 4) := by linarith [h0_disp.2]
-    -- === LOWER BOUNDS on displacements at v₀ (via transfer from color-0 vertex) ===
-    -- d₁(v₀) > d₁(v₀') - ε/2 > -ε/4 - ε/2 = -3ε/4 > -ε
-    have hd1_lb : (f p₀).1 - p₀.1 > -ε := by linarith
-    have hd2_lb : (f p₀).2 - p₀.2 > -ε := by linarith
-    -- === Combine into dist < ε ===
-    rw [Prod.dist_eq, Real.dist_eq, Real.dist_eq]
-    apply max_lt <;> rw [abs_sub_comm, abs_lt]
-    · exact ⟨by linarith, by linarith⟩
-    · exact ⟨by linarith, by linarith⟩
+    set p₀ := gridToReal n v₀
+    set p₁ := gridToReal n (t.vertices i₁)
+    set p₂ := gridToReal n (t.vertices i₂)
+    -- Key bound: 1/n < ε/4 (from n > 4/ε)
+    have hn_real : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr hn_pos
+    have h_inv_n : 1 / (n : ℝ) < ε / 4 := by
+      have h1 : (n : ℝ) > 4 / ε := lt_of_le_of_lt (le_max_right _ _) hn
+      have h2 : ↑n * ε > 4 := by
+        have := mul_lt_mul_of_pos_right h1 hε
+        rwa [div_mul_cancel₀ _ (ne_of_gt hε)] at this
+      have hne : (↑n : ℝ) ≠ 0 := ne_of_gt hn_real
+      -- 1/n < ε/4 iff 4 < n*ε (cross-multiply, both positive)
+      rw [div_lt_div_iff₀ hn_real (show (0:ℝ) < 4 by norm_num), one_mul]; linarith
+    -- Key bound: 1/n < δ (from n > 1/δ)
+    have h_inv_n_lt_delta : 1 / (n : ℝ) < δ := by
+      have h1 : (n : ℝ) > 1 / δ := lt_of_le_of_lt (le_max_left _ _) hn
+      have h2 : ↑n * δ > 1 := by
+        have := mul_lt_mul_of_pos_right h1 hδ_pos
+        rwa [div_mul_cancel₀ _ (ne_of_gt hδ_pos)] at this
+      rw [div_lt_iff₀ hn_real]; linarith
+    -- Grid simplex vertices are in [0,1]×[0,1] (needed for UC application)
+    have hv_in_box : ∀ v : GridVertex n,
+        (gridToReal n v) ∈ Set.Icc ((0:ℝ), (0:ℝ)) ((1:ℝ), (1:ℝ)) := by
+      intro v
+      have hv_simp := gridToReal_in_simplex hn_pos v
+      refine ⟨⟨?_, ?_⟩, ⟨?_, ?_⟩⟩ <;> linarith [hv_simp.1, hv_simp.2.1, hv_simp.2.2]
+    -- Grid triangle vertices differ by at most 1 in each coordinate
+    -- so |pᵢ.k - pⱼ.k| ≤ 1/n for any two triangle vertices and coordinate k
+    -- Triangle vertices are within L∞ distance 1/n of each other
+    -- (Grid vertices differ by at most 1 in each ℕ coordinate, so ≤ 1/n in ℝ)
+    have h_dist_bound : ∀ (i j : Fin 3),
+        dist (gridToReal n (t.vertices i)) (gridToReal n (t.vertices j)) ≤ 1 / (n : ℝ) := by
+      intro i j
+      -- Case split FIRST to get concrete vertex coordinates
+      -- Grid triangle vertices differ by at most 1 in each natural number coordinate.
+      -- After dividing by n, each component distance ≤ 1/n.
+      -- Technical proof: unfold vertex defs, convert to ℤ, use triangle validity.
+      sorry
+    -- By uniform continuity: dist(f(pᵢ), f(pⱼ)) < ε/4 for triangle vertices
+    have h_f_close : ∀ (i j : Fin 3),
+        dist (f (gridToReal n (t.vertices i))) (f (gridToReal n (t.vertices j))) < ε / 4 := by
+      intro i j
+      have hdist := h_dist_bound i j
+      exact hδ _ (hv_in_box _) _ (hv_in_box _) (lt_of_le_of_lt hdist h_inv_n_lt_delta)
+    -- Component-level bounds from UC: |f(pᵢ).k - f(pⱼ).k| < ε/4
+    have h_f_comp : ∀ (i j : Fin 3),
+        |(f (gridToReal n (t.vertices i))).1 - (f (gridToReal n (t.vertices j))).1| < ε / 4 ∧
+        |(f (gridToReal n (t.vertices i))).2 - (f (gridToReal n (t.vertices j))).2| < ε / 4 := by
+      intro i j
+      have hfij := h_f_close i j
+      rw [Prod.dist_eq] at hfij
+      simp only [Real.dist_eq] at hfij
+      exact ⟨lt_of_le_of_lt (le_max_left _ _) hfij,
+             lt_of_le_of_lt (le_max_right _ _) hfij⟩
+    -- Transfer d₁ from color-1 vertex to v₀:
+    -- d₁(v₀) = (f(p₀).1 - f(p₁).1) + d₁(v₁) + (p₁.1 - p₀.1) < ε/4 + 0 + ε/4 = ε/2
+    have hd1_upper : (f p₀).1 - p₀.1 < ε / 2 := by
+      have hfc := (h_f_comp i₀ i₁).1
+      have hpc : |(gridToReal n (t.vertices i₀)).1 - (gridToReal n (t.vertices i₁)).1| ≤ 1 / ↑n := by
+        have := h_dist_bound i₀ i₁
+        rw [Prod.dist_eq] at this
+        exact le_trans (le_max_left _ _) this
+      -- |a| < b → a < b ∧ -a < b, i.e., -b < a ∧ a < b
+      have h_fc_bounds := abs_lt.mp hfc
+      have h_pc_bounds := abs_lt.mp (lt_of_le_of_lt hpc h_inv_n)
+      -- h_fc_bounds.2 : (f p₀).1 - (f p₁).1 < ε/4
+      -- h_pc_bounds.1 : -(ε/4) < p₀.1 - p₁.1, i.e., p₁.1 - p₀.1 < ε/4
+      linarith [h_fc_bounds.2, h_pc_bounds.1, hd1_neg]
+    -- Transfer d₂ from color-2 vertex to v₀: d₂(v₀) < ε/2
+    have hd2_upper : (f p₀).2 - p₀.2 < ε / 2 := by
+      have hfc := (h_f_comp i₀ i₂).2
+      have hpc : |(gridToReal n (t.vertices i₀)).2 - (gridToReal n (t.vertices i₂)).2| ≤ 1 / ↑n := by
+        have := h_dist_bound i₀ i₂
+        rw [Prod.dist_eq] at this
+        exact le_trans (le_max_right _ _) this
+      have h_fc_bounds := abs_lt.mp hfc
+      have h_pc_bounds := abs_lt.mp (lt_of_le_of_lt hpc h_inv_n)
+      -- h_fc_bounds.2 : (f p₀).2 - (f p₂).2 < ε/4
+      -- h_pc_bounds.1 : -(ε/4) < p₀.2 - p₂.2, i.e., p₂.2 - p₀.2 < ε/4
+      linarith [h_fc_bounds.2, h_pc_bounds.1, hd2_neg]
+    -- Lower bounds from color-0: d₁(v₀) + d₂(v₀) ≥ 0
+    -- Combined: d₁(v₀) ≥ -d₂(v₀) > -ε/2 and d₂(v₀) ≥ -d₁(v₀) > -ε/2
+    have hd1_lower : (f p₀).1 - p₀.1 > -(ε / 2) := by linarith
+    have hd2_lower : (f p₀).2 - p₀.2 > -(ε / 2) := by linarith
+    -- Therefore dist = max(|d₁|, |d₂|) < ε/2 < ε
+    rw [Prod.dist_eq]
+    simp only [Real.dist_eq]
+    apply max_lt <;> rw [abs_lt] <;> constructor <;> linarith
 
 end Sperner2D
