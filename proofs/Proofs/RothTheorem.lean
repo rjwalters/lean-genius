@@ -231,9 +231,7 @@ private lemma conj_psi {N : ℕ} [NeZero N] (x : ZMod N) :
       ring
     rw [this, Real.exp_zero]
   have h2 : ψ x * starRingEnd ℂ (ψ x) = 1 := by
-    rw [← Complex.sq_abs]
-    rw [show Complex.abs (ψ x) ^ 2 = (1 : ℝ) from by
-      rw [← Complex.norm_eq_abs, h_norm, one_pow]]; exact Complex.ofReal_one
+    rw [Complex.mul_conj, ← Complex.ofReal_pow, h_norm, one_pow, Complex.ofReal_one]
   exact mul_left_cancel₀ hne (h2.trans h1.symm)
 
 /-- ψ(c) ≠ 1 when c ≠ 0: a nontrivial character is not the identity.
