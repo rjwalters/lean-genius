@@ -102,7 +102,7 @@
       "startLine": 109,
       "endLine": 121
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős 1964 Main Theorem",
     "content": "**erdos_1964_main:** The central result of Erdős's 1964 paper. For $2^{r-1} < k \\le 2^r$, $g_k(n) \\sim \\frac{(\\log\\log n)^{r-1}}{(r-1)!} \\cdot \\frac{n}{\\log n}$.\n\nThe key insight is that integers with exactly $r$ prime factors (counted with multiplicity) have roughly $2^r$ ordered factorizations. So restricting to $< k$ representations (where $2^{r-1} < k \\le 2^r$) means the optimal set consists roughly of integers with $r$ prime factors.\n\nThe key cases:\n- $k = 2$ ($r = 1$): $g_2(n) \\sim n/\\log n$, related to primes. Each prime $p$ has only the trivial factorization $1 \\cdot p$.\n- $k = 3, 4$ ($r = 2$): $g_k(n) \\sim (\\log\\log n / \\log n) \\cdot n$, related to semiprimes ($p \\cdot q$).\n- $k = 5, \\ldots, 8$ ($r = 3$): $g_k(n) \\sim \\frac{(\\log\\log n)^2}{2 \\log n} \\cdot n$, related to 3-almost primes.",
     "mathContext": "For $2^{r-1} < k \\le 2^r$: $g_k(n) = \\left(\\frac{(\\log\\log n)^{r-1}}{(r-1)!} + o(1)\\right) \\frac{n}{\\log n}$. The threshold $2^{r-1}$ arises because an integer $m = p_1^{a_1} \\cdots p_s^{a_s}$ has $\\tau(m) = \\prod (a_i + 1)$ divisors, and ordered factorizations $m = a_1 a_2$ with $a_1 < a_2$ number $\\lfloor \\tau(m)/2 \\rfloor$. For $m$ with $r$ distinct prime factors (all to the first power), $\\tau(m) = 2^r$.",
@@ -127,7 +127,7 @@
       "startLine": 123,
       "endLine": 140
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "First-Order for k = 3",
     "content": "**g3_first_order:** Derives $g_3(n) \\sim (\\log\\log n / \\log n) \\cdot n$ from erdos_1964_main with $k = 3$, $r = 2$.\n\nSince $2^1 = 2 < 3 \\le 4 = 2^2$, we have $r = 2$. Substituting: $(\\log\\log n)^{2-1} / (2-1)! = \\log\\log n / 1 = \\log\\log n$. The proof is a clean specialization: `norm_num` verifies $2 < 3 \\le 4$ and `simp` simplifies the factorial and power expressions.\n\nThis is the only fully proved theorem in the file -- all other results are axiomatized. It demonstrates that the $k = 3$ case follows mechanically from the general result.",
     "mathContext": "$g_3(n) \\sim \\frac{\\log\\log n}{\\log n} \\cdot n$. This says the largest subset of $[n]$ where no integer has $\\ge 3$ ordered factorizations from the set has size roughly $(\\log\\log n / \\log n) \\cdot n$, matching the count of semiprimes up to $n$.",
@@ -175,7 +175,7 @@
       "startLine": 172,
       "endLine": 183
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The k = 2 Case and Primes",
     "content": "**g2_asymptotic:** $g_2(n) \\sim n/\\log n$, directly analogous to the Prime Number Theorem.\n\nFor $k = 2$, no integer $m$ should have even one representation $m = a_1 a_2$ with $a_1 < a_2$, both in $A$. This forces $A$ to behave like a multiplicatively independent set. The primes form such a set (no prime is a product of two smaller primes), and the PNT gives $\\pi(n) \\sim n/\\log n$.\n\n**Problem #425** asks the analogous second-order question for $g_2(n)$, making it a companion problem to #796.",
     "mathContext": "$g_2(n) \\sim \\frac{n}{\\log n}$. Compare with $\\pi(n) \\sim \\frac{n}{\\log n}$ (Prime Number Theorem). The set of primes in $[n]$ satisfies $r_A(m) < 2$ since primes are multiplicatively independent.",
@@ -199,7 +199,7 @@
       "startLine": 185,
       "endLine": 204
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Optimal Sets and Semiprime Structure",
     "content": "**IsNearOptimal3:** A set is near-optimal for $g_3$ if it is valid and has cardinality $\\ge 0.99 \\cdot g_3(n)$. This relaxation avoids having to pin down the exact maximizer.\n\n**optimal_sets_structure:** For large $n$, any near-optimal set for $g_3$ has at least half its elements being integers with exactly 2 prime factors (counted with multiplicity, i.e., $\\Omega(m) = 2$). These are the semiprimes: products $pq$ of two primes (not necessarily distinct). This reveals that the extremal sets for $g_3$ are concentrated among the semiprimes, confirming the heuristic that $g_3(n) \\sim$ (count of semiprimes up to $n$).",
     "mathContext": "If $A$ is $\\varepsilon$-optimal for $g_3(n)$, then $|\\{a \\in A : \\Omega(a) = 2\\}| \\ge |A|/2$. Here $\\Omega(m) = \\sum a_i$ for $m = p_1^{a_1} \\cdots p_s^{a_s}$ counts prime factors with multiplicity. Semiprimes ($m = pq$) have $\\tau(m) \\le 4$, so each $m$ has $\\le 1$ ordered factorization beyond trivial -- they are 'safe' for the $k = 3$ constraint.",
@@ -223,7 +223,7 @@
       "startLine": 206,
       "endLine": 217
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Divisor Function Connection",
     "content": "**divisor_connection:** If $\\tau(m) \\le 2k - 1$, then $m$ automatically has $< k$ ordered factorizations from any set $A$. This is because the number of ordered pairs $(a_1, a_2)$ with $a_1 a_2 = m$ and $a_1 < a_2$ is $\\lfloor \\tau(m)/2 \\rfloor \\le \\lfloor (2k-1)/2 \\rfloor = k - 1 < k$.\n\nNumbers with few divisors never constrain the optimization. For $k = 3$, numbers with $\\tau(m) \\le 5$ are automatically safe. Since primes have $\\tau(p) = 2$ and semiprimes have $\\tau(pq) = 4$, both are safe -- explaining why optimal sets concentrate on these.",
     "mathContext": "$\\tau(m) \\le 2k - 1 \\implies r_A(m) \\le \\lfloor \\tau(m)/2 \\rfloor \\le k - 1 < k$ for every $A$. The divisor function $\\tau(m) = |\\{d : d \\mid m\\}|$ controls the maximum possible representation count.",
@@ -246,7 +246,7 @@
       "startLine": 219,
       "endLine": 241
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_796_summary:** A conjunction packaging the two main established results:\n\n1. **First-order asymptotics** (from `g3_first_order`): $g_3(n) \\sim (\\log\\log n / \\log n) \\cdot n$\n2. **Second-order bounds** (from `E3_bounded`): $c_1 \\cdot n/(\\log n)^2 \\le E_3(n) \\le c_2 \\cdot n/(\\log n)^2$\n\nProved directly by `exact ⟨g3_first_order, E3_bounded⟩`. The exact constant $c$ in the second-order term remains OPEN. This theorem serves as the formalization's 'executive summary,' bundling the known results and implicitly highlighting what remains unknown.",
     "mathContext": "$g_3(n) = \\frac{\\log\\log n}{\\log n} \\cdot n + \\Theta\\left(\\frac{n}{(\\log n)^2}\\right)$. The first term is proved (via Erdős 1964); the second is bounded but not pinned to a constant.",

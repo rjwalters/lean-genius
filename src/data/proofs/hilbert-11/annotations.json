@@ -53,7 +53,7 @@
       "startLine": 127,
       "endLine": 155
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sylvester's Law of Inertia (1852)",
     "content": "**Sylvester's Law of Inertia**: Every real quadratic form is equivalent to a diagonal form $x_1^2 + \\cdots + x_p^2 - x_{p+1}^2 - \\cdots - x_{p+q}^2$ with unique signature $(p,q)$.\n\nThe axiomatization asserts existence and uniqueness ($\\exists!$) of a `RealSignature` together with a diagonal coefficient vector $a: \\text{Fin}\\;n \\to \\mathbb{R}$ with $a_i = 1$ for $i < p$ and $a_i = -1$ for $p \\leq i < p+q$, and an isometry to `diagonalForm ℝ a`.\n\n**Why axiomatized**: A full proof requires spectral theory for symmetric matrices, orthogonal diagonalization, and the correspondence between quadratic forms and symmetric bilinear forms.",
     "mathContext": "Every real quadratic form $Q$ on $\\mathbb{R}^n$ is equivalent to $\\langle \\underbrace{1,\\ldots,1}_{p}, \\underbrace{-1,\\ldots,-1}_{q}, \\underbrace{0,\\ldots,0}_{n-p-q} \\rangle$. The signature $(p,q)$ is a complete invariant: $Q_1 \\sim Q_2$ over $\\mathbb{R}$ iff they have the same signature. $Q$ is indefinite iff $p > 0$ and $q > 0$.",
@@ -77,7 +77,7 @@
       "startLine": 157,
       "endLine": 209
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Hasse-Minkowski Theorem",
     "content": "**THE CENTRAL RESULT**: A quadratic form $Q$ over $\\mathbb{Q}$ represents zero nontrivially iff:\n1. $Q$ is indefinite over $\\mathbb{R}$ (signature has both $+$ and $-$)\n2. $Q$ represents zero over $\\mathbb{Q}_p$ for all primes $p$\n\nStated twice: as `HasseMinkowskiTheorem` (a `def` giving the proposition) and `hasse_minkowski_alt` (an axiom asserting it). The local solvability predicates `RepresentsZeroOverReals` and `RepresentsZeroOverPadic` are placeholder `True` because full formalization requires scalar extension via tensor products $Q \\otimes_{\\mathbb{Q}} \\mathbb{R}$ and $Q \\otimes_{\\mathbb{Q}} \\mathbb{Q}_p$.\n\n**Timeline**: Minkowski proved the ternary case in 1890 using geometry of numbers; Hasse proved the general case in his 1923 Marburg dissertation under Kurt Hensel.",
     "mathContext": "$Q$ isotropic over $\\mathbb{Q} \\iff Q$ isotropic over $\\mathbb{R}$ and over $\\mathbb{Q}_p$ for all $p$. A complete proof uses: Hensel's lemma for lifting $p$-adic solutions, local classification of forms over $\\mathbb{Q}_p$ (by dimension, discriminant, and Hasse invariant), and the Hilbert symbol product formula $\\prod_v (a,b)_v = 1$.",
@@ -102,7 +102,7 @@
       "startLine": 239,
       "endLine": 252
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Lagrange's Four Squares Theorem (1770)",
     "content": "**Lagrange's Theorem**: Every positive integer is a sum of four squares: $n = a^2 + b^2 + c^2 + d^2$ for some $a,b,c,d \\in \\mathbb{Z}$.\n\nIn quadratic form language: the quaternary form $x_1^2 + x_2^2 + x_3^2 + x_4^2$ is **universal** (represents all positive integers). Axiomatized because integrating Mathlib's proof requires converting between natural number and quadratic form representations.\n\nThe proof relies on Euler's four-square identity $(a^2+b^2+c^2+d^2)(e^2+f^2+g^2+h^2) = (\\text{sum of 4 squares})$, which is secretly the norm multiplicativity of the quaternion algebra $\\mathbb{H}$.",
     "mathContext": "$\\forall n \\in \\mathbb{N}, \\exists a,b,c,d \\in \\mathbb{Z}: n = a^2 + b^2 + c^2 + d^2$. This connects to the $\\Gamma_4$ theta function: $\\theta(q)^4 = \\sum_{n=0}^{\\infty} r_4(n) q^n$ where $r_4(n)$ counts representations. Jacobi's formula: $r_4(n) = 8 \\sum_{4 \\nmid d \\mid n} d$.",
@@ -198,7 +198,7 @@
       "startLine": 403,
       "endLine": 411
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Meyer's Theorem: Dimension ≥ 5",
     "content": "**Meyer's Theorem**: Any quadratic form in $\\geq 5$ variables over $\\mathbb{Q}_p$ is always isotropic. Proved by `trivial` (since `RepresentsZeroOverPadic` is `True`).\n\nConsequence: for forms in $\\geq 5$ variables, the Hasse-Minkowski check reduces to checking indefiniteness over $\\mathbb{R}$ plus finitely many 'bad' primes dividing the discriminant. Dimension 5 is the threshold because the $u$-invariant of $\\mathbb{Q}_p$ is 4 (for $p$ odd), meaning all forms of dimension $> 4$ are isotropic.",
     "mathContext": "The **$u$-invariant** $u(F)$ is the maximum dimension of an anisotropic form over $F$. For $\\mathbb{Q}_p$ ($p$ odd): $u(\\mathbb{Q}_p) = 4$. For $\\mathbb{Q}_2$: $u(\\mathbb{Q}_2) = 4$. For $\\mathbb{R}$: $u(\\mathbb{R}) = \\infty$. Meyer's theorem: $\\dim Q \\geq 5 \\implies Q$ is isotropic over every $\\mathbb{Q}_p$.",
@@ -245,7 +245,7 @@
       "startLine": 446,
       "endLine": 497
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem Status Summary",
     "content": "**Hilbert 11: Partially Solved**\n\nThe `hilbert11_summary` theorem (proved by `trivial`) synthesizes the formalization. The docstring summarizes all ten parts:\n\n1. Problem statement and Hasse-Minkowski theorem\n2. Classification: signature over $\\mathbb{R}$, local invariants over $\\mathbb{Q}_p$, complete over $\\mathbb{Q}$\n3. Key tools: Witt cancellation, Witt ring, Hilbert symbol\n4. Solved: binary/ternary/quaternary forms, Meyer's theorem for $\\dim \\geq 5$\n5. Open: explicit classification over general number fields, Langlands connections\n6. Hasse failures: Selmer curve, Brauer-Manin obstruction\n7. Significance: local-global philosophy is now central to arithmetic geometry\n\nThe `#check` commands verify that the key definitions compile.",
     "mathContext": "The formalization axiomatizes the deepest results (Hasse-Minkowski, Sylvester, Lagrange, Selmer) while proving the structural connections. The 497-line file covers 10 parts spanning definitions, the main theorem, applications, classification, algebraic structure, counterexamples, extensions, and connections to reciprocity.",

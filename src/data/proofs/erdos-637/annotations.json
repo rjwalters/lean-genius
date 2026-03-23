@@ -164,7 +164,7 @@
       "startLine": 99,
       "endLine": 112
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bukh-Sudakov (2007)",
     "content": "**bukh_sudakov:**\n\nProved the original Erdős-Faudree-Sós conjecture.\n\n- Ramsey graphs have induced subgraph on ≫ n vertices\n- With ≫ √n distinct degrees\n\nThis was the first proof of the conjecture.",
     "mathContext": "Uses regularity-type arguments and degree analysis.",
@@ -210,7 +210,7 @@
       "startLine": 124,
       "endLine": 137
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "JKLY (2020)",
     "content": "**jkly_strengthened:**\n\nJenssen-Keevash-Long-Yepremyan proved the strengthened conjecture.\n\n- ≫ n^{2/3} distinct degrees in any Ramsey graph\n- No restriction on vertex count of induced subgraph\n- Exponent 2/3 believed optimal\n\nMajor improvement over Bukh-Sudakov's √n.",
     "mathContext": "Uses sophisticated probabilistic and algebraic methods.",
@@ -256,7 +256,7 @@
       "startLine": 153,
       "endLine": 172
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Regular Graphs",
     "content": "**IsRegular, regular_one_degree:**\n\nA k-regular graph has all degrees equal to k, so only 1 distinct degree.\n\n**ramsey_not_too_regular:** Ramsey graphs cannot be too regular - they must have at least 2 distinct degrees for large n.\n\nRamsey property forces degree diversity.",
     "significance": "supporting",
@@ -278,7 +278,7 @@
       "startLine": 174,
       "endLine": 189
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Random Graphs",
     "content": "**Random G(n, 1/2) properties:**\n\n- Typically a Ramsey graph (ω, α ~ 2 log n)\n- Has many distinct degrees (≈ n)\n- Degrees concentrate around n/2\n\nRandom graphs are the prototypical Ramsey graphs.",
     "significance": "supporting",
@@ -300,7 +300,7 @@
       "startLine": 191,
       "endLine": 202
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Ramsey Connections",
     "content": "**Ramsey number connections:**\n\n- R(k,k) ≥ 2^{k/2} (probabilistic lower bound)\n- If ω(G), α(G) ≤ k then n ≤ R(k+1, k+1)\n\nThe Ramsey graph condition constrains graph size.",
     "significance": "supporting",
@@ -322,7 +322,7 @@
       "startLine": 216,
       "endLine": 231
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary",
     "content": "**Erdős Problem #637: SOLVED**\n\n**Timeline:**\n1. Erdős-Faudree-Sós: Conjecture (≫ √n degrees)\n2. Bukh-Sudakov (2007): Proved original conjecture\n3. JKLY (2020): Strengthened to ≫ n^{2/3} degrees\n\n**Key insight:** Ramsey graphs (no large cliques/independent sets) must have high degree diversity.",
     "significance": "key",

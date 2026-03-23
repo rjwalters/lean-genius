@@ -54,7 +54,7 @@
       "startLine": 64,
       "endLine": 91
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Partial Fraction Decomposition",
     "content": "**Key Identity (Partial Fractions)**:\n\n$$\\frac{2}{n(n+1)} = \\frac{2}{n} - \\frac{2}{n+1}$$\n\nEquivalently: $\\frac{1}{n(n+1)} = \\frac{1}{n} - \\frac{1}{n+1}$\n\n**Why this works**:\n$$\\frac{2}{n} - \\frac{2}{n+1} = \\frac{2(n+1) - 2n}{n(n+1)} = \\frac{2}{n(n+1)} \\checkmark$$\n\n**Lean Proof**: Both forms are proved by `field_simp` (clears denominators) followed by `ring` (verifies the polynomial identity). The preconditions $n \\neq 0$ and $n + 1 \\neq 0$ are established via `positivity`. This is the prototype of all telescoping decompositions: any product $n(n+k)$ can be decomposed into $k$ partial fractions.",
     "mathContext": "2/(n(n+1)) = 2/n - 2/(n+1)",
@@ -79,7 +79,7 @@
       "startLine": 92,
       "endLine": 131
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Telescoping Sum",
     "content": "**Finite Telescoping Sum**:\n\n$$\\sum_{k=1}^{n} \\frac{2}{k(k+1)} = 2 - \\frac{2}{n+1}$$\n\n**How it telescopes**:\n$$\\left(\\frac{2}{1} - \\frac{2}{2}\\right) + \\left(\\frac{2}{2} - \\frac{2}{3}\\right) + \\left(\\frac{2}{3} - \\frac{2}{4}\\right) + \\cdots$$\n\nAll intermediate terms cancel, leaving $\\frac{2}{1} - \\frac{2}{n+1} = 2 - \\frac{2}{n+1}$.\n\n**Lean Proof**: By induction on $n$ over `Finset.Icc 1 n`. The base case ($n = 1$) reduces to $2/(1 \\cdot 2) = 2 - 1$ via `norm_num`. The inductive step splits `Icc 1 (m+1) = Icc 1 m ∪ {m+1}`, applies the IH, then uses `field_simp` and `ring` for the algebraic simplification. The Finset manipulation (proving disjointness and membership) requires `omega`.",
     "mathContext": "Σ_{k=1}^{n} 2/(k(k+1)) = 2 - 2/(n+1)",
@@ -105,7 +105,7 @@
       "startLine": 132,
       "endLine": 168
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Series Convergence",
     "content": "**Convergence Proof**:\n\nThe series $\\sum \\frac{1}{n(n+1)}$ converges because:\n\n$$\\frac{1}{n(n+1)} \\leq \\frac{1}{n^2}$$\n\n(since $n(n+1) \\geq n^2$) and the **p-series** $\\sum \\frac{1}{n^2}$ converges (since $p = 2 > 1$).\n\n**Lean**: The bound uses `one_div_le_one_div_of_le` with `nlinarith` for $n(n+1) \\geq n^2$. The p-series convergence comes from `Real.summable_nat_rpow_inv` with the condition $1 < 2$ discharged by `norm_num`. The 2x-scaled version inherits summability via `Summable.mul_left 2`.\n\n**Note**: The comparison test (`Summable.of_nonneg_of_le`) requires explicit non-negativity proofs, handled by `positivity` for $n \\neq 0$ and `rfl` for $n = 0$ (where the term is $1/(0 \\cdot 1) = 0$ by convention).",
     "mathContext": "1/(n(n+1)) ≤ 1/n² and ∑1/n² converges",
@@ -130,7 +130,7 @@
       "startLine": 170,
       "endLine": 247
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem: Sum Equals 2",
     "content": "**Sum of Reciprocals of Triangular Numbers** (Wiedijk #42):\n\n$$\\sum_{n=1}^{\\infty} \\frac{2}{n(n+1)} = 2$$\n\n**Proof Strategy**:\n1. Show partial sums over `Finset.range n` equal $2 - 2/n$ for $n \\geq 1$ (handling the $n = 0$ dummy term)\n2. Convert `HasSum` to sequential convergence via `hasSum_iff_tendsto_nat_of_nonneg`\n3. Apply `Metric.tendsto_atTop`: given $\\varepsilon > 0$, choose $N = \\lceil 2/\\varepsilon \\rceil + 1$\n4. For $n \\geq N$: $|2 - 2/n - 2| = 2/n < \\varepsilon$ since $n > 2/\\varepsilon$\n\n**Lean Details**: The if-then-else handles $n = 0$ (where $n(n+1) = 0$). The partial sum lemma converts `Finset.range n` to `Finset.Icc 1 (n-1)` via set operations. The tsum version follows from `HasSum.tsum_eq`.\n\n**The epsilon-N argument**: This is a fully constructive convergence proof — the witness $N = \\lceil 2/\\varepsilon \\rceil + 1$ is computed explicitly, making this a rare example of a completely explicit analytic proof in Lean.",
     "mathContext": "∑ 2/(n(n+1)) = 2 via ε-N with N = ⌈2/ε⌉ + 1",
@@ -156,7 +156,7 @@
       "startLine": 249,
       "endLine": 265
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Corollary: Unscaled Sum",
     "content": "**Corollary**: Sum of $\\frac{1}{n(n+1)}$ equals 1:\n\n$$\\sum_{n=1}^{\\infty} \\frac{1}{n(n+1)} = 1$$\n\nThis is the result Leibniz computed in 1673 — one of the earliest evaluated infinite series. The proof divides the main result by 2 using `HasSum.div_const`.\n\n**Relation to triangular numbers**:\n$$\\sum_{n=1}^{\\infty} \\frac{1}{T_n} = \\sum_{n=1}^{\\infty} \\frac{2}{n(n+1)} = 2 = 2 \\cdot \\sum_{n=1}^{\\infty} \\frac{1}{n(n+1)}$$\n\nSo the sum of reciprocals of triangular numbers is twice the Leibniz series.",
     "mathContext": "∑ 1/(n(n+1)) = 1 (Leibniz 1673)",
@@ -179,7 +179,7 @@
       "startLine": 267,
       "endLine": 291
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Connection to Triangular Numbers",
     "content": "**Reciprocal of Triangular Number**:\n\n$$\\frac{1}{T_n} = \\frac{2}{n(n+1)}$$\n\nsince $T_n = \\frac{n(n+1)}{2}$.\n\n**Lean Proof**: The key challenge is showing that natural number division by 2 is exact. The proof splits on the parity of $n$: if $n = 2k$, then $n(n+1) = 2k(2k+1)$ and $2 | n(n+1)$ via the factor $2k$; if $n = 2k+1$, then $n+1 = 2(k+1)$ and $2 | n(n+1)$ via the factor $2(k+1)$. After extracting the divisibility witness $m$ with $n(n+1) = 2m$, the proof uses `field_simp` and `linarith` to complete the real-number identity.\n\n**Divisibility**: $n(n+1)$ is always even (consecutive integers), so division by 2 is exact. This is a standard number-theoretic fact, but formalizing it requires explicit case analysis.",
     "mathContext": "1/Tₙ = 2/(n(n+1)) via divisibility of consecutive integers",

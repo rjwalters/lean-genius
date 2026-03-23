@@ -85,7 +85,7 @@
       "startLine": 133,
       "endLine": 141
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Alon-Trotter Upper Bound",
     "content": "**alon_trotter_bound:** For c < 1/4: f_c(n) ≪ n^{1/2}\n\nAlon and Trotter constructed triangle-saturated graphs with cn² edges where the maximum book size is only O(√n).",
     "significance": "key"
@@ -97,7 +97,7 @@
       "startLine": 143,
       "endLine": 151
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Fox-Loh Upper Bound (2012)",
     "content": "**fox_loh_bound:** For c < 1/4: f_c(n) ≤ n^{O(1/log log n)}\n\nThis is essentially n^{o(1)}, meaning NO polynomial lower bound exists! This disproved Erdős's conjecture that f_c(n) > n^ε for some ε > 0.\n\nUsed sophisticated probabilistic construction.",
     "mathContext": "The key breakthrough that resolved one of Erdős's questions negatively.",
@@ -110,7 +110,7 @@
       "startLine": 153,
       "endLine": 159
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Polynomial Conjecture: DISPROVED",
     "content": "**erdos_polynomial_conjecture_false:** Erdős asked: Is f_c(n) > n^ε for some ε > 0?\n\n**Answer: NO** (for c < 1/4). Fox-Loh's n^{O(1/log log n)} bound eventually falls below any n^ε.",
     "significance": "key"
@@ -122,7 +122,7 @@
       "startLine": 165,
       "endLine": 172
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Linear Bound Above Threshold",
     "content": "**linear_bound_above_threshold:** For c > 1/4: f_c(n) ≥ n/6\n\nAbove the threshold 1/4, books of LINEAR size are guaranteed! Proved independently by Edwards and by Khadziivanov-Nikiforov (1979).",
     "mathContext": "This shows the phase transition at c = 1/4 is sharp.",
@@ -135,7 +135,7 @@
       "startLine": 174,
       "endLine": 188
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Regularity Lower Bound",
     "content": "**regularity_lower_bound:** For all c > 0: f_c(n) → ∞ as n → ∞.\n\nSzemerédi's regularity lemma implies book size must grow unboundedly.\n\n**Weakness:** The bounds from regularity are 'tower-type' — extremely weak. The gap between this and Fox-Loh is enormous.",
     "significance": "key"
@@ -176,7 +176,7 @@
       "startLine": 233,
       "endLine": 255
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Results Summary",
     "content": "**erdos_80_summary:** Complete characterization of what is known:\n\n1. f_c(n) → ∞ for all c > 0 (regularity)\n2. f_c(n) ≥ n/6 for c > 1/4 (linear)\n3. f_c(n) ≤ n^{O(1/log log n)} for c < 1/4 (Fox-Loh)\n4. Polynomial growth DISPROVED for c < 1/4\n5. Logarithmic growth OPEN\n\n**The Gap:** For c < 1/4, the true growth rate lies between 'tending to infinity' and n^{o(1)}.\n\nThe summary theorem is proved directly from the axiomatized results.",
     "significance": "key"

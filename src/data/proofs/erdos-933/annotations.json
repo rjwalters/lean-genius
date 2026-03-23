@@ -142,7 +142,7 @@
       "startLine": 73,
       "endLine": 77
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "mahler_upper_bound",
     "content": "Mahler's theorem: for any $\\varepsilon > 0$, the $\\{2,3\\}$-smooth part of $n(n+1)$ is eventually less than $n^{1+\\varepsilon}$. Axiomatized because the proof requires deep results from the theory of S-unit equations.",
     "significance": "key",
@@ -166,7 +166,7 @@
       "startLine": 88,
       "endLine": 91
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "erdos_lower_bound",
     "content": "Erdős's claim (1976): for infinitely many $n$, the $\\{2,3\\}$-smooth part of $n(n+1)$ exceeds $n \\log n$. This establishes the threshold $n \\log n$ as the critical scale. Axiomatized; Steinerberger later provided an explicit construction.",
     "significance": "key",
@@ -211,7 +211,7 @@
       "startLine": 125,
       "endLine": 127
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "steinerberger_divisibility",
     "content": "Key divisibility: $3^{r+1} \\mid 2^{3^r} + 1$ for $r \\geq 1$. This is the core arithmetic fact enabling Steinerberger's construction. Axiomatized because it requires the Lifting the Exponent Lemma.",
     "significance": "key",
@@ -234,7 +234,7 @@
       "startLine": 138,
       "endLine": 139
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "steinerberger_proof",
     "content": "Steinerberger's proof that $\\limsup \\text{smoothRatio} = \\infty$. Axiomatized as the full proof requires combining the divisibility result with growth rate analysis showing the ratio along $n = 2^{3^r}$ is unbounded.",
     "significance": "key",
@@ -257,7 +257,7 @@
       "startLine": 149,
       "endLine": 152
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "lifting_the_exponent",
     "content": "The Lifting the Exponent (LTE) Lemma applied to $p = 3$, $a = 2$, $b = 1$: $v_3(2^{3^r} + 1) = r + 1$. This is the engine of Steinerberger's construction, determining the exact 3-adic valuation.",
     "significance": "key",
@@ -281,7 +281,7 @@
       "startLine": 165,
       "endLine": 167
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "consecutive_coprime",
     "content": "Consecutive integers $n$ and $n+1$ are coprime: $\\gcd(n, n+1) = 1$. Proved in one line via Mathlib's `Nat.coprime_self_add_one`. This is the structural foundation enabling the factorization of `consecutiveSmoothPart`.",
     "significance": "supporting",
@@ -326,7 +326,7 @@
       "startLine": 219,
       "endLine": 219
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "erdos_933",
     "content": "Main theorem: $\\limsup \\text{smoothRatio} = \\infty$ (the answer to Erdős #933 is YES). Proved as `erdos_933 := steinerberger_proof`—a one-line proof delegating to Steinerberger's axiomatized result.",
     "significance": "key",

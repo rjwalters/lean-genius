@@ -43,7 +43,7 @@
       "startLine": 42,
       "endLine": 49
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Special Case a = 0: Complete Characterization",
     "content": "**totient_dvd_self_iff** axiomatizes the classical result: φ(n) | n if and only if n ≤ 1 or n = 2^a · 3^b with a > 0. The key insight is the formula φ(n)/n = ∏_{p|n}(1 - 1/p): for φ(n) | n, this product must be 1/k for some integer k, which happens only when the prime factors are 2 and 3 (giving 1/2 and 2/3 respectively). **totientDivisors_zero_infinite** follows immediately since 2^a · 3^b gives infinitely many solutions.",
     "mathContext": "The 3-smooth numbers (numbers whose prime factors are at most 3) form a well-studied class. The characterization shows that φ(n) | n is equivalent to n being 3-smooth with at least one factor of 2.",
@@ -98,7 +98,7 @@
       "startLine": 79,
       "endLine": 90
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Structural Properties of the Totient",
     "content": "Three key properties of Euler's totient function. **totient_even**: φ(n) is even for all n > 2 (since -1 is a unit in (ℤ/nℤ)*, making elements come in ±pairs). **totient_prime'**: a Mathlib wrapper confirming φ(p) = p - 1 for primes. **totient_prime_pow_formula**: φ(p^k) = p^{k-1}(p-1) for prime powers. Together these control the divisibility φ(n) | n + a when n has specific prime power structure.",
     "mathContext": "The evenness of φ(n) for n > 2 means that φ(n) | n + a requires n + a to be even when n > 2. This gives immediate parity constraints on solutions.",
@@ -116,7 +116,7 @@
       "startLine": 92,
       "endLine": 105
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_828_summary** combines the two main known results: totientDivisors(0) is infinite (the 3-smooth numbers) and totientDivisors(-1) is infinite (the primes). The proof is constructive, using `exact ⟨totientDivisors_zero_infinite, totientDivisors_neg_one_infinite⟩` to build the conjunction from the two axioms. This captures the complete state of rigorous knowledge: the conjecture is verified for a = 0 and a = -1, but open for all other values of a.",
     "mathContext": "The conjunction type (totientDivisors 0).Infinite ∧ (totientDivisors (-1)).Infinite is the strongest statement the formalization can make without resolving the full conjecture.",

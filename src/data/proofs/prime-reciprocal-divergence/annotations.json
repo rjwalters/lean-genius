@@ -30,7 +30,7 @@
       "startLine": 62,
       "endLine": 76
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem: $\\sum 1/p$ Diverges",
     "content": "**Prime Reciprocal Divergence**:\n\n`¬ Summable (fun p : Nat.Primes => 1 / (p : ℝ))`\n\nThe function $p \\mapsto 1/p$ over primes is **not summable** — its partial sums grow without bound.\n\n**Two formulations proved**:\n1. `prime_reciprocal_not_summable` — using division $1/p$\n2. `prime_reciprocal_not_summable'` — using inverse $p^{-1}$ (converted via `one_div`)\n\n**Mathlib**: Directly from `Nat.Primes.not_summable_one_div`, which follows Erdős's smooth number argument.",
     "mathContext": "`¬ Summable (fun p : Nat.Primes => 1 / (p : ℝ))`",
@@ -54,7 +54,7 @@
       "startLine": 78,
       "endLine": 89
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Indicator Function Formulation",
     "content": "**As Sub-sum of the Harmonic Series**:\n\nUsing set indicator functions:\n$$\\sum_{n=1}^{\\infty} \\mathbf{1}_{\\{p : \\text{Prime}(p)\\}}(n) \\cdot \\frac{1}{n}$$\n\nFor each $n$: the term is $1/n$ if $n$ is prime, else $0$.\n\n**Why important**:\n- Shows the prime reciprocal sum embeds into the harmonic series\n- Both diverge, but the prime sum grows as $\\ln \\ln n$ while the harmonic sum grows as $\\ln n$\n- Uses `Set.indicator` and `not_summable_one_div_on_primes` from Mathlib\n\n**Connection**: Since the prime reciprocal sum is a sub-sum of the harmonic series, its divergence is a *stronger* statement than harmonic divergence.",
     "mathContext": "$\\sum_n \\mathbf{1}_{\\mathbb{P}}(n) \\cdot n^{-1}$ is not summable",
@@ -78,7 +78,7 @@
       "startLine": 91,
       "endLine": 109
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Prime $p$-Series Criterion",
     "content": "**Sharp Convergence Criterion**:\n\n$$\\text{Summable}(p \\mapsto p^r) \\Leftrightarrow r < -1$$\n\n**Cases**:\n- $r = -1$: **DIVERGES** (our main theorem)\n- $r < -1$: CONVERGES (e.g., $\\sum 1/p^2 < \\infty$)\n- $r > -1$: DIVERGES (even faster)\n\n**Prime zeta function**: $P(s) = \\sum_{p \\text{ prime}} p^{-s}$ converges for $\\text{Re}(s) > 1$ and diverges at $s = 1$. This is the prime analogue of the Riemann zeta function.\n\n**Mathlib**: `Nat.Primes.summable_rpow` provides the biconditional. The special case $r = -1$ is recovered via `norm_num`.",
     "mathContext": "`Summable (fun p : Nat.Primes => ((p : ℝ) ^ r)) ↔ r < -1`",
@@ -126,7 +126,7 @@
       "startLine": 128,
       "endLine": 146
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Convergent Case: $\\sum 1/p^2$",
     "content": "**Contrast**: While $\\sum 1/p$ diverges, $\\sum 1/p^2$ converges!\n\n**Theorem**: `prime_squared_reciprocal_summable : Summable (fun p : Nat.Primes => 1 / ((p : ℝ) ^ 2))`\n\n**Proof technique**: Converts to the $r = -2$ case of the general criterion via:\n1. `prime_power_summable_iff` with `norm_num` to verify $-2 < -1$\n2. Algebraic manipulation using `Real.rpow_neg` and `Real.rpow_two`\n3. Positivity of prime coercions via `p.prop.two_le`\n\n**Prime zeta values**: $P(2) \\approx 0.4522$, $P(3) \\approx 0.1747$, $P(4) \\approx 0.0769$. Unlike $\\zeta(2) = \\pi^2/6$, no closed forms are known for $P(n)$.",
     "mathContext": "$P(2) = \\sum_p 1/p^2 \\approx 0.4522$ converges; proved via `Nat.Primes.summable_rpow` at $r = -2$",

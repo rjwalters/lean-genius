@@ -59,7 +59,7 @@
       "startLine": 102,
       "endLine": 114
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős's Original Lower Bound (1965)",
     "content": "**erdos_lower_bound:** For any ε > 0, ∃ C > 0 such that eventually k(n) ≥ C·exp((log n)^{1/2-ε}).\n\nErdős used sieve methods to show small primes can 'miss' long intervals. This was the first non-trivial lower bound, establishing k(n) grows faster than any polynomial in log n.",
     "mathContext": "Erdős presented this at a 1965 symposium on extremal problems in number theory. The sieve approach remains the foundation for all subsequent lower bound improvements.",
@@ -76,7 +76,7 @@
       "startLine": 116,
       "endLine": 135
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Tang's Improved Lower Bound",
     "content": "**tang_lower_bound:** For any ε > 0, eventually k(n) ≥ exp((1/√2-ε)·√(log n · log log n)).\n\n**tangConstant = 1/√2 ≈ 0.707** arises from optimizing over prime sieves.\n\nThis bound is subpolynomial: exp(√(log n · log log n)) = o(n^ε) for any ε > 0. It represents the current state of the art for lower bounds.",
     "mathContext": "Tang's improvement over Erdős's original bound is significant — the exponent changes from (log n)^{1/2-ε} to √(log n · log log n), which grows much faster.",
@@ -93,7 +93,7 @@
       "startLine": 137,
       "endLine": 148
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Tao's Upper Bound",
     "content": "**tao_upper_bound:** For any ε > 0, eventually k(n) ≤ (1+ε)·√n.\n\n**Pigeonhole argument:** If k > √n, among primes p ≤ k, by pigeonhole some p divides two numbers in {m+1,...,m+k}. Since those numbers are at distance < k ≤ p·... this contradicts each having a prime factor > k.\n\nTao provided this elegant argument in a comment on erdosproblems.com.",
     "mathContext": "This was the first non-trivial upper bound and uses only elementary counting. The gap between √n (polynomial) and exp(√(log n · log log n)) (subpolynomial) is enormous.",
@@ -110,7 +110,7 @@
       "startLine": 183,
       "endLine": 224
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorems",
     "content": "**erdos_962_summary** and **erdos_962:** Combine Tang's lower bound and Tao's upper bound into a single conjunction, proved by ⟨tang_lower_bound, tao_upper_bound⟩.\n\nThe formalization captures the known bounds while the open conjecture ErdosConjecture is defined as a Prop but not asserted as an axiom, reflecting its unsolved status.",
     "mathContext": "The summary represents the state of knowledge: bounds established, but the exact growth rate of k(n) remains unknown. Closing the gap is one of the outstanding problems in extremal number theory.",

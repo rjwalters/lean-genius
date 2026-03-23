@@ -92,7 +92,7 @@
       "startLine": 119,
       "endLine": 132
     },
-    "type": "conjecture",
+    "type": "concept",
     "title": "The Erdos-Rubin-Taylor Conjecture (DISPROVED)",
     "content": "ERTConjecture formalizes: exists c > 0 such that for all n >= 1 and all graphs G on n vertices, chi_L(G) + chi_L(G^c) > n^{1/2+c}. The quantifier structure is exists c, forall n, forall V with Fintype.card V = n, forall G : SimpleGraph V, with necessary DecidableRel instances for both G and complementGraph G. The exponent uses Real arithmetic: n^(1/2 + c).",
     "mathContext": "`ERTConjecture := \\exists c > 0, \\forall n \\geq 1, \\forall G \\text{ on } n \\text{ vertices}, (\\chi_L(G) + \\chi_L(\\bar{G}) : \\mathbb{R}) > n^{1/2+c}$. The cast to $\\mathbb{R}$ is needed for the real exponentiation $n^{1/2+c}$ and the comparison with the natural number sum.",
@@ -114,7 +114,7 @@
       "startLine": 134,
       "endLine": 161
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Alon's Counterexample (1992) and Conjecture Disproof",
     "content": "alon_counterexample (axiom): there exists C > 0 such that for every n >= 2, there exists a graph G on n vertices with chi_L(G) + chi_L(G^c) <= C*sqrt(n*log(n)). conjecture_false (1 sorry): derives not ERTConjecture by extracting c from the conjecture and C from Alon, then arguing that for large n, C*sqrt(n*log(n)) < n^{1/2+c} — a contradiction since sqrt(n*log(n)) = n^{1/2}*sqrt(log(n)) grows slower than n^{1/2+c} for any c > 0.",
     "mathContext": "`alon_counterexample : \\exists C > 0, \\forall n \\geq 2, \\exists G, \\chi_L(G) + \\chi_L(\\bar{G}) \\leq C\\sqrt{n \\log n}$. `conjecture_false : \\neg\\text{ERTConjecture}` — proof outline: $C\\sqrt{n \\log n} < n^{1/2+c}$ for large $n$ since $\\sqrt{\\log n} = o(n^c)$. The `sorry` is the asymptotic analysis.",
@@ -137,7 +137,7 @@
       "startLine": 163,
       "endLine": 188
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bounds: chi_L >= chi, Trivial Lower Bound, Greedy Upper Bound",
     "content": "list_chromatic_ge_chromatic (axiom): chi_L(G) >= chi(G) since any k-coloring is an L-coloring for constant lists. trivial_lower_bound (axiom): chi_L(G) + chi_L(G^c) >= sqrt(n) from Ramsey theory (either G or G^c has a large clique). list_chromatic_le_max_degree_plus_one (axiom, simplified to True): chi_L(G) <= Delta(G) + 1 from greedy coloring — any graph is (Delta+1)-choosable.",
     "mathContext": "`list_chromatic_ge_chromatic : \\chi_L(G) \\geq \\chi(G)$. `trivial_lower_bound : \\chi_L(G) + \\chi_L(\\bar{G}) \\geq \\sqrt{n}$. The gap between $\\sqrt{n}$ (lower) and $O(\\sqrt{n \\log n})$ (Alon upper) shows the logarithmic factor is the remaining question.",
@@ -180,7 +180,7 @@
       "startLine": 209,
       "endLine": 236
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Nordhaus-Gaddum and List vs Ordinary Chromatic Number",
     "content": "nordhaus_gaddum (axiom): chi(G) + chi(G^c) >= 2*sqrt(n), the classical 1956 result motivating the ERT conjecture. nordhaus_gaddum_upper (axiom): chi(G) + chi(G^c) <= n+1. list_chromatic_differs_from_chromatic (axiom): there exist graphs where chi_L(G) > chi(G), first shown by Voigt (a planar graph that is 4-colorable but not 4-choosable). These results establish the context for why the ERT conjecture was natural but ultimately false.",
     "mathContext": "Nordhaus-Gaddum (1956): $2\\sqrt{n} \\leq \\chi(G) + \\chi(\\bar{G}) \\leq n + 1$. The lower bound motivated ERT: is $\\chi_L(G) + \\chi_L(\\bar{G}) > n^{1/2+c}$? Voigt's example: $\\exists$ planar $G$ with $\\chi(G) = 4$ but $\\chi_L(G) = 5$.",
@@ -223,7 +223,7 @@
       "startLine": 265,
       "endLine": 298
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary: Conjecture False and Alon Counterexample",
     "content": "erdos_753_summary combines the two main results: (1) not ERTConjecture (the conjecture is false) and (2) Alon's counterexample exists with the sqrt(n*log(n)) bound. The proof is a direct conjunction: ⟨conjecture_false, alon_counterexample⟩. This encapsulates the complete resolution of Problem #753.",
     "mathContext": "`erdos_753_summary : \\neg\\text{ERTConjecture} \\wedge (\\exists C > 0, \\forall n \\geq 2, \\exists G, \\chi_L(G) + \\chi_L(\\bar{G}) \\leq C\\sqrt{n \\log n})$. Proved by `⟨conjecture_false, alon_counterexample⟩`.",

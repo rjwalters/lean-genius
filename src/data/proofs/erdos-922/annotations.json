@@ -101,7 +101,7 @@
       "startLine": 98,
       "endLine": 103
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "k = 0 Implies Bipartiteness",
     "content": "**folkman_zero_implies_bipartite:**\n\nIf every subgraph has α ≥ n/2, then χ(G) ≤ 2.\n\n**Proof idea:**\n- No odd cycles exist (they violate the condition)\n- A graph is bipartite iff it has no odd cycles\n- Bipartite graphs are 2-colorable",
     "significance": "key"
@@ -113,7 +113,7 @@
       "startLine": 117,
       "endLine": 119
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Folkman's Theorem (1970)",
     "content": "**folkman_theorem:**\n\nIf G has the Folkman property with parameter k, then χ(G) ≤ k+2.\n\n**Statement:**\n```lean\naxiom folkman_theorem :\n  ∀ (k : ℕ), hasFolkmanPropertyInduced G k → χ(G) ≤ k + 2\n```\n\nThis is the main result, proved by Jon Folkman in 1970.",
     "mathContext": "Folkman's original proof uses induction and careful analysis of graph structure.",
@@ -126,7 +126,7 @@
       "startLine": 121,
       "endLine": 124
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős Problem #922: SOLVED",
     "content": "**erdos_922:**\n\nThe statement of the problem, now a theorem:\n\n∀ k ≥ 0, Folkman property with k → χ(G) ≤ k+2\n\n**Answer: YES** - proved by Folkman (1970).",
     "significance": "key"
@@ -138,7 +138,7 @@
       "startLine": 132,
       "endLine": 136
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Bound is Tight",
     "content": "**folkman_bound_tight:**\n\nFor every k ≥ 0, there exist graphs achieving χ(G) = k+2 while satisfying the Folkman property.\n\nThe bound k+2 cannot be improved in general.",
     "significance": "key"
@@ -150,7 +150,7 @@
       "startLine": 141,
       "endLine": 144
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The k = 1 Case",
     "content": "**folkman_k1:**\n\nFor k = 1: Folkman property implies χ(G) ≤ 3.\n\nThis is the first non-trivial case that Erdős and Hajnal couldn't prove themselves.",
     "significance": "key"
@@ -174,7 +174,7 @@
       "startLine": 173,
       "endLine": 175
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Greedy Coloring Bound",
     "content": "**greedy_coloring_bound:**\n\nχ(G) ≤ Δ(G) + 1 where Δ(G) is the maximum degree.\n\nGreedy coloring always uses at most Δ+1 colors. Folkman graphs have special degree structure.",
     "significance": "supporting"
@@ -199,7 +199,7 @@
       "startLine": 207,
       "endLine": 211
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Ramsey Connection",
     "content": "**ramsey_connection:**\n\nLarge graphs have either large cliques or large independent sets.\n\nThis Ramsey-type principle underlies why the Folkman property constrains chromatic number.",
     "significance": "supporting",
@@ -215,7 +215,7 @@
       "startLine": 213,
       "endLine": 216
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Brooks' Theorem",
     "content": "**brooks_theorem:**\n\nχ(G) ≤ Δ(G) unless G is complete or an odd cycle.\n\nBrooks' theorem improves greedy coloring for most graphs. It's related but distinct from Folkman's result.",
     "mathContext": "Proved by R. L. Brooks in 1941.",
@@ -228,7 +228,7 @@
       "startLine": 225,
       "endLine": 235
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_922_summary:**\n\nCombines the main results:\n1. Folkman's theorem: property with k → χ ≤ k+2\n2. Tightness: bound is achieved for all k\n3. Special case: k=0 gives bipartiteness\n\nThe answer to Erdős Problem #922 is YES.",
     "significance": "key"

@@ -60,7 +60,7 @@
       "startLine": 64,
       "endLine": 69
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Empty Set is Independent",
     "content": "**empty_is_independent:**\n\nThe empty set ∅ is independent in any graph G. This is vacuously true: the quantifier \"for all u ∈ ∅\" is vacuously satisfied.\n\nThe proof uses absurd to derive a contradiction from the assumption that u ∈ ∅.",
     "mathContext": "This is the base case for inductive arguments about independent sets. It establishes that the IsIndependent predicate is non-vacuous.",
@@ -96,7 +96,7 @@
       "startLine": 92,
       "endLine": 105
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Conjecture 1 (Disproved)",
     "content": "**erdos_hajnal_conjecture_1_false:**\n\nErdős-Hajnal conjectured: f((log n)², n) ≥ n^(1/2 - o(1))\n\nThis would mean: if every (log n)²-vertex subgraph has α ≥ log n, then the whole graph has α almost √n.\n\n**DISPROVED!** The true bound is only Θ((log n)² / log log n), which is MUCH smaller than √n.\n\nThe conjecture was off by an exponential factor!",
     "mathContext": "The negation ¬(∀ ε > 0, ...) means there exists ε > 0 for which the bound fails for infinitely many n. The gap between polylogarithmic truth and polynomial conjecture shows a fundamental misunderstanding of propagation strength.",
@@ -114,7 +114,7 @@
       "startLine": 107,
       "endLine": 120
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Conjecture 2 (Disproved)",
     "content": "**erdos_hajnal_conjecture_2_false:**\n\nErdős-Hajnal conjectured: f((log n)³, n) ≫ (log n)³\n\nThis would mean: if every (log n)³-vertex subgraph has α ≥ log n, then the whole graph has α much larger than (log n)³.\n\n**DISPROVED!** The true bound is only Θ((log n)² / log log n), which is smaller than (log n)³.\n\nRemarkably, increasing m from (log n)² to (log n)³ doesn't significantly improve the global bound!",
     "mathContext": "This reveals a saturation effect: beyond a threshold, increasing the local window size m doesn't help. The bottleneck for global independence is not local structure but rather global density properties.",
@@ -132,7 +132,7 @@
       "startLine": 128,
       "endLine": 140
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Alon-Sudakov Upper Bound",
     "content": "**alon_sudakov_upper_bound_1:**\n\nThere exist graphs where:\n- Every (log n)²-vertex subgraph has α ≥ log n\n- But the global α is only O((log n)²)\n\n**Construction idea:** Dense random graphs G(n, p) with p ≈ 1 - 1/log n have this property. They're dense enough that global α is small, but sparse enough locally to have good local independent sets.",
     "mathContext": "The existential quantifier (∃ G) combined with the eventually-for-all (∀ᶠ n) shows that counterexamples exist for all sufficiently large n. The constant C in the O((log n)²) bound comes from the probabilistic analysis.",
@@ -150,7 +150,7 @@
       "startLine": 142,
       "endLine": 154
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Alon-Sudakov Lower Bound",
     "content": "**alon_sudakov_lower_bound_1:**\n\nAny graph where every (log n)²-vertex subgraph has α ≥ log n must have:\n$$\\alpha(G) \\geq c \\cdot \\frac{(\\log n)^2}{\\log \\log n}$$\n\n**The log log n factor is crucial!** It appears mysteriously in many extremal combinatorics bounds.\n\nCombined with the upper bound, this gives the tight characterization.",
     "mathContext": "This is a universal statement (∀ G): every graph with the local property must have a global independent set of this size. The cast to ℝ allows the division by log log n.",
@@ -168,7 +168,7 @@
       "startLine": 156,
       "endLine": 174
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Tight Bound for (log n)³",
     "content": "**alon_sudakov_tight_bound_2:**\n\n$$f((\\log n)^3, n) \\asymp \\frac{(\\log n)^2}{\\log \\log n}$$\n\n**Surprising fact:** The answer for m = (log n)³ is THE SAME as for m = (log n)² (up to constants)!\n\nIncreasing the local window size by a factor of log n doesn't help the global bound. The bottleneck is elsewhere.",
     "mathContext": "This axiom combines both lower and upper bounds into a single statement, showing the asymptotic equivalence. The conjunction captures both directions of the ≍ relation.",
@@ -186,7 +186,7 @@
       "startLine": 180,
       "endLine": 202
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem — Both Conjectures False",
     "content": "**erdos_804:**\n\nBoth original Erdős-Hajnal conjectures are FALSE:\n\n1. f((log n)², n) ≱ n^(1/2 - o(1))\n2. f((log n)³, n) ≯ (log n)³\n\nProved by exact ⟨conjecture_1_false, conjecture_2_false⟩ — a direct conjunction of the two disproof axioms.",
     "mathContext": "This is a fully proved Lean theorem, combining the two axioms via an anonymous constructor. The proof term is a pair of the two axiom applications.",
@@ -204,7 +204,7 @@
       "startLine": 208,
       "endLine": 242
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Full Resolution with Bounds",
     "content": "**erdos_804_resolution:**\n\nCombines the complete picture:\n1. Both conjectures are false (disproof)\n2. Upper bound: f((log n)², n) ≤ C(log n)² (counterexample exists)\n3. Lower bound: f((log n)², n) ≥ c(log n)²/log log n (universal guarantee)\n\nThis proved theorem packages all four results into a single 4-fold conjunction, giving the definitive answer to Problem #804.",
     "mathContext": "The proof applies all four axioms: erdos_hajnal_conjecture_1_false, erdos_hajnal_conjecture_2_false, alon_sudakov_upper_bound_1, alon_sudakov_lower_bound_1.",

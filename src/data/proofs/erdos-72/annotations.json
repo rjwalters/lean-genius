@@ -133,7 +133,7 @@
       "startLine": 99,
       "endLine": 108
     },
-    "type": "conjecture",
+    "type": "concept",
     "title": "Erdős Problem #72: Formal Statement",
     "content": "The formal problem: does there exist a density-0 set A that is strongly unavoidable? This combines number-theoretic sparsity (density 0) with extremal graph theory (cycle forcing by average degree). Defined as Erdos72Statement, it is proved by erdos_72_solved using Liu-Montgomery.",
     "mathContext": "$\\text{Erdos72Statement} := \\exists A \\subseteq \\mathbb{N}, \\text{hasDensityZero}(A) \\wedge \\text{isStronglyUnavoidable}(A)$.",
@@ -154,7 +154,7 @@
       "startLine": 110,
       "endLine": 121
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bollobás (1977): Arithmetic Progressions",
     "content": "Bollobás proved that infinite arithmetic progressions containing even numbers are strongly unavoidable. While this doesn't solve Problem #72 (APs have positive density), it establishes the cycle-forcing phenomenon. The requirement of even numbers connects to the bipartite structure: odd cycles are harder to force.",
     "mathContext": "If $\\text{AP}(a,d)$ contains an even number (i.e., $\\exists k, 2 \\mid (a + kd)$), then $\\text{isStronglyUnavoidable}(\\text{AP}(a,d))$. The even condition is necessary: the set $\\{1, 3, 5, 7, \\ldots\\}$ is not unavoidable since bipartite graphs have no odd cycles regardless of density.",
@@ -175,7 +175,7 @@
       "startLine": 123,
       "endLine": 128
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Verstraëte (2005): Non-Constructive Existence",
     "content": "Verstraëte proved non-constructively that some density-0 set is strongly unavoidable, solving Problem #72 in principle. The proof uses probabilistic and compactness arguments, establishing existence without identifying which specific sets work. This left open the constructive question answered by Liu-Montgomery.",
     "mathContext": "`verstraete_existence : Erdos72Statement` — a pure existence axiom. The proof in [Ve05] uses probabilistic methods to show a random sparse subset of even numbers is unavoidable with high probability.",
@@ -194,7 +194,7 @@
       "startLine": 130,
       "endLine": 140
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Liu-Montgomery (2020): Powers of 2 Work",
     "content": "The breakthrough result: powers of 2 are strongly unavoidable. There exists a constant c > 0 such that every sufficiently large graph with average degree ≥ c contains a cycle whose length is a power of 2. Combined with density-zero of powers of 2, this yields the constructive solution erdos_72_solved.",
     "mathContext": "`liu_montgomery_powers_of_two : isStronglyUnavoidable powersOfTwo`. Combined with `powersOfTwo_density_zero`, yields `erdos_72_solved : Erdos72Statement` via `⟨powersOfTwo, powersOfTwo_density_zero, liu_montgomery_powers_of_two⟩`.",
@@ -274,7 +274,7 @@
       "startLine": 187,
       "endLine": 198
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "General Liu-Montgomery Theorem",
     "content": "Liu-Montgomery actually proved a more general result: any set A with logarithmic growth (|A ∩ [1,n]| ≤ log₂(n) + 1) consisting of even numbers (plus possibly 1) is strongly unavoidable. Powers of 2 is a special case. This characterizes a broad class of unavoidable sets.",
     "mathContext": "If $|A \\cap [1,n]| \\leq \\log_2(n) + 1$ and $\\forall a \\in A, 2 \\mid a \\text{ or } a = 1$, then $\\text{isStronglyUnavoidable}(A)$. This uses `hasControlledGrowth A (fun n => Nat.log 2 n + 1)` for the growth bound.",

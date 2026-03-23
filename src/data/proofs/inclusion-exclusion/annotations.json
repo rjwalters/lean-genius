@@ -29,7 +29,7 @@
       "startLine": 65,
       "endLine": 72
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Mathlib's Additive Form",
     "content": "**|A ∪ B| + |A ∩ B| = |A| + |B|**\n\nThis is the form provided by Mathlib's `card_union_add_card_inter`. The additive form avoids subtraction, which makes it easier to work with in natural numbers where subtraction can be truncated. The proof is a direct application of the Mathlib lemma.",
     "mathContext": "$|A \\cup B| + |A \\cap B| = |A| + |B|$. This is equivalent to the classical form but avoids the issue that $a - b$ truncates to $0$ when $a < b$ in $\\mathbb{N}$.",
@@ -51,7 +51,7 @@
       "startLine": 74,
       "endLine": 83
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Classical Inclusion-Exclusion",
     "content": "**|A ∪ B| = |A| + |B| - |A ∩ B|**\n\nThe form most commonly taught. Elements in the intersection are counted in both |A| and |B|, so we subtract |A ∩ B| to avoid double-counting.\n\nThe proof derives this from the additive form using omega arithmetic.",
     "mathContext": "$|A \\cup B| = |A| + |B| - |A \\cap B|$",
@@ -73,7 +73,7 @@
       "startLine": 95,
       "endLine": 124
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Three-Set Formula",
     "content": "**The complete formula for three sets:**\n\n$|A \\cup B \\cup C| = |A| + |B| + |C| - |A \\cap B| - |A \\cap C| - |B \\cap C| + |A \\cap B \\cap C|$\n\nThe proof applies `card_union_add_inter` twice: first to $(A \\cup B)$ and $C$, then to $A$ and $B$. The key step uses distributivity $(A \\cup B) \\cap C = (A \\cap C) \\cup (B \\cap C)$ proved by `ext; simp; tauto`. Cardinality bounds like $|A \\cap B| \\leq |A|$ (via `card_le_card inter_subset_left`) are needed for `omega` to handle the natural number arithmetic.",
     "mathContext": "$|A \\cup B \\cup C| = |A| + |B| + |C| - |A \\cap B| - |A \\cap C| - |B \\cap C| + |A \\cap B \\cap C|$\n\nAn element in $k$ of the three sets ($k = 1, 2, 3$) contributes: $k - \\binom{k}{2} + \\binom{k}{3} = 1$ to the alternating sum.",
@@ -118,7 +118,7 @@
       "startLine": 128,
       "endLine": 134
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Disjoint Union",
     "content": "**When A and B are disjoint, |A ∪ B| = |A| + |B|**\n\nThis is the base case that motivates inclusion-exclusion. For disjoint sets (A ∩ B = ∅), there's no overcounting to correct.",
     "mathContext": "$A \\cap B = \\emptyset \\Rightarrow |A \\cup B| = |A| + |B|$",
@@ -140,7 +140,7 @@
       "startLine": 136,
       "endLine": 143
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Union Upper Bound",
     "content": "**|A ∪ B| ≤ |A| + |B|**\n\nThe union is never larger than the sum of its parts. Equality holds exactly when A and B are disjoint.",
     "mathContext": "$|A \\cup B| \\leq |A| + |B|$",
@@ -161,7 +161,7 @@
       "startLine": 145,
       "endLine": 150
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Union Lower Bound",
     "content": "**|A ∪ B| ≥ max(|A|, |B|)**\n\nThe union is at least as large as either of its parts, since both A and B are subsets of A ∪ B.",
     "mathContext": "$|A \\cup B| \\geq \\max(|A|, |B|)$",
@@ -183,7 +183,7 @@
       "startLine": 158,
       "endLine": 193
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Symmetric Difference Cardinality",
     "content": "**|A △ B| = |A| + |B| - 2|A ∩ B|**\n\nThe symmetric difference contains elements in exactly one of A or B. Since elements in A ∩ B appear in both |A| and |B| but should not appear in A △ B, we subtract 2|A ∩ B|.",
     "mathContext": "$|A \\triangle B| = |A| + |B| - 2|A \\cap B|$",
@@ -205,7 +205,7 @@
       "startLine": 199,
       "endLine": 211
     },
-    "type": "example",
+    "type": "context",
     "title": "Computational Examples",
     "content": "**Concrete verification using native_decide:**\n\n- {1,2,3} ∪ {2,3,4} = {1,2,3,4} has 4 elements\n- {1,2,3} ∩ {2,3,4} = {2,3} has 2 elements\n- 4 = 3 + 3 - 2 ✓\n\nThese examples verify that our theorems give correct results on specific sets.",
     "mathContext": "$|\\{1,2,3\\} \\cup \\{2,3,4\\}| = 3 + 3 - 2 = 4$",

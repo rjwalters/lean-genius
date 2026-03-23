@@ -74,7 +74,7 @@
       "startLine": 59,
       "endLine": 62
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Mertens' Theorem",
     "content": "Mertens' theorem (1874): ∑_{p≤n} 1/p = log log n + M + o(1), where M ≈ 0.2615 is the Meissel-Mertens constant. Formalized here as mertensSum(n) ~ Real.log(Real.log n). This provides the baseline: the EGRS conjecture claims the upper half gets exactly half of this.",
     "mathContext": "$\\sum_{p \\le n} \\frac{1}{p} = \\log\\log n + M + O(1/\\log n)$ where $M = \\gamma + \\sum_p (\\log(1-1/p) + 1/p) \\approx 0.2615$. Here $\\gamma$ is Euler's constant.",
@@ -121,7 +121,7 @@
       "startLine": 75,
       "endLine": 93
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Basic Residue Properties",
     "content": "Proves three fundamental facts: (1) n mod p < p (residue bound), (2) 0 is not an upper-half residue, (3) if p divides n then n is not an upper-half residue. Also establishes that the upper half (p/2, p) contains exactly (p−1)/2 elements for odd primes. These structural facts support the heuristic that each prime contributes to the upper-half sum with probability ≈ 1/2.",
     "mathContext": "For odd prime $p$: $|\\{r \\in [1, p-1] : r > p/2\\}| = (p-1)/2$. The elements $\\{\\lceil p/2 \\rceil + 1, \\ldots, p-1\\}$ form the upper half. If $p \\mid n$, the residue is 0, which is never in the upper half.",
@@ -143,7 +143,7 @@
       "startLine": 99,
       "endLine": 157
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sum Partition and Bounds",
     "content": "Establishes the algebraic framework: both half-sums are nonneg, each is bounded by the full Mertens sum, and the sum is 0 for n < 2 (no primes). These are proved using Finset.sum_nonneg with positivity and Finset.sum_le_sum_of_subset_of_nonneg. Together they show the half-sums form a valid partition of Mertens' sum.",
     "mathContext": "$0 \\le U(n) \\le M(n)$, $0 \\le L(n) \\le M(n)$, and $U(n) + L(n) = M(n)$. For $n < 2$: $U(n) = L(n) = M(n) = 0$.",
@@ -211,7 +211,7 @@
       "startLine": 186,
       "endLine": 202
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Monotonicity and Positivity of Mertens' Sum",
     "content": "The Mertens sum is non-decreasing (more primes available as n grows) and positive for n ≥ 2 (at least the prime 2 contributes 1/2). The monotonicity proof uses Finset.sum_le_sum_of_subset_of_nonneg; positivity uses Finset.single_le_sum to extract the p = 2 contribution.",
     "mathContext": "$m \\le n \\implies M(m) \\le M(n)$ since primes up to $m$ are a subset of primes up to $n$. $M(n) \\ge 1/2$ for $n \\ge 2$ since $2$ is prime and contributes $1/2$.",

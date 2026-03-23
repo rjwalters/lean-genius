@@ -43,7 +43,7 @@
       "startLine": 66,
       "endLine": 87
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Edge Count Verification",
     "content": "**totalTreeEdges, completeGraphEdges, edge_counts_match, complete_graph_edges_small**\n\n`totalTreeEdges n` computes Σ(k-1) for k=2..n = 1+2+...+(n-1). `completeGraphEdges n` computes n(n-1)/2. The axiom `edge_counts_match` states these are equal for n ≥ 2 — the necessary condition for packing.\n\n`complete_graph_edges_small` is a **proved theorem** (not an axiom) verifying concrete values: |E(K₂)| = 1, |E(K₃)| = 3, |E(K₄)| = 6, |E(K₅)| = 10, |E(K₆)| = 15, proved by `unfold` and `norm_num`.",
     "mathContext": "The edge count identity Σ_{k=1}^{n-1} k = n(n-1)/2 is the triangular number formula. That tree edges exactly fill Kₙ is what makes the conjecture plausible — no edges are wasted.",
@@ -79,7 +79,7 @@
       "startLine": 97,
       "endLine": 111
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Gyárfás-Lehel Results (1978)",
     "content": "**gyarfasLehel_stars and gyarfasLehel_starsPaths**\n\nThe original 1978 results:\n- `gyarfasLehel_stars`: If all but at most 2 trees are stars, packing exists\n- `gyarfasLehel_starsPaths`: If every tree is a star or a path, packing exists\n\nThese were the first positive results for the conjecture. Stars pack easily because their simple structure (one hub vertex) allows flexible placement. Paths are also tractable because they can be laid out sequentially.",
     "mathContext": "Stars and paths represent the two extremes of tree shape: stars maximize degree concentration (one vertex has degree k-1), while paths minimize it (max degree 2). Both extremes turn out to be easier than the general case.",
@@ -97,7 +97,7 @@
       "startLine": 113,
       "endLine": 126
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Small Cases and Greedy Packing (1983)",
     "content": "**fishburn_small_n and bollobas_greedy**\n\n`fishburn_small_n`: The conjecture holds for n ≤ 9, verified by exhaustive computational search (Fishburn 1983).\n\n`bollobas_greedy`: The smallest ⌊n/√2⌋ trees can always be packed greedily into Kₙ (Bollobás 1983). This handles roughly 70% of the smallest trees in the collection. The bound 2m² ≥ n² encodes m ≥ n/√2.",
     "mathContext": "Bollobás's greedy argument is elegant: small trees have few edges and can be placed one at a time without conflicting. The bound n/√2 comes from ensuring the total edges of trees T₂,...,T_m don't exceed the available edges after accounting for degree constraints.",
@@ -115,7 +115,7 @@
       "startLine": 128,
       "endLine": 144
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bounded Degree Results (2019-2021)",
     "content": "**jkko_boundedDegree and allen_sublinearDegree**\n\n`jkko_boundedDegree`: For any fixed Δ, there exists N such that the conjecture holds for all Δ-bounded degree collections with n ≥ N (JKKO 2019, Combinatorica). This was a major breakthrough using Szemerédi's regularity lemma.\n\n`allen_sublinearDegree`: The conjecture holds when all trees have max degree ≤ cn/log n for some constant c > 0 (Allen et al. 2021). This significantly extends JKKO from constant to sublinear degree bounds.",
     "mathContext": "The JKKO result was transformative because it showed regularity methods — originally developed for dense graph problems — could be adapted for tree packing. The sublinear extension by Allen et al. pushed the frontier further toward handling arbitrary trees.",
@@ -134,7 +134,7 @@
       "startLine": 146,
       "endLine": 157
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Packing Large Trees (2024)",
     "content": "**janzerMontgomery_largeTrees**\n\nThere exists c > 0 such that for any tree collection and n ≥ 2, the largest cn trees (those with n-m to n vertices, where m ≥ cn) can always be packed into Kₙ (Janzer-Montgomery 2024).\n\nCombined with Bollobás's result: small trees (size ≤ n/√2) and large trees (size ≥ (1-c)n) can both be packed. The remaining gap is trees of intermediate size, roughly 0.7n to (1-c)n vertices.",
     "mathContext": "The Janzer-Montgomery result is the most recent major advance. It complements Bollobás from the other end: together they handle both extremes of the size spectrum, leaving only the 'middle' as the frontier.",
@@ -152,7 +152,7 @@
       "startLine": 159,
       "endLine": 173
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_743_summary**\n\nA **proved theorem** (not an axiom) combining three key partial results:\n1. Small cases: ∀ n ≤ 9, packing exists (Fishburn)\n2. Stars/paths: if all trees are stars or paths, packing exists (Gyárfás-Lehel)\n3. Bounded degree: for any Δ, Δ-bounded collections pack for large n (JKKO)\n\nProof: `exact ⟨fishburn_small_n, gyarfasLehel_starsPaths, jkko_boundedDegree⟩`\n\nThis captures the strongest verified partial results in a single statement.",
     "mathContext": "The summary demonstrates that while the full conjecture remains open, substantial progress has been made across multiple fronts: small n, restricted tree shapes, and bounded degree collections.",

@@ -160,7 +160,7 @@
       "startLine": 89,
       "endLine": 91
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Hereditary Property",
     "content": "States that Ramsey size linearity is **hereditary** (downward-closed under subgraphs): if $G$ is Ramsey size linear and $H \\subsetneq G$, then $H$ is also Ramsey size linear. Intuitively, removing edges from $G$ makes it 'easier' to embed, so $R(H, \\cdot)$ can only decrease. This is the key structural property that makes the notion of 'minimally non-linear' well-defined.",
     "mathContext": "$H \\subsetneq G \\wedge G \\text{ is Ramsey size linear} \\implies H \\text{ is Ramsey size linear}$",
@@ -228,7 +228,7 @@
       "startLine": 119,
       "endLine": 120
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "K₄ Not Linear",
     "content": "Axiomatizes that $K_4$ is not Ramsey size linear. This follows from the fact that $R(K_4, K_n) \\geq c \\cdot n^2 / \\log n$ for some constant $c$ (proved using probabilistic deletion), while $K_n$ has $\\binom{n}{2}$ edges. The quadratic-over-log growth exceeds any linear bound in the edge count.",
     "mathContext": "$R(K_4, K_n) = \\Omega(n^2 / \\log n)$ while $|E(K_n)| = \\binom{n}{2}$, so $R(K_4, K_n) / |E(K_n)| \\to \\infty$",
@@ -250,7 +250,7 @@
       "startLine": 122,
       "endLine": 125
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "K₄ Subgraphs Are Linear",
     "content": "Axiomatizes that every proper subgraph of $K_4$ is Ramsey size linear. The proper subgraphs of $K_4$ are: $K_3$ (triangle), $K_3 - e$ (path $P_3$), matchings, and smaller. All have bounded degree ($\\Delta \\leq 2$ for non-$K_3$ subgraphs, $\\Delta = 2$ for $K_3$), and the Burr–Erdős conjecture (proved by Lee 2017) guarantees bounded-degree graphs are Ramsey size linear. For $K_3$ specifically, Chvátal–Rödl–Szemerédi–Trotter (1983) proved $R(K_3, H) = O(m)$.",
     "mathContext": "$\\forall H \\subsetneq K_4,\\; R(H, \\cdot) = O(m)$. In particular, $R(K_3, H) \\leq c \\cdot |E(H)|$ for all $H$ without isolated vertices.",
@@ -272,7 +272,7 @@
       "startLine": 127,
       "endLine": 132
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "K₄ is Minimal",
     "content": "Proves $K_4$ is minimally non-Ramsey-size-linear by combining the two axioms: $K_4$ itself is superlinear, and all proper subgraphs are linear. This is the only known *explicit* example. The proof structure is a simple conjunction introduction (`constructor`) followed by applying the two axioms.",
     "mathContext": "$K_4 \\in \\mathcal{M}$ where $\\mathcal{M} = \\{G : \\neg\\text{linear}(G) \\wedge \\forall H \\subsetneq G,\\; \\text{linear}(H)\\}$",
@@ -316,7 +316,7 @@
       "startLine": 156,
       "endLine": 158
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Wigderson's Theorem (2024)",
     "content": "Axiomatizes Wigderson's 2024 breakthrough: infinitely many minimally non-Ramsey-size-linear graphs exist. The proof is fundamentally non-constructive, using probabilistic and extremal methods to derive a contradiction from assuming only finitely many exist. This resolves the 31-year-old question but leaves explicit construction wide open.",
     "mathContext": "$|\\mathcal{M}| = \\infty$ (Wigderson 2024, non-constructive)",
@@ -339,7 +339,7 @@
       "startLine": 160,
       "endLine": 161
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem Solved",
     "content": "Derives the solution to Erdős #79 directly from Wigderson's theorem. The formalization is a one-line application of the axiom, reflecting how the problem reduces entirely to Wigderson's result.",
     "mathContext": "$\\text{erdos\\_79\\_solved} := \\text{wigderson\\_theorem}$",
@@ -381,7 +381,7 @@
       "startLine": 193,
       "endLine": 195
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "K₄ Has 6 Edges",
     "content": "States that $K_4$ has exactly 6 edges ($\\binom{4}{2} = 6$). Left as `sorry` — this is a decidable computation that could be resolved by `decide` or `native_decide` with appropriate instances. The 6-edge structure of $K_4$ is key: its proper subgraphs have at most 5 edges, all with maximum degree $\\leq 2$.",
     "mathContext": "$|E(K_4)| = \\binom{4}{2} = 6$",
@@ -403,7 +403,7 @@
       "startLine": 197,
       "endLine": 203
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "K₃ and Paths Are Linear",
     "content": "Axiomatizes that $K_3$ (the triangle) and path graphs are Ramsey size linear. For $K_3$: Chvátal, Rödl, Szemerédi, and Trotter (1983) proved $R(K_3, H) \\leq c \\cdot |E(H)|$, one of the earliest results on Ramsey size linearity. For paths: all paths have maximum degree 2, so Lee's proof of the Burr–Erdős conjecture (2017) applies. The path graph is given a placeholder definition (`⊥`, the empty graph).",
     "mathContext": "$R(K_3, H) = O(|E(H)|)$ (CRST 1983). For paths $P_n$: $\\Delta(P_n) = 2$, so $R(P_n, H) = O(|E(H)|)$ by Lee (2017).",
@@ -425,7 +425,7 @@
       "startLine": 212,
       "endLine": 217
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Antichain Structure",
     "content": "States that minimally non-Ramsey-size-linear graphs form an **antichain** in the subgraph ordering: no two distinct minimal elements can be related by the subgraph relation. This follows from a general fact about minimal elements of hereditary properties — if $G \\subsetneq H$ and $H$ is minimal, then $G$ must be linear (by minimality of $H$), contradicting $G$ being non-linear. Combined with Wigderson's theorem, this gives an infinite antichain in the subgraph order.",
     "mathContext": "$\\forall G, H \\in \\mathcal{M},\\; G \\neq H \\implies G \\not\\subsetneq H \\wedge H \\not\\subsetneq G$",

@@ -143,7 +143,7 @@
       "startLine": 99,
       "endLine": 108
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The ENR Conjecture",
     "content": "ENRConjecture: If infinite A has the ENR property, then A is a finite union of AP-free sets. This seems plausible - uniformly large AP-free parts should come from a finite collection.",
     "mathContext": "The conjecture asks whether local density implies global structure.",
@@ -166,7 +166,7 @@
       "startLine": 109,
       "endLine": 122
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Conjecture is FALSE",
     "content": "enr_conjecture_false: The ENR conjecture is DISPROVED. There exists an infinite A with the ENR property that is NOT a finite union of AP-free sets!",
     "mathContext": "The counterexample shows that different finite subsets may require different decompositions, with no finite collection working for all.",
@@ -189,7 +189,7 @@
       "startLine": 125,
       "endLine": 135
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Szemeredi's Theorem",
     "content": "For any k >= 3 and delta > 0, there exists N such that any subset of [1,N] with density >= delta contains a k-term AP. This is one of the deepest results in combinatorics.",
     "mathContext": "Won Szemeredi the Abel Prize. Implies AP-free sets have density 0. Roth proved k=3 case in 1953.",
@@ -212,7 +212,7 @@
       "startLine": 136,
       "endLine": 144
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "AP-Free Sets Have Density Zero",
     "content": "apfree_zero_density: Any AP-free subset of [1,N] has size o(N). The density |A cap [1,N]| / N tends to 0 as N grows.",
     "mathContext": "Direct consequence of Szemeredi. AP-free sets are very sparse in the integers.",
@@ -257,7 +257,7 @@
       "startLine": 160,
       "endLine": 170
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Finite Union Implies ENR",
     "content": "If A is a finite union of k AP-free sets, then A satisfies ENR with epsilon = 1/k. Any finite subset can be partitioned into k AP-free parts, one in each Ai.",
     "mathContext": "The converse direction works - finite union is stronger than ENR.",
@@ -302,7 +302,7 @@
       "startLine": 187,
       "endLine": 196
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Roth's Theorem (1953)",
     "content": "The k=3 case of Szemeredi: any dense subset of [1,N] contains a 3-term AP. Specifically, if |A| > N/(log N)^c, then A contains a 3-AP.",
     "mathContext": "Klaus Roth won the Fields Medal partly for this result. It was the first major result on AP-free sets.",
@@ -325,7 +325,7 @@
       "startLine": 197,
       "endLine": 204
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Kelley-Meka Bounds (2023)",
     "content": "The best known bounds: an AP-free subset of [1,N] has size at most N * exp(-c * (log N)^{1/12}). This is a major breakthrough from 2023.",
     "mathContext": "Improved on bounds that had stood for decades. Shows AP-free sets are even sparser than previously known.",
@@ -348,7 +348,7 @@
       "startLine": 207,
       "endLine": 236
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Results",
     "content": "erdos_847_disproved: The ENR conjecture is FALSE. erdos_847_counterexample: There exists an explicit counterexample - an infinite A with ENR property that is NOT a finite AP-free union.",
     "mathContext": "The main theorems establishing the disproof of Erdos Problem #847.",

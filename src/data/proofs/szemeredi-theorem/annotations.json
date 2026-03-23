@@ -41,7 +41,7 @@
       "startLine": 66,
       "endLine": 71
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Main Statement",
     "content": "**Szemeredi's Theorem**: For any k >= 1 and delta > 0, there exists N_0 such that:\n\nAny subset S of {1,...,N} with |S| >= delta*N contains a k-term AP.\n\nThe density delta*N ensures S is 'thick enough' to force long progressions.",
     "mathContext": "SzemerediTheorem := forall k delta, k >= 1 -> delta > 0 -> exists N_0, ...",
@@ -58,7 +58,7 @@
       "startLine": 80,
       "endLine": 83
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "k=1 Case",
     "content": "**Trivial**: Any non-empty set contains a 1-AP.\n\nA single element forms a 1-term arithmetic progression (vacuously).\n\nProof: Take any element a in S; the sequence (a) is a 1-AP.",
     "mathContext": "szemeredi_k1: S.Nonempty -> HasAPOfLength S 1",
@@ -75,7 +75,7 @@
       "startLine": 85,
       "endLine": 106
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "k=2 Case",
     "content": "**Trivial**: Any set with 2+ elements contains a 2-AP.\n\nTake any two distinct elements a < b. Then (a, b) is a 2-AP with d = b - a.\n\nThe proof handles both orderings (a < b and b < a).",
     "mathContext": "szemeredi_k2: |S| >= 2 -> HasAPOfLength S 2",
@@ -92,7 +92,7 @@
       "startLine": 216,
       "endLine": 256
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "ThreeAPFree Equivalence",
     "content": "**Key Result**: Our `IsAPFree S 3` is equivalent to Mathlib's `ThreeAPFree S`.\n\nMathlib's definition: ThreeAPFree means for a, b, c in S with a + c = 2b, we have a = b.\n\nOur definition: IsAPFree S 3 means no (a, a+d, a+2d) with d > 0 all in S.\n\nThe proof shows these are the same condition.",
     "mathContext": "threeAPFree_iff_isAPFree: ThreeAPFree S <-> IsAPFree S 3",
@@ -109,7 +109,7 @@
       "startLine": 261,
       "endLine": 271
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Roth's Theorem via Mathlib",
     "content": "**Breakthrough**: The k=3 case is FULLY PROVED using Mathlib.\n\nWe apply `roth_3ap_theorem_nat` via the equivalence established above.\n\nThe bound comes from `cornersTheoremBound(delta/3)`, which uses the Szemeredi Regularity bound (a tower-type function).",
     "mathContext": "roth_theorem_via_mathlib: RothTheorem := apply roth_3ap_theorem_nat",

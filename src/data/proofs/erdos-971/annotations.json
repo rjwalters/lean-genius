@@ -60,7 +60,7 @@
       "startLine": 49,
       "endLine": 65
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Main Open Question",
     "content": "**This is the central unsolved question** formalized as a Lean definition rather than an axiom (since its truth value is unknown).\n\nThe statement uses several layers of quantification:\n1. **∃ c > 0**: There exists a positive constant c\n2. **∃ C > 0**: There exists a positive constant C (for the 'many residue classes' bound)\n3. **∀ᶠ d in atTop**: For all sufficiently large d\n4. The count of residue classes with large least primes must be at least C·φ(d)\n\nThe key inequality is: p(a,d) > (1+c)·φ(d)·log(d), meaning the least prime exceeds the expected average by a multiplicative factor of (1+c).",
     "mathContext": "The filter notation ∀ᶠ d in atTop means 'eventually for d → ∞'. The counting uses Finset.card (notation #{...}) to count elements satisfying a predicate. The formula C·φ(d) represents 'a positive proportion of all φ(d) reduced residue classes'.",
@@ -78,7 +78,7 @@
       "startLine": 79,
       "endLine": 93
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Partial Result: Infinitely Many d",
     "content": "**Erdős's first partial result** from 1949 establishes that the phenomenon in the main question DOES occur for infinitely many moduli d, even though we don't know if it occurs for ALL large d.\n\nThis is stated as an axiom because the proof uses Brun's sieve methods, which are not yet formalized in Mathlib. The key difference from the main question is `{...}.Infinite` instead of `∀ᶠ d in atTop`.\n\n**Why this matters**: Proving something for infinitely many values is often much easier than proving it for all sufficiently large values. This partial result shows the phenomenon is not impossible—it definitely happens—but leaves open whether it happens universally.",
     "mathContext": "Brun's sieve is a combinatorial technique for counting primes satisfying multiple conditions. Erdős applied it to carefully constructed sequences of moduli with special multiplicative structure.",
@@ -96,7 +96,7 @@
       "startLine": 95,
       "endLine": 109
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Partial Result: Many Small Least Primes",
     "content": "**Erdős's second partial result** provides a complementary bound in the opposite direction.\n\nFor ANY ε > 0 (no matter how small), a positive proportion of residue classes have their least prime LESS than ε·φ(d)·log(d). This means many residue classes have least primes much smaller than the average.\n\n**The interplay**: Together with the first partial result, this shows both extremes occur:\n- Some moduli d have many classes with unusually LARGE least primes\n- For all large d, many classes have unusually SMALL least primes\n\nThe open question asks whether the 'large' behavior is also universal.",
     "mathContext": "The statement ∀ ε > 0, ∃ C > 0, ∀ᶠ d in atTop, ... is a typical analytic number theory formulation. The constant C depends on ε (written C_ε in mathematical notation).",
@@ -132,7 +132,7 @@
       "startLine": 132,
       "endLine": 155
     },
-    "type": "example",
+    "type": "context",
     "title": "Verified Computational Examples",
     "content": "**Concrete examples** demonstrate that our definition correctly captures the mathematical concept.\n\nFor modulus d = 10, there are φ(10) = 4 reduced residue classes: {1, 3, 7, 9}. The least primes are:\n- p(1, 10) = 11 (first prime ending in 1)\n- p(3, 10) = 3 (3 is already prime)\n- p(7, 10) = 7 (7 is already prime)\n- p(9, 10) = 19 (first prime ending in 9)\n\nWe prove two of these explicitly using Lean's `native_decide` tactic, which uses computational verification. The theorems confirm that 3 and 11 are prime and satisfy the required congruences.",
     "mathContext": "The proofs use `decide` for primality (which Lean can check by trial division at compile time) and `native_decide` for modular arithmetic verification.",

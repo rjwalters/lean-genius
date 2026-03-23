@@ -52,7 +52,7 @@
       "startLine": 64,
       "endLine": 88
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Petal Definition and Disjointness Proof",
     "content": "Defines `Petal A core = A \\ core` and proves `sunflower_petals_disjoint`: if $\\mathcal{F}$ is a sunflower with core $C$, then for distinct $A, B \\in \\mathcal{F}$, we have $\\text{Disjoint}(A \\setminus C, B \\setminus C)$. The proof proceeds by extensionality: assume $x \\in (A \\setminus C) \\cap (B \\setminus C)$; then $x \\in A$ and $x \\in B$ so $x \\in A \\cap B = C$, contradicting $x \\notin C$. This is one of only two fully verified results in the file.",
     "mathContext": "For a sunflower with core $C$: if $x \\in (A \\setminus C) \\cap (B \\setminus C)$ then $x \\in A \\cap B = C$, contradicting $x \\notin C$. Hence $(A \\setminus C) \\cap (B \\setminus C) = \\emptyset$.",
@@ -99,7 +99,7 @@
       "startLine": 109,
       "endLine": 143
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős-Ko-Rado Sunflower Lemma and Corollary",
     "content": "The axiom `erdos_ko_rado_sunflower` states the classical 1960 result: any family of more than $(k-1)! \\cdot \\ell^\\ell$ sets, each of size at most $\\ell$, contains a $k$-sunflower. The original proof by Erdős and Rado uses induction on $\\ell$: either many sets share an element (recurse on the residual family with $\\ell-1$) or no element is too popular (use a counting argument). The corollary `bounded_sets_sunflower` for exactly-$\\ell$-sized sets is **fully proved** using the monotonicity $k! \\geq (k-1)!$ and Lean's `Nat.factorial_le`.",
     "mathContext": "**Erdős-Rado Sunflower Lemma (1960):** If $|A| \\leq \\ell$ for all $A \\in \\mathcal{F}$ and $|\\mathcal{F}| > (k-1)! \\cdot \\ell^\\ell$, then $\\mathcal{F}$ contains a $k$-sunflower. The proof uses the greedy algorithm: pick sets $A_1, A_2, \\ldots$ with pairwise distinct elements outside the growing intersection, stopping when $k$ sets share the same core.",
@@ -123,7 +123,7 @@
       "startLine": 144,
       "endLine": 154
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Naslund-Sawin Bound (2017)",
     "content": "Axiomatizes the 2017 breakthrough by Eric Naslund and Will Sawin: $m(n,3) \\leq (3/2^{2/3} + \\varepsilon)^n$ for all sufficiently large $n$. The base $3/2^{2/3} \\approx 1.890$ (so the bound is roughly $1.890^n$) was the first improvement over the trivial $3^n$-type bound for 3-sunflowers. The proof adapts the polynomial method from the cap set breakthrough, using the slice rank of a tensor associated to the sunflower-free condition.",
     "mathContext": "$m(n,3) \\leq \\lceil(3/2^{2/3} + \\varepsilon)^n\\rceil$ for all $n \\geq N(\\varepsilon)$, where $3/2^{2/3} = 3 \\cdot 2^{-2/3} \\approx 1.890$. This uses the **slice rank method**: a 3-sunflower-free family corresponds to a diagonal tensor of high slice rank, and the polynomial method bounds the dimension.",
@@ -147,7 +147,7 @@
       "startLine": 156,
       "endLine": 169
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Cap Set Connection",
     "content": "Axiomatizes the key insight linking sunflowers to additive combinatorics: the density of maximum 3-AP-free subsets of $\\mathbb{F}_3^n$ (cap sets) controls $m(n,3)$ up to polynomial factors. The 2016 breakthrough by Croot, Lev, and Pach (for $\\mathbb{Z}_4^n$) and Ellenberg and Gijswijt (for $\\mathbb{F}_3^n$) proved cap sets have size at most $(2.756\\ldots)^n$, resolving the cap set conjecture. Naslund and Sawin showed this implies the 3-sunflower bound.",
     "mathContext": "A **cap set** in $\\mathbb{F}_3^n$ is a subset with no three-term arithmetic progression. The cap set bound $|S| \\leq (2.756\\ldots)^n$ implies $m(n,3) \\leq |S| \\cdot (n+1)$, because a 3-sunflower-free family of subsets of $[n]$ can be encoded as a cap set in $\\mathbb{F}_3^n$ (each subset $A$ maps to its characteristic vector in $\\{0,1\\}^n \\subset \\mathbb{F}_3^n$).",
@@ -172,7 +172,7 @@
       "startLine": 171,
       "endLine": 183
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Sunflower Conjecture",
     "content": "Axiomatizes the famous Sunflower Conjecture of Erdős and Rado (1960): for any $k \\geq 3$, there exists a constant $c(k) > 0$ such that $m(n,k) \\leq \\lceil c(k)^n \\rceil$ for all $n$. The conjecture asserts that the exponential base depends only on $k$, not on $n$. For $k=3$, the Naslund-Sawin bound establishes this with $c(3) \\leq 3/2^{2/3}$, but the general case remains wide open. The 2019 Alweiss-Lovett-Wu-Zhang result gives evidence in favor by improving the strong sunflower bound.",
     "mathContext": "**Sunflower Conjecture:** $\\forall k \\geq 3,\\; \\exists c(k) > 0$ such that $m(n,k) \\leq c(k)^n$ for all $n \\in \\mathbb{N}$. For $k=3$ this is known (Naslund-Sawin). For $k \\geq 4$, the best known bound is $m(n,k) \\leq (n+1)(k-1)!n^n$ from summing EKR bounds, which is super-exponential in $n$.",
@@ -195,7 +195,7 @@
       "startLine": 185,
       "endLine": 200
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Trivial and Exponential Bounds",
     "content": "States two bounding axioms. `trivial_upper_bound`: $m(n,k) \\leq 2^n + 1$ since $|2^{[n]}| = 2^n$ and any collection of $2^n + 1$ subsets must repeat a subset, creating a trivial $k$-sunflower (for $k \\geq 2$, two copies of the same set form a 2-sunflower with that set as the core). `lower_bound`: $m(n,k) \\geq c^n$ for some $c > 1$, established by probabilistic constructions of large sunflower-free families. These bracket the problem: the answer lies between exponential lower and upper bounds.",
     "mathContext": "**Upper:** $m(n,k) \\leq 2^n + 1$ (pigeonhole on $|2^{[n]}| = 2^n$). **Lower:** $m(n,k) \\geq c^n$ for some $c = c(k) > 1$. For $k=3$, the best lower bound is approximately $1.5^n$ from Fourier-analytic constructions; the gap between $1.5^n$ and $1.89^n$ is the current frontier.",
@@ -219,7 +219,7 @@
       "startLine": 202,
       "endLine": 233
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Concrete Sunflower Examples",
     "content": "`singleton_sunflower_example` is **fully proved**: the family $\\{\\{0\\}, \\{1\\}, \\{2\\}\\}$ in $\\text{Finset}(\\text{Fin}\\,3)$ is a 3-sunflower with core $\\emptyset$, since any two singletons have empty intersection. The proof uses `rcases` to case-split on family membership and `simp` with `Fin.ext_iff` for the intersection computation. Two axiomatized examples follow: `nonempty_core_example` asserts a 3-sunflower with 2-element core (e.g., $\\{\\{1,2,3\\}, \\{1,2,4\\}, \\{1,2,5\\}\\}$ with core $\\{1,2\\}$), and `sunflower_free_family_bound` asserts a 4-element family of 2-sets from $[4]$ avoiding 3-sunflowers.",
     "mathContext": "**Empty-core example:** $\\{\\{0\\}, \\{1\\}, \\{2\\}\\}$ with $C = \\emptyset$. For any distinct $A_i, A_j$: $A_i \\cap A_j = \\emptyset = C$. **Non-empty core:** $\\{\\{1,2,3\\}, \\{1,2,4\\}, \\{1,2,5\\}\\}$ with $C = \\{1,2\\}$, petals $\\{3\\}, \\{4\\}, \\{5\\}$. **Sunflower-free:** $\\{\\{1,2\\}, \\{1,3\\}, \\{2,4\\}, \\{3,4\\}\\}$ — no three members share the same pairwise intersection.",
@@ -267,7 +267,7 @@
       "startLine": 264,
       "endLine": 275
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Union Formulation Equivalence",
     "content": "Axiomatizes that `IsSunflower family core` is equivalent to the pointwise formulation: $\\forall A, B \\in \\mathcal{F}$, $A \\neq B \\implies (\\forall x,\\; x \\in A \\cap B \\iff x \\in C)$. Erdős originally used a \"union\" formulation; the equivalence follows since $A \\cap B = C$ is precisely the statement that membership in the intersection equals membership in the core, element by element.",
     "mathContext": "$A \\cap B = C \\iff (\\forall x,\\; x \\in A \\cap B \\leftrightarrow x \\in C)$. This is set extensionality: two sets are equal iff they have the same elements. The equivalence is immediate from `Finset.ext_iff`.",
@@ -289,7 +289,7 @@
       "startLine": 277,
       "endLine": 324
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary and Main Theorem",
     "content": "`erdos_857_summary` restates the EKR bound as a standalone theorem. The main `erdos_857` theorem packages both key results as a conjunction: (1) the classical Erdős-Ko-Rado sunflower lemma for bounded families, and (2) the Naslund-Sawin bound for 3-sunflowers. The proof is the pair $\\langle$`erdos_ko_rado_sunflower`, `naslund_sawin_bound`$\\rangle$. This demonstrates that the formalization simultaneously captures the 1960 classical result and the 2017 state-of-the-art.",
     "mathContext": "$\\texttt{erdos\\_857} : \\big(\\forall \\mathcal{F} \\text{ with } |A| \\leq \\ell,\\; |\\mathcal{F}| > (k-1)!\\ell^\\ell \\implies k\\text{-sunflower}\\big) \\;\\wedge\\; \\big(m(n,3) \\leq (3/2^{2/3}+\\varepsilon)^n\\big)$",

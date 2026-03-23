@@ -78,7 +78,7 @@
       "startLine": 56,
       "endLine": 64
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Part I: Consecutive Differences (OPEN)",
     "content": "**Erdős Problem #897, Part I**: If f is additive and f(p^k)/log(p^k) is unbounded over prime powers, then is (f(n+1) - f(n))/log(n) also unbounded?\n\nThis asks whether rapid growth on prime powers propagates to consecutive differences. The `∃ᶠ n in atTop` notation means \"for infinitely many n\".",
     "mathContext": "The normalization by log(n) is natural since log is the canonical additive function with bounded differences.",
@@ -96,7 +96,7 @@
       "startLine": 66,
       "endLine": 73
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Part II: Ratio of Consecutive Values (OPEN)",
     "content": "**Erdős Problem #897, Part II**: Under the same hypotheses, is f(n+1)/f(n) also unbounded?\n\nThis is a multiplicative version of Part I. Instead of differences, we ask about ratios. Can the ratio of consecutive values be arbitrarily large?",
     "mathContext": "For log, the ratio log(n+1)/log(n) → 1, so this asks about functions with more erratic behavior.",
@@ -114,7 +114,7 @@
       "startLine": 82,
       "endLine": 91
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Wirsing's Theorem (1970)",
     "content": "**Wirsing's Theorem**: If f is additive and |f(n+1) - f(n)| ≤ C for all n (bounded consecutive differences), then f(n) = c·log(n) + O(1) for some constant c.\n\nThis is the **converse** direction—it characterizes log as essentially the unique additive function with bounded consecutive differences. This beautiful rigidity result was proved in 1970.",
     "mathContext": "The O(1) notation via `=O[atTop] (1 : ℕ → ℝ)` means the error term f(n) - c·log(n) is bounded.",
@@ -168,7 +168,7 @@
       "startLine": 111,
       "endLine": 123
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Restricted Variants (OPEN)",
     "content": "The same conjectures restricted to strongly additive or completely additive functions. These restrictions might be easier to prove or disprove, providing partial progress on the main problem.\n\nIt's unknown whether the restricted cases have different answers than the general case.",
     "significance": "key",
@@ -202,7 +202,7 @@
       "startLine": 151,
       "endLine": 167
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Basic Properties",
     "content": "**additive_at_one**: Every additive function satisfies f(1) = 0.\n\nProof: f(1) = f(1·1) = f(1) + f(1) (since gcd(1,1) = 1), so f(1) = 0.\n\nWe also state that completely additive functions satisfy f(p^k) = k·f(p), and strongly additive functions satisfy f(p^k) = f(p) for k ≥ 1.",
     "mathContext": "The value f(1) = 0 is forced by the functional equation, matching log(1) = 0.",

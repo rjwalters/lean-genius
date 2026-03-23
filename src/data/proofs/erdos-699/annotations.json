@@ -43,7 +43,7 @@
       "startLine": 32,
       "endLine": 48
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sylvester-Schur Theorem",
     "content": "**sylvester_schur** axiomatizes a classical result: for 1 ≤ i ≤ n/2, there exists a prime p > i dividing C(n,i).\n\nThis theorem says that binomial coefficients always have 'large' prime factors — primes greater than the smaller index.",
     "mathContext": "Proved independently by Sylvester (1892) and Schur (1929). The proof analyzes the product n(n-1)...(n-i+1)/i! and shows it must have a prime factor > i.\n\nThis is the foundation for Problem #699: if single coefficients have large primes, do GCDs also?",
@@ -115,7 +115,7 @@
       "startLine": 101,
       "endLine": 125
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Verified Example: n=6, i=2, j=3",
     "content": "We verify **gcd(C(6,2), C(6,3)) = gcd(15, 20) = 5**.\n\nSince 5 ≥ 2 is prime and 5 | gcd, the conjecture holds for this triple.\n\nNote: 5 > 2, so the strict version also holds here.",
     "mathContext": "Computation: C(6,2) = 15 = 3·5, C(6,3) = 20 = 2²·5. GCD = 5.\n\nThe shared factor 5 satisfies both p ≥ i and p > i (since 5 > 2).",
@@ -133,7 +133,7 @@
       "startLine": 127,
       "endLine": 146
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Verified Example: n=10, i=2, j=5",
     "content": "We verify **gcd(C(10,2), C(10,5)) = gcd(45, 252) = 9 = 3²**.\n\nThe prime factor 3 ≥ 2 divides the GCD, confirming the conjecture for this triple.\n\nSince 3 > 2, the strict version also holds.",
     "mathContext": "Computation: C(10,2) = 45 = 3²·5, C(10,5) = 252 = 2²·3²·7. GCD = 9 = 3².\n\nInterestingly, 45 has the large prime 5, and 252 has 7, but they share only 3.",
@@ -150,7 +150,7 @@
       "startLine": 148,
       "endLine": 167
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Critical Counterexample: Setup",
     "content": "We compute the key values for (n, i, j) = (28, 5, 14):\n\n• C(28, 5) = 98280\n• C(28, 14) = 40116600\n• gcd = 1080 = 2³ · 3³ · 5",
     "mathContext": "This GCD has only three prime factors: 2, 3, and 5. The largest is 5, which equals i.\n\nThis means there is NO prime p > 5 = i in the GCD — a counterexample to the strict form!",
@@ -168,7 +168,7 @@
       "startLine": 169,
       "endLine": 180
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Maximum Prime of 1080",
     "content": "**max_prime_1080_is_5** states: any prime dividing 1080 is ≤ 5.\n\nSince 1080 = 2³ × 3³ × 5, the only prime factors are 2, 3, and 5.\n\n(This is stated with a sorry for the factorization check.)",
     "mathContext": "This lemma is the key to proving (28, 5, 14) is a counterexample. If any prime p | 1080, then p ∈ {2, 3, 5}, so p ≤ 5.",
@@ -186,7 +186,7 @@
       "startLine": 182,
       "endLine": 190
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Weak Version Satisfied",
     "content": "**example_28_5_14_weak** shows HasCommonLargePrime 28 5 14:\n\nThe prime 5 ≥ 5 divides gcd(C(28,5), C(28,14)) = 1080.\n\nSo the weak conjecture (p ≥ i) holds for this triple.",
     "mathContext": "The witness prime p = 5 satisfies: 5 is prime, 5 ≥ 5 = i, and 5 | 1080.",
@@ -204,7 +204,7 @@
       "startLine": 192,
       "endLine": 204
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Strong Version Failed",
     "content": "**counterexample_28_5_14_strong** proves ¬HasCommonStrictlyLargePrime 28 5 14:\n\nSuppose prime p > 5 divides gcd = 1080. By max_prime_1080_is_5, p ≤ 5. Contradiction!\n\nSo (28, 5, 14) is a counterexample to the strict form.",
     "mathContext": "The proof by contradiction: assume p > 5 and p | 1080. Since 1080 = 2³·3³·5, any prime divisor p ∈ {2, 3, 5}, so p ≤ 5 < 5+1. This contradicts p > 5.",

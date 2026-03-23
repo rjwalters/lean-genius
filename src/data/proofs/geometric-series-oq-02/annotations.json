@@ -6,7 +6,7 @@
       "startLine": 59,
       "endLine": 62
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Neumann Series Summability",
     "content": "The power series ∑ T^n converges absolutely when ‖T‖ < 1 in a complete normed ring. This is the operator generalization of the scalar convergence condition |r| < 1.",
     "mathContext": "\\sum_{n=0}^{\\infty} \\|T^n\\| \\leq \\sum_{n=0}^{\\infty} \\|T\\|^n < \\infty \\text{ when } \\|T\\| < 1",
@@ -28,7 +28,7 @@
       "startLine": 72,
       "endLine": 75
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Invertibility of (1-T)",
     "content": "When ‖T‖ < 1, the element (1-T) is a unit (invertible) in the ring. This is constructed via Mathlib's Units.oneSub, which packages (1-T) with its inverse ∑ T^n.",
     "mathContext": "(1-T)^{-1} = \\sum_{n=0}^{\\infty} T^n",
@@ -49,7 +49,7 @@
       "startLine": 90,
       "endLine": 100
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Neumann Series Sum Formula",
     "content": "The fundamental identity ∑ T^n = Ring.inverse(1-T). The proof bridges Mathlib's Units.oneSub construction (which defines the inverse as the tsum) to the Ring.inverse API via simp.",
     "mathContext": "\\sum_{n=0}^{\\infty} T^n = (1-T)^{-1} \\text{ in } \\operatorname{Ring.inverse}",
@@ -70,7 +70,7 @@
       "startLine": 127,
       "endLine": 140
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Left and Right Inverse Identities",
     "content": "Both (1-T)·∑T^n = 1 and ∑T^n·(1-T) = 1. In non-commutative settings (like matrix rings), both directions must be verified separately. These follow directly from Ring.mul_inverse_cancel and Ring.inverse_mul_cancel.",
     "mathContext": "(1-T) \\cdot S = S \\cdot (1-T) = 1 \\text{ where } S = \\sum T^n",
@@ -92,7 +92,7 @@
       "startLine": 189,
       "endLine": 202
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Perturbation of Identity",
     "content": "Any element A with ‖1-A‖ < 1 is invertible, with Ring.inverse A = ∑(1-A)^n. This is the foundation of perturbation theory: small perturbations of the identity preserve invertibility.",
     "mathContext": "\\|1-A\\| < 1 \\implies A \\text{ is invertible, } A^{-1} = \\sum_{n=0}^{\\infty} (1-A)^n",
@@ -112,7 +112,7 @@
       "startLine": 212,
       "endLine": 228
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Commutativity with Generator",
     "content": "T commutes with ∑T^n even in non-commutative rings. The proof uses the inverse identities: from S-T·S = 1 and S-S·T = 1, we get T·S = S-1 = S·T by additive cancellation (abel tactic).",
     "mathContext": "T \\cdot \\sum T^n = \\sum T^n \\cdot T",

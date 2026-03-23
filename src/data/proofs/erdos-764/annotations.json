@@ -76,7 +76,7 @@
       "startLine": 87,
       "endLine": 102
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdos-Fuchs Theorem (2-Fold Case, 1956)",
     "content": "erdos_fuchs_theorem (axiom): no set A has sum 1_A * 1_A = cN + o(N^{1/4}/(log N)^{1/2}). This is the foundational 1956 result establishing that representation functions must fluctuate. erdos_fuchs_corollary (axiom): no set A has sum 1_A * 1_A = cN + O(1). Follows because bounded error is a special case of the Vaughan error bound. These establish the 2-fold baseline that Problem #764 generalizes.",
     "mathContext": "`erdos_fuchs_theorem : \\forall A, c > 0, \\neg\\text{IsLinearVaughan}(\\text{sumConv2}(A), c)$. `erdos_fuchs_corollary : \\forall A, c > 0, \\neg\\text{IsLinearBounded}(\\text{sumConv2}(A), c)$. The original proof uses exponential sums and Parseval's identity: $\\sum |\\hat{f}|^2 = \\sum |f|^2$.",
@@ -98,7 +98,7 @@
       "startLine": 109,
       "endLine": 131
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Vaughan's Theorem: 3-Fold and h-Fold Impossibility",
     "content": "vaughan_3fold_theorem (axiom): no set A has sum 1_A * 1_A * 1_A = cN + o(N^{1/4}/(log N)^{1/2}). The strong form proving even this weak error bound is impossible. vaughan_corollary (axiom): no set A has sum 1_A * 1_A * 1_A = cN + O(1). This is the direct answer to Erdos Problem #764: NO. vaughan_hfold_theorem (axiom): for any h >= 2, the h-fold convolution sum cannot be cN + O(1). Vaughan's proof technique extends the Erdos-Fuchs exponential sum method to higher-order convolutions.",
     "mathContext": "`vaughan_3fold_theorem : \\forall A, c > 0, \\neg\\text{IsLinearVaughan}(\\text{sumConv3}(A), c)$. `vaughan_corollary : \\forall A, c > 0, \\neg\\text{IsLinearBounded}(\\text{sumConv3}(A), c)$. `vaughan_hfold_theorem : \\forall h \\geq 2, \\forall A, c > 0, \\neg\\text{IsLinearBounded}(\\sum_{n \\leq N} \\text{convH}(h, A, n), c)$.",
@@ -142,7 +142,7 @@
       "startLine": 155,
       "endLine": 161
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Squares Example: Proved Application",
     "content": "squares_not_linear (PROVED): even for A = {0, 1, 4, 9, 16, ...} (perfect squares), the 3-fold convolution sum cannot be cN + O(1). Proved directly by applying vaughan_corollary to Squares. This connects to Waring's problem: the number of representations of n as a sum of 3 squares is known to be ~(pi/4) * n^{1/2} * S(n) where S is a singular series, far from linear growth.",
     "mathContext": "`squares_not_linear : \\forall c > 0, \\neg\\text{IsLinearBounded}(\\text{sumConv3}(\\text{Squares}), c)$. Proved: `vaughan_corollary Squares c hc`. The 3-square representation count $r_3(n)$ has fluctuations governed by class numbers.",
@@ -163,7 +163,7 @@
       "startLine": 167,
       "endLine": 181
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Montgomery-Vaughan Refinement and Tightness",
     "content": "montgomery_vaughan_refinement (axiom): even o(N^{1/4}) is impossible for 2-fold convolutions, removing the logarithmic factor from Erdos-Fuchs. quarter_exponent_tight (axiom): there exist sets where the error is O(N^alpha) for any alpha > 1/4. Together these show the 1/4 exponent is exactly the critical threshold — it cannot be improved to any smaller exponent, but the log factor can be removed.",
     "mathContext": "`montgomery_vaughan_refinement : \\forall A, c > 0, \\neg\\text{IsLinearLittleO}(\\text{sumConv2}(A), c, 1/4)$. `quarter_exponent_tight : \\exists A, c > 0, \\forall \\alpha > 1/4, \\text{IsLinearLittleO}(\\text{sumConv2}(A), c, \\alpha)$. The critical exponent $1/4$ matches the Fourier-analytic prediction from $L^2$ norms.",
@@ -184,7 +184,7 @@
       "startLine": 196,
       "endLine": 208
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem: Three Impossibility Results",
     "content": "erdos_764_summary (PROVED from axioms): combines three impossibility results into one theorem. (1) 3-fold convolution sum cannot be cN + O(1) — the direct answer to Problem #764. (2) Cannot even be cN + o(N^{1/4}/(log N)^{1/2}) — the strong Vaughan bound. (3) Generalizes to h-fold for all h >= 2 — completely general. Proved as a triple conjunction directly from vaughan_corollary, vaughan_3fold_theorem, and vaughan_hfold_theorem.",
     "mathContext": "`erdos_764_summary` proves the conjunction: $(\\forall A, c > 0, \\neg\\text{IsLinearBounded}(\\text{sumConv3}(A), c)) \\wedge (\\forall A, c > 0, \\neg\\text{IsLinearVaughan}(\\text{sumConv3}(A), c)) \\wedge (\\forall h \\geq 2, \\forall A, c > 0, \\neg\\text{IsLinearBounded}(\\sum \\text{convH}(h,A), c))$. Proof: `\\langle\\text{vaughan\\_corollary}, \\text{vaughan\\_3fold\\_theorem}, \\text{vaughan\\_hfold\\_theorem}\\rangle`.",

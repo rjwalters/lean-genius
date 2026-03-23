@@ -105,7 +105,7 @@
       "startLine": 128,
       "endLine": 134
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Burr's Unpublished Result",
     "content": "**burr_unpublished:**\n\nBurr proved that k-th powers are Ramsey r-complete for all r, k ≥ 2.\n\nThis result was reported by Erdős in 1995 but was never formally published.",
     "mathContext": "The lack of publication left the problem officially open until 2021.",
@@ -122,7 +122,7 @@
       "startLine": 136,
       "endLine": 146
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Conlon-Fox-Pham (2021)",
     "content": "**conlon_fox_pham_2021:**\n\nFor every r, k ≥ 2, the set of k-th powers contains a SPARSE Ramsey r-complete subsequence.\n\n'Sparse' means |A ∩ {1,...,N}| ≪ r(log N)², which is optimal up to constants.\n\nThis is stronger than just proving k-th powers are Ramsey complete.",
     "mathContext": "From arXiv:2104.14766 'Subset sums, completeness and colorings'.",
@@ -139,7 +139,7 @@
       "startLine": 148,
       "endLine": 153
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Subset Ramsey Complete",
     "content": "**subset_ramsey_complete (axiom):**\n\nIf A ⊆ B and A is Ramsey r-complete, then B is Ramsey r-complete.\n\nThis is the key lemma: sparse subsequence completeness implies full set completeness.",
     "significance": "key",
@@ -155,7 +155,7 @@
       "startLine": 155,
       "endLine": 162
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "k-th Powers Ramsey Complete",
     "content": "**kth_powers_ramsey_complete:**\n\nFor k ≥ 2 and r ≥ 2, the k-th powers are Ramsey r-complete.\n\nFollows from CFP's sparse subsequence result plus subset_ramsey_complete.",
     "significance": "key",
@@ -171,7 +171,7 @@
       "startLine": 168,
       "endLine": 184
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem Resolved",
     "content": "**squares_ramsey_2_complete, erdos_843_resolved:**\n\nThe squares are Ramsey 2-complete.\n\nProof: Squares = KthPowers 2, and kth_powers_ramsey_complete gives the result for k=2, r=2.",
     "significance": "key",
@@ -187,7 +187,7 @@
       "startLine": 190,
       "endLine": 217
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Density Bounds",
     "content": "**cfp_density_bounds, burr_erdos_upper_bound:**\n\nOptimal density for Ramsey completeness:\n- Upper: ∃ r-Ramsey complete A with |A ∩ [1,N]| ≪ r(log N)² (CFP)\n- Lower: Any r-Ramsey complete A has |A ∩ [1,N]| ≫ (log N)² (CFP)\n- Previous: Burr-Erdős achieved (log N)³\n\nSo (log N)² is the threshold - CFP achieved optimality.",
     "significance": "key",
@@ -219,7 +219,7 @@
       "startLine": 245,
       "endLine": 271
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem Summary",
     "content": "**erdos_843_summary:**\n\n| Aspect | Result |\n|--------|--------|\n| Question | Are squares Ramsey 2-complete? |\n| Answer | YES (Conlon-Fox-Pham 2021) |\n| Generalization | k-th powers Ramsey r-complete |\n| Optimal density | (log N)² |\n| Prize | Part of $350 combined |",
     "significance": "key",

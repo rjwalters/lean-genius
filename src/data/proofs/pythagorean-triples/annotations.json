@@ -95,7 +95,7 @@
       "startLine": 85,
       "endLine": 113
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Classification Theorems",
     "content": "The two central results of the formalization:\n\n**primitive_triples_are_classified** (line 98): If $(x, y, z)$ is a Pythagorean triple with $\\gcd(x, y) = 1$, then it has the parametric form. This is a direct application of Mathlib's `isPrimitiveClassified_of_coprime`. The proof encodes the deep result that the rational parametrization of the unit circle captures all rational points.\n\n**all_triples_are_classified** (line 110): Every Pythagorean triple (not just primitive ones) can be written as $k \\cdot (m^2 - n^2, 2mn, m^2 + n^2)$ for some integer $k$. This follows from the fact that dividing by $\\gcd(x, y)$ produces a primitive triple.",
     "mathContext": "$\\forall x, y, z \\in \\mathbb{Z},\\; x^2 + y^2 = z^2 \\implies \\exists k, m, n$ such that $(x, y, z) = k \\cdot (m^2 - n^2, 2mn, m^2 + n^2)$ (up to leg swap)",
@@ -119,7 +119,7 @@
       "startLine": 115,
       "endLine": 133
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Algebraic Verification of the Formula",
     "content": "The converse direction: the parametric formula always produces valid triples. Two theorems handle both orderings of legs:\n\n- `parametric_form_is_triple`: $(m^2 - n^2, 2mn, m^2 + n^2)$ is a triple\n- `parametric_form_is_triple'`: $(2mn, m^2 - n^2, m^2 + n^2)$ is a triple\n\nBoth proofs unfold the `PythagoreanTriple` definition and apply `ring`, which automatically verifies the polynomial identity $(m^2 - n^2)^2 + (2mn)^2 = (m^2 + n^2)^2$. This expands to $m^4 - 2m^2n^2 + n^4 + 4m^2n^2 = m^4 + 2m^2n^2 + n^4$.",
     "mathContext": "$(m^2 - n^2)^2 + (2mn)^2 = m^4 - 2m^2n^2 + n^4 + 4m^2n^2 = m^4 + 2m^2n^2 + n^4 = (m^2 + n^2)^2$",
@@ -162,7 +162,7 @@
       "startLine": 194,
       "endLine": 209
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Structural Properties",
     "content": "Three properties of the Pythagorean triple predicate:\n\n- **Symmetry** (`triple_symm`): If $(x, y, z)$ is a triple, so is $(y, x, z)$. This reflects the commutativity of addition.\n- **Zero triple** (`triple_zero`): $(0, 0, 0)$ is trivially a triple since $0 + 0 = 0$.\n- **Parity** (`even_odd_of_coprime`): In a primitive triple, exactly one of $x, y$ is even and the other odd. This is because if both were odd, $x^2 + y^2 \\equiv 2 \\pmod{4}$, which cannot be a perfect square.",
     "mathContext": "If $\\gcd(x,y) = 1$ and $x^2 + y^2 = z^2$, then $(x \\bmod 2, y \\bmod 2) \\in \\{(0,1), (1,0)\\}$",
@@ -208,7 +208,7 @@
       "startLine": 241,
       "endLine": 268
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Scaling and Non-primitive Triples",
     "content": "The final section shows that multiplying a Pythagorean triple by any integer $k$ produces another triple: if $x^2 + y^2 = z^2$, then $(kx)^2 + (ky)^2 = k^2(x^2 + y^2) = k^2 z^2 = (kz)^2$. This is demonstrated concretely:\n\n- $(6, 8, 10) = 2 \\times (3, 4, 5)$\n- $(9, 12, 15) = 3 \\times (3, 4, 5)$\n\nCombined with the primitive classification, this completes the picture: **every** Pythagorean triple is an integer multiple of a parametrically generated primitive triple.",
     "mathContext": "$k(x, y, z)$ is a Pythagorean triple whenever $(x, y, z)$ is, since $(kx)^2 + (ky)^2 = k^2(x^2 + y^2) = (kz)^2$",

@@ -58,7 +58,7 @@
       "startLine": 61,
       "endLine": 63
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Frankl-Wilson Lower Bound (1981)",
     "content": "**frankl_wilson_1981:**\n\nχ(Gₙ) ≥ (1+o(1))·1.2ⁿ\n\nThis proves exponential growth with base at least 1.2.\n\n**Reference:** Frankl, P. and Wilson, R. M., \"Intersection theorems with geometric consequences\", Combinatorica (1981).",
     "mathContext": "The proof uses algebraic combinatorics: analyzing set systems with restricted intersection sizes leads to chromatic number bounds.",
@@ -75,7 +75,7 @@
       "startLine": 86,
       "endLine": 88
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Larman-Rogers Upper Bound (1972)",
     "content": "**larman_rogers_1972:**\n\nχ(Gₙ) ≤ (3+o(1))ⁿ\n\nThis uses lattice tilings: partition ℝⁿ using Voronoi cells of the Aₙ lattice, where each cell has diameter < 1.\n\n**Reference:** Larman, D. G. and Rogers, C. A., \"The realization of distances within sets in Euclidean space\", Mathematika (1972).",
     "significance": "key",
@@ -108,7 +108,7 @@
       "startLine": 108,
       "endLine": 109
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "de Grey's Breakthrough (2018)",
     "content": "**de_grey_2018:**\n\nχ(G₂) ≥ 5\n\nAubrey de Grey constructed a 1581-vertex unit distance graph requiring 5 colors, improving the 70-year-old lower bound of 4.\n\nThis was later reduced to 509 vertices by others.",
     "mathContext": "A major breakthrough in the Hadwiger-Nelson problem, found by an amateur mathematician using computer search.",
@@ -126,7 +126,7 @@
       "startLine": 114,
       "endLine": 116
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Hadwiger-Nelson Bounds",
     "content": "**hadwiger_nelson_bounds:**\n\n5 ≤ χ(G₂) ≤ 7\n\nThe plane chromatic number is 5, 6, or 7. After 70+ years, the exact value is unknown!\n\n- Lower bound 5: de Grey's graph (2018)\n- Upper bound 7: Hexagonal tiling",
     "significance": "key",
@@ -158,7 +158,7 @@
       "startLine": 130,
       "endLine": 138
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Derived Results",
     "content": "**exponential_growth** and **base_bounds:**\n\nTwo consequences axiomatized from the main bounds:\n- Exponential growth: ∃ c > 1 such that χ(Gₙ) ≥ cⁿ for all n ≥ 1\n- Base bounds: 1.2 ≤ lim χ(Gₙ)^{1/n} ≤ 3\n\nThese follow from Frankl-Wilson and Larman-Rogers but require real analysis arguments not yet in Mathlib.",
     "mathContext": "Converting asymptotic bounds (1+o(1))·1.2ⁿ to uniform exponential bounds requires careful limit arguments.",
@@ -192,7 +192,7 @@
       "startLine": 157,
       "endLine": 161
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result",
     "content": "**erdos_704_solved:**\n\nCombines both bounds:\n- ∀ε>0: χ(Gₙ) ≥ (1-ε)·1.2ⁿ for large n\n- ∀ε>0: χ(Gₙ) ≤ (3+ε)ⁿ for large n\n\nThis establishes exponential growth, resolving part of the problem.\n\nThe exact base remains open.",
     "significance": "key",

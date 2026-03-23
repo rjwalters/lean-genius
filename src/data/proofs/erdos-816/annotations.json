@@ -8,11 +8,11 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erd\u0151s Problem #816: Equal-Degree Vertices and Paths of Length 3**\n\nA problem of Erd\u0151s and Hajnal asking:\n\nIf G has 2n+1 vertices and n\u00b2 + n + 1 edges, must it contain two vertices of the same degree connected by a path of length 3?\n\n**Answer:** YES (Chen-Ma, 2025)\n\n**Key Insight:** K_{n,n+1} with n\u00b2 + n edges is the unique obstruction.",
-    "mathContext": "This is a Tur\u00e1n-type extremal graph problem about forced substructures.",
+    "content": "**Erdős Problem #816: Equal-Degree Vertices and Paths of Length 3**\n\nA problem of Erdős and Hajnal asking:\n\nIf G has 2n+1 vertices and n² + n + 1 edges, must it contain two vertices of the same degree connected by a path of length 3?\n\n**Answer:** YES (Chen-Ma, 2025)\n\n**Key Insight:** K_{n,n+1} with n² + n edges is the unique obstruction.",
+    "mathContext": "This is a Turán-type extremal graph problem about forced substructures.",
     "significance": "key",
     "relatedConcepts": [
-      "Tur\u00e1n problems",
+      "Turán problems",
       "Bipartite graphs",
       "Degree sequences"
     ]
@@ -51,7 +51,7 @@
       "degree sequences",
       "equal-degree vertices",
       "P3 path conditions",
-      "Erd\u0151s-Hajnal conjecture"
+      "Erdős-Hajnal conjecture"
     ]
   },
   {
@@ -62,11 +62,11 @@
       "endLine": 122
     },
     "type": "definition",
-    "title": "Erd\u0151s-Hajnal and Chen-Ma Conditions",
-    "content": "**satisfiesEH816:** A graph has 2n+1 vertices and n\u00b2 + n + 1 edges (original problem).\n\n**satisfiesWeakerEH816:** A graph has 2n+1 vertices and at least n\u00b2 + n edges (Chen-Ma's stronger version). With this weaker condition, only K_{n,n+1} fails.",
+    "title": "Erdős-Hajnal and Chen-Ma Conditions",
+    "content": "**satisfiesEH816:** A graph has 2n+1 vertices and n² + n + 1 edges (original problem).\n\n**satisfiesWeakerEH816:** A graph has 2n+1 vertices and at least n² + n edges (Chen-Ma's stronger version). With this weaker condition, only K_{n,n+1} fails.",
     "significance": "key",
     "relatedConcepts": [
-      "Erd\u0151s-Hajnal conditions",
+      "Erdős-Hajnal conditions",
       "graph edge density",
       "Chen-Ma theorem",
       "vertex-edge bounds"
@@ -81,7 +81,7 @@
     },
     "type": "definition",
     "title": "Complete Bipartite Graph and Counterexample",
-    "content": "**isCompleteBipartite:** K_{n,n+1} is the complete bipartite graph with parts of size n and n+1. All edges go between parts, giving n\u00b2 + n total edges.\n\n**K_counterexample:** K_{n,n+1} does NOT contain an equal-degree path-3 pair. Part A has degree n+1, part B has degree n, so same-degree vertices are in the same part. But length-3 paths between same-part vertices don't exist in bipartite graphs.\n\nThis shows the threshold n\u00b2 + n + 1 is tight.",
+    "content": "**isCompleteBipartite:** K_{n,n+1} is the complete bipartite graph with parts of size n and n+1. All edges go between parts, giving n² + n total edges.\n\n**K_counterexample:** K_{n,n+1} does NOT contain an equal-degree path-3 pair. Part A has degree n+1, part B has degree n, so same-degree vertices are in the same part. But length-3 paths between same-part vertices don't exist in bipartite graphs.\n\nThis shows the threshold n² + n + 1 is tight.",
     "mathContext": "K_{n,n+1} is the unique extremal graph for the problem.",
     "significance": "key"
   },
@@ -92,10 +92,10 @@
       "startLine": 157,
       "endLine": 188
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Chen-Ma Theorem and Main Results",
-    "content": "**chen_ma_theorem:** For n \u2265 600, every graph on 2n+1 vertices with \u2265 n\u00b2 + n edges contains an equal-degree path-3 pair, EXCEPT K_{n,n+1}.\n\n**erdos_816_for_large_n:** Corollary for n \u2265 600 with n\u00b2 + n + 1 edges (G cannot be K_{n,n+1} since it has fewer edges).\n\n**erdos_816_full:** The complete answer for all n: axiomatized as the full resolution of Problem #816.",
-    "mathContext": "Chen-Ma (2025, arXiv:2503.19569) resolved this decades-old Erd\u0151s-Hajnal problem.",
+    "content": "**chen_ma_theorem:** For n ≥ 600, every graph on 2n+1 vertices with ≥ n² + n edges contains an equal-degree path-3 pair, EXCEPT K_{n,n+1}.\n\n**erdos_816_for_large_n:** Corollary for n ≥ 600 with n² + n + 1 edges (G cannot be K_{n,n+1} since it has fewer edges).\n\n**erdos_816_full:** The complete answer for all n: axiomatized as the full resolution of Problem #816.",
+    "mathContext": "Chen-Ma (2025, arXiv:2503.19569) resolved this decades-old Erdős-Hajnal problem.",
     "significance": "key",
     "relatedConcepts": [
       "Chen-Ma theorem 2019",
@@ -111,7 +111,7 @@
       "startLine": 194,
       "endLine": 200
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Pigeonhole for Degrees",
     "content": "**pigeonhole_degrees:** In any graph with at least 2 vertices, some pair of vertices must share a degree. There are only n possible degrees (0 to n-1) among n vertices, so by pigeonhole, at least two coincide.",
     "significance": "supporting"
@@ -123,15 +123,15 @@
       "startLine": 206,
       "endLine": 226
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary",
-    "content": "**erdos_816_summary:** The complete resolution: for all n, graphs with 2n+1 vertices and n\u00b2 + n + 1 edges contain equal-degree vertices joined by path of length 3.\n\n**Stronger Result:** For n \u2265 600, even n\u00b2 + n edges suffice, except K_{n,n+1}.\n\n**Threshold:** K_{n,n+1} has exactly n\u00b2 + n edges and fails. One more edge forces the property.",
+    "content": "**erdos_816_summary:** The complete resolution: for all n, graphs with 2n+1 vertices and n² + n + 1 edges contain equal-degree vertices joined by path of length 3.\n\n**Stronger Result:** For n ≥ 600, even n² + n edges suffice, except K_{n,n+1}.\n\n**Threshold:** K_{n,n+1} has exactly n² + n edges and fails. One more edge forces the property.",
     "significance": "key",
     "relatedConcepts": [
       "complete bipartite graphs",
       "K_{n,n+1} counterexample",
       "graph theory open problems",
-      "Erd\u0151s problems solved"
+      "Erdős problems solved"
     ]
   }
 ]

@@ -77,7 +77,7 @@
       "startLine": 150,
       "endLine": 158
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Key Trigonometric Identities",
     "content": "Two expansion identities for $\\pi/3$-shifted angles: $\\sin(\\pi/3 + \\theta) = (\\sqrt{3}/2)\\cos\\theta + (1/2)\\sin\\theta$ and $\\cos(\\pi/3 + \\theta) = (1/2)\\cos\\theta - (\\sqrt{3}/2)\\sin\\theta$. Both are proved by `simp` using `sin_add`/`cos_add` with the known values $\\sin(\\pi/3) = \\sqrt{3}/2$ and $\\cos(\\pi/3) = 1/2$. These connect trisected angles to the equilateral triangle's $60°$ geometry.",
     "mathContext": "The identities follow from the addition formulas: $\\sin(a + b) = \\sin a \\cos b + \\cos a \\sin b$ and $\\cos(a + b) = \\cos a \\cos b - \\sin a \\sin b$. With $a = \\pi/3$, we substitute $\\sin(\\pi/3) = \\sqrt{3}/2$ and $\\cos(\\pi/3) = 1/2$. These are the only theorems in the file proved without axioms — the `simp` tactic closes them from Mathlib's `sin_add`, `cos_add`, `sin_pi_div_three`, and `cos_pi_div_three`.",
@@ -151,7 +151,7 @@
       "startLine": 255,
       "endLine": 270
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Morley's Theorem (Wiedijk #84)",
     "content": "**Morley's Theorem**: For any triangle with angles $\\alpha, \\beta, \\gamma$, the three intersection points $M_1, M_2, M_3$ of adjacent angle trisectors satisfy $|M_1 M_2| = |M_2 M_3| = |M_3 M_1|$. The main theorem `morleys_theorem` follows directly from `morleys_theorem_axiom`. The alternative formulation `morley_triangle_equilateral` adds a trivial `True` conjunct. The axiom encodes the deep geometric fact that the symmetric side length formula guarantees equilateral geometry.",
     "mathContext": "The theorem asserts $|M_2 - M_1| = |M_3 - M_2|$ and $|M_3 - M_2| = |M_1 - M_3|$ using `Complex.abs` for Euclidean distance in the complex plane. The axiom `morleys_theorem_axiom` is the only axiom used for the main result (besides `equilateral_side_length_axiom` for the construction). A full proof would require showing that the backward construction produces valid trisectors, which involves substantial trigonometric computation.",

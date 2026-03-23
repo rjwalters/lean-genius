@@ -222,7 +222,7 @@
       "startLine": 120,
       "endLine": 128
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Hartter-Nathanson Existence",
     "content": "**hartter_nathanson_existence:**\n\nThere exist additive bases that contain NO minimal additive bases.\n\n```lean\naxiom hartter_nathanson_existence (k : N) (hk : k >= 2) :\n    exists A, IsAdditiveBasis A k and not ContainsMinimalBasis A k\n```\n\n**Significance:** This shows the problem is non-trivial - without growth conditions, minimal bases need not exist.\n\n**References:** Hartter (1956), Nathanson (1974)",
     "mathContext": "These constructions are delicate - they produce bases with no irreducible core.",
@@ -245,7 +245,7 @@
       "startLine": 130,
       "endLine": 135
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdos-Nathanson (1979) for k = 2",
     "content": "**erdos_nathanson_k2:**\n\nFor k = 2, if A satisfies the EN condition, then A contains a minimal basis.\n\n```lean\naxiom erdos_nathanson_k2 (A : AdditiveSet) :\n    IsAdditiveBasis A 2 -> SatisfiesENCondition A -> ContainsMinimalBasis A 2\n```\n\n**This is the main known result:** The k = 2 case is SOLVED.",
     "mathContext": "Proved by Erdos and Nathanson in their 1979 paper.",
@@ -290,7 +290,7 @@
       "startLine": 179,
       "endLine": 186
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "k = 2 Case Resolved",
     "content": "**k2_case_resolved:**\n\nThe conjecture is vacuously true for k = 2 (since it requires k >= 3).\n\nThe actual k = 2 result is erdos_nathanson_k2 which gives the positive answer.",
     "significance": "supporting",
@@ -311,7 +311,7 @@
       "startLine": 209,
       "endLine": 216
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Waring's Problem Connection",
     "content": "**waring_theorem:**\n\nK-th powers form an additive basis of some order g(k).\n\n```lean\ndef KthPowers (k : N) : AdditiveSet := {n : N | exists m, n = m^k}\n\naxiom waring_theorem (k : N) (hk : k >= 1) :\n    exists g, IsAdditiveBasis (KthPowers k) g\n```\n\n**Classical result:** g(2) = 4, g(3) = 9, g(4) = 19, ...",
     "mathContext": "Waring's problem was solved by Hilbert (1909), with bounds improved by many.",
@@ -354,7 +354,7 @@
       "startLine": 280,
       "endLine": 322
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary",
     "content": "**Erdos Problem #870: OPEN**\n\n**Question:** For k >= 3, if A is an additive basis with r(n) >= c log n, must A contain a minimal basis?\n\n**Known Results:**\n1. k = 2: YES (Erdos-Nathanson 1979)\n2. Without log growth: NO (Hartter-Nathanson)\n3. k >= 3: UNKNOWN\n\n**Key Insight:** The log n threshold marks a boundary between 'sparse' bases (which may lack minimal substructures) and 'dense' bases (which might be forced to have them).",
     "significance": "key",

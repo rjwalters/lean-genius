@@ -2,7 +2,7 @@
   {
     "id": "ann-e75-imports",
     "proofId": "erdos-75",
-    "type": "import",
+    "type": "context",
     "title": "Basic Mathlib Imports",
     "content": "Imports Nat.Basic, Finset, Rat.Basic, and tactics from Mathlib.",
     "mathContext": "The formalization uses `ℚ` (rational numbers) for the density parameter $\\varepsilon$ and the linear constant $c$, avoiding the complications of working with real-valued exponents. The `Finset` import supports finite vertex counting. Notably, this file does NOT import Mathlib's `SimpleGraph` type—instead it axiomatizes an abstract `Graph` type to handle infinite graphs with uncountable chromatic number, which are beyond SimpleGraph's scope.",
@@ -24,7 +24,7 @@
   {
     "id": "ann-e75-graphAxioms",
     "proofId": "erdos-75",
-    "type": "axiom",
+    "type": "concept",
     "title": "Abstract Graph Type and Chromatic Number",
     "content": "Axiomatizes Graph as an abstract type with chromaticNum G n meaning G requires ≥ n colours, and monotonicity of this predicate.",
     "mathContext": "The abstract `Graph` type is necessary because Problem 75 concerns graphs with **uncountable chromatic number** ($\\chi(G) \\geq \\aleph_1$), which cannot be modeled by Mathlib's `SimpleGraph V` with finite `V`. The chromatic number is represented as a predicate `chromaticNum G n` ('$G$ requires at least $n$ colours') rather than a cardinal-valued function, with monotonicity axiom: if $G$ requires $n$ colours and $m \\leq n$, then $G$ requires $m$ colours. This representation sidesteps cardinal arithmetic while capturing the essential property.",
@@ -65,7 +65,7 @@
   {
     "id": "ann-e75-finiteSubgraph",
     "proofId": "erdos-75",
-    "type": "axiom",
+    "type": "concept",
     "title": "Finite Subgraphs and Independence Number",
     "content": "Axiomatizes FiniteSubgraph G n (a subgraph on n vertices), indepNumber (its independence number), and the bound α(H) ≤ n.",
     "mathContext": "The axiomatization of `FiniteSubgraph G n` as a type (rather than a predicate on vertex subsets) cleanly handles the passage from the infinite graph $G$ to its finite induced subgraphs. The **independence number** $\\alpha(H)$ is the size of the largest independent set in $H$, axiomatized with the trivial upper bound $\\alpha(H) \\leq n$ (at most all vertices are independent). The problem asks for *lower bounds* on $\\alpha(H)$ that are nearly linear in $n$.",
@@ -131,7 +131,7 @@
   {
     "id": "ann-e75-chromaticIndepBound",
     "proofId": "erdos-75",
-    "type": "axiom",
+    "type": "concept",
     "title": "Chromatic-Independence Bound",
     "content": "For finite graphs, α(H) · χ(H) ≥ |V(H)|: large chromatic number forces small independence ratio.",
     "mathContext": "The classical bound $\\alpha(G) \\cdot \\chi(G) \\geq |V(G)|$ follows from the pigeonhole principle: in a proper $k$-colouring, at least one colour class has size $\\geq n/k$, and colour classes are independent sets. This gives $\\alpha(G) \\geq n/\\chi(G)$. For finite graphs with large chromatic number, this *limits* the independence ratio. Problem 75 asks whether this tension can be circumvented for infinite graphs: can $\\chi(G)$ be uncountable while finite subgraphs still have $\\alpha(H) \\geq n^{1-\\varepsilon}$?",
@@ -153,7 +153,7 @@
   {
     "id": "ann-e75-basicConjecture",
     "proofId": "erdos-75",
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős Problem 75: Basic Form",
     "content": "There exists a graph with uncountable chromatic number and the large (n^{1-ε}) independence set property.",
     "mathContext": "The basic form of **Erdős Problem 75** ($\\$1000$ prize) asks whether uncountable chromatic number is compatible with near-linear independence in every finite subgraph. The existential quantification ($\\exists G$) means a *single* example suffices. Known constructions of graphs with $\\chi(G) \\geq \\aleph_1$ (shift graphs, Kneser-like constructions on $\\omega_1$) typically have finite subgraphs with $\\alpha(H) = O(\\sqrt{n})$ or worse, far from the required $n^{1-\\varepsilon}$. The problem is connected to the **Erdős-Hajnal conjecture** and the theory of obligatory subgraphs in infinite graphs.",
@@ -175,7 +175,7 @@
   {
     "id": "ann-e75-strongConjecture",
     "proofId": "erdos-75",
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős Problem 75: Strong Form",
     "content": "There exists a graph with uncountable chromatic number where every large finite subgraph has linear independence number α(H) ≥ c·n.",
     "mathContext": "The **strong form** replaces the sublinear bound $n^{1-\\varepsilon}$ with a linear bound $c \\cdot n$. If true, this would mean: despite needing uncountably many colours globally, every finite piece of the graph has a constant fraction of its vertices forming an independent set. This is an extreme form of the global-local tension in infinite graph theory. The strong form implies the basic form (since $c \\cdot n \\geq n^{1-\\varepsilon}$ for large $n$), but may be false even if the basic form holds.",

@@ -126,7 +126,7 @@
       "startLine": 78,
       "endLine": 92
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Known Values (EFKT92)",
     "content": "**Known exact values.** Erdős-Fon-Der-Flaass-Kostochka-Tuza (1992) determined: f(k,3) = 2k, f(k,4) = ⌊3k/2⌋, f(k,5) = ⌊5k/4⌋, f(k,6) = k. Each requires both an upper bound (covering algorithm) and matching lower bound (extremal construction).",
     "mathContext": "The exact values reveal a striking pattern of decreasing coefficients: $2, 3/2, 5/4, 1$. These can be written as $(r-1)/(r-2)$ for $r = 3, 4$ but this formula breaks at $r = 5$ (where $5/3 \\neq 5/4$). The jumps suggest the coefficient depends on the structure of extremal families, which becomes more constrained as $r$ increases. For $r = 6$, reaching $f(k,6) = k$ means the covering set need not be larger than the sets themselves — a natural barrier.",
@@ -173,7 +173,7 @@
       "startLine": 122,
       "endLine": 128
     },
-    "type": "conjecture",
+    "type": "concept",
     "title": "Question 1: f(k,7) = (3/4+o(1))k?",
     "content": "**Question 1.** Is f(k,7) = (3/4 + o(1))k? This asks whether the decreasing coefficient pattern continues to c₇ = 3/4, dropping below the natural barrier c₆ = 1.",
     "mathContext": "The transition from $c_6 = 1$ to a conjectured $c_7 = 3/4$ would cross the important threshold where the covering set becomes smaller than each individual set in the family. This sublinear regime ($c_r < 1$) means that the r-wise pair property forces enough redundancy that a proper subset of any $A_i$ suffices to cover the entire family. Proving this likely requires new extremal constructions and covering algorithms beyond those in EFKT92.",
@@ -197,7 +197,7 @@
       "startLine": 140,
       "endLine": 147
     },
-    "type": "conjecture",
+    "type": "concept",
     "title": "Question 2: General Asymptotics",
     "content": "**Question 2.** For all r ≥ 3, does f(k,r) = (cᵣ + o(1))k for some constant cᵣ? This asks whether the linear-in-k behavior persists for all r, not just the computed cases r = 3,...,6.",
     "mathContext": "If f(k,r) grows linearly in k for all r with coefficient $c_r$, the problem reduces to understanding the sequence $(c_r)_{r \\geq 3}$. Sublinear growth (f(k,r) = o(k)) for large r would be even more remarkable and would connect to the sunflower lemma, which guarantees structure in large families. The question of whether $c_r \\to 0$ or stabilizes at some positive constant is a deep open problem in extremal set theory.",
@@ -245,7 +245,7 @@
       "startLine": 174,
       "endLine": 180
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Monotonicity Properties",
     "content": "**Monotonicity.** f(k,r) is non-increasing in r (stronger coherence allows smaller covers) and non-decreasing in k (larger sets need larger covers). These are natural structural properties.",
     "mathContext": "The monotonicity in $r$ follows because a family with the $(r+1)$-wise pair property automatically has the $r$-wise pair property (take any $r$ sets from a set of $r+1$ and use the guaranteed pair). Thus the constraint is stronger for larger $r$, so the worst-case covering number is smaller. The monotonicity in $k$ is similarly natural: enlarging each set gives more elements to cover.",
@@ -268,7 +268,7 @@
       "startLine": 188,
       "endLine": 199
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sunflower Connection",
     "content": "**Sunflower Connection.** The r-wise pair property relates to the sunflower lemma (Erdős-Ko 1960). A sunflower is a family where all pairwise intersections are the same 'core.' The Erdős-Ko sunflower lemma bounds family sizes, and the pair property provides a weaker structural guarantee that still enables efficient covering.",
     "mathContext": "The **sunflower lemma** (Erdős and Rado, 1960) states that any family of more than $(r-1)^k \\cdot k!$ k-element sets contains an $r$-petal sunflower. The pair property is weaker than the sunflower condition (a common pair vs. a common core), but both force structural constraints on large families. Recent breakthroughs on the sunflower conjecture (Alweiss-Lovett-Wu-Zhang 2020, improved to $(\\log k)^k$) suggest that pair-intersection structures may also admit improved bounds.",

@@ -42,7 +42,7 @@
       "startLine": 60,
       "endLine": 95
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Basic Properties and Trivial Basis",
     "content": "**Key properties of additive bases:**\n\n**basis_contains_zero** (axiom): 0 must be in any 2-basis, since 0 ∈ A+A with a, b ∈ ℕ forces a = b = 0.\n\n**trivial_basis** (proved): {0, 1, ..., n} is always a 2-basis for {0,...,n}. The proof is simple: for any k ≤ n, k = 0 + k with both 0, k in the range.\n\n**g_le_n_plus_one** (axiom): g(n) ≤ n + 1, since the trivial basis has n+1 elements. But optimal bases are much smaller — roughly √n elements.\n\n**g_pos** (axiom): g(n) ≥ 1, since we need at least {0}.",
     "mathContext": "The trivial_basis proof uses Finset.mem_range and the pair (0, k) to witness each target. The proof is constructive and doesn't require any axioms.",
@@ -59,7 +59,7 @@
       "startLine": 97,
       "endLine": 112
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Rohrbach's Bounds (1937)",
     "content": "**The first non-trivial bounds on g(n):**\n\n**rohrbach_lower:** 2n ≤ g(n)². A set of size k can produce at most k(k+1)/2 distinct sums (counting with repetition), so covering n+1 values requires k² ≥ 2n approximately.\n\n**rohrbach_upper:** g(n)² ≤ 4n. Rohrbach constructed explicit 2-bases using arithmetic progressions that achieve this. This gives g(n) ≤ 2√n.\n\nTogether: √(2n) ≤ g(n) ≤ 2√n. Erdős conjectured the upper bound is tight (g(n) ~ 2√n), which turned out to be wrong.",
     "mathContext": "Rohrbach's 1937 paper 'Ein Beitrag zur additiven Zahlentheorie' established these foundational bounds. The lower bound is essentially a pigeonhole argument on the number of available sums.",
@@ -76,7 +76,7 @@
       "startLine": 114,
       "endLine": 131
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Mrose's Disproof (1979)",
     "content": "**The key disproof of Erdős's conjecture:**\n\n**mrose_upper:** Mrose constructed 2-bases with g(n)² ≤ (7/2)n = 3.5n for large n. Since the conjecture g(n) ~ 2√n implies g(n)² ~ 4n, having g(n)² ≤ 3.5n < 4n contradicts the conjecture.\n\n**erdos_conjecture_false:** Formalizes the disproof: ∃ ε > 0 such that eventually g(n)² < (4 - 2ε)n. This uses Filter.atTop to express 'for all sufficiently large n'.\n\nMrose's paper 'Untere Schranken für die Reichweiten von Extremalbasen fester Ordnung' was published in 1979 and resolved the problem after 42 years.",
     "mathContext": "The construction uses sophisticated combinatorial techniques to pack more representation power into fewer elements, beating Rohrbach's approach. The key insight is using non-uniform arithmetic progressions.",
@@ -94,7 +94,7 @@
       "startLine": 133,
       "endLine": 147
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Modern Bounds (2015-2017)",
     "content": "**Recent improvements to both bounds:**\n\n**yu_lower (2015):** (2.181... + o(1))n ≤ g(n)², improving Rohrbach's constant from 2 to 2.181. Published in J. Number Theory.\n\n**kohonen_upper (2017):** g(n)² ≤ (3.458... + o(1))n, improving Mrose's 3.5 to 3.458. Published in J. Number Theory.\n\nThe gap between 2.181 and 3.458 represents our current uncertainty. In terms of g(n): 1.477√n ≤ g(n) ≤ 1.860√n approximately.",
     "mathContext": "Both bounds are formalized using integer arithmetic to avoid real number precision issues: e.g., 218n ≤ 100·g(n)² + 100n encodes 2.18n ≤ g(n)² approximately. This is a common technique for encoding rational bounds in natural number arithmetic.",
@@ -112,7 +112,7 @@
       "startLine": 183,
       "endLine": 215
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Results",
     "content": "**Two key results resolving Problem #791:**\n\n**erdos_791** (proved): There exist constants C₁ ≥ 2 and C₂ ≤ 4 such that C₁·n ≤ g(n)² ≤ C₂·n for all n ≥ 1. The proof instantiates C₁ = 2, C₂ = 4 using Rohrbach's bounds.\n\n**erdos_791_answer** (axiom): The conjecture g(n) ~ 2√n is FALSE. Formalized as the negation of asymptotic equivalence. Axiomatized because the proof involves real analysis and limit arguments from Mrose's bound.\n\nTogether these completely resolve Erdős Problem #791: the conjecture is disproved, and we have explicit (though not tight) bounds on g(n).",
     "mathContext": "The erdos_791 theorem is proved constructively using omega for the constant bounds and exact application of the Rohrbach axioms. The answer theorem involves Filter.atTop and rational arithmetic.",
@@ -130,7 +130,7 @@
       "startLine": 217,
       "endLine": 237
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_791_summary combines three key results:**\n\n1. **Mrose-type bound:** ∃ C < 4 such that g(n)² ≤ Cn + n for all n ≥ 1 (with C = 3, giving g(n)² ≤ 4n which subsumes Rohrbach's upper bound)\n2. **Rohrbach lower:** 2n ≤ g(n)² for all n ≥ 1\n3. **Rohrbach upper:** g(n)² ≤ 4n for all n ≥ 1\n\nThe proof uses ⟨⟨3, by omega, ...⟩, rohrbach_lower, rohrbach_upper⟩ to construct the conjunction. The existence of C = 3 < 4 is the formal content of Mrose's disproof.",
     "mathContext": "The C = 3 instantiation gives g(n)² ≤ 3n + n = 4n, which is actually just Rohrbach's upper bound. A tighter formalization would use C = 3 with the bound g(n)² ≤ 3.5n, but integer arithmetic makes this cleaner.",

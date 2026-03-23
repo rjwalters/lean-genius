@@ -42,7 +42,7 @@
       "startLine": 70,
       "endLine": 78
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Example: t_6 = 6",
     "content": "**example_t6_product**: 6 · 8 · 12 = 576 = 24², proved by native_decide.\n\n**t6_equals_6**: t(6) = 6 (axiomatized).\n\nThis is the motivating example: 6 = 2·3 has odd exponents, and multiplying by 8 = 2³ and 12 = 2²·3 gives 2⁶·3² = (2³·3)² = 24².",
     "mathContext": "The example shows why we need to reach 12 in the interval: the subset {8,12} provides exactly the right prime factors to complete the square.",
@@ -55,7 +55,7 @@
       "startLine": 80,
       "endLine": 107
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Selfridge's Results",
     "content": "**trivial_lower_bound**: t(n) ≥ P(n) for non-square n. If p^(2k+1) || n, we need a multiple of p in the interval.\n\n**selfridge_equality**: When P(n) > √(2n)+1, t(n) = P(n) exactly. The large prime appears only once in the interval.\n\n**selfridge_upper_bound**: When P(n) ≤ √(2n)+1, t(n) ≤ C√n. Smooth numbers allow shorter intervals.",
     "mathContext": "Selfridge's theorem establishes a complete dichotomy: rough numbers (large P(n)) achieve the trivial bound exactly, while smooth numbers (small P(n)) have much smaller t_n.",
@@ -73,7 +73,7 @@
       "startLine": 109,
       "endLine": 140
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Refined Bounds and Distribution",
     "content": "**lower_bound_for_all**: t(n) ≥ C·(log log n)^{6/5}/(log log log n)^{1/5} for non-square n ≥ 3.\n\n**upper_bound_for_many**: For x^{1-o(1)} many n ≤ x, t(n) ≤ exp(O(√(log n · log log n))).\n\n**bui_pratt_zaharescu_2024**: The distribution of t_n follows P(n)'s distribution — for any c ∈ (0,1], the density of {n : t_n ≤ n^c} equals the density of {n : P(n) ≤ n^c}.",
     "mathContext": "The lower bound shows t_n cannot be too small even for smooth n. The Bui-Pratt-Zaharescu result (2024) completely characterizes the statistical behavior of t_n.",
@@ -109,7 +109,7 @@
       "startLine": 155,
       "endLine": 197
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_841_characterization** and **erdos_841**: Combine the three main results:\n1. t(n) ≥ P(n) always (trivial_lower_bound)\n2. t(n) = P(n) when P(n) > √(2n)+1 (selfridge_equality)\n3. t(n) ≤ O(√n) when P(n) ≤ √(2n)+1 (selfridge_upper_bound)\n\nProved by ⟨trivial_lower_bound, selfridge_equality, selfridge_upper_bound⟩.",
     "mathContext": "A complete solution showing t_n is governed by the smooth/rough dichotomy of n. The problem is considered SOLVED.",

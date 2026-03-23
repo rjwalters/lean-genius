@@ -73,7 +73,7 @@
       "startLine": 58,
       "endLine": 70
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Powers of 2 are Lacunary",
     "content": "The sequence 1, 2, 4, 8, 16, ... (powers of 2) is lacunary with λ = 2. Each term is exactly twice the previous, so the ratio is constant at 2.",
     "mathContext": "For $n_k = 2^k$, we have $n_{k+1}/n_k = 2^{k+1}/2^k = 2 \\geq 2$ for all $k$. The proof uses `Nat.cast_mul`, `div_self`, and `norm_num` to verify the ratio bound in $\\mathbb{R}$.",
@@ -94,7 +94,7 @@
       "startLine": 72,
       "endLine": 84
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Powers of 3 are Lacunary",
     "content": "Similarly, 1, 3, 9, 27, ... (powers of 3) is lacunary with λ = 3. Any geometric sequence a^k with a ≥ 2 is lacunary.",
     "mathContext": "For $n_k = 3^k$, the ratio $3^{k+1}/3^k = 3$ is constant. More generally, $a^k$ is lacunary with ratio $a$ for any integer $a \\geq 2$. These are the simplest examples; Raikov's theorem shows the SLLN holds unconditionally for such sequences.",
@@ -114,7 +114,7 @@
       "startLine": 86,
       "endLine": 89
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Lacunary Implies Increasing",
     "content": "Any lacunary sequence is strictly increasing. Since n(k+1)/n(k) > 1, we have n(k+1) > n(k) for all k.",
     "mathContext": "If $n_{k+1}/n_k \\geq \\lambda > 1$ and $n_0 > 0$, then $n_{k+1} > n_k$ for all $k$, so the sequence is $\\texttt{StrictMono}$. This is stated with a `sorry` — it requires an inductive argument using the positivity of $n_0$ and the lower bound on the ratio.",
@@ -181,7 +181,7 @@
       "startLine": 104,
       "endLine": 107
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Parseval's Identity",
     "content": "Parseval's identity: the L² norm of f equals the sum of squared Fourier coefficients. This connects the function space norm to the frequency domain.",
     "mathContext": "Parseval's identity states $\\int_0^1 |f(x)|^2\\,dx = \\sum_{n \\in \\mathbb{Z}} |\\hat{f}(n)|^2$. This is the isometry between $L^2([0,1])$ and $\\ell^2(\\mathbb{Z})$ via the Fourier transform. It is axiomatized here because the full proof requires Mathlib's Fourier theory on AddCircle.",
@@ -316,7 +316,7 @@
       "startLine": 138,
       "endLine": 145
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Raikov's Theorem",
     "content": "**Raikov**: For geometric sequences nₖ = aᵏ (a ≥ 2), the strong law holds for ALL f ∈ L² without any Fourier decay condition. Geometric sequences are 'maximally lacunary'.",
     "mathContext": "Raikov proved: for $a \\geq 2$ integer and any $f \\in L^2([0,1])$, $\\frac{1}{N}\\sum_{k=1}^{N} f(\\{\\alpha a^k\\}) \\to \\int_0^1 f$ for a.e. $\\alpha$. No decay condition on $\\|f - f_N\\|_2$ is needed because the geometric gaps $(a^{k+1} - a^k = (a-1)a^k)$ ensure very strong quasi-independence of the values $f(\\{\\alpha a^k\\})$.",
@@ -338,7 +338,7 @@
       "startLine": 147,
       "endLine": 154
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Kac-Salem-Zygmund (1948)",
     "content": "**KSZ 1948**: If Fourier error decays like 1/(log n)^c for c > 1, the strong law holds for any lacunary sequence. First general result for non-geometric lacunary sequences.",
     "mathContext": "Kac, Salem, and Zygmund proved: if $(n_k)$ is lacunary and $\\|f - f_N\\|_2 \\leq (\\log N)^{-c}$ for $c > 1$, then $S_N \\to \\bar{f}$ a.e. The condition $c > 1$ ensures the error series $\\sum_N \\|f - f_N\\|_2^2 (\\log N)^{-\\delta}$ converges, enabling a Borel-Cantelli argument.",
@@ -360,7 +360,7 @@
       "startLine": 156,
       "endLine": 162
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős (1949)",
     "content": "**Erdős 1949**: Improved to 1/(log log n)^c for c > 1. This was a significant improvement, replacing log with log log.",
     "mathContext": "Erdős showed that the weaker condition $\\|f - f_N\\|_2 \\leq (\\log\\log N)^{-c}$ for $c > 1$ still suffices. Since $\\log\\log N \\ll \\log N$, this allows much slower Fourier decay. The proof refines the KSZ argument by exploiting the quasi-independence of lacunary sequences more carefully.",
@@ -381,7 +381,7 @@
       "startLine": 164,
       "endLine": 170
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Matsuyama (1966)",
     "content": "**Matsuyama 1966**: Further improved the exponent from c > 1 to c > 1/2 for log log decay. This is currently the best known result. Halving the exponent is a major improvement.",
     "mathContext": "Matsuyama proved: $\\|f - f_N\\|_2 \\leq (\\log\\log N)^{-c}$ with $c > 1/2$ suffices. The exponent $1/2$ is suggestive of the central limit theorem: if the $f(\\{\\alpha n_k\\})$ were truly independent with variance $\\sigma^2$, the variance of $S_N$ would be $\\sigma^2/N$, and $c > 1/2$ ensures the Borel-Cantelli condition $\\sum P(|S_N - \\bar{f}| > \\epsilon) < \\infty$.",
@@ -424,7 +424,7 @@
       "startLine": 184,
       "endLine": 186
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Open Status",
     "content": "The problem remains OPEN. We don't know if log log log decay (with any exponent) is sufficient for the strong law.",
     "mathContext": "As of 2026, no proof or counterexample is known. The difficulty is that the quasi-independence of lacunary sequences weakens as the decay condition weakens, and current techniques cannot handle the triple-iterated logarithm regime.",
@@ -574,7 +574,7 @@
       "startLine": 234,
       "endLine": 240
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Quasi-Independence",
     "content": "Lacunary sequences have 'quasi-independence': the fractional parts {α·nₖ} behave almost like independent random variables. This is why probabilistic tools apply.",
     "mathContext": "The quasi-independence property means $\\mathrm{Cov}(e^{2\\pi i m\\{\\alpha n_j\\}}, e^{2\\pi i m\\{\\alpha n_k\\}}) \\approx 0$ for $j \\neq k$, because the lacunary gap condition prevents resonances between frequencies $mn_j$ and $mn_k$. This is formalized as a placeholder `True` — the actual proof requires deep harmonic analysis.",
@@ -597,7 +597,7 @@
       "startLine": 242,
       "endLine": 249
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Consecutive Not Lacunary",
     "content": "The consecutive integers n(k) = k+1 are NOT lacunary: (k+2)/(k+1) → 1, not ≥ λ > 1. The strong law can fail for such sequences.",
     "mathContext": "For $n_k = k+1$, the ratio $n_{k+1}/n_k = (k+2)/(k+1) = 1 + 1/(k+1) \\to 1$ as $k \\to \\infty$. By the Archimedean property, for any $\\lambda > 1$, there exists $k$ with $(k+2)/(k+1) < \\lambda$, contradicting lacunarity. The `sorry` requires formalizing this Archimedean argument.",
@@ -619,7 +619,7 @@
       "startLine": 251,
       "endLine": 265
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Known Gap",
     "content": "We KNOW log log decay with c > 1/2 suffices (Matsuyama). We DON'T KNOW if log log log decay ever suffices. The gap is one iterated logarithm.",
     "mathContext": "The theorem packages the known result $\\forall c > 1/2, \\ldots \\texttt{StrongLawHoldsAE}$ (from Matsuyama) with a trivial `True` placeholder for the open question. The gap between $(\\log\\log N)^{-1/2-\\epsilon}$ and $(\\log\\log\\log N)^{-C}$ decay is enormous — the latter allows functions whose Fourier coefficients decrease at a barely perceptible rate.",
@@ -640,7 +640,7 @@
       "startLine": 277,
       "endLine": 281
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Weyl Equidistribution",
     "content": "Weyl's theorem: {αn} is equidistributed mod 1 for irrational α. This is a precursor—lacunary sequences give a 'sparse' version with similar equidistribution.",
     "mathContext": "Weyl (1916) proved: if $\\alpha$ is irrational, then $\\{\\alpha, 2\\alpha, 3\\alpha, \\ldots\\}$ is equidistributed mod 1, i.e., $\\frac{1}{N}\\sum_{k=1}^N f(\\{k\\alpha\\}) \\to \\int_0^1 f$ for all Riemann integrable $f$. The lacunary version replaces $k$ with $n_k$, sampling only at lacunary times, which makes the problem harder.",
@@ -662,7 +662,7 @@
       "startLine": 283,
       "endLine": 311
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**SUMMARY**: We know log log decay with c > 1/2 works (Matsuyama). The question of whether log log log decay suffices remains OPEN. The formalization captures both the known results and the open problem.",
     "mathContext": "The summary theorem asserts $\\exists c > 1/2, \\forall f, n, \\ldots$ (witnessed by $c = 1$, using `matsuyama_1966 1 (\\text{by norm\\_num})$) conjoined with `True`. The choice $c = 1 > 1/2$ satisfies Matsuyama's hypothesis, giving an explicit witness for the known result while the open question remains as a trivial placeholder.",

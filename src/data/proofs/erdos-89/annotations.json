@@ -97,7 +97,7 @@
       "startLine": 93,
       "endLine": 103
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Guth-Katz Theorem (2015)",
     "content": "**guthKatz** is the breakthrough result: g(n) ≥ c·n/log n for some c > 0.\n\nThis is weaker than the conjecture by a factor of √(log n), but was a major breakthrough after decades of work.\n\n**Why an axiom?** The proof uses sophisticated algebraic geometry techniques (polynomial partitioning).",
     "mathContext": "Guth and Katz proved this using a polynomial method, counting incidences between points and lines in 3D.",
@@ -115,7 +115,7 @@
       "startLine": 105,
       "endLine": 113
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Grid Upper Bound",
     "content": "**gridUpperBound** states: g(n) ≤ c·n/√(log n) for some c > 0.\n\nThe √n × √n integer grid achieves this bound, showing the conjecture is tight if true.\n\nThis uses number theory: the count of integers ≤ x representable as sums of two squares.",
     "mathContext": "The Landau-Ramanujan constant governs this: |{n ≤ x : n = a² + b²}| ~ Kx/√(log x).",
@@ -134,7 +134,7 @@
       "startLine": 121,
       "endLine": 137
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Conjecture Implies Guth-Katz",
     "content": "**conjecture_implies_guthKatz** shows the conjecture is strictly stronger than Guth-Katz.\n\nThe key: n/√(log n) > n/log n for large n, since √(log n) < log n.\n\nThis is a genuine Lean theorem (with one sorry for the inequality).",
     "mathContext": "The proof uses `filter_upwards` to work with the eventually filter and `calc` for the chain of inequalities.",
@@ -171,7 +171,7 @@
       "startLine": 179,
       "endLine": 189
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Single Point Conjecture",
     "content": "**singlePointConjecture** (Problem #604) is a stronger version: there's always a SINGLE point determining Ω(n/√(log n)) distances.\n\nThis would immediately imply Problem #89, since the total distinct distances includes those from any single point.",
     "mathContext": "This asks for a 'rich' point that sees many distances, not just that the whole set has many.",

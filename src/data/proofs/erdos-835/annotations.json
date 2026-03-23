@@ -240,7 +240,7 @@
       "startLine": 91,
       "endLine": 93
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Equivalence to Chromatic Number",
     "content": "The key structural result: ErdosRosenfeldQuestion(k) holds if and only if χ(J(2k,k)) = k+1. This transforms the combinatorial rainbow condition into a chromatic number equation. The forward direction shows a rainbow coloring must be proper; the reverse constructs a rainbow coloring from an optimal proper coloring.",
     "mathContext": "$\\text{ErdosRosenfeldQuestion}(k) \\iff \\chi(J(2k,k)) = k + 1$. The proof uses: (1) a rainbow coloring is necessarily proper (adjacent $k$-subsets share a $(k+1)$-subset), and (2) a $(k+1)$-coloring achieving $\\chi = k+1$ is rainbow by counting.",
@@ -263,7 +263,7 @@
       "startLine": 99,
       "endLine": 104
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Base Case k = 2",
     "content": "The base case k = 2 works: J(4,2) has 6 vertices (the 2-subsets of {1,2,3,4}) and is isomorphic to the octahedron graph (complement of 3K_2). Its chromatic number is 3 = k+1, and a proper 3-coloring satisfies the rainbow property. The constructive proof provides a witness coloring.",
     "mathContext": "$J(4,2) \\cong \\overline{3K_2}$ (octahedron), $\\chi(J(4,2)) = 3 = 2 + 1$. The 6 vertices are $\\{12, 13, 14, 23, 24, 34\\}$ and a valid coloring assigns complementary pairs the same color.",
@@ -286,7 +286,7 @@
       "startLine": 106,
       "endLine": 107
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Case k = 3: Failure",
     "content": "χ(J(6,3)) = 4 = k+1, but the Erdős-Rosenfeld property still fails because no proper 4-coloring of the 20 vertices of J(6,3) can simultaneously achieve the rainbow condition on all 4-subsets. This subtle case shows the property is strictly stronger than achieving the lower bound.",
     "mathContext": "$\\chi(J(6,3)) = 4 = 3 + 1$, yet $\\neg\\text{ErdosRosenfeldQuestion}(3)$. The chromatic number is achieved but no optimal coloring has the rainbow property.",
@@ -309,7 +309,7 @@
       "startLine": 109,
       "endLine": 113
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Cases k = 4, 5: Clear Failure",
     "content": "For k = 4: χ(J(8,4)) = 7 > 5 = k+1. For k = 5: χ(J(10,5)) = 8 > 6 = k+1. In these cases, the chromatic number significantly exceeds k+1, making the rainbow property impossible since it requires exactly k+1 colors.",
     "mathContext": "$\\chi(J(8,4)) = 7 > 5$, $\\chi(J(10,5)) = 8 > 6$. Since rainbow coloring needs exactly $k+1$ colors but $\\chi > k+1$, no proper $(k+1)$-coloring exists.",
@@ -331,7 +331,7 @@
       "startLine": 115,
       "endLine": 117
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Case k = 6: Erdős-Rosenfeld 'Not Sure'",
     "content": "χ(J(12,6)) = 11 > 7 = k+1. Erdős and Rosenfeld were 'not sure' whether this case would work. Computational verification settles it negatively. J(12,6) has C(12,6) = 924 vertices, making direct enumeration non-trivial.",
     "mathContext": "$\\chi(J(12,6)) = 11 > 7 = 6 + 1$. $J(12,6)$ has $\\binom{12}{6} = 924$ vertices and is $36$-regular. The chromatic gap of $4$ shows the property fails decisively.",
@@ -353,7 +353,7 @@
       "startLine": 119,
       "endLine": 123
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Cases k = 7, 8: Largest Verified",
     "content": "χ(J(14,7)) = 13 > 8, χ(J(16,8)) = 15 > 9. These are the largest verified cases. J(16,8) has C(16,8) = 12870 vertices and is 64-regular, at the boundary of computational feasibility for exact chromatic number determination.",
     "mathContext": "$\\chi(J(14,7)) = 13 > 8$, $\\chi(J(16,8)) = 15 > 9$. $|V(J(16,8))| = \\binom{16}{8} = 12870$, $\\deg = 8^2 = 64$. The gaps $13 - 8 = 5$ and $15 - 9 = 6$ continue the growing trend.",
@@ -375,7 +375,7 @@
       "startLine": 129,
       "endLine": 131
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Lower Bound χ >= k+1",
     "content": "χ(J(2k,k)) >= k+1 for all k > 0. This follows from the clique number: J(2k,k) contains a clique of size k+1 (take the k+1 subsets of a fixed (k+1)-element set), and χ >= ω (clique number).",
     "mathContext": "$\\omega(J(2k,k)) \\geq k + 1$ since $\\binom{A}{k}$ for $|A| = k+1$ forms a clique: any two $k$-subsets of $A$ share $k-1$ elements. Hence $\\chi \\geq \\omega \\geq k + 1$.",
@@ -398,7 +398,7 @@
       "startLine": 133,
       "endLine": 135
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Upper Bound χ <= 2k",
     "content": "χ(J(2k,k)) <= 2k: color each k-subset S by the minimum element not in S. This gives a proper 2k-coloring since adjacent subsets (differing by one element) have different minimum-excluded elements.",
     "mathContext": "$\\chi(J(2k,k)) \\leq 2k$. Define $f(S) = \\min([2k] \\setminus S)$. If $S \\sim T$ with $S = (T \\setminus \\{b\\}) \\cup \\{a\\}$, then $f(S) \\neq f(T)$ in general. More precisely, a greedy argument on any ordering gives $\\chi \\leq 2k$.",
@@ -420,7 +420,7 @@
       "startLine": 137,
       "endLine": 145
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Known Chromatic Number Table",
     "content": "Axiomatized table of known chromatic numbers for J(2k,k): k=2 gives χ=3, k=3 gives χ=4, k=4 gives χ=7, k=5 gives χ=8, k=6 gives χ=11, k=7 gives χ=13, k=8 gives χ=15. These values were obtained through computational graph coloring algorithms.",
     "mathContext": "$\\chi(J(2k,k))$ for $k = 2,\\ldots,8$: $3, 4, 7, 8, 11, 13, 15$. Compared to $k+1 = 3, 4, 5, 6, 7, 8, 9$, the gap is $0, 0, 2, 2, 4, 5, 6$.",
@@ -442,7 +442,7 @@
       "startLine": 160,
       "endLine": 169
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem: erdos_835",
     "content": "The main result: for all k with 3 <= k <= 8, the Erdős-Rosenfeld property fails. The proof uses Lean's interval_cases tactic to exhaustively case-split on k ∈ {3,4,5,6,7,8}, dispatching each case to the corresponding axiom.",
     "mathContext": "$\\forall k \\in \\mathbb{N},\\, 3 \\leq k \\leq 8 \\Rightarrow \\neg\\text{ErdosRosenfeldQuestion}(k)$. Proof: `interval_cases k` reduces to 6 goals, each closed by the corresponding `k_equals_N_fails` axiom.",
@@ -465,7 +465,7 @@
       "startLine": 171,
       "endLine": 182
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Uniqueness of k = 2",
     "content": "Among 2 <= k <= 8, only k = 2 satisfies the Erdős-Rosenfeld property. The proof case-splits: k = 2 is proved by rfl, and k = 3,...,8 each lead to contradiction via absurd and the failure axioms. This establishes k = 2 as the unique small solution.",
     "mathContext": "$\\forall k,\\, 2 \\leq k \\leq 8 \\Rightarrow \\text{ErdosRosenfeldQuestion}(k) \\Rightarrow k = 2$. Contrapositively: $k \\neq 2 \\Rightarrow \\neg\\text{ErdosRosenfeldQuestion}(k)$ for $k \\in [2, 8]$.",

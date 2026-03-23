@@ -109,7 +109,7 @@
       "startLine": 138,
       "endLine": 145
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Q1 implies Q2",
     "content": "question1_implies_question2: Question1 -> Question2. Contrapositive: not Q2 -> not Q1.",
     "mathContext": "Quasi-progressions with uniform bound yield cubes via Ramsey-type extraction argument.",
@@ -143,7 +143,7 @@
       "startLine": 176,
       "endLine": 188
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bombieri-Lang Connection",
     "content": "cilleruelo_granville: BombieriLang -> exists k, not ContainsCube(Squares, k). Conditional negative answer.",
     "mathContext": "Cilleruelo-Granville (2007): Bombieri-Lang conjecture for varieties of general type implies Q2 negative.",

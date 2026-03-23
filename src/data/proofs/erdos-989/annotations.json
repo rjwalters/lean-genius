@@ -210,7 +210,7 @@
       "startLine": 90,
       "endLine": 101
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Beck's Lower Bound",
     "content": "The central lower bound: for EVERY sequence A, f(r) ≥ c√r for some universal c > 0 and large r. No matter how cleverly you place points, discrepancy grows at least like √r. This uses Fourier analysis and Bessel function asymptotics.",
     "mathContext": "Beck proved $\\exists c > 0, \\forall A, \\exists r_0, \\forall r > r_0: f_A(r) \\geq c\\sqrt{r}$. The proof expresses disk indicators via Fourier transforms $\\hat{\\mathbf{1}}_B(\\xi) = r \\cdot J_1(2\\pi r|\\xi|)/(|\\xi|)$ where $J_1$ is the Bessel function of the first kind. The asymptotics $|J_1(x)| \\sim \\sqrt{2/(\\pi x)}$ force $\\Omega(\\sqrt{r})$ growth via Parseval's identity.",
@@ -234,7 +234,7 @@
       "startLine": 103,
       "endLine": 128
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Discrepancy is Unbounded",
     "content": "Corollary of Beck's lower bound: f(r) → ∞ for every sequence. This answers Erdős's first question: YES, discrepancy is always unbounded. The proof chooses r large enough that c√r exceeds any given M.",
     "mathContext": "Given any $M > 0$, choose $r = \\max(r_0 + 1, (M/c + 1)^2)$ so that $c\\sqrt{r} \\geq c \\cdot (M/c + 1) = M + c > M$. The formal proof uses `calc` chains and `mul_le_mul_of_nonneg_left` with `Real.sqrt_le_sqrt` to establish the chain of inequalities. This is one of the rare fully-proved theorems in this file.",
@@ -258,7 +258,7 @@
       "startLine": 132,
       "endLine": 144
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Beck's Upper Bound",
     "content": "The existence result: there EXISTS a sequence A achieving f(r) ≤ C√(r log r). Beck's probabilistic construction (perturbed lattice) achieves near-optimal discrepancy. The log factor comes from union bounds.",
     "mathContext": "Beck proved $\\exists A, \\exists C > 0, \\exists r_0, \\forall r > r_0: f_A(r) \\leq C\\sqrt{r \\log r}$. The construction perturbs each lattice point $z \\in \\mathbb{Z}^2$ by a random displacement $\\delta_z$ uniform in $[-\\epsilon, \\epsilon]^2$. The expectation $\\mathbb{E}[D(A,C,n)^2]$ is bounded using independence, and a union bound over $O(r^2)$ circle centers introduces the $\\log r$ factor.",
@@ -305,7 +305,7 @@
       "startLine": 153,
       "endLine": 182
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Complete Solution",
     "content": "The main theorem combining all results: (1) discrepancy is unbounded for all A, (2) universal lower bound √r, (3) existence of near-optimal sequence with √(r log r). This completely answers Erdős's questions.",
     "mathContext": "The conjunction $P_1 \\wedge P_2 \\wedge P_3$ packages three results: (1) $\\forall A, \\forall M, \\exists r > 0: f_A(r) > M$, (2) $\\exists c > 0, \\forall A, \\ldots: f_A(r) \\geq c\\sqrt{r}$, (3) $\\exists A, \\exists C > 0, \\ldots: f_A(r) \\leq C\\sqrt{r \\log r}$. Together these establish $f_A(r) = \\tilde{\\Theta}(\\sqrt{r})$.",
@@ -373,7 +373,7 @@
       "startLine": 211,
       "endLine": 225
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Fourier Analysis Technique",
     "content": "Beck's lower bound proof uses: (1) Fourier transforms of disk indicators, (2) Bessel function J₁ in the transform, (3) Parseval's identity relating discrepancy to Fourier coefficients, (4) J₁(x) ~ 1/√x asymptotics giving √r growth.",
     "mathContext": "The Fourier transform of $\\mathbf{1}_{\\overline{B}(0,r)}$ is $\\hat{f}(\\xi) = r J_1(2\\pi r|\\xi|)/|\\xi|$ where $J_1$ is the Bessel function of first kind. By Parseval, $\\sum |\\hat{\\mu}_A(\\xi)|^2 |\\hat{f}(\\xi)|^2$ controls the $L^2$ discrepancy. Since $J_1(x) \\sim \\sqrt{2/(\\pi x)} \\cos(x - 3\\pi/4)$, the Fourier coefficients decay as $O(1/\\sqrt{r|\\xi|})$, forcing $\\Omega(\\sqrt{r})$ total discrepancy.",
@@ -398,7 +398,7 @@
       "startLine": 227,
       "endLine": 238
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Probabilistic Construction",
     "content": "Beck's upper bound construction: (1) Start with ℤ² lattice, (2) Add small random perturbations, (3) Expected discrepancy is √(r log r), (4) The log comes from union bound over O(r²) circle positions.",
     "mathContext": "The construction sets $A_z = z + \\delta_z$ for $z \\in \\mathbb{Z}^2$ where $\\delta_z$ are i.i.d. uniform on $[-\\epsilon, \\epsilon]^2$. For a single circle, $\\mathrm{Var}[\\#(A \\cap C)] = O(r)$ (boundary contribution). The union bound over $O(r^2)$ relevant circle positions multiplies by $\\log(r^2) = 2\\log r$, giving $\\mathbb{E}[\\sup_C D] = O(\\sqrt{r \\log r})$.",
@@ -492,7 +492,7 @@
       "startLine": 286,
       "endLine": 304
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Schmidt's Classical Discrepancy",
     "content": "Related result: For axis-aligned boxes in [0,1]^d, Schmidt generalized Roth's lower bound to D(N) ≥ c(log N)^{d/2}. Circles behave differently due to curved boundaries - √r vs polylog.",
     "mathContext": "Schmidt (1972) proved $D(N) \\geq c_d (\\log N)^{d/2}$ for axis-aligned box discrepancy, generalizing Roth's (1954) bound $D(N) \\geq c \\sqrt{\\log N}$ for $d=2$. The circle discrepancy $\\Omega(\\sqrt{r})$ is much larger because circles have curvature: the number of lattice points near a circle of radius $r$ fluctuates by $\\Omega(\\sqrt{r})$ (Gauss circle problem), while box boundaries are aligned with the lattice.",
@@ -516,7 +516,7 @@
       "startLine": 306,
       "endLine": 319
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Alexander's Half-Plane Discrepancy",
     "content": "Comparison: Half-planes have discrepancy r^{1/4}, much smaller than circles (√r). The curved boundary of circles can 'trap' points more effectively, leading to higher unavoidable discrepancy.",
     "mathContext": "Alexander (1990) proved the half-plane discrepancy satisfies $D(N) \\geq cN^{1/4}$ for $N$ points. Since half-plane boundaries are lines (zero curvature), the discrepancy is much lower: $N^{1/4} \\ll \\sqrt{N} = N^{1/2}$. For circles, the curvature $\\kappa = 1/r$ creates $\\Theta(\\sqrt{r})$ lattice point fluctuation along the boundary, which is the mechanism behind the larger discrepancy.",
@@ -539,7 +539,7 @@
       "startLine": 321,
       "endLine": 365
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary",
     "content": "Complete summary of Erdős Problem #989: (1) f(r) unbounded for all A - YES, (2) optimal growth Θ̃(√r), (3) lower bound via Fourier/Bessel, (4) upper bound via probabilistic perturbation. Foundational result in geometric discrepancy.",
     "mathContext": "The final theorem $\\texttt{erdos\\_989\\_answers\\_both\\_questions}$ packages the two key results as a conjunction: unboundedness ($\\forall A, \\forall M, \\exists r > 0: f_A(r) > M$) and the sharp lower bound ($\\exists c > 0, \\forall A: f_A(r) \\geq c\\sqrt{r}$ eventually). It is proved by pairing $\\texttt{discrepancy\\_unbounded}$ with $\\texttt{beck\\_lower\\_bound}$.",

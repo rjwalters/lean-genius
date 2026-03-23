@@ -76,7 +76,7 @@
       "startLine": 61,
       "endLine": 65
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Pach's Upper Bound: $h(n) < n^{\\log_2 3}$",
     "content": "Axiomatizes Pach's construction: there exist general-position configurations with fewer than $n^{\\log_2 3} \\approx n^{1.585}$ distinct distances, eventually for all large $n$. The construction uses recursive Horton-type sets. The exponent $\\log_2 3$ arises from a divide-and-conquer: split $n$ points into 3 groups of $n/2$, recursing on the distances. This is stated via `Filter.atTop` (eventually for all $n$).",
     "mathContext": "$\\exists^\\infty n: h(n) < n^{\\log_2 3}$; exponent $\\log_2 3 \\approx 1.585$",
@@ -98,7 +98,7 @@
       "startLine": 68,
       "endLine": 71
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős-Füredi-Pach Bound: $h(n) < n \\cdot e^{c\\sqrt{\\log n}}$",
     "content": "The best known upper bound: there exist general-position configurations with fewer than $n \\cdot \\exp(c\\sqrt{\\log n})$ distinct distances for some constant $c > 0$. This is much closer to linear than Pach's $n^{1.585}$, showing that $h(n)$ grows at most slightly superlinearly. Formalized using `Real.exp` and `Real.sqrt` composed with `Real.log`. The construction refines Pach's method using more sophisticated point placements.",
     "mathContext": "$\\exists c > 0: h(n) < n \\cdot e^{c\\sqrt{\\log n}}$ eventually; note $n \\cdot e^{c\\sqrt{\\log n}} = o(n^{1+\\varepsilon})$ for all $\\varepsilon > 0$",
@@ -165,7 +165,7 @@
       "startLine": 87,
       "endLine": 96
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Guth-Katz Comparison: $\\Omega(n/\\log n)$ Without General Position",
     "content": "`guth_katz_comparison` axiomatizes the Guth-Katz theorem (2015): without any general-position assumption, any $n$ distinct points in $\\mathbb{R}^2$ determine $\\Omega(n/\\log n)$ distinct distances. This near-optimal bound (matching Erdős's 1946 conjecture up to $\\sqrt{\\log n}$) uses algebraic geometry—the polynomial partitioning technique. General position should give more, but no one has proved that the Guth-Katz bound can be improved under general-position assumptions.",
     "mathContext": "$\\exists c > 0: \\forall n \\ge 2, \\forall P \\text{ injective}: |\\text{dist}(P)| \\ge c \\cdot n / \\log n$",

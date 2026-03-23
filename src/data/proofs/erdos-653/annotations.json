@@ -60,7 +60,7 @@
       "startLine": 98,
       "endLine": 124
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Known Bounds on g(n)",
     "content": "**erdos_fishburn_bound** (axiom): g(n) > 3n/8 for n ≥ 8. The first nontrivial lower bound.\n\n**csizmadia_bound** (axiom): g(n) > 7n/10 for n ≥ 10. The current best lower bound, improving Erdős-Fishburn.\n\n**upper_bound** (axiom): g(n) < n - cn^{2/3} for some c > 0. This shows perfect R-diversity (g = n) is impossible for large n — there must always be some collision among R-values, with the gap growing at least as n^{2/3}.",
     "mathContext": "The gap between the 0.7n lower bound and the n - cn^{2/3} upper bound brackets g(n) but leaves the precise asymptotics wide open. The conjecture predicts the lower bound is closer to truth.",
@@ -116,7 +116,7 @@
       "startLine": 207,
       "endLine": 224
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Asymptotic Gap n - g(n)",
     "content": "**gap_lower_bound** (axiom): n - g(n) ≥ cn^{2/3} for some c > 0. The gap between n and g(n) is at least of order n^{2/3}.\n\n**gap_bounds** (axiom): For n ≥ 10, cn^{2/3} ≤ n - g(n) ≤ 0.3n. Packages both the n^{2/3} lower bound on the gap and the Csizmadia upper bound.\n\nThe conjecture asserts n - g(n) = o(n), meaning the gap is sublinear. The n^{2/3} lower bound on the gap shows it cannot vanish entirely.",
     "mathContext": "The gap function n - g(n) is the key quantity. If o(n), the conjecture holds. The n^{2/3} lower bound suggests geometric constraints fundamentally limit R-diversity.",
@@ -134,7 +134,7 @@
       "startLine": 246,
       "endLine": 274
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorems",
     "content": "**erdos_653_summary** (PROVED): Combines three results:\n1. ∀ n ≥ 10, g(n) > 7n/10 (Csizmadia lower bound)\n2. ∀ n, g(n) ≤ n (trivial upper bound)\n3. ∃ c > 0, ∀ n ≥ 2, g(n) < n - cn^{2/3} (nontrivial upper gap)\n\n**erdos_653** (PROVED): Definitionally equal to erdos_653_summary.\n\nProof: Direct application of csizmadia_bound, g_le_n, and upper_bound axioms via ⟨_, _, _⟩.",
     "mathContext": "The summary packages all known quantitative results. The open conjecture (g(n)/n → 1) is stated separately as erdos653Conjecture but not included in the proved summary.",

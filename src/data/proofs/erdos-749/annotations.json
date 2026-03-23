@@ -104,7 +104,7 @@
       "startLine": 63,
       "endLine": 72
     },
-    "type": "conjecture",
+    "type": "concept",
     "title": "The Main Conjecture (OPEN)",
     "content": "**erdos_749_conjecture.** Stated as a disjunction: either for every ε > 0 such sets exist (dense sumset + bounded r(n)), or there exists ε > 0 below which this is impossible. This captures both possible answers.",
     "mathContext": "The axiom `erdos_749_conjecture` is stated as a law of excluded middle applied to the main question: either the answer is YES for all ε (we can always find A with d(A+A) ≥ 1-ε and bounded r(n)), or there is a critical ε₀ > 0 below which no such A exists (meaning dense sumsets require unbounded r(n)). If the second disjunct holds, it would give a quantitative version of the Erdős-Turán conjecture: not only must full bases have unbounded r(n), but even (1-ε₀)-bases must. The first disjunct would show the Erdős-Turán threshold is exactly density 1.",
@@ -128,7 +128,7 @@
       "startLine": 74,
       "endLine": 87
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sidon Sets: Bounded but Sparse",
     "content": "**sidon_bounded_rep and sidon_density_zero.** Sidon sets have r(n) ≤ 2 (bounded) but d(A+A) = 0 (density 0). This shows one extreme: bounded r(n) is compatible with sparse sumsets, but Sidon sets are far from the dense sumset goal.",
     "mathContext": "A **Sidon set** (or B₂ set) is a set A where all pairwise sums a + b (a ≤ b) are distinct. This gives r_A(n) ≤ 1 for all n. The classical result of Erdős and Turán shows |A ∩ {1,...,N}| ≤ (1+o(1))√N for Sidon sets, giving |A+A| ≤ (1+o(1))N, so d(A+A) can be at most 1 — but the density is actually 0 since |A+A| ∼ N while we need |A+A ∩ [1,N]|/N → 0 from the sparsity of A. This establishes the 'lower left' of the density-representation landscape: bounded r(n) is achievable, but only with sparse sumsets.",
@@ -153,7 +153,7 @@
       "startLine": 89,
       "endLine": 96
     },
-    "type": "conjecture",
+    "type": "concept",
     "title": "Erdős-Turán Connection (Problem #28)",
     "content": "**erdos_turan_conjecture_28.** The Erdős-Turán conjecture: if d(A+A) = 1 (A is an additive basis), then r(n) must be unbounded. Problem #749 relaxes density = 1 to density ≥ 1-ε, asking whether the obstruction persists.",
     "mathContext": "The **Erdős-Turán conjecture** (1941, Problem #28, $500 bounty) is one of the most important open problems in additive number theory. It asserts that if A is an asymptotic additive basis of order 2 (every sufficiently large integer is in A+A), then lim sup r_A(n) = ∞. Problem #749 probes the boundary: if we relax 'every large integer' to '(1-ε)-fraction of integers', does the obstruction survive? A negative answer to #749 (such sets exist) would show the Erdős-Turán obstruction is specific to density exactly 1. A positive answer would strengthen #28.",
@@ -178,7 +178,7 @@
       "startLine": 98,
       "endLine": 107
     },
-    "type": "conjecture",
+    "type": "concept",
     "title": "Upper Density Variant",
     "content": "**erdos_749_upper_variant.** The same question with upper density instead of lower density: does A exist with d̄(A+A) ≥ 1-ε and bounded r(n)? This variant is also open and the answer may differ from the lower density version.",
     "mathContext": "Since upper density d̄(S) ≥ lower density d(S), having d̄(A+A) ≥ 1-ε is a weaker condition than d(A+A) ≥ 1-ε. If the lower density version has a positive answer (such sets exist), then so does the upper density version. However, if the lower density version has a negative answer, the upper density version could still be positive. The distinction matters because lower density captures 'almost all integers eventually' while upper density only captures 'most integers along a subsequence'. The two variants could have genuinely different answers.",

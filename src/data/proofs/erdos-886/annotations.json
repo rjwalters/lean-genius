@@ -60,7 +60,7 @@
       "startLine": 99,
       "endLine": 109
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Rosenfeld Result (1997)",
     "content": "**erdos_rosenfeld_four_divisors:** Infinitely many n have ≥ 4 divisors in (√n, √n + n^{1/4}).\n\n**erdos_rosenfeld:** For every k, there exists n ≥ k with 4 divisors in that interval.\n\nNote: This uses ε = 1/4, giving interval width n^{1/4}. The conjecture asks about arbitrarily small ε. The Erdős-Rosenfeld result shows divisors CAN cluster to some extent, but doesn't resolve whether the bounded count holds for all ε > 0.\n\nPublished in Acta Arithmetica (1997): 'The factor-difference set of integers'.",
     "mathContext": "For ε = 1/4, the interval (√n, √n + n^{1/4}) is wider than for smaller ε. The result doesn't contradict Ruzsa's conjecture since the bound 4 is finite.",
@@ -112,7 +112,7 @@
       "startLine": 157,
       "endLine": 165
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bounds on Divisor Count",
     "content": "**trivial_bound** (PROVED): divisorsNearSqrt(n, ε) ≤ divisorCount(n) = τ(n). The count of divisors in any interval is at most the total divisor count.\n\nProof: `card_filter_le` — filtering a finset can only decrease its cardinality.\n\n**divisor_count_bound** (axiom): τ(n) ≤ 2√n for all n ≥ 1. This classical bound shows divisors can't be too numerous overall.\n\nCombined: divisorsNearSqrt(n, ε) ≤ 2√n, but this is much weaker than the conjectured O_ε(1).",
     "mathContext": "The trivial bound is proved in Lean using Finset.card_filter_le. The divisor count bound τ(n) ≤ 2√n is a standard result in elementary number theory.",
@@ -130,7 +130,7 @@
       "startLine": 167,
       "endLine": 180
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_886_summary** (PROVED): Combines two key results:\n1. The trivial bound: divisorsNearSqrt(n, ε) ≤ divisorCount(n) for all n ≥ 1 (proved)\n2. Erdős-Rosenfeld: infinitely many n have ≥ 4 divisors in (√n, √n + n^{1/4}) (axiom)\n\nProof: ⟨trivial_bound, erdos_rosenfeld_four_divisors⟩\n\nThis captures the known facts: divisor count near √n is bounded by τ(n), and clustering does occur for ε = 1/4. The main conjecture (O_ε(1) for all ε > 0) remains open.",
     "mathContext": "The summary theorem packages the proved result with the axiomatized Erdős-Rosenfeld result, giving a complete picture of what is known.",

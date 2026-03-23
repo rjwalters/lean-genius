@@ -96,7 +96,7 @@
       "startLine": 74,
       "endLine": 84
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Mod 4 Example",
     "content": "**mod4_example**: Integers n where n mod 4 = 2 form a MulCardSet with density 1/4. Examples: 2, 6, 10, 14, 18, ...",
     "mathContext": "Why it works: n mod 4 = 2 means exactly one factor of 2 (i.e., n = 2 * odd). A product of r such integers has exactly r factors of 2. So equal products require equal r.",
@@ -132,7 +132,7 @@
       "startLine": 95,
       "endLine": 107
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Selfridge's Construction",
     "content": "**selfridge_construction**: For any epsilon > 0, there exists a MulCardSet with density 1/e - epsilon. This is the best known construction!",
     "mathContext": "Construction: Take consecutive primes p1 < ... < pk where sum(1/pi) crosses 1. Let A = {n : exactly one pi divides n}. Then A has density approaching 1/e by inclusion-exclusion.",
@@ -150,7 +150,7 @@
       "startLine": 111,
       "endLine": 119
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Ruzsa's Upper Bound",
     "content": "**ruzsa_upper_bound_unpublished**: The maximum size of a MulCardSet in {1,...,N} is at most (1-c)N for some constant c > 0. This would mean density 1 is impossible.",
     "mathContext": "Ruzsa reportedly proved this around the time of Erdos's papers, but the proof was never published. The exact value of c is unknown.",
@@ -168,7 +168,7 @@
       "startLine": 121,
       "endLine": 128
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Log 2 Lower Bound",
     "content": "**log2_lower_bound**: Integers in {1,...,N} with a prime factor > sqrt(N) form a MulCardSet of size >= (log 2) * N.",
     "mathContext": "Why it works: if n has a large prime factor p > sqrt(N), then any factorization of n^2 into products from this set forces unique factor counts. The density is about log 2 approx 0.693.",
@@ -204,7 +204,7 @@
       "startLine": 144,
       "endLine": 156
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Verified Examples",
     "content": "We verify concrete examples: 2 mod 4 = 2, 6 mod 4 = 2, 10 mod 4 = 2. Also 2 * 6 = 12, showing products can be computed.",
     "mathContext": "These are verified by native_decide, providing constructive evidence that the mod 4 set contains these elements.",
@@ -222,7 +222,7 @@
       "startLine": 160,
       "endLine": 173
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_786_summary** combines the known results: (1) mod 4 achieves density 1/4, (2) Selfridge achieves density 1/e - epsilon for any epsilon > 0.",
     "mathContext": "This is a proved theorem (not axiom) that packages the two existence axioms. It shows we have concrete constructions achieving known density bounds.",

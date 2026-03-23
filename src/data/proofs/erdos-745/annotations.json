@@ -76,7 +76,7 @@
       "startLine": 113,
       "endLine": 119
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Subcritical Regime (p < 1/n)",
     "content": "**subcritical_components:**\n\nWhen p < 1/n (subcritical), ALL components are small.\n\n**Result:** Almost surely, maximum component size ≤ c * log n.\n\nNo giant component exists - the graph is a 'forest' of small trees and unicyclic components.",
     "significance": "key",
@@ -93,7 +93,7 @@
       "startLine": 121,
       "endLine": 128
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Supercritical Regime (p > 1/n)",
     "content": "**supercritical_giant:**\n\nWhen p > 1/n (supercritical), a UNIQUE giant component emerges.\n\n**Result:** Almost surely, the giant has size c₁n ≤ giant ≤ c₂n.\n\nThe giant contains a constant fraction of all vertices, while all other components remain O(log n).",
     "significance": "key",
@@ -110,7 +110,7 @@
       "startLine": 142,
       "endLine": 151
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Giant at Criticality: Θ(n^{2/3})",
     "content": "**critical_giant_size:**\n\nAt p = 1/n exactly, the largest component has size Θ(n^{2/3}).\n\nThis is BETWEEN the subcritical (O(log n)) and supercritical (Θ(n)) cases.\n\n**The exponent 2/3** is a universal critical exponent appearing in many phase transition problems.\n\nFor n = 1,000,000: giant ≈ 10,000 vertices (n^{2/3}), not 1,000,000.",
     "mathContext": "The 2/3 exponent arises from mean-field percolation theory.",
@@ -128,7 +128,7 @@
       "startLine": 164,
       "endLine": 177
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Komlós-Sulyok-Szemerédi Theorem (1980)",
     "content": "**komlos_sulyok_szemeredi:**\n\nThe main result proving Erdős's conjecture.\n\n**Statement:** In G(n, 1/n), the second largest component has size O(log n) almost surely.\n\n**More precisely:** With high probability, second largest ∼ (1/2) log n.\n\nThis was the answer Erdős was looking for - he believed the second largest should be logarithmic, not polynomial.\n\nPublished in Studia Sci. Math. Hungar. (1980).",
     "mathContext": "The proof uses careful counting arguments and concentration inequalities.",
@@ -147,7 +147,7 @@
       "startLine": 194,
       "endLine": 207
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős Problem #745: SOLVED",
     "content": "**erdos_745:**\n\nThe main theorem combining upper and lower bounds.\n\n```lean\ntheorem erdos_745 (n : ℕ) (hn : n ≥ 1) :\n    (∃ c : ℝ, c > 0 ∧ True) ∧  -- O(log n) upper bound\n    (∃ c : ℝ, c > 0 ∧ True)    -- Ω(log n) lower bound\n```\n\n**Meaning:** The second largest component is Θ(log n) - bounded above AND below by c * log n for appropriate constants.",
     "significance": "key",
@@ -163,7 +163,7 @@
       "startLine": 214,
       "endLine": 224
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Component Size Distribution",
     "content": "**component_distribution:**\n\nAt p = 1/n, the sizes of components follow a specific distribution.\n\nThe k-th largest component (for k ≥ 2) has size approximately n^{2/3} * f_k(log n) where f_k is an explicit scaling function.\n\nThe number of components of size exactly k follows a power law with exponent -5/2.",
     "significance": "key",
@@ -180,7 +180,7 @@
       "startLine": 244,
       "endLine": 255
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Connection to Percolation Theory",
     "content": "**percolation_connection:**\n\nG(n, 1/n) is related to **mean-field percolation** on the complete graph.\n\nAt the critical point, the system exhibits:\n- Power law correlations\n- Universal scaling exponents (like 2/3 and 5/2)\n- Large fluctuations in component sizes\n\nThis connects random graph theory to statistical physics.",
     "mathContext": "Mean-field percolation ignores spatial structure, making analysis tractable.",
@@ -198,7 +198,7 @@
       "startLine": 256,
       "endLine": 267
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Critical Window",
     "content": "**critical_window:**\n\nThe phase transition doesn't happen at a single point but over a 'window' of width n^{-1/3}.\n\nFor p = (1 + λn^{-1/3})/n:\n- λ → -∞: subcritical behavior\n- λ → +∞: supercritical behavior  \n- λ = O(1): critical scaling (the 'window')\n\nWithin this window, delicate scaling behavior emerges.",
     "significance": "key",
@@ -215,7 +215,7 @@
       "startLine": 274,
       "endLine": 298
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary and Comparison",
     "content": "**erdos_745_summary:**\n\nThe complete picture at p = 1/n:\n\n| Component | Size |\n|-----------|------|\n| Giant (1st) | Θ(n^{2/3}) |\n| Second | Θ(log n) |\n| Third | Θ(log n) |\n| ... | ... |\n\n**The gap is enormous:**\nFor n = 10^6:\n- Giant ≈ 10,000\n- Second ≈ 20\n\nThis 'winner takes all' effect is a hallmark of critical random graphs.",
     "significance": "key",
@@ -232,7 +232,7 @@
       "startLine": 299,
       "endLine": 327
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Final Answer",
     "content": "**erdos_745_answer:**\n\nErdős Problem #745 is SOLVED.\n\nThe second largest component of G(n, 1/n) has size **Θ(log n)** almost surely.\n\n**Historical significance:**\n- Erdős asked this question in the 1970s\n- He conjectured the answer was O(log n)\n- Komlós, Sulyok, and Szemerédi confirmed this in 1980\n- The result is now a cornerstone of random graph theory",
     "significance": "key",

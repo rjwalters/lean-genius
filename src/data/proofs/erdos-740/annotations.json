@@ -461,7 +461,7 @@
       "startLine": 237,
       "endLine": 246
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Girth Implies Odd Cycle Avoidance",
     "content": "A formally verified implication: the girth conjecture implies the Erdos-Hajnal conjecture for the same parameters. The proof is straightforward: if a subgraph has no cycles of any length $\\leq r$, it certainly has no odd cycles of length $\\leq r$. This is one of the few fully proved results in the formalization.",
     "mathContext": "$\\text{girthConjecture}(\\mathfrak{m}, r) \\implies \\text{erdosHajnalConjecture}(\\mathfrak{m}, r)$. Proof: $\\text{girth}(H) > r \\implies \\text{oddGirth}(H) > r$.",
@@ -546,7 +546,7 @@
       "startLine": 286,
       "endLine": 296
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "No Infinite Bipartite Subgraph",
     "content": "For $\\mathfrak{m} > 2$, it is impossible to find a bipartite subgraph with $\\chi = \\mathfrak{m}$, because every bipartite graph has $\\chi \\leq 2$. This shows that Problem #740 must have a finite bound $r$: the 'avoid ALL odd cycles' (bipartite) version fails for large chromatic numbers. The proof uses sorry for the final contradiction step.",
     "mathContext": "$\\mathfrak{m} > 2 \\implies \\neg(\\forall G,\\; \\chi(G) = \\mathfrak{m} \\implies \\exists H \\subseteq G,\\; \\chi(H) = \\mathfrak{m} \\wedge H \\text{ bipartite})$, since bipartite $\\implies \\chi \\leq 2 < \\mathfrak{m}$.",
@@ -568,7 +568,7 @@
       "startLine": 308,
       "endLine": 317
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "Combines the three main results into a single conjunction: (1) Rodl's theorem resolving the countable triangle-free case, (2) the girth conjecture implying the odd cycle conjecture, and (3) the impossibility of bipartite subgraphs with $\\chi > 2$. This provides a complete picture of what is currently known about Problem #740.",
     "mathContext": "$\\text{erdos\\_740\\_summary} : \\text{countableCase}(3) \\wedge (\\text{girthConj} \\Rightarrow \\text{oddCycleConj}) \\wedge (\\mathfrak{m} > 2 \\implies \\neg\\text{bipartiteVersion})$.",
@@ -588,7 +588,7 @@
       "startLine": 323,
       "endLine": 323
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem (Erdos 740)",
     "content": "The main exported theorem: $\\text{countableCase}(3)$, i.e., Rodl's theorem. This identifies the strongest known positive result as the headline theorem of the formalization.",
     "mathContext": "$\\text{erdos\\_740} : \\text{countableCase}(3) = \\text{rodl\\_theorem}$.",

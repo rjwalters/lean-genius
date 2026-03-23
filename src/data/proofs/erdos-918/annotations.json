@@ -61,7 +61,7 @@
       "startLine": 48,
       "endLine": 56
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Question 1 (OPEN)",
     "content": "**Question1**: Is there a graph with ℵ₂ vertices and chromatic number ℵ₂ where every ℵ₁-sized induced subgraph has chromatic number at most ℵ₀?",
     "mathContext": "This asks if 'global' chromatic number ℵ₂ can coexist with 'local' countable chromaticity. The graph would need uncountably many colors globally, but any subgraph of size ℵ₁ could be colored with countably many colors.",
@@ -79,7 +79,7 @@
       "startLine": 58,
       "endLine": 65
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Question 2 (OPEN)",
     "content": "**Question2**: Is there a graph with ℵ_{ω+1} vertices and chromatic number ℵ₁ where every ℵ_ω-sized induced subgraph has chromatic number at most ℵ₀?",
     "mathContext": "Here ω is the first infinite ordinal (Ordinal.omega0). ℵ_ω = sup{ℵ_n : n < ω} is a limit cardinal, and ℵ_{ω+1} is its successor. This question involves larger cardinals than Question 1.",
@@ -97,7 +97,7 @@
       "startLine": 67,
       "endLine": 82
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Hajnal Finite Case (SOLVED)",
     "content": "**erdos_hajnal_finite**: For every finite k, there exists a graph with ℵ_k vertices and chromatic number ℵ₁ where all subgraphs on fewer than ℵ_k vertices have chromatic number ≤ ℵ₀.",
     "mathContext": "This is the SOLVED part of Problem #918. The construction uses transfinite induction on k. For k=1, we need an ℵ₁-vertex graph that is ℵ₁-chromatic but where all countable subgraphs are countably chromatic.",
@@ -115,7 +115,7 @@
       "startLine": 84,
       "endLine": 96
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Impossibility of Exact ℵ₀",
     "content": "**eq_aleph0_impossible_statement**: The original problem in [Er69b] asked for chromatic number *exactly* ℵ₀, not *at most* ℵ₀. But this is trivially impossible!",
     "mathContext": "Any graph contains finite subgraphs (like single edges or triangles) with finite chromatic number. So we cannot require ALL subgraphs to have chromatic number exactly ℵ₀. The corrected version uses ≤ ℵ₀.",
@@ -133,7 +133,7 @@
       "startLine": 98,
       "endLine": 116
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Aleph Cardinal Hierarchy",
     "content": "We establish basic facts about aleph cardinals: ℵ₀ = |ℕ|, ℵ₀ < ℵ₁ < ℵ₂, and ℵ_ω is the supremum of all finite alephs.",
     "mathContext": "The aleph hierarchy: ℵ₀ (countable), ℵ₁ (first uncountable), ℵ₂ (next uncountable), etc. ℵ_ω is a limit cardinal - it's the supremum but has no immediate predecessor. ℵ_{ω+1} is the successor of ℵ_ω.",
@@ -170,7 +170,7 @@
       "startLine": 134,
       "endLine": 148
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_918_summary** packages the proved facts: ℵ₀ < ℵ₁ and ℵ₁ < ℵ₂. This demonstrates the strict ordering of the aleph cardinals relevant to the problem.",
     "mathContext": "This is a genuine proved theorem (not axiom) that follows from our axioms about aleph ordering. It confirms the cardinal hierarchy needed to understand the problem statements.",

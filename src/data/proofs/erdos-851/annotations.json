@@ -60,7 +60,7 @@
       "startLine": 47,
       "endLine": 50
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "2^k + 1 is Always Representable",
     "content": "**twoPow_add_one_mem**: For any k, 2^k + 1 ∈ TwoPowAddSet 0.\n\n**Proof**: The number 1 has 0 prime factors (primeFactors 1 = ∅), so 2^k + 1 is in TwoPowAddSet 0.\n\nThis gives us Fermat numbers (3, 5, 17, 257, 65537, ...) for free.",
     "mathContext": "The simp tactic handles Nat.primeFactors 1 = ∅ automatically.",
@@ -77,7 +77,7 @@
       "startLine": 52,
       "endLine": 55
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Monotonicity of TwoPowAddSet",
     "content": "**twoPowAddSet_mono**: If r ≤ s, then TwoPowAddSet r ⊆ TwoPowAddSet s.\n\n**Proof**: If m = 2^k + n with n having ≤ r prime factors, then certainly n has ≤ s prime factors.\n\n**Consequence**: As we allow more prime factors, we can represent more integers. The density is non-decreasing in r.",
     "significance": "key",
@@ -93,7 +93,7 @@
       "startLine": 57,
       "endLine": 61
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Union Covers All Integers ≥ 2",
     "content": "**twoPowAddSet_union_covers**: For m ≥ 2, there exists r such that m ∈ TwoPowAddSet r.\n\n**Proof**: Write m = 2^0 + (m-1). Then take r = (m-1).primeFactors.card.\n\n**Significance**: Every integer ≥ 2 is eventually covered. The question is how large r needs to be as a function of the desired density.",
     "mathContext": "Uses omega tactic to verify m = 1 + (m-1) when m ≥ 2.",
@@ -110,7 +110,7 @@
       "startLine": 70,
       "endLine": 72
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Romanoff's Theorem (1934)",
     "content": "**romanoff_theorem**: 0 < lowerDensity (TwoPowAddSet 1)\n\nRomanoff proved this foundational result in 1934. The set of integers of form 2^k + p (where p is prime or 1) has positive lower density.\n\n**Numerical value**: The density is approximately 0.0868, computed by Erdős-Odlyzko (1979).\n\n**Why this matters**: It shows that infinitely many integers have such representations, with positive proportion.",
     "mathContext": "This is stated as an axiom because the full proof requires analytic number theory beyond basic Mathlib.",
@@ -127,7 +127,7 @@
       "startLine": 74,
       "endLine": 76
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Romanoff Density Bounds",
     "content": "**romanoff_density_value**: 0.08 < lowerDensity(TwoPowAddSet 1) < 0.10\n\nErdős and Odlyzko (1979) computed sharper bounds. The exact value is approximately 0.0868.\n\n**Interpretation**: Only about 8.7% of integers can be written as 2^k + p for some prime p. This leaves ~91% uncovered, motivating Erdős's question about larger r.",
     "significance": "key",
@@ -143,7 +143,7 @@
       "startLine": 85,
       "endLine": 91
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Main Conjecture (OPEN)",
     "content": "**erdos_851_conjecture**: ∀ ε > 0, ∃ r, 1 - ε ≤ lowerDensity(TwoPowAddSet r)\n\n**In words**: For any desired closeness to 1, we can achieve it by allowing enough prime factors.\n\n**This is OPEN**: We don't know if this is true. It's possible that:\n1. Yes: Density approaches 1 as r → ∞\n2. No: Some positive proportion of integers resist all such representations",
     "mathContext": "Stated as axiom because the truth value is unknown.",
@@ -160,7 +160,7 @@
       "startLine": 97,
       "endLine": 99
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Density Monotonicity",
     "content": "**density_mono**: If r ≤ s, then lowerDensity(TwoPowAddSet r) ≤ lowerDensity(TwoPowAddSet s).\n\nThis follows from TwoPowAddSet monotonicity: larger sets have larger (or equal) density.\n\n**Consequence**: The sequence of densities is non-decreasing. The conjecture asks if it converges to 1.",
     "significance": "supporting",
@@ -176,7 +176,7 @@
       "startLine": 113,
       "endLine": 116
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Conjecture Equivalence",
     "content": "**conjecture_iff_limit_one**: The main conjecture is equivalent to: ∀ ε > 0, ∃ r₀, ∀ r ≥ r₀, 1 - ε < lowerDensity(TwoPowAddSet r).\n\n**In other words**: The conjecture is true iff lim_{r→∞} density(r) = 1.\n\nThis is a standard ε-δ reformulation of limit convergence.",
     "significance": "key",
@@ -192,7 +192,7 @@
       "startLine": 122,
       "endLine": 125
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Uncovered by Primes",
     "content": "**uncovered_by_primes_positive**: The complement (TwoPowAddSet 1)^c has positive density.\n\n**Meaning**: A positive proportion of integers CANNOT be written as 2^k + p for any prime p.\n\n**This is known**: Since Romanoff density is ~0.0868, the uncovered proportion is ~0.9132.",
     "significance": "supporting",
@@ -208,7 +208,7 @@
       "startLine": 127,
       "endLine": 129
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Odlyzko (1979)",
     "content": "**erdos_odlyzko_bound**: 0.0868 < lowerDensity(TwoPowAddSet 1)\n\nThis refined Romanoff's original bound. Their paper 'On the density of odd integers of the form (p-1)/2^n and related questions' established tighter estimates using sieve methods.",
     "significance": "supporting",
@@ -224,7 +224,7 @@
       "startLine": 137,
       "endLine": 151
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Verified Examples",
     "content": "**Explicit verifications**:\n\n- 3 = 2^1 + 1 ∈ TwoPowAddSet 0\n- 5 = 2^2 + 1 ∈ TwoPowAddSet 0\n- 9 = 2^3 + 1 ∈ TwoPowAddSet 0\n- 17 = 2^4 + 1 ∈ TwoPowAddSet 0\n\nThese are Fermat numbers F_n = 2^{2^n} + 1 for n = 0, 1, 2.\n\nThe proofs use rfl for the equation and simp for the prime factor count.",
     "mathContext": "Each theorem provides witnesses (k, n) showing the representation exists.",

@@ -118,7 +118,7 @@
       "startLine": 116,
       "endLine": 125
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Spencer's Construction (1971)",
     "content": "**spencer_graph_construction:**\n\nFor graphs (k=2), there exists a graph on n vertices with at least n - log₂n - O(1) different clique sizes.\n\nThis shows ordinary graphs can achieve much more clique size diversity than hypergraphs.",
     "mathContext": "Spencer's probabilistic construction achieves the Moon-Moser optimal bound for graphs.",
@@ -135,7 +135,7 @@
       "startLine": 127,
       "endLine": 136
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Moon-Moser Theorem (1965)",
     "content": "**moon_moser_upper_bound:**\n\nEvery graph on n vertices has at most n - log₂n + O(1) different clique sizes.\n\nCombined with Spencer's construction, this characterizes the optimal bound for graphs: exactly n - Θ(log n).",
     "significance": "key"
@@ -147,7 +147,7 @@
       "startLine": 142,
       "endLine": 152
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős's Hypergraph Construction",
     "content": "**erdos_hypergraph_construction:**\n\nErdős showed that for 3-uniform hypergraphs, one can achieve n - log*n different clique sizes.\n\nHere log* is the iterated logarithm: the number of times you can take log₂ before reaching ≤ 1.\n\n**Examples:**\n- log*(16) = 3 (16 → 4 → 2 → 1)\n- log*(65536) = 4\n\nThis grows VERY slowly, but still → ∞.",
     "mathContext": "The iterated logarithm log* grows extremely slowly: log*(2^65536) = 5.",
@@ -185,7 +185,7 @@
       "startLine": 185,
       "endLine": 192
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Gao's Upper Bound",
     "content": "**gao_upper_bound:**\n\nFor any k ≥ 3 and any k-uniform hypergraph H on n vertices:\n\nnumCliqueSizes H ≤ n - f_k(n)\n\nThis is the key quantitative result that rules out n - O(1) clique sizes.",
     "significance": "key"
@@ -197,7 +197,7 @@
       "startLine": 194,
       "endLine": 199
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "f_k(n) Tends to Infinity",
     "content": "**gaoFunction_tendsto_infinity:**\n\nFor any k ≥ 3 and any bound M, there exists N such that f_k(n) ≥ M for all n ≥ N.\n\nThis ensures that the gap n - (number of clique sizes) grows without bound, preventing any constant gap.",
     "significance": "key"
@@ -209,7 +209,7 @@
       "startLine": 205,
       "endLine": 230
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős #775: DISPROVED",
     "content": "**erdos_775_answer:**\n\n```lean\ntheorem erdos_775_answer : ¬erdos775Question\n```\n\n**Proof Idea:**\n1. Assume there exists constant C (proof by contradiction)\n2. By gaoFunction_tendsto_infinity, choose N such that f_3(n) ≥ C+1 for n ≥ N\n3. Take n = max(N, 3)\n4. The assumed hypergraph would have ≥ n - C clique sizes\n5. But Gao's bound gives ≤ n - (C+1) clique sizes\n6. Contradiction: n - C ≤ n - (C+1) is impossible",
     "mathContext": "The proof uses a standard technique: showing that for any proposed constant, a large enough n violates it.",
@@ -222,7 +222,7 @@
       "startLine": 232,
       "endLine": 235
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem",
     "content": "**erdos_775:**\n\n```lean\ntheorem erdos_775 : ¬erdos775Question := erdos_775_answer\n```\n\nThe answer to Erdős Problem #775 is NO.",
     "significance": "key"
@@ -234,7 +234,7 @@
       "startLine": 241,
       "endLine": 259
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Graphs vs Hypergraphs",
     "content": "**graphs_vs_hypergraphs:**\n\nThis theorem captures the fundamental dichotomy:\n\n1. **Graphs (k=2):** Can achieve n - log₂n - O(1) clique sizes (Spencer)\n2. **Hypergraphs (k≥3):** Cannot achieve n - O(1) clique sizes (Gao)\n\nThe extra uniformity constraint for k ≥ 3 fundamentally limits clique size diversity.",
     "mathContext": "This phase transition at k=2 vs k≥3 is a striking structural result in extremal combinatorics.",
@@ -263,7 +263,7 @@
       "startLine": 272,
       "endLine": 291
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_775_summary:**\n\nCombines all main results:\n\n1. ¬erdos775Question: The answer is NO\n2. For any k ≥ 3 and any target M, sufficiently large hypergraphs have clique diversity bounded by n - M\n\n```lean\ntheorem erdos_775_summary :\n    ¬erdos775Question ∧\n    (∀ k ≥ 3, ∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N, ∀ H : UniformHypergraph k (Fin n),\n      numCliqueSizes H ≤ n - M)\n```",
     "significance": "key"

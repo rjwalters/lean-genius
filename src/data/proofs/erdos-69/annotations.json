@@ -60,7 +60,7 @@
       "startLine": 62,
       "endLine": 85
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Geometric Series Over Multiples",
     "content": "For any prime p, the sum **sum(1/2^(pk))** over k >= 1 equals exactly **1/(2^p - 1)**. This is a geometric series with ratio r = 1/2^p, giving r/(1-r) = 1/(2^p - 1).",
     "mathContext": "Uses Mathlib's `tsum_geometric_of_lt_one` for the convergence and formula. Key calculation: `sum r^(k+1) = r * sum r^k = r * 1/(1-r) = r/(1-r)`.",
@@ -78,7 +78,7 @@
       "startLine": 101,
       "endLine": 115
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Tao's Identity",
     "content": "**Tao's key observation**: The omega sum equals the prime sum. This follows by writing omega(n) = sum_{p|n} 1, then swapping the order of summation. Summing over all n divisible by p gives a geometric series.",
     "mathContext": "The double sum interchange requires careful justification of absolute convergence. The identity `omega(n) = sum_{p|n} 1` is definitional from `primeFactors.card`.",
@@ -96,7 +96,7 @@
       "startLine": 119,
       "endLine": 128
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Prime Sum Irrationality",
     "content": "The sum **sum(1/(2^p - 1))** over primes is **irrational**. This deep result was proved by Tao and Teräväinen in December 2025 using correlations of arithmetic functions and sieve methods.",
     "mathContext": "This is stated as an `axiom` since the proof uses analytic number theory far beyond Mathlib's current scope. It's a special case of Erdos Problem 257.",
@@ -114,7 +114,7 @@
       "startLine": 130,
       "endLine": 138
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdos 69 Solution",
     "content": "**Main theorem**: The sum omega(n)/2^n is irrational. The proof is just two lines: rewrite via Tao's identity, then apply the irrationality result for the prime sum.",
     "mathContext": "The proof is `rw [tao_identity]; exact primeSum_irrational`. This elegant structure shows the power of finding the right transformation.",

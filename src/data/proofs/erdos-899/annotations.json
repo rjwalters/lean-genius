@@ -78,7 +78,7 @@
       "startLine": 67,
       "endLine": 70
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Zero in Difference Set",
     "content": "If A is nonempty, then 0 ∈ A - A. This is because for any a ∈ A, we have a - a = 0.",
     "mathContext": "This is a trivial but useful observation. The difference set is always symmetric around 0: if d ∈ A - A, then -d ∈ A - A.",
@@ -95,7 +95,7 @@
       "startLine": 84,
       "endLine": 94
     },
-    "type": "example",
+    "type": "context",
     "title": "Powers of Two",
     "content": "The set of powers of 2: {1, 2, 4, 8, 16, ...} is a classic example of a zero-density set. Up to N, there are only about log₂(N) powers of 2.",
     "mathContext": "For powers of 2, the difference set contains {2^k - 2^j : k, j ∈ ℕ}. This includes many values like 1 = 2-1, 2 = 4-2, 3 = 4-1, etc.",
@@ -112,7 +112,7 @@
       "startLine": 93,
       "endLine": 109
     },
-    "type": "example",
+    "type": "context",
     "title": "Differences of Powers of 2",
     "content": "We verify that 1 and 2 are in the difference set of powers of 2: 1 = 2 - 1, and 2 = 4 - 2. These concrete examples illustrate how the difference set is computed.",
     "mathContext": "The proof uses existential witnesses and simple arithmetic. The `ring` tactic handles the numerical equality.",
@@ -129,7 +129,7 @@
       "startLine": 118,
       "endLine": 124
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Axiom: Ruzsa's Theorem",
     "content": "We state Ruzsa's 1978 result as an **axiom**: for any infinite zero-density set A, the ratio |(A-A) ∩ [1,N]| / |A ∩ [1,N]| tends to infinity.",
     "mathContext": "The full proof uses counting arguments and the pigeonhole principle. If A - A were bounded relative to A, too many pairs (a,b) would collide, forcing A to have structure.",
@@ -147,7 +147,7 @@
       "startLine": 126,
       "endLine": 134
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem: Erdős Problem 899",
     "content": "**Erdős Problem 899 (Solved):** For infinite sets A with zero density, the limsup of |A - A| / |A| is infinite. Sparse sets have \"large\" difference sets relative to their size.",
     "mathContext": "This is the formal statement matching the problem. The proof invokes the axiom encoding Ruzsa's published result.",

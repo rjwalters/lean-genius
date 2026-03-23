@@ -93,7 +93,7 @@
       "startLine": 126,
       "endLine": 135
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős's Upper Bound (1984)",
     "content": "**erdos_1984_upper_bound:**\n\nH_k(n) ≪ n^{2/3}\n\n**Statement:**\n```lean\naxiom erdos_1984_upper_bound :\n  ∃ C : ℝ, C > 0 ∧\n    ∀ k n : ℕ, k ≥ 1 → n ≥ 1 →\n      (H_k k n : ℝ) ≤ C * (n : ℝ)^(2/3 : ℝ)\n```\n\n**Key Point:** The implied constant C is absolute (independent of k). Published in Erdős's 1984 ICM paper.",
     "mathContext": "Erdős proved this upper bound using counting arguments on additive quadruples.",
@@ -110,7 +110,7 @@
       "startLine": 141,
       "endLine": 158
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Basic Lower Bound",
     "content": "**sidon_subset_sqrt** and **basic_lower_bound:**\n\nAny set of size n contains a Sidon subset of size ≫ √n.\n\n**Consequence:**\nH_k(n) ≫ √n for all k.\n\nThis is a weaker bound than the optimal n^{2/3}, but follows from general Sidon set theory (see Problem #530).",
     "significance": "key",
@@ -126,7 +126,7 @@
       "startLine": 164,
       "endLine": 174
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Alon-Erdős Optimal Lower Bound (1985)",
     "content": "**alon_erdos_1985:**\n\nH_k(n) ≫_k n^{2/3}\n\n**Statement:**\n```lean\naxiom alon_erdos_1985 :\n  ∀ k : ℕ, k ≥ 1 →\n    ∃ c_k : ℝ, c_k > 0 ∧\n      ∀ n : ℕ, n ≥ 1 →\n        (H_k k n : ℝ) ≥ c_k * (n : ℝ)^(2/3 : ℝ)\n```\n\n**Key Point:** The constant c_k depends on k (subscript notation ≫_k). This matches Erdős's upper bound, giving H_k(n) = Θ(n^{2/3}).",
     "mathContext": "Published in European J. Combin. (1985). The proof uses the probabilistic method with random subsampling.",
@@ -143,7 +143,7 @@
       "startLine": 176,
       "endLine": 192
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Corollaries: Answering Erdős's Questions",
     "content": "**ratio_tends_to_infinity:**\nH_k(n)/√n → ∞ as n → ∞.\n\n**stronger_lower_bound:**\nH_k(n) > n^{1/2+c} for c = 1/6 and large n.\n\nThese directly answer Erdős's two questions:\n1. YES, H_k(n)/√n → ∞\n2. YES, H_k(n) > n^{1/2+c} with c = 1/6\n\nThe key insight is that 2/3 = 1/2 + 1/6, so the n^{2/3} bound implies both.",
     "significance": "key",
@@ -159,7 +159,7 @@
       "startLine": 198,
       "endLine": 227
     },
-    "type": "proof",
+    "type": "technique",
     "title": "Probabilistic Method Construction",
     "content": "**The Alon-Erdős Probabilistic Proof:**\n\n1. **Quadruple Bound:** In a set A with ‖1_A∗1_A‖_∞ ≤ k, the number of non-trivial additive quadruples is ≤ k·n².\n\n2. **Random Sampling:** Include each element in A' with probability p ∼ n^{-1/3}.\n\n3. **Expected Size:** E[|A'|] ≈ n · p = n^{2/3}.\n\n4. **Expected Quadruples:** E[quadruples in A'] ≈ k·n² · p⁴ = k·n^{2/3}.\n\n5. **Cleanup:** Remove one element from each remaining quadruple. Since there are ≪ n^{2/3} quadruples, removing at most n^{2/3} elements leaves ≫ n^{2/3} elements.\n\n6. **Result:** The cleaned set is Sidon with size ≫ n^{2/3}.",
     "mathContext": "This is a classic application of the probabilistic method: random sampling followed by 'cleaning' to remove defects.",
@@ -177,7 +177,7 @@
       "startLine": 233,
       "endLine": 248
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Optimal Bounds Theorem",
     "content": "**optimal_bounds:**\n\nCombines the upper and lower bounds to show H_k(n) = Θ(n^{2/3}).\n\n**Proof:**\n```lean\ntheorem optimal_bounds :\n    ∀ k : ℕ, k ≥ 1 →\n      ∃ c C : ℝ, c > 0 ∧ C > 0 ∧\n        ∀ n : ℕ, n ≥ 1 →\n          c * (n : ℝ)^(2/3 : ℝ) ≤ (H_k k n : ℝ) ∧\n          (H_k k n : ℝ) ≤ C * (n : ℝ)^(2/3 : ℝ)\n```\n\nThe proof simply combines alon_erdos_1985 (lower) and erdos_1984_upper_bound (upper).",
     "significance": "key",
@@ -193,7 +193,7 @@
       "startLine": 254,
       "endLine": 280
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem Summary",
     "content": "**erdos_772_summary:**\n\nThe complete answer to Erdős Problem #772.\n\n**Results:**\n1. H_k(n)/√n → ∞ (first question: YES)\n2. H_k(n) = Θ(n^{2/3}) (optimal bounds)\n\n**Key Insight:**\nThe probabilistic method shows that random subsampling with probability n^{-1/3} balances:\n- Subset size: ≈ n^{2/3}\n- Remaining quadruples: ≈ n^{2/3}\n\nThis optimal balance gives the n^{2/3} answer.",
     "significance": "key",

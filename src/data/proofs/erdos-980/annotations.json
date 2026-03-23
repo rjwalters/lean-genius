@@ -72,7 +72,7 @@
       "startLine": 63,
       "endLine": 65
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Quadratic Case Equivalence",
     "content": "For $k = 2$, the general power nonresidue definition specializes to quadratic nonresidues: $a$ is a quadratic nonresidue mod $p$ iff $\\nexists b,\\; b^2 \\equiv a \\pmod{p}$ and $a \\not\\equiv 0 \\pmod{p}$. The Legendre symbol characterizes this: $(a/p) = -1$ for nonresidues.",
     "mathContext": "$\\text{IsPowerNonresidue}(2, p, a) \\iff (\\nexists b,\\; b^2 \\equiv a \\pmod{p}) \\wedge p \\nmid a$. Equivalently, the Legendre symbol $(a/p) = -1$.",
@@ -289,7 +289,7 @@
       "startLine": 207,
       "endLine": 214
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Solution Theorem",
     "content": "The main theorem: for $k \\geq 2$, there exists $c > 0$ such that $\\sum_{p<x} n_k(p) \\sim c \\cdot x/\\log x$. The proof instantiates $c = c_k(k)$, uses `c_k_positive` for positivity, and `elliott_1967_general` for the asymptotic. This is a constructive combination of the axiomatized results.",
     "mathContext": "$\\forall k \\geq 2,\\; \\exists c > 0,\\; |S_k(x) - c \\cdot x/\\log x| < \\varepsilon \\cdot x/\\log x$ for all $x \\geq x_0(\\varepsilon)$.",
@@ -376,7 +376,7 @@
       "startLine": 298,
       "endLine": 307
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "Combines the two pillars of the solution into a single conjunction: (1) existence of the positive constant $c_2$ for the quadratic case (Erdos 1961), and (2) positivity of $c_k$ for all $k \\geq 2$ (Elliott 1967). The proof uses `c_2_positive` and `c_k_positive` directly.",
     "mathContext": "$\\text{erdos\\_980\\_summary} : (\\exists c > 0,\\; c = c_2) \\wedge (\\forall k \\geq 2,\\; c_k > 0)$.",

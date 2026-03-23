@@ -78,7 +78,7 @@
       "startLine": 59,
       "endLine": 72
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Iterated Derivatives",
     "content": "**iteratedDeriv n f** gives the n-th derivative f^{(n)}. We axiomatize the 0th derivative is f, and (n+1)th is derivative of nth.",
     "mathContext": "For exp, all derivatives equal exp. For polynomials of degree d, the (d+1)th derivative is zero. This captures f', f'', f''', etc.",
@@ -132,7 +132,7 @@
       "startLine": 101,
       "endLine": 110
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Polynomials Are Trivial",
     "content": "**polynomial_trivial** shows any polynomial satisfies HasDenseDerivativeZeros. This is why transcendental is required in the problem.",
     "mathContext": "A degree-d polynomial has f^{(n)} = 0 for all n > d. So any subsequence eventually hits zeros everywhere, making the zero set all of C (trivially dense).",
@@ -150,7 +150,7 @@
       "startLine": 114,
       "endLine": 122
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Open Question",
     "content": "**erdos_906_open** axiomatizes the unknown: does such a transcendental entire function exist? Erdos claimed YES but no proof is known.",
     "mathContext": "Erdos wrote in 1982 it was 'solved more than ten years ago' but gave no reference. The formal-conjectures project marks this OPEN due to no verified proof.",
@@ -186,7 +186,7 @@
       "startLine": 134,
       "endLine": 139
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Exponential is Entire and Transcendental",
     "content": "**exp_is_entire** and **exp_is_transcendental** show e^z satisfies two of the required properties.",
     "mathContext": "exp is the quintessential transcendental entire function. Its derivatives all equal itself, so it's infinitely differentiable and not a polynomial.",
@@ -204,7 +204,7 @@
       "startLine": 141,
       "endLine": 149
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Exponential Fails the Property",
     "content": "**exp_deriv_never_zero** and **exp_no_zeros** show that exp does NOT have the dense zeros property - in fact it has NO zeros at all!",
     "mathContext": "Since all derivatives of e^z equal e^z, and e^z != 0 for all z in C, the derivativeZeroSet is empty for any subsequence. This is the opposite of dense.",
@@ -240,7 +240,7 @@
       "startLine": 165,
       "endLine": 175
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Zero Set Properties",
     "content": "**zero_set_closed** shows derivative zero sets are closed. **individual_zero_sets_discrete** notes individual derivative zeros are isolated for non-constant entire functions.",
     "mathContext": "Each f^{(k)} has isolated zeros (unless identically zero), but the UNION over a subsequence can be dense. This is the subtlety the problem exploits.",
@@ -258,7 +258,7 @@
       "startLine": 179,
       "endLine": 196
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_906_summary** packages: polynomials satisfy the property, and exp is entire and transcendental (but doesn't satisfy the property).",
     "mathContext": "This demonstrates the gap: polynomials work trivially, exp fails completely. The question is whether some other transcendental entire function works.",

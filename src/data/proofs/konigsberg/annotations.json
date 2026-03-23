@@ -109,7 +109,7 @@
       "startLine": 138,
       "endLine": 140
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Degree Verification",
     "content": "We prove that `graph.degree v = degree v` for all vertices.\n\nThe proof is by case analysis: `by cases v <;> rfl`\n\nThis unfolds the definition for each of the 11 vertices and confirms the computed degree matches the graph's actual degree.",
     "significance": "supporting",
@@ -125,7 +125,7 @@
       "startLine": 155,
       "endLine": 159
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "The Set of Odd-Degree Vertices",
     "content": "We prove that the odd-degree vertices are exactly {V1, V2, V3, V4}:\n\n$$\\{v : \\text{Odd}(\\deg(v))\\} = \\{V_1, V_2, V_3, V_4\\}$$\n\nThis set has **4 elements** - the crucial fact for the impossibility proof.\n\nThe proof uses:\n- `Nat.odd_iff_not_even`: A number is odd iff it's not even\n- Set extensionality: Two sets are equal iff they have the same members",
     "mathContext": "$|\\{v : \\text{deg}(v) \\text{ is odd}\\}| = 4$",
@@ -143,7 +143,7 @@
       "startLine": 161,
       "endLine": 179
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Euler's Theorem on Eulerian Paths",
     "content": "The key theorem from Mathlib's graph theory library:\n\n**If an Eulerian path exists, the number of odd-degree vertices is 0 or 2.**\n\nWhy?\n- Each time a path passes through a vertex (not at the endpoints), it uses two edges\n- So interior vertices need even degree\n- Only endpoints can have odd degree\n- An Eulerian path has at most 2 endpoints\n\nThe Königsberg graph has 4 odd-degree vertices, so no Eulerian path can exist.",
     "mathContext": "$\\exists$ Eulerian path $\\Rightarrow |\\{v : \\deg(v) \\text{ odd}\\}| \\in \\{0, 2\\}$",
@@ -164,7 +164,7 @@
       "startLine": 180,
       "endLine": 188
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Impossibility Proof",
     "content": "The main theorem: **No Eulerian path exists in the Königsberg graph.**\n\nThe proof is by contradiction:\n1. Assume an Eulerian path `p` exists\n2. Apply `card_odd_degree`: the number of odd-degree vertices must be 0 or 2\n3. But we proved it's 4 (the set {V1, V2, V3, V4})\n4. Contradiction!\n\nIn Lean: `simp at h` derives a contradiction from `4 ∈ {0, 2}`.",
     "mathContext": "$\\neg\\exists$ Eulerian path in $G_{\\text{Königsberg}}$",

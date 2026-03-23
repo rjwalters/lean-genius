@@ -101,7 +101,7 @@
       "startLine": 98,
       "endLine": 126
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Pair-Counting Necessary Condition",
     "content": "**PairCountCondition Xs n:** The constraint $\\sum_i \\binom{X_i}{2} = \\binom{n}{2}$. Since each pair must be covered exactly once, and a block of size $X_i$ covers $\\binom{X_i}{2}$ pairs, the total coverage must match.\n\n**pair_count_necessary:** If $X$ is block-compatible, then it satisfies the pair-counting condition. This is axiomatized; the proof is a simple double-counting argument.\n\n**pair_count_explanation:** A trivial theorem ($n(n-1)/2 = n(n-1)/2$) serving as documentation.\n\nCrucially, pair-counting is necessary but NOT sufficient. Some sequences pass the pair-counting test but cannot be realized by any PBD, because of subtler combinatorial obstructions such as the Fisher inequality and divisibility conditions.",
     "mathContext": "$\\sum_{i=1}^m \\binom{X_i}{2} = \\binom{n}{2}$. Equivalently, $\\sum_{i=1}^m X_i(X_i - 1) = n(n-1)$. This is the analog of the handshaking lemma: total 'pair budget' must balance.",
@@ -125,7 +125,7 @@
       "startLine": 127,
       "endLine": 153
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Question 1: Characterization (OPEN)",
     "content": "**CharacterizationQuestion:** Asks whether there exists a decidable predicate that is both necessary and sufficient for block-compatibility, strictly refining the pair-counting condition.\n\n**characterization_hard:** There exist well-formed sequences satisfying pair-counting that are NOT block-compatible. This shows the pair-counting condition has false positives -- sequences that 'look right' by the numbers but cannot actually be realized.\n\nThe difficulty lies in the non-local nature of PBDs: whether a sequence is block-compatible depends on delicate intersection properties between blocks, not just their sizes. Known obstructions include the Fisher inequality ($m \\ge n$ for non-trivial PBDs), divisibility conditions on replication numbers, and packing/covering constraints.",
     "mathContext": "$\\exists (X_1, \\ldots, X_m),\\, n : \\sum \\binom{X_i}{2} = \\binom{n}{2}$ and $2 \\le X_i \\le n$ sorted, but no PBD on $[n]$ with these sizes exists. The gap between necessary and sufficient conditions is where the combinatorial difficulty resides.",
@@ -173,7 +173,7 @@
       "startLine": 196,
       "endLine": 227
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Asymptotic Constant",
     "content": "**AsymptoticConstant:** The proposition that $B(n) = 2^{(c + o(1))\\sqrt{n} \\log n}$ for some constant $c > 0$, meaning $\\log_2 B(n) / (\\sqrt{n} \\log n) \\to c$.\n\n**constant_at_least_half:** Proved from `alon_lower_bound`, showing $c \\ge 1/2$. The proof uses `alon_lower_bound` directly after witnessing $c = 1/2$ and verifying $1/2 \\ge 1/2$ by `norm_num`.\n\nThe upper bound from Erdős gives $c \\le C$ for some unspecified constant. Closing this gap remains open.",
     "mathContext": "If $\\lim_{n \\to \\infty} \\frac{\\log_2 B(n)}{\\sqrt{n} \\log n} = c$, then $c \\ge 1/2$ (Alon). The growth rate $\\sqrt{n} \\log n$ in the exponent is governed by the geometry of integer partitions of $n(n-1)/2$ into parts of the form $k(k-1)/2$.",
@@ -196,7 +196,7 @@
       "startLine": 228,
       "endLine": 269
     },
-    "type": "example",
+    "type": "context",
     "title": "Concrete Examples",
     "content": "**n = 3:** The only PBD on $\\{1,2,3\\}$ is the single block $\\{1,2,3\\}$, giving sequence $[3]$. Here $\\binom{3}{2} = 3$ pairs, all covered by one block.\n\n**n = 4:** Two sequences pass pair-counting: $[4]$ (one block covering all $\\binom{4}{2} = 6$ pairs) and $[2,2,2,2,2,2]$ (partition into 6 pairs). Both are verified by `simp` and `norm_num`.\n\n**n = 6:** The sequence $[3,3,3,3,3]$ satisfies $5 \\cdot \\binom{3}{2} = 15 = \\binom{6}{2}$. Whether this is block-compatible depends on the existence of a resolvable design on 6 points with 5 triples.",
     "mathContext": "$B(3) = 1$, $B(4) \\ge 2$. These small values illustrate that even for tiny $n$, multiple block-compatible sequences can exist. The pair-counting condition $\\sum X_i(X_i-1) = n(n-1)$ is verified computationally.",
@@ -244,7 +244,7 @@
       "startLine": 285,
       "endLine": 327
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorems",
     "content": "**erdos_732_summary:** Packages two results as a conjunction:\n1. Q2 is solved: $\\exists c > 0$ with $B(n) \\ge \\exp(c\\sqrt{n}\\log n)$\n2. Pair-counting is necessary: block-compatible $\\implies$ pair-counting\n\nProved by pairing `question_2_solved` with `pair_count_necessary`.\n\n**erdos_732:** Alias for the summary theorem.\n\nThe formalization captures the full state: Q2 resolved with matching upper/lower bounds (up to the constant $c$), Q1 open with the pair-counting condition as the best known necessary condition, and concrete examples validating the definitions.",
     "mathContext": "$\\log B(n) = \\Theta(\\sqrt{n} \\log n)$ (Q2 solved), and $\\text{block-compatible} \\implies \\sum \\binom{X_i}{2} = \\binom{n}{2}$ (necessary condition for Q1).",

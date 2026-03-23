@@ -44,7 +44,7 @@
       "startLine": 69,
       "endLine": 88
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Ramsey Numbers and Trivial Bound",
     "content": "**R_3_3 m** axiomatizes the multicolor Ramsey number R(3,3,m): the minimum n such that every graph on n vertices either is Ramsey for K₃ (every 2-coloring has a monochromatic triangle) or has an independent set of size m. **trivial_independent_set_bound** captures the 'easy' result: every non-Ramsey graph on n vertices has an independent set of size at least n^(1/3). This follows from a counting argument: in a triangle-free 2-coloring, one color class has ≥ n/2 edges, and Ramsey theory gives independence number Ω(√(n/2)), leading to α ≥ Ω(n^(1/3)).",
     "mathContext": "axiom R_3_3 (m : ℕ) : ℕ. trivial_independent_set_bound: ∀ non-Ramsey G on n vertices, hasIndependentSetOfSize G (n^(1/3)).toNat. The exponent 1/3 arises from R(3,t) ~ t².",
@@ -80,7 +80,7 @@
       "startLine": 113,
       "endLine": 143
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Alon-Rödl Disproof (2005)",
     "content": "Four axioms capture the resolution. **alon_rodl_lower_bound**: R(3,3,m) ≥ m³/(log m)^(4+o(1)), formalized with a function f(m) satisfying f(m) ≤ (log m)^(4+ε) for large m. **alon_rodl_upper_bound**: R(3,3,m) ≤ C·m³·(log log m)/(log m)². **sudakov_improvement**: removes the log log factor, giving R(3,3,m) ≤ C·m³/(log m)². **erdos_925_disproved**: ¬erdos_925_conjecture. **erdos_925_ramsey_disproof**: ¬erdos_925_ramsey_form. The lower bound is the key: since R(3,3,m) ≥ m³/polylog(m), we cannot have R(3,3,m) ≤ m^(3-c) for any c > 0.",
     "mathContext": "m³/(log m)^(4+o(1)) ≤ R(3,3,m) ≤ m³/(log m)². The lower bound disproves the conjecture: m³/polylog(m) > m^(3-c) for any c > 0 and large m. Published in Combinatorica 25 (2005), 125-141.",
@@ -99,7 +99,7 @@
       "startLine": 145,
       "endLine": 159
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Optimality of n^(1/3)",
     "content": "**n_one_third_is_optimal** formalizes that the trivial n^(1/3) bound is tight: for any ε > 0, there exist sufficiently large non-Ramsey graphs G on n vertices with α(G) ≤ n^(1/3+ε). This follows from the Alon-Rödl lower bound: if R(3,3,m) ≥ m³/polylog(m), then for n ~ m³/polylog(m), the extremal non-Ramsey graph has α ~ m ~ n^(1/3)·polylog(n)^(1/3), which is ≤ n^(1/3+ε) for any ε > 0 and large n.",
     "mathContext": "n_one_third_is_optimal: ∀ ε > 0, ∃ n₀, ∀ n ≥ n₀, ∃ non-Ramsey G on n vertices with α(G) ≤ ⌈n^(1/3+ε)⌉. The improvement over n^(1/3) is at most polylogarithmic.",
@@ -117,7 +117,7 @@
       "startLine": 161,
       "endLine": 177
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Easy Lower Bound",
     "content": "**easy_lower_bound** states that every non-Ramsey graph has α(G) ≥ c·n^(1/3) for an absolute constant c > 0. The proof sketch: given a 2-coloring of G with no monochromatic triangle, each color class is triangle-free. By Ramsey theory, R(3,t) ~ t² (up to log factors), so a triangle-free graph on N vertices has α ≥ Ω(√N). The denser color class has ≥ n/2 vertices, giving α ≥ Ω(n^(1/2)) in that class. But we need the independent set in G, not in a color class — a more careful argument via R(3,3,m) gives the n^(1/3) bound.",
     "mathContext": "easy_lower_bound: ∃ c > 0, ∀ non-Ramsey G on n vertices, (α(G) : ℝ) ≥ c·n^(1/3). Uses Ramsey theory for triangle-free graphs and counting.",
@@ -135,7 +135,7 @@
       "startLine": 179,
       "endLine": 217
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorems",
     "content": "Two summary theorems. **erdos_925** directly states the disproof: ¬erdos_925_conjecture, proved by erdos_925_disproved. **erdos_925_summary** combines both the negative and positive results: (1) the conjecture is false (no polynomial improvement over n^(1/3)), and (2) the easy lower bound c·n^(1/3) does hold. The proof is ⟨erdos_925_disproved, easy_lower_bound⟩, directly combining the two axioms via an anonymous constructor. This fully characterizes the situation: n^(1/3) is the right exponent, up to polylogarithmic factors.",
     "mathContext": "erdos_925 : ¬erdos_925_conjecture := erdos_925_disproved. erdos_925_summary : ¬conjecture ∧ (∃ c > 0, α(G) ≥ c·n^(1/3)) := ⟨erdos_925_disproved, easy_lower_bound⟩.",

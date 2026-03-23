@@ -42,7 +42,7 @@
       "startLine": 47,
       "endLine": 49
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Perfect Squares Have 0 in D(n)",
     "content": "**zero_mem_factorDifferenceSet_of_sq**: If n is a perfect square (n = k²), then 0 ∈ D(n).\n\n**Proof idea**: n = k × k, so |k - k| = 0.\n\n**Examples**:\n- D(4) contains 0 (from 2×2)\n- D(9) contains 0 (from 3×3)\n- D(6) does NOT contain 0 (not a perfect square)",
     "significance": "supporting",
@@ -58,7 +58,7 @@
       "startLine": 51,
       "endLine": 53
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "D(n) Always Contains n-1",
     "content": "**pred_mem_factorDifferenceSet**: For n > 0, n - 1 ∈ D(n).\n\n**Proof**: From the factorization n = 1 × n, we get |1 - n| = n - 1.\n\nThis is the **maximum element** of D(n).",
     "significance": "supporting",
@@ -90,7 +90,7 @@
       "startLine": 76,
       "endLine": 80
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Main Conjecture (Partially OPEN)",
     "content": "**erdos_885_conjecture**: For all k ≥ 1, there exists a k-common set.\n\nThis is stated as an axiom because k ≥ 5 remains OPEN.\n\nThe conjecture asks whether the existence of k-common sets is unbounded.",
     "significance": "key",
@@ -106,7 +106,7 @@
       "startLine": 86,
       "endLine": 92
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Rosenfeld (1997): k = 2",
     "content": "**erdos_rosenfeld_k2**: There exists a 2-common set.\n\nErdős and Rosenfeld proved this in their 1997 paper introducing the factor difference set.\n\n**Example approach**: Find N₁, N₂ where D(N₁) ∩ D(N₂) has at least 2 elements.",
     "mathContext": "This was the first result, establishing the problem has non-trivial solutions.",
@@ -123,7 +123,7 @@
       "startLine": 94,
       "endLine": 98
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Jiménez-Urroz (1999): k = 3",
     "content": "**jimenez_urroz_k3**: There exists a 3-common set.\n\nJiménez-Urroz extended the result to k = 3 by finding three highly composite numbers with at least 3 common factor differences.\n\nThe construction becomes significantly more constrained.",
     "significance": "key",
@@ -138,7 +138,7 @@
       "startLine": 100,
       "endLine": 104
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bremner (2019): k = 4",
     "content": "**bremner_k4**: There exists a 4-common set.\n\nBremner used computational search combined with number-theoretic techniques. This is the current frontier—the largest k for which a solution is known.\n\n20 years passed between k = 3 and k = 4, illustrating the difficulty.",
     "significance": "key",
@@ -154,7 +154,7 @@
       "startLine": 116,
       "endLine": 119
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Open Case: k ≥ 5",
     "content": "**open_k5**: Either a 5-common set exists, or it doesn't.\n\nThis is the **next unsolved case**. The difficulty increases rapidly because:\n1. More integers are needed\n2. Each must have many divisors\n3. Their D(n) sets must align on ≥ 5 common values\n\nNo construction for k = 5 is currently known.",
     "mathContext": "The computational barrier grows exponentially with k.",
@@ -171,7 +171,7 @@
       "startLine": 125,
       "endLine": 128
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Size of D(n)",
     "content": "**card_factorDifferenceSet**: |D(n)| = ⌈d(n)/2⌉ where d(n) is the number of divisors.\n\nEach divisor pair (a, n/a) contributes one element to D(n). Since pairs are symmetric, we get half the divisor count (rounded up for perfect squares).\n\n**Examples**:\n- d(12) = 6, so |D(12)| = 3\n- d(6) = 4, so |D(6)| = 2",
     "significance": "key",
@@ -187,7 +187,7 @@
       "startLine": 141,
       "endLine": 145
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Divisor Characterization",
     "content": "**mem_factorDifferenceSet_iff_divisor**: d ∈ D(n) iff there exists a divisor a of n with |a - n/a| = d.\n\nThis connects factor difference sets directly to the divisor structure:\n- Each divisor a gives the element |a - n/a|\n- Divisors come in pairs (a, n/a) that give the same difference",
     "significance": "key",
@@ -203,7 +203,7 @@
       "startLine": 153,
       "endLine": 180
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Verified Examples",
     "content": "**Explicit computations**:\n\n- 1 ∈ D(12) from 3 × 4\n- 4 ∈ D(12) from 2 × 6\n- 11 ∈ D(12) from 1 × 12\n- 1 ∈ D(6) from 2 × 3\n- 5 ∈ D(6) from 1 × 6\n\n**Intersection**: 1 ∈ D(6) ∩ D(12)\n\nThese are verified by Lean type-checking with explicit witnesses.",
     "mathContext": "Each membership is witnessed by a factorization (a, b) with n = a*b.",
