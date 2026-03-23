@@ -20,7 +20,13 @@
     "erdosUrl": "https://erdosproblems.com/53",
     "erdosProblemStatus": "proved",
     "axiomCount": 4,
-    "lineCount": 129
+    "lineCount": 129,
+    "prerequisites": [
+      "Sumsets and product sets",
+      "Additive vs multiplicative structure",
+      "Combinatorial number theory",
+      "Arithmetic combinatorics"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős and Szemerédi posed this problem in 1983, asking whether sums and products of distinct elements from a finite integer set must be super-polynomially abundant. The question captures a deep principle in additive combinatorics: that additive and multiplicative structure in a set are fundamentally incompatible, so at least one of sums or products must be very rich. The problem is closely related to their more famous sum-product conjecture (Problem 52), which concerns pairwise operations $|A+A| + |A \\cdot A|$ rather than subset operations. Erdős and Szemerédi also established an upper bound, showing that arbitrarily large sets exist where the representable count is at most $\\exp(c(\\log|A|)^2 \\log\\log|A|)$, so the growth is subexponential. In 2003, Mei-Chu Chang resolved the problem affirmatively, proving that for every $k$, sufficiently large sets have at least $|A|^k$ representable integers. Chang's proof combined the Balog-Szemerédi-Gowers theorem with multiplicative energy estimates, building on the growing toolkit of additive combinatorics developed by Gowers, Bourgain, and others. The result confirmed that finite integer sets are inherently arithmetically rich when measured by subset operations.",
@@ -111,5 +117,37 @@
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-52",
+      "relationship": "related",
+      "description": "Problem #52 (the sum-product conjecture) is the main problem in this family. Problem #53 studies the distinct-element variant of the sum-product phenomenon"
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Problem #1 (distinct subset sums) and Problem #53 both concern distinctness conditions on sums of sets. The sum-product setting adds the multiplicative dimension"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Szemerédi, Endre",
+      "title": "On sums and products of integers",
+      "year": "1983",
+      "venue": "In: Studies in Pure Mathematics, Birkhäuser, pp. 213–218",
+      "note": "Original paper introducing the sum-product phenomenon"
+    },
+    {
+      "authors": "Tao, Terence; Vu, Van",
+      "title": "Additive Combinatorics",
+      "year": "2006",
+      "venue": "Cambridge University Press",
+      "note": "Standard reference for sum-product theory and its connections to additive combinatorics"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-52"
+  ]
 }

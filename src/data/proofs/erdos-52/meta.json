@@ -20,7 +20,13 @@
     "erdosUrl": "https://erdosproblems.com/52",
     "erdosProblemStatus": "open",
     "axiomCount": 7,
-    "lineCount": 134
+    "lineCount": 134,
+    "prerequisites": [
+      "Sumsets and product sets of finite sets",
+      "Additive combinatorics",
+      "Incidence geometry (Szemerédi-Trotter)",
+      "Real analysis and arithmetic structure"
+    ]
   },
   "overview": {
     "historicalContext": "The sum-product conjecture originated in a landmark 1983 paper by Paul Erdős and Endre Szemerédi, \"A combinatorial theorem in group theory,\" where they proved the first super-linear bound $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1+c}$ with $c = 1/31$ using the Szemerédi–Trotter incidence theorem. The conjecture itself — that the exponent should be $2-\\varepsilon$ for any $\\varepsilon > 0$ — reflects a deep philosophical insight: addition and multiplication are fundamentally incompatible operations on finite sets. An arithmetic progression $\\{1,2,\\ldots,n\\}$ has small sumset ($|A+A| = 2n-1$) but large product set, while a geometric progression $\\{2^0, 2^1, \\ldots, 2^{n-1}\\}$ has small product set but large sumset. The conjecture says these are essentially the only ways to have a small sum-product quantity. The exponent has been improved through a remarkable sequence of breakthroughs: Nathanson–Ford ($c = 1/15$), Elekes (1997, exponent $5/4$ via an elegant geometric argument), Solymosi (2009, exponent $4/3$ using multiplicative energy), Konyagin–Shkredov (2016), Rudnev–Stevens (2022), and Bloom (2025, exponent $1270/951 \\approx 1.335$). Erdős offered a $250 prize for its resolution. The conjecture has deep connections to the Kakeya problem, the discretized ring conjecture of Bourgain, and the finite field analog proved by Bourgain–Katz–Tao (2004). Related gallery entries: erdos-53, erdos-808, erdos-818.",
@@ -125,5 +131,44 @@
     "axiomCount": 7,
     "theoremCount": 0,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-53",
+      "relationship": "related",
+      "description": "Problem #53 on sums and products of distinct elements is the companion problem. Both concern the fundamental sum-product phenomenon: sets cannot be simultaneously additively and multiplicatively structured"
+    },
+    {
+      "targetId": "erdos-101",
+      "relationship": "related",
+      "description": "Problem #101 on incidence geometry shares techniques with the sum-product conjecture: the Szemerédi-Trotter incidence theorem is a key tool for both"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Szemerédi, Endre",
+      "title": "On sums and products of integers",
+      "year": "1983",
+      "venue": "In: Studies in Pure Mathematics, Birkhäuser, pp. 213–218",
+      "note": "Original formulation of the sum-product conjecture: max(|A+A|, |A·A|) ≥ c|A|^{1+ε}"
+    },
+    {
+      "authors": "Solymosi, József",
+      "title": "Bounding multiplicative energy by the sumset",
+      "year": "2009",
+      "venue": "Advances in Mathematics, vol. 222, no. 2, pp. 402–408",
+      "note": "Elegant proof giving the best known bound |A+A||A·A| ≥ |A|^{8/3}/2 via multiplicative energy"
+    },
+    {
+      "authors": "Guth, Larry; Katz, Nets Hawk",
+      "title": "On the Erdős distinct distances problem in the plane",
+      "year": "2015",
+      "venue": "Annals of Mathematics, vol. 181, no. 1, pp. 155–190",
+      "note": "Revolutionary polynomial method with deep connections to sum-product theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-53",
+    "erdos-101"
+  ]
 }

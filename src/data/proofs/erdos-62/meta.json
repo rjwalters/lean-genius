@@ -57,7 +57,13 @@
     ],
     "leanFile": "Proofs/Erdos62Problem.lean",
     "axiomCount": 3,
-    "lineCount": 207
+    "lineCount": 207,
+    "prerequisites": [
+      "Common subgraphs and graph isomorphism",
+      "Extremal graph theory",
+      "Ramsey theory",
+      "Graph density and structure"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős posed this problem at the intersection of infinite combinatorics and chromatic graph theory. The question asks whether graphs with uncountable chromatic number (χ = ℵ₁) must share 'rich' common subgraphs. The Erdős-Hajnal-Shelah theorem (1974) provides the key partial answer: every graph with χ = ℵ₁ contains all sufficiently large odd cycles, so any two such graphs share common subgraphs with χ = 3. The gap between χ = 3 (achieved) and χ = 4 (conjectured) represents a fundamental barrier in infinite combinatorics. Erdős generalized the problem to finite collections (1987) and raised it repeatedly through the 1990s. The problem connects to partition calculus, the De Bruijn-Erdős compactness theorem, and the structure theory of graphs with large chromatic number. Under ZFC, graphs with χ = ℵ₁ exist (e.g., shift graphs on ω₁), but controlling their common subgraph structure remains elusive.",
@@ -166,5 +172,30 @@
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-61",
+      "relationship": "related",
+      "description": "Problem #61 (Erdős-Hajnal) and Problem #62 both concern structural properties of dense graphs. Both study how graph structure forces the appearance of specific subgraphs"
+    },
+    {
+      "targetId": "erdos-22",
+      "relationship": "related",
+      "description": "Problem #22 and Problem #62 both concern extremal properties of graphs with specific density constraints"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "On some problems in graph theory, combinatorial analysis, and combinatorial number theory",
+      "year": "1977",
+      "venue": "In: Graph Theory and Related Topics, Academic Press, pp. 132–149",
+      "note": "Includes the formulation of problems about common subgraphs of dense graphs"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-22",
+    "erdos-61"
+  ]
 }
