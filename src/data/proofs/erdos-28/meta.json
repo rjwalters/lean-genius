@@ -97,11 +97,17 @@
       "**Erdős–Fuchs falls short**: The cumulative sum $\\sum r_A(n)$ must oscillate by $\\Omega(N^{1/4}/\\sqrt{\\log N})$, but these fluctuations could concentrate in a few large terms without any single $r_A(n)$ being large — a subtle gap between average and pointwise behavior",
       "**Sidon sets confirm the extremal case**: Sets with $r \\leq 1$ (Sidon/$B_2$ sets) satisfy $A(N) \\leq \\sqrt{N} + O(N^{1/4})$, which is too sparse for a basis, confirming the conjecture vacuously at the boundary",
       "**Hierarchy of related problems**: #28 implies #40 ($B_2[g]$ sets cannot be bases), connects to #1145 on dense $B_2[g]$ constructions, and motivates the density version that weakens the basis hypothesis to $A(N) \\gg \\sqrt{N}$"
+    ],
+    "prerequisites": [
+      "Additive number theory (sumsets, representation functions)",
+      "Sidon sets and B_2 sequences",
+      "Basic analytic number theory (Fourier analysis on integers)",
+      "Asymptotic notation and density of integer sets"
     ]
   },
   "conclusion": {
     "summary": "This formalization captures the full landscape of the Erdős–Turán conjecture on additive bases: the core definitions, the main conjecture and its strengthenings, connections to Sidon sets and Problem #40, and the partial results (Erdős–Fuchs, Halberstam–Roth) that illuminate why the problem is so hard. The gap between what is known (average representations diverge, cumulative sums oscillate) and what is conjectured (individual representations are unbounded) highlights a deep open question about the pointwise behavior of additive structure.",
-    "implications": "A proof would establish that no additive basis of order 2 can have uniformly bounded representations — a fundamental dichotomy in additive number theory. This would resolve Problem #40 as a corollary, settle the structure of $B_2[g]$ sets relative to bases, and likely introduce new techniques at the intersection of additive combinatorics and analytic number theory. The density version, if true, would extend the result far beyond bases to any sufficiently dense set.",
+    "implications": "**Theoretical Significance**: A proof would establish that no additive basis of order 2 can have uniformly bounded representations — a fundamental dichotomy in additive number theory.\n\n**Broader Connections**: This would resolve Problem #40 as a corollary, settle the structure of $B_2[g]$ sets relative to bases, and likely introduce new techniques at the intersection of additive combinatorics and analytic number theory. The density version, if true, would extend the result far beyond bases to any sufficiently dense set.",
     "openQuestions": [
       "Can the Erdős–Fuchs fluctuation theorem be strengthened to imply pointwise unboundedness of $r_A(n)$, or is there a fundamental barrier?",
       "Does the conjecture hold under the weaker density hypothesis $A(N) \\geq c\\sqrt{N}$, without assuming $A + A$ covers almost all integers?",

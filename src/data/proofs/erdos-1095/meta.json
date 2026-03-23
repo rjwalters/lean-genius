@@ -35,6 +35,10 @@
       "**Mertens' heuristic**: the 'probability' $\\binom{n}{k}$ is $k$-rough is $\\prod_{p \\le k} 1/p \\approx e^{-k/\\log k}$, predicting $g(k) \\approx e^{k/\\log k}$",
       "**Wild irregularity**: $g$ can jump by arbitrary factors ($\\limsup g(k+1)/g(k) = \\infty$) or barely change ($\\liminf = 0$), depending on the prime structure of $k$",
       "**LCM connection**: $L_k = \\operatorname{lcm}(1,\\ldots,k) = e^{\\psi(k)} \\sim e^k$ by PNT, providing the natural scale for the upper bound"
+    ],
+    "prerequisites": [
+      "Number theory fundamentals",
+      "Combinatorial analysis"
     ]
   },
   "sections": [

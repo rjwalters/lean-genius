@@ -35,6 +35,10 @@
       "**Halász construction**: By splitting $c$ grid squares into pairs, one gains exactly $c/k$ in total side length, giving $f(k^2+2c+1) \\geq k + c/k$. The conjecture says this simple construction is optimal",
       "**Praton's stunning equivalence**: The simplest open case $f(10) = 3$ would imply the entire Erdős-Soifer formula $f(k^2+2c+1) = k + c/k$ for all $k$ and $|c| < k$. This deep structural result reduces an infinite family of questions to a single case",
       "**Axis-parallel vs rotated**: BKU (2024) solved the restricted problem where all squares must be axis-aligned. The general case remains open because rotated squares could potentially create more efficient packings — though no example is known where rotation helps"
+    ],
+    "prerequisites": [
+      "Number theory fundamentals",
+      "Combinatorial analysis"
     ]
   },
   "sections": [
@@ -118,7 +122,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #106 formalizes one of the most elegant unsolved problems in discrete geometry: whether the maximum side-length sum $f(n)$ of $n$ non-overlapping squares in $[0,1]^2$ satisfies $f(k^2+1) = k$. The Lean formalization captures the full structure — from the Cauchy-Schwarz tight bound at perfect squares through the Halász constructions, Erdős-Soifer conjecture, Praton's equivalence, and the 2024 BKU axis-parallel breakthrough. The file has only 1 sorry (the grid construction existence), with 3 fully proved theorems including the key conjecture-equivalence results.",
-    "implications": "**Theoretical Significance**\n\n1. **Discrete Geometry**: The problem is a prototype for understanding when adding extra pieces to an optimal configuration doesn't help — a 'rigidity' phenomenon in packing theory\n\n2. **Rotated vs Axis-Parallel Packing**: With BKU (2024) solving the axis-parallel case, the core remaining question is whether rotation can beat alignment. This connects to the broader theory of packing efficiency under geometric constraints\n\n3. **Praton's Reduction**: The equivalence between the single case $f(k^2+1) = k$ and the full Erdős-Soifer formula reveals deep structural rigidity in the packing function — a single data point determines an entire family\n\n4. **Optimization Plateaus**: The plateau phenomenon ($f(n+1) = f(n)$ at perfect squares) connects to general questions about when adding resources to a constrained optimization problem fails to improve the objective\n\n5. **Combinatorial Extremal Theory**: The interplay between Cauchy-Schwarz (global bound) and constructive packings (local optimality) exemplifies the tension between analysis and combinatorics in extremal problems",
+    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Discrete Geometry**: The problem is a prototype for understanding when adding extra pieces to an optimal configuration doesn't help — a 'rigidity' phenomenon in packing theory\n\n2. **Rotated vs Axis-Parallel Packing**: With BKU (2024) solving the axis-parallel case, the core remaining question is whether rotation can beat alignment.\n\n**Broader Connections**: This connects to the broader theory of packing efficiency under geometric constraints\n\n3. **Praton's Reduction**: The equivalence between the single case $f(k^2+1) = k$ and the full Erdős-Soifer formula reveals deep structural rigidity in the packing function — a single data point determines an entire family\n\n4. **Optimization Plateaus**: The plateau phenomenon ($f(n+1) = f(n)$ at perfect squares) connects to general questions about when adding resources to a constrained optimization problem fails to improve the objective\n\n5. **Combinatorial Extremal Theory**: The interplay between Cauchy-Schwarz (global bound) and constructive packings (local optimality) exemplifies the tension between analysis and combinatorics in extremal problems.",
     "openQuestions": [
       "Is $f(k^2+1) = k$ for all $k \\geq 1$? (The main conjecture — open for $k \\geq 3$, i.e., $f(10) = 3$ is the first unresolved case)",
       "Can rotated squares beat axis-parallel packings? (I.e., is $f(n) > g(n)$ for some $n$? No example is known)",
@@ -187,7 +191,10 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "A. Soifer"],
+      "authors": [
+        "P. Erdős",
+        "A. Soifer"
+      ],
       "title": "Squares Packing",
       "venue": "Geombinatorics",
       "year": 1995,
@@ -196,7 +203,9 @@
       "note": "Formulates the Erdős-Soifer conjecture f(k²+2c+1) = k + c/k and states the equivalence with f(k²+1) = k."
     },
     {
-      "authors": ["G. Halász"],
+      "authors": [
+        "G. Halász"
+      ],
       "title": "Packing squares into a square",
       "venue": "Studia Scientiarum Mathematicarum Hungarica",
       "year": 1984,
@@ -205,7 +214,9 @@
       "note": "Proves the constructive lower bounds f(k²+2c+1) ≥ k + c/k by splitting grid squares into pairs."
     },
     {
-      "authors": ["I. Praton"],
+      "authors": [
+        "I. Praton"
+      ],
       "title": "Squares packing into a square",
       "venue": "Geombinatorics",
       "year": 2003,
@@ -214,7 +225,11 @@
       "note": "Proves the stunning equivalence: f(k²+1) = k for all k if and only if the full Erdős-Soifer formula holds, reducing the conjecture to the single case f(10) = 3."
     },
     {
-      "authors": ["J. Baek", "M. Koizumi", "Y. Ueoro"],
+      "authors": [
+        "J. Baek",
+        "M. Koizumi",
+        "Y. Ueoro"
+      ],
       "title": "Packing unit squares in a square: axis-parallel case",
       "venue": "arXiv preprint",
       "year": 2024,
@@ -222,7 +237,9 @@
       "note": "Proves g(k²+1) = k for axis-parallel squares (BKU theorem), completely resolving the axis-parallel restriction of Erdős's conjecture."
     },
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "Some old and new problems in combinatorial geometry",
       "venue": "Annals of Discrete Mathematics",
       "year": 1986,
