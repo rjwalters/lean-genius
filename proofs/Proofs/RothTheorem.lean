@@ -138,10 +138,7 @@ private lemma fourierCoeff_eq_sum_psi {N : ℕ} (A : Finset (ZMod N)) (r : ZMod 
 private lemma exp_eq_pow_root {N : ℕ} [NeZero N] (k : ℕ) :
     Complex.exp (2 * ↑Real.pi * Complex.I * (↑k / ↑N)) =
     (Complex.exp (2 * ↑Real.pi * Complex.I / ↑N)) ^ k := by
-  rw [← Complex.exp_nat_mul]
-  congr 1
-  push_cast
-  ring
+  rw [← Complex.exp_nat_mul]; congr 1; ring
 
 /-- The primitive N-th root of unity satisfies ω^N = 1. -/
 private lemma root_pow_eq_one {N : ℕ} [NeZero N] :
@@ -194,21 +191,22 @@ private lemma psi_eq_pow {N : ℕ} [NeZero N] (r x : ZMod N) :
 private lemma psi_add {N : ℕ} [NeZero N] (a b : ZMod N) :
     ψ (a + b) = ψ a * ψ b := by
   simp only [ψ, ← Complex.exp_add]
-  congr 1
-  -- Reduce to val(a+b) ≡ val(a) + val(b) mod N
-  rw [ZMod.val_add]
+  -- Combine RHS: 2πi·val(a)/N + 2πi·val(b)/N = 2πi·(val(a)+val(b))/N
+  rw [show 2 * ↑Real.pi * Complex.I * (↑(ZMod.val a) / ↑N) +
+      2 * ↑Real.pi * Complex.I * (↑(ZMod.val b) / ↑N) =
+      2 * ↑Real.pi * Complex.I * ((↑(ZMod.val a) + ↑(ZMod.val b)) / ↑N) from by ring]
+  -- LHS has val(a+b) = (val(a)+val(b)) % N; exponents agree mod 2πi
+  rw [ZMod.val_add,
+    show (↑(ZMod.val a) : ℂ) + ↑(ZMod.val b) = ↑(ZMod.val a + ZMod.val b) from by push_cast; ring]
   set k := ZMod.val a + ZMod.val b
   have hN : (N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
   have hdiv : (↑k : ℂ) = ↑N * ↑(k / N) + ↑(k % N) := by
     exact_mod_cast (Nat.div_add_mod k N).symm
-  rw [show (↑k : ℂ) / ↑N = ↑(k / N) + ↑(k % N) / ↑N from by rw [hdiv]; field_simp]
-  rw [show 2 * ↑Real.pi * Complex.I * (↑(k / N) + ↑(k % N) / ↑N) =
-      ↑(k / N) * (2 * ↑Real.pi * Complex.I) +
-      2 * ↑Real.pi * Complex.I * (↑(k % N) / ↑N) from by ring]
-  rw [Complex.exp_add, Complex.exp_nat_mul, Complex.exp_two_pi_mul_I, one_pow, one_mul]
-  -- Now need: 2πi * ((val a + val b) % N) / N = 2πi * val a / N + 2πi * val b / N
-  -- which is: (k % N) / N = val a / N + val b / N up to the integer part already handled
-  ring
+  rw [show (↑k : ℂ) / ↑N = ↑(k / N) + ↑(k % N) / ↑N from by rw [hdiv]; field_simp,
+    show 2 * ↑Real.pi * Complex.I * (↑(k / N) + ↑(k % N) / ↑N) =
+        ↑(k / N) * (2 * ↑Real.pi * Complex.I) +
+        2 * ↑Real.pi * Complex.I * (↑(k % N) / ↑N) from by ring,
+    Complex.exp_add, Complex.exp_nat_mul, Complex.exp_two_pi_mul_I, one_pow, one_mul]
 
 /-- ψ(0) = 1 (the character evaluated at zero). -/
 private lemma psi_zero {N : ℕ} [NeZero N] : ψ (0 : ZMod N) = 1 := by
@@ -223,7 +221,7 @@ private lemma psi_ne_one {N : ℕ} [NeZero N] (c : ZMod N) (hc : c ≠ 0) :
   have hval_pos : 0 < ZMod.val c := by
     rw [Nat.pos_iff_ne_zero]
     intro h
-    exact hc (ZMod.val_eq_zero.mp h)
+    exact hc (by rwa [ZMod.val_eq_zero] at h)
   have hval_lt : ZMod.val c < N := ZMod.val_lt c
   -- exp(2πi·val(c)/N) = 1 iff val(c)/N ∈ ℤ, but 0 < val(c)/N < 1
   intro h
@@ -236,18 +234,16 @@ private lemma psi_ne_one {N : ℕ} [NeZero N] (c : ZMod N) (hc : c ≠ 0) :
     · exact_mod_cast Real.pi_ne_zero
   have hN : (N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
   -- From hn: val(c)/N = n (as complex numbers)
-  have heq : (↑(ZMod.val c) : ℂ) / ↑N = ↑n := by
-    have h1 := congr_arg (· / (2 * ↑Real.pi * Complex.I)) hn
-    simp only [mul_div_cancel_left₀ _ hpi] at h1
-    linarith
-  -- val(c) = n * N
+  have heq : (↑(ZMod.val c) : ℂ) / ↑N = ↑n :=
+    mul_left_cancel₀ hpi (by rw [hn]; ring)
   have heq_nat : (ZMod.val c : ℤ) = n * N := by
-    have : (↑(ZMod.val c) : ℂ) = ↑n * ↑N := by
-      rw [eq_comm, mul_div_eq_iff₀ hN] at heq; linarith
-    exact_mod_cast this
-  -- But 0 < val(c) < N, so n must be 0 (giving val(c) = 0, contradiction)
-  -- or n ≥ 1 (giving val(c) ≥ N, contradiction)
-  omega
+    have h := heq; rw [div_eq_iff hN] at h; exact_mod_cast h
+  have hN_pos : (0 : ℤ) < ↑N := by exact_mod_cast (NeZero.pos N)
+  have hvc_pos : (0 : ℤ) < ↑(ZMod.val c) := by exact_mod_cast hval_pos
+  have hvc_lt : (↑(ZMod.val c) : ℤ) < ↑N := by exact_mod_cast hval_lt
+  rcases le_or_lt n 0 with hn | hn
+  · linarith [mul_nonpos_of_nonpos_of_nonneg hn hN_pos.le]
+  · linarith [mul_le_mul_of_nonneg_right (show 1 ≤ n by omega) hN_pos.le]
 
 /-- Character orthogonality: ∑_{r : ZMod N} ψ(r·c) = N if c = 0, 0 if c ≠ 0.
     When c = 0, every term is 1. When c ≠ 0, the sum is a geometric series
@@ -267,27 +263,69 @@ private theorem char_orthogonality {N : ℕ} [NeZero N] (c : ZMod N) :
     have hshift : ψ c * S = S := by
       rw [hS_def, Finset.mul_sum]
       -- ψ(c) · ψ(r·c) = ψ(c + r·c) = ψ((r+1)·c)
-      conv_lhs => ext r; rw [← psi_add c (r * c), show c + r * c = (r + 1) * c from by ring]
+      have hstep : ∀ r : ZMod N, ψ c * ψ (r * c) = ψ ((r + 1) * c) := by
+        intro r; rw [← psi_add c (r * c), show c + r * c = (r + 1) * c from by ring]
+      simp_rw [hstep]
       -- Reindex: sum over r of f(r+1) = sum over r of f(r)
       rw [show (Finset.univ.sum fun r : ZMod N => ψ ((r + 1) * c)) =
           Finset.univ.sum fun r : ZMod N => ψ (r * c) from by
         apply Finset.sum_equiv (Equiv.addRight (1 : ZMod N))
         · intro r; simp
-        · intro r _; ring_nf]
+        · intro r _; congr 1]
     -- Step 2: ψ(c) ≠ 1
     have hψ := psi_ne_one c hc
     -- Step 3: (ψ(c) - 1) · S = 0, and ψ(c) - 1 ≠ 0, so S = 0
     have h0 : (ψ c - 1) * S = 0 := by rw [sub_mul, one_mul, hshift, sub_self]
     exact (mul_eq_zero.mp h0).resolve_left (sub_ne_zero.mpr hψ)
 
+/-- exp(n * 2πi) = 1 for any integer n. -/
+private lemma exp_int_mul_two_pi_I (n : ℤ) :
+    Complex.exp (↑n * (2 * ↑Real.pi * Complex.I)) = 1 :=
+  Complex.exp_eq_one_iff.mpr ⟨n, rfl⟩
+
 /-- Character sum over integers: ∑_{j=0}^{N-1} exp(2πi·j·m/N) = N·δ(N∣m).
     Extension of char_orthogonality to integer exponents via geometric series. -/
 private lemma char_sum_int {N : ℕ} [NeZero N] (m : ℤ) :
     ∑ j ∈ Finset.range N, Complex.exp (2 * ↑Real.pi * Complex.I * (↑j * ↑m / ↑N)) =
     if (N : ℤ) ∣ m then ↑N else 0 := by
-  -- Write as ∑ ω^j where ω = exp(2πi·m/N), apply root_unity_sum_zero.
-  -- N∣m case: ω = 1, sum = N. N∤m case: ω ≠ 1, ω^N = 1, sum = 0.
-  sorry
+  have hN : (N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
+  -- Set ω = exp(2πi·m/N) and rewrite each term as ω^j
+  set ω := Complex.exp (2 * ↑Real.pi * Complex.I * (↑m / ↑N)) with hω_def
+  have hterm : ∀ j : ℕ,
+      Complex.exp (2 * ↑Real.pi * Complex.I * (↑j * ↑m / ↑N)) = ω ^ j := by
+    intro j
+    change Complex.exp (2 * ↑Real.pi * Complex.I * (↑j * ↑m / ↑N)) =
+      (Complex.exp (2 * ↑Real.pi * Complex.I * (↑m / ↑N))) ^ j
+    rw [← Complex.exp_nat_mul]; congr 1; ring
+  simp_rw [hterm]
+  -- ω^N = 1: exp(N · 2πi·m/N) = exp(m · 2πi) = 1
+  have hωN : ω ^ N = 1 := by
+    rw [hω_def, ← Complex.exp_nat_mul]
+    rw [show (↑N : ℂ) * (2 * ↑Real.pi * Complex.I * (↑m / ↑N)) =
+        ↑m * (2 * ↑Real.pi * Complex.I) from by field_simp]
+    exact exp_int_mul_two_pi_I m
+  split_ifs with hdvd
+  · -- N ∣ m: ω = 1, sum = N
+    have hω1 : ω = 1 := by
+      obtain ⟨k, hk⟩ := hdvd
+      show Complex.exp (2 * ↑Real.pi * Complex.I * (↑m / ↑N)) = 1
+      rw [hk, show (↑(↑N * k) : ℂ) / ↑N = ↑k from by push_cast; field_simp]
+      rw [show (2 : ℂ) * ↑Real.pi * Complex.I * ↑k =
+          ↑k * (2 * ↑Real.pi * Complex.I) from by ring]
+      exact exp_int_mul_two_pi_I k
+    simp [hω1]
+  · -- N ∤ m: ω ≠ 1, geometric series gives 0
+    have hω1 : ω ≠ 1 := by
+      intro h; apply hdvd
+      rw [hω_def, Complex.exp_eq_one_iff] at h
+      obtain ⟨k, hk⟩ := h
+      have hpi : (2 : ℂ) * ↑Real.pi * Complex.I ≠ 0 :=
+        mul_ne_zero (mul_ne_zero two_ne_zero (by exact_mod_cast Real.pi_ne_zero))
+          Complex.I_ne_zero
+      have heq : (↑m : ℂ) / ↑N = ↑k := mul_left_cancel₀ hpi (by rw [hk]; ring)
+      have h := heq; rw [div_eq_iff hN] at h
+      exact ⟨k, by rw [mul_comm] at h; exact_mod_cast h⟩
+    exact root_unity_sum_zero ω N hωN hω1
 
 theorem parseval_on_zmod {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
     (Finset.univ.sum fun r => ‖fourierCoeff A r‖ ^ 2) = A.card * N := by
