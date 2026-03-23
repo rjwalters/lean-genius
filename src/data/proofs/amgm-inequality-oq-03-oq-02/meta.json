@@ -188,11 +188,11 @@
     },
     {
       "id": "main-limit",
-      "title": "Core Limit via Derivative Definition",
+      "title": "Core Slope Limit via Derivative Definition",
       "startLine": 143,
-      "endLine": 200,
-      "summary": "tendsto_log_sum_div_rpow: (log ∑ wᵢzᵢ^r)/r → ∑ wᵢ log zᵢ using hasDerivAt_iff_tendsto_slope. tendsto_powerMean_zero: MAIN THEOREM M_r → GM via exp continuity.",
-      "mathContext": "$\\frac{\\log(\\sum w_i z_i^r)}{r} = \\frac{f(r) - f(0)}{r - 0} \\to f'(0) = \\sum w_i \\log z_i$. Then $M_r = \\exp(f(r)/r) \\to \\exp(\\sum w_i \\log z_i) = \\text{GM}$."
+      "endLine": 171,
+      "summary": "tendsto_log_sum_div_rpow: the key intermediate limit (log ∑ wᵢzᵢ^r)/r → ∑ wᵢ log zᵢ. Uses hasDerivAt_iff_tendsto_slope to convert HasDerivAt at r=0 (with g(0) = 0) into the slope limit g(r)/r → g'(0).",
+      "mathContext": "$\\frac{g(r)}{r} = \\frac{g(r) - g(0)}{r - 0} \\to g'(0) = \\sum w_i \\log z_i$ by the definition of derivative, since $g(0) = 0$."
     },
     {
       "id": "supporting-identities",
