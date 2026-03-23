@@ -47,7 +47,7 @@ grow at least exponentially? That is, does there exist `C > 1` such that
 `a_j ≥ C^j` for all large `j`? -/
 def ErdosProblem1103 : Prop :=
     ∀ A : Set ℕ, A.Infinite → SquarefreeSumset A →
-      ∃ (C : ℝ), 1 < C ∧ ∀ᶠ j in atTop,
+      ∃ (C : ℝ), 1 < C ∧ ∀ᶠ (j : ℕ) in atTop,
         C ^ (j : ℝ) ≤ (enumSet A j : ℝ)
 
 /- ## Known bounds -/
@@ -75,12 +75,13 @@ axiom konyagin_finite_bound :
 /- ## Basic properties -/
 
 /-- Every singleton set has a squarefree sumset iff `2a` is squarefree. -/
-axiom squarefreeSumset_singleton (a : ℕ) :
-    SquarefreeSumset {a} ↔ Squarefree (a + a)
+theorem squarefreeSumset_singleton (a : ℕ) :
+    SquarefreeSumset {a} ↔ Squarefree (a + a) := by
+  simp [SquarefreeSumset]
 
 /-- The empty set trivially has a squarefree sumset. -/
 theorem squarefreeSumset_empty : SquarefreeSumset ∅ := by
-  intro a ha; exact absurd ha (Set.not_mem_empty a)
+  intro a ha; exact absurd ha (Set.notMem_empty a)
 
 /-- If `SquarefreeSumset A` and `B ⊆ A`, then `SquarefreeSumset B`. -/
 theorem squarefreeSumset_subset {A B : Set ℕ} (h : B ⊆ A) (hA : SquarefreeSumset A) :
