@@ -75,13 +75,49 @@
     ]
   },
   {
+    "id": "ann-union-avoidance",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01",
+    "range": { "startLine": 44, "endLine": 104 },
+    "type": "technique",
+    "title": "Union Avoidance over Infinite Fields",
+    "content": "The most technically intricate helper: over an infinite field $K$, a nontrivial $K$-vector space cannot be a finite union of proper subspaces. Proved by induction on the number of subspaces, using a line argument. Given $v \\notin S_k$ and $w \\notin S_1 \\cup \\cdots \\cup S_{k-1}$ (from the inductive hypothesis), the line $\\{v + tw : t \\in K\\}$ meets each $S_i$ in at most one point — because two intersections $v + t_1 w, v + t_2 w \\in S_i$ would force $(t_1 - t_2)w \\in S_i$, hence $w \\in S_i$ (contradicting the choice of $w$). Since $K$ is infinite and there are only finitely many bad values of $t$, some $v + tw$ avoids all subspaces.",
+    "mathContext": "For proper subspaces $S_1, \\ldots, S_k \\subsetneq V$ over infinite $K$: $\\exists v \\in V \\setminus (S_1 \\cup \\cdots \\cup S_k)$. The key: $|\\{t \\in K : v + tw \\in S_i\\}| \\leq 1$ for each $i$, so the set of bad parameters has $|\\text{bad}| \\leq k < |K| = \\infty$.",
+    "significance": "key",
+    "relatedConcepts": ["prime avoidance", "Zariski topology", "generic points"],
+    "prerequisites": ["Finset.induction_on", "Submodule.smul_mem", "Set.Finite"]
+  },
+  {
+    "id": "ann-gcd-annihilation",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01",
+    "range": { "startLine": 106, "endLine": 132 },
+    "type": "technique",
+    "title": "GCD Annihilation via Bezout's Identity",
+    "content": "If $p(M)v = 0$, then $\\gcd(p, \\mu_M)(M)v = 0$. The proof uses Bezout's identity in the Euclidean domain $K[X]$: write $d = ap + b\\mu_M$, then $d(M)v = a(M) \\cdot p(M)v + b(M) \\cdot \\mu_M(M)v$. The first term vanishes by hypothesis ($p(M)v = 0$), the second vanishes because the minimal polynomial annihilates $M$ ($\\mu_M(M) = 0$ by Cayley-Hamilton). The key subtlety is the `mul_comm` rewriting: Bezout gives $d = p \\cdot a + \\mu \\cdot b$, but we need $a \\cdot p$ and $b \\cdot \\mu$ to apply `mulVec_mulVec` in the right order.",
+    "mathContext": "$d = \\gcd(p, \\mu) = ap + b\\mu$ in $K[X]$. Then $d(M)v = a(M)p(M)v + b(M)\\mu(M)v = 0 + 0 = 0$ because polynomial evaluations at the same matrix commute.",
+    "significance": "key",
+    "relatedConcepts": ["Bezout's identity", "Euclidean domain", "polynomial GCD", "matrix commutativity"],
+    "prerequisites": ["EuclideanDomain.gcd_eq_gcd_ab", "minpoly.aeval", "Matrix.mulVec_mulVec"]
+  },
+  {
+    "id": "ann-factor-contradiction",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01",
+    "range": { "startLine": 210, "endLine": 266 },
+    "type": "insight",
+    "title": "Phase 4: Contradiction via Factor Divisibility Chain",
+    "content": "The deepest part of the proof: assuming $v$ is not cyclic, find a contradiction. If some nonzero $p$ with $\\deg(p) < n$ annihilates $v$, then $d = \\gcd(p, \\mu)$ annihilates $v$ and properly divides $\\mu$ (since $\\deg(d) \\leq \\deg(p) < n = \\deg(\\mu)$). Write $\\mu = ds$ with $\\deg(s) > 0$. Since $s$ is non-unit, it has an irreducible factor $q_0$. By UFD theory, $q_0$ is associated to some $q' \\in \\text{normalizedFactors}(\\mu)$. The chain $q' | q_0 | s$ gives $q' | s$, so $\\mu/q' = d \\cdot t$, and $(\\mu/q')(M)v = t(M) \\cdot d(M)v = 0$. This contradicts Phase 3's guarantee that $v \\notin \\ker((\\mu/q')(M))$.",
+    "mathContext": "The divisibility chain: $d | \\mu$ properly, $\\mu = ds$, $q_0 | s$ (irreducible), $q' \\sim q_0$ in $\\text{normalizedFactors}(\\mu)$, $q' | s$, $\\mu/q' = dt$, $(\\mu/q')(M)v = t(M) \\cdot 0 = 0$ — contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["unique factorization", "associated elements", "normalizedFactors", "contradiction"],
+    "prerequisites": ["exists_mem_normalizedFactors_of_dvd", "dvd_of_mem_normalizedFactors"]
+  },
+  {
     "id": "ann-main-theorem",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01",
     "range": {
       "startLine": 150,
       "endLine": 266
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem: Nonderogatory Has Cyclic Vector (Infinite Fields)",
     "content": "The proof has five phases:\n\n**Phase 1** (Setup): Extract $\\mu = \\text{minpoly}(M)$, verify $\\deg(\\mu) = n$, get irreducible factors via `normalizedFactors`.\n\n**Phase 2** (Proper subspaces): For each irreducible factor $q | \\mu$, the cofactor kernel $\\ker((\\mu/q)(M))$ is a proper subspace. Proof: $\\mu/q$ has degree $< n$, is nonzero, so $(\\mu/q)(M) \\neq 0$ by `aeval_ne_zero_of_ne_zero`.\n\n**Phase 3** (Union avoidance): Apply `not_union_proper_subspaces` to find $v$ outside all cofactor kernels.\n\n**Phase 4** (Cyclicity by contradiction): Suppose $v$ is not cyclic — some nonzero $p$ of degree $< n$ annihilates $v$. Then $d = \\gcd(p, \\mu)$ annihilates $v$ (Bezout), $d$ properly divides $\\mu$ (since $\\deg(d) \\leq \\deg(p) < n = \\deg(\\mu)$). Write $\\mu = ds$ with $\\deg(s) > 0$. Factor $s$: some irreducible $q_0 | s$. Find $q' \\in \\text{normalizedFactors}(\\mu)$ associated to $q_0$. Then $q' | s$, so $\\mu/q' = d \\cdot t$ for some $t$, and $(\\mu/q')(M)v = t(M)(d(M)v) = t(M) \\cdot 0 = 0$. But $v \\notin \\ker((\\mu/q')(M))$ by Phase 3 — contradiction.",
     "mathContext": "$v \\notin \\ker((\\mu/q)(M))$ for all irreducible $q | \\mu$. If $p(M)v = 0$ with $0 < \\deg(p) < n$, then $d = \\gcd(p,\\mu)$ gives $d(M)v = 0$ and $d | \\mu$ properly. Factor $\\mu/d$: find $q | (\\mu/d)$, so $q$ divides some normalized factor $q'$ of $\\mu$, giving $\\mu/q' = d \\cdot t$ and $(\\mu/q')(M)v = 0$ — contradicting $v \\notin \\ker((\\mu/q')(M))$.",
