@@ -137,6 +137,41 @@
       "targetId": "abel-ruffini",
       "relationship": "related",
       "description": "Both are landmarks of 19th-century algebra: Abel-Ruffini uses Galois groups to prove quintic unsolvability, while quadratic reciprocity reveals deep structure in $\\mathbb{Z}/p\\mathbb{Z}$. Artin reciprocity law unifies both into class field theory."
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "The quadratic residues modulo $p$ form a subgroup of index 2 in $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, with order $(p-1)/2$ by Lagrange's theorem. This index-2 structure (the kernel of the Legendre symbol homomorphism) is the group-theoretic foundation for reciprocity"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "FTA guarantees $x^2 - a$ splits over $\\mathbb{C}$; quadratic reciprocity determines when it splits over $\\mathbb{F}_p$. Both address the solvability of $x^2 = a$ — FTA over $\\mathbb{C}$ (always), reciprocity over $\\mathbb{F}_p$ (depends on $a$ and $p$)"
+    },
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "foundational",
+      "description": "Quadratic reciprocity is the $n = 2$ case of Artin reciprocity, which Wiles's modularity theorem generalizes to 2-dimensional Galois representations. The Langlands program, of which FLT is a consequence, seeks to extend reciprocity laws to all reductive groups — making QR the historical seed of the entire program"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization underpins the Legendre symbol: $(a/p)$ depends on $a$ only through its residue mod $p$, and the multiplicativity $(ab/p) = (a/p)(b/p)$ mirrors the multiplicativity of prime factorization. The Jacobi symbol extends this to composite moduli via the factorization of the modulus"
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "foundational",
+      "description": "The existence of primitive roots modulo $p$ proves $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic of order $p-1$. Quadratic residues are exactly the even powers of any primitive root $g$: $a \\equiv g^{2k}$ is a QR, $a \\equiv g^{2k+1}$ is a QNR. This cyclic structure makes the Legendre symbol a group homomorphism"
+    },
+    {
+      "targetId": "kroneckers-jugendtraum",
+      "relationship": "extends",
+      "description": "Kronecker-Weber (every abelian extension of $\\mathbb{Q}$ is cyclotomic) generalizes quadratic reciprocity: QR determines the splitting of primes in quadratic fields $\\mathbb{Q}(\\sqrt{d})$, while Kronecker-Weber determines splitting in all abelian extensions. Hilbert's 12th problem seeks the analogous result for arbitrary number fields"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "Gauss's constructibility criterion for regular $n$-gons (1801, same year as QR) requires $n = 2^k p_1 \\cdots p_m$ with distinct Fermat primes. The Fermat prime structure connects to quadratic residues: $2$ is a QR mod $p$ iff $p \\equiv \\pm 1 \\pmod{8}$, and the second supplementary law $(2/p)$ is used in Gauss's constructibility analysis"
     }
   ],
   "relatedProofs": [
@@ -144,7 +179,14 @@
     "euler-totient",
     "wilsons-theorem",
     "infinitude-primes",
-    "abel-ruffini"
+    "abel-ruffini",
+    "lagrange-theorem",
+    "fundamental-theorem-algebra",
+    "fermats-last-theorem",
+    "fundamental-arithmetic",
+    "primitive-roots",
+    "kroneckers-jugendtraum",
+    "angle-trisection"
   ],
   "leanFile": {
     "imports": [
