@@ -32,7 +32,7 @@
     "content": "Axiomatizes the triangle removal function $f(n)$ with basic properties ($0 \\leq f(n) \\leq \\binom{n}{2}$) and the BFL (2015) bounds: for any $\\varepsilon > 0$, eventually $n^{3/2-\\varepsilon} \\leq f(n) \\leq n^{3/2+\\varepsilon}$.\n\nThe **Erdős conjecture** (`erdos_1155_conjecture`) is formalized as: $\\exists c_1 \\leq c_2$ with $0 < c_1$ such that $c_1 n^{3/2} \\leq f(n) \\leq c_2 n^{3/2}$ eventually. The gap: BFL gives sub-polynomial bounds $n^{\\pm\\varepsilon}$ on the ratio $f(n)/n^{3/2}$, while the conjecture needs constant bounds.",
     "mathContext": "$\\text{erdos\\_1155\\_conjecture} := \\exists c_1, c_2,\\; 0 < c_1 \\leq c_2 \\wedge \\forall^\\infty n,\\; c_1 n^{3/2} \\leq f(n) \\leq c_2 n^{3/2}$. The requirement $c_1 \\leq c_2$ is built into the definition.",
     "significance": "key",
-    "relatedConcepts": ["triangle-removal-process", "random-graphs", "theta-notation"],
+    "relatedConcepts": ["triangle-removal-process", "random-graphs", "theta-notation", "Wormald-ODE-method", "martingale-concentration"],
     "prerequisites": ["filter-eventually", "real-rpow", "asymptotic-notation"]
   },
   {
@@ -92,7 +92,7 @@
     "content": "`limit_implies_conjecture`: if $f(n)/n^{3/2} \\to L > 0$, the conjecture holds with $c_1 = L/2$, $c_2 = 3L/2$. Uses the `Icc` neighborhood $[L/2, 3L/2] \\in \\text{nhds}(L)$.\n\n`limsup_liminf_implies_conjecture`: the weaker condition $0 < \\liminf \\leq \\limsup < \\infty$ also suffices. This shows the conjecture is equivalent to a compactness condition on the ratio sequence.",
     "mathContext": "If $\\lim f(n)/n^{3/2} = L > 0$, then $L/2 \\leq f(n)/n^{3/2} \\leq 3L/2$ eventually. The limsup/liminf condition is equivalent to the conjecture.",
     "significance": "key",
-    "relatedConcepts": ["convergence", "limsup-liminf", "nhds-neighborhoods"],
+    "relatedConcepts": ["convergence", "limsup-liminf", "nhds-neighborhoods", "Bolzano-Weierstrass", "sequential-compactness"],
     "prerequisites": ["filter-tendsto", "topological-convergence", "icc-neighborhoods"]
   },
   {
@@ -116,7 +116,7 @@
     "content": "Connects the triangle removal process to Mantel's theorem (1907): the terminal graph is triangle-free, so $f(n) \\leq n^2/4$. The BFL bound $f(n) \\leq n^{7/4}$ (taking $\\varepsilon = 1/4$) is much tighter. The hierarchy: $n^{3/2} \\ll n^{7/4} \\ll n^2/4$.",
     "mathContext": "Mantel's theorem (1907): a triangle-free graph on $n$ vertices has at most $\\lfloor n^2/4 \\rfloor$ edges. Applied to the terminal graph of the removal process: $f(n) \\leq n^2/4$.",
     "significance": "supporting",
-    "relatedConcepts": ["mantel-theorem", "turan-theorem", "extremal-graph-theory"],
+    "relatedConcepts": ["mantel-theorem", "turan-theorem", "extremal-graph-theory", "triangle-supersaturation", "flag-algebras"],
     "prerequisites": ["triangle-free-graphs", "extremal-bounds"]
   },
   {
