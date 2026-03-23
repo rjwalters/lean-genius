@@ -27,7 +27,7 @@
     "id": "ann-ymtm-finite-volume-gap",
     "proofId": "yang-mills-transfer-matrix",
     "range": { "startLine": 5372, "endLine": 5397 },
-    "type": "definition",
+    "type": "technique",
     "title": "Finite-Volume Mass Gap: Definition and Proof",
     "content": "The mass gap is defined as $\\Delta = \\log(\\lambda_0/\\lambda_1)$ in temporal lattice units, and $m = \\Delta/a$ in physical units. The proof that $\\Delta > 0$ is a direct consequence of $\\lambda_0 > \\lambda_1 > 0$: the ratio $\\lambda_0/\\lambda_1 > 1$, so $\\log(\\lambda_0/\\lambda_1) > 0$. This is a THEOREM (not a conjecture) for any finite-volume lattice gauge theory with any coupling $g^2 > 0$. The Millennium Prize problem asks whether this gap survives the infinite-volume ($L \\to \\infty$) and continuum ($a \\to 0$) limits.",
     "mathContext": "$\\Delta = \\log(\\lambda_0/\\lambda_1) > 0$; physical: $m = \\Delta/a = \\log(\\lambda_0/\\lambda_1)/a > 0$",
