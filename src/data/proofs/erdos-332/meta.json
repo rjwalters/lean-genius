@@ -90,49 +90,56 @@
       "title": "Header and Imports",
       "startLine": 1,
       "endLine": 21,
-      "summary": "Module docstring referencing Prikry, Tijdeman, and Stewart. Imports Mathlib for $\\mathbb{Z}$, sets, Finset cardinality, and tactics. Opens `Set` namespace."
+      "summary": "Module docstring referencing Prikry, Tijdeman, and Stewart. Imports Mathlib for $\\mathbb{Z}$, sets, Finset cardinality, and tactics. Opens `Set` namespace.",
+      "mathContext": "Imports: `Int.Basic` for $a_1 - a_2 \\in \\mathbb{Z}$, `Set.Basic` for $D(A)$ definition, `Finset.Card` for $A(N)$."
     },
     {
       "id": "difference-set",
       "title": "Difference Set D(A)",
       "startLine": 23,
       "endLine": 29,
-      "summary": "Defines $D(A) = \\{d \\in \\mathbb{Z} : |\\{(a_1,a_2) \\in A^2 : a_1 - a_2 = d\\}| = \\infty\\}$ using `Set.Infinite` on the fibre over each $d$. Stricter than $A - A$."
+      "summary": "Defines $D(A) = \\{d \\in \\mathbb{Z} : |\\{(a_1,a_2) \\in A^2 : a_1 - a_2 = d\\}| = \\infty\\}$ using `Set.Infinite` on the fibre over each $d$. Stricter than $A - A$.",
+      "mathContext": "$D(A) = \\{d \\in \\mathbb{Z} : |\\{(a_1,a_2) \\in A^2 : a_1 - a_2 = d\\}| = \\infty\\}$. Stricter than $A - A$."
     },
     {
       "id": "bounded-gaps",
       "title": "Bounded Gaps (Syndeticity)",
       "startLine": 31,
       "endLine": 38,
-      "summary": "Defines `HasBoundedGaps`: $\\exists M > 0, \\forall z \\in \\mathbb{Z}, \\exists s \\in S: z \\leq s < z + M$. The dual of thick sets in topological dynamics."
+      "summary": "Defines `HasBoundedGaps`: $\\exists M > 0, \\forall z \\in \\mathbb{Z}, \\exists s \\in S: z \\leq s < z + M$. The dual of thick sets in topological dynamics.",
+      "mathContext": "$\\text{HasBoundedGaps}(S) \\iff \\exists M > 0,\\, \\forall z \\in \\mathbb{Z},\\, \\exists s \\in S: z \\leq s < z + M$."
     },
     {
       "id": "density-conditions",
       "title": "Density Conditions",
       "startLine": 40,
       "endLine": 57,
-      "summary": "Counting function $A(N) = |A \\cap [1,N]|$, positive upper density ($\\limsup A(N)/N > 0$), and positive lower density ($\\liminf A(N)/N > 0$), all formalized over $\\mathbb{Q}$."
+      "summary": "Counting function $A(N) = |A \\cap [1,N]|$, positive upper density ($\\limsup A(N)/N > 0$), and positive lower density ($\\liminf A(N)/N > 0$), all formalized over $\\mathbb{Q}$.",
+      "mathContext": "$A(N) = |A \\cap [1,N]|$; $\\overline{d}(A) = \\limsup_{N \\to \\infty} A(N)/N$; $\\underline{d}(A) = \\liminf_{N \\to \\infty} A(N)/N$."
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 58,
       "endLine": 76,
-      "summary": "Four axiomatized results: **Prikry's theorem** ($\\overline{d}(A) > 0 \\Rightarrow D(A)$ syndetic), density inheritance for $D(A)$, symmetry $D(A) = -D(A)$, and $0 \\in D(A)$ for infinite $A$."
+      "summary": "Four axiomatized results: **Prikry's theorem** ($\\overline{d}(A) > 0 \\Rightarrow D(A)$ syndetic), density inheritance for $D(A)$, symmetry $D(A) = -D(A)$, and $0 \\in D(A)$ for infinite $A$.",
+      "mathContext": "Prikry: $\\overline{d}(A) > 0 \\Rightarrow \\text{HasBoundedGaps}(D(A))$. Structure: $D(A) = -D(A)$, $0 \\in D(A)$ for infinite $A$."
     },
     {
       "id": "main-problem",
       "title": "The Main Open Problem",
       "startLine": 78,
       "endLine": 88,
-      "summary": "Erdős Problem 332: characterize the weakest property $P$ such that $P(A) \\Rightarrow \\text{HasBoundedGaps}(D(A))$. Positive upper density is the best known sufficient condition."
+      "summary": "Erdős Problem 332: characterize the weakest property $P$ such that $P(A) \\Rightarrow \\text{HasBoundedGaps}(D(A))$. Positive upper density is the best known sufficient condition.",
+      "mathContext": "Find weakest $P$: $P(A) \\Rightarrow \\text{HasBoundedGaps}(D(A))$. Known: $\\overline{d}(A) > 0$ suffices."
     },
     {
       "id": "related-questions",
       "title": "Related Questions",
       "startLine": 90,
       "endLine": 97,
-      "summary": "Does positive density imply $\\sum_{d \\in D(A)} 1/d = \\infty$? This would show $D(A)$ has 'harmonic thickness' beyond mere syndeticity."
+      "summary": "Does positive density imply $\\sum_{d \\in D(A)} 1/d = \\infty$? This would show $D(A)$ has 'harmonic thickness' beyond mere syndeticity.",
+      "mathContext": "Open: $\\overline{d}(A) > 0 \\Rightarrow \\sum_{d \\in D(A)} 1/|d| = \\infty$? (harmonic thickness conjecture)"
     }
   ],
   "conclusion": {
@@ -191,10 +198,26 @@
     "definitionCount": 6
   },
   "references": [
-    "Erdős & Graham (1980): 'Old and New Problems and Results in Combinatorial Number Theory'",
-    "Prikry: positive upper density implies D(A) is syndetic",
-    "Tijdeman & Stewart: related density results for difference sets",
-    "Furstenberg (1977): correspondence principle connecting density to ergodic theory",
-    "https://erdosproblems.com/332"
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Monograph no. 28, Geneva",
+      "note": "Original source for Problem #332; comprehensive survey of open problems in additive combinatorics"
+    },
+    {
+      "authors": "Furstenberg, Hillel",
+      "title": "Ergodic behavior of diagonal measures and a theorem of Szemerédi on arithmetic progressions",
+      "year": "1977",
+      "venue": "Journal d'Analyse Mathématique, vol. 31, pp. 204–256",
+      "note": "Established the correspondence principle connecting combinatorial density to ergodic theory; Prikry's theorem follows from Poincaré recurrence in the associated system"
+    },
+    {
+      "authors": "Halberstam, Heini; Roth, Klaus F.",
+      "title": "Sequences",
+      "year": "1966",
+      "venue": "Oxford University Press",
+      "note": "Classical reference for difference sets, density conditions, and additive bases; includes the average representation divergence result"
+    }
   ]
 }
