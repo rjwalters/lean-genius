@@ -275,6 +275,16 @@
       "targetId": "infinitude-primes",
       "relationship": "foundational",
       "description": "The infinitude of primes is a prerequisite for studying prime gaps — the problem only makes sense because there are infinitely many primes to have gaps between"
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "complementary",
+      "description": "The dual problem: Maynard's multidimensional sieve proving $\\liminf g_n \\leq 246$ (bounded gaps) uses the same framework he applied in reverse to prove $\\limsup g_n / f(n) = \\infty$ (unbounded large gaps). Together they show prime gaps are both sometimes very small and sometimes very large"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions is used in Rankin's construction: to create large prime-free intervals, one exploits that primes in specific residue classes can be avoided, requiring control over how primes distribute in progressions"
     }
   ],
   "relatedProofs": [
@@ -282,7 +292,9 @@
     "erdos-369",
     "bertrands-postulate",
     "prime-number-theorem",
-    "infinitude-primes"
+    "infinitude-primes",
+    "bounded-prime-gaps",
+    "dirichlets-theorem"
   ],
   "leanFile": {
     "imports": [

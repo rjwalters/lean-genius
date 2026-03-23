@@ -84,6 +84,13 @@
         "year": "2003",
         "venue": "Kluwer Academic Publishers",
         "note": "Section III.1: comprehensive treatment of power mean continuity and limit cases"
+      },
+      {
+        "authors": "Rényi, Alfréd",
+        "title": "On Measures of Entropy and Information",
+        "year": "1961",
+        "venue": "Proceedings of the Fourth Berkeley Symposium on Mathematical Statistics and Probability, vol. 1, pp. 547-561",
+        "note": "Introduces Rényi entropy H_α = (1/(1-α)) log ∑ pᵢ^α, whose limit α→1 gives Shannon entropy by the same derivative-at-singular-point technique used in this power mean limit proof"
       }
     ]
   },
@@ -137,6 +144,11 @@
       "targetId": "sum-of-kth-powers",
       "relationship": "related",
       "description": "Power sums p_k = ∑ xᵢ^k are the unnormalized building blocks of power means M_k = (p_k/n)^(1/k). The r→0 limit lim M_r = GM connects the power sum hierarchy to the geometric mean, which is the product rather than a sum"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "The fundamental theorem of calculus underpins the derivative machinery used throughout this proof. The key bridge hasDerivAt_iff_tendsto_slope — connecting HasDerivAt to the slope limit f(r)/r → f'(0) — is a consequence of the differential calculus framework that FTC establishes"
     }
   ],
   "overview": {
@@ -242,6 +254,7 @@
     "mean-value-theorem",
     "triangle-inequality",
     "cauchy-schwarz",
-    "sum-of-kth-powers"
+    "sum-of-kth-powers",
+    "fundamental-theorem-calculus"
   ]
 }

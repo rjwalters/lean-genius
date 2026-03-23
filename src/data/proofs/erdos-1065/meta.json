@@ -152,7 +152,8 @@
       "**Prime factor count:** Form A restricts $p - 1$ to have $\\omega(p-1) \\leq 2$ distinct prime factors; Form B allows $\\omega(p-1) \\leq 3$, with the logical hierarchy safe primes $\\Rightarrow$ Conjecture A $\\Rightarrow$ Conjecture B",
       "**Separating example $p = 61$:** $60 = 2^2 \\cdot 3 \\cdot 5$ has three distinct prime factors, so 61 is Form B but not Form A — showing the two forms are genuinely distinct",
       "**Non-example $p = 37$:** $36 = 2^2 \\cdot 3^2$ is $\\{2,3\\}$-smooth with no additional prime factor, showing that not all primes satisfy even the relaxed Form B condition",
-      "**Artin connection:** Both problems concern the multiplicative structure of $p - 1$; Artin's primitive root conjecture requires large prime factors of $p - 1$, while Erdős asks about the opposite extreme"
+      "**Artin connection:** Both problems concern the multiplicative structure of $p - 1$; Artin's primitive root conjecture requires large prime factors of $p - 1$, while Erdős asks about the opposite extreme",
+      "**Cryptographic significance:** Safe primes ($k=1$) are essential for Diffie-Hellman key exchange: when $p = 2q + 1$, the group $(\\mathbb{Z}/p\\mathbb{Z})^*$ has a subgroup of prime order $q$ where the discrete logarithm problem is believed hard. The infinitude of safe primes is an implicit assumption in modern cryptographic protocols, yet remains unproven"
     ],
     "prerequisites": [
       "Prime numbers and `Nat.Prime` from Mathlib",
@@ -196,6 +197,21 @@
       "targetId": "wilsons-theorem",
       "relationship": "related",
       "description": "Wilson's theorem connects primes to factorials via $(p-1)! \\equiv -1 \\pmod{p}$; both problems involve the interplay between primes and multiplicative structures"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient $\\varphi(p) = p - 1$ connects directly: Form A primes have $\\varphi(p) = 2^k q$ with $\\omega(\\varphi(p)) \\leq 2$. Pomerance's work on popular totient values studies exactly this structure — how often $\\varphi(n)$ has restricted factorization"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "Euclid's theorem guarantees infinitely many primes; this problem asks whether the subset with restricted $p-1$ factorization is also infinite — a natural refinement of the basic infinitude result"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate guarantees primes in every interval $(n, 2n)$; similar density arguments underlie the heuristic prediction that Form A primes have positive density among all primes"
     }
   ],
   "relatedProofs": [
@@ -203,7 +219,10 @@
     "primitive-roots",
     "dirichlets-theorem",
     "erdos-1057",
-    "wilsons-theorem"
+    "wilsons-theorem",
+    "euler-totient",
+    "infinitude-primes",
+    "bertrands-postulate"
   ],
   "leanFile": {
     "imports": [

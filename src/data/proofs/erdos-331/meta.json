@@ -22,6 +22,29 @@
     "erdosNumber": 331,
     "erdosUrl": "https://erdosproblems.com/331",
     "erdosProblemStatus": "solved",
+    "references": [
+      {
+        "authors": "Ruzsa, Imre Z.",
+        "title": "Additive completion of lacunary sequences",
+        "year": "1992",
+        "venue": "Combinatorica 12, pp. 225-233",
+        "note": "Contains the binary digit separation construction disproving the conjecture"
+      },
+      {
+        "authors": "Erdős, Paul; Sárközy, András",
+        "title": "On differences and sums of integers, II",
+        "year": "1977",
+        "venue": "Bulletin of the Greek Mathematical Society 18, pp. 204-223",
+        "note": "Earlier positive results on common differences at higher densities"
+      },
+      {
+        "authors": "Tao, Terence; Vu, Van",
+        "title": "Additive Combinatorics",
+        "year": "2006",
+        "venue": "Cambridge University Press",
+        "note": "Standard reference; Chapter 2 covers sumset estimates and density conditions for additive structure"
+      }
+    ],
     "dateAdded": "2026-01-23",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
@@ -178,11 +201,23 @@
       "targetId": "erdos-1097",
       "relationship": "related",
       "description": "Both study common differences and additive structure: #1097 asks about the number of common differences in 3-term APs within a single set, while #331 asks about common differences between two distinct sets"
+    },
+    {
+      "targetId": "roth-theorem-k3",
+      "relationship": "related",
+      "description": "Both study density thresholds for additive structure. Roth's theorem shows density $\\gg N/\\log\\log N$ forces 3-term APs; Problem #331 shows density $\\sim \\sqrt{N}$ does NOT force common differences between two sets — a sharp contrast in the 'density implies structure' paradigm"
+    },
+    {
+      "targetId": "erdos-30",
+      "relationship": "related",
+      "description": "Ruzsa's counterexample sets have Sidon-like properties ($|A - A| \\sim |A|$), connecting to Erdős #30 on $B_2$ sequences (sets with distinct pairwise sums). Both exploit extremal additive structure to achieve unusual combinatorial properties"
     }
   ],
   "relatedProofs": [
     "szemeredi-theorem",
-    "erdos-1097"
+    "erdos-1097",
+    "roth-theorem-k3",
+    "erdos-30"
   ],
   "leanFile": {
     "imports": [

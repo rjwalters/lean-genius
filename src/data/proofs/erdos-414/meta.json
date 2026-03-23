@@ -132,12 +132,24 @@
       "targetId": "euler-totient",
       "relationship": "related",
       "description": "Both involve fundamental multiplicative arithmetic functions: $\\tau(n)$ counts all divisors while Euler's $\\phi(n)$ counts coprime residues. Erdős #413 studies the related iteration $n \\mapsto n - \\phi(n)$"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The divisor function $\\tau(n) = \\prod (e_i + 1)$ is defined via unique prime factorization $n = p_1^{e_1} \\cdots p_k^{e_k}$. Understanding when $h^i(m) = h^j(n)$ (orbit coalescence) requires controlling how $\\tau$ transforms the prime factorization structure at each step"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "related",
+      "description": "The average of $\\tau(n)$ over $[1, N]$ is $\\sim \\log N$ (Dirichlet's divisor problem), so the iteration $h(n) = n + \\tau(n)$ advances by $\\sim \\log n$ on average. The divergence of the harmonic series underlies the heuristic that orbits grow linearly with logarithmic corrections"
     }
   ],
   "relatedProofs": [
     "erdos-444",
     "collatz-structured",
-    "euler-totient"
+    "euler-totient",
+    "fundamental-arithmetic",
+    "harmonic-divergence"
   ],
   "conclusion": {
     "summary": "Erdős Problem #414 remains OPEN. The conjecture that all orbits of h(n) = n + τ(n) eventually merge is supported by overwhelming computational evidence and plausible heuristics, but no proof exists. The difficulty is fundamentally about controlling the cumulative irregularity of the divisor function along different trajectories to guarantee an exact collision.",

@@ -32,7 +32,7 @@
     "content": "Defines the predicate `IsTwoTimePrimePlusOne p`: a prime $p$ such that $p - 1 = 2^k \\cdot q$ for some prime $q$ and non-negative integer $k$. This restricts $p - 1$ to have exactly one odd prime factor. The condition means $p - 1$ is '$2$-smooth times a prime', or equivalently that $p - 1$ has at most two distinct prime factors (2 and $q$).",
     "mathContext": "$\\text{IsTwoTimePrimePlusOne}(p) \\;:\\Leftrightarrow\\; p \\text{ prime} \\wedge \\exists q, k \\in \\mathbb{N}: q \\text{ prime} \\wedge p = 2^k q + 1$. When $k = 0$, $p = q + 1$, so $p = 3, q = 2$ is the only solution. When $k = 1$, $p = 2q + 1$: these are the safe primes.",
     "significance": "key",
-    "relatedConcepts": ["safe prime", "smooth number", "2-rough number", "Cunningham chain"],
+    "relatedConcepts": ["safe prime", "smooth number", "2-rough number", "Cunningham chain", "Diffie-Hellman", "discrete logarithm"],
     "prerequisites": ["prime numbers", "factorization of p-1"]
   },
   {
@@ -56,7 +56,7 @@
     "content": "The stronger variant of Erdős Problem #1065: the set $\\{p \\text{ prime} : p - 1 = 2^k q,\\; q \\text{ prime}\\}$ is infinite. This implies the safe primes conjecture as a special case ($k = 1$). The conjecture relates to the distribution of prime values of the polynomial $2^k q + 1$ as $q$ ranges over primes and $k$ over non-negative integers.",
     "mathContext": "$|\\{p \\in \\mathbb{P} : \\exists q \\in \\mathbb{P},\\, k \\in \\mathbb{N}: p = 2^k q + 1\\}| = \\infty$.",
     "significance": "key",
-    "relatedConcepts": ["safe primes conjecture", "Bunyakovsky conjecture", "prime-producing polynomials"],
+    "relatedConcepts": ["safe primes conjecture", "Bunyakovsky conjecture", "prime-producing polynomials", "Hardy-Littlewood Conjecture F"],
     "prerequisites": ["IsTwoTimePrimePlusOne definition", "Set.Infinite"]
   },
   {

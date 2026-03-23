@@ -303,6 +303,11 @@
       "targetId": "gelfond-schneider",
       "relationship": "related",
       "description": "The Gelfond-Schneider theorem ($\\alpha^\\beta$ is transcendental for algebraic $\\alpha \\neq 0,1$ and irrational algebraic $\\beta$) sits above Abel-Ruffini in the expressibility hierarchy: Abel-Ruffini shows certain roots aren't expressible by radicals, while Gelfond-Schneider shows that exponentiating algebraic numbers by algebraic irrationals escapes the algebraic numbers entirely — producing numbers that satisfy no polynomial equation at all"
+    },
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of $m^{1/n}$ for non-perfect-power $m$ is the simplest instance of the radical extension phenomenon central to Abel-Ruffini: adjoining $\\sqrt[n]{m}$ to $\\mathbb{Q}$ creates a genuine field extension of degree $n$, and each such radical step contributes a cyclic Galois group quotient. Abel-Ruffini's impossibility arises precisely because the composition of such cyclic quotients cannot produce $S_5$ — the solvability constraint on Galois groups built from radical towers"
     }
   ],
   "relatedProofs": [
@@ -336,7 +341,8 @@
     "hurwitz-theorem",
     "hilbert-9-reciprocity",
     "euler-totient",
-    "gelfond-schneider"
+    "gelfond-schneider",
+    "nth-root-irrational"
   ],
   "references": [
     {
