@@ -55,7 +55,13 @@
       "Connection to asymptotic additive bases of order 2"
     ],
     "axiomCount": 1,
-    "lineCount": 726
+    "lineCount": 726,
+    "prerequisites": [
+      "Additive complements of sets",
+      "Asymptotic density",
+      "Sumset theory (A + B)",
+      "Analytic number theory"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős and Straus conjectured that any infinite set A can be 'completed' to cover almost all of ℕ using only a very sparse set B (density 0).\n\nLorentz proved this in 1954, showing that the additive structure of infinite sets is quite flexible. The proof constructs B by filling in 'gaps' in the sumset, and the sparseness of the construction depends on the distribution of A.\n\nThis result is fundamental to additive combinatorics: it shows that even very sparse sets can have rich additive structure when combined appropriately.",
@@ -138,5 +144,43 @@
     "axiomCount": 1,
     "theoremCount": 19,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-32",
+      "relationship": "related",
+      "description": "Problem #32 asks specifically about additive complements of primes, a special case of Problem #31's general question about additive complements"
+    },
+    {
+      "targetId": "erdos-33",
+      "relationship": "related",
+      "description": "Problem #33 asks about additive complements of squares, another special case. Problems #31, #32, #33 form a trio studying additive complements of different structured sets"
+    },
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "Additive bases (Problem #28) and additive complements (Problem #31) are dual concepts: a complement B of A satisfies A + B ⊇ all large integers, making A ∪ B a basis-like structure"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Ginzburg, Abraham; Ziv, Abraham",
+      "title": "A theorem in additive number theory",
+      "year": "1961",
+      "venue": "Bulletin of the Research Council of Israel, Section F, vol. 10F, pp. 41–43",
+      "note": "Related additive combinatorics result on zero-sum subsequences"
+    },
+    {
+      "authors": "Danzer, Ludwig",
+      "title": "Über eine Frage von Erdős und Moser über dichte Mengen",
+      "year": "1964",
+      "venue": "Archiv der Mathematik, vol. 15, pp. 210–214",
+      "note": "Early results on density of additive complements"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-28",
+    "erdos-32",
+    "erdos-33"
+  ]
 }

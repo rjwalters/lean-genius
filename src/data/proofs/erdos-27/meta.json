@@ -90,7 +90,13 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 242
+    "lineCount": 242,
+    "prerequisites": [
+      "Covering systems and congruence classes",
+      "Natural density of integer sequences",
+      "Chinese Remainder Theorem",
+      "Modular arithmetic"
+    ]
   },
   "overview": {
     "historicalContext": "**Erdős Problem #27: Almost Covering Systems**\n\nThis $\\$100$ Erdős prize problem sits at the heart of the theory of covering systems — one of Erdős's most sustained research interests.\n\n**Background: Covering Systems**\nA covering system is a finite collection of congruence classes $a_i \\pmod{n_i}$ with distinct moduli $n_1 < \\ldots < n_k$ such that every integer belongs to at least one class. Erdős initiated the systematic study of these objects in 1950 and posed dozens of problems about them over the next five decades.\n\n**The Almost-Covering Question:**\nErdős asked a natural relaxation: instead of covering *every* integer, what if we only need to cover all but a small fraction? An $\\varepsilon$-almost covering leaves at most density $\\varepsilon$ of integers uncovered. The specific question was whether a fixed constant $C > 1$ suffices to achieve $\\varepsilon$-almost covering with all moduli in the bounded range $[N, CN]$, for *all* $\\varepsilon > 0$ and $N \\geq 1$.\n\n**The FFKPY Disproof:**\nFilaseta, Ford, Konyagin, Pomerance, and Yu resolved this negatively. Their key insight: for moduli in $[N, CN]$ with fixed $C$, the total 'coverage capacity' is $\\sum_{n=N}^{CN} 1/n \\approx \\ln C$, which is bounded. Using a critical exponent $\\alpha(N) = \\frac{\\log\\log\\log N}{4\\log\\log N}$, they showed that for $C \\leq N^{\\alpha(N)}$ (which includes all constants), the uncovered density is bounded below by approximately $1/(2C)$. No fixed $C$ can make this arbitrarily small.\n\n**What Does Work:**\nIf $C$ is allowed to grow with $N$ (e.g., $C(N) = N^{1/\\log\\log N}$), then $\\varepsilon$-almost coverings exist for any fixed $\\varepsilon$. The boundary between success and failure lies at the growth rate of the critical exponent.\n\n**Connection to Perfect Coverings:**\nThe related question for perfect coverings (covering *every* integer) was resolved by Hough (2015): covering systems cannot have all moduli exceeding some absolute bound. Bloom, Briggs, Maynard, Smith, and Tao (2024) improved the bound to $616{,}000$.",
@@ -200,5 +206,43 @@
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 16
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-2",
+      "relationship": "extends",
+      "description": "Problem #2 concerns exact covering systems. Problem #27 relaxes the coverage requirement, asking about systems that cover all but a density-zero set of integers"
+    },
+    {
+      "targetId": "erdos-7",
+      "relationship": "related",
+      "description": "Problem #7 (odd coverings) and Problem #27 (almost coverings) are both structural extensions of the basic covering system framework"
+    },
+    {
+      "targetId": "erdos-8",
+      "relationship": "related",
+      "description": "Problem #8 (monochromatic coverings) is another variant of covering systems. Problems #2, #7, #8, and #27 form a family of structural questions"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "Problems and results on combinatorial number theory III",
+      "year": "1977",
+      "venue": "In: Number Theory Day, Lecture Notes in Mathematics vol. 626, Springer, pp. 43–72",
+      "note": "Includes the formulation of almost covering systems among many combinatorial number theory problems"
+    },
+    {
+      "authors": "Filaseta, Michael; Ford, Kevin; Konyagin, Sergei; Pomerance, Carl; Yu, Gang",
+      "title": "Sieving by large integers and covering systems of congruences",
+      "year": "2007",
+      "venue": "Journal of the American Mathematical Society, vol. 20, no. 2, pp. 495–517",
+      "note": "Structural results on covering systems applicable to near-covering variants"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-7",
+    "erdos-8"
+  ]
 }

@@ -46,7 +46,13 @@
       "Educational documentation of thick/Behrend sequence concepts"
     ],
     "axiomCount": 8,
-    "lineCount": 209
+    "lineCount": 209,
+    "prerequisites": [
+      "Arithmetic progressions and AP-free sets",
+      "Behrend's construction (sphere method)",
+      "Asymptotic density of integer sequences",
+      "Extremal combinatorics"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #26 was posed by Erdős and Tenenbaum and concerns the relationship between \"thick\" sequences (those with divergent reciprocal sums) and \"Behrend\" sequences (those whose multiples cover almost all integers).\n\nThe Davenport-Erdős theorem (1951) established that every Behrend sequence must be thick, but the converse was unknown: if A is thick, must some shift A+k be Behrend?\n\nRuzsa provided the first counterexample using a clever construction involving prime residues. His sequence was not thick, so Van Doorn later modified the construction to produce a thick counterexample, definitively disproving the conjecture.",
@@ -145,5 +151,37 @@
     "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-3",
+      "relationship": "related",
+      "description": "Problem #3 (APs in sets with divergent reciprocal sum) directly uses bounds on AP-free sets. Problem #26 studies the constructions (Behrend sets) that provide the lower bounds making Problem #3 so difficult"
+    },
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "The density of AP-free sets relates to additive basis theory. Thick sequences (Problem #26) and additive bases (Problem #28) both concern density thresholds in additive combinatorics"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Behrend, Felix A.",
+      "title": "On sets of integers which contain no three terms in arithmetical progression",
+      "year": "1946",
+      "venue": "Proceedings of the National Academy of Sciences, vol. 32, no. 12, pp. 331–332",
+      "note": "The foundational construction of dense AP-free sets using high-dimensional spheres"
+    },
+    {
+      "authors": "Elkin, Michael",
+      "title": "An improved construction of progression-free sets",
+      "year": "2011",
+      "venue": "Israel Journal of Mathematics, vol. 184, pp. 93–128",
+      "note": "Improved Behrend's construction by a √(log log N) factor"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-28"
+  ]
 }

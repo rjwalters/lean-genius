@@ -24,7 +24,13 @@
     "erdosUrl": "https://erdosproblems.com/35",
     "erdosProblemStatus": "solved",
     "axiomCount": 0,
-    "lineCount": 225
+    "lineCount": 225,
+    "prerequisites": [
+      "Schnirelmann density and its properties",
+      "Additive bases and Waring's problem",
+      "Goldbach conjecture and related results",
+      "Sieve methods in number theory"
+    ]
   },
   "overview": {
     "historicalContext": "Schnirelmann introduced his density notion in 1930 and proved that the primes form an additive basis — every sufficiently large integer is a bounded sum of primes. His density d_s(A) = inf_{N≥1} A(N)/N is more restrictive than natural density because it uses the true infimum rather than a limit, making it well-suited for additive combinatorics where worst-case control is essential.\n\nErdős posed Problem #35 in 1956 [Er56], conjecturing that if B is an additive basis of order k with 0 ∈ B, then d_s(A+B) ≥ α + α(1-α)/k where α = d_s(A). He had already proved a weaker version with 2k in the denominator in 1936 [Er36c], which was the first quantitative result connecting basis order to density increment. The factor-of-2 gap between Erdős's partial result and his conjecture remained open for over three decades.\n\nPlünnecke's 1970 paper [Pl70] resolved the problem by proving the strictly stronger inequality d_s(A+B) ≥ α^{1-1/k}. His proof used a novel graph-theoretic framework — directed layered graphs with vertex magnification properties — that was later simplified and popularized by Ruzsa in 1989. The power bound α^{1-1/k} dominates the conjectured bound α + α(1-α)/k on all of [0,1], as can be verified by the concavity of x^p for p ∈ (0,1).\n\nThe Plünnecke–Ruzsa inequality has since become one of the cornerstones of additive combinatorics, with far-reaching applications to sumset estimates, Freiman's theorem, and the polynomial Freiman–Ruzsa conjecture (recently resolved by Gowers, Green, Manners, and Tao in 2023). Erdős Problem #35 thus served as a catalyst for a major line of research in modern combinatorial number theory.",
@@ -121,5 +127,43 @@
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "Problem #28 (Erdős-Turán on bases) and Problem #35 both concern additive bases. Schnirelmann density provides the foundation: positive Schnirelmann density implies basis, but Problem #28 asks about the representation function"
+    },
+    {
+      "targetId": "erdos-29",
+      "relationship": "related",
+      "description": "Problem #29 asks for explicit economical bases. Schnirelmann's theorem (Problem #35) guarantees existence; Problem #29 demands constructive versions"
+    },
+    {
+      "targetId": "erdos-31",
+      "relationship": "related",
+      "description": "Additive complements (Problem #31) and Schnirelmann density (Problem #35) are closely related: a set with positive Schnirelmann density is automatically an additive basis"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Schnirelmann, Lev G.",
+      "title": "Über additive Eigenschaften von Zahlen",
+      "year": "1933",
+      "venue": "Mathematische Annalen, vol. 107, pp. 649–690",
+      "note": "Foundational paper proving positive Schnirelmann density implies additive basis property"
+    },
+    {
+      "authors": "Halberstam, Heini; Roth, Klaus F.",
+      "title": "Sequences",
+      "year": "1966",
+      "venue": "Oxford University Press",
+      "note": "Standard reference for Schnirelmann density theory and additive bases"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-28",
+    "erdos-29",
+    "erdos-31"
+  ]
 }
