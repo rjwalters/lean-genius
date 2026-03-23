@@ -197,6 +197,11 @@
       "targetId": "fundamental-arithmetic",
       "relationship": "supports",
       "description": "Unique prime factorization underlies the compositeness checks: verifying $n - k!$ is composite requires exhibiting a non-trivial factorization, which the `decide` tactic performs by trial division"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The probabilistic heuristic for this problem relies on the PNT: the probability that a random integer near $p$ is prime is $\\sim 1/\\ln p$. With $O(\\log p / \\log \\log p)$ factorial subtractions to check, the expected number of prime subtractions is $O(\\log p / (\\log p \\cdot \\log \\log p)) \\to 0$, suggesting almost all large primes satisfy the property"
     }
   ],
   "relatedProofs": [
@@ -206,7 +211,8 @@
     "erdos-1057",
     "erdos-68",
     "erdos-728-factorial-divisibility",
-    "fundamental-arithmetic"
+    "fundamental-arithmetic",
+    "prime-number-theorem"
   ],
   "leanFile": {
     "imports": [
