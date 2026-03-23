@@ -50,6 +50,7 @@
   "overview": {
     "historicalContext": "Erdős posed this problem at the 1989 Great Western Number Theory problem session in Asilomar, California. He asked: given an $n$-element set of integers $A$, how many distinct common differences can three-term arithmetic progressions in $A$ have?\n\nThe Erdős-Spencer probabilistic argument (random subsets of $\\{1,\\ldots,N\\}$) showed that $\\Omega(n^{3/2})$ is achievable. Bourgain connected the problem to the Kakeya conjecture, reformulating it via restricted sums and differences. In 1999, Katz and Tao established $O(n^{11/6})$ using Szemerédi-Trotter incidence geometry. Lemm improved the lower bound past $n^{1.778}$ in 2015, and in 2025 AlphaEvolve achieved a marginal further improvement. The gap $\\Omega(n^{1.778})$ vs $O(n^{11/6}) \\approx O(n^{1.833})$ remains open, with implications for the Kakeya conjecture and additive combinatorics.",
     "problemStatement": "Let $A \\subseteq \\mathbb{Z}$ with $|A| = n$, and let $D(A) = \\{d : \\exists\\, a \\text{ s.t. } a, a+d, a+2d \\in A\\}$. Is $|D(A)| = O(n^{3/2})$?",
+    "text": "Erdős Problem #1097 asks: given an n-element set A of integers, how many distinct common differences can three-term arithmetic progressions in A have? The conjectured answer is O(n^{3/2}), matching a probabilistic lower bound. The best known bounds bracket the critical exponent between 1.778 (Lemm) and 11/6 (Katz-Tao). Chan proved this problem is equivalent to Bourgain's sums-differences problem, connecting it to the Kakeya conjecture in geometric measure theory. The formalization proves 14 infrastructure lemmas without axioms and captures the state of knowledge via 6 axiomatized research bounds.",
     "proofStrategy": "The formalization defines IsThreeAP and commonDifferences, then develops a comprehensive infrastructure of proven structural results: subset bounds, monotonicity, symmetry, translation invariance, and dilation covariance. The main conjecture and known bounds are stated as axioms. Bourgain's restricted sums-differences framework is formalized, and Chan's equivalence theorem connecting the two formulations is recorded. A summary theorem combines the bounds to capture the current state of knowledge: $1.778 < c^* \\le 11/6$.",
     "keyInsights": [
       "The Erdős-Spencer probabilistic method gives Ω(n^{3/2}) common differences, matching the conjectured upper bound and establishing the combinatorial baseline",
@@ -142,7 +143,12 @@
   ],
   "conclusion": {
     "summary": "Formalizes Erdős Problem #1097 on common differences in 3-term APs, developing 14 proven infrastructure lemmas alongside axiomatized research bounds. Captures the O(n^{3/2}) conjecture, four lower bounds (Erdős-Spencer, Erdős-Ruzsa, Lemm, AlphaEvolve), the Katz-Tao upper bound, and the deep connection to Bourgain's sums-differences problem via Chan's equivalence.",
-    "implications": "**Theoretical Significance**: Progress on this problem would directly impact the Kakeya conjecture through Bourgain's arithmetic approach.\n\n**Broader Connections**: The formalization's infrastructure lemmas (translation invariance, dilation covariance, symmetry) provide a foundation for any future Lean-based work on additive combinatorics. The gap between n^{1.778} and n^{11/6} remains one of the central open problems connecting combinatorics to harmonic analysis.",
+    "implications": [
+      "Progress on this problem would directly impact the Kakeya conjecture through Bourgain's arithmetic approach and Chan's equivalence theorem",
+      "The 14 proven infrastructure lemmas (translation invariance, dilation covariance, symmetry) provide a reusable foundation for future Lean-based work in additive combinatorics",
+      "The gap between n^{1.778} and n^{11/6} remains one of the central open problems connecting discrete combinatorics to harmonic analysis and geometric measure theory",
+      "AI-assisted methods (AlphaEvolve) achieving marginal improvements suggests this problem is amenable to computational search, potentially yielding further bounds"
+    ],
     "openQuestions": [
       "Is the true exponent 3/2 as Erdős conjectured, or is Lemm's n^{1.778} closer to the truth?",
       "Can the Katz-Tao 11/6 upper bound be improved using recent decoupling techniques?",
