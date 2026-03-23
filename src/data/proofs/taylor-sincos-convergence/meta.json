@@ -1,0 +1,114 @@
+{
+  "id": "taylor-sincos-convergence",
+  "title": "Taylor Series Convergence for Sin and Cos",
+  "slug": "taylor-sincos-convergence",
+  "description": "Proves that the Taylor series of sin and cos converge to sin(x) and cos(x) for all real x. The key insight: since all iterated derivatives of sin and cos are bounded by 1 (period-4 cycling through {sin, cos, -sin, -cos}), the remainder bound |x|^{n+1}/n! is strictly tighter than the analogous exp bound.",
+  "meta": {
+    "author": "Taylor, Euler, Cauchy (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions",
+    "date": "1715",
+    "status": "axiomatized",
+    "tags": [
+      "analysis",
+      "calculus",
+      "series",
+      "convergence",
+      "trigonometric",
+      "taylor-series",
+      "open-question"
+    ],
+    "proofRepoPath": "Proofs/TaylorSinCosConvergence.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "axioms": [
+      "sin_taylor_remainder_bound: connects sinPartialSum to taylorWithinEval for the Lagrange remainder",
+      "cos_taylor_remainder_bound: connects cosPartialSum to taylorWithinEval for the Lagrange remainder"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "summable_pow_div_factorial",
+        "description": "x^n/n! is summable for all x",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "Real.hasDerivAt_sin",
+        "description": "derivative of sin is cos",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv"
+      },
+      {
+        "theorem": "Real.hasDerivAt_cos",
+        "description": "derivative of cos is -sin",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv"
+      },
+      {
+        "theorem": "Real.contDiff_sin",
+        "description": "sin is infinitely differentiable",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv"
+      },
+      {
+        "theorem": "abs_sin_le_one",
+        "description": "|sin(x)| <= 1 for all x",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
+    ]
+  },
+  "proof": {
+    "technique": "remainder-bound",
+    "style": "analytic",
+    "difficulty": 4,
+    "keyIdea": "All iterated derivatives of sin and cos cycle through {sin, cos, -sin, -cos} with period 4, so every derivative is bounded by 1 in absolute value. The Lagrange remainder is thus bounded by |x|^{n+1}/n!, which tends to 0 for any fixed x.",
+    "sections": [
+      {
+        "title": "Derivative Cycle (Period 4)",
+        "description": "Proves iteratedDeriv_sin_add_four and iteratedDeriv_cos_add_four: the iterated derivatives of sin and cos repeat with period 4.",
+        "theorems": ["iteratedDeriv_sin_add_four", "iteratedDeriv_cos_add_four", "iteratedDeriv_sin_one", "iteratedDeriv_sin_two", "iteratedDeriv_sin_three", "iteratedDeriv_cos_one", "iteratedDeriv_cos_two", "iteratedDeriv_cos_three"]
+      },
+      {
+        "title": "Universal Bound",
+        "description": "Every iterated derivative of sin and cos has norm at most 1, proved by reducing to the 4 base cases via the period-4 property.",
+        "theorems": ["norm_iteratedDeriv_sin_le", "norm_iteratedDeriv_cos_le"]
+      },
+      {
+        "title": "Convergence",
+        "description": "Taylor partial sums converge to sin(x) and cos(x) for all x, via the squeeze theorem applied to the |x|^{n+1}/n! remainder bound.",
+        "theorems": ["sinPartialSum_tendsto", "cosPartialSum_tendsto", "sin_taylor_remainder_tendsto", "cos_taylor_remainder_tendsto"]
+      },
+      {
+        "title": "Explicit Series & Summability",
+        "description": "The explicit alternating series forms sin(x) = sum (-1)^n x^{2n+1}/(2n+1)! and cos(x) = sum (-1)^n x^{2n}/(2n)! are proved summable via subseries comparison with exp.",
+        "theorems": ["summable_sinSeries", "summable_cosSeries"]
+      },
+      {
+        "title": "Tighter vs Exp",
+        "description": "The sin/cos remainder bound |x|^{n+1}/n! is strictly tighter than the exp remainder bound exp(|x|)|x|^{n+1}/n!.",
+        "theorems": ["sincos_remainder_tighter_than_exp"]
+      }
+    ]
+  },
+  "historicalContext": "The Taylor series for sin and cos were known to Indian mathematicians of the Kerala school (Madhava, c. 1350) centuries before Taylor's 1715 publication. The rigorous convergence proof via remainder bounds was developed by Cauchy and Lagrange in the 18th-19th centuries. This formalization demonstrates that the trig series have a simpler convergence argument than exp: the boundedness of all derivatives (|sin|, |cos| <= 1) eliminates the exponential factor from the remainder bound.",
+  "summary": "Formalizes the convergence of Taylor series for sin and cos using the period-4 property of their derivatives. All 31 theorems are fully proved with 0 sorries. The 2 axioms encode the connection between sinPartialSum/cosPartialSum and Mathlib's taylorWithinEval for the Lagrange remainder. Key results: the period-4 cycle of iterated derivatives, the universal norm bound of 1, convergence of Taylor partial sums to sin/cos, summability of the explicit series, and a comparison showing the trig remainder is strictly tighter than the exp remainder.",
+  "openQuestions": [
+    "Can the two remainder axioms be eliminated by directly bridging sinPartialSum/cosPartialSum with taylorWithinEval using iteratedDerivWithin_sin_eq?",
+    "Can the convergence of sin and cos Taylor series be combined with exp convergence to give a formal proof of Euler's formula e^{ix} = cos(x) + i*sin(x)?",
+    "Can the remainder bounds be sharpened using the alternating series estimation theorem (which gives |error| <= |next term|)?",
+    "Can this approach be generalized to prove Taylor convergence for any entire function f with bounded derivatives?"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "taylor-theorem-oq-03",
+      "relationship": "extends",
+      "description": "Answers the second open question from the parent entry: extending Taylor convergence from exp to sin and cos."
+    },
+    {
+      "targetId": "taylor-theorem",
+      "relationship": "related",
+      "description": "Uses the same Taylor remainder machinery (Lagrange form) from the parent Taylor's theorem entry."
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "The convergence of sin, cos, and exp Taylor series together provides the real-analytic foundation for Euler's formula."
+    }
+  ]
+}
