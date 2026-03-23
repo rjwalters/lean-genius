@@ -2,6 +2,7 @@ import Mathlib.NumberTheory.ZetaValues
 import Mathlib.Analysis.PSeries
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 import Mathlib.Topology.Algebra.InfiniteSum.Real
+import Mathlib.Topology.Algebra.InfiniteSum.Order
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
 
@@ -87,24 +88,34 @@ lemma inv_rpow_strictAnti {n : ℕ} (hn : 2 ≤ n) {s₁ s₂ : ℝ} (hs : s₁ 
 /-- ζ(s₂) ≤ ζ(s₁) when 1 < s₁ ≤ s₂ (zeta is antitone). -/
 theorem tsum_inv_rpow_antitone {s₁ s₂ : ℝ} (hs₁ : 1 < s₁) (hs : s₁ ≤ s₂) :
     ∑' n : ℕ, ((n : ℝ) ^ s₂)⁻¹ ≤ ∑' n : ℕ, ((n : ℝ) ^ s₁)⁻¹ := by
-  -- Term-by-term comparison via inv_rpow_antitone
-  sorry
+  have hs₂ : 1 < s₂ := lt_of_lt_of_le hs₁ hs
+  exact hasSum_le (fun n => by
+    by_cases hn : n = 0
+    · simp [hn, Real.zero_rpow (by linarith : s₁ ≠ 0), Real.zero_rpow (by linarith : s₂ ≠ 0)]
+    · exact inv_rpow_antitone (by omega) hs)
+    (summable_inv_rpow hs₂).hasSum (summable_inv_rpow hs₁).hasSum
 
 /-! ## Part V: Lower Bound -/
 
 /-- ζ(s) ≥ 1 for s > 1: the n=1 term contributes 1^{-s} = 1. -/
 theorem one_le_tsum_inv_rpow {s : ℝ} (hs : 1 < s) :
     1 ≤ ∑' n : ℕ, ((n : ℝ) ^ s)⁻¹ := by
-  -- The n=1 partial sum = 1 ≤ full sum
-  sorry
+  calc (1 : ℝ) = (((1 : ℕ) : ℝ) ^ s)⁻¹ := by simp [Real.one_rpow]
+    _ ≤ ∑' n : ℕ, ((n : ℝ) ^ s)⁻¹ :=
+        le_hasSum (summable_inv_rpow hs).hasSum 1 (fun n _ => by positivity)
 
 /-! ## Part VI: Upper Bound -/
 
 /-- For s ≥ 2, ζ(s) ≤ ζ(2) = π²/6 by term-wise monotonicity. -/
 theorem tsum_inv_rpow_le_zeta_two {s : ℝ} (hs : 2 ≤ s) :
     ∑' n : ℕ, ((n : ℝ) ^ s)⁻¹ ≤ Real.pi ^ 2 / 6 := by
-  -- Follows from tsum_inv_rpow_antitone + zeta_two_eq
-  sorry
+  calc ∑' n : ℕ, ((n : ℝ) ^ s)⁻¹
+      ≤ ∑' n : ℕ, ((n : ℝ) ^ (2 : ℝ))⁻¹ :=
+        tsum_inv_rpow_antitone (by norm_num : (1 : ℝ) < 2) hs
+    _ = ∑' n : ℕ, (1 : ℝ) / ↑n ^ 2 := by
+        congr 1; ext n
+        rw [show (2 : ℝ) = ((2 : ℕ) : ℝ) from by norm_num, Real.rpow_natCast, one_div]
+    _ = Real.pi ^ 2 / 6 := zeta_two_eq
 
 /-! ## Part VII: Partial Sums -/
 

@@ -8,7 +8,7 @@
     "author": "Euler (1734); formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Riemann_zeta_function",
     "date": "1734",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/SumOfKthPowersOQ02.lean",
     "tags": [
       "analysis",
@@ -19,8 +19,8 @@
       "research",
       "open-problem"
     ],
-    "badge": "formalized",
-    "sorries": 3,
+    "badge": "verified",
+    "sorries": 0,
     "axiomCount": 0,
     "mathlibDependencies": [
       {
@@ -50,9 +50,9 @@
       "zeta_two_eq / zeta_four_eq: tsum forms of Basel and ζ(4)",
       "inv_rpow_antitone: (n^s)⁻¹ is antitone in s for n ≥ 1",
       "inv_rpow_strictAnti: strict version for n ≥ 2",
-      "tsum_inv_rpow_antitone: ζ(s) is antitone (sorry - tsum ordering)",
-      "one_le_tsum_inv_rpow: ζ(s) ≥ 1 (sorry - tsum ordering)",
-      "tsum_inv_rpow_le_zeta_two: ζ(s) ≤ π²/6 for s ≥ 2 (sorry - tsum ordering)",
+      "tsum_inv_rpow_antitone: ζ(s) is antitone via hasSum_le",
+      "one_le_tsum_inv_rpow: ζ(s) ≥ 1 via le_hasSum at n=1",
+      "tsum_inv_rpow_le_zeta_two: ζ(s) ≤ π²/6 for s ≥ 2 via antitone + Basel",
       "partialZeta_tendsto: partial sums converge to ζ(s)",
       "partialZeta_mono: partial sums are monotone",
       "rpow_inv_eq_nat_inv: bridge from rpow to nat pow",
@@ -60,7 +60,7 @@
       "partial_sum_sq_tendsto: ∑ 1/n² → π²/6"
     ],
     "dateAdded": "2026-03-23",
-    "lineCount": 164,
+    "lineCount": 173,
     "prerequisites": [
       "Real-valued power series and summability",
       "Zeta values from Mathlib",
@@ -78,7 +78,7 @@
         "type": "book"
       }
     ],
-    "assumptions": "No axioms. 3 sorry(s) remain in the formalization."
+    "assumptions": "No axioms or sorries. Fully verified."
   },
   "sections": [
     {
@@ -118,16 +118,16 @@
       "title": "Part IV: Zeta Monotonicity",
       "startLine": 85,
       "endLine": 91,
-      "summary": "zeta(s) antitone (sorry).",
-      "mathContext": "tsum ordering comparison."
+      "summary": "zeta(s) antitone via hasSum_le.",
+      "mathContext": "Term-wise comparison via inv_rpow_antitone, n=0 handled by zero_rpow."
     },
     {
       "id": "bounds",
       "title": "Parts V-VI: Bounds",
       "startLine": 93,
       "endLine": 107,
-      "summary": "zeta(s) >= 1, zeta(s) <= pi^2/6 for s>=2 (sorry).",
-      "mathContext": "Lower and upper bounds."
+      "summary": "zeta(s) >= 1 via le_hasSum, zeta(s) <= pi^2/6 for s>=2 via antitone + Basel.",
+      "mathContext": "Lower bound from n=1 term, upper bound via zeta monotonicity and zeta(2)."
     },
     {
       "id": "partial-sums",
@@ -151,19 +151,19 @@
       "startLine": 147,
       "endLine": 164,
       "summary": "Type-checks all 14 results.",
-      "mathContext": "11 proved, 3 sorry."
+      "mathContext": "14 proved, 0 sorry."
     }
   ],
   "overview": {
     "historicalContext": "Johann Faulhaber (1631) published closed-form expressions for sums of consecutive kth powers, extending work by al-Haytham (c. 1000) and Bernoulli. The reciprocal series sum 1/n^2 was posed as the Basel Problem by Pietro Mengoli in 1644 and resisted solution for 90 years. Euler's breakthrough in 1734, showing zeta(2) = pi^2/6, stunned contemporary mathematicians by linking a discrete arithmetic sum to the circle constant. Euler subsequently computed zeta(2k) for all positive integers k using Bernoulli numbers and powers of pi. The convergence dichotomy at s = 1 — the harmonic series diverges while sum 1/n^s converges for any s > 1 — was first observed by Nicole Oresme (c. 1360) and later connected to the prime number theorem via the Euler product zeta(s) = prod (1 - p^{-s})^{-1}. Riemann's 1859 memoir extended zeta(s) to complex s via analytic continuation, transforming number theory forever.",
     "problemStatement": "Extend Faulhaber integer power sums to real exponents via zeta(s) = sum 1/n^s.",
-    "proofStrategy": "Eight parts: convergence dichotomy, known values, term monotonicity, zeta monotonicity, bounds, partial sums, bridge to integers. Three sorries in tsum ordering.",
+    "proofStrategy": "Eight parts: convergence dichotomy, known values, term monotonicity, zeta monotonicity, bounds, partial sums, bridge to integers. Fully verified.",
     "keyInsights": [
       "P-series threshold at s=1 separates convergent from divergent power-law decay",
       "Basel problem zeta(2)=pi^2/6 connects discrete arithmetic to geometry",
       "General formula zeta(2k) involves Bernoulli numbers; no closed form for odd values",
       "Bridge rpow_inv_eq_nat_inv connects real-exponent analysis to integer combinatorics",
-      "Three remaining sorries are routine tsum ordering comparisons"
+      "hasSum_le and le_hasSum are the key API for tsum ordering"
     ],
     "prerequisites": [
       "Real summability",
@@ -172,10 +172,9 @@
     ]
   },
   "conclusion": {
-    "summary": "11 of 14 results proved. 3 sorries remain in tsum ordering comparisons.",
-    "implications": "Bridge from Faulhaber to zeta(s). Sorries are routine and Aristotle-provable.",
+    "summary": "All 14 results fully proved. 0 sorries, 0 axioms.",
+    "implications": "Complete bridge from Faulhaber integer power sums to zeta(s) real-exponent theory.",
     "openQuestions": [
-      "Close 3 tsum ordering sorries using tsum_le_tsum and le_tsum",
       "Extend to zeta(6), zeta(8) via Bernoulli numbers",
       "Formalize Euler product",
       "Prove functional equation"
