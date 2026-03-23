@@ -37,8 +37,10 @@
       "This is one of the solved Erdos problems, demonstrating that formal verification can capture and confirm combinatorial constructions"
     ],
     "prerequisites": [
-      "Number theory fundamentals",
-      "Combinatorial analysis"
+      "Subset sum theory: completeness, density of sumsets",
+      "Asymptotic density: natural density, upper/lower density",
+      "Sequences: monotone sequences, consecutive ratios, binary representations",
+      "Cofinite sets: finitely many removals from infinite sequences"
     ]
   },
   "sections": [
@@ -47,42 +49,48 @@
       "title": "Subset Sums",
       "startLine": 23,
       "endLine": 27,
-      "summary": "`subsetSums A`: the set of all natural numbers expressible as finite subset sums from $A$."
+      "summary": "`subsetSums A`: the set of all natural numbers expressible as finite subset sums from $A$.",
+      "mathContext": "$P(A) = \\{\\sum_{i \\in S} a_i : S \\subseteq \\mathbb{N},\\, |S| < \\infty\\}$. Binary: $P(\\{1,2,4,8,\\ldots\\}) = \\mathbb{N}$."
     },
     {
       "id": "density",
       "title": "Asymptotic Density",
       "startLine": 29,
       "endLine": 39,
-      "summary": "Counting function `countIn` and `HasDensity S delta` via epsilon-N_0 convergence of |S cap [1,N]|/N."
+      "summary": "Counting function `countIn` and `HasDensity S delta` via epsilon-N_0 convergence of |S cap [1,N]|/N.",
+      "mathContext": "$\\text{HasDensity}(S, \\delta) \\iff |S \\cap [1,N]|/N \\to \\delta$ as $N \\to \\infty$. Goal: $\\delta = 1$."
     },
     {
       "id": "ratio-limit",
       "title": "Monotone Sequences with Ratio Limit",
       "startLine": 41,
       "endLine": 52,
-      "summary": "`IsMonotone` (nondecreasing) and `HasRatioLimit a r` (consecutive ratio convergence). Critical value r = 2."
+      "summary": "`IsMonotone` (nondecreasing) and `HasRatioLimit a r` (consecutive ratio convergence). Critical value r = 2.",
+      "mathContext": "$\\lim_{n \\to \\infty} a_{n+1}/a_n = r$. Critical case $r = 2$: geometric growth at rate of binary powers."
     },
     {
       "id": "cofinite",
       "title": "Cofinite Subsequences",
       "startLine": 54,
       "endLine": 63,
-      "summary": "`IsCofiniteSubseq`: strictly monotone reindexing with cofinite range. `cofiniteImage`: the values of the subsequence."
+      "summary": "`IsCofiniteSubseq`: strictly monotone reindexing with cofinite range. `cofiniteImage`: the values of the subsequence.",
+      "mathContext": "$A' \\subseteq A$ cofinite $\\iff |A \\setminus A'| < \\infty$. Robustness: $P(A')$ should still have density 1."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (Solved)",
       "startLine": 65,
       "endLine": 78,
-      "summary": "Erdős Problem 347: existential statement and affirmative axiom. Solved by ebarschkis (Tao-van Doorn ideas)."
+      "summary": "Erdős Problem 347: existential statement and affirmative axiom. Solved by ebarschkis (Tao-van Doorn ideas).",
+      "mathContext": "$\\exists A: \\lim a_{n+1}/a_n = 2 \\wedge \\forall A' \\subseteq_{\\text{cof}} A,\\, \\text{HasDensity}(P(A'), 1)$. Answer: YES."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 80,
       "endLine": 93,
-      "summary": "Zero in P(A), additive closure, and monotonicity of subset sums — the algebraic structure of P."
+      "summary": "Zero in P(A), additive closure, and monotonicity of subset sums — the algebraic structure of P.",
+      "mathContext": "$0 \\in P(A)$ (empty sum); $s \\in P(A),\\, a \\in A \\Rightarrow s + a \\in P(A)$; $A \\subseteq B \\Rightarrow P(A) \\subseteq P(B)$."
     }
   ],
   "conclusion": {
@@ -112,5 +120,43 @@
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Both concern subset sum structure: #1 asks when all subset sums are distinct (minimizing representations), while #347 asks when subset sums achieve density 1 robustly (maximizing coverage). They sit at opposite ends of the subset sum complexity spectrum"
+    },
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "Both concern additive completeness: #28 asks whether representation functions of additive bases must be unbounded, while #347 asks whether a sequence growing at rate 2 can maintain density-1 subset sums under deletions. Both explore the boundary between thin and thick additive structure"
+    },
+    {
+      "targetId": "erdos-40",
+      "relationship": "related",
+      "description": "Both involve additive structure at critical thresholds: #40 studies B_2[g] sets that cannot be bases, while #347 studies sequences at the critical ratio 2 that can be robustly complete. Both concern how growth rate constraints interact with additive coverage"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-28",
+    "erdos-40"
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Monograph no. 28, Geneva",
+      "note": "Original source for Problem #347; comprehensive survey of complete sequences and subset sum problems"
+    },
+    {
+      "authors": "Folkman, Jon",
+      "title": "On the representation of integers as sums of distinct terms from a fixed sequence",
+      "year": "1966",
+      "venue": "Canadian Journal of Mathematics, vol. 18, pp. 643–655",
+      "note": "Classical results on complete sequences and the relationship between growth rate and completeness"
+    }
+  ]
 }
