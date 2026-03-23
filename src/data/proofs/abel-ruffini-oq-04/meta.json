@@ -328,6 +328,21 @@
       "targetId": "nth-root-irrational-oq-01",
       "relationship": "foundational",
       "description": "The irrationality of nth roots via irreducible polynomials is a prototype of the field extension arguments that underlie Abel-Ruffini. Showing ⁿ√m ∉ ℚ uses the irreducibility of xⁿ − m over ℚ (Eisenstein's criterion), giving [ℚ(ⁿ√m) : ℚ] = n — a degree-n radical extension. Abel-Ruffini asks when arbitrary polynomial roots can be reached by chaining such radical extensions (tower of radical extensions), and the answer depends on whether the Galois group is solvable. The irrationality proof is the base case (degree 1 tower, always possible) of the general radical solvability question"
+    },
+    {
+      "targetId": "hilbert-9-reciprocity",
+      "relationship": "extends",
+      "description": "Hilbert's 9th problem — the search for the most general reciprocity law — was answered by Artin reciprocity (1927), which establishes an isomorphism between abelian Galois groups and generalized ideal class groups. This directly extends the abelian/non-abelian dichotomy central to Abel-Ruffini: Artin reciprocity completely classifies abelian extensions (the solvable case), while the non-abelian Langlands program seeks analogues for non-abelian Galois groups like S₅. The contrast is precise: Abel-Ruffini says S₅ blocks radical solvability because it is non-solvable, while class field theory says abelian extensions are fully understood — the frontier of difficulty is exactly the non-abelian boundary"
+    },
+    {
+      "targetId": "hilbert-13",
+      "relationship": "related",
+      "description": "Hilbert's 13th problem asked whether solutions of degree-7 polynomials require functions of 3 variables — a direct successor to Abel-Ruffini's impossibility for radicals. While Abel-Ruffini shows x⁵ + ··· cannot be solved by nested radicals (functions of 1 variable composed via +, ×, ⁿ√), Hilbert asked whether the general septic could be solved using continuous functions of only 2 variables. The Kolmogorov-Arnold representation theorem (1957) resolved this negatively by showing every continuous function of n variables decomposes into functions of 1 variable — a surprising inversion: the algebraic barrier (Abel-Ruffini) is harder than the continuous one"
+    },
+    {
+      "targetId": "hurwitz-theorem",
+      "relationship": "thematic",
+      "description": "Hurwitz's theorem (1898) proves that normed division algebras exist only in dimensions 1, 2, 4, 8 (ℝ, ℂ, ℍ, 𝕆), a striking parallel to Abel-Ruffini's threshold phenomenon: radical solvability holds only for degrees 1–4, and composition algebras exist only for n = 1, 2, 4, 8. Both are 'finiteness of nice structures' results where algebraic constraints force a sharp cutoff. The connection deepens through Frobenius's theorem (1878): associative division algebras over ℝ are only ℝ, ℂ, ℍ — and the quaternions ℍ have automorphism group SO(3), which is not solvable, echoing how A₅'s non-solvability drives Abel-Ruffini"
     }
   ],
   "overview": {
