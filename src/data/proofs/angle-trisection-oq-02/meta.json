@@ -164,6 +164,16 @@
       "targetId": "angle-trisection-oq-02-oq-03-oq-01",
       "relationship": "extended-by",
       "description": "Bridges the Gauss-Wantzel constructibility theorem to Mathlib's cyclotomic field infrastructure. Connects the 2-group Galois criterion proved here to the concrete setting of $\\zeta_n = e^{2\\pi i/n}$ and Chebyshev polynomials, showing how the abstract group-theoretic characterization manifests in the cyclotomic world that governs regular polygon constructibility"
+    },
+    {
+      "targetId": "de-moivre",
+      "relationship": "foundational",
+      "description": "De Moivre's formula $(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$ expresses the $n$th roots of unity $\\zeta_n = e^{2\\pi i/n}$ that generate cyclotomic extensions. The Gauss-Wantzel theorem is a direct application: the regular $p$-gon is constructible iff $\\text{Gal}(\\mathbb{Q}(\\zeta_p)/\\mathbb{Q}) \\cong (\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ is a 2-group, i.e., $p-1 = 2^k$. Gauss's construction of the 17-gon used the 2-group structure to recursively extract square roots of the Gauss periods $\\eta_i = \\sum_{j} \\zeta_{17}^{g^{2j+i}}$, which are real numbers expressed via De Moivre's formula"
+    },
+    {
+      "targetId": "kroneckers-jugendtraum",
+      "relationship": "extends",
+      "description": "Kronecker-Weber (every abelian extension of $\\mathbb{Q}$ is contained in a cyclotomic field) explains why all constructible numbers live inside cyclotomic fields: the degree-2 tower generating a constructible number produces an abelian extension, which Kronecker-Weber places inside $\\mathbb{Q}(\\zeta_n)$ for some $n$. This connects the local geometric construction (compass-and-straightedge) to the global arithmetic of cyclotomic fields"
     }
   ],
   "overview": {
@@ -202,7 +212,7 @@
       "startLine": 46,
       "endLine": 59,
       "summary": "Three proved theorems about 2-groups: IsPGroup.iff_card (2-group ↔ order is 2^n), IsPGroup.of_card (2-power order → 2-group), and their combination.",
-      "mathContext": "A finite group $G$ is a 2-group $\\iff |G| = 2^n$ for some $n \\geq 0$. Equivalently, every element has order a power of 2."
+      "mathContext": "A finite group $G$ is a 2-group $\\iff |G| = 2^n$ for some $n \\geq 0$. Examples: $\\mathbb{Z}/2\\mathbb{Z}$, $\\mathbb{Z}/4\\mathbb{Z}$, $D_4$ (order 8), $Q_8$ (order 8). Non-examples: $S_3$ (order 6), $\\mathbb{Z}/3\\mathbb{Z}$ (order 3). The order characterization `IsPGroup.iff_card` bridges between Mathlib's element-wise definition and the cardinality condition needed for the constructibility criterion."
     },
     {
       "id": "constructibility",
@@ -226,7 +236,7 @@
       "startLine": 94,
       "endLine": 141,
       "summary": "Proved: Gal(x³-2/ℚ) (order 6) and Gal(8x³-6x-1/ℚ) (order 3) are NOT 2-groups. Key: 3 divides both orders but gcd(3,2^n)=1, so neither is a power of 2.",
-      "mathContext": "$|\\text{Gal}(x^3-2/\\mathbb{Q})| = 6 = 2 \\cdot 3$, not $2^n$. $|\\text{Gal}(8x^3-6x-1/\\mathbb{Q})| = 3$, not $2^n$. Key: $\\gcd(3, 2^n) = 1$ so $3 \\nmid 2^n$."
+      "mathContext": "$|\\text{Gal}(x^3-2/\\mathbb{Q})| = 6 = 2 \\cdot 3$: since $\\gcd(3, 2) = 1$, we get $\\gcd(3, 2^n) = 1$ by `Nat.Coprime.pow_right`, so $3 \\nmid 2^n$, but $3 \\mid 6$, contradiction with $6 = 2^n$. Same argument for $|\\text{Gal}(8x^3-6x-1/\\mathbb{Q})| = 3$. The private lemma `not_pow_two_of_eq_six` encapsulates this coprimality argument and is reused for both non-constructibility proofs ($\\sqrt[3]{2}$ and $\\cos 20°$)."
     },
     {
       "id": "constructible-examples",
@@ -234,7 +244,7 @@
       "startLine": 143,
       "endLine": 200,
       "summary": "PROVED: |Gal(x²-2/ℚ)| = 2 via divisibility squeeze (prime degree divides |Gal|, Gal embeds into S₂). Gal(x⁴-2/ℚ) = 8 from InverseGaloisD4. Both are 2-groups.",
-      "mathContext": "$|\\text{Gal}(x^2-2/\\mathbb{Q})| = 2 = 2^1$ ($\\sqrt{2}$ constructible). $|\\text{Gal}(x^4-2/\\mathbb{Q})| = 8 = 2^3$ ($\\sqrt[4]{2}$ constructible)."
+      "mathContext": "$|\\text{Gal}(x^2-2/\\mathbb{Q})| = 2 = 2^1$: the only automorphism is $\\sqrt{2} \\mapsto -\\sqrt{2}$, so $\\text{Gal} \\cong \\mathbb{Z}/2\\mathbb{Z}$. $|\\text{Gal}(x^4-2/\\mathbb{Q})| = 8 = 2^3$: the four roots $\\zeta^k \\sqrt[4]{2}$ ($\\zeta = i$) yield $\\text{Gal} \\cong D_4$. Both are 2-groups via `IsPGroup.of_card`, confirming $\\sqrt{2}$ and $\\sqrt[4]{2}$ are constructible. Geometrically: $\\sqrt{2}$ is the unit square diagonal (one compass step), $\\sqrt[4]{2} = \\sqrt{\\sqrt{2}}$ requires two successive square root extractions."
     },
     {
       "id": "oq01-connection",
@@ -242,7 +252,7 @@
       "startLine": 202,
       "endLine": 242,
       "summary": "PROVED: galois_2group_implies_degree_pow2 via tower law (natDegree | finrank(SplittingField) = |Gal| = 2^k). Former axiom eliminated.",
-      "mathContext": "$\\deg(\\text{minpoly}) \\mid [\\text{SplittingField} : \\mathbb{Q}] = |\\text{Gal}| = 2^k$, so $\\deg(\\text{minpoly}) = 2^j$ for some $j \\leq k$."
+      "mathContext": "The chain: $\\text{natDegree}(\\text{minpoly}) \\mid [\\text{SplittingField}:\\mathbb{Q}] = |\\text{Gal}| = 2^k$ (by the tower law and the Galois group order theorem), so $\\text{natDegree} = 2^j$ for some $j \\leq k$. This shows OQ-02's Galois criterion strictly implies OQ-01's degree criterion: constructible $\\Rightarrow$ 2-group Gal $\\Rightarrow$ $\\deg \\mid 2^n$. The reverse fails: some degree-$2^k$ polynomials have non-2-group Galois groups."
     },
     {
       "id": "contrapositives",
@@ -309,7 +319,9 @@
     "nth-root-irrational",
     "e-transcendental",
     "solution-of-cubic",
-    "angle-trisection-oq-02-oq-03-oq-01"
+    "angle-trisection-oq-02-oq-03-oq-01",
+    "de-moivre",
+    "kroneckers-jugendtraum"
   ],
   "references": [
     {

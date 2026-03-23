@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 37
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Gauss-Wantzel OQ Chain: From Galois Groups to Fermat Primes",
     "content": "This file is the third level of the constructibility OQ chain. OQ01 proved the degree criterion ($\\alpha$ constructible $\\Rightarrow$ $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = 2^k$, necessary but not sufficient). OQ02 proved the complete Galois criterion ($\\alpha$ constructible $\\iff$ Gal(minpoly) is a 2-group). OQ02-OQ03 (this file) applies OQ02 to $\\cos(2\\pi/n)$ to get the Gauss-Wantzel theorem: a regular $n$-gon is constructible $\\iff$ $\\varphi(n)$ is a power of 2.",
     "mathContext": "**Gauss-Wantzel**: regular $n$-gon constructible $\\iff$ $\\varphi(n) = 2^k$. **Key chain**: $\\cos(2\\pi/n)$ generates maximal real subfield of $\\mathbb{Q}(\\zeta_n)$; $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = \\varphi(n)$; $\\text{Gal}(\\Phi_n/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^*$.",
@@ -32,9 +32,9 @@
     },
     "type": "technique",
     "title": "Totient Computations and Power-of-2 Tests",
-    "content": "Core computations: $\\varphi(n)$ for $n = 3, \\ldots, 17, 257, 65537$ proved by `decide`/`native_decide`. The key helper `not_pow_two_of_odd_prime_dvd` shows: if $p \\mid n$ with $p$ an odd prime, then $n \\neq 2^k$. Proof: $p \\mid 2^k \\Rightarrow p \\mid 2$ (by `Prime.dvd_of_dvd_pow`) $\\Rightarrow p \\le 2$, contradicting $p \\ge 3$.\n\n**Positive**: $\\varphi(3) = 2$, $\\varphi(5) = 4$, $\\varphi(17) = 16$, $\\varphi(257) = 256$, $\\varphi(65537) = 65536$ \u2014 all $2^k$.\n**Negative**: $\\varphi(7) = 6$ ($3 \\mid 6$), $\\varphi(9) = 6$, $\\varphi(11) = 10$ ($5 \\mid 10$), $\\varphi(13) = 12$ ($3 \\mid 12$).",
+    "content": "Core computations: $\\varphi(n)$ for $n = 3, \\ldots, 17, 257, 65537$ proved by `decide`/`native_decide`. The key helper `not_pow_two_of_odd_prime_dvd` shows: if $p \\mid n$ with $p$ an odd prime, then $n \\neq 2^k$. Proof: $p \\mid 2^k \\Rightarrow p \\mid 2$ (by `Prime.dvd_of_dvd_pow`) $\\Rightarrow p \\le 2$, contradicting $p \\ge 3$.\n\n**Positive**: $\\varphi(3) = 2$, $\\varphi(5) = 4$, $\\varphi(17) = 16$, $\\varphi(257) = 256$, $\\varphi(65537) = 65536$ — all $2^k$.\n**Negative**: $\\varphi(7) = 6$ ($3 \\mid 6$), $\\varphi(9) = 6$, $\\varphi(11) = 10$ ($5 \\mid 10$), $\\varphi(13) = 12$ ($3 \\mid 12$).",
     "mathContext": "$p \\mid n$, $p$ odd prime $\\Rightarrow n \\neq 2^k$. Proof: $p \\mid 2^k \\Rightarrow p \\mid 2 \\Rightarrow p \\leq 2$, contradiction.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Nat.totient",
       "Nat.Prime.dvd_of_dvd_pow",
@@ -54,10 +54,10 @@
       "startLine": 120,
       "endLine": 210
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Gauss-Wantzel Theorem and IsConstructibleNgon (NOW PROVED)",
     "content": "**IsConstructibleNgon** defines a regular $n$-gon as constructible when $\\cos(2\\pi/n)$ lies in some intermediate field $K$ of $\\mathbb{R}/\\mathbb{Q}$ with $[K:\\mathbb{Q}] = 2^k$.\n\nThe **gauss_wantzel_theorem** was originally axiomatized but is now fully proved (0 axioms remain). The proof uses: (1) `IsCyclotomicExtension.finrank` for $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = \\varphi(n)$; (2) Chebyshev polynomials showing $\\cos(2\\pi/n)$ is algebraic; (3) cyclotomic tower law showing $[\\mathbb{Q}(\\cos(2\\pi/n)):\\mathbb{Q}] = \\varphi(n)/2$; (4) the 2-group criterion from OQ-02. The file grew from ~548 lines to 1799 lines in the process of eliminating all axioms.",
-    "mathContext": "**Proved**: `IsConstructibleNgon n \u2194 TotientIsPow2 n` for $n \\ge 3$. **Definition**: `IsConstructibleNgon n := \\exists K \\le \\mathbb{R},\\; [K:\\mathbb{Q}] = 2^k \\wedge \\cos(2\\pi/n) \\in K$.",
+    "mathContext": "**Proved**: `IsConstructibleNgon n ↔ TotientIsPow2 n` for $n \\ge 3$. **Definition**: `IsConstructibleNgon n := \\exists K \\le \\mathbb{R},\\; [K:\\mathbb{Q}] = 2^k \\wedge \\cos(2\\pi/n) \\in K$.",
     "significance": "key",
     "relatedConcepts": [
       "gauss_wantzel_theorem",
@@ -80,7 +80,7 @@
     },
     "type": "insight",
     "title": "Constructible Polygons: From Triangle to 65537-gon",
-    "content": "Ten constructible polygons proved via Gauss-Wantzel: $n = 3, 4, 5, 6, 8, 10, 12, 17, 257, 65537$.\n\n**Highlights**:\n- **Gauss's 17-gon** (March 30, 1796): $\\varphi(17) = 16 = 2^4$. First new construction since antiquity. Gauss was 18.\n- **Richelot's 257-gon** (1832): $\\varphi(257) = 256 = 2^8$. Explicit construction: 80 pages.\n- **Hermes's 65537-gon** (1879\u20131889): $\\varphi(65537) = 65536 = 2^{16}$. Hermes spent 10 years; manuscript donated to G\u00f6ttingen, never published.",
+    "content": "Ten constructible polygons proved via Gauss-Wantzel: $n = 3, 4, 5, 6, 8, 10, 12, 17, 257, 65537$.\n\n**Highlights**:\n- **Gauss's 17-gon** (March 30, 1796): $\\varphi(17) = 16 = 2^4$. First new construction since antiquity. Gauss was 18.\n- **Richelot's 257-gon** (1832): $\\varphi(257) = 256 = 2^8$. Explicit construction: 80 pages.\n- **Hermes's 65537-gon** (1879–1889): $\\varphi(65537) = 65536 = 2^{16}$. Hermes spent 10 years; manuscript donated to Göttingen, never published.",
     "mathContext": "$\\varphi(3) = 2$, $\\varphi(4) = 2$, $\\varphi(5) = 4$, $\\varphi(6) = 2$, $\\varphi(8) = 4$, $\\varphi(10) = 4$, $\\varphi(12) = 4$, $\\varphi(17) = 16$, $\\varphi(257) = 256$, $\\varphi(65537) = 65536$.",
     "significance": "key",
     "relatedConcepts": [
@@ -104,8 +104,8 @@
     },
     "type": "technique",
     "title": "Non-Constructible Polygons: The Odd Prime Obstruction",
-    "content": "Four non-constructible polygons: $n = 7, 9, 11, 13$.\n\n- **7-gon**: $\\varphi(7) = 6 = 2 \\cdot 3$. The factor 3 prevents a 2-tower.\n- **9-gon**: $\\varphi(9) = 6$. Despite 3 being Fermat, $9 = 3^2$ fails \u2014 primes must appear at most once.\n- **11-gon**: $\\varphi(11) = 10 = 2 \\cdot 5$. 11 is prime but not Fermat ($11 \\neq 2^{2^k}+1$).\n- **13-gon**: $\\varphi(13) = 12 = 4 \\cdot 3$. Odd factor 3 is the obstruction.",
-    "mathContext": "$\\varphi(7) = 6$, $\\varphi(9) = 6$, $\\varphi(11) = 10$, $\\varphi(13) = 12$ \u2014 none powers of 2.",
+    "content": "Four non-constructible polygons: $n = 7, 9, 11, 13$.\n\n- **7-gon**: $\\varphi(7) = 6 = 2 \\cdot 3$. The factor 3 prevents a 2-tower.\n- **9-gon**: $\\varphi(9) = 6$. Despite 3 being Fermat, $9 = 3^2$ fails — primes must appear at most once.\n- **11-gon**: $\\varphi(11) = 10 = 2 \\cdot 5$. 11 is prime but not Fermat ($11 \\neq 2^{2^k}+1$).\n- **13-gon**: $\\varphi(13) = 12 = 4 \\cdot 3$. Odd factor 3 is the obstruction.",
+    "mathContext": "$\\varphi(7) = 6$, $\\varphi(9) = 6$, $\\varphi(11) = 10$, $\\varphi(13) = 12$ — none powers of 2.",
     "significance": "supporting",
     "relatedConcepts": [
       "heptagon impossibility",
@@ -126,7 +126,7 @@
     },
     "type": "concept",
     "title": "Fermat Primes and the General Constructibility Theorem",
-    "content": "**Fermat primes**: primes of the form $p = 2^{2^k}+1$. The five known: $F_0 = 3$, $F_1 = 5$, $F_2 = 17$, $F_3 = 257$, $F_4 = 65537$.\n\nThe general theorem `fermat_prime_totient_pow2`: if $p = 2^{2^k}+1$ is prime, then $\\varphi(p) = 2^{2^k}$ (a power of 2). Then `fermat_prime_ngon_constructible` applies Gauss-Wantzel.\n\n$F_5 = 2^{32}+1 = 641 \\times 6700417$ (Euler, 1732) \u2014 composite. No Fermat prime beyond $F_4$ is known.",
+    "content": "**Fermat primes**: primes of the form $p = 2^{2^k}+1$. The five known: $F_0 = 3$, $F_1 = 5$, $F_2 = 17$, $F_3 = 257$, $F_4 = 65537$.\n\nThe general theorem `fermat_prime_totient_pow2`: if $p = 2^{2^k}+1$ is prime, then $\\varphi(p) = 2^{2^k}$ (a power of 2). Then `fermat_prime_ngon_constructible` applies Gauss-Wantzel.\n\n$F_5 = 2^{32}+1 = 641 \\times 6700417$ (Euler, 1732) — composite. No Fermat prime beyond $F_4$ is known.",
     "mathContext": "$F_k = 2^{2^k}+1$. If prime, $\\varphi(F_k) = 2^{2^k}$. Known: $F_0 = 3, F_1 = 5, F_2 = 17, F_3 = 257, F_4 = 65537$.",
     "significance": "key",
     "relatedConcepts": [
@@ -195,9 +195,9 @@
       "startLine": 560,
       "endLine": 579
     },
-    "type": "context",
+    "type": "concept",
     "title": "Euler's Factorization of F5 and the Open Fermat Prime Problem",
-    "content": "**Euler (1732)**: $F_5 = 2^{32}+1 = 4294967297 = 641 \\times 6700417$.\n\nThe file proves `f5_factorization`, `f5_value`, `f5_not_prime` (by `native_decide`), and `f5_not_fermat_prime`.\n\nEuler found the factor 641 by observing $641 = 5^4 + 2^4 = 5 \\cdot 2^7 + 1$, which yields $641 \\mid 2^{32}+1$ through modular arithmetic.\n\n**Open problem**: are there any Fermat primes beyond $F_4 = 65537$? As of 2026, $F_n$ checked up to $n = 32$ \u2014 all composite. It is conjectured that only 5 Fermat primes exist, but this is unproved.",
+    "content": "**Euler (1732)**: $F_5 = 2^{32}+1 = 4294967297 = 641 \\times 6700417$.\n\nThe file proves `f5_factorization`, `f5_value`, `f5_not_prime` (by `native_decide`), and `f5_not_fermat_prime`.\n\nEuler found the factor 641 by observing $641 = 5^4 + 2^4 = 5 \\cdot 2^7 + 1$, which yields $641 \\mid 2^{32}+1$ through modular arithmetic.\n\n**Open problem**: are there any Fermat primes beyond $F_4 = 65537$? As of 2026, $F_n$ checked up to $n = 32$ — all composite. It is conjectured that only 5 Fermat primes exist, but this is unproved.",
     "mathContext": "$F_5 = 2^{2^5}+1 = 4294967297 = 641 \\times 6700417$. Euler: $641 = 5^4 + 2^4$ and $641 = 5 \\cdot 128 + 1$.",
     "significance": "supporting",
     "relatedConcepts": [

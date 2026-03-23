@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 44
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Overview: From Degree Criterion to Galois Criterion",
     "content": "The file imports Mathlib (for p-groups, Galois groups, field extensions, polynomials) plus four project-local files: `InverseGalois` (S\u2083 as Galois group of x\u00b3-2), `InverseGaloisD4` (D\u2084 as Galois group of x\u2074-2), `NthRootIrrationalOQ01` (irreducibility of x^n-a), and `AngleTrisectionCos20Gal` (Galois group of the trisection polynomial). The module docstring explains the upgrade from OQ-01's necessary condition (degree divides 2^n) to OQ-02's exact biconditional (constructibility \u2194 2-group Galois). This is a fundamental shift: degree is a numerical shadow of the richer group-theoretic structure.\n\n**Why the upgrade matters:** The degree criterion alone cannot distinguish \u221a2 (constructible, degree 2) from \u221b2 (non-constructible, degree 3). But it also fails more subtly: there exist algebraic numbers whose degree IS a power of 2 but which are NOT constructible \u2014 because the Galois group, though of 2-power order, may not embed into the right intermediate field structure. The 2-group Galois criterion captures the exact obstruction.",
     "mathContext": "The upgrade: OQ-01 says $\\alpha$ constructible $\\Rightarrow [\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\mid 2^n$ (necessary). OQ-02 says $\\alpha$ constructible $\\iff \\text{Gal}(\\text{minpoly}(\\mathbb{Q},\\alpha))$ is a 2-group (necessary AND sufficient).",
@@ -221,7 +221,7 @@
       "startLine": 263,
       "endLine": 298
     },
-    "type": "context",
+    "type": "concept",
     "title": "Summary: 22 Declarations, 1 Axiom",
     "content": "The file contains 15 public theorems, 2 private lemmas, 4 private theorems, 1 definition (`IsConstructibleFromQ`), and 1 axiom (`wantzel_galois_characterization`). The Galois group orders for x\u00b3-2 and cos(20\u00b0)'s minimal polynomial are proved (not axiomatized) \u2014 they reference results in companion files InverseGalois.lean and AngleTrisectionCos20Gal.lean.\n\nThe only axiom remaining is `wantzel_galois_characterization` (the biconditional requiring the full Galois correspondence). All other results are either proved from Mathlib lemmas or derived from first principles.\n\n**Verification methodology:** The six `#check` commands at the end test both proved theorems and imported results: `isPGroup_iff_card_pow_two` (basic 2-group fact), `x_cube_sub_2_gal_not_2group` (\u221b2 non-constructible), `cos20_gal_not_2group` (trisection impossible), `x_sq_sub_2_gal_is_2group` (\u221a2 constructible), `x_4th_sub_2_gal_is_2group` (2^(1/4) constructible), and `constructible_implies_degree_dvd_pow2` (OQ-02 implies OQ-01).",
     "mathContext": "22 total declarations: 15 public theorems + 6 private lemmas/theorems + 1 definition + 1 axiom. The sole axiom `wantzel_galois_characterization` is the only gap: it requires the Galois correspondence $\\text{Gal}(K/\\mathbb{Q})$ subgroups $\\leftrightarrow$ intermediate fields, which Mathlib provides but the full proof chain is complex.",

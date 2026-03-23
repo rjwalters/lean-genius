@@ -830,15 +830,15 @@
   "tractability": 2,
   "leanFiles": [
     {
-      "path": "Proofs/PNPBarriers.lean",
-      "filename": "PNPBarriers.lean",
-      "lineCount": 17951,
+      "path": "Proofs/PNPBarriersLegacy.lean",
+      "filename": "PNPBarriersLegacy.lean",
+      "lineCount": 17969,
       "theoremCount": 644,
       "axiomCount": 88,
       "defCount": 422,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PNPBarriers.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PNPBarriersLegacy.lean"
     },
     {
       "path": "Proofs/PNPBarriersOQ01.lean",
@@ -861,6 +861,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PNPBarriersSound.lean"
+    },
+    {
+      "path": "Proofs/PNPBarriersUnified.lean",
+      "filename": "PNPBarriersUnified.lean",
+      "lineCount": 6371,
+      "theoremCount": 302,
+      "axiomCount": 121,
+      "defCount": 66,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PNPBarriersUnified.lean"
     },
     {
       "path": "Proofs/PvsNP.lean",

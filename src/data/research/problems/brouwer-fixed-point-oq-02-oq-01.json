@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 0 sorries, 0 axioms. Proved h_dist_bound (grid triangle L-infinity distance \u2264 1/n) via coord_dist helper lemma with fin_cases + omega on all 18 vertex pair cases (2 tri types \u00d7 9 Fin3\u00d7Fin3 combos). File fully machine-checked.",
+    "progressSummary": "COMPLETED: 0 sorries, 0 axioms. Proved h_dist_bound (grid triangle L-infinity distance ≤ 1/n) via coord_dist helper lemma with fin_cases + omega on all 18 vertex pair cases (2 tri types × 9 Fin3×Fin3 combos). File fully machine-checked.",
     "builtItems": [
       "BrouwerFixedPointOQ02OQ01.lean: 428 lines, 2 sorries (down from 5)",
       "sperner_2d: PROVED via row-sweep parity (modulo strip_parity)",
@@ -51,16 +51,16 @@
       "gridToReal_in_simplex: PROVED helper lemma for simplex membership",
       "approximate_fixed_point_2d: restructured to handle boundary fixed points (1 sorry remains for uniform continuity)",
       "PROVED door_parity_of_not_fc: non-FC triples have even {0,1}-door count (was sorry)",
-      "PROVED no_door_left_boundary: left boundary colors \u2208 {0,2}, no {0,1}-doors",
-      "PROVED no_door_hypotenuse: hypotenuse colors \u2208 {1,2}, no {0,1}-doors",
+      "PROVED no_door_left_boundary: left boundary colors ∈ {0,2}, no {0,1}-doors",
+      "PROVED no_door_hypotenuse: hypotenuse colors ∈ {1,2}, no {0,1}-doors",
       "PROVED hTrans_zero_eq: bottom row {0,1}-doors = all transitions (under Sperner)",
       "PROVED lower_door_sum_zero: non-FC lower triangles have even {0,1}-door count",
       "PROVED upper_door_sum_zero: non-FC upper triangles have even {0,1}-door count",
       "PROVED doorZ_hyp_boundary: no {0,1}-doors on hypotenuse in ZMod 2",
-      "PROVED hTrans_cast: Nat.card \u2192 ZMod 2 sum conversion via Finset.sum_boole",
+      "PROVED hTrans_cast: Nat.card → ZMod 2 sum conversion via Finset.sum_boole",
       "FIXED hTrans definition: now counts {0,1}-doors (was incorrectly counting all transitions)",
-      "Proved coord_dist helper: |a/n - b/n| \u2264 1/n when |a-b| \u2264 1",
-      "Proved h_dist_bound: grid triangle vertices within L\u221e dist 1/n"
+      "Proved coord_dist helper: |a/n - b/n| ≤ 1/n when |a-b| ≤ 1",
+      "Proved h_dist_bound: grid triangle vertices within L∞ dist 1/n"
     ],
     "insights": [
       "Row-sweep approach is cleaner than full double-counting: define hTrans(j) = horizontal {0,1}-doors at row j, show parity is constant across rows",
@@ -77,16 +77,16 @@
       "15+ omega failures in fully_colored_one_door and no_door_hypotenuse (Lean 4.26 / Fin comparison changes)",
       "sperner_2d proof structure (row-sweep via strip_parity) is mathematically complete but cannot compile due to missing upstream definitions",
       "Restored missing definitions (gColor, hTrans, hTrans_top, gColor_bot, abstractDoorCount) from git history",
-      "Fixed Mathlib v4.26 API drift: omega failures through GridVertex projections (use show/dsimp), deprecated renames (range_succ\u2192range_add_one, notMem_range_self, natCast_eq_zero_iff), door_parity_of_not_fc decide\u2192contradiction",
+      "Fixed Mathlib v4.26 API drift: omega failures through GridVertex projections (use show/dsimp), deprecated renames (range_succ→range_add_one, notMem_range_self, natCast_eq_zero_iff), door_parity_of_not_fc decide→contradiction",
       "Removed unused lemmas (fully_colored_one_door, no_door_left_boundary, no_door_hypotenuse) that had unfixable API drift - superseded by doorZ_* variants",
       "Fixed zmod2_sum_shift_cancel: added missing 0<m hypothesis (lemma was false for m=0)",
       "Added @[ext] to GridVertex for ext tactic compatibility",
       "File now builds clean with 1 sorry (approximate_fixed_point_2d only)",
-      "BUG FOUND: displacementColoring tie-breaking is wrong. When f(p)=p (d0=d1=d2=0), coloring gives 0 on hypotenuse, violating Sperner condition (needs color \u2260 0 there).",
+      "BUG FOUND: displacementColoring tie-breaking is wrong. When f(p)=p (d0=d1=d2=0), coloring gives 0 on hypotenuse, violating Sperner condition (needs color ≠ 0 there).",
       "Root cause: tie-breaking picks smallest index (color 0 first), but on hypotenuse need color 0 to have LOWEST priority.",
       "Fix: reverse tie-breaking priority OR use face-aware tie-breaking where vertex-opposite colors get low priority.",
-      "Standard fix from literature: argmin with tie-broken by largest index (so all-zeros \u2192 color 2, which is fine on hypotenuse).",
-      "On bottom edge (d2\u22650): reversed priority would give color 2 when all zeros. Need face-aware tie-breaking for corners.",
+      "Standard fix from literature: argmin with tie-broken by largest index (so all-zeros → color 2, which is fine on hypotenuse).",
+      "On bottom edge (d2≥0): reversed priority would give color 2 when all zeros. Need face-aware tie-breaking for corners.",
       "door_parity_of_not_fc PROVED: fin_cases + simp_all (config := {decide := true}) closes all 27 cases",
       "Confirmed: displacementColoring tie-breaking already fixed by previous session (face-aware)",
       "Application section (lines 600+) has 7+ build errors from Lean 4.26 linarith/nlinarith changes",
@@ -99,7 +99,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove approximate_fixed_point_2d: need uniform continuity bound on grid mesh \u2192 displacement bound",
+      "Prove approximate_fixed_point_2d: need uniform continuity bound on grid mesh → displacement bound",
       "Fix Section V pre-existing Lean 4.26 API drift in displacementColoring_isSperner (linarith/nlinarith changes)",
       "Fix color_one_d1_nonpos and color_two_d2_nonpos for Lean 4.26 split_ifs changes"
     ]
@@ -170,11 +170,11 @@
     {
       "path": "Proofs/BrouwerFixedPointOQ02OQ01.lean",
       "filename": "BrouwerFixedPointOQ02OQ01.lean",
-      "lineCount": 868,
+      "lineCount": 1072,
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 14,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02OQ01.lean"
     },

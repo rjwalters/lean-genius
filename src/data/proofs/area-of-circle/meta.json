@@ -94,7 +94,7 @@
       "startLine": 1,
       "endLine": 50,
       "summary": "Imports `VolumeOfBalls` and `Tactic`, extensive doc comment covering what is proved ($A = \\pi r^2$), the Wiedijk #9 reference, the mathematical statement, the measure-theoretic approach via $\\mathbb{C} \\cong \\mathbb{R}^2$, proof status, Mathlib dependencies, and historical note on Archimedes.",
-      "mathContext": "Area of a circle: $A = \\pi r^2$. The disc $D(r) = \\{(x,y) : x^2 + y^2 \\leq r^2\\}$ has Lebesgue measure $\\pi r^2$."
+      "mathContext": "Area of a circle: $A = \\pi r^2$. The disc $D(c, r) = \\{z \\in \\mathbb{C} : |z - c| \\leq r\\}$ has Lebesgue measure $\\lambda^2(D) = \\pi r^2$. The proof uses the general $n$-dimensional ball volume formula $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2 + 1)$ specialized to $n = 2$: $V_2(r) = \\pi r^2 / \\Gamma(2) = \\pi r^2$ since $\\Gamma(2) = 1! = 1$. Mathlib provides this as `Complex.volume_ball` via the identification $\\mathbb{C} \\cong \\mathbb{R}^2$."
     },
     {
       "id": "main-theorems",
@@ -102,7 +102,7 @@
       "startLine": 52,
       "endLine": 84,
       "summary": "Opens namespace and `MeasureTheory Metric`. Proves `area_of_circle`: volume of open ball in $\\mathbb{C}$ equals $r^2 \\cdot \\pi$ via `Complex.volume_ball`. Proves `area_of_closed_disk`: closed ball has the same measure via `Complex.volume_closedBall`.",
-      "mathContext": "Main result: $\\text{volume}(\\text{Metric.closedBall}(0, r)) = \\pi r^2$ in $\\mathbb{R}^2$, using Mathlib's `MeasureTheory.volume_closedBall`."
+      "mathContext": "Main results: `volume (ball c r) = ENNReal.ofReal r ^ 2 * NNReal.pi` and `volume (closedBall c r) = ENNReal.ofReal r ^ 2 * NNReal.pi`. The equality of open and closed ball measures reflects $\\lambda^2(\\partial D) = 0$ — the boundary circle $\\{z : |z - c| = r\\}$ is a 1-dimensional manifold with 2-dimensional Lebesgue measure zero. Both proofs are one-liners delegating to `Complex.volume_ball` and `Complex.volume_closedBall` respectively."
     },
     {
       "id": "special-cases",
@@ -110,7 +110,7 @@
       "startLine": 86,
       "endLine": 115,
       "summary": "Derives special cases: unit disk area is $\\pi$ (both open and closed), zero radius gives area 0 (point has measure zero), negative radius gives area 0 (empty ball). Uses `simp` with `ENNReal.ofReal_one`, `ball_zero`, `closedBall_zero`, and `ball_eq_empty`.",
-      "mathContext": "Unit circle: $A = \\pi \\cdot 1^2 = \\pi$. This is equivalent to the definition of $\\pi$ as the area of the unit disc."
+      "mathContext": "Five edge cases: (1) $r = 1$: $A = \\pi \\cdot 1^2 = \\pi$, the definition of $\\pi$ as the area of the unit disc. (2-3) $r = 0$: open ball is $\\emptyset$, closed ball is $\\{c\\}$ — both have $\\lambda^2$-measure 0 since singletons are 0-dimensional. (4) $r < 0$: $\\text{ball}(c, r) = \\emptyset$ since $|z - c| < r < 0$ is impossible. All follow from $\\text{ENNReal.ofReal}(r)^2 \\cdot \\pi$ mapping $r \\leq 0$ to 0."
     },
     {
       "id": "significance",
@@ -118,7 +118,7 @@
       "startLine": 117,
       "endLine": 136,
       "summary": "Doc section explaining the significance of $A = \\pi r^2$ across mathematics and science: foundational for geometry, the first polar coordinate integral in calculus, essential in physics (optics, mechanics), probability (Gaussian integral), and engineering.",
-      "mathContext": "One of the oldest known mathematical results: Archimedes (c. 250 BC) proved $A = \\pi r^2$ by the method of exhaustion, approximating the circle with inscribed/circumscribed polygons."
+      "mathContext": "The formula connects to analysis through the polar coordinate integral $\\int_0^{2\\pi} \\int_0^r \\rho\\, d\\rho\\, d\\theta = \\pi r^2$ and to probability through the Gaussian integral $\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$, proved by squaring and converting to polar coordinates: $\\left(\\int e^{-x^2} dx\\right)^2 = \\iint e^{-(x^2+y^2)} dA = \\int_0^{2\\pi} \\int_0^{\\infty} e^{-r^2} r\\, dr\\, d\\theta = \\pi$."
     },
     {
       "id": "circumference-connection",
@@ -126,7 +126,7 @@
       "startLine": 138,
       "endLine": 155,
       "summary": "Doc section explaining how $A = \\pi r^2$ relates to circumference $C = 2\\pi r$ via integration of annular rings: $dA = 2\\pi\\rho\\, d\\rho$, giving $A = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$. References Archimedes' conceptualization of the disk as concentric circular strips. Ends with `#check` commands and namespace closing.",
-      "mathContext": "Circumference $C = 2\\pi r$ is the derivative of area with respect to $r$: $\\frac{dA}{dr} = \\frac{d}{dr}(\\pi r^2) = 2\\pi r$. This reflects the infinitesimal shell argument."
+      "mathContext": "The annular ring argument yields $A(r) = \\int_0^r C(\\rho)\\, d\\rho = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$, giving $A'(r) = C(r) = 2\\pi r$. This derivative relationship generalizes to all dimensions: the surface area of an $n$-ball is $S_n(r) = \\frac{d}{dr} V_n(r)$. For $n = 3$: $V_3(r) = \\frac{4}{3}\\pi r^3$ and $S_3(r) = 4\\pi r^2$. Archimedes discovered both the 2D and 3D cases, proving that the surface area and volume of a sphere relate to its circumscribing cylinder as $2:3$."
     }
   ],
   "conclusion": {

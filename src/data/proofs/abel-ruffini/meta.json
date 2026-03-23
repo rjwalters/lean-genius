@@ -87,7 +87,8 @@
       "**S_n Unsolvability for n ≥ 5:** `symmetric_group_not_solvable` proves $\\forall n \\geq 5$, $S_n$ not solvable, using `Cardinal.mk (Fin n) ≥ 5` via `simp`. Instances for $S_0, S_1$ (`inferInstance`) vs the impossibility for $S_5, S_6, \\ldots$ illustrate the sharp boundary.",
       "**Original Contributions Are Wrappers:** The file's original theorems (`galois_bridge`, `symmetric_group_not_solvable`, `not_solvable_by_rad_of_not_solvable_gal`) are pedagogical wrappers that make the Mathlib results explicit and user-facing — a pattern for presenting Mathlib-based formalizations.",
       "**Jordan-Hölder Guarantees Completeness:** The analysis of $S_n$ via derived series is not ad hoc — the Jordan-Hölder theorem guarantees that any two composition series of a finite group have the same multiset of composition factors (up to isomorphism). For $S_5$, the unique composition series is $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$ with factors $A_5$ (simple, order 60) and $\\mathbb{Z}/2$. Since $A_5$ is non-abelian, the group is not solvable — and no alternative decomposition can avoid this obstruction. This uniqueness is what makes the degree-5 boundary absolute rather than a limitation of one particular analysis.",
-      "**Discriminant Criterion for Galois Group Computation:** The theorem `not_solvable_by_rad_of_not_solvable_gal` requires exhibiting a polynomial with non-solvable Galois group. In practice, the discriminant provides a key tool: $\\text{Gal}(f) \\subseteq A_n$ if and only if $\\Delta(f)$ is a perfect square in $F$. For the standard example $x^5 - x - 1$, $\\Delta = 2869 = 19 \\times 151$, which is not a perfect square, so $\\text{Gal}(x^5 - x - 1/\\mathbb{Q}) \\not\\subseteq A_5$. Combined with irreducibility mod 2 and the existence of a 5-cycle in the Galois group (from the number of real roots), this forces $\\text{Gal}(x^5 - x - 1/\\mathbb{Q}) = S_5$. Formalizing this computation would bridge the gap between the abstract `not_solvable_by_rad_of_not_solvable_gal` and a concrete unsolvable quintic."
+      "**Discriminant Criterion for Galois Group Computation:** The theorem `not_solvable_by_rad_of_not_solvable_gal` requires exhibiting a polynomial with non-solvable Galois group. In practice, the discriminant provides a key tool: $\\text{Gal}(f) \\subseteq A_n$ if and only if $\\Delta(f)$ is a perfect square in $F$. For the standard example $x^5 - x - 1$, $\\Delta = 2869 = 19 \\times 151$, which is not a perfect square, so $\\text{Gal}(x^5 - x - 1/\\mathbb{Q}) \\not\\subseteq A_5$. Combined with irreducibility mod 2 and the existence of a 5-cycle in the Galois group (from the number of real roots), this forces $\\text{Gal}(x^5 - x - 1/\\mathbb{Q}) = S_5$. Formalizing this computation would bridge the gap between the abstract `not_solvable_by_rad_of_not_solvable_gal` and a concrete unsolvable quintic.",
+      "**Roots of Unity as the Engine of Radical Extensions:** Every radical step $K_i \\to K_i(\\sqrt[n]{a})$ implicitly requires the $n$th roots of unity $\\zeta_n = e^{2\\pi i/n}$. The cyclotomic extension $\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}$ has Galois group $(\\mathbb{Z}/n\\mathbb{Z})^{\\times}$, which is abelian (hence solvable). This is the hidden ingredient in the Galois bridge: each radical step contributes an abelian Galois quotient precisely because the underlying cyclotomic symmetries are abelian (by De Moivre's formula, the $n$th roots of unity form a cyclic group under multiplication). The Abel-Ruffini impossibility arises when the polynomial's Galois group $S_5$ cannot be decomposed into such abelian layers — a failure of solvability that no choice of radical tower can circumvent."
     ],
     "prerequisites": [
       "Galois theory and field extensions",
@@ -443,6 +444,21 @@
       "targetId": "dirichlets-theorem",
       "relationship": "related",
       "description": "Dirichlet's theorem on primes in arithmetic progressions (1837) uses Dirichlet characters — group homomorphisms $\\chi: (\\mathbb{Z}/n\\mathbb{Z})^{\\times} \\to \\mathbb{C}^{\\times}$ — which are precisely the representations of the Galois group $\\text{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^{\\times}$. This abelian Galois group is always solvable (in fact cyclic or a product of cyclics), which is why cyclotomic extensions are solvable by radicals. Dirichlet's analytic proof via L-functions launched the program of using Galois representations in number theory — the same program that, through Artin L-functions and the Langlands correspondence, generalizes the abelian/solvable distinction central to Abel-Ruffini to non-abelian settings"
+    },
+    {
+      "targetId": "de-moivre",
+      "relationship": "foundational",
+      "description": "De Moivre's formula $(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$ gives the $n$th roots of unity $\\zeta_n = e^{2\\pi i/n}$, which generate the cyclotomic extensions fundamental to radical solvability. Adjoining $\\sqrt[n]{a}$ to a field requires $\\zeta_n$, and the cyclotomic extension $\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}$ has abelian Galois group $(\\mathbb{Z}/n\\mathbb{Z})^{\\times}$ — the abelianness of this group is precisely why each radical step in the Galois bridge produces a solvable quotient"
+    },
+    {
+      "targetId": "de-moivre-oq-03",
+      "relationship": "foundational",
+      "description": "Root extraction via fractional exponents $z^{p/q}$ formalizes the radical operations central to Abel-Ruffini: the operation $\\alpha \\mapsto \\alpha^{1/n}$ is exactly the radical step in the tower $F = K_0 \\subset K_1 \\subset \\cdots \\subset K_m$ where each $K_{i+1} = K_i(\\beta_i^{1/n_i})$. The multivaluedness of $z^{1/n}$ (yielding $n$ distinct roots) corresponds to the $n$ cosets of the stabilizer in the Galois group, connecting the analytic notion of root extraction to the algebraic symmetry that drives Abel-Ruffini's impossibility"
+    },
+    {
+      "targetId": "amgm-inequality-oq-02",
+      "relationship": "foundational",
+      "description": "Maclaurin's inequalities are built from elementary symmetric polynomials $e_k(x_1,\\ldots,x_n)$ — the same objects that underpin Galois theory via Vieta's formulas: the coefficients of a polynomial are the elementary symmetric polynomials of its roots, and the Galois group is defined as the group of permutations that preserve these symmetric functions. The inequality chain $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$ between the normalized symmetric means reveals the analytical structure of the same symmetric polynomials whose algebraic structure (invariance under $S_n$) drives the Abel-Ruffini impossibility"
     }
   ],
   "relatedProofs": [
@@ -502,7 +518,10 @@
     "erdos-226",
     "solution-of-cubic-oq-03",
     "platonic-solids",
-    "dirichlets-theorem"
+    "dirichlets-theorem",
+    "de-moivre",
+    "de-moivre-oq-03",
+    "amgm-inequality-oq-02"
   ],
   "references": [
     {
@@ -658,6 +677,13 @@
       "year": "1930",
       "venue": "Springer (English translation: Frederick Ungar, 1949; 7th German edition 1966)",
       "note": "The landmark textbook that established the modern abstract algebra curriculum. van der Waerden's presentation of Galois theory as the interplay between field extensions and automorphism groups (rather than permutations of roots) became the standard framework used in this Lean formalization. His Chapter 8 contains the cleanest classical proof of Abel-Ruffini via the derived series of Sₙ"
+    },
+    {
+      "authors": "Burnside, William",
+      "title": "On groups of order p^α q^β",
+      "year": "1904",
+      "venue": "Proceedings of the London Mathematical Society, 2(1), pp. 388–392",
+      "note": "Proved that every group of order p^a q^b (two primes) is solvable, establishing that non-solvability requires at least three distinct prime factors. A₅ (order 60 = 2²·3·5) is the smallest group escaping this criterion, making the connection to Abel-Ruffini explicit: the minimal non-solvable group has exactly the structure needed to block quintic radical solutions"
     }
   ],
   "leanFile": {
