@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Module Documentation",
-    "content": "The Abel-Ruffini theorem, proven by Niels Henrik Abel in 1824 and later illuminated by Galois's theory, answers a 300-year-old question: why is there no 'quintic formula' like the quadratic formula?\n\nGalois discovered that solvability by radicals is equivalent to having a solvable Galois group, revealing a profound connection between field theory and group theory.\n\n**The file's logical structure mirrors the historical development:** Part I defines solvability by radicals (the algebraic question that drove centuries of work), Part II establishes the Galois bridge (Galois's key insight connecting fields to groups), Part III proves the group-theoretic obstruction ($S_5$ not solvable), Parts IV–V combine these ingredients, and Parts VI–VII provide historical context. This is entry #16 in Wiedijk's '100 Theorems' project.",
+    "content": "The Abel-Ruffini theorem, proven by Niels Henrik Abel in 1824 and later illuminated by Galois's theory, answers a 300-year-old question: why is there no 'quintic formula' like the quadratic formula?\n\nGalois discovered that solvability by radicals is equivalent to having a solvable Galois group, revealing a profound connection between field theory and group theory.",
     "mathContext": "The question: Given $ax^5 + bx^4 + cx^3 + dx^2 + ex + f = 0$, is there a formula for $x$ using only $+, -, \\times, \\div,$ and $\\sqrt[n]{\\phantom{x}}$?",
     "significance": "supporting",
     "prerequisites": [
@@ -52,8 +52,8 @@
     },
     "type": "context",
     "title": "Namespace Declaration",
-    "content": "The `AbelRuffini` namespace scopes all theorems in the file. All theorem names are prefixed with `AbelRuffini.` when referenced externally (e.g., `AbelRuffini.galois_bridge`). The namespace is closed at line 185 with `end AbelRuffini`.\n\n**Key declarations in this namespace:** `galois_bridge` (the field-to-group bridge), `symmetric_group_not_solvable` (the group-theoretic core), `s5_not_solvable` and `s6_not_solvable` (concrete instances), `a5_is_simple` (the structural reason), `s0_solvable` and `s1_solvable` (contrast cases), `exists_quintic` (degree witness), and `not_solvable_by_rad_of_not_solvable_gal` (the main theorem in contrapositive form).",
-    "mathContext": "Lean 4 namespaces organize declarations hierarchically. The `AbelRuffini` namespace groups 9 theorems following the logical chain: bridge ($\\alpha$ solvable $\\Rightarrow$ Gal solvable) $\\to$ obstruction ($S_n$ not solvable for $n \\geq 5$) $\\to$ conclusion (non-solvable Gal $\\Rightarrow$ $\\alpha$ not solvable by radicals).",
+    "content": "The `AbelRuffini` namespace scopes all theorems in the file. All theorem names are prefixed with `AbelRuffini.` when referenced externally (e.g., `AbelRuffini.galois_bridge`). The namespace is closed at line 185 with `end AbelRuffini`.",
+    "mathContext": "Lean 4 namespaces organize declarations hierarchically. The `AbelRuffini` namespace groups `galois_bridge`, `symmetric_group_not_solvable`, `not_solvable_by_rad_of_not_solvable_gal`, etc. under a common prefix.",
     "significance": "context",
     "prerequisites": [
       "Lean 4 namespace system"
@@ -74,7 +74,7 @@
     "title": "Solvable by Radicals and Field Variables",
     "content": "An element α is 'solvable by radicals' if it can be built from the base field using field operations and nth roots. The quadratic formula is an example: $x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$\n\nMathlib defines this inductively via `IsSolvableByRad`, with constructors for: base field elements, arithmetic operations, and radical extraction.",
     "mathContext": "`solvableByRad F E` is the intermediate field of all elements solvable by radicals over F.\n\nExample: $\\sqrt{1 + \\sqrt{2}}$ is built by: 2 ∈ ℚ, then √2, then 1+√2, then √(1+√2).",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [
       "field extensions",
       "nth roots",
@@ -87,41 +87,17 @@
     ]
   },
   {
-    "id": "ann-part-ii-bridge-setup",
-    "proofId": "abel-ruffini",
-    "range": {
-      "startLine": 50,
-      "endLine": 58
-    },
-    "type": "context",
-    "title": "Part II Preamble: The Central Insight of Galois Theory",
-    "content": "This section docstring introduces the single most important idea in the proof: the bridge from field theory to group theory. Galois's breakthrough was recognizing that whether a polynomial's roots can be expressed by radicals is determined entirely by the algebraic structure of the polynomial's symmetry group.\n\nThe formalization makes this bridge explicit as a Lean theorem (`galois_bridge`), separating it from the group-theoretic ingredient ($S_5$ not solvable) that follows in Part III. This separation mirrors how modern algebra textbooks present the result.",
-    "mathContext": "The bridge theorem is the hard direction of Galois's criterion: $\\text{IsSolvableByRad}\\,F\\,\\alpha \\Rightarrow \\text{IsSolvable}(\\text{Gal}(\\text{minpoly}_F(\\alpha)))$. Each radical step $K_i \\subset K_{i+1} = K_i(\\sqrt[n]{a})$ is a Kummer extension with cyclic Galois group $\\mathbb{Z}/n\\mathbb{Z}$, and a group with cyclic composition factors is solvable.",
-    "significance": "supporting",
-    "prerequisites": [
-      "Galois correspondence",
-      "Kummer theory",
-      "composition series"
-    ],
-    "relatedConcepts": [
-      "radical tower",
-      "cyclic extension",
-      "solvable group",
-      "Galois criterion"
-    ]
-  },
-  {
     "id": "ann-abel-ruffini-theorem",
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 59,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "The Galois Bridge Theorem",
     "content": "**Theorem**: If α is expressible using radicals, then the Galois group of its minimal polynomial is solvable.\n\nThis is the key bridge: radical solvability (field theory) → group solvability (group theory).\n\nThe proof proceeds by induction on `IsSolvableByRad`. The key case: if α^n is solvable, then adjoining α creates a cyclic extension, and cyclic groups are abelian (hence solvable).",
     "mathContext": "$\\alpha$ solvable by radicals $\\Rightarrow$ Gal(minpoly(α)) is solvable\n\nContrapositive: If Galois group is NOT solvable, roots are NOT expressible by radicals.",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [
       "field extensions",
       "Galois theory",
@@ -212,11 +188,11 @@
       "startLine": 94,
       "endLine": 98
     },
-    "type": "concept",
+    "type": "theorem",
     "title": "A₅ is Simple",
     "content": "A group is simple if its only normal subgroups are {1} and the whole group. The alternating group A₅ is simple - it's the smallest non-abelian simple group, with 60 elements.\n\nThe proof analyzes cycle types: identity (1), 3-cycles (20), 5-cycles (24), double transpositions (15). Any normal subgroup containing a non-identity element must contain a 3-cycle, and 3-cycles generate all of A₅.",
     "mathContext": "A₅ = {even permutations of 5 objects} = ker(sign : S₅ → {±1})\n\n|A₅| = 60 = 5!/2",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [
       "permutation groups",
       "normal subgroups",
@@ -306,11 +282,11 @@
       "startLine": 137,
       "endLine": 149
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "The Abel-Ruffini Contrapositive: The Main Event",
     "content": "`not_solvable_by_rad_of_not_solvable_gal` is the logical heart of the formalization. It takes the contrapositive of `galois_bridge`: if the Galois group of an irreducible polynomial $q$ is **not** solvable and $\\alpha$ is a root, then $\\alpha$ is **not** solvable by radicals. The proof is a 2-line `intro`/`exact`.\n\n`exists_quintic` provides a trivial witness ($X^5$) that degree-5 polynomials exist. To complete the Abel-Ruffini theorem for a *specific* quintic, one would need to show some $q \\in \\mathbb{Q}[X]$ of degree 5 has $\\text{Gal}(q) \\cong S_5$ — a computation the formalization leaves implicit.",
     "mathContext": "$\\neg\\,\\text{IsSolvable}(q.\\text{Gal}) \\Rightarrow \\neg\\,\\text{IsSolvableByRad}\\,F\\,\\alpha$.\n\nProof: Assume $\\text{IsSolvableByRad}\\,F\\,\\alpha$. By `galois_bridge`, $\\text{IsSolvable}(q.\\text{Gal})$. Contradiction with $\\neg\\,\\text{IsSolvable}(q.\\text{Gal})$. $\\square$\n\nFor the general quintic: $q = x^5 - x - 1$ over $\\mathbb{Q}$ has $\\text{Gal}(q) \\cong S_5$, so its roots are not expressible by radicals.",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [
       "galois_bridge",
       "IsSolvable",

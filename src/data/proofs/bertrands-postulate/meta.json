@@ -55,6 +55,14 @@
   },
   "sections": [
     {
+      "id": "imports-docstring",
+      "title": "Imports and Historical Context",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Import of `Mathlib.NumberTheory.Bertrand` and `Mathlib.Tactic`. Comprehensive docstring covering the problem statement, historical development (Bertrand 1845, Chebyshev 1852, Erdős 1932), proof approach via Mathlib delegation, and connections to prime gap theory. Namespace `BertrandsPostulate` opens `Nat`.",
+      "mathContext": "Three key historical proofs: Bertrand conjectured $\\forall n, \\exists p \\in (n, 2n]$ prime after checking $n \\leq 3{,}000{,}000$; Chebyshev proved it analytically via $\\vartheta(x) = \\sum_{p \\leq x} \\log p$; Erdős gave an elementary proof using $\\binom{2n}{n}$ and the central binomial coefficient."
+    },
+    {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 52,
@@ -147,6 +155,11 @@
       "targetId": "riemann-hypothesis",
       "relationship": "related",
       "description": "RH implies the strongest form of the prime gap bound: $p_{n+1} - p_n = O(\\sqrt{p_n} \\log p_n)$, far stronger than Bertrand's $p_{n+1} < 2p_n$. Both concern the regularity of prime distribution but at different scales — Bertrand is elementary, RH is deep"
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "Both quantify prime density: Bertrand's postulate gives a local guarantee ($\\exists$ prime in $(n, 2n]$), while $\\sum 1/p = \\infty$ gives a global measure (primes are collectively dense enough for their reciprocals to diverge). Together they establish that primes are both locally frequent and globally ubiquitous"
     }
   ],
   "relatedProofs": [
@@ -156,7 +169,8 @@
     "prime-number-theorem",
     "fundamental-arithmetic",
     "bertrands-postulate-oq-03",
-    "riemann-hypothesis"
+    "riemann-hypothesis",
+    "prime-reciprocal-divergence"
   ],
   "leanFile": {
     "imports": [
