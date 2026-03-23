@@ -59,8 +59,37 @@ the last East step). This may be incomplete for paths where trailing steps
 cause overlap. Needs investigation.
 
 ### What Remains
-1. **Crossing lemma** (`lattice_paths_must_cross`): Need discrete IVT argument
-   showing paths that start with P below Q but end with P above Q must share
-   a lattice point. Challenge: colEntry may not capture trailing North steps.
-2. **GV involution** (`gv_involution_cancellation`): Build sign-reversing
+1. **GV involution** (`cancellable_sum_eq_zero`): Build sign-reversing
    involution on TaggedPathTuple using first-crossing finder + tail-swap.
+
+---
+
+## Session 2026-03-23 (researcher-3) - Counting Bijection Proof
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 29)
+**Problem**: ballot-problem-oq-03-oq-02
+**Prior Status**: 0 axioms, 2 sorries
+
+### Work Done
+Proved `card_nonCancellable_eq_niTupleCount` — the counting bijection between
+non-cancellable tagged tuples and NI identity path tuples.
+
+**Key insight**: `PermPathTuple cfg 1` is *definitionally* equal to `PathTuple cfg`
+(since `(1 : Perm) i = id i = i`). This makes the bijection between
+`{⟨1, p⟩ : TaggedPathTuple | NI(p)}` and `{p : PathTuple | NI(p)}` trivial —
+the `Equiv` reduces to identity maps with proof-irrelevant packaging.
+
+**Proof technique**: `Fintype.card_congr` with an explicit `Equiv` whose `toFun`
+projects out the path data and `invFun` wraps it with σ=1. Both `left_inv` and
+`right_inv` close by `Subtype.ext` + `Sigma.ext rfl (heq_of_eq rfl)` due to
+definitional equality of the underlying types.
+
+### Files Modified
+- `proofs/Proofs/BallotProblemOQ03OQ02.lean` (sorry → proof for card_nonCancellable)
+
+### What Remains
+1. **`cancellable_sum_eq_zero`** (1 sorry): The GV sign-reversing involution.
+   Requires: first-crossing finder, tail-swap at crossing, proof of involutivity
+   and sign reversal. Infrastructure available: `swapTailsAt`, `nonid_perm_paths_cross`,
+   `gessel_viennot_transposition_sign`, `lattice_paths_must_cross`.
+   Could use `Finset.sum_involution` from Mathlib.
