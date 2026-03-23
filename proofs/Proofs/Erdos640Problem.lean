@@ -34,24 +34,12 @@ import Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
+import Proofs.GraphCore
 
-open SimpleGraph
+open GraphCore
+open SimpleGraph hiding chromaticNumber
 
 namespace Erdos640
-
-/- ## Part I: Chromatic Number -/
-
-/--
-A graph G on vertex type V is k-colorable if there exists a proper
-coloring using at most k colors (modeled as `Fin k`).
--/
-def IsKColorable (G : SimpleGraph V) (k : ℕ) : Prop :=
-  ∃ c : V → Fin k, ∀ v w : V, G.Adj v w → c v ≠ c w
-
-open Classical in
-/-- The chromatic number of G: the smallest k such that G is k-colorable. -/
-noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
-  if h : ∃ k : ℕ, IsKColorable G k then Nat.find h else 0
 
 /- ## Part II: Odd Cycles -/
 
@@ -71,14 +59,6 @@ def HasOddCycleWithVertices (G : SimpleGraph V) (S : Finset V) : Prop :=
     (∀ i : Fin S.card, G.Adj (σ i) (σ ⟨(i.val + 1) % S.card, Nat.mod_lt _ (by have := i.isLt; omega)⟩))
 
 /- ## Part III: Induced Subgraph Chromatic Number -/
-
-/--
-The induced subgraph of G on a vertex set S.
--/
-def inducedSubgraph (G : SimpleGraph V) (S : Set V) : SimpleGraph S where
-  Adj v w := G.Adj v.val w.val
-  symm _ _ h := G.symm h
-  loopless _ h := G.loopless _ h
 
 /--
 The span chromatic number: the chromatic number of the subgraph

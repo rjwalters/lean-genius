@@ -21,8 +21,11 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Coloring
 import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Data.Finset.Basic
+import Proofs.GraphCore
 
 namespace Erdos1091
+
+open GraphCore
 
 /- ## Part 1: Basic Definitions
 
@@ -62,10 +65,6 @@ noncomputable def Cycle.diagonalCount (c : Cycle G) : ℕ :=
 /-- A graph is K₄-free if it contains no clique of size 4 -/
 def IsK4Free (G : SimpleGraph V) : Prop :=
   ¬ ∃ s : Finset V, s.card = 4 ∧ G.IsClique s
-
-/-- Chromatic number: minimum colors needed to properly color G -/
-noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
-  sSup { k : ℕ | ∃ (c : G.Coloring (Fin k)), True }
 
 /- ## Part 2: Larson's Theorem (1979)
 

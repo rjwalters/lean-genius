@@ -37,29 +37,16 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Coloring
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Data.Nat.Basic
+import Proofs.GraphCore
 
-open Nat SimpleGraph
+open Nat GraphCore
+open SimpleGraph hiding chromaticNumber
 
 namespace Erdos923
 
 /- ## Part I: Graph Colorings and Chromatic Number -/
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
-
-/--
-**Chromatic Number:**
-The chromatic number χ(G) is the minimum number of colors needed
-to properly color the vertices of G (no adjacent vertices share a color).
--/
-noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
-  sInf { k : ℕ | ∃ c : G.Coloring (Fin k), True }
-
-/--
-**Colorable:**
-A graph G is k-colorable if its chromatic number is at most k.
--/
-def IsKColorable (G : SimpleGraph V) (k : ℕ) : Prop :=
-  chromaticNumber G ≤ k
 
 /--
 **High Chromatic Number:**
@@ -103,13 +90,6 @@ H is a spanning subgraph of G if V(H) = V(G) and E(H) ⊆ E(G).
 -/
 def IsSpanningSubgraph (H G : SimpleGraph V) : Prop :=
   ∀ v w, H.Adj v w → G.Adj v w
-
-/--
-**Induced Subgraph on Vertex Set:**
-The subgraph induced by a set of vertices.
--/
-def inducedSubgraph (G : SimpleGraph V) (S : Set V) : SimpleGraph S :=
-  G.comap (fun x => x.val)
 
 /--
 **Subgraph monotonicity:**

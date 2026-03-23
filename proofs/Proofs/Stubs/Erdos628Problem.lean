@@ -21,22 +21,14 @@
 -/
 
 import Mathlib
+import Proofs.GraphCore
 
-open Finset Function SimpleGraph Nat
+open Finset Function Nat GraphCore
+open SimpleGraph hiding chromaticNumber
 
 namespace Erdos628
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
-
-/- ## Basic Definitions -/
-
-/-- The chromatic number χ(G) -/
-noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
-  sorry -- Minimum k such that G is k-colorable
-
-/-- The clique number ω(G) -/
-noncomputable def cliqueNumber (G : SimpleGraph V) : ℕ :=
-  sorry -- Maximum k such that G contains K_k
 
 /-- A graph is K_k-free (contains no k-clique) -/
 def IsCliqueFree (G : SimpleGraph V) (k : ℕ) : Prop :=

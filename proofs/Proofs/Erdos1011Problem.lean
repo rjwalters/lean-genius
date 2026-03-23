@@ -30,8 +30,10 @@
 -/
 
 import Mathlib
+import Proofs.GraphCore
 
-open SimpleGraph Finset
+open Finset GraphCore
+open SimpleGraph hiding chromaticNumber
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
@@ -44,14 +46,6 @@ Chromatic number and triangle containment.
 /-- A graph contains a triangle -/
 def HasTriangle (G : SimpleGraph V) : Prop :=
   ∃ a b c : V, a ≠ b ∧ b ≠ c ∧ a ≠ c ∧ G.Adj a b ∧ G.Adj b c ∧ G.Adj a c
-
-/-- The chromatic number of a graph (minimum colors for proper coloring) -/
-noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
-  sInf {k : ℕ | ∃ f : V → Fin k, ∀ v w : V, G.Adj v w → f v ≠ f w}
-
-/-- Edge count of a graph -/
-noncomputable def edgeCount (G : SimpleGraph V) : ℕ :=
-  G.edgeFinset.card
 
 /-
 ## The Threshold Function f_r(n)
