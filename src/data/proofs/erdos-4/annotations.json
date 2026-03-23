@@ -182,7 +182,8 @@
       "Chinese Remainder Theorem",
       "primorial",
       "covering congruences",
-      "Euler-Mascheroni constant"
+      "Euler-Mascheroni constant",
+      "infinitude of primes"
     ],
     "prerequisites": [
       "erdos_4_conjecture"
@@ -392,7 +393,7 @@
     },
     "type": "concept",
     "title": "Average Gap Asymptotic",
-    "content": "The average prime gap near $n$ is $\\sim \\log n$, a consequence of the Prime Number Theorem: $p_n \\sim n \\log n$.",
+    "content": "The average prime gap near $n$ is $\\sim \\log n$, a consequence of the Prime Number Theorem (see `prime-number-theorem`): $p_n \\sim n \\log n$. This is the baseline against which all gap results are measured — Bertrand's postulate (see `bertrands-postulate`) gives the trivial upper bound $g_n < p_n$, while this problem asks about gaps *much larger* than average.",
     "significance": "supporting",
     "mathContext": "The Prime Number Theorem ($\\pi(x) \\sim x/\\log x$, equivalently $p_n \\sim n \\log n$) implies the average gap $g_n \\sim \\log p_n \\sim \\log n$. The formalization states this as $p_n / (n \\log n) \\to 1$, using `Filter.Tendsto` and `nhds 1`. Problem #4 asks about gaps exceeding this average by a factor growing with $n$ — the Erdős function grows as $\\sim (\\log\\log n / \\log\\log\\log n) \\cdot \\log n$, which is $\\omega(\\log n)$ but $o((\\log n)^{1+\\varepsilon})$.",
     "relatedConcepts": [
