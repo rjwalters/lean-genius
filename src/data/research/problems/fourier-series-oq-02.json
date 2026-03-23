@@ -20,50 +20,59 @@
       "fourierCoeff_holder_decay: main theorem from axioms",
       "fourierCoeff_lipschitz_decay: Lipschitz special case",
       "holder_continuous: Hölder ⟹ continuous",
-      "lipschitz_is_holder_one: Lipschitz ⊂ Hölder(1)"
+      "lipschitz_is_holder_one: Lipschitz ⊂ Hölder(1)",
+      "dist_circleTranslate_le: dist x (x + ↑s) ≤ |s| on AddCircle (quotient norm bound)",
+      "holderWith_dist_le: HolderWith edist → dist conversion for ℝ≥0∞ → ℝ",
+      "holder_translation_bound: ‖f(x) - f(x+T/(2n))‖ ≤ C·(T/(2|n|))^α (from HolderWith + quotient dist)",
+      "integral_product_bound: ‖∫ (f-f∘τ)·e dμ‖ ≤ C·(T/(2|n|))^α (from norm_integral_le + holder_bound + prob measure)"
     ],
     "open": [
-      "Prove remaining 10 axioms: difference formula, Hölder translation bound, integral product bound, summability, optimality, converse, C^k/C^∞/analytic decay"
+      "Prove remaining 8 axioms: difference formula, summability, Riemann-Lebesgue, optimality, converse, C^k/C^∞/analytic decay"
     ],
-    "goal": "Reduce axiom count further by proving core analytical infrastructure"
+    "goal": "Prove fourierCoeff_difference_formula (requires Haar translation invariance + integrability machinery)"
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-23T18:00:00Z",
-    "iteration": 2,
-    "focus": "Proved 2 of 12 axioms. Core infrastructure (fourier_norm_one, half-period identity) now verified.",
+    "since": "2026-03-23T20:00:00Z",
+    "iteration": 3,
+    "focus": "Proved holder_translation_bound + integral_product_bound + 2 helper theorems. Axiom count reduced from 10 to 8.",
     "blockers": [
-      "holder_translation_bound needs QuotientAddGroup distance API (dist on AddCircle)",
-      "fourierCoeff_difference_formula needs Haar measure translation invariance"
+      "fourierCoeff_difference_formula needs integral_add_right_eq_self + integral_sub (integrability hypotheses)",
+      "fourierCoeff_sq_summable_of_holder needs comparison test with zeta function"
     ],
-    "nextAction": "Prove holder_translation_bound using HolderWith.dist_le_of_le + quotient distance bound",
+    "nextAction": "Prove fourierCoeff_difference_formula using Haar measure translation invariance (integral_add_right_eq_self)",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced axiom count from 12 to 10. Proved fourier_norm_one and fourier_translate_halfperiod.",
+    "progressSummary": "PROGRESS: Reduced axiom count from 10 to 8 (originally 12). Proved key analytical infrastructure: quotient distance bound, HolderWith dist conversion, Hölder translation bound, integral product bound.",
     "builtItems": [
       "fourier_norm_one: proved via simp [fourier_apply] — toCircle maps to unit circle",
-      "fourier_translate_halfperiod: proved via fourier_neg + fourier_add_half_inv_index + map_neg"
+      "fourier_translate_halfperiod: proved via fourier_neg + fourier_add_half_inv_index + map_neg",
+      "dist_circleTranslate_le: proved via dist_eq_norm + add_sub_cancel_left + quotient_norm_mk_le + Real.norm_eq_abs",
+      "holderWith_dist_le: proved via edist_dist + ENNReal.toReal_le_toReal + ENNReal.toReal_rpow conversions",
+      "holder_translation_bound: proved via holderWith_dist_le + dist_circleTranslate_le + rpow monotonicity",
+      "integral_product_bound: proved via norm_integral_le_integral_norm + fourier_norm_one + holder_translation_bound + IsProbabilityMeasure"
     ],
     "insights": [
       "fourier_apply unfolds to ↑(n • x).toCircle, which immediately gives unit norm via simp",
       "fourier_add_half_inv_index takes explicit (hT : 0 < T), not Fact instance — need hT.out",
       "fourier_neg relates fourier(-n) to starRingEnd(fourier n), enabling conjugation approach",
       "T/(2*n) vs T/2/n: ring normalizes between these equivalent forms",
-      "holder_translation_bound needs QuotientAddGroup dist API — dist(x, x+↑s) ≤ |s| on AddCircle",
-      "integral_product_bound needs norm_integral_le + fourier_norm_one + holder_bound + probability measure"
+      "quotient_norm_mk_le from Mathlib.Analysis.Normed.Group.Quotient gives ‖↑s‖ ≤ |s| on AddCircle",
+      "ENNReal → ℝ conversion for HolderWith: use edist_dist rewrite, then ENNReal.toReal_le_toReal + finiteness proofs",
+      "integral_product_bound: chain norm_integral_le → pointwise bound → integral_mono_of_nonneg → integral_const on probability measure",
+      "integral_add_right_eq_self exists in Mathlib for IsAddRightInvariant measures — needed for difference formula",
+      "|halfPeriod T n| = T/(2|n|) via abs_div + abs_of_pos + abs_mul + Int.abs_cast"
     ],
-    "mathlibGaps": [
-      "No obvious dist(x, x+↑s) ≤ |s| lemma found for AddCircle quotient metric"
-    ],
+    "mathlibGaps": [],
     "nextSteps": [
-      "Prove holder_translation_bound via HolderWith API + quotient distance bound",
-      "Prove integral_product_bound from norm_integral_le + fourier_norm_one + holder_bound",
-      "Prove fourierCoeff_difference_formula via Haar translation invariance"
+      "Prove fourierCoeff_difference_formula via integral_add_right_eq_self + integral_sub (needs integrability)",
+      "Prove riemannLebesgue_of_holder from fourierCoeff_holder_decay + Tendsto cofinite",
+      "Consider Aristotle companion file for routine summability lemmas"
     ]
   },
   "tags": [
@@ -83,20 +92,23 @@
       "fourier_apply (Mathlib.Analysis.Fourier.AddCircle)",
       "fourier_add_half_inv_index (Mathlib.Analysis.Fourier.AddCircle)",
       "fourier_neg (Mathlib.Analysis.Fourier.AddCircle)",
-      "HolderWith (Mathlib.Topology.MetricSpace.Holder)"
+      "HolderWith (Mathlib.Topology.MetricSpace.Holder)",
+      "quotient_norm_mk_le (Mathlib.Analysis.Normed.Group.Quotient)",
+      "norm_integral_le_integral_norm (Mathlib.MeasureTheory.Integral.Bochner)",
+      "integral_add_right_eq_self (Mathlib.MeasureTheory.Group.Integral)"
     ]
   },
   "started": "2026-03-22T15:12:20-07:00",
-  "lastUpdate": "2026-03-23T18:00:00Z",
+  "lastUpdate": "2026-03-23T20:00:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/FourierSeriesOQ02.lean",
       "filename": "FourierSeriesOQ02.lean",
-      "lineCount": 280,
-      "theoremCount": 9,
-      "axiomCount": 10,
+      "lineCount": 364,
+      "theoremCount": 13,
+      "axiomCount": 8,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,

@@ -255,3 +255,93 @@ The self-inverse `g(g(t)) = t` cannot be proved with the current `gvInvolutionFn
 
 ### Pool Status
 - Available: 76, In-progress: 322, Completed: 235
+
+---
+
+## Session 2026-03-23 (researcher-6) - Self-Inverse Deep Analysis
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 66)
+**Problem**: ballot-problem-oq-03-oq-02
+**Prior Status**: ACT phase, 1 sorry (self-inverse of GV involution)
+
+### Analysis
+
+Deep investigation of the self-inverse property for `cancellable_sum_eq_zero`.
+
+**Why current approach fails**: The existing `gvInvolutionFn` replaces ALL paths with
+`northThenEastPath`. This is fundamentally NOT self-inverse because applying twice gives
+NTE paths (not the original paths). The information about the original paths is destroyed.
+
+**Why tail-swap is necessary**: Any involution that discards original path data cannot be
+self-inverse. The classical GV proof swaps path suffixes at a shared lattice point, which
+is reversible (double-swap = identity).
+
+### Solution Architecture
+
+**Key encoding**: `key = (c + y) * r² + i * r + j` where (c, y) is a shared lattice point
+between paths i and j. Using `c + y` (not lex on (c, y)) as primary key ensures invariance
+because `c + y` equals the list position proxy.
+
+**Invariance proof**: After swapping tails at split positions `k_i = (c₀+y₀) - source(i)`
+and `k_j = (c₀+y₀) - source(j)`:
+1. At shared points with key' < key₀: the visit positions `c'+y'-source` are less than the
+   split positions, so path prefixes are unchanged → shared point status unchanged
+2. At key₀ itself: the shared point (c₀, y₀) is preserved (in the prefix for both paths)
+3. Therefore `Nat.find` returns the same key for t and g(t)
+
+**Self-inverse**: Same key → same crossing pair (i₀, j₀) → same split positions → double
+tail-swap restores original lists (via `List.take_append_drop`) → σ * swap(i,j)² = σ
+
+**Double tail-swap identity** (proved in analysis, not yet in Lean):
+```
+(l₁.take k₁ ++ l₂.drop k₂).take k₁ = l₁.take k₁  [by List.take_left]
+(l₂.take k₂ ++ l₁.drop k₁).drop k₂ = l₁.drop k₁  [by List.drop_left]
+∴ result = l₁.take k₁ ++ l₁.drop k₁ = l₁            [by List.take_append_drop]
+```
+
+**Validity of swapped paths** (PathMN proofs):
+- East count: `take_east_count_within_column` gives prefix East = c₀,
+  suffix East = m - c₀, total = m ✓
+- North count: prefix North = y₀ - source(i), suffix North = n_j - (y₀ - source(j)),
+  total = n_j + source(j) - source(i) = targets(σ(j)) - source(i) ✓
+- Length follows from East + North counts ✓
+
+### Estimated Implementation
+
+| Component | Lines | Difficulty |
+|-----------|-------|-----------|
+| Shared point infrastructure (pathVisitsPoint, spKey, Nat.find) | ~50 | Medium |
+| Deterministic crossing pair + split positions | ~30 | Medium |
+| New gvInvolutionFn (tail-swap) | ~40 | Hard (dependent types) |
+| Swapped path validity (PathMN proofs) | ~50 | Medium |
+| Key invariance lemma | ~50 | Hard |
+| Self-inverse proof | ~40 | Medium (given invariance) |
+| Re-prove sign/membership/no-fixed | ~40 | Easy (adapt existing) |
+| **Total** | **~300** | |
+
+### Key Technical Challenges
+
+1. **Dependent types**: `PermPathTuple cfg σ` depends on σ. Swapping paths at indices
+   i₀ and j₀ changes their types (PathMN m n with different n). Need careful casts.
+2. **Key invariance**: Need to formalize "colEntry depends only on prefix" — requires
+   showing `colEntry` of `(l.take k ++ l'.drop k')` at columns < c₀ equals `colEntry` of `l`.
+3. **Finset vs Nat.find**: Using `Nat.find` for the min key requires proving the predicate
+   is decidable (or using `Classical.dec`).
+
+### What Would Help
+
+- A Lean 4 helper lemma: `List.take_of_take_append (h : k ≤ l₁.length) : (l₁ ++ l₂).take k = l₁.take k`
+- A Lean 4 helper: `List.drop_of_take_append (h : k = l₁.length) : (l₁ ++ l₂).drop k = l₂`
+- `colEntry_take_prefix`: if `(l.take k).countP false = c` and `c ≤ c'`, then
+  `colEntry (l.take k ++ l'.drop k') c' = colEntry l c'` for `c' ≤ c`
+
+### Next Steps (for future sessions)
+1. Implement `take_drop_swap_involutive` List lemma (cleanest starting point)
+2. Define `pathVisitsPoint` and shared point key infrastructure
+3. Build deterministic crossing pair selection via `Nat.find`
+4. Implement new `gvInvolutionFn` with tail-swap
+5. Prove key invariance and self-inverse
+6. Adapt existing proofs for sign/membership/no-fixed
+
+### Files Modified
+- None (analysis only, no code changes committed)
