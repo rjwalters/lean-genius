@@ -16,7 +16,7 @@
       "advanced"
     ],
     "badge": "formalized",
-    "sorries": 2,
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "Analysis.SpecialFunctions.Log.Basic",
@@ -44,7 +44,7 @@
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "lineCount": 320,
+    "lineCount": 410,
     "prerequisites": [
       "Probability distributions and discrete random variables",
       "Logarithm and convexity (Jensen's inequality)",
@@ -105,6 +105,30 @@
       "endLine": 48,
       "summary": "The log-sum inequality: sum a_i log(a_i/b_i) >= (sum a_i) log((sum a_i)/(sum b_i)). A generalization of the Gibbs inequality. Sorry'd — proof via convexity of x·log(x).",
       "mathContext": "$\\sum_i a_i \\ln \\frac{a_i}{b_i} \\geq \\left(\\sum_i a_i\\right) \\ln \\frac{\\sum_i a_i}{\\sum_i b_i}$"
+    },
+    {
+      "id": "kl-divergence-def",
+      "title": "KL Divergence Definition and Key Inequality",
+      "startLine": 73,
+      "endLine": 131,
+      "summary": "Defines KL divergence D(p||q), conditional entropy H(X|Y), and mutual information I(X;Y). Proves the pointwise bound p*log(p/q) >= p-q from ln(t) <= t-1 (Real.log_le_sub_one_of_pos).",
+      "mathContext": "$D(p \\| q) = \\sum p(x) \\ln(p(x)/q(x))$. Pointwise: $p \\ln(p/q) \\geq p - q$ from $\\ln t \\leq t - 1$."
+    },
+    {
+      "id": "kl-nonneg-gibbs",
+      "title": "KL Non-Negativity, Gibbs, and Maximum Entropy",
+      "startLine": 133,
+      "endLine": 218,
+      "summary": "Fully proves KL divergence non-negativity (sum of pointwise bounds), Gibbs inequality (decomposing KL terms), and maximum entropy (Gibbs with uniform q). All 0 sorries.",
+      "mathContext": "$D(p \\| q) \\geq 0 \\Rightarrow H(p) \\leq -\\sum p \\ln q \\Rightarrow H(X) \\leq \\ln |\\mathcal{X}|$."
+    },
+    {
+      "id": "mutual-info-chain",
+      "title": "Mutual Information, Chain Rule, and Conditioning",
+      "startLine": 230,
+      "endLine": 408,
+      "summary": "Proves I(X;Y) >= 0 via the pointwise KL technique. The chain rule I(X;Y) = H(X) - H(X|Y) is proved by a detailed term-by-term decomposition using log_div, log_mul, and marginal telescoping. Corollary: H(X|Y) <= H(X). All fully proved (0 sorries).",
+      "mathContext": "$I(X;Y) \\geq 0$. Chain rule: $I(X;Y) = H(X) - H(X|Y)$. Corollary: $H(X|Y) \\leq H(X)$ (conditioning reduces entropy)."
     }
   ],
   "crossReferences": [
