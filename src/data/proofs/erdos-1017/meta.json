@@ -120,6 +120,83 @@
       "Does the problem extend naturally to hypergraphs: what is the minimum number of complete sub-hypergraphs needed to partition a $k$-uniform hypergraph?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1009",
+      "relationship": "foundational",
+      "description": "Erdős #1009 asks about edge-disjoint triangles in graphs with more than n²/4 edges—precisely the structural ingredient the Győri-Keszegh theorem uses to lower f(n,k) in the K₄-free case of Problem #1017."
+    },
+    {
+      "targetId": "erdos-1010",
+      "relationship": "complementary",
+      "description": "Erdős #1010 studies triangle supersaturation: how many triangles must appear when k > n²/4. This supersaturation count directly governs how much the clique partition number f(n,k) can decrease below ⌊n²/4⌋ in dense graphs."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey theory underpins the EGP proof: after greedily extracting triangles from a graph, the remainder is triangle-free and hence (by a Ramsey-style argument) bipartite, reducing the partition to individual edges bounded by ⌊n²/4⌋."
+    },
+    {
+      "targetId": "erdos-1015",
+      "relationship": "thematic",
+      "description": "Erdős #1015 partitions edges of 2-colored complete graphs into monochromatic cliques, sharing the same edge-partition framework and complete-bipartite extremal example that appears in Problem #1017."
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "complementary",
+      "description": "The Szemerédi Regularity Lemma is a key tool in modern extremal graph theory for problems about dense graphs. Approaches to the general case of Problem #1017 beyond the K₄-free regime are expected to require regularity-based techniques."
+    },
+    {
+      "targetId": "erdos-500",
+      "relationship": "thematic",
+      "description": "Erdős #500 studies Turán-type density questions for hypergraphs. The EGP bound ⌊n²/4⌋ equals the Turán number ex(n,K₃), linking clique partition numbers to Turán density and making Problem #1017 part of the broader Turán extremal program."
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1009",
+    "erdos-1010",
+    "ramseys-theorem",
+    "erdos-1015",
+    "szemeredi-regularity",
+    "erdos-500"
+  ],
+  "references": [
+    {
+      "authors": ["P. Erdős", "A. W. Goodman", "L. Pósa"],
+      "title": "The representation of a graph by set intersections",
+      "year": 1966,
+      "venue": "Canadian Journal of Mathematics",
+      "note": "Proves f(n,k) ≤ ⌊n²/4⌋ using only edges and triangles; establishes the completebbipartite extremal graph."
+    },
+    {
+      "authors": ["E. Győri", "B. Keszegh"],
+      "title": "On the number of edge-disjoint triangles in K₄-free graphs",
+      "year": 2017,
+      "venue": "Combinatorica",
+      "note": "Resolves the K₄-free case: a K₄-free graph with ⌊n²/4⌋+m edges contains m edge-disjoint triangles, giving f(n,k)=⌊n²/4⌋−m."
+    },
+    {
+      "authors": ["L. Lovász"],
+      "title": "On covering of graphs",
+      "year": 1968,
+      "venue": "Theory of Graphs (Proceedings of the Colloquium, Tihany, 1966)",
+      "note": "Establishes the covering bound used as a comparison in Problem #1017: G is covered by ⌊n²/4⌋ − k + t cliques where t measures the triangle density."
+    },
+    {
+      "authors": ["P. Turán"],
+      "title": "On an extremal problem in graph theory",
+      "year": 1941,
+      "venue": "Matematikai és Fizikai Lapok",
+      "note": "Turán's theorem implies ex(n,K₃)=⌊n²/4⌋, establishing that the EGP bound is tight and that K_{n/2,n/2} is the unique extremal graph."
+    },
+    {
+      "authors": ["F. R. K. Chung", "R. L. Graham"],
+      "title": "Erdős on Graphs: His Legacy of Unsolved Problems",
+      "year": 1998,
+      "venue": "A K Peters/CRC Press",
+      "note": "Surveys the broader context of clique partition and graph decomposition problems in Erdős's program, including Problem #1017 and related questions."
+    }
+  ],
   "leanFile": {
     "imports": [],
     "opens": [],
