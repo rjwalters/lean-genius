@@ -46,7 +46,13 @@
       "Generalized statement for f(n) = o(n)"
     ],
     "axiomCount": 2,
-    "lineCount": 132
+    "lineCount": 132,
+    "prerequisites": [
+      "Euler's totient function φ(n) and its multiplicativity",
+      "Natural density of subsets of ℕ",
+      "Asymptotic notation (o(n), almost all)",
+      "Prime factorization and coprimality"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem 1064 concerns the comparison of φ(n) with φ(n - φ(n)), a natural iteration of Euler's totient function. The problem asks whether φ(n) is usually larger, and whether the reverse ever happens.\n\nGrytczuk, Luca, and Wójtowicz (2001) made initial progress, showing A₊ (where φ(n) > φ(n-φ(n))) has lower density at least 0.54 and A₋ is infinite. They gave the explicit pattern: n = 15·2^k gives n ∈ A₋.\n\nLuca and Pomerance (2002) completed the solution, proving A₊ has density 1. Their stronger result: for any f(n) = o(n), we have φ(n) > φ(n - φ(n)) + f(n) for almost all n.",
@@ -63,38 +69,43 @@
   "sections": [
     {
       "id": "definitions",
-      "title": "Definitions",
+      "title": "Definitions: Comparison Sets",
       "startLine": 52,
       "endLine": 64,
-      "summary": "The sets A₊, A₋, A₌ based on comparing φ(n) with φ(n - φ(n))."
+      "summary": "Defines $A_> = \\{n : \\phi(n) > \\phi(n - \\phi(n))\\}$, $A_< = \\{n : \\phi(n) < \\phi(n - \\phi(n))\\}$, and $A_= = \\{n : \\phi(n) = \\phi(n - \\phi(n))\\}$.",
+      "mathContext": "The map $n \\mapsto n - \\phi(n)$ sends $n$ to the count of integers in $[1, n]$ sharing a common factor with $n$. For primes, $n - \\phi(n) = 1$. For $n = p \\cdot q$ (distinct primes), $n - \\phi(n) = p + q - 1$. The comparison $\\phi(n)$ vs $\\phi(n - \\phi(n))$ measures how 'totient-rich' $n$ is relative to its 'non-coprime count.'"
     },
     {
       "id": "examples-greater",
-      "title": "Examples of the Greater Case",
+      "title": "Examples: φ(n) > φ(n - φ(n))",
       "startLine": 83,
       "endLine": 89,
-      "summary": "n = 10 and n = 15 where φ(n) > φ(n - φ(n))."
+      "summary": "Verified examples: $n = 10$: $\\phi(10) = 4 > 2 = \\phi(6)$; $n = 15$: $\\phi(15) = 8 > 4 = \\phi(7)$.",
+      "mathContext": "For $n = 10 = 2 \\cdot 5$: $\\phi(10) = 4$, $n - \\phi(n) = 6$, $\\phi(6) = 2$. The inequality $4 > 2$ holds. This is the 'typical' case — most $n$ satisfy the inequality because $n - \\phi(n)$ tends to be smooth (many small prime factors) while $\\phi$ of smooth numbers is relatively small."
     },
     {
       "id": "examples-less",
-      "title": "Examples of the Less Case",
+      "title": "Examples: φ(n) < φ(n - φ(n)) and the 15·2^k Pattern",
       "startLine": 91,
       "endLine": 109,
-      "summary": "n = 30, 60, 66 where φ(n) < φ(n - φ(n)), and the 15·2^k pattern."
+      "summary": "Verified counterexamples: $n = 30, 60, 66$. The infinite family $n = 15 \\cdot 2^k$ gives $\\phi(n) = 4 \\cdot 2^k < 5 \\cdot 2^k = \\phi(n - \\phi(n))$.",
+      "mathContext": "For $n = 15 \\cdot 2^k$: $\\phi(n) = \\phi(15) \\cdot \\phi(2^k) = 8 \\cdot 2^{k-1} = 4 \\cdot 2^k$. Then $n - \\phi(n) = 15 \\cdot 2^k - 4 \\cdot 2^k = 11 \\cdot 2^k$. So $\\phi(n - \\phi(n)) = \\phi(11) \\cdot \\phi(2^k) = 10 \\cdot 2^{k-1} = 5 \\cdot 2^k$. Since $5 \\cdot 2^k > 4 \\cdot 2^k$, we get $\\phi(n) < \\phi(n - \\phi(n))$. The key: $\\phi(11)/11 = 10/11 > 8/15 = \\phi(15)/15$."
     },
     {
       "id": "main-theorems",
-      "title": "Main Theorems",
+      "title": "Main Theorems: Density 1 and Infinitude",
       "startLine": 116,
       "endLine": 141,
-      "summary": "Both parts: density 1 for A₊ and infinitude of A₋."
+      "summary": "Two axioms encoding the solution: `density_of_greater` ($A_>$ has natural density 1, Luca-Pomerance 2002) and `less_is_infinite` ($A_<$ is infinite, Grytczuk-Luca-Wójtowicz 2001).",
+      "mathContext": "Natural density: $d(A) = \\lim_{N \\to \\infty} |A \\cap [1, N]| / N$. The density-1 result means: for any $\\epsilon > 0$, all but $o(N)$ integers $n \\leq N$ satisfy $\\phi(n) > \\phi(n - \\phi(n))$. The infinitude of $A_<$ follows from the explicit family $15 \\cdot 2^k$ (but there are other counterexamples too, like $n = 30, 66$)."
     },
     {
       "id": "generalization",
-      "title": "Generalization",
+      "title": "Generalization: Stronger Dominance",
       "startLine": 143,
       "endLine": 158,
-      "summary": "For any f(n) = o(n), φ(n) > φ(n - φ(n)) + f(n) almost always."
+      "summary": "Luca-Pomerance's stronger result: for any $f(n) = o(n)$, the set $\\{n : \\phi(n) > \\phi(n - \\phi(n)) + f(n)\\}$ has density 1.",
+      "mathContext": "This says the dominance $\\phi(n) > \\phi(n - \\phi(n))$ is not borderline — the gap $\\phi(n) - \\phi(n - \\phi(n))$ grows faster than any $o(n)$ function for typical $n$. Heuristically, $\\phi(n) \\sim n \\prod_{p|n} (1 - 1/p)$ and $n - \\phi(n) \\sim n(1 - \\prod_{p|n}(1-1/p))$, so the ratio $\\phi(n)/\\phi(n-\\phi(n))$ is typically large."
     }
   ],
   "conclusion": {
@@ -106,6 +117,44 @@
       "What happens for higher iterates: φ(n) vs φ(n - φ(n - φ(n)))?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's totient function $\\phi(n)$ and its basic properties (multiplicativity, formula $\\phi(n) = n \\prod_{p|n}(1-1/p)$) are the foundation of this problem. The multiplicativity $\\phi(mn) = \\phi(m)\\phi(n)$ for $\\gcd(m,n) = 1$ is the key tool for the explicit counterexample family $15 \\cdot 2^k$"
+    },
+    {
+      "targetId": "perfect-numbers",
+      "relationship": "related",
+      "description": "Perfect numbers satisfy $\\sigma(n) = 2n$, which relates to the iteration $n \\mapsto n - \\phi(n)$ studied here. For even perfect numbers $n = 2^{p-1}(2^p-1)$, $\\phi(n) = 2^{p-2}(2^p-2)$, making them natural test cases for the $\\phi(n)$ vs $\\phi(n-\\phi(n))$ comparison"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The density-1 result for $A_>$ relies on the distribution of prime factors of typical integers, which is governed by the prime number theorem and its refinements. The PNT implies that a random integer near $N$ has $\\sim \\log\\log N$ distinct prime factors, controlling the average behavior of $\\phi(n)$"
+    }
+  ],
+  "relatedProofs": [
+    "euler-totient",
+    "perfect-numbers",
+    "prime-number-theorem"
+  ],
+  "references": [
+    {
+      "authors": "Luca, Florian; Pomerance, Carl",
+      "title": "On some problems of Mąkowski-Schinzel and Erdős concerning the arithmetical functions φ and σ",
+      "year": "2002",
+      "venue": "Colloquium Mathematicum, vol. 92, no. 1, pp. 111–130",
+      "note": "Proved that φ(n) > φ(n - φ(n)) holds for a set of density 1, completing the solution of Problem 1064. The stronger result: for any f(n) = o(n), the dominance φ(n) > φ(n - φ(n)) + f(n) holds almost always"
+    },
+    {
+      "authors": "Grytczuk, Aleksander; Luca, Florian; Wójtowicz, Marek",
+      "title": "Another note on the equation φ(n) = φ(n - φ(n))",
+      "year": "2001",
+      "venue": "Colloquium Mathematicum, vol. 87, no. 1, pp. 133–138",
+      "note": "Initial progress toward Problem 1064: showed the set where φ(n) > φ(n - φ(n)) has lower density ≥ 0.54 and gave the explicit infinite family n = 15·2^k where the reverse inequality holds"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
