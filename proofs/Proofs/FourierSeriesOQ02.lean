@@ -225,11 +225,13 @@ axiom fourierCoeff_smooth_decay (k : ℕ) (f : AddCircle T → ℂ)
     ∃ (Ck : ℝ), 0 < Ck ∧ ‖fourierCoeff f n‖ ≤ Ck / |↑n| ^ (k : ℝ)
 
 /-- **Rapid Decay for C^∞**: C^∞ ⟹ ‖ĉ_n‖ decays faster than any
-    polynomial (Schwartz class on the circle). -/
-axiom fourierCoeff_Cinfty_rapid_decay (f : AddCircle T → ℂ)
+    polynomial (Schwartz class on the circle).
+    Proved: C^∞ means C^k for all k, so apply fourierCoeff_smooth_decay. -/
+theorem fourierCoeff_Cinfty_rapid_decay (f : AddCircle T → ℂ)
     (hf : ∀ k : ℕ, ContDiff ℝ k (fun x : ℝ => f (↑x : AddCircle T)))
     (k : ℕ) (n : ℤ) (hn : n ≠ 0) :
-    ∃ (Ck : ℝ), 0 < Ck ∧ ‖fourierCoeff f n‖ ≤ Ck / |↑n| ^ (k : ℝ)
+    ∃ (Ck : ℝ), 0 < Ck ∧ ‖fourierCoeff f n‖ ≤ Ck / |↑n| ^ (k : ℝ) :=
+  fourierCoeff_smooth_decay k f (hf k) n hn
 
 /-- **Analytic Decay**: Holomorphic on strip of width δ ⟹
     ‖ĉ_n‖ ≤ C·e^{-2πδ|n|/T}. Exponential decay = analyticity. -/
