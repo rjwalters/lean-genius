@@ -253,13 +253,14 @@
     },
     "type": "insight",
     "title": "Erdős's Disproved Conjecture c = 1/2",
-    "content": "Erdős initially conjectured $c = 1/2$, meaning the trivial partition (first half vs second half) would be asymptotically optimal. This was disproved: better partitions exist, and $c \\approx 0.38 \\ll 1/2$.",
+    "content": "Erdős initially conjectured $c = 1/2$, meaning the trivial partition (first half vs second half) would be asymptotically optimal. This was disproved: better partitions exist, and $c \\approx 0.38 \\ll 1/2$. This mirrors a common pattern in additive combinatorics (see `szemeredi-theorem`, `roth-theorem-k3`) where naive bounds are far from the truth — structured problems have richer behavior than initial heuristics suggest.",
     "significance": "key",
     "mathContext": "The trivial partition $A = \\{1, \\ldots, N\\}$, $B = \\{N+1, \\ldots, 2N\\}$ has maximum overlap $N$ at $k = -N$ (every $a \\in A$ pairs with $b = a + N \\in B$). This gives overlap $N/N = 1$, not $1/2$. Instead, Erdős likely meant the 'balanced' partition where $A$ contains alternating elements. Scherk's counterexample showed $c \\leq 1 - 1/\\sqrt{2} \\approx 0.293$ was initially thought tight, but the true value turned out to be higher at $\\approx 0.380$. The failure of the $c = 1/2$ conjecture demonstrates how partition optimization over consecutive integers is subtler than it appears.",
     "relatedConcepts": [
       "trivial partition",
       "counterexample",
-      "partition optimization"
+      "partition optimization",
+      "Szemerédi's theorem"
     ],
     "prerequisites": [
       "erdos_36_limit_exists"
@@ -297,7 +298,7 @@
     },
     "type": "insight",
     "title": "Connection to Additive Combinatorics",
-    "content": "The minimum overlap problem is a fundamental question about the unavoidable additive structure in equal partitions of consecutive integers. It connects to sumset theory, representation functions, and the Plünnecke-Ruzsa inequality.",
+    "content": "The minimum overlap problem is a fundamental question about the unavoidable additive structure in equal partitions of consecutive integers. It connects to sumset theory, representation functions, and the Plünnecke-Ruzsa inequality. The regularity-based approach to additive combinatorics (see `szemeredi-regularity`) provides another perspective: the overlap structure can be analyzed via pseudorandom decompositions of the indicator function.",
     "significance": "key",
     "mathContext": "In the language of additive combinatorics, $M(N) = \\min_{|A|=N} \\|r_{A-B}\\|_\\infty$ where $r_{A-B}$ is the representation function of $A - B$ and $A \\cup B = \\{1,\\ldots,2N\\}$. The Plünnecke-Ruzsa inequality gives $|A - B| \\leq |A + A|^2 / |A|$, providing structural constraints on the difference set. The minimum overlap problem also connects to discrepancy theory: minimizing the maximum overlap is equivalent to making the difference multiset as 'flat' as possible, akin to low-discrepancy sequences. The problem appears as C17 in Guy's 'Unsolved Problems in Number Theory'.",
     "relatedConcepts": [
