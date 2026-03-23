@@ -185,6 +185,16 @@
       "targetId": "erdos-1096",
       "relationship": "related",
       "description": "Sister problem in additive combinatorics on arithmetic progressions in integer sets. Both arise from the Asilomar sessions and concern quantitative bounds on AP structure"
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "related",
+      "description": "The first moment method underlies the $\\Omega(n^{3/2})$ lower bound on common differences: a random subset of $\\{1,\\ldots,N\\}$ of size $n$ has expected $\\sim cn^3/N$ three-term APs, distributed over $\\sim N$ possible common differences. The pigeonhole principle then shows at least $\\sim n^3/N^2$ distinct common differences occur, which for optimal $N \\sim n^2$ gives $\\Omega(n)$ — but more sophisticated counting via the second moment or Cauchy-Schwarz improves this to $\\Omega(n^{3/2})$"
+    },
+    {
+      "targetId": "prob-method-second-moment",
+      "relationship": "related",
+      "description": "The second moment method (Chebyshev/Paley-Zygmund inequalities) provides the concentration bounds needed to convert the first-moment lower bound on common differences into a high-probability statement. The Erdős-Spencer $\\Omega(n^{3/2})$ lower bound uses precisely this: the variance of the common-difference count in a random subset is controlled by the second moment, proving that the lower bound holds with positive probability"
     }
   ],
   "relatedProofs": [
@@ -195,7 +205,9 @@
     "erdos-3",
     "erdos-1096",
     "arithmetic-series",
-    "roth-theorem-k3"
+    "roth-theorem-k3",
+    "prob-method-expectation",
+    "prob-method-second-moment"
   ],
   "leanFile": {
     "imports": [
