@@ -59,7 +59,7 @@
       "single_eventual_orbit: equivalent single-orbit formulation",
       "orbit_1_start: orbit from 1 is 1, 2, 4, 7, 9, ...",
       "orbit_3_merges_with_1: orbit from 3 reaches 7, merging with orbit from 1",
-      "average_divisor_count: ∑ τ(k) ~ n log n (Dirichlet's average order)",
+      "average_divisor_count: PLACEHOLDER — declares `True`, not the actual Dirichlet asymptotic. Contributes no mathematical content",
       "orbit_linear_lower: orbit values grow at least linearly",
       "orbits_get_close: weaker statement that orbits get arbitrarily close"
     ],
@@ -117,7 +117,8 @@
       "**Two-speed dynamics**: primes advance by 2 (minimum), highly composite numbers jump by τ ≫ log n — this irregular spacing creates the orbit structure",
       "**Collision mechanism**: h(a) = h(b) when a + τ(a) = b + τ(b), i.e., b − a = τ(a) − τ(b). The divisor function's irregularity makes these collisions common but unpredictable",
       "**Heuristic for merging**: orbit spacing ∼ log V at value V, so collision probability ∼ 1/(log V)² per step. Since Σ 1/(log V)² diverges, infinitely many collisions are expected — but this heuristic is not rigorous",
-      "**Even the weak form is open**: proving that orbits merely get arbitrarily close (without exact collision) is already unproven"
+      "**Even the weak form is open**: proving that orbits merely get arbitrarily close (without exact collision) is already unproven",
+      "**Many axioms are provable**: Of the 14 axiom declarations, several are trivially computable (h_one, h_two, h_three, orbit_1_start) and could be proved by `decide`/`native_decide`. The `average_divisor_count : True` axiom is a placeholder that states nothing. Only 4 axioms encode genuinely open mathematics (erdos_414_conjecture, single_eventual_orbit, orbits_get_close, and the unproven orbit_3_merges_with_1). The remaining are provable properties of h that could be Aristotle candidates"
     ],
     "prerequisites": [
       "Number theory: divisor functions and multiplicative functions",
