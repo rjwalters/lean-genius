@@ -448,7 +448,43 @@ Ask yourself:
 
 ## Gallery Integrity Auditing
 
-**In addition to build/runtime validation, you MUST audit the proof gallery for overstated claims.** This is critical — agents (enricher, researcher) write meta.json files that make claims about proof status, sorry counts, and original contributions. These claims are not validated by the build system and go live unchecked.
+**In addition to build/runtime validation, you MUST audit the proof gallery for overstated claims.** Agents (enricher, researcher) write meta.json files that make claims about proof status, sorry counts, and original contributions. These claims are not validated by the build system and go live unchecked.
+
+### Tracking Scripts
+
+Gallery auditing has its own claim/tracker system, analogous to the enricher's:
+
+```bash
+# Find highest-priority targets (issues first, then unaudited)
+npx tsx scripts/auditor/find-targets.ts              # Top 10
+npx tsx scripts/auditor/find-targets.ts --next       # Single highest-priority
+npx tsx scripts/auditor/find-targets.ts --issues     # Only proofs with detected issues
+npx tsx scripts/auditor/find-targets.ts --stats      # Summary statistics
+
+# Claim a target for exclusive audit work
+./scripts/auditor/claim-target.sh claim-next         # Claim highest-priority unclaimed
+./scripts/auditor/claim-target.sh claim <id>         # Claim specific proof
+./scripts/auditor/claim-target.sh status             # Show active claims
+
+# After auditing, mark complete
+./scripts/auditor/claim-target.sh complete <id> clean          # No issues found
+./scripts/auditor/claim-target.sh complete <id> issues-found   # Issues found, filed
+./scripts/auditor/claim-target.sh complete <id> issues-fixed   # Issues found and fixed
+```
+
+The tracker is at `src/data/proofs/audit-tracker.json`. It records which proofs have been audited, when, and the result.
+
+### Audit Workflow
+
+```bash
+# 1. Claim next target
+id=$(./scripts/auditor/claim-target.sh claim-next)
+
+# 2. Read meta.json and Lean source, run integrity checks
+# 3. If issues found: fix meta.json in a PR OR create issue
+# 4. Mark complete with result
+./scripts/auditor/claim-target.sh complete "$id" clean  # or issues-found / issues-fixed
+```
 
 ### What to Check
 
