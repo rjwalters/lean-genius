@@ -239,7 +239,24 @@ theorem primes_for_element_bound (A : Finset ℕ) (N : ℕ) (a : ℕ)
 theorem sum_reprCount_bound (A : Finset ℕ) (N : ℕ)
     (hA : A ⊆ Finset.range (N + 1)) (hpos : ∀ a ∈ A, 0 < a) :
     ∑ m ∈ Finset.range (N + 1), reprCount A m ≤ A.card * N := by
-  sorry
+  -- Step 1: reprCount A 0 = 0 (since all a ∈ A positive, p prime → pa ≥ 2 > 0)
+  have h0 : reprCount A 0 = 0 := by
+    simp only [reprCount, Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+    intro a ha ⟨p, hp, hm⟩
+    have ha0 := hpos a ha
+    have := Nat.Prime.pos hp
+    omega
+  -- Step 2: Split off m = 0 term
+  rw [Finset.sum_range_succ', h0, zero_add]
+  -- Now we have ∑ m ∈ range N, reprCount A (m + 1)
+  -- Step 3: Each reprCount A (m+1) ≤ A.card
+  calc ∑ m ∈ Finset.range N, reprCount A (m + 1)
+      ≤ ∑ _ ∈ Finset.range N, A.card := by
+        apply Finset.sum_le_sum
+        intro m _
+        exact reprCount_le_card A (m + 1)
+    _ = A.card * N := by
+        rw [Finset.sum_const, Finset.card_range, smul_eq_mul]
 
 /-
 ## Section VIII: Connections to Multiplicative Structure
