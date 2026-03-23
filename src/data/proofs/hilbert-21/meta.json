@@ -92,11 +92,52 @@
     "summary": "Hilbert's 21st Problem has a nuanced answer. For irreducible monodromy representations, Fuchsian systems always exist (Plemelj, 1908). For reducible representations, counterexamples exist (Bolibrukh, 1989). The complete characterization involves vector bundle conditions.",
     "implications": "This problem spawned major developments in the theory of differential equations, D-modules, and the geometric Langlands program. The Riemann-Hilbert correspondence is now a cornerstone of modern algebraic geometry.",
     "openQuestions": [
-      "How to effectively compute the obstruction for a given representation?",
-      "Extensions to irregular singular points (Stokes phenomena)?",
-      "Connections to the geometric Langlands program?"
+      "Can the Bolibrukh counterexample (dimension 3, 4 singularities, reducible monodromy with specific Jordan block structure) be made fully constructive in Lean, providing an explicit Fuchsian system whose monodromy cannot be realized?",
+      "The irregular Riemann-Hilbert correspondence (Stokes phenomena) replaces monodromy matrices with Stokes matrices at irregular singular points. Can this extension be formalized, connecting to resurgent analysis and Écalle's theory of alien derivatives?",
+      "The geometric Langlands program reformulates the Riemann-Hilbert correspondence as an equivalence between D-modules and local systems on algebraic curves. Can the categorical equivalence $\\text{Conn}_{\\text{reg}}(X) \\simeq \\text{Loc}(X)$ be stated in Lean using Mathlib's category theory?",
+      "Can the realizability criterion — a monodromy representation is Fuchsian-realizable iff the associated vector bundle on $\\mathbb{CP}^1$ is trivializable after removing the singularities — be formalized in terms of Birkhoff-Grothendieck decomposition?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "thematic",
+      "description": "Both are named after Riemann and concern deep analytic structures: the Riemann hypothesis concerns the zeta function's zeros, while the Riemann-Hilbert problem concerns monodromy of differential equations. The Riemann-Hilbert method is also used in approaches to random matrix theory, which connects to RH via the Montgomery-Odlyzko law"
+    },
+    {
+      "targetId": "hilbert-10",
+      "relationship": "thematic",
+      "description": "Both are Hilbert problems with surprising negative resolutions: Hilbert's 10th was resolved negatively by Matiyasevich (1970, no algorithm for Diophantine equations), while the 21st was partially negative (Bolibrukh, 1989, not all monodromy representations are Fuchsian-realizable)"
+    },
+    {
+      "targetId": "hilbert-5",
+      "relationship": "thematic",
+      "description": "Hilbert's 5th (characterizing Lie groups) and 21st both concern the structure of continuous symmetry groups — the 5th asks about topological groups, while the 21st asks about monodromy groups of differential equations, which are representations of the fundamental group into Lie groups like GL(n,C)"
+    },
+    {
+      "targetId": "hilbert-9-reciprocity",
+      "relationship": "thematic",
+      "description": "Hilbert's 9th (most general reciprocity law) and 21st both contributed to the Langlands program: the 9th via class field theory and Artin reciprocity, the 21st via the geometric Langlands correspondence (Riemann-Hilbert as categorical equivalence between D-modules and local systems)"
+    },
+    {
+      "targetId": "hilbert-19",
+      "relationship": "thematic",
+      "description": "Hilbert's 19th (regularity of solutions of variational problems) and 21st both concern differential equations: the 19th asks about regularity of elliptic PDE solutions, while the 21st asks about realizability of monodromy for linear ODE systems"
+    },
+    {
+      "targetId": "hilbert-22",
+      "relationship": "thematic",
+      "description": "Hilbert's 22nd (uniformization of analytic relations) and 21st both concern complex analysis and Riemann surfaces: uniformization parametrizes Riemann surfaces, while the 21st reconstructs differential equations from monodromy data on punctured surfaces"
+    }
+  ],
+  "relatedProofs": [
+    "riemann-hypothesis",
+    "hilbert-10",
+    "hilbert-5",
+    "hilbert-9-reciprocity",
+    "hilbert-19",
+    "hilbert-22"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Tactic",
@@ -126,6 +167,27 @@
       "year": "1990",
       "venue": "Russian Mathematical Surveys 45(2), 1–58",
       "note": "Survey showing the negative resolution — not every monodromy representation arises from a regular singular system"
+    },
+    {
+      "authors": "Plemelj, Josip",
+      "title": "Riemannsche Funktionenscharen mit gegebener Monodromiegruppe",
+      "year": "1908",
+      "venue": "Monatshefte für Mathematik und Physik 19, 211–245",
+      "note": "Claimed a complete positive solution — correct for irreducible representations but contained a gap for the general case that went unnoticed for 80 years"
+    },
+    {
+      "authors": "Anosov, D.V.; Bolibrukh, A.A.",
+      "title": "The Riemann-Hilbert Problem",
+      "year": "1994",
+      "venue": "Aspects of Mathematics E22, Vieweg",
+      "note": "Comprehensive monograph on the Riemann-Hilbert problem including the complete characterization via vector bundle conditions and detailed analysis of Bolibrukh's counterexamples"
+    },
+    {
+      "authors": "Riemann, Bernhard",
+      "title": "Beiträge zur Theorie der durch die Gauss'sche Reihe F(α,β,γ,x) darstellbaren Functionen",
+      "year": "1857",
+      "venue": "Abhandlungen der Königlichen Gesellschaft der Wissenschaften zu Göttingen 7, 3–22",
+      "note": "Riemann's investigation of hypergeometric equations and their monodromy — the origin of the Riemann-Hilbert problem"
     }
   ]
 }
