@@ -54,11 +54,11 @@
       "startLine": 62,
       "endLine": 70
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "The Basel Identity",
-    "content": "**The Main Result**: $\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6}$. This is Euler's celebrated 1734 solution to the Basel Problem.",
-    "mathContext": "In Lean, `HasSum f s` means the series $\\sum f(n)$ converges to $s$. We prove `HasSum (fun n => 1 / n^2) (π^2 / 6)` using Mathlib's `hasSum_zeta_two`.",
-    "significance": "key",
+    "content": "**The Main Result**: $\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6}$. This is Euler's celebrated 1734 solution to the Basel Problem.\n\nThe Lean proof is a one-liner (`hasSum_zeta_two`), but this brevity conceals deep Mathlib infrastructure: the proof internally constructs Bernoulli polynomials $B_n(x)$, expands them as Fourier series, evaluates at $x = 0$ to extract the zeta value, and verifies the Fourier coefficients converge. The fact that $\\sum 1/n^2$ evaluates to a rational multiple of $\\pi^2$ was profoundly surprising — it revealed for the first time that $\\pi$ encodes information about the integers, foreshadowing the Riemann zeta function's role in prime number theory.",
+    "mathContext": "In Lean, `HasSum f s` means the partial sums $\\sum_{n=0}^{N} f(n)$ converge to $s$ in the topology of $\\mathbb{R}$. We prove `HasSum (fun n => 1 / (n : ℝ)^2) (π^2 / 6)` using Mathlib's `hasSum_zeta_two`, which derives from `hasSum_zeta_nat` with $k = 1$. The general formula yields $\\zeta(2) = (-1)^{2} \\cdot 2^{1} \\cdot \\pi^{2} \\cdot B_2 / (2!) = 2\\pi^2 \\cdot (1/6) / 2 = \\pi^2/6$, where $B_2 = 1/6$ is the second Bernoulli number.",
+    "significance": "critical",
     "prerequisites": [
       "hasSum_zeta_two",
       "HasSum predicate",
@@ -77,7 +77,7 @@
       "startLine": 72,
       "endLine": 74
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "The tsum Version",
     "content": "The `tsum` (topological sum) version: `∑' n, 1/n² = π²/6`. This is the form using Lean's notation for infinite sums.",
     "mathContext": "`tsum` is defined as the limit of partial sums when the series is summable, and 0 otherwise. For summable series, `HasSum.tsum_eq` converts between the two forms.",
@@ -99,7 +99,7 @@
       "startLine": 76,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Series Convergence",
     "content": "The series $\\sum 1/n^2$ converges because it's a p-series with $p = 2 > 1$. This is a fundamental result in analysis.",
     "mathContext": "We use `Real.summable_nat_rpow_inv` which proves that $\\sum n^{-p}$ converges for $p > 1$. The harmonic series ($p = 1$) is the boundary case that diverges.",
@@ -122,7 +122,7 @@
       "startLine": 80,
       "endLine": 91
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Convergence Proofs: p-Series with p = 2",
     "content": "`summable_one_div_sq` and `summable_nat_sq_inv` prove that $\\sum 1/n^2$ is summable (convergent) using two equivalent formulations. The proofs convert to `Real.summable_nat_rpow_inv` with $p = 2 > 1$, using `rpow_natCast` to bridge between the natural number exponent $n^2$ and the real-valued power $n^{2.0}$.\n\nThe p-series test ($\\sum n^{-p}$ converges $\\iff p > 1$) is the standard convergence criterion. The boundary case $p = 1$ (harmonic series $\\sum 1/n$) diverges — proved by the integral test or Cauchy condensation.",
     "mathContext": "The p-series test: $\\sum_{n=1}^{\\infty} n^{-p} < \\infty \\iff p > 1$. For $p = 2$: convergence follows from comparison with the telescoping series $\\sum (1/n - 1/(n+1)) = 1$, since $1/n^2 < 1/(n(n-1))$ for $n \\geq 2$. The proof converts between `1/n^2` (natural number power) and `n^{(-2:ℝ)}` (real-valued power) via `rpow_natCast` and `div_eq_mul_inv`.",
@@ -146,7 +146,7 @@
       "startLine": 93,
       "endLine": 101
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Positivity and Basic Properties",
     "content": "Three positivity lemmas: `one_div_sq_pos` ($1/n^2 > 0$ for $n > 0$), `one_div_sq_nonneg` ($1/n^2 \\geq 0$ for all $n$), and `basel_value_pos` ($\\pi^2/6 > 0$). All proved by Lean's `positivity` tactic, which chains positivity/nonnegativity facts automatically.\n\nThese lemmas are supporting infrastructure: positivity of terms ensures the partial sums are increasing (important for monotone convergence), and positivity of the limit confirms the sum is meaningful.",
     "mathContext": "For $n \\geq 1$: $1/n^2 > 0$ since $n^2 > 0$. For $n = 0$: $1/0^2 = 0 \\geq 0$ (Lean's convention). The value $\\pi^2/6 > 0$ since $\\pi > 0$ implies $\\pi^2 > 0$. The `positivity` tactic automatically chains `sq_nonneg`, `div_pos`, and `pi_pos` to close these goals.",
@@ -171,8 +171,8 @@
     },
     "type": "insight",
     "title": "Euler's Original Proof",
-    "content": "Euler's 1734 proof used the Weierstrass factorization of $\\sin(x)/x$. By comparing the $x^2$ coefficient in the infinite product with the Taylor series, he derived the Basel identity.",
-    "mathContext": "Euler wrote $\\sin(x)/x = \\prod_{n=1}^{\\infty}(1 - x^2/(n\\pi)^2)$. Expanding and comparing with $1 - x^2/6 + \\ldots$ gives $1/6 = \\sum 1/(n\\pi)^2$, hence $\\sum 1/n^2 = \\pi^2/6$.",
+    "content": "Euler's 1734 proof was a tour de force of analogy. He treated $\\sin(x)/x$ like a polynomial whose roots are $\\pm n\\pi$, factoring it as $\\prod(1 - x^2/(n\\pi)^2)$. Expanding this infinite product and comparing the $x^2$ coefficient with the Taylor series $1 - x^2/3! + x^4/5! - \\cdots$ yields $1/6 = \\sum 1/(n\\pi)^2$, hence $\\sum 1/n^2 = \\pi^2/6$.\n\nThis reasoning was logically daring: Euler assumed without proof that an entire function (one with infinitely many roots) factors like a finite polynomial — a principle that was only justified 142 years later by Weierstrass's factorization theorem (1876). Euler himself was aware of the gap and gave several alternative proofs, including one using partial fractions of $\\pi\\cot(\\pi x)$ (1743) and another via Fourier-like integrals. The Parseval approach ($f(x) = x$ on $[-\\pi, \\pi]$ gives $\\sum 1/n^2 = \\pi^2/6$ directly) was established in the 19th century.",
+    "mathContext": "Euler's factorization: $\\frac{\\sin x}{x} = \\prod_{n=1}^{\\infty}\\left(1 - \\frac{x^2}{n^2\\pi^2}\\right)$. Expanding: $\\prod\\left(1 - \\frac{x^2}{n^2\\pi^2}\\right) = 1 - \\left(\\sum_{n=1}^{\\infty} \\frac{1}{n^2\\pi^2}\\right)x^2 + \\cdots$. Comparing with $\\frac{\\sin x}{x} = 1 - \\frac{x^2}{6} + \\frac{x^4}{120} - \\cdots$ gives $\\sum \\frac{1}{n^2\\pi^2} = \\frac{1}{6}$, so $\\sum \\frac{1}{n^2} = \\frac{\\pi^2}{6}$. The $x^4$ coefficient similarly gives $\\zeta(4) = \\pi^4/90$.",
     "significance": "key",
     "prerequisites": [
       "Weierstrass factorization theorem",
@@ -191,7 +191,7 @@
       "startLine": 130,
       "endLine": 132
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Higher Zeta Values",
     "content": "Euler generalized the Basel identity: $\\zeta(4) = \\pi^4/90$, $\\zeta(6) = \\pi^6/945$, and in general $\\zeta(2k)$ is a rational multiple of $\\pi^{2k}$ involving Bernoulli numbers.",
     "mathContext": "The general formula is $\\zeta(2k) = (-1)^{k+1} \\cdot 2^{2k-1} \\cdot \\pi^{2k} \\cdot B_{2k} / (2k)!$ where $B_{2k}$ is the $(2k)$-th Bernoulli number.",
@@ -214,7 +214,7 @@
       "startLine": 134,
       "endLine": 143
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "The General Zeta Value Formula",
     "content": "`zeta_general` proves the general formula for even zeta values: $\\zeta(2k) = (-1)^{k+1} \\cdot 2^{2k-1} \\cdot \\pi^{2k} \\cdot B_{2k} / (2k)!$, where $B_{2k}$ is the $(2k)$-th Bernoulli number. This is Euler's generalization of the Basel Problem to all even positive integers.\n\nThe first few values: $B_2 = 1/6$ gives $\\zeta(2) = \\pi^2/6$, $B_4 = -1/30$ gives $\\zeta(4) = \\pi^4/90$, $B_6 = 1/42$ gives $\\zeta(6) = \\pi^6/945$. The odd zeta values $\\zeta(3), \\zeta(5), \\ldots$ remain mysterious — Apéry (1978) proved $\\zeta(3)$ is irrational, but no closed form in terms of $\\pi$ is known.",
     "mathContext": "$\\zeta(2k) = \\frac{(-1)^{k+1} 2^{2k-1} \\pi^{2k} B_{2k}}{(2k)!}$ for $k \\geq 1$. The Bernoulli numbers satisfy $B_0 = 1$, $B_1 = -1/2$, $B_{2k+1} = 0$ for $k \\geq 1$ (odd Bernoulli numbers vanish). The generating function is $t/(e^t - 1) = \\sum B_n t^n/n!$.",
