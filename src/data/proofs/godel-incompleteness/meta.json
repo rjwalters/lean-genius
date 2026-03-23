@@ -7,25 +7,57 @@
     "author": "Kurt Gödel (formalized sketch in Lean 4)",
     "sourceUrl": "https://en.wikipedia.org/wiki/G%C3%B6del%27s_incompleteness_theorems",
     "date": "1931",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "logic",
       "foundations",
       "incompleteness",
       "self-reference",
-      "advanced"
+      "advanced",
+      "wiedijk-100"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "mathlibDependencies": [],
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib.Logic.Basic",
+        "description": "Basic logical connectives and predicates",
+        "module": "Mathlib.Logic.Basic"
+      }
+    ],
     "originalContributions": [
-      "Complete formalization of Gödel numbering framework",
-      "Diagonal Lemma construction for self-reference",
-      "First Incompleteness Theorem proof structure"
+      "Formula structure with Gödel numbering (code : Nat)",
+      "Provable predicate (placeholder: fun _ => False)",
+      "Consistent and Complete definitions",
+      "godelNum_injective: Gödel numbering is injective",
+      "diagonal_lemma: existence of self-referential sentences (simplified)",
+      "G_not_provable and not_G_not_provable: incompleteness argument structure",
+      "first_incompleteness_theorem: consistent → ¬Complete",
+      "second_incompleteness_theorem: consistent → ¬Provable Con",
+      "lob_theorem: Löb's theorem from derivability conditions"
     ],
     "dateAdded": "2025-12-21",
     "wiedijkNumber": 6,
-    "axiomCount": 0
+    "axiomCount": 3,
+    "prerequisites": [
+      "Mathematical logic: formal systems, provability, consistency",
+      "Gödel numbering and arithmetization of metamathematics",
+      "Diagonalization and self-reference (Diagonal Lemma)",
+      "Modal logic of provability (Hilbert-Bernays-Löb conditions)"
+    ],
+    "lineCount": 467,
+    "leanFile": {
+      "imports": [
+        "Mathlib.Logic.Basic",
+        "Mathlib.Tactic"
+      ],
+      "opens": [],
+      "namespace": "Godel",
+      "lineCount": 467,
+      "axiomCount": 3,
+      "theoremCount": 12,
+      "definitionCount": 8
+    }
   },
   "overview": {
     "historicalContext": "In 1931, Kurt Gödel, a 25-year-old logician in Vienna, published a paper that would fundamentally change our understanding of mathematics and logic. His Incompleteness Theorems demonstrated that the dream of a complete, consistent foundation for mathematics—Hilbert's Program—was impossible.\n\nDavid Hilbert had proposed that all mathematical truths could be derived from a fixed set of axioms using formal rules. Gödel showed this was a fantasy: any system powerful enough to do arithmetic would contain truths it could never prove. The implications rippled through philosophy, computer science (anticipating the Halting Problem), and our understanding of the limits of human knowledge.",
@@ -45,77 +77,80 @@
       "title": "Introduction",
       "startLine": 1,
       "endLine": 20,
-      "summary": "Overview of the theorem and its historical significance, explaining how Gödel shattered Hilbert's dream of a complete formal mathematics."
+      "summary": "Module docstring: formalizes both incompleteness theorems, Hilbert-Bernays-Löb derivability conditions, and Löb's theorem. Notes 3 axioms, placeholder `Provable` predicate. Imports `Mathlib.Logic.Basic` and `Mathlib.Tactic`.",
+      "mathContext": "Two incompleteness theorems: (1) consistent $F \\Rightarrow F$ is incomplete (has true unprovable sentences), (2) consistent $F \\Rightarrow F$ cannot prove its own consistency. Three axioms encode self-reference (`G_self_reference`), derivability conditions (`derivability_conditions`), and Löb fixed points (`lob_sentence_fixed_point`). `Provable : Formula → Prop := fun _ => False` is a placeholder."
     },
     {
       "id": "formal-system",
-      "title": "The Formal System",
-      "startLine": 22,
-      "endLine": 38,
-      "summary": "Axiomatizing the minimal requirements for a formal system F capable of expressing arithmetic, including formulas, provability, and negation."
+      "title": "Part 1: The Formal System",
+      "startLine": 56,
+      "endLine": 84,
+      "summary": "`Formula` structure (code : Nat), `Provable : Formula → Prop := fun _ => False` (placeholder), `neg` (simplified: code + 1). The `⊢ φ` notation for `Provable φ` and `¬ᶠ` prefix for `neg`.",
+      "mathContext": "`Formula` models a sentence in a formal system via its Gödel number. `Provable φ` = \"$\\varphi$ is provable in $F$\". In the full formalization, `Provable` would be defined as $\\exists p,\\ \\text{IsProof}(p, \\ulcorner \\varphi \\urcorner)$ where `IsProof` is a primitive recursive proof-checking predicate. The placeholder `fun _ => False` makes all theorems about `Provable` vacuously true."
     },
     {
       "id": "consistency",
-      "title": "Consistency Assumption",
-      "startLine": 40,
-      "endLine": 49,
-      "summary": "Defining consistency: no formula can have both itself and its negation provable. This is the key assumption for the theorem."
+      "title": "Part 2: Consistency and Completeness",
+      "startLine": 86,
+      "endLine": 96,
+      "summary": "`Consistent := ∀ φ, ¬(Provable φ ∧ Provable (neg φ))` — no formula is both provable and refutable. `Complete := ∀ φ, Provable φ ∨ Provable (neg φ)` — every formula is decidable. The first incompleteness theorem shows: Consistent → ¬Complete.",
+      "mathContext": "Consistency: $\\neg\\exists \\varphi,\\ \\vdash \\varphi \\wedge \\vdash \\neg\\varphi$. Completeness: $\\forall \\varphi,\\ \\vdash \\varphi \\vee \\vdash \\neg\\varphi$. Gödel proves: if $F$ is consistent and sufficiently strong, then $F$ is not complete."
     },
     {
       "id": "godel-numbering",
-      "title": "Gödel Numbering",
-      "startLine": 51,
-      "endLine": 68,
-      "summary": "The revolutionary encoding scheme that assigns unique natural numbers to formulas, allowing the system to reason about its own syntax."
+      "title": "Part 3: Gödel Numbering",
+      "startLine": 98,
+      "endLine": 110,
+      "summary": "`godelNum φ = φ.code` extracts the natural number encoding. `godelNum_injective`: the encoding is injective (distinct formulas have distinct codes), proved by `cases`/`congr`.",
+      "mathContext": "Gödel numbering: $\\ulcorner \\varphi \\urcorner : \\mathbb{N}$, an injective map from formulas to natural numbers. This allows the formal system to \"talk about\" its own syntax via arithmetic predicates on Gödel numbers. In practice, $\\ulcorner \\varphi \\urcorner$ encodes the syntax tree of $\\varphi$ using prime factorization."
     },
     {
       "id": "representability",
-      "title": "Representability",
-      "startLine": 70,
-      "endLine": 87,
-      "summary": "The crucial property that provability itself can be expressed within the system, enabling self-reference about provability."
+      "title": "Part 4: The Provability Predicate",
+      "startLine": 112,
+      "endLine": 120,
+      "summary": "`Prov : Nat → Formula := fun n => ⟨n * 2⟩` — simplified encoding of \"the formula with Gödel number $n$ is provable.\" In a full formalization, `Prov(n)` would be a $\\Sigma_1^0$ formula expressing the existence of a proof.",
+      "mathContext": "$\\text{Prov}(n)$ is a formula in $F$ asserting \"the formula with Gödel number $n$ is provable in $F$.\" The key property: $F$ can talk about its own provability. If $\\vdash \\varphi$, then $\\vdash \\text{Prov}(\\ulcorner \\varphi \\urcorner)$ — the system can verify its own proofs internally."
     },
     {
       "id": "diagonal-lemma",
-      "title": "The Diagonal Lemma",
-      "startLine": 89,
-      "endLine": 110,
-      "summary": "The heart of Gödel's construction—a fixed point theorem that enables formulas to 'talk about themselves' in a precise sense."
+      "title": "Part 5: The Diagonal Lemma",
+      "startLine": 122,
+      "endLine": 134,
+      "summary": "`diagonal_lemma`: for any property $P$, there exists $\\gamma$ (simplified to `⟨0⟩, trivial`). In a full formalization, this would produce $\\gamma$ satisfying $F \\vdash (\\gamma \\leftrightarrow P(\\ulcorner\\gamma\\urcorner))$.",
+      "mathContext": "Diagonal Lemma (fixed point theorem for formal systems): $\\forall P,\\ \\exists \\gamma,\\ F \\vdash (\\gamma \\leftrightarrow P(\\ulcorner\\gamma\\urcorner))$. This enables self-reference: applying $P = \\neg\\text{Prov}$ gives the Gödel sentence $G \\leftrightarrow \\neg\\text{Prov}(\\ulcorner G \\urcorner)$, i.e., \"$G$ says: I am not provable.\""
     },
     {
       "id": "godel-sentence",
-      "title": "The Gödel Sentence",
-      "startLine": 112,
-      "endLine": 132,
-      "summary": "Constructing G—the sentence that says 'I am not provable'—by applying the diagonal lemma to the negation of provability."
+      "title": "Part 6: The Gödel Sentence",
+      "startLine": 136,
+      "endLine": 161,
+      "summary": "`G : Formula := ⟨42⟩` (arbitrary code; real construction via diagonal lemma). `G_self_reference` (axiom): encapsulates the diagonal lemma result that $G \\leftrightarrow \\neg\\text{Prov}(\\ulcorner G \\urcorner)$.",
+      "mathContext": "The Gödel sentence $G$ satisfies $G \\leftrightarrow \\neg\\text{Prov}(\\ulcorner G \\urcorner)$: \"I am not provable.\" This is the rigorous version of the Liar Paradox — replacing \"false\" with \"unprovable\" avoids logical contradiction while creating undecidability. The axiom `G_self_reference` encapsulates the full diagonal construction."
     },
     {
       "id": "incompleteness-argument",
-      "title": "The Incompleteness Argument",
-      "startLine": 134,
-      "endLine": 164,
-      "summary": "The central proof: showing that if G were provable, we'd have a contradiction, so G must be true but unprovable."
+      "title": "Part 7: The Incompleteness Proof",
+      "startLine": 163,
+      "endLine": 194,
+      "summary": "`G_not_provable`: Consistent → ¬Provable G. `not_G_not_provable`: Consistent → ¬Provable (neg G). Both are vacuously true in this formalization (Provable is constantly False), but the docstrings give the full conceptual argument.",
+      "mathContext": "If $\\vdash G$: by representability, $\\vdash \\text{Prov}(\\ulcorner G \\urcorner)$. But $G \\leftrightarrow \\neg\\text{Prov}(\\ulcorner G \\urcorner)$, so $\\vdash \\neg\\text{Prov}(\\ulcorner G \\urcorner)$. Contradiction with consistency. If $\\vdash \\neg G$: then $\\vdash \\text{Prov}(\\ulcorner G \\urcorner)$, but $G$ is actually not provable, contradicting $\\omega$-consistency. Therefore $G$ is true but undecidable in $F$."
     },
     {
       "id": "first-incompleteness-theorem",
-      "title": "The First Incompleteness Theorem",
-      "startLine": 166,
-      "endLine": 185,
-      "summary": "The main theorem stated formally: no consistent system capable of expressing arithmetic is complete."
-    },
-    {
-      "id": "philosophical-implications",
-      "title": "Philosophical Implications",
-      "startLine": 187,
+      "title": "First Incompleteness Theorem",
+      "startLine": 196,
       "endLine": 210,
-      "summary": "The profound consequences: death of Hilbert's program, limits of formalization, the inexhaustibility of mathematics, and the mind-mechanism debate."
+      "summary": "`first_incompleteness_theorem`: Consistent → ¬Complete. Proof: G is neither provable nor refutable (by `G_not_provable` and `not_G_not_provable`), contradicting completeness.",
+      "mathContext": "$\\text{Consistent}(F) \\Rightarrow \\neg\\text{Complete}(F)$. Proof: if Complete, then $\\vdash G$ or $\\vdash \\neg G$. Both are ruled out by `G_not_provable` and `not_G_not_provable`. $\\square$"
     },
     {
-      "id": "summary",
-      "title": "The Construction Summarized",
+      "id": "second-incompleteness-and-lob",
+      "title": "Second Incompleteness Theorem and Löb's Theorem",
       "startLine": 212,
-      "endLine": 241,
-      "summary": "A concise summary of the proof strategy: encoding, representability, self-reference, the truth of G, and the final conclusion."
+      "endLine": 467,
+      "summary": "Derivability conditions (axiom), Löb sentence fixed point (axiom), `second_incompleteness_theorem`: Consistent → ¬Provable Con. `lob_theorem`: if ⊢(Prov(⌜φ⌝) → φ), then ⊢ φ. Both use the Hilbert-Bernays-Löb conditions D1-D3.",
+      "mathContext": "Second incompleteness: $\\text{Con}(F) \\not\\vdash \\text{Con}(F)$ where $\\text{Con}(F) = \\neg\\text{Prov}(\\ulcorner 0=1 \\urcorner)$. Derivability conditions (Hilbert-Bernays-Löb): (D1) $\\vdash \\varphi \\Rightarrow \\vdash \\text{Prov}(\\ulcorner\\varphi\\urcorner)$, (D2) $\\vdash \\text{Prov}(\\ulcorner\\varphi \\to \\psi\\urcorner) \\to (\\text{Prov}(\\ulcorner\\varphi\\urcorner) \\to \\text{Prov}(\\ulcorner\\psi\\urcorner))$, (D3) $\\vdash \\text{Prov}(\\ulcorner\\varphi\\urcorner) \\to \\text{Prov}(\\ulcorner\\text{Prov}(\\ulcorner\\varphi\\urcorner)\\urcorner)$. Löb: $\\vdash (\\text{Prov}(\\ulcorner\\varphi\\urcorner) \\to \\varphi) \\Rightarrow \\vdash \\varphi$."
     }
   ],
   "conclusion": {
@@ -158,6 +193,16 @@
       "targetId": "mathematical-induction",
       "relationship": "foundational",
       "description": "Induction over natural numbers is the core reasoning principle that Gödel's system must be able to express. The incompleteness theorem applies to any consistent system containing enough arithmetic to formalize induction"
+    },
+    {
+      "targetId": "parallel-postulate-independence",
+      "relationship": "related",
+      "description": "The independence of the parallel postulate from Euclid's other axioms (via non-Euclidean geometries) was an early example of independence results. Gödel's incompleteness generalizes this dramatically: for ANY sufficiently strong consistent system, there exist independent sentences — not just geometric axioms but arithmetic statements"
+    },
+    {
+      "targetId": "russell-1-plus-1",
+      "relationship": "related",
+      "description": "Russell and Whitehead's Principia Mathematica (1910-1913) attempted to derive all of mathematics from logical axioms — Hilbert's program in action. Gödel's theorem showed that any such foundational system, if consistent, must be incomplete. The famous proof that 1+1=2 in PM illustrates the immense formal infrastructure that Gödel's theorem applies to"
     }
   ],
   "relatedProofs": [
@@ -168,7 +213,8 @@
     "hilbert-10",
     "mathematical-induction",
     "parallel-postulate-independence",
-    "fermats-last-theorem"
+    "fermats-last-theorem",
+    "russell-1-plus-1"
   ],
   "references": [
     {
