@@ -227,6 +227,21 @@
       "targetId": "brouwer-fixed-point-oq-02",
       "relationship": "extended-by",
       "description": "Explores the computational complexity of finding approximate fixed points (PPAD-completeness) — the constructive dimension of Brouwer's inherently non-constructive existence result, with implications for Nash equilibrium computation"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The Pythagorean theorem defines the Euclidean metric $\\|x\\|^2 = x_1^2 + \\cdots + x_n^2$ that determines the closed ball $B^n = \\{x : \\|x\\| \\leq 1\\}$ and its boundary sphere $S^{n-1} = \\{x : \\|x\\| = 1\\}$ — the geometric setting of Brouwer's theorem"
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "related",
+      "description": "The area formula $A = \\pi r^2$ gives the measure of the 2-disk $B^2$ where the 2-dimensional Brouwer theorem applies. The non-retractibility of $B^2$ onto $S^1$ can be seen measure-theoretically: any retraction would have to 'collapse' the disk's 2-dimensional area onto the circle's 1-dimensional boundary"
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "thematic",
+      "description": "Both are non-constructive existence/impossibility results: Brouwer proves a fixed point exists without exhibiting it, while the halting problem proves no general decision procedure exists. Both involve self-referential constructions — the retraction construction uses the hypothetical fixed-point-free map to create a paradox, paralleling Turing's diagonalization"
     }
   ],
   "relatedProofs": [
@@ -237,6 +252,9 @@
     "schauder-fixed-point",
     "poincare-conjecture",
     "mean-value-theorem",
-    "brouwer-fixed-point-oq-02"
+    "brouwer-fixed-point-oq-02",
+    "pythagorean-theorem",
+    "area-of-circle",
+    "halting-problem"
   ]
 }
