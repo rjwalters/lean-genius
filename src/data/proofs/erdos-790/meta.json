@@ -68,6 +68,12 @@
       "**CKS Conjecture (OPEN)**: l(n) ≥ n^{1-o(1)} would mean l(n) is nearly linear",
       "**Erdős's Lost Proof**: He claimed l(n) = o(n) in 1965 but couldn't reconstruct it by 1973",
       "**Probabilistic Methods**: Lower bound constructions use random or greedy selection"
+    ],
+    "prerequisites": [
+      "Sum-free sets: the classical definition (no a + b = c within the set) versus the weaker Erdos variant (no element equals a sum of two or more distinct others), and the relationship between these two notions",
+      "Extremal combinatorics: the study of extremal functions f(n) guaranteeing the existence of substructures in any configuration of size n, and techniques for proving upper and lower bounds on such functions",
+      "The probabilistic method: random subset selection, greedy algorithms, and the Lovasz Local Lemma as tools for constructing large sum-free subsets and proving existential lower bounds",
+      "Asymptotic analysis: big-O, little-o, and Omega notation, iterated logarithms, and the meaning of bounds like n^{1-o(1)} indicating near-linear growth"
     ]
   },
   "sections": [
