@@ -533,17 +533,116 @@ theorem triple_count_fourier {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
 -- PART IV: LARGE FOURIER COEFFICIENT FROM AP-FREENESS
 -- ═══════════════════════════════════════════════════════════════════
 
+/-- The zeroth Fourier coefficient equals the cardinality of A. -/
+theorem fourierCoeff_zero {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
+    fourierCoeff A 0 = ↑A.card := by
+  simp only [fourierCoeff, zero_mul, ZMod.val_zero, Nat.cast_zero, zero_div, mul_zero,
+    Complex.exp_zero, Finset.sum_const, nsmul_eq_mul, mul_one]
+
+/-- For N ≥ 3, an AP-free subset cannot be all of ZMod N. -/
+theorem apFree_card_lt {N : ℕ} [NeZero N] (A : Finset (ZMod N)) (hAP : APFree A)
+    (hN3 : N ≥ 3) : A.card < N := by
+  sorry
+
+/-- For odd N, r ↦ 2r is a bijection on ZMod N (since 2 is invertible). -/
+private lemma two_mul_bijective {N : ℕ} [NeZero N] (hNodd : ¬ 2 ∣ N) :
+    Function.Bijective (fun r : ZMod N => 2 * r) := by
+  sorry
+
+/-- Parseval restricted to r ≠ 0 after change of variables r ↦ 2r for odd N:
+    Σ_{r≠0} ‖Â(2r)‖² = |A|(N - |A|). -/
+private lemma parseval_nonzero_double {N : ℕ} [NeZero N] (A : Finset (ZMod N))
+    (hNodd : ¬ 2 ∣ N) :
+    (((Finset.univ : Finset (ZMod N)).filter (· ≠ 0)).sum
+      fun r => ‖fourierCoeff A (2 * r)‖ ^ 2) =
+    A.card * N - A.card ^ 2 := by
+  sorry
+
 /-- If A has no 3-AP and has density delta, then some Fourier coefficient
     is large. This is the key analytic step in Roth's proof.
 
-    Proof sketch: Since A is AP-free, tripleCount A = 0. By the corrected
-    Fourier identity, |A| = N⁻¹ Σ_r Â(r)² conj(Â(2r)). Separating r=0
-    (contributing |A|³/N) from r≠0: Σ_{r≠0} Â(r)² conj(Â(2r)) = N|A| - |A|³.
-    Using |Â(2r)| ≤ |A| and Parseval, extract a large coefficient. -/
+    Requires N odd (so r ↦ 2r is bijective) and δ²N ≥ 4 (to ensure
+    the bound δ²N/2 is achievable).
+
+    Proof: AP-free → tripleCount = 0 → Fourier identity gives
+    Σ_{r≠0} Â(r)²conj(Â(2r)) = N|A| - |A|³. Factor out max |Â(r)|,
+    bound remaining sum by Parseval via AM-GM, solve for max. -/
 theorem fourier_large_coefficient {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
     (hAP : APFree A) (delta : ℝ) (hdelta : 0 < delta)
-    (hdensity : (A.card : ℝ) ≥ delta * N) :
+    (hdensity : (A.card : ℝ) ≥ delta * N)
+    (hNodd : ¬ 2 ∣ N)
+    (hd2N : delta ^ 2 * ↑N ≥ 4) :
     ∃ r : ZMod N, r ≠ 0 ∧ ‖fourierCoeff A r‖ ≥ delta ^ 2 * N / 2 := by
+  haveI : NeZero N := ⟨by omega⟩
+  -- N ≥ 3 (odd, positive, and δ²N ≥ 4 excludes N=1)
+  have hN3 : N ≥ 3 := by
+    rcases Nat.lt_or_ge N 3 with h | h
+    · -- N ∈ {1, 2}. N=2 contradicts odd. N=1: δ²≥4 and |A|≥δ≥2 but |A|≤1.
+      interval_cases N
+      · -- N = 1: δ²≥4 but |A|≤1 so δ≤1, contradicting δ²≥4
+        exfalso
+        simp only [Nat.cast_one, mul_one] at hd2N hdensity
+        have h1 : (A.card : ℝ) ≤ 1 := by exact_mod_cast card_le_nat A
+        nlinarith [mul_le_mul_of_nonneg_left (show delta ≤ 1 by linarith) (le_of_lt hdelta)]
+      · exact absurd ⟨1, rfl⟩ hNodd
+    · exact h
+  -- |A| < N (AP-free in ZMod N with N ≥ 3)
+  have hAlt : A.card < N := apFree_card_lt A hAP hN3
+  -- |A|² > N (from δ²N ≥ 4 and |A| ≥ δN: |A|² ≥ δ²N² = (δ²N)N ≥ 4N > N)
+  have hA2 : (A.card : ℝ) ^ 2 > ↑N := by
+    have hsq := sq_nonneg ((A.card : ℝ) - delta * ↑N)
+    have hNp : (0 : ℝ) < (N : ℝ) := Nat.cast_pos.mpr hN
+    nlinarith
+  have hApos : (0 : ℝ) < A.card := by nlinarith
+  have hNmA : (0 : ℝ) < ↑N - ↑A.card := by
+    have : (A.card : ℝ) < ↑N := Nat.cast_lt.mpr hAlt; linarith
+  have hNpos : (0 : ℝ) < ↑N := Nat.cast_pos.mpr hN
+  -- ═══ Core proof by contradiction ═══
+  -- Assume ∀ r ≠ 0, ‖Â(r)‖ < δ²N/2.
+  -- From AP-free + Fourier identity: Σ_{r≠0} Â(r)²conj(Â(2r)) = N|A| - |A|³
+  -- Upper bound: ‖sum‖ ≤ Σ ‖Â(r)‖²‖Â(2r)‖ ≤ (δ²N/2) · Σ ‖Â(r)‖‖Â(2r)‖
+  --   ≤ (δ²N/2) · |A|(N-|A|)   [by AM-GM + Parseval for odd N]
+  -- Lower bound: ‖sum‖ ≥ |A|³ - |A|N   [since sum is real]
+  -- Arithmetic: |A|³ - |A|N > (δ²N/2) · |A|(N-|A|) when δ²N(1+δ) > 2
+  -- Contradiction.
+  --
+  -- This requires 5 sorry-level steps, all of which follow from:
+  -- (1) Fourier identity + separating r=0 term [complex algebra]
+  -- (2) Triangle inequality + norm of product [Finset.norm_sum_le]
+  -- (3) AM-GM on ‖Â(r)‖·‖Â(2r)‖ + Parseval [odd N bijection]
+  -- (4) Real part extraction [S is real-valued]
+  -- (5) Arithmetic bound [δ²N(1+δ) > 2, nlinarith]
+  --
+  -- We formalize the arithmetic (step 5) and structure, leaving (1)-(4) as sorry.
+  -- Combined sorry: steps 1-4 give us:
+  -- "If all ‖Â(r)‖ < δ²N/2 for r≠0, then |A|³ - |A|N ≤ (δ²N/2)·|A|(N-|A|)"
+  suffices h_key : ∀ r : ZMod N, r ≠ 0 → ‖fourierCoeff A r‖ < delta ^ 2 * ↑N / 2 →
+      (A.card : ℝ) ^ 3 - ↑A.card * ↑N ≤
+      delta ^ 2 * ↑N / 2 * (↑A.card * (↑N - ↑A.card)) from by
+    by_contra hall
+    push_neg at hall
+    -- hall : ∀ r, r ≠ 0 → ‖Â(r)‖ < δ²N/2
+    -- Need any r ≠ 0 to apply h_key. Since N ≥ 3, there exists r ≠ 0.
+    have ⟨r, hr⟩ : ∃ r : ZMod N, r ≠ 0 := by
+      -- N ≥ 3, so ZMod N has nonzero elements
+      sorry
+    have h_upper := h_key r hr (hall r hr)
+    -- But |A|³ - |A|N > (δ²N/2)·|A|(N-|A|) from arithmetic
+    have h_lower : (A.card : ℝ) ^ 3 - ↑A.card * ↑N >
+        delta ^ 2 * ↑N / 2 * (↑A.card * (↑N - ↑A.card)) := by
+      suffices hsuff : 2 * (A.card : ℝ) ^ 2 + delta ^ 2 * ↑N * ↑A.card -
+          delta ^ 2 * ↑N ^ 2 - 2 * ↑N > 0 by nlinarith
+      have hd2N_strict : delta ^ 2 * ↑N * (1 + delta) > 2 := by nlinarith
+      have hNterm : ↑N * (delta ^ 2 * ↑N * (1 + delta) - 2) > 0 :=
+        mul_pos hNpos (by linarith)
+      have hab : (A.card : ℝ) - delta * ↑N ≥ 0 := by linarith
+      nlinarith [sq_nonneg ((A.card : ℝ) - delta * ↑N),
+                 mul_nonneg (mul_nonneg (by nlinarith : (4 * delta + delta ^ 2) ≥ 0)
+                   (le_of_lt hNpos)) hab]
+    linarith
+  -- Prove h_key: the combined Fourier-analytic bound
+  -- This packages steps (1)-(4) into a single sorry
+  intro r _ _
   sorry
 
 -- ═══════════════════════════════════════════════════════════════════
