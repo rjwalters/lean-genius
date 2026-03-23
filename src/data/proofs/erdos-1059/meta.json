@@ -84,7 +84,32 @@
       "Set.Infinite for stating infinitary conjectures",
       "Decidable arithmetic: interval_cases and decide tactics"
     ],
-    "lineCount": 143
+    "lineCount": 143,
+    "leanFile": {
+      "lineCount": 143,
+      "structureCount": 0,
+      "axiomCount": 3,
+      "theoremCount": 6,
+      "lemmaCount": 0,
+      "defCount": 1,
+      "imports": [
+        "Mathlib.Data.Nat.Prime.Basic",
+        "Mathlib.Data.Nat.Factorial.Basic",
+        "Mathlib.Data.Set.Basic",
+        "Mathlib.Data.Finset.Basic",
+        "Mathlib.Tactic"
+      ]
+    },
+    "relatedProblems": [
+      {
+        "id": "erdos-1057",
+        "relationship": "Sister Erdős problem about prime-related counting; both concern infinitude of special prime sets"
+      },
+      {
+        "id": "erdos-68",
+        "relationship": "Both involve factorial-prime interactions from different angles"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "This problem appears as Problem A2 in Guy's *Unsolved Problems in Number Theory* [Gu04], attributed to Erdős circa 1980. It probes the interaction between two fundamental sequences in number theory — primes and factorials — through subtraction.\n\nThe factorials $1, 2, 6, 24, 120, 720, \\ldots$ grow super-exponentially (Stirling: $k! \\sim \\sqrt{2\\pi k}(k/e)^k$), so only $O(\\log n / \\log \\log n)$ factorials lie below $n$. This means the factorial-subtraction condition is mild: for $n \\sim 10^6$, only 9 factorials need checking. The known examples are $p = 101$ (factorials to check: $1, 2, 6, 24$) and $p = 211$ (factorials: $1, 2, 6, 24, 120$). The prime $89$ fails because $89 - 6 = 83$ is prime. These are listed in OEIS A064152.\n\nThe probabilistic heuristic is compelling: each $p - k!$ is prime independently with probability $\\sim 1/\\ln p$ (by the prime number theorem). With only $\\sim \\log p / \\log \\log p$ values to check, the probability that *all* subtractions are composite is $(1 - 1/\\ln p)^{O(\\log p / \\log \\log p)} \\to 1$ as $p \\to \\infty$. This suggests that not only are there infinitely many such primes, but *almost all* large primes satisfy the property — yet no rigorous proof exists.\n\nErdős suggested a potentially easier variant: find infinitely many $n$ in $(l!, (l+1)!]$ whose prime factors all exceed $l$ and whose factorial subtractions are all composite. This removes the requirement that $n$ itself be prime, possibly making the problem more tractable via sieve methods. The connection to smooth numbers (integers with only small prime factors) links this variant to the Dickman function $\\rho(u)$ and the theory of friable integers.",
@@ -202,6 +227,11 @@
       "targetId": "prime-number-theorem",
       "relationship": "foundational",
       "description": "The probabilistic heuristic for this problem relies on the PNT: the probability that a random integer near $p$ is prime is $\\sim 1/\\ln p$. With $O(\\log p / \\log \\log p)$ factorial subtractions to check, the expected number of prime subtractions is $O(\\log p / (\\log p \\cdot \\log \\log p)) \\to 0$, suggesting almost all large primes satisfy the property"
+    },
+    {
+      "targetId": "erdos-1058",
+      "relationship": "related",
+      "description": "Both problems concern the interplay between primes and factorials: #1058 studies prime divisors of $n!+1$ between consecutive primes, while #1059 studies primality of $p - k!$. Both exploit the super-exponential growth of factorials to reduce infinite problems to finite case analysis"
     }
   ],
   "relatedProofs": [
@@ -209,6 +239,7 @@
     "wilsons-theorem",
     "bertrands-postulate",
     "erdos-1057",
+    "erdos-1058",
     "erdos-68",
     "erdos-728-factorial-divisibility",
     "fundamental-arithmetic",
