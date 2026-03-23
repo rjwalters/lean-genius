@@ -166,6 +166,26 @@
       "targetId": "gcd-algorithm",
       "relationship": "foundational",
       "description": "The GCD algorithm is essential for the classification: primitive Pythagorean triples require $\\gcd(m, n) = 1$ with $m, n$ of opposite parity. The reduction from general to primitive triples uses GCD."
+    },
+    {
+      "targetId": "erdos-1148",
+      "relationship": "extended-by",
+      "description": "Erdős Problem #1148 studies $x^2 + y^2 = z^2 + n$, generalizing the Pythagorean equation ($n = 0$ case) to ask which integers $n$ are representable as a difference of a sum of two squares and a perfect square"
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "related",
+      "description": "The coprimality condition $\\gcd(m, n) = 1$ in the parametrization of primitive triples is tested and characterized via Bézout's identity. The extended Euclidean algorithm reduces a triple to its primitive core"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "related",
+      "description": "The classification of Pythagorean triples depends on unique prime factorization: a positive integer $c$ is a hypotenuse iff every prime factor $p \\equiv 3 \\pmod{4}$ appears to an even power in the factorization of $c$"
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "related",
+      "description": "The unit circle parametrization underlying the Pythagorean triple formula uses $x = \\cos\\theta$, $y = \\sin\\theta$, directly connecting to the circle's geometry. The rational parametrization via stereographic projection is essentially the Weierstrass substitution $t = \\tan(\\theta/2)$"
     }
   ],
   "relatedProofs": [
@@ -173,7 +193,11 @@
     "pythagorean-theorem",
     "sqrt2-irrational",
     "fermat-two-squares",
-    "gcd-algorithm"
+    "gcd-algorithm",
+    "erdos-1148",
+    "bezout-identity",
+    "fundamental-arithmetic",
+    "area-of-circle"
   ],
   "leanFile": {
     "imports": [
@@ -194,6 +218,27 @@
       "year": "~300 BCE",
       "venue": "Alexandria",
       "note": "Parametrization of Pythagorean triples: (m²-n², 2mn, m²+n²) for m > n > 0 coprime with opposite parity"
+    },
+    {
+      "authors": "Neugebauer, Otto; Sachs, Abraham",
+      "title": "Mathematical Cuneiform Texts",
+      "year": "1945",
+      "venue": "American Oriental Society, New Haven",
+      "note": "First modern analysis of the Plimpton 322 tablet (c. 1800 BCE), showing Babylonian mathematicians systematically generated Pythagorean triples — including large examples like (4601, 4800, 6649) — using a parametric method equivalent to the Euclid formula"
+    },
+    {
+      "authors": "Hardy, G.H.; Wright, E.M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th edition",
+      "note": "Chapter 13: complete proof of the classification via the Gaussian integer factorization a² + b² = (a + bi)(a - bi) = c², connecting Pythagorean triples to the arithmetic of Z[i]"
+    },
+    {
+      "authors": "Sierpiński, Wacław",
+      "title": "Pythagorean Triangles",
+      "year": "2003",
+      "venue": "Dover Publications (reprint of 1962 original)",
+      "note": "Comprehensive monograph devoted entirely to Pythagorean triples: parametrization, counting formulas, geometric properties, and connections to Pell equations and continued fractions"
     }
   ]
 }
