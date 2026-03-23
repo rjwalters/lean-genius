@@ -261,6 +261,16 @@
       "targetId": "konigsberg",
       "relationship": "thematic",
       "description": "Both are pioneering results in topology: Euler's solution of the Königsberg bridge problem (1736) launched graph theory and combinatorial topology, while Brouwer's fixed point theorem (1911) launched algebraic topology. The progression from Euler's discrete topological insight to Brouwer's continuous one mirrors the development of topology from combinatorial to algebraic"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "foundational",
+      "description": "Cauchy-Schwarz provides the triangle inequality $\\|u+v\\| \\leq \\|u\\| + \\|v\\|$ that makes the closed ball $B^n = \\{x : \\|x\\| \\leq 1\\}$ convex and the norm continuous — both prerequisites for Brouwer's theorem. The inner product structure governed by Cauchy-Schwarz ensures the ball is a well-behaved compact convex set"
+    },
+    {
+      "targetId": "isoperimetric-theorem",
+      "relationship": "thematic",
+      "description": "Both characterize fundamental properties of the ball/sphere: the isoperimetric theorem shows the ball maximizes volume for given surface area, while Brouwer's theorem shows the ball has the fixed point property. Both use compactness and convexity in essential ways — the isoperimetric theorem via calculus of variations, Brouwer via algebraic topology"
     }
   ],
   "relatedProofs": [
@@ -275,6 +285,8 @@
     "pythagorean-theorem",
     "area-of-circle",
     "halting-problem",
-    "konigsberg"
+    "konigsberg",
+    "cauchy-schwarz",
+    "isoperimetric-theorem"
   ]
 }
