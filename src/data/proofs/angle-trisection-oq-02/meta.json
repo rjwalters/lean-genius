@@ -202,7 +202,7 @@
       "startLine": 46,
       "endLine": 59,
       "summary": "Three proved theorems about 2-groups: IsPGroup.iff_card (2-group ↔ order is 2^n), IsPGroup.of_card (2-power order → 2-group), and their combination.",
-      "mathContext": "A finite group $G$ is a 2-group $\\iff |G| = 2^n$ for some $n \\geq 0$. Equivalently, every element has order a power of 2."
+      "mathContext": "A finite group $G$ is a 2-group $\\iff |G| = 2^n$ for some $n \\geq 0$. Examples: $\\mathbb{Z}/2\\mathbb{Z}$, $\\mathbb{Z}/4\\mathbb{Z}$, $D_4$ (order 8), $Q_8$ (order 8). Non-examples: $S_3$ (order 6), $\\mathbb{Z}/3\\mathbb{Z}$ (order 3). The order characterization `IsPGroup.iff_card` bridges between Mathlib's element-wise definition and the cardinality condition needed for the constructibility criterion."
     },
     {
       "id": "constructibility",
@@ -226,7 +226,7 @@
       "startLine": 94,
       "endLine": 141,
       "summary": "Proved: Gal(x³-2/ℚ) (order 6) and Gal(8x³-6x-1/ℚ) (order 3) are NOT 2-groups. Key: 3 divides both orders but gcd(3,2^n)=1, so neither is a power of 2.",
-      "mathContext": "$|\\text{Gal}(x^3-2/\\mathbb{Q})| = 6 = 2 \\cdot 3$, not $2^n$. $|\\text{Gal}(8x^3-6x-1/\\mathbb{Q})| = 3$, not $2^n$. Key: $\\gcd(3, 2^n) = 1$ so $3 \\nmid 2^n$."
+      "mathContext": "$|\\text{Gal}(x^3-2/\\mathbb{Q})| = 6 = 2 \\cdot 3$: since $\\gcd(3, 2) = 1$, we get $\\gcd(3, 2^n) = 1$ by `Nat.Coprime.pow_right`, so $3 \\nmid 2^n$, but $3 \\mid 6$, contradiction with $6 = 2^n$. Same argument for $|\\text{Gal}(8x^3-6x-1/\\mathbb{Q})| = 3$. The private lemma `not_pow_two_of_eq_six` encapsulates this coprimality argument and is reused for both non-constructibility proofs ($\\sqrt[3]{2}$ and $\\cos 20°$)."
     },
     {
       "id": "constructible-examples",
@@ -234,7 +234,7 @@
       "startLine": 143,
       "endLine": 200,
       "summary": "PROVED: |Gal(x²-2/ℚ)| = 2 via divisibility squeeze (prime degree divides |Gal|, Gal embeds into S₂). Gal(x⁴-2/ℚ) = 8 from InverseGaloisD4. Both are 2-groups.",
-      "mathContext": "$|\\text{Gal}(x^2-2/\\mathbb{Q})| = 2 = 2^1$ ($\\sqrt{2}$ constructible). $|\\text{Gal}(x^4-2/\\mathbb{Q})| = 8 = 2^3$ ($\\sqrt[4]{2}$ constructible)."
+      "mathContext": "$|\\text{Gal}(x^2-2/\\mathbb{Q})| = 2 = 2^1$: the only automorphism is $\\sqrt{2} \\mapsto -\\sqrt{2}$, so $\\text{Gal} \\cong \\mathbb{Z}/2\\mathbb{Z}$. $|\\text{Gal}(x^4-2/\\mathbb{Q})| = 8 = 2^3$: the four roots $\\zeta^k \\sqrt[4]{2}$ ($\\zeta = i$) yield $\\text{Gal} \\cong D_4$. Both are 2-groups via `IsPGroup.of_card`, confirming $\\sqrt{2}$ and $\\sqrt[4]{2}$ are constructible. Geometrically: $\\sqrt{2}$ is the unit square diagonal (one compass step), $\\sqrt[4]{2} = \\sqrt{\\sqrt{2}}$ requires two successive square root extractions."
     },
     {
       "id": "oq01-connection",
@@ -242,7 +242,7 @@
       "startLine": 202,
       "endLine": 242,
       "summary": "PROVED: galois_2group_implies_degree_pow2 via tower law (natDegree | finrank(SplittingField) = |Gal| = 2^k). Former axiom eliminated.",
-      "mathContext": "$\\deg(\\text{minpoly}) \\mid [\\text{SplittingField} : \\mathbb{Q}] = |\\text{Gal}| = 2^k$, so $\\deg(\\text{minpoly}) = 2^j$ for some $j \\leq k$."
+      "mathContext": "The chain: $\\text{natDegree}(\\text{minpoly}) \\mid [\\text{SplittingField}:\\mathbb{Q}] = |\\text{Gal}| = 2^k$ (by the tower law and the Galois group order theorem), so $\\text{natDegree} = 2^j$ for some $j \\leq k$. This shows OQ-02's Galois criterion strictly implies OQ-01's degree criterion: constructible $\\Rightarrow$ 2-group Gal $\\Rightarrow$ $\\deg \\mid 2^n$. The reverse fails: some degree-$2^k$ polynomials have non-2-group Galois groups."
     },
     {
       "id": "contrapositives",
