@@ -1,0 +1,155 @@
+{
+  "id": "birthday-problem-oq-03",
+  "title": "Birthday Problem: k-Way Coincidences",
+  "slug": "birthday-problem-oq-03",
+  "description": "Generalizes the Birthday Problem from pairwise collisions to k-way coincidences. Proves the generalized pigeonhole bound, classical recovery (k=2 equals non-injectivity), monotonicity, and probability formulas. Fully proved with 0 axioms and 0 sorries.",
+  "meta": {
+    "status": "verified",
+    "tags": [
+      "combinatorics",
+      "probability",
+      "pigeonhole",
+      "open-question"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All theorems fully proved from Mathlib.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_eq_sum_card_fiberwise",
+        "description": "Decomposes set cardinality as sum of fiber cardinalities",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.sum_le_sum",
+        "description": "Pointwise inequality on summands propagates to sums",
+        "module": "Mathlib.Algebra.BigOperators.Order"
+      },
+      {
+        "theorem": "Finset.one_lt_card",
+        "description": "A set has more than one element iff it contains two distinct elements",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of k-way coincidences via fiber cardinality",
+      "Generalized pigeonhole bound: n > (k-1)*d implies k-way coincidence is certain",
+      "Classical recovery: 2-way coincidence is equivalent to non-injectivity",
+      "Monotonicity: k-way coincidence implies k'-way for k' <= k",
+      "Probability formula and probability = 1 when pigeonhole bound exceeded",
+      "Probability monotonicity in k: higher k gives lower probability",
+      "Fiber partition of unity: fiber sizes sum to total population"
+    ],
+    "dateAdded": "2026-03-23"
+  },
+  "overview": {
+    "historicalContext": "The birthday problem, first stated by von Mises (1939), asks how many people are needed for a >50% chance of a shared birthday. The natural generalization asks about k-way coincidences: when do k people share a birthday? This connects to the occupancy problem in combinatorics, hash table collision analysis, and the generalized pigeonhole principle. The threshold scales roughly as d^{(k-1)/k}, so while k=2 needs ~23 people for 365 days, k=3 needs ~88 and k=4 needs ~187.",
+    "problemStatement": "Formalize k-way birthday coincidences: given n people and d days, prove the generalized pigeonhole bound (n > (k-1)*d implies a k-way coincidence is certain), and show the k=2 case recovers the classical birthday problem.",
+    "proofStrategy": "The proof uses fiber decomposition: each assignment f : Fin n -> Fin d partitions people into fibers by day. The fiber sizes sum to n (partition of unity). The generalized pigeonhole follows by contradiction: if every fiber has < k elements, then n <= (k-1)*d. The classical recovery connects 2-way coincidences to non-injectivity by showing fibers of size >= 2 correspond to collisions.",
+    "keyInsights": [
+      "The fiber decomposition (using Finset.card_eq_sum_card_fiberwise) is the key structural tool: it converts the global constraint on n into local constraints on each day",
+      "The generalized pigeonhole follows from a simple averaging argument: n people in d bins with each bin having < k means n < k*d",
+      "The k=2 classical recovery uses Finset.one_lt_card to extract two distinct elements from a fiber, connecting fiber size >= 2 to non-injectivity",
+      "Monotonicity in k is immediate: if some day has >= k people, it certainly has >= k' people for k' <= k",
+      "The probability monotonicity follows from set containment: fewer safe assignments for smaller k means higher collision probability"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 34,
+      "endLine": 47,
+      "summary": "Defines fiberAt (the set of people assigned to a day) and HasKWay (some day has at least k people)."
+    },
+    {
+      "id": "fiber-partition",
+      "title": "Fiber Partition of Unity",
+      "startLine": 49,
+      "endLine": 63,
+      "summary": "Proves fiber sizes sum to n using Finset.card_eq_sum_card_fiberwise."
+    },
+    {
+      "id": "pigeonhole",
+      "title": "Generalized Pigeonhole",
+      "startLine": 65,
+      "endLine": 112,
+      "summary": "Proves the generalized pigeonhole bound with examples for d=365."
+    },
+    {
+      "id": "classical-recovery",
+      "title": "Classical Recovery (k=2)",
+      "startLine": 114,
+      "endLine": 170,
+      "summary": "Shows 2-way coincidence equals non-injectivity, connecting to the standard birthday problem."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity",
+      "startLine": 172,
+      "endLine": 193,
+      "summary": "Proves k-way implies k'-way for k' <= k."
+    },
+    {
+      "id": "trivial-cases",
+      "title": "Trivial Cases",
+      "startLine": 195,
+      "endLine": 228,
+      "summary": "Validates the definition with edge cases: k=0 always satisfied, k=1 iff n > 0."
+    },
+    {
+      "id": "probability",
+      "title": "Probability Formula",
+      "startLine": 230,
+      "endLine": 280,
+      "summary": "Defines probKWay, proves it equals 1 when pigeonhole applies, and monotonicity in k."
+    },
+    {
+      "id": "classical-connection",
+      "title": "Connection to Classical Birthday Problem",
+      "startLine": 282,
+      "endLine": 296,
+      "summary": "Shows the no-2-way set equals the set of injective functions."
+    },
+    {
+      "id": "counting",
+      "title": "Counting Examples",
+      "startLine": 298,
+      "endLine": 330,
+      "summary": "Verifies small cases: 1 person has no 2-way, 0 people have no k-way."
+    },
+    {
+      "id": "bounds",
+      "title": "Population Bounds",
+      "startLine": 332,
+      "endLine": 366,
+      "summary": "Proves that n < k people cannot have a k-way coincidence, and the probability is 0."
+    }
+  ],
+  "conclusion": {
+    "summary": "Provides a complete formalization of k-way birthday coincidences with 0 axioms and 0 sorries. The 25 theorems cover the generalized pigeonhole principle, classical recovery, monotonicity, probability formulas, and counting results.",
+    "implications": "This generalization is relevant to hash function security (k-way collisions), load balancing (ensuring no server gets more than k requests), and the occupancy problem in combinatorics. The generalized pigeonhole bound gives hard capacity limits.",
+    "openQuestions": [
+      "Can the exact threshold for k=3 (approximately n=88 for d=365) be computed using multinomial coefficient sums?",
+      "Can the Poisson approximation for k-way coincidences be formalized, connecting to Mathlib's probability theory?",
+      "What is the asymptotic scaling of the k-way threshold as a function of k and d?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "birthday-problem",
+      "relationship": "generalizes",
+      "description": "Generalizes from 2-way to k-way coincidences"
+    },
+    {
+      "targetId": "birthday-problem-oq-02",
+      "relationship": "related",
+      "description": "The asymptotic bound formalization complements this combinatorial approach"
+    }
+  ],
+  "relatedProofs": [
+    "birthday-problem",
+    "birthday-problem-oq-02"
+  ]
+}
