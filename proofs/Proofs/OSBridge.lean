@@ -293,7 +293,14 @@ We define a minimal Wightman structure here to state the reconstruction theorem
 independently of the main YangMillsMassGap.lean file. -/
 
 /-- A Wightman quantum field theory in Minkowski spacetime.
-    This is the output of the OS reconstruction theorem. -/
+    This is the output of the OS reconstruction theorem.
+
+    NOTE: This is structurally isomorphic to the canonical `WightmanQFT` at
+    line 335 of YangMillsMassGap.lean, but not definitionally equal (different
+    field names: `instNACG`/`instIPS`/`instCS` vs `normedAddCommGroup`/
+    `innerProductSpace`/`completeSpace`, and `energy_nonneg`/`vacuum_ground`
+    vs `energy_bounded_below`/`vacuum_lowest_energy`). Unification would
+    require extracting to a shared module; see issue #5282. -/
 structure WightmanQFT where
   /-- The Hilbert space of states -/
   H : Type*
