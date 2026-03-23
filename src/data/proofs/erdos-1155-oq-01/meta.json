@@ -138,7 +138,7 @@
       "id": "asymptotic-setup",
       "title": "Asymptotic Infrastructure",
       "summary": "Axiomatizes the triangle removal function f(n) with basic properties and BFL bounds. States the Erdős conjecture as ∃ c₁, c₂ > 0 with c₁·n^{3/2} ≤ f(n) ≤ c₂·n^{3/2} eventually.",
-      "startLine": 78,
+      "startLine": 83,
       "endLine": 104,
       "mathContext": "Axioms: $0 \\leq f(n) \\leq \\binom{n}{2}$, BFL: $\\forall \\varepsilon > 0, \\; n^{3/2-\\varepsilon} \\leq f(n) \\leq n^{3/2+\\varepsilon}$ eventually."
     },
@@ -162,7 +162,7 @@
       "id": "exponent-characterization",
       "title": "Exponent Characterization and Small Values",
       "summary": "Proves 3/2 is the exact critical exponent. f(n) = O(n^α) for all α > 3/2 but for no β < 3/2. Includes small-value bounds and ratio reformulation of BFL.",
-      "startLine": 221,
+      "startLine": 226,
       "endLine": 305,
       "mathContext": "Critical exponent: $f(n) = O(n^\\alpha)$ for $\\alpha > 3/2$, $f(n) \\neq O(n^\\beta)$ for $\\beta < 3/2$. Ratio: $R(n) = f(n)/n^{3/2} \\in [n^{-\\varepsilon}, n^{\\varepsilon}]$."
     },
@@ -170,7 +170,7 @@
       "id": "sufficient-conditions",
       "title": "Sufficient Conditions for the Conjecture",
       "summary": "If f(n)/n^{3/2} → L > 0, the conjecture holds with c₁ = L/2, c₂ = 3L/2. The weaker limsup/liminf boundedness condition also suffices.",
-      "startLine": 306,
+      "startLine": 311,
       "endLine": 355,
       "mathContext": "$f(n)/n^{3/2} \\to L > 0 \\implies$ conjecture with $c_1 = L/2, c_2 = 3L/2$. Weaker: $0 < \\liminf \\leq \\limsup < \\infty$ also suffices."
     },
@@ -178,7 +178,7 @@
       "id": "lower-exponent",
       "title": "Lower Exponent Characterization",
       "summary": "BFL implies f eventually exceeds any sub-3/2 power: for any α < 3/2, eventually n^α ≤ f(n). Includes superlinear and n^{5/4} special cases.",
-      "startLine": 357,
+      "startLine": 362,
       "endLine": 370,
       "mathContext": "$\\forall \\alpha < 3/2: \\; n^\\alpha \\leq f(n)$ eventually. Take $\\varepsilon = 3/2 - \\alpha$ in the BFL lower bound."
     },
@@ -186,7 +186,7 @@
       "id": "mantel-connection",
       "title": "Mantel/Turán Connection",
       "summary": "Connects the triangle removal process to Mantel's theorem: the triangle-free terminal graph has at most n²/4 edges. BFL's n^{7/4} bound is strictly tighter.",
-      "startLine": 372,
+      "startLine": 382,
       "endLine": 403,
       "mathContext": "Mantel: $f(n) \\leq n^2/4$ (triangle-free). BFL: $f(n) \\leq n^{7/4}$. Hierarchy: $n^{3/2} \\ll n^{7/4} \\ll n^2/4$."
     },
@@ -194,7 +194,7 @@
       "id": "hierarchy",
       "title": "Hierarchy of Bounds",
       "summary": "Proves the strict weakening chain: Conjecture ⟹ BFL ⟹ Grable, each step losing information about the multiplicative constant.",
-      "startLine": 405,
+      "startLine": 411,
       "endLine": 445,
       "mathContext": "Strict hierarchy: $\\Theta(n^{3/2}) \\Longrightarrow n^{3/2 \\pm o(1)} \\Longrightarrow n^{7/4+o(1)}$. Each step relaxes the multiplicative constant control."
     },
