@@ -30,8 +30,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-23T18:00:00Z",
-    "iteration": 2,
-    "focus": "Proved 2 of 12 axioms. Core infrastructure (fourier_norm_one, half-period identity) now verified.",
+    "iteration": 3,
+    "focus": "Proved Cinfty rapid decay. 9 axioms remain.",
     "blockers": [
       "holder_translation_bound needs QuotientAddGroup distance API (dist on AddCircle)",
       "fourierCoeff_difference_formula needs Haar measure translation invariance"
@@ -44,10 +44,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced axiom count from 12 to 10. Proved fourier_norm_one and fourier_translate_halfperiod.",
+    "progressSummary": "PROGRESS: Proved fourierCoeff_Cinfty_rapid_decay (C^∞ rapid decay follows from C^k decay). Axiom count: 10→9. 0 sorries.",
     "builtItems": [
       "fourier_norm_one: proved via simp [fourier_apply] — toCircle maps to unit circle",
-      "fourier_translate_halfperiod: proved via fourier_neg + fourier_add_half_inv_index + map_neg"
+      "fourier_translate_halfperiod: proved via fourier_neg + fourier_add_half_inv_index + map_neg",
+      "Proved fourierCoeff_Cinfty_rapid_decay: C^∞ ⟹ rapid decay, trivially from fourierCoeff_smooth_decay (C^∞ ⟹ C^k for all k)"
     ],
     "insights": [
       "fourier_apply unfolds to ↑(n • x).toCircle, which immediately gives unit norm via simp",
@@ -55,7 +56,8 @@
       "fourier_neg relates fourier(-n) to starRingEnd(fourier n), enabling conjugation approach",
       "T/(2*n) vs T/2/n: ring normalizes between these equivalent forms",
       "holder_translation_bound needs QuotientAddGroup dist API — dist(x, x+↑s) ≤ |s| on AddCircle",
-      "integral_product_bound needs norm_integral_le + fourier_norm_one + holder_bound + probability measure"
+      "integral_product_bound needs norm_integral_le + fourier_norm_one + holder_bound + probability measure",
+      "fourierCoeff_Cinfty_rapid_decay is a trivial consequence of fourierCoeff_smooth_decay — C^∞ means C^k for all k"
     ],
     "mathlibGaps": [
       "No obvious dist(x, x+↑s) ≤ |s| lemma found for AddCircle quotient metric"
@@ -95,8 +97,8 @@
       "path": "Proofs/FourierSeriesOQ02.lean",
       "filename": "FourierSeriesOQ02.lean",
       "lineCount": 280,
-      "theoremCount": 9,
-      "axiomCount": 10,
+      "theoremCount": 10,
+      "axiomCount": 9,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
