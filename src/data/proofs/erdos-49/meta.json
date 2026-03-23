@@ -111,6 +111,77 @@
       "What is the exact value of $\\text{maxIncTotientSize}(N) - \\pi(N)$ for small $N$?"
     ]
   },
+  "crossReferences": [
+    {
+      "slug": "euler-totient",
+      "relationship": "foundation",
+      "note": "Euler's totient function φ(n) is the central object of this problem; its properties (φ(p) = p−1 for primes, multiplicativity, distribution) drive the entire analysis."
+    },
+    {
+      "slug": "erdos-48",
+      "relationship": "sibling",
+      "note": "A neighboring Erdős problem concerning the interaction of φ(n) and σ(m); both problems probe the collision structure of multiplicative arithmetic functions."
+    },
+    {
+      "slug": "erdos-1003",
+      "relationship": "sibling",
+      "note": "Asks whether φ(n) = φ(n+1) infinitely often — directly about the collision structure of φ that limits the size of increasing-totient sets studied here."
+    },
+    {
+      "slug": "erdos-1004",
+      "relationship": "sibling",
+      "note": "Asks about long runs of distinct consecutive totient values; the distribution of φ-values is the same analytic ingredient underlying Tao's proof of Problem #49."
+    },
+    {
+      "slug": "infinitude-primes",
+      "relationship": "prerequisite",
+      "note": "The infinitude of primes guarantees that the lower bound π(N) → ∞, and the set of primes is the explicit witness achieving asymptotic optimality in this problem."
+    },
+    {
+      "slug": "fundamental-arithmetic",
+      "relationship": "prerequisite",
+      "note": "Unique factorization underlies the multiplicativity of φ and the anatomy-of-integers techniques (used by Ford and Tao) to control the distribution of totient values."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "slug": "euler-totient",
+      "description": "Euler's theorem a^φ(n) ≡ 1 (mod n) provides the classical context for the totient function that is maximized over in Problem #49."
+    },
+    {
+      "slug": "erdos-1003",
+      "description": "The question of when φ(n) = φ(n+1) is the collision counterpart to Problem #49's requirement of strict distinctness; resolved tools overlap."
+    },
+    {
+      "slug": "infinitude-primes",
+      "description": "Euclid's infinitude-of-primes result ensures the prime witness set grows without bound, making the asymptotic statement of Problem #49 non-vacuous."
+    }
+  ],
+  "references": [
+    {
+      "citation": "T. Tao, 'The set of primes is the most efficient set with increasing Euler totient values', preprint, 2023.",
+      "url": "https://arxiv.org/abs/2309.02325",
+      "note": "Resolves Erdős Problem #49: |A| ≤ (1 + O((log log x)^5 / log x)) π(x)."
+    },
+    {
+      "citation": "C. Pomerance, 'On the distribution of amicable numbers', Journal für die reine und angewandte Mathematik, 293/294 (1977), 217–222.",
+      "note": "Contains early bounds on sets with increasing totient values using sieve methods; the precursor work cited by Erdős."
+    },
+    {
+      "citation": "K. Ford, 'The distribution of totients', Ramanujan Journal 2 (1998), 67–151.",
+      "url": "https://doi.org/10.1023/A:1009761909132",
+      "note": "Definitive study of the distribution of φ-values; Ford's anatomy-of-integers techniques were essential to subsequent progress on Problem #49."
+    },
+    {
+      "citation": "P. Erdős, 'Some remarks on Euler's φ-function and some related problems', Bulletin of the American Mathematical Society 51 (1945), 540–544.",
+      "url": "https://doi.org/10.1090/S0002-9904-1945-08378-9",
+      "note": "Erdős's original paper raising questions about the size of sets with increasing totient values."
+    },
+    {
+      "citation": "H. L. Montgomery and R. C. Vaughan, 'Multiplicative Number Theory I: Classical Theory', Cambridge University Press, 2007.",
+      "note": "Standard reference for the Selberg sieve and the analytic tools used in Tao's proof; Chapter 8 covers the totient function distribution."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Totient",

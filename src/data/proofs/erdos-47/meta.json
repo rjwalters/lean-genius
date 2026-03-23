@@ -143,6 +143,77 @@
       "What structural properties characterize maximal sets avoiding unit fraction subsets?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Problem #1 (distinct subset sums) and Problem #47 (unit fraction subsets) are companion questions about what arithmetic structure is forced on dense sets. Both ask: given a density condition on a set A, must a specific subset-sum pattern appear? Problem #1 demands all subset sums be distinct (an avoidance property), while Problem #47 demands a specific target value of 1 (an achievement property). Both are resolved using the interplay between combinatorial density and additive structure."
+    },
+    {
+      "targetId": "erdos-40",
+      "relationship": "related",
+      "description": "Problem #40 (representation function and dense sets) asks how density of A ⊆ {1,…,N} forces arithmetic richness in the additive structure of A. Problem #47 likewise connects harmonic density (∑ 1/a > δ log N) to forced subset-sum structure. Both probe the general theme of density thresholds above which arithmetic patterns must appear, and both remain quantitatively open at the optimal threshold."
+    },
+    {
+      "targetId": "erdos-41",
+      "relationship": "related",
+      "description": "Problem #41 (B_h sequences and density bounds) studies sets in {1,…,N} with constraints on how sums of h-element subsets can coincide — the density of such sets is bounded by N^{1/h}. Problem #47 uses a harmonic density condition (∑ 1/a > δ log N) to force a specific subset sum equal to 1. Both problems belong to the broader study of density-vs-additive-structure tradeoffs in combinatorial number theory."
+    },
+    {
+      "targetId": "erdos-43",
+      "relationship": "related",
+      "description": "Problem #43 (Sidon sets with disjoint difference sets) studies extremal additive combinatorics: how large can Sidon sets be while maintaining difference-set disjointness? Problem #47 studies a different extremal question: what harmonic density threshold forces a specific additive equation (∑ 1/n = 1)? Both problems arise from Erdős's systematic exploration of the boundaries between additive structure and combinatorial freedom."
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "technique",
+      "description": "The Szemerédi Regularity Lemma is a fundamental tool for analyzing dense subsets: it decomposes any graph (or subset of integers) into pseudo-random parts. Bloom's 2021 proof of Problem #47 employs structural results about dense sets—related in spirit to regularity methods—to find unit fraction subsets. The regularity machinery formalised here provides the theoretical backdrop for understanding how density forces structure in combinatorial arguments."
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-40",
+    "erdos-41",
+    "erdos-43",
+    "szemeredi-regularity"
+  ],
+  "references": [
+    {
+      "authors": "Bloom, Thomas F.",
+      "title": "On a result of Konyagin and the Erdős unit fraction problem",
+      "year": "2021",
+      "venue": "Bulletin of the London Mathematical Society, 54(2), pp. 421–434",
+      "note": "Resolves Erdős Problem #47 affirmatively, proving that sets with ∑ 1/a > δ log N must contain a subset whose reciprocals sum to 1, using the Hardy–Littlewood circle method and additive energy bounds"
+    },
+    {
+      "authors": "Liu, Mehtaab; Sawhney, Ashwin",
+      "title": "A proof of the Erdős–Ginzburg–Ziv conjecture and quantitative improvements on Bloom's theorem",
+      "year": "2024",
+      "venue": "Preprint, arXiv:2404.04414",
+      "note": "Improves Bloom's quantitative threshold from (log N)^{1−o(1)} to (log N)^{4/5+o(1)}, a polynomial improvement that dramatically narrows the gap to Pomerance's lower bound"
+    },
+    {
+      "authors": "Pomerance, Carl",
+      "title": "Unit fractions and the Erdős–Straus conjecture",
+      "year": "1994",
+      "venue": "Proceedings of Symposia in Applied Mathematics, vol. 48, pp. 371–374",
+      "note": "Constructs sets with ∑ 1/a ≈ (log log N)² that avoid unit fraction subsets, establishing the lower bound on the density threshold and showing Erdős's conjectured threshold is essentially optimal"
+    },
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and new problems and results in combinatorial number theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique, vol. 28, Université de Genève",
+      "note": "Surveys Erdős's conjectures on unit fractions, subset sums, and Egyptian fraction representations, including the conjecture resolved by Bloom; the conjectured threshold of (log log N)² originates here"
+    },
+    {
+      "authors": "Croot, Ernest S.",
+      "title": "On a coloring conjecture about unit fractions",
+      "year": "2003",
+      "venue": "Annals of Mathematics, 157(2), pp. 545–556",
+      "note": "Proves the Erdős–Graham conjecture that {1/2, 1/3, …} can be finitely colored so that no color class sums to 1, an important precursor result that isolated the combinatorial difficulty exploited by Bloom"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

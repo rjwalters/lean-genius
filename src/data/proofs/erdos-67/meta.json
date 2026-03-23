@@ -129,6 +129,101 @@
       "Are there effective bounds on d and m for given C?"
     ]
   },
+  "crossReferences": [
+    {
+      "id": "erdos-1028",
+      "title": "Erdős Problem #1028: Discrepancy of Sign Functions",
+      "relationship": "Direct sibling in discrepancy theory. Where Erdős #67 asks about ±1 sequences on arithmetic progressions, #1028 studies H(n) = the min-max discrepancy of ±1 functions on pairs, establishing H(n) = Θ(n^(3/2)). Both problems probe how evenly ±1 assignments can be balanced over structured combinatorial objects."
+    },
+    {
+      "id": "ramseys-theorem",
+      "title": "Ramsey's Theorem",
+      "relationship": "Foundational companion in combinatorics. Ramsey theory guarantees unavoidable monochromatic structure in colorings; the discrepancy problem guarantees unavoidable imbalance in ±1 sequences. Tao's proof borrows Ramsey-type density arguments when reducing to multiplicative functions."
+    },
+    {
+      "id": "szemeredi-regularity",
+      "title": "Szemerédi Regularity Lemma",
+      "relationship": "Deep structural connection via arithmetic progressions. Szemerédi's regularity machinery underlies results about dense subsets of integers containing arithmetic progressions, and Tao's proof of the discrepancy problem uses related harmonic-analysis and ergodic-theory techniques that grew from this tradition."
+    },
+    {
+      "id": "erdos-1",
+      "title": "Erdős Problem #1: Distinct Subset Sums",
+      "relationship": "Related extremal combinatorics. Both problems concern the extremal behavior of integer-valued sequences under summation constraints. Techniques for bounding subset sums inform the discrepancy framework, and both problems illustrate Erdős's style of seeking sharp quantitative thresholds."
+    },
+    {
+      "id": "erdos-72",
+      "title": "Erdős Problem #72: Unavoidable Cycle Lengths",
+      "relationship": "Thematic parallel in unavoidability results. Erdős #72 proves that certain combinatorial patterns cannot be avoided; the discrepancy theorem proves that imbalance cannot be suppressed. Both exemplify the principle that sufficiently dense or long structures must contain unavoidable substructure."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "erdos-1028",
+      "description": "Sibling discrepancy problem: min-max discrepancy of ±1 functions on pairs, H(n) = Θ(n^(3/2))"
+    },
+    {
+      "id": "ramseys-theorem",
+      "description": "Fundamental combinatorial unavoidability result underpinning the broader discrepancy and Ramsey-theory landscape"
+    },
+    {
+      "id": "szemeredi-regularity",
+      "description": "Regularity machinery for arithmetic progressions; Tao's discrepancy proof draws on the same harmonic-analysis and ergodic lineage"
+    },
+    {
+      "id": "erdos-1",
+      "description": "Extremal problem on distinct subset sums; shares the spirit of quantitative threshold results in additive combinatorics"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Terence Tao"],
+      "title": "The Erdős discrepancy problem",
+      "venue": "Discrete Analysis",
+      "year": 2016,
+      "volume": "1",
+      "pages": "1–29",
+      "doi": "10.19086/da.609",
+      "url": "https://discreteanalysisjournal.com/article/609",
+      "notes": "The definitive paper proving the Erdős Discrepancy Conjecture using the Elliott conjecture on multiplicative functions."
+    },
+    {
+      "authors": ["Terence Tao", "Joni Teräväinen"],
+      "title": "The structure of logarithmically averaged correlations of multiplicative functions, with applications to the Chowla and Elliott conjectures",
+      "venue": "Duke Mathematical Journal",
+      "year": 2019,
+      "volume": "168",
+      "number": "11",
+      "pages": "1977–2055",
+      "doi": "10.1215/00127094-2019-0002",
+      "notes": "Establishes the logarithmic Elliott conjecture used as a key step in Tao's discrepancy proof."
+    },
+    {
+      "authors": ["Alexey Lisitsa", "Boris Konev"],
+      "title": "A SAT attack on the Erdős discrepancy conjecture",
+      "venue": "arXiv preprint",
+      "year": 2014,
+      "url": "https://arxiv.org/abs/1402.2184",
+      "notes": "Used SAT solvers to verify the conjecture up to C = 2, providing strong computational evidence that ultimately preceded Tao's proof."
+    },
+    {
+      "authors": ["Paul Erdős"],
+      "title": "Some unsolved problems",
+      "venue": "Michigan Mathematical Journal",
+      "year": 1957,
+      "volume": "4",
+      "pages": "291–300",
+      "doi": "10.1307/mmj/1028997963",
+      "notes": "One of the original sources containing Erdős's formulation of the discrepancy problem and related open questions."
+    },
+    {
+      "authors": ["Polymath5 Project"],
+      "title": "The Erdős discrepancy problem",
+      "venue": "Polymath Project Wiki / arXiv:1509.05363",
+      "year": 2010,
+      "url": "https://arxiv.org/abs/1509.05363",
+      "notes": "Collaborative 2010 effort that made partial progress, proving discrepancy grows for subsequences, and ultimately informing Tao's approach."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

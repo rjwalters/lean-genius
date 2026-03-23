@@ -107,6 +107,91 @@
       "Is the reciprocal sum minimized by complete bipartite graphs among all graphs with the same edge count?"
     ]
   },
+  "crossReferences": [
+    {
+      "id": "erdos-64",
+      "relevance": "Companion problem on cycle lengths in graphs with minimum degree 3; both problems study how graph structure forces specific cycle lengths."
+    },
+    {
+      "id": "erdos-72",
+      "relevance": "Directly related: asks which cycle lengths are unavoidable in dense graphs, complementing the reciprocal-sum question of Problem 65."
+    },
+    {
+      "id": "erdos-73",
+      "relevance": "Concerns almost-bipartite graphs, connecting to the role of complete bipartite graphs as extremal examples in Problem 65."
+    },
+    {
+      "id": "erdos-1012",
+      "relevance": "Asks about long cycles in dense graphs; shares the edge-density vs cycle-structure theme and uses overlapping techniques."
+    },
+    {
+      "id": "szemeredi-regularity",
+      "relevance": "The Szemerédi Regularity Lemma is a key tool in proving cycle-structure results for dense graphs, including the GKS theorem approach."
+    },
+    {
+      "id": "ramseys-theorem",
+      "relevance": "Ramsey theory underlies extremal combinatorics; forbidden-subgraph methods used in the Zarankiewicz connection appear here."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "erdos-72",
+      "relationship": "sibling",
+      "description": "Erdős Problem #72 asks which specific cycle lengths are unavoidable in graphs of given density, making it the closest sibling to Problem 65's quantitative reciprocal-sum question."
+    },
+    {
+      "id": "erdos-64",
+      "relationship": "sibling",
+      "description": "Erdős Problem #64 studies power-of-two cycle lengths under minimum-degree conditions, sharing the extremal cycle-length theme."
+    },
+    {
+      "id": "szemeredi-regularity",
+      "relationship": "tool",
+      "description": "The Szemerédi Regularity Lemma provides the structural decomposition used in density-based cycle arguments, including the GKS proof strategy."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["A. Gyárfás", "J. Komlós", "E. Szemerédi"],
+      "title": "On a problem of K. Zarankiewicz",
+      "venue": "Acta Mathematica Hungarica",
+      "year": 1984,
+      "volume": "44",
+      "pages": "283–293",
+      "note": "Proves Σ 1/aᵢ ≥ c·log(e/n) for graphs with e edges; the GKS theorem axiomatized in this formalization."
+    },
+    {
+      "authors": ["H. Liu", "R. Montgomery"],
+      "title": "A solution to Erdős and Hajnal's odd cycle problem",
+      "venue": "Journal of the American Mathematical Society",
+      "year": 2023,
+      "volume": "36",
+      "pages": "1191–1234",
+      "note": "Proves the sharp constant (1/2 − o(1)) log k for the reciprocal sum, fully resolving the quantitative part of Problem 65."
+    },
+    {
+      "authors": ["P. Erdős", "A. Hajnal"],
+      "title": "On the structure of graphs without cycles of given lengths",
+      "venue": "Colloquium Mathematicum Societatis János Bolyai",
+      "year": 1966,
+      "note": "Original problem statement by Erdős and Hajnal posing both the logarithmic lower bound and the minimization question."
+    },
+    {
+      "authors": ["B. Bollobás"],
+      "title": "Extremal Graph Theory",
+      "venue": "Academic Press",
+      "year": 1978,
+      "note": "Standard reference for extremal graph theory including Kővári-Sós-Turán theorem and Zarankiewicz problem techniques used in this formalization."
+    },
+    {
+      "authors": ["E. Szemerédi"],
+      "title": "Regular Partitions of Graphs",
+      "venue": "Problèmes Combinatoires et Théorie des Graphes (Colloq. Internat. CNRS)",
+      "year": 1978,
+      "pages": "399–401",
+      "note": "The Regularity Lemma, a key structural tool underlying density-based cycle arguments in extremal graph theory."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
