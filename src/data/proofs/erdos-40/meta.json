@@ -100,6 +100,85 @@
       "Can the threshold function $g^*$ be related to a natural arithmetic quantity, such as the density of primes in short intervals?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-41",
+      "relationship": "related",
+      "description": "Erdős Problem #41 also concerns additive bases and representation functions, exploring threshold densities for covering all sufficiently large integers. Both problems share the $\\sqrt{N}$ density landscape and ask how minimal density constraints force structural properties of the representation function."
+    },
+    {
+      "targetId": "erdos-43",
+      "relationship": "related",
+      "description": "Erdős Problem #43 on Sidon sets (B_2 sequences) directly underpins Problem #40: Sidon sets achieve density $\\approx \\sqrt{N}$ with $r_A(n) \\leq 1$, establishing the $\\sqrt{N}$ threshold as the natural boundary. The Erdős–Turán 1941 density bound for Sidon sets is precisely the extremal case that Problem #40 asks to push below."
+    },
+    {
+      "targetId": "erdos-47",
+      "relationship": "related",
+      "description": "Erdős Problem #47 concerns $B_h$ sets and multiplicities in sumsets. The $B_2[g]$ bound ($r_A(n) \\leq g \\Rightarrow A(N) \\leq c_g \\sqrt{N}$) formalized in Problem #40 is the direct generalization from Sidon sets ($g=1$) to bounded-multiplicity sets, and connects to the broader theory of $B_h$ sequences studied in Problem #47."
+    },
+    {
+      "targetId": "erdos-500",
+      "relationship": "related",
+      "description": "Erdős Problem #500, also carrying a high bounty, shares the theme of quantitative density conditions in additive number theory. Both problems reflect Erdős's program of identifying sharp numerical thresholds governing additive structure, and both remain open as of 2026."
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "foundational",
+      "description": "The Szemerédi regularity lemma is a fundamental tool in additive combinatorics that provides structural decompositions of dense graphs. While Problem #40 concerns sumsets, the regularity approach to additive problems (via Fourier analysis on dense sets) represents the same lineage of ideas about density thresholds and structure, and regularity-type arguments are central to modern attacks on the Erdős–Turán conjecture."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The binomial theorem underlies the probabilistic random-set heuristic in Problem #40: the expected number of representations $\\mathbb{E}[r_A(n)]$ is computed by summing over pairs $(a, b)$ with each element independently included, giving a binomial expectation. The threshold density $\\sqrt{N}/g(N)$ is calibrated so that $\\mathbb{E}[r_A(n)] \\sim 1/g(N)^2 \\to 0$."
+    }
+  ],
+  "relatedProofs": [
+    "erdos-41",
+    "erdos-43",
+    "erdos-47",
+    "erdos-500",
+    "erdos-1",
+    "szemeredi-regularity",
+    "ramseys-theorem",
+    "binomial-theorem"
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Turán, Pál",
+      "title": "On a problem of Sidon in additive number theory, and on some related problems",
+      "year": "1941",
+      "venue": "Journal of the London Mathematical Society, vol. 16, pp. 212–215",
+      "note": "Foundational paper establishing the $\\sqrt{N}$ density bound for Sidon sets and introducing the Erdős–Turán conjecture (Problem #28) that Problem #40 strengthens"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Problems and results on combinatorial number theory",
+      "year": "1995",
+      "venue": "The Mathematics of Paul Erdős, II (Graham and Nešetřil, eds.), Algorithms and Combinatorics vol. 14, Springer, pp. 3–35",
+      "note": "Contains [Er95]: Erdős's late formulation of Problem #40 with the $500 bounty, posing the density threshold question for all $g \\to \\infty$"
+    },
+    {
+      "authors": "Cilleruelo, Javier; Ruzsa, Imre Z.; Trujillo, Carlos",
+      "title": "Upper and lower bounds for finite $B_h[g]$ sequences",
+      "year": "2000",
+      "venue": "Journal of Number Theory, vol. 82, no. 2, pp. 229–255",
+      "note": "Establishes tight bounds on $A(N)$ for $B_2[g]$ sets (bounded multiplicity $r_A(n) \\leq g$), directly formalizing the density barrier $A(N) \\leq c_g \\sqrt{N}$ used in the Problem #40 formalization"
+    },
+    {
+      "authors": "Lindström, Bernt",
+      "title": "A remark on B_4 sequences",
+      "year": "1969",
+      "venue": "Journal of Combinatorial Theory, vol. 7, no. 3, pp. 276–277",
+      "note": "Provides the sharp constant in the Sidon density bound $|A \\cap \\{1,\\ldots,N\\}| \\leq (1+o(1))\\sqrt{N}$, establishing the extremal density that Problem #40's threshold $\\sqrt{N}/g(N)$ is measured against"
+    },
+    {
+      "authors": "Green, Ben; Ruzsa, Imre Z.",
+      "title": "Counting sumsets and sum-free sets modulo a prime",
+      "year": "2005",
+      "venue": "Studia Scientiarum Mathematicarum Hungarica, vol. 41, no. 3, pp. 285–293",
+      "note": "Illustrates Fourier-analytic and probabilistic methods for counting representations in sumsets, representing the modern circle-method and exponential-sum approach relevant to Problem #40's heuristic analysis"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

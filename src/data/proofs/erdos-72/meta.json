@@ -155,6 +155,78 @@
       "summary": "Controlled growth sets and the general Liu-Montgomery theorem"
     }
   ],
+  "crossReferences": [
+    {
+      "id": "erdos-64",
+      "relationship": "Direct companion problem: asks whether minimum-degree-3 graphs contain power-of-2 cycles, sharing the same central set A = {2^k} with Problem #72's Liu-Montgomery answer"
+    },
+    {
+      "id": "erdos-65",
+      "relationship": "Sibling problem on cycle lengths in dense graphs: asks about the reciprocal sum of cycle lengths, complementing Problem #72's existence question for unavoidable sets"
+    },
+    {
+      "id": "erdos-1012",
+      "relationship": "Related extremal result: characterizes graphs with long cycles via edge density, using similar density-threshold techniques to Problem #72's unavoidability framework"
+    },
+    {
+      "id": "szemeredi-regularity",
+      "relationship": "Core technique in the Liu-Montgomery (2020) proof: the regularity lemma is used to decompose dense graphs into structured pieces where cycle detection proceeds"
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "Foundational combinatorics result underpinning extremal graph theory; the density-forcing philosophy of Ramsey theory informs why high average degree compels specific substructures"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-64",
+    "erdos-65",
+    "erdos-71",
+    "erdos-1012",
+    "szemeredi-regularity"
+  ],
+  "references": [
+    {
+      "authors": ["Hong Liu", "Richard Montgomery"],
+      "title": "A proof of Mader's conjecture on large clique subdivisions in C₄-free graphs",
+      "journal": "Journal of the London Mathematical Society",
+      "year": 2017,
+      "note": "Foundation for the Liu-Montgomery cycle length work"
+    },
+    {
+      "authors": ["Hong Liu", "Richard Montgomery"],
+      "title": "A solution to Erdős and Hajnal's odd cycle problem",
+      "journal": "Journal of the American Mathematical Society",
+      "year": 2023,
+      "doi": "10.1090/jams/1009",
+      "note": "Proves powers of 2 are unavoidable cycle lengths, directly resolving Erdős Problem #72 and refuting Erdős's intuition"
+    },
+    {
+      "authors": ["Jacques Verstraëte"],
+      "title": "Unavoidable cycle lengths in graphs",
+      "journal": "Journal of Graph Theory",
+      "volume": 49,
+      "year": 2005,
+      "pages": "151–167",
+      "note": "Non-constructive proof that a density-0 unavoidable set exists, the first positive answer to Problem #72"
+    },
+    {
+      "authors": ["Béla Bollobás"],
+      "title": "Cycles modulo k",
+      "journal": "Bulletin of the London Mathematical Society",
+      "volume": 9,
+      "year": 1977,
+      "pages": "97–98",
+      "note": "Shows every infinite arithmetic progression containing even numbers is an unavoidable cycle length set"
+    },
+    {
+      "authors": ["Endre Szemerédi"],
+      "title": "Regular partitions of graphs",
+      "journal": "Problèmes Combinatoires et Théorie des Graphes (Colloques Internationaux CNRS)",
+      "year": 1978,
+      "pages": "399–401",
+      "note": "The regularity lemma used as a key tool in the Liu-Montgomery proof strategy"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #72 asked whether sparse sets of natural numbers can serve as 'unavoidable' cycle length sets in dense graphs. The answer is yes, proved non-constructively by Verstraëte (2005) and constructively for powers of 2 by Liu and Montgomery (2020). This contradicted Erdős's belief that powers of 2 would not work.",
     "implications": "**Theoretical Significance**\n\n1. **Extremal Graph Theory**: Demonstrates that high average degree forces rich cycle structure with specific length properties\n\n2. **Erdős's Intuition**: A rare case where Erdős's mathematical intuition was definitively wrong, showing the depth of the problem\n\n3. **Number Theory Connection**: Links graph density to number-theoretic properties of integer sets\n\n4. **Algorithmic Implications**: Suggests efficient cycle-finding algorithms in dense graphs may target specific length classes",

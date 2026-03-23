@@ -174,6 +174,88 @@
       "Can the five `sorry` counting lemmas be proved using Mathlib's `Finset.card` API?"
     ]
   },
+  "crossReferences": [
+    {
+      "proofId": "erdos-40",
+      "relationship": "Erdős #40 studies the representation function r_A(n) for B_2 sets (sets where every integer has at most one representation as a pairwise sum), directly connected to the density and structure theory underlying Problem #43"
+    },
+    {
+      "proofId": "erdos-41",
+      "relationship": "Erdős #41 asks about B_3 sequences (distinct triple sums), a natural generalization of B_2/Sidon sets; the density bound liminf |A∩{1,…,N}|/N^{1/3}=0 is the B_3 analogue of f(N)~√N for Sidon sets"
+    },
+    {
+      "proofId": "erdos-1",
+      "relationship": "Erdős #1 (distinct subset sums, $500 prize) is a sibling extremal problem: both ask how large a set with a distinctness condition on its arithmetic structure can be, with the answer controlled by powers of 2 vs. √N"
+    },
+    {
+      "proofId": "binomial-theorem",
+      "relationship": "The conjecture is stated entirely in terms of binomial coefficients C(|A|,2) and C(f(N),2); the binomial theorem and properties of C(n,2) = n(n-1)/2 are essential for interpreting the pair-counting bound"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "proofId": "erdos-425",
+      "relationship": "Multiplicative analogue: Erdős #425 studies multiplicative Sidon sets (all pairwise products distinct) in {1,…,n}, with F(n)=π(n)+Θ(n^{3/4}/(log n)^{3/2}), a direct multiplicative counterpart to the additive f(N)~√N"
+    },
+    {
+      "proofId": "erdos-340",
+      "relationship": "Erdős #340 concerns B_2[g] sequences (at most g representations), a relaxation of the Sidon (B_2[1]) condition; the structure of repeated sums illuminates why disjoint-difference Sidon pairs are constrained"
+    },
+    {
+      "proofId": "erdos-30",
+      "relationship": "Erdős #30 ($1000 prize) asks whether f(N)=√N+O(N^ε) for all ε>0, sharpening the f(N)~√N asymptotic that underpins Problem #43's conjectured bound"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["P. Erdős", "P. Turán"],
+      "title": "On a problem of Sidon in additive number theory, and on some related problems",
+      "journal": "Journal of the London Mathematical Society",
+      "volume": "16",
+      "year": 1941,
+      "pages": "212–215",
+      "doi": "10.1112/jlms/s1-16.4.212",
+      "note": "Founding paper proving f(N)≤√N+O(N^{1/4}) and constructing Sidon sets of size ~√N via Singer difference sets"
+    },
+    {
+      "authors": ["S. Chowla"],
+      "title": "Solution of a problem of Erdős and Turán in additive-number theory",
+      "journal": "Proceedings of the National Academy of Sciences of India",
+      "volume": "14",
+      "year": 1944,
+      "pages": "1–2",
+      "note": "Simplified Singer-type construction giving explicit Sidon sets of size ~√p for prime p"
+    },
+    {
+      "authors": ["B. Lindström"],
+      "title": "An inequality for B_2-sequences",
+      "journal": "Journal of Combinatorial Theory",
+      "volume": "6",
+      "year": 1969,
+      "pages": "211–212",
+      "doi": "10.1016/S0021-9800(69)80124-9",
+      "note": "Proves C(|A|,2)≤N for Sidon sets in {1,…,N} via a direct counting argument on differences"
+    },
+    {
+      "authors": ["I. Z. Ruzsa"],
+      "title": "Solving a linear equation in a set of integers",
+      "journal": "Acta Arithmetica",
+      "volume": "65",
+      "year": 1993,
+      "pages": "259–282",
+      "doi": "10.4064/aa-65-3-259-282",
+      "note": "Develops the Plünnecke-Ruzsa inequality and sumset methods used in modern Sidon set analysis"
+    },
+    {
+      "authors": ["K. O'Bryant"],
+      "title": "A complete annotated bibliography of work related to Sidon sets",
+      "journal": "Electronic Journal of Combinatorics",
+      "volume": "DS11",
+      "year": 2004,
+      "url": "https://www.combinatorics.org/ojs/index.php/eljc/article/view/DS11",
+      "note": "Comprehensive survey of Sidon set results through 2004, covering B_2 sequences, f(N) bounds, and related prize problems"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",

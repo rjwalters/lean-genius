@@ -165,6 +165,106 @@
       "Common values of other arithmetic function pairs"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "euler-totient",
+      "relationship": "uses",
+      "description": "Euler's totient function φ(n) is one of the two arithmetic functions at the heart of this problem; the formalization imports Nat.totient from Mathlib and relies on its multiplicativity and prime-value formula."
+    },
+    {
+      "targetId": "erdos-49",
+      "relationship": "related",
+      "description": "Erdős #49 also studies sets defined by totient values and uses the same range Im(φ); understanding which values appear in Im(φ) is central to both problems."
+    },
+    {
+      "targetId": "erdos-1003",
+      "relationship": "related",
+      "description": "Erdős #1003 asks about consecutive equal totient values φ(n) = φ(n+1); the twin-prime construction used in erdos-48 (φ(p+2) = σ(p) = p+1 for twin primes) directly connects the two problems."
+    },
+    {
+      "targetId": "erdos-1004",
+      "relationship": "related",
+      "description": "Erdős #1004 studies the distribution of distinct consecutive totient values; the density and value-distribution techniques (EPS bounds) are closely related to the Garaev density improvement axiomatized here."
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "uses",
+      "description": "The infinite supply of twin primes (conjectural) and ordinary primes underpins the Ford-Luca-Pomerance construction; the infinitude of primes is the foundational fact that makes the argument work."
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "uses",
+      "description": "Unique factorization is required for the multiplicativity of both φ and σ; the multiplicative structure exploited throughout the proof rests on the Fundamental Theorem of Arithmetic."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "targetId": "euler-totient",
+      "relationship": "uses",
+      "note": "φ(n) is one of the two central arithmetic functions; the formalization imports Nat.totient directly."
+    },
+    {
+      "targetId": "erdos-49",
+      "relationship": "related",
+      "note": "Both problems study the range Im(φ) and properties of totient values."
+    },
+    {
+      "targetId": "erdos-1003",
+      "relationship": "related",
+      "note": "Shares the twin-prime construction linking consecutive totient equalities to φ(p+2) = σ(p) = p+1."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Kevin Ford", "Florian Luca", "Carl Pomerance"],
+      "title": "Common values of the arithmetic functions φ and σ",
+      "venue": "Bulletin of the London Mathematical Society",
+      "year": 2010,
+      "volume": "42",
+      "pages": "478–488",
+      "doi": "10.1112/blms/bdq014",
+      "note": "Proves infinitely many pairs (n,m) with φ(n) = σ(m); the main result axiomatized as ford_luca_pomerance."
+    },
+    {
+      "authors": ["Moubariz Z. Garaev"],
+      "title": "On the number of common values of the arithmetic functions φ and σ below x",
+      "venue": "Bulletin of the Belgian Mathematical Society – Simon Stevin",
+      "year": 2011,
+      "volume": "18",
+      "pages": "373–380",
+      "doi": "10.36045/bbms/1313604464",
+      "note": "Improves density bounds to exp((log log x)^{ω(x)}) where ω(x) → ∞; axiomatized as garaev_improvement."
+    },
+    {
+      "authors": ["Paul Erdős"],
+      "title": "Some remarks on number theory",
+      "venue": "Riveon Lematematika (Israel)",
+      "year": 1959,
+      "volume": "9",
+      "pages": "45–48",
+      "note": "Original 1959 formulation [Er59c] of the problem asking about common values of φ and σ."
+    },
+    {
+      "authors": ["Kevin Ford"],
+      "title": "The distribution of totients",
+      "venue": "Ramanujan Journal",
+      "year": 1998,
+      "volume": "2",
+      "pages": "67–151",
+      "doi": "10.1023/A:1009761909132",
+      "note": "Comprehensive study of Im(φ) and its density; background for the value-distribution results used in the proof."
+    },
+    {
+      "authors": ["Paul Erdős", "Carl Pomerance", "András Sárközy"],
+      "title": "On locally repeated values of certain arithmetic functions",
+      "venue": "Journal of Number Theory",
+      "year": 1987,
+      "volume": "21",
+      "pages": "319–332",
+      "doi": "10.1016/0022-314X(85)90058-0",
+      "note": "EPS (1987) density bounds for arithmetic functions; related to the Garaev improvement and value-distribution analysis."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Totient",
