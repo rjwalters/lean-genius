@@ -54,7 +54,7 @@
       "startLine": 95,
       "endLine": 100
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem (ZMod Formulation)",
     "content": "**Mathlib's primary statement:** For any positive q and unit a in ZMod q, there are infinitely many primes p such that (p : ZMod q) = a.\n\nThe condition 'a is a unit' means gcd(a, q) = 1, which is necessary: if gcd(a, q) = d > 1, then all terms a + kq are divisible by d, so at most one can be prime (namely d itself, if a = d).\n\nThis formulation uses ZMod, Lean's type for integers modulo q, which provides a clean algebraic framework.",
     "summary": "The primary ZMod formulation of Dirichlet's theorem: infinitely many primes in each coprime residue class.",
@@ -79,7 +79,7 @@
       "startLine": 138,
       "endLine": 141
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Constructive Formulation",
     "content": "**For any n, we can find a prime p > n in the progression.**\n\nThis is the constructive version: given any bound n, there exists a prime p larger than n that is congruent to a modulo q.\n\nThis is logically equivalent to 'infinitely many' but has a more computational flavor. It says the primes in the progression are unbounded.",
     "summary": "Constructive version: for any bound n, there exists a prime p > n congruent to a mod q.",
@@ -153,7 +153,7 @@
       "startLine": 162,
       "endLine": 168
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Key Lemma: L(1, chi) != 0",
     "content": "**The heart of Dirichlet's proof:** For a non-trivial (non-principal) Dirichlet character chi, we have L(1, chi) != 0.\n\nThis is easy for complex characters (take absolute values) but subtle for real characters. Dirichlet needed to show that L(s, chi) does not have a zero at s = 1, which requires careful analysis of the class number formula.\n\nMathlib proves this in `DirichletCharacter.LFunction_apply_one_ne_zero`.",
     "summary": "The crucial non-vanishing theorem: L(1, chi) != 0 for non-principal Dirichlet characters.",
@@ -178,7 +178,7 @@
       "startLine": 175,
       "endLine": 188
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Special Case: Primes 1 mod 4",
     "content": "**There are infinitely many primes of the form 4k + 1.**\n\nExamples: 5, 13, 17, 29, 37, 41, 53, 61, 73, 89, 97, ...\n\nThis follows immediately from Dirichlet's theorem since gcd(1, 4) = 1. These primes are exactly those that can be written as a sum of two squares (by Fermat's theorem).",
     "summary": "Infinitely many primes congruent to 1 mod 4, derived from Dirichlet's theorem via coprimality of 1 and 4.",
@@ -203,7 +203,7 @@
       "startLine": 190,
       "endLine": 200
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Special Case: Primes 3 mod 4",
     "content": "**There are infinitely many primes of the form 4k + 3.**\n\nExamples: 3, 7, 11, 19, 23, 31, 43, 47, 59, 67, 71, 79, 83, ...\n\nInterestingly, this special case can be proved without L-functions: if there were only finitely many, say p_1, ..., p_n, then consider N = 4*p_1*...*p_n - 1. This is 3 mod 4 and must have a prime factor 3 mod 4, which must be new.",
     "summary": "Infinitely many primes congruent to 3 mod 4, with an elementary proof alternative to Dirichlet's analytic method.",
@@ -277,7 +277,7 @@
       "startLine": 242,
       "endLine": 250
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Linnik's Theorem",
     "content": "**Linnik's Theorem (1944):** There exists an absolute constant L such that the smallest prime p = a (mod q) satisfies p <= q^L.\n\nThe current best unconditional result is L = 5. Under the Generalized Riemann Hypothesis, L = 2 + epsilon suffices.\n\nThis theorem answers: how long do we have to wait for the first prime in a given progression?",
     "summary": "Linnik's theorem bounds the smallest prime in a progression: p <= q^L with current best L = 5.",

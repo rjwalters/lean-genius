@@ -2,541 +2,951 @@
   {
     "id": "ann-1036-imports",
     "proofId": "erdos-1036",
-    "range": { "startLine": 1, "endLine": 27 },
-    "type": "overview",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "context",
     "title": "Imports and Problem Overview",
     "content": "Module documentation describing Erdős Problem #1036 on distinct induced subgraphs in non-Ramsey graphs. Imports SimpleGraph, Finset, Fintype, and real number infrastructure for counting arguments.",
     "mathContext": "A graph $G$ on $n$ vertices is non-Ramsey with parameter $c$ if it has no trivial (empty or complete) induced subgraph on more than $c \\log n$ vertices. Problem 1036 asks whether such graphs must contain $2^{\\Omega_c(n)}$ non-isomorphic induced subgraphs.",
     "significance": "context",
-    "relatedConcepts": ["Ramsey theory", "induced subgraph counting", "graph complexity"],
-    "prerequisites": ["SimpleGraph", "Finset", "Fintype"]
+    "relatedConcepts": [
+      "Ramsey theory",
+      "induced subgraph counting",
+      "graph complexity"
+    ],
+    "prerequisites": [
+      "SimpleGraph",
+      "Finset",
+      "Fintype"
+    ]
   },
   {
     "id": "ann-1036-vertexcount",
     "proofId": "erdos-1036",
-    "range": { "startLine": 36, "endLine": 37 },
+    "range": {
+      "startLine": 36,
+      "endLine": 37
+    },
     "type": "definition",
     "title": "vertexCount",
     "content": "Number of vertices in a simple graph, defined as the cardinality of the Fintype vertex set.",
     "mathContext": "$|V(G)|$ — the number of vertices of the graph $G$. All graphs are finite throughout this formalization.",
     "significance": "supporting",
-    "relatedConcepts": ["graph order", "vertex set cardinality"],
-    "prerequisites": ["Fintype.card"]
+    "relatedConcepts": [
+      "graph order",
+      "vertex set cardinality"
+    ],
+    "prerequisites": [
+      "Fintype.card"
+    ]
   },
   {
     "id": "ann-1036-trivial",
     "proofId": "erdos-1036",
-    "range": { "startLine": 45, "endLine": 48 },
+    "range": {
+      "startLine": 45,
+      "endLine": 48
+    },
     "type": "definition",
     "title": "isTrivialInduced",
     "content": "A vertex subset S induces a trivial subgraph if the induced subgraph is either empty (independent set) or complete (clique). These are the 'homogeneous' subgraphs in Ramsey theory terminology.",
     "mathContext": "A set $S \\subseteq V(G)$ is \\emph{trivial} if the induced subgraph $G[S]$ is either the empty graph (no edges) or the complete graph (all edges). Equivalently, $S$ is homogeneous: $\\forall u,v \\in S$, either all pairs are adjacent or none are.",
     "significance": "key",
-    "relatedConcepts": ["homogeneous set", "Ramsey theory", "clique", "independent set"],
-    "prerequisites": ["inducedSubgraph", "isClique", "isIndependentSet"]
+    "relatedConcepts": [
+      "homogeneous set",
+      "Ramsey theory",
+      "clique",
+      "independent set"
+    ],
+    "prerequisites": [
+      "inducedSubgraph",
+      "isClique",
+      "isIndependentSet"
+    ]
   },
   {
     "id": "ann-1036-independent",
     "proofId": "erdos-1036",
-    "range": { "startLine": 50, "endLine": 52 },
+    "range": {
+      "startLine": 50,
+      "endLine": 52
+    },
     "type": "definition",
     "title": "isIndependentSet",
     "content": "A vertex set S is independent if no two vertices in S are adjacent: the induced subgraph G[S] has no edges.",
     "mathContext": "$S$ is independent in $G$ if $\\forall u, v \\in S$, $uv \\notin E(G)$. The independence number $\\alpha(G)$ is the maximum size of an independent set.",
     "significance": "key",
-    "relatedConcepts": ["independent set", "independence number", "stable set"],
-    "prerequisites": ["SimpleGraph.Adj"]
+    "relatedConcepts": [
+      "independent set",
+      "independence number",
+      "stable set"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj"
+    ]
   },
   {
     "id": "ann-1036-clique",
     "proofId": "erdos-1036",
-    "range": { "startLine": 54, "endLine": 56 },
+    "range": {
+      "startLine": 54,
+      "endLine": 56
+    },
     "type": "definition",
     "title": "isClique",
     "content": "A vertex set S is a clique if every pair of distinct vertices in S are adjacent: the induced subgraph G[S] is complete.",
     "mathContext": "$S$ is a clique in $G$ if $\\forall u, v \\in S$ with $u \\neq v$, $uv \\in E(G)$. The clique number $\\omega(G)$ is the maximum clique size.",
     "significance": "key",
-    "relatedConcepts": ["clique number", "complete subgraph", "Ramsey number"],
-    "prerequisites": ["SimpleGraph.Adj"]
+    "relatedConcepts": [
+      "clique number",
+      "complete subgraph",
+      "Ramsey number"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj"
+    ]
   },
   {
     "id": "ann-1036-trivialiff",
     "proofId": "erdos-1036",
-    "range": { "startLine": 58, "endLine": 61 },
+    "range": {
+      "startLine": 58,
+      "endLine": 61
+    },
     "type": "technique",
     "title": "trivial_iff",
     "content": "Characterizes trivial induced subgraphs: S is trivial if and only if S is an independent set or S is a clique.",
     "mathContext": "$S$ is trivial $\\iff$ $S$ is independent or $S$ is a clique. This is the basic dichotomy underlying Ramsey theory.",
     "significance": "supporting",
-    "relatedConcepts": ["homogeneous set characterization"],
-    "prerequisites": ["isTrivialInduced", "isIndependentSet", "isClique"]
+    "relatedConcepts": [
+      "homogeneous set characterization"
+    ],
+    "prerequisites": [
+      "isTrivialInduced",
+      "isIndependentSet",
+      "isClique"
+    ]
   },
   {
     "id": "ann-1036-nolargetrivial",
     "proofId": "erdos-1036",
-    "range": { "startLine": 69, "endLine": 71 },
+    "range": {
+      "startLine": 69,
+      "endLine": 71
+    },
     "type": "definition",
     "title": "noLargeTrivial",
     "content": "A graph G satisfies noLargeTrivial k if every trivial induced subgraph has fewer than k vertices. This is the non-Ramsey condition.",
     "mathContext": "$G$ satisfies $\\text{noLargeTrivial}(k)$ if $\\alpha(G) < k$ and $\\omega(G) < k$. Equivalently, both the clique number and independence number are bounded by $k-1$.",
     "significance": "key",
-    "relatedConcepts": ["Ramsey number", "clique number bound", "independence number bound"],
-    "prerequisites": ["isTrivialInduced", "Finset.card"]
+    "relatedConcepts": [
+      "Ramsey number",
+      "clique number bound",
+      "independence number bound"
+    ],
+    "prerequisites": [
+      "isTrivialInduced",
+      "Finset.card"
+    ]
   },
   {
     "id": "ann-1036-nonramsey",
     "proofId": "erdos-1036",
-    "range": { "startLine": 73, "endLine": 75 },
+    "range": {
+      "startLine": 73,
+      "endLine": 75
+    },
     "type": "definition",
     "title": "isNonRamsey",
     "content": "A graph G on n vertices is non-Ramsey with parameter c if it has no trivial subgraph on more than c log n vertices. By Ramsey's theorem, this requires c ≥ some constant depending on the graph.",
     "mathContext": "$G$ is non-Ramsey with parameter $c$ if $\\max(\\omega(G), \\alpha(G)) \\leq c \\log_2 n$. By Ramsey's theorem, $R(k,k) \\leq 4^k$, so every $n$-vertex graph has a trivial subgraph of size $\\geq \\frac{1}{2}\\log_2 n$.",
     "significance": "key",
-    "relatedConcepts": ["Ramsey's theorem", "diagonal Ramsey number", "log n threshold"],
-    "prerequisites": ["noLargeTrivial", "Real.log"]
+    "relatedConcepts": [
+      "Ramsey's theorem",
+      "diagonal Ramsey number",
+      "log n threshold"
+    ],
+    "prerequisites": [
+      "noLargeTrivial",
+      "Real.log"
+    ]
   },
   {
     "id": "ann-1036-ramsey",
     "proofId": "erdos-1036",
-    "range": { "startLine": 77, "endLine": 81 },
+    "range": {
+      "startLine": 77,
+      "endLine": 81
+    },
     "type": "context",
     "title": "ramsey_theorem",
     "content": "Axiomatizes the existence of non-Ramsey graphs: for sufficiently large n, there exist n-vertex graphs with no trivial subgraph larger than O(log n). Random graphs achieve this with high probability.",
     "mathContext": "By Ramsey's theorem, $R(k,k) \\leq 4^k$. Conversely, Erdős (1947) showed $R(k,k) \\geq 2^{k/2}$ by the probabilistic method: the random graph $G(n, 1/2)$ has $\\omega(G), \\alpha(G) = O(\\log n)$ with high probability.",
     "significance": "key",
-    "relatedConcepts": ["probabilistic method", "Erdős 1947", "random graph", "Ramsey number lower bound"],
-    "prerequisites": ["isNonRamsey"]
+    "relatedConcepts": [
+      "probabilistic method",
+      "Erdős 1947",
+      "random graph",
+      "Ramsey number lower bound"
+    ],
+    "prerequisites": [
+      "isNonRamsey"
+    ]
   },
   {
     "id": "ann-1036-induced",
     "proofId": "erdos-1036",
-    "range": { "startLine": 89, "endLine": 93 },
+    "range": {
+      "startLine": 89,
+      "endLine": 93
+    },
     "type": "definition",
     "title": "inducedSubgraph",
     "content": "The induced subgraph G[S] on vertex subset S: vertices are elements of S, edges are those of G restricted to pairs in S.",
     "mathContext": "The induced subgraph $G[S]$ has vertex set $S$ and edge set $\\{uv \\in E(G) : u, v \\in S\\}$. The number of distinct induced subgraphs (up to isomorphism) measures the structural complexity of $G$.",
     "significance": "key",
-    "relatedConcepts": ["vertex subset", "subgraph", "induced subgraph counting"],
-    "prerequisites": ["SimpleGraph", "Finset"]
+    "relatedConcepts": [
+      "vertex subset",
+      "subgraph",
+      "induced subgraph counting"
+    ],
+    "prerequisites": [
+      "SimpleGraph",
+      "Finset"
+    ]
   },
   {
     "id": "ann-1036-inducedpair",
     "proofId": "erdos-1036",
-    "range": { "startLine": 95, "endLine": 99 },
+    "range": {
+      "startLine": 95,
+      "endLine": 99
+    },
     "type": "definition",
     "title": "InducedPair",
     "content": "A pair of induced subgraphs of the same size, used for comparing isomorphism types.",
     "mathContext": "An $(S_1, S_2)$ pair where $|S_1| = |S_2|$ and both induce subgraphs of $G$. This is used to define the isomorphism equivalence relation on induced subgraphs.",
     "significance": "supporting",
-    "relatedConcepts": ["isomorphism testing", "graph comparison"],
-    "prerequisites": ["inducedSubgraph", "Finset.card"]
+    "relatedConcepts": [
+      "isomorphism testing",
+      "graph comparison"
+    ],
+    "prerequisites": [
+      "inducedSubgraph",
+      "Finset.card"
+    ]
   },
   {
     "id": "ann-1036-graphiso",
     "proofId": "erdos-1036",
-    "range": { "startLine": 107, "endLine": 109 },
+    "range": {
+      "startLine": 107,
+      "endLine": 109
+    },
     "type": "definition",
     "title": "GraphIso",
     "content": "Graph isomorphism: a bijection between vertex sets that preserves adjacency. Two graphs are isomorphic if such a bijection exists.",
     "mathContext": "Graphs $G$ and $H$ are isomorphic ($G \\cong H$) if there exists a bijection $\\phi: V(G) \\to V(H)$ such that $uv \\in E(G) \\iff \\phi(u)\\phi(v) \\in E(H)$.",
     "significance": "key",
-    "relatedConcepts": ["graph isomorphism", "adjacency preservation", "automorphism"],
-    "prerequisites": ["SimpleGraph", "Equiv"]
+    "relatedConcepts": [
+      "graph isomorphism",
+      "adjacency preservation",
+      "automorphism"
+    ],
+    "prerequisites": [
+      "SimpleGraph",
+      "Equiv"
+    ]
   },
   {
     "id": "ann-1036-inducediso",
     "proofId": "erdos-1036",
-    "range": { "startLine": 111, "endLine": 114 },
+    "range": {
+      "startLine": 111,
+      "endLine": 114
+    },
     "type": "definition",
     "title": "inducedIso",
     "content": "Isomorphism of induced subgraphs: G[S₁] ≅ G[S₂] via some bijection preserving adjacency.",
     "mathContext": "Two induced subgraphs $G[S_1]$ and $G[S_2]$ are isomorphic if there is a bijection $\\phi: S_1 \\to S_2$ preserving the adjacency relation of $G$ restricted to these sets.",
     "significance": "key",
-    "relatedConcepts": ["induced subgraph isomorphism", "isomorphism class"],
-    "prerequisites": ["GraphIso", "inducedSubgraph"]
+    "relatedConcepts": [
+      "induced subgraph isomorphism",
+      "isomorphism class"
+    ],
+    "prerequisites": [
+      "GraphIso",
+      "inducedSubgraph"
+    ]
   },
   {
     "id": "ann-1036-isorefl",
     "proofId": "erdos-1036",
-    "range": { "startLine": 116, "endLine": 119 },
+    "range": {
+      "startLine": 116,
+      "endLine": 119
+    },
     "type": "technique",
     "title": "inducedIso_refl",
     "content": "Induced subgraph isomorphism is reflexive: G[S] ≅ G[S] via the identity.",
     "mathContext": "$G[S] \\cong G[S]$ via the identity bijection $\\text{id}: S \\to S$.",
     "significance": "supporting",
-    "relatedConcepts": ["equivalence relation", "reflexivity"],
-    "prerequisites": ["inducedIso"]
+    "relatedConcepts": [
+      "equivalence relation",
+      "reflexivity"
+    ],
+    "prerequisites": [
+      "inducedIso"
+    ]
   },
   {
     "id": "ann-1036-isosymm",
     "proofId": "erdos-1036",
-    "range": { "startLine": 121, "endLine": 124 },
+    "range": {
+      "startLine": 121,
+      "endLine": 124
+    },
     "type": "technique",
     "title": "inducedIso_symm",
     "content": "Induced subgraph isomorphism is symmetric: G[S₁] ≅ G[S₂] implies G[S₂] ≅ G[S₁] via the inverse bijection.",
     "mathContext": "If $\\phi: G[S_1] \\cong G[S_2]$, then $\\phi^{-1}: G[S_2] \\cong G[S_1]$.",
     "significance": "supporting",
-    "relatedConcepts": ["equivalence relation", "symmetry"],
-    "prerequisites": ["inducedIso"]
+    "relatedConcepts": [
+      "equivalence relation",
+      "symmetry"
+    ],
+    "prerequisites": [
+      "inducedIso"
+    ]
   },
   {
     "id": "ann-1036-isotrans",
     "proofId": "erdos-1036",
-    "range": { "startLine": 126, "endLine": 129 },
+    "range": {
+      "startLine": 126,
+      "endLine": 129
+    },
     "type": "technique",
     "title": "inducedIso_trans",
     "content": "Induced subgraph isomorphism is transitive: G[S₁] ≅ G[S₂] and G[S₂] ≅ G[S₃] imply G[S₁] ≅ G[S₃] via composition.",
     "mathContext": "If $\\phi: G[S_1] \\cong G[S_2]$ and $\\psi: G[S_2] \\cong G[S_3]$, then $\\psi \\circ \\phi: G[S_1] \\cong G[S_3]$.",
     "significance": "supporting",
-    "relatedConcepts": ["equivalence relation", "transitivity"],
-    "prerequisites": ["inducedIso"]
+    "relatedConcepts": [
+      "equivalence relation",
+      "transitivity"
+    ],
+    "prerequisites": [
+      "inducedIso"
+    ]
   },
   {
     "id": "ann-1036-allsubsets",
     "proofId": "erdos-1036",
-    "range": { "startLine": 137, "endLine": 139 },
+    "range": {
+      "startLine": 137,
+      "endLine": 139
+    },
     "type": "definition",
     "title": "allInducedSubsets",
     "content": "The collection of all vertex subsets of G, whose induced subgraphs give all possible induced subgraphs. There are 2^n such subsets for an n-vertex graph.",
     "mathContext": "The power set $\\mathcal{P}(V(G))$ has $2^n$ elements. Each subset $S$ induces a subgraph $G[S]$. The number of non-isomorphic induced subgraphs is at most $2^n$ and at least $n+1$ (by vertex count alone).",
     "significance": "key",
-    "relatedConcepts": ["power set", "induced subgraph enumeration"],
-    "prerequisites": ["Finset.powerset"]
+    "relatedConcepts": [
+      "power set",
+      "induced subgraph enumeration"
+    ],
+    "prerequisites": [
+      "Finset.powerset"
+    ]
   },
   {
     "id": "ann-1036-sameisoclass",
     "proofId": "erdos-1036",
-    "range": { "startLine": 141, "endLine": 143 },
+    "range": {
+      "startLine": 141,
+      "endLine": 143
+    },
     "type": "definition",
     "title": "sameIsoClass",
     "content": "Equivalence relation on vertex subsets: S₁ ~ S₂ if and only if G[S₁] ≅ G[S₂]. The number of equivalence classes is the number of distinct induced subgraph types.",
     "mathContext": "Define $S_1 \\sim S_2$ iff $G[S_1] \\cong G[S_2]$. This is an equivalence relation (reflexive, symmetric, transitive). The quotient $\\mathcal{P}(V) / {\\sim}$ gives the set of distinct induced subgraph isomorphism types.",
     "significance": "key",
-    "relatedConcepts": ["equivalence class", "isomorphism type", "quotient"],
-    "prerequisites": ["inducedIso", "inducedIso_refl", "inducedIso_symm", "inducedIso_trans"]
+    "relatedConcepts": [
+      "equivalence class",
+      "isomorphism type",
+      "quotient"
+    ],
+    "prerequisites": [
+      "inducedIso",
+      "inducedIso_refl",
+      "inducedIso_symm",
+      "inducedIso_trans"
+    ]
   },
   {
     "id": "ann-1036-distinctcount",
     "proofId": "erdos-1036",
-    "range": { "startLine": 145, "endLine": 147 },
+    "range": {
+      "startLine": 145,
+      "endLine": 147
+    },
     "type": "definition",
     "title": "distinctInducedCount",
     "content": "The number of non-isomorphic induced subgraphs of G: the cardinality of the quotient of the power set by the isomorphism equivalence relation.",
     "mathContext": "Let $i(G) = |\\mathcal{P}(V(G)) / {\\sim}|$ be the number of distinct induced subgraph types. Problem 1036 asks: is $i(G) \\geq 2^{\\Omega(n)}$ for non-Ramsey $G$?",
     "significance": "key",
-    "relatedConcepts": ["induced subgraph counting", "graph complexity measure"],
-    "prerequisites": ["sameIsoClass", "Finset.card"]
+    "relatedConcepts": [
+      "induced subgraph counting",
+      "graph complexity measure"
+    ],
+    "prerequisites": [
+      "sameIsoClass",
+      "Finset.card"
+    ]
   },
   {
     "id": "ann-1036-hasdistinct",
     "proofId": "erdos-1036",
-    "range": { "startLine": 149, "endLine": 153 },
+    "range": {
+      "startLine": 149,
+      "endLine": 153
+    },
     "type": "definition",
     "title": "hasDistinctInduced",
     "content": "Predicate asserting that G has at least k non-isomorphic induced subgraphs. The conjecture asks for k = 2^{Ω(n)}.",
     "mathContext": "$G$ has $\\geq k$ distinct induced subgraphs means $i(G) \\geq k$, i.e., there exist $k$ vertex subsets $S_1, \\ldots, S_k$ with $G[S_i] \\not\\cong G[S_j]$ for $i \\neq j$.",
     "significance": "key",
-    "relatedConcepts": ["lower bound on distinct types", "graph diversity"],
-    "prerequisites": ["distinctInducedCount"]
+    "relatedConcepts": [
+      "lower bound on distinct types",
+      "graph diversity"
+    ],
+    "prerequisites": [
+      "distinctInducedCount"
+    ]
   },
   {
     "id": "ann-1036-conjecture",
     "proofId": "erdos-1036",
-    "range": { "startLine": 161, "endLine": 168 },
+    "range": {
+      "startLine": 161,
+      "endLine": 168
+    },
     "type": "definition",
     "title": "erdos_renyi_conjecture",
     "content": "The Erdős-Rényi conjecture: for every constant c > 0, there exists c' > 0 such that every non-Ramsey graph with parameter c on n vertices has at least 2^{c'n} non-isomorphic induced subgraphs.",
     "mathContext": "For every $c > 0$, $\\exists c' > 0$ such that if $\\max(\\omega(G), \\alpha(G)) \\leq c \\log n$, then $i(G) \\geq 2^{c' n}$. This says non-Ramsey graphs must be structurally diverse at an exponential scale.",
     "significance": "key",
-    "relatedConcepts": ["Erdős-Rényi conjecture", "exponential diversity", "Ramsey avoidance"],
-    "prerequisites": ["isNonRamsey", "hasDistinctInduced"]
+    "relatedConcepts": [
+      "Erdős-Rényi conjecture",
+      "exponential diversity",
+      "Ramsey avoidance"
+    ],
+    "prerequisites": [
+      "isNonRamsey",
+      "hasDistinctInduced"
+    ]
   },
   {
     "id": "ann-1036-ahexp",
     "proofId": "erdos-1036",
-    "range": { "startLine": 176, "endLine": 178 },
+    "range": {
+      "startLine": 176,
+      "endLine": 178
+    },
     "type": "definition",
     "title": "alonHajnalExponent",
     "content": "The Alon-Hajnal exponent n·(log n)^{-O(log log n)}: a sub-exponential but super-polynomial growth rate, weaker than the conjectured 2^{Ω(n)}.",
     "mathContext": "The Alon-Hajnal (1991) bound gives $i(G) \\geq \\exp(n (\\log n)^{-O(\\log \\log n)})$, which is $2^{o(n)}$ — sub-exponential in $n$ but still super-polynomial.",
     "significance": "key",
-    "relatedConcepts": ["sub-exponential bound", "iterated logarithm"],
-    "prerequisites": ["Real.log", "Real.exp"]
+    "relatedConcepts": [
+      "sub-exponential bound",
+      "iterated logarithm"
+    ],
+    "prerequisites": [
+      "Real.log",
+      "Real.exp"
+    ]
   },
   {
     "id": "ann-1036-ahbound",
     "proofId": "erdos-1036",
-    "range": { "startLine": 180, "endLine": 186 },
+    "range": {
+      "startLine": 180,
+      "endLine": 186
+    },
     "type": "context",
     "title": "Alon-Hajnal Bound",
     "content": "Axiomatizes the Alon-Hajnal (1991) result: every non-Ramsey graph has at least exp(n·(log n)^{-O(log log n)}) distinct induced subgraphs. This was the strongest result before Shelah.",
     "mathContext": "Alon and Hajnal (1991) proved: if $\\max(\\omega(G), \\alpha(G)) \\leq c \\log n$, then $i(G) \\geq \\exp(n (\\log n)^{-O(\\log \\log n)})$. Their proof uses Szemerédi's regularity lemma.",
     "significance": "key",
-    "relatedConcepts": ["Szemerédi regularity lemma", "Alon-Hajnal 1991"],
-    "prerequisites": ["isNonRamsey", "alonHajnalExponent"]
+    "relatedConcepts": [
+      "Szemerédi regularity lemma",
+      "Alon-Hajnal 1991"
+    ],
+    "prerequisites": [
+      "isNonRamsey",
+      "alonHajnalExponent"
+    ]
   },
   {
     "id": "ann-1036-ahweaker",
     "proofId": "erdos-1036",
-    "range": { "startLine": 188, "endLine": 191 },
+    "range": {
+      "startLine": 188,
+      "endLine": 191
+    },
     "type": "technique",
     "title": "alon_hajnal_weaker",
     "content": "The Alon-Hajnal bound is strictly weaker than Shelah's theorem: for large n, exp(n·(log n)^{-O(log log n)}) < 2^{c'n}.",
     "mathContext": "For large $n$: $\\exp(n (\\log n)^{-O(\\log \\log n)}) = 2^{o(n)} < 2^{c'n}$, so Shelah's bound is exponentially stronger.",
     "significance": "supporting",
-    "relatedConcepts": ["bound comparison", "asymptotic dominance"],
-    "prerequisites": ["alonHajnalExponent", "shelahBound"]
+    "relatedConcepts": [
+      "bound comparison",
+      "asymptotic dominance"
+    ],
+    "prerequisites": [
+      "alonHajnalExponent",
+      "shelahBound"
+    ]
   },
   {
     "id": "ann-1036-bipartite",
     "proofId": "erdos-1036",
-    "range": { "startLine": 199, "endLine": 202 },
+    "range": {
+      "startLine": 199,
+      "endLine": 202
+    },
     "type": "definition",
     "title": "hasCompleteBipartite",
     "content": "Predicate for containing a complete bipartite subgraph K_{s,t} as an induced subgraph.",
     "mathContext": "$G$ contains $K_{s,t}$ if there exist disjoint sets $A, B \\subseteq V(G)$ with $|A| = s$, $|B| = t$, all pairs in $A \\times B$ adjacent, and no edges within $A$ or within $B$.",
     "significance": "supporting",
-    "relatedConcepts": ["complete bipartite graph", "Zarankiewicz problem"],
-    "prerequisites": ["SimpleGraph.Adj", "Finset"]
+    "relatedConcepts": [
+      "complete bipartite graph",
+      "Zarankiewicz problem"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj",
+      "Finset"
+    ]
   },
   {
     "id": "ann-1036-avoidsbip",
     "proofId": "erdos-1036",
-    "range": { "startLine": 204, "endLine": 206 },
+    "range": {
+      "startLine": 204,
+      "endLine": 206
+    },
     "type": "definition",
     "title": "avoidsBipartite",
     "content": "A graph avoids bipartite if neither G nor its complement contains K_{k,k}. This is stronger than being non-Ramsey.",
     "mathContext": "$G$ avoids bipartite with parameter $k$ if $G$ contains no $K_{k,k}$ and the complement $\\bar{G}$ contains no $K_{k,k}$.",
     "significance": "supporting",
-    "relatedConcepts": ["bipartite Ramsey", "complement graph"],
-    "prerequisites": ["hasCompleteBipartite"]
+    "relatedConcepts": [
+      "bipartite Ramsey",
+      "complement graph"
+    ],
+    "prerequisites": [
+      "hasCompleteBipartite"
+    ]
   },
   {
     "id": "ann-1036-ehbip",
     "proofId": "erdos-1036",
-    "range": { "startLine": 208, "endLine": 214 },
+    "range": {
+      "startLine": 208,
+      "endLine": 214
+    },
     "type": "context",
     "title": "Erdős-Hajnal Bipartite",
     "content": "Axiomatizes the Erdős-Hajnal (1989) result: graphs avoiding K_{k,k} in both G and its complement have 2^{Ω(n)} distinct induced subgraphs. This was the first exponential bound in a restricted setting.",
     "mathContext": "Erdős and Hajnal (1989) proved: if neither $G$ nor $\\bar{G}$ contains $K_{k,k}$, then $i(G) \\geq 2^{cn}$ for a constant $c = c(k) > 0$. This uses a direct counting argument on neighborhoods.",
     "significance": "key",
-    "relatedConcepts": ["Erdős-Hajnal 1989", "bipartite avoidance", "neighborhood counting"],
-    "prerequisites": ["avoidsBipartite", "hasDistinctInduced"]
+    "relatedConcepts": [
+      "Erdős-Hajnal 1989",
+      "bipartite avoidance",
+      "neighborhood counting"
+    ],
+    "prerequisites": [
+      "avoidsBipartite",
+      "hasDistinctInduced"
+    ]
   },
   {
     "id": "ann-1036-nonramseyavoids",
     "proofId": "erdos-1036",
-    "range": { "startLine": 216, "endLine": 219 },
+    "range": {
+      "startLine": 216,
+      "endLine": 219
+    },
     "type": "technique",
     "title": "nonRamsey_avoids_bipartite",
     "content": "Non-Ramsey graphs avoid large complete bipartite subgraphs: if max(ω(G), α(G)) ≤ c log n, then neither G nor its complement contains K_{k,k} for appropriate k.",
     "mathContext": "If $\\max(\\omega(G), \\alpha(G)) \\leq c \\log n$, then for $k = c \\log n$, $G$ avoids $K_{k,k}$ (since $K_{k,k}$ contains an independent set of size $k$) and similarly for $\\bar{G}$.",
     "significance": "key",
-    "relatedConcepts": ["non-Ramsey implies bipartite avoidance"],
-    "prerequisites": ["isNonRamsey", "avoidsBipartite"]
+    "relatedConcepts": [
+      "non-Ramsey implies bipartite avoidance"
+    ],
+    "prerequisites": [
+      "isNonRamsey",
+      "avoidsBipartite"
+    ]
   },
   {
     "id": "ann-1036-shelah",
     "proofId": "erdos-1036",
-    "range": { "startLine": 227, "endLine": 233 },
+    "range": {
+      "startLine": 227,
+      "endLine": 233
+    },
     "type": "context",
     "title": "Shelah's Theorem",
     "content": "Axiomatizes Shelah's 1998 theorem: every non-Ramsey graph on n vertices has at least 2^{c'n} non-isomorphic induced subgraphs, where c' depends on the Ramsey parameter c. This fully resolves Problem 1036.",
     "mathContext": "Shelah (1998): For every $c > 0$, $\\exists c' > 0$ such that if $\\max(\\omega(G), \\alpha(G)) \\leq c \\log n$, then $i(G) \\geq 2^{c'n}$. The proof uses a sophisticated partition argument combined with the Hales-Jewett theorem.",
     "significance": "key",
-    "relatedConcepts": ["Shelah 1998", "partition argument", "Hales-Jewett theorem"],
-    "prerequisites": ["isNonRamsey", "hasDistinctInduced"]
+    "relatedConcepts": [
+      "Shelah 1998",
+      "partition argument",
+      "Hales-Jewett theorem"
+    ],
+    "prerequisites": [
+      "isNonRamsey",
+      "hasDistinctInduced"
+    ]
   },
   {
     "id": "ann-1036-solved",
     "proofId": "erdos-1036",
-    "range": { "startLine": 235, "endLine": 239 },
+    "range": {
+      "startLine": 235,
+      "endLine": 239
+    },
     "type": "technique",
     "title": "erdos_1036_solved",
     "content": "Shelah's theorem implies the Erdős-Rényi conjecture, resolving Problem 1036 affirmatively.",
     "mathContext": "Shelah's theorem directly establishes the Erdős-Rényi conjecture: $i(G) \\geq 2^{c'n}$ for non-Ramsey $G$, which is $2^{\\Omega(n)}$ as conjectured.",
     "significance": "key",
-    "relatedConcepts": ["conjecture resolution", "Erdős-Rényi conjecture"],
-    "prerequisites": ["shelah_theorem", "erdos_renyi_conjecture"]
+    "relatedConcepts": [
+      "conjecture resolution",
+      "Erdős-Rényi conjecture"
+    ],
+    "prerequisites": [
+      "shelah_theorem",
+      "erdos_renyi_conjecture"
+    ]
   },
   {
     "id": "ann-1036-shelahbound",
     "proofId": "erdos-1036",
-    "range": { "startLine": 247, "endLine": 248 },
+    "range": {
+      "startLine": 247,
+      "endLine": 248
+    },
     "type": "definition",
     "title": "shelahBound",
     "content": "The Shelah bound 2^{c'n} expressed as a function of n and the constant c'.",
     "mathContext": "$\\text{shelahBound}(c', n) = 2^{c' \\cdot n}$. This is the lower bound on $i(G)$ guaranteed by Shelah's theorem.",
     "significance": "supporting",
-    "relatedConcepts": ["exponential bound", "Shelah constant"],
-    "prerequisites": ["Real.rpow"]
+    "relatedConcepts": [
+      "exponential bound",
+      "Shelah constant"
+    ],
+    "prerequisites": [
+      "Real.rpow"
+    ]
   },
   {
     "id": "ann-1036-ahbounddef",
     "proofId": "erdos-1036",
-    "range": { "startLine": 250, "endLine": 252 },
+    "range": {
+      "startLine": 250,
+      "endLine": 252
+    },
     "type": "definition",
     "title": "alonHajnalBound",
     "content": "The Alon-Hajnal bound exp(n·(log n)^{-O(log log n)}) expressed as a concrete function.",
     "mathContext": "$\\text{alonHajnalBound}(n) = \\exp(n \\cdot (\\log n)^{-O(\\log \\log n)})$, the sub-exponential bound from 1991.",
     "significance": "supporting",
-    "relatedConcepts": ["sub-exponential growth", "iterated logarithm"],
-    "prerequisites": ["alonHajnalExponent"]
+    "relatedConcepts": [
+      "sub-exponential growth",
+      "iterated logarithm"
+    ],
+    "prerequisites": [
+      "alonHajnalExponent"
+    ]
   },
   {
     "id": "ann-1036-shelahbetter",
     "proofId": "erdos-1036",
-    "range": { "startLine": 254, "endLine": 257 },
+    "range": {
+      "startLine": 254,
+      "endLine": 257
+    },
     "type": "technique",
     "title": "shelah_better",
     "content": "Shelah's bound is asymptotically stronger than Alon-Hajnal's: 2^{c'n} grows exponentially faster than exp(n·(log n)^{-O(log log n)}).",
     "mathContext": "For large $n$: $2^{c'n} \\gg \\exp(n (\\log n)^{-O(\\log \\log n)})$. The ratio $2^{c'n} / \\exp(n (\\log n)^{-O(\\log \\log n)}) \\to \\infty$.",
     "significance": "supporting",
-    "relatedConcepts": ["asymptotic comparison", "exponential vs sub-exponential"],
-    "prerequisites": ["shelahBound", "alonHajnalBound"]
+    "relatedConcepts": [
+      "asymptotic comparison",
+      "exponential vs sub-exponential"
+    ],
+    "prerequisites": [
+      "shelahBound",
+      "alonHajnalBound"
+    ]
   },
   {
     "id": "ann-1036-distinctupper",
     "proofId": "erdos-1036",
-    "range": { "startLine": 265, "endLine": 268 },
+    "range": {
+      "startLine": 265,
+      "endLine": 268
+    },
     "type": "technique",
     "title": "distinct_upper",
     "content": "Trivial upper bound: any n-vertex graph has at most 2^n distinct induced subgraphs (one per subset of vertices).",
     "mathContext": "$i(G) \\leq |\\mathcal{P}(V(G))| = 2^n$. Combined with Shelah's lower bound $i(G) \\geq 2^{c'n}$, this shows $i(G) = 2^{\\Theta(n)}$ for non-Ramsey graphs.",
     "significance": "supporting",
-    "relatedConcepts": ["trivial upper bound", "power set size"],
-    "prerequisites": ["allInducedSubsets", "Finset.card"]
+    "relatedConcepts": [
+      "trivial upper bound",
+      "power set size"
+    ],
+    "prerequisites": [
+      "allInducedSubsets",
+      "Finset.card"
+    ]
   },
   {
     "id": "ann-1036-random",
     "proofId": "erdos-1036",
-    "range": { "startLine": 270, "endLine": 275 },
+    "range": {
+      "startLine": 270,
+      "endLine": 275
+    },
     "type": "context",
     "title": "random_graph_distinct",
     "content": "Axiomatizes the fact that random graphs G(n, 1/2) have asymptotically 2^n distinct induced subgraphs with high probability. This represents the 'maximum diversity' benchmark.",
     "mathContext": "For $G \\sim G(n, 1/2)$: $i(G) = (1 - o(1)) \\cdot 2^n$ with high probability. Random graphs are maximally diverse in induced subgraph types.",
     "significance": "supporting",
-    "relatedConcepts": ["Erdős-Rényi random graph", "maximum diversity"],
-    "prerequisites": ["distinctInducedCount"]
+    "relatedConcepts": [
+      "Erdős-Rényi random graph",
+      "maximum diversity"
+    ],
+    "prerequisites": [
+      "distinctInducedCount"
+    ]
   },
   {
     "id": "ann-1036-randomlike",
     "proofId": "erdos-1036",
-    "range": { "startLine": 277, "endLine": 284 },
+    "range": {
+      "startLine": 277,
+      "endLine": 284
+    },
     "type": "technique",
     "title": "nonRamsey_random_like",
     "content": "Non-Ramsey graphs are 'random-like' in diversity: their induced subgraph count is exponential in n, matching the random graph up to a constant in the exponent.",
     "mathContext": "Combining Shelah ($i(G) \\geq 2^{c'n}$) with the trivial bound ($i(G) \\leq 2^n$): for non-Ramsey $G$, $i(G) = 2^{\\Theta(n)}$, qualitatively matching random graphs.",
     "significance": "key",
-    "relatedConcepts": ["pseudo-randomness", "quasi-random graphs"],
-    "prerequisites": ["shelah_theorem", "distinct_upper"]
+    "relatedConcepts": [
+      "pseudo-randomness",
+      "quasi-random graphs"
+    ],
+    "prerequisites": [
+      "shelah_theorem",
+      "distinct_upper"
+    ]
   },
   {
     "id": "ann-1036-inducedsize",
     "proofId": "erdos-1036",
-    "range": { "startLine": 292, "endLine": 294 },
+    "range": {
+      "startLine": 292,
+      "endLine": 294
+    },
     "type": "definition",
     "title": "inducedOfSize",
     "content": "The set of all k-vertex subsets of G, representing all possible induced subgraphs of a fixed size.",
     "mathContext": "The set $\\binom{V}{k} = \\{S \\subseteq V(G) : |S| = k\\}$ has $\\binom{n}{k}$ elements. Each gives an induced subgraph on exactly $k$ vertices.",
     "significance": "supporting",
-    "relatedConcepts": ["fixed-size subsets", "binomial coefficient"],
-    "prerequisites": ["Finset.powerset", "Finset.card"]
+    "relatedConcepts": [
+      "fixed-size subsets",
+      "binomial coefficient"
+    ],
+    "prerequisites": [
+      "Finset.powerset",
+      "Finset.card"
+    ]
   },
   {
     "id": "ann-1036-distinctsize",
     "proofId": "erdos-1036",
-    "range": { "startLine": 296, "endLine": 298 },
+    "range": {
+      "startLine": 296,
+      "endLine": 298
+    },
     "type": "definition",
     "title": "distinctOfSize",
     "content": "The number of distinct isomorphism types among k-vertex induced subgraphs of G.",
     "mathContext": "Let $i_k(G) = |\\{G[S] : S \\subseteq V(G), |S| = k\\} / {\\cong}|$. The total count satisfies $i(G) = \\sum_{k=0}^{n} i_k(G)$.",
     "significance": "supporting",
-    "relatedConcepts": ["size-restricted counting", "graph type enumeration"],
-    "prerequisites": ["inducedOfSize", "sameIsoClass"]
+    "relatedConcepts": [
+      "size-restricted counting",
+      "graph type enumeration"
+    ],
+    "prerequisites": [
+      "inducedOfSize",
+      "sameIsoClass"
+    ]
   },
   {
     "id": "ann-1036-hasdistinctsize",
     "proofId": "erdos-1036",
-    "range": { "startLine": 300, "endLine": 303 },
+    "range": {
+      "startLine": 300,
+      "endLine": 303
+    },
     "type": "definition",
     "title": "hasDistinctOfSize",
     "content": "Predicate asserting G has at least m distinct isomorphism types among its k-vertex induced subgraphs.",
     "mathContext": "$i_k(G) \\geq m$: among all $\\binom{n}{k}$ induced subgraphs on $k$ vertices, at least $m$ are pairwise non-isomorphic.",
     "significance": "supporting",
-    "relatedConcepts": ["fixed-size diversity"],
-    "prerequisites": ["distinctOfSize"]
+    "relatedConcepts": [
+      "fixed-size diversity"
+    ],
+    "prerequisites": [
+      "distinctOfSize"
+    ]
   },
   {
     "id": "ann-1036-fixedsize",
     "proofId": "erdos-1036",
-    "range": { "startLine": 305, "endLine": 311 },
+    "range": {
+      "startLine": 305,
+      "endLine": 311
+    },
     "type": "context",
     "title": "nonRamsey_fixed_size",
     "content": "Axiomatizes that non-Ramsey graphs have many distinct k-vertex induced subgraphs for appropriate k: a strengthening of the counting argument to fixed sizes.",
     "mathContext": "For non-Ramsey $G$ and appropriate $k = \\Theta(\\log n)$: $i_k(G) \\geq 2^{\\Omega(k^2)}$, since the number of distinct graphs on $k$ vertices is $2^{\\Theta(k^2)}$ and non-Ramsey graphs realize a constant fraction of them.",
     "significance": "supporting",
-    "relatedConcepts": ["fixed-size diversity", "graph enumeration"],
-    "prerequisites": ["isNonRamsey", "hasDistinctOfSize"]
+    "relatedConcepts": [
+      "fixed-size diversity",
+      "graph enumeration"
+    ],
+    "prerequisites": [
+      "isNonRamsey",
+      "hasDistinctOfSize"
+    ]
   },
   {
     "id": "ann-1036-compnonramsey",
     "proofId": "erdos-1036",
-    "range": { "startLine": 319, "endLine": 322 },
+    "range": {
+      "startLine": 319,
+      "endLine": 322
+    },
     "type": "technique",
     "title": "complement_nonRamsey",
     "content": "The complement of a non-Ramsey graph is also non-Ramsey: if G has no large clique or independent set, then the complement (which swaps cliques and independent sets) has the same property.",
     "mathContext": "If $\\max(\\omega(G), \\alpha(G)) \\leq c \\log n$, then $\\omega(\\bar{G}) = \\alpha(G) \\leq c \\log n$ and $\\alpha(\\bar{G}) = \\omega(G) \\leq c \\log n$, so $\\bar{G}$ is also non-Ramsey.",
     "significance": "key",
-    "relatedConcepts": ["complement symmetry", "clique-independence duality"],
-    "prerequisites": ["isNonRamsey"]
+    "relatedConcepts": [
+      "complement symmetry",
+      "clique-independence duality"
+    ],
+    "prerequisites": [
+      "isNonRamsey"
+    ]
   },
   {
     "id": "ann-1036-compdistinct",
     "proofId": "erdos-1036",
-    "range": { "startLine": 324, "endLine": 327 },
+    "range": {
+      "startLine": 324,
+      "endLine": 327
+    },
     "type": "technique",
     "title": "complement_distinct",
     "content": "G and its complement have the same number of distinct induced subgraphs, since complementation preserves the isomorphism type structure.",
     "mathContext": "$i(G) = i(\\bar{G})$, since $G[S] \\cong G[T]$ iff $\\bar{G}[S] \\cong \\bar{G}[T]$. Complementation is an involution on isomorphism classes.",
     "significance": "supporting",
-    "relatedConcepts": ["complement involution", "isomorphism class preservation"],
-    "prerequisites": ["complement_nonRamsey", "distinctInducedCount"]
+    "relatedConcepts": [
+      "complement involution",
+      "isomorphism class preservation"
+    ],
+    "prerequisites": [
+      "complement_nonRamsey",
+      "distinctInducedCount"
+    ]
   },
   {
     "id": "ann-1036-kuniversal",
     "proofId": "erdos-1036",
-    "range": { "startLine": 335, "endLine": 341 },
+    "range": {
+      "startLine": 335,
+      "endLine": 341
+    },
     "type": "definition",
     "title": "isKUniversal",
     "content": "A graph G is k-universal if it contains every graph on at most k vertices as an induced subgraph. Prömel and Rödl (1999) proved non-Ramsey graphs are c·log(n)-universal.",
     "mathContext": "$G$ is $k$-universal if for every graph $H$ with $|V(H)| \\leq k$, there exists $S \\subseteq V(G)$ with $G[S] \\cong H$. The number of graphs on $k$ vertices is $2^{\\binom{k}{2}}$, so $k$-universality implies $i(G) \\geq 2^{\\binom{k}{2}}$.",
     "significance": "key",
-    "relatedConcepts": ["universal graph", "Prömel-Rödl theorem", "induced universality"],
-    "prerequisites": ["inducedSubgraph", "GraphIso"]
+    "relatedConcepts": [
+      "universal graph",
+      "Prömel-Rödl theorem",
+      "induced universality"
+    ],
+    "prerequisites": [
+      "inducedSubgraph",
+      "GraphIso"
+    ]
   },
   {
     "id": "ann-1036-univdistinct",
     "proofId": "erdos-1036",
-    "range": { "startLine": 343, "endLine": 346 },
+    "range": {
+      "startLine": 343,
+      "endLine": 346
+    },
     "type": "technique",
     "title": "universal_implies_distinct",
     "content": "k-universality implies having at least 2^{C(k,2)} distinct induced subgraphs, since there are that many non-isomorphic graphs on k vertices.",
     "mathContext": "If $G$ is $k$-universal, then $i(G) \\geq 2^{\\binom{k}{2}} / k!$ (accounting for isomorphisms). For $k = c \\log n$, this gives $i(G) \\geq 2^{\\Omega((\\log n)^2)}$.",
     "significance": "key",
-    "relatedConcepts": ["graph counting", "universality implies diversity"],
-    "prerequisites": ["isKUniversal", "distinctInducedCount"]
+    "relatedConcepts": [
+      "graph counting",
+      "universality implies diversity"
+    ],
+    "prerequisites": [
+      "isKUniversal",
+      "distinctInducedCount"
+    ]
   },
   {
     "id": "ann-1036-viauniv",
     "proofId": "erdos-1036",
-    "range": { "startLine": 348, "endLine": 355 },
+    "range": {
+      "startLine": 348,
+      "endLine": 355
+    },
     "type": "technique",
     "title": "via_universality",
     "content": "Alternative proof of Problem 1036 via Prömel-Rödl universality (Problem 1031): non-Ramsey graphs are c·log(n)-universal, and universality implies exponentially many distinct induced subgraphs.",
     "mathContext": "By Prömel-Rödl (Problem 1031), non-Ramsey $G$ is $c \\log n$-universal. Hence $i(G) \\geq 2^{\\binom{c \\log n}{2}} = 2^{\\Omega((\\log n)^2)}$. Note: this gives a weaker bound than Shelah's $2^{\\Omega(n)}$ but provides a conceptually cleaner proof via universality.",
     "significance": "key",
-    "relatedConcepts": ["Prömel-Rödl universality", "alternative proof", "Problem 1031 connection"],
-    "prerequisites": ["isKUniversal", "universal_implies_distinct", "isNonRamsey"]
+    "relatedConcepts": [
+      "Prömel-Rödl universality",
+      "alternative proof",
+      "Problem 1031 connection"
+    ],
+    "prerequisites": [
+      "isKUniversal",
+      "universal_implies_distinct",
+      "isNonRamsey"
+    ]
   }
 ]

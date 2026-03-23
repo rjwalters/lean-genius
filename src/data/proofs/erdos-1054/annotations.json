@@ -147,7 +147,7 @@
       "startLine": 120,
       "endLine": 166
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Concrete Examples",
     "content": "We record specific values of f(n) as axioms:\n\n| n | f(n) | Explanation |\n|---|------|-------------|\n| 1 | 1 | divisors of 1 = {1}, sum = 1 |\n| 3 | 2 | divisors of 2 = {1,2}, 1+2 = 3 |\n| 4 | 3 | divisors of 3 = {1,3}, 1+3 = 4 |\n| 6 | 6 | divisors of 6 = {1,2,3,6}, 1+2+3 = 6 |\n\nThese examples illustrate how f(n) can sometimes be much smaller than n (f(3) = 2) and sometimes equal to n (f(6) = 6).",
     "significance": "supporting",

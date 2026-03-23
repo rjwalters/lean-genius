@@ -6,7 +6,7 @@
       "startLine": 28,
       "endLine": 48
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "General Last-k-Digits Theorem",
     "content": "The master theorem for all last-digit rules:\n\n```lean\ntheorem dvd_iff_dvd_mod (d M n : ℕ) (hdM : d ∣ M) :\n    d ∣ n ↔ d ∣ (n % M)\n```\n\nIf $d | M$, then $d | n \\iff d | (n \\bmod M)$. This unifies:\n- div by 2 (M=10): 2|10\n- div by 4 (M=100): 4|100\n- div by 8 (M=1000): 8|1000\n- div by 5, 25, 125 similarly",
     "mathContext": "$d | M \\implies (d | n \\iff d | (n \\bmod M))$",
@@ -24,7 +24,7 @@
       "startLine": 97,
       "endLine": 118
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Power Generalizations",
     "content": "General theorems for all powers of 2 and 5:\n\n```lean\ntheorem pow2_dvd_last_k (k n : ℕ) :\n    2^k ∣ n ↔ 2^k ∣ (n % 10^k)\ntheorem pow5_dvd_last_k (k n : ℕ) :\n    5^k ∣ n ↔ 5^k ∣ (n % 10^k)\n```\n\nThese subsume all individual 2/4/8/16/32 and 5/25/125 rules.",
     "mathContext": "$2^k | n \\iff 2^k | (n \\bmod 10^k)$",
@@ -42,7 +42,7 @@
       "startLine": 120,
       "endLine": 148
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Divisibility by 13: Truncation Method",
     "content": "The 'add 4 times the last digit' rule for 13:\n\n```lean\ntheorem thirteen_dvd_truncation (n : ℕ) :\n    13 ∣ n ↔ (13 : ℤ) ∣ (↑(n/10) + 4·↑(n%10))\n```\n\n**Proof idea**: $10(q + 4r) = n + 39r \\equiv n \\pmod{13}$, and $\\gcd(13, 10) = 1$.\n\nThis gives a practical mental test: remove last digit, add 4 times it to the rest.",
     "mathContext": "$13 | n \\iff 13 | (\\lfloor n/10 \\rfloor + 4(n \\bmod 10))$",
@@ -60,7 +60,7 @@
       "startLine": 155,
       "endLine": 210
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Digit-Sum Rules in Various Bases",
     "content": "General digit-sum divisibility via Mathlib:\n\n```lean\ntheorem digitSum_dvd_iff (d b : ℕ) (hdb : b % d = 1) (n : ℕ) :\n    d ∣ n ↔ d ∣ (Nat.digits b n).sum\n```\n\nInstantiations include:\n- 37 via base 1000 (three-digit grouping)\n- 99 via base 100 (two-digit grouping)\n- 27, 999 via base 1000\n- Rules in hex (3, 5, 15), octal (7), and base 7 (3, 6)",
     "mathContext": "$b \\equiv 1 \\pmod{d} \\implies (d | n \\iff d | \\text{digit sum in base } b)$",
@@ -114,7 +114,7 @@
       "startLine": 333,
       "endLine": 375
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Coprime Factorization Rules",
     "content": "General coprime divisibility and 8 specific rules:\n\n```lean\ntheorem coprime_mul_dvd_iff (d₁ d₂ n : ℕ) (h : Nat.Coprime d₁ d₂) :\n    d₁ * d₂ ∣ n ↔ d₁ ∣ n ∧ d₂ ∣ n\n```\n\nRules: 6=2×3, 12=4×3, 15=3×5, 18=2×9, 36=4×9, 45=9×5, 60=4×15, 90=9×10.",
     "mathContext": "$\\gcd(d_1, d_2) = 1 \\implies (d_1 d_2 | n \\iff d_1 | n \\wedge d_2 | n)$",
@@ -132,7 +132,7 @@
       "startLine": 390,
       "endLine": 420
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Master Summary",
     "content": "A single theorem collecting all major divisibility rules:\n\n- 3 digit-sum rules (3, 9, 37, 99 in various bases)\n- 5 last-digit rules (2, 4, 8, 5, 25)\n- 2 power generalizations (2^k, 5^k)\n\nAll verified in one theorem statement.",
     "significance": "supporting",
