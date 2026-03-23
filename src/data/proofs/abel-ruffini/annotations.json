@@ -80,7 +80,7 @@
     "title": "Solvable by Radicals and Field Variables",
     "content": "An element α is 'solvable by radicals' if it can be built from the base field using field operations and nth roots. The quadratic formula is an example: $x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$\n\nMathlib defines this inductively via `IsSolvableByRad`, with constructors for: base field elements, arithmetic operations (+, -, ×, ÷), and radical extraction ($\\alpha \\mapsto \\alpha^{1/n}$). The intermediate field `solvableByRad F E` is the largest subfield of $E$ whose elements are all solvable by radicals over $F$.\n\nThe variable declarations introduce a universe-polymorphic framework: `F` is an arbitrary field and `E/F` is a field extension with `[Algebra F E]`. This generality means the development applies to any characteristic, though the classical Abel-Ruffini theorem is typically stated over $\\mathbb{Q}$.",
     "mathContext": "`solvableByRad F E` is the intermediate field of all elements solvable by radicals over $F$. Formally, $\\alpha \\in \\text{solvableByRad}(F, E)$ iff there exists a radical tower $F = K_0 \\subset K_1 \\subset \\cdots \\subset K_m$ with $\\alpha \\in K_m$ and each $K_{i+1} = K_i(\\beta_i)$ where $\\beta_i^{n_i} \\in K_i$.\n\nExample: $\\sqrt{1 + \\sqrt{2}}$ is built by the tower $\\mathbb{Q} \\subset \\mathbb{Q}(\\sqrt{2}) \\subset \\mathbb{Q}(\\sqrt{2}, \\sqrt{1+\\sqrt{2}})$.",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [
       "field extensions",
       "nth roots",
@@ -129,7 +129,7 @@
     "title": "The Galois Bridge Theorem",
     "content": "**Theorem**: If α is expressible using radicals, then the Galois group of its minimal polynomial is solvable.\n\nThis is the key bridge: radical solvability (field theory) → group solvability (group theory).\n\nThe Lean proof is a one-liner: `solvableByRad.isSolvable' hq hroot hrad`. Internally, Mathlib proves this by induction on the `IsSolvableByRad` construction: each radical step $K_i \\to K_i(\\sqrt[n]{a})$ yields a cyclic (hence abelian) Galois group quotient, and a group built from abelian quotients is solvable. The hypotheses `hq : Irreducible q`, `hroot : aeval α q = 0`, and `hrad : IsSolvableByRad F α` are passed directly to Mathlib's lemma — the theorem is a pedagogical wrapper making the bridge explicit.",
     "mathContext": "$\\alpha \\in \\text{solvableByRad}(F, E) \\Rightarrow \\text{IsSolvable}(\\text{Gal}(\\text{minpoly}_F(\\alpha)))$\n\nContrapositive (used in `not_solvable_by_rad_of_not_solvable_gal`): $\\neg\\text{IsSolvable}(\\text{Gal}(q)) \\Rightarrow \\neg\\text{IsSolvableByRad}\\,F\\,\\alpha$.\n\nThe converse ($\\Leftarrow$) also holds: given a solvable Galois group, one constructs a radical tower from the composition series $\\{e\\} = G_n \\triangleleft \\cdots \\triangleleft G_0 = G$ where each $G_i/G_{i+1}$ is cyclic, using Kummer theory to extract the radical at each step.",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [
       "field extensions",
       "Galois theory",
@@ -174,7 +174,7 @@
     },
     "type": "tactic",
     "title": "The Cardinal Bridge: From ℕ to Lean's Type Universe",
-    "content": "The proof of `symmetric_group_not_solvable` bridges between $\\mathbb{N}$ (where $5 \\leq n$ lives) and Cardinal (where Mathlib's `Equiv.Perm.not_solvable` expects $5 \\leq \\text{Cardinal.mk}\\,\\alpha$).\n\n**Step-by-step tactic trace:**\n1. `simp only [Cardinal.mk_fintype, Fintype.card_fin]` — rewrites `Cardinal.mk (Fin n)` to `↑(Fintype.card (Fin n))` to `↑n`, normalizing the cardinal to a natural number cast\n2. `exact_mod_cast hn` — the `exact_mod_cast` tactic unifies goals that differ only by coercion (`↑n` vs `n`), automatically inserting or removing `Nat.cast` wrappers. Here it converts the goal `5 ≤ ↑n` to `5 ≤ n` and applies `hn`\n\n**Why this pattern matters:** Mathlib's group theory API is universe-polymorphic and speaks in terms of `Cardinal.mk α` (the cardinality of a type), while concrete computations use $\\mathbb{N}$. The $\\mathbb{N} \\hookrightarrow \\text{Cardinal}$ coercion is an order embedding (monotone and reflecting), so $5 \\leq n$ in $\\mathbb{N}$ is equivalent to $5 \\leq \\uparrow n$ in Cardinal. This 3-line `simp`/`exact_mod_cast` pattern is the standard idiom for bridging concrete $\\mathbb{N}$ bounds into Mathlib's cardinal-based theorems, and recurs identically in `AbelRuffiniOQ04.lean`.",
+    "content": "The proof of symmetric_group_not_solvable bridges between ℕ (where 5 ≤ n lives) and Cardinal (where Mathlib's Equiv.Perm.not_solvable expects 5 ≤ Cardinal.mk α). Step 1: simp rewrites Cardinal.mk (Fin n) as ↑n. Step 2: exact_mod_cast strips the cast and applies hn. The ℕ → Cardinal coercion is an order embedding, so inequalities transfer automatically. This 3-line pattern recurs in AbelRuffiniOQ04.lean.",
     "mathContext": "$5 \\leq n$ in $\\mathbb{N}$ $\\xrightarrow{\\text{cast}}$ $\\uparrow 5 \\leq \\uparrow n$ in Cardinal $\\xleftarrow{\\text{simp}}$ $5 \\leq |\\text{Fin}\\,n|$. The cast $\\mathbb{N} \\hookrightarrow \\text{Cardinal}$ is an order embedding.",
     "significance": "supporting",
     "prerequisites": [
@@ -224,7 +224,7 @@
     "title": "A₅ is Simple",
     "content": "A group is simple if its only normal subgroups are {1} and the whole group. The alternating group A₅ is simple - it's the smallest non-abelian simple group, with 60 elements.\n\nThe proof analyzes cycle types: identity (1), 3-cycles (20), 5-cycles (24), double transpositions (15). Any normal subgroup containing a non-identity element must contain a 3-cycle, and 3-cycles generate all of A₅.",
     "mathContext": "$A_5 = \\ker(\\text{sign} : S_5 \\to \\{\\pm 1\\}) = \\{\\sigma \\in S_5 : \\text{sign}(\\sigma) = +1\\}$, $|A_5| = 60 = 5!/2$.\n\nConjugacy classes: identity (1), products of two disjoint transpositions (15), 3-cycles (20), and two classes of 5-cycles (12 + 12). A normal subgroup $N \\trianglelefteq A_5$ must be a union of conjugacy classes containing $\\{e\\}$ (size 1), and $|N|$ must divide 60. The possible sub-sums starting with 1 are: $1, 1{+}15{=}16, 1{+}20{=}21, 1{+}12{=}13, 1{+}15{+}20{=}36, \\ldots$ — none divides 60 except 1 and 60 itself. Therefore $A_5$ has no proper nontrivial normal subgroups.\n\nLean: `alternatingGroup.isSimpleGroup_five : IsSimpleGroup (alternatingGroup (Fin 5))`.",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [
       "permutation groups",
       "normal subgroups",
@@ -320,7 +320,7 @@
     "title": "The Abel-Ruffini Contrapositive: The Main Event",
     "content": "`not_solvable_by_rad_of_not_solvable_gal` is the logical heart of the formalization. It takes the contrapositive of `galois_bridge`: if the Galois group of an irreducible polynomial $q$ is **not** solvable and $\\alpha$ is a root, then $\\alpha$ is **not** solvable by radicals. The proof is a 2-line proof term: `intro hrad; exact hns (galois_bridge α q hq hroot hrad)` — assuming $\\alpha$ is solvable by radicals, applying the bridge to get `IsSolvable q.Gal`, and deriving a contradiction with `hns`.\n\n`exists_quintic` provides a trivial witness ($X^5$) that degree-5 polynomials exist. To complete the Abel-Ruffini theorem for a *specific* quintic, one would need to exhibit $q \\in \\mathbb{Q}[X]$ of degree 5 with $\\text{Gal}(q) \\cong S_5$. The standard example is $x^5 - x - 1$, whose Galois group over $\\mathbb{Q}$ is $S_5$ (verified by checking irreducibility mod 2 and that the discriminant has non-square part, forcing the full symmetric group).",
     "mathContext": "$\\neg\\,\\text{IsSolvable}(q.\\text{Gal}) \\Rightarrow \\neg\\,\\text{IsSolvableByRad}\\,F\\,\\alpha$.\n\nProof: Assume $\\text{IsSolvableByRad}\\,F\\,\\alpha$. By `galois_bridge`, $\\text{IsSolvable}(q.\\text{Gal})$. Contradiction with $\\neg\\,\\text{IsSolvable}(q.\\text{Gal})$. $\\square$\n\nFor the general quintic: $q = x^5 - x - 1$ over $\\mathbb{Q}$ has $\\text{Gal}(q) \\cong S_5$, so its roots are not expressible by radicals.",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [
       "galois_bridge",
       "IsSolvable",
