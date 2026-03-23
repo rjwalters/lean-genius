@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-imports",
+    "proofId": "lagrange-theorem",
+    "range": {"startLine": 1, "endLine": 6},
+    "type": "concept",
+    "title": "Mathlib Group Theory Imports",
+    "content": "Six Mathlib imports provide the group theory infrastructure: `Coset.Basic` supplies left/right cosets and the quotient $G/H$; `Index` provides $[G:H]$ and `Subgroup.index_mul_card`; `OrderOfElement` gives `orderOf` and its properties; `SpecificGroups.Cyclic` provides `IsCyclic` and the classification of cyclic groups; `Data.Nat.Totient` provides Euler's $\\phi$ function for the Euler's theorem application; `Tactic` provides `omega`, `norm_num`, and other automation.\n\nThe imports reflect the theorem's reach: Lagrange's theorem connects subgroup structure (cosets, index) to element order and number theory (Fermat, Euler).",
+    "mathContext": "The import chain: `Coset.Basic` ($G/H$, coset partition) $\\to$ `Index` ($[G:H]$, $|G| = |H| \\cdot [G:H]$) $\\to$ `OrderOfElement` ($\\text{ord}(g) \\mid |G|$) $\\to$ `Cyclic` (cyclic group classification) $\\to$ `Totient` ($\\phi(n)$, Euler's theorem).",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "cosets", "subgroup index", "element order"],
+    "prerequisites": ["Lean 4 import system", "Mathlib group theory"]
+  },
+  {
     "id": "ann-intro",
     "proofId": "lagrange-theorem",
     "range": {
