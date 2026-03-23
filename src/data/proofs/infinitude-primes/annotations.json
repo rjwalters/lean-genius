@@ -7,14 +7,18 @@
       "endLine": 38
     },
     "type": "context",
-    "title": "Mathlib Imports",
-    "content": "This proof uses Mathlib's established definitions for primes and factorials. `Nat.Prime` provides a robust prime definition, while `Nat.factorial` gives us the factorial function with all its key properties already proven.",
-    "mathContext": "Mathlib provides `Nat.Prime p` and `n.factorial` with extensive lemma libraries.",
-    "significance": "supporting",
+    "title": "Mathlib Imports and Module Documentation",
+    "content": "The module imports three Mathlib packages: `Nat.Prime.Basic` (providing `Nat.Prime`, `Nat.exists_prime_and_dvd`, and prime factorization lemmas), `Nat.Factorial.Basic` (the factorial function and `Nat.dvd_factorial`), and `Tactic` (proof automation including `omega`, `norm_num`, `push_neg`). The docstring outlines the proof structure and attributes the theorem to Euclid's *Elements* Book IX, Proposition 20.",
+    "mathContext": "Mathlib provides `Nat.Prime p` ($p \\geq 2$ and no non-trivial divisors), `n.factorial` ($n! = \\prod_{k=1}^{n} k$), `Nat.dvd_factorial` ($0 < k \\leq n \\Rightarrow k \\mid n!$), and `Nat.exists_prime_and_dvd` ($n \\geq 2 \\Rightarrow \\exists p$ prime, $p \\mid n$).",
+    "significance": "context",
     "relatedConcepts": [
       "Mathlib",
       "prime definition",
       "factorial"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib library structure"
     ]
   },
   {
