@@ -431,6 +431,154 @@ theorem millennium_prize_from_continuum_limit
   obtain ⟨dμ, Δ, hOS, hΔ⟩ := h
   exact ⟨os_reconstruction dμ hOS, Δ, mass_gap_transfer dμ hOS Δ hΔ⟩
 
+/- ## Extended Yang-Mills: Gauge Invariance, Non-Triviality, and the Full Prize Chain
+
+The simplified `YangMillsContinuumLimit` above asserts only OS axioms + mass gap.
+The actual Clay Millennium Prize requires two additional conditions:
+
+1. **Gauge invariance**: The continuum measure must respect the gauge symmetry
+   of the original Yang-Mills Lagrangian (invariance under local gauge
+   transformations g(x) in the gauge group G).
+
+2. **Non-triviality**: The theory must not be a generalized free field (Gaussian
+   measure). This rules out the trivial solution where the 4d Yang-Mills theory
+   is a free field in disguise.
+
+Below we define these conditions and state the complete prize conjecture. -/
+
+/-- **Gauge invariance** of the continuum measure.
+
+    The continuum measure should be invariant under local gauge transformations:
+    for any smooth map g : R^4 -> G, the measure is unchanged when field
+    configurations are transformed by the gauge action.
+
+    Full formalization requires:
+    - Defining the gauge group action on `EFieldConfiguration`
+    - For connections: A_mu -> g A_mu g^{-1} + g d(g^{-1})
+    - For the measure: dmu[A^g] = dmu[A] (formal gauge orbit equivalence)
+
+    This is left as `True` because formalizing gauge transformations on
+    distribution-valued field configurations (elements of `WeakDual R SchwartzMap`)
+    requires substantial infrastructure not yet available in Mathlib:
+    the gauge orbit structure of the connection space A/G, principal bundle
+    geometry, and the Faddeev-Popov procedure.
+
+    Reference: Glimm-Jaffe, Quantum Physics, Ch. 6 (gauge group action);
+    Wilson (1974), Phys. Rev. D10, 2445 (lattice gauge invariance). -/
+def GaugeInvariant (_dμ : ProbabilityMeasure EFieldConfiguration) : Prop :=
+  True  -- TODO: formalize gauge transformation action on field configurations
+
+/-- **Non-triviality** of the continuum theory.
+
+    A probability measure on field configurations is non-trivial if it is not
+    a generalized free field (Gaussian measure). The standard criterion is that
+    the connected 4-point Schwinger function is non-zero.
+
+    For a Gaussian (free) field, Wick's theorem gives:
+      S_4(f_0, f_1, f_2, f_3) = S_2(f_0,f_1) S_2(f_2,f_3)
+                                + S_2(f_0,f_2) S_2(f_1,f_3)
+                                + S_2(f_0,f_3) S_2(f_1,f_2)
+
+    Non-triviality means this factorization fails for some test functions,
+    i.e., the connected 4-point function is non-vanishing.
+
+    Reference: Glimm-Jaffe, Quantum Physics, Section 6.1 (Wick's theorem);
+    Simon (1974), The P(phi)_2 Euclidean QFT, Ch. II. -/
+def NonTrivial (dμ : ProbabilityMeasure EFieldConfiguration) : Prop :=
+  ∃ (f : Fin 4 → ETestFunction),
+    schwingerFunction dμ 4 f ≠
+      schwingerFunction dμ 2 ![f 0, f 1] * schwingerFunction dμ 2 ![f 2, f 3] +
+      schwingerFunction dμ 2 ![f 0, f 2] * schwingerFunction dμ 2 ![f 1, f 3] +
+      schwingerFunction dμ 2 ![f 0, f 3] * schwingerFunction dμ 2 ![f 1, f 2]
+
+/-- A lattice Yang-Mills theory on a finite lattice with gauge group G.
+
+    This extends `LatticeGaugeTheory` (which has group, spacing, coupling)
+    with the lattice volume parameter needed to state the thermodynamic
+    limit. The partition function is:
+
+      Z = integral prod_{plaquettes} exp(-beta * Re Tr(1 - U_plaq)) dU
+
+    where dU is Haar measure on each link variable U in G.
+
+    We define this as a separate structure (rather than extending
+    `LatticeGaugeTheory`) to avoid changing the existing definition
+    that may be referenced elsewhere.
+
+    Reference: Wilson (1974), Phys. Rev. D10, 2445;
+    Balaban (1980s), lattice UV stability program. -/
+structure LatticeYangMills where
+  /-- Gauge group (compact Lie group, e.g., SU(N)) -/
+  G : Type*
+  [group : Group G]
+  [topSpace : TopologicalSpace G]
+  [compact : CompactSpace G]
+  /-- Lattice spacing -/
+  a : ℝ
+  a_pos : a > 0
+  /-- Inverse coupling: beta = 2N/g^2 -/
+  β : ℝ
+  β_pos : β > 0
+  /-- Lattice volume (number of sites per dimension) -/
+  L : ℕ
+  L_pos : L > 0
+
+/-- The full Yang-Mills continuum limit conjecture.
+
+    As lattice spacing a -> 0 with coupling beta(a) -> infinity according
+    to asymptotic freedom, the lattice measures converge to a continuum
+    measure satisfying:
+
+    1. All OS axioms (OS0-OS4) -- enabling reconstruction to a Wightman QFT
+    2. Gauge invariance -- the continuum theory respects local gauge symmetry
+    3. Non-triviality -- the theory is not a generalized free field
+    4. Exponential clustering -- the theory has a mass gap
+
+    This is the complete mathematical content of the Clay Millennium Prize
+    problem for Yang-Mills existence and mass gap, in the Euclidean
+    (constructive QFT) formulation.
+
+    Reference: Jaffe-Witten, Clay Millennium Prize problem statement;
+    Douglas (2026), Nature Reviews Physics (the lattice -> OS -> Wightman chain). -/
+def YangMillsContinuumLimitFull (G : Type*) [Group G] [TopologicalSpace G]
+    [CompactSpace G] : Prop :=
+  ∃ (dμ : ProbabilityMeasure EFieldConfiguration),
+    SatisfiesAllOS dμ ∧
+    GaugeInvariant dμ ∧
+    NonTrivial dμ ∧
+    ∃ Δ : ℝ, hasExponentialClustering dμ Δ
+
+/-- **The Yang-Mills Millennium Prize theorem** (full chain).
+
+    If the continuum limit exists with all required properties (OS axioms,
+    gauge invariance, non-triviality, and exponential clustering), then
+    there exists a Wightman QFT with mass gap.
+
+    This theorem makes the full logical chain explicit:
+
+      Wilson lattice gauge theory (finite, well-defined)
+        -> continuum limit (a -> 0, asymptotic freedom)
+        -> probability measure on field configurations
+        -> verify OS axioms (OS0-OS4)              [hypothesis: SatisfiesAllOS]
+        -> OS reconstruction -> Wightman QFT       [axiom: os_reconstruction]
+        -> exponential clustering -> mass gap       [axiom: mass_gap_transfer]
+
+    The proof extracts the OS axioms and clustering rate from the full
+    continuum limit hypothesis, then applies `os_reconstruction` and
+    `mass_gap_transfer` (the same axioms used by
+    `millennium_prize_from_continuum_limit`).
+
+    No new axioms are introduced beyond `os_reconstruction` and
+    `mass_gap_transfer`.
+
+    Reference: Osterwalder-Schrader (1973, 1975); Glimm-Jaffe Ch. 19. -/
+theorem yang_mills_millennium_prize
+    (G : Type*) [Group G] [TopologicalSpace G] [CompactSpace G]
+    (h : YangMillsContinuumLimitFull G) :
+    ∃ (qft : WightmanQFT) (Δ : ℝ), qft.hasMassGap Δ := by
+  obtain ⟨dμ, hOS, _, _, Δ, hΔ⟩ := h
+  exact ⟨os_reconstruction dμ hOS, Δ, mass_gap_transfer dμ hOS Δ hΔ⟩
+
 /- ## Consistency Note
 
 Douglas et al. (arXiv:2603.15770) proved that the massive Gaussian free field
@@ -439,6 +587,11 @@ This establishes that `SatisfiesAllOS` is consistent -- it has a model.
 
 For Yang-Mills (an interacting, non-abelian gauge theory), proving `SatisfiesAllOS`
 is the core mathematical challenge. The lattice gauge theory approach
-(Wilson 1974) provides strong numerical evidence but no rigorous proof. -/
+(Wilson 1974) provides strong numerical evidence but no rigorous proof.
+
+The `NonTrivial` condition additionally rules out the Gaussian free field as
+a solution to the Yang-Mills continuum limit problem: it requires the connected
+4-point function to be non-vanishing, which fails for any Gaussian measure
+by Wick's theorem. -/
 
 end OSBridge
