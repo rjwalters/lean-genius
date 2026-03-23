@@ -52,7 +52,13 @@
       "Concrete verification that gcd(2,4) = 2 (even numbers share factors)"
     ],
     "axiomCount": 1,
-    "lineCount": 134
+    "lineCount": 134,
+    "prerequisites": [
+      "Divisibility and the divisor function",
+      "Set theory and infinite sets",
+      "Extremal combinatorics",
+      "Number-theoretic density"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #56 addresses a fundamental question in combinatorial number theory: how large can a subset of {1,...,N} be if we forbid too many pairwise coprime elements?\n\nThe conjecture seemed natural: take all multiples of the first k primes (2, 3, 5, ..., p_k). Any k+1 numbers from this set must include two that share a prime factor, so they can't all be pairwise coprime. Erdős conjectured this construction was optimal.\n\nSurprisingly, Ahlswede and Khachatrian disproved this in 1994, finding a counterexample at k=212. However, they later proved (1995) that Erdős's conjecture IS true when N is sufficiently large relative to k. This reveals a subtle phase transition in the problem's behavior.",
@@ -128,5 +134,37 @@
     "axiomCount": 1,
     "theoremCount": 7,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-12",
+      "relationship": "related",
+      "description": "Problem #12 on divisibility-free sets and Problem #56 on weakly divisible sets both study divisibility constraints on sets of integers — from opposite directions"
+    },
+    {
+      "targetId": "erdos-13",
+      "relationship": "related",
+      "description": "Problem #13, another divisibility problem, shares the theme of understanding how divisibility structures constrain sets of integers"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Sárközy, András",
+      "title": "On divisibility properties of sequences of integers",
+      "year": "1975",
+      "venue": "In: Number Theory, Colloquia Mathematica Societatis János Bolyai, vol. 13, pp. 35–44",
+      "note": "Studied divisibility properties of integer sequences including weak divisibility"
+    },
+    {
+      "authors": "Saias, Eric",
+      "title": "Applications des entiers à diviseurs denses",
+      "year": "1997",
+      "venue": "Acta Arithmetica, vol. 83, no. 3, pp. 225–240",
+      "note": "Results on integers with dense divisors related to weak divisibility"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-12",
+    "erdos-13"
+  ]
 }

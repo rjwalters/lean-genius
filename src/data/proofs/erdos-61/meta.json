@@ -52,7 +52,13 @@
       "Concrete example graphs (triangle, 3-path)"
     ],
     "axiomCount": 3,
-    "lineCount": 148
+    "lineCount": 148,
+    "prerequisites": [
+      "Ramsey theory and Ramsey numbers",
+      "Hereditary graph properties",
+      "Regularity method and blow-up lemma",
+      "Probabilistic combinatorics"
+    ]
   },
   "overview": {
     "historicalContext": "The Erdős–Hajnal conjecture, proposed in 1989, is one of the most important open problems in graph theory. It connects two fundamental concepts: induced subgraphs and Ramsey-type bounds.\n\nClassical Ramsey theory tells us that every graph on n vertices contains either a clique or independent set of size at least c·log(n). This logarithmic bound is tight for general graphs. However, Erdős and Hajnal conjectured that FORBIDDING a specific induced subgraph H should dramatically improve this bound to a polynomial n^c.\n\nDespite intensive study for over 35 years, the conjecture remains open. The best known general bound, due to Bucić, Nguyen, Scott, and Seymour (2023), is exp(c√(log n · log log n))—still far from the conjectured polynomial.",
@@ -134,5 +140,44 @@
     "axiomCount": 3,
     "theoremCount": 0,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-22",
+      "relationship": "related",
+      "description": "Problem #22 (Ramsey-Turán) and Problem #61 (Erdős-Hajnal) both study the interaction between forbidden subgraphs and graph structure. Erdős-Hajnal predicts polynomial Ramsey numbers for hereditary classes"
+    },
+    {
+      "targetId": "erdos-24",
+      "relationship": "related",
+      "description": "Problem #24 and Problem #61 both concern extremal properties of graphs avoiding specific substructures"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Hajnal, András",
+      "title": "Ramsey-type theorems",
+      "year": "1989",
+      "venue": "Discrete Applied Mathematics, vol. 25, no. 1–2, pp. 37–52",
+      "note": "Original formulation of the Erdős-Hajnal conjecture: H-free graphs have polynomial-sized homogeneous sets"
+    },
+    {
+      "authors": "Chudnovsky, Maria; Safra, Shmuel",
+      "title": "The Erdős-Hajnal conjecture — a survey",
+      "year": "2014",
+      "venue": "Journal of Graph Theory, vol. 75, no. 2, pp. 178–190",
+      "note": "Comprehensive survey of progress on the conjecture including the tournament version"
+    },
+    {
+      "authors": "Nguyen, Tung; Scott, Alex; Seymour, Paul",
+      "title": "Induced subgraphs and tree decompositions VII. Basic obstructions in H-free graphs",
+      "year": "2024",
+      "venue": "Journal of Combinatorial Theory, Series B, vol. 164, pp. 443–472",
+      "note": "Recent structural results related to the Erdős-Hajnal conjecture"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-22",
+    "erdos-24"
+  ]
 }
