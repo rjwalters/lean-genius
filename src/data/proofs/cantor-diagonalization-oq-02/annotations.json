@@ -7,7 +7,7 @@
     "title": "ω₁ as Initial Ordinal of ℵ₁",
     "content": "We define ω₁ = (Cardinal.aleph 1).ord — the initial ordinal of the first uncountable cardinal. This is the canonical first uncountable ordinal: the smallest ordinal α such that α.card = ℵ₁. The `ord` function maps a cardinal c to the smallest ordinal of cardinality c, guaranteeing ω₁.card = ℵ₁ by definition.",
     "mathContext": "The `ord` function establishes a Galois connection: for any cardinal $c$, $c.\\text{ord}$ is the smallest ordinal of cardinality $c$, so $c.\\text{ord}.\\text{card} = c$ (via `Cardinal.card_ord`). Concretely, $\\omega_1 = (\\aleph_1).\\text{ord}$ is the smallest ordinal $\\alpha$ with $|\\alpha| = \\aleph_1$.",
-    "significance": "The definition of ω₁ as an initial ordinal pins down its exact cardinality and position in the ordinal hierarchy — the entire proof pivots on this anchor.",
+    "significance": "key",
     "relatedConcepts": [
       "initial ordinal",
       "aleph numbers",
@@ -29,7 +29,7 @@
     "title": "Cardinal.card_ord Closes omega1_card",
     "content": "The theorem `omega1_card : omega1.card = aleph 1` is a one-liner: `Cardinal.card_ord _`. This lemma states that for any cardinal c, the initial ordinal c.ord has cardinality c. It's the fundamental identity linking cardinals and ordinals via the `ord` function.",
     "mathContext": "`Cardinal.card_ord` asserts $c.\\text{ord}.\\text{card} = c$ for any cardinal $c$. Applied with $c = \\aleph_1$ this gives $\\omega_1.\\text{card} = \\aleph_1$. The proof is entirely definitional: the initial ordinal is built to have exactly that cardinality.",
-    "significance": "This one-liner epitomizes how the cardinal/ordinal duality in Mathlib eliminates what would otherwise be a substantial lemma — the cardinality of ω₁ is immediate from its definition.",
+    "significance": "key",
     "relatedConcepts": [
       "Cardinal.card_ord",
       "initial ordinal",
@@ -50,7 +50,7 @@
     "title": "Deriving aleph 1 = Order.succ ℵ₀ via aleph_succ",
     "content": "The key identity `aleph 1 = Order.succ ℵ₀` requires a small rewriting chain. First, `(1 : Ordinal) = Order.succ 0` (by simp). Then `Cardinal.aleph_succ` gives `aleph(succ α) = Order.succ(aleph α)`. Finally, `Cardinal.aleph_zero : aleph 0 = ℵ₀` converts to the final form. The `rwa` handles the substitution.",
     "mathContext": "`Cardinal.aleph_succ` encodes $\\aleph_{\\alpha+1} = (\\aleph_\\alpha)^+$ (cardinal successor). Applied at $\\alpha = 0$: $\\aleph_1 = (\\aleph_0)^+ = \\text{Order.succ}(\\aleph_0)$. This successor characterization is what makes `Order.lt_succ_iff` applicable for the ℵ₁ threshold.",
-    "significance": "Reducing ℵ₁ to a successor cardinal unlocks `Order.lt_succ_iff`, collapsing the characterization `κ < ℵ₁ ↔ κ ≤ ℵ₀` to a single rewrite rather than a case analysis.",
+    "significance": "key",
     "relatedConcepts": [
       "aleph successor",
       "successor cardinal",
@@ -71,7 +71,7 @@
     "title": "κ < ℵ₁ ↔ κ ≤ ℵ₀: Characterizing ℵ₁",
     "content": "This is the fundamental characterization of ℵ₁ as the MINIMUM uncountable cardinal. Since aleph 1 = Order.succ ℵ₀, we use `Order.lt_succ_iff : a < Order.succ b ↔ a ≤ b` directly. This characterization drives most results about ℵ₁: uncountability, minimality, and the gap property all follow.",
     "mathContext": "The equivalence $\\kappa < \\aleph_1 \\iff \\kappa \\leq \\aleph_0$ follows from the successor characterization $\\aleph_1 = (\\aleph_0)^+$ together with `Order.lt_succ_iff`. This is the set-theoretic content of ℵ₁ being the MINIMUM uncountable cardinal: no cardinal lies strictly between $\\aleph_0$ and $\\aleph_1$.",
-    "significance": "The fundamental gap theorem for ℵ₁ — this equivalence is the engine behind uncountability, minimality, and the absence of cardinals between ℵ₀ and ℵ₁.",
+    "significance": "key",
     "relatedConcepts": [
       "minimum uncountable cardinal",
       "gap between aleph-0 and aleph-1",
@@ -93,7 +93,7 @@
     "title": "sSup Instead of iSup for Ordinals",
     "content": "Ordinal.{0} has `ConditionallyCompleteLinearOrder` but NOT `CompleteLattice` (since the sup of all ordinals would be a proper class). Therefore `iSup` (which requires `CompleteLattice`) is unavailable. Instead, we use `sSup (Set.range f)` with `BddAbove` hypothesis. The bound is `omega1` since all f(n) < omega1. The diagonal witness is sSup(range f) + 1.",
     "mathContext": "In a `ConditionallyCompleteLinearOrder`, $\\text{sSup}$ exists only for sets bounded above. The key step: $\\text{sSup}(\\text{range}\\, f) < \\omega_1$ follows from `Ordinal.iSup_lt_ord` with the regularity hypothesis $\\#\\mathbb{N} = \\aleph_0 < \\aleph_1 = \\omega_1.\\text{cof}$. Then $\\text{sSup} + 1 < \\omega_1$ by the limit ordinal property of $\\omega_1$.",
-    "significance": "The use of sSup rather than iSup is the critical Lean-specific adaptation — it captures the set-theoretic diagonal construction while respecting that Ordinal is not a complete lattice.",
+    "significance": "key",
     "relatedConcepts": [
       "ConditionallyCompleteLinearOrder",
       "sSup vs iSup",
@@ -116,7 +116,7 @@
     "title": "le_csSup: Members ≤ Conditional Supremum",
     "content": "The lemma `le_csSup (hbdd : BddAbove s) (hmem : x ∈ s) : x ≤ sSup s` gives f(n) ≤ sSup(range f). Here `BddAbove (Set.range f)` is witnessed by `omega1` (since all f(n) < omega1 ≤ omega1), and `Set.mem_range_self n : f n ∈ Set.range f` gives membership. Combining: f(n) ≤ sSup < sSup + 1, so the diagonal witness exceeds every f(n).",
     "mathContext": "In any `ConditionallyCompleteLinearOrder`, `le_csSup` gives $x \\leq \\text{sSup}\\, S$ when $S$ is bounded above and $x \\in S$. Here $S = \\text{range}\\, f$ is bounded above by $\\omega_1$. Combined with $\\text{sSup} < \\text{sSup} + 1$, this gives $f(n) < \\text{sSup}(\\text{range}\\, f) + 1$ — the strict inequality needed for the diagonal contradiction.",
-    "significance": "This is the Lean API bridge that converts the informal 'the diagonal exceeds all listed values' into a formal strict inequality, completing the no-surjection argument.",
+    "significance": "key",
     "relatedConcepts": [
       "le_csSup",
       "BddAbove",
@@ -138,7 +138,7 @@
     "title": "Clipping f to Countable Values",
     "content": "The surjection proof doesn't assume f : ℕ → Ordinal maps only to countable ordinals — f could map some n to ω₂. We handle this by 'clipping': define g n = if f n < omega1 then f n else 0. Now (1) all g(n) < omega1, and (2) g still surjects onto countable ordinals (if f(n) = α < omega1, then f(n) < omega1, so g(n) = f(n) = α). Apply diagonal to g to derive contradiction.",
     "mathContext": "Clipping is a standard technique: given $f: \\mathbb{N} \\to \\text{Ordinal}$, define $g(n) = f(n)$ if $f(n) < \\omega_1$, else $g(n) = 0$. Then $g$ maps into $\\{\\alpha : \\alpha < \\omega_1\\}$ and restricts identically on the preimage of countable ordinals. The diagonal argument applied to $g$ produces $\\beta < \\omega_1$ not in $\\text{range}(f)$.",
-    "significance": "Clipping is the proof-engineering insight that lets us apply the diagonal argument to any ℕ-indexed function — crucial for a clean no-surjection theorem that makes no assumptions about f's codomain.",
+    "significance": "key",
     "relatedConcepts": [
       "clipping technique",
       "function restriction",

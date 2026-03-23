@@ -60,8 +60,14 @@
       "Theorem total_dissipation_bound: ∫₀ᵀ 2νP(t) dt ≤ E(0), total dissipation bounded by initial enstrophy"
     ],
     "dateAdded": "2026-02-26",
-    "lineCount": 22350,
-    "assumptions": "None. Formalized with 0 axioms and 0 sorries."
+    "lineCount": 21110,
+    "assumptions": "None. Formalized with 0 axioms and 0 sorries.",
+    "relatedProblems": [
+      {
+        "id": "navier-stokes",
+        "relationship": "Extension of the base Navier-Stokes formalization with quantitative enstrophy decay between arbitrary times and exact integrated energy identities"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "The two-dimensional Navier-Stokes equations have been known to have global smooth solutions since Ladyzhenskaya's work in 1969. The key is that vortex stretching — the primary mechanism that might cause blowup in 3D — is absent in 2D. In 2D, the vorticity ω satisfies a transport-diffusion equation without the dangerous (ω·∇)u stretching term.\n\nThe enstrophy E(t) = ∫|ω(x,t)|² dx is the squared L² norm of vorticity. In 2D, enstrophy satisfies the ODE dE/dt = -2νP where P = ∫|∇ω|² is the palinstrophy. Under a Poincaré inequality P ≥ μ₁E (where μ₁ is the first eigenvalue of -Δ on the domain), this becomes dE/dt ≤ -2νμ₁E, giving exponential decay.\n\nThis formalization extends the existing NavierStokes.lean (which already proved the asymptotic bound E(t) ≤ E(0)·exp(-2νμ₁t)) with new quantitative results: decay between arbitrary times, exact FTC integration of the enstrophy ODE, and total dissipation bounds.",
@@ -76,7 +82,11 @@
       "The total dissipation bound ∫₀ᵀ 2νP ≤ E(0) is immediate from the energy identity and E(T) ≥ 0: all enstrophy dissipated over any finite time comes from the initial enstrophy"
     ],
     "prerequisites": [
-      "Mathematical analysis"
+      "Real analysis (continuity, differentiability, integration)",
+      "ODE theory (Gronwall-type inequalities, integrating factors)",
+      "Functional analysis (Poincar\u00e9 inequality, Sobolev spaces)",
+      "Fluid dynamics (enstrophy, palinstrophy, vorticity)",
+      "Familiarity with Lean 4 and Mathlib"
     ]
   },
   "sections": [
@@ -170,7 +180,7 @@
       "TwoDimensionalGlobal"
     ],
     "namespace": "NavierStokesRegularity",
-    "lineCount": 22350,
+    "lineCount": 21110,
     "axiomCount": 0,
     "theoremCount": 1009,
     "definitionCount": 104
@@ -189,13 +199,33 @@
     {
       "targetId": "fundamental-theorem-calculus",
       "relationship": "foundational",
-      "description": "The energy identity and enstrophy estimates rely on integration by parts, which is the multidimensional generalization of the fundamental theorem of calculus"
+      "description": "The enstrophy integral identity directly applies the FTC (integral_eq_sub_of_hasDerivAt_of_le) to convert the pointwise ODE E'(t) = -2\u03bdP(t) into the global identity \u222b\u2080\u1d40 -2\u03bdP = E(T) - E(0)"
+    },
+    {
+      "targetId": "navier-stokes-existence",
+      "relationship": "related",
+      "description": "Existence theory for Navier-Stokes solutions \u2014 the solutions whose enstrophy decay properties are formalized here"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "foundational",
+      "description": "The Cauchy-Schwarz inequality for integrals underlies many estimates in PDE regularity theory, including bounding enstrophy dissipation rates"
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "foundational",
+      "description": "The integral identities are formulated using Lebesgue integration (MeasureTheory.Integral.IntervalIntegral), with IntervalIntegrable conditions proved via ContinuousOn"
     }
   ],
   "relatedProofs": [
     "navier-stokes",
     "navier-stokes-oq-02",
-    "fundamental-theorem-calculus"
+    "navier-stokes-existence",
+    "fundamental-theorem-calculus",
+    "fundamental-theorem-calculus-oq-01",
+    "cauchy-schwarz-integral",
+    "lebesgue-measure",
+    "poincare-conjecture"
   ],
   "references": [
     {

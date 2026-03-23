@@ -60,7 +60,7 @@
     "content": "The rectToTypeI constructor creates the rectangle [a,b]×[c,d] as a TypeI region by taking constant boundary curves f = const c and g = const d. The key theorem rectTypeI_set_eq proves the set equality (rectToTypeI).toSet = Set.Icc a b ×ˢ Set.Icc c d using ext + simp + constructor/rintro pattern.\n\nThis connects OQ03 back to OQ01: the rectangle case in GreensTheoremOQ01.lean is now recognized as a special TypeI region. The unit square [0,1]² is the canonical example, proved to contain its center (1/2, 1/2) by norm_num.",
     "mathContext": "**Rectangle as TypeI**: $f \\equiv c$, $g \\equiv d$ with $c \\leq d$. Then $D = [a,b] \\times [c,d]$. **Set equality**: `toSet = Icc a b ×ˢ Icc c d` proved by `ext ⟨x, y⟩` + membership unfolding. **Unit square**: `rectToTypeI 0 1 0 1 (by norm_num) (by norm_num)`.",
     "summary": "Rectangle [a,b]×[c,d] as TypeI with constant curves; set equality and unit square example.",
-    "significance": "insight",
+    "significance": "key",
     "relatedConcepts": [
       "rectToTypeI",
       "unitSquareTypeI",
