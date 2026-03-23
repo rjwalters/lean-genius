@@ -482,158 +482,114 @@
   ],
   "references": [
     {
-      "authors": "Abel, Niels Henrik",
-      "title": "Mémoire sur les équations algébriques, où l'on démontre l'impossibilité de la résolution de l'équation générale du cinquième degré",
-      "year": "1824",
-      "venue": "Christiania",
-      "note": "First proof that the general quintic equation has no solution in radicals, published as a self-funded pamphlet"
+      "key": "A24",
+      "citation": "N. H. Abel, Mémoire sur les équations algébriques, où l'on démontre l'impossibilité de la résolution de l'équation générale du cinquième degré, Christiania, 1824",
+      "type": "paper"
     },
     {
-      "authors": "Ruffini, Paolo",
-      "title": "Teoria generale delle equazioni",
-      "year": "1799",
-      "venue": "Bologna",
-      "note": "First (incomplete) attempt to prove the quintic is unsolvable — anticipated Abel by 25 years but contained gaps"
+      "key": "R99",
+      "citation": "P. Ruffini, Teoria generale delle equazioni, Bologna, 1799",
+      "type": "book"
     },
     {
-      "authors": "Galois, Évariste",
-      "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
-      "year": "1846",
-      "venue": "Journal de Mathématiques Pures et Appliquées (published posthumously by Liouville)",
-      "note": "The foundational paper of Galois theory, written in 1831 and published posthumously — established the criterion that a polynomial is solvable by radicals iff its Galois group is solvable"
+      "key": "G46",
+      "citation": "É. Galois, Mémoire sur les conditions de résolubilité des équations par radicaux, J. Math. Pures Appl., 1846",
+      "type": "paper"
     },
     {
-      "authors": "Edwards, Harold M.",
-      "title": "Galois Theory",
-      "year": "1984",
-      "venue": "Springer GTM 101",
-      "note": "Standard modern reference tracing the historical development from Lagrange through Abel and Galois, with complete proofs of the Abel-Ruffini theorem and Galois's criterion"
+      "key": "E84",
+      "citation": "H. M. Edwards, Galois Theory, Springer GTM 101, 1984",
+      "type": "book"
     },
     {
-      "authors": "Tignol, Jean-Pierre",
-      "title": "Galois' Theory of Algebraic Equations",
-      "year": "2001",
-      "venue": "World Scientific",
-      "note": "Comprehensive historical treatment from the origins of polynomial solving through Galois theory, with detailed analysis of Ruffini's incomplete proof and Abel's rigorous argument"
+      "key": "T01",
+      "citation": "J.-P. Tignol, Galois' Theory of Algebraic Equations, World Scientific, 2001",
+      "type": "book"
     },
     {
-      "authors": "Stewart, Ian",
-      "title": "Galois Theory",
-      "year": "2015",
-      "venue": "Chapman & Hall/CRC, 4th edition",
-      "note": "Accessible modern textbook covering the Abel-Ruffini theorem with both historical context and modern algebraic formulation via composition series"
+      "key": "S15",
+      "citation": "I. Stewart, Galois Theory, 4th ed., Chapman & Hall/CRC, 2015",
+      "type": "book"
     },
     {
-      "authors": "Artin, Emil",
-      "title": "Galois Theory",
-      "year": "1942",
-      "venue": "Notre Dame Mathematical Lectures No. 2",
-      "note": "Influential lecture notes that reformulated Galois theory in modern algebraic terms, establishing the field extension / automorphism group framework used in this formalization"
+      "key": "A42",
+      "citation": "E. Artin, Galois Theory, Notre Dame Mathematical Lectures No. 2, 1942",
+      "type": "book"
     },
     {
-      "authors": "Lagrange, Joseph-Louis",
-      "title": "Réflexions sur la résolution algébrique des équations",
-      "year": "1770",
-      "venue": "Nouveaux Mémoires de l'Académie royale des Sciences et Belles-Lettres de Berlin",
-      "note": "The crucial precursor: Lagrange analyzed why classical formulas worked for degrees 2-4 by studying permutations of roots ('resolvents'), and discovered his method broke down for degree 5 — the resolvent of a quintic had degree 6, not lower"
+      "key": "L70",
+      "citation": "J.-L. Lagrange, Réflexions sur la résolution algébrique des équations, Nouv. Mém. Acad. Roy. Sci. Berlin, 1770",
+      "type": "paper"
     },
     {
-      "authors": "Jordan, Camille",
-      "title": "Traité des substitutions et des équations algébriques",
-      "year": "1870",
-      "venue": "Gauthier-Villars, Paris",
-      "note": "The first systematic treatise on group theory and its application to polynomial equations — made Galois's posthumous manuscripts accessible to a wider audience and established the modern framework for studying permutation groups and solvability"
+      "key": "J70",
+      "citation": "C. Jordan, Traité des substitutions et des équations algébriques, Gauthier-Villars, Paris, 1870",
+      "type": "book"
     },
     {
-      "authors": "Abel, Niels Henrik",
-      "title": "Beweis der Unmöglichkeit, algebraische Gleichungen von höheren Graden als dem vierten allgemein aufzulösen",
-      "year": "1826",
-      "venue": "Journal für die reine und angewandte Mathematik (Crelle's Journal), vol. 1, pp. 65–84",
-      "note": "Abel's expanded and refined proof of quintic unsolvability, published in the inaugural volume of Crelle's Journal — the first rigorous treatment, superseding his compressed 1824 pamphlet"
+      "key": "A26",
+      "citation": "N. H. Abel, Beweis der Unmöglichkeit algebraische Gleichungen von höheren Graden als dem vierten allgemein aufzulösen, J. Reine Angew. Math. 1 (1826), 65–84",
+      "type": "paper"
     },
     {
-      "authors": "Cauchy, Augustin-Louis",
-      "title": "Sur le nombre des valeurs qu'une fonction peut acquérir",
-      "year": "1815",
-      "venue": "Journal de l'École Polytechnique, vol. 10, pp. 1–28",
-      "note": "Foundational results on permutation groups, including the theorem that a primitive subgroup of S_p containing a p-cycle equals S_p — key precursor to the group-theoretic analysis of polynomial solvability"
+      "key": "C15",
+      "citation": "A.-L. Cauchy, Sur le nombre des valeurs qu'une fonction peut acquérir, J. École Polytechnique 10 (1815), 1–28",
+      "type": "paper"
     },
     {
-      "authors": "Neumann, Peter M.",
-      "title": "The Mathematical Writings of Évariste Galois",
-      "year": "2011",
-      "venue": "European Mathematical Society",
-      "note": "Definitive modern edition of Galois's complete mathematical writings with detailed commentary — includes the famous letter to Chevalier, the two Académie memoirs, and previously unpublished fragments"
+      "key": "N11",
+      "citation": "P. M. Neumann, The Mathematical Writings of Évariste Galois, European Mathematical Society, 2011",
+      "type": "book"
     },
     {
-      "authors": "Hermite, Charles",
-      "title": "Sur la résolution de l'équation du cinquième degré",
-      "year": "1858",
-      "venue": "Comptes rendus de l'Académie des Sciences, vol. 46, pp. 508–515",
-      "note": "Showed the general quintic CAN be solved using elliptic modular functions, bypassing the radical barrier by expanding the class of allowed operations — directly relevant to the open question about formalizing the 'elliptic solution of the quintic' in Lean"
+      "key": "H58",
+      "citation": "C. Hermite, Sur la résolution de l'équation du cinquième degré, C. R. Acad. Sci. Paris 46 (1858), 508–515",
+      "type": "paper"
     },
     {
-      "authors": "Bring, Erland Samuel",
-      "title": "Meletemata quaedam mathematica circa transformationem aequationum algebraicarum",
-      "year": "1786",
-      "venue": "Lund University doctoral dissertation",
-      "note": "First showed that any quintic can be reduced to the form x⁵ + px + q via Tschirnhaus transformations, establishing the Bring normal form. The Bring radical BR(a) — the unique real root of x⁵ + x + a — then solves the general quintic in a framework beyond the four basic radicals, demonstrating that Abel-Ruffini's impossibility is specifically about ⁿ√ operations"
+      "key": "B86",
+      "citation": "E. S. Bring, Meletemata quaedam mathematica circa transformationem aequationum algebraicarum, Lund University, 1786",
+      "type": "thesis"
     },
     {
-      "authors": "Jerrard, George Birch",
-      "title": "An essay on the resolution of equations",
-      "year": "1859",
-      "venue": "Taylor and Francis, London",
-      "note": "Independently rediscovered and popularized Bring's reduction of the quintic to x⁵ + px + q (now called the Bring-Jerrard form). Jerrard's 1834 paper first brought this result to wider attention, though Bring's priority was later established by Hermite"
+      "key": "J59",
+      "citation": "G. B. Jerrard, An Essay on the Resolution of Equations, Taylor and Francis, London, 1859",
+      "type": "book"
     },
     {
-      "authors": "Feit, Walter; Thompson, John G.",
-      "title": "Solvability of groups of odd order",
-      "year": "1963",
-      "venue": "Pacific Journal of Mathematics, vol. 13, no. 3, pp. 775–1029",
-      "note": "The celebrated Odd Order Theorem: every finite group of odd order is solvable. This 255-page proof is the deepest result about group solvability since Galois and directly implies that any polynomial whose Galois group has odd order is solvable by radicals"
+      "key": "FT63",
+      "citation": "W. Feit and J. G. Thompson, Solvability of groups of odd order, Pacific J. Math. 13 (1963), no. 3, 775–1029",
+      "type": "paper"
     },
     {
-      "authors": "Wiedijk, Freek",
-      "title": "Formalizing 100 Theorems",
-      "year": "2008",
-      "venue": "https://www.cs.ru.nl/~freek/100/",
-      "note": "The definitive list of 100 well-known mathematical theorems and their formalization status across proof assistants. The Abel-Ruffini theorem is #16. This formalization contributes to the Lean 4 / Mathlib column of the list"
+      "key": "W08",
+      "citation": "F. Wiedijk, Formalizing 100 Theorems, 2008, https://www.cs.ru.nl/~freek/100/",
+      "type": "paper"
     },
     {
-      "authors": "Pesic, Peter",
-      "title": "Abel's Proof: An Essay on the Sources and Meaning of Mathematical Unsolvability",
-      "year": "2003",
-      "venue": "MIT Press",
-      "note": "Accessible modern account tracing the intellectual journey from the Renaissance algebraists through Abel and Galois, placing the impossibility of the quintic in the broader context of mathematical thought about the limits of symbolic methods"
+      "key": "P03",
+      "citation": "P. Pesic, Abel's Proof: An Essay on the Sources and Meaning of Mathematical Unsolvability, MIT Press, 2003",
+      "type": "book"
     },
     {
-      "authors": "Klein, Felix",
-      "title": "Vorlesungen über das Ikosaeder und die Auflösung der Gleichungen vom fünften Grade",
-      "year": "1884",
-      "venue": "Teubner, Leipzig (English translation: Lectures on the Icosahedron, 1888, Trübner & Co.)",
-      "note": "Klein's masterwork connecting the quintic to the symmetries of the icosahedron (rotation group ≅ A₅) and solving it via elliptic modular functions and hypergeometric series. Directly relevant to the open question about formalizing alternative quintic solutions beyond radicals: Klein showed that the icosahedral equation x⁵ + x + a can be solved by theta functions, linking A₅'s geometry to transcendental function theory"
+      "key": "K84",
+      "citation": "F. Klein, Vorlesungen über das Ikosaeder und die Auflösung der Gleichungen vom fünften Grade, Teubner, Leipzig, 1884",
+      "type": "book"
     },
     {
-      "authors": "Serre, Jean-Pierre",
-      "title": "Topics in Galois Theory",
-      "year": "2008",
-      "venue": "A K Peters/CRC Press, 2nd edition (based on 1988 lecture notes)",
-      "note": "Serre's treatment of the inverse Galois problem includes the proof that Sₙ occurs as a Galois group over Q for all n (via Hilbert irreducibility), establishing that the Abel-Ruffini impossibility applies to infinitely many concrete polynomials over Q. Also covers rigidity methods and the Noether problem"
+      "key": "S08",
+      "citation": "J.-P. Serre, Topics in Galois Theory, 2nd ed., A K Peters/CRC Press, 2008",
+      "type": "book"
     },
     {
-      "authors": "Dummit, David S.; Foote, Richard M.",
-      "title": "Abstract Algebra",
-      "year": "2004",
-      "venue": "John Wiley & Sons, 3rd edition",
-      "note": "The most widely-used graduate algebra textbook, with a complete treatment of Galois theory including the Abel-Ruffini theorem (Chapter 14). Contains the discriminant criterion for determining whether Gal(f) ⊆ Aₙ and explicit Galois group computations for specific quintics — the gap between the abstract theorem and concrete examples"
+      "key": "DF04",
+      "citation": "D. S. Dummit and R. M. Foote, Abstract Algebra, 3rd ed., Wiley, 2004",
+      "type": "book"
     },
     {
-      "authors": "van der Waerden, Bartel Leendert",
-      "title": "Algebra",
-      "year": "1930",
-      "venue": "Springer (English translation: Frederick Ungar, 1949; 7th German edition 1966)",
-      "note": "The landmark textbook that established the modern abstract algebra curriculum. van der Waerden's presentation of Galois theory as the interplay between field extensions and automorphism groups (rather than permutations of roots) became the standard framework used in this Lean formalization. His Chapter 8 contains the cleanest classical proof of Abel-Ruffini via the derived series of Sₙ"
+      "key": "vdW30",
+      "citation": "B. L. van der Waerden, Algebra, Springer, 1930",
+      "type": "book"
     }
   ],
   "leanFile": {

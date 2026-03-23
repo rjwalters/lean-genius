@@ -253,53 +253,39 @@
   },
   "references": [
     {
-      "authors": "Cauchy, Augustin-Louis",
-      "title": "Cours d'analyse de l'École Royale Polytechnique",
-      "year": "1821",
-      "venue": "Paris: Debure",
-      "note": "Contains Cauchy's proof of AM-GM by forward-backward induction — one of the most elegant proof techniques in mathematics"
+      "key": "C21",
+      "citation": "Cauchy, A.-L. Cours d'analyse de l'École Royale Polytechnique. Paris: Debure, 1821.",
+      "type": "book"
     },
     {
-      "authors": "Maclaurin, Colin",
-      "title": "A Second Letter to Martin Folkes, Esq.; Concerning the Roots of Equations",
-      "year": "1729",
-      "venue": "Philosophical Transactions of the Royal Society",
-      "note": "Introduced the symmetric function inequalities (Maclaurin's inequalities) that strictly refine AM-GM for distinct values"
+      "key": "M29",
+      "citation": "Maclaurin, C. A Second Letter to Martin Folkes, Esq.; Concerning the Roots of Equations. Philosophical Transactions of the Royal Society, 1729.",
+      "type": "paper"
     },
     {
-      "authors": "Hardy, G. H.; Littlewood, J. E.; Polya, G.",
-      "title": "Inequalities",
-      "year": "1934",
-      "venue": "Cambridge University Press",
-      "note": "The definitive reference on classical inequalities, including six distinct proofs of AM-GM and its connections to convexity, power means, and rearrangement inequalities"
+      "key": "HLP34",
+      "citation": "Hardy, G. H., Littlewood, J. E., and Pólya, G. Inequalities. Cambridge University Press, 1934.",
+      "type": "book"
     },
     {
-      "authors": "Steele, J. Michael",
-      "title": "The Cauchy-Schwarz Master Class: An Introduction to the Art of Mathematical Inequalities",
-      "year": "2004",
-      "venue": "Cambridge University Press / MAA Problem Books",
-      "note": "Chapter 2 develops AM-GM from first principles with 12 proof exercises, including Pólya's proof via the exponential function ($e^{x-1} \\geq x$) and connections to Schur convexity"
+      "key": "S04",
+      "citation": "Steele, J. M. The Cauchy-Schwarz Master Class. Cambridge University Press / MAA, 2004.",
+      "type": "book"
     },
     {
-      "authors": "Bullen, P. S.",
-      "title": "Handbook of Means and Their Inequalities",
-      "year": "2003",
-      "venue": "Kluwer Academic Publishers (Mathematics and Its Applications, vol. 560)",
-      "note": "Encyclopedic reference cataloging over 50 types of means and their ordering properties. Chapter III covers the AM-GM inequality with 15 distinct proofs including Cauchy's forward-backward induction, Pólya's exponential proof, and proofs via Schur convexity and majorization"
+      "key": "B03",
+      "citation": "Bullen, P. S. Handbook of Means and Their Inequalities. Kluwer Academic Publishers, 2003.",
+      "type": "book"
     },
     {
-      "authors": "Pólya, George; Szegő, Gábor",
-      "title": "Problems and Theorems in Analysis I: Series, Integral Calculus, Theory of Functions",
-      "year": "1925",
-      "venue": "Springer (English edition: Grundlehren der mathematischen Wissenschaften, vol. 193, 1972)",
-      "note": "Part I collects dozens of inequality problems centered on AM-GM, including proofs via Schur convexity, majorization, and the exponential function. Problem 64 gives the forward-backward induction proof, and Problem 74 connects AM-GM to entropy maximization"
+      "key": "PS25",
+      "citation": "Pólya, G. and Szegő, G. Problems and Theorems in Analysis I. Springer, 1925.",
+      "type": "book"
     },
     {
-      "authors": "Cox, David A.",
-      "title": "The Arithmetic-Geometric Mean of Gauss",
-      "year": "1984",
-      "venue": "L'Enseignement Mathématique, vol. 30, pp. 275–330",
-      "note": "Definitive account of Gauss's arithmetic-geometric mean iteration and its connection to elliptic integrals — the most beautiful computational application of the AM-GM inequality, achieving quadratic convergence for computing π and elliptic functions"
+      "key": "C84",
+      "citation": "Cox, D. A. The Arithmetic-Geometric Mean of Gauss. L'Enseignement Mathématique 30, 275-330, 1984.",
+      "type": "paper"
     }
   ],
   "leanFile": {
