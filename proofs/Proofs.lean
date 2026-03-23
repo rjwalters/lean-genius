@@ -163,6 +163,7 @@ import Proofs.ChineseRemainderNonCoprimeOQ03Aristotle
 import Proofs.CircumferenceFromArea
 import Proofs.CircumferenceViaDifferentiation
 import Proofs.CollatzStructured
+import Proofs.ComplexityCore
 import Proofs.CombinationsFormula
 import Proofs.CombinationsFormulaOQ01
 import Proofs.CombinationsFormulaOQ03
@@ -1516,9 +1517,9 @@ import Proofs.NthRootIrrational
 import Proofs.NthRootIrrationalOQ01
 import Proofs.OnePlusOne
 import Proofs.PACLearning
-import Proofs.PNPBarriers
 import Proofs.PNPBarriersOQ01
 import Proofs.PNPBarriersSound
+import Proofs.PNPBarriersUnified
 import Proofs.PappusTheoremOQ02
 import Proofs.ParallelPostulateIndependence
 import Proofs.ParallelPostulateIndependenceOQ02
