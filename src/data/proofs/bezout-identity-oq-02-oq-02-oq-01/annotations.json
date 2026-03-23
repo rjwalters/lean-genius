@@ -80,7 +80,7 @@
       "startLine": 109,
       "endLine": 144
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Constructive Algorithm: Assembly over ℕ",
     "content": "constructive_div assembles the full algorithm: extract Bézout coefficients (x,y) from extGcd, extract divisibility witness k from hdvd.choose, return x*c + y*k. The correctness theorem constructive_div_correct proves a*q = c by converting extGcd_correct to match quotient_formula's hypothesis.\n\neuclids_lemma_via_extGcd packages the result as a divisibility statement over ℤ. The definition is noncomputable because it uses hdvd.choose (classical choice), but the Bézout coefficients themselves are computable.\n\n**The noncomputable bottleneck:** In Lean 4, `Dvd.dvd` provides only a proof of existence ($\\exists k, bc = ak$), not an algorithm to find $k$. The `hdvd.choose` extracts such a $k$ using the axiom of choice — making the definition `noncomputable`. This is a fundamental tension in constructive formalization: the mathematical content is fully constructive (we *know* $k = bc/a$), but the Lean type system requires an explicit computation path. The child entry `bezout-identity-oq-02-oq-02-oq-01-oq-01` resolves this by replacing `hdvd.choose` with the computable `b * c / a`, making the full algorithm executable.",
     "mathContext": "The algorithm takes $a, b, c \\in \\mathbb{N}$ with $\\gcd(a,b) = 1$ and a proof of $a | bc$, and returns the quotient $q = c/a \\in \\mathbb{Z}$. The correctness proof converts between the extGcd output format $(x, y, g)$ where $ax + by = g$ and the quotient formula's input format $ua + vb = 1$.",
