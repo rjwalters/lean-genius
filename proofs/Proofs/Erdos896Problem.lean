@@ -104,11 +104,45 @@ theorem uniqueProductCount_le_product (A B : Finset ℕ) :
     _ ≤ (A ×ˢ B).card := Finset.card_image_le
     _ = A.card * B.card := Finset.card_product A B
 
+/-- reprCount is symmetric: swapping A and B doesn't change the count. -/
+theorem reprCount_comm (A B : Finset ℕ) (m : ℕ) :
+    reprCount A B m = reprCount B A m := by
+  unfold reprCount
+  apply Finset.card_bij (fun p _ => (p.2, p.1))
+  · intro ⟨a, b⟩ h
+    simp only [Finset.mem_filter, Finset.mem_product] at h ⊢
+    exact ⟨⟨h.1.2, h.1.1⟩, by rw [mul_comm]; exact h.2⟩
+  · intro ⟨a₁, b₁⟩ _ ⟨a₂, b₂⟩ _ h
+    simp only [Prod.mk.injEq] at h
+    exact Prod.ext h.2 h.1
+  · intro ⟨b, a⟩ h
+    simp only [Finset.mem_filter, Finset.mem_product] at h
+    exact ⟨⟨a, b⟩, by simp [Finset.mem_filter, Finset.mem_product, h.1.2, h.1.1, mul_comm, h.2],
+      by simp⟩
+
 /-- F(A, B) = F(B, A) by commutativity of multiplication.
     The bijection (a,b) ↦ (b,a) maps A×B to B×A while preserving
     the product, so representation counts and unique product counts agree. -/
-axiom uniqueProductCount_comm (A B : Finset ℕ) :
-    uniqueProductCount A B = uniqueProductCount B A
+theorem uniqueProductCount_comm (A B : Finset ℕ) :
+    uniqueProductCount A B = uniqueProductCount B A := by
+  unfold uniqueProductCount
+  -- The product image sets are equal (by mul_comm)
+  have h_image : (A ×ˢ B).image (fun p => p.1 * p.2) =
+      (B ×ˢ A).image (fun p => p.1 * p.2) := by
+    ext m
+    simp only [Finset.mem_image, Finset.mem_product, Prod.exists]
+    constructor
+    · rintro ⟨a, b, ⟨ha, hb⟩, hab⟩
+      exact ⟨b, a, ⟨hb, ha⟩, by rw [mul_comm]; exact hab⟩
+    · rintro ⟨b, a, ⟨hb, ha⟩, hba⟩
+      exact ⟨a, b, ⟨ha, hb⟩, by rw [mul_comm]; exact hba⟩
+  -- reprCount is symmetric
+  have h_repr : ∀ m, reprCount A B m = reprCount B A m := reprCount_comm A B
+  -- The filtered sets are equal
+  congr 1
+  rw [h_image]
+  ext m
+  simp [h_repr]
 
 /-- The empty set gives F = 0. -/
 theorem uniqueProductCount_empty_left (B : Finset ℕ) :
