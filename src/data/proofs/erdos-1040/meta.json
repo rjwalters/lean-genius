@@ -32,6 +32,7 @@
       }
     ],
     "axiomCount": 8,
+    "assumptions": "8 axiom declarations: transfiniteDiameter_eq (definition of transfinite diameter as limit of nth root of max product), problem_open (open status marker), lineSegment_determined and disc_determined (transfinite diameters for specific sets), lineSegment_diameter and disc_diameter (known diameter values for segments and discs), small_diameter_disc (disc containment for small transfinite diameter), erdos_netanyahu (Erdős-Netanyahu quantitative measure bound for sublevel sets). These encode established results from potential theory (Fekete 1923, Erdős-Herzog-Piranian 1958, Erdős-Netanyahu 1960) and the open status of the conjecture.",
     "prerequisites": [
       "Complex analysis: polynomial lemniscates and sublevel sets",
       "Potential theory: transfinite diameter and logarithmic capacity",
