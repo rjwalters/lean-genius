@@ -1,0 +1,147 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-05-oq-01",
+  "title": "Nonderogatory Matrices Have Cyclic Vectors (Infinite Fields)",
+  "slug": "cayley-hamilton-minpoly-oq-05-oq-01",
+  "description": "Over an infinite field K, if M ∈ M_n(K) is nonderogatory (minpoly = charpoly), then M has a cyclic vector. Proved via union avoidance over irreducible factor kernels, with GCD/Bezout annihilation and normalizedFactors from UniqueFactorizationMonoid.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Nonderogatory_matrix",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ05OQ01.lean",
+    "tags": [
+      "linear-algebra",
+      "abstract-algebra",
+      "minimal-polynomial",
+      "cyclic-vector",
+      "union-avoidance",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "minpoly.aeval",
+        "description": "Minimal polynomial annihilates its element",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      },
+      {
+        "theorem": "minpoly.dvd",
+        "description": "Minpoly divides any annihilating polynomial",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      },
+      {
+        "theorem": "UniqueFactorizationMonoid.normalizedFactors",
+        "description": "Multiset of normalized irreducible factors",
+        "module": "Mathlib.RingTheory.UniqueFactorizationDomain.NormalizedFactors"
+      },
+      {
+        "theorem": "EuclideanDomain.gcd_eq_gcd_ab",
+        "description": "Bezout's identity for GCD in Euclidean domains",
+        "module": "Mathlib.RingTheory.EuclideanDomain"
+      },
+      {
+        "theorem": "Matrix.charpoly_natDegree_eq_dim",
+        "description": "Characteristic polynomial has degree n for n×n matrices",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "EuclideanDomain.div_add_mod",
+        "description": "Division algorithm in Euclidean domains",
+        "module": "Mathlib.RingTheory.EuclideanDomain"
+      }
+    ],
+    "originalContributions": [
+      "nonderogatory_has_cyclic_vector: Over infinite fields, nonderogatory matrices have cyclic vectors (0 sorries)",
+      "not_union_proper_subspaces: A nontrivial vector space over an infinite field cannot be a finite union of proper subspaces",
+      "gcd_aeval_mulVec_eq_zero: If p(M)v = 0, then gcd(p, minpoly)(M)v = 0 via Bezout identity",
+      "ker_mulVecLin_ne_top: Nonzero matrix has proper kernel as submodule",
+      "aeval_ne_zero_of_ne_zero: Low-degree nonzero polynomials evaluate to nonzero matrices"
+    ],
+    "dateAdded": "2026-03-23",
+    "prerequisites": [
+      "Minimal polynomials and the Cayley-Hamilton theorem",
+      "Unique factorization in polynomial rings over fields",
+      "Union avoidance lemma for vector spaces",
+      "Bezout's identity in Euclidean domains",
+      "Matrix polynomial evaluation (aeval)"
+    ],
+    "relatedProblems": [
+      {
+        "id": "cayley-hamilton-minpoly-oq-05",
+        "relationship": "Parent: minimal polynomial reduction in K-algebras"
+      },
+      {
+        "id": "cayley-hamilton-minpoly",
+        "relationship": "Root: Cayley-Hamilton and minimal polynomials"
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 270
+  },
+  "overview": {
+    "historicalContext": "The theory of nonderogatory matrices (those whose minimal polynomial equals the characteristic polynomial) is central to the rational canonical form theorem. A matrix is nonderogatory if and only if it has a cyclic vector — a vector whose orbit under M spans the entire space. This characterization, due to Hoffman and Kunze, provides the bridge between algebraic (minpoly = charpoly) and geometric (cyclic vector existence) descriptions. The proof over infinite fields uses a beautiful union avoidance argument: the set of non-cyclic vectors is contained in a finite union of proper subspaces (one for each irreducible factor of the minimal polynomial), and over an infinite field, such a union cannot cover the whole space.",
+    "problemStatement": "Prove that over an infinite field K, if M ∈ M_n(K) has minpoly(M) = charpoly(M) (nonderogatory), then there exists a cyclic vector v such that no nonzero polynomial of degree < n annihilates v under M.",
+    "proofStrategy": "Phase 1: For each irreducible factor q of μ = minpoly(M), the kernel of the cofactor (μ/q)(M) is a proper subspace. Phase 2: Union avoidance over an infinite field gives a vector v outside all these kernels. Phase 3: If v were not cyclic, the GCD of its annihilating polynomial with μ would give a proper divisor d of μ. Then d(M)v = 0 by Bezout, d properly divides μ, and the quotient μ/d has an irreducible factor q. The cofactor μ/q is a multiple of d, so (μ/q)(M)v = 0, contradicting the choice of v.",
+    "keyInsights": [
+      "The import of UniqueFactorizationDomain.Basic broke DecidableEq instance resolution in the existing backward file; isolating the proof in a separate module resolves this",
+      "Union avoidance is the key: over an infinite field, finitely many proper subspaces cannot cover the whole space",
+      "The GCD/Bezout argument connects polynomial annihilation to the factor structure of the minimal polynomial",
+      "Polynomial evaluations at the same matrix commute, enabling the d(M)v = 0 argument via mul_comm",
+      "normalizedFactors provides the canonical finite set of irreducible factors needed for union avoidance"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 22,
+      "endLine": 33,
+      "summary": "Defines IsCyclicVector (no nonzero polynomial of degree < n annihilates v under M) and IsNonderogatory (minpoly = charpoly)",
+      "mathContext": "A cyclic vector v generates the entire Krylov space span{v, Mv, M²v, ...} = K^n. Nonderogatory means the minimal and characteristic polynomials coincide, i.e., M has a single invariant factor."
+    },
+    {
+      "id": "helpers",
+      "title": "Helper Lemmas",
+      "startLine": 35,
+      "endLine": 146,
+      "summary": "Proves five key helpers: aeval_ne_zero_of_ne_zero (low-degree nonzero polys evaluate to nonzero matrices), not_union_proper_subspaces (union avoidance over infinite fields), gcd_aeval_mulVec_eq_zero (GCD annihilation via Bezout), and ker_mulVecLin_ne_top (nonzero matrix has proper kernel)",
+      "mathContext": "Union avoidance is proved by induction on the number of subspaces, using a line argument: for v ∉ S_k and w ∉ S_1 ∪ ... ∪ S_{k-1}, the line {v + tw} meets each S_i in at most one point. Since K is infinite, some point avoids all subspaces."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 148,
+      "endLine": 268,
+      "summary": "The main theorem: over an infinite field, nonderogatory implies cyclic vector. Uses normalizedFactors to get a finite set of irreducible factors, constructs cofactor kernels as proper subspaces, applies union avoidance, then proves cyclicity by contradiction using GCD annihilation",
+      "mathContext": "The proof has five phases: (1) setup and factor enumeration, (2) proper subspace construction, (3) union avoidance, (4) cyclicity proof by contradiction using GCD/Bezout and factor divisibility. The key algebraic step uses polynomial commutativity (mul_comm) to get the right order for matrix multiplication."
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete proof that nonderogatory matrices over infinite fields have cyclic vectors. All 5 theorems and 2 definitions are fully verified with 0 sorries, 0 axioms, using Mathlib's UniqueFactorizationMonoid infrastructure.",
+    "implications": "This resolves the sorry in CayleyHamiltonMinpolyOQ04Backward.lean (which had the complete proof architecture but couldn't import UFD due to DecidableEq conflicts). Combined with the forward direction from OQ04, this gives a complete characterization: over infinite fields, M is nonderogatory iff it has a cyclic vector.",
+    "openQuestions": [
+      "Can the infinite field hypothesis be weakened to fields with |K| > n?",
+      "What is the measure of cyclic vectors among all vectors (Zariski density)?",
+      "Extend to nonderogatory operators on infinite-dimensional spaces"
+    ]
+  },
+  "sorryCount": 0,
+  "status": "verified",
+  "badge": "verified",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial",
+      "UniqueFactorizationMonoid"
+    ],
+    "namespace": "NonderogatoryComplete",
+    "lineCount": 270,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 2
+  }
+}
