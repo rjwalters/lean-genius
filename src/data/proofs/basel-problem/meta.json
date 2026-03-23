@@ -255,6 +255,26 @@
       "targetId": "sum-of-kth-powers",
       "relationship": "related",
       "description": "Faulhaber's formulas for $\\sum k^p$ involve Bernoulli numbers $B_k$, which also determine $\\zeta(2n) = (-1)^{n+1} (2\\pi)^{2n} B_{2n} / (2(2n)!)$ — the Basel problem's $\\zeta(2) = \\pi^2/6$ is the $n=1$ case with $B_2 = 1/6$"
+    },
+    {
+      "targetId": "leibniz-pi",
+      "relationship": "complementary",
+      "description": "Leibniz's formula $\\pi/4 = 1 - 1/3 + 1/5 - 1/7 + \\cdots$ and Basel's $\\sum 1/n^2 = \\pi^2/6$ are both series evaluations producing $\\pi$. Leibniz's series (a Dirichlet L-function $L(1, \\chi_4)$) converges conditionally, while Basel's $\\zeta(2)$ converges absolutely — the two represent different families of special values: Dirichlet L-values vs Riemann zeta values"
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "foundational",
+      "description": "The geometric series $\\sum r^n = 1/(1-r)$ for $|r| < 1$ is the simplest convergent series with closed form. The Basel series $\\sum 1/n^2$ is the next level — a power series with closed form involving $\\pi$. Both exemplify the paradigm of exact summation, but while geometric series sum by elementary algebra, Basel requires analytic methods (Bernoulli polynomials, Fourier theory)"
+    },
+    {
+      "targetId": "taylor-theorem",
+      "relationship": "technique",
+      "description": "Euler's original proof compares the Taylor expansion $\\sin(x)/x = 1 - x^2/6 + x^4/120 - \\cdots$ with the infinite product $\\prod(1 - x^2/n^2\\pi^2)$. The Taylor expansion provides the $x^2$ coefficient $-1/6$ that, matched against the product expansion, yields the Basel identity. Taylor's theorem thus provides one half of the input to Euler's proof"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "The integral test for series convergence ($\\sum f(n)$ converges iff $\\int f$ converges for decreasing $f > 0$) relies on FTC to evaluate $\\int_1^{\\infty} x^{-2}dx = 1$. This confirms convergence of $\\sum 1/n^2$ and provides the crude bound $\\sum 1/n^2 < 2$, but cannot determine the exact value $\\pi^2/6$ — for that, the deeper Bernoulli polynomial machinery is needed"
     }
   ],
   "relatedProofs": [
@@ -272,7 +292,11 @@
     "arithmetic-series",
     "basel-problem-oq-01",
     "euler-totient",
-    "sum-of-kth-powers"
+    "sum-of-kth-powers",
+    "leibniz-pi",
+    "geometric-series",
+    "taylor-theorem",
+    "fundamental-theorem-calculus"
   ],
   "leanFile": {
     "imports": [

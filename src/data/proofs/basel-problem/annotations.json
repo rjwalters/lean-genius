@@ -99,9 +99,9 @@
       "startLine": 76,
       "endLine": 78
     },
-    "type": "theorem",
+    "type": "context",
     "title": "Series Convergence",
-    "content": "The series $\\sum 1/n^2$ converges because it's a p-series with $p = 2 > 1$. This is a fundamental result in analysis.",
+    "content": "The series $\\sum 1/n^2$ converges because it's a p-series with $p = 2 > 1$. This is a fundamental result in analysis — the integral test shows $\\sum n^{-p}$ converges iff $\\int_1^{\\infty} x^{-p} dx < \\infty$, which holds iff $p > 1$. The boundary case $p = 1$ (harmonic series) diverges logarithmically: $\\sum_{n=1}^{N} 1/n \\sim \\ln N$.",
     "mathContext": "We use `Real.summable_nat_rpow_inv` which proves that $\\sum n^{-p}$ converges for $p > 1$. The harmonic series ($p = 1$) is the boundary case that diverges.",
     "significance": "key",
     "prerequisites": [
@@ -144,11 +144,11 @@
     "proofId": "basel-problem",
     "range": {
       "startLine": 93,
-      "endLine": 101
+      "endLine": 106
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Positivity and Basic Properties",
-    "content": "Three positivity lemmas: `one_div_sq_pos` ($1/n^2 > 0$ for $n > 0$), `one_div_sq_nonneg` ($1/n^2 \\geq 0$ for all $n$), and `basel_value_pos` ($\\pi^2/6 > 0$). All proved by Lean's `positivity` tactic, which chains positivity/nonnegativity facts automatically.\n\nThese lemmas are supporting infrastructure: positivity of terms ensures the partial sums are increasing (important for monotone convergence), and positivity of the limit confirms the sum is meaningful.",
+    "content": "Three positivity lemmas: `one_div_sq_pos` ($1/n^2 > 0$ for $n > 0$), `one_div_sq_nonneg` ($1/n^2 \\geq 0$ for all $n$), and `basel_value_pos` ($\\pi^2/6 > 0$). All proved by Lean's `positivity` tactic, which chains positivity/nonnegativity facts automatically.\n\nThese lemmas are supporting infrastructure: positivity of terms ensures the partial sums are increasing (important for monotone convergence), and positivity of the limit confirms the sum is meaningful. The `positivity` tactic works by recursively decomposing the goal into subgoals about positivity or nonnegativity of components: for $1/n^2$, it uses `sq_nonneg` to establish $n^2 \\geq 0$, then `div_pos` or `div_nonneg`; for $\\pi^2/6$, it chains `pi_pos` through `sq_pos_of_pos` and `div_pos`.",
     "mathContext": "For $n \\geq 1$: $1/n^2 > 0$ since $n^2 > 0$. For $n = 0$: $1/0^2 = 0 \\geq 0$ (Lean's convention). The value $\\pi^2/6 > 0$ since $\\pi > 0$ implies $\\pi^2 > 0$. The `positivity` tactic automatically chains `sq_nonneg`, `div_pos`, and `pi_pos` to close these goals.",
     "significance": "supporting",
     "prerequisites": [
