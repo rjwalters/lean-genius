@@ -82,11 +82,22 @@ theorem bisectStep_width (f : ℝ → ℝ) (a b : ℝ) (hab : a ≤ b) :
   · -- Right half: ((a+b)/2, b)
     ring
 
+/-- Width after one bisection step is exactly half, regardless of ordering. -/
+theorem bisectStep_width' (f : ℝ → ℝ) (a b : ℝ) :
+    (bisectStep f a b).2 - (bisectStep f a b).1 = (b - a) / 2 := by
+  simp only [bisectStep]; split <;> ring
+
 /-- After n bisection steps, the interval width is (b-a)/2ⁿ.
     This guarantees exponential convergence. -/
 theorem bisect_width (f : ℝ → ℝ) (a b : ℝ) (hab : a ≤ b) (n : ℕ) :
     bisectRight f a b n - bisectLeft f a b n = (b - a) / 2 ^ n := by
-  sorry
+  induction n with
+  | zero => simp [bisectRight, bisectLeft, bisectIter]
+  | succ n ih =>
+    have key : bisectRight f a b (n + 1) - bisectLeft f a b (n + 1) =
+               (bisectRight f a b n - bisectLeft f a b n) / 2 :=
+      bisectStep_width' f (bisectIter f a b n).1 (bisectIter f a b n).2
+    rw [key, ih, div_div, ← pow_succ]
 
 -- ============================================================
 -- Part IV: Error Bound
@@ -96,8 +107,8 @@ theorem bisect_width (f : ℝ → ℝ) (a b : ℝ) (hab : a ≤ b) (n : ℕ) :
     Any root in [a,b] is within (b-a)/2^{n+1} of the midpoint
     of the nth interval. -/
 theorem bisect_error_bound (f : ℝ → ℝ) (a b : ℝ) (hab : a ≤ b) (n : ℕ) :
-    bisectRight f a b n - bisectLeft f a b n ≤ (b - a) / 2 ^ n := by
-  sorry
+    bisectRight f a b n - bisectLeft f a b n ≤ (b - a) / 2 ^ n :=
+  le_of_eq (bisect_width f a b hab n)
 
 -- ============================================================
 -- Part V: Concrete Examples

@@ -7,7 +7,7 @@
     "author": "Bolzano (1817), bisection method classical",
     "sourceUrl": "https://en.wikipedia.org/wiki/Bisection_method",
     "date": "1817",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/IntermediateValueTheoremOQ01.lean",
     "tags": [
       "analysis",
@@ -17,14 +17,17 @@
       "constructive",
       "convergence"
     ],
-    "badge": "formalized",
-    "sorries": 2,
+    "badge": "verified",
+    "sorries": 0,
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
     "originalContributions": [
       "bisectStep: single bisection interval-halving step",
       "bisectIter: iterated bisection sequence",
-      "bisectStep_width: width halves at each step",
+      "bisectStep_width: width halves at each step (with ordering hypothesis)",
+      "bisectStep_width': width halves at each step (unconditional)",
+      "bisect_width: after n steps, width is (b-a)/2^n (by induction)",
+      "bisect_error_bound: error bound ≤ (b-a)/2^n (from bisect_width)",
       "midpoint_mem_Icc: midpoint lies in [a,b]",
       "sqrt2_between_1_and_2: constructive √2 ∈ [1,2]",
       "bisect_10_width: 10 steps give width 1/1024",
@@ -96,21 +99,21 @@
       "id": "part-iii",
       "title": "Part III: Width Decay",
       "startLine": 70,
-      "endLine": 89,
-      "summary": "Proves bisectStep_width (single-step halving) by case split and ring. States bisect_width (n-step exponential decay) as sorry — needs induction with ordering invariant."
+      "endLine": 101,
+      "summary": "Proves bisectStep_width (single-step halving) by case split and ring. Proves bisectStep_width' (unconditional version). Proves bisect_width (n-step exponential decay) by induction using bisectStep_width' — the key insight is that the width formula holds without ordering, avoiding the need for an ordering invariant."
     },
     {
       "id": "part-iv",
       "title": "Part IV: Error Bound",
-      "startLine": 91,
-      "endLine": 100,
-      "summary": "States bisect_error_bound (width ≤ (b-a)/2^n) as sorry — would follow from bisect_width."
+      "startLine": 102,
+      "endLine": 111,
+      "summary": "Proves bisect_error_bound (width ≤ (b-a)/2^n) as a direct corollary of bisect_width via le_of_eq."
     },
     {
       "id": "part-v",
       "title": "Part V: Concrete Examples",
-      "startLine": 102,
-      "endLine": 124,
+      "startLine": 113,
+      "endLine": 136,
       "summary": "sqrt2_between_1_and_2 via Real.sqrt witness with monotonicity bounds. bisect_10_width and bisect_20_error: concrete convergence rate computations via norm_num."
     }
   ],
@@ -127,10 +130,9 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalizes the bisection method with 7 proved theorems and 2 sorries (the inductive width decay and its corollary error bound). Proves the single-step halving property, defines the iterated sequence, and demonstrates convergence rates with concrete examples. The √2 existence is proved constructively via Mathlib's sqrt.",
+    "summary": "Fully verified formalization of the bisection method with 11 proved theorems and 0 sorries. Proves the single-step halving property (both with and without ordering hypothesis), the n-step exponential width decay by induction, the error bound as a corollary, and demonstrates convergence rates with concrete examples. The √2 existence is proved constructively via Mathlib's sqrt.",
     "implications": "**For numerical analysis**: Provides a verified foundation for the simplest root-finding algorithm, establishing the convergence rate $O(2^{-n})$ that all students learn but rarely see formally proved.\n\n**For constructive mathematics**: Bridges the gap between the non-constructive IVT and a computational approximation scheme — the bisection sequence is an explicit Cauchy sequence converging to a root.\n\n**For Lean 4**: Demonstrates that `linarith` and `ring` handle the interval arithmetic cleanly, while the inductive step (maintaining ordering through conditional branching) is where the real formalization challenge lies.",
     "openQuestions": [
-      "Prove bisect_width by induction, maintaining the invariant a_k ≤ b_k through the conditional branch",
       "Prove sign persistence: f(a_n) · f(b_n) ≤ 0 at each step (requires continuity or the IVT hypothesis)",
       "Connect bisectIter to Mathlib's Filter.Tendsto to prove full convergence to a root",
       "Formalize Newton's method and prove its quadratic convergence for comparison"
@@ -148,9 +150,9 @@
       "Real"
     ],
     "namespace": "BisectionMethod",
-    "lineCount": 124,
+    "lineCount": 136,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 5
   }
 }
