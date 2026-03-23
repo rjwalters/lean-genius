@@ -50,7 +50,6 @@
   "overview": {
     "historicalContext": "Erdős posed this problem at the 1989 Great Western Number Theory problem session in Asilomar, California. He asked: given an $n$-element set of integers $A$, how many distinct common differences can three-term arithmetic progressions in $A$ have?\n\nThe Erdős-Spencer probabilistic argument (random subsets of $\\{1,\\ldots,N\\}$) showed that $\\Omega(n^{3/2})$ is achievable. Bourgain connected the problem to the Kakeya conjecture, reformulating it via restricted sums and differences. In 1999, Katz and Tao established $O(n^{11/6})$ using Szemerédi-Trotter incidence geometry. Lemm improved the lower bound past $n^{1.778}$ in 2015, and in 2025 AlphaEvolve achieved a marginal further improvement. The gap $\\Omega(n^{1.778})$ vs $O(n^{11/6}) \\approx O(n^{1.833})$ remains open, with implications for the Kakeya conjecture and additive combinatorics.",
     "problemStatement": "Let $A \\subseteq \\mathbb{Z}$ with $|A| = n$, and let $D(A) = \\{d : \\exists\\, a \\text{ s.t. } a, a+d, a+2d \\in A\\}$. Is $|D(A)| = O(n^{3/2})$?",
-    "text": "Erdős Problem #1097 asks: given an n-element set A of integers, how many distinct common differences can three-term arithmetic progressions in A have? The conjectured answer is O(n^{3/2}), matching a probabilistic lower bound. The best known bounds bracket the critical exponent between 1.778 (Lemm) and 11/6 (Katz-Tao). Chan proved this problem is equivalent to Bourgain's sums-differences problem, connecting it to the Kakeya conjecture in geometric measure theory. The formalization proves 14 infrastructure lemmas without axioms and captures the state of knowledge via 6 axiomatized research bounds.",
     "proofStrategy": "The formalization defines IsThreeAP and commonDifferences, then develops a comprehensive infrastructure of proven structural results: subset bounds, monotonicity, symmetry, translation invariance, and dilation covariance. The main conjecture and known bounds are stated as axioms. Bourgain's restricted sums-differences framework is formalized, and Chan's equivalence theorem connecting the two formulations is recorded. A summary theorem combines the bounds to capture the current state of knowledge: $1.778 < c^* \\le 11/6$.",
     "keyInsights": [
       "The Erdős-Spencer probabilistic method gives Ω(n^{3/2}) common differences, matching the conjectured upper bound and establishing the combinatorial baseline",
@@ -59,12 +58,6 @@
       "Chan's equivalence theorem shows the 3-AP exponent equals the Bourgain sums-differences exponent, unifying a discrete combinatorial problem with continuous harmonic analysis",
       "The formalization proves 14 infrastructure lemmas without axioms, including translation invariance D(A+c) = D(A), dilation covariance, negation symmetry, and exact computations for small sets",
       "The connection to the Kakeya conjecture means resolving this problem would impact fundamental questions in geometric measure theory about Besicovitch sets in R^n"
-    ],
-    "prerequisites": [
-      "Additive combinatorics: sumsets, difference sets, and arithmetic progressions",
-      "The probabilistic method (Erdős-Spencer construction for the lower bound)",
-      "Incidence geometry: the Szemerédi-Trotter theorem and its applications to sum-product problems",
-      "Basic real analysis: asymptotic notation, limits, and exponents"
     ]
   },
   "sections": [
