@@ -153,7 +153,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #384 asks whether every C(n,k) with 1 < k < n−1 has a prime divisor < n/2. Ecklund (1969) proved this with exactly one exception: C(7,3) = 35 = 5 × 7. Stronger conjectures about n/k bounds remain open.",
-    "implications": "**Theoretical Significance**: Ecklund's result reveals that Pascal's triangle is 'densely prime-factored' — binomial coefficients almost always have small prime factors.\n\n**Broader Connections**: This has implications for the divisibility structure of Catalan numbers $C_n = \\binom{2n}{n}/(n+1)$, for Lucas' theorem on $\\binom{n}{k} \\pmod{p}$, and for the Erdős-Ko-Rado theorem's extremal combinatorics. The stronger conjectures about $n/k$ bounds, if proved, would sharpen our understanding of how prime factors distribute across rows of Pascal's triangle.",
+    "implications": "**Theoretical Significance**: Ecklund's result reveals that Pascal's triangle is 'densely prime-factored' — binomial coefficients almost always have small prime factors.\n\nThis has implications for the divisibility structure of Catalan numbers $C_n = \\binom{2n}{n}/(n+1)$, for Lucas' theorem on $\\binom{n}{k} \\pmod{p}$, and for the Erdős-Ko-Rado theorem's extremal combinatorics. The stronger conjectures about $n/k$ bounds, if proved, would sharpen our understanding of how prime factors distribute across rows of Pascal's triangle.",
     "openQuestions": [
       "Is C(n,k) divisible by a prime < n/k when n > k²? (Ecklund's stronger conjecture)",
       "Is C(n,k) divisible by a prime ≤ n/k when n > 17.125k? (Selfridge's conjecture)",

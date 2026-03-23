@@ -100,7 +100,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #152 in 109 lines of Lean 4, encoding the isolated element counting problem for Sidon sumsets with both weak (unbounded) and strong ($\\gg |A|^2$) forms, the exact sumset size identity, range bounds, pigeonhole existence, and the infinite version. Zero sorries; structural results axiomatized.",
-    "implications": "**Theoretical Significance**: Resolution would reveal the fine structure of Sidon sumsets beyond mere counting.\n\n**Broader Connections**: The strong form would establish that Sidon sumsets are inherently 'lacunary' — not just sparse on average, but with many isolated points. This connects to the theory of $B_2$ sequences, additive energy bounds, and the broader question of how arithmetic structure (the Sidon property) constrains the distribution of sums.",
+    "implications": "**Theoretical Significance**: Resolution would reveal the fine structure of Sidon sumsets beyond mere counting.\n\nThe strong form would establish that Sidon sumsets are inherently 'lacunary' — not just sparse on average, but with many isolated points. This connects to the theory of $B_2$ sequences, additive energy bounds, and the broader question of how arithmetic structure (the Sidon property) constrains the distribution of sums.",
     "openQuestions": [
       "Does $I(A) \\to \\infty$ as $|A| \\to \\infty$ over Sidon sets? This is the weak form, still open.",
       "Is $I(A) \\geq c|A|^2$ for some absolute $c > 0$? This is the strong form. What is the optimal constant $c$?",

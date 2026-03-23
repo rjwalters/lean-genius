@@ -160,7 +160,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #982 asks whether every convex n-gon has a vertex with at least floor(n/2) distinct distances to other vertices. The problem remains OPEN. The best known lower bound is approximately 0.361n (Nivasch et al. 2013), while the regular polygon shows the conjecture would be tight at ceil(n/2). The gap of about 0.139n represents substantial open mathematical territory.",
-    "implications": "**Theoretical Significance**: **Geometric Significance**\n\n1. **Distance Distribution:** Understanding how distances distribute from vertices in convex configurations.\n\n2.\n\n**Broader Connections**: **Extremal Geometry:** The regular polygon appears optimal, suggesting deep connections to symmetry.\n\n3. **Combinatorial Geometry:** Part of broader questions about distinct distances (Erdos-Moser problem).\n\n4. **Continuous Analogues:** The curve generalization failures show the discrete and continuous settings differ fundamentally.",
+    "implications": "**Theoretical Significance**: **Geometric Significance**\n\n1. **Distance Distribution:** Understanding how distances distribute from vertices in convex configurations.\n\n**2. Extremal Geometry:** The regular polygon appears optimal, suggesting deep connections to symmetry.\n\n3. **Combinatorial Geometry:** Part of broader questions about distinct distances (Erdos-Moser problem).\n\n4. **Continuous Analogues:** The curve generalization failures show the discrete and continuous settings differ fundamentally.",
     "openQuestions": [
       "Prove or disprove the conjecture f(n) >= floor(n/2)",
       "Close the gap between 0.361n and 0.5n",

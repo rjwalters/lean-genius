@@ -126,7 +126,7 @@
   },
   "conclusion": {
     "summary": "Erdős Problem #770 is formalized with a complete computation of h(n) for n = 1..12 via native_decide, computational verification of Fermat's little theorem for five primes, demonstration of the h(n) = 3 pattern at 11 values, and axiomatization of three open questions. The file has 1 sorry (gcd stability) and 3 axioms (open questions).",
-    "implications": "**Theoretical Significance**: Understanding h(n) would illuminate the arithmetic structure of exponential sequences modulo primes.\n\n**Broader Connections**: The density question connects to the distribution of smooth numbers and Fermat quotients. The largest-prime characterization would link h(n) to the factorization of n+1, bridging analytic and algebraic number theory.",
+    "implications": "**Theoretical Significance**: Understanding h(n) would illuminate the arithmetic structure of exponential sequences modulo primes.\n\nThe density question connects to the distribution of smooth numbers and Fermat quotients. The largest-prime characterization would link h(n) to the factorization of n+1, bridging analytic and algebraic number theory.",
     "openQuestions": [
       "Does the natural density of {n : h(n) = p} exist for each prime p? If so, what is its value?",
       "Does lim inf h(n) = ∞, or does h(n) remain bounded along some subsequence?",

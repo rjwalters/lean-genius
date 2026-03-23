@@ -201,7 +201,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #434 on the extremal Frobenius problem. Kiss (2002) proved that the 'top k' set {n-k+1, ..., n} maximizes the count of non-representable integers among all k-element subsets of {1, ..., n}. The 311-line proof has 8 sorries (examples, cardinality, finiteness, comparison) and 4 axioms (Kiss's theorem, Sylvester-Frobenius formula and count, consecutive Frobenius). Core representability theory (3 closure lemmas) and topK_5_2 are fully proved.",
-    "implications": "**Theoretical Significance**: The problem connects the classical Frobenius (coin) problem with extremal combinatorics and numerical semigroup theory.\n\n**Broader Connections**: The greedy approach of selecting largest elements is optimal, contrasting with many optimization problems where greedy fails. The result also connects to computational complexity: while the Frobenius problem for ≥ 3 elements is NP-hard, the extremal problem has a clean, explicit optimal solution.",
+    "implications": "**Theoretical Significance**: The problem connects the classical Frobenius (coin) problem with extremal combinatorics and numerical semigroup theory.\n\nThe greedy approach of selecting largest elements is optimal, contrasting with many optimization problems where greedy fails. The result also connects to computational complexity: while the Frobenius problem for ≥ 3 elements is NP-hard, the extremal problem has a clean, explicit optimal solution.",
     "openQuestions": [
       "Exact formula for the maximum count of non-representables as a function of n and k?",
       "Characterization of which sets achieve close-to-optimal counts?",

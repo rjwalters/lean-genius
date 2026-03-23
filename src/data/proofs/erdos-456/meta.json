@@ -176,7 +176,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #456 explores the comparative growth of pₙ (smallest prime ≡ 1 mod n) and mₙ (smallest m with n | φ(m)) through three progressively stronger conjectures. Known results establish mₙ ≤ pₙ trivially, Linnik's polynomial bound on pₙ, and van Doorn's explicit strict inequality family for powers of 2. All three conjectures remain open.",
-    "implications": "**Theoretical Significance**: Resolving these questions would illuminate the relationship between Dirichlet primes in arithmetic progressions and the preimage structure of Euler's totient function. Part 1 would show that for 'generic' n, finding an m with n | φ(m) is easier than finding a prime in the progression.\n\n**Broader Connections**: Part 2 would quantify how much easier. Part 3 connects to Carmichael's totient conjecture and the inverse totient problem.",
+    "implications": "**Theoretical Significance**: Resolving these questions would illuminate the relationship between Dirichlet primes in arithmetic progressions and the preimage structure of Euler's totient function. Part 1 would show that for 'generic' n, finding an m with n | φ(m) is easier than finding a prime in the progression.\n\nPart 2 would quantify how much easier. Part 3 connects to Carmichael's totient conjecture and the inverse totient problem.",
     "openQuestions": [
       "Is mₙ < pₙ for almost all n? (Part 1)",
       "Does pₙ/mₙ → ∞ for almost all n? (Part 2)",

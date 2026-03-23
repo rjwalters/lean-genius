@@ -150,7 +150,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #197 asks whether ℕ can be partitioned into two sets, each permutable to avoid monotone 3-term arithmetic progressions. The answer is UNKNOWN. We do know that three sets suffice (Erdős-Graham) and that the problem cannot be resolved by finite computation. The formalization captures the open conjecture as an axiom representing the disjunction of the two possible answers.",
-    "implications": "**Theoretical Significance**: **Combinatorial Number Theory Connections**\n\n1. **Ramsey Theory:** Related to coloring problems and unavoidable patterns\n\n2. **Density Bounds:** Connected to Roth's theorem on 3-AP-free sets\n\n3.\n\n**Broader Connections**: **Permutation Avoidance:** Links to pattern avoidance in combinatorics\n\n4. **Threshold Phenomena:** The jump from 2 to 3 sets marks a structural boundary\n\n5. **Algorithmic Questions:** Stanley sequences and greedy constructions.",
+    "implications": "**Theoretical Significance**: **Combinatorial Number Theory Connections**\n\n1. **Ramsey Theory:** Related to coloring problems and unavoidable patterns\n\n2. **Density Bounds:** Connected to Roth's theorem on 3-AP-free sets\n\n**3. Permutation Avoidance:** Links to pattern avoidance in combinatorics\n\n4. **Threshold Phenomena:** The jump from 2 to 3 sets marks a structural boundary\n\n5. **Algorithmic Questions:** Stanley sequences and greedy constructions.",
     "openQuestions": [
       "Does the answer change for arithmetic progressions of length > 3?",
       "What is the minimum number of parts needed for length-k AP avoidance?",

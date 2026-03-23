@@ -142,7 +142,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #165 asked for an asymptotic formula for R(3,k). The answer is R(3,k) = Θ(k²/log k). The upper bound (1+o(1))k²/log k is due to Shearer (1983). The lower bound has seen dramatic improvement: from c ≥ 1/162 (Kim 1995) to c ≥ 1/2 (Hefty-Horn-King-Pfender 2025). The exact constant remains open, with c = 1/2 being the current conjecture.",
-    "implications": "**Theoretical Significance**: **Theoretical Connections**\n\n1. **Independence Numbers:** R(3,k) bounds give information about independence numbers in triangle-free graphs\n\n2. **Probabilistic Method:** Kim's triangle-free process exemplifies the power of semi-random methods\n\n3.\n\n**Broader Connections**: **Ramsey Theory:** This is a key benchmark problem in the field\n\n4. **Related Problems:** Connects to Erdős #544 (diagonal R(k,k)) and #986 (off-diagonal R(s,k))\n\n5. **Algorithm Design:** The triangle-free process has algorithmic applications.",
+    "implications": "**Theoretical Significance**: **Theoretical Connections**\n\n1. **Independence Numbers:** R(3,k) bounds give information about independence numbers in triangle-free graphs\n\n2. **Probabilistic Method:** Kim's triangle-free process exemplifies the power of semi-random methods\n\n**3. Ramsey Theory:** This is a key benchmark problem in the field\n\n4. **Related Problems:** Connects to Erdős #544 (diagonal R(k,k)) and #986 (off-diagonal R(s,k))\n\n5. **Algorithm Design:** The triangle-free process has algorithmic applications.",
     "openQuestions": [
       "What is the exact value of c in R(3,k) ~ c·k²/log k?",
       "Is c = 1/2 the correct asymptotic constant?",

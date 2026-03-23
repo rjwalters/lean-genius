@@ -146,7 +146,7 @@
   ],
   "conclusion": {
     "summary": "Fully formalizes Feuerbach's Theorem (Wiedijk #29) in coordinate geometry with 0 axioms and 0 sorries. All four tangency relations proved by direct coordinate computation. The formalization develops a complete triangle geometry framework and proves all nine-point circle memberships, Euler line relations, and Feuerbach distance relations.",
-    "implications": "**Theoretical Significance**: Feuerbach's theorem inspired the systematic study of triangle centers, leading to Clark Kimberling's Encyclopedia of Triangle Centers (now containing over 60,000 entries). The Feuerbach point X(11) is one of the most important triangle centers.\n\n**Broader Connections**: The theorem connects to inversive geometry (inversion centered at the Feuerbach point maps the nine-point circle to the incircle) and to the theory of pencils of circles. Modern generalizations extend to tetrahedra and non-Euclidean geometries.",
+    "implications": "**Theoretical Significance**: Feuerbach's theorem inspired the systematic study of triangle centers, leading to Clark Kimberling's Encyclopedia of Triangle Centers (now containing over 60,000 entries). The Feuerbach point X(11) is one of the most important triangle centers.\n\nThe theorem connects to inversive geometry (inversion centered at the Feuerbach point maps the nine-point circle to the incircle) and to the theory of pencils of circles. Modern generalizations extend to tetrahedra and non-Euclidean geometries.",
     "openQuestions": [
       "RESOLVED: All distance relations proved by coordinate computation in FeuerbachsTheoremOQ01.lean",
       "What is the 3D analogue of Feuerbach's theorem for tetrahedra?",

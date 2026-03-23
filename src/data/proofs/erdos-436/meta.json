@@ -124,7 +124,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #436 is PARTIALLY SOLVED. Question 1 ($\\Lambda(k,2)$ finite) was resolved by Hildebrand (1991) using character sum estimates. Question 2 ($\\Lambda(k,3)$ for odd $k$) remains OPEN for $k \\geq 5$, with only $\\Lambda(3,3) = 23532$ known. The Lehmers showed $\\Lambda(k,3) = \\infty$ for even $k$ (parity dichotomy). Graham proved $\\Lambda(k,m) = \\infty$ for $m \\geq 4$. The formalization includes 620 lines with genuine proofs of Fermat's little theorem and Euler's criterion from Mathlib.",
-    "implications": "**Theoretical Significance**: This problem reveals deep structure in the distribution of power residues among consecutive integers. The parity dichotomy for $m = 3$ shows that algebraic structure ($(-1)^k$) creates qualitative differences.\n\n**Broader Connections**: The threshold at $m = 4$ (Graham) makes $m \\leq 3$ a sharp boundary. Hildebrand's resolution of the $m = 2$ case demonstrates the power of the large sieve in additive number theory.",
+    "implications": "**Theoretical Significance**: This problem reveals deep structure in the distribution of power residues among consecutive integers. The parity dichotomy for $m = 3$ shows that algebraic structure ($(-1)^k$) creates qualitative differences.\n\nThe threshold at $m = 4$ (Graham) makes $m \\leq 3$ a sharp boundary. Hildebrand's resolution of the $m = 2$ case demonstrates the power of the large sieve in additive number theory.",
     "openQuestions": [
       "Is $\\Lambda(k,3)$ finite for odd $k \\geq 5$? Can Hildebrand's methods be extended?",
       "What is the growth rate of $\\Lambda(k,2)$ as a function of $k$? Is it super-polynomial?",

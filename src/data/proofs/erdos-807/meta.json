@@ -155,7 +155,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #807 asked whether the bipartition number tau(G) equals n - alpha(G) almost surely for random graphs G(n, 1/2). The answer is NO. Alon (2015) showed that almost surely tau(G) <= n - alpha(G) - 1, and Alon-Bohman-Huang (2017) proved the stronger bound tau(G) <= n - (1+c)alpha(G) for some absolute constant c > 0.",
-    "implications": "**Theoretical Significance**: **Graph-Theoretic Connections**\n\n1. **Bipartite Decomposition:** Understanding the minimum decomposition of graphs into complete bipartite subgraphs\n\n2.\n\n**Broader Connections**: **Graham-Pollak Theorem:** The classical result tau(K_n) = n - 1 provides context for the random graph case\n\n3. **Probabilistic Combinatorics:** Random graph theory provides bounds unattainable deterministically\n\n4. **Independence vs Covering:** The gap between n - alpha(G) and tau(G) reveals structural properties of random graphs.",
+    "implications": "**Theoretical Significance**: **Graph-Theoretic Connections**\n\n1. **Bipartite Decomposition:** Understanding the minimum decomposition of graphs into complete bipartite subgraphs\n\n**2. Graham-Pollak Theorem:** The classical result tau(K_n) = n - 1 provides context for the random graph case\n\n3. **Probabilistic Combinatorics:** Random graph theory provides bounds unattainable deterministically\n\n4. **Independence vs Covering:** The gap between n - alpha(G) and tau(G) reveals structural properties of random graphs.",
     "openQuestions": [
       "What is the optimal constant c in the Alon-Bohman-Huang bound?",
       "Does the gap persist for other edge probabilities p != 1/2?",

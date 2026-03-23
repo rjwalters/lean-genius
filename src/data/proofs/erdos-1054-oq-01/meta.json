@@ -131,7 +131,7 @@
   ],
   "conclusion": {
     "summary": "We formalize the density framework for Part II of Erdős Problem #1054. The key structural result is the sigma bound f(σ(m)) ≤ m, proved via concrete native_decide computations for superabundant numbers. The ratio m/σ(m) is explicitly shown to decrease along m ∈ {6, 12, 24, 120, 720, 5040} from 1/2 to 0.26. The main open conjecture (density-0 of large-f set) is axiomatized; proving it requires Gronwall's theorem or Mertens' theorem, not yet in Mathlib.",
-    "implications": "**Theoretical Significance**: Resolving this would show most integers have 'efficiently representable' partial divisor sums.\n\n**Broader Connections**: The connection to Gronwall's theorem (σ(m)/(m log log m) → e^γ) and Mertens' theorem suggests analytic number theory techniques will be needed. The sigma bound provides a clear constructive path once these tools are available.",
+    "implications": "**Theoretical Significance**: Resolving this would show most integers have 'efficiently representable' partial divisor sums.\n\nThe connection to Gronwall's theorem (σ(m)/(m log log m) → e^γ) and Mertens' theorem suggests analytic number theory techniques will be needed. The sigma bound provides a clear constructive path once these tools are available.",
     "openQuestions": [
       "Does {n : f(n) ≥ εn} have natural density 0? (Main conjecture, OPEN)",
       "Is limsup f(n)/n = ∞? (Part III of Erdős 1054, OPEN)",

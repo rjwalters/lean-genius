@@ -121,7 +121,7 @@
   ],
   "conclusion": {
     "summary": "Problem #294 is SOLVED. Erdős-Graham (1980) proved t(N) ≪ N/log N. Liu-Sawhney (2024) proved the matching lower bound t(N) ≫ N/((log N)(log log N)³...), determining t(N) up to polylogarithmic factors.",
-    "implications": "**Theoretical Significance**: The result shows that 'almost all' starting points allow Egyptian representations of 1, with the exceptional set having density ≈ (log N)/N.\n\n**Broader Connections**: This connects to deep questions about harmonic sums and prime distributions.",
+    "implications": "**Theoretical Significance**: The result shows that 'almost all' starting points allow Egyptian representations of 1, with the exceptional set having density ≈ (log N)/N.\n\nThis connects to deep questions about harmonic sums and prime distributions.",
     "openQuestions": [
       "Can the polylogarithmic gap be closed?",
       "What is the exact value of t(N) for small N?",

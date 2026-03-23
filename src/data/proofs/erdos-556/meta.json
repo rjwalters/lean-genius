@@ -169,7 +169,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #556 asked to prove R(C_n;3) ≤ 4n - 3. The conjecture is PROVED with complete resolution: for large odd n, R(C_n;3) = 4n - 3 exactly (KSS 2005); for large even n, R(C_n;3) = 2n (Benevides-Skokan 2009). The odd/even dichotomy is striking—odd cycles require roughly twice as many vertices!",
-    "implications": "**Theoretical Significance**: **Implications for Ramsey Theory**\n\n1. **Parity Matters:** The odd/even dichotomy shows parity is crucial in cycle Ramsey numbers\n\n2.\n\n**Broader Connections**: **Regularity Method Power:** Szemerédi's method provides exact bounds, not just asymptotics\n\n3. **3 Colors vs 2:** 3-coloring requires significantly more vertices than 2-coloring\n\n4. **Tight Bounds Achievable:** Many Ramsey problems have exact answers, not just bounds.",
+    "implications": "**Theoretical Significance**: **Implications for Ramsey Theory**\n\n1. **Parity Matters:** The odd/even dichotomy shows parity is crucial in cycle Ramsey numbers\n\n**2. Regularity Method Power:** Szemerédi's method provides exact bounds, not just asymptotics\n\n3. **3 Colors vs 2:** 3-coloring requires significantly more vertices than 2-coloring\n\n4. **Tight Bounds Achievable:** Many Ramsey problems have exact answers, not just bounds.",
     "openQuestions": [
       "What are the exact values for small n (both odd and even)?",
       "Can the proofs be made more elementary (without regularity)?",

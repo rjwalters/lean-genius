@@ -127,7 +127,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #554 conjectures that R(C_{2n+1}; k) / R(K_3; k) -> 0 as k -> infinity for any n >= 2. This open problem, posed by Erdős and Graham in 1981, asserts that odd cycles are asymptotically much easier to find monochromatically than triangles. We formalize the conjecture, state known bounds, verify classical 2-color results, and connect the problem to chromatic number questions.",
-    "implications": "**Theoretical Significance**: Resolution would fundamentally advance our understanding of multicolor Ramsey theory.\n\n**Broader Connections**: It would demonstrate that Ramsey-theoretic complexity of graphs is not determined by chromatic number alone, and would quantify how graph structure (cycles vs. cliques) affects the growth of multicolor Ramsey numbers.",
+    "implications": "**Theoretical Significance**: Resolution would fundamentally advance our understanding of multicolor Ramsey theory.\n\nIt would demonstrate that Ramsey-theoretic complexity of graphs is not determined by chromatic number alone, and would quantify how graph structure (cycles vs. cliques) affects the growth of multicolor Ramsey numbers.",
     "openQuestions": [
       "Does R(C_5; k) / R(K_3; k) -> 0 as k -> infinity? (simplest open case)",
       "What is the exact growth rate of R(C_{2n+1}; k) for k >= 3 colors?",

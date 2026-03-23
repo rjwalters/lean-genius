@@ -121,7 +121,7 @@
   ],
   "conclusion": {
     "summary": "This formalization demonstrates the dramatic simplification that type theory brings to mathematical foundations. What took Russell and Whitehead hundreds of pages is now a single rfl—not because we're cheating, but because we've chosen a cleaner foundation where natural numbers and their operations are primitive concepts rather than derived constructions.",
-    "implications": "**Theoretical Significance**: The evolution from Principia to modern proof assistants like Lean represents a fundamental shift in how we think about mathematical foundations.\n\n**Broader Connections**: Type theory provides a computationally meaningful framework where proofs aren't just certificates of truth but executable programs. This has enabled the development of verified software, formalized mathematics (like Mathlib), and a new understanding of the deep connections between logic, computation, and mathematics.",
+    "implications": "**Theoretical Significance**: The evolution from Principia to modern proof assistants like Lean represents a fundamental shift in how we think about mathematical foundations.\n\nType theory provides a computationally meaningful framework where proofs aren't just certificates of truth but executable programs. This has enabled the development of verified software, formalized mathematics (like Mathlib), and a new understanding of the deep connections between logic, computation, and mathematics.",
     "openQuestions": [
       "How do the various foundations for mathematics (set theory, type theory, category theory) relate to each other?",
       "Can we formalize all of classical mathematics in type theory, or are there statements that require set-theoretic axioms?",

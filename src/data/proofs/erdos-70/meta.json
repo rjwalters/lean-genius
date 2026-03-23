@@ -159,7 +159,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #70, an OPEN problem in partition calculus asking whether 𝔠 → (β, n)₂³ holds for all countable ordinals β and 2 ≤ n < ω. The 226-line formalization captures colorings, homogeneous sets, partition arrows, the Erdős-Rado partial result, monotonicity, and countability proofs for ordinal arithmetic. Several properties are proved from Mathlib's API; deep results are axiomatized.",
-    "implications": "**Theoretical Significance**: This problem connects infinite Ramsey theory to the combinatorial structure of the continuum.\n\n**Broader Connections**: A positive answer would establish that the continuum satisfies strong partition properties for all countable ordinals. The problem may depend on set-theoretic axioms beyond ZFC, and its resolution could involve forcing, pcf theory, or new stepping-up techniques.",
+    "implications": "**Theoretical Significance**: This problem connects infinite Ramsey theory to the combinatorial structure of the continuum.\n\nA positive answer would establish that the continuum satisfies strong partition properties for all countable ordinals. The problem may depend on set-theoretic axioms beyond ZFC, and its resolution could involve forcing, pcf theory, or new stepping-up techniques.",
     "openQuestions": [
       "Does 𝔠 → (ω², n)₂³ hold? This is the first case beyond the Erdős-Rado theorem",
       "Does 𝔠 → (ω^ω, n)₂³ hold? ω^ω is the supremum of ω, ω², ω³, ...",

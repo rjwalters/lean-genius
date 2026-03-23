@@ -114,7 +114,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #944 about the existence of k-vertex-critical graphs where every critical edge set is large. Dirac (1970) conjectured this for r = 1; it's now proven for all k ≥ 5 (Jensen 2002) and for large k with any r (Martinsson-Steiner 2025). The case k = 4 remains OPEN.",
-    "implications": "**Theoretical Significance**: This problem reveals deep structure in graph coloring.\n\n**Broader Connections**: The question of whether vertex-criticality and edge-criticality can be decoupled connects to fundamental questions about the 'redundancy' in graph colorings. Understanding k = 4 could illuminate the transition from small to large chromatic numbers.",
+    "implications": "**Theoretical Significance**: This problem reveals deep structure in graph coloring.\n\nThe question of whether vertex-criticality and edge-criticality can be decoupled connects to fundamental questions about the 'redundancy' in graph colorings. Understanding k = 4 could illuminate the transition from small to large chromatic numbers.",
     "openQuestions": [
       "Does there exist a 4-vertex-critical graph with no critical edges?",
       "What is the exact asymptotic behavior of f_k(n) for k ≥ 5?",

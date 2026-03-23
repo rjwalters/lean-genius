@@ -159,7 +159,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem #582 asked whether there exists a K4-free graph where every 2-coloring of edges contains a monochromatic triangle. Folkman (1970) proved YES - such graphs exist. The minimum number of vertices f(2,3,4) satisfies 19 <= f(2,3,4) <= 941, with the upper bound due to Dudek-Rodl (2008). Spencer (1988) resolved Erdos's $100 challenge by finding a construction with < 10^10 vertices.",
-    "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Ramsey Theory:** Folkman numbers generalize Ramsey numbers with forbidden subgraph constraints\n\n2. **Extremal Graph Theory:** Shows sparse graphs can still have strong Ramsey properties\n\n3.\n\n**Broader Connections**: **Probabilistic Method:** Early upper bounds used probabilistic existence proofs\n\n4. **Explicit Constructions:** Lu's algebraic construction demonstrates concrete examples\n\n5. **Computational Complexity:** Finding exact Folkman numbers is computationally hard.",
+    "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Ramsey Theory:** Folkman numbers generalize Ramsey numbers with forbidden subgraph constraints\n\n2. **Extremal Graph Theory:** Shows sparse graphs can still have strong Ramsey properties\n\n**3. Probabilistic Method:** Early upper bounds used probabilistic existence proofs\n\n4. **Explicit Constructions:** Lu's algebraic construction demonstrates concrete examples\n\n5. **Computational Complexity:** Finding exact Folkman numbers is computationally hard.",
     "openQuestions": [
       "What is the exact value of f(2,3,4)?",
       "Is the Radziszowski-Xu conjecture f(2,3,4) <= 127 true?",

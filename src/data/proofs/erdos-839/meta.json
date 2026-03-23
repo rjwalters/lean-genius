@@ -124,7 +124,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #839 poses two open questions about sequences avoiding consecutive-term sums. The formalization is notable for its seven fully proved structural theorems alongside axiomatized deep results, providing a solid scaffold for future proof attempts. Freud's construction with upper density $19/36$ disproves the $1/2$ conjecture, but the growth rate ($\\limsup a_n/n = \\infty$?) and logarithmic density (vanishing?) questions remain completely open.",
-    "implications": "**Theoretical Significance**: Resolution of either question would illuminate the structure of additive avoidance constraints in number theory.\n\n**Broader Connections**: The problem connects consecutive-sum avoidance to sum-free sets (Problem #359), primitive sets, and additive combinatorics more broadly. The gap between the $\\Omega(\\log \\log x)$ reciprocal sum lower bound and the conjectured $o(\\log x)$ upper bound suggests subtle number-theoretic structure at intermediate scales.",
+    "implications": "**Theoretical Significance**: Resolution of either question would illuminate the structure of additive avoidance constraints in number theory.\n\nThe problem connects consecutive-sum avoidance to sum-free sets (Problem #359), primitive sets, and additive combinatorics more broadly. The gap between the $\\Omega(\\log \\log x)$ reciprocal sum lower bound and the conjectured $o(\\log x)$ upper bound suggests subtle number-theoretic structure at intermediate scales.",
     "openQuestions": [
       "Is $\\limsup(a_n/n) = \\infty$ for all valid sequences? This is Question 1, the primary open question.",
       "Does the logarithmic density $(1/\\log x) \\sum_{a_n < x} 1/a_n \\to 0$? This is Question 2.",

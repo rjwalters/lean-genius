@@ -115,7 +115,7 @@
   ],
   "conclusion": {
     "summary": "Hilbert's nineteenth problem is resolved affirmatively: solutions of uniformly elliptic variational problems with smooth data are smooth, and analytic if the data is analytic.\n\nThe proof combines:\n1. De Giorgi-Nash-Moser theory for initial Holder regularity\n2. Schauder estimates for bootstrapping to full smoothness\n\nThis established the foundation of modern elliptic PDE theory.",
-    "implications": "**Theoretical Significance**: The resolution of Hilbert's 19th problem has profound implications:\n\n1. **PDE Theory**: Elliptic regularity is now a cornerstone of analysis\n\n2. **Geometric Analysis**: Regularity of minimal surfaces, harmonic maps\n\n3.\n\n**Broader Connections**: **Physics Applications**: Smoothness of equilibrium states, field configurations\n\n4. **Numerical Analysis**: Justifies approximation schemes for elliptic problems\n\n5. **Free Boundary Problems**: Extended to problems where the domain is unknown.",
+    "implications": "**Theoretical Significance**: The resolution of Hilbert's 19th problem has profound implications:\n\n1. **PDE Theory**: Elliptic regularity is now a cornerstone of analysis\n\n2. **Geometric Analysis**: Regularity of minimal surfaces, harmonic maps\n\n**3. Physics Applications**: Smoothness of equilibrium states, field configurations\n\n4. **Numerical Analysis**: Justifies approximation schemes for elliptic problems\n\n5. **Free Boundary Problems**: Extended to problems where the domain is unknown.",
     "openQuestions": [
       "What is the optimal regularity for degenerate elliptic equations?",
       "When do solutions of elliptic systems have singularities?",
@@ -157,7 +157,11 @@
       "description": "The De Giorgi-Nash-Moser regularity theory developed for Hilbert's 19th problem directly informs the Navier-Stokes regularity question; the gap between elliptic regularity (solved) and parabolic/nonlinear regularity (open) is central to both"
     }
   ],
-  "relatedProofs": ["hilbert-20", "hilbert-23", "navier-stokes"],
+  "relatedProofs": [
+    "hilbert-20",
+    "hilbert-23",
+    "navier-stokes"
+  ],
   "references": [
     {
       "authors": "Hilbert, David",

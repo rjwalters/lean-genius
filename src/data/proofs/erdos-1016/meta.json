@@ -108,7 +108,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdos Problem #1016 on the minimum excess edges for pancyclic graphs. The bounds $\\lfloor\\log_2(n-1)\\rfloor - 1 \\leq h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ leave a gap of only $\\log^* n + O(1)$, which is at most about 6 for any practical $n$. The Lean formalization encodes the definitions, both conjectures, the known bounds, structural properties, and small cases.",
-    "implications": "**Theoretical Significance**: Resolving whether $h(n) = \\lfloor\\log_2 n\\rfloor + \\log^* n + \\Theta(1)$ would determine the exact edge threshold for pancyclicity.\n\n**Broader Connections**: The problem is notable for the extreme tightness of known bounds combined with the apparent difficulty of closing the gap. A proof of even $h(n) - \\log_2 n \\to \\infty$ would require new techniques for lower-bounding the edge count of pancyclic graphs beyond simple doubling arguments.",
+    "implications": "**Theoretical Significance**: Resolving whether $h(n) = \\lfloor\\log_2 n\\rfloor + \\log^* n + \\Theta(1)$ would determine the exact edge threshold for pancyclicity.\n\nThe problem is notable for the extreme tightness of known bounds combined with the apparent difficulty of closing the gap. A proof of even $h(n) - \\log_2 n \\to \\infty$ would require new techniques for lower-bounding the edge count of pancyclic graphs beyond simple doubling arguments.",
     "openQuestions": [
       "Is $h(n) \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n - O(1)$? (Main conjecture)",
       "Does $h(n) - \\lfloor\\log_2 n\\rfloor \\to \\infty$? (Weaker question Erdos could not prove)",

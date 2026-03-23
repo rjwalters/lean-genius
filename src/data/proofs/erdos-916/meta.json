@@ -142,7 +142,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #916 asked whether every graph with n vertices and 2n-2 edges contains a cycle and another vertex adjacent to three vertices on that cycle. The answer is YES, as proved by Carsten Thomassen in 1974. This result strengthens Dirac's 1960 theorem about K₄ subdivisions and reveals deep structural properties forced by moderate edge density in graphs.",
-    "implications": "**Theoretical Significance**: **Graph-Theoretic Connections**\n\n1. **Extremal Graph Theory:** The 2n-2 edge threshold is critical for forcing rich structure\n\n2. **K₄ Subdivisions:** Thomassen's result provides an alternative proof that K₄ subdivisions exist\n\n3.\n\n**Broader Connections**: **Structural Hierarchy:** Establishes relationships between different subgraph structures\n\n4. **Average Degree:** Graphs with average degree approaching 4 have constrained structure\n\n5. **Planar Graph Theory:** Related to the 3n-6 edge bound for planarity.",
+    "implications": "**Theoretical Significance**: **Graph-Theoretic Connections**\n\n1. **Extremal Graph Theory:** The 2n-2 edge threshold is critical for forcing rich structure\n\n2. **K₄ Subdivisions:** Thomassen's result provides an alternative proof that K₄ subdivisions exist\n\n**3. Structural Hierarchy:** Establishes relationships between different subgraph structures\n\n4. **Average Degree:** Graphs with average degree approaching 4 have constrained structure\n\n5. **Planar Graph Theory:** Related to the 3n-6 edge bound for planarity.",
     "openQuestions": [
       "What other structures are forced by the 2n-2 edge count?",
       "Can the result be strengthened to require more adjacencies?",

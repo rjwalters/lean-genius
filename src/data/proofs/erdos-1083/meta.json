@@ -118,7 +118,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #1083 on distinct distances in higher dimensions. The established bounds $n^{1/d} \\ll f_d(n) \\ll n^{2/d}$ are axiomatized along with Solymosi and Vu's improvement to $n^{2/d - c/d^2}$ for $d \\geq 4$. The central open conjecture $f_d(n) = n^{2/d - o(1)}$ is formalized using the standard $\\varepsilon$-formulation. The clean separation between proven results and open conjectures provides a precise formal statement of the current state of knowledge.",
-    "implications": "**Theoretical Significance**: Resolving this conjecture would complete the higher-dimensional picture of the distinct distances problem, generalizing the Guth-Katz theorem from 2D.\n\n**Broader Connections**: Progress on this problem is closely tied to advances in incidence geometry, polynomial methods, and sum-product theory. The duality with Problem #1089 means any improvement to the lower bound for $f_d$ immediately constrains the maximum size of point sets with few distances.",
+    "implications": "**Theoretical Significance**: Resolving this conjecture would complete the higher-dimensional picture of the distinct distances problem, generalizing the Guth-Katz theorem from 2D.\n\nProgress on this problem is closely tied to advances in incidence geometry, polynomial methods, and sum-product theory. The duality with Problem #1089 means any improvement to the lower bound for $f_d$ immediately constrains the maximum size of point sets with few distances.",
     "openQuestions": [
       "Is $f_d(n) = n^{2/d - o(1)}$ for all $d \\geq 3$? This is the main conjecture.",
       "Can the Solymosi-Vu gap of $c/d^2$ be eliminated, or at least reduced to $o(1/d)$?",

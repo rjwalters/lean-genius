@@ -182,7 +182,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1033 asks to estimate h(n), where every graph on n vertices with > n²/4 edges contains a triangle with degree sum ≥ h(n). Erdős-Laskar (1985) proved h(n) ≤ 2(√3−1)n, and Fan (1988) proved h(n) ≥ (21/16)n. The gap remains open.",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Turán Theory Extension**: Refines our understanding beyond triangle existence\n\n2.\n\n**Broader Connections**: **Degree-Sum Problems**: Template for similar extremal questions\n\n3. **Extremal Graph Structure**: Near-Turán graphs have specific triangle properties\n\n4. **Algorithmic Implications**: Finding high-degree-sum triangles.",
+    "implications": "1. **Turán Theory Extension**: Refines our understanding beyond triangle existence\n\n**2. Degree-Sum Problems**: Template for similar extremal questions\n\n3. **Extremal Graph Structure**: Near-Turán graphs have specific triangle properties\n\n4. **Algorithmic Implications**: Finding high-degree-sum triangles.",
     "openQuestions": [
       "Is h(n) = (2(√3−1)−o(1))n? (Main conjecture)",
       "What are the extremal graphs achieving h(n)?",

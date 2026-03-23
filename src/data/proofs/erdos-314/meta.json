@@ -137,7 +137,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #314 asks whether lim inf n²ε(n) = 0 where ε(n) is the overshoot when the partial harmonic sum from n first exceeds 1. Lim and Steinerberger (2024) proved this is TRUE with explicit bounds. The optimal exponent conjecture remains open.",
-    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Harmonic Sum Structure:** Understanding when harmonic sums barely exceed thresholds.\n\n2.\n\n**Broader Connections**: **Diophantine Approximation:** Connected to approximating 1 by differences of harmonic numbers.\n\n3. **Unit Fractions:** Part of broader study of representing 1 as sums of unit fractions.\n\n4. **Computational Interest:** Finding specific n with small ε(n) is computationally interesting.",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Harmonic Sum Structure:** Understanding when harmonic sums barely exceed thresholds.\n\n**2. Diophantine Approximation:** Connected to approximating 1 by differences of harmonic numbers.\n\n3. **Unit Fractions:** Part of broader study of representing 1 as sums of unit fractions.\n\n4. **Computational Interest:** Finding specific n with small ε(n) is computationally interesting.",
     "openQuestions": [
       "Is the exponent 2 optimal: lim inf ε(n)n^{2+δ} = ∞ for all δ > 0?",
       "Can the Lim-Steinerberger bound be improved?",
