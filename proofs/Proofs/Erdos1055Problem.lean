@@ -27,28 +27,62 @@ import Mathlib.Data.Set.Finite.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
+/- ## Termination Lemma -/
+
+/-- Any prime factor q of (p+1) with q ∉ {2,3} satisfies q < p.
+    Key termination argument for well-founded prime classification.
+    Proof: q | (p+1) gives q ≤ p+1. q ≠ p+1 by parity (p odd ⟹ p+1 even ⟹
+    p+1 not an odd prime). q ≠ p since p ∤ (p+1). So q < p. -/
+theorem nonSmooth_factor_lt (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q)
+    (hdvd : q ∣ p + 1) (hq2 : q ≠ 2) (hq3 : q ≠ 3) :
+    q < p := by
+  -- q ≤ p+1 since q divides p+1 > 0
+  have hle : q ≤ p + 1 := Nat.le_of_dvd (by omega) hdvd
+  -- q ≠ p: if q = p then p | (p+1), but (p+1) % p = 1 ≠ 0
+  have hne_p : q ≠ p := by
+    intro heq
+    have h1 : (p + 1) % p = 1 := by
+      calc (p + 1) % p = (1 + p) % p := by rw [Nat.add_comm]
+        _ = 1 % p := Nat.add_mod_right 1 p
+        _ = 1 := Nat.mod_eq_of_lt hp.one_lt
+    have h2 : (p + 1) % p = 0 := Nat.dvd_iff_mod_eq_zero.mp (heq ▸ hdvd)
+    omega
+  -- q ≠ p+1: for p = 2, q = 3 contradicts hq3; for p ≥ 3, p is odd so
+  -- p+1 is even, and the only even prime is 2, giving p = 1, contradiction
+  have hne_succ : q ≠ p + 1 := by
+    intro heq
+    by_cases h2 : p = 2
+    · exact hq3 (by omega)
+    · have hp_odd : Odd p := hp.odd_of_ne_two h2
+      have hp1_even : Even (p + 1) := hp_odd.add_one
+      have h2_dvd : 2 ∣ q := by
+        rw [heq]; obtain ⟨k, hk⟩ := hp1_even; exact ⟨k, by omega⟩
+      rcases hq.eq_one_or_self_of_dvd 2 h2_dvd with h | h
+      · omega
+      · omega
+  omega
+
 /- ## Core Definitions -/
 
-/-- Compute the Erdős–Selfridge class of a prime p.
-    Uses fuel for termination (sufficient for all primes up to ~10^6).
+/-- Well-founded Erdős–Selfridge class using structural recursion on p.
+    Terminates because all nonSmooth prime factors q of (p+1) satisfy q < p
+    (proved in nonSmooth_factor_lt).
     - Class 0: not a prime (sentinel)
     - Class 1: all prime factors of p+1 are in {2, 3} (3-smooth successor)
     - Class r ≥ 2: 1 + max class of non-{2,3} prime factors of p+1 -/
-def primeClassAux : ℕ → ℕ → ℕ
-  | 0, _ => 0
-  | _, 0 => 0
-  | _, 1 => 0
-  | fuel + 1, p =>
+def primeClassWF (p : ℕ) : ℕ :=
     if ¬ Nat.Prime p then 0
     else
       let factors := (p + 1).primeFactorsList.dedup
       let nonSmooth := factors.filter (fun q => q != 2 && q != 3)
       if nonSmooth.isEmpty then 1
-      else 1 + nonSmooth.foldl (fun acc q => max acc (primeClassAux fuel q)) 0
+      else 1 + nonSmooth.foldl (fun acc q =>
+        if _h : q < p then max acc (primeClassWF q) else acc) 0
+termination_by p
 
 /-- The Erdős–Selfridge class of a prime. Returns 0 for non-primes.
-    Fuel of 30 is sufficient for all primes up to 10^15. -/
-def primeClass (p : ℕ) : ℕ := primeClassAux 30 p
+    Uses well-founded recursion for clean structural proofs. -/
+def primeClass (p : ℕ) : ℕ := primeClassWF p
 
 /-- A prime p is in class r if primeClass p = r and p is prime. -/
 def IsInClass (p : ℕ) (r : ℕ) : Prop :=
@@ -103,112 +137,6 @@ theorem least_class_5 : findLeastPrimeInClass 5 1100 = some 1021 := by native_de
 
 /- ## Structural Properties -/
 
-/-- Class 1 primes are exactly those whose successor is 3-smooth. -/
-theorem class_one_iff_smooth (p : ℕ) (hp : Nat.Prime p) :
-    primeClass p = 1 ↔ ∀ q ∈ (p + 1).primeFactorsList, q = 2 ∨ q = 3 := by
-  -- Proved by Aristotle (Harmonic)
-  constructor <;> intros h <;> simp_all +decide [primeClass]
-  · intro q hq hq'
-    contrapose! h
-    have h_non_smooth : q ∈ (p + 1).primeFactorsList.dedup.filter (fun q => q != 2 && q != 3) := by
-      rw [List.mem_filter]; aesop
-    have h_max_class : (List.filter (fun q => q != 2 && q != 3)
-        (p + 1).primeFactorsList.dedup).foldl
-        (fun acc q => max acc (primeClassAux 29 q)) 0 ≥ 1 := by
-      have h_max_class : ∀ {l : List ℕ}, q ∈ l →
-          (List.foldl (fun acc q => max acc (primeClassAux 29 q)) 0 l) ≥ primeClassAux 29 q := by
-        intros l hl; induction' l using List.reverseRecOn with l ih <;> aesop
-      refine le_trans ?_ (h_max_class h_non_smooth)
-      unfold primeClassAux; aesop
-    rw [primeClassAux]; aesop
-    · aesop
-    · aesop
-  · have h_non_smooth_empty : (p + 1).primeFactorsList.dedup.filter
-        (fun q => q != 2 && q != 3) = [] := by
-      exact List.filter_eq_nil_iff.mpr fun q hq => by
-        specialize h q (Nat.prime_of_mem_primeFactorsList (List.mem_dedup.mp hq))
-          (Nat.dvd_of_mem_primeFactorsList (List.mem_dedup.mp hq))
-        aesop
-    rw [primeClassAux]
-    · grind
-    · aesop
-    · aesop
-
-/-- If p is prime, then primeClass p ≥ 1. -/
-theorem primeClass_pos_of_prime (p : ℕ) (hp : Nat.Prime p) :
-    primeClass p ≥ 1 := by
-  -- Proved by Aristotle (Harmonic)
-  unfold primeClass
-  unfold primeClassAux; aesop
-
-/-- Any prime factor q of (p+1) with q ∉ {2,3} satisfies q < p.
-    Key termination argument for well-founded prime classification.
-    Proof: q | (p+1) gives q ≤ p+1. q ≠ p+1 by parity (p odd ⟹ p+1 even ⟹
-    p+1 not an odd prime). q ≠ p since p ∤ (p+1). So q < p. -/
-theorem nonSmooth_factor_lt (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q)
-    (hdvd : q ∣ p + 1) (hq2 : q ≠ 2) (hq3 : q ≠ 3) :
-    q < p := by
-  -- q ≤ p+1 since q divides p+1 > 0
-  have hle : q ≤ p + 1 := Nat.le_of_dvd (by omega) hdvd
-  -- q ≠ p: if q = p then p | (p+1), but (p+1) % p = 1 ≠ 0
-  have hne_p : q ≠ p := by
-    intro heq
-    have h1 : (p + 1) % p = 1 := by
-      calc (p + 1) % p = (1 + p) % p := by rw [Nat.add_comm]
-        _ = 1 % p := Nat.add_mod_right 1 p
-        _ = 1 := Nat.mod_eq_of_lt hp.one_lt
-    have h2 : (p + 1) % p = 0 := Nat.dvd_iff_mod_eq_zero.mp (heq ▸ hdvd)
-    omega
-  -- q ≠ p+1: for p = 2, q = 3 contradicts hq3; for p ≥ 3, p is odd so
-  -- p+1 is even, and the only even prime is 2, giving p = 1, contradiction
-  have hne_succ : q ≠ p + 1 := by
-    intro heq
-    by_cases h2 : p = 2
-    · exact hq3 (by omega)
-    · have hp_odd : Odd p := hp.odd_of_ne_two h2
-      have hp1_even : Even (p + 1) := hp_odd.add_one
-      have h2_dvd : 2 ∣ q := by
-        rw [heq]; obtain ⟨k, hk⟩ := hp1_even; exact ⟨k, by omega⟩
-      rcases hq.eq_one_or_self_of_dvd 2 h2_dvd with h | h
-      · omega
-      · omega
-  omega
-
-/-- Class is monotone along the chain: if q is a prime factor of p+1
-    with q ∉ {2,3}, then primeClass q < primeClass p.
-
-    NOTE: This theorem uses the fuel-based primeClass (= primeClassAux 30).
-    The fuel-based definition prevents a direct proof because we need
-    primeClassAux 29 q = primeClassAux 30 q (fuel convergence), which
-    requires showing fuel 29 is sufficient for all primes q — not provable
-    in general since primes with class ≥ 30 (if they exist) would fail.
-
-    See class_of_factor_lt_wf below for the well-founded version that
-    avoids the fuel convergence issue entirely. -/
-theorem class_of_factor_lt (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q)
-    (hdvd : q ∣ p + 1) (hq2 : q ≠ 2) (hq3 : q ≠ 3) :
-    primeClass q < primeClass p := by
-  sorry
-
-/- ## Well-Founded Prime Classification -/
-
-/-- Well-founded Erdős–Selfridge class using structural recursion on p.
-    Terminates because all nonSmooth prime factors q of (p+1) satisfy q < p
-    (proved in nonSmooth_factor_lt). Uses `if q < p` guard for the termination
-    checker; this branch is always taken for actual nonSmooth factors.
-
-    Equivalent to primeClassAux with sufficient fuel, but avoids the fuel
-    convergence issue entirely. -/
-def primeClassWF (p : ℕ) : ℕ :=
-    if ¬ Nat.Prime p then 0
-    else
-      let factors := (p + 1).primeFactorsList.dedup
-      let nonSmooth := factors.filter (fun q => q != 2 && q != 3)
-      if nonSmooth.isEmpty then 1
-      else 1 + nonSmooth.foldl (fun acc q =>
-        if _h : q < p then max acc (primeClassWF q) else acc) 0
-termination_by p
-
 /-- Foldl with guarded max is monotone in the initial value. -/
 private theorem foldl_guarded_max_mono (l : List ℕ) (f : ℕ → ℕ) (bound : ℕ) (init : ℕ) :
     l.foldl (fun acc q => if q < bound then max acc (f q) else acc) init ≥ init := by
@@ -242,43 +170,90 @@ private theorem mem_nonSmooth_of_dvd (p q : ℕ) (hq : Nat.Prime q)
   rw [List.mem_filter, List.mem_dedup]
   exact ⟨(Nat.mem_primeFactorsList (by omega : p + 1 ≠ 0)).mpr ⟨hq, hdvd⟩, by simp [hq2, hq3]⟩
 
-/-- primeClassWF p ≥ 1 + primeClassWF q when q is a nonSmooth factor of p+1.
+/-- primeClass p ≥ 1 + primeClass q when q is a nonSmooth factor of p+1.
     This is the key lower bound; the proof unfolds the WF definition. -/
-private theorem primeClassWF_ge_succ_factor (p q : ℕ) (hp : Nat.Prime p)
+private theorem primeClass_ge_succ_factor (p q : ℕ) (hp : Nat.Prime p)
     (hq : Nat.Prime q) (hdvd : q ∣ p + 1) (hq2 : q ≠ 2) (hq3 : q ≠ 3) :
-    primeClassWF p ≥ 1 + primeClassWF q := by
+    primeClass p ≥ 1 + primeClass q := by
   have hqlt := nonSmooth_factor_lt p q hp hq hdvd hq2 hq3
   have hq_mem := mem_nonSmooth_of_dvd p q hq hdvd hq2 hq3
-  -- Unfold primeClassWF at p using the auto-generated equation lemma
+  show primeClassWF p ≥ 1 + primeClassWF q
   rw [primeClassWF.eq_1]
-  simp only [hp, not_true_eq_false, ↓reduceIte, not_false_eq_true]
-  -- After unfolding: goal involves isEmpty check and foldl
-  -- Split on isEmpty: either list is empty (contradiction) or has elements
-  -- NOTE: The proof below broke with a Mathlib API change.
-  -- The well-founded unfolding via primeClassWF.eq_1 + simp + split no longer
-  -- produces goals that omega/linarith can close. The key theorem
-  -- class_of_factor_lt_wf (line 267) depends on this, but is itself provable
-  -- if this helper is fixed. Needs investigation of the primeClassWF definition's
-  -- equation lemma after Mathlib update.
-  sorry
+  split
+  · exact absurd hp ‹_›
+  · -- In the else branch, unfold let bindings then split on isEmpty
+    simp only []
+    split
+    · -- isEmpty = true → simp_all converts to "all non-2 prime factors are 3"
+      -- This contradicts hq3 (q ≠ 3) since q is such a factor
+      exfalso
+      simp_all
+      rename_i hall
+      exact hq3 (hall q hq hdvd hq2)
+    · -- Goal: 1 + foldl (dite) ... ≥ 1 + primeClassWF q
+      -- Convert dite to ite (definitionally equal, congr closes it)
+      have hconv : ∀ (l : List ℕ) (init : ℕ),
+          l.foldl (fun acc r => if _ : r < p then max acc (primeClassWF r) else acc) init =
+          l.foldl (fun acc r => if r < p then max acc (primeClassWF r) else acc) init := by
+        intro l init; congr
+      rw [hconv]
+      have := foldl_guarded_max_ge _ primeClassWF p q hq_mem hqlt 0
+      omega
 
-/-- For primeClassWF, nonSmooth prime factors have strictly smaller class.
-    This is the well-founded version of class_of_factor_lt, proved directly
-    from the definition without any fuel convergence assumptions. -/
-theorem class_of_factor_lt_wf (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q)
+/-- For nonSmooth prime factors, class strictly decreases.
+    Proved directly from the well-founded definition without fuel convergence. -/
+theorem class_of_factor_lt (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q)
     (hdvd : q ∣ p + 1) (hq2 : q ≠ 2) (hq3 : q ≠ 3) :
-    primeClassWF q < primeClassWF p := by
-  have h := primeClassWF_ge_succ_factor p q hp hq hdvd hq2 hq3
+    primeClass q < primeClass p := by
+  have h := primeClass_ge_succ_factor p q hp hq hdvd hq2 hq3
   omega
 
-/- ## Verification: primeClassWF computes correct values -/
+/-- Class 1 primes are exactly those whose successor is 3-smooth. -/
+theorem class_one_iff_smooth (p : ℕ) (hp : Nat.Prime p) :
+    primeClass p = 1 ↔ ∀ q ∈ (p + 1).primeFactorsList, q = 2 ∨ q = 3 := by
+  constructor
+  · -- Forward: class = 1 → all factors smooth
+    intro h
+    -- If any nonSmooth factor q exists, class ≥ 2 by class_of_factor_lt + pos
+    by_contra hc
+    push_neg at hc
+    obtain ⟨q, hq_mem, hq2, hq3⟩ := hc
+    have hq_prime := Nat.prime_of_mem_primeFactorsList hq_mem
+    have hq_dvd := Nat.dvd_of_mem_primeFactorsList hq_mem
+    have hlt := class_of_factor_lt p q hp hq_prime hq_dvd hq2 hq3
+    -- primeClass q ≥ 1 since q is prime
+    have hpos : primeClass q ≥ 1 := by
+      show primeClassWF q ≥ 1
+      rw [primeClassWF.eq_1]
+      split
+      · exact absurd hq_prime ‹_›
+      · simp only []; split <;> omega
+    -- So primeClass p ≥ 2, contradicting h
+    omega
+  · -- Backward: all factors smooth → class = 1
+    intro h
+    -- The nonSmooth filter is empty, so primeClassWF returns 1
+    show primeClassWF p = 1
+    rw [primeClassWF.eq_1]
+    split
+    · exact absurd hp ‹_›
+    · simp only []
+      -- The filter of non-{2,3} factors is empty
+      have hnil : ((p + 1).primeFactorsList.dedup.filter (fun q => q != 2 && q != 3)) = [] := by
+        apply List.filter_eq_nil_iff.mpr
+        intro q hq
+        have hq_mem := List.mem_dedup.mp hq
+        rcases h q hq_mem with rfl | rfl <;> simp
+      simp [hnil]
 
--- primeClassWF agrees with primeClass on all tested primes
-theorem primeClassWF_eq_2 : primeClassWF 2 = 1 := by native_decide
-theorem primeClassWF_eq_13 : primeClassWF 13 = 2 := by native_decide
-theorem primeClassWF_eq_37 : primeClassWF 37 = 3 := by native_decide
-theorem primeClassWF_eq_73 : primeClassWF 73 = 4 := by native_decide
-theorem primeClassWF_eq_1021 : primeClassWF 1021 = 5 := by native_decide
+/-- If p is prime, then primeClass p ≥ 1. -/
+theorem primeClass_pos_of_prime (p : ℕ) (hp : Nat.Prime p) :
+    primeClass p ≥ 1 := by
+  show primeClassWF p ≥ 1
+  rw [primeClassWF.eq_1]
+  split
+  · exact absurd hp ‹_›
+  · simp only []; split <;> omega
 
 /- ## Concrete Evidence for Infinitude -/
 

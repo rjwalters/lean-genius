@@ -67,7 +67,33 @@ Back to the problem
 
 ## Sessions
 
-(No research sessions yet)
+### Session 2026-03-23 (Session 1) - WF Migration: 0 Sorries
+
+**Mode**: FRESH (revisit of existing formalization)
+**Outcome**: completed
+
+#### What I Did
+- Fixed the sorry in `primeClassWF_ge_succ_factor` (key lower bound theorem)
+  - Root cause: dite/ite mismatch between WF definition and helper theorems
+  - Solution: `congr` tactic bridges definitional equality; `simp only []` unfolds lets without normalizing filter predicates; `simp_all` + `rename_i` closes isEmpty contradictions
+- Migrated `primeClass` from fuel-based `primeClassAux 30` to well-founded `primeClassWF`
+- Proved `class_of_factor_lt` (was sorry due to fuel convergence)
+- Rewrote `class_one_iff_smooth` and `primeClass_pos_of_prime` for WF definition
+- Removed dependency on `primeClassAux` (kept definition but unused)
+
+#### Key Findings
+- The dite/ite gap (WF needs `dite` for termination proof, helpers use `ite`) is bridged by `congr` which treats them as definitionally equal
+- `simp only []` (empty simp set) effectively unfolds `let` bindings without normalizing `!=` to `decide (¬·)`, preserving filter predicate matching
+- Fuel-based definitions fundamentally cannot prove convergence in general
+
+#### Files Modified
+- `proofs/Proofs/Erdos1055Problem.lean` — 0 sorries, 4 axioms, 36 theorems, 305 lines
+- `src/data/proofs/erdos-1055/meta.json` — Updated line count, theorem count, sections
+- `src/data/research/problems/erdos-1055.json` — Updated knowledge, phase
+
+#### Next Steps
+- Consider proving `class_density_subpolynomial` (Erdős stated it as "easy to prove")
+- Remove `primeClassAux` entirely (now unused after migration)
 
 ---
 
