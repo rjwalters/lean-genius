@@ -165,6 +165,16 @@
       "targetId": "infinitude-primes",
       "relationship": "thematic",
       "description": "Both are existence proofs via contradiction: Euclid shows no finite list contains all primes (construct p₁···pₙ + 1), Cantor shows no countable list contains all reals (construct the diagonal). The diagonal argument is the cardinality-theoretic analogue of Euclid's prime construction."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-01",
+      "relationship": "extended-by",
+      "description": "Explores the Continuum Hypothesis — whether there exists a cardinality strictly between $|\\mathbb{N}|$ and $|\\mathbb{R}|$. Cantor's diagonalization proves $|\\mathbb{N}| < |\\mathbb{R}|$ but leaves the gap open; CH's independence from ZFC (Gödel 1938, Cohen 1963) shows this question cannot be settled by the standard axioms"
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-02",
+      "relationship": "extended-by",
+      "description": "Establishes the cardinality of the set of countable ordinals $\\omega_1$, extending the diagonal argument's study of cardinality beyond the natural numbers and reals to transfinite ordinals"
     }
   ],
   "relatedProofs": [
@@ -173,7 +183,9 @@
     "halting-problem",
     "godel-incompleteness",
     "schroeder-bernstein",
-    "infinitude-primes"
+    "infinitude-primes",
+    "cantor-diagonalization-oq-01",
+    "cantor-diagonalization-oq-02"
   ],
   "alternativeInterpretation": {
     "title": "The Constructivist View: Why the Reals Don't Exist",
