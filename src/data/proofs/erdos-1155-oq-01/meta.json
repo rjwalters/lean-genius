@@ -326,6 +326,64 @@
       "note": "Foundation of extremal graph theory; Mantel's 1907 result is the r=2 case. The terminal triangle-free graph connects to the Turán bound"
     }
   ],
+  "references": [
+    {
+      "authors": "Bohman, Tom; Frieze, Alan; Lubetzky, Eyal",
+      "title": "Random triangle removal",
+      "year": "2015",
+      "venue": "Advances in Mathematics, vol. 280, pp. 379–438",
+      "note": "Proved f(n) = n^{3/2+o(1)} almost surely, confirming the exponent 3/2 conjectured by Erdős but with sub-polynomial rather than constant multiplicative bounds"
+    },
+    {
+      "authors": "Grable, Daniel",
+      "title": "On random greedy triangle packing",
+      "year": "1997",
+      "venue": "Electronic Journal of Combinatorics, vol. 4, R11",
+      "note": "Earlier upper bound of n^{7/4+ε} for the triangle removal process, superseded by the BFL result"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Problems and results in combinatorial analysis and graph theory",
+      "year": "1981",
+      "venue": "Discrete Mathematics, vol. 36, pp. 69–73",
+      "note": "Original conjecture that f(n) = Θ(n^{3/2}) for the triangle removal process"
+    },
+    {
+      "authors": "Mantel, Willem",
+      "title": "Problem 28",
+      "year": "1907",
+      "venue": "Wiskundige Opgaven, vol. 10, pp. 60–61",
+      "note": "Triangle-free graphs on n vertices have at most ⌊n²/4⌋ edges; provides the naive upper bound on f(n)"
+    },
+    {
+      "authors": "Wormald, Nicholas",
+      "title": "Differential equations for random processes and random graphs",
+      "year": "1995",
+      "venue": "Annals of Applied Probability, vol. 5, pp. 1217–1235",
+      "note": "Foundational method for analyzing random graph processes via ODEs; the technique underlying BFL's proof"
+    },
+    {
+      "authors": "Alon, Noga; Spencer, Joel H.",
+      "title": "The Probabilistic Method",
+      "year": "2016",
+      "venue": "Wiley, 4th edition",
+      "note": "Standard reference for probabilistic combinatorics; Chapter 14 covers random graph processes"
+    },
+    {
+      "authors": "Razborov, Alexander",
+      "title": "On the minimal density of triangles in graphs",
+      "year": "2010",
+      "venue": "Combinatorics, Probability and Computing, vol. 19, pp. 201–214",
+      "note": "Flag algebra proof of the exact triangle density threshold in dense graphs; the supersaturation phenomenon governs the early stages of the triangle removal process"
+    },
+    {
+      "authors": "Turán, Pál",
+      "title": "Eine Extremalaufgabe aus der Graphentheorie",
+      "year": "1941",
+      "venue": "Matematikai és Fizikai Lapok, vol. 48, pp. 436–452",
+      "note": "Foundation of extremal graph theory; Mantel's 1907 result is the r=2 case. The terminal triangle-free graph connects to the Turán bound"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
