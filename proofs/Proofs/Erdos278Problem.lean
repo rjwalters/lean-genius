@@ -141,12 +141,16 @@ theorem density_bounds (sys : CongruenceSystem) :
     0 ≤ coverageDensity sys ∧ coverageDensity sys ≤ 1 :=
   ⟨density_nonneg sys, density_le_one sys⟩
 
--- ## Inclusion-Exclusion Formula
+-- ## Density Formulas
 
-/-- The inclusion-exclusion density when all residues are equal:
-    Σ 1/nᵢ - Σ 1/lcm(nᵢ,nⱼ) + ⋯
-    (Simplified: only the first-order term for now.) -/
-noncomputable def inclusionExclusionDensity (moduli : Finset ℕ) : ℝ :=
+/-- The inclusion-exclusion density for pairwise coprime moduli:
+    1 - ∏ᵢ(1 - 1/nᵢ) = Σ 1/nᵢ - Σ 1/(nᵢnⱼ) + ⋯
+    For coprime moduli, this is the exact density for ALL residue choices (by CRT). -/
+noncomputable def coprimeDensity (moduli : Finset ℕ) : ℝ :=
+  1 - moduli.prod (fun n => 1 - 1 / (n : ℝ))
+
+/-- The first-order approximation Σ 1/nᵢ (upper bound on density for coprime moduli). -/
+noncomputable def sumReciprocalDensity (moduli : Finset ℕ) : ℝ :=
   moduli.sum (fun n => (1 : ℝ) / n)
 
 -- ## Simpson's Theorem (1986)
@@ -157,81 +161,88 @@ axiom simpson_theorem (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n) :
     ∀ r : ℕ → ℕ,
       coverageDensity ⟨moduli, (fun _ => 0), hpos⟩ ≤ coverageDensity ⟨moduli, r, hpos⟩
 
-/-- (x % L + y) % L = (x + y) % L — factoring out a mod from an addend. -/
-private lemma mod_add_mod (x y L : ℕ) (hL : 0 < L) : (x % L + y) % L = (x + y) % L := by
-  rw [Nat.add_mod (x % L) y L, Nat.mod_eq_of_lt (Nat.mod_lt x hL), ← Nat.add_mod x y L]
+/-- Helper: (x % n + y) % n = (x + y) % n -/
+private lemma mod_add_right (x y n : ℕ) : (x % n + y) % n = (x + y) % n := by
+  conv_lhs => rw [Nat.add_mod, Nat.mod_mod_of_dvd _ (dvd_refl n), ← Nat.add_mod]
 
-/-- If L ∣ c and m < L, then (m + c) % L = m. -/
-private lemma add_dvd_mod (m c L : ℕ) (hm : m < L) (hL : 0 < L) (hc : L ∣ c) :
-    (m + c) % L = m := by
-  obtain ⟨k, rfl⟩ := hc
-  rw [Nat.add_mod, show L * k % L = 0 from Nat.mul_mod_right L k,
-      Nat.add_zero, Nat.mod_eq_of_lt (Nat.mod_lt m hL), Nat.mod_eq_of_lt hm]
+/-- If a ≡ b (mod k) and b ≤ a, then k | (a - b). -/
+private lemma dvd_sub_of_mod_eq {a b k : ℕ} (h : a % k = b % k) (hab : b ≤ a) :
+    k ∣ (a - b) := by
+  by_cases hk : k = 0
+  · subst hk; simp
+  · have hk_pos : 0 < k := Nat.pos_of_ne_zero hk
+    -- a = b + (a-b), so a%k = (b%k + (a-b)%k) % k = b%k, hence (a-b)%k = 0
+    have hab2 : a = b + (a - b) := by omega
+    have hmodeq : b % k = (b % k + (a - b) % k) % k := by
+      conv_lhs => rw [← h, hab2, Nat.add_mod]
+    have hbk := Nat.mod_lt b hk_pos
+    have habk := Nat.mod_lt (a - b) hk_pos
+    have hzero : (a - b) % k = 0 := by omega
+    rwa [Nat.dvd_iff_mod_eq_zero]
 
 /-- The coverage filter for constant residue a has the same cardinality as for
-    constant residue 0, via cyclic shift bijection on {0,...,L-1}.
-    Forward: m ↦ (m + (L - a%L)) % L maps "≡a" to "divisible" (shifts a↦0).
-    Backward: m ↦ (m + a) % L maps "divisible" to "≡a" (shifts 0↦a). -/
+    constant residue 0, via the cyclic shift bijection on {0,...,L-1}.
+    Since n∣L for each modulus n, the shift preserves residue classes. -/
 private lemma coverage_card_shift (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n) (a : ℕ) :
     let L := systemLCM ⟨moduli, fun _ => a, hpos⟩
     ((Finset.range L).filter (fun m => ∃ n ∈ moduli, m % n = a % n)).card =
     ((Finset.range L).filter (fun m => ∃ n ∈ moduli, m % n = 0)).card := by
   intro L
   have hLpos : 0 < L := systemLCM_pos ⟨moduli, fun _ => a, hpos⟩
+  have hb : a % L < L := Nat.mod_lt a hLpos
   have hdvd : ∀ n ∈ moduli, n ∣ L := fun n hn =>
     dvd_systemLCM ⟨moduli, fun _ => a, hpos⟩ n hn
-  set b := L - a % L with hb_def
-  have haL : a % L < L := Nat.mod_lt a hLpos
-  -- a + b and b + a are multiples of L (key for round-trips)
-  have hab_dvd : L ∣ (a + b) := by
-    refine ⟨a / L + 1, ?_⟩
-    rw [mul_add, mul_one]  -- L*(a/L+1) → L*(a/L) + L
-    have := Nat.div_add_mod a L; omega
-  have hba_dvd : L ∣ (b + a) := by rwa [Nat.add_comm]
-  -- Forward: (· + b) maps F_a → F_0; Backward: (· + a) maps F_0 → F_a
-  apply Finset.card_bij' (fun m _ => (m + b) % L) (fun m _ => (m + a) % L)
-  -- Forward: maps "≡a" filter into "divisible" filter
+  -- Bijection: "≡a" → "divisible" via m ↦ (m+L-a%L)%L, inverse: m ↦ (m+a)%L
+  apply Finset.card_bij' (fun m _ => (m + L - a % L) % L) (fun m _ => (m + a) % L)
+  -- Forward (hi): maps "≡a" filter → "divisible" filter
   · intro m hm
     simp only [Finset.mem_filter, Finset.mem_range] at hm ⊢
     refine ⟨Nat.mod_lt _ hLpos, ?_⟩
     obtain ⟨_, k, hk, hmod⟩ := hm
     have hkL := hdvd k hk
-    exact ⟨k, hk, by
-      -- Goal: ((m + b) % L) % k = 0
-      -- Key: (a%k + (L-a%L)%k) % k = 0 because a%L + (L-a%L) = L and k∣L
-      rw [Nat.mod_mod_of_dvd _ hkL, Nat.add_mod, hmod,
-          ← Nat.mod_mod_of_dvd a hkL, ← Nat.add_mod]
-      -- Goal: (a % L + b) % k = 0
-      show (a % L + b) % k = 0
-      have : a % L + b = L := by omega
-      rw [this]
-      obtain ⟨q, hq⟩ := hkL; rw [hq]; exact Nat.mul_mod_right k q⟩
-  -- Backward: maps "divisible" filter into "≡a" filter
+    refine ⟨k, hk, ?_⟩
+    -- Show: ((m+L-a%L)%L) % k = 0
+    rw [Nat.mod_mod_of_dvd _ hkL]
+    -- Goal: (m + L - a%L) % k = 0
+    have hLk : L % k = 0 := by obtain ⟨q, hq⟩ := hkL; rw [hq]; exact Nat.mul_mod_right k q
+    have haLk : (a % L) % k = a % k := Nat.mod_mod_of_dvd a hkL
+    have hk_pos := hpos k hk
+    have hmL_mod : (m + L) % k = (a % L) % k := by
+      rw [Nat.add_mod, hLk, Nat.add_zero, hmod, haLk,
+          Nat.mod_eq_of_lt (Nat.mod_lt a hk_pos)]
+    have hdvd_sub := dvd_sub_of_mod_eq hmL_mod (by omega : a % L ≤ m + L)
+    rwa [Nat.dvd_iff_mod_eq_zero] at hdvd_sub
+  -- Backward (hj): maps "divisible" filter → "≡a" filter
   · intro m hm
     simp only [Finset.mem_filter, Finset.mem_range] at hm ⊢
     refine ⟨Nat.mod_lt _ hLpos, ?_⟩
     obtain ⟨_, k, hk, hmod⟩ := hm
     exact ⟨k, hk, by
-      -- Goal: ((m + a) % L) % k = a % k
-      -- Key: m%k = 0, so (m+a)%k = a%k
       rw [Nat.mod_mod_of_dvd _ (hdvd k hk), Nat.add_mod, hmod, Nat.zero_add,
-          Nat.mod_eq_of_lt (Nat.mod_lt a (hpos k hk))]⟩
-  -- Round-trip: g ∘ f = id on F_a (left_inv)
+          Nat.mod_mod_of_dvd _ (dvd_refl k)]⟩
+  -- Round-trip: backward ∘ forward = id (left_inv)
   · intro m hm
     simp only [Finset.mem_filter, Finset.mem_range] at hm
-    -- g(f(m)) = ((m + b) % L + a) % L = m
-    calc ((m + b) % L + a) % L
-        = (m + b + a) % L := mod_add_mod (m + b) a L hLpos
-      _ = (m + (b + a)) % L := by ring_nf
-      _ = m := add_dvd_mod m (b + a) L hm.1 hLpos hba_dvd
-  -- Round-trip: f ∘ g = id on F_0 (right_inv)
+    -- ((m + L - a%L) % L + a) % L = m
+    rw [mod_add_right]
+    -- (m + L - a%L + a) % L = m
+    have hstep : m + L - a % L + a = m + (L + L * (a / L)) := by
+      have := Nat.div_add_mod a L; omega
+    have hfactor : L + L * (a / L) = L * (a / L + 1) := by ring
+    rw [hstep, hfactor, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt hm.1]
+  -- Round-trip: forward ∘ backward = id (right_inv)
   · intro m hm
     simp only [Finset.mem_filter, Finset.mem_range] at hm
-    -- f(g(m)) = ((m + a) % L + b) % L = m
-    calc ((m + a) % L + b) % L
-        = (m + a + b) % L := mod_add_mod (m + a) b L hLpos
-      _ = (m + (a + b)) % L := by ring_nf
-      _ = m := add_dvd_mod m (a + b) L hm.1 hLpos hab_dvd
+    -- ((m + a) % L + L - a%L) % L = m
+    have hassoc : (m + a) % L + L - a % L = (m + a) % L + (L - a % L) := by
+      have : a % L ≤ (m + a) % L + L := by omega
+      omega
+    rw [hassoc, mod_add_right]
+    -- (m + a + (L - a%L)) % L = m
+    have hstep : m + a + (L - a % L) = m + (L + L * (a / L)) := by
+      have := Nat.div_add_mod a L; omega
+    have hfactor : L + L * (a / L) = L * (a / L + 1) := by ring
+    rw [hstep, hfactor, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt hm.1]
 
 /-- The all-equal-residue system achieves minimum density: the coverage density
     with constant residue a equals that with constant residue 0.
@@ -250,16 +261,40 @@ theorem equal_residues_minimize (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 
 
 -- ## Question 1: Maximum Density (OPEN)
 
-/-- For pairwise coprime moduli, the density is the SAME for all residue choices
-    (by CRT, the residue classes are independent). The common value is
-    1 - ∏ (1 - 1/nᵢ) = 1 - ∏(nᵢ - 1)/∏nᵢ.
-    NOTE: A previous version incorrectly stated Σ 1/nᵢ; the correct formula
-    accounts for overlaps via inclusion-exclusion on independent events.
-    Example: {2,3} gives density 1-(1-1/2)(1-1/3) = 2/3, not 1/2+1/3 = 5/6. -/
-axiom max_density_coprime_case (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n)
+/-- For pairwise coprime moduli, all residue choices give the same density:
+    the density equals 1 - ∏ᵢ(1 - 1/nᵢ) regardless of residue selection.
+    This follows from the Chinese Remainder Theorem: since the moduli are coprime,
+    the residue classes partition Z/LZ uniformly.
+    NOTE: Previously stated as "= Σ 1/nᵢ" which is incorrect for |moduli| ≥ 2
+    (e.g., for {2,3}: actual density = 2/3, not 5/6). -/
+axiom coprime_density_formula (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n)
+    (hcop : ∀ m ∈ moduli, ∀ n ∈ moduli, m ≠ n → Nat.Coprime m n)
+    (r : ℕ → ℕ) :
+    coverageDensity ⟨moduli, r, hpos⟩ = coprimeDensity moduli
+
+/-- coprimeDensity for a singleton is 1/n. -/
+theorem coprimeDensity_singleton (n : ℕ) (hn : 0 < n) :
+    coprimeDensity {n} = 1 / (n : ℝ) := by
+  unfold coprimeDensity
+  rw [Finset.prod_singleton]
+  ring
+
+/-- For coprime moduli, max = min = coprimeDensity. -/
+theorem coprime_max_eq_min (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n)
     (hcop : ∀ m ∈ moduli, ∀ n ∈ moduli, m ≠ n → Nat.Coprime m n) :
-    maxCoverageDensity moduli hpos =
-    1 - moduli.prod (fun n => (1 : ℝ) - 1 / n)
+    maxCoverageDensity moduli hpos = minCoverageDensity moduli hpos := by
+  unfold maxCoverageDensity minCoverageDensity
+  -- Both sets equal {coprimeDensity moduli} since every residue choice gives the same density
+  have hall : ∀ r : ℕ → ℕ,
+      coverageDensity ⟨moduli, r, hpos⟩ = coprimeDensity moduli :=
+    fun r => coprime_density_formula moduli hpos hcop r
+  have hset : { d : ℝ | ∃ r, d = coverageDensity ⟨moduli, r, hpos⟩ } =
+      {coprimeDensity moduli} := by
+    ext d; simp only [Set.mem_setOf_eq, Set.mem_singleton_iff]
+    constructor
+    · rintro ⟨r, rfl⟩; exact hall r
+    · intro h; exact ⟨fun _ => 0, by rw [hall, h]⟩
+  rw [hset]; simp [csSup_singleton, csInf_singleton]
 
 /-- The maximum coverage density is at most 1 (follows from density_le_one). -/
 theorem erdos_278_density_le_one (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n) :
