@@ -242,6 +242,56 @@
       "targetId": "bezout-identity-oq-04",
       "relationship": "extended-by",
       "description": "Characterizes the complete solution set of linear Diophantine equations $ax + by = c$: a particular solution (from Bézout) plus the homogeneous solutions $(b/g)t, -(a/g)t$ where $g = \\gcd(a,b)$"
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "related",
+      "description": "Formalizes the Euclidean algorithm that computes $\\gcd(a,b)$ — the same algorithm that, when run 'in reverse' (the extended Euclidean algorithm), produces the Bézout coefficients $x, y$ with $\\gcd(a,b) = ax + by$"
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "extended-by",
+      "description": "Extends the CRT to non-coprime moduli: the system $x \\equiv a_1 \\pmod{m_1}$, $x \\equiv a_2 \\pmod{m_2}$ is solvable iff $\\gcd(m_1, m_2) \\mid (a_1 - a_2)$. The sufficiency proof uses Bézout coefficients to construct the explicit solution"
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ relies on the existence of modular inverses for each $1 \\leq a \\leq p-1$, which Bézout's identity guarantees since $\\gcd(a, p) = 1$ for primes $p$"
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "The Gaussian integer proof of Fermat's two-squares theorem uses Bézout's identity in $\\mathbb{Z}[i]$: the GCD structure of Gaussian integers inherits from the Euclidean algorithm, enabling the factorization $p = (a+bi)(a-bi)$ when $p \\equiv 1 \\pmod{4}$"
+    },
+    {
+      "targetId": "factor-remainder-theorem",
+      "relationship": "related",
+      "description": "The factor theorem extends Bézout-style GCD reasoning to polynomial rings: $\\gcd(p,q) = ap + bq$ in $F[x]$ uses the polynomial Euclidean algorithm, generalizing the integer Bézout identity to the polynomial setting"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Bézout's identity is the algebraic backbone of the Galois bridge: the equivalence of irreducibility and the prime property in $F[x]$ (a PID) rests on Bézout's identity for polynomials, which underpins the entire Galois theory apparatus used in Abel-Ruffini"
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-01",
+      "relationship": "extended-by",
+      "description": "Proves the Fundamental Theorem of Arithmetic from Euclid's lemma, completing the chain Bézout → Euclid's lemma → unique prime factorization"
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-02",
+      "relationship": "extended-by",
+      "description": "Generalizes Euclid's lemma from $\\mathbb{Z}$ to Bézout domains and PIDs: shows that `IsCoprime` (the existence of $u, v$ with $ua + vb = 1$) suffices for the lemma in any commutative ring"
+    },
+    {
+      "targetId": "bezout-identity-oq-03-oq-01",
+      "relationship": "extended-by",
+      "description": "Proves the CRT ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ for coprime $m, n$. The idempotents $e_1 = nv$, $e_2 = mu$ from Bézout's identity $mu + nv = 1$ decompose the ring"
+    },
+    {
+      "targetId": "sqrt2-from-axioms-oq-01",
+      "relationship": "related",
+      "description": "The irrationality of $\\sqrt{p}$ for prime $p$ uses Euclid's criterion ($p \\mid ab \\Rightarrow p \\mid a$ or $p \\mid b$), which is proved from Bézout's identity via the coprimality characterization"
     }
   ],
   "relatedProofs": [
@@ -251,7 +301,17 @@
     "lagrange-theorem",
     "bezout-identity-oq-02",
     "bezout-identity-oq-03",
-    "bezout-identity-oq-04"
+    "bezout-identity-oq-04",
+    "gcd-algorithm",
+    "chinese-remainder-non-coprime",
+    "wilsons-theorem",
+    "fermat-two-squares",
+    "factor-remainder-theorem",
+    "abel-ruffini",
+    "bezout-identity-oq-02-oq-01",
+    "bezout-identity-oq-02-oq-02",
+    "bezout-identity-oq-03-oq-01",
+    "sqrt2-from-axioms-oq-01"
   ],
   "references": [
     {
@@ -267,6 +327,20 @@
       "year": "2008",
       "venue": "Oxford University Press, 6th edition",
       "note": "Standard reference with multiple proofs of Bézout's identity via the Euclidean algorithm"
+    },
+    {
+      "authors": "Bachet de Méziriac, Claude Gaspard",
+      "title": "Problèmes plaisants et délectables qui se font par les nombres (commentary on Diophantus)",
+      "year": "1624",
+      "venue": "Lyon",
+      "note": "First published proof of Bézout's identity, predating Bézout by 150 years — showed how to express gcd(a,b) as a linear combination using the Euclidean algorithm run in reverse"
+    },
+    {
+      "authors": "Knuth, Donald E.",
+      "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
+      "year": "1997",
+      "venue": "Addison-Wesley, 3rd edition",
+      "note": "Section 4.5.2: comprehensive analysis of the extended Euclidean algorithm including worst-case behavior (Fibonacci inputs), average number of steps, and connection to continued fractions"
     }
   ]
 }
