@@ -23,7 +23,7 @@ where e(A,B) = C(dx + dy, dx) is the number of lattice paths from A to B.
 The identity permutation contributes ∏ e(Aᵢ,Bᵢ). Non-identity permutations
 cancel via a sign-reversing involution (Gessel-Viennot involution).
 
-## Status (0 axioms, 1 sorry — GV involution self-inverse needs tail-swap redesign)
+## Status (0 axioms, 2 sorries — GV involution membership + self-inverse)
 - [x] Path tuple and non-intersecting definitions (closed-interval formulation)
 - [x] Path weight matrix using Matrix.det
 - [x] Permutation path tuples and signed counts
@@ -53,8 +53,14 @@ cancel via a sign-reversing involution (Gessel-Viennot involution).
 - [x] northThenEast_not_NI: these paths cross at column 0 under wellFormed (PROVED)
 - [x] gvInvolutionFn: uses northThenEast paths (well-typed, compiles)
 - [x] gvInvolution_sign_reversal + no_fixed: proved for northThenEast variant
-- [x] Membership: image cancellable (PROVED via pathMN_cast_val + northThenEast_not_NI_general)
-- [ ] Self-inverse: g(g(a)) = a (sorry — needs tail-swap involution redesign)
+- [x] Canonical crossing selection (Nat.find + lex encoding) (PROVED)
+- [x] Tail-swap PathMN construction (take+drop with length/East proofs) (PROVED)
+- [x] Canonical GV involution (gvCanonInv) with actual tail-swap paths (DEFINED)
+- [x] gvCanon_sign_reversal (PROVED — same as before, only depends on perm)
+- [x] gvCanon_no_fixed (PROVED — same as before, only depends on perm)
+- [x] cancellable_sum_eq_zero wired to Finset.sum_involution (PROVED modulo sorries below)
+- [ ] gvCanon_membership (sorry — tail-swapped paths share (c, y) → ¬NI)
+- [ ] gvCanon_self_inverse (sorry — canonical crossing preserved + double swap = id)
 
 ## References
 - Lindström (1973): "On the Vector Representations of Induced Matroids"
@@ -1088,6 +1094,12 @@ private lemma northThenEastList_east (m n : ℕ) :
 private def northThenEastPath (m n : ℕ) : PathMN m n :=
   ⟨northThenEastList m n, northThenEastList_length m n, northThenEastList_east m n⟩
 
+/-- Cast between PathMN types with equal n preserves the underlying list. -/
+private lemma cast_pathMN_val {m n₁ n₂ : ℕ} (hn : n₁ = n₂)
+    (p : PathMN m n₁) {heq : PathMN m n₁ = PathMN m n₂} :
+    (cast heq p).val = p.val := by
+  subst hn; rfl
+
 /-- colEntry of northThenEastList at column 0: the path has n North steps before any East step. -/
 private lemma northThenEast_colEntry_one (m n : ℕ) (hm : 0 < m) :
     colEntry (northThenEastList m n) 1 = n := by
@@ -1125,21 +1137,6 @@ private lemma northThenEast_not_NI {m n₁ n₂ y₁ y₂ : ℕ}
     exact northThenEast_colEntry_one m n₂ hm
   rw [hce1_1, hce2_1, hce1_0, hce2_0] at h0
   omega
-
-/-- Generalized: northThenEast paths are never NI under wellFormed bounds,
-    including the degenerate m = 0 case (final-column condition fails). -/
-private lemma northThenEast_not_NI_general {m n₁ n₂ y₁ y₂ : ℕ}
-    (hy₁n₂ : y₁ ≤ y₂ + n₂) (hy₂n₁ : y₂ ≤ y₁ + n₁) :
-    ¬NonIntersecting (northThenEastList m n₁) (northThenEastList m n₂)
-      m y₁ y₂ n₁ n₂ := by
-  rcases Nat.eq_zero_or_pos m with rfl | hm
-  · intro ⟨_, hfinal⟩; simp [colEntry] at hfinal; omega
-  · exact northThenEast_not_NI hm hy₁n₂ hy₂n₁
-
-/-- Cast between PathMN with provably equal North step counts preserves .val. -/
-private lemma pathMN_cast_val {m : ℕ} {n₁ n₂ : ℕ} (hn : n₁ = n₂) (P : PathMN m n₁) :
-    ∀ (h : PathMN m n₁ = PathMN m n₂), (cast h P).val = P.val := by
-  subst hn; intro _; rfl
 
 -- ============================================================
 -- PART 7h: GV Involution (using northThenEast for membership)
@@ -1210,52 +1207,593 @@ private theorem gvInvolution_no_fixed {r : ℕ} (cfg : LGVConfig r)
 
 /-- The GV involution image is cancellable: ¬isNonCancellable(g(t)).
     If σ' = σ * swap(i,j) ≠ 1, the image is trivially cancellable.
-    If σ' = 1, the northThenEast paths cross under wellFormed. -/
+    If σ' = 1, the northThenEast paths cross at column 0 (by wellFormed). -/
 private theorem gvInvolution_membership {r : ℕ} (cfg : LGVConfig r)
     (hwf : cfg.wellFormed) (t : TaggedPathTuple cfg)
     (ht : ¬isNonCancellable t) :
     ¬isNonCancellable (gvInvolutionFn cfg hwf t ht) := by
-  simp only [isNonCancellable, IsGVFixedPoint]
-  intro ⟨hσ, hni⟩
+  simp only [isNonCancellable, IsGVFixedPoint, not_exists]
+  intro hσ hni
+  simp only [IsNonIntersecting] at hni
   have hij := crossingI_lt_J cfg hwf t ht
-  have hpair := hni (crossingI cfg hwf t ht) (crossingJ cfg hwf t ht) hij
-  -- σ' acts as identity
-  have hσ_id : ∀ k : Fin r, (gvInvolutionFn cfg hwf t ht).1 k = k := fun k => by rw [hσ]; rfl
-  -- Underlying .val of each path is northThenEastList (cast preserves .val)
+  set ci := crossingI cfg hwf t ht
+  set cj := crossingJ cfg hwf t ht
+  have hpair := hni ci cj hij
+  -- gvNewPerm = 1 from hσ
+  have hperm_eq : gvNewPerm cfg hwf t ht = 1 := hσ
+  -- The n parameters of the paths match after substitution
+  have hn_eq : ∀ k : Fin r, cfg.targets ((gvNewPerm cfg hwf t ht) k) - cfg.sources k =
+      cfg.targets k - cfg.sources k := by
+    intro k; congr 1; simp [hperm_eq]
+  -- Show that the underlying lists in the toPathTuple are northThenEastList
+  -- toPathTuple applies cast, gvInvolutionFn gives northThenEastPath
   have hval : ∀ k : Fin r,
-      ((gvInvolutionFn cfg hwf t ht).2.toPathTuple hσ k).val =
+      ((gvInvolutionFn cfg hwf t ht).snd.toPathTuple hσ k).val =
       northThenEastList cfg.m (cfg.targets k - cfg.sources k) := by
     intro k
-    simp only [PermPathTuple.toPathTuple]
-    rw [pathMN_cast_val (by rw [hσ_id] :
-      cfg.targets ((gvInvolutionFn cfg hwf t ht).1 k) - cfg.sources k =
-      cfg.targets k - cfg.sources k)]
-    show northThenEastList cfg.m
-      (cfg.targets (gvNewPerm cfg hwf t ht k) - cfg.sources k) =
-      northThenEastList cfg.m (cfg.targets k - cfg.sources k)
-    rw [show gvNewPerm cfg hwf t ht k = k from hσ_id k]
-  rw [hval (crossingI cfg hwf t ht), hval (crossingJ cfg hwf t ht)] at hpair
-  exact absurd hpair (northThenEast_not_NI_general
-    (by have := hwf (crossingI cfg hwf t ht) (crossingJ cfg hwf t ht)
-        have := cfg.source_le_target (crossingJ cfg hwf t ht); omega)
-    (by have := hwf (crossingJ cfg hwf t ht) (crossingI cfg hwf t ht)
-        have := cfg.source_le_target (crossingI cfg hwf t ht); omega))
+    unfold PermPathTuple.toPathTuple
+    simp only [gvInvolutionFn]
+    rw [cast_pathMN_val (hn_eq k)]
+    simp only [northThenEastPath]
+    congr 1; exact hn_eq k
+  -- Rewrite hpair using hval
+  rw [hval ci, hval cj] at hpair
+  -- wellFormed gives overlap conditions
+  have hwf_ij : cfg.sources ci ≤ cfg.targets cj := hwf ci cj
+  have hwf_ji : cfg.sources cj ≤ cfg.targets ci := hwf cj ci
+  -- Case split on m > 0
+  have h_ci := cfg.source_le_target ci
+  have h_cj := cfg.source_le_target cj
+  by_cases hm : 0 < cfg.m
+  · -- northThenEast_not_NI needs: y₁ ≤ y₂ + n₂ and y₂ ≤ y₁ + n₁
+    -- where y₁ = sources ci, n₁ = targets ci - sources ci, etc.
+    -- sources(ci) + (targets(ci) - sources(ci)) = targets(ci) since sources ≤ targets
+    have hy₁n₂ : cfg.sources ci ≤ cfg.sources cj + (cfg.targets cj - cfg.sources cj) := by omega
+    have hy₂n₁ : cfg.sources cj ≤ cfg.sources ci + (cfg.targets ci - cfg.sources ci) := by omega
+    exact northThenEast_not_NI hm hy₁n₂ hy₂n₁ hpair
+  · -- m = 0 case: NonIntersecting final condition contradicts wellFormed
+    push_neg at hm
+    simp only [NonIntersecting] at hpair
+    obtain ⟨_, h_final⟩ := hpair
+    have hm0 : cfg.m = 0 := by omega
+    rw [hm0] at h_final
+    simp only [colEntry] at h_final
+    have h_ci := cfg.source_le_target ci
+    have h_cj := cfg.source_le_target cj
+    rcases h_final with h | h <;> omega
 
-/-- The signed sum over cancellable (non-NI) tagged tuples is zero,
-    by the GV sign-reversing involution.
-    Uses `Finset.sum_involution` with (1) sign cancel, (2) no fixed points,
-    (3) membership (all proved), and (4) self-inverse (sorry — needs tail-swap). -/
+-- ============================================================
+-- PART 7i: Prefix Lemma for Self-Inverse Proof
+-- ============================================================
+
+/-- northBeforeEast depends only on the prefix when the prefix contains > k East steps.
+    Key lemma for the GV tail-swap involution: swapping suffixes after a crossing
+    point doesn't change colEntry at earlier columns. -/
+private lemma northBeforeEast_prefix (pfx sfx₁ sfx₂ : LPath) (k : ℕ)
+    (hk : pfx.countP (· = false) > k) :
+    northBeforeEast (pfx ++ sfx₁) k = northBeforeEast (pfx ++ sfx₂) k := by
+  induction pfx generalizing k with
+  | nil => simp [List.countP] at hk
+  | cons b xs ih =>
+    cases b with
+    | false =>
+      cases k with
+      | zero => simp [northBeforeEast]
+      | succ k' =>
+        simp only [List.cons_append, northBeforeEast]
+        apply ih k'
+        simp only [List.countP_cons] at hk ⊢; omega
+    | true =>
+      simp only [List.cons_append, northBeforeEast]
+      have := ih k (by simp only [List.countP_cons] at hk ⊢; omega)
+      omega
+
+/-- colEntry at column k+1 depends only on the prefix when it has > k East steps. -/
+private lemma colEntry_prefix_eq (pfx sfx₁ sfx₂ : LPath) (k : ℕ)
+    (hk : pfx.countP (· = false) > k) :
+    colEntry (pfx ++ sfx₁) (k + 1) = colEntry (pfx ++ sfx₂) (k + 1) := by
+  exact northBeforeEast_prefix pfx sfx₁ sfx₂ k hk
+
+-- ============================================================
+-- PART 7j: Canonical GV Involution with Tail-Swap (Self-Inverse)
+-- ============================================================
+
+/-- Paths i and j share a lattice point at column c: their y-ranges overlap.
+    At column c < m, the range is [source + colEntry(c), source + colEntry(c+1)].
+    At column c = m, the range is [source + colEntry(m), target(σ(·))]. -/
+private def pathsShareCol {r : ℕ} (cfg : LGVConfig r) (t : TaggedPathTuple cfg)
+    (c : ℕ) (i j : Fin r) : Prop :=
+  let lo_i := cfg.sources i + colEntry (t.2 i).val c
+  let hi_i := if c < cfg.m then cfg.sources i + colEntry (t.2 i).val (c + 1)
+              else cfg.targets (t.1 i)
+  let lo_j := cfg.sources j + colEntry (t.2 j).val c
+  let hi_j := if c < cfg.m then cfg.sources j + colEntry (t.2 j).val (c + 1)
+              else cfg.targets (t.1 j)
+  lo_j ≤ hi_i ∧ lo_i ≤ hi_j
+
+/-- Crossing code predicate. Encodes (c, i, j) as n = c * r² + i * r + j.
+    Nat.find on this yields the lex-minimum crossing triple. -/
+private def crossingCode {r : ℕ} (cfg : LGVConfig r) (t : TaggedPathTuple cfg)
+    (n : ℕ) : Prop :=
+  0 < r ∧
+  let c := n / (r * r)
+  let iv := (n / r) % r
+  let jv := n % r
+  c ≤ cfg.m ∧ iv < jv ∧
+  ∃ (hiv : iv < r) (hjv : jv < r),
+    pathsShareCol cfg t c ⟨iv, hiv⟩ ⟨jv, hjv⟩
+
+private noncomputable instance crossingCode.dec {r : ℕ} {cfg : LGVConfig r}
+    {t : TaggedPathTuple cfg} : DecidablePred (crossingCode cfg t) :=
+  fun _ => Classical.dec _
+
+/-- From ¬NonIntersecting, extract a column where paths overlap. -/
+private theorem notNI_gives_overlap {r : ℕ} (cfg : LGVConfig r)
+    (t : TaggedPathTuple cfg) (i j : Fin r) (hij : i < j)
+    (hni : ¬NonIntersecting (t.2 i).val (t.2 j).val cfg.m
+      (cfg.sources i) (cfg.sources j)
+      (cfg.targets (t.1 i) - cfg.sources i) (cfg.targets (t.1 j) - cfg.sources j)) :
+    ∃ c, c ≤ cfg.m ∧ pathsShareCol cfg t c i j := by
+  simp only [NonIntersecting, not_and_or] at hni
+  rcases hni with hinterior | hfinal
+  · simp only [not_forall] at hinterior
+    obtain ⟨x, hx⟩ := hinterior
+    push_neg at hx
+    obtain ⟨hxm, hoverlap⟩ := hx
+    push_neg at hoverlap
+    exact ⟨x, le_of_lt hxm, by
+      unfold pathsShareCol
+      simp only [if_pos hxm]
+      exact hoverlap⟩
+  · push_neg at hfinal
+    refine ⟨cfg.m, le_refl _, ?_⟩
+    unfold pathsShareCol
+    simp only [lt_irrefl, ite_false]
+    constructor
+    · have := hfinal.1
+      have h1 := cfg.source_le_target i
+      have h2 : cfg.targets (t.1 i) - cfg.sources i + cfg.sources i = cfg.targets (t.1 i) := by
+        omega
+      omega
+    · have := hfinal.2
+      have h1 := cfg.source_le_target j
+      have h2 : cfg.targets (t.1 j) - cfg.sources j + cfg.sources j = cfg.targets (t.1 j) := by
+        omega
+      omega
+
+/-- Encoding (c, i, j) as c * r² + i * r + j, with decoding back. -/
+private theorem encode_decode_c (r c iv jv : ℕ) (hr : 0 < r)
+    (hiv : iv < r) (hjv : jv < r) :
+    (c * (r * r) + iv * r + jv) / (r * r) = c := by
+  have h1 : iv * r + jv < r * r := by nlinarith
+  rw [Nat.add_div_right_eq_zero h1 |>.symm ▸ show c * (r * r) + (iv * r + jv) =
+    c * (r * r) + iv * r + jv from by ring_nf]
+  omega
+
+private theorem encode_decode_i (r c iv jv : ℕ) (hr : 0 < r)
+    (hiv : iv < r) (hjv : jv < r) :
+    ((c * (r * r) + iv * r + jv) / r) % r = iv := by
+  have h1 : jv / r = 0 := Nat.div_eq_zero_iff (by omega).mpr (by omega)
+  have : c * (r * r) + iv * r + jv = (c * r + iv) * r + jv := by ring
+  rw [this, Nat.add_mul_div_left _ _ (by omega : 0 < r)]
+  rw [h1, Nat.add_zero]
+  exact Nat.mod_eq_of_lt hiv
+
+private theorem encode_decode_j (r c iv jv : ℕ) (hr : 0 < r)
+    (hiv : iv < r) (hjv : jv < r) :
+    (c * (r * r) + iv * r + jv) % r = jv := by
+  have : c * (r * r) + iv * r + jv = (c * r + iv) * r + jv := by ring
+  rw [this, Nat.add_mul_mod_self_left]
+  exact Nat.mod_eq_of_lt hjv
+
+/-- A crossing code exists for every cancellable tagged tuple. -/
+private theorem crossingCode_exists {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
+    ∃ n, crossingCode cfg t n := by
+  obtain ⟨i, j, hij, hni⟩ := cancellable_has_crossing cfg hwf t ht
+  obtain ⟨c, hcm, hoverlap⟩ := notNI_gives_overlap cfg t i j hij hni
+  have hr : 0 < r := by omega
+  refine ⟨c * (r * r) + i.val * r + j.val, hr, ?_, ?_, ?_⟩
+  · rwa [encode_decode_c r c i.val j.val hr i.isLt j.isLt]
+  · rw [encode_decode_i r c i.val j.val hr i.isLt j.isLt,
+        encode_decode_j r c i.val j.val hr i.isLt j.isLt]
+    exact hij
+  · rw [encode_decode_i r c i.val j.val hr i.isLt j.isLt,
+        encode_decode_j r c i.val j.val hr i.isLt j.isLt]
+    exact ⟨i.isLt, j.isLt, by convert hoverlap using 2 <;> simp⟩
+
+/-- The canonical crossing code for a cancellable tagged tuple. -/
+private noncomputable def canonCrossN {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) : ℕ :=
+  Nat.find (crossingCode_exists cfg hwf t ht)
+
+/-- The canonical crossing satisfies the crossing predicate. -/
+private theorem canonCross_spec {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
+    crossingCode cfg t (canonCrossN cfg hwf t ht) :=
+  Nat.find_spec (crossingCode_exists cfg hwf t ht)
+
+/-- The canonical crossing is minimal. -/
+private theorem canonCross_min {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
+    ∀ n, crossingCode cfg t n → canonCrossN cfg hwf t ht ≤ n :=
+  fun n hn => Nat.find_min' (crossingCode_exists cfg hwf t ht) hn
+
+/-- Extract the canonical crossing column. -/
+private noncomputable def canonCol {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) : ℕ :=
+  canonCrossN cfg hwf t ht / (r * r)
+
+/-- Extract the canonical first crossing index. -/
+private noncomputable def canonI {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) : Fin r :=
+  ⟨(canonCrossN cfg hwf t ht / r) % r,
+    (canonCross_spec cfg hwf t ht).2.2.2.choose⟩
+
+/-- Extract the canonical second crossing index. -/
+private noncomputable def canonJ {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) : Fin r :=
+  ⟨canonCrossN cfg hwf t ht % r,
+    (canonCross_spec cfg hwf t ht).2.2.2.choose_spec.choose⟩
+
+private theorem canonI_lt_canonJ {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
+    canonI cfg hwf t ht < canonJ cfg hwf t ht := by
+  have h := canonCross_spec cfg hwf t ht
+  exact h.2.2.1
+
+private theorem canonCol_le_m {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
+    canonCol cfg hwf t ht ≤ cfg.m := by
+  have h := canonCross_spec cfg hwf t ht
+  exact h.2.1
+
+private theorem canon_overlap {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
+    pathsShareCol cfg t (canonCol cfg hwf t ht)
+      (canonI cfg hwf t ht) (canonJ cfg hwf t ht) := by
+  have h := canonCross_spec cfg hwf t ht
+  exact h.2.2.2.choose_spec.choose_spec.2
+
+/-- The shared y-value: max of lower bounds at the canonical crossing column. -/
+private noncomputable def canonY {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) : ℕ :=
+  let ci := canonI cfg hwf t ht
+  let cj := canonJ cfg hwf t ht
+  let c := canonCol cfg hwf t ht
+  max (cfg.sources ci + colEntry (t.2 ci).val c)
+      (cfg.sources cj + colEntry (t.2 cj).val c)
+
+-- ============================================================
+-- PART 7k: Tail-Swap PathMN Construction
+-- ============================================================
+
+/-- Construct a new PathMN by taking a prefix from one path and suffix from another.
+    Given paths P (m East, n₁ North) and Q (m East, n₂ North), and split positions
+    k_p in P, k_q in Q where both have seen exactly c East steps:
+    Result: take(P, k_p) ++ drop(Q, k_q) is a valid PathMN m n'
+    where n' = k_p - c + (n₂ - (k_q - c)) = (k_p + n₂ + c - k_q - c) = k_p + n₂ - k_q.
+    Actually n' depends on the North step counts. -/
+private noncomputable def tailSwapPath {m n₁ n₂ : ℕ}
+    (P : PathMN m n₁) (Q : PathMN m n₂) (kp kq : ℕ)
+    (hkp_east : (P.val.take kp).countP (· = false) = (Q.val.take kq).countP (· = false))
+    (hkp_le : kp ≤ P.val.length) (hkq_le : kq ≤ Q.val.length) :
+    PathMN m (kp + n₂ - kq) where
+  val := P.val.take kp ++ Q.val.drop kq
+  property := by
+    constructor
+    · -- Length: kp + (m + n₂ - kq) = m + (kp + n₂ - kq)
+      simp [List.length_append, List.length_take, List.length_drop]
+      have hlen_q := Q.property.1
+      omega
+    · -- East count: prefix has c East steps, suffix has m - c East steps
+      have heast_p := P.property.2
+      have heast_q := Q.property.2
+      have hlen_p := P.property.1
+      have hlen_q := Q.property.1
+      simp [List.countP_append]
+      -- countP(take(P, kp)) + countP(drop(Q, kq)) = countP(take(P, kp)) + (m - countP(take(Q, kq)))
+      have hdrop : (Q.val.drop kq).countP (· = false) = m - (Q.val.take kq).countP (· = false) := by
+        have := List.countP_take_add_countP_drop (· = false) kq Q.val
+        omega
+      rw [hdrop, hkp_east]
+      omega
+
+/-- Split position in path k at shared point (c, y): c + (y - source(k)) -/
+private noncomputable def splitPosAt {r : ℕ} (cfg : LGVConfig r) (t : TaggedPathTuple cfg)
+    (c y : ℕ) (k : Fin r) : ℕ :=
+  c + (y - cfg.sources k)
+
+/-- The canonical new permutation. -/
+private noncomputable def canonNewPerm {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) : Equiv.Perm (Fin r) :=
+  t.1 * Equiv.swap (canonI cfg hwf t ht) (canonJ cfg hwf t ht)
+
+/-- For PathMN m n, colEntry at m+1 equals n (total North steps).
+    northBeforeEast l m counts all North steps when l has exactly m East steps. -/
+private lemma colEntry_at_end {m n : ℕ} (P : PathMN m n) :
+    colEntry P.val (m + 1) = n := by
+  simp only [colEntry]
+  -- northBeforeEast P.val m = n: counts all North steps since there are exactly m East steps
+  have heast := P.property.2
+  have hlen := P.property.1
+  -- Proof by induction on the list
+  suffices ∀ (l : LPath) (k : ℕ), l.countP (· = false) = k →
+      northBeforeEast l k = l.countP (· = true) by
+    rw [this P.val m heast, pathMN_countP_true P]
+  intro l k hk
+  induction l generalizing k with
+  | nil => simp [northBeforeEast, List.countP]
+  | cons b xs ih =>
+    cases b with
+    | false =>
+      cases k with
+      | zero => simp [List.countP_cons] at hk
+      | succ k' =>
+        simp only [northBeforeEast, List.countP_cons, Bool.false_eq_true, decide_false,
+          Nat.add_zero] at hk ⊢
+        exact ih k' (by omega)
+    | true =>
+      simp only [northBeforeEast, List.countP_cons, Bool.true_eq_true, decide_true,
+        Bool.true_eq_false, decide_false, Nat.add_zero] at hk ⊢
+      rw [ih k (by omega)]
+
+/-- The shared y-value is within path i's y-range at the canonical crossing column. -/
+private theorem canonY_in_range_i {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
+    let ci := canonI cfg hwf t ht
+    let c := canonCol cfg hwf t ht
+    let y := canonY cfg hwf t ht
+    colEntry (t.2 ci).val c ≤ y - cfg.sources ci ∧
+    y - cfg.sources ci ≤ colEntry (t.2 ci).val (c + 1) := by
+  have hoverlap := canon_overlap cfg hwf t ht
+  set ci := canonI cfg hwf t ht
+  set cj := canonJ cfg hwf t ht
+  set c := canonCol cfg hwf t ht
+  set y := canonY cfg hwf t ht
+  unfold canonY at y
+  unfold pathsShareCol at hoverlap
+  constructor
+  · -- colEntry(P_ci, c) ≤ y - source_ci
+    -- y = max(source_ci + colEntry(P_ci, c), source_cj + colEntry(P_cj, c))
+    -- y ≥ source_ci + colEntry(P_ci, c)
+    simp only [y]; omega
+  · -- y - source_ci ≤ colEntry(P_ci, c+1) (or n_ci for c = m)
+    -- From overlap: source_cj + colEntry(P_cj, c) ≤ hi_ci
+    -- And y = max(lo_ci, lo_cj) ≤ hi_ci
+    split_ifs at hoverlap with hcm
+    · -- c < m: hi_ci = source_ci + colEntry(P_ci, c+1)
+      simp only [y]; omega
+    · -- c ≥ m: hi_ci = targets(σ(ci))
+      have hcm' := canonCol_le_m cfg hwf t ht
+      have hceq : c = cfg.m := by omega
+      rw [hceq, colEntry_at_end (t.2 ci)]
+      have h_le := hwf ci (t.1 ci)
+      simp only [y]; omega
+
+/-- The shared y-value is within path j's y-range at the canonical crossing column. -/
+private theorem canonY_in_range_j {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
+    let cj := canonJ cfg hwf t ht
+    let c := canonCol cfg hwf t ht
+    let y := canonY cfg hwf t ht
+    colEntry (t.2 cj).val c ≤ y - cfg.sources cj ∧
+    y - cfg.sources cj ≤ colEntry (t.2 cj).val (c + 1) := by
+  have hoverlap := canon_overlap cfg hwf t ht
+  set ci := canonI cfg hwf t ht
+  set cj := canonJ cfg hwf t ht
+  set c := canonCol cfg hwf t ht
+  set y := canonY cfg hwf t ht
+  unfold canonY at y
+  unfold pathsShareCol at hoverlap
+  constructor
+  · simp only [y]; omega
+  · split_ifs at hoverlap with hcm
+    · simp only [y]; omega
+    · have hcm' := canonCol_le_m cfg hwf t ht
+      have hceq : c = cfg.m := by omega
+      rw [hceq, colEntry_at_end (t.2 cj)]
+      have h_le := hwf cj (t.1 cj)
+      simp only [y]; omega
+
+/-- Split position is within path bounds. -/
+private theorem splitPos_le_length {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t)
+    (k : Fin r) (hk : k = canonI cfg hwf t ht ∨ k = canonJ cfg hwf t ht) :
+    splitPosAt cfg t (canonCol cfg hwf t ht) (canonY cfg hwf t ht) k ≤
+      (t.2 k).val.length := by
+  set c := canonCol cfg hwf t ht
+  set y := canonY cfg hwf t ht
+  simp only [splitPosAt]
+  have hlen := (t.2 k).property.1
+  rcases hk with rfl | rfl
+  · have ⟨_, hhi⟩ := canonY_in_range_i cfg hwf t ht
+    have hce := colEntry_le_north (t.2 k) (c + 1)
+    omega
+  · have ⟨_, hhi⟩ := canonY_in_range_j cfg hwf t ht
+    have hce := colEntry_le_north (t.2 k) (c + 1)
+    omega
+
+/-- Both split positions have the same East count (= canonical column). -/
+private theorem splitPos_east_eq {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
+    let ci := canonI cfg hwf t ht
+    let cj := canonJ cfg hwf t ht
+    let c := canonCol cfg hwf t ht
+    let y := canonY cfg hwf t ht
+    let ki := splitPosAt cfg t c y ci
+    let kj := splitPosAt cfg t c y cj
+    ((t.2 ci).val.take ki).countP (· = false) =
+    ((t.2 cj).val.take kj).countP (· = false) := by
+  set ci := canonI cfg hwf t ht
+  set cj := canonJ cfg hwf t ht
+  set c := canonCol cfg hwf t ht
+  set y := canonY cfg hwf t ht
+  simp only [splitPosAt]
+  have hc_le := canonCol_le_m cfg hwf t ht
+  have ⟨hlo_i, hhi_i⟩ := canonY_in_range_i cfg hwf t ht
+  have ⟨hlo_j, hhi_j⟩ := canonY_in_range_j cfg hwf t ht
+  have heast_ci := take_east_count_within_column (t.2 ci).val c (y - cfg.sources ci)
+    (by omega) hlo_i hhi_i
+  have heast_cj := take_east_count_within_column (t.2 cj).val c (y - cfg.sources cj)
+    (by omega) hlo_j hhi_j
+  rw [heast_ci, heast_cj]
+
+/-- The tail-swap n parameter for path ci matches what PermPathTuple expects. -/
+private theorem tailSwap_n_ci {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
+    let ci := canonI cfg hwf t ht
+    let cj := canonJ cfg hwf t ht
+    let c := canonCol cfg hwf t ht
+    let y := canonY cfg hwf t ht
+    let ki := splitPosAt cfg t c y ci
+    let kj := splitPosAt cfg t c y cj
+    ki + (cfg.targets (t.1 cj) - cfg.sources cj) - kj =
+      cfg.targets (t.1 cj) - cfg.sources ci := by
+  simp only [splitPosAt]; omega
+
+/-- The tail-swap n parameter for path cj matches what PermPathTuple expects. -/
+private theorem tailSwap_n_cj {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
+    let ci := canonI cfg hwf t ht
+    let cj := canonJ cfg hwf t ht
+    let c := canonCol cfg hwf t ht
+    let y := canonY cfg hwf t ht
+    let ki := splitPosAt cfg t c y ci
+    let kj := splitPosAt cfg t c y cj
+    kj + (cfg.targets (t.1 ci) - cfg.sources ci) - ki =
+      cfg.targets (t.1 ci) - cfg.sources cj := by
+  simp only [splitPosAt]; omega
+
+/-- The canonical GV involution: tail-swap at the lex-min crossing point.
+    For paths ci and cj, we swap suffixes at the shared lattice point (c, y).
+    Other paths are unchanged (with cast for type compatibility). -/
+private noncomputable def gvCanonInv {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) : TaggedPathTuple cfg :=
+  let ci := canonI cfg hwf t ht
+  let cj := canonJ cfg hwf t ht
+  let c := canonCol cfg hwf t ht
+  let y := canonY cfg hwf t ht
+  let σ' := canonNewPerm cfg hwf t ht
+  let ki := splitPosAt cfg t c y ci
+  let kj := splitPosAt cfg t c y cj
+  ⟨σ', fun k =>
+    if hk_ci : k = ci then
+      cast (by simp [hk_ci]; rw [tailSwap_n_ci cfg hwf t ht]; ring_nf
+            simp [canonNewPerm, Equiv.Perm.mul_apply, Equiv.swap_apply_left]) <|
+        tailSwapPath (t.2 ci) (t.2 cj) ki kj
+          (splitPos_east_eq cfg hwf t ht)
+          (splitPos_le_length cfg hwf t ht ci (Or.inl rfl))
+          (splitPos_le_length cfg hwf t ht cj (Or.inr rfl))
+    else if hk_cj : k = cj then
+      cast (by simp [hk_cj]; rw [tailSwap_n_cj cfg hwf t ht]; ring_nf
+            simp [canonNewPerm, Equiv.Perm.mul_apply, Equiv.swap_apply_right]) <|
+        tailSwapPath (t.2 cj) (t.2 ci) kj ki
+          (by rw [splitPos_east_eq cfg hwf t ht])
+          (splitPos_le_length cfg hwf t ht cj (Or.inr rfl))
+          (splitPos_le_length cfg hwf t ht ci (Or.inl rfl))
+    else
+      cast (by congr 1
+            simp [canonNewPerm, Equiv.Perm.mul_apply,
+              Equiv.swap_apply_of_ne_of_ne hk_ci hk_cj]) (t.2 k)⟩
+
+-- ============================================================
+-- PART 7l: Involution Properties
+-- ============================================================
+
+/-- Sign reversal: canonNewPerm has opposite sign. -/
+private theorem gvCanon_sign_reversal {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg)
+    (ht : t ∈ Finset.univ.filter (fun t : TaggedPathTuple cfg => ¬isNonCancellable t)) :
+    taggedWeight t + taggedWeight (gvCanonInv cfg hwf t
+      ((Finset.mem_filter.mp ht).2)) = 0 := by
+  simp only [taggedWeight, gvCanonInv]
+  have hht := (Finset.mem_filter.mp ht).2
+  have hij := canonI_lt_canonJ cfg hwf t hht
+  simp only [canonNewPerm]
+  rw [map_mul, Equiv.Perm.sign_swap (ne_of_lt hij), mul_neg, mul_one]
+  simp [Units.val_neg, add_neg_cancel]
+
+/-- No fixed points: the image differs from the input. -/
+private theorem gvCanon_no_fixed {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg)
+    (ht : t ∈ Finset.univ.filter (fun t : TaggedPathTuple cfg => ¬isNonCancellable t))
+    (hw : taggedWeight t ≠ 0) :
+    gvCanonInv cfg hwf t ((Finset.mem_filter.mp ht).2) ≠ t := by
+  intro heq
+  have hht := (Finset.mem_filter.mp ht).2
+  have hij := canonI_lt_canonJ cfg hwf t hht
+  have h1 : (gvCanonInv cfg hwf t hht).1 = t.1 := congr_arg Sigma.fst heq
+  simp only [gvCanonInv, canonNewPerm] at h1
+  have hswap : Equiv.swap (canonI cfg hwf t hht) (canonJ cfg hwf t hht) = 1 := by
+    have : t.1⁻¹ * (t.1 * Equiv.swap (canonI cfg hwf t hht) (canonJ cfg hwf t hht)) =
+        t.1⁻¹ * t.1 := by rw [h1]
+    rwa [inv_mul_cancel_left, inv_mul_cancel] at this
+  have heval : (Equiv.swap (canonI cfg hwf t hht) (canonJ cfg hwf t hht))
+      (canonI cfg hwf t hht) = canonI cfg hwf t hht := by
+    rw [hswap]; rfl
+  rw [Equiv.swap_apply_left] at heval
+  exact absurd heval (ne_of_gt hij)
+
+/-- The GV canonical involution image is cancellable. -/
+private theorem gvCanon_membership {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg)
+    (ht : t ∈ Finset.univ.filter (fun t : TaggedPathTuple cfg => ¬isNonCancellable t)) :
+    gvCanonInv cfg hwf t ((Finset.mem_filter.mp ht).2) ∈
+      Finset.univ.filter (fun t : TaggedPathTuple cfg => ¬isNonCancellable t) := by
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  have hht := (Finset.mem_filter.mp ht).2
+  -- Need: ¬isNonCancellable(g(t))
+  -- i.e., ¬(σ' = 1 ∧ paths NI)
+  simp only [isNonCancellable, IsGVFixedPoint, not_exists]
+  intro hσ' hni
+  -- We have σ' = σ * swap(ci, cj)
+  set ci := canonI cfg hwf t hht
+  set cj := canonJ cfg hwf t hht
+  have hij := canonI_lt_canonJ cfg hwf t hht
+  -- σ' = 1 means σ = swap(ci, cj)
+  simp only [gvCanonInv, canonNewPerm] at hσ'
+  have hσ_eq : t.1 = Equiv.swap ci cj := by
+    have : (t.1 * Equiv.swap ci cj)⁻¹ = 1⁻¹ := congr_arg (·⁻¹) hσ'
+    simp [mul_inv_rev] at this
+    exact this
+  -- Since σ = swap(ci, cj) ≠ 1, the tuple is cancellable
+  -- The paths must cross by nonid_perm_paths_cross
+  -- But hni says the image paths are NI, contradiction
+  -- The tail-swapped paths at (ci, cj) share the swap point (c, y)
+  -- which contradicts NI
+  sorry -- membership proof (same structure as gvInvolution_membership but for tail-swap)
+
+/-- The GV canonical involution is self-inverse: g(g(t)) = t.
+    The proof has two parts:
+    1. Permutation: σ * swap(ci,cj) * swap(ci,cj) = σ (swap² = 1)
+    2. Paths: double tail-swap at the same point = identity
+    Part 2 requires showing the canonical crossing is preserved:
+    - Prefixes at columns < c₀ are unchanged → same crossings there
+    - The shared point (c₀, y₀) is preserved (both paths still visit it)
+    - No smaller crossing (c', y', i', j') is newly created
+    → Nat.find returns the same code → same (c, ci, cj, y) → same swap
+    → double swap on lists: take(take(P,k)++drop(Q,k'), k)++drop(take(Q,k')++drop(P,k), k')
+       = take(P,k)++drop(P,k) = P by List.take_append_drop -/
+private theorem gvCanon_self_inverse {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg)
+    (ht : t ∈ Finset.univ.filter (fun t : TaggedPathTuple cfg => ¬isNonCancellable t)) :
+    gvCanonInv cfg hwf (gvCanonInv cfg hwf t ((Finset.mem_filter.mp ht).2))
+      ((Finset.mem_filter.mp (gvCanon_membership cfg hwf t ht)).2) = t := by
+  sorry -- self-inverse: canonical crossing preserved + double tail-swap = id
+
+/-- The signed sum over cancellable tagged tuples is zero,
+    by the GV sign-reversing involution via `Finset.sum_involution`. -/
 private theorem cancellable_sum_eq_zero {r : ℕ} (cfg : LGVConfig r)
     (hwf : cfg.wellFormed) :
     (Finset.sum (Finset.univ.filter
       (fun t : TaggedPathTuple cfg => ¬isNonCancellable t)) taggedWeight) = 0 := by
   exact Finset.sum_involution
-    (fun t ht => gvInvolutionFn cfg hwf t ((Finset.mem_filter.mp ht).2))
-    (fun t ht => gvInvolution_sign_reversal cfg hwf t ht)
-    (fun t ht hw => gvInvolution_no_fixed cfg hwf t ht hw)
-    (fun t ht => Finset.mem_filter.mpr
-      ⟨Finset.mem_univ _, gvInvolution_membership cfg hwf t ((Finset.mem_filter.mp ht).2)⟩)
-    (fun t ht => sorry) -- self-inverse: needs tail-swap involution redesign
+    (fun t ht => gvCanonInv cfg hwf t ((Finset.mem_filter.mp ht).2))
+    (gvCanon_sign_reversal cfg hwf)
+    (fun t ht hw => gvCanon_no_fixed cfg hwf t ht hw)
+    (gvCanon_membership cfg hwf)
+    (gvCanon_self_inverse cfg hwf)
 
 theorem gv_involution_cancellation {r : ℕ} (cfg : LGVConfig r)
     (hwf : cfg.wellFormed) :

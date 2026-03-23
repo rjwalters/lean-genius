@@ -1,4 +1,5 @@
 import Mathlib.RingTheory.Algebraic.Basic
+import Mathlib.RingTheory.Localization.Integral
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
 import Mathlib.Data.Real.Irrational
@@ -132,10 +133,15 @@ axiom lindemann_theorem (α : ℂ) (hα_ne : α ≠ 0) (hα_alg : IsAlgebraic �
 axiom pi_transcendental : Transcendental ℤ Real.pi
 
 /-- π is transcendental over ℚ.
-    Derived from pi_transcendental (over ℤ) via IsFractionRing.isAlgebraic_iff:
-    IsAlgebraic ℚ x ↔ IsAlgebraic ℤ x for the fraction ring ℤ ⊂ ℚ. -/
-theorem pi_transcendental_over_rationals : Transcendental ℚ Real.pi :=
-  fun halg => pi_transcendental ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mp halg)
+    Derived from pi_transcendental (over ℤ): if π were algebraic over ℚ,
+    clearing denominators via integerNormalization gives an integer polynomial
+    vanishing at π, contradicting Transcendental ℤ π. -/
+theorem pi_transcendental_over_rationals : Transcendental ℚ Real.pi := by
+  intro ⟨p, hp_ne, hp_eval⟩
+  exact pi_transcendental
+    ⟨IsLocalization.integerNormalization (nonZeroDivisors ℤ) p,
+     mt IsFractionRing.integerNormalization_eq_zero_iff.mp hp_ne,
+     IsLocalization.integerNormalization_aeval_eq_zero (nonZeroDivisors ℤ) p hp_eval⟩
 
 -- ============================================================
 -- PART 5: Why π Cannot Be Algebraic
