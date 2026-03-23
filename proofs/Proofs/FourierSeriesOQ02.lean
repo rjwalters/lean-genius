@@ -4,6 +4,7 @@ import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.MeasureTheory.Function.L2Space
 import Mathlib.Topology.MetricSpace.Holder
+import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 import Mathlib.Tactic
 
 /-
@@ -228,10 +229,45 @@ axiom fourierCoeff_sq_summable_of_holder (C : ℝ≥0) (α : ℝ≥0)
     (hα : (1 : ℝ) / 2 < (α : ℝ)) :
     Summable (fun n : ℤ => ‖fourierCoeff f n‖ ^ 2)
 
-/-- **Riemann-Lebesgue from Hölder**: ‖ĉ_n‖ = O(1/|n|^α) → 0. -/
-axiom riemannLebesgue_of_holder (C : ℝ≥0) (α : ℝ≥0)
+/-- **Riemann-Lebesgue from Hölder**: ‖ĉ_n‖ = O(1/|n|^α) → 0.
+
+    Proof: From the main decay theorem, ‖ĉ_n‖ ≤ K·|n|^(-α) for n ≠ 0.
+    Since α > 0, |n|^(-α) → 0 as |n| → ∞ through cofinite.
+    By the squeeze theorem (squeeze_zero_norm), fourierCoeff → 0. -/
+theorem riemannLebesgue_of_holder (C : ℝ≥0) (α : ℝ≥0)
     (f : AddCircle T → ℂ) (hf : IsHolderOnCircle C α f) (hα : 0 < α) :
-    Tendsto (fun n : ℤ => fourierCoeff f n) cofinite (𝓝 0)
+    Tendsto (fun n : ℤ => fourierCoeff f n) cofinite (𝓝 0) := by
+  set K := (↑C / 2 : ℝ) * (T / 2) ^ (↑α : ℝ) with hK_def
+  -- Squeeze: ‖ĉ_n‖ ≤ K · |n|^(-α) → 0
+  apply squeeze_zero_norm
+  · -- Pointwise bound: ‖ĉ_n‖ ≤ K · |n|^(-α) eventually
+    filter_upwards [Filter.eventually_cofinite_ne (0 : ℤ)] with n hn
+    have hbound := fourierCoeff_holder_decay C α f hf n hn
+    -- Rewrite (C/2)(T/(2|n|))^α = (C/2)(T/2)^α · |n|^(-α) = K · |n|^(-α)
+    calc ‖fourierCoeff f n‖
+        ≤ (↑C / 2) * (T / (2 * |↑n|)) ^ (↑α : ℝ) := hbound
+      _ = K * |(↑n : ℝ)| ^ (-(↑α : ℝ)) := by
+          rw [hK_def]
+          have hn_ne : (↑n : ℝ) ≠ 0 := Int.cast_ne_zero.mpr hn
+          have hn_abs_pos : 0 < |(↑n : ℝ)| := abs_pos.mpr hn_ne
+          rw [div_rpow (le_of_lt hT.out) (by positivity : (0 : ℝ) ≤ 2 * |(↑n : ℝ)|),
+            mul_rpow (by positivity : (0 : ℝ) ≤ 2) (abs_nonneg _),
+            rpow_neg (abs_nonneg _)]
+          ring
+  · -- The bound K · |n|^(-α) → 0 through cofinite
+    have hα_pos : (0 : ℝ) < ↑α := hα
+    -- |n| → ∞ through cofinite, and x^(-α) → 0 at ∞
+    have h_abs_atTop : Tendsto (fun n : ℤ => ‖(↑n : ℝ)‖) cofinite atTop :=
+      tendsto_norm_cocompact_atTop.comp Int.tendsto_coe_cofinite
+    have h_rpow_zero : Tendsto (fun x : ℝ => x ^ (-(↑α : ℝ))) atTop (𝓝 0) :=
+      tendsto_rpow_neg_atTop hα_pos
+    have h_abs_rpow : Tendsto (fun n : ℤ => ‖(↑n : ℝ)‖ ^ (-(↑α : ℝ))) cofinite (𝓝 0) :=
+      h_rpow_zero.comp h_abs_atTop
+    -- ‖n‖ = |n| for reals, so convert
+    have h_eq : (fun n : ℤ => ‖(↑n : ℝ)‖ ^ (-(↑α : ℝ))) = (fun n : ℤ => |(↑n : ℝ)| ^ (-(↑α : ℝ))) := by
+      ext n; rw [Real.norm_eq_abs]
+    rw [h_eq] at h_abs_rpow
+    exact Tendsto.const_mul h_abs_rpow K
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
