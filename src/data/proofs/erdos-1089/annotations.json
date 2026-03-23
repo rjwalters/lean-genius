@@ -29,8 +29,8 @@
     "range": { "startLine": 51, "endLine": 57 },
     "type": "definition",
     "title": "Distinct Distances Set and Count",
-    "content": "**distinctDistances P** computes all positive pairwise distances in a point set, and **numDistinctDistances** returns its cardinality. These are the central quantities: the problem asks how many points guarantee n distinct values.",
-    "mathContext": "For $P \\subseteq \\mathbb{R}^d$, $\\Delta(P) = \\{\\|p - q\\| : p, q \\in P, p \\neq q\\}$. The count $|\\Delta(P)|$ is the number of distinct distances. Implemented via `Finset.product`, `Finset.image`, and `Finset.filter`.",
+    "content": "**distinctDistances P** computes all positive pairwise distances in a point set, and **numDistinctDistances** returns its cardinality. These are the central quantities: the problem asks how many points guarantee n distinct values.\n\nThe number of pairwise distances is at most $\\binom{|P|}{2}$ (see `combinations-formula`), so $|\\Delta(P)| \\leq \\binom{|P|}{2}$. The Guth-Katz breakthrough (2015) proved $|\\Delta(P)| \\geq c|P|/\\sqrt{\\log |P|}$ in the plane — the near-tight answer to the 2D distinct distances problem. Problem #1089 asks the orthogonal question: fixing the number of distinct distances $n$ and varying dimension $d$.",
+    "mathContext": "For $P \\subseteq \\mathbb{R}^d$, $\\Delta(P) = \\{\\|p - q\\| : p, q \\in P, p \\neq q\\}$. The count $|\\Delta(P)|$ is the number of distinct distances. Upper bound: $|\\Delta(P)| \\leq \\binom{|P|}{2}$. Lower bound (Guth-Katz, $d = 2$): $|\\Delta(P)| \\geq c|P|/\\sqrt{\\log |P|}$.",
     "significance": "key",
     "relatedConcepts": ["Distinct distances problem", "Guth-Katz theorem", "Euclidean distance"],
     "prerequisites": ["EuclideanSpace", "Finset.product", "Finset.image"]
@@ -125,8 +125,8 @@
     "range": { "startLine": 179, "endLine": 185 },
     "type": "definition",
     "title": "Connection to f_d(n) and Problem #1083",
-    "content": "**f d n** = max distinct distances from $n$ points in $\\mathbb{R}^d$. The relationship $g_d(n) = \\min\\{m : f_d(m) \\ge n\\}$ shows $g$ and $f$ are inverse perspectives on the same problem.",
-    "mathContext": "$f_d(n) = \\max\\{|\\Delta(P)| : P \\subseteq \\mathbb{R}^d, |P| = n\\}$ and $g_d(n) = \\inf\\{m : f_d(m) \\ge n\\}$. The `g_f_relationship` axiom formalizes this duality.",
+    "content": "**f d n** = max distinct distances from $n$ points in $\\mathbb{R}^d$. The relationship $g_d(n) = \\min\\{m : f_d(m) \\ge n\\}$ shows $g$ and $f$ are inverse perspectives on the same problem — a Galois connection between 'how many points for $n$ distances' and 'how many distances from $n$ points'. Problem #1083 (see `erdos-1083`) studies $f_d(n)$ directly.",
+    "mathContext": "$f_d(n) = \\max\\{|\\Delta(P)| : P \\subseteq \\mathbb{R}^d, |P| = n\\}$ and $g_d(n) = \\inf\\{m : f_d(m) \\ge n\\}$. The `g_f_relationship` axiom formalizes this duality. Guth-Katz (2015): $f_2(n) \\geq cn/\\sqrt{\\log n}$.",
     "significance": "key",
     "relatedConcepts": ["Galois connections", "Inverse functions", "Erdős Problem 1083"],
     "prerequisites": ["f definition", "Nat.sSup", "Nat.sInf"]
