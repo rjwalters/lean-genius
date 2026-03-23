@@ -12,7 +12,6 @@ import Proofs.AmgmInequalityOQ02Defs
 import Proofs.AmgmInequalityOQ02OQ02
 import Proofs.AmgmInequalityOQ03
 import Proofs.AngleTrisection
-import Proofs.AngleTrisectionAPITest
 import Proofs.AngleTrisectionEmbedding
 import Proofs.AngleTrisectionOQ01
 import Proofs.AngleTrisectionOQ02
@@ -1507,7 +1506,6 @@ import Proofs.MorleysTheorem
 import Proofs.MotivicFlagMaps
 import Proofs.MotivicFlagMapsProvable
 import Proofs.NavierStokes
-import Proofs.NavierStokesAristotle
 import Proofs.NewtonIndStep2
 import Proofs.NewtonInductiveStep
 import Proofs.NewtonLogConcavity
@@ -1659,7 +1657,6 @@ import Proofs.WilsonsTheoremOQ02
 import Proofs.WilsonsTheoremOQ02Ext
 import Proofs.WolstenholmeTheorem
 import Proofs.YangMillsMassGap
-import Proofs.YangMillsMassGapAristotle
 import Proofs.ZetaFiveIrrationality
 import Proofs.ZsqrtdNegTwo
 import Proofs.eTranscendental
