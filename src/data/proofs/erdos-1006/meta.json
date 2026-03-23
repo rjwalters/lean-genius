@@ -49,35 +49,40 @@
       "title": "Graph Girth",
       "summary": "hasGirthAtLeast, hasGirth",
       "startLine": 50,
-      "endLine": 62
+      "endLine": 62,
+      "mathContext": "The girth $g(G)$ of a graph $G$ is the length of its shortest cycle ($\\infty$ if acyclic). `hasGirthAtLeast G k` means all cycles in $G$ have length $\\geq k$. High girth forces local tree-like structure, which intuitively should make acyclic orientations more robust."
     },
     {
       "id": "orientations",
       "title": "Directed Graphs and Orientations",
       "summary": "Orientation structure, hasDirectedPath, isAcyclic",
       "startLine": 64,
-      "endLine": 84
+      "endLine": 84,
+      "mathContext": "An orientation of $G$ assigns a direction to each edge. An orientation is acyclic iff there is no directed cycle, equivalently iff the vertices admit a topological ordering. Every graph has acyclic orientations (orient by any linear ordering of vertices). The question is whether 'robust' acyclicity is achievable."
     },
     {
       "id": "robust",
       "title": "Robust Acyclicity",
       "summary": "reverseEdge, isRobustlyAcyclic, admitsRobustlyAcyclicOrientation",
       "startLine": 86,
-      "endLine": 102
+      "endLine": 102,
+      "mathContext": "An acyclic orientation is *robustly acyclic* if reversing any single edge preserves acyclicity. Equivalently, no directed edge $u \\to v$ lies on a directed path from $v$ back to $u$. This is a strong structural property: the orientation must avoid all 'barely acyclic' configurations."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture (Disproved)",
       "summary": "oresConjecture",
       "startLine": 104,
-      "endLine": 113
+      "endLine": 113,
+      "mathContext": "Ore's conjecture (attributed by Erdős): every graph with girth $> 4$ admits a robustly acyclic orientation. The girth $> 4$ threshold excludes triangles and 4-cycles — the known obstructions at the time. Ore showed a girth-4 counterexample; the conjecture asked whether girth 5 suffices."
     },
     {
       "id": "counterexamples",
       "title": "Counterexamples",
       "summary": "grotzsch_counterexample, nesetril_rodl_1978, ores_conjecture_false",
       "startLine": 115,
-      "endLine": 141
+      "endLine": 141,
+      "mathContext": "Nešetřil-Rödl (1978) disproved the conjecture for ALL girths: for every $g \\geq 3$, $\\exists$ graph $G$ with $g(G) = g$ and $\\chi(G) \\geq 4$ that admits no robustly acyclic orientation. Their probabilistic construction uses the Lovász Local Lemma to build high-girth, high-chromatic-number graphs. The Grötzsch graph ($g = 4$, $\\chi = 4$, 11 vertices) is the smallest triangle-free non-3-colorable graph and provides a concrete counterexample at girth 4."
     }
   ],
   "conclusion": {

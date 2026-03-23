@@ -106,77 +106,88 @@
       "title": "Problem Statement and References",
       "startLine": 1,
       "endLine": 26,
-      "summary": "Documentation header with problem statement, Thomassen/Voigt resolution, context on list chromatic number, and namespace setup with $\\text{SimpleGraph}$ and $\\text{Finset}$"
+      "summary": "Documentation header with problem statement, Thomassen/Voigt resolution, context on list chromatic number, and namespace setup with $\\text{SimpleGraph}$ and $\\text{Finset}$",
+      "mathContext": "Erdős Problem #631: Does every planar graph $G$ satisfy $\\chi_L(G) \\leq 5$? Is this best possible? The list chromatic number $\\chi_L(G)$ is the minimum $k$ such that $G$ is $k$-choosable: for every assignment of lists of size $\\geq k$ to vertices, a proper coloring from the lists exists."
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 28,
       "endLine": 36,
-      "summary": "Defines $\\text{chromaticNumber}$ ($\\chi(G)$, noncomputable sorry) and $\\text{IsKColorable}$ ($\\exists f: V \\to \\text{Fin}\\,k$ with $f(v) \\neq f(w)$ for adjacent $v,w$)"
+      "summary": "Defines $\\text{chromaticNumber}$ ($\\chi(G)$, noncomputable sorry) and $\\text{IsKColorable}$ ($\\exists f: V \\to \\text{Fin}\\,k$ with $f(v) \\neq f(w)$ for adjacent $v,w$)",
+      "mathContext": "$\\chi(G) = \\min\\{k : G \\text{ is } k\\text{-colorable}\\}$. A proper $k$-coloring is $f: V \\to \\{0, \\ldots, k-1\\}$ with $f(u) \\neq f(v)$ for every edge $uv$. The chromatic number is noncomputable (definition uses sorry)."
     },
     {
       "id": "list-coloring",
       "title": "List Coloring Definitions",
       "startLine": 38,
       "endLine": 57,
-      "summary": "Defines $\\text{ListAssignment}$ ($V \\to \\text{Finset}\\,C$), $\\text{IsListColoring}$ (proper coloring from lists), $\\text{IsKChoosable}$ ($\\forall L$ with $|L(v)| \\geq k$, $\\exists$ proper list coloring), and $\\text{listChromaticNumber}$ ($\\chi_L(G)$)"
+      "summary": "Defines $\\text{ListAssignment}$ ($V \\to \\text{Finset}\\,C$), $\\text{IsListColoring}$ (proper coloring from lists), $\\text{IsKChoosable}$ ($\\forall L$ with $|L(v)| \\geq k$, $\\exists$ proper list coloring), and $\\text{listChromaticNumber}$ ($\\chi_L(G)$)",
+      "mathContext": "A list assignment $L: V \\to \\text{Finset}\\,C$ gives each vertex a set of allowed colors. A list coloring $f$ satisfies $f(v) \\in L(v)$ and $f(u) \\neq f(v)$ for adjacent $u, v$. $G$ is $k$-choosable if every list assignment with $|L(v)| \\geq k$ for all $v$ admits a proper list coloring. $\\chi_L(G) = \\min\\{k : G \\text{ is } k\\text{-choosable}\\}$."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 59,
       "endLine": 91,
-      "summary": "Proves $\\chi_L \\geq \\chi$ (sorry), choosable monotonicity (sorry), and $k$-choosable $\\Rightarrow$ $k$-colorable (**proved by Aristotle** via contrapositive with $\\text{ULift}$)"
+      "summary": "Proves $\\chi_L \\geq \\chi$ (sorry), choosable monotonicity (sorry), and $k$-choosable $\\Rightarrow$ $k$-colorable (**proved by Aristotle** via contrapositive with $\\text{ULift}$)",
+      "mathContext": "$\\chi_L(G) \\geq \\chi(G)$ always holds: take $L(v) = \\{1, \\ldots, k\\}$ for all $v$, reducing list coloring to ordinary coloring. The inequality can be strict: $\\chi_L(K_{2,2}) = 3 > 2 = \\chi(K_{2,2})$. For complete bipartite graphs, $\\chi_L(K_{n,n}) = 1 + \\lceil \\log_2 n \\rceil$ (Galvin's theorem)."
     },
     {
       "id": "planar-graphs",
       "title": "Planar Graphs",
       "startLine": 92,
       "endLine": 108,
-      "summary": "Defines $\\text{IsPlanar}$ (sorry), Euler's formula $V - E + F = 2$, and edge bound $|E| \\leq 3|V| - 6$ as axioms"
+      "summary": "Defines $\\text{IsPlanar}$ (sorry), Euler's formula $V - E + F = 2$, and edge bound $|E| \\leq 3|V| - 6$ as axioms",
+      "mathContext": "A graph is planar if it embeds in $\\mathbb{R}^2$ without edge crossings. Euler's formula $|V| - |E| + |F| = 2$ for connected planar graphs implies $|E| \\leq 3|V| - 6$ (since each face has $\\geq 3$ boundary edges). This gives the average degree bound $\\bar{d} < 6$, which underlies the Five Color Theorem."
     },
     {
       "id": "four-color",
       "title": "The Four Color Theorem",
       "startLine": 110,
       "endLine": 120,
-      "summary": "Axiomatizes the Four Color Theorem ($\\chi \\leq 4$ for planar) and Five Color Theorem ($\\chi \\leq 5$)"
+      "summary": "Axiomatizes the Four Color Theorem ($\\chi \\leq 4$ for planar) and Five Color Theorem ($\\chi \\leq 5$)",
+      "mathContext": "The Four Color Theorem (Appel-Haken 1976, simplified by Robertson et al. 1997): every planar graph has $\\chi(G) \\leq 4$. The Five Color Theorem (Heawood 1890) has a short proof by induction using the $|E| \\leq 3|V| - 6$ bound. Note: $\\chi \\leq 4$ does NOT imply $\\chi_L \\leq 4$ — the list coloring analogue remains open."
     },
     {
       "id": "thomassen",
       "title": "Thomassen's Theorem",
       "startLine": 122,
       "endLine": 143,
-      "summary": "Main result: $\\chi_L(G) \\leq 5$ for planar $G$ (axiom). Includes proof technique description: induction on $|V|+|E|$ via near-triangulations with precolored edge"
+      "summary": "Main result: $\\chi_L(G) \\leq 5$ for planar $G$ (axiom). Includes proof technique description: induction on $|V|+|E|$ via near-triangulations with precolored edge",
+      "mathContext": "Thomassen's theorem (1994): every planar graph is 5-choosable. The proof uses induction on $|V| + |E|$ with a stronger hypothesis: in any near-triangulation with outer face bounded by a path $P = v_1 v_2 \\cdots v_k$, if $v_1$ and $v_2$ are precolored and each other outer vertex has a list of size $\\geq 3$ while inner vertices have lists of size $\\geq 5$, a proper list coloring exists."
     },
     {
       "id": "voigt",
       "title": "Voigt's Construction and Sharpness",
       "startLine": 145,
       "endLine": 165,
-      "summary": "Sharpness: $\\exists$ planar $G$ with $\\chi_L = 5$ (axiom). Voigt's 238-vertex construction, Gutner's simplification, smallest known $\\leq 63$ vertices"
+      "summary": "Sharpness: $\\exists$ planar $G$ with $\\chi_L = 5$ (axiom). Voigt's 238-vertex construction, Gutner's simplification, smallest known $\\leq 63$ vertices",
+      "mathContext": "Voigt (1993) constructed a planar graph that is not 4-choosable, proving $\\chi_L \\leq 5$ is tight. The original had 238 vertices. Gutner (1996) simplified to 75 vertices. Mirzakhani (1998) found a 63-vertex example. The smallest known non-4-choosable planar graph has $\\leq 63$ vertices — the exact minimum is unknown."
     },
     {
       "id": "list-conjecture",
       "title": "The List Coloring Conjecture",
       "startLine": 167,
       "endLine": 185,
-      "summary": "Open: $\\chi_L \\leq 4$ for planar? $\\texttt{chromatic\\_list\\_gap}$ bundles both bounds $\\langle\\text{Four Color}, \\text{Thomassen}\\rangle$ (proved from axioms)"
+      "summary": "Open: $\\chi_L \\leq 4$ for planar? $\\texttt{chromatic\\_list\\_gap}$ bundles both bounds $\\langle\\text{Four Color}, \\text{Thomassen}\\rangle$ (proved from axioms)",
+      "mathContext": "The List Coloring Conjecture for planar graphs: $\\chi_L(G) \\leq 4$ for every planar graph $G$. If true, this would be the list-coloring analog of the Four Color Theorem. Evidence: all known non-4-choosable planar graphs are carefully constructed, and many natural classes (bipartite planar, outerplanar, high-girth) satisfy $\\chi_L \\leq 3$."
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "startLine": 187,
       "endLine": 232,
-      "summary": "Alon-Tarsi: bipartite planar $\\Rightarrow \\chi_L \\leq 3$. Outerplanar $\\Rightarrow \\chi_L \\leq 3$. Girth $\\geq 5$ planar $\\Rightarrow \\chi_L \\leq 3$. Thomassen's proof structure via key lemma and induction"
+      "summary": "Alon-Tarsi: bipartite planar $\\Rightarrow \\chi_L \\leq 3$. Outerplanar $\\Rightarrow \\chi_L \\leq 3$. Girth $\\geq 5$ planar $\\Rightarrow \\chi_L \\leq 3$. Thomassen's proof structure via key lemma and induction",
+      "mathContext": "Restricted planar classes with $\\chi_L \\leq 3$: (1) Bipartite planar (Alon-Tarsi 1992, via the combinatorial nullstellensatz and orientation parity); (2) Outerplanar (all vertices on the outer face, degeneracy $\\leq 2$); (3) Girth $\\geq 5$ planar (Thomassen 1995, the triangle-free case). The Alon-Tarsi method counts Eulerian subgraph orientations modulo 2."
     },
     {
       "id": "main-status",
       "title": "Main Problem Status",
       "startLine": 245,
       "endLine": 276,
-      "summary": "Theorem $\\texttt{erdos\\_631\\_status}$: $\\langle\\texttt{thomassen\\_five\\_list\\_theorem}, \\texttt{voigt\\_construction}\\rangle$ — both questions answered, bound is tight"
+      "summary": "Theorem $\\texttt{erdos\\_631\\_status}$: $\\langle\\texttt{thomassen\\_five\\_list\\_theorem}, \\texttt{voigt\\_construction}\\rangle$ — both questions answered, bound is tight",
+      "mathContext": "Problem #631 is SOLVED: $\\chi_L(G) \\leq 5$ for all planar $G$ (Thomassen 1994) and $\\exists$ planar $G$ with $\\chi_L(G) = 5$ (Voigt 1993). The formalization bundles both results as a conjunction, establishing the tight bound $\\max_G \\chi_L(G) = 5$ over all planar graphs $G$."
     }
   ],
   "conclusion": {
