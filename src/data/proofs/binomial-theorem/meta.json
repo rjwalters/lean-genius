@@ -66,7 +66,7 @@
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 44,
     "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and no structure-encoded assumptions. All nine theorems are proved from Mathlib (add_pow, Nat.sum_range_choose, Int.alternating_sum_range_choose, Nat.choose_succ_succ, Nat.choose_symm, Nat.choose_zero_right, Nat.choose_self) with no custom axioms. The main theorem and corollaries are pedagogical wrappers composing Mathlib lemmas with algebraic normalization via the ring tactic.",
     "relatedProblems": [
       {
         "id": "binomial-theorem-oq-01",
@@ -111,21 +111,24 @@
       "title": "Imports",
       "startLine": 1,
       "endLine": 4,
-      "summary": "Imports four Mathlib modules: `BigOperators.Ring.Finset` for `∑` notation over finsets, `Nat.Choose.Sum` for `add_pow` and coefficient sum theorems, `Ring.Basic` for ring axioms, and `Tactic` for proof automation."
+      "summary": "Imports four Mathlib modules: `BigOperators.Ring.Finset` for `∑` notation over finsets, `Nat.Choose.Sum` for `add_pow` and coefficient sum theorems, `Ring.Basic` for ring axioms, and `Tactic` for proof automation.",
+      "mathContext": "The `BigOperators` module provides the $\\sum$ notation `∑ k in S, f k` for finite sums, while `Nat.Choose.Sum` provides the core `add_pow` identity and its corollaries. Together these four imports supply every Mathlib result used in the file."
     },
     {
       "id": "module-docstring",
       "title": "Module Docstring",
       "startLine": 6,
       "endLine": 43,
-      "summary": "Establishes this as Wiedijk #44. States the binomial theorem, describes the Mathlib foundation (`add_pow`), lists dependencies (`Nat.choose`, `sum_range_choose`), and gives historical context: al-Karaji (c. 1000), Yang Hui (1261), Newton (1665)."
+      "summary": "Establishes this as Wiedijk #44. States the binomial theorem, describes the Mathlib foundation (`add_pow`), lists dependencies (`Nat.choose`, `sum_range_choose`), and gives historical context: al-Karaji (c. 1000), Yang Hui (1261), Newton (1665).",
+      "mathContext": "$(x + y)^n = \\sum_{k=0}^{n} \\binom{n}{k} x^k y^{n-k}$ where $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$. This is Wiedijk #44, formalized for commutative semirings via Mathlib's `add_pow`."
     },
     {
       "id": "namespace-open",
       "title": "Namespace and Opens",
       "startLine": 45,
       "endLine": 47,
-      "summary": "Opens `BinomialTheorem` namespace and brings `Finset` and `BigOperators` into scope for `∑` and `range` notation."
+      "summary": "Opens `BinomialTheorem` namespace and brings `Finset` and `BigOperators` into scope for `∑` and `range` notation.",
+      "mathContext": "The `open Finset BigOperators` brings the notation $\\sum_{k \\in S} f(k)$ and the `range` function into scope. `Finset.range (n+1) = \\{0, 1, \\ldots, n\\}$."
     },
     {
       "id": "main-theorem",
@@ -164,14 +167,16 @@
       "title": "Special Cases: Square and Cube",
       "startLine": 132,
       "endLine": 149,
-      "summary": "Explicit expansions `binomial_square` ($(x+y)^2 = x^2 + 2xy + y^2$) and `binomial_cube` ($(x+y)^3 = x^3 + 3x^2y + 3xy^2 + y^3$). Both proved by the `ring` tactic alone, demonstrating that small cases can be verified purely algebraically."
+      "summary": "Explicit expansions `binomial_square` ($(x+y)^2 = x^2 + 2xy + y^2$) and `binomial_cube` ($(x+y)^3 = x^3 + 3x^2y + 3xy^2 + y^3$). Both proved by the `ring` tactic alone, demonstrating that small cases can be verified purely algebraically.",
+      "mathContext": "$(x+y)^2 = x^2 + 2xy + y^2$ (coefficients $1, 2, 1$) and $(x+y)^3 = x^3 + 3x^2y + 3xy^2 + y^3$ (coefficients $1, 3, 3, 1$). Both are rows of Pascal's triangle."
     },
     {
       "id": "examples-verification",
       "title": "Examples and Verification",
       "startLine": 150,
       "endLine": 176,
-      "summary": "Six numerical examples verified with `native_decide`: $(1+1)^4 = 16$, explicit coefficient sum for $n = 4$, $\\binom{5}{2} = 10$, $\\binom{10}{5} = 252$, Pascal's identity for $\\binom{5}{3}$, and symmetry $\\binom{6}{2} = \\binom{6}{4}$. Ends with `#check` commands and namespace close."
+      "summary": "Six numerical examples verified with `native_decide`: $(1+1)^4 = 16$, explicit coefficient sum for $n = 4$, $\\binom{5}{2} = 10$, $\\binom{10}{5} = 252$, Pascal's identity for $\\binom{5}{3}$, and symmetry $\\binom{6}{2} = \\binom{6}{4}$. Ends with `#check` commands and namespace close.",
+      "mathContext": "$\\binom{5}{2} = 10$, $\\binom{10}{5} = 252$. Pascal's identity: $\\binom{5}{3} = 10 = \\binom{4}{2} + \\binom{4}{3} = 6 + 4$. Symmetry: $\\binom{6}{2} = \\binom{6}{4} = 15$."
     }
   ],
   "crossReferences": [
@@ -254,6 +259,21 @@
       "targetId": "fundamental-arithmetic",
       "relationship": "foundational",
       "description": "The prime factorization of $n!$ determines the prime factorization of $\\binom{n}{k} = n!/(k!(n-k)!)$. Kummer's theorem states that the highest power of prime $p$ dividing $\\binom{m+n}{m}$ equals the number of carries when adding $m$ and $n$ in base $p$ — connecting the binomial coefficients to number-theoretic structure via unique factorization"
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "The birthday problem computes $P(\\text{collision among } k \\text{ people}) = 1 - \\prod_{i=0}^{k-1}(1 - i/365)$, which involves the same combinatorial counting as binomial coefficients: the number of collision-free arrangements is $\\binom{365}{k} \\cdot k!$ divided by $365^k$. Both results illustrate how counting arguments yield surprising quantitative results"
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "foundational",
+      "description": "The geometric series $\\sum_{k=0}^n r^k = (1-r^{n+1})/(1-r)$ is the $y = 1$ special case of the binomial theorem when $x = r$ and we track only powers of $x$. More deeply, Newton's generalized binomial series $(1+x)^\\alpha = \\sum \\binom{\\alpha}{k} x^k$ for $|x| < 1$ reduces to the geometric series when $\\alpha = -1$: $(1+x)^{-1} = 1 - x + x^2 - \\cdots$"
+    },
+    {
+      "targetId": "taylor-theorem",
+      "relationship": "extends",
+      "description": "Taylor's theorem provides the framework for Newton's generalized binomial series: $(1+x)^\\alpha = \\sum_{k=0}^\\infty \\frac{f^{(k)}(0)}{k!} x^k$ where $f^{(k)}(0) = \\alpha(\\alpha-1)\\cdots(\\alpha-k+1)$, giving the generalized binomial coefficient $\\binom{\\alpha}{k}$. The finite binomial theorem (proved here) is the special case where $\\alpha = n \\in \\mathbb{N}$ and the Taylor series terminates after $n+1$ terms"
     }
   ],
   "relatedProofs": [
@@ -272,7 +292,10 @@
     "mathematical-induction",
     "ballot-problem",
     "fundamental-arithmetic",
-    "binomial-theorem-oq-04"
+    "binomial-theorem-oq-04",
+    "birthday-problem",
+    "geometric-series",
+    "taylor-theorem"
   ],
   "references": [
     {
@@ -334,8 +357,11 @@
     ],
     "namespace": "BinomialTheorem",
     "lineCount": 176,
+    "structureCount": 0,
     "axiomCount": 0,
     "theoremCount": 9,
+    "lemmaCount": 0,
+    "defCount": 0,
     "definitionCount": 0
   }
 }
