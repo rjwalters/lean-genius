@@ -53,112 +53,112 @@
       "title": "Imports and Problem Overview",
       "summary": "Module documentation on Problem 1036, imports for SimpleGraph, Finset, Fintype, and real number arithmetic for counting arguments",
       "startLine": 1,
-      "endLine": 27
+      "endLine": 1
     },
     {
       "id": "graph-setup",
       "title": "Graph Setup",
       "summary": "vertexCount definition: cardinality of the finite vertex set",
       "startLine": 28,
-      "endLine": 37
+      "endLine": 1
     },
     {
       "id": "trivial",
       "title": "Trivial Subgraphs",
       "summary": "Definitions of isTrivialInduced, isIndependentSet, isClique, and the trivial_iff characterization (trivial = independent or clique)",
       "startLine": 39,
-      "endLine": 61
+      "endLine": 1
     },
     {
       "id": "non-ramsey",
       "title": "Non-Ramsey Graphs",
       "summary": "noLargeTrivial predicate, isNonRamsey definition (no trivial subgraph > c log n), and axiomatized existence of non-Ramsey graphs via the probabilistic method",
       "startLine": 63,
-      "endLine": 81
+      "endLine": 1
     },
     {
       "id": "induced",
       "title": "Induced Subgraphs",
       "summary": "inducedSubgraph definition (G[S] restricted to vertex subset S) and InducedPair for comparing equal-size induced subgraphs",
       "startLine": 83,
-      "endLine": 99
+      "endLine": 1
     },
     {
       "id": "isomorphism",
       "title": "Graph Isomorphism",
       "summary": "GraphIso (adjacency-preserving bijection), inducedIso, and proofs that induced isomorphism is an equivalence relation (reflexive, symmetric, transitive)",
       "startLine": 101,
-      "endLine": 129
+      "endLine": 1
     },
     {
       "id": "counting",
       "title": "Counting Distinct Induced Subgraphs",
       "summary": "allInducedSubsets (power set), sameIsoClass equivalence relation, distinctInducedCount (number of isomorphism classes), hasDistinctInduced predicate",
       "startLine": 131,
-      "endLine": 153
+      "endLine": 1
     },
     {
       "id": "conjecture",
       "title": "The Erdős-Rényi Conjecture",
       "summary": "erdos_renyi_conjecture: for every c > 0, there exists c' > 0 such that non-Ramsey graphs with parameter c have ≥ 2^{c'n} distinct induced subgraphs",
       "startLine": 155,
-      "endLine": 168
+      "endLine": 1
     },
     {
       "id": "alon-hajnal",
       "title": "Alon-Hajnal Bound (1991)",
       "summary": "alonHajnalExponent (n·(log n)^{-O(log log n)}), axiomatized Alon-Hajnal bound, and proof that it is weaker than Shelah's bound",
       "startLine": 170,
-      "endLine": 191
+      "endLine": 1
     },
     {
       "id": "erdos-hajnal",
       "title": "Erdős-Hajnal Bipartite Result (1989)",
       "summary": "hasCompleteBipartite, avoidsBipartite predicates, axiomatized Erdős-Hajnal 1989 bound, and proof that non-Ramsey implies bipartite avoidance",
       "startLine": 193,
-      "endLine": 219
+      "endLine": 1
     },
     {
       "id": "shelah",
       "title": "Shelah's Theorem (1998)",
       "summary": "Axiomatized Shelah's theorem (2^{c'n} bound) and erdos_1036_solved establishing the conjecture is true",
       "startLine": 221,
-      "endLine": 239
+      "endLine": 1
     },
     {
       "id": "comparison",
       "title": "Comparison of Bounds",
       "summary": "shelahBound and alonHajnalBound definitions with shelah_better proving Shelah's bound is exponentially stronger",
       "startLine": 241,
-      "endLine": 257
+      "endLine": 1
     },
     {
       "id": "counting-args",
       "title": "Counting Arguments",
       "summary": "distinct_upper (trivial 2^n upper bound), random_graph_distinct (random graphs near-maximize diversity), nonRamsey_random_like (non-Ramsey ≈ random in diversity)",
       "startLine": 259,
-      "endLine": 284
+      "endLine": 1
     },
     {
       "id": "fixed-size",
       "title": "Fixed-Size Induced Subgraphs",
       "summary": "inducedOfSize, distinctOfSize, hasDistinctOfSize definitions, and nonRamsey_fixed_size axiom for fixed-k diversity",
       "startLine": 286,
-      "endLine": 311
+      "endLine": 1
     },
     {
       "id": "complement",
       "title": "Complement Symmetry",
       "summary": "complement_nonRamsey (complement preserves non-Ramsey) and complement_distinct (i(G) = i(Ḡ))",
       "startLine": 313,
-      "endLine": 327
+      "endLine": 1
     },
     {
       "id": "problem-1031",
       "title": "Connection to Problem 1031",
       "summary": "isKUniversal definition, universal_implies_distinct theorem, and via_universality providing an alternative proof of Problem 1036 through Prömel-Rödl universality",
       "startLine": 329,
-      "endLine": 355
+      "endLine": 1
     }
   ],
   "conclusion": {

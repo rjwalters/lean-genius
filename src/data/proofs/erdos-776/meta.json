@@ -103,7 +103,7 @@
       "id": "structural",
       "title": "Structural Observations",
       "startLine": 94,
-      "endLine": 119,
+      "endLine": 118,
       "summary": "Axiomatizes Sperner's theorem ($|\\mathcal{F}| \\leq \\binom{n}{\\lfloor n/2 \\rfloor}$), the middle layer antichain (one size, maximum cardinality), the size-variety tradeoff ($|\\mathcal{F}| \\geq r \\cdot d$), and the size availability condition ($\\binom{n}{k} \\geq r$ needed for layer $k$).",
       "mathContext": "Sperner: $|\\mathcal{F}| \\leq \\binom{n}{\\lfloor n/2\\rfloor}$. Middle layer: $d = 1$, $|\\mathcal{F}| = \\binom{n}{\\lfloor n/2\\rfloor}$. Tradeoff: $|\\mathcal{F}| \\geq r \\cdot d$. Availability: layer $k$ usable iff $\\binom{n}{k} \\geq r$."
     }

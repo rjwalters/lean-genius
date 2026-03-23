@@ -95,7 +95,7 @@
       "id": "monotonicity",
       "title": "Monotonicity and Main Implication",
       "startLine": 112,
-      "endLine": 128,
+      "endLine": 127,
       "summary": "Axiomatizes non-increasing monotonicity $q(n,k_2) \\leq q(n,k_1)$ for $k_1 \\leq k_2$, and proves that the main conjecture implies the weak bound via the inequality $(1+\\varepsilon)\\log n \\leq (1+\\varepsilon)\\,k\\log n$ using `mul_assoc` and `nlinarith`."
     }
   ],

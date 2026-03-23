@@ -46,84 +46,84 @@
       "id": "header-imports",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 32,
+      "endLine": 1,
       "summary": "File documentation citing EPS (1987), imports from Mathlib: `EulerPhi.Basic` for $\\varphi(n)$, `ArithmeticFunction`, `Log.Basic` and `Pow.Real` for asymptotic bounds, and `Topology.Instances.Real` for `Filter.atTop`."
     },
     {
       "id": "totient",
       "title": "Euler's Totient Function",
       "startLine": 36,
-      "endLine": 58,
+      "endLine": 1,
       "summary": "Defines `phi(n)` as `Nat.totient n`, proves $\\varphi(p) = p-1$ for primes, and establishes bounds: $\\varphi(n) > 0$ for $n > 0$, $\\varphi(n) \\leq n$, $\\varphi(n) < n$ for $n > 1$."
     },
     {
       "id": "distinct-runs",
       "title": "Distinct Totient Runs",
       "startLine": 60,
-      "endLine": 85,
+      "endLine": 1,
       "summary": "Defines `IsDistinctTotientRun(n, K)`: $\\varphi$ is injective on $\\{n+1, \\ldots, n+K\\}$. Equivalent `Set.InjOn` formulation stated. Trivial cases $K=0$ and $K=1$ proved."
     },
     {
       "id": "max-length",
       "title": "Maximum Run Length Function",
       "startLine": 87,
-      "endLine": 96,
+      "endLine": 1,
       "summary": "Defines `maxDistinctRunLength(n) = \\sup\\{K : \\text{IsDistinctTotientRun}(n,K)\\}` and proves it is at least 1 for every $n$."
     },
     {
       "id": "eps87",
       "title": "EPS87 Upper Bound",
       "startLine": 98,
-      "endLine": 118,
+      "endLine": 1,
       "summary": "Axiomatizes the Erdős–Pomerance–Sárközy theorem: $K \\leq n/\\exp(c(\\log n)^{1/3})$ for distinct runs of length $K$. Corollary: $f(n)/n \\to 0$ (sublinear growth)."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture and Variants",
       "startLine": 120,
-      "endLine": 152,
+      "endLine": 1,
       "summary": "States `Erdos1004Conjecture`: $\\forall c > 0,\\ \\forall^\\infty x,\\ \\exists n \\leq x$ with distinct run of length $\\lfloor (\\log x)^c \\rfloor$. Also: negation, `SmallCaseConjecture`, and the EPS constraint heuristic $c \\leq 1/3$."
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 154,
-      "endLine": 176,
+      "endLine": 1,
       "summary": "Verified computations: $n=1$ gives run length 2 ($\\varphi(2)=1, \\varphi(3)=2, \\varphi(4)=2$), $n=2$ gives run length 1. Proves longer runs require larger starting points."
     },
     {
       "id": "collisions",
       "title": "Totient Value Collisions",
       "startLine": 178,
-      "endLine": 201,
+      "endLine": 1,
       "summary": "Defines `TotientCollision`, proves $\\varphi(1) = \\varphi(2) = 1$ and $\\varphi(3) = \\varphi(4) = 2$. Key theorem: `collision_ends_run` — a collision at positions $i < j$ in a run bounds its length to $< j$."
     },
     {
       "id": "divisor",
       "title": "Connection to Problem 945 (Divisor Function)",
       "startLine": 203,
-      "endLine": 217,
+      "endLine": 1,
       "summary": "Defines $\\tau(n) = |\\text{divisors}(n)|$, `IsDistinctDivisorRun`, and `Problem945Conjecture`: the analogous question for $\\tau$ instead of $\\varphi$."
     },
     {
       "id": "heuristics",
       "title": "Birthday Problem Heuristics",
       "startLine": 219,
-      "endLine": 236,
+      "endLine": 1,
       "summary": "Counts distinct totient values: $|\\{\\varphi(k) : k \\leq x\\}| \\sim x/\\log x$. Birthday paradox analysis: collisions likely after $K \\approx \\sqrt{x/\\log x}$ terms, suggesting logarithmic runs should exist."
     },
     {
       "id": "bounds",
       "title": "Run Length Bounds",
       "startLine": 238,
-      "endLine": 248,
+      "endLine": 1,
       "summary": "Trivial bound $K \\leq n+K$ and structural bound $K \\leq |\\{\\varphi(m) : m \\leq n+K+1\\}|$ (distinct values bound injective image)."
     },
     {
       "id": "special",
       "title": "Special Totient Values",
       "startLine": 250,
-      "endLine": 263,
+      "endLine": 1,
       "summary": "Characterizes $\\varphi^{-1}(1) = \\{1,2\\}$, $\\varphi^{-1}(2) = \\{3,4,6\\}$, $\\varphi^{-1}(4) = \\{5,8,10,12\\}$. Illustrates increasing preimage sizes relevant to Carmichael's conjecture."
     }
   ],

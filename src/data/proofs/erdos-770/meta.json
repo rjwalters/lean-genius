@@ -101,7 +101,7 @@
       "id": "stability",
       "title": "GCD Stability Property",
       "startLine": 221,
-      "endLine": 228,
+      "endLine": 227,
       "summary": "States `gcdPowerSeq_stable`: once $\\gcd(2^n-1, \\ldots, k^n-1) = 1$, extending to $j \\geq k$ keeps the gcd at 1. This has a `sorry` — the proof requires showing $\\gcd(1, x) = 1$ propagation through `Finset.fold`."
     }
   ],

@@ -129,7 +129,7 @@
       "id": "properties",
       "title": "Basic Properties and Tightness",
       "startLine": 97,
-      "endLine": 123,
+      "endLine": 122,
       "summary": "States **density_nonneg** ($d(A) \\geq 0$), **density_le_one** ($d(A) \\leq 1$), **additive_sum_le_one** ($d(A) + d(B) \\leq 1$), and **plunnecke_ruzsa_lower** ($d(A+B) \\geq \\min(d(A)+d(B), 1)$). PROVES **additive_implies_tight**: density additivity makes the Plünnecke–Ruzsa bound an equality.",
       "mathContext": "$d(A) \\in [0,1]$ always. $d(A+B) \\geq d(A) + d(B) - 1$ (Kneser). $d(A+B) \\leq 1$ trivially."
     }
