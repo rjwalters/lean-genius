@@ -533,6 +533,64 @@ theorem triple_count_fourier {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
 -- PART IV: LARGE FOURIER COEFFICIENT FROM AP-FREENESS
 -- ═══════════════════════════════════════════════════════════════════
 
+/-- An AP-free subset of ZMod N has strictly fewer than N elements when N ≥ 2.
+    The full set always contains the 3-AP {0, 1, 2·1}. -/
+theorem apFree_card_lt {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N)) (hAP : APFree A) :
+    A.card < N := by
+  haveI : NeZero N := ⟨by omega⟩
+  by_contra h; push_neg at h
+  have hfull : A = Finset.univ :=
+    Finset.eq_univ_of_card A (by have := card_le_nat A; simp only [ZMod.card]; omega)
+  haveI : Fact (1 < N) := ⟨hN⟩
+  exact hAP 0 1 one_ne_zero (hfull ▸ Finset.mem_univ _) (hfull ▸ Finset.mem_univ _)
+    (hfull ▸ Finset.mem_univ _)
+
+/-- In ZMod N, there is at most one nonzero element r with 2*r = 0.
+    Both a and b have additive order 2. In the cyclic group ZMod N, there is at most
+    one subgroup of order 2, so ⟨a⟩ = ⟨b⟩ and a = b. -/
+private lemma two_mul_eq_zero_unique {N : ℕ} [NeZero N]
+    (a b : ZMod N) (ha : a ≠ 0) (h2a : 2 * a = 0)
+    (hb : b ≠ 0) (h2b : 2 * b = 0) : a = b := by
+  -- Reduce to val(a) = val(b) via ZMod.val arithmetic
+  -- In ZMod N (= Fin N for N > 0), 2*a = 0 means (val a + val a) % N = 0
+  -- Since 0 < val a < N, this forces val a + val a = N, i.e., val a = N/2
+  -- Similarly val b = N/2, so a = b
+  have haa : a + a = 0 := by linear_combination h2a
+  have hbb : b + b = 0 := by linear_combination h2b
+  -- val(a + a) = (val a + val a) % N = 0
+  have hmod_a : (ZMod.val a + ZMod.val a) % N = 0 := by
+    have h := congr_arg ZMod.val haa; rw [ZMod.val_add, ZMod.val_zero] at h; exact h
+  have hmod_b : (ZMod.val b + ZMod.val b) % N = 0 := by
+    have h := congr_arg ZMod.val hbb; rw [ZMod.val_add, ZMod.val_zero] at h; exact h
+  -- N ∣ 2 * val a, and 0 < 2 * val a < 2N, so 2 * val a = N
+  have hva_pos : 0 < ZMod.val a := by
+    rw [Nat.pos_iff_ne_zero]; intro h; exact ha (by rwa [ZMod.val_eq_zero] at h)
+  have hvb_pos : 0 < ZMod.val b := by
+    rw [Nat.pos_iff_ne_zero]; intro h; exact hb (by rwa [ZMod.val_eq_zero] at h)
+  have hva_lt : ZMod.val a < N := ZMod.val_lt a
+  have hvb_lt : ZMod.val b < N := ZMod.val_lt b
+  -- Helper: if N ∣ s and 0 < s < 2N, then s = N
+  have dvd_range_eq : ∀ {s : ℕ}, N ∣ s → 0 < s → s < 2 * N → s = N := by
+    intro s hdvs hlo hhi
+    obtain ⟨k, hk⟩ := hdvs  -- s = N * k
+    subst hk
+    -- k = 0: N*0 = 0, contradicts 0 < s
+    -- k = 1: N*1 = N ✓
+    -- k ≥ 2: N*k ≥ 2N, contradicts s < 2N
+    rcases k with _ | _ | k
+    · omega
+    · omega
+    · exfalso
+      have h1 : N * 2 ≤ N * (k + 2) := Nat.mul_le_mul_left N (by omega)
+      linarith
+  have h2va : ZMod.val a + ZMod.val a = N :=
+    dvd_range_eq (Nat.dvd_of_mod_eq_zero hmod_a) (by omega) (by omega)
+  have h2vb : ZMod.val b + ZMod.val b = N :=
+    dvd_range_eq (Nat.dvd_of_mod_eq_zero hmod_b) (by omega) (by omega)
+  -- val a = val b (both = N/2), hence a = b
+  have hval_eq : ZMod.val a = ZMod.val b := by omega
+  exact ZMod.val_injective N hval_eq
+
 /-- Fourier coefficient at 0 equals the cardinality: Â(0) = |A|. -/
 theorem fourierCoeff_zero {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
     fourierCoeff A 0 = ↑A.card := by
@@ -583,7 +641,8 @@ theorem fourier_parseval_pigeonhole {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
   -- hall : ∀ r ≠ 0, ‖Â(r)‖² * (↑N - 1) < ↑A.card * (↑N - ↑A.card)
   -- Sum the multiplicative form: ∑ [f(r) * (N-1)] < |S| * C
   have hN1_pos : (0 : ℝ) < (↑N : ℝ) - 1 := by
-    have : (1 : ℝ) < ↑N := Nat.one_lt_cast.mpr hN; linarith
+    have : (1 : ℝ) < ↑N := by exact_mod_cast hN
+    linarith
   -- Each f(r) * (N-1) < C
   have hlt_mul : ∀ r ∈ S, ‖fourierCoeff A r‖ ^ 2 * (↑N - 1) <
       (A.card : ℝ) * (↑N - ↑A.card) :=
@@ -607,18 +666,175 @@ theorem fourier_parseval_pigeonhole {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
     nlinarith [hsum_bound]
   linarith [hpnz]
 
+set_option maxHeartbeats 800000 in
 /-- If A has no 3-AP and has density delta, then some Fourier coefficient
     is large. This is the key analytic step in Roth's proof.
 
     The bound δ²N/2 follows from the AP-free Fourier identity combined with
-    Parseval. When δ²N ≤ 1 (sparse regime), Parseval pigeonhole suffices.
-    When δ²N > 1 (dense regime), the Cauchy-Schwarz argument on the
-    Fourier identity ∑_{r≠0} Â(r)²conj(Â(2r)) = N|A| - |A|³ gives the bound. -/
-theorem fourier_large_coefficient {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
+    Parseval. When δ²N ≤ 2 (sparse regime), Parseval pigeonhole gives
+    ‖Â(r)‖ ≥ 1 ≥ δ²N/2. When δ²N > 2 (dense regime), the Fourier identity
+    ∑_{r≠0} Â(r)²conj(Â(2r)) = N|A| - |A|³ combined with term-by-term bounds
+    gives δ²N ≤ 2, a contradiction. -/
+theorem fourier_large_coefficient {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
     (hAP : APFree A) (delta : ℝ) (hdelta : 0 < delta)
     (hdensity : (A.card : ℝ) ≥ delta * N) :
     ∃ r : ZMod N, r ≠ 0 ∧ ‖fourierCoeff A r‖ ≥ delta ^ 2 * N / 2 := by
-  sorry
+  haveI : NeZero N := ⟨by omega⟩
+  set n := A.card with hn_def
+  have hNpos : (0 : ℝ) < ↑N := Nat.cast_pos.mpr (by omega)
+  have hn_pos : 0 < n := by
+    rw [Nat.pos_iff_ne_zero]; intro h; rw [h] at hdensity; simp at hdensity; nlinarith
+  have hAne : A.Nonempty := Finset.card_pos.mp hn_pos
+  have hn_lt : n < N := apFree_card_lt hN A hAP
+  by_cases hcase : delta ^ 2 * ↑N ≤ 2
+  · -- CASE 1: δ²N ≤ 2, so δ²N/2 ≤ 1. Parseval pigeonhole gives ‖Â(r)‖ ≥ 1 ≥ δ²N/2.
+    obtain ⟨r, hr, hpig⟩ := fourier_parseval_pigeonhole hN A hAne
+    refine ⟨r, hr, ?_⟩
+    have hn_ge : (1 : ℝ) ≤ ↑n := Nat.one_le_cast.mpr hn_pos
+    have hn_le : (↑n : ℝ) ≤ ↑N - 1 := by
+      have : n ≤ N - 1 := Nat.lt_iff_le_pred (by omega : 0 < N) |>.mp hn_lt
+      have := Nat.cast_le (α := ℝ).mpr this
+      have : (↑(N - 1) : ℝ) = ↑N - 1 := by rw [Nat.cast_sub (by omega : 1 ≤ N)]; simp
+      linarith
+    have hprod : (↑n : ℝ) * (↑N - ↑n) ≥ ↑N - 1 := by nlinarith
+    have hN1_pos : (0 : ℝ) < ↑N - 1 := by
+      have : (1 : ℝ) < ↑N := by exact_mod_cast hN
+      linarith
+    have hnorm_sq : ‖fourierCoeff A r‖ ^ 2 ≥ 1 := by nlinarith
+    -- ‖Â(r)‖ ≥ 1 from ‖Â(r)‖² ≥ 1 and ‖Â(r)‖ ≥ 0
+    have hnorm_ge : ‖fourierCoeff A r‖ ≥ 1 := by
+      by_contra h; push_neg at h
+      have : ‖fourierCoeff A r‖ ^ 2 < 1 := by
+        calc ‖fourierCoeff A r‖ ^ 2
+            = ‖fourierCoeff A r‖ * ‖fourierCoeff A r‖ := sq _
+          _ ≤ ‖fourierCoeff A r‖ * 1 :=
+              mul_le_mul_of_nonneg_left (le_of_lt h) (norm_nonneg _)
+          _ = ‖fourierCoeff A r‖ := mul_one _
+          _ < 1 := h
+      linarith
+    linarith
+  · -- CASE 2: δ²N > 2. Fourier identity + contradiction.
+    push_neg at hcase
+    by_contra hall; push_neg at hall
+    -- Step A: n² > N (dense regime). From n ≥ δN and δ²N > 2: n² ≥ δ²N² > 2N > N
+    have hn_sq : (↑n : ℝ) ^ 2 ≥ (delta * ↑N) ^ 2 := by nlinarith [sq_nonneg (↑n - delta * ↑N)]
+    have hn_sq_gt : (↑n : ℝ) ^ 2 > ↑N := by nlinarith
+    -- Step B: Fourier identity from AP-freeness
+    have htc : tripleCount A = 0 := (apFree_iff_tripleCount_zero A).mp hAP
+    have hfi := triple_count_fourier A
+    rw [htc, Nat.cast_zero, zero_add] at hfi
+    have hN_ne : (↑N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
+    set F := fun r : ZMod N => fourierCoeff A r ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * r))
+    have hfi2 : (↑N : ℂ) * ↑n = Finset.univ.sum F := by rw [hfi]; field_simp
+    -- Step C: Split sum at r = 0, F(0) = n³
+    have hF0 : F 0 = (↑n : ℂ) ^ 3 := by
+      simp only [F, mul_zero, fourierCoeff_zero, map_natCast]; ring
+    have hsplit : Finset.univ.sum F = F 0 + (Finset.univ.erase 0).sum F :=
+      (Finset.add_sum_erase _ F (Finset.mem_univ 0)).symm
+    -- Σ_{r≠0} F(r) = Nn - n³ (complex algebra, not linarith)
+    have hsum_ne0 : (Finset.univ.erase 0).sum F = (↑N : ℂ) * ↑n - (↑n : ℂ) ^ 3 := by
+      have h4 : (↑N : ℂ) * ↑n = (↑n : ℂ) ^ 3 + (Finset.univ.erase 0).sum F := by
+        calc (↑N : ℂ) * ↑n = Finset.univ.sum F := hfi2
+          _ = F 0 + (Finset.univ.erase 0).sum F := hsplit
+          _ = (↑n : ℂ) ^ 3 + (Finset.univ.erase 0).sum F := by rw [hF0]
+      linear_combination -h4
+    -- Step D: Triangle inequality
+    have htri : ‖(↑N : ℂ) * ↑n - (↑n : ℂ) ^ 3‖ ≤
+        (Finset.univ.erase 0).sum (fun r => ‖F r‖) := by
+      rw [← hsum_ne0]; exact norm_sum_le _ _
+    have hFnorm : ∀ r : ZMod N,
+        ‖F r‖ = ‖fourierCoeff A r‖ ^ 2 * ‖fourierCoeff A (2 * r)‖ := by
+      intro r; simp only [F, norm_mul, norm_pow, RCLike.norm_conj]
+    -- Step E: Split sum by 2r = 0 vs 2r ≠ 0
+    set S₁ := (Finset.univ.erase (0 : ZMod N)).filter (fun r => 2 * r ≠ 0)
+    set S₂ := (Finset.univ.erase (0 : ZMod N)).filter (fun r => 2 * r = 0)
+    have hunion : (Finset.univ.erase 0) = S₁ ∪ S₂ := by
+      ext r; simp [S₁, S₂, Finset.mem_filter, Finset.mem_erase]; tauto
+    have hdisj : Disjoint S₁ S₂ := by
+      rw [Finset.disjoint_filter]; intro r _ h1 h2; exact h1 h2
+    have hsum_split : (Finset.univ.erase 0).sum (fun r => ‖F r‖) =
+        S₁.sum (fun r => ‖F r‖) + S₂.sum (fun r => ‖F r‖) := by
+      rw [hunion]; exact Finset.sum_union hdisj
+    -- Step F: Bound S₁ (2r ≠ 0 so ‖Â(2r)‖ < δ²N/2)
+    have hS1_bound : S₁.sum (fun r => ‖F r‖) ≤
+        (delta ^ 2 * ↑N / 2) * ((↑n : ℝ) * (↑N - ↑n)) := by
+      simp_rw [hFnorm]
+      calc S₁.sum (fun r => ‖fourierCoeff A r‖ ^ 2 * ‖fourierCoeff A (2 * r)‖)
+          ≤ S₁.sum (fun r => ‖fourierCoeff A r‖ ^ 2 * (delta ^ 2 * ↑N / 2)) := by
+            apply Finset.sum_le_sum; intro r hr
+            exact mul_le_mul_of_nonneg_left
+              (le_of_lt (hall (2 * r) (Finset.mem_filter.mp hr).2)) (sq_nonneg _)
+        _ = (delta ^ 2 * ↑N / 2) * S₁.sum (fun r => ‖fourierCoeff A r‖ ^ 2) := by
+            rw [← Finset.sum_mul]; ring_nf
+        _ ≤ (delta ^ 2 * ↑N / 2) * ((↑n : ℝ) * (↑N - ↑n)) := by
+            apply mul_le_mul_of_nonneg_left _ (by positivity)
+            calc S₁.sum (fun r => ‖fourierCoeff A r‖ ^ 2)
+                ≤ (Finset.univ.erase 0).sum (fun r => ‖fourierCoeff A r‖ ^ 2) :=
+                  Finset.sum_le_sum_of_subset_of_nonneg
+                    (fun r hr => Finset.mem_of_mem_filter r hr)
+                    (fun _ _ _ => sq_nonneg _)
+              _ = _ := by
+                  rw [show Finset.univ.erase (0 : ZMod N) =
+                    Finset.univ.filter (· ≠ 0) from (Finset.filter_ne' _ _).symm]
+                  exact parseval_nonzero A
+    -- Step G: Bound S₂ (at most 1 element by two_mul_eq_zero_unique)
+    have hS2_card : S₂.card ≤ 1 := by
+      rw [Finset.card_le_one]; intro a ha b hb
+      have ha' := Finset.mem_filter.mp ha; have hb' := Finset.mem_filter.mp hb
+      exact two_mul_eq_zero_unique a b
+        (Finset.mem_erase.mp ha'.1).1 ha'.2 (Finset.mem_erase.mp hb'.1).1 hb'.2
+    have hS2_bound : S₂.sum (fun r => ‖F r‖) ≤ (delta ^ 2 * ↑N / 2) ^ 2 * ↑n := by
+      simp_rw [hFnorm]
+      calc S₂.sum (fun r => ‖fourierCoeff A r‖ ^ 2 * ‖fourierCoeff A (2 * r)‖)
+          ≤ S₂.sum (fun _ => (delta ^ 2 * ↑N / 2) ^ 2 * ↑n) := by
+            apply Finset.sum_le_sum; intro r hr
+            have hr' := Finset.mem_filter.mp hr
+            have hAr := sq_le_sq' (by linarith [norm_nonneg (fourierCoeff A r)])
+              (le_of_lt (hall r (Finset.mem_erase.mp hr'.1).1))
+            rw [hr'.2, fourierCoeff_zero, Complex.norm_natCast]
+            exact mul_le_mul_of_nonneg_right hAr (Nat.cast_nonneg n)
+        _ = ↑S₂.card * ((delta ^ 2 * ↑N / 2) ^ 2 * ↑n) := by
+            rw [Finset.sum_const, nsmul_eq_mul]
+        _ ≤ 1 * ((delta ^ 2 * ↑N / 2) ^ 2 * ↑n) := by
+            apply mul_le_mul_of_nonneg_right _ (by positivity)
+            exact_mod_cast hS2_card
+        _ = _ := one_mul _
+    -- Step H: ‖Nn - n³‖ = n(n² - N) as real numbers
+    have hn_cast_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr hn_pos
+    have hsub_pos : (0 : ℝ) < (↑n : ℝ) ^ 2 - ↑N := sub_pos.mpr hn_sq_gt
+    set rval := (↑n : ℝ) * ((↑n : ℝ) ^ 2 - ↑N) with hrval_def
+    have hrval_pos : 0 < rval := mul_pos hn_cast_pos hsub_pos
+    have hnorm_real : ‖(↑N : ℂ) * ↑n - (↑n : ℂ) ^ 3‖ = rval := by
+      have hcast : (↑N : ℂ) * ↑n - (↑n : ℂ) ^ 3 = -↑rval := by
+        simp only [hrval_def]; push_cast; ring
+      rw [hcast, norm_neg, Complex.norm_real]
+      exact Real.norm_of_nonneg (le_of_lt hrval_pos)
+    -- Step I: Combine to get n(n²-N) ≤ (δ²N/2)·n(N-n) + (δ²N/2)²·n
+    have hcombined : (↑n : ℝ) * ((↑n : ℝ) ^ 2 - ↑N) ≤
+        (delta ^ 2 * ↑N / 2) * ((↑n : ℝ) * (↑N - ↑n)) +
+        (delta ^ 2 * ↑N / 2) ^ 2 * ↑n := by linarith [htri, hsum_split, hS1_bound, hS2_bound]
+    -- Step J: Divide by n > 0 and use δ²N/2 ≤ n to simplify
+    have hdelta_le : delta ≤ 1 := by
+      have : (↑n : ℝ) < ↑N := by exact_mod_cast hn_lt
+      nlinarith
+    have hα_le_n : delta ^ 2 * ↑N / 2 ≤ ↑n := by nlinarith
+    -- n²-N ≤ (δ²N/2)(N-n) + (δ²N/2)² ≤ (δ²N/2)·N (since δ²N/2 ≤ n means N-n+δ²N/2 ≤ N)
+    -- Step: α² ≤ α·n (since α ≤ n and α ≥ 0)
+    set α := delta ^ 2 * ↑N / 2 with hα_def
+    have hα_pos : (0 : ℝ) ≤ α := by positivity
+    have hα_sq_le : α ^ 2 ≤ α * ↑n :=
+      calc α ^ 2 = α * α := sq α
+        _ ≤ α * ↑n := mul_le_mul_of_nonneg_left hα_le_n hα_pos
+    -- n(n²-N) ≤ αn(N-n) + α²n ≤ αn(N-n+n) = αnN
+    have h_bound : ↑n * ((↑n : ℝ) ^ 2 - ↑N * (1 + α)) ≤ 0 := by nlinarith
+    -- Since n > 0 and n·x ≤ 0, we get x ≤ 0, i.e., n² ≤ N(1+α)
+    have hkey : (↑n : ℝ) ^ 2 ≤ ↑N * (1 + α) :=
+      le_of_not_gt fun h => by
+        have : (0 : ℝ) < (↑n : ℝ) ^ 2 - ↑N * (1 + α) := by linarith
+        linarith [mul_pos hn_cast_pos this]
+    -- From n ≥ δN: δ²N² ≤ n² ≤ N(1+α) = N + αN. So δ²N ≤ 1+α = 1+δ²N/2, giving δ²N ≤ 2
+    have hcontra : delta ^ 2 * ↑N ≤ 2 := by nlinarith
+    linarith
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART V: DENSITY INCREMENT LEMMA
@@ -634,11 +850,11 @@ theorem fourier_large_coefficient {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
     length ~√N. By pigeonhole, A has increased density on at least one
     of these progressions. AP-freeness is preserved since any 3-AP in the
     subprogression would lift to a 3-AP in the original set. -/
-theorem density_increment_lemma {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
+theorem density_increment_lemma {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
     (hAP : APFree A) (delta : ℝ) (hdelta : 0 < delta)
     (hdensity : (A.card : ℝ) ≥ delta * N) :
     ∃ (M : ℕ) (B : Finset (ZMod M)),
-      0 < M ∧
+      1 < M ∧
       M ≥ Nat.sqrt N ∧
       APFree B ∧
       (B.card : ℝ) ≥ (delta + delta ^ 2 / 100) * M := by
@@ -649,16 +865,16 @@ theorem density_increment_lemma {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
 -- ═══════════════════════════════════════════════════════════════════
 
 /-- Auxiliary: one step of the density increment iteration.
-    If there exists an AP-free set of density ≥ d in Z/NZ (with N > 0),
+    If there exists an AP-free set of density ≥ d in Z/NZ (with N > 1),
     then there exists an AP-free set of density ≥ d + d²/100 in some
-    Z/MZ with 0 < M. -/
-theorem density_increment_step {N : ℕ} (hN : 0 < N) (d : ℝ) (hd : 0 < d)
+    Z/MZ with 1 < M. -/
+theorem density_increment_step {N : ℕ} (hN : 1 < N) (d : ℝ) (hd : 0 < d)
     (A : Finset (ZMod N)) (hAP : APFree A)
     (hdens : (A.card : ℝ) ≥ d * N) :
     ∃ (M : ℕ) (B : Finset (ZMod M)),
-      0 < M ∧ APFree B ∧ (B.card : ℝ) ≥ (d + d ^ 2 / 100) * M :=
-  let ⟨M, B, hMpos, _, hBAP, hBdens⟩ := density_increment_lemma hN A hAP d hd hdens
-  ⟨M, B, hMpos, hBAP, hBdens⟩
+      1 < M ∧ APFree B ∧ (B.card : ℝ) ≥ (d + d ^ 2 / 100) * M :=
+  let ⟨M, B, hMgt, _, hBAP, hBdens⟩ := density_increment_lemma hN A hAP d hd hdens
+  ⟨M, B, hMgt, hBAP, hBdens⟩
 
 /-- After k iterations of density increment starting from density delta,
     the density reaches at least delta + k * delta² / 100.
@@ -667,19 +883,19 @@ theorem density_increment_step {N : ℕ} (hN : 0 < N) (d : ℝ) (hd : 0 < d)
     so the increment d²/100 ≥ delta²/100. Thus after k steps, the total
     increment is at least k * delta²/100. -/
 theorem density_iteration (delta : ℝ) (hdelta : 0 < delta) :
-    ∀ k : ℕ, ∀ N : ℕ, 0 < N →
+    ∀ k : ℕ, ∀ N : ℕ, 1 < N →
     ∀ A : Finset (ZMod N), APFree A →
     (A.card : ℝ) ≥ (delta + k * delta ^ 2 / 100) * N →
     ∃ (M : ℕ) (B : Finset (ZMod M)),
-      0 < M ∧ APFree B ∧
+      1 < M ∧ APFree B ∧
       (B.card : ℝ) ≥ (delta + (k + 1) * delta ^ 2 / 100) * M := by
   intro k N hN A hAP hdens
   -- Current density is d := delta + k * delta^2 / 100
   set d := delta + ↑k * delta ^ 2 / 100 with hd_def
   have hd_pos : 0 < d := by positivity
   -- Apply density increment at current density d
-  obtain ⟨M, B, hMpos, _, hBAP, hBdens⟩ := density_increment_lemma hN A hAP d hd_pos hdens
-  refine ⟨M, B, hMpos, hBAP, ?_⟩
+  obtain ⟨M, B, hMgt, _, hBAP, hBdens⟩ := density_increment_lemma hN A hAP d hd_pos hdens
+  refine ⟨M, B, hMgt, hBAP, ?_⟩
   -- hBdens : (B.card : ℝ) ≥ (d + d^2/100) * M
   -- Need: (B.card : ℝ) ≥ (delta + (k+1) * delta^2/100) * M
   -- Since d ≥ delta > 0, we have d^2 ≥ delta^2, so d + d^2/100 ≥ d + delta^2/100
@@ -708,28 +924,28 @@ theorem density_iteration (delta : ℝ) (hdelta : 0 < delta) :
 theorem roth_density_bound (delta : ℝ) (hdelta : 0 < delta) (hdelta1 : delta ≤ 1) :
     ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ → ∀ A : Finset (ZMod N),
       (A.card : ℝ) ≥ delta * N → ¬APFree A := by
-  -- N₀ = 1 works: the argument applies for all N ≥ 1
-  refine ⟨1, fun N hN A hdensity hAP => ?_⟩
-  have hNpos : 0 < N := by omega
+  -- N₀ = 2 works: the argument applies for all N ≥ 2
+  refine ⟨2, fun N hN A hdensity hAP => ?_⟩
+  have hNgt : 1 < N := by omega
   -- Iteration chain: after k density-increment steps, we get a set of
-  -- density ≥ delta + k * delta²/100 in some Z/MZ with M > 0
+  -- density ≥ delta + k * delta²/100 in some Z/MZ with M > 1
   have chain : ∀ k : ℕ, ∃ (M : ℕ) (B : Finset (ZMod M)),
-      0 < M ∧ APFree B ∧ (B.card : ℝ) ≥ (delta + ↑k * delta ^ 2 / 100) * ↑M := by
+      1 < M ∧ APFree B ∧ (B.card : ℝ) ≥ (delta + ↑k * delta ^ 2 / 100) * ↑M := by
     intro k
     induction k with
     | zero =>
       simp only [Nat.cast_zero, zero_mul, zero_div, add_zero]
-      exact ⟨N, A, hNpos, hAP, hdensity⟩
+      exact ⟨N, A, hNgt, hAP, hdensity⟩
     | succ k ih =>
-      obtain ⟨M, B, hMpos, hBAP, hBdens⟩ := ih
-      obtain ⟨M', B', hM'pos, hB'AP, hB'dens⟩ :=
-        density_iteration delta hdelta k M hMpos B hBAP hBdens
-      refine ⟨M', B', hM'pos, hB'AP, ?_⟩
+      obtain ⟨M, B, hMgt, hBAP, hBdens⟩ := ih
+      obtain ⟨M', B', hM'gt, hB'AP, hB'dens⟩ :=
+        density_iteration delta hdelta k M hMgt B hBAP hBdens
+      refine ⟨M', B', hM'gt, hB'AP, ?_⟩
       push_cast at hB'dens ⊢
       linarith
   -- Choose K large enough that delta + K * delta²/100 > 1
   obtain ⟨K, hK⟩ := exists_nat_gt (100 / delta ^ 2)
-  obtain ⟨M, B, hMpos, _, hBdens⟩ := chain K
+  obtain ⟨M, B, hMgt, _, hBdens⟩ := chain K
   haveI : NeZero M := ⟨by omega⟩
   -- Clear the denominator: 100/delta² < K implies 100 < K*delta²
   have hd2 : delta ^ 2 > 0 := by positivity
@@ -740,7 +956,7 @@ theorem roth_density_bound (delta : ℝ) (hdelta : 0 < delta) (hdelta1 : delta �
     linarith
   -- The density exceeds 1, so |B| > M
   have hgt1 : delta + ↑K * delta ^ 2 / 100 > 1 := by linarith
-  have hMcast : (0 : ℝ) < ↑M := Nat.cast_pos.mpr hMpos
+  have hMcast : (0 : ℝ) < ↑M := Nat.cast_pos.mpr (by omega : 0 < M)
   have hBgt : (B.card : ℝ) > ↑M := by
     calc (B.card : ℝ) ≥ (delta + ↑K * delta ^ 2 / 100) * ↑M := hBdens
       _ > 1 * ↑M := mul_lt_mul_of_pos_right hgt1 hMcast
