@@ -88,6 +88,17 @@ theorem apFree_iff_tripleCount_zero {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
     simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_univ, true_and] at this
     exact this ⟨hd, ha, had, hadd⟩
 
+/-- tripleCount + |A| expressed as a triple sum of AP indicators.
+    ∑_{x∈A} ∑_{y∈A} ∑_{z∈A} [x+z=2y] counts all (a,d) with a,a+d,a+2d ∈ A
+    (including d=0), where (a, a+2d, a+d) = (x, z, y). -/
+private theorem tripleCount_add_card_eq_triple_sum {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
+    (tripleCount A : ℂ) + ↑A.card = A.sum fun x => A.sum fun y =>
+      A.sum fun z => if x + z = 2 * y then (1 : ℂ) else 0 := by
+  -- The RHS counts |{(x,y,z) ∈ A³ : x+z=2y}|.
+  -- Bijection: (a,d) with a,a+d,a+2d ∈ A ↦ (x,y,z) = (a, a+d, a+2d).
+  -- d=0 gives |A| degenerate triples, d≠0 gives tripleCount A.
+  sorry
+
 -- ═══════════════════════════════════════════════════════════════════
 -- PART III: FOURIER ANALYSIS ON Z/NZ
 -- ═══════════════════════════════════════════════════════════════════
@@ -408,20 +419,32 @@ theorem triple_count_fourier {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
         fourierCoeff A r ^ 2 * starRingEnd ℂ (fourierCoeff A (2 * r))) := by
   have hN : (↑N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
   rw [eq_comm, inv_mul_eq_div, div_eq_iff hN, eq_comm]
-  -- Part A: Expand the Fourier sum via orthogonality
-  simp_rw [fourierCoeff_eq_sum_psi, sq]
-  simp_rw [map_sum (starRingEnd ℂ), conj_psi]
-  simp_rw [Finset.sum_mul, Finset.mul_sum]
-  simp only [← psi_add, Finset.mul_sum]
+  -- Goal: ((tripleCount A : ℂ) + ↑A.card) * ↑N = ∑ r, Â(r)² · conj(Â(2r))
+  -- Part A: Expand Fourier coefficients as ψ sums
+  simp_rw [fourierCoeff_eq_sum_psi, sq, map_sum (starRingEnd ℂ), conj_psi]
+  -- Distribute products over sums
+  simp_rw [Finset.sum_mul, Finset.mul_sum, Finset.sum_mul]
+  -- Combine ψ products: ψ(r*x) * ψ(r*z) * ψ(-(2*r*y)) → ψ(r*(x+z-2y))
   simp_rw [show ∀ (r x z y : ZMod N),
-    ψ (r * x + r * z + -(2 * r * y)) = ψ (r * (x + z - 2 * y)) from
-    fun _ _ _ _ => congr_arg ψ (by ring)]
-  -- Part A continued: swap sums and apply orthogonality
-  -- After fixing simp_rw breakage (Mathlib v4.26 API change), the conv
-  -- tactics need rework to match the new expression structure.
-  -- TODO: rebuild conv/sum_comm chain + char_orthogonality application
-  -- + Part B (combinatorial bijection)
-  sorry
+    ψ (r * x) * ψ (r * z) * ψ (-(2 * r * y)) = ψ (r * (x + z - 2 * y)) from
+    fun r x z y => by rw [← psi_add, ← psi_add]; congr 1; ring]
+  -- RHS: ∑_r ∑_{x∈A} ∑_{z∈A} ∑_{y∈A} ψ(r * (x + z - 2 * y))
+  -- Part B: Swap r sum to innermost position
+  simp_rw [Finset.sum_comm (s := Finset.univ) (t := A)]
+  -- Now: ∑_{x∈A} ∑_{z∈A} ∑_{y∈A} ∑_r ψ(r * (x + z - 2 * y))
+  -- Part C: Apply character orthogonality
+  simp_rw [char_orthogonality, sub_eq_zero]
+  -- Each inner sum: if x + z = 2*y then ↑N else 0
+  -- Part D: Factor out N and match combinatorial identity
+  simp_rw [show ∀ (P : Prop) [Decidable P],
+    (if P then (↑N : ℂ) else 0) = ↑N * if P then (1 : ℂ) else 0 from
+    fun P _ => by split_ifs <;> simp]
+  simp_rw [← Finset.mul_sum]
+  rw [mul_comm]
+  -- Goal: ((tripleCount A : ℂ) + ↑A.card) * ↑N = ↑N * ∑_{x∈A} ∑_{z∈A} ∑_{y∈A} if x+z=2y then 1 else 0
+  congr 1
+  -- The Fourier expansion sum matches the triple sum in our helper
+  exact tripleCount_add_card_eq_triple_sum A
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART IV: LARGE FOURIER COEFFICIENT FROM AP-FREENESS
