@@ -11,8 +11,17 @@
     "content": "Vieta's formulas relate polynomial coefficients to symmetric functions of roots.\n\nFor x^2 - bx + c = 0 with roots r, s:\n- Sum: r + s = b\n- Product: r * s = c\n\nNamed after Francois Viete (1540-1603), who revolutionized algebra by using letters for unknowns.",
     "mathContext": "For $x^2 - bx + c = 0$ with roots $r, s$: $r + s = b$ and $rs = c$; in general: $\\text{coeff}(x^{n-k}) = (-1)^k e_k(r_1,\\ldots,r_n)$",
     "significance": "key",
-    "relatedConcepts": ["Viete", "symmetric functions", "polynomial roots", "elementary symmetric polynomials"],
-    "prerequisites": ["polynomial definition", "roots of polynomials", "symmetric functions"]
+    "relatedConcepts": [
+      "Viete",
+      "symmetric functions",
+      "polynomial roots",
+      "elementary symmetric polynomials"
+    ],
+    "prerequisites": [
+      "polynomial definition",
+      "roots of polynomials",
+      "symmetric functions"
+    ]
   },
   {
     "id": "ann-quadratic",
@@ -21,13 +30,21 @@
       "startLine": 39,
       "endLine": 44
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Vieta's Formula (Quadratic)",
     "content": "**Theorem**: If x is a root of x^2 - bx + c = 0, then there exists y with:\n- y is also a root\n- x + y = b (sum of roots)\n- x * y = c (product of roots)\n\nThis is `vieta_formula_quadratic` from Mathlib.",
     "mathContext": "`vieta_formula_quadratic`: $x^2 - bx + c = 0$ and $x$ root $\\Rightarrow \\exists y,\\, y^2 - by + c = 0 \\wedge x+y = b \\wedge xy = c$",
     "significance": "key",
-    "relatedConcepts": ["quadratic", "sum", "product", "vieta_formula_quadratic"],
-    "prerequisites": ["Polynomial.IsRoot", "Mathlib.RingTheory.Polynomial.Vieta"]
+    "relatedConcepts": [
+      "quadratic",
+      "sum",
+      "product",
+      "vieta_formula_quadratic"
+    ],
+    "prerequisites": [
+      "Polynomial.IsRoot",
+      "Mathlib.RingTheory.Polynomial.Vieta"
+    ]
   },
   {
     "id": "ann-example-5-6",
@@ -36,13 +53,20 @@
       "startLine": 54,
       "endLine": 63
     },
-    "type": "example",
+    "type": "context",
     "title": "Example: x^2 - 5x + 6",
     "content": "The polynomial x^2 - 5x + 6 = 0 has roots 2 and 3.\n\nVerification:\n- Sum: 2 + 3 = 5 ✓\n- Product: 2 * 3 = 6 ✓\n- Root check: 2^2 - 5*2 + 6 = 4 - 10 + 6 = 0 ✓\n- Root check: 3^2 - 5*3 + 6 = 9 - 15 + 6 = 0 ✓",
     "mathContext": "$x^2 - 5x + 6 = (x-2)(x-3)$; $r_1 + r_2 = 2+3 = 5$ and $r_1 r_2 = 6$",
     "significance": "supporting",
-    "relatedConcepts": ["verification", "factorization", "native_decide"],
-    "prerequisites": ["Vieta quadratic theorem", "Polynomial.IsRoot definition"]
+    "relatedConcepts": [
+      "verification",
+      "factorization",
+      "native_decide"
+    ],
+    "prerequisites": [
+      "Vieta quadratic theorem",
+      "Polynomial.IsRoot definition"
+    ]
   },
   {
     "id": "ann-cubic-example",
@@ -51,13 +75,21 @@
       "startLine": 79,
       "endLine": 90
     },
-    "type": "example",
+    "type": "context",
     "title": "Example: Cubic with Roots 1, 2, 3",
     "content": "The polynomial x^3 - 6x^2 + 11x - 6 = 0 has roots 1, 2, 3.\n\nVerification:\n- Sum: 1 + 2 + 3 = 6 ✓\n- Sum of pairs: 1*2 + 1*3 + 2*3 = 2 + 3 + 6 = 11 ✓\n- Product: 1 * 2 * 3 = 6 ✓\n\nNote the sign pattern: coefficient of x^2 is -6 = -(sum of roots).",
     "mathContext": "$(x-1)(x-2)(x-3) = x^3 - 6x^2 + 11x - 6$; $e_1 = 6$, $e_2 = 11$, $e_3 = 6$",
     "significance": "key",
-    "relatedConcepts": ["cubic", "sign pattern", "verification", "elementary symmetric"],
-    "prerequisites": ["elementary symmetric polynomials e_1, e_2, e_3", "Multiset.esymm"]
+    "relatedConcepts": [
+      "cubic",
+      "sign pattern",
+      "verification",
+      "elementary symmetric"
+    ],
+    "prerequisites": [
+      "elementary symmetric polynomials e_1, e_2, e_3",
+      "Multiset.esymm"
+    ]
   },
   {
     "id": "ann-general",
@@ -66,13 +98,22 @@
       "startLine": 101,
       "endLine": 114
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "General Vieta Relation",
     "content": "**Theorem**: For a polynomial p with roots forming multiset S:\n\np.coeff(k) = leadingCoeff * (-1)^(deg - k) * esymm(S, deg - k)\n\nwhere esymm(S, j) is the j-th elementary symmetric polynomial of S.\n\nFor monic polynomials, leadingCoeff = 1, simplifying the formula.",
     "mathContext": "$c_k = (-1)^{n-k} e_{n-k}(r_1,\\ldots,r_n)$; `coeff_eq_esymm_roots_of_card` in Mathlib",
     "significance": "key",
-    "relatedConcepts": ["elementary symmetric", "general formula", "monic", "coeff_eq_esymm_roots_of_card"],
-    "prerequisites": ["Multiset.esymm definition", "Polynomial.coeff", "Polynomial.roots multiset"]
+    "relatedConcepts": [
+      "elementary symmetric",
+      "general formula",
+      "monic",
+      "coeff_eq_esymm_roots_of_card"
+    ],
+    "prerequisites": [
+      "Multiset.esymm definition",
+      "Polynomial.coeff",
+      "Polynomial.roots multiset"
+    ]
   },
   {
     "id": "ann-monic-quadratic",
@@ -81,13 +122,22 @@
       "startLine": 130,
       "endLine": 134
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Monic Quadratic Expansion",
     "content": "**Formula**: (x - r1)(x - r2) = x^2 - (r1 + r2)*x + r1*r2\n\nThis explicit expansion shows:\n- Coefficient of x = -(sum of roots)\n- Constant term = product of roots\n\nThe formula is verified by ring arithmetic.",
     "mathContext": "$(x - r_1)(x - r_2) = x^2 - (r_1 + r_2)x + r_1 r_2$; `ring` tactic closes the goal via commutative ring axioms",
     "significance": "supporting",
-    "relatedConcepts": ["expansion", "factorization", "roots", "ring tactic"],
-    "prerequisites": ["CommRing typeclass", "ring tactic", "polynomial multiplication"]
+    "relatedConcepts": [
+      "expansion",
+      "factorization",
+      "roots",
+      "ring tactic"
+    ],
+    "prerequisites": [
+      "CommRing typeclass",
+      "ring tactic",
+      "polynomial multiplication"
+    ]
   },
   {
     "id": "ann-monic-cubic",
@@ -96,12 +146,21 @@
       "startLine": 136,
       "endLine": 141
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Monic Cubic Expansion",
     "content": "**Formula**:\n(x - r1)(x - r2)(x - r3) = x^3 - (r1+r2+r3)*x^2 + (r1r2+r1r3+r2r3)*x - r1r2r3\n\nThe alternating signs:\n- Coefficient of x^2: negative sum\n- Coefficient of x^1: positive sum of pairs\n- Coefficient of x^0: negative product",
     "mathContext": "$(x-r_1)(x-r_2)(x-r_3) = x^3 - e_1 x^2 + e_2 x - e_3$ where $e_k$ are elementary symmetric; alternating signs from $(-1)^k$",
     "significance": "supporting",
-    "relatedConcepts": ["cubic", "alternating signs", "expansion", "elementary symmetric e_3"],
-    "prerequisites": ["monic_quadratic_vieta", "ring tactic", "polynomial degree-3 arithmetic"]
+    "relatedConcepts": [
+      "cubic",
+      "alternating signs",
+      "expansion",
+      "elementary symmetric e_3"
+    ],
+    "prerequisites": [
+      "monic_quadratic_vieta",
+      "ring tactic",
+      "polynomial degree-3 arithmetic"
+    ]
   }
 ]
