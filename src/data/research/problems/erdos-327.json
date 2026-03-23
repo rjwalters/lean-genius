@@ -29,9 +29,10 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: sumDvdProd_iff_reduced_divides_gcd fully proved. File has 0 sorries, 7 complete theorems, 2 axioms (vanDoorn_bound + unitFraction equiv). GCD characterization proved via coprimality of reduced fractions and mul_dvd_mul_iff_left.",
+    "progressSummary": "PROGRESS: sumDvdProd_iff_unitFraction axiom ELIMINATED (proved as theorem). File now: 0 sorries, 1 axiom (vanDoorn bound only). Proof uses div_add_div + div_eq_div_iff + exact_mod_cast.",
     "builtItems": [
-      "Proved sumDvdProd_iff_reduced_divides_gcd in Erdos327Problem.lean:144-168 - complete proof replacing sorry"
+      "Proved sumDvdProd_iff_reduced_divides_gcd in Erdos327Problem.lean:144-168 - complete proof replacing sorry",
+      "sumDvdProd_iff_unitFraction: axiom→theorem via div_add_div + div_eq_div_iff in ℚ"
     ],
     "insights": [
       "Proof strategy: write a=d*a', b=d*b' with d=gcd. Then (a+b)|a*b ↔ (a'+b')|d via coprimality of a'+b' and a'*b'",
@@ -39,7 +40,8 @@
       "Main Mathlib API challenge: finding exact lemma names for Nat.Coprime.add_left style results",
       "Proof uses coprime_div_gcd_div_gcd to get gcd(a/d, b/d)=1, then derives gcd(a/d+b/d, a/d*b/d)=1 via Coprime.mul_right",
       "Key Mathlib API: mul_dvd_mul_iff_left cancels common factor d from divisibility, Coprime.dvd_of_dvd_mul_right extracts the coprime factor",
-      "coprime_self_add_right is the bridge: gcd(a, a+b) = gcd(a, b) allows lifting coprimality to the sum"
+      "coprime_self_add_right is the bridge: gcd(a, a+b) = gcd(a, b) allows lifting coprimality to the sum",
+      "sumDvdProd_iff_unitFraction provable: 1/a+1/b=(a+b)/(ab), equals 1/c iff c*(a+b)=ab iff (a+b)|ab. Forward: div_add_div combines fractions, div_eq_div_iff clears denominators. Backward: field_simp in ℚ + exact_mod_cast back to ℕ."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -70,9 +72,9 @@
     {
       "path": "Proofs/Erdos327Problem.lean",
       "filename": "Erdos327Problem.lean",
-      "lineCount": 147,
-      "theoremCount": 7,
-      "axiomCount": 2,
+      "lineCount": 186,
+      "theoremCount": 8,
+      "axiomCount": 1,
       "defCount": 5,
       "sorryCount": 1,
       "isAristotle": false,

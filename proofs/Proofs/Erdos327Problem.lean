@@ -65,9 +65,39 @@ def ErdosProblem327_variant : Prop :=
 
 /- ## Unit fraction equivalence -/
 
-/-- `a + b ∣ a * b` iff `1/a + 1/b` is a unit fraction (i.e., `1/c` for some `c`). -/
-axiom sumDvdProd_iff_unitFraction (a b : ℕ) (ha : 0 < a) (hb : 0 < b) :
-    a + b ∣ a * b ↔ ∃ c : ℕ, 0 < c ∧ (1 : ℚ) / a + (1 : ℚ) / b = (1 : ℚ) / c
+/-- `a + b ∣ a * b` iff `1/a + 1/b` is a unit fraction (i.e., `1/c` for some `c`).
+    Proof: 1/a + 1/b = (a+b)/(ab), which equals 1/c iff c = ab/(a+b), iff (a+b) | ab. -/
+theorem sumDvdProd_iff_unitFraction (a b : ℕ) (ha : 0 < a) (hb : 0 < b) :
+    a + b ∣ a * b ↔ ∃ c : ℕ, 0 < c ∧ (1 : ℚ) / a + (1 : ℚ) / b = (1 : ℚ) / c := by
+  have ha' : (a : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have hb' : (b : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have hab : (a : ℚ) * b ≠ 0 := mul_ne_zero ha' hb'
+  have hab_pos : 0 < (a : ℚ) * b := by positivity
+  constructor
+  · -- (→) If (a+b) | ab, then c = ab/(a+b) is a positive natural number
+    intro ⟨c, hc⟩
+    have hc_pos : 0 < c := by
+      by_contra h; push_neg at h
+      have hc0 : c = 0 := by omega
+      rw [hc0, mul_zero] at hc
+      have := Nat.mul_pos ha hb
+      omega
+    refine ⟨c, hc_pos, ?_⟩
+    -- 1/a + 1/b = (a+b)/(ab) = (a+b)/((a+b)*c) = 1/c
+    have hc_ne : (c : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+    rw [div_add_div _ _ ha' hb', div_eq_div_iff (mul_ne_zero ha' hb') hc_ne]
+    have hc_q : (↑a : ℚ) * ↑b = (↑a + ↑b) * ↑c := by exact_mod_cast hc
+    linarith
+  · -- (←) If 1/a + 1/b = 1/c, then (a+b) | ab
+    intro ⟨c, hc_pos, heq⟩
+    have hc' : (c : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+    have hab' : (↑a + ↑b : ℚ) ≠ 0 := by positivity
+    -- From 1/a + 1/b = 1/c: (a+b)/(ab) = 1/c, so c*(a+b) = ab
+    have key : (↑c : ℚ) * (↑a + ↑b) = ↑a * ↑b := by
+      have := heq; field_simp at this; linarith
+    -- Extract the ℕ identity
+    have key_nat : c * (a + b) = a * b := by exact_mod_cast key
+    exact ⟨c, by linarith [key_nat]⟩
 
 /- ## Basic properties -/
 
