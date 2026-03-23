@@ -87,6 +87,29 @@
     ]
   },
   {
+    "id": "ann-part-ii-bridge",
+    "proofId": "abel-ruffini",
+    "range": {
+      "startLine": 51,
+      "endLine": 57
+    },
+    "type": "context",
+    "title": "Part II: The Galois-Theoretic Bridge",
+    "content": "This docstring introduces the central insight of the formalization: the connection between radical solvability (a field-theoretic property) and group solvability (a group-theoretic property). Galois's 1831 memoir established that these two notions correspond precisely.\n\nThe bridge is one-directional for the impossibility proof: solvable by radicals $\\Rightarrow$ solvable Galois group. The converse (solvable Galois group $\\Rightarrow$ solvable by radicals) also holds but is not needed here — only the contrapositive of the forward direction is used in `not_solvable_by_rad_of_not_solvable_gal`.",
+    "mathContext": "Galois's correspondence: $\\text{IsSolvableByRad}\\,F\\,\\alpha \\Leftrightarrow \\text{IsSolvable}(\\text{Gal}(\\text{minpoly}_F(\\alpha)))$. The forward direction ($\\Rightarrow$) is `solvableByRad.isSolvable'`; the backward direction ($\\Leftarrow$) uses the primitive element theorem and Galois's constructive procedure for extracting radicals from a solvable tower of normal subgroups.",
+    "significance": "context",
+    "prerequisites": [
+      "Galois theory",
+      "solvable groups",
+      "radical extensions"
+    ],
+    "relatedConcepts": [
+      "Galois correspondence",
+      "contrapositive reasoning",
+      "fundamental theorem of Galois theory"
+    ]
+  },
+  {
     "id": "ann-abel-ruffini-theorem",
     "proofId": "abel-ruffini",
     "range": {
@@ -95,8 +118,8 @@
     },
     "type": "theorem",
     "title": "The Galois Bridge Theorem",
-    "content": "**Theorem**: If α is expressible using radicals, then the Galois group of its minimal polynomial is solvable.\n\nThis is the key bridge: radical solvability (field theory) → group solvability (group theory).\n\nThe proof proceeds by induction on `IsSolvableByRad`. The key case: if α^n is solvable, then adjoining α creates a cyclic extension, and cyclic groups are abelian (hence solvable).",
-    "mathContext": "$\\alpha$ solvable by radicals $\\Rightarrow$ Gal(minpoly(α)) is solvable\n\nContrapositive: If Galois group is NOT solvable, roots are NOT expressible by radicals.",
+    "content": "**Theorem**: If α is expressible using radicals, then the Galois group of its minimal polynomial is solvable.\n\nThis is the key bridge: radical solvability (field theory) → group solvability (group theory).\n\nThe Lean proof is a one-liner: `solvableByRad.isSolvable' hq hroot hrad`. Internally, Mathlib proves this by induction on the `IsSolvableByRad` construction: each radical step $K_i \\to K_i(\\sqrt[n]{a})$ yields a cyclic (hence abelian) Galois group quotient, and a group built from abelian quotients is solvable. The hypotheses `hq : Irreducible q`, `hroot : aeval α q = 0`, and `hrad : IsSolvableByRad F α` are passed directly to Mathlib's lemma — the theorem is a pedagogical wrapper making the bridge explicit.",
+    "mathContext": "$\\alpha \\in \\text{solvableByRad}(F, E) \\Rightarrow \\text{IsSolvable}(\\text{Gal}(\\text{minpoly}_F(\\alpha)))$\n\nContrapositive (used in `not_solvable_by_rad_of_not_solvable_gal`): $\\neg\\text{IsSolvable}(\\text{Gal}(q)) \\Rightarrow \\neg\\text{IsSolvableByRad}\\,F\\,\\alpha$.\n\nThe converse ($\\Leftarrow$) also holds: given a solvable Galois group, one constructs a radical tower from the composition series $\\{e\\} = G_n \\triangleleft \\cdots \\triangleleft G_0 = G$ where each $G_i/G_{i+1}$ is cyclic, using Kummer theory to extract the radical at each step.",
     "significance": "critical",
     "prerequisites": [
       "field extensions",
@@ -284,7 +307,7 @@
     },
     "type": "theorem",
     "title": "The Abel-Ruffini Contrapositive: The Main Event",
-    "content": "`not_solvable_by_rad_of_not_solvable_gal` is the logical heart of the formalization. It takes the contrapositive of `galois_bridge`: if the Galois group of an irreducible polynomial $q$ is **not** solvable and $\\alpha$ is a root, then $\\alpha$ is **not** solvable by radicals. The proof is a 2-line `intro`/`exact`.\n\n`exists_quintic` provides a trivial witness ($X^5$) that degree-5 polynomials exist. To complete the Abel-Ruffini theorem for a *specific* quintic, one would need to show some $q \\in \\mathbb{Q}[X]$ of degree 5 has $\\text{Gal}(q) \\cong S_5$ — a computation the formalization leaves implicit.",
+    "content": "`not_solvable_by_rad_of_not_solvable_gal` is the logical heart of the formalization. It takes the contrapositive of `galois_bridge`: if the Galois group of an irreducible polynomial $q$ is **not** solvable and $\\alpha$ is a root, then $\\alpha$ is **not** solvable by radicals. The proof is a 2-line proof term: `intro hrad; exact hns (galois_bridge α q hq hroot hrad)` — assuming $\\alpha$ is solvable by radicals, applying the bridge to get `IsSolvable q.Gal`, and deriving a contradiction with `hns`.\n\n`exists_quintic` provides a trivial witness ($X^5$) that degree-5 polynomials exist. To complete the Abel-Ruffini theorem for a *specific* quintic, one would need to exhibit $q \\in \\mathbb{Q}[X]$ of degree 5 with $\\text{Gal}(q) \\cong S_5$. The standard example is $x^5 - x - 1$, whose Galois group over $\\mathbb{Q}$ is $S_5$ (verified by checking irreducibility mod 2 and that the discriminant has non-square part, forcing the full symmetric group).",
     "mathContext": "$\\neg\\,\\text{IsSolvable}(q.\\text{Gal}) \\Rightarrow \\neg\\,\\text{IsSolvableByRad}\\,F\\,\\alpha$.\n\nProof: Assume $\\text{IsSolvableByRad}\\,F\\,\\alpha$. By `galois_bridge`, $\\text{IsSolvable}(q.\\text{Gal})$. Contradiction with $\\neg\\,\\text{IsSolvable}(q.\\text{Gal})$. $\\square$\n\nFor the general quintic: $q = x^5 - x - 1$ over $\\mathbb{Q}$ has $\\text{Gal}(q) \\cong S_5$, so its roots are not expressible by radicals.",
     "significance": "critical",
     "prerequisites": [

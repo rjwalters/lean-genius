@@ -79,9 +79,8 @@
       }
     ],
     "relatedProofs": [
-      "erdos-44-problem",
-      "erdos-44-sidon-lower-bound",
-      "erdos-340-problem"
+      "erdos-44",
+      "erdos-340"
     ],
     "dateAdded": "2026-03-22",
     "axiomCount": 21,
@@ -164,19 +163,14 @@
   ],
   "crossReferences": [
     {
-      "targetId": "erdos-44-problem",
+      "targetId": "erdos-44",
       "relationship": "foundational",
-      "description": "Provides the Sidon set definitions and counting infrastructure imported by the Erdos Problem #44 formalization"
+      "description": "Provides the Sidon set definitions, counting infrastructure, and difference injectivity imported by the Erdos Problem #44 formalization"
     },
     {
-      "targetId": "erdos-44-sidon-lower-bound",
-      "relationship": "foundational",
-      "description": "Provides the sidon_lower_bound and difference set machinery imported by the Erdos #44 Sidon lower bound proof"
-    },
-    {
-      "targetId": "erdos-340-problem",
+      "targetId": "erdos-340",
       "relationship": "extends",
-      "description": "This infrastructure module provides the foundations for the main Erdos #340 problem formalization"
+      "description": "This infrastructure module provides the Sidon set library and greedy sequence axiomatization for the main Erdos #340 problem formalization"
     }
   ],
   "conclusion": {

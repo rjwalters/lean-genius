@@ -50,8 +50,8 @@
       }
     ],
     "relatedProofs": [
-      "amgm-inequality-oq-02-oq-02",
-      "newton-ind-step-2"
+      "amgm-inequality-oq-02",
+      "amgm-inequality"
     ],
     "dateAdded": "2026-03-22",
     "axiomCount": 0,
@@ -98,14 +98,14 @@
   ],
   "crossReferences": [
     {
-      "targetId": "amgm-inequality-oq-02-oq-02",
+      "targetId": "amgm-inequality-oq-02",
       "relationship": "foundational",
       "description": "Provides the key binomial inequality imported by the AM-GM inequality extension, which uses Newton's log-concavity of symmetric polynomials"
     },
     {
-      "targetId": "newton-ind-step-2",
-      "relationship": "foundational",
-      "description": "Provides the base binomial inequality imported by the second Newton inductive step variant for further log-concavity applications"
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "The AM-GM inequality is connected via Newton's inequalities: log-concavity of elementary symmetric polynomials implies AM-GM as a special case"
     }
   ],
   "conclusion": {
