@@ -229,32 +229,64 @@ theorem partitionEnergy_le_one (G : SimpleGraph V) [DecidableRel G.Adj]
     (hdisjoint : ∀ P Q : Finset V, P ∈ parts → Q ∈ parts → P ≠ Q →
       Disjoint P Q) :
     partitionEnergy G parts ≤ 1 := by
-  unfold partitionEnergy
-  split_ifs with h
+  unfold partitionEnergy; simp only; split_ifs with h
   · exact zero_le_one
-  · -- Each d(P,Q)^2 <= 1, and there are k^2 terms, so Sigma d^2 <= k^2
-    -- Therefore (1/k^2) * Sigma d^2 <= (1/k^2) * k^2 = 1
-    have hk2_ne : (↑(parts.card ^ 2) : ℚ) ≠ 0 :=
-      Nat.cast_ne_zero.mpr (pow_ne_zero 2 h)
-    have hsum : (parts.product parts).sum (fun pq => (edgeDensity G pq.1 pq.2) ^ 2)
-        ≤ ↑(parts.card ^ 2) := by
-      calc (parts.product parts).sum (fun pq => (edgeDensity G pq.1 pq.2) ^ 2)
-          ≤ (parts.product parts).sum (fun _ => (1 : ℚ)) := by
-            apply Finset.sum_le_sum; intro x _
-            have h1 := edgeDensity_nonneg G x.1 x.2
-            have h2 := edgeDensity_le_one G x.1 x.2
-            have : (edgeDensity G x.1 x.2) ^ 2 ≤ edgeDensity G x.1 x.2 := by
-              rw [sq]; exact mul_le_of_le_one_right h1 h2
-            linarith
-        _ = ↑(parts.product parts).card := by
-            simp [Finset.sum_const, nsmul_eq_mul]
-        _ = ↑(parts.card ^ 2) := by
-            congr 1
-            exact (Finset.card_product parts parts).trans (by ring)
-    calc (1 : ℚ) / ↑(parts.card ^ 2) *
-          (parts.product parts).sum (fun pq => (edgeDensity G pq.1 pq.2) ^ 2)
-        ≤ 1 / ↑(parts.card ^ 2) * ↑(parts.card ^ 2) :=
-          mul_le_mul_of_nonneg_left hsum (by positivity)
+  · -- h : ¬ (Fintype.card V : ℚ) = 0
+    set nq := (Fintype.card V : ℚ) with hnq_def
+    have hnq_ne : nq ≠ 0 := h
+    have hnq2_pos : (0 : ℚ) < nq ^ 2 := by positivity
+    -- Σ|P_i| ≤ n (disjoint parts cover ⊆ univ)
+    have h_parts_sum_le : parts.sum (fun P => (P.card : ℚ)) ≤ nq := by
+      rw [hnq_def]
+      have h_biunion_eq : (parts.biUnion id).card = parts.sum Finset.card :=
+        Finset.card_biUnion (fun a ha b hb hab =>
+          hdisjoint a b ha hb hab)
+      have : parts.sum Finset.card ≤ Fintype.card V := by
+        rw [← h_biunion_eq, Fintype.card]
+        exact Finset.card_le_card (Finset.subset_univ _)
+      push_cast; exact_mod_cast this
+    -- Each term ≤ |Pi|·|Pj|/nq² (since d² ≤ 1)
+    -- Σ|Pi|·|Pj|/nq² = (Σ|Pi|)²/nq² ≤ nq²/nq² = 1
+    have h_sum_bound : (parts.product parts).sum (fun pq =>
+        (pq.1.card : ℚ) * pq.2.card) ≤ nq * nq := by
+      -- Σ_{i,j} |Pi|·|Pj| = (Σ|Pi|)² ≤ nq²
+      -- Decompose: Σ_{(Pa,Pb)} |Pa|·|Pb| = Σ_Pa |Pa| · (Σ_Pb |Pb|)
+      --                                    = (Σ |P|) · (Σ |P|) ≤ nq²
+      have h_nest : (parts ×ˢ parts).sum (fun pq : Finset V × Finset V =>
+          (pq.1.card : ℚ) * pq.2.card) =
+          parts.sum (fun Pa => (Pa.card : ℚ) * parts.sum (fun Pb => (Pb.card : ℚ))) := by
+        rw [Finset.sum_product]
+        apply Finset.sum_congr rfl; intro Pa _
+        simp only [Prod.fst, Prod.snd]
+        rw [← Finset.mul_sum]
+      -- Factor: Σ_Pa c_Pa * K = K * Σ_Pa c_Pa where K = Σ c
+      set K := parts.sum (fun P => (P.card : ℚ))
+      have h_factor : parts.sum (fun Pa => (Pa.card : ℚ) * K) = K * K := by
+        rw [show parts.sum (fun Pa => (Pa.card : ℚ) * K) =
+            parts.sum (fun Pa => (Pa.card : ℚ)) * K from by
+          rw [← Finset.sum_mul]]
+      rw [show parts.product parts = parts ×ˢ parts from rfl]
+      linarith [mul_le_mul h_parts_sum_le h_parts_sum_le
+        (Finset.sum_nonneg (fun P _ => Nat.cast_nonneg _))
+        (by linarith [Nat.cast_nonneg (α := ℚ) (Fintype.card V)] :
+          (0 : ℚ) ≤ nq)]
+    calc (parts.product parts).sum (fun pq =>
+          (pq.1.card : ℚ) * pq.2.card / nq ^ 2 *
+          (edgeDensity G pq.1 pq.2) ^ 2)
+        ≤ (parts.product parts).sum (fun pq =>
+            (pq.1.card : ℚ) * pq.2.card / nq ^ 2) := by
+          apply Finset.sum_le_sum; intro pq _
+          have h1 := edgeDensity_nonneg G pq.1 pq.2
+          have h2 := edgeDensity_le_one G pq.1 pq.2
+          have hd2 : (edgeDensity G pq.1 pq.2) ^ 2 ≤ 1 := by
+            rw [sq]; exact mul_le_one₀ h2 h1 h2
+          have hnn : (0 : ℚ) ≤ (pq.1.card : ℚ) * pq.2.card / nq ^ 2 := by positivity
+          nlinarith [mul_le_of_le_one_right hnn hd2]
+      _ = (1 / nq ^ 2) * (parts.product parts).sum (fun pq =>
+            (pq.1.card : ℚ) * pq.2.card) := by
+          rw [Finset.mul_sum]; congr 1; ext pq; ring
+      _ ≤ (1 / nq ^ 2) * (nq * nq) := by
+          apply mul_le_mul_of_nonneg_left h_sum_bound (by positivity)
       _ = 1 := by field_simp
 
 /-- The energy of a regular partition is finite-step achievable: since
