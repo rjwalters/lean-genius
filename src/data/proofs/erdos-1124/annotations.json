@@ -191,7 +191,7 @@
       "startLine": 137,
       "endLine": 165
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Laczkovich's Theorem (1990)",
     "content": "**Laczkovich's breakthrough: YES, with translations only!**\n\nMiklós Laczkovich (1990) proved that every circle and square of equal area are translation equidecomposable. The proof uses discrepancy theory: Laczkovich showed that if a set has small discrepancy with respect to half-planes, it is equidecomposable with a square by translations. He then proved disks have sufficiently small discrepancy.\n\nThe axiom `laczkovich_theorem` states the result. `laczkovich_piece_count` bounds the pieces at $< 10^{51}$. `translation_implies_isometry` derives the isometry version, and `tarski_solved` closes Tarski's problem.",
     "significance": "key",
@@ -215,7 +215,7 @@
       "startLine": 171,
       "endLine": 184
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Non-Measurability and Dubins-Hirsch-Karush",
     "content": "**The pieces must be non-Lebesgue-measurable.**\n\nTwo deep results are axiomatized:\n1. `pieces_not_measurable`: any finite decomposition of a disk must include a non-measurable piece.\n2. `dubins_hirsch_karush` (1963): it is impossible to decompose a disk and square into finitely many *measurable*, translation-congruent pieces.\n\nThis explains the essential role of the Axiom of Choice in Laczkovich's proof — the pieces exist but cannot be explicitly constructed. The Dubins-Hirsch-Karush result preceded Laczkovich by 27 years, showing that if a solution existed, it would necessarily involve pathological sets.",
     "significance": "key",
@@ -240,7 +240,7 @@
       "startLine": 190,
       "endLine": 209
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result: erdos_1124",
     "content": "**The combined main result for Erdős Problem #1124.**\n\nProves two things simultaneously:\n1. `TarskiProblem` holds (the original question is answered affirmatively)\n2. `TranslationEquidecomposable` for all equal-area circles and squares (the stronger Laczkovich form)\n\nThe proof is `exact ⟨tarski_solved, laczkovich_theorem⟩`, packaging the derived theorem with the axiomatized result. This is the final summary theorem that closes the problem.",
     "significance": "key",

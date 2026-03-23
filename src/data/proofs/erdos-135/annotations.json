@@ -96,7 +96,7 @@
       "startLine": 90,
       "endLine": 106
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Tao's Counterexample (2024)",
     "content": "**TaoCounterexample**: For n ≥ 2, ∃ A with:\n- A.card = n\n- HasFiveDistanceProperty A ✓\n- distanceCount A ≤ C·n²/√(log n)\n\n**axiom tao_counterexample : TaoCounterexample**\n\n**theorem erdos_135_disproved : ¬ErdosConjecture135** ✓\n\nThe counterexample has fewer than n² distances while satisfying the five-distance property!",
     "mathContext": "n²/√(log n) is o(n²), so this disproves the Ω(n²) conjecture. The log factor matches Guth-Katz lower bounds.",
@@ -132,7 +132,7 @@
       "startLine": 116,
       "endLine": 141
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Parallelograms Are Forbidden",
     "content": "**IsParallelogram p₁ p₂ p₃ p₄**: Opposite sides are equal and parallel.\n\np₁ - p₂ = p₄ - p₃ (or permutations)\n\n**theorem parallelogram_few_distances**: Parallelograms have ≤ 3 distinct distances.\n\nSince 3 < 5, parallelograms violate the five-distance property!",
     "mathContext": "A parallelogram has 2 side lengths and 2 diagonal lengths. If it's a rhombus, sides are equal (2 distances). If rectangular, diagonals are equal (3 distances).",
@@ -150,7 +150,7 @@
       "startLine": 166,
       "endLine": 204
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Forbidden Four-Point Patterns",
     "content": "**IsForbiddenPattern p₁ p₂ p₃ p₄**: (fourPointDistances).card < 5\n\n**Forbidden patterns include**:\n- Parallelograms (2-3 distances)\n- Isosceles trapezoids\n- Equilateral triangle with center\n- Various other symmetric configurations\n\n**theorem parallelogram_forbidden**: IsParallelogram → IsForbiddenPattern ✓\n\nTao's construction must avoid ALL these patterns.",
     "mathContext": "The key insight: avoiding parallelograms is the main constraint. Other patterns are handled by random perturbations.",
@@ -186,7 +186,7 @@
       "startLine": 236,
       "endLine": 266
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Guth-Katz Lower Bound",
     "content": "**Trivial upper bound**: distanceCount ≤ n(n-1)/2 (all distances distinct)\n\n**Guth-Katz (2015)**: distanceCount ≥ c·n/√(log n)\n\nThis is the famous solution to Erdős's distinct distances problem!\n\n**Comparison**: Tao's upper bound O(n²/√(log n)) shows the five-distance property doesn't help much - still only saves a √(log n) factor.",
     "mathContext": "Guth-Katz used polynomial partitioning, a breakthrough technique in incidence geometry. The log factor remains mysterious.",
@@ -204,7 +204,7 @@
       "startLine": 291,
       "endLine": 300
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Matching Bounds",
     "content": "**theorem tao_optimal_up_to_log**: The lower and upper bounds match in the log exponent!\n\n- **Lower**: distanceCount ≥ C₁ · n/√(log n) (Guth-Katz)\n- **Upper**: distanceCount ≤ C₂ · n²/√(log n) with five-distance (Tao)\n\nProof combines the two axioms with existential witnesses.",
     "mathContext": "The √(log n) appears in both bounds - not a coincidence. This suggests the log factor captures something fundamental about distance geometry.",

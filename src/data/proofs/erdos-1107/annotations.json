@@ -60,7 +60,7 @@
       "startLine": 55,
       "endLine": 58
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Decidability Instance",
     "content": "We prove that `IsFull r n` is **decidable** for concrete values. This allows us to use `native_decide` to verify examples computationally.",
     "mathContext": "Since `primeFactors` is a finite set and divisibility is decidable, checking whether all prime factors satisfy the condition is decidable.",
@@ -95,7 +95,7 @@
       "startLine": 71,
       "endLine": 94
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Basic Properties of r-Powerful Numbers",
     "content": "We establish foundational facts: **0 and 1 are r-powerful** for all r (vacuously, they have no prime factors). Every number is **0-powerful and 1-powerful**. If n is k-powerful and m ≤ k, then n is also m-powerful (monotonicity).",
     "mathContext": "These lemmas follow from basic properties of divisibility and the empty prime factorization of 0 and 1. The monotonicity uses that p^m divides p^k when m ≤ k.",
@@ -113,7 +113,7 @@
       "startLine": 100,
       "endLine": 110
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Verified Squareful Numbers",
     "content": "We verify computationally that **4, 8, 9, and 36 are 2-powerful** (squareful). These are verified using `native_decide`, which evaluates the predicate directly.",
     "mathContext": "4 = 2², 8 = 2³, 9 = 3², and 36 = 2² × 3². Each prime factor appears with exponent ≥ 2, satisfying the 2-powerful condition.",
@@ -131,7 +131,7 @@
       "startLine": 120,
       "endLine": 128
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Conjecture (Axiom)",
     "content": "**Erdős Problem #1107**: For all r ≥ 2, every sufficiently large integer is the sum of at most r+1 many r-powerful numbers. This general conjecture **remains OPEN**.",
     "mathContext": "We state this as an axiom using `∀ᶠ n in atTop`, meaning 'for all sufficiently large n'. The techniques that work for r=2 do not extend to larger r.",
@@ -149,7 +149,7 @@
       "startLine": 130,
       "endLine": 139
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Heath-Brown's Theorem (r=2)",
     "content": "**Heath-Brown (1988)** proved the r=2 case: every sufficiently large integer is the sum of at most **three squareful numbers**. This resolves Erdős #1107 for the most important case.",
     "mathContext": "The proof uses the theory of ternary quadratic forms and deep analytic results. A ternary quadratic form is a polynomial like ax² + by² + cz², and Heath-Brown's work shows connections between these forms and squareful sums.",
@@ -167,7 +167,7 @@
       "startLine": 147,
       "endLine": 159
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Verified Example: 13 = 4 + 9",
     "content": "We prove that **13 can be written as 4 + 9**, the sum of two squareful numbers. This is a concrete witness demonstrating the conjecture for small cases.",
     "mathContext": "The proof constructs the list [4, 9], verifies its length is ≤ 3, checks that 4 and 9 are both 2-powerful, and confirms the sum is 13. All checks use `native_decide` for computational verification.",
@@ -185,7 +185,7 @@
       "startLine": 161,
       "endLine": 170
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Verified Example: 17 = 8 + 9",
     "content": "We prove that **17 = 8 + 9**, another sum of two squareful numbers. Both 8 = 2³ and 9 = 3² are 2-powerful.",
     "mathContext": "This example shows that even prime numbers (17) can be represented as sums of squareful numbers, which is not obvious since primes themselves are not squareful (except trivially 1).",

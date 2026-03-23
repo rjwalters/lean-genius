@@ -99,7 +99,7 @@
       "startLine": 66,
       "endLine": 77
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Non-dividing Implies Non-averaging",
     "content": "Every non-dividing set is non-averaging. The proof sketch: if $a = \\text{avg}(S)$, then $\\sum S = a \\cdot |S|$, so $a \\mid \\sum S$, contradicting the non-dividing property. The divisibility extraction from the rational equation remains a sorry.",
     "mathContext": "$a = \\frac{\\sum S}{|S|}$ in $\\mathbb{Q}$ $\\implies$ $\\sum S = a \\cdot |S|$ in $\\mathbb{N}$ $\\implies$ $a \\mid \\sum S$. The key step is lifting the $\\mathbb{Q}$-equation back to $\\mathbb{N}$-divisibility.",
@@ -145,7 +145,7 @@
       "startLine": 86,
       "endLine": 89
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Monotonicity of F",
     "content": "$F$ is monotone: $N \\leq M \\implies F(N) \\leq F(M)$. Any non-dividing subset of $\\{1,\\ldots,N\\}$ is also a subset of $\\{1,\\ldots,M\\}$ when $N \\leq M$.",
     "mathContext": "$N \\leq M \\implies \\{1,\\ldots,N\\} \\subseteq \\{1,\\ldots,M\\} \\implies$ every non-dividing $A \\subseteq [N]$ is a candidate in $[M]$, so $F(N) \\leq F(M)$.",
@@ -166,7 +166,7 @@
       "startLine": 93,
       "endLine": 96
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "ELRSS Upper Bound (1999)",
     "content": "Erdős, Lev, Rauzy, Sandor, and Sarkozy (1999) proved $F(N) < 3\\sqrt{N} + 1$. This was the first strong upper bound, establishing $F(N) = O(\\sqrt{N})$ and showing the problem was tractable.",
     "mathContext": "$F(N) < 3\\sqrt{N} + 1$ for all $N \\geq 1$. The bound is tight up to constants: the $\\sqrt{N}$ exponent was later improved to $N^{1/4}$ by Pham-Zakharov.",
@@ -188,7 +188,7 @@
       "startLine": 98,
       "endLine": 103
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Pham-Zakharov Upper Bound (2024)",
     "content": "Pham and Zakharov (2024) proved $F(N) \\leq N^{1/4+o(1)}$. The key innovation was exploiting the connection to non-averaging sets: since non-dividing $\\implies$ non-averaging, any upper bound on non-averaging sets applies to non-dividing sets. This resolved the original question.",
     "mathContext": "$\\exists \\varepsilon(N) \\to 0: F(N) \\leq N^{1/4 + \\varepsilon(N)}$ for $N \\geq 2$. Formalized with explicit $\\varepsilon : \\mathbb{N} \\to \\mathbb{R}$ satisfying $|\\varepsilon(N)| < \\delta$ for all $N \\geq N_0(\\delta)$.",
@@ -211,7 +211,7 @@
       "startLine": 105,
       "endLine": 110
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Original Question Resolved: NO",
     "content": "The original question 'Is $F(N) > N^{1/2-o(1)}$?' is answered NO. Since $N^{1/4+o(1)} < N^{1/2-\\varepsilon}$ for large $N$ and any $\\varepsilon > 0$, the Pham-Zakharov bound rules out $N^{1/2}$-type growth.",
     "mathContext": "$F(N) \\leq N^{1/4+o(1)}$ and $1/4 < 1/2 - \\varepsilon$ for small $\\varepsilon$, so $F(N) \\not> N^{1/2-o(1)}$.",
@@ -232,7 +232,7 @@
       "startLine": 114,
       "endLine": 117
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Csaba Lower Bound",
     "content": "Csaba proved $F(N) \\gg N^{1/5}$: there exist non-dividing subsets of $\\{1,\\ldots,N\\}$ of size $\\geq c N^{1/5}$. This provides a polynomial lower bound but is much weaker than the $N^{1/4}$ upper bound.",
     "mathContext": "$\\exists c > 0: F(N) \\geq c \\cdot N^{1/5}$ for all $N \\geq 1$. The exponent $1/5$ is far from the upper bound exponent $1/4$.",
@@ -253,7 +253,7 @@
       "startLine": 119,
       "endLine": 125
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Straus Lower Bound",
     "content": "Straus proved $F(N) > \\exp\\left((\\sqrt{2/\\ln 2} + o(1))\\sqrt{\\ln N}\\right)$ where $\\sqrt{2/\\ln 2} \\approx 1.699$. This is subexponential but superpolynomial in $\\log N$, disproving Erdős's original conjecture that $F(N) < (\\log N)^{O(1)}$.",
     "mathContext": "$F(N) > \\exp\\left(c\\sqrt{\\log N}\\right)$ with $c = \\sqrt{2/\\log 2} \\approx 1.699$. This grows faster than $(\\log N)^k$ for any $k$ but slower than $N^\\alpha$ for any $\\alpha > 0$.",
@@ -277,7 +277,7 @@
       "startLine": 127,
       "endLine": 130
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Straus Constant Bounds",
     "content": "The Straus constant $\\sqrt{2/\\ln 2}$ satisfies $1.6 < \\sqrt{2/\\ln 2} < 1.8$. This numerical verification (currently a sorry) would follow from `norm_num` with appropriate Real.sqrt and Real.log bounds.",
     "mathContext": "$\\sqrt{2/\\log 2} = \\sqrt{2/0.6931\\ldots} = \\sqrt{2.8854\\ldots} \\approx 1.6992$.",
@@ -320,7 +320,7 @@
       "startLine": 148,
       "endLine": 152
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős's Original Conjecture Disproved",
     "content": "Erdős originally conjectured $F(N) < (\\log N)^{O(1)}$. Straus's construction disproved this: $\\exp(c\\sqrt{\\log N})$ grows faster than $(\\log N)^k$ for any $k$, since $c\\sqrt{\\log N} \\gg k \\log\\log N$.",
     "mathContext": "$\\exp(c\\sqrt{\\log N}) > (\\log N)^k$ for large $N$, since $c\\sqrt{\\log N} > k \\log\\log N$ as $\\sqrt{x}/\\log x \\to \\infty$.",
@@ -341,7 +341,7 @@
       "startLine": 156,
       "endLine": 166
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Singleton Non-Dividing (Verified)",
     "content": "Any singleton $\\{n\\}$ with $n \\geq 1$ is trivially non-dividing: $\\{n\\}\\setminus\\{n\\} = \\emptyset$ has no subset with $\\geq 2$ elements. This is fully verified in Lean using `Finset.subset_empty` and the cardinality contradiction.",
     "mathContext": "$|S| \\geq 2$ and $S \\subseteq \\{n\\} \\setminus \\{n\\} = \\emptyset$ is a contradiction, so the universal quantifier is vacuously true.",
@@ -387,7 +387,7 @@
       "startLine": 196,
       "endLine": 198
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "F(N) ≤ g(N)",
     "content": "The non-dividing maximum is at most the non-averaging maximum. This key inequality allows transferring upper bounds: any bound on $g(N)$ (from Problem #186 research) immediately applies to $F(N)$.",
     "mathContext": "$\\text{IsNonDividing}(A) \\implies \\text{IsNonAveraging}(A) \\implies A$ is a candidate for $g(N) \\implies F(N) \\leq g(N)$.",
@@ -408,7 +408,7 @@
       "startLine": 200,
       "endLine": 206
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Pham-Zakharov Bound Transfer",
     "content": "The Pham-Zakharov bound on $g(N)$ chains to $F(N)$: if $g(N) \\leq N^{1/4+\\varepsilon}$ then $F(N) \\leq N^{1/4+\\varepsilon}$. This is the mechanism by which the original question was resolved.",
     "mathContext": "$g(N) \\leq N^{1/4+\\varepsilon} \\implies F(N) \\leq g(N) \\leq N^{1/4+\\varepsilon}$. The proof uses `F_le_g` and transitivity of $\\leq$.",

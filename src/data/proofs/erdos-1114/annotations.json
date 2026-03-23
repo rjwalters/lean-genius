@@ -78,7 +78,7 @@
       "startLine": 64,
       "endLine": 80
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Rolle's Theorem Gives Critical Points",
     "content": "**rolle_gives_critical_points** axiomatizes a consequence of Rolle's theorem.\n\nFor a polynomial with n+1 AP roots, f' has exactly n distinct real roots (critical points), and:\n- The critical points are strictly increasing: c(i) < c(j) when i < j\n- Each critical point lies between consecutive roots: a₀ + i·d < c(i) < a₀ + (i+1)·d\n\nThis is a standard application of Rolle's theorem: between any two consecutive roots of a differentiable function, there's a point where the derivative is zero.",
     "mathContext": "Rolle's theorem states that if f is continuous on [a,b], differentiable on (a,b), and f(a) = f(b), then there exists c ∈ (a,b) with f'(c) = 0. Applied to consecutive roots of f, this gives one critical point in each inter-root interval.",
@@ -132,7 +132,7 @@
       "startLine": 111,
       "endLine": 128
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bálint's Theorem (1960) — Main Result",
     "content": "**balint_theorem** is the central result of Erdős Problem #1114.\n\nFor n ≥ 2 critical points with d > 0:\nIf critical point i is closer to the midpoint than critical point j (in terms of DistFromMidpoint), then Gap(i) < Gap(j).\n\n**In words:** The farther a critical point is from the center, the larger the gap to its neighbor. Gaps increase outward.",
     "mathContext": "Bálint's proof exploits the symmetry of the polynomial f(x) = ∏(x - (a₀ + kd)). The logarithmic derivative f'/f = Σ 1/(x - (a₀+kd)) has convexity properties that force the critical points to be more tightly packed near the center.",
@@ -150,7 +150,7 @@
       "startLine": 130,
       "endLine": 138
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Symmetric Formulation",
     "content": "**balint_symmetric** gives an alternative formulation: the outermost gap is at least as large as the middle gap.\n\nFor n ≥ 3 critical points: Gap(0) ≥ Gap(n/2 - 1).\n\nThis captures the key implication: gaps at the endpoints dominate gaps at the center.",
     "mathContext": "This is a corollary of the main theorem. Since c(0) is farthest from the midpoint (among the left-side critical points) and c(n/2-1) is closest, the gap ordering follows directly.",
@@ -168,7 +168,7 @@
       "startLine": 144,
       "endLine": 151
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Quartic Case (n = 4)",
     "content": "**quartic_gap_property** gives the explicit statement for the quartic case.\n\nWith 5 AP roots, f' has 4 critical points c₁ < c₂ < c₃ < c₄, giving 3 gaps:\n- g₁ = c₂ - c₁ (left outer)\n- g₂ = c₃ - c₂ (middle)\n- g₃ = c₄ - c₃ (right outer)\n\nResult: g₁ > g₂ AND g₃ > g₂ — both outer gaps exceed the middle gap.",
     "mathContext": "The quartic case is the simplest non-trivial instance. With 4 critical points there are exactly 3 gaps, and the theorem reduces to showing the middle gap is the smallest.",
@@ -186,7 +186,7 @@
       "startLine": 157,
       "endLine": 167
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Lorch's Generalization (1976)",
     "content": "**lorch_higher_derivatives** extends Bálint's result to higher derivatives.\n\nFor the k-th derivative f⁽ᵏ⁾ (with k < n), the zeros also exhibit outward gap monotonicity. The axiom asserts existence of n-k ordered critical points of f⁽ᵏ⁾ with the same monotonicity property.\n\nThis shows the gap monotonicity pattern persists through repeated differentiation.",
     "mathContext": "Lorch's 1976 paper generalized from f' to arbitrary f⁽ᵏ⁾. Since each differentiation reduces the number of zeros by one (by Rolle), f⁽ᵏ⁾ has n-k zeros, and the gap monotonicity continues to hold for each derivative level.",
@@ -204,7 +204,7 @@
       "startLine": 173,
       "endLine": 191
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_1114_summary** is the only fully proved theorem in the file, combining:\n1. **Bálint's theorem** — gap monotonicity for general n\n2. **Quartic property** — explicit outer > middle for n = 4\n\nThe proof is by exact construction ⟨balint_theorem, quartic_gap_property⟩, packaging both axioms into a conjunction.\n\nThis demonstrates that the Lean formalization correctly captures the mathematical content.",
     "mathContext": "The summary theorem has type (∀ n ≥ 2, ...) ∧ (∀ c : Fin 4 → ℝ, ...). It is proved by providing the two axioms as the components of the conjunction.",

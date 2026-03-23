@@ -61,7 +61,7 @@
       "startLine": 95,
       "endLine": 124
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Growth Bounds and Chebyshev Nodes",
     "content": "**erdos_lower_bound** (1961): for any nodes in [-1,1], Λₙ > (2/π)log(n) - 10. This fundamental result shows logarithmic growth is unavoidable. **chebyshevNodes** defines the optimal nodes xₖ = cos((2k-1)π/(2n)), which are zeros of Chebyshev polynomials shifted to [-1,1]. **chebyshevNodes_in_interval** confirms they lie in [-1,1]. **chebyshev_lebesgue_constant** shows |Λₙ - (2/π)log(n)| ≤ 2 for Chebyshev nodes, proving they achieve the theoretical lower bound up to O(1). The constant 2/π ≈ 0.637 is thus the optimal leading coefficient.",
     "mathContext": "erdos_lower_bound: Λₙ > (2/π)log(n) - 10. chebyshevNodes k := cos((2(k+1)-1)π/(2n)). chebyshev_lebesgue_constant: |Λₙ - (2/π)log n| ≤ 2. Optimal: 2/π ≈ 0.637.",
@@ -98,7 +98,7 @@
       "startLine": 162,
       "endLine": 190
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Partial Results",
     "content": "**denseGoodPoints** defines the set of x where limsup Lₙ(x)/log(n) ≥ 2/π, and asks that this set be Dense in ℝ. **bernstein_density_theorem** (1931) axiomatizes that this holds for every infinite node sequence. **erdos_max_theorem** (1961): for each n ≥ 2, there exists x ∈ [-1,1] with Lₙ(x) > (2/π)log(n) - 10. The gap: Bernstein gives density (topological notion — the set intersects every open interval) but Question 2 asks for positive measure (measure-theoretic). It is possible for a set to be dense but have measure zero (like the rationals), so density alone doesn't resolve the almost-everywhere question.",
     "mathContext": "bernstein_density_theorem: ∀ seq, Dense {x | limsup Lₙ(x)/log n ≥ 2/π}. erdos_max_theorem: ∀ n ≥ 2, ∃ x ∈ [-1,1], Lₙ(x) > (2/π)log n - 10. Dense ⊄ a.e. in general.",
@@ -135,7 +135,7 @@
       "startLine": 209,
       "endLine": 245
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorems",
     "content": "Two summary theorems. **erdos_1132** combines the two main known results: (1) Bernstein's density theorem holds for all sequences, and (2) the Erdős maximum bound holds for each n. Proved by ⟨bernstein_density_theorem, erdos_max_theorem⟩. **erdos_1132_summary** applies Bernstein's theorem to a specific sequence: denseGoodPoints seq := bernstein_density_theorem seq. Both questions remain OPEN — we know good points are dense but not whether they have positive measure or full measure.",
     "mathContext": "erdos_1132 : (∀ seq, denseGoodPoints seq) ∧ (∀ seq n ≥ 2, ∃ x, Lₙ(x) > threshold) := ⟨bernstein, erdos_max⟩. erdos_1132_summary seq : denseGoodPoints seq := bernstein seq.",

@@ -117,7 +117,7 @@
       "startLine": 46,
       "endLine": 48
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "counter_partition_3 — Triangle Partition Property",
     "content": "Axiomatizes that $\\omega^{\\omega^2} \\to (\\omega^{\\omega^2}, 3)^2$: every 2-coloring of pairs from $\\omega^{\\omega^2}$ yields either a red subset of order type $\\omega^{\\omega^2}$ or a blue triangle. This follows from Schipperus's positive classification results (1999/2010), which characterized partition ordinals for triangles among ordinals with short Cantor Normal Form. The proof uses a delicate tree-coloring argument.",
     "mathContext": "$\\omega^{\\omega^2} \\to (\\omega^{\\omega^2}, 3)^2$",
@@ -139,7 +139,7 @@
       "startLine": 50,
       "endLine": 52
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "counter_not_partition_5 — K_5 Failure",
     "content": "Axiomatizes that $\\omega^{\\omega^2} \\not\\to (\\omega^{\\omega^2}, 5)^2$: there exists a 2-coloring of pairs from $\\omega^{\\omega^2}$ with no red set of order type $\\omega^{\\omega^2}$ and no blue $K_5$. Larson's proof constructs an explicit coloring using the ordinal's tree structure — the coloring is based on the **least differing digit** in the Cantor Normal Form representation of ordinals below $\\omega^{\\omega^2}$.",
     "mathContext": "$\\omega^{\\omega^2} \\not\\to (\\omega^{\\omega^2}, 5)^2$: $\\exists c : [\\omega^{\\omega^2}]^2 \\to 2$ with no red $\\omega^{\\omega^2}$ and no blue $K_5$.",
@@ -161,7 +161,7 @@
       "startLine": 56,
       "endLine": 61
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "erdos_118_disproved — Formal Disproof",
     "content": "The only fully-proved theorem in the file: derives $\\neg$ ErdosHajnalConjecture by contradiction. Assuming the conjecture, instantiate it at $\\alpha = \\omega^{\\omega^2}$ and $n = 5$: the conjecture plus `counter_partition_3` would give $\\omega^{\\omega^2} \\to (\\omega^{\\omega^2}, 5)^2$, contradicting `counter_not_partition_5`. This is a clean proof by specialization and modus ponens.",
     "mathContext": "$\\neg (\\alpha \\to (\\alpha, 3)^2 \\implies \\forall n \\ge 3,\\, \\alpha \\to (\\alpha, n)^2)$, witnessed by $\\alpha = \\omega^{\\omega^2}$, $n = 5$.",
@@ -205,7 +205,7 @@
       "startLine": 81,
       "endLine": 85
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "omega_omega2_threshold — Threshold Bounds",
     "content": "The partition threshold of $\\omega^{\\omega^2}$ lies in $\\{3, 4\\}$. We know $\\alpha \\to (\\alpha, 3)^2$ holds (from Schipperus) and $\\alpha \\to (\\alpha, 5)^2$ fails (from Larson), so the threshold is 3 or 4. Whether $\\omega^{\\omega^2} \\to (\\omega^{\\omega^2}, 4)^2$ holds remains an open question — pinning down this exact value would further illuminate the structure of ordinal Ramsey theory.",
     "mathContext": "$3 \\le \\text{thr}(\\omega^{\\omega^2}) \\le 4$",
@@ -228,7 +228,7 @@
       "startLine": 89,
       "endLine": 93
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "relation_to_592 — Connection to Problem #592",
     "content": "Restates the existence of an ordinal that is a partition ordinal for triangles but not for $K_5$, connecting to Erdős Problem #592 which asks for a complete classification of ordinals satisfying $\\alpha \\to (\\alpha, 3)^2$. The disproof of #118 shows that classifying partition ordinals for triangles does **not** automatically classify them for all cliques — separate analysis is needed for each clique size.",
     "mathContext": "$\\exists \\alpha : \\alpha \\to (\\alpha, 3)^2 \\wedge \\alpha \\not\\to (\\alpha, 5)^2$",

@@ -90,7 +90,7 @@
       "startLine": 98,
       "endLine": 131
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Graham Theorem (1980)",
     "content": "**erdos_graham_1980 and r2_23_equals_2:**\n\nIf B is 2-lacunary with b₁ ≥ 5, there exists A with gaps in [2, 3] such that (A + A) ∩ B = ∅.\n\n**Implication:** r₂(2, 3) = 2.\n\n**Intuition:** The 2-fold sumset A + A is still sparse enough that, by carefully choosing A, we can 'weave between' the elements of any 2-lacunary sequence.\n\nThe theorem `r2_23_equals_2` formally proves RkExists 2 2 3 using the Erdős-Graham axiom, handling both the case B 0 ≥ 5 and the small-start edge case.",
     "mathContext": "From Erdős and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory.'",
@@ -107,7 +107,7 @@
       "startLine": 133,
       "endLine": 158
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bollobás-Hegyvári-Jin Theorem (1997)",
     "content": "**bollobas_hegevari_jin_1997 and bhj_r_lacunary:**\n\nFor ANY growth rate sequence r₁ < r₂ < ⋯, there exists B with b_{i+1} ≥ r_i·b_i such that (A + A + A) ∩ B ≠ ∅ for EVERY A with [2, 3] gaps.\n\n**Implication:** r₃(2, 3) does NOT exist!\n\n**This is striking:** No matter how fast B grows - even faster than any fixed exponential - every A will have its 3-fold sumset hit B.\n\n**The Key Insight:** 3A contains 'too many' elements; the combinatorial structure forces intersection.",
     "mathContext": "The negative result shows a fundamental barrier that cannot be overcome by making B sparser.",
@@ -124,7 +124,7 @@
       "startLine": 160,
       "endLine": 168
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "r₃(2,3) Does Not Exist (Proved)",
     "content": "**r3_23_not_exists:**\n\n```lean\ntheorem r3_23_not_exists : ¬RkExists 3 2 3\n```\n\nThis theorem is fully proved from the BHJ axioms. The proof proceeds by contradiction: assume some r works, then use bhj_r_lacunary to get a counterexample B that defeats all A with [2,3] gaps, contradicting the avoidance assumption.\n\nThe proof uses the equivalence between ThreeFoldSumset and KFoldSumset 3.",
     "significance": "key",
@@ -140,7 +140,7 @@
       "startLine": 170,
       "endLine": 176
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Chen's Generalization (2000)",
     "content": "**chen_r2_bound:**\n\nFor any a < b with b ≠ 2a, we have r₂(a, b) ≤ 2.\n\n**This generalizes Erdős-Graham:** The [2, 3] case is not special; most gap bounds work for k = 2.\n\n**Critical Exception:** When b = 2a (e.g., [1, 2], [2, 4], [3, 6]), different behavior occurs. The ratio b/a = 2 exactly matches the lacunary growth rate, creating interference.",
     "mathContext": "Chen's result shows the k = 2 case is largely resolved, shifting focus to k ≥ 3.",
@@ -157,7 +157,7 @@
       "startLine": 178,
       "endLine": 187
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Tang-Yang Results (2021)",
     "content": "**tang_yang_2021:**\n\nAdditional non-existence results for k ≥ 3 with various parameter combinations.\n\nThese results expand the known 'impossibility region' for the r_k function, showing that the k = 3 barrier extends to many other parameter choices.\n\nThe complete characterization remains open.",
     "mathContext": "Published in Publicationes Mathematicae Debrecen (2021).",
@@ -174,7 +174,7 @@
       "startLine": 203,
       "endLine": 210
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem: The Dichotomy",
     "content": "**erdos_1112:**\n\n```lean\ntheorem erdos_1112 :\n    (∀ a b : ℕ, a ≥ 1 → b > a → b ≠ 2 * a → RkExists 2 a b) ∧\n    (¬RkExists 3 2 3)\n```\n\nThis combines Chen's generalization (k=2 works broadly) with the BHJ impossibility (k=3 fails), capturing the essential phase transition of Erdős Problem #1112.",
     "significance": "key",
@@ -190,7 +190,7 @@
       "startLine": 212,
       "endLine": 217
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_1112_summary:**\n\n```lean\ntheorem erdos_1112_summary :\n    (RkExists 2 2 3) ∧ (¬RkExists 3 2 3)\n```\n\nThis captures the essential result for the specific case [2, 3]:\n- 2-fold sumsets CAN avoid lacunary sequences (with r = 2)\n- 3-fold sumsets CANNOT avoid lacunary sequences (no r works)\n\nBoth components are proved from axioms, making this the strongest formal statement.",
     "significance": "key",

@@ -118,7 +118,7 @@
       "startLine": 62,
       "endLine": 74
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Counting Lower Bounds (Melfi, Hasler-Melfi)",
     "content": "Two progressively stronger lower bounds on $|C \\cap [1,x]|$. Melfi (2001) proved $|C \\cap [1,x]| \\geq cx^{0.965}$ for large $x$. Hasler and Melfi (2024) improved this to $cx^{0.9777}$. Both bounds are sub-linear (exponent $< 1$) so they do not directly prove positive density, but the exponent is tantalizingly close to 1.",
     "mathContext": "Melfi: $\\exists c > 0,\\, |C \\cap [1,x]| \\geq c x^{0.965}$ for $x \\geq N_0$. Hasler-Melfi: $\\exists c > 0,\\, |C \\cap [1,x]| \\geq c x^{0.9777}$ for $x \\geq N_0$. Positive density requires exponent $= 1$.",
@@ -140,7 +140,7 @@
       "startLine": 76,
       "endLine": 84
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Upper Density Bound (Hasler-Melfi 2024)",
     "content": "Hasler and Melfi (2024) showed the upper density of $C$ is at most approximately 0.696. This means $C$ must miss at least 30% of the natural numbers, even if it has positive lower density. The bound comes from analyzing the measure-theoretic properties of the digit-restricted sets.",
     "mathContext": "$\\overline{d}(C) = \\limsup_{x \\to \\infty} |C \\cap [0,x]|/x \\leq 0.696 + \\varepsilon$ for any $\\varepsilon > 0$ and large enough $x$.",

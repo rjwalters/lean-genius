@@ -189,7 +189,7 @@
       "startLine": 121,
       "endLine": 137
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős's Weaker Result (Known)",
     "content": "Erdős proved: for any C > 0, there exists ε > 0 such that for large n and m = ⌊(1+ε)n⌋ sample points, there EXISTS a degree-n polynomial P with |P(x_i)| ≤ 1 at all m points yet ‖P‖_∞ > C. This is weaker because it asks for existence of P (the ∃P direction), not the choice of y_i.",
     "mathContext": "Erdős's result: $\\forall C > 0,\\; \\exists \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\geq N,\\; \\forall \\mathbf{x} \\in [-1,1]^m:\\; \\exists P,\\; \\deg P \\leq n \\wedge |P(x_i)| \\leq 1\\; \\forall i \\wedge \\|P\\|_{\\infty} > C$. The key difference from the conjecture: here $P$ is existentially quantified (we find one bad polynomial), while the conjecture universally quantifies over $P$ (ALL polynomials matching $y$ are bad). The gap is the difference between $\\exists P$ (constructive) and $\\forall P$ (universal).",
@@ -211,7 +211,7 @@
       "startLine": 143,
       "endLine": 162
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Lagrange Interpolation and Divergence",
     "content": "Two axioms: (1) Lagrange interpolation: given n distinct points, there is a unique polynomial of degree < n through all of them. (2) Lagrange divergence: there exist continuous functions for which interpolation on uniform nodes diverges — Runge's phenomenon.",
     "mathContext": "**Lagrange**: $\\forall$ distinct $x_1, \\ldots, x_n \\in \\mathbb{R}$, $\\forall y_1, \\ldots, y_n$: $\\exists! P \\in \\mathbb{R}[X],\\; \\deg P < n \\wedge P(x_i) = y_i$. The formula is $P(x) = \\sum_{i} y_i \\prod_{j \\neq i} \\frac{x - x_j}{x_i - x_j}$.\n\n**Divergence**: Faber (1914) showed for ANY node sequence, $\\exists f \\in C[-1,1]$ with $\\|L_n f\\|_{\\infty} \\to \\infty$. For uniform nodes, Runge's example $f(x) = 1/(1+25x^2)$ gives wild oscillations near $\\pm 1$. The Lebesgue constant $\\Lambda_n = \\|L_n\\|$ grows as $\\Omega(\\log n)$ for any nodes.",
@@ -235,7 +235,7 @@
       "startLine": 168,
       "endLine": 183
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Chebyshev Nodes and Optimality",
     "content": "Chebyshev nodes x_k = cos(π(2k+1)/(2n)) minimize the Lebesgue constant and give optimal polynomial interpolation behavior. The chebyshev_optimal axiom states: if |P(x_k)| ≤ 1 at all n+1 Chebyshev nodes and deg(P) = n, then ‖P‖_∞ ≤ 1.",
     "mathContext": "The Chebyshev nodes $x_k = \\cos\\frac{\\pi(2k+1)}{2n}$ are roots of the Chebyshev polynomial $T_n(x) = \\cos(n \\arccos x)$. Their Lebesgue constant $\\Lambda_n^{\\text{Cheb}} = \\frac{2}{\\pi} \\log n + O(1)$ is the smallest possible up to $O(1)$. The optimality axiom encodes: if $P$ is bounded at Chebyshev nodes, it's bounded everywhere. However, this does NOT resolve the conjecture because Chebyshev nodes are fixed — the adversary chooses arbitrary nodes.",
@@ -259,7 +259,7 @@
       "startLine": 194,
       "endLine": 200
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "exact_interpolation_case (Fully Proved)",
     "content": "For ε = 0 (exact interpolation): given n distinct points and arbitrary target values, Lagrange interpolation provides the unique polynomial of degree < n through all points. Proved by applying lagrange_interpolation axiom via Classical.choose_spec.",
     "mathContext": "This is the $\\varepsilon = 0$ reduction: when ALL $n$ points must be matched and $\\deg P < n$, the Lagrange polynomial is the unique solution. The conjecture for $\\varepsilon = 0$ asks: can we choose $y_i$ so the Lagrange polynomial has $\\|L_n\\|_{\\infty} > C$? Since $L_n(x) = \\sum y_i \\ell_i(x)$ where $\\ell_i$ are the Lagrange basis polynomials, this asks: does $\\max_i |\\ell_i(x^*)| > C/n$ for some $x^*$? This is related to the Lebesgue constant.",
@@ -281,7 +281,7 @@
       "startLine": 202,
       "endLine": 218
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "erdos_1133_summary",
     "content": "The summary theorem wraps exact_interpolation_case as the main proved result. ErdosConjecture1133 remains OPEN — formalized as a Lean Prop but with no proof or disproof.",
     "mathContext": "The theorem simply restates exact\\_interpolation\\_case. The conjecture $\\texttt{ErdosConjecture1133}$ is defined as a Lean $\\texttt{Prop}$ but is neither proved nor refuted — it has the logical status of an independent statement relative to the formalized axioms. Progress would require either: (1) constructing the target values $y_i$ (proving the conjecture), or (2) finding node configurations that defeat all target choices (disproving it).",

@@ -79,7 +79,7 @@
       "startLine": 96,
       "endLine": 105
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "AKS Theorem (2003)",
     "content": "**Alon-Krivelevich-Sudakov:**\n\nFor bipartite r-degenerate H:\nex(n; H) ≪ n^{2-1/4r}\n\n**Note:** This is weaker than the conjecture by a factor of 4 in the exponent denominator.\n\n**Method:** Uses the dependent random choice technique, which selects a random subset of vertices and argues that it contains many 'rich' vertices with large common neighborhoods.",
     "mathContext": "The exponent 2-1/(4r) vs the conjectured 2-1/r reflects the current gap. The factor of 4 arises from the probabilistic argument requiring concentration bounds.",
@@ -97,7 +97,7 @@
       "startLine": 107,
       "endLine": 120
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "AKS Special Case: Bounded-Side-Degree",
     "content": "**MaxDegreeOneSide and aks_special_case:**\n\nWhen H is bipartite with max degree r in one side of the bipartition, the full bound ex(n;H) ≪ n^{2-1/r} holds. The MaxDegreeOneSide predicate requires a bipartition (A, B) with A ∪ B = V, A ∩ B = ∅, all edges crossing the partition, and max degree r in side A.\n\n**This includes:** K_{r,s} for any s ≥ r, since the r-side has degree s and the s-side has degree r.",
     "mathContext": "This is a stronger structural condition than r-degeneracy alone, and the full conjecture asks whether degeneracy suffices without the degree bound on one side.",
@@ -115,7 +115,7 @@
       "startLine": 134,
       "endLine": 146
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Gap Between Bounds (Proved)",
     "content": "**aks_weaker_than_conjecture (proved by field_simp + linarith):**\n\nFor all r ≥ 1: 2 - 1/r < 2 - 1/(4r)\n\nThis is a fully proved theorem establishing that the AKS exponent is strictly larger (weaker) than the conjectured exponent. The proof uses field_simp to clear fractions and linarith for the resulting linear arithmetic.\n\n**For r = 2:** Conjecture gives n^{3/2}, AKS gives n^{15/8} — a gap of 3/8 in the exponent.",
     "mathContext": "The inequality 2 - 1/r < 2 - 1/(4r) simplifies to 1/(4r) < 1/r, which holds for all positive r. The bound_comparison_r2 theorem verifies the r=2 specialization with norm_num.",
@@ -169,7 +169,7 @@
       "startLine": 230,
       "endLine": 238
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem (Proved)",
     "content": "**erdos_146_summary (fully proved):**\n\nCombines three verified results into a single conjunction:\n1. ∀ r ≥ 1, the AKS exponent is strictly weaker than the conjectured exponent\n2. The r=2 exponents are exactly 3/2 (conjectured) and 15/8 (known)\n3. The r=2 bound comparison: 3/2 < 15/8\n\nAll three components are proved theorems (no axioms or trivial True placeholders). The proof uses exact with the three previously proved theorems.",
     "mathContext": "This summary replaces the original True-valued placeholder with a meaningful conjunction of the key quantitative facts established in the formalization.",

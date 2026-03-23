@@ -69,7 +69,7 @@
       "startLine": 70,
       "endLine": 96
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Ordinal Arithmetic: Proved and Axiomatized Properties",
     "content": "Several ordinal inequalities and properties are established:\n\n**Proved** (using Mathlib's ordinal API):\n- **omega_lt_omega1**: ω < ω₁, from Cardinal.aleph_lt_aleph and ord monotonicity\n- **omega1_pos**: 0 < ω₁, by transitivity through ω\n- **omega1TimesOmega_lt_omega1Sq**: ω₁·ω < ω₁², using left-cancellation and ω < ω₁\n\n**Axiomatized**:\n- **omega1TimesOmega_isLimit**: ω₁·ω is a limit ordinal (product of a limit by a limit is limit)\n- **omega1_isLimit**: ω₁ is a limit ordinal (initial ordinals of uncountable cofinality are limits)\n\nThe proof of ω < ω₁ is the most interesting: it computes ω = (ℵ₀).ord, then uses ℵ₀ < ℵ₁ and ord-monotonicity.",
     "mathContext": "$$\\omega = (\\aleph_0).\\text{ord}, \\quad \\omega_1 = (\\aleph_1).\\text{ord}, \\quad \\aleph_0 < \\aleph_1 \\implies \\omega < \\omega_1$$",
@@ -123,7 +123,7 @@
       "startLine": 136,
       "endLine": 164
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "CH Resolution: Hajnal's Theorem and Color Merging",
     "content": "Under the Continuum Hypothesis (2^ℵ₀ = ℵ₁), Problem #1171 is fully resolved in two stages:\n\n**Stage 1 — The k=1 case** (erdos_1171_k1_under_ch): Hajnal's theorem gives ω₁² → (ω₁², 3)² under CH. Since ω₁·ω < ω₁², monotonicity in the target weakens this to ω₁² → (ω₁·ω, 3)², which is the k=1 case. The proof uses multi_two_eq to convert between 2-color frameworks.\n\n**Stage 2 — All finite k** (erdos_1171_under_ch via ch_implies_multicolor): Given a (k+1)-coloring, merge colors 1 through k into a single color. Apply Hajnal's 2-color result. If color 0 wins, it has order type ω₁² ⊇ ω₁·ω. If the merged color wins with a triangle {a,b,c}, then all three pairs had non-zero colors; by pigeonhole, some original color contains a monochromatic triangle.\n\nThis shows the problem's difficulty is purely a ZFC question — CH trivially resolves it.",
     "mathContext": "Under CH: $\\omega_1^2 \\to (\\omega_1^2, k)^2$ (Hajnal) $\\implies \\omega_1^2 \\to (\\omega_1 \\cdot \\omega, 3)^2$ $\\implies \\omega_1^2 \\to (\\omega_1 \\cdot \\omega, 3, \\ldots, 3)^2_{k+1}$ (color merging).",
@@ -146,7 +146,7 @@
       "startLine": 166,
       "endLine": 185
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Baumgartner's Partial Result Under Martin's Axiom",
     "content": "Baumgartner [Ba89b] proved that assuming Martin's Axiom (MA), ω₁·ω → (ω₁·ω, 3)². This directly gives the k=1 case of #1171 under MA.\n\nThe proof (erdos_1171_k1_under_ma) works by source monotonicity: since ω₁·ω < ω₁², Baumgartner's result for the smaller source ω₁·ω lifts to the larger source ω₁². The multi_two_eq bridge converts back to the multicolor framework.\n\nMA is strictly weaker than CH (CH implies MA, but not conversely), so this gives an alternative path to the k=1 case under a weaker hypothesis. However, extending Baumgartner's approach to k ≥ 2 under MA remains open.",
     "mathContext": "MA $\\implies \\omega_1 \\cdot \\omega \\to (\\omega_1 \\cdot \\omega, 3)^2$ (Baumgartner). Since $\\omega_1 \\cdot \\omega \\leq \\omega_1^2$, source monotonicity gives $\\omega_1^2 \\to (\\omega_1 \\cdot \\omega, 3)^2_{2}$.",
@@ -169,7 +169,7 @@
       "startLine": 187,
       "endLine": 206
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Ordinal Sandwich and Structural Properties",
     "content": "Three structural theorems about the ordinal hierarchy:\n\n**omega1_lt_omega1TimesOmega**: ω₁ < ω₁·ω, proved by rewriting ω₁ = ω₁·1 and using 1 < ω with left-cancellation.\n\n**omega1TimesOmega_structure**: The sandwich ω₁ < ω₁·ω < ω₁², packaging both strict inequalities. This shows ω₁·ω occupies a precise intermediate position — large enough to be interesting as a Ramsey target, but small enough that the partition relation might hold in ZFC.\n\n**omega1Sq_pos**: ω₁² > 0, from ω₁ > 0 and closure of positive ordinals under multiplication.",
     "mathContext": "$$\\omega_1 = \\omega_1 \\cdot 1 < \\omega_1 \\cdot \\omega < \\omega_1 \\cdot \\omega_1 = \\omega_1^2$$",

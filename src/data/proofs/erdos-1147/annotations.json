@@ -60,7 +60,7 @@
       "startLine": 152,
       "endLine": 164
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Konieczny's Disproof",
     "content": "**axiom konieczny_disproof**:\n  ∀ᵐ α ∂(volume.restrict (Ioi 0)),\n    Irrational α → ¬IsAdditiveBasisOrder2 (diophantineSet α)\n\n**axiom konieczny_generalized (ε) (hε : ε → 0)**:\n  Same conclusion for generalizedDiophantineSet α ε\n\nFor ALMOST EVERY irrational α > 0, the set A is NOT a basis of order 2. This uses Lebesgue measure on (0,∞).\n\nThe generalization shows that no threshold ε(n) → 0 can save the conjecture.",
     "mathContext": "The measure-theoretic formulation ∀ᵐ (almost everywhere) is essential. There might exist specific α values where the set IS a basis, but the generic behavior is failure.",
@@ -78,7 +78,7 @@
       "startLine": 180,
       "endLine": 188
     },
-    "type": "proof",
+    "type": "technique",
     "title": "Conjecture Disproved",
     "content": "**theorem erdos_1147_false**: ¬Erdos1147Conjecture\n\nProved without sorry! The proof:\n1. Assume the conjecture holds for ALL irrational α > 0\n2. In particular, it holds for α = √2\n3. But sqrt2_not_basis says diophantineSet(√2) is NOT a basis\n4. Contradiction\n\nUses Real.sqrt_pos_of_pos for √2 > 0 and irrational_sqrt_two from Mathlib.",
     "mathContext": "This is the cleanest route to disproving the conjecture: a single specific counterexample suffices to refute a universal statement.",

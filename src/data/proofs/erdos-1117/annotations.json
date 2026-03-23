@@ -117,7 +117,7 @@
       "startLine": 52,
       "endLine": 59
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Finiteness and Existence of Maximum Points",
     "content": "Two basic properties: (1) `nu_finite` — for non-monomial entire functions, $\\nu(r) < \\infty$ for each $r > 0$, because the function $\\theta \\mapsto |f(re^{i\\theta})|$ is real-analytic and non-constant, so it achieves its maximum at finitely many points; (2) `nu_ge_one` — for any entire function, $\\nu(r) \\ge 1$ because the circle $|z| = r$ is compact and $|f|$ is continuous, so the maximum is always attained.",
     "mathContext": "For non-monomial $f$: $1 \\le \\nu(r) < \\infty$ for all $r > 0$. The finiteness follows from the identity theorem applied to $|f(re^{i\\theta})| - M(r)$.",
@@ -140,7 +140,7 @@
       "startLine": 63,
       "endLine": 68
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Herzog–Piranian (1968): lim sup ν(r) = ∞",
     "content": "Fritz Herzog and George Piranian (1968) resolved Question 1 affirmatively: there exists a non-monomial entire function $f$ such that $\\limsup_{r \\to \\infty} \\nu(r) = \\infty$. The formalization states this as: for every $N \\in \\mathbb{N}$, there exists such an $f$ and arbitrarily large $r$ with $\\nu(r) \\ge N$. The construction uses a carefully chosen lacunary series where the dominant term rotates to create many near-maximum points.",
     "mathContext": "$\\exists f \\text{ entire, non-monomial}: \\limsup_{r \\to \\infty} \\nu(r) = \\infty$, i.e., $\\forall N,\\, \\forall R,\\, \\exists r > R : \\nu(r) \\ge N$.",
@@ -185,7 +185,7 @@
       "startLine": 87,
       "endLine": 92
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Glücksam–Pardo-Simón (2024): Approximate Answer",
     "content": "Adi Glücksam and Leticia Pardo-Simón (2024) provided an **approximate** affirmative answer: for every $\\varepsilon > 0$ and $N \\in \\mathbb{N}$, there exists an entire function $f$ such that for all sufficiently large $r$, there are at least $N$ points on $|z| = r$ where $|f(z)| \\ge (1 - \\varepsilon) M(r)$. The gap between $(1-\\varepsilon)M(r)$ and the exact maximum $M(r)$ is the remaining difficulty — closing this gap would resolve the open problem.",
     "mathContext": "$\\forall \\varepsilon > 0,\\, \\forall N,\\, \\exists f \\text{ entire}: \\forall r \\gg 1,\\, \\exists z_1, \\ldots, z_N \\text{ on } |z|=r : |f(z_k)| \\ge (1-\\varepsilon) M(r)$.",
@@ -207,7 +207,7 @@
       "startLine": 96,
       "endLine": 100
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "maxModulus_nondecreasing — Monotonicity of M(r)",
     "content": "The maximum modulus $M(r)$ is a nondecreasing function of $r$ for nonconstant entire functions. This follows from the maximum modulus principle: if $|f|$ achieves value $M(r_1)$ at some point on $|z| = r_1$, then on the larger disc $|z| \\le r_2$ (with $r_2 \\ge r_1$), the maximum of $|f|$ can only increase. Moreover, by Hadamard's three-circles theorem, $\\log M(r)$ is a convex function of $\\log r$.",
     "mathContext": "$0 < r_1 \\le r_2 \\implies M(r_1) \\le M(r_2)$ for nonconstant entire $f$. Furthermore, $\\log M(e^t)$ is convex in $t$.",

@@ -44,7 +44,7 @@
       "startLine": 50,
       "endLine": 69
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Main Conjecture: f(n)/log(n) → ∞",
     "content": "**ErdosConjecture126** states that f(n)/log(n) tends to infinity.\n\nThis is stronger than saying f(n) → ∞ (which follows from the Erdős–Turán lower bound). It asserts that f(n) grows *strictly faster* than logarithmic — not just O(log(n)), but ω(log(n)).\n\nThe axiom `erdos_126` asserts: if f is the extremal function, then `Tendsto (fun n => f(n)/log(n)) atTop atTop`.\n\n**Why it matters:** If true, even the weakest additive structure (any n-element set) forces rich multiplicative structure (many distinct primes) in pairwise sums, beyond what a purely logarithmic count would suggest.",
     "mathContext": "Formalized using Filter.Tendsto with atTop → atTop, meaning for every bound M there exists N such that f(n)/log(n) > M for all n > N.",
@@ -63,7 +63,7 @@
       "startLine": 71,
       "endLine": 83
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős–Turán Lower Bound: log(n) ≪ f(n)",
     "content": "**erdos_turan_lower**: log(n) = O(f(n)).\n\nThe 1934 result shows f(n) grows at least logarithmically. Informally: any n-element set A must have at least c·log(n) distinct primes in its pairwise sum product, for some constant c > 0.\n\nThe proof idea: among the n(n−1)/2 pairwise sums, some must hit distinct primes. A pigeonhole/sieve argument shows at least logarithmically many primes are needed.",
     "mathContext": "Stated as IsBigO: (fun n => Real.log n) =O[atTop] (fun n => (f n : ℝ)). This means there exist C, N₀ such that log(n) ≤ C · f(n) for all n ≥ N₀.",
@@ -81,7 +81,7 @@
       "startLine": 85,
       "endLine": 101
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős–Turán Upper Bound: f(n) ≪ n/log(n)",
     "content": "**erdos_turan_upper**: f(n) = O(n/log(n)).\n\nThe upper bound is achieved by the \"trivial\" construction A = {1, 2, …, n}. The pairwise sums range from 3 to 2n−1, so all prime factors are at most 2n−1. By the prime number theorem, there are approximately n/log(n) primes up to 2n.\n\n**erdos_turan_bounds** (theorem): Combines both bounds into a conjunction, proved directly from the two axioms.\n\nThe gap between log(n) and n/log(n) is vast — about n/log²(n). Closing this gap in either direction would be a major advance.",
     "mathContext": "The combined bounds are stated as a theorem (not axiom) since they follow by ⟨lower, upper⟩ from the individual axioms. This is the only proved theorem in the formalization.",
@@ -99,7 +99,7 @@
       "startLine": 103,
       "endLine": 117
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Little-o Sub-Question",
     "content": "**erdos_126_littleo**: f(n) = o(n/log(n)).\n\nThis secondary question asks whether the upper bound is tight. If f(n) = o(n/log(n)), then f(n) grows strictly slower than n/log(n), meaning the trivial construction A = {1,…,n} is not close to optimal.\n\nErdős said this has \"never been seriously attacked.\" It is weaker than the main conjecture — it addresses the upper end of the gap rather than the lower end.",
     "mathContext": "In little-o notation: f(n)/[n/log(n)] → 0, i.e., f(n)·log(n)/n → 0. Formalized via Asymptotics.IsLittleO with atTop filter.",
@@ -117,7 +117,7 @@
       "startLine": 119,
       "endLine": 133
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Trivial Upper Bound Construction",
     "content": "**trivial_upper_bound**: For each n, there exists a set A with |A| = n whose pairwise sum product has at most 2n distinct prime factors.\n\nThe construction is A = {1, 2, …, n}. Then all sums a + b satisfy 3 ≤ a + b ≤ 2n − 1, so every prime factor p divides some integer ≤ 2n − 1, giving p ≤ 2n − 1. The number of primes up to 2n is bounded by 2n (trivially) and more precisely is ~ 2n/log(n) by PNT.\n\nThis axiom provides the explicit witness for the upper bound.",
     "mathContext": "The bound 2n is a crude version; the prime number theorem gives the tighter π(2n) ~ 2n/log(2n) ~ 2n/log(n).",
@@ -135,7 +135,7 @@
       "startLine": 135,
       "endLine": 146
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Monotonicity of f",
     "content": "**f_monotone**: The extremal function f is monotone non-decreasing.\n\nIntuitively: if |A| = n+1, then A contains an n-element subset A' ⊆ A. The pairwise sums of A' are a subset of those of A, so the prime factors of A's product include those of A'. This means adding elements can only increase the guaranteed prime count.\n\nThis structural property confirms that f(n) is well-behaved as a function of the set size.",
     "mathContext": "Formalized as Monotone f, meaning m ≤ n → f(m) ≤ f(n). The proof requires showing that the subset relationship on off-diagonal pairs preserves prime factor containment.",

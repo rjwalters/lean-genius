@@ -99,7 +99,7 @@
       "startLine": 102,
       "endLine": 112
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős–Pomerance–Sárközy Theorem (1997)",
     "content": "The main positive results, axiomatized: the divisor function $d(n)$ and the distinct prime count $\\omega(n)$ both have SICP. This was proved by Erdős, Carl Pomerance, and András Sárközy in their 1997 paper. The key insight is that $d(n)$ and $\\omega(n)$ are **highly variable** — they take unusually large values on highly composite numbers and smooth numbers, creating clusters of $n + f(n)$ in short intervals. The Hardy–Ramanujan theorem gives $\\omega(n) \\sim \\log \\log n$ for most $n$, but the exceptional set where $\\omega(n)$ is much larger drives the concentration.",
     "mathContext": "$d(n)$ and $\\omega(n)$ have SICP: $\\forall F$ with $d/F \\to 0$, $\\exists^\\infty x : \\#\\{n : n + d(n) \\in (x, x+F(x)]\\} \\gg C \\cdot F(x)$.",
@@ -147,7 +147,7 @@
       "startLine": 146,
       "endLine": 155
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "erdos_122_known_results — Proved Summary",
     "content": "A proved theorem (not sorry'd) packaging the two positive results: $d$ and $\\omega$ both have SICP. The proof is trivial — it just pairs the two axioms using the anonymous constructor. This is one of the few non-sorry'd theorems in the file, establishing the known portion of the problem's answer.",
     "mathContext": "$\\text{HasSICP}(d) \\wedge \\text{HasSICP}(\\omega)$",
