@@ -111,6 +111,30 @@
     "prerequisites": ["exists_mem_normalizedFactors_of_dvd", "dvd_of_mem_normalizedFactors"]
   },
   {
+    "id": "ann-ker-proper",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01",
+    "range": { "startLine": 134, "endLine": 144 },
+    "type": "technique",
+    "title": "Proper Kernel of Nonzero Matrix",
+    "content": "If a matrix $A \\neq 0$, then $\\ker(A) \\neq K^n$ (the kernel is a proper subspace). Proved by contrapositive: if $\\ker(A) = K^n$, then $A e_j = 0$ for every standard basis vector $e_j$, so every column of $A$ is zero, contradicting $A \\neq 0$. This is used in Phase 2 to show that each cofactor kernel $\\ker((\\mu/q)(M))$ is a proper subspace — since $\\deg(\\mu/q) < n = \\deg(\\mu)$, the matrix $(\\mu/q)(M)$ is nonzero by the minimality of the minimal polynomial.",
+    "mathContext": "$A \\neq 0 \\implies \\ker(A) \\subsetneq K^n$. The proof extracts column $j$ via $A e_j = 0$ using `Pi.single j 1` as the standard basis vector, then reads off the matrix entry $A_{ij}$ from the dot product.",
+    "significance": "supporting",
+    "relatedConcepts": ["kernel of linear map", "standard basis", "proper subspace"],
+    "prerequisites": ["Matrix.mulVecLin", "LinearMap.mem_ker", "Pi.single"]
+  },
+  {
+    "id": "ann-phase2-subspaces",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01",
+    "range": { "startLine": 169, "endLine": 207 },
+    "type": "technique",
+    "title": "Phase 2: Cofactor Kernels as Proper Subspaces",
+    "content": "For each irreducible factor $q \\in \\text{normalizedFactors}(\\mu)$, the cofactor kernel $S_q = \\ker((\\mu/q)(M))$ is a proper subspace of $K^n$. The argument: since $\\mu = q \\cdot (\\mu/q)$ and $q$ is irreducible with $\\deg(q) \\geq 1$, the cofactor $\\mu/q$ has degree $< n = \\deg(\\mu)$. Being nonzero and of degree less than the minimal polynomial, $(\\mu/q)(M) \\neq 0$ by `aeval_ne_zero_of_ne_zero`. Then `ker_mulVecLin_ne_top` gives $S_q \\neq K^n$. This construction is the heart of the union avoidance setup: it converts the factorization data of $\\mu$ into geometric data (a finite collection of proper subspaces).",
+    "mathContext": "For each irreducible $q | \\mu$: $S_q = \\ker((\\mu/q)(M)) \\subsetneq K^n$ because $0 < \\deg(\\mu/q) < \\deg(\\mu_M)$ implies $(\\mu/q)(M) \\neq 0$. The subspaces $\\{S_q\\}_{q \\in \\text{normalizedFactors}(\\mu)}$ form the finite collection to which union avoidance is applied.",
+    "significance": "key",
+    "relatedConcepts": ["cofactor", "irreducible factorization", "exact polynomial division", "proper subspace"],
+    "prerequisites": ["normalizedFactors", "dvd_of_mem_normalizedFactors", "aeval_ne_zero_of_ne_zero", "ker_mulVecLin_ne_top"]
+  },
+  {
     "id": "ann-main-theorem",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01",
     "range": {
