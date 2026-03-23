@@ -81,54 +81,100 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Overview",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Documentation of Riesz-Thorin interpolation and its relationship to Hölder.",
+      "mathContext": "Riesz-Thorin: if $T: L^{p_i} \\to L^{q_i}$ with bounds $M_i$, then $T: L^{p_\\theta} \\to L^{q_\\theta}$ with bound $M_0^{1-\\theta} M_1^\\theta$."
+    },
+    {
       "id": "interpolation-params",
-      "title": "Interpolation Parameter Infrastructure",
-      "summary": "Defines interpRecip and interpExp. Proves endpoint recovery (θ=0 gives p₀, θ=1 gives p₁), positivity, and diagonal case."
+      "title": "Part I: Interpolation Parameter Infrastructure",
+      "startLine": 48,
+      "endLine": 100,
+      "summary": "Defines interpRecip and interpExp. Proves endpoint recovery, positivity, diagonal case.",
+      "mathContext": "$1/p_\\theta = (1-\\theta)/p_0 + \\theta/p_1$."
     },
     {
       "id": "conjugate-preservation",
-      "title": "Conjugate Exponent Preservation",
-      "summary": "Proves interpolated reciprocals sum to 1 when endpoints are Hölder conjugate."
+      "title": "Part II: Conjugate Exponent Preservation",
+      "startLine": 101,
+      "endLine": 126,
+      "summary": "Interpolated reciprocals sum to 1 when endpoints are Hölder conjugate.",
+      "mathContext": "$1/p_i + 1/q_i = 1 \\Rightarrow 1/p_\\theta + 1/q_\\theta = 1$."
     },
     {
       "id": "endpoint-bounds",
-      "title": "Hölder-Based Endpoint Bounds",
-      "summary": "Defines LpLqBounded structure. Proves identity operator bound and Hölder endpoint bound."
+      "title": "Part III: Hölder-Based Endpoint Bounds",
+      "startLine": 127,
+      "endLine": 161,
+      "summary": "Defines LpLqBounded. Proves identity operator and Hölder endpoint bounds.",
+      "mathContext": "$\\|Tf\\|_{q_i} \\leq M_i \\|f\\|_{p_i}$ at endpoints."
     },
     {
       "id": "log-convexity",
-      "title": "Log-Convexity and Properties of Norm Bound",
-      "summary": "Defines interpNorm = M₀^(1-θ)·M₁^θ. Proves log-convexity, monotonicity, scaling, AM-GM, and submultiplicativity."
+      "title": "Part IV: Log-Convexity of Norm Bound",
+      "startLine": 162,
+      "endLine": 247,
+      "summary": "interpNorm = M₀^(1-θ)·M₁^θ. Log-convexity, monotonicity, AM-GM, submultiplicativity.",
+      "mathContext": "$\\log M_\\theta = (1-\\theta)\\log M_0 + \\theta \\log M_1$ (log-convex)."
     },
     {
       "id": "three-lines",
-      "title": "Hadamard Three-Lines Lemma",
-      "summary": "Axiomatizes the three-lines lemma with strip geometry. Derives log-convexity as a consequence."
+      "title": "Part V: Hadamard Three-Lines Lemma",
+      "startLine": 248,
+      "endLine": 316,
+      "summary": "Axiomatizes three-lines lemma for strips. Derives log-convexity.",
+      "mathContext": "$\\log M(x)$ convex for bounded analytic $f$ on strip $0 \\leq \\text{Re}(z) \\leq 1$."
     },
     {
       "id": "riesz-thorin",
-      "title": "Riesz-Thorin Theorem Statement",
-      "summary": "States the Riesz-Thorin interpolation theorem as an axiom."
+      "title": "Part VI: Riesz-Thorin Statement",
+      "startLine": 317,
+      "endLine": 358,
+      "summary": "Riesz-Thorin as axiom (full proof needs complex interpolation).",
+      "mathContext": "$\\|T\\|_{p_\\theta \\to q_\\theta} \\leq M_0^{1-\\theta} M_1^\\theta$ (axiom)."
     },
     {
       "id": "holder-connection",
-      "title": "Hölder's Role in the Proof",
-      "summary": "Proves Hölder gives endpoint bounds. Documents how Hölder + three-lines → Riesz-Thorin."
+      "title": "Part VII: Hölder Connection",
+      "startLine": 359,
+      "endLine": 399,
+      "summary": "Hölder gives endpoint bounds. Chain: Hölder → endpoints → three-lines → Riesz-Thorin.",
+      "mathContext": "Hölder provides endpoint estimates; three-lines interpolates."
     },
     {
       "id": "hausdorff-young",
-      "title": "Consequences: Hausdorff-Young",
-      "summary": "Proves Hausdorff-Young exponent computation and trivial norm bound."
+      "title": "Part VIII: Hausdorff-Young",
+      "startLine": 400,
+      "endLine": 451,
+      "summary": "Hausdorff-Young exponent computation and norm bound from Riesz-Thorin.",
+      "mathContext": "$\\|\\hat{f}\\|_{p'} \\leq \\|f\\|_p$ for $1 \\leq p \\leq 2$."
     },
     {
       "id": "young-convolution",
-      "title": "Young's Convolution Inequality",
-      "summary": "Proves Young's exponent condition 1/q+1=1/p+1/r, q≥1 bound, and concrete examples (L1*L1, L1*L2, L^(4/3)*L2)."
+      "title": "Part IX: Young Convolution",
+      "startLine": 452,
+      "endLine": 511,
+      "summary": "Young exponent condition 1/q+1=1/p+1/r and concrete examples.",
+      "mathContext": "$\\|f * g\\|_q \\leq \\|f\\|_p \\|g\\|_r$ when $1/q + 1 = 1/p + 1/r$."
     },
     {
       "id": "interpolation-spaces",
-      "title": "Interpolation Space Inclusions",
-      "summary": "Proves embedding exponent difference and concrete interpolation parameter examples."
+      "title": "Part X: Interpolation Spaces",
+      "startLine": 512,
+      "endLine": 548,
+      "summary": "Embedding exponent differences and interpolation parameter examples.",
+      "mathContext": "$L^p \\hookrightarrow L^q$ for $p \\leq q$ on finite measure spaces."
+    },
+    {
+      "id": "summary",
+      "title": "Part XI: Summary",
+      "startLine": 549,
+      "endLine": 600,
+      "summary": "Verification checklist and Hölder hierarchy documentation.",
+      "mathContext": "Cauchy-Schwarz $\\subset$ Hölder $\\to$ Riesz-Thorin $\\to$ Hausdorff-Young + Young."
     }
   ],
   "conclusion": {
