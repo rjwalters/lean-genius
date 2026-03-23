@@ -239,3 +239,55 @@ All other sorries are eliminated. The proof of Roth's theorem is complete modulo
 **Difficulty**: HIGH (estimated 200+ lines of new infrastructure)
 **Aristotle-suitable**: NO (requires creative proof architecture, not just tactic search)
 **Simplification**: Could remove M ≥ √N from statement (unused) to simplify
+
+## Session 7 (2026-03-23, researcher-1)
+
+### What Was Done
+1. **Simplified `density_increment_lemma` statement**: Removed `M ≥ Nat.sqrt N` from the conclusion (unused downstream — destructured as `_` in both `density_increment_step` and `density_iteration`). Updated both downstream callers.
+2. **Proved `natCast_mod_mul_eq`**: Key modular arithmetic lemma showing `(↑(a % P) : ZMod N) * r = (↑a : ZMod N) * r` when `addOrderOf r = P`. Uses `Nat.div_add_mod` + the vanishing of `P • r = 0`.
+3. **Proved `cosetMap_add`**: The coset map φ(k) = a + val(k)·r is additive: `φ(k₁+k₂) = φ(k₁) + val(k₂)·r`. Uses `ZMod.val_add` + `natCast_mod_mul_eq`.
+4. **Proved `apFree_coset_slice`**: AP-freeness is preserved under the coset inclusion map. If A ⊆ Z/NZ is AP-free, the "slice" B = {k ∈ Z/PZ : a + val(k)·r ∈ A} is AP-free in Z/PZ. Key steps:
+   - 3-AP (b,b+e,b+2e) in B lifts to 3-AP in A via `cosetMap_add`
+   - Common difference `val(e)·r ≠ 0` since `0 < val(e) < P = addOrderOf r`
+   - Uses `addOrderOf_dvd_of_nsmul_eq_zero` for the non-vanishing
+
+### Key Technical Discoveries
+- `congrArg Nat.cast h` works for casting ℕ equalities to ZMod N when `exact_mod_cast` fails
+- `nsmul_eq_mul` converts between `P • r` (nsmul) and `↑P * r` (ring multiplication) in ZMod N
+- `addOrderOf_nsmul_eq_zero` gives `(addOrderOf r) • r = 0`
+- `Nat.not_dvd_of_pos_of_lt` shows `P ∤ val(e)` when `0 < val(e) < P`
+- ZMod N is commutative, so `ring` handles rearrangements like `↑P * ↑q * r = ↑q * (↑P * r)`
+
+### Remaining Sorry Dependency Chain (Updated Session 7)
+```
+density_increment_lemma (1 sorry) ── needs density boost on cosets
+    └→ roth_density_bound (PROVED)
+```
+
+All AP-freeness preservation infrastructure is now in place. The sole remaining challenge is the **density boost**: showing that some coset of ⟨r⟩ has density ≥ δ + δ²/100.
+
+### Analysis: Density Boost Approaches
+
+**Approach A: Subgroup cosets (P = addOrderOf r)**
+- ✅ AP-freeness preservation (proved via `apFree_coset_slice`)
+- ❌ Density boost: simple Cauchy-Schwarz on |f_a| ≤ |B_a| only gives max density ≈ δ²/2, not δ + δ²/100
+- ❌ Fails when N is prime (P = N, only 1 coset, no boost possible)
+- Mathlib has: `ZMod.addOrderOf_coe`, `addOrderOf_nsmul_eq_zero`
+
+**Approach B: Dirichlet approximation + arithmetic progressions**
+- Mathlib has: `exists_int_int_abs_mul_sub_le` (Dirichlet's theorem)
+- Choose step size q ≤ √N with |qr| ≈ 0 in Z/NZ
+- APs of step q have "approximately constant" character
+- ❌ Approximation error too large for Q = √N (error ≈ signal)
+- ✅ Works with Q = N^{2/3} for N > C/δ⁶ (error < signal)
+- ❌ Requires separate handling for small N
+
+**Approach C: Use Mathlib's `roth_3ap_theorem` directly**
+- Mathlib proves Roth via corners/regularity (different proof strategy)
+- Would bypass density increment entirely but change proof character
+- Would need to connect our `APFree` to Mathlib's `ThreeAPFree`
+
+**Recommended next steps:**
+1. Try Approach B with Q = N^{2/3}, handle small N separately
+2. OR try Approach A with refined Fourier analysis using the EXACT identity (not just magnitude bounds)
+3. The density boost is the deepest mathematical step — may require 2+ sessions

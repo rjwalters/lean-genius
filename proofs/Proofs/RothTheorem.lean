@@ -840,6 +840,70 @@ theorem fourier_large_coefficient {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
 -- PART V: DENSITY INCREMENT LEMMA
 -- ═══════════════════════════════════════════════════════════════════
 
+/-- Key lemma: casting a natural number modulo P to ZMod N and multiplying by r
+    gives the same result as casting the original number, when P = addOrderOf r.
+    This is because (P : ZMod N) * r = 0, so the quotient vanishes. -/
+private lemma natCast_mod_mul_eq {N : ℕ} [NeZero N] (a : ℕ) (r : ZMod N) (P : ℕ)
+    (hord : addOrderOf r = P) :
+    (↑(a % P) : ZMod N) * r = (↑a : ZMod N) * r := by
+  have hPr : (↑P : ZMod N) * r = 0 := by
+    rw [← nsmul_eq_mul]; exact hord ▸ addOrderOf_nsmul_eq_zero r
+  have hsum : (↑P : ZMod N) * ↑(a / P) + ↑(a % P) = ↑a := by
+    have h : (↑(P * (a / P) + a % P) : ZMod N) = ↑a :=
+      congrArg Nat.cast (Nat.div_add_mod a P)
+    simp only [Nat.cast_add, Nat.cast_mul] at h; exact h
+  have hvanish : (↑P : ZMod N) * ↑(a / P) * r = 0 := by
+    calc (↑P : ZMod N) * ↑(a / P) * r
+        = ↑(a / P) * ((↑P : ZMod N) * r) := by ring
+      _ = ↑(a / P) * 0 := by rw [hPr]
+      _ = 0 := mul_zero _
+  calc (↑(a % P) : ZMod N) * r
+      = 0 + (↑(a % P) : ZMod N) * r := (zero_add _).symm
+    _ = (↑P : ZMod N) * ↑(a / P) * r + (↑(a % P) : ZMod N) * r := by rw [hvanish]
+    _ = ((↑P : ZMod N) * ↑(a / P) + ↑(a % P)) * r := by ring
+    _ = (↑a : ZMod N) * r := by rw [hsum]
+
+/-- The coset map k ↦ a + val(k)·r is additive: the val of a sum maps to the sum
+    of individual images. -/
+private lemma cosetMap_add {N P : ℕ} [NeZero N] [NeZero P]
+    (r : ZMod N) (hord : addOrderOf r = P)
+    (a : ZMod N) (k₁ k₂ : ZMod P) :
+    a + (↑(ZMod.val (k₁ + k₂)) : ZMod N) * r =
+    (a + (↑(ZMod.val k₁) : ZMod N) * r) + (↑(ZMod.val k₂) : ZMod N) * r := by
+  rw [ZMod.val_add, natCast_mod_mul_eq _ _ P hord, Nat.cast_add, add_mul]
+  ring
+
+/-- AP-freeness is preserved under the coset inclusion map.
+    If A ⊆ Z/NZ is AP-free, r has additive order P, and B = {k ∈ Z/PZ : a + val(k)·r ∈ A},
+    then B is AP-free in Z/PZ. -/
+theorem apFree_coset_slice {N P : ℕ} [NeZero N] [NeZero P]
+    (A : Finset (ZMod N)) (hAP : APFree A)
+    (r : ZMod N) (hord : addOrderOf r = P)
+    (a : ZMod N)
+    (B : Finset (ZMod P))
+    (hB : ∀ k : ZMod P, k ∈ B ↔ a + (↑(ZMod.val k) : ZMod N) * r ∈ A) :
+    APFree B := by
+  intro b e he hb hbe hb2e
+  rw [hB] at hb hbe hb2e
+  set d := (↑(ZMod.val e) : ZMod N) * r with hd_def
+  have h1 : a + (↑(ZMod.val (b + e)) : ZMod N) * r =
+      (a + (↑(ZMod.val b) : ZMod N) * r) + d :=
+    cosetMap_add r hord a b e
+  have h2 : a + (↑(ZMod.val (b + 2 * e)) : ZMod N) * r =
+      (a + (↑(ZMod.val b) : ZMod N) * r) + 2 * d := by
+    have : b + 2 * e = (b + e) + e := by ring
+    rw [this, cosetMap_add r hord a (b + e) e, cosetMap_add r hord a b e]; ring
+  have hd_ne : d ≠ 0 := by
+    rw [hd_def]; intro h
+    have hval_e_pos : 0 < ZMod.val e := by
+      rw [Nat.pos_iff_ne_zero]; intro h0; exact he (by rwa [ZMod.val_eq_zero] at h0)
+    have hval_e_lt : ZMod.val e < P := ZMod.val_lt e
+    have := addOrderOf_dvd_of_nsmul_eq_zero
+      (show (ZMod.val e) • r = 0 by rwa [nsmul_eq_mul])
+    rw [hord] at this
+    exact Nat.not_dvd_of_pos_of_lt hval_e_pos hval_e_lt this
+  exact hAP (a + (↑(ZMod.val b) : ZMod N) * r) d hd_ne hb (h1 ▸ hbe) (h2 ▸ hb2e)
+
 /-- The density increment lemma: if A ⊆ Z/NZ has density delta and no 3-AP,
     then A has density at least delta + c·delta² on some long arithmetic
     subprogression, and the restriction is also AP-free. This is the
@@ -855,7 +919,6 @@ theorem density_increment_lemma {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
     (hdensity : (A.card : ℝ) ≥ delta * N) :
     ∃ (M : ℕ) (B : Finset (ZMod M)),
       1 < M ∧
-      M ≥ Nat.sqrt N ∧
       APFree B ∧
       (B.card : ℝ) ≥ (delta + delta ^ 2 / 100) * M := by
   sorry
@@ -873,8 +936,7 @@ theorem density_increment_step {N : ℕ} (hN : 1 < N) (d : ℝ) (hd : 0 < d)
     (hdens : (A.card : ℝ) ≥ d * N) :
     ∃ (M : ℕ) (B : Finset (ZMod M)),
       1 < M ∧ APFree B ∧ (B.card : ℝ) ≥ (d + d ^ 2 / 100) * M :=
-  let ⟨M, B, hMgt, _, hBAP, hBdens⟩ := density_increment_lemma hN A hAP d hd hdens
-  ⟨M, B, hMgt, hBAP, hBdens⟩
+  density_increment_lemma hN A hAP d hd hdens
 
 /-- After k iterations of density increment starting from density delta,
     the density reaches at least delta + k * delta² / 100.
@@ -894,7 +956,7 @@ theorem density_iteration (delta : ℝ) (hdelta : 0 < delta) :
   set d := delta + ↑k * delta ^ 2 / 100 with hd_def
   have hd_pos : 0 < d := by positivity
   -- Apply density increment at current density d
-  obtain ⟨M, B, hMgt, _, hBAP, hBdens⟩ := density_increment_lemma hN A hAP d hd_pos hdens
+  obtain ⟨M, B, hMgt, hBAP, hBdens⟩ := density_increment_lemma hN A hAP d hd_pos hdens
   refine ⟨M, B, hMgt, hBAP, ?_⟩
   -- hBdens : (B.card : ℝ) ≥ (d + d^2/100) * M
   -- Need: (B.card : ℝ) ≥ (delta + (k+1) * delta^2/100) * M
