@@ -209,6 +209,26 @@
       "targetId": "central-limit-theorem",
       "relationship": "extends",
       "description": "The binomial distribution $P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}$ arises directly from the binomial theorem. The Central Limit Theorem shows this distribution converges to a Gaussian as $n \\to \\infty$."
+    },
+    {
+      "targetId": "binomial-theorem-oq-02",
+      "relationship": "extended-by",
+      "description": "Generalizes $(x+y)^n = \\sum \\binom{n}{k} x^k y^{n-k}$ to the multinomial theorem $(x_1 + \\cdots + x_m)^n = \\sum \\frac{n!}{k_1! \\cdots k_m!} \\prod x_i^{k_i}$ — the binomial theorem is the $m=2$ case"
+    },
+    {
+      "targetId": "binomial-theorem-oq-03",
+      "relationship": "extended-by",
+      "description": "Derives the binomial distribution $P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}$ as a probabilistic interpretation of the binomial theorem with $x = p$, $y = 1-p$"
+    },
+    {
+      "targetId": "binomial-theorem-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Newton's generalized binomial theorem extends to non-integer exponents: $(1+x)^\\alpha = \\sum_{k=0}^\\infty \\binom{\\alpha}{k} x^k$ for $|x| < 1$, using the generalized binomial coefficient $\\binom{\\alpha}{k} = \\frac{\\alpha(\\alpha-1)\\cdots(\\alpha-k+1)}{k!}$"
+    },
+    {
+      "targetId": "binomial-theorem-oq-04-oq-02",
+      "relationship": "extended-by",
+      "description": "Proves the Vandermonde identity $\\binom{m+n}{r} = \\sum_{k=0}^r \\binom{m}{k}\\binom{n}{r-k}$ via algebraic coefficient comparison in the product $(1+x)^m(1+x)^n = (1+x)^{m+n}$"
     }
   ],
   "relatedProofs": [
@@ -219,7 +239,11 @@
     "binomial-theorem-oq-01",
     "arithmetic-series",
     "inclusion-exclusion",
-    "central-limit-theorem"
+    "central-limit-theorem",
+    "binomial-theorem-oq-02",
+    "binomial-theorem-oq-03",
+    "binomial-theorem-oq-01-oq-01",
+    "binomial-theorem-oq-04-oq-02"
   ],
   "references": [
     {
