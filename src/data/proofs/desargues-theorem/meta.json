@@ -57,7 +57,12 @@
       "**Determinant Unification:** Three points $p, q, r$ are collinear $\\iff \\det(p, q, r) = 0$. Three lines $\\ell, m, n$ are concurrent $\\iff \\det(\\ell, m, n) = 0$. The proof reduces both perspective conditions to related determinant equations.",
       "**Non-Desarguesian Planes Exist:** The Moulton plane (modify the intersection rule for lines of certain slopes) satisfies all projective plane axioms but violates Desargues's theorem. This shows the theorem is independent of the basic incidence axioms — it is a genuine structural condition."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Projective geometry (homogeneous coordinates, duality, incidence)",
+      "Linear algebra (cross products in $\\mathbb{R}^3$, determinants, linear dependence)",
+      "Matrix theory ($3 \\times 3$ determinants, the scalar triple product $\\det(u, v, w) = u \\cdot (v \\times w)$)",
+      "Projective planes (incidence axioms, Desarguesian vs non-Desarguesian)"
+    ]
   },
   "sections": [
     {
@@ -65,28 +70,32 @@
       "title": "Introduction",
       "startLine": 1,
       "endLine": 52,
-      "summary": "Overview of Desargues's theorem, its historical context, and the projective geometry approach."
+      "summary": "Overview of Desargues's theorem, its historical context, and the projective geometry approach.",
+      "mathContext": "Desargues's theorem (Wiedijk #87): triangles $ABC$, $A'B'C'$ in perspective from point $O$ (i.e., $AA'$, $BB'$, $CC'$ concurrent) $\\iff$ in perspective from a line (i.e., $AB \\cap A'B'$, $BC \\cap B'C'$, $CA \\cap C'A'$ collinear). Formalized using homogeneous coordinates in $\\mathbb{R}^3$ with cross products."
     },
     {
       "id": "projective-setup",
       "title": "Projective Geometry Setup",
       "startLine": 54,
       "endLine": 75,
-      "summary": "Definition of projective points and lines using homogeneous coordinates in R^3."
+      "summary": "Definition of projective points and lines using homogeneous coordinates in R^3.",
+      "mathContext": "Points and lines in $\\mathbb{RP}^2$ are represented as nonzero vectors in $\\mathbb{R}^3$ (up to scalar multiples). Point $p$ lies on line $\\ell$ iff $p \\cdot \\ell = 0$ (dot product). This homogeneous coordinate model makes the point-line duality manifest."
     },
     {
       "id": "fundamental-ops",
       "title": "Fundamental Operations",
       "startLine": 76,
       "endLine": 92,
-      "summary": "Line through two points, intersection of two lines, and point-on-line incidence."
+      "summary": "Line through two points, intersection of two lines, and point-on-line incidence.",
+      "mathContext": "Line through points $p, q$: $\\ell = p \\times q$ (cross product). Intersection of lines $\\ell, m$: $p = \\ell \\times m$. Point $p$ on line $\\ell$: $p \\cdot \\ell = 0$. The cross product is the key operation: $(p \\times q) \\cdot p = (p \\times q) \\cdot q = 0$ (scalar triple product vanishes when two vectors coincide)."
     },
     {
       "id": "collinearity-concurrence",
       "title": "Collinearity and Concurrence",
       "startLine": 93,
       "endLine": 115,
-      "summary": "Determinant conditions for three points being collinear or three lines being concurrent."
+      "summary": "Determinant conditions for three points being collinear or three lines being concurrent.",
+      "mathContext": "Three points $p, q, r$ are collinear $\\iff \\det(p, q, r) = 0$ (linearly dependent). Three lines $\\ell, m, n$ are concurrent $\\iff \\det(\\ell, m, n) = 0$. The algebraic symmetry between these conditions reflects the projective duality between points and lines."
     },
     {
       "id": "perspective-configs",
@@ -107,7 +116,8 @@
       "title": "Main Theorem",
       "startLine": 176,
       "endLine": 220,
-      "summary": "Desargues's theorem: point perspective implies line perspective."
+      "summary": "Desargues's theorem: point perspective implies line perspective.",
+      "mathContext": "Forward direction: concurrent lines $AA'$, $BB'$, $CC'$ (i.e., $\\det(A \\times A', B \\times B', C \\times C') = 0$) implies collinear intersection points $P, Q, R$ (i.e., $\\det(P, Q, R) = 0$). The key identity: $\\det(P, Q, R) = \\det(AA', BB', CC') \\cdot K$ for an algebraic factor $K$, proved by the `ring` tactic."
     },
     {
       "id": "converse",
