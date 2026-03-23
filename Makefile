@@ -3,7 +3,7 @@
 
 .DEFAULT_GOAL := help
 
-.PHONY: help clean clean-all clean-enhancers clean-research clean-loom \
+.PHONY: help clean clean-all clean-enhancers clean-research clean-loom clean-branches \
         status status-enhancers status-research status-aristotle \
         sync-research \
         build test lint \
@@ -23,6 +23,7 @@ help:
 	@echo "  make clean-enhancers  - Clean enhancement agent artifacts"
 	@echo "  make clean-research   - Clean research agent artifacts"
 	@echo "  make clean-loom       - Clean loom worktrees and branches"
+	@echo "  make clean-branches   - Comprehensive branch/worktree cleanup (PR-aware)"
 	@echo "  make prune            - Prune git worktrees and remote branches"
 	@echo ""
 	@echo "Status:"
@@ -97,6 +98,7 @@ clean-all:
 	./scripts/erdos/clean-enhancers.sh --deep --force
 	./scripts/research/clean-research.sh --deep --force
 	./.loom/scripts/clean.sh --deep --force
+	./scripts/clean-branches.sh --force
 
 clean-enhancers:
 	./scripts/erdos/clean-enhancers.sh $(CLEAN_FLAGS)
@@ -106,6 +108,9 @@ clean-research:
 
 clean-loom:
 	./.loom/scripts/clean.sh $(CLEAN_FLAGS)
+
+clean-branches:
+	./scripts/clean-branches.sh $(CLEAN_FLAGS)
 
 prune:
 	@echo "=== Pruning git worktrees ==="
