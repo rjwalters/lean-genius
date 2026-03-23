@@ -18,12 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-21",
-    "iteration": 5,
-    "focus": "tripleCount_add_card_eq_triple_sum PROVED. Remaining 2 sorries: fourier_large_coefficient, density_increment_lemma",
+    "iteration": 6,
+    "focus": "fourier_large_coefficient proof structure complete (arithmetic step proved). 7 sorries remain: 5 helper lemma proofs + 1 Fourier-analytic bound + density_increment_lemma",
     "blockers": [
-      "fourier_large_coefficient statement may need fixing (δ²N/2 bound fails for N=1)"
+      "Helper lemma proofs (fourierCoeff_zero, apFree_card_lt, two_mul_bijective, parseval_nonzero_double)",
+      "h_key sorry: Fourier identity + triangle inequality + AM-GM Parseval bound"
     ],
-    "nextAction": "Fix fourier_large_coefficient statement (add N≥2/δ² hypothesis), then prove it via Parseval + AP-freeness",
+    "nextAction": "Prove helper lemmas (fourierCoeff_zero is simple simp, apFree_card_lt needs ZMod API). Then prove h_key: separate r=0 term, triangle inequality, AM-GM+Parseval for odd N.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,19 +32,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 5b PROVED tripleCount_add_card_eq_triple_sum (combinatorial bijection). 2 sorries remain: fourier_large_coefficient, density_increment_lemma. The Fourier identity chain is now complete (triple_count_fourier fully proved).",
+    "progressSummary": "PROGRESS: Session 6 proved fourier_large_coefficient arithmetic core. The key contradiction \u03b4\u00b2N(1+\u03b4)>2 is formalized. Added hypotheses (N odd, \u03b4\u00b2N\u22654). 5 helper lemma sorries + 1 Fourier-analytic sorry remain. density_increment_lemma still sorry.",
     "builtItems": [
       "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
       "Build now succeeds: 0 axioms, 3 sorries",
-      "Proved fourierCoeff_norm_le: triangle inequality with |exp(iθ)|=1 via push_cast+ring",
-      "Proved roth_density_bound: iterate density_iteration, choose K>100/δ², density>1 contradicts card_le_nat",
-      "Proved psi_add: ψ(a+b) = ψ(a)·ψ(b) via val_add + exp periodicity (same pattern as exp_val_mul_eq)",
-      "Proved psi_zero: ψ(0) = 1",
-      "Proved psi_ne_one: ψ(c) ≠ 1 when c ≠ 0, via Complex.exp_eq_one_iff + integer squeeze on val(c)",
-      "Proved char_orthogonality: Σ ψ(r·c) = N·δ(c=0) via shift argument (r↦r+1 bijection on ZMod N)",
-      "Proved triple_count_fourier Part A: Fourier expansion ∑Â(r)²conj(Â(2r)) = N·∑δ(x+z=2y)",
+      "Proved fourierCoeff_norm_le: triangle inequality with |exp(i\u03b8)|=1 via push_cast+ring",
+      "Proved roth_density_bound: iterate density_iteration, choose K>100/\u03b4\u00b2, density>1 contradicts card_le_nat",
+      "Proved psi_add: \u03c8(a+b) = \u03c8(a)\u00b7\u03c8(b) via val_add + exp periodicity (same pattern as exp_val_mul_eq)",
+      "Proved psi_zero: \u03c8(0) = 1",
+      "Proved psi_ne_one: \u03c8(c) \u2260 1 when c \u2260 0, via Complex.exp_eq_one_iff + integer squeeze on val(c)",
+      "Proved char_orthogonality: \u03a3 \u03c8(r\u00b7c) = N\u00b7\u03b4(c=0) via shift argument (r\u21a6r+1 bijection on ZMod N)",
+      "Proved triple_count_fourier Part A: Fourier expansion \u2211\u00c2(r)\u00b2conj(\u00c2(2r)) = N\u00b7\u2211\u03b4(x+z=2y)",
       "PROVED triple_count_fourier: Fourier identity for AP counting, via fixed distribution + sum swap + orthogonality",
-      "PROVED tripleCount_add_card_eq_triple_sum: bijection (a,d)↦(a,a+d) between all APs and {(x,y)∈A²:2y-x∈A}, partition d=0/d≠0"
+      "PROVED tripleCount_add_card_eq_triple_sum: bijection (a,d)\u21a6(a,a+d) between all APs and {(x,y)\u2208A\u00b2:2y-x\u2208A}, partition d=0/d\u22600",
+      "fourier_large_coefficient proof structure: by_contra + suffices h_key, arithmetic via nlinarith",
+      "fourierCoeff_zero statement (\u00c2(0) = |A|), apFree_card_lt statement (AP-free \u2192 |A|<N)",
+      "parseval_nonzero_double statement (\u03a3_{r\u22600}\u2016\u00c2(2r)\u2016\u00b2=|A|(N-|A|) for odd N)"
     ],
     "insights": [
       "RothTheorem.lean had 3 build errors: deprecated Finset.not_mem_empty, broken apFree_singleton, non-existent Complex.abs",
@@ -51,29 +55,33 @@
       "Complex.abs renamed in Mathlib v4.26.0 - use norm instead",
       "roth_density_bound could be proved from density_increment_lemma via iterated application",
       "field_simp handles div_mul_cancel cleanly when clearing denominators",
-      "push_cast normalizes ↑(k+1) to ↑k+1 for cast unification",
-      "Key lemma chain: density_iteration (proved) → roth_density_bound (now proved)",
-      "char_orthogonality proved via elegant shift argument: ψ(c)·S = S where S is the sum, and ψ(c) ≠ 1 forces S = 0",
-      "psi_add proof follows same pattern as exp_val_mul_eq: val(a+b) = (val(a)+val(b))%N, exponents differ by integer*2πi",
-      "psi_ne_one key step: Complex.exp_eq_one_iff reduces to val(c)/N ∈ ℤ, then 0 < val(c) < N gives contradiction",
+      "push_cast normalizes \u2191(k+1) to \u2191k+1 for cast unification",
+      "Key lemma chain: density_iteration (proved) \u2192 roth_density_bound (now proved)",
+      "char_orthogonality proved via elegant shift argument: \u03c8(c)\u00b7S = S where S is the sum, and \u03c8(c) \u2260 1 forces S = 0",
+      "psi_add proof follows same pattern as exp_val_mul_eq: val(a+b) = (val(a)+val(b))%N, exponents differ by integer*2\u03c0i",
+      "psi_ne_one key step: Complex.exp_eq_one_iff reduces to val(c)/N \u2208 \u2124, then 0 < val(c) < N gives contradiction",
       "PRE-EXISTING BREAKAGES: psi_add, psi_ne_one, char_orthogonality all broken by Mathlib API changes",
       "char_sum_int proof strategy verified: omega=exp(2pi*m/N), sum omega^j, omega^N=1 via exp_eq_one_iff",
-      "triple_count_fourier follows same Parseval pattern but with THREE sums (ψ(rx)·ψ(rz)·conj(ψ(2ry))) + combinatorial bijection",
-      "fourier_large_coefficient bound δ²N/2 may be too strong — standard result is O(δ^{3/2}√N). Statement may need fixing.",
-      "Ring normalization in simp_rw: use congr_arg ψ (by ring) to match ψ arguments regardless of associativity",
+      "triple_count_fourier follows same Parseval pattern but with THREE sums (\u03c8(rx)\u00b7\u03c8(rz)\u00b7conj(\u03c8(2ry))) + combinatorial bijection",
+      "fourier_large_coefficient bound \u03b4\u00b2N/2 may be too strong \u2014 standard result is O(\u03b4^{3/2}\u221aN). Statement may need fixing.",
+      "Ring normalization in simp_rw: use congr_arg \u03c8 (by ring) to match \u03c8 arguments regardless of associativity",
       "Finset.sum_mul + Finset.mul_sum does NOT fully distribute 3-factor products",
       "simp_rw [Finset.sum_comm (s := univ) (t := A)] pushes r innermost in 3 passes",
-      "Finset.sum_ite_eq' collapses ∑_{z∈A} [z=c] to [c∈A] — key for inner sum simplification",
-      "linear_combination works for ZMod N ring equalities (x+z=2y ↔ z=2y-x)",
-      "Finset.card_image_of_injective cleaner than card_bij for simple embeddings like a↦(a,0)",
+      "Finset.sum_ite_eq' collapses \u2211_{z\u2208A} [z=c] to [c\u2208A] \u2014 key for inner sum simplification",
+      "linear_combination works for ZMod N ring equalities (x+z=2y \u2194 z=2y-x)",
+      "Finset.card_image_of_injective cleaner than card_bij for simple embeddings like a\u21a6(a,0)",
       "For Finset partition: manually construct union via ext+tauto, then card_union_of_disjoint",
-      "norm_cast pushes Nat.cast through Finset.sum and ite — closes ↑(∑ℕ) = ∑ℂ goals"
+      "norm_cast pushes Nat.cast through Finset.sum and ite \u2014 closes \u2191(\u2211\u2115) = \u2211\u2102 goals",
+      "fourier_large_coefficient needs N odd for r\u21a62r bijection (Parseval change of variables)",
+      "The arithmetic core: \u03b4\u00b2N(1+\u03b4)>2 iff (|A|\u00b2-N)/(N-|A|)>\u03b4\u00b2N/2, proved via substitution b=|A|-\u03b4N\u22650",
+      "Complex.norm_ofReal matching issues in Lean: use Complex.ofReal explicitly + norm_neg"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Fix fourier_large_coefficient: add hypothesis δ²N≥2 (bound δ²N/2 fails for N=1 since ZMod 1 has no r≠0)",
-      "Prove fourier_large_coefficient: AP-free → tripleCount=0, Fourier identity gives Σ_{r≠0}Â(r)²conj(Â(2r)) = N|A|-|A|³, triangle inequality + Parseval extracts large coefficient",
-      "Prove density_increment_lemma: use fourier_large_coefficient to find large Â(r), partition Z/NZ by character r into APs of length ~√N, pigeonhole for density increment, preserve AP-freeness"
+      "Prove fourierCoeff_zero: unfold + simp with ZMod.val_zero, Complex.exp_zero",
+      "Prove apFree_card_lt: by_contra, eq_univ_of_card, test a=0 d=1 for contradiction",
+      "Prove h_key: separate r=0 term (Finset.sum_union), triangle ineq (norm_sum_le), factor out max, AM-GM + Parseval",
+      "Prove density_increment_lemma: use fourier_large_coefficient + partition by character + pigeonhole"
     ]
   },
   "tags": [
@@ -92,7 +100,7 @@
     "mathlib": []
   },
   "started": "2026-03-22T06:10:36.236Z",
-  "lastUpdate": "2026-03-23T12:00:00Z",
+  "lastUpdate": "2026-03-23T18:00:00Z",
   "significance": 9,
   "tractability": 6
 }
