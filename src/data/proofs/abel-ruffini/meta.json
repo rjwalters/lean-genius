@@ -363,6 +363,16 @@
       "targetId": "angle-trisection-oq-02-oq-03-oq-01",
       "relationship": "related",
       "description": "The cyclotomic field approach to Gauss-Wantzel connects directly to Abel-Ruffini's radical solvability paradigm: cyclotomic polynomials have abelian Galois groups $(\\mathbb{Z}/n\\mathbb{Z})^{\\times}$, which are always solvable — explaining why roots of unity are expressible by radicals. The Abel-Ruffini impossibility arises when the Galois group escapes this abelian cyclotomic world, as the generic quintic's Galois group $S_5$ is not solvable"
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "foundational",
+      "description": "Bezout's identity ($\\gcd(a,b) = sa + tb$ for some integers $s, t$) is the algebraic backbone connecting the two characterizations of primality: the divisor property (irreducibility) and the multiplicative property (Euclid's criterion). In the Galois bridge theorem, the proof that each radical step $K_i \\to K_i(\\sqrt[n]{a})$ produces a cyclic Galois quotient implicitly uses the structure of $\\mathbb{Z}/n\\mathbb{Z}$ as a PID — where Bezout's identity guarantees that prime and irreducible coincide. This equivalence is what makes the chain from radical extensions to solvable Galois groups work"
+    },
+    {
+      "targetId": "sqrt2-from-axioms-oq-01",
+      "relationship": "foundational",
+      "description": "The irrationality of $\\sqrt{p}$ for prime $p$ (proved from first principles via Euclid's criterion) is the simplest case of the radical expressibility question that Abel-Ruffini addresses at degree 5. The from-axioms proof explicitly uses the multiplicative property of primes ($p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$) — the same property that, when lifted to Galois groups, drives the bridge theorem: solvable by radicals implies solvable Galois group. The irrationality proof is thus the degree-1 prototype of the Galois-theoretic argument"
     }
   ],
   "relatedProofs": [
@@ -408,7 +418,9 @@
     "chinese-remainder-non-coprime",
     "elementary-quadratic-reciprocity-oq-01",
     "angle-trisection-oq-02-oq-03",
-    "angle-trisection-oq-02-oq-03-oq-01"
+    "angle-trisection-oq-02-oq-03-oq-01",
+    "bezout-identity",
+    "sqrt2-from-axioms-oq-01"
   ],
   "references": [
     {
