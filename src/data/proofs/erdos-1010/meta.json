@@ -144,6 +144,51 @@
       "Can the stability method yield effective bounds on how structurally close a near-extremal graph must be to the Turán graph?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-340",
+      "relationship": "related",
+      "description": "Both are extremal combinatorics problems: Erdős #340 concerns Sidon sets (sets with distinct pairwise sums), while #1010 concerns triangle supersaturation beyond the Turán threshold. Both use counting arguments central to extremal graph theory"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey theory guarantees unavoidable substructures in large graphs; triangle supersaturation quantifies this by counting how many triangles are forced when the edge count exceeds the Turán bound. The Kruskal-Katona theorem extends this counting to general cliques"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "Binomial coefficients appear in the Turán number ex(n, K₃) = ⌊n²/4⌋ and in counting triangle triples C(n,3). The supersaturation bound t·⌊n/2⌋ involves combinatorial counting arguments that build on binomial coefficient identities"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-340",
+    "ramseys-theorem",
+    "binomial-theorem"
+  ],
+  "references": [
+    {
+      "authors": "Kruskal, Joseph B.",
+      "title": "The number of simplices in a complex",
+      "year": "1963",
+      "venue": "Mathematical Optimization Techniques, pp. 251–278",
+      "note": "The Kruskal-Katona theorem, which generalizes triangle supersaturation to counting r-cliques given edge density constraints"
+    },
+    {
+      "authors": "Razborov, Alexander",
+      "title": "On the minimal density of triangles in graphs",
+      "year": "2010",
+      "venue": "Combinatorics, Probability and Computing, vol. 19, pp. 201–225",
+      "note": "Used flag algebra methods to determine the exact minimum number of triangles in graphs with given edge density, resolving the supersaturation question precisely"
+    },
+    {
+      "authors": "Turán, Pál",
+      "title": "Eine Extremalaufgabe aus der Graphentheorie",
+      "year": "1941",
+      "venue": "Matematikai és Fizikai Lapok, vol. 48, pp. 436–452",
+      "note": "The foundational extremal graph theory result: the maximum number of edges in a K_{r+1}-free graph on n vertices is achieved by the complete r-partite graph with balanced parts"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
