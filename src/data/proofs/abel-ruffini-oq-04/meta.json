@@ -105,7 +105,10 @@
       "angle-trisection-oq-02",
       "quadratic-reciprocity",
       "kroneckers-jugendtraum",
-      "hilbert-10"
+      "hilbert-10",
+      "vietas-formulas",
+      "primitive-roots",
+      "fermats-last-theorem"
     ],
     "prerequisites": [
       "Group theory (normal subgroups, derived series, solvability)",
@@ -220,6 +223,21 @@
       "targetId": "hilbert-10",
       "relationship": "thematic",
       "description": "Matiyasevich's negative resolution of Hilbert's tenth problem (1970) extends the impossibility tradition: this file proves no radical formula solves all quintics (group-theoretic obstruction), while Hilbert-10 proves no algorithm decides all Diophantine equations (computability obstruction) — both establish fundamental limits on solving polynomial equations"
+    },
+    {
+      "targetId": "vietas-formulas",
+      "relationship": "foundational",
+      "description": "Vieta's formulas express polynomial roots as elementary symmetric functions of coefficients — the symmetric group Sₙ acts on roots by permutation, and Vieta's formulas are exactly the fundamental Sₙ-invariant polynomials. This invariance is why polynomial coefficients live in the ground field: they are fixed by the Galois group. The Abel-Ruffini theorem can be restated as: the elementary symmetric functions cannot be 'inverted' by radicals when the Galois group is S₅"
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "related",
+      "description": "Primitive roots of unity generate cyclotomic extensions ℚ(ζₙ)/ℚ, the simplest radical extensions with cyclic (hence solvable) Galois groups Gal(ℚ(ζₚ)/ℚ) ≅ (ℤ/pℤ)*. These are the prototype of solvable-by-radicals equations — every radical tower passes through cyclotomic extensions. The contrast with the generic quintic (Galois group S₅, not solvable) illuminates the exact boundary between radical-solvable and radical-unsolvable"
+    },
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "thematic",
+      "description": "Two landmark impossibility results that drove algebraic innovation across centuries: Abel-Ruffini (1824) proves no radical formula solves all quintics via the non-solvability of S₅, spawning Galois theory; FLT (1995) proves aⁿ + bⁿ = cⁿ has no positive integer solutions for n > 2, proved via the modularity of elliptic curves. Both transformed their fields — Abel-Ruffini led from equation-solving to structural algebra, while FLT connected number theory to the Langlands program"
     }
   ],
   "overview": {
