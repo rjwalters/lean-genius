@@ -223,6 +223,11 @@
       "targetId": "sqrt2-irrational",
       "relationship": "thematic",
       "description": "The irrationality of $\\sqrt{2}$ and Gödel's incompleteness are both proved by contradiction and both reveal fundamental limitations: $\\sqrt{2}$ cannot be expressed as $p/q$ (the rational framework is too narrow), and arithmetic truths cannot all be proved in a formal system (the formal framework is too narrow). Both show that natural-seeming 'complete' descriptions are inherently incomplete"
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "foundational",
+      "description": "Cantor's theorem ($|A| < |\\mathcal{P}(A)|$) uses the same diagonal construction that Gödel adapted for incompleteness. Gödel's self-referential sentence 'this statement is unprovable' is the arithmetic analog of Cantor's diagonal set $\\{x : x \\notin f(x)\\}$ — both create paradoxes by negating a self-referential predicate along the diagonal. Lawvere's fixed-point theorem unifies both as instances of a single categorical principle"
     }
   ],
   "relatedProofs": [
@@ -238,7 +243,8 @@
     "fundamental-arithmetic",
     "infinitude-primes",
     "angle-trisection",
-    "sqrt2-irrational"
+    "sqrt2-irrational",
+    "cantors-theorem"
   ],
   "references": [
     {
