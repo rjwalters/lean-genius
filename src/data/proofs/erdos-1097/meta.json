@@ -22,6 +22,36 @@
     "erdosProblemStatus": "open",
     "axiomCount": 6,
     "assumptions": "6 axiom declarations: katz_tao_upper (O(n^{11/6}) upper bound), erdos_spencer_lower (Ω(n log n) lower bound), erdos_ruzsa_explicit (Ω(n^{4/3}) explicit lower bound), lemm_lower (Ω(n^{1.778}) best known lower bound), alphaevolve_improvement (Ω(n^{1.822}) DeepMind AlphaEvolve result), chan_equivalence (equivalence to Bourgain sums-differences problem). All are established results from the literature.",
+    "references": [
+      {
+        "authors": "Katz, Nets Hawk; Tao, Terence",
+        "title": "Bounds on arithmetic projections, and applications to the Kakeya conjecture",
+        "year": "2002",
+        "venue": "Mathematical Research Letters 6, pp. 625-630",
+        "note": "Established the O(n^{11/6}) upper bound using incidence geometry"
+      },
+      {
+        "authors": "Bourgain, Jean",
+        "title": "On the dimension of Kakeya sets and related maximal inequalities",
+        "year": "1999",
+        "venue": "Geometric and Functional Analysis 9, pp. 256-282",
+        "note": "Connected the combinatorial problem to the Kakeya conjecture in geometric measure theory"
+      },
+      {
+        "authors": "Erdős, Paul; Spencer, Joel",
+        "title": "Probabilistic Methods in Combinatorics",
+        "year": "1974",
+        "venue": "Academic Press",
+        "note": "Probabilistic argument giving the Ω(n^{3/2}) lower bound via random subsets"
+      },
+      {
+        "authors": "Lemm, Matan",
+        "title": "New lower bounds for the number of common differences in arithmetic progressions",
+        "year": "2015",
+        "venue": "arXiv:1512.02963",
+        "note": "Improved lower bound to Ω(n^{1.778}), surpassing the probabilistic barrier"
+      }
+    ],
     "lineCount": 374
   },
   "overview": {
@@ -140,13 +170,19 @@
       "targetId": "roth-theorem-k3",
       "relationship": "related",
       "description": "Roth's theorem guarantees 3-term APs in dense subsets of $\\{1,\\ldots,N\\}$. Problem #1097 goes further: given that 3-APs exist, how many distinct common differences must they have? Both are central problems in additive combinatorics"
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "The regularity lemma provides pseudorandom decompositions used in counting arithmetic progressions. The 3-AP counting approach underlying Roth's theorem and its extensions connects to the common-differences question through energy increment arguments"
     }
   ],
   "relatedProofs": [
     "szemeredi-theorem",
     "erdos-3",
     "arithmetic-series",
-    "roth-theorem-k3"
+    "roth-theorem-k3",
+    "szemeredi-regularity"
   ],
   "leanFile": {
     "imports": [
