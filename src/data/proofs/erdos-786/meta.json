@@ -143,6 +143,43 @@
       "What about products with repetitions (multisets instead of sets)?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-437",
+      "relationship": "related",
+      "description": "Both study multiplicative structure of integer sets; #437 concerns square partial products while #786 concerns multiplicative cardinality (factor count uniqueness)"
+    },
+    {
+      "targetId": "erdos-841",
+      "relationship": "related",
+      "description": "Companion multiplicative structure problem; both investigate density limitations imposed by multiplicative constraints on integer sets"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The prime number theorem underlies the density analysis of multiplicative cardinality sets, especially Selfridge's 1/e construction using prime reciprocal sums"
+    }
+  ],
+  "references": [
+    {
+      "title": "On some problems of a statistical group-theory, I",
+      "author": "Erdős, P. and Turán, P.",
+      "year": 1965,
+      "description": "Early appearance of Problem #786 on multiplicative cardinality sets and their density"
+    },
+    {
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "author": "Erdős, P. and Graham, R. L.",
+      "year": 1980,
+      "description": "Comprehensive discussion of the problem with Selfridge's density 1/e construction"
+    },
+    {
+      "title": "On the distribution of the number of prime factors of sums a+b",
+      "author": "Erdős, P.",
+      "year": 1973,
+      "description": "Further discussion of multiplicative structure problems including Ruzsa's unpublished upper bound"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Finset.Card",

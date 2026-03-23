@@ -126,6 +126,43 @@
       "Do max f and max F coincide for large x?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-679",
+      "relationship": "related",
+      "description": "Both study prime factorization functions (ω and f/F) with unusual asymptotic behavior; #679 concerns the distribution of ω(n-k) while #878 studies unconventional additive functions of prime factorizations"
+    },
+    {
+      "targetId": "erdos-690",
+      "relationship": "related",
+      "description": "Both study fine structure of prime factor distributions; #690 examines k-th prime factor density while #878 defines new functions of the prime factorization"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The prime number theorem provides the asymptotic context for understanding growth rates of f(n), F(n), and the behavior of H(x)"
+    }
+  ],
+  "references": [
+    {
+      "title": "On some unconventional problems on the divisors of integers",
+      "author": "Erdős, P.",
+      "year": 1984,
+      "description": "Original paper introducing the functions f(n) and F(n) and their unusual asymptotic properties"
+    },
+    {
+      "title": "Divisors",
+      "author": "Hall, R. R. and Tenenbaum, G.",
+      "year": 1988,
+      "description": "Comprehensive treatment of divisor functions and additive number theory, including context for unconventional functions"
+    },
+    {
+      "title": "The normal number of prime factors of a number n",
+      "author": "Hardy, G. H. and Ramanujan, S.",
+      "year": 1917,
+      "description": "Foundational paper on the normal order of ω(n), providing the baseline for comparing unconventional functions"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.ArithmeticFunction",

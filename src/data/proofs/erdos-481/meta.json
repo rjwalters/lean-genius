@@ -117,6 +117,43 @@
       "Higher-dimensional analogues"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-482",
+      "relationship": "related",
+      "description": "Consecutive Erdős-Graham problems on iteration and number-theoretic sequences; both concern structural properties of integer maps"
+    },
+    {
+      "targetId": "erdos-477",
+      "relationship": "related",
+      "description": "Both are Erdős-Graham problems from the same 1980 monograph on combinatorial number theory, studying iteration and density properties"
+    },
+    {
+      "targetId": "erdos-480",
+      "relationship": "related",
+      "description": "Nearby Erdős-Graham problem on integer sequences and their iteration behavior"
+    }
+  ],
+  "references": [
+    {
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "author": "Erdős, P. and Graham, R. L.",
+      "year": 1980,
+      "description": "Original source of Problem #481 (p.96); remarked the iteration difficulty is surprising"
+    },
+    {
+      "title": "On the problem of Erdős and Graham on free semigroups of affine maps",
+      "author": "Klarner, D. A.",
+      "year": 1982,
+      "description": "First proof that Σ(1/aᵢ) > 1 forces eventual repetition, via free semigroup theory"
+    },
+    {
+      "title": "An extra satisfying condition in a conjecture of Erdős and Graham",
+      "author": "Alweiss, R.",
+      "year": 2021,
+      "description": "Showed the extra minimum-value condition in the original formulation was redundant"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

@@ -159,6 +159,43 @@
       "Is there a finite characterization of proportionate dissociation?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-847",
+      "relationship": "related",
+      "description": "Both ask whether a proportionality condition on subsets forces finite union decomposition; #847 concerns AP-free sets (disproved) while #774 concerns dissociated sets (open)"
+    },
+    {
+      "targetId": "erdos-340-greedy-sidon",
+      "relationship": "related",
+      "description": "Both involve Sidon-type sets in additive combinatorics; Sidon sets are closely related to dissociated sets through unique representation properties"
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Szemeredi's theorem provides context for the density-zero nature of structured sets; dissociated sets have density zero similarly to AP-free sets"
+    }
+  ],
+  "references": [
+    {
+      "title": "An application of graph theory to additive number theory",
+      "author": "Alon, N. and Erdős, P.",
+      "year": 1985,
+      "description": "Original statement of Problem #774 on proportionately dissociated sets and finite union decomposition"
+    },
+    {
+      "title": "Conditions de Sidon dans le dual d'un groupe abélien compact",
+      "author": "Pisier, G.",
+      "year": 1983,
+      "description": "Breakthrough equivalence: proportionately dissociated equals Sidon in harmonic analysis"
+    },
+    {
+      "title": "A negative answer to a question of Erdős and Nešetřil",
+      "author": "Nešetřil, J., Rödl, V., and Sales, M.",
+      "year": 2024,
+      "description": "Resolved the Sidon analogue negatively, providing strong evidence that #774 also has a negative answer"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",
