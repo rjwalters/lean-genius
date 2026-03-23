@@ -76,6 +76,12 @@
         "key": "St04",
         "citation": "Stewart, I., Galois Theory, 3rd ed., Chapman & Hall/CRC (2004), Chapter 5.",
         "type": "book"
+      },
+      {
+        "key": "Ga01",
+        "citation": "Gauss, C.F., Disquisitiones Arithmeticae (1801), §365.",
+        "type": "book",
+        "note": "Gauss proved the regular 17-gon is constructible using the 2-group structure of Gal(ℚ(ζ₁₇)/ℚ) ≅ ℤ/16ℤ, implicitly anticipating the Galois characterization of constructibility"
       }
     ],
     "lineCount": 298
@@ -155,6 +161,16 @@
       "targetId": "euler-totient",
       "relationship": "foundational",
       "description": "The Gauss-Wantzel theorem states the regular $n$-gon is constructible iff $\\phi(n) = 2^k$, making Euler's totient function the bridge between number theory and constructibility. Since $\\text{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^{\\times}$ has order $\\phi(n)$, the 2-group criterion reduces to $\\phi(n) = 2^k$"
+    },
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of $\\sqrt[n]{m}$ for non-perfect-power $m$ is the simplest case of the constructibility question: $\\sqrt[n]{m}$ is constructible iff $\\text{Gal}(x^n - m / \\mathbb{Q})$ is a 2-group. For $n = 2$, $\\text{Gal}(x^2 - m) \\cong \\mathbb{Z}/2\\mathbb{Z}$ (a 2-group), so $\\sqrt{m}$ is always constructible. For $n = 3$, $\\text{Gal}(x^3 - m) \\cong S_3$ (order 6, not a 2-group), so $\\sqrt[3]{m}$ is never constructible"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "The transcendence of $e$ (Hermite 1873) is a strictly stronger impossibility than non-constructibility: transcendental numbers are not just non-constructible but satisfy no polynomial over $\\mathbb{Q}$ at all. The Galois criterion applies only to algebraic numbers — for transcendental numbers, even the Galois group framework does not apply"
     }
   ],
   "overview": {
@@ -289,6 +305,8 @@
     "quadratic-reciprocity",
     "angle-trisection-oq-02-oq-01",
     "primitive-roots",
-    "euler-totient"
+    "euler-totient",
+    "nth-root-irrational",
+    "e-transcendental"
   ]
 }
