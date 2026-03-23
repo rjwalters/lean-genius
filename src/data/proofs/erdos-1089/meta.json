@@ -181,7 +181,6 @@
   "overview": {
     "historicalContext": "The distinct distances problem in higher dimensions was posed by L.M. Kelly and Paul Erdős in their 1975 paper on combinatorial geometry. It generalizes the famous planar distinct distances problem — solved by Larry Guth and Nets Hawk Katz in 2015 (published in *Annals of Mathematics*), who proved $f_2(n) \\geq cn/\\sqrt{\\log n}$ using algebraic topology and polynomial partitioning — to arbitrary dimension $d$. But with a twist: instead of fixing $d$ and varying $n$, Problem #1089 fixes the number of distinct distances $n$ and asks how the threshold $g_d(n)$ grows with $d$.\n\nThe key construction is the $d$-dimensional unit cube $\\{0,1\\}^d$: its $2^d$ vertices produce only $d$ distinct distances ($\\sqrt{1}, \\sqrt{2}, \\ldots, \\sqrt{d}$), since two vertices differing in $k$ coordinates have Hamming-Euclidean distance $\\sqrt{k}$. This shows $g_d(d+1) > 2^d$. Erdős proved 'easily' that $g_d(n) \\gg d^{n-1}$ for fixed $n$ using a counting argument, establishing a polynomial lower bound. Croft (1962) computed the exact value $g_3(3) = 7$ through a painstaking analysis of all possible 6-point configurations in $\\mathbb{R}^3$ with at most 2 distinct distances.\n\nThe upper bound side remains poorly understood: the Erdős-Straus bound $g_d(n) \\leq c^{d^{1-b_n}}$ is stretched-exponential, leaving an enormous gap with the polynomial lower bound. Whether $g_d(n)/d^{n-1}$ converges as $d \\to \\infty$ for fixed $n$ is the central open question. If the limit exists and is positive, it determines the exact polynomial growth rate; if it diverges, $g_d(n)$ grows super-polynomially in $d$.",
     "problemStatement": "Let $g_d(n)$ be minimal such that every collection of $g_d(n)$ points in $\\mathbb{R}^d$ determines at least $n$ distinct distances. Estimate $g_d(n)$. In particular, does $\\lim_{d \\to \\infty} g_d(n)/d^{n-1}$ exist?",
-    "text": "Erdős Problem #1089 asks about the threshold function g_d(n): the minimum number of points in ℝ^d that guarantees n distinct pairwise distances. The d-dimensional unit cube {0,1}^d demonstrates that 2^d points can have only d distinct distances, giving exponential lower bounds. Erdős proved g_d(n) >> d^{n-1} for fixed n, while the Erdős-Straus upper bound g_d(n) ≤ c^{d^{1-b_n}} is stretched-exponential — leaving a vast gap. The central open question is whether g_d(n)/d^{n-1} converges as d → ∞.",
     "proofStrategy": "The formalization defines g_d(n) as the infimum of thresholds guaranteeing n distinct distances in ℝ^d, using Mathlib's EuclideanSpace. The cube construction is axiomatized (embedding {0,1}^d into ℝ^d would require substantial infrastructure). Known bounds are captured as axioms. The theorem ratio_bounded_below is genuinely proved from the Erdős lower bound axiom. The f_d(n) inverse function connects to Problem #1083.",
     "keyInsights": [
       "**Threshold function**: $g_d(n) = \\min\\{m : \\text{every } m\\text{-point set in } \\mathbb{R}^d \\text{ has} \\geq n \\text{ distinct distances}\\}$ — the central combinatorial quantity",
@@ -189,14 +188,8 @@
       "**Small exact values**: $g_1(3)=4$, $g_2(3)=6$, $g_3(3)=7$ (Croft 1962) — values grow with dimension, reflecting that higher-dimensional spaces allow larger few-distance configurations",
       "**Polynomial lower bound**: $g_d(n) \\gg d^{n-1}$ (Erdős, 'easy') via counting arguments, establishing that the threshold grows at least polynomially in $d$",
       "**Stretched-exponential upper bound**: $g_d(n) \\leq c^{d^{1-b_n}}$ (Erdős-Straus) leaves an enormous gap with the polynomial lower bound — closing this gap is the heart of the open problem",
-      "**Genuinely proved**: The ratio $g_d(n)/d^{n-1} \\geq c > 0$ is proved from the Erdős lower bound axiom; convergence of this ratio as $d \\to \\infty$ is the open question"
-    ],
-    "prerequisites": [
-      "Discrete and combinatorial geometry: point configurations and distances",
-      "Euclidean space ℝ^d and the distance function",
-      "The distinct distances problem (Erdős 1946) and its higher-dimensional variants",
-      "Threshold functions and extremal combinatorics",
-      "Filter-based limits in Lean (Filter.Tendsto)"
+      "**Genuinely proved**: The ratio $g_d(n)/d^{n-1} \\geq c > 0$ is proved from the Erdős lower bound axiom; convergence of this ratio as $d \\to \\infty$ is the open question",
+      "**Dimension vs. point count duality**: While the planar problem (Guth-Katz 2015) fixes $d=2$ and grows $n$, this problem fixes $n$ and grows $d$ — exploring the complementary axis of the distance problem landscape. The polynomial partitioning technique that resolved the planar case has yet to yield results in the high-dimensional threshold setting"
     ]
   },
   "crossReferences": [
