@@ -153,39 +153,29 @@
   },
   "references": [
     {
-      "authors": "Euler, Leonhard",
-      "title": "De summis serierum reciprocarum",
-      "year": "1735",
-      "venue": "Commentarii academiae scientiarum Petropolitanae, 7, pp. 123-134",
-      "note": "Euler's original solution to the Basel Problem, presented to the St. Petersburg Academy in 1734 and published in 1735, using the sin(x)/x infinite product factorization"
+      "key": "Eu35",
+      "citation": "Euler, L., De summis serierum reciprocarum, Commentarii academiae scientiarum Petropolitanae 7 (1735), 123–134. Euler's original solution using the sin(x)/x infinite product factorization, presented to the St. Petersburg Academy in 1734.",
+      "type": "paper"
     },
     {
-      "authors": "Mengoli, Pietro",
-      "title": "Novae quadraturae arithmeticae, seu de additione fractionum",
-      "year": "1650",
-      "venue": "Bologna",
-      "note": "First posing of the Basel Problem: what is the exact sum of 1 + 1/4 + 1/9 + 1/16 + ...?"
+      "key": "Me50",
+      "citation": "Mengoli, P., Novae quadraturae arithmeticae, seu de additione fractionum, Bologna (1650). First posing of the Basel Problem.",
+      "type": "book"
     },
     {
-      "authors": "Apéry, Roger",
-      "title": "Irrationalité de ζ(2) et ζ(3)",
-      "year": "1979",
-      "venue": "Astérisque 61, pp. 11-13",
-      "note": "Proved ζ(3) is irrational — the first odd zeta value shown to be irrational, a major breakthrough"
+      "key": "Ap79",
+      "citation": "Apéry, R., Irrationalité de ζ(2) et ζ(3), Astérisque 61 (1979), 11–13. Proved ζ(3) is irrational — the first odd zeta value shown to be irrational.",
+      "type": "paper"
     },
     {
-      "authors": "Dunham, William",
-      "title": "Euler: The Master of Us All",
-      "year": "1999",
-      "venue": "MAA Dolciani Mathematical Expositions 22",
-      "note": "Chapter 3 gives a detailed account of Euler's Basel Problem solution including the sin(x)/x factorization, his computation of higher zeta values, and the historical context of the Bernoulli family's failed attempts"
+      "key": "Du99",
+      "citation": "Dunham, W., Euler: The Master of Us All, MAA Dolciani Mathematical Expositions 22 (1999), Chapter 3. Detailed account of Euler's Basel Problem solution.",
+      "type": "book"
     },
     {
-      "authors": "Rivoal, Tanguy",
-      "title": "La fonction zêta de Riemann prend une infinité de valeurs irrationnelles aux entiers impairs",
-      "year": "2000",
-      "venue": "Comptes Rendus de l'Académie des Sciences, Série I, 331, pp. 267-270",
-      "note": "Proved that infinitely many odd zeta values ζ(2k+1) are irrational — a partial resolution of the mystery of odd zeta values that contrasts with the explicit Basel formula for even values"
+      "key": "Ri00",
+      "citation": "Rivoal, T., La fonction zêta de Riemann prend une infinité de valeurs irrationnelles aux entiers impairs, Comptes Rendus Acad. Sci. Paris Sér. I 331 (2000), 267–270.",
+      "type": "paper"
     }
   ],
   "crossReferences": [
