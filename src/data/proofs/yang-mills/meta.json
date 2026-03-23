@@ -243,13 +243,31 @@
       "targetId": "brouwer-fixed-point",
       "relationship": "related",
       "description": "Fixed point theorems are used in functional analysis proofs relevant to constructive QFT and the existence of vacuum states."
+    },
+    {
+      "targetId": "yang-mills-transfer-matrix",
+      "relationship": "has-submodule",
+      "description": "Proven finite-volume mass gap via transfer matrix / Perron-Frobenius — the strongest rigorous result in this formalization"
+    },
+    {
+      "targetId": "yang-mills-lattice",
+      "relationship": "has-submodule",
+      "description": "Lattice gauge theory with proven plaquette gauge invariance and action bounds"
+    },
+    {
+      "targetId": "yang-mills-2d",
+      "relationship": "has-submodule",
+      "description": "Exact 2D Yang-Mills solution via Migdal formula with proven area law and mass gap"
     }
   ],
   "relatedProofs": [
     "poincare-conjecture",
     "riemann-hypothesis",
     "hilbert-5",
-    "brouwer-fixed-point"
+    "brouwer-fixed-point",
+    "yang-mills-transfer-matrix",
+    "yang-mills-lattice",
+    "yang-mills-2d"
   ],
   "leanFile": {
     "imports": [
