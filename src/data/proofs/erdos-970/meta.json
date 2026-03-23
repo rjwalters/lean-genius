@@ -67,6 +67,12 @@
       "**Best lower bound:** h(k) ≥ ck log k log₃k/(log₂k)² by Ford-Green-Konyagin-Maynard-Tao (2018)",
       "**Gap from k²** is roughly (log k)² — closing this is the main challenge",
       "**Primorials maximize h(k):** the extremal numbers are products of the first k primes"
+    ],
+    "prerequisites": [
+      "Coprimality and GCD: the definition $\\gcd(a,n) = 1$, Euler's totient function, and coprime residues modulo $n$",
+      "Prime factorization: the number of distinct prime factors $\\omega(n)$, primorial numbers, and the distribution of primes",
+      "Sieve methods: the Selberg sieve, Brun's sieve, and their application to counting integers coprime to a given modulus",
+      "Gaps in sifted sequences: maximal gaps between integers not divisible by small primes, and connections to prime gap results"
     ]
   },
   "sections": [
