@@ -71,7 +71,24 @@ def IsKBalanced {n : ℕ} (c : EdgeColouring n) (k : ℕ) (α : ℚ) : Prop :=
 theorem balanced_requires_le_half {n : ℕ} (c : EdgeColouring n) (S : Finset (Fin n))
     (α : ℚ) (hα : 1 / 2 < α) (hS : 2 ≤ S.card) :
     ¬IsBalancedOn c S α := by
-  sorry
+  intro hbal
+  -- Both color counts > α * C(|S|, 2)
+  have htrue := hbal true
+  have hfalse := hbal false
+  -- Their sum > 2α * C(|S|, 2) > C(|S|, 2) (since α > 1/2)
+  have hchoose_pos : (0 : ℚ) < Nat.choose S.card 2 := by
+    have : 0 < Nat.choose S.card 2 := Nat.choose_pos hS
+    exact Nat.cast_pos.mpr this
+  have hsum : (colourEdgeCount c S true : ℚ) + colourEdgeCount c S false >
+      2 * α * Nat.choose S.card 2 := by linarith
+  -- But their sum = C(|S|, 2) by colourEdgeCount_total
+  have htot := colourEdgeCount_total c S
+  have htot_cast : (colourEdgeCount c S true : ℚ) + colourEdgeCount c S false =
+      Nat.choose S.card 2 := by exact_mod_cast htot
+  -- 2α > 1 since α > 1/2
+  have h2α : 2 * α > 1 := by linarith
+  -- So 2α * C(|S|, 2) > C(|S|, 2)
+  linarith [mul_lt_mul_of_pos_right h2α hchoose_pos]
 
 -- Part III: The function F(n, α)
 
