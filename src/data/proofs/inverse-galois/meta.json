@@ -299,6 +299,11 @@
       "targetId": "fundamental-theorem-algebra",
       "relationship": "related",
       "description": "FTA guarantees polynomial roots exist over C; the Inverse Galois Problem asks about the symmetry structure of those roots over Q"
+    },
+    {
+      "targetId": "nth-root-irrational-oq-01",
+      "relationship": "depends-on",
+      "description": "Imports Eisenstein irreducibility and nth root irrationality infrastructure used for proving polynomial irreducibility in Galois group computations"
     }
   ],
   "relatedProofs": [
@@ -306,7 +311,8 @@
     "abel-ruffini-oq-04",
     "lagrange-theorem",
     "sylow-theorems",
-    "fundamental-theorem-algebra"
+    "fundamental-theorem-algebra",
+    "nth-root-irrational-oq-01"
   ],
   "references": [
     {
