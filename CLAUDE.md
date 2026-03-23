@@ -55,10 +55,11 @@ This project uses **two distinct AI agent orchestration systems** for different 
 | **Scout** | Surveys gallery proofs, techniques, and literature for research problems | On-demand |
 | **Seeker** | Selects research problems when candidate pool runs low | Autonomous (15min) |
 | **Deployer** | Merges PRs, syncs data, deploys website to Cloudflare | Autonomous (30min) |
+| **Auditor** | Validates gallery integrity: checks proof claims match Lean source files | Autonomous (10min) |
 | **Tester** | Tests random proof pages on the live site, files issues on failure | Autonomous (30min) |
 | **Herald** | Posts noteworthy research results to Mathstodon | Autonomous (6h) |
 
-**Managed by `/lean`**: Enricher, Aristotle, Researcher, Seeker, Deployer, Tester, Herald
+**Managed by `/lean`**: Enricher, Aristotle, Researcher, Auditor, Seeker, Deployer, Tester, Herald
 **Managed separately**: Erdos Enhancer (`make enhance`, `scripts/erdos/`)
 
 **Invoke via**: `/enricher`, `/aristotle`, `/research`, `/scout`, `/seeker`, `/deploy`
@@ -128,6 +129,7 @@ The `/lean` skill provides a unified interface to start, stop, and scale the mat
 | Enricher | 2 | 5 |
 | Aristotle | 1 | 2 |
 | Researcher | 2 | 5 |
+| Auditor | 3 | 3 |
 | Seeker | 1 | 1 |
 | Deployer | 1 | 1 |
 | Tester | 1 | 1 |
