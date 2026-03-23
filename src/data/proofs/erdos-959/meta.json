@@ -139,5 +139,56 @@
     "axiomCount": 2,
     "theoremCount": 5,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-957",
+      "relationship": "related",
+      "description": "Erdős problem #957 studies the product of extreme distance frequencies — a closely related combinatorial geometry problem asking about multiplicative rather than additive gaps in the distance frequency spectrum of planar point sets"
+    },
+    {
+      "targetId": "erdos-958",
+      "relationship": "related",
+      "description": "Erdős problem #958 concerns distance multiplicities and point configurations — another variant of the distance frequency problem, asking how many times specific distances can occur"
+    },
+    {
+      "targetId": "erdos-960",
+      "relationship": "related",
+      "description": "Erdős problem #960 on ordinary lines and collinear Ramsey thresholds — a sibling combinatorial geometry problem in the same problem cluster studying structural properties of planar point sets"
+    },
+    {
+      "targetId": "erdos-504",
+      "relationship": "thematic",
+      "description": "Both are extremal problems on finite planar point configurations — #504 optimizes angles while #959 optimizes distance frequency gaps, but both use the interplay between metric structure and combinatorial counting"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-957",
+    "erdos-958",
+    "erdos-960",
+    "erdos-504"
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "On sets of distances of n points",
+      "year": "1946",
+      "venue": "The American Mathematical Monthly 53(5), 248–250",
+      "note": "Foundational paper establishing the distinct distances problem: n points in the plane determine at least Ω(n/√(log n)) distinct distances"
+    },
+    {
+      "authors": "Guth, Larry; Katz, Nets Hawk",
+      "title": "On the Erdős distinct distances problem in the plane",
+      "year": "2015",
+      "venue": "Annals of Mathematics 181(1), 155–190",
+      "note": "Nearly optimal Ω(n/log n) lower bound on distinct distances, resolving the Erdős conjecture up to logarithmic factors — the algebraic-geometric techniques developed here underpin modern distance frequency analysis"
+    },
+    {
+      "authors": "Pach, János; Sharir, Micha",
+      "title": "Repeated angles in the plane and related problems",
+      "year": "1992",
+      "venue": "Journal of Combinatorial Theory, Series A 59(1), 12–22",
+      "note": "Studies repeated geometric configurations in point sets — the frequency analysis framework relevant to understanding distance frequency gaps"
+    }
+  ]
 }
