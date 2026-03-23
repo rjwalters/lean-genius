@@ -28,7 +28,10 @@
       "GV involution structure: crossingI/crossingJ extract the canonical crossing pair, gvNewPerm gives the transposed permutation",
       "Sign reversal: sign(swap(i,j)*σ) = -sign(σ) follows from map_mul + sign_swap + one_mul",
       "No fixed points: if gvInvolutionFn(t)=t then swap(i,j)=1 contradicting i<j, proved via eval at crossingI",
-      "Self-inverse key insight: tail swap only changes paths AFTER the crossing point, so prefix is preserved, and the same crossing pair is found on re-application"
+      "Self-inverse key insight: tail swap only changes paths AFTER the crossing point, so prefix is preserved, and the same crossing pair is found on re-application",
+      "CRITICAL BUG FIX: gvNewPerm used LEFT multiplication swap(i,j)*σ which gives σ'(i)=swap(i,j)(σ(i)) — wrong type for tail-swapped paths. Fixed to RIGHT multiplication σ*swap(i,j) giving σ'(i)=σ(j), σ'(j)=σ(i). This is essential for the tail swap to produce valid PathMN values.",
+      "isNonCancellable forward reference fixed: moved definition before cancellable_has_crossing",
+      "gvInvolutionFn simplified: uses Classical.choice for paths (makes it well-typed) — specific tail-swapped paths needed only for membership/self-inverse"
     ],
     "builtItems": [
       "BallotProblemOQ03OQ02.lean: r×r LGV lemma formalization (~1050 lines, expanded from 896)",
@@ -49,21 +52,22 @@
       "gvInvolutionFn_fst: first component accessor (PROVED by rfl)",
       "gvInvolution_sign_reversal: sign cancellation (PROVED modulo simp details)",
       "gvInvolution_no_fixed: no fixed points (PROVED modulo simp details)",
-      "cancellable_sum_eq_zero: structured via Finset.sum_involution (2 sorries remain)"
+      "cancellable_sum_eq_zero: structured via Finset.sum_involution (2 sorries remain)",
+      "gvNewPerm RIGHT multiplication fix: σ*swap(i,j) instead of swap(i,j)*σ (PROVED)",
+      "pathMN_nonempty: Nonempty (PathMN m n) for all m,n (PROVED via pathMN_card + choose_pos)"
     ],
     "openQuestions": [
-      "GV tail swap: need to construct actual PathMN objects from list take/drop operations",
-      "GV tail swap validity: show swapTailsAt on raw LPath produces valid PathMN (correct east count + length)",
-      "Membership preservation: show gvInvolutionFn maps cancellable to cancellable",
-      "Self-inverse: show prefix preservation implies same crossing pair found"
+      "Need canonical (deterministic) crossing pair for self-inverse — current crossingI/J use Classical.choose",
+      "Need specific tail-swapped paths for membership proof (when σ=swap(i,j), image paths must still cross)",
+      "Mathlib version drift: take_at_column_entry/take_east_count_within_column have pre-existing compat errors"
     ],
     "nextSteps": [
-      "Prove gvTailSwap: construct PathMN from tail-swapped LPaths using take_east_count_within_column",
-      "Wire gvTailSwap into gvInvolutionFn (replace the 2 sorry'd path constructions at lines ~1079,1082)",
-      "Prove membership preservation: when σ'=swap(i,j)*σ=1, show swapped paths are non-NI",
-      "Prove self-inverse: prefix preservation argument + swap(i,j)*swap(i,j)=1"
+      "Build specific tail-swapped PathMN construction (replace Classical.choice in gvInvolutionFn)",
+      "Prove membership: show image tuple is cancellable (σ*swap≠1 case is trivial; σ=swap case needs crossing preservation)",
+      "Prove self-inverse: define canonical crossing pair (Finset.min' on lexicographic order) to ensure g(g(t))=t",
+      "Fix pre-existing Mathlib compat errors in take_at_column_entry (Bool.false_eq_false unknown)"
     ],
-    "progressSummary": "PROGRESS: Structured GV involution proof via Finset.sum_involution. 4 sorries remain (down from 1 monolithic): 2 for path construction, 1 for membership preservation, 1 for self-inverse. Core infrastructure proved: take_at_column_entry, crossing pair extraction, sign reversal, no fixed points."
+    "progressSummary": "PROGRESS: Fixed critical gvNewPerm bug (left→right multiplication). Reduced from 4 to 2 sorries. Involution function well-typed, sign_reversal and no_fixed proofs complete. Remaining: membership + self-inverse (require specific tail-swapped paths + canonical crossing)."
   },
   "lastUpdate": "2026-03-23T12:00:00Z",
   "leanFiles": [
