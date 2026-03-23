@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-header-def",
+    "proofId": "shannon-channel-coding-oq-04",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "definition",
+    "title": "Binary Entropy Definition",
+    "content": "Defines the binary entropy function $h(p) = -(p \\ln p + (1-p) \\ln(1-p))$ using Mathlib's natural logarithm, plus the base-2 variant $h_2(p) = h(p)/\\ln 2$ measuring entropy in bits.\n\nThe convention $0 \\cdot \\ln 0 = 0$ is automatic via `Real.log 0 = 0` in Mathlib — no conditional definition needed. This is the natural convention from the limit $\\lim_{x \\to 0^+} x \\ln x = 0$ (L'Hôpital). Shannon (1948) introduced this as the entropy of a Bernoulli($p$) random variable: $H(X) = -\\mathbb{E}[\\log P(X)]$ for $X \\in \\{0, 1\\}$ with $P(X=1) = p$.",
+    "mathContext": "$h(p) = -(p \\ln p + (1-p) \\ln(1-p))$, $h_2(p) = h(p)/\\ln 2$. Convention: $0 \\cdot \\ln 0 = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["Shannon entropy", "binary random variable", "Bernoulli distribution", "natural logarithm"],
+    "prerequisites": ["real logarithm", "information theory basics"]
+  },
+  {
+    "id": "ann-boundary-symmetry",
+    "proofId": "shannon-channel-coding-oq-04",
+    "range": { "startLine": 34, "endLine": 51 },
+    "type": "technique",
+    "title": "Boundary Values and Symmetry",
+    "content": "Three foundational properties: $h(0) = h(1) = 0$ (deterministic distributions have zero uncertainty) and $h(p) = h(1-p)$ (relabeling 0↔1 doesn't change entropy). The boundary values follow from `Real.log_one`, and symmetry is a pure `ring` identity.",
+    "mathContext": "$h(0) = h(1) = 0$ and $h(p) = h(1-p)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["boundary conditions", "symmetry", "deterministic distribution"],
+    "prerequisites": ["definition of h"]
+  },
+  {
+    "id": "ann-half-value",
+    "proofId": "shannon-channel-coding-oq-04",
+    "range": { "startLine": 53, "endLine": 70 },
+    "type": "insight",
+    "title": "Maximum Entropy: h(1/2) = ln 2 = 1 Bit",
+    "content": "The maximum value of binary entropy occurs at $p = 1/2$ (fair coin) and equals $\\ln 2$ nats or exactly 1 bit. The proof computes $h(1/2) = -\\ln(2^{-1}) = \\ln 2$ via `Real.log_inv`. The bits theorem `hBits_half = 1` uses `div_self`.\n\nA fair coin having exactly 1 bit of entropy is the defining calibration of Shannon's entropy scale — chosen so that $n$ independent fair coins have $n$ bits (by additivity of entropy for independent variables).",
+    "mathContext": "$h(1/2) = \\ln 2 \\approx 0.693$ nats $= 1$ bit.",
+    "significance": "key",
+    "relatedConcepts": ["maximum entropy principle", "fair coin", "bit", "entropy calibration"],
+    "prerequisites": ["logarithm properties"]
+  },
+  {
+    "id": "ann-nonnegativity",
+    "proofId": "shannon-channel-coding-oq-04",
+    "range": { "startLine": 72, "endLine": 91 },
+    "type": "technique",
+    "title": "Non-negativity on [0,1]",
+    "content": "Proves $h(p) \\geq 0$ for $p \\in [0,1]$. Each term $t \\ln t \\leq 0$ for $t \\in [0,1]$ since $\\ln t \\leq 0$ and $t \\geq 0$ (`mul_nonpos_of_nonneg_of_nonpos`). Boundary cases handled by `simp`, interior by the auxiliary `mul_log_nonpos` lemma.\n\nThis is the fundamental property that information content is never negative.",
+    "mathContext": "$h(p) \\geq 0$ for $p \\in [0,1]$. Each term: $t \\ln t \\leq 0$ for $t \\in [0,1]$.",
+    "significance": "key",
+    "relatedConcepts": ["non-negativity of entropy", "log bounds"],
+    "prerequisites": ["logarithm on [0,1]"]
+  },
+  {
+    "id": "ann-upper-bound",
+    "proofId": "shannon-channel-coding-oq-04",
+    "range": { "startLine": 92, "endLine": 151 },
+    "type": "insight",
+    "title": "Upper Bound via Binary Gibbs Inequality",
+    "content": "The deepest proof: $h(p) \\leq \\ln 2$ via KL divergence non-negativity against the uniform distribution.\n\nThe KL term bound $p \\ln(p/q) \\geq p - q$ (from Mathlib's $\\ln x \\leq x - 1$) is applied with $q = 1/2$ for both $p$ and $1-p$. After expanding $\\ln(2p) = \\ln 2 + \\ln p$ and adding, the right sides cancel to 0 while the left gives $\\ln 2 + (p \\ln p + (1-p)\\ln(1-p)) \\geq 0$, i.e., $h(p) \\leq \\ln 2$.\n\nThis is equivalent to $D_{\\text{KL}}(\\text{Bernoulli}(p) \\| \\text{Uniform}) \\geq 0$. The inequality $\\ln x \\leq x - 1$ is the universal workhorse of information theory — it underlies Gibbs' inequality, the data processing inequality, and Fano's inequality.",
+    "mathContext": "$h(p) \\leq \\ln 2$ via $D_{\\text{KL}}(p \\| 1/2) \\geq 0$. Kernel: $\\ln x \\leq x - 1$ gives $p \\ln(p/q) \\geq p - q$.",
+    "significance": "key",
+    "relatedConcepts": ["Gibbs inequality", "KL divergence", "maximum entropy", "log inequality", "information inequality"],
+    "prerequisites": ["log(x) ≤ x-1"]
+  },
+  {
+    "id": "ann-zero-char",
+    "proofId": "shannon-channel-coding-oq-04",
+    "range": { "startLine": 153, "endLine": 183 },
+    "type": "technique",
+    "title": "Zero Entropy Characterization",
+    "content": "Proves $h(p) = 0 \\iff p \\in \\{0, 1\\}$. The forward direction uses contradiction: if $0 < p < 1$, then $\\ln p < 0$ and $\\ln(1-p) < 0$ (by `log_lt_log` and $p < 1$), making both terms strictly negative, so $h(p) > 0$.\n\nThis characterizes entropy as a strict measure of uncertainty: zero entropy means deterministic, any genuine randomness produces positive entropy.",
+    "mathContext": "$h(p) = 0 \\iff p \\in \\{0,1\\}$. For $0 < p < 1$: $p\\ln p < 0$ and $(1-p)\\ln(1-p) < 0$, so $h(p) > 0$.",
+    "significance": "key",
+    "relatedConcepts": ["deterministic distribution", "strict positivity", "characterization theorem"],
+    "prerequisites": ["strict log monotonicity"]
+  },
+  {
+    "id": "ann-concavity",
+    "proofId": "shannon-channel-coding-oq-04",
+    "range": { "startLine": 185, "endLine": 224 },
+    "type": "insight",
+    "title": "Concavity via Convexity of x·log(x)",
+    "content": "The most technically demanding theorem: `ConcaveOn ℝ (Set.Icc 0 1) h`. The proof decomposes $h(p) = -f(p) - f(1-p)$ where $f(x) = x\\ln x$ is convex (Mathlib's `convexOn_mul_log`).\n\nApply convexity of $f$ twice — at points $(x,y)$ and at $(1-x, 1-y)$ — then use the affine identity $a(1-x)+b(1-y) = 1-(ax+by)$ (which requires $a+b=1$) to connect the two applications. Adding and negating yields concavity.\n\nConcavity of entropy is fundamental: mixing distributions increases uncertainty. In information theory, this means $H(tX + (1-t)Y) \\geq tH(X) + (1-t)H(Y)$ — you can't reduce uncertainty by averaging. This is the binary case of the general principle underlying the maximum entropy method.",
+    "mathContext": "$h(tp + (1-t)q) \\geq t \\cdot h(p) + (1-t) \\cdot h(q)$. From convexity of $x\\ln x$ applied twice, connected by $a(1-x)+b(1-y) = 1-(ax+by)$.",
+    "significance": "key",
+    "relatedConcepts": ["concavity", "convexity of x·log(x)", "mixing increases entropy", "Jensen's inequality", "maximum entropy method"],
+    "prerequisites": ["convexOn_mul_log", "convex combinations"]
+  }
+]

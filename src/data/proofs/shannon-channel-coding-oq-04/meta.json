@@ -63,9 +63,12 @@
     "problemStatement": "Define the binary entropy function $h(p) = -(p \\ln p + (1-p) \\ln(1-p))$ using natural logarithm with the convention $0 \\cdot \\ln 0 = 0$, and prove its fundamental properties:\n\n1. **Boundary values**: $h(0) = h(1) = 0$\n2. **Symmetry**: $h(p) = h(1-p)$\n3. **Non-negativity**: $h(p) \\geq 0$ for $p \\in [0,1]$\n4. **Maximum**: $h(1/2) = \\ln 2$\n5. **Upper bound**: $h(p) \\leq \\ln 2$ for all $p \\in [0,1]$\n6. **Characterization**: $h(p) = 0$ if and only if $p \\in \\{0, 1\\}$\n7. **Concavity**: $h$ is concave on $[0,1]$",
     "proofStrategy": "The formalization develops seven properties of binary entropy in increasing depth:\n\n1. **Boundary values** follow from Real.log 0 = 0 and Real.log 1 = 0 in Mathlib.\n\n2. **Symmetry** is a pure ring identity: swapping p and 1-p.\n\n3. **Value at 1/2** uses Real.log_inv to compute log(1/2) = -log(2).\n\n4. **Non-negativity** decomposes h(p) into two terms, each non-positive by mul_nonpos_of_nonneg_of_nonpos applied to p > 0 and log(p) ≤ 0.\n\n5. **Upper bound** uses the binary Gibbs inequality: KL(Bernoulli(p) || Uniform) ≥ 0. The kernel is Mathlib's log(x) ≤ x-1, applied with reference measure q = 1/2 for both p and 1-p. Adding the two inequalities gives log 2 + (p·log p + (1-p)·log(1-p)) ≥ 0.\n\n6. **Zero characterization** shows that 0 < p < 1 forces both p·log(p) < 0 and (1-p)·log(1-p) < 0 (strictly), using log_lt_log for strict log monotonicity.\n\n7. **Concavity** uses Mathlib's convexOn_mul_log (x·log(x) is convex on [0,∞)) applied twice: once at the points x,y and once at 1-x, 1-y. The identity a(1-x)+b(1-y) = 1-(ax+by) connects the two applications.",
     "keyInsights": [
-      "The 0·log(0) = 0 convention is automatic in Lean via Mathlib's Real.log 0 = 0, avoiding the need for conditional definitions",
-      "The upper bound h(p) ≤ log 2 is equivalent to KL divergence non-negativity for binary distributions against uniform — the log(x) ≤ x-1 inequality is the universal tool",
-      "Concavity decomposes into two applications of convexity of x·log(x), one for each 'leg' of h(p) = f(p) + f(1-p) where f(x) = -x·log(x), connected by the affine identity on weights"
+      "The 0·log(0) = 0 convention is automatic in Lean via Mathlib's Real.log 0 = 0, avoiding conditional definitions — this is the natural convention from the limit lim_{x→0+} x·ln(x) = 0",
+      "The upper bound h(p) ≤ ln 2 is equivalent to KL divergence non-negativity D_KL(Bernoulli(p) || Uniform) ≥ 0 — the log(x) ≤ x-1 inequality is the universal workhorse underlying Gibbs, data processing, and Fano's inequalities",
+      "Concavity decomposes into two applications of convexity of x·log(x), one for each 'leg' of h(p) = -f(p) - f(1-p), connected by the affine identity a(1-x) + b(1-y) = 1 - (ax+by) which requires the convex combination constraint a+b=1",
+      "The zero characterization h(p) = 0 iff p ∈ {0,1} uses strict log monotonicity: 0 < p < 1 forces both ln(p) < 0 and ln(1-p) < 0, making both terms strictly negative",
+      "A fair coin having exactly 1 bit of entropy (hBits(1/2) = 1) is not a theorem but a calibration: Shannon chose the logarithmic form so that n independent coins give n bits, and the binary entropy function is the unique function satisfying this plus continuity and additivity",
+      "The KL term bound p·ln(p/q) ≥ p-q is proved by applying ln(x) ≤ x-1 to x = q/p then negating — this single move is the kernel of every information-theoretic inequality"
     ]
   },
   "sections": [
@@ -138,12 +141,27 @@
     {
       "targetId": "shannon-channel-coding",
       "relationship": "extends",
-      "description": "Binary entropy is the key ingredient in BSC capacity C = 1 - h(p) and Fano's inequality"
+      "description": "Binary entropy is the key ingredient in BSC capacity C = 1 - h(p). The properties proved here (concavity, upper bound, zero characterization) are exactly what's needed for the channel coding theorem applied to the binary symmetric channel."
     },
     {
       "targetId": "shannon-entropy",
       "relationship": "specializes",
-      "description": "Binary entropy is Shannon entropy for the Bernoulli(p) distribution on {0,1}"
+      "description": "Binary entropy h(p) is Shannon entropy H(X) = -Σ pᵢ log pᵢ specialized to the Bernoulli(p) distribution on {0,1}. All properties proved here (concavity, non-negativity, maximum at uniform) extend to the general Shannon entropy."
+    },
+    {
+      "targetId": "shannon-source-coding",
+      "relationship": "related",
+      "description": "Shannon's source coding theorem states that the optimal compression rate for a source equals its entropy. For a binary source with P(1) = p, the rate is exactly h(p) bits per symbol — the binary entropy function proved here provides the rate computation."
+    },
+    {
+      "targetId": "shannon-source-coding-oq-02",
+      "relationship": "related",
+      "description": "Huffman coding optimality connects to binary entropy: the expected code length of an optimal prefix code for a Bernoulli(p) source is bounded by h₂(p) ≤ E[L] ≤ h₂(p) + 1. The upper bound h₂(p) ≤ 1 bit proved here gives a bound on the minimum code length."
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "thematic",
+      "description": "Both AM-GM and the binary Gibbs inequality are instances of Jensen's inequality applied to convex/concave functions: AM-GM uses concavity of log, while h(p) ≤ ln 2 uses convexity of x·log(x). The log(x) ≤ x-1 inequality used in the upper bound proof is itself a consequence of the concavity of log."
     }
   ],
   "conclusion": {
@@ -158,7 +176,9 @@
   "relatedProofs": [
     "shannon-channel-coding",
     "shannon-entropy",
-    "shannon-source-coding"
+    "shannon-source-coding",
+    "shannon-source-coding-oq-02",
+    "amgm-inequality"
   ],
   "leanFile": {
     "imports": [
@@ -175,18 +195,24 @@
   },
   "references": [
     {
-      "authors": "Shannon, Claude E.",
-      "title": "A Mathematical Theory of Communication",
-      "year": "1948",
-      "venue": "Bell System Technical Journal 27(3), 379-423",
-      "note": "The founding paper of information theory introducing entropy and channel capacity"
+      "key": "Sh48",
+      "citation": "Shannon, C.E., A Mathematical Theory of Communication, Bell System Technical Journal 27(3) (1948), 379–423.",
+      "type": "paper"
     },
     {
-      "authors": "Cover, Thomas M.; Thomas, Joy A.",
-      "title": "Elements of Information Theory",
-      "year": "2006",
-      "venue": "Wiley, 2nd edition",
-      "note": "Chapter 2: binary entropy function properties including concavity and maximum"
+      "key": "CT06",
+      "citation": "Cover, T.M. and Thomas, J.A., Elements of Information Theory, 2nd ed., Wiley (2006), Chapter 2.",
+      "type": "book"
+    },
+    {
+      "key": "Gi02",
+      "citation": "Gibbs, J.W., Elementary Principles in Statistical Mechanics, Yale University Press (1902). The Gibbs inequality appears in thermodynamic context.",
+      "type": "book"
+    },
+    {
+      "key": "Kh57",
+      "citation": "Khinchin, A.I., Mathematical Foundations of Information Theory, Dover (1957). Axiomatic characterization of Shannon entropy.",
+      "type": "book"
     }
   ]
 }
