@@ -533,13 +533,87 @@ theorem triple_count_fourier {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
 -- PART IV: LARGE FOURIER COEFFICIENT FROM AP-FREENESS
 -- ═══════════════════════════════════════════════════════════════════
 
+/-- Fourier coefficient at 0 equals the cardinality: Â(0) = |A|. -/
+theorem fourierCoeff_zero {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
+    fourierCoeff A 0 = ↑A.card := by
+  unfold fourierCoeff
+  simp only [zero_mul, ZMod.val_zero, Nat.cast_zero, zero_div, mul_zero, Complex.exp_zero]
+  simp [Finset.sum_const, nsmul_eq_mul]
+
+/-- Parseval for nonzero frequencies: ∑_{r≠0} ‖Â(r)‖² = |A|(N - |A|). -/
+theorem parseval_nonzero {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
+    (Finset.univ.filter (· ≠ (0 : ZMod N))).sum (fun r => ‖fourierCoeff A r‖ ^ 2) =
+    (A.card : ℝ) * ((N : ℝ) - A.card) := by
+  have hparseval := parseval_on_zmod A
+  -- Split at r = 0
+  have hsplit : (Finset.univ.sum fun r : ZMod N => ‖fourierCoeff A r‖ ^ 2) =
+      ‖fourierCoeff A 0‖ ^ 2 +
+      ((Finset.univ.erase (0 : ZMod N)).sum fun r => ‖fourierCoeff A r‖ ^ 2) :=
+    (Finset.add_sum_erase Finset.univ (fun r : ZMod N => ‖fourierCoeff A r‖ ^ 2)
+      (Finset.mem_univ (0 : ZMod N))).symm
+  have hfilt : (Finset.univ : Finset (ZMod N)).filter (· ≠ 0) = Finset.univ.erase (0 : ZMod N) :=
+    Finset.filter_ne' _ _
+  have h_norm0 : ‖fourierCoeff A 0‖ ^ 2 = (A.card : ℝ) ^ 2 := by
+    rw [fourierCoeff_zero, Complex.norm_natCast]
+  rw [hfilt]; linarith [hsplit, h_norm0]
+
+/-- If A ⊆ Z/NZ is nonempty and N ≥ 2, some nonzero Fourier coefficient satisfies
+    the Parseval pigeonhole bound: ‖Â(r)‖² · (N-1) ≥ |A| · (N - |A|).
+
+    This bound is always achievable and does not require AP-freeness.
+    For the density increment argument, AP-freeness provides an identity
+    (triple_count_fourier) that can give stronger bounds in certain regimes. -/
+theorem fourier_parseval_pigeonhole {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
+    (_hA : A.Nonempty) :
+    ∃ r : ZMod N, r ≠ 0 ∧
+      ‖fourierCoeff A r‖ ^ 2 * ((N : ℝ) - 1) ≥ (A.card : ℝ) * ((N : ℝ) - A.card) := by
+  haveI : NeZero N := ⟨by omega⟩
+  haveI : Fact (1 < N) := ⟨hN⟩
+  -- Parseval for r ≠ 0
+  have hpnz := parseval_nonzero A
+  set S := Finset.univ.filter (· ≠ (0 : ZMod N)) with hS_def
+  have hcard : S.card = N - 1 := by
+    rw [hS_def, Finset.filter_ne', Finset.card_erase_of_mem (Finset.mem_univ 0),
+      Finset.card_univ, ZMod.card]
+  have hne : S.Nonempty := by
+    rw [Finset.nonempty_iff_ne_empty]; intro h
+    have := Finset.card_eq_zero.mpr h; rw [hcard] at this; omega
+  -- Pigeonhole by contradiction: if all terms are strictly small, sum is too small
+  by_contra hall; push_neg at hall
+  -- hall : ∀ r ≠ 0, ‖Â(r)‖² * (↑N - 1) < ↑A.card * (↑N - ↑A.card)
+  -- Sum the multiplicative form: ∑ [f(r) * (N-1)] < |S| * C
+  have hN1_pos : (0 : ℝ) < (↑N : ℝ) - 1 := by
+    have : (1 : ℝ) < ↑N := Nat.one_lt_cast.mpr hN; linarith
+  -- Each f(r) * (N-1) < C
+  have hlt_mul : ∀ r ∈ S, ‖fourierCoeff A r‖ ^ 2 * (↑N - 1) <
+      (A.card : ℝ) * (↑N - ↑A.card) :=
+    fun r hr => hall r (Finset.mem_filter.mp hr).2
+  -- Sum all: (∑ f) * (N-1) = ∑ (f * (N-1)) < (N-1) * C
+  have hsum_bound : S.sum (fun r => ‖fourierCoeff A r‖ ^ 2 * (↑N - 1)) <
+      S.sum (fun _ => (A.card : ℝ) * (↑N - ↑A.card)) :=
+    Finset.sum_lt_sum (fun r hr => le_of_lt (hlt_mul r hr))
+      ⟨hne.choose, hne.choose_spec, hlt_mul _ hne.choose_spec⟩
+  -- RHS constant sum = (N-1) * C
+  set C := (A.card : ℝ) * ((↑N : ℝ) - ↑A.card) with hC_def
+  have hconst : S.sum (fun _ => C) = (↑N - 1) * C := by
+    rw [Finset.sum_const, nsmul_eq_mul, hcard,
+      show (↑(N - 1) : ℝ) = (↑N : ℝ) - 1 from by
+        rw [Nat.cast_sub (Nat.one_le_of_lt hN)]; simp]
+  -- LHS: commute f * c → c * f, then factor
+  simp_rw [mul_comm (‖fourierCoeff A _‖ ^ 2) ((↑N : ℝ) - 1)] at hsum_bound
+  rw [← Finset.mul_sum, hconst] at hsum_bound
+  -- (N-1) * ∑ f < (N-1) * C → ∑ f < C (cancel N-1 > 0)
+  have hlt_sum : S.sum (fun r => ‖fourierCoeff A r‖ ^ 2) < C := by
+    nlinarith [hsum_bound]
+  linarith [hpnz]
+
 /-- If A has no 3-AP and has density delta, then some Fourier coefficient
     is large. This is the key analytic step in Roth's proof.
 
-    Proof sketch: Since A is AP-free, tripleCount A = 0. By the corrected
-    Fourier identity, |A| = N⁻¹ Σ_r Â(r)² conj(Â(2r)). Separating r=0
-    (contributing |A|³/N) from r≠0: Σ_{r≠0} Â(r)² conj(Â(2r)) = N|A| - |A|³.
-    Using |Â(2r)| ≤ |A| and Parseval, extract a large coefficient. -/
+    The bound δ²N/2 follows from the AP-free Fourier identity combined with
+    Parseval. When δ²N ≤ 1 (sparse regime), Parseval pigeonhole suffices.
+    When δ²N > 1 (dense regime), the Cauchy-Schwarz argument on the
+    Fourier identity ∑_{r≠0} Â(r)²conj(Â(2r)) = N|A| - |A|³ gives the bound. -/
 theorem fourier_large_coefficient {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
     (hAP : APFree A) (delta : ℝ) (hdelta : 0 < delta)
     (hdensity : (A.card : ℝ) ≥ delta * N) :
