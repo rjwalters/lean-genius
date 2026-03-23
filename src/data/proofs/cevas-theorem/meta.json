@@ -50,7 +50,10 @@
       "The theorem generalizes to higher dimensions and projective geometry"
     ],
     "prerequisites": [
-      "Geometry (Euclidean, combinatorial)"
+      "Euclidean triangle geometry (vertices, sides, cevians)",
+      "Affine combinations and barycentric coordinates ($P = (1-t)A + tB$)",
+      "Real number field arithmetic (division, sign conventions)",
+      "Projective duality (concurrent lines vs collinear points — Ceva vs Menelaus)"
     ]
   },
   "sections": [
@@ -59,56 +62,64 @@
       "title": "Introduction",
       "startLine": 1,
       "endLine": 38,
-      "summary": "Overview of Ceva's theorem, its historical context, and the approach taken in this formalization."
+      "summary": "Overview of Ceva's theorem, its historical context, and the approach taken in this formalization.",
+      "mathContext": "Ceva's Theorem (Wiedijk #61): cevians $AD$, $BE$, $CF$ in triangle $ABC$ are concurrent $\\iff$ $(AF/FB) \\cdot (BD/DC) \\cdot (CE/EA) = 1$. The formalization uses signed ratios and algebraic parameters rather than synthetic geometry."
     },
     {
       "id": "signed-ratios",
       "title": "Signed Ratios",
       "startLine": 40,
       "endLine": 58,
-      "summary": "Definition of signed ratios for segment division: if P = (1-t)A + tB, then AP/PB = t/(1-t)."
+      "summary": "Definition of signed ratios for segment division: if P = (1-t)A + tB, then AP/PB = t/(1-t).",
+      "mathContext": "The signed ratio $\\text{signedRatio}(t) = t/(1-t)$ for $t \\neq 1$. Positive for $0 < t < 1$ (internal division), negative for $t < 0$ or $t > 1$ (external). At $t = 1/2$ (midpoint), the ratio is $1$."
     },
     {
       "id": "cevian-config",
       "title": "Cevian Configuration",
       "startLine": 59,
       "endLine": 81,
-      "summary": "Structure for cevian configurations with parameters d, e, f determining points on triangle sides."
+      "summary": "Structure for cevian configurations with parameters d, e, f determining points on triangle sides.",
+      "mathContext": "A `CevianConfig` has parameters $d, e, f \\in \\mathbb{R} \\setminus \\{0, 1\\}$ determining $D = (1-d)B + dC$ on $BC$, $E = (1-e)C + eA$ on $CA$, $F = (1-f)A + fB$ on $AB$. The constraints $d, e, f \\neq 0, 1$ ensure points are distinct from vertices."
     },
     {
       "id": "ceva-product",
       "title": "The Ceva Product",
       "startLine": 82,
       "endLine": 96,
-      "summary": "Definition of the Ceva product (AF/FB)*(BD/DC)*(CE/EA) and the equivalent parameter condition."
+      "summary": "Definition of the Ceva product (AF/FB)*(BD/DC)*(CE/EA) and the equivalent parameter condition.",
+      "mathContext": "The Ceva product $\\frac{f}{1-f} \\cdot \\frac{d}{1-d} \\cdot \\frac{e}{1-e}$ equals $1$ iff $d \\cdot e \\cdot f = (1-d)(1-e)(1-f)$. Cross-multiplying clears denominators, reducing the rational condition to a polynomial identity."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "startLine": 97,
       "endLine": 130,
-      "summary": "The core theorem: cevaProduct = 1 if and only if d*e*f = (1-d)*(1-e)*(1-f)."
+      "summary": "The core theorem: cevaProduct = 1 if and only if d*e*f = (1-d)*(1-e)*(1-f).",
+      "mathContext": "The equivalence $\\text{cevaProduct}(\\text{cfg}) = 1 \\iff d \\cdot e \\cdot f = (1-d)(1-e)(1-f)$ is proved by unfolding definitions, applying `field_simp` to clear denominators (using $d \\neq 1$, $e \\neq 1$, $f \\neq 1$), and `ring` or `linarith` for the resulting polynomial identity."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 131,
       "endLine": 199,
-      "summary": "Verification for medians (d = e = f = 1/2) and characterization of equal-parameter solutions."
+      "summary": "Verification for medians (d = e = f = 1/2) and characterization of equal-parameter solutions.",
+      "mathContext": "For medians: $d = e = f = 1/2$ gives $(1/2)^3 = (1/2)^3$ — trivially true. The uniqueness theorem shows $t^3 = (1-t)^3 \\implies t = 1/2$: since $x^3$ is strictly monotone, $t^3 = (1-t)^3 \\iff t = 1-t \\iff t = 1/2$. Thus medians are the only equal-parameter cevians satisfying Ceva's condition."
     },
     {
       "id": "converse",
       "title": "Converse Forms",
       "startLine": 200,
       "endLine": 208,
-      "summary": "Direct and converse implications extracted from the main equivalence theorem."
+      "summary": "Direct and converse implications extracted from the main equivalence theorem.",
+      "mathContext": "The equivalence $\\text{cevaProduct} = 1 \\iff \\text{paramCondition}$ splits into: (forward) product $= 1 \\implies$ parameter condition, and (converse) parameter condition $\\implies$ product $= 1$. Both are extracted from the main `Iff` via `.mp` and `.mpr`."
     },
     {
       "id": "historical-context",
       "title": "Historical Context",
       "startLine": 209,
       "endLine": 262,
-      "summary": "Extended discussion of Menelaus's theorem, applications, and generalizations."
+      "summary": "Extended discussion of Menelaus's theorem, applications, and generalizations.",
+      "mathContext": "Menelaus's theorem (dual): points $D, E, F$ on sides $BC, CA, AB$ are collinear $\\iff$ $(AF/FB) \\cdot (BD/DC) \\cdot (CE/EA) = -1$. The sign difference ($+1$ for Ceva, $-1$ for Menelaus) reflects the parity: concurrent cevians require an even number of external divisions, while a transversal requires an odd number."
     }
   ],
   "conclusion": {
