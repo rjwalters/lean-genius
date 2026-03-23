@@ -78,8 +78,9 @@
       "**Closed forms by induction**: The triangular and tetrahedral closed forms follow from the recurrence by induction + nlinarith, without needing to unfold the binomial coefficient definition."
     ],
     "prerequisites": [
-      "Number theory (primes, divisibility)",
-      "Combinatorics (counting, extremal problems)"
+      "Combinatorics (binomial coefficients, Pascal's triangle)",
+      "Mathematical induction",
+      "Familiarity with Lean 4 and Mathlib"
     ]
   },
   "sections": [
@@ -123,7 +124,15 @@
       "title": "Explicit Closed Formulas",
       "startLine": 136,
       "endLine": 165,
-      "summary": "simplicial_two_formula: S_2(n)*2=(n+1)(n+2). simplicial_three_formula: S_3(n)*6=(n+1)(n+2)(n+3). Both proved by induction using simplicial_succ_recurrence + nlinarith. Concrete values: triangular_10 = 55, tetrahedral_10 = 220, verified by native_decide."
+      "summary": "simplicial_two_formula: S_2(n)*2=(n+1)(n+2). simplicial_three_formula: S_3(n)*6=(n+1)(n+2)(n+3). Both proved by induction using simplicial_succ_recurrence + nlinarith."
+    },
+    {
+      "id": "verification",
+      "title": "Concrete Values, Summary, and Verification",
+      "startLine": 161,
+      "endLine": 209,
+      "summary": "Concrete computations (triangular_10 = 55, tetrahedral_10 = 220, triangular_sum_10 = 220) verified by native_decide. Summary of the dimension-raising principle. Type-checks five main theorems.",
+      "mathContext": "$S_2(9) = 55$, $S_3(9) = 220$, $\\sum_{i=0}^9 S_2(i) = 220 = S_3(9)$."
     }
   ],
   "conclusion": {
@@ -132,7 +141,8 @@
     "openQuestions": [
       "Can the hockey stick be generalized to q-binomial coefficients (Gaussian binomial coefficients), connecting to quantum groups?",
       "What is the Lean formalization of the 2D 'hockey stick' identity ∑_{i+j≤n} C(i+k1,k1)*C(j+k2,k2) = C(n+k1+k2+1, k1+k2+1)?",
-      "Can the simplicial numbers be connected to the face numbers of simplicial complexes (f-vectors) in algebraic topology?"
+      "Can the simplicial numbers be connected to the face numbers of simplicial complexes (f-vectors) in algebraic topology?",
+      "Formalize the general closed form S_k(n) * k! = (n+1)(n+2)···(n+k) for all k, and prove it equals Nat.choose (n+k) k * k! by the binomial coefficient formula"
     ]
   },
   "crossReferences": [
@@ -174,5 +184,22 @@
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 1
-  }
+  },
+  "references": [
+    {
+      "key": "Pa65",
+      "citation": "Pascal, B., Traité du triangle arithmétique (1654, published 1665).",
+      "type": "book"
+    },
+    {
+      "key": "GKP94",
+      "citation": "Graham, R.L., Knuth, D.E., and Patashnik, O., Concrete Mathematics, 2nd ed., Addison-Wesley (1994), Chapter 5.",
+      "type": "book"
+    },
+    {
+      "key": "Co74",
+      "citation": "Conway, J.H. and Guy, R.K., The Book of Numbers, Springer-Verlag (1996), Chapter 4: Figurate Numbers.",
+      "type": "book"
+    }
+  ]
 }
