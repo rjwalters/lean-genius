@@ -68,6 +68,12 @@
       "**Counterexample for $k \\geq 3$**: The HHP construction for $k \\geq 3$ builds $A$ so that $kA$ covers everything (using repeated elements heavily), but $k \\times A$ has arbitrarily large holes — the distinctness constraint 'wastes' elements and prevents covering.",
       "**Restricted vs unrestricted**: The containment $k \\times A \\subseteq kA$ is always strict when elements of $A$ need to be reused. The problem reveals that this strictness can be severe enough to destroy the bounded-gaps property for $k \\geq 3$.",
       "**Connection to Erdős-Turán**: The classical Erdős-Turán conjecture asks about the unrestricted representation function. This problem shows that the restricted version (counting representations with distinct summands) behaves fundamentally differently, with qualitative changes at $k = 3$."
+    ],
+    "prerequisites": [
+      "Additive combinatorics: additive bases of order $k$, $k$-fold sumsets $kA$, restricted sumsets $k \\times A$ (distinct-element sums), and the containment $k \\times A \\subseteq kA$",
+      "Parity arguments in number theory: the observation that $a + a = 2a$ is always even, forcing odd elements of $2A$ into the restricted sumset $2 \\times A$, and why this fails for $k \\geq 3$",
+      "Gap analysis and density: the gap supremum $\\Delta(B) = \\sup(b_{n+1} - b_n)$ as a measure of set regularity, bounded vs unbounded gaps, and connections to Schnirelmann density",
+      "Counterexample construction: building additive bases $A$ with $kA \\sim \\mathbb{N}$ but arbitrarily large holes in $k \\times A$ for $k \\geq 3$, exploiting the failure of parity constraints"
     ]
   },
   "sections": [
