@@ -52,7 +52,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Georg Cantor published this theorem in 1891, using the now-famous diagonal argument. It was revolutionary because it showed that not all infinities are equal - the power set of any set is strictly larger than the set itself.\n\nThis result shattered the intuition that 'infinity is just infinity' and established the foundation for the theory of transfinite cardinal numbers. Cantor showed there is an endless hierarchy of infinities: |N| < |P(N)| < |P(P(N))| < ...\n\nThe diagonal construction used in the proof is remarkably versatile and appears in many areas of mathematics and computer science, including Godel's incompleteness theorems and the undecidability of the halting problem.",
+    "historicalContext": "Georg Cantor published this theorem in his 1891 paper *Über eine elementare Frage der Mannigfaltigkeitslehre* in *Jahresbericht der Deutschen Mathematiker-Vereinigung*. This was actually Cantor's second proof that the reals are uncountable — his first (1874) used a nested interval argument, but the 1891 diagonal proof was far more general and elegant.\n\nThe theorem was revolutionary: it proved that not all infinities are equal, establishing the hierarchy $|A| < |\\mathcal{P}(A)| = 2^{|A|}$ for every set $A$. Starting from $\\aleph_0 = |\\mathbb{N}|$, Cantor showed there exist infinities $\\aleph_0 < 2^{\\aleph_0} < 2^{2^{\\aleph_0}} < \\cdots$ — an endless tower of transfinite cardinals.\n\nCantor's work provoked fierce opposition. Leopold Kronecker, his former teacher at Berlin, famously declared 'God made the integers; all else is the work of man' and actively blocked Cantor's career. Henri Poincaré called set theory 'a disease from which mathematics will eventually recover.' The controversy contributed to Cantor's recurring bouts of depression; he died in a sanatorium in 1918. Yet within decades, Cantor's ideas became the foundation of modern mathematics: Zermelo axiomatized set theory (1908), and today ZFC set theory — built on Cantor's concepts — is the standard foundation.\n\nThe diagonal argument's versatility is remarkable: Gödel used a variant for his incompleteness theorems (1931), Turing for the undecidability of the halting problem (1936), and it appears in proofs of the Baire category theorem, the uncountability of the reals, and the non-computability of Kolmogorov complexity.",
     "problemStatement": "Cantor's Theorem (Wiedijk #63):\n\nFor any set A, there is no surjection from A to its power set P(A).\n\n**Equivalently:**\n- There is no function f: A -> P(A) such that every subset of A is f(x) for some x in A\n- The cardinality of A is strictly less than the cardinality of P(A): |A| < |P(A)| = 2^|A|\n\nThis proves that the power set is always 'larger' than the original set, even for infinite sets.",
     "proofStrategy": "The proof uses Cantor's diagonal argument:\n\n1. **Assume for contradiction** that f: A -> P(A) is surjective.\n\n2. **Construct the diagonal set** D = {x in A | x is not in f(x)}.\n   This is the set of elements that are NOT in their own image.\n\n3. **By surjectivity**, there exists some b in A with f(b) = D.\n\n4. **Ask: Is b in D?**\n   - If b in D, then by definition of D, b is not in f(b) = D. Contradiction!\n   - If b not in D, then by definition of D, b is in f(b) = D. Contradiction!\n\n5. **Conclude** no such surjection can exist.\n\nThe construction is entirely explicit - given any f, we can exhibit a set not in its range.",
     "keyInsights": [
@@ -76,21 +76,24 @@
       "title": "Main Theorem (Mathlib)",
       "startLine": 48,
       "endLine": 60,
-      "summary": "The core theorem using Mathlib's Function.cantor_surjective for the (A -> Prop) formulation."
+      "summary": "The core theorem using Mathlib's Function.cantor_surjective for the (A -> Prop) formulation.",
+      "mathContext": "$\\neg \\exists f: A \\to (A \\to \\text{Prop}),\\ \\text{Surjective}(f)$. In Lean, $\\mathcal{P}(A)$ is represented as `A → Prop` — each predicate defines a subset. The proof delegates to Mathlib's `Function.cantor_surjective`."
     },
     {
       "id": "set-formulation",
       "title": "Set Formulation",
       "startLine": 62,
       "endLine": 94,
-      "summary": "Alternative proof using Set A instead of (A -> Prop), with explicit diagonal set construction."
+      "summary": "Alternative proof using Set A instead of (A -> Prop), with explicit diagonal set construction.",
+      "mathContext": "The diagonal set $D = \\{x \\in A \\mid x \\notin f(x)\\}$ is the explicit witness. If $f(b) = D$, then $b \\in D \\iff b \\notin f(b) = D \\iff b \\notin D$ — a contradiction."
     },
     {
       "id": "diagonal-paradox",
       "title": "The Diagonal Paradox",
       "startLine": 96,
       "endLine": 106,
-      "summary": "The core lemma showing that the diagonal set leads to a self-referential contradiction."
+      "summary": "The core lemma showing that the diagonal set leads to a self-referential contradiction.",
+      "mathContext": "If $f(b) = D$ then $b \\in D \\iff b \\notin D$, i.e., $P \\iff \\neg P$ for $P := (b \\in D)$. This self-referential contradiction parallels Russell's paradox: $R = \\{x \\mid x \\notin x\\}$ yields $R \\in R \\iff R \\notin R$."
     },
     {
       "id": "corollaries",
