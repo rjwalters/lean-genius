@@ -28,7 +28,10 @@
       "GV involution structure: crossingI/crossingJ extract the canonical crossing pair, gvNewPerm gives the transposed permutation",
       "Sign reversal: sign(swap(i,j)*σ) = -sign(σ) follows from map_mul + sign_swap + one_mul",
       "No fixed points: if gvInvolutionFn(t)=t then swap(i,j)=1 contradicting i<j, proved via eval at crossingI",
-      "Self-inverse key insight: tail swap only changes paths AFTER the crossing point, so prefix is preserved, and the same crossing pair is found on re-application"
+      "Self-inverse key insight: tail swap only changes paths AFTER the crossing point, so prefix is preserved, and the same crossing pair is found on re-application",
+      "CRITICAL: GV involution must use RIGHT multiplication σ*swap(i,j), not LEFT swap(i,j)*σ — left gives σ'(i)=swap(σ(i)) which does not match tail swap endpoints",
+      "Separating gvSwappedPaths from gvInvolutionFn allows gvInvolutionFn_fst = rfl even with sorry'd paths",
+      "mkSwappedPathMN: prefix has x₀ East steps, suffix has m-x₀ — concatenation preserves total East count m"
     ],
     "builtItems": [
       "BallotProblemOQ03OQ02.lean: r×r LGV lemma formalization (~1050 lines, expanded from 896)",
@@ -49,7 +52,11 @@
       "gvInvolutionFn_fst: first component accessor (PROVED by rfl)",
       "gvInvolution_sign_reversal: sign cancellation (PROVED modulo simp details)",
       "gvInvolution_no_fixed: no fixed points (PROVED modulo simp details)",
-      "cancellable_sum_eq_zero: structured via Finset.sum_involution (2 sorries remain)"
+      "cancellable_sum_eq_zero: structured via Finset.sum_involution (2 sorries remain)",
+      "mkSwappedPathMN: PathMN constructor from prefix + suffix at crossing point",
+      "extractCrossingCol, crossingYVal: canonical crossing data extraction",
+      "countP_drop_eq_sub, northBeforeEast_ge_east, colEntry_succ_m_eq_n: helper lemmas",
+      "gvSwappedPaths: separated path construction function"
     ],
     "openQuestions": [
       "GV tail swap: need to construct actual PathMN objects from list take/drop operations",
@@ -63,7 +70,7 @@
       "Prove membership preservation: when σ'=swap(i,j)*σ=1, show swapped paths are non-NI",
       "Prove self-inverse: prefix preservation argument + swap(i,j)*swap(i,j)=1"
     ],
-    "progressSummary": "PROGRESS: Structured GV involution proof via Finset.sum_involution. 4 sorries remain (down from 1 monolithic): 2 for path construction, 1 for membership preservation, 1 for self-inverse. Core infrastructure proved: take_at_column_entry, crossing pair extraction, sign reversal, no fixed points."
+    "progressSummary": "PROGRESS: Fixed critical permutation order bug (left→right multiplication). File compiles with 6 sorries (4 API drift + 2 path construction). Sign reversal and no-fixed-points proved. PR #5111."
   },
   "lastUpdate": "2026-03-23T12:00:00Z",
   "leanFiles": [
