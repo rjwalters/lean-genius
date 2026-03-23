@@ -174,6 +174,11 @@
       "targetId": "kroneckers-jugendtraum",
       "relationship": "extends",
       "description": "Kronecker-Weber (every abelian extension of $\\mathbb{Q}$ is contained in a cyclotomic field) explains why all constructible numbers live inside cyclotomic fields: the degree-2 tower generating a constructible number produces an abelian extension, which Kronecker-Weber places inside $\\mathbb{Q}(\\zeta_n)$ for some $n$. This connects the local geometric construction (compass-and-straightedge) to the global arithmetic of cyclotomic fields"
+    },
+    {
+      "targetId": "hilbert-13",
+      "relationship": "related",
+      "description": "Hilbert's 13th problem asked whether the solution of degree-7 equations requires functions of 3 variables after Bring-Jerrard reduction. This extends the expressibility hierarchy formalized here: constructible (2-group Galois) $\\subsetneq$ solvable by radicals (solvable Galois) $\\subsetneq$ solvable by algebraic functions of bounded variables. The Kolmogorov-Arnold theorem (1957) resolved the continuous version but the algebraic question remains open — connecting the 2-group constructibility barrier to deeper algebraic complexity"
     }
   ],
   "overview": {
@@ -321,7 +326,8 @@
     "solution-of-cubic",
     "angle-trisection-oq-02-oq-03-oq-01",
     "de-moivre",
-    "kroneckers-jugendtraum"
+    "kroneckers-jugendtraum",
+    "hilbert-13"
   ],
   "references": [
     {
