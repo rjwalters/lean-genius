@@ -1,5 +1,29 @@
 [
   {
+    "id": "erdos-500-ann-module-doc",
+    "proofId": "erdos-500",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
+    "title": "Module Documentation: Turán's Hypergraph Problem",
+    "content": "The module docstring frames Problem #500 as one of the most famous open problems in extremal combinatorics. It states the central question: determine $\\text{ex}_3(n, K_4^{(3)})$, the maximum number of 3-element subsets of an $n$-element set that avoid containing all four 3-subsets of any 4-element set. Turán's 1941 construction (3-partition) gives $(5/9 + o(1))\\binom{n}{3}$ edges, Razborov's 2010 flag algebra bound gives $\\leq 0.5612\\binom{n}{3}$. Erdős considered this important enough to assign it Problem #500 with a \\$500 prize.",
+    "mathContext": "$\\text{ex}_3(n, K_4^{(3)}) = \\max\\{|E| : E \\subseteq \\binom{[n]}{3},\\; \\forall S \\in \\binom{[n]}{4},\\; \\exists T \\in \\binom{S}{3},\\; T \\notin E\\}$. Turán conjecture: $\\lim_{n \\to \\infty} \\text{ex}_3(n)/\\binom{n}{3} = 5/9$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán problem",
+      "extremal combinatorics",
+      "hypergraph Turán density",
+      "flag algebras"
+    ],
+    "prerequisites": [
+      "3-uniform hypergraphs",
+      "binomial coefficients",
+      "asymptotic density"
+    ]
+  },
+  {
     "id": "erdos-500-ann-imports",
     "proofId": "erdos-500",
     "type": "concept",
@@ -131,6 +155,28 @@
     "prerequisites": [
       "IsK4Free",
       "Hypergraph3"
+    ]
+  },
+  {
+    "id": "erdos-500-ann-extremal-axioms",
+    "proofId": "erdos-500",
+    "type": "technique",
+    "range": {
+      "startLine": 49,
+      "endLine": 55
+    },
+    "title": "Achievability and Optimality Axioms",
+    "content": "Two axioms formalize the extremal property: `ex3_K4_achievable` guarantees existence (some $K_4^{(3)}$-free hypergraph attains $\\text{ex}_3(n)$ edges), and `ex3_K4_optimal` guarantees maximality (no $K_4^{(3)}$-free hypergraph exceeds it). Together they characterize $\\text{ex}_3(n)$ as a maximum rather than a supremum — the extremal hypergraph exists for every $n$. This is guaranteed by compactness of the space of hypergraphs on $n$ vertices.",
+    "mathContext": "$\\exists H : |E(H)| = \\text{ex}_3(n) \\wedge H \\text{ is } K_4^{(3)}\\text{-free}$ (achievability) and $\\forall H : H \\text{ is } K_4^{(3)}\\text{-free} \\Rightarrow |E(H)| \\leq \\text{ex}_3(n)$ (optimality).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "extremal function",
+      "existence of extremal objects",
+      "compactness argument"
+    ],
+    "prerequisites": [
+      "ex3_K4",
+      "IsK4Free"
     ]
   },
   {

@@ -140,6 +140,96 @@
       "Does a stability result hold: are near-extremal hypergraphs close to Turán's construction?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both are foundational results in extremal combinatorics: Ramsey theory guarantees monochromatic substructures, while the Turán problem maximizes edges avoiding substructures. Turán's graph theorem (1941) was motivated by Ramsey's theorem"
+    },
+    {
+      "targetId": "erdos-1009",
+      "relationship": "related",
+      "description": "Erdős #1009 concerns edge-disjoint triangles beyond the Turán threshold — directly related to the extremal graph/hypergraph paradigm. Both problems study how substructure avoidance constrains edge density"
+    },
+    {
+      "targetId": "erdos-1010",
+      "relationship": "related",
+      "description": "Erdős #1010 on triangle supersaturation: once edge density exceeds the Turán threshold, how many copies of the forbidden subgraph must appear? The supersaturation phenomenon is the complement of Turán's question"
+    },
+    {
+      "targetId": "erdos-1008",
+      "relationship": "related",
+      "description": "Erdős #1008 on C₄-free subgraphs — another extremal problem asking for maximum edge density avoiding a specific forbidden subgraph, paralleling the K₄³ avoidance in Problem #500"
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "Szemerédi's regularity lemma is the key structural tool in extremal graph theory. While it applies to graphs (2-uniform), the hypergraph regularity lemma (Gowers, Rödl et al.) is a major tool for attacking hypergraph Turán problems like #500"
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Erdős #1 (distinct subset sums) is another flagship Erdős problem in combinatorics. Both exemplify the characteristic Erdős style: simple to state, extraordinarily difficult to resolve"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The binomial coefficient C(n,3) normalizes the Turán density π(K₄³) = lim ex₃(n)/C(n,3). The combinatorial identity C(n,3) = n(n-1)(n-2)/6 counts the total number of possible 3-edges"
+    }
+  ],
+  "relatedProofs": [
+    "ramseys-theorem",
+    "erdos-1009",
+    "erdos-1010",
+    "erdos-1008",
+    "szemeredi-regularity",
+    "erdos-1",
+    "binomial-theorem"
+  ],
+  "references": [
+    {
+      "authors": "Turán, Pál",
+      "title": "Eine Extremalaufgabe aus der Graphentheorie",
+      "year": "1941",
+      "venue": "Matematikai és Fizikai Lapok, vol. 48, pp. 436–452",
+      "note": "Introduced the graph Turán problem and proved the graph Turán theorem. Proposed the 3-partition construction for K₄³ and conjectured π(K₄³) = 5/9"
+    },
+    {
+      "authors": "Razborov, Alexander",
+      "title": "Flag algebras",
+      "year": "2007",
+      "venue": "Journal of Symbolic Logic, vol. 72, no. 4, pp. 1239–1282",
+      "note": "Introduced the flag algebra method — a general framework for proving density inequalities in combinatorics via semidefinite programming"
+    },
+    {
+      "authors": "Razborov, Alexander",
+      "title": "On 3-hypergraphs with forbidden 4-vertex configurations",
+      "year": "2010",
+      "venue": "SIAM Journal on Discrete Mathematics, vol. 24, no. 3, pp. 946–963",
+      "note": "Applied flag algebras to prove π(K₄³) ≤ 0.5611666..., dramatically improving earlier bounds"
+    },
+    {
+      "authors": "de Caen, Dominique",
+      "title": "Extension of a theorem of Moon and Moser on complete subgraphs",
+      "year": "1994",
+      "venue": "Ars Combinatoria, vol. 16, pp. 5–10",
+      "note": "Proved π(K₄³) ≤ 1/√2 ≈ 0.707, the best upper bound before Razborov's flag algebra method"
+    },
+    {
+      "authors": "Katona, Gyula O.H.; Nemetz, Tibor; Simonovits, Miklós",
+      "title": "On a problem of Turán in the theory of graphs",
+      "year": "1964",
+      "venue": "Matematikai Lapok, vol. 15, pp. 228–238",
+      "note": "Proved that the Turán density π(F) = lim ex(n,F)/C(n,r) exists for every r-uniform hypergraph F — the foundational result that makes the Turán density well-defined"
+    },
+    {
+      "authors": "Keevash, Peter",
+      "title": "Hypergraph Turán problems",
+      "year": "2011",
+      "venue": "Surveys in Combinatorics 2011, London Math. Soc. Lecture Notes 392, pp. 83–140",
+      "note": "Comprehensive survey of hypergraph Turán problems including detailed discussion of the K₄³ problem, known bounds, and open questions"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",
@@ -149,7 +239,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 107,
+    "lineCount": 108,
     "axiomCount": 13,
     "theoremCount": 0,
     "definitionCount": 4

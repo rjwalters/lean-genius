@@ -123,6 +123,83 @@
       "What is the computational complexity of finding the small non-planar subgraph?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "technique",
+      "description": "The probabilistic method used in Kostochka-Pyber (1988) shares roots with Ramsey theory; both study unavoidable substructures in dense combinatorial objects."
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "related-problem",
+      "description": "Erdős Problem #1 on graph coloring illustrates the broader program of finding unavoidable substructures in graphs with prescribed density or chromatic properties."
+    },
+    {
+      "targetId": "erdos-1009",
+      "relationship": "related-problem",
+      "description": "Erdős Problem #1009 on graph density and subgraph containment is closely related to the extremal graph theory framework underlying the Kostochka-Pyber result."
+    },
+    {
+      "targetId": "erdos-1015",
+      "relationship": "related-problem",
+      "description": "Erdős Problem #1015 involves topological graph theory questions similar in spirit to the planarity obstruction theme of Problem #1018."
+    },
+    {
+      "targetId": "erdos-1017",
+      "relationship": "sibling",
+      "description": "Erdős Problem #1017 is a neighboring problem in the Erdős problem collection sharing the extremal combinatorics and density-forcing theme."
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "technique",
+      "description": "Szemerédi's Regularity Lemma is a fundamental tool in extremal graph theory; the density regime n^(1+ε) studied in Problem #1018 connects naturally to regularity-based decompositions."
+    }
+  ],
+  "relatedProofs": [
+    "ramseys-theorem",
+    "erdos-1",
+    "erdos-1009",
+    "erdos-1015",
+    "erdos-1017",
+    "szemeredi-regularity"
+  ],
+  "references": [
+    {
+      "authors": ["A. V. Kostochka", "L. Pyber"],
+      "title": "Small topological complete subgraphs of 'dense' graphs",
+      "year": 1988,
+      "venue": "Combinatorica",
+      "note": "Proves the main result of Erdős Problem #1018: graphs with n^(1+ε) edges contain K₅ subdivisions on O_ε(1) vertices."
+    },
+    {
+      "authors": ["W. Mader"],
+      "title": "Homomorphieeigenschaften und mittlere Kantendichte von Graphen",
+      "year": 1967,
+      "venue": "Mathematische Annalen",
+      "note": "Established that the Turán number for K_t subdivisions is O(t√(log t) · n), a key precursor to the Kostochka-Pyber result."
+    },
+    {
+      "authors": ["K. Kuratowski"],
+      "title": "Sur le problème des courbes gauches en topologie",
+      "year": 1930,
+      "venue": "Fundamenta Mathematicae",
+      "note": "The foundational characterization of planar graphs: a graph is planar if and only if it contains no subdivision of K₅ or K_{3,3}."
+    },
+    {
+      "authors": ["P. Erdős", "M. Simonovits"],
+      "title": "A limit theorem in graph theory",
+      "year": 1966,
+      "venue": "Studia Scientiarum Mathematicarum Hungarica",
+      "note": "Foundational work on extremal graph theory and Turán-type problems underlying the density threshold analysis in Problem #1018."
+    },
+    {
+      "authors": ["N. Alon", "J. H. Spencer"],
+      "title": "The Probabilistic Method",
+      "year": 2016,
+      "venue": "Wiley (4th edition)",
+      "note": "Standard reference for the probabilistic method techniques used in the Kostochka-Pyber proof and related extremal graph theory results."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",
