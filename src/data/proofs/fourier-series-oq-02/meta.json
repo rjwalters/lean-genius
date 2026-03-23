@@ -1,0 +1,67 @@
+{
+  "id": "fourier-series-oq-02",
+  "title": "Fourier Coefficient Decay under Hölder Continuity",
+  "slug": "fourier-series-oq-02",
+  "description": "If f is α-Hölder continuous on the circle, then its Fourier coefficients decay as O(|n|^{-α}). Uses the half-period shift trick: shifting by T/(2n) flips the sign of the n-th Fourier exponential.",
+  "leanFile": "Proofs/FourierSeriesOQ02.lean",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fourier_series#Decay_of_Fourier_coefficients",
+    "date": "2026-03-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FourierSeriesOQ02.lean",
+    "tags": [
+      "analysis",
+      "harmonic-analysis",
+      "fourier-series",
+      "holder-continuity",
+      "decay-estimates"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "dateAdded": "2026-03-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "fourierCoeff",
+        "description": "Fourier coefficients on AddCircle",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "fourier_coe_apply",
+        "description": "Explicit exponential formula for Fourier monomials",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "integral_add_right_eq_self",
+        "description": "Translation invariance of Haar integral",
+        "module": "Mathlib.MeasureTheory.Group.Integral"
+      },
+      {
+        "theorem": "Complex.exp_pi_mul_I",
+        "description": "Euler's identity: exp(πi) = -1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
+    ],
+    "proofTechniques": [
+      {
+        "name": "Half-period shift trick",
+        "description": "Shift integration variable by T/(2n) to flip sign of Fourier exponential, producing a difference f(x) - f(x+h) that is bounded by Hölder continuity"
+      },
+      {
+        "name": "Character property",
+        "description": "fourier n (x+y) = fourier n x · fourier n y, from toCircle being a group homomorphism"
+      }
+    ],
+    "parentProof": "fourier-series",
+    "openQuestion": {
+      "number": 2,
+      "question": "What is the optimal Fourier coefficient decay rate under Hölder continuity?",
+      "answer": "The optimal rate is O(|n|^{-α}) for α-Hölder continuous functions, achieved by the half-period shift trick."
+    }
+  },
+  "overview": {
+    "text": "This proof establishes the classical decay estimate for Fourier coefficients under Hölder regularity. For a function f on the circle that satisfies |f(x) - f(y)| ≤ C·dist(x,y)^α, the n-th Fourier coefficient is bounded by C/2 times dist(0, T/(2n))^α. The proof uses the elegant half-period shift trick: shifting by T/(2n) makes the Fourier exponential change sign, producing a difference that Hölder continuity can bound."
+  }
+}
