@@ -62,6 +62,17 @@
       "Proved erdos_4_solved via maynard_theorem"
     ],
     "axiomCount": 9,
+    "assumptions": [
+      "rankin_theorem: ∃ C > 0, infinitely many gaps exceed C·f(n) (Rankin 1938)",
+      "maynard_theorem: erdos_4_conjecture holds (Maynard 2016)",
+      "ford_green_konyagin_tao_theorem: erdos_4_conjecture holds (independent proof, FGKT 2016)",
+      "fgkmt_improved_bound: improved Rankin constant (Ford-Green-Konyagin-Maynard-Tao 2018)",
+      "baker_harman_pintz_upper_bound: g_n = O(n^0.525) (Baker-Harman-Pintz 2001)",
+      "gap_0: primeGap(0) = 1",
+      "prime_gap_pos: primeGap(n) > 0 for n ≥ 1",
+      "average_gap_asymptotic: average prime gap ~ log n (from PNT)",
+      "erdos_function_growth: f(n) = o(log n) — sublogarithmic growth of Erdős function"
+    ],
     "prerequisites": [
       "Analytic number theory: the Prime Number Theorem and its consequences",
       "Sieve methods: Selberg sieve, multidimensional sieve weights",
@@ -209,6 +220,7 @@
   "overview": {
     "historicalContext": "Erdős Problem #4 is one of the most celebrated problems in prime number theory. The prime number theorem gives average gap $\\log n$ near $n$, but individual gaps can be much larger.\n\nRankin (1938) proved infinitely many gaps exceed $C \\cdot (\\log n)(\\log\\log n)(\\log\\log\\log\\log n)/(\\log\\log\\log n)^2$ for $C = e^\\gamma/3 \\approx 0.593$. His constant stood for 75 years. Erdős offered a $\\$10{,}000$ prize for gaps exceeding $(\\log n)^{1+c}$.\n\nIn 2014-2016, two independent breakthroughs resolved the problem for ALL $C > 0$: Maynard used multidimensional sieve weights, while Ford-Green-Konyagin-Tao used hypergraph covering lemmas. In 2018, all five combined techniques for a stronger bound.\n\nThe problem complements bounded gaps: Zhang (2013) and Maynard (2013) showed $\\liminf(p_{n+1}-p_n) < \\infty$ (small gaps exist), while Erdős #4 concerns $\\limsup(p_{n+1}-p_n)/\\log p_n = \\infty$ (large gaps exist). Cramér's conjecture ($\\sim (\\log p_n)^2$) and Granville's refinement ($\\sim 2e^{-\\gamma}(\\log p_n)^2$) predict the true maximum gap size.",
     "problemStatement": "Is it true that for any $C > 0$, there are infinitely many $n$ such that $p_{n+1} - p_n > C \\cdot \\frac{\\log\\log n \\cdot \\log\\log\\log\\log n}{(\\log\\log\\log n)^2} \\cdot \\log n$?",
+    "text": "Erdős Problem #4 asks whether prime gaps can exceed any constant multiple of Rankin's function log n · log log n · log log log log n / (log log log n)². Posed in the 1930s, it stood for 75 years until simultaneous solutions by Maynard and Ford-Green-Konyagin-Tao in 2016. The $10,000 prize for gaps exceeding (log n)^{1+c} remains open.",
     "proofStrategy": "The formalization defines the $n$-th prime via `Nat.nth`, iterated logarithms, and the Erdős function. The conjecture is stated as a universally quantified proposition over $C > 0$. Rankin's theorem ($\\exists C$), Maynard's theorem ($\\forall C$), and the FGKT theorem (independent $\\forall C$) are axiomatized. The FGKMT improved bound, Baker-Harman-Pintz upper bound, Cramér's conjecture, and Firoozbakht's conjecture provide context. One sorry remains in the comparison theorem `improved_stronger`.",
     "keyInsights": [
       "**75 years stuck**: Rankin's constant $C = e^\\gamma/3$ from 1938 was not improved until 2016 — the longest-standing result in prime gap theory",
@@ -227,7 +239,13 @@
   },
   "conclusion": {
     "summary": "Erdős Problem #4 is SOLVED: for any $C > 0$, infinitely many prime gaps exceed $C$ times the Erdős function. Proved independently by Maynard and Ford-Green-Konyagin-Tao in 2016, with an improved bound by all five authors in 2018. This resolved a 75-year-old question about the growth rate of maximal prime gaps.",
-    "implications": "**1. Prime Gap Theory**: The resolution by Maynard (2016) and Ford-Green-Konyagin-Tao (2016) demonstrates that prime gaps can far exceed the average gap of $\\log n$, with the amplification factor $\\log\\log n \\cdot \\log\\log\\log\\log n / (\\log\\log\\log n)^2$ growing without bound. This answered a question open since the 1930s and established that the Cramér random model (which predicts gaps of order $(\\log n)^2$) is essentially correct for the regime of 'large' gaps.\n\n**2. Sieve Methods Revolution**: The multidimensional sieve techniques developed for this problem, particularly Maynard's optimization of GPY sieve weights, have become fundamental tools in analytic number theory. These same methods led to Maynard's Fields Medal-winning work on bounded gaps between primes ($p_{n+1} - p_n \\leq 246$ infinitely often).\n\n**3. Probabilistic Hypergraph Methods**: The Ford-Green-Konyagin-Tao approach introduced probabilistic hypergraph covering arguments into prime number theory, creating a bridge between combinatorics and analytic number theory. The 'hypergraph covering lemma' has found applications in additive combinatorics and Ramsey theory.\n\n**4. Connections to RH and Beyond**: Under the Riemann Hypothesis, the expected maximum gap below $x$ is $O(\\sqrt{x} \\log x)$, far below the unconditional $(\\log x)^2$ prediction of Cramér. The gap between conditional and unconditional results remains one of the central mysteries in analytic number theory.\n\n**5. Computational Verification**: The largest known prime gap as of 2024 is 1550 (between primes near $10^{18}$), discovered by computation. The interplay between theoretical bounds and computational search continues to inform our understanding of prime distribution.",
+    "implications": [
+      "Prime gaps can far exceed the average gap of log n, with Rankin's amplification factor growing without bound — answering a question open since the 1930s",
+      "Maynard's multidimensional sieve techniques became fundamental tools in analytic number theory, leading to his Fields Medal-winning work on bounded gaps (p_{n+1} - p_n ≤ 246 infinitely often)",
+      "The FGKT probabilistic hypergraph covering approach bridges combinatorics and analytic number theory, with applications to additive combinatorics and Ramsey theory",
+      "Under the Riemann Hypothesis, the maximum gap below x is O(√x log x), far below the unconditional (log x)² prediction — the gap between conditional and unconditional results remains a central mystery",
+      "The $10,000 prize for gaps exceeding (log n)^{1+c} remains open and would require fundamentally new ideas beyond current sieve methods"
+    ],
     "openQuestions": [
       "Erdős's $10,000 conjecture: Does p_{n+1} - p_n > (log n)^{1+c} hold for some c > 0 and infinitely many n?",
       "Cramér's conjecture: Is p_{n+1} - p_n = O((log p_n)²)?",
