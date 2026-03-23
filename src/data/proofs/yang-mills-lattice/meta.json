@@ -1,0 +1,100 @@
+{
+  "id": "yang-mills-lattice",
+  "title": "Yang-Mills: Lattice Gauge Theory",
+  "slug": "yang-mills-lattice",
+  "description": "Lattice formulation of Yang-Mills theory with proven plaquette gauge invariance, action bounds, Wilson loops, strong coupling expansion, and Creutz ratio diagnostics.",
+  "meta": {
+    "proofRepoPath": "Proofs/YangMills/Exploration.lean",
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "date": "2026",
+    "status": "axiomatized",
+    "tags": [
+      "mathematical-physics",
+      "lattice-gauge-theory",
+      "wilson-loops",
+      "gauge-invariance",
+      "strong-coupling"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 5,
+    "assumptions": "Structure-encoded assumptions: WilsonLatticeAction requires coupling beta > 0 and character function. LinkVariable, LatticeGaugeTransform, and Plaquette encode lattice geometry. Wilson loop structures assume gauge-invariant trace. All lattice proofs (gauge invariance, bounds) are fully verified given these structures.",
+    "lineCount": 800,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_nonneg",
+        "description": "Non-negativity of plaquette action sums",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "Full lattice gauge theory: sites, links, plaquettes, Wilson action",
+      "Proven: plaquette action gauge invariance (conjugation-invariant trace)",
+      "Proven: action bounds 0 <= S_W <= 2N*beta",
+      "Wilson loop area law vs perimeter law characterization",
+      "Strong coupling expansion with Creutz ratio diagnostics",
+      "Confinement criteria via Wilson loop behavior"
+    ],
+    "dateAdded": "2026-03-23"
+  },
+  "overview": {
+    "historicalContext": "Kenneth Wilson introduced lattice gauge theory in 1974, providing the first non-perturbative definition of Yang-Mills theory. By discretizing spacetime into a lattice and placing gauge group elements on links, Wilson showed that confinement (area law for Wilson loops) emerges naturally in the strong coupling regime. This framework enabled the first numerical simulations of QCD and remains the primary tool for non-perturbative calculations in the Standard Model.",
+    "problemStatement": "Formalize Wilson's lattice gauge theory: define the lattice, link variables, plaquettes, and Wilson action, then prove gauge invariance and establish bounds on the action.",
+    "text": "Complete lattice gauge theory formalization with proven gauge invariance and action bounds.",
+    "proofStrategy": "The Wilson lattice action $S_W = \\beta \\sum_P (1 - \\chi(U_P)/\\chi(1))$ is shown to be gauge-invariant because the plaquette variable $U_P = U_1 U_2 U_3^{-1} U_4^{-1}$ transforms by conjugation under gauge transformations, and the character $\\chi$ is conjugation-invariant. Bounds follow from $0 \\leq 1 - \\chi(U)/\\chi(1) \\leq 2$.",
+    "keyInsights": [
+      "Gauge invariance is EXACT on the lattice (no approximation), unlike perturbative methods",
+      "The Wilson action is bounded: $0 \\leq S_W \\leq 2N\\beta$, ensuring a well-defined partition function",
+      "Wilson loops distinguish confining (area law: $\\langle W \\rangle \\sim e^{-\\sigma A}$) from deconfined (perimeter law: $\\langle W \\rangle \\sim e^{-mP}$) phases",
+      "The Creutz ratio $\\chi(R,T) = -\\ln(W(R,T)W(R-1,T-1)/(W(R,T-1)W(R-1,T)))$ extracts the string tension from lattice data"
+    ],
+    "prerequisites": []
+  },
+  "sections": [
+    {
+      "id": "lattice-structure",
+      "title": "Lattice Structure",
+      "summary": "Defines lattice sites, links, link variables (group elements on edges), and gauge transformations.",
+      "startLine": 1,
+      "endLine": 200
+    },
+    {
+      "id": "plaquette-action",
+      "title": "Plaquette Action and Gauge Invariance",
+      "summary": "Defines plaquettes, the Wilson lattice action, and proves gauge invariance and action bounds.",
+      "startLine": 201,
+      "endLine": 500
+    },
+    {
+      "id": "wilson-loops",
+      "title": "Wilson Loops and Confinement",
+      "summary": "Wilson loop algebra, area law vs perimeter law, and strong coupling expansion.",
+      "startLine": 501,
+      "endLine": 800
+    }
+  ],
+  "conclusion": {
+    "summary": "The lattice formulation provides a rigorous non-perturbative definition of Yang-Mills theory with proven gauge invariance and bounded action. The key open question is whether the continuum limit (a -> 0) exists and preserves the mass gap.",
+    "openQuestions": [
+      "Does the continuum limit of lattice Yang-Mills exist?",
+      "Can the strong coupling confinement (area law) be analytically continued to weak coupling?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "yang-mills",
+      "relationship": "part-of",
+      "description": "Sub-module of the comprehensive Yang-Mills formalization"
+    },
+    {
+      "targetId": "yang-mills-transfer-matrix",
+      "relationship": "supports",
+      "description": "Lattice structures are used by the transfer matrix formalism to prove the mass gap"
+    }
+  ],
+  "relatedProofs": [
+    "yang-mills",
+    "yang-mills-transfer-matrix",
+    "yang-mills-2d"
+  ]
+}
