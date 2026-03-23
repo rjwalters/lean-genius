@@ -29,9 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Proved pathGraph_isTriangleFree and starGraph_isTriangleFree. Fixed pre-existing bug in starGraph symm proof. Added compactness note to finite_implies_infinite_version. File: 3 theorems, 7 axioms, 0 sorries.",
+    "builtItems": [
+      "Proved pathGraph_isTriangleFree in Erdos738Problem.lean:81-92",
+      "Proved starGraph_isTriangleFree in Erdos738Problem.lean:94-106",
+      "Fixed starGraph symm proof (pre-existing compile error)"
+    ],
+    "insights": [
+      "pathGraph and starGraph triangle-freeness proved via Finset.card_eq_three extraction and omega on adjacency disjunctions",
+      "starGraph symm proof had a latent bug using ▸ on ≠ (not an equality) - fixed to simple exact h",
+      "finite_implies_infinite_version correctly invokes full conjecture but needs De Bruijn-Erdős compactness to use hfin properly",
+      "Gyárfás conjecture is OPEN - main axiom represents an unresolved problem in combinatorics"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Erdős #738 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ has infinite chromatic number and is triangle-free (contains no $K_3$) then must $G$ contain every tree as an induced subgraph?\n\n\n\nA conjecture of Gy\\'{a}rf\\'{a}s.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #737\n- Problem #739\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er81\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
