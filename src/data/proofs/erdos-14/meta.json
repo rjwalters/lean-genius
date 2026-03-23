@@ -21,7 +21,13 @@
     "erdosUrl": "https://erdosproblems.com/14",
     "erdosProblemStatus": "open",
     "axiomCount": 7,
-    "lineCount": 103
+    "lineCount": 103,
+    "prerequisites": [
+      "Additive combinatorics (sumsets and representation functions)",
+      "Finite set theory",
+      "Extremal combinatorics",
+      "Probabilistic method"
+    ]
   },
   "overview": {
     "historicalContext": "This problem was originally considered by Erdős and Nathanson, and later attributed by Erdős to joint work with Sárközy and Szemerédi (references [Er92c], [Er97], [Er97e]). It asks a fundamental question about the trade-off between uniqueness and coverage in additive representation: given $A \\subseteq \\mathbb{N}$, the set $B$ of integers with exactly one representation as $a + b$ ($a \\leq b$, $a, b \\in A$) captures the 'well-represented' sums. The complementary set $\\{1, \\ldots, N\\} \\setminus B$ consists of integers that are either unrepresented or multiply represented.\n\nThe key tension is that making $A$ larger increases coverage (fewer unrepresented integers) but also increases collisions (more multiply represented integers). Sidon sets, where all sums are distinct, achieve perfect uniqueness but are too sparse ($|A| \\leq \\sqrt{N} + O(N^{1/4})$) to cover even half of $\\{1, \\ldots, N\\}$. At the other extreme, dense sets cover everything but have massive collision counts.\n\nThe main quantitative results are by Erdős, Sárközy, and Szemerédi: they constructed $A \\subseteq \\mathbb{N}$ achieving $f_A(N) = O_{\\varepsilon}(N^{1/2+\\varepsilon})$ for all $\\varepsilon > 0$, showing the non-unique count can be brought very close to $\\sqrt{N}$ from above. However, they also proved that for this same set, $f_A(N) \\gg_{\\varepsilon} N^{1/3-\\varepsilon}$ for infinitely many $N$. Erdős and Freud (1991) proved a finite analogue: for $A \\subseteq \\{1, \\ldots, N\\}$, there exists a choice with non-unique count $< 2^{3/2}\\sqrt{N}$, and the constant $2^{3/2}$ may be optimal.",
@@ -119,5 +125,37 @@
     "axiomCount": 7,
     "theoremCount": 0,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "Problem #28 (Erdős-Turán on additive bases) concerns unbounded representation. Problem #14 studies unique sums vs. non-unique representation, the complementary question of when representations can be controlled"
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Problem #1 (distinct subset sums) concerns unique representations of a different kind. Both ask when additive structure forces non-uniqueness"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Freiman, Gregory",
+      "title": "On two additive problems",
+      "year": "1990",
+      "venue": "Journal of Number Theory, vol. 34, no. 1, pp. 1–12",
+      "note": "Studied unique and non-unique representation in additive settings"
+    },
+    {
+      "authors": "Nathanson, Melvyn B.",
+      "title": "Additive Number Theory: The Classical Bases",
+      "year": "1996",
+      "venue": "Springer GTM 164",
+      "note": "Standard reference for additive number theory including representation functions and unique sums"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-28"
+  ]
 }

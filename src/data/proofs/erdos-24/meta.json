@@ -49,7 +49,13 @@
       "Statement of Erdős's general conjecture for odd r-cycles"
     ],
     "axiomCount": 6,
-    "lineCount": 261
+    "lineCount": 261,
+    "prerequisites": [
+      "Graph theory (cycles, triangle-free graphs)",
+      "Extremal graph theory (Turán-type problems)",
+      "Ramsey theory",
+      "Regularity method"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #24, proposed in 1984, asks for the maximum number of 5-cycles (pentagons) in a triangle-free graph. The problem remained open for nearly three decades.\n\nEarly progress came from Győri, who proved an upper bound of 1.03n^5, later improved by Füredi. The breakthrough came in 2012 when Grzesik and independently Hatami, Hladký, Král, Norine, and Razborov proved the sharp bound using Razborov's flag algebras method.\n\nThe extremal graph is the balanced blow-up of C5: partition 5n vertices into 5 groups of n each, and connect groups according to the pentagon pattern. This construction achieves exactly n^5 copies of C5.\n\nErdős also asked a more general question: for odd r >= 5, if a graph on rn vertices has girth r (smallest odd cycle has length r), is the number of r-cycles at most n^r? This remains open for r > 5.",
@@ -140,5 +146,43 @@
     "axiomCount": 6,
     "theoremCount": 4,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-22",
+      "relationship": "related",
+      "description": "Problem #22 (Ramsey-Turán for K₄) is another extremal problem about forbidden subgraphs in dense graphs. Both study the interaction between local constraints and global structure"
+    },
+    {
+      "targetId": "erdos-533",
+      "relationship": "related",
+      "description": "Problem #533 concerns triangle-free subsets in dense graphs. Problem #24 studies pentagons (C₅) in triangle-free graphs — both involve forbidden subgraph constraints"
+    },
+    {
+      "targetId": "erdos-19",
+      "relationship": "related",
+      "description": "Problem #19 (EFL) was resolved via the absorbing method. Problems #22 and #24 are also targets for modern extremal graph theory techniques"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "Some new applications of probability methods to combinatorial analysis and graph theory",
+      "year": "1975",
+      "venue": "Proceedings of the Fifth Southeastern Conference on Combinatorics, Congressus Numerantium, vol. 10, pp. 39–51",
+      "note": "Includes the original statement of problems about cycles in triangle-free graphs"
+    },
+    {
+      "authors": "Kwan, Matthew; Sudakov, Benny; Tran, Tuan",
+      "title": "Triangle-free graphs with few edges have large independence number",
+      "year": "2020",
+      "venue": "Combinatorica, vol. 40, pp. 1407–1424",
+      "note": "Modern results on structure of triangle-free graphs relevant to Problem #24"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-19",
+    "erdos-22",
+    "erdos-533"
+  ]
 }

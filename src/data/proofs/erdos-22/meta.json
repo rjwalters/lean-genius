@@ -56,7 +56,13 @@
       "erdos_22_summary combining all main results"
     ],
     "axiomCount": 23,
-    "lineCount": 327
+    "lineCount": 327,
+    "prerequisites": [
+      "Ramsey theory and Ramsey numbers",
+      "Turán-type extremal graph theory",
+      "Graph density and independence number",
+      "Probabilistic combinatorics"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #22 is the Bollobás-Erdős conjecture from 1976, arising from their systematic study of Ramsey-Turán problems. Turán's theorem (1941) tells us the maximum number of edges in a K₄-free graph on n vertices is about n²/3, achieved by the complete tripartite graph T(n,3). However, T(n,3) has independence number n/3, which is linear in n. The natural question is: what happens if we also demand small independence number?\n\nBollobás and Erdős conjectured that for any ε > 0 and sufficiently large n, there exist K₄-free graphs on n vertices with at least n²/8 edges and independence number at most εn. They proved a weaker version with (1/8 + o(1))n² edges. The bound n²/8 corresponds to the Ramsey-Turán density ρ₄ = 1/4, which measures the asymptotic edge density achievable under both clique-free and small-independence constraints.\n\nFox, Loh, and Zhao resolved the conjecture fully in 2015 using pseudorandom Cayley graph constructions over finite fields. Their result is actually much stronger than the conjecture: the independence number achieved is only O((log log n)^{3/2} / (log n)^{1/2} · n), which is far smaller than any εn. This polylogarithmic bound demonstrates the power of algebraic and probabilistic methods in extremal combinatorics.",
@@ -160,5 +166,50 @@
     "axiomCount": 23,
     "theoremCount": 4,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-24",
+      "relationship": "related",
+      "description": "Problem #24 on pentagons in triangle-free graphs is another Ramsey-Turán type question. Both study extremal graph problems where local constraints (triangle-free, K₄-free) interact with global density"
+    },
+    {
+      "targetId": "erdos-19",
+      "relationship": "related",
+      "description": "Problem #19 (EFL) and Problem #22 both concern graph coloring and structure. EFL asks about chromatic number of clique unions; Problem #22 asks about independence in dense K₄-free graphs"
+    },
+    {
+      "targetId": "erdos-533",
+      "relationship": "related",
+      "description": "Problem #533 on triangle-free subsets in K₅-free graphs is another extremal Ramsey-type question in the same family"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Szemerédi, Endre",
+      "title": "On graphs containing no complete subgraph with 4 vertices (in Hungarian)",
+      "year": "1972",
+      "venue": "Matematikai Lapok, vol. 23, pp. 113–116",
+      "note": "Early Ramsey-Turán results for K₄-free graphs"
+    },
+    {
+      "authors": "Erdős, Paul; Hajnal, András; Sós, Vera T.; Szemerédi, Endre",
+      "title": "More results on Ramsey-Turán type problems",
+      "year": "1983",
+      "venue": "Combinatorica, vol. 3, no. 1, pp. 69–81",
+      "note": "Systematic development of Ramsey-Turán theory including results for K₄"
+    },
+    {
+      "authors": "Sudakov, Benny",
+      "title": "Few remarks on the Ramsey-Turán-type problems",
+      "year": "2003",
+      "venue": "Journal of Combinatorial Theory, Series B, vol. 88, no. 1, pp. 99–106",
+      "note": "Modern advances in Ramsey-Turán problems using dependent random choice"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-19",
+    "erdos-24",
+    "erdos-533"
+  ]
 }
