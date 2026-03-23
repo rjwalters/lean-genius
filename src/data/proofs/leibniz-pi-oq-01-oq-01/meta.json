@@ -1,0 +1,151 @@
+{
+  "id": "leibniz-pi-oq-01-oq-01",
+  "title": "Machin's Formula from the Arctan Addition Formula",
+  "slug": "leibniz-pi-oq-01-oq-01",
+  "description": "Derives Machin's formula pi/4 = 4*arctan(1/5) - arctan(1/239) step by step from three applications of the arctan addition formula arctan(x) + arctan(y) = arctan((x+y)/(1-xy)). No pre-packaged Mathlib lemma is used for the final identity.",
+  "meta": {
+    "author": "John Machin (1706); step-by-step derivation formalized here",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Machin-like_formula",
+    "date": "1706",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MachinFromAddition.lean",
+    "tags": [
+      "analysis",
+      "pi",
+      "arctangent",
+      "series",
+      "computation",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.arctan_add",
+        "description": "arctan(x) + arctan(y) = arctan((x+y)/(1-xy)) when xy < 1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan"
+      },
+      {
+        "theorem": "Real.arctan_neg",
+        "description": "arctan(-x) = -arctan(x)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan"
+      },
+      {
+        "theorem": "Real.arctan_one",
+        "description": "arctan(1) = pi/4",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan"
+      }
+    ],
+    "originalContributions": [
+      "Step-by-step derivation of Machin's formula using only the arctan addition formula",
+      "two_arctan_inv_5: proves arctan(1/5) + arctan(1/5) = arctan(5/12) via addition formula",
+      "four_arctan_inv_5: proves 4*arctan(1/5) = arctan(120/119) by doubling twice",
+      "arctan_diff_eq_arctan_one: proves arctan(120/119) - arctan(1/239) = arctan(1) using 28561/28441 cancellation"
+    ],
+    "references": [
+      {
+        "authors": "Machin, John",
+        "title": "The solution of Kepler's problem",
+        "year": "1706",
+        "venue": "Philosophical Transactions of the Royal Society",
+        "note": "Original discovery of the formula pi/4 = 4*arctan(1/5) - arctan(1/239)"
+      },
+      {
+        "authors": "Beckmann, Petr",
+        "title": "A History of Pi",
+        "year": "1971",
+        "venue": "Golem Press",
+        "note": "Chapter 10 discusses Machin's formula and its impact on pi computation"
+      }
+    ],
+    "prerequisites": [
+      "Arctan addition formula: arctan(x) + arctan(y) = arctan((x+y)/(1-xy)) for xy < 1",
+      "Arctan parity: arctan(-x) = -arctan(x)",
+      "arctan(1) = pi/4"
+    ],
+    "dateAdded": "2026-03-23",
+    "axiomCount": 0,
+    "lineCount": 79,
+    "leanFile": "proofs/Proofs/MachinFromAddition.lean"
+  },
+  "overview": {
+    "historicalContext": "In 1706, John Machin, professor of astronomy at Gresham College, London, discovered that $\\pi/4 = 4\\arctan(1/5) - \\arctan(1/239)$. He used this to compute 100 digits of $\\pi$, a record at the time. The formula's power lies in replacing the arctan series at $x=1$ (the Leibniz series, converging at rate $O(1/N)$) with evaluations at $x = 1/5$ and $x = 1/239$, where convergence is exponential.\n\nWilliam Shanks used Machin's formula in 1873 to compute 707 digits (later found to have an error after digit 527). Machin-like formulas dominated $\\pi$ computation for over 250 years until the Borwein and Chudnovsky algorithms introduced fundamentally faster approaches.\n\nThis formalization derives Machin's formula from scratch, applying the arctan addition formula three times. The derivation reveals the beautiful algebraic coincidence: $4\\arctan(1/5) = \\arctan(120/119)$, and $120/119$ is close enough to 1 that subtracting $\\arctan(1/239)$ yields exactly $\\arctan(1)$. The numerics work out because $169^2 = 28561$ appears in both numerator and denominator of the final fraction.",
+    "problemStatement": "**Open Question (from parent proof)**: Prove Machin's formula $\\pi/4 = 4\\arctan(1/5) - \\arctan(1/239)$ from the arctan addition formula, rather than invoking Mathlib's pre-packaged lemma.\n\n**Resolution**: Three applications of $\\arctan(x) + \\arctan(y) = \\arctan\\left(\\frac{x+y}{1-xy}\\right)$ suffice:\n1. $\\arctan(1/5) + \\arctan(1/5) = \\arctan(5/12)$\n2. $\\arctan(5/12) + \\arctan(5/12) = \\arctan(120/119)$\n3. $\\arctan(120/119) + \\arctan(-1/239) = \\arctan(1) = \\pi/4$",
+    "proofStrategy": "The proof applies `Real.arctan_add` three times with explicit rational arithmetic:\n\n**Step 1 (two_arctan_inv_5)**: With $x = y = 1/5$, the condition $xy = 1/25 < 1$ holds, giving $\\arctan(1/5) + \\arctan(1/5) = \\arctan\\left(\\frac{2/5}{24/25}\\right) = \\arctan(5/12)$.\n\n**Step 2 (four_arctan_inv_5)**: With $x = y = 5/12$, the condition $xy = 25/144 < 1$ holds, giving $2\\arctan(5/12) = \\arctan\\left(\\frac{10/12}{119/144}\\right) = \\arctan(120/119)$.\n\n**Step 3 (arctan_diff_eq_arctan_one)**: Rewrite the subtraction as addition using $\\arctan(-x) = -\\arctan(x)$. With $x = 120/119, y = -1/239$, the condition $xy = -120/28441 < 1$ holds, giving $\\arctan\\left(\\frac{28561/28441}{28561/28441}\\right) = \\arctan(1) = \\pi/4$.\n\nThe final step uses the fact that $120 \\cdot 239 - 119 = 28561 = 169^2$ and $119 \\cdot 239 + 120 = 28561$, so both numerator and denominator of the addition formula equal $28561/28441$, yielding a ratio of exactly 1.",
+    "keyInsights": [
+      "Three applications of arctan_add suffice to derive Machin's formula from first principles",
+      "The key numerical coincidence: 120*239 - 119 = 119*239 + 120 = 28561 = 169^2, making the final fraction exactly 1",
+      "The subtraction arctan(a) - arctan(b) is handled by arctan_neg + arctan_add, converting to arctan(a) + arctan(-b)",
+      "All three applications of arctan_add have xy < 1 trivially satisfied (either both factors < 1, or one factor is negative)",
+      "The proof technique generalizes: any Machin-like formula pi/4 = sum of c_i * arctan(a_i/b_i) can be verified by iterating arctan_add"
+    ]
+  },
+  "sections": [
+    {
+      "id": "step1",
+      "title": "Step 1: Doubling arctan(1/5)",
+      "startLine": 34,
+      "endLine": 39,
+      "summary": "Proves $\\arctan(1/5) + \\arctan(1/5) = \\arctan(5/12)$ via the addition formula with $xy = 1/25 < 1$. The rational arithmetic $(2/5)/(24/25) = 5/12$ is verified by `norm_num`."
+    },
+    {
+      "id": "step2",
+      "title": "Step 2: Doubling to arctan(120/119)",
+      "startLine": 41,
+      "endLine": 53,
+      "summary": "Proves $4 \\cdot \\arctan(1/5) = \\arctan(120/119)$ by expressing $4 \\cdot \\arctan(1/5) = 2 \\cdot \\arctan(5/12)$ and applying the addition formula again with $xy = 25/144 < 1$."
+    },
+    {
+      "id": "step3",
+      "title": "Step 3: Subtracting arctan(1/239)",
+      "startLine": 55,
+      "endLine": 70,
+      "summary": "Proves $\\arctan(120/119) - \\arctan(1/239) = \\arctan(1)$ by rewriting the subtraction as addition of $\\arctan(-1/239)$ and applying arctan_add. The key computation: $(28561/28441)/(28561/28441) = 1$."
+    },
+    {
+      "id": "main",
+      "title": "Machin's Formula",
+      "startLine": 72,
+      "endLine": 79,
+      "summary": "Combines Steps 1-3 to prove $4 \\cdot \\arctan(1/5) - \\arctan(1/239) = \\pi/4$ in one line: rewrite via `four_arctan_inv_5` and `arctan_diff_eq_arctan_one`, then apply `arctan_one`."
+    }
+  ],
+  "conclusion": {
+    "summary": "Machin's formula is derived from scratch using only the arctan addition formula, arctan parity, and arctan(1) = pi/4. The proof is fully verified with 0 sorries and 0 axioms. Each step reduces to pure rational arithmetic verified by norm_num.",
+    "implications": "This resolves the open question from the parent proof (leibniz-pi-oq-01) about deriving Machin's formula from the addition formula. The technique generalizes to any Machin-like formula: each such identity can be verified by iterating arctan_add with norm_num checking the rational arithmetic.\n\nThe proof also demonstrates that Mathlib's arctan API is sufficient for compositional reasoning about arctangent identities, without needing to invoke specialized pre-packaged formulas.",
+    "openQuestions": [
+      "Can the technique be automated to verify arbitrary Machin-like formulas (e.g., Wetherfield's pi/4 = 12*arctan(1/49) + ...)?",
+      "What is the optimal Machin-like formula (minimizing terms for a given accuracy)?",
+      "Can Lean's norm_num be extended to verify Machin-like identities in a single tactic call?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Real"],
+    "namespace": "MachinFromAddition",
+    "lineCount": 79,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "leibniz-pi-oq-01",
+      "relationship": "resolves",
+      "description": "Answers the open question about deriving Machin's formula from the arctan addition formula"
+    },
+    {
+      "targetId": "leibniz-pi",
+      "relationship": "extends",
+      "description": "Provides a constructive derivation of the faster-converging alternative to the Leibniz series"
+    }
+  ],
+  "relatedProofs": [
+    "leibniz-pi",
+    "leibniz-pi-oq-01"
+  ]
+}
