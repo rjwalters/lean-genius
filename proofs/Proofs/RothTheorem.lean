@@ -962,7 +962,7 @@ theorem apFree_card_le_half {N : ℕ} (hN : 1 < N)
 -- PART V: DENSITY INCREMENT LEMMA
 -- ═══════════════════════════════════════════════════════════════════
 
-/-- The density increment lemma: if A ⊆ Z/NZ has density delta and no 3-AP,
+/- The density increment lemma: if A ⊆ Z/NZ has density delta and no 3-AP,
     then A has density at least delta + c·delta² on some long arithmetic
     subprogression, and the restriction is also AP-free. This is the
     core inductive step in Roth's proof.
@@ -985,9 +985,13 @@ private lemma mul_L_r_eq_zero {N : ℕ} [NeZero N] (r : ZMod N) :
   have hdvd : N ∣ L * ZMod.val r := by
     obtain ⟨s, hs⟩ := hg_dvd_r
     rw [hs, show L = N / g from rfl, ← mul_assoc, Nat.div_mul_cancel hgN]
-  -- ↑L * r = ↑(L * val(r)) = 0 since N | L * val(r)
-  -- (Needs: ↑(val(r)) = r in ZMod N, standard ZMod property)
-  sorry
+    exact dvd_mul_right N s
+  -- ↑(L * val(r)) = 0 in ZMod N since N | L * val(r)
+  have h0 : (↑(L * ZMod.val r) : ZMod N) = 0 :=
+    (ZMod.natCast_zmod_eq_zero_iff_dvd _ _).mpr hdvd
+  -- ↑(L * val(r)) = ↑L * ↑(val(r)) = ↑L * r by natCast_zmod_val
+  rw [Nat.cast_mul, ZMod.natCast_zmod_val] at h0
+  exact h0
 
 /-- ψ(r·) is constant on cosets of ⟨L⟩ where L = N/gcd(val(r),N).
     For any x in coset C_t, ψ(rx) = ψ(rt), because L·r = 0 in ZMod N. -/
@@ -996,7 +1000,7 @@ private lemma psi_const_on_coset {N : ℕ} [NeZero N] (r : ZMod N) :
     let L := N / g
     ∀ t k : ZMod N, ψ (r * (t + k * (L : ZMod N))) = ψ (r * t) := by
   intro g L t k
-  have hLr := mul_L_r_eq_zero r (g := g) (L := L)
+  have hLr := mul_L_r_eq_zero r
   suffices h : r * (k * ↑L) = 0 by rw [mul_add, h, add_zero]
   calc r * (k * ↑L) = k * (↑L * r) := by ring
     _ = k * 0 := by rw [hLr]
@@ -1010,10 +1014,46 @@ private lemma coset_char_sum_zero {N : ℕ} [NeZero N] (r : ZMod N)
     let g := Nat.gcd (ZMod.val r) N
     let L := N / g
     (Finset.range L).sum (fun t => ψ (r * (t : ZMod N))) = 0 := by
-  -- Each ψ(r·t) = ω^(st) where ω = e^{2πi/L} and s = val(r)/g with gcd(s,L)=1.
-  -- So ω^s is a primitive L-th root of unity, and Σ_{t<L} (ω^s)^t = 0 by
-  -- root_unity_sum_zero (already proved in Part III).
-  sorry
+  intro g L
+  -- Setup
+  have hval_pos : 0 < ZMod.val r := by
+    rw [Nat.pos_iff_ne_zero]; exact fun h => hr (by rwa [ZMod.val_eq_zero] at h)
+  have hgN : g ∣ N := Nat.gcd_dvd_right _ _
+  have hg_dvd_r : g ∣ ZMod.val r := Nat.gcd_dvd_left _ _
+  have hg_pos : 0 < g := Nat.pos_of_ne_zero (Nat.gcd_ne_zero_right (NeZero.ne N))
+  have hg_lt_N : g < N := lt_of_le_of_lt (Nat.le_of_dvd hval_pos hg_dvd_r) (ZMod.val_lt r)
+  -- L ≥ 2: since g | N and g < N, N/g ≥ 2
+  have hL_ge : 2 ≤ L := by
+    obtain ⟨L', hL'⟩ := hgN  -- N = g * L'
+    suffices 2 ≤ L' by
+      rw [show L = N / g from rfl, hL', Nat.mul_div_cancel_left _ hg_pos]; exact this
+    by_contra h; push_neg at h
+    interval_cases L' <;> omega
+  have hN_ne : (↑N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
+  -- Each ψ(r * ↑t) = (ψ r)^t for t < L
+  have hterm : ∀ t ∈ Finset.range L, ψ (r * (↑t : ZMod N)) = (ψ r) ^ t := by
+    intro t ht; rw [Finset.mem_range] at ht
+    simp only [ψ]; rw [exp_val_mul_eq]
+    have htN : t < N := lt_of_lt_of_le ht (Nat.div_le_self N g)
+    rw [ZMod.val_natCast, Nat.mod_eq_of_lt htN, ← Complex.exp_nat_mul]
+    congr 1; ring
+  -- Rewrite sum
+  rw [Finset.sum_congr rfl hterm]
+  -- Apply root_unity_sum_zero: need (ψ r)^L = 1 and ψ r ≠ 1
+  apply root_unity_sum_zero
+  · -- (ψ r)^L = 1: exponent is an integer multiple of 2πi
+    simp only [ψ, ← Complex.exp_nat_mul]
+    have hdvd : N ∣ L * ZMod.val r := by
+      obtain ⟨s, hs⟩ := hg_dvd_r
+      rw [hs, show L = N / g from rfl, ← mul_assoc, Nat.div_mul_cancel hgN]
+      exact dvd_mul_right N s
+    obtain ⟨k, hk⟩ := hdvd
+    have h : (↑L : ℂ) * ↑(ZMod.val r) = ↑N * ↑k := by exact_mod_cast hk
+    rw [show ↑L * (2 * ↑Real.pi * Complex.I * (↑(ZMod.val r) / ↑N)) =
+        ↑L * ↑(ZMod.val r) / ↑N * (2 * ↑Real.pi * Complex.I) from by ring,
+      h, mul_div_cancel_left₀ _ hN_ne, Complex.exp_nat_mul,
+      Complex.exp_two_pi_mul_I, one_pow]
+  · exact psi_ne_one r hr
 
 /-- Coset density increment: given a large Fourier coefficient at r with
     g = gcd(val(r), N) ≥ √N, the annihilator coset partition gives a
@@ -1071,8 +1111,9 @@ theorem density_increment_lemma {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
       by_cases hg_sqrt : g ≥ Nat.sqrt N
       · by_cases hg2 : g ≥ 2
         · exact coset_density_increment A hAP delta hdelta hdensity r hr hfourier hN3 hNodd hg2 hg_sqrt
-        · -- g < 2 but g ≥ √N means √N ≤ 1, so N ≤ 1, contradicting N ≥ 2
-          omega
+        · -- g ≤ 1 and g ≥ √N: reachable for small N (N=3 with r coprime to N).
+          -- For N ≤ 3, construct trivial subprogression in ZMod 1.
+          sorry
       · -- g < √N: cosets too short. Need box partition (prime N case).
         -- For prime N, every r≠0 has gcd=1, so the coset partition is trivial.
         -- Requires phase-approximation "box partition" approach.
