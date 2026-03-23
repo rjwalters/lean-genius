@@ -203,6 +203,26 @@
       "targetId": "russell-1-plus-1",
       "relationship": "related",
       "description": "Russell and Whitehead's Principia Mathematica (1910-1913) attempted to derive all of mathematics from logical axioms — Hilbert's program in action. Gödel's theorem showed that any such foundational system, if consistent, must be incomplete. The famous proof that 1+1=2 in PM illustrates the immense formal infrastructure that Gödel's theorem applies to"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Gödel numbering — the encoding of formulas as natural numbers — relies critically on the fundamental theorem of arithmetic (unique prime factorization). Each formula is encoded as $\\prod p_i^{a_i}$ where primes index symbol positions and exponents encode symbols. Without unique factorization, Gödel numbers would be ambiguous and the self-referential construction would fail"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes ensures Gödel numbering never runs out: each position in a formula requires a new prime, so encoding arbitrarily long formulas requires infinitely many primes. Euclid's theorem (c. 300 BCE) thus provides the basic number-theoretic infrastructure for Gödel's encoding (1931)"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "thematic",
+      "description": "Both are impossibility results that resolved long-standing programs: Wantzel (1837) showed compass-straightedge cannot trisect all angles, ending 2000 years of geometric attempts; Gödel (1931) showed no formal system can prove all arithmetic truths, ending Hilbert's program. Both shift the question from 'how?' to 'why not?'"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "thematic",
+      "description": "The irrationality of $\\sqrt{2}$ and Gödel's incompleteness are both proved by contradiction and both reveal fundamental limitations: $\\sqrt{2}$ cannot be expressed as $p/q$ (the rational framework is too narrow), and arithmetic truths cannot all be proved in a formal system (the formal framework is too narrow). Both show that natural-seeming 'complete' descriptions are inherently incomplete"
     }
   ],
   "relatedProofs": [
@@ -214,7 +234,11 @@
     "mathematical-induction",
     "parallel-postulate-independence",
     "fermats-last-theorem",
-    "russell-1-plus-1"
+    "russell-1-plus-1",
+    "fundamental-arithmetic",
+    "infinitude-primes",
+    "angle-trisection",
+    "sqrt2-irrational"
   ],
   "references": [
     {
@@ -230,6 +254,20 @@
       "year": "2013",
       "venue": "Cambridge University Press, 2nd edition",
       "note": "Modern pedagogical treatment of both incompleteness theorems with detailed proofs"
+    },
+    {
+      "authors": "Nagel, Ernest; Newman, James R.",
+      "title": "Gödel's Proof",
+      "year": "1958",
+      "venue": "New York University Press (revised edition 2001, ed. Douglas Hofstadter)",
+      "note": "Classic popularization explaining the incompleteness theorems for a general audience — traces the self-referential construction and its implications with minimal technical prerequisites"
+    },
+    {
+      "authors": "Smullyan, Raymond M.",
+      "title": "Gödel's Incompleteness Theorems",
+      "year": "1992",
+      "venue": "Oxford Logic Guides 19, Oxford University Press",
+      "note": "Rigorous modern treatment emphasizing the role of the diagonal lemma and Löb's theorem — the approach most closely matching this formalization's use of fixed-point sentences and derivability conditions"
     }
   ]
 }
