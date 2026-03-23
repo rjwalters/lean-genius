@@ -38,7 +38,8 @@
   },
   "tags": [],
   "relatedProofs": [
-    "wolstenholme-theorem"
+    "wolstenholme-theorem",
+    "wolstenholme-theorem-oq-02"
   ],
   "references": {
     "papers": [],
@@ -51,13 +52,35 @@
     {
       "path": "Proofs/WolstenholmeTheorem.lean",
       "filename": "WolstenholmeTheorem.lean",
-      "lineCount": 215,
-      "theoremCount": 16,
-      "axiomCount": 3,
+      "lineCount": 221,
+      "theoremCount": 17,
+      "axiomCount": 2,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheorem.lean"
+    },
+    {
+      "path": "Proofs/WolstenholmeTheoremOQ02.lean",
+      "filename": "WolstenholmeTheoremOQ02.lean",
+      "lineCount": 145,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/WolstenholmeTheoremOQ02OQ02.lean",
+      "filename": "WolstenholmeTheoremOQ02OQ02.lean",
+      "lineCount": 216,
+      "theoremCount": 14,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheoremOQ02OQ02.lean"
     }
   ]
 }
