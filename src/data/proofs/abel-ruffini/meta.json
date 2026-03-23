@@ -318,6 +318,16 @@
       "targetId": "cayley-hamilton-minpoly",
       "relationship": "related",
       "description": "The minimal polynomial, central to the `galois_bridge` theorem ($\\alpha$ solvable by radicals $\\Rightarrow$ $\\text{Gal}(\\text{minpoly}_F(\\alpha))$ solvable), is closely related to the Cayley-Hamilton framework. The minimal polynomial of $\\alpha$ over $F$ is the unique monic irreducible polynomial vanishing at $\\alpha$, and its Galois group captures the symmetries of $\\alpha$'s conjugates — the key object whose solvability determines radical expressibility"
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem ($(p-1)! \\equiv -1 \\pmod{p}$) establishes that $(\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ is a group whose structure is fully determined by $p$. Both results analyze finite group structure: Abel-Ruffini uses the non-solvability of $S_5$ (a permutation group), while Wilson's theorem characterizes the product structure of cyclic groups — the very groups whose abelianness makes each radical step in the Galois bridge work"
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Fermat's two-squares theorem ($p = a^2 + b^2$ iff $p \\equiv 1 \\pmod{4}$) uses the Gaussian integers $\\mathbb{Z}[i]$, a prototype for the algebraic number rings central to Galois theory. The splitting behavior of primes in $\\mathbb{Z}[i]$ foreshadows the Langlands program, which generalizes both quadratic reciprocity and the abelian case of Galois's solvability criterion that underpins Abel-Ruffini"
     }
   ],
   "relatedProofs": [
@@ -354,7 +364,9 @@
     "gelfond-schneider",
     "nth-root-irrational",
     "factor-remainder-theorem",
-    "cayley-hamilton-minpoly"
+    "cayley-hamilton-minpoly",
+    "wilsons-theorem",
+    "fermat-two-squares"
   ],
   "references": [
     {
@@ -440,6 +452,13 @@
       "year": "2011",
       "venue": "European Mathematical Society",
       "note": "Definitive modern edition of Galois's complete mathematical writings with detailed commentary — includes the famous letter to Chevalier, the two Académie memoirs, and previously unpublished fragments"
+    },
+    {
+      "authors": "Hermite, Charles",
+      "title": "Sur la résolution de l'équation du cinquième degré",
+      "year": "1858",
+      "venue": "Comptes rendus de l'Académie des Sciences, vol. 46, pp. 508–515",
+      "note": "Showed the general quintic CAN be solved using elliptic modular functions, bypassing the radical barrier by expanding the class of allowed operations — directly relevant to the open question about formalizing the 'elliptic solution of the quintic' in Lean"
     }
   ],
   "leanFile": {
