@@ -84,7 +84,7 @@
       "Theorem equivariant_bu_landscape: summary theorem combining Z/2 Borsuk-Ulam and equivariance"
     ],
     "dateAdded": "2026-02-24",
-    "axiomCount": 4,
+    "axiomCount": 1,
     "crossReferences": [
       {
         "proofId": "borsuk-ulam",
@@ -114,7 +114,7 @@
       "borsuk-ulam-oq-03"
     ],
     "lineCount": 389,
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "1 axiom encoding the core ℤ/2 equivariant Borsuk-Ulam vanishing result (z2_equivariant_borsuk_ulam). No structure-encoded assumptions."
   },
   "overview": {
     "historicalContext": "Karol Borsuk proved his famous theorem in 1933: every continuous function from the n-sphere to n-dimensional Euclidean space sends some antipodal pair to the same point. The antipodal map x ↦ -x generates a free action of ℤ/2 on the sphere.\n\nIn the equivariant reformulation, saying f(x) = f(-x) for some x is equivalent to saying the 'difference function' g(x) = f(x) - f(-x) vanishes — and g is **odd**, meaning g(-x) = -g(x). An odd continuous function is exactly a **ℤ/2-equivariant** map when ℝⁿ carries the negation action.\n\nThis perspective opened the door to sweeping generalizations: replace ℤ/2 with other groups G, replace the sphere with other G-spaces, and ask when equivariant maps must vanish.\n\n**1954 — Yang's theorem**: For any prime p, consider ℤ/p acting on S^(2n-1) ⊂ ℂⁿ by rotating each coordinate by ω = e^(2πi/p). Any equivariant continuous map f: S^(2n-1) → S^(2n-3) (same group action, lower-dimensional sphere) must vanish. This is the Yang-Borsuk theorem.\n\n**1983 — Dold's theorem**: Using cohomological index theory (generalizing the ℤ/2 index of Fadell-Husseini), Dold gave a universal obstruction: if G acts freely on a highly connected space X, and Y has too low cohomological complexity, then no G-equivariant map X → Y exists.\n\n**Today**: For non-prime group orders, non-free actions, and general compact Lie groups, equivariant Borsuk-Ulam theorems become increasingly subtle. The optimal dimensional bounds are open for non-free actions.",
@@ -139,56 +139,64 @@
       "title": "Problem Statement and Historical Context",
       "startLine": 1,
       "endLine": 54,
-      "summary": "Overview of equivariant Borsuk-Ulam theory: ℤ/2 (classical), Yang-Borsuk (prime groups), Dold's theorem, and open problems for general Lie groups. Key references: Borsuk 1933, Yang 1954, Dold 1983."
+      "summary": "Overview of equivariant Borsuk-Ulam theory: ℤ/2 (classical), Yang-Borsuk (prime groups), Dold's theorem, and open problems for general Lie groups. Key references: Borsuk 1933, Yang 1954, Dold 1983.",
+      "mathContext": "The equivariant reformulation: $f(-x) = -f(x)$ is $\\mathbb{Z}/2$-equivariance. Yang-Borsuk: $\\mathbb{Z}/p$ equivariant $f: S^{2n-1} \\to \\mathbb{R}^{2n}$ must vanish. Dold: cohomological index obstruction for free $G$-space maps."
     },
     {
       "id": "general-framework",
       "title": "Part 1: G-Equivariant Maps — General Framework",
       "startLine": 55,
       "endLine": 92,
-      "summary": "Abstract definition of G-equivariant maps via SMul G X. Proved: equivariant_comp (composition), equivariant_id (identity), equivariant_const (constant at fixed point), equivariant_maps_orbits (maps orbits to orbits)."
+      "summary": "Abstract definition of G-equivariant maps via SMul G X. Proved: equivariant_comp (composition), equivariant_id (identity), equivariant_const (constant at fixed point), equivariant_maps_orbits (maps orbits to orbits).",
+      "mathContext": "$f: X \\to Y$ is $G$-equivariant iff $\\forall g \\in G, x \\in X: f(g \\cdot x) = g \\cdot f(x)$. Composition preserves equivariance: $(h \\circ f)(g \\cdot x) = g \\cdot (h \\circ f)(x)$. Orbits map to orbits: $f(G \\cdot x) \\subseteq G \\cdot f(x)$."
     },
     {
       "id": "z2-case",
       "title": "Part 2: ℤ/2 Equivariance = Odd Functions (Classical Case)",
       "startLine": 93,
       "endLine": 149,
-      "summary": "Explicit ℤ/2 SMul instance on Euclidean space. Theorem odd_iff_z2_equivariant: f(-x)=-f(x) iff ℤ/2-equivariant. Theorem antipode_on_sphere. Axiom z2_equivariant_borsuk_ulam (core vanishing result). Theorem classical_borsuk_ulam_from_equivariant: derives ∃x: f(x)=f(-x)."
+      "summary": "Explicit ℤ/2 SMul instance on Euclidean space. Theorem odd_iff_z2_equivariant: f(-x)=-f(x) iff ℤ/2-equivariant. Theorem antipode_on_sphere. Axiom z2_equivariant_borsuk_ulam (core vanishing result). Theorem classical_borsuk_ulam_from_equivariant: derives ∃x: f(x)=f(-x).",
+      "mathContext": "$\\mathbb{Z}/2$ acts on $\\mathbb{R}^n$ by negation: $1 \\cdot x = -x$. $f(-x) = -f(x)$ $\\iff$ $f$ is $\\mathbb{Z}/2$-equivariant. Classical BU: $\\forall f: S^n \\to \\mathbb{R}^n$ continuous, $\\exists x: f(x) = f(-x)$ follows by setting $g(x) = f(x) - f(-x)$ (odd, hence equivariant, hence vanishes)."
     },
     {
       "id": "zp-case",
       "title": "Part 3: ℤ/p Equivariant Case (Yang-Borsuk Theorem)",
       "startLine": 150,
       "endLine": 289,
-      "summary": "zp_rotation: explicit Z/p rotation on ℝ² by 2π/p. PROVED zp_rotation_isometry (isometry via cos²+sin²=1) and zp_rotation_free_statement (no fixed points for prime p, using cos(2π/p)≠1). AXIOM yang_borsuk_theorem: equivariant maps on S^(2n-1) must vanish."
+      "summary": "zp_rotation: explicit Z/p rotation on ℝ² by 2π/p. PROVED zp_rotation_isometry (isometry via cos²+sin²=1) and zp_rotation_free_statement (no fixed points for prime p, using cos(2π/p)≠1). AXIOM yang_borsuk_theorem: equivariant maps on S^(2n-1) must vanish.",
+      "mathContext": "$\\mathbb{Z}/p$ acts on $\\mathbb{R}^2$ by rotation $R_{2\\pi/p} = \\begin{pmatrix} \\cos(2\\pi/p) & -\\sin(2\\pi/p) \\\\ \\sin(2\\pi/p) & \\cos(2\\pi/p) \\end{pmatrix}$. Isometry: $\\cos^2(2\\pi/p) + \\sin^2(2\\pi/p) = 1$. Free on $S^1$: $\\cos(2\\pi k/p) = 1 \\Rightarrow k \\equiv 0 \\pmod{p}$ for prime $p$."
     },
     {
       "id": "dold-theorem",
       "title": "Part 4: Dold's Theorem (Cohomological Index Obstruction)",
       "startLine": 290,
       "endLine": 323,
-      "summary": "Definition IsFreeAction: free group action (no fixed points). AXIOM dold_theorem: general cohomological obstruction for free G-space maps — no equivariant map from highly connected free G-space to low-dimensional G-space."
+      "summary": "Definition IsFreeAction: free group action (no fixed points). AXIOM dold_theorem: general cohomological obstruction for free G-space maps — no equivariant map from highly connected free G-space to low-dimensional G-space.",
+      "mathContext": "Dold's theorem (1983): if $G$ acts freely on an $(n-1)$-connected space $X$ and $\\dim Y < n$, then no $G$-equivariant continuous map $X \\to Y$ exists. The cohomological index $\\text{ind}_G(X)$ controls the minimal target dimension."
     },
     {
       "id": "open-cases",
       "title": "Part 5: What Remains Open",
       "startLine": 324,
       "endLine": 355,
-      "summary": "AXIOM equivariant_borsuk_ulam_free_G: general finite free G-action case. PROVED equivariant_dimension_bound_trivial: trivial upper bound via identity. Documents three open problems: non-free actions, optimal bounds, compact Lie groups."
+      "summary": "AXIOM equivariant_borsuk_ulam_free_G: general finite free G-action case. PROVED equivariant_dimension_bound_trivial: trivial upper bound via identity. Documents three open problems: non-free actions, optimal bounds, compact Lie groups.",
+      "mathContext": "Open: for non-free $G$-actions, the equivariant BU dimension depends on the fixed-point set structure. For $\\mathbb{Z}/4$ on $S^2$ (non-free), Smith theory bounds apply. For compact Lie groups, representation-theoretic obstructions replace cohomological ones."
     },
     {
       "id": "summary",
       "title": "Part 6: Summary of Known Equivariant Borsuk-Ulam Results",
       "startLine": 356,
       "endLine": 370,
-      "summary": "equivariant_bu_landscape: unified theorem combining ℤ/2 Borsuk-Ulam (every f: Sⁿ → ℝⁿ has antipodal pair) with equivariance infrastructure (identity is always equivariant)."
+      "summary": "equivariant_bu_landscape: unified theorem combining ℤ/2 Borsuk-Ulam (every f: Sⁿ → ℝⁿ has antipodal pair) with equivariance infrastructure (identity is always equivariant).",
+      "mathContext": "Combined result: $\\forall f: S^n \\to \\mathbb{R}^n$ continuous, $\\exists x: f(x) = f(-x)$ (classical BU from equivariant form) $\\wedge$ identity is always $G$-equivariant (trivial upper bound on equivariant dimension)."
     },
     {
       "id": "part7-extras",
       "title": "Part 7: Additional Equivariance Properties",
       "startLine": 371,
-      "endLine": 435,
-      "summary": "Seven structural lemmas: antipode_involutive (double negation), antipode_fixed_point_free (no fixed points on sphere via 2‖x‖=0 contradiction), zp_rotation_maps_sphere (isometries preserve S¹), z2_smul_zero/one (explicit Z/2 action values), z2_action_involutive (k•(k•x)=x), equivariant_add_z2 (sum of Z/2-equivariant maps is equivariant)."
+      "endLine": 389,
+      "summary": "Seven structural lemmas: antipode_involutive (double negation), antipode_fixed_point_free (no fixed points on sphere via 2‖x‖=0 contradiction), zp_rotation_maps_sphere (isometries preserve S¹), z2_smul_zero/one (explicit Z/2 action values), z2_action_involutive (k•(k•x)=x), equivariant_add_z2 (sum of Z/2-equivariant maps is equivariant).",
+      "mathContext": "Structural properties: antipode is involutive ($(-1)^2 = 1$ in $\\mathbb{Z}/2$), fixed-point-free on $S^n$ (since $x = -x \\Rightarrow 2\\|x\\| = 0$ contradicts $\\|x\\| = 1$), and $\\mathbb{Z}/p$ rotation preserves $S^1$. Sum of $\\mathbb{Z}/2$-equivariant maps is equivariant."
     }
   ],
   "conclusion": {
