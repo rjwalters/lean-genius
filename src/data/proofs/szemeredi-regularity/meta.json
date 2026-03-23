@@ -9,7 +9,6 @@
     "date": "1975",
     "status": "verified",
     "proofRepoPath": "Proofs/SzemerediRegularity.lean",
-    "leanFile": "proofs/Proofs/SzemerediRegularity.lean",
     "tags": [
       "szemeredi",
       "combinatorics",
@@ -55,33 +54,6 @@
       "Pseudo-randomness and epsilon-regular pairs",
       "Cauchy-Schwarz inequality (for density convexity)",
       "Szemerédi core definitions (edgeDensity, IsEpsilonRegular, etc.)"
-    ],
-    "references": [
-      {
-        "key": "Sz75",
-        "citation": "Szemerédi, E., On sets of integers containing no k elements in arithmetic progression, Acta Arith. 27 (1975), 199-245.",
-        "type": "paper"
-      },
-      {
-        "key": "KS96",
-        "citation": "Komlós, J. and Simonovits, M., Szemerédi's regularity lemma and its applications in graph theory, Combinatorics, Paul Erdős is Eighty, Vol. 2 (1996), 295-352.",
-        "type": "paper"
-      },
-      {
-        "key": "Go97",
-        "citation": "Gowers, W.T., Lower bounds of tower type for Szemerédi's uniformity lemma, GAFA 7 (1997), 322-337.",
-        "type": "paper"
-      },
-      {
-        "key": "FK99",
-        "citation": "Frieze, A. and Kannan, R., Quick approximation to matrices and applications, Combinatorica 19 (1999), 175-220.",
-        "type": "paper"
-      },
-      {
-        "key": "ADLRY94",
-        "citation": "Alon, N., Duke, R.A., Lefmann, H., Rödl, V., and Yuster, R., The algorithmic aspects of the regularity lemma, JCSS 52 (1996), 480-491.",
-        "type": "paper"
-      }
     ],
     "relatedProofs": [
       "szemeredi-core",
@@ -203,11 +175,41 @@
       "Mathlib",
       "Proofs.SzemerediCore"
     ],
-    "opens": ["Classical", "Szemeredi.Core"],
+    "opens": [
+      "Classical",
+      "Szemeredi.Core"
+    ],
     "namespace": "Szemeredi.Regularity",
     "lineCount": 501,
     "axiomCount": 0,
     "theoremCount": 17,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "key": "Sz75",
+      "citation": "Szemerédi, E., On sets of integers containing no k elements in arithmetic progression, Acta Arith. 27 (1975), 199-245.",
+      "type": "paper"
+    },
+    {
+      "key": "KS96",
+      "citation": "Komlós, J. and Simonovits, M., Szemerédi's regularity lemma and its applications in graph theory, Combinatorics, Paul Erdős is Eighty, Vol. 2 (1996), 295-352.",
+      "type": "paper"
+    },
+    {
+      "key": "Go97",
+      "citation": "Gowers, W.T., Lower bounds of tower type for Szemerédi's uniformity lemma, GAFA 7 (1997), 322-337.",
+      "type": "paper"
+    },
+    {
+      "key": "FK99",
+      "citation": "Frieze, A. and Kannan, R., Quick approximation to matrices and applications, Combinatorica 19 (1999), 175-220.",
+      "type": "paper"
+    },
+    {
+      "key": "ADLRY94",
+      "citation": "Alon, N., Duke, R.A., Lefmann, H., Rödl, V., and Yuster, R., The algorithmic aspects of the regularity lemma, JCSS 52 (1996), 480-491.",
+      "type": "paper"
+    }
+  ]
 }

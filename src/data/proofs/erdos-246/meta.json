@@ -65,34 +65,7 @@
       "greedyRepresentation definition and greedy_eventually_works axiom"
     ],
     "axiomCount": 19,
-    "lineCount": 266,
-    "references": [
-      {
-        "key": "Bi59",
-        "citation": "Birch, B.J., Note on a problem of Erdős, Proceedings of the Cambridge Philosophical Society 55 (1959), 370–373.",
-        "type": "paper"
-      },
-      {
-        "key": "Ca60",
-        "citation": "Cassels, J.W.S., On the representation of integers as the sums of distinct summands taken from a fixed set, Acta Scientiarum Mathematicarum (Szeged) 21 (1960), 111–124.",
-        "type": "paper"
-      },
-      {
-        "key": "He00",
-        "citation": "Hegyvári, N., On representation problems in the additive number theory, Periodica Mathematica Hungarica 43(1–2) (2000), 145–155.",
-        "type": "paper"
-      },
-      {
-        "key": "FC17",
-        "citation": "Fang, J.-H. and Chen, Y.-G., On a problem of Erdős on integers of the form 2^k + p and related problems, Journal of Number Theory 185 (2017), 255–267.",
-        "type": "paper"
-      },
-      {
-        "key": "Yu24",
-        "citation": "Yu, G., Representation of sufficiently large integers as sums of terms of a complete sequence with large summands, to appear (2024).",
-        "type": "paper"
-      }
-    ]
+    "lineCount": 266
   },
   "overview": {
     "historicalContext": "**Erdős Problem #246** asks about complete sequences — sets where every sufficiently large integer can be represented as a sum of distinct elements.\n\n**Historical Development:**\n- **Birch (1959):** Original proof that {a^k b^l : gcd(a,b)=1} is complete\n- **Cassels (1960):** General result implying completeness for logarithmically dense sets\n- **Davenport:** Observed that bounded l suffices\n- **Hegyvári (2000):** First explicit bound on l (quadruple exponential)\n- **Fang-Chen (2017):** Improved to triply exponential\n- **Yu (2024):** Can use only large summands (> n/(log n)^{1+o(1)})\n\n**Key Insight:** Two coprime bases generate enough distinct numbers that their logarithmic density suffices for completeness.",
@@ -240,6 +213,33 @@
       "targetId": "binomial-theorem",
       "relationship": "related",
       "description": "The binomial theorem counts subset sums: a set of n elements generates at most 2^n distinct subset sums. For powerSet(a,b), the ~(log N)² elements up to N generate 2^{(log N)²} ≫ N subset sums, providing the combinatorial basis for completeness"
+    }
+  ],
+  "references": [
+    {
+      "key": "Bi59",
+      "citation": "Birch, B.J., Note on a problem of Erdős, Proceedings of the Cambridge Philosophical Society 55 (1959), 370–373.",
+      "type": "paper"
+    },
+    {
+      "key": "Ca60",
+      "citation": "Cassels, J.W.S., On the representation of integers as the sums of distinct summands taken from a fixed set, Acta Scientiarum Mathematicarum (Szeged) 21 (1960), 111–124.",
+      "type": "paper"
+    },
+    {
+      "key": "He00",
+      "citation": "Hegyvári, N., On representation problems in the additive number theory, Periodica Mathematica Hungarica 43(1–2) (2000), 145–155.",
+      "type": "paper"
+    },
+    {
+      "key": "FC17",
+      "citation": "Fang, J.-H. and Chen, Y.-G., On a problem of Erdős on integers of the form 2^k + p and related problems, Journal of Number Theory 185 (2017), 255–267.",
+      "type": "paper"
+    },
+    {
+      "key": "Yu24",
+      "citation": "Yu, G., Representation of sufficiently large integers as sums of terms of a complete sequence with large summands, to appear (2024).",
+      "type": "paper"
     }
   ]
 }

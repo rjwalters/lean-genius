@@ -9,7 +9,6 @@
     "erdosUrl": "https://erdosproblems.com/313",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos313Problem.lean",
-    "leanFile": "Proofs/Erdos313Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -56,14 +55,6 @@
       "uniqueness: at most one prime set per m",
       "at_least_eight: lower bound on known solutions",
       "egyptian_fraction_form: connection to Egyptian fractions of 1"
-    ],
-    "references": [
-      "Erdős, Graham (1980): 'Old and New Problems and Results in Combinatorial Number Theory', Monographies de l'Enseignement Mathématique 28, p.30",
-      "Butske, Jaje, Mayernik (2000): 'On the equation ∑_{p|N} 1/p + 1/N = 1, pseudoperfect numbers, and perfectly weighted graphs', Mathematics of Computation 69(229), 407–420",
-      "OEIS A054377: Primary pseudoperfect numbers (Sloane)",
-      "Fibonacci (1202): 'Liber Abaci', greedy algorithm for Egyptian fractions",
-      "Graham (1964): 'On finite sums of unit fractions', Proceedings of the London Mathematical Society (3) 14, 193–207",
-      "https://erdosproblems.com/313"
     ],
     "crossReferences": [
       {
@@ -168,5 +159,13 @@
     "axiomCount": 11,
     "theoremCount": 0,
     "definitionCount": 2
-  }
+  },
+  "references": [
+    "Erdős, Graham (1980): 'Old and New Problems and Results in Combinatorial Number Theory', Monographies de l'Enseignement Mathématique 28, p.30",
+    "Butske, Jaje, Mayernik (2000): 'On the equation ∑_{p|N} 1/p + 1/N = 1, pseudoperfect numbers, and perfectly weighted graphs', Mathematics of Computation 69(229), 407–420",
+    "OEIS A054377: Primary pseudoperfect numbers (Sloane)",
+    "Fibonacci (1202): 'Liber Abaci', greedy algorithm for Egyptian fractions",
+    "Graham (1964): 'On finite sums of unit fractions', Proceedings of the London Mathematical Society (3) 14, 193–207",
+    "https://erdosproblems.com/313"
+  ]
 }

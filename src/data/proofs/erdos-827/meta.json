@@ -51,23 +51,6 @@
       "erdosClaimedBound: Erdős's original (incorrect) bound",
       "nk_three, nk_monotone, nk_ge_k: basic properties"
     ],
-    "references": [
-      {
-        "key": "Er75",
-        "citation": "Erdős, P., Problems and results in combinatorial geometry (1975).",
-        "type": "paper"
-      },
-      {
-        "key": "Er78",
-        "citation": "Erdős, P., Set-theoretic, measure-theoretic, combinatorial, and number-theoretic problems (1978).",
-        "type": "paper"
-      },
-      {
-        "key": "MRP",
-        "citation": "Martinez, R., Roldán-Pensado, E., Corrected polynomial bounds for distinct circumradii configurations.",
-        "type": "paper"
-      }
-    ],
     "crossReferences": [
       {
         "proofId": "erdos-97",
@@ -164,5 +147,22 @@
     "axiomCount": 7,
     "theoremCount": 0,
     "definitionCount": 8
-  }
+  },
+  "references": [
+    {
+      "key": "Er75",
+      "citation": "Erdős, P., Problems and results in combinatorial geometry (1975).",
+      "type": "paper"
+    },
+    {
+      "key": "Er78",
+      "citation": "Erdős, P., Set-theoretic, measure-theoretic, combinatorial, and number-theoretic problems (1978).",
+      "type": "paper"
+    },
+    {
+      "key": "MRP",
+      "citation": "Martinez, R., Roldán-Pensado, E., Corrected polynomial bounds for distinct circumradii configurations.",
+      "type": "paper"
+    }
+  ]
 }

@@ -53,23 +53,6 @@
       "ErdosChallenge: C_6 or K_4 in balanced 6-colorings",
       "erdos_811: main theorem combining Clemen-Wagner and Axenovich-Clemen"
     ],
-    "references": [
-      {
-        "key": "ErPyTu91",
-        "citation": "Erdős, P., Pyber, L., Tuza, Z., Rainbow subgraphs in edge-colorings of complete graphs (1991).",
-        "type": "paper"
-      },
-      {
-        "key": "ClWa23",
-        "citation": "Clemen, F., Wagner, A.Z., K_4 is not rainbow-forcing (2023).",
-        "type": "paper"
-      },
-      {
-        "key": "AxCl24",
-        "citation": "Axenovich, M., Clemen, F., Infinitely many complete graphs are not rainbow-forcing (2024).",
-        "type": "paper"
-      }
-    ],
     "crossReferences": [
       {
         "proofId": "erdos-809",
@@ -202,5 +185,22 @@
     "axiomCount": 9,
     "theoremCount": 1,
     "definitionCount": 8
-  }
+  },
+  "references": [
+    {
+      "key": "ErPyTu91",
+      "citation": "Erdős, P., Pyber, L., Tuza, Z., Rainbow subgraphs in edge-colorings of complete graphs (1991).",
+      "type": "paper"
+    },
+    {
+      "key": "ClWa23",
+      "citation": "Clemen, F., Wagner, A.Z., K_4 is not rainbow-forcing (2023).",
+      "type": "paper"
+    },
+    {
+      "key": "AxCl24",
+      "citation": "Axenovich, M., Clemen, F., Infinitely many complete graphs are not rainbow-forcing (2024).",
+      "type": "paper"
+    }
+  ]
 }

@@ -39,13 +39,6 @@
         "module": "Mathlib.Data.Fin.Basic"
       }
     ],
-    "references": [
-      "Erdős (1974, 1987, 1990): Original problem statements and generalization to finite collections",
-      "Erdős, Hajnal, Shelah (1974): graphs with χ = ℵ₁ contain all sufficiently large odd cycles",
-      "De Bruijn, Erdős (1951): compactness theorem — G is k-colorable iff every finite subgraph is",
-      "Komjáth, Shelah (2003): related results on uncountable chromatic number",
-      "https://erdosproblems.com/62"
-    ],
     "originalContributions": [
       "Custom InfGraph structure for infinite simple graphs (not SimpleGraph)",
       "Chromatic hierarchy: HasChromaticNumber k, HasChromaticAleph0, HasChromaticAleph1",
@@ -55,7 +48,6 @@
       "Proofs of finite_implies_countable and embed_colorable",
       "chi_gap_problem capturing the exact frontier χ = 3 → χ = 4"
     ],
-    "leanFile": "Proofs/Erdos62Problem.lean",
     "axiomCount": 3,
     "lineCount": 207,
     "prerequisites": [
@@ -192,7 +184,12 @@
       "year": "1977",
       "venue": "In: Graph Theory and Related Topics, Academic Press, pp. 132–149",
       "note": "Includes the formulation of problems about common subgraphs of dense graphs"
-    }
+    },
+    "Erdős (1974, 1987, 1990): Original problem statements and generalization to finite collections",
+    "Erdős, Hajnal, Shelah (1974): graphs with χ = ℵ₁ contain all sufficiently large odd cycles",
+    "De Bruijn, Erdős (1951): compactness theorem — G is k-colorable iff every finite subgraph is",
+    "Komjáth, Shelah (2003): related results on uncountable chromatic number",
+    "https://erdosproblems.com/62"
   ],
   "relatedProofs": [
     "erdos-22",

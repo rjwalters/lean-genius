@@ -61,29 +61,6 @@
       "pomerance_1981: A(x) ≤ x·exp(-(log x)^{1/3}) (Pomerance 1981)",
       "pomerance_2015: A(x) ≤ x·exp(-(1/2+o(1))√(log x · log log x)) (Pomerance 2015)"
     ],
-    "references": [
-      {
-        "authors": "Erdős, Paul",
-        "title": "On amicable numbers",
-        "year": "1955",
-        "venue": "Publicationes Mathematicae Debrecen, 4, pp. 108-111",
-        "note": "First non-trivial bound: amicable pairs have density zero (A(x) = o(x))"
-      },
-      {
-        "authors": "Pomerance, Carl",
-        "title": "On the distribution of amicable numbers",
-        "year": "1981",
-        "venue": "Journal für die reine und angewandte Mathematik, 293-294, pp. 217-222",
-        "note": "Improved bound to A(x) ≤ x·exp(-(log x)^{1/3})"
-      },
-      {
-        "authors": "Pomerance, Carl",
-        "title": "On the distribution of amicable numbers, II",
-        "year": "2015",
-        "venue": "Journal für die reine und angewandte Mathematik, 325, pp. 183-188",
-        "note": "Current best bound: A(x) ≤ x·exp(-(1/2+o(1))√(log x · log log x))"
-      }
-    ],
     "crossReferences": [
       {
         "targetId": "erdos-1052",
@@ -121,12 +98,6 @@
       "**Density Bounds**: Pomerance's bounds show amicable pairs are extremely rare—A(x) grows slower than x/exp(√(log x · log log x)).",
       "**Computational Search**: Over 1.2 billion amicable pairs are known, but this doesn't prove infinitude—the pattern could theoretically stop.",
       "**Connection to Perfect Numbers**: Amicable pairs generalize perfect numbers (σ(n) = 2n). While Euclid-Euler characterized even perfect numbers, the analogous classification for amicable pairs remains entirely open, and no structural pattern like the Mersenne prime connection has been found."
-    ],
-    "prerequisites": [
-      "Divisor functions: the sum-of-divisors function sigma(n) = sum of all divisors of n, its multiplicativity (sigma(ab) = sigma(a) sigma(b) when gcd(a,b) = 1), and the Euler product formula for computing sigma on prime factorizations",
-      "Perfect and amicable numbers: even perfect numbers characterized by the Euclid-Euler theorem via Mersenne primes, the definition of amicable pairs where sigma(a) - a = b and sigma(b) - b = a, and the historical search from Pythagoras through modern computation",
-      "Asymptotic density and counting functions: the concept of natural density of a set of integers, little-o bounds like A(x) = o(x) meaning density zero, and sub-exponential decay rates involving expressions like exp(-sqrt(log x * log log x))",
-      "Sieve methods in number theory: techniques for bounding the count of integers satisfying divisibility constraints, as used by Erdos and Pomerance to establish upper bounds on the density of amicable numbers"
     ]
   },
   "sections": [
@@ -203,5 +174,28 @@
     "axiomCount": 5,
     "theoremCount": 9,
     "definitionCount": 1
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "On amicable numbers",
+      "year": "1955",
+      "venue": "Publicationes Mathematicae Debrecen, 4, pp. 108-111",
+      "note": "First non-trivial bound: amicable pairs have density zero (A(x) = o(x))"
+    },
+    {
+      "authors": "Pomerance, Carl",
+      "title": "On the distribution of amicable numbers",
+      "year": "1981",
+      "venue": "Journal für die reine und angewandte Mathematik, 293-294, pp. 217-222",
+      "note": "Improved bound to A(x) ≤ x·exp(-(log x)^{1/3})"
+    },
+    {
+      "authors": "Pomerance, Carl",
+      "title": "On the distribution of amicable numbers, II",
+      "year": "2015",
+      "venue": "Journal für die reine und angewandte Mathematik, 325, pp. 183-188",
+      "note": "Current best bound: A(x) ≤ x·exp(-(1/2+o(1))√(log x · log log x))"
+    }
+  ]
 }

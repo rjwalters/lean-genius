@@ -9,7 +9,6 @@
     "date": "1858",
     "status": "verified",
     "proofRepoPath": "Proofs/DenumerabilityRationalsOQ03.lean",
-    "leanFile": "proofs/Proofs/DenumerabilityRationalsOQ03.lean",
     "tags": [
       "set-theory",
       "number-theory",
@@ -58,23 +57,6 @@
       "eval_injective: different paths yield different states (injectivity), via BST ordering and monotonicity",
       "toRat_pos: every tree node represents a positive rational",
       "7 concrete verification examples for first 3 tree levels"
-    ],
-    "references": [
-      {
-        "key": "St58",
-        "citation": "Stern, M.A., Ueber eine zahlentheoretische Funktion, Journal fur die reine und angewandte Mathematik 55 (1858), 193-220.",
-        "type": "paper"
-      },
-      {
-        "key": "Br61",
-        "citation": "Brocot, A., Calcul des rouages par approximation, nouvelle methode, Revue chronometrique 3 (1861), 186-194.",
-        "type": "paper"
-      },
-      {
-        "key": "GKP94",
-        "citation": "Graham, R.L., Knuth, D.E., Patashnik, O., Concrete Mathematics, 2nd edition, Addison-Wesley (1994), Section 4.5.",
-        "type": "book"
-      }
     ],
     "lineCount": 584
   },
@@ -203,6 +185,21 @@
       "year": "1994",
       "venue": "Addison-Wesley, 2nd edition",
       "note": "Section 4.5 gives a modern treatment of the Stern-Brocot tree, including the mediant operation and connection to continued fractions"
+    },
+    {
+      "key": "St58",
+      "citation": "Stern, M.A., Ueber eine zahlentheoretische Funktion, Journal fur die reine und angewandte Mathematik 55 (1858), 193-220.",
+      "type": "paper"
+    },
+    {
+      "key": "Br61",
+      "citation": "Brocot, A., Calcul des rouages par approximation, nouvelle methode, Revue chronometrique 3 (1861), 186-194.",
+      "type": "paper"
+    },
+    {
+      "key": "GKP94",
+      "citation": "Graham, R.L., Knuth, D.E., Patashnik, O., Concrete Mathematics, 2nd edition, Addison-Wesley (1994), Section 4.5.",
+      "type": "book"
     }
   ],
   "relatedProofs": [

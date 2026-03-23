@@ -14,15 +14,6 @@
       "packing",
       "open"
     ],
-    "references": [
-      "Erdős, Lovász & Vesztergombi (1997): Problems and results on the grid",
-      "Thue (1910): Über die dichteste Zusammenstellung von kongruenten Kreisen in einer Ebene",
-      "Fejes Tóth (1940): Über einen geometrischen Satz",
-      "Harborth (1974): Lösung zu Problem 664A (contact number formula)",
-      "Swanepoel (2009): Combinatorial distance geometry in normed spaces",
-      "https://erdosproblems.com/662"
-    ],
-    "leanFile": "Proofs/Erdos662Problem.lean",
     "sorries": 4,
     "sourceUrl": "https://erdosproblems.com/662",
     "erdosUrl": "https://erdosproblems.com/662",
@@ -111,5 +102,13 @@
       "Does an analogous result hold in ℝ³ for the FCC or HCP lattice?",
       "Can the Loeschian form connection to Eisenstein integers yield an algebraic proof for specific values of t?"
     ]
-  }
+  },
+  "references": [
+    "Erdős, Lovász & Vesztergombi (1997): Problems and results on the grid",
+    "Thue (1910): Über die dichteste Zusammenstellung von kongruenten Kreisen in einer Ebene",
+    "Fejes Tóth (1940): Über einen geometrischen Satz",
+    "Harborth (1974): Lösung zu Problem 664A (contact number formula)",
+    "Swanepoel (2009): Combinatorial distance geometry in normed spaces",
+    "https://erdosproblems.com/662"
+  ]
 }

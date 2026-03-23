@@ -46,35 +46,6 @@
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       }
     ],
-    "references": [
-      {
-        "cite": "Sárközy–Szemerédi 1965",
-        "title": "Über ein Problem von Erdős und Moser",
-        "journal": "Acta Arithmetica",
-        "year": 1965,
-        "relevance": "Sharp bound 2^N/N^{3/2} for subset sum concentration (Q1)"
-      },
-      {
-        "cite": "Halász 1977",
-        "title": "Estimates for the concentration function of combinatorial number theory and probability",
-        "journal": "Periodica Mathematica Hungarica",
-        "year": 1977,
-        "relevance": "Fixed-cardinality bound 2^N/N^2 (Q2) and multi-dimensional generalization"
-      },
-      {
-        "cite": "Stanley 1980",
-        "title": "Weyl groups, the hard Lefschetz theorem, and the Sperner property",
-        "journal": "Journal of the AMS",
-        "year": 1980,
-        "relevance": "Symmetric set maximizes concentration via algebraic geometry"
-      },
-      {
-        "cite": "Erdős–Graham 1980",
-        "title": "Old and New Problems and Results in Combinatorial Number Theory",
-        "year": 1980,
-        "relevance": "Original source of the problem"
-      }
-    ],
     "originalContributions": [
       "setSum, subsetsWithSum, countSubsetsWithSum definitions",
       "concentrationFunction: max concentration over all targets",
@@ -200,5 +171,34 @@
   },
   "relatedProofs": [
     ""
+  ],
+  "references": [
+    {
+      "cite": "Sárközy–Szemerédi 1965",
+      "title": "Über ein Problem von Erdős und Moser",
+      "journal": "Acta Arithmetica",
+      "year": 1965,
+      "relevance": "Sharp bound 2^N/N^{3/2} for subset sum concentration (Q1)"
+    },
+    {
+      "cite": "Halász 1977",
+      "title": "Estimates for the concentration function of combinatorial number theory and probability",
+      "journal": "Periodica Mathematica Hungarica",
+      "year": 1977,
+      "relevance": "Fixed-cardinality bound 2^N/N^2 (Q2) and multi-dimensional generalization"
+    },
+    {
+      "cite": "Stanley 1980",
+      "title": "Weyl groups, the hard Lefschetz theorem, and the Sperner property",
+      "journal": "Journal of the AMS",
+      "year": 1980,
+      "relevance": "Symmetric set maximizes concentration via algebraic geometry"
+    },
+    {
+      "cite": "Erdős–Graham 1980",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": 1980,
+      "relevance": "Original source of the problem"
+    }
   ]
 }

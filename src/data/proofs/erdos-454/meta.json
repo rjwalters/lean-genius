@@ -62,29 +62,6 @@
       "Prime Number Graph as SimpleGraph ℕ with proved symmetry and looplessness",
       "Goldbach-symmetric property connecting to Goldbach conjecture"
     ],
-    "references": [
-      {
-        "authors": "C. Pomerance",
-        "title": "The prime number graph",
-        "year": "1979",
-        "venue": "Mathematics of Computation, 33(145), 399-408",
-        "note": "Introduced the Prime Number Graph and proved limsup(f(n) - 2p_n) ≥ 2"
-      },
-      {
-        "authors": "P. Erdős, R. L. Graham",
-        "title": "Old and New Problems and Results in Combinatorial Number Theory",
-        "year": "1980",
-        "venue": "Monographies de L'Enseignement Mathématique",
-        "note": "Original problem statement"
-      },
-      {
-        "authors": "R. K. Guy",
-        "title": "Unsolved Problems in Number Theory",
-        "year": "2004",
-        "venue": "Springer, 3rd edition",
-        "note": "Discussion of prime gap problems and symmetric prime properties"
-      }
-    ],
     "mathContext": {
       "field": "Number Theory",
       "subfield": "Analytic Number Theory / Prime Gaps",
@@ -254,5 +231,28 @@
     "axiomCount": 3,
     "theoremCount": 16,
     "definitionCount": 14
-  }
+  },
+  "references": [
+    {
+      "authors": "C. Pomerance",
+      "title": "The prime number graph",
+      "year": "1979",
+      "venue": "Mathematics of Computation, 33(145), 399-408",
+      "note": "Introduced the Prime Number Graph and proved limsup(f(n) - 2p_n) ≥ 2"
+    },
+    {
+      "authors": "P. Erdős, R. L. Graham",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique",
+      "note": "Original problem statement"
+    },
+    {
+      "authors": "R. K. Guy",
+      "title": "Unsolved Problems in Number Theory",
+      "year": "2004",
+      "venue": "Springer, 3rd edition",
+      "note": "Discussion of prime gap problems and symmetric prime properties"
+    }
+  ]
 }

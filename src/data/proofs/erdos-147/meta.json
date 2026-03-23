@@ -54,28 +54,6 @@
       "probabilistic_lower_bound: ex(n; H) ≥ c·n^{2-2/r+ε}",
       "erdos_147: main theorem closing the problem at r = 4"
     ],
-    "references": [
-      {
-        "key": "ES84",
-        "citation": "Erdős, P. and Simonovits, M., Cube-supersaturated graphs and related problems, Progress in Graph Theory, Academic Press (1984), 203-218.",
-        "type": "paper"
-      },
-      {
-        "key": "Ja23",
-        "citation": "Janzer, O., Resolution of the Erdős-Simonovits conjecture on Turán numbers of bipartite graphs, preprint (2023).",
-        "type": "paper"
-      },
-      {
-        "key": "Tu41",
-        "citation": "Turán, P., On an extremal problem in graph theory, Mat. Fiz. Lapok 48 (1941), 436-452.",
-        "type": "paper"
-      },
-      {
-        "key": "KST54",
-        "citation": "Kővári, T., Sós, V.T., and Turán, P., On a problem of K. Zarankiewicz, Colloq. Math. 3 (1954), 50-57.",
-        "type": "paper"
-      }
-    ],
     "axiomCount": 3,
     "lineCount": 101
   },
@@ -165,5 +143,27 @@
     "axiomCount": 3,
     "theoremCount": 1,
     "definitionCount": 1
-  }
+  },
+  "references": [
+    {
+      "key": "ES84",
+      "citation": "Erdős, P. and Simonovits, M., Cube-supersaturated graphs and related problems, Progress in Graph Theory, Academic Press (1984), 203-218.",
+      "type": "paper"
+    },
+    {
+      "key": "Ja23",
+      "citation": "Janzer, O., Resolution of the Erdős-Simonovits conjecture on Turán numbers of bipartite graphs, preprint (2023).",
+      "type": "paper"
+    },
+    {
+      "key": "Tu41",
+      "citation": "Turán, P., On an extremal problem in graph theory, Mat. Fiz. Lapok 48 (1941), 436-452.",
+      "type": "paper"
+    },
+    {
+      "key": "KST54",
+      "citation": "Kővári, T., Sós, V.T., and Turán, P., On a problem of K. Zarankiewicz, Colloq. Math. 3 (1954), 50-57.",
+      "type": "paper"
+    }
+  ]
 }

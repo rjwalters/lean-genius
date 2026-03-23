@@ -60,33 +60,6 @@
       "independenceNumber: cardinal-valued graph invariant",
       "GeneralConjecture: $500 prize problem"
     ],
-    "references": [
-      {
-        "key": "EHM70",
-        "citation": "Erdős, Paul, Hajnal, András, and Milner, Eric C., On sets of almost disjoint subsets of a set, Acta Math. Acad. Sci. Hungar. 19 (1968/1970), 209-218.",
-        "type": "paper"
-      },
-      {
-        "key": "La90",
-        "citation": "Larson, Jean A., A short proof of a partition theorem for the ordinal ω^ω, Ann. Pure Appl. Logic 48 (1990), 253-255.",
-        "type": "paper"
-      },
-      {
-        "key": "EH77",
-        "citation": "Erdős, Paul and Hajnal, András, Unsolved problems in set theory, Proc. Sympos. Pure Math. 13 (1977), 17-48.",
-        "type": "paper"
-      },
-      {
-        "key": "To85",
-        "citation": "Todorcevic, Stevo, Partition Problems in Topology, Contemp. Math. 84, AMS (1989).",
-        "type": "book"
-      },
-      {
-        "key": "EP",
-        "citation": "Erdős Problems, Problem #601, https://erdosproblems.com/601.",
-        "type": "website"
-      }
-    ],
     "relatedProofs": [
       {
         "id": "erdos-590",
@@ -247,5 +220,32 @@
     "axiomCount": 3,
     "theoremCount": 19,
     "definitionCount": 13
-  }
+  },
+  "references": [
+    {
+      "key": "EHM70",
+      "citation": "Erdős, Paul, Hajnal, András, and Milner, Eric C., On sets of almost disjoint subsets of a set, Acta Math. Acad. Sci. Hungar. 19 (1968/1970), 209-218.",
+      "type": "paper"
+    },
+    {
+      "key": "La90",
+      "citation": "Larson, Jean A., A short proof of a partition theorem for the ordinal ω^ω, Ann. Pure Appl. Logic 48 (1990), 253-255.",
+      "type": "paper"
+    },
+    {
+      "key": "EH77",
+      "citation": "Erdős, Paul and Hajnal, András, Unsolved problems in set theory, Proc. Sympos. Pure Math. 13 (1977), 17-48.",
+      "type": "paper"
+    },
+    {
+      "key": "To85",
+      "citation": "Todorcevic, Stevo, Partition Problems in Topology, Contemp. Math. 84, AMS (1989).",
+      "type": "book"
+    },
+    {
+      "key": "EP",
+      "citation": "Erdős Problems, Problem #601, https://erdosproblems.com/601.",
+      "type": "website"
+    }
+  ]
 }

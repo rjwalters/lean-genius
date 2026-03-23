@@ -66,29 +66,7 @@
       "Real analysis (rpow, sqrt, mean inequalities)",
       "Finset combinatorics (powersetCard, sum, prod)"
     ],
-    "lineCount": 543,
-    "references": [
-      {
-        "key": "Ma29",
-        "citation": "Maclaurin, C., A Second Letter to Martin Folkes, Esq.; concerning the Roots of Equations, Phil. Trans. Roy. Soc. London 36 (1729), 59–96.",
-        "type": "paper"
-      },
-      {
-        "key": "HLP34",
-        "citation": "Hardy, G.H., Littlewood, J.E., and Pólya, G., Inequalities, Cambridge University Press (1934), §2.22.",
-        "type": "book"
-      },
-      {
-        "key": "Ne87",
-        "citation": "Newton, I., Arithmetica Universalis (1707; results from c. 1687). Contains Newton's inequalities for symmetric functions.",
-        "type": "book"
-      },
-      {
-        "key": "BH20",
-        "citation": "Brändén, P. and Huh, J., Lorentzian polynomials, Annals of Mathematics 192(3) (2020), 821–891. Unified framework for log-concavity including Newton's inequalities.",
-        "type": "paper"
-      }
-    ]
+    "lineCount": 543
   },
   "crossReferences": [
     {
@@ -294,5 +272,27 @@
     "amgm-inequality-oq-03-oq-01",
     "vietas-formulas",
     "inclusion-exclusion"
+  ],
+  "references": [
+    {
+      "key": "Ma29",
+      "citation": "Maclaurin, C., A Second Letter to Martin Folkes, Esq.; concerning the Roots of Equations, Phil. Trans. Roy. Soc. London 36 (1729), 59–96.",
+      "type": "paper"
+    },
+    {
+      "key": "HLP34",
+      "citation": "Hardy, G.H., Littlewood, J.E., and Pólya, G., Inequalities, Cambridge University Press (1934), §2.22.",
+      "type": "book"
+    },
+    {
+      "key": "Ne87",
+      "citation": "Newton, I., Arithmetica Universalis (1707; results from c. 1687). Contains Newton's inequalities for symmetric functions.",
+      "type": "book"
+    },
+    {
+      "key": "BH20",
+      "citation": "Brändén, P. and Huh, J., Lorentzian polynomials, Annals of Mathematics 192(3) (2020), 821–891. Unified framework for log-concavity including Newton's inequalities.",
+      "type": "paper"
+    }
   ]
 }

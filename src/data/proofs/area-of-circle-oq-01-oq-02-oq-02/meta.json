@@ -2,7 +2,7 @@
   "id": "area-of-circle-oq-01-oq-02-oq-02",
   "title": "IBP for Fourier Coefficients of Periodic Functions",
   "slug": "area-of-circle-oq-01-oq-02-oq-02",
-  "description": "Proves the integration by parts formula for Fourier coefficients: for a C¹ periodic function f with period 2π, the Fourier coefficient of the derivative satisfies ĉₙ(f') = i·n·ĉₙ(f). This is key infrastructure for the Fourier-analytic proof of the isoperimetric inequality.",
+  "description": "Proves the integration by parts formula for Fourier coefficients: for a C\u00b9 periodic function f with period 2\u03c0, the Fourier coefficient of the derivative satisfies \u0109\u2099(f') = i\u00b7n\u00b7\u0109\u2099(f). This is key infrastructure for the Fourier-analytic proof of the isoperimetric inequality.",
   "meta": {
     "author": "Formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fourier_series#Derivative",
@@ -37,26 +37,10 @@
       }
     ],
     "originalContributions": [
-      "Chain rule lemma: HasDerivAt (ofReal ∘ f) ((ofReal ∘ deriv f) x) x for C¹ real functions",
-      "Main theorem: ĉₙ(f') = i·n·ĉₙ(f) for 2π-periodic C¹ functions via Mathlib's fourierCoeffOn_of_hasDerivAt",
-      "Periodicity kills boundary term: f(2π) - f(0) = 0 simplifies IBP to a clean algebraic identity",
+      "Chain rule lemma: HasDerivAt (ofReal \u2218 f) ((ofReal \u2218 deriv f) x) x for C\u00b9 real functions",
+      "Main theorem: \u0109\u2099(f') = i\u00b7n\u00b7\u0109\u2099(f) for 2\u03c0-periodic C\u00b9 functions via Mathlib's fourierCoeffOn_of_hasDerivAt",
+      "Periodicity kills boundary term: f(2\u03c0) - f(0) = 0 simplifies IBP to a clean algebraic identity",
       "Full field_simp/ring closure of the Fourier coefficient algebra"
-    ],
-    "references": [
-      {
-        "authors": "A. Hurwitz",
-        "title": "Sur quelques applications géométriques des séries de Fourier",
-        "year": "1902",
-        "venue": "Annales scientifiques de l'École Normale Supérieure",
-        "note": "First Fourier-analytic proof of the isoperimetric inequality, using this IBP formula as a key step"
-      },
-      {
-        "authors": "E. M. Stein, R. Shakarchi",
-        "title": "Fourier Analysis: An Introduction",
-        "year": "2003",
-        "venue": "Princeton Lectures in Analysis",
-        "note": "Modern treatment of Fourier series including the derivative formula for Fourier coefficients"
-      }
     ],
     "historicalContext": "The relationship between differentiation and Fourier coefficients is fundamental to harmonic analysis. For a smooth periodic function, differentiation in the time domain corresponds to multiplication by in in the frequency domain. This formula, a discrete analogue of the Fourier transform property, was central to Hurwitz's 1902 Fourier-analytic proof of the isoperimetric inequality.",
     "dateAdded": "2026-03-22",
@@ -64,7 +48,7 @@
     "relatedProblems": [
       {
         "id": "area-of-circle-oq-01-oq-02",
-        "relationship": "Parent entry proving A = ∫ C via FTC; this entry builds Fourier infrastructure for the isoperimetric generalization"
+        "relationship": "Parent entry proving A = \u222b C via FTC; this entry builds Fourier infrastructure for the isoperimetric generalization"
       },
       {
         "id": "area-of-circle-oq-01-oq-03",
@@ -78,16 +62,16 @@
     "lineCount": 82
   },
   "overview": {
-    "summary": "Proves the integration by parts formula for Fourier coefficients of periodic functions: ĉₙ(f') = i·n·ĉₙ(f) for 2π-periodic C¹ functions f and n ≠ 0. The proof lifts real functions to complex via ofRealCLM, applies Mathlib's fourierCoeffOn_of_hasDerivAt, and uses periodicity f(2π) = f(0) to eliminate the boundary term.",
+    "summary": "Proves the integration by parts formula for Fourier coefficients of periodic functions: \u0109\u2099(f') = i\u00b7n\u00b7\u0109\u2099(f) for 2\u03c0-periodic C\u00b9 functions f and n \u2260 0. The proof lifts real functions to complex via ofRealCLM, applies Mathlib's fourierCoeffOn_of_hasDerivAt, and uses periodicity f(2\u03c0) = f(0) to eliminate the boundary term.",
     "historicalContext": "The formula $\\hat{c}_n(f') = in \\cdot \\hat{c}_n(f)$ is a cornerstone of Fourier analysis. It states that differentiation in the time domain corresponds to multiplication by $in$ in the frequency domain. Adolf Hurwitz used this property in his celebrated 1902 proof of the isoperimetric inequality: by expressing the perimeter $L$ and area $A$ of a closed curve in terms of Fourier coefficients and applying the IBP formula, one derives $L^2 - 4\\pi A = \\sum_{n \\neq 0,1} (|a'_n|^2 - n^2|a_n|^2 + \\ldots) \\geq 0$, with equality only for circles.",
     "problemStatement": "**Open Question**: Can the isoperimetric inequality $C^2 \\geq 4\\pi A$ be proved using Fourier analysis?\n\n**This entry**: Proves the IBP formula for Fourier coefficients, which is the key analytical ingredient. For a $C^1$ function $f: \\mathbb{R} \\to \\mathbb{R}$ with period $2\\pi$ and $n \\neq 0$:\n$$\\hat{c}_n(f') = in \\cdot \\hat{c}_n(f)$$\nwhere $\\hat{c}_n(g) = \\frac{1}{2\\pi} \\int_0^{2\\pi} g(t) e^{-int} \\, dt$.",
-    "proofStrategy": "1. **Lift to complex**: Prove that for C¹ real f, HasDerivAt (ofReal ∘ f) ((ofReal ∘ deriv f) x) x via the chain rule (ofRealCLM is a ContinuousLinearMap).\n2. **Apply Mathlib IBP**: Use fourierCoeffOn_of_hasDerivAt to get the Fourier IBP formula with boundary term.\n3. **Kill boundary**: Periodicity f(2π) = f(0) makes the boundary term f(2π) - f(0) = 0.\n4. **Algebraic cleanup**: field_simp and ring close the goal after simplification.",
+    "proofStrategy": "1. **Lift to complex**: Prove that for C\u00b9 real f, HasDerivAt (ofReal \u2218 f) ((ofReal \u2218 deriv f) x) x via the chain rule (ofRealCLM is a ContinuousLinearMap).\n2. **Apply Mathlib IBP**: Use fourierCoeffOn_of_hasDerivAt to get the Fourier IBP formula with boundary term.\n3. **Kill boundary**: Periodicity f(2\u03c0) = f(0) makes the boundary term f(2\u03c0) - f(0) = 0.\n4. **Algebraic cleanup**: field_simp and ring close the goal after simplification.",
     "keyInsights": [
-      "The chain rule for ofRealCLM ∘ f uses ContinuousLinearMap.hasDerivAt composed with HasDerivAt.scomp",
+      "The chain rule for ofRealCLM \u2218 f uses ContinuousLinearMap.hasDerivAt composed with HasDerivAt.scomp",
       "Periodicity is the key simplification: without it, the IBP formula has a non-trivial boundary correction",
       "The proof leverages Mathlib's fourierCoeffOn_of_hasDerivAt which does the heavy integration-by-parts work",
-      "field_simp handles the complex algebra involving π, I, and n after boundary elimination",
-      "The n ≠ 0 hypothesis is essential: for n = 0 the Fourier coefficient is just the average value, and differentiation sends constants to zero rather than multiplying by in"
+      "field_simp handles the complex algebra involving \u03c0, I, and n after boundary elimination",
+      "The n \u2260 0 hypothesis is essential: for n = 0 the Fourier coefficient is just the average value, and differentiation sends constants to zero rather than multiplying by in"
     ],
     "keyIdea": "Differentiation in the time domain corresponds to multiplication by in in the frequency domain. For periodic functions, the IBP boundary term vanishes, giving a clean formula.",
     "prerequisites": [
@@ -101,7 +85,7 @@
     {
       "targetId": "area-of-circle-oq-01-oq-02",
       "relationship": "extends",
-      "description": "The parent entry proves A = ∫C via FTC. This entry builds Fourier infrastructure needed for the isoperimetric generalization C² ≥ 4πA."
+      "description": "The parent entry proves A = \u222bC via FTC. This entry builds Fourier infrastructure needed for the isoperimetric generalization C\u00b2 \u2265 4\u03c0A."
     },
     {
       "targetId": "area-of-circle-oq-01-oq-03",
@@ -121,7 +105,12 @@
     {
       "targetId": "fundamental-theorem-calculus",
       "relationship": "foundational",
-      "description": "Integration by parts is derived from the product rule and FTC — the IBP formula fourierCoeffOn_of_hasDerivAt used here is Mathlib's formalization of this principle for interval integrals"
+      "description": "Integration by parts is derived from the product rule and FTC \u2014 the IBP formula fourierCoeffOn_of_hasDerivAt used here is Mathlib's formalization of this principle for interval integrals"
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling entry generalizing circumference integration to n-dimensional volume from surface area \u2014 both extend the parent's radial integration technique, with this file applying it to periodic function analysis via IBP and the sibling extending to higher-dimensional geometry"
     }
   ],
   "sections": [
@@ -138,15 +127,15 @@
       "title": "Chain Rule for ofReal Composition",
       "startLine": 27,
       "endLine": 45,
-      "summary": "Proves HasDerivAt (ofReal ∘ f) ((ofReal ∘ deriv f) x) x for C¹ real f. Uses ContinuousLinearMap.hasDerivAt for ofRealCLM and HasDerivAt.scomp for the chain rule.",
-      "mathContext": "Chain rule: d/dx(ofReal ∘ f)(x) = ofReal(f'(x)) since ofRealCLM' = id and (g ∘ f)' = f' · g'."
+      "summary": "Proves HasDerivAt (ofReal \u2218 f) ((ofReal \u2218 deriv f) x) x for C\u00b9 real f. Uses ContinuousLinearMap.hasDerivAt for ofRealCLM and HasDerivAt.scomp for the chain rule.",
+      "mathContext": "Chain rule: d/dx(ofReal \u2218 f)(x) = ofReal(f'(x)) since ofRealCLM' = id and (g \u2218 f)' = f' \u00b7 g'."
     },
     {
       "id": "ibp-statement",
       "title": "IBP Theorem Statement and Hypotheses",
       "startLine": 47,
       "endLine": 58,
-      "summary": "States the main theorem: for C¹ periodic f with period 2π and n ≠ 0, fourierCoeffOn of (ofReal ∘ deriv f) equals I * n * fourierCoeffOn of (ofReal ∘ f). The hypotheses encode regularity (ContDiff ℝ 1 f), periodicity (∀ t, f(t + 2π) = f(t)), and the non-degeneracy condition n ≠ 0.",
+      "summary": "States the main theorem: for C\u00b9 periodic f with period 2\u03c0 and n \u2260 0, fourierCoeffOn of (ofReal \u2218 deriv f) equals I * n * fourierCoeffOn of (ofReal \u2218 f). The hypotheses encode regularity (ContDiff \u211d 1 f), periodicity (\u2200 t, f(t + 2\u03c0) = f(t)), and the non-degeneracy condition n \u2260 0.",
       "mathContext": "For $f \\in C^1(\\mathbb{R})$ with $f(t+2\\pi) = f(t)$ and $n \\in \\mathbb{Z} \\setminus \\{0\\}$: $\\hat{c}_n(f') = in \\cdot \\hat{c}_n(f)$."
     },
     {
@@ -154,7 +143,7 @@
       "title": "IBP Application and Periodicity Elimination",
       "startLine": 59,
       "endLine": 69,
-      "summary": "Steps 1-4 of the proof: establishes the HasDerivAt hypothesis for all x ∈ [0, 2π], proves integrability of ofReal ∘ deriv f, applies Mathlib's fourierCoeffOn_of_hasDerivAt to get the IBP formula with boundary term, and uses periodicity f(2π) = f(0) to eliminate the boundary contribution.",
+      "summary": "Steps 1-4 of the proof: establishes the HasDerivAt hypothesis for all x \u2208 [0, 2\u03c0], proves integrability of ofReal \u2218 deriv f, applies Mathlib's fourierCoeffOn_of_hasDerivAt to get the IBP formula with boundary term, and uses periodicity f(2\u03c0) = f(0) to eliminate the boundary contribution.",
       "mathContext": "IBP: $\\int_0^{2\\pi} f'(t)e^{-int}\\,dt = [f(t)e^{-int}]_0^{2\\pi} + in\\int_0^{2\\pi} f(t)e^{-int}\\,dt$. Periodicity: $f(2\\pi) = f(0)$ kills the boundary."
     },
     {
@@ -162,16 +151,16 @@
       "title": "Algebraic Simplification and Closure",
       "startLine": 70,
       "endLine": 82,
-      "summary": "Step 5: after boundary elimination via simp, establishes non-vanishing of π, I, and n as complex numbers, then uses field_simp to clear denominators and ring to close the complex arithmetic identity. Ends the IsoperimetricFourier namespace.",
+      "summary": "Step 5: after boundary elimination via simp, establishes non-vanishing of \u03c0, I, and n as complex numbers, then uses field_simp to clear denominators and ring to close the complex arithmetic identity. Ends the IsoperimetricFourier namespace.",
       "mathContext": "After eliminating boundary terms, the remaining goal is a complex algebraic identity involving $\\pi$, $i$, $n$, and integrals. The non-vanishing hypotheses $\\pi \\neq 0$, $i \\neq 0$, $n \\neq 0$ allow `field_simp` to safely clear fractions."
     }
   ],
   "conclusion": {
-    "summary": "This entry proves the IBP formula for Fourier coefficients of periodic functions with 0 sorries and 0 axioms in 82 lines. The formula ĉₙ(f') = i·n·ĉₙ(f) is the analytical backbone of Hurwitz's Fourier proof of the isoperimetric inequality.",
-    "implications": "This IBP formula enables the full Fourier-analytic approach to the isoperimetric inequality. Combined with Parseval's identity and the Wirtinger inequality (proved in the sibling entry), it provides all the ingredients for proving L² ≥ 4πA with equality characterization for circles.",
+    "summary": "This entry proves the IBP formula for Fourier coefficients of periodic functions with 0 sorries and 0 axioms in 82 lines. The formula \u0109\u2099(f') = i\u00b7n\u00b7\u0109\u2099(f) is the analytical backbone of Hurwitz's Fourier proof of the isoperimetric inequality.",
+    "implications": "This IBP formula enables the full Fourier-analytic approach to the isoperimetric inequality. Combined with Parseval's identity and the Wirtinger inequality (proved in the sibling entry), it provides all the ingredients for proving L\u00b2 \u2265 4\u03c0A with equality characterization for circles.",
     "openQuestions": [
-      "Can the full isoperimetric inequality C² ≥ 4πA now be assembled from this IBP formula + Wirtinger + Parseval?",
-      "Can this be generalized to higher-order derivatives: ĉₙ(f^(k)) = (in)^k · ĉₙ(f)?",
+      "Can the full isoperimetric inequality C\u00b2 \u2265 4\u03c0A now be assembled from this IBP formula + Wirtinger + Parseval?",
+      "Can this be generalized to higher-order derivatives: \u0109\u2099(f^(k)) = (in)^k \u00b7 \u0109\u2099(f)?",
       "Can the periodicity hypothesis be weakened to compact support using Fourier transforms instead of Fourier series?"
     ]
   },
@@ -199,5 +188,21 @@
     "axiomCount": 0,
     "theoremCount": 2,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "A. Hurwitz",
+      "title": "Sur quelques applications g\u00e9om\u00e9triques des s\u00e9ries de Fourier",
+      "year": "1902",
+      "venue": "Annales scientifiques de l'\u00c9cole Normale Sup\u00e9rieure",
+      "note": "First Fourier-analytic proof of the isoperimetric inequality, using this IBP formula as a key step"
+    },
+    {
+      "authors": "E. M. Stein, R. Shakarchi",
+      "title": "Fourier Analysis: An Introduction",
+      "year": "2003",
+      "venue": "Princeton Lectures in Analysis",
+      "note": "Modern treatment of Fourier series including the derivative formula for Fourier coefficients"
+    }
+  ]
 }

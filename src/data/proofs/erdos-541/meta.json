@@ -62,29 +62,6 @@
       "gao_hamidoune_wang: Graham's conjecture holds for all moduli n (Gao-Hamidoune-Wang 2010)",
       "erdos_ginzburg_ziv: Among 2n-1 integers, some n have sum ≡ 0 mod n (Erdős-Ginzburg-Ziv 1961)"
     ],
-    "references": [
-      {
-        "authors": "Erdős, Paul; Szemerédi, Endre",
-        "title": "On a problem of Graham",
-        "year": "1976",
-        "venue": "Publicationes Mathematicae Debrecen, 23, pp. 123-127",
-        "note": "Proved Graham's conjecture for sufficiently large primes"
-      },
-      {
-        "authors": "Gao, Weidong; Hamidoune, Yahya Ould; Wang, Guoqing",
-        "title": "On zero-sum subsequences of restricted size, IV",
-        "year": "2010",
-        "venue": "Acta Arithmetica, 143, pp. 301-316",
-        "note": "Proved Graham's conjecture for all moduli, completing the result"
-      },
-      {
-        "authors": "Erdős, Paul; Ginzburg, Abraham; Ziv, Abraham",
-        "title": "Theorem in the additive number theory",
-        "year": "1961",
-        "venue": "Bulletin of the Research Council of Israel, 10F, pp. 41-43",
-        "note": "Foundational result: 2n-1 integers contain n summing to 0 mod n"
-      }
-    ],
     "crossReferences": [
       {
         "targetId": "erdos-1",
@@ -184,5 +161,28 @@
     "axiomCount": 3,
     "theoremCount": 2,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Szemerédi, Endre",
+      "title": "On a problem of Graham",
+      "year": "1976",
+      "venue": "Publicationes Mathematicae Debrecen, 23, pp. 123-127",
+      "note": "Proved Graham's conjecture for sufficiently large primes"
+    },
+    {
+      "authors": "Gao, Weidong; Hamidoune, Yahya Ould; Wang, Guoqing",
+      "title": "On zero-sum subsequences of restricted size, IV",
+      "year": "2010",
+      "venue": "Acta Arithmetica, 143, pp. 301-316",
+      "note": "Proved Graham's conjecture for all moduli, completing the result"
+    },
+    {
+      "authors": "Erdős, Paul; Ginzburg, Abraham; Ziv, Abraham",
+      "title": "Theorem in the additive number theory",
+      "year": "1961",
+      "venue": "Bulletin of the Research Council of Israel, 10F, pp. 41-43",
+      "note": "Foundational result: 2n-1 integers contain n summing to 0 mod n"
+    }
+  ]
 }

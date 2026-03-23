@@ -13,14 +13,6 @@
       "graph-theory",
       "open"
     ],
-    "references": [
-      "Erdős, Faudree, Rousseau & Schelp (1993): Ramsey size linear graphs",
-      "Chvátal & Harary (1972): Generalized Ramsey theory for graphs III",
-      "Chvátal, Rödl, Szemerédi & Trotter (1983): The Ramsey number of a graph with bounded maximum degree",
-      "Beck (1983): On size Ramsey number of paths, trees, and circuits I",
-      "https://erdosproblems.com/568"
-    ],
-    "leanFile": "Proofs/Erdos568Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/568",
     "erdosUrl": "https://erdosproblems.com/568",
@@ -110,5 +102,12 @@
       "Can the conjecture be proved for bounded-degree graphs, where both classical conditions are known to hold?",
       "Is there a probabilistic proof strategy, perhaps using the Lovász Local Lemma to construct efficient Ramsey host graphs from classical Ramsey bounds?"
     ]
-  }
+  },
+  "references": [
+    "Erdős, Faudree, Rousseau & Schelp (1993): Ramsey size linear graphs",
+    "Chvátal & Harary (1972): Generalized Ramsey theory for graphs III",
+    "Chvátal, Rödl, Szemerédi & Trotter (1983): The Ramsey number of a graph with bounded maximum degree",
+    "Beck (1983): On size Ramsey number of paths, trees, and circuits I",
+    "https://erdosproblems.com/568"
+  ]
 }

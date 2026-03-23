@@ -14,15 +14,6 @@
       "cycles",
       "open"
     ],
-    "references": [
-      "Erdős & Simonovits (1982): original problem [ErSi82]",
-      "Bondy & Simonovits (1974): ex(n; C_{2k}) = O(n^{1+1/k})",
-      "Kővári–Sós–Turán (1954): Zarankiewicz problem upper bound",
-      "Lazebnik, Ustimenko & Woldar (1995): algebraic constructions for k = 2, 3, 5",
-      "Wenger (1991): explicit C_{2k}-free constructions via algebraic geometry",
-      "https://erdosproblems.com/574"
-    ],
-    "leanFile": "Proofs/Erdos574Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/574",
     "erdosUrl": "https://erdosproblems.com/574",
@@ -110,5 +101,13 @@
       "Does the phenomenon extend to non-consecutive pairs: is $\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\}) \\sim \\text{ex}(n; \\{C_{2j-1}, C_{2k}\\})$ for $j \\ne k$?",
       "What is the second-order term in $\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\})$, and does it differ from that of $\\text{ex}(n; C_{2k})$?"
     ]
-  }
+  },
+  "references": [
+    "Erdős & Simonovits (1982): original problem [ErSi82]",
+    "Bondy & Simonovits (1974): ex(n; C_{2k}) = O(n^{1+1/k})",
+    "Kővári–Sós–Turán (1954): Zarankiewicz problem upper bound",
+    "Lazebnik, Ustimenko & Woldar (1995): algebraic constructions for k = 2, 3, 5",
+    "Wenger (1991): explicit C_{2k}-free constructions via algebraic geometry",
+    "https://erdosproblems.com/574"
+  ]
 }

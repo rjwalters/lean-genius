@@ -48,29 +48,6 @@
       "erdos_267_open by classical EM (decidability of open conjecture)",
       "pow_two_series_first_terms computation via native_decide"
     ],
-    "references": [
-      {
-        "authors": "Good, I. J.",
-        "title": "A reciprocal series of Fibonacci numbers",
-        "year": "1974",
-        "venue": "Fibonacci Quarterly 12(4), p. 346",
-        "note": "Proved Σ 1/F_{2^n} is irrational"
-      },
-      {
-        "authors": "Bicknell, Marjorie; Hoggatt, Verner E.",
-        "title": "A reciprocal series of Fibonacci numbers with subscripts 2^n k",
-        "year": "1976",
-        "venue": "Fibonacci Quarterly 14(5), pp. 408-410",
-        "note": "Extended Good's result to related subsequences"
-      },
-      {
-        "authors": "André-Jeannin, Richard",
-        "title": "Irrationalité de la somme des inverses de certaines suites récurrentes",
-        "year": "1989",
-        "venue": "Comptes Rendus de l'Académie des Sciences, Série I 308(17), pp. 539-541",
-        "note": "Proved Σ 1/F_n is irrational using transcendence methods"
-      }
-    ],
     "axiomCount": 3,
     "prerequisites": [
       "Fibonacci sequence and recurrence relations",
@@ -212,5 +189,28 @@
     "axiomCount": 3,
     "theoremCount": 12,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    {
+      "authors": "Good, I. J.",
+      "title": "A reciprocal series of Fibonacci numbers",
+      "year": "1974",
+      "venue": "Fibonacci Quarterly 12(4), p. 346",
+      "note": "Proved Σ 1/F_{2^n} is irrational"
+    },
+    {
+      "authors": "Bicknell, Marjorie; Hoggatt, Verner E.",
+      "title": "A reciprocal series of Fibonacci numbers with subscripts 2^n k",
+      "year": "1976",
+      "venue": "Fibonacci Quarterly 14(5), pp. 408-410",
+      "note": "Extended Good's result to related subsequences"
+    },
+    {
+      "authors": "André-Jeannin, Richard",
+      "title": "Irrationalité de la somme des inverses de certaines suites récurrentes",
+      "year": "1989",
+      "venue": "Comptes Rendus de l'Académie des Sciences, Série I 308(17), pp. 539-541",
+      "note": "Proved Σ 1/F_n is irrational using transcendence methods"
+    }
+  ]
 }

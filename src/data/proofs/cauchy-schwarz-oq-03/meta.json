@@ -50,29 +50,6 @@
       "Cauchy-Schwarz-Hölder bridge: CS = Hölder at p=q=2 (HolderConjugate 2 2 via norm_num)",
       "Complete proof chain from Young's inequality to abstract inner product Cauchy-Schwarz"
     ],
-    "references": [
-      {
-        "authors": "O. Hölder",
-        "title": "Ueber einen Mittelwerthssatz",
-        "year": "1889",
-        "venue": "Goettinger Nachrichten",
-        "note": "Original proof of the general inequality for conjugate exponents"
-      },
-      {
-        "authors": "J.-L. Lagrange",
-        "title": "Solutions analytiques de quelques problèmes sur les pyramides triangulaires",
-        "year": "1773",
-        "venue": "Nouveaux Mémoires de l'Académie de Berlin",
-        "note": "Lagrange's identity: the elegant algebraic proof of Cauchy-Schwarz"
-      },
-      {
-        "authors": "G. H. Hardy, J. E. Littlewood, G. Pólya",
-        "title": "Inequalities",
-        "year": "1934",
-        "venue": "Cambridge University Press",
-        "note": "Comprehensive treatment of Young, Hölder, and Minkowski inequalities"
-      }
-    ],
     "dateAdded": "2026-02-26",
     "axiomCount": 0,
     "lineCount": 242
@@ -165,5 +142,28 @@
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "O. Hölder",
+      "title": "Ueber einen Mittelwerthssatz",
+      "year": "1889",
+      "venue": "Goettinger Nachrichten",
+      "note": "Original proof of the general inequality for conjugate exponents"
+    },
+    {
+      "authors": "J.-L. Lagrange",
+      "title": "Solutions analytiques de quelques problèmes sur les pyramides triangulaires",
+      "year": "1773",
+      "venue": "Nouveaux Mémoires de l'Académie de Berlin",
+      "note": "Lagrange's identity: the elegant algebraic proof of Cauchy-Schwarz"
+    },
+    {
+      "authors": "G. H. Hardy, J. E. Littlewood, G. Pólya",
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press",
+      "note": "Comprehensive treatment of Young, Hölder, and Minkowski inequalities"
+    }
+  ]
 }

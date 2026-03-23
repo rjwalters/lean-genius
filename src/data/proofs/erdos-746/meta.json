@@ -47,33 +47,6 @@
         "module": "Mathlib.Order.Filter.Basic"
       }
     ],
-    "references": [
-      {
-        "key": "ErRe1966",
-        "citation": "Erdős, P. and Rényi, A. (1966). On the existence of a factor of degree one of a connected random graph. Acta Math. Acad. Sci. Hungar. 17, 359–368.",
-        "type": "paper"
-      },
-      {
-        "key": "Po1976",
-        "citation": "Pósa, L. (1976). Hamiltonian circuits in random graphs. Discrete Mathematics 14, 359–364.",
-        "type": "paper"
-      },
-      {
-        "key": "Ko1977",
-        "citation": "Korshunov, A.D. (1977). Solution of a problem of Erdős and Rényi on Hamilton cycles in nonoriented graphs. Soviet Math. Dokl. 17, 760–764.",
-        "type": "paper"
-      },
-      {
-        "key": "KoSz1983",
-        "citation": "Komlós, J. and Szemerédi, E. (1983). Limit distribution for the existence of Hamiltonian cycles in a random graph. Discrete Mathematics 43, 55–63.",
-        "type": "paper"
-      },
-      {
-        "key": "ErdosProblems",
-        "citation": "Erdős Problems. Problem #746.",
-        "type": "website"
-      }
-    ],
     "originalContributions": [
       "GraphOnN: simple graphs on n vertices",
       "numEdges: edge count",
@@ -234,5 +207,32 @@
     "axiomCount": 9,
     "theoremCount": 7,
     "definitionCount": 17
-  }
+  },
+  "references": [
+    {
+      "key": "ErRe1966",
+      "citation": "Erdős, P. and Rényi, A. (1966). On the existence of a factor of degree one of a connected random graph. Acta Math. Acad. Sci. Hungar. 17, 359–368.",
+      "type": "paper"
+    },
+    {
+      "key": "Po1976",
+      "citation": "Pósa, L. (1976). Hamiltonian circuits in random graphs. Discrete Mathematics 14, 359–364.",
+      "type": "paper"
+    },
+    {
+      "key": "Ko1977",
+      "citation": "Korshunov, A.D. (1977). Solution of a problem of Erdős and Rényi on Hamilton cycles in nonoriented graphs. Soviet Math. Dokl. 17, 760–764.",
+      "type": "paper"
+    },
+    {
+      "key": "KoSz1983",
+      "citation": "Komlós, J. and Szemerédi, E. (1983). Limit distribution for the existence of Hamiltonian cycles in a random graph. Discrete Mathematics 43, 55–63.",
+      "type": "paper"
+    },
+    {
+      "key": "ErdosProblems",
+      "citation": "Erdős Problems. Problem #746.",
+      "type": "website"
+    }
+  ]
 }

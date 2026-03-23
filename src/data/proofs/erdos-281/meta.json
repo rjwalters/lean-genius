@@ -41,29 +41,6 @@
       "Axiomatization of Davenport–Erdős and Rogers theorems for the hard direction",
       "Biconditional equivalence combining both directions"
     ],
-    "references": [
-      {
-        "authors": "Paul Erdős",
-        "title": "Problems and results on combinatorial number theory III",
-        "year": "1980",
-        "venue": "Number Theory Day",
-        "note": "Original problem statement"
-      },
-      {
-        "authors": "Harold Davenport, Paul Erdős",
-        "title": "On sequences of positive integers",
-        "year": "1951",
-        "venue": "Acta Arithmetica",
-        "note": "Lower density = upper density for sets defined by divisibility conditions"
-      },
-      {
-        "authors": "Heini Halberstam, Klaus Roth",
-        "title": "Sequences",
-        "year": "1966",
-        "venue": "Oxford University Press",
-        "note": "Contains Rogers' theorem used in the uniformization step"
-      }
-    ],
     "axiomCount": 3,
     "lineCount": 262
   },
@@ -154,5 +131,28 @@
     "axiomCount": 3,
     "theoremCount": 13,
     "definitionCount": 11
-  }
+  },
+  "references": [
+    {
+      "authors": "Paul Erdős",
+      "title": "Problems and results on combinatorial number theory III",
+      "year": "1980",
+      "venue": "Number Theory Day",
+      "note": "Original problem statement"
+    },
+    {
+      "authors": "Harold Davenport, Paul Erdős",
+      "title": "On sequences of positive integers",
+      "year": "1951",
+      "venue": "Acta Arithmetica",
+      "note": "Lower density = upper density for sets defined by divisibility conditions"
+    },
+    {
+      "authors": "Heini Halberstam, Klaus Roth",
+      "title": "Sequences",
+      "year": "1966",
+      "venue": "Oxford University Press",
+      "note": "Contains Rogers' theorem used in the uniformization step"
+    }
+  ]
 }

@@ -8,7 +8,6 @@
     "sourceUrl": "https://erdosproblems.com/117",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos117Problem.lean",
-    "leanFile": "Proofs/Erdos117Problem.lean",
     "tags": [
       "erdos",
       "group-theory",
@@ -38,23 +37,6 @@
         "theorem": "sInf",
         "description": "Infimum of a set of natural numbers",
         "module": "Mathlib.Data.Nat.Basic"
-      }
-    ],
-    "references": [
-      {
-        "key": "Py87",
-        "citation": "Pyber, L. (1987). The number of pairwise non-commuting elements and the index of the centre in a finite group. Journal of the London Mathematical Society, 35(2), 287-295.",
-        "type": "paper"
-      },
-      {
-        "key": "Er97",
-        "citation": "Erdős, P. (1997). Some of my favourite unsolved problems. In A Tribute to Paul Erdős (eds. Baker, Bollobás, Hajnal), Cambridge University Press, 467-478.",
-        "type": "paper"
-      },
-      {
-        "key": "Is76",
-        "citation": "Isaacs, I.M. (1976). Character Theory of Finite Groups. Academic Press (Dover reprint 1994).",
-        "type": "book"
       }
     ],
     "originalContributions": [
@@ -153,5 +135,22 @@
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    {
+      "key": "Py87",
+      "citation": "Pyber, L. (1987). The number of pairwise non-commuting elements and the index of the centre in a finite group. Journal of the London Mathematical Society, 35(2), 287-295.",
+      "type": "paper"
+    },
+    {
+      "key": "Er97",
+      "citation": "Erdős, P. (1997). Some of my favourite unsolved problems. In A Tribute to Paul Erdős (eds. Baker, Bollobás, Hajnal), Cambridge University Press, 467-478.",
+      "type": "paper"
+    },
+    {
+      "key": "Is76",
+      "citation": "Isaacs, I.M. (1976). Character Theory of Finite Groups. Academic Press (Dover reprint 1994).",
+      "type": "book"
+    }
+  ]
 }

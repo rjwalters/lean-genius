@@ -42,28 +42,6 @@
       ],
       "significance": "Generalizes the Hadwiger-Nelson problem from one forbidden distance to r distances. The gap between the known exponential upper bound L(r) ≤ C^r and the conjectured polynomial bound L(r) ≤ r^{O(1)} is vast. Even the r = 1 case (5 ≤ L(1) ≤ 7) remains unsolved after 75 years, making the general question one of the hardest open problems in chromatic geometry."
     },
-    "references": [
-      {
-        "key": "E81",
-        "citation": "Erdős, Paul, Some applications of graph theory and combinatorial methods to number theory and geometry, Algebraic Methods in Graph Theory (Szeged, 1978), Colloq. Math. Soc. J. Bolyai 25, North-Holland, 1981, 137-148.",
-        "type": "paper"
-      },
-      {
-        "key": "dG18",
-        "citation": "de Grey, Aubrey D.N.J., The chromatic number of the plane is at least 5, Geombinatorics 28 (2018), 18-31.",
-        "type": "paper"
-      },
-      {
-        "key": "FW81",
-        "citation": "Frankl, P. and Wilson, R.M., Intersection theorems with geometric consequences, Combinatorica 1 (1981), 357-368.",
-        "type": "paper"
-      },
-      {
-        "key": "erdos706",
-        "citation": "Erdős Problems, Problem #706, https://erdosproblems.com/706",
-        "type": "website"
-      }
-    ],
     "relatedProofs": [
       {
         "id": "erdos-508",
@@ -184,5 +162,27 @@
     "axiomCount": 5,
     "theoremCount": 0,
     "definitionCount": 2
-  }
+  },
+  "references": [
+    {
+      "key": "E81",
+      "citation": "Erdős, Paul, Some applications of graph theory and combinatorial methods to number theory and geometry, Algebraic Methods in Graph Theory (Szeged, 1978), Colloq. Math. Soc. J. Bolyai 25, North-Holland, 1981, 137-148.",
+      "type": "paper"
+    },
+    {
+      "key": "dG18",
+      "citation": "de Grey, Aubrey D.N.J., The chromatic number of the plane is at least 5, Geombinatorics 28 (2018), 18-31.",
+      "type": "paper"
+    },
+    {
+      "key": "FW81",
+      "citation": "Frankl, P. and Wilson, R.M., Intersection theorems with geometric consequences, Combinatorica 1 (1981), 357-368.",
+      "type": "paper"
+    },
+    {
+      "key": "erdos706",
+      "citation": "Erdős Problems, Problem #706, https://erdosproblems.com/706",
+      "type": "website"
+    }
+  ]
 }

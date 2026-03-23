@@ -24,23 +24,6 @@
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-24",
     "mathlib_version": "4.15.0",
-    "references": [
-      {
-        "key": "Er64f",
-        "citation": "Erdős, P. (1964). On extremal problems of graphs and generalized graphs. Israel J. Math. 2, 183-190.",
-        "type": "paper"
-      },
-      {
-        "key": "Er74c",
-        "citation": "Erdős, P. (1974). Problems and results on finite and infinite combinatorial analysis. In Proc. Budapest Coll. 1974, p. 80.",
-        "type": "paper"
-      },
-      {
-        "key": "KruskalKatona",
-        "citation": "Kruskal, J.B. (1963) and Katona, G.O.H. (1968). The Kruskal-Katona theorem on shadows of set systems.",
-        "type": "paper"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose",
@@ -232,6 +215,21 @@
       "year": "1984",
       "venue": "Combinatorica, 4(2–3), 149–159",
       "note": "Shows hypergraph Turán densities are not 'jumping' — related to the structure of extremal constants c_r"
+    },
+    {
+      "key": "Er64f",
+      "citation": "Erdős, P. (1964). On extremal problems of graphs and generalized graphs. Israel J. Math. 2, 183-190.",
+      "type": "paper"
+    },
+    {
+      "key": "Er74c",
+      "citation": "Erdős, P. (1974). Problems and results on finite and infinite combinatorial analysis. In Proc. Budapest Coll. 1974, p. 80.",
+      "type": "paper"
+    },
+    {
+      "key": "KruskalKatona",
+      "citation": "Kruskal, J.B. (1963) and Katona, G.O.H. (1968). The Kruskal-Katona theorem on shadows of set systems.",
+      "type": "paper"
     }
   ],
   "leanFile": {

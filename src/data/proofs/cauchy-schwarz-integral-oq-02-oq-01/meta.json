@@ -67,26 +67,6 @@
       "Equality conditions in classical inequalities",
       "Proportionality and linear dependence of vectors"
     ],
-    "references": [
-      {
-        "title": "Geometrie der Zahlen",
-        "authors": "H. Minkowski",
-        "year": 1896,
-        "note": "Origin of the Minkowski inequality for Lp spaces"
-      },
-      {
-        "title": "Cours d'Analyse",
-        "authors": "A.-L. Cauchy",
-        "year": 1821,
-        "note": "First proof of the discrete Cauchy inequality"
-      },
-      {
-        "title": "Allgemeine Theorie der Operatoren eines unitären Raumes",
-        "authors": "J. von Neumann",
-        "year": 1929,
-        "note": "Axiomatic treatment of Hilbert spaces placing inner product inequalities at the foundation of functional analysis"
-      }
-    ],
     "relatedProofs": [
       "cauchy-schwarz-integral-oq-02",
       "cauchy-schwarz-integral",
@@ -198,5 +178,25 @@
     "axiomCount": 0,
     "theoremCount": 3,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "title": "Geometrie der Zahlen",
+      "authors": "H. Minkowski",
+      "year": 1896,
+      "note": "Origin of the Minkowski inequality for Lp spaces"
+    },
+    {
+      "title": "Cours d'Analyse",
+      "authors": "A.-L. Cauchy",
+      "year": 1821,
+      "note": "First proof of the discrete Cauchy inequality"
+    },
+    {
+      "title": "Allgemeine Theorie der Operatoren eines unitären Raumes",
+      "authors": "J. von Neumann",
+      "year": 1929,
+      "note": "Axiomatic treatment of Hilbert spaces placing inner product inequalities at the foundation of functional analysis"
+    }
+  ]
 }

@@ -19,18 +19,6 @@
       "B2-sets",
       "difference-sets"
     ],
-    "references": [
-      "Erdős–Turán (1941): On a problem of Sidon in additive number theory",
-      "Singer (1938): A theorem in finite projective geometry and some applications to number theory",
-      "Lindström (1969): An inequality for B_2 sequences",
-      "Erdős (1992, 1994): Problem statements on slow growth of F(N)",
-      "Cilleruelo (2010): Sidon sets in N^d",
-      "Ruzsa (1993): Solving a linear equation in a set of integers",
-      "O'Bryant (2004): A complete annotated bibliography of work related to Sidon sets",
-      "OEIS A003022: maximal Sidon sets, A143824: increase points",
-      "https://erdosproblems.com/155"
-    ],
-    "leanFile": "Proofs/Erdos155Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/155",
     "erdosUrl": "https://erdosproblems.com/155",
@@ -135,5 +123,16 @@
     "axiomCount": 11,
     "theoremCount": 0,
     "definitionCount": 1
-  }
+  },
+  "references": [
+    "Erdős–Turán (1941): On a problem of Sidon in additive number theory",
+    "Singer (1938): A theorem in finite projective geometry and some applications to number theory",
+    "Lindström (1969): An inequality for B_2 sequences",
+    "Erdős (1992, 1994): Problem statements on slow growth of F(N)",
+    "Cilleruelo (2010): Sidon sets in N^d",
+    "Ruzsa (1993): Solving a linear equation in a set of integers",
+    "O'Bryant (2004): A complete annotated bibliography of work related to Sidon sets",
+    "OEIS A003022: maximal Sidon sets, A143824: increase points",
+    "https://erdosproblems.com/155"
+  ]
 }

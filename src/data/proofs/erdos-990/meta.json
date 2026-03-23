@@ -29,44 +29,6 @@
       "Complex analysis fundamentals",
       "Discrepancy theory"
     ],
-    "references": [
-      {
-        "title": "On the distribution of roots of polynomials",
-        "authors": "P. Erdős, P. Turán",
-        "year": 1950,
-        "venue": "Annals of Mathematics",
-        "url": "https://doi.org/10.2307/1969500",
-        "description": "The original paper proving the classical Erdős-Turán inequality bounding star discrepancy by O(√(d log M))"
-      },
-      {
-        "title": "Sequences of roots of a class of algebraic equations",
-        "authors": "T. Ganelius",
-        "year": 1954,
-        "venue": "Annals of Mathematics",
-        "description": "Improved the explicit constant in the Erdős-Turán inequality to C ≤ 8"
-      },
-      {
-        "title": "The Erdős-Turán inequality for rotations",
-        "authors": "K. Soundararajan",
-        "year": 2019,
-        "venue": "Inventiones Mathematicae",
-        "description": "Determined the sharp (optimal) constant in the Erdős-Turán inequality via connection to Hilbert transforms"
-      },
-      {
-        "title": "On the discrepancy of the roots of a polynomial",
-        "authors": "T. Erdélyi",
-        "year": 2002,
-        "venue": "Bulletin of the London Mathematical Society",
-        "description": "One-sided improvement of the classical Erdős-Turán bound"
-      },
-      {
-        "title": "The roots of random polynomials cluster near the unit circle",
-        "authors": "I. Ibragimov, O. Zeitouni",
-        "year": 1997,
-        "venue": "Annals of Probability",
-        "description": "Root distribution of random polynomials, providing context for the lower bound construction"
-      }
-    ],
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       {
@@ -149,12 +111,6 @@
       "**Sharp constant via Hilbert transforms**: After 70 years, the optimal constant was found by connecting the problem to the operator norm of a modified Hilbert transform — an unexpected link between polynomial root theory and harmonic analysis.",
       "**One-sided improvement (Erdélyi)**: Roots cannot *exceed* the expected count by more than C√(d log M) in any sector, even though the two-sided bound is the standard formulation.",
       "**Lower bound tightness**: There exist polynomials with discrepancy ≥ (1/10)√d, showing the √d dependence is necessary."
-    ],
-    "prerequisites": [
-      "Complex analysis: polynomial roots, argument of complex numbers, and the fundamental theorem of algebra",
-      "Discrepancy theory: star discrepancy, equidistribution on the circle, and Weyl's criterion",
-      "Harmonic analysis: exponential sums, Hilbert transforms, and trigonometric polynomial bounds",
-      "Lacunary polynomials: sparsity of coefficient representations and its effect on root distribution"
     ]
   },
   "sections": [
@@ -285,5 +241,43 @@
     "axiomCount": 22,
     "theoremCount": 3,
     "definitionCount": 11
-  }
+  },
+  "references": [
+    {
+      "title": "On the distribution of roots of polynomials",
+      "authors": "P. Erdős, P. Turán",
+      "year": 1950,
+      "venue": "Annals of Mathematics",
+      "url": "https://doi.org/10.2307/1969500",
+      "description": "The original paper proving the classical Erdős-Turán inequality bounding star discrepancy by O(√(d log M))"
+    },
+    {
+      "title": "Sequences of roots of a class of algebraic equations",
+      "authors": "T. Ganelius",
+      "year": 1954,
+      "venue": "Annals of Mathematics",
+      "description": "Improved the explicit constant in the Erdős-Turán inequality to C ≤ 8"
+    },
+    {
+      "title": "The Erdős-Turán inequality for rotations",
+      "authors": "K. Soundararajan",
+      "year": 2019,
+      "venue": "Inventiones Mathematicae",
+      "description": "Determined the sharp (optimal) constant in the Erdős-Turán inequality via connection to Hilbert transforms"
+    },
+    {
+      "title": "On the discrepancy of the roots of a polynomial",
+      "authors": "T. Erdélyi",
+      "year": 2002,
+      "venue": "Bulletin of the London Mathematical Society",
+      "description": "One-sided improvement of the classical Erdős-Turán bound"
+    },
+    {
+      "title": "The roots of random polynomials cluster near the unit circle",
+      "authors": "I. Ibragimov, O. Zeitouni",
+      "year": 1997,
+      "venue": "Annals of Probability",
+      "description": "Root distribution of random polynomials, providing context for the lower bound construction"
+    }
+  ]
 }

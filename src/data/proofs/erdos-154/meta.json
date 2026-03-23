@@ -49,28 +49,6 @@
       "even_odd_balance: m=2 case — even/odd balance of A+A",
       "erdos_154: main theorem closing the problem"
     ],
-    "references": [
-      {
-        "key": "Li98",
-        "citation": "Lindström, B., Well distribution of Sidon sets in residue classes, J. Number Theory 69 (1998), 197-200.",
-        "type": "paper"
-      },
-      {
-        "key": "Ko99",
-        "citation": "Kolountzakis, M., The distribution of additive complements of squares, J. Number Theory 76 (1999), 209-214.",
-        "type": "paper"
-      },
-      {
-        "key": "Si38",
-        "citation": "Singer, J., A theorem in finite projective geometry and some applications to number theory, Trans. AMS 43 (1938), 377-385.",
-        "type": "paper"
-      },
-      {
-        "key": "OR04",
-        "citation": "O'Bryant, K., A complete annotated bibliography of work related to Sidon sets, Electron. J. Combin. DS11 (2004).",
-        "type": "survey"
-      }
-    ],
     "axiomCount": 3,
     "lineCount": 106
   },
@@ -166,5 +144,27 @@
     "axiomCount": 3,
     "theoremCount": 1,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    {
+      "key": "Li98",
+      "citation": "Lindström, B., Well distribution of Sidon sets in residue classes, J. Number Theory 69 (1998), 197-200.",
+      "type": "paper"
+    },
+    {
+      "key": "Ko99",
+      "citation": "Kolountzakis, M., The distribution of additive complements of squares, J. Number Theory 76 (1999), 209-214.",
+      "type": "paper"
+    },
+    {
+      "key": "Si38",
+      "citation": "Singer, J., A theorem in finite projective geometry and some applications to number theory, Trans. AMS 43 (1938), 377-385.",
+      "type": "paper"
+    },
+    {
+      "key": "OR04",
+      "citation": "O'Bryant, K., A complete annotated bibliography of work related to Sidon sets, Electron. J. Combin. DS11 (2004).",
+      "type": "survey"
+    }
+  ]
 }

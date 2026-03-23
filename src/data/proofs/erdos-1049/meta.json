@@ -50,18 +50,6 @@
         "module": "Mathlib.Data.Nat.Prime.Basic"
       }
     ],
-    "references": [
-      {
-        "key": "Er48",
-        "citation": "Erdős, P. (1948). On arithmetical properties of Lambert series. J. Indian Math. Soc., 12:63-66.",
-        "type": "paper"
-      },
-      {
-        "key": "Er88c",
-        "citation": "Erdős, P. (1988). Problems and results on number theoretic properties of consecutive integers and related questions, p. 102.",
-        "type": "paper"
-      }
-    ],
     "originalContributions": [
       "Formal definition of divisor function τ(n) via Nat.divisors.card",
       "Definition of the series S(t) = ∑ 1/(t^n - 1) and D(t) = ∑ τ(n)/t^n",
@@ -288,6 +276,16 @@
       "year": "2006",
       "venue": "Acta Arithmetica, 123(4):309–326",
       "note": "Investigates p-adic properties of Lambert series including $S(t)$, providing quantitative irrationality measures and partial progress toward Chowla's conjecture for certain non-integer rationals."
+    },
+    {
+      "key": "Er48",
+      "citation": "Erdős, P. (1948). On arithmetical properties of Lambert series. J. Indian Math. Soc., 12:63-66.",
+      "type": "paper"
+    },
+    {
+      "key": "Er88c",
+      "citation": "Erdős, P. (1988). Problems and results on number theoretic properties of consecutive integers and related questions, p. 102.",
+      "type": "paper"
     }
   ],
   "leanFile": {

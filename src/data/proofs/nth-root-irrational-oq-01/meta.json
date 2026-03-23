@@ -9,7 +9,6 @@
     "date": "2026",
     "status": "verified",
     "proofRepoPath": "Proofs/NthRootIrrationalOQ01.lean",
-    "leanFile": "proofs/Proofs/NthRootIrrationalOQ01.lean",
     "tags": [
       "algebra",
       "irrationality",
@@ -50,28 +49,6 @@
       "irrational_nthRoot_of_prime: nth root of prime is irrational",
       "Concrete applications: sqrt(2), cbrt(2), cbrt(3), 5th-root(7)"
     ],
-    "references": [
-      {
-        "key": "La02",
-        "citation": "Lang, S. (2002). Algebra, 3rd ed. Springer GTM 211, Chapter IV (Polynomials).",
-        "type": "book"
-      },
-      {
-        "key": "DF04",
-        "citation": "Dummit, D. S. and Foote, R. M. (2004). Abstract Algebra, 3rd ed. Wiley, Section 9.4 (Irreducibility Criteria).",
-        "type": "book"
-      },
-      {
-        "key": "Ei50",
-        "citation": "Eisenstein, G. (1850). Uber die Irreductibilitat und einige andere Eigenschaften der Gleichung, von welcher die Theilung der ganzen Lemniscate abhangt. Journal fur die reine und angewandte Mathematik, 39, 160-179.",
-        "type": "paper"
-      },
-      {
-        "key": "Ga01",
-        "citation": "Gauss, C. F. (1801). Disquisitiones Arithmeticae. Article 42 (Gauss's lemma on primitive polynomials).",
-        "type": "book"
-      }
-    ],
     "relatedProofs": [
       "inverse-galois",
       "angle-trisection-oq-02",
@@ -104,12 +81,6 @@
       "This module serves as shared infrastructure for Galois theory proofs, where knowing that nth roots of primes generate non-trivial field extensions is a foundational fact",
       "The proof that $p^2 \\nmid p$ for prime $p$ -- the most delicate Eisenstein condition -- is dispatched by nlinarith using the inequality $(p-1)^2 \\geq 0$, which expands to $p^2 - 2p + 1 \\geq 0$ and thus $p^2 \\geq 2p - 1 > p$ for $p \\geq 2$",
       "Real power arithmetic ($\\texttt{rpow\\_natCast}$, $\\texttt{rpow\\_mul}$) handles the root verification $(p^{1/n})^n = p$, bridging between the algebraic world ($\\mathbb{Q}[X]$) and the analytic world ($\\mathbb{R}$) where irrationality is defined"
-    ],
-    "prerequisites": [
-      "Polynomial algebra: irreducibility, roots, factorization, degree computations in Q[X]",
-      "Eisenstein's criterion: divisibility conditions on polynomial coefficients implying irreducibility",
-      "Gauss lemma: irreducibility over Z implies irreducibility over Q for primitive polynomials",
-      "Minimal polynomials: uniqueness, irreducibility, and connection to algebraic degree"
     ]
   },
   "sections": [
@@ -205,11 +176,35 @@
     "imports": [
       "Mathlib"
     ],
-    "opens": ["Polynomial"],
+    "opens": [
+      "Polynomial"
+    ],
     "namespace": "NthRootIrrationalOQ01",
     "lineCount": 209,
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "key": "La02",
+      "citation": "Lang, S. (2002). Algebra, 3rd ed. Springer GTM 211, Chapter IV (Polynomials).",
+      "type": "book"
+    },
+    {
+      "key": "DF04",
+      "citation": "Dummit, D. S. and Foote, R. M. (2004). Abstract Algebra, 3rd ed. Wiley, Section 9.4 (Irreducibility Criteria).",
+      "type": "book"
+    },
+    {
+      "key": "Ei50",
+      "citation": "Eisenstein, G. (1850). Uber die Irreductibilitat und einige andere Eigenschaften der Gleichung, von welcher die Theilung der ganzen Lemniscate abhangt. Journal fur die reine und angewandte Mathematik, 39, 160-179.",
+      "type": "paper"
+    },
+    {
+      "key": "Ga01",
+      "citation": "Gauss, C. F. (1801). Disquisitiones Arithmeticae. Article 42 (Gauss's lemma on primitive polynomials).",
+      "type": "book"
+    }
+  ]
 }

@@ -67,36 +67,6 @@
       "Independent sets in graphs",
       "Ramsey theory fundamentals"
     ],
-    "references": [
-      {
-        "authors": "Erdős, Paul; Graham, Ronald; Montgomery, Peter; Rothschild, Bruce; Spencer, Joel; Straus, Ernst",
-        "title": "Euclidean Ramsey theorems I",
-        "year": "1973",
-        "venue": "Journal of Combinatorial Theory, Series A",
-        "note": "Foundational paper establishing Euclidean Ramsey theory; proved the original lower bound k ≥ 5 for Problem #188"
-      },
-      {
-        "authors": "Erdős, Paul; Graham, Ronald",
-        "title": "Old and New Problems and Results in Combinatorial Number Theory",
-        "year": "1980",
-        "venue": "L'Enseignement Mathématique, Monograph No. 28",
-        "note": "States the upper bound k ≤ 10,000,000 via an explicit (but intricate) stripe-based construction"
-      },
-      {
-        "authors": "Tsaturian, Sergei",
-        "title": "A new bound for the Erdős-Graham problem on unit distance colorings",
-        "year": "2017",
-        "venue": "arXiv preprint",
-        "note": "Improved the lower bound from k ≥ 5 to k ≥ 6 using refined geometric arguments about unit distance configurations"
-      },
-      {
-        "authors": "de Grey, Aubrey D. N. J.",
-        "title": "The chromatic number of the plane is at least 5",
-        "year": "2018",
-        "venue": "Geombinatorics",
-        "note": "Proved χ(ℝ²) ≥ 5 for the Hadwiger-Nelson problem, closely related to the unit distance graph structure used here"
-      }
-    ],
     "lineCount": 201
   },
   "overview": {
@@ -216,5 +186,35 @@
     "",
     "",
     ""
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald; Montgomery, Peter; Rothschild, Bruce; Spencer, Joel; Straus, Ernst",
+      "title": "Euclidean Ramsey theorems I",
+      "year": "1973",
+      "venue": "Journal of Combinatorial Theory, Series A",
+      "note": "Foundational paper establishing Euclidean Ramsey theory; proved the original lower bound k ≥ 5 for Problem #188"
+    },
+    {
+      "authors": "Erdős, Paul; Graham, Ronald",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Monograph No. 28",
+      "note": "States the upper bound k ≤ 10,000,000 via an explicit (but intricate) stripe-based construction"
+    },
+    {
+      "authors": "Tsaturian, Sergei",
+      "title": "A new bound for the Erdős-Graham problem on unit distance colorings",
+      "year": "2017",
+      "venue": "arXiv preprint",
+      "note": "Improved the lower bound from k ≥ 5 to k ≥ 6 using refined geometric arguments about unit distance configurations"
+    },
+    {
+      "authors": "de Grey, Aubrey D. N. J.",
+      "title": "The chromatic number of the plane is at least 5",
+      "year": "2018",
+      "venue": "Geombinatorics",
+      "note": "Proved χ(ℝ²) ≥ 5 for the Hadwiger-Nelson problem, closely related to the unit distance graph structure used here"
+    }
   ]
 }

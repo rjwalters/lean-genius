@@ -8,7 +8,6 @@
     "sourceUrl": "https://erdosproblems.com/848",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos848Problem.lean",
-    "leanFile": "proofs/Proofs/Erdos848Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -37,18 +36,6 @@
       "mod25_achieves: axiom that 5² | ab+1 when a ≡ b ≡ 7 (mod 25)",
       "sawhney_solution: axiom encoding the exact answer N/25 for large N",
       "sawhney_structure: axiom encoding uniqueness of extremal sets (mod 25 residue classes)"
-    ],
-    "references": [
-      {
-        "key": "ES92",
-        "citation": "Erdős, P. and Sárközy, A., On sets of integers with property P, Mathematica Pannonica 3 (1992). Original formulation of the problem.",
-        "type": "paper"
-      },
-      {
-        "key": "Sa",
-        "citation": "Sawhney, M., Solution to Erdős Problem 848: the maximum is N/25 for sufficiently large N, with extremal sets {n ≡ 7 (mod 25)} and {n ≡ 18 (mod 25)}.",
-        "type": "paper"
-      }
     ],
     "prerequisites": [
       "Number theory: squarefree numbers, prime factorization, density 6/π²",
@@ -95,11 +82,6 @@
       "Sawhney proved the extremal sets are exactly the mod-25 residue classes — a rigid structural result showing the construction is unique up to the 7 ↔ 18 symmetry",
       "The 'sufficiently large N' threshold in Sawhney's result means finite exceptions may exist; determining the exact threshold remains open",
       "The choice of prime 5 is optimal: 25 = 5² is the smallest prime square for which x² ≡ -1 (mod p²) has solutions (since 5 ≡ 1 (mod 4)), giving the densest residue class achieving the property"
-    ],
-    "prerequisites": [
-      "Number theory: squarefree numbers (density $6/\\pi^2$), prime factorization, and divisibility",
-      "Modular arithmetic: quadratic residues, $x^2 \\equiv -1 \\pmod{p}$ solvable iff $p \\equiv 1 \\pmod{4}$",
-      "Extremal combinatorics: maximum set problems under arithmetic constraints"
     ]
   },
   "sections": [
@@ -174,5 +156,17 @@
     "axiomCount": 7,
     "theoremCount": 0,
     "definitionCount": 2
-  }
+  },
+  "references": [
+    {
+      "key": "ES92",
+      "citation": "Erdős, P. and Sárközy, A., On sets of integers with property P, Mathematica Pannonica 3 (1992). Original formulation of the problem.",
+      "type": "paper"
+    },
+    {
+      "key": "Sa",
+      "citation": "Sawhney, M., Solution to Erdős Problem 848: the maximum is N/25 for sufficiently large N, with extremal sets {n ≡ 7 (mod 25)} and {n ≡ 18 (mod 25)}.",
+      "type": "paper"
+    }
+  ]
 }

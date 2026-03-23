@@ -42,20 +42,6 @@
         "module": "Mathlib.Algebra.BigOperators.Group.Finset"
       }
     ],
-    "references": [
-      {
-        "cite": "Landau 1908",
-        "title": "Über die Einteilung der positiven ganzen Zahlen in vier Klassen",
-        "year": 1908,
-        "relevance": "Proved f_{2,2}(x) ~ c·x/√(log x), resolving k = 2"
-      },
-      {
-        "cite": "Erdős–Graham 1980",
-        "title": "Old and New Problems and Results in Combinatorial Number Theory",
-        "year": 1980,
-        "relevance": "Original source of both conjectures"
-      }
-    ],
     "originalContributions": [
       "IsSumOfPowers predicate",
       "powerSumCount (f_{k,m}(x)) counting function",
@@ -167,5 +153,19 @@
     "",
     "",
     ""
+  ],
+  "references": [
+    {
+      "cite": "Landau 1908",
+      "title": "Über die Einteilung der positiven ganzen Zahlen in vier Klassen",
+      "year": 1908,
+      "relevance": "Proved f_{2,2}(x) ~ c·x/√(log x), resolving k = 2"
+    },
+    {
+      "cite": "Erdős–Graham 1980",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": 1980,
+      "relevance": "Original source of both conjectures"
+    }
   ]
 }

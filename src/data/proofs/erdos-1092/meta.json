@@ -20,14 +20,6 @@
     "erdosNumber": 1092,
     "erdosUrl": "https://erdosproblems.com/1092",
     "erdosProblemStatus": "open",
-    "references": [
-      "Erdős, Hajnal & Szemerédi: original question on chromatic decomposition thresholds",
-      "Rödl (1982), graph constructions with high chromatic number and local bipartiteness",
-      "Tang: observation connecting Rödl's construction to Problem #1092",
-      "Related to Erdős Problem #744 on chromatic decomposition",
-      "Brooks (1941), coloring theorem: χ(G) ≤ Δ(G) + 1",
-      "https://erdosproblems.com/1092"
-    ],
     "axiomCount": 5,
     "lineCount": 102
   },
@@ -136,14 +128,20 @@
   ],
   "references": [
     {
-      "authors": ["Erdős, P.", "Hajnal, A.", "Szemerédi, E."],
+      "authors": [
+        "Erdős, P.",
+        "Hajnal, A.",
+        "Szemerédi, E."
+      ],
       "title": "On almost bipartite large chromatic graphs",
       "venue": "Annals of Discrete Mathematics",
       "year": 1982,
       "note": "Original paper posing the chromatic decomposition threshold problem; introduces f_r(n) and questions on its asymptotic growth"
     },
     {
-      "authors": ["Rödl, V."],
+      "authors": [
+        "Rödl, V."
+      ],
       "title": "On the chromatic number of subgraphs of a given graph",
       "venue": "Proceedings of the American Mathematical Society",
       "volume": 64,
@@ -151,7 +149,10 @@
       "note": "Rödl's construction establishing the upper bound f_2(n) = O(n·(log n)^2), the key nontrivial bound for Problem #1092"
     },
     {
-      "authors": ["Rödl, V.", "Tuza, Zs."],
+      "authors": [
+        "Rödl, V.",
+        "Tuza, Zs."
+      ],
       "title": "Double-critical graph conjecture",
       "venue": "Graphs and Combinatorics",
       "volume": 8,
@@ -159,7 +160,9 @@
       "note": "Disproves Erdős Problem #744 using constructions related to edge-deletion thresholds; the methods are cited in the context of Problem #1092"
     },
     {
-      "authors": ["Brooks, R. L."],
+      "authors": [
+        "Brooks, R. L."
+      ],
       "title": "On colouring the nodes of a network",
       "venue": "Mathematical Proceedings of the Cambridge Philosophical Society",
       "volume": 37,
@@ -168,12 +171,20 @@
       "note": "Brooks' theorem (χ(G) ≤ Δ(G) + 1) is the classical local-to-global coloring result; f_r(n) can be viewed as a quantitative variant of this local-degree-to-chromatic-number philosophy"
     },
     {
-      "authors": ["Johansson, A."],
+      "authors": [
+        "Johansson, A."
+      ],
       "title": "Asymptotic choice number for triangle free graphs",
       "venue": "DIMACS Technical Report",
       "year": 1996,
       "note": "Johansson's theorem (χ = O(Δ/log Δ) for triangle-free graphs) is another landmark local-to-global chromatic bound; mentioned in the key insights as part of the broader hierarchy"
-    }
+    },
+    "Erdős, Hajnal & Szemerédi: original question on chromatic decomposition thresholds",
+    "Rödl (1982), graph constructions with high chromatic number and local bipartiteness",
+    "Tang: observation connecting Rödl's construction to Problem #1092",
+    "Related to Erdős Problem #744 on chromatic decomposition",
+    "Brooks (1941), coloring theorem: χ(G) ≤ Δ(G) + 1",
+    "https://erdosproblems.com/1092"
   ],
   "leanFile": {
     "imports": [

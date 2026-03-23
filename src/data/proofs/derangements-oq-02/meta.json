@@ -65,22 +65,6 @@
       "sum_permsWithKFixed_eq_factorial: ∑_{k=0}^n S(n,k) = n! via disjoint cover of Fin n permutations",
       "11 native_decide verifications: S(3,k) = {2,3,0,1}, S(4,k) = {9,8,6,0,1}, S(5,2) = 20"
     ],
-    "references": [
-      {
-        "authors": "Various",
-        "title": "Derangements (Combinatorics)",
-        "year": "classical",
-        "venue": "Wikipedia",
-        "note": "Standard formula: the number of permutations with exactly k fixed points"
-      },
-      {
-        "authors": "Riordan, J.",
-        "title": "An Introduction to Combinatorial Analysis",
-        "year": "1958",
-        "venue": "Wiley, New York",
-        "note": "Classical treatment of subfactorials and partial derangements"
-      }
-    ],
     "dateAdded": "2026-02-25",
     "axiomCount": 0,
     "lineCount": 357
@@ -180,5 +164,21 @@
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 1
-  }
+  },
+  "references": [
+    {
+      "authors": "Various",
+      "title": "Derangements (Combinatorics)",
+      "year": "classical",
+      "venue": "Wikipedia",
+      "note": "Standard formula: the number of permutations with exactly k fixed points"
+    },
+    {
+      "authors": "Riordan, J.",
+      "title": "An Introduction to Combinatorial Analysis",
+      "year": "1958",
+      "venue": "Wiley, New York",
+      "note": "Classical treatment of subfactorials and partial derangements"
+    }
+  ]
 }

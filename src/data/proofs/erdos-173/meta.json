@@ -41,15 +41,6 @@
         "module": "Mathlib.Data.Set.Function"
       }
     ],
-    "references": [
-      "Erdős [Er75f, Er83c]: original problem statement",
-      "Shader (1976) [Sh76]: All right triangles are Ramsey in ℝ²",
-      "Graham, Rothschild, Spencer: Ramsey Theory (1990), Chapter on Euclidean Ramsey",
-      "Frankl–Rödl (1990): Partition regular configurations in Euclidean space",
-      "Kříž (1991): Permutation groups and Euclidean Ramsey theory",
-      "Guy: Unsolved Problems in Number Theory and Geometry",
-      "https://erdosproblems.com/173"
-    ],
     "originalContributions": [
       "PlaneColoring definition for 2-colorings of ℝ²",
       "Triangle structure with vertices and nondegeneracy",
@@ -174,5 +165,14 @@
     "axiomCount": 4,
     "theoremCount": 3,
     "definitionCount": 11
-  }
+  },
+  "references": [
+    "Erdős [Er75f, Er83c]: original problem statement",
+    "Shader (1976) [Sh76]: All right triangles are Ramsey in ℝ²",
+    "Graham, Rothschild, Spencer: Ramsey Theory (1990), Chapter on Euclidean Ramsey",
+    "Frankl–Rödl (1990): Partition regular configurations in Euclidean space",
+    "Kříž (1991): Permutation groups and Euclidean Ramsey theory",
+    "Guy: Unsolved Problems in Number Theory and Geometry",
+    "https://erdosproblems.com/173"
+  ]
 }

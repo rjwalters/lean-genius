@@ -42,26 +42,6 @@
         "module": "Mathlib.Data.Set.Basic"
       }
     ],
-    "references": [
-      {
-        "cite": "Erdős–Graham 1980",
-        "title": "Old and New Problems and Results in Combinatorial Number Theory",
-        "year": 1980,
-        "relevance": "Original source of the conjecture about threshold reversals for power sequences"
-      },
-      {
-        "cite": "Hilbert 1909",
-        "title": "Beweis für die Darstellbarkeit der ganzen Zahlen durch eine feste Anzahl n-ter Potenzen",
-        "year": 1909,
-        "relevance": "Waring's problem resolution: every integer is a sum of k-th powers, implying completeness"
-      },
-      {
-        "cite": "Sprague 1948",
-        "title": "Über Zerlegungen in ungleiche Quadratzahlen",
-        "year": 1948,
-        "relevance": "Proved completeness of distinct squares: every sufficiently large integer is a sum of distinct squares"
-      }
-    ],
     "originalContributions": [
       "subsetSums and IsComplete definitions",
       "threshold axiomatization (correctness + minimality)",
@@ -172,5 +152,25 @@
   "relatedProofs": [
     "",
     ""
+  ],
+  "references": [
+    {
+      "cite": "Erdős–Graham 1980",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": 1980,
+      "relevance": "Original source of the conjecture about threshold reversals for power sequences"
+    },
+    {
+      "cite": "Hilbert 1909",
+      "title": "Beweis für die Darstellbarkeit der ganzen Zahlen durch eine feste Anzahl n-ter Potenzen",
+      "year": 1909,
+      "relevance": "Waring's problem resolution: every integer is a sum of k-th powers, implying completeness"
+    },
+    {
+      "cite": "Sprague 1948",
+      "title": "Über Zerlegungen in ungleiche Quadratzahlen",
+      "year": 1948,
+      "relevance": "Proved completeness of distinct squares: every sufficiently large integer is a sum of distinct squares"
+    }
   ]
 }

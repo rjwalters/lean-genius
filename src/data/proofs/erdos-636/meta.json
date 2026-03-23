@@ -44,28 +44,6 @@
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       }
     ],
-    "references": [
-      {
-        "key": "KwSu2021",
-        "citation": "Kwan, M. and Sudakov, B. (2021). Proof of a conjecture of Erdős on the number of distinct induced subgraphs. Advances in Mathematics, 389, 107888.",
-        "type": "paper"
-      },
-      {
-        "key": "EFS",
-        "citation": "Erdős, P., Faudree, R., and Sós, V. T. On the number of distinct induced subgraphs of a graph, with a lower bound of cn^(3/2).",
-        "type": "paper"
-      },
-      {
-        "key": "Er93",
-        "citation": "Erdős, P. (1993). Some of my favourite problems in various branches of combinatorics. Matematiche (Catania) 48, p. 346.",
-        "type": "paper"
-      },
-      {
-        "key": "Erdos1947",
-        "citation": "Erdős, P. (1947). Some remarks on the theory of graphs. Bulletin of the American Mathematical Society, 53(4), 292-294.",
-        "type": "paper"
-      }
-    ],
     "originalContributions": [
       "Formal definition of induced subgraph signatures as (vertex count, edge count) pairs",
       "Definition of Ramsey graph condition via bounded clique and independence number",
@@ -242,5 +220,27 @@
     "axiomCount": 9,
     "theoremCount": 8,
     "definitionCount": 18
-  }
+  },
+  "references": [
+    {
+      "key": "KwSu2021",
+      "citation": "Kwan, M. and Sudakov, B. (2021). Proof of a conjecture of Erdős on the number of distinct induced subgraphs. Advances in Mathematics, 389, 107888.",
+      "type": "paper"
+    },
+    {
+      "key": "EFS",
+      "citation": "Erdős, P., Faudree, R., and Sós, V. T. On the number of distinct induced subgraphs of a graph, with a lower bound of cn^(3/2).",
+      "type": "paper"
+    },
+    {
+      "key": "Er93",
+      "citation": "Erdős, P. (1993). Some of my favourite problems in various branches of combinatorics. Matematiche (Catania) 48, p. 346.",
+      "type": "paper"
+    },
+    {
+      "key": "Erdos1947",
+      "citation": "Erdős, P. (1947). Some remarks on the theory of graphs. Bulletin of the American Mathematical Society, 53(4), 292-294.",
+      "type": "paper"
+    }
+  ]
 }

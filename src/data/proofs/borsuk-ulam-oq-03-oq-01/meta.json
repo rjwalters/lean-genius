@@ -57,22 +57,6 @@
       "Perturbation stability: epsilon-close functions have antisymmetric differences differing by at most 2*epsilon",
       "Even/constant/linear coincidence characterization"
     ],
-    "references": [
-      {
-        "authors": "A. W. Tucker",
-        "title": "Some topological properties of disk and sphere",
-        "year": "1946",
-        "venue": "Proceedings of the First Canadian Mathematical Congress",
-        "note": "Tucker's combinatorial lemma"
-      },
-      {
-        "authors": "K. Borsuk",
-        "title": "Drei Satze uber die n-dimensionale euklidische Sphare",
-        "year": "1933",
-        "venue": "Fundamenta Mathematicae",
-        "note": "Original Borsuk-Ulam theorem"
-      }
-    ],
     "dateAdded": "2026-03-11",
     "mathlib_version": "4.26.0",
     "axiomCount": 2,
@@ -195,5 +179,21 @@
     "axiomCount": 1,
     "theoremCount": 47,
     "definitionCount": 4
-  }
+  },
+  "references": [
+    {
+      "authors": "A. W. Tucker",
+      "title": "Some topological properties of disk and sphere",
+      "year": "1946",
+      "venue": "Proceedings of the First Canadian Mathematical Congress",
+      "note": "Tucker's combinatorial lemma"
+    },
+    {
+      "authors": "K. Borsuk",
+      "title": "Drei Satze uber die n-dimensionale euklidische Sphare",
+      "year": "1933",
+      "venue": "Fundamenta Mathematicae",
+      "note": "Original Borsuk-Ulam theorem"
+    }
+  ]
 }

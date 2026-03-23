@@ -10,7 +10,6 @@
     "date": "1950s",
     "status": "formalized",
     "proofRepoPath": "Proofs/Stubs/Erdos27Problem.lean",
-    "leanFile": "Proofs/Stubs/Erdos27Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -59,13 +58,6 @@
       "ffkpy_main_theorem and erdos_27_disproved",
       "growing_C_works and sufficientC",
       "bbmst_bound connection to perfect coverings"
-    ],
-    "references": [
-      "Filaseta, Ford, Konyagin, Pomerance, Yu: 'Covering systems, their analogues, and applications', Annals of Mathematics (2007)",
-      "Hough (2015): 'Solution of the minimum modulus problem for covering systems', Annals of Mathematics 181(1), 361–382",
-      "Bloom, Briggs, Maynard, Smith, Tao (2024): Improved bound on minimum modulus of covering systems",
-      "Erdős (1950): 'Quelques problèmes de théorie des nombres', in Monographies de l'Enseignement Mathématique",
-      "https://erdosproblems.com/27"
     ],
     "crossReferences": [
       {
@@ -238,7 +230,12 @@
       "year": "2007",
       "venue": "Journal of the American Mathematical Society, vol. 20, no. 2, pp. 495–517",
       "note": "Structural results on covering systems applicable to near-covering variants"
-    }
+    },
+    "Filaseta, Ford, Konyagin, Pomerance, Yu: 'Covering systems, their analogues, and applications', Annals of Mathematics (2007)",
+    "Hough (2015): 'Solution of the minimum modulus problem for covering systems', Annals of Mathematics 181(1), 361–382",
+    "Bloom, Briggs, Maynard, Smith, Tao (2024): Improved bound on minimum modulus of covering systems",
+    "Erdős (1950): 'Quelques problèmes de théorie des nombres', in Monographies de l'Enseignement Mathématique",
+    "https://erdosproblems.com/27"
   ],
   "relatedProofs": [
     "erdos-2",

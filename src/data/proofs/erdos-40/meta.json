@@ -14,11 +14,6 @@
       "representation-function",
       "open"
     ],
-    "references": [
-      "Erdős [Er95], [Er97c]",
-      "Erdős–Turán conjecture (Problem #28)",
-      "https://erdosproblems.com/40"
-    ],
     "proofRepoPath": "Proofs/Erdos40Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/40",
@@ -177,7 +172,10 @@
       "year": "2005",
       "venue": "Studia Scientiarum Mathematicarum Hungarica, vol. 41, no. 3, pp. 285–293",
       "note": "Illustrates Fourier-analytic and probabilistic methods for counting representations in sumsets, representing the modern circle-method and exponential-sum approach relevant to Problem #40's heuristic analysis"
-    }
+    },
+    "Erdős [Er95], [Er97c]",
+    "Erdős–Turán conjecture (Problem #28)",
+    "https://erdosproblems.com/40"
   ],
   "leanFile": {
     "imports": [

@@ -8,7 +8,6 @@
     "sourceUrl": "https://erdosproblems.com/287",
     "date": "1932",
     "status": "axiomatized",
-    "leanFile": "Proofs/Erdos287Problem.lean",
     "proofRepoPath": "Proofs/Erdos287Problem.lean",
     "tags": [
       "erdos",
@@ -22,36 +21,6 @@
     "erdosNumber": 287,
     "erdosUrl": "https://erdosproblems.com/287",
     "erdosProblemStatus": "open",
-    "references": [
-      {
-        "authors": "Erdős, Paul",
-        "title": "Egy Kürschák-féle elemi számelméleti tétel általánosítása",
-        "year": "1932",
-        "venue": "Mat. Fiz. Lapok 39, pp. 17-24",
-        "note": "First proved the gap ≥ 2 result using Bertrand's postulate and p-adic valuations"
-      },
-      {
-        "authors": "Guy, Richard K.",
-        "title": "Unsolved Problems in Number Theory",
-        "year": "2004",
-        "venue": "Springer, 3rd edition",
-        "note": "Problem D11: Egyptian fraction representations of unity"
-      },
-      {
-        "authors": "Graham, Ronald L.",
-        "title": "On finite sums of unit fractions",
-        "year": "1964",
-        "venue": "Proceedings of the London Mathematical Society 14, pp. 193-207",
-        "note": "Systematic study of Egyptian fraction representations; established several structural results"
-      },
-      {
-        "authors": "Erdős, Paul; Straus, Ernst G.",
-        "title": "On the irrationality of certain Ahmes series",
-        "year": "1971",
-        "venue": "Journal of the Indian Mathematical Society 27, pp. 129-133",
-        "note": "Related work on Egyptian fraction structure and irrationality of harmonic subseries"
-      }
-    ],
     "dateAdded": "2026-01-24",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
@@ -223,5 +192,35 @@
     "axiomCount": 3,
     "theoremCount": 1,
     "definitionCount": 2
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "Egy Kürschák-féle elemi számelméleti tétel általánosítása",
+      "year": "1932",
+      "venue": "Mat. Fiz. Lapok 39, pp. 17-24",
+      "note": "First proved the gap ≥ 2 result using Bertrand's postulate and p-adic valuations"
+    },
+    {
+      "authors": "Guy, Richard K.",
+      "title": "Unsolved Problems in Number Theory",
+      "year": "2004",
+      "venue": "Springer, 3rd edition",
+      "note": "Problem D11: Egyptian fraction representations of unity"
+    },
+    {
+      "authors": "Graham, Ronald L.",
+      "title": "On finite sums of unit fractions",
+      "year": "1964",
+      "venue": "Proceedings of the London Mathematical Society 14, pp. 193-207",
+      "note": "Systematic study of Egyptian fraction representations; established several structural results"
+    },
+    {
+      "authors": "Erdős, Paul; Straus, Ernst G.",
+      "title": "On the irrationality of certain Ahmes series",
+      "year": "1971",
+      "venue": "Journal of the Indian Mathematical Society 27, pp. 129-133",
+      "note": "Related work on Egyptian fraction structure and irrationality of harmonic subseries"
+    }
+  ]
 }

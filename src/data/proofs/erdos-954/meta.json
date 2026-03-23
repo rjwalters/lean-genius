@@ -9,7 +9,6 @@
     "date": "1977",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos954Problem.lean",
-    "leanFile": "Proofs/Erdos954Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -55,12 +54,6 @@
       "erdos_954_weak/strong_conjecture: both open conjectures as axioms",
       "IsB2Sequence: Sidon set definition for connection to Problem #28",
       "repCount_mono_k: monotonicity R_k(n) ≤ R_{k+1}(n) (proved)"
-    ],
-    "references": [
-      "Erdős (1977): original problem (Er77c, p.71)",
-      "Rosen: greedy sequence construction",
-      "OEIS A390642: the Rosen sequence",
-      "https://erdosproblems.com/954"
     ],
     "axiomCount": 4,
     "lineCount": 187
@@ -158,5 +151,11 @@
     "axiomCount": 4,
     "theoremCount": 17,
     "definitionCount": 9
-  }
+  },
+  "references": [
+    "Erdős (1977): original problem (Er77c, p.71)",
+    "Rosen: greedy sequence construction",
+    "OEIS A390642: the Rosen sequence",
+    "https://erdosproblems.com/954"
+  ]
 }

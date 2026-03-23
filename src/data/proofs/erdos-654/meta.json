@@ -14,15 +14,6 @@
       "concyclic-points",
       "open"
     ],
-    "references": [
-      "Erdős (1987): original problem",
-      "Erdős–Pach (1990): weaker variant under general position",
-      "Erdős (1997): related discussion",
-      "Guth–Katz (2015): Ω(n/log n) distinct distances via polynomial partitioning",
-      "Szemerédi–Trotter (1983): point-line incidence bound",
-      "https://erdosproblems.com/654"
-    ],
-    "leanFile": "Proofs/Erdos654Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/654",
     "erdosUrl": "https://erdosproblems.com/654",
@@ -120,5 +111,13 @@
       "Can polynomial partitioning methods (à la Guth-Katz) be adapted to the per-point distinct distance question under geometric restrictions?",
       "What happens in higher dimensions — does no-four-cospherical force near-linear distinct distances in ℝ³?"
     ]
-  }
+  },
+  "references": [
+    "Erdős (1987): original problem",
+    "Erdős–Pach (1990): weaker variant under general position",
+    "Erdős (1997): related discussion",
+    "Guth–Katz (2015): Ω(n/log n) distinct distances via polynomial partitioning",
+    "Szemerédi–Trotter (1983): point-line incidence bound",
+    "https://erdosproblems.com/654"
+  ]
 }

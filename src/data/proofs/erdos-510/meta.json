@@ -16,16 +16,6 @@
       "trigonometric-polynomials",
       "open"
     ],
-    "references": [
-      "Chowla, S.: Original cosine problem — conjectured min_θ ∑ cos(nθ) < −c√N for |A| = N",
-      "Bourgain, J. (1986): First non-trivial bound for Chowla's cosine problem",
-      "Ruzsa, I. (2004): Improved bound to −exp(c√(log N)) using Balog-Szemerédi-Gowers theorem",
-      "Bedert, B. (2025): First polynomial bound −cN^{1/7} — major breakthrough",
-      "Jin, Z., Milojević, A., Tomon, I., and Zhang, Y. (2025): Independent polynomial bound, confirming the polynomial threshold",
-      "Green, B.: Problem 81 on open problems list in additive combinatorics",
-      "https://erdosproblems.com/510"
-    ],
-    "leanFile": "Proofs/Erdos510Problem.lean",
     "proofRepoPath": "Proofs/Erdos510Problem.lean",
     "badge": "axiom",
     "sorries": 0,
@@ -125,5 +115,14 @@
     "axiomCount": 3,
     "theoremCount": 0,
     "definitionCount": 2
-  }
+  },
+  "references": [
+    "Chowla, S.: Original cosine problem — conjectured min_θ ∑ cos(nθ) < −c√N for |A| = N",
+    "Bourgain, J. (1986): First non-trivial bound for Chowla's cosine problem",
+    "Ruzsa, I. (2004): Improved bound to −exp(c√(log N)) using Balog-Szemerédi-Gowers theorem",
+    "Bedert, B. (2025): First polynomial bound −cN^{1/7} — major breakthrough",
+    "Jin, Z., Milojević, A., Tomon, I., and Zhang, Y. (2025): Independent polynomial bound, confirming the polynomial threshold",
+    "Green, B.: Problem 81 on open problems list in additive combinatorics",
+    "https://erdosproblems.com/510"
+  ]
 }

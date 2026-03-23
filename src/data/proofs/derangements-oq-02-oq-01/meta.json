@@ -56,29 +56,6 @@
       "permsWithAllFixed_eq_one: S(α,|α|) = 1 (only identity fixes all, general version)",
       "sum_kfixed_eq_factorial: ∑_{k=0}^{|α|} S(α,k) = |α|! (general version)"
     ],
-    "references": [
-      {
-        "authors": "P. R. de Montmort",
-        "title": "Essay d'Analyse sur les Jeux de Hazard",
-        "year": "1708",
-        "venue": "Quillau, Paris",
-        "note": "First study of the problème des rencontres (matching problem), introducing derangement counting"
-      },
-      {
-        "authors": "L. Euler",
-        "title": "Calcul de la probabilité dans le jeu de rencontre",
-        "year": "1753",
-        "venue": "Mémoires de l'Académie des Sciences de Berlin",
-        "note": "Derived the alternating series formula D(n) = n! Σ (-1)^k/k! and the recurrence D(n) = (n-1)(D(n-1) + D(n-2))"
-      },
-      {
-        "authors": "R. P. Stanley",
-        "title": "Enumerative Combinatorics, Volume 1",
-        "year": "2012",
-        "venue": "Cambridge University Press",
-        "note": "Chapter 2: standard treatment of permutation statistics including fixed-point counting and the partial derangement formula"
-      }
-    ],
     "dateAdded": "2026-03-11",
     "axiomCount": 0,
     "lineCount": 123
@@ -208,6 +185,20 @@
       "year": "1976",
       "venue": "Mathematical Proceedings of the Cambridge Philosophical Society, vol. 79, pp. 135–143",
       "note": "Connects derangement numbers to Laguerre polynomials and generating functions, extending classical results on partial derangements"
+    },
+    {
+      "authors": "P. R. de Montmort",
+      "title": "Essay d'Analyse sur les Jeux de Hazard",
+      "year": "1708",
+      "venue": "Quillau, Paris",
+      "note": "First study of the problème des rencontres (matching problem), introducing derangement counting"
+    },
+    {
+      "authors": "L. Euler",
+      "title": "Calcul de la probabilité dans le jeu de rencontre",
+      "year": "1753",
+      "venue": "Mémoires de l'Académie des Sciences de Berlin",
+      "note": "Derived the alternating series formula D(n) = n! Σ (-1)^k/k! and the recurrence D(n) = (n-1)(D(n-1) + D(n-2))"
     }
   ],
   "leanFile": {

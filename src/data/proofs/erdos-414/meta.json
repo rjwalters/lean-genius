@@ -17,15 +17,6 @@
       "orbit-coalescence",
       "open"
     ],
-    "references": [
-      "Erdős, P. and Graham, R.L. (1980): 'Old and new problems and results in combinatorial number theory', Monographies de L'Enseignement Mathématique 28, p. 82",
-      "OEIS A064491: Iterates of n + τ(n) starting from 1",
-      "Dirichlet, P.G.L. (1849): 'Über die Bestimmung der mittleren Werthe in der Zahlentheorie', Abhandlungen der Preußischen Akademie der Wissenschaften, 69–83",
-      "Huxley, M.N. (2003): 'Exponential sums and lattice points III', Proc. London Math. Soc. 87, 591–609 (best Dirichlet divisor problem bound)",
-      "Ramanujan, S. (1915): 'Highly composite numbers', Proc. London Math. Soc. 14, 347–409",
-      "https://erdosproblems.com/414"
-    ],
-    "leanFile": "Proofs/Erdos414Problem.lean",
     "proofRepoPath": "Proofs/Erdos414Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/414",
@@ -192,5 +183,13 @@
     "axiomCount": 14,
     "theoremCount": 0,
     "definitionCount": 2
-  }
+  },
+  "references": [
+    "Erdős, P. and Graham, R.L. (1980): 'Old and new problems and results in combinatorial number theory', Monographies de L'Enseignement Mathématique 28, p. 82",
+    "OEIS A064491: Iterates of n + τ(n) starting from 1",
+    "Dirichlet, P.G.L. (1849): 'Über die Bestimmung der mittleren Werthe in der Zahlentheorie', Abhandlungen der Preußischen Akademie der Wissenschaften, 69–83",
+    "Huxley, M.N. (2003): 'Exponential sums and lattice points III', Proc. London Math. Soc. 87, 591–609 (best Dirichlet divisor problem bound)",
+    "Ramanujan, S. (1915): 'Highly composite numbers', Proc. London Math. Soc. 14, 347–409",
+    "https://erdosproblems.com/414"
+  ]
 }

@@ -47,27 +47,6 @@
         "module": "Mathlib.Data.Real.Basic"
       }
     ],
-    "references": [
-      {
-        "key": "erdos1977",
-        "title": "Problems and results in combinatorial number theory",
-        "author": "P. Erdős",
-        "year": 1977,
-        "pages": "p.64"
-      },
-      {
-        "key": "erdosgraham1980",
-        "title": "Old and New Problems and Results in Combinatorial Number Theory",
-        "author": "P. Erdős, R.L. Graham",
-        "year": 1980,
-        "pages": "p.91"
-      },
-      {
-        "key": "eggleton-erdos-selfridge",
-        "title": "Growth bound for greedy coprime sieve sequences",
-        "author": "R.B. Eggleton, P. Erdős, J.L. Selfridge"
-      }
-    ],
     "originalContributions": [
       "Axiomatic definition of the greedy coprime sieve sequence with initial values and greedy selection property",
       "Formal statement of ErdosProblem460 as divergence of reciprocal sums",
@@ -194,5 +173,26 @@
     "erdos-246",
     "erdos-248",
     "erdos-233"
+  ],
+  "references": [
+    {
+      "key": "erdos1977",
+      "title": "Problems and results in combinatorial number theory",
+      "author": "P. Erdős",
+      "year": 1977,
+      "pages": "p.64"
+    },
+    {
+      "key": "erdosgraham1980",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "author": "P. Erdős, R.L. Graham",
+      "year": 1980,
+      "pages": "p.91"
+    },
+    {
+      "key": "eggleton-erdos-selfridge",
+      "title": "Growth bound for greedy coprime sieve sequences",
+      "author": "R.B. Eggleton, P. Erdős, J.L. Selfridge"
+    }
   ]
 }

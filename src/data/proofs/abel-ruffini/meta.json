@@ -385,6 +385,16 @@
       "targetId": "sqrt2-from-axioms-oq-01",
       "relationship": "foundational",
       "description": "The irrationality of $\\sqrt{p}$ for prime $p$ (proved from first principles via Euclid's criterion) is the simplest case of the radical expressibility question that Abel-Ruffini addresses at degree 5. The from-axioms proof explicitly uses the multiplicative property of primes ($p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$) — the same property that, when lifted to Galois groups, drives the bridge theorem: solvable by radicals implies solvable Galois group. The irrationality proof is thus the degree-1 prototype of the Galois-theoretic argument"
+    },
+    {
+      "targetId": "vietas-formulas-oq-03",
+      "relationship": "foundational",
+      "description": "Newton's identities express power sums $p_k = \\sum x_i^k$ in terms of elementary symmetric polynomials $e_j$, providing the computational bridge between individual roots and symmetric functions of roots. Since the Galois group of a polynomial acts by permuting roots while fixing the elementary symmetric polynomials (= coefficients, by Vieta's formulas), Newton's identities reveal how non-symmetric expressions of roots — the power sums — transform under Galois action. The solvability criterion in Abel-Ruffini ultimately asks whether the roots can be disentangled from these symmetric combinations using only radical operations"
+    },
+    {
+      "targetId": "nth-root-irrational-oq-01",
+      "relationship": "foundational",
+      "description": "The proof that $\\sqrt[n]{m}$ is irrational for non-perfect-power $m$ via irreducible polynomials ($x^n - m$ is irreducible over $\\mathbb{Q}$ by Eisenstein's criterion) connects directly to the Galois-theoretic framework of Abel-Ruffini: the minimal polynomial of a radical $\\sqrt[n]{m}$ has degree $n$ and its splitting field has Galois group a subgroup of $\\mathbb{Z}/n\\mathbb{Z} \\rtimes (\\mathbb{Z}/n\\mathbb{Z})^{\\times}$. The irreducibility approach shows why each radical step $K_i \\to K_i(\\sqrt[n]{a})$ creates a genuine field extension, contributing a cyclic Galois quotient to the composition series that the bridge theorem requires to be solvable"
     }
   ],
   "relatedProofs": [
@@ -434,7 +444,9 @@
     "angle-trisection-oq-02-oq-03",
     "angle-trisection-oq-02-oq-03-oq-01",
     "bezout-identity",
-    "sqrt2-from-axioms-oq-01"
+    "sqrt2-from-axioms-oq-01",
+    "vietas-formulas-oq-03",
+    "nth-root-irrational-oq-01"
   ],
   "references": [
     {

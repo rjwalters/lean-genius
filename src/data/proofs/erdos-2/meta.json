@@ -9,7 +9,6 @@
     "date": "2015, 2022",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos2Problem.lean",
-    "leanFile": "Proofs/Erdos2Problem.lean",
     "tags": [
       "erdos",
       "covering-systems",
@@ -24,16 +23,6 @@
     "erdosUrl": "https://erdosproblems.com/2",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$1000",
-    "references": [
-      "Erdős (1950): Introduction of covering systems and the minimum modulus problem",
-      "Choi (1971): Covering system with minimum modulus 3",
-      "Filaseta, Ford, Konyagin, Pomerance, Yu (2007): Structural results on covering systems, key precursor to Hough",
-      "Owens (2014): Covering system with minimum modulus 42 — best known lower bound",
-      "Hough (2015): 'Solution of the minimum modulus problem for covering systems', Annals of Mathematics — disproved the conjecture with bound 10^16",
-      "Balister, Bollobás, Morris, Sahasrabudhe, Tiba (2022): 'Covering systems with restricted divisibility', Annals of Mathematics — improved bound to 616,000",
-      "Hough, Nielsen (2019): Odd covering systems must have minimum modulus > 10^18",
-      "https://erdosproblems.com/2"
-    ],
     "relatedProblems": [
       {
         "id": "erdos-3",
@@ -221,7 +210,15 @@
       "year": "1971",
       "venue": "Mathematics of Computation, vol. 25, no. 116, pp. 885–895",
       "note": "Constructed covering systems with minimum modulus 3"
-    }
+    },
+    "Erdős (1950): Introduction of covering systems and the minimum modulus problem",
+    "Choi (1971): Covering system with minimum modulus 3",
+    "Filaseta, Ford, Konyagin, Pomerance, Yu (2007): Structural results on covering systems, key precursor to Hough",
+    "Owens (2014): Covering system with minimum modulus 42 — best known lower bound",
+    "Hough (2015): 'Solution of the minimum modulus problem for covering systems', Annals of Mathematics — disproved the conjecture with bound 10^16",
+    "Balister, Bollobás, Morris, Sahasrabudhe, Tiba (2022): 'Covering systems with restricted divisibility', Annals of Mathematics — improved bound to 616,000",
+    "Hough, Nielsen (2019): Odd covering systems must have minimum modulus > 10^18",
+    "https://erdosproblems.com/2"
   ],
   "relatedProofs": [
     "erdos-3",

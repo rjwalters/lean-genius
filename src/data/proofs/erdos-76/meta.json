@@ -56,33 +56,6 @@
         "module": "Mathlib.Data.Nat.Choose.Basic"
       }
     ],
-    "references": [
-      {
-        "key": "GL20",
-        "citation": "Gruslys, V. and Letzter, S. (2020). Minimising the number of monochromatic triangles in 2-coloured complete graphs. Combinatorica, 40(5), 653–674.",
-        "type": "paper"
-      },
-      {
-        "key": "EFO",
-        "citation": "Erdős, P., Faudree, R.J., and Ordman, E.T. Problem #76: Edge-disjoint monochromatic triangles.",
-        "type": "paper"
-      },
-      {
-        "key": "Sz78",
-        "citation": "Szemerédi, E. (1978). Regular partitions of graphs. Problèmes combinatoires et théorie des graphes, Colloq. Internat. CNRS 260, 399–401.",
-        "type": "paper"
-      },
-      {
-        "key": "Ra30",
-        "citation": "Ramsey, F.P. (1930). On a problem of formal logic. Proceedings of the London Mathematical Society, 2(1), 264–286.",
-        "type": "paper"
-      },
-      {
-        "key": "Ki47",
-        "citation": "Kirkman, T.P. (1847). On a problem in combinations. Cambridge and Dublin Mathematical Journal, 2, 191–204.",
-        "type": "paper"
-      }
-    ],
     "originalContributions": [
       "Color inductive type with Red/Blue constructors",
       "EdgeColoring V as function assigning colors to edges",
@@ -233,5 +206,32 @@
     "axiomCount": 3,
     "theoremCount": 4,
     "definitionCount": 15
-  }
+  },
+  "references": [
+    {
+      "key": "GL20",
+      "citation": "Gruslys, V. and Letzter, S. (2020). Minimising the number of monochromatic triangles in 2-coloured complete graphs. Combinatorica, 40(5), 653–674.",
+      "type": "paper"
+    },
+    {
+      "key": "EFO",
+      "citation": "Erdős, P., Faudree, R.J., and Ordman, E.T. Problem #76: Edge-disjoint monochromatic triangles.",
+      "type": "paper"
+    },
+    {
+      "key": "Sz78",
+      "citation": "Szemerédi, E. (1978). Regular partitions of graphs. Problèmes combinatoires et théorie des graphes, Colloq. Internat. CNRS 260, 399–401.",
+      "type": "paper"
+    },
+    {
+      "key": "Ra30",
+      "citation": "Ramsey, F.P. (1930). On a problem of formal logic. Proceedings of the London Mathematical Society, 2(1), 264–286.",
+      "type": "paper"
+    },
+    {
+      "key": "Ki47",
+      "citation": "Kirkman, T.P. (1847). On a problem in combinations. Cambridge and Dublin Mathematical Journal, 2, 191–204.",
+      "type": "paper"
+    }
+  ]
 }

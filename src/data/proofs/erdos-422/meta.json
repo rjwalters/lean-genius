@@ -8,7 +8,6 @@
     "sourceUrl": "https://erdosproblems.com/422",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos422Problem.lean",
-    "leanFile": "Proofs/Erdos422Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -38,23 +37,6 @@
         "theorem": "Function.Surjective",
         "description": "Surjectivity of functions",
         "module": "Mathlib.Logic.Function.Basic"
-      }
-    ],
-    "references": [
-      {
-        "key": "ErGr80",
-        "citation": "Erdős, P. and Graham, R.L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de L'Enseignement Mathématique 28, Université de Genève.",
-        "type": "book"
-      },
-      {
-        "key": "Hof79",
-        "citation": "Hofstadter, D.R. (1979). Gödel, Escher, Bach: An Eternal Golden Braid. Basic Books.",
-        "type": "book"
-      },
-      {
-        "key": "A005185",
-        "citation": "OEIS Foundation. A005185: Hofstadter-Maler-Mitchell (or Hofstadter-Conway) $10,000 sequence. The On-Line Encyclopedia of Integer Sequences.",
-        "type": "database"
       }
     ],
     "originalContributions": [
@@ -148,5 +130,22 @@
     "axiomCount": 5,
     "theoremCount": 0,
     "definitionCount": 2
-  }
+  },
+  "references": [
+    {
+      "key": "ErGr80",
+      "citation": "Erdős, P. and Graham, R.L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de L'Enseignement Mathématique 28, Université de Genève.",
+      "type": "book"
+    },
+    {
+      "key": "Hof79",
+      "citation": "Hofstadter, D.R. (1979). Gödel, Escher, Bach: An Eternal Golden Braid. Basic Books.",
+      "type": "book"
+    },
+    {
+      "key": "A005185",
+      "citation": "OEIS Foundation. A005185: Hofstadter-Maler-Mitchell (or Hofstadter-Conway) $10,000 sequence. The On-Line Encyclopedia of Integer Sequences.",
+      "type": "database"
+    }
+  ]
 }

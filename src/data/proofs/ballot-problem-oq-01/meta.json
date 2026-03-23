@@ -44,12 +44,12 @@
     "lineCount": 710
   },
   "overview": {
-    "historicalContext": "The classical Ballot Problem was posed by Joseph Bertrand in 1887 in the *Comptes Rendus*: if candidate A receives $p$ votes and B receives $q$ votes ($p > q$), the probability that A leads throughout counting is $(p-q)/(p+q)$. Désiré André gave the first proof using the **reflection principle** (1887), mapping unfavorable sequences to their reflections across the axis. W.A. Whitworth independently discovered the result using a direct combinatorial argument. In 1947, Aryeh Dvoretzky and Theodore Motzkin proved the **Cycle Lemma** in the *Proceedings of the National Academy of Sciences*, which gives a far more general and elegant proof: for any integer sequence with positive sum $S$ and length $n$, exactly $S$ of its $n$ cyclic rotations have all positive prefix sums. This immediately implies the ballot theorem and its $k$-fold generalization. The cycle lemma has since found applications in lattice path enumeration, queueing theory, and the analysis of random trees (Raney's theorem).",
+    "historicalContext": "The classical Ballot Problem was posed by Joseph Bertrand in 1887 in the *Comptes Rendus*: if candidate A receives $p$ votes and B receives $q$ votes ($p > q$), the probability that A leads throughout counting is $(p-q)/(p+q)$. D\u00e9sir\u00e9 Andr\u00e9 gave the first proof using the **reflection principle** (1887), mapping unfavorable sequences to their reflections across the axis. W.A. Whitworth independently discovered the result using a direct combinatorial argument. In 1947, Aryeh Dvoretzky and Theodore Motzkin proved the **Cycle Lemma** in the *Proceedings of the National Academy of Sciences*, which gives a far more general and elegant proof: for any integer sequence with positive sum $S$ and length $n$, exactly $S$ of its $n$ cyclic rotations have all positive prefix sums. This immediately implies the ballot theorem and its $k$-fold generalization. The cycle lemma has since found applications in lattice path enumeration, queueing theory, and the analysis of random trees (Raney's theorem).",
     "problemStatement": "**Generalized Ballot Theorem**: In an election where candidate A receives $a$ votes and candidate B receives $b$ votes, with $a > kb$ for a positive integer $k$, the probability that A always has more than $k$ times as many votes as B throughout the counting is:\n\n$$P = \\frac{a - kb}{a + b}$$\n\nWhen $k = 1$, this reduces to the classical formula $P = (p-q)/(p+q)$.",
     "proofStrategy": "**Lattice Path Model + Cycle Lemma**:\n\n1. Model vote counting as a lattice path: each A-vote is a +1 step, each B-vote is a $-k$ step\n2. The condition 'A has > k times B's votes' equals the path staying strictly above the x-axis\n3. Use the Dvoretzky-Motzkin Cycle Lemma: for a sequence with positive sum $S$ and length $n$, exactly $S$ of the $n$ cyclic rotations have all positive prefix sums\n4. Apply to ballot sequences: $S = a - kb$, $n = a + b$, giving the fraction of good orderings",
     "keyInsights": [
       "The **Dvoretzky-Motzkin cycle lemma** unifies all ballot-type results: exactly $S$ of $n$ cyclic rotations have all positive prefix sums, immediately giving $P = S/n = (a - kb)/(a + b)$",
-      "**Cyclic rotation preserves** the multiset of values, so all rotations of a ballot sequence remain in $\\text{kCountedSequence}(k, a, b)$ — a crucial invariant enabling the counting argument",
+      "**Cyclic rotation preserves** the multiset of values, so all rotations of a ballot sequence remain in $\\text{kCountedSequence}(k, a, b)$ \u2014 a crucial invariant enabling the counting argument",
       "The **prefix sum relation** $\\sigma_{\\text{rot}(i)}(j) = \\sigma(i+j) - \\sigma(i)$ (non-wrapping) connects rotated prefix sums to original ones, reducing good rotation analysis to prefix sum arithmetic",
       "The proof uses a **sandwich argument**: an injection into $\\{0, \\ldots, S-1\\}$ gives $|\\text{goodRotations}| \\leq S$, while a surjection via `levelPos` (a discrete IVT argument exploiting $+1$ steps) gives $|\\text{goodRotations}| \\geq S$",
       "The **rightmost minimum** of the prefix sum sequence is always a good rotation, providing the existence base case that bootstraps the full counting argument"
@@ -155,17 +155,22 @@
     {
       "targetId": "ballot-problem",
       "relationship": "extends",
-      "description": "Generalizes the classical ballot problem from 1-fold dominance (p>q always) to k-fold dominance (candidate A always has ≥k× candidate B's votes at every stage)"
+      "description": "Generalizes the classical ballot problem from 1-fold dominance (p>q always) to k-fold dominance (candidate A always has \u2265k\u00d7 candidate B's votes at every stage)"
     },
     {
       "targetId": "combinations-formula",
       "relationship": "foundational",
-      "description": "The counting formula for k-ballot sequences uses generalized binomial coefficients — the number of lattice paths with asymmetric step sizes"
+      "description": "The counting formula for k-ballot sequences uses generalized binomial coefficients \u2014 the number of lattice paths with asymmetric step sizes"
     },
     {
       "targetId": "erdos-szekeres",
       "relationship": "related",
-      "description": "Both are combinatorial results on sequences: Erdős-Szekeres guarantees monotone subsequences, the generalized ballot problem counts sequences satisfying a dominance constraint"
+      "description": "Both are combinatorial results on sequences: Erd\u0151s-Szekeres guarantees monotone subsequences, the generalized ballot problem counts sequences satisfying a dominance constraint"
+    },
+    {
+      "targetId": "ballot-problem-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Applies the Dvoretzky-Motzkin cycle lemma with a discrete intermediate value theorem to analyze ballot sequences \u2014 extending the k-fold dominance criterion from this file with a rotational symmetry argument that counts favorable cyclic permutations"
     }
   ],
   "relatedProofs": [
@@ -173,7 +178,8 @@
     "ballot-problem-oq-02",
     "ballot-problem-oq-03",
     "combinations-formula",
-    "erdos-szekeres"
+    "erdos-szekeres",
+    "ballot-problem-oq-01-oq-01"
   ],
   "leanFile": {
     "imports": [

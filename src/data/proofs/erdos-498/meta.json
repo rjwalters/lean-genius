@@ -14,17 +14,7 @@
       "signed-sums",
       "solved"
     ],
-    "references": [
-      "Littlewood & Offord (1943): original problem on real polynomials",
-      "Erdős (1945): real case via Sperner's theorem [Er45]",
-      "Erdős (1961): complex weak bound O(2ⁿ/√n) [Er61]",
-      "Kleitman (1965): sharp complex bound [Kl65]",
-      "Kleitman (1970): Hilbert space generalization [Kl70]",
-      "Tao & Vu (2006): inverse Littlewood–Offord theory",
-      "https://erdosproblems.com/498"
-    ],
     "proofRepoPath": "Proofs/Erdos498Problem.lean",
-    "leanFile": "Proofs/Erdos498Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/498",
     "erdosUrl": "https://erdosproblems.com/498",
@@ -118,5 +108,14 @@
     "axiomCount": 3,
     "theoremCount": 0,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    "Littlewood & Offord (1943): original problem on real polynomials",
+    "Erdős (1945): real case via Sperner's theorem [Er45]",
+    "Erdős (1961): complex weak bound O(2ⁿ/√n) [Er61]",
+    "Kleitman (1965): sharp complex bound [Kl65]",
+    "Kleitman (1970): Hilbert space generalization [Kl70]",
+    "Tao & Vu (2006): inverse Littlewood–Offord theory",
+    "https://erdosproblems.com/498"
+  ]
 }

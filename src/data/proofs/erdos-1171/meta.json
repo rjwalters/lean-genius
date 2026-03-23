@@ -44,14 +44,6 @@
         "module": "Mathlib.Tactic"
       }
     ],
-    "references": [
-      "Erdős: original problem formulation",
-      "Hajnal (1960s): ω₁² → (ω₁², k)² under CH",
-      "Baumgartner [Ba89b]: ω₁·ω → (ω₁·ω, 3)² under MA",
-      "Erdős-Rado (1956): (2^κ)⁺ → (κ⁺ + 1)²_κ",
-      "[Va99, 7.84]: Vaughan's survey cataloguing the problem",
-      "https://erdosproblems.com/1171"
-    ],
     "originalContributions": [
       "omega1",
       "omega1Sq",
@@ -214,5 +206,13 @@
     "axiomCount": 16,
     "theoremCount": 11,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    "Erdős: original problem formulation",
+    "Hajnal (1960s): ω₁² → (ω₁², k)² under CH",
+    "Baumgartner [Ba89b]: ω₁·ω → (ω₁·ω, 3)² under MA",
+    "Erdős-Rado (1956): (2^κ)⁺ → (κ⁺ + 1)²_κ",
+    "[Va99, 7.84]: Vaughan's survey cataloguing the problem",
+    "https://erdosproblems.com/1171"
+  ]
 }

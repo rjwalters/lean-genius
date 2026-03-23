@@ -14,11 +14,6 @@
       "integer-distance",
       "open"
     ],
-    "references": [
-      "Andrásfai & Erdős (1997): original problem [Er97b]",
-      "Anning & Erdős (1945): infinite integer distance sets are collinear [AnEr45]",
-      "https://erdosproblems.com/130"
-    ],
     "proofRepoPath": "Proofs/Erdos130Problem.lean",
     "badge": "axiom",
     "sorries": 0,
@@ -128,5 +123,10 @@
     "axiomCount": 5,
     "theoremCount": 0,
     "definitionCount": 9
-  }
+  },
+  "references": [
+    "Andrásfai & Erdős (1997): original problem [Er97b]",
+    "Anning & Erdős (1945): infinite integer distance sets are collinear [AnEr45]",
+    "https://erdosproblems.com/130"
+  ]
 }

@@ -47,36 +47,6 @@
       "Linearity properties of the Cramer map",
       "2x2 system example over a field"
     ],
-    "references": [
-      {
-        "authors": "G. Cramer",
-        "title": "Introduction à l'Analyse des Lignes Courbes Algébriques",
-        "year": "1750",
-        "venue": "Geneva",
-        "note": "First published statement of Cramer's rule for systems of polynomial equations"
-      },
-      {
-        "authors": "C. Maclaurin",
-        "title": "A Treatise of Algebra",
-        "year": "1748",
-        "venue": "London (posthumous)",
-        "note": "Contains the rule independently, predating Cramer's publication but published posthumously"
-      },
-      {
-        "authors": "A. Cayley",
-        "title": "A Memoir on the Theory of Matrices",
-        "year": "1858",
-        "venue": "Philosophical Transactions of the Royal Society",
-        "note": "Systematic matrix algebra framework including the adjugate identity"
-      },
-      {
-        "authors": "E. H. Bareiss",
-        "title": "Sylvester's identity and multistep integer-preserving Gaussian elimination",
-        "year": "1968",
-        "venue": "Mathematics of Computation",
-        "note": "Fraction-free algorithm for determinants, an alternative to Cramer's rule for integer matrices"
-      }
-    ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 97,
     "mathlib_version": "4.15.0",
@@ -222,5 +192,35 @@
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "G. Cramer",
+      "title": "Introduction à l'Analyse des Lignes Courbes Algébriques",
+      "year": "1750",
+      "venue": "Geneva",
+      "note": "First published statement of Cramer's rule for systems of polynomial equations"
+    },
+    {
+      "authors": "C. Maclaurin",
+      "title": "A Treatise of Algebra",
+      "year": "1748",
+      "venue": "London (posthumous)",
+      "note": "Contains the rule independently, predating Cramer's publication but published posthumously"
+    },
+    {
+      "authors": "A. Cayley",
+      "title": "A Memoir on the Theory of Matrices",
+      "year": "1858",
+      "venue": "Philosophical Transactions of the Royal Society",
+      "note": "Systematic matrix algebra framework including the adjugate identity"
+    },
+    {
+      "authors": "E. H. Bareiss",
+      "title": "Sylvester's identity and multistep integer-preserving Gaussian elimination",
+      "year": "1968",
+      "venue": "Mathematics of Computation",
+      "note": "Fraction-free algorithm for determinants, an alternative to Cramer's rule for integer matrices"
+    }
+  ]
 }

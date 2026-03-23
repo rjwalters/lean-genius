@@ -56,23 +56,6 @@
       "evenKConjecture: open conjecture for even k",
       "erdos_815_summary: combines disproof with EFGS short cycle theorem"
     ],
-    "references": [
-      {
-        "key": "EFGS88",
-        "citation": "Erdős, P., Faudree, R., Gyárfás, A., Schelp, R., Cycles in graphs without proper subgraphs of minimum degree 3 (1988).",
-        "type": "paper"
-      },
-      {
-        "key": "Er91",
-        "citation": "Erdős, P., Problems and results in combinatorial analysis (1991).",
-        "type": "paper"
-      },
-      {
-        "key": "NPS17",
-        "citation": "Narins, L., Pokrovskiy, A., Szabó, T., Graphs without proper subgraphs of minimum degree 3 and short cycles (2017).",
-        "type": "paper"
-      }
-    ],
     "crossReferences": [
       {
         "proofId": "erdos-814",
@@ -200,5 +183,22 @@
     "axiomCount": 4,
     "theoremCount": 3,
     "definitionCount": 8
-  }
+  },
+  "references": [
+    {
+      "key": "EFGS88",
+      "citation": "Erdős, P., Faudree, R., Gyárfás, A., Schelp, R., Cycles in graphs without proper subgraphs of minimum degree 3 (1988).",
+      "type": "paper"
+    },
+    {
+      "key": "Er91",
+      "citation": "Erdős, P., Problems and results in combinatorial analysis (1991).",
+      "type": "paper"
+    },
+    {
+      "key": "NPS17",
+      "citation": "Narins, L., Pokrovskiy, A., Szabó, T., Graphs without proper subgraphs of minimum degree 3 and short cycles (2017).",
+      "type": "paper"
+    }
+  ]
 }

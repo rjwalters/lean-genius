@@ -19,18 +19,6 @@
       "behrend-construction",
       "kelley-meka"
     ],
-    "references": [
-      "Szemerédi (1975): On sets of integers containing no k elements in arithmetic progression",
-      "Roth (1953): On certain sets of integers (Fourier-analytic proof for k=3)",
-      "Behrend (1946): On sets of integers which contain no three terms in arithmetical progression",
-      "Kelley–Meka (2023): Strong bounds for 3-progressions",
-      "Green–Tao (2017): New bounds for Szemerédi's theorem, III: A polylogarithmic bound for r_4(N)",
-      "Leng–Sah–Sawhney (2024): Improved bounds for Szemerédi's theorem for k ≥ 5",
-      "Elkin (2011): An improved construction of progression-free sets",
-      "Bloom–Sisask (2020): Breaking the logarithmic barrier in Roth's theorem",
-      "https://erdosproblems.com/142"
-    ],
-    "leanFile": "Proofs/Erdos142Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/142",
     "erdosUrl": "https://erdosproblems.com/142",
@@ -150,5 +138,16 @@
     "axiomCount": 8,
     "theoremCount": 0,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    "Szemerédi (1975): On sets of integers containing no k elements in arithmetic progression",
+    "Roth (1953): On certain sets of integers (Fourier-analytic proof for k=3)",
+    "Behrend (1946): On sets of integers which contain no three terms in arithmetical progression",
+    "Kelley–Meka (2023): Strong bounds for 3-progressions",
+    "Green–Tao (2017): New bounds for Szemerédi's theorem, III: A polylogarithmic bound for r_4(N)",
+    "Leng–Sah–Sawhney (2024): Improved bounds for Szemerédi's theorem for k ≥ 5",
+    "Elkin (2011): An improved construction of progression-free sets",
+    "Bloom–Sisask (2020): Breaking the logarithmic barrier in Roth's theorem",
+    "https://erdosproblems.com/142"
+  ]
 }

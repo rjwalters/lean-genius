@@ -58,34 +58,7 @@
       "sigma_prime_pow theorem"
     ],
     "axiomCount": 3,
-    "lineCount": 320,
-    "references": [
-      {
-        "key": "ErGr80",
-        "citation": "Erdős, P. and Graham, R.L., Old and New Problems and Results in Combinatorial Number Theory, L'Enseignement Mathématique, Monographie 28 (1980).",
-        "type": "book"
-      },
-      {
-        "key": "Gu04",
-        "citation": "Guy, R.K., Unsolved Problems in Number Theory, 3rd ed., Springer (2004), Problem B9: Iterates of σ.",
-        "type": "book"
-      },
-      {
-        "key": "EGPS90",
-        "citation": "Erdős, P., Granville, A., Pomerance, C., and Spiro, C., On the normal behavior of the iterates of some arithmetical functions, Analytic Number Theory, Birkhäuser (1990), 165–204.",
-        "type": "paper"
-      },
-      {
-        "key": "Ro84",
-        "citation": "Robin, G., Grandes valeurs de la fonction somme des diviseurs et hypothèse de Riemann, Journal de Mathématiques Pures et Appliquées 63 (1984), 187–213.",
-        "type": "paper"
-      },
-      {
-        "key": "HW08",
-        "citation": "Hardy, G.H. and Wright, E.M., An Introduction to the Theory of Numbers, 6th ed., Oxford University Press (2008), Chapter 16: Arithmetical functions.",
-        "type": "book"
-      }
-    ]
+    "lineCount": 320
   },
   "overview": {
     "historicalContext": "This problem appears in [ErGr80] (Erdős-Graham 1980) and is discussed in Guy's 'Unsolved Problems in Number Theory' as Problem B9. It was also studied in 'On the normal behavior of the iterates of some arithmetical functions' by Erdős, Granville, Pomerance, and Spiro (1990).\n\nThe sum of divisors function σ(n) is fundamental in number theory. The question asks whether the iterated application σₖ(n) grows faster than any exponential c^k.\n\nRelated to perfect numbers (σ(n) = 2n), aliquot sequences (s(n) = σ(n) - n), and the Catalan-Dickson conjecture on aliquot sequence termination.\n\nOEIS sequence A007497 records related data.",
@@ -236,6 +209,33 @@
       "targetId": "euler-totient",
       "relationship": "related",
       "description": "Euler's totient φ(n) and the sum of divisors σ(n) are both multiplicative arithmetic functions. They satisfy the identity Σ_{d|n} φ(d) = n, and Robin's inequality σ(n) < e^γ n ln ln n (for n > 5040, equivalent to RH) parallels Ramanujan's work on highly composite numbers"
+    }
+  ],
+  "references": [
+    {
+      "key": "ErGr80",
+      "citation": "Erdős, P. and Graham, R.L., Old and New Problems and Results in Combinatorial Number Theory, L'Enseignement Mathématique, Monographie 28 (1980).",
+      "type": "book"
+    },
+    {
+      "key": "Gu04",
+      "citation": "Guy, R.K., Unsolved Problems in Number Theory, 3rd ed., Springer (2004), Problem B9: Iterates of σ.",
+      "type": "book"
+    },
+    {
+      "key": "EGPS90",
+      "citation": "Erdős, P., Granville, A., Pomerance, C., and Spiro, C., On the normal behavior of the iterates of some arithmetical functions, Analytic Number Theory, Birkhäuser (1990), 165–204.",
+      "type": "paper"
+    },
+    {
+      "key": "Ro84",
+      "citation": "Robin, G., Grandes valeurs de la fonction somme des diviseurs et hypothèse de Riemann, Journal de Mathématiques Pures et Appliquées 63 (1984), 187–213.",
+      "type": "paper"
+    },
+    {
+      "key": "HW08",
+      "citation": "Hardy, G.H. and Wright, E.M., An Introduction to the Theory of Numbers, 6th ed., Oxford University Press (2008), Chapter 16: Arithmetical functions.",
+      "type": "book"
     }
   ]
 }

@@ -38,22 +38,6 @@
         "description": "Well-ordering principle used to define leastNonDivisor",
         "module": "Mathlib.Order.WellFounded"
       }
-    ],
-    "references": [
-      {
-        "authors": "P. Erdős, R. L. Graham, I. Z. Ruzsa, E. G. Straus",
-        "title": "On the prime factors of $\\binom{2n}{n}$",
-        "year": "1975",
-        "venue": "Mathematische Zeitschrift, 148(3), pp. 287-295",
-        "note": "Establishes the heuristic m = exp((log n)^{1/2+o(1)}) for the least non-divisor via Kummer's theorem and digit structure"
-      },
-      {
-        "authors": "E. E. Kummer",
-        "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
-        "year": "1852",
-        "venue": "Journal für die reine und angewandte Mathematik, 44, pp. 93-146",
-        "note": "Proves that v_p(C(m+n,m)) equals the number of carries in base-p addition of m and n"
-      }
     ]
   },
   "overview": {
@@ -149,5 +133,21 @@
     "axiomCount": 12,
     "theoremCount": 0,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    {
+      "authors": "P. Erdős, R. L. Graham, I. Z. Ruzsa, E. G. Straus",
+      "title": "On the prime factors of $\\binom{2n}{n}$",
+      "year": "1975",
+      "venue": "Mathematische Zeitschrift, 148(3), pp. 287-295",
+      "note": "Establishes the heuristic m = exp((log n)^{1/2+o(1)}) for the least non-divisor via Kummer's theorem and digit structure"
+    },
+    {
+      "authors": "E. E. Kummer",
+      "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
+      "year": "1852",
+      "venue": "Journal für die reine und angewandte Mathematik, 44, pp. 93-146",
+      "note": "Proves that v_p(C(m+n,m)) equals the number of carries in base-p addition of m and n"
+    }
+  ]
 }

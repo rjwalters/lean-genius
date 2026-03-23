@@ -9,7 +9,6 @@
     "date": "1900",
     "status": "verified",
     "proofRepoPath": "Proofs/DissectionOfCubesOQ02.lean",
-    "leanFile": "proofs/Proofs/DissectionOfCubesOQ02.lean",
     "tags": [
       "geometry",
       "scissors-congruence",
@@ -41,28 +40,6 @@
       "dehn_obstruction: cube and tetrahedron have different Dehn invariants",
       "polygon_dehn_zero: 2D Bolyai-Gerwien analog (all polygons have zero Dehn invariant)",
       "Comprehensive documentation: Hilbert's 3rd problem, Dehn-Sydler theorem, dimension contrast"
-    ],
-    "references": [
-      {
-        "key": "De00",
-        "citation": "Dehn, M., Ueber den Rauminhalt, Mathematische Annalen 55 (1900), 465-478.",
-        "type": "paper"
-      },
-      {
-        "key": "Sy65",
-        "citation": "Sydler, J.-P., Conditions nécessaires et suffisantes pour l'équivalence des polyèdres de l'espace euclidien à trois dimensions, Comment. Math. Helv. 40 (1965), 43-80.",
-        "type": "paper"
-      },
-      {
-        "key": "Ni56",
-        "citation": "Niven, I., Irrational Numbers, Carus Math. Monographs No. 11, MAA (1956). Contains the theorem that arccos(r) is a rational multiple of π only for r ∈ {0, ±1/2, ±1}.",
-        "type": "book"
-      },
-      {
-        "key": "Je68",
-        "citation": "Jessen, B., The algebra of polyhedra and the Dehn-Sydler theorem, Math. Scand. 22 (1968), 241-256.",
-        "type": "paper"
-      }
     ],
     "lineCount": 383
   },
@@ -170,5 +147,27 @@
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    {
+      "key": "De00",
+      "citation": "Dehn, M., Ueber den Rauminhalt, Mathematische Annalen 55 (1900), 465-478.",
+      "type": "paper"
+    },
+    {
+      "key": "Sy65",
+      "citation": "Sydler, J.-P., Conditions nécessaires et suffisantes pour l'équivalence des polyèdres de l'espace euclidien à trois dimensions, Comment. Math. Helv. 40 (1965), 43-80.",
+      "type": "paper"
+    },
+    {
+      "key": "Ni56",
+      "citation": "Niven, I., Irrational Numbers, Carus Math. Monographs No. 11, MAA (1956). Contains the theorem that arccos(r) is a rational multiple of π only for r ∈ {0, ±1/2, ±1}.",
+      "type": "book"
+    },
+    {
+      "key": "Je68",
+      "citation": "Jessen, B., The algebra of polyhedra and the Dehn-Sydler theorem, Math. Scand. 22 (1968), 241-256.",
+      "type": "paper"
+    }
+  ]
 }

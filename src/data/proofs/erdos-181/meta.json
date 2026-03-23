@@ -8,7 +8,6 @@
     "sourceUrl": "https://erdosproblems.com/181",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos181Problem.lean",
-    "leanFile": "Proofs/Erdos181Problem.lean",
     "tags": [
       "erdos",
       "graph-theory",
@@ -42,28 +41,6 @@
         "theorem": "Nat.sInf_le",
         "description": "sInf is a lower bound",
         "module": "Mathlib.Data.Nat.Basic"
-      }
-    ],
-    "references": [
-      {
-        "key": "BuEr75",
-        "citation": "Burr, S.A. and Erdős, P. (1975). On the magnitude of generalized Ramsey numbers for graphs. Colloquia Mathematica Societatis János Bolyai 10, Infinite and Finite Sets, 214-240.",
-        "type": "paper"
-      },
-      {
-        "key": "Ti22",
-        "citation": "Tikhomirov, K. (2022). Ramsey number of the Boolean lattice. arXiv:2208.14568.",
-        "type": "paper"
-      },
-      {
-        "key": "Le17",
-        "citation": "Lee, C. (2017). Ramsey numbers of degenerate graphs. Annals of Mathematics, 185(3), 791-829.",
-        "type": "paper"
-      },
-      {
-        "key": "Er93",
-        "citation": "Erdős, P. (1993). On some of my problems in graph theory. Combinatorics, Graph Theory, and Algorithms, Vol. I, 365-377.",
-        "type": "paper"
       }
     ],
     "originalContributions": [
@@ -160,5 +137,27 @@
     "axiomCount": 7,
     "theoremCount": 6,
     "definitionCount": 2
-  }
+  },
+  "references": [
+    {
+      "key": "BuEr75",
+      "citation": "Burr, S.A. and Erdős, P. (1975). On the magnitude of generalized Ramsey numbers for graphs. Colloquia Mathematica Societatis János Bolyai 10, Infinite and Finite Sets, 214-240.",
+      "type": "paper"
+    },
+    {
+      "key": "Ti22",
+      "citation": "Tikhomirov, K. (2022). Ramsey number of the Boolean lattice. arXiv:2208.14568.",
+      "type": "paper"
+    },
+    {
+      "key": "Le17",
+      "citation": "Lee, C. (2017). Ramsey numbers of degenerate graphs. Annals of Mathematics, 185(3), 791-829.",
+      "type": "paper"
+    },
+    {
+      "key": "Er93",
+      "citation": "Erdős, P. (1993). On some of my problems in graph theory. Combinatorics, Graph Theory, and Algorithms, Vol. I, 365-377.",
+      "type": "paper"
+    }
+  ]
 }

@@ -54,43 +54,6 @@
       "Poincaré-Hopf index theorem → hairy ball theorem (complete χ=0 classification)",
       "Morse theory: critical point counts constrained by Euler characteristic"
     ],
-    "references": [
-      {
-        "authors": "Carl Friedrich Gauss",
-        "title": "Disquisitiones generales circa superficies curvas",
-        "year": "1827",
-        "venue": "Commentationes Societatis Regiae Scientiarum Gottingensis",
-        "note": "Established Gaussian curvature and the Theorema Egregium"
-      },
-      {
-        "authors": "Pierre Ossian Bonnet",
-        "title": "Mémoire sur la théorie générale des surfaces",
-        "year": "1848",
-        "venue": "Journal de l'École Polytechnique",
-        "note": "Proved the Gauss-Bonnet theorem for geodesic triangles"
-      },
-      {
-        "authors": "Shiing-Shen Chern",
-        "title": "A simple intrinsic proof of the Gauss-Bonnet formula for closed Riemannian manifolds",
-        "year": "1944",
-        "venue": "Annals of Mathematics",
-        "note": "Generalized to higher dimensions via the Pfaffian"
-      },
-      {
-        "authors": "Manfredo do Carmo",
-        "title": "Differential Geometry of Curves and Surfaces",
-        "year": "1976",
-        "venue": "Prentice-Hall",
-        "note": "Chapter 4: The Gauss-Bonnet theorem and applications"
-      },
-      {
-        "authors": "W. Mantel",
-        "title": "Über die Eigenschaft der Kugel, unter allen geschlossenen Flächen...",
-        "year": "1907",
-        "venue": "Jahresbericht der DMV",
-        "note": "Early topology-curvature connections"
-      }
-    ],
     "historicalContext": "The Gauss-Bonnet theorem is one of the deepest results connecting geometry and topology. Gauss (1827) discovered that Gaussian curvature is intrinsic (Theorema Egregium). Bonnet (1848) proved ∫K dA = 2πχ for closed surfaces. Chern (1944) generalized to 2n-manifolds using the Pfaffian of the curvature form. The theorem bridges local geometry (curvature) and global topology (Euler characteristic), and is a precursor to the Atiyah-Singer index theorem.",
     "axiomCount": 0,
     "lineCount": 786
@@ -283,6 +246,43 @@
     {
       "id": "euler-polyhedral-formula",
       "relationship": "The base Euler formula V-E+F=2 whose topological content (χ=2-2g) is the central quantity in both discrete and smooth Gauss-Bonnet"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Carl Friedrich Gauss",
+      "title": "Disquisitiones generales circa superficies curvas",
+      "year": "1827",
+      "venue": "Commentationes Societatis Regiae Scientiarum Gottingensis",
+      "note": "Established Gaussian curvature and the Theorema Egregium"
+    },
+    {
+      "authors": "Pierre Ossian Bonnet",
+      "title": "Mémoire sur la théorie générale des surfaces",
+      "year": "1848",
+      "venue": "Journal de l'École Polytechnique",
+      "note": "Proved the Gauss-Bonnet theorem for geodesic triangles"
+    },
+    {
+      "authors": "Shiing-Shen Chern",
+      "title": "A simple intrinsic proof of the Gauss-Bonnet formula for closed Riemannian manifolds",
+      "year": "1944",
+      "venue": "Annals of Mathematics",
+      "note": "Generalized to higher dimensions via the Pfaffian"
+    },
+    {
+      "authors": "Manfredo do Carmo",
+      "title": "Differential Geometry of Curves and Surfaces",
+      "year": "1976",
+      "venue": "Prentice-Hall",
+      "note": "Chapter 4: The Gauss-Bonnet theorem and applications"
+    },
+    {
+      "authors": "W. Mantel",
+      "title": "Über die Eigenschaft der Kugel, unter allen geschlossenen Flächen...",
+      "year": "1907",
+      "venue": "Jahresbericht der DMV",
+      "note": "Early topology-curvature connections"
     }
   ]
 }

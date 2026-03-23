@@ -46,29 +46,6 @@
       "cramer_implies_gap_sublinear: C*(log x)^2 = o(x) via rpow bounds (was sorry)",
       "primeGapSet_zero/one/two: empty gap sets for small x"
     ],
-    "references": [
-      {
-        "authors": "P. Erdos",
-        "title": "Problems in number theory and combinatorics",
-        "year": "1979",
-        "venue": "Congr. Numer.",
-        "note": "Problem 1138: prime gap growth"
-      },
-      {
-        "authors": "H. Cramer",
-        "title": "On the order of difference of consecutive primes",
-        "year": "1936",
-        "venue": "Acta Arithmetica",
-        "note": "Cramer conjecture: maximal gap ~ (log p)^2"
-      },
-      {
-        "authors": "R. C. Baker, G. Harman, J. Pintz",
-        "title": "The difference between consecutive primes, II",
-        "year": "2001",
-        "venue": "Proc. London Math. Soc.",
-        "note": "Unconditional bound: gap <= x^0.525"
-      }
-    ],
     "dateAdded": "2026-03-11",
     "mathlib_version": "4.26.0",
     "axiomCount": 1,
@@ -165,5 +142,28 @@
     "axiomCount": 1,
     "theoremCount": 12,
     "definitionCount": 2
-  }
+  },
+  "references": [
+    {
+      "authors": "P. Erdos",
+      "title": "Problems in number theory and combinatorics",
+      "year": "1979",
+      "venue": "Congr. Numer.",
+      "note": "Problem 1138: prime gap growth"
+    },
+    {
+      "authors": "H. Cramer",
+      "title": "On the order of difference of consecutive primes",
+      "year": "1936",
+      "venue": "Acta Arithmetica",
+      "note": "Cramer conjecture: maximal gap ~ (log p)^2"
+    },
+    {
+      "authors": "R. C. Baker, G. Harman, J. Pintz",
+      "title": "The difference between consecutive primes, II",
+      "year": "2001",
+      "venue": "Proc. London Math. Soc.",
+      "note": "Unconditional bound: gap <= x^0.525"
+    }
+  ]
 }

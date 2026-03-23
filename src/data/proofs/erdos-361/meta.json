@@ -8,7 +8,6 @@
     "sourceUrl": "https://erdosproblems.com/361",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos361Problem.lean",
-    "leanFile": "Proofs/Erdos361Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -43,13 +42,6 @@
         "theorem": "Filter.atTop",
         "description": "Filter for asymptotic analysis",
         "module": "Mathlib.Order.Filter.Basic"
-      }
-    ],
-    "references": [
-      {
-        "key": "ErGr80",
-        "citation": "Erdős, P. and Graham, R.L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de L'Enseignement Mathématique 28, Université de Genève.",
-        "type": "book"
       }
     ],
     "originalContributions": [
@@ -150,5 +142,12 @@
     "axiomCount": 2,
     "theoremCount": 5,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    {
+      "key": "ErGr80",
+      "citation": "Erdős, P. and Graham, R.L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de L'Enseignement Mathématique 28, Université de Genève.",
+      "type": "book"
+    }
+  ]
 }

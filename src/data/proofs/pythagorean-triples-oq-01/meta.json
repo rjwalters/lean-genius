@@ -58,29 +58,6 @@
       "Computational verification for N = 0, 4, 5, 13, 25, 50",
       "Column-sum decomposition separating m-parity classes"
     ],
-    "references": [
-      {
-        "authors": "D. N. Lehmer",
-        "title": "Asymptotic evaluation of certain totient sums",
-        "year": "1900",
-        "venue": "American Journal of Mathematics",
-        "note": "Early work on the density of primitive Pythagorean triples"
-      },
-      {
-        "authors": "E. Cesàro",
-        "title": "Question 75 (Solution)",
-        "year": "1883",
-        "venue": "Mathesis 3, 224-225",
-        "note": "Probability that two random integers are coprime is 6/π²"
-      },
-      {
-        "authors": "C. F. Gauss",
-        "title": "Disquisitiones Arithmeticae",
-        "year": "1801",
-        "venue": "Leipzig",
-        "note": "Gauss circle problem: lattice points in circular regions"
-      }
-    ],
     "dateAdded": "2026-03-14",
     "relatedProblems": [
       {
@@ -285,6 +262,27 @@
       "year": "1991",
       "venue": "Wiley, 5th edition",
       "note": "Standard textbook covering Pythagorean triples, their parametrization, and density results"
+    },
+    {
+      "authors": "D. N. Lehmer",
+      "title": "Asymptotic evaluation of certain totient sums",
+      "year": "1900",
+      "venue": "American Journal of Mathematics",
+      "note": "Early work on the density of primitive Pythagorean triples"
+    },
+    {
+      "authors": "E. Cesàro",
+      "title": "Question 75 (Solution)",
+      "year": "1883",
+      "venue": "Mathesis 3, 224-225",
+      "note": "Probability that two random integers are coprime is 6/π²"
+    },
+    {
+      "authors": "C. F. Gauss",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig",
+      "note": "Gauss circle problem: lattice points in circular regions"
     }
   ]
 }

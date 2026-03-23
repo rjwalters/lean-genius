@@ -40,33 +40,6 @@
         "module": "Mathlib.Data.Nat.Prime.Basic"
       }
     ],
-    "references": [
-      {
-        "key": "Beeson",
-        "citation": "Beeson, M. 'Triangle Tiling I: The tile is an acute triangle or a right triangle.' (2012). Proves that 7 and 11 are not dissectable into congruent triangles via exhaustive geometric case analysis.",
-        "type": "paper"
-      },
-      {
-        "key": "Soifer",
-        "citation": "Soifer, A. 'How Does One Cut a Triangle?' (1990, 2nd ed. 2009). Springer. Complete solution for similar triangle dissections: all n ≥ 1 except 2, 3, 5.",
-        "type": "book"
-      },
-      {
-        "key": "SWW",
-        "citation": "Snover, S., Waiveris, C., and Williams, J. 'Rep-Tiling for Triangles.' Discrete Mathematics 91(2), 193–200 (1991). Characterizes which n allow dissection into n similar copies of the original triangle.",
-        "type": "paper"
-      },
-      {
-        "key": "Zhang2025",
-        "citation": "Zhang (2025). 'On sufficient conditions for triangle dissectability.' Establishes that for fixed aspect ratios, sufficiently large n²ab are dissectable.",
-        "type": "paper"
-      },
-      {
-        "key": "ErdosGraham",
-        "citation": "Erdős, P. and Graham, R.L. 'Old and New Problems and Results in Combinatorial Number Theory.' L'Enseignement Mathématique, Monograph 28 (1980). Contains the original problem statement.",
-        "type": "book"
-      }
-    ],
     "originalContributions": [
       "Formal definition of triangle congruence via side length multisets",
       "Definition of triangle dissection and congruent dissection",
@@ -206,5 +179,32 @@
     "axiomCount": 8,
     "theoremCount": 16,
     "definitionCount": 15
-  }
+  },
+  "references": [
+    {
+      "key": "Beeson",
+      "citation": "Beeson, M. 'Triangle Tiling I: The tile is an acute triangle or a right triangle.' (2012). Proves that 7 and 11 are not dissectable into congruent triangles via exhaustive geometric case analysis.",
+      "type": "paper"
+    },
+    {
+      "key": "Soifer",
+      "citation": "Soifer, A. 'How Does One Cut a Triangle?' (1990, 2nd ed. 2009). Springer. Complete solution for similar triangle dissections: all n ≥ 1 except 2, 3, 5.",
+      "type": "book"
+    },
+    {
+      "key": "SWW",
+      "citation": "Snover, S., Waiveris, C., and Williams, J. 'Rep-Tiling for Triangles.' Discrete Mathematics 91(2), 193–200 (1991). Characterizes which n allow dissection into n similar copies of the original triangle.",
+      "type": "paper"
+    },
+    {
+      "key": "Zhang2025",
+      "citation": "Zhang (2025). 'On sufficient conditions for triangle dissectability.' Establishes that for fixed aspect ratios, sufficiently large n²ab are dissectable.",
+      "type": "paper"
+    },
+    {
+      "key": "ErdosGraham",
+      "citation": "Erdős, P. and Graham, R.L. 'Old and New Problems and Results in Combinatorial Number Theory.' L'Enseignement Mathématique, Monograph 28 (1980). Contains the original problem statement.",
+      "type": "book"
+    }
+  ]
 }

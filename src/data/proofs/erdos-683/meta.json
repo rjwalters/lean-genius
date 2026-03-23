@@ -46,38 +46,6 @@
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       }
     ],
-    "references": [
-      {
-        "key": "Sy1892",
-        "citation": "Sylvester, J.J. (1892). On arithmetical series. Messenger of Mathematics 21, 1–19, 87–120.",
-        "type": "paper"
-      },
-      {
-        "key": "Sc1929",
-        "citation": "Schur, I. (1929). Einige Sätze über Primzahlen mit Anwendung auf Irreduzibilitätsfragen. Sitzungsberichte der Preussischen Akademie der Wissenschaften, Phys.-Math. Klasse, 23–24.",
-        "type": "paper"
-      },
-      {
-        "key": "Er1934",
-        "citation": "Erdős, P. (1934). A theorem of Sylvester and Schur. Journal of the London Mathematical Society 9, 282–288.",
-        "type": "paper"
-      },
-      {
-        "key": "Er1955",
-        "citation": "Erdős, P. (1955). On consecutive integers. Nieuw Archief voor Wiskunde 3, 124–128.",
-        "type": "paper"
-      },
-      {
-        "key": "Er1979",
-        "citation": "Erdős, P. (1979). Some unconventional problems in number theory. Mathematics Magazine 52, 67–70.",
-        "type": "paper"
-      },
-      {
-        "key": "ErdosProblems",
-        "citation": "Erdős Problems. Problem #683.",
-        "type": "website"
-      }
-    ],
     "originalContributions": [
       "largestPrimeDivisor with P_is_prime, P_divides, P_largest axioms",
       "P(C(n,k)) applied to binomial coefficients",
@@ -230,5 +198,37 @@
     "axiomCount": 14,
     "theoremCount": 3,
     "definitionCount": 4
-  }
+  },
+  "references": [
+    {
+      "key": "Sy1892",
+      "citation": "Sylvester, J.J. (1892). On arithmetical series. Messenger of Mathematics 21, 1–19, 87–120.",
+      "type": "paper"
+    },
+    {
+      "key": "Sc1929",
+      "citation": "Schur, I. (1929). Einige Sätze über Primzahlen mit Anwendung auf Irreduzibilitätsfragen. Sitzungsberichte der Preussischen Akademie der Wissenschaften, Phys.-Math. Klasse, 23–24.",
+      "type": "paper"
+    },
+    {
+      "key": "Er1934",
+      "citation": "Erdős, P. (1934). A theorem of Sylvester and Schur. Journal of the London Mathematical Society 9, 282–288.",
+      "type": "paper"
+    },
+    {
+      "key": "Er1955",
+      "citation": "Erdős, P. (1955). On consecutive integers. Nieuw Archief voor Wiskunde 3, 124–128.",
+      "type": "paper"
+    },
+    {
+      "key": "Er1979",
+      "citation": "Erdős, P. (1979). Some unconventional problems in number theory. Mathematics Magazine 52, 67–70.",
+      "type": "paper"
+    },
+    {
+      "key": "ErdosProblems",
+      "citation": "Erdős Problems. Problem #683.",
+      "type": "website"
+    }
+  ]
 }

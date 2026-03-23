@@ -68,29 +68,6 @@
       "standard_pattern theorem: 1/n = 1/(n+1) + 1/(n(n+1))",
       "erdos_302 theorem: complete status combining all bounds"
     ],
-    "references": [
-      {
-        "authors": "Erdős, Paul; Graham, Ronald L.",
-        "title": "Old and New Problems and Results in Combinatorial Number Theory",
-        "year": "1980",
-        "venue": "Monographies de L'Enseignement Mathématique 28",
-        "note": "[ErGr80] where Problem 302 appears"
-      },
-      {
-        "authors": "Cambie, Stijn",
-        "title": "On unit fraction sum-free sets",
-        "year": "2023",
-        "venue": "arXiv preprint",
-        "note": "Proved lower bound f(N) ≥ (5/8+o(1))N, disproving original conjecture"
-      },
-      {
-        "authors": "van Doorn, Wouter",
-        "title": "Upper bounds for unit fraction sum-free sets",
-        "year": "2023",
-        "venue": "arXiv preprint",
-        "note": "Proved upper bound f(N) ≤ (9/10+o(1))N"
-      }
-    ],
     "axiomCount": 6,
     "prerequisites": [
       "Elementary number theory (divisibility, parity)",
@@ -258,5 +235,28 @@
     "axiomCount": 6,
     "theoremCount": 15,
     "definitionCount": 10
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "note": "[ErGr80] where Problem 302 appears"
+    },
+    {
+      "authors": "Cambie, Stijn",
+      "title": "On unit fraction sum-free sets",
+      "year": "2023",
+      "venue": "arXiv preprint",
+      "note": "Proved lower bound f(N) ≥ (5/8+o(1))N, disproving original conjecture"
+    },
+    {
+      "authors": "van Doorn, Wouter",
+      "title": "Upper bounds for unit fraction sum-free sets",
+      "year": "2023",
+      "venue": "arXiv preprint",
+      "note": "Proved upper bound f(N) ≤ (9/10+o(1))N"
+    }
+  ]
 }

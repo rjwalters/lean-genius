@@ -17,29 +17,6 @@
       "extremal-combinatorics",
       "solved"
     ],
-    "references": [
-      {
-        "authors": "Erdős, Paul; Graham, Ronald L.",
-        "title": "Old and new problems and results in combinatorial number theory",
-        "year": "1980",
-        "venue": "Monographies de L'Enseignement Mathématique 28",
-        "note": "Original problem statement about fractional distance separation in disk configurations"
-      },
-      {
-        "authors": "Sárközy, András",
-        "title": "On differences of the fractional parts of pairwise distances",
-        "year": "1976",
-        "venue": "Number Theory Conference Proceedings",
-        "note": "Proved polynomial bound N(X,δ) > X^{1/2−δ^{1/7}}, nearly matching Konyagin's upper bound"
-      },
-      {
-        "authors": "Konyagin, Sergei V.",
-        "title": "Upper bounds for integer point configurations avoiding near-integer distances",
-        "year": "2001",
-        "venue": "Mathematika",
-        "note": "Proved N(X,δ) ≪ X^{1/2}, matching Sárközy's lower bound up to the δ-dependent correction"
-      }
-    ],
     "badge": "axiom",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/466",
@@ -110,12 +87,6 @@
       "**Sárközy's polynomial leap**: the improvement from O(log X) to X^{1/2−ε} shows the problem has algebraic, not logarithmic, character — carefully chosen point sets can exploit arithmetic structure",
       "**The 465-466 duality**: matching upper (Konyagin) and lower (Sárközy) bounds at X^{1/2} reveal the natural scale, with the remaining gap only in the δ-dependence",
       "**Threshold exponent 1/2**: heuristically, area πX² of the disk gives √(area) ≈ X independent distance classes modulo integers, suggesting X^{1/2} as the natural extremal count"
-    ],
-    "prerequisites": [
-      "Discrete geometry: point configurations in Euclidean space, packing bounds",
-      "Diophantine approximation: fractional parts, distance to nearest integer $\\|x\\|$",
-      "Analytic number theory: exponential sums and the circle method (for construction proofs)",
-      "Combinatorial geometry: extremal configurations under distance constraints"
     ]
   },
   "conclusion": {
@@ -159,5 +130,28 @@
     "axiomCount": 6,
     "theoremCount": 0,
     "definitionCount": 2
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and new problems and results in combinatorial number theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "note": "Original problem statement about fractional distance separation in disk configurations"
+    },
+    {
+      "authors": "Sárközy, András",
+      "title": "On differences of the fractional parts of pairwise distances",
+      "year": "1976",
+      "venue": "Number Theory Conference Proceedings",
+      "note": "Proved polynomial bound N(X,δ) > X^{1/2−δ^{1/7}}, nearly matching Konyagin's upper bound"
+    },
+    {
+      "authors": "Konyagin, Sergei V.",
+      "title": "Upper bounds for integer point configurations avoiding near-integer distances",
+      "year": "2001",
+      "venue": "Mathematika",
+      "note": "Proved N(X,δ) ≪ X^{1/2}, matching Sárközy's lower bound up to the δ-dependent correction"
+    }
+  ]
 }

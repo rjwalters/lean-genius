@@ -62,22 +62,6 @@
       "Special values: T_n(1) = 1, T_n(-1) = (-1)^n, T_n(0) = cos(nπ/2)",
       "Roots: T_n vanishes at cos((2k+1)π/(2n)) for all k ∈ ℤ"
     ],
-    "references": [
-      {
-        "authors": "J. C. Mason, D. C. Handscomb",
-        "title": "Chebyshev Polynomials",
-        "year": "2003",
-        "venue": "CRC Press",
-        "note": "Comprehensive reference for composition, product-to-sum, and root properties"
-      },
-      {
-        "authors": "T. J. Rivlin",
-        "title": "Chebyshev Polynomials: From Approximation Theory to Algebra and Number Theory",
-        "year": "1990",
-        "venue": "Wiley",
-        "note": "Classical treatment of Chebyshev polynomial identities"
-      }
-    ],
     "dateAdded": "2026-02-26",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
@@ -173,5 +157,21 @@
     "axiomCount": 0,
     "theoremCount": 16,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "J. C. Mason, D. C. Handscomb",
+      "title": "Chebyshev Polynomials",
+      "year": "2003",
+      "venue": "CRC Press",
+      "note": "Comprehensive reference for composition, product-to-sum, and root properties"
+    },
+    {
+      "authors": "T. J. Rivlin",
+      "title": "Chebyshev Polynomials: From Approximation Theory to Algebra and Number Theory",
+      "year": "1990",
+      "venue": "Wiley",
+      "note": "Classical treatment of Chebyshev polynomial identities"
+    }
+  ]
 }

@@ -61,22 +61,6 @@
       "Direct proofs of double, triple, quadruple, and quintuple angle formulas for cos and sin",
       "Formalized the cosine recurrence cos((n+2)θ) = 2cos(θ)cos((n+1)θ) - cos(nθ) for all integer n"
     ],
-    "references": [
-      {
-        "authors": "A. de Moivre",
-        "title": "Miscellanea Analytica de Seriebus et Quadraturis",
-        "year": "1730",
-        "venue": "London",
-        "note": "First systematic treatment of (cos θ + i sin θ)^n = cos(nθ) + i sin(nθ)"
-      },
-      {
-        "authors": "P. L. Chebyshev",
-        "title": "Théorie des mécanismes connus sous le nom de parallélogrammes",
-        "year": "1853",
-        "venue": "Mémoires des Savants étrangers présentés à l'Académie de Saint-Pétersbourg",
-        "note": "Introduced T_n and U_n polynomials, capturing the multiple-angle structure"
-      }
-    ],
     "dateAdded": "2026-02-23",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
@@ -173,5 +157,21 @@
     "axiomCount": 0,
     "theoremCount": 19,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "A. de Moivre",
+      "title": "Miscellanea Analytica de Seriebus et Quadraturis",
+      "year": "1730",
+      "venue": "London",
+      "note": "First systematic treatment of (cos θ + i sin θ)^n = cos(nθ) + i sin(nθ)"
+    },
+    {
+      "authors": "P. L. Chebyshev",
+      "title": "Théorie des mécanismes connus sous le nom de parallélogrammes",
+      "year": "1853",
+      "venue": "Mémoires des Savants étrangers présentés à l'Académie de Saint-Pétersbourg",
+      "note": "Introduced T_n and U_n polynomials, capturing the multiple-angle structure"
+    }
+  ]
 }

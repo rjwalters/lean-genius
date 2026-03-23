@@ -49,38 +49,6 @@
       "Axiomatization of de Mathan-Pollington theorem and Peres-Schlag bound"
     ],
     "mathContext": "Diophantine Approximation — Lacunary Sequences and Equidistribution",
-    "references": [
-      {
-        "authors": "B. de Mathan",
-        "title": "Numbers contravening a condition in density modulo 1",
-        "year": 1980,
-        "journal": "Acta Mathematica Hungarica"
-      },
-      {
-        "authors": "A. D. Pollington",
-        "title": "On the density of sequence {nₖξ}",
-        "year": 1979,
-        "journal": "Illinois Journal of Mathematics"
-      },
-      {
-        "authors": "Y. Peres, W. Schlag",
-        "title": "Two Erdős problems on lacunary sequences: chromatic number and Diophantine approximation",
-        "year": 2010,
-        "journal": "Bulletin of the London Mathematical Society"
-      },
-      {
-        "authors": "Y. Katznelson",
-        "title": "Chromatic numbers of Cayley graphs on Z and recurrence",
-        "year": 2001,
-        "journal": "Combinatorica"
-      },
-      {
-        "authors": "R. K. Akhunzhanov, N. G. Moshchevitin",
-        "title": "On the chromatic number of a distance graph associated with a lacunary sequence",
-        "year": 2004,
-        "journal": "Doklady Mathematics"
-      }
-    ],
     "crossReferences": [
       {
         "targetId": "erdos-466",
@@ -174,5 +142,37 @@
     "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    {
+      "authors": "B. de Mathan",
+      "title": "Numbers contravening a condition in density modulo 1",
+      "year": 1980,
+      "journal": "Acta Mathematica Hungarica"
+    },
+    {
+      "authors": "A. D. Pollington",
+      "title": "On the density of sequence {nₖξ}",
+      "year": 1979,
+      "journal": "Illinois Journal of Mathematics"
+    },
+    {
+      "authors": "Y. Peres, W. Schlag",
+      "title": "Two Erdős problems on lacunary sequences: chromatic number and Diophantine approximation",
+      "year": 2010,
+      "journal": "Bulletin of the London Mathematical Society"
+    },
+    {
+      "authors": "Y. Katznelson",
+      "title": "Chromatic numbers of Cayley graphs on Z and recurrence",
+      "year": 2001,
+      "journal": "Combinatorica"
+    },
+    {
+      "authors": "R. K. Akhunzhanov, N. G. Moshchevitin",
+      "title": "On the chromatic number of a distance graph associated with a lacunary sequence",
+      "year": 2004,
+      "journal": "Doklady Mathematics"
+    }
+  ]
 }

@@ -58,33 +58,6 @@
       "straus_high_dimension: high-dimensional construction with only n-1 distances",
       "currentGap, refinedQuestion: formalization of the remaining open questions"
     ],
-    "references": [
-      {
-        "key": "Er73",
-        "citation": "Erdős, P. and Davies, R. (1973). On a problem of Erdős and Moser. In: Problems and results on combinatorial number theory.",
-        "type": "paper"
-      },
-      {
-        "key": "Du08",
-        "citation": "Dumitrescu, A. (2008). On distinct distances and λ-free point sets. Discrete Mathematics, 308(24), 6533-6538.",
-        "type": "paper"
-      },
-      {
-        "key": "KeMeka23",
-        "citation": "Kelley, Z. and Meka, R. (2023). Strong Bounds for 3-Progressions. Proceedings of FOCS 2023.",
-        "type": "paper"
-      },
-      {
-        "key": "BlSi23",
-        "citation": "Bloom, T. and Sisask, O. (2023). An improvement to the Kelley-Meka bounds on three-term arithmetic progressions. arXiv:2309.02353.",
-        "type": "preprint"
-      },
-      {
-        "key": "Beh46",
-        "citation": "Behrend, F. (1946). On sets of integers which contain no three terms in arithmetical progression. Proceedings of the National Academy of Sciences, 32(12), 331-332.",
-        "type": "paper"
-      }
-    ],
     "relatedProblems": [
       {
         "id": "erdos-135",
@@ -231,5 +204,32 @@
     "axiomCount": 16,
     "theoremCount": 6,
     "definitionCount": 16
-  }
+  },
+  "references": [
+    {
+      "key": "Er73",
+      "citation": "Erdős, P. and Davies, R. (1973). On a problem of Erdős and Moser. In: Problems and results on combinatorial number theory.",
+      "type": "paper"
+    },
+    {
+      "key": "Du08",
+      "citation": "Dumitrescu, A. (2008). On distinct distances and λ-free point sets. Discrete Mathematics, 308(24), 6533-6538.",
+      "type": "paper"
+    },
+    {
+      "key": "KeMeka23",
+      "citation": "Kelley, Z. and Meka, R. (2023). Strong Bounds for 3-Progressions. Proceedings of FOCS 2023.",
+      "type": "paper"
+    },
+    {
+      "key": "BlSi23",
+      "citation": "Bloom, T. and Sisask, O. (2023). An improvement to the Kelley-Meka bounds on three-term arithmetic progressions. arXiv:2309.02353.",
+      "type": "preprint"
+    },
+    {
+      "key": "Beh46",
+      "citation": "Behrend, F. (1946). On sets of integers which contain no three terms in arithmetical progression. Proceedings of the National Academy of Sciences, 32(12), 331-332.",
+      "type": "paper"
+    }
+  ]
 }

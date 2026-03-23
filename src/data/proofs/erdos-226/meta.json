@@ -47,36 +47,6 @@
       "Proved rationals_countable_dense directly from two Mathlib lemmas",
       "Formalized both the original and general question with precise type-theoretic statements"
     ],
-    "references": [
-      {
-        "authors": "Barth, K. F.; Schneider, W. J.",
-        "title": "Entire functions mapping countable dense subsets of the reals onto each other monotonically",
-        "year": "1970",
-        "venue": "Journal of the London Mathematical Society (2), pp. 620-626",
-        "note": "The main result: for any countable dense A, B ⊂ ℝ, a transcendental entire f with f(A) = B exists"
-      },
-      {
-        "authors": "Barth, K. F.; Schneider, W. J.",
-        "title": "Entire functions mapping arbitrary countable dense sets and their complements onto each other",
-        "year": "1971",
-        "venue": "Journal of the London Mathematical Society (2), pp. 482-488",
-        "note": "Extended the 1970 result to countable dense subsets of ℂ"
-      },
-      {
-        "authors": "Hayman, W. K.",
-        "title": "Research problems in function theory: new problems",
-        "year": "1974",
-        "venue": "pp. 155-180",
-        "note": "Problem 2.31, attributing the question to Erdős"
-      },
-      {
-        "authors": "Stäckel, Paul",
-        "title": "Ueber arithmetische Eigenschaften analytischer Functionen",
-        "year": "1895",
-        "venue": "Mathematische Annalen 46, pp. 513-520",
-        "note": "Early work on arithmetic properties of analytic functions — proved a transcendental entire function can take rational values at all rationals"
-      }
-    ],
     "prerequisites": [
       "Complex analysis (entire and transcendental functions)",
       "Topology (countable dense subsets of ℝ and ℂ)",
@@ -212,5 +182,35 @@
     "axiomCount": 4,
     "theoremCount": 6,
     "definitionCount": 8
-  }
+  },
+  "references": [
+    {
+      "authors": "Barth, K. F.; Schneider, W. J.",
+      "title": "Entire functions mapping countable dense subsets of the reals onto each other monotonically",
+      "year": "1970",
+      "venue": "Journal of the London Mathematical Society (2), pp. 620-626",
+      "note": "The main result: for any countable dense A, B ⊂ ℝ, a transcendental entire f with f(A) = B exists"
+    },
+    {
+      "authors": "Barth, K. F.; Schneider, W. J.",
+      "title": "Entire functions mapping arbitrary countable dense sets and their complements onto each other",
+      "year": "1971",
+      "venue": "Journal of the London Mathematical Society (2), pp. 482-488",
+      "note": "Extended the 1970 result to countable dense subsets of ℂ"
+    },
+    {
+      "authors": "Hayman, W. K.",
+      "title": "Research problems in function theory: new problems",
+      "year": "1974",
+      "venue": "pp. 155-180",
+      "note": "Problem 2.31, attributing the question to Erdős"
+    },
+    {
+      "authors": "Stäckel, Paul",
+      "title": "Ueber arithmetische Eigenschaften analytischer Functionen",
+      "year": "1895",
+      "venue": "Mathematische Annalen 46, pp. 513-520",
+      "note": "Early work on arithmetic properties of analytic functions — proved a transcendental entire function can take rational values at all rationals"
+    }
+  ]
 }

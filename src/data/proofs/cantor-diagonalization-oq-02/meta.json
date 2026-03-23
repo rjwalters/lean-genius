@@ -80,22 +80,6 @@
       "Characterization of ω₁ = (aleph 1).ord as the exact threshold between countable and uncountable ordinals",
       "ℵ₁ as minimum uncountable cardinal: no cardinal strictly between ℵ₀ and ℵ₁"
     ],
-    "references": [
-      {
-        "authors": "G. Cantor",
-        "title": "Über unendliche, lineare Punktmannigfaltigkeiten",
-        "year": "1883",
-        "venue": "Mathematische Annalen",
-        "note": "Introduced transfinite ordinals and the first uncountable ordinal ω₁"
-      },
-      {
-        "authors": "F. Hausdorff",
-        "title": "Grundzüge der Mengenlehre",
-        "year": "1914",
-        "venue": "Leipzig: Veit",
-        "note": "Systematic treatment of uncountable ordinals and their cardinality"
-      }
-    ],
     "dateAdded": "2026-02-25",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
@@ -202,5 +186,21 @@
     "axiomCount": 0,
     "theoremCount": 16,
     "definitionCount": 2
-  }
+  },
+  "references": [
+    {
+      "authors": "G. Cantor",
+      "title": "Über unendliche, lineare Punktmannigfaltigkeiten",
+      "year": "1883",
+      "venue": "Mathematische Annalen",
+      "note": "Introduced transfinite ordinals and the first uncountable ordinal ω₁"
+    },
+    {
+      "authors": "F. Hausdorff",
+      "title": "Grundzüge der Mengenlehre",
+      "year": "1914",
+      "venue": "Leipzig: Veit",
+      "note": "Systematic treatment of uncountable ordinals and their cardinality"
+    }
+  ]
 }

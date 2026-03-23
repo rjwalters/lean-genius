@@ -58,29 +58,6 @@
       "sizeRamsey_lower_bound theorem: lower bound R̂ ≥ max edges",
       "erdos_561 theorem: main result for uniform star unions"
     ],
-    "references": [
-      {
-        "authors": "Burr, S. A., Erdős, P., Faudree, R. J., Rousseau, C. C., and Schelp, R. H.",
-        "title": "Ramsey-minimal graphs for multiple copies",
-        "year": "1978",
-        "venue": "Indagationes Mathematicae (Proc.) 81(2), 187-195",
-        "note": "Proved the conjectured formula for uniform star unions"
-      },
-      {
-        "authors": "Erdős, P., Faudree, R. J., Rousseau, C. C., and Schelp, R. H.",
-        "title": "The size Ramsey number",
-        "year": "1978",
-        "venue": "Period. Math. Hungar. 9(1-2), 145-161",
-        "note": "Introduced size Ramsey numbers and established basic theory"
-      },
-      {
-        "authors": "Beck, J.",
-        "title": "On size Ramsey number of paths, trees, and circuits. I",
-        "year": "1983",
-        "venue": "J. Graph Theory 7(1), 115-129",
-        "note": "Proved size Ramsey numbers are linear for bounded-degree graphs"
-      }
-    ],
     "axiomCount": 8,
     "lineCount": 237
   },
@@ -196,5 +173,28 @@
     "axiomCount": 8,
     "theoremCount": 3,
     "definitionCount": 16
-  }
+  },
+  "references": [
+    {
+      "authors": "Burr, S. A., Erdős, P., Faudree, R. J., Rousseau, C. C., and Schelp, R. H.",
+      "title": "Ramsey-minimal graphs for multiple copies",
+      "year": "1978",
+      "venue": "Indagationes Mathematicae (Proc.) 81(2), 187-195",
+      "note": "Proved the conjectured formula for uniform star unions"
+    },
+    {
+      "authors": "Erdős, P., Faudree, R. J., Rousseau, C. C., and Schelp, R. H.",
+      "title": "The size Ramsey number",
+      "year": "1978",
+      "venue": "Period. Math. Hungar. 9(1-2), 145-161",
+      "note": "Introduced size Ramsey numbers and established basic theory"
+    },
+    {
+      "authors": "Beck, J.",
+      "title": "On size Ramsey number of paths, trees, and circuits. I",
+      "year": "1983",
+      "venue": "J. Graph Theory 7(1), 115-129",
+      "note": "Proved size Ramsey numbers are linear for bounded-degree graphs"
+    }
+  ]
 }

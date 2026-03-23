@@ -14,14 +14,6 @@
       "sparse-graphs",
       "open"
     ],
-    "references": [
-      "Erdős, Faudree, Rousseau & Schelp (1993): Ramsey size linear graphs [EFRS93]",
-      "Erdős, Faudree, Rousseau & Schelp (1978): Size Ramsey numbers involving matchings",
-      "Beck (1983): On size Ramsey number of paths, trees, and circuits I",
-      "Bradač, Gishboliner & Sudakov (2024): Size Ramsey numbers of K₄-subdivisions",
-      "https://erdosproblems.com/566"
-    ],
-    "leanFile": "Proofs/Erdos566Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/566",
     "erdosUrl": "https://erdosproblems.com/566",
@@ -118,5 +110,12 @@
       "For specific $(2k-3)$-sparse graphs like $Q_3$ and $K_{3,3}$ (Problem #567), can the size Ramsey linearity be proved directly without resolving the full conjecture?",
       "What is the correct growth rate of $\\hat{r}(G,H)$ for graphs $G$ just above the $(2k-3)$ threshold — is the transition from linear to superlinear sharp or gradual?"
     ]
-  }
+  },
+  "references": [
+    "Erdős, Faudree, Rousseau & Schelp (1993): Ramsey size linear graphs [EFRS93]",
+    "Erdős, Faudree, Rousseau & Schelp (1978): Size Ramsey numbers involving matchings",
+    "Beck (1983): On size Ramsey number of paths, trees, and circuits I",
+    "Bradač, Gishboliner & Sudakov (2024): Size Ramsey numbers of K₄-subdivisions",
+    "https://erdosproblems.com/566"
+  ]
 }

@@ -10,7 +10,6 @@
     "date": "1874",
     "status": "verified",
     "proofRepoPath": "Proofs/DenumerabilityRationals.lean",
-    "leanFile": "proofs/Proofs/DenumerabilityRationals.lean",
     "tags": [
       "set-theory",
       "infinity",
@@ -71,35 +70,6 @@
       "rationals_infinite: Infinite ℚ via inferInstance",
       "Pedagogical documentation with diagonal visualization and philosophical commentary"
     ],
-    "references": [
-      {
-        "key": "Ca74",
-        "citation": "Cantor, G., Ueber eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen, Journal für die reine und angewandte Mathematik (Crelle's Journal) 77 (1874), 258-262.",
-        "type": "paper"
-      },
-      {
-        "key": "Ca91",
-        "citation": "Cantor, G., Ueber eine elementare Frage der Mannigfaltigkeitslehre, Jahresbericht der Deutschen Mathematiker-Vereinigung 1 (1891), 75-78.",
-        "type": "paper"
-      },
-      {
-        "key": "Da82",
-        "citation": "Dauben, J.W., Georg Cantor: His Mathematics and Philosophy of the Infinite, Harvard University Press (1979).",
-        "type": "book"
-      },
-      {
-        "key": "Ca74b",
-        "citation": "Cantor, G., Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen, Journal für die reine und angewandte Mathematik (Crelle's Journal) 77 (1874), 258–262.",
-        "type": "paper",
-        "note": "Cantor's landmark 1874 paper establishing the countability of the algebraic numbers and uncountability of the reals — the founding document of set-theoretic cardinality"
-      },
-      {
-        "key": "Fe07",
-        "citation": "Ferreirós, J., Labyrinth of Thought: A History of Set Theory and Its Role in Modern Mathematics, 2nd ed., Birkhäuser (2007).",
-        "type": "book",
-        "note": "Authoritative history of set theory from Cantor and Dedekind through Zermelo and Gödel, with detailed analysis of the denumerability results and their foundational impact"
-      }
-    ],
     "lineCount": 191
   },
   "overview": {
@@ -113,10 +83,6 @@
       "**Constructive Content**: The round-trip proofs (`decode ∘ encode = id`, `encode ∘ decode = id`) certify that the bijection is computable, not merely existential. Both directions are discharged by `simp`, which unfolds the definitions and applies `Equiv.symm_apply_apply` / `Equiv.apply_symm_apply`. This constructive witness is what distinguishes `Denumerable` from weaker notions of countability.",
       "**Cardinal Bridge**: `Cardinal.mk_denumerable` bridges the type-theoretic view (`Denumerable` typeclass) with the set-theoretic view (`Cardinal.aleph0`), connecting two fundamental frameworks — Martin-Lof type theory and Zermelo-Fraenkel set theory — in one proof.",
       "**Stern-Brocot alternative**: The Stern-Brocot tree provides a different bijection $\\mathbb{N} \\simeq \\mathbb{Q}^+$ with better structural properties: each rational appears in lowest terms exactly once, and the tree structure encodes continued fraction expansions. Mathlib's encoding uses the Cantor pairing function instead, which is computationally simpler but loses this number-theoretic structure."
-    ],
-    "prerequisites": [
-      "Set theory: cardinality, countability, bijections",
-      "Mathematical maturity and proof techniques"
     ]
   },
   "leanFile": {
@@ -243,5 +209,34 @@
     "schroeder-bernstein",
     "continuum-hypothesis",
     "sqrt2-irrational"
+  ],
+  "references": [
+    {
+      "key": "Ca74",
+      "citation": "Cantor, G., Ueber eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen, Journal für die reine und angewandte Mathematik (Crelle's Journal) 77 (1874), 258-262.",
+      "type": "paper"
+    },
+    {
+      "key": "Ca91",
+      "citation": "Cantor, G., Ueber eine elementare Frage der Mannigfaltigkeitslehre, Jahresbericht der Deutschen Mathematiker-Vereinigung 1 (1891), 75-78.",
+      "type": "paper"
+    },
+    {
+      "key": "Da82",
+      "citation": "Dauben, J.W., Georg Cantor: His Mathematics and Philosophy of the Infinite, Harvard University Press (1979).",
+      "type": "book"
+    },
+    {
+      "key": "Ca74b",
+      "citation": "Cantor, G., Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen, Journal für die reine und angewandte Mathematik (Crelle's Journal) 77 (1874), 258–262.",
+      "type": "paper",
+      "note": "Cantor's landmark 1874 paper establishing the countability of the algebraic numbers and uncountability of the reals — the founding document of set-theoretic cardinality"
+    },
+    {
+      "key": "Fe07",
+      "citation": "Ferreirós, J., Labyrinth of Thought: A History of Set Theory and Its Role in Modern Mathematics, 2nd ed., Birkhäuser (2007).",
+      "type": "book",
+      "note": "Authoritative history of set theory from Cantor and Dedekind through Zermelo and Gödel, with detailed analysis of the denumerability results and their foundational impact"
+    }
   ]
 }

@@ -33,36 +33,6 @@
       "Theorems density_two_three, density_two_three_five (concrete examples)",
       "Connection to Jacobsthal's function (Erdős #970)"
     ],
-    "references": [
-      {
-        "authors": "Paul Erdős",
-        "title": "Problem 1143",
-        "year": "1999",
-        "venue": "Erdős Problems collection (Va99, Problem 1.8)",
-        "note": "Original problem statement on covering intervals"
-      },
-      {
-        "authors": "Paul Erdős, John Selfridge",
-        "title": "Exact bound for covering in the 2 < α < 3 regime",
-        "year": "unpublished",
-        "venue": "Unpublished (paper not located)",
-        "note": "Reportedly found exact formula for F_k when k = αp_u with 2 < α < 3"
-      },
-      {
-        "authors": "Ernst Jacobsthal",
-        "title": "Über Sequenzen ganzer Zahlen",
-        "year": "1960",
-        "venue": "Norske Vid. Selsk. Forh.",
-        "note": "Jacobsthal's function h(k) — the dual question about coprime elements in intervals"
-      },
-      {
-        "authors": "H. Iwaniec",
-        "title": "On the problem of Jacobsthal",
-        "year": "1978",
-        "venue": "Demonstratio Mathematica",
-        "note": "Best known bounds for Jacobsthal's function, related to the covering problem"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "Finset.Ico",
@@ -175,5 +145,35 @@
     "axiomCount": 3,
     "theoremCount": 8,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    {
+      "authors": "Paul Erdős",
+      "title": "Problem 1143",
+      "year": "1999",
+      "venue": "Erdős Problems collection (Va99, Problem 1.8)",
+      "note": "Original problem statement on covering intervals"
+    },
+    {
+      "authors": "Paul Erdős, John Selfridge",
+      "title": "Exact bound for covering in the 2 < α < 3 regime",
+      "year": "unpublished",
+      "venue": "Unpublished (paper not located)",
+      "note": "Reportedly found exact formula for F_k when k = αp_u with 2 < α < 3"
+    },
+    {
+      "authors": "Ernst Jacobsthal",
+      "title": "Über Sequenzen ganzer Zahlen",
+      "year": "1960",
+      "venue": "Norske Vid. Selsk. Forh.",
+      "note": "Jacobsthal's function h(k) — the dual question about coprime elements in intervals"
+    },
+    {
+      "authors": "H. Iwaniec",
+      "title": "On the problem of Jacobsthal",
+      "year": "1978",
+      "venue": "Demonstratio Mathematica",
+      "note": "Best known bounds for Jacobsthal's function, related to the covering problem"
+    }
+  ]
 }

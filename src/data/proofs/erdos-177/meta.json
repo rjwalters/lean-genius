@@ -62,28 +62,6 @@
       "factorial_bound axiom: $h(d) \\leq d!$ (Cantor-Erdős-Schreiber-Straus 1966)",
       "erdos_177 theorem: main result proved via roth_lower_bound"
     ],
-    "references": [
-      {
-        "key": "Ro64",
-        "citation": "Roth, K. F., Remark concerning integer sequences, Acta Arith. 9 (1964), 257–260.",
-        "type": "paper"
-      },
-      {
-        "key": "CESS66",
-        "citation": "Cantor, D. G., Erdős, P., Schreiber, S., Straus, E. G., Coloring of integers with bounded discrepancy (1966, unpublished).",
-        "type": "paper"
-      },
-      {
-        "key": "Be17",
-        "citation": "Beck, J., Roth's estimate of the discrepancy of integer sequences is nearly sharp, Combinatorica 1 (2017), 319–325.",
-        "type": "paper"
-      },
-      {
-        "key": "Ta15",
-        "citation": "Tao, T., The Erdős discrepancy problem, Discrete Analysis 1 (2015), 29 pp.",
-        "type": "paper"
-      }
-    ],
     "relatedProblems": [
       "erdos-105"
     ],
@@ -177,5 +155,27 @@
     "axiomCount": 3,
     "theoremCount": 9,
     "definitionCount": 6
-  }
+  },
+  "references": [
+    {
+      "key": "Ro64",
+      "citation": "Roth, K. F., Remark concerning integer sequences, Acta Arith. 9 (1964), 257–260.",
+      "type": "paper"
+    },
+    {
+      "key": "CESS66",
+      "citation": "Cantor, D. G., Erdős, P., Schreiber, S., Straus, E. G., Coloring of integers with bounded discrepancy (1966, unpublished).",
+      "type": "paper"
+    },
+    {
+      "key": "Be17",
+      "citation": "Beck, J., Roth's estimate of the discrepancy of integer sequences is nearly sharp, Combinatorica 1 (2017), 319–325.",
+      "type": "paper"
+    },
+    {
+      "key": "Ta15",
+      "citation": "Tao, T., The Erdős discrepancy problem, Discrete Analysis 1 (2015), 29 pp.",
+      "type": "paper"
+    }
+  ]
 }

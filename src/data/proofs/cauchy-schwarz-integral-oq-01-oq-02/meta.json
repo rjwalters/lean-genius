@@ -60,29 +60,6 @@
       "Formal statement of Riesz-Thorin theorem (axiom: requires three-lines lemma)",
       "Complete documentation of Hölder → Riesz-Thorin proof hierarchy"
     ],
-    "references": [
-      {
-        "authors": "M. Riesz",
-        "title": "Sur les maxima des formes bilinéaires et sur les fonctionnelles linéaires",
-        "year": "1927",
-        "venue": "Acta Mathematica",
-        "note": "Original interpolation theorem for bilinear forms"
-      },
-      {
-        "authors": "G.O. Thorin",
-        "title": "Convexity theorems generalizing those of M. Riesz and Hadamard",
-        "year": "1948",
-        "venue": "Meddelanden från Lunds Universitets Matematiska Seminarium",
-        "note": "Simplified proof via complex analysis (three-lines lemma)"
-      },
-      {
-        "authors": "E. Stein, G. Weiss",
-        "title": "Introduction to Fourier Analysis on Euclidean Spaces",
-        "year": "1971",
-        "venue": "Princeton University Press",
-        "note": "Standard reference for interpolation theory (Chapter V)"
-      }
-    ],
     "dateAdded": "2026-03-06",
     "axiomCount": 2,
     "lineCount": 600
@@ -175,5 +152,28 @@
     "axiomCount": 2,
     "theoremCount": 29,
     "definitionCount": 7
-  }
+  },
+  "references": [
+    {
+      "authors": "M. Riesz",
+      "title": "Sur les maxima des formes bilinéaires et sur les fonctionnelles linéaires",
+      "year": "1927",
+      "venue": "Acta Mathematica",
+      "note": "Original interpolation theorem for bilinear forms"
+    },
+    {
+      "authors": "G.O. Thorin",
+      "title": "Convexity theorems generalizing those of M. Riesz and Hadamard",
+      "year": "1948",
+      "venue": "Meddelanden från Lunds Universitets Matematiska Seminarium",
+      "note": "Simplified proof via complex analysis (three-lines lemma)"
+    },
+    {
+      "authors": "E. Stein, G. Weiss",
+      "title": "Introduction to Fourier Analysis on Euclidean Spaces",
+      "year": "1971",
+      "venue": "Princeton University Press",
+      "note": "Standard reference for interpolation theory (Chapter V)"
+    }
+  ]
 }

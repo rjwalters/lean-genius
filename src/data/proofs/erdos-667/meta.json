@@ -8,7 +8,6 @@
     "sourceUrl": "https://erdosproblems.com/667",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos667Problem.lean",
-    "leanFile": "proofs/Proofs/Erdos667Problem.lean",
     "tags": [
       "erdos",
       "graph-theory",
@@ -45,23 +44,6 @@
       "p3_strict: complete resolution of the p=3 case (c(3,1) < c(3,2)=1)",
       "erdos667_weak_evidence: c(p,1) < 1 = c(p,q_max) from Ramsey upper bound",
       "erdos667_summary: packaging of all known structural results"
-    ],
-    "references": [
-      {
-        "key": "EFRS93",
-        "citation": "Erdős, P., Faudree, R.J., Rousseau, C.C., and Schelp, R.H., Subgraphs of minimal degree k, Discrete Mathematics 115 (1993), 83–94.",
-        "type": "paper"
-      },
-      {
-        "key": "Er97f",
-        "citation": "Erdős, P., Some old and new problems in various branches of combinatorics, Discrete Mathematics 165/166 (1997), 227–231. Contains Problem 667.",
-        "type": "paper"
-      },
-      {
-        "key": "GRS90",
-        "citation": "Graham, R.L., Rothschild, B.L., and Spencer, J.H., Ramsey Theory, 2nd ed., Wiley (1990). Standard reference for Ramsey bounds.",
-        "type": "book"
-      }
     ],
     "prerequisites": [
       "Graph theory: simple graphs, cliques, induced subgraphs",
@@ -103,12 +85,6 @@
       "The EFRS bound c(p, C(p-1,2)) ≤ 1/2 combined with c(p, C(p-1,2)+1) = 1 shows the last edge requirement at least doubles the exponent — a dramatic phase transition",
       "For p=3, q ranges over {1,2} and the conjecture reduces to c(3,1) < c(3,2)=1, which follows immediately from the Ramsey upper bound 2/(3+1) = 1/2 < 1",
       "The difficulty concentrates in the middle of the q-range: at the endpoints c is determined, and at the top it jumps; the question is whether intermediate steps also produce strict increases"
-    ],
-    "prerequisites": [
-      "Graph theory: simple graphs, cliques, independent sets, and the Ramsey property",
-      "Ramsey theory: classical Ramsey numbers $R(p,m)$ and their known bounds (probabilistic lower bound, Shearer upper bound)",
-      "Extremal graph theory: Turán-type problems and density conditions on graphs",
-      "Asymptotic analysis: the lim inf of $\\log H(n;p,q)/\\log n$ capturing polynomial growth rates"
     ]
   },
   "sections": [
@@ -197,5 +173,22 @@
     "axiomCount": 15,
     "theoremCount": 12,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    {
+      "key": "EFRS93",
+      "citation": "Erdős, P., Faudree, R.J., Rousseau, C.C., and Schelp, R.H., Subgraphs of minimal degree k, Discrete Mathematics 115 (1993), 83–94.",
+      "type": "paper"
+    },
+    {
+      "key": "Er97f",
+      "citation": "Erdős, P., Some old and new problems in various branches of combinatorics, Discrete Mathematics 165/166 (1997), 227–231. Contains Problem 667.",
+      "type": "paper"
+    },
+    {
+      "key": "GRS90",
+      "citation": "Graham, R.L., Rothschild, B.L., and Spencer, J.H., Ramsey Theory, 2nd ed., Wiley (1990). Standard reference for Ramsey bounds.",
+      "type": "book"
+    }
+  ]
 }

@@ -22,14 +22,6 @@
     "erdosNumber": 59,
     "erdosUrl": "https://erdosproblems.com/59",
     "erdosProblemStatus": "solved",
-    "references": [
-      "Erdős-Frankl-Rödl (1986): 'The asymptotic number of graphs not containing a fixed subgraph'",
-      "Morris-Saxton (2016): 'The number of C_{2l}-free graphs'",
-      "Kővári-Sós-Turán (1954): bipartite Turán bounds",
-      "Turán (1941): extremal number for complete graphs",
-      "https://erdosproblems.com/59"
-    ],
-    "leanFile": "Proofs/Erdos59Problem.lean",
     "axiomCount": 9,
     "lineCount": 222
   },
@@ -158,5 +150,12 @@
     "axiomCount": 9,
     "theoremCount": 5,
     "definitionCount": 9
-  }
+  },
+  "references": [
+    "Erdős-Frankl-Rödl (1986): 'The asymptotic number of graphs not containing a fixed subgraph'",
+    "Morris-Saxton (2016): 'The number of C_{2l}-free graphs'",
+    "Kővári-Sós-Turán (1954): bipartite Turán bounds",
+    "Turán (1941): extremal number for complete graphs",
+    "https://erdosproblems.com/59"
+  ]
 }

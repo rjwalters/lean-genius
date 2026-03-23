@@ -45,29 +45,6 @@
       "power_mean_monotone_neg: Full proof of M_r ≤ M_s for r ≤ s < 0 via dual argument reducing to the positive case",
       "Inversion technique: from A ≤ B with 0 < A, derives B⁻¹ ≤ A⁻¹ using explicit calc blocks (avoids inv_le_inv_of_le)"
     ],
-    "references": [
-      {
-        "authors": "Hardy, G.H.; Littlewood, J.E.; Pólya, G.",
-        "title": "Inequalities",
-        "year": "1934",
-        "venue": "Cambridge University Press",
-        "note": "Chapter 2: the power mean inequality and its proof via convexity and duality arguments"
-      },
-      {
-        "authors": "Bullen, P.S.",
-        "title": "Handbook of Means and Their Inequalities",
-        "year": "2003",
-        "venue": "Kluwer Academic Publishers",
-        "note": "Comprehensive treatment of power means including the duality M_r(z) = M_{-r}(z⁻¹)⁻¹"
-      },
-      {
-        "authors": "Steele, J. Michael",
-        "title": "The Cauchy-Schwarz Master Class: An Introduction to the Art of Mathematical Inequalities",
-        "year": "2004",
-        "venue": "Cambridge University Press",
-        "note": "Chapter 4 develops the power mean inequality with detailed proofs of the duality and inversion techniques used here"
-      }
-    ],
     "prerequisites": [
       "Power mean definitions and positive monotonicity (from parent file)",
       "Real power function (rpow) arithmetic: inv_rpow, rpow_neg, rpow_mul",
@@ -76,8 +53,7 @@
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "lineCount": 372,
-    "leanFile": "proofs/Proofs/AmgmInequalityOQ03.lean"
+    "lineCount": 372
   },
   "overview": {
     "historicalContext": "The Power Mean Inequality states that $M_r \\leq M_s$ whenever $r \\leq s$. While the positive-exponent case ($0 < r \\leq s$) follows directly from Jensen's inequality applied to the convex function $t \\mapsto t^{s/r}$, the negative-exponent case requires a fundamentally different approach.\n\nThe classical trick, due to Hardy, Littlewood, and Pólya (*Inequalities*, 1934, §2.9), exploits the algebraic duality $M_r(z) = M_{-r}(z^{-1})^{-1}$ between positive and negative power means via value inversion. This duality is an instance of a pervasive pattern in analysis: Hölder duality ($\\|f\\|_p^* = \\|f\\|_{p/(p-1)}$), Legendre-Fenchel duality in convex analysis ($f^{**} = f$ for convex $f$), and Pontryagin duality in harmonic analysis all exploit the same principle — negating or inverting a parameter transforms one inequality into another. The power mean duality is perhaps the simplest non-trivial example.\n\nAs of early 2026, Mathlib4 had an explicit TODO noting the gap for 'generalized mean inequality with any $p \\leq q$, including negative numbers.' This formalization fills that gap for the $r \\leq s < 0$ case, complementing the positive case proved in the parent file. The proof technique — reducing to a known case via an algebraic identity — is a model for how duality arguments can systematically extend results across parameter boundaries.",
@@ -90,11 +66,6 @@
       "This fills a known Mathlib gap: the generalized mean inequality for negative exponents",
       "The explicit inversion proof (A ≤ B → B⁻¹ ≤ A⁻¹) avoids Mathlib's inv_le_inv_of_le by building the inequality from multiplicative primitives — a technique useful whenever the reciprocal lemma has inconvenient hypotheses",
       "The duality $M_r(z) = M_{-r}(z^{-1})^{-1}$ is an involution on the parameter space: applying it twice returns to $M_r$. This means the entire power mean theory for negative $r$ is formally *redundant* — every statement about $M_r$ for $r < 0$ can be mechanically derived from the corresponding statement for $r > 0$ on inverted values. The proof here exploits this systematically, suggesting a general Lean metaprogram for duality reductions"
-    ],
-    "prerequisites": [
-      "Positive power mean monotonicity: $M_r \\leq M_s$ for $0 < r \\leq s$ (from parent file, via Jensen)",
-      "Real power function identities: `inv_rpow` ($x^{-1})^r = (x^r)^{-1}$), `rpow_neg` ($x^{-r} = (x^r)^{-1}$), `rpow_mul` ($x^{ab} = (x^a)^b$)",
-      "Finset positivity: `single_le_sum` (a positive term bounds the sum from below), `sum_pos` and `rpow_pos_of_pos`"
     ]
   },
   "sections": [
@@ -225,5 +196,28 @@
     "shannon-entropy",
     "mean-value-theorem",
     "sum-of-kth-powers"
+  ],
+  "references": [
+    {
+      "authors": "Hardy, G.H.; Littlewood, J.E.; Pólya, G.",
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press",
+      "note": "Chapter 2: the power mean inequality and its proof via convexity and duality arguments"
+    },
+    {
+      "authors": "Bullen, P.S.",
+      "title": "Handbook of Means and Their Inequalities",
+      "year": "2003",
+      "venue": "Kluwer Academic Publishers",
+      "note": "Comprehensive treatment of power means including the duality M_r(z) = M_{-r}(z⁻¹)⁻¹"
+    },
+    {
+      "authors": "Steele, J. Michael",
+      "title": "The Cauchy-Schwarz Master Class: An Introduction to the Art of Mathematical Inequalities",
+      "year": "2004",
+      "venue": "Cambridge University Press",
+      "note": "Chapter 4 develops the power mean inequality with detailed proofs of the duality and inversion techniques used here"
+    }
   ]
 }

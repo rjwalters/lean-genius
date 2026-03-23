@@ -8,7 +8,6 @@
     "sourceUrl": "https://erdosproblems.com/319",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos319Problem.lean",
-    "leanFile": "Proofs/Erdos319Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -38,18 +37,6 @@
         "theorem": "Real.exp",
         "description": "Exponential function for 1/e constant",
         "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
-      }
-    ],
-    "references": [
-      {
-        "key": "ErGr80",
-        "citation": "Erdős, P. and Graham, R.L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de L'Enseignement Mathématique 28, Université de Genève.",
-        "type": "book"
-      },
-      {
-        "key": "Cr01",
-        "citation": "Croot, E.S. (2001). On a coloring conjecture about unit fractions. Annals of Mathematics, 157(2), 545-556.",
-        "type": "paper"
       }
     ],
     "originalContributions": [
@@ -145,5 +132,17 @@
     "axiomCount": 5,
     "theoremCount": 0,
     "definitionCount": 4
-  }
+  },
+  "references": [
+    {
+      "key": "ErGr80",
+      "citation": "Erdős, P. and Graham, R.L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de L'Enseignement Mathématique 28, Université de Genève.",
+      "type": "book"
+    },
+    {
+      "key": "Cr01",
+      "citation": "Croot, E.S. (2001). On a coloring conjecture about unit fractions. Annals of Mathematics, 157(2), 545-556.",
+      "type": "paper"
+    }
+  ]
 }

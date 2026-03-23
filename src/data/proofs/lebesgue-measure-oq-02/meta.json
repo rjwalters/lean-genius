@@ -63,36 +63,6 @@
       "Minkowski's inequality for Lp spaces (triangle inequality)",
       "L² inner product space instance verification"
     ],
-    "references": [
-      {
-        "authors": "Otto Hölder",
-        "title": "Ueber einen Mittelwerthssatz",
-        "year": "1889",
-        "venue": "Nachrichten von der Königlichen Gesellschaft der Wissenschaften zu Göttingen",
-        "note": "Original statement and proof for finite sums, generalizing Cauchy-Schwarz to arbitrary conjugate exponents"
-      },
-      {
-        "authors": "Frigyes Riesz",
-        "title": "Untersuchungen über Systeme integrierbarer Funktionen",
-        "year": "1910",
-        "venue": "Mathematische Annalen",
-        "note": "Extended Hölder's inequality to Lebesgue-integrable functions and founded Lp space theory"
-      },
-      {
-        "authors": "Hermann Minkowski",
-        "title": "Geometrie der Zahlen",
-        "year": "1896",
-        "venue": "Teubner, Leipzig",
-        "note": "The triangle inequality for Lp norms, proved using Hölder's inequality"
-      },
-      {
-        "authors": "William Henry Young",
-        "title": "On classes of summable functions and their Fourier series",
-        "year": "1912",
-        "venue": "Proceedings of the Royal Society of London",
-        "note": "Young's inequality ab ≤ a^p/p + b^q/q, the pointwise engine behind Hölder"
-      }
-    ],
     "historicalContext": "Hölder's inequality is one of the central pillars of modern analysis. Cauchy (1821) proved the sum version for p=q=2 (Cauchy-Schwarz). Hölder (1889) generalized to arbitrary conjugate exponents 1/p + 1/q = 1. Riesz (1910) extended it to Lebesgue integrals, founding Lp space theory. Young (1912) isolated the pointwise inequality ab ≤ a^p/p + b^q/q that drives the proof. Minkowski (1896) used Hölder to prove the triangle inequality for Lp norms, making Lp into a Banach space. The inequality establishes the fundamental duality (Lp)* ≅ Lq (for 1 < p < ∞), which is the algebraic backbone of functional analysis, distribution theory, and Fourier analysis.",
     "axiomCount": 0,
     "lineCount": 224
@@ -204,5 +174,35 @@
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Otto Hölder",
+      "title": "Ueber einen Mittelwerthssatz",
+      "year": "1889",
+      "venue": "Nachrichten von der Königlichen Gesellschaft der Wissenschaften zu Göttingen",
+      "note": "Original statement and proof for finite sums, generalizing Cauchy-Schwarz to arbitrary conjugate exponents"
+    },
+    {
+      "authors": "Frigyes Riesz",
+      "title": "Untersuchungen über Systeme integrierbarer Funktionen",
+      "year": "1910",
+      "venue": "Mathematische Annalen",
+      "note": "Extended Hölder's inequality to Lebesgue-integrable functions and founded Lp space theory"
+    },
+    {
+      "authors": "Hermann Minkowski",
+      "title": "Geometrie der Zahlen",
+      "year": "1896",
+      "venue": "Teubner, Leipzig",
+      "note": "The triangle inequality for Lp norms, proved using Hölder's inequality"
+    },
+    {
+      "authors": "William Henry Young",
+      "title": "On classes of summable functions and their Fourier series",
+      "year": "1912",
+      "venue": "Proceedings of the Royal Society of London",
+      "note": "Young's inequality ab ≤ a^p/p + b^q/q, the pointwise engine behind Hölder"
+    }
+  ]
 }

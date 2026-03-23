@@ -57,36 +57,6 @@
       "kamio_li_tang_2025: axiom asserting proof",
       "sylvester_double_exponential: proved from limit"
     ],
-    "references": [
-      {
-        "authors": "Sylvester, James Joseph",
-        "title": "On a Point in the Theory of Vulgar Fractions",
-        "year": "1880",
-        "venue": "American Journal of Mathematics 3(4), pp. 332-335",
-        "note": "Introduced the sequence u₁=2, u_{n+1}=u_n²-u_n+1 via the greedy algorithm for Egyptian fractions"
-      },
-      {
-        "authors": "Erdős, Paul; Graham, Ronald L.",
-        "title": "Old and New Problems and Results in Combinatorial Number Theory",
-        "year": "1980",
-        "venue": "Monographies de L'Enseignement Mathématique 28",
-        "note": "[ErGr80] where the growth rate conjecture for Sylvester's sequence appears"
-      },
-      {
-        "authors": "Vardi, Ilan",
-        "title": "Computational Recreations in Mathematica",
-        "year": "1991",
-        "venue": "Addison-Wesley",
-        "note": "Studied the constant c₀ = lim u_n^{1/2^n} ≈ 1.264085..."
-      },
-      {
-        "authors": "Kamio; Li, Jiaqi; Tang, Quanyu",
-        "title": "Independent proofs of the Erdős-Graham conjecture on Sylvester's sequence",
-        "year": "2025",
-        "venue": "arXiv preprints",
-        "note": "Independently proved that Sylvester's sequence has maximal growth rate among Egyptian sequences"
-      }
-    ],
     "axiomCount": 6,
     "prerequisites": [
       "Real analysis: convergence of series, liminf",
@@ -239,5 +209,35 @@
     "axiomCount": 6,
     "theoremCount": 13,
     "definitionCount": 11
-  }
+  },
+  "references": [
+    {
+      "authors": "Sylvester, James Joseph",
+      "title": "On a Point in the Theory of Vulgar Fractions",
+      "year": "1880",
+      "venue": "American Journal of Mathematics 3(4), pp. 332-335",
+      "note": "Introduced the sequence u₁=2, u_{n+1}=u_n²-u_n+1 via the greedy algorithm for Egyptian fractions"
+    },
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "note": "[ErGr80] where the growth rate conjecture for Sylvester's sequence appears"
+    },
+    {
+      "authors": "Vardi, Ilan",
+      "title": "Computational Recreations in Mathematica",
+      "year": "1991",
+      "venue": "Addison-Wesley",
+      "note": "Studied the constant c₀ = lim u_n^{1/2^n} ≈ 1.264085..."
+    },
+    {
+      "authors": "Kamio; Li, Jiaqi; Tang, Quanyu",
+      "title": "Independent proofs of the Erdős-Graham conjecture on Sylvester's sequence",
+      "year": "2025",
+      "venue": "arXiv preprints",
+      "note": "Independently proved that Sylvester's sequence has maximal growth rate among Egyptian sequences"
+    }
+  ]
 }

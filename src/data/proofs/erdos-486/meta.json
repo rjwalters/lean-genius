@@ -60,22 +60,6 @@
       "davenport_erdos_theorem: The proven special case (Xₙ = {0}) — stated as axiom pending Mathlib formalization",
       "besicovitch_counterexample: Existence of a set with logarithmic but not natural density — stated as axiom pending formalization"
     ],
-    "references": [
-      {
-        "authors": "Davenport, Harold; Erdős, Paul",
-        "title": "On sequences of positive integers",
-        "year": "1936",
-        "venue": "Acta Arithmetica, 2, pp. 147-151",
-        "note": "Proved that sets avoiding divisibility by elements of any set A always have a logarithmic density — the foundational special case of Problem #486"
-      },
-      {
-        "authors": "Besicovitch, Abram S.",
-        "title": "On the density of certain sequences of integers",
-        "year": "1934",
-        "venue": "Mathematische Annalen, 110, pp. 336-341",
-        "note": "Showed natural density can fail for zero-avoidance sets, justifying the use of logarithmic density"
-      }
-    ],
     "crossReferences": [
       {
         "targetId": "erdos-25",
@@ -182,5 +166,21 @@
     "axiomCount": 3,
     "theoremCount": 0,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    {
+      "authors": "Davenport, Harold; Erdős, Paul",
+      "title": "On sequences of positive integers",
+      "year": "1936",
+      "venue": "Acta Arithmetica, 2, pp. 147-151",
+      "note": "Proved that sets avoiding divisibility by elements of any set A always have a logarithmic density — the foundational special case of Problem #486"
+    },
+    {
+      "authors": "Besicovitch, Abram S.",
+      "title": "On the density of certain sequences of integers",
+      "year": "1934",
+      "venue": "Mathematische Annalen, 110, pp. 336-341",
+      "note": "Showed natural density can fail for zero-avoidance sets, justifying the use of logarithmic density"
+    }
+  ]
 }

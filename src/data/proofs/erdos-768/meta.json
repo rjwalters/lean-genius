@@ -24,12 +24,6 @@
       "A001034",
       "A352287"
     ],
-    "references": [
-      {
-        "key": "Er",
-        "citation": "P. Erdős, on the density of integers with the witness divisor property"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "Nat.primeFactors",
@@ -162,5 +156,11 @@
     "axiomCount": 8,
     "theoremCount": 5,
     "definitionCount": 10
-  }
+  },
+  "references": [
+    {
+      "key": "Er",
+      "citation": "P. Erdős, on the density of integers with the witness divisor property"
+    }
+  ]
 }

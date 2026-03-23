@@ -49,22 +49,6 @@
       "BU for linear maps via rank-nullity (nontrivial kernel exists)",
       "Necessity of antipodal condition (counterexample: constant labeling)"
     ],
-    "references": [
-      {
-        "authors": "A. W. Tucker",
-        "title": "Some topological properties of disk and sphere",
-        "year": "1946",
-        "venue": "Proceedings of the First Canadian Mathematical Congress",
-        "note": "Tucker's combinatorial lemma"
-      },
-      {
-        "authors": "K. Borsuk",
-        "title": "Drei Satze uber die n-dimensionale euklidische Sphare",
-        "year": "1933",
-        "venue": "Fundamenta Mathematicae",
-        "note": "Original Borsuk-Ulam theorem"
-      }
-    ],
     "dateAdded": "2026-03-06",
     "mathlib_version": "4.26.0",
     "axioms": 2,
@@ -200,5 +184,21 @@
     "axiomCount": 1,
     "theoremCount": 123,
     "definitionCount": 30
-  }
+  },
+  "references": [
+    {
+      "authors": "A. W. Tucker",
+      "title": "Some topological properties of disk and sphere",
+      "year": "1946",
+      "venue": "Proceedings of the First Canadian Mathematical Congress",
+      "note": "Tucker's combinatorial lemma"
+    },
+    {
+      "authors": "K. Borsuk",
+      "title": "Drei Satze uber die n-dimensionale euklidische Sphare",
+      "year": "1933",
+      "venue": "Fundamenta Mathematicae",
+      "note": "Original Borsuk-Ulam theorem"
+    }
+  ]
 }

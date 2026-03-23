@@ -38,36 +38,6 @@
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
       }
     ],
-    "references": [
-      {
-        "authors": "P. Erdős",
-        "title": "Some remarks on polynomials",
-        "year": "1947",
-        "venue": "Bulletin of the American Mathematical Society",
-        "note": "Original statement of the problem and proof of the √n upper bound for Υ"
-      },
-      {
-        "authors": "C. de Boor, A. Pinkus",
-        "title": "Proof of the conjectures of Bernstein and Erdős concerning the optimal nodes for polynomial interpolation",
-        "year": "1978",
-        "venue": "Journal of Approximation Theory",
-        "note": "Proved Υ ≤ (2/π) log n + O(1) and characterized optimal nodes via equioscillation"
-      },
-      {
-        "authors": "T. J. Rivlin",
-        "title": "An Introduction to the Approximation of Functions",
-        "year": "1969",
-        "venue": "Blaisdell Publishing",
-        "note": "Standard reference on Lebesgue constants and Chebyshev node theory"
-      },
-      {
-        "authors": "L. Brutman",
-        "title": "Lebesgue functions for polynomial interpolation — a survey",
-        "year": "1997",
-        "venue": "Annals of Numerical Mathematics",
-        "note": "Survey of Lebesgue constant theory including the Υ functional"
-      }
-    ],
     "axiomCount": 4,
     "lineCount": 95
   },
@@ -187,5 +157,35 @@
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    {
+      "authors": "P. Erdős",
+      "title": "Some remarks on polynomials",
+      "year": "1947",
+      "venue": "Bulletin of the American Mathematical Society",
+      "note": "Original statement of the problem and proof of the √n upper bound for Υ"
+    },
+    {
+      "authors": "C. de Boor, A. Pinkus",
+      "title": "Proof of the conjectures of Bernstein and Erdős concerning the optimal nodes for polynomial interpolation",
+      "year": "1978",
+      "venue": "Journal of Approximation Theory",
+      "note": "Proved Υ ≤ (2/π) log n + O(1) and characterized optimal nodes via equioscillation"
+    },
+    {
+      "authors": "T. J. Rivlin",
+      "title": "An Introduction to the Approximation of Functions",
+      "year": "1969",
+      "venue": "Blaisdell Publishing",
+      "note": "Standard reference on Lebesgue constants and Chebyshev node theory"
+    },
+    {
+      "authors": "L. Brutman",
+      "title": "Lebesgue functions for polynomial interpolation — a survey",
+      "year": "1997",
+      "venue": "Annals of Numerical Mathematics",
+      "note": "Survey of Lebesgue constant theory including the Υ functional"
+    }
+  ]
 }

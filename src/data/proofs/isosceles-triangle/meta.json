@@ -40,33 +40,6 @@
       "Vector space formulation via inner product geometry",
       "Non-degeneracy analysis for the converse"
     ],
-    "references": [
-      {
-        "authors": "Euclid",
-        "title": "Elements, Book I, Proposition 5",
-        "year": "c. 300 BCE",
-        "note": "Original statement and proof of the isosceles triangle theorem using auxiliary construction"
-      },
-      {
-        "authors": "Pappus of Alexandria",
-        "title": "Synagoge (Collection), Book III",
-        "year": "c. 340 AD",
-        "note": "Simplified proof by considering the triangle congruent to itself (SAS with triangle ABC ≅ ACB)"
-      },
-      {
-        "authors": "Proclus",
-        "title": "Commentary on the First Book of Euclid's Elements",
-        "year": "c. 450 AD",
-        "note": "Historical commentary on Pons Asinorum and its pedagogical significance"
-      },
-      {
-        "authors": "D. Hilbert",
-        "title": "Grundlagen der Geometrie",
-        "year": "1899",
-        "venue": "Leipzig",
-        "note": "Axiomatic treatment of Euclidean geometry; the isosceles triangle theorem follows from SAS congruence"
-      }
-    ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 65,
     "axiomCount": 0,
@@ -185,5 +158,32 @@
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Euclid",
+      "title": "Elements, Book I, Proposition 5",
+      "year": "c. 300 BCE",
+      "note": "Original statement and proof of the isosceles triangle theorem using auxiliary construction"
+    },
+    {
+      "authors": "Pappus of Alexandria",
+      "title": "Synagoge (Collection), Book III",
+      "year": "c. 340 AD",
+      "note": "Simplified proof by considering the triangle congruent to itself (SAS with triangle ABC ≅ ACB)"
+    },
+    {
+      "authors": "Proclus",
+      "title": "Commentary on the First Book of Euclid's Elements",
+      "year": "c. 450 AD",
+      "note": "Historical commentary on Pons Asinorum and its pedagogical significance"
+    },
+    {
+      "authors": "D. Hilbert",
+      "title": "Grundlagen der Geometrie",
+      "year": "1899",
+      "venue": "Leipzig",
+      "note": "Axiomatic treatment of Euclidean geometry; the isosceles triangle theorem follows from SAS congruence"
+    }
+  ]
 }

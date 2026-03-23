@@ -21,14 +21,6 @@
     "erdosNumber": 1072,
     "erdosUrl": "https://erdosproblems.com/1072",
     "erdosProblemStatus": "open",
-    "references": [
-      "Erdős, Hardy & Subbarao (2002), 'Some problems involving factorials', Amer. Math. Monthly",
-      "Guy (2004), Unsolved Problems in Number Theory, Problem A2",
-      "Lagrange (1771), proof of Wilson's theorem",
-      "OEIS A154554: Least k such that k! ≡ -1 (mod prime(n))",
-      "Crandall, Dilcher & Pomerance (1997), Wilson prime search to 5×10^8",
-      "https://erdosproblems.com/1072"
-    ],
     "axiomCount": 11,
     "lineCount": 113
   },
@@ -145,7 +137,12 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "R. L. Graham", "I. Z. Ruzsa", "E. G. Straus"],
+      "authors": [
+        "P. Erdős",
+        "R. L. Graham",
+        "I. Z. Ruzsa",
+        "E. G. Straus"
+      ],
       "title": "On the prime factors of $\\binom{2n}{n}$",
       "journal": "Mathematics of Computation",
       "volume": "29",
@@ -154,14 +151,19 @@
       "note": "Early Erdős work on factorial arithmetic and prime divisors, establishing techniques used in the Hardy-Subbarao program"
     },
     {
-      "authors": ["P. Erdős", "R. L. Graham"],
+      "authors": [
+        "P. Erdős",
+        "R. L. Graham"
+      ],
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "publisher": "L'Enseignement Mathématique",
       "year": 1980,
       "note": "Comprehensive survey including problems on factorial residues and prime congruences; background for the #1072 program"
     },
     {
-      "authors": ["F. Luca"],
+      "authors": [
+        "F. Luca"
+      ],
       "title": "On the equation $x^a + 2^b = p^n$",
       "journal": "Indagationes Mathematicae",
       "volume": "14",
@@ -170,7 +172,11 @@
       "note": "Luca's methods for factorial-prime equations, relevant to the resolution of the companion Problem #1058 and techniques bearing on #1072"
     },
     {
-      "authors": ["R. Crandall", "K. Dilcher", "C. Pomerance"],
+      "authors": [
+        "R. Crandall",
+        "K. Dilcher",
+        "C. Pomerance"
+      ],
       "title": "A search for Wieferich and Wilson primes",
       "journal": "Mathematics of Computation",
       "volume": "66",
@@ -180,13 +186,21 @@
       "note": "Definitive computational search for Wilson primes to $5 \\times 10^8$; establishes that Wilson primes (a stronger condition than Wilson-maximality) are extremely rare"
     },
     {
-      "authors": ["R. K. Guy"],
+      "authors": [
+        "R. K. Guy"
+      ],
       "title": "Unsolved Problems in Number Theory",
       "edition": "3rd",
       "publisher": "Springer",
       "year": 2004,
       "note": "Problem A2 catalogues Wilson primes; Problem A15 lists related factorial congruence open problems including the Hardy-Subbarao program"
-    }
+    },
+    "Erdős, Hardy & Subbarao (2002), 'Some problems involving factorials', Amer. Math. Monthly",
+    "Guy (2004), Unsolved Problems in Number Theory, Problem A2",
+    "Lagrange (1771), proof of Wilson's theorem",
+    "OEIS A154554: Least k such that k! ≡ -1 (mod prime(n))",
+    "Crandall, Dilcher & Pomerance (1997), Wilson prime search to 5×10^8",
+    "https://erdosproblems.com/1072"
   ],
   "leanFile": {
     "imports": [

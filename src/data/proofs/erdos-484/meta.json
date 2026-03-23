@@ -17,21 +17,11 @@
       "partition-regularity",
       "solved"
     ],
-    "references": [
-      "Roth, K.F.: Original conjecture on monochromatic sums in finite colorings",
-      "Erdős, P., Sárközy, A., and Sós, V.T. (1989): 'On a conjecture of Roth and some related problems I' — complete solution with N/2 − O(N^{1−1/2^{k+1}}) bound",
-      "Green, B.: Problem 25 on 'Some open problems in additive combinatorics' — asks for exact error terms",
-      "Schur, I. (1916): 'Über die Kongruenz x^m + y^m ≡ z^m (mod p)' — earliest partition regularity result",
-      "Hindman, N. (1974): 'Finite sums from sequences within cells of a partition of N' — infinite monochromatic sum structure",
-      "Freiman, G.A. (1973): 'Foundations of a Structural Theory of Set Addition'",
-      "https://erdosproblems.com/484"
-    ],
     "badge": "axiom",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/484",
     "erdosUrl": "https://erdosproblems.com/484",
     "erdosProblemStatus": "solved",
-    "leanFile": "Proofs/Erdos484Problem.lean",
     "proofRepoPath": "Proofs/Erdos484Problem.lean",
     "date": "1989",
     "dateAdded": "2026-01-19",
@@ -149,5 +139,14 @@
     "axiomCount": 14,
     "theoremCount": 4,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    "Roth, K.F.: Original conjecture on monochromatic sums in finite colorings",
+    "Erdős, P., Sárközy, A., and Sós, V.T. (1989): 'On a conjecture of Roth and some related problems I' — complete solution with N/2 − O(N^{1−1/2^{k+1}}) bound",
+    "Green, B.: Problem 25 on 'Some open problems in additive combinatorics' — asks for exact error terms",
+    "Schur, I. (1916): 'Über die Kongruenz x^m + y^m ≡ z^m (mod p)' — earliest partition regularity result",
+    "Hindman, N. (1974): 'Finite sums from sequences within cells of a partition of N' — infinite monochromatic sum structure",
+    "Freiman, G.A. (1973): 'Foundations of a Structural Theory of Set Addition'",
+    "https://erdosproblems.com/484"
+  ]
 }

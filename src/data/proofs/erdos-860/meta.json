@@ -55,18 +55,6 @@
       "subquadratic_upper_bound: h(n) = o(n²) via IsLittleO (partial proof)",
       "erdos_860: main theorem combining Ruzsa + Erdős-Pomerance (fully proved)"
     ],
-    "references": [
-      {
-        "key": "ErPo80",
-        "citation": "Erdős, P. and Pomerance, C., Matching the natural numbers up to n with distinct multiples of another interval, Indigationes Math. (1980), 147-151.",
-        "type": "paper"
-      },
-      {
-        "key": "Gu04",
-        "citation": "Guy, Richard K., Unsolved Problems in Number Theory, 3rd ed. (2004), Problem B32.",
-        "type": "book"
-      }
-    ],
     "axiomCount": 5,
     "lineCount": 205
   },
@@ -170,5 +158,17 @@
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "references": [
+    {
+      "key": "ErPo80",
+      "citation": "Erdős, P. and Pomerance, C., Matching the natural numbers up to n with distinct multiples of another interval, Indigationes Math. (1980), 147-151.",
+      "type": "paper"
+    },
+    {
+      "key": "Gu04",
+      "citation": "Guy, Richard K., Unsolved Problems in Number Theory, 3rd ed. (2004), Problem B32.",
+      "type": "book"
+    }
+  ]
 }

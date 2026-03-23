@@ -44,12 +44,6 @@
         "module": "Mathlib.Order.Filter.Basic"
       }
     ],
-    "references": [
-      "Erdős, Gallai, Tuza (1992): τ ≤ n - √(kn) when all cliques have size ≥ k",
-      "Bollobás, Erdős: exact threshold n + 3 - 2√n for τ = 1, proved optimal",
-      "Erdős Problem #610: clique transversal without clique size constraints (the base problem)",
-      "https://erdosproblems.com/611"
-    ],
     "originalContributions": [
       "Formal definition of AllCliquesLarge and AllCliquesLinear",
       "Statement of Question 1 (linear clique size → sublinear τ)",
@@ -58,7 +52,6 @@
       "Statement of Bollobás-Erdős threshold n + 3 - 2√n",
       "Lower bound k_c(n) ≥ n^{c'/log log n}"
     ],
-    "leanFile": "Proofs/Stubs/Erdos611Problem.lean",
     "axiomCount": 5,
     "lineCount": 245
   },
@@ -171,5 +164,11 @@
     "axiomCount": 5,
     "theoremCount": 8,
     "definitionCount": 14
-  }
+  },
+  "references": [
+    "Erdős, Gallai, Tuza (1992): τ ≤ n - √(kn) when all cliques have size ≥ k",
+    "Bollobás, Erdős: exact threshold n + 3 - 2√n for τ = 1, proved optimal",
+    "Erdős Problem #610: clique transversal without clique size constraints (the base problem)",
+    "https://erdosproblems.com/611"
+  ]
 }

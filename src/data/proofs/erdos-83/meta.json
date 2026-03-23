@@ -71,28 +71,6 @@
       "erdos_83_summary: both directions (bound + tightness)",
       "erdos_83: final theorem statement"
     ],
-    "references": [
-      {
-        "key": "EKR61",
-        "citation": "Erdős, P., Ko, C., Rado, R., 'Intersection theorems for systems of finite sets,' Quart. J. Math. Oxford 12 (1961), 313–320.",
-        "type": "paper"
-      },
-      {
-        "key": "AK97",
-        "citation": "Ahlswede, R., Khachatrian, L.H., 'The complete intersection theorem for systems of finite sets,' European J. Combin. 18 (1997), 125–136.",
-        "type": "paper"
-      },
-      {
-        "key": "Kat72",
-        "citation": "Katona, G.O.H., 'A simple proof of the Erdős-Ko-Rado theorem,' J. Combin. Theory Ser. B 13 (1972), 183–184.",
-        "type": "paper"
-      },
-      {
-        "key": "Fra87",
-        "citation": "Frankl, P., 'The shifting technique in extremal set theory,' in Surveys in Combinatorics (1987), London Math. Soc. Lecture Note Ser. 123, 81–110.",
-        "type": "paper"
-      }
-    ],
     "crossReferences": [
       {
         "proofId": "erdos-857",
@@ -223,5 +201,27 @@
     "axiomCount": 9,
     "theoremCount": 3,
     "definitionCount": 12
-  }
+  },
+  "references": [
+    {
+      "key": "EKR61",
+      "citation": "Erdős, P., Ko, C., Rado, R., 'Intersection theorems for systems of finite sets,' Quart. J. Math. Oxford 12 (1961), 313–320.",
+      "type": "paper"
+    },
+    {
+      "key": "AK97",
+      "citation": "Ahlswede, R., Khachatrian, L.H., 'The complete intersection theorem for systems of finite sets,' European J. Combin. 18 (1997), 125–136.",
+      "type": "paper"
+    },
+    {
+      "key": "Kat72",
+      "citation": "Katona, G.O.H., 'A simple proof of the Erdős-Ko-Rado theorem,' J. Combin. Theory Ser. B 13 (1972), 183–184.",
+      "type": "paper"
+    },
+    {
+      "key": "Fra87",
+      "citation": "Frankl, P., 'The shifting technique in extremal set theory,' in Surveys in Combinatorics (1987), London Math. Soc. Lecture Note Ser. 123, 81–110.",
+      "type": "paper"
+    }
+  ]
 }

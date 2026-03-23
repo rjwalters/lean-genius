@@ -14,13 +14,6 @@
       "combinatorics",
       "open"
     ],
-    "references": [
-      "Erdős–Graham [ErGr75], p. 516",
-      "Gerencsér–Gyárfás (1967): path Ramsey numbers",
-      "Lee (2017): Burr–Erdős conjecture",
-      "https://erdosproblems.com/557"
-    ],
-    "leanFile": "Proofs/Erdos557Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/557",
     "erdosUrl": "https://erdosproblems.com/557",
@@ -93,5 +86,11 @@
       "Does R(T; k) ≤ kn + C hold for forests (disconnected acyclic graphs) as well as trees?",
       "Can Lee's probabilistic approach to the 2-color Burr-Erdős conjecture be extended to handle k ≥ 3 colors?"
     ]
-  }
+  },
+  "references": [
+    "Erdős–Graham [ErGr75], p. 516",
+    "Gerencsér–Gyárfás (1967): path Ramsey numbers",
+    "Lee (2017): Burr–Erdős conjecture",
+    "https://erdosproblems.com/557"
+  ]
 }

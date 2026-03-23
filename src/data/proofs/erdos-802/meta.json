@@ -55,28 +55,6 @@
       "conjecture_true_for_r3: derived theorem",
       "alon_1996: local chromatic version"
     ],
-    "references": [
-      {
-        "key": "AEKS81",
-        "citation": "Ajtai, M., Erdős, P., Komlós, J., Szemerédi, E., On Turán's theorem for sparse graphs, Combinatorica (1981), 313-317.",
-        "type": "paper"
-      },
-      {
-        "key": "AKS80",
-        "citation": "Ajtai, M., Komlós, J., Szemerédi, E., A note on Ramsey numbers, J. Combin. Theory Ser. A (1980), 354-360.",
-        "type": "paper"
-      },
-      {
-        "key": "Sh95",
-        "citation": "Shearer, J.B., On the independence number of sparse graphs, Random Structures Algorithms (1995), 269-271.",
-        "type": "paper"
-      },
-      {
-        "key": "Al96",
-        "citation": "Alon, N., Independence numbers of locally sparse graphs, Random Structures Algorithms (1996), 271-278.",
-        "type": "paper"
-      }
-    ],
     "crossReferences": [
       {
         "proofId": "erdos-800",
@@ -201,5 +179,27 @@
     "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 13
-  }
+  },
+  "references": [
+    {
+      "key": "AEKS81",
+      "citation": "Ajtai, M., Erdős, P., Komlós, J., Szemerédi, E., On Turán's theorem for sparse graphs, Combinatorica (1981), 313-317.",
+      "type": "paper"
+    },
+    {
+      "key": "AKS80",
+      "citation": "Ajtai, M., Komlós, J., Szemerédi, E., A note on Ramsey numbers, J. Combin. Theory Ser. A (1980), 354-360.",
+      "type": "paper"
+    },
+    {
+      "key": "Sh95",
+      "citation": "Shearer, J.B., On the independence number of sparse graphs, Random Structures Algorithms (1995), 269-271.",
+      "type": "paper"
+    },
+    {
+      "key": "Al96",
+      "citation": "Alon, N., Independence numbers of locally sparse graphs, Random Structures Algorithms (1996), 271-278.",
+      "type": "paper"
+    }
+  ]
 }

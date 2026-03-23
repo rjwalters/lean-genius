@@ -13,13 +13,6 @@
       "tournaments",
       "open"
     ],
-    "references": [
-      "Erdős–Rado (1967): original problem and upper bound",
-      "Larson–Mitchell (1997): k(n,3) ≤ n²",
-      "Hunter–Steiner: directed path variant",
-      "https://erdosproblems.com/112"
-    ],
-    "leanFile": "Proofs/Erdos112Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/112",
     "erdosUrl": "https://erdosproblems.com/112",
@@ -166,39 +159,56 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "R. Rado"],
+      "authors": [
+        "P. Erdős",
+        "R. Rado"
+      ],
       "title": "Combinatorial theorems on classifications of subsets of a given set",
       "venue": "Proceedings of the London Mathematical Society",
       "year": 1952,
       "note": "Foundational partition calculus paper; the 1967 directed Ramsey problem cites this framework for the upper bound $k(n,m) \\leq \\frac{2^{m-1}(n-1)^m + n - 2}{2n - 3}$"
     },
     {
-      "authors": ["J. A. Larson", "W. J. Mitchell"],
+      "authors": [
+        "J. A. Larson",
+        "W. J. Mitchell"
+      ],
       "title": "On a problem of Erdős and Rado",
       "venue": "Annals of Pure and Applied Logic",
       "year": 1997,
       "note": "Proves the quadratic bound $k(n,3) \\leq n^2$ for transitive triples, the best known result for $m=3$"
     },
     {
-      "authors": ["B. Hunter"],
+      "authors": [
+        "B. Hunter"
+      ],
       "title": "Upper bounds on directed Ramsey numbers via multi-color Ramsey theory",
       "venue": "Unpublished manuscript",
       "year": 2020,
       "note": "Establishes the 3-color reduction yielding $k(n,m) \\leq C \\cdot 3^{n+2m}$ via a forward/backward/absent edge coloring"
     },
     {
-      "authors": ["F. P. Ramsey"],
+      "authors": [
+        "F. P. Ramsey"
+      ],
       "title": "On a problem of formal logic",
       "venue": "Proceedings of the London Mathematical Society",
       "year": 1930,
       "note": "Original Ramsey theorem establishing $R(n,m)$, the undirected lower bound for $k(n,m)$"
     },
     {
-      "authors": ["P. Erdős", "G. Szekeres"],
+      "authors": [
+        "P. Erdős",
+        "G. Szekeres"
+      ],
       "title": "A combinatorial problem in geometry",
       "venue": "Compositio Mathematica",
       "year": 1935,
       "note": "The Erdős–Szekeres theorem solves the directed path variant exactly as $(n-1)(m-1)+1$, establishing the baseline against which the open transitive tournament problem is measured"
-    }
+    },
+    "Erdős–Rado (1967): original problem and upper bound",
+    "Larson–Mitchell (1997): k(n,3) ≤ n²",
+    "Hunter–Steiner: directed path variant",
+    "https://erdosproblems.com/112"
   ]
 }

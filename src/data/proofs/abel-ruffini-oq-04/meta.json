@@ -9,7 +9,6 @@
     "date": "1824",
     "status": "verified",
     "proofRepoPath": "Proofs/AbelRuffiniOQ04.lean",
-    "leanFile": "proofs/Proofs/AbelRuffiniOQ04.lean",
     "tags": [
       "algebra",
       "group-theory",
@@ -42,78 +41,6 @@
       "five_is_the_threshold: exact dividing line between solvable and non-solvable",
       "Comprehensive documentation of the 5-step proof chain with historical context",
       "Degree-by-degree comparison table showing why 5 is the critical threshold"
-    ],
-    "references": [
-      {
-        "key": "Ab24",
-        "citation": "Abel, N.H., Mémoire sur les équations algébriques, où l'on démontre l'impossibilité de la résolution de l'équation générale du cinquième degré (1824).",
-        "type": "paper"
-      },
-      {
-        "key": "Ga32",
-        "citation": "Galois, É., Mémoire sur les conditions de résolubilité des équations par radicaux (1832, published posthumously 1846).",
-        "type": "paper"
-      },
-      {
-        "key": "Ar42",
-        "citation": "Artin, E., Galois Theory, Notre Dame Mathematical Lectures 2 (1942).",
-        "type": "book"
-      },
-      {
-        "key": "Ru99",
-        "citation": "Ruffini, P., Teoria Generale delle Equazioni, in cui si dimostra impossibile la soluzione algebraica delle equazioni generali di grado superiore al quarto, Bologna (1799).",
-        "type": "book"
-      },
-      {
-        "key": "Ro95",
-        "citation": "Rotman, J.J., An Introduction to the Theory of Groups, 4th ed., Springer GTM 148 (1995), Chapter 8.",
-        "type": "book"
-      },
-      {
-        "key": "Ed84",
-        "citation": "Edwards, H.M., Galois Theory, Springer GTM 101 (1984).",
-        "type": "book"
-      },
-      {
-        "key": "Ti01",
-        "citation": "Tignol, J.-P., Galois' Theory of Algebraic Equations, World Scientific (2001).",
-        "type": "book"
-      },
-      {
-        "key": "Co05",
-        "citation": "Cohen, H., A Course in Computational Algebraic Number Theory, Springer GTM 138 (1993, corrected 4th printing 2005), Chapter 6: Galois groups of polynomials.",
-        "type": "book"
-      },
-      {
-        "key": "Bu04",
-        "citation": "Burnside, W., On groups of order p^α q^β, Proceedings of the London Mathematical Society 2(1) (1904), 388–392.",
-        "type": "paper"
-      },
-      {
-        "key": "Pe03",
-        "citation": "Pesic, P., Abel's Proof: An Essay on the Sources and Meaning of Mathematical Unsolvability, MIT Press (2003).",
-        "type": "book"
-      },
-      {
-        "key": "St89",
-        "citation": "Stillwell, J., Mathematics and Its History, Springer Undergraduate Texts in Mathematics (1989, 3rd ed. 2010), Chapters 18–19: Galois theory and impossibility proofs.",
-        "type": "book"
-      },
-      {
-        "key": "Wu07",
-        "citation": "Wussing, H., The Genesis of the Abstract Group Concept: A Contribution to the History of the Origin of Abstract Group Theory, Dover (2007, reprint of 1984 MIT Press edition).",
-        "type": "book"
-      },
-      {
-        "key": "FT63",
-        "citation": "Feit, W. and Thompson, J.G., Solvability of groups of odd order, Pacific Journal of Mathematics 13(3) (1963), 775–1029.",
-        "type": "paper"
-      },
-      {
-        "key": "Kl84",
-        "citation": "Klein, F., Vorlesungen über das Ikosaeder und die Auflösung der Gleichungen vom fünften Grade, Teubner (1884). English translation: Lectures on the Icosahedron and the Solution of Equations of the Fifth Degree, Trübner (1888).",
-        "type": "book"
-      }
     ],
     "relatedProofs": [
       "abel-ruffini",
@@ -368,13 +295,6 @@
       "The proof chain reveals a hierarchy of mathematical eras: Cardano/Ferrari solved cubics/quartics (1540s) by clever substitutions, but Ruffini/Abel (1799-1824) needed permutation group theory, and Galois (1832) needed a wholly new framework — the difficulty of the problem drove fundamental advances in algebra",
       "The formalization exposes a subtle gap between non-existence and non-computability: Abel-Ruffini proves no uniform radical formula exists for generic quintics, but Galois theory provides an effective decision procedure for any specific polynomial — compute its Galois group, check solvability, and if solvable, construct the radical tower. The theorem is an impossibility result about uniform formulas, not about individual decidability, which is always algorithmically tractable via Galois group computation",
       "Klein's 1884 Icosahedron monograph reveals a geometric counterpart: A₅ is isomorphic to the rotation group of the regular icosahedron (60 rotational symmetries matching |A₅| = 60), and the general quintic can be solved by reducing it to the 'icosahedral equation' via Tschirnhaus transformations — a connection between the algebraic impossibility (no radical formula) and the geometry of Platonic solids. This gives a concrete geometric visualization of why degree 5 is special: the icosahedron is the most symmetric Platonic solid with a non-abelian symmetry group, and its 60-element rotation group is exactly A₅"
-    ],
-    "prerequisites": [
-      "Group theory: normal subgroups, derived series, solvability, and the relationship between subgroups and quotient solvability",
-      "Alternating and symmetric groups: $S_n$, $A_n = \\ker(\\text{sign})$, cycle types, and the embedding $A_5 \\hookrightarrow A_n$ for $n \\geq 5$",
-      "Galois theory fundamentals: field extensions, Galois groups, and the connection between radical solvability and group solvability (for the full chain context)",
-      "Lean 4 type coercions: `exact_mod_cast` for converting between $\\mathbb{N}$ and `Cardinal` types, and `inferInstance` for automatic typeclass resolution of solvability instances",
-      "Classification context: the role of $A_5 \\cong \\text{PSL}(2,4) \\cong \\text{PSL}(2,5)$ as the smallest non-abelian simple group and first member of the alternating simple family $\\{A_n : n \\geq 5\\}$"
     ]
   },
   "sections": [
@@ -460,5 +380,77 @@
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "key": "Ab24",
+      "citation": "Abel, N.H., Mémoire sur les équations algébriques, où l'on démontre l'impossibilité de la résolution de l'équation générale du cinquième degré (1824).",
+      "type": "paper"
+    },
+    {
+      "key": "Ga32",
+      "citation": "Galois, É., Mémoire sur les conditions de résolubilité des équations par radicaux (1832, published posthumously 1846).",
+      "type": "paper"
+    },
+    {
+      "key": "Ar42",
+      "citation": "Artin, E., Galois Theory, Notre Dame Mathematical Lectures 2 (1942).",
+      "type": "book"
+    },
+    {
+      "key": "Ru99",
+      "citation": "Ruffini, P., Teoria Generale delle Equazioni, in cui si dimostra impossibile la soluzione algebraica delle equazioni generali di grado superiore al quarto, Bologna (1799).",
+      "type": "book"
+    },
+    {
+      "key": "Ro95",
+      "citation": "Rotman, J.J., An Introduction to the Theory of Groups, 4th ed., Springer GTM 148 (1995), Chapter 8.",
+      "type": "book"
+    },
+    {
+      "key": "Ed84",
+      "citation": "Edwards, H.M., Galois Theory, Springer GTM 101 (1984).",
+      "type": "book"
+    },
+    {
+      "key": "Ti01",
+      "citation": "Tignol, J.-P., Galois' Theory of Algebraic Equations, World Scientific (2001).",
+      "type": "book"
+    },
+    {
+      "key": "Co05",
+      "citation": "Cohen, H., A Course in Computational Algebraic Number Theory, Springer GTM 138 (1993, corrected 4th printing 2005), Chapter 6: Galois groups of polynomials.",
+      "type": "book"
+    },
+    {
+      "key": "Bu04",
+      "citation": "Burnside, W., On groups of order p^α q^β, Proceedings of the London Mathematical Society 2(1) (1904), 388–392.",
+      "type": "paper"
+    },
+    {
+      "key": "Pe03",
+      "citation": "Pesic, P., Abel's Proof: An Essay on the Sources and Meaning of Mathematical Unsolvability, MIT Press (2003).",
+      "type": "book"
+    },
+    {
+      "key": "St89",
+      "citation": "Stillwell, J., Mathematics and Its History, Springer Undergraduate Texts in Mathematics (1989, 3rd ed. 2010), Chapters 18–19: Galois theory and impossibility proofs.",
+      "type": "book"
+    },
+    {
+      "key": "Wu07",
+      "citation": "Wussing, H., The Genesis of the Abstract Group Concept: A Contribution to the History of the Origin of Abstract Group Theory, Dover (2007, reprint of 1984 MIT Press edition).",
+      "type": "book"
+    },
+    {
+      "key": "FT63",
+      "citation": "Feit, W. and Thompson, J.G., Solvability of groups of odd order, Pacific Journal of Mathematics 13(3) (1963), 775–1029.",
+      "type": "paper"
+    },
+    {
+      "key": "Kl84",
+      "citation": "Klein, F., Vorlesungen über das Ikosaeder und die Auflösung der Gleichungen vom fünften Grade, Teubner (1884). English translation: Lectures on the Icosahedron and the Solution of Equations of the Fifth Degree, Trübner (1888).",
+      "type": "book"
+    }
+  ]
 }

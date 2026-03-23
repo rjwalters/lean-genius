@@ -9,7 +9,6 @@
     "date": "2026",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos340GreedySidon.lean",
-    "leanFile": "proofs/Proofs/Erdos340GreedySidon.lean",
     "tags": [
       "number-theory",
       "combinatorics",
@@ -56,43 +55,6 @@
       "Greedy Sidon sequence axiomatization with strict monotonicity and the Sidon property",
       "erdos_340: formal statement of Erdos's conjecture (OPEN)"
     ],
-    "references": [
-      {
-        "key": "ET41",
-        "citation": "Erdos, P. and Turan, P. (1941). On a problem of Sidon in additive number theory. Journal of the London Mathematical Society, 16(4), 212-215.",
-        "type": "paper"
-      },
-      {
-        "key": "MC44",
-        "citation": "Mian, A. M. and Chowla, S. D. (1944). On the B2 sequences of Sidon. Proceedings of the National Academy of Sciences India, A14, 3-4.",
-        "type": "paper"
-      },
-      {
-        "key": "Si38",
-        "citation": "Singer, J. (1938). A theorem in finite projective geometry and some applications to number theory. Transactions of the American Mathematical Society, 43(3), 377-385.",
-        "type": "paper"
-      },
-      {
-        "key": "Ru98",
-        "citation": "Ruzsa, I. Z. (1998). An infinite Sidon set. Journal of Number Theory, 68(1), 63-71.",
-        "type": "paper"
-      },
-      {
-        "key": "Ch24",
-        "citation": "Cheng, Y. (2024). Greedy Sidon sets for linear forms. Journal of Number Theory.",
-        "type": "paper"
-      },
-      {
-        "key": "OR05",
-        "citation": "O'Bryant, K. (2005). A complete annotated bibliography of work related to Sidon sets. Electronic Journal of Combinatorics, Dynamic Survey DS11.",
-        "type": "paper"
-      },
-      {
-        "key": "TV06",
-        "citation": "Tao, T. and Vu, V. (2006). Additive Combinatorics. Cambridge University Press, Chapter 6.",
-        "type": "book"
-      }
-    ],
     "relatedProofs": [
       "erdos-340",
       "erdos-44",
@@ -132,12 +94,6 @@
       "The weak upper bound sqrt(2N) + 1 is proved from differences alone; the tight Erdos-Turan bound sqrt(N) + O(N^{1/4}) requires counting sums instead",
       "21 axioms: 1 tight upper bound (known result), 5 greedy sequence properties, 11 specific values, 2 growth bounds, 2 difference set memberships. The high axiom count reflects the difficulty of constructive Sidon sequence theory",
       "Erdos #340 is OPEN: the gap between the N^(1/3) lower bound and conjectured N^(1/2-epsilon) has persisted for 80+ years"
-    ],
-    "prerequisites": [
-      "Sidon sets (B2 sequences): sets where all pairwise sums are distinct",
-      "Finite combinatorics: Finset operations, card, filter, image, product",
-      "Pigeonhole principle: if n distinct values lie in [1,M], then M >= n",
-      "Asymptotic notation: Filter.atTop for eventually-true statements"
     ]
   },
   "sections": [
@@ -250,11 +206,52 @@
       "Mathlib.Algebra.Order.Field.Basic",
       "Mathlib.Analysis.SpecialFunctions.Pow.Real"
     ],
-    "opens": ["Finset", "Filter", "Set"],
+    "opens": [
+      "Finset",
+      "Filter",
+      "Set"
+    ],
     "namespace": "Erdos340",
     "lineCount": 537,
     "axiomCount": 21,
     "theoremCount": 16,
     "definitionCount": 10
-  }
+  },
+  "references": [
+    {
+      "key": "ET41",
+      "citation": "Erdos, P. and Turan, P. (1941). On a problem of Sidon in additive number theory. Journal of the London Mathematical Society, 16(4), 212-215.",
+      "type": "paper"
+    },
+    {
+      "key": "MC44",
+      "citation": "Mian, A. M. and Chowla, S. D. (1944). On the B2 sequences of Sidon. Proceedings of the National Academy of Sciences India, A14, 3-4.",
+      "type": "paper"
+    },
+    {
+      "key": "Si38",
+      "citation": "Singer, J. (1938). A theorem in finite projective geometry and some applications to number theory. Transactions of the American Mathematical Society, 43(3), 377-385.",
+      "type": "paper"
+    },
+    {
+      "key": "Ru98",
+      "citation": "Ruzsa, I. Z. (1998). An infinite Sidon set. Journal of Number Theory, 68(1), 63-71.",
+      "type": "paper"
+    },
+    {
+      "key": "Ch24",
+      "citation": "Cheng, Y. (2024). Greedy Sidon sets for linear forms. Journal of Number Theory.",
+      "type": "paper"
+    },
+    {
+      "key": "OR05",
+      "citation": "O'Bryant, K. (2005). A complete annotated bibliography of work related to Sidon sets. Electronic Journal of Combinatorics, Dynamic Survey DS11.",
+      "type": "paper"
+    },
+    {
+      "key": "TV06",
+      "citation": "Tao, T. and Vu, V. (2006). Additive Combinatorics. Cambridge University Press, Chapter 6.",
+      "type": "book"
+    }
+  ]
 }

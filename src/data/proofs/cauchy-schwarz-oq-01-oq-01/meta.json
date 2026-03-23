@@ -56,22 +56,6 @@
       "Symmetric version: ‖⟪u,v⟫‖ = ‖u‖·‖v‖ ↔ ∃ c, v = c • u (for u ≠ 0)",
       "Edge cases: equality trivially holds when either vector is zero"
     ],
-    "references": [
-      {
-        "authors": "A.-L. Cauchy",
-        "title": "Cours d'Analyse",
-        "year": "1821",
-        "venue": "Imprimerie Royale, Paris",
-        "note": "Original finite sum form"
-      },
-      {
-        "authors": "H. A. Schwarz",
-        "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem",
-        "year": "1885",
-        "venue": "Acta Societatis Scientiarum Fennicae",
-        "note": "Inner product space formulation with equality condition"
-      }
-    ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
     "crossReferences": [
@@ -177,5 +161,21 @@
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "A.-L. Cauchy",
+      "title": "Cours d'Analyse",
+      "year": "1821",
+      "venue": "Imprimerie Royale, Paris",
+      "note": "Original finite sum form"
+    },
+    {
+      "authors": "H. A. Schwarz",
+      "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem",
+      "year": "1885",
+      "venue": "Acta Societatis Scientiarum Fennicae",
+      "note": "Inner product space formulation with equality condition"
+    }
+  ]
 }

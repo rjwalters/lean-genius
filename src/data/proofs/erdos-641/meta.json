@@ -40,33 +40,6 @@
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       }
     ],
-    "references": [
-      {
-        "key": "JSS2024",
-        "citation": "Janzer, O., Steiner, R., and Sudakov, B. (2024). Graphs with high chromatic number and no regular subgraphs.",
-        "type": "paper"
-      },
-      {
-        "key": "ErdosHajnal",
-        "citation": "Erdős, P. and Hajnal, A. Original problem on edge-disjoint cycles and chromatic number.",
-        "type": "paper"
-      },
-      {
-        "key": "Gyarfas1975",
-        "citation": "Gyárfás, A. (1975). On Ramsey covering numbers. Infinite and Finite Sets, Colloq. Math. Soc. J. Bolyai 10, 801-816.",
-        "type": "paper"
-      },
-      {
-        "key": "Kim1995",
-        "citation": "Kim, J. H. (1995). The Ramsey number R(3,t) has order of magnitude t²/log t. Random Structures & Algorithms 7(3), 173-207.",
-        "type": "paper"
-      },
-      {
-        "key": "Thomassen1983",
-        "citation": "Thomassen, C. (1983). Girth in graphs. J. Combin. Theory Ser. B 35(2), 129-141.",
-        "type": "paper"
-      }
-    ],
     "originalContributions": [
       "Formal definition of edge-disjoint cycles on same vertex set",
       "Connection to 2k-regular subgraphs",
@@ -185,5 +158,32 @@
     "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 17
-  }
+  },
+  "references": [
+    {
+      "key": "JSS2024",
+      "citation": "Janzer, O., Steiner, R., and Sudakov, B. (2024). Graphs with high chromatic number and no regular subgraphs.",
+      "type": "paper"
+    },
+    {
+      "key": "ErdosHajnal",
+      "citation": "Erdős, P. and Hajnal, A. Original problem on edge-disjoint cycles and chromatic number.",
+      "type": "paper"
+    },
+    {
+      "key": "Gyarfas1975",
+      "citation": "Gyárfás, A. (1975). On Ramsey covering numbers. Infinite and Finite Sets, Colloq. Math. Soc. J. Bolyai 10, 801-816.",
+      "type": "paper"
+    },
+    {
+      "key": "Kim1995",
+      "citation": "Kim, J. H. (1995). The Ramsey number R(3,t) has order of magnitude t²/log t. Random Structures & Algorithms 7(3), 173-207.",
+      "type": "paper"
+    },
+    {
+      "key": "Thomassen1983",
+      "citation": "Thomassen, C. (1983). Girth in graphs. J. Combin. Theory Ser. B 35(2), 129-141.",
+      "type": "paper"
+    }
+  ]
 }

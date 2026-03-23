@@ -22,13 +22,6 @@
     "erdosUrl": "https://erdosproblems.com/507",
     "erdosProblemStatus": "open",
     "mathlib_version": "4.15.0",
-    "references": [
-      "Heilbronn: original problem (1940s)",
-      "Komlós–Pintz–Szemerédi (1982): lower bound (log n)/n²",
-      "Komlós–Pintz–Szemerédi (1981): upper bound 1/n^{8/7}",
-      "Cohen–Pohoata–Zakharov (2024): upper bound 1/n^{7/6+o(1)}",
-      "https://erdosproblems.com/507"
-    ],
     "mathlibDependencies": [
       {
         "theorem": "Real.log",
@@ -170,5 +163,12 @@
     "axiomCount": 7,
     "theoremCount": 0,
     "definitionCount": 4
-  }
+  },
+  "references": [
+    "Heilbronn: original problem (1940s)",
+    "Komlós–Pintz–Szemerédi (1982): lower bound (log n)/n²",
+    "Komlós–Pintz–Szemerédi (1981): upper bound 1/n^{8/7}",
+    "Cohen–Pohoata–Zakharov (2024): upper bound 1/n^{7/6+o(1)}",
+    "https://erdosproblems.com/507"
+  ]
 }

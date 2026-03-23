@@ -43,29 +43,6 @@
       "Concrete examples: example_10, example_100",
       "smoothCount (ψ function) and Goldbach connection"
     ],
-    "references": [
-      {
-        "authors": "Erdős, Paul; Graham, Ronald L.",
-        "title": "Old and New Problems and Results in Combinatorial Number Theory",
-        "year": "1980",
-        "venue": "Monographies de L'Enseignement Mathématique 28",
-        "note": "Original formulation asking whether f(n) ≤ n^{1/3}"
-      },
-      {
-        "authors": "Balog, Antal",
-        "title": "On the representation of integers as sums of smooth numbers",
-        "year": "1989",
-        "venue": "Mathematika 36(1), pp. 67-70",
-        "note": "Current best bound: f(n) ≤ n^{4/(9√e)+ε} ≈ n^{0.2695}"
-      },
-      {
-        "authors": "de Bruijn, N. G.",
-        "title": "On the number of positive integers ≤ x and free of prime factors > y",
-        "year": "1951",
-        "venue": "Indag. Math. 13, pp. 50-60",
-        "note": "Foundational work on the Dickman function ρ(u) governing smooth number density"
-      }
-    ],
     "axiomCount": 5,
     "prerequisites": [
       "Prime numbers and prime factorization",
@@ -196,5 +173,28 @@
     "axiomCount": 5,
     "theoremCount": 9,
     "definitionCount": 9
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "note": "Original formulation asking whether f(n) ≤ n^{1/3}"
+    },
+    {
+      "authors": "Balog, Antal",
+      "title": "On the representation of integers as sums of smooth numbers",
+      "year": "1989",
+      "venue": "Mathematika 36(1), pp. 67-70",
+      "note": "Current best bound: f(n) ≤ n^{4/(9√e)+ε} ≈ n^{0.2695}"
+    },
+    {
+      "authors": "de Bruijn, N. G.",
+      "title": "On the number of positive integers ≤ x and free of prime factors > y",
+      "year": "1951",
+      "venue": "Indag. Math. 13, pp. 50-60",
+      "note": "Foundational work on the Dickman function ρ(u) governing smooth number density"
+    }
+  ]
 }

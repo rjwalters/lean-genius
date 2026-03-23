@@ -58,26 +58,6 @@
       "Consistency: fractional power raised to q gives integer power",
       "Square root and cube root special cases"
     ],
-    "references": [
-      {
-        "authors": "Abraham De Moivre",
-        "title": "Original theorem for integer exponents",
-        "year": "1707",
-        "venue": "Philosophical Transactions"
-      },
-      {
-        "authors": "Leonhard Euler",
-        "title": "Extension via exponential form",
-        "year": "1748",
-        "venue": "Introductio in analysin infinitorum"
-      },
-      {
-        "authors": "Tristan Needham",
-        "title": "Visual Complex Analysis",
-        "year": "1997",
-        "venue": "Oxford University Press"
-      }
-    ],
     "dateAdded": "2026-02-26",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
@@ -210,5 +190,25 @@
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 2
-  }
+  },
+  "references": [
+    {
+      "authors": "Abraham De Moivre",
+      "title": "Original theorem for integer exponents",
+      "year": "1707",
+      "venue": "Philosophical Transactions"
+    },
+    {
+      "authors": "Leonhard Euler",
+      "title": "Extension via exponential form",
+      "year": "1748",
+      "venue": "Introductio in analysin infinitorum"
+    },
+    {
+      "authors": "Tristan Needham",
+      "title": "Visual Complex Analysis",
+      "year": "1997",
+      "venue": "Oxford University Press"
+    }
+  ]
 }

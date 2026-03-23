@@ -57,22 +57,6 @@
       "finite_sum_exact_constant: finite sum version via Lagrange identity cross-term vanishing",
       "existential_constant_is_projCoeff: bridge to base CauchySchwarz.lean existential result"
     ],
-    "references": [
-      {
-        "authors": "A.-L. Cauchy",
-        "title": "Cours d'Analyse de l'École Royale Polytechnique",
-        "year": "1821",
-        "venue": "Paris",
-        "note": "Original discrete inequality with equality case noted"
-      },
-      {
-        "authors": "J. M. Steele",
-        "title": "The Cauchy-Schwarz Master Class",
-        "year": "2004",
-        "venue": "Cambridge University Press",
-        "note": "Chapter 2: detailed treatment of equality conditions"
-      }
-    ],
     "dateAdded": "2026-03-19",
     "lineCount": 288
   },
@@ -184,5 +168,21 @@
     "axiomCount": 0,
     "theoremCount": 17,
     "definitionCount": 2
-  }
+  },
+  "references": [
+    {
+      "authors": "A.-L. Cauchy",
+      "title": "Cours d'Analyse de l'École Royale Polytechnique",
+      "year": "1821",
+      "venue": "Paris",
+      "note": "Original discrete inequality with equality case noted"
+    },
+    {
+      "authors": "J. M. Steele",
+      "title": "The Cauchy-Schwarz Master Class",
+      "year": "2004",
+      "venue": "Cambridge University Press",
+      "note": "Chapter 2: detailed treatment of equality conditions"
+    }
+  ]
 }

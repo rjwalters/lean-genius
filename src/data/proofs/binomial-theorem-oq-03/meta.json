@@ -55,36 +55,6 @@
         "module": "Mathlib.Topology.Algebra.Order.LiminfLimsup"
       }
     ],
-    "references": [
-      {
-        "authors": "Jacob Bernoulli",
-        "title": "Ars Conjectandi",
-        "year": "1713",
-        "venue": "Published posthumously, Basel",
-        "note": "Established the binomial distribution and the weak law of large numbers"
-      },
-      {
-        "authors": "Siméon Denis Poisson",
-        "title": "Recherches sur la probabilité des jugements",
-        "year": "1837",
-        "venue": "Bachelier, Paris",
-        "note": "Proved the Poisson limit theorem (law of rare events): Bin(n, r/n) → Poi(r)"
-      },
-      {
-        "authors": "Alexandre-Théophile Vandermonde",
-        "title": "Mémoire sur des irrationnelles de différens ordres avec une application au cercle",
-        "year": "1772",
-        "venue": "Mémoires de l'Académie Royale des Sciences",
-        "note": "Vandermonde's identity: C(m+n,k) = Σ C(m,j)C(n,k-j)"
-      },
-      {
-        "authors": "Abraham de Moivre",
-        "title": "Approximatio ad Summam Terminorum Binomii (a+b)^n in Seriem Expansi",
-        "year": "1733",
-        "venue": "Supplementum to Miscellanea Analytica",
-        "note": "First proof of the normal approximation to the binomial (de Moivre–Laplace theorem)"
-      }
-    ],
     "originalContributions": [
       "binomPMF: P(X=k) = C(n,k) p^k (1-p)^(n-k) as a Lean definition",
       "binomPMF_sum_eq_one: normalization from (p + (1-p))^n = 1",
@@ -253,5 +223,35 @@
     "axiomCount": 0,
     "theoremCount": 33,
     "definitionCount": 2
-  }
+  },
+  "references": [
+    {
+      "authors": "Jacob Bernoulli",
+      "title": "Ars Conjectandi",
+      "year": "1713",
+      "venue": "Published posthumously, Basel",
+      "note": "Established the binomial distribution and the weak law of large numbers"
+    },
+    {
+      "authors": "Siméon Denis Poisson",
+      "title": "Recherches sur la probabilité des jugements",
+      "year": "1837",
+      "venue": "Bachelier, Paris",
+      "note": "Proved the Poisson limit theorem (law of rare events): Bin(n, r/n) → Poi(r)"
+    },
+    {
+      "authors": "Alexandre-Théophile Vandermonde",
+      "title": "Mémoire sur des irrationnelles de différens ordres avec une application au cercle",
+      "year": "1772",
+      "venue": "Mémoires de l'Académie Royale des Sciences",
+      "note": "Vandermonde's identity: C(m+n,k) = Σ C(m,j)C(n,k-j)"
+    },
+    {
+      "authors": "Abraham de Moivre",
+      "title": "Approximatio ad Summam Terminorum Binomii (a+b)^n in Seriem Expansi",
+      "year": "1733",
+      "venue": "Supplementum to Miscellanea Analytica",
+      "note": "First proof of the normal approximation to the binomial (de Moivre–Laplace theorem)"
+    }
+  ]
 }

@@ -15,14 +15,6 @@
       "equidistribution",
       "open"
     ],
-    "references": [
-      "Erdős, Graham, Ruzsa & Straus (1975): On the prime factors of C(2n, n)",
-      "Mertens (1874): Ein Beitrag zur analytischen Zahlentheorie",
-      "Bombieri & Davenport (1968): Small differences between consecutive primes",
-      "Granville & Soundararajan (2007): Large character sums",
-      "https://erdosproblems.com/726"
-    ],
-    "leanFile": "Proofs/Erdos726Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/726",
     "erdosUrl": "https://erdosproblems.com/726",
@@ -119,5 +111,12 @@
       "Does the conjecture generalize to other interval partitions: Σ_{n mod p ∈ (αp, p)} 1/p ~ (1−α) log log n for 0 < α < 1?",
       "Is there a connection to the distribution of n mod p for structured sequences (e.g., n = 2^k or n = k!)?"
     ]
-  }
+  },
+  "references": [
+    "Erdős, Graham, Ruzsa & Straus (1975): On the prime factors of C(2n, n)",
+    "Mertens (1874): Ein Beitrag zur analytischen Zahlentheorie",
+    "Bombieri & Davenport (1968): Small differences between consecutive primes",
+    "Granville & Soundararajan (2007): Large character sums",
+    "https://erdosproblems.com/726"
+  ]
 }

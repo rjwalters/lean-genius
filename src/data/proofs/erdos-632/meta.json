@@ -40,33 +40,6 @@
         "module": "Mathlib.Order.Disjoint"
       }
     ],
-    "references": [
-      {
-        "key": "DHS2019",
-        "citation": "Dvořák, Z., Hu, X., and Sereni, J.-S. 'A 4-choosable graph that is not (8:2)-choosable.' Advances in Combinatorics (2019). Constructs a graph with >100 vertices that is (4,1)-choosable but not (8,2)-choosable, using Kneser-type techniques.",
-        "type": "paper"
-      },
-      {
-        "key": "ERT1980",
-        "citation": "Erdős, P., Rubin, A. L., and Taylor, H. 'Choosability in graphs.' Proc. West Coast Conf. on Combinatorics, Graph Theory and Computing, Congressus Numerantium 26, 125–157 (1979/1980). Introduced list coloring and the scaling conjecture.",
-        "type": "paper"
-      },
-      {
-        "key": "ATV1997",
-        "citation": "Alon, N., Tuza, Z., and Voigt, M. 'Choosability and fractional chromatic numbers.' Discrete Mathematics 165/166, 31–38 (1997). Proved that fractional choosability does scale.",
-        "type": "paper"
-      },
-      {
-        "key": "Ohba2002",
-        "citation": "Ohba, K. 'On chromatic-choosable graphs.' Journal of Graph Theory 40(2), 130–135 (2002). Conjectured χ_L(G) = χ(G) when |V| ≤ 2χ(G) + 1, proved by Noel-Reed-Wu in 2015.",
-        "type": "paper"
-      },
-      {
-        "key": "Galvin1995",
-        "citation": "Galvin, F. 'The list chromatic index of a bipartite multigraph.' Journal of Combinatorial Theory, Series B 63(1), 153–158 (1995). List edge-coloring of bipartite graphs.",
-        "type": "paper"
-      }
-    ],
     "originalContributions": [
       "Formal definition of (a,b)-choosability",
       "Definition of color assignments and valid selections",
@@ -205,5 +178,32 @@
     "axiomCount": 14,
     "theoremCount": 11,
     "definitionCount": 14
-  }
+  },
+  "references": [
+    {
+      "key": "DHS2019",
+      "citation": "Dvořák, Z., Hu, X., and Sereni, J.-S. 'A 4-choosable graph that is not (8:2)-choosable.' Advances in Combinatorics (2019). Constructs a graph with >100 vertices that is (4,1)-choosable but not (8,2)-choosable, using Kneser-type techniques.",
+      "type": "paper"
+    },
+    {
+      "key": "ERT1980",
+      "citation": "Erdős, P., Rubin, A. L., and Taylor, H. 'Choosability in graphs.' Proc. West Coast Conf. on Combinatorics, Graph Theory and Computing, Congressus Numerantium 26, 125–157 (1979/1980). Introduced list coloring and the scaling conjecture.",
+      "type": "paper"
+    },
+    {
+      "key": "ATV1997",
+      "citation": "Alon, N., Tuza, Z., and Voigt, M. 'Choosability and fractional chromatic numbers.' Discrete Mathematics 165/166, 31–38 (1997). Proved that fractional choosability does scale.",
+      "type": "paper"
+    },
+    {
+      "key": "Ohba2002",
+      "citation": "Ohba, K. 'On chromatic-choosable graphs.' Journal of Graph Theory 40(2), 130–135 (2002). Conjectured χ_L(G) = χ(G) when |V| ≤ 2χ(G) + 1, proved by Noel-Reed-Wu in 2015.",
+      "type": "paper"
+    },
+    {
+      "key": "Galvin1995",
+      "citation": "Galvin, F. 'The list chromatic index of a bipartite multigraph.' Journal of Combinatorial Theory, Series B 63(1), 153–158 (1995). List edge-coloring of bipartite graphs.",
+      "type": "paper"
+    }
+  ]
 }

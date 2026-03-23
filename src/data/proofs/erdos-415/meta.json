@@ -68,36 +68,6 @@
       "Formalization of triple-log asymptotic bounds $c_1 \\log\\log\\log n \\leq F(n) \\leq c_2 \\log\\log\\log n$",
       "Extension to other arithmetic functions ($\\sigma$, $\\tau$, $\\omega$) with analogous $F$ functions"
     ],
-    "references": [
-      {
-        "authors": "P. Erdős",
-        "title": "On a problem of Chowla and some related problems",
-        "year": "1936",
-        "venue": "Proc. Nat. Inst. Sci. India",
-        "note": "Original proof that F(n) ≍ log log log n"
-      },
-      {
-        "authors": "P. Erdős, R. L. Graham",
-        "title": "Old and New Problems and Results in Combinatorial Number Theory",
-        "year": "1980",
-        "venue": "Monographies de L'Enseignement Mathématique",
-        "note": "Collection of open problems including #415"
-      },
-      {
-        "authors": "R. R. Hall, G. Tenenbaum",
-        "title": "Divisors",
-        "year": "1988",
-        "venue": "Cambridge University Press",
-        "note": "Comprehensive treatment of arithmetic function distribution and consecutive values"
-      },
-      {
-        "authors": "K. Ford",
-        "title": "The distribution of totients",
-        "year": "1998",
-        "venue": "Ramanujan J.",
-        "note": "Tight bounds on V(x), the counting function for totient values"
-      }
-    ],
     "dateAdded": "2026-01-23",
     "dateUpdated": "2026-02-12",
     "axiomCount": 1,
@@ -239,5 +209,35 @@
     "axiomCount": 1,
     "theoremCount": 14,
     "definitionCount": 20
-  }
+  },
+  "references": [
+    {
+      "authors": "P. Erdős",
+      "title": "On a problem of Chowla and some related problems",
+      "year": "1936",
+      "venue": "Proc. Nat. Inst. Sci. India",
+      "note": "Original proof that F(n) ≍ log log log n"
+    },
+    {
+      "authors": "P. Erdős, R. L. Graham",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique",
+      "note": "Collection of open problems including #415"
+    },
+    {
+      "authors": "R. R. Hall, G. Tenenbaum",
+      "title": "Divisors",
+      "year": "1988",
+      "venue": "Cambridge University Press",
+      "note": "Comprehensive treatment of arithmetic function distribution and consecutive values"
+    },
+    {
+      "authors": "K. Ford",
+      "title": "The distribution of totients",
+      "year": "1998",
+      "venue": "Ramanujan J.",
+      "note": "Tight bounds on V(x), the counting function for totient values"
+    }
+  ]
 }

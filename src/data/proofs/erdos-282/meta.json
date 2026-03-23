@@ -23,7 +23,6 @@
     "sourceUrl": "https://erdosproblems.com/282",
     "erdosUrl": "https://erdosproblems.com/282",
     "proofRepoPath": "Proofs/Erdos282Problem.lean",
-    "leanFile": "Proofs/Erdos282Problem.lean",
     "mathlibDependencies": [
       {
         "theorem": "Rat.Basic",
@@ -57,14 +56,6 @@
       "congClass and graham_representability for congruence class denominators",
       "perfectSquares and erdos_graham_squares_conjecture for sparse denominators",
       "greedy_implies_representable connecting termination to representability"
-    ],
-    "references": [
-      "Fibonacci (1202): 'Liber Abaci', greedy algorithm for Egyptian fractions",
-      "Erdős, Graham (1980): 'Old and New Problems and Results in Combinatorial Number Theory', Monographies de l'Enseignement Mathématique 28, p.30",
-      "Graham (1964): 'On finite sums of unit fractions', Proceedings of the London Mathematical Society (3) 14, 193–207",
-      "Stein (unpublished): odd greedy conjecture for Egyptian fractions with odd denominators",
-      "Vose (1985): 'Egyptian fractions', Bulletin of the London Mathematical Society 17, 21–24",
-      "https://erdosproblems.com/282"
     ],
     "crossReferences": [
       {
@@ -171,5 +162,13 @@
     "axiomCount": 8,
     "theoremCount": 0,
     "definitionCount": 7
-  }
+  },
+  "references": [
+    "Fibonacci (1202): 'Liber Abaci', greedy algorithm for Egyptian fractions",
+    "Erdős, Graham (1980): 'Old and New Problems and Results in Combinatorial Number Theory', Monographies de l'Enseignement Mathématique 28, p.30",
+    "Graham (1964): 'On finite sums of unit fractions', Proceedings of the London Mathematical Society (3) 14, 193–207",
+    "Stein (unpublished): odd greedy conjecture for Egyptian fractions with odd denominators",
+    "Vose (1985): 'Egyptian fractions', Bulletin of the London Mathematical Society 17, 21–24",
+    "https://erdosproblems.com/282"
+  ]
 }

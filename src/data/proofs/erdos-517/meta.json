@@ -63,29 +63,6 @@
     "assumptions": [
       "biernacki_theorem: Under Fejér gaps (∑1/nₖ < ∞), entire functions assume every value infinitely often. Deep complex analysis result beyond Mathlib."
     ],
-    "references": [
-      {
-        "authors": "Fejér, Leopold",
-        "title": "Über die Wurzel vom kleinsten absoluten Betrage einer algebraischen Gleichung",
-        "year": "1908",
-        "venue": "Mathematische Annalen, 65, pp. 413-423",
-        "note": "Proved entire functions with ∑1/nₖ < ∞ assume every value at least once"
-      },
-      {
-        "authors": "Biernacki, Mieczysław",
-        "title": "Sur les équations algébriques contenant des paramètres arbitraires",
-        "year": "1928",
-        "venue": "Bulletin de l'Académie Polonaise des Sciences",
-        "note": "Strengthened Fejér's result: under ∑1/nₖ < ∞, every value is assumed infinitely often"
-      },
-      {
-        "authors": "Pólya, George",
-        "title": "Untersuchungen über Lücken und Singularitäten von Potenzreihen",
-        "year": "1929",
-        "venue": "Mathematische Zeitschrift, 29, pp. 549-640",
-        "note": "Proved partial results for functions of finite order, posed the conjecture for the general Fabry case"
-      }
-    ],
     "crossReferences": [
       {
         "targetId": "erdos-1116",
@@ -186,5 +163,28 @@
     "axiomCount": 1,
     "theoremCount": 3,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    {
+      "authors": "Fejér, Leopold",
+      "title": "Über die Wurzel vom kleinsten absoluten Betrage einer algebraischen Gleichung",
+      "year": "1908",
+      "venue": "Mathematische Annalen, 65, pp. 413-423",
+      "note": "Proved entire functions with ∑1/nₖ < ∞ assume every value at least once"
+    },
+    {
+      "authors": "Biernacki, Mieczysław",
+      "title": "Sur les équations algébriques contenant des paramètres arbitraires",
+      "year": "1928",
+      "venue": "Bulletin de l'Académie Polonaise des Sciences",
+      "note": "Strengthened Fejér's result: under ∑1/nₖ < ∞, every value is assumed infinitely often"
+    },
+    {
+      "authors": "Pólya, George",
+      "title": "Untersuchungen über Lücken und Singularitäten von Potenzreihen",
+      "year": "1929",
+      "venue": "Mathematische Zeitschrift, 29, pp. 549-640",
+      "note": "Proved partial results for functions of finite order, posed the conjecture for the general Fabry case"
+    }
+  ]
 }

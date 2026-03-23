@@ -10,7 +10,6 @@
     "date": "2021",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos296Problem.lean",
-    "leanFile": "Proofs/Erdos296Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -65,13 +64,6 @@
       "erdos_296_main: k(N)/log N → 1",
       "k_not_sublogarithmic: NOT o(log N) (proved, answers Erdős's question)",
       "k_infinitely_often_large: infinitely many N with k(N) > ε·log N (proved)"
-    ],
-    "references": [
-      "Erdős, Graham (1980): 'Old and New Problems and Results in Combinatorial Number Theory', Monographies de l'Enseignement Mathématique 28",
-      "Bloom (2021): 'On a density conjecture about unit fractions', arXiv:2112.03726",
-      "Hunter, Sawhney (2021): observation that Bloom's Theorem 3 implies k(N) = (1-o(1))·log N",
-      "Erdős, Rado (1960): 'Intersection theorems for systems of sets', sunflower lemma",
-      "https://erdosproblems.com/296"
     ],
     "crossReferences": [
       {
@@ -192,5 +184,12 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    "Erdős, Graham (1980): 'Old and New Problems and Results in Combinatorial Number Theory', Monographies de l'Enseignement Mathématique 28",
+    "Bloom (2021): 'On a density conjecture about unit fractions', arXiv:2112.03726",
+    "Hunter, Sawhney (2021): observation that Bloom's Theorem 3 implies k(N) = (1-o(1))·log N",
+    "Erdős, Rado (1960): 'Intersection theorems for systems of sets', sunflower lemma",
+    "https://erdosproblems.com/296"
+  ]
 }

@@ -49,28 +49,6 @@
       "ceiling_formula theorem: proved",
       "erdos_570_summary theorem: proved"
     ],
-    "references": [
-      {
-        "key": "EFRS93",
-        "citation": "Erdős, P., Faudree, R.J., Rousseau, C.C., Schelp, R.H., Ramsey size linear graphs (1993)",
-        "type": "paper"
-      },
-      {
-        "key": "Si93",
-        "citation": "Sidorenko, A., The Ramsey number of an n-edge graph versus triangle (1993)",
-        "type": "paper"
-      },
-      {
-        "key": "Ja99",
-        "citation": "Jayawardene, C.J., Size Ramsey numbers for C5 vs arbitrary graphs (1999)",
-        "type": "paper"
-      },
-      {
-        "key": "CFMPP24",
-        "citation": "Cambie, S., Freschi, A., Morawski, L., Petrova, E., Pokrovskiy, A., Cycle-complete graph Ramsey numbers (2024)",
-        "type": "paper"
-      }
-    ],
     "axiomCount": 5,
     "lineCount": 178,
     "theoremCount": 2,
@@ -195,5 +173,27 @@
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "references": [
+    {
+      "key": "EFRS93",
+      "citation": "Erdős, P., Faudree, R.J., Rousseau, C.C., Schelp, R.H., Ramsey size linear graphs (1993)",
+      "type": "paper"
+    },
+    {
+      "key": "Si93",
+      "citation": "Sidorenko, A., The Ramsey number of an n-edge graph versus triangle (1993)",
+      "type": "paper"
+    },
+    {
+      "key": "Ja99",
+      "citation": "Jayawardene, C.J., Size Ramsey numbers for C5 vs arbitrary graphs (1999)",
+      "type": "paper"
+    },
+    {
+      "key": "CFMPP24",
+      "citation": "Cambie, S., Freschi, A., Morawski, L., Petrova, E., Pokrovskiy, A., Cycle-complete graph Ramsey numbers (2024)",
+      "type": "paper"
+    }
+  ]
 }

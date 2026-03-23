@@ -50,22 +50,6 @@
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       }
     ],
-    "references": [
-      {
-        "authors": "Bolzano, Bernard",
-        "title": "Rein analytischer Beweis des Lehrsatzes dass zwischen je zwey Werthen, die ein entgegengesetztes Resultat gewähren, wenigstens eine reelle Wurzel der Gleichung liege",
-        "year": "1817",
-        "venue": "Prague",
-        "note": "First rigorous proof of the IVT (Bolzano's theorem), predating Cauchy's 1821 treatment"
-      },
-      {
-        "authors": "Burden, Richard L.; Faires, J. Douglas",
-        "title": "Numerical Analysis",
-        "year": "2010",
-        "venue": "Cengage Learning (9th edition)",
-        "note": "Chapter 2.1: The bisection method, convergence analysis, and comparison with Newton's method"
-      }
-    ],
     "lineCount": 124
   },
   "overview": {
@@ -154,5 +138,21 @@
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    {
+      "authors": "Bolzano, Bernard",
+      "title": "Rein analytischer Beweis des Lehrsatzes dass zwischen je zwey Werthen, die ein entgegengesetztes Resultat gewähren, wenigstens eine reelle Wurzel der Gleichung liege",
+      "year": "1817",
+      "venue": "Prague",
+      "note": "First rigorous proof of the IVT (Bolzano's theorem), predating Cauchy's 1821 treatment"
+    },
+    {
+      "authors": "Burden, Richard L.; Faires, J. Douglas",
+      "title": "Numerical Analysis",
+      "year": "2010",
+      "venue": "Cengage Learning (9th edition)",
+      "note": "Chapter 2.1: The bisection method, convergence analysis, and comparison with Newton's method"
+    }
+  ]
 }

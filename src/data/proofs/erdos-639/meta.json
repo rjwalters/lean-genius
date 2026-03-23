@@ -40,33 +40,6 @@
         "module": "Mathlib.Data.Nat.Choose.Basic"
       }
     ],
-    "references": [
-      {
-        "key": "KeevashSudakov2004",
-        "citation": "Keevash, P. and Sudakov, B. (2004). On the number of edges not covered by monochromatic copies of a clique. Journal of Combinatorial Theory, Series B 90, 41–52.",
-        "type": "paper"
-      },
-      {
-        "key": "Pyber1986",
-        "citation": "Pyber, L. (1986). Clique covering of graphs. Combinatorica 6, 393–398.",
-        "type": "paper"
-      },
-      {
-        "key": "ErdosRousseau",
-        "citation": "Erdős, P., Rousseau, C.C., and Schelp, R.H. Unpublished result on monochromatic triangle covering.",
-        "type": "paper"
-      },
-      {
-        "key": "Ramsey1930",
-        "citation": "Ramsey, F. P. (1930). On a Problem of Formal Logic. Proceedings of the London Mathematical Society, s2-30(1), 264–286.",
-        "type": "paper"
-      },
-      {
-        "key": "Greenwood1955",
-        "citation": "Greenwood, R. E. and Gleason, A. M. (1955). Combinatorial relations and chromatic graphs. Canadian Journal of Mathematics, 7, 1–7.",
-        "type": "paper"
-      }
-    ],
     "originalContributions": [
       "Formal definition of edge colorings and monochromatic triangles with symmetric coloring property",
       "Statement of the exact bound for all n including the three-regime structure (n ≤ 5, n = 6, n ≥ 7)",
@@ -192,5 +165,32 @@
     "axiomCount": 10,
     "theoremCount": 3,
     "definitionCount": 15
-  }
+  },
+  "references": [
+    {
+      "key": "KeevashSudakov2004",
+      "citation": "Keevash, P. and Sudakov, B. (2004). On the number of edges not covered by monochromatic copies of a clique. Journal of Combinatorial Theory, Series B 90, 41–52.",
+      "type": "paper"
+    },
+    {
+      "key": "Pyber1986",
+      "citation": "Pyber, L. (1986). Clique covering of graphs. Combinatorica 6, 393–398.",
+      "type": "paper"
+    },
+    {
+      "key": "ErdosRousseau",
+      "citation": "Erdős, P., Rousseau, C.C., and Schelp, R.H. Unpublished result on monochromatic triangle covering.",
+      "type": "paper"
+    },
+    {
+      "key": "Ramsey1930",
+      "citation": "Ramsey, F. P. (1930). On a Problem of Formal Logic. Proceedings of the London Mathematical Society, s2-30(1), 264–286.",
+      "type": "paper"
+    },
+    {
+      "key": "Greenwood1955",
+      "citation": "Greenwood, R. E. and Gleason, A. M. (1955). Combinatorial relations and chromatic graphs. Canadian Journal of Mathematics, 7, 1–7.",
+      "type": "paper"
+    }
+  ]
 }

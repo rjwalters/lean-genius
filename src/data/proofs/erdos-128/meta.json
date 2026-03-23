@@ -13,16 +13,6 @@
       "triangle-free",
       "open"
     ],
-    "references": [
-      "Erdős–Rousseau [Er93, p.344]",
-      "Erdős–Faudree–Rousseau–Schelp [EFRS94]",
-      "Krivelevich [Kr95]",
-      "Keevash–Sudakov [KeSu06]",
-      "Norin–Yepremyan [NoYe15]",
-      "Razborov [Ra22]",
-      "https://erdosproblems.com/128"
-    ],
-    "leanFile": "Proofs/Erdos128Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/128",
     "erdosUrl": "https://erdosproblems.com/128",
@@ -109,5 +99,14 @@
       "What is the analogous conjecture for $K_4$ instead of triangles? The extremal graph would likely involve blow-ups of triangle-free graphs with higher chromatic number.",
       "Can the subgraph size threshold $n/2$ be reduced? Krivelevich showed $3n/5$ works with constant $25$; is there a version with threshold $\\alpha n$ for all $\\alpha > 0$?"
     ]
-  }
+  },
+  "references": [
+    "Erdős–Rousseau [Er93, p.344]",
+    "Erdős–Faudree–Rousseau–Schelp [EFRS94]",
+    "Krivelevich [Kr95]",
+    "Keevash–Sudakov [KeSu06]",
+    "Norin–Yepremyan [NoYe15]",
+    "Razborov [Ra22]",
+    "https://erdosproblems.com/128"
+  ]
 }

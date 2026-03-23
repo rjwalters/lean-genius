@@ -55,22 +55,6 @@
       "Theorem that the adjugate identity implies Cayley-Hamilton as a formal corollary",
       "Exposition of the unified algebraic structure behind Cramer's Rule and Cayley-Hamilton"
     ],
-    "references": [
-      {
-        "authors": "A. Cayley",
-        "title": "A Memoir on the Theory of Matrices",
-        "year": "1858",
-        "venue": "Philosophical Transactions of the Royal Society",
-        "note": "Introduced systematic matrix algebra including the adjugate identity"
-      },
-      {
-        "authors": "D. Bar-Natan",
-        "title": "A Nice Proof of the Cayley-Hamilton Theorem",
-        "year": "2015",
-        "venue": "Academic Pensieve",
-        "note": "The proof approach in Mathlib follows this reference"
-      }
-    ],
     "dateAdded": "2026-02-23",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
@@ -183,5 +167,21 @@
     "axiomCount": 0,
     "theoremCount": 13,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "A. Cayley",
+      "title": "A Memoir on the Theory of Matrices",
+      "year": "1858",
+      "venue": "Philosophical Transactions of the Royal Society",
+      "note": "Introduced systematic matrix algebra including the adjugate identity"
+    },
+    {
+      "authors": "D. Bar-Natan",
+      "title": "A Nice Proof of the Cayley-Hamilton Theorem",
+      "year": "2015",
+      "venue": "Academic Pensieve",
+      "note": "The proof approach in Mathlib follows this reference"
+    }
+  ]
 }
