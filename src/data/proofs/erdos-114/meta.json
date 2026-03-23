@@ -127,6 +127,94 @@
       "Can any of the axiomatized results (lemniscate length positivity, Danchenko bound, Gamma-function formula) be verified in Lean using Mathlib's complex analysis library?"
     ]
   },
+  "crossReferences": [
+    {
+      "proofId": "erdos-115",
+      "relationship": "Direct companion problem: erdos-115 asks for bounds on |p'(z)| on connected lemniscates (Eremenko-Lempert, Chebyshev extremals), while erdos-114 asks which monic polynomial maximizes the lemniscate arc length; both are solved for special cases and share the Eremenko authorship"
+    },
+    {
+      "proofId": "erdos-1044",
+      "relationship": "Closely parallel extremal question: erdos-1044 asks for the infimum of the maximum boundary length of connected components of {|f(z)| < 1}, the complementary minimization problem to erdos-114's maximization of total arc length of {|p(z)| = 1}"
+    },
+    {
+      "proofId": "erdos-1042",
+      "relationship": "erdos-1042 studies the number of connected components of polynomial lemniscates {|f(z)| < 1} as a function of transfinite diameter; understanding lemniscate topology (connected vs. disconnected) is prerequisite to the length maximization in erdos-114"
+    },
+    {
+      "proofId": "erdos-1046",
+      "relationship": "erdos-1046 (Pommerenke 1959) proves that connected lemniscates {|f(z)| < 1} are contained in a disc of radius 2; this containment result constrains the geometry of the extremal lemniscate in erdos-114 and uses the same potential-theoretic techniques"
+    },
+    {
+      "proofId": "erdos-509",
+      "relationship": "erdos-509 asks whether {|f(z)| ≤ 1} can be covered by discs with total radius ≤ 2 (Cartan: 2e; Pommerenke: 2); the disc-covering and arc-length problems are dual perspectives on lemniscate size, both central to the Erdős-Herzog-Piranian program"
+    },
+    {
+      "proofId": "isoperimetric-theorem",
+      "relationship": "erdos-114 is an isoperimetric-type problem for polynomial lemniscates: among all monic degree-n polynomials, find the one whose level set has maximum arc length. The classical isoperimetric theorem (circle maximizes area for fixed perimeter) provides the philosophical template and suggests symmetric (z^n-1) extremizers"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "proofId": "erdos-116",
+      "note": "erdos-116 concerns the measure (area) of sublevel sets {|p(z)| < 1} for polynomials with roots in the unit disk; the Krishnapur-Lundberg-Ramachandran result complements the arc-length (1D measure of boundary) studied in erdos-114"
+    },
+    {
+      "proofId": "erdos-1047",
+      "note": "erdos-1047 asks whether connected components of {|f(z)| ≤ c} are convex for small c; convexity of the extremal lemniscate {|z^n-1| = 1} is relevant to understanding why z^n-1 is optimal in erdos-114"
+    },
+    {
+      "proofId": "erdos-990",
+      "note": "erdos-990 concerns the Erdős-Turán inequality on root distribution of polynomials; equidistribution of roots of z^n-1 (the n-th roots of unity) underlies the dihedral symmetry argument supporting optimality in erdos-114"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Erdős, P.", "Herzog, M.", "Piranian, G."],
+      "title": "Metric properties of polynomials",
+      "journal": "Journal d'Analyse Mathématique",
+      "volume": "6",
+      "year": 1958,
+      "pages": "125–148",
+      "doi": "10.1007/BF02790232",
+      "note": "Original paper posing the lemniscate length maximization problem and conjecturing z^n-1 as extremal"
+    },
+    {
+      "authors": ["Eremenko, A.", "Hayman, W. K."],
+      "title": "On the length of lemniscates",
+      "journal": "Michigan Mathematical Journal",
+      "volume": "46",
+      "year": 1999,
+      "pages": "409–415",
+      "doi": "10.1307/mmj/1030132418",
+      "note": "Resolves the n=2 case (Bernoulli lemniscate) and proves arc length bounds using conformal mapping; key partial result axiomatized in the Lean file"
+    },
+    {
+      "authors": ["Fryntov, A.", "Nazarov, F."],
+      "title": "New estimates for the length of the Erdős-Herzog-Piranian lemniscate",
+      "journal": "Linear and Complex Analysis: Dedicated to V. P. Havin",
+      "series": "American Mathematical Society Translations",
+      "volume": "226",
+      "year": 2009,
+      "pages": "49–60",
+      "note": "Proves local optimality of z^n-1 (negative-definite Hessian) and the sharp near-optimal bound f(n) ≤ 2n + C·n^{7/8}, establishing f(n)/n → 2"
+    },
+    {
+      "authors": ["Danchenko, V. I."],
+      "title": "Estimates for the lengths of lemniscates",
+      "journal": "Mathematical Notes",
+      "volume": "82",
+      "year": 2007,
+      "pages": "475–480",
+      "doi": "10.1134/S0001434607090222",
+      "note": "Improves Dolzhenko's bound from 4πn to 2πn using potential-theoretic methods"
+    },
+    {
+      "authors": ["Tao, T."],
+      "title": "On the length of lemniscates of monic polynomials",
+      "year": 2025,
+      "note": "Proves global optimality of z^n-1 for all sufficiently large n, reducing the full Erdős conjecture to finitely many cases; preprint available on arXiv"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.Complex.Basic",

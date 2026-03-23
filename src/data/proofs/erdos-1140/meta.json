@@ -138,6 +138,99 @@
       "What is the connection to Bunyakovsky's conjecture? If n - 2x² represents infinitely many primes for fixed n, what is the density of primes represented?"
     ]
   },
+  "crossReferences": [
+    {
+      "id": "quadratic-reciprocity",
+      "title": "Quadratic Reciprocity",
+      "relationship": "Gauss's law of quadratic reciprocity determines when 2 is a quadratic residue mod p. The Epure-Gica proof for n ≡ 1 (mod 4) uses this to analyze which residue classes can contain primes of the form n - 2x², forming the core of their sieve argument."
+    },
+    {
+      "id": "fermat-two-squares",
+      "title": "Fermat's Two-Square Theorem",
+      "relationship": "Fermat's theorem (p = a² + b² iff p ≡ 1 mod 4) exhibits the same mod-4 splitting structure central to the erdos-1140 disproof. Both results classify primes by residue behavior of quadratic forms, reflecting the same underlying theory of binary quadratic forms."
+    },
+    {
+      "id": "chinese-remainder-constructive",
+      "title": "Chinese Remainder Theorem (Constructive)",
+      "relationship": "The Epure-Gica sieve for the n ≡ 1 (mod 4) case combines congruence constraints on n - 2x² modulo small primes. The Chinese Remainder Theorem is used to assemble these local obstructions into a global finiteness argument eliminating all but finitely many candidates."
+    },
+    {
+      "id": "bertrands-postulate",
+      "title": "Bertrand's Postulate",
+      "relationship": "Bertrand's postulate guarantees a prime in (n, 2n], establishing that primes are 'common' at the logarithmic scale. This contextualizes the extreme rarity in erdos-1140: requiring all of {n, n-2, n-8, n-18, ...} to be simultaneously prime is far stronger than Bertrand's single-prime guarantee."
+    },
+    {
+      "id": "dirichlets-theorem",
+      "title": "Dirichlet's Theorem on Primes in Arithmetic Progressions",
+      "relationship": "Dirichlet's theorem shows primes are equidistributed across residue classes coprime to the modulus. The erdos-1140 problem requires primes in multiple arithmetic progressions simultaneously; the finiteness of solutions shows that Dirichlet density alone cannot sustain the simultaneous primality conditions for large n."
+    },
+    {
+      "id": "prime-number-theorem",
+      "title": "Prime Number Theorem",
+      "relationship": "The prime number theorem gives the probability that a number near n is prime as ~1/ln(n). Since AllShiftsArePrime(n) requires ~√(n/2) independent primality events, heuristically the expected number of solutions above N is ~∑ (1/ln(n))^{√(n/2)}, which converges — consistent with finitely many solutions."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "erdos-1141",
+      "title": "Erdős Problem #1141",
+      "relationship": "Direct companion problem: asks whether there are infinitely many n such that n - k² is prime for all k coprime to n with k² < n. Status: open with 41 known values up to 1722. The structural similarity to erdos-1140 makes the contrasting open/disproved status particularly striking."
+    },
+    {
+      "id": "erdos-1142",
+      "title": "Erdős Problem #1142",
+      "relationship": "Second companion problem: asks whether there are infinitely many n such that n - 2^k is prime for all 2^k < n. Status: open with 7 known values. Uses exponential shifts instead of quadratic ones; the analogous sieve arguments for finiteness do not apply because 2^k grows faster than 2x²."
+    },
+    {
+      "id": "erdos-1138",
+      "title": "Erdős Problem #1138: Primes in Short Intervals",
+      "relationship": "Concerns the maximal gap between consecutive primes and the density of primes in short intervals. The logarithmic rarity of primes (from PNT) underpins the erdos-1140 heuristic: as n grows, having all n - 2x² simultaneously prime requires beating the PNT odds for O(√n) terms."
+    },
+    {
+      "id": "riemann-hypothesis",
+      "title": "Riemann Hypothesis",
+      "relationship": "The 'at most one exception' in the erdos-1140 n ≡ 3 (mod 4) case arises from the ineffectivity of Siegel's class number bound. If the Generalized Riemann Hypothesis holds, no Siegel zeros exist and the exception is eliminated entirely, making GRH directly relevant to the completeness of the solution set {2,5,7,13,31,61,181,199}."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Epure, M.", "Gica, A."],
+      "title": "A Diophantine Equation Related to an Erdős Problem",
+      "year": 2010,
+      "description": "The paper that disproved Erdős Problem #1140, proving that only finitely many n satisfy AllShiftsArePrime(n). The proof combines quadratic residue sieving for n ≡ 1 (mod 4) and class number methods for n ≡ 3 (mod 4)."
+    },
+    {
+      "authors": ["Mollin, R. A.", "Williams, H. C."],
+      "title": "On Prime-Valued Polynomials and Class Numbers of Real Quadratic Fields",
+      "year": 1989,
+      "journal": "Nagoya Mathematical Journal",
+      "volume": 112,
+      "description": "Establishes the connection between the condition that all n - 2x² are prime and the class number h(-8n) of the imaginary quadratic field Q(√(-2n)). This result is the key ingredient in the Epure-Gica proof for the n ≡ 3 (mod 4) case."
+    },
+    {
+      "authors": ["Siegel, C. L."],
+      "title": "Über die Classenzahl quadratischer Zahlkörper",
+      "year": 1935,
+      "journal": "Acta Arithmetica",
+      "volume": 1,
+      "description": "Proves the ineffective lower bound h(-D) > C(ε)D^{1/2-ε}. The ineffectivity (C(ε) cannot be explicitly computed) is responsible for the 'at most one exception' in the erdos-1140 disproof and is related to the existence of Siegel zeros."
+    },
+    {
+      "authors": ["Ireland, K.", "Rosen, M."],
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": 1990,
+      "publisher": "Springer",
+      "edition": "2nd",
+      "description": "Standard reference covering quadratic residues, Gauss's law of quadratic reciprocity, the theory of binary quadratic forms, and class numbers of imaginary quadratic fields — all the tools required to understand the Epure-Gica proof."
+    },
+    {
+      "authors": ["Bunyakovsky, V."],
+      "title": "Nouveaux théorèmes relatifs à la distinction des nombres premiers et à la décomposition des entiers en facteurs",
+      "year": 1857,
+      "journal": "Mémoires de l'Académie impériale des sciences de Saint Pétersbourg",
+      "description": "Conjectured that any irreducible polynomial with positive leading coefficient and no fixed prime divisor represents infinitely many primes. Erdős Problem #1140 asks for something far stronger: all values simultaneously prime, which Bunyakovsky's conjecture does not support and Epure-Gica shows is impossible for n - 2x²."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

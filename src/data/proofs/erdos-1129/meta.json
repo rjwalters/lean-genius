@@ -151,6 +151,113 @@
       "Optimal rational interpolation nodes"
     ]
   },
+  "crossReferences": [
+    {
+      "id": "erdos-1130",
+      "title": "Erdős Problem #1130: Lagrange Basis Function Sums",
+      "relationship": "Companion problem: asks whether the minimum over subintervals of the maximum Lebesgue function is O(log n), directly complementing #1129's full characterization of optimal nodes and the (2/π) log n asymptotic.",
+      "relevance": "high"
+    },
+    {
+      "id": "erdos-1131",
+      "title": "Minimizing Lagrange Interpolation Basis Polynomial Integrals",
+      "relationship": "L² analog of #1129: minimizes ∫ Σ|l_k(x)|² dx (Legendre nodes) rather than the L∞ Lebesgue constant. The equal-height equioscillation structure in #1129 has no direct L² counterpart, leaving the L² problem open.",
+      "relevance": "high"
+    },
+    {
+      "id": "erdos-671",
+      "title": "Erdős Problem #671: Lagrange Interpolation Convergence",
+      "relationship": "Studies whether Lagrange interpolation at general nodes converges for continuous functions; uses the same Lebesgue constant framework and Faber's logarithmic lower bound established in #1129.",
+      "relevance": "high"
+    },
+    {
+      "id": "erdos-1132",
+      "title": "Erdős Problem #1132: Lagrange Interpolation and Lebesgue Functions",
+      "relationship": "Asks for sharp pointwise bounds on individual Lebesgue basis functions; shares the core definitions of LagrangeBasis and LebesgueFunction developed in #1129.",
+      "relevance": "medium"
+    },
+    {
+      "id": "erdos-1133",
+      "title": "Erdős Problem #1133: Large Polynomial Interpolation Bound",
+      "relationship": "Investigates the maximum of Lagrange interpolation polynomials for bounded functions; the Lebesgue constant bounds from #1129 provide key inputs to these upper estimates.",
+      "relevance": "medium"
+    },
+    {
+      "id": "de-moivre-oq-02",
+      "title": "Chebyshev Polynomial Properties via De Moivre's Theorem",
+      "relationship": "Establishes the recurrence, extremal, and equioscillation properties of Chebyshev polynomials T_n via De Moivre's theorem; these properties underlie the ChebyshevNodes definition and the upper bound Λ ≤ (2/π) log n + O(1) in #1129.",
+      "relevance": "medium"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "erdos-1130",
+      "title": "Erdős Problem #1130: Lagrange Basis Function Sums",
+      "connection": "Directly related sibling problem about subinterval maxima of the Lebesgue function; both problems were resolved using the de Boor–Pinkus equal-height characterization."
+    },
+    {
+      "id": "erdos-1131",
+      "title": "Minimizing Lagrange Interpolation Basis Polynomial Integrals",
+      "connection": "The L² analog: minimizes ∫ Σ|l_k(x)|² dx rather than the supremum. Legendre nodes (not Chebyshev) are near-optimal in L², contrasting with the Chebyshev-optimal L∞ result of #1129."
+    },
+    {
+      "id": "erdos-671",
+      "title": "Erdős Problem #671: Lagrange Interpolation Convergence",
+      "connection": "Asks whether interpolation at given nodes converges for all continuous functions; the Lebesgue constant growth rate proved in #1129 is the central obstruction to uniform convergence."
+    },
+    {
+      "id": "de-moivre-oq-02",
+      "title": "Chebyshev Polynomial Properties via De Moivre's Theorem",
+      "connection": "Formalizes the equioscillation and extremal properties of T_n(cos θ) = cos(nθ) that make Chebyshev nodes near-optimal for Lagrange interpolation."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["T. Kilgore", "E. W. Cheney"],
+      "title": "A theorem on interpolation in Haar subspaces",
+      "journal": "Aequationes Mathematicae",
+      "year": 1976,
+      "volume": "14",
+      "pages": "391–400",
+      "description": "First proof of the existence of optimal interpolation nodes (Kilgore-Cheney existence theorem); the key compactness argument establishing that a minimizer of Λ exists in [-1,1]^n."
+    },
+    {
+      "authors": ["T. Kilgore"],
+      "title": "A characterization of the Lagrange interpolating projection with minimal Tchebycheff norm",
+      "journal": "Journal of Approximation Theory",
+      "year": 1977,
+      "volume": "24",
+      "pages": "273–288",
+      "description": "Proves the equal-height characterization: optimal nodes equalize the local maxima of the Lebesgue function on consecutive subintervals (equioscillation theorem)."
+    },
+    {
+      "authors": ["C. de Boor", "A. Pinkus"],
+      "title": "Proof of the conjectures of Bernstein and Erdős concerning the optimal nodes for polynomial interpolation",
+      "journal": "Journal of Approximation Theory",
+      "year": 1978,
+      "volume": "24",
+      "pages": "289–303",
+      "description": "Proves uniqueness of the canonical minimizer and resolves both the Bernstein and Erdős conjectures on optimal interpolation nodes; the source for the uniqueness axiom in the Lean formalization."
+    },
+    {
+      "authors": ["G. Faber"],
+      "title": "Über die interpolatorische Darstellung stetiger Funktionen",
+      "journal": "Jahresbericht der Deutschen Mathematiker-Vereinigung",
+      "year": 1914,
+      "volume": "23",
+      "pages": "192–210",
+      "description": "The foundational 1914 result showing that no sequence of interpolation nodes can keep Λ_n bounded; establishes Λ_n → ∞ for every node sequence, the starting point for the logarithmic lower bound."
+    },
+    {
+      "authors": ["P. Erdős"],
+      "title": "Problems and results on the theory of interpolation II",
+      "journal": "Acta Mathematica Academiae Scientiarum Hungaricae",
+      "year": 1961,
+      "volume": "12",
+      "pages": "235–244",
+      "description": "Erdős establishes the sharp lower bound Λ ≥ (2/π) log n - O(1) and conjectures the equal-height characterization of optimal nodes, posing the problem that Kilgore and de Boor–Pinkus later solved."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.SpecialFunctions.Polynomials.Chebyshev",

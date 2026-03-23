@@ -142,6 +142,87 @@
       "How does the answer depend on regularity conditions on the sequence?"
     ]
   },
+  "crossReferences": [
+    {
+      "slug": "erdos-1129",
+      "title": "Erdős Problem #1129: Optimal Lagrange Interpolation Nodes",
+      "relationship": "Directly related: #1129 asks which node sequences minimize the Lebesgue constant Λₙ, while #1132 asks about pointwise growth of Lₙ(x) for fixed infinite sequences. Together they frame the full optimality picture for Lagrange interpolation."
+    },
+    {
+      "slug": "erdos-1130",
+      "title": "Erdős Problem #1130: Lagrange Basis Function Sums",
+      "relationship": "Closely related: both problems study pointwise behavior of sums of Lagrange basis polynomials. #1130 considers sum magnitudes; #1132 asks about the limsup growth rate of the same Lebesgue function Lₙ(x)."
+    },
+    {
+      "slug": "erdos-1131",
+      "title": "Minimizing Lagrange Interpolation Basis Polynomial Integrals",
+      "relationship": "Companion problem: #1131 optimizes integral norms of Lagrange basis polynomials (related to Legendre polynomials), while #1132 studies pointwise supremum behavior. Both concern extremal properties of Lagrange interpolation."
+    },
+    {
+      "slug": "erdos-1133",
+      "title": "Erdős Problem #1133: Large Polynomial Interpolation Bound",
+      "relationship": "Neighboring open problem in the same 1967 Erdős cluster on interpolation theory. #1133 studies lower bounds for max|pₙ(x)| over node sequences, complementing #1132's focus on Lebesgue function growth rates."
+    },
+    {
+      "slug": "erdos-671",
+      "title": "Erdos Problem #671: Lagrange Interpolation Convergence",
+      "relationship": "Foundational context: #671 asks whether Lagrange interpolants can converge for continuous functions, a classical problem intimately linked to Lebesgue function growth — large Lₙ(x) is the obstruction to uniform convergence."
+    },
+    {
+      "slug": "lebesgue-measure",
+      "title": "Lebesgue Measure",
+      "relationship": "Measure-theoretic foundation: Question 2 of #1132 is explicitly a Lebesgue measure question (does the growth condition hold a.e.?). The Lebesgue measure entry formalizes the underlying measure theory used to interpret 'almost everywhere'."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "slug": "fourier-series",
+      "title": "Fourier Series",
+      "relationship": "Structural analogy: Fourier partial sums and Lagrange interpolants share the Lebesgue function as a common error amplification tool. The Dirichlet kernel in Fourier analysis plays a role analogous to Lagrange basis polynomials, and the (2/π)log(n) Lebesgue constant growth rate arises in both settings."
+    },
+    {
+      "slug": "lebesgue-measure",
+      "title": "Lebesgue Measure",
+      "relationship": "Essential prerequisite: the 'almost everywhere' assertion in Question 2 is a statement in Lebesgue measure theory. The formalization of Lebesgue measure underpins any rigorous treatment of the measure-zero exceptional set in #1132."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["P. Erdős"],
+      "title": "Problems and Results on the Theory of Interpolation, II",
+      "venue": "Acta Mathematica Academiae Scientiarum Hungaricae",
+      "year": 1961,
+      "note": "Proves the lower bound Λₙ ≥ (2/π)log(n) − O(1) for the Lebesgue constant of any node sequence; this is the key quantitative result underlying both questions in Problem #1132."
+    },
+    {
+      "authors": ["S. N. Bernstein"],
+      "title": "Sur la limitation des valeurs d'un polynôme P_n(x) de degré n sur tout un segment par ses valeurs en n+1 points du segment",
+      "venue": "Izvestia Akademii Nauk SSSR",
+      "year": 1931,
+      "note": "Establishes that the set of 'good' points x where Lₙ(x) grows like (2/π)log(n) is dense in (-1,1), the density result formalized as bernstein_density_theorem in this entry."
+    },
+    {
+      "authors": ["T. J. Rivlin"],
+      "title": "An Introduction to the Approximation of Functions",
+      "venue": "Blaisdell Publishing Company (reprinted Dover, 1981)",
+      "year": 1969,
+      "note": "Classical graduate text covering Lebesgue functions, Lebesgue constants, Chebyshev nodes, and the (2/π)log(n) asymptotic in depth; standard reference for the background to Problem #1132."
+    },
+    {
+      "authors": ["E. W. Cheney"],
+      "title": "Introduction to Approximation Theory",
+      "venue": "McGraw-Hill (reprinted AMS Chelsea, 1998)",
+      "year": 1966,
+      "note": "Covers Chebyshev nodes, equidistant node instability (Runge phenomenon), and the optimality of Chebyshev interpolation in terms of Lebesgue constants, providing the context for the (2/π)log(n) lower bound."
+    },
+    {
+      "authors": ["L. Brutman"],
+      "title": "Lebesgue Functions for Polynomial Interpolation — A Survey",
+      "venue": "Annals of Numerical Mathematics",
+      "year": 1997,
+      "note": "Survey article covering known results on Lebesgue constants, growth rates, and extremal node sequences up to 1997; directly surveys the state of knowledge relevant to Problems #1129–#1133."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.Calculus.LagrangeInterpolation",
