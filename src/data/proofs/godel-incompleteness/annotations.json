@@ -116,7 +116,7 @@
       "startLine": 94,
       "endLine": 94
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Representability of Provability",
     "content": "This axiom captures a key property: if $\\phi$ is actually provable, then the system can prove that $\\phi$ is provable.\n\nFormally: $\\vdash\\phi \\Rightarrow \\vdash\\text{Prov}(\\ulcorner\\phi\\urcorner)$\n\nThis is not trivial! It requires showing that the Gödel encoding preserves enough structure that proofs of provability can be internalized. It's one of the technical heart of the incompleteness proof.",
     "mathContext": "$\\vdash\\phi \\implies \\vdash\\text{Prov}(\\ulcorner\\phi\\urcorner)$",
@@ -136,7 +136,7 @@
       "startLine": 105,
       "endLine": 105
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Diagonal Lemma (Fixed Point Theorem)",
     "content": "This is the formal engine of self-reference. For any property $P(x)$ expressible in the system, there exists a sentence $\\gamma$ such that:\n\n$\\gamma \\iff P(\\ulcorner\\gamma\\urcorner)$\n\nIn other words, $\\gamma$ says \"I have property $P$.\" The sentence refers to itself—not by name, but by describing its own Gödel number!\n\nThe construction uses the substitution function and diagonalization, similar to Cantor's proof that the reals are uncountable. It's the formalization of the Liar's Paradox mechanism.",
     "mathContext": "$\\forall P. \\exists\\gamma. \\gamma \\iff P(\\ulcorner\\gamma\\urcorner)$",
@@ -175,7 +175,7 @@
       "startLine": 126,
       "endLine": 131
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Existence of the Gödel Sentence",
     "content": "By the Diagonal Lemma applied to $\\text{NotProv}$, there exists a sentence $G$ such that:\n\n$G \\iff \\neg\\text{Prov}(\\ulcorner G\\urcorner)$\n\nTranslating to English: $G$ says \"I am not provable.\" This is the formal realization of the Liar's Paradox, but replacing \"false\" with \"unprovable\" avoids the contradiction—instead, we get incompleteness.",
     "mathContext": "$G \\iff \\neg\\text{Prov}(\\ulcorner G\\urcorner)$",
@@ -196,7 +196,7 @@
       "startLine": 150,
       "endLine": 160
     },
-    "type": "tactic",
+    "type": "technique",
     "title": "G Is Not Provable",
     "content": "This is the heart of the argument. Assume for contradiction that $G$ is provable.\n\n1. By representability, $\\vdash\\text{Prov}(\\ulcorner G\\urcorner)$\n2. But $G \\iff \\neg\\text{Prov}(\\ulcorner G\\urcorner)$, so $\\vdash\\neg\\text{Prov}(\\ulcorner G\\urcorner)$\n3. We've proved both $\\text{Prov}(\\ulcorner G\\urcorner)$ and $\\neg\\text{Prov}(\\ulcorner G\\urcorner)$\n4. This contradicts consistency!\n\nTherefore, if the system is consistent, $G$ cannot be provable. But $G$ *says* \"I am not provable\"—so $G$ is true! A true sentence that cannot be proved.",
     "mathContext": "$\\text{Consistent}(F) \\implies \\neg\\vdash G$",
@@ -217,7 +217,7 @@
       "startLine": 181,
       "endLine": 185
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The First Incompleteness Theorem",
     "content": "The theorem in its full glory: **No consistent formal system capable of expressing arithmetic is complete.**\n\nThe proof considers both cases:\n- If $G$ is provable: contradiction (we showed this)\n- If $\\neg G$ is provable: $\\neg G$ says \"$G$ is provable,\" which (with $\\omega$-consistency) leads to contradiction\n\nEither way, completeness fails. Mathematics is forever incomplete.",
     "mathContext": "$\\text{Consistent}(F) \\implies \\neg\\text{Complete}(F)$",
