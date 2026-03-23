@@ -61,7 +61,29 @@
       }
     ],
     "axiomCount": 9,
-    "lineCount": 194
+    "lineCount": 194,
+    "references": [
+      {
+        "key": "Cr01",
+        "citation": "Croot, E.S., On a coloring conjecture about unit fractions, Annals of Mathematics 157(2) (2003), 545–556.",
+        "type": "paper"
+      },
+      {
+        "key": "Er50",
+        "citation": "Erdős, P., On a Diophantine equation, Proceedings of the National Academy of Sciences 36 (1950), 252–255.",
+        "type": "paper"
+      },
+      {
+        "key": "Gu04",
+        "citation": "Guy, R.K., Unsolved Problems in Number Theory, 3rd ed., Springer (2004), Section D11: Egyptian fractions.",
+        "type": "book"
+      },
+      {
+        "key": "GS55",
+        "citation": "Graham, R.L., On finite sums of unit fractions, Proceedings of the London Mathematical Society 14(3) (1964), 193–207.",
+        "type": "paper"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #284 asks about the asymptotic behavior of Egyptian fraction decompositions of 1. An Egyptian fraction representation of 1 is an equation 1 = 1/n₁ + 1/n₂ + ... + 1/nₖ with distinct positive integers n₁ < n₂ < ... < nₖ. The function f(k) denotes the maximum possible first denominator n₁ in such a k-term representation.\n\nThe upper bound f(k) ≤ (1+o(1))·k/(e-1) follows from a simple counting argument: if the first denominator is u, the harmonic sum over [u, eu] is approximately 1 (since ∫₁ᵉ 1/x dx = 1), so we need about (e-1)u terms. Hence k ≥ (e-1-o(1))u, giving u ≤ (1+o(1))k/(e-1).\n\nThe matching lower bound was proved by Croot in 2001. He showed that for any N > 1, one can find distinct integers in the interval (N, eN] whose reciprocals sum to exactly 1. This constructive result implies f(k) ≥ (1-o(1))·k/(e-1), completing the asymptotic determination. The constant 1/(e-1) ≈ 0.582 arises from the integral identity ∫₁ᵉ 1/x dx = 1.",
@@ -73,6 +95,12 @@
       "**Croot's constructive proof**: Start with the full harmonic sum over (N, eN] (slightly > 1), then carefully remove terms to reach exactly 1",
       "**Egyptian fractions are ancient**: Representing rationals as sums of distinct unit fractions dates to ancient Egypt (Rhind papyrus ~1650 BC)",
       "**Connection to harmonic series**: The asymptotic constant 1/(e-1) is entirely determined by the integral ∫₁ᵉ 1/x dx = 1"
+    ],
+    "prerequisites": [
+      "Egyptian fractions: representations of rationals as sums of distinct unit fractions $\\sum 1/n_i$",
+      "Harmonic series: $\\sum_{n=1}^{N} 1/n \\sim \\ln N + \\gamma$ (Euler-Mascheroni constant)",
+      "Greedy algorithm for Egyptian fractions (Sylvester-Fibonacci algorithm)",
+      "Asymptotic analysis: the constant $e - 1 \\approx 1.718$ in the growth rate"
     ]
   },
   "sections": [
@@ -145,5 +173,27 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "foundational",
+      "description": "The divergence of the harmonic series Σ 1/n is directly connected to Egyptian fractions: the greedy algorithm for writing 1 as a sum of unit fractions terminates precisely because partial harmonic sums grow without bound. The growth rate f(k) ≈ k/(e-1) relates to harmonic series asymptotics"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function φ(n) appears in counting the number of reduced fractions with denominator ≤ n, which connects to the density of available denominators in Egyptian fraction representations"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique factorization determines which denominators can combine to give integer numerators when added, a key constraint in Egyptian fraction representations of 1"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "thematic",
+      "description": "The constant e appears naturally in the solution f(k) = (1+o(1))·k/(e-1): this connects Egyptian fractions to the exponential function through the relation 1/(e-1) = Σ_{n≥1} 1/n! and related series identities"
+    }
+  ]
 }
