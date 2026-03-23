@@ -8,17 +8,20 @@
     },
     "type": "concept",
     "title": "Module Documentation",
-    "content": "The Abel-Ruffini theorem, proven by Niels Henrik Abel in 1824 and later illuminated by Galois's theory, answers a 300-year-old question: why is there no 'quintic formula' like the quadratic formula?\n\nGalois discovered that solvability by radicals is equivalent to having a solvable Galois group, revealing a profound connection between field theory and group theory.",
-    "mathContext": "The question: Given $ax^5 + bx^4 + cx^3 + dx^2 + ex + f = 0$, is there a formula for $x$ using only $+, -, \\times, \\div,$ and $\\sqrt[n]{\\phantom{x}}$?",
-    "significance": "context",
+    "content": "The Abel-Ruffini theorem, proven by Niels Henrik Abel in 1824 and later illuminated by Galois's theory, answers a 300-year-old question: why is there no 'quintic formula' like the quadratic formula?\n\nGalois discovered that solvability by radicals is equivalent to having a solvable Galois group, revealing a profound connection between field theory and group theory.\n\nThis formalization is structured as a seven-part development mirroring how modern algebra textbooks present the proof. Parts I–II establish the field-theoretic side (radical solvability and the Galois bridge). Part III provides the group-theoretic obstruction ($S_n$ not solvable for $n \\geq 5$, with $A_5$ simple). Part IV contrasts with the solvable cases ($S_0, S_1$). Part V synthesizes the argument via contrapositive. Parts VI–VII provide mathematical and historical commentary.\n\nThe entire proof is a composition of four Mathlib modules — no sorries, no axioms, zero original sorry-carrying definitions. The file's original contributions are pedagogical wrappers (`galois_bridge`, `symmetric_group_not_solvable`, `not_solvable_by_rad_of_not_solvable_gal`) that make the Mathlib infrastructure explicit and accessible. This is Wiedijk 100 theorem #16.",
+    "mathContext": "The question: Given $ax^5 + bx^4 + cx^3 + dx^2 + ex + f = 0$, is there a formula for $x$ using only $+, -, \\times, \\div,$ and $\\sqrt[n]{\\phantom{x}}$?\n\nAnswer: No. The Galois group of the generic quintic is $S_5$, which is not solvable ($A_5$ is simple and non-abelian), so no radical formula exists. Specific quintics with solvable Galois groups (e.g., $x^5 - 1$, with cyclic Galois group $\\mathbb{Z}/4\\mathbb{Z}$) can still be solved by radicals.",
+    "significance": "key",
     "relatedConcepts": [
       "Galois theory",
       "radical extensions",
-      "polynomial solvability"
+      "polynomial solvability",
+      "Wiedijk 100 theorems",
+      "Mathlib"
     ],
     "prerequisites": [
       "polynomial equations",
-      "field operations"
+      "field operations",
+      "Wiedijk 100 list"
     ]
   },
   {
