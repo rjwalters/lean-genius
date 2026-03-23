@@ -1,1 +1,280 @@
-[]
+[
+  {
+    "id": "ann-header-imports",
+    "proofId": "sqrt2-from-axioms-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 47
+    },
+    "type": "context",
+    "title": "Module Overview: From √2 to √p via Euclid's Criterion",
+    "content": "The file imports only `Mathlib.Tactic` for arithmetic automation (`ring`, `omega`, `linarith`, `nlinarith`). All mathematical content — divisibility, primality, and the irrationality proof — is built from scratch. This pedagogical choice makes the generalization mechanism fully transparent: the reader sees exactly which properties of 2 the classical √2 proof actually uses (answer: only that 2 is prime in the Euclid sense), and why replacing 2 with any prime p gives an identical proof.\n\nThe file extends `Sqrt2IrrationalFromAxioms.lean` (the parent entry `sqrt2-from-axioms`) by abstracting the parity-based argument into a prime-based one. Where the parent proof builds Even/Odd infrastructure for ~20 lines, this file defines EuclidPrime once and gets the key lemma in 2 lines for all primes simultaneously.",
+    "mathContext": "The core abstraction: replace 'even' ($2 \\mid n$) with '$p \\mid n$' and 'odd' ($2 \\nmid n$) with '$p \\nmid n$'. The proof structure $a^2 = 2b^2 \\Rightarrow 2 \\mid a \\Rightarrow 2 \\mid b$ becomes $a^2 = pb^2 \\Rightarrow p \\mid a \\Rightarrow p \\mid b$ for any prime $p$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "pedagogical formalization",
+      "generalization",
+      "first-principles proof",
+      "Lean 4 tactics"
+    ],
+    "prerequisites": [
+      "Lean 4 basics",
+      "the √2 irrationality proof"
+    ]
+  },
+  {
+    "id": "ann-divisibility",
+    "proofId": "sqrt2-from-axioms-oq-01",
+    "range": {
+      "startLine": 48,
+      "endLine": 81
+    },
+    "type": "definition",
+    "title": "Divisibility from Scratch",
+    "content": "Defines custom divisibility `Divides p n` as the existential statement ∃k, n = p·k, with a custom notation `∣₀` to avoid conflicts with Mathlib's `∣`. The basic lemmas — `divides_zero`, `divides_self`, `divides_mul`, `divides_of_divides_mul_left` — establish the minimal infrastructure needed for the proof. The theorem `not_divides_of_lt` (small positive numbers less than p are not divisible by p) provides the key tool for the small-prime verifications in Part 3.\n\n**Design choice**: Building divisibility from scratch rather than using Mathlib's `Dvd` is deliberate — it ensures the proof chain is fully transparent and self-contained. The custom notation `∣₀` signals to readers that this is a pedagogical development, not production Mathlib code.",
+    "mathContext": "$p \\mid n \\;\\Leftrightarrow\\; \\exists k \\in \\mathbb{N},\\, n = p \\cdot k$. Basic properties: $p \\mid 0$, $p \\mid p$, $p \\mid pa$, and $p \\mid a \\Rightarrow p \\mid ab$. For $0 < n < p$: $p \\nmid n$ (since any multiple $pk \\geq p$ for $k \\geq 1$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "divisibility",
+      "existential quantifier",
+      "custom notation in Lean 4",
+      "self-contained formalization"
+    ],
+    "prerequisites": [
+      "natural number arithmetic",
+      "existential statements"
+    ]
+  },
+  {
+    "id": "ann-euclid-prime",
+    "proofId": "sqrt2-from-axioms-oq-01",
+    "range": {
+      "startLine": 82,
+      "endLine": 96
+    },
+    "type": "concept",
+    "title": "Euclid's Criterion: The 'Right' Definition of Prime",
+    "content": "Defines `EuclidPrime p` as the conjunction: p > 1 AND for all a, b, if p | ab then p | a or p | b. This is Euclid's lemma (Elements VII.30, ~300 BCE) elevated to a definition. The crucial insight is that for irrationality proofs, this multiplicative property is the *only* property of primes that matters — the classical divisor definition (p > 1, only divisors are 1 and p) is equivalent but requires Bézout's identity to prove the equivalence.\n\n**Historical note**: Euclid stated and proved this property for what we now call primes, but he defined primes via the divisor property. The realization that the multiplicative property is *equivalent* to the divisor property (for integers) came later, through the work of Gauss and Dedekind. In more general algebraic settings (rings), the two notions diverge: elements satisfying the divisor property are called 'irreducible', while those satisfying the multiplicative property are called 'prime'. They coincide exactly in unique factorization domains (UFDs).\n\n**Why this definition is better here**: With the classical definition, proving 'p | n² → p | n' requires: (1) p | n² and p ∤ n implies gcd(p,n) = 1, (2) Bézout gives sp + tn = 1, (3) sp·n + tn² = n, (4) p divides both terms, so p | n — contradiction. With Euclid's criterion as definition, the same result is: p | n·n → p | n ∨ p | n → p | n. One line.",
+    "mathContext": "$\\text{EuclidPrime}(p) \\;:\\Leftrightarrow\\; p > 1 \\;\\wedge\\; \\forall a,b \\in \\mathbb{N},\\, p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$. This is equivalent to the classical definition ($p > 1$, only divisors are $1$ and $p$) for $\\mathbb{N}$, but the proof of equivalence requires Bézout's identity: $\\gcd(a,b) = 1 \\Rightarrow \\exists s,t \\in \\mathbb{Z},\\, sa + tb = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euclid's lemma",
+      "prime vs irreducible",
+      "unique factorization domain",
+      "Bézout's identity",
+      "Elements Book VII"
+    ],
+    "prerequisites": [
+      "basic number theory",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "ann-two-euclid",
+    "proofId": "sqrt2-from-axioms-oq-01",
+    "range": {
+      "startLine": 98,
+      "endLine": 122
+    },
+    "type": "technique",
+    "title": "Verifying 2 Is an Euclid Prime",
+    "content": "Proves `two_euclidPrime : EuclidPrime 2` by case-splitting on the parity of a. If a is even (a % 2 = 0), then 2 | a directly. If a is odd (a % 2 = 1), then the modular arithmetic identity (a·b) % 2 = ((a % 2) · (b % 2)) % 2 = (1 · (b % 2)) % 2 forces b % 2 = 0, so 2 | b. This is exactly the 'even/odd' case analysis from the classical √2 proof, reframed as a verification of Euclid's criterion.\n\n**Connection to the parent proof**: In `sqrt2-from-axioms`, the key lemma `even_of_sq_even` requires ~20 lines of Even/Odd infrastructure. Here, the same mathematical content is packaged as a one-time verification that 2 is an Euclid prime, after which the key lemma becomes trivial for *all* primes. The modular arithmetic identity `Nat.mul_mod` from Lean's standard library provides the bridge: $(ab) \\bmod p = ((a \\bmod p) \\cdot (b \\bmod p)) \\bmod p$.",
+    "mathContext": "Verification: $(\\mathbb{Z}/2\\mathbb{Z})^\\times = \\{1\\}$ has no zero divisors. If $a \\not\\equiv 0 \\pmod{2}$, then $a \\equiv 1 \\pmod{2}$, so $ab \\equiv b \\pmod{2}$. Thus $2 \\mid ab$ and $2 \\nmid a$ implies $2 \\mid b$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "modular arithmetic",
+      "parity",
+      "zero divisors",
+      "Nat.mul_mod"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "case analysis"
+    ]
+  },
+  {
+    "id": "ann-three-five-euclid",
+    "proofId": "sqrt2-from-axioms-oq-01",
+    "range": {
+      "startLine": 124,
+      "endLine": 152
+    },
+    "type": "technique",
+    "title": "Verifying 3 and 5 Are Euclid Primes",
+    "content": "Extends the verification pattern to primes 3 and 5. For p = 3: if 3 ∤ a, then a % 3 ∈ {1, 2}. The multiplication table mod 3 for nonzero residues is: 1·1 = 1, 1·2 = 2, 2·1 = 2, 2·2 = 4 ≡ 1. None are 0, so (ℤ/3ℤ)* has no zero divisors. For p = 5: if 5 ∤ a, then a % 5 ∈ {1, 2, 3, 4}, and similar case analysis on the 4×4 multiplication table confirms no zero divisors.\n\n**The pattern**: For any prime p, the nonzero residues mod p form the multiplicative group (ℤ/pℤ)* of order p−1. A group has no zero divisors (since ab = 0 and a ≠ 0 implies b = a⁻¹(ab) = 0). This is the abstract reason Euclid's criterion holds for all primes — but proving it for each specific small prime by case analysis avoids needing the group theory machinery.",
+    "mathContext": "$(\\mathbb{Z}/3\\mathbb{Z})^\\times = \\{1, 2\\}$ and $(\\mathbb{Z}/5\\mathbb{Z})^\\times = \\{1, 2, 3, 4\\}$ are multiplicative groups with no zero divisors. For prime $p$: $ab \\equiv 0 \\pmod{p}$ with $a \\not\\equiv 0$ implies $b \\equiv 0 \\pmod{p}$, since $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is a group (every nonzero element has a multiplicative inverse).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "finite fields",
+      "multiplicative group mod p",
+      "zero divisors",
+      "integral domain"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "case analysis in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-bridge",
+    "proofId": "sqrt2-from-axioms-oq-01",
+    "range": {
+      "startLine": 153,
+      "endLine": 172
+    },
+    "type": "technique",
+    "title": "Bridge to Mathlib: Every Nat.Prime Is an EuclidPrime",
+    "content": "Proves `natPrime_is_euclidPrime`: every Mathlib-certified `Nat.Prime` satisfies our custom `EuclidPrime` definition. This is the only place the file touches Mathlib's number theory library (specifically `Nat.Prime.dvd_mul`). The bridge enables users to apply the √p irrationality theorem to any prime without manually verifying Euclid's criterion — they can use Mathlib's `Nat.Prime` typeclass machinery instead.\n\n**One-way bridge**: The reverse direction (every EuclidPrime satisfies the classical prime definition) is left as an exercise. Proving it requires Bézout's identity: if p satisfies Euclid's criterion and d | p with 1 < d < p, then... the argument needs the extended Euclidean algorithm. This asymmetry is pedagogically intentional — it highlights that Euclid's criterion is *stronger* than what we need (we never need to go from EuclidPrime back to classical), and that the classical direction requires substantially more infrastructure.",
+    "mathContext": "Bridge theorem: $\\text{Nat.Prime}(p) \\Rightarrow \\text{EuclidPrime}(p)$. Proof: Mathlib's `Nat.Prime.dvd_mul` gives $p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$ for Mathlib primes. The converse requires Bézout's identity.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "bridge theorem",
+      "Mathlib interoperability",
+      "Nat.Prime",
+      "typeclass inference"
+    ],
+    "prerequisites": [
+      "Mathlib's Nat.Prime",
+      "Euclid's criterion"
+    ]
+  },
+  {
+    "id": "ann-key-lemma",
+    "proofId": "sqrt2-from-axioms-oq-01",
+    "range": {
+      "startLine": 173,
+      "endLine": 187
+    },
+    "type": "insight",
+    "title": "The Key Lemma: p | n² ⟹ p | n (Two Lines!)",
+    "content": "The heart of the entire generalization: `dvd_of_prime_dvd_sq` proves that if p is an Euclid prime and p | n², then p | n. The proof is a single `rcases` tactic application: since n² = n·n, Euclid's criterion gives p | n ∨ p | n, and either disjunct gives p | n.\n\n**Contrast with the parent proof**: In `sqrt2-from-axioms`, the analogous step (`even_of_sq_even`) requires defining `Even` and `Odd`, proving that odd squares are odd via case analysis on the last bit, and concluding by contradiction. That approach works for p = 2 but would need reimplementation for each new prime. Here, a single 2-line proof handles all primes at once — the definition of EuclidPrime has absorbed all the work.\n\n**This is the proof's 'center of gravity'**: Every other component (divisibility definitions, prime verification, coprimality, the main theorem) is scaffolding around this one lemma. The entire irrationality argument reduces to: p | n·n, so by Euclid's criterion, p | n.",
+    "mathContext": "$p$ prime (Euclid), $p \\mid n^2 = n \\cdot n$. By Euclid's criterion: $p \\mid n \\lor p \\mid n$. Either way: $p \\mid n$. ∎\n\nThis generalizes the classical: $n^2$ even $\\Rightarrow$ $n$ even (which is the $p = 2$ case).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euclid's lemma",
+      "proof by definition",
+      "generalization power",
+      "center of gravity of a proof"
+    ],
+    "prerequisites": [
+      "EuclidPrime definition",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "ann-coprime-mod",
+    "proofId": "sqrt2-from-axioms-oq-01",
+    "range": {
+      "startLine": 189,
+      "endLine": 199
+    },
+    "type": "definition",
+    "title": "Coprimality Relative to a Prime",
+    "content": "Defines `CoprimeMod p a b` as the negation of (p | a ∧ p | b) — that is, a and b are not both divisible by p. This generalizes the √2 proof's 'not both even' condition. In full generality, coprimality means gcd(a,b) = 1, but this weaker p-specific version suffices for the irrationality argument: the contradiction arises when we show both a and b are divisible by p, contradicting the assumption that a/b is in lowest terms.\n\n**Why this weaker notion suffices**: The classical proof assumes a/b is in lowest terms (gcd = 1) and derives a contradiction. But we only need gcd(a,b) = 1 to imply 'not both divisible by p' — which is immediate. So `CoprimeMod` captures exactly the hypothesis strength we need, without building GCD machinery.",
+    "mathContext": "$\\text{CoprimeMod}(p, a, b) \\;:\\Leftrightarrow\\; \\neg(p \\mid a \\wedge p \\mid b)$. This is weaker than $\\gcd(a,b) = 1$ but sufficient: if $\\gcd(a,b) = 1$ then certainly $p$ does not divide both $a$ and $b$ (since $p > 1$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "coprimality",
+      "greatest common divisor",
+      "lowest terms",
+      "proof by contradiction"
+    ],
+    "prerequisites": [
+      "divisibility",
+      "logical negation"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "sqrt2-from-axioms-oq-01",
+    "range": {
+      "startLine": 201,
+      "endLine": 256
+    },
+    "type": "technique",
+    "title": "Main Theorem: √p Is Irrational for Any Euclid Prime",
+    "content": "The main theorem `sqrt_prime_irrational` proves: for any Euclid prime p, if a² = p·b² with b > 0, then p divides both a and b — contradicting coprimality. The proof follows the classical descent argument in four steps:\n\n1. **p | a**: From a² = p·b², we get p | a² = a·a, so p | a by the key lemma.\n2. **Write a = pk**: Extract the witness k from p | a.\n3. **p | b**: Substitute a = pk into a² = p·b² to get p²k² = p·b², cancel p to get pk² = b², so p | b² = b·b, hence p | b by the key lemma again.\n4. **Contradiction**: Both p | a and p | b contradicts CoprimeMod.\n\nThe helper theorems `a_dvd_of_sq_eq_prime_sq` (step 1) and `b_sq_eq_prime_k_sq` (step 3) handle the arithmetic. The cancellation step (pk² = b² from p²k² = pb²) uses `Nat.mul_div_cancel_left` to divide both sides by p.\n\n**Infinite descent perspective**: This proof is an instance of Fermat's method of infinite descent. If √p = a/b with gcd(a,b) = 1, then we derive √p = b'/a' where a' < a — an impossible infinite descending sequence. The 'coprime' formulation avoids the explicit descent by deriving a contradiction in one step.",
+    "mathContext": "Assume $a^2 = p \\cdot b^2$ with $b > 0$ and $\\gcd_p(a,b) = 1$. Then:\n1. $p \\mid a^2 \\Rightarrow p \\mid a$ (key lemma), write $a = pk$.\n2. $(pk)^2 = pb^2 \\Rightarrow p^2k^2 = pb^2 \\Rightarrow pk^2 = b^2$ (cancel $p$).\n3. $p \\mid b^2 \\Rightarrow p \\mid b$ (key lemma again).\n4. $p \\mid a$ and $p \\mid b$ contradicts $\\text{CoprimeMod}(p,a,b)$. ∎",
+    "significance": "key",
+    "relatedConcepts": [
+      "proof by contradiction",
+      "infinite descent",
+      "arithmetic cancellation",
+      "Fermat's method"
+    ],
+    "prerequisites": [
+      "EuclidPrime",
+      "key lemma (p | n² → p | n)",
+      "CoprimeMod"
+    ]
+  },
+  {
+    "id": "ann-alternative",
+    "proofId": "sqrt2-from-axioms-oq-01",
+    "range": {
+      "startLine": 258,
+      "endLine": 276
+    },
+    "type": "technique",
+    "title": "Alternative Formulation: No Coprime Constraint",
+    "content": "Provides `sqrt_prime_no_rational_form`, the contrapositive of the main theorem: for any a, b with a² = p·b², either b = 0 or p divides both a and b. This removes the coprimality hypothesis, giving a stronger statement that's sometimes more convenient for applications. The proof proceeds by case-matching on b: if b = 0, done; if b = n+1 > 0, apply the same argument as the main theorem.\n\n**Why both formulations**: The main theorem (with CoprimeMod) mirrors the classical textbook proof structure ('assume a/b is in lowest terms...'). The alternative formulation is logically stronger and avoids the assumption, making it directly applicable without first reducing to lowest terms.",
+    "mathContext": "For all $a, b \\in \\mathbb{N}$ with $a^2 = p \\cdot b^2$: either $b = 0$ or ($p \\mid a$ and $p \\mid b$). Equivalently: if $\\sqrt{p} = a/b$ in $\\mathbb{Q}$, then $p \\mid \\gcd(a,b)$, so the fraction is never in lowest terms.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "contrapositive",
+      "pattern matching",
+      "strengthened theorem statement"
+    ],
+    "prerequisites": [
+      "main theorem",
+      "natural number case analysis"
+    ]
+  },
+  {
+    "id": "ann-concrete-instances",
+    "proofId": "sqrt2-from-axioms-oq-01",
+    "range": {
+      "startLine": 278,
+      "endLine": 300
+    },
+    "type": "insight",
+    "title": "Concrete Instances: √2, √3, √5 as Corollaries",
+    "content": "Instantiates the general theorem for primes 2, 3, and 5, recovering √2 irrationality as a special case and immediately obtaining √3 and √5 irrationality 'for free'. The final theorem `sqrt_natPrime_irrational` uses the bridge to Mathlib, allowing √p irrationality for any `Nat.Prime p` without manual verification.\n\n**The generalization payoff**: In the parent proof (`sqrt2-from-axioms`), proving √3 irrational would require rebuilding the entire Even/Odd infrastructure with 'divisible by 3 / not divisible by 3' — essentially writing a new proof from scratch. Here, √3 and √5 are zero-cost corollaries: just supply `three_euclidPrime` or `five_euclidPrime` as the primality witness. This demonstrates the power of finding the right abstraction level.\n\n**Historical context**: The irrationality of √2 was known to the Pythagoreans (~500 BCE). Theodorus of Cyrene (~5th century BCE) extended this to √3, √5, √6, ..., √17, stopping (according to Plato's *Theaetetus*) at √17 for unknown reasons. His student Theaetetus gave the first general proof for all non-square integers, likely using a method equivalent to our Euclid-criterion approach.",
+    "mathContext": "$\\sqrt{2}, \\sqrt{3}, \\sqrt{5}$ are irrational: immediate corollaries of the general theorem $\\sqrt{p} \\notin \\mathbb{Q}$ for prime $p$. More generally, via the Mathlib bridge: $\\sqrt{p} \\notin \\mathbb{Q}$ for every $p$ satisfying `Nat.Prime p`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "corollary extraction",
+      "abstraction payoff",
+      "Theodorus of Cyrene",
+      "Theaetetus",
+      "Nat.Prime bridge"
+    ],
+    "prerequisites": [
+      "main theorem",
+      "specific prime verifications"
+    ]
+  },
+  {
+    "id": "ann-educational-notes",
+    "proofId": "sqrt2-from-axioms-oq-01",
+    "range": {
+      "startLine": 302,
+      "endLine": 365
+    },
+    "type": "context",
+    "title": "Educational Notes: The Correspondence Table and Extensions",
+    "content": "Comprehensive pedagogical documentation explaining why the proof works and what it reveals about the √2 argument. The correspondence table maps each concept from the √2 proof to its generalization: 'even' → 'divisible by p', 'odd' → 'not divisible by p', 'n² even → n even' → 'p | n² → p | n'. The notes also discuss:\n\n1. **The two definitions of prime**: EuclidPrime (multiplicative) vs classical (divisor), equivalent via Bézout.\n2. **The reverse direction**: Proving every EuclidPrime satisfies the classical definition requires ~200 lines of extended Euclidean algorithm.\n3. **Limitations**: √6 is also irrational but 6 is not prime. Extending to non-prime non-squares requires unique factorization (UFD property of ℤ), a deeper result.\n4. **Connection to the parent proof**: The crucial step `even_of_sq_even` is exactly `dvd_of_prime_dvd_sq` for p = 2.\n\n**The deeper lesson**: The file illustrates a general principle in mathematics — when a proof for a specific case seems to 'just work', it's often because the specific case has a property (here: primality) that drives the argument. Finding that property reveals the natural generalization.",
+    "mathContext": "Correspondence: $\\sqrt{2}$ proof uses parity ($n \\bmod 2$); general $\\sqrt{p}$ proof uses $p$-divisibility ($n \\bmod p$). The generalization to non-prime non-squares ($\\sqrt{6}, \\sqrt{12}$, etc.) requires unique factorization: if $n$ is not a perfect square, then some prime $p$ appears to an odd power in $n$'s factorization, and $p \\mid a^2 = nb^2$ forces $p \\mid a$ and $p \\mid b$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "pedagogical exposition",
+      "abstraction in mathematics",
+      "unique factorization",
+      "literate programming"
+    ],
+    "prerequisites": [
+      "the full proof development",
+      "basic number theory"
+    ]
+  }
+]

@@ -1,8 +1,8 @@
 {
   "id": "sqrt2-from-axioms-oq-01",
-  "title": "Irrationality of \u221ap for Any Prime p (From Axioms)",
+  "title": "Irrationality of √p for Any Prime p (From Axioms)",
   "slug": "sqrt2-from-axioms-oq-01",
-  "description": "Generalizes the \u221a2 irrationality proof to all primes: for any prime p, there are no coprime a, b with a\u00b2 = p\u00b7b\u00b2. Built from scratch using Euclid's criterion for primality.",
+  "description": "Generalizes the √2 irrationality proof to all primes: for any prime p, there are no coprime a, b with a² = p·b². Built from scratch using Euclid's criterion for primality.",
   "meta": {
     "author": "Lean Genius Research",
     "sourceUrl": "",
@@ -34,24 +34,54 @@
     "originalContributions": [
       "Custom Divides, EuclidPrime, CoprimeMod definitions built from scratch",
       "Verification that 2, 3, 5 are Euclid primes via modular arithmetic",
-      "Key lemma: p prime and p | n\u00b2 implies p | n (from Euclid's criterion)",
-      "Main theorem: \u221ap is irrational for any Euclid prime p",
+      "Key lemma: p prime and p | n² implies p | n (from Euclid's criterion)",
+      "Main theorem: √p is irrational for any Euclid prime p",
       "Bridge theorem: every Nat.Prime is an EuclidPrime",
-      "Concrete instances: \u221a2, \u221a3, \u221a5 irrationality as corollaries"
+      "Concrete instances: √2, √3, √5 irrationality as corollaries"
     ],
     "dateAdded": "2026-03-22",
     "axiomCount": 0,
-    "lineCount": 365
+    "lineCount": 365,
+    "references": [
+      {
+        "key": "Eu300",
+        "citation": "Euclid, Elements, Book VII, Proposition 30 (~300 BCE). The first proof that if a prime divides a product, it divides one of the factors.",
+        "type": "book"
+      },
+      {
+        "key": "HW08",
+        "citation": "Hardy, G.H. and Wright, E.M., An Introduction to the Theory of Numbers, 6th ed., Oxford University Press (2008), Chapter 4: Irrational numbers.",
+        "type": "book"
+      },
+      {
+        "key": "Ni04",
+        "citation": "Niven, I., Zuckerman, H.S., and Montgomery, H.L., An Introduction to the Theory of Numbers, 5th ed., Wiley (1991), Chapter 1.3: Irrationality of √2.",
+        "type": "book"
+      },
+      {
+        "key": "Kn98",
+        "citation": "Knorr, W.R., The Ancient Tradition of Geometric Problems, Dover (1993), Chapter 4: Theodorus and Theaetetus on irrationals.",
+        "type": "book"
+      },
+      {
+        "key": "St10",
+        "citation": "Stillwell, J., Mathematics and Its History, 3rd ed., Springer (2010), Chapter 1.3: Irrational Numbers.",
+        "type": "book"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "The irrationality of $\\sqrt{2}$ was first proved by the ancient Greeks, traditionally attributed to Hippasus of Metapontum (~500 BCE). The proof by contradiction\u2014assuming $\\sqrt{2} = a/b$ in lowest terms and deriving that both $a$ and $b$ must be even\u2014is one of the most celebrated arguments in mathematics.\n\nThe generalization to $\\sqrt{p}$ for any prime $p$ was known to the ancient Greeks as well. The key insight is that the proof works not because of any special property of the number 2, but because 2 is **prime**. The 'even/odd' trick is secretly using Euclid's lemma (Elements VII.30, ~300 BCE): if a prime divides a product, it divides one of the factors.\n\nThis formalization makes the connection explicit by defining primality via Euclid's criterion (the multiplicative property) rather than the divisor property, revealing why the $\\sqrt{2}$ proof generalizes immediately to all primes.",
+    "historicalContext": "The irrationality of $\\sqrt{2}$ was first proved by the ancient Greeks, traditionally attributed to Hippasus of Metapontum (~500 BCE). The proof by contradiction — assuming $\\sqrt{2} = a/b$ in lowest terms and deriving that both $a$ and $b$ must be even — is one of the most celebrated arguments in mathematics. According to legend, Hippasus was drowned at sea for revealing this discovery to non-Pythagoreans, though this story is likely apocryphal.\n\nThe generalization to other square roots was pursued by Theodorus of Cyrene (~5th century BCE), who proved the irrationality of $\\sqrt{3}, \\sqrt{5}, \\ldots, \\sqrt{17}$, stopping at 17 for reasons still debated by historians. His student Theaetetus (~369 BCE) gave the first general proof for all non-square integers. The key insight underlying these generalizations is that the $\\sqrt{2}$ proof works not because of any special property of the number 2, but because 2 is **prime** — the 'even/odd' case analysis is secretly Euclid's lemma (Elements VII.30, ~300 BCE) for the specific prime $p = 2$.\n\nEuclid's lemma states: if a prime divides a product, it divides one of the factors. This was proved by Euclid using the theory of proportions and the Euclidean algorithm. The modern algebraic perspective distinguishes two notions: *irreducible* elements (no non-trivial factorization) and *prime* elements (satisfying Euclid's criterion). In the integers these coincide, but in general rings they may diverge — a distinction first clarified by Dedekind (1871) in his theory of ideals. This formalization makes the connection explicit by defining primality via Euclid's criterion (the multiplicative property) rather than the divisor property, revealing why the $\\sqrt{2}$ proof generalizes immediately to all primes.",
     "problemStatement": "**Open Question**: Can the pedagogical $\\sqrt{2}$ irrationality proof be generalized to $\\sqrt{p}$ for any prime $p$?\n\n**Answer**: Yes. The proof structure is identical once we replace 'even/odd' (divisibility by 2) with 'divisible by $p$ / not divisible by $p$'. The key ingredient is Euclid's lemma: $p \\mid n^2 \\Rightarrow p \\mid n$ for prime $p$.\n\nWe formalize this completely from scratch, building divisibility, primality, and the main theorem without relying on Mathlib's number theory.",
     "proofStrategy": "The proof generalizes the classical $\\sqrt{2}$ argument in three steps:\n\n1. **Define EuclidPrime**: $p > 1$ and $p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$\n2. **Key lemma**: $p$ prime, $p \\mid n^2 \\Rightarrow p \\mid n$ (trivial from definition since $n^2 = n \\cdot n$)\n3. **Main theorem**: If $a^2 = p \\cdot b^2$ with $b > 0$, then $p \\mid a$ and $p \\mid b$ (so $a/b$ is not in lowest terms)\n\nThe magic is step 2: with Euclid's criterion as the *definition* of prime, the key lemma that took 20 lines for $p=2$ becomes a one-liner for all primes.",
     "keyInsights": [
-      "**The even/odd trick IS Euclid's lemma for p=2**: The parent proof's 'n\u00b2 even implies n even' is exactly the statement '2 | n\u00b2 implies 2 | n', which is Euclid's lemma for the prime 2",
+      "**The even/odd trick IS Euclid's lemma for p=2**: The parent proof's 'n² even implies n even' is exactly the statement '2 | n² implies 2 | n', which is Euclid's lemma for the prime 2",
       "**The right definition of prime**: For irrationality proofs, the multiplicative property (Euclid's criterion) is more natural than the divisor property. The two are equivalent via Bezout's identity, but the multiplicative form directly gives the key lemma",
-      "**From 20 lines to 2 lines**: The parent proof needs Even/Odd definitions, parity lemmas, and case analysis to prove 'n\u00b2 even implies n even'. With Euclid's criterion, this becomes: p | n*n implies p | n or p | n, so p | n. QED.",
-      "**Modular arithmetic verification**: Small primes (2, 3, 5) are verified as EuclidPrime by checking that nonzero residues mod p form a multiplicative group (no zero divisors)"
+      "**From 20 lines to 2 lines**: The parent proof needs Even/Odd definitions, parity lemmas, and case analysis to prove 'n² even implies n even'. With Euclid's criterion, this becomes: p | n*n implies p | n or p | n, so p | n. QED.",
+      "**Modular arithmetic verification**: Small primes (2, 3, 5) are verified as EuclidPrime by checking that nonzero residues mod p form a multiplicative group (no zero divisors)",
+      "**The proof is an instance of infinite descent**: The argument can be viewed as Fermat's method of descent — if √p = a/b in lowest terms, we derive √p = b'/a' with a' < a, creating an impossible infinite descending sequence. The coprimality formulation short-circuits the descent by deriving a contradiction in one step",
+      "**Prime vs irreducible: a preview of abstract algebra**: This file implicitly demonstrates that for ℤ, 'prime' (Euclid's criterion) and 'irreducible' (classical definition) coincide. In general rings they may not — e.g., in ℤ[√−5], the element 2 is irreducible but not prime since 2 | (1+√−5)(1−√−5) = 6 but 2 ∤ (1±√−5). The failure of this equivalence is exactly the failure of unique factorization",
+      "**The one-way bridge reveals a logical asymmetry**: Proving Nat.Prime → EuclidPrime is easy (Mathlib provides it). Proving EuclidPrime → Nat.Prime requires Bézout's identity and ~200 more lines. For irrationality proofs, only the EuclidPrime direction is needed — the classical definition is never used"
     ]
   },
   "sections": [
@@ -92,7 +122,7 @@
     },
     {
       "id": "main-theorem",
-      "title": "Main Theorem: \u221ap is Irrational",
+      "title": "Main Theorem: √p is Irrational",
       "startLine": 197,
       "endLine": 260,
       "summary": "Proves that for any Euclid prime $p$, if $a^2 = p \\cdot b^2$ with $b > 0$, then $p$ divides both $a$ and $b$. Includes helper lemmas for the arithmetic cancellation step ($p^2k^2 = pb^2 \\Rightarrow pk^2 = b^2$)"
@@ -106,12 +136,13 @@
     }
   ],
   "conclusion": {
-    "summary": "The irrationality of \u221ap for prime p is proved completely from scratch, revealing that the classical \u221a2 proof secretly uses Euclid's lemma. By defining primality via the multiplicative property (Euclid's criterion), the key lemma becomes trivial and the proof generalizes to all primes with zero additional effort.",
-    "implications": "**Key correspondence:**\n\n| \u221a2 proof concept | General \u221ap concept |\n|---|---|\n| n is even | p divides n |\n| n is odd | p does not divide n |\n| n\u00b2 even \u2192 n even | p \\| n\u00b2 \u2192 p \\| n (Euclid) |\n| coprime = not both even | coprime = not both div by p |\n\nThe generalization shows that parity is not the essential ingredient\u2014primality is.",
+    "summary": "The irrationality of √p for any prime p is proved in 365 lines from first principles, with 17 theorems and 3 custom definitions. By adopting Euclid's criterion as the definition of primality, the key lemma (p | n² → p | n) becomes trivial, and the proof generalizes to all primes with zero additional effort. The bridge to Mathlib's Nat.Prime ensures the result is usable in production proofs.",
+    "implications": "This file demonstrates the power of choosing the right definition. The classical prime definition (p > 1, only divisors are 1 and p) is natural for factorization but awkward for irrationality proofs. Euclid's criterion (p | ab → p | a ∨ p | b) directly gives the key lemma, collapsing 20 lines of parity infrastructure into 2 lines.\n\n**Key correspondence:**\n\n| √2 proof concept | General √p concept |\n|---|---|\n| n is even | p divides n |\n| n is odd | p does not divide n |\n| n² even → n even | p | n² → p | n (Euclid) |\n| coprime = not both even | coprime = not both div by p |\n\nThe distinction between 'prime' (multiplicative) and 'irreducible' (divisor) becomes important in abstract algebra: they coincide in UFDs like ℤ but diverge in rings like ℤ[√−5], where 2 is irreducible but not prime.",
     "openQuestions": [
-      "Prove equivalence of Euclid's criterion with the classical prime definition (requires building Bezout's identity from scratch)",
-      "Extend to \u221an for any non-square n (requires unique factorization or alternative approach)",
-      "Build the p-adic valuation from scratch and prove multiplicativity"
+      "Prove equivalence of Euclid's criterion with the classical prime definition (requires building Bézout's identity and the extended Euclidean algorithm from scratch)",
+      "Extend to √n for any non-square n (requires unique factorization or the alternative approach via minimal polynomial irreducibility)",
+      "Build the p-adic valuation vₚ(n) from scratch and prove multiplicativity vₚ(ab) = vₚ(a) + vₚ(b), then reprove √p irrationality via parity of valuations",
+      "Formalize the connection between Euclid's criterion and integral domains: ℤ/pℤ is an integral domain iff p is prime, providing the algebraic explanation for why the small-prime verifications work"
     ]
   },
   "leanFile": {
@@ -124,5 +155,57 @@
     "axiomCount": 0,
     "theoremCount": 17,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "sqrt2-from-axioms",
+      "relationship": "extends",
+      "description": "Parent proof: √2 irrationality built from scratch using Even/Odd parity. This file generalizes the approach to all primes by recognizing that the parity argument is secretly Euclid's lemma for p=2"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "Mathlib-based √2 irrationality proof using irrational_sqrt_two. This file builds the same result from scratch and generalizes it, while sqrt2-irrational leverages Mathlib's library for a shorter proof"
+    },
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "related",
+      "description": "Proves ⁿ√k is irrational for non-perfect-power k using Mathlib's Nat.Prime infrastructure. This file provides the foundational from-axioms approach for the square root case"
+    },
+    {
+      "targetId": "nth-root-irrational-oq-01",
+      "relationship": "related",
+      "description": "Extends irrationality to arbitrary nth roots via irreducible polynomials and field extension degrees. The Euclid-criterion approach here for square roots could be adapted for nth roots via the multiplicative property of prime ideals"
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "foundational",
+      "description": "Bézout's identity (gcd(a,b) = sa + tb) is the missing ingredient for proving Euclid's criterion equivalent to the classical prime definition. This file deliberately avoids Bézout to keep the development self-contained"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "related",
+      "description": "Unique prime factorization extends the irrationality result to non-prime non-squares: √n is irrational for any non-perfect-square n, since some prime appears to an odd power in n's factorization"
+    },
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "related",
+      "description": "Explores divisibility by 3 using digit sums. This file's verification that 3 is an Euclid prime uses modular arithmetic instead, checking that (ℤ/3ℤ)* has no zero divisors"
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "related",
+      "description": "The Euclidean algorithm computes gcd(a,b) and produces the Bézout coefficients. Building this from scratch would enable proving the equivalence of EuclidPrime with the classical prime definition"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "thematic",
+      "description": "Both are impossibility results about algebraic expressions: √p ∉ ℚ (irrational) vs generic quintic roots not in radical extensions. The irrationality of √p is the simplest instance of the radical tower framework"
+    },
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "The descent argument (if a/b is in lowest terms, derive a contradiction) can be viewed as an application of the well-ordering principle, equivalent to strong induction on the denominator"
+    }
+  ]
 }
