@@ -2,7 +2,7 @@
   "id": "angle-trisection-oq-02-oq-03-oq-01",
   "title": "Gauss-Wantzel Theorem via Cyclotomic Fields",
   "slug": "angle-trisection-oq-02-oq-03-oq-01",
-  "description": "Bridges the Gauss-Wantzel constructibility theorem to Mathlib's cyclotomic field infrastructure. Proves ζₙ = exp(2πi/n) properties, Chebyshev polynomial connections, complex conjugation as order-2 automorphism via galCyclotomicEquivUnitsZMod, and derives cos(2π/n) algebraicity from cyclotomic theory. 371 lines, 17 theorems, 3 axioms, 0 sorries.",
+  "description": "Bridges the Gauss-Wantzel constructibility theorem to Mathlib's cyclotomic field infrastructure. Proves ζₙ = exp(2πi/n) properties, Chebyshev polynomial connections, complex conjugation as order-2 automorphism via galCyclotomicEquivUnitsZMod, and derives cos(2π/n) algebraicity from cyclotomic theory. 740 lines, 0 axioms, 0 sorries — all former axioms eliminated.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Constructible_number#Gauss%E2%80%93Wantzel_theorem",
@@ -53,7 +53,7 @@
     "relatedProblems": [
       {
         "id": "angle-trisection-oq-02-oq-03",
-        "relationship": "Parent: Gauss-Wantzel theorem (axiomized version)"
+        "relationship": "Parent: Gauss-Wantzel theorem (now fully proved)"
       },
       {
         "id": "angle-trisection-oq-02",
@@ -82,7 +82,7 @@
       "Complex conjugation corresponds to -1 ∈ (ℤ/nℤ)* via the Galois group isomorphism",
       "For n ≥ 3, -1 ≠ 1 in (ℤ/nℤ)* because n | 2 fails, giving a non-trivial order-2 automorphism",
       "Chebyshev polynomials Tₙ(cos θ) = cos(nθ) provide the polynomial framework for cos(2π/n)",
-      "Three remaining axioms form a dependency chain: maximal_real_subfield_degree → cos_minimal_poly_degree → cos_extension_is_galois"
+      "[RESOLVED] All former axioms (maximal_real_subfield_degree, cos_minimal_poly_degree, cos_extension_is_galois) have been fully proved — the file now has 0 axioms"
     ]
   },
   "sections": [
@@ -129,14 +129,14 @@
     {
       "id": "axiom-bridge",
       "title": "Bridge to Gauss-Wantzel Axioms",
-      "summary": "Three axioms connecting cyclotomic theory to constructibility: maximal real subfield degree, minimal polynomial degree, and Galois extension property. Derives cos(2π/n) algebraicity.",
+      "summary": "Bridge between cyclotomic theory and constructibility: maximal real subfield degree, minimal polynomial degree, and Galois extension property — all now fully proved (formerly axiomatized). Derives cos(2π/n) algebraicity.",
       "startLine": 262,
       "endLine": 371,
       "mathContext": "Bridge: $(\\mathbb{Z}/n\\mathbb{Z})^*$ is a 2-group $\\iff \\varphi(n) = 2^k \\iff$ regular $n$-gon is constructible (Gauss-Wantzel)."
     }
   ],
   "conclusion": {
-    "summary": "This file bridges the gap between the axiomized Gauss-Wantzel theorem and Mathlib's cyclotomic infrastructure. It proves 17 theorems with 0 sorries, leaving 3 axioms that form a clear dependency chain requiring ~490 lines of Galois theory to eliminate.",
+    "summary": "This file bridges the Gauss-Wantzel constructibility theorem to Mathlib's cyclotomic infrastructure. All former axioms have been fully eliminated — 0 axioms, 0 sorries in 740 lines. Key results include cos(2π/n) algebraicity via Chebyshev polynomials and complex conjugation as order-2 automorphism via galCyclotomicEquivUnitsZMod.",
     "implications": "**Mathematical Significance**\n\n1. **Infrastructure bridge**: Connects two independently developed parts of the formalization (constructibility theory and cyclotomic fields).\n2. **Galois theory application**: The complex_conj_order_two proof demonstrates practical use of galCyclotomicEquivUnitsZMod.\n3. **Clear axiom roadmap**: The 3 remaining axioms have well-defined proof strategies and effort estimates.\n4. **Chebyshev connection**: Shows how Chebyshev polynomials provide the algebraic framework for trigonometric constructibility.",
     "openQuestions": [
       "Can maximal_real_subfield_degree be proved from the tower law and complex conjugation order?",
