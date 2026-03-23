@@ -90,7 +90,10 @@
       "Combined with the parent file's minpoly.algEquiv_eq, Skolem-Noether shows that ALL minpoly-preserving automorphisms of Mₙ(K) are exactly the inner ones — there are no 'exotic' automorphisms"
     ],
     "prerequisites": [
-      "Linear algebra"
+      "Linear algebra (matrices, invertibility, linear independence)",
+      "Abstract algebra (algebra automorphisms, units, center of a ring)",
+      "Central simple algebras (basic concepts)",
+      "Familiarity with Lean 4 and Mathlib"
     ]
   },
   "sections": [
@@ -160,6 +163,36 @@
       "Can the connection to projective geometry (PGL action on projective space) be formalized?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Parent file proving minimal polynomial preservation under algebra equivalences; this file extends to the full Skolem-Noether theorem"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "extends",
+      "description": "Root formalization connecting Cayley-Hamilton to minimal polynomials; the Skolem-Noether theorem shows all automorphisms preserving minimal polynomials are inner"
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "foundational",
+      "description": "The Cayley-Hamilton theorem provides the connection between matrices and their characteristic/minimal polynomials, which Skolem-Noether shows are preserved by all automorphisms"
+    }
+  ],
+  "relatedProofs": [
+    "cayley-hamilton",
+    "cayley-hamilton-minpoly",
+    "cayley-hamilton-minpoly-oq-02",
+    "cayley-hamilton-minpoly-oq-02-oq-01",
+    "cayley-hamilton-reduction"
+  ],
+  "relatedProblems": [
+    {
+      "id": "cayley-hamilton-minpoly-oq-02-oq-01",
+      "relationship": "Extends the minimal polynomial preservation result to the full Skolem-Noether theorem, proving all K-algebra automorphisms of M\u2099(K) are inner"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

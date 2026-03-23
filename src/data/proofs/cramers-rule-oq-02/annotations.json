@@ -130,7 +130,7 @@
     "title": "nlinarith for Factorial-Polynomial Inequalities",
     "content": "The `nlinarith` tactic appears at two key points. In the factorial induction (`factorial_gt_sq`), `nlinarith [Nat.factorial_pos m]` closes `(m+1)² < (m+1)*m!` from `m²<m!` — the hint provides `0<m!` which lets nlinarith multiply hypotheses and find the Positivstellensatz certificate. In the main theorem, `nlinarith [Nat.factorial_pos n]` closes `n³ < (n+1)*n*n!` from `n²<n!` and `0<n`. The tactic works because the goal is a polynomial inequality in n with n! treated as an atomic variable satisfying `n!>n²`.",
     "mathContext": "nlinarith uses a Positivstellensatz certificate: it searches for a nonnegative linear combination of products of hypotheses that equals the negation of the goal. For `n³ < (n+1)*n*n!` given `n²<n!` and `0<n`: the certificate involves `n * (n! - n²) > 0` (product of `n>0` and `n!>n²`), giving `n*n! > n*n² = n³`.",
-    "significance": "technique",
+    "significance": "technical",
     "relatedConcepts": [
       "nlinarith",
       "Positivstellensatz",

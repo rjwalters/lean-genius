@@ -7,9 +7,8 @@
     },
     "type": "context",
     "title": "The Moment Hierarchy: Why E[|X|] < ∞ Is the True Threshold",
-    "body": "The file opens by resolving a central pedagogical misconception in probability. Chebyshev's classical WLLN proof uses the bound `P(|S_n/n - μ| > ε) ≤ Var(X)/(nε²)`, which requires finite variance. This leads many texts to treat `E[X²] < ∞` as a prerequisite for the LLN — but it is only a proof artifact. Kolmogorov's 1930 theorem shows the true threshold is `E[|X|] < ∞` (integrability, L¹), not L². The docstring makes this precise with the moment diagram: L² → L¹ → SLLN → WLLN.",
     "mathContext": "The moment hierarchy for LLN: $$E[X^2] < \\infty \\;\\Rightarrow\\; E[|X|] < \\infty \\;\\Rightarrow\\; \\text{SLLN} \\;\\Rightarrow\\; \\text{WLLN}.$$ The first implication is strict: Pareto$(\\alpha, x_m)$ with $1 < \\alpha \\leq 2$ satisfies $E[X] = \\alpha x_m/(\\alpha-1) < \\infty$ but $E[X^2] = \\infty$. Cauchy$(0,1)$ has $E[|X|] = \\infty$ and the LLN fails: by $1$-stability, $(X_1 + \\cdots + X_n)/n \\sim \\text{Cauchy}(0,1)$ for all $n$, so the sample mean never concentrates.",
-    "significance": "Resolves the open question for all applications: power-law returns in finance (Pareto α ∈ (1,2)), network traffic packet sizes, and earthquake magnitudes all follow LLN via Kolmogorov even though Chebyshev's approach fails. The Cauchy distribution (α = 1) is the precise boundary where LLN breaks.",
+    "significance": "key",
     "relatedConcepts": [
       "law of large numbers",
       "Chebyshev's inequality",
@@ -23,7 +22,9 @@
       "Chebyshev's inequality",
       "moment conditions",
       "stable distributions"
-    ]
+    ],
+    "proofId": "laws-of-large-numbers-oq-01",
+    "content": "The file opens by resolving a central pedagogical misconception in probability. Chebyshev's classical WLLN proof uses the bound `P(|S_n/n - μ| > ε) ≤ Var(X)/(nε²)`, which requires finite variance. This leads many texts to treat `E[X²] < ∞` as a prerequisite for the LLN — but it is only a proof artifact. Kolmogorov's 1930 theorem shows the true threshold is `E[|X|] < ∞` (integrability, L¹), not L². The docstring makes this precise with the moment diagram: L² → L¹ → SLLN → WLLN."
   },
   {
     "id": "ann-slln-direct",
@@ -33,9 +34,8 @@
     },
     "type": "technique",
     "title": "SLLN Under Finite Mean: One-Line Mathlib Application",
-    "body": "`slln_under_finite_mean_only` is a one-line proof calling `ProbabilityTheory.strong_law_ae` directly. The key is in the hypotheses: the only condition is `hint : MeasureTheory.Integrable (X 0) μ` — there is no `Memℒp 2`, no `HasFiniteVariance`, no L² assumption. For i.i.d. X₀, X₁, ... with E[|X₀|] < ∞, the Cesàro means `n⁻¹·∑_{i<n} Xᵢ(ω)` converge a.s. to `∫ X₀ dμ = E[X₀]`. The comment `-- E[|X|] < ∞, NO variance condition!` makes the key distinction explicit.",
     "mathContext": "Kolmogorov's Strong Law (Mathlib): for $X: \\mathbb{N} \\to \\Omega \\to \\mathbb{R}$ i.i.d. and integrable, $$\\text{for a.e. }\\omega: \\quad \\frac{1}{n}\\sum_{i=0}^{n-1} X_i(\\omega) \\xrightarrow{n\\to\\infty} \\int X_0 \\, d\\mu.$$ `strong_law_ae` takes: `hint` (integrability), `hindep` (pairwise independence as `IndepFun`), `hident` (identical distribution as `IdentDistrib`). The `IdentDistrib` condition requires the pushforward measures $\\mu \\circ X_i^{-1}$ to coincide, which is stronger than just equal moments.",
-    "significance": "The one-line proof demonstrates Mathlib's SLLN already has the optimal L¹ condition — all the heavy lifting (Kronecker's lemma, maximal inequalities, truncation) is inside `strong_law_ae`. This formalization shows heavy-tailed distributions with finite mean satisfy SLLN with zero additional work.",
+    "significance": "key",
     "relatedConcepts": [
       "strong_law_ae",
       "Integrable",
@@ -48,7 +48,9 @@
       "ProbabilityTheory.strong_law_ae",
       "MeasureTheory.Integrable",
       "i.i.d. conditions in Mathlib"
-    ]
+    ],
+    "proofId": "laws-of-large-numbers-oq-01",
+    "content": "`slln_under_finite_mean_only` is a one-line proof calling `ProbabilityTheory.strong_law_ae` directly. The key is in the hypotheses: the only condition is `hint : MeasureTheory.Integrable (X 0) μ` — there is no `Memℒp 2`, no `HasFiniteVariance`, no L² assumption. For i.i.d. X₀, X₁, ... with E[|X₀|] < ∞, the Cesàro means `n⁻¹·∑_{i<n} Xᵢ(ω)` converge a.s. to `∫ X₀ dμ = E[X₀]`. The comment `-- E[|X|] < ∞, NO variance condition!` makes the key distinction explicit."
   },
   {
     "id": "ann-wlln-from-slln",
@@ -58,9 +60,8 @@
     },
     "type": "technique",
     "title": "WLLN from SLLN via Almost Sure Implies In-Measure Convergence",
-    "body": "`wlln_for_heavy_tails` derives convergence in probability from almost sure convergence using `tendstoInMeasure_of_tendsto_ae`. On a probability space, convergence in measure equals convergence in probability. The proof composes `hmeas` (measurability of partial sums) with `slln_under_finite_mean_only`. This bypasses Chebyshev's inequality entirely — since SLLN gives the stronger a.s. result, WLLN follows for free, including for infinite-variance distributions where Chebyshev fails.",
     "mathContext": "Convergence hierarchy: $X_n \\to X$ a.s. $\\Rightarrow$ $X_n \\xrightarrow{\\mu} X$ (in measure) $\\Leftrightarrow$ $X_n \\xrightarrow{P} X$ (in probability, on prob. spaces). The reverse fails in general. `tendstoInMeasure_of_tendsto_ae` in Mathlib formalizes the forward direction: for $\\varepsilon > 0$, $\\mu(\\{\\omega : |S_n(\\omega)/n - \\mu| > \\varepsilon\\}) \\to 0$ follows from the a.s. convergence filter statement.",
-    "significance": "For applications (statistics, simulation), WLLN suffices: P(|sample mean − μ| > ε) → 0. The SLLN → WLLN route is the clean path for heavy-tailed distributions, since Chebyshev's direct WLLN proof requires finite variance.",
+    "significance": "key",
     "relatedConcepts": [
       "tendstoInMeasure_of_tendsto_ae",
       "convergence in probability",
@@ -71,7 +72,9 @@
       "slln_under_finite_mean_only",
       "MeasureTheory.TendstoInMeasure",
       "AEStronglyMeasurable"
-    ]
+    ],
+    "proofId": "laws-of-large-numbers-oq-01",
+    "content": "`wlln_for_heavy_tails` derives convergence in probability from almost sure convergence using `tendstoInMeasure_of_tendsto_ae`. On a probability space, convergence in measure equals convergence in probability. The proof composes `hmeas` (measurability of partial sums) with `slln_under_finite_mean_only`. This bypasses Chebyshev's inequality entirely — since SLLN gives the stronger a.s. result, WLLN follows for free, including for infinite-variance distributions where Chebyshev fails."
   },
   {
     "id": "ann-necessity-axiom",
@@ -81,9 +84,8 @@
     },
     "type": "technique",
     "title": "Necessity of Finite Mean: Kolmogorov's Converse as Axiom",
-    "body": "`slln_necessity` is axiomatized as the converse: if there exists c such that n⁻¹·∑Xᵢ(ω) → c a.s., then E[|X₀|] < ∞. This completes Kolmogorov's 1930 biconditional characterization. The axiom is well-motivated: the proof requires the Borel-Cantelli lemma applied to tail events {|Xₙ| > nε}, not directly available in Mathlib's `strong_law_ae`. The Cauchy example in the docstring illustrates why the condition is tight: by 1-stability, Cauchy sample means are always Cauchy(0,1), so no concentration ever occurs.",
     "mathContext": "**Necessity argument** (Kolmogorov): if $E[|X_0|] = \\infty$, then $\\sum_n P(|X_n| > n) = \\infty$ (since $\\sum_n P(|X| > n) = E[|X|]$ by Fubini). By the second Borel-Cantelli lemma (independence), $|X_n| > n$ infinitely often a.s. But then $|X_n/n| > 1$ i.o., preventing Cesàro convergence. Formally: $n^{-1}|X_n| \\leq |S_n/n| + \\frac{n-1}{n}|S_{n-1}/(n-1)|$, so divergence of $|X_n/n|$ implies divergence of $|S_n/n|$.",
-    "significance": "Without this axiom, the file would only have the sufficiency direction. The iff characterization makes Kolmogorov's theorem its strongest form and documents exactly what Mathlib would need to formalize the complete result: a Borel-Cantelli argument for tail events of i.i.d. sequences.",
+    "significance": "key",
     "relatedConcepts": [
       "Borel-Cantelli lemma",
       "Kolmogorov characterization",
@@ -95,7 +97,9 @@
       "second Borel-Cantelli lemma",
       "tail probability identity E[|X|] = ∑P(|X|>n)",
       "slln_under_finite_mean_only"
-    ]
+    ],
+    "proofId": "laws-of-large-numbers-oq-01",
+    "content": "`slln_necessity` is axiomatized as the converse: if there exists c such that n⁻¹·∑Xᵢ(ω) → c a.s., then E[|X₀|] < ∞. This completes Kolmogorov's 1930 biconditional characterization. The axiom is well-motivated: the proof requires the Borel-Cantelli lemma applied to tail events {|Xₙ| > nε}, not directly available in Mathlib's `strong_law_ae`. The Cauchy example in the docstring illustrates why the condition is tight: by 1-stability, Cauchy sample means are always Cauchy(0,1), so no concentration ever occurs."
   },
   {
     "id": "ann-iff-characterization",
@@ -105,9 +109,8 @@
     },
     "type": "technique",
     "title": "Kolmogorov's Complete Biconditional Characterization of SLLN",
-    "body": "`kolmogorov_slln_characterization` packages both directions: `Integrable (X 0) μ ↔ ∃ c, ∀ᵐ ω, Tendsto (n⁻¹·∑Xᵢ(ω)) atTop (nhds c)`. The proof uses a clean `constructor`: forward direction gives `c = ∫ X₀ dμ` via `slln_under_finite_mean_only`; backward direction applies `slln_necessity` destructuring the existential. Below it, `lln_heavy_tail_answer` is the direct answer to the open question — it's essentially a rename of `slln_under_finite_mean_only` with the pedagogical comment 'variance may be ∞!'.",
     "mathContext": "The full Kolmogorov characterization: for i.i.d. $X_0, X_1, \\ldots$ on a probability space, $$E[|X_0|] < \\infty \\iff \\exists c \\in \\mathbb{R},\\; \\frac{1}{n}\\sum_{i=0}^{n-1} X_i \\xrightarrow{\\text{a.s.}} c.$$ Moreover, when the limit exists, $c = E[X_0]$ necessarily (by uniqueness of limits). The `∃ c` quantifier in the Lean statement reflects the necessity direction — it's enough to know *some* constant limit exists to conclude integrability.",
-    "significance": "This iff form shows L¹ integrability is the exact threshold — not a convenient sufficient condition. The biconditional is what makes Kolmogorov's 1930 theorem definitive and separates it from earlier partial results (Borel 1909 for {0,1}-valued, Cantelli 1917 for bounded, Chebyshev for L²).",
+    "significance": "key",
     "relatedConcepts": [
       "Kolmogorov 1930 characterization",
       "iff theorem",
@@ -119,7 +122,9 @@
       "slln_under_finite_mean_only",
       "slln_necessity",
       "Lean 4 constructor/rcases tactics"
-    ]
+    ],
+    "proofId": "laws-of-large-numbers-oq-01",
+    "content": "`kolmogorov_slln_characterization` packages both directions: `Integrable (X 0) μ ↔ ∃ c, ∀ᵐ ω, Tendsto (n⁻¹·∑Xᵢ(ω)) atTop (nhds c)`. The proof uses a clean `constructor`: forward direction gives `c = ∫ X₀ dμ` via `slln_under_finite_mean_only`; backward direction applies `slln_necessity` destructuring the existential. Below it, `lln_heavy_tail_answer` is the direct answer to the open question — it's essentially a rename of `slln_under_finite_mean_only` with the pedagogical comment 'variance may be ∞!'."
   },
   {
     "id": "ann-composed-functions",
@@ -129,9 +134,8 @@
     },
     "type": "technique",
     "title": "SLLN for f(Xᵢ): The Foundation of Monte Carlo Integration",
-    "body": "`slln_for_composed` proves SLLN for `f ∘ X`: if X₀, X₁, ... are i.i.d. and f : ℝ → ℝ is measurable with E[|f(X₀)|] < ∞, then n⁻¹·∑f(Xᵢ(ω)) → ∫ f(X₀) dμ a.s. The proof propagates i.i.d. structure through f: `hindep` → `hindep'` via `IndepFun.comp hf hf`, and `hident` → `hident'` via `IdentDistrib.comp hf`. Then `slln_under_finite_mean_only` closes the goal with `f ∘ X`. This is the SLLN's most practically important form.",
     "mathContext": "**Monte Carlo integration**: to estimate $\\int f \\, d\\mu$ (analytically intractable), draw i.i.d. $X_1, \\ldots, X_n \\sim \\mu$ and use $\\hat{\\mu}_n = n^{-1}\\sum_{i=1}^n f(X_i) \\xrightarrow{\\text{a.s.}} \\int f \\, d\\mu$ — requiring only $E[|f(X)|] < \\infty$, no smoothness. Also the **sample analog principle**: $n^{-1}\\sum g(X_i) \\to E[g(X)]$ as an estimator for $E[g(X)]$. The independence propagation `IndepFun.comp` works because measurable functions of independent random variables are independent.",
-    "significance": "This is the LLN form used in all of simulation, Bayesian computation (MCMC), and statistical estimation. The proof cleanly shows how composition preserves i.i.d. structure, making `slln_for_composed` the master lemma from which the negation, affine, and bounded function variants all follow.",
+    "significance": "key",
     "relatedConcepts": [
       "Monte Carlo method",
       "sample analog principle",
@@ -144,7 +148,9 @@
       "slln_under_finite_mean_only",
       "ProbabilityTheory.IndepFun.comp",
       "ProbabilityTheory.IdentDistrib.comp"
-    ]
+    ],
+    "proofId": "laws-of-large-numbers-oq-01",
+    "content": "`slln_for_composed` proves SLLN for `f ∘ X`: if X₀, X₁, ... are i.i.d. and f : ℝ → ℝ is measurable with E[|f(X₀)|] < ∞, then n⁻¹·∑f(Xᵢ(ω)) → ∫ f(X₀) dμ a.s. The proof propagates i.i.d. structure through f: `hindep` → `hindep'` via `IndepFun.comp hf hf`, and `hident` → `hident'` via `IdentDistrib.comp hf`. Then `slln_under_finite_mean_only` closes the goal with `f ∘ X`. This is the SLLN's most practically important form."
   },
   {
     "id": "ann-derived-results",
@@ -154,9 +160,8 @@
     },
     "type": "insight",
     "title": "SLLN Variants: Lᵖ, L∞, Mean-Zero, Affine, Bounded",
-    "body": "Sections V-VII collect corollaries, all reducing to `slln_under_finite_mean_only` via integrability closure: (1) `slln_for_Lp_distributions`: `(hLp 0).integrable hp` converts Lᵖ (p ≥ 1) to L¹. (2) `slln_for_Linfty`: `(hLinfty 0).integrable le_top` — L∞ ⊆ L¹ on probability spaces. (3) `slln_mean_zero`: `simpa [hmean]` reuses SLLN with E[X₀]=0. (4) `slln_affine_transform`: `(hint.const_mul a).add (integrable_const b)` shows a·X+b is integrable. (5) `slln_for_bounded_measurable`: `Integrable.mono' (integrable_const M)` bounds ‖f(X)‖ by M pointwise.",
     "mathContext": "**Integrability closure properties** used across the variants:\n- $L^p \\subseteq L^1$ for $p \\geq 1$ (when $\\mu(\\Omega) = 1$): `Memℒp.integrable`\n- $X \\in L^1 \\Rightarrow aX + b \\in L^1$: linearity and `integrable_const`\n- $|f| \\leq M$ a.e. on probability space $\\Rightarrow f \\in L^1$: comparison with constant $M$\n- $X \\in L^1 \\Rightarrow f(X) \\in L^1$ when $f$ measurable and $E[|f(X)|] < \\infty$: `slln_for_composed`\n\nThe mean-zero result covers symmetric stable distributions with $\\alpha \\in (1,2)$: ubiquitous in financial modeling.",
-    "significance": "These variants demonstrate the modular structure of the SLLN framework: `slln_for_composed` is the main reduction lemma, and all specific forms follow by choosing f and proving integrability. This shows how a single deep theorem (Kolmogorov's SLLN) generates a rich family of results via algebraic closure of integrability.",
+    "significance": "key",
     "relatedConcepts": [
       "Memℒp.integrable",
       "integrability closure",
@@ -171,6 +176,8 @@
       "Integrable.neg",
       "Integrable.const_mul",
       "Memℒp.integrable"
-    ]
+    ],
+    "proofId": "laws-of-large-numbers-oq-01",
+    "content": "Sections V-VII collect corollaries, all reducing to `slln_under_finite_mean_only` via integrability closure: (1) `slln_for_Lp_distributions`: `(hLp 0).integrable hp` converts Lᵖ (p ≥ 1) to L¹. (2) `slln_for_Linfty`: `(hLinfty 0).integrable le_top` — L∞ ⊆ L¹ on probability spaces. (3) `slln_mean_zero`: `simpa [hmean]` reuses SLLN with E[X₀]=0. (4) `slln_affine_transform`: `(hint.const_mul a).add (integrable_const b)` shows a·X+b is integrable. (5) `slln_for_bounded_measurable`: `Integrable.mono' (integrable_const M)` bounds ‖f(X)‖ by M pointwise."
   }
 ]

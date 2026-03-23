@@ -10,7 +10,7 @@
     "title": "The Theorem That Took 124 Years",
     "content": "The Four Color Theorem has a remarkable history. Posed in 1852, it resisted proof for over a century, defeating many brilliant mathematicians. Its eventual 1976 proof required something unprecedented: a computer checking thousands of cases no human could verify.\n\nThe theorem states that any map can be colored with at most four colors such that no two adjacent regions share a color. While easy to state and seemingly simple, the proof revealed deep connections between graph theory, combinatorics, and computation.\n\nThis formalization presents the conceptual structure. The complete proof (Appel-Haken 1976, Gonthier 2005) requires computer verification of 1,936 configurations.",
     "mathContext": "The Four Color Theorem: every planar graph $G$ satisfies $\\chi(G) \\leq 4$, where $\\chi(G)$ is the chromatic number. Equivalently, every map drawn on a sphere or plane can be colored with at most 4 colors so that adjacent regions have different colors.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "graph theory",
       "computer-assisted proof",
@@ -75,7 +75,7 @@
     "title": "Planar Graphs",
     "content": "A graph is **planar** if it can be drawn in the plane with no edge crossings. Equivalently, it can be embedded on a sphere.\n\nNot all graphs are planar! The complete graph $K_5$ (5 vertices, all connected) and the complete bipartite graph $K_{3,3}$ are the 'forbidden minors'—every non-planar graph contains one of these as a substructure (Kuratowski's theorem, 1930).\n\nPlanarity is essential to the theorem. Non-planar graphs can require arbitrarily many colors: the complete graph $K_n$ requires $n$ colors, and $K_n$ is non-planar for $n \\geq 5$.",
     "mathContext": "A graph $G$ is planar iff it contains no subdivision of $K_5$ or $K_{3,3}$ (Kuratowski 1930). Equivalently, $G$ has no $K_5$ or $K_{3,3}$ minor (Wagner 1937). For planar $G$ with $|V| \\geq 3$: $|E| \\leq 3|V| - 6$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "planar embedding",
       "Kuratowski's theorem",
@@ -99,7 +99,7 @@
     "title": "Euler's Formula: The Fundamental Constraint",
     "content": "For any connected planar graph embedded in the plane:\n\n$$V - E + F = 2$$\n\nwhere V = vertices, E = edges, F = faces (including the unbounded outer face).\n\nThis remarkable formula constrains planar graph structure. Combined with the handshaking lemma (sum of degrees = 2E), it implies every planar graph has a vertex of degree at most 5.\n\nThis 'low-degree vertex' existence is the entry point for inductive proofs of coloring theorems.",
     "mathContext": "$V - E + F = 2$ for connected planar graphs",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-planar"
     ],
@@ -160,7 +160,7 @@
     "title": "Kempe Chains: The Color-Swapping Trick",
     "content": "A **Kempe chain** for colors a and b starting at vertex v is the maximal connected subgraph of vertices colored a or b containing v.\n\nThe crucial property: swapping colors a ↔ b on a Kempe chain produces another valid coloring! Adjacent vertices still have different colors because:\n- Vertices outside the chain keep their colors\n- Inside the chain, neighbors alternate between a and b\n\nKempe invented this for his 1879 'proof' of Four Colors. His argument was flawed (Heawood found the error in 1890), but the technique is correct and essential. The flaw was in handling cases where two Kempe chains for different color pairs intersect, creating a situation where swapping one chain disrupts another.",
     "mathContext": "Given a proper coloring $c: V \\to \\{1,2,3,4\\}$, the $(a,b)$-Kempe chain at $v$ is the connected component of $c^{-1}(\\{a,b\\})$ containing $v$. Swapping $a \\leftrightarrow b$ on this component yields a new proper coloring $c'$. Kempe's error: for a degree-5 vertex $v$ with neighbors using all 4 colors, swapping the $(1,3)$-chain through one neighbor may merge with the $(2,4)$-chain through another.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "color swapping",
       "connected component",
@@ -203,7 +203,7 @@
     "title": "Reducibility: Configurations That Can't Block Coloring",
     "content": "A configuration C is **reducible** if it cannot appear in a minimal counterexample to Four Color. That is: if a planar graph G contains C, then G is 4-colorable (or G can be simplified to a smaller graph that's 4-colorable).\n\nProving reducibility requires showing that any 4-coloring of the graph minus the configuration can be extended to include it. This involves analyzing all possible colorings of the boundary (the 'ring') and showing Kempe chains can always make room.\n\nFor many configurations, this case analysis is astronomically complex—too many cases for human verification. Appel-Haken's proof checked 1,936 configurations; Robertson-Sanders-Seymour-Thomas (1997) reduced this to 633. This is where computers become essential.",
     "mathContext": "A configuration with ring size $r$ has up to $4^r$ possible boundary colorings. For each, one must show the coloring extends to the interior via Kempe chain arguments. The unavoidable set must cover all possible local structures in a minimal counterexample — a discharging argument shows that at least one of the 633 (or 1,936) configurations must appear.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "minimal counterexample",
       "configuration",

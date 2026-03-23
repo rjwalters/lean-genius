@@ -14,7 +14,8 @@
     ],
     "prerequisites": [
       "Real.HolderConjugate"
-    ]
+    ],
+    "proofId": "lebesgue-measure-oq-02"
   },
   {
     "id": "ann-conjugate-general",
@@ -30,7 +31,8 @@
     ],
     "prerequisites": [
       "Real.HolderConjugate.conjExponent"
-    ]
+    ],
+    "proofId": "lebesgue-measure-oq-02"
   },
   {
     "id": "ann-young",
@@ -48,7 +50,8 @@
     "prerequisites": [
       "Real.HolderConjugate",
       "ENNReal.young_inequality"
-    ]
+    ],
+    "proofId": "lebesgue-measure-oq-02"
   },
   {
     "id": "ann-holder-lintegral",
@@ -67,7 +70,8 @@
       "Real.HolderConjugate",
       "AEMeasurable",
       "ENNReal.lintegral_mul_le_Lp_mul_Lq"
-    ]
+    ],
+    "proofId": "lebesgue-measure-oq-02"
   },
   {
     "id": "ann-holder-lebesgue",
@@ -85,7 +89,8 @@
     "prerequisites": [
       "holder_lintegral",
       "volume (Lebesgue measure on ℝ)"
-    ]
+    ],
+    "proofId": "lebesgue-measure-oq-02"
   },
   {
     "id": "ann-cauchy-schwarz",
@@ -104,7 +109,8 @@
     "prerequisites": [
       "holder_lintegral",
       "holderConj_two_two"
-    ]
+    ],
+    "proofId": "lebesgue-measure-oq-02"
   },
   {
     "id": "ann-minkowski",
@@ -123,7 +129,8 @@
       "holder_lintegral",
       "norm_add_le",
       "MeasureTheory.Lp"
-    ]
+    ],
+    "proofId": "lebesgue-measure-oq-02"
   },
   {
     "id": "ann-proper-holder",
@@ -140,7 +147,8 @@
     "prerequisites": [
       "ENNReal.lintegral_mul_le_Lp_mul_Lq",
       "Real.HolderConjugate"
-    ]
+    ],
+    "proofId": "lebesgue-measure-oq-02"
   },
   {
     "id": "ann-l2-inner-product",
@@ -160,7 +168,8 @@
       "MeasureTheory.Lp",
       "InnerProductSpace",
       "cauchy_schwarz_lintegral"
-    ]
+    ],
+    "proofId": "lebesgue-measure-oq-02"
   },
   {
     "id": "ann-lp-norm-nonneg",
@@ -178,6 +187,7 @@
     "prerequisites": [
       "MeasureTheory.Lp",
       "norm_nonneg"
-    ]
+    ],
+    "proofId": "lebesgue-measure-oq-02"
   }
 ]
