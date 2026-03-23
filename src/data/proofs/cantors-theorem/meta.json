@@ -65,7 +65,10 @@
       "Applying this to A = N shows there are uncountably many subsets of the natural numbers"
     ],
     "prerequisites": [
-      "Set theory and cardinality"
+      "Naive set theory (sets, subsets, power sets, membership)",
+      "Functions and surjectivity (a function $f: A \\to B$ is surjective if every $b \\in B$ has a preimage)",
+      "Proof by contradiction and classical logic (law of excluded middle for the case split $b \\in D \\lor b \\notin D$)",
+      "Cardinality (comparing sizes of sets via injections, surjections, bijections)"
     ]
   },
   "sections": [
@@ -74,7 +77,8 @@
       "title": "Introduction",
       "startLine": 1,
       "endLine": 46,
-      "summary": "Overview of Cantor's theorem, its connection to Wiedijk #63, and relationship to the diagonalization result."
+      "summary": "Overview of Cantor's theorem, its connection to Wiedijk #63, and relationship to the diagonalization result.",
+      "mathContext": "Statement: $\\forall A,\\ \\neg\\exists f: A \\to \\mathcal{P}(A),\\ \\text{Surjective}(f)$. In Lean, $\\mathcal{P}(A)$ is represented as `A → Prop` (each predicate defines a subset). The file provides both the `A → Prop` formulation (via Mathlib) and the `Set A` formulation (original diagonal construction). Wiedijk #63 (general) subsumes Wiedijk #22 (uncountability of $\\mathbb{R}$) as the special case $A = \\mathbb{N}$."
     },
     {
       "id": "main-mathlib",
@@ -105,14 +109,16 @@
       "title": "Corollaries",
       "startLine": 108,
       "endLine": 131,
-      "summary": "Derived results including strict cardinality inequality and impossibility of bijection."
+      "summary": "Derived results including strict cardinality inequality and impossibility of bijection.",
+      "mathContext": "Three corollaries: (1) `powerset_strictly_larger`: $|A| < |\\mathcal{P}(A)|$ (strict inequality, since the singleton injection $a \\mapsto \\{a\\}$ gives $\\leq$ and Cantor gives $\\neq$). (2) `no_bijection_to_powerset`: $A \\not\\cong \\mathcal{P}(A)$ (no bijection, since every bijection is a surjection). (3) `cantor_cardinal_inequality`: reformulation emphasizing the cardinal arithmetic perspective."
     },
     {
       "id": "constructive-witness",
       "title": "Constructive Witness",
       "startLine": 133,
       "endLine": 156,
-      "summary": "Shows the proof is constructive: given any f, we can explicitly construct a set not in its range."
+      "summary": "Shows the proof is constructive: given any f, we can explicitly construct a set not in its range.",
+      "mathContext": "For any $f: A \\to \\mathcal{P}(A)$, the diagonal set $D = \\{x \\mid x \\notin f(x)\\}$ is an explicit witness with $D \\notin \\mathrm{ran}(f)$. This constructivity contrasts with existence proofs using Zorn's lemma or the axiom of choice — Cantor's proof produces the counterexample rather than merely asserting its existence."
     }
   ],
   "conclusion": {
@@ -191,13 +197,6 @@
       "year": "1960",
       "venue": "Van Nostrand (Springer reprint 1974)",
       "note": "Standard introduction to set theory with clean exposition of Cantor's theorem and its consequences"
-    },
-    {
-      "authors": "Cantor, Georg",
-      "title": "Über eine elementare Frage der Mannigfaltigkeitslehre",
-      "year": "1891",
-      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung 1, 75–78",
-      "note": "Original paper proving the power set is strictly larger via the diagonal argument — the first use of diagonalization in mathematics"
     },
     {
       "authors": "Dauben, Joseph W.",
