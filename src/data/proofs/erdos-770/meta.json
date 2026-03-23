@@ -114,6 +114,12 @@
       "The gcd cascade at $n = 12$: $\\gcd(2^{12}-1, 3^{12}-1) = 455 = 5 \\cdot 7 \\cdot 13$, then adding terms kills factors 5, then 7, until only 13 remains — reflecting the multiple Fermat primes (5, 7, 13) dividing $n! - 1$ terms",
       "Conjectured $h(n) = 3$ infinitely often: the formalization verifies this at 11 values, but proving density existence requires understanding the distribution of primes $p$ with $(p-1) \\mid n$",
       "The stability property: once the gcd reaches 1, it cannot increase — this is the monotonicity of gcd under additional factors, formalized as `gcdPowerSeq_stable`"
+    ],
+    "prerequisites": [
+      "Greatest common divisor and its properties under multiple arguments",
+      "Fermat's little theorem: a^(p-1) is congruent to 1 mod p for primes p not dividing a",
+      "Prime factorization and divisibility in modular arithmetic",
+      "Natural density of subsets of the natural numbers"
     ]
   },
   "conclusion": {
