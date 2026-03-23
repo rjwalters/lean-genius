@@ -129,7 +129,9 @@
       "hilbert-10",
       "vietas-formulas",
       "primitive-roots",
-      "fermats-last-theorem"
+      "fermats-last-theorem",
+      "puiseux-theorem",
+      "elementary-quadratic-reciprocity-oq-01"
     ],
     "prerequisites": [
       "Group theory (normal subgroups, derived series, solvability)",
@@ -264,6 +266,16 @@
       "targetId": "angle-trisection-oq-02-oq-01",
       "relationship": "related",
       "description": "Both use Galois-theoretic obstructions to prove impossibility via parallel strategies: this file shows Gal(generic quintic) ≅ S₅ is not solvable, blocking radical solutions; OQ-02-OQ-01 proves that constructibility requires the Galois group to be a 2-group (natDegree divides |Gal|), blocking compass-and-straightedge constructions. Both reduce geometric/algebraic impossibility to a group-theoretic property check"
+    },
+    {
+      "targetId": "puiseux-theorem",
+      "relationship": "complementary",
+      "description": "Puiseux's theorem shows that the field of fractional power series ℂ{{t^{1/∞}}} is algebraically closed — every polynomial equation has a Puiseux series solution. This provides an illuminating contrast with Abel-Ruffini: while radicals (nested nth roots) cannot solve the generic quintic, Puiseux series always can. The Newton-Puiseux algorithm constructs solutions term-by-term via the Newton polygon, succeeding precisely where radical formulas fail. This situates Abel-Ruffini as a statement about the specific class of radical expressions, not about the existence of 'closed-form' solutions in general"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-01",
+      "relationship": "related",
+      "description": "Zolotarev's 1872 proof of quadratic reciprocity uses the sign homomorphism sign: Sₙ → {±1} — the same homomorphism whose kernel Aₙ = ker(sign) is central to this file's proof chain. In Zolotarev's proof, the Legendre symbol (a/p) equals the signature of the multiplication-by-a permutation on (ℤ/pℤ)*, directly linking the symmetric group structure that drives Abel-Ruffini's impossibility to a fundamental result in number theory. Both proofs exploit the same group-theoretic infrastructure (symmetric groups and their sign homomorphism) for entirely different purposes"
     }
   ],
   "overview": {
