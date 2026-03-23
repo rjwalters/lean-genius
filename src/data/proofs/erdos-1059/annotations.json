@@ -125,10 +125,10 @@
     "range": { "startLine": 121, "endLine": 137 },
     "type": "technique",
     "title": "Primality Verification via decide",
-    "content": "Proves `prime_101` and `prime_211` using Lean's `decide` tactic, which compiles the primality test to native code and evaluates it at kernel level. This produces a proof term — stronger than `#eval` — confirming the computation is correct. These primality proofs are prerequisites for the summary theorem.",
-    "mathContext": "$101$ and $211$ are prime. Lean's `decide` performs trial division up to $\\sqrt{n}$ at compile time, producing a certified proof.",
+    "content": "Proves `prime_101` and `prime_211` using Lean's `decide` tactic, which compiles the primality test to native code and evaluates it at kernel level. This produces a proof term — stronger than `#eval` — confirming the computation is correct. These primality proofs are prerequisites for the summary theorem.\n\nThe `decide` tactic works by reducing the proposition to a Boolean computation via the `Decidable` typeclass. For `Nat.Prime n`, Lean checks whether any integer from 2 to $\\sqrt{n}$ divides $n$. For $n = 211$, this means checking divisibility by 2, 3, 5, 7, 11, 13 (since $14^2 = 196 < 211 < 225 = 15^2$). The entire computation is verified by the kernel — no axioms, no trust assumptions.",
+    "mathContext": "$101$ is prime (not divisible by $2, 3, 5, 7$ since $10^2 = 100 < 101$). $211$ is prime (not divisible by $2, 3, 5, 7, 11, 13$ since $14^2 = 196 < 211$). Lean's `decide` performs certified trial division, producing a proof term checked by the kernel.",
     "significance": "supporting",
-    "relatedConcepts": ["decide tactic", "certified computation", "primality testing", "trial division"],
+    "relatedConcepts": ["decide tactic", "certified computation", "primality testing", "trial division", "Decidable typeclass"],
     "prerequisites": ["Nat.Prime", "Decidable instance for primality"]
   },
   {

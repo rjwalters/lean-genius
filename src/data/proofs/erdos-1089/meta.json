@@ -91,6 +91,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Imports and Module Documentation",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Imports Mathlib and opens Set/Finset. Module docstring describes Problem #1089: estimating $g_d(n)$, known small values ($g_1(3)=4$, $g_2(3)=6$, $g_3(3)=7$), the cube construction, and the central bounds ($d^{n-1} \\ll g_d(n) \\leq c^{d^{1-b_n}}$).",
+      "mathContext": "Problem: does $\\lim_{d \\to \\infty} g_d(n)/d^{n-1}$ exist for fixed $n$? The cube $\\{0,1\\}^d$ with $2^d$ vertices and $d$ distinct distances motivates the polynomial normalization."
+    },
+    {
       "id": "points",
       "title": "Points and Distances",
       "summary": "Defines Point d = EuclideanSpace ℝ (Fin d), Euclidean distance via ‖p - q‖, distinctDistances via Finset.product/image/filter, and numDistinctDistances as the cardinality.",
@@ -151,7 +159,7 @@
       "title": "Connection to f_d(n) and Problem #1083",
       "summary": "Defines f d n = max distinct distances from n points. Axiomatizes g_f_relationship: g_d(n) = min{m : f_d(m) ≥ n}. Names the full open problem as erdos1089OpenProblem.",
       "startLine": 173,
-      "endLine": 202,
+      "endLine": 201,
       "mathContext": "$f_d(n) = \\max\\{|\\Delta(P)| : P \\subseteq \\mathbb{R}^d, |P| = n\\}$. Duality: $g_d(n) = \\inf\\{m : f_d(m) \\geq n\\}$. Guth-Katz (2015): $f_2(n) \\geq cn/\\sqrt{\\log n}$."
     }
   ],
@@ -160,12 +168,12 @@
     "problemStatement": "Let $g_d(n)$ be minimal such that every collection of $g_d(n)$ points in $\\mathbb{R}^d$ determines at least $n$ distinct distances. Estimate $g_d(n)$. In particular, does $\\lim_{d \\to \\infty} g_d(n)/d^{n-1}$ exist?",
     "proofStrategy": "The formalization defines g_d(n) as the infimum of thresholds guaranteeing n distinct distances in ℝ^d, using Mathlib's EuclideanSpace. The cube construction is axiomatized (embedding {0,1}^d into ℝ^d would require substantial infrastructure). Known bounds are captured as axioms. The theorem ratio_bounded_below is genuinely proved from the Erdős lower bound axiom. The f_d(n) inverse function connects to Problem #1083.",
     "keyInsights": [
-      "g_d(n) = min{m : every m-point set in ℝ^d has ≥ n distinct distances} — the threshold function",
-      "The d-cube {0,1}^d has 2^d vertices but only d distinct distances √1, ..., √d, giving g_d(d+1) > 2^d",
-      "Known small values: g_1(3)=4, g_2(3)=6, g_3(3)=7 (Croft 1962) — values grow with dimension",
-      "Lower bound: g_d(n) ≫ d^{n-1} (Erdős, 'easy') establishes polynomial growth",
-      "Upper bound: g_d(n) ≤ c^{d^{1-b_n}} (Erdős-Straus) — stretched-exponential, creating a huge gap",
-      "The ratio g_d(n)/d^{n-1} is bounded below (genuinely proved) but convergence is unknown"
+      "**Threshold function**: $g_d(n) = \\min\\{m : \\text{every } m\\text{-point set in } \\mathbb{R}^d \\text{ has} \\geq n \\text{ distinct distances}\\}$ — the central combinatorial quantity",
+      "**Cube construction**: The $d$-cube $\\{0,1\\}^d$ has $2^d$ vertices but only $d$ distinct distances $\\sqrt{1}, \\ldots, \\sqrt{d}$, giving $g_d(d+1) > 2^d$ — exponential growth in $d$ for linear growth in $n$",
+      "**Small exact values**: $g_1(3)=4$, $g_2(3)=6$, $g_3(3)=7$ (Croft 1962) — values grow with dimension, reflecting that higher-dimensional spaces allow larger few-distance configurations",
+      "**Polynomial lower bound**: $g_d(n) \\gg d^{n-1}$ (Erdős, 'easy') via counting arguments, establishing that the threshold grows at least polynomially in $d$",
+      "**Stretched-exponential upper bound**: $g_d(n) \\leq c^{d^{1-b_n}}$ (Erdős-Straus) leaves an enormous gap with the polynomial lower bound — closing this gap is the heart of the open problem",
+      "**Genuinely proved**: The ratio $g_d(n)/d^{n-1} \\geq c > 0$ is proved from the Erdős lower bound axiom; convergence of this ratio as $d \\to \\infty$ is the open question"
     ],
     "prerequisites": [
       "Discrete and combinatorial geometry: point configurations and distances",

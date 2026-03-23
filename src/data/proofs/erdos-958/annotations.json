@@ -14,7 +14,13 @@
     "relatedConcepts": [
       "distance geometry",
       "point configurations",
-      "multiplicities"
+      "distance multiplicities",
+      "Erdős problems"
+    ],
+    "prerequisites": [
+      "Euclidean distance",
+      "finite point sets",
+      "multisets"
     ]
   },
   {
@@ -32,7 +38,13 @@
     "relatedConcepts": [
       "EuclideanSpace",
       "Finset.product",
-      "Finset.image"
+      "Finset.image",
+      "noncomputable definitions"
+    ],
+    "prerequisites": [
+      "EuclideanSpace ℝ (Fin 2)",
+      "Finset operations",
+      "norm and inner product"
     ]
   },
   {
@@ -50,7 +62,13 @@
     "relatedConcepts": [
       "collinearity",
       "concyclic points",
-      "regular polygons"
+      "regular polygons",
+      "standard configurations"
+    ],
+    "prerequisites": [
+      "line parameterization",
+      "circle definition",
+      "Euclidean geometry"
     ]
   },
   {
@@ -67,8 +85,14 @@
     "significance": "key",
     "relatedConcepts": [
       "multiplicity patterns",
-      "characterization",
-      "uniqueness"
+      "characterization theorems",
+      "uniqueness conjectures",
+      "Multiset.range"
+    ],
+    "prerequisites": [
+      "distanceSet definition",
+      "multiplicity definition",
+      "Multiset operations"
     ]
   },
   {
@@ -86,7 +110,13 @@
     "relatedConcepts": [
       "unit circle",
       "arc length",
-      "counterexample"
+      "counterexample construction",
+      "chord distances"
+    ],
+    "prerequisites": [
+      "unit circle geometry",
+      "trigonometric distances",
+      "Finset subset"
     ]
   },
   {
@@ -102,9 +132,15 @@
     "mathContext": "∀ n ≥ 4, ∃ A, isArcPlusCenter A n ∧ hasSpecialPattern A ∧ ¬isStandardConfig A.",
     "significance": "key",
     "relatedConcepts": [
-      "counterexample",
-      "disproof",
-      "Clemen-Dumitrescu-Liu 2025"
+      "axiom declarations",
+      "disproof by counterexample",
+      "Clemen-Dumitrescu-Liu 2025",
+      "universal counterexample family"
+    ],
+    "prerequisites": [
+      "isArcPlusCenter definition",
+      "hasSpecialPattern definition",
+      "isStandardConfig definition"
     ]
   },
   {
@@ -120,9 +156,15 @@
     "mathContext": "erdos_958_summary : ¬OriginalConjecture ∧ (∀ n ≥ 4, ∃ A, isArcPlusCenter A n ∧ hasSpecialPattern A ∧ ¬isStandardConfig A) := ⟨conjecture_disproved, clemen_dumitrescu_liu⟩.",
     "significance": "key",
     "relatedConcepts": [
-      "solved problems",
-      "Erdős intuition",
-      "counterexamples"
+      "solved Erdős problems",
+      "conjunction construction",
+      "anonymous constructor",
+      "Erdős's combinatorial intuition"
+    ],
+    "prerequisites": [
+      "conjecture_disproved axiom",
+      "clemen_dumitrescu_liu axiom",
+      "anonymous constructor syntax"
     ]
   }
 ]

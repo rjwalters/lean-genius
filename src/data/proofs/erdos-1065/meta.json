@@ -75,6 +75,14 @@
       "mathContext": "Uses `Nat.Prime`, `Set.Infinite`, `Set.Finite`, `Finset`, and decision procedures (`decide`, `norm_num`) from Mathlib."
     },
     {
+      "id": "module-doc",
+      "title": "Module Documentation",
+      "startLine": 6,
+      "endLine": 23,
+      "summary": "Problem statement referencing Guy's B46, OEIS A074781 (safe primes) and A339465. Describes both conjecture variants, lists known Form A examples (3, 5, 7, 11, 13, 29, 41, 97) and the separating example p = 61, and notes connections to safe primes, Artin's conjecture, and Cunningham chains.",
+      "mathContext": "Form A: $p = 2^k q + 1$ ($q$ prime). Form B: $p = 2^k 3^l q + 1$. Known Form A primes $\\leq 100$: $3, 5, 7, 11, 13, 29, 41, 97$. Separating example: $61 = 2^2 \\cdot 3 \\cdot 5 + 1$ (Form B only)."
+    },
+    {
       "id": "definitions",
       "title": "Form Definitions",
       "startLine": 24,
@@ -110,7 +118,7 @@
       "id": "computational",
       "title": "Computational Verification",
       "startLine": 138,
-      "endLine": 163,
+      "endLine": 162,
       "summary": "Decidable check function for Form A membership and collective verification of all eight examples.",
       "mathContext": "Algorithm: for each $k = 0, \\ldots, p-1$, check if $2^k \\mid (p-1)$ and $(p-1)/2^k$ is prime. Collectively verifies $\\forall p \\in \\{3,5,7,11,13,29,41,97\\}: \\text{IsTwoTimePrimePlusOne}(p)$."
     }

@@ -68,6 +68,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Imports and Module Documentation",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Imports Mathlib.Tactic, Finset.Basic, and Pow.Real. Module docstring describes Problem #1097: common differences in 3-term APs, the $O(n^{3/2})$ conjecture, connections to Bourgain and Kakeya, and the full history of bounds from Erdős-Spencer through AlphaEvolve.",
+      "mathContext": "Problem: For $A \\subseteq \\mathbb{Z}$ with $|A| = n$, estimate $|D(A)| = |\\{d : \\exists a, a+d, a+2d \\in A\\}|$. Conjectured $O(n^{3/2})$, best bounds $\\Omega(n^{1.778})$ to $O(n^{11/6})$."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 36,
