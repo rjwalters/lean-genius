@@ -23,7 +23,7 @@ where e(A,B) = C(dx + dy, dx) is the number of lattice paths from A to B.
 The identity permutation contributes ∏ e(Aᵢ,Bᵢ). Non-identity permutations
 cancel via a sign-reversing involution (Gessel-Viennot involution).
 
-## Status (0 axioms, 1 sorry)
+## Status (0 axioms, 6 sorries — structured GV involution)
 - [x] Path tuple and non-intersecting definitions (closed-interval formulation)
 - [x] Path weight matrix using Matrix.det
 - [x] Permutation path tuples and signed counts
@@ -41,8 +41,19 @@ cancel via a sign-reversing involution (Gessel-Viennot involution).
 - [x] NonIntersecting definition fixed: closed intervals + final column
 - [x] colEntry monotonicity and bound lemmas (proved)
 - [x] GV cancellation structure: split = NI part + cancellable part (proved)
-- [ ] NI counting bijection (card_nonCancellable_eq_niTupleCount)
-- [ ] GV sign-reversing involution on cancellable tuples (cancellable_sum_eq_zero)
+- [x] NI counting bijection (card_nonCancellable_eq_niTupleCount) (PROVED)
+- [x] take_at_column_entry: East count at column entry (PROVED)
+- [x] take_east_count_within_column: East count within column (PROVED)
+- [x] cancellable_has_crossing: existence of crossing pair (PROVED)
+- [x] GV involution structure: Finset.sum_involution application (PROVED)
+- [x] gvInvolution_sign_reversal: sign cancellation property (structured)
+- [x] gvInvolution_no_fixed: no fixed points property (structured)
+- [ ] gvTailSwap: actual PathMN construction from tail swap (sorry)
+- [ ] gvInvolutionFn path construction at i,j indices (sorry — needs gvTailSwap)
+- [ ] gvInvolution_sign_reversal: sign arithmetic (sorry — routine)
+- [ ] gvInvolution_no_fixed: first-component extraction (sorry — routine)
+- [ ] Membership preservation: image is cancellable (sorry — needs involution analysis)
+- [ ] Self-inverse: g(g(a)) = a (sorry — needs prefix-preservation argument)
 
 ## References
 - Lindström (1973): "On the Vector Representations of Induced Matroids"
@@ -806,7 +817,7 @@ theorem nonid_perm_paths_cross {r : ℕ} (cfg : LGVConfig r)
   omega
 
 -- ============================================================
--- PART 7g: GV Involution Cancellation (Structured Proof)
+-- PART 7g: GV Involution Infrastructure
 -- ============================================================
 
 /-  GV involution cancellation proof structure:
@@ -814,6 +825,159 @@ theorem nonid_perm_paths_cross {r : ℕ} (cfg : LGVConfig r)
     2. `nonid_perm_paths_cross`: non-identity tuples always have crossings
     3. Sign-reversing involution on tagged tuples (tail-swap at first crossing)
     Components 1-2 are proved. Component 3 is in `cancellable_sum_eq_zero`. -/
+
+/-- **Key lemma**: At a column entry point, the prefix has the correct East step count.
+    When entering column x (having seen x East steps and colEntry(l,x) North steps),
+    the first (x + colEntry l x) elements contain exactly x East (false) steps.
+    This is the foundation of the GV tail-swap construction. -/
+private lemma take_at_column_entry (l : LPath) (x : ℕ)
+    (hx : x ≤ l.countP (· = false)) :
+    (l.take (x + colEntry l x)).countP (· = false) = x := by
+  induction l generalizing x with
+  | nil => simp [List.countP] at hx
+  | cons b l' ih =>
+    cases b with
+    | false =>
+      -- l = false :: l'; the first element is an East step
+      cases x with
+      | zero => simp [colEntry, List.take]
+      | succ x' =>
+        -- Need: ((false :: l').take ((x'+1) + colEntry (false :: l') (x'+1))).countP (false) = x'+1
+        have hx' : x' ≤ l'.countP (· = false) := by
+          simp [List.countP_cons] at hx; omega
+        -- colEntry (false :: l') (x'+1) = colEntry l' x'
+        have hce : colEntry (false :: l') (x' + 1) = colEntry l' x' := by
+          simp only [colEntry, northBeforeEast]
+          cases x' with
+          | zero => rfl
+          | succ _ => rfl
+        rw [hce, show x' + 1 + colEntry l' x' = (x' + colEntry l' x') + 1 from by omega]
+        simp only [List.take_succ_cons, List.countP_cons, Bool.false_eq_false, decide_true]
+        rw [ih x' hx']
+    | true =>
+      -- l = true :: l'; the first element is a North step
+      cases x with
+      | zero => simp [colEntry, List.take]
+      | succ x' =>
+        -- Need: ((true :: l').take ((x'+1) + colEntry (true :: l') (x'+1))).countP (false) = x'+1
+        have hx' : x' + 1 ≤ l'.countP (· = false) := by
+          simp [List.countP_cons] at hx; omega
+        -- colEntry (true :: l') (x'+1) = 1 + colEntry l' (x'+1)
+        have hce : colEntry (true :: l') (x' + 1) = 1 + colEntry l' (x' + 1) := by
+          simp [colEntry, northBeforeEast]
+        rw [hce, show x' + 1 + (1 + colEntry l' (x' + 1)) =
+            ((x' + 1) + colEntry l' (x' + 1)) + 1 from by omega]
+        simp only [List.take_succ_cons, List.countP_cons, Bool.true_eq_false, decide_false,
+          Bool.false_eq_true]
+        exact ih (x' + 1) hx'
+
+/-- Between the x-th and (x+1)-th East steps, all list elements are North (true).
+    Consequence: at any position x + h with colEntry(l,x) ≤ h ≤ colEntry(l,x+1),
+    the prefix has exactly x East steps. -/
+private lemma take_east_count_within_column (l : LPath) (x h : ℕ)
+    (hx : x ≤ l.countP (· = false))
+    (hlow : colEntry l x ≤ h) (hhigh : h ≤ colEntry l (x + 1)) :
+    (l.take (x + h)).countP (· = false) = x := by
+  -- Between positions (x + colEntry l x) and (x + colEntry l (x+1)),
+  -- all elements are North steps. So extending the prefix from
+  -- colEntry(l,x) to h doesn't add any East steps.
+  -- Strategy: show that take(l, x+h) has the same East count as take(l, x+colEntry l x).
+  -- The elements between these positions are all true (North).
+  induction l generalizing x h with
+  | nil =>
+    simp [List.countP] at hx
+  | cons b l' ih =>
+    cases b with
+    | false =>
+      cases x with
+      | zero =>
+        -- x=0: colEntry(false::l', 0) = 0 ≤ h ≤ colEntry(false::l', 1)
+        -- colEntry(false::l', 1) = northBeforeEast(false::l', 0) = 0
+        simp only [colEntry, northBeforeEast] at hlow hhigh
+        -- So h = 0
+        have : h = 0 := by omega
+        subst this; simp [List.take]
+      | succ x' =>
+        -- colEntry (false :: l') (x'+1) = colEntry l' x'
+        -- colEntry (false :: l') (x'+2) = colEntry l' (x'+1)
+        have hce1 : colEntry (false :: l') (x' + 1) = colEntry l' x' := by
+          simp only [colEntry, northBeforeEast]; cases x' <;> rfl
+        have hce2 : colEntry (false :: l') (x' + 1 + 1) = colEntry l' (x' + 1) := by
+          simp only [colEntry, northBeforeEast]; cases x' <;> rfl
+        rw [hce1] at hlow; rw [hce2] at hhigh
+        have hx' : x' ≤ l'.countP (· = false) := by
+          simp [List.countP_cons] at hx; omega
+        -- take(false :: l', (x'+1) + h) = false :: take(l', x' + h)
+        rw [show x' + 1 + h = (x' + h) + 1 from by omega]
+        simp only [List.take_succ_cons, List.countP_cons, Bool.false_eq_false, decide_true]
+        rw [ih x' h hx' hlow hhigh]
+    | true =>
+      cases x with
+      | zero =>
+        -- x=0: no East steps yet. colEntry(true::l', 0) = 0 ≤ h ≤ colEntry(true::l', 1)
+        -- colEntry(true::l', 1) = northBeforeEast(true::l', 0) = 1 + northBeforeEast l' 0 = 1 + colEntry l' 1
+        -- We need take(true :: l', h).countP(false) = 0
+        -- Since h ≤ 1 + colEntry l' 1, and the first element is true...
+        cases h with
+        | zero => simp [List.take]
+        | succ h' =>
+          -- take(true :: l', h'+1) = true :: take(l', h')
+          simp only [List.take_succ_cons, List.countP_cons, Bool.true_eq_false, decide_false,
+            Bool.false_eq_true]
+          -- Need: take(l', h').countP(false) = 0
+          -- colEntry(true::l', 0) = 0, colEntry(true::l', 1) = 1 + colEntry l' 1
+          -- So 0 ≤ h'+1 ≤ 1 + colEntry l' 1, meaning h' ≤ colEntry l' 1
+          -- Also colEntry l' 0 = 0 ≤ h'
+          have hlow' : colEntry l' 0 ≤ h' := by simp [colEntry]
+          have hhigh' : h' ≤ colEntry l' (0 + 1) := by
+            simp only [colEntry, northBeforeEast] at hhigh
+            omega
+          have hx' : 0 ≤ l'.countP (· = false) := Nat.zero_le _
+          exact ih 0 h' hx' hlow' hhigh'
+      | succ x' =>
+        -- colEntry(true::l', x'+1) = 1 + colEntry l' (x'+1)
+        -- colEntry(true::l', x'+2) = 1 + colEntry l' (x'+2)
+        have hce1 : colEntry (true :: l') (x' + 1) = 1 + colEntry l' (x' + 1) := by
+          simp [colEntry, northBeforeEast]
+        have hce2 : colEntry (true :: l') (x' + 1 + 1) = 1 + colEntry l' (x' + 1 + 1) := by
+          simp [colEntry, northBeforeEast]
+        rw [hce1] at hlow; rw [hce2] at hhigh
+        have hx' : x' + 1 ≤ l'.countP (· = false) := by
+          simp [List.countP_cons] at hx; omega
+        -- h ≥ 1 + colEntry l' (x'+1), so h ≥ 1
+        have hh_pos : h ≥ 1 := by omega
+        -- take(true :: l', (x'+1) + h) = true :: take(l', x' + h)
+        rw [show x' + 1 + h = (x' + (h - 1)) + 1 + 1 from by omega]
+        simp only [List.take_succ_cons, List.countP_cons, Bool.true_eq_false, decide_false,
+          Bool.false_eq_true]
+        rw [show x' + (h - 1) + 1 = x' + 1 + (h - 1) from by omega]
+        exact ih (x' + 1) (h - 1) hx' (by omega) (by omega)
+
+/-- A cancellable tagged tuple always has a crossing pair (i,j) with i < j. -/
+private theorem cancellable_has_crossing {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
+    ∃ i j : Fin r, i < j ∧
+      ¬NonIntersecting (t.2 i).val (t.2 j).val cfg.m
+        (cfg.sources i) (cfg.sources j)
+        (cfg.targets (t.1 i) - cfg.sources i) (cfg.targets (t.1 j) - cfg.sources j) := by
+  simp only [isNonCancellable, IsGVFixedPoint] at ht
+  push_neg at ht
+  by_cases hσ : t.1 = 1
+  · -- σ = 1, but paths are not NI
+    have hni := ht hσ
+    simp only [IsNonIntersecting] at hni
+    push_neg at hni
+    obtain ⟨i, j, hij, hcross⟩ := hni
+    refine ⟨i, j, hij, ?_⟩
+    -- Need to reconcile: paths from toPathTuple vs paths directly
+    -- When σ = 1: targets(σ i) = targets(1 i) = targets i
+    convert hcross using 2 <;> simp [hσ]
+  · -- σ ≠ 1
+    exact nonid_perm_paths_cross cfg hwf t.1 hσ t.2
+
+-- ============================================================
+-- PART 7g-2: GV Involution Cancellation (Structured Proof)
+-- ============================================================
 /-- **Helper**: A tagged tuple is "non-cancellable" iff it is an NI identity tuple.
     All other tagged tuples (σ ≠ 1, or σ = 1 with crossings) are paired and cancelled
     by the GV involution. -/
@@ -866,6 +1030,108 @@ private theorem card_nonCancellable_eq_niTupleCount {r : ℕ} (cfg : LGVConfig r
       exact Subtype.ext rfl
   }
 
+/-- The first index of the crossing pair for a cancellable tuple. -/
+private noncomputable def crossingI {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) : Fin r :=
+  (cancellable_has_crossing cfg hwf t ht).choose
+
+/-- The second index of the crossing pair for a cancellable tuple. -/
+private noncomputable def crossingJ {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) : Fin r :=
+  (cancellable_has_crossing cfg hwf t ht).choose_spec.choose
+
+/-- The crossing pair has i < j. -/
+private theorem crossingI_lt_J {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
+    crossingI cfg hwf t ht < crossingJ cfg hwf t ht :=
+  (cancellable_has_crossing cfg hwf t ht).choose_spec.choose_spec.1
+
+/-- The crossing pair has non-intersecting paths. -/
+private theorem crossingPair_not_NI {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
+    ¬NonIntersecting (t.2 (crossingI cfg hwf t ht)).val
+      (t.2 (crossingJ cfg hwf t ht)).val cfg.m
+      (cfg.sources (crossingI cfg hwf t ht))
+      (cfg.sources (crossingJ cfg hwf t ht))
+      (cfg.targets (t.1 (crossingI cfg hwf t ht)) - cfg.sources (crossingI cfg hwf t ht))
+      (cfg.targets (t.1 (crossingJ cfg hwf t ht)) - cfg.sources (crossingJ cfg hwf t ht)) :=
+  (cancellable_has_crossing cfg hwf t ht).choose_spec.choose_spec.2
+
+/-- The new permutation under the GV involution. -/
+private noncomputable def gvNewPerm {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) : Equiv.Perm (Fin r) :=
+  Equiv.swap (crossingI cfg hwf t ht) (crossingJ cfg hwf t ht) * t.1
+
+/-- The GV involution function on cancellable tagged tuples.
+    Maps (σ, paths) to (swap(i,j) * σ, swapped_paths) where (i,j) is the
+    first crossing pair. The new paths at indices i,j come from the tail swap;
+    paths at other indices are unchanged (with a cast for the permutation change). -/
+private noncomputable def gvInvolutionFn {r : ℕ} (cfg : LGVConfig r)
+    (hwf : cfg.wellFormed) (t : TaggedPathTuple cfg)
+    (ht : ¬isNonCancellable t) : TaggedPathTuple cfg :=
+  let i := crossingI cfg hwf t ht
+  let j := crossingJ cfg hwf t ht
+  let hij := crossingI_lt_J cfg hwf t ht
+  let σ' := gvNewPerm cfg hwf t ht
+  ⟨σ', fun k =>
+    if hk_i : k = i then
+      -- Path at i: needs PathMN m (targets(σ' i) - sources i) = PathMN m (targets(σ j) - sources i)
+      cast (by simp [σ', gvNewPerm, Equiv.swap_apply_left, hij.ne]) (sorry)
+    else if hk_j : k = j then
+      -- Path at j: needs PathMN m (targets(σ' j) - sources j) = PathMN m (targets(σ i) - sources j)
+      cast (by simp [σ', gvNewPerm, Equiv.swap_apply_right, hij.ne]) (sorry)
+    else
+      -- Path at k ≠ i,j: unchanged
+      cast (by simp [σ', gvNewPerm, Equiv.swap_apply_of_ne_of_ne hk_i hk_j]) (t.2 k)⟩
+
+/-- The first component of gvInvolutionFn is gvNewPerm. -/
+private theorem gvInvolutionFn_fst {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
+    (gvInvolutionFn cfg hwf t ht).1 = gvNewPerm cfg hwf t ht := rfl
+
+/-- The GV involution reverses the sign: taggedWeight(t) + taggedWeight(gv t) = 0. -/
+private theorem gvInvolution_sign_reversal {r : ℕ} (cfg : LGVConfig r)
+    (hwf : cfg.wellFormed) (t : TaggedPathTuple cfg)
+    (ht : t ∈ Finset.univ.filter (fun t : TaggedPathTuple cfg => ¬isNonCancellable t)) :
+    taggedWeight t + taggedWeight (gvInvolutionFn cfg hwf t
+      ((Finset.mem_filter.mp ht).2)) = 0 := by
+  simp only [taggedWeight, gvInvolutionFn_fst, gvNewPerm]
+  have hht := (Finset.mem_filter.mp ht).2
+  have hij := crossingI_lt_J cfg hwf t hht
+  -- sign(swap(i,j) * σ) = -sign(σ)
+  have hsign : Equiv.Perm.sign
+      (Equiv.swap (crossingI cfg hwf t hht) (crossingJ cfg hwf t hht) * t.fst) =
+      -Equiv.Perm.sign t.fst := by
+    rw [map_mul, Equiv.Perm.sign_swap (ne_of_lt hij), neg_mul, one_mul]
+  -- ↑(sign σ) + ↑(-sign σ) = 0
+  rw [hsign]
+  simp [Units.val_neg, add_neg_cancel]
+
+/-- The GV involution has no fixed points on cancellable tuples. -/
+private theorem gvInvolution_no_fixed {r : ℕ} (cfg : LGVConfig r)
+    (hwf : cfg.wellFormed) (t : TaggedPathTuple cfg)
+    (ht : t ∈ Finset.univ.filter (fun t : TaggedPathTuple cfg => ¬isNonCancellable t))
+    (hw : taggedWeight t ≠ 0) :
+    gvInvolutionFn cfg hwf t ((Finset.mem_filter.mp ht).2) ≠ t := by
+  intro heq
+  have hht := (Finset.mem_filter.mp ht).2
+  have hij := crossingI_lt_J cfg hwf t hht
+  -- The first components must be equal
+  have h1 : gvNewPerm cfg hwf t hht = t.1 := congr_arg Sigma.fst heq
+  -- gvNewPerm = swap(i,j) * σ = σ, so swap(i,j) = 1
+  unfold gvNewPerm at h1
+  have hswap : Equiv.swap (crossingI cfg hwf t hht) (crossingJ cfg hwf t hht) = 1 := by
+    calc Equiv.swap _ _
+        = Equiv.swap _ _ * t.1 * t.1⁻¹ := by group
+      _ = t.1 * t.1⁻¹ := by rw [h1]
+      _ = 1 := mul_inv_cancel _
+  -- But swap(i,j)(i) = j ≠ i since i < j, contradicting swap = 1
+  have heval : (Equiv.swap (crossingI cfg hwf t hht) (crossingJ cfg hwf t hht))
+      (crossingI cfg hwf t hht) = crossingI cfg hwf t hht := by
+    rw [hswap]; rfl
+  rw [Equiv.swap_apply_left] at heval
+  exact absurd heval (ne_of_gt hij)
+
 /-- The signed sum over cancellable (non-NI) tagged tuples is zero,
     by the GV sign-reversing involution.
     This is the combinatorial engine of the LGV lemma. -/
@@ -873,13 +1139,29 @@ private theorem cancellable_sum_eq_zero {r : ℕ} (cfg : LGVConfig r)
     (hwf : cfg.wellFormed) :
     (Finset.sum (Finset.univ.filter
       (fun t : TaggedPathTuple cfg => ¬isNonCancellable t)) taggedWeight) = 0 := by
-  -- The GV involution: find first crossing among all path pairs,
-  -- swap tails there. This pairs each cancellable tuple with one of
-  -- opposite sign (gessel_viennot_transposition_sign).
-  -- The involution is self-inverse because the swap doesn't change
-  -- paths before the crossing point, so the same crossing is found again.
-  -- Key inputs: nonid_perm_paths_cross, swapTailsAt, lattice_paths_must_cross.
-  sorry
+  -- Apply Finset.sum_involution with the GV sign-reversing involution.
+  -- The involution maps (σ, paths) ↦ (swap(i,j) * σ, swapped_paths)
+  -- where (i,j) is the first crossing pair.
+  apply Finset.sum_involution
+    (fun t ht => gvInvolutionFn cfg hwf t ((Finset.mem_filter.mp ht).2))
+  · -- (1) Sign cancellation: f(a) + f(g(a)) = 0
+    exact fun t ht => gvInvolution_sign_reversal cfg hwf t ht
+  · -- (2) No fixed points when f ≠ 0
+    exact fun t ht hw => gvInvolution_no_fixed cfg hwf t ht hw
+  · -- (3) Membership: g(a) ∈ s (image is also cancellable)
+    intro t ht
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at ht ⊢
+    -- The image (swap(i,j) * σ, swapped_paths) is cancellable because:
+    -- either σ' = swap(i,j) * σ ≠ 1 (then automatically cancellable),
+    -- or σ' = 1 (meaning σ = swap(i,j)) and swapped paths still cross.
+    sorry
+  · -- (4) Self-inverse: g(g(a)) = a
+    intro t ht
+    -- The involution finds the same crossing pair (i,j) in the image
+    -- because the tail swap preserves path prefixes before the crossing.
+    -- Swapping tails twice restores the original paths.
+    -- The permutation: swap(i,j) * (swap(i,j) * σ) = σ.
+    sorry
 
 theorem gv_involution_cancellation {r : ℕ} (cfg : LGVConfig r)
     (hwf : cfg.wellFormed) :
