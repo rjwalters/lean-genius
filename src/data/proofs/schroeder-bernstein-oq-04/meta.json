@@ -131,6 +131,23 @@
       "Can the Lean 4 noncomputability be eliminated with a better extraction mechanism?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "schroeder-bernstein",
+      "relationship": "extends",
+      "description": "The classical (non-constructive) Schroeder-Bernstein theorem; this proof provides a constructive version for finite types"
+    }
+  ],
+  "references": [
+    {
+      "text": "Pradic, C. and Brown, C. (2019). Iterating the Cantor-Bernstein Theorem. Mathematics of Program Construction.",
+      "url": "https://en.wikipedia.org/wiki/Schr%C3%B6der%E2%80%93Bernstein_theorem"
+    },
+    {
+      "text": "Bernstein, F. (1898). Untersuchungen aus der Mengenlehre. PhD thesis, Georg-August-Universität Göttingen.",
+      "url": "https://en.wikipedia.org/wiki/Schr%C3%B6der%E2%80%93Bernstein_theorem"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Tactic",
