@@ -58,7 +58,7 @@
     "title": "The Basel Identity",
     "content": "**The Main Result**: $\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6}$. This is Euler's celebrated 1734 solution to the Basel Problem.\n\nThe Lean proof is a one-liner (`hasSum_zeta_two`), but this brevity conceals deep Mathlib infrastructure: the proof internally constructs Bernoulli polynomials $B_n(x)$, expands them as Fourier series, evaluates at $x = 0$ to extract the zeta value, and verifies the Fourier coefficients converge. The fact that $\\sum 1/n^2$ evaluates to a rational multiple of $\\pi^2$ was profoundly surprising — it revealed for the first time that $\\pi$ encodes information about the integers, foreshadowing the Riemann zeta function's role in prime number theory.",
     "mathContext": "In Lean, `HasSum f s` means the partial sums $\\sum_{n=0}^{N} f(n)$ converge to $s$ in the topology of $\\mathbb{R}$. We prove `HasSum (fun n => 1 / (n : ℝ)^2) (π^2 / 6)` using Mathlib's `hasSum_zeta_two`, which derives from `hasSum_zeta_nat` with $k = 1$. The general formula yields $\\zeta(2) = (-1)^{2} \\cdot 2^{1} \\cdot \\pi^{2} \\cdot B_2 / (2!) = 2\\pi^2 \\cdot (1/6) / 2 = \\pi^2/6$, where $B_2 = 1/6$ is the second Bernoulli number.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "hasSum_zeta_two",
       "HasSum predicate",

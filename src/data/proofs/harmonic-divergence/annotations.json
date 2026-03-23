@@ -33,7 +33,7 @@
     "title": "Harmonic Series Not Summable",
     "content": "**The Main Result**: The function $n \\mapsto 1/n$ is not summable over the natural numbers. In other words, $\\sum_{n=1}^{\\infty} \\frac{1}{n} = \\infty$.",
     "mathContext": "In Lean, `Summable f` means the series $\\sum f(n)$ converges. We prove `¬Summable (fun n => 1 / n)` using Mathlib's `Real.not_summable_one_div_natCast`.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "Summable",
       "divergence",
@@ -79,7 +79,7 @@
     "title": "Oresme's Grouping Argument",
     "content": "The classical proof from ~1350: group terms so each group of $2^k$ consecutive terms (from $2^k$ to $2^{k+1}-1$) sums to at least $1/2$. With infinitely many such groups, the series diverges.",
     "mathContext": "The key observation: in the group from $2^k$ to $2^{k+1}-1$, there are $2^k$ terms, and each is at least $1/2^{k+1}$. So the sum is at least $2^k \\cdot (1/2^{k+1}) = 1/2$.",
-    "significance": "critical",
+    "significance": "supporting",
     "prerequisites": [
       "comparison",
       "group theory",
@@ -124,7 +124,7 @@
     "title": "Each Group Sums to ≥ 1/2",
     "content": "**Key Lemma**: For $k \\geq 1$, the sum $\\sum_{i=2^k}^{2^{k+1}-1} \\frac{1}{i} \\geq \\frac{1}{2}$. This is the heart of Oresme's argument.",
     "mathContext": "The proof: the group has $2^k$ terms, each at least $1/2^{k+1}$ (since $i \\leq 2^{k+1}-1 < 2^{k+1}$). Thus the sum is at least $2^k \\cdot (1/2^{k+1}) = 1/2$.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-oresme-intro"
     ],

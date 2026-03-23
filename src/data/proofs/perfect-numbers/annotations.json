@@ -10,7 +10,7 @@
     "title": "The Perfect Number Theorem",
     "content": "A number is **perfect** if it equals the sum of its proper divisors. The first four perfect numbers are:\n\n- $6 = 1 + 2 + 3$\n- $28 = 1 + 2 + 4 + 7 + 14$\n- $496 = 1 + 2 + 4 + 8 + 16 + 31 + 62 + 124 + 248$\n- $8128 = 1 + 2 + 4 + 8 + 16 + 32 + 64 + 127 + ...$\n\nThe Euclid-Euler Theorem completely characterizes **even** perfect numbers: $n$ is even and perfect if and only if $n = 2^{k}(2^{k+1}-1)$ where $2^{k+1}-1$ is a Mersenne prime.",
     "mathContext": "$n$ perfect $\\Leftrightarrow \\sigma(n) = 2n$\n\nwhere $\\sigma$ is the sum of divisors function.",
-    "significance": "critical",
+    "significance": "supporting",
     "prerequisites": [
       "Euler's work",
       "Mersenne primes",
@@ -58,7 +58,7 @@
     "title": "Perfect Number Definition",
     "content": "A number $n$ is **perfect** if $\\sigma(n) = 2n$, where $\\sigma$ is the sum-of-divisors function. Equivalently, the sum of proper divisors equals $n$.\n\nFor $n = 6$:\n- All divisors: $1, 2, 3, 6$ with sum $= 12 = 2 \\times 6$ ✓\n- Proper divisors: $1, 2, 3$ with sum $= 6$ ✓",
     "mathContext": "$\\sigma(n) = \\sum_{d \\mid n} d$\n\n$n$ perfect $\\Leftrightarrow \\sigma(n) = 2n$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "basic set theory",
       "proper divisors",
@@ -127,7 +127,7 @@
     "title": "Euclid's Theorem (Elements IX.36)",
     "content": "**Euclid's Theorem**: If $2^{k+1} - 1$ is a Mersenne prime, then $2^k \\times (2^{k+1} - 1)$ is perfect.\n\nThis 2,300-year-old result gives a recipe for generating perfect numbers from Mersenne primes:\n\n| $k$ | Mersenne Prime | Perfect Number |\n|-----|----------------|----------------|\n| 1   | $M_2 = 3$      | $2 \\times 3 = 6$ |\n| 2   | $M_3 = 7$      | $4 \\times 7 = 28$ |\n| 4   | $M_5 = 31$     | $16 \\times 31 = 496$ |\n| 6   | $M_7 = 127$    | $64 \\times 127 = 8128$ |",
     "mathContext": "Euclid's proof uses:\n$\\sigma(2^k \\cdot M) = \\sigma(2^k) \\cdot \\sigma(M) = (2^{k+1}-1)(M+1) = M \\cdot 2^{k+1} = 2n$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-mersenne-def",
       "ann-sigma-power-2"
@@ -149,7 +149,7 @@
     "title": "Euler's Theorem (1747)",
     "content": "**Euler's Theorem**: Every *even* perfect number has Euclid's form.\n\nEuler proved the converse 2,000 years after Euclid, completing the characterization of even perfect numbers. If $n$ is even and perfect, then:\n\n$$n = 2^k \\times (2^{k+1} - 1)$$\n\nwhere $2^{k+1} - 1$ is a Mersenne prime.",
     "mathContext": "Euler's proof analyzes the prime factorization and uses properties of the multiplicative $\\sigma$ function.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-euclid-thm"
     ],
@@ -170,7 +170,7 @@
     "title": "Euclid-Euler Biconditional",
     "content": "**The Complete Characterization**:\n\n$$n \\text{ is even and perfect} \\Leftrightarrow n = 2^k(2^{k+1}-1) \\text{ where } 2^{k+1}-1 \\text{ is prime}$$\n\nThis biconditional combines Euclid's ancient result with Euler's 18th-century proof, providing a complete classification of even perfect numbers.",
     "mathContext": "This is Wiedijk's 100 Theorems #70.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-euclid-thm",
       "ann-euler-thm"

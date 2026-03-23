@@ -32,7 +32,7 @@
     "title": "Peano Natural Numbers",
     "content": "The natural numbers are defined as an **inductive type** with exactly two constructors:\n\n1. `zero` — the base case, representing 0\n2. `succ` — the successor function, taking any natural to its successor\n\nThis is Peano's original insight: we don't need to say *what* numbers are, only *how they behave*. Zero exists, and every number has a successor. From these two building blocks, we get all of $\\mathbb{N}$.",
     "mathContext": "$\\mathbb{N} = \\{0, S(0), S(S(0)), S(S(S(0))), \\ldots\\}$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "Peano axioms",
       "basic set theory",
@@ -77,7 +77,7 @@
     "title": "Recursive Definition of Addition",
     "content": "Addition is defined by **recursion on the second argument**. This follows Peano's original definition:\n\n1. **Base case:** $n + 0 = n$ (adding zero does nothing)\n2. **Recursive case:** $n + S(m) = S(n + m)$ (adding a successor means taking the successor of the sum)\n\nThe key insight is that every natural number is either zero or a successor, so these two cases cover all possibilities. The recursion is **well-founded** because the second argument strictly decreases.",
     "mathContext": "$n + 0 = n \\\\ n + S(m) = S(n + m)$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-peano-inductive"
     ],
@@ -98,7 +98,7 @@
     "title": "The Main Theorem",
     "content": "Here it is—the theorem that launched a thousand memes. We claim that $1 + 1 = 2$, or more precisely, that `one + one = two` where these are our defined Peano naturals.\n\nThe proof will show that both sides compute to the same thing.",
     "mathContext": "$S(0) + S(0) = S(S(0))$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-add-definition",
       "ann-numeric-notation"
@@ -119,7 +119,7 @@
     "title": "Unfolding the Computation",
     "content": "The `unfold` tactic expands definitions, revealing the computation:\n\n1. `one + one` = `succ zero + succ zero`\n2. By the recursive case of `add`: `succ (succ zero + zero)`\n3. By the base case of `add`: `succ (succ zero)`\n4. Which is exactly `two`\n\nEach step is just applying a definition—no axioms, no magic, just computation. The `rfl` at the end confirms that both sides are definitionally equal.",
     "mathContext": "$S(0) + S(0) = S(S(0) + 0) = S(S(0)) = 2$",
-    "significance": "critical",
+    "significance": "supporting",
     "prerequisites": [
       "ann-main-theorem-statement"
     ],

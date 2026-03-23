@@ -10,7 +10,7 @@
     "title": "Spectral Gap Constant",
     "content": "The spectral gap $\\lambda_1 = 4\\pi^2$ is the first eigenvalue of the Laplacian on the 3-torus $\\mathbb{T}^3$. This represents the fundamental frequency of the smallest non-trivial oscillation mode. In fluid dynamics, it controls how quickly energy dissipates through viscosity.",
     "mathContext": "For the Laplacian $-\\Delta$ on $\\mathbb{T}^3 = [0,1]^3$ with periodic boundary conditions, the eigenvalues are $4\\pi^2(n_1^2 + n_2^2 + n_3^2)$ for integers $n_i$. The smallest non-zero eigenvalue is $4\\pi^2 \\approx 39.5$.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "Poincare inequality",
       "basic set theory",
@@ -56,7 +56,7 @@
     "title": "The Key Numerical Inequality",
     "content": "This is the heart of the depletion mechanism: $\\kappa \\cdot c_{FK} > 2$ proves that geometric depletion (from vortex stretching alignment) overwhelms the potential for concentration. The factor $\\kappa = 4$ comes from the geometry of strain-vorticity interaction.",
     "mathContext": "When $\\kappa \\cdot c_{FK} > 2$, the depletion coefficient $d = 2 - \\kappa \\cdot c_{FK}$ becomes negative, meaning the system naturally depletes rather than concentrates. Numerically: $4 \\times 2.11 = 8.44 > 2$.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-spectral-gap",
       "ann-faber-krahn"
@@ -77,7 +77,7 @@
     "title": "Depletion Coefficient",
     "content": "The depletion coefficient $d = 2 - \\kappa \\cdot c_{FK}$ determines whether the system concentrates or depletes. Since $\\kappa \\cdot c_{FK} > 8 > 2$, we have $d < 0$, meaning vorticity naturally **depletes** rather than concentrates. This is the numerical crux of the proof.",
     "mathContext": "The sign of $d$ determines the fate of potential blowup. If $d > 0$, concentration could overcome dissipation. But $d < -6$ means dissipation wins decisively.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-key-numerical"
     ],
@@ -160,7 +160,7 @@
     "title": "Liouville Theorem for Bounded Ancient Solutions",
     "content": "The climax of Part III: any bounded ancient solution must be constant. The proof is elegant: $E$ is monotone increasing (backward) and bounded above by $M$, so it must converge to a constant. But a constant non-zero $E$ contradicts the positive growth rate from the spectral gap.",
     "mathContext": "This mirrors classical Liouville theorems: bounded harmonic functions on $\\mathbb{R}^n$ are constant. Here, the spectral gap provides the rigidity that forces constancy.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-monotone-backward",
       "ann-backward-growth"
@@ -182,7 +182,7 @@
     "title": "ESS Theorem: Type I Blowup Impossible",
     "content": "The Escauriaza-Seregin-Sverak theorem (2003) rules out Type I (self-similar) blowup for Navier-Stokes. This proof formalizes it: bounded ancient solutions are constant, constant solutions have zero dissipation, but the spectral gap requires positive dissipation for non-trivial solutions. Contradiction.",
     "mathContext": "Type I blowup would have $|u(x,t)| \\leq C/\\sqrt{T-t}$. The rescaled solution around the blowup would be an ancient solution with bounded enstrophy - now shown impossible.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-liouville"
     ],
@@ -250,7 +250,7 @@
     "title": "Type II Blowup Scenario",
     "content": "After ESS rules out Type I ($\\alpha = 1/2$), any potential blowup must be Type II with exponent $\\alpha > 1$. This structure encodes: the blowup rate $\\Omega \\sim (T-t)^{-\\alpha}$, the $\\beta$ bound from $\\theta$ dynamics, dissipation coercivity from the spectral gap, and the BKM criterion.",
     "mathContext": "Type II means slower blowup than self-similar. The key is $\\alpha > 1$: as $t \\to T$, the coefficient $(T-t)^{\\alpha-1} \\to 0$, so the stretching term $S$ becomes negligible compared to dissipation.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-ess-theorem"
     ],
@@ -291,7 +291,7 @@
     "title": "Type II Implies Eventual Stability",
     "content": "The heart of Part VI: for Type II scenarios, there exists $t_0 < T$ such that for all $t > t_0$, we have $S(t) \\leq \\nu P(t)$. Stretching is dominated by dissipation near the potential blowup time! This is the stability that prevents blowup.",
     "mathContext": "The proof chains: $(T-t)^{\\alpha-1} < c_d/(2C_\\beta)$ implies $S \\leq (c_d/2)\\Omega E \\leq (\\nu P)/2 \\leq \\nu P$. Dissipation wins.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-beta-vanishes"
     ],
@@ -332,7 +332,7 @@
     "title": "Type II Blowup is Impossible",
     "content": "The culmination of Part VI: Type II blowup cannot occur. The proof: eventual stability gives bounded $E$, BKM criterion converts bounded $E$ to bounded $\\Omega$, but blowup means $\\Omega \\to \\infty$. Contradiction. Combined with ESS (no Type I), **all blowup is impossible**.",
     "mathContext": "This is a proof by contradiction. Assume blowup occurs at time $T$. Then $\\Omega(t) \\to \\infty$ as $t \\to T$. But we proved $\\Omega(t) \\leq C$ for all $t < T$. This contradiction rules out blowup entirely.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-E-bounded",
       "ann-bkm-criterion"

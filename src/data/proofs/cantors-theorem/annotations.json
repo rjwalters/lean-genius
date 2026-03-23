@@ -10,7 +10,7 @@
     "title": "The Hierarchy of Infinities",
     "content": "Cantor's theorem establishes that **not all infinities are equal**. For any set A:\n\n$$|A| < |\\mathcal{P}(A)| = 2^{|A|}$$\n\nThis means:\n- There are strictly more subsets of N than there are natural numbers\n- There are strictly more real numbers than rationals\n- The hierarchy continues: $|\\mathbb{N}| < |\\mathcal{P}(\\mathbb{N})| < |\\mathcal{P}(\\mathcal{P}(\\mathbb{N}))| < ...$\n\nThe proof uses the **diagonal argument**, which constructs an explicit witness to the non-surjectivity of any proposed function.",
     "mathContext": "$$$|A| < |\\mathcal{P}(A)| = 2^{|A|}$$$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "cardinal numbers",
       "power set"
@@ -32,7 +32,7 @@
     "title": "No Surjection to Power Set",
     "content": "**Cantor's Theorem (Wiedijk #63)**:\n\n$$\\neg \\exists f: A \\to \\mathcal{P}(A), \\text{Surjective}(f)$$\n\nIn Lean, the power set is represented as `A -> Prop` (the type of predicates on A). Each predicate corresponds to a subset: the set of elements satisfying that predicate.\n\nMathlib's `Function.cantor_surjective` provides this directly:\n```lean\ntheorem cantor_no_surjection (A : Type*) :\n    not exists f : A -> (A -> Prop), Function.Surjective f\n```",
     "mathContext": "$\\neg \\exists f: A \\to \\mathcal{P}(A)$ surjective",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "logical reasoning",
       "power set",
@@ -56,7 +56,7 @@
     "title": "The Diagonal Set",
     "content": "The key construction is the **diagonal set**:\n\n$$D = \\{x \\in A \\mid x \\notin f(x)\\}$$\n\nThis is the set of elements that are **not** contained in their own image under f.\n\nIn Lean:\n```lean\ndef diagonalSet (f : A -> Set A) : Set A :=\n  { x | x not_in f x }\n```\n\nThe diagonal set always exists and is well-defined for any function f. It's the **witness** that f cannot be surjective.",
     "mathContext": "$D = \\{x \\mid x \\notin f(x)\\}$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "basic set theory",
       "complement",
@@ -103,7 +103,7 @@
     "title": "The Self-Reference Paradox",
     "content": "The **diagonal paradox** is the heart of the argument:\n\nIf f(b) = D where D = {x | x not in f(x)}, then:\n$$b \\in D \\iff b \\notin D$$\n\nThis is a **self-referential contradiction** - b's membership in D depends on whether b is in D.\n\nThis paradox is closely related to:\n- **Russell's Paradox**: Consider R = {x | x not in x}. Is R in R?\n- **The Liar Paradox**: 'This statement is false'\n- **Godel's Incompleteness**: Self-referential sentences about provability\n\nIn type theory, we avoid Russell's paradox by stratifying types into universes.",
     "mathContext": "$b \\in D \\iff b \\notin D$",
-    "significance": "critical",
+    "significance": "supporting",
     "prerequisites": [
       "Russell's paradox",
       "self-reference"

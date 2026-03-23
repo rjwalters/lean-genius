@@ -9,7 +9,7 @@
     "title": "NSSolutionPair2D: Comparing Two Solutions via Difference Energy",
     "body": "`NSSolutionPair2D` encodes two 2D Navier-Stokes solutions being compared via their difference energy W(t) = ‖u₁(t) - u₂(t)‖². The key hypothesis is the Ladyzhenskaya stability estimate: W'(t) ≤ C·E(t)·W(t), where E(t) is the enstrophy of the reference solution. This abstracts away the PDE analysis (Sobolev embeddings, trilinear form estimates) into a structural hypothesis, making the Gronwall argument modular.",
     "mathContext": "For two solutions $u_1, u_2$ of 2D incompressible Navier-Stokes, define $W(t) = \\|u_1(t) - u_2(t)\\|_{L^2}^2$. The difference $w = u_1 - u_2$ satisfies a linearized equation, and the Ladyzhenskaya inequality in 2D gives:\n$$\\frac{d}{dt}W(t) \\leq C \\cdot E(t) \\cdot W(t),$$\nwhere $E(t) = \\|\\nabla u_1(t)\\|_{L^2}^2$ is the enstrophy and $C$ depends on the domain. This is the critical estimate that enables the Gronwall argument.",
-    "significance": "By encoding the stability estimate as a structure field rather than deriving it from Sobolev space theory, the proof becomes modular: any evolution equation with a Gronwall-type estimate W' ≤ f(t)·W and bounded f(t) gives well-posedness through the same argument.",
+    "significance": "context",
     "relatedConcepts": [
       "Ladyzhenskaya inequality",
       "Gronwall inequality",
@@ -31,7 +31,7 @@
     "title": "Gronwall L² Stability: The Integrating Factor Proof",
     "body": "`gronwall_stability_2d` proves W(t) ≤ W(0)·exp(C·E(0)·t). The proof sets K = C·E(0) (justified because E(t) ≤ E(0) in 2D via `global_enstrophy_bound`), then defines the integrating factor g(s) = W(s)·exp(-K·s). Since W'(s) ≤ C·E(s)·W(s) ≤ K·W(s), we get g'(s) = (W'(s) - K·W(s))·exp(-Ks) ≤ 0. Applying `antitoneOn_of_deriv_nonpos` gives g(t) ≤ g(0) = W(0), hence W(t)·exp(-Kt) ≤ W(0), and multiplying by exp(Kt) yields the bound.",
     "mathContext": "Set $K = C \\cdot E(0)$. Since $E(t) \\leq E(0)$ in 2D (bounded enstrophy), $W'(t) \\leq C \\cdot E(t) \\cdot W(t) \\leq K \\cdot W(t)$.\n\nDefine $g(s) = W(s) \\cdot e^{-Ks}$. Then:\n$$g'(s) = W'(s) e^{-Ks} - K W(s) e^{-Ks} = (W'(s) - KW(s)) e^{-Ks} \\leq 0.$$\n\nSo $g$ is antitone on $[0,\\infty)$: $g(t) \\leq g(0) = W(0)$. Hence:\n$$W(t) e^{-Kt} \\leq W(0) \\implies W(t) \\leq W(0) \\cdot e^{Kt} = W(0) \\cdot e^{CE(0)t}.$$",
-    "significance": "This is the same integrating factor technique used for enstrophy decay (Part X-B), but with reversed sign: here we bound GROWTH (W increasing at most exponentially) rather than DECAY (E decreasing exponentially). The bounded enstrophy E(t) ≤ E(0) in 2D is what makes K finite and the bound meaningful.",
+    "significance": "key",
     "relatedConcepts": [
       "integrating factor",
       "antitoneOn_of_deriv_nonpos",
@@ -56,7 +56,7 @@
     "title": "Uniqueness of 2D Navier-Stokes: A One-Line Corollary",
     "body": "`uniqueness_2d` proves that W(0) = 0 implies W(t) = 0 for all t > 0. The proof is a one-liner: from `gronwall_stability_2d` we get W(t) ≤ W(0)·exp(Kt) = 0·exp(Kt) = 0, and from W_nonneg we get W(t) ≥ 0, so W(t) = 0 by `le_antisymm`. This is the classical Ladyzhenskaya uniqueness result for 2D Navier-Stokes.",
     "mathContext": "From $W(0) = 0$:\n$$0 \\leq W(t) \\leq W(0) \\cdot e^{Kt} = 0 \\cdot e^{Kt} = 0.$$\nHence $W(t) = 0$, meaning $\\|u_1(t) - u_2(t)\\|^2 = 0$, i.e., $u_1(t) = u_2(t)$ for all $t > 0$.",
-    "significance": "Uniqueness is the first pillar of Hadamard well-posedness. Combined with existence (GlobalNSSolution2D) and continuous dependence (below), this establishes the complete well-posedness theory for 2D Navier-Stokes.",
+    "significance": "key",
     "relatedConcepts": [
       "uniqueness",
       "Hadamard well-posedness",
@@ -78,7 +78,7 @@
     "title": "Stability Amplification Factor: Uniform Bound on [0,T]",
     "body": "`stability_amplification_2d` proves W(t) ≤ W(0)·exp(C·E(0)·T) for all t ∈ (0,T). The amplification factor exp(C·E(0)·T) is FINITE because 2D enstrophy E(0) < ∞. This is the key 2D vs 3D distinction: in 3D, if enstrophy blew up, the amplification factor would be infinite and this bound would fail.",
     "mathContext": "For $0 < t < T$, since $t \\leq T$ and $\\exp$ is monotone:\n$$W(t) \\leq W(0) \\cdot e^{CE(0)t} \\leq W(0) \\cdot e^{CE(0)T}.$$\nThe amplification factor $e^{CE(0)T}$ depends on:\n- $C$: the Ladyzhenskaya constant (geometry-dependent)\n- $E(0)$: initial enstrophy (finite in 2D)\n- $T$: time horizon (finite for any fixed interval)\n\nIn 3D, $E(t)$ could potentially blow up, making $\\int_0^T CE(t)\\,dt$ infinite.",
-    "significance": "The finite amplification factor is what distinguishes 2D from 3D: it provides a uniform Lipschitz-type bound on the solution map over any finite time interval. This is precisely the stability component needed for Hadamard well-posedness.",
+    "significance": "key",
     "relatedConcepts": [
       "amplification factor",
       "finite enstrophy",
@@ -101,7 +101,7 @@
     "title": "Continuous Dependence: Completing Hadamard Well-Posedness",
     "body": "`continuous_dependence_2d` proves that for any ε > 0, the threshold δ = ε·exp(-C·E(0)·T) > 0 ensures W(0) ≤ δ implies W(t) ≤ ε for all t ∈ (0,T). The proof chains the stability amplification with the explicit choice of δ: W(t) ≤ W(0)·exp(KT) ≤ δ·exp(KT) = ε·exp(-KT)·exp(KT) = ε. Together with existence and uniqueness, this establishes all three pillars of Hadamard well-posedness.",
     "mathContext": "Given $\\varepsilon > 0$, set $\\delta = \\varepsilon \\cdot e^{-CE(0)T} > 0$. If $W(0) \\leq \\delta$, then:\n$$W(t) \\leq W(0) \\cdot e^{CE(0)T} \\leq \\delta \\cdot e^{CE(0)T} = \\varepsilon \\cdot e^{-CE(0)T} \\cdot e^{CE(0)T} = \\varepsilon.$$\n\nThe explicit formula $\\delta = \\varepsilon \\cdot e^{-CE(0)T}$ shows that:\n- Longer time horizons $T$ require closer initial data (smaller $\\delta$)\n- Higher initial enstrophy $E(0)$ also requires closer initial data\n- For fixed $T$ and $E(0)$, the dependence is continuous (not just upper semicontinuous)",
-    "significance": "Continuous dependence is the third pillar of Hadamard well-posedness: small perturbations in initial data produce small changes in the solution. The explicit stability threshold δ = ε·exp(-CE(0)T) is computable and physically meaningful, decreasing with both the time horizon and initial enstrophy.",
+    "significance": "key",
     "relatedConcepts": [
       "Hadamard well-posedness",
       "continuous dependence",

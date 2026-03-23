@@ -107,7 +107,7 @@
     "title": "No Equal-Complexity Point: Gaussian Always Wins",
     "content": "The `cramer_vs_gauss_small` lemma reveals a counterintuitive fact: in the n³ model, Gaussian elimination beats Cramer's rule for ALL n ≥ 1, not just n ≥ 4. At n=1: Cramer=2 vs Gauss=1; at n=2: Cramer=12 vs Gauss=8; at n=3: Cramer=72 vs Gauss=27. The threshold n=4 in `gauss_beats_cramer` is a proof artifact (where n!>n² first holds), not a computational crossover. The theorem `complexity_threshold` packages this complete picture: four conjuncts covering n=1,2,3 by native_decide and n≥4 by the factorial argument.",
     "mathContext": "Concrete values: $\\text{cramersRuleMuls}(1)=2, \\text{gaussMuls}(1)=1$; $\\text{cramersRuleMuls}(2)=12, \\text{gaussMuls}(2)=8$; $\\text{cramersRuleMuls}(3)=72, \\text{gaussMuls}(3)=27$. All ratios $> 1$. The proof threshold $n \\geq 4$ is where the induction on $n! > n^2$ starts, but the inequality holds earlier too.",
-    "significance": "insight",
+    "significance": "supporting",
     "relatedConcepts": [
       "native_decide",
       "complexity_threshold",
@@ -130,7 +130,7 @@
     "title": "nlinarith for Factorial-Polynomial Inequalities",
     "content": "The `nlinarith` tactic appears at two key points. In the factorial induction (`factorial_gt_sq`), `nlinarith [Nat.factorial_pos m]` closes `(m+1)² < (m+1)*m!` from `m²<m!` — the hint provides `0<m!` which lets nlinarith multiply hypotheses and find the Positivstellensatz certificate. In the main theorem, `nlinarith [Nat.factorial_pos n]` closes `n³ < (n+1)*n*n!` from `n²<n!` and `0<n`. The tactic works because the goal is a polynomial inequality in n with n! treated as an atomic variable satisfying `n!>n²`.",
     "mathContext": "nlinarith uses a Positivstellensatz certificate: it searches for a nonnegative linear combination of products of hypotheses that equals the negation of the goal. For `n³ < (n+1)*n*n!` given `n²<n!` and `0<n`: the certificate involves `n * (n! - n²) > 0` (product of `n>0` and `n!>n²`), giving `n*n! > n*n² = n³`.",
-    "significance": "technique",
+    "significance": "key",
     "relatedConcepts": [
       "nlinarith",
       "Positivstellensatz",

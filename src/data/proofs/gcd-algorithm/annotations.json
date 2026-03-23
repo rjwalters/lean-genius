@@ -10,7 +10,7 @@
     "title": "The Oldest Algorithm",
     "content": "The Euclidean algorithm is arguably the oldest non-trivial algorithm still in common use:\n\n$$\\gcd(a, b) = \\gcd(b, a \\mod b)$$\n\n**Why it matters**:\n- Over 2,300 years old (Euclid's Elements, c. 300 BCE)\n- Foundation of modern cryptography (RSA, Diffie-Hellman)\n- Remarkably efficient: O(log min(a, b)) steps\n- Extends to polynomials, Gaussian integers, and more\n\nThe algorithm terminates because $a \\mod b < b$, giving a strictly decreasing sequence.",
     "mathContext": "$$$\\gcd(a, b) = \\gcd(b, a \\mod b)$$$",
-    "significance": "critical",
+    "significance": "context",
     "prerequisites": [
       "GCD theory",
       "divisibility",
@@ -57,7 +57,7 @@
     "title": "The Euclidean Recurrence",
     "content": "**The Core Identity**:\n$$\\gcd(a, b) = \\gcd(b, a \\mod b)$$\n\nThis is the heart of the algorithm. The key insight is that common divisors are preserved:\n\n- If $d | a$ and $d | b$, then $d | (a \\mod b)$ since $a \\mod b = a - qb$\n- Conversely, if $d | b$ and $d | (a \\mod b)$, then $d | a$ since $a = qb + (a \\mod b)$\n\nThus the two pairs have exactly the same common divisors.",
     "mathContext": "$\\gcd(a, b) = \\gcd(b, a \\mod b)$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "GCD theory",
       "divisibility",
@@ -151,7 +151,7 @@
     "title": "GCD is the Greatest",
     "content": "**Correctness Property 2**: Any common divisor divides the GCD.\n\nIf $d \\mid a$ and $d \\mid b$, then $d \\mid \\gcd(a, b)$.\n\nThis means $\\gcd(a, b)$ is the *greatest* common divisor because every other common divisor must be smaller (since it divides the GCD).\n\n**Universal Property**: This characterizes GCD uniquely.",
     "mathContext": "$d \\mid a \\land d \\mid b \\Rightarrow d \\mid \\gcd(a, b)$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "GCD theory",
       "lattice theory",
@@ -270,7 +270,7 @@
     "title": "Bezout's Identity",
     "content": "**Bezout's Identity**: For any $a, b \\in \\mathbb{N}$, there exist integers $x, y$ such that:\n\n$$\\gcd(a, b) = ax + by$$\n\nThe **extended Euclidean algorithm** computes these coefficients alongside the GCD.\n\n**Applications**:\n- Solving linear Diophantine equations $ax + by = c$\n- Computing modular multiplicative inverses\n- RSA key generation\n\n**Example**: $\\gcd(35, 15) = 5 = 35 \\cdot 1 + 15 \\cdot (-2)$",
     "mathContext": "$\\gcd(a, b) = ax + by$ for some integers $x, y$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "GCD theory",
       "extended Euclidean algorithm",

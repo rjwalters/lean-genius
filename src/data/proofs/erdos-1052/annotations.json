@@ -9,7 +9,7 @@
     "type": "context",
     "title": "Module Header and Imports",
     "content": "The file imports all of Mathlib with a single `import Mathlib` and opens namespace `Erdos1052`. The header comment describes the five known unitary perfect numbers (6, 60, 90, 87360, and the 24-digit number found in 1975) and references Wall's 1972 paper.",
-    "significance": "minor",
+    "significance": "context",
     "prerequisites": [
       "Finset API",
       "Mathlib imports",
@@ -83,7 +83,7 @@
     "type": "technique",
     "title": "One is Always a Unitary Divisor",
     "content": "**one_mem_properUnitaryDivisors**: For n > 1, 1 belongs to `properUnitaryDivisors n`. Proof unfolds the filter definition with `simp` and verifies: 1 ∈ Ico 1 n (by `omega`), 1 ∣ n (by `one_dvd`), and `gcd(1, n) = 1` (by `simp [Nat.Coprime]`).",
-    "significance": "minor",
+    "significance": "key",
     "prerequisites": [
       "Finset API",
       "Finset.mem_filter",
@@ -108,7 +108,7 @@
     "type": "technique",
     "title": "Membership Characterization",
     "content": "**mem_properUnitaryDivisors**: Characterizes membership as `d ∈ Finset.Ico 1 n ∧ d ∣ n ∧ d.Coprime (n / d)`, directly unfolding the filter definition with `simp [properUnitaryDivisors]`.",
-    "significance": "minor",
+    "significance": "key",
     "prerequisites": [
       "Finset API",
       "Finset.mem_filter",
@@ -132,7 +132,7 @@
     "type": "technique",
     "title": "Odd Unitary Divisors of Odd Numbers",
     "content": "**odd_of_unitaryDivisor_of_odd**: If n is odd and d divides n, then d is odd. Proof by contradiction: if d were even, `Even.two_dvd` gives `2 ∣ d`, then `dvd_trans` yields `2 ∣ n`, contradicting `Odd.not_two_dvd_nat`.",
-    "significance": "major",
+    "significance": "key",
     "prerequisites": [
       "dvd_trans",
       "natural number arithmetic",
@@ -207,7 +207,7 @@
     "type": "technique",
     "title": "Unitary Complement Symmetry",
     "content": "**unitary_complement**: If d is a unitary divisor of n with n > 0, then n/d is also unitary. The key step is `Nat.div_div_self hd hn_ne` which rewrites `n/(n/d) = d`, then `Coprime.symm` gives the result from `gcd(d, n/d) = 1 → gcd(n/d, d) = 1`.",
-    "significance": "major",
+    "significance": "key",
     "prerequisites": [
       "Coprime.symm",
       "GCD theory",
@@ -232,7 +232,7 @@
     "type": "definition",
     "title": "Unitary Divisor Sum Function",
     "content": "**unitaryDivisorSum (n : ℕ) : ℕ** sums all unitary divisors of n (including n itself), using `Finset.Ico 1 (n + 1)` to include n. For unitary perfect n, σ*(n) = n + n = 2n since the proper unitary divisors sum to n.",
-    "significance": "major",
+    "significance": "key",
     "prerequisites": [
       "Finset API",
       "GCD theory",
@@ -281,7 +281,7 @@
     "type": "technique",
     "title": "Verified Examples: 6, 60, 90",
     "content": "Three unitary perfect numbers verified by `native_decide`: 6 = 2·3 (divisors {1,2,3}), 60 = 2²·3·5 (divisors {1,3,4,5,12,15,20}), and 90 = 2·3²·5 (divisors {1,2,5,9,10,18,45}). The `Decidable` instance on `IsUnitaryPerfect` enables the Lean kernel to evaluate the Finset computation and check the sum equality.",
-    "significance": "major",
+    "significance": "key",
     "prerequisites": [
       "Finset API",
       "computational verification",
@@ -305,7 +305,7 @@
     "type": "technique",
     "title": "Prime Power Unitary Divisors",
     "content": "**unitaryDivisors_primePow** (axiom): For prime p and k > 0, the unitary divisors of p^k are exactly {1, p^k}. Any intermediate divisor p^j (0 < j < k) has gcd(p^j, p^{k-j}) = p^{min(j,k-j)} > 1, so it is not unitary.",
-    "significance": "major",
+    "significance": "key",
     "prerequisites": [
       "Finset API",
       "Finset equality",
@@ -353,7 +353,7 @@
     "type": "technique",
     "title": "Divisor Pairing Structure",
     "content": "**properUnitaryDivisors_pairing** (axiom): Proper unitary divisors pair up via d ↦ n/d (with a possible singleton at √n). This involutive pairing is guaranteed by `unitary_complement` and provides structural insight into how σ*(n) decomposes.",
-    "significance": "minor",
+    "significance": "key",
     "prerequisites": [
       "Finset API",
       "divisor pairing",

@@ -10,7 +10,7 @@
     "title": "Gauss's Golden Theorem",
     "content": "The Law of Quadratic Reciprocity relates the solvability of two quadratic equations:\n\n$$x^2 \\equiv p \\pmod{q} \\quad \\text{and} \\quad x^2 \\equiv q \\pmod{p}$$\n\nfor distinct odd primes $p$ and $q$. Remarkably, whether $p$ is a square mod $q$ is closely related to whether $q$ is a square mod $p$.\n\nGauss called this the 'theorema aureum' (golden theorem) and published 8 different proofs during his lifetime.",
     "mathContext": "Formalizes: Gauss's Golden Theorem",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "Legendre symbol",
       "prime numbers",
@@ -34,7 +34,7 @@
     "title": "The Legendre Symbol",
     "content": "The **Legendre symbol** $(a/p)$ for an integer $a$ and odd prime $p$ is:\n\n- $(a/p) = 1$ if $a$ is a **quadratic residue** mod $p$ (i.e., $x^2 \\equiv a \\pmod{p}$ has a solution)\n- $(a/p) = -1$ if $a$ is a **quadratic nonresidue** mod $p$\n- $(a/p) = 0$ if $p | a$\n\n**Euler's Criterion**: $(a/p) \\equiv a^{(p-1)/2} \\pmod{p}$\n\nThis gives a computational method for evaluating Legendre symbols.",
     "mathContext": "$(a/p) = a^{(p-1)/2} \\mod p$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "Euler's criterion",
       "Euler's work",
@@ -58,7 +58,7 @@
     "title": "The Main Law (Product Form)",
     "content": "**Quadratic Reciprocity** (Product Form):\n\nFor distinct odd primes $p$ and $q$:\n\n$$\\left(\\frac{q}{p}\\right) \\cdot \\left(\\frac{p}{q}\\right) = (-1)^{\\frac{p-1}{2} \\cdot \\frac{q-1}{2}}$$\n\nThe exponent $(p-1)/2 \\cdot (q-1)/2$ is odd exactly when both $p \\equiv 3$ and $q \\equiv 3 \\pmod{4}$.\n\nThis means the Legendre symbols are:\n- **Equal** if at least one of $p, q \\equiv 1 \\pmod{4}$\n- **Opposite** if both $p, q \\equiv 3 \\pmod{4}$",
     "mathContext": "$(q/p)(p/q) = (-1)^{(p-1)/2 \\cdot (q-1)/2}$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "Legendre symbol",
       "logical reasoning",

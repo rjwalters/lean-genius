@@ -10,7 +10,7 @@
     "title": "The Foundation of Recursive Reasoning",
     "content": "Mathematical induction is the principle that allows us to prove statements about all natural numbers by:\n\n1. **Base Case**: Prove the statement holds for 0\n2. **Inductive Step**: Prove that if it holds for $n$, it holds for $n+1$\n\n$$P(0) \\land (\\forall n. P(n) \\to P(n+1)) \\to \\forall n. P(n)$$\n\nThis is Peano's fifth axiom, and it's what distinguishes the natural numbers from other structures.",
     "mathContext": "Formalizes: The Foundation of Recursive Reasoning",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "Peano axioms",
       "recursion"
@@ -55,7 +55,7 @@
     "title": "Weak Induction (Standard Form)",
     "content": "**Weak Induction**: The standard form of mathematical induction.\n\n```lean\ntheorem weak_induction (P : ℕ → Prop)\n    (base : P 0)\n    (step : ∀ n, P n → P (n + 1)) :\n    ∀ n, P n\n```\n\nThe proof uses Lean's `induction` tactic, which applies the `Nat.rec` recursor. This is the most common form of induction used in practice.",
     "mathContext": "$P(0) \\land (\\forall n. P(n) \\to P(n+1)) \\to \\forall n. P(n)$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "base case",
       "inductive step",
@@ -102,7 +102,7 @@
     "title": "Strong Induction (Complete Induction)",
     "content": "**Strong Induction**: Instead of assuming just $P(n)$, we assume $P(k)$ for **all** $k < n$.\n\n```lean\ntheorem strong_induction (P : ℕ → Prop)\n    (step : ∀ n, (∀ k, k < n → P k) → P n) :\n    ∀ n, P n\n```\n\n**Key insight**: The base case is implicit! When $n = 0$, the hypothesis '$\\forall k < 0, P(k)$' is vacuously true (there are no such $k$), so we must prove $P(0)$ directly.",
     "mathContext": "$(\\forall n. (\\forall k < n. P(k)) \\to P(n)) \\to \\forall n. P(n)$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "complete induction",
       "course-of-values induction",
@@ -239,7 +239,7 @@
     "title": "The Well-Ordering Principle",
     "content": "**Well-Ordering Principle**: Every nonempty subset of $\\mathbb{N}$ has a least element.\n\nIn Lean, this is captured by `Nat.find`: given a decidable predicate $P$ and a proof that some $n$ satisfies $P$, `Nat.find` returns the smallest such $n$.\n\n```lean\ntheorem well_ordering (P : ℕ → Prop) [DecidablePred P]\n    (hne : ∃ n, P n) :\n    ∃ m, P m ∧ ∀ n, P n → m ≤ n\n```",
     "mathContext": "$\\forall S \\subseteq \\mathbb{N}. S \\neq \\emptyset \\to \\exists m \\in S. \\forall n \\in S. m \\leq n$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "Nat.find",
       "logical reasoning",

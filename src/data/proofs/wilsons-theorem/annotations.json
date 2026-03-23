@@ -10,7 +10,7 @@
     "title": "A Primality Characterization",
     "content": "Wilson's theorem gives a complete characterization of prime numbers in terms of factorials:\n\n$$n > 1 \\text{ is prime} \\iff (n-1)! \\equiv -1 \\pmod{n}$$\n\nThis is remarkable because:\n- It provides an *exact* test for primality (not probabilistic)\n- The condition involves only modular arithmetic\n- It reveals deep structure about how primes behave\n\nHowever, computing $(n-1)!$ is computationally expensive, making this impractical for actual primality testing.",
     "mathContext": "$$$n > 1 \\text{ is prime} \\iff (n-1)! \\equiv -1 \\pmod{n}$$$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "factorial",
       "primality testing",
@@ -54,7 +54,7 @@
     "title": "Wilson's Lemma (Forward Direction)",
     "content": "**Wilson's Lemma**: For a prime $p$, $(p-1)! \\equiv -1 \\pmod{p}$.\n\nIn Lean:\n```\ntheorem wilsons_lemma (p : N) [Fact (Nat.Prime p)] :\n    ((p - 1).factorial : ZMod p) = -1\n```\n\nThis is the 'easy' direction—the core insight is the pairing of elements with their inverses in $(\\mathbb{Z}/p\\mathbb{Z})^*$.",
     "mathContext": "$(p-1)! \\equiv -1 \\pmod{p}$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "factorial",
       "logical reasoning",
@@ -78,7 +78,7 @@
     "title": "Wilson's Theorem (Biconditional)",
     "content": "**Wilson's Theorem (Full Version)**:\n\n$$n > 1 \\text{ is prime} \\iff (n-1)! \\equiv -1 \\pmod{n}$$\n\nThe backward direction is equally important: if $(n-1)! \\equiv -1 \\pmod{n}$, then $n$ must be prime.\n\n**Proof of backward direction**:\n- Suppose $n = ab$ with $1 < a < n$\n- Then $a$ divides $(n-1)!$ (since $a < n$)\n- If also $(n-1)! \\equiv -1 \\pmod{n}$, then $a | (n-1)! + 1 = -1 + 1 \\pmod{a}$\n- But this means $a | 0$ and $a | 1$, contradiction for $a > 1$",
     "mathContext": "$n$ prime $\\iff (n-1)! \\equiv -1 \\pmod{n}$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "divisibility",
       "logical reasoning",
@@ -102,7 +102,7 @@
     "title": "The Pairing Argument",
     "content": "The proof's key insight is a **pairing argument** in the multiplicative group:\n\n1. In $(\\mathbb{Z}/p\\mathbb{Z})^*$, every element $a$ has an inverse $a^{-1}$\n2. **Self-inverse elements**: $a = a^{-1}$ iff $a^2 \\equiv 1 \\pmod{p}$\n   - Solutions: $(a-1)(a+1) \\equiv 0 \\pmod{p}$\n   - Since $p$ is prime: $a \\equiv \\pm 1 \\pmod{p}$\n3. **Non-self-inverse elements** pair up: $\\{a, a^{-1}\\}$ contributes $a \\cdot a^{-1} = 1$\n\n**The product**:\n$$(p-1)! = 1 \\cdot \\underbrace{(2 \\cdot 2^{-1})}_{=1} \\cdot \\ldots \\cdot \\underbrace{((p-2) \\cdot (p-2)^{-1})}_{=1} \\cdot (p-1)$$\n$$= 1 \\cdot 1 \\cdot \\ldots \\cdot 1 \\cdot (-1) = -1$$",
     "mathContext": "Elements pair as $\\{a, a^{-1}\\}$, except 1 and -1.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "group theory",
       "inverse",
