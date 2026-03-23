@@ -120,15 +120,15 @@
     ]
   },
   {
-    "id": "ann-weighted",
+    "id": "ann-weighted-general",
     "proofId": "amgm-inequality",
     "range": {
       "startLine": 134,
-      "endLine": 160
+      "endLine": 147
     },
     "type": "concept",
-    "title": "Weighted AM-GM via Mathlib's General Inequality",
-    "content": "**Weighted AM-GM**:\n\nFor weights $w_i \\geq 0$ with $\\sum_{i} w_i = 1$ and values $z_i \\geq 0$:\n$$\\prod_i z_i^{w_i} \\leq \\sum_i w_i z_i$$\n\nThe left side is the **weighted geometric mean**; the right is the **weighted arithmetic mean**. Setting $w_i = 1/n$ for all $i$ recovers the classical unweighted AM-GM.\n\n**Mathlib implementation**: `Real.geom_mean_le_arith_mean_weighted` operates over `Finset ι`, allowing arbitrary finite index sets. Internally, Mathlib proves this via the concavity of $\\log$: since $\\log$ is concave on $(0,\\infty)$, Jensen's inequality gives $\\sum w_i \\log(z_i) \\leq \\log(\\sum w_i z_i)$, and exponentiating yields the weighted AM-GM. The proof `am_gm_two_via_weighted` uses Mathlib's pre-specialized two-variable form `Real.geom_mean_le_arith_mean2_weighted` with weights $1/2$, using `convert` to bridge between Mathlib's statement and the concrete form $a^{1/2} b^{1/2} \\leq (a+b)/2$—`ring` closes the remaining arithmetic goals. Similarly, `am_gm_three` uses the pre-specialized `Real.geom_mean_le_arith_mean3_weighted`.\n\n**Schur convexity perspective**: The weighted AM-GM has a deep connection to *majorization theory*. A vector $\\mathbf{x}$ majorizes $\\mathbf{y}$ (written $\\mathbf{x} \\succeq \\mathbf{y}$) if the partial sums of $\\mathbf{x}$ sorted in decreasing order dominate those of $\\mathbf{y}$. The function $f(\\mathbf{z}) = -\\sum w_i \\log z_i$ is *Schur-convex*, meaning $\\mathbf{x} \\succeq \\mathbf{y}$ implies $f(\\mathbf{x}) \\geq f(\\mathbf{y})$. Since $\\left(\\frac{\\sum w_i z_i}{1}, 0, \\ldots\\right) \\succeq (z_1, \\ldots, z_n)$ in an appropriate sense, the AM-GM inequality follows. This viewpoint, developed by Hardy, Littlewood, and Pólya (1929), unifies AM-GM with Muirhead's inequality, the Schur inequality, and many competition results.\n\n**Design pattern**: This section illustrates a common Lean formalization strategy: prove the result elementarily for the base case (two variables), then also provide a path through Mathlib's general machinery for n-variable extensions. The two approaches serve different audiences: the elementary proof is pedagogically transparent, while the Mathlib delegation is more scalable.",
+    "title": "General Weighted AM-GM via Mathlib",
+    "content": "**Weighted AM-GM**:\n\nFor weights $w_i \\geq 0$ with $\\sum_{i} w_i = 1$ and values $z_i \\geq 0$:\n$$\\prod_i z_i^{w_i} \\leq \\sum_i w_i z_i$$\n\nThe left side is the **weighted geometric mean**; the right is the **weighted arithmetic mean**. Setting $w_i = 1/n$ for all $i$ recovers the classical unweighted AM-GM.\n\n**Mathlib implementation**: `Real.geom_mean_le_arith_mean_weighted` operates over `Finset ι`, allowing arbitrary finite index sets. Internally, Mathlib proves this via the concavity of $\\log$: since $\\log$ is concave on $(0,\\infty)$, Jensen's inequality gives $\\sum w_i \\log(z_i) \\leq \\log(\\sum w_i z_i)$, and exponentiating yields the weighted AM-GM.\n\n**Schur convexity perspective**: The weighted AM-GM has a deep connection to *majorization theory*. A vector $\\mathbf{x}$ majorizes $\\mathbf{y}$ (written $\\mathbf{x} \\succeq \\mathbf{y}$) if the partial sums of $\\mathbf{x}$ sorted in decreasing order dominate those of $\\mathbf{y}$. The function $f(\\mathbf{z}) = -\\sum w_i \\log z_i$ is *Schur-convex*, meaning $\\mathbf{x} \\succeq \\mathbf{y}$ implies $f(\\mathbf{x}) \\geq f(\\mathbf{y})$. This viewpoint, developed by Hardy, Littlewood, and Pólya (1929), unifies AM-GM with Muirhead's inequality, the Schur inequality, and many competition results.\n\n**Design pattern**: The `am_gm_weighted` theorem is a thin wrapper around Mathlib's `Real.geom_mean_le_arith_mean_weighted`, providing a clean API within the `AMGMInequality` namespace. This illustrates a common formalization pattern: expose Mathlib results through a local API to prevent name collisions and improve discoverability.",
     "mathContext": "$$\\prod_i z_i^{w_i} \\leq \\sum_i w_i z_i, \\quad \\sum_i w_i = 1, \\; z_i \\geq 0$$",
     "significance": "key",
     "relatedConcepts": [
@@ -137,16 +137,40 @@
       "Jensen's inequality",
       "Finset",
       "Real.geom_mean_le_arith_mean_weighted",
-      "Real.geom_mean_le_arith_mean2_weighted",
-      "Real.geom_mean_le_arith_mean3_weighted",
       "Schur convexity",
-      "majorization"
+      "majorization",
+      "Muirhead's inequality"
     ],
     "prerequisites": [
       "Finset",
       "weighted sums and products",
       "Jensen's inequality",
       "convex functions"
+    ]
+  },
+  {
+    "id": "ann-weighted-two-var",
+    "proofId": "amgm-inequality",
+    "range": {
+      "startLine": 149,
+      "endLine": 160
+    },
+    "type": "technique",
+    "title": "Two-Variable AM-GM via Weighted Means and convert",
+    "content": "**Recovering the two-variable case from the general form**:\n\nThe theorem `am_gm_two_via_weighted` sets weights $w_1 = w_2 = 1/2$ in Mathlib's `Real.geom_mean_le_arith_mean2_weighted` to obtain:\n$$a^{1/2} \\cdot b^{1/2} \\leq \\frac{a + b}{2}$$\n\n**The `convert` tactic pattern**: Mathlib's statement has a slightly different normal form than the desired conclusion. The `convert` tactic produces subgoals for each position where the two sides differ, and `ring` closes each arithmetic subgoal. This `convert ... using 1` + `all_goals ring` pattern is a workhorse for adapting Mathlib results to custom formulations—it avoids the need for manual term-level manipulation.\n\n**Pedagogical value**: This theorem exists alongside `am_gm_two` to demonstrate *two independent proof routes* to the same result: the elementary algebraic proof (square non-negativity) and the general machinery (convexity + Jensen's). When formalizing mathematics, having multiple proof paths increases confidence and provides different insights into the result.",
+    "mathContext": "$a^{1/2} b^{1/2} \\leq (a+b)/2$, which is $\\sqrt{ab} \\leq (a+b)/2$ since $a^{1/2} = \\sqrt{a}$ for $a \\geq 0$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "convert tactic",
+      "Real.geom_mean_le_arith_mean2_weighted",
+      "ring tactic",
+      "proof diversity",
+      "weight specialization"
+    ],
+    "prerequisites": [
+      "am_gm_weighted",
+      "Lean 4 convert tactic",
+      "real-valued powers"
     ]
   },
   {
