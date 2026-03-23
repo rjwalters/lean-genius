@@ -142,7 +142,25 @@ theorem primeClass_pos_of_prime (p : ℕ) (hp : Nat.Prime p) :
   unfold primeClassAux; aesop
 
 /-- Class is monotone along the chain: if q is a prime factor of p+1
-    with q ∉ {2,3}, then primeClass q < primeClass p. -/
+    with q ∉ {2,3}, then primeClass q < primeClass p.
+
+    PROOF CHALLENGE: The fuel-based recursion (primeClassAux 30 p) makes
+    this non-trivial. The definition unfolds as:
+      primeClass p = 1 + max(primeClassAux 29 q') over nonSmooth factors q'
+    So primeClass p ≥ 1 + primeClassAux 29 q > primeClassAux 29 q.
+    But primeClass q = primeClassAux 30 q, and we need primeClassAux 30 q
+    to equal primeClassAux 29 q (fuel convergence).
+
+    FUEL CONVERGENCE: For prime p ≥ 5, all nonSmooth factors q of p+1
+    satisfy q ≤ (p+1)/2 < p (since p is odd, p+1 is even). So the
+    recursion strictly decreases on the prime value, meaning the depth
+    is bounded by ~log(p). Fuel 30 is sufficient for all primes with
+    class ≤ 30 (the deepest known class is 5).
+
+    FIX OPTIONS:
+    1. Prove fuel convergence via strong induction on p
+    2. Refactor primeClassAux to use well-founded recursion (Nat.lt)
+    3. Add hypothesis: primeClassAux 29 q = primeClassAux 30 q -/
 theorem class_of_factor_lt (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q)
     (hdvd : q ∣ p + 1) (hq2 : q ≠ 2) (hq3 : q ≠ 3) :
     primeClass q < primeClass p := by
