@@ -31,7 +31,8 @@
     "relatedConcepts": [
       "Prime factorization",
       "Divisibility"
-    ]
+    ],
+    "mathContext": "$n$ is squarefree $\\iff \\forall p$ prime: $p^2 \\nmid n$. Equivalently, $n = \\prod p_i$ with distinct primes"
   },
   {
     "id": "ann-e378-squarefree-examples",
@@ -43,7 +44,8 @@
     "type": "technique",
     "title": "Squarefree Examples",
     "content": "**Verified examples:**\n\n- squarefree_one: 1 is squarefree (no prime squared divides 1)\n- squarefree_six: 6 = 2*3 is squarefree (axiom)\n- not_squarefree_four: 4 = 2^2 is NOT squarefree\n- not_squarefree_twelve: 12 = 4*3 is NOT squarefree\n\n**Proof for 4:** We show 2*2 divides 4, contradicting the definition.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "$1, 2, 3, 5, 6, 7, 10, 11, 13, 14, 15$ are squarefree; $4 = 2^2, 8 = 2^3, 9 = 3^2$ are not"
   },
   {
     "id": "ann-e378-binomial-squarefree",
@@ -59,7 +61,8 @@
     "relatedConcepts": [
       "Binomial coefficients",
       "Pascal's triangle"
-    ]
+    ],
+    "mathContext": "$\\binom{n}{k}$ is squarefree $\\iff \\forall p$ prime: $p^2 \\nmid \\binom{n}{k}$"
   },
   {
     "id": "ann-e378-count",
@@ -75,7 +78,8 @@
     "relatedConcepts": [
       "Counting",
       "Row analysis"
-    ]
+    ],
+    "mathContext": "$\\text{sqfCount}(n) = |\\{k \\in [1, n-1] : \\binom{n}{k}$ is squarefree$\\}|$"
   },
   {
     "id": "ann-e378-density",
@@ -108,7 +112,8 @@
     "relatedConcepts": [
       "Preliminary results",
       "Sparsity"
-    ]
+    ],
+    "mathContext": "Erdős-Graham: (1) for fixed $m$, $|\\{n : \\text{sqfCount}(n) = 2m+2\\}|$ is finite; (2) for $n = 2^a$, only $\\binom{n}{1}$ and $\\binom{n}{n-1}$ are squarefree"
   },
   {
     "id": "ann-e378-exactly",
@@ -124,7 +129,8 @@
     "relatedConcepts": [
       "Symmetry",
       "Partitioning"
-    ]
+    ],
+    "mathContext": "$\\text{exactly}(m) = \\{n : \\text{sqfCount}(n) = 2m + 2\\}$ — always even+2 by the symmetry $\\binom{n}{k} = \\binom{n}{n-k}$"
   },
   {
     "id": "ann-e378-granville-ramare",
@@ -156,7 +162,8 @@
     "significance": "key",
     "relatedConcepts": [
       "Main question"
-    ]
+    ],
+    "mathContext": "$\\text{atLeast}(r) = \\{n : \\text{sqfCount}(n) \\geq r\\}$ — a superset of $\\text{exactly}(m)$ for all $m \\geq (r-2)/2$"
   },
   {
     "id": "ann-e378-complement",
@@ -189,7 +196,8 @@
     "relatedConcepts": [
       "Existence",
       "Complement"
-    ]
+    ],
+    "mathContext": "$\\lim_{N \\to \\infty} |\\text{atLeast}(r) \\cap [1,N]| / N$ exists for all $r \\geq 0$"
   },
   {
     "id": "ann-e378-main-positive",
@@ -205,7 +213,8 @@
     "relatedConcepts": [
       "Positivity",
       "Key argument"
-    ]
+    ],
+    "mathContext": "$\\lim_{N \\to \\infty} |\\text{atLeast}(r) \\cap [1,N]| / N > 0$ for all $r \\geq 0$"
   },
   {
     "id": "ann-e378-example-C21",
@@ -217,7 +226,8 @@
     "type": "technique",
     "title": "Example: C(2,1) = 2",
     "content": "**example_C_2_1:**\n\nC(2,1) = 2 is squarefree.\n\n**Verification:** 2 is prime, so no prime squared divides it.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "$\\binom{2}{1} = 2$ is squarefree (2 is prime, hence squarefree)"
   },
   {
     "id": "ann-e378-example-C63",
@@ -232,7 +242,8 @@
     "significance": "key",
     "relatedConcepts": [
       "Counterexample"
-    ]
+    ],
+    "mathContext": "$\\binom{6}{3} = 20 = 2^2 \\cdot 5$ is NOT squarefree ($4 = 2^2 \\mid 20$)"
   },
   {
     "id": "ann-e378-symmetry",
@@ -248,7 +259,8 @@
     "relatedConcepts": [
       "Symmetry",
       "Pairing"
-    ]
+    ],
+    "mathContext": "$\\binom{n}{k}$ is squarefree $\\iff \\binom{n}{n-k}$ is squarefree, since $\\binom{n}{k} = \\binom{n}{n-k}$"
   },
   {
     "id": "ann-e378-summary",
@@ -264,6 +276,7 @@
     "relatedConcepts": [
       "Main theorem",
       "Resolution"
-    ]
+    ],
+    "mathContext": "For all $r$: the set $\\{n : \\text{sqfCount}(n) \\geq r\\}$ has positive natural density"
   }
 ]
