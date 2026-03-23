@@ -87,6 +87,21 @@
         "key": "Bu04",
         "citation": "Burnside, W., On groups of order p^α q^β, Proceedings of the London Mathematical Society 2(1) (1904), 388–392.",
         "type": "paper"
+      },
+      {
+        "key": "Pe03",
+        "citation": "Pesic, P., Abel's Proof: An Essay on the Sources and Meaning of Mathematical Unsolvability, MIT Press (2003).",
+        "type": "book"
+      },
+      {
+        "key": "St89",
+        "citation": "Stillwell, J., Mathematics and Its History, Springer Undergraduate Texts in Mathematics (1989, 3rd ed. 2010), Chapters 18–19: Galois theory and impossibility proofs.",
+        "type": "book"
+      },
+      {
+        "key": "Wu07",
+        "citation": "Wussing, H., The Genesis of the Abstract Group Concept: A Contribution to the History of the Origin of Abstract Group Theory, Dover (2007, reprint of 1984 MIT Press edition).",
+        "type": "book"
       }
     ],
     "relatedProofs": [
@@ -300,16 +315,16 @@
       "title": "Small Symmetric Groups Are Solvable",
       "startLine": 67,
       "endLine": 76,
-      "summary": "Shows S₀ and S₁ are solvable via Lean's typeclass inference (inferInstance). These trivial cases contrast with the non-solvable S₅ and above.",
-      "mathContext": "$S_0 \\cong S_1 \\cong \\{e\\}$ are trivially solvable. Full picture: $S_n$ solvable $\\iff n \\leq 4$."
+      "summary": "Shows S₀ and S₁ are solvable via Lean's typeclass inference (inferInstance). These trivial cases contrast with the non-solvable S₅ and above. The full solvable range S₀–S₄ is established by Lean's typeclass system, which finds proofs automatically from Mathlib's library of group-theoretic instances.",
+      "mathContext": "$S_0 \\cong S_1 \\cong \\{e\\}$ are trivially solvable. Full picture: $S_n$ solvable $\\iff n \\leq 4$. Derived series for each: $S_2$: $\\{e\\} \\triangleleft S_2$; $S_3$: $\\{e\\} \\triangleleft A_3 \\triangleleft S_3$; $S_4$: $\\{e\\} \\triangleleft V_4 \\triangleleft A_4 \\triangleleft S_4$."
     },
     {
       "id": "threshold",
       "title": "The Solvability Threshold",
       "startLine": 77,
       "endLine": 87,
-      "summary": "Packages the sharp dichotomy: S₁ solvable ∧ S₅ not solvable. Witnesses the exact transition point at n = 5 where radical solvability breaks.",
-      "mathContext": "$\\text{IsSolvable}(S_1) \\wedge \\neg\\text{IsSolvable}(S_5)$: the transition is sharp at $n = 5$."
+      "summary": "Packages the sharp dichotomy: S₁ solvable ∧ S₅ not solvable. Witnesses the exact transition point at n = 5 where radical solvability breaks. The conjunction of both facts in a single theorem makes the threshold quotable and independently verifiable — a formalization of the historical observation that the quintic is the smallest degree where radical formulas fail.",
+      "mathContext": "$\\text{IsSolvable}(S_1) \\wedge \\neg\\text{IsSolvable}(S_5)$: the transition is sharp at $n = 5$. Equivalently: $S_n$ solvable $\\iff n \\leq 4$, since $A_n$ is simple for $n \\geq 5$ while $A_4 \\supset V_4 \\cong (\\mathbb{Z}/2)^2$ has a proper normal subgroup."
     },
     {
       "id": "chain",
