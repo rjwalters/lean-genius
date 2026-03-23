@@ -80,6 +80,12 @@
       "**Ratio decomposition**: $R(k+1,k)/R(k,k) = 1 + \\text{diff}/R(k,k)$, so linear difference growth combined with exponential $R(k,k)$ bounds determines the limit behavior",
       "**Critical colorings**: The BEFS proof analyzes 2-colorings of $K_{R(k,k)-1}$ to extract structural constraints on the off-diagonal increment",
       "**Problem connections**: Generalizes to Problem #1014 (arbitrary offset $j$) and relates to Problem #544 on $R(3,k) \\sim k^2/\\log k$ growth"
+    ],
+    "prerequisites": [
+      "Ramsey theory: Ramsey numbers R(k, l), edge colorings, and monochromatic cliques",
+      "Binomial coefficients and the Erdos-Szekeres recursive bound (Mathlib.Data.Nat.Choose.Basic)",
+      "Filter.liminf for growth rate analysis (Mathlib.Order.LiminfLimsup)",
+      "Probabilistic method: Erdos 1947 lower bound R(k,k) >= 2^{k/2}"
     ]
   },
   "sections": [

@@ -85,6 +85,12 @@
       "The bound t·⌊n/2⌋ is tight: adding t edges within one part of the Turán graph creates exactly this many triangles",
       "The stability method shows near-extremal graphs must be structurally close to bipartite, constraining where extra edges can go",
       "Rademacher's base case (t=1) reveals the fundamental phenomenon: each intra-part edge creates ⌊n/2⌋ triangles by pairing with every vertex in the other part"
+    ],
+    "prerequisites": [
+      "Extremal graph theory: Turan's theorem and the Turan graph K_{n/2, n/2}",
+      "SimpleGraph and edgeFinset in Mathlib (Mathlib.Combinatorics.SimpleGraph.Basic)",
+      "Finset filtering and cardinality for triangle counting (Mathlib.Data.Finset.Basic)",
+      "Supersaturation phenomena: how exceeding extremal thresholds forces substructure counts"
     ]
   },
   "sections": [
