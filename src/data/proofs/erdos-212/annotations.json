@@ -11,6 +11,10 @@
     "content": "This header documents **Erdős Problem #212**, the famous Erdős-Ulam rational distance problem. It asks whether there can be a dense subset of the plane with all pairwise distances rational.",
     "mathContext": "The problem connects elementary geometry (distances in the plane) to deep arithmetic geometry (the Bombieri-Lang conjecture). This unexpected connection is part of what makes the problem fascinating.",
     "significance": "key",
+    "prerequisites": [
+      "Erdős-Ulam",
+      "rational distances"
+    ],
     "relatedConcepts": [
       "Erdős-Ulam",
       "rational distances",
@@ -29,6 +33,11 @@
     "content": "A set S has **rational distances** if for every pair of distinct points p, q in S, the Euclidean distance d(p,q) is a rational number. We formalize this using Pairwise on sets.",
     "mathContext": "HasRationalDistances S := S.Pairwise (fun p₁ p₂ => ∃ q : ℚ, dist p₁ p₂ = q). The Pairwise predicate ensures we only check distinct pairs.",
     "significance": "key",
+    "prerequisites": [
+      "Pairwise",
+      "basic set theory",
+      "distance"
+    ],
     "relatedConcepts": [
       "Pairwise",
       "distance",
@@ -47,6 +56,11 @@
     "content": "**Erdos212Conjecture** states that no dense rational distance set exists. This is Ulam's conjecture, which Erdős believed to be true. It remains one of the most famous open problems in combinatorial geometry.",
     "mathContext": "Erdos212Conjecture := ¬∃ S : Set (ℝ × ℝ), Dense S ∧ HasRationalDistances S. A set is Dense if its closure equals the whole space.",
     "significance": "key",
+    "prerequisites": [
+      "Ulam",
+      "basic set theory",
+      "conjecture"
+    ],
     "relatedConcepts": [
       "Ulam",
       "conjecture",
@@ -65,6 +79,11 @@
     "content": "We note that the conjecture is decidable classically - it's either true or false. This is a standard observation using excluded middle.",
     "mathContext": "erdos_212_classical : Erdos212Conjecture ∨ ¬Erdos212Conjecture := Classical.em _",
     "significance": "supporting",
+    "prerequisites": [
+      "classical logic",
+      "excluded middle",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "excluded middle",
       "classical logic"
@@ -82,6 +101,12 @@
     "content": "The **Bombieri-Lang conjecture** is a deep statement in arithmetic geometry: varieties of general type over number fields have only finitely many rational points outside a proper closed subset. We axiomatize it as a placeholder.",
     "mathContext": "axiom BombieriLangConjecture : Prop. The full statement requires algebraic geometry machinery beyond current Mathlib. The conjecture is central to understanding rational points on algebraic varieties.",
     "significance": "key",
+    "prerequisites": [
+      "arithmetic geometry",
+      "basic set theory",
+      "field theory",
+      "varieties"
+    ],
     "relatedConcepts": [
       "arithmetic geometry",
       "varieties",
@@ -100,6 +125,11 @@
     "content": "**Tao (2014) and Shaffaf (2018)** independently proved that assuming Bombieri-Lang, the answer to Erdős-Ulam is NO. This is the strongest known result toward resolving the problem.",
     "mathContext": "axiom tao_shaffaf_conditional : BombieriLangConjecture → Erdos212Conjecture. The proof uses that rational distance constraints force points onto certain algebraic varieties, whose rational points are controlled by Bombieri-Lang.",
     "significance": "key",
+    "prerequisites": [
+      "Shaffaf",
+      "Tao",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Tao",
       "Shaffaf",
@@ -118,6 +148,12 @@
     "content": "A **real algebraic curve** is a set in ℝ² defined as the zero set of a polynomial in two variables. These are the fundamental objects of algebraic geometry.",
     "mathContext": "IsRealAlgebraicCurve C := ∃ p : MvPolynomial (Fin 2) ℝ, C = {pt | MvPolynomial.eval ![pt.1, pt.2] p = 0}. We use Mathlib's MvPolynomial for multivariate polynomials.",
     "significance": "key",
+    "prerequisites": [
+      "algebraic curve",
+      "basic set theory",
+      "polynomial",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "algebraic curve",
       "polynomial",
@@ -136,6 +172,12 @@
     "content": "**Shaffaf-Tao** proved unconditionally that any rational distance set must be contained in a finite union of real algebraic curves. This severely restricts the structure of such sets.",
     "mathContext": "axiom shaffaf_tao_algebraic_curves : ∀ S, HasRationalDistances S → ∃ curves : Finset (Set (ℝ × ℝ)), (∀ C ∈ curves, IsRealAlgebraicCurve C) ∧ S ⊆ ⋃ C ∈ curves, C",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "algebraic constraint",
+      "finite union",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "algebraic constraint",
       "finite union",
@@ -154,6 +196,11 @@
     "content": "**Solymosi and de Zeeuw (2010)** proved that rational distance sets contained in algebraic curves must be finite, unless the curve contains a line or circle. This is unconditional and rules out many configurations.",
     "mathContext": "axiom solymosi_de_zeeuw : ∀ C, IsRealAlgebraicCurve C → ∀ S, S ⊆ C → HasRationalDistances S → S.Finite ∨ (∃ line ⊆ C) ∨ (∃ circle ⊆ C)",
     "significance": "key",
+    "prerequisites": [
+      "Solymosi",
+      "de Zeeuw",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Solymosi",
       "de Zeeuw",
@@ -172,6 +219,11 @@
     "content": "The summary theorem combines the two main results: (1) Bombieri-Lang implies no dense rational distance set exists, and (2) unconditionally, such sets are contained in finite unions of curves.",
     "mathContext": "summary_erdos_212 : (BombieriLangConjecture → Erdos212Conjecture) ∧ (∀ S, HasRationalDistances S → ∃ curves, S ⊆ ⋃ C ∈ curves, C)",
     "significance": "key",
+    "prerequisites": [
+      "combined results",
+      "proof techniques",
+      "summary"
+    ],
     "relatedConcepts": [
       "summary",
       "combined results"

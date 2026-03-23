@@ -11,6 +11,10 @@
     "content": "The claim that Principia Mathematica took 362 pages to prove $1+1=2$ has become legendary—and somewhat misleading. Those pages weren't proving a single equation; they were constructing the entire logical framework needed to give rigorous meaning to the symbols '1', '+', '=', and '2'.\n\nIn modern type theory, this proof is definitionally true: the computation $1+1$ *reduces to* $2$ by the very definitions of the symbols involved. The `rfl` tactic (reflexivity) captures this.",
     "mathContext": "Introduction to the formalization of The Most Famous 'Trivial' Proof",
     "significance": "key",
+    "prerequisites": [
+      "Principia Mathematica",
+      "definitional equality"
+    ],
     "relatedConcepts": [
       "Principia Mathematica",
       "definitional equality",
@@ -29,6 +33,11 @@
     "content": "The natural numbers are defined as an **inductive type** with exactly two constructors:\n\n1. `zero` — the base case, representing 0\n2. `succ` — the successor function, taking any natural to its successor\n\nThis is Peano's original insight: we don't need to say *what* numbers are, only *how they behave*. Zero exists, and every number has a successor. From these two building blocks, we get all of $\\mathbb{N}$.",
     "mathContext": "$\\mathbb{N} = \\{0, S(0), S(S(0)), S(S(S(0))), \\ldots\\}$",
     "significance": "critical",
+    "prerequisites": [
+      "Peano axioms",
+      "basic set theory",
+      "inductive types"
+    ],
     "relatedConcepts": [
       "inductive types",
       "Peano axioms",
@@ -47,6 +56,11 @@
     "content": "We define convenient names for the first few numbers:\n\n- $1 = S(0)$ (one successor of zero)\n- $2 = S(S(0))$ (two successors of zero)\n- $3 = S(S(S(0)))$ (three successors)\n\nThese are just syntactic sugar—`one` is literally defined to *be* `succ zero`, not merely equal to it.",
     "mathContext": "$1 \\stackrel{\\text{def}}{=} S(0), \\quad 2 \\stackrel{\\text{def}}{=} S(S(0))$",
     "significance": "supporting",
+    "prerequisites": [
+      "basic set theory",
+      "definitional equality",
+      "notation"
+    ],
     "relatedConcepts": [
       "definitional equality",
       "notation"
@@ -148,6 +162,11 @@
     "content": "Zero is a right identity for addition: $n + 0 = n$. This follows immediately from the definition of `add`—it's the base case! The proof is `rfl` because `n + zero` *reduces to* `n` by definition.",
     "mathContext": "$\\forall n \\in \\mathbb{N}: n + 0 = n$",
     "significance": "supporting",
+    "prerequisites": [
+      "identity element",
+      "logical reasoning",
+      "monoid"
+    ],
     "relatedConcepts": [
       "identity element",
       "monoid"
@@ -205,6 +224,11 @@
     "content": "Addition is associative: $(a + b) + c = a + (b + c)$. With commutativity, this makes $(\\mathbb{N}, +)$ a commutative monoid.\n\nThe proof is by induction on `c`, which matches how addition is defined (recursion on the second argument). Both base case and inductive step reduce to definitional equality after applying the definition of `add`.",
     "mathContext": "$\\forall a, b, c \\in \\mathbb{N}: (a + b) + c = a + (b + c)$",
     "significance": "key",
+    "prerequisites": [
+      "associative property",
+      "logical reasoning",
+      "monoid"
+    ],
     "relatedConcepts": [
       "associative property",
       "monoid",
@@ -223,6 +247,11 @@
     "content": "Once we have the machinery, more arithmetic facts fall out immediately:\n\n- $2 + 1 = 3$ — `rfl`\n- $1 + 2 = 3$ — `rfl` \n- $2 + 2 = 4$ — `rfl`\n\nAll definitionally true, requiring no proof beyond reflexivity. The pattern extends to any concrete computation with natural numbers.",
     "mathContext": "Lean: `theorem succ_add (n m : ℕ) : succ n + m = succ (n + m)`",
     "significance": "supporting",
+    "prerequisites": [
+      "computation",
+      "definitional equality",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "definitional equality",
       "computation"
@@ -260,6 +289,12 @@
     "content": "Russell and Whitehead weren't trying to prove $1+1=2$ in isolation—they were building a complete logical foundation for all of mathematics.\n\nTheir approach was radically different from ours:\n\n- **Numbers as sets:** 1 was defined as *the set of all singleton sets*, 2 as *the set of all two-element sets*\n- **Addition via unions:** $a + b$ meant taking the union of disjoint representatives\n- **Ramified type theory:** To avoid paradoxes, they used a complex type hierarchy\n\nIn contrast, modern type theory treats natural numbers as a primitive inductive type, making the foundations far simpler. We're not cheating—we've just found a better foundation.",
     "mathContext": "Lean: `theorem two_plus_one_eq_three : two + one = three`",
     "significance": "key",
+    "prerequisites": [
+      "Frege-Russell definition",
+      "complex numbers",
+      "logicism",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "Frege-Russell definition",
       "logicism",

@@ -11,6 +11,11 @@
     "content": "**lacunarySum**: The infinite series Σ_{k=1}^∞ 1/2^{n_k} for a sequence n : ℕ → ℕ. In binary, this creates a number with 1s at positions n_k. The 'lacunary' (gappy) structure emerges when n_k grows quickly, making the 1s increasingly sparse.",
     "mathContext": "$\\text{lacunarySum}(n) = \\sum_{k=1}^{\\infty} \\frac{1}{2^{n_k}} \\in (0, 1]$; converges since $\\sum 1/2^k < \\infty$ and $n_k \\geq k$ (strictly increasing).",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "binary representation",
+      "infinite series"
+    ],
     "relatedConcepts": [
       "infinite series",
       "binary representation",
@@ -29,6 +34,11 @@
     "content": "**HasWeakGrowth**: For all C > 0, there exists k with n_k > C·k. This is equivalent to lim sup n_k/k = ∞, meaning the sequence eventually grows faster than any linear function. Example: k² satisfies this but k does not.",
     "mathContext": "$\\text{HasWeakGrowth}(n) \\Leftrightarrow \\limsup_{k \\to \\infty} n_k/k = \\infty \\Leftrightarrow \\forall C > 0, \\exists k: n_k > Ck$; contrast: $n_k = k$ fails, $n_k = k^2$ passes.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "growth rate",
+      "limsup"
+    ],
     "relatedConcepts": [
       "limsup",
       "growth rate",
@@ -47,6 +57,12 @@
     "content": "**HasStrongGrowth**: For ALL exponents t ≥ 1 and all C > 0, there exists k with n_k > C·k^t. This means the sequence grows faster than ANY polynomial. Factorial and exponential functions satisfy this; polynomial functions do not.",
     "mathContext": "$\\text{HasStrongGrowth}(n) \\Leftrightarrow \\forall t \\geq 1, \\limsup_{k \\to \\infty} n_k/k^t = \\infty$; implies $\\text{HasWeakGrowth}$ (take $t=1$); examples: $n_k = k!$, $n_k = 2^k$.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "polynomial growth",
+      "polynomial ring theory",
+      "superpolynomial"
+    ],
     "relatedConcepts": [
       "polynomial growth",
       "superpolynomial",
@@ -65,6 +81,12 @@
     "content": "**erdos_247_conjecture**: The full conjecture states that weak growth (faster than linear) suffices for transcendence. This remains OPEN - we only know that strong growth (faster than any polynomial) works. The gap between these conditions is where the difficulty lies.",
     "mathContext": "Conjecture: $\\text{HasWeakGrowth}(n) \\Rightarrow \\text{Transcendental}(\\text{lacunarySum}(n))$; known: $\\text{HasStrongGrowth}(n) \\Rightarrow \\text{Transcendental}$; open: does $n_k = k^2$ (weak but not strong) give transcendental $\\sum 1/2^{k^2}$?",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "open problems",
+      "polynomial ring theory",
+      "transcendence"
+    ],
     "relatedConcepts": [
       "open problems",
       "transcendence",
@@ -83,6 +105,12 @@
     "content": "**erdos_transcendence_strong** (axiom): Under strong growth conditions, the lacunary sum is transcendental. The proof uses Liouville-type arguments: if α is algebraic of degree d, then |α - p/q| > c/q^d. But lacunary sums with superpolynomial growth can be approximated by their partial sums (rationals) with error smaller than any Liouville bound.",
     "mathContext": "$\\text{HasStrongGrowth}(n) \\Rightarrow \\neg\\text{Algebraic}(\\sum 1/2^{n_k})$; key: $|\\sum_{k=1}^{\\infty} 1/2^{n_k} - \\sum_{k=1}^N 1/2^{n_k}| \\leq 2/2^{n_{N+1}}$, which beats Liouville's bound $c/2^{d \\cdot n_N}$ when $n_{N+1}/n_N \\to \\infty$.",
     "significance": "key",
+    "prerequisites": [
+      "Liouville theorem",
+      "algebraic numbers",
+      "polynomial ring theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Liouville theorem",
       "algebraic numbers",
@@ -101,6 +129,12 @@
     "content": "**factorial_strictMono**: The sequence k ↦ (k+1)! is strictly increasing. This is needed to apply Erdős's theorem, which requires the index sequence to be strictly increasing. Proof uses Nat.factorial_lt_of_lt.",
     "mathContext": "Lean: `axiom erdos_transcendence_strong (n : ℕ → ℕ)`",
     "significance": "supporting",
+    "prerequisites": [
+      "StrictMono",
+      "factorial",
+      "natural number arithmetic",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "factorial",
       "StrictMono",
@@ -119,6 +153,11 @@
     "content": "**pow2_strictMono**: The sequence k ↦ 2^k is strictly increasing. Another example of a sequence with strong growth that can serve as the index for a transcendental lacunary sum.",
     "mathContext": "Lean: `theorem factorial_strictMono : StrictMono (fun k => (k + 1).factorial)`",
     "significance": "supporting",
+    "prerequisites": [
+      "StrictMono",
+      "exponential function",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "exponential function",
       "StrictMono",
@@ -137,6 +176,12 @@
     "content": "**factorial_strong_growth** and **pow2_strong_growth** (axioms): Both k! and 2^k grow faster than any polynomial. These facts are axiomatized here; proving them formally would require analysis of growth rates. Both k!/k^t → ∞ and 2^k/k^t → ∞ for any fixed t.",
     "mathContext": "Lean: `theorem pow2_strictMono : StrictMono (fun k => 2^k)`",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic analysis",
+      "basic set theory",
+      "factorial growth",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "asymptotic analysis",
       "factorial growth",
@@ -155,6 +200,11 @@
     "content": "**factorial_sum_transcendental** and **pow2_sum_transcendental**: As corollaries of Erdős's theorem, both Σ 1/2^{k!} and Σ 1/2^{2^k} are transcendental. These are famous examples of explicit transcendental numbers.",
     "mathContext": "Formalizes the concept of transcendental lacunary sums",
     "significance": "key",
+    "prerequisites": [
+      "Liouville constant",
+      "explicit transcendentals",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Liouville constant",
       "explicit transcendentals",
@@ -173,6 +223,11 @@
     "content": "**squareSeq** and **square_sum**: The sequence n_k = k² is the simplest example in the 'gap' between weak and strong growth. It grows faster than linear (satisfies weak growth) but NOT faster than quadratic (fails strong growth). Whether Σ 1/2^{k²} is transcendental remains OPEN.",
     "mathContext": "Lean: `theorem pow2_strong_growth : HasStrongGrowth (fun k => 2 ^ k)`",
     "significance": "key",
+    "prerequisites": [
+      "open problems",
+      "polynomial growth",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "open problems",
       "polynomial growth",
@@ -191,6 +246,11 @@
     "content": "**square_strictMono**: The sequence k ↦ (k+1)² is strictly increasing. This shows the square sequence is a valid index sequence for Erdős's problem, even though we can't prove transcendence of the resulting sum.",
     "mathContext": "Formalizes the concept of square sequence monotonicity",
     "significance": "supporting",
+    "prerequisites": [
+      "Nat.pow_lt_pow_left",
+      "StrictMono",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "StrictMono",
       "Nat.pow_lt_pow_left",
@@ -209,6 +269,11 @@
     "content": "**problem_247_summary**: Packages the main results: (1) Erdős's theorem for strong growth, (2) transcendence of the factorial sum, (3) transcendence of the double-exponential sum. This provides a clean interface to the file's main contributions.",
     "mathContext": "Formalizes the concept of summary theorem",
     "significance": "key",
+    "prerequisites": [
+      "API design",
+      "proof techniques",
+      "theorem packaging"
+    ],
     "relatedConcepts": [
       "API design",
       "theorem packaging",

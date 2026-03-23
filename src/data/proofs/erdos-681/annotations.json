@@ -11,6 +11,11 @@
     "content": "Erdős Problem 681 asks whether, for all sufficiently large n, there exists a positive integer k such that n+k is composite and its least prime factor exceeds k². Posed by Erdős, Eggleton, and Selfridge, it probes the distribution of smooth numbers near a given integer.",
     "mathContext": "The question concerns the interplay between additive shifts and multiplicative structure. Near any large n, most composite numbers n+k have small prime factors (of order √(n+k)). The conjecture asserts that some shifted composites have unusually large least prime factors relative to the shift.",
     "significance": "key",
+    "prerequisites": [
+      "prime numbers",
+      "prime-factors",
+      "smooth-numbers"
+    ],
     "relatedConcepts": [
       "prime-factors",
       "smooth-numbers",
@@ -29,6 +34,12 @@
     "content": "Imports `Nat.Prime.Basic` for primality definitions and `Tactic` for proof automation. The formalization builds on Mathlib's `Nat.minFac` function.",
     "mathContext": "Formalizes the concept of imports and setup",
     "significance": "supporting",
+    "prerequisites": [
+      "mathlib",
+      "natural number arithmetic",
+      "prime numbers",
+      "prime-basic"
+    ],
     "relatedConcepts": [
       "mathlib",
       "prime-basic"
@@ -46,6 +57,12 @@
     "content": "**`leastPrimeFactor m`** returns the smallest prime dividing m, using Mathlib's `Nat.minFac`. Returns 1 for m ≤ 1.",
     "mathContext": "The least prime factor p(m) is a fundamental multiplicative function. For composite m, we always have p(m) ≤ √m since m must have a factor at most its square root.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "minFac",
+      "natural number arithmetic",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "minFac",
       "prime-factorization"
@@ -63,6 +80,12 @@
     "content": "**`IsLeastPrimeFactor p m`** holds when p is prime, p divides m, and p is minimal among all prime divisors of m. This is a relational characterization that avoids partial functions.",
     "mathContext": "The predicate approach (rather than function) handles edge cases cleanly and allows stating results about any witness without computing minFac.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "predicate-style",
+      "prime numbers",
+      "prime-divisors"
+    ],
     "relatedConcepts": [
       "predicate-style",
       "prime-divisors"
@@ -80,6 +103,12 @@
     "content": "Every composite number m ≥ 2 has a least prime factor. This is axiomatized since the constructive proof via `Nat.minFac` requires showing the predicate is satisfied.",
     "mathContext": "Lean: `theorem minFac_is_lpf (m : ℕ) (hm : 2 ≤ m) :`",
     "significance": "supporting",
+    "prerequisites": [
+      "existence",
+      "fundamental-theorem",
+      "natural number arithmetic",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "fundamental-theorem",
       "existence"
@@ -97,6 +126,11 @@
     "content": "**The main conjecture**: For all sufficiently large n, there exists k > 0 such that n+k is composite and its least prime factor exceeds k². The composite requirement is essential since primes trivially have large LPF (equal to themselves).",
     "mathContext": "Formally: ∃ N₀, ∀ n ≥ N₀, ∃ k > 0, ¬(n+k).Prime ∧ 2 ≤ n+k ∧ ∀ p, IsLeastPrimeFactor p (n+k) → k² < p. The condition k² < p(n+k) for a composite is very strong — it says the smallest factor grows quadratically in the shift.",
     "significance": "key",
+    "prerequisites": [
+      "number-theory",
+      "prime numbers",
+      "sieving"
+    ],
     "relatedConcepts": [
       "number-theory",
       "sieving",
@@ -115,6 +149,11 @@
     "content": "**Generalization**: For any fixed d, for all large n, there exists k > 0 with n+k composite and p(n+k) > k^d. The original conjecture is the d = 2 case.",
     "mathContext": "The generalization to arbitrary exponents d asks whether near every large integer, some composite shift has a least prime factor that is a d-th power of the shift. For large d this becomes extremely restrictive.",
     "significance": "key",
+    "prerequisites": [
+      "exponent-growth",
+      "generalization",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "generalization",
       "exponent-growth"
@@ -132,6 +171,11 @@
     "content": "The least prime factor of a composite m satisfies p(m) ≤ √m. This is the trivial upper bound: every composite has a prime factor at most its square root.",
     "mathContext": "Combined with the conjecture, this means we need k such that k² < p(n+k) ≤ √(n+k), giving k⁴ < n+k. So the conjecture is non-trivial only for k ≪ n^{1/4}.",
     "significance": "supporting",
+    "prerequisites": [
+      "composite-structure",
+      "prime numbers",
+      "trial-division"
+    ],
     "relatedConcepts": [
       "trial-division",
       "composite-structure"
@@ -149,6 +193,12 @@
     "content": "**`Nat.minFac`** gives the least prime factor for m ≥ 2, connecting the Mathlib API to the IsLeastPrimeFactor predicate used throughout the formalization.",
     "mathContext": "Lean: `theorem leastPrimeFactor_eq_minFac (m : ℕ) (hm : 2 ≤ m) :`",
     "significance": "supporting",
+    "prerequisites": [
+      "mathlib-api",
+      "minFac",
+      "natural number arithmetic",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "mathlib-api",
       "minFac"

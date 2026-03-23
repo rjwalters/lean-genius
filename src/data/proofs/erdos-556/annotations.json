@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #556: 3-Color Ramsey Number for Cycles**\n\nShow that R(C_n;3) ≤ 4n - 3, where R(G;3) is the minimum m such that any 3-coloring of K_m contains a monochromatic copy of G.\n\n**Complete Resolution:**\n- Odd n (large): R(C_n;3) = 4n - 3 exactly (KSS 2005)\n- Even n (large): R(C_n;3) = 2n (Benevides-Skokan 2009)\n\nThe bound is tight for odd n, and even cycles behave completely differently!",
     "mathContext": "Ramsey theory studies how large a structure must be to guarantee certain substructures. This problem is about cycles in edge-colored complete graphs.",
     "significance": "key",
+    "prerequisites": [
+      "Cycles",
+      "Ramsey numbers",
+      "Ramsey theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Ramsey numbers",
       "Cycles",
@@ -29,6 +35,12 @@
     "content": "**EdgeColoring3 n:**\n\nA function assigning one of 3 colors to each edge of K_n.\n\n**Definition:** Fin n × Fin n → Fin 3\n\nThis represents any way to color the edges of a complete graph with 3 colors (typically called red, blue, green).",
     "mathContext": "Edge colorings are fundamental in Ramsey theory. The question is: how large must n be to guarantee a monochromatic subgraph?",
     "significance": "key",
+    "prerequisites": [
+      "Complete graphs",
+      "Edge coloring",
+      "Ramsey theory",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Edge coloring",
       "Complete graphs",
@@ -47,6 +59,12 @@
     "content": "**cycleGraph n:**\n\nThe cycle graph on n vertices, where vertex i is adjacent to vertices (i-1) mod n and (i+1) mod n.\n\n**Examples:**\n- C_3 = triangle (K_3)\n- C_4 = square\n- C_5 = pentagon\n\nCycles are fundamental graphs in Ramsey theory.",
     "mathContext": "Cycles are among the simplest non-complete graphs, making their Ramsey numbers tractable to study.",
     "significance": "key",
+    "prerequisites": [
+      "Cycles",
+      "Ramsey theory",
+      "Simple graphs",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Cycles",
       "Simple graphs",
@@ -65,6 +83,12 @@
     "content": "**R_cycle_3 n:**\n\nThe 3-color Ramsey number for C_n: the minimum m such that any 3-coloring of K_m contains a monochromatic cycle C_n.\n\n**Intuition:** No matter how you 3-color the edges of K_m, you cannot avoid a single-color cycle of length n.",
     "mathContext": "This is the central object of study in Problem #556. The challenge is to determine its exact value.",
     "significance": "key",
+    "prerequisites": [
+      "Monochromatic subgraphs",
+      "Ramsey numbers",
+      "Ramsey theory",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Ramsey numbers",
       "Monochromatic subgraphs",
@@ -83,6 +107,12 @@
     "content": "**bondy_erdos_conjecture:**\n\nR(C_n;3) ≤ 4n - 3 for all n ≥ 3.\n\n**Interpretation:** You only need 4n - 3 vertices to guarantee a monochromatic n-cycle in any 3-coloring.\n\n**Result:** PROVED, and tight for odd n!",
     "mathContext": "This was the original conjecture that motivated decades of research.",
     "significance": "key",
+    "prerequisites": [
+      "Original conjectures",
+      "Upper bounds",
+      "graph coloring",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Original conjectures",
       "Upper bounds",
@@ -101,6 +131,11 @@
     "content": "**luczak_1999_general:**\n\nR(C_n;3) ≤ (4 + o(1))n for all n.\n\nŁuczak proved the first asymptotic result, showing the coefficient 4 is correct up to lower-order terms.\n\nThis was a major step toward the exact bound.",
     "mathContext": "Asymptotic results often precede exact bounds in Ramsey theory.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic bounds",
+      "First major results",
+      "Ramsey theory"
+    ],
     "relatedConcepts": [
       "Asymptotic bounds",
       "First major results"
@@ -118,6 +153,10 @@
     "content": "**luczak_1999_even:**\n\nR(C_n;3) ≤ (3 + o(1))n for even n.\n\n**Key observation:** Even cycles need FEWER vertices than odd cycles—the coefficient drops from 4 to 3!\n\nThis hinted at the eventual exact result: R = 2n for even n.",
     "mathContext": "The even/odd dichotomy was first visible in Łuczak's asymptotic improvement.",
     "significance": "key",
+    "prerequisites": [
+      "Even cycles",
+      "Improved bounds"
+    ],
     "relatedConcepts": [
       "Even cycles",
       "Improved bounds",
@@ -136,6 +175,11 @@
     "content": "**kss_2005_upper_odd:**\n\nR(C_n;3) ≤ 4n - 3 for sufficiently large odd n.\n\nKohayakawa, Simonovits, and Skokan proved the exact upper bound using the regularity method.\n\nCombined with the lower bound, this gives R(C_n;3) = 4n - 3 exactly.",
     "mathContext": "The KSS paper is a landmark in Ramsey theory, establishing exact bounds using modern techniques.",
     "significance": "key",
+    "prerequisites": [
+      "Exact upper bounds",
+      "Ramsey theory",
+      "Regularity method"
+    ],
     "relatedConcepts": [
       "Exact upper bounds",
       "Regularity method",
@@ -154,6 +198,12 @@
     "content": "**kss_2005_lower_odd:**\n\nR(C_n;3) ≥ 4n - 3 for sufficiently large odd n.\n\n**Construction:** There exists a 3-coloring of K_{4n-4} with no monochromatic C_n.\n\nThis shows the Bondy-Erdős bound is tight!",
     "mathContext": "Lower bounds require explicit constructions avoiding monochromatic cycles.",
     "significance": "key",
+    "prerequisites": [
+      "Constructions",
+      "Lower bounds",
+      "graph coloring",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Lower bounds",
       "Constructions",
@@ -172,6 +222,12 @@
     "content": "**R_cycle_odd_exact:**\n\nFor sufficiently large odd n: R(C_n;3) = 4n - 3.\n\n**Proof:** Combines KSS upper bound (≤ 4n-3) and lower bound (≥ 4n-3).\n\nThis completely resolves the odd cycle case.",
     "mathContext": "Matching upper and lower bounds give exact Ramsey numbers.",
     "significance": "key",
+    "prerequisites": [
+      "Exact Ramsey numbers",
+      "Matching bounds",
+      "Ramsey theory",
+      "matching theory"
+    ],
     "relatedConcepts": [
       "Exact Ramsey numbers",
       "Matching bounds"
@@ -189,6 +245,11 @@
     "content": "**benevides_skokan_2009:**\n\nFor sufficiently large even n: R(C_n;3) = 2n.\n\n**Dramatic difference:** Even cycles need only 2n vertices, compared to 4n-3 for odd cycles!\n\nThe ratio is nearly 2:1.",
     "mathContext": "The even cycle result shows parity fundamentally changes Ramsey behavior.",
     "significance": "key",
+    "prerequisites": [
+      "Even cycles",
+      "Exact bounds",
+      "Ramsey theory"
+    ],
     "relatedConcepts": [
       "Even cycles",
       "Exact bounds",
@@ -207,6 +268,12 @@
     "content": "**Why odd and even cycles differ:**\n\n- **Odd cycles:** Have odd length, creating parity constraints with 3-colorings\n- **Even cycles:** Can be 2-colored (bipartite structure helps)\n\n**Lower bound constructions:**\n- Even n: K_{2n-1} can be 3-colored avoiding monochromatic C_n\n- Odd n: K_{4n-4} can be 3-colored avoiding monochromatic C_n\n\nThe structural difference leads to factor-of-2 gap in Ramsey numbers.",
     "mathContext": "Parity effects are common in combinatorics but rarely this dramatic.",
     "significance": "key",
+    "prerequisites": [
+      "Parity constraints",
+      "Ramsey theory",
+      "Structural differences",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Parity constraints",
       "Structural differences",
@@ -225,6 +292,10 @@
     "content": "**Known exact values:**\n\n- R(C_3;3) = 17 (triangle = R(3,3,3))\n- R(C_4;3) = 8 = 2(4) ✓\n- R(C_5;3) = 17 = 4(5)-3 ✓\n\nThe formulas work even for small n:\n- 4(5)-3 = 17 for odd n = 5\n- 2(4) = 8 for even n = 4",
     "mathContext": "Small cases often require different techniques but confirm the general pattern.",
     "significance": "key",
+    "prerequisites": [
+      "Explicit values",
+      "Small Ramsey numbers"
+    ],
     "relatedConcepts": [
       "Small Ramsey numbers",
       "Explicit values",
@@ -243,6 +314,11 @@
     "content": "**Key techniques in the proofs:**\n\n1. **Szemerédi Regularity Lemma:** Decomposes any dense graph into \"regular\" parts\n2. **Blow-up Lemma:** Embeds graphs into regular pairs\n\nThese powerful tools from extremal graph theory made exact bounds possible.\n\nWithout regularity, only asymptotic results would be achievable.",
     "mathContext": "The regularity method revolutionized extremal combinatorics in the 1970s-2000s.",
     "significance": "key",
+    "prerequisites": [
+      "Blow-up lemma",
+      "Regularity lemma",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Regularity lemma",
       "Blow-up lemma",
@@ -261,6 +337,12 @@
     "content": "**erdos_556:**\n\nComplete resolution of Erdős Problem #556:\n\n1. R(C_n;3) ≤ 4n - 3 for all n ≥ 3 (Bondy-Erdős conjecture PROVED)\n2. R(C_n;3) = 4n - 3 for large odd n (exact!)\n3. R(C_n;3) = 2n for large even n\n\nThe problem is completely solved.",
     "mathContext": "A comprehensive theorem packaging all results about 3-color cycle Ramsey numbers.",
     "significance": "key",
+    "prerequisites": [
+      "Complete resolution",
+      "Main theorem",
+      "Ramsey theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Complete resolution",
       "Main theorem"
@@ -278,6 +360,12 @@
     "content": "**erdos_556_summary:**\n\n**Erdős Problem #556: SOLVED**\n\n- Odd n (large): R(C_n;3) = 4n - 3\n- Even n (large): R(C_n;3) = 2n\n\nThe Bondy-Erdős conjecture is proved with the beautiful twist that odd and even cycles have completely different Ramsey numbers.",
     "mathContext": "The final answer shows one of the most striking parity dichotomies in Ramsey theory.",
     "significance": "key",
+    "prerequisites": [
+      "Dichotomy",
+      "Final answer",
+      "Ramsey theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Final answer",
       "Dichotomy",

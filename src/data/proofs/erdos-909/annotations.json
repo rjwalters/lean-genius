@@ -29,6 +29,11 @@
       }
     ],
     "significance": "key",
+    "prerequisites": [
+      "covering dimension",
+      "product spaces",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "covering dimension",
       "product spaces",
@@ -48,6 +53,11 @@
     "content": "**`coveringDimension X n`** (axiom): The topological space $X$ has covering dimension $\\leq n$.\n\n**Standard definition**: $\\dim(X) \\leq n$ if every finite open cover of $X$ has a refinement of **order** at most $n+1$ — meaning no point of $X$ lies in more than $n+1$ sets of the refinement.\n\n**Equivalences** (for separable metrizable spaces):\n- Small inductive dimension $\\text{ind}(X) = n$\n- Large inductive dimension $\\text{Ind}(X) = n$\n- Covering dimension $\\dim(X) = n$\n\nAll three are equal for separable metrizable spaces (Katětov-Morita theorem). The axiomatization here is necessary because Mathlib does not yet have covering dimension.",
     "mathContext": "coveringDimension X n := dim(X) ≤ n (every open cover refines to order ≤ n+1)",
     "significance": "key",
+    "prerequisites": [
+      "Lebesgue covering dimension",
+      "refinement",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Lebesgue covering dimension",
       "refinement",
@@ -67,6 +77,11 @@
     "content": "**`hasDimensionExactly X n`**: $\\dim(X) = n$ — the space has dimension exactly $n$.\n\n**Lean definition**: `dimLeq X n ∧ (n > 0 → ¬dimLeq X (n - 1))`\n\nThis captures $\\dim(X) \\leq n$ AND $\\dim(X) \\not\\leq n-1$ (when $n > 0$). The guard $n > 0$ avoids the meaningless case of 'dimension not at most $-1$'.\n\n**Key property**: This is the standard way to pin down dimension as an exact value rather than just an upper bound.",
     "mathContext": "hasDimensionExactly X n := dimLeq X n ∧ (n > 0 → ¬dimLeq X (n-1))",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "exact dimension",
+      "upper bound vs equality"
+    ],
     "relatedConcepts": [
       "exact dimension",
       "upper bound vs equality"
@@ -84,6 +99,11 @@
     "content": "**`dimension_product_ineq`** (axiom): If $\\dim(X) \\leq m$ and $\\dim(Y) \\leq n$, then $\\dim(X \\times Y) \\leq m + n$.\n\nThis is the **fundamental product inequality** for covering dimension, proved for compact metric spaces by Hurewicz-Wallman and extended to broader classes.\n\n**When tight**: For Euclidean spaces, cubes, manifolds: $\\dim(X \\times Y) = \\dim(X) + \\dim(Y)$ (equality). The Erdős problem asks precisely when this can fail — and how badly.\n\n**Maximum failure**: Anderson-Keisler spaces achieve $\\dim(S \\times S) = \\dim(S)$ instead of $2 \\cdot \\dim(S)$, the most extreme possible violation.",
     "mathContext": "dimension_product_ineq: dimLeq X m → dimLeq Y n → dimLeq (X×Y) (m+n)",
     "significance": "key",
+    "prerequisites": [
+      "Hurewicz-Wallman",
+      "product inequality",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "product inequality",
       "Hurewicz-Wallman",
@@ -102,6 +122,12 @@
     "content": "**`erdos909Statement`**: $\\forall n \\geq 1,\\, \\exists (S : \\text{Type})$ with `TopologicalSpace S` such that $\\dim(S) = n \\wedge \\dim(S \\times S) = n$.\n\nThis is the **existential** formulation: for each $n$, we need to produce a witness space $S$. The construction is non-trivial — the Anderson-Keisler spaces are defined using descriptive set theory, not elementary topology.\n\n**Why $n \\geq 1$**: For $n = 0$, every finite discrete space satisfies $\\dim(S) = 0$ and $\\dim(S \\times S) = 0$, so the question is trivial. The interesting cases are $n \\geq 1$.",
     "mathContext": "erdos909Statement := ∀ n ≥ 1, ∃ S : Type, TopologicalSpace S ∧ hasDimensionExactly S n ∧ hasDimensionExactly (S×S) n",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "existential quantification",
+      "topology",
+      "witness construction"
+    ],
     "relatedConcepts": [
       "existential quantification",
       "witness construction"
@@ -119,6 +145,11 @@
     "content": "**`rational_hilbert_example`** (axiom): There exists $S$ with $\\dim(S) = 1$ and $\\dim(S \\times S) = 1$.\n\n**The witness**: $\\ell^2(\\mathbb{Q})$ — the set of points in Hilbert space $\\ell^2$ with all coordinates rational. This is a countable, dense, totally disconnected subset of $\\ell^2$.\n\n**Why $\\dim(\\ell^2(\\mathbb{Q})) = 1$**: Despite being a subset of an infinite-dimensional space, $\\ell^2(\\mathbb{Q})$ has covering dimension exactly 1. Intuitively, the rationals create enough 'gaps' that open covers can be refined efficiently.\n\n**Why $\\dim(\\ell^2(\\mathbb{Q}) \\times \\ell^2(\\mathbb{Q})) = 1$**: The product of two copies inherits the gap structure, and covers of the product can be refined without increasing the order. This was known before Anderson-Keisler and is connected to classical results of Erdős and Sierpiński on pathological topological spaces.",
     "mathContext": "∃ S, dim(S) = 1 ∧ dim(S×S) = 1; witness: ℓ²(ℚ) (rational coordinates in Hilbert space)",
     "significance": "key",
+    "prerequisites": [
+      "Hilbert space",
+      "rational coordinates",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Hilbert space",
       "rational coordinates",
@@ -138,6 +169,10 @@
     "content": "**`anderson_keisler_theorem`** (axiom): For every $n \\geq 1$, there exists a **separable metric** space $S$ (witnessed by `MetrizableSpace S`) with $\\dim(S) = n$ and $\\dim(S \\times S) = n$.\n\n**Construction outline**:\n1. Start with an $n$-dimensional compact space (e.g., $[0,1]^n$)\n2. Use descriptive set theory (absolute Borel sets) to select a subset\n3. The subset is chosen so that open covers of $S \\times S$ can be refined to order $\\leq n+1$\n4. The key technical ingredient: controlling how covers of the two factors interact\n\n**Significance**: This is the main result that resolves Erdős Problem #909 for all $n$. The `MetrizableSpace` witness ensures the spaces are well-behaved enough for dimension theory to be meaningful.\n\n**Lean**: Returns `∃ (S : Type) (_ : TopologicalSpace S) (_ : MetrizableSpace S), hasDimensionExactly S n ∧ hasDimensionExactly (S × S) n`",
     "mathContext": "anderson_keisler_theorem: ∀ n ≥ 1, ∃ S metrizable separable, dim(S) = n ∧ dim(S×S) = n",
     "significance": "key",
+    "prerequisites": [
+      "Anderson-Keisler",
+      "absolute Borel sets"
+    ],
     "relatedConcepts": [
       "Anderson-Keisler",
       "absolute Borel sets",
@@ -157,6 +192,11 @@
     "content": "**`erdos_909 : erdos909Statement`**: The problem is solved — YES for all $n \\geq 1$.\n\n**Proof**: Given $n \\geq 1$, apply `anderson_keisler_theorem n hn` to obtain space $S$ with `MetrizableSpace` instance and dimension properties. The metrizability witness is dropped (the problem statement only requires `TopologicalSpace`), and $(S, \\text{hTop}, \\text{hdim})$ is returned.\n\n**Lean proof**: `intro n hn; obtain ⟨S, hTop, _, hdim⟩ := anderson_keisler_theorem n hn; exact ⟨S, hTop, hdim⟩`\n\nThe underscore `_` discards the `MetrizableSpace` instance since the problem statement doesn't require it.",
     "mathContext": "erdos_909 : erdos909Statement (direct from anderson_keisler_theorem, dropping MetrizableSpace witness)",
     "significance": "key",
+    "prerequisites": [
+      "instance dropping",
+      "proof techniques",
+      "solved Erdős problem"
+    ],
     "relatedConcepts": [
       "solved Erdős problem",
       "instance dropping",
@@ -175,6 +215,11 @@
     "content": "**Two standard background results** (both axiomatized):\n\n1. **`dimension_euclidean n`**: $\\dim(\\mathbb{R}^n) = n$, where $\\mathbb{R}^n$ is `Fin n → ℝ`. This establishes that Euclidean spaces have the expected covering dimension, serving as the 'normal' case against which the Anderson-Keisler construction is surprising.\n\n2. **`dimension_subspace X Y n`**: If $Y \\subseteq X$ and $\\dim(X) \\leq n$, then $\\dim(Y) \\leq n$ (monotonicity). Subspaces cannot have larger dimension than the ambient space.\n\nNeither is directly used in the main proof, but they provide essential context: the Anderson-Keisler spaces are subsets of $\\mathbb{R}^n$-like spaces, and their dimension is controlled by the ambient space.",
     "mathContext": "dimension_euclidean: dimLeq (Fin n → ℝ) n; dimension_subspace: Y ⊆ X → dimLeq X n → dimLeq Y n",
     "significance": "supporting",
+    "prerequisites": [
+      "Euclidean dimension",
+      "monotonicity",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Euclidean dimension",
       "monotonicity",
@@ -193,6 +238,11 @@
     "content": "**`erdos_909_summary`**: Packages two results into one theorem:\n\n1. `erdos909Statement` holds — the problem is solved for all $n \\geq 1$\n2. An **explicit example** exists for $n = 1$ — the rational Hilbert space $\\ell^2(\\mathbb{Q})$\n\n**Lean proof**: `exact ⟨erdos_909, rational_hilbert_example⟩`\n\n**What this means**: Not only does the abstract Anderson-Keisler theorem guarantee existence for all $n$, but for the base case $n = 1$, we have a concrete and well-understood witness. The gap between the concrete ($n = 1$) and abstract (general $n$) reflects the difficulty jump: the $n = 1$ case uses elementary properties of $\\ell^2(\\mathbb{Q})$, while the general case requires deep descriptive set theory.",
     "mathContext": "erdos_909_summary : erdos909Statement ∧ (∃ S, dim(S)=1 ∧ dim(S×S)=1)",
     "significance": "key",
+    "prerequisites": [
+      "concrete vs abstract",
+      "proof techniques",
+      "summary theorem"
+    ],
     "relatedConcepts": [
       "summary theorem",
       "concrete vs abstract",

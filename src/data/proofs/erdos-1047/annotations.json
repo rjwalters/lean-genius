@@ -11,6 +11,12 @@
     "content": "A **polynomial lemniscate** is the sublevel set:\n\n{z ∈ ℂ : |f(z)| ≤ c}\n\nThe name comes from the lemniscate of Bernoulli (the figure-8 curve), which is the lemniscate of f(z) = z² - 1.\n\nFor small c, the lemniscate breaks into separate 'islands' around each root of f.",
     "mathContext": "Uses the norm `‖·‖` (which equals Complex.abs for ℂ) and `Polynomial.eval` to evaluate f at complex points.",
     "significance": "key",
+    "prerequisites": [
+      "Level sets",
+      "Sublevel sets",
+      "basic set theory",
+      "complex numbers"
+    ],
     "relatedConcepts": [
       "Level sets",
       "Sublevel sets",
@@ -29,6 +35,10 @@
     "content": "The **strict lemniscate** uses < instead of ≤:\n\n{z : |f(z)| < c}\n\nThis is the interior of the lemniscate. The distinction matters for topological properties like connectedness.",
     "mathContext": "Defines the open sublevel set $\\{z \\in \\mathbb{C} : |f(z)| < c\\}$. In Lean this is `{z : ℂ | ‖f.eval z‖ < c}`, using strict inequality `<` on the norm. This is the topological interior of the lemniscate $\\{z : |f(z)| \\le c\\}$.",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "formal mathematics"
     ],
     "significance": "supporting"
@@ -51,6 +61,12 @@
       "inequalities",
       "open sets"
     ],
+    "prerequisites": [
+      "abstract algebra",
+      "algebraic structures",
+      "basic set theory",
+      "polynomial ring theory"
+    ],
     "significance": "supporting"
   },
   {
@@ -66,6 +82,12 @@
     "mathContext": "The map $z \\mapsto |f(z)|$ is continuous, and $[0, c]$ is closed in $\\mathbb{R}$, so the preimage $\\{z : |f(z)| \\le c\\} = |f|^{-1}([0, c])$ is closed. In Lean this is stated as `IsClosed (lemniscate f c)` using the `lemniscate_isClosed` axiom.",
     "relatedConcepts": [
       "continuity",
+      "topology"
+    ],
+    "prerequisites": [
+      "continuity",
+      "continuous functions",
+      "proof techniques",
       "topology"
     ],
     "significance": "supporting"
@@ -88,6 +110,11 @@
       "compactness",
       "inequalities"
     ],
+    "prerequisites": [
+      "Heine-Borel",
+      "algebra",
+      "polynomial ring theory"
+    ],
     "significance": "key"
   },
   {
@@ -102,6 +129,12 @@
     "content": "For sufficiently small c, the lemniscate has exactly m connected components, where m is the number of distinct roots.\n\nEach root gets its own 'island'. As c increases, these islands may merge when c passes a critical value (a saddle point of |f|).",
     "mathContext": "If $f$ is monic with $m$ distinct roots $z_1, \\dots, z_m$, then for sufficiently small $c > 0$ the lemniscate $\\{z : |f(z)| \\le c\\}$ has exactly $m$ connected components. In Lean this is axiomatized with `m = f.roots.toFinset.card` and existence of a threshold $c_0 > 0$ below which the component count equals $m$.",
     "significance": "key",
+    "prerequisites": [
+      "Connected components",
+      "Finset API",
+      "Morse theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Connected components",
       "Morse theory"
@@ -119,6 +152,12 @@
     "content": "A set S ⊆ ℂ is **convex** if for any two points z, w ∈ S, the entire line segment from z to w lies in S:\n\n∀ t ∈ [0,1], (1-t)z + tw ∈ S\n\nThis is the standard definition, viewing ℂ as ℝ².",
     "mathContext": "Viewing ℂ ≅ ℝ², convexity of S means S contains all convex combinations (1−t)z + tw for t ∈ [0,1]. Equivalently, S is the intersection of (possibly infinitely many) closed half-planes, a characterisation used in the Hahn-Banach separation theorem.",
     "significance": "key",
+    "prerequisites": [
+      "Convex hull",
+      "Convex sets",
+      "basic set theory",
+      "convexity"
+    ],
     "relatedConcepts": [
       "Convex sets",
       "Convex hull",
@@ -142,6 +181,12 @@
       "optimization",
       "polynomials"
     ],
+    "prerequisites": [
+      "algebra",
+      "basic set theory",
+      "convexity",
+      "polynomial ring theory"
+    ],
     "significance": "key"
   },
   {
@@ -156,6 +201,12 @@
     "content": "The Grunsky conjecture is **disproved**.\n\nCounterexamples show that lemniscate components can be non-convex, even for small c. The interaction between multiple roots can create 'pinching' effects.",
     "mathContext": "The negation $\\lnot\\text{grunskyConjecture}$ is axiomatized as `grunskyConjecture_false`. This asserts $\\exists f$ monic, $\\exists c > 0$ small, $\\exists z_0 \\in \\{z : |f(z)| \\le c\\}$ such that the connected component containing $z_0$ is not convex. The main theorem `erdos_1047` is definitionally equal to this axiom.",
     "significance": "key",
+    "prerequisites": [
+      "Counterexample",
+      "Disproved conjecture",
+      "convexity",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Disproved conjecture",
       "Counterexample",
@@ -179,6 +230,12 @@
       "optimization",
       "polynomials"
     ],
+    "prerequisites": [
+      "algebra",
+      "basic set theory",
+      "convexity",
+      "simp tactic"
+    ],
     "significance": "key"
   },
   {
@@ -195,6 +252,12 @@
     "relatedConcepts": [
       "convexity",
       "optimization"
+    ],
+    "prerequisites": [
+      "complex numbers",
+      "convexity",
+      "optimization",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -213,6 +276,12 @@
       "algebra",
       "polynomials"
     ],
+    "prerequisites": [
+      "algebra",
+      "basic set theory",
+      "polynomial ring theory",
+      "polynomials"
+    ],
     "significance": "key"
   },
   {
@@ -227,6 +296,11 @@
     "content": "The critical level:\n\nc = 5^(3/2) / 4 ≈ 2.795\n\nAt this level, the lemniscate has three components (around i, -i, and 2), and one of them is non-convex.",
     "mathContext": "The critical value is $c = \\frac{5^{3/2}}{4} = \\frac{5\\sqrt{5}}{4} \\approx 2.795$. In Lean: `goodmanCriticalValue : ℝ := 5 ^ (3/2 : ℝ) / 4`. At this level the lemniscate $\\{z : |(z^2+1)(z-2)^2| \\le c\\}$ has three components, at least one of which is non-convex.",
     "relatedConcepts": [
+      "convexity",
+      "optimization"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "convexity",
       "optimization"
     ],
@@ -249,6 +323,12 @@
       "optimization",
       "polynomials"
     ],
+    "prerequisites": [
+      "algebra",
+      "convexity",
+      "polynomial ring theory",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -269,6 +349,12 @@
       "metric spaces",
       "optimization"
     ],
+    "prerequisites": [
+      "algebra",
+      "convexity",
+      "polynomial ring theory",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -288,6 +374,12 @@
       "optimization",
       "polynomials"
     ],
+    "prerequisites": [
+      "algebra",
+      "basic set theory",
+      "convexity",
+      "polynomial ring theory"
+    ],
     "significance": "key"
   },
   {
@@ -305,6 +397,12 @@
       "convexity",
       "optimization"
     ],
+    "prerequisites": [
+      "complex numbers",
+      "convexity",
+      "optimization",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -321,6 +419,11 @@
     "relatedConcepts": [
       "convexity",
       "optimization"
+    ],
+    "prerequisites": [
+      "convexity",
+      "optimization",
+      "proof techniques"
     ],
     "significance": "key"
   }

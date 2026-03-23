@@ -11,6 +11,10 @@
     "content": "**Erdos Problem #831**\n\nLet h(n) be maximal such that any n points in general position (no 3 collinear, no 4 concyclic) have at least h(n) circles of different radii through triples.\n\n**Key Question:** Estimate h(n) as n -> infinity.\n\n**References:**\n- [Er75h] Erdos 1975\n- [Er92e] Erdos 1992\n\n**Related Problems:** #104 (orchard), #506 (unit distance)",
     "mathContext": "Each triple of non-collinear points determines a unique circumcircle. With n points, there are C(n,3) such circles. The question is about the minimum diversity of radii.",
     "significance": "key",
+    "prerequisites": [
+      "Circumcircle",
+      "General position"
+    ],
     "relatedConcepts": [
       "Circumcircle",
       "General position",
@@ -32,6 +36,11 @@
       "distance",
       "metric spaces"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "distance",
+      "metric spaces"
+    ],
     "significance": "key"
   },
   {
@@ -46,6 +55,10 @@
     "content": "**PointTriple:**\n\nA structure representing three distinct points.\n\n```lean\nstructure PointTriple where\n  p1 : Point\n  p2 : Point\n  p3 : Point\n  distinct12 : p1 != p2\n  distinct13 : p1 != p3\n  distinct23 : p2 != p3\n```\n\nThe distinctness proofs ensure we can form a non-degenerate triangle.",
     "mathContext": "Lean: `structure PointTriple where`",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "formal mathematics"
     ],
     "significance": "key"
@@ -64,6 +77,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -78,6 +95,10 @@
     "content": "**areConcyclic:**\n\nFour points are concyclic if they lie on a common circle.\n\n```lean\ndef areConcyclic (p1 p2 p3 p4 : Point) : Prop :=\n  exists center r, r > 0 and\n    all four points are at distance r from center\n```\n\nFour concyclic points would have equal circumradii for all 4 triples.",
     "mathContext": "The constraint 'no 4 concyclic' prevents radius collisions from geometric degeneracies.",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "formal mathematics"
     ],
     "significance": "key"
@@ -97,6 +118,11 @@
       "distance",
       "metric spaces"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "distance",
+      "metric spaces"
+    ],
     "significance": "key"
   },
   {
@@ -111,6 +137,11 @@
     "content": "**circumradius:**\n\nThe radius of the circumcircle through three non-collinear points.\n\n**Formula:** R = abc / (4 * Area)\n\nwhere a, b, c are the side lengths and Area is the triangle area.\n\n```lean\nnoncomputable def circumradius (t : PointTriple) : R :=\n  let a := ||t.p2 - t.p3||\n  let b := ||t.p1 - t.p3||\n  let c := ||t.p1 - t.p2||\n  let twiceArea := |cross product magnitude|\n  (a * b * c) / (2 * twiceArea)\n```",
     "mathContext": "This is the standard formula for the circumradius of a triangle, derived from the law of sines: a/sin(A) = 2R.",
     "significance": "key",
+    "prerequisites": [
+      "Circumcircle",
+      "Law of sines",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Circumcircle",
       "Law of sines",
@@ -131,6 +162,12 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "cardinal arithmetic",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -145,6 +182,10 @@
     "content": "**h(n):**\n\nThe minimum over all n-point configurations in general position of the number of distinct circumradii.\n\n```lean\nnoncomputable def h (n : N) : N :=\n  sInf {k | exists S, |S| = n and isInGeneralPosition S and\n    countDistinctRadii S = k}\n```\n\nThis is the central object of the problem.",
     "mathContext": "Lean: `noncomputable def h (n : N) : N :=`",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "formal mathematics"
     ],
     "significance": "key"
@@ -164,6 +205,12 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "natural number arithmetic",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -178,6 +225,10 @@
     "content": "**h_four_lower:**\n\nFour points in general position give at least 2 distinct radii.\n\n```lean\naxiom h_four_lower : h 4 >= 2\n```\n\n**Why:** If all 4 circumradii (from the 4 triples) were equal, the 4 points would lie on a common circle, violating general position.",
     "mathContext": "This is the key observation: the 'no 4 concyclic' constraint forces radius diversity.",
     "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
+    "prerequisites": [
       "bounds",
       "inequalities"
     ],
@@ -200,6 +251,11 @@
       "growth rates",
       "polynomials"
     ],
+    "prerequisites": [
+      "algebra",
+      "asymptotics",
+      "polynomial ring theory"
+    ],
     "significance": "key"
   },
   {
@@ -215,6 +271,11 @@
     "mathContext": "Lean: `theorem regular_polygon_not_general (S : Finset Point)`",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "Finset API",
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -233,6 +294,10 @@
       "probabilistic method",
       "random structures"
     ],
+    "prerequisites": [
+      "probabilistic method",
+      "random structures"
+    ],
     "significance": "supporting"
   },
   {
@@ -247,6 +312,11 @@
     "content": "**orchardConfiguration:**\n\nErdos #104 studies point-line configurations, asking about the maximum number of 3-point lines.\n\nThe circle-radius problem has similar extremal flavor:\n- #104: minimize lines with >= 3 points\n- #831: minimize distinct circumradii\n\nBoth are geometric optimization over point configurations.",
     "mathContext": "Lean: `def orchardConfiguration (S : Set Point) : Prop`",
     "significance": "supporting",
+    "prerequisites": [
+      "Erdos #104",
+      "Point-line incidences",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Erdos #104",
       "Point-line incidences"
@@ -264,6 +334,11 @@
     "content": "**unitDistanceProblem:**\n\nErdos #506 studies repeated distances: how many pairs can have the same distance?\n\nThe circle-radius problem is analogous:\n- #506: repeated pairwise distances\n- #831: repeated circumradii (triple-wise)\n\nBoth ask about geometric multiplicity.",
     "mathContext": "Lean: `def unitDistanceProblem (S : Set Point) (d : ℝ) : ℕ`",
     "significance": "supporting",
+    "prerequisites": [
+      "Erdos #506",
+      "Unit distance graph",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Erdos #506",
       "Unit distance graph"
@@ -284,6 +359,10 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -300,6 +379,12 @@
     "relatedConcepts": [
       "bounds",
       "inequalities"
+    ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "natural number arithmetic",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -319,6 +404,11 @@
       "bounds",
       "growth rates",
       "inequalities"
+    ],
+    "prerequisites": [
+      "asymptotics",
+      "bounds",
+      "proof techniques"
     ],
     "significance": "key"
   }

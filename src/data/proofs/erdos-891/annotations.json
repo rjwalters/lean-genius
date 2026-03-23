@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #891** asks about the distribution of integers with many prime factors in short intervals.\n\nGiven the first k primes $p_1 = 2, p_2 = 3, \\ldots, p_k$, the **primorial** $p_1 \\cdots p_k$ gives a natural interval length.\n\n**Question:** For large n, must every interval $[n, n + p_1 \\cdots p_k)$ contain an integer with more than k prime factors?\n\nThe problem is OPEN even for k = 2, asking about intervals of length 6.",
     "mathContext": "The primorial intervals have special structure since they are divisible by all small primes. This makes the problem surprisingly difficult - you cannot simply compute your way to an answer.",
     "significance": "key",
+    "prerequisites": [
+      "Prime factorization",
+      "Primorial",
+      "divisibility",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Primorial",
       "Prime factorization",
@@ -29,6 +35,12 @@
     "content": "**bigOmega(n):** Counts prime factors WITH multiplicity.\n\nAlso written as $\\Omega(n)$ in number theory.\n\n**Examples:**\n- $\\Omega(12) = \\Omega(2^2 \\cdot 3) = 2 + 1 = 3$\n- $\\Omega(8) = \\Omega(2^3) = 3$\n- $\\Omega(30) = \\Omega(2 \\cdot 3 \\cdot 5) = 1 + 1 + 1 = 3$\n\n**Implementation:** Sums all exponents in the prime factorization.",
     "mathContext": "The Ω function is one of two standard ways to count prime factors. The other is ω (little omega), which counts distinct primes only.",
     "significance": "key",
+    "prerequisites": [
+      "Arithmetic functions",
+      "Prime factorization",
+      "basic set theory",
+      "omega tactic"
+    ],
     "relatedConcepts": [
       "Prime factorization",
       "Arithmetic functions",
@@ -51,6 +63,12 @@
       "factorization",
       "prime numbers"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "divisibility",
+      "factorization",
+      "omega tactic"
+    ],
     "significance": "key"
   },
   {
@@ -69,6 +87,12 @@
       "factorization",
       "prime numbers"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "divisibility",
+      "factorization",
+      "omega tactic"
+    ],
     "significance": "key"
   },
   {
@@ -83,6 +107,12 @@
     "content": "**primorial(k):** The product of the first k primes.\n\n**Values:**\n- primorial(1) = 2\n- primorial(2) = 2 × 3 = 6\n- primorial(3) = 2 × 3 × 5 = 30\n- primorial(4) = 2 × 3 × 5 × 7 = 210\n- primorial(5) = 2310\n\nThese give the interval lengths for Erdős #891.\n\nNotation: Sometimes written as $p_k\\#$ or $k\\#$.",
     "mathContext": "Primorials grow very rapidly - faster than factorials for large k. They have the property of being divisible by all primes up to pₖ.",
     "significance": "key",
+    "prerequisites": [
+      "Factorial",
+      "Product of primes",
+      "basic set theory",
+      "divisibility"
+    ],
     "relatedConcepts": [
       "Factorial",
       "Product of primes",
@@ -105,6 +135,12 @@
       "factorization",
       "prime numbers"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "divisibility",
+      "factorization",
+      "prime numbers"
+    ],
     "significance": "key"
   },
   {
@@ -119,6 +155,11 @@
     "content": "**erdos891_conjecture(k):** For k ≥ 2, there exists N such that HasManyFactors(n, k) holds for all n ≥ N.\n\nIn other words: every primorial-length interval eventually contains an integer with many prime factors.\n\n**Status:** OPEN for all k ≥ 2.",
     "mathContext": "Lean: `def HasManyFactorsComp (n k : ℕ) : Prop`",
     "relatedConcepts": [
+      "divisibility",
+      "factorization",
+      "prime numbers"
+    ],
+    "prerequisites": [
       "divisibility",
       "factorization",
       "prime numbers"
@@ -141,6 +182,12 @@
       "factorization",
       "prime numbers"
     ],
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "prime numbers",
+      "simp tactic"
+    ],
     "significance": "key"
   },
   {
@@ -158,6 +205,12 @@
       "divisibility",
       "factorization",
       "prime numbers"
+    ],
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "prime numbers",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -179,6 +232,11 @@
       "inequalities",
       "prime numbers"
     ],
+    "prerequisites": [
+      "bounds",
+      "divisibility",
+      "prime numbers"
+    ],
     "significance": "key"
   },
   {
@@ -193,6 +251,11 @@
     "content": "**dicksons_conjecture:** A major open problem generalizing the twin prime conjecture.\n\nIt states: For linear forms aᵢn + bᵢ with certain conditions, infinitely many n make all forms simultaneously prime.\n\n**Special cases:**\n- k=1: Infinitely many primes (proven)\n- k=2 with forms n, n+2: Twin prime conjecture (open)\n\nUsed in Weisenberg's conditional result.",
     "mathContext": "Dickson's conjecture is one of the strongest open conjectures in prime number theory, implying infinitely many twin primes, Sophie Germain primes, and more.",
     "significance": "key",
+    "prerequisites": [
+      "Prime constellations",
+      "Twin primes",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Twin primes",
       "Prime constellations",
@@ -215,6 +278,11 @@
       "factorization",
       "prime numbers"
     ],
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "prime numbers"
+    ],
     "significance": "key"
   },
   {
@@ -229,6 +297,12 @@
     "content": "**isSmooth(n, k):** n is k-smooth if all prime factors are ≤ pₖ.\n\n**Examples of 2-smooth numbers:** 1, 2, 4, 8, 16, ... (powers of 2)\n**Examples of 3-smooth numbers:** 1, 2, 3, 4, 6, 8, 9, 12, ...\n\n**Pólya's Theorem:** The gaps between consecutive k-smooth numbers are unbounded.\n\nThis is key to Schinzel's result: eventually there are arbitrarily long stretches without k-smooth numbers, forcing numbers with more prime factors.",
     "mathContext": "Lean: `axiom dicksons_conjecture : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "Friable numbers",
+      "Gaps in sequences",
+      "basic set theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Friable numbers",
       "Gaps in sequences",
@@ -248,6 +322,10 @@
     "mathContext": "Lean: `def isSmoothComp (n : ℕ) (bound : ℕ) : Prop`",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   }

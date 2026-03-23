@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #199: Arithmetic Progressions in Set Complements**\n\n**Question:** If A ⊂ ℝ contains no 3-term arithmetic progression, must ℝ \\ A contain an infinite arithmetic progression?\n\n**Answer:** NO (Disproved)\n\n**Historical Timeline:**\n- 1970s: Erdős posed the question\n- 1975: Baumgartner provided counterexample using axiom of choice\n\n**Key Insight:** The construction uses a Hamel basis for ℝ over ℚ to partition the reals into two sets, neither containing an infinite AP.",
     "mathContext": "This problem connects Ramsey theory (van der Waerden's theorem) with set-theoretic constructions requiring the axiom of choice.",
     "significance": "key",
+    "prerequisites": [
+      "Arithmetic progressions",
+      "Ramsey theory",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Arithmetic progressions",
       "Ramsey theory",
@@ -30,6 +35,11 @@
     "content": "**has3AP:**\n\nA set A contains a 3-term arithmetic progression if there exist a, d ∈ ℝ with d ≠ 0 such that a, a+d, a+2d are all in A.\n\n**Examples:**\n- {1, 2, 3} has a 3-AP: 1, 2, 3 with d = 1\n- {1, 3, 9} has no 3-AP (it's a geometric progression)",
     "mathContext": "Lean: `def has3AP (A : Set ℝ) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "Erdős problems",
+      "basic set theory",
+      "combinatorics"
+    ],
     "relatedConcepts": [
       "Erdős problems",
       "combinatorics",
@@ -50,6 +60,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -64,6 +78,10 @@
     "content": "**infiniteAP:**\n\nThe infinite arithmetic progression {a, a+d, a+2d, a+3d, ...} for d ≠ 0.\n\n**Examples:**\n- infiniteAP 0 1 = {0, 1, 2, 3, ...} = ℕ\n- infiniteAP 1 2 = {1, 3, 5, 7, ...} = odd naturals",
     "mathContext": "Lean: `def infiniteAP (a d : ℝ) : Set ℝ`",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "formal mathematics"
     ],
     "significance": "key"
@@ -82,6 +100,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -98,6 +120,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -112,6 +138,10 @@
     "content": "**baumgartner_partition:**\n\nBaumgartner showed ℝ can be partitioned into two sets A and B, where NEITHER contains an infinite arithmetic progression.\n\n**Construction Idea:**\n1. Take a Hamel basis B for ℝ over ℚ\n2. Partition using the \"parity\" of coefficients in the basis expansion\n3. This prevents infinite APs in either part\n\n**baumgartner_3AP_free:** From the partition, derive a 3-AP-free set whose complement has no infinite AP.",
     "mathContext": "Published in 'Partitioning vector spaces' (J. Combinatorial Theory Ser. A, 1975, pp. 231-233). The Hamel basis existence requires the axiom of choice.",
     "significance": "key",
+    "prerequisites": [
+      "Hamel basis",
+      "Set partition"
+    ],
     "relatedConcepts": [
       "Set partition",
       "Hamel basis",
@@ -132,6 +162,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -148,6 +182,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -162,6 +200,12 @@
     "content": "**van_der_waerden:**\n\nFor any finite coloring of ℕ, some color class contains arbitrarily long arithmetic progressions.\n\n**Contrast with Erdős 199:**\n- VdW: Finite colorings of ℕ → long APs exist\n- Baumgartner: 2-partition of ℝ → NO infinite APs\n\nThe difference: infinite APs are much harder to avoid than arbitrarily long finite ones.",
     "mathContext": "Van der Waerden's theorem (1927) is a cornerstone of Ramsey theory.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "Szemerédi's theorem",
+      "graph coloring",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Ramsey theory",
       "Szemerédi's theorem",
@@ -182,6 +226,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -198,6 +246,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -213,6 +265,10 @@
     "mathContext": "Lean: `theorem erdos_199_summary :`",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   }

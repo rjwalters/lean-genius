@@ -11,6 +11,10 @@
     "content": "The claim $1+2+3+4+\\cdots = -\\frac{1}{12}$ went viral through a Numberphile video. While the value $-\\frac{1}{12}$ does appear in the Riemann zeta function ($\\zeta(-1) = -\\frac{1}{12}$), the 'elementary proof' using series manipulation is mathematically invalid.",
     "mathContext": "In standard analysis, this series diverges to infinity. The -1/12 comes from **analytic continuation**, not from adding up the terms.",
     "significance": "critical",
+    "prerequisites": [
+      "divergent series",
+      "zeta function"
+    ],
     "relatedConcepts": [
       "divergent series",
       "zeta function",
@@ -29,6 +33,11 @@
     "content": "Mathlib's `tsum` (topological sum) function is the standard way to express infinite sums in Lean. Crucially, `tsum f` only equals the expected limit if the sum **converges**. For divergent series, `tsum` returns **0** by convention.",
     "mathContext": "This design choice prevents false conclusions: you can't do arithmetic with 'infinite' values because they're just represented as 0. All the useful lemmas about series require a `Summable` proof.",
     "significance": "key",
+    "prerequisites": [
+      "Summable",
+      "basic set theory",
+      "tsum"
+    ],
     "relatedConcepts": [
       "tsum",
       "Summable",
@@ -47,6 +56,11 @@
     "content": "We define `naturals n = n + 1` to get the sequence $1, 2, 3, 4, \\ldots$ (offset by 1 because $\\mathbb{N}$ starts at 0 in Lean).",
     "mathContext": "$\\sum_{n=1}^{\\infty} n \\ne -\\frac{1}{12}$ (divergent series are not summable in the classical sense)",
     "significance": "supporting",
+    "prerequisites": [
+      "basic set theory",
+      "natural numbers",
+      "sequences"
+    ],
     "relatedConcepts": [
       "natural numbers",
       "sequences"
@@ -64,6 +78,11 @@
     "content": "This theorem shows that IF we could prove $\\sum n = -\\frac{1}{12}$, THEN the series would need to be `Summable`. But the series diverges, so this implication is vacuously true - we can never satisfy the hypothesis.",
     "mathContext": "The `sorry` here is permanent - this line of reasoning is blocked. Lean forces us to acknowledge that the hypothesis is impossible.",
     "significance": "critical",
+    "prerequisites": [
+      "impossible hypothesis",
+      "logical reasoning",
+      "vacuous truth"
+    ],
     "relatedConcepts": [
       "vacuous truth",
       "impossible hypothesis"
@@ -81,6 +100,11 @@
     "content": "The **Grandi series** $1-1+1-1+\\cdots$ has partial sums that alternate forever between 0 and 1. It does not converge in any standard sense.",
     "mathContext": "The Numberphile video claims this equals $\\frac{1}{2}$ by averaging 0 and 1. This is actually the **Cesaro mean**, not the limit. They're different mathematical concepts!",
     "significance": "key",
+    "prerequisites": [
+      "Cesaro mean",
+      "basic set theory",
+      "partial sums"
+    ],
     "relatedConcepts": [
       "partial sums",
       "Cesaro mean",
@@ -99,6 +123,11 @@
     "content": "Here we attempt to prove the Numberphile claim that $1-1+1-1+\\cdots = \\frac{1}{2}$. **This is impossible** - the `sorry` can never be filled in. Since the series isn't summable, `tsum grandi = 0` by definition, and $0 \\neq \\frac{1}{2}$.",
     "mathContext": "The red X (❌) in the comments indicates Lean rejects this. This is the first fallacy in the Numberphile argument.",
     "significance": "critical",
+    "prerequisites": [
+      "logical reasoning",
+      "proof failure",
+      "tsum convention"
+    ],
     "relatedConcepts": [
       "tsum convention",
       "proof failure"
@@ -116,6 +145,10 @@
     "content": "The Numberphile proof adds $S_2$ to a shifted copy of itself:\n$$2S_2 = (1-2+3-4+\\cdots) + (0+1-2+3+\\cdots)$$\nThis term-by-term addition is ONLY valid for convergent series!",
     "mathContext": "The **Riemann series theorem** proves that rearranging a conditionally convergent series can give any real number as a 'sum'. For divergent series, such manipulations are completely meaningless.",
     "significance": "key",
+    "prerequisites": [
+      "Riemann series theorem",
+      "rearrangement"
+    ],
     "relatedConcepts": [
       "Riemann series theorem",
       "rearrangement",
@@ -134,6 +167,10 @@
     "content": "The series $1-2+3-4+5-6+\\cdots$ also diverges. Its partial sums grow without bound in absolute value: $1, -1, 2, -2, 3, -3, \\ldots$",
     "mathContext": "Lean: `theorem grandi_not_summable : ¬ Summable grandi`",
     "significance": "key",
+    "prerequisites": [
+      "divergence",
+      "partial sums"
+    ],
     "relatedConcepts": [
       "divergence",
       "partial sums"
@@ -151,6 +188,11 @@
     "content": "Mathlib's lemmas for manipulating series (like `tsum_eq_zero_add`) all require a `Summable` hypothesis. This is the **type-level gatekeeper** that prevents invalid reasoning.",
     "mathContext": "Notice `hf : Summable f` in the theorem statement. Without this proof, Lean won't let you use the lemma.",
     "significance": "critical",
+    "prerequisites": [
+      "logical reasoning",
+      "proof obligations",
+      "typeclass constraints"
+    ],
     "relatedConcepts": [
       "typeclass constraints",
       "proof obligations"
@@ -168,6 +210,11 @@
     "content": "When we try to apply the shift-and-add manipulation to our divergent series, **Lean blocks us**. We would need `Summable alternatingNaturals`, but we proved this is false!",
     "mathContext": "$\\sum_{n=1}^{\\infty} n \\ne -\\frac{1}{12}$ (divergent series are not summable in the classical sense)",
     "significance": "critical",
+    "prerequisites": [
+      "blocked proof",
+      "logical reasoning",
+      "type checking"
+    ],
     "relatedConcepts": [
       "type checking",
       "blocked proof"
@@ -185,6 +232,10 @@
     "content": "The sum $1+2+\\cdots+n = \\frac{n(n+1)}{2}$, which grows without bound as $n \\to \\infty$. This is the formal statement that the series diverges.",
     "mathContext": "For any $M$, we can find $N$ large enough that the partial sum exceeds $M$. This is the definition of divergence to infinity.",
     "significance": "key",
+    "prerequisites": [
+      "divergence to infinity",
+      "triangle numbers"
+    ],
     "relatedConcepts": [
       "divergence to infinity",
       "triangle numbers"
@@ -202,6 +253,12 @@
     "content": "Here's the key theorem: $\\sum_{n=1}^{\\infty} n \\neq -\\frac{1}{12}$. The proof is almost trivial once we know the series doesn't converge:\n1. `naturals` is not summable\n2. Therefore `tsum naturals = 0` (by Mathlib convention)\n3. $0 \\neq -\\frac{1}{12}$ (by `norm_num`)",
     "mathContext": "This is what Lean can actually PROVE, as opposed to the fallacious claim. The type system has protected us from error.",
     "significance": "critical",
+    "prerequisites": [
+      "logical reasoning",
+      "norm_num",
+      "norm_num tactic",
+      "tsum_eq_zero_of_not_summable"
+    ],
     "relatedConcepts": [
       "tsum_eq_zero_of_not_summable",
       "norm_num"
@@ -219,6 +276,10 @@
     "content": "The value $-\\frac{1}{12}$ is real - it comes from the **Riemann zeta function** $\\zeta(s) = \\sum n^{-s}$ analytically continued to $s = -1$. But this is a DIFFERENT mathematical operation than ordinary summation.",
     "mathContext": "In Lean, we would model zeta regularization with a completely different function type. The type system enforces the distinction automatically - you can't confuse `tsum` with `zeta_regularized`.",
     "significance": "key",
+    "prerequisites": [
+      "Riemann zeta function",
+      "analytic continuation"
+    ],
     "relatedConcepts": [
       "Riemann zeta function",
       "analytic continuation",
@@ -237,6 +298,11 @@
     "content": "The second step uses the shift-and-add manipulation. **BLOCKED**: This requires `Summable` which we cannot prove for divergent series.",
     "mathContext": "$\\sum_{n=1}^{\\infty} n \\ne -\\frac{1}{12}$ (divergent series are not summable in the classical sense)",
     "significance": "critical",
+    "prerequisites": [
+      "logical reasoning",
+      "manipulation blocked",
+      "second fallacy"
+    ],
     "relatedConcepts": [
       "second fallacy",
       "manipulation blocked"
@@ -254,6 +320,11 @@
     "content": "Interestingly, the equation $S - S_2 = 4S$ **does typecheck** - but it's trivially true because both sides equal 0! This shows how Mathlib's convention prevents false conclusions: we can prove $0 - 0 = 4 \\cdot 0$, but this tells us nothing about $-\\frac{1}{12}$.",
     "mathContext": "The `sorry`-free proof here uses `tsum_eq_zero_of_not_summable` twice, reducing everything to $0 = 0$.",
     "significance": "key",
+    "prerequisites": [
+      "logical reasoning",
+      "vacuous truth",
+      "zero convention"
+    ],
     "relatedConcepts": [
       "vacuous truth",
       "zero convention"
@@ -271,6 +342,10 @@
     "content": "Lean's type system and Mathlib's design choices enforce mathematical rigor automatically:\n\n1. **Summable typeclass**: Acts as proof obligation before series manipulation\n2. **tsum = 0 convention**: Prevents arithmetic on divergent 'values'\n3. **Distinct types**: Regularization would be a different function entirely\n\nThe -1/12 result is useful in physics, but it requires different mathematical machinery that Lean would model with appropriate types.",
     "mathContext": "Lean: `theorem step1_exposed : (∑' n, grandi n) = 0`",
     "significance": "critical",
+    "prerequisites": [
+      "formal verification",
+      "type safety"
+    ],
     "relatedConcepts": [
       "formal verification",
       "type safety",

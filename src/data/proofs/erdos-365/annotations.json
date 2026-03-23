@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #365** concerns consecutive powerful numbers — pairs (n, n+1) where both have every prime factor appearing with exponent ≥ 2. Erdős asked Mahler if infinitely many exist; Mahler said yes via Pell equation x² - 8y² = 1. The deeper questions: must one of the pair be a perfect square (Q1)? And is the count up to x bounded by (log x)^O(1) (Q2)? Golomb (1970) answered Q1 negatively with counterexample (12167, 12168). Q2 remains open.",
     "mathContext": "Powerful numbers (also called squarefull numbers) satisfy p² | n for all primes p | n, equivalently n = a²b³. They have density ~ c·√x up to x. Consecutive powerful pairs are much rarer, with their count conjectured to be polylogarithmic. The connection to Pell equations arises because x² - 1 = (x-1)(x+1) factors nicely when x² = Dy² + 1.",
     "significance": "key",
+    "prerequisites": [
+      "Pell equations",
+      "density theory",
+      "powerful numbers",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "powerful numbers",
       "Pell equations",
@@ -29,6 +35,12 @@
     "content": "**IsPowerful n** requires n ≥ 1 and p² | n for every prime p | n. **IsPowerfulAlt** gives the equivalent characterization n = a²b³. **square_is_powerful** and **cube_is_powerful** (axioms) state that perfect squares and cubes are powerful — since every prime in k^m has exponent ≥ m ≥ 2.",
     "mathContext": "The two characterizations are equivalent: if every prime exponent is ≥ 2, write n = ∏ pᵉᵢ and split exponents as eᵢ = 2qᵢ + 3rᵢ with rᵢ ∈ {0,1}. Then n = (∏ p^qᵢ)² · (∏ p^rᵢ)³. The axiomatization of square/cube powerfulness avoids detailed factorization reasoning in Lean.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "prime factorization",
+      "prime numbers",
+      "squarefull numbers"
+    ],
     "relatedConcepts": [
       "prime factorization",
       "squarefull numbers",
@@ -47,6 +59,12 @@
     "content": "**example_8_9** (proved): 8 = 2³ and 9 = 3² are both powerful. The proof checks each prime divisor p via interval_cases: for 8, only p = 2 divides it and 4 | 8; for 9, only p = 3 divides it and 9 | 9. This is the smallest consecutive powerful pair and corresponds to the fundamental Pell solution (3, 1) since 3² = 8·1² + 1.",
     "mathContext": "The proof uses interval_cases to enumerate small primes that could divide 8 or 9, then verifies the p² | n condition computationally with decide. This approach works for small numbers but would not scale to larger examples like Golomb's (12167, 12168), which is why that is axiomatized.",
     "significance": "key",
+    "prerequisites": [
+      "decide",
+      "interval_cases",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "interval_cases",
       "decide",
@@ -65,6 +83,11 @@
     "content": "**IsPellSolution x y D** formalizes x² = Dy² + 1. **mahler_pell_gives_powerful** (axiom): solutions to x² = 8y² + 1 give powerful pairs (8y², 8y²+1). **infinitely_many_pell** (axiom): infinitely many such solutions exist, with strictly increasing y-values. The fundamental solution (3, 1) generates all others via the recurrence (xₖ₊₁, yₖ₊₁) = (3xₖ + 8yₖ, xₖ + 3yₖ).",
     "mathContext": "Pell equations x² - Dy² = 1 for non-square D > 0 always have infinitely many solutions, generated from the fundamental solution by the theory of continued fractions. For D = 8, the fundamental solution is (3, 1). The key insight: 8y² = x² - 1 = (x-1)(x+1), and since x is odd (as x² ≡ 1 mod 8), both x-1 and x+1 are even, giving enough prime power structure for powerfulness.",
     "significance": "key",
+    "prerequisites": [
+      "Pell equation",
+      "continued fractions",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Pell equation",
       "continued fractions",
@@ -83,6 +106,11 @@
     "content": "**Question1** asks whether all consecutive powerful pairs have one element being a square. **question1_false** (axiom): NO. **golomb_counterexample** (axiom): 12167 = 23³ and 12168 = 2³·3²·13² are both powerful, neither is a perfect square. The factorizations are verified by native_decide: 12167 = 23³ and 12168 = 2³·3²·13².",
     "mathContext": "Golomb's 1970 paper in the American Mathematical Monthly introduced the term 'powerful number' and exhibited this counterexample. Note 12167 = 23³ is a perfect cube (powerful but not square), while 12168 = 8·1521 = 8·39² = 2³·(3·13)² has all prime exponents ≥ 2. Neither 12167 nor 12168 is a perfect square since √12167 ≈ 110.3 and √12168 ≈ 110.3.",
     "significance": "key",
+    "prerequisites": [
+      "counterexample",
+      "native_decide",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "counterexample",
       "native_decide",
@@ -101,6 +129,11 @@
     "content": "**WalkerEquation x y** formalizes 7³x² = 3³y² + 1, i.e., 343x² = 27y² + 1. **walker_infinitely_many** (axiom): infinitely many solutions exist. **walker_gives_nonsquare** (axiom): each solution gives n = 27y² where (n, n+1) = (27y², 343x²) is a consecutive powerful pair with neither element a perfect square.",
     "mathContext": "Walker's 1976 paper in the Fibonacci Quarterly showed that generalized Pell equations of the form a³x² - b³y² = 1 yield consecutive powerful pairs (b³y², a³x²) where both are powerful (being products of cubes and squares) but neither need be a perfect square. The equation 343x² = 27y² + 1 is equivalent to (7x√7)² - (3y√3)² = 1 in a suitable algebraic number field.",
     "significance": "key",
+    "prerequisites": [
+      "field theory",
+      "generalized Pell equation",
+      "infinite family"
+    ],
     "relatedConcepts": [
       "generalized Pell equation",
       "infinite family",
@@ -119,6 +152,11 @@
     "content": "**erdos_365_summary** packages three results as a proved conjunction: (1) ¬Question1 — the square requirement fails, (2) Golomb's specific counterexample (12167, 12168) with neither being a square, (3) Walker's infinite family of non-square counterexamples. The proof is ⟨question1_false, golomb_counterexample, walker_infinitely_many⟩. Question 2 (polylogarithmic counting bound) remains open and is formalized as a definition only.",
     "mathContext": "The three-part conjunction captures the complete state of Q1: qualitative (it's false), concrete (explicit counterexample), and structural (infinitely many counterexamples). Q2 is deliberately not included in the summary since it remains open. The formalization of Q2 as a Prop allows future work to state and potentially prove it.",
     "significance": "key",
+    "prerequisites": [
+      "conjunction",
+      "partial resolution",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "conjunction",
       "partial resolution",

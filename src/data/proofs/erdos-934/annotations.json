@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #934: Edge Distance in Bounded-Degree Graphs**\n\nLet h_t(d) be minimal such that every graph G with h_t(d) edges and maximum degree ≤ d contains two edges at distance ≥ t.\n\n**Status:** Solved for t=1,2; partial for t=3; general bounds known.\n\n**Erdős's Comment (1988):** 'This problem seems to be interesting only if there is a nice expression for h_t(d).'",
     "mathContext": "This problem studies how dense a bounded-degree graph can be while avoiding 'far apart' edges. It connects to 2K₂-free graphs and line graph diameter.",
     "significance": "key",
+    "prerequisites": [
+      "Bounded-degree graphs",
+      "Edge distance",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Edge distance",
       "Bounded-degree graphs",
@@ -30,6 +35,12 @@
     "content": "**edgeDist G e₁ e₂:**\n\nThe distance between two edges is the minimum distance between any pair of their endpoints:\n\nmin(dist(e₁.u, e₂.u), dist(e₁.u, e₂.v), dist(e₁.v, e₂.u), dist(e₁.v, e₂.v))\n\nThis measures how 'close' two edges are in the graph.",
     "mathContext": "Edge distance extends vertex distance to pairs of edges, essential for studying edge separation properties.",
     "significance": "key",
+    "prerequisites": [
+      "Edge separation",
+      "Graph distance",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Graph distance",
       "Edge separation",
@@ -48,6 +59,12 @@
     "content": "**AreTSeparated G e₁ e₂ t:**\n\nTwo edges are t-separated if their edge distance is at least t.\n\n**Special cases:**\n- 1-separated: edges share no vertex but may share neighbors\n- 2-separated: edges form an induced matching (2K₂)\n- t-separated: all endpoints are far apart in the graph",
     "mathContext": "The t-separation concept generalizes induced matchings to arbitrary distances.",
     "significance": "key",
+    "prerequisites": [
+      "2K₂",
+      "Induced matchings",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Induced matchings",
       "2K₂",
@@ -66,6 +83,12 @@
     "content": "**h t d:**\n\nThe function h_t(d) is the minimum number of edges m such that ANY graph with m edges and maximum degree ≤ d contains two t-separated edges.\n\nEquivalently: the maximum edges in a graph with max degree d and no t-separated edges, plus 1.\n\nThis is the central object of Problem #934.",
     "mathContext": "This is an extremal function asking: how many edges can we pack while avoiding a forbidden structure?",
     "significance": "key",
+    "prerequisites": [
+      "Extremal graph theory",
+      "Ramsey-type functions",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Extremal graph theory",
       "Ramsey-type functions",
@@ -84,6 +107,12 @@
     "content": "**h_1_exact:**\n\nh_1(d) = d + 1 (trivial case).\n\n**Proof idea:** A star with center v and d leaves has d edges, max degree d, and no 1-separated edges (all edges share v). Adding any edge creates 1-separated edges.\n\nSo h_1(d) - 1 = d is achieved by the star.",
     "mathContext": "The star is the unique extremal graph for h_1, showing the simplest case is completely understood.",
     "significance": "key",
+    "prerequisites": [
+      "Star graphs",
+      "Trivial cases",
+      "graph theory basics",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "Star graphs",
       "Trivial cases",
@@ -102,6 +131,12 @@
     "content": "**two_separated_is_2K2:**\n\nTwo edges are 2-separated if and only if they form an induced matching (2K₂).\n\nThis means no endpoint of one edge is adjacent to any endpoint of the other.\n\nSo h_2(d) counts the maximum edges in a 2K₂-free graph of bounded degree.",
     "mathContext": "This equivalence connects Problem #934 to the well-studied class of 2K₂-free graphs.",
     "significance": "key",
+    "prerequisites": [
+      "Forbidden subgraphs",
+      "Induced matchings",
+      "graph theory basics",
+      "matching theory"
+    ],
     "relatedConcepts": [
       "Induced matchings",
       "Forbidden subgraphs",
@@ -120,6 +155,10 @@
     "content": "**cgtt_1990:**\n\nh_2(d) = ⌊5d²/4⌋ + 1\n\nThis was conjectured independently by Erdős-Nešetřil and Bermond-Bond-Paoli-Peyrat (1983), then proved by Chung-Gyárfás-Tuza-Trotter (1990).\n\nFor even d: h_2(d) = 5d²/4 + 1 exactly.\n\nThis gives a complete answer for the t=2 case.",
     "mathContext": "The elegant formula 5d²/4 fulfills Erdős's hope for a 'nice expression' in this case.",
     "significance": "key",
+    "prerequisites": [
+      "Complete solutions",
+      "Extremal numbers"
+    ],
     "relatedConcepts": [
       "Extremal numbers",
       "Complete solutions",
@@ -138,6 +177,10 @@
     "content": "**h_3_3:**\n\nCambie, Cames van Batenburg, de Joannis de Verclos, and Kang (2022) proved:\n\nh_3(3) = 23\n\nThis is the first exactly computed value for t = 3.",
     "mathContext": "Computing specific values like h_3(3) = 23 helps verify conjectures and understand the structure.",
     "significance": "key",
+    "prerequisites": [
+      "Small cases",
+      "Specific computations"
+    ],
     "relatedConcepts": [
       "Specific computations",
       "Small cases",
@@ -156,6 +199,12 @@
     "content": "**H3Conjecture:**\n\nConjecture: h_3(d) ≤ d³ - d² + d + 2\n\n**H3EqualityCondition:** Equality holds if and only if d = p^k + 1 for some prime power p^k.\n\nThis connects to projective planes: when d-1 is a prime power, special constructions exist.",
     "mathContext": "The conjectured formula is cubic in d, matching the expected d³ growth for t=3.",
     "significance": "key",
+    "prerequisites": [
+      "Conjectures",
+      "Prime powers",
+      "basic set theory",
+      "matching theory"
+    ],
     "relatedConcepts": [
       "Conjectures",
       "Prime powers",
@@ -174,6 +223,12 @@
     "content": "**trivial_upper_bound:**\n\nh_t(d) ≤ 2d^t\n\nThis follows from a simple counting argument: in a graph with max degree d, each vertex has degree ≤ d, and the t-neighborhood grows at most exponentially.",
     "mathContext": "The factor of 2 is not tight but shows the polynomial order d^t is correct.",
     "significance": "key",
+    "prerequisites": [
+      "Counting arguments",
+      "Upper bounds",
+      "graph theory basics",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Upper bounds",
       "Counting arguments",
@@ -192,6 +247,10 @@
     "content": "**improved_upper_bound:**\n\nh_t(d) ≤ (3/2)d^t + 1\n\nCambie et al. (2022) improved the trivial factor of 2 to 3/2.\n\nThis is still not tight - the asymptotic conjecture suggests the leading coefficient should be 1.",
     "mathContext": "Improving the constant from 2 to 3/2 represents significant progress toward understanding h_t(d).",
     "significance": "key",
+    "prerequisites": [
+      "Leading coefficients",
+      "Upper bound improvements"
+    ],
     "relatedConcepts": [
       "Upper bound improvements",
       "Leading coefficients",
@@ -210,6 +269,10 @@
     "content": "**lower_bound_large_t:**\n\nFor t ≥ 3, there exist infinitely many d with h_t(d) ≥ 0.629^t · d^t.\n\nThis shows the leading coefficient can be bounded away from 0, though 0.629^t → 0 as t → ∞.\n\nFor specific t, better constants exist.",
     "mathContext": "Lower bounds come from explicit constructions showing we can achieve many edges without t-separation.",
     "significance": "key",
+    "prerequisites": [
+      "Constructions",
+      "Lower bounds"
+    ],
     "relatedConcepts": [
       "Lower bounds",
       "Constructions",
@@ -228,6 +291,11 @@
     "content": "**AsymptoticConjecture:**\n\nFor all t ≥ 3:\n- Lower: For infinitely many d, h_t(d) ≥ (1 - o(1))d^t\n- Upper: For all d, h_t(d) ≤ (1 + o(1))d^t\n\nThis says the leading coefficient of h_t(d)/d^t approaches 1 as d → ∞.\n\nIf true, h_t(d) ~ d^t asymptotically.",
     "mathContext": "The asymptotic conjecture would give a complete understanding of h_t(d) up to lower-order terms.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic analysis",
+      "Leading coefficients",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Asymptotic analysis",
       "Leading coefficients",
@@ -246,6 +314,12 @@
     "content": "**h_mono_d and h_mono_t:**\n\n- h_t(d) is non-decreasing in d: larger max degree allows more edges\n- h_t(d) is non-decreasing in t: requiring greater separation is harder\n\nThese natural monotonicity properties help bound h_t(d) from known values.",
     "mathContext": "Monotonicity in both parameters provides a partial ordering on the (t,d) parameter space.",
     "significance": "key",
+    "prerequisites": [
+      "Monotonicity",
+      "Parameter bounds",
+      "proof techniques",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Monotonicity",
       "Parameter bounds",
@@ -264,6 +338,12 @@
     "content": "**line_graph_connection:**\n\nThe problem is equivalent to: find the maximum edges in G such that the line graph L(G) has diameter < t.\n\nIn L(G), vertices are edges of G, and two are adjacent if the edges share a vertex. Edge distance in G equals vertex distance in L(G).\n\nNo t-separated edges ⟺ L(G) has diameter < t.",
     "mathContext": "This reformulation connects to the well-studied theory of line graphs and their diameters.",
     "significance": "key",
+    "prerequisites": [
+      "Graph diameter",
+      "Line graphs",
+      "graph theory basics",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Line graphs",
       "Graph diameter",
@@ -282,6 +362,12 @@
     "content": "**Key Constructions:**\n\n1. **Star Graph:** Achieves h_1(d) - 1 = d edges with no 1-separated edges.\n\n2. **2K₂-Free Extremal:** For h_2(d), specific constructions achieve 5d²/4 edges.\n\n3. **Projective Planes:** For h_3, incidence graphs of projective planes provide good constructions when d-1 is a prime power.",
     "mathContext": "Understanding extremal graphs is key to both proving upper bounds and computing exact values.",
     "significance": "key",
+    "prerequisites": [
+      "Constructions",
+      "Extremal graphs",
+      "graph theory basics",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Extremal graphs",
       "Constructions",
@@ -300,6 +386,11 @@
     "content": "**erdos_934:**\n\nComplete status of Problem #934:\n\n1. h_1(d) = d + 1 (solved, trivial)\n2. h_2(d) = ⌊5d²/4⌋ + 1 (solved, CGTT 1990)\n3. h_3(3) = 23 (Cambie et al. 2022)\n4. General: h_t(d) ≤ (3/2)d^t + 1\n\nThe problem has elegant solutions for small t and good bounds for general t.",
     "mathContext": "Combining all results gives a fairly complete picture of h_t(d), fulfilling Erdős's desire for 'nice expressions' in key cases.",
     "significance": "key",
+    "prerequisites": [
+      "Combined results",
+      "Problem resolution",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Problem resolution",
       "Combined results",
@@ -318,6 +409,11 @@
     "content": "**Erdős Problem #934: Status**\n\n**Solved:** t = 1 (trivial), t = 2 (CGTT 1990)\n**Partial:** t = 3 (h_3(3) = 23, conjecture for general d)\n**Bounds:** (1-o(1))d^t ≤ h_t(d) ≤ (3/2)d^t + 1\n\n**Open:** Exact formula for t ≥ 3; proving asymptotic conjecture.",
     "mathContext": "The problem exemplifies how extremal graph theory progresses: solve small cases, establish bounds, conjecture general formulas.",
     "significance": "key",
+    "prerequisites": [
+      "Open questions",
+      "Problem status",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Problem status",
       "Open questions",

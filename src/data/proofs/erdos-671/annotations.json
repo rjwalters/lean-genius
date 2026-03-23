@@ -11,6 +11,10 @@
     "content": "**Erdos Problem #671**\n\nTwo profound questions about Lagrange interpolation:\n\n**Q1:** Can L^n f(x) -> f(x) at points where lambda_n(x) -> infinity?\n**Q2:** Can lambda_n(x) -> infinity EVERYWHERE, yet still have convergence somewhere?\n\n**Prize: $250**\n\n**Key Results:**\n- Bernstein (1931): lambda_n diverges somewhere\n- Erdos-Vertesi (1980): |L^n f| -> infinity a.e. for some f",
     "mathContext": "The Lebesgue function controls interpolation error. Its divergence typically implies divergence of the interpolation, but the questions ask about exceptions.",
     "significance": "key",
+    "prerequisites": [
+      "Lagrange interpolation",
+      "Lebesgue function"
+    ],
     "relatedConcepts": [
       "Lagrange interpolation",
       "Lebesgue function",
@@ -29,6 +33,11 @@
     "content": "**InterpolationPoints**\n\nA structure containing n distinct points in [-1, 1] for interpolation.\n\n```lean\nstructure InterpolationPoints (n : N) where\n  points : Fin n -> R\n  in_interval : forall i, points i in Icc (-1) 1\n  distinct : forall i j, i != j -> points i != points j\n```\n\nExamples: Chebyshev nodes, equidistant nodes, random points.",
     "mathContext": "The choice of interpolation points critically affects convergence behavior.",
     "significance": "key",
+    "prerequisites": [
+      "Chebyshev nodes",
+      "Interpolation",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Interpolation",
       "Chebyshev nodes"
@@ -49,6 +58,12 @@
       "algebra",
       "polynomials"
     ],
+    "prerequisites": [
+      "algebra",
+      "basic set theory",
+      "filter theory",
+      "polynomial ring theory"
+    ],
     "significance": "key"
   },
   {
@@ -64,6 +79,12 @@
     "mathContext": "L^n f agrees with f at all interpolation nodes. The question is whether it converges to f elsewhere.",
     "relatedConcepts": [
       "algebra",
+      "polynomials"
+    ],
+    "prerequisites": [
+      "algebra",
+      "basic set theory",
+      "polynomial ring theory",
       "polynomials"
     ],
     "significance": "key"
@@ -85,6 +106,12 @@
       "integration",
       "measure theory"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "bounds",
+      "inequalities",
+      "measure theory"
+    ],
     "significance": "key"
   },
   {
@@ -101,6 +128,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -115,6 +146,12 @@
     "content": "**bernstein**\n\nFor ANY choice of interpolation nodes:\n$$\\exists x_0 \\in [-1,1]: \\limsup_{n\\to\\infty} \\lambda_n(x_0) = \\infty$$\n\nThis is a fundamental negative result: uniform convergence for all continuous functions is impossible regardless of node choice.",
     "mathContext": "Bernstein's theorem shows that the Lebesgue function must diverge somewhere. The question is whether convergence can still occur at such points.",
     "significance": "key",
+    "prerequisites": [
+      "Divergence",
+      "Pointwise vs uniform convergence",
+      "continuous functions",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Divergence",
       "Pointwise vs uniform convergence"
@@ -135,6 +172,12 @@
       "continuity",
       "topology"
     ],
+    "prerequisites": [
+      "continuity",
+      "continuous functions",
+      "proof techniques",
+      "topology"
+    ],
     "significance": "key"
   },
   {
@@ -150,6 +193,12 @@
     "mathContext": "The Lebesgue function controlling error doesn't mean it prevents convergence when it diverges.",
     "relatedConcepts": [
       "continuity",
+      "topology"
+    ],
+    "prerequisites": [
+      "basic set theory",
+      "continuity",
+      "continuous functions",
       "topology"
     ],
     "significance": "key"
@@ -169,6 +218,12 @@
       "continuity",
       "topology"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "continuity",
+      "continuous functions",
+      "topology"
+    ],
     "significance": "key"
   },
   {
@@ -186,6 +241,12 @@
       "algebra",
       "polynomials"
     ],
+    "prerequisites": [
+      "algebra",
+      "basic set theory",
+      "polynomial ring theory",
+      "polynomials"
+    ],
     "significance": "key"
   },
   {
@@ -200,6 +261,10 @@
     "content": "**equidistantNodes**\n\n$$x_k = -1 + \\frac{2k}{n-1}, \\quad k = 0, \\ldots, n-1$$\n\nEqually-spaced points seem natural but perform poorly.\n\n**Runge phenomenon:** Lambda_n grows exponentially like 2^n/n, causing wild oscillations near endpoints.",
     "mathContext": "Equidistant nodes are a cautionary tale in numerical analysis.",
     "significance": "key",
+    "prerequisites": [
+      "Runge phenomenon",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Runge phenomenon"
     ]
@@ -217,6 +282,12 @@
     "mathContext": "Faber's theorem complements Bernstein's: one shows Lebesgue diverges, the other shows actual interpolation diverges.",
     "relatedConcepts": [
       "continuity",
+      "topology"
+    ],
+    "prerequisites": [
+      "continuity",
+      "continuous functions",
+      "proof techniques",
       "topology"
     ],
     "significance": "key"
@@ -238,6 +309,12 @@
       "measure theory",
       "topology"
     ],
+    "prerequisites": [
+      "continuity",
+      "continuous functions",
+      "integration",
+      "measure theory"
+    ],
     "significance": "key"
   },
   {
@@ -252,6 +329,10 @@
     "content": "**MainConjecture**\n\nQuestion 1 iff Question 2?\n\nQ2 trivially implies Q1 (if Lebesgue diverges everywhere, it certainly diverges at some point).\n\nThe conjecture asks whether Q1 implies Q2 - is local Lebesgue divergence with convergence only possible when Lebesgue diverges everywhere?",
     "mathContext": "Resolution would deeply clarify the relationship between the Lebesgue function and actual convergence behavior.",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "formal mathematics"
     ],
     "significance": "key"

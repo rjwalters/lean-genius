@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #816: Equal-Degree Vertices and Paths of Length 3**\n\nA problem of Erdős and Hajnal asking:\n\nIf G has 2n+1 vertices and n² + n + 1 edges, must it contain two vertices of the same degree connected by a path of length 3?\n\n**Answer:** YES (Chen-Ma, 2025)\n\n**Key Insight:** K_{n,n+1} with n² + n edges is the unique obstruction.",
     "mathContext": "This is a Turán-type extremal graph problem about forced substructures.",
     "significance": "key",
+    "prerequisites": [
+      "Bipartite graphs",
+      "Turán problems",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Turán problems",
       "Bipartite graphs",
@@ -29,6 +34,12 @@
     "content": "**hasPath3:** A path of length 3 from u to v consists of 4 distinct vertices u - a - b - v where consecutive pairs are adjacent.\n\n**hasPath3_symm:** Constructive proof that paths of length 3 are symmetric: if there's a path from u to v, reversing gives one from v to u.\n\nPath length 3 is crucial: in bipartite graphs, each step alternates parts, so length-3 paths between same-part vertices don't exist.",
     "mathContext": "In bipartite graphs, paths alternate between parts, so length-3 paths between same-part vertices don't exist.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "graph theory basics",
+      "graph walks",
+      "path graphs"
+    ],
     "relatedConcepts": [
       "path graphs",
       "graph walks",
@@ -48,6 +59,12 @@
     "content": "**sameDegree:** Two vertices have the same degree in graph G.\n\n**hasEqualDegreePath3Pair:** The main property: existence of distinct vertices with same degree connected by path of length 3. This is what the problem asks whether dense graphs must have.",
     "mathContext": "Lean: `def sameDegree (G : SimpleGraph V) (u v : V) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "degree sequences",
+      "equal-degree vertices",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "degree sequences",
       "equal-degree vertices",
@@ -67,6 +84,12 @@
     "content": "**satisfiesEH816:** A graph has 2n+1 vertices and n² + n + 1 edges (original problem).\n\n**satisfiesWeakerEH816:** A graph has 2n+1 vertices and at least n² + n edges (Chen-Ma's stronger version). With this weaker condition, only K_{n,n+1} fails.",
     "mathContext": "Lean: `def satisfiesEH816 (G : SimpleGraph V) [DecidableRel G.Adj] (n : ℕ) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "Erdős-Hajnal conditions",
+      "basic set theory",
+      "graph edge density",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Erdős-Hajnal conditions",
       "graph edge density",
@@ -91,6 +114,12 @@
       "phase transitions",
       "threshold phenomena"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "combinatorics",
+      "graph theory",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -105,6 +134,11 @@
     "content": "**chen_ma_theorem:** For n ≥ 600, every graph on 2n+1 vertices with ≥ n² + n edges contains an equal-degree path-3 pair, EXCEPT K_{n,n+1}.\n\n**erdos_816_for_large_n:** Corollary for n ≥ 600 with n² + n + 1 edges (G cannot be K_{n,n+1} since it has fewer edges).\n\n**erdos_816_full:** The complete answer for all n: axiomatized as the full resolution of Problem #816.",
     "mathContext": "Chen-Ma (2025, arXiv:2503.19569) resolved this decades-old Erdős-Hajnal problem.",
     "significance": "key",
+    "prerequisites": [
+      "Chen-Ma theorem 2019",
+      "graph Ramsey theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Chen-Ma theorem 2019",
       "graph Ramsey theory",
@@ -129,6 +163,12 @@
       "graph theory",
       "pigeonhole principle"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "counting argument",
+      "graph theory basics",
+      "simp tactic"
+    ],
     "significance": "supporting"
   },
   {
@@ -143,6 +183,12 @@
     "content": "**erdos_816_summary:** The complete resolution: for all n, graphs with 2n+1 vertices and n² + n + 1 edges contain equal-degree vertices joined by path of length 3.\n\n**Stronger Result:** For n ≥ 600, even n² + n edges suffice, except K_{n,n+1}.\n\n**Threshold:** K_{n,n+1} has exactly n² + n edges and fails. One more edge forces the property.",
     "mathContext": "Lean: `theorem erdos_816_summary :`",
     "significance": "key",
+    "prerequisites": [
+      "K_{n,n+1} counterexample",
+      "complete bipartite graphs",
+      "graph theory basics",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "complete bipartite graphs",
       "K_{n,n+1} counterexample",

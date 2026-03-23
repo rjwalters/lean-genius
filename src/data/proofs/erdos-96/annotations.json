@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #96: Unit Distances in Convex Polygons**\n\nFor n points in convex position in ℝ², how many pairs can be at distance 1? Erdős and Moser conjectured O(n).\n\n**Known:** Upper O(n log n) (Füredi 1990, Aggarwal 2015). Lower 2n - 7 (Edelsbrunner-Hajnal 1991).\n\n**Status:** OPEN. The log factor gap between O(n log n) and O(n) is the central challenge.",
     "mathContext": "This is the convex case of the unit distance problem. In the general plane, the answer is Θ(n^{4/3}); convexity should reduce this to linear, but proving it is hard.",
     "significance": "key",
+    "prerequisites": [
+      "Convex geometry",
+      "Unit distance problem",
+      "convexity"
+    ],
     "relatedConcepts": [
       "Unit distance problem",
       "Convex geometry",
@@ -30,6 +35,12 @@
     "content": "**Point:** ℝ² via EuclideanSpace ℝ (Fin 2).\n\n**IsUnitDistance p q:** dist(p, q) = 1.\n\n**unitDistancePairs A:** Finset of unordered pairs {p, q} ⊆ A with p ≠ q and dist = 1.\n\n**unitDistanceCount A:** Cardinality of unitDistancePairs.\n\n**inConvexPosition A:** No point lies in the convex hull of the others.\n\n**IsConvexPolygon A:** |A| ≥ 3 and A is in convex position.",
     "mathContext": "Convex position is defined via Mathlib's convexHull, ensuring the polygon has no interior points. The unit distance count is the key quantity to bound.",
     "significance": "key",
+    "prerequisites": [
+      "EuclideanSpace",
+      "Finset API",
+      "basic set theory",
+      "cardinal arithmetic"
+    ],
     "relatedConcepts": [
       "EuclideanSpace",
       "convexHull",
@@ -49,6 +60,12 @@
     "content": "**ErdosMoserConjecture:** ∃ C, ∀ convex A with |A| ≥ 3: unitDistanceCount(A) ≤ C · |A|. The main O(n) conjecture.\n\n**ErdosFishburnConjecture:** unitDistanceCount(A) ≤ 2|A| for all convex A. A stronger, more precise version claiming the exact bound is 2n.",
     "mathContext": "The Erdős-Fishburn conjecture implies the Erdős-Moser conjecture with C = 2. The lower bound 2n - 7 suggests that if the Erdős-Fishburn conjecture is true, it is nearly tight.",
     "significance": "key",
+    "prerequisites": [
+      "Linear bound",
+      "Open problem",
+      "basic set theory",
+      "convexity"
+    ],
     "relatedConcepts": [
       "Open problem",
       "Linear bound",
@@ -67,6 +84,11 @@
     "content": "**furedi_bound:** ∃ C > 0, unitDistanceCount(A) ≤ C · n · log n for convex A. Füredi's O(n log n) bound from 1990.\n\n**aggarwal_bound:** unitDistanceCount(A) ≤ n · log₂(n) + 4n. Aggarwal's 2015 improvement with explicit constants.\n\nBoth are axiomatized as the proofs use recursive geometric arguments beyond current Mathlib.",
     "mathContext": "The log factor arises from a recursive counting argument: each recursive step contributes O(n) pairs, with O(log n) recursion depth. Removing this log is equivalent to the main conjecture.",
     "significance": "key",
+    "prerequisites": [
+      "Aggarwal",
+      "Füredi",
+      "convexity"
+    ],
     "relatedConcepts": [
       "Füredi",
       "Aggarwal",
@@ -86,6 +108,12 @@
     "content": "**edelsbrunner_hajnal_construction:** For n ≥ 7, ∃ convex n-gon with exactly 2n - 7 unit distance pairs. Axiomatized construction from 1991.\n\n**lower_bound (PROVED):** For n ≥ 7, ∃ convex n-gon with ≥ 2n - 7 unit distances. Proved from the construction axiom using omega.",
     "mathContext": "The construction uses points on a specific curve. The lower_bound theorem is one of the few fully proved results in this formalization, derived from the construction axiom via a simple inequality relaxation.",
     "significance": "key",
+    "prerequisites": [
+      "Constructive bound",
+      "Edelsbrunner-Hajnal",
+      "convexity",
+      "omega tactic"
+    ],
     "relatedConcepts": [
       "Edelsbrunner-Hajnal",
       "Constructive bound",
@@ -104,6 +132,12 @@
     "content": "**equidistantCount A x:** Number of pairs in A equidistant from x, via powerset filtering.\n\n**ErdosSumConjecture:** ∑_{x ∈ A} g(x) < 4n for convex A. Another open conjecture related to Problem #97.\n\n**sum_lower_bound:** The sum ∑g(x) can approach 4n from below, showing the conjecture would be tight if true.",
     "mathContext": "The equidistant count function g(x) counts repeated distances from x. The sum conjecture bounds the total across all vertices. Connection to Problem #97 on repeated distances.",
     "significance": "key",
+    "prerequisites": [
+      "Equidistant pairs",
+      "Sum conjecture",
+      "convexity",
+      "filter theory"
+    ],
     "relatedConcepts": [
       "Equidistant pairs",
       "Sum conjecture",
@@ -122,6 +156,11 @@
     "content": "**erdos_96_summary (PROVED):** Conjunction of:\n1. Füredi's O(n log n) upper bound (from furedi_bound axiom)\n2. The 2n - 7 lower bound (from lower_bound theorem)\n\nThe problem remains OPEN: the gap between O(n log n) and O(n) is unresolved.",
     "mathContext": "The summary packages the state of knowledge: best upper bound O(n log n), best lower bound 2n - 7. The Erdős-Moser and Erdős-Fishburn conjectures are stated but neither proved nor disproved.",
     "significance": "key",
+    "prerequisites": [
+      "Open problem",
+      "State of knowledge",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "State of knowledge",
       "Open problem",

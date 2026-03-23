@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #445** asks whether for any c > 1/2 and sufficiently large prime p, every interval (n, n + p^c) contains a multiplicative inverse pair a, b with ab ≡ 1 (mod p). The heuristic threshold is c = 1/2 since an interval of length p^c contains ~p^{2c-1} pairs. Heilbronn proved it for c close to 1; Heath-Brown (2000) for c > 3/4. The range c ∈ (1/2, 3/4] remains open.",
     "mathContext": "The problem sits at the intersection of modular arithmetic and analytic number theory. The key insight is that multiplicative inverses mod p are 'spread out' enough that short intervals should contain pairs, but proving this rigorously for c close to 1/2 requires delicate exponential sum estimates beyond current techniques.",
     "significance": "key",
+    "prerequisites": [
+      "Kloosterman sums",
+      "modular arithmetic",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "modular arithmetic",
       "Kloosterman sums",
@@ -29,6 +34,12 @@
     "content": "**HasInverse p a b** checks (a * b) % p = 1. **OpenInterval n L** constructs {n+1, ..., n+L} as a Finset. **HasInversePairInInterval** requires ∃ a, b in (n, n + ⌊p^c⌋) with ab ≡ 1 (mod p). **MainConjecture** states this holds for all c > 1/2 and sufficiently large primes. **StrongConjecture** adds that c = 1/2 is the exact threshold — below it, the property can fail.",
     "mathContext": "The interval uses Nat.floor(p^c) to convert the real exponent to a natural number length. The conjecture quantifies over all starting points n, making it a uniform statement. The strong conjecture asserts c = 1/2 is sharp: there exist primes p with intervals of length p^{1/2} lacking inverse pairs.",
     "significance": "key",
+    "prerequisites": [
+      "Finset",
+      "Finset API",
+      "Nat.floor",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Finset",
       "Nat.floor",
@@ -47,6 +58,10 @@
     "content": "**heilbronn_threshold** (axiom): an unspecified real number c₀. **heilbronn_unpublished** (axiom): c₀ < 1 and the conjecture holds for all c > c₀. Heilbronn proved this result but never published it, and the exact value of c₀ is not known from his work.",
     "mathContext": "Heilbronn's unpublished result was the first progress on the problem. The existential nature of the axiom (some c₀ exists) reflects the historical situation: we know a threshold exists below 1, but Heilbronn's specific bound is not recorded. Heath-Brown's result supersedes this by proving c₀ ≤ 3/4.",
     "significance": "key",
+    "prerequisites": [
+      "existential threshold",
+      "unpublished result"
+    ],
     "relatedConcepts": [
       "existential threshold",
       "unpublished result"
@@ -64,6 +79,12 @@
     "content": "**KloostermanSum** (axiom): K(m,n;p) = Σₓ e^{2πi(mx + nx⁻¹)/p}, axiomatized since it requires exponential sum machinery. **weil_bound** (axiom): |K(m,n;p)| ≤ 2√p, Weil's deep estimate from algebraic geometry. **heath_brown_2000** (axiom): the conjecture holds for all c > 3/4. **heath_brown_threshold** (proved): witnesses c₀ = 3/4 with proof ⟨rfl, heath_brown_2000⟩.",
     "mathContext": "Heath-Brown's proof uses Kloosterman sums to count inverse pairs via Fourier analysis on (Z/pZ)*. The Weil bound — a consequence of the Riemann hypothesis for curves over finite fields — provides the key square-root cancellation. The factor 3/4 arises from balancing the Weil bound contribution against the main term in the counting formula.",
     "significance": "key",
+    "prerequisites": [
+      "Kloosterman sum",
+      "Weil bound",
+      "field theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Kloosterman sum",
       "Weil bound",
@@ -82,6 +103,12 @@
     "content": "**OpenRange** = Set.Ioc (1/2) (3/4), the gap where the conjecture is neither proved nor disproved. **current_knowledge** (proved): packages Heath-Brown's result together with the fact that OpenRange ⊆ (1/2, 1). The proof of the inclusion uses calc with hx.2 and norm_num.",
     "mathContext": "The open range c ∈ (1/2, 3/4] is the main challenge. The lower bound 1/2 comes from the heuristic counting argument. The upper bound 3/4 is Heath-Brown's threshold. Closing this gap requires either stronger exponential sum estimates (improving the Weil bound is impossible, but better averaging may help) or entirely new methods.",
     "significance": "key",
+    "prerequisites": [
+      "Set.Ioc",
+      "norm_num tactic",
+      "open problem",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Set.Ioc",
       "open problem",
@@ -100,6 +127,11 @@
     "content": "**erdos_445_summary** packages both known results as a proved conjunction: (1) Heilbronn's result — ∃ c₀ < 1 with the conjecture holding for c > c₀, and (2) Heath-Brown's c > 3/4 result. The proof is ⟨⟨heilbronn_threshold, heilbronn_unpublished.1, heilbronn_unpublished.2⟩, heath_brown_2000⟩.",
     "mathContext": "The two-part conjunction captures the complete known picture: an early existential result (Heilbronn) and a quantitative improvement (Heath-Brown). Heath-Brown's result strictly improves Heilbronn's since 3/4 < c₀ ≤ 1, but including both preserves the historical development. The open questions about c ∈ (1/2, 3/4] are stated in the problem but not included in the summary since they are unresolved.",
     "significance": "key",
+    "prerequisites": [
+      "axiom combination",
+      "conjunction",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "conjunction",
       "axiom combination",

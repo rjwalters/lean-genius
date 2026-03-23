@@ -11,6 +11,10 @@
     "content": "We import from Mathlib: `Data.Rat.Basic` for rational number operations, `Data.Int.Parity` for even/odd predicates on integers, and `Tactic` for proof automation.",
     "mathContext": "Introduction to the formalization of Mathlib Imports",
     "significance": "supporting",
+    "prerequisites": [
+      "Lean 4",
+      "Mathlib"
+    ],
     "relatedConcepts": [
       "Mathlib",
       "Lean 4",
@@ -29,6 +33,11 @@
     "content": "A real number $x$ is **irrational** if for all integers $p, q$ with $q \\neq 0$, we have $x \\neq p/q$. This is the negation of rationality: there is no way to express $x$ as a ratio of integers.",
     "mathContext": "In Lean, this is a universal statement: `∀ p q : ℤ, q ≠ 0 → x ≠ p / q`. The proof will show this holds for $x = \\sqrt{2}$ by contradiction.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "negation",
+      "rational numbers"
+    ],
     "relatedConcepts": [
       "rational numbers",
       "negation",
@@ -47,6 +56,12 @@
     "content": "Two integers $p$ and $q$ are **coprime** (or relatively prime) if their greatest common divisor is 1: $\\gcd(p, q) = 1$. Equivalently, they share no prime factors.",
     "mathContext": "Every rational number can be written in lowest terms $p/q$ where $p$ and $q$ are coprime. This is crucial for the contradiction—if both are even, they're not coprime.",
     "significance": "key",
+    "prerequisites": [
+      "GCD",
+      "GCD theory",
+      "basic set theory",
+      "lowest terms"
+    ],
     "relatedConcepts": [
       "GCD",
       "lowest terms",
@@ -65,6 +80,10 @@
     "content": "**The key lemma**: If $n^2$ is even, then $n$ is even. The proof uses the contrapositive: assume $n$ is odd, show $n^2$ is odd, contradicting that $n^2$ is even.",
     "mathContext": "Why does odd$^2$ = odd? Write $n = 2k+1$. Then $n^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1$, which is odd. The tactic `Odd.pow` handles this in Lean.",
     "significance": "critical",
+    "prerequisites": [
+      "contrapositive",
+      "parity"
+    ],
     "relatedConcepts": [
       "contrapositive",
       "parity",
@@ -123,6 +142,12 @@
     "content": "The theorem states $\\sqrt{2}$ is irrational. We assume the contrary: there exist integers $p, q$ with $q \\neq 0$ and $\\sqrt{2} = p/q$. We may assume $p, q$ are coprime (in lowest terms).",
     "mathContext": "The WLOG (without loss of generality) step to assume coprimality is marked `sorry` here—a complete proof would reduce any $p/q$ to lowest terms first.",
     "significance": "critical",
+    "prerequisites": [
+      "WLOG",
+      "logical reasoning",
+      "prime numbers",
+      "proof by contradiction"
+    ],
     "relatedConcepts": [
       "proof by contradiction",
       "WLOG",
@@ -141,6 +166,11 @@
     "content": "From $\\sqrt{2} = p/q$, we square both sides to get $2 = p^2/q^2$, hence $p^2 = 2q^2$. This eliminates the square root and gives us an equation in integers.",
     "mathContext": "This is the key algebraic step. In Lean, `congrArg (·^2)` applies squaring to both sides of an equation.",
     "significance": "key",
+    "prerequisites": [
+      "algebraic manipulation",
+      "congruence",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "algebraic manipulation",
       "congruence"

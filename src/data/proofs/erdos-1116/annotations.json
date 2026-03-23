@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #1116: Extreme Value Distribution**\n\nFor an entire function f, let n(r, a) count solutions to f(z) = a in |z| < r.\n\n**Question:** Does there exist f such that for every a ≠ b,\nlim sup_{r → ∞} n(r, a)/n(r, b) = ∞?\n\n**Answer: YES** (Gol'dberg 1978, Toppila 1976)\n\nThis is surprising because Nevanlinna theory says values are typically taken with equal frequency on average.",
     "mathContext": "This problem is in the field of Nevanlinna theory / value distribution theory, studying how entire and meromorphic functions take values.",
     "significance": "key",
+    "prerequisites": [
+      "Entire functions",
+      "Nevanlinna theory",
+      "field theory"
+    ],
     "relatedConcepts": [
       "Nevanlinna theory",
       "Entire functions",
@@ -30,6 +35,12 @@
     "content": "**IsEntire f:**\n\nA function f : ℂ → ℂ is entire if it is differentiable everywhere.\n\n**Definition:**\n```lean\ndef IsEntire (f : ℂ → ℂ) : Prop :=\n  ∀ z : ℂ, DifferentiableAt ℂ f z\n```\n\n**Examples:** e^z, sin z, cos z, polynomials\n**Non-examples:** 1/z (pole at 0), tan z (poles at π/2 + nπ)",
     "mathContext": "Entire functions have globally convergent Taylor series. They form the 'nicest' class of complex functions.",
     "significance": "key",
+    "prerequisites": [
+      "Complex differentiability",
+      "Taylor series",
+      "basic set theory",
+      "complex numbers"
+    ],
     "relatedConcepts": [
       "Complex differentiability",
       "Taylor series",
@@ -48,6 +59,12 @@
     "content": "**countingFunction f a r** (written n(f, r, a)):\n\nThe number of solutions to f(z) = a in the disc |z| < r.\n\n**Definition:**\n```lean\ndef countingFunction (f : ℂ → ℂ) (a : ℂ) (r : ℝ) : ℕ :=\n  if h : (aPoints f a ∩ {z | Complex.abs z < r}).Finite\n  then h.toFinset.card\n  else 0\n```\n\n**Examples:**\n- n(e^z, r, 0) = 0 (e^z never equals 0)\n- n(z², r, 1) = 2 for r > 1 (roots at ±1)",
     "mathContext": "The counting function is the fundamental object in value distribution theory. It measures how often f takes a given value.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "Zeros",
+      "a-points",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "a-points",
       "Zeros",
@@ -66,6 +83,11 @@
     "content": "**HasUnboundedRatio f a b:**\n\nThe ratio n(r, a)/n(r, b) is unbounded as r → ∞.\n\n**Definition:**\n```lean\ndef HasUnboundedRatio (f : ℂ → ℂ) (a b : ℂ) : Prop :=\n  ∀ M : ℝ, M > 0 → ∀ R : ℝ, R > 0 →\n    ∃ r > R, n(f, r, a) > M * n(f, r, b)\n```\n\nThis means: for any M, there exist arbitrarily large r with n(r,a)/n(r,b) > M.",
     "mathContext": "This captures lim sup = ∞ in a constructive way: we can always find r making the ratio arbitrarily large.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic behavior",
+      "Limsup",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Limsup",
       "Asymptotic behavior",
@@ -84,6 +106,11 @@
     "content": "**HasExtremeValueDistribution f:**\n\nFor ALL pairs a ≠ b, BOTH ratios n(r,a)/n(r,b) AND n(r,b)/n(r,a) are unbounded.\n\n**Definition:**\n```lean\ndef HasExtremeValueDistribution (f : ℂ → ℂ) : Prop :=\n  ∀ a b : ℂ, a ≠ b →\n    HasUnboundedRatio f a b ∧ HasUnboundedRatio f b a\n```\n\nThis is an extremely strong condition - no value is 'typical'.",
     "mathContext": "This property says the counting functions oscillate wildly relative to each other, with neither dominating.",
     "significance": "key",
+    "prerequisites": [
+      "Oscillation",
+      "Value distribution",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Value distribution",
       "Oscillation",
@@ -102,6 +129,10 @@
     "content": "**goldberg_toppila_existence:**\n\nThere exist entire functions with extreme value distribution.\n\n**Statement:**\n```lean\naxiom goldberg_toppila_existence :\n    ∃ f : ℂ → ℂ, IsEntire f ∧ HasExtremeValueDistribution f\n```\n\nThis was proved independently by Gol'dberg (1978) and Toppila (1976).",
     "mathContext": "The construction uses lacunary series and carefully placed zeros to create wild oscillations in the counting functions.",
     "significance": "key",
+    "prerequisites": [
+      "Lacunary series",
+      "Weierstrass products"
+    ],
     "relatedConcepts": [
       "Lacunary series",
       "Weierstrass products",
@@ -122,6 +153,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -136,6 +171,12 @@
     "content": "**deficiency f a:**\n\nMeasures how much f 'avoids' the value a.\n\nδ(a) = lim inf_{r → ∞} (1 - N(r, a) / T(r))\n\n**Key theorem (Nevanlinna):**\n- δ(a) ≤ 1 for all a\n- ∑_a δ(a) ≤ 2 (deficiency sum)\n\nThis means: at most 2 values can be 'exceptional'.",
     "mathContext": "Nevanlinna's deficiency relation is a deep result showing that entire functions take most values with roughly equal frequency on average.",
     "significance": "key",
+    "prerequisites": [
+      "Nevanlinna theory",
+      "Second main theorem",
+      "basic set theory",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "Nevanlinna theory",
       "Second main theorem",
@@ -154,6 +195,10 @@
     "content": "**oscillation_key_insight:**\n\nEven though N(r, a) ∼ N(r, b) on average (both ∼ T(r)), the un-integrated counting function n(r, a) can oscillate wildly!\n\nThe Gol'dberg-Toppila construction exploits this:\n- n(r, a) is sometimes much larger than n(r, b)\n- n(r, b) is sometimes much larger than n(r, a)\n- But the integrals N(r, a) and N(r, b) still satisfy Nevanlinna bounds\n\nPointwise behavior (n) vs average behavior (N) can be very different.",
     "mathContext": "This is the 'aha moment': integration smooths out oscillations, so n can oscillate wildly while N remains controlled.",
     "significance": "key",
+    "prerequisites": [
+      "Integration",
+      "Smoothing"
+    ],
     "relatedConcepts": [
       "Integration",
       "Smoothing",
@@ -172,6 +217,11 @@
     "content": "**IsLacunarySeries:**\n\nA power series with large gaps between nonzero terms:\nf(z) = Σ_{n ∈ S} a_n z^n where n_{k+1}/n_k → ∞.\n\n**Definition:**\n```lean\ndef IsLacunarySeries (coeffs : ℕ → ℂ) (support : Set ℕ) : Prop :=\n  (∀ n ∉ support, coeffs n = 0) ∧\n  (∀ m n ∈ support, m < n → gaps grow)\n```\n\nLacunary series have special properties that make them useful for constructions.",
     "mathContext": "Lacunary series (like Σz^(2^n)) have gaps that grow geometrically, giving better control over value distribution.",
     "significance": "supporting",
+    "prerequisites": [
+      "Gap series",
+      "Hadamard gaps",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Gap series",
       "Hadamard gaps",
@@ -190,6 +240,10 @@
     "content": "**exp_not_extreme:**\n\ne^z does NOT have extreme value distribution.\n\n**Why:** e^z has no zeros, so n(r, 0) = 0 for all r.\nBut n(r, 1) ~ r/π (roots at 2πik).\nSo 0 is a 'special' value - the ratio n(r,1)/n(r,0) is undefined (division by zero).",
     "mathContext": "The exponential is the classic example of a function with an exceptional value (0 has deficiency 1).",
     "significance": "supporting",
+    "prerequisites": [
+      "Exceptional values",
+      "Picard's theorem"
+    ],
     "relatedConcepts": [
       "Exceptional values",
       "Picard's theorem",
@@ -209,6 +263,10 @@
     "mathContext": "Lean: `theorem erdos_1116_summary :`",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   }

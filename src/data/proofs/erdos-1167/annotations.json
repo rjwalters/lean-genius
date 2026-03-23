@@ -35,6 +35,12 @@
     "content": "Five definitions build up the partition relation machinery from scratch:\n\n**RSubset α r**: The type of r-element subsets of α, defined as `{ s : Finset α // s.card = r }`. This is the domain for colorings.\n\n**Coloring α r γ**: A function from r-element subsets of α to colors in γ. This is simply `RSubset α r → γ`.\n\n**IsMonochromatic f H c**: Every r-element subset drawn from H receives color c under coloring f. The key subtlety: this is vacuously true when H has fewer than r elements.\n\n**PartitionRelation κ λ r γ**: The uniform relation κ → (λ)^r_γ, where every color seeks the same target size λ. Quantifies over all types of the right cardinality.\n\n**IndexedPartitionRelation κ targets r γ**: The indexed relation κ → (κ_i)^r_{i<γ}, where different colors can have different target sizes. This is the form needed for Problem #1167.",
     "mathContext": "The definitions use Lean 4's dependent types: $\\text{RSubset}(\\alpha, r) = \\{s : \\text{Finset}(\\alpha) \\mid s.\\text{card} = r\\}$. The partition relation quantifies universally over all types $\\alpha$ with $|\\alpha| = \\kappa$, avoiding universe issues.",
     "significance": "key",
+    "prerequisites": [
+      "Finset",
+      "Finset API",
+      "basic set theory",
+      "cardinal arithmetic"
+    ],
     "relatedConcepts": [
       "Finset",
       "cardinal cardinality",

@@ -11,6 +11,12 @@
     "content": "This module formalizes Erdős Problem #326, an **open problem** in additive combinatorics. The question asks: given any set A that's an additive basis of order 2, can we always find a sub-basis B with 'irregular' growth?",
     "mathContext": "We import Mathlib for filters (to express limits), topology (for convergence), and set operations. The `open scoped Topology` allows convenient notation for limits.",
     "significance": "supporting",
+    "prerequisites": [
+      "Mathlib",
+      "filter theory",
+      "filters",
+      "module theory"
+    ],
     "relatedConcepts": [
       "Mathlib",
       "filters",
@@ -29,6 +35,11 @@
     "content": "An **additive basis** is a set A of natural numbers such that every sufficiently large integer can be written as a sum of elements from A. Think of it as a 'generating set' for large integers under addition.",
     "mathContext": "Formally: there exists N such that for all n >= N, we can find elements a₁, ..., aₖ from A with a₁ + ... + aₖ = n. The number of summands k can vary.",
     "significance": "key",
+    "prerequisites": [
+      "additive combinatorics",
+      "basic set theory",
+      "representation"
+    ],
     "relatedConcepts": [
       "additive combinatorics",
       "representation",
@@ -47,6 +58,11 @@
     "content": "A basis of **order k** requires at most k summands. An order 2 basis means every large number is a sum of at most 2 elements. The perfect squares have order 4 (Lagrange's theorem).",
     "mathContext": "The constraint `m <= k` in the definition bounds the number of summands. Lower order = denser set required. Order 2 is quite restrictive.",
     "significance": "key",
+    "prerequisites": [
+      "Goldbach conjecture",
+      "Lagrange four-square theorem",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Lagrange four-square theorem",
       "Goldbach conjecture",
@@ -65,6 +81,12 @@
     "content": "For an enumerated set B = {b₁ < b₂ < ...}, the **growth ratio** bₖ/k² measures how fast the elements grow. For an order 2 basis, this ratio is bounded above (can't grow faster than quadratic).",
     "mathContext": "The `noncomputable` keyword is needed because real division isn't computable in Lean. The ratio bₖ/k² has a natural upper bound from counting arguments.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic growth",
+      "basic set theory",
+      "density",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "asymptotic growth",
       "density",
@@ -83,6 +105,11 @@
     "content": "A sequence has **no limit** if it doesn't converge to any real number. This could mean oscillation, unboundedness, or other irregular behavior. Erdős asks if we can always find such irregular sub-bases.",
     "mathContext": "The definition `HasNoGrowthLimit` asserts that for every real x, the sequence does NOT tend to x. This is stronger than just not having a finite limit.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "convergence",
+      "oscillation"
+    ],
     "relatedConcepts": [
       "convergence",
       "oscillation",
@@ -101,6 +128,11 @@
     "content": "**Erdős Problem #326**: Given any order 2 basis A, must there exist a sub-basis B with non-convergent growth ratio? This is stated as a disjunction: either YES for all A, or NO for some A.",
     "mathContext": "We use `axiom` because the answer is unknown. The disjunction P ∨ ¬P is always true, so this captures the mathematical question without assuming an answer. A proof of either disjunct would resolve the problem.",
     "significance": "key",
+    "prerequisites": [
+      "existential statements",
+      "open problems",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "open problems",
       "existential statements",
@@ -119,6 +151,11 @@
     "content": "**Cassels disproved Erdős's original conjecture** by constructing an order 2 basis A where the growth ratio aₖ/k² converges to a positive limit. This shows 'nice' bases exist.",
     "mathContext": "The existential statement guarantees a basis with `0 < x` and `HasGrowthLimit a x`. Cassels' construction is explicit but technical. This answered the A=B version negatively.",
     "significance": "key",
+    "prerequisites": [
+      "construction",
+      "counterexample",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "counterexample",
       "construction",
@@ -137,6 +174,12 @@
     "content": "**Standard bound**: For any order 2 basis, the k-th element satisfies bₖ <= Ck² for some constant C. This is a counting argument: we need enough pairs to represent all integers.",
     "mathContext": "If the k-th element were larger than Ck², there wouldn't be enough sums of pairs below n to cover all integers from 1 to n. This gives a density lower bound on order 2 bases.",
     "significance": "supporting",
+    "prerequisites": [
+      "counting arguments",
+      "density bounds",
+      "density theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "density bounds",
       "counting arguments",

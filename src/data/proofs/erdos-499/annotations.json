@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #499** asks about diagonal products in doubly stochastic matrices.\n\nA **doubly stochastic matrix** has non-negative entries where each row and column sums to 1.\n\nA **diagonal** is a selection of one entry from each row and column, i.e., entries M_{i,σ(i)} for some permutation σ.\n\n**Question:** Does every n×n doubly stochastic matrix have a diagonal with product ≥ n^{-n}?\n\n**Answer: YES** (Marcus-Minc, 1962)",
     "mathContext": "This connects to the van der Waerden conjecture about permanents, a famous problem open for over 50 years before being solved in 1981.",
     "significance": "key",
+    "prerequisites": [
+      "Doubly stochastic matrices",
+      "Permanent",
+      "matrix algebra"
+    ],
     "relatedConcepts": [
       "Doubly stochastic matrices",
       "Permanent",
@@ -29,6 +34,12 @@
     "content": "**IsDoublyStochastic(M):** A matrix M is doubly stochastic if:\n\n1. All entries are non-negative: M_{i,j} ≥ 0\n2. Each row sums to 1: ∑_j M_{i,j} = 1 for all i\n3. Each column sums to 1: ∑_i M_{i,j} = 1 for all j\n\n**Examples:**\n- Identity matrix (permutation matrix)\n- Uniform matrix: all entries = 1/n\n- Convex combinations of permutation matrices",
     "mathContext": "The set of all n×n doubly stochastic matrices forms a convex polytope called the Birkhoff polytope.",
     "significance": "key",
+    "prerequisites": [
+      "Birkhoff polytope",
+      "Stochastic matrix",
+      "basic set theory",
+      "convexity"
+    ],
     "relatedConcepts": [
       "Birkhoff polytope",
       "Stochastic matrix",
@@ -50,6 +61,12 @@
       "linear algebra",
       "matrices"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "linear algebra",
+      "matrices",
+      "matrix algebra"
+    ],
     "significance": "key"
   },
   {
@@ -67,6 +84,11 @@
       "permutations",
       "symmetric group"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "permutations",
+      "symmetric group"
+    ],
     "significance": "key"
   },
   {
@@ -81,6 +103,12 @@
     "content": "**perm(M):** The permanent of a matrix is:\n\n$$\\text{perm}(M) = \\sum_{\\sigma \\in S_n} \\prod_{i=1}^{n} M_{i,\\sigma(i)}$$\n\nIt's like the determinant but with all + signs (no alternating).\n\n**Key difference from determinant:**\n- Permanent is always ≥ 0 for non-negative matrices\n- Computing the permanent is #P-complete (very hard)\n- No simple formula like cofactor expansion works efficiently",
     "mathContext": "The permanent counts the number of perfect matchings in bipartite graphs when M is a 0-1 matrix.",
     "significance": "key",
+    "prerequisites": [
+      "Determinant",
+      "Perfect matching",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Determinant",
       "Perfect matching",
@@ -105,6 +133,12 @@
       "linear algebra",
       "matrices"
     ],
+    "prerequisites": [
+      "algebra",
+      "bounds",
+      "matrix algebra",
+      "ring tactic"
+    ],
     "significance": "key"
   },
   {
@@ -124,6 +158,12 @@
       "permutations",
       "symmetric group"
     ],
+    "prerequisites": [
+      "linear algebra",
+      "matrices",
+      "matrix algebra",
+      "simp tactic"
+    ],
     "significance": "key"
   },
   {
@@ -138,6 +178,11 @@
     "content": "**van_der_waerden:** For every n×n doubly stochastic matrix M:\n\n$$\\text{perm}(M) \\geq n^{-n} \\cdot n!$$\n\nEquality holds exactly when M is the uniform matrix.\n\n**History:** Conjectured by van der Waerden in 1926, proved independently by Egorychev and Falikman in 1981.\n\n**Implies Erdős #499:** If the sum of n! terms is ≥ n^{-n}·n!, then at least one term is ≥ n^{-n}.",
     "mathContext": "This was one of the most famous open problems in combinatorics for over 50 years.",
     "significance": "key",
+    "prerequisites": [
+      "Extremal matrix theory",
+      "Permanent bounds",
+      "matrix algebra"
+    ],
     "relatedConcepts": [
       "Permanent bounds",
       "Extremal matrix theory"
@@ -160,6 +205,11 @@
       "inequalities",
       "pigeonhole principle"
     ],
+    "prerequisites": [
+      "bounds",
+      "counting argument",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -177,6 +227,12 @@
       "linear algebra",
       "matrices"
     ],
+    "prerequisites": [
+      "linear algebra",
+      "matrices",
+      "matrix algebra",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -191,6 +247,12 @@
     "content": "**birkhoff_von_neumann:** Every doubly stochastic matrix is a convex combination of permutation matrices.\n\n$$M = \\sum_{i} c_i P_{\\sigma_i}$$\n\nwhere c_i ≥ 0, ∑c_i = 1, and P_σ is the permutation matrix for σ.\n\nThis characterizes the Birkhoff polytope: its vertices are exactly the permutation matrices.",
     "mathContext": "This theorem is fundamental to understanding doubly stochastic matrices geometrically.",
     "significance": "key",
+    "prerequisites": [
+      "Convex polytopes",
+      "Permutation matrices",
+      "convexity",
+      "matrix algebra"
+    ],
     "relatedConcepts": [
       "Convex polytopes",
       "Permutation matrices",
@@ -213,6 +275,12 @@
       "inequalities",
       "linear algebra",
       "matrices"
+    ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "matrix algebra",
+      "proof techniques"
     ],
     "significance": "key"
   }

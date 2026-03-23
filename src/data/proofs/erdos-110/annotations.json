@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #110: Chromatic Number Growth in Uncountable Graphs**\n\nConjecture: For ℵ₁-chromatic graphs, there exists F(n) bounding the size of n-chromatic subgraphs.\n\n**Answer**: NO - DISPROVED by Lambie-Hanson (2020) in ZFC.\n\nKey history: de Bruijn-Erdős (1951) → Erdős-Hajnal-Szemerédi conjecture (1982) → Shelah consistency (2005) → Lambie-Hanson ZFC disproof (2020).",
     "mathContext": "This problem sits at the intersection of infinite graph theory and set theory, connecting chromatic numbers to cardinal arithmetic.",
     "significance": "key",
+    "prerequisites": [
+      "Cardinals",
+      "Chromatic number",
+      "cardinal arithmetic",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Chromatic number",
       "Cardinals",
@@ -30,6 +36,12 @@
     "content": "**IsProperColoring:** Adjacent vertices get different colors.\n\n**IsKColorable:** Admits a proper k-coloring.\n\n**chromaticNumber:** Minimum k for k-colorability (as ℕ∞).\n\n**inducedSubgraph:** Restriction of G to vertex subset S.\n\n**HasFiniteNChromaticSubgraph(G, n, bound):** G has an n-chromatic subgraph on ≤ bound vertices.",
     "mathContext": "These definitions set up the framework for studying chromatic properties of finite subgraphs of infinite graphs.",
     "significance": "key",
+    "prerequisites": [
+      "Erdős problems",
+      "basic set theory",
+      "combinatorics",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Erdős problems",
       "combinatorics",
@@ -48,6 +60,12 @@
     "content": "**aleph0, aleph1:** ℵ₀ (countable infinity) and ℵ₁ (first uncountable cardinal).\n\n**HasChromaticNumberAtLeast(G, κ):** Not k-colorable for any k < κ.\n\n**HasChromaticNumber(G, κ):** Chromatic number is exactly κ.\n\nThe conjecture specifically targets ℵ₁-chromatic graphs.",
     "mathContext": "ℵ₁ = succ(ℵ₀) is the first uncountable cardinal. The conjecture's failure for ℵ₀ was already known.",
     "significance": "key",
+    "prerequisites": [
+      "Aleph numbers",
+      "Successor cardinals",
+      "basic set theory",
+      "cardinal arithmetic"
+    ],
     "relatedConcepts": [
       "Aleph numbers",
       "Successor cardinals",
@@ -71,6 +89,11 @@
       "compactness",
       "graph theory"
     ],
+    "prerequisites": [
+      "Heine-Borel",
+      "combinatorics",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -90,6 +113,12 @@
       "graph theory",
       "inequalities"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "bounds",
+      "combinatorics",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -104,6 +133,12 @@
     "content": "**shelah_consistency (2005):** Consistent with ZFC that no F exists.\n\n**lambie_hanson_counterexample (2020):** Proved in ZFC—no extra assumptions. Constructed an ℵ₁-chromatic graph defeating every proposed bound F.\n\n**erdos_110_disproved:** Direct proof that ¬ErdosHajnalSzemerediConjecture by extracting the counterexample and deriving contradiction.",
     "mathContext": "Shelah's consistency result left open whether this was a ZFC theorem. Lambie-Hanson's construction settled this definitively.",
     "significance": "key",
+    "prerequisites": [
+      "Consistency",
+      "ZFC",
+      "graph theory basics",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "ZFC",
       "Consistency",
@@ -128,6 +163,12 @@
       "graph theory",
       "inequalities"
     ],
+    "prerequisites": [
+      "algebra",
+      "basic set theory",
+      "bounds",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -146,6 +187,12 @@
       "combinatorics",
       "graph theory",
       "inequalities"
+    ],
+    "prerequisites": [
+      "bounds",
+      "combinatorics",
+      "graph theory basics",
+      "proof techniques"
     ],
     "significance": "key"
   }

@@ -11,6 +11,12 @@
     "content": "We import key Mathlib modules: `Finset.Basic` for finite set operations and summation, `SimpleGraph.Basic` and `SimpleGraph.Finite` for graph structure and edge sets, and `Data.Real.Basic` for real number arithmetic in probability calculations.",
     "mathContext": "Introduction to the formalization of Mathlib Imports",
     "significance": "supporting",
+    "prerequisites": [
+      "Finset API",
+      "Mathlib",
+      "SimpleGraph",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Mathlib",
       "SimpleGraph",
@@ -29,6 +35,11 @@
     "content": "**The Combinatorial Heart**: For distinct vertices $u \\neq v$, exactly half of all $2^{|V|}$ boolean assignments satisfy $f(u) \\neq f(v)$.",
     "mathContext": "The proof constructs a bijection via the toggle operation: flipping $u$'s assignment swaps 'same' and 'different' cases. Since toggle is an involution (self-inverse), the two sets have equal size. Together they partition all assignments, so each has exactly half.",
     "significance": "critical",
+    "prerequisites": [
+      "bijection",
+      "involution",
+      "logical reasoning"
+    ],
     "relatedConcepts": [
       "bijection",
       "involution",
@@ -89,6 +100,12 @@
     "content": "To prove something about an unordered pair $e$, we use `induction e using Sym2.ind` to get representatives $u, v$. The hypothesis `h : ¬e.IsDiag` ensures $u \\neq v$ (edges don't have both endpoints the same).",
     "mathContext": "Lean: `lemma prob_edge_in_cut {V : Type*} [DecidableEq V] [Fintype V] (G : SimpleGraph V)`",
     "significance": "supporting",
+    "prerequisites": [
+      "Fintype",
+      "Sym2",
+      "graph theory basics",
+      "quotient induction"
+    ],
     "relatedConcepts": [
       "quotient induction",
       "Sym2",
@@ -150,6 +167,12 @@
     "content": "The maximum cut value is the supremum (maximum) over all possible boolean assignments. We iterate over all $2^{|V|}$ functions and take the largest cut size.",
     "mathContext": "$$\\text{MaxCut}(G) = \\max_{f : V \\to \\text{Bool}} |C_f|$$\n\nThe `Finset.univ.sup` computes the maximum over the finite set of all assignments.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "optimization",
+      "supremum"
+    ],
     "relatedConcepts": [
       "supremum",
       "optimization",

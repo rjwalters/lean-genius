@@ -11,6 +11,10 @@
     "content": "Erdős Problem #693: Let A = {m ∈ [n, n^k] : m has a divisor in (n, 2n)}. Is the maximum gap between consecutive elements of A bounded by (log n)^O(1)? Heuristically, average gap ~log(n). OPEN.",
     "mathContext": "From Erdős [Er79e]. Related to Problem #446. Connects to Hooley divisor function and sieve methods.",
     "significance": "key",
+    "prerequisites": [
+      "divisor distribution",
+      "gaps"
+    ],
     "relatedConcepts": [
       "divisor distribution",
       "gaps",
@@ -36,6 +40,11 @@
     "content": "hasDivisorInInterval(m, a, b): ∃ d, d | m ∧ a < d < b. setA(n, k) = {m : n ≤ m ≤ n^k ∧ hasDivisorInInterval m n (2n)}. setA_finite: proved (setA ⊆ Icc n (n^k), which is finite).",
     "mathContext": "setA_finite: Set.Finite.subset applied to Icc containment.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "divisors",
+      "finite sets"
+    ],
     "relatedConcepts": [
       "divisors",
       "finite sets",
@@ -60,6 +69,12 @@
     "content": "setAFinset: convert to Finset. orderedA: sorted list. consecutiveGaps: differences of adjacent elements. maxGap: foldl max over gaps. maxGapA(n, k, hn): maximum gap for set A.",
     "mathContext": "Gap computation chain: setA → setAFinset → sort → zipWith → foldl max.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "Finset.sort",
+      "List.zipWith",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Finset.sort",
       "List.zipWith",
@@ -84,6 +99,11 @@
     "content": "polylogBoundedGap(k): ∃ C, α > 0 such that for large n, maxGapA(n,k) ≤ C·(log n)^α. erdos693Conjecture: polylogBoundedGap holds for all k ≥ 2. OPEN.",
     "mathContext": "erdos693Conjecture ≡ ∀ k ≥ 2, polylogBoundedGap k. Uses Filter.Eventually (∀ᶠ in atTop).",
     "significance": "key",
+    "prerequisites": [
+      "Filter.Eventually",
+      "filter theory",
+      "polylogarithmic growth"
+    ],
     "relatedConcepts": [
       "polylogarithmic growth",
       "Filter.Eventually",
@@ -108,6 +128,11 @@
     "content": "mem_setA_has_divisor: proved (direct extraction from set membership). divisor_factorization: proved (d | m gives ∃ q, m = d·q). range_card (axiom): |Icc n (n^k)| = n^k - n + 1.",
     "mathContext": "Two proved results from definitions. range_card axiomatized (Finset.card_Icc with arithmetic).",
     "significance": "supporting",
+    "prerequisites": [
+      "Finset API",
+      "divisibility",
+      "set membership"
+    ],
     "relatedConcepts": [
       "set membership",
       "divisibility",
@@ -131,6 +156,11 @@
     "content": "maxGap_trivial_upper (axiom): maxGapA ≤ n^k - n. maxGap_pigeonhole (axiom): ∃ gap ≤ maxGapA with gap · |A| ≥ n^k - n. Pigeonhole connects gap bounds to density estimates.",
     "mathContext": "Trivial bound from range size. Pigeonhole: average gap ≥ range/|A|.",
     "significance": "key",
+    "prerequisites": [
+      "density theory",
+      "pigeonhole principle",
+      "trivial bounds"
+    ],
     "relatedConcepts": [
       "trivial bounds",
       "pigeonhole principle",
@@ -154,6 +184,11 @@
     "content": "countA(n, k, hn) = |A|. divisor_density_heuristic (axiom): |A| ≥ (n^k - n)/(2·log n) for large n. This suggests average gap ~2·log n, making polylog bound plausible.",
     "mathContext": "Heuristic: P(d | m) ~ 1/d, so ∑_{d∈(n,2n)} 1/d ~ log(2). Density ~ log(2) in [n, n^k].",
     "significance": "key",
+    "prerequisites": [
+      "density estimates",
+      "density theory",
+      "logarithmic density"
+    ],
     "relatedConcepts": [
       "density estimates",
       "logarithmic density",
@@ -178,6 +213,11 @@
     "content": "uniformGapBound(n, k, hn, B): every consecutive gap ≤ B. uniform_equiv_maxgap (axiom): uniformGapBound ↔ maxGapA ≤ B. The two formulations are equivalent.",
     "mathContext": "Uniform bound on all gaps equivalent to bounding the maximum gap.",
     "significance": "supporting",
+    "prerequisites": [
+      "basic set theory",
+      "equivalent formulations",
+      "uniform bounds"
+    ],
     "relatedConcepts": [
       "equivalent formulations",
       "uniform bounds",
@@ -201,6 +241,10 @@
     "content": "Connects to classical divisor distribution (Hooley divisor function τ(n; y, z)), sieve methods, and related Erdős Problem #446.",
     "mathContext": "divisor_distribution_connection: True (placeholder). related_problem_446: True (placeholder).",
     "significance": "supporting",
+    "prerequisites": [
+      "Hooley divisor function",
+      "sieve methods"
+    ],
     "relatedConcepts": [
       "Hooley divisor function",
       "sieve methods",
@@ -224,6 +268,10 @@
     "content": "erdos_693_summary: (erdos693Conjecture ↔ ∀ k ≥ 2, polylogBoundedGap k) ∧ True. Proved from Iff.rfl and trivial. erdos_693_status: True. Problem remains OPEN.",
     "mathContext": "erdos_693_summary := ⟨Iff.rfl, trivial⟩.",
     "significance": "key",
+    "prerequisites": [
+      "open problem",
+      "summary"
+    ],
     "relatedConcepts": [
       "open problem",
       "summary",

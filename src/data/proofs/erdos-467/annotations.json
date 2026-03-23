@@ -10,6 +10,12 @@
     "title": "Residue Assignment",
     "content": "A `ResidueAssignment x` is a function assigning to each prime $p \\leq x$ a residue class $a_p$. The assignment determines which integers each prime 'covers': prime $p$ covers $n$ when $n \\equiv a_p \\pmod{p}$.",
     "significance": "key",
+    "prerequisites": [
+      "Chinese Remainder Theorem",
+      "basic set theory",
+      "congruence relations",
+      "covering congruences"
+    ],
     "mathContext": "\\text{ResidueAssignment}(x) : \\{p \\leq x : p \\text{ prime}\\} \\to \\mathbb{Z}/p\\mathbb{Z}: Dependent function type assigning each prime $p \\leq x$ a residue class. Uses natural number residues with congruence checked via $n \\bmod p = a_p \\bmod p$. Each assignment determines which integers each prime 'covers'.",
     "relatedConcepts": [
       "covering congruences",
@@ -29,6 +35,12 @@
     "title": "Prime Partition Structure",
     "content": "A `PrimePartition x` partitions primes $\\leq x$ into sets $A$ and $B$ via a Boolean classifier `inA`. Both sets must be non-empty (witnessed by existential proofs).",
     "significance": "key",
+    "prerequisites": [
+      "Boolean classification",
+      "basic set theory",
+      "prime numbers",
+      "set partition"
+    ],
     "mathContext": "\\{p \\leq x : p \\text{ prime}\\} = A \\sqcup B,\\quad A \\neq \\emptyset,\\, B \\neq \\emptyset: Boolean classifier with non-emptiness witnesses. Uses `Bool` rather than `Prop` for the classifier, enabling computation. The structure packages the partition function together with existential proofs that both parts are non-empty.",
     "relatedConcepts": [
       "set partition",
@@ -47,6 +59,12 @@
     "title": "Coverage and Dual Covering",
     "content": "Defines `CoveredByA`, `CoveredByB`, and `IsDualCovering`. An integer $n$ is covered by $A$ if $\\exists p \\in A,\\, n \\equiv a_p \\pmod{p}$. A dual covering requires every $n < x$ is covered by both $A$ and $B$ independently.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "covering systems",
+      "exact covering systems",
+      "prime numbers"
+    ],
     "mathContext": "\\text{IsDualCovering} :\\Leftrightarrow \\forall n < x,\\, (\\exists p \\in A,\\, n \\equiv a_p \\pmod{p}) \\wedge (\\exists q \\in B,\\, n \\equiv a_q \\pmod{q}): Universal quantification requiring every integer $n < x$ to be covered by at least one prime from each partition class. This is strictly stronger than a single covering system.",
     "relatedConcepts": [
       "covering systems",
@@ -65,6 +83,12 @@
     "title": "Main Conjecture: Erdős Problem 467",
     "content": "For all sufficiently large $x$, there exist a residue assignment and a prime partition achieving dual coverage. The problem asks whether the redundancy in prime residue classes ($\\sum 1/p$ diverges) is enough to split primes into two halves that each cover everything.",
     "significance": "key",
+    "prerequisites": [
+      "Erdős covering congruence problems",
+      "Euler's work",
+      "Hough's theorem",
+      "group theory"
+    ],
     "mathContext": "\\exists X,\\, \\forall x \\geq X,\\, \\exists (a_p)_{p \\leq x},\\, \\exists A \\sqcup B,\\, \\text{IsDualCovering}(x): Existential statement asking whether primes can be split into two groups that each independently cover all residues. Axiomatized since the problem is open. The quantifier structure ($\\exists X, \\forall x \\geq X, \\exists \\text{assign}, \\exists \\text{part}$) captures 'for sufficiently large $x$'. The divergence of $\\sum 1/p$ (Euler) suggests enough redundancy exists.",
     "relatedConcepts": [
       "Erdős covering congruence problems",
@@ -84,6 +108,12 @@
     "title": "Residue Class Properties (Proved)",
     "content": "Seven fully proved basic properties: $n \\bmod p < p$, $n \\bmod p = 0 \\iff p \\mid n$, $n \\bmod 2 \\in \\{0,1\\}$, residue periodicity $(a + kp) \\bmod p = a \\bmod p$, every $n \\geq 2$ has a prime factor, prime factors are $\\leq n$, and for $n < x$ prime factors are $\\leq x$.",
     "significance": "supporting",
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "natural number arithmetic",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "divisibility",
       "factorization",
@@ -104,6 +134,12 @@
     "title": "Zero Assignment Analysis (Proved)",
     "content": "The zero assignment $a_p = 0$ for all $p$ is fully analyzed: $n = 0$ is covered by every prime, $n = 1$ is never covered (no prime divides 1), and every $n \\geq 2$ is covered via its smallest prime factor. The equivalence `zero_assign_cover_iff`: coverage by $p$ iff $p \\mid n$.",
     "significance": "supporting",
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "prime numbers",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "divisibility",
       "factorization",
@@ -122,6 +158,12 @@
     "title": "Partition and Dual Covering Properties (Proved)",
     "content": "Six fully proved structural results. `dual_implies_A/B_covers`: projections. `dual_covering_double_hit`: every $n < x$ is hit by $\\geq 2$ primes (one from each side). `partition_uses_two_primes`: $\\geq 2$ primes required. `partition_has_distinct_labels`: $A \\neq B$. `partition_needs_prime`: $x \\geq 2$ necessary.",
     "significance": "supporting",
+    "prerequisites": [
+      "algebra",
+      "combinatorics",
+      "prime numbers",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "algebra",
       "combinatorics",
@@ -142,6 +184,11 @@
     "title": "Residue Class Periodicity (Proved)",
     "content": "Three proved results: $(n + p) \\bmod p = n \\bmod p$ (periodicity), $a < p \\implies a \\bmod p = a$ (identity in range), and $n \\bmod p < p$ (range bound). These establish that each residue class covers exactly $1/p$ fraction of integers.",
     "significance": "supporting",
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "natural number arithmetic"
+    ],
     "relatedConcepts": [
       "bounds",
       "inequalities",
@@ -161,6 +208,12 @@
     "title": "CRT for Distinct Primes",
     "content": "For distinct primes $p, q$ and any residues $a, b$, the Chinese Remainder Theorem guarantees $\\exists n,\\, n \\equiv a \\pmod{p} \\wedge n \\equiv b \\pmod{q}$. Axiomatized; provable from `ZMod.chineseRemainder`. CRT implies coverage events from distinct primes are independent.",
     "significance": "key",
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "modular arithmetic",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "divisibility",
       "factorization",
@@ -181,6 +234,12 @@
     "title": "Mertens-type Estimate",
     "content": "By Mertens' third theorem, $\\prod_{p \\leq x} (1 - 1/p) \\sim e^{-\\gamma}/\\log x$, where $\\gamma \\approx 0.5772$ is the Euler-Mascheroni constant. This bounds the 'uncovered probability' — the fraction of integers not hit by any prime's residue class. For dual coverage, both $A$ and $B$ need enough primes that $\\prod_{p \\in A} (1 - 1/p)$ is small enough.",
     "significance": "key",
+    "prerequisites": [
+      "Euler's work",
+      "bounds",
+      "divisibility",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "bounds",
       "divisibility",

@@ -11,6 +11,10 @@
     "content": "**Erdos Problem #359** concerns MacMahon's sequence where a_1 = 1 and each a_{i+1} is the smallest integer not expressible as a sum of consecutive earlier terms. The main questions ask about the growth rate of this sequence.",
     "mathContext": "The sequence is OEIS A002048: 1, 2, 4, 5, 8, 10, 14, 15, ... Andrews conjectured a_k ~ (k log k) / (log log k). The problem remains OPEN.",
     "significance": "key",
+    "prerequisites": [
+      "erdos",
+      "macmahon"
+    ],
     "relatedConcepts": [
       "erdos",
       "macmahon",
@@ -30,6 +34,12 @@
     "content": "**ConsecutiveSum** computes the sum A(a) + A(a+1) + ... + A(b) of consecutive terms. Unlike subset sums, we require the terms to be contiguous.",
     "mathContext": "Defined as sum over Finset.Icc a b. The constraint of consecutive indices creates the gaps that define MacMahon's sequence.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "finset",
+      "sum"
+    ],
     "relatedConcepts": [
       "finset",
       "sum",
@@ -48,6 +58,11 @@
     "content": "**AchievableSums** is the set of all integers expressible as a consecutive sum from the first k+1 terms. A number is achievable if it equals some A(a) + A(a+1) + ... + A(b) with b <= k.",
     "mathContext": "This set grows as k increases. The next term A(k+1) is chosen as the smallest integer greater than A(k) that is NOT in this set.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "membership",
+      "set"
+    ],
     "relatedConcepts": [
       "set",
       "membership",
@@ -66,6 +81,11 @@
     "content": "**IsGoodFor A n** says: A(0) = n, A is strictly increasing, and each A(j+1) is the least integer greater than A(j) not achievable as a consecutive sum from A(0)...A(j).",
     "mathContext": "Uses IsLeast from Mathlib to formally capture 'smallest integer satisfying a condition'. The recursion uniquely determines the sequence given n.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "isLeast",
+      "recursion"
+    ],
     "relatedConcepts": [
       "isLeast",
       "recursion",
@@ -84,6 +104,12 @@
     "content": "**IsMacMahonSeq** defines THE MacMahon sequence as the unique sequence 'good for 1'. This is the sequence 1, 2, 4, 5, 8, 10, 14, 15, ... (OEIS A002048).",
     "mathContext": "Named after Percy MacMahon who studied these 'prime numbers of measurement'. The sequence has fascinating connections to combinatorics.",
     "significance": "key",
+    "prerequisites": [
+      "OEIS",
+      "basic set theory",
+      "measure theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "OEIS",
       "uniqueness",
@@ -102,6 +128,11 @@
     "content": "**macmahon_first_term** shows A(0) = 1, **macmahon_strictMono** proves strict monotonicity, and **term_is_achievable** shows each A(i) is achievable as the 'singleton sum' of just itself.",
     "mathContext": "These are direct consequences of the definition. Strict monotonicity follows because A(j+1) > A(j) by construction.",
     "significance": "supporting",
+    "prerequisites": [
+      "first-term",
+      "monotonicity",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "monotonicity",
       "first-term",
@@ -120,6 +151,11 @@
     "content": "**macmahonValues** lists the first 8 terms: 1, 2, 4, 5, 8, 10, 14, 15. Note that 3, 6, 7, 9, 11, 12, 13 are all skipped because they're achievable as consecutive sums.",
     "mathContext": "3 = 1 + 2, 6 = 2 + 4, 7 = 1 + 2 + 4, etc. The 'gaps' in the sequence reveal which sums are achievable.",
     "significance": "key",
+    "prerequisites": [
+      "OEIS-A002048",
+      "basic set theory",
+      "concrete-values"
+    ],
     "relatedConcepts": [
       "OEIS-A002048",
       "concrete-values",
@@ -138,6 +174,12 @@
     "content": "**three_is_achievable** proves 3 in AchievableSums (since 3 = 1 + 2 = A(0) + A(1)). **six_is_achievable** proves 6 in AchievableSums (since 6 = 2 + 4 = A(1) + A(2)).",
     "mathContext": "These verified theorems show concrete examples of the sequence's construction. Each uses the Finset.sum_Icc_succ_top lemma to compute the sum.",
     "significance": "supporting",
+    "prerequisites": [
+      "Finset API",
+      "consecutive-sum",
+      "proof techniques",
+      "verification"
+    ],
     "relatedConcepts": [
       "verification",
       "consecutive-sum",
@@ -156,6 +198,11 @@
     "content": "**Three open conjectures**: (1) a_k/k -> infinity (superlinear), (2) a_k/k^{1+c} -> 0 for c > 0 (subpolynomial), (3) Andrews' conjecture a_k ~ (k log k)/(log log k).",
     "mathContext": "These capture the expected intermediate growth rate - faster than linear but slower than any polynomial > 1. All remain OPEN.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic",
+      "polynomial ring theory",
+      "tendsto"
+    ],
     "relatedConcepts": [
       "tendsto",
       "asymptotic",
@@ -174,6 +221,10 @@
     "content": "**porubsky_upper** states: for any epsilon > 0, infinitely many k satisfy a_k < (log k)^epsilon * (k log k)/(log log k). This gives partial evidence for Andrews' conjecture.",
     "mathContext": "The bound shows the sequence doesn't grow too much faster than the conjectured rate, at least infinitely often.",
     "significance": "key",
+    "prerequisites": [
+      "partial-result",
+      "upper-bound"
+    ],
     "relatedConcepts": [
       "upper-bound",
       "partial-result",
@@ -192,6 +243,12 @@
     "content": "**countingFunction** counts terms <= x, and **primeCounting** counts primes <= x. These allow comparing MacMahon's sequence to primes.",
     "mathContext": "The counting function A(x) = |{i : A(i) <= x}| measures how 'dense' the sequence is up to x.",
     "significance": "supporting",
+    "prerequisites": [
+      "basic set theory",
+      "counting",
+      "measure theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "counting",
       "primes",
@@ -210,6 +267,12 @@
     "content": "**porubsky_density_bound** states limsup A(x)/pi(x) >= 1/log(2). MacMahon's sequence is denser than primes by at least this factor infinitely often.",
     "mathContext": "Since 1/log(2) ~ 1.44, the sequence has at least 44% more elements than primes (asymptotically, infinitely often).",
     "significance": "key",
+    "prerequisites": [
+      "density theory",
+      "limsup",
+      "prime numbers",
+      "prime-comparison"
+    ],
     "relatedConcepts": [
       "limsup",
       "prime-comparison",
@@ -228,6 +291,10 @@
     "content": "**general_n_superlinear** conjectures that sequences 'good for n' (starting with any n > 0) also have superlinear growth a_k/k -> infinity.",
     "mathContext": "The problem generalizes beyond n = 1. Different starting values create different sequences but with similar growth behavior.",
     "significance": "supporting",
+    "prerequisites": [
+      "generalization",
+      "starting-value"
+    ],
     "relatedConcepts": [
       "generalization",
       "starting-value",
@@ -246,6 +313,11 @@
     "content": "**erdos_359_summary** bundles basic facts: A(0) = 1 for MacMahon sequences, strict monotonicity holds, and the first and eighth values are 1 and 15 respectively.",
     "mathContext": "A convenience theorem packaging the core verified results for quick reference.",
     "significance": "supporting",
+    "prerequisites": [
+      "packaging",
+      "proof techniques",
+      "summary"
+    ],
     "relatedConcepts": [
       "summary",
       "packaging",

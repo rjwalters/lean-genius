@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #146: Turán Numbers for Bipartite r-Degenerate Graphs**\n\n**Conjecture:** If H is bipartite and r-degenerate, then ex(n;H) ≪ n^{2-1/r}.\n\n**Status:** OPEN (even for r = 2!)\n\n**Prize:** $500\n\n**Best Known:** n^{2-1/4r} by Alon-Krivelevich-Sudakov (2003)",
     "mathContext": "The Turán number ex(n;H) is the maximum edges in an n-vertex H-free graph. The conjecture relates it to degeneracy, a local structural property.",
     "significance": "key",
+    "prerequisites": [
+      "Degeneracy",
+      "Turán numbers",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Turán numbers",
       "Degeneracy",
@@ -30,6 +35,12 @@
     "content": "**IsRDegenerate:**\n\nA graph is r-degenerate if every induced subgraph has minimum degree ≤ r. Formally, for every nonempty subset S of vertices, there exists v ∈ S with |N(v) ∩ S| ≤ r.\n\n**Equivalent:** Vertices can be ordered so each has ≤ r neighbors among later vertices.\n\n**Examples:** Trees are 1-degenerate, planar graphs are 5-degenerate, K_{r,s} is min(r,s)-degenerate.",
     "mathContext": "The definition uses ncard (natural-valued cardinality) for the intersection of the neighbor set with S, making it compatible with potentially infinite vertex types.",
     "significance": "key",
+    "prerequisites": [
+      "Degeneracy ordering",
+      "Minimum degree",
+      "basic set theory",
+      "cardinal arithmetic"
+    ],
     "relatedConcepts": [
       "Degeneracy ordering",
       "Minimum degree",
@@ -48,6 +59,12 @@
     "content": "**turanNumber ex(n; H):**\n\nThe maximum number of edges in an n-vertex graph containing no copy of H as a subgraph. This is axiomatized rather than defined constructively because formalizing the H-free condition requires graph homomorphism infrastructure not available in Mathlib.\n\n**Classic Result:** ex(n; K_r) = (1 - 1/(r-1))n²/2 (Turán's theorem)\n\n**For bipartite H:** ex(n; H) = o(n²) by Kővári-Sós-Turán.",
     "mathContext": "The original stub used a noncomputable definition with a True placeholder for the H-free condition. Axiomatizing is more honest since the H-free condition was never actually formalized.",
     "significance": "key",
+    "prerequisites": [
+      "Forbidden subgraph",
+      "Turán's theorem",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Turán's theorem",
       "Forbidden subgraph",
@@ -66,6 +83,11 @@
     "content": "**ErdosSimonovitsConjecture (1984):**\n\nFor bipartite r-degenerate H with r ≥ 1:\nex(n; H) ≪ n^{2-1/r}\n\n**Meaning:** The extremal exponent depends ONLY on r, not on other structure of H.\n\n**Significance:** Would give a complete classification of bipartite Turán number exponents based solely on the degeneracy parameter.",
     "mathContext": "The conjecture is defined as a Prop using the IsAsymptoticallyBounded predicate, which requires the existence of a constant C > 0 bounding the Turán number by C·n^{2-1/r}.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic notation",
+      "Big-O",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Asymptotic notation",
       "Big-O",
@@ -84,6 +106,11 @@
     "content": "**Alon-Krivelevich-Sudakov:**\n\nFor bipartite r-degenerate H:\nex(n; H) ≪ n^{2-1/4r}\n\n**Note:** This is weaker than the conjecture by a factor of 4 in the exponent denominator.\n\n**Method:** Uses the dependent random choice technique, which selects a random subset of vertices and argues that it contains many 'rich' vertices with large common neighborhoods.",
     "mathContext": "The exponent 2-1/(4r) vs the conjectured 2-1/r reflects the current gap. The factor of 4 arises from the probabilistic argument requiring concentration bounds.",
     "significance": "key",
+    "prerequisites": [
+      "Dependent random choice",
+      "Probabilistic method",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Dependent random choice",
       "Probabilistic method",
@@ -102,6 +129,10 @@
     "content": "**MaxDegreeOneSide and aks_special_case:**\n\nWhen H is bipartite with max degree r in one side of the bipartition, the full bound ex(n;H) ≪ n^{2-1/r} holds. The MaxDegreeOneSide predicate requires a bipartition (A, B) with A ∪ B = V, A ∩ B = ∅, all edges crossing the partition, and max degree r in side A.\n\n**This includes:** K_{r,s} for any s ≥ r, since the r-side has degree s and the s-side has degree r.",
     "mathContext": "This is a stronger structural condition than r-degeneracy alone, and the full conjecture asks whether degeneracy suffices without the degree bound on one side.",
     "significance": "key",
+    "prerequisites": [
+      "Bipartition",
+      "Maximum degree"
+    ],
     "relatedConcepts": [
       "Bipartition",
       "Maximum degree",
@@ -120,6 +151,12 @@
     "content": "**aks_weaker_than_conjecture (proved by field_simp + linarith):**\n\nFor all r ≥ 1: 2 - 1/r < 2 - 1/(4r)\n\nThis is a fully proved theorem establishing that the AKS exponent is strictly larger (weaker) than the conjectured exponent. The proof uses field_simp to clear fractions and linarith for the resulting linear arithmetic.\n\n**For r = 2:** Conjecture gives n^{3/2}, AKS gives n^{15/8} — a gap of 3/8 in the exponent.",
     "mathContext": "The inequality 2 - 1/r < 2 - 1/(4r) simplifies to 1/(4r) < 1/r, which holds for all positive r. The bound_comparison_r2 theorem verifies the r=2 specialization with norm_num.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic gap",
+      "Exponent comparison",
+      "field theory",
+      "linarith tactic"
+    ],
     "relatedConcepts": [
       "Exponent comparison",
       "Asymptotic gap",
@@ -138,6 +175,12 @@
     "content": "**completeBipartiteGraph K_{r,s}:**\n\nExplicitly constructed on Fin(r+s) with adjacency defined by the condition that one endpoint is in [0,r) and the other in [r, r+s). Symmetry and irreflexivity are proved inline.\n\n**complete_bipartite_degenerate:** K_{r,s} is r-degenerate when r ≤ s (axiomatized).\n\n**kovari_sos_turan:** ex(n; K_{r,s}) = Θ(n^{2-1/r}) — the conjecture holds for complete bipartite graphs! This is the Kővári-Sós-Turán theorem (1954), one of the earliest results in extremal graph theory.",
     "mathContext": "The K_{r,s} case is important because it shows the conjectured bound is achievable for a natural family of r-degenerate graphs. The question is whether all r-degenerate bipartite graphs behave similarly.",
     "significance": "key",
+    "prerequisites": [
+      "Complete bipartite graph",
+      "Kővári-Sós-Turán theorem",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Complete bipartite graph",
       "Kővári-Sós-Turán theorem",
@@ -156,6 +199,11 @@
     "content": "**Even r = 2 is Open:**\n\nFor 2-degenerate bipartite graphs:\n- Conjecture: ex(n;H) ≪ n^{3/2}\n- AKS: ex(n;H) ≪ n^{15/8}\n\n**r2_case_exponents (proved):** Verifies 2 - 1/2 = 3/2 and 2 - 1/8 = 15/8.\n\n**c4_turan (axiom):** The 4-cycle C_4 is 2-degenerate and bipartite, with ex(n; C_4) = Θ(n^{3/2}) known by Bondy-Simonovits. So the conjecture holds for C_4, but the general case for 2-degenerate graphs remains open.",
     "mathContext": "The C_4 Turán number is one of the most classical results in extremal graph theory, proved using algebraic methods (incidence geometry). The difficulty for general 2-degenerate graphs is that algebraic techniques don't apply uniformly.",
     "significance": "key",
+    "prerequisites": [
+      "4-cycle",
+      "Bondy-Simonovits",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "4-cycle",
       "Bondy-Simonovits",
@@ -174,6 +222,11 @@
     "content": "**erdos_146_summary (fully proved):**\n\nCombines three verified results into a single conjunction:\n1. ∀ r ≥ 1, the AKS exponent is strictly weaker than the conjectured exponent\n2. The r=2 exponents are exactly 3/2 (conjectured) and 15/8 (known)\n3. The r=2 bound comparison: 3/2 < 15/8\n\nAll three components are proved theorems (no axioms or trivial True placeholders). The proof uses exact with the three previously proved theorems.",
     "mathContext": "This summary replaces the original True-valued placeholder with a meaningful conjunction of the key quantitative facts established in the formalization.",
     "significance": "key",
+    "prerequisites": [
+      "Conjunction",
+      "Summary theorem",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Conjunction",
       "Summary theorem",

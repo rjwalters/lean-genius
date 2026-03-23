@@ -11,6 +11,10 @@
     "content": "**Erdős Problem #497** (SOLVED):\n\nHow many antichains (Sperner families) exist in the power set P([n])?\n\n**Answer:** 2^{(1+o(1)) · C(n, ⌊n/2⌋)} (Kleitman 1969).\n\nThis is closely related to Dedekind's problem (OEIS A000372) on the number of monotone Boolean functions, one of the oldest problems in combinatorics.",
     "mathContext": "The Dedekind numbers D(n) count antichains in P([n]). They grow doubly exponentially — roughly 2^{C(n,n/2)} — making them extremely difficult to compute. D(9) was only determined in 2023.",
     "significance": "key",
+    "prerequisites": [
+      "Dedekind numbers",
+      "antichains"
+    ],
     "relatedConcepts": [
       "Dedekind numbers",
       "antichains",
@@ -30,6 +34,12 @@
     "content": "**IsAntichain n F:** F is a family of subsets of Fin n with no containment between distinct members. If A ⊆ B and both are in F, then A = B.\n\n**antichainCount n:** the total number of antichains in P([n]), computed by filtering all subfamilies of the powerset.\n\nThese are also called Sperner families (after Sperner's 1928 theorem) or antichains in the Boolean lattice 2^[n].",
     "mathContext": "The Boolean lattice 2^[n] has 2^n elements ordered by inclusion. An antichain is a set of pairwise incomparable elements. The width (maximum antichain size) is C(n, ⌊n/2⌋) by Sperner's theorem.",
     "significance": "key",
+    "prerequisites": [
+      "Boolean lattice",
+      "basic set theory",
+      "filter theory",
+      "partial order"
+    ],
     "relatedConcepts": [
       "Boolean lattice",
       "partial order",
@@ -48,6 +58,10 @@
     "content": "**sperner_theorem:** Every antichain in P([n]) has size ≤ C(n, ⌊n/2⌋).\n\nThis is the maximum width of the Boolean lattice, achieved by the middle layer.\n\n**middle_layer_antichain:** The family of all ⌊n/2⌋-element subsets of [n] is an antichain achieving the Sperner bound.\n\nSperner's theorem (1928) is one of the foundational results of extremal set theory.",
     "mathContext": "The proof uses the LYM inequality (Lubell-Yamamoto-Meshalkin): Σ 1/C(n,|A|) ≤ 1 for any antichain. Since C(n, ⌊n/2⌋) is the largest binomial coefficient, this gives the bound.",
     "significance": "key",
+    "prerequisites": [
+      "LYM inequality",
+      "Sperner's theorem"
+    ],
     "relatedConcepts": [
       "Sperner's theorem",
       "LYM inequality",
@@ -67,6 +81,11 @@
     "content": "**Axiomatised values:**\n- D(0) = 2, D(1) = 3, D(2) = 6, D(3) = 20, D(4) = 168\n\nThese form OEIS A000372. The sequence grows extremely fast:\n- D(5) = 7581\n- D(6) = 7,828,354\n- D(7) = 2,414,682,040,998\n- D(8) = 56,130,437,228,687,557,907,788\n- D(9) was determined in 2023\n\nThe double-exponential growth makes exact computation extremely difficult beyond small n.",
     "mathContext": "Dedekind posed this problem in 1897. It remains one of the hardest counting problems in combinatorics, with each new value requiring massive computational effort.",
     "significance": "supporting",
+    "prerequisites": [
+      "Dedekind's problem",
+      "OEIS A000372",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "OEIS A000372",
       "Dedekind's problem",
@@ -85,6 +104,10 @@
     "content": "**trivial_upper_bound:** antichainCount(n) ≤ 2^{C(n, ⌊n/2⌋)}.\n\nEvery antichain is a subset of the middle layer's 'neighbourhood,' giving at most 2^{C(n,n/2)} choices.\n\nThis bound is tight in the logarithmic sense: log₂(antichainCount(n)) ~ C(n, n/2).",
     "mathContext": "The key insight is that most antichains consist primarily of sets near the middle layer. Sets far from the middle layer contribute negligibly to the count.",
     "significance": "key",
+    "prerequisites": [
+      "middle layer",
+      "upper bound"
+    ],
     "relatedConcepts": [
       "upper bound",
       "middle layer",
@@ -103,6 +126,11 @@
     "content": "**kleitman_lower + kleitman_upper:**\n\nFor every ε > 0 and large enough n:\n(1−ε) · C(n,n/2) ≤ log₂(antichainCount(n)) ≤ (1+ε) · C(n,n/2)\n\nEquivalently: antichainCount(n) = 2^{(1+o(1)) · C(n, ⌊n/2⌋)}.\n\n**ErdosProblem497** formalises this as the conjunction of lower and upper asymptotic bounds.\n\nKleitman's proof (1969) uses a delicate entropy argument and correlation inequalities.",
     "mathContext": "This determines the logarithmic order of the Dedekind numbers: log₂ D(n) ~ C(n, ⌊n/2⌋) ~ 2^n · √(2/(πn)). The exact constant in front remains an open question.",
     "significance": "key",
+    "prerequisites": [
+      "Dedekind numbers",
+      "Kleitman",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Kleitman",
       "Dedekind numbers",

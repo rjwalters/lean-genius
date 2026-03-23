@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #784: Sieving with Bounded Reciprocal Sums**\n\nThis problem asks: if a set A has reciprocal sum Σ 1/n ≤ C, must a significant number of elements survive sieving?\n\n**The Question:** Does there exist c > 0 such that H_C(x) ≫ x/(log x)^c?\n\n**Answer:**\n- **YES** for 0 < C ≤ 1\n- **NO** for C > 1\n\nThe transition at C = 1 is a sharp phase transition in sieving behavior.",
     "mathContext": "This connects reciprocal sums (a measure of density) to sieve-theoretic outcomes. The problem lies at the intersection of analytic number theory and sieve methods.",
     "significance": "key",
+    "prerequisites": [
+      "Reciprocal sums",
+      "Sieve theory",
+      "density theory",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "Sieve theory",
       "Reciprocal sums",
@@ -36,6 +42,12 @@
     "content": "**reciprocalSum A:**\n\nThe reciprocal sum of a finite set A is Σ_{n∈A} 1/n.\n\n**Examples:**\n- reciprocalSum {2} = 1/2\n- reciprocalSum {2,3} = 1/2 + 1/3 = 5/6\n- reciprocalSum {2,3,5} ≈ 1.03\n\nThis measures how 'dense' the set is in terms of divisibility coverage. A larger reciprocal sum means the set covers more numbers via divisibility.",
     "mathContext": "The reciprocal sum appears in harmonic analysis and is related to the density of integers with divisors in A.",
     "significance": "key",
+    "prerequisites": [
+      "Density",
+      "Harmonic series",
+      "basic set theory",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Harmonic series",
       "Density",
@@ -60,6 +72,12 @@
     "content": "**sievedSet A x:**\n\nThe set of integers m ∈ [1,x] such that no element of A divides m.\n\n**Definition:**\n```lean\ndef sievedSet (A : Finset ℕ) (x : ℕ) : Finset ℕ :=\n  (range (x + 1)).filter (fun m => m ≥ 1 ∧ ∀ a ∈ A, ¬(a ∣ m))\n```\n\n**Example:** If A = {2,3}, then sievedSet A 10 = {1,5,7}—the elements not divisible by 2 or 3.",
     "mathContext": "This is the fundamental object in sieve theory: counting integers that avoid divisibility by a given set.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "Inclusion-exclusion",
+      "Sieve of Eratosthenes",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Sieve of Eratosthenes",
       "Inclusion-exclusion",
@@ -83,6 +101,11 @@
     "content": "**H_C(x):** The minimum sieved count.\n\nH_C(x) = min { |sievedSet A x| : A ⊆ {2,...,x}, Σ_{a∈A} 1/a ≤ C }\n\nThis is the worst-case scenario: the fewest elements that can survive sieving when the reciprocal sum constraint is C.\n\n**Key insight:** We minimize over all valid sets A to find how effective sieving can be under the constraint.",
     "mathContext": "The minimization captures the adversarial sieving problem: what's the best an adversary can do to eliminate elements while respecting the reciprocal sum budget?",
     "significance": "key",
+    "prerequisites": [
+      "Optimization",
+      "Sieve theory",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Optimization",
       "Sieve theory",
@@ -107,6 +130,12 @@
     "content": "**HasPolynomialLogBound(C):**\n\nDoes there exist c > 0 such that H_C(x) ≫ x/(log x)^c for all sufficiently large x?\n\n**Definition:**\n```lean\ndef HasPolynomialLogBound (C : ℝ) : Prop :=\n  ∃ c : ℝ, c > 0 ∧ ∃ K : ℝ, K > 0 ∧\n    ∀ x : ℕ, x ≥ 2 → (H_C C x : ℝ) ≥ K * x / (Real.log x) ^ c\n```\n\nThis is Erdős's original question, asking whether the survivors decay at most polynomially in log x.",
     "mathContext": "Polynomial-in-log bounds are the natural scale for sieve problems. The question asks whether the reciprocal sum constraint is strong enough to guarantee such bounds.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic analysis",
+      "Polynomial bounds",
+      "basic set theory",
+      "logarithmic functions"
+    ],
     "relatedConcepts": [
       "Asymptotic analysis",
       "Polynomial bounds",
@@ -130,6 +159,11 @@
     "content": "**ruzsa_1982_lower_bound:**\n\nFor C = 1: H₁(x) ≥ K · x/log x for some constant K > 0.\n\n**Statement:**\n```lean\naxiom ruzsa_1982_lower_bound :\n    ∃ K : ℝ, K > 0 ∧ ∀ x : ℕ, x ≥ 2 →\n      (H_C 1 x : ℝ) ≥ K * x / Real.log x\n```\n\nThis establishes that even in the worst case with Σ 1/n ≤ 1, at least ~x/log x elements survive.",
     "mathContext": "Ruzsa's 1982 paper was a breakthrough, showing the critical case C = 1 has predictable behavior.",
     "significance": "key",
+    "prerequisites": [
+      "C = 1 case",
+      "Lower bounds",
+      "logarithmic functions"
+    ],
     "relatedConcepts": [
       "Lower bounds",
       "C = 1 case",
@@ -154,6 +188,11 @@
     "content": "**saias_1998_upper_bound:**\n\nFor C = 1: H₁(x) ≤ K · x/log x for some constant K > 0.\n\n**Statement:**\n```lean\naxiom saias_1998_upper_bound :\n    ∃ K : ℝ, K > 0 ∧ ∀ x : ℕ, x ≥ 2 →\n      (H_C 1 x : ℝ) ≤ K * x / Real.log x\n```\n\nCombined with Ruzsa's lower bound, this gives H₁(x) ≍ x/log x—the complete asymptotic for C = 1.",
     "mathContext": "Saias closed the gap 16 years after Ruzsa, completing the picture for the critical case.",
     "significance": "key",
+    "prerequisites": [
+      "Matching bounds",
+      "Upper bounds",
+      "logarithmic functions"
+    ],
     "relatedConcepts": [
       "Upper bounds",
       "Matching bounds",
@@ -178,6 +217,12 @@
     "content": "**H_one_asymptotic:**\n\nFor C = 1: H₁(x) ≍ x/log x.\n\nBoth upper and lower bounds of the form K · x/log x hold, giving the precise order of magnitude.\n\n**Proof:** Follows directly from combining Ruzsa's lower bound and Saias's upper bound.",
     "mathContext": "This is the complete answer for the critical case C = 1: the polynomial-log bound holds with exponent c = 1.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic equivalence",
+      "Big-Theta notation",
+      "polynomial ring theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Big-Theta notation",
       "Asymptotic equivalence"
@@ -200,6 +245,12 @@
     "content": "**union_bound_small_C:**\n\nFor C < 1, the union bound gives sievedCount ≥ (1-C)x - 1.\n\n**Proof sketch:** At most Σ_{a∈A} x/a ≤ Cx elements are divisible by some a ∈ A. Hence at least x - Cx = (1-C)x elements survive.\n\nSince this is linear in x, any polynomial-log bound trivially holds.",
     "mathContext": "When C < 1, the reciprocal sum constraint is strong enough that a simple union bound suffices.",
     "significance": "key",
+    "prerequisites": [
+      "Inclusion-exclusion",
+      "Union bound",
+      "divisibility",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Union bound",
       "Inclusion-exclusion",
@@ -224,6 +275,11 @@
     "content": "**alpha C:**\n\nFor C > 1, the critical exponent is α = e^{1-C}.\n\n**Definition:**\n```lean\nnoncomputable def alpha (C : ℝ) : ℝ := Real.exp (1 - C)\n```\n\n**Key property:** For C > 1, we have 1 - C < 0, so α = e^{1-C} < e^0 = 1.\n\nThis sublinear exponent controls H_C(x) ≍ x^α/log x.",
     "mathContext": "The exponential form α = e^{1-C} arises from analyzing optimal sieving strategies as a variational problem.",
     "significance": "key",
+    "prerequisites": [
+      "Exponential function",
+      "Sublinear growth",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Exponential function",
       "Sublinear growth",
@@ -248,6 +304,11 @@
     "content": "**ruzsa_negative_answer:**\n\nFor C > 1: H_C(x) = x^{α+o(1)} where α = e^{1-C} < 1.\n\n**Statement:**\n```lean\naxiom ruzsa_negative_answer (C : ℝ) (hC : C > 1) :\n    ∀ ε > 0, ∃ N : ℕ, ∀ x ≥ N,\n      x^(alpha C - ε) ≤ H_C(x) ≤ x^(alpha C + ε)\n```\n\nSince α < 1, this is sublinear growth—no polynomial-in-log bound can hold. Answer: NO for C > 1.",
     "mathContext": "Ruzsa showed that for larger reciprocal sums, sieving becomes much more effective, reducing survivors to a sublinear count.",
     "significance": "key",
+    "prerequisites": [
+      "Negative answers",
+      "Sublinear growth",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Sublinear growth",
       "Negative answers",
@@ -272,6 +333,10 @@
     "content": "**weingartner_2025:**\n\nPrecise asymptotics for C > 1: H_C(x) ≍ x^{e^{1-C}}/log x.\n\n**Statement:**\n```lean\naxiom weingartner_2025 (C : ℝ) (hC : C > 1) :\n    ∃ K₁ K₂ : ℝ, K₁ > 0 ∧ K₂ > 0 ∧ ∀ x : ℕ, x ≥ 2 →\n      K₁ * x^(alpha C) / log x ≤ H_C(x) ≤ K₂ * x^(alpha C) / log x\n```\n\nThis refines Ruzsa's result by specifying the log factor in the denominator.",
     "mathContext": "Weingartner's 2025 work completed the picture with precise asymptotics for all values of C > 1.",
     "significance": "key",
+    "prerequisites": [
+      "Log corrections",
+      "Precise asymptotics"
+    ],
     "relatedConcepts": [
       "Precise asymptotics",
       "Log corrections",
@@ -296,6 +361,12 @@
     "content": "**negative_answer_large_C:**\n\nFor C > 1, no polynomial-log bound exists: ¬HasPolynomialLogBound C.\n\n**Proof idea:** H_C(x) grows like x^α where α = e^{1-C} < 1. But x/(log x)^c grows faster than any x^β for β < 1 (since it's essentially linear). Hence H_C(x) cannot dominate x/(log x)^c for any c > 0.",
     "mathContext": "The transition from YES to NO at C = 1 is a genuine phase transition in the mathematical sense.",
     "significance": "key",
+    "prerequisites": [
+      "Growth rates",
+      "Phase transitions",
+      "polynomial ring theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Phase transitions",
       "Growth rates",
@@ -319,6 +390,11 @@
     "content": "**schinzel_szekeres_1959:**\n\nFor any c > 0, there exist sets A achieving H_C ≤ 2x/(log x)^c with C = 1.\n\nThis 1959 construction shows the polynomial-log bound x/(log x)^c is optimal: you can't do better than this form.\n\n**Significance:** Establishes the tightness of the Ruzsa-Saias bounds.",
     "mathContext": "The Schinzel-Szekeres construction predates Erdős's problem and showed the natural boundary of sieve effectiveness.",
     "significance": "key",
+    "prerequisites": [
+      "Constructions",
+      "Optimality",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Constructions",
       "Optimality",
@@ -343,6 +419,12 @@
     "content": "**one_in_A_trivial:**\n\nIf 1 ∈ A, then sievedCount A x = 0.\n\n**Proof:** Every positive integer is divisible by 1, so no element survives sieving.\n\n**Consequence:** We must require a ≥ 2 for all a ∈ A (this is the validSet condition).",
     "mathContext": "This is why the problem excludes 1 from sieving sets—including 1 makes the problem trivial.",
     "significance": "key",
+    "prerequisites": [
+      "Boundary conditions",
+      "Well-posedness",
+      "divisibility",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Boundary conditions",
       "Well-posedness"
@@ -365,6 +447,12 @@
     "content": "**erdos_784_complete_answer:**\n\nFor any C > 0:\n- If C ≤ 1: HasPolynomialLogBound C (answer YES)\n- If C > 1: ¬HasPolynomialLogBound C (answer NO)\n\n**Statement:**\n```lean\ntheorem erdos_784_complete_answer (C : ℝ) (hC : C > 0) :\n    (C ≤ 1 → HasPolynomialLogBound C) ∧\n    (C > 1 → ¬HasPolynomialLogBound C)\n```\n\nThe transition at C = 1 is sharp—a mathematical phase transition.",
     "mathContext": "This dichotomy is the complete solution to Erdős Problem #784, achieved through work spanning 1959-2025.",
     "significance": "key",
+    "prerequisites": [
+      "Complete solutions",
+      "Dichotomies",
+      "polynomial ring theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Complete solutions",
       "Dichotomies",
@@ -389,6 +477,12 @@
     "content": "**erdos_784_statement:**\n\nThe complete formalization combining all results:\n\n1. **C = 1:** H₁(x) ≍ x/log x (Ruzsa-Saias)\n2. **C > 1:** H_C(x) ≍ x^{e^{1-C}}/log x (Ruzsa-Weingartner)\n3. **C ≤ 1:** Answer is YES (polynomial-log bound exists)\n4. **C > 1:** Answer is NO (no such bound exists)\n\nThis theorem packages the entire solution.",
     "mathContext": "A comprehensive theorem statement suitable for mathematical reference.",
     "significance": "key",
+    "prerequisites": [
+      "Complete formalizations",
+      "Summary theorems",
+      "polynomial ring theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Summary theorems",
       "Complete formalizations"
@@ -411,6 +505,12 @@
     "content": "**erdos_784_summary:**\n\nConcise summary of the key dichotomy:\n\n```lean\ntheorem erdos_784_summary :\n    (HasPolynomialLogBound 1) ∧\n    (∀ C : ℝ, C > 1 → ¬HasPolynomialLogBound C)\n```\n\nC = 1 has the bound (with c = 1); C > 1 has no such bound.\n\n**The answer to Erdős Problem #784: SOLVED (YES for C ≤ 1, NO for C > 1)**",
     "mathContext": "The summary emphasizes the phase transition at C = 1 as the key mathematical phenomenon.",
     "significance": "key",
+    "prerequisites": [
+      "Solved problems",
+      "Summary",
+      "polynomial ring theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Summary",
       "Solved problems",

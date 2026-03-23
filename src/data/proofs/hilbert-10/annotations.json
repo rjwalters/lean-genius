@@ -11,6 +11,11 @@
     "content": "Hilbert posed this problem in 1900, and it took 70 years and four mathematicians to solve it. The key breakthrough came from Yuri Matiyasevich in 1970, who was just 22 years old.\n\nThe solution required connecting two seemingly unrelated areas: ancient Diophantine equations (studied since antiquity) and modern computability theory (developed in the 1930s).",
     "mathContext": "Hilbert's challenge: Find an algorithm that decides whether any polynomial equation $P(x_1, \\ldots, x_n) = 0$ with integer coefficients has integer solutions.",
     "significance": "key",
+    "prerequisites": [
+      "Hilbert's 23 problems",
+      "MRDP theorem",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Hilbert's 23 problems",
       "MRDP theorem",
@@ -29,6 +34,12 @@
     "content": "A **Diophantine polynomial** is a polynomial with integer coefficients in any number of variables. We model it as a function from variable assignments (each variable gets an integer value) to integers.\n\nThe polynomial evaluates to 0 when a valid solution is found.",
     "mathContext": "$P : (\\mathbb{N} \\to \\mathbb{Z}) \\to \\mathbb{Z}$\n\nFor example, $P(x,y) = x^2 + y^2 - 5$ represents the equation $x^2 + y^2 = 5$.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "integer solutions",
+      "polynomial equations",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "polynomial equations",
       "integer solutions",
@@ -47,6 +58,12 @@
     "content": "A Diophantine equation $P = 0$ **has a solution** if there exists an assignment of integers to all variables that makes the polynomial evaluate to zero.\n\nThe question 'does a solution exist?' is the core of Hilbert's 10th problem.",
     "mathContext": "$\\exists (x_1, \\ldots, x_n) \\in \\mathbb{Z}^n : P(x_1, \\ldots, x_n) = 0$",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "existential quantification",
+      "polynomial ring theory",
+      "search problems"
+    ],
     "relatedConcepts": [
       "existential quantification",
       "search problems",
@@ -65,6 +82,12 @@
     "content": "A set $S \\subseteq \\mathbb{N}$ is **Diophantine** if membership can be expressed via polynomial solvability.\n\nFormally: $n \\in S$ iff there exist integers $(x_1, \\ldots, x_k)$ such that $P(n, x_1, \\ldots, x_k) = 0$ for some fixed polynomial $P$.\n\nThe MRDP theorem characterizes exactly which sets are Diophantine.",
     "mathContext": "$S$ is Diophantine iff $\\exists P : n \\in S \\Leftrightarrow \\exists \\vec{x} \\in \\mathbb{Z}^k : P(n, \\vec{x}) = 0$",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "definable sets",
+      "polynomial ring theory",
+      "recursively enumerable sets"
+    ],
     "relatedConcepts": [
       "definable sets",
       "recursively enumerable sets",
@@ -83,6 +106,11 @@
     "content": "A set is **recursively enumerable (r.e.)** if there's a program that halts exactly on members of the set. Equivalently, we can list all members (possibly with duplicates, possibly not in order).\n\nThe halting set is the canonical example of an r.e. set that is not decidable.",
     "mathContext": "$S$ is r.e. iff $\\exists$ program $p : n \\in S \\Leftrightarrow p$ halts on input $n$\n\nEquivalently: $S = \\{n : \\exists t . M(n)$ halts in $t$ steps$\\}$",
     "significance": "key",
+    "prerequisites": [
+      "Turing machines",
+      "basic set theory",
+      "semi-decidable"
+    ],
     "relatedConcepts": [
       "Turing machines",
       "semi-decidable",
@@ -101,6 +129,11 @@
     "content": "**MRDP Theorem** (Matiyasevich-Robinson-Davis-Putnam, 1970):\n\nA set is recursively enumerable if and only if it is Diophantine.\n\nThis is a stunning result: the ancient concept of polynomial solvability over integers captures exactly the modern notion of semi-decidability!",
     "mathContext": "$S$ is r.e. $\\Leftrightarrow$ $S$ is Diophantine\n\nEvery computable enumeration can be encoded as polynomial solvability.",
     "significance": "key",
+    "prerequisites": [
+      "Pell equations",
+      "polynomial ring theory",
+      "universal computation"
+    ],
     "relatedConcepts": [
       "universal computation",
       "Pell equations",
@@ -119,6 +152,11 @@
     "content": "The **diagonal behavior** is the key construction for proving undecidability. Given any oracle $H$, the diagonal does the opposite of what $H$ predicts for self-application:\n\ndiagonal$(n) = \\neg H(n, n)$\n\nThis creates a behavior that $H$ cannot correctly predict.",
     "mathContext": "$\\text{diagonal}(H)(n) = \\neg H(n, n)$\n\nIf $H$ says program $n$ halts on $n$, diagonal loops.\nIf $H$ says program $n$ loops on $n$, diagonal halts.",
     "significance": "key",
+    "prerequisites": [
+      "Cantor diagonal",
+      "basic set theory",
+      "self-reference"
+    ],
     "relatedConcepts": [
       "Cantor diagonal",
       "self-reference",
@@ -137,6 +175,12 @@
     "content": "**Turing's Theorem** (1936): No algorithm can correctly decide whether an arbitrary program halts.\n\nThe proof uses diagonalization: for any proposed oracle, we can construct a behavior (the diagonal) that the oracle must get wrong.\n\nThis is the foundation for proving H10 undecidable.",
     "mathContext": "$\\forall H : \\mathbb{N}^2 \\to \\text{Bool}, \\exists \\text{behavior}, \\forall n : \\text{behavior}(n) \\neq H(n,n)$",
     "significance": "key",
+    "prerequisites": [
+      "Church-Turing thesis",
+      "Turing machines",
+      "proof techniques",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Turing machines",
       "Church-Turing thesis",
@@ -155,6 +199,11 @@
     "content": "The key reduction: from a correct H10 oracle, we can construct a halting oracle.\n\n1. The halting set for any program is r.e.\n2. By MRDP, every r.e. set is Diophantine.\n3. So we can encode 'does program p halt on n?' as a Diophantine equation.\n4. Ask the H10 oracle if this equation has solutions.\n\nIf H10 were decidable, halting would be decidable!",
     "mathContext": "haltingOracle$(p, n)$ = h10Oracle$(P_{p,n})$\n\nwhere $P_{p,n}$ encodes 'program $p$ halts on input $n$' as a Diophantine equation.",
     "significance": "key",
+    "prerequisites": [
+      "Turing reduction",
+      "basic set theory",
+      "many-one reduction"
+    ],
     "relatedConcepts": [
       "many-one reduction",
       "Turing reduction",
@@ -173,6 +222,12 @@
     "content": "**Main Theorem**: Hilbert's 10th Problem is undecidable.\n\nNo algorithm can determine whether an arbitrary Diophantine equation has integer solutions.\n\nProof: If such an algorithm existed, we could use it (via MRDP) to decide the halting problem. But halting is undecidable. Contradiction.",
     "mathContext": "$\\nexists$ oracle $: \\text{DiophantinePolynomial} \\to \\text{Bool}$ that correctly decides solvability",
     "significance": "key",
+    "prerequisites": [
+      "polynomial ring theory",
+      "proof techniques",
+      "reduction",
+      "undecidability"
+    ],
     "relatedConcepts": [
       "undecidability",
       "reduction",
@@ -191,6 +246,11 @@
     "content": "The hardest part of MRDP was showing that **exponential relations are Diophantine**. This was Matiyasevich's key contribution.\n\nHe used properties of Fibonacci numbers and Pell equation solutions to encode $y = x^n$ as a system of polynomial equations.\n\nThis was surprising because exponential growth seems 'too fast' for polynomials to capture.",
     "mathContext": "The relation $y = x^n$ is Diophantine:\n$\\exists P : y = x^n \\Leftrightarrow P(x, y, n, z_1, \\ldots, z_k) = 0$\n\nKey tool: Fibonacci numbers satisfy $F_{2n} = F_n(F_{n+1} + F_{n-1})$",
     "significance": "key",
+    "prerequisites": [
+      "Fibonacci numbers",
+      "Pell equations",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Fibonacci numbers",
       "Pell equations",
@@ -209,6 +269,12 @@
     "content": "Linear Diophantine equations ARE decidable! The equation $ax + by = c$ has integer solutions iff $\\gcd(a,b)$ divides $c$.\n\nThis shows the undecidability is about **general** polynomials, not all Diophantine problems. The Euclidean algorithm solves the linear case in polynomial time.",
     "mathContext": "$ax + by = c$ has solutions iff $\\gcd(a,b) | c$\n\nSolutions can be found via extended Euclidean algorithm.",
     "significance": "key",
+    "prerequisites": [
+      "Bezout's identity",
+      "Euclidean algorithm",
+      "GCD theory",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Euclidean algorithm",
       "Bezout's identity",

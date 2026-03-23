@@ -17,6 +17,12 @@
       "Continuum Hypothesis",
       "ZFC independence"
     ],
+    "prerequisites": [
+      "Partition calculus",
+      "Ramsey theory",
+      "cardinal arithmetic",
+      "graph coloring"
+    ],
     "significance": "key"
   },
   {
@@ -35,6 +41,12 @@
       "Cardinal power",
       "Continuum Hypothesis",
       "Gödel-Cohen independence"
+    ],
+    "prerequisites": [
+      "Cardinal power",
+      "Cardinal.aleph",
+      "basic set theory",
+      "cardinal arithmetic"
     ],
     "significance": "key"
   },
@@ -55,6 +67,12 @@
       "Graph coloring",
       "Ramsey theory"
     ],
+    "prerequisites": [
+      "Fin",
+      "Function type",
+      "basic set theory",
+      "graph coloring"
+    ],
     "significance": "key"
   },
   {
@@ -73,6 +91,12 @@
       "Cardinal.aleph",
       "Countable",
       "Cantor's theorem"
+    ],
+    "prerequisites": [
+      "Cardinal.aleph",
+      "Cardinal.mk",
+      "basic set theory",
+      "cardinal arithmetic"
     ],
     "significance": "key"
   },
@@ -93,6 +117,11 @@
       "Surjectivity",
       "Rainbow condition"
     ],
+    "prerequisites": [
+      "Set membership",
+      "ThreeColoring",
+      "basic set theory"
+    ],
     "significance": "key"
   },
   {
@@ -111,6 +140,12 @@
       "ContainsAllColorPairs",
       "IsUncountable",
       "Existential quantification"
+    ],
+    "prerequisites": [
+      "ContainsAllColorPairs",
+      "ThreeColoring",
+      "basic set theory",
+      "graph coloring"
     ],
     "significance": "key"
   },
@@ -131,6 +166,12 @@
       "Cantor space",
       "Monochromatic set"
     ],
+    "prerequisites": [
+      "Partition arrow",
+      "Ramsey theory",
+      "basic set theory",
+      "cardinal arithmetic"
+    ],
     "significance": "key"
   },
   {
@@ -150,6 +191,12 @@
       "Unconditional result",
       "Two-coloring"
     ],
+    "prerequisites": [
+      "Fin 2",
+      "Pigeonhole principle",
+      "graph coloring",
+      "ring tactic"
+    ],
     "significance": "key"
   },
   {
@@ -168,6 +215,12 @@
       "Erdős-Rado",
       "Monochromatic set",
       "Cardinal Ramsey theory"
+    ],
+    "prerequisites": [
+      "Erdős-Rado",
+      "PartitionProperty",
+      "graph coloring",
+      "ring tactic"
     ],
     "significance": "key"
   },
@@ -189,6 +242,12 @@
       "Cohen forcing",
       "Hilbert's problems"
     ],
+    "prerequisites": [
+      "aleph1",
+      "basic set theory",
+      "cardinal arithmetic",
+      "continuum"
+    ],
     "significance": "key"
   },
   {
@@ -207,6 +266,12 @@
       "ThreeColoring",
       "Transfinite induction",
       "Well-ordering"
+    ],
+    "prerequisites": [
+      "ContinuumHypothesis",
+      "ThreeColoring",
+      "graph coloring",
+      "omega tactic"
     ],
     "significance": "key"
   },
@@ -227,6 +292,12 @@
       "Iterated forcing",
       "NegativePartition"
     ],
+    "prerequisites": [
+      "Forcing",
+      "ZFC consistency",
+      "graph coloring",
+      "ring tactic"
+    ],
     "significance": "key"
   },
   {
@@ -245,6 +316,12 @@
       "Cohen reals",
       "Forcing iteration",
       "shelah_consistency"
+    ],
+    "prerequisites": [
+      "Cardinal.aleph 2",
+      "Cohen reals",
+      "graph coloring",
+      "ring tactic"
     ],
     "significance": "key"
   },
@@ -265,6 +342,12 @@
       "Forcing",
       "NegativePartition"
     ],
+    "prerequisites": [
+      "Cardinal.aleph 2",
+      "Consistency strength",
+      "basic set theory",
+      "graph coloring"
+    ],
     "significance": "key"
   },
   {
@@ -282,6 +365,12 @@
       "erdos_prize_question",
       "Cardinal threshold",
       "Minimal failure cardinal"
+    ],
+    "prerequisites": [
+      "Cardinal threshold",
+      "basic set theory",
+      "cardinal arithmetic",
+      "erdos_prize_question"
     ],
     "significance": "key"
   },
@@ -302,6 +391,12 @@
       "Independence",
       "ZFC"
     ],
+    "prerequisites": [
+      "PartitionProperty",
+      "basic set theory",
+      "graph coloring",
+      "ring tactic"
+    ],
     "significance": "key"
   },
   {
@@ -320,6 +415,12 @@
       "Well-ordering",
       "Transfinite induction",
       "Pigeonhole principle"
+    ],
+    "prerequisites": [
+      "ContinuumHypothesis",
+      "Well-ordering",
+      "omega tactic",
+      "ring tactic"
     ],
     "significance": "key"
   },
@@ -340,6 +441,11 @@
       "sierpinski_kurepa",
       "And.intro",
       "Independence"
+    ],
+    "prerequisites": [
+      "erdos_under_ch",
+      "proof techniques",
+      "shelah_consistency"
     ],
     "significance": "key"
   }

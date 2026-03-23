@@ -11,6 +11,11 @@
     "content": "This module formalizes **Erdős Problem #251**: Is the sum Σ pₙ/2ⁿ irrational? The sum converges to approximately **3.59686...** (OEIS A098990), but its arithmetic nature remains **unknown**.",
     "mathContext": "The series Σ pₙ/2ⁿ = 2/2 + 3/4 + 5/8 + 7/16 + ... converges absolutely since pₙ ~ n ln n by the prime number theorem, and Σ n ln n / 2ⁿ converges by the ratio test.",
     "significance": "supporting",
+    "prerequisites": [
+      "irrational numbers",
+      "module theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "irrational numbers",
       "prime numbers",
@@ -29,6 +34,12 @@
     "content": "We define **nthPrime(n) = pₙ** using Mathlib's `Nat.nth Nat.Prime`. The primes are 0-indexed: p₀ = 2, p₁ = 3, p₂ = 5, p₃ = 7, p₄ = 11, ...",
     "mathContext": "Mathlib's `Nat.nth` returns the nth element satisfying a predicate. For primes, this gives the standard enumeration. The values are axiomatized since the definition is noncomputable.",
     "significance": "key",
+    "prerequisites": [
+      "Mathlib",
+      "basic set theory",
+      "natural number arithmetic",
+      "prime enumeration"
+    ],
     "relatedConcepts": [
       "prime enumeration",
       "Mathlib",
@@ -47,6 +58,11 @@
     "content": "The **general term** of the Erdős sum is pₙ/2^(n+1). For n = 0, 1, 2, 3, 4 this gives 2/2, 3/4, 5/8, 7/16, 11/32.",
     "mathContext": "Using 0-indexing with denominator 2^(n+1) matches the 1-indexed formulation from the problem statement where the first term is p₁/2¹ = 2/2.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "geometric decay",
+      "series terms"
+    ],
     "relatedConcepts": [
       "series terms",
       "geometric decay"
@@ -64,6 +80,11 @@
     "content": "The **Erdős sum** is defined as Σ_{n=0}^∞ pₙ/2^(n+1). This infinite series sums to approximately **3.59686...** — a well-defined real number whose rationality is unknown.",
     "mathContext": "We use Mathlib's `tsum` (topological sum) to define the infinite series. The sum exists by the convergence axiom `erdosSum_summable`.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "infinite series",
+      "tsum"
+    ],
     "relatedConcepts": [
       "infinite series",
       "tsum",
@@ -82,6 +103,11 @@
     "content": "We **axiomatize** that the Erdős sum converges (is summable). This follows from the prime number theorem: pₙ ~ n ln n, so pₙ/2ⁿ is eventually dominated by any geometric series with ratio > 1/2.",
     "mathContext": "The ratio test shows Σ n ln n / 2ⁿ converges since (n+1)ln(n+1)/n ln n → 1 as n → ∞, and the limiting ratio 1/2 < 1.",
     "significance": "key",
+    "prerequisites": [
+      "Summable",
+      "prime number theorem",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Summable",
       "prime number theorem",
@@ -100,6 +126,11 @@
     "content": "We verify that the first 5 terms sum to **101/32 ≈ 3.15625**. This is computed as 2/2 + 3/4 + 5/8 + 7/16 + 11/32 = 1 + 0.75 + 0.625 + 0.4375 + 0.34375.",
     "mathContext": "Partial sums provide lower bounds on the infinite sum. The gap between 3.15625 and 3.597 shows that the tail contributes about 0.44 to the total.",
     "significance": "supporting",
+    "prerequisites": [
+      "norm_num",
+      "partial sums",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "partial sums",
       "norm_num",
@@ -118,6 +149,11 @@
     "content": "**Erdős Problem #251**: Is the Erdős sum irrational? This is stated as `erdos_251_conjecture := Irrational erdosSum`. The question **remains open** as of 2025.",
     "mathContext": "Mathlib's `Irrational x` is defined as `¬∃ (q : ℚ), x = q`. Proving this requires showing no rational p/q equals the sum — a task that has eluded all attempts.",
     "significance": "key",
+    "prerequisites": [
+      "Irrational",
+      "basic set theory",
+      "open problem"
+    ],
     "relatedConcepts": [
       "Irrational",
       "open problem",
@@ -136,6 +172,10 @@
     "content": "**Erdős (1958)** proved that Σ pₙᵏ/n! is irrational for all k ≥ 1. The factorial denominators grow much faster than 2ⁿ, making irrationality provable via tail analysis.",
     "mathContext": "The key insight is that n! grows super-exponentially. For large N, the tail Σ_{n>N} pₙᵏ/n! < 1/(N+1)!, which can be made arbitrarily small. This approach fails for 2ⁿ denominators.",
     "significance": "key",
+    "prerequisites": [
+      "factorial growth",
+      "tail bounds"
+    ],
     "relatedConcepts": [
       "factorial growth",
       "tail bounds",
@@ -154,6 +194,11 @@
     "content": "Erdős conjectured that Σ pₙᵏ/2ⁿ is irrational **for all k ≥ 1**. Problem #251 is the case k = 1. Higher powers k might be easier or harder — the relationship is unclear.",
     "mathContext": "For k = 2, the sum is Σ pₙ²/2ⁿ = 4/2 + 9/4 + 25/8 + ... ≈ 8.something. The arithmetic nature of this and all higher-power sums is unknown.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "generalization",
+      "powers of primes"
+    ],
     "relatedConcepts": [
       "generalization",
       "powers of primes"
@@ -171,6 +216,12 @@
     "content": "Proving irrationality of explicit series is **notoriously difficult**. Even whether e + π is irrational remains open! The prime sequence's irregularity adds further complexity.",
     "mathContext": "Standard irrationality proofs use: (1) algebraic identities (like e = Σ 1/n!), (2) Liouville approximation bounds, or (3) modular arithmetic. None apply directly here because primes don't follow a formula.",
     "significance": "supporting",
+    "prerequisites": [
+      "complex numbers",
+      "irrationality proofs",
+      "prime numbers",
+      "transcendence theory"
+    ],
     "relatedConcepts": [
       "transcendence theory",
       "irrationality proofs",
@@ -189,6 +240,10 @@
     "content": "The Erdős sum lies between **3 and 4**, more precisely between **3.596 and 3.597**. This is catalogued as OEIS sequence A098990.",
     "mathContext": "These bounds can be computed by evaluating sufficiently many terms and bounding the tail. The sum to 100 terms gives 10+ decimal places of accuracy.",
     "significance": "supporting",
+    "prerequisites": [
+      "OEIS",
+      "numerical bounds"
+    ],
     "relatedConcepts": [
       "OEIS",
       "numerical bounds",
@@ -207,6 +262,12 @@
     "content": "We prove exact values for the first 1, 2, 3, 4, 5 terms: **1, 7/4, 19/8, 45/16, 101/32**. These are verified using Lean's `norm_num` tactic.",
     "mathContext": "Each computation is straightforward arithmetic: 1 + 3/4 = 7/4, then + 5/8 = 19/8, then + 7/16 = 45/16, then + 11/32 = 101/32. The pattern of numerators (1, 7, 19, 45, 101) has no simple formula.",
     "significance": "supporting",
+    "prerequisites": [
+      "exact arithmetic",
+      "norm_num",
+      "norm_num tactic",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "norm_num",
       "exact arithmetic",

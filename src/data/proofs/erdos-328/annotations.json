@@ -36,6 +36,12 @@
     "content": "Imports `Nat.Basic`, `Set.Basic`, `Finset.Basic`, and `BigOperators` from Mathlib. The `Erdos328` namespace encapsulates all definitions and results.",
     "mathContext": "The formalization uses both `Set ℕ` (for infinite sets in the theoretical statements) and `Finset ℕ` (for computational definitions like `rA`). BigOperators provides summation notation over finite sets.",
     "significance": "supporting",
+    "prerequisites": [
+      "Finset",
+      "Finset API",
+      "Mathlib",
+      "natural number arithmetic"
+    ],
     "relatedConcepts": [
       "Mathlib",
       "Finset",

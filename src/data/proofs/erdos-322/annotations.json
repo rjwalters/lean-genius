@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #322: Representations as Sums of k-th Powers**\n\nLet r_k(n) count the number of representations of n as a sum of k many k-th powers: n = x₁^k + x₂^k + ... + x_k^k. Hardy and Littlewood conjectured (Hypothesis K) that r_k(n) = n^{o(1)} for k ≥ 3, meaning representations grow slower than any polynomial.\n\n**Status:** PARTIALLY SOLVED\n- k = 3: Hypothesis K is FALSE (Mahler 1936, with c = 1/12)\n- k ≥ 4: OPEN (Erdős conjectured K fails)\n\n**References:** Mahler (1936), Erdős-Chowla (1936), Hardy-Littlewood Partitio Numerorum papers.",
     "mathContext": "r_k(n) = #{(x₁,...,x_k) : x₁^k + ... + x_k^k = n}. Hypothesis K: r_k(n) = n^{o(1)}.",
     "significance": "key",
+    "prerequisites": [
+      "Hypothesis K",
+      "Waring's problem",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Waring's problem",
       "Hypothesis K",
@@ -29,6 +34,12 @@
     "content": "**Fundamental Objects**\n\n- **kthPowers k:** The set {n | ∃ m, n = m^k} of k-th powers\n- **representationCount k n:** The count r_k(n) — axiomatized since defining it computably requires enumerating all k-tuples with bounded entries\n- **hypothesisK k:** For k ≥ 3, ∀ ε > 0, ∃ N, ∀ n ≥ N, r_k(n) < n^ε — representations grow sub-polynomially\n- **hypothesisK_fails k:** ∃ c > 0, infinitely many n with r_k(n) > n^c — polynomial growth occurs\n\nThe two predicates are logically complementary for the relevant regime.",
     "mathContext": "hypothesisK k ↔ ∀ ε > 0, r_k(n) < n^ε eventually; hypothesisK_fails k ↔ ∃ c > 0, r_k(n) > n^c infinitely often",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "k-th powers",
+      "polynomial ring theory",
+      "representation function"
+    ],
     "relatedConcepts": [
       "k-th powers",
       "representation function",
@@ -47,6 +58,10 @@
     "content": "**The Key Breakthrough**\n\nMahler (1936) proved that Hypothesis K is false for k = 3. Specifically, there exist infinitely many n such that r_3(n) ≫ n^{1/12}. This was a major surprise — Hardy and Littlewood had believed K was true for all k ≥ 3.\n\nThe proof uses properties of cubic forms and algebraic number theory. The exponent 1/12 arises from the structure of the underlying lattice point counting.\n\nThe corollary hypothesisK_fails_for_3 restates this in the negation-of-K framework.",
     "mathContext": "∃ c > 0, ∀ N, ∃ n ≥ N, r_3(n) ≥ c · n^{1/12}",
     "significance": "key",
+    "prerequisites": [
+      "Mahler 1936",
+      "cubic forms"
+    ],
     "relatedConcepts": [
       "Mahler 1936",
       "cubic forms",
@@ -65,6 +80,11 @@
     "content": "**Weaker Results for All k ≥ 3**\n\nThe Erdős-Chowla theorem (1936) gives a weaker lower bound valid for ALL k ≥ 3: there exist infinitely many n with r_k(n) ≫ n^{c/log log n} for some constant c > 0 depending on k. This grows faster than any iterated logarithm but slower than any polynomial — so it doesn't disprove Hypothesis K.\n\nHypothesis K* is a weaker version of K: Σ_{n≤N} r_k(n)² ≪ N^{1+ε}. This allows occasional polynomial spikes in r_k(n) but controls their frequency. Erdős and Graham called it 'probably true but no doubt very deep' and noted it 'would suffice for most applications.'",
     "mathContext": "r_k(n) ≫ n^{c/log log n} i.o.; Σ_{n≤N} r_k(n)² ≤ C · N^{1+ε}",
     "significance": "key",
+    "prerequisites": [
+      "Erdős-Chowla",
+      "polynomial ring theory",
+      "sub-polynomial bound"
+    ],
     "relatedConcepts": [
       "Erdős-Chowla",
       "sub-polynomial bound",
@@ -84,6 +104,11 @@
     "content": "**Erdős's Result on Dense Subsets**\n\nIf S ⊆ ℕ has positive lower density (|S ∩ [1,N]| ≥ δN for some δ > 0) and B = {s^k : s ∈ S}, then the representation count using k-th powers from B is unbounded: for every M, some n has r_B^{(k)}(n) ≥ M.\n\nThis shows that restricting to k-th powers of a dense subset still gives arbitrarily many representations — density is sufficient for unbounded growth.",
     "mathContext": "S has positive density ⟹ ∀ M, ∃ n, representationCount k n ≥ M",
     "significance": "key",
+    "prerequisites": [
+      "density theory",
+      "positive density",
+      "unbounded representations"
+    ],
     "relatedConcepts": [
       "positive density",
       "unbounded representations",
@@ -102,6 +127,12 @@
     "content": "**Combined Results**\n\nThe erdos_322_summary theorem bundles the two main known results:\n1. hypothesisK_fails 3 — Mahler's disproof of Hypothesis K for cubes\n2. Erdős-Chowla bound for all k ≥ 3 — weaker sub-polynomial lower bound\n\nThe proof is a direct pair ⟨hypothesisK_fails_for_3, fun k hk => erdos_chowla_bound k hk⟩.\n\nThe main theorem erdos_322 states simply: hypothesisK_fails 3, citing Mahler via the axiom. For k ≥ 4, the problem remains one of the central open questions in additive number theory.",
     "mathContext": "erdos_322 : hypothesisK_fails 3; erdos_322_summary : hypothesisK_fails 3 ∧ (∀ k ≥ 3, Erdős-Chowla)",
     "significance": "key",
+    "prerequisites": [
+      "Mahler",
+      "partially solved",
+      "polynomial ring theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "partially solved",
       "Mahler",

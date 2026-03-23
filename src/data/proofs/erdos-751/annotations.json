@@ -11,6 +11,11 @@
     "content": "**Erdos Problem #751: Cycle Lengths in 4-Chromatic Graphs**\n\nLet G be a graph with chromatic number chi(G) = 4. If m_1 < m_2 < ... are cycle lengths, can min(m_{i+1} - m_i) be arbitrarily large?\n\n**Answer: NO**\n\nBondy-Vince (1998) proved: minimum degree >= 3 implies two cycles differ by at most 2. Since chi(G) = 4 forces min degree >= 3, the gap is always <= 2.\n\nLarge girth doesn't help either.",
     "mathContext": "This connects chromatic number, minimum degree, and cycle structure - three fundamental graph parameters.",
     "significance": "key",
+    "prerequisites": [
+      "Chromatic number",
+      "Minimum degree",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Chromatic number",
       "Minimum degree",
@@ -30,6 +35,12 @@
     "content": "**minDegree:**\n\nThe minimum vertex degree delta(G) = min over all v of deg(v).\n\n**Definition:**\n```lean\nnoncomputable def minDegree (G : SimpleGraph V) : N :=\n  Finset.min' (Finset.univ.image G.degree) ...\n```\n\nMinimum degree bounds how sparse the graph is.",
     "mathContext": "Lean: `noncomputable def minDegree (G : SimpleGraph V) : N :=`",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "Graph sparsity",
+      "Vertex degree",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Vertex degree",
       "Graph sparsity"
@@ -47,6 +58,12 @@
     "content": "**chromaticNumber:**\n\nchi(G) = minimum colors for proper vertex coloring (no adjacent vertices same color).\n\n**Examples:**\n- chi(K_n) = n (complete graph)\n- chi(tree) = 2 (bipartite)\n- chi(odd cycle) = 3\n\nThe chromatic number captures the \"complexity\" of the graph's structure.",
     "mathContext": "Graph coloring is NP-hard in general, but the chromatic number provides structural information.",
     "significance": "key",
+    "prerequisites": [
+      "Clique number",
+      "Graph coloring",
+      "basic set theory",
+      "complex numbers"
+    ],
     "relatedConcepts": [
       "Graph coloring",
       "Clique number",
@@ -65,6 +82,12 @@
     "content": "**girth:**\n\nThe length of the shortest cycle in G. Forests have girth = infinity (we use 0).\n\n**Examples:**\n- girth(K_4) = 3 (triangle)\n- girth(K_{3,3}) = 4\n- girth(Petersen) = 5\n\nThe girth measures how \"locally tree-like\" the graph is.",
     "mathContext": "$The length of the shortest cycle in G. Forests have girth = infinity (we use 0).$",
     "significance": "key",
+    "prerequisites": [
+      "Cycles",
+      "Trees",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Cycles",
       "Trees",
@@ -85,6 +108,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -99,6 +126,10 @@
     "content": "**minCycleLengthGap:**\n\nFor sorted cycle lengths m_1 < m_2 < ..., the minimum of consecutive differences m_{i+1} - m_i.\n\nThe problem asks: can this be arbitrarily large for chi = 4?",
     "mathContext": "$The problem asks: can this be arbitrarily large for chi = 4?$",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "formal mathematics"
     ],
     "significance": "key"
@@ -118,6 +149,11 @@
       "combinatorics",
       "graph theory"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -135,6 +171,12 @@
       "combinatorics",
       "graph theory"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "graph theory basics",
+      "simp tactic"
+    ],
     "significance": "key"
   },
   {
@@ -150,6 +192,10 @@
     "mathContext": "$For chi(G) = 4, there exist cycles m, m' with |m - m'| <= 2.$",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -168,6 +214,12 @@
       "combinatorics",
       "graph theory"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "graph theory basics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -184,6 +236,12 @@
     "relatedConcepts": [
       "combinatorics",
       "graph theory"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "graph theory basics",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -202,6 +260,12 @@
       "combinatorics",
       "graph theory"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "graph theory basics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -217,6 +281,10 @@
     "mathContext": "$1. **Main:** chi = 4 implies close cycles (gap <= 2)$",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   }

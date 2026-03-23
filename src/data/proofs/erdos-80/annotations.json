@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #80: Book Size in Triangle-Saturated Graphs**\n\nA 'book' is an edge shared by multiple triangles. In a dense graph where every edge lies in at least one triangle, how large must the maximum book be?\n\n**Status: OPEN**\n\n**Key Results:**\n- For c > 1/4: f_c(n) ≥ n/6 (linear books)\n- For c < 1/4: f_c(n) ≤ n^{O(1/log log n)} (Fox-Loh)\n- Polynomial growth DISPROVED\n- Logarithmic growth OPEN",
     "mathContext": "This is an open problem in extremal graph theory with a remarkable phase transition at density 1/4.",
     "significance": "key",
+    "prerequisites": [
+      "Graph theory",
+      "Triangles",
+      "density theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Graph theory",
       "Triangles",
@@ -29,6 +35,12 @@
     "content": "**isTriangle:** A triangle is three vertices {a, b, c} that are pairwise adjacent in the graph G.",
     "mathContext": "Lean: `def isTriangle (G : SimpleGraph V) (a b c : V) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "Adjacency",
+      "Clique",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Adjacency",
       "Clique",
@@ -47,6 +59,12 @@
     "content": "**isTriangleSaturated:** A graph where every edge is contained in at least one triangle.\n\n**Key insight:** Without this condition, star graphs have no books at all! This condition is essential for the problem to be non-trivial.",
     "mathContext": "Triangle saturation ensures every edge participates in local structure.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "graph saturation",
+      "graph theory basics",
+      "triangle-free graphs"
+    ],
     "relatedConcepts": [
       "triangle-free graphs",
       "graph saturation",
@@ -69,6 +87,12 @@
       "algebra",
       "ring theory"
     ],
+    "prerequisites": [
+      "algebra",
+      "basic set theory",
+      "graph theory basics",
+      "ring tactic"
+    ],
     "significance": "key"
   },
   {
@@ -87,6 +111,12 @@
       "combinatorics",
       "graph theory",
       "ring theory"
+    ],
+    "prerequisites": [
+      "algebra",
+      "basic set theory",
+      "combinatorics",
+      "density theory"
     ],
     "significance": "key"
   },
@@ -107,6 +137,11 @@
       "graph theory",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "combinatorics",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -125,6 +160,11 @@
       "bounds",
       "inequalities",
       "polynomials"
+    ],
+    "prerequisites": [
+      "algebra",
+      "bounds",
+      "polynomial ring theory"
     ],
     "significance": "key"
   },
@@ -145,6 +185,11 @@
       "inequalities",
       "polynomials"
     ],
+    "prerequisites": [
+      "algebra",
+      "bounds",
+      "polynomial ring theory"
+    ],
     "significance": "key"
   },
   {
@@ -163,6 +208,10 @@
       "inequalities",
       "phase transitions",
       "threshold phenomena"
+    ],
+    "prerequisites": [
+      "bounds",
+      "inequalities"
     ],
     "significance": "key"
   },
@@ -183,6 +232,10 @@
       "inequalities",
       "normed spaces"
     ],
+    "prerequisites": [
+      "bounds",
+      "functional analysis"
+    ],
     "significance": "key"
   },
   {
@@ -197,6 +250,12 @@
     "content": "**critical_threshold = 1/4:** The phase transition point separating two regimes:\n\n- **c > 1/4:** Linear books (f_c(n) ≥ n/6)\n- **c < 1/4:** Subpolynomial books (f_c(n) ≤ n^{o(1)})\n\nOne of the cleanest phase transitions in extremal graph theory.",
     "mathContext": "Related to Turán's theorem threshold.",
     "significance": "key",
+    "prerequisites": [
+      "Phase transition",
+      "Turán theorem",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Phase transition",
       "Turán theorem"
@@ -217,6 +276,12 @@
       "algebra",
       "polynomials"
     ],
+    "prerequisites": [
+      "algebra",
+      "basic set theory",
+      "polynomial ring theory",
+      "polynomials"
+    ],
     "significance": "key"
   },
   {
@@ -233,6 +298,12 @@
     "relatedConcepts": [
       "algebra",
       "polynomials"
+    ],
+    "prerequisites": [
+      "algebra",
+      "polynomial ring theory",
+      "polynomials",
+      "proof techniques"
     ],
     "significance": "key"
   }

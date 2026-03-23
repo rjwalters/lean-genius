@@ -11,6 +11,12 @@
     "content": "**Erdos Problem #392** asks: what is the minimum number of factors needed to write n! as a product where each factor is at most n^2?\n\nThe answer is A(n) = n/2 - n/(2 log n) + o(n/log n).\n\n**Key insight**: Cambie observed that this follows from a simpler variant with bound n by pairing consecutive factors. If a_1...a_t = n! with each a_i <= n, then a'_i = a_{2i-1} * a_{2i} gives a factorization with each a'_i <= n^2 and roughly t/2 factors.",
     "mathContext": "The factorization problem connects to Stirling's approximation log(n!) ~ n log n. Since each factor contributes at most log(n^2) = 2 log n, we need at least (n log n)/(2 log n) = n/2 factors.",
     "significance": "key",
+    "prerequisites": [
+      "factorial",
+      "factorization",
+      "ring tactic",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "factorial",
       "factorization",
@@ -29,6 +35,12 @@
     "content": "**IsValidFactorization n t B a** means the tuple (a_1, ..., a_t) is a valid factorization of n! with bound B:\n\n1. The product equals n!: prod_i a_i = n!\n2. The sequence is monotone: a_1 <= a_2 <= ... <= a_t\n3. All factors are bounded: a_i <= B for all i\n\nThe monotonicity requirement is standard - it avoids counting permutations of the same factorization.",
     "mathContext": "The definition uses Fin t -> N for the factor sequence, ensuring exactly t factors. Monotone a means the sequence is non-decreasing.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "factorial",
+      "monotone",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "factorial",
       "monotone",
@@ -47,6 +59,10 @@
     "content": "**A(n, B)** is the minimum number of factors needed to express n! with factor bound B.\n\nThis is axiomatized because:\n1. The definition involves an existential minimum\n2. Constructive computation would require factorization algorithms\n3. Our focus is on the asymptotic formula, not computation\n\n**A_spec** asserts that A(n, B) is indeed the least element of the set of valid factorization lengths.",
     "mathContext": "IsLeast S x means x is in S and x <= y for all y in S. The set {t | exists a, IsValidFactorization n t B a} contains all possible factorization lengths.",
     "significance": "key",
+    "prerequisites": [
+      "existence",
+      "minimum"
+    ],
     "relatedConcepts": [
       "minimum",
       "existence",
@@ -65,6 +81,10 @@
     "content": "**erdos_392_main**: With factor bound n^2, we have\n\nA(n, n^2) = n/2 - n/(2 log n) + o(n/log n)\n\nThe error term o(n/log n) means the difference grows slower than n/log n as n -> infinity.\n\n**Proof outline**:\n- Upper bound: Use the variant with bound n, then pair factors\n- Lower bound: Stirling's approximation gives the n/2 term",
     "mathContext": "The =o[atTop] notation means the left side is little-o of the right side, i.e., the ratio converges to 0 as n -> infinity. This is Landau notation for asymptotics.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotics",
+      "little-o"
+    ],
     "relatedConcepts": [
       "little-o",
       "asymptotics",
@@ -83,6 +103,10 @@
     "content": "**erdos_392_variant**: With the stricter factor bound n, we have\n\nA(n, n) = n - n/log n + o(n/log n)\n\nThis is solved by a **greedy algorithm**:\n1. Use factor n as many times as possible\n2. Then use n-1 as many times as possible\n3. Continue decreasing until n! is exhausted\n\nThe greedy approach is optimal because larger factors reduce the product most efficiently.",
     "mathContext": "With bound n instead of n^2, we need roughly twice as many factors. The formula A(n,n) ~ n vs A(n,n^2) ~ n/2 reflects this doubling.",
     "significance": "key",
+    "prerequisites": [
+      "greedy-algorithm",
+      "variant"
+    ],
     "relatedConcepts": [
       "greedy-algorithm",
       "variant",
@@ -101,6 +125,11 @@
     "content": "**cambie_implication**: The main result (bound n^2) follows from the variant (bound n) by **factor pairing**.\n\nGiven a_1...a_t = n! with each a_i <= n:\n- Define a'_i = a_{2i-1} * a_{2i}\n- Then a'_1...a'_{ceil(t/2)} = n!\n- Each a'_i <= n * n = n^2\n\nThis roughly **halves the number of factors**. Combined with the variant's formula, we get the main result.",
     "mathContext": "The implication uses the type_of% syntax from formal-conjectures. It states that if the variant holds, then the main result follows. This captures Cambie's observation as a formal implication.",
     "significance": "key",
+    "prerequisites": [
+      "factor-pairing",
+      "reduction",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "factor-pairing",
       "reduction",
@@ -119,6 +148,10 @@
     "content": "**stirling_log_factorial**: Stirling's approximation gives\n\nlog(n!) = n log n - n + (1/2) log(2 pi n) + O(1/n)\n\nFor our purposes, the key fact is **log(n!) ~ n log n**. This explains why we need ~n/2 factors: each factor <= n^2 contributes <= 2 log n to the logarithm.",
     "mathContext": "The approximation log(n!) - n log n + n = o(n log n) captures the leading behavior. The constant term and lower order corrections don't affect the asymptotic for A(n).",
     "significance": "key",
+    "prerequisites": [
+      "logarithm",
+      "stirling"
+    ],
     "relatedConcepts": [
       "stirling",
       "logarithm",
@@ -137,6 +170,12 @@
     "content": "**factor_count_lower_bound_intuition**: A simple calculation shows\n\n(n * log n) / (2 * log n) = n/2\n\nThis is the intuitive lower bound:\n- log(n!) ~ n log n (Stirling)\n- Each factor <= n^2 contributes <= 2 log n\n- So we need >= (n log n)/(2 log n) = n/2 factors\n\nThe proof uses field_simp after establishing log n != 0.",
     "mathContext": "The proof requires showing log n != 0 for n >= 2, which uses Real.log_ne_zero_of_pos_of_ne_one with positivity from Nat.cast_pos and inequality from Nat.cast_ne_one.",
     "significance": "key",
+    "prerequisites": [
+      "field theory",
+      "intuition",
+      "logarithmic functions",
+      "lower-bound"
+    ],
     "relatedConcepts": [
       "lower-bound",
       "intuition",
@@ -155,6 +194,11 @@
     "content": "We axiomatize values of A(n, n^2) for small n:\n\n- **A(2, 4) = 1**: 2! = 2 <= 4, one factor suffices\n- **A(3, 9) = 1**: 3! = 6 <= 9, one factor suffices\n- **A(4, 16) = 2**: 4! = 24 > 16, need 4*6 = 24\n- **A(5, 25) = 2**: 5! = 120 = 10*12 or 8*15\n\nThese verify the formula: for n=5, n/2 = 2.5 which rounds to ~2.",
     "mathContext": "For n >= 4, we have n! > n^2, so at least 2 factors are needed. The examples show the formula A(n) ~ n/2 is reasonable even for small n.",
     "significance": "supporting",
+    "prerequisites": [
+      "proof techniques",
+      "small-cases",
+      "verification"
+    ],
     "relatedConcepts": [
       "small-cases",
       "verification",
@@ -173,6 +217,11 @@
     "content": "**A_asymptotic_half_n**: For large n, A(n, n^2) is approximately n/2.\n\nFormally: for all epsilon > 0, eventually |A(n,n^2)/n - 1/2| < epsilon.\n\nThis captures the leading behavior without the correction term -n/(2 log n).",
     "mathContext": "The statement uses Filter.Eventually (forall^f in atTop) to express 'for sufficiently large n'. The epsilon-delta formulation is standard for limits.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic",
+      "filter theory",
+      "leading-term"
+    ],
     "relatedConcepts": [
       "asymptotic",
       "leading-term",
@@ -191,6 +240,10 @@
     "content": "**correction_is_lower_order**: The correction term n/(2 log n) is o(n/2).\n\nSince log n -> infinity, we have:\n\n(n/(2 log n)) / (n/2) = 1/log n -> 0\n\nThis confirms the correction term is genuinely 'smaller' than the main term n/2.",
     "mathContext": "The isLittleO relation f =o[atTop] g means lim_{n->inf} f(n)/g(n) = 0. Here f(n) = n/(2 log n) and g(n) = n/2.",
     "significance": "supporting",
+    "prerequisites": [
+      "correction-term",
+      "little-o"
+    ],
     "relatedConcepts": [
       "little-o",
       "correction-term",
@@ -209,6 +262,12 @@
     "content": "**erdos_392_summary** packages the key bounds:\n\n1. A(n, n^2) >= C * n/2 for some C > 0 (lower bound)\n2. A(n, n^2) <= C * n for some C > 0 (upper bound)\n\nThis confirms A(n, n^2) = Theta(n) - it grows linearly in n.",
     "mathContext": "The exists-forall structure with Filter.Eventually expresses asymptotic bounds. The constants C > 0 witness the big-Theta relationship.",
     "significance": "supporting",
+    "prerequisites": [
+      "bounds",
+      "filter theory",
+      "proof techniques",
+      "summary"
+    ],
     "relatedConcepts": [
       "summary",
       "bounds",

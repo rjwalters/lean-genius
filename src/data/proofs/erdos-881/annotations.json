@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #881** concerns minimal additive bases. An additive basis of order k is a set A ⊂ ℕ where every sufficiently large integer is a sum of at most k elements from A. A minimal basis cannot have any infinite subset removed while maintaining the same order. The question: can we always find an infinite subset to remove that increases the order by exactly 1?",
     "mathContext": "Classic examples: ℕ is a basis of order 1, squares are order 4 (Lagrange), k-th powers are order g(k) (Waring). The problem asks about the fine structure of 'tight' bases.",
     "significance": "key",
+    "prerequisites": [
+      "Waring's problem",
+      "additive basis",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "additive basis",
       "Waring's problem",
@@ -29,6 +34,12 @@
     "content": "**IsAsymptoticAddBasisOfOrder k A** means A is an additive basis of order k: there exists N such that every n ≥ N can be written as a sum of at most k elements from A. The 'asymptotic' qualifier means we only care about sufficiently large integers.",
     "mathContext": "Formally: ∃ N, ∀ n ≥ N, ∃ s : Finset ℕ, s ⊆ A ∧ |s| ≤ k ∧ Σs = n. The order is the minimum k for which this holds.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "additive number theory",
+      "basic set theory",
+      "representation"
+    ],
     "relatedConcepts": [
       "representation",
       "additive number theory"
@@ -46,6 +57,11 @@
     "content": "**order_one_basis**: A set is a basis of order 1 iff it contains all sufficiently large integers. This is because order 1 means each number represents itself (one element sum). This is a fully proved theorem, not an axiom.",
     "mathContext": "The proof uses that a singleton sum {n} requires n ∈ A, and conversely if n ∈ A then {n} represents n.",
     "significance": "key",
+    "prerequisites": [
+      "order 1",
+      "proof techniques",
+      "trivial representation"
+    ],
     "relatedConcepts": [
       "order 1",
       "trivial representation"
@@ -63,6 +79,11 @@
     "content": "**IsMinimalAsymptoticAddBasisOfOrder k A** means A is a basis of order k that is 'tight': removing ANY infinite subset B ⊆ A destroys the order-k property (makes A\\B not a basis of order k). These are bases with no redundancy.",
     "mathContext": "Formally: IsAsymptoticAddBasisOfOrder k A ∧ ∀ B ⊆ A infinite, ¬IsAsymptoticAddBasisOfOrder k (A\\B).",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "minimality",
+      "redundancy"
+    ],
     "relatedConcepts": [
       "minimality",
       "redundancy"
@@ -80,6 +101,10 @@
     "content": "**minimal_basis_infinite**: Every minimal basis must be infinite. A finite set can only produce finitely many sums, so it cannot be a basis of any order. Axiomatized since the full proof requires careful analysis of finite sum bounds.",
     "mathContext": "Lean: `def IsMinimalAsymptoticAddBasisOfOrder (k : ℕ) (A : Set ℕ) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "finiteness",
+      "infinite sets"
+    ],
     "relatedConcepts": [
       "infinite sets",
       "finiteness"
@@ -97,6 +122,11 @@
     "content": "**erdos881Conjecture**: For every minimal basis A of order k, there exists an infinite B ⊆ A such that A\\B is a basis of order exactly k+1. This asks: can minimal bases always 'degrade gracefully' by exactly one order?",
     "mathContext": "The conjecture is stated as a Prop and axiomatized via erdos_881. The challenge is proving the order increases by exactly 1, not 2 or more.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "open problem",
+      "order increase"
+    ],
     "relatedConcepts": [
       "open problem",
       "order increase"
@@ -114,6 +144,11 @@
     "content": "**erdos881Weak**: A weaker question asks if we can increase the order by SOME finite amount m > 0, not necessarily 1. This is easier than the main conjecture but still open.",
     "mathContext": "Formalizes the concept of weak version",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "relaxation",
+      "weak version"
+    ],
     "relatedConcepts": [
       "weak version",
       "relaxation"
@@ -131,6 +166,11 @@
     "content": "**strong_implies_weak**: The main conjecture (m=1) implies the weak version (any m). This is proved by taking m=1 and using the strong conjecture's witness. A clean, fully proved theorem.",
     "mathContext": "Formalizes the concept of strong implies weak",
     "significance": "key",
+    "prerequisites": [
+      "implication",
+      "proof techniques",
+      "weakening"
+    ],
     "relatedConcepts": [
       "implication",
       "weakening"
@@ -148,6 +188,12 @@
     "content": "**squares**: The set {n² : n ∈ ℕ} of perfect squares. By Lagrange's four-square theorem, every positive integer is a sum of four squares, so squares form a basis of order 4.",
     "mathContext": "This is the classical example motivating Waring's problem. The axiom squares_basis_order_4 asserts the basis property.",
     "significance": "key",
+    "prerequisites": [
+      "Lagrange",
+      "basic set theory",
+      "four squares",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Lagrange",
       "four squares"
@@ -165,6 +211,12 @@
     "content": "**basis_order_monotone**: If A is a basis of order k and k' ≥ k, then A is also a basis of order k'. Using more summands can only make representation easier. Fully proved.",
     "mathContext": "The proof simply observes that any k-representation is also a k'-representation when k' ≥ k.",
     "significance": "key",
+    "prerequisites": [
+      "monotonicity",
+      "order",
+      "proof techniques",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "monotonicity",
       "order"
@@ -182,6 +234,11 @@
     "content": "**basis_subset**: If A ⊆ A' and A is a basis of order k, then A' is also a basis of order k. Adding more elements can only improve or maintain representability. Fully proved.",
     "mathContext": "Lean: `def erdos881Weak : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "proof techniques",
+      "subset",
+      "superset"
+    ],
     "relatedConcepts": [
       "subset",
       "superset"
@@ -199,6 +256,12 @@
     "content": "**erdos_881_summary**: Erdős Problem #881 remains OPEN. The summary theorem shows the conjecture is definitionally equal to its natural language form. Related to Waring's problem, Sidon sets, and the Erdős-Turán conjecture.",
     "mathContext": "Lean: `theorem (every positive integer is a sum of four squares).`",
     "significance": "key",
+    "prerequisites": [
+      "open problems",
+      "proof techniques",
+      "ring tactic",
+      "summary"
+    ],
     "relatedConcepts": [
       "summary",
       "open problems"

@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #966** asks a fascinating Ramsey-type question:\n\nGiven parameters k, r ≥ 2, can we find a set A ⊆ ℕ that:\n1. Contains NO arithmetic progression of length k+1\n2. Yet FORCES every r-coloring to have a monochromatic k-AP\n\n**Answer:** YES (Spencer, ~1975)\n\nThis bridges **additive combinatorics** (AP-free sets) with **Ramsey theory** (monochromatic structures).",
     "mathContext": "An arithmetic progression of length k is {a, a+d, a+2d, ..., a+(k-1)d}. It's non-trivial when d > 0.",
     "significance": "key",
+    "prerequisites": [
+      "Arithmetic progressions",
+      "Ramsey theory",
+      "graph coloring",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Arithmetic progressions",
       "Ramsey theory",
@@ -29,6 +35,12 @@
     "content": "**arithmeticProgression a d k:**\n\nConstructs the finite set {a, a+d, a+2d, ..., a+(k-1)d}.\n\n**Implementation:**\n```lean\ndef arithmeticProgression (a d k : ℕ) : Finset ℕ :=\n  (Finset.range k).image (fun i => a + i * d)\n```\n\nThis maps indices 0, 1, ..., k-1 to the AP terms.",
     "mathContext": "Using Finset.range and image provides a clean, computable definition.",
     "significance": "key",
+    "prerequisites": [
+      "Arithmetic sequences",
+      "Finset",
+      "Finset API",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Finset",
       "Arithmetic sequences"
@@ -46,6 +58,11 @@
     "content": "**containsAPOfLength A k:**\n\nA set A contains a k-term AP if there exist a, d with d > 0 such that all elements a, a+d, ..., a+(k-1)d are in A.\n\n**APFreeOfLength A k:**\n\nA set is k-AP-free if it contains NO such progression.\n\nThese predicates capture the central constraint: avoiding long APs while allowing shorter ones.",
     "mathContext": "Lean: `def containsAPOfLength (A : Set ℕ) (k : ℕ) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "AP-free sets",
+      "Szemerédi's theorem",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "AP-free sets",
       "Szemerédi's theorem"
@@ -63,6 +80,12 @@
     "content": "**Coloring r:**\n\nAn r-coloring assigns each natural number a color from {0, 1, ..., r-1}.\n\n**colorClass A f c:**\n\nThe subset of A whose elements have color c under coloring f.\n\n```lean\ndef colorClass (A : Set ℕ) (f : Coloring r) (c : Fin r) : Set ℕ :=\n  {x ∈ A | f x = c}\n```",
     "mathContext": "Colorings partition a set into r disjoint color classes.",
     "significance": "key",
+    "prerequisites": [
+      "Partition",
+      "Pigeonhole principle",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Partition",
       "Pigeonhole principle"
@@ -80,6 +103,12 @@
     "content": "**hasMonochromaticAP A r f k:**\n\nThere exists a color class (under coloring f) that contains a k-term AP.\n\n**forcesMonochromaticAP A r k:**\n\nEVERY r-coloring of A has a monochromatic k-term AP.\n\nThis is the \"Ramsey property\" - no matter how you color, you can't avoid the pattern.",
     "mathContext": "Lean: `def hasMonochromaticAP (A : Set ℕ) (r : ℕ) (f : Coloring r) (k : ℕ) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "Unavoidable patterns",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Ramsey theory",
       "Unavoidable patterns"
@@ -97,6 +126,12 @@
     "content": "**SpencerSet k r:**\n\nThe witness set satisfying both properties simultaneously:\n1. **spencer_AP_free:** No (k+1)-term AP exists\n2. **spencer_forces_mono_AP:** Every r-coloring has a monochromatic k-AP\n\nThe actual construction is sophisticated - marked as `sorry` since the combinatorial details are beyond simple formalization.",
     "mathContext": "Spencer's construction uses probabilistic or algebraic methods to achieve both constraints.",
     "significance": "key",
+    "prerequisites": [
+      "Constructive combinatorics",
+      "Probabilistic method",
+      "graph coloring",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Probabilistic method",
       "Constructive combinatorics"
@@ -114,6 +149,11 @@
     "content": "**erdos_966:**\n\n```lean\ntheorem erdos_966 (k r : ℕ) (hk : k ≥ 2) (hr : r ≥ 2) :\n    ∃ A : Set ℕ,\n      APFreeOfLength A (k + 1) ∧\n      forcesMonochromaticAP A r k :=\n  spencer_theorem k r hk hr\n```\n\n**The answer is YES** for all k, r ≥ 2. Such sets exist!",
     "mathContext": "Lean: `theorem erdos_966 (k r : ℕ) (hk : k ≥ 2) (hr : r ≥ 2) :`",
     "significance": "key",
+    "prerequisites": [
+      "Existence theorem",
+      "Ramsey theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Existence theorem",
       "Ramsey theory"
@@ -131,6 +171,12 @@
     "content": "**Van der Waerden's Theorem (1927):**\n\nFor any k, r, there exists N such that any r-coloring of {1, ..., N} contains a monochromatic k-term AP.\n\n**Van der Waerden Number W(k, r):**\nThe minimum such N.\n\n**Erdős 966 Refinement:**\nEven when restricted to (k+1)-AP-free sets, the Ramsey property persists for k-APs.",
     "mathContext": "Van der Waerden numbers grow extremely fast - W(3,3) is already unknown!",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey numbers",
+      "Ramsey theory",
+      "Van der Waerden theorem",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Van der Waerden theorem",
       "Ramsey numbers"
@@ -148,6 +194,12 @@
     "content": "**Graph-Theoretic Analogue:**\n\nErdős Problem #924 asks: Does there exist a graph G with no (k+1)-clique, yet every r-coloring has a monochromatic k-clique?\n\n**Answer:** YES (Folkman's theorem)\n\nProblem #966 is the **arithmetic progression analogue**:\n- Graphs → Sets of integers\n- Cliques → Arithmetic progressions\n\nBoth have affirmative answers!",
     "mathContext": "Lean: `axiom erdos_966_analogue_of_924 :`",
     "significance": "key",
+    "prerequisites": [
+      "Folkman numbers",
+      "Graph coloring",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Folkman numbers",
       "Graph coloring",
@@ -166,6 +218,12 @@
     "content": "**case_k2_r2:**\nThere exists A with no 3-AP, but every 2-coloring has a monochromatic 2-AP.\n(Note: Any 2 distinct elements form a \"2-AP\", so this is nearly trivial.)\n\n**case_k3_r2:**\nThere exists A with no 4-AP, but every 2-coloring has a monochromatic 3-AP.\nThis is more interesting - avoiding 4-APs while forcing 3-APs in any 2-coloring.",
     "mathContext": "Lean: `theorem case_k2_r2 : ∃ A : Set ℕ, APFreeOfLength A 3 ∧ forcesMonochromaticAP A 2 2`",
     "significance": "supporting",
+    "prerequisites": [
+      "Concrete examples",
+      "Instantiation",
+      "graph coloring",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Instantiation",
       "Concrete examples"
@@ -183,6 +241,12 @@
     "content": "**Roth's Theorem (1953):**\n\nAny subset of ℕ with positive upper density contains a 3-term AP.\n\n**Implication for Spencer's Sets:**\n\nSince Spencer's sets avoid all sufficiently long APs, they must have **zero upper density**.\n\n```lean\naxiom spencer_zero_density (k r : ℕ) (hk : k ≥ 2) (hr : r ≥ 2) :\n    upperDensity (SpencerSet k r) = 0\n```",
     "mathContext": "Roth won the Fields Medal partly for this result. Szemerédi extended it to all k.",
     "significance": "key",
+    "prerequisites": [
+      "Roth's theorem",
+      "Szemerédi's theorem",
+      "density theory",
+      "field theory"
+    ],
     "relatedConcepts": [
       "Roth's theorem",
       "Szemerédi's theorem",
@@ -201,6 +265,11 @@
     "content": "**singleton_AP_free:**\n\nAny singleton {n} is trivially k-AP-free for k ≥ 2.\n\n**Proof Idea:**\nA k-AP with d > 0 has at least 2 distinct elements: a and a+d. A singleton can't contain both.\n\nThis shows the base case: extreme AP-avoidance is easy (just use tiny sets).",
     "mathContext": "$Any singleton {n} is trivially k-AP-free for k ≥ 2.$",
     "significance": "supporting",
+    "prerequisites": [
+      "Base cases",
+      "Trivial instances",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Base cases",
       "Trivial instances"
@@ -218,6 +287,12 @@
     "content": "**AP_card:**\n\nAn arithmetic progression {a, a+d, ..., a+(k-1)d} with d > 0 has exactly k elements.\n\n**Proof:**\nThe map i ↦ a + i·d is injective when d > 0 (different i give different values). So the image of {0, ..., k-1} has cardinality k.",
     "mathContext": "Lean: `theorem AP_card (a d k : ℕ) (hd : d > 0) :`",
     "significance": "supporting",
+    "prerequisites": [
+      "Cardinality",
+      "Injective functions",
+      "cardinal arithmetic",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Cardinality",
       "Injective functions"
@@ -235,6 +310,12 @@
     "content": "**erdos_966_summary:**\n\nCombines all main results:\n1. Existence of the required set A\n2. A is (k+1)-AP-free\n3. A forces monochromatic k-APs in any r-coloring\n4. A has zero upper density\n\nThis captures the complete solution to Erdős Problem #966.",
     "mathContext": "Lean: `theorem erdos_966_summary (k r : ℕ) (hk : k ≥ 2) (hr : r ≥ 2) :`",
     "significance": "key",
+    "prerequisites": [
+      "Main results",
+      "Summary",
+      "density theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Summary",
       "Main results"

@@ -11,6 +11,11 @@
     "content": "**Greatest Prime Factor** P(m):\n\nThe largest prime number that divides m.\n\n**Definition:**\n- P(1) = 0 by convention\n- P(p) = p for prime p\n- P(p^k) = p for prime power\n- P(m·n) = max(P(m), P(n))\n\n**Examples:**\n- P(12) = P(2² · 3) = 3\n- P(100) = P(2² · 5²) = 5\n- P(2^k) = 2 for all k ≥ 1\n\nAxiomatized since computing requires prime factorization.",
     "mathContext": "Central to many number-theoretic problems about consecutive integers.",
     "significance": "key",
+    "prerequisites": [
+      "Prime factorization",
+      "Smooth numbers",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Prime factorization",
       "Smooth numbers",
@@ -33,6 +38,11 @@
       "factorization",
       "prime numbers"
     ],
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "prime numbers"
+    ],
     "significance": "key"
   },
   {
@@ -47,6 +57,12 @@
     "content": "**ErdosConjecture649 (DISPROVED):**\n\nFor any two primes p, q, there exists n > 0 such that:\n- P(n) = p\n- P(n+1) = q\n\n**In Lean:**\n```lean\ndef ErdosConjecture649 : Prop :=\n  ∀ p q : ℕ, p.Prime → q.Prime →\n    ∃ n : ℕ, n > 0 ∧ P(n) = p ∧ P(n + 1) = q\n```\n\nErdős called this 'probably hopelessly difficult' - but it turned out to be false.",
     "mathContext": "Erdős believed this problem was very hard to settle either way.",
     "relatedConcepts": [
+      "divisibility",
+      "factorization",
+      "prime numbers"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "divisibility",
       "factorization",
       "prime numbers"
@@ -69,6 +85,11 @@
       "factorization",
       "prime numbers"
     ],
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "prime numbers"
+    ],
     "significance": "key"
   },
   {
@@ -83,6 +104,11 @@
     "content": "**two_power_mod_seven:**\n\n2^k ≢ -1 (mod 7) for all k ≥ 0.\n\n**The Cycle:**\n- 2^0 ≡ 1 (mod 7)\n- 2^1 ≡ 2 (mod 7)\n- 2^2 ≡ 4 (mod 7)\n- 2^3 ≡ 1 (mod 7) ← cycle repeats\n\nThe powers cycle through {1, 2, 4}, never reaching 6 ≡ -1.\n\n**Group Theory View:**\nord₇(2) = 3 (odd), so -1 ∉ ⟨2⟩ in (ℤ/7ℤ)*",
     "mathContext": "The order of 2 modulo 7 being odd is the key obstruction.",
     "significance": "key",
+    "prerequisites": [
+      "Cyclic groups",
+      "Multiplicative order",
+      "group theory"
+    ],
     "relatedConcepts": [
       "Multiplicative order",
       "Cyclic groups",
@@ -103,6 +129,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "divisibility",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -120,6 +150,12 @@
       "indirect proof",
       "proof by contradiction"
     ],
+    "prerequisites": [
+      "indirect proof",
+      "proof by contradiction",
+      "proof techniques",
+      "simp tactic"
+    ],
     "significance": "key"
   },
   {
@@ -134,6 +170,11 @@
     "content": "**Primitive Root Obstruction:**\n\nWhen 2 is a primitive root modulo prime q > 2, additional constraints arise.\n\n**Mechanism:**\n- If ord_q(2) = q - 1 (primitive root)\n- Then 2^k ≡ -1 (mod q) requires k = (q-1)/2\n- This imposes constraints on which p can work\n\n**Example:** 2 is a primitive root mod 19, leading to the (19, 2) obstruction.",
     "mathContext": "Lean: `axiom primitive_root_obstruction (p q : ℕ) (hp : p.Prime) (hq : q.Prime) :`",
     "significance": "key",
+    "prerequisites": [
+      "Multiplicative order",
+      "Primitive roots",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Primitive roots",
       "Multiplicative order",
@@ -156,6 +197,11 @@
       "factorization",
       "prime numbers"
     ],
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "prime numbers"
+    ],
     "significance": "key"
   },
   {
@@ -170,6 +216,9 @@
     "content": "**no_solution_19_2:**\n\nNo n exists with P(n) = 19 and P(n+1) = 2.\n\n**Why it fails:**\n- P(n+1) = 2 means n + 1 = 2^k\n- So n = 2^k - 1 (Mersenne-like number)\n- P(2^k - 1) = 19 requires 19 | (2^k - 1)\n- But 2 is a primitive root mod 19\n- ord₁₉(2) = 18, so 2^k ≡ 1 (mod 19) only when 18 | k\n- Additional constraints prevent this from working",
     "mathContext": "$No n \\exists with P(n) = 19 and P(n+1) = 2.$",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
       "formal mathematics"
     ],
     "significance": "key"
@@ -192,6 +241,12 @@
       "normed spaces",
       "prime numbers"
     ],
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "natural number arithmetic",
+      "norm_num tactic"
+    ],
     "significance": "key"
   },
   {
@@ -210,6 +265,12 @@
       "factorization",
       "prime numbers"
     ],
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "prime numbers",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -224,6 +285,11 @@
     "content": "**Mahler's Theorem (1935):**\n\nP(n(n+1)) → ∞ as n → ∞, but grows very slowly.\n\n**Growth Rate:**\nP(n(n+1)) ~ log log n\n\n**In Lean:**\n```lean\naxiom mahler_growth :\n  ∀ C : ℕ, ∃ N : ℕ, ∀ n ≥ N, P(n * (n + 1)) > C\n```\n\n**Corollary:** For any prime p, infinitely many n have P(n(n+1)) > p.",
     "mathContext": "Mahler studied the distribution of smooth numbers.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic growth",
+      "Smooth numbers",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Smooth numbers",
       "Asymptotic growth",
@@ -245,6 +311,10 @@
       "algebra",
       "group theory"
     ],
+    "prerequisites": [
+      "algebra",
+      "group theory"
+    ],
     "significance": "key"
   },
   {
@@ -260,6 +330,12 @@
     "mathContext": "$∀ k : ℕ, (2^k : ZMod 7) ≠ -1$",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "divisibility",
+      "formal mathematics",
+      "modular arithmetic",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -281,6 +357,12 @@
       "prime numbers",
       "proof by contradiction"
     ],
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "natural number arithmetic",
+      "prime numbers"
+    ],
     "significance": "key"
   },
   {
@@ -296,6 +378,10 @@
     "mathContext": "Lean: `theorem some_pairs_work :`",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "supporting"
   },
@@ -314,6 +400,12 @@
       "divisibility",
       "factorization",
       "prime numbers"
+    ],
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "prime numbers",
+      "proof techniques"
     ],
     "significance": "key"
   }

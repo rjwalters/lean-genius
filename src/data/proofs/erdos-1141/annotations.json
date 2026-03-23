@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #1141**: Are there infinitely many $n$ such that $n - k^2$ is prime for all $k$ with $\\gcd(n, k) = 1$ and $k^2 < n$?\n\nThe known values form **OEIS A214583**: 3, 4, 6, 8, 12, 14, 18, 20, 24, 30, 32, ..., 930, 1722. There are exactly 41 known terms, and an exhaustive search found no further terms below $10^{10}$.\n\n**Key observation**: All known good values are **even** (except 3). This is because odd $n > 3$ tends to fail: taking $k$ even with $\\gcd(n,k) = 1$, we need $n - k^2$ prime, but the many coprime $k$ values create too many primality constraints.\n\nChatGPT-Tang proved the count of good values in $[1, N]$ is $O(N^{1/2+o(1)})$, giving a density bound that is consistent with finiteness but does not settle the question.",
     "mathContext": "$\\{n \\in \\mathbb{N} : \\forall k,\\; \\gcd(n,k)=1 \\wedge k^2 < n \\Rightarrow (n-k^2) \\text{ prime}\\}$",
     "significance": "context",
+    "prerequisites": [
+      "Bunyakovsky conjecture",
+      "GCD theory",
+      "OEIS A214583",
+      "density theory"
+    ],
     "relatedConcepts": [
       "OEIS A214583",
       "Bunyakovsky conjecture",

@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #176: Discrepancy of Arithmetic Progressions**\n\nFor any ±1 coloring of {1,...,N}, what is the minimum N guaranteeing a k-AP with discrepancy ≥ ℓ?\n\n**Key Questions:**\n1. Is N(k, ck) ≤ C^k for any c > 0?\n2. Is N(k, 2) ≤ C^k?\n3. Is N(k, √k) ≤ C^k?\n\n**Known:** N(k,1) exactly (Spencer), exponential lower bounds (Erdős).\n**Open:** Even N(k,2) has 'no decent bound' (Erdős-Graham).",
     "mathContext": "Erdős posed this in 1963. Spencer gave exact formula for N(k,1) in 1973. The problem appears in Erdős-Graham's monograph (1980).",
     "significance": "key",
+    "prerequisites": [
+      "Discrepancy theory",
+      "Van der Waerden numbers",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Discrepancy theory",
       "Van der Waerden numbers",
@@ -29,6 +35,12 @@
     "content": "**ArithProg a d k:**\n\nThe k-term arithmetic progression starting at a with common difference d:\n\n{a, a+d, a+2d, ..., a+(k-1)d}\n\nRepresented as a Finset by mapping i ↦ a + i·d over {0, 1, ..., k-1}.",
     "mathContext": "In Lean: $\\texttt{ArithProg}(a, d, k) = \\texttt{Finset.image}(\\lambda\\, i.\\; a + i \\cdot d,\\; \\texttt{Finset.range}\\; k)$. This encodes the set $\\{a + id : 0 \\le i < k\\}$ as a $\\texttt{Finset\\;\\mathbb{N}}$.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "Finsets",
+      "Sequences",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Sequences",
       "Finsets"
@@ -46,6 +58,12 @@
     "content": "**arithProg_card:**\n\nFor d > 0, (ArithProg a d k).card = k.\n\nThe arithmetic progression has exactly k distinct elements when the common difference is positive. The proof uses injectivity of the index map.",
     "mathContext": "The theorem $\\texttt{arithProg\\_card}$ proves $|\\texttt{ArithProg}(a,d,k)| = k$ when $d > 0$, using injectivity of $i \\mapsto a + id$ ($i,j < k$ and $a+id = a+jd$ implies $i = j$ by $\\texttt{omega}$).",
     "significance": "supporting",
+    "prerequisites": [
+      "Cardinality",
+      "Injectivity",
+      "omega tactic",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Cardinality",
       "Injectivity"
@@ -63,6 +81,12 @@
     "content": "**Coloring:** ℕ → Int\n\n**IsValidColoring f:** f(n) ∈ {-1, 1} for all n\n\nA ±1 coloring assigns either +1 (\"red\") or -1 (\"blue\") to each natural number. The coloring tries to balance each arithmetic progression.",
     "mathContext": "Defined as $\\texttt{Coloring} := \\mathbb{N} \\to \\mathbb{Z}$. The predicate $\\texttt{IsValidColoring}(f)$ requires $\\forall\\, n,\\; f(n) = 1 \\lor f(n) = -1$. This models the classical $\\pm 1$ coloring from combinatorial discrepancy theory.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "Two-coloring",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Two-coloring",
       "Ramsey theory"
@@ -80,6 +104,12 @@
     "content": "**APDiscrepancy f a d k:** Σ_{n∈P} f(n)\n\n**HasDiscrepancy f a d k ℓ:** |Σ_{n∈P} f(n)| ≥ ℓ\n\nThe discrepancy measures how unbalanced the coloring is on the AP:\n- Discrepancy 0: equal +1s and -1s\n- Discrepancy k: all same color (monochromatic)\n\nThe problem asks when discrepancy ≥ ℓ is unavoidable.",
     "mathContext": "$\\texttt{APDiscrepancy}(f, a, d, k) = \\sum_{n \\in \\texttt{ArithProg}(a,d,k)} f(n)$ via $\\texttt{Finset.sum}$. The predicate $\\texttt{HasDiscrepancy}(f, a, d, k, \\ell)$ asserts $\\left|\\sum_{n \\in P} f(n)\\right| \\ge \\ell$, using $\\texttt{Int.natAbs}$ for the absolute value comparison.",
     "significance": "key",
+    "prerequisites": [
+      "Absolute value",
+      "Finset API",
+      "Sum",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Sum",
       "Absolute value",
@@ -98,6 +128,12 @@
     "content": "**SatisfiesNkl N k ℓ:** Every valid coloring of {1,...,N} has some k-AP with discrepancy ≥ ℓ.\n\n**Nkl k ℓ:** The minimal such N.\n\nThis is the central object of study. N(k,ℓ) tells us how large the domain must be before every coloring has an unbalanced AP.",
     "mathContext": "$\\texttt{SatisfiesNkl}(N, k, \\ell)$ states: $\\forall f,\\; \\texttt{IsValidColoring}(f) \\Rightarrow \\exists\\, a,d > 0,\\; a + (k{-}1)d \\le N \\wedge |{\\textstyle\\sum_{P}} f| \\ge \\ell$. The function $\\texttt{Nkl}(k,\\ell) := \\texttt{Nat.find}(\\ldots)$ uses classical choice to extract the minimum $N$.",
     "significance": "key",
+    "prerequisites": [
+      "Minimal witness",
+      "Ramsey numbers",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Minimal witness",
       "Ramsey numbers"
@@ -115,6 +151,11 @@
     "content": "**satisfiesNkl_mono:**\n\nIf N satisfies the N(k,ℓ) condition, so does any N' ≥ N.\n\nLarger domains only make it easier to find unbalanced APs. This monotonicity justifies taking the minimum.",
     "mathContext": "The proof of $\\texttt{satisfiesNkl\\_mono}$ is direct: given $N \\le N'$ and a witness $(a, d)$ for $N$, the constraint $a + (k{-}1)d \\le N \\le N'$ transfers by $\\texttt{le\\_trans}$. This justifies well-definedness of $\\texttt{Nkl}$ as a minimum.",
     "significance": "supporting",
+    "prerequisites": [
+      "Monotonicity",
+      "Well-defined minimum",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Monotonicity",
       "Well-defined minimum"
@@ -132,6 +173,12 @@
     "content": "**vanDerWaerden k:** = Nkl k k\n\nWhen ℓ = k, discrepancy k means all k terms have the same color - a **monochromatic AP**.\n\nSo N(k,k) equals the van der Waerden number W(k): the minimum N such that any 2-coloring of {1,...,N} contains a monochromatic k-AP.\n\nVan der Waerden's theorem (1927) proves W(k) exists for all k.",
     "mathContext": "Van der Waerden numbers grow extremely fast: W(3)=9, W(4)=35, W(5)=178, W(6)=1132, but exact values are unknown for k≥7.",
     "significance": "key",
+    "prerequisites": [
+      "Monochromatic progressions",
+      "Van der Waerden theorem",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Van der Waerden theorem",
       "Monochromatic progressions"
@@ -149,6 +196,10 @@
     "content": "**spencer_1973:**\n\nIf k = 2^t · m with m odd, then N(k, 1) = 2^t(k-1) + 1.\n\nThis gives an **exact formula** for the smallest N guaranteeing some AP has non-zero discrepancy.\n\n**Example:** k = 4 = 2²·1, so N(4,1) = 4·3 + 1 = 13.\n\nSpencer published this in Bull. Canad. Math. Soc. (1973).",
     "mathContext": "The 2-adic valuation of k (the power of 2 in k's factorization) determines the formula.",
     "significance": "key",
+    "prerequisites": [
+      "2-adic valuation",
+      "Exact formulas"
+    ],
     "relatedConcepts": [
       "Exact formulas",
       "2-adic valuation"
@@ -166,6 +217,10 @@
     "content": "**erdos_1963_lower_bound:**\n\nFor any c > 0, N(k, ck) > (1 + α_c)^k where α_c is a function of c.\n\n**Behavior of α_c:**\n- α_c → 0 as c → 0 (small discrepancy is easier to avoid)\n- α_c → √2 - 1 ≈ 0.414 as c → 1 (approaching van der Waerden)\n\nThis proves N(k, ℓ) grows **exponentially** in k for any fixed ratio ℓ/k.",
     "mathContext": "From Erdős's 1963 paper in Mat. Lapok.",
     "significance": "key",
+    "prerequisites": [
+      "Exponential lower bounds",
+      "Growth rates"
+    ],
     "relatedConcepts": [
       "Exponential lower bounds",
       "Growth rates"
@@ -183,6 +238,11 @@
     "content": "**LinearDiscrepancyConjecture:**\n\nFor any c > 0, there exists C > 1 such that N(k, ck) ≤ C^k.\n\nCombined with Erdős's lower bound, this would show N(k, ck) is exactly exponential in k.\n\nThis is the most general of the three main conjectures.",
     "mathContext": "$\\texttt{LinearDiscrepancyConjecture} :\\equiv \\forall\\, c > 0,\\; \\exists\\, C > 1,\\; \\forall\\, k > 0,\\; N(k, \\lceil ck \\rceil) \\le C^k$. The ceiling $\\lceil ck \\rceil$ is computed via $\\texttt{Int.toNat} \\circ \\texttt{Int.ceil}$ in Lean. Combined with Erd\\H{o}s's lower bound $(1 + \\alpha_c)^k < N(k, ck)$, a positive answer would pin exponential growth exactly.",
     "significance": "key",
+    "prerequisites": [
+      "Exponential growth",
+      "Upper bounds",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Upper bounds",
       "Exponential growth"
@@ -200,6 +260,12 @@
     "content": "**Discrepancy2Conjecture:**\n\nIs there C > 1 with N(k, 2) ≤ C^k?\n\nThis is the weakest question (ℓ = 2 is constant, not growing with k), yet Erdős-Graham wrote that 'no decent bound' is known.\n\nA positive answer would be a major breakthrough.",
     "mathContext": "$\\texttt{Discrepancy2Conjecture} :\\equiv \\exists\\, C > 1,\\; \\forall\\, k > 0,\\; N(k, 2) \\le C^k$. The axiom $\\texttt{Nk2\\_grows\\_superpolynomially}$ formalizes that $N(k,2)$ grows faster than any polynomial: $\\forall\\, d,\\; \\exists\\, k_0,\\; \\forall\\, k \\ge k_0,\\; N(k,2) > k^d$.",
     "significance": "key",
+    "prerequisites": [
+      "Constant discrepancy",
+      "Open problems",
+      "basic set theory",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Constant discrepancy",
       "Open problems"
@@ -217,6 +283,11 @@
     "content": "**SqrtDiscrepancyConjecture:**\n\nIs there C > 1 with N(k, √k) ≤ C^k?\n\nThis intermediate case (ℓ = √k grows sublinearly) interpolates between the constant and linear cases.\n\nA positive answer would suggest the linear conjecture might also hold.",
     "mathContext": "$\\texttt{SqrtDiscrepancyConjecture} :\\equiv \\exists\\, C > 1,\\; \\forall\\, k > 1,\\; N(k, \\lceil\\sqrt{k}\\rceil) \\le C^k$. The $\\sqrt{k}$ is computed via $\\texttt{Real.sqrt}$ and rounded up with $\\texttt{Int.ceil}$. This interpolates between the constant case ($\\ell = 2$) and the linear case ($\\ell = ck$).",
     "significance": "key",
+    "prerequisites": [
+      "Intermediate cases",
+      "Sublinear discrepancy",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Intermediate cases",
       "Sublinear discrepancy"
@@ -234,6 +305,12 @@
     "content": "**Connections to Other Problems:**\n\n1. **Erdős Discrepancy Problem:** Concerns discrepancy of homogeneous APs. Proved by Tao (2015) using Fourier analysis.\n\n2. **Szemerédi's Theorem:** Density of sets containing APs. Different focus: subsets vs colorings.\n\n3. **Hales-Jewett:** Higher-dimensional generalization of van der Waerden.\n\nAll share the theme of unavoidable arithmetic structure.",
     "mathContext": "The file axiomatizes two landmark results: (1) Tao's proof (2015) of the Erd\\H{o}s Discrepancy Conjecture — $\\forall\\, C,\\; \\exists\\, d, N > 0,\\; |\\sum_{i=1}^{N} f(id)| > C$ — using homogeneous APs $\\{d, 2d, \\ldots, Nd\\}$; (2) Szemer\\'edi's theorem on density of AP-free sets. Problem #176 differs: it concerns $\\pm 1$ colorings rather than dense subsets or homogeneous progressions.",
     "significance": "supporting",
+    "prerequisites": [
+      "Erdős discrepancy",
+      "Szemerédi theorem",
+      "density theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Erdős discrepancy",
       "Szemerédi theorem",
@@ -252,6 +329,11 @@
     "content": "**erdos_176_summary:**\n\nCaptures the state of knowledge:\n\n1. Spencer gives exact formula for N(k, 1)\n2. N(k, k) = W(k), the van der Waerden number\n3. The main conjectures are precisely stated\n\n**Known:** Exact formula for N(k,1); exponential lower bounds.\n**Open:** Exponential upper bounds for N(k,2), N(k,√k), N(k,ck).",
     "mathContext": "The summary theorem $\\texttt{erdos\\_176\\_summary}$ is a conjunction of three facts proved in Lean: (1) Spencer's formula gives $N(k,1)$ exactly (via the axiom $\\texttt{spencer\\_1973}$), (2) $N(k,k) = W(k)$ holds by $\\texttt{rfl}$ since $\\texttt{vanDerWaerden}(k) := \\texttt{Nkl}(k,k)$, and (3) $\\texttt{LinearDiscrepancyConjecture}$ unfolds to its definition, also by $\\texttt{rfl}$.",
     "significance": "key",
+    "prerequisites": [
+      "Open questions",
+      "Summary",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Summary",
       "Open questions"

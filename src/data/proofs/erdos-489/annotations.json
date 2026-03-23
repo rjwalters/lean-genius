@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #489: Gaps Between B-Free Numbers**\n\nGiven a sparse set A ⊆ ℕ with |A ∩ [1,x]| = o(√x), define B to be the A-free numbers (not divisible by any element of A). If B = {b₁ < b₂ < ...}, does lim (1/x) Σ_{bᵢ<x} (b_{i+1} - bᵢ)² exist?\n\n**Status: OPEN** in general. The squarefree case (A = {p² : p prime}) was solved by Erdős.",
     "mathContext": "This is a question about second moments of gap distributions in number-theoretic sequences. The sparseness condition o(√x) is a threshold that ensures the A-free numbers have positive density, making the gap statistic well-defined.",
     "significance": "key",
+    "prerequisites": [
+      "B-free numbers",
+      "Squarefree numbers",
+      "density theory",
+      "divisibility"
+    ],
     "relatedConcepts": [
       "B-free numbers",
       "Squarefree numbers",
@@ -30,6 +36,12 @@
     "content": "**countingFunction** and **IsSparse:**\n\ncountingFunction(A, x) = |A ∩ [1,x]| counts elements of A up to x.\n\nA set A is sparse if countingFunction(A, x) = o(x^{1/2}), meaning A grows slower than √x. This is formalized using Mathlib's little-o notation via the atTop filter.",
     "mathContext": "The threshold √x is significant: if |A ∩ [1,x]| grows faster than √x, the A-free numbers can become too sparse for gap statistics to converge. The o(√x) condition is the critical dividing line identified by Erdős.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic analysis",
+      "Little-o notation",
+      "basic set theory",
+      "filter theory"
+    ],
     "relatedConcepts": [
       "Asymptotic analysis",
       "Little-o notation",
@@ -48,6 +60,12 @@
     "content": "**BFreeSet** and **IsBFree:**\n\nBFreeSet(A) = {n ≥ 1 : a ∤ n for all a ∈ A}. These are the A-free (or B-free) numbers — positive integers not divisible by any element of A.\n\nIsBFree provides an equivalent predicate form: n is B-free with respect to A if n ≥ 1 and no element of A divides n.",
     "mathContext": "When A = {p² : p prime}, the B-free numbers are exactly the squarefree numbers. When A = {p³ : p prime}, we get the cubefree numbers. The general B-free construction was studied extensively in sieve theory.",
     "significance": "key",
+    "prerequisites": [
+      "Sieve of Eratosthenes",
+      "Squarefree numbers",
+      "basic set theory",
+      "divisibility"
+    ],
     "relatedConcepts": [
       "Squarefree numbers",
       "Sieve of Eratosthenes",
@@ -66,6 +84,11 @@
     "content": "**nthElement**, **gap**, **gapSquaredSum**, **normalizedGapStatistic:**\n\nnthElement(B, i) returns the i-th smallest element of B (axiomatized). gap(B, i) = b_{i+1} - b_i is the gap between consecutive elements.\n\ngapSquaredSum(B, x) = Σᵢ (gap(B, i))² sums squared gaps. normalizedGapStatistic(B, x) = gapSquaredSum(B, x) / x is the normalized second moment.\n\nThe central question is whether this normalized statistic converges as x → ∞.",
     "mathContext": "The second moment of gaps captures both the average gap size and the variability of gaps. If gaps were all equal (perfectly uniform distribution), the second moment would be minimal. Large gaps contribute disproportionately to the sum of squares.",
     "significance": "key",
+    "prerequisites": [
+      "Gap distributions",
+      "Moment methods",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Moment methods",
       "Gap distributions",
@@ -84,6 +107,12 @@
     "content": "**LimitExists** and **ErdosConjecture:**\n\nLimitExists(A) asserts ∃ L : ℝ such that normalizedGapStatistic(BFreeSet(A), x) → L as x → ∞, formalized via Filter.Tendsto and nhds.\n\nErdosConjecture states: for ALL sparse A (with |A ∩ [1,x]| = o(√x)), LimitExists(A) holds. This is the full open problem.",
     "mathContext": "The conjecture asks whether sparseness alone guarantees convergence of the second moment. This is stronger than just asking about density — it requires control over the distribution of gaps, not just their average.",
     "significance": "key",
+    "prerequisites": [
+      "Filter convergence",
+      "Topological limits",
+      "basic set theory",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Filter convergence",
       "Topological limits",
@@ -102,6 +131,12 @@
     "content": "**PrimeSquares**, **squarefreeSetAsBFree**, **erdos_squarefree_limit**, **squarefree_density:**\n\nPrimeSquares = {p² : p prime}. The axiom squarefreeSetAsBFree states BFreeSet(PrimeSquares) = {n : Squarefree n}.\n\nerdos_squarefree_limit axiomatizes Erdős's theorem: LimitExists(PrimeSquares). The density axiom states squarefree numbers have density 6/π² ≈ 0.6079.",
     "mathContext": "The density 6/π² = 1/ζ(2) comes from inclusion-exclusion over prime squares. Each prime p excludes 1/p² of integers, and by Euler's product formula, the density of squarefree numbers is Π_p (1 - 1/p²) = 1/ζ(2) = 6/π².",
     "significance": "key",
+    "prerequisites": [
+      "Basel problem",
+      "Euler's work",
+      "Riemann zeta function",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Riemann zeta function",
       "Basel problem",
@@ -120,6 +155,12 @@
     "content": "**erdos_489_summary** and **erdos_489:**\n\nBoth theorems state LimitExists(PrimeSquares), proved via erdos_squarefree_limit. This captures the known result: the squarefree case is solved.\n\nThe general conjecture (ErdosConjecture) remains open — it is defined but not asserted as an axiom, reflecting its unsolved status.",
     "mathContext": "The formalization distinguishes between the solved special case (squarefree numbers, stated as a theorem) and the open general conjecture (stated as a definition of type Prop). This accurately reflects the mathematical status of Problem #489.",
     "significance": "key",
+    "prerequisites": [
+      "Open problems in number theory",
+      "Partial results",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Open problems in number theory",
       "Partial results"

@@ -11,6 +11,11 @@
     "content": "**Erdos Problem #668: Unit Distance Configuration Uniqueness**\n\nThis problem asks about the multiplicity of extremal configurations for the unit distance problem.\n\n**Key Questions:**\n1. Does f(n) (number of incongruent extremals) tend to infinity?\n2. Is f(n) > 1 for all n > 3?\n\n**Status:** OPEN\n**Related:** Problem #90 (maximum unit distances u(n))",
     "mathContext": "The unit distance problem is a classic question in combinatorial geometry, posed by Erdos in 1946.",
     "significance": "key",
+    "prerequisites": [
+      "Extremal configurations",
+      "Unit distance graph",
+      "congruence relations"
+    ],
     "relatedConcepts": [
       "Unit distance graph",
       "Extremal configurations",
@@ -55,6 +60,12 @@
       "combinatorics",
       "graph theory"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "combinatorics",
+      "graph theory",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -71,6 +82,12 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "filter theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -85,6 +102,10 @@
     "content": "**u(n):**\n\nThe maximum number of unit distances achievable by n points in the plane.\n\n```lean\nnoncomputable def u (n : N) : N :=\n  sSup {k | exists S, S.card = n and unitDistanceCount S = k}\n```\n\nThis is the central object of Erdos Problem #90.",
     "mathContext": "Erdos proved u(n) = O(n^(4/3)). The exact value is still unknown for most n.",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "formal mathematics"
     ],
     "significance": "key"
@@ -130,6 +151,12 @@
       "distance",
       "metric spaces"
     ],
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "bijection",
+      "cardinality"
+    ],
     "significance": "key"
   },
   {
@@ -173,6 +200,12 @@
       "optimization",
       "ring theory"
     ],
+    "prerequisites": [
+      "algebra",
+      "basic set theory",
+      "extremal problems",
+      "ring tactic"
+    ],
     "significance": "key"
   },
   {
@@ -189,6 +222,12 @@
     "relatedConcepts": [
       "extremal problems",
       "optimization"
+    ],
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "congruence relations",
+      "extremal problems"
     ],
     "significance": "key"
   },
@@ -210,6 +249,12 @@
       "graph theory",
       "isomorphisms"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "combinatorics",
+      "congruence relations",
+      "congruences"
+    ],
     "significance": "key"
   },
   {
@@ -229,6 +274,12 @@
       "inequalities",
       "optimization"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "bounds",
+      "congruence relations",
+      "extremal problems"
+    ],
     "significance": "key"
   },
   {
@@ -245,6 +296,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -259,6 +314,11 @@
     "content": "**Relationship to u(n):**\n\nProblem #668 builds on Problem #90 (maximum unit distances).\n\n**Key bounds on u(n):**\n- Lower: u(n) >= n - 1\n- Upper: u(n) < c * n^(4/3) (Erdos)\n\nUnderstanding u(n) is prerequisite to studying f(n).",
     "mathContext": "Formalizes the concept of connection to problem #90",
     "significance": "key",
+    "prerequisites": [
+      "Erdos Problem #90",
+      "Extremal graph theory",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Erdos Problem #90",
       "Extremal graph theory"
@@ -276,6 +336,11 @@
     "content": "**erdos_668_summary:**\n\nCombines the known results:\n1. f(4) = 1 (unique double-triangle)\n2. Any two 4-point extremals are congruent\n\n```lean\ntheorem erdos_668_summary :\n    f 4 = 1 and\n    (forall S T, S.card = 4 -> T.card = 4 ->\n      isExtremal S -> isExtremal T -> areCongruent S T)\n```\n\n**Status:** The main questions remain OPEN.",
     "mathContext": "Lean: `theorem erdos_668_summary :`",
     "relatedConcepts": [
+      "extremal problems",
+      "optimization"
+    ],
+    "prerequisites": [
+      "congruence relations",
       "extremal problems",
       "optimization"
     ],

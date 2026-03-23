@@ -11,6 +11,12 @@
     "content": "Erdős Problem #525 asks about the minimum modulus m(f) = min_{|z|=1} |f(z)| for Littlewood polynomials (polynomials with ±1 coefficients). The problem has been completely resolved through a series of landmark results spanning 55 years.",
     "mathContext": "Littlewood polynomials f(z) = Σ aₖzᵏ where each aₖ ∈ {-1, +1} are fundamental objects in harmonic analysis. The minimum modulus m(f) measures how close f gets to zero on the unit circle.",
     "significance": "key",
+    "prerequisites": [
+      "littlewood-polynomials",
+      "measure theory",
+      "minimum-modulus",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "littlewood-polynomials",
       "minimum-modulus",
@@ -30,6 +36,12 @@
     "content": "A Littlewood polynomial has all coefficients in {-1, +1}. These are also called flat polynomials or Rademacher polynomials. There are exactly 2^(n+1) such polynomials of degree n.",
     "mathContext": "The definition IsLittlewoodPolynomial checks that every coefficient up to the degree is ±1. LittlewoodPolynomials(n) collects all degree-n Littlewood polynomials as a set.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "polynomial ring theory",
+      "polynomial-coefficients",
+      "rademacher-random-variables"
+    ],
     "relatedConcepts": [
       "polynomial-coefficients",
       "rademacher-random-variables",
@@ -48,6 +60,12 @@
     "content": "The unit circle {z ∈ ℂ : |z| = 1} is the domain of study. The minimum modulus m(f) = inf_{|z|=1} |f(z)| measures the closest approach of f to zero on the unit circle.",
     "mathContext": "minModulus is defined as the infimum (greatest lower bound) of |f(z)| over all z on the unit circle. Since the unit circle is compact and |f| is continuous, this infimum is attained.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "continuous functions",
+      "infimum",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "unit-circle",
       "infimum",
@@ -67,6 +85,11 @@
     "content": "The first question is answered affirmatively: all except o(2^n) Littlewood polynomials of degree n have |f(z)| < 1 for some z on the unit circle. This means the 'exceptional' set is negligible.",
     "mathContext": "HasSmallValue(p) means ∃ z on the unit circle with |p(z)| < 1. The axiom almost_all_small states that the count of exceptions grows slower than 2^n (the total count).",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic-density",
+      "polynomial ring theory",
+      "probability"
+    ],
     "relatedConcepts": [
       "probability",
       "asymptotic-density",
@@ -85,6 +108,12 @@
     "content": "Littlewood (1966) conjectured that m(f) → 0 in probability as n → ∞. Kashin proved this in 1987: for any ε > 0, almost all Littlewood polynomials of large degree have m(f) < ε.",
     "mathContext": "LittlewoodConjecture formalizes convergence in probability: for any ε, δ > 0, eventually the fraction of polynomials with m(f) > ε is less than δ. kashin_theorem asserts this holds.",
     "significance": "key",
+    "prerequisites": [
+      "convergence-in-probability",
+      "polynomial ring theory",
+      "probability theory",
+      "random-trigonometric-polynomials"
+    ],
     "relatedConcepts": [
       "convergence-in-probability",
       "random-trigonometric-polynomials",
@@ -103,6 +132,10 @@
     "content": "Konyagin (1994) proved the sharp bound m(f) ≤ n^{-1/2+o(1)} almost surely, pinning down the correct rate of decay. The companion result shows the exponent -1/2 cannot be improved.",
     "mathContext": "konyagin_upper_bound gives the upper bound and konyagin_exponent_tight shows it is essentially optimal. Together they establish m(f) = Θ(n^{-1/2}) in a probabilistic sense.",
     "significance": "key",
+    "prerequisites": [
+      "exponent-optimization",
+      "sharp-bounds"
+    ],
     "relatedConcepts": [
       "sharp-bounds",
       "exponent-optimization",
@@ -121,6 +154,12 @@
     "content": "Konyagin-Schlag (1999) proved that the probability of m(f) being much smaller than n^{-1/2} is proportional to ε. This 'thin lower tail' result was a key step toward the exact distribution.",
     "mathContext": "The axiom states: for any ε > 0, the fraction of polynomials with m(f) ≤ εn^{-1/2} is at most Cε for some constant C. This gives precise control over the lower tail.",
     "significance": "key",
+    "prerequisites": [
+      "polynomial ring theory",
+      "probability theory",
+      "probability-distribution",
+      "tail-bounds"
+    ],
     "relatedConcepts": [
       "tail-bounds",
       "probability-distribution",
@@ -139,6 +178,10 @@
     "content": "Cook-Nguyen (2021) identified the exact limiting distribution: P(m(f) > εn^{-1/2}) → e^{-ελ} as n → ∞. This is a striking universality result - the distribution doesn't depend on the specific ±1 coefficient scheme.",
     "mathContext": "cook_nguyen_lambda is an explicit constant and cook_nguyen_distribution formalizes the convergence. The exponential form e^{-ελ} is reminiscent of Gumbel-type extreme value distributions.",
     "significance": "key",
+    "prerequisites": [
+      "extreme-value-theory",
+      "universality"
+    ],
     "relatedConcepts": [
       "universality",
       "extreme-value-theory",
@@ -158,6 +201,12 @@
     "content": "Rudin-Shapiro polynomials are special Littlewood polynomials with a flat bound |p(z)| ≤ √(2^(n+1)) on the unit circle. The all-ones polynomial 1 + z + ... + z^n provides a concrete example with minimum modulus 1/(n+1).",
     "mathContext": "IsRudinShapiro combines being Littlewood with degree 2^n - 1 and the flat bound. AllOnesPolynomial is the simplest Littlewood polynomial, with minimum modulus decaying as 1/n.",
     "significance": "supporting",
+    "prerequisites": [
+      "basic set theory",
+      "flat-polynomials",
+      "polynomial ring theory",
+      "rudin-shapiro-polynomials"
+    ],
     "relatedConcepts": [
       "rudin-shapiro-polynomials",
       "flat-polynomials",
@@ -176,6 +225,12 @@
     "content": "The Mahler measure M(p) = exp(∫ log|p(e^{2πit})| dt) is the geometric mean of |p| on the unit circle. For Littlewood polynomials, M(p) ≥ 1 implies m(p) ≤ M(p), connecting to Lehmer's famous conjecture.",
     "mathContext": "MahlerMeasure is defined via integration of log|p| over the unit circle. Lehmer's problem asks whether there exist polynomials with M(p) arbitrarily close to 1, a major open question in number theory.",
     "significance": "supporting",
+    "prerequisites": [
+      "basic set theory",
+      "lehmer-conjecture",
+      "mahler-measure",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "mahler-measure",
       "lehmer-conjecture",
@@ -195,6 +250,11 @@
     "content": "Three summary theorems combine the key results: (1) Littlewood's conjecture is true (Kashin), (2) the correct exponent is -1/2 (Konyagin), and (3) the exact limiting distribution is e^{-ελ} (Cook-Nguyen). This completely resolves Erdős Problem #525.",
     "mathContext": "erdos_525_solved directly applies kashin_theorem. erdos_525_main combines Kashin and Konyagin. erdos_525_answer combines the first question answer with the Cook-Nguyen distribution.",
     "significance": "key",
+    "prerequisites": [
+      "complete-resolution",
+      "proof techniques",
+      "summary-theorems"
+    ],
     "relatedConcepts": [
       "complete-resolution",
       "summary-theorems",

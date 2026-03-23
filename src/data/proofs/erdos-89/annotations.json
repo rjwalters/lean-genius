@@ -11,6 +11,10 @@
     "content": "**Erdős Problem #89** is the famous distinct distances problem, posed in 1946.\n\n**The Question**: Does every set of n points in ℝ² determine at least Ω(n/√(log n)) distinct distances?\n\n**Status**: OPEN (original conjecture)\n\n**Partial Result**: Guth-Katz (2015) proved Ω(n/log n)\n\n**Prize**: $500",
     "mathContext": "This is one of Erdős's most celebrated problems in combinatorial geometry. The √n × √n integer grid achieves O(n/√(log n)) distances, showing the conjecture would be tight.",
     "significance": "key",
+    "prerequisites": [
+      "distinct-distances",
+      "erdos"
+    ],
     "relatedConcepts": [
       "erdos",
       "distinct-distances",
@@ -30,6 +34,10 @@
     "content": "Given n points in the plane, how many distinct pairwise distances must exist?\n\nThe **√n × √n integer grid** is the key extremal example. Points of the form (i, j) for 0 ≤ i, j < √n have distances determined by sums of two squares.\n\nA classical result in number theory shows such grids have only O(n/√(log n)) distinct distances.",
     "mathContext": "The number of integers ≤ x representable as sums of two squares is ~cx/√(log x). This controls the grid's distinct distances.",
     "significance": "key",
+    "prerequisites": [
+      "integer-grid",
+      "sums-of-squares"
+    ],
     "relatedConcepts": [
       "integer-grid",
       "sums-of-squares",
@@ -48,6 +56,12 @@
     "content": "**dist p q** is the Euclidean distance ‖p - q‖ between points.\n\n**distinctDistances S** is the set of all positive pairwise distances in S.\n\nWe use `S.offDiag` to get pairs (p, q) with p ≠ q, then image the distance function and filter out zero.",
     "mathContext": "Formally: `(S.offDiag.image fun pq => dist pq.1 pq.2).filter (· > 0)`",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "euclidean-distance",
+      "filter theory",
+      "finset"
+    ],
     "relatedConcepts": [
       "euclidean-distance",
       "finset",
@@ -66,6 +80,11 @@
     "content": "**minDistinctDistances n** is g(n), the minimum number of distinct distances over all n-point sets in ℝ².\n\nThis is THE extremal function that Erdős asked about: what is g(n) asymptotically?",
     "mathContext": "Defined as `sInf {numDistinctDistances S | S.card = n}` over all n-point sets S.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "extremal-function",
+      "infimum"
+    ],
     "relatedConcepts": [
       "extremal-function",
       "infimum",
@@ -84,6 +103,11 @@
     "content": "**Erdos89Conjecture** states: g(n) ≥ c·n/√(log n) for some c > 0 and all large n.\n\nFormally: ∃ c > 0 such that eventually c·n/√(log n) ≤ g(n).\n\nThis would be tight by the grid construction.",
     "mathContext": "The bound Ω(n/√(log n)) is the conjectured answer. The grid shows O(n/√(log n)) is achievable.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic",
+      "basic set theory",
+      "open-problem"
+    ],
     "relatedConcepts": [
       "open-problem",
       "asymptotic",
@@ -102,6 +126,12 @@
     "content": "**guthKatz** is the breakthrough result: g(n) ≥ c·n/log n for some c > 0.\n\nThis is weaker than the conjecture by a factor of √(log n), but was a major breakthrough after decades of work.\n\n**Why an axiom?** The proof uses sophisticated algebraic geometry techniques (polynomial partitioning).",
     "mathContext": "Guth and Katz proved this using a polynomial method, counting incidences between points and lines in 3D.",
     "significance": "key",
+    "prerequisites": [
+      "axiom",
+      "guth-katz",
+      "polynomial ring theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "axiom",
       "guth-katz",
@@ -120,6 +150,11 @@
     "content": "**gridUpperBound** states: g(n) ≤ c·n/√(log n) for some c > 0.\n\nThe √n × √n integer grid achieves this bound, showing the conjecture is tight if true.\n\nThis uses number theory: the count of integers ≤ x representable as sums of two squares.",
     "mathContext": "The Landau-Ramanujan constant governs this: |{n ≤ x : n = a² + b²}| ~ Kx/√(log x).",
     "significance": "key",
+    "prerequisites": [
+      "axiom",
+      "proof techniques",
+      "upper-bound"
+    ],
     "relatedConcepts": [
       "axiom",
       "upper-bound",
@@ -139,6 +174,12 @@
     "content": "**conjecture_implies_guthKatz** shows the conjecture is strictly stronger than Guth-Katz.\n\nThe key: n/√(log n) > n/log n for large n, since √(log n) < log n.\n\nThis is a genuine Lean theorem (with one sorry for the inequality).",
     "mathContext": "The proof uses `filter_upwards` to work with the eventually filter and `calc` for the chain of inequalities.",
     "significance": "key",
+    "prerequisites": [
+      "filter theory",
+      "filter_upwards",
+      "implication",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "implication",
       "filter_upwards",
@@ -157,6 +198,11 @@
     "content": "The problem saw steady progress over decades:\n\n- **1992**: Chung proves Ω(n^(4/5))\n- **2001**: Solymosi-Tóth prove Ω(n^(6/7))\n- **2004**: Tardos proves Ω(n^0.8641)\n- **2015**: Guth-Katz prove Ω(n/log n)\n\n**chung1992** and **tardos2004** are axioms for these historical bounds.",
     "mathContext": "The exponent improved from 0.8 to 0.86 to... finally escaping polynomial bounds in 2015.",
     "significance": "supporting",
+    "prerequisites": [
+      "chung",
+      "history",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "history",
       "chung",
@@ -176,6 +222,11 @@
     "content": "**singlePointConjecture** (Problem #604) is a stronger version: there's always a SINGLE point determining Ω(n/√(log n)) distances.\n\nThis would immediately imply Problem #89, since the total distinct distances includes those from any single point.",
     "mathContext": "This asks for a 'rich' point that sees many distances, not just that the whole set has many.",
     "significance": "supporting",
+    "prerequisites": [
+      "604",
+      "proof techniques",
+      "related-problem"
+    ],
     "relatedConcepts": [
       "related-problem",
       "604",

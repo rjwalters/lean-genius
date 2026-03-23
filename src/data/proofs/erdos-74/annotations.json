@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #74** asks about graphs with high chromatic number but 'almost bipartite' subgraphs.\n\n**The Question**: For any f(n) → ∞, is there a graph with infinite chromatic number where every n-vertex subgraph can be made bipartite by deleting ≤ f(n) edges?\n\n**Status**: OPEN\n\n**Partial Results**:\n- TRUE for f(n) = εn (Rödl 1982)\n- OPEN for f(n) = √n\n- FALSE for uncountable chromatic number",
     "mathContext": "This explores the tension between global coloring complexity and local bipartite-like structure.",
     "significance": "key",
+    "prerequisites": [
+      "chromatic-number",
+      "complex numbers",
+      "erdos",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "erdos",
       "chromatic-number",
@@ -30,6 +36,12 @@
     "content": "**Bipartite graphs** can be 2-colored (vertices split into two groups with edges only between groups). Equivalently, they have no odd cycles.\n\n**Chromatic number** χ(G) is the minimum colors needed to properly color G. For bipartite graphs, χ ≤ 2.\n\n**The key insight**: To have infinite chromatic number, a graph MUST have non-bipartite subgraphs. The question is: how 'close' to bipartite can they be?",
     "mathContext": "A graph is bipartite iff it has no odd cycles. This is equivalent to being 2-colorable.",
     "significance": "key",
+    "prerequisites": [
+      "bipartite",
+      "chromatic-number",
+      "graph theory basics",
+      "group theory"
+    ],
     "relatedConcepts": [
       "bipartite",
       "chromatic-number",
@@ -48,6 +60,12 @@
     "content": "**edgeDistToBipartite V G** is the minimum number of edges that must be deleted from G to make it bipartite.\n\nThis is the infimum over all edge sets E such that G \\ E is bipartite. A graph is bipartite iff this distance is 0.\n\n**Example**: A triangle (K₃) has distance 1—delete any edge to get a path.",
     "mathContext": "Defined as `sInf {k | ∃ E, E.ncard = k ∧ E ⊆ G.edgeSet ∧ (G.deleteEdges E).IsBipartite}`",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "edge-deletion",
+      "graph theory basics",
+      "infimum"
+    ],
     "relatedConcepts": [
       "infimum",
       "edge-deletion",
@@ -66,6 +84,12 @@
     "content": "**Aristotle Discovery (2026-01-14)**: The naive equivalence 'G is bipartite ⟺ edgeDistToBipartite = 0' is FALSE for infinite graphs!\n\n**Counterexample**: The complete graph K_ℕ on natural numbers:\n- NOT bipartite (any 2-coloring has monochromatic edges by pigeonhole)\n- Yet edgeDistToBipartite ℕ K_ℕ = 0!\n\n**Why?** Set.ncard of an infinite set is 0. Deleting all (infinitely many) edges gives the empty graph (bipartite), and ncard(all edges) = 0.\n\nThe equivalence only holds for FINITE graphs, hence `isBipartiteIffDistZero_finite`.\n\n*Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>*",
     "mathContext": "This reveals a subtle interaction between Set.ncard (which returns 0 for infinite sets) and our definition.",
     "significance": "key",
+    "prerequisites": [
+      "aristotle",
+      "counterexample",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "aristotle",
       "counterexample",
@@ -85,6 +109,12 @@
     "content": "**maxEdgeDistToBipartite V G n** is the worst-case edge distance to bipartite over all n-vertex induced subgraphs of G.\n\nThis captures how 'far from bipartite' the most non-bipartite n-vertex piece can be.",
     "mathContext": "Defined as the supremum of edgeDistToBipartite over all n-vertex subsets S.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "graph theory basics",
+      "induced-subgraph",
+      "supremum"
+    ],
     "relatedConcepts": [
       "supremum",
       "induced-subgraph",
@@ -103,6 +133,12 @@
     "content": "**hasAlmostBipartiteSubgraphs V G f** says every n-vertex subgraph can be made bipartite by deleting at most f(n) edges.\n\nFormally: ∀ n, maxEdgeDistToBipartite(G, n) ≤ f(n).\n\nThis is the local constraint we want to combine with infinite chromatic number.",
     "mathContext": "If f grows slowly (like √n or log n), this is a strong constraint on the structure of subgraphs.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "constraint",
+      "graph theory basics",
+      "subgraph"
+    ],
     "relatedConcepts": [
       "constraint",
       "subgraph",
@@ -121,6 +157,12 @@
     "content": "**Erdos74Question** asks: For any f with f(n) → ∞, does there exist a graph G with:\n1. Infinite chromatic number (χ(G) = ⊤)\n2. f-almost-bipartite subgraphs\n\nWe state this as a Prop without asserting truth. The answer is unknown for slow-growing f like √n.",
     "mathContext": "The quantification over all unbounded f makes this very strong—even f(n) = log log log n must work.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "graph theory basics",
+      "open-problem",
+      "universal-quantifier"
+    ],
     "relatedConcepts": [
       "open-problem",
       "universal-quantifier",
@@ -139,6 +181,12 @@
     "content": "**rodlLinear** states: For any ε > 0, there exists a graph with infinite chromatic number where every n-vertex subgraph needs at most εn edge deletions to become bipartite.\n\nThis shows the conjecture is TRUE for linear f(n) = εn. Rödl's construction uses probabilistic methods.\n\n**Why an axiom?** The construction is complex and not yet formalized in Mathlib.",
     "mathContext": "The bound ⌈εn⌉₊ is linear in n. The construction works for any positive ε, no matter how small.",
     "significance": "key",
+    "prerequisites": [
+      "axiom",
+      "complex numbers",
+      "graph theory basics",
+      "rodl"
+    ],
     "relatedConcepts": [
       "axiom",
       "rodl",
@@ -157,6 +205,12 @@
     "content": "**SqrtNQuestion** asks: Is there a graph with infinite chromatic number where every n-vertex subgraph needs at most √n edge deletions?\n\nThis is the key barrier case. The gap between linear (known) and √n (unknown) is significant.\n\nSolving this would be major progress toward the full conjecture.",
     "mathContext": "The bound ⌈√n⌉₊ grows much slower than εn. Even for n = 10000, we only allow ~100 deletions vs ~100ε for linear.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "graph theory basics",
+      "open-problem",
+      "sqrt"
+    ],
     "relatedConcepts": [
       "open-problem",
       "sqrt",
@@ -175,6 +229,11 @@
     "content": "**uncountableFails** states: If we require chromatic number ≥ ℵ₁ (uncountable), then NO such graph exists for any unbounded f.\n\nThis is a surprising dichotomy:\n- χ = ℵ₀ (countable infinite): Open question\n- χ = ℵ₁ (uncountable): Impossible!\n\nThe set-theoretic distinction is crucial to the problem.",
     "mathContext": "The proof uses that uncountably-chromatic graphs must contain certain unavoidable non-bipartite configurations.",
     "significance": "key",
+    "prerequisites": [
+      "axiom",
+      "graph theory basics",
+      "set-theory"
+    ],
     "relatedConcepts": [
       "axiom",
       "set-theory",
@@ -194,6 +253,12 @@
     "content": "**edgeDistUpperBound**: Any n-vertex graph has at most n(n-1)/2 edges, so edge distance to bipartite is at most this. Proved by showing we can delete all edges to get the empty (bipartite) graph.\n\n**bipartite_chromaticNumber_le_two**: Bipartite graphs have χ ≤ 2. Follows directly from the definition of IsBipartite.\n\n*Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>*",
     "mathContext": "The upper bound shows the problem is well-posed—edge distance is always finite for finite graphs.",
     "significance": "key",
+    "prerequisites": [
+      "graph theory basics",
+      "proof techniques",
+      "trivial-bound",
+      "upper-bound"
+    ],
     "relatedConcepts": [
       "upper-bound",
       "trivial-bound",

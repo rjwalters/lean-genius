@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #458** asks about the growth rate of the LCM function between consecutive primes. Is it true that lcm(1,...,p_{k+1}-1) < p_k · lcm(1,...,p_k) for all k ≥ 1? Erdős and Graham call this 'almost certainly' true, but proving it requires something close to Legendre's conjecture.",
     "mathContext": "The LCM function lcm(1,...,n) grows roughly like e^n. The conjecture controls growth between consecutive primes p_k and p_{k+1}.",
     "significance": "key",
+    "prerequisites": [
+      "LCM theory",
+      "lcm",
+      "prime numbers",
+      "primes"
+    ],
     "relatedConcepts": [
       "lcm",
       "primes",
@@ -29,6 +35,12 @@
     "content": "**lcm_upto(n)** is the least common multiple of {1, 2, ..., n}, defined using Finset.lcm over the interval [1,n]. This fundamental function has deep connections to prime distribution via Chebyshev's ψ function.",
     "mathContext": "lcm_upto n = lcm{1,2,...,n}. Asymptotically, log(lcm_upto n) ~ n, so lcm_upto n ~ e^n.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "LCM theory",
+      "basic set theory",
+      "chebyshev-psi"
+    ],
     "relatedConcepts": [
       "finset-lcm",
       "chebyshev-psi",
@@ -47,6 +59,12 @@
     "content": "We verify basic properties: lcm_upto 1 = 1, lcm_upto is always positive, and compute small values like lcm(1,...,5) = 60. Monotonicity is also established.",
     "mathContext": "Small values verified by native_decide: lcm_upto 2 = 2, lcm_upto 3 = 6, lcm_upto 4 = 12, lcm_upto 5 = 60, lcm_upto 6 = 60.",
     "significance": "supporting",
+    "prerequisites": [
+      "LCM theory",
+      "monotonicity",
+      "native-decide",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "native-decide",
       "monotonicity",
@@ -65,6 +83,12 @@
     "content": "**Axioms about LCM growth**: When crossing a prime p, the LCM multiplies by exactly p. Between primes, the LCM only grows by powers of smaller primes.",
     "mathContext": "lcm_upto(p) = p · lcm_upto(p-1) for prime p. This captures how primes contribute to LCM growth.",
     "significance": "key",
+    "prerequisites": [
+      "LCM theory",
+      "lcm-growth",
+      "prime numbers",
+      "prime-factors"
+    ],
     "relatedConcepts": [
       "prime-factors",
       "lcm-growth",
@@ -83,6 +107,12 @@
     "content": "**nthPrime(k)** is the k-th prime (0-indexed: p_0 = 2, p_1 = 3, etc.), defined using Nat.nth. We verify p_0 = 2, p_1 = 3, and establish that primes are strictly increasing.",
     "mathContext": "nthPrime k = Nat.nth Nat.Prime k. Uses Nat.infinite_setOf_prime to guarantee existence.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "nat-nth",
+      "natural number arithmetic",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "nat-nth",
       "prime-enumeration",
@@ -101,6 +131,12 @@
     "content": "**Erdős Problem #458**: For all k ≥ 1, lcm(1,...,p_{k+1}-1) < p_k · lcm(1,...,p_k). This asks whether LCM growth between consecutive primes is bounded by multiplication by the smaller prime.",
     "mathContext": "Intuitively: between p_k and p_{k+1}, LCM only grows by composite factors (powers of smaller primes), bounded by p_k.",
     "significance": "key",
+    "prerequisites": [
+      "LCM theory",
+      "basic set theory",
+      "open-problem",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "open-problem",
       "prime-gaps",
@@ -119,6 +155,12 @@
     "content": "**Obstacle**: We need to control primes q with p_k < q² < p_{k+1}. **Legendre's Conjecture** (there's always a prime between n² and (n+1)²) would help by bounding prime gaps.",
     "mathContext": "If Legendre holds, then p_{k+1} - p_k < √p_k + 1, which bounds the interval where problematic primes q could appear.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "legendre-conjecture",
+      "prime numbers",
+      "prime-gaps"
+    ],
     "relatedConcepts": [
       "legendre-conjecture",
       "prime-gaps",
@@ -137,6 +179,12 @@
     "content": "**Small cases verified computationally**: k=1 (lcm(1,2,3,4)=12 < 3·6=18) and k=2 (lcm(1,...,6)=60 < 5·60=300). Both verified by native_decide.",
     "mathContext": "These concrete examples show the conjecture holds for the first few primes, building confidence in the general statement.",
     "significance": "supporting",
+    "prerequisites": [
+      "LCM theory",
+      "native-decide",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "native-decide",
       "verification",
@@ -155,6 +203,12 @@
     "content": "**Chebyshev's Result**: log(lcm_upto n) ~ n as n → ∞. This means lcm_upto n grows roughly like e^n. The conjecture asks about fine structure of this growth between consecutive primes.",
     "mathContext": "There exist 0 < c₁ < 1 < c₂ such that c₁n < log(lcm_upto n) < c₂n for all n ≥ 2.",
     "significance": "key",
+    "prerequisites": [
+      "LCM theory",
+      "asymptotic-growth",
+      "chebyshev-bounds",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "chebyshev-bounds",
       "asymptotic-growth",

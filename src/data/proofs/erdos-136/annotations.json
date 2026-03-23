@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #136** asks for the Erdős-Gyárfás function f(n,4,5): the minimum number of colors to edge-color Kₙ so every K₄ has at least 5 different colors among its 6 edges. Erdős-Gyárfás proved (5/6)(n-1) < f(n) < n and computed f(9) = 8. Bennett et al. (2022) and Joos-Mubayi (2022) independently proved f(n) ~ (5/6)n, confirming the lower bound is tight.",
     "mathContext": "f(n,p,q) = min{k : ∃ edge k-coloring of Kₙ with every Kₚ using ≥ q colors}. Here p=4, q=5. K₄ has C(4,2) = 6 edges, so requiring ≥ 5 colors means at most one repeated color per K₄.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey-theory",
+      "graph coloring",
+      "graph-coloring",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Ramsey-theory",
       "graph-coloring",
@@ -29,6 +35,12 @@
     "content": "Four definitions form the foundation. **EdgeColoring n k** assigns a color from Fin k to each pair of vertices. **isValidColoring** ensures symmetry (c i j = c j i). **colorsInK4** collects the 6 edge colors of a 4-clique into a Finset. **hasAtLeast5ColorsInEveryK4** is the global constraint: every injective mapping of 4 vertices yields a K₄ with ≥ 5 distinct colors.\n\nThe injective mapping formulation quantifies over all C(n,4) possible 4-cliques.",
     "mathContext": "colorsInK4 c v = {c(v₀,v₁), c(v₀,v₂), c(v₀,v₃), c(v₁,v₂), c(v₁,v₃), c(v₂,v₃)} — all 6 edges of K₄.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "K4-subgraph",
+      "basic set theory",
+      "edge-coloring"
+    ],
     "relatedConcepts": [
       "edge-coloring",
       "K4-subgraph",
@@ -47,6 +59,12 @@
     "content": "**f_exists** axiomatizes that for any n, there exists some k-coloring satisfying the K₄ constraint (trivially, n colors work). **f(n)** is then defined as Nat.find applied to f_exists, yielding the minimum such k.\n\nThe definition is noncomputable because Nat.find uses Classical.choice.",
     "mathContext": "f(n) = Nat.find(f_exists n) = min{k : ∃ valid k-coloring with K₄ constraint}.",
     "significance": "key",
+    "prerequisites": [
+      "Nat.find",
+      "basic set theory",
+      "extremal-function",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Nat.find",
       "extremal-function",
@@ -65,6 +83,10 @@
     "content": "Three axioms capture the original results. **erdos_gyarfas_lower_bound**: f(n) > (5/6)(n-1) for n ≥ 4. **erdos_gyarfas_upper_bound**: f(n) < n for n ≥ 4. **f_9**: f(9) = 8, a concrete computation.\n\nThe lower bound suggests f(n) ~ (5/6)n, which turned out to be correct. The upper bound f(n) < n is loose.",
     "mathContext": "(5/6)(n-1) < f(n) < n for n ≥ 4. f(9) = 8.",
     "significance": "key",
+    "prerequisites": [
+      "Erdős-Gyárfás",
+      "asymptotic-bounds"
+    ],
     "relatedConcepts": [
       "Erdős-Gyárfás",
       "asymptotic-bounds",
@@ -83,6 +105,12 @@
     "content": "**bcdp_asymptotic**: f(n)/n → 5/6 as n → ∞, expressed via Filter.Tendsto to nhds(5/6). This is the main resolution of Problem #136. **AsymptoticResult** gives the equivalent ε-δ formulation: for all ε > 0, eventually |f(n)/n - 5/6| < ε. **asymptotic_holds** axiomatizes this equivalent form.\n\nBennett, Cushman, Dudek, and Pralat proved this in 2022. Joos and Mubayi found an independent shorter proof via hypergraph matchings.",
     "mathContext": "lim_{n→∞} f(n)/n = 5/6. Equivalently: ∀ ε > 0, ∃ N₀, ∀ n ≥ N₀, |f(n)/n - 5/6| < ε.",
     "significance": "key",
+    "prerequisites": [
+      "Filter.Tendsto",
+      "asymptotic-analysis",
+      "filter theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Filter.Tendsto",
       "asymptotic-analysis",
@@ -101,6 +129,12 @@
     "content": "Two proved theorems explaining the constant. **why_five_sixths**: 6-1=5 and 5/6 = 1 - 1/6 (proved by norm_num). **k4_edges**: Nat.choose 4 2 = 6 (proved by norm_num).\n\nThe constant 5/6 emerges naturally: K₄ has 6 edges, we require 5 colors, so the defect tolerance is 1/6, giving the asymptotic ratio 5/6.",
     "mathContext": "C(4,2) = 6 edges in K₄. Requiring ≥ 5 colors means tolerance = 1/6. Asymptotic ratio = 1 - 1/6 = 5/6.",
     "significance": "key",
+    "prerequisites": [
+      "combinatorial-constants",
+      "edge-counting",
+      "natural number arithmetic",
+      "norm_num tactic"
+    ],
     "relatedConcepts": [
       "combinatorial-constants",
       "edge-counting",
@@ -119,6 +153,10 @@
     "content": "**small_values**: f(4) = 5, f(5) = 5, f(6) = 5, f(9) = 8. These concrete values illustrate the function's behavior for small n. **f_nondecreasing**: f is monotone non-decreasing, since adding vertices to Kₙ can only increase the minimum colors needed.\n\nThe small values show that f grows slowly initially, consistent with f(n) ~ (5/6)n.",
     "mathContext": "f(4) = f(5) = f(6) = 5. f(9) = 8. ∀ m ≤ n, f(m) ≤ f(n).",
     "significance": "key",
+    "prerequisites": [
+      "concrete-values",
+      "monotonicity"
+    ],
     "relatedConcepts": [
       "monotonicity",
       "concrete-values",
@@ -137,6 +175,11 @@
     "content": "**erdos_136** is a proved theorem combining three results:\n1. f(n)/n → 5/6 (the asymptotic resolution)\n2. f(n) > (5/6)(n-1) for n ≥ 4 (Erdős-Gyárfás lower bound)\n3. f(n) < n for n ≥ 4 (Erdős-Gyárfás upper bound)\n\nProof: `exact ⟨bcdp_asymptotic, erdos_gyarfas_lower_bound, erdos_gyarfas_upper_bound⟩`. This captures the complete resolution of Problem #136.",
     "mathContext": "erdos_136 : (f(n)/n → 5/6) ∧ (∀ n ≥ 4, f(n) > (5/6)(n-1)) ∧ (∀ n ≥ 4, f(n) < n).",
     "significance": "key",
+    "prerequisites": [
+      "exact-constructor",
+      "problem-resolution",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "problem-resolution",
       "exact-constructor"

@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #944** asks about k-vertex-critical graphs where every critical edge set has size > r.\n\nA **critical vertex** lowers χ when deleted. A **critical edge** lowers χ when deleted.\n\n**The Decoupling Question**: Can vertex-criticality exist without edge-criticality?\n\n**Timeline**:\n- 1970: Dirac conjectures yes for k ≥ 4, r = 1\n- 1992: Brown proves k = 5\n- 2002: Jensen proves all k ≥ 5\n- 2025: Martinsson-Steiner prove large k for any r\n- k = 4 remains **OPEN**",
     "mathContext": "Complete graphs K_k are k-vertex-critical but every edge is critical. The problem asks if we can avoid edge-criticality.",
     "significance": "key",
+    "prerequisites": [
+      "chromatic number",
+      "graph theory basics",
+      "vertex-critical graphs"
+    ],
     "relatedConcepts": [
       "chromatic number",
       "vertex-critical graphs",
@@ -29,6 +34,12 @@
     "content": "**IsKVertexCritical G k** captures graphs where:\n1. χ(G) = k (chromatic number is exactly k)\n2. For every vertex v, χ(G - v) < k (every vertex is critical)\n\nThis is a **type class** axiomatizing the property without defining graph operations.\n\n**Examples**:\n- K_n is n-vertex-critical\n- Odd cycle C_{2n+1} is 3-vertex-critical\n- Petersen graph is 3-vertex-critical",
     "mathContext": "We use type classes because full graph coloring definitions require extensive infrastructure.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "chromatic number",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "type classes",
       "chromatic number",
@@ -47,6 +58,12 @@
     "content": "**IsErdos944Graph G k r** extends k-vertex-critical with:\n- Every critical edge set has more than r edges\n\nA critical edge set is any set of edges whose deletion reduces χ(G).\n\n**Key insight**: This \"decouples\" vertex-criticality from edge-criticality. Every vertex matters, but no small edge set matters.",
     "mathContext": "For r = 1, this means no single edge is critical—you need at least 2 edges to lower χ.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "critical edge sets",
+      "edge deletion",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "edge deletion",
       "critical edge sets",
@@ -65,6 +82,11 @@
     "content": "**erdos_944_conjecture**: For k ≥ 4 and r ≥ 1, there exists a graph with the Erdős944 property.\n\nThis is stated as an axiom because the case **k = 4, r = 1 remains OPEN**.\n\n**Status by k**:\n- k ≥ 5: SOLVED (Jensen 2002)\n- k = 4: OPEN since 1970",
     "mathContext": "$This is stated as an axiom because the case **k = 4, r = 1 remains OPEN**.$",
     "significance": "key",
+    "prerequisites": [
+      "existence conjecture",
+      "graph theory basics",
+      "open problem"
+    ],
     "relatedConcepts": [
       "open problem",
       "existence conjecture"
@@ -82,6 +104,11 @@
     "content": "**dirac_conjecture**: For k ≥ 4, there exists a k-vertex-critical graph with no critical edges.\n\nThis is the special case r = 1 of the main problem.\n\n**Motivation**: Dirac observed that K_k has *every* edge critical. He asked if this is necessary—can vertex-criticality exist without any individual edge being critical?",
     "mathContext": "Dirac's original 1970 formulation focused on r = 1. The generalization to arbitrary r came later.",
     "significance": "key",
+    "prerequisites": [
+      "Dirac conjecture",
+      "graph theory basics",
+      "no critical edges"
+    ],
     "relatedConcepts": [
       "Dirac conjecture",
       "no critical edges"
@@ -99,6 +126,12 @@
     "content": "**brown_1992**: There exists a 5-vertex-critical graph with no critical edges.\n\nBrown explicitly constructed such a graph with **11 vertices**. This was the first positive result for Dirac's conjecture.\n\n**The construction**: Carefully chosen edge structure where every vertex matters for 5-coloring but no single edge is essential.",
     "mathContext": "Brown's paper 'A vertex critical graph without critical edges' appeared in 1992.",
     "significance": "key",
+    "prerequisites": [
+      "11-vertex graph",
+      "explicit construction",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "explicit construction",
       "11-vertex graph"
@@ -116,6 +149,12 @@
     "content": "**lattanzio_2002**: When k-1 is NOT prime, there exist k-vertex-critical graphs with no critical edges.\n\n**Examples**:\n- k = 5: k-1 = 4 not prime ✓\n- k = 7: k-1 = 6 not prime ✓\n- k = 10: k-1 = 9 not prime ✓\n\nThis covers infinitely many cases but misses k where k-1 is prime (k = 4, 6, 8, 12, ...).",
     "mathContext": "The primality condition relates to the structure of the construction, not a fundamental barrier.",
     "significance": "key",
+    "prerequisites": [
+      "Nat.Prime",
+      "graph theory basics",
+      "primality",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "primality",
       "Nat.Prime"
@@ -133,6 +172,12 @@
     "content": "**jensen_2002**: For **all k ≥ 5**, there exist k-vertex-critical graphs with no critical edges.\n\nThis completely resolves Dirac's conjecture for k ≥ 5, regardless of whether k-1 is prime.\n\nJensen's paper 'Dense critical and vertex-critical graphs' gave a uniform construction that works for all k ≥ 5.",
     "mathContext": "Jensen's result subsumes Lattanzio's. Together with Brown (k=5), all k ≥ 5 are now solved.",
     "significance": "key",
+    "prerequisites": [
+      "general construction",
+      "graph theory basics",
+      "k ≥ 5 solved",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "general construction",
       "k ≥ 5 solved"
@@ -150,6 +195,11 @@
     "content": "**martinsson_steiner_2025**: For every r ≥ 1, if k is sufficiently large, there exist k-vertex-critical graphs where every critical edge set has size > r.\n\nThis extends beyond r = 1 to arbitrary r, but requires k to be large (depending on r).\n\n**Quantitative version**: They also showed f_k(n) → ∞ for k ≥ 5, where f_k(n) is the largest r achievable by an n-vertex k-critical graph.",
     "mathContext": "Their 2025 paper 'Vertex-critical graphs far from edge-criticality' establishes these bounds.",
     "significance": "key",
+    "prerequisites": [
+      "arbitrary r",
+      "graph theory basics",
+      "quantitative bounds"
+    ],
     "relatedConcepts": [
       "arbitrary r",
       "quantitative bounds"
@@ -167,6 +217,12 @@
     "content": "**k_equals_4_open**: Either there exists a 4-vertex-critical graph with no critical edges, or no such graph exists.\n\nThis is the **last remaining case** of Dirac's 1970 conjecture.\n\n**Why k = 4 is hard**:\n- 4-vertex-critical graphs must have minimum degree 3 (tight constraint)\n- High edge density leaves little room for non-critical edges\n- The structural constraints are much tighter than for k ≥ 5",
     "mathContext": "The jump from k = 4 to k = 5 represents a fundamental structural transition that remains unexplained.",
     "significance": "key",
+    "prerequisites": [
+      "density theory",
+      "graph theory basics",
+      "minimum degree constraint",
+      "open problem"
+    ],
     "relatedConcepts": [
       "open problem",
       "minimum degree constraint"
@@ -184,6 +240,12 @@
     "content": "**vertex_critical_min_degree**: A k-vertex-critical graph has minimum degree at least k-1.\n\n**Proof idea**: If deg(v) < k-1, then v has at most k-2 neighbors. When coloring G - v with k-1 colors, we can extend to v using a color not appearing among its neighbors.\n\nFor k = 4, this means every vertex has degree ≥ 3.",
     "mathContext": "$For k = 4, this means every vertex has degree ≥ 3.$",
     "significance": "supporting",
+    "prerequisites": [
+      "graph coloring",
+      "graph theory basics",
+      "greedy coloring",
+      "minimum degree"
+    ],
     "relatedConcepts": [
       "minimum degree",
       "greedy coloring"
@@ -201,6 +263,11 @@
     "content": "**vertex_critical_connected**: A k-vertex-critical graph is connected.\n\n**Proof idea**: If G = G₁ ∪ G₂ (disconnected), then χ(G) = max(χ(G₁), χ(G₂)). Removing a vertex from the smaller chromatic component doesn't change χ(G), contradicting vertex-criticality.",
     "mathContext": "Lean: `axiom vertex_critical_connected (G : Type) [IsKVertexCritical G k] (hk : 2 ≤ k) :`",
     "significance": "supporting",
+    "prerequisites": [
+      "chromatic number of unions",
+      "connectivity",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "connectivity",
       "chromatic number of unions"
@@ -218,6 +285,11 @@
     "content": "**complete_graph_vertex_critical**: K_n is n-vertex-critical.\n\n**odd_cycle_vertex_critical**: C_{2n+1} (odd cycles) are 3-vertex-critical.\n\n**Note**: While K_k is k-vertex-critical, it fails the Erdős944 property—*every* edge is critical. The challenge is finding graphs that are vertex-critical without being edge-critical.",
     "mathContext": "Lean: `axiom complete_graph_vertex_critical (n : ℕ) (hn : 1 ≤ n) :`",
     "significance": "supporting",
+    "prerequisites": [
+      "complete graphs",
+      "graph theory basics",
+      "odd cycles"
+    ],
     "relatedConcepts": [
       "complete graphs",
       "odd cycles",
@@ -236,6 +308,12 @@
     "content": "**The Decoupling Question**: Dirac (1970) asked whether vertex-criticality implies edge-criticality.\n\n**Motivation**: In K_k, both properties hold. But are they inherently linked?\n\n**Answer for k ≥ 5**: No—vertex-criticality can exist without any edge being critical.\n\n**Answer for k = 4**: Unknown after 55+ years of study.\n\n**Significance**: This problem reveals deep structure in graph coloring. Understanding when criticality 'transfers' from vertices to edges illuminates the nature of chromatic number.",
     "mathContext": "The gap between k = 4 and k ≥ 5 suggests a phase transition in graph structure that remains mysterious.",
     "significance": "key",
+    "prerequisites": [
+      "Dirac",
+      "decoupling",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Dirac",
       "decoupling",

@@ -14,6 +14,11 @@
       "distance",
       "metric spaces"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "distance",
+      "metric spaces"
+    ],
     "significance": "supporting",
     "tags": [
       "euclidean-geometry",
@@ -33,6 +38,12 @@
     "content": "The **pinned distances** from point x to a set A is the set of all distinct distances from x to other points:\n\n{d(x,y) : y ∈ A, y ≠ x}\n\nThis 'pins' or fixes one endpoint and varies the other. The key question is: how large must this set be for some choice of x?",
     "mathContext": "Uses `Finset.filter` to exclude x, then `Finset.image` to collect distances. The result is a finite set of real numbers.",
     "significance": "key",
+    "prerequisites": [
+      "Distance geometry",
+      "Distinct distances",
+      "Finset API",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Distinct distances",
       "Distance geometry",
@@ -59,6 +70,11 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "cardinal arithmetic",
+      "formal mathematics"
+    ],
     "significance": "key",
     "tags": [
       "cardinality",
@@ -78,6 +94,11 @@
     "content": "**Erdős Problem #604 (Weak Form):**\n\nFor every ε > 0, every sufficiently large n-point set has a point x seeing at least n^(1-ε) distinct distances.\n\nThis says the exponent can get arbitrarily close to 1. Currently, Katz-Tardos achieves exponent ≈ 0.864.",
     "mathContext": "Formalized as: ∀ ε > 0, ∃ N₀, ∀ A with |A| ≥ N₀, ∃ x ∈ A, d(x) ≥ |A|^(1-ε)",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic bounds",
+      "basic set theory",
+      "o(1) notation"
+    ],
     "relatedConcepts": [
       "Asymptotic bounds",
       "o(1) notation"
@@ -104,6 +125,11 @@
       "lattice theory",
       "order theory"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "lattice theory",
+      "order theory"
+    ],
     "significance": "key",
     "tags": [
       "open-problem",
@@ -124,6 +150,12 @@
     "content": "The **Katz-Tardos exponent**:\n\nc = (48 - 14e) / (55 - 16e) ≈ 0.864137\n\nwhere e ≈ 2.718 is Euler's number. This peculiar expression arises from their crossing number argument combined with the Szemerédi-Trotter theorem.",
     "mathContext": "The exact value involves the natural constant e because the proof uses exponential growth bounds in certain graph-theoretic arguments.",
     "significance": "key",
+    "prerequisites": [
+      "Crossing number inequality",
+      "Euler's work",
+      "Szemerédi-Trotter theorem",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Crossing number inequality",
       "Szemerédi-Trotter theorem"
@@ -152,6 +184,12 @@
       "counting",
       "inequalities"
     ],
+    "prerequisites": [
+      "analysis",
+      "bounds",
+      "graph theory basics",
+      "proof techniques"
+    ],
     "significance": "key",
     "tags": [
       "incidence-geometry",
@@ -174,6 +212,11 @@
     "relatedConcepts": [
       "bounds",
       "inequalities"
+    ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
     ],
     "significance": "supporting",
     "tags": [
@@ -199,6 +242,12 @@
       "integration",
       "measure theory"
     ],
+    "prerequisites": [
+      "bounds",
+      "filter theory",
+      "inequalities",
+      "measure theory"
+    ],
     "significance": "supporting",
     "tags": [
       "cardinality",
@@ -218,6 +267,11 @@
     "content": "**Key Upper Bound Example:**\n\nThe integer lattice {1,...,√n} × {1,...,√n} contains n points where every point sees at most O(n/√log n) distinct distances.\n\nThis is because distances in the lattice are √(a² + b²) for integers a,b, and the number of such representable integers up to N is O(N/√log N) by classical results on sums of two squares.",
     "mathContext": "Uses Landau's theorem: the count of integers ≤ N representable as sum of two squares is asymptotic to c·N/√log N.",
     "significance": "key",
+    "prerequisites": [
+      "Landau's theorem",
+      "Sum of two squares",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Sum of two squares",
       "Landau's theorem",
@@ -244,6 +298,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key",
     "tags": [
       "open-problem",
@@ -263,6 +321,11 @@
     "content": "The set of all pairwise distinct distances in A:\n\n{d(p,q) : p,q ∈ A, p ≠ q}\n\nThis is the 'unpinned' distinct distance set studied in Erdős Problem #89, famously solved by Guth-Katz (2015) who proved it has size ≫ n/log n.",
     "mathContext": "${d(p,q) : p,q ∈ A, p ≠ q}$",
     "significance": "supporting",
+    "prerequisites": [
+      "Erdős Problem #89",
+      "Guth-Katz theorem",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Erdős Problem #89",
       "Guth-Katz theorem"
@@ -287,6 +350,11 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "filter theory",
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "supporting",
     "tags": [
       "subset-relation",
@@ -307,6 +375,10 @@
     "mathContext": "Formalizes the concept of open problem marker",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key",
     "tags": [

@@ -16,6 +16,12 @@
       "clique numbers",
       "graph density"
     ],
+    "prerequisites": [
+      "Ramsey theory",
+      "extremal graph theory",
+      "graph theory basics",
+      "polynomial ring theory"
+    ],
     "significance": "key"
   },
   {
@@ -33,6 +39,12 @@
       "induced subgraph density",
       "local-to-global principles",
       "Ramsey multiplicity"
+    ],
+    "prerequisites": [
+      "basic set theory",
+      "density theory",
+      "filter theory",
+      "graph theory basics"
     ],
     "significance": "supporting"
   },
@@ -52,6 +64,12 @@
       "extremal functions",
       "clique number guarantees"
     ],
+    "prerequisites": [
+      "Ramsey theory",
+      "Ramsey-type functions",
+      "basic set theory",
+      "density theory"
+    ],
     "significance": "key"
   },
   {
@@ -69,6 +87,12 @@
       "complete graphs",
       "Turan-type problems",
       "boundary analysis"
+    ],
+    "prerequisites": [
+      "Turan-type problems",
+      "complete graphs",
+      "density theory",
+      "graph theory basics"
     ],
     "significance": "supporting"
   },
@@ -88,6 +112,12 @@
       "lim inf",
       "asymptotic analysis"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "lim inf",
+      "polynomial growth exponents",
+      "polynomial ring theory"
+    ],
     "significance": "key"
   },
   {
@@ -105,6 +135,12 @@
       "off-diagonal Ramsey numbers",
       "probabilistic lower bounds",
       "entropy methods"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "density theory",
+      "off-diagonal Ramsey numbers",
+      "probabilistic lower bounds"
     ],
     "significance": "key"
   },
@@ -124,6 +160,12 @@
       "phase transitions",
       "extremal density thresholds"
     ],
+    "prerequisites": [
+      "EFRS theorem",
+      "density theory",
+      "phase transitions",
+      "polynomial ring theory"
+    ],
     "significance": "key"
   },
   {
@@ -141,6 +183,11 @@
       "formal proof",
       "structural lemmas",
       "Lean 4 tactics"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "formal proof",
+      "structural lemmas"
     ],
     "significance": "supporting"
   },
@@ -160,6 +207,11 @@
       "case analysis",
       "native_decide tactic"
     ],
+    "prerequisites": [
+      "Ramsey theory",
+      "case analysis",
+      "small parameter verification"
+    ],
     "significance": "supporting"
   },
   {
@@ -177,6 +229,12 @@
       "strict monotonicity",
       "density-structure trade-offs",
       "open Erdos problems"
+    ],
+    "prerequisites": [
+      "density theory",
+      "density-structure trade-offs",
+      "graph theory basics",
+      "strict monotonicity"
     ],
     "significance": "key"
   }

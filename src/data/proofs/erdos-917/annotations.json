@@ -11,6 +11,11 @@
     "content": "Erdős Problem #917 asks about the maximum number of edges in k-critical graphs on n vertices. A graph is k-critical if its chromatic number is k but removing any edge decreases the chromatic number. The problem poses three questions about the function f_k(n): (1) Is f_k(n) quadratic in n? (2) Is f_6(n) ~ n²/4? (3) Is f_k(n) ~ (1/2)(1 - 1/⌊k/3⌋)n² for k ≥ 6?",
     "mathContext": "Erdős originally expected f_k(n) = o(n²), but was surprised by counterexamples from Dirac (1952).",
     "significance": "key",
+    "prerequisites": [
+      "Chromatic number",
+      "Critical graphs",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Critical graphs",
       "Chromatic number",
@@ -29,6 +34,12 @@
     "content": "chromaticNumber G: the minimum number of colors for a proper coloring, defined via Nat.find on Colorable. IsKChromatic G k: the chromatic number is exactly k. IsKCritical G k: the graph is k-chromatic AND removing any edge decreases the chromatic number. These are the 'minimal' k-chromatic graphs — every edge is essential for maintaining the chromatic number.",
     "mathContext": "Lean: `def IsKChromatic (G : SimpleGraph V) (k : ℕ) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "Colorable",
+      "Edge-critical",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Colorable",
       "Edge-critical",
@@ -47,6 +58,12 @@
     "content": "f k n (axiom): the maximum number of edges in a k-critical graph on n vertices. Axiomatized because computing this maximum requires dependent type manipulation over all graphs on n vertices. The axiom f_defined asserts that this maximum is achieved for k ≥ 4 and n ≥ k, producing a witness graph that is k-critical with exactly f(k,n) edges.",
     "mathContext": "This function is the central object of study — it captures the extremal edge density question for critical graphs.",
     "significance": "key",
+    "prerequisites": [
+      "Axiomatization",
+      "Extremal function",
+      "basic set theory",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Extremal function",
       "Axiomatization",
@@ -65,6 +82,12 @@
     "content": "Question1 k asks: does f_k(n) ≥ c_k · n² for some c_k > 0? Toft (1970) proved this is YES for all k ≥ 4: there exists c > 0 such that f_k(n) ≥ c · n² for all n ≥ k. The theorem question1_answered directly applies Toft's result. This was surprising — Erdős initially expected subquadratic growth.",
     "mathContext": "Toft's proof uses explicit constructions of dense k-critical graphs for all k ≥ 4.",
     "significance": "key",
+    "prerequisites": [
+      "Quadratic growth",
+      "Toft 1970",
+      "graph theory basics",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Quadratic growth",
       "Toft 1970",
@@ -83,6 +106,12 @@
     "content": "Question2 conjectures f_6(n) ~ n²/4, meaning 6-critical graphs achieve edge density 1/4. Dirac's construction takes two disjoint odd cycles C_{2n+1} and adds ALL edges between them, creating a 6-critical graph on 4n+2 vertices with 4n² + 8n + 3 edges. This establishes the lower bound f_6(n) ≥ (1/4 - ε)n². The conjecture remains OPEN.",
     "mathContext": "The two-odd-cycles construction was the first to show 6-critical graphs can be dense, surprising Erdős.",
     "significance": "key",
+    "prerequisites": [
+      "Dirac 1952",
+      "Odd cycles",
+      "density theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Dirac 1952",
       "Odd cycles",
@@ -102,6 +131,12 @@
     "content": "Question3 k asks: for k ≥ 6, is f_k(n) ~ (1/2)(1 - 1/⌊k/3⌋)n²? This generalizes Question 2 (k=6 gives 1/4). Erdős (1969) proved lower bounds for k ≡ 0 (mod 3) via constructions generalizing Dirac's. Stiebitz (1987) showed the conjecture is FALSE for k ≢ 0 (mod 3), meaning the mod 3 structure of k fundamentally determines the extremal behavior.",
     "mathContext": "The mod 3 phenomenon arises because Dirac-type constructions use groups of odd cycles, naturally partitioning vertices in triples.",
     "significance": "key",
+    "prerequisites": [
+      "Erdős 1969",
+      "Stiebitz 1987",
+      "group theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Stiebitz 1987",
       "Erdős 1969",
@@ -121,6 +156,10 @@
     "content": "Three increasingly tight upper bounds on f_k(n): (1) turan_upper: f_k(n) ≤ (1/2)(1-1/(k-1))n² from Turán's theorem (avoiding K_k). (2) stiebitz_upper: f_k(n) < (1/2)(1-1/(k-2))n², improving Turán by replacing k-1 with k-2. (3) luo_ma_yang_2023: f_k(n) ≤ (1/2)(1-1/(k-2)-1/(36(k-1)²)+o(1))n², the current best bound from 2023.",
     "mathContext": "The gap between upper and lower bounds remains significant, especially for determining exact asymptotics.",
     "significance": "key",
+    "prerequisites": [
+      "Extremal bounds",
+      "Turán's theorem"
+    ],
     "relatedConcepts": [
       "Turán's theorem",
       "Extremal bounds",
@@ -139,6 +178,11 @@
     "content": "erdos_917 combines all partial results: (1) Question 1 is answered YES for all k ≥ 4 (Toft), (2) Question 3 is FALSE for k ≢ 0 (mod 3) (Stiebitz), and (3) quadratic growth f_k(n) ≥ c·n² holds for all k ≥ 4. Proved by exact ⟨question1_answered, stiebitz_1987_disproof, toft_1970⟩. The problem remains PARTIALLY SOLVED: Question 2 and Question 3 for k ≡ 0 (mod 3) are still open.",
     "mathContext": "Lean: `theorem erdos_917 :`",
     "significance": "key",
+    "prerequisites": [
+      "Partial resolution",
+      "Summary",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Summary",
       "Partial resolution",

@@ -11,6 +11,11 @@
     "content": "Erdős Problem #950: Define f(n) = ∑_{p<n} 1/(n−p). Three questions: (1) Is lim inf f(n) = 1? (2) Is lim sup f(n) = ∞? (3) Is f(n) = o(log log n)? Known: f(n) averages to 1. OPEN.",
     "mathContext": "f(n) = ∑_{p<n, p prime} 1/(n−p). De Bruijn–Erdős–Turán: ∑_{n<x} f(n) ~ x, ∑_{n<x} f(n)² ~ x.",
     "significance": "key",
+    "prerequisites": [
+      "prime gaps",
+      "prime numbers",
+      "reciprocal sums"
+    ],
     "relatedConcepts": [
       "prime gaps",
       "reciprocal sums",
@@ -31,6 +36,12 @@
     "content": "primesLessThan(n) = {p prime : p < n}. f(n) = ∑_{p ∈ primesLessThan(n)} 1/(n−p). fReal extends to real arguments via floor. Nearby primes contribute more than distant ones.",
     "mathContext": "primesLessThan n = (Finset.range n).filter Nat.Prime. f n = ∑ p ∈ primesLessThan n, 1/(n−p : ℕ). fReal uses ⌊n⌋₊.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "Finset.filter",
+      "Finset.sum",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Finset.filter",
       "Finset.sum",
@@ -49,6 +60,11 @@
     "content": "Q1: lim inf f(n) = 1? (Filter.liminf). Q2: lim sup f(n) = ∞? (Filter.limsup = ⊤). Q3: f(n) = o(log log n)? (Eventually f(n) < log(log n)). Strong form: f(n)/log(log n) → 0 (Tendsto to nhds 0).",
     "mathContext": "question1 = Filter.liminf f atTop = 1. question2 = Filter.limsup f atTop = ⊤. question3 = ∀ᶠ n, f n < log(log n). fLittleO = Tendsto (f/log∘log) atTop (nhds 0).",
     "significance": "key",
+    "prerequisites": [
+      "Filter.liminf",
+      "Filter.limsup",
+      "filter theory"
+    ],
     "relatedConcepts": [
       "Filter.liminf",
       "Filter.limsup",
@@ -69,6 +85,10 @@
     "content": "∑_{n<x} f(n) ~ x and ∑_{n<x} f(n)² ~ x. Both stated as axioms (Tendsto to nhds 1). f_average_one is proved directly from the first axiom.",
     "mathContext": "de_bruijn_erdos_turan_sum: Tendsto (∑ f(n)/x) atTop (nhds 1). de_bruijn_erdos_turan_sum_sq: Tendsto (∑ f(n)²/x) atTop (nhds 1). f_average_one: proved from axiom.",
     "significance": "key",
+    "prerequisites": [
+      "Cesàro mean",
+      "second moment"
+    ],
     "relatedConcepts": [
       "Cesàro mean",
       "second moment",
@@ -88,6 +108,12 @@
     "content": "f_nonneg: f(n) ≥ 0 (proved by Finset.sum_nonneg). f_two: f(2) = 0 (proved by simp). f_three: f(3) = 1 (axiom). f_four: f(4) = 3/2 (axiom). prime_contributes: membership lemma (proved).",
     "mathContext": "f_nonneg: proved (sum_nonneg + cast_nonneg). f_two: proved (simp). f_three, f_four: axioms. prime_contributes: proved (⟨p, rfl⟩).",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "Finset.sum_nonneg",
+      "Nat.cast_nonneg",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Finset.sum_nonneg",
       "Nat.cast_nonneg",
@@ -106,6 +132,12 @@
     "content": "By PNT, primes have density ~1/log t, so ∑_{p<n} 1/(n−p) ≈ ∫₂ⁿ dt/((n−t) log t) ~ 1. This explains why f(n) averages to 1. f(n) is large when n immediately follows a prime (term 1/(n−p) = 1).",
     "mathContext": "integral_heuristic: True (placeholder). f_large_near_primes: True (placeholder). Both capture heuristic reasoning.",
     "significance": "supporting",
+    "prerequisites": [
+      "Prime Number Theorem",
+      "density theory",
+      "integral approximation",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Prime Number Theorem",
       "integral approximation",
@@ -124,6 +156,10 @@
     "content": "Erdős's weaker conjecture: ∀ ε > 0, large x has y < x with π(x) < π(y) + ε·π(x−y). If a strong version holds, then f(n) ≪ log log log n — an extremely slow growth bound.",
     "mathContext": "weakerConjecture: ∀ ε > 0, ∀ᶠ x, ∃ y < x, π(x) < π(y) + ε·π(x−y). weaker_implies_bound: weakerConjecture → ∃ C, ∀ᶠ n, f(n) ≤ C·log(log(log n)).",
     "significance": "supporting",
+    "prerequisites": [
+      "conditional results",
+      "prime counting function"
+    ],
     "relatedConcepts": [
       "prime counting function",
       "conditional results",
@@ -142,6 +178,12 @@
     "content": "primeGap(m) = p_{m+1} − p_m via Nat.nth. dense_primes_increase_f: if [n−k, n) contains a prime, then f(n) ≥ 1/k. More primes nearby means larger f(n).",
     "mathContext": "primeGap m = Nat.nth Prime (m+1) − Nat.nth Prime m. dense_primes_increase_f: card(primesLessThan n ∩ Ico(n−k, n)) > 0 → f(n) ≥ 1/k (axiom).",
     "significance": "supporting",
+    "prerequisites": [
+      "Nat.nth",
+      "basic set theory",
+      "natural number arithmetic",
+      "prime gaps"
+    ],
     "relatedConcepts": [
       "Nat.nth",
       "prime gaps",
@@ -160,6 +202,10 @@
     "content": "erdos_950_summary combines: de Bruijn–Erdős–Turán sum and sum-of-squares asymptotics, and True (all questions stated). Proved by ⟨de_bruijn_erdos_turan_sum, de_bruijn_erdos_turan_sum_sq, trivial⟩. Status: OPEN.",
     "mathContext": "erdos_950_summary: (∑ f ~ x) ∧ (∑ f² ~ x) ∧ True. Proof: ⟨de_bruijn_erdos_turan_sum, de_bruijn_erdos_turan_sum_sq, trivial⟩.",
     "significance": "key",
+    "prerequisites": [
+      "known results",
+      "open problem"
+    ],
     "relatedConcepts": [
       "known results",
       "open problem",

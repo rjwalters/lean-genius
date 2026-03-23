@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #921**\n\nFor k ≥ 4, what is f_k(n) = largest m such that an n-vertex k-chromatic graph can have all odd cycles of length > m?\n\n**Answer: SOLVED**\n\nf_k(n) ≍ n^{1/(k-2)} by Kierstead-Szemerédi-Trotter (1984).\n\nThis completely characterizes the trade-off between chromatic number and odd cycle length.",
     "mathContext": "A foundational result in extremal graph theory connecting local structure (cycles) to global properties (coloring).",
     "significance": "key",
+    "prerequisites": [
+      "Chromatic number",
+      "Graph coloring",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Chromatic number",
       "Graph coloring",
@@ -29,6 +35,12 @@
     "content": "**Graph V:**\n\nA simple graph on vertex type V consists of:\n- adj : V → V → Prop (adjacency relation)\n- symm : adjacency is symmetric\n- loopless : no vertex is adjacent to itself\n\nThis matches the standard mathematical definition of an undirected simple graph.",
     "mathContext": "Simple graphs are the foundation of graph theory. No loops, no multiple edges.",
     "significance": "key",
+    "prerequisites": [
+      "Adjacency",
+      "Graph theory",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Graph theory",
       "Adjacency",
@@ -47,6 +59,12 @@
     "content": "**chromaticNumber χ(G):**\n\nThe minimum k such that G has a proper k-coloring - assigning colors 1,...,k to vertices so adjacent vertices get different colors.\n\n**Key Facts:**\n- χ(G) = 1 iff G has no edges\n- χ(G) = 2 iff G is bipartite (no odd cycles)\n- χ(G) ≥ 3 requires at least one odd cycle\n\nAxiomatized because the full definition requires Fintype and decidability infrastructure.",
     "mathContext": "The chromatic number is one of the most fundamental graph invariants, central to the Four Color Theorem.",
     "significance": "key",
+    "prerequisites": [
+      "Fintype",
+      "Four Color Theorem",
+      "Graph coloring",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Graph coloring",
       "Four Color Theorem",
@@ -65,6 +83,12 @@
     "content": "**oddGirth:**\n\nThe length of the shortest odd cycle in G, or 0 if G is bipartite (has no odd cycles).\n\n**Examples:**\n- Complete graph K_n: odd girth = 3 (has triangles)\n- Cycle C_5: odd girth = 5\n- Cycle C_6: odd girth = 0 (bipartite)\n\nAxiomatized to avoid the complexity of cycle enumeration in the formalization.",
     "mathContext": "Odd girth generalizes the classical girth (shortest cycle) by focusing only on odd-length cycles.",
     "significance": "key",
+    "prerequisites": [
+      "Bipartite graphs",
+      "Girth",
+      "complex numbers",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Girth",
       "Bipartite graphs",
@@ -83,6 +107,11 @@
     "content": "**f(k, n):**\n\nThe largest m such that there exists an n-vertex graph with χ = k and odd girth > m.\n\nEquivalently: f_k(n) = max{oddGirth(G) - 1 : G has n vertices and χ(G) = k}\n\nThe well-definedness axiom guarantees f(k,n) ≥ 1 for k ≥ 4 and n ≥ k, meaning k-chromatic graphs with positive odd girth always exist.",
     "mathContext": "This extremal function captures the fundamental trade-off between chromatic number and odd cycle structure.",
     "significance": "key",
+    "prerequisites": [
+      "Chromatic number",
+      "Extremal graph theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Extremal graph theory",
       "Chromatic number",
@@ -101,6 +130,12 @@
     "content": "**erdos_gallai_conjecture(k) and kierstead_szemeredi_trotter:**\n\nThe conjecture states: for k ≥ 4, f_k(n) ≍ n^{1/(k-2)}.\n\nThe notation ≍ means asymptotically equivalent:\n∃ c₁, c₂ > 0: c₁ · n^{1/(k-2)} ≤ f_k(n) ≤ c₂ · n^{1/(k-2)}\n\nThe KST axiom asserts this conjecture is proved for all k ≥ 4. The proof required combining regularity methods (Szemerédi), coloring theory (Kierstead), and combinatorial geometry (Trotter).",
     "mathContext": "Asymptotic notation captures the essential growth behavior up to constant factors, standard in extremal combinatorics.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic analysis",
+      "Extremal graph theory",
+      "graph coloring",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Asymptotic analysis",
       "Extremal graph theory",
@@ -119,6 +154,12 @@
     "content": "**gallai_lower_bound, erdos_upper_bound, and k4_case:**\n\nGallai (1963) proved f_4(n) ≥ c√n by constructing explicit 4-chromatic graphs with large odd girth. Erdős proved the matching upper bound f_4(n) ≤ C√n (unpublished).\n\nThe k4_case theorem combines both bounds constructively:\n∃ c₁, c₂ > 0: c₁√n ≤ f_4(n) ≤ c₂√n\n\nNote: 1/(k-2) = 1/2 when k = 4, matching √n = n^{1/2}. This case provided key intuition for the general exponent formula.",
     "mathContext": "The k = 4 case was resolved before the general conjecture and is the only case with a constructive proof in this formalization.",
     "significance": "key",
+    "prerequisites": [
+      "Constructive proofs",
+      "Square root bounds",
+      "graph theory basics",
+      "matching theory"
+    ],
     "relatedConcepts": [
       "Constructive proofs",
       "Square root bounds",
@@ -137,6 +178,12 @@
     "content": "**general_lower_bound and general_upper_bound:**\n\nFor all k ≥ 4:\n- Lower: ∃ c > 0 such that f_k(n) ≥ c · n^{1/(k-2)}\n- Upper: ∃ C > 0 such that f_k(n) ≤ C · n^{1/(k-2)}\n\nLower bounds use probabilistic constructions (random graphs with appropriate edge probability). Upper bounds use Szemerédi's regularity lemma and careful counting arguments.\n\nThe exponent 1/(k-2) is significant: k=4 → 1/2, k=5 → 1/3, k=6 → 1/4. As k → ∞, the exponent → 0, forcing very short odd cycles.",
     "mathContext": "Lower bounds require constructing extremal examples; upper bounds use the regularity lemma, one of the most powerful tools in combinatorics.",
     "significance": "key",
+    "prerequisites": [
+      "Probabilistic method",
+      "Szemerédi regularity lemma",
+      "graph theory basics",
+      "probability theory"
+    ],
     "relatedConcepts": [
       "Probabilistic method",
       "Szemerédi regularity lemma",
@@ -155,6 +202,11 @@
     "content": "**erdos_921_status:**\n\n∀ k ≥ 4, erdos_gallai_conjecture k\n\nThis states that for all k ≥ 4, the conjecture f_k(n) ≍ n^{1/(k-2)} is proved. The proof follows directly from the kierstead_szemeredi_trotter axiom.\n\nThe problem stood for over 20 years between Gallai's partial result (1963) and the full resolution by KST (1984). It remains an important result in understanding how local structure (odd cycles) constrains global properties (chromatic number).",
     "mathContext": "This theorem summarizes the complete resolution of Erdős Problem #921.",
     "significance": "key",
+    "prerequisites": [
+      "Main theorem",
+      "Problem resolution",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Problem resolution",
       "Main theorem",

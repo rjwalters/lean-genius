@@ -11,6 +11,12 @@
     "content": "We import Mathlib's group theory foundations: **cosets**, **subgroup index**, **rational arithmetic**, and **finite type cardinality**.\n\nThese provide the building blocks for defining exact coverings of groups by cosets.",
     "mathContext": "The key import is `Subgroup.index` which gives [G:H], the index of H in G.",
     "significance": "supporting",
+    "prerequisites": [
+      "cardinal arithmetic",
+      "group theory",
+      "group-theory",
+      "mathlib"
+    ],
     "relatedConcepts": [
       "mathlib",
       "group-theory",
@@ -29,6 +35,12 @@
     "content": "An **exact covering** of a group G by k cosets consists of:\n- k subgroups H₁, ..., Hₖ\n- k coset representatives g₁, ..., gₖ\n- A partition property: every element of G belongs to exactly one coset gᵢHᵢ\n\nThis formalizes the notion of partitioning G by cosets.",
     "mathContext": "The cosets gᵢHᵢ = {gᵢh : h ∈ Hᵢ} are the left cosets. The covers field uses ∃! for exactly-one membership.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "cosets",
+      "field theory",
+      "group theory"
+    ],
     "relatedConcepts": [
       "cosets",
       "partitions",
@@ -47,6 +59,12 @@
     "content": "A covering has **distinct indices** if all the subgroup indices [G:Hᵢ] are pairwise different.\n\nThe Herzog-Schönheim conjecture asks: can such a covering exist with k > 1?",
     "mathContext": "The index [G:H] counts how many cosets of H partition G. If G is finite, [G:H] = |G|/|H|.",
     "significance": "key",
+    "prerequisites": [
+      "Lagrange-theorem",
+      "basic set theory",
+      "group theory",
+      "index"
+    ],
     "relatedConcepts": [
       "index",
       "Lagrange-theorem"
@@ -64,6 +82,12 @@
     "content": "The **Herzog-Schönheim Conjecture** states that no group G can be exactly covered by k > 1 cosets with all distinct indices.\n\nEquivalently: if cosets partition G, at least two must have the same index.",
     "mathContext": "This is a deep statement about the structure of subgroups. It connects to Egyptian fractions since the indices must satisfy 1/n₁ + ... + 1/nₖ = 1.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "covering-systems",
+      "egyptian-fractions",
+      "group theory"
+    ],
     "relatedConcepts": [
       "covering-systems",
       "egyptian-fractions"
@@ -81,6 +105,11 @@
     "content": "**Sun Zhi-Wei (2004)** proved the Herzog-Schönheim conjecture for finite abelian groups.\n\nThis is stated as an axiom because the proof requires deep results about the structure of abelian groups not formalized in Mathlib.",
     "mathContext": "Sun's proof actually shows more: it works for any collection of subnormal subgroups, which includes all subgroups when G is abelian.",
     "significance": "key",
+    "prerequisites": [
+      "abelian-groups",
+      "group theory",
+      "sun-theorem"
+    ],
     "relatedConcepts": [
       "abelian-groups",
       "sun-theorem"
@@ -98,6 +127,12 @@
     "content": "An equivalent statement: for any exact covering of a finite abelian group with k > 1 cosets, there exist distinct i, j with [G:Hᵢ] = [G:Hⱼ].\n\nThis is derived from Sun's axiom by negating the distinct indices condition.",
     "mathContext": "The `push_neg` tactic transforms ¬(∀i j, i≠j → n_i≠n_j) into ∃i j, i≠j ∧ n_i=n_j.",
     "significance": "key",
+    "prerequisites": [
+      "group theory",
+      "logical-equivalence",
+      "proof techniques",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "logical-equivalence"
     ]
@@ -114,6 +149,11 @@
     "content": "**Margolis and Schnabel (2019)** verified computationally that the conjecture holds for all groups of order < 1440.\n\nThis is the best known computational result, extending the verified cases significantly.",
     "mathContext": "The bound 1440 comes from systematic enumeration. The smallest potential counterexample would need |G| ≥ 1440.",
     "significance": "key",
+    "prerequisites": [
+      "computational-verification",
+      "group theory",
+      "small-groups"
+    ],
     "relatedConcepts": [
       "computational-verification",
       "small-groups"
@@ -131,6 +171,12 @@
     "content": "We prove that the Herzog-Schönheim conjecture holds for finite abelian groups using Sun's axiom.\n\nThis answers Erdős Problem #274 for the abelian case: NO, you cannot partition an abelian group by cosets with distinct indices.",
     "mathContext": "The proof is a direct application of sun_abelian_case.",
     "significance": "key",
+    "prerequisites": [
+      "erdos-274",
+      "group theory",
+      "herzog-schonheim",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "erdos-274",
       "herzog-schonheim"
@@ -148,6 +194,10 @@
     "content": "A **necessary condition** for k cosets to partition G: the reciprocals of indices must sum to 1.\n\nIf cosets have indices n₁, ..., nₖ, then 1/n₁ + ... + 1/nₖ = 1.\n\n**Example:** Indices 2, 3, 6 satisfy 1/2 + 1/3 + 1/6 = 1.",
     "mathContext": "This follows from counting: |G| = Σ|Hᵢ| = Σ(|G|/nᵢ), so 1 = Σ(1/nᵢ). Axiomatized as the sum ∑ 1/[G:Hᵢ] = 1 over ℚ.",
     "significance": "key",
+    "prerequisites": [
+      "counting",
+      "egyptian-fractions"
+    ],
     "relatedConcepts": [
       "egyptian-fractions",
       "counting"
@@ -165,6 +215,12 @@
     "content": "erdos_274_summary: The abelian case of the Herzog-Schönheim conjecture is proved via Sun's theorem. The general case remains OPEN.",
     "mathContext": "Lean: `theorem erdos_274_summary (G : Type*) [CommGroup G] [Fintype G] :`",
     "significance": "key",
+    "prerequisites": [
+      "Fintype",
+      "erdos",
+      "group theory",
+      "open-problems"
+    ],
     "relatedConcepts": [
       "open-problems",
       "erdos"

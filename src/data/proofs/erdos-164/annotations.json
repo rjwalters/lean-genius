@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #164** asks whether the sum Σ 1/(n log n) over a primitive set is maximized by the primes. A set A ⊆ ℕ is *primitive* if no element divides another. Erdős proved convergence in 1935 and conjectured the primes are extremal in 1976. Lichtman proved this in 2023, confirming the conjecture after nearly 50 years.",
     "mathContext": "Primitive sets are antichains in the divisibility poset on ℕ. The weight function 1/(n log n) arises naturally because Σ_p 1/(p log p) converges (barely — Σ 1/p diverges but log p provides just enough decay). The conjecture says primes are extremal for this critical weight.",
     "significance": "key",
+    "prerequisites": [
+      "divisibility",
+      "prime numbers",
+      "primitive sets"
+    ],
     "relatedConcepts": [
       "primitive sets",
       "prime numbers",
@@ -29,6 +34,12 @@
     "content": "**IsPrimitive** defines a set where no element divides another: if a, b ∈ A and a | b then a = b. The theorem **primes_primitive** proves the primes satisfy this — since for distinct primes p, q neither divides the other. The proof uses Mathlib's `Nat.Prime.eq_one_or_self_of_dvd`.",
     "mathContext": "Primitive sets are exactly the antichains in (ℕ, |). Dilworth's theorem relates them to chain decompositions. The primes are the most natural infinite primitive set.",
     "significance": "key",
+    "prerequisites": [
+      "antichains",
+      "basic set theory",
+      "divisibility",
+      "natural number arithmetic"
+    ],
     "relatedConcepts": [
       "antichains",
       "divisibility",
@@ -47,6 +58,12 @@
     "content": "**{6, 10, 15}** is primitive: 6 = 2·3, 10 = 2·5, 15 = 3·5. None divides another since each pair shares exactly one prime factor but not both. Proved by case analysis with `omega` finishing each case.",
     "mathContext": "Formalizes the concept of concrete primitive set example",
     "significance": "supporting",
+    "prerequisites": [
+      "divisibility",
+      "omega tactic",
+      "prime numbers",
+      "primitive sets"
+    ],
     "relatedConcepts": [
       "primitive sets",
       "divisibility"
@@ -64,6 +81,12 @@
     "content": "The function **f(n)** = 1/(n log n) for n ≥ 2, else 0. The sum over a set is defined as the supremum of sums over finite subsets (**primitiveSum**). This handles potentially infinite primitive sets properly. The **primeSum** ≈ 1.6366 is the benchmark all primitive sets are compared against.",
     "mathContext": "The supremum construction avoids measure-theoretic machinery while correctly defining the sum for infinite sets. The function 1/(n log n) is at the critical boundary — Σ 1/n diverges for primes, but 1/(n log n) barely converges.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "convergence",
+      "measure theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "supremum",
       "convergence",
@@ -82,6 +105,12 @@
     "content": "**erdos_convergence** axiomatizes Erdős's 1935 result that Σ 1/(n log n) converges for any primitive set. This is the foundational result making the maximization question meaningful — without convergence, there would be no finite maximum to compare. The corollary **primes_sum_converges** follows immediately.",
     "mathContext": "Erdős's proof uses the fact that primitive sets have upper density zero and a careful comparison with the prime harmonic series. The numerical bound on primeSum (between 1.6 and 1.7) is axiomatized from numerical computation.",
     "significance": "key",
+    "prerequisites": [
+      "Erdős 1935",
+      "convergent series",
+      "density theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "convergent series",
       "Erdős 1935",
@@ -100,6 +129,11 @@
     "content": "**lichtman_theorem** states that for any primitive set A, primitiveSum A ≤ primeSum. **lichtman_uniqueness** strengthens this: equality holds only when A is the primes. The answer theorem **erdos_164_answer** wraps the main result. These are axiomatized because the proof requires techniques beyond Mathlib.",
     "mathContext": "Lichtman's proof uses a comparison argument: for any primitive set, replacing elements with primes in a controlled way increases the sum. The key insight is that primes contribute maximally to 1/(n log n) relative to their 'position' in the multiplicative structure of ℕ.",
     "significance": "key",
+    "prerequisites": [
+      "extremal problems",
+      "prime numbers",
+      "prime optimality"
+    ],
     "relatedConcepts": [
       "extremal problems",
       "prime optimality",
@@ -118,6 +152,12 @@
     "content": "**IsMaximizedByPrimes** captures the broader question: for which weight functions g : ℕ → ℝ is Σ g(n) over primitive sets maximized by primes? The theorem **f_maximized_by_primes** confirms f(n) = 1/(n log n) satisfies this property. This framework opens the door to studying other weight functions.",
     "mathContext": "Lean: `def IsMaximizedByPrimes (g : ℕ → ℝ) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "extremal combinatorics",
+      "prime numbers",
+      "weight functions"
+    ],
     "relatedConcepts": [
       "extremal combinatorics",
       "weight functions",
@@ -136,6 +176,12 @@
     "content": "**erdos_164_main** packages the complete answer: (1) primes maximize Σ 1/(n log n), and (2) primes are the unique maximizer. Proved by combining lichtman_theorem and lichtman_uniqueness in a conjunction.",
     "mathContext": "Lean: `theorem erdos_164_main :`",
     "significance": "key",
+    "prerequisites": [
+      "Erdős problems",
+      "prime numbers",
+      "primitive set conjecture",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Erdős problems",
       "primitive set conjecture"

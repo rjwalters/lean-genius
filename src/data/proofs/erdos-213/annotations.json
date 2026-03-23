@@ -11,6 +11,10 @@
     "content": "This header documents **Erdős Problem #213** about integer distance sets in general position. The question asks whether for all n ≥ 4, we can find n points with no three collinear, no four concyclic, and all distances integers.",
     "mathContext": "The 'general position' requirements (no three collinear, no four concyclic) prevent trivial infinite constructions. Anning-Erdős proved such sets must be finite; n=7 is the current record.",
     "significance": "key",
+    "prerequisites": [
+      "general position",
+      "integer distances"
+    ],
     "relatedConcepts": [
       "integer distances",
       "general position",
@@ -29,6 +33,11 @@
     "content": "We use **EuclideanSpace ℝ (Fin 2)** as our representation of points in the plane. This is Mathlib's standard type for finite-dimensional Euclidean spaces.",
     "mathContext": "abbrev Point := EuclideanSpace ℝ (Fin 2). This provides the metric structure we need for distances.",
     "significance": "supporting",
+    "prerequisites": [
+      "EuclideanSpace",
+      "basic set theory",
+      "plane"
+    ],
     "relatedConcepts": [
       "EuclideanSpace",
       "plane"
@@ -46,6 +55,11 @@
     "content": "Three points are **collinear** if one is a linear combination of the others (they lie on a common line). **NoThreeCollinear** requires no three distinct points from the set are collinear.",
     "mathContext": "AreCollinear uses vector differences: r - p = t • (q - p) means r lies on the line through p and q. NoThreeCollinear applies this to all triples.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "general position",
+      "linear dependence"
+    ],
     "relatedConcepts": [
       "general position",
       "linear dependence"
@@ -63,6 +77,11 @@
     "content": "Four points are **concyclic** (or cocircular) if they lie on a common circle. **NoFourConcyclic** forbids any four distinct points from the set lying on a circle.",
     "mathContext": "AreConcyclic p q r s := ∃ center radius, radius > 0 and all four points are at distance radius from center. This is the standard definition of four points on a circle.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "circle",
+      "circumcircle"
+    ],
     "relatedConcepts": [
       "circle",
       "circumcircle",
@@ -81,6 +100,11 @@
     "content": "A set has **integer distances** if for every pair of distinct points, the Euclidean distance is an integer. Combined with general position, this is a severe constraint.",
     "mathContext": "AllDistancesInteger S := S.Pairwise (fun p q => ∃ n : ℤ, dist p q = n). IsIntegerDistanceSetGP combines all three conditions. ExistsIntDistSetGP n asserts existence of an n-point set.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "distance",
+      "integers"
+    ],
     "relatedConcepts": [
       "distance",
       "integers",
@@ -99,6 +123,10 @@
     "content": "**Anning-Erdős (1945)** proved a fundamental finiteness result: any set in the plane with no three collinear and all distances integers must be finite. This doesn't even need the concyclic condition!",
     "mathContext": "axiom anning_erdos_finite : ∀ S, NoThreeCollinear S → AllDistancesInteger S → S.Finite. This is why finding large examples is hard.",
     "significance": "key",
+    "prerequisites": [
+      "Anning",
+      "Erdős"
+    ],
     "relatedConcepts": [
       "Anning",
       "Erdős",
@@ -117,6 +145,11 @@
     "content": "**Erdős Problem #213** asks: for all n ≥ 4, does ExistsIntDistSetGP n hold? That is, can we always find n points satisfying all the constraints? This remains OPEN.",
     "mathContext": "Erdos213Question := ∀ n ≥ 4, ExistsIntDistSetGP n. The status is axiomatized as 'open' since neither proof nor disproof is known.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "existence",
+      "open problem"
+    ],
     "relatedConcepts": [
       "open problem",
       "existence"
@@ -134,6 +167,10 @@
     "content": "**Harborth** proved that n=5 is achievable by explicitly constructing 5 points in general position with integer distances.",
     "mathContext": "axiom harborth_five : ExistsIntDistSetGP 5. The explicit coordinates involve Pythagorean triples.",
     "significance": "key",
+    "prerequisites": [
+      "Harborth",
+      "construction"
+    ],
     "relatedConcepts": [
       "Harborth",
       "construction",
@@ -152,6 +189,10 @@
     "content": "**Kreisel and Kurz (2008)** achieved the current record: n=7. Their 'integral heptagon' has no three collinear, no four concyclic, and all 21 pairwise distances are integers.",
     "mathContext": "axiom kreisel_kurz_seven : ExistsIntDistSetGP 7. This has been the record for over 15 years. n=8 remains unknown.",
     "significance": "key",
+    "prerequisites": [
+      "Kreisel",
+      "Kurz"
+    ],
     "relatedConcepts": [
       "Kreisel",
       "Kurz",
@@ -170,6 +211,10 @@
     "content": "From the n=7 construction, we prove n=4,5,6 exist by taking subsets. A subset of a set in general position is still in general position, and inherits integer distances.",
     "mathContext": "exists_four, exists_six are axioms; exists_five, exists_seven are theorems referencing the axioms. The predicates are preserved under taking subsets.",
     "significance": "key",
+    "prerequisites": [
+      "inheritance",
+      "subset"
+    ],
     "relatedConcepts": [
       "subset",
       "inheritance",
@@ -188,6 +233,10 @@
     "content": "**Greenfeld-Iliopoulou-Peluse (2024)** proved that integer distance sets in general position in [-N,N]² have size at most O((log N)^C). This extreme sparsity shows such sets are rare.",
     "mathContext": "axiom gip_sparsity_bound : ∃ C > 0, for all S in [-N,N]² satisfying the conditions, |S| ≤ (log N)^C. This is an unconditional bound (no Bombieri-Lang needed).",
     "significance": "key",
+    "prerequisites": [
+      "sparsity",
+      "upper bound"
+    ],
     "relatedConcepts": [
       "sparsity",
       "upper bound",
@@ -206,6 +255,11 @@
     "content": "The summary theorem combines all known constructions: n=4,5,6,7 all exist. The open question is whether n=8 or larger is achievable.",
     "mathContext": "known_constructions : ExistsIntDistSetGP 4 ∧ ExistsIntDistSetGP 5 ∧ ExistsIntDistSetGP 6 ∧ ExistsIntDistSetGP 7",
     "significance": "supporting",
+    "prerequisites": [
+      "known cases",
+      "proof techniques",
+      "summary"
+    ],
     "relatedConcepts": [
       "summary",
       "known cases"

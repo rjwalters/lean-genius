@@ -33,6 +33,12 @@
       }
     ],
     "significance": "key",
+    "prerequisites": [
+      "Complete graphs",
+      "Graph coloring",
+      "Ramsey theory",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Complete graphs",
       "Graph coloring",
@@ -57,6 +63,12 @@
     "content": "A complete graph $K_n$ **has a monochromatic copy** of $G$ under coloring $c$ if there exists:\n- An injective map $f: V \\hookrightarrow \\text{Fin}\\,n$ (embedding vertices)\n- A single color such that all edges of $G$ map to edges of that color\n\n**Lean**: `HasMonochromaticCopy` takes an embedding `f : V ↪ Fin n` and quantifies over a color `Bool` — all $G$-edges must agree on the same color.\n\nThis is the fundamental property that Ramsey numbers guarantee: for sufficiently large $n$, *every* coloring has a monochromatic copy.",
     "mathContext": "HasMonochromaticCopy n G c := ∃ (f : V ↪ Fin n) (color : Bool), ∀ v w, G.Adj v w → c (s(f v, f w)) = color",
     "significance": "key",
+    "prerequisites": [
+      "Graph embedding",
+      "Injective function",
+      "Ramsey theory",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Graph embedding",
       "Injective function",
@@ -80,6 +92,12 @@
     "content": "**Three axioms** define the Ramsey number $R(G)$:\n\n1. **`exists_ramsey_number`**: For any finite graph $G$, $\\exists N$ such that any 2-coloring of $K_N$ contains a monochromatic $G$ (Ramsey's theorem)\n\n2. **`ramseyNumber_spec`**: The function `ramseyNumber G` returns $R(G)$ satisfying the Ramsey property\n\n3. **`ramseyNumber_minimal`**: $R(G)$ is minimal — for $n < R(G)$, there exists a coloring of $K_n$ *without* a monochromatic $G$\n\nTogether these define $R(G)$ as the *minimum* $N$ with the Ramsey property. This is axiomatized because computing Ramsey numbers is famously hard ($R(5,5)$ is unknown).",
     "mathContext": "ramseyNumber G : ℕ with spec (∀ c, HasMonochromaticCopy) and minimality",
     "significance": "key",
+    "prerequisites": [
+      "Finite graph theory",
+      "Ramsey theory",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Ramsey theory",
       "Finite graph theory",
@@ -104,6 +122,12 @@
     "content": "**Tree axioms**:\n\n- **`IsTree G`**: $G$ is connected with exactly $n-1$ edges (equivalently: connected and acyclic, or unique path between any two vertices)\n- **`tree_exists`**: Trees exist for any nonempty vertex set\n- **`maxDegree G`**: Maximum vertex degree $\\Delta(G) = \\max\\{\\deg(v) : v \\in V\\}$\n- **`tree_degree_bounds`**: For trees on $n \\geq 2$ vertices, $1 \\leq \\Delta \\leq n-1$\n\nThe degree bounds capture the full spectrum: paths have $\\Delta = 2$ and stars have $\\Delta = n-1$.",
     "mathContext": "IsTree G: connected, |E| = |V|-1; 1 ≤ maxDegree T ≤ |V|-1",
     "significance": "key",
+    "prerequisites": [
+      "Acyclic graphs",
+      "Connected graphs",
+      "basic set theory",
+      "tree theory"
+    ],
     "relatedConcepts": [
       "Connected graphs",
       "Acyclic graphs",
@@ -128,6 +152,12 @@
     "content": "**Three special tree families** with increasing complexity:\n\n| Family | Definition | $\\Delta$ | $R(T)$ |\n|--------|-----------|---------|--------|\n| **Path** $P_n$ | Every vertex has degree $\\leq 2$ | 2 | $n$ (minimum) |\n| **Caterpillar** | Removing leaves yields a path | varies | between $n$ and $2n-2$ |\n| **Star** $S_n$ | One center adjacent to all others | $n-1$ | $2n-2$ (maximum) |\n\n**Inclusion**: paths $\\subset$ caterpillars $\\subset$ trees. All three types are proved to be trees via `path_is_tree`, `caterpillar_is_tree`, `star_is_tree`.\n\n**Degree axioms**: `star_max_degree` gives $\\Delta(S_n) = n-1$; `path_max_degree` gives $\\Delta(P_n) = 2$ for $n \\geq 3$.",
     "mathContext": "IsPath G: Δ ≤ 2; IsStar G: one center, Δ = n-1; IsCaterpillar G: path after leaf removal",
     "significance": "key",
+    "prerequisites": [
+      "Path graph",
+      "Star graph",
+      "basic set theory",
+      "complex numbers"
+    ],
     "relatedConcepts": [
       "Path graph",
       "Star graph",
@@ -152,6 +182,12 @@
     "content": "**$R(P_n) = n$** for paths on $n \\geq 2$ vertices.\n\nPaths are the *easiest* trees to embed monochromatically — with only $n$ vertices in $K_n$, the longest monochromatic path must have length $\\geq n-1$ by pigeonhole.\n\n**Lower bound**: $K_{n-1}$ can be 2-colored without a monochromatic $P_n$ by alternating colors along the longest path.\n\n**Upper bound**: In any 2-coloring of $K_n$, the longest monochromatic path has at least $n$ vertices (Gerencsér-Gyárfás theorem for $r=2$).",
     "mathContext": "path_ramsey : IsPath P → |V| ≥ 2 → ramseyNumber P = |V|",
     "significance": "key",
+    "prerequisites": [
+      "Gerencsér-Gyárfás",
+      "Path embedding",
+      "Ramsey theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Path embedding",
       "Gerencsér-Gyárfás",
@@ -175,6 +211,12 @@
     "content": "**$R(S_n) = 2n - 2$** for stars on $n \\geq 2$ vertices.\n\nStars are the *hardest* trees because embedding a monochromatic $S_n$ requires finding a vertex of degree $\\geq n-1$ in one color.\n\n**Lower bound**: In $K_{2n-3}$, give each vertex exactly $n-2$ red and $n-2$ blue edges — no vertex has $n-1$ edges of one color.\n\n**Upper bound**: In $K_{2n-2}$, every vertex has degree $2n-3 = (n-2) + (n-1)$, so by pigeonhole some vertex has $\\geq n-1$ edges in one color, forming a monochromatic $S_n$.",
     "mathContext": "star_ramsey : IsStar S → |V| ≥ 2 → ramseyNumber S = 2|V| - 2",
     "significance": "key",
+    "prerequisites": [
+      "Degree argument",
+      "Pigeonhole principle",
+      "Ramsey theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Pigeonhole principle",
       "Degree argument",
@@ -199,6 +241,12 @@
     "content": "**Chvátal's Bound**: For a tree $T$ on $n$ vertices with maximum degree $\\Delta$:\n\n$$R(T) \\leq (\\Delta - 1)(n - 1) + 1$$\n\n**Analysis by tree type**:\n- Paths ($\\Delta = 2$): $R \\leq n$ (tight)\n- Binary trees ($\\Delta = 3$): $R \\leq 2n - 1$\n- Stars ($\\Delta = n-1$): $R \\leq (n-2)(n-1) + 1$ (much worse than $2n-2$)\n\nThe bound is tight for paths (`chvatal_tight_for_paths`). For $\\Delta \\geq 3$, the Erdős-Burr bound $2n-2$ is strictly better.\n\n**Key insight**: Maximum degree is the structural parameter controlling $R(T)$.",
     "mathContext": "chvatal_bound : IsTree T → ramseyNumber T ≤ (maxDegree T - 1) * (|V| - 1) + 1",
     "significance": "key",
+    "prerequisites": [
+      "Chvátal",
+      "Degree-dependent bound",
+      "Ramsey theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Chvátal",
       "Degree-dependent bound",
@@ -223,6 +271,12 @@
     "content": "**Erdős Problem #547 / Burr's Conjecture (1974)**:\n\nFor any tree $T$ on $n$ vertices:\n$$R(T) \\leq 2n - 2$$\n\n**History**: Conjectured by Burr in 1974, proved for all sufficiently large $n$ by Zhao, Hladký, Komlós, Piguet, Simonovits, Stein, Szemerédi (2012+).\n\n**Tightness**: Stars achieve equality ($R(S_n) = 2n - 2$), proved via `bound_achieved_by_stars`.\n\n**Lean**: `tree_ramsey_bound` is the main axiom; `erdos_547` theorem derives from it directly. The bound is universal — it holds for all trees regardless of structure.",
     "mathContext": "tree_ramsey_bound : IsTree T → |V| ≥ 2 → ramseyNumber T ≤ 2|V| - 2",
     "significance": "key",
+    "prerequisites": [
+      "Erdős-Burr conjecture",
+      "Ramsey theory",
+      "Tree embedding",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Erdős-Burr conjecture",
       "Tree embedding",
@@ -247,6 +301,12 @@
     "content": "**When is Chvátal better than $2n-2$?**\n\n$(\\Delta-1)(n-1)+1 < 2n-2$ simplifies to $\\Delta < 2 + \\frac{1}{n-1}$, so $\\Delta \\leq 2$.\n\n**Conclusion**: Chvátal's bound is only better for **paths** (degree $\\leq 2$). For any tree with $\\Delta \\geq 3$, the universal bound $2n-2$ is at least as good.\n\n**Lean**: `chvatal_vs_main` gives the exact iff: the Chvátal bound is better iff $\\Delta \\in \\{1, 2\\}$.",
     "mathContext": "(Δ-1)(n-1)+1 < 2n-2 ↔ Δ = 1 ∨ Δ = 2",
     "significance": "key",
+    "prerequisites": [
+      "Bound comparison",
+      "Degree dichotomy",
+      "proof techniques",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "Bound comparison",
       "Degree dichotomy"
@@ -269,6 +329,12 @@
     "content": "**Theorem `erdos_547`**: For all trees $T$ on $n \\geq 2$ vertices,\n\n$$R(T) \\leq 2n - 2$$\n\n**Proof**: Direct application of `tree_ramsey_bound` axiom.\n\n**Status**: SOLVED. The answer is YES — the conjecture of Burr (1974) is confirmed.\n\nThe bound is the best possible (tight), as stars $S_n$ achieve equality. This places tree Ramsey numbers in the precise interval $[n, 2n-2]$.",
     "mathContext": "erdos_547 : IsTree T → |V| ≥ 2 → ramseyNumber T ≤ 2|V| - 2",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "Solved Erdős problem",
+      "Tight bound",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Solved Erdős problem",
       "Tight bound"
@@ -292,6 +358,12 @@
     "content": "**Complete ordering**: For all trees $T$ on $n \\geq 2$ vertices:\n\n$$n = R(P_n) \\leq R(T) \\leq R(S_n) = 2n - 2$$\n\nPaths achieve the minimum, stars achieve the maximum, and all other trees fall strictly in between.\n\n**Lean**: `tree_ramsey_ordering` combines the lower bound (a tree on $n$ vertices needs at least $n$ vertices) with the upper bound from the Erdős-Burr conjecture. Together with `erdos_547_tight`, this completely characterizes the range of tree Ramsey numbers.",
     "mathContext": "|V| ≤ ramseyNumber T ≤ 2|V| - 2",
     "significance": "key",
+    "prerequisites": [
+      "Extremal trees",
+      "Paths vs stars",
+      "Ramsey theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Extremal trees",
       "Paths vs stars",

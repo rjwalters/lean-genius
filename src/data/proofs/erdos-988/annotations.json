@@ -11,6 +11,11 @@
     "content": "Erdős Problem #988 asks: does the minimum discrepancy of n-point configurations on the sphere tend to infinity? The answer is **YES**, proved by Schmidt (1969) for spheres of any dimension.",
     "mathContext": "For a finite point set P on S², discrepancy D(P) measures the maximum deviation |#(C ∩ P) - αC·|P|| over all spherical caps C, where αC is the cap's normalized measure.",
     "significance": "key",
+    "prerequisites": [
+      "discrepancy theory",
+      "measure theory",
+      "uniform distribution"
+    ],
     "relatedConcepts": [
       "discrepancy theory",
       "uniform distribution",
@@ -29,6 +34,11 @@
     "content": "The **unit sphere** S^d is defined as {x ∈ ℝ^(d+1) : ||x|| = 1}. For the original problem d=2, giving the familiar 2-sphere in 3-dimensional space.",
     "mathContext": "Using EuclideanSpace ℝ (Fin (d+1)) from Mathlib, the sphere is the set of points with norm equal to 1. This formulation generalizes naturally to any dimension.",
     "significance": "key",
+    "prerequisites": [
+      "EuclideanSpace",
+      "basic set theory",
+      "norm"
+    ],
     "relatedConcepts": [
       "EuclideanSpace",
       "norm",
@@ -47,6 +57,12 @@
     "content": "A **spherical cap** is the intersection of S^d with a half-space. It's parametrized by a center direction v ∈ S^d and height h ∈ [-1,1]. The cap contains all points x with ⟨v,x⟩ ≥ h.",
     "mathContext": "When h = -1, the cap is the entire sphere. When h = 1, it's a single point (the center). For h = 0, it's a hemisphere. The measure formula (1-h)/2 applies for d=2.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "half-space",
+      "inner product",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "inner product",
       "half-space",
@@ -65,6 +81,12 @@
     "content": "A **SphereConfiguration** is a finite set of points (Finset) in ℝ^(d+1). The predicate IsOnSphere checks that all points actually lie on the unit sphere.",
     "mathContext": "Using Finset rather than Set allows us to count points with .card. The IsOnSphere predicate ensures we're working with valid configurations on S^d.",
     "significance": "key",
+    "prerequisites": [
+      "Finset",
+      "Finset API",
+      "basic set theory",
+      "cardinality"
+    ],
     "relatedConcepts": [
       "Finset",
       "cardinality",
@@ -83,6 +105,12 @@
     "content": "The **cap discrepancy** measures deviation for a single cap: |#(C ∩ P) - αC·|P||. If points were perfectly uniform, we'd expect αC·|P| points in cap C.",
     "mathContext": "pointsInCap counts how many configuration points satisfy the inner product condition. The absolute difference from the expected count is the discrepancy for that cap.",
     "significance": "key",
+    "prerequisites": [
+      "absolute value",
+      "basic set theory",
+      "expected count",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "absolute value",
       "expected count",
@@ -101,6 +129,12 @@
     "content": "The **discrepancy** D(P) is the supremum of cap discrepancies over all spherical caps. This measures the worst-case deviation from uniformity.",
     "mathContext": "Using ⨆ (supremum) over the type SphericalCap d captures the maximum deviation. This is noncomputable since we're taking a supremum over uncountably many caps.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "measure theory",
+      "supremum",
+      "worst-case analysis"
+    ],
     "relatedConcepts": [
       "supremum",
       "worst-case analysis",
@@ -119,6 +153,11 @@
     "content": "**minDiscrepancy(d,n)** is the infimum of D(P) over all n-point configurations on S^d. This is the best achievable discrepancy for n points.",
     "mathContext": "The conditional ⨅ (infimum) ensures we only consider valid configurations with exactly n points on the sphere. Non-conforming configurations contribute ⊤ (infinity).",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "infimum",
+      "optimization"
+    ],
     "relatedConcepts": [
       "infimum",
       "optimization",
@@ -137,6 +176,11 @@
     "content": "**Roth (1954)** proved the analogous result for the unit square: rectangle discrepancy grows at least as c·(log n)^{1/4}. This established the paradigm before Schmidt's spherical result.",
     "mathContext": "For axis-aligned rectangles in [0,1]², the discrepancy cannot be made arbitrarily small. The logarithmic growth is slower than the polynomial growth on spheres.",
     "significance": "key",
+    "prerequisites": [
+      "logarithmic growth",
+      "polynomial ring theory",
+      "rectangle discrepancy"
+    ],
     "relatedConcepts": [
       "rectangle discrepancy",
       "logarithmic growth",
@@ -155,6 +199,11 @@
     "content": "**Schmidt (1969)** proved that spherical cap discrepancy grows at least as c·n^{d/(2d+2)} for S^d. This is the key axiom resolving Problem #988.",
     "mathContext": "For d=2 (S²), the exponent is 2/(2·2+2) = 2/6 = 1/3, giving growth ≥ c·n^{1/3}. This polynomial growth ensures minDiscrepancy → ∞.",
     "significance": "key",
+    "prerequisites": [
+      "dimensional dependence",
+      "polynomial growth",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "polynomial growth",
       "dimensional dependence",
@@ -173,6 +222,11 @@
     "content": "The axiom **min_discrepancy_tends_to_infinity** states that minDiscrepancy(d,n) → ∞ as n → ∞, for any dimension d ≥ 1. This follows from Schmidt's lower bound.",
     "mathContext": "Using Filter.Tendsto with atTop atTop expresses that the minimum discrepancy grows without bound. Axiomatized because formalizing the filter proof from the existential bound is non-trivial.",
     "significance": "key",
+    "prerequisites": [
+      "Filter",
+      "Tendsto",
+      "filter theory"
+    ],
     "relatedConcepts": [
       "Tendsto",
       "Filter",
@@ -191,6 +245,11 @@
     "content": "**Erdős Problem #988: SOLVED (YES)**. For all dimensions d ≥ 1, the minimum discrepancy over n-point configurations tends to infinity. Perfect uniformity is impossible!",
     "mathContext": "The theorem erdos_988_solved wraps min_discrepancy_tends_to_infinity with the universal quantifier over dimensions. The proof is immediate from the helper theorem.",
     "significance": "key",
+    "prerequisites": [
+      "main theorem",
+      "proof techniques",
+      "universal quantification"
+    ],
     "relatedConcepts": [
       "main theorem",
       "universal quantification",
@@ -209,6 +268,10 @@
     "content": "For the 2-sphere specifically, **minDiscrepancy(2,n) ≥ c·n^{1/3}**. This is Schmidt's bound specialized to dimension 2.",
     "mathContext": "The exponent 1/3 comes from d/(2d+2) = 2/6 when d=2. This means even the best n-point configuration has discrepancy growing like the cube root of n.",
     "significance": "key",
+    "prerequisites": [
+      "cube root growth",
+      "explicit exponent"
+    ],
     "relatedConcepts": [
       "cube root growth",
       "explicit exponent",
@@ -227,6 +290,10 @@
     "content": "Good configurations exist achieving **D(P) = O(n^{1/2})**. The gap between n^{1/3} and n^{1/2} represents an open problem: what is the true exponent?",
     "mathContext": "The upper bound shows constructibility: there exist n-point configurations with discrepancy at most C·√n. The exact optimal exponent between 1/3 and 1/2 is unknown.",
     "significance": "key",
+    "prerequisites": [
+      "constructive existence",
+      "upper bound"
+    ],
     "relatedConcepts": [
       "upper bound",
       "constructive existence",
@@ -245,6 +312,12 @@
     "content": "**erdos_988_summary** packages both results: (1) Schmidt's theorem for all dimensions, and (2) Roth's precedent for the square. Together they establish the general impossibility of perfect uniformity.",
     "mathContext": "The conjunction ∧ combines the spherical result (polynomial growth) with the square result (logarithmic growth). Both demonstrate fundamental limits on uniform distribution.",
     "significance": "key",
+    "prerequisites": [
+      "conjunction",
+      "polynomial ring theory",
+      "proof techniques",
+      "summary"
+    ],
     "relatedConcepts": [
       "conjunction",
       "summary",

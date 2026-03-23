@@ -11,6 +11,11 @@
     "content": "Erdős Problem #618 asks: for triangle-free G with max degree o(n^{1/2}), is h₂(G) = o(n²)? Here h₂(G) is the minimum edges to add for diameter 2 while staying triangle-free. Answer: YES (Alon). The √n threshold is sharp: Simonovits showed graphs above this threshold can need Θ(n²) edges.",
     "mathContext": "Posed by Erdős-Gyárfás-Ruszinkó (1998), essentially identical to Problem #134.",
     "significance": "key",
+    "prerequisites": [
+      "Graph diameter",
+      "Triangle-free graphs",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Triangle-free graphs",
       "Graph diameter",
@@ -29,6 +34,12 @@
     "content": "IsTriangleFree G: no K₃ subgraph (CliqueFree 3). maxDegree G: maximum vertex degree. DiameterAtMostTwo G: every pair has a common neighbor. IsSubgraphOf G H: edge inclusion. edgeDiff G H: edges in H not in G. These definitions set up the framework for measuring the cost of diameter reduction.",
     "mathContext": "Lean: `def IsTriangleFree (G : SimpleGraph V) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "CliqueFree",
+      "Graph degree",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "CliqueFree",
       "Graph degree",
@@ -47,6 +58,12 @@
     "content": "ValidExtension G H: H extends G with G ⊆ H, H triangle-free, and diameter(H) ≤ 2. h₂(G) = inf{k : ∃ H with ValidExtension G H and edgeDiff G H = k}. h₂_exists axiom: every triangle-free G has a valid extension (e.g., adding edges to form a complete bipartite graph).",
     "mathContext": "The h₂ function is the central object: it measures the minimum cost of making a triangle-free graph have diameter 2.",
     "significance": "key",
+    "prerequisites": [
+      "Edge augmentation",
+      "Infimum",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Infimum",
       "Edge augmentation",
@@ -65,6 +82,11 @@
     "content": "simonovits_example: ∃ triangle-free graphs with Δ ≫ √n and h₂(G) ≫ n². This shows the √n threshold is sharp from above. bounded_degree_result: for Δ = O(1) with no isolated vertices, h₂(G) = O(n log n). These partial results from the original paper established the landscape before Alon's full solution.",
     "mathContext": "Lean: `axiom simonovits_example :`",
     "significance": "key",
+    "prerequisites": [
+      "Bounded degree",
+      "Simonovits",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Simonovits",
       "Bounded degree",
@@ -83,6 +105,10 @@
     "content": "alon_theorem: For any ε > 0, ∃ N such that for all n ≥ N and all triangle-free G on n vertices with maxDegree G ≤ n^{1/2-ε}, we have h₂(G) ≤ ε·n². This proves the conjecture: Δ = o(√n) implies h₂ = o(n²). Axiomatized because the proof uses probabilistic constructions and counting arguments.",
     "mathContext": "Alon observed this is essentially Problem #134. The ε-quantitative form implies the qualitative o(·) statement.",
     "significance": "key",
+    "prerequisites": [
+      "Alon",
+      "Probabilistic method"
+    ],
     "relatedConcepts": [
       "Alon",
       "Probabilistic method",
@@ -101,6 +127,11 @@
     "content": "DegreeIsLittleO f: ∀ε > 0, eventually f(n) ≤ ε√n. H2IsLittleO f: ∀ε > 0, eventually f(n) ≤ εn². MainConjecture: if degree sequence is o(√n), then h₂ values are o(n²). main_conjecture_proved axiom: Alon proved the MainConjecture. This gives the clean asymptotic statement of the result.",
     "mathContext": "Lean: `def DegreeIsLittleO (f : ℕ → ℕ) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic analysis",
+      "Little-o notation",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Little-o notation",
       "Asymptotic analysis",
@@ -119,6 +150,12 @@
     "content": "threshold_is_sharp: conjunction of (1) below √n: h₂ ≤ c·n^{2-ε} by Alon, and (2) above √n: ∃ G with h₂ ≥ n²/10 by Simonovits. mantel_theorem: triangle-free graphs have at most n²/4 edges. The √n threshold arises because a graph with degree ≈ √n has ~n^{3/2} edges, the critical scale for triangle-free diameter-2 graphs.",
     "mathContext": "Mantel's theorem (1907) is the foundation: it limits the density of triangle-free graphs and explains why √n is the natural boundary.",
     "significance": "key",
+    "prerequisites": [
+      "Mantel's theorem",
+      "Sharp threshold",
+      "density theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Mantel's theorem",
       "Sharp threshold",
@@ -137,6 +174,11 @@
     "content": "erdos_618 (main theorem): MainConjecture ∧ (below-threshold bound from threshold_is_sharp). Proved by exact ⟨main_conjecture_proved, threshold_is_sharp.1⟩. This combines Alon's proof that Δ = o(√n) implies h₂ = o(n²) with the quantitative below-threshold bound, giving the complete resolution of Problem #618.",
     "mathContext": "Lean: `theorem erdos_618 :`",
     "significance": "key",
+    "prerequisites": [
+      "Complete resolution",
+      "Summary",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Summary",
       "Complete resolution",

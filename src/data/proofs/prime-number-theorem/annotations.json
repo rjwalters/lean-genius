@@ -11,6 +11,12 @@
     "content": "One of the most celebrated results in mathematics:\n\n$$\\lim_{x \\to \\infty} \\frac{\\pi(x)}{x/\\ln x} = 1$$\n\nThis tells us the **density of primes** near x is approximately 1/ln(x) — primes become rarer, but in a precisely quantifiable way governed by the logarithm.\n\n**Historical milestones**:\n- **1798**: Legendre conjectures π(x) ≈ x/(ln x − 1.08366)\n- **1849**: Gauss refines to Li(x) = ∫₂ˣ dt/ln t\n- **1859**: Riemann's epoch-making paper connects primes to ζ(s) zeros via the explicit formula\n- **1896**: Hadamard & de la Vallée Poussin independently prove PNT using the zero-free region Re(s) = 1\n- **1949**: Erdős & Selberg give an elementary proof (no complex analysis)\n- **2004**: First formal proof in Isabelle (Avigad et al.)\n- **2024**: PrimeNumberTheoremAnd project formally proves PNT in Lean 4 (Kontorovich, Tao, et al.)",
     "mathContext": "π(x) ~ x/ln(x), equivalently: lim_{x→∞} π(x)·ln(x)/x = 1. The proof requires showing ζ(1+it) ≠ 0 for all t ∈ ℝ, then applying a Tauberian theorem.",
     "significance": "key",
+    "prerequisites": [
+      "Riemann zeta function",
+      "complex numbers",
+      "density theory",
+      "prime counting function"
+    ],
     "relatedConcepts": [
       "prime counting function",
       "Riemann zeta function",
@@ -40,6 +46,12 @@
     "content": "$$\\pi(x) = \\#\\{p \\leq x : p \\text{ is prime}\\}$$\n\nThe fundamental object of study in prime distribution theory. Some values:\n\n| x | π(x) | x/ln(x) | Error |\n|---|------|---------|-------|\n| 10 | 4 | 4.3 | −8% |\n| 100 | 25 | 21.7 | +13% |\n| 1000 | 168 | 145 | +14% |\n| 10⁶ | 78,498 | 72,382 | +8% |\n\nMathlib provides `Nat.primeCounting` which counts primes up to n. The formalization wraps this with a floor function: `primePi(x) = Nat.primeCounting ⌊x⌋₊`.",
     "mathContext": "π(x) = #{p ≤ x : p prime} = Nat.primeCounting ⌊x⌋₊. Related: Chebyshev functions θ(x) = Σ_{p≤x} ln p, ψ(x) = Σ_{p^k≤x} ln p.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "counting functions",
+      "natural number arithmetic",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "prime numbers",
       "counting functions",
@@ -59,6 +71,12 @@
     "content": "The simplest approximation to π(x):\n\n$$\\text{primeApprox}(x) = \\frac{x}{\\ln x}$$\n\nThis is the \"first-order\" estimate. PNT says π(x) ~ x/ln(x), meaning their ratio → 1.\n\n**Guard**: defined as 0 for x ≤ 1 to avoid division by ln(1) = 0 or negative logarithms. This is mathematically inconsequential since PNT concerns the limit as x → ∞.",
     "mathContext": "x/ln x for x > 1, 0 otherwise. The conditional avoids the singularity at x = 1 where ln x = 0.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic equivalence",
+      "basic set theory",
+      "logarithm",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "asymptotic equivalence",
       "logarithm",
@@ -77,6 +95,12 @@
     "content": "A **much better** approximation to π(x):\n\n$$\\text{Li}(x) = \\int_2^x \\frac{dt}{\\ln t}$$\n\nGauss observed empirically that Li(x) tracks π(x) more closely than x/ln(x). The asymptotic expansion via repeated integration by parts:\n\n$$\\text{Li}(x) = \\frac{x}{\\ln x} + \\frac{x}{\\ln^2 x} + \\frac{2x}{\\ln^3 x} + \\cdots + \\frac{(k-1)! \\cdot x}{\\ln^k x} + O\\left(\\frac{x}{\\ln^{k+1} x}\\right)$$\n\nshows Li(x) ~ x/ln(x), but captures higher-order terms. The lower limit 2 avoids the integrable singularity at t = 1.",
     "mathContext": "Li(x) = ∫₂ˣ dt/ln t. Asymptotic: Li(x) = x/ln x · Σ_{k=0}^{n} k!/ln^k(x) + O(x/ln^{n+2}x). Related to the Ramanujan prime counting approximation R(x).",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic expansion",
+      "basic set theory",
+      "integral",
+      "integral calculus"
+    ],
     "relatedConcepts": [
       "integral",
       "asymptotic expansion",
@@ -102,6 +126,12 @@
     "content": "**Prime Number Theorem (Ratio Form)**:\n\n$$\\lim_{x \\to \\infty} \\frac{\\pi(x) \\cdot \\ln x}{x} = 1$$\n\nThis is the classical statement, formulated as convergence to 1 of the ratio π(x)·ln(x)/x. In Lean, expressed using `Tendsto` to the neighborhood `𝓝 1` along the `atTop` filter.\n\nThe formulation π(x)·ln(x)/x (rather than π(x)/(x/ln(x))) avoids division-by-zero issues and is more natural for filter-based limits in Lean.",
     "mathContext": "Tendsto (λ x, π(x)·ln(x)/x) atTop (𝓝 1). Equivalent to: ∀ε>0, ∃X, ∀x≥X, |π(x)·ln(x)/x − 1| < ε.",
     "significance": "key",
+    "prerequisites": [
+      "Tendsto",
+      "filter theory",
+      "limits",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "limits",
       "Tendsto",
@@ -121,6 +151,12 @@
     "content": "**Asymptotic Notation**:\n\n$$\\pi(x) \\sim \\frac{x}{\\ln x}$$\n\nUsing Mathlib's `Asymptotics.IsEquivalent` (notation `~[atTop]`), we express that two functions have the same asymptotic behavior.\n\nf ~[l] g means (f - g) =o[l] g, or equivalently f/g → 1 along filter l. This is a standard equivalence relation on functions that are eventually nonzero.",
     "mathContext": "(λ x, π(x)) ~[atTop] (λ x, x/ln x). Uses Mathlib.Analysis.Asymptotics.IsEquivalent, which is reflexive, symmetric, and transitive.",
     "significance": "key",
+    "prerequisites": [
+      "IsEquivalent",
+      "asymptotic equivalence",
+      "filter theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "asymptotic equivalence",
       "IsEquivalent",
@@ -140,6 +176,11 @@
     "content": "**Error Term Formulation**:\n\n$$\\pi(x) = \\frac{x}{\\ln x} + o\\left(\\frac{x}{\\ln x}\\right)$$\n\nThe error π(x) − x/ln(x) grows slower than x/ln(x) itself. Expressed using Mathlib's `Asymptotics.IsLittleO` (notation `=o[atTop]`).\n\nThe equivalence f ~ g ⟺ f − g = o(g) is proved in the formalization as `equiv_iff_error`. The best known unconditional error bound is π(x) = Li(x) + O(x · exp(−c(ln x)^{3/5} (ln ln x)^{-1/5})) due to Vinogradov–Korobov.",
     "mathContext": "(λ x, π(x) − x/ln x) =o[atTop] (λ x, x/ln x). Unconditional: |π(x)−Li(x)| = O(x·exp(−c·ln^{3/5}x·(ln ln x)^{−1/5})).",
     "significance": "key",
+    "prerequisites": [
+      "IsLittleO",
+      "error bounds",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "error bounds",
       "IsLittleO",
@@ -159,6 +200,11 @@
     "content": "The **strongest** standard form of PNT:\n\n$$\\pi(x) \\sim \\text{Li}(x)$$\n\nSince Li(x) ~ x/ln(x), this is equivalent to the other forms by transitivity. But Li(x) is a far superior numerical approximation:\n\n| x | π(x) | x/ln(x) | Li(x) | |π−Li| |\n|---|------|---------|-------|---------|\n| 10⁶ | 78,498 | 72,382 | 78,628 | 130 |\n| 10⁹ | 50,847,534 | 48,254,942 | 50,849,235 | 1,701 |\n\nLi(x) captures the first several terms of the asymptotic expansion, while x/ln(x) only captures the leading term.",
     "mathContext": "(λ x, π(x)) ~[atTop] Li. Proved equivalent to ratio form via li_iff_equiv using transitivity of ~.",
     "significance": "key",
+    "prerequisites": [
+      "Gauss",
+      "logarithmic integral",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "logarithmic integral",
       "Gauss",
@@ -178,6 +224,11 @@
     "content": "**All four formulations are equivalent**:\n\n1. **Ratio**: π(x)·ln(x)/x → 1\n2. **Asymptotic**: π(x) ~ x/ln(x)\n3. **Error**: π(x) − x/ln(x) = o(x/ln(x))\n4. **Li**: π(x) ~ Li(x)\n\nThe equivalences are axiomatized as:\n- `ratio_iff_equiv`: (1) ⟺ (2) — unwinding definitions of Tendsto and IsEquivalent\n- `equiv_iff_error`: (2) ⟺ (3) — standard f~g ⟺ f−g=o(g)\n- `li_iff_equiv`: (4) ⟺ (2) — transitivity via Li(x) ~ x/ln(x)\n\nA fifth equivalent formulation uses Chebyshev's ψ-function: ψ(x) ~ x, which is often the form directly proved via complex analysis.",
     "mathContext": "PNT_Ratio ⟺ PNT_Equiv ⟺ PNT_Error ⟺ PNT_Li. Also equivalent: θ(x) ~ x, ψ(x) ~ x, and Σ_{n≤x} Λ(n) ~ x where Λ is the von Mangoldt function.",
     "significance": "key",
+    "prerequisites": [
+      "Chebyshev ψ-function",
+      "asymptotic equivalence",
+      "complex numbers"
+    ],
     "relatedConcepts": [
       "asymptotic equivalence",
       "Chebyshev ψ-function",
@@ -197,6 +248,12 @@
     "content": "**The Prime Number Theorem** (axiomatized):\n\n$$\\lim_{x \\to \\infty} \\frac{\\pi(x) \\cdot \\ln x}{x} = 1$$\n\n**Why an axiom?** A complete proof requires the full machinery of analytic number theory:\n1. **Complex analysis**: Cauchy's integral formula, residue calculus\n2. **Riemann zeta function**: analytic continuation to ℂ\\{1}, functional equation\n3. **Zero-free region**: proving ζ(1+it) ≠ 0 for all real t (the hardest step)\n4. **Tauberian theorem**: Wiener-Ikehara or Newman's simplified approach\n\nThe **PrimeNumberTheoremAnd** project by Kontorovich, Tao, et al. provides a complete Lean 4 formalization. The axiom here references that work.",
     "mathContext": "axiom primeNumberTheorem : Tendsto (λ x, π(x)·ln(x)/x) atTop (𝓝 1). Key step: ζ(1+it) ≠ 0 proved via 3·4·cos trick: 3+4cos(θ)+cos(2θ) ≥ 0.",
     "significance": "key",
+    "prerequisites": [
+      "Hadamard",
+      "complex numbers",
+      "de la Vallée Poussin",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Hadamard",
       "de la Vallée Poussin",
@@ -222,6 +279,12 @@
     "content": "**Corollary**: The density of primes goes to zero:\n\n$$\\lim_{x \\to \\infty} \\frac{\\pi(x)}{x} = 0$$\n\nFrom PNT: π(x)/x ~ 1/ln(x) → 0.\n\n**Interpretation**: The \"probability\" of a random number near x being prime is ≈ 1/ln(x). At x = 10¹⁰⁰, this is about 1/230. Despite vanishing density, there are infinitely many primes — the natural density is 0 but the counting function diverges.",
     "mathContext": "Tendsto (λ x, π(x)/x) atTop (𝓝 0). Follows from PNT: π(x)/x ~ 1/ln(x) and ln(x) → ∞.",
     "significance": "key",
+    "prerequisites": [
+      "density theory",
+      "natural density",
+      "prime numbers",
+      "probability heuristic"
+    ],
     "relatedConcepts": [
       "natural density",
       "probability heuristic",
@@ -246,6 +309,12 @@
     "content": "**Inverse PNT**: The nth prime satisfies:\n\n$$p_n \\sim n \\ln n$$\n\nThis is the \"inverse\" of PNT: if π(x) ~ x/ln(x), inverting gives pₙ ~ n·ln(n). A more precise estimate: pₙ = n(ln n + ln ln n − 1 + o(1)).\n\nIn Lean, uses `Nat.nth Nat.Prime n` for the nth prime and `Tendsto ... atTop (𝓝 1)` for the asymptotic ratio.\n\n**Examples**:\n- p₁₀ = 29 ≈ 10·ln(10) = 23\n- p₁₀₀ = 541 ≈ 100·ln(100) = 461\n- p₁₀₀₀ = 7919 ≈ 1000·ln(1000) = 6908",
     "mathContext": "Tendsto (λ n, pₙ/(n·ln n)) atTop (𝓝 1). Refinement: pₙ = n·ln n + n·ln ln n − n + O(n·ln ln n/ln n).",
     "significance": "key",
+    "prerequisites": [
+      "inverse function",
+      "natural number arithmetic",
+      "nth prime",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "nth prime",
       "inverse function",
@@ -271,6 +340,12 @@
     "content": "**Sum of Prime Reciprocals** (Mertens, 1874):\n\n$$\\sum_{p \\leq x} \\frac{1}{p} = \\ln\\ln x + M + o(1)$$\n\nwhere M ≈ 0.2615 is the **Meissel–Mertens constant**.\n\nThis shows prime reciprocals diverge, but *extremely slowly* — as ln(ln(x)). For comparison:\n- Harmonic series: Σ_{n≤x} 1/n ~ ln(x) (slow)\n- Prime reciprocals: Σ_{p≤x} 1/p ~ ln(ln(x)) (much slower)\n\nMertens' proof uses partial summation (Abel summation) with estimates on π(x). The formalization axiomatizes the existence of the constant c (= M).",
     "mathContext": "∃c, Tendsto (λ x, Σ_{p≤x,prime} 1/p − ln ln x) atTop (𝓝 c) where c = M ≈ 0.2615. Mertens also proved: ∏_{p≤x}(1−1/p) ~ e^{-γ}/ln x.",
     "significance": "key",
+    "prerequisites": [
+      "Meissel-Mertens constant",
+      "Mertens",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Mertens",
       "Meissel-Mertens constant",
@@ -296,6 +371,12 @@
     "content": "**Prime Gaps Bound**: For any ε > 0 and sufficiently large x, consecutive primes near x differ by at most εx.\n\nFrom PNT: there are ~ x/ln(x) primes up to x, so the average gap is ~ ln(x). Since ln(x) = o(x), gaps are o(x) — sublinear growth.\n\nThe formalization states: ∀ε>0, ∃X, ∀x≥X, for any prime p ≤ x, there exists a next prime q with q ≤ x + εx.\n\n**Stronger known results**: Baker–Harman–Pintz (2001) proved gaps ≤ x^{0.525}. Under RH, gaps ≤ O(√x · ln x). Maynard–Tao (2014) proved bounded gaps between primes.",
     "mathContext": "∀ε>0, ∃X, ∀x≥X, ∀p prime ≤ x, ∃q prime: p < q ≤ x+εx. Average gap: x/π(x) ~ ln(x). Best unconditional: gap ≤ x^{0.525}.",
     "significance": "supporting",
+    "prerequisites": [
+      "Baker-Harman-Pintz",
+      "prime gaps",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "prime gaps",
       "Baker-Harman-Pintz",
@@ -321,6 +402,12 @@
     "content": "The **Riemann Hypothesis** (RH, 1859):\n\nAll non-trivial zeros of ζ(s) have Re(s) = 1/2.\n\nThis is one of the seven **Millennium Prize Problems** ($1M reward, Clay Mathematics Institute). It is the deepest open problem connected to prime distribution.\n\nRH is axiomatized here as a `Prop` (the formalization focuses on PNT, and RH is only used for conditional error bounds). A proper definition requires ζ(s) for complex s with analytic continuation.\n\n**Known**: Over 10¹³ zeros computed, all on the critical line. Hardy (1914) proved infinitely many zeros lie on Re(s) = 1/2.",
     "mathContext": "RH: ∀s, ζ(s) = 0 ∧ 0 < Re(s) < 1 → Re(s) = 1/2. Axiomatized as a Prop since defining ζ: ℂ → ℂ with analytic continuation is beyond this file's scope.",
     "significance": "key",
+    "prerequisites": [
+      "Riemann zeta function",
+      "complex numbers",
+      "critical line",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Riemann zeta function",
       "critical line",
@@ -346,6 +433,11 @@
     "content": "**Under RH** (von Koch, 1901):\n\n$$|\\pi(x) - \\text{Li}(x)| = O(\\sqrt{x} \\ln x)$$\n\nThis is a **dramatic** improvement over the unconditional bound O(x·exp(−c·ln^{3/5}x)):\n- At x = 10¹², unconditional: error ≤ ~10⁹. Under RH: error ≤ ~10⁶·ln(10¹²) ≈ 3×10⁷.\n\n**Why RH helps**: Riemann's explicit formula writes π(x) as a sum over ζ-zeros: π(x) = Li(x) − Σ_ρ Li(x^ρ) + smaller terms. If all ρ satisfy Re(ρ) = 1/2, then |x^ρ| = √x, giving the √x bound.",
     "mathContext": "RH ⟹ ∃C>0, ∀x≥2, |π(x)−Li(x)| ≤ C·√x·ln x. Explicit formula: π(x) = Li(x) − Σ_ρ Li(x^ρ) − ln 2 + ∫_x^∞ dt/(t(t²−1)·ln t).",
     "significance": "key",
+    "prerequisites": [
+      "explicit formula",
+      "proof techniques",
+      "von Koch"
+    ],
     "relatedConcepts": [
       "von Koch",
       "explicit formula",
@@ -365,6 +457,12 @@
     "content": "**Before PNT** (Chebyshev, 1852):\n\n$$0.92 < \\frac{\\pi(x) \\ln x}{x} < 1.11$$\n\nfor sufficiently large x. Chebyshev proved that **if** the limit exists, it must equal 1.\n\n**Method**: Analyzed prime factorization of the central binomial coefficient C(2n,n) = (2n)!/(n!)², using:\n- Legendre's formula: v_p(n!) = Σ_{k≥1} ⌊n/p^k⌋\n- The bound 2²ⁿ/√(2n) ≤ C(2n,n) ≤ 2²ⁿ\n\nThis was 44 years before Hadamard/de la Vallée Poussin proved the limit exists! Chebyshev's elementary approach remains influential — Erdős's proof of Bertrand's postulate uses similar ideas.",
     "mathContext": "∃X, ∀x≥X, x>1 → 0.92 < π(x)·ln(x)/x < 1.11. Chebyshev's sharper constants: A = ln(2·3·5·30)/(30) ≈ 0.92129, B ≈ 1.10555.",
     "significance": "key",
+    "prerequisites": [
+      "Chebyshev",
+      "central binomial coefficient",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Chebyshev",
       "central binomial coefficient",
@@ -390,6 +488,12 @@
     "content": "**Euler's product formula** (1737):\n\n$$\\zeta(s) = \\sum_{n=1}^{\\infty} \\frac{1}{n^s} = \\prod_{p \\text{ prime}} \\frac{1}{1 - p^{-s}}$$\n\nfor Re(s) > 1. This identity — equating a sum over integers with a product over primes — is the **fundamental bridge** between analysis and prime distribution.\n\nTaking logarithms: log ζ(s) = Σ_p p⁻ˢ + O(1). The pole of ζ(s) at s = 1 encodes the infinitude of primes; the zero-free region on Re(s) = 1 encodes PNT.",
     "mathContext": "ζ(s) = Π_p (1−p⁻ˢ)⁻¹ for Re(s)>1. The connection: −ζ'(s)/ζ(s) = Σ_n Λ(n)/nˢ where Λ is the von Mangoldt function.",
     "significance": "key",
+    "prerequisites": [
+      "Euler product",
+      "Euler's work",
+      "Riemann zeta function",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Euler product",
       "Riemann zeta function",
@@ -419,6 +523,11 @@
     "content": "**Comparing approximations**:\n\n| x | π(x) | x/ln(x) | Li(x) | |π−x/ln x| | |π−Li| |\n|---|------|---------|-------|-----------|--------|\n| 10 | 4 | 4.3 | 6.2 | 0.3 | 2.2 |\n| 10³ | 168 | 145 | 178 | 23 | 10 |\n| 10⁶ | 78,498 | 72,382 | 78,628 | 6,116 | 130 |\n| 10⁹ | 50,847,534 | 48,254,942 | 50,849,235 | 2.6M | 1,701 |\n| 10¹² | 37,607,912,018 | ~34.4B | ~37.6B | ~3.2B | ~38,263 |\n\nLi(x) is consistently better by orders of magnitude. Remarkably, Li(x) > π(x) for all computed values, though Littlewood (1914) proved π(x) > Li(x) occurs infinitely often (the first crossover is believed to be near x ≈ 10³¹⁶).",
     "mathContext": "Skewes' number: the first x where π(x) > Li(x). Upper bound: e^{e^{e^{79}}} (Skewes, 1933, assuming RH). Modern: ≈ 1.397×10³¹⁶.",
     "significance": "supporting",
+    "prerequisites": [
+      "Skewes' number",
+      "numerical computation",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "numerical computation",
       "Skewes' number",

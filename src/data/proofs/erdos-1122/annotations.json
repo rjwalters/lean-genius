@@ -10,6 +10,12 @@
     "title": "Module Header and Imports",
     "content": "The file imports `Mathlib.Data.Nat.Prime.Basic` (for `Nat.Prime`, `Nat.primeFactors`), `Mathlib.Data.Nat.GCD.Basic` (for `Nat.gcd`, coprimality), `Mathlib.Data.Real.Basic`, `Mathlib.Analysis.SpecialFunctions.Log.Basic` (for `Real.log`, `Real.log_mul`, `Real.log_le_log`), and `Mathlib.Order.Filter.Basic` (for `Filter.Tendsto`, `atTop`, `nhds`). Opens `Nat`, `Real`, `Filter` namespaces.",
     "significance": "supporting",
+    "prerequisites": [
+      "GCD theory",
+      "Mathlib imports",
+      "filter theory",
+      "logarithmic functions"
+    ],
     "mathContext": "`open Nat Real Filter` brings `primeFactors`, `log`, `log_mul`, `log_le_log`, `Tendsto`, `atTop`, `nhds` into scope. The `namespace Erdos1122` scopes all definitions. Five Mathlib imports provide the full API: prime factorizations, GCD/coprimality, real arithmetic, logarithm identities, and filter-based limits.",
     "relatedConcepts": [
       "Mathlib imports",
@@ -28,6 +34,12 @@
     "title": "Additive Function",
     "content": "**IsAdditive f** requires `f(a * b) = f(a) + f(b)` whenever `Nat.gcd a b = 1` and both `a, b >= 1`. This is weaker than completely additive. Examples include log(n), omega(n) (distinct prime factors), and Omega(n) (prime factors with multiplicity).",
     "significance": "key",
+    "prerequisites": [
+      "GCD theory",
+      "Nat.gcd",
+      "basic set theory",
+      "coprimality"
+    ],
     "mathContext": "`def IsAdditive (f : ℕ → ℝ) : Prop := ∀ a b : ℕ, a ≥ 1 → b ≥ 1 → Nat.gcd a b = 1 → f (a * b) = f a + f b` — the coprimality guard `Nat.gcd a b = 1` distinguishes additive from completely additive. The `a ≥ 1` and `b ≥ 1` guards exclude the trivial case `f(0)`.",
     "relatedConcepts": [
       "Nat.gcd",
@@ -46,6 +58,12 @@
     "title": "Completely Additive",
     "content": "**IsCompletelyAdditive f** requires `f(a * b) = f(a) + f(b)` for ALL `a, b >= 1`, with no coprimality condition. This is strictly stronger than `IsAdditive`. The logarithm is the canonical example.",
     "significance": "supporting",
+    "prerequisites": [
+      "GCD theory",
+      "IsAdditive",
+      "basic set theory",
+      "function classification"
+    ],
     "mathContext": "`def IsCompletelyAdditive (f : ℕ → ℝ) : Prop := ∀ a b : ℕ, a ≥ 1 → b ≥ 1 → f (a * b) = f a + f b` — identical to `IsAdditive` but without the `Nat.gcd a b = 1` hypothesis. Every completely additive function is additive (by weakening the hypothesis).",
     "relatedConcepts": [
       "IsAdditive",
@@ -63,6 +81,12 @@
     "title": "Logarithm is Completely Additive",
     "content": "**log_completely_additive** proves `Real.log` is completely additive on positive naturals: `log(ab) = log(a) + log(b)`. The proof converts the natural product to reals via `Nat.cast_mul`, then applies `Real.log_mul`.",
     "significance": "key",
+    "prerequisites": [
+      "Nat.cast_mul",
+      "Real.log_mul",
+      "logarithmic functions",
+      "natural number arithmetic"
+    ],
     "mathContext": "`theorem log_completely_additive : IsCompletelyAdditive (fun n => Real.log n) := by intro a b ha hb; simp only; rw [Nat.cast_mul]; exact Real.log_mul (by positivity) (by positivity)` — `Nat.cast_mul` rewrites `↑(a * b)` to `↑a * ↑b` in `ℝ`. `Real.log_mul` requires both arguments nonzero, discharged by `positivity` from the `a ≥ 1`, `b ≥ 1` hypotheses.",
     "relatedConcepts": [
       "Nat.cast_mul",
@@ -81,6 +105,12 @@
     "title": "Value Determined by Primes",
     "content": "**valueDeterminedByPrimes f hf** states that `f(n)` equals the sum of `f(p^k)` over prime factors. This captures the fundamental property that additive functions are determined by their values on prime powers.",
     "significance": "supporting",
+    "prerequisites": [
+      "Finset API",
+      "Nat.factorization",
+      "Nat.primeFactors",
+      "basic set theory"
+    ],
     "mathContext": "`def valueDeterminedByPrimes (f : ℕ → ℝ) (hf : IsAdditive f) : Prop := ∀ n : ℕ, n ≥ 1 → f n = ∑ p ∈ Nat.primeFactors n, f (p ^ (Nat.factorization n p))` — uses `Nat.primeFactors n` (the `Finset` of prime divisors) and `Nat.factorization n p` (the p-adic valuation). The sum ranges over `Nat.primeFactors` which is always finite.",
     "relatedConcepts": [
       "Nat.primeFactors",
@@ -99,6 +129,12 @@
     "title": "Monotonicity Defect Set and Count",
     "content": "**monotonicityDefectSet f** = `{n : ℕ | n ≥ 1 ∧ f(n+1) < f(n)}` collects where f fails to increase. **defectCount f X** counts defects in `[0, X]` via `Finset.filter` on `Finset.range(X+1)`. These are the central objects of the conjecture.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "Finset.filter",
+      "Set membership",
+      "basic set theory"
+    ],
     "mathContext": "`def monotonicityDefectSet (f : ℕ → ℝ) : Set ℕ := {n : ℕ | n ≥ 1 ∧ f (n + 1) < f n}` — a `Set ℕ` with the membership predicate using `<` on `ℝ`. `noncomputable def defectCount (f : ℕ → ℝ) (X : ℕ) : ℕ := Finset.card (Finset.filter (fun n => n ∈ monotonicityDefectSet f) (Finset.range (X + 1)))` — `noncomputable` because `Set` membership is not decidable. `Finset.range (X + 1)` gives `{0, 1, ..., X}`.",
     "relatedConcepts": [
       "Set membership",
@@ -118,6 +154,11 @@
     "title": "Little-o Condition",
     "content": "**defectIsLittleO f** encodes `|A ∩ [1,X]| = o(X)` as an ε-N statement: for every `ε > 0`, there exists `N` such that for all `X ≥ N`, `defectCount f X < ε * X`. This is the key hypothesis of the conjecture.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic notation",
+      "basic set theory",
+      "ε-N definition"
+    ],
     "mathContext": "`def defectIsLittleO (f : ℕ → ℝ) : Prop := ∀ ε > 0, ∃ N : ℕ, ∀ X ≥ N, (defectCount f X : ℝ) < ε * X` — an explicit ε-N formulation rather than using Mathlib's `Asymptotics.IsLittleO`. The cast `(defectCount f X : ℝ)` coerces `ℕ` to `ℝ` for comparison with `ε * X`.",
     "relatedConcepts": [
       "asymptotic notation",
@@ -136,6 +177,11 @@
     "title": "Empty Defect Implies Increasing",
     "content": "**hasEmptyDefectSet f** is `monotonicityDefectSet f = ∅`. **empty_defect_means_increasing** proves: if the defect set is empty, then `f(n) ≤ f(n+1)` for all `n ≥ 1`. Proof by contradiction — if `f(n+1) < f(n)`, then `n ∈ monotonicityDefectSet f`, but the set is empty.",
     "significance": "supporting",
+    "prerequisites": [
+      "by_contra",
+      "proof techniques",
+      "push_neg"
+    ],
     "mathContext": "`theorem empty_defect_means_increasing (f : ℕ → ℝ) (h : hasEmptyDefectSet f) : ∀ n : ℕ, n ≥ 1 → f n ≤ f (n + 1) := by intro n hn; by_contra hlt; push_neg at hlt; have : n ∈ monotonicityDefectSet f := ⟨hn, hlt⟩; rw [h] at this; exact this` — `by_contra` assumes `¬(f n ≤ f (n+1))`, `push_neg` converts to `f (n+1) < f n`. The anonymous constructor `⟨hn, hlt⟩` builds the `Set.mem_setOf` proof. `rw [h] at this` rewrites membership in `∅`, and `exact this` discharges the `False` goal since `n ∈ ∅` is `False`.",
     "relatedConcepts": [
       "by_contra",
@@ -154,6 +200,12 @@
     "title": "Logarithmic Form and Properties",
     "content": "**hasLogarithmicForm f** = `∃ c : ℝ, ∀ n ≥ 1, f(n) = c * Real.log(n)`. **zero_is_logarithmic** uses `c = 0`. **logarithmic_is_additive** proves any `c·log` is additive: substitute the form, apply `Real.log_mul` for coprime arguments, close by `ring`.",
     "significance": "key",
+    "prerequisites": [
+      "logarithmic functions",
+      "natural number arithmetic",
+      "obtain tactic",
+      "prime numbers"
+    ],
     "mathContext": "`def hasLogarithmicForm (f : ℕ → ℝ) : Prop := ∃ c : ℝ, ∀ n : ℕ, n ≥ 1 → f n = c * Real.log n` — an existential over the constant `c`. `theorem logarithmic_is_additive ... := by obtain ⟨c, hc⟩ := hf; intro a b ha hb _; simp only [hc a ha, hc b hb, hc (a * b) ...]; rw [Nat.cast_mul, Real.log_mul (by positivity) (by positivity)]; ring` — `obtain ⟨c, hc⟩` destructs the existential. After rewriting all three `f` applications to `c * log(·)`, `Real.log_mul` gives `log(a*b) = log(a) + log(b)`, and `ring` closes `c * (log a + log b) = c * log a + c * log b`.",
     "relatedConcepts": [
       "obtain tactic",
@@ -172,6 +224,11 @@
     "title": "Erdős's Known Results (1946)",
     "content": "**erdos_empty_defect** (axiom): if `IsAdditive f` and `hasEmptyDefectSet f`, then `hasLogarithmicForm f` — Erdős's 1946 theorem that increasing additive functions are logarithmic. **incrementsVanish f** uses `Tendsto (fun n => f(n+1) - f(n)) atTop (nhds 0)`. **erdos_vanishing_increments** (axiom): the Kátai-Wirsing theorem.",
     "significance": "key",
+    "prerequisites": [
+      "Filter.Tendsto",
+      "atTop filter",
+      "filter theory"
+    ],
     "mathContext": "`axiom erdos_empty_defect (f : ℕ → ℝ) (hf : IsAdditive f) (hempty : hasEmptyDefectSet f) : hasLogarithmicForm f` — axiomatized because the proof requires analytic number theory beyond Mathlib. `def incrementsVanish (f : ℕ → ℝ) : Prop := Tendsto (fun n => f (n + 1) - f n) atTop (nhds 0)` — uses Mathlib's filter-based limits: `atTop` is the cofinite filter on `ℕ`, `nhds 0` is the neighborhood filter at 0 in `ℝ`. `axiom erdos_vanishing_increments` similarly axiomatizes the Kátai-Wirsing result.",
     "relatedConcepts": [
       "Filter.Tendsto",
@@ -191,6 +248,12 @@
     "title": "Mangerel's Density and Bounded Prime Values",
     "content": "**satisfiesMangerelDensity f** requires `∃ c > 0, ∃ C > 0, ∀ X ≥ 2, defectCount f X ≤ C * X / (Real.log X)^(2+c)`. **hasBoundedPrimeValues f** requires `|f(p)| ≤ g(p)` for primes, where `g(p) ≤ ε * log(p)` eventually. Together these form Mangerel's hypotheses.",
     "significance": "key",
+    "prerequisites": [
+      "Nat.Prime",
+      "Real.log power",
+      "basic set theory",
+      "density theory"
+    ],
     "mathContext": "`def satisfiesMangerelDensity (f : ℕ → ℝ) : Prop := ∃ c : ℝ, c > 0 ∧ ∃ C : ℝ, C > 0 ∧ ∀ X : ℕ, X ≥ 2 → (defectCount f X : ℝ) ≤ C * X / (Real.log X)^(2 + c)` — nested existentials for the constants. `Real.log X` uses natural number coercion. `def hasBoundedPrimeValues (f : ℕ → ℝ) : Prop := ∃ g : ℕ → ℝ, (∀ p, Nat.Prime p → |f p| ≤ g p) ∧ (∀ ε > 0, ∃ N, ∀ p, Nat.Prime p → p ≥ N → g p ≤ ε * Real.log p)` — an intermediate bounding function `g` that is eventually `o(log p)`.",
     "relatedConcepts": [
       "Nat.Prime",
@@ -209,6 +272,12 @@
     "title": "Mangerel's Theorem (2022)",
     "content": "**mangerel_2022** (axiom): if f is additive, satisfies the Mangerel density bound, and has bounded prime values, then `hasLogarithmicForm f`. This is the strongest partial progress toward the conjecture, published in Ramanujan J. (2022).",
     "significance": "key",
+    "prerequisites": [
+      "Ramanujan Journal",
+      "density theory",
+      "partial progress",
+      "prime numbers"
+    ],
     "mathContext": "`axiom mangerel_2022 (f : ℕ → ℝ) (hf : IsAdditive f) (hdensity : satisfiesMangerelDensity f) (hbounded : hasBoundedPrimeValues f) : hasLogarithmicForm f` — takes three hypotheses (additive, density, bounded primes) and concludes logarithmic form. The `hasBoundedPrimeValues` condition is the key additional restriction not present in the full conjecture.",
     "relatedConcepts": [
       "Ramanujan Journal",
@@ -227,6 +296,12 @@
     "title": "The Conjecture (OPEN)",
     "content": "**erdos1122Conjecture** defines the full open problem: `∀ f, IsAdditive f → defectIsLittleO f → hasLogarithmicForm f`. The axiom **erdos_1122** asserts this, marking it as an open problem. No `hasBoundedPrimeValues` condition — that's what makes it harder than Mangerel's theorem.",
     "significance": "key",
+    "prerequisites": [
+      "axiom for conjecture",
+      "basic set theory",
+      "open problem",
+      "prime numbers"
+    ],
     "mathContext": "`def erdos1122Conjecture : Prop := ∀ f : ℕ → ℝ, IsAdditive f → defectIsLittleO f → hasLogarithmicForm f` — a `Prop`-valued definition for the conjecture statement. `axiom erdos_1122 : erdos1122Conjecture` — axiomatized because the problem is OPEN. This axiom makes the Lean file logically unsound (asserts an unproven statement), but the `axiomCount: 7` in meta.json documents this.",
     "relatedConcepts": [
       "open problem",
@@ -245,6 +320,12 @@
     "title": "Condition Hierarchy",
     "content": "**empty_implies_littleO** is fully proved: if defect set is empty, then `defectIsLittleO f`. The proof shows `defectCount = 0` via `Finset.filter_eq_empty_iff` and `Set.not_mem_empty`. **mangerel_implies_littleO** is axiomatized (requires `X/(log X)^{2+c} = o(X)`). **conditionHierarchy** bundles both implications.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "Finset.card_eq_zero",
+      "Finset.filter_eq_empty_iff",
+      "filter theory"
+    ],
     "mathContext": "`theorem empty_implies_littleO (f : ℕ → ℝ) (h : hasEmptyDefectSet f) : defectIsLittleO f := by intro ε hε; use 1; intro X _; have : defectCount f X = 0 := by unfold defectCount; simp only [Finset.card_eq_zero, Finset.filter_eq_empty_iff]; intro n _; rw [h]; exact Set.not_mem_empty n; simp [this, hε]` — the chain: `Finset.card_eq_zero` reduces to `filter = ∅`, `Finset.filter_eq_empty_iff` reduces to \"no element satisfies the predicate\", then `rw [h]` rewrites the defect set to `∅` and `Set.not_mem_empty` finishes. Finally `simp [this, hε]` closes `(0 : ℝ) < ε * X`.",
     "relatedConcepts": [
       "Finset.card_eq_zero",
@@ -263,6 +344,12 @@
     "title": "Log Has Empty Defect Set",
     "content": "**log_has_empty_defect** proves `hasEmptyDefectSet (fun n => Real.log n)` — log is strictly increasing on positive naturals, so its defect set is empty. Uses `ext`/`simp` to reduce to showing `log(n) ≤ log(n+1)` for `n ≥ 1`, then `Real.log_le_log` and `positivity`.",
     "significance": "supporting",
+    "prerequisites": [
+      "Real.log_le_log",
+      "Set.ext",
+      "logarithmic functions",
+      "proof techniques"
+    ],
     "mathContext": "`theorem log_has_empty_defect : hasEmptyDefectSet (fun n => Real.log n) := by unfold hasEmptyDefectSet monotonicityDefectSet; ext n; simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_and, not_lt]; intro hn; apply Real.log_le_log (by positivity); simp [hn]` — `ext n` reduces set equality to pointwise iff. `simp` normalizes the membership predicate. `Real.log_le_log` requires `0 < n` (from `positivity`) and `n ≤ n + 1` (from `simp [hn]`).",
     "relatedConcepts": [
       "Set.ext",
@@ -281,6 +368,12 @@
     "title": "Counterexample: omega(n)",
     "content": "**omega n** = `n.primeFactors.card` counts distinct prime factors. Axiomatized as additive (`omega_is_additive`) but not logarithmic (`omega_not_logarithmic`). This shows additivity alone doesn't force logarithmic form — the sparse defect condition is essential.",
     "significance": "supporting",
+    "prerequisites": [
+      "Finset API",
+      "Finset.card",
+      "Nat.primeFactors",
+      "basic set theory"
+    ],
     "mathContext": "`def omega (n : ℕ) : ℕ := n.primeFactors.card` — `Nat.primeFactors` returns the `Finset` of prime divisors, `.card` gives its size. `axiom omega_is_additive : IsAdditive (fun n => (omega n : ℝ))` — cast to `ℝ` since `IsAdditive` expects `ℕ → ℝ`. `axiom omega_not_logarithmic : ¬hasLogarithmicForm (fun n => (omega n : ℝ))` — ω grows as `log log n` on average, much slower than any `c · log n`.",
     "relatedConcepts": [
       "Nat.primeFactors",
@@ -299,6 +392,12 @@
     "title": "Summary of Known Results",
     "content": "**erdos_1122_summary** consolidates three positive results into a conjunction: (1) empty defect → logarithmic (Erdős 1946), (2) vanishing increments → logarithmic (Kátai-Wirsing), (3) Mangerel density + bounded primes → logarithmic (Mangerel 2022). Proved by `refine ⟨?_, ?_, ?_⟩` with `exact` for each component.",
     "significance": "key",
+    "prerequisites": [
+      "anonymous constructor",
+      "density theory",
+      "prime numbers",
+      "proof techniques"
+    ],
     "mathContext": "`theorem erdos_1122_summary : (∀ f, IsAdditive f → hasEmptyDefectSet f → hasLogarithmicForm f) ∧ (∀ f, IsAdditive f → incrementsVanish f → hasLogarithmicForm f) ∧ (∀ f, IsAdditive f → satisfiesMangerelDensity f → hasBoundedPrimeValues f → hasLogarithmicForm f) := by refine ⟨?_, ?_, ?_⟩; · exact erdos_empty_defect; · exact erdos_vanishing_increments; · exact mangerel_2022` — `refine ⟨?_, ?_, ?_⟩` creates three goals from the triple conjunction. Each `exact` discharges one goal by applying the corresponding axiom directly (eta-expanded match).",
     "relatedConcepts": [
       "refine tactic",

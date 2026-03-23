@@ -11,6 +11,10 @@
     "content": "**Erdős Problem #272** asks: given {1,...,N}, what is the largest family of subsets such that every pairwise intersection is a non-empty arithmetic progression? Erdős and Graham conjectured the optimal family consists of APs through ⌊N/2⌋ (~π²N²/24 sets), but Simonovits-Sós disproved this by showing that sets of size ≤ 3 through a fixed element give ~N²/2 sets — more than APs! Szabó (1999) resolved the asymptotic completely: t = N²/2 + O(N^{5/3}(log N)³).",
     "mathContext": "The problem sits at the intersection of extremal set theory and arithmetic combinatorics. The AP-intersection constraint is surprisingly restrictive: it forces quadratic growth but allows considerable freedom in the exact leading constant.",
     "significance": "key",
+    "prerequisites": [
+      "arithmetic progressions",
+      "extremal set theory"
+    ],
     "relatedConcepts": [
       "extremal set theory",
       "arithmetic progressions",
@@ -29,6 +33,12 @@
     "content": "**ArithProg** is a structure with start, common difference, and length. **IsArithProg S** asserts that S equals the elements of some AP with length ≥ 1. Two constructive results are proved: **singleton_is_ap** shows {n} is an AP (with any difference), and **pair_is_ap** shows {a,b} with a < b is an AP with difference b-a and length 2. These matter because the AP-intersection property allows singleton intersections — the key to the small-sets construction.",
     "mathContext": "The pair_is_ap proof uses interval_cases and omega tactics. The extension argument shows {a, b} = {a, a + 1·(b-a)}, matching the ArithProg with start=a, diff=b-a, len=2.",
     "significance": "key",
+    "prerequisites": [
+      "ArithProg",
+      "basic set theory",
+      "matching theory",
+      "omega tactic"
+    ],
     "relatedConcepts": [
       "ArithProg",
       "singleton",
@@ -47,6 +57,12 @@
     "content": "**hasAPIntersectionProperty F** requires that for all distinct A, B ∈ F, the intersection A ∩ B is both nonempty AND an arithmetic progression. **maxAPFamily N** is axiomatized as a function giving the maximum family size for each N. The axiomatization avoids defining it via Nat.find with a sorry, instead treating it as an abstract quantity whose properties are captured by the Simonovits-Sós and Szabó axioms.",
     "mathContext": "The nonemptiness requirement is crucial — without it, the problem becomes easier and was solved exactly by Graham-Simonovits-Sós (1980) with answer C(N,3)+C(N,2)+C(N,1)+1.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "extremal function",
+      "intersection property",
+      "natural number arithmetic"
+    ],
     "relatedConcepts": [
       "intersection property",
       "extremal function",
@@ -65,6 +81,10 @@
     "content": "**simonovits_sos_upper** and **simonovits_sos_lower** together establish t = Θ(N²): the maximum family size grows quadratically. The upper bound uses a counting argument on pairs of elements and their appearances in sets. The lower bound comes from the small-sets construction (detailed in Part V). These axioms pin down the growth rate before Szabó's more precise asymptotic.",
     "mathContext": "The quadratic growth rate means ~N²/2 sets can be packed with the AP-intersection property, while ~N² is impossible. This is typical of extremal set theory problems with pairwise constraints.",
     "significance": "key",
+    "prerequisites": [
+      "O-notation",
+      "quadratic growth"
+    ],
     "relatedConcepts": [
       "O-notation",
       "quadratic growth",
@@ -83,6 +103,11 @@
     "content": "**erdos_graham_conjecture_false** asserts that for large enough N, there exists a family F with the AP-intersection property that is strictly larger than any family of APs through ⌊N/2⌋. This disproves the natural conjecture that structured sets (APs) are optimal. The counterexample uses small sets (size ≤ 3) through a fixed element, which have trivially AP intersections (always a singleton).",
     "mathContext": "The Erdős-Graham conjecture predicted ~π²N²/24 ≈ 0.411N² sets. The small-sets construction gives ~N²/2 = 0.5N², a significant improvement. The key insight is that requiring AP intersections is easier with small sets.",
     "significance": "key",
+    "prerequisites": [
+      "counterexample",
+      "disproved conjecture",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "disproved conjecture",
       "counterexample",
@@ -101,6 +126,11 @@
     "content": "**smallSetsThroughElement N k** constructs all subsets of {1,...,N} of size ≤ 3 that contain element k. **small_sets_count** gives the exact count: C(N-1,2) + 1 (choose 2 more elements from the remaining N-1, plus the singleton {k}). **small_sets_has_AP** confirms this family satisfies the AP-intersection property: any two such sets share at least k, and {k} is a singleton AP.",
     "mathContext": "The count C(N-1,2) + 1 = (N-1)(N-2)/2 + 1 ~ N²/2 is asymptotically larger than π²N²/24 ~ N²/2.4, which is why this construction disproves Erdős-Graham.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "filter",
+      "powerset"
+    ],
     "relatedConcepts": [
       "powerset",
       "filter",
@@ -120,6 +150,10 @@
     "content": "**szabo_theorem** is the main result: |maxAPFamily(N) - N²/2| ≤ C·N^{5/3}·(log N)³ for some constant C > 0. **szabo_leading_constant** gives the precise asymptotic: maxAPFamily(N)/N² → 1/2. **szabo_lower_bound** improves the lower bound to C(N,2) + ⌊(N-1)/4⌋ + 1, beating the basic small-sets count. **szabo_common_element_conjecture** is an open structural conjecture: every extremal family has a common element k contained in all sets.",
     "mathContext": "The error term N^{5/3}(log N)³ arises from the gap between the lower bound (small-sets construction) and the upper bound (counting argument). Szabó conjectured the true error is O(N), i.e., t = C(N,2) + O(N).",
     "significance": "key",
+    "prerequisites": [
+      "Filter.Tendsto",
+      "asymptotic analysis"
+    ],
     "relatedConcepts": [
       "asymptotic analysis",
       "Filter.Tendsto",
@@ -139,6 +173,11 @@
     "content": "**erdos_272_summary** combines the two main results into a conjunction: (1) the Simonovits-Sós upper bound t = O(N²), and (2) Szabó's precise asymptotic t = N²/2 + O(N^{5/3}(log N)³). The proof is constructive, using exact ⟨...⟩ to assemble the axioms. This captures the complete resolution of Erdős Problem #272.",
     "mathContext": "The proof delegates to simonovits_sos_upper and szabo_theorem via lambda abstractions to handle the universal quantifiers over N.",
     "significance": "key",
+    "prerequisites": [
+      "axiom composition",
+      "conjunction",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "conjunction",
       "axiom composition",

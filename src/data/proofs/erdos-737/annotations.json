@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #737: Edge in All Large Cycles**\n\nLet G have chromatic number ℵ₁. Must there exist an edge e in cycles of all large lengths?\n\n**Answer:** YES (Thomassen 1983)\n\n**History:**\n- EHS (1974): G contains all large cycles\n- Thomassen (1983): Cycles can be routed through one edge",
     "mathContext": "Connects uncountable chromatic number to cycle structure in infinite graphs.",
     "significance": "key",
+    "prerequisites": [
+      "Chromatic number",
+      "Infinite graphs",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Chromatic number",
       "Infinite graphs",
@@ -29,6 +34,12 @@
     "content": "**chromaticNumber G:** Axiomatized as a cardinal-valued function.\n\n**hasChromaticNumberAleph1 G:** χ(G) = ℵ₁, the first uncountable cardinal.\n\nThis is the critical threshold for Thomassen's result. Finite or countable χ doesn't suffice.",
     "mathContext": "De Bruijn-Erdős theorem: χ(G) = sup{χ(H) : H finite subgraph}.",
     "significance": "key",
+    "prerequisites": [
+      "Cardinal",
+      "Coloring",
+      "cardinal arithmetic",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Coloring",
       "Cardinal",
@@ -49,6 +60,11 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "graph theory basics",
+      "simp tactic"
+    ],
     "significance": "key"
   },
   {
@@ -65,6 +81,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "topology"
+    ],
     "significance": "key"
   },
   {
@@ -79,6 +99,10 @@
     "content": "**thomassen_1983:** If χ(G) = ℵ₁, there exists an edge e such that G contains a cycle of length n through e for all large n.\n\nThis is STRONGER than EHS — cycles can be routed through one edge.\n\n**erdos_737_resolved** directly applies Thomassen to resolve Problem #737.",
     "mathContext": "Published in Combinatorica, 1983, pp. 133-134.",
     "significance": "key",
+    "prerequisites": [
+      "Routing",
+      "Thomassen 1983"
+    ],
     "relatedConcepts": [
       "Thomassen 1983",
       "Routing",
@@ -100,6 +124,12 @@
       "combinatorics",
       "graph theory"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "graph theory basics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -114,6 +144,11 @@
     "content": "**isUniversalCycleEdge:** An edge is \"universal\" if it lies in all large cycles.\n\n**universal_edges_exist:** Thomassen's theorem guarantees such edges exist when χ = ℵ₁.",
     "mathContext": "Lean: `def isUniversalCycleEdge (u v : V) (h : G.Adj u v) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "Edge characterization",
+      "Universal edge",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Universal edge",
       "Edge characterization"
@@ -132,6 +167,12 @@
     "mathContext": "Lean: `theorem erdos_737_summary (G : SimpleGraph V)`",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "graph theory basics",
+      "proof techniques",
+      "simp tactic"
     ],
     "significance": "key"
   }

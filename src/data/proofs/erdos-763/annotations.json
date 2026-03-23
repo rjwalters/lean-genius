@@ -11,6 +11,10 @@
     "content": "**Erdos Problem #763: The Erdos-Fuchs Theorem**\n\nThis problem asks whether a set A in N can have its representation count grow perfectly linearly with bounded error.\n\n**The Question:**\nCan sum_{n<=N} r_A(n) = cN + O(1) for some infinite set A and constant c > 0?\n\n**The Answer:** NO (Erdos-Fuchs, 1956)\n\nThe proof shows even o(N^{1/4}/(log N)^{1/2}) error is impossible.",
     "mathContext": "The representation function r_A(n) = |{(a,b) in A x A : a+b=n}| counts representations of n as a sum of two elements from A. This is the convolution 1_A * 1_A.",
     "significance": "key",
+    "prerequisites": [
+      "Additive combinatorics",
+      "Representation functions"
+    ],
     "relatedConcepts": [
       "Representation functions",
       "Additive combinatorics",
@@ -29,6 +33,12 @@
     "content": "**representationCount:**\n\nr_A(n) = |{(a, b) in A x A : a + b = n}|\n\nThis counts ordered pairs from A that sum to n.\n\n**Definition:**\n```lean\ndef representationCount (A : Finset N) (n : N) : N :=\n  (A.filter (fun a => a < n and n - a in A)).card +\n  (if n % 2 = 0 and n / 2 in A then 1 else 0)\n```\n\nThe second term handles the diagonal case a = b = n/2.",
     "mathContext": "This is the additive convolution 1_A * 1_A evaluated at n, central to additive number theory.",
     "significance": "key",
+    "prerequisites": [
+      "Additive bases",
+      "Convolution",
+      "Finset API",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Convolution",
       "Additive bases",
@@ -49,6 +59,12 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "filter theory",
+      "formal mathematics"
+    ],
     "significance": "supporting"
   },
   {
@@ -63,6 +79,12 @@
     "content": "**cumulativeRepCount:**\n\nR_A(N) = sum_{n <= N} r_A(n)\n\nThe cumulative sum of representation counts up to N.\n\n```lean\ndef cumulativeRepCount (A : Finset N) (N : N) : N :=\n  sum n in range (N + 1), representationCount' A n\n```\n\nThis equals |{(a,b) in A x A : a + b <= N}|.",
     "mathContext": "The central object in the Erdos-Fuchs theorem. The question is whether R_A(N) can be approximated by cN with bounded error.",
     "significance": "key",
+    "prerequisites": [
+      "Counting functions",
+      "Finset API",
+      "Summation",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Summation",
       "Counting functions",
@@ -81,6 +103,12 @@
     "content": "**HasLinearGrowthBounded:**\n\nA set A has asymptotically linear growth with constant c if R_A(N) = cN + O(1).\n\n```lean\ndef HasLinearGrowthBounded (A : N -> Finset N) (c : R) : Prop :=\n  exists M : R, exists N_0 : N, forall N >= N_0,\n    |cumulativeRepCount (A N) N - c * N| <= M\n```\n\nThis captures the O(1) error: the difference is bounded by some constant M.",
     "mathContext": "This is the precise formalization of 'cN + O(1)' from asymptotic analysis.",
     "significance": "key",
+    "prerequisites": [
+      "Big-O notation",
+      "Bounded error",
+      "Finset API",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Big-O notation",
       "Bounded error",
@@ -101,6 +129,12 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "filter theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -115,6 +149,10 @@
     "content": "**erdos_fuchs_theorem:**\n\nFor any infinite set A in N and constant c > 0, it is impossible that sum_{n<=N} r_A(n) = cN + O(1).\n\n```lean\naxiom erdos_fuchs_theorem :\n  forall (A : Set N), A.Infinite ->\n  forall (c : R), c > 0 ->\n  not HasLinearGrowthBounded (truncate A) c\n```\n\n**Why axiom?** The proof requires Fourier analysis on the circle, Parseval's identity, and trigonometric sum estimates not yet in Mathlib.",
     "mathContext": "Published in J. London Math. Soc. (1956) by Erdos and Fuchs. The proof analyzes the generating function (sum z^{a_i})^2.",
     "significance": "key",
+    "prerequisites": [
+      "Fourier analysis",
+      "Parseval's identity"
+    ],
     "relatedConcepts": [
       "Fourier analysis",
       "Parseval's identity",
@@ -136,6 +174,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -152,6 +195,11 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -166,6 +214,10 @@
     "content": "**erdos_fuchs_strong:**\n\nEven sum_{n<=N} r(n) = cN + o(N^{1/4}/(log N)^{1/2}) is impossible.\n\n```lean\naxiom erdos_fuchs_strong :\n  forall (A : Set N), A.Infinite ->\n  forall (c : R), c > 0 ->\n  not forall eventually N in atTop,\n    |errorTerm (truncate A) c N| < N^{1/4} / (log N)^{1/2}\n```\n\nThe error must infinitely often exceed this bound.",
     "mathContext": "This is the stronger form from the original 1956 paper, showing even small-o error is impossible.",
     "significance": "key",
+    "prerequisites": [
+      "Error bounds",
+      "Small-o notation"
+    ],
     "relatedConcepts": [
       "Small-o notation",
       "Error bounds",
@@ -187,6 +239,10 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -204,6 +260,11 @@
       "asymptotic analysis",
       "density"
     ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "density",
+      "density theory"
+    ],
     "significance": "key"
   },
   {
@@ -218,6 +279,10 @@
     "content": "**Analytic Proof Method:**\n\nWriting A = {a_1, a_2, ...}, the generating function is f(z) = sum z^{a_i}.\n\nThe representation count has generating function f(z)^2.\n\nParseval's identity relates:\nintegral |f(e^{i*theta})|^4 d*theta to sum r(n)^2\n\nThis L^4 norm controls the error term.",
     "mathContext": "The proof uses Fourier analysis on the unit circle, a technique now standard in additive combinatorics.",
     "significance": "key",
+    "prerequisites": [
+      "Fourier series",
+      "Generating functions"
+    ],
     "relatedConcepts": [
       "Generating functions",
       "Fourier series",
@@ -236,6 +301,11 @@
     "content": "**perfectSquares:**\n\nA = {n^2 : n in N} = {0, 1, 4, 9, 16, 25, ...}\n\n```lean\ndef perfectSquares : Set N := {n : N | exists k : N, n = k^2}\n```\n\nFor squares, r(n) = O(n^eps) (very sparse representations).\nThe cumulative sum grows much slower than linear.",
     "mathContext": "The representation function for squares relates to sums of two squares, connected to Jacobi's formula.",
     "significance": "supporting",
+    "prerequisites": [
+      "Jacobi's formula",
+      "Sums of squares",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Sums of squares",
       "Jacobi's formula"
@@ -255,6 +325,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "supporting"
   },
   {
@@ -269,6 +343,11 @@
     "content": "**IsSidonSet:**\n\nA set A is Sidon if all pairwise sums are distinct:\na + b = c + d with a <= b, c <= d implies a = c and b = d.\n\n```lean\ndef IsSidonSet (A : Set N) : Prop :=\n  forall a b c d : N, a in A -> b in A -> c in A -> d in A ->\n    a <= b -> c <= d -> a + b = c + d -> (a = c and b = d)\n```\n\nFor Sidon sets, r(n) is in {0, 1, 2} for all n.",
     "mathContext": "Named after Simon Sidon; also called B_2 sequences. Studied extensively in additive combinatorics.",
     "significance": "key",
+    "prerequisites": [
+      "Additive combinatorics",
+      "B_h sequences",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "B_h sequences",
       "Additive combinatorics"
@@ -289,6 +368,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -303,6 +387,10 @@
     "content": "**erdos_fuchs_k_fold:**\n\nProblem #764 asks about k-fold representations:\nCan sum_{n<=N} r_k(n) = cN + O(1) where r_k counts representations as sums of k elements?\n\nThe Erdos-Fuchs theorem extends to this case with similar N^{1/4} bounds.\n\nSee erdosproblems.com/764 for the generalization.",
     "mathContext": "$Can sum_{n<=N} r_k(n) = cN + O(1) where r_k counts representations as sums of k elements?$",
     "significance": "supporting",
+    "prerequisites": [
+      "Problem #764",
+      "k-fold sums"
+    ],
     "relatedConcepts": [
       "Problem #764",
       "k-fold sums"
@@ -323,6 +411,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -339,6 +432,11 @@
     "relatedConcepts": [
       "bounds",
       "inequalities"
+    ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
     ],
     "significance": "key"
   }

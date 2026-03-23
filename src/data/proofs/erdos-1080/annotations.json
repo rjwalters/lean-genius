@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #1080:**\n\nDoes there exist a constant c > 0 such that bipartite graphs on n vertices with one part of size ⌊n^(2/3)⌋ and at least cn edges must contain a 6-cycle?\n\n**Answer: NO**\n\nDe Caen and Székely (1992) disproved this by showing that C_4,C_6-free bipartite graphs can have superlinearly many edges.",
     "mathContext": "This is an extremal graph theory problem about forcing cycles in sparse bipartite graphs. The specific partition constraint ⌊n^(2/3)⌋ creates interesting threshold behavior.",
     "significance": "key",
+    "prerequisites": [
+      "Bipartite graphs",
+      "Extremal graph theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Extremal graph theory",
       "Bipartite graphs",
@@ -29,6 +34,12 @@
     "content": "**IsBipartition G X Y:**\n\nA bipartition of graph G into sets X and Y requires:\n1. X and Y are disjoint\n2. X ∪ Y covers all vertices\n3. Every edge goes between X and Y\n\n```lean\ndef IsBipartition (G : SimpleGraph V) (X Y : Set V) : Prop :=\n  Disjoint X Y ∧ X ∪ Y = Set.univ ∧ ∀ u v, G.Adj u v → (u ∈ X ↔ v ∈ Y)\n```",
     "mathContext": "Bipartite graphs are fundamental in combinatorics. Many extremal problems have different behavior for bipartite vs general graphs.",
     "significance": "key",
+    "prerequisites": [
+      "Bipartite graphs",
+      "Graph partitions",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Bipartite graphs",
       "Graph partitions",
@@ -51,6 +62,12 @@
       "graph theory",
       "partition"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "graph theory basics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -65,6 +82,12 @@
     "content": "**HasCycleOfLength G k:**\n\nThe graph G contains a cycle of length k.\n\nA cycle is a closed walk that visits each vertex at most once (except the start/end vertex).\n\n```lean\ndef HasCycleOfLength (G : SimpleGraph V) (k : ℕ) : Prop :=\n  ∃ (v : V) (walk : G.Walk v v), walk.IsCycle ∧ walk.length = k\n```",
     "mathContext": "Cycles are fundamental graph structures. In bipartite graphs, all cycles have even length.",
     "significance": "key",
+    "prerequisites": [
+      "Graph walks",
+      "Paths",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Graph walks",
       "Paths",
@@ -83,6 +106,12 @@
     "content": "**C4Free, C6Free, C4C6Free:**\n\nPredicates for graphs avoiding specific short cycles.\n\n- **C4Free G:** G contains no 4-cycle (equivalently, no K_{2,2})\n- **C6Free G:** G contains no 6-cycle\n- **C4C6Free G:** G contains neither 4-cycles nor 6-cycles\n\nThese are central to the extremal function f(n,m) studied in this problem.",
     "mathContext": "Lean: `def C4Free {V : Type*} (G : SimpleGraph V) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "Forbidden subgraphs",
+      "Girth",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Girth",
       "Forbidden subgraphs",
@@ -101,6 +130,12 @@
     "content": "**maxC4C6FreeEdges n m:**\n\nThe maximum number of edges in a bipartite graph with parts of size n and m that contains no C_4 or C_6.\n\nThis is denoted f(n,m) in the literature.\n\n**Key insight:** If f(n, ⌊n^(2/3)⌋) grows faster than O(n), then no constant c can force a C_6.",
     "mathContext": "Extremal functions are central to Turan-type problems. For bipartite graphs, forbidding short cycles allows more edges than forbidding complete bipartite subgraphs.",
     "significance": "key",
+    "prerequisites": [
+      "Extremal graph theory",
+      "Turan numbers",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Turan numbers",
       "Extremal graph theory",
@@ -119,6 +154,11 @@
     "content": "**deCaen_szekely_upper_bound:**\n\nf(n, ⌊n^(2/3)⌋) = O(n^(10/9))\n\nMore generally, for n^(1/2) <= m <= n:\nf(n, m) = O((nm)^(2/3))\n\nThis establishes an upper limit on how many edges a C_4,C_6-free bipartite graph can have.",
     "mathContext": "The proof uses probabilistic counting arguments and the structure of short cycles in bipartite graphs.",
     "significance": "key",
+    "prerequisites": [
+      "Double counting",
+      "Probabilistic method",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Probabilistic method",
       "Double counting"
@@ -139,6 +179,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "omega tactic"
+    ],
     "significance": "key"
   },
   {
@@ -153,6 +198,12 @@
     "content": "**lazebnik_ustimenko_woldar_bound:**\n\nf(n, ⌊n^(2/3)⌋) = Omega(n^(16/15 + o(1)))\n\nThis improves De Caen-Szekely's lower bound from 58/57 to 16/15.\n\nThe construction uses incidence graphs of algebraic structures related to generalized polygons.",
     "mathContext": "Algebraic constructions from finite geometry often provide optimal or near-optimal extremal graphs.",
     "significance": "key",
+    "prerequisites": [
+      "Algebraic graph constructions",
+      "Generalized polygons",
+      "graph theory basics",
+      "omega tactic"
+    ],
     "relatedConcepts": [
       "Algebraic graph constructions",
       "Generalized polygons",
@@ -176,6 +227,12 @@
       "indirect proof",
       "proof by contradiction"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "graph theory basics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -193,6 +250,12 @@
       "combinatorics",
       "graph theory"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "graph theory basics",
+      "omega tactic"
+    ],
     "significance": "key"
   },
   {
@@ -207,6 +270,11 @@
     "content": "**erdos_c8_observation:**\n\nErdos noted that while C_6 cannot be forced with O(n) edges, C_8 CAN be.\n\nThere exists c > 0 such that bipartite graphs with ⌊n^(2/3)⌋ vertices in one part and cn edges must contain an 8-cycle.\n\nThis shows an interesting dichotomy: C_6 and C_8 have different forcing thresholds.",
     "mathContext": "The gap between C_6 and C_8 thresholds reflects the structure of short cycles in bipartite graphs.",
     "significance": "key",
+    "prerequisites": [
+      "Cycle forcing",
+      "Girth",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Cycle forcing",
       "Girth",
@@ -225,6 +293,11 @@
     "content": "**kovari_sos_turan:**\n\nThe classical theorem bounding edges in bipartite graphs avoiding complete bipartite subgraphs.\n\nFor a bipartite graph with parts of size n and m avoiding K_{s,t}:\n|E| <= (1/2)(t-1)^(1/s) * m * n^(1-1/s) + (s-1)n/2\n\nThis is relevant because C_4 = K_{2,2}, so C_4-free graphs avoid K_{2,2}.",
     "mathContext": "The Kovari-Sos-Turan theorem (1954) is foundational in extremal graph theory and gives the Zarankiewicz bound.",
     "significance": "key",
+    "prerequisites": [
+      "Complete bipartite graphs",
+      "Zarankiewicz problem",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Zarankiewicz problem",
       "Complete bipartite graphs",
@@ -246,6 +319,12 @@
       "combinatorics",
       "graph theory"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "graph theory basics",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -261,6 +340,10 @@
     "mathContext": "Lean: `theorem erdos_1080_summary :`",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   }

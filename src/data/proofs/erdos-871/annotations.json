@@ -11,6 +11,10 @@
     "content": "Erdős Problem #871 asked whether an additive basis A of order 2 with r_A(n) → ∞ can always be partitioned into two disjoint order-2 bases. Daniel Larsen (2026) proved the answer is NO using an AI-assisted construction with Claude Opus 4.5.",
     "mathContext": "The problem sits between two known results: (1) for fixed threshold r_A(n) ≥ t, partition can fail; (2) for r_A(n) > c log n, partition is possible. The r_A(n) → ∞ case was open until Larsen's disproof.",
     "significance": "key",
+    "prerequisites": [
+      "additive-basis",
+      "partition"
+    ],
     "relatedConcepts": [
       "additive-basis",
       "partition",
@@ -29,6 +33,12 @@
     "content": "r_A(n) = |{(a,b) ∈ A × A : a + b = n}| counts ordered pairs summing to n. This measures how 'redundantly' n is covered by the sumset A + A. More representations mean more flexibility for partition.",
     "mathContext": "We use Set.ncard for the cardinality of the set of pairs. The function is noncomputable since it involves arbitrary infinite sets.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "cardinal arithmetic",
+      "counting",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "sumset",
       "counting",
@@ -47,6 +57,11 @@
     "content": "The sumset A + A = {a + b : a, b ∈ A} is the set of all pairwise sums from A. An order-2 basis is a set whose sumset covers all but finitely many naturals.",
     "mathContext": "This is the foundational concept for additive bases. The notation A +ₛ B is used for sumset unions in some contexts.",
     "significance": "key",
+    "prerequisites": [
+      "additive-combinatorics",
+      "basic set theory",
+      "sumset"
+    ],
     "relatedConcepts": [
       "additive-combinatorics",
       "sumset",
@@ -65,6 +80,11 @@
     "content": "A is an additive basis of order 2 if A + A covers all sufficiently large n. Equivalently, the complement (A + A)ᶜ is finite. The equivalence is proved in basis2_equiv.",
     "mathContext": "The 'order' refers to how many elements are summed. Order 2 means pairs a + b; order 3 would need a + b + c.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "coverage",
+      "order"
+    ],
     "relatedConcepts": [
       "order",
       "coverage",
@@ -83,6 +103,11 @@
     "content": "The two definitions of order-2 basis are equivalent: (1) ∃N₀, ∀n ≥ N₀, n ∈ A + A, and (2) (A + A)ᶜ is finite. The proof uses BddAbove for the finite complement case.",
     "mathContext": "This equivalence is standard but the formal proof requires careful handling of the cases where the complement is empty vs nonempty.",
     "significance": "supporting",
+    "prerequisites": [
+      "complement",
+      "equivalence",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "equivalence",
       "complement",
@@ -101,6 +126,12 @@
     "content": "RepTendsToInfty(A) says that r_A(n) grows without bound as n → ∞. This is formalized using Filter.Tendsto to atTop. The weaker RepEventuallyGe(A, t) says r_A(n) ≥ t eventually.",
     "mathContext": "The Tendsto characterization lets us extract: for any t, eventually r_A(n) ≥ t. This is proved in repTendsToInfty_implies_eventuallyGe.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "filter theory",
+      "growth",
+      "tendsto"
+    ],
     "relatedConcepts": [
       "tendsto",
       "growth",
@@ -119,6 +150,12 @@
     "content": "If r_A(n) → ∞, then for any fixed t, r_A(n) ≥ t eventually. This shows the r_A(n) → ∞ condition is strictly stronger than having a fixed threshold.",
     "mathContext": "The proof uses the atTop filter characterization of limits. We extract the witness N₀ from the Tendsto definition.",
     "significance": "key",
+    "prerequisites": [
+      "filter theory",
+      "implication",
+      "proof techniques",
+      "threshold"
+    ],
     "relatedConcepts": [
       "implication",
       "threshold",
@@ -137,6 +174,11 @@
     "content": "CanPartitionIntoBases(A) asserts that A can be split into disjoint sets B and C, each of which is itself an order-2 basis. This is the property the conjecture asked about.",
     "mathContext": "The partition requirement is B ∩ C = ∅ and B ∪ C = A. Both B and C must independently cover all large integers.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "disjoint",
+      "partition"
+    ],
     "relatedConcepts": [
       "partition",
       "disjoint",
@@ -155,6 +197,11 @@
     "content": "Erdos871Conjecture states: for all A, if A is an order-2 basis with r_A(n) → ∞, then A can be partitioned into two disjoint order-2 bases. This is what Larsen disproved.",
     "mathContext": "The conjecture seemed plausible because growing representations suggest 'enough room' to split. The disproof shows this intuition fails.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "conjecture",
+      "quantifier"
+    ],
     "relatedConcepts": [
       "conjecture",
       "quantifier",
@@ -173,6 +220,10 @@
     "content": "For any fixed threshold t, there exists a basis A with r_A(n) ≥ t (eventually) that cannot be partitioned. This was known since 1989 and inspired the stronger conjecture.",
     "mathContext": "The construction uses a 'blocking' technique to ensure any partition fails. Larsen extended this to handle r_A(n) → ∞.",
     "significance": "key",
+    "prerequisites": [
+      "counterexample",
+      "erdos-nathanson"
+    ],
     "relatedConcepts": [
       "erdos-nathanson",
       "counterexample",
@@ -191,6 +242,10 @@
     "content": "When r_A(n) > c log n for c > (log 4/3)^{-1} ≈ 3.48, partition IS possible. This shows logarithmic growth is sufficient for partition.",
     "mathContext": "The threshold c ≈ 3.48 comes from a probabilistic argument. Faster growth gives more 'slack' for splitting.",
     "significance": "key",
+    "prerequisites": [
+      "logarithmic",
+      "positive-result"
+    ],
     "relatedConcepts": [
       "positive-result",
       "logarithmic",
@@ -209,6 +264,10 @@
     "content": "There exists a basis A with r_A(n) → ∞ that cannot be partitioned. This is the key axiom that disproves the conjecture. The construction was found with AI assistance.",
     "mathContext": "The axiom states existence; the construction sketch in the file explains the technique. Full details are in Larsen's paper.",
     "significance": "key",
+    "prerequisites": [
+      "counterexample",
+      "disproof"
+    ],
     "relatedConcepts": [
       "counterexample",
       "disproof",
@@ -227,6 +286,11 @@
     "content": "erdos_871_disproved proves ¬Erdos871Conjecture. The proof applies the conjecture to the Larsen counterexample, obtaining a contradiction.",
     "mathContext": "This is a classic proof by contradiction: assume the conjecture, apply to the counterexample, derive False.",
     "significance": "key",
+    "prerequisites": [
+      "contradiction",
+      "disproof",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "disproof",
       "contradiction",
@@ -245,6 +309,12 @@
     "content": "HasBlockingProperty(A) says: for any partition B ∪ C = A, infinitely many n satisfy n ∉ B + B or n ∉ C + C. This prevents both parts from being bases.",
     "mathContext": "The blocking is quantified using Filter.Frequently (∃ᶠ), meaning infinitely many failures. This is the key obstruction to partition.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "blocking",
+      "filter theory",
+      "frequently"
+    ],
     "relatedConcepts": [
       "blocking",
       "frequently",
@@ -263,6 +333,12 @@
     "content": "If A has the blocking property, then A cannot be partitioned into two bases. The proof shows that the 'frequently fails' condition contradicts both parts being bases (which must cover all large n).",
     "mathContext": "The proof uses the Filter.Frequently characterization to derive a contradiction with the eventually-covers property of bases.",
     "significance": "key",
+    "prerequisites": [
+      "contradiction",
+      "filter theory",
+      "implication",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "implication",
       "contradiction",
@@ -281,6 +357,10 @@
     "content": "The Larsen construction produces A with: (1) A is an order-2 basis, (2) r_A(n) → ∞, (3) A has the blocking property. This combines the positive aspects with the partition-preventing feature.",
     "mathContext": "The key insight is that the blocking property can be maintained even as representations grow unboundedly.",
     "significance": "key",
+    "prerequisites": [
+      "combination",
+      "construction"
+    ],
     "relatedConcepts": [
       "construction",
       "combination",

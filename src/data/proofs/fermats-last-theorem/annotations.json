@@ -11,6 +11,12 @@
     "content": "We import from Mathlib's FLT modules: `FLT.Basic` for the theorem statement, `FLT.Four` for Fermat's descent proof of the n=4 case, and ring theory for integer properties.",
     "mathContext": "Overview: We import from Mathlib's FLT modules: `FLT.Basic` for the theorem statement, `FLT.Four` for Fermat's descent proof of the n=4 case, and ring theory for integer properties.",
     "significance": "supporting",
+    "prerequisites": [
+      "Lean 4",
+      "Mathlib",
+      "module theory",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Mathlib",
       "Lean 4",
@@ -29,6 +35,12 @@
     "content": "Fermat's marginal note in 1637 launched the longest-running open problem in mathematics. His claim to have a \"truly marvelous proof\" almost certainly referred only to the n=4 case, which uses infinite descent. The full theorem required 20th-century machinery that Fermat could not have imagined.",
     "mathContext": "The theorem resisted attack for centuries: Euler proved n=3 (1770), Sophie Germain developed techniques for certain primes (1823), and Kummer proved it for regular primes (1850s). But the full proof waited for Wiles.",
     "significance": "key",
+    "prerequisites": [
+      "Euler's work",
+      "history of mathematics",
+      "number theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "history of mathematics",
       "number theory",
@@ -47,6 +59,11 @@
     "content": "Mathlib defines `FermatLastTheoremFor n` as: for all integers a, b, c, if all three are non-zero, then $a^n + b^n \\neq c^n$. This is the standard formulation excluding trivial solutions where any variable is zero.",
     "mathContext": "The formulation allows negative integers, which is equivalent to the positive integer statement. If $(-a)^n + b^n = c^n$ with a positive, we can rearrange to get a positive solution.",
     "significance": "critical",
+    "prerequisites": [
+      "Diophantine equations",
+      "basic set theory",
+      "integer solutions"
+    ],
     "relatedConcepts": [
       "Diophantine equations",
       "integer solutions",
@@ -65,6 +82,10 @@
     "content": "The Frey curve is the key construction. Given a hypothetical counterexample $(a, b, c)$ with $a^p + b^p = c^p$, we build the elliptic curve $E: y^2 = x(x - a^p)(x + b^p)$. This curve has unusual arithmetic properties that lead to a contradiction.",
     "mathContext": "Gerhard Frey proposed in 1984 that such a curve would be \"too weird to exist\" - specifically, it would violate the Taniyama-Shimura conjecture about modularity. This brilliant insight connected Fermat to elliptic curves.",
     "significance": "critical",
+    "prerequisites": [
+      "Frey",
+      "elliptic curves"
+    ],
     "relatedConcepts": [
       "elliptic curves",
       "Frey",
@@ -105,6 +126,12 @@
     "content": "**Wiles' Main Theorem**: Every semi-stable elliptic curve over $\\mathbb{Q}$ is modular. This means there exists a modular form $f$ of weight 2 such that $L(E, s) = L(f, s)$ - the L-functions match.",
     "mathContext": "Modularity connects geometry (elliptic curves) to analysis (modular forms). The L-function encodes how many points $E$ has over each finite field $\\mathbb{F}_p$. This deep connection is part of the Langlands program.",
     "significance": "critical",
+    "prerequisites": [
+      "L-functions",
+      "field theory",
+      "logical reasoning",
+      "modular forms"
+    ],
     "relatedConcepts": [
       "modular forms",
       "L-functions",
@@ -167,6 +194,11 @@
     "content": "Fermat himself proved the n=4 case using **infinite descent**: assume the smallest solution exists, construct a strictly smaller solution, contradiction. This is the only case Fermat definitely proved.",
     "mathContext": "The proof actually shows $x^4 + y^4 = z^2$ has no positive solutions, which is stronger. Fermat's descent uses the parameterization of Pythagorean triples repeatedly.",
     "significance": "key",
+    "prerequisites": [
+      "Pythagorean triples",
+      "infinite descent",
+      "logical reasoning"
+    ],
     "relatedConcepts": [
       "infinite descent",
       "Pythagorean triples",
@@ -185,6 +217,12 @@
     "content": "Euler proved n=3 in 1770 using the **Eisenstein integers** $\\mathbb{Z}[\\omega]$ where $\\omega = e^{2\\pi i/3}$. This ring has unique factorization, enabling a descent argument. The proof is fully formalized in Mathlib!",
     "mathContext": "The key is that $x^3 + y^3 = (x + y)(x + \\omega y)(x + \\omega^2 y)$ factors in $\\mathbb{Z}[\\omega]$. Analyzing this factorization leads to a contradiction.",
     "significance": "key",
+    "prerequisites": [
+      "Eisenstein integers",
+      "Euler's work",
+      "logical reasoning",
+      "omega tactic"
+    ],
     "relatedConcepts": [
       "Eisenstein integers",
       "unique factorization",
@@ -203,6 +241,12 @@
     "content": "If FLT holds for exponent $n$, it holds for all multiples of $n$. Why? If $a^{nm} + b^{nm} = c^{nm}$, then $(a^m)^n + (b^m)^n = (c^m)^n$, contradicting FLT for $n$.",
     "mathContext": "This means we only need to prove FLT for n=4 and all odd primes. Since every n ≥ 3 is divisible by 4 or an odd prime, this covers everything.",
     "significance": "supporting",
+    "prerequisites": [
+      "divisibility",
+      "prime factorization",
+      "prime numbers",
+      "reduction"
+    ],
     "relatedConcepts": [
       "reduction",
       "prime factorization",

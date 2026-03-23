@@ -11,6 +11,12 @@
     "content": "This module formalizes **Erdos Problem #786**: Can we find sets with arbitrarily high density where equal products must have equal numbers of factors? This is called a 'multiplicative cardinality set'.",
     "mathContext": "The problem is OPEN. Selfridge achieved density 1/e - epsilon using consecutive primes. Ruzsa claimed density 1 is impossible but never published the proof.",
     "significance": "supporting",
+    "prerequisites": [
+      "cardinal arithmetic",
+      "density",
+      "density theory",
+      "module theory"
+    ],
     "relatedConcepts": [
       "multiplicative structure",
       "density",
@@ -29,6 +35,12 @@
     "content": "**IsMulCardSet A** means: if a1 * a2 * ... * ar = b1 * b2 * ... * bs with all elements in A, then r = s. Equal products must have equal numbers of factors.",
     "mathContext": "This is the core constraint of the problem. We quantify over all finite subsets a, b of A with equal products, requiring equal cardinalities.",
     "significance": "key",
+    "prerequisites": [
+      "CommMonoid",
+      "Finset.prod",
+      "basic set theory",
+      "cardinal arithmetic"
+    ],
     "relatedConcepts": [
       "CommMonoid",
       "Finset.prod",
@@ -47,6 +59,12 @@
     "content": "**HasNaturalDensity A delta** means |A intersect {1,...,n}| / n converges to delta as n -> infinity. This measures the 'proportion' of naturals in A.",
     "mathContext": "We use Filter.Tendsto atTop to formalize the limit. The density 1 means 'almost all' integers; density 0 means 'almost none'.",
     "significance": "key",
+    "prerequisites": [
+      "Filter.Tendsto",
+      "atTop",
+      "basic set theory",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Filter.Tendsto",
       "atTop",
@@ -65,6 +83,12 @@
     "content": "**DensityConjecture**: For any epsilon > 0, does there exist a MulCardSet with density > 1 - epsilon? Can we get arbitrarily close to density 1?",
     "mathContext": "This is the main open question. If true, we could find MulCardSets with density 0.99, 0.999, etc. Currently the best is 1/e approx 0.368.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "density bounds",
+      "density theory",
+      "open problem"
+    ],
     "relatedConcepts": [
       "open problem",
       "density bounds",
@@ -83,6 +107,12 @@
     "content": "**FiniteConjecture**: Can we find A in {1,...,N} of size >= (1-o(1))N that is a MulCardSet? The o(1) means the 'wasted' fraction goes to 0 as N -> infinity.",
     "mathContext": "This is a finite version of the density question. We use Tendsto f atTop (nhds 0) to express that f(N) -> 0.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "density theory",
+      "finite sets",
+      "o(1) notation"
+    ],
     "relatedConcepts": [
       "finite sets",
       "o(1) notation",
@@ -101,6 +131,11 @@
     "content": "**mod4_example**: Integers n where n mod 4 = 2 form a MulCardSet with density 1/4. Examples: 2, 6, 10, 14, 18, ...",
     "mathContext": "Why it works: n mod 4 = 2 means exactly one factor of 2 (i.e., n = 2 * odd). A product of r such integers has exactly r factors of 2. So equal products require equal r.",
     "significance": "key",
+    "prerequisites": [
+      "density theory",
+      "factor of 2",
+      "modular arithmetic"
+    ],
     "relatedConcepts": [
       "modular arithmetic",
       "factor of 2",
@@ -119,6 +154,12 @@
     "content": "**ConsecutivePrimes p** means p is a strictly increasing sequence with no primes between consecutive terms. For example: 11, 13 are consecutive primes.",
     "mathContext": "Selfridge's construction requires consecutive primes where the sum of reciprocals crosses 1. This condition ensures the prime gaps are controlled.",
     "significance": "supporting",
+    "prerequisites": [
+      "Nat.Prime",
+      "StrictMono",
+      "basic set theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Nat.Prime",
       "StrictMono",
@@ -137,6 +178,12 @@
     "content": "**selfridge_construction**: For any epsilon > 0, there exists a MulCardSet with density 1/e - epsilon. This is the best known construction!",
     "mathContext": "Construction: Take consecutive primes p1 < ... < pk where sum(1/pi) crosses 1. Let A = {n : exactly one pi divides n}. Then A has density approaching 1/e by inclusion-exclusion.",
     "significance": "key",
+    "prerequisites": [
+      "1/e",
+      "consecutive primes",
+      "density theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "consecutive primes",
       "1/e",
@@ -155,6 +202,11 @@
     "content": "**ruzsa_upper_bound_unpublished**: The maximum size of a MulCardSet in {1,...,N} is at most (1-c)N for some constant c > 0. This would mean density 1 is impossible.",
     "mathContext": "Ruzsa reportedly proved this around the time of Erdos's papers, but the proof was never published. The exact value of c is unknown.",
     "significance": "key",
+    "prerequisites": [
+      "density theory",
+      "unpublished",
+      "upper bound"
+    ],
     "relatedConcepts": [
       "upper bound",
       "unpublished",
@@ -173,6 +225,12 @@
     "content": "**log2_lower_bound**: Integers in {1,...,N} with a prime factor > sqrt(N) form a MulCardSet of size >= (log 2) * N.",
     "mathContext": "Why it works: if n has a large prime factor p > sqrt(N), then any factorization of n^2 into products from this set forces unique factor counts. The density is about log 2 approx 0.693.",
     "significance": "supporting",
+    "prerequisites": [
+      "density theory",
+      "large prime factors",
+      "log 2",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "large prime factors",
       "log 2",
@@ -191,6 +249,12 @@
     "content": "The key insight: MulCardSets force **factorization patterns to be unique**. Each element carries a 'signature' that counts toward the product's total.",
     "mathContext": "For mod 4: the signature is 'exactly 1 factor of 2'. For Selfridge: the signature is 'divisible by exactly one selected prime'. Equal products require equal signature counts.",
     "significance": "key",
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "prime numbers",
+      "uniqueness"
+    ],
     "relatedConcepts": [
       "factorization",
       "uniqueness",
@@ -209,6 +273,11 @@
     "content": "We verify concrete examples: 2 mod 4 = 2, 6 mod 4 = 2, 10 mod 4 = 2. Also 2 * 6 = 12, showing products can be computed.",
     "mathContext": "These are verified by native_decide, providing constructive evidence that the mod 4 set contains these elements.",
     "significance": "supporting",
+    "prerequisites": [
+      "concrete examples",
+      "native_decide",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "native_decide",
       "concrete examples",
@@ -227,6 +296,12 @@
     "content": "**erdos_786_summary** combines the known results: (1) mod 4 achieves density 1/4, (2) Selfridge achieves density 1/e - epsilon for any epsilon > 0.",
     "mathContext": "This is a proved theorem (not axiom) that packages the two existence axioms. It shows we have concrete constructions achieving known density bounds.",
     "significance": "key",
+    "prerequisites": [
+      "density theory",
+      "existence",
+      "proof techniques",
+      "summary"
+    ],
     "relatedConcepts": [
       "summary",
       "existence",

@@ -11,6 +11,11 @@
     "content": "This proof formalizes a result from Donald Knuth's 29th Annual Christmas Lecture at Stanford (December 4, 2025). Knuth revealed that every closed knight's tour must include at least 4 'oblique' turns (where the knight changes direction by more than 90 degrees), and remarkably, exactly one tour achieves this minimum.\n\nAs Knuth put it: 'It's a beauty.'",
     "mathContext": "The knight's tour problem asks: can a knight visit all 64 squares of a chessboard exactly once and return to the start? This is equivalent to finding a Hamiltonian cycle in the knight graph.",
     "significance": "critical",
+    "prerequisites": [
+      "Hamiltonian cycle",
+      "graph theory basics",
+      "knight graph"
+    ],
     "relatedConcepts": [
       "Hamiltonian cycle",
       "knight graph",
@@ -30,6 +35,12 @@
     "content": "We build on Lean's Mathlib library:\n\n- **SimpleGraph**: For modeling the knight's movement graph\n- **Fin**: Finite types for board coordinates (0-7)\n- **ZMod**: Modular arithmetic for the winding argument\n- **Int**: Signed integers for move offsets\n- **List**: For representing tour sequences",
     "mathContext": "Mathlib provides battle-tested formalizations of mathematical structures. Using `SimpleGraph` ensures our knight graph automatically satisfies symmetry and irreflexivity properties.",
     "significance": "supporting",
+    "prerequisites": [
+      "Lean 4",
+      "Mathlib",
+      "graph theory basics",
+      "modular arithmetic"
+    ],
     "relatedConcepts": [
       "Mathlib",
       "Lean 4",
@@ -48,6 +59,12 @@
     "content": "We model the 8x8 chessboard using `Fin 8 x Fin 8`, the Cartesian product of two copies of the finite type with 8 elements (0 through 7). Each square is identified by its (column, row) coordinates.\n\nUsing `abbrev` creates a transparent alias, so `Square` can be used interchangeably with `Fin 8 x Fin 8`.",
     "mathContext": "$\\text{Square} = \\text{Fin } 8 \\times \\text{Fin } 8 = \\{0,1,...,7\\}^2$\n\nThis gives us exactly 64 squares, matching the chessboard. Lean automatically derives that `Square` is a `Fintype` with decidable equality.",
     "significance": "supporting",
+    "prerequisites": [
+      "Cartesian product",
+      "Fin type",
+      "Fintype",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Fin type",
       "Cartesian product",
@@ -107,6 +124,12 @@
     "content": "A `MoveVector` packages a knight move direction as integers (dx, dy) together with a proof that these form a valid knight offset.\n\nThis dependent type ensures we only work with the 8 legal knight directions. The `allMoveVectors` list enumerates all 8, with `by decide` automatically checking validity.",
     "mathContext": "The 8 move vectors form a discrete set on the integer lattice $\\mathbb{Z}^2$, all at distance $\\sqrt{5}$ from the origin.\n\nNumbering them 0-7 counterclockwise maps to directions: NNE, ENE, ESE, SSE, SSW, WSW, WNW, NNW.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "dependent type",
+      "ring tactic",
+      "vector"
+    ],
     "relatedConcepts": [
       "dependent type",
       "vector",
@@ -125,6 +148,12 @@
     "content": "The **dot product** measures alignment between vectors:\n\n- **Positive**: vectors point in similar directions (acute angle, < 90°)\n- **Zero**: vectors are perpendicular (right angle, = 90°)\n- **Negative**: vectors point in opposing directions (obtuse angle, > 90°)\n\nFor knight moves, this determines whether a turn is 'oblique'.",
     "mathContext": "$\\vec{v}_1 \\cdot \\vec{v}_2 = dx_1 \\cdot dx_2 + dy_1 \\cdot dy_2$\n\nGeometrically: $\\vec{v}_1 \\cdot \\vec{v}_2 = |\\vec{v}_1| |\\vec{v}_2| \\cos\\theta$\n\nSo $\\cos\\theta < 0 \\iff \\theta > 90°$ iff dot product is negative.",
     "significance": "critical",
+    "prerequisites": [
+      "angle",
+      "basic set theory",
+      "dot product",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "dot product",
       "angle",
@@ -227,6 +256,10 @@
     "content": "A crucial insight: knight moves have exactly 8 directions, which we number 0-7 counterclockwise. This maps to $\\mathbb{Z}/8\\mathbb{Z}$ (integers mod 8).\n\n**Direction assignments**:\n- 0: NNE (+1,+2)\n- 1: ENE (+2,+1)\n- 2: ESE (+2,-1)\n- 3: SSE (+1,-2)\n- 4: SSW (-1,-2)\n- 5: WSW (-2,-1)\n- 6: WNW (-2,+1)\n- 7: NNW (-1,+2)\n\nOpposite directions differ by 4 (mod 8).",
     "mathContext": "$\\text{dir} : \\text{MoveVector} \\to \\mathbb{Z}/8\\mathbb{Z}$\n\nConsecutive directions differ by 1 unit = 45°.\nA full rotation is 8 units = 360°.",
     "significance": "critical",
+    "prerequisites": [
+      "discrete geometry",
+      "modular arithmetic"
+    ],
     "relatedConcepts": [
       "modular arithmetic",
       "discrete geometry",
@@ -330,6 +363,12 @@
     "content": "The chessboard has 8 symmetries forming the **dihedral group D4**:\n\n- **4 rotations**: 0°, 90°, 180°, 270° about the center\n- **4 reflections**: horizontal, vertical, two diagonals\n\nThese preserve the knight graph: if squares A, B are knight-adjacent, so are their images under any D4 transformation.\n\nThis 8-fold symmetry reduces the search space for uniqueness.",
     "mathContext": "$D_4 = \\langle r, s \\mid r^4 = s^2 = 1, srs = r^{-1} \\rangle$\n\n$|D_4| = 8$, reducing ~13 trillion tours to ~1.7 trillion equivalence classes.",
     "significance": "key",
+    "prerequisites": [
+      "dihedral group",
+      "graph theory basics",
+      "group theory",
+      "symmetry group"
+    ],
     "relatedConcepts": [
       "dihedral group",
       "symmetry group",
@@ -348,6 +387,12 @@
     "content": "We define 90° counterclockwise rotation about the board center.\n\nFor a square at (x, y), the rotated position is (7-y, x). This maps:\n- a1 (0,0) → a8 (0,7) → h8 (7,7) → h1 (7,0) → a1\n\nApplying 4 times returns to the original, matching the cyclic group structure.",
     "mathContext": "$R_{90°}(x, y) = (7-y, x)$\n\nThe board center is at (3.5, 3.5). The formula accounts for this by using 7 - y instead of -y.",
     "significance": "supporting",
+    "prerequisites": [
+      "basic set theory",
+      "coordinate transformation",
+      "group theory",
+      "matching theory"
+    ],
     "relatedConcepts": [
       "rotation",
       "coordinate transformation"

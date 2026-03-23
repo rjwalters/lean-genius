@@ -11,6 +11,10 @@
     "content": "**Erdős Problem #885** asks about common factor difference sets.\n\n**Definition**: For n ≥ 1, D(n) = {|a - b| : n = ab}\n\n**Conjecture**: For every k ≥ 1, there exist k integers whose D sets have ≥ k elements in common.\n\n**Timeline**:\n- 1997: Erdős-Rosenfeld prove k = 2\n- 1999: Jiménez-Urroz proves k = 3\n- 2019: Bremner proves k = 4\n- k ≥ 5 remains **OPEN**",
     "mathContext": "D(n) captures the arithmetic structure of n's factorizations through their differences.",
     "significance": "key",
+    "prerequisites": [
+      "divisors",
+      "factorization"
+    ],
     "relatedConcepts": [
       "factorization",
       "divisors",
@@ -29,6 +33,12 @@
     "content": "**factorDifferenceSet n** = {d | ∃ a b, n = a * b ∧ d = |a - b|}\n\nThis captures all possible absolute differences between factor pairs.\n\n**Examples**:\n- D(12) = {11, 4, 1} from 1×12, 2×6, 3×4\n- D(6) = {5, 1} from 1×6, 2×3\n- D(p) = {p-1} for prime p (only 1×p)",
     "mathContext": "Uses Int.natAbs to compute |a - b| as a natural number.",
     "significance": "key",
+    "prerequisites": [
+      "Int.natAbs",
+      "basic set theory",
+      "factorization",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Int.natAbs",
       "factorization",
@@ -47,6 +57,10 @@
     "content": "**zero_mem_factorDifferenceSet_of_sq**: If n is a perfect square (n = k²), then 0 ∈ D(n).\n\n**Proof idea**: n = k × k, so |k - k| = 0.\n\n**Examples**:\n- D(4) contains 0 (from 2×2)\n- D(9) contains 0 (from 3×3)\n- D(6) does NOT contain 0 (not a perfect square)",
     "mathContext": "Lean: `axiom zero_mem_factorDifferenceSet_of_sq (n : ℕ) (hn : IsSquare n) :`",
     "significance": "supporting",
+    "prerequisites": [
+      "IsSquare",
+      "perfect squares"
+    ],
     "relatedConcepts": [
       "IsSquare",
       "perfect squares"
@@ -64,6 +78,9 @@
     "content": "**pred_mem_factorDifferenceSet**: For n > 0, n - 1 ∈ D(n).\n\n**Proof**: From the factorization n = 1 × n, we get |1 - n| = n - 1.\n\nThis is the **maximum element** of D(n).",
     "mathContext": "Lean: `axiom pred_mem_factorDifferenceSet (n : ℕ) (hn : 0 < n) :`",
     "significance": "supporting",
+    "prerequisites": [
+      "trivial factorization"
+    ],
     "relatedConcepts": [
       "trivial factorization"
     ]
@@ -80,6 +97,12 @@
     "content": "**IsKCommonSet k Ns** means:\n1. All n ∈ Ns are positive (n ≥ 1)\n2. |Ns| = k\n3. |⋂_{n ∈ Ns} D(n)| ≥ k\n\nA k-common set is a collection of k integers whose factor difference sets share at least k elements.",
     "mathContext": "Uses Finset intersection and Set.ncard for cardinality.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "cardinal arithmetic",
+      "cardinality"
+    ],
     "relatedConcepts": [
       "set intersection",
       "cardinality"
@@ -97,6 +120,10 @@
     "content": "**erdos_885_conjecture**: For all k ≥ 1, there exists a k-common set.\n\nThis is stated as an axiom because k ≥ 5 remains OPEN.\n\nThe conjecture asks whether the existence of k-common sets is unbounded.",
     "mathContext": "$This is stated as an axiom because k ≥ 5 remains OPEN.$",
     "significance": "key",
+    "prerequisites": [
+      "existence conjecture",
+      "open problem"
+    ],
     "relatedConcepts": [
       "open problem",
       "existence conjecture"
@@ -114,6 +141,10 @@
     "content": "**erdos_rosenfeld_k2**: There exists a 2-common set.\n\nErdős and Rosenfeld proved this in their 1997 paper introducing the factor difference set.\n\n**Example approach**: Find N₁, N₂ where D(N₁) ∩ D(N₂) has at least 2 elements.",
     "mathContext": "This was the first result, establishing the problem has non-trivial solutions.",
     "significance": "key",
+    "prerequisites": [
+      "base case",
+      "k = 2 case"
+    ],
     "relatedConcepts": [
       "k = 2 case",
       "base case"
@@ -131,6 +162,10 @@
     "content": "**jimenez_urroz_k3**: There exists a 3-common set.\n\nJiménez-Urroz extended the result to k = 3 by finding three highly composite numbers with at least 3 common factor differences.\n\nThe construction becomes significantly more constrained.",
     "mathContext": "Lean: `axiom jimenez_urroz_k3 : ∃ Ns : Finset ℕ, IsKCommonSet 3 Ns`",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "highly composite numbers"
+    ],
     "relatedConcepts": [
       "highly composite numbers"
     ]
@@ -147,6 +182,10 @@
     "content": "**bremner_k4**: There exists a 4-common set.\n\nBremner used computational search combined with number-theoretic techniques. This is the current frontier—the largest k for which a solution is known.\n\n20 years passed between k = 3 and k = 4, illustrating the difficulty.",
     "mathContext": "$20 years passed between k = 3 and k = 4, illustrating the difficulty.$",
     "significance": "key",
+    "prerequisites": [
+      "computational search",
+      "number theory"
+    ],
     "relatedConcepts": [
       "computational search",
       "number theory"
@@ -164,6 +203,10 @@
     "content": "**open_k5**: Either a 5-common set exists, or it doesn't.\n\nThis is the **next unsolved case**. The difficulty increases rapidly because:\n1. More integers are needed\n2. Each must have many divisors\n3. Their D(n) sets must align on ≥ 5 common values\n\nNo construction for k = 5 is currently known.",
     "mathContext": "The computational barrier grows exponentially with k.",
     "significance": "key",
+    "prerequisites": [
+      "computational complexity",
+      "open problem"
+    ],
     "relatedConcepts": [
       "open problem",
       "computational complexity"
@@ -181,6 +224,10 @@
     "content": "**card_factorDifferenceSet**: |D(n)| = ⌈d(n)/2⌉ where d(n) is the number of divisors.\n\nEach divisor pair (a, n/a) contributes one element to D(n). Since pairs are symmetric, we get half the divisor count (rounded up for perfect squares).\n\n**Examples**:\n- d(12) = 6, so |D(12)| = 3\n- d(6) = 4, so |D(6)| = 2",
     "mathContext": "Lean: `axiom card_factorDifferenceSet (n : ℕ) (hn : 0 < n) :`",
     "significance": "key",
+    "prerequisites": [
+      "divisor function",
+      "highly composite numbers"
+    ],
     "relatedConcepts": [
       "divisor function",
       "highly composite numbers"
@@ -198,6 +245,10 @@
     "content": "**mem_factorDifferenceSet_iff_divisor**: d ∈ D(n) iff there exists a divisor a of n with |a - n/a| = d.\n\nThis connects factor difference sets directly to the divisor structure:\n- Each divisor a gives the element |a - n/a|\n- Divisors come in pairs (a, n/a) that give the same difference",
     "mathContext": "Lean: `axiom mem_factorDifferenceSet_iff_divisor (n : ℕ) (hn : 0 < n) (d : ℕ) :`",
     "significance": "key",
+    "prerequisites": [
+      "Nat.divisors",
+      "divisor pairs"
+    ],
     "relatedConcepts": [
       "Nat.divisors",
       "divisor pairs"
@@ -215,6 +266,11 @@
     "content": "**Explicit computations**:\n\n- 1 ∈ D(12) from 3 × 4\n- 4 ∈ D(12) from 2 × 6\n- 11 ∈ D(12) from 1 × 12\n- 1 ∈ D(6) from 2 × 3\n- 5 ∈ D(6) from 1 × 6\n\n**Intersection**: 1 ∈ D(6) ∩ D(12)\n\nThese are verified by Lean type-checking with explicit witnesses.",
     "mathContext": "Each membership is witnessed by a factorization (a, b) with n = a*b.",
     "significance": "supporting",
+    "prerequisites": [
+      "explicit witnesses",
+      "proof techniques",
+      "type-checked computation"
+    ],
     "relatedConcepts": [
       "explicit witnesses",
       "type-checked computation"

@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #1078** asks about the minimum degree needed to guarantee a complete subgraph K_r in an r-partite graph with n vertices per part. Bollobás, Erdős, and Szemerédi conjectured in 1975 that minimum degree at least (r - 3/2 - o(1))n suffices, and showed the constant r - 3/2 is best possible.",
     "mathContext": "This is a classic extremal graph theory problem combining minimum degree conditions with multipartite structure. The conjecture was open for 25 years before Haxell's 2001 proof.",
     "significance": "key",
+    "prerequisites": [
+      "extremal-graph-theory",
+      "graph theory basics",
+      "multipartite-graphs"
+    ],
     "relatedConcepts": [
       "extremal-graph-theory",
       "multipartite-graphs",
@@ -29,6 +34,12 @@
     "content": "**RPartiteGraph** formalizes a balanced r-partite graph: r disjoint vertex sets (parts) each of size n, with edges only between different parts. The structure bundles the partition data with a SimpleGraph and the constraint that edges respect the partition.",
     "mathContext": "The vertex type Fin (r * n) ensures the total vertex count is exactly r*n. The fields enforce disjointness, full coverage, equal sizes, and the bipartiteness constraint on edges.",
     "significance": "key",
+    "prerequisites": [
+      "balanced-multipartite",
+      "basic set theory",
+      "field theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "graph-partition",
       "balanced-multipartite"
@@ -46,6 +57,12 @@
     "content": "**minDegree** computes the minimum degree of a graph by taking the infimum of the degree function over all vertices. This is the key parameter in the BES conjecture — the threshold condition is stated in terms of minimum degree.",
     "mathContext": "Uses Finset.inf' with the degree function. The noncomputable marker is needed because degree computation requires decidable adjacency, which may not hold for all SimpleGraph instances.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "extremal-conditions",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "graph-degree",
       "extremal-conditions"
@@ -63,6 +80,11 @@
     "content": "**ContainsKr** asserts the existence of a complete r-clique with one vertex from each part. This is the conclusion of the BES conjecture: sufficient minimum degree forces such a 'rainbow' clique.",
     "mathContext": "The function f : Fin r → Fin (r * n) selects one vertex per part, and the two conditions require (1) each selected vertex lies in its designated part, and (2) every pair of selected vertices are adjacent.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "complete-subgraph",
+      "rainbow-clique"
+    ],
     "relatedConcepts": [
       "complete-subgraph",
       "rainbow-clique",
@@ -81,6 +103,11 @@
     "content": "**BESConjecture** formalizes the 1975 conjecture of Bollobás, Erdős, and Szemerédi. It states that for any r-partite graph with n vertices per part and minimum degree at least (r - 3/2)n - 1, the graph must contain K_r.",
     "mathContext": "The -1 term absorbs the o(1) in the original statement, making this a concrete rather than asymptotic formulation. The cast to ℝ is needed for the fractional threshold (r - 3/2).",
     "significance": "key",
+    "prerequisites": [
+      "conjecture",
+      "graph theory basics",
+      "minimum-degree-threshold"
+    ],
     "relatedConcepts": [
       "conjecture",
       "minimum-degree-threshold"
@@ -98,6 +125,11 @@
     "content": "**threshold_tight** axiomatizes the BES construction showing r - 3/2 cannot be improved. For any r ≥ 2, there exist arbitrarily large r-partite graphs with minimum degree near (r - 3/2)n that avoid K_r.",
     "mathContext": "The construction exploits parity in the partition structure. This is axiomatized because the explicit construction involves probabilistic or algebraic methods beyond current Mathlib.",
     "significance": "key",
+    "prerequisites": [
+      "extremal-construction",
+      "graph theory basics",
+      "tightness"
+    ],
     "relatedConcepts": [
       "extremal-construction",
       "tightness"
@@ -115,6 +147,12 @@
     "content": "**haxell_theorem** axiomatizes the main result: the BES conjecture is true. Haxell's proof used connections to list coloring theory, reducing the clique-finding problem to a vertex list coloring problem on an auxiliary graph. The corollary **asymptotic_threshold** is proved from this axiom with explicit constant C = 1.",
     "mathContext": "The proof technique — reducing multipartite clique existence to list coloring — is beyond current Mathlib capabilities. The corollary demonstrates that axiom-based reasoning still allows deriving useful consequences.",
     "significance": "key",
+    "prerequisites": [
+      "graph coloring",
+      "graph theory basics",
+      "list-coloring",
+      "proof-by-reduction"
+    ],
     "relatedConcepts": [
       "list-coloring",
       "proof-by-reduction"
@@ -132,6 +170,11 @@
     "content": "**sharpThreshold** computes the exact minimum degree threshold: (r-1)n - ⌈sn/(2s-1)⌉ where s = ⌊r/2⌋. The Haxell-Szabó theorem states this is both sufficient (above threshold forces K_r) and necessary (at the threshold, counterexamples exist).",
     "mathContext": "The formula reveals the role of parity: s = ⌊r/2⌋ makes the threshold depend on whether r is even or odd. The ceiling is approximated via integer arithmetic: ⌈a/b⌉ = (a + b - 1) / b.",
     "significance": "key",
+    "prerequisites": [
+      "extremal-construction",
+      "proof techniques",
+      "sharp-threshold"
+    ],
     "relatedConcepts": [
       "sharp-threshold",
       "extremal-construction",
@@ -150,6 +193,12 @@
     "content": "**Concrete computations** verify the sharp threshold formula for small values of r. For r=2 (bipartite), the threshold is 0 — any edge gives K_2. For r=3 (tripartite), the threshold is n. For r=4, the formula gives 3n - ⌈2n/3⌉. These are proved by simplification and ring arithmetic.",
     "mathContext": "These cases confirm the formula matches intuition. The bipartite case shows the formula degenerates appropriately, while the tripartite case recovers a classical result.",
     "significance": "supporting",
+    "prerequisites": [
+      "bipartite-graphs",
+      "proof techniques",
+      "ring tactic",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "bipartite-graphs",
       "tripartite-graphs"
@@ -167,6 +216,12 @@
     "content": "**IsIndependentTransversal** defines an independent transversal: a selection of one vertex from each part such that no two are adjacent. This is the dual of ContainsKr — the extremal constructions avoiding K_r work by having independent transversals that block complete subgraphs.",
     "mathContext": "Haxell's work on independent transversals in list coloring was the key tool for proving the BES conjecture. The extremal_construction axiom asserts the existence of K_r-free graphs near the threshold.",
     "significance": "key",
+    "prerequisites": [
+      "extremal-construction",
+      "graph coloring",
+      "graph theory basics",
+      "independent-transversal"
+    ],
     "relatedConcepts": [
       "independent-transversal",
       "extremal-construction"
@@ -184,6 +239,11 @@
     "content": "**erdos_1078_summary** combines all four main results into a single conjunction: (1) Haxell's theorem (BES conjecture is true), (2) tightness of the r-3/2 constant, (3) Haxell-Szabó sufficiency at the sharp threshold, and (4) sharpness via counterexamples at the threshold.",
     "mathContext": "Proved by exact ⟨haxell_theorem, threshold_tight, haxell_szabo_theorem, threshold_sharp⟩. This summary theorem packages the complete resolution of Erdős Problem #1078.",
     "significance": "key",
+    "prerequisites": [
+      "complete-answer",
+      "problem-resolution",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "problem-resolution",
       "complete-answer"

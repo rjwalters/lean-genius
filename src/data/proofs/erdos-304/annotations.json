@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #304** studies the complexity of Egyptian fraction representations.\n\n**N(a,b)** = minimal k such that a/b = 1/n₁ + ... + 1/nₖ with 1 < n₁ < ... < nₖ\n\n**N(b)** = max N(a,b) over all 1 ≤ a < b (worst-case complexity)\n\n**Known Bounds**:\n- Erdős (1950): log log b ≪ N(b) ≪ log b / log log b\n- Vose (1985): N(b) ≪ √(log b)\n\n**Open Question**: Is N(b) ≪ log log b?",
     "mathContext": "Egyptian fractions were used in ancient Egypt; this problem asks about the minimum number of terms needed.",
     "significance": "key",
+    "prerequisites": [
+      "Egyptian fractions",
+      "asymptotic bounds",
+      "complex numbers"
+    ],
     "relatedConcepts": [
       "Egyptian fractions",
       "asymptotic bounds",
@@ -30,6 +35,12 @@
     "content": "**unitFractionExpressible(a, b)**: The set of all k such that a/b can be written as a sum of k distinct unit fractions.\n\n```lean\ndef unitFractionExpressible (a b : ℕ) : Set ℕ :=\n  {k | ∃ s : Finset ℕ, s.card = k ∧ (∀ n ∈ s, n > 1) ∧\n       (a / b : ℚ) = ∑ n ∈ s, (n : ℚ)⁻¹}\n```\n\n**Key constraints**:\n- Denominators must be > 1 (no 1/1 = 1)\n- Denominators must be distinct\n- The sum must equal a/b exactly",
     "mathContext": "This set captures all possible representation sizes. N(a,b) is the minimum element of this set.",
     "significance": "key",
+    "prerequisites": [
+      "Finset",
+      "Finset API",
+      "basic set theory",
+      "set comprehension"
+    ],
     "relatedConcepts": [
       "Finset",
       "set comprehension",
@@ -48,6 +59,10 @@
     "content": "**smallestCollection(a, b)** = N(a,b) = min{k : a/b representable with k unit fractions}\n\n**smallestCollectionMax(b)** = N(b) = max{N(a,b) : 1 ≤ a < b}\n\n```lean\naxiom smallestCollection : ℕ → ℕ → ℕ\naxiom smallestCollectionMax : ℕ → ℕ\n```\n\nThese are axiomatized because computing the infimum/supremum requires decidability of the Egyptian fraction representation problem.",
     "mathContext": "N(a,b) exists because every rational has an Egyptian fraction representation (e.g., via the greedy algorithm).",
     "significance": "key",
+    "prerequisites": [
+      "infimum",
+      "supremum"
+    ],
     "relatedConcepts": [
       "infimum",
       "supremum",
@@ -66,6 +81,11 @@
     "content": "**Concrete Example**: 2/15 = 1/10 + 1/30\n\n**Why N(2, 15) = 2**:\n- 2/15 ≠ 1/n for any integer n > 1 (since 15/2 = 7.5 is not an integer)\n- Therefore N(2, 15) ≥ 2\n- The representation 1/10 + 1/30 = 3/30 + 1/30 = 4/30 = 2/15 achieves k = 2\n\n```lean\naxiom example_two_fifteen : (2 : ℚ) / 15 = 1 / 10 + 1 / 30\naxiom smallestCollection_two_fifteen : smallestCollection 2 15 = 2\n```",
     "mathContext": "This verifies the definition with a small concrete case where we can check optimality manually.",
     "significance": "supporting",
+    "prerequisites": [
+      "concrete verification",
+      "optimality",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "concrete verification",
       "optimality",
@@ -84,6 +104,12 @@
     "content": "**Theorem (Erdős 1950)**: log log b ≪ N(b)\n\n```lean\naxiom erdos_1950_lower_bound :\n  ∃ c : ℚ, c > 0 ∧ ∀ b ≥ 10,\n    c * Nat.log 2 (Nat.log 2 b) ≤ smallestCollectionMax b\n```\n\n**Interpretation**: There exists c > 0 such that for all sufficiently large b:\n  N(b) ≥ c · log₂(log₂ b)\n\n**Why this bound?** The prime factorization structure of denominators forces at least log log b terms for some a/b.",
     "mathContext": "This established the first non-trivial lower bound on Egyptian fraction complexity.",
     "significance": "key",
+    "prerequisites": [
+      "complex numbers",
+      "iterated logarithm",
+      "natural number arithmetic",
+      "prime factorization"
+    ],
     "relatedConcepts": [
       "iterated logarithm",
       "prime factorization",
@@ -102,6 +128,11 @@
     "content": "**Theorem (Erdős 1950)**: N(b) ≪ log b / log log b\n\n```lean\naxiom erdos_1950_upper_bound :\n  ∃ C : ℚ, C > 0 ∧ ∀ b ≥ 10,\n    smallestCollectionMax b ≤ C * Nat.log 2 b / (Nat.log 2 (Nat.log 2 b) + 1)\n```\n\nThis was Erdős's original upper bound, later improved by Vose.\n\n**Gap from 1950**: log log b ≪ N(b) ≪ log b / log log b",
     "mathContext": "The +1 in the denominator avoids division by zero for small b.",
     "significance": "key",
+    "prerequisites": [
+      "big-O notation",
+      "natural number arithmetic",
+      "upper bound"
+    ],
     "relatedConcepts": [
       "upper bound",
       "big-O notation",
@@ -120,6 +151,11 @@
     "content": "**Theorem (Vose 1985)**: N(b) ≪ √(log b)\n\n```lean\naxiom vose_1985_upper_bound :\n  ∃ C : ℚ, C > 0 ∧ ∀ b ≥ 10,\n    smallestCollectionMax b * smallestCollectionMax b ≤ C * Nat.log 2 b\n```\n\n**Written as**: N(b)² ≤ C · log₂ b, i.e., N(b) ≤ √(C · log₂ b)\n\nThis dramatically improved Erdős's original log b / log log b bound.\n\n**New gap**: log log b ≪ N(b) ≪ √(log b)",
     "mathContext": "Vose's proof uses continued fractions to construct efficient representations.",
     "significance": "key",
+    "prerequisites": [
+      "constructive proof",
+      "continued fractions",
+      "natural number arithmetic"
+    ],
     "relatedConcepts": [
       "continued fractions",
       "constructive proof",
@@ -138,6 +174,12 @@
     "content": "**Erdős Problem #304**: Is N(b) ≪ log log b?\n\n```lean\ndef erdos_304_conjecture : Prop :=\n  ∃ C : ℚ, C > 0 ∧ ∀ b ≥ 10,\n    smallestCollectionMax b ≤ C * Nat.log 2 (Nat.log 2 b + 1)\n\naxiom erdos_304_open :\n  ¬(erdos_304_conjecture ↔ True) ∧ ¬(erdos_304_conjecture ↔ False)\n```\n\n**If true**: N(b) ≍ log log b (the bounds would match asymptotically)\n\n**Current gap**: log log b ≪ N(b) ≪ √(log b)",
     "mathContext": "The +1 inside the log log handles the case b = 1 (where log log 1 = log 0 is undefined).",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "natural number arithmetic",
+      "open problem",
+      "tight bounds"
+    ],
     "relatedConcepts": [
       "open problem",
       "tight bounds",
@@ -156,6 +198,11 @@
     "content": "**averageCollection(b)** = (1/(b-1)) ∑_{a=1}^{b-1} N(a,b)\n\nThe average number of unit fractions needed over all numerators.\n\n**Lower bound**: (1/b) ∑ N(a,b) ≫ log log b\n\n```lean\naxiom average_lower_bound :\n  ∃ c : ℚ, c > 0 ∧ ∀ b ≥ 10,\n    c * Nat.log 2 (Nat.log 2 b) ≤ averageCollection b\n```\n\n**Interpretation**: Even the typical case requires Ω(log log b) terms - not just worst cases.",
     "mathContext": "This shows the lower bound is not just achieved by a few bad numerators, but is pervasive.",
     "significance": "key",
+    "prerequisites": [
+      "average case",
+      "natural number arithmetic",
+      "typical behavior"
+    ],
     "relatedConcepts": [
       "average case",
       "typical behavior",
@@ -174,6 +221,11 @@
     "content": "**almostOneCollection(b)** = N(b-1, b) = number of unit fractions for (b-1)/b\n\nThe fraction (b-1)/b = 1 - 1/b is a natural special case.\n\n```lean\nnoncomputable def almostOneCollection (b : ℕ) : ℕ :=\n  smallestCollection (b - 1) b\n\naxiom connection_to_problem_293 :\n  ∀ b ≥ 2, almostOneCollection b ≤ smallestCollectionMax b\n```\n\n**Connection to #293**: This relates to representations of 1 as a sum of unit fractions and which denominators can be missing.",
     "mathContext": "van Doorn and Tang (2025) explored this connection in detail.",
     "significance": "supporting",
+    "prerequisites": [
+      "Erdős #293",
+      "basic set theory",
+      "representations of 1"
+    ],
     "relatedConcepts": [
       "Erdős #293",
       "representations of 1",
@@ -192,6 +244,12 @@
     "content": "**Greedy Algorithm**: Given q > 0, repeatedly subtract the largest 1/n ≤ q.\n\n```lean\naxiom greedy_upper_bound :\n  ∃ C : ℚ, C > 0 ∧ ∀ b ≥ 2, ∀ a, 1 ≤ a → a < b →\n    ∃ s : Finset ℕ, s.card ≤ C * Nat.log 2 b ∧\n      (∀ n ∈ s, n > 1) ∧ (a / b : ℚ) = ∑ n ∈ s, (n : ℚ)⁻¹\n```\n\n**Bound**: Greedy uses O(log b) terms.\n\n**Comparison**:\n- Greedy: O(log b)\n- Optimal: O(√(log b))\n\nThe greedy algorithm is far from optimal!",
     "mathContext": "The greedy algorithm is easy to implement but produces suboptimal representations.",
     "significance": "supporting",
+    "prerequisites": [
+      "Fibonacci-Sylvester",
+      "Finset API",
+      "greedy algorithm",
+      "natural number arithmetic"
+    ],
     "relatedConcepts": [
       "greedy algorithm",
       "Fibonacci-Sylvester",
@@ -210,6 +268,12 @@
     "content": "**bounds_known**: Combines the Erdős lower bound and Vose upper bound into a single theorem.\n\n```lean\ntheorem bounds_known :\n    (∃ c : ℚ, c > 0 ∧ ∀ b ≥ 10,\n      c * Nat.log 2 (Nat.log 2 b) ≤ smallestCollectionMax b) ∧\n    (∃ C : ℚ, C > 0 ∧ ∀ b ≥ 10,\n      smallestCollectionMax b * smallestCollectionMax b ≤ C * Nat.log 2 b) :=\n  ⟨erdos_1950_lower_bound, vose_1985_upper_bound⟩\n```\n\n**Summary**: log log b ≪ N(b) ≪ √(log b)",
     "mathContext": "This theorem captures the current state of knowledge, combining results from 1950 and 1985.",
     "significance": "key",
+    "prerequisites": [
+      "combined bounds",
+      "natural number arithmetic",
+      "proof techniques",
+      "state of the art"
+    ],
     "relatedConcepts": [
       "combined bounds",
       "state of the art",

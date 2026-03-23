@@ -11,6 +11,11 @@
     "content": "This module formalizes **Erdős Problem #350**: If A is a finite dissociated set (all subset sums distinct), prove that the sum of reciprocals is less than 2.",
     "mathContext": "The problem was SOLVED by Ryavec. The bound is sharp: powers of 2 achieve equality in the limit. Hanson-Steele-Stenger (1977) generalized to all positive exponents.",
     "significance": "key",
+    "prerequisites": [
+      "dissociated sets",
+      "module theory",
+      "subset sums"
+    ],
     "relatedConcepts": [
       "dissociated sets",
       "subset sums",
@@ -29,6 +34,11 @@
     "content": "**DistinctSubsetSums A** means all subsets of A have distinct sums. For any X ≠ Y subsets of A, we require ΣX ≠ ΣY.",
     "mathContext": "A dissociated set (also called a B-sequence) with n elements has 2^n distinct subset sums. The canonical example is {1, 2, 4, ..., 2^k} whose subset sums are exactly 0, 1, 2, ..., 2^{k+1}-1.",
     "significance": "key",
+    "prerequisites": [
+      "Finset",
+      "basic set theory",
+      "subset"
+    ],
     "relatedConcepts": [
       "Finset",
       "subset",
@@ -47,6 +57,11 @@
     "content": "**singleton_one_dissociated**: The singleton {1} is trivially dissociated. Its only subsets are ∅ (sum 0) and {1} (sum 1), which are distinct.",
     "mathContext": "This is proved by case analysis on subsets. A singleton {a} has only two subsets with sums 0 and a, always distinct for positive a.",
     "significance": "supporting",
+    "prerequisites": [
+      "base case",
+      "proof techniques",
+      "singleton"
+    ],
     "relatedConcepts": [
       "singleton",
       "base case",
@@ -65,6 +80,10 @@
     "content": "**powers_of_two_dissociated**: The set {1, 2, 4, ..., 2^k} is dissociated. This is the canonical example of a dissociated set.",
     "mathContext": "Every natural number has a unique binary representation, so subset sums of powers of 2 are all distinct. This set achieves the extremal bound in Ryavec's theorem.",
     "significance": "key",
+    "prerequisites": [
+      "binary representation",
+      "geometric series"
+    ],
     "relatedConcepts": [
       "binary representation",
       "geometric series",
@@ -83,6 +102,10 @@
     "content": "**erdos_350**: If A is a finite dissociated set of positive integers, then Σ_{n∈A} 1/n < 2. This is the core result of Erdős Problem #350.",
     "mathContext": "The proof, reproduced in Benkoski-Erdős 1974, uses properties of dissociated sets and their subset sums. The bound 2 comes from the geometric series of powers of 2.",
     "significance": "key",
+    "prerequisites": [
+      "strict bound",
+      "sum of reciprocals"
+    ],
     "relatedConcepts": [
       "sum of reciprocals",
       "strict bound",
@@ -101,6 +124,10 @@
     "content": "**ryavec_sharp_bound**: Σ 1/n ≤ 2 - 2^{1-|A|}, with equality iff A = {1, 2, ..., 2^k}. This characterizes the extremal dissociated sets.",
     "mathContext": "For {1,2,...,2^k}, the sum is 1 + 1/2 + ... + 1/2^k = 2 - 2^{-k} = 2 - 2^{1-(k+1)}. As k → ∞, this approaches but never reaches 2.",
     "significance": "key",
+    "prerequisites": [
+      "extremal characterization",
+      "sharp bound"
+    ],
     "relatedConcepts": [
       "sharp bound",
       "extremal characterization",
@@ -119,6 +146,11 @@
     "content": "**hanson_steele_stenger**: For all s > 0, Σ 1/n^s < 1/(1 - 2^{-s}). This extends Ryavec's bound to all positive exponents.",
     "mathContext": "At s = 1: 1/(1 - 1/2) = 2, recovering Ryavec. At s = 2: 1/(1 - 1/4) = 4/3. The bound comes from geometric series with ratio 2^{-s}.",
     "significance": "key",
+    "prerequisites": [
+      "generalization",
+      "positive exponents",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "generalization",
       "positive exponents",
@@ -137,6 +169,11 @@
     "content": "**dissociated_subset**: Any subset of a dissociated set is also dissociated. This is a basic closure property.",
     "mathContext": "Proof: If X, Y ⊆ B ⊆ A and X ≠ Y, then X, Y ⊆ A and by A being dissociated, ΣX ≠ ΣY. Hence B is dissociated.",
     "significance": "key",
+    "prerequisites": [
+      "closure property",
+      "proof techniques",
+      "subset"
+    ],
     "relatedConcepts": [
       "subset",
       "closure property",
@@ -155,6 +192,11 @@
     "content": "**IsSidonSet A**: All pairwise sums a+b (with a ≤ b) are distinct. Every dissociated set is a Sidon set, but not conversely.",
     "mathContext": "Sidon sets (B₂ sequences) only require pairwise sums to be distinct. Dissociated sets require ALL subset sums to be distinct - much stronger. Example: {1, 2, 5, 10} is Sidon but not dissociated (1+5 = 2+4 as subset sums).",
     "significance": "key",
+    "prerequisites": [
+      "B₂ sequence",
+      "Sidon set",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Sidon set",
       "B₂ sequence",
@@ -173,6 +215,12 @@
     "content": "Concrete computations verified by **norm_num**: 1 + 1/2 = 3/2 < 2, and 1 + 1/2 + 1/4 + 1/8 = 15/8 < 2.",
     "mathContext": "These examples show the bound in action. For powers of 2 up to 2^k, the sum is 2 - 2^{-k}, always strictly less than 2.",
     "significance": "supporting",
+    "prerequisites": [
+      "computation",
+      "norm_num",
+      "norm_num tactic",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "norm_num",
       "computation",
@@ -191,6 +239,11 @@
     "content": "**erdos_350_summary** packages the key verified results: {1, 2} is dissociated, and 1 + 1/2 + 1/4 + 1/8 < 2.",
     "mathContext": "This summary demonstrates the formalization captures both the definition (dissociated sets) and the bound (sum of reciprocals < 2).",
     "significance": "supporting",
+    "prerequisites": [
+      "proof techniques",
+      "summary",
+      "verified"
+    ],
     "relatedConcepts": [
       "summary",
       "verified",

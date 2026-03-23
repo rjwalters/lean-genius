@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #394** asks about the function t_k(n), the least m such that n divides the product of k consecutive integers starting at m. The two main questions concern the growth rate of Σ t₂(n) and whether Σ t_{k+1}(n) = o(Σ t_k(n)).",
     "mathContext": "The function t_k(n) measures how far one must search among consecutive integer products to find divisibility by n. For primes p, t₂(p) = p - 1 since p first appears in the product (p-1)·p.",
     "significance": "key",
+    "prerequisites": [
+      "consecutive-integers",
+      "divisibility",
+      "measure theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "divisibility",
       "consecutive-integers",
@@ -29,6 +35,11 @@
     "content": "The product m(m+1)(m+2)···(m+k-1) of k consecutive integers starting at m. This is the fundamental object: we ask what is the smallest m making this divisible by n? Products of consecutive integers have special divisibility properties — in particular, k! always divides any product of k consecutive integers.",
     "mathContext": "Defined as ∏ i in range k, (m + i). The binomial coefficient argument shows k! | m(m+1)···(m+k-1) for all m, since this product equals k! · C(m+k-1, k).",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "consecutive-integers",
+      "divisibility"
+    ],
     "relatedConcepts": [
       "consecutive-integers",
       "divisibility",
@@ -47,6 +58,12 @@
     "content": "t_k(n) is the central object of the problem: the least m ≥ 1 such that n divides the product of k consecutive integers starting at m. The existence of such m is axiomatized (t_exists), and t is defined using Nat.find to select the minimum.",
     "mathContext": "The existence axiom t_exists states that for k ≥ 1 and n ≥ 1, there exists m ≥ 1 with n | m(m+1)···(m+k-1). This is justified since m = n works for k ≥ 1 (as n appears in the product n(n+1)···).",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "divisibility",
+      "minimization",
+      "natural number arithmetic"
+    ],
     "relatedConcepts": [
       "divisibility",
       "minimization",
@@ -65,6 +82,12 @@
     "content": "For any prime p, t₂(p) = p - 1 because p divides (p-1)·p but p does not divide m(m+1) for any m < p - 1. This is the key fact underlying the lower bound on Σ t₂(n): since there are ~x/log x primes up to x, each contributing p - 1 ≈ p to the sum, we get Σ t₂(n) ≫ x²/log x.",
     "mathContext": "Axiomatized as t2_of_prime. The corollary primes_large_t2 restates this universally. This fact makes the threshold c = log 2 in the Erdős-Hall conjecture optimal.",
     "significance": "key",
+    "prerequisites": [
+      "divisibility",
+      "prime numbers",
+      "prime-numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "prime-numbers",
       "divisibility",
@@ -83,6 +106,12 @@
     "content": "The sum Σ_{n≤x} t₂(n) ≫ x²/log x. This follows from the Prime Number Theorem: there are approximately x/log x primes up to x, and each prime p contributes t₂(p) = p - 1 ≈ p to the sum. Summing over primes gives roughly Σ_{p≤x} p ≈ x²/(2 log x).",
     "mathContext": "Axiomatized as trivial_lower_bound. This is sharp in the sense that no exponent larger than 1 can appear on log x in the denominator.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic-bounds",
+      "prime numbers",
+      "prime-number-theorem",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "prime-number-theorem",
       "asymptotic-bounds"
@@ -100,6 +129,11 @@
     "content": "The main result of Erdős and Hall (1978): Σ_{n≤x} t₂(n) ≪ (log log log x / log log x) x². The triple-logarithm factor shows the sum grows much slower than x², confirming Erdős's original o(x²) conjecture. The original conjecture is stated as erdos_original_conjecture and axiomatized as proved via erdos_conjecture_proved.",
     "mathContext": "The proof uses sophisticated sieve methods. The ratio (log log log x)/(log log x) tends to 0, but extremely slowly — it is still roughly 1/3 for x = 10^100.",
     "significance": "key",
+    "prerequisites": [
+      "iterated-logarithms",
+      "proof techniques",
+      "sieve-methods"
+    ],
     "relatedConcepts": [
       "sieve-methods",
       "iterated-logarithms",
@@ -118,6 +152,11 @@
     "content": "The Erdős-Hall conjecture posits that Σ t₂(n) = o(x²/(log x)^c) for any c < log 2 ≈ 0.693. This is much stronger than the proven bound. The threshold log 2 is optimal because the prime contribution alone gives Ω(x²/log x). The theorem threshold_log_2 formalizes this lower bound.",
     "mathContext": "Defined as erdos_hall_conjecture. The parameter c < log 2 is conjectured to be the exact boundary: the sum should be o(x²/(log x)^c) for c < log 2 but not for c ≥ log 2.",
     "significance": "key",
+    "prerequisites": [
+      "logarithmic-bounds",
+      "open-problem",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "open-problem",
       "logarithmic-bounds",
@@ -136,6 +175,12 @@
     "content": "Question 2 asks whether Σ_{n≤x} t_{k+1}(n) = o(Σ_{n≤x} t_k(n)) for k ≥ 2. Intuitively, longer products of consecutive integers make divisibility easier (more numbers to choose from), so t_{k+1}(n) should typically be smaller than t_k(n). This remains open.",
     "mathContext": "Formalized as hierarchy_conjecture. The definition uses Filter.atTop to express the asymptotic o(·) notation. This question connects to the general theory of divisibility in short intervals.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic-hierarchy",
+      "divisibility",
+      "filter theory",
+      "open-problem"
+    ],
     "relatedConcepts": [
       "open-problem",
       "asymptotic-hierarchy",
@@ -154,6 +199,12 @@
     "content": "For factorial arguments, t_k(n!) has elegant exact values. t_{n-1}(n!) = 2 since 2·3·4···n = n! is divisible by n! (starting at m = 2 gives exactly n - 1 consecutive integers whose product is n!). The bound t_{n-2}(n!) ≤ 2n is proved, and it is sharp for n = 2^r where t_{n-2}(n!) ≥ 2^{r-1} ≈ n/2.",
     "mathContext": "Three axioms formalize these results: factorial_t_n_minus_1, factorial_t_n_minus_2, and factorial_t_n_minus_2_sharp. The sharpness for powers of 2 reflects the high multiplicity of 2 in n!.",
     "significance": "key",
+    "prerequisites": [
+      "divisibility",
+      "factorial",
+      "proof techniques",
+      "sharp-bounds"
+    ],
     "relatedConcepts": [
       "factorial",
       "sharp-bounds",
@@ -172,6 +223,11 @@
     "content": "The summary theorem erdos_394_summary collects the three main results: (1) the Erdős-Hall upper bound, (2) the trivial lower bound from primes, and (3) the Selfridge result for n = 10. The final theorem erdos_394 restates the Erdős-Hall bound as the headline result. Two major questions remain open: the power-saving bound and the hierarchy conjecture.",
     "mathContext": "Both erdos_394_summary and erdos_394_open are proved by combining the axiomatized results using exact ⟨...⟩ syntax. The formalization captures the state of knowledge as of 2025.",
     "significance": "key",
+    "prerequisites": [
+      "open-problems",
+      "prime numbers",
+      "summary"
+    ],
     "relatedConcepts": [
       "summary",
       "open-problems",

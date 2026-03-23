@@ -35,6 +35,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "supporting"
   },
   {
@@ -51,6 +55,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -65,6 +73,10 @@
     "content": "**has63Configuration** is the specific forbidden structure: 3 hyperedges spanning at most 6 vertices. This is the central object in Erdős Problem #716.",
     "mathContext": "Formalizes the concept of (6,3)-configuration",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "formal mathematics"
     ],
     "significance": "key"
@@ -87,6 +99,12 @@
       "hypergraph theory",
       "optimization"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "combinatorics",
+      "extremal problems",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -101,6 +119,12 @@
     "content": "**extremalHypergraph n v e** = f^(3)(n; v, e) is the maximum edges in an n-vertex 3-uniform hypergraph with no e edges spanning v vertices. Computing these is a major challenge in extremal combinatorics.",
     "mathContext": "Formalizes the concept of extremal number",
     "significance": "key",
+    "prerequisites": [
+      "Extremal graph theory",
+      "Turán numbers",
+      "graph theory basics",
+      "hypergraph theory"
+    ],
     "relatedConcepts": [
       "Turán numbers",
       "Extremal graph theory",
@@ -122,6 +146,11 @@
       "extremal problems",
       "optimization"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "extremal problems",
+      "optimization"
+    ],
     "significance": "key"
   },
   {
@@ -139,6 +168,12 @@
       "combinatorics",
       "graph theory"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "combinatorics",
+      "graph theory",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -153,6 +188,12 @@
     "content": "**isRSGraph G** means every edge belongs to exactly one triangle. These 'Ruzsa-Szemerédi graphs' are central to the problem. Maximum edges in an RS graph is 3·ex63(n).",
     "mathContext": "Formalizes the concept of rs graph",
     "significance": "key",
+    "prerequisites": [
+      "Extremal graph theory",
+      "Triangle-free graphs",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Triangle-free graphs",
       "Extremal graph theory",
@@ -173,6 +214,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "supporting"
   },
   {
@@ -187,6 +232,10 @@
     "content": "**ruzsa_szemeredi_theorem** (1978): ex₃(n; 6, 3) = o(n²). This is the main result solving Erdős Problem #716. The proof uses the Triangle Removal Lemma derived from Szemerédi's regularity lemma.",
     "mathContext": "$f^{(3)}(n; 6, 3) = o(n^2)$; proved via: (1) Szemerédi regularity → (2) Triangle Removal Lemma → (3) RS theorem. The subquadratic bound is tight up to the exponent.",
     "significance": "key",
+    "prerequisites": [
+      "Szemerédi regularity lemma",
+      "ruzsa_szemeredi_theorem"
+    ],
     "relatedConcepts": [
       "ruzsa_szemeredi_theorem",
       "Szemerédi regularity lemma",
@@ -208,6 +257,10 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -225,6 +278,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "matching theory"
+    ],
     "significance": "key"
   },
   {
@@ -239,6 +297,11 @@
     "content": "**triangle_removal_lemma**: If a graph has ≤ δn³ triangles, removing ≤ εn² edges makes it triangle-free. This powerful tool follows from Szemerédi regularity and is key to the RS theorem.",
     "mathContext": "$\\forall \\varepsilon > 0\\, \\exists \\delta > 0$: if $G$ has $\\leq \\delta n^3$ triangles, then removing $\\leq \\varepsilon n^2$ edges makes $G$ triangle-free; the optimal $\\delta(\\varepsilon) \\sim e^{-c/\\varepsilon^C}$ is very small.",
     "significance": "key",
+    "prerequisites": [
+      "Graph removal lemmas",
+      "Szemerédi regularity lemma",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Szemerédi regularity lemma",
       "Graph removal lemmas",
@@ -259,6 +322,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -273,6 +340,11 @@
     "content": "**roth_theorem** (1953): r₃(n) = o(n), meaning large sets contain 3-APs. The RS theorem implies Roth's theorem, connecting graph theory to additive combinatorics!",
     "mathContext": "$r_3(n) = o(n)$: any set $A \\subseteq [n]$ with $|A| \\geq \\varepsilon n$ contains a 3-AP. Roth's proof used Fourier analysis; RS gives a combinatorial route via the triangle removal lemma.",
     "significance": "key",
+    "prerequisites": [
+      "Arithmetic progressions",
+      "Szemerédi's theorem",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Arithmetic progressions",
       "Szemerédi's theorem",
@@ -294,6 +366,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "density theory",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -308,6 +385,10 @@
     "content": "**brownErdosSosConjecture k** generalizes (6,3) to (k+3, k): f^(3)(n; k+3, k) = o(n²). Erdős #716 is the k=3 case. The full conjecture was proved by Delcourt-Postle (2024).",
     "mathContext": "Formalizes the concept of brown-erdős-sós conjecture",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "formal mathematics"
     ],
     "significance": "key"
@@ -326,6 +407,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -342,6 +427,12 @@
     "relatedConcepts": [
       "combinatorics",
       "graph theory",
+      "hypergraph theory"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "graph theory basics",
       "hypergraph theory"
     ],
     "significance": "key"

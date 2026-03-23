@@ -11,6 +11,10 @@
     "content": "**Erdős Problem #991: Discrepancy of Optimal Logarithmic Energy Points**\n\nThis problem asks whether point configurations that maximize the product of pairwise distances on the sphere distribute uniformly with respect to spherical caps.\n\n**The Setup:**\n- Take n points on the unit sphere S²\n- Find the configuration maximizing ∏|wᵢ - wⱼ| (product of all pairwise distances)\n- Ask: do these optimal points spread evenly across all spherical caps?\n\n**The Answer: YES**\n\nThe cap discrepancy is o(n), meaning the deviation from uniform distribution is sublinear in the number of points.",
     "mathContext": "This connects logarithmic potential theory, discrepancy theory, and approximation on spheres. The optimal configurations are called Fekete points.",
     "significance": "key",
+    "prerequisites": [
+      "Discrepancy theory",
+      "Potential theory"
+    ],
     "relatedConcepts": [
       "Potential theory",
       "Discrepancy theory",
@@ -29,6 +33,11 @@
     "content": "**UnitSphere:**\n\nThe set of points in R³ at unit distance from the origin:\n```lean\ndef UnitSphere : Set (Fin 3 → ℝ) :=\n  {w : Fin 3 → ℝ | ∑ i, (w i)^2 = 1}\n```\n\nThis is the 2-dimensional sphere S² embedded in 3-dimensional space. Points are represented as functions from Fin 3 (indices 0, 1, 2) to real numbers.",
     "mathContext": "Lean: `def UnitSphere : Set (Fin 3 → ℝ) :=`",
     "significance": "key",
+    "prerequisites": [
+      "Euclidean space",
+      "Manifolds",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Euclidean space",
       "Manifolds"
@@ -46,6 +55,12 @@
     "content": "**sphereDist:**\n\nThe Euclidean (chordal) distance between two points on the sphere:\n```lean\ndef sphereDist (w₁ w₂ : Fin 3 → ℝ) : ℝ :=\n  Real.sqrt (∑ i, (w₁ i - w₂ i)^2)\n```\n\nThis measures the straight-line distance through the interior of the sphere, not the geodesic (great circle) distance along the surface. For points on S², the chordal distance ranges from 0 to 2.",
     "mathContext": "Lean: `def sphereDist (w₁ w₂ : Fin 3 → ℝ) : ℝ :=`",
     "significance": "key",
+    "prerequisites": [
+      "Euclidean distance",
+      "Geodesic distance",
+      "basic set theory",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "Euclidean distance",
       "Geodesic distance"
@@ -63,6 +78,12 @@
     "content": "**logEnergy:**\n\nThe logarithmic energy of a point configuration:\n```lean\ndef logEnergy (points : Finset (Fin 3 → ℝ)) : ℝ :=\n  ∑ p₁ ∈ points, ∑ p₂ ∈ points,\n    if p₁ ≠ p₂ then -Real.log (sphereDist p₁ p₂) / 2 else 0\n```\n\n**Key insight:** Minimizing E(A) = -log(∏|wᵢ - wⱼ|) is equivalent to maximizing the product of distances.\n\nLogarithmic energy arises naturally in potential theory: think of points as charged particles repelling with logarithmic potential.",
     "mathContext": "The logarithmic kernel -log|x-y| is the fundamental solution to Laplace's equation in 2D.",
     "significance": "key",
+    "prerequisites": [
+      "Electrostatics",
+      "Finset API",
+      "Potential theory",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Potential theory",
       "Electrostatics",
@@ -81,6 +102,12 @@
     "content": "**IsOptimalConfig:**\n\nA configuration is optimal if it minimizes logarithmic energy among all n-point sets on the sphere:\n```lean\ndef IsOptimalConfig (points : Finset (Fin 3 → ℝ)) : Prop :=\n  (∀ p ∈ points, p ∈ UnitSphere) ∧\n  ∀ other, other.card = points.card →\n    (∀ p ∈ other, p ∈ UnitSphere) →\n    logEnergy points ≤ logEnergy other\n```\n\n**Fekete points:** Optimal configurations are called Fekete points in approximation theory. They arise in polynomial interpolation on spheres.",
     "mathContext": "Lean: `def IsOptimalConfig (points : Finset (Fin 3 → ℝ)) : Prop :=`",
     "significance": "key",
+    "prerequisites": [
+      "Approximation theory",
+      "Fekete points",
+      "Finset API",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Fekete points",
       "Approximation theory"
@@ -98,6 +125,11 @@
     "content": "**SphericalCap:**\n\nA spherical cap is the portion of S² above a certain latitude:\n```lean\ndef SphericalCap (center : Fin 3 → ℝ) (cosAngle : ℝ) : Set (Fin 3 → ℝ) :=\n  {w ∈ UnitSphere | ∑ i, (center i) * (w i) ≥ cosAngle}\n```\n\n**Parameters:**\n- center: direction of the cap's center (north pole of the cap)\n- cosAngle: cosine of the angular radius (cosAngle = 1 is just the center, cosAngle = -1 is the whole sphere)\n\nThe cap includes all points whose dot product with the center is at least cosAngle.",
     "mathContext": "Lean: `def SphericalCap (center : Fin 3 → ℝ) (cosAngle : ℝ) : Set (Fin 3 → ℝ) :=`",
     "significance": "key",
+    "prerequisites": [
+      "Geodesic balls",
+      "Spherical geometry",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Spherical geometry",
       "Geodesic balls"
@@ -115,6 +147,11 @@
     "content": "**normalizedCapArea:**\n\nThe area of a spherical cap, normalized so the full sphere has area 1:\n```lean\ndef normalizedCapArea (cosAngle : ℝ) : ℝ :=\n  (1 - cosAngle) / 2\n```\n\n**Examples:**\n- cosAngle = 1: area = 0 (just a point)\n- cosAngle = 0: area = 1/2 (hemisphere)\n- cosAngle = -1: area = 1 (full sphere)\n\nThe actual area is 2π(1 - cos θ); normalizing by 4π gives (1 - cos θ)/2.",
     "mathContext": "Lean: `def normalizedCapArea (cosAngle : ℝ) : ℝ :=`",
     "significance": "key",
+    "prerequisites": [
+      "Solid angle",
+      "Spherical area",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Spherical area",
       "Solid angle"
@@ -135,6 +172,12 @@
       "functional analysis",
       "normed spaces"
     ],
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "filter theory",
+      "functional analysis"
+    ],
     "significance": "key"
   },
   {
@@ -149,6 +192,12 @@
     "content": "**HasSmallDiscrepancy:**\n\nA point set has small discrepancy if the deviation from uniform distribution is sublinear in n:\n```lean\ndef HasSmallDiscrepancy (points : Finset (Fin 3 → ℝ)) : Prop :=\n  ∀ center cosAngle, ... →\n  ∃ bound : ℕ → ℝ, (∀ n, bound n / n → 0) ∧\n    ||A ∩ C| - αC · n| ≤ bound(n)\n```\n\n**Intuition:** If n points were perfectly uniform, each cap C would contain exactly αC · n points. The discrepancy measures the worst-case deviation. Being o(n) means this deviation grows slower than n itself.",
     "mathContext": "Lean: `def HasSmallDiscrepancy (points : Finset (Fin 3 → ℝ)) : Prop :=`",
     "significance": "key",
+    "prerequisites": [
+      "Discrepancy theory",
+      "Finset API",
+      "Uniform distribution",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Discrepancy theory",
       "Uniform distribution"
@@ -169,6 +218,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "measure theory"
+    ],
     "significance": "key"
   },
   {
@@ -183,6 +237,10 @@
     "content": "**marzo_mas_bound:**\n\nImproved bound: discrepancy is O(n^{2/3}):\n```lean\naxiom marzo_mas_bound :\n  ∀ points, IsOptimalConfig points →\n  ∃ C > 0, ∀ cap, ||A ∩ cap| - αC · n| ≤ C · n^(2/3)\n```\n\n**Publication:** Marzo-Mas (2021), \"Discrepancy of minimal Riesz energy points\", Constr. Approx.\n\nThis matches an earlier unpublished bound by Wolff. The result is proved for general Riesz s-energy, with logarithmic energy as the s → 0 limit.",
     "mathContext": "The improvement from 3/4 to 2/3 is a factor of n^{1/12}, significant for large n.",
     "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
+    "prerequisites": [
       "bounds",
       "inequalities"
     ],
@@ -203,6 +261,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -217,6 +280,12 @@
     "content": "**FeketePoints:**\n\nThe set of optimal n-point configurations:\n```lean\ndef FeketePoints (n : ℕ) : Set (Finset (Fin 3 → ℝ)) :=\n  {points | points.card = n ∧ IsOptimalConfig points}\n```\n\n**Named after:** Michael Fekete (1886-1957), Hungarian mathematician.\n\n**Applications:**\n- Polynomial interpolation on spheres\n- Numerical integration (quadrature)\n- Sampling for computer graphics",
     "mathContext": "Lean: `def FeketePoints (n : ℕ) : Set (Finset (Fin 3 → ℝ)) :=`",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "Polynomial interpolation",
+      "Quadrature",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Polynomial interpolation",
       "Quadrature"
@@ -234,6 +303,12 @@
     "content": "**rieszEnergy:**\n\nGeneralization of logarithmic energy with parameter s:\n```lean\ndef rieszEnergy (s : ℝ) (points : Finset (Fin 3 → ℝ)) : ℝ :=\n  ∑_{i≠j} |wᵢ - wⱼ|^{-s}\n```\n\n**Connection to logarithmic energy:** As s → 0, Riesz energy converges (after normalization) to logarithmic energy.\n\n**Physical interpretation:** s = 1 is Coulomb energy (electrostatics in 3D), s = 2 is used in various physics models.",
     "mathContext": "Marzo-Mas prove discrepancy bounds for general s-energy; our result is the s → 0 case.",
     "significance": "key",
+    "prerequisites": [
+      "Coulomb energy",
+      "Finset API",
+      "Potential theory",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Coulomb energy",
       "Potential theory"
@@ -251,6 +326,10 @@
     "content": "**potential_theory_equidistribution:**\n\nFekete points equidistribute in the limit:\n```lean\naxiom potential_theory_equidistribution :\n  ∀ ε > 0, ∃ N, ∀ n ≥ N, ∀ points ∈ FeketePoints n,\n  ∀ cap, ||A ∩ cap|/n - αC| < ε\n```\n\n**Classical result:** This is the qualitative o(n) statement from classical potential theory. Fekete points converge weakly to the uniform measure on the sphere.\n\n**Attribution:** The exact origin is unclear; Brauchart cites it as following from 'classical potential theory'.",
     "mathContext": "This is a weak-* convergence result: the empirical measures of Fekete points converge to the uniform measure.",
     "relatedConcepts": [
+      "integration",
+      "measure theory"
+    ],
+    "prerequisites": [
       "integration",
       "measure theory"
     ],
@@ -274,6 +353,11 @@
       "inequalities",
       "metric spaces"
     ],
+    "prerequisites": [
+      "bounds",
+      "distance",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -289,6 +373,10 @@
     "mathContext": "Lean: `theorem improvement_factor :`",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "supporting"
   },
@@ -306,6 +394,11 @@
     "relatedConcepts": [
       "bounds",
       "inequalities"
+    ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
     ],
     "significance": "key"
   }

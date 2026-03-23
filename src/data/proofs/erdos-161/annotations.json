@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #161: Almost Monochromatic Subsets**\n\nDoes F^(t)(n,α) jump as α varies from 0 to 1/2? F^(t)(n,α) is the largest m allowing a 2-coloring where every large subset has at least α fraction of t-subsets in each color.\n\n**Answer (t=3):** Exactly one jump at α=0 (Conlon-Fox-Sudakov 2011).\n\nThis is a $500 prize problem connecting Ramsey theory (α=0) to balanced coloring (α>0).",
     "mathContext": "The function F interpolates between Ramsey-type problems and balanced coloring, revealing a phase transition.",
     "significance": "key",
+    "prerequisites": [
+      "Hypergraph coloring",
+      "Ramsey theory",
+      "graph coloring",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Ramsey theory",
       "Hypergraph coloring",
@@ -29,6 +35,12 @@
     "content": "**completeHypergraph:** All t-subsets of [n], forming the complete t-uniform hypergraph.\n\n**HyperedgeColoring:** A 2-coloring assigns each t-subset to true/false (red/blue).\n\n**colorCount:** Counts t-subsets of X with a given color.\n\n**IsBalanced:** A coloring is (α,m)-balanced if every subset X with |X| ≥ m has at least α·C(|X|,t) hyperedges of each color.",
     "mathContext": "For t=2 this reduces to edge-colorings of complete graphs; for t≥3 we enter hypergraph territory where behavior is qualitatively different.",
     "significance": "key",
+    "prerequisites": [
+      "Balanced coloring",
+      "Complete hypergraph",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Complete hypergraph",
       "Balanced coloring",
@@ -53,6 +65,12 @@
       "combinatorics",
       "graph coloring"
     ],
+    "prerequisites": [
+      "Ramsey theory",
+      "algebra",
+      "graph coloring",
+      "ring tactic"
+    ],
     "significance": "key"
   },
   {
@@ -67,6 +85,12 @@
     "content": "**FZero:** F^(t)(n,0) is the classical Ramsey function for hypergraphs.\n\n**erdos_hajnal_rado_conjecture:** F^(t)(n,0) ≍ log_{t-1}(n), the (t-1)-times iterated logarithm. This grows extremely slowly—for t=3, it's log₂(n); for t=4, it's log(log(n)).\n\n**iterLog:** The iterated logarithm function, computed recursively.",
     "mathContext": "The iterated logarithm growth at α=0 contrasts sharply with the power-of-log growth at α>0, creating the jump.",
     "significance": "key",
+    "prerequisites": [
+      "Iterated logarithm",
+      "Ramsey numbers",
+      "Ramsey theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Ramsey numbers",
       "Iterated logarithm",
@@ -90,6 +114,12 @@
       "inequalities",
       "matching theory"
     ],
+    "prerequisites": [
+      "bounds",
+      "graph coloring",
+      "graph theory",
+      "matching theory"
+    ],
     "significance": "key"
   },
   {
@@ -106,6 +136,12 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics",
+      "graph coloring",
+      "ring tactic"
+    ],
     "significance": "key"
   },
   {
@@ -120,6 +156,12 @@
     "content": "**conlon_fox_sudakov_upper:** F^(3)(n,α) ≤ c·√(log n) for all α > 0. This upper bound matches the Erdős-Spencer lower bound.\n\n**F3_characterization:** Combined: F^(3)(n,α) = Θ(√(log n)) for α ∈ (0, 1/2).\n\n**one_jump_for_t3:** Confirms exactly one jump at α=0 for t=3.",
     "mathContext": "Conlon-Fox-Sudakov (2011) proved this in 'Large almost monochromatic subsets in hypergraphs'. The key technique involves dependent random choice.",
     "significance": "key",
+    "prerequisites": [
+      "Dependent random choice",
+      "Upper bounds",
+      "graph theory basics",
+      "hypergraph theory"
+    ],
     "relatedConcepts": [
       "Dependent random choice",
       "Upper bounds",
@@ -139,6 +181,12 @@
     "mathContext": "A complete resolution for t=3, with the general case remaining one of the major open problems in hypergraph Ramsey theory.",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "formal mathematics",
+      "graph theory basics",
+      "hypergraph theory"
     ],
     "significance": "key"
   }

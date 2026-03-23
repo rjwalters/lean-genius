@@ -16,6 +16,12 @@
       "Diophantine equations",
       "prime factorization"
     ],
+    "prerequisites": [
+      "LCM theory",
+      "least common multiple",
+      "number theory",
+      "prime numbers"
+    ],
     "significance": "key"
   },
   {
@@ -35,6 +41,12 @@
       "prime number theorem",
       "Finset.fold"
     ],
+    "prerequisites": [
+      "Finset API",
+      "LCM theory",
+      "basic set theory",
+      "consecutive integers"
+    ],
     "significance": "key"
   },
   {
@@ -52,6 +64,12 @@
       "injectivity",
       "arithmetic functions",
       "prime distribution in intervals"
+    ],
+    "prerequisites": [
+      "LCM theory",
+      "arithmetic functions",
+      "injectivity",
+      "prime numbers"
     ],
     "significance": "key"
   },
@@ -71,6 +89,12 @@
       "smooth numbers",
       "prime power distribution"
     ],
+    "prerequisites": [
+      "LCM coincidences",
+      "LCM theory",
+      "prime numbers",
+      "smooth numbers"
+    ],
     "significance": "key"
   },
   {
@@ -88,6 +112,12 @@
       "prime factorization",
       "radical of an integer",
       "Bertrand's postulate"
+    ],
+    "prerequisites": [
+      "basic set theory",
+      "prime factorization",
+      "prime numbers",
+      "radical of an integer"
     ],
     "significance": "supporting"
   },
@@ -108,6 +138,12 @@
       "S-unit equations",
       "Pell equations"
     ],
+    "prerequisites": [
+      "LCM theory",
+      "abc conjecture",
+      "prime numbers",
+      "radical of an integer"
+    ],
     "significance": "key"
   },
   {
@@ -126,6 +162,12 @@
       "Diophantine approximation",
       "finiteness theorems",
       "effective bounds"
+    ],
+    "prerequisites": [
+      "Diophantine approximation",
+      "LCM theory",
+      "Thue-Siegel-Roth theorem",
+      "polynomial ring theory"
     ],
     "significance": "key"
   },
@@ -146,6 +188,12 @@
       "Finset.range",
       "Lean 4 simp tactic"
     ],
+    "prerequisites": [
+      "LCM theory",
+      "base cases",
+      "fold semantics",
+      "natural number arithmetic"
+    ],
     "significance": "supporting"
   },
   {
@@ -164,6 +212,12 @@
       "LCM properties",
       "positive integers",
       "arithmetic axioms"
+    ],
+    "prerequisites": [
+      "LCM properties",
+      "LCM theory",
+      "divisibility",
+      "proof techniques"
     ],
     "significance": "supporting"
   }

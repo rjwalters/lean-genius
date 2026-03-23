@@ -11,6 +11,12 @@
     "content": "The Seven Bridges of Königsberg is one of the most famous problems in mathematics. The question seems simple: can you walk through the city crossing each bridge exactly once?\n\nEuler's 1736 solution didn't just answer this question - it created an entirely new field of mathematics. He realized that the physical layout doesn't matter; only the **connections** matter.\n\nThis abstraction - representing places as points and connections as lines - is the essence of graph theory.",
     "mathContext": "Formalizes the concept of the birth of graph theory",
     "significance": "key",
+    "prerequisites": [
+      "Euler's work",
+      "field theory",
+      "graph theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "graph theory",
       "topology",
@@ -29,6 +35,12 @@
     "content": "We model the graph with 11 vertices:\n\n- **V1, V2, V3, V4**: The four landmasses (north bank, south bank, and two islands)\n- **B1-B7**: The seven bridges\n\nWhy include bridges as vertices? In a `SimpleGraph`, edges are unique between vertex pairs. Since multiple bridges connect the same landmasses, we insert bridge vertices to avoid multi-edges.\n\nThe `deriving DecidableEq, Fintype` clause automatically generates:\n- `DecidableEq`: We can test if two vertices are equal\n- `Fintype`: The type is finite (Lean can enumerate all elements)",
     "mathContext": "Graph $G = (V, E)$ with $|V| = 11$, $|E| = 14$",
     "significance": "key",
+    "prerequisites": [
+      "Fintype",
+      "basic set theory",
+      "deriving",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "inductive type",
       "deriving",
@@ -47,6 +59,12 @@
     "content": "The edges are defined as pairs connecting landmasses to their adjacent bridges:\n\n- **V1** connects to 5 bridges (B1, B2, B3, B4, B5)\n- **V2** connects to 3 bridges (B1, B2, B6)\n- **V3** connects to 3 bridges (B4, B5, B7)\n- **V4** connects to 3 bridges (B3, B6, B7)\n\nEach bridge vertex has exactly 2 edges (to its two endpoints).\n\nNote: We only list each edge once; the graph is made symmetric in the adjacency definition.",
     "mathContext": "Lean: `def edges : List (Verts × Verts)`",
     "significance": "supporting",
+    "prerequisites": [
+      "adjacency",
+      "basic set theory",
+      "edge list",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "edge list",
       "adjacency"
@@ -64,6 +82,12 @@
     "content": "The adjacency relation checks if `(v, w)` or `(w, v)` appears in the edge list:\n\n```lean\ndef adj (v w : Verts) : Bool := (v, w) ∈ edges || (w, v) ∈ edges\n```\n\nThis makes the graph **undirected** - if you can walk from A to B, you can walk from B to A.",
     "mathContext": "Lean: `def adj (v w : Verts) : Bool := (v, w) ∈ edges || (w, v) ∈ edges`",
     "significance": "supporting",
+    "prerequisites": [
+      "basic set theory",
+      "graph theory basics",
+      "symmetric relation",
+      "undirected graph"
+    ],
     "relatedConcepts": [
       "undirected graph",
       "symmetric relation"
@@ -81,6 +105,12 @@
     "content": "A `SimpleGraph` in Mathlib is an undirected graph with:\n\n1. **Symmetric adjacency**: If $u \\sim v$ then $v \\sim u$\n2. **No self-loops**: $v \\not\\sim v$ for all vertices\n\nThe `@[simps]` attribute generates helper lemmas for the graph's components.\n\nThe proofs of symmetry and irreflexivity use `decide`, which works because our vertex type is finite and the adjacency is decidable.",
     "mathContext": "Simple graph: symmetric, irreflexive adjacency relation",
     "significance": "key",
+    "prerequisites": [
+      "SimpleGraph",
+      "basic set theory",
+      "decidability",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "SimpleGraph",
       "decidability",
@@ -99,6 +129,12 @@
     "content": "The **degree** of a vertex is the number of edges incident to it.\n\nFor Königsberg:\n- **V1**: degree 5 (connected to 5 bridges)\n- **V2, V3, V4**: degree 3 each (connected to 3 bridges each)\n- **All bridges**: degree 2 (each connects exactly two landmasses)\n\nThis is the key data for Euler's theorem: 4 vertices have **odd** degree.",
     "mathContext": "$\\deg(V_1) = 5$, $\\deg(V_2) = \\deg(V_3) = \\deg(V_4) = 3$",
     "significance": "key",
+    "prerequisites": [
+      "Euler's work",
+      "basic set theory",
+      "degree",
+      "odd/even"
+    ],
     "relatedConcepts": [
       "degree",
       "odd/even",
@@ -117,6 +153,12 @@
     "content": "We prove that `graph.degree v = degree v` for all vertices.\n\nThe proof is by case analysis: `by cases v <;> rfl`\n\nThis unfolds the definition for each of the 11 vertices and confirms the computed degree matches the graph's actual degree.",
     "mathContext": "$We prove that `graph.degree v = degree v` for all vertices.$",
     "significance": "supporting",
+    "prerequisites": [
+      "case analysis",
+      "graph theory basics",
+      "proof techniques",
+      "reflexivity"
+    ],
     "relatedConcepts": [
       "case analysis",
       "reflexivity"
@@ -134,6 +176,12 @@
     "content": "We prove that the odd-degree vertices are exactly {V1, V2, V3, V4}:\n\n$$\\{v : \\text{Odd}(\\deg(v))\\} = \\{V_1, V_2, V_3, V_4\\}$$\n\nThis set has **4 elements** - the crucial fact for the impossibility proof.\n\nThe proof uses:\n- `Nat.odd_iff_not_even`: A number is odd iff it's not even\n- Set extensionality: Two sets are equal iff they have the same members",
     "mathContext": "$|\\{v : \\text{deg}(v) \\text{ is odd}\\}| = 4$",
     "significance": "key",
+    "prerequisites": [
+      "cardinality",
+      "natural number arithmetic",
+      "proof techniques",
+      "set equality"
+    ],
     "relatedConcepts": [
       "set equality",
       "cardinality",
@@ -195,6 +243,12 @@
     "content": "Euler's solution had far-reaching consequences:\n\n**Birth of Graph Theory**: The idea that structure matters, not geometry, became graph theory - now essential in computer science, biology, and social sciences.\n\n**Early Topology**: Euler called this 'geometry of position' (analysis situs). The problem depends on connectivity, not distances - a topological property.\n\n**Modern Applications**:\n- **DNA sequencing**: Assembling genome fragments\n- **Circuit design**: Drawing circuits without lifting the pen\n- **Route optimization**: Garbage trucks, mail delivery, snow plowing\n- **Network analysis**: Understanding connectivity in social networks",
     "mathContext": "Formalizes the concept of historical impact",
     "significance": "key",
+    "prerequisites": [
+      "Euler's work",
+      "graph theory basics",
+      "history of mathematics",
+      "topology"
+    ],
     "relatedConcepts": [
       "history of mathematics",
       "topology",

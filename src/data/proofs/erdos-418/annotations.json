@@ -11,6 +11,10 @@
     "content": "**Erdos Problem #418** asks whether there are infinitely many non-cototients - positive integers that cannot be written as n - phi(n) for any n.",
     "mathContext": "The answer is YES, proved by Browkin and Schinzel (1995). The key construction: 2^k * 509203 are non-cototients for all k >= 1.",
     "significance": "key",
+    "prerequisites": [
+      "erdos",
+      "totient"
+    ],
     "relatedConcepts": [
       "erdos",
       "totient",
@@ -30,6 +34,12 @@
     "content": "**cototient(n)** = n - phi(n) counts the integers from 1 to n that share a common factor with n. This is the complement of Euler's totient.",
     "mathContext": "For n = 6: phi(6) = 2 (only 1 and 5 are coprime to 6), so cototient(6) = 6 - 2 = 4 (the numbers 2, 3, 4, 6 share factors with 6).",
     "significance": "key",
+    "prerequisites": [
+      "Euler's work",
+      "basic set theory",
+      "coprime",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "totient",
       "coprime",
@@ -48,6 +58,11 @@
     "content": "**IsCototientValue(m)** says m is in the range of the cototient function - there exists some n with cototient(n) = m.",
     "mathContext": "For example, 4 is a cototient value because cototient(6) = 4 and cototient(8) = 4.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "existence",
+      "range"
+    ],
     "relatedConcepts": [
       "range",
       "existence",
@@ -66,6 +81,11 @@
     "content": "**IsNonCototient(m)** says m > 0 and m is NOT a cototient value. These are numbers that cannot be expressed as n - phi(n) for any n.",
     "mathContext": "The smallest non-cototient is 10. No matter what n you choose, n - phi(n) never equals 10.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "complement",
+      "non-existence"
+    ],
     "relatedConcepts": [
       "complement",
       "non-existence",
@@ -84,6 +104,12 @@
     "content": "**cototient_one** shows 1 - phi(1) = 1 - 1 = 0. The only positive integer <= 1 is 1 itself, which is coprime to 1.",
     "mathContext": "phi(1) = 1 by convention (or because gcd(1,1) = 1).",
     "significance": "supporting",
+    "prerequisites": [
+      "GCD theory",
+      "base-case",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "base-case",
       "totient-one"
@@ -101,6 +127,12 @@
     "content": "**cototient_two** shows 2 - phi(2) = 2 - 1 = 1. Only 1 is coprime to 2, so one integer (2 itself) shares a factor.",
     "mathContext": "Verified by native_decide which computes phi(2) = 1 directly.",
     "significance": "supporting",
+    "prerequisites": [
+      "computation",
+      "native-decide",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "computation",
       "native-decide"
@@ -118,6 +150,12 @@
     "content": "**cototient_prime** proves that for any prime p, cototient(p) = 1. Since phi(p) = p - 1, we get p - (p-1) = 1.",
     "mathContext": "Uses Nat.totient_prime and omega tactic. The only non-coprime integer in [1,p] is p itself.",
     "significance": "key",
+    "prerequisites": [
+      "natural number arithmetic",
+      "omega tactic",
+      "prime",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "prime",
       "totient-prime",
@@ -136,6 +174,11 @@
     "content": "**zero_is_cototient** through **four_is_cototient** verify that 0, 1, 2, 3, 4 are all cototient values with explicit witnesses.",
     "mathContext": "0 = cototient(1), 1 = cototient(2), 2 = cototient(4), 3 = cototient(9), 4 = cototient(8).",
     "significance": "supporting",
+    "prerequisites": [
+      "proof techniques",
+      "verification",
+      "witnesses"
+    ],
     "relatedConcepts": [
       "verification",
       "witnesses",
@@ -154,6 +197,10 @@
     "content": "**ten_is_non_cototient** states that 10 is the smallest non-cototient. No n satisfies n - phi(n) = 10.",
     "mathContext": "Proving this requires exhaustive search or clever analysis. The OEIS sequence A005278 lists non-cototients: 10, 26, 34, 50, ...",
     "significance": "key",
+    "prerequisites": [
+      "exhaustive-search",
+      "smallest"
+    ],
     "relatedConcepts": [
       "smallest",
       "exhaustive-search",
@@ -172,6 +219,12 @@
     "content": "**browkinSchinzelBase** = 509203 is the magic number from Browkin and Schinzel's 1995 paper. All 2^k * 509203 are non-cototients.",
     "mathContext": "The number 509203 has special properties related to covering systems and modular arithmetic that make this construction work.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "covering-systems",
+      "magic-number",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "magic-number",
       "covering-systems",
@@ -190,6 +243,11 @@
     "content": "**browkinSchinzelWitness(k)** = 2^(k+1) * 509203 gives infinitely many non-cototients as k ranges over natural numbers.",
     "mathContext": "k=0 gives 1018406, k=1 gives 2036812, k=2 gives 4073624, etc. Each is a non-cototient.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "infinite-family",
+      "witness"
+    ],
     "relatedConcepts": [
       "witness",
       "infinite-family",
@@ -208,6 +266,10 @@
     "content": "**erdos_418** states NonCototients.Infinite - there are infinitely many non-cototients. This answers Erdos's question affirmatively.",
     "mathContext": "The proof uses the Browkin-Schinzel witness sequence, which provides infinitely many distinct non-cototients.",
     "significance": "key",
+    "prerequisites": [
+      "infinitely-many",
+      "main-result"
+    ],
     "relatedConcepts": [
       "main-result",
       "infinitely-many",
@@ -226,6 +288,12 @@
     "content": "**StrengthenedGoldbach** requires every even n > 6 to be a sum of two DISTINCT primes. This is slightly stronger than standard Goldbach.",
     "mathContext": "Standard Goldbach allows p + p (same prime twice). The strengthened version needs p + q with p != q.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "conjecture",
+      "goldbach",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "goldbach",
       "conjecture",
@@ -244,6 +312,11 @@
     "content": "**odd_cototient_conditional** shows that under strengthened Goldbach, every odd m is a cototient value.",
     "mathContext": "For odd m >= 7: m+1 is even > 6, so m+1 = p+q (distinct primes). Then cototient(p*q) = p*q - (p-1)(q-1) = p+q-1 = m.",
     "significance": "key",
+    "prerequisites": [
+      "conditional",
+      "odd-numbers",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "conditional",
       "odd-numbers",
@@ -262,6 +335,11 @@
     "content": "**small_odd_cototients** verifies 1, 3, 5 are cototients directly: 1 = cototient(2), 3 = cototient(9), 5 = cototient(25).",
     "mathContext": "These handle the base cases (m < 7) separately from the Goldbach-based argument.",
     "significance": "supporting",
+    "prerequisites": [
+      "base-cases",
+      "proof techniques",
+      "verification"
+    ],
     "relatedConcepts": [
       "base-cases",
       "verification",
@@ -280,6 +358,11 @@
     "content": "**density_open** marks the open question: do non-cototients have positive density? The Browkin-Schinzel set has density 0.",
     "mathContext": "Positive density would mean a constant fraction of integers are non-cototients. The exponentially sparse witness set doesn't prove this.",
     "significance": "key",
+    "prerequisites": [
+      "density",
+      "density theory",
+      "open-problem"
+    ],
     "relatedConcepts": [
       "density",
       "open-problem",
@@ -298,6 +381,11 @@
     "content": "**erdos_nonaliquot_density** states that numbers not of the form sigma(n) - n (nonaliquots) have positive density. Erdos proved this in 1973.",
     "mathContext": "This contrasts with non-cototients where density is unknown. Banks-Luca showed density >= 1/48; Chen-Zhao improved to 0.06.",
     "significance": "key",
+    "prerequisites": [
+      "density theory",
+      "nonaliquot",
+      "positive-density"
+    ],
     "relatedConcepts": [
       "nonaliquot",
       "positive-density",
@@ -316,6 +404,11 @@
     "content": "**erdos_418_summary** packages key facts: the base 509203, and the first two witnesses 2*509203 and 4*509203.",
     "mathContext": "Verified computationally using native_decide to check the arithmetic.",
     "significance": "supporting",
+    "prerequisites": [
+      "proof techniques",
+      "summary",
+      "verification"
+    ],
     "relatedConcepts": [
       "summary",
       "verification",

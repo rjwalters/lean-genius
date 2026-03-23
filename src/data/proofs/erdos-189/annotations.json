@@ -11,6 +11,11 @@
     "content": "We define the **plane** as `EuclideanSpace ℝ (Fin 2)`, Mathlib's standard representation of ℝ². This gives us access to the inner product, norm, and distance functions needed for geometric reasoning.",
     "mathContext": "`EuclideanSpace ℝ (Fin 2)` is the 2-dimensional real Euclidean space with the standard inner product.",
     "significance": "supporting",
+    "prerequisites": [
+      "basic set theory",
+      "euclidean-geometry",
+      "plane"
+    ],
     "relatedConcepts": [
       "euclidean-geometry",
       "plane",
@@ -29,6 +34,12 @@
     "content": "A **finite coloring** using n colors is simply a function from the plane to `Fin n`. Every point gets assigned one of n colors (0 through n-1). This is the standard way to formalize coloring problems in combinatorics.",
     "mathContext": "`FiniteColoring n := Plane → Fin n` assigns each point in ℝ² a color from {0, 1, ..., n-1}.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "coloring",
+      "graph coloring",
+      "ramsey-theory"
+    ],
     "relatedConcepts": [
       "ramsey-theory",
       "coloring",
@@ -47,6 +58,11 @@
     "content": "Four points form a **rectangle** if they have three consecutive right angles: a-b perpendicular to b-c and b-c perpendicular to c-d. The fourth angle is automatically right. We also require the quadrilateral to be non-degenerate (distinct consecutive vertices).",
     "mathContext": "Perpendicularity is expressed via the inner product: `inner (a - b) (c - b) = 0` means a-b is perpendicular to b-c; $\\text{inner}(u, v) = 0 \\Leftrightarrow u \\perp v$.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "perpendicularity",
+      "rectangle"
+    ],
     "relatedConcepts": [
       "rectangle",
       "perpendicularity",
@@ -65,6 +81,11 @@
     "content": "The **area** of a rectangle is the product of two perpendicular side lengths: ||a - b|| * ||b - c||. For a proper rectangle (where a-b is perpendicular to b-c), this gives the standard area formula.",
     "mathContext": "Using the norm for Euclidean distance, the area is width times height.",
     "significance": "key",
+    "prerequisites": [
+      "area",
+      "basic set theory",
+      "norm"
+    ],
     "relatedConcepts": [
       "area",
       "norm",
@@ -83,6 +104,12 @@
     "content": "**Erdos189Statement** formalizes the question: For ANY finite coloring of the plane, does SOME color class contain rectangles of EVERY positive area? This is a universal-existential statement: for all n, for all n-colorings, exists a color such that for all A > 0, that color has a rectangle of area A.",
     "mathContext": "The statement quantifies over the number of colors $n$, the coloring function, and requires existence of a 'universal' color: $\\forall n\\, \\forall c: \\mathbb{R}^2 \\to \\text{Fin}\\,n\\, \\exists i\\, \\forall A > 0\\, \\exists \\text{rect} \\subset c^{-1}(i)$ with area $A$.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "erdos-problem",
+      "graph coloring",
+      "ramsey-type"
+    ],
     "relatedConcepts": [
       "erdos-problem",
       "ramsey-type",
@@ -101,6 +128,12 @@
     "content": "**Kovac's breakthrough**: There exists a 25-coloring of the plane such that NO color class contains rectangle vertices of area 1. This is axiomatized since the construction involves partitioning the plane into Jordan measurable regions with specific properties.",
     "mathContext": "The axiom states: $\\exists c : \\mathbb{R}^2 \\to \\text{Fin}\\,25\\, \\forall i < 25\\, \\neg\\exists$ rectangle with all 4 vertices in $c^{-1}(i)$ of area 1; the construction uses Jordan measurable color regions.",
     "significance": "key",
+    "prerequisites": [
+      "counterexample",
+      "graph coloring",
+      "kovac",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "counterexample",
       "kovac",
@@ -119,6 +152,12 @@
     "content": "**erdos_189_is_false** proves that the Erdos statement is false. The proof is a clean derivation from Kovac's counterexample: if the statement were true, the 25-coloring would have some color with rectangles of every area, including area 1. But Kovac showed no color has area-1 rectangles. Contradiction!",
     "mathContext": "The proof uses the 25-coloring to instantiate the universal quantifiers, then applies Kovac's result for the contradiction; formally: assume Erdos189Statement, apply to the 25-coloring, get a color with area-1 rectangle, contradicting Kovac's axiom.",
     "significance": "key",
+    "prerequisites": [
+      "contradiction",
+      "disproof",
+      "graph coloring",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "disproof",
       "contradiction",
@@ -137,6 +176,12 @@
     "content": "**Contrast with triangles**: Graham (1980) proved that for RIGHT-ANGLED TRIANGLES, the answer is YES - any finite coloring has a color class containing triangles of every area. This shows rectangles and triangles behave fundamentally differently in this Ramsey-type question.",
     "mathContext": "For triangles, the area formula uses (1/2) times base times height with a right angle at one vertex.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "graham",
+      "graph coloring",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "graham",
       "triangle",
@@ -155,6 +200,12 @@
     "content": "**Still unsolved**: What about parallelograms? If we drop the right-angle constraint and only require opposite sides parallel, does every finite coloring have a color with parallelograms of every area? This remains open as of 2025.",
     "mathContext": "Parallelograms are defined by a - b = d - c (opposite sides equal as vectors). Area uses the determinant formula.",
     "significance": "key",
+    "prerequisites": [
+      "graph coloring",
+      "open-problem",
+      "parallelogram",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "parallelogram",
       "open-problem",
@@ -173,6 +224,12 @@
     "content": "The problem was open for **43 years** (1980-2023). Graham's original paper showed interesting dichotomies: triangles YES, rhombuses NO, rectangles unknown. Kovac's resolution came via an elegant construction using Jordan measurable regions - the coloring is surprisingly 'nice' despite being a counterexample.",
     "mathContext": "Jordan measurable means the topological boundary has Lebesgue measure zero - a regularity condition.",
     "significance": "supporting",
+    "prerequisites": [
+      "graham-1980",
+      "graph coloring",
+      "history",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "history",
       "graham-1980",

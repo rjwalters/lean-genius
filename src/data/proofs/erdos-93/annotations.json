@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #93: Distinct Distances in Convex Polygons**\n\nIf n distinct points form a convex polygon, they determine at least ⌊n/2⌋ distinct distances.\n\n**Status**: SOLVED by Altman (1963)\n\n**Tightness**: Regular n-gons achieve exactly ⌊n/2⌋ distances.\n\n**Open variants**: Problem #982 (single vertex), Fishburn's conjecture, Problem #1082 (no collinear).",
     "mathContext": "Formalizes the concept of problem overview",
     "significance": "key",
+    "prerequisites": [
+      "Convex position",
+      "Distinct distances",
+      "convexity"
+    ],
     "relatedConcepts": [
       "Distinct distances",
       "Convex position",
@@ -32,6 +37,12 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "bounds",
+      "cardinal arithmetic",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -46,6 +57,11 @@
     "content": "**InConvexPosition(S)** (axiom): Points form a convex polygon — no point lies in the convex hull of the others.\n\nAxiomatized because formally defining convex hulls in ℝ² requires substantial geometric infrastructure. The key property is that vertices can be cyclically ordered with all interior angles < 180°.",
     "mathContext": "Convexity forces angular spread among points, which is the geometric constraint that creates distance diversity.",
     "significance": "key",
+    "prerequisites": [
+      "Convex hull",
+      "Convex polygon",
+      "convexity"
+    ],
     "relatedConcepts": [
       "Convex hull",
       "Convex polygon",
@@ -64,6 +80,12 @@
     "content": "**altman_theorem (axiom):** For any S in convex position, numDistinctDistances(S) ≥ |S|/2.\n\nThe main result solving Erdős Problem #93.\n\n**regular_polygon_exact (axiom):** For n ≥ 3, there exists a convex n-gon with exactly n/2 distinct distances. The distances from vertex 0 to vertex k are 2R sin(kπ/n), giving ⌊n/2⌋ distinct values.\n\nExamples: triangle 1, square 2, pentagon 2, hexagon 3.",
     "mathContext": "Altman's 1963 proof uses the cyclic ordering of vertices and analyzes distances from a fixed vertex.",
     "significance": "key",
+    "prerequisites": [
+      "Lower bounds",
+      "Regular polygons",
+      "convexity",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Lower bounds",
       "Regular polygons",
@@ -82,6 +104,12 @@
     "content": "**distancesFrom(p, S)**: Distinct distances from point p to other points in S.\n\n**numDistancesFrom(p, S)**: How many distinct distances p 'sees'.\n\n**StrongerVariant**: In a convex n-gon, does some vertex determine ≥ ⌊n/2⌋ distinct distances?\n\nThis is strictly stronger than Altman's theorem (which counts total distinct distances). Status: OPEN.",
     "mathContext": "Lean: `def StrongerVariant : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "Open problems",
+      "Problem #982",
+      "basic set theory",
+      "convexity"
+    ],
     "relatedConcepts": [
       "Problem #982",
       "Open problems",
@@ -100,6 +128,11 @@
     "content": "**FishburnConjecture**: For convex n-gon, Σ_{x ∈ S} R(x) ≥ C(n,2) where R(x) = numDistancesFrom(x, S).\n\n**fishburn_implies_stronger (axiom):** Fishburn ⟹ StrongerVariant.\n\nReasoning: If Σ R(x) ≥ n(n-1)/2, the average R(x) ≥ (n-1)/2, so some vertex achieves ≥ ⌊n/2⌋ by pigeonhole.",
     "mathContext": "This averaging argument shows that Fishburn's sum conjecture is the natural strengthening to prove.",
     "significance": "key",
+    "prerequisites": [
+      "Pigeonhole principle",
+      "Sum conjectures",
+      "convexity"
+    ],
     "relatedConcepts": [
       "Sum conjectures",
       "Pigeonhole principle",
@@ -120,6 +153,11 @@
     "relatedConcepts": [
       "convexity",
       "optimization"
+    ],
+    "prerequisites": [
+      "convexity",
+      "optimization",
+      "proof techniques"
     ],
     "significance": "key"
   }

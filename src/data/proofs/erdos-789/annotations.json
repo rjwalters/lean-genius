@@ -11,6 +11,10 @@
     "content": "**Erdős Problem #789**: Estimate h(n), the maximal size of a sum-length-free subset B of any n-element set A ⊆ ℤ. A set B is sum-length-free if equal sums must use equal numbers of terms. Known bounds: (n log n)^{1/3} ≪ h(n) ≪ √n. The gap between exponents 1/3 and 1/2 remains OPEN.",
     "mathContext": "Posed by Erdős in 1962, with bounds improved by Straus (1966, upper) and Choi (1974, lower). Related to Problems 186 and 874.",
     "significance": "key",
+    "prerequisites": [
+      "Sidon sets",
+      "Sum-free sets"
+    ],
     "relatedConcepts": [
       "Sum-free sets",
       "Sidon sets",
@@ -52,6 +56,11 @@
     "content": "**h(n)** = max |B| such that B ⊆ A is sum-length-free for any n-element set A ⊆ ℤ. Axiomatized with h_pos (h(n) > 0 for n ≥ 1) and h_achievable (the max is achieved).",
     "mathContext": "This is an extremal function: for every n-element set A, we can always find a sum-length-free subset of size at least h(n).",
     "significance": "key",
+    "prerequisites": [
+      "Extremal functions",
+      "Guaranteed subsets",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Extremal functions",
       "Guaranteed subsets"
@@ -69,6 +78,10 @@
     "content": "**Erdős (1962)**: h(n) ≪ n^{5/6}, the first upper bound. **Straus (1966)**: h(n) ≪ √n, a dramatic improvement using counting arguments on sum representations. This is the best known upper bound and matches the Sidon set bound.",
     "mathContext": "Lean: `axiom erdos_1962_upper :`",
     "significance": "key",
+    "prerequisites": [
+      "Counting arguments",
+      "Straus"
+    ],
     "relatedConcepts": [
       "Straus",
       "Counting arguments",
@@ -87,6 +100,10 @@
     "content": "**Erdős (1962)**: h(n) ≫ n^{1/3} via a probabilistic construction using fractional parts {αa} for random α. **Erdős-Choi (1974)**: h(n) ≫ (n log n)^{1/3}, refining the probabilistic argument with Diophantine approximation. This is the best known lower bound.",
     "mathContext": "Lean: `axiom erdos_1962_lower :`",
     "significance": "key",
+    "prerequisites": [
+      "Fractional parts",
+      "Probabilistic method"
+    ],
     "relatedConcepts": [
       "Probabilistic method",
       "Fractional parts",
@@ -127,6 +144,12 @@
     "content": "**IsSidonSet B**: Distinct pairwise sums (a+b = c+d implies {a,b} = {c,d}). Sidon implies sum-length-free, so the max Sidon subset (≈ √n by Erdős-Turán) gives a lower bound for h(n). But Straus's upper bound √n shows they grow at the same rate.",
     "mathContext": "Lean: `def IsSidonSet (B : Finset ℤ) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "B₂ sequences",
+      "Finset API",
+      "Sidon sets",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Sidon sets",
       "B₂ sequences",
@@ -145,6 +168,11 @@
     "content": "**√1000 = 31** and **√1000000 = 1000** verified via native_decide, illustrating the scale of bounds at moderate n. At n = 1000: lower ≈ 19, upper ≈ 32. At n = 10^6: lower ≈ 239, upper = 1000.",
     "mathContext": "Formalizes the concept of computational examples",
     "significance": "supporting",
+    "prerequisites": [
+      "Numerical verification",
+      "native_decide",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "native_decide",
       "Numerical verification"
@@ -162,6 +190,11 @@
     "content": "**erdos_789**: The main theorem combines lower bound (n log n)^{1/3} and upper bound √n. Proved by exact ⟨erdos_choi_1974_lower, straus_1966_upper⟩. Problem remains OPEN — the true growth rate of h(n) is unknown.",
     "mathContext": "Formalizes the concept of main theorem",
     "significance": "key",
+    "prerequisites": [
+      "Open problem",
+      "Summary",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Summary",
       "Open problem",

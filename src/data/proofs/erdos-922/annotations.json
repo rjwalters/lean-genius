@@ -11,6 +11,12 @@
     "content": "**IsIndependentSet S:**\n\nA set S of vertices is independent if no two vertices in S are adjacent.\n\n**Definition:**\n```lean\ndef IsIndependentSet (S : Finset V) : Prop :=\n  ∀ u ∈ S, ∀ v ∈ S, ¬G.Adj u v\n```\n\nIndependent sets are central to graph coloring: each color class must be independent.",
     "mathContext": "Finding maximum independent sets is NP-hard in general, making this property computationally interesting.",
     "significance": "key",
+    "prerequisites": [
+      "Clique",
+      "Finset API",
+      "Vertex cover",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Clique",
       "Vertex cover",
@@ -29,6 +35,12 @@
     "content": "**independenceNumber G = α(G):**\n\nThe size of the largest independent set in G.\n\n**Properties:**\n- α(Kₙ) = 1 (complete graph: only singletons)\n- α(empty graph on n vertices) = n\n- χ(G) ≥ n/α(G) (lower bound on chromatic number)",
     "mathContext": "Formalizes the concept of independence number",
     "significance": "key",
+    "prerequisites": [
+      "Clique number",
+      "Ramsey numbers",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Clique number",
       "Ramsey numbers",
@@ -52,6 +64,12 @@
       "graph coloring",
       "ring theory"
     ],
+    "prerequisites": [
+      "algebra",
+      "basic set theory",
+      "chromatic number",
+      "graph coloring"
+    ],
     "significance": "key"
   },
   {
@@ -66,6 +84,12 @@
     "content": "**chromaticNumber' G = χ(G):**\n\nThe minimum number of colors needed for a proper coloring.\n\n**Examples:**\n- χ(Kₙ) = n (complete graph)\n- χ(bipartite) ≤ 2\n- χ(odd cycle) = 3\n\nComputing χ(G) is NP-hard in general.",
     "mathContext": "The chromatic number is one of the most studied graph invariants.",
     "significance": "key",
+    "prerequisites": [
+      "Chromatic polynomial",
+      "Four color theorem",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Four color theorem",
       "Chromatic polynomial",
@@ -84,6 +108,12 @@
     "content": "**hasFolkmanPropertyInduced k:**\n\nEvery induced subgraph on W vertices has an independent set of size at least (|W|-k)/2.\n\n**Equivalently:** α(H) ≥ (|V(H)| - k)/2 for all induced subgraphs H.\n\nThis is the key condition in Erdős Problem #922.",
     "mathContext": "The condition must hold for ALL subgraphs, not just the original graph.",
     "significance": "key",
+    "prerequisites": [
+      "Induced subgraph",
+      "Subgraph",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Subgraph",
       "Induced subgraph",
@@ -105,6 +135,12 @@
       "combinatorics",
       "graph theory"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "combinatorics",
+      "graph theory",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -122,6 +158,12 @@
       "combinatorics",
       "graph theory"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "graph theory basics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -138,6 +180,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -153,6 +199,10 @@
     "mathContext": "$∀ k ≥ 0, Folkman property with k → χ(G) ≤ k+2$",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -173,6 +223,11 @@
       "graph theory",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "combinatorics",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -188,6 +243,10 @@
     "mathContext": "$For k = 1: Folkman property implies χ(G) ≤ 3.$",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -205,6 +264,12 @@
     "relatedConcepts": [
       "combinatorics",
       "graph theory"
+    ],
+    "prerequisites": [
+      "basic set theory",
+      "combinatorics",
+      "graph theory",
+      "graph theory basics"
     ],
     "significance": "supporting"
   },
@@ -226,6 +291,12 @@
       "combinatorics",
       "graph coloring"
     ],
+    "prerequisites": [
+      "algebra",
+      "bounds",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "significance": "supporting"
   },
   {
@@ -243,6 +314,12 @@
       "combinatorics",
       "graph theory"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "combinatorics",
+      "graph theory",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -257,6 +334,12 @@
     "content": "**ramsey_connection:**\n\nLarge graphs have either large cliques or large independent sets.\n\nThis Ramsey-type principle underlies why the Folkman property constrains chromatic number.",
     "mathContext": "Lean: `axiom ramsey_connection (n k : ℕ) :`",
     "significance": "supporting",
+    "prerequisites": [
+      "Ramsey numbers",
+      "Ramsey theorem",
+      "Ramsey theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Ramsey theorem",
       "Ramsey numbers"
@@ -280,6 +363,12 @@
       "graph coloring",
       "graph theory"
     ],
+    "prerequisites": [
+      "algebra",
+      "chromatic number",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "significance": "supporting"
   },
   {
@@ -296,6 +385,11 @@
     "relatedConcepts": [
       "bounds",
       "inequalities"
+    ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
     ],
     "significance": "key"
   }

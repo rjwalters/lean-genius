@@ -16,6 +16,11 @@
       "abbrev",
       "function type"
     ],
+    "prerequisites": [
+      "Fin",
+      "Int",
+      "basic set theory"
+    ],
     "significance": "key"
   },
   {
@@ -35,6 +40,11 @@
       "Manhattan distance",
       "lattice adjacency"
     ],
+    "prerequisites": [
+      "Fin",
+      "Int.natAbs",
+      "basic set theory"
+    ],
     "significance": "key"
   },
   {
@@ -52,6 +62,11 @@
       "Fin",
       "function type",
       "LatticePoint"
+    ],
+    "prerequisites": [
+      "Fin",
+      "basic set theory",
+      "function type"
     ],
     "significance": "supporting"
   },
@@ -72,6 +87,12 @@
       "isSelfAvoiding",
       "polymer model"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "ideal theory",
+      "isConnected",
+      "simp tactic"
+    ],
     "significance": "key"
   },
   {
@@ -91,6 +112,11 @@
       "#P-completeness",
       "exponential growth"
     ],
+    "prerequisites": [
+      "Nat",
+      "basic set theory",
+      "isSAW"
+    ],
     "significance": "key"
   },
   {
@@ -109,6 +135,11 @@
       "limit_exists",
       "Nat.mul",
       "Nat.le"
+    ],
+    "prerequisites": [
+      "Fekete's lemma",
+      "limit_exists",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -130,6 +161,12 @@
       "Real.rpow",
       "Fekete's lemma"
     ],
+    "prerequisites": [
+      "Filter.Tendsto",
+      "Filter.atTop",
+      "filter theory",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -149,6 +186,11 @@
       "dite",
       "notation"
     ],
+    "prerequisites": [
+      "Classical.choose",
+      "basic set theory",
+      "noncomputable"
+    ],
     "significance": "key"
   },
   {
@@ -166,6 +208,11 @@
       "connective_lower_bound",
       "connective_upper_bound",
       "And.intro"
+    ],
+    "prerequisites": [
+      "connective_lower_bound",
+      "connective_upper_bound",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -186,6 +233,12 @@
       "abs",
       "Real.div"
     ],
+    "prerequisites": [
+      "connective_upper_bound",
+      "normalized_limit",
+      "probability theory",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -204,6 +257,12 @@
       "alm_upper",
       "jsg_computation",
       "two_d_bounds"
+    ],
+    "prerequisites": [
+      "alm_upper",
+      "conway_guttmann_lower",
+      "matrix algebra",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -224,6 +283,12 @@
       "nhds",
       "kesten_asymptotic"
     ],
+    "prerequisites": [
+      "Filter.Tendsto",
+      "Filter.atTop",
+      "probability theory",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -242,6 +307,12 @@
       "mu_honeycomb_approx",
       "discrete holomorphicity",
       "parafermionic observables"
+    ],
+    "prerequisites": [
+      "Real.sqrt",
+      "field theory",
+      "mu_honeycomb_approx",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -262,6 +333,11 @@
       "Classical.em",
       "mu_honeycomb"
     ],
+    "prerequisites": [
+      "Irrational",
+      "Real.sqrt",
+      "basic set theory"
+    ],
     "significance": "key"
   },
   {
@@ -280,6 +356,12 @@
       "ratio_convergence",
       "Filter.Tendsto",
       "OEIS A001411"
+    ],
+    "prerequisites": [
+      "proof techniques",
+      "ratio_convergence",
+      "ring tactic",
+      "sawCount"
     ],
     "significance": "supporting"
   },
@@ -300,6 +382,12 @@
       "universality",
       "conformal field theory"
     ],
+    "prerequisites": [
+      "critical_exponent_exists",
+      "field theory",
+      "gamma_2d_conjecture_value",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -318,6 +406,11 @@
       "trivial_bounds",
       "two_d_bounds",
       "And.intro"
+    ],
+    "prerequisites": [
+      "limit_exists",
+      "proof techniques",
+      "trivial_bounds"
     ],
     "significance": "key"
   }

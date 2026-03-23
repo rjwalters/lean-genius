@@ -11,6 +11,10 @@
     "content": "**Erdős Problem #1127: Decomposing ℝⁿ into Sets with Distinct Distances**\n\n**Question:** Can ℝⁿ be decomposed into countably many sets where all pairwise distances within each set are distinct?\n\n**Answer:** YES, assuming the Continuum Hypothesis.\n\n**Status: SOLVED** with conditions (CH required)",
     "mathContext": "The problem connects geometry (distance) to set theory (Continuum Hypothesis) in a deep way.",
     "significance": "key",
+    "prerequisites": [
+      "Continuum Hypothesis",
+      "Set theory"
+    ],
     "relatedConcepts": [
       "Continuum Hypothesis",
       "Set theory",
@@ -29,6 +33,11 @@
     "content": "**HasDistinctDistances S:**\n\nA set S has the distinct distances property if every two distinct pairs of points have different distances.\n\nFormally: If {p₁, p₂} ≠ {p₃, p₄} are pairs in S, then dist(p₁, p₂) ≠ dist(p₃, p₄).",
     "mathContext": "Lean: `def HasDistinctDistances {n : ℕ} (S : Set (Point n)) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "Erdős distance conjecture",
+      "basic set theory",
+      "distinct distances problem"
+    ],
     "relatedConcepts": [
       "distinct distances problem",
       "Erdős distance conjecture",
@@ -50,6 +59,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -64,6 +77,12 @@
     "content": "**ContinuumHypothesis:**\n\nThe assertion that |ℝ| = ℵ₁, i.e., the cardinality of the reals equals the first uncountable cardinal.\n\nThis is independent of ZFC - neither provable nor disprovable from standard axioms.",
     "mathContext": "Cardinal.mk ℝ = Cardinal.aleph 1",
     "significance": "key",
+    "prerequisites": [
+      "Cardinal numbers",
+      "ZFC",
+      "basic set theory",
+      "cardinal arithmetic"
+    ],
     "relatedConcepts": [
       "Cardinal numbers",
       "ZFC",
@@ -85,6 +104,11 @@
       "abstract algebra",
       "algebraic structures"
     ],
+    "prerequisites": [
+      "abstract algebra",
+      "algebraic structures",
+      "basic set theory"
+    ],
     "significance": "key"
   },
   {
@@ -99,6 +123,11 @@
     "content": "**erdos_kakutani_equivalence:**\n\nThe Continuum Hypothesis is EQUIVALENT to the statement:\n'ℝ can be written as a countable union of ℚ-linearly independent sets.'\n\nThis is a remarkable characterization of CH in terms of linear algebra!",
     "mathContext": "CH ↔ ∃(S : ℕ → Set ℝ), (∀i, IsQLinearlyIndependent (S i)) ∧ (⋃i, S i) = univ",
     "significance": "key",
+    "prerequisites": [
+      "CH characterization",
+      "Linear algebra",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "CH characterization",
       "Linear algebra",
@@ -119,6 +148,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -134,6 +167,10 @@
     "mathContext": "Lean: `axiom davies_theorem : ContinuumHypothesis → Erdos1127Question' 2`",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -152,6 +189,11 @@
       "combinatorics",
       "partition"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "partition",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -167,6 +209,10 @@
     "mathContext": "$CH → ∀n, Erdos1127Question' n$",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   }

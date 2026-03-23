@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #965: Monochromatic Sums in ℝ**\n\n**Question:** For any 2-coloring of ℝ, must there exist an uncountable set A (cardinality ℵ₁) where all pairwise sums a+b are the same color?\n\n**Answer:** NO\n\n**History:**\n- 1975: Erdős claimed false under CH\n- 2016: Komjáth proved it unconditionally\n- 2017: Hindman-Leader-Strauss extended to k-sums",
     "mathContext": "This problem marks the boundary where sum-Ramsey properties fail.",
     "significance": "key",
+    "prerequisites": [
+      "Cardinal arithmetic",
+      "Ramsey theory",
+      "cardinal arithmetic",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Ramsey theory",
       "Cardinal arithmetic",
@@ -29,6 +35,12 @@
     "content": "**TwoColoring:**\n\nA 2-coloring assigns each real number a color (Bool: true=Red, false=Blue).\n\n```lean\ndef TwoColoring := ℝ → Bool\n```\n\nThis is the basic structure we study for Ramsey properties.",
     "mathContext": "Lean: `def TwoColoring := ℝ → Bool`",
     "significance": "key",
+    "prerequisites": [
+      "Colorings",
+      "Ramsey theory",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Colorings",
       "Ramsey theory"
@@ -46,6 +58,11 @@
     "content": "**PairwiseSums A:**\n\nThe set of all sums a + b where a ≠ b and both a, b ∈ A.\n\n```lean\ndef PairwiseSums (A : Set ℝ) : Set ℝ :=\n  { x | ∃ a b, a ∈ A ∧ b ∈ A ∧ a ≠ b ∧ x = a + b }\n```\n\nThe question asks if these sums can all be the same color.",
     "mathContext": "Lean: `def PairwiseSums (A : Set ℝ) : Set ℝ :=`",
     "significance": "key",
+    "prerequisites": [
+      "Additive combinatorics",
+      "Sum sets",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Sum sets",
       "Additive combinatorics"
@@ -63,6 +80,12 @@
     "content": "**IsMonochromatic c S:**\n\nA set S is monochromatic if all elements have the same color under c.\n\n```lean\ndef IsMonochromatic (c : TwoColoring) (S : Set ℝ) : Prop :=\n  (∀ x ∈ S, c x = true) ∨ (∀ x ∈ S, c x = false)\n```",
     "mathContext": "Lean: `def IsMonochromatic (c : TwoColoring) (S : Set ℝ) : Prop :=`",
     "significance": "key",
+    "prerequisites": [
+      "Colorings",
+      "Monochromatic",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Monochromatic",
       "Colorings"
@@ -80,6 +103,12 @@
     "content": "**aleph_one, HasCardinalityAleph1:**\n\nℵ₁ (aleph-one) is the first uncountable cardinal. A set has cardinality ℵ₁ if it's 'minimally uncountable'.\n\n```lean\ndef aleph_one : Cardinal := Cardinal.aleph 1\ndef HasCardinalityAleph1 (A : Set ℝ) : Prop :=\n  Cardinal.mk A = aleph_one\n```\n\nThe Continuum Hypothesis (CH) states ℵ₁ = 2^ℵ₀.",
     "mathContext": "Understanding cardinals is essential for this problem.",
     "significance": "key",
+    "prerequisites": [
+      "Cardinals",
+      "basic set theory",
+      "cardinal arithmetic",
+      "ℵ₁"
+    ],
     "relatedConcepts": [
       "Cardinals",
       "ℵ₁",
@@ -98,6 +127,12 @@
     "content": "**ErdosConjecture965:**\n\nFor any 2-coloring of ℝ, there exists a set A with |A| = ℵ₁ such that PairwiseSums(A) is monochromatic.\n\n```lean\ndef ErdosConjecture965 : Prop :=\n  ∀ c : TwoColoring, ∃ A : Set ℝ,\n    HasCardinalityAleph1 A ∧ IsMonochromatic c (PairwiseSums A)\n```\n\nThis conjecture turns out to be FALSE.",
     "mathContext": "Lean: `def ErdosConjecture965 : Prop :=`",
     "significance": "key",
+    "prerequisites": [
+      "Conjecture",
+      "Disproved",
+      "basic set theory",
+      "cardinal arithmetic"
+    ],
     "relatedConcepts": [
       "Conjecture",
       "Disproved"
@@ -115,6 +150,12 @@
     "content": "**counterexample_exists:**\n\nThere exists a 2-coloring c such that for ANY set A with |A| = ℵ₁, the pairwise sums are NOT monochromatic.\n\n```lean\naxiom counterexample_exists :\n  ∃ c : TwoColoring, ∀ A : Set ℝ,\n    HasCardinalityAleph1 A → ¬ IsMonochromatic c (PairwiseSums A)\n```\n\nKomjáth (2016) proved this unconditionally.",
     "mathContext": "The construction uses sophisticated partition calculus techniques.",
     "significance": "key",
+    "prerequisites": [
+      "Counterexample",
+      "Komjáth",
+      "cardinal arithmetic",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Counterexample",
       "Komjáth"
@@ -132,6 +173,12 @@
     "content": "**erdos_965_disproved:**\n\nThe conjecture is FALSE.\n\n```lean\ntheorem erdos_965_disproved : ¬ ErdosConjecture965 := by\n  intro hConj\n  obtain ⟨c, hc⟩ := counterexample_exists\n  obtain ⟨A, hA_card, hA_mono⟩ := hConj c\n  exact hc A hA_card hA_mono\n```\n\nProof: The counterexample coloring contradicts the conjecture.",
     "mathContext": "Lean: `theorem erdos_965_disproved : ¬ ErdosConjecture965 := by`",
     "significance": "key",
+    "prerequisites": [
+      "Disproof",
+      "Main theorem",
+      "graph coloring",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Main theorem",
       "Disproof"
@@ -149,6 +196,12 @@
     "content": "**KSums, hindman_leader_strauss_ch:**\n\nKSums extends pairwise sums to k distinct elements.\n\nHindman, Leader, and Strauss (2017) proved under CH: for any k ≥ 1, there's a coloring defeating all uncountable k-sum sets.\n\nThis is strictly stronger than the original problem.",
     "mathContext": "Lean: `def KSums (A : Set ℝ) (k : ℕ) : Set ℝ`",
     "significance": "key",
+    "prerequisites": [
+      "Generalization",
+      "basic set theory",
+      "graph coloring",
+      "k-sums"
+    ],
     "relatedConcepts": [
       "Generalization",
       "k-sums"
@@ -166,6 +219,12 @@
     "content": "**komjath_unconditional:**\n\nKomjáth (2016) proved the counterexample exists WITHOUT assuming CH.\n\n```lean\naxiom komjath_unconditional :\n  ∃ c : TwoColoring, ∀ A : Set ℝ,\n    HasCardinalityAleph1 A → ¬ IsMonochromatic c (PairwiseSums A)\n```\n\nSoukup and Weiss independently obtained the same result.",
     "mathContext": "This shows the result is a theorem of ZFC, not just ZFC+CH.",
     "significance": "key",
+    "prerequisites": [
+      "Unconditional",
+      "ZFC",
+      "cardinal arithmetic",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Unconditional",
       "ZFC",
@@ -184,6 +243,12 @@
     "content": "**countable_ramsey_possible, countable_vs_uncountable:**\n\nThe key contrast:\n- **Countable:** For ANY coloring, there EXISTS a countable infinite set with monochromatic pairwise sums\n- **Uncountable:** There EXISTS a coloring where NO uncountable set has monochromatic pairwise sums\n\nThe transition from countable to uncountable is where Ramsey properties break down.",
     "mathContext": "Lean: `axiom countable_ramsey_possible :`",
     "significance": "key",
+    "prerequisites": [
+      "Countable",
+      "Ramsey theory",
+      "Uncountable",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Countable",
       "Uncountable",
@@ -202,6 +267,10 @@
     "content": "**Erdős-Hajnal-Rado Methods:**\n\nErdős's original proof used partition calculus techniques from his work with Hajnal and Rado on infinite combinatorics.\n\nPartition calculus studies how infinite structures can be colored to achieve or avoid certain patterns.",
     "mathContext": "Lean: `def PartitionCalculus : Prop`",
     "significance": "supporting",
+    "prerequisites": [
+      "Erdős-Hajnal-Rado",
+      "Partition calculus"
+    ],
     "relatedConcepts": [
       "Partition calculus",
       "Erdős-Hajnal-Rado"
@@ -219,6 +288,11 @@
     "content": "**erdos_965_summary, erdos_965_answer_no:**\n\n| Aspect | Result |\n|--------|--------|\n| Question | Uncountable monochromatic sums? |\n| Answer | NO |\n| Original | Erdős (1975) under CH |\n| Final | Komjáth (2016) unconditionally |\n| Contrast | Countable sets: YES |",
     "mathContext": "Lean: `theorem erdos_965_summary :`",
     "significance": "key",
+    "prerequisites": [
+      "Final answer",
+      "Summary",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Summary",
       "Final answer"

@@ -11,6 +11,12 @@
     "content": "**Desargues's Theorem (1639)**:\n\nIf two triangles $ABC$ and $A'B'C'$ are **in perspective from a point** (lines $AA', BB', CC'$ meet at a common point $O$), then they are **in perspective from a line** (the intersections $P = AB \\cap A'B'$, $Q = BC \\cap B'C'$, $R = CA \\cap C'A'$ are collinear).\n\n**The converse also holds**: If the intersections are collinear, the connecting lines are concurrent.\n\n**Why Remarkable**:\n1. **Self-dual** in projective geometry (point/line swap gives same theorem)\n2. Characterizes **Desarguesian planes** — some planes violate it!\n3. Equivalent to coordinatization by a division ring\n\n**Applications**: Computer graphics, computer vision, perspective drawing, 3D reconstruction.",
     "mathContext": "$ABC$",
     "significance": "key",
+    "prerequisites": [
+      "graph theory basics",
+      "perspective",
+      "projective geometry",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "projective geometry",
       "perspective",
@@ -29,6 +35,11 @@
     "content": "**Homogeneous Coordinates**:\n\nPoints in the projective plane are represented as nonzero vectors in $\\mathbb{R}^3$. Scalar multiples represent the same point.\n\n```lean\nabbrev ProjPoint := Fin 3 → ℝ\ndef ProjPoint.valid (p : ProjPoint) : Prop := p ≠ 0\n```\n\n**Lines**: Represented by their coefficients $(a, b, c)$. Point $p$ lies on line $l$ iff $p \\cdot l = 0$.\n\n**Key Operations**:\n- `lineThrough p q` = $p \\times q$ (cross product)\n- `lineIntersection l m` = $l \\times m$\n\n**Why Cross Products?** The cross product of two points gives the line through them. The cross product of two lines gives their intersection.",
     "mathContext": "homogeneous coordinates in ℝ³",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "cross product",
+      "homogeneous coordinates"
+    ],
     "relatedConcepts": [
       "homogeneous coordinates",
       "cross product",
@@ -47,6 +58,12 @@
     "content": "**Determinant Conditions**:\n\n**Collinearity**: Three points $p, q, r$ are collinear iff\n$$\\det \\begin{pmatrix} p \\\\ q \\\\ r \\end{pmatrix} = 0$$\n\n**Concurrence**: Three lines $l, m, n$ are concurrent iff\n$$\\det \\begin{pmatrix} l \\\\ m \\\\ n \\end{pmatrix} = 0$$\n\n```lean\ndef collinear (p q r : ProjPoint) : Prop :=\n  (threeVectorMatrix p q r).det = 0\n\ndef concurrent (l m n : ProjLine) : Prop :=\n  (threeVectorMatrix l m n).det = 0\n```\n\n**Duality**: Note that collinearity and concurrence use the same algebraic condition!",
     "mathContext": "det = 0 for linear dependence",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "determinant",
+      "linear dependence",
+      "matrix algebra"
+    ],
     "relatedConcepts": [
       "determinant",
       "linear dependence",
@@ -65,6 +82,11 @@
     "content": "**Perspective from a Point**:\n\nTriangles $ABC$ and $A'B'C'$ are in perspective from point $O$ if lines $AA', BB', CC'$ all pass through $O$.\n\n```lean\ndef perspectiveFromPoint (A B C A' B' C' : ProjPoint) : Prop :=\n  concurrent (lineThrough A A') (lineThrough B B') (lineThrough C C')\n```\n\n**Perspective from a Line**:\n\nTriangles are in perspective from a line if:\n- $P = AB \\cap A'B'$\n- $Q = BC \\cap B'C'$\n- $R = CA \\cap C'A'$\n\nare collinear (the **axis of perspectivity**).\n\n```lean\ndef perspectiveFromLine (A B C A' B' C' : ProjPoint) : Prop :=\n  collinear P Q R\n```",
     "mathContext": "concurrent lines ⟺ collinear intersections",
     "significance": "key",
+    "prerequisites": [
+      "axis of perspectivity",
+      "basic set theory",
+      "center of perspectivity"
+    ],
     "relatedConcepts": [
       "center of perspectivity",
       "axis of perspectivity",
@@ -83,6 +105,12 @@
     "content": "**Key Identities for the Proof**:\n\n1. **Self cross product**: $a \\times a = 0$\n```lean\ntheorem crossProduct_self (a : Fin 3 → ℝ) : a ×₃ a = 0\n```\n\n2. **BAC-CAB rule** (vector triple product):\n$$a \\times (b \\times c) = (a \\cdot c) b - (a \\cdot b) c$$\n\n3. **Scalar triple product**:\n$$a \\cdot (b \\times c) = \\det \\begin{pmatrix} a \\\\ b \\\\ c \\end{pmatrix}$$\n\nThese identities connect cross products to determinants, enabling the algebraic proof.",
     "mathContext": "a × (b × c) = (a·c)b - (a·b)c",
     "significance": "key",
+    "prerequisites": [
+      "BAC-CAB rule",
+      "matrix algebra",
+      "proof techniques",
+      "scalar triple product"
+    ],
     "relatedConcepts": [
       "BAC-CAB rule",
       "scalar triple product",
@@ -101,6 +129,12 @@
     "content": "**The Fundamental Identity**:\n\nFor vectors $a, b, c, d, e, f \\in \\mathbb{R}^3$:\n$$\\det(a \\times b, c \\times d, e \\times f)$$\n\ncan be expressed as a polynomial in the determinants of 3-tuples from $\\{a, b, c, d, e, f\\}$.\n\n```lean\ntheorem scalar_triple_of_cross_products :\n    (threeVectorMatrix (a ×₃ b) (c ×₃ d) (e ×₃ f)).det =\n      det(a,c,e) * det(b,d,f) - det(a,c,f) * det(b,d,e) - ...\n```\n\n**Proof**: Direct polynomial expansion, verified by `ring`.\n\n**Why This Matters**: This identity is the algebraic heart of Desargues's theorem.",
     "mathContext": "det of cross products factorizes",
     "significance": "key",
+    "prerequisites": [
+      "matrix algebra",
+      "polynomial identity",
+      "polynomial ring theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "ring tactic",
       "polynomial identity",
@@ -119,6 +153,12 @@
     "content": "**Core Algebraic Fact**:\n\nLet $P, Q, R$ be the three intersection points and $K$ be a certain factor.\n\n$$\\det(P, Q, R) = \\det(AA', BB', CC') \\cdot K$$\n\nwhere:\n$$K = \\det(A,B,C) \\cdot \\det(A',B',C') - \\det(A,B,C') \\cdot \\det(A',B',C)$$\n\n```lean\ntheorem desargues_identity (A B C A' B' C' : Fin 3 → ℝ) :\n    (threeVectorMatrix P Q R).det =\n      concurrenceDet * K\n```\n\n**Consequence**:\n- If $\\det(AA', BB', CC') = 0$ (concurrent), then $\\det(P, Q, R) = 0$ (collinear)\n- If $K \\neq 0$ and $\\det(P, Q, R) = 0$, then $\\det(AA', BB', CC') = 0$",
     "mathContext": "det(P,Q,R) = det(AA',BB',CC') · K",
     "significance": "key",
+    "prerequisites": [
+      "concurrence",
+      "factorization",
+      "matrix algebra",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "factorization",
       "concurrence",
@@ -137,6 +177,11 @@
     "content": "**Desargues's Theorem** (Wiedijk #87):\n\nIf triangles $ABC$ and $A'B'C'$ are in perspective from a point, then they are in perspective from a line.\n\n```lean\ntheorem desargues_theorem\n    (h_perspective : perspectiveFromPoint A B C A' B' C') :\n    perspectiveFromLine A B C A' B' C'\n```\n\n**Proof**:\n1. By `desargues_identity`: $\\det(P,Q,R) = \\det(AA',BB',CC') \\cdot K$\n2. Hypothesis says $\\det(AA',BB',CC') = 0$ (concurrent)\n3. Therefore $\\det(P,Q,R) = 0 \\cdot K = 0$\n4. So $P, Q, R$ are collinear ✓\n\nThe `ring` tactic handles the algebra.",
     "mathContext": "concurrent ⟹ collinear",
     "significance": "key",
+    "prerequisites": [
+      "forward direction",
+      "proof techniques",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "forward direction",
       "ring tactic",
@@ -155,6 +200,11 @@
     "content": "**Desargues's Theorem (Converse)**:\n\nIf triangles are in perspective from a line AND $K \\neq 0$ (non-degenerate), then they are in perspective from a point.\n\n```lean\ntheorem desargues_theorem_converse\n    (h_nondegen : desargues_K A B C A' B' C' ≠ 0)\n    (h_perspective : perspectiveFromLine A B C A' B' C') :\n    perspectiveFromPoint A B C A' B' C'\n```\n\n**Proof**:\n1. By `desargues_identity'`: $\\det(P,Q,R) = \\det(AA',BB',CC') \\cdot K$\n2. Hypothesis: $\\det(P,Q,R) = 0$ (collinear) and $K \\neq 0$\n3. From $a \\cdot b = 0$ with $b \\neq 0$, we get $a = 0$\n4. So $\\det(AA',BB',CC') = 0$ (concurrent) ✓\n\n**Non-degeneracy**: $K \\neq 0$ means neither triangle is degenerate and they're in general position.",
     "mathContext": "collinear + K≠0 ⟹ concurrent",
     "significance": "key",
+    "prerequisites": [
+      "converse",
+      "mul_eq_zero",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "converse",
       "mul_eq_zero",
@@ -173,6 +223,12 @@
     "content": "**Complete Desargues Theorem**:\n\nFor non-degenerate configurations ($K \\neq 0$):\n\n$$\\text{perspective from point} \\iff \\text{perspective from line}$$\n\n```lean\ntheorem desargues_theorem_iff\n    (h_nondegen : desargues_K A B C A' B' C' ≠ 0) :\n    perspectiveFromPoint A B C A' B' C' ↔\n    perspectiveFromLine A B C A' B' C'\n```\n\nThis combines both directions into a single equivalence, capturing the full content of Desargues's theorem.",
     "mathContext": "⟺ for non-degenerate cases",
     "significance": "key",
+    "prerequisites": [
+      "equivalence",
+      "iff",
+      "proof techniques",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "iff",
       "equivalence",
@@ -191,6 +247,10 @@
     "content": "**Shared Vertex Case**:\n\nWhen $A = A'$, the triangles trivially satisfy perspective from that point.\n\n```lean\ntheorem shared_vertex_perspective (A B C B' C' : ProjPoint) :\n    perspectiveFromPoint A B C A B' C'\n```\n\n**Proof**: $A \\times A = 0$ by `crossProduct_self`, making the concurrence determinant 0.\n\n**Degenerate Cases**:\n- Three collinear points: determinant = 0\n- Repeated points: always collinear\n\n```lean\ntheorem collinear_repeated (p q : ProjPoint) : collinear p p q\n```",
     "mathContext": "$A = A'$",
     "significance": "supporting",
+    "prerequisites": [
+      "degenerate",
+      "shared vertex"
+    ],
     "relatedConcepts": [
       "degenerate",
       "shared vertex",
@@ -209,6 +269,11 @@
     "content": "**Self-Duality**:\n\nDesargues's theorem is **self-dual**: swapping points↔lines and collinear↔concurrent gives the same theorem!\n\n**Non-Desarguesian Planes**:\n\nNot all projective planes satisfy Desargues:\n- The **Moulton plane** violates it\n- Certain finite planes of order $p^2$ are non-Desarguesian\n\nA plane is **Desarguesian** iff it can be coordinatized by a division ring.\n\n**Related Theorems**:\n- **Pappus's Theorem**: Special case for configurations on two lines\n- **Pascal's Theorem**: Related result for hexagons in conics\n\n**Applications**:\n- 3D rendering and perspective projection\n- Camera calibration\n- Architectural drawing\n- Art: understanding perspective",
     "mathContext": "$p^2$",
     "significance": "supporting",
+    "prerequisites": [
+      "duality",
+      "non-Desarguesian",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "duality",
       "non-Desarguesian",

@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #841: Minimal Interval for Square Product**\n\nLet t_n be minimal such that {n+1,...,n+t_n} contains a subset S where n·∏S is a perfect square.\n\n**Example**: t_6 = 6 since 6·8·12 = 24².\n\n**Key Results**:\n- t_n ≥ P(n) always (trivial)\n- t_n = P(n) when P(n) > √(2n)+1 (Selfridge)\n- Distribution follows P(n) (Bui-Pratt-Zaharescu 2024)",
     "mathContext": "This problem connects perfect squares to prime factorization. The largest prime divisor P(n) determines the behavior of t_n.",
     "significance": "key",
+    "prerequisites": [
+      "Perfect squares",
+      "Prime divisors",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Perfect squares",
       "Prime divisors",
@@ -29,6 +34,12 @@
     "content": "**IsPerfectSquare(n)**: n = m² for some m.\n\n**interval(n, t)**: The Finset {n+1,...,n+t}.\n\n**HasSquareProduct(n, S)**: n · ∏S is a perfect square.\n\n**HasSquareSubset(n, t)**: ∃ nonempty S ⊆ interval(n,t) with HasSquareProduct.\n\n**t(n)**: Axiomatized function giving the minimal t. Returns 0 for perfect squares (t_of_square), positive for non-squares (t_pos).",
     "mathContext": "The function t is axiomatized rather than defined via Nat.find, since proving the existence of a square-making subset requires non-trivial number theory.",
     "significance": "key",
+    "prerequisites": [
+      "Finset",
+      "Finset API",
+      "Perfect squares",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Perfect squares",
       "Finset",
@@ -49,6 +60,11 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "prime numbers",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -63,6 +79,11 @@
     "content": "**trivial_lower_bound**: t(n) ≥ P(n) for non-square n. If p^(2k+1) || n, we need a multiple of p in the interval.\n\n**selfridge_equality**: When P(n) > √(2n)+1, t(n) = P(n) exactly. The large prime appears only once in the interval.\n\n**selfridge_upper_bound**: When P(n) ≤ √(2n)+1, t(n) ≤ C√n. Smooth numbers allow shorter intervals.",
     "mathContext": "Selfridge's theorem establishes a complete dichotomy: rough numbers (large P(n)) achieve the trivial bound exactly, while smooth numbers (small P(n)) have much smaller t_n.",
     "significance": "key",
+    "prerequisites": [
+      "Prime divisors",
+      "Smooth numbers",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Prime divisors",
       "Smooth numbers",
@@ -81,6 +102,11 @@
     "content": "**lower_bound_for_all**: t(n) ≥ C·(log log n)^{6/5}/(log log log n)^{1/5} for non-square n ≥ 3.\n\n**upper_bound_for_many**: For x^{1-o(1)} many n ≤ x, t(n) ≤ exp(O(√(log n · log log n))).\n\n**bui_pratt_zaharescu_2024**: The distribution of t_n follows P(n)'s distribution — for any c ∈ (0,1], the density of {n : t_n ≤ n^c} equals the density of {n : P(n) ≤ n^c}.",
     "mathContext": "The lower bound shows t_n cannot be too small even for smooth n. The Bui-Pratt-Zaharescu result (2024) completely characterizes the statistical behavior of t_n.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic density",
+      "Distribution theory",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Asymptotic density",
       "Distribution theory",
@@ -99,6 +125,12 @@
     "content": "**IsSmooth(n, y)**: All prime factors of n are ≤ y.\n\n**smooth_numbers_small_t**: For y-smooth n with y ≥ 2, we have t(n) ≤ y.\n\nSmooth numbers have many factorization options, making it easier to find square-completing subsets in shorter intervals.",
     "mathContext": "The smooth/rough dichotomy is the key structural insight. Smooth (y-friable) numbers are central in analytic number theory and connect to the Dickman function.",
     "significance": "key",
+    "prerequisites": [
+      "Friable numbers",
+      "Smooth numbers",
+      "basic set theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Smooth numbers",
       "Friable numbers",
@@ -117,6 +149,11 @@
     "content": "**erdos_841_characterization** and **erdos_841**: Combine the three main results:\n1. t(n) ≥ P(n) always (trivial_lower_bound)\n2. t(n) = P(n) when P(n) > √(2n)+1 (selfridge_equality)\n3. t(n) ≤ O(√n) when P(n) ≤ √(2n)+1 (selfridge_upper_bound)\n\nProved by ⟨trivial_lower_bound, selfridge_equality, selfridge_upper_bound⟩.",
     "mathContext": "A complete solution showing t_n is governed by the smooth/rough dichotomy of n. The problem is considered SOLVED.",
     "significance": "key",
+    "prerequisites": [
+      "Complete characterization",
+      "Summary",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Summary",
       "Complete characterization"

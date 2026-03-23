@@ -34,6 +34,12 @@
     "content": "Three ordinals form the backbone of this formalization:\n\n- **ω₁** (omega1): the first uncountable ordinal, defined as (ℵ₁).ord. Every countable ordinal is less than ω₁, and ω₁ itself is a limit ordinal of uncountable cofinality.\n\n- **ω₁²** (omega1Sq): the ordinal product ω₁ · ω₁, which serves as the source ordinal. Ordinal multiplication is not commutative: ω · ω₁ ≠ ω₁ · ω. Here ω₁² means ω₁ copies of ω₁ laid end-to-end.\n\n- **ω₁·ω** (omega1TimesOmega): ω copies of ω₁, strictly between ω₁ and ω₁². This is the target order type for the primary color — large enough to be non-trivial but smaller than ω₁², making the problem potentially provable in ZFC even when #1169 is not.",
     "mathContext": "$$\\omega_1 < \\omega_1 \\cdot \\omega < \\omega_1 \\cdot \\omega_1 = \\omega_1^2$$\nThe strict ordering follows from $1 < \\omega < \\omega_1$ and left-cancellation of ordinal multiplication.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "omega tactic",
+      "ordinal arithmetic",
+      "ordinal multiplication"
+    ],
     "relatedConcepts": [
       "ordinal arithmetic",
       "ordinal multiplication",
@@ -74,6 +80,12 @@
     "content": "Several ordinal inequalities and properties are established:\n\n**Proved** (using Mathlib's ordinal API):\n- **omega_lt_omega1**: ω < ω₁, from Cardinal.aleph_lt_aleph and ord monotonicity\n- **omega1_pos**: 0 < ω₁, by transitivity through ω\n- **omega1TimesOmega_lt_omega1Sq**: ω₁·ω < ω₁², using left-cancellation and ω < ω₁\n\n**Axiomatized**:\n- **omega1TimesOmega_isLimit**: ω₁·ω is a limit ordinal (product of a limit by a limit is limit)\n- **omega1_isLimit**: ω₁ is a limit ordinal (initial ordinals of uncountable cofinality are limits)\n\nThe proof of ω < ω₁ is the most interesting: it computes ω = (ℵ₀).ord, then uses ℵ₀ < ℵ₁ and ord-monotonicity.",
     "mathContext": "$$\\omega = (\\aleph_0).\\text{ord}, \\quad \\omega_1 = (\\aleph_1).\\text{ord}, \\quad \\aleph_0 < \\aleph_1 \\implies \\omega < \\omega_1$$",
     "significance": "key",
+    "prerequisites": [
+      "cardinal arithmetic",
+      "cardinal-ordinal correspondence",
+      "limit ordinals",
+      "omega tactic"
+    ],
     "relatedConcepts": [
       "cardinal-ordinal correspondence",
       "limit ordinals",
@@ -92,6 +104,12 @@
     "content": "The problem statement is formalized as:\n\n  erdos_1171_statement : Prop :=\n    ∀ k : ℕ, ordinalPartitionRelMulti omega1Sq omega1TimesOmega 3 (k + 1)\n\nThis says: for every natural number k, the partition relation ω₁² → (ω₁·ω, 3, …, 3)²_{k+1} holds. The quantification over k makes this a family of increasingly strong statements — as k grows, more colors are allowed, and the partition must still produce either a large monochromatic-0 set or a triangle in some other color.\n\nThe formulation uses k+1 colors (not k) to avoid the degenerate 0-color case, matching the mathematical convention where the k=1 case corresponds to 2 colors.",
     "mathContext": "$$\\text{erdos\\_1171\\_statement} \\equiv \\forall k \\in \\mathbb{N},\\; \\omega_1^2 \\to (\\omega_1 \\cdot \\omega, \\underbrace{3, \\ldots, 3}_k)^2_{k+1}$$",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "basic set theory",
+      "matching theory",
+      "omega tactic"
+    ],
     "relatedConcepts": [
       "Ramsey theory",
       "universal quantification",
@@ -110,6 +128,10 @@
     "content": "Four monotonicity axioms capture how partition relations behave under parameter changes:\n\n1. **partition_multi_mono_colors**: Fewer colors makes the relation easier — if α → (β, k, …, k)²_n holds, it holds for any m ≤ n colors. (Merge excess colors into one.)\n\n2. **partition_multi_mono_target**: Weakening the primary target preserves the relation — if you can find order type β, you can certainly find a subset of order type γ ≤ β.\n\n3. **partition_multi_mono_source**: Enlarging the source preserves the relation — more elements to color means more opportunities for monochromatic structures.\n\n4. **multi_two_eq**: The 2-color multicolor relation reduces to the standard 2-color relation, providing the bridge between the two formalizations.\n\nThese are the workhorses that connect Hajnal's and Baumgartner's results to Problem #1171.",
     "mathContext": "Monotonicity: $m \\leq n \\implies [\\alpha \\to (\\beta, k)^2_n \\Rightarrow \\alpha \\to (\\beta, k)^2_m]$. Source: $\\alpha \\leq \\alpha' \\implies [\\alpha \\to (\\beta, k)^2 \\Rightarrow \\alpha' \\to (\\beta, k)^2]$.",
     "significance": "key",
+    "prerequisites": [
+      "monotonicity",
+      "partition calculus"
+    ],
     "relatedConcepts": [
       "partition calculus",
       "monotonicity",
@@ -174,6 +196,12 @@
     "content": "Three structural theorems about the ordinal hierarchy:\n\n**omega1_lt_omega1TimesOmega**: ω₁ < ω₁·ω, proved by rewriting ω₁ = ω₁·1 and using 1 < ω with left-cancellation.\n\n**omega1TimesOmega_structure**: The sandwich ω₁ < ω₁·ω < ω₁², packaging both strict inequalities. This shows ω₁·ω occupies a precise intermediate position — large enough to be interesting as a Ramsey target, but small enough that the partition relation might hold in ZFC.\n\n**omega1Sq_pos**: ω₁² > 0, from ω₁ > 0 and closure of positive ordinals under multiplication.",
     "mathContext": "$$\\omega_1 = \\omega_1 \\cdot 1 < \\omega_1 \\cdot \\omega < \\omega_1 \\cdot \\omega_1 = \\omega_1^2$$",
     "significance": "supporting",
+    "prerequisites": [
+      "Ramsey theory",
+      "left-cancellation",
+      "omega tactic",
+      "ordinal multiplication"
+    ],
     "relatedConcepts": [
       "ordinal multiplication",
       "left-cancellation",

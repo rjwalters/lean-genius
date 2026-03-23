@@ -11,6 +11,12 @@
     "content": "**Erdos Problem #807: Bipartite Decomposition of Random Graphs**\n\nThis problem asks whether the bipartition number tau(G) equals n - alpha(G) almost surely for random graphs G(n, 1/2).\n\n**Key Definitions:**\n- tau(G) = minimum edge-disjoint complete bipartite subgraphs covering G\n- alpha(G) = size of largest independent set\n\n**Answer: NO** - Disproved by Alon (2015), strengthened by Alon-Bohman-Huang (2017).",
     "mathContext": "The problem originates from work by Katona, Recski, and Wormald [KRW88] on bipartite graph decomposition.",
     "significance": "key",
+    "prerequisites": [
+      "Graph decomposition",
+      "Random graphs",
+      "graph theory basics",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Graph decomposition",
       "Random graphs",
@@ -29,6 +35,12 @@
     "content": "**independenceNumber** alpha(G):\n\nThe size of the largest independent set in G. An independent set is a set of vertices with no edges between them.\n\n**Definition:**\n```lean\ndef independenceNumber (G : SimpleGraph V) : N :=\n  Finset.univ.sup fun S => if G.IsClique S^c then S.card else 0\n```\n\n**Note:** For random graphs G(n, 1/2), alpha(G) is typically around 2 log_2(n).",
     "mathContext": "$\\alpha(G) = \\max\\{|S| : S \\subseteq V(G),\\, \\forall u,v \\in S,\\, uv \\notin E(G)\\}$. For $G(n,1/2)$: $\\alpha \\approx 2\\log_2 n$.",
     "significance": "key",
+    "prerequisites": [
+      "Clique",
+      "Finset API",
+      "Independent set",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Independent set",
       "Clique",
@@ -47,6 +59,12 @@
     "content": "**CompleteBipartite:**\n\nA structure representing a complete bipartite subgraph of G.\n\n**Fields:**\n- left, right: Disjoint vertex sets\n- disjoint: Proof that left and right are disjoint\n- edges_complete: Every vertex in left is adjacent to every vertex in right\n\nThese are the building blocks for bipartite decomposition.",
     "mathContext": "Formalizes the concept of complete bipartite subgraph",
     "significance": "key",
+    "prerequisites": [
+      "Bipartite graphs",
+      "Complete graphs",
+      "basic set theory",
+      "field theory"
+    ],
     "relatedConcepts": [
       "Bipartite graphs",
       "Complete graphs",
@@ -65,6 +83,12 @@
     "content": "**BipartiteCover:**\n\nA collection of complete bipartite subgraphs that:\n1. Are pairwise edge-disjoint (no edge in multiple subgraphs)\n2. Cover all edges of G (union equals G)\n\nThe bipartition number is the minimum size of such a cover.",
     "mathContext": "Formalizes the concept of edge-disjoint bipartite cover",
     "significance": "key",
+    "prerequisites": [
+      "Edge covering",
+      "Graph decomposition",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Edge covering",
       "Graph decomposition"
@@ -82,6 +106,12 @@
     "content": "**bipartitionNumber** tau(G):\n\nThe smallest number of pairwise edge-disjoint complete bipartite subgraphs whose union covers all edges of G.\n\n**Definition:**\n```lean\ndef bipartitionNumber (G : SimpleGraph V) : N :=\n  sInf {k : N | exists cover : BipartiteCover G, cover.parts.card = k}\n```\n\nThis is the central quantity in Erdos #807.",
     "mathContext": "$\\tau(G) = \\min\\{k : E(G) = \\bigsqcup_{i=1}^k E(K_{a_i, b_i})\\}$ where the union is edge-disjoint over complete bipartite subgraphs.",
     "significance": "key",
+    "prerequisites": [
+      "Complete bipartite graphs",
+      "Graph decomposition",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Graph decomposition",
       "Complete bipartite graphs"
@@ -99,6 +129,12 @@
     "content": "**ERW_conjecture:**\n\nThe original conjecture by Erdos-Recski-Wormald:\n\nFor a random graph G on n vertices with edge probability 1/2, is tau(G) = n - alpha(G) almost surely?\n\nThis conjecture was motivated by connections to the Graham-Pollak theorem, which shows tau(K_n) = n - 1.",
     "mathContext": "Conjecture: $\\tau(G) = n - \\alpha(G)$ a.s. for $G \\in G(n, 1/2)$. Motivated by Graham-Pollak: $\\tau(K_n) = n - 1$.",
     "significance": "key",
+    "prerequisites": [
+      "Graham-Pollak theorem",
+      "Random graphs",
+      "graph theory basics",
+      "probability theory"
+    ],
     "relatedConcepts": [
       "Graham-Pollak theorem",
       "Random graphs"
@@ -122,6 +158,11 @@
       "probabilistic method",
       "random structures"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -137,6 +178,10 @@
     "mathContext": "Lean: `theorem erw_conjecture_false : not (forall n, ERW_conjecture n)`",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -157,6 +202,11 @@
       "probabilistic method",
       "random structures"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -171,6 +221,12 @@
     "content": "**graham_pollak:**\n\nA classical result in graph theory.\n\n**Statement:** tau(K_n) = n - 1 for the complete graph on n vertices.\n\nThis is optimal: you need exactly n - 1 complete bipartite subgraphs to decompose the complete graph.\n\nThe proof uses linear algebra over GF(2).",
     "mathContext": "$\\tau(K_n) = n - 1$. The lower bound uses a rank argument: $J - I$ has rank $n-1$ and each complete bipartite subgraph contributes a rank-1 matrix.",
     "significance": "key",
+    "prerequisites": [
+      "Complete graphs",
+      "Linear algebra",
+      "graph theory basics",
+      "matrix algebra"
+    ],
     "relatedConcepts": [
       "Complete graphs",
       "Linear algebra"
@@ -188,6 +244,11 @@
     "content": "**independence_number_random_graph:**\n\nFor random graphs G in G(n, 1/2):\n\nAlmost surely, alpha(G) is approximately 2 log_2(n).\n\nThis is a classical result in random graph theory, proved using first and second moment methods.",
     "mathContext": "Lean: `axiom independence_number_random_graph (n : ℕ) (hn : n ≥ 2) :`",
     "significance": "supporting",
+    "prerequisites": [
+      "Probabilistic methods",
+      "Random graphs",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Random graphs",
       "Probabilistic methods"
@@ -206,6 +267,10 @@
     "mathContext": "$\\exists\\, c > 0$ such that a.s. $\\tau(G) \\leq n - (1+c)\\alpha(G)$ for $G \\in G(n, 1/2)$, refuting $\\tau(G) = n - \\alpha(G)$.",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -227,6 +292,12 @@
       "probabilistic method",
       "random structures"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "graph theory basics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -241,6 +312,12 @@
     "content": "**cliqueCoverNumber:**\n\nThe minimum number of cliques needed to cover all edges.\n\n**Relation:** tau(G) <= cliqueCover(G) since every clique can be decomposed into complete bipartite subgraphs.\n\nThe clique cover number is another measure of graph complexity.",
     "mathContext": "Lean: `def cliqueCoverNumber (G : SimpleGraph V) : ℕ`",
     "significance": "supporting",
+    "prerequisites": [
+      "Clique",
+      "Graph covering",
+      "basic set theory",
+      "complex numbers"
+    ],
     "relatedConcepts": [
       "Clique",
       "Graph covering"
@@ -258,6 +335,12 @@
     "content": "**The Probabilistic Method:**\n\nAlon's proof uses the probabilistic method, pioneered by Erdos himself.\n\n**Key idea:** Show that a random bipartite subgraph covers many edges in expectation, then use this to construct an efficient decomposition.\n\nThis is a powerful technique where existence is proved by showing a random object has the desired property with positive probability.",
     "mathContext": "Lean: `axiom probabilistic_method_bipartition :`",
     "significance": "key",
+    "prerequisites": [
+      "Expectation",
+      "Random graphs",
+      "graph theory basics",
+      "probability theory"
+    ],
     "relatedConcepts": [
       "Random graphs",
       "Expectation",
@@ -276,6 +359,12 @@
     "content": "**Concentration Inequalities:**\n\nThe \"almost surely\" statements use concentration inequalities:\n\n- Chernoff bounds for sums of independent random variables\n- Azuma-Hoeffding for martingales\n- Talagrand's inequality for complex dependencies\n\nThese show that random variables are close to their expectation with high probability.",
     "mathContext": "Lean: `axiom concentration_for_random_graphs :`",
     "significance": "supporting",
+    "prerequisites": [
+      "Probability theory",
+      "Random graphs",
+      "complex numbers",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Probability theory",
       "Random graphs",

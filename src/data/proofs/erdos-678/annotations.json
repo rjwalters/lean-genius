@@ -11,6 +11,12 @@
     "content": "The LCM of k consecutive integers starting at n+1:\n\nM(n,k) = lcm{n+1, n+2, ..., n+k}\n\nImplemented by folding `lcm` over `Finset.range k`, mapping each index i to n+1+i.",
     "mathContext": "The fold starts with 1 (identity for lcm) and accumulates the lcm of all elements. This gives a computable definition suitable for `native_decide`.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "Finset.fold",
+      "LCM theory",
+      "Least common multiple"
+    ],
     "relatedConcepts": [
       "Least common multiple",
       "Finset.fold",
@@ -37,6 +43,12 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "Finset API",
+      "LCM theory",
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "supporting",
     "tags": [
       "lcm",
@@ -57,6 +69,12 @@
     "mathContext": "Formalizes the concept of base cases",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "Finset API",
+      "LCM theory",
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "supporting",
     "tags": [
@@ -107,6 +125,12 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "LCM theory",
+      "basic set theory",
+      "formal mathematics",
+      "ring tactic"
+    ],
     "significance": "key",
     "tags": [
       "erdos-comparison",
@@ -130,6 +154,12 @@
       "analysis",
       "inequalities"
     ],
+    "prerequisites": [
+      "LCM theory",
+      "analysis",
+      "inequalities",
+      "proof techniques"
+    ],
     "significance": "key",
     "tags": [
       "selfridge-example",
@@ -152,6 +182,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "key",
     "tags": [
       "selfridge-example",
@@ -172,6 +206,10 @@
     "mathContext": "Native decision procedures allow Lean to verify numeric facts that would be tedious to prove symbolically.",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key",
     "tags": [
@@ -223,6 +261,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "key",
     "tags": [
       "cambie-theorem",
@@ -243,6 +285,12 @@
     "content": "**Key mechanism:**\n\nIf an interval contains a prime power p^a, then p^a divides the interval's LCM.\n\nFor example, {97,...,103} contains no power of 2 larger than 2^2 = 4 (since 64 and 128 are outside), while {105,...,112} contains 112 = 16×7, contributing 2^4.\n\nBut the crucial factor is which PRIMES appear, not just prime powers.",
     "mathContext": "Formalizes the concept of prime power divisibility",
     "significance": "key",
+    "prerequisites": [
+      "LCM structure",
+      "LCM theory",
+      "Prime factorization",
+      "divisibility"
+    ],
     "relatedConcepts": [
       "Prime factorization",
       "LCM structure"
@@ -270,6 +318,12 @@
       "factorization",
       "prime numbers"
     ],
+    "prerequisites": [
+      "LCM theory",
+      "divisibility",
+      "factorization",
+      "prime numbers"
+    ],
     "significance": "key",
     "tags": [
       "prime-power-skipping",
@@ -290,6 +344,12 @@
     "content": "**Asymptotic behavior:**\n\nlog M(n,k) ≈ k (for typical n)\n\nMore precisely, M(n,k) ≤ 4^k by Chebyshev-type bounds.\n\nThis follows from the prime number theorem: the product of primes up to x is about e^x, and lcm is bounded by this product.",
     "mathContext": "$More precisely, M(n,k) ≤ 4^k by Chebyshev-type bounds.$",
     "significance": "supporting",
+    "prerequisites": [
+      "Chebyshev bounds",
+      "LCM theory",
+      "Prime number theorem",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Chebyshev bounds",
       "Prime number theorem"
@@ -312,6 +372,11 @@
     "content": "**Erdős's observation:**\n\nLet n_k be the minimal n for which some m exists with M(n,k) > M(m,k+1).\n\nErdős proved n_k/k → ∞, meaning valid examples require increasingly large starting points relative to interval length.\n\nHe knew no good upper bounds for n_k.",
     "mathContext": "Formalizes the concept of minimal starting point",
     "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "bounds",
       "inequalities"
     ],

@@ -11,6 +11,10 @@
     "content": "**Erdős Problem #297** asks: how many subsets A of {1,...,N} satisfy the equation Σ_{n∈A} 1/n = 1?\n\nThese are called *Egyptian fraction representations* of 1 — decompositions of 1 as a sum of distinct unit fractions. The name comes from the ancient Egyptian practice of representing fractions as sums of unit fractions.\n\n**Answer:** The count is 2^{(c + o(1))N} where c ≈ 0.91... is defined by an integral equation.\n\n**Key Result:** c < 1, so far fewer than 2^N subsets work. Only about 2^{0.91N} out of 2^N subsets have their reciprocals summing to exactly 1.\n\n**2024 Breakthrough:** Solved independently by three teams within weeks: Steinerberger (upper bound), Liu-Sawhney (full asymptotic), and Conlon et al. (same result plus generalization).",
     "mathContext": "Egyptian fraction representations of 1 are exponentially sparse among all subsets. The problem connects combinatorics, analytic number theory, and the theory of the harmonic series.",
     "significance": "key",
+    "prerequisites": [
+      "Egyptian fractions",
+      "Unit fractions"
+    ],
     "relatedConcepts": [
       "Egyptian fractions",
       "Unit fractions",
@@ -30,6 +34,11 @@
     "content": "**harmonicSum** computes the sum of reciprocals over a finite set:\n\nharmonicSum(A) = Σ_{n ∈ A} 1/n\n\nThis is the key quantity in the problem. We count sets A where harmonicSum(A) = 1 exactly.\n\n**Implementation detail:** Elements equal to 0 contribute nothing, avoiding division by zero. The sum is computed over the rationals (ℚ) for exact arithmetic.",
     "mathContext": "The harmonic sum generalizes the harmonic numbers H_N = Σ_{n=1}^{N} 1/n. The divergence of the harmonic series (H_N → ∞) is crucial to understanding why c < 1.",
     "significance": "key",
+    "prerequisites": [
+      "Harmonic numbers",
+      "Unit fractions",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Harmonic numbers",
       "Unit fractions",
@@ -48,6 +57,11 @@
     "content": "**IsEgyptianRepresentation** defines when a set A represents 1 as a sum of unit fractions:\n\n1. harmonicSum(A) = 1 (the reciprocals sum to 1)\n2. All elements n ∈ A satisfy n ≥ 1 (positive integers only)\n\nExamples: {1}, {2,3,6}, {2,4,5,20} are all Egyptian representations of 1.",
     "mathContext": "$1. harmonicSum(A) = 1 (the reciprocals sum to 1)$",
     "significance": "key",
+    "prerequisites": [
+      "Egyptian fractions",
+      "Partition theory",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Egyptian fractions",
       "Partition theory"
@@ -65,6 +79,12 @@
     "content": "**egyptianCount(N)** is the main object of study: the number of subsets A ⊆ {1,...,N} with Σ_{n∈A} 1/n = 1.\n\nThis is what Erdős asked to characterize asymptotically. The function filters all subsets of {0,...,N} by the conditions harmonicSum = 1 and 0 ∉ A.\n\n**The question:** Does egyptianCount(N) grow like 2^{cN} with c < 1, or like 2^N?",
     "mathContext": "The count is related to OEIS sequence A092670.",
     "significance": "key",
+    "prerequisites": [
+      "Exponential growth rates",
+      "Subset counting",
+      "basic set theory",
+      "filter theory"
+    ],
     "relatedConcepts": [
       "Subset counting",
       "Exponential growth rates"
@@ -82,6 +102,12 @@
     "content": "**Concrete Egyptian representations of 1:**\n\n- **{1}:** The trivial case, 1/1 = 1 (proved by simp)\n- **{2, 3, 6}:** The classic 1/2 + 1/3 + 1/6 = 1\n- **{2, 4, 5, 20}:** 1/2 + 1/4 + 1/5 + 1/20 = 1\n- **{2, 3, 7, 42}:** 1/2 + 1/3 + 1/7 + 1/42 = 1\n\nThe multi-element examples are axiomatized because proving rational arithmetic equalities over Finset.sum requires careful decidability handling.\n\n**at_least_three_representations** bundles the first three examples into a single theorem.",
     "mathContext": "Lean: `theorem singleton_one_is_egyptian : harmonicSum {1} = 1`",
     "significance": "key",
+    "prerequisites": [
+      "Computational verification",
+      "Egyptian fractions",
+      "Finset API",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Egyptian fractions",
       "Computational verification"
@@ -99,6 +125,10 @@
     "content": "**Basic bounds on egyptianCount(N):**\n\n1. **egyptianCount_finite:** The count is at most 2^{N+1} (number of subsets of {0,...,N})\n2. **trivial_upper_bound:** At most 2^N as a real number (subsets of an N-element set)\n3. **trivial_lower_bound:** At least 1 for N ≥ 1, since {1} always works\n\nThese frame the question: is the count closer to 1 or to 2^N?",
     "mathContext": "$3. **trivial_lower_bound:** At least 1 for N ≥ 1, since {1} always works$",
     "significance": "supporting",
+    "prerequisites": [
+      "Counting bounds",
+      "Power set cardinality"
+    ],
     "relatedConcepts": [
       "Power set cardinality",
       "Counting bounds"
@@ -116,6 +146,11 @@
     "content": "**hasSubexponentialGrowth** formalizes Erdős's question:\n\nDoes there exist c < 1 and C > 0 such that egyptianCount(N) ≤ C · 2^{cN} for all N?\n\nIf YES, the exponential growth rate is strictly less than 1 — meaning exponentially fewer subsets work than the naive bound suggests.\n\n**Answer: YES**, with c ≈ 0.91...",
     "mathContext": "$Does there exist c < 1 and C > 0 such that egyptianCount(N) ≤ C · 2^{cN} for all N?$",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic analysis",
+      "Exponential growth",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Exponential growth",
       "Asymptotic analysis"
@@ -133,6 +168,11 @@
     "content": "**Steinerberger (arXiv:2403.17041, March 2024):**\n\negyptianCount(N) ≤ 2^{0.93N} for all sufficiently large N.\n\nThis was the **first proof** that c < 1, answering half of Erdős's question. The constant 0.93 was later improved by Liu-Sawhney to the optimal 0.91...\n\nThe proof uses combinatorial and analytic techniques to bound the number of subsets with a given harmonic sum.",
     "mathContext": "Steinerberger's paper appeared in March 2024, triggering the rapid independent solutions by Liu-Sawhney and Conlon et al. in April 2024.",
     "significance": "key",
+    "prerequisites": [
+      "Exponential growth rates",
+      "Upper bounds",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Upper bounds",
       "Exponential growth rates"
@@ -150,6 +190,12 @@
     "content": "**liuSawhneyConstant ≈ 0.91...**\n\nThe optimal constant in the asymptotic 2^{(c+o(1))N}. It is defined as the solution to a certain integral equation involving the density of integers with specific divisibility properties.\n\n**liuSawhney_constant_bounds** establishes 0.9 < c < 0.92.\n\nThe exact numerical value is difficult to compute but is known to lie strictly between 0.9 and 0.92.",
     "mathContext": "The constant c arises from an optimization problem over the space of measures on the positive reals, related to logarithmic densities of divisibility-constrained sets.",
     "significance": "key",
+    "prerequisites": [
+      "Integral equations",
+      "Logarithmic density",
+      "basic set theory",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Integral equations",
       "Logarithmic density"
@@ -167,6 +213,11 @@
     "content": "**Liu-Sawhney (arXiv:2404.07113, April 2024):**\n\nFull asymptotic: for every ε > 0, eventually:\n  2^{(c - ε)N} ≤ egyptianCount(N) ≤ 2^{(c + ε)N}\n\nThis gives **both upper AND lower bounds** with the same constant c, completely characterizing the exponential growth rate.\n\nThe notation 2^{(c+o(1))N} means the exponent is cN + o(N), i.e., cN plus a sublinear correction.",
     "mathContext": "The matching lower bound is the harder direction: one must show that enough Egyptian representations exist, not just that few do.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic analysis",
+      "Matching bounds",
+      "matching theory"
+    ],
     "relatedConcepts": [
       "Asymptotic analysis",
       "Matching bounds"
@@ -184,6 +235,10 @@
     "content": "**Conlon-Fox-He-Mubayi-Pham-Suk-Verstraëte (arXiv:2404.16016, April 2024):**\n\nIndependently proved the same asymptotic as Liu-Sawhney, using different methods.\n\n**Key generalization:** For any positive rational target x (not just x = 1), the count of subsets with harmonic sum = x satisfies:\n  egyptianCountTarget(N, x) = 2^{(c_x + o(1))N}\nwhere c_x > 0 and c_x < 1 depends on x.\n\nThis shows the phenomenon of subexponential growth is universal across all positive rational targets.",
     "mathContext": "Seven authors from different institutions proved this independently of Liu-Sawhney, highlighting the problem's timeliness.",
     "significance": "key",
+    "prerequisites": [
+      "Generalization",
+      "Rational targets"
+    ],
     "relatedConcepts": [
       "Generalization",
       "Rational targets",
@@ -202,6 +257,10 @@
     "content": "**The ≤ 1 variant:**\n\nIn 2017, Mikhail Tikhomirov asked on MathOverflow about subsets with harmonic sum ≤ 1 (not = 1).\n\nLucia, RaphaelB4, and js21 sketched proofs showing the same asymptotic structure: the count grows like 2^{cN} with c < 1.\n\nThis earlier work provided important intuition and partial results for the exact-sum problem solved in 2024.",
     "mathContext": "$In 2017, Mikhail Tikhomirov asked on MathOverflow about subsets with harmonic sum ≤ 1 (not = 1).$",
     "significance": "supporting",
+    "prerequisites": [
+      "MathOverflow",
+      "Partial sums"
+    ],
     "relatedConcepts": [
       "MathOverflow",
       "Partial sums"
@@ -219,6 +278,12 @@
     "content": "**Intuition for subexponential growth:**\n\nFor a random subset of {1,...,N}, each element n is included independently with probability 1/2. The expected harmonic sum is:\n\nE[Σ 1/n] = Σ_{n=1}^{N} (1/2) · (1/n) = H_N / 2 ≈ (log N) / 2\n\nSince (log N)/2 → ∞, the expected sum diverges. Most random subsets have sum far exceeding 1.\n\nThis means hitting Σ 1/n = 1 exactly is a rare event, occurring for only a 2^{-0.09N} fraction of all subsets.\n\n**heuristic_expected_sum_grows** axiomatizes this divergence formally.",
     "mathContext": "The divergence of the harmonic series H_N = 1 + 1/2 + 1/3 + ... + 1/N ~ ln N is one of the oldest results in analysis.",
     "significance": "key",
+    "prerequisites": [
+      "Expected value",
+      "Harmonic series",
+      "probability theory",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Harmonic series",
       "Expected value",
@@ -237,6 +302,11 @@
     "content": "**erdos_297_main:**\n\nThere exists c ∈ (0.9, 0.93) such that for all ε > 0, eventually:\n  2^{(c-ε)N} ≤ egyptianCount(N) ≤ 2^{(c+ε)N}\n\n**Proof:** Uses liuSawhneyConstant as the witness. The bounds on c come from liuSawhney_constant_bounds, and the asymptotic from liuSawhney_asymptotic. This is one of the few theorems with a complete (non-axiom) proof in the file.",
     "mathContext": "$There \\exists c ∈ (0.9, 0.93) such that for all ε > 0, eventually:$",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic characterization",
+      "Growth rate",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Asymptotic characterization",
       "Growth rate"
@@ -254,6 +324,10 @@
     "content": "**erdos_297_answer:**\n\nhasSubexponentialGrowth holds — YES, there exists c < 1 with egyptianCount(N) ≤ C · 2^{cN}.\n\nSpecifically, c = 0.93 (Steinerberger's constant) suffices for the upper bound. The optimal constant is c ≈ 0.91... (Liu-Sawhney).\n\nThis resolves the long-standing question of Erdős and Graham.",
     "mathContext": "$hasSubexponentialGrowth holds — YES, there \\exists c < 1 with egyptianCount(N) ≤ C · 2^{cN}.$",
     "significance": "key",
+    "prerequisites": [
+      "Problem resolution",
+      "Subexponential growth"
+    ],
     "relatedConcepts": [
       "Problem resolution",
       "Subexponential growth"
@@ -271,6 +345,10 @@
     "content": "**Erdős Problem #297: SOLVED (2024)**\n\n- **Question:** How many A ⊆ {1,...,N} have Σ 1/n = 1?\n- **Answer:** 2^{(0.91... + o(1))N}\n- **Key Insight:** c < 1, so count << 2^N\n- **Solved by:** Steinerberger, Liu-Sawhney, Conlon et al. (three independent teams, 2024)\n- **Why:** Most random subsets overshoot since the expected sum grows like (log N)/2\n\n**erdos_297_solved** packages the answer as a final summary theorem.",
     "mathContext": "Lean: `theorem erdos_297_solved : hasSubexponentialGrowth`",
     "significance": "key",
+    "prerequisites": [
+      "Egyptian fractions",
+      "Problem resolution"
+    ],
     "relatedConcepts": [
       "Problem resolution",
       "Egyptian fractions"

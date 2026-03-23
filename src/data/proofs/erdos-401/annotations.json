@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #401**: Factorial Divisibility with Prime Products\n\n**Question**: Does there exist f(r) → ∞ such that for infinitely many n, there exist a₁, a₂ with a₁ + a₂ > n + f(r)·log(n) where a₁!·a₂! | n!·2ⁿ·3ⁿ·...·pᵣⁿ?\n\n**Status**: PROVED (Barreto-Leeham 2026)\n**Answer**: YES\n\n**Context**: Related to #400 which studied g_k(n). Without extra factors, Erdős-Graham showed a₁ + a₂ ≤ n + O(log n). The question asks if primorial factors allow unbounded excess.\n\n**Counterexample**: Sothanaphan showed the 'for all large n' version is FALSE using n = p_{r+1}^k - 1.",
     "mathContext": "This problem explores how additional divisibility factors affect the structure of factorial arithmetic. The primorial factors 2ⁿ3ⁿ...pᵣⁿ provide extra room that fundamentally changes the problem.",
     "significance": "key",
+    "prerequisites": [
+      "divisibility",
+      "factorial-divisibility",
+      "prime numbers",
+      "primorial"
+    ],
     "relatedConcepts": [
       "factorial-divisibility",
       "primorial",
@@ -29,6 +35,12 @@
     "content": "**noncomputable def nthPrime (r : ℕ)**: ℕ\n  The r-th prime (0-indexed: p₀ = 2, p₁ = 3, ...)\n  Uses Nat.nth from Mathlib.\n\n**noncomputable def primorialPow (r n : ℕ)**: ℕ\n  ∏ i ∈ range r, (nthPrime i)^n\n  = 2ⁿ · 3ⁿ · 5ⁿ · ... · pᵣⁿ\n\nThis is the extra factor that distinguishes #401 from simpler factorial problems.",
     "mathContext": "The primorial (product of first r primes) appears throughout number theory. Here we need the n-th power of each prime, giving massive additional divisibility.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "divisibility",
+      "natural number arithmetic",
+      "nth-prime"
+    ],
     "relatedConcepts": [
       "nth-prime",
       "primorial",
@@ -47,6 +59,12 @@
     "content": "**def FactorialDivides (a₁ a₂ n r : ℕ)**: Prop\n  (a₁! · a₂!) ∣ (n! · primorialPow r n)\n\nThis is the central divisibility condition. We ask: given this condition, how large can a₁ + a₂ be relative to n?\n\nThe extra factor primorialPow(r,n) = 2ⁿ3ⁿ...pᵣⁿ provides additional prime powers that can satisfy divisibility for larger a₁, a₂.",
     "mathContext": "Factorial divisibility constraints are central to many Erdős problems. The divisibility a₁!a₂! | m determines which pairs (a₁, a₂) are valid.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "divisibility",
+      "factorial",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "divisibility",
       "factorial",
@@ -65,6 +83,11 @@
     "content": "**axiom erdos_graham_baseline**:\n  ∃ C > 0, ∀ n a₁ a₂, n > 0 → a₁!a₂! | n! →\n  (a₁ + a₂) ≤ n + C · log(n)\n\n**Key insight**: Without the extra primorial factor, we can NEVER exceed n + O(log n).\n\nThis is the baseline that Problem #401 asks us to exceed by using the primorial factors.",
     "mathContext": "This bound from Erdős-Graham (1980) shows that pure factorial divisibility is quite restrictive. The logarithmic bound is tight.",
     "significance": "key",
+    "prerequisites": [
+      "baseline",
+      "divisibility",
+      "erdos-graham-1980"
+    ],
     "relatedConcepts": [
       "erdos-graham-1980",
       "baseline",
@@ -83,6 +106,11 @@
     "content": "**def TendsToInfty (f : ℕ → ℝ)**: Prop\n  ∀ M, ∃ r₀, ∀ r ≥ r₀, f(r) ≥ M\n\n**def Erdos401Conjecture**: Prop\n  ∃ f, TendsToInfty f ∧\n  ∀ r, ∃ᶠ n in atTop, ∃ a₁ a₂,\n    FactorialDivides a₁ a₂ n r ∧\n    (a₁ + a₂) > n + f(r) · log(n)\n\n**In words**: Can we find f(r) → ∞ and, for each r, infinitely many n with a₁ + a₂ exceeding n + f(r)·log(n)?",
     "mathContext": "The 'infinitely many n' quantifier (∃ᶠ n in atTop) is crucial. The strong version with 'for all large n' is false!",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "frequently",
+      "tends-to-infinity"
+    ],
     "relatedConcepts": [
       "tends-to-infinity",
       "frequently",
@@ -101,6 +129,10 @@
     "content": "**axiom barreto_leeham_401**: Erdos401Conjecture\n\n**theorem erdos_401_proved**: Erdos401Conjecture := barreto_leeham_401\n\nBarreto and Leeham (2026) proved YES using the same construction as Problem #729.\n\n**Key idea**: Choose n related to primorial structure, set a₂ ≈ n/2 and a₁ ≈ n/2 + excess. The excess grows unboundedly as r increases.\n\n**Technique**: AI-assisted proof via ChatGPT, building on combinatorial number theory.",
     "mathContext": "This is one of several Erdős problems solved via AI assistance. The same construction works for both #401 and #729.",
     "significance": "key",
+    "prerequisites": [
+      "ai-assisted",
+      "barreto-leeham-2026"
+    ],
     "relatedConcepts": [
       "barreto-leeham-2026",
       "ai-assisted",
@@ -119,6 +151,12 @@
     "content": "**def Erdos401Strong**: Prop\n  Same as Erdos401Conjecture but with '∀ n ≥ N₀' instead of '∃ᶠ n'\n\n**axiom sothanaphan_counterexample**: ¬Erdos401Strong\n\n**Counterexample**: Take n = p_{r+1}^k - 1 (one less than a prime power).\n\nFor such n, the divisibility constraint forces a₁ + a₂ ≤ n + 2·p_{r+1}, which is bounded independent of how large k is.\n\nThis shows the quantifier matters: 'infinitely many n' vs 'all large n' give different answers!",
     "mathContext": "This is a subtle point about quantifiers. The 'for all large n' version fails because some n have special structure that limits the excess.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "counterexample",
+      "divisibility",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "sothanaphan",
       "counterexample",
@@ -137,6 +175,12 @@
     "content": "**noncomputable def g₂ (n : ℕ)**: ℝ\n  sSup { a₁ + a₂ - n | a₁!a₂! | n! }\n\nThe maximum excess when factorials divide n! (no extra factors).\n\n**axiom g2_log_bound**: ∃ C > 0, ∀ n > 1, g₂(n) ≤ C · log(n)\n\n**noncomputable def g₂_modified (n r : ℕ)**: ℝ\n  sSup { a₁ + a₂ - n | FactorialDivides a₁ a₂ n r }\n\nThe modified version with primorial factors - this can exceed C·log(n) by f(r)·log(n).",
     "mathContext": "The g_k functions from Problem #400 measure the 'excess' possible in factorial divisibility. Problem #401 asks how the modified g₂ behaves.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "divisibility",
+      "g-function",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "g-function",
       "supremum",
@@ -155,6 +199,10 @@
     "content": "**axiom erdos_401_reformulation**:\n  Erdos401Conjecture ↔\n  ∃ f, TendsToInfty f ∧\n  ∀ r, ∃ᶠ n in atTop, g₂_modified(n,r) > f(r) · log(n)\n\nThis shows #401 asks: can g₂_modified exceed f(r)·log(n) for unbounded f(r)?\n\nThe answer is YES, while for the unmodified g₂, we always have g₂(n) ≤ C·log(n).",
     "mathContext": "This reformulation makes clear what the primorial factors accomplish: they allow the g-function to grow faster than logarithmically.",
     "significance": "supporting",
+    "prerequisites": [
+      "equivalence",
+      "reformulation"
+    ],
     "relatedConcepts": [
       "reformulation",
       "equivalence",
@@ -173,6 +221,10 @@
     "content": "**axiom erdos_729_connection**:\n  Erdos401Conjecture ↔ [equivalent statement for #729]\n\nThe same Barreto-Leeham construction proves both #401 and #729.\n\n**Problem #729** has a slightly different formulation but the underlying mathematics is the same.\n\nBoth problems ask about exceeding logarithmic bounds via careful factorial constructions.",
     "mathContext": "This connection shows the Erdős problems form a web of related questions. Solving one often illuminates others.",
     "significance": "supporting",
+    "prerequisites": [
+      "connection",
+      "erdos-729"
+    ],
     "relatedConcepts": [
       "erdos-729",
       "connection",
@@ -191,6 +243,12 @@
     "content": "**Erdős Problem #401: PROVED** (Barreto-Leeham 2026)\n\n**Answer**: YES - such f(r) → ∞ exists.\n\n**Key Results**:\n1. Without extra factors: a₁ + a₂ ≤ n + O(log n) (Erdős-Graham)\n2. With primorial factors: can exceed n + f(r)·log(n) for f(r) → ∞\n3. But NOT for ALL large n - only INFINITELY MANY (Sothanaphan)\n\n**Connections**:\n- Related to Problem #400 (g_k function)\n- Same construction as Problem #729\n- AI-assisted proof via ChatGPT\n\n**Technique**: Careful choice of n exploiting primorial structure.",
     "mathContext": "This problem illustrates how additional prime power factors can fundamentally change divisibility constraints, and the importance of exact quantifier formulations.",
     "significance": "key",
+    "prerequisites": [
+      "divisibility",
+      "prime numbers",
+      "problem-status",
+      "proved"
+    ],
     "relatedConcepts": [
       "problem-status",
       "proved",

@@ -172,6 +172,12 @@
     "content": "**Infinite Analogue (Problem #1103):**\n\nProblem #1103 asks about INFINITE sequences a₁ < a₂ < ⋯ with all pairwise sums squarefree.\n\n```lean\naxiom connection_to_1103 :\n    question2_polylogarithmic →\n      ∃ c > 0, ∀ (a : ℕ → ℕ), (∀ i j : ℕ, isSquarefree (a i + a j)) →\n        ∀ n : ℕ, a n ≥ n^(c : ℝ)\n```\n\nIf f(N) is polylogarithmic, then any infinite squarefree-sumset sequence must grow at least polynomially!\n\n**k-Power-Free Generalization (Sárközy 1992):**\n```lean\ndef isKPowerFree (k n : ℕ) : Prop :=\n  ∀ p : ℕ, p.Prime → ¬(p^k ∣ n)\n```\n\nReplacing 'squarefree' (k=2) with 'k-power-free' gives a family of related problems.",
     "mathContext": "The connection between finite and infinite cases reveals deep structural constraints.",
     "significance": "key",
+    "prerequisites": [
+      "Erdős Problem #1103",
+      "k-power-free numbers",
+      "polynomial ring theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Erdős Problem #1103",
       "k-power-free numbers"

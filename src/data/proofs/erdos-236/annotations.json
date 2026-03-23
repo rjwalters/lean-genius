@@ -11,6 +11,11 @@
     "content": "This header documents **Erdős Problem #236** about counting representations n = p + 2^k. Let f(n) count such representations where p is prime and k ≥ 0. The question: Is f(n) = o(log n)?",
     "mathContext": "f(n) := |{k : n - 2^k is prime}|. Erdős (1950) proved infinitely many n have f(n) ≫ log log n. The conjecture asks if f(n)/log n → 0.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic growth",
+      "prime numbers",
+      "prime representations"
+    ],
     "relatedConcepts": [
       "prime representations",
       "asymptotic growth",
@@ -29,6 +34,12 @@
     "content": "**f(n)** counts solutions to n = p + 2^k where p is prime. We iterate k from 0 to log₂(n) and count those where n - 2^k is prime.",
     "mathContext": "def f (n : ℕ) := |{k ∈ [0, log₂ n] : Prime(n - 2^k)}|. This is computable via filtering and checking primality.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "counting function",
+      "filter theory",
+      "prime checking"
+    ],
     "relatedConcepts": [
       "counting function",
       "prime checking",
@@ -47,6 +58,12 @@
     "content": "**Proved**: f(n) ≤ log₂(n) + 1 always. Since we only check k ∈ {0,...,log₂(n)}, we can have at most log₂(n) + 1 valid representations.",
     "mathContext": "f_trivial_upper_bound : f n ≤ Nat.log2 n + 1. The proof uses that filtering a list cannot exceed its original length.",
     "significance": "key",
+    "prerequisites": [
+      "filter theory",
+      "logarithm",
+      "natural number arithmetic",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "upper bound",
       "logarithm"
@@ -64,6 +81,11 @@
     "content": "**Proved/Axiomatized**: f(2)=0, f(3)=1, f(5)=1, f(9)=2, f(15)=3. Small cases verified by decide or explicit computation.",
     "mathContext": "f_two : f 2 = 0; f_three : f 3 = 1; f_five : f 5 = 1. For 9: 7+2 and 5+4. For 15: 13+2, 11+4, 7+8.",
     "significance": "key",
+    "prerequisites": [
+      "computation",
+      "examples",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "computation",
       "examples"
@@ -81,6 +103,12 @@
     "content": "**HasAllPrimeProperty n** means n - 2^k is prime for ALL k with 1 < 2^k < n. These numbers are extremely rare.",
     "mathContext": "HasAllPrimeProperty n := ∀ k, 1 < 2^k → 2^k < n → Prime(n - 2^k). Conjectured to be exactly 7 such numbers.",
     "significance": "key",
+    "prerequisites": [
+      "all-prime numbers",
+      "basic set theory",
+      "prime numbers",
+      "special sets"
+    ],
     "relatedConcepts": [
       "all-prime numbers",
       "special sets"
@@ -98,6 +126,12 @@
     "content": "**Proved**: 4 and 7 have the all-prime property. For 4: only 4-2=2 (prime). For 7: 7-2=5, 7-4=3 (both prime).",
     "mathContext": "four_all_prime : HasAllPrimeProperty 4; seven_all_prime : HasAllPrimeProperty 7. Proved by case analysis on k.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "prime numbers",
+      "small cases",
+      "verification"
+    ],
     "relatedConcepts": [
       "verification",
       "small cases"
@@ -115,6 +149,11 @@
     "content": "**Conjecture**: The only all-prime numbers are {4, 7, 15, 21, 45, 75, 105}. Verified up to 2^44 by Mientka-Weitzenkamp (1969).",
     "mathContext": "axiom erdos_guy_all_prime_conjecture : {n | HasAllPrimeProperty n ∧ n > 1} = {4, 7, 15, 21, 45, 75, 105}.",
     "significance": "key",
+    "prerequisites": [
+      "computational verification",
+      "conjecture",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "conjecture",
       "computational verification"
@@ -132,6 +171,12 @@
     "content": "**Erdős Problem #236**: Is f(n) = o(log n)? Formally: the ratio f(n)/log(n) tends to 0 as n → ∞.",
     "mathContext": "Erdos236_Conjecture := (fun n => f n) =o[atTop] (fun n => Real.log n). Uses Mathlib's asymptotic notation.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic",
+      "basic set theory",
+      "little-o",
+      "logarithmic functions"
+    ],
     "relatedConcepts": [
       "little-o",
       "asymptotic",
@@ -150,6 +195,10 @@
     "content": "**Erdős (1950)**: f(n) ≫ log log n infinitely often. There are infinitely many n where f(n) ≥ c·log log n for some c > 0.",
     "mathContext": "axiom erdos_lower_bound : ∀ C, ∀ᶠ n in atTop, ∃ m ≥ n, f m ≥ C * log log m. Shows the conjecture, if true, is tight.",
     "significance": "key",
+    "prerequisites": [
+      "Erdős 1950",
+      "lower bound"
+    ],
     "relatedConcepts": [
       "lower bound",
       "Erdős 1950"
@@ -167,6 +216,12 @@
     "content": "**Vaughan (1973)**: All-prime numbers are extremely sparse. Their count up to N is at most N·exp(-c·(log log log N / log log N)·log N).",
     "mathContext": "This is a super-polynomial decay rate, much faster than any polynomial. Shows all-prime numbers are astronomically rare.",
     "significance": "key",
+    "prerequisites": [
+      "density",
+      "polynomial ring theory",
+      "prime numbers",
+      "sparsity"
+    ],
     "relatedConcepts": [
       "sparsity",
       "density",
@@ -185,6 +240,10 @@
     "content": "Problem #236 counts representations n = p + 2^k, while Problem #10 asks if every odd n has such a representation. f(n) = 0 means no representation exists.",
     "mathContext": "HasRepresentation n := f n > 0. Numbers with f(n) = 0 cannot be written as p + 2^k. Example: f(262) = 0.",
     "significance": "supporting",
+    "prerequisites": [
+      "Problem #10",
+      "existence vs counting"
+    ],
     "relatedConcepts": [
       "Problem #10",
       "existence vs counting"

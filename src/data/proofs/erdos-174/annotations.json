@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #174** asks for a characterization of Ramsey sets in Euclidean space. A finite set A ⊂ ℝⁿ is Ramsey if for any k-coloring of sufficiently high-dimensional space ℝᵈ, a monochromatic congruent copy of A must exist. The problem was introduced by Erdős, Graham, Montgomery, Rothschild, Spencer, and Straus in their foundational 1973 paper on Euclidean Ramsey theory. The EGMRSS theorem established the necessary condition (Ramsey ⟹ spherical), but the sufficient direction remains OPEN.",
     "mathContext": "A is Ramsey := ∀ k ≥ 1, ∃ d, ∀ χ : ℝᵈ → [k], ∃ monochromatic congruent copy of A. Necessary: A spherical. Sufficient: OPEN.",
     "significance": "key",
+    "prerequisites": [
+      "EGMRSS-1973",
+      "Ramsey theory",
+      "Ramsey-theory",
+      "congruence relations"
+    ],
     "relatedConcepts": [
       "EGMRSS-1973",
       "Ramsey-theory",
@@ -30,6 +36,12 @@
     "content": "Three definitions build the formal framework. **FiniteConfig n** is a Finset of EuclideanSpace ℝ (Fin n) — a finite point configuration. **IsCongruentCopy A B** asserts B is the image of A under an isometry (distance-preserving map). **IsRamsey A** is the central predicate: for any k ≥ 1 colors, there exists dimension d such that every k-coloring of ℝᵈ contains a monochromatic congruent copy. The existential over d is key — we go to high enough dimension, not a fixed one.",
     "mathContext": "IsRamsey A := ∀ k ≥ 1, ∃ d, ∀ χ : ℝᵈ → Fin k, ∃ B with IsCongruentCopy A B ∧ IsMonochromatic B χ.",
     "significance": "key",
+    "prerequisites": [
+      "EuclideanSpace",
+      "Finset",
+      "Finset API",
+      "Ramsey theory"
+    ],
     "relatedConcepts": [
       "EuclideanSpace",
       "Finset",
@@ -49,6 +61,12 @@
     "content": "**IsSpherical A** means all points lie on a sphere: ∃ center, radius > 0, ∀ x ∈ A, dist x center = radius. **ramsey_implies_spherical** (EGMRSS 1973) axiomatizes the necessary condition: every Ramsey set is spherical. The proof constructs a distance-based coloring: color x by the distance from x to some reference point modulo a threshold. If A is not spherical, the distances from A's points to the center vary, so no congruent copy can be monochromatic.",
     "mathContext": "ramsey_implies_spherical : IsRamsey A → IsSpherical A. Contrapositive: non-spherical ⟹ non-Ramsey.",
     "significance": "key",
+    "prerequisites": [
+      "EGMRSS-1973",
+      "Ramsey theory",
+      "congruence relations",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "EGMRSS-1973",
       "necessary-condition",
@@ -67,6 +85,12 @@
     "content": "Two competing conjectures for the sufficient direction. **graham_conjecture**: every spherical set is Ramsey, which would give the clean characterization Ramsey ⟺ Spherical. **IsSubtransitive A**: A embeds isometrically into a set S where isometries act transitively (any point can be mapped to any other while preserving S). **lrw_conjecture** (Leader-Russell-Walters 2012): Ramsey ⟺ Subtransitive. If Graham's conjecture is true, then LRW would follow since all subtransitive sets are spherical. Both remain OPEN.",
     "mathContext": "graham_conjecture := ∀ A, IsSpherical A → IsRamsey A. lrw_conjecture := ∀ A, IsRamsey A ↔ IsSubtransitive A.",
     "significance": "key",
+    "prerequisites": [
+      "Graham-conjecture",
+      "LRW-2012",
+      "Ramsey theory",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Graham-conjecture",
       "LRW-2012",
@@ -86,6 +110,12 @@
     "content": "Four families proved Ramsey. **rectangle_is_ramsey** (EGMRSS 1973): vertices of k-dimensional boxes are Ramsey, using product arguments. **simplex_is_ramsey** (Frankl-Rödl 1990): k+1 affinely independent points are Ramsey, using partite methods. **trapezoid_is_ramsey** (Kříž 1992): four points with two parallel sides. **regular_polygon_is_ramsey** (Kříž 1991): all regular polygons and polyhedra, using permutation group methods. The IsRegularPolygon definition simplifies to m ≥ 3 vertices that are spherical, which captures the essential geometric constraint.",
     "mathContext": "rectangle_is_ramsey, simplex_is_ramsey, trapezoid_is_ramsey, regular_polygon_is_ramsey: four axioms for known Ramsey families.",
     "significance": "key",
+    "prerequisites": [
+      "EGMRSS-1973",
+      "Frankl-Rodl-1990",
+      "Ramsey theory",
+      "group theory"
+    ],
     "relatedConcepts": [
       "EGMRSS-1973",
       "Frankl-Rodl-1990",
@@ -105,6 +135,12 @@
     "content": "Concrete configurations with explicit coordinates. **twoPoints** ({![0], ![1]}) is the simplest Ramsey set — by pigeonhole in high dimension. **equilateralTriangle** and **square** are Ramsey as special cases of simplices and rectangles. **not_spherical_not_ramsey** is a genuine Lean proof: the contrapositive of EGMRSS, proved by `intro hNotSph hRam; exact hNotSph (ramsey_implies_spherical A hRam)`. **collinearFour** ({0,1,2,4}) demonstrates a non-Ramsey set: unequal spacing means non-spherical. **collinear_not_ramsey** chains the two results.",
     "mathContext": "not_spherical_not_ramsey : ¬IsSpherical A → ¬IsRamsey A. Proved by contrapositive of EGMRSS axiom.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "contrapositive",
+      "pigeonhole",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "pigeonhole",
       "contrapositive",
@@ -123,6 +159,12 @@
     "content": "**erdos_174_question** formalizes the main open problem: ∃ P, ∀ n A, P n A ↔ IsRamsey A — find a property characterizing Ramsey sets. **characterization_exists** is a genuine Lean proof that such a P exists trivially (take P = IsRamsey, proved by `rfl`). The real challenge is finding a *geometrically meaningful* P. The candidates are IsSpherical (Graham) and IsSubtransitive (LRW). This section highlights the gap between mathematical existence and mathematical understanding.",
     "mathContext": "characterization_exists : erdos_174_question := ⟨IsRamsey, fun n A => rfl⟩. Trivial but illustrates the real question.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "characterization",
+      "existence-vs-construction",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "characterization",
       "existence-vs-construction",
@@ -141,6 +183,12 @@
     "content": "Two summary theorems. **erdos_174** combines four key results into a conjunction: (1) Ramsey ⟹ Spherical (EGMRSS), (2) Rectangles are Ramsey, (3) Simplices are Ramsey, (4) Trapezoids are Ramsey, proved by ⟨ramsey_implies_spherical, rectangle_is_ramsey, simplex_is_ramsey, trapezoid_is_ramsey⟩. **erdos_174_summary** gives just the EGMRSS necessary condition for a specific configuration. The problem remains OPEN — the gap between the necessary condition and the known sufficient conditions has persisted for over 50 years.",
     "mathContext": "erdos_174 : (Ramsey→Spherical) ∧ (Rectangle→Ramsey) ∧ (Simplex→Ramsey) ∧ (Trapezoid→Ramsey) := ⟨...⟩.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "exact-constructor",
+      "open-problem",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "exact-constructor",
       "open-problem",

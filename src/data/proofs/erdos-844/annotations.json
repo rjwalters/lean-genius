@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #844: Maximum Set with Non-Squarefree Products**\n\nLet A ⊆ {1,...,N} such that for all a,b ∈ A, ab is not squarefree.\n\n**Question:** Is the maximum achieved by A = even numbers ∪ odd non-squarefree?\n\n**Answer: YES** (Weisenberg; Alexeev-Mixon-Sawin)\n\nThe key insight: among squarefree numbers, pairs must share a prime - this is an 'intersecting family' problem solved by Chvátal.",
     "mathContext": "A squarefree number has no repeated prime factors. The optimal set excludes exactly the odd squarefree numbers.",
     "significance": "key",
+    "prerequisites": [
+      "Intersecting families",
+      "Squarefree numbers",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Squarefree numbers",
       "Intersecting families",
@@ -31,6 +36,11 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "divisibility",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -45,6 +55,11 @@
     "content": "**optimalSet N:**\n\nevenNumbers N ∪ oddNonSquarefreeNumbers N\n\nEquivalently: all numbers except odd squarefree numbers (1, 3, 5, 7, 11, 13, ...).",
     "mathContext": "This is conjectured to achieve the maximum. The formalization proves this is indeed optimal.",
     "significance": "key",
+    "prerequisites": [
+      "Even numbers",
+      "Non-squarefree numbers",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Even numbers",
       "Non-squarefree numbers"
@@ -66,6 +81,12 @@
       "factorization",
       "prime numbers"
     ],
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "prime numbers",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -81,6 +102,10 @@
     "mathContext": "This is why including all non-squarefree numbers is safe - they 'infect' any product.",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -98,6 +123,9 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -112,6 +140,11 @@
     "content": "**squarefree_product_criterion:**\n\nFor squarefree a, b:\n¬Squarefree(ab) ↔ ∃ prime p, p|a ∧ p|b\n\nTwo squarefree numbers have non-squarefree product iff they share a prime.",
     "mathContext": "This reduces the problem to finding 'intersecting families' of squarefree numbers.",
     "significance": "key",
+    "prerequisites": [
+      "Prime factorization",
+      "Squarefree numbers",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Prime factorization",
       "Squarefree numbers"
@@ -129,6 +162,12 @@
     "content": "**IsIntersectingFamily A:**\n\nA subset of squarefree numbers where any two elements share a prime factor.\n\nThis is the combinatorial structure at the heart of the problem.",
     "mathContext": "Lean: `def IsIntersectingFamily (A : Finset ℕ) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "Chvátal's theorem",
+      "Finset API",
+      "Hypergraphs",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Hypergraphs",
       "Chvátal's theorem"
@@ -146,6 +185,12 @@
     "content": "**chvatal_intersecting_families:**\n\nThe maximum intersecting family of squarefree numbers in {1,...,N} is the set of all even squarefree numbers.\n\nChvátal (1974): Maximum intersecting family = all multiples of a fixed prime. The optimal choice is 2 (maximizes density).",
     "mathContext": "This is the key external result that solves the problem. It comes from hypergraph theory.",
     "significance": "key",
+    "prerequisites": [
+      "Chvátal 1974",
+      "Intersecting hypergraphs",
+      "density theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Chvátal 1974",
       "Intersecting hypergraphs"
@@ -165,6 +210,9 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -181,6 +229,9 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics"
+    ],
     "significance": "supporting"
   },
   {
@@ -195,6 +246,11 @@
     "content": "**optimal_set_density:**\n\nThe optimal set has at most N elements (trivial upper bound). Asymptotically, the optimal set has density 1 - 4/π² ≈ 0.595, since the odd squarefree numbers (density 4/π² ≈ 0.405) are excluded.",
     "mathContext": "The squarefree numbers have density 6/π² ≈ 0.608, and half of them are even.",
     "significance": "supporting",
+    "prerequisites": [
+      "Asymptotic analysis",
+      "Squarefree density",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Squarefree density",
       "Asymptotic analysis"
@@ -214,6 +270,9 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics"
+    ],
     "significance": "supporting"
   },
   {
@@ -230,6 +289,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -245,6 +308,10 @@
     "mathContext": "Lean: `theorem erdos_844 :`",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   }

@@ -11,6 +11,10 @@
     "content": "Three key imports: `Mathlib.NumberTheory.Real.Irrational` for `irrational_nrt_of_notint_nrt`, `Mathlib.Analysis.SpecialFunctions.Pow.Real` for real-valued power operations (`rpow`), and `Mathlib.Tactic` for proof automation.",
     "mathContext": "Formalizes the concept of mathlib imports",
     "significance": "supporting",
+    "prerequisites": [
+      "Mathlib",
+      "rpow"
+    ],
     "relatedConcepts": [
       "Mathlib",
       "rpow",
@@ -29,6 +33,11 @@
     "content": "We define `nthRoot n m = m^(1/n)` as a real number using Lean's real-valued power (`rpow`). The function is `noncomputable` because real arithmetic is not constructive.",
     "mathContext": "The definition uses `(m : \\mathbb{R})^{1/(n : \\mathbb{R})}`. For $n \\geq 1$ and $m \\geq 0$, this gives the unique non-negative real $n$-th root of $m$.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "noncomputable",
+      "rpow"
+    ],
     "relatedConcepts": [
       "rpow",
       "noncomputable",
@@ -47,6 +56,12 @@
     "content": "The fundamental identity connecting the nth root back to the original value. The proof uses `rpow_natCast` to convert between natural number and real exponents, then `rpow_mul` to simplify $(m^{1/n})^n = m^{n/n} = m^1 = m$.",
     "mathContext": "The key step is `rpow_mul`: $(m^a)^b = m^{ab}$ for $m \\geq 0$. Applied with $a = 1/n$ and $b = n$, we get $m^{(1/n) \\cdot n} = m^1 = m$. The `positivity` tactic proves $m \\geq 0$ automatically.",
     "significance": "key",
+    "prerequisites": [
+      "proof techniques",
+      "rpow_mul",
+      "rpow_natCast",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "rpow_mul",
       "rpow_natCast",
@@ -108,6 +123,12 @@
     "content": "For odd powers like cubes, the proof strategy is: (1) Show $k > 0$ since odd powers of non-positive integers are non-positive, contradicting $k^3 = 2 > 0$. (2) Show $k < 2$ since $2^3 = 8 > 2$. (3) Conclude $k = 1$, but $1^3 = 1 \\neq 2$.",
     "mathContext": "The `nlinarith` tactic handles polynomial arithmetic after expanding $k^3 = k \\cdot k \\cdot k$ via `ring`. The expansion is necessary because `nlinarith` works with products but not directly with powers.",
     "significance": "key",
+    "prerequisites": [
+      "linarith tactic",
+      "nlinarith",
+      "polynomial ring theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "nlinarith",
       "ring",
@@ -127,6 +148,12 @@
     "content": "For even powers, we use `Int.natAbs_sq` to convert from $\\mathbb{Z}$ to $\\mathbb{N}$. Since $(|k|)^2 = k^2$ always, we get $(|k|)^2 = 2$ in $\\mathbb{N}$. Then: $|k| \\leq 1$ since $2^2 = 4 > 2$, and `interval_cases` checks $|k| \\in \\{0, 1\\}$.",
     "mathContext": "The key insight: for even powers, $k^n = |k|^n$, so we can work in $\\mathbb{N}$ where bounds are simpler. `Int.natAbs_sq` provides this bridge. The `interval_cases` tactic exhaustively checks all natural numbers in the bounded range.",
     "significance": "key",
+    "prerequisites": [
+      "Int.natAbs_sq",
+      "interval_cases",
+      "proof techniques",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "Int.natAbs_sq",
       "interval_cases",

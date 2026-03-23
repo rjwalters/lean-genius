@@ -11,6 +11,10 @@
     "content": "**Erdos Problem #197**\n\nCan N be partitioned into two sets, each of which can be permuted to avoid monotone 3-term arithmetic progressions?\n\n**Key Results:**\n- The answer is YES if three sets are allowed (Erdos-Graham)\n- The two-set case remains OPEN\n- Cannot be resolved by finite computation\n\n**References:**\n- [ErGr79] and [ErGr80]: Erdos and Graham's foundational work",
     "mathContext": "A monotone 3-AP in a sequence f is a triple i < j < k where f(i) + f(k) = 2*f(j). This is stronger than just containing an AP as a set.",
     "significance": "key",
+    "prerequisites": [
+      "Arithmetic progressions",
+      "Set partitions"
+    ],
     "relatedConcepts": [
       "Arithmetic progressions",
       "Set partitions",
@@ -29,6 +33,11 @@
     "content": "**isArithmeticProgression:**\n\nThree natural numbers a, b, c form an arithmetic progression if the middle one is the average of the other two.\n\n**Definition:**\n```lean\ndef isArithmeticProgression (a b c : N) : Prop := a + c = 2 * b\n```\n\n**Examples:**\n- (1, 3, 5): 1 + 5 = 6 = 2 * 3 (YES)\n- (1, 2, 4): 1 + 4 = 5 != 4 = 2 * 2 (NO)",
     "mathContext": "Lean: `def isArithmeticProgression (a b c : N) : Prop := a + c = 2 * b`",
     "significance": "key",
+    "prerequisites": [
+      "Arithmetic sequences",
+      "Common difference",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Common difference",
       "Arithmetic sequences"
@@ -51,6 +60,12 @@
       "order theory",
       "ring theory"
     ],
+    "prerequisites": [
+      "algebra",
+      "basic set theory",
+      "monotonicity",
+      "ring tactic"
+    ],
     "significance": "key"
   },
   {
@@ -70,6 +85,11 @@
       "order theory",
       "partition"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "combinatorics",
+      "monotonicity"
+    ],
     "significance": "key"
   },
   {
@@ -84,6 +104,11 @@
     "content": "**isEnumeration:**\n\nAn enumeration of a set S is a bijection from N to S.\n\n```lean\ndef isEnumeration (S : Set N) (f : N -> N) : Prop :=\n  Function.Bijective f and forall n, f n in S\n```\n\nThis allows us to 'order' the elements of S.",
     "mathContext": "Lean: `def isEnumeration (S : Set N) (f : N -> N) : Prop :=`",
     "relatedConcepts": [
+      "bijection",
+      "cardinality"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "bijection",
       "cardinality"
     ],
@@ -106,6 +131,11 @@
       "order theory",
       "partition"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "combinatorics",
+      "monotonicity"
+    ],
     "significance": "key"
   },
   {
@@ -120,6 +150,11 @@
     "content": "**isTwoPartition:**\n\nA and B form a partition of N if they are disjoint and their union is N.\n\n```lean\ndef isTwoPartition (A B : Set N) : Prop :=\n  Disjoint A B and A union B = Set.univ\n```\n\nThis captures the classical notion of a partition into two parts.",
     "mathContext": "Lean: `def isTwoPartition (A B : Set N) : Prop :=`",
     "relatedConcepts": [
+      "combinatorics",
+      "partition"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "combinatorics",
       "partition"
     ],
@@ -140,6 +175,11 @@
       "combinatorics",
       "partition"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "partition",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -159,6 +199,10 @@
       "order theory",
       "partition"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "monotonicity"
+    ],
     "significance": "key"
   },
   {
@@ -173,6 +217,11 @@
     "content": "**isThreePartition:**\n\nA, B, C form a partition of N if they are pairwise disjoint and cover N.\n\n```lean\ndef isThreePartition (A B C : Set N) : Prop :=\n  Disjoint A B and Disjoint B C and Disjoint A C and A union B union C = Set.univ\n```",
     "mathContext": "Lean: `def isThreePartition (A B C : Set N) : Prop :=`",
     "relatedConcepts": [
+      "combinatorics",
+      "partition"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "combinatorics",
       "partition"
     ],
@@ -196,6 +245,10 @@
       "partition",
       "phase transitions"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "monotonicity"
+    ],
     "significance": "key"
   },
   {
@@ -215,6 +268,12 @@
       "order theory",
       "ring theory"
     ],
+    "prerequisites": [
+      "algebra",
+      "monotonicity",
+      "proof techniques",
+      "ring tactic"
+    ],
     "significance": "key"
   },
   {
@@ -229,6 +288,10 @@
     "content": "**powers_of_2_avoid_3AP:**\n\nThe sequence 1, 2, 4, 8, 16, ... avoids 3-APs.\n\n```lean\naxiom powers_of_2_avoid_3AP : avoids3AP (fun n => 2 ^ n)\n```\n\n**Why:** If 2^a + 2^c = 2 * 2^b, then by uniqueness of binary representation, we need a = b = c (contradiction for a < b < c).\n\nThis is a canonical example of a 3-AP-free sequence.",
     "mathContext": "Powers of 2 have unique binary representations, which prevents the AP equality from holding with distinct exponents.",
     "significance": "key",
+    "prerequisites": [
+      "Binary representation",
+      "Geometric sequences"
+    ],
     "relatedConcepts": [
       "Binary representation",
       "Geometric sequences"
@@ -249,6 +312,10 @@
       "combinatorics",
       "partition"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "partition"
+    ],
     "significance": "key"
   },
   {
@@ -263,6 +330,12 @@
     "content": "**isStanleySequence:**\n\nThe Stanley Sequence S(0,1) is the 3-AP-free sequence starting with 0, 1 and greedily adding the smallest number that doesn't create a 3-AP.\n\n**Begins:** 0, 1, 3, 5, 9, 11, 13, 15, 25, 27, ...\n\nBy construction, this sequence avoids all 3-APs.",
     "mathContext": "Stanley sequences are important in combinatorial number theory. Their density and structure are actively studied.",
     "significance": "key",
+    "prerequisites": [
+      "3-AP-free sets",
+      "Greedy algorithms",
+      "basic set theory",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Greedy algorithms",
       "3-AP-free sets"
@@ -283,6 +356,11 @@
       "combinatorics",
       "partition"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "partition",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -299,6 +377,11 @@
     "relatedConcepts": [
       "combinatorics",
       "partition"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "partition",
+      "proof techniques"
     ],
     "significance": "key"
   }

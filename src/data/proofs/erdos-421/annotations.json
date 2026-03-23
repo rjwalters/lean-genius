@@ -11,6 +11,11 @@
     "content": "Erdos Problem #421: Find sequence d_1 < d_2 < ... with density 1 and all interval products distinct. Status: OPEN.",
     "mathContext": "From [ErGr80, p.84]. Selfridge achieves density 1/e - eps. Gap to density 1 remains open.",
     "significance": "key",
+    "prerequisites": [
+      "density",
+      "density theory",
+      "distinct-products"
+    ],
     "relatedConcepts": [
       "distinct-products",
       "density",
@@ -29,6 +34,11 @@
     "content": "IsStrictlyIncreasing(d) := StrictMono d. StartsAtOne(d) := 1 <= d(0). IsValidSequence combines both.",
     "mathContext": "We want d: N -> N with d(0) < d(1) < d(2) < ... and d(0) >= 1.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "sequence",
+      "strict-mono"
+    ],
     "relatedConcepts": [
       "strict-mono",
       "sequence"
@@ -46,6 +56,12 @@
     "content": "HasDensity(S, delta) := |S ∩ [0,n]| / n -> delta as n -> inf. HasDensityOne(d) := density of range(d) is 1.",
     "mathContext": "Density 1 means the sequence contains almost all integers asymptotically.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic",
+      "basic set theory",
+      "density theory",
+      "natural-density"
+    ],
     "relatedConcepts": [
       "natural-density",
       "asymptotic"
@@ -63,6 +79,11 @@
     "content": "intervalProduct(d, u, v) := prod_{u <= i <= v} d(i). productMap: (u,v) -> interval product.",
     "mathContext": "For each pair (u, v) with u <= v, we compute the product of d_u * d_{u+1} * ... * d_v.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "interval",
+      "product"
+    ],
     "relatedConcepts": [
       "product",
       "interval",
@@ -81,6 +102,11 @@
     "content": "HasDistinctProducts(d) := productMap is injective on ValidPairs. distinct_equiv: equivalent to pairwise distinct.",
     "mathContext": "Different intervals (u1,v1) != (u2,v2) must give different products.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "distinct",
+      "injective"
+    ],
     "relatedConcepts": [
       "injective",
       "distinct"
@@ -98,6 +124,12 @@
     "content": "ErdosConjecture421 := exists d valid with density 1 and distinct products.",
     "mathContext": "Combines three requirements: strictly increasing, density 1, and injective productMap.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "conjecture",
+      "density theory",
+      "existence"
+    ],
     "relatedConcepts": [
       "conjecture",
       "existence"
@@ -115,6 +147,11 @@
     "content": "selfridge_construction: For any eps > 0, exists sequence with distinct products and density > 1/e - eps.",
     "mathContext": "Best known construction achieves density approaching 1/e ~ 0.3679. Far from density 1.",
     "significance": "key",
+    "prerequisites": [
+      "density theory",
+      "one-over-e",
+      "selfridge"
+    ],
     "relatedConcepts": [
       "selfridge",
       "one-over-e",
@@ -133,6 +170,11 @@
     "content": "numProductsUpToLength(n) = n(n+1)/2. Number of interval products grows quadratically.",
     "mathContext": "Constraint: many products must fit distinctly, limiting how dense the sequence can be.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "constraint",
+      "counting"
+    ],
     "relatedConcepts": [
       "counting",
       "constraint"
@@ -150,6 +192,12 @@
     "content": "Natural numbers: density 1 but products collide (1*2 = 2). Primes: distinct products but density 0.",
     "mathContext": "Neither extreme works. Need clever construction balancing both constraints.",
     "significance": "supporting",
+    "prerequisites": [
+      "density theory",
+      "natural-numbers",
+      "prime numbers",
+      "primes"
+    ],
     "relatedConcepts": [
       "natural-numbers",
       "primes",
@@ -168,6 +216,11 @@
     "content": "Problem 786 contains details of Selfridge's construction.",
     "mathContext": "See erdosproblems.com/786 for the construction achieving density 1/e.",
     "significance": "supporting",
+    "prerequisites": [
+      "density theory",
+      "erdos-786",
+      "selfridge"
+    ],
     "relatedConcepts": [
       "erdos-786",
       "selfridge"
@@ -185,6 +238,11 @@
     "content": "The problem is OPEN. Best: density 1/e - eps. Target: density 1. OEIS: A389544, A390848.",
     "mathContext": "Large gap between best construction (1/e) and target (1). No upper bounds on achievable density known.",
     "significance": "key",
+    "prerequisites": [
+      "density theory",
+      "oeis",
+      "open-problem"
+    ],
     "relatedConcepts": [
       "open-problem",
       "oeis",

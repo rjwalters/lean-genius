@@ -11,6 +11,12 @@
     "content": "H(k) is the canonical Ramsey number for k-APs: the smallest N where every coloring of {1,...,N} yields a monochromatic or rainbow k-AP. Two questions: estimate H(k), and determine if H(k)^{1/k}/k → ∞.",
     "mathContext": "H(k) = min{N : ∀ χ coloring of [N], ∃ monochromatic k-AP or rainbow k-AP}. Known: H(k)^{1/k} → ∞. Open: H(k)^{1/k}/k → ∞?",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "arithmetic progressions",
+      "canonical Ramsey theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "canonical Ramsey theory",
       "arithmetic progressions",
@@ -29,6 +35,12 @@
     "content": "A k-term AP is a sequence a, a+d, a+2d, ..., a+(k-1)d with common difference d > 0. Two formalizations: as a Finset via range.image, and as a function Fin k → ℕ.",
     "mathContext": "isArithmeticProgression s k ≡ ∃ a d, d > 0 ∧ s = {a + i·d : i < k}. isAPSequence f ≡ ∃ a d, d > 0 ∧ ∀ i, f(i) = a + i·d.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "Finset.image",
+      "Finset.range",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Finset.range",
       "Finset.image",
@@ -47,6 +59,12 @@
     "content": "A coloring χ : Fin N → C assigns colors. Monochromatic: all elements share one color. Rainbow: all elements have distinct colors (card s = card (image χ s)). Alternative rainbow: injective on s.",
     "mathContext": "isMonochromatic χ s ≡ ∃ c, ∀ x ∈ s, χ(x) = c. isRainbow χ s ≡ s.card = (s.image χ).card. isRainbowAlt: ∀ x ≠ y ∈ s, χ(x) ≠ χ(y).",
     "significance": "key",
+    "prerequisites": [
+      "Finset.card",
+      "Finset.image",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Finset.card",
       "Finset.image",
@@ -65,6 +83,12 @@
     "content": "A coloring has the canonical property for k-APs if some k-AP is either monochromatic or rainbow. The OR is what makes this 'canonical' Ramsey — any coloring must produce at least one structured pattern.",
     "mathContext": "hasCanonicalAP χ k ≡ ∃ f : Fin k → Fin N, isAPSequence(f.val) ∧ (isMonochromatic χ (image f univ) ∨ isRainbow χ (image f univ)).",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey property",
+      "Ramsey theory",
+      "basic set theory",
+      "disjunctive win condition"
+    ],
     "relatedConcepts": [
       "disjunctive win condition",
       "Ramsey property",
@@ -83,6 +107,12 @@
     "content": "H(k) is defined as the minimum N via Nat.find, given existence from Szemerédi's theorem. Three axioms: exists_canonical_threshold (existence), H_spec (sufficiency for N ≥ H(k)), H_minimal (witness for N < H(k)).",
     "mathContext": "H(k) = Nat.find(exists_canonical_threshold k). H_spec: N ≥ H(k) → ∀ χ, hasCanonicalAP χ k. H_minimal: N < H(k) → ∃ χ, ¬hasCanonicalAP χ k.",
     "significance": "key",
+    "prerequisites": [
+      "Nat.find",
+      "Szemerédi's theorem",
+      "basic set theory",
+      "natural number arithmetic"
+    ],
     "relatedConcepts": [
       "Nat.find",
       "Szemerédi's theorem",
@@ -101,6 +131,12 @@
     "content": "Van der Waerden number W(k) requires only monochromatic APs in 2-colorings. Since canonical also accepts rainbow APs, H(k) ≤ W(k). The lower bound H(k) ≥ k is trivial (need at least k elements for a k-AP).",
     "mathContext": "W(k) = Nat.find(vanDerWaerden_exists k). H_le_W: k ≥ 3 → H(k) ≤ W(k). H_lower_bound: k ≥ 3 → H(k) ≥ k.",
     "significance": "key",
+    "prerequisites": [
+      "2-colorings",
+      "basic set theory",
+      "graph coloring",
+      "natural number arithmetic"
+    ],
     "relatedConcepts": [
       "van der Waerden's theorem",
       "2-colorings",
@@ -119,6 +155,10 @@
     "content": "Known: H(k)^{1/k} → ∞ (the k-th root grows without bound). The open conjecture: H(k)^{1/k}/k → ∞, meaning H(k) grows faster than k^k — a much stronger super-exponential statement.",
     "mathContext": "H_root_to_infinity: ∀ M, ∃ K, ∀ k ≥ K, H(k)^{1/k} > M. erdos190Conjecture: ∀ M, ∃ K, ∀ k ≥ K, H(k)^{1/k}/k > M.",
     "significance": "key",
+    "prerequisites": [
+      "k-th root",
+      "super-exponential growth"
+    ],
     "relatedConcepts": [
       "super-exponential growth",
       "k-th root",
@@ -137,6 +177,10 @@
     "content": "Concrete bounds: H(3) ≤ 10 and H(4) ≤ 100. These provide baseline data for the asymptotic questions.",
     "mathContext": "H_3_bound: H(3) ≤ 10. H_4_bound: H(4) ≤ 100.",
     "significance": "supporting",
+    "prerequisites": [
+      "explicit bounds",
+      "small Ramsey numbers"
+    ],
     "relatedConcepts": [
       "explicit bounds",
       "small Ramsey numbers",
@@ -155,6 +199,12 @@
     "content": "H(k) exists by Szemerédi's theorem: dense subsets of ℕ contain long APs, so for large N, colorings with few colors force monochromatic APs, while many colors enable rainbow APs. The difficulty is the precise interplay between these two competing forces.",
     "mathContext": "Szemerédi: dense A ⊆ [N] contains k-APs for large N. Pigeonhole: few colors → monochromatic; many colors → rainbow. The competition determines H(k).",
     "significance": "supporting",
+    "prerequisites": [
+      "Szemerédi's theorem",
+      "graph coloring",
+      "pigeonhole principle",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Szemerédi's theorem",
       "pigeonhole principle",
@@ -173,6 +223,10 @@
     "content": "The summary theorem combines H(k) > 0, H(k)^{1/k} → ∞, and trivially True (conjecture is stated). Uses H_pos axiom and H_root_to_infinity axiom. Problem status: OPEN.",
     "mathContext": "erdos_190_summary: (∀ k, H(k) > 0) ∧ (∀ M, ∃ K, ∀ k ≥ K, H(k)^{1/k} > M) ∧ True. Proof: ⟨H_pos, H_root_to_infinity, trivial⟩.",
     "significance": "key",
+    "prerequisites": [
+      "known results",
+      "open problem"
+    ],
     "relatedConcepts": [
       "known results",
       "open problem",
@@ -191,6 +245,11 @@
     "content": "H(k) > 0 for all k: every canonical Ramsey number is positive because any k-AP requires at least k elements and the canonical property requires N large enough to force patterns.",
     "mathContext": "H_pos: ∀ k, H(k) > 0. Used in erdos_190_summary to establish the base property.",
     "significance": "supporting",
+    "prerequisites": [
+      "Ramsey theory",
+      "positive Ramsey number",
+      "well-definedness"
+    ],
     "relatedConcepts": [
       "well-definedness",
       "positive Ramsey number",

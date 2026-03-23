@@ -11,6 +11,12 @@
     "content": "Erdős Problem #821 asks: for every ε > 0, are there infinitely many n with g(n) > n^{1-ε}, where g(n) = |{m : φ(m) = n}| counts preimages of n under Euler's totient? The problem is OPEN. Best known: g(n) > n^{0.71568} infinitely often (Lichtman 2022). The conjecture would follow from sufficient density of primes with smooth p-1.",
     "mathContext": "The preimage counting function g(n) connects multiplicative number theory (Euler's totient) with smooth numbers and prime distribution.",
     "significance": "key",
+    "prerequisites": [
+      "Euler's totient",
+      "Euler's work",
+      "Preimage counting",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Euler's totient",
       "Preimage counting",
@@ -29,6 +35,12 @@
     "content": "phi: Euler's totient φ(n), defined as Nat.totient. g(n): a partial preimage count using Finset.filter (lower bound). preimageCount(n) = Nat.card {m : φ(m) = n}: the full preimage count. preimageCount_finite (axiom): g(n) < n² for all n, ensuring the count is bounded.",
     "mathContext": "Lean: `def phi : ℕ → ℕ`",
     "significance": "key",
+    "prerequisites": [
+      "Euler's work",
+      "Finset API",
+      "Nat.card",
+      "Nat.totient"
+    ],
     "relatedConcepts": [
       "Nat.totient",
       "Nat.card",
@@ -47,6 +59,11 @@
     "content": "pillai_theorem (axiom): for any M, there exists n with g(n) > M, i.e., g(n) is unbounded. erdos_1935 (axiom): there exists c > 0 with g(n) > n^c infinitely often — the first power-law bound. erdos_explicit_bound: the same with a specific (placeholder) constant 0.1.",
     "mathContext": "Pillai's result was qualitative; Erdős's 1935 paper was the breakthrough showing quantitative power-law growth.",
     "significance": "key",
+    "prerequisites": [
+      "Erdős 1935",
+      "Pillai",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Pillai",
       "Erdős 1935",
@@ -65,6 +82,12 @@
     "content": "lichtmanExponent = 0.71568: the current best exponent. lichtman_theorem (axiom): g(n) > n^{0.71568} infinitely often. lichtman_primes (axiom): there are ≥ cx/(log x)² primes p ≤ x with all prime factors of p-1 at most x^{0.2843}. This is the technical ingredient behind the improved exponent.",
     "mathContext": "Lichtman's 2022 result improved on Baker-Harman (1998) and represents the state of the art.",
     "significance": "key",
+    "prerequisites": [
+      "Best known bound",
+      "Lichtman 2022",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Lichtman 2022",
       "Best known bound",
@@ -83,6 +106,12 @@
     "content": "ErdosConjecture821: ∀ ε > 0, g(n) > n^{1-ε} infinitely often. ErdosConjecture821': equivalent formulation with α < 1. IsEpsilonSmooth p ε: all prime factors of p-1 are < p^ε. SmoothPrimesCondition: for every ε > 0, there are ≫ x/log x primes p < x with ε-smooth p-1. smooth_implies_conjecture (axiom): the smooth primes condition implies the full conjecture.",
     "mathContext": "The reduction to smooth primes shows that the number-theoretic conjecture is equivalent to a question about prime distribution.",
     "significance": "key",
+    "prerequisites": [
+      "Conjecture",
+      "Smooth numbers",
+      "basic set theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Conjecture",
       "Smooth numbers",
@@ -101,6 +130,10 @@
     "content": "preimageCount_upper_bound (axiom): g(n) ≤ C · n^{1.01} for all n ≥ 2. average_preimageCount (axiom): the average of g(n) over [1,N] is O(log N). preimage_of_1 (theorem): φ(1) = φ(2) = 1, so g(1) ≥ 2. The upper bound shows the conjecture asks for near-maximal behavior.",
     "mathContext": "Lean: `axiom preimageCount_upper_bound :`",
     "significance": "supporting",
+    "prerequisites": [
+      "Average order",
+      "Upper bound"
+    ],
     "relatedConcepts": [
       "Upper bound",
       "Average order",
@@ -119,6 +152,12 @@
     "content": "erdos_821 combines three partial results: (1) Lichtman's best known bound g(n) > n^{0.71568} infinitely often, (2) Erdős's 1935 power-law growth for some c > 0, and (3) the reduction showing the smooth primes condition implies the full conjecture. Proved by exact ⟨lichtman_theorem, erdos_1935, smooth_implies_conjecture⟩.",
     "mathContext": "Lean: `theorem erdos_821 :`",
     "significance": "key",
+    "prerequisites": [
+      "Partial results",
+      "Summary",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Summary",
       "Partial results",

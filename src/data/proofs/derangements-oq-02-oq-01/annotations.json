@@ -11,6 +11,12 @@
     "content": "**Theorem** `fixedPoint_count_permCongr`:\n```\nFintype.card {x : α // σ x = x} = Fintype.card {y : β // (e.permCongr σ) y = y}\n```\n\nFor any equivalence `e : α ≃ β`, conjugating a permutation `σ : Perm α` by `e` preserves the number of fixed points. The proof constructs an explicit bijection between the fixed-point subtypes:\n- **Forward**: `⟨x, hx⟩ ↦ ⟨e x, proof that e.permCongr σ (e x) = e x⟩`\n- **Backward**: `⟨y, hy⟩ ↦ ⟨e.symm y, proof that σ (e.symm y) = e.symm y⟩`\n\nThe key computation: `e.permCongr σ (e x) = e (σ (e.symm (e x))) = e (σ x) = e x` when `σ x = x`.",
     "mathContext": "|\\text{Fix}(\\sigma)| = |\\text{Fix}(e \\circ \\sigma \\circ e^{-1})|",
     "significance": "key",
+    "prerequisites": [
+      "Fintype",
+      "conjugation",
+      "permCongr",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "permCongr",
       "conjugation",
@@ -30,6 +36,12 @@
     "content": "**Theorem** `card_kfixed_permCongr`:\n```\n|{σ : Perm α | |Fix(σ)| = k}| = |{τ : Perm β | |Fix(τ)| = k}|\n```\n\nTransports the entire k-fixed-point filter between Perm α and Perm β. The bijection sends `σ ↦ e.permCongr σ` and uses `fixedPoint_count_permCongr` to verify the fixed-point count is preserved.\n\nThe round-trip proofs use:\n- `e.symm.permCongr ∘ e.permCongr = id` (left inverse)\n- `e.permCongr ∘ e.symm.permCongr = id` (right inverse)\n\nBoth close by `simp [Equiv.permCongr_apply]` after pointwise extensionality.",
     "mathContext": "\\{\\sigma \\in \\text{Perm}\\; \\alpha \\mid |\\text{Fix}(\\sigma)| = k\\} \\cong \\{\\tau \\in \\text{Perm}\\; \\beta \\mid |\\text{Fix}(\\tau)| = k\\}",
     "significance": "key",
+    "prerequisites": [
+      "Fintype.card_congr",
+      "filter theory",
+      "permCongr",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Fintype.card_congr",
       "permCongr",
@@ -49,6 +61,12 @@
     "content": "**Theorem** `card_perms_with_kfixed_fintype` (for `hk : k ≤ Fintype.card α`):\n```\n|{σ : Perm α | |Fix(σ)| = k}| = C(|α|, k) · numDerangements(|α| - k)\n```\n\nThe proof is remarkably concise — just two lines:\n1. `rw [card_kfixed_permCongr (Fintype.equivFin α) k]` — transport from Perm α to Perm (Fin |α|)\n2. `exact PartialDerangements.card_perms_with_kfixed ...` — apply the Fin n result\n\nThis demonstrates the power of the transport approach: once the filter bijection is established, the general result follows immediately from the special case.",
     "mathContext": "S(\\alpha, k) = \\binom{|\\alpha|}{k} \\cdot D(|\\alpha| - k)",
     "significance": "key",
+    "prerequisites": [
+      "Fintype",
+      "Fintype.equivFin",
+      "filter theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Fintype.equivFin",
       "transport",
@@ -68,6 +86,12 @@
     "content": "Three corollaries, each proved by a single transport + application:\n\n**S(α, |α|-1) = 0** (`permsWithCardMinus1Fixed_eq_zero`, for |α| ≥ 2):\nImpossible to fix exactly |α|-1 elements. If all but one element is fixed, that remaining element must map to itself too.\n\n**S(α, |α|) = 1** (`permsWithAllFixed_eq_one`):\nThe only permutation fixing all elements is the identity.\n\n**∑ S(α,k) = |α|!** (`sum_kfixed_eq_factorial`):\nEvery permutation has a definite fixed-point count, so the filter classes partition Perm α.\n\nAll three follow the same pattern: `rw [card_kfixed_permCongr (Fintype.equivFin α)]` then apply the Fin n corollary.",
     "mathContext": "S(\\alpha, |\\alpha|-1) = 0, \\quad S(\\alpha, |\\alpha|) = 1, \\quad \\sum_k S(\\alpha,k) = |\\alpha|!",
     "significance": "key",
+    "prerequisites": [
+      "Fintype",
+      "card_support_ne_one",
+      "filter theory",
+      "identity permutation"
+    ],
     "relatedConcepts": [
       "identity permutation",
       "card_support_ne_one",
@@ -87,6 +111,12 @@
     "content": "The proof's summary highlights a reusable pattern for Mathlib: prove a permutation-counting result for Fin n, then transport to arbitrary Fintype α via `Fintype.equivFin`. The key insight is that `permCongr` preserves the combinatorial invariant (here, fixed-point count), so the Fin n result lifts for free.\n\nThis three-step pattern — (1) prove invariance under permCongr, (2) establish filter bijection, (3) instantiate with equivFin — applies to any permutation statistic preserved by conjugation: cycle type, descent count, inversion number, etc.",
     "mathContext": "\\text{Perm}\\;\\alpha \\xrightarrow{\\text{permCongr}(e)} \\text{Perm}\\;(\\text{Fin}\\;|\\alpha|)",
     "significance": "supporting",
+    "prerequisites": [
+      "Fintype",
+      "Fintype.equivFin",
+      "filter theory",
+      "permCongr"
+    ],
     "relatedConcepts": [
       "Fintype.equivFin",
       "permCongr",

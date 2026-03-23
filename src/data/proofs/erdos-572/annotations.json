@@ -11,6 +11,11 @@
     "content": "**Erdos Problem #572: Extremal Function for Even Cycles**\n\nThis problem asks for a lower bound on ex(n; C_{2k}), the maximum edges in an n-vertex graph with no 2k-cycle.\n\n**Conjecture:** ex(n; C_{2k}) >> n^{1+1/k} for k >= 3\n\n**Status:** Proved for k=3,5 (Benson 1966); open for k=4 and k >= 6.",
     "mathContext": "The extremal function ex(n; H) is central to Turan-type problems in combinatorics.",
     "significance": "key",
+    "prerequisites": [
+      "Extremal graph theory",
+      "Turan's theorem",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Extremal graph theory",
       "Turan's theorem",
@@ -34,6 +39,12 @@
       "injectivity",
       "one-to-one functions"
     ],
+    "prerequisites": [
+      "Fintype",
+      "basic set theory",
+      "combinatorics",
+      "graph theory"
+    ],
     "significance": "key"
   },
   {
@@ -53,6 +64,12 @@
       "graph theory",
       "optimization"
     ],
+    "prerequisites": [
+      "Fintype",
+      "basic set theory",
+      "combinatorics",
+      "extremal problems"
+    ],
     "significance": "key"
   },
   {
@@ -69,6 +86,12 @@
     "relatedConcepts": [
       "combinatorics",
       "graph theory"
+    ],
+    "prerequisites": [
+      "Finset API",
+      "Fintype",
+      "basic set theory",
+      "combinatorics"
     ],
     "significance": "supporting"
   },
@@ -87,6 +110,12 @@
       "extremal problems",
       "optimization"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "extremal problems",
+      "graph theory basics",
+      "measure theory"
+    ],
     "significance": "key"
   },
   {
@@ -101,6 +130,10 @@
     "content": "**bondy_simonovits_upper:**\n\nFor k >= 2: ex(n; C_{2k}) <= c * k * n^{1+1/k}\n\n```lean\naxiom bondy_simonovits_upper :\n  forall k : N, k >= 2 ->\n  exists c : R, c > 0 and forall n : N, n >= 1 ->\n    (exCycle n k : R) <= c * k * n^(1 + 1/k)\n```\n\nThis is the best known upper bound (1974).",
     "mathContext": "Proved using the dependent random choice method and careful cycle counting.",
     "significance": "key",
+    "prerequisites": [
+      "Cycle counting",
+      "Random graph methods"
+    ],
     "relatedConcepts": [
       "Random graph methods",
       "Cycle counting"
@@ -121,6 +154,11 @@
       "combinatorics",
       "graph theory"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -137,6 +175,9 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -151,6 +192,12 @@
     "content": "**lazebnik_ustimenko_woldar:**\n\nFor all k >= 3:\nex(n; C_{2k}) >= c * n^{1+2/(3k-3+v)}\n\nwhere v = 0 for odd k, v = 1 for even k.\n\n```lean\ndef luwExponent (k : N) : R :=\n  1 + 2 / (3 * k - 3 + if k % 2 = 0 then 1 else 0)\n```\n\nThis is weaker than n^{1+1/k} but works for all k >= 3.",
     "mathContext": "Uses algebraic graph constructions over finite fields.",
     "significance": "key",
+    "prerequisites": [
+      "Algebraic graphs",
+      "Finite fields",
+      "field theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Algebraic graphs",
       "Finite fields"
@@ -171,6 +218,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -188,6 +240,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -204,6 +261,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -218,6 +279,10 @@
     "content": "**conjecturedExponent:**\n\nThe conjectured exponent is 1 + 1/k.\n\n```lean\ndef conjecturedExponent (k : N) : R := 1 + 1 / k\n```\n\nCompare with luwExponent which is weaker for most k.",
     "mathContext": "Lean: `def conjecturedExponent (k : N) : R := 1 + 1 / k`",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "formal mathematics"
     ],
     "significance": "key"
@@ -237,6 +302,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -253,6 +323,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -267,6 +341,11 @@
     "content": "**erdos_klein_c4:**\n\nex(n; C_4) ~ (1/2) * n^{3/2}\n\nThe extremal graphs are related to finite projective planes.\n\n```lean\naxiom erdos_klein_c4 :\n  exists c1 c2, 0 < c1 <= c2 and forall n >= 1,\n    c1 * n^{3/2} <= exCycle n 2 <= c2 * n^{3/2}\n```\n\nThis is the k=2 case, fully resolved.",
     "mathContext": "Connected to the Zarankiewicz problem and projective planes.",
     "significance": "key",
+    "prerequisites": [
+      "Projective planes",
+      "Zarankiewicz problem",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Zarankiewicz problem",
       "Projective planes"
@@ -289,6 +368,11 @@
       "graph theory",
       "optimization"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "extremal problems",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -306,6 +390,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -322,6 +411,11 @@
     "relatedConcepts": [
       "bounds",
       "inequalities"
+    ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
     ],
     "significance": "key"
   }

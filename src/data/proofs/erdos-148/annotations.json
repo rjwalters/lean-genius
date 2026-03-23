@@ -11,6 +11,10 @@
     "content": "Erdos Problem #148: Count F(k), the ways to write 1 as a sum of k distinct unit fractions. Known: 2^{c*k/log k} <= F(k) <= c_0^{(1/5+o(1))*2^k}. Problem is OPEN.",
     "mathContext": "Unit fractions (1/n) have been studied since ancient Egypt. Erdos-Graham posed this counting problem in 1980.",
     "significance": "key",
+    "prerequisites": [
+      "egyptian-fractions",
+      "unit-fractions"
+    ],
     "relatedConcepts": [
       "egyptian-fractions",
       "unit-fractions",
@@ -29,6 +33,11 @@
     "content": "A unit fraction is 1/n for positive integer n. These are the building blocks of Egyptian fractions. Examples: 1/2, 1/3, 1/6.",
     "mathContext": "Ancient Egyptians represented all fractions as sums of distinct unit fractions (except 2/3).",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "fractions",
+      "rationals"
+    ],
     "relatedConcepts": [
       "fractions",
       "rationals"
@@ -46,6 +55,12 @@
     "content": "unitFractionSum(S) computes the sum of 1/n over all n in S. For a set {2, 3, 6}, this gives 1/2 + 1/3 + 1/6 = 1.",
     "mathContext": "Uses Finset.sum to compute the sum efficiently.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "finsets",
+      "sums"
+    ],
     "relatedConcepts": [
       "sums",
       "finsets"
@@ -63,6 +78,11 @@
     "content": "isEgyptianDecomposition(S) holds if all elements of S are >= 1 and unitFractionSum(S) = 1. This formalizes 'S sums to 1.'",
     "mathContext": "The positivity condition ensures we only consider proper unit fractions.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "decomposition",
+      "unit-sums"
+    ],
     "relatedConcepts": [
       "decomposition",
       "unit-sums"
@@ -80,6 +100,11 @@
     "content": "F(k) counts sets S with |S| = k and isEgyptianDecomposition(S). This is the central object: how many k-decompositions of 1 exist?",
     "mathContext": "Uses Set.ncard to count the finite set of valid decompositions.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "cardinality",
+      "counting"
+    ],
     "relatedConcepts": [
       "counting",
       "cardinality"
@@ -97,6 +122,10 @@
     "content": "The only 1-decomposition is {1}: 1 = 1/1. No other single unit fraction equals 1.",
     "mathContext": "Trivial case but establishes the base case for F.",
     "significance": "supporting",
+    "prerequisites": [
+      "base-case",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "base-case"
     ]
@@ -113,6 +142,11 @@
     "content": "There is NO way to write 1 as a sum of exactly 2 distinct unit fractions! If 1/n1 + 1/n2 = 1 with n1 < n2, algebra forces n1 = n2 = 2, violating distinctness.",
     "mathContext": "Surprising result: the first non-trivial case has no solutions.",
     "significance": "key",
+    "prerequisites": [
+      "algebra",
+      "impossibility",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "impossibility",
       "algebra"
@@ -130,6 +164,11 @@
     "content": "The unique 3-decomposition is {2, 3, 6}: 1/2 + 1/3 + 1/6 = 1. No other triple of distinct unit fractions sums to 1.",
     "mathContext": "The example isEgyptianDecomposition {2, 3, 6} is verified computationally.",
     "significance": "key",
+    "prerequisites": [
+      "proof techniques",
+      "uniqueness",
+      "verification"
+    ],
     "relatedConcepts": [
       "uniqueness",
       "verification"
@@ -147,6 +186,11 @@
     "content": "F(k) >= 2^{c * k / log k} for some c > 0. This means F grows at least as fast as 2^{k/log k}, which is super-polynomial.",
     "mathContext": "Konyagin's 2014 result gave the best known lower bound, improving earlier work.",
     "significance": "key",
+    "prerequisites": [
+      "growth-rate",
+      "lower-bounds",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "lower-bounds",
       "growth-rate"
@@ -164,6 +208,10 @@
     "content": "F(k) <= c_0^{(1/5 + o(1)) * 2^k} where c_0 = 1.26408... (Vardi constant). This is doubly exponential in k!",
     "mathContext": "Elsholtz and Planitzer 2021 gave the best upper bound, involving the Vardi constant from analysis.",
     "significance": "key",
+    "prerequisites": [
+      "upper-bounds",
+      "vardi-constant"
+    ],
     "relatedConcepts": [
       "upper-bounds",
       "vardi-constant"
@@ -181,6 +229,10 @@
     "content": "F is eventually increasing, grows super-exponentially, and decomposition denominators are bounded by 2^k - 1.",
     "mathContext": "These properties establish that F(k) grows very rapidly.",
     "significance": "key",
+    "prerequisites": [
+      "bounds",
+      "monotonicity"
+    ],
     "relatedConcepts": [
       "monotonicity",
       "bounds"
@@ -198,6 +250,10 @@
     "content": "Every positive rational has an Egyptian fraction representation. The greedy (Fibonacci-Sylvester) algorithm always terminates with a valid decomposition.",
     "mathContext": "This classical result ensures the counting problem is well-posed - decompositions exist.",
     "significance": "key",
+    "prerequisites": [
+      "existence",
+      "greedy-algorithm"
+    ],
     "relatedConcepts": [
       "greedy-algorithm",
       "existence"
@@ -215,6 +271,10 @@
     "content": "The key asymptotic question is the growth of log F(k). Current bounds: c*k/log(k) <= log_2 F(k) <= O(2^k). Huge gap!",
     "mathContext": "Closing this gap is the main challenge in the problem.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotics",
+      "logarithm"
+    ],
     "relatedConcepts": [
       "asymptotics",
       "logarithm"
@@ -232,6 +292,10 @@
     "content": "F(k) values: 1, 0, 1, 14, 147, 3462, ... (OEIS A076393). The rapid growth is evident: F(4)=14, F(5)=147, F(6)=3462.",
     "mathContext": "Computed values help understand the growth pattern.",
     "significance": "supporting",
+    "prerequisites": [
+      "computation",
+      "oeis"
+    ],
     "relatedConcepts": [
       "oeis",
       "computation"
@@ -249,6 +313,11 @@
     "content": "erdos_148_status: Combines lower and upper bounds into one theorem. The problem is OPEN - true growth rate of F(k) unknown.",
     "mathContext": "Captures the state of mathematical knowledge on this problem.",
     "significance": "key",
+    "prerequisites": [
+      "open-problem",
+      "proof techniques",
+      "summary"
+    ],
     "relatedConcepts": [
       "summary",
       "open-problem"

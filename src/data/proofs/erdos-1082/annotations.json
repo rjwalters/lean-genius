@@ -11,6 +11,10 @@
     "content": "**Erdos Problem #1082: Distinct Distances in General Position**\n\nLet A subset of R^2 be n points with no three collinear.\n\n**Two Questions:**\n1. Does A determine at least n/2 distinct distances?\n2. Must some point see at least n/2 distinct distances?\n\n**Status:**\n- Question 1: OPEN\n- Question 2: DISPROVED (Xichuan's 42-point counterexample)\n\n**Known:** Szemeredi proved at least n/3 distinct distances exist.",
     "mathContext": "This problem bridges combinatorial geometry and the famous distinct distances problem solved by Guth-Katz in 2015.",
     "significance": "key",
+    "prerequisites": [
+      "Distinct distances",
+      "General position"
+    ],
     "relatedConcepts": [
       "Distinct distances",
       "General position",
@@ -31,6 +35,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -45,6 +53,12 @@
     "content": "**areCollinear, inGeneralPosition:**\n\nThree points p, q, r are collinear iff the cross-product is zero:\n(q.x - p.x)(r.y - p.y) = (r.x - p.x)(q.y - p.y)\n\n**General Position:** A point set is in general position if no three points are collinear.\n\nThis is stronger than 'no four points on a circle' or 'convex position'.",
     "mathContext": "The cross-product formula is the determinant condition for collinearity.",
     "significance": "key",
+    "prerequisites": [
+      "Cross product",
+      "Determinant",
+      "basic set theory",
+      "convexity"
+    ],
     "relatedConcepts": [
       "Cross product",
       "Determinant",
@@ -65,6 +79,11 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "cardinal arithmetic",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -79,6 +98,10 @@
     "content": "**szemeredi_n_over_3:**\n\nIf S has n points in general position, then S determines at least n/3 distinct distances.\n\n**Stronger result:** If no k points are collinear, some point determines >> n/k distances.\n\nThis was unpublished but cited in Erdos's 1975 paper. It's the best proven lower bound for the total distances question.",
     "mathContext": "Szemeredi's proof uses incidence geometry and careful counting arguments.",
     "significance": "key",
+    "prerequisites": [
+      "Distinct distances",
+      "Incidence geometry"
+    ],
     "relatedConcepts": [
       "Incidence geometry",
       "Distinct distances"
@@ -98,6 +121,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -114,6 +141,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -128,6 +159,10 @@
     "content": "**xichuan_counterexample:**\n\nThere exist 42 points in R^2 with no three collinear, such that every point determines only 20 distinct distances.\n\nSince 20 < 21 = floor(42/2), this disproves Conjecture 2.\n\nThe construction uses symmetric patterns that repeat distances while maintaining general position.",
     "mathContext": "Finding such constructions is highly non-trivial and requires sophisticated geometric design.",
     "significance": "key",
+    "prerequisites": [
+      "Counterexamples",
+      "Symmetric point sets"
+    ],
     "relatedConcepts": [
       "Counterexamples",
       "Symmetric point sets"
@@ -148,6 +183,12 @@
       "indirect proof",
       "proof by contradiction"
     ],
+    "prerequisites": [
+      "indirect proof",
+      "omega tactic",
+      "proof by contradiction",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -165,6 +206,12 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "Finset API",
+      "bounds",
+      "inequalities",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -179,6 +226,12 @@
     "content": "**guth_katz_distinct_distances:**\n\nThe famous Erdos distinct distances problem asks: what is the minimum number of distinct distances determined by n points in R^2?\n\n**Answer (Guth-Katz 2015):** Omega(n / log n) distinct distances.\n\nProblem #1082 asks a related question: what happens when we add the general position constraint?",
     "mathContext": "Guth-Katz used algebraic topology and polynomial partitioning - a breakthrough result.",
     "significance": "key",
+    "prerequisites": [
+      "Incidence bounds",
+      "Polynomial partitioning",
+      "omega tactic",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Polynomial partitioning",
       "Incidence bounds"
@@ -196,6 +249,12 @@
     "content": "**3D Extensions:**\n\nErdos asked: Given n points in R^3 with no three collinear, do they determine >> n distances?\n\n**Known results:**\n- YES for convex polyhedra vertices (Altman)\n- YES if no four points are coplanar (Szemeredi)\n\nThe 3D problem has different behavior depending on geometric constraints.",
     "mathContext": "Lean: `axiom szemeredi_no_k_on_line (S : Finset Point2D) (k : ℕ) (hk : k ≥ 3)`",
     "significance": "supporting",
+    "prerequisites": [
+      "Convex position",
+      "Finset API",
+      "Higher dimensions",
+      "convexity"
+    ],
     "relatedConcepts": [
       "Higher dimensions",
       "Convex position"
@@ -215,6 +274,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -231,6 +294,11 @@
     "relatedConcepts": [
       "bounds",
       "inequalities"
+    ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
     ],
     "significance": "key"
   }

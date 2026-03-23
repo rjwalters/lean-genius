@@ -16,6 +16,11 @@
       "asymptotic analysis",
       "diagonal Ramsey numbers"
     ],
+    "prerequisites": [
+      "Ramsey theory",
+      "graph colouring",
+      "ring tactic"
+    ],
     "significance": "key"
   },
   {
@@ -33,6 +38,12 @@
       "Ramsey numbers",
       "graph colouring",
       "extremal graph theory"
+    ],
+    "prerequisites": [
+      "Ramsey numbers",
+      "Ramsey theory",
+      "basic set theory",
+      "graph colouring"
     ],
     "significance": "key"
   },
@@ -52,6 +63,12 @@
       "exact Ramsey numbers",
       "combinatorial enumeration"
     ],
+    "prerequisites": [
+      "Ramsey theory",
+      "computational Ramsey theory",
+      "exact Ramsey numbers",
+      "simp tactic"
+    ],
     "significance": "supporting"
   },
   {
@@ -69,6 +86,10 @@
       "probabilistic method",
       "triangle-free process",
       "semi-random method"
+    ],
+    "prerequisites": [
+      "probabilistic method",
+      "triangle-free process"
     ],
     "significance": "key"
   },
@@ -89,6 +110,11 @@
       "entropy method",
       "asymptotic combinatorics"
     ],
+    "prerequisites": [
+      "Ramsey upper bounds",
+      "book algorithm",
+      "omega tactic"
+    ],
     "significance": "key"
   },
   {
@@ -106,6 +132,12 @@
       "finite differences",
       "monotone sequences",
       "Ramsey growth rate"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "basic set theory",
+      "finite differences",
+      "measure theory"
     ],
     "significance": "key"
   },
@@ -125,6 +157,11 @@
       "Cesaro averages",
       "asymptotic growth"
     ],
+    "prerequisites": [
+      "Cesaro averages",
+      "Ramsey theory",
+      "divergence of sequences"
+    ],
     "significance": "key"
   },
   {
@@ -143,6 +180,12 @@
       "sublinear growth",
       "smoothness of Ramsey sequences"
     ],
+    "prerequisites": [
+      "Ramsey theory",
+      "little-o notation",
+      "omega tactic",
+      "sublinear growth"
+    ],
     "significance": "key"
   },
   {
@@ -157,6 +200,10 @@
     "content": "**ErdosProblem544** combines both parts as a conjunction: the consecutive differences **diverge** AND they are **sublinear**. This captures the full strength of what Erdos and Sos asked: the differences grow to infinity but slower than k.",
     "mathContext": "Lean: `def ErdosProblem544 : Prop`",
     "relatedConcepts": [
+      "Erdos-Sos conjecture",
+      "Ramsey theory open problems"
+    ],
+    "prerequisites": [
       "Erdos-Sos conjecture",
       "Ramsey theory open problems"
     ],

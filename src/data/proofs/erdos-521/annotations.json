@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #521: Real Roots of Random ±1 Polynomials**\n\nLet f_n(z) = Σ_{k=0}^n εₖ z^k where each εₖ ∈ {-1, 1} uniformly. If Rₙ counts the real roots, is it true that almost surely lim Rₙ/log n = 2/π?\n\n**Status:** PARTIALLY SOLVED / OPEN\n- Expectation convergence: KNOWN (Erdős-Offord 1956)\n- A.s. for roots in [-1,1]: KNOWN (Do 2024)\n- Full a.s. convergence: OPEN",
     "mathContext": "The constant 2/π ≈ 0.6366 arises from Kac's integral formula for the root density. The logarithmic growth comes from integrating the density ρ_n(x) ≈ 1/(π|1-x²|^{1/2}) near x = ±1.",
     "significance": "key",
+    "prerequisites": [
+      "Littlewood-polynomials",
+      "density theory",
+      "polynomial ring theory",
+      "random-polynomials"
+    ],
     "relatedConcepts": [
       "random-polynomials",
       "Littlewood-polynomials",
@@ -29,6 +35,12 @@
     "content": "**Three key definitions:**\n\n**RandomPlusMinus1Polynomial:** f_n(z) = Σ εₖ z^k, computed using Finset.range and real coercion of integer coefficients.\n\n**IsValidCoeffSeq:** Each coefficient ε(k) is either 1 or -1.\n\n**realRootCount / realRootCountInUnit:** Axiomatized counts of real roots (all reals / interval [-1,1]). Axiomatized because computing exact root counts requires algebraic geometry machinery.",
     "mathContext": "These are Littlewood polynomials — polynomials with all coefficients ±1. They have deep connections to harmonic analysis, signal processing, and coding theory.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "Finset.range",
+      "Littlewood-polynomial",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Finset.range",
       "Littlewood-polynomial",
@@ -47,6 +59,12 @@
     "content": "**kacConstant = 2/π ≈ 0.6366:** The asymptotic constant for the expected number of real roots of random ±1 polynomials of degree n divided by log n.\n\n**halfKacConstant = 1/π ≈ 0.3183:** The constant for roots restricted to [-1,1]. Exactly half of 2/π, reflecting that asymptotically half the real roots lie in [-1,1].\n\n**kac_constant_pos:** Axiom that 2/π > 0, following from π > 0.",
     "mathContext": "The factor 2/π is specific to the uniform ±1 distribution. For Gaussian N(0,1) coefficients, the same constant appears. For {0,1} coefficients, the constant changes to 1/π.",
     "significance": "key",
+    "prerequisites": [
+      "Kac-formula",
+      "Real.pi",
+      "basic set theory",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Real.pi",
       "Kac-formula",
@@ -65,6 +83,11 @@
     "content": "**erdos_offord_expectation:** For all ε > 0, eventually |E[Rₙ] - (2/π)log n| < ε·log n. This says the expected root count is asymptotically (2/π)log n.\n\n**varianceRealRoots / variance_bound:** The variance of Rₙ is O((log n)²). This is crucial for potential Borel-Cantelli arguments toward almost sure convergence.\n\nThe expectation result is the baseline — Erdős's question asks whether individual realizations concentrate around this expectation.",
     "mathContext": "The axiom uses Filter.atTop for 'eventually' (for all sufficiently large n). The variance bound suggests concentration, but O((log n)²) variance with O(log n) mean is not tight enough for direct Chebyshev-based a.s. arguments.",
     "significance": "key",
+    "prerequisites": [
+      "Filter.atTop",
+      "filter theory",
+      "variance-bound"
+    ],
     "relatedConcepts": [
       "Filter.atTop",
       "variance-bound",
@@ -83,6 +106,12 @@
     "content": "**erdosConjecture_open:** The conjecture that a.s. lim Rₙ/log n = 2/π is axiomatized as a Prop without specifying its truth value.\n\nThe formal measure-theoretic statement requires a probability space over infinite binary sequences {-1,1}^ℕ, which is beyond what we axiomatize here. The conjecture is the central open question of this problem.",
     "mathContext": "Almost sure convergence means: for a set of measure 1 in the product space {-1,1}^ℕ, the limit holds. This is strictly stronger than E[Rₙ]/log n → 2/π.",
     "significance": "key",
+    "prerequisites": [
+      "almost-sure-convergence",
+      "measure theory",
+      "measure-theory",
+      "probability theory"
+    ],
     "relatedConcepts": [
       "almost-sure-convergence",
       "measure-theory",
@@ -101,6 +130,11 @@
     "content": "**do_theorem_2024:** For all ε > 0, eventually for all valid coefficient sequences, |(Rₙ[-1,1])/log n - 1/π| < ε.\n\nThis is the strongest known result toward Erdős's conjecture. Do proved that roots in [-1,1] satisfy the almost sure law. Since asymptotically half the real roots are in [-1,1], this resolves exactly half the problem.\n\nThe remaining challenge is roots outside [-1,1], which cluster near ±∞ and are harder to control.",
     "mathContext": "Do's 2024 paper 'A strong law of large numbers for real roots of random polynomials' uses sophisticated probabilistic techniques. The axiomatization captures the key conclusion.",
     "significance": "key",
+    "prerequisites": [
+      "partial-result",
+      "polynomial ring theory",
+      "strong-law"
+    ],
     "relatedConcepts": [
       "strong-law",
       "partial-result",
@@ -119,6 +153,12 @@
     "content": "**kac_integral_formula:** The expected root count equals (2/π + o(1))log n, derived from Kac's integral E[Rₙ] = ∫ ρ_n(x) dx where ρ_n(x) ≈ 1/(π|1-x²|^{1/2}) near ±1.\n\n**real_root_bound:** A degree n polynomial has at most n+1 real roots. This is the fundamental algebraic constraint — almost all roots must be complex.",
     "mathContext": "The root density diverges at x = ±1, but integrably so: ∫ dx/√(1-x²) = π over [-1,1]. The factor 2 in 2/π accounts for roots outside [-1,1] as well.",
     "significance": "key",
+    "prerequisites": [
+      "Kac-integral",
+      "complex numbers",
+      "density theory",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Kac-integral",
       "root-density",
@@ -137,6 +177,12 @@
     "content": "**erdos_521_summary** combines three key results:\n\n1. **Variance bound:** ∃ C > 0, Var(Rₙ) ≤ C(log n)² for n ≥ 2\n2. **Root bound:** Rₙ ≤ n + 1 for all polynomials\n3. **Kac positivity:** 2/π > 0\n\nThe proof uses `exact ⟨variance_bound, real_root_bound, kac_constant_pos⟩` to combine axioms into a single conjunction.",
     "mathContext": "This summary captures the quantitative framework around the problem: the expected behavior is known, variance is controlled, and the limiting constant is well-defined and positive.",
     "significance": "key",
+    "prerequisites": [
+      "exact-proof",
+      "polynomial ring theory",
+      "proof techniques",
+      "summary-theorem"
+    ],
     "relatedConcepts": [
       "summary-theorem",
       "exact-proof",

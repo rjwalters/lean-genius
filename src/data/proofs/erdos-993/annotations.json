@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #993** asks whether the independent set sequence of trees is unimodal. An independent set is a collection of vertices with no edges between them, and i_k(T) counts how many such sets of size k exist.\n\n**Answer: YES** — for any tree or forest T, the sequence i_0, i_1, i_2, ... increases to a peak and then decreases. This contrasts dramatically with general graphs, where Alavi-Erdős-Malde-Schwenk (1987) showed EVERY pattern of increases and decreases is achievable.\n\nThe proof uses a beautiful algebraic technique: the independence polynomial I(T,x) = Σ i_k x^k has all real roots for trees. Newton's theorem then implies the coefficients are unimodal.",
     "mathContext": "This sits at the intersection of graph theory, algebraic combinatorics, and polynomial theory. The real-rootedness technique has become a standard tool for proving unimodality, with applications to chromatic polynomials, matching polynomials, and more.",
     "significance": "key",
+    "prerequisites": [
+      "Independent sets",
+      "Unimodality",
+      "graph theory basics",
+      "matching theory"
+    ],
     "relatedConcepts": [
       "Independent sets",
       "Unimodality",
@@ -30,6 +36,12 @@
     "content": "**Three core definitions:**\n\n1. **IsIndependentSet G S**: No two vertices in S are adjacent in G. Formally: ∀ u, v ∈ S, u ≠ v → ¬G.Adj u v.\n\n2. **indepCount G k**: The number of independent sets of size k. Computed by filtering the powerset of vertices for sets of the right size with the independence property.\n\n3. **independencePolynomial G**: The generating function I(G, x) = Σ_k i_k(G) · x^k. This polynomial encodes ALL independent set counts as its coefficients.\n\nFor trees, this polynomial has special algebraic properties (all real roots) that force unimodality.",
     "mathContext": "The independence polynomial was introduced by Gutman and Harary (1983). For the path P_3, it equals 1 + 3x + x^2 (1 empty set, 3 singletons, 1 pair of non-adjacent endpoints). The polynomial is multiplicative on disjoint components.",
     "significance": "key",
+    "prerequisites": [
+      "Generating functions",
+      "Independent sets",
+      "basic set theory",
+      "filter theory"
+    ],
     "relatedConcepts": [
       "Independent sets",
       "Generating functions",
@@ -48,6 +60,12 @@
     "content": "**IsUnimodal f n**: A sequence f(0), f(1), ..., f(n) is unimodal if there exists a peak position m ≤ n such that the sequence is non-decreasing up to m and non-increasing after m.\n\nFormally: ∃ m ≤ n, (∀ i ≤ j ≤ m, f(i) ≤ f(j)) ∧ (∀ m ≤ i ≤ j ≤ n, f(j) ≤ f(i)).\n\n**HasUnimodalIndepSequence G**: The independent set sequence of G is unimodal, with n = |V(G)|.\n\nExamples: The path P_4 has sequence (1, 4, 3, 1) with peak at k=1. The star K_{1,3} has (1, 4, 3, 1) — same sequence! Different trees can have the same independent set sequence.",
     "mathContext": "Unimodality is a central theme in combinatorics. Many natural sequences are conjectured to be unimodal: binomial coefficients, Gaussian coefficients, face numbers of polytopes, chromatic polynomial coefficients.",
     "significance": "key",
+    "prerequisites": [
+      "Combinatorial sequences",
+      "Unimodality",
+      "basic set theory",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Unimodality",
       "Combinatorial sequences",
@@ -66,6 +84,12 @@
     "content": "**IsAcyclic G**: No cycle exists in G. Formally: every closed walk of positive length is NOT a path (it must repeat a vertex).\n\n**IsTree G**: Connected and acyclic. The minimal connected graph on n vertices.\n\n**IsForest G**: Acyclic (may be disconnected). A disjoint union of trees.\n\n**tree_is_forest**: Every tree is a forest (trivially, since Tree = Connected ∧ Acyclic ⊆ Acyclic = Forest).\n\n**tree_edge_count**: A tree on n vertices has exactly n-1 edges. This is axiomatized since the proof requires induction on tree structure.",
     "mathContext": "Trees are the simplest connected graphs. Their independence polynomials can be computed recursively by leaf removal in O(n) time, unlike general graphs where independent set counting is #P-complete.",
     "significance": "key",
+    "prerequisites": [
+      "Acyclic graphs",
+      "Connected graphs",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Acyclic graphs",
       "Connected graphs",
@@ -84,6 +108,12 @@
     "content": "**tree_unimodal** (axiom): For any tree T, HasUnimodalIndepSequence T. This is the core result of Erdős Problem #993.\n\n**forest_unimodal** (axiom): For any forest F, HasUnimodalIndepSequence F. This extends the tree result using the fact that the independence polynomial of a disjoint union is the product of individual polynomials, and products of real-rooted polynomials are real-rooted.\n\n**erdos_993_main** (proved theorem): Combines both results into a single conjunction, proved directly from the axioms using pattern matching on the quantified variables.",
     "mathContext": "The proof of tree_unimodal goes: (1) compute I(T,x) recursively, (2) show all roots are real using interlacing arguments, (3) apply Newton's theorem. This is a non-trivial argument that cannot currently be formalized in Lean/Mathlib.",
     "significance": "key",
+    "prerequisites": [
+      "Real-rootedness",
+      "Unimodality",
+      "matching theory",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Unimodality",
       "Real-rootedness",
@@ -102,6 +132,12 @@
     "content": "**general_graph_not_unimodal**: Not all graphs have unimodal independent set sequences. AEMS (1987) proved the remarkable result that for ANY finite sequence of positive integers, there exists a graph whose independent set sequence matches it.\n\nThis means the non-unimodal examples are not rare exceptions — they are the generic case. The unimodality of trees is the special phenomenon, not the lack of unimodality in general graphs.\n\nThe axiom states existence of a graph G with ¬HasUnimodalIndepSequence G, which is the weakest form of this wildness result.",
     "mathContext": "The AEMS construction builds graphs with prescribed independent set sequences by carefully gluing complete bipartite graphs. For example, K_{1,3} ∪ K_2 gives sequence (1, 5, 6, 4, 1) which IS unimodal, but replacing K_2 with a larger graph can break unimodality at any desired position.",
     "significance": "key",
+    "prerequisites": [
+      "AEMS theorem",
+      "Prescribed sequences",
+      "graph theory basics",
+      "tree theory"
+    ],
     "relatedConcepts": [
       "AEMS theorem",
       "Prescribed sequences",
@@ -120,6 +156,12 @@
     "content": "**Contrast with matchings:** Schwenk (1981) proved that matching sequences are unimodal for ALL graphs, not just trees. A matching is a set of edges with no shared vertices.\n\n**IsMatching G M**: Every pair of distinct edges in M share no endpoint.\n\n**matchingCount G k**: Number of matchings of size k.\n\n**schwenk_matching_unimodal**: The matching sequence is always unimodal. This is because the matching polynomial ALWAYS has all real roots (Heilmann-Lieb theorem, 1972), regardless of graph structure.\n\nThe contrast is striking: matchings are universally well-behaved, while independent sets are only well-behaved for trees.",
     "mathContext": "The Heilmann-Lieb theorem (1972) shows the matching polynomial has only real roots. This was one of the first applications of algebraic methods to combinatorial unimodality, predating the independent set result by decades.",
     "significance": "key",
+    "prerequisites": [
+      "Heilmann-Lieb theorem",
+      "Matchings",
+      "graph theory basics",
+      "matching theory"
+    ],
     "relatedConcepts": [
       "Matchings",
       "Heilmann-Lieb theorem",
@@ -138,6 +180,12 @@
     "content": "**tree_indep_poly_real_roots**: The independence polynomial of a tree has all real roots. This is the key algebraic fact: every root z of I(T, x) has z.im = 0.\n\n**IsLogConcave f n**: The stronger property i_k² ≥ i_{k-1} · i_{k+1} for all intermediate k. Log-concavity implies unimodality for positive sequences.\n\n**log_concave_implies_unimodal**: Axiomatized since the proof requires careful case analysis.\n\n**tree_log_concave_conjecture**: Trees may satisfy the stronger log-concavity property. This is closely related to the real-rootedness, since real-rooted polynomials with positive coefficients are actually log-concave.",
     "mathContext": "Newton's inequality states that for real-rooted polynomials with positive coefficients, the coefficient sequence is log-concave. This is strictly stronger than unimodality and provides quantitative control on how fast the sequence decreases after the peak.",
     "significance": "key",
+    "prerequisites": [
+      "Newton's inequality",
+      "Real-rooted polynomials",
+      "polynomial ring theory",
+      "tree theory"
+    ],
     "relatedConcepts": [
       "Real-rooted polynomials",
       "Newton's inequality",
@@ -156,6 +204,12 @@
     "content": "**independenceNumber G**: The independence number α(G) is the maximum size of an independent set. Computed as the supremum of card(S) over all independent sets S.\n\n**no_large_indep_sets**: For k > α(G), there are no independent sets of size k, so i_k(G) = 0. This means the sequence is eventually zero.\n\n**peak_at_most_alpha**: For trees, the peak of the unimodal sequence occurs at some position m ≤ α(G). Since i_k = 0 for k > α(G), the sequence must start decreasing by position α(G) at the latest.\n\nFor a path P_n, α = ⌈n/2⌉ and the peak is typically near n/3, well below the independence number.",
     "mathContext": "Computing the independence number is NP-hard for general graphs but polynomial for trees (via dynamic programming). For a tree on n vertices, α(T) ≥ ⌈n/2⌉ always holds. The relationship between the peak location and α(T) is an active area of study.",
     "significance": "key",
+    "prerequisites": [
+      "Independence number",
+      "Maximum independent set",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Independence number",
       "Maximum independent set",
@@ -174,6 +228,12 @@
     "content": "**erdos_993_summary** combines three key results:\n\n1. Trees have unimodal independent set sequences (tree_unimodal)\n2. Forests have unimodal independent set sequences (forest_unimodal)\n3. General graphs do NOT (general_graph_not_unimodal)\n\nProved by `⟨..., ..., general_graph_not_unimodal⟩`, directly packaging the three results.\n\nThis captures the complete picture: trees/forests are YES, general graphs are NO. The dividing line is real-rootedness of the independence polynomial.",
     "mathContext": "The summary highlights the dichotomy between trees (algebraically structured, unimodal sequences) and general graphs (combinatorially wild, any pattern achievable). This is a recurring theme in extremal combinatorics.",
     "significance": "key",
+    "prerequisites": [
+      "Summary theorem",
+      "Trees vs general graphs",
+      "graph theory basics",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Summary theorem",
       "Trees vs general graphs",

@@ -11,6 +11,11 @@
     "content": "We import Mathlib and open the `Pointwise` scope which enables set arithmetic: A + B = {a + b : a ∈ A, b ∈ B}. This is essential for defining translates A + {b}.",
     "mathContext": "The `open scoped Pointwise` allows writing `A + {b}` instead of explicit set comprehension. This notation comes from `Mathlib.Algebra.Group.Pointwise`.",
     "significance": "supporting",
+    "prerequisites": [
+      "Mathlib",
+      "group theory",
+      "pointwise operations"
+    ],
     "relatedConcepts": [
       "Mathlib",
       "pointwise operations",
@@ -29,6 +34,12 @@
     "content": "The **counting function** |A ∩ {1,...,N}| measures how many elements of A appear in the first N positive integers. This is the basic building block for density measures.",
     "mathContext": "We use `Set.ncard` for the cardinality of the finite intersection A ∩ [1,N]. The result is a natural number that we later cast to ℝ for density calculations.",
     "significance": "supporting",
+    "prerequisites": [
+      "basic set theory",
+      "cardinal arithmetic",
+      "cardinality",
+      "counting"
+    ],
     "relatedConcepts": [
       "counting",
       "cardinality",
@@ -47,6 +58,12 @@
     "content": "**Schnirelmann density** σ(A) = inf_{N≥1} |A ∩ {1,...,N}|/N is a 'worst-case' density. Unlike asymptotic density, it's sensitive to gaps early in the sequence - if 1 ∉ A, then σ(A) = 0!",
     "mathContext": "The infimum is taken over N ≥ 1 using a subtype `{n : ℕ // n ≥ 1}`. This density is central to additive number theory: Schnirelmann proved that σ(A + B) ≥ σ(A) + σ(B) when σ(A) + σ(B) < 1.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "density",
+      "density theory",
+      "infimum"
+    ],
     "relatedConcepts": [
       "density",
       "infimum",
@@ -65,6 +82,12 @@
     "content": "A set B is an **additive basis of order k** if every natural number can be written as a sum of at most k elements from B. Example: the squares are an additive basis of order 4 (Lagrange).",
     "mathContext": "Formally: ∀ n, ∃ S ⊆ B with |S| ≤ k and Σ S = n. We use `Finset.sum id` for the sum. Famous examples: primes (order 3 by Vinogradov for large odd n), squares (order 4).",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "Waring's problem",
+      "additive basis",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "additive basis",
       "Waring's problem",
@@ -83,6 +106,11 @@
     "content": "A set B is an **additive basis** if it's a basis of some finite order k. The problem asks about sets that are NOT bases - they fail to represent some integers even with arbitrarily many summands.",
     "mathContext": "Being a basis is a strong property: it means B is 'dense enough' that its k-fold sumset eventually covers all of ℕ. Non-bases have persistent gaps.",
     "significance": "key",
+    "prerequisites": [
+      "additive basis",
+      "basic set theory",
+      "sumset"
+    ],
     "relatedConcepts": [
       "additive basis",
       "sumset",
@@ -101,6 +129,11 @@
     "content": "The **translate** A + {b} = {a + b : a ∈ A} shifts every element of A by b. The union A ∪ (A + b) combines the original set with its translate, potentially filling gaps.",
     "mathContext": "Using pointwise notation, `A + {b}` is the Minkowski sum of A with the singleton {b}. This is the key operation: can we always find b ∈ B that significantly increases the counting function?",
     "significance": "key",
+    "prerequisites": [
+      "Minkowski sum",
+      "basic set theory",
+      "translate"
+    ],
     "relatedConcepts": [
       "translate",
       "Minkowski sum",
@@ -119,6 +152,12 @@
     "content": "The **density-boosting property** states: for any set A with Schnirelmann density α and any N, there exists b ∈ B such that |A ∪ (A+b) ∩ {1,...,N}| ≥ (α + f(α)) · N where f(α) > 0.",
     "mathContext": "This is STRONGER than being an essential component. Essential components just need to increase Schnirelmann density; this requires a specific quantitative improvement for EVERY N.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "density improvement",
+      "density theory",
+      "essential component"
+    ],
     "relatedConcepts": [
       "essential component",
       "density improvement",
@@ -137,6 +176,12 @@
     "content": "**The question**: Does there exist B that is NOT an additive basis but still has the density-boosting property? This asks if 'density-boosting' is strictly weaker than 'being a basis'.",
     "mathContext": "The formal statement requires: (1) ¬IsAdditiveBasis B, and (2) ∃ f with f(α) > 0 for 0 < α < 1 such that B has the density-boost property. Both conditions must hold.",
     "significance": "key",
+    "prerequisites": [
+      "additive basis",
+      "basic set theory",
+      "density theory",
+      "open problem"
+    ],
     "relatedConcepts": [
       "open problem",
       "additive basis",
@@ -155,6 +200,11 @@
     "content": "**Erdős proved** in 1936 that additive bases of order k DO have the density-boost property with f(α) = α(1-α)/(2k). This shows one direction: being a basis implies density-boosting.",
     "mathContext": "The factor α(1-α) is maximal at α = 1/2 (giving 1/8k), and approaches 0 as α → 0 or α → 1. Random sets show this factor is optimal.",
     "significance": "key",
+    "prerequisites": [
+      "Erdős",
+      "density",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Erdős",
       "density",
@@ -173,6 +223,11 @@
     "content": "**Linnik constructed** an essential component that is NOT an additive basis. Essential components increase Schnirelmann density when added to any set, but this is weaker than density-boosting.",
     "mathContext": "Linnik's construction shows: ∃ B, ¬IsAdditiveBasis B ∧ (∀ A, σ(A) > 0 → σ(A + B) > σ(A)). But Problem 38 asks for the stronger pointwise count improvement.",
     "significance": "key",
+    "prerequisites": [
+      "Linnik",
+      "density theory",
+      "essential component"
+    ],
     "relatedConcepts": [
       "Linnik",
       "essential component",
@@ -191,6 +246,10 @@
     "content": "For B = ℕ (the full set), the factor α(1-α) in Erdős's bound **cannot be improved**. Random sets demonstrate this - sometimes you can't do better than α(1-α).",
     "mathContext": "This shows the bound α(1-α)/(2k) for bases of order k is essentially tight. The question remains whether non-bases can achieve ANY positive f(α).",
     "significance": "key",
+    "prerequisites": [
+      "optimality",
+      "random sets"
+    ],
     "relatedConcepts": [
       "optimality",
       "random sets",

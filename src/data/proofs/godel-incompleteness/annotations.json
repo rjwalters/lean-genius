@@ -11,6 +11,10 @@
     "content": "Gödel's 1931 paper is one of the most important in the history of mathematics and logic. It proved that Hilbert's dream of a complete, consistent formal foundation for mathematics was impossible.\n\nThe theorem states that any formal system $F$ capable of expressing basic arithmetic must be **incomplete**: there exist true statements that $F$ cannot prove. This isn't a flaw in our axioms—it's a fundamental limitation of formal reasoning itself.\n\nThis formalization presents the key conceptual components. A complete proof would require thousands of lines defining syntax, proof systems, and primitive recursive functions.",
     "mathContext": "Introduction to the formalization of The Theorem That Changed Everything",
     "significance": "critical",
+    "prerequisites": [
+      "Hilbert's Program",
+      "formal systems"
+    ],
     "relatedConcepts": [
       "Hilbert's Program",
       "formal systems",
@@ -29,6 +33,11 @@
     "content": "We axiomatize `Formula` as an abstract type representing well-formed formulas in our formal system. In a full formalization, this would be an inductive type defining the syntax of first-order arithmetic:\n\n- Variables: $x, y, z, \\ldots$\n- Constants: $0, 1, 2, \\ldots$\n- Functions: $+, \\times, S$ (successor)\n- Relations: $=, <$\n- Logical connectives: $\\land, \\lor, \\neg, \\rightarrow$\n- Quantifiers: $\\forall, \\exists$\n\nEvery formula in Peano Arithmetic can be built from these primitives.",
     "mathContext": "No consistent system containing arithmetic can prove its own consistency",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "first-order logic",
+      "formal syntax"
+    ],
     "relatedConcepts": [
       "formal syntax",
       "first-order logic",
@@ -47,6 +56,11 @@
     "content": "The statement $\\vdash \\phi$ means \"$\\phi$ is provable in the formal system $F$.\" A proof is a finite sequence of formulas where each step follows from previous steps by inference rules.\n\nCrucially, provability is a **syntactic** notion—it depends only on the formal rules, not on whether $\\phi$ is \"true\" in any model. This distinction between provability and truth is central to Gödel's argument.",
     "mathContext": "$\\vdash \\phi$ iff there exists a proof of $\\phi$ from the axioms of $F$",
     "significance": "critical",
+    "prerequisites": [
+      "basic set theory",
+      "derivation",
+      "proof"
+    ],
     "relatedConcepts": [
       "proof",
       "derivation",
@@ -65,6 +79,11 @@
     "content": "Gödel's revolutionary insight was to assign a unique natural number to every formula. This encoding, called **Gödel numbering**, allows the formal system to reason about its own syntax.\n\nFor example, the formula \"$0 = 0$\" might receive Gödel number 4,782,969. The number encodes the structure: which symbols appear, in what order, how they combine.\n\nWith this encoding, questions about formulas become questions about numbers. \"Is $\\phi$ provable?\" becomes \"Does the number $\\ulcorner\\phi\\urcorner$ have property $P$?\" And arithmetic can talk about properties of numbers!",
     "mathContext": "$\\ulcorner\\phi\\urcorner$ denotes the Gödel number of formula $\\phi$",
     "significance": "critical",
+    "prerequisites": [
+      "arithmetization",
+      "encoding",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "encoding",
       "arithmetization",
@@ -144,6 +163,11 @@
     "content": "This is the formal engine of self-reference. For any property $P(x)$ expressible in the system, there exists a sentence $\\gamma$ such that:\n\n$\\gamma \\iff P(\\ulcorner\\gamma\\urcorner)$\n\nIn other words, $\\gamma$ says \"I have property $P$.\" The sentence refers to itself—not by name, but by describing its own Gödel number!\n\nThe construction uses the substitution function and diagonalization, similar to Cantor's proof that the reals are uncountable. It's the formalization of the Liar's Paradox mechanism.",
     "mathContext": "$\\forall P. \\exists\\gamma. \\gamma \\iff P(\\ulcorner\\gamma\\urcorner)$",
     "significance": "critical",
+    "prerequisites": [
+      "fixed point",
+      "logical reasoning",
+      "self-reference"
+    ],
     "relatedConcepts": [
       "self-reference",
       "fixed point",
@@ -246,6 +270,10 @@
     "content": "David Hilbert had proposed that:\n1. All mathematics could be formalized in a complete, consistent system\n2. The consistency of this system could be proved by \"finitary\" means\n\nGödel's First Incompleteness Theorem killed (1): no complete system exists. His Second Incompleteness Theorem killed (2): no consistent system can prove its own consistency.\n\nThis was a shock to the mathematical community. The dream of absolute certainty in mathematics was over.",
     "mathContext": "No consistent system containing arithmetic can prove its own consistency",
     "significance": "key",
+    "prerequisites": [
+      "Hilbert",
+      "formalism"
+    ],
     "relatedConcepts": [
       "Hilbert",
       "formalism",
@@ -264,6 +292,10 @@
     "content": "Gödel's theorem reveals something profound: mathematical truth is inexhaustible. No matter how many axioms we add, there will always be truths beyond our reach.\n\nWe can always add $G$ as a new axiom—then the system proves what it couldn't before. But immediately, a new Gödel sentence $G'$ emerges that the expanded system cannot prove. It's turtles all the way down.",
     "mathContext": "No consistent system containing arithmetic can prove its own consistency",
     "significance": "key",
+    "prerequisites": [
+      "axiom extension",
+      "ordinal analysis"
+    ],
     "relatedConcepts": [
       "axiom extension",
       "ordinal analysis",
@@ -282,6 +314,10 @@
     "content": "Some philosophers (notably Roger Penrose and J.R. Lucas) have argued that Gödel's theorem shows human minds are not machines—we can \"see\" that $G$ is true even though no formal system can prove it.\n\nThis interpretation is controversial. Critics argue that humans are also subject to limitations, and our \"seeing\" the truth of $G$ depends on assumptions (like consistency) that we cannot verify.\n\nThe debate continues: does mathematical intuition transcend computation, or are we also bounded by our own version of incompleteness?",
     "mathContext": "No consistent system containing arithmetic can prove its own consistency",
     "significance": "supporting",
+    "prerequisites": [
+      "Lucas-Penrose argument",
+      "mechanism"
+    ],
     "relatedConcepts": [
       "mechanism",
       "Lucas-Penrose argument",

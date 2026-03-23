@@ -10,6 +10,11 @@
     "title": "Problem Background",
     "content": "Erdős Problem #460 concerns a greedy coprime sieve: given $n$, construct a sequence $a_0 = 0, a_1 = 1, a_2, \\ldots$ where each $a_k$ is the least integer exceeding $a_{k-1}$ such that $n - a_k$ is coprime to all previous $n - a_i$. The central question is whether the sum of reciprocals $\\sum_{0 < a_i < n} 1/a_i$ tends to infinity as $n \\to \\infty$. This connects greedy algorithms, coprimality structure, and divergence of reciprocal sums.",
     "significance": "key",
+    "prerequisites": [
+      "Brun's theorem",
+      "Mertens' theorem",
+      "prime numbers"
+    ],
     "mathContext": "\\sum_{\\substack{0 < a_i < n}} \\frac{1}{a_i} \\stackrel{?}{\\to} \\infty \\text{ as } n \\to \\infty: The problem asks whether a greedy coprime sieve produces enough terms for their reciprocals to diverge. Related to Mertens' theorem on prime reciprocal sums and Brun's theorem on twin prime reciprocals. Prerequisites: coprimality, greedy algorithms, reciprocal sum divergence, sieve of Eratosthenes.",
     "relatedConcepts": [
       "Mertens' theorem",
@@ -29,6 +34,12 @@
     "title": "Greedy Coprime Sieve Sequence",
     "content": "The function `greedyCoprimeSieve n k` gives the $k$-th element of the greedy sequence for a fixed $n$. Starting with $a_0 = 0, a_1 = 1$, each subsequent $a_k$ is the least integer greater than $a_{k-1}$ such that $\\gcd(n - a_k, n - a_i) = 1$ for all $i < k$. The sieve ensures the shifted values $n - a_0, n - a_1, \\ldots$ are pairwise coprime.",
     "significance": "key",
+    "prerequisites": [
+      "GCD theory",
+      "basic set theory",
+      "complex numbers",
+      "greedy sequence"
+    ],
     "mathContext": "a_k = \\min\\{m > a_{k-1} : \\gcd(n - m, n - a_i) = 1 \\; \\forall i < k\\}: Defined as a constant function with behavior specified by axioms sieve_initial and sieve_greedy. This separates specification from explicit construction, which would require implementing a computationally complex greedy search.",
     "relatedConcepts": [
       "pairwise coprimality",
@@ -48,6 +59,11 @@
     "title": "Initial Values: $a_0 = 0, a_1 = 1$",
     "content": "The sieve starts with $a_0 = 0$ and $a_1 = 1$ for any $n \\geq 2$. The choice $a_0 = 0$ means $n - a_0 = n$, and $a_1 = 1$ gives $n - a_1 = n - 1$. Since $\\gcd(n, n-1) = 1$ always holds, the greedy condition is satisfied.",
     "significance": "key",
+    "prerequisites": [
+      "GCD theory",
+      "analytic number theory",
+      "sieve methods"
+    ],
     "relatedConcepts": [
       "analytic number theory",
       "sieve methods"
@@ -65,6 +81,11 @@
     "title": "Greedy Selection Property",
     "content": "For $k \\geq 2$, the axiom captures three properties: (1) $a_k > a_{k-1}$ (strict increase), (2) $\\gcd(n - a_k, n - a_i) = 1$ for all $i < k$ (pairwise coprimality of shifted values), and (3) minimality — every integer between $a_{k-1}$ and $a_k$ fails the coprimality condition for some earlier term.",
     "significance": "key",
+    "prerequisites": [
+      "GCD theory",
+      "formal mathematics",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "formal mathematics"
     ],
@@ -81,6 +102,12 @@
     "title": "Sieve Count",
     "content": "`sieveCount n` counts how many terms of the sieve sequence are less than $n$. Since the sequence is increasing and bounded by $n$, this is finite. The count determines the range of summation for the reciprocal sum.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "analytic number theory",
+      "basic set theory",
+      "bounds"
+    ],
     "relatedConcepts": [
       "analytic number theory",
       "bounds",
@@ -100,6 +127,11 @@
     "title": "Reciprocal Sum $\\sum 1/a_i$",
     "content": "The sum $\\sum_{0 < a_i < n} 1/a_i$ is computed over positive sieve terms less than $n$. This is a finite sum for each $n$. The central question is whether this sum diverges as $n \\to \\infty$. If the Eggleton-Erdős-Selfridge conjectured bound $a_k \\ll k \\log k$ holds, then the reciprocal sum would be $\\gg \\sum 1/(k \\log k) = \\infty$.",
     "significance": "key",
+    "prerequisites": [
+      "analytic number theory",
+      "basic set theory",
+      "bounds"
+    ],
     "relatedConcepts": [
       "analytic number theory",
       "bounds",
@@ -119,6 +151,11 @@
     "title": "Main Conjecture: Divergence of Reciprocal Sum",
     "content": "Erdős Problem #460: for every $M > 0$, there exists $N_0$ such that for all $n \\geq N_0$, the reciprocal sum $\\sum_{0 < a_i < n} 1/a_i > M$. Equivalently, $\\lim_{n \\to \\infty} S(n) = \\infty$. The problem is OPEN — the known growth bound $a_k < k^{2+\\varepsilon}$ is too weak to imply divergence.",
     "significance": "key",
+    "prerequisites": [
+      "Filter.Tendsto",
+      "divergence of series",
+      "filter theory"
+    ],
     "mathContext": "\\forall M > 0,\\; \\exists N_0,\\; \\forall n \\geq N_0,\\; \\sum_{0 < a_i < n} \\frac{1}{a_i} > M: Stated in the ε-N form of divergence to infinity rather than using filters, for concreteness. This is the formal definition of ErdosProblem460 as a Prop in Lean.",
     "relatedConcepts": [
       "divergence of series",
@@ -137,6 +174,11 @@
     "title": "Eggleton-Erdős-Selfridge Bound: $a_k < k^{2+o(1)}$",
     "content": "Eggleton, Erdős, and Selfridge proved that the sieve sequence satisfies $a_k < k^{2+\\varepsilon}$ for any $\\varepsilon > 0$ and all sufficiently large $k$. This quadratic-type growth is the best known upper bound. It means the sieve doesn't grow too fast, but is insufficient for reciprocal sum divergence (since $\\sum 1/k^{2+\\varepsilon}$ converges).",
     "significance": "key",
+    "prerequisites": [
+      "analytic number theory",
+      "bounds",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "analytic number theory",
       "bounds",
@@ -156,6 +198,11 @@
     "title": "Conjectured Bound: $a_k \\ll k \\log k$",
     "content": "It is conjectured that $a_k \\leq C \\cdot k \\log k$ for some constant $C > 0$. If true, this would immediately imply Problem #460 since $\\sum_{k=2}^{N} 1/(k \\log k)$ diverges (by the integral test, as $\\int dx/(x \\ln x) = \\ln \\ln x \\to \\infty$).",
     "significance": "key",
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "bounds",
       "inequalities",
@@ -175,6 +222,12 @@
     "title": "Least Prime Factor",
     "content": "The least prime factor $P^-(n)$ of $n$ is defined as `Nat.minFac n` for $n > 1$, and 0 for $n \\leq 1$. This function appears in the sufficient condition for Problem #460: the filtered sum over $a$ where $P^-(n-a) > a$.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "divisibility",
+      "factorization",
+      "filter theory"
+    ],
     "relatedConcepts": [
       "divisibility",
       "factorization",
@@ -193,6 +246,12 @@
     "title": "Least Prime Factor Filtered Sum $f(n)$",
     "content": "The function $f(n) = \\sum_{\\substack{0 < a < n \\\\ P^-(n-a) > a}} 1/a$ sums reciprocals over those $a < n$ whose complement $n - a$ has all prime factors exceeding $a$. This is a 'smooth number' condition on $n - a$. Divergence of $f(n)$ would imply Problem #460.",
     "significance": "key",
+    "prerequisites": [
+      "Dickman–de Bruijn function",
+      "basic set theory",
+      "prime numbers",
+      "smooth numbers"
+    ],
     "mathContext": "f(n) = \\sum_{\\substack{0 < a < n \\\\ P^-(n-a) > a}} \\frac{1}{a}: The condition P⁻(n-a) > a means n-a has no 'small' prime divisors relative to a. This connects to the counting function Ψ(x,y) of y-smooth numbers, a central object in analytic number theory.",
     "relatedConcepts": [
       "smooth numbers",
@@ -212,6 +271,12 @@
     "title": "Filtered Sum Implies Full Divergence",
     "content": "If $f(n) \\to \\infty$ then Problem #460 holds. This is because the greedy coprime sieve must include at least the terms counted by the filtered sum — if $P^-(n-a) > a$, then $n - a$ is automatically coprime to all $n - a_i$ for $a_i < a$ (since $n - a$ has no prime factors $\\leq a$).",
     "significance": "key",
+    "prerequisites": [
+      "GCD theory",
+      "analytic number theory",
+      "divisibility",
+      "filter theory"
+    ],
     "relatedConcepts": [
       "analytic number theory",
       "divisibility",
@@ -232,6 +297,12 @@
     "title": "Small Prime Divisible Sum",
     "content": "The sum restricted to sieve terms $a_k$ where $n - a_k$ has a prime factor $p \\leq a_k$. These are the 'easy' terms to include in the sieve — their coprimality follows from avoiding specific small primes.",
     "significance": "key",
+    "prerequisites": [
+      "analytic number theory",
+      "basic set theory",
+      "divisibility",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "analytic number theory",
       "divisibility",
@@ -252,6 +323,12 @@
     "title": "Large Prime Sum",
     "content": "The complementary sum over sieve terms where $P^-(n - a_k) > a_k$ — all prime factors of $n - a_k$ exceed $a_k$. These are the 'hard' terms where coprimality is automatic but the contribution to the reciprocal sum depends on the distribution of smooth numbers.",
     "significance": "key",
+    "prerequisites": [
+      "analytic number theory",
+      "basic set theory",
+      "divisibility",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "analytic number theory",
       "divisibility",
@@ -272,6 +349,12 @@
     "title": "Restricted Sum Divergence Question",
     "content": "Erdős asked whether the two restricted sums (small-prime and large-prime) individually diverge. If either one diverges, Problem #460 follows since the full sum dominates each restricted sum. This splits the divergence question into two potentially easier subproblems with different flavors: the small-prime case is combinatorial, while the large-prime case involves smooth number estimates.",
     "significance": "key",
+    "prerequisites": [
+      "combinatorics",
+      "counting",
+      "divisibility",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "combinatorics",
       "counting",

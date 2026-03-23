@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #717**: Chromatic Number and Clique Subdivisions\n\nIs χ(G) ≤ C · (√n/log n) · σ(G) for all n-vertex graphs?\n\n**Status**: SOLVED (Fox, Lee, Sudakov 2013)\n\n**Answer**: YES - the bound is tight by Erdős-Fajtlowicz.\n\n**Historical context**: Disproves Hajós conjecture in quantitative form.",
     "mathContext": "σ(G) is the maximum k such that G contains a subdivision of K_k. The problem asks for the best upper bound on χ in terms of σ and n.",
     "significance": "key",
+    "prerequisites": [
+      "chromatic-number",
+      "graph theory basics",
+      "subdivisions"
+    ],
     "relatedConcepts": [
       "chromatic-number",
       "subdivisions",
@@ -36,6 +41,11 @@
     "content": "**axiom chromaticNumber G : ℕ**\n\nThe minimum number of colors needed to properly color G (adjacent vertices get different colors).\n\n**Properties axiomatized**:\n- `chromaticNumber_pos`: χ(G) ≥ 1 for nonempty G\n- `chromaticNumber_bound`: χ(G) ≤ |V(G)|\n\nComputing χ is NP-hard, so we axiomatize it.",
     "mathContext": "The chromatic number is one of the most studied graph parameters. It's related to clique number by χ ≥ ω (clique number), with equality for perfect graphs.",
     "significance": "key",
+    "prerequisites": [
+      "chromatic-number",
+      "graph theory basics",
+      "graph-coloring"
+    ],
     "relatedConcepts": [
       "chromatic-number",
       "graph-coloring",
@@ -59,6 +69,12 @@
     "content": "**def completeGraph k : SimpleGraph (Fin k)**\n\nK_k is the complete graph on k vertices where every pair is adjacent.\n\n```lean\ndef completeGraph (k : ℕ) : SimpleGraph (Fin k) where\n  Adj x y := x ≠ y\n```\n\nK_k has χ(K_k) = k and is the 'worst case' for coloring.",
     "mathContext": "Complete graphs are fundamental in graph theory. K_4 is planar, K_5 is not (Kuratowski). Every graph G is a subgraph of K_n for large enough n.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "clique",
+      "complete-graph",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "complete-graph",
       "clique",
@@ -82,6 +98,12 @@
     "content": "**Subdivision of H**: Replace edges with paths (add 'branch vertices').\n\n**hasSubdivision G H**: G contains a subdivision of H.\n\n**axiom subdivisionNumber G : ℕ**\nσ(G) = maximum k such that G contains a subdivision of K_k.\n\nThis measures the 'topological clique structure' of G.",
     "mathContext": "A subdivision of K_k in G means k 'branch vertices' connected by disjoint paths. This is stronger than having K_k as a minor (where paths can share internal vertices).",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "measure theory",
+      "subdivision",
+      "topological-minor"
+    ],
     "relatedConcepts": [
       "subdivision",
       "topological-minor",
@@ -106,6 +128,12 @@
     "content": "**Hajós Conjecture (1961)**: χ(G) ≤ σ(G) for all graphs G.\n\n```lean\ndef hajosConjecture (G : SimpleGraph V) : Prop :=\n  chromaticNumber G ≤ subdivisionNumber G\n```\n\n**Meaning**: If G needs k colors, it contains a K_k subdivision.\n\n**Status**: FALSE for k ≥ 7! (Catlin 1974)",
     "mathContext": "Hajós conjecture would be a beautiful strengthening of the trivial bound χ ≤ n. It was open for decades before being disproved.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "catlin",
+      "graph theory basics",
+      "hajos-conjecture"
+    ],
     "relatedConcepts": [
       "hajos-conjecture",
       "catlin",
@@ -130,6 +158,12 @@
     "content": "**axiom dirac_theorem**: Hajós holds for χ(G) = 4.\n\nIf a graph needs 4 colors, it contains a subdivision of K_4.\n\n**Proof idea**: 4-chromatic graphs have rich structure that forces K_4 subdivisions.\n\nThis was the strongest evidence for Hajós before it was disproved!",
     "mathContext": "Dirac's theorem connects graph coloring to topological graph theory. The case χ = 4 is related to planarity (4-color theorem).",
     "significance": "key",
+    "prerequisites": [
+      "4-chromatic",
+      "dirac-1952",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "dirac-1952",
       "4-chromatic",
@@ -153,6 +187,11 @@
     "content": "**axiom catlin_counterexamples**: Hajós fails for all χ ≥ 7.\n\nFor each k ≥ 7, there exists a graph G with:\n- χ(G) = k (needs k colors)\n- σ(G) < k (no K_k subdivision)\n\n**The gap**: These counterexamples showed χ can exceed σ, but by how much?",
     "mathContext": "Catlin's construction uses high-girth graphs (no short cycles) which are hard to color but have no large clique subdivisions.",
     "significance": "key",
+    "prerequisites": [
+      "catlin-1974",
+      "counterexample",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "catlin-1974",
       "counterexample",
@@ -176,6 +215,11 @@
     "content": "**axiom erdos_fajtlowicz_lower_bound**:\nFor almost all n-vertex graphs:\nχ(G) ≥ c · (√n / log n) · σ(G)\n\n**The strength**: Not only can χ > σ, but χ/σ can be as large as √n/log n!\n\n**Random graphs G(n, 1/2)**:\n- χ ≈ n/(2 log n) (high: needs many colors)\n- σ ≈ 2 log n (low: sparse K_k subdivisions)",
     "mathContext": "Random graphs are excellent counterexamples to Hajós. They're hard to color (high independence number) but contain few clique subdivisions.",
     "significance": "key",
+    "prerequisites": [
+      "erdos-fajtlowicz-1981",
+      "graph theory basics",
+      "random-graphs"
+    ],
     "relatedConcepts": [
       "erdos-fajtlowicz-1981",
       "random-graphs",
@@ -200,6 +244,12 @@
     "content": "**erdos717QuestionUniversal**: Is there C > 0 such that for all n ≥ 2 and all G on n vertices:\nχ(G) ≤ C · (√n / log n) · σ(G)?\n\n**Why this specific bound?**\nErdős-Fajtlowicz shows χ/σ can be Ω(√n/log n). The question asks: is this the worst case?\n\n**If YES**: χ/σ = Θ(√n/log n) - a complete characterization!",
     "mathContext": "The question asks for a matching upper bound to the Erdős-Fajtlowicz lower bound. This would give tight asymptotics for χ vs σ.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "main-question",
+      "matching theory",
+      "upper-bound"
+    ],
     "relatedConcepts": [
       "main-question",
       "upper-bound",
@@ -224,6 +274,11 @@
     "content": "**axiom fox_lee_sudakov_theorem**:\nFor all n ≥ 2 and all G on n vertices:\nχ(G) ≤ C · (√n / log n) · σ(G)\n\nfor some absolute constant C > 0.\n\n**theorem erdos717_answer : erdos717QuestionUniversal**\nThe answer is YES - follows from fox_lee_sudakov_theorem.\n\nThis completes the picture: χ/σ = Θ(√n/log n).",
     "mathContext": "The Fox-Lee-Sudakov paper appeared in Combinatorica (2013). The proof uses probabilistic and extremal graph theory techniques.",
     "significance": "key",
+    "prerequisites": [
+      "fox-lee-sudakov-2013",
+      "graph theory basics",
+      "main-result"
+    ],
     "relatedConcepts": [
       "fox-lee-sudakov-2013",
       "main-result",
@@ -248,6 +303,11 @@
     "content": "**axiom tight_bound**: The bound is tight up to constants.\n\n**Combining results**:\n- Lower: χ/σ ≥ c · √n/log n (Erdős-Fajtlowicz, random graphs)\n- Upper: χ/σ ≤ C · √n/log n (Fox-Lee-Sudakov, all graphs)\n\n**Conclusion**: χ/σ = Θ(√n/log n)\n\nRandom graphs are 'worst case' for χ vs σ.",
     "mathContext": "Tight bounds are the gold standard in extremal combinatorics. This problem is completely resolved up to determining the exact constants.",
     "significance": "key",
+    "prerequisites": [
+      "graph theory basics",
+      "theta-notation",
+      "tight-bound"
+    ],
     "relatedConcepts": [
       "tight-bound",
       "theta-notation",
@@ -271,6 +331,11 @@
     "content": "**axiom hadwiger_conjecture**: χ(G) ≤ h(G) where h(G) is the Hadwiger number.\n\nHadwiger number h(G) = max k such that K_k is a MINOR of G.\n\n**Key difference from Hajós**:\n- Subdivision: edges → paths (strict)\n- Minor: contract edges (flexible)\n\n**Status**: OPEN for k ≥ 7. Implies 4-color theorem!",
     "mathContext": "Hadwiger's conjecture (1943) is one of the most important open problems in graph theory. It generalizes the 4-color theorem.",
     "significance": "key",
+    "prerequisites": [
+      "graph theory basics",
+      "hadwiger-conjecture",
+      "minor"
+    ],
     "relatedConcepts": [
       "hadwiger-conjecture",
       "minor",
@@ -294,6 +359,10 @@
     "content": "**axiom subdivision_minor_relation**: σ(G) ≤ h(G) always.\n\n**Why?** Every subdivision is a minor (subdivisions are stricter).\n\n**Implication**:\n- Hajós (χ ≤ σ): FALSE\n- Hadwiger (χ ≤ h): Maybe TRUE?\n\nMinors are more flexible, so Hadwiger is weaker but might hold.",
     "mathContext": "The relationship between subdivisions and minors is fundamental. Kuratowski's theorem uses subdivisions; Robertson-Seymour theory uses minors.",
     "significance": "key",
+    "prerequisites": [
+      "kuratowski",
+      "subdivision-minor"
+    ],
     "relatedConcepts": [
       "subdivision-minor",
       "kuratowski",
@@ -317,6 +386,10 @@
     "content": "**axiom kostochka_thomason**: h(G) ≤ c · √(χ log χ)\n\nThis gives an upper bound on Hadwiger number in terms of chromatic number.\n\n**Connection to Hadwiger**: If χ ≤ h held, we'd get χ ≤ c · √(χ log χ), which gives χ ≤ C - a trivial bound!\n\nSo Hadwiger implies more than the trivial bound, showing its depth.",
     "mathContext": "Kostochka and Thomason independently proved this in the 1980s. It's one of the best partial results toward Hadwiger.",
     "significance": "supporting",
+    "prerequisites": [
+      "kostochka",
+      "thomason"
+    ],
     "relatedConcepts": [
       "kostochka",
       "thomason",
@@ -340,6 +413,10 @@
     "content": "**axiom bollobas_catlin_erdos_conjecture**: Does large h(G) imply large σ(G)?\n\n**Question**: Is there f(k) such that h(G) ≥ f(k) implies σ(G) ≥ k?\n\n**Known (subdivision_from_minor)**: h(G) ≥ c · k²/log k implies σ(G) ≥ k.\n\nSo minors do imply subdivisions, but with a quadratic loss.",
     "mathContext": "This conjecture asks whether minors can be 'de-contracted' into subdivisions. The quadratic bound is likely not tight.",
     "significance": "supporting",
+    "prerequisites": [
+      "bollobas-catlin-erdos",
+      "minor-to-subdivision"
+    ],
     "relatedConcepts": [
       "bollobas-catlin-erdos",
       "minor-to-subdivision",
@@ -363,6 +440,12 @@
     "content": "**theorem erdos_717_summary** combines:\n\n1. Catlin: Hajós fails for χ ≥ 7\n2. Erdős-Fajtlowicz: χ/σ can be Ω(√n/log n)\n3. Fox-Lee-Sudakov: χ/σ ≤ O(√n/log n)\n\n**The complete picture**:\n- Hajós is wrong\n- But χ/σ is at most O(√n/log n)\n- And this is achieved by random graphs",
     "mathContext": "The summary theorem packages all the key results into one statement, documenting the complete resolution of the problem.",
     "significance": "key",
+    "prerequisites": [
+      "complete-picture",
+      "graph theory basics",
+      "proof techniques",
+      "summary"
+    ],
     "relatedConcepts": [
       "summary",
       "complete-picture",
@@ -386,6 +469,12 @@
     "content": "**theorem erdos_717 : erdos717QuestionUniversal**\n\n**Statement**: There exists C > 0 such that for all n ≥ 2 and graphs G on n vertices:\nχ(G) ≤ C · (√n / log n) · σ(G)\n\n**Proof**: Follows from fox_lee_sudakov_theorem.\n\n**Status**: SOLVED (Fox, Lee, Sudakov 2013)",
     "mathContext": "This theorem is the formal statement of the main result. The answer to Erdős Problem #717 is YES.",
     "significance": "key",
+    "prerequisites": [
+      "erdos-717",
+      "graph theory basics",
+      "main-theorem",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "main-theorem",
       "erdos-717",
@@ -410,6 +499,10 @@
     "content": "**Timeline**:\n- **1943**: Hadwiger conjecture (minors)\n- **1952**: Dirac proves Hajós for χ = 4\n- **1961**: Hajós conjecture (subdivisions)\n- **1974**: Catlin disproves Hajós for χ ≥ 7\n- **1981**: Erdős-Fajtlowicz: χ/σ = Ω(√n/log n)\n- **2013**: Fox-Lee-Sudakov: χ/σ = O(√n/log n)\n\n**The journey**: From conjecture to disproof to tight characterization.",
     "mathContext": "The problem evolved from a false conjecture to a complete understanding. Each step revealed more about the χ-σ relationship.",
     "significance": "supporting",
+    "prerequisites": [
+      "history",
+      "timeline"
+    ],
     "relatedConcepts": [
       "history",
       "timeline",
@@ -433,6 +526,12 @@
     "content": "**Required Mathlib modules**:\n\n- `SimpleGraph.Basic`: Graph definitions\n- `SimpleGraph.Coloring`: Graph coloring\n- `SimpleGraph.Subgraph`: Subgraph structure\n- `Log.Basic`: Logarithm for bounds\n\nThese provide the foundation for formalizing graph-theoretic concepts.",
     "mathContext": "Mathlib's SimpleGraph library provides a clean formalization of finite simple graphs, suitable for studying structural properties.",
     "significance": "supporting",
+    "prerequisites": [
+      "basic set theory",
+      "graph coloring",
+      "graph theory basics",
+      "mathlib"
+    ],
     "relatedConcepts": [
       "mathlib",
       "simplegraph",
@@ -456,6 +555,12 @@
     "content": "**axiom randomGraph : ℕ → Type**\n\n**G(n, 1/2)**: The Erdős-Rényi random graph.\n- n vertices\n- Each edge appears independently with probability 1/2\n\n**Why important?**\nRandom graphs achieve the worst-case χ/σ ratio, showing the bound is tight.",
     "mathContext": "Random graphs are central to probabilistic combinatorics. They often exhibit extremal behavior for graph parameters.",
     "significance": "supporting",
+    "prerequisites": [
+      "erdos-renyi",
+      "graph theory basics",
+      "probability theory",
+      "random-graph"
+    ],
     "relatedConcepts": [
       "random-graph",
       "erdos-renyi",

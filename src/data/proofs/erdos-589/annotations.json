@@ -11,6 +11,10 @@
     "content": "**Erdős Problem #589: Points in General Position**\n\nLet g(n) be the minimum guaranteed general position subset size in any n-point set with no 4 collinear.\n\n**Known Bounds:**\n- Lower: n^(1/2)·log n (Füredi 1991)\n- Upper: n^(5/6+o(1)) (Balogh-Solymosi 2018)\n\n**Erdős's Belief (WRONG):** g(n) = Ω(n)",
     "mathContext": "The exact exponent remains open - somewhere between 1/2 and 5/6.",
     "significance": "key",
+    "prerequisites": [
+      "Collinearity",
+      "General position"
+    ],
     "relatedConcepts": [
       "Collinearity",
       "General position",
@@ -29,6 +33,11 @@
     "content": "**Collinear3 p q r:**\n\nThree points are collinear if they lie on a common line. Uses determinant criterion.\n\n**Collinear4 p q r s:**\n\nFour points are collinear if all lie on a common line (pairwise collinearity of triples).",
     "mathContext": "Lean: `def Collinear3 (p q r : Point) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "Determinant",
+      "Lines in plane",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Determinant",
       "Lines in plane"
@@ -46,6 +55,11 @@
     "content": "**InGeneralPosition S:**\n\nNo three points of S are collinear.\n\n**InAlmostGeneralPosition S:**\n\nNo four points of S are collinear (but three may be).\n\nThe problem: extract general position from almost general position.",
     "mathContext": "Lean: `def InGeneralPosition (S : Set Point) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "General position",
+      "Point configurations",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "General position",
       "Point configurations"
@@ -63,6 +77,11 @@
     "content": "**g(n):**\n\nThe MINIMUM over all n-point sets in almost general position of the MAXIMUM general position subset size.\n\nThis is the worst-case guarantee: ANY set with no 4 collinear has a subset of at least g(n) points with no 3 collinear.",
     "mathContext": "g(n) captures the worst-case extractable general position subset.",
     "significance": "key",
+    "prerequisites": [
+      "Extremal functions",
+      "Worst-case analysis",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Extremal functions",
       "Worst-case analysis"
@@ -80,6 +99,12 @@
     "content": "**ErdosBelief, erdos_belief_false:**\n\nErdős originally thought g(n) = Ω(n) - linear growth.\n\nThis was DISPROVED. The density Hales-Jewett theorem implies g(n) = o(n).",
     "mathContext": "Erdős's intuition was wrong on this problem.",
     "significance": "key",
+    "prerequisites": [
+      "Disproved conjecture",
+      "Sublinear growth",
+      "density theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Disproved conjecture",
       "Sublinear growth"
@@ -97,6 +122,10 @@
     "content": "**greedy_lower_bound, trivial_lower_bound:**\n\ng(n) ≥ c·√n for some constant c > 0.\n\n**Algorithm:** Pick points one by one, always choosing a point that doesn't form a collinear triple with any two already chosen.\n\nThis is the 'trivial' bound improved by Füredi.",
     "mathContext": "$g(n) ≥ c·√n for some constant c > 0.$",
     "significance": "key",
+    "prerequisites": [
+      "Greedy algorithm",
+      "Lower bounds"
+    ],
     "relatedConcepts": [
       "Greedy algorithm",
       "Lower bounds"
@@ -114,6 +143,11 @@
     "content": "**furedi_lower_bound, furedi_upper_bound:**\n\n- Lower: g(n) ≥ c·√n·log n (improves greedy by log factor)\n- Upper: g(n) = o(n) (sublinear growth)\n\nThe upper bound uses the density Hales-Jewett theorem.",
     "mathContext": "Published in SIAM J. Discrete Math.",
     "significance": "key",
+    "prerequisites": [
+      "Füredi 1991",
+      "Improved bounds",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Füredi 1991",
       "Improved bounds"
@@ -131,6 +165,12 @@
     "content": "**density_hales_jewett, dhj_implies_sublinear:**\n\nThe DHJ theorem (Furstenberg-Katznelson 1991): For every δ > 0 and k ≥ 2, there exists N such that any δ-dense subset of [k]^N contains a combinatorial line.\n\nThis implies g(n) = o(n) via embedding arguments.",
     "mathContext": "A deep result in Ramsey theory/ergodic theory.",
     "significance": "key",
+    "prerequisites": [
+      "Ergodic theory",
+      "Hales-Jewett",
+      "Ramsey theory",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Hales-Jewett",
       "Ergodic theory"
@@ -148,6 +188,10 @@
     "content": "**balogh_solymosi_2018:**\n\ng(n) ≤ n^(5/6+o(1))\n\nProved using the **container method** (Saxton-Thomason, Balogh-Morris-Samotij).\n\nThis was the FIRST application of containers to discrete geometry.\n\n**Construction:** Random n-element subset of large 3D grid, projected to 2D.",
     "mathContext": "Published in Discrete Analysis.",
     "significance": "key",
+    "prerequisites": [
+      "Balogh-Solymosi 2018",
+      "Container method"
+    ],
     "relatedConcepts": [
       "Container method",
       "Balogh-Solymosi 2018"
@@ -165,6 +209,11 @@
     "content": "**current_bounds:**\n\nn^(1/2)·log n ≪ g(n) ≤ n^(5/6+o(1))\n\nThe gap between exponents 1/2 and 5/6 remains open.",
     "mathContext": "$n^(1/2)·log n ≪ g(n) ≤ n^(5/6+o(1))$",
     "significance": "key",
+    "prerequisites": [
+      "Current state",
+      "Open gap",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Current state",
       "Open gap"
@@ -182,6 +231,11 @@
     "content": "**g_kl(k, l, n):**\n\nFor k > l ≥ 3, the generalized function where we extract l-general position from k-general position.\n\nThe original problem is g(n) = g_{4,3}(n).",
     "mathContext": "$The original problem is g(n) = g_{4,3}(n).$",
     "significance": "supporting",
+    "prerequisites": [
+      "Generalization",
+      "Parameters",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Generalization",
       "Parameters"
@@ -199,6 +253,10 @@
     "content": "**ExactGrowthOpen, balogh_solymosi_conjecture:**\n\n**Main open question:** What is the exact exponent α such that g(n) = Θ(n^α)?\n\nIs it 1/2, 5/6, or something in between?\n\nBalogh-Solymosi suggest 5/6 might be correct.",
     "mathContext": "Lean: `def ExactGrowthOpen : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "Exact asymptotics",
+      "Open problems"
+    ],
     "relatedConcepts": [
       "Open problems",
       "Exact asymptotics"
@@ -216,6 +274,11 @@
     "content": "**erdos_589_summary:**\n\n| Aspect | Result |\n|--------|--------|\n| Question | Estimate g(n) |\n| Erdős's belief | g(n) = Ω(n) (WRONG) |\n| Lower bound | c·√n·log n (Füredi) |\n| Upper bound | n^(5/6+o(1)) (Balogh-Solymosi) |\n| Key tools | DHJ, Container method |\n| Status | Partially resolved |",
     "mathContext": "$| Erdős's belief | g(n) = Ω(n) (WRONG) |$",
     "significance": "key",
+    "prerequisites": [
+      "Current state",
+      "Summary",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Summary",
       "Current state"

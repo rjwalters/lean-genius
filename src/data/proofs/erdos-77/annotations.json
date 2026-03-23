@@ -11,6 +11,12 @@
     "content": "**Erdos Problem #77**: Find lim R(k)^{1/k} where R(k) is the diagonal Ramsey number.\n\n**Status**: OPEN\n\n**Prizes**:\n- $100 for proving limit exists\n- $10000 for proving limit doesn't exist (Erdos: 'a joke')\n\n**Known bounds** (2024): sqrt(2) <= liminf <= limsup <= 3.7993\n\n**2023 breakthrough**: First improvement to upper bound in ~90 years!",
     "mathContext": "Ramsey theory concerns unavoidable patterns in combinatorial structures. R(k) is the minimum n such that any 2-coloring of K_n contains a monochromatic K_k.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "graph coloring",
+      "probabilistic-method",
+      "ramsey-theory"
+    ],
     "relatedConcepts": [
       "ramsey-theory",
       "probabilistic-method",
@@ -29,6 +35,12 @@
     "content": "**axiom RamseyNumber : N -> N**\n\nR(k) is the minimum n such that every 2-coloring of K_n contains a monochromatic K_k.\n\nWe axiomatize rather than construct, as the full definition requires extensive graph theory infrastructure.",
     "mathContext": "Ramsey's theorem guarantees R(k) exists for all k. The function is well-defined but computationally intractable.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "complete-graph",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "ramsey-theorem",
       "complete-graph",
@@ -47,6 +59,11 @@
     "content": "**axiom ramsey_1**: R(1) = 1\n**axiom ramsey_2**: R(2) = 2\n**axiom ramsey_3**: R(3) = 6 (classic)\n**axiom ramsey_4**: R(4) = 18 (Greenwood-Gleason 1955)\n**axiom ramsey_5_bounds**: 43 <= R(5) <= 48 (exact value UNKNOWN!)\n\nErdos's 'alien parable': If aliens demanded R(5), we could find it. If they demanded R(6), we'd have to attack them.",
     "mathContext": "Computing Ramsey numbers is extremely difficult. Even R(5) is not known exactly as of 2024.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "computation",
+      "known-values"
+    ],
     "relatedConcepts": [
       "computation",
       "known-values",
@@ -65,6 +82,12 @@
     "content": "**axiom erdos_lower_bound**: R(k) >= 2^{k/2} for k >= 3\n\n**Historical significance**: This was one of the FIRST applications of the probabilistic method (1947)!\n\n**Proof idea**: Random 2-coloring of K_n. Probability a specific k-clique is monochromatic: (1/2)^{C(k,2)}. Union bound over all C(n,k) cliques. If n < 2^{k/2}, positive probability no mono-clique exists.",
     "mathContext": "The probabilistic method: prove existence by showing positive probability. Revolutionary technique pioneered by Erdos.",
     "significance": "key",
+    "prerequisites": [
+      "graph coloring",
+      "probabilistic-method",
+      "probability theory",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "probabilistic-method",
       "union-bound",
@@ -83,6 +106,11 @@
     "content": "**axiom erdos_upper_bound**: R(k) <= 4^{k-1}\n\n**theorem erdos_upper_bound'**: R(k) <= 4^k (verified!)\n\nFrom the recurrence R(s,t) <= R(s-1,t) + R(s,t-1).\n\nThis bound stood for ~90 YEARS before being improved in 2023!",
     "mathContext": "R(k,k) <= C(2k-2, k-1) < 4^{k-1} by the Erdos-Szekeres recurrence. One of the oldest bounds in combinatorics.",
     "significance": "key",
+    "prerequisites": [
+      "erdos-szekeres",
+      "proof techniques",
+      "recurrence"
+    ],
     "relatedConcepts": [
       "erdos-szekeres",
       "recurrence",
@@ -101,6 +129,12 @@
     "content": "**noncomputable def ramseyGrowthRate (k : N) : R**\n  := R(k)^{1/k}\n\nThis is the main sequence studied. The question: does lim ramseyGrowthRate(k) exist as k -> infinity?",
     "mathContext": "Taking the k-th root normalizes exponential growth. If R(k) ~ c^k, then R(k)^{1/k} -> c.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "basic set theory",
+      "growth-rate",
+      "limit"
+    ],
     "relatedConcepts": [
       "growth-rate",
       "limit",
@@ -119,6 +153,11 @@
     "content": "**theorem erdos_bounds**: sqrt(2) <= liminf R(k)^{1/k} AND limsup R(k)^{1/k} <= 4\n\nVerified from the axioms!\n\nThis means: 1.414... <= limit (if exists) <= 4",
     "mathContext": "From R(k) >= 2^{k/2}: R(k)^{1/k} >= 2^{1/2} = sqrt(2). From R(k) <= 4^k: R(k)^{1/k} <= 4.",
     "significance": "key",
+    "prerequisites": [
+      "liminf",
+      "limsup",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "liminf",
       "limsup",
@@ -137,6 +176,11 @@
     "content": "**axiom cgms_2023_bound**: R(k) <= (4 - 1/128)^k eventually\n**axiom cgms_2023_limsup**: limsup <= 4 - 1/128 ~ 3.992\n\n**BREAKTHROUGH**: This was the FIRST improvement to the upper bound since the 1930s!\n\nCampos, Griffiths, Morris, Sahasrabudhe (2023) - 'An exponential improvement for diagonal Ramsey'",
     "mathContext": "Breaking the barrier of 4 was a major achievement. The paper appeared in Annals of Mathematics.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "breakthrough-2023",
+      "cgms"
+    ],
     "relatedConcepts": [
       "breakthrough-2023",
       "cgms",
@@ -155,6 +199,11 @@
     "content": "**axiom gnnw_2024_bound**: R(k) <= (3.7993)^k eventually\n**axiom gnnw_2024_limsup**: limsup <= 3.7993\n\n**theorem current_best_bounds**: sqrt(2) <= liminf AND limsup <= 3.7993\n\nGupta, Ndiaye, Norin, Wei (2024) further improved the CGMS bound.",
     "mathContext": "The improvement from 3.992 to 3.7993 shows the techniques are still being refined.",
     "significance": "key",
+    "prerequisites": [
+      "current-best",
+      "gnnw-2024",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "gnnw-2024",
       "current-best",
@@ -173,6 +222,11 @@
     "content": "**def LimitExists**: exists L, R(k)^{1/k} -> L\n\n**def ErdosConjecture**: LimitExists AND L = 2\n\nErdos: 'I have no idea what the value should be, perhaps it is 2 but we have no real evidence for this.'\n\n**Prizes**: $100 for existence, $10000 for non-existence",
     "mathContext": "The limit exists iff liminf = limsup. Current gap: [1.414, 3.799].",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "erdos-conjecture",
+      "open-problem"
+    ],
     "relatedConcepts": [
       "open-problem",
       "erdos-conjecture",
@@ -191,6 +245,11 @@
     "content": "**theorem erdos_conjecture_consistent**: sqrt(2) < 2 AND 2 < 3.7993\n\nVerified! Erdos's conjecture (L = 2) is consistent with current bounds.\n\nNote: sqrt(2) ~ 1.414 < 2 < 3.7993",
     "mathContext": "If the limit exists and equals 2, this would be consistent with all known bounds.",
     "significance": "supporting",
+    "prerequisites": [
+      "consistency",
+      "proof techniques",
+      "verified"
+    ],
     "relatedConcepts": [
       "consistency",
       "verified",
@@ -209,6 +268,11 @@
     "content": "**Erdos Problem #77**: OPEN\n\n**Known bounds**: sqrt(2) <= liminf <= limsup <= 3.7993\n\n**Verified theorems**:\n- erdos_bounds\n- current_best_bounds\n- erdos_upper_bound'\n- erdos_conjecture_consistent\n\n**Historical significance**:\n1. Probabilistic method birthplace (1947)\n2. 90-year breakthrough (2023)\n3. Computational intractability (R(5) unknown)\n4. Prize system ($100 / $10000)",
     "mathContext": "This problem captures fundamental aspects of Ramsey theory and combinatorics. The gap between bounds shows how much we don't understand about Ramsey numbers.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "historical",
+      "summary"
+    ],
     "relatedConcepts": [
       "summary",
       "historical",

@@ -17,6 +17,12 @@
       "Perfect elimination ordering",
       "Intersection number"
     ],
+    "prerequisites": [
+      "Chordal graphs",
+      "Clique partitions",
+      "graph theory basics",
+      "ring tactic"
+    ],
     "significance": "key"
   },
   {
@@ -36,6 +42,12 @@
       "SimpleGraph.Adj",
       "induced subgraph"
     ],
+    "prerequisites": [
+      "Fin",
+      "Function.Injective",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -54,6 +66,12 @@
       "Perfect graphs",
       "Interval graphs",
       "Clique tree"
+    ],
+    "prerequisites": [
+      "Perfect graphs",
+      "basic set theory",
+      "graph theory basics",
+      "hasInducedCycleOfLength"
     ],
     "significance": "key"
   },
@@ -75,6 +93,12 @@
       "chromatic number",
       "complement graph"
     ],
+    "prerequisites": [
+      "ExistsUnique",
+      "Finset",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -94,6 +118,12 @@
       "Finset.univ",
       "Földes-Hammer characterization"
     ],
+    "prerequisites": [
+      "Disjoint",
+      "IsClique",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -111,6 +141,11 @@
       "IsSplitGraph",
       "IsChordal",
       "bipartition"
+    ],
+    "prerequisites": [
+      "IsChordal",
+      "IsSplitGraph",
+      "graph theory basics"
     ],
     "significance": "supporting"
   },
@@ -131,6 +166,12 @@
       "cliquePartitionNumber",
       "complete bipartite graph"
     ],
+    "prerequisites": [
+      "extremal_construction_exists",
+      "graph theory basics",
+      "proof techniques",
+      "ring tactic"
+    ],
     "significance": "key"
   },
   {
@@ -148,6 +189,12 @@
       "IsChordal",
       "cliquePartitionNumber",
       "perfect elimination ordering"
+    ],
+    "prerequisites": [
+      "IsChordal",
+      "cliquePartitionNumber",
+      "graph theory basics",
+      "group theory"
     ],
     "significance": "key"
   },
@@ -167,6 +214,12 @@
       "cliquePartitionNumber",
       "bipartite edges"
     ],
+    "prerequisites": [
+      "IsSplitGraph",
+      "cliquePartitionNumber",
+      "graph theory basics",
+      "group theory"
+    ],
     "significance": "key"
   },
   {
@@ -184,6 +237,12 @@
       "erdos_81_conjecture",
       "IsChordal",
       "cliquePartitionNumber"
+    ],
+    "prerequisites": [
+      "IsChordal",
+      "basic set theory",
+      "erdos_81_conjecture",
+      "graph theory basics"
     ],
     "significance": "key"
   },
@@ -203,6 +262,12 @@
       "norm_num",
       "gap analysis"
     ],
+    "prerequisites": [
+      "Rat",
+      "norm_num",
+      "norm_num tactic",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -221,6 +286,12 @@
       "clique",
       "perfect elimination ordering",
       "Dirac's theorem"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj",
+      "basic set theory",
+      "clique",
+      "graph theory basics"
     ],
     "significance": "key"
   },
@@ -242,6 +313,12 @@
       "Lex-BFS",
       "Fulkerson-Gross theorem"
     ],
+    "prerequisites": [
+      "Fintype.card",
+      "Function.Bijective",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -259,6 +336,11 @@
       "CliquePartition",
       "cliquePartitionNumber",
       "approximation algorithm"
+    ],
+    "prerequisites": [
+      "CliquePartition",
+      "cliquePartitionNumber",
+      "graph theory basics"
     ],
     "significance": "key"
   },
@@ -278,6 +360,11 @@
       "cliquePartitionNumber",
       "NP-hardness",
       "chordal recognition"
+    ],
+    "prerequisites": [
+      "CliquePartition",
+      "cliquePartitionNumber",
+      "graph theory basics"
     ],
     "significance": "supporting"
   },
@@ -299,6 +386,12 @@
       "clique cover",
       "edge cover"
     ],
+    "prerequisites": [
+      "IsClique",
+      "Nat.find",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "significance": "supporting"
   },
   {
@@ -318,6 +411,12 @@
       "And.intro",
       "existential quantification"
     ],
+    "prerequisites": [
+      "graph theory basics",
+      "lower_bound",
+      "norm_num",
+      "norm_num tactic"
+    ],
     "significance": "key"
   },
   {
@@ -336,6 +435,12 @@
       "peo_gives_clique_partition",
       "IsChordal",
       "And.intro"
+    ],
+    "prerequisites": [
+      "erdos_ordman_zalcstein",
+      "graph theory basics",
+      "peo_gives_clique_partition",
+      "proof techniques"
     ],
     "significance": "key"
   }

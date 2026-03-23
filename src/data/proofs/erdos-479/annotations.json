@@ -11,6 +11,10 @@
     "content": "**Erdős Problem #479** (Graham's Conjecture) asks: Is it true that for all k ≠ 1, there are infinitely many n such that 2^n ≡ k (mod n)?\n\nThis problem connects exponential functions with modular arithmetic in a surprising way: the modulus n appears both as the exponent of 2 and as the divisor.\n\n**Status**: OPEN — The general conjecture remains unproved, though important special cases have been resolved.",
     "mathContext": "The restriction k ≠ 1 is necessary and easy to verify: for n > 1, we always have 2^n ≢ 1 (mod n). This is because for even n, 2^n ≡ 0 (mod 2) ≠ 1, and for odd n > 1, more subtle arguments apply.",
     "significance": "key",
+    "prerequisites": [
+      "exponential congruences",
+      "modular arithmetic"
+    ],
     "relatedConcepts": [
       "modular arithmetic",
       "exponential congruences",
@@ -29,6 +33,12 @@
     "content": "**SolutionSet(k)** is the set of positive integers n such that 2^n ≡ k (mod n).\n\n```\nSolutionSet (k : ℤ) : Set ℕ :=\n  { n : ℕ | n > 0 ∧ (2 : ℤ) ^ n ≡ k [ZMOD n] }\n```\n\nGraham's conjecture states that this set is infinite for every k ≠ 1.",
     "mathContext": "We use integer modular equivalence (ZMOD) rather than natural number modular arithmetic to handle negative residues cleanly. The condition n > 0 excludes the trivial case n = 0.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "modular arithmetic",
+      "modular equivalence",
+      "set builder notation"
+    ],
     "relatedConcepts": [
       "set builder notation",
       "modular equivalence",
@@ -47,6 +57,10 @@
     "content": "**Axiom**: For n > 1, we have 2^n ≢ 1 (mod n).\n\nThis explains why Graham's conjecture requires k ≠ 1.\n\n**Proof sketch**:\n- **Case n even**: 2^n ≡ 0 (mod 2), but 1 ≢ 0 (mod 2). Since 2 | n, if 2^n ≡ 1 (mod n), we'd need 1 ≡ 0 (mod 2). Contradiction.\n- **Case n odd > 1**: More subtle number-theoretic arguments show 2^n ≢ 1 (mod n).\n\nConsequence: SolutionSet(1) is finite.",
     "mathContext": "This result is elementary but requires careful case analysis. The key insight is that 2^n shares factors with n in ways that prevent the remainder from being 1.",
     "significance": "key",
+    "prerequisites": [
+      "divisibility",
+      "parity"
+    ],
     "relatedConcepts": [
       "parity",
       "divisibility",
@@ -65,6 +79,11 @@
     "content": "**Graham, Lehmer, and Lehmer** proved the conjecture for two important cases:\n\n1. **Powers of 2**: For k = 2^i (any i ≥ 1), SolutionSet(2^i) is infinite.\n\n2. **k = -1**: The set { n | 2^n ≡ -1 (mod n) } is infinite.\n\nTang later gave simplified proofs of these results.",
     "mathContext": "The proof for powers of 2 leverages the structure of how 2^n relates to powers of 2 modulo composite numbers. The k = -1 case uses properties of the multiplicative order of 2.",
     "significance": "key",
+    "prerequisites": [
+      "Graham-Lehmer-Lehmer theorem",
+      "multiplicative order",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "Graham-Lehmer-Lehmer theorem",
       "multiplicative order",
@@ -83,6 +102,12 @@
     "content": "**Graham's Conjecture** (Erdős Problem #479):\n\n```\ndef grahams_conjecture : Prop :=\n  ∀ k : ℕ, k > 1 → (SolutionSet k).Infinite\n```\n\nFor all k > 1, the set of n with 2^n ≡ k (mod n) is infinite.\n\nWe state this for positive k. Negative residues can be handled by taking k mod n.",
     "mathContext": "The conjecture remains open despite decades of work. The difficulty lies in the complex interaction between the exponential growth of 2^n and the divisibility conditions imposed by the modulus n.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic density",
+      "basic set theory",
+      "complex numbers",
+      "divisibility"
+    ],
     "relatedConcepts": [
       "open conjecture",
       "asymptotic density",
@@ -101,6 +126,10 @@
     "content": "**Remarkable fact**: For k = 3, the smallest n with 2^n ≡ 3 (mod n) is:\n\n**n = 4,700,063,497** (a 10-digit number!)\n\nThis illustrates the extreme computational difficulty of the problem. Despite k = 3 being small, solutions are incredibly sparse.\n\nAlso axiomatized: all n < 4700063497 fail for k = 3, confirming minimality.",
     "mathContext": "The OEIS sequence A036236 catalogs minimal n for each k. The values are highly irregular: A036236(2) = 3, A036236(3) = 4700063497, A036236(4) = 6. This irregularity suggests deep arithmetic structure.",
     "significance": "key",
+    "prerequisites": [
+      "OEIS A036236",
+      "computational number theory"
+    ],
     "relatedConcepts": [
       "OEIS A036236",
       "computational number theory",
@@ -119,6 +148,11 @@
     "content": "**Fermat's Little Theorem** provides a complete solution for k = 2:\n\nFor any prime p: 2^p ≡ 2 (mod p)\n\nThis means **every odd prime p** satisfies p ∈ SolutionSet(2).\n\nSince there are infinitely many odd primes, SolutionSet(2) is infinite. This is the simplest case of Graham's conjecture.",
     "mathContext": "Fermat's Little Theorem states a^p ≡ a (mod p) for prime p. Setting a = 2 gives us 2^p ≡ 2 (mod p), which is exactly what we need for membership in SolutionSet(2).",
     "significance": "key",
+    "prerequisites": [
+      "Fermat's Little Theorem",
+      "prime numbers",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "Fermat's Little Theorem",
       "prime numbers",
@@ -137,6 +171,11 @@
     "content": "The Lean `decide` tactic can verify small instances:\n\n| Computation | Verification |\n|-------------|-------------|\n| 2^3 = 8 ≡ 2 (mod 3) | `by decide` |\n| 2^6 = 64 ≡ 4 (mod 6) | `by decide` |\n| 2^4 = 16 ≡ 0 (mod 4) | `by decide` |\n\nThese confirm the OEIS data: A036236(2) = 3, A036236(4) = 6, A036236(0) = 4.\n\nThe OEIS pattern is highly irregular: k = 3 needs n = 4700063497, but k = 4 only needs n = 6.",
     "mathContext": "Decidable propositions about finite computations can be verified automatically by Lean's kernel. This provides machine-checked confirmation of the small cases.",
     "significance": "supporting",
+    "prerequisites": [
+      "computational verification",
+      "decidability",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "decidability",
       "computational verification",
@@ -156,6 +195,10 @@
     "mathContext": "$1. SolutionSet(1) is finite (k = 1 impossible)$",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   }

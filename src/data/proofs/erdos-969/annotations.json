@@ -11,6 +11,12 @@
     "content": "**isSquarefree n:**\n\nAn integer n is squarefree if no prime p divides n with multiplicity ≥ 2.\n\nEquivalently, n has no repeated prime factors.\n\n**Examples:**\n- Squarefree: 1, 2, 3, 5, 6, 7, 10, 11, 13, 14, 15...\n- Not squarefree: 4=2², 8=2³, 9=3², 12=2²·3...\n\nUses Mathlib's Squarefree predicate.",
     "mathContext": "The study of squarefree integers dates to antiquity and connects to the Möbius function and multiplicative number theory.",
     "significance": "key",
+    "prerequisites": [
+      "Multiplicative functions",
+      "Möbius function",
+      "basic set theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Möbius function",
       "Multiplicative functions",
@@ -33,6 +39,12 @@
       "factorization",
       "prime numbers"
     ],
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "prime numbers",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -47,6 +59,12 @@
     "content": "**squarefreeCount n = Q(n):**\n\nThe number of squarefree integers in [1, n].\n\n**Definition:**\n```lean\ndef squarefreeCount (n : ℕ) : ℕ :=\n  (Finset.range (n + 1)).filter (fun k => k > 0 ∧ Squarefree k) |>.card\n```\n\nThis is the central counting function whose asymptotic behavior we study.",
     "mathContext": "Counting functions like Q(x), π(x), and ψ(x) are fundamental in analytic number theory.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic analysis",
+      "Finset API",
+      "Prime counting function",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Prime counting function",
       "Asymptotic analysis",
@@ -67,6 +85,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -81,6 +103,12 @@
     "content": "**squarefreeDensity = 6/π²:**\n\nThe asymptotic density of squarefree integers.\n\n**Value:** 6/π² ≈ 0.6079...\n\n**Connection to ζ(2):**\n- ζ(2) = π²/6 (Basel problem)\n- Density = 1/ζ(2) = 6/π²\n\nThis beautiful identity connects elementary counting to complex analysis.",
     "mathContext": "Euler solved the Basel problem in 1734, finding ζ(2) = π²/6.",
     "significance": "key",
+    "prerequisites": [
+      "Basel problem",
+      "Euler's work",
+      "Riemann zeta function",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Basel problem",
       "Riemann zeta function",
@@ -104,6 +132,12 @@
       "density",
       "inequalities"
     ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "bounds",
+      "density theory",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -118,6 +152,11 @@
     "content": "**errorTerm x = E(x):**\n\nThe deviation of Q(x) from its asymptotic:\n\nE(x) = Q(x) - (6/π²)x\n\n**Central question:** What is the order of magnitude of E(x)?\n\nDetermining this is Erdős Problem #969.",
     "mathContext": "Error terms in counting functions often reveal deep arithmetic structure.",
     "significance": "key",
+    "prerequisites": [
+      "Explicit formulas",
+      "Prime number theorem error",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Prime number theorem error",
       "Explicit formulas",
@@ -142,6 +181,11 @@
       "inequalities",
       "prime numbers"
     ],
+    "prerequisites": [
+      "bounds",
+      "divisibility",
+      "prime numbers"
+    ],
     "significance": "key"
   },
   {
@@ -162,6 +206,10 @@
       "inequalities",
       "prime numbers"
     ],
+    "prerequisites": [
+      "bounds",
+      "divisibility"
+    ],
     "significance": "key"
   },
   {
@@ -176,6 +224,10 @@
     "content": "**walfisz_bound:**\n\n|E(x)| ≪ x^(1/2 - o(1))\n\nThe best known unconditional upper bound.\n\nThe exponent 1/2 - o(1) means the bound beats x^(1/2-ε) for any fixed ε > 0, but the improvement vanishes as x → ∞.",
     "mathContext": "Walfisz's book on exponential sums (1963) contains this and many related results.",
     "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
+    "prerequisites": [
       "bounds",
       "inequalities"
     ],
@@ -196,6 +248,10 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -213,6 +269,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -227,6 +288,10 @@
     "content": "**rh_from_error_bound:**\n\nIf |E(x)| ≪ x^(1/4+ε) for all ε > 0, then the Riemann Hypothesis holds.\n\n**Profound implication:** Proving the conjectured upper bound would solve one of the Millennium Prize Problems!\n\nThis shows how squarefree counting connects to the deepest questions in number theory.",
     "mathContext": "The RH equivalence comes from the explicit formula relating E(x) to zeta zeros.",
     "significance": "key",
+    "prerequisites": [
+      "Millennium Problems",
+      "Riemann Hypothesis"
+    ],
     "relatedConcepts": [
       "Riemann Hypothesis",
       "Millennium Problems",
@@ -248,6 +313,10 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -265,6 +334,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -279,6 +353,12 @@
     "content": "**μ : ℕ → ℤ:**\n\nThe Möbius function:\n- μ(1) = 1\n- μ(n) = (-1)^k if n = p₁·p₂·...·pₖ (distinct primes)\n- μ(n) = 0 if n has a squared prime factor\n\nKey property: Σ_{d|n} μ(d) = [n = 1] (indicator function).",
     "mathContext": "The Möbius function is fundamental to analytic number theory and combinatorics (inclusion-exclusion).",
     "significance": "key",
+    "prerequisites": [
+      "Dirichlet series",
+      "Inclusion-exclusion",
+      "basic set theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Inclusion-exclusion",
       "Dirichlet series",
@@ -299,6 +379,9 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -313,6 +396,10 @@
     "content": "**classical_zero_free_region, zero_free_improves_error:**\n\nThe error term E(x) is controlled by the zeros of ζ(s).\n\n**Classical zero-free region:** Re(s) > 1 - c/log|Im(s)|\n\n**Key principle:** Wider zero-free regions → better error bounds.\n\nRH (all zeros have Re(s) = 1/2) would give the best possible control.",
     "mathContext": "The connection between counting problems and zeta zeros is a central theme in analytic number theory.",
     "significance": "key",
+    "prerequisites": [
+      "Zero-free regions",
+      "Zeta zeros"
+    ],
     "relatedConcepts": [
       "Zeta zeros",
       "Zero-free regions",
@@ -334,6 +421,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -350,6 +442,11 @@
     "relatedConcepts": [
       "analysis",
       "analytic methods"
+    ],
+    "prerequisites": [
+      "analysis",
+      "analytic methods",
+      "basic set theory"
     ],
     "significance": "key"
   }

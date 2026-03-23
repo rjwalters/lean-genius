@@ -166,6 +166,11 @@
     "content": "The formalization verifies totient computations for small values using native_decide: $\\phi(2) = 1$, $\\phi(3) = 2$, $\\phi(4) = 2$, $\\phi(5) = 4$, $\\phi(6) = 2$, $\\phi(7) = 6$. These trace the iteration chains:\n\n$f(2) = 1$: $2 \\to 1$\n$f(3) = 2$: $3 \\to 2 \\to 1$\n$f(5) = 3$: $5 \\to 4 \\to 2 \\to 1$\n$f(7) = 3$: $7 \\to 6 \\to 2 \\to 1$\n\nThe small_values axiom packages $f(2) = 1, f(3) = 2, f(4) = 2, f(5) = 3, f(6) = 2, f(7) = 3$. The corresponding ratios $f(n)/\\log n$ are approximately $1.44, 1.82, 1.44, 1.86, 1.12, 1.54$, which already suggest concentration around $1/\\log 2 \\approx 1.44$.",
     "mathContext": "For small $n$, the ratios $f(n)/\\log n$ fluctuate considerably. The EGPS prediction of convergence to $1/\\log 2$ is an asymptotic statement — concentration becomes apparent only for large $n$. Computationally, the sequence $f(n)$ for $n \\le 10^6$ shows the distribution tightening around $1/\\log 2$ as predicted.",
     "significance": "supporting",
+    "prerequisites": [
+      "OEIS A003434",
+      "native_decide in Lean 4",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "native_decide in Lean 4",
       "OEIS A003434"
@@ -204,6 +209,12 @@
     "content": "Two summary theorems package the formalization:\n\nerdos_408_summary combines three facts: Pillai's bounds exist, $f$ is essentially multiplicative (Shapiro), and Elliott-Halberstam implies YES to Q1 and Q2. This is proved by assembling pillai_bounds, shapiro_multiplicativity, and egps_conditional.\n\nerdos_408 states that $f(n) \\ge 1$ for $n \\ge 2$ (well-posedness) and that Elliott-Halberstam implies Q1 $\\wedge$ Q2. Both components are proved by applying the corresponding axioms.\n\nThe formalization spans 393 lines with 1 sorry (existence of $f(n)$), multiple axioms for deep results (Pillai, Shapiro, EGPS, Elliott-Halberstam), and proved theorems (Pillai combined bounds, summary assemblies, small examples via native_decide).",
     "mathContext": "This problem exemplifies a common pattern in Erdős's later questions: asking whether an arithmetic function has a distribution function, and whether its normalized form concentrates. Many such questions were resolved conditionally on strong forms of the prime number theorem in arithmetic progressions. The unconditional resolution would likely require a breakthrough in understanding the level of distribution of primes.",
     "significance": "key",
+    "prerequisites": [
+      "Distribution of additive functions",
+      "Erdős-Kac theorem",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Erdős-Kac theorem",
       "Distribution of additive functions",

@@ -17,6 +17,12 @@
       "List.head?",
       "List.getLast?"
     ],
+    "prerequisites": [
+      "SimpleGraph.Path",
+      "SimpleGraph.Walk",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -37,6 +43,11 @@
       "Menger's theorem",
       "vertex cut"
     ],
+    "prerequisites": [
+      "List.drop",
+      "List.dropLast",
+      "basic set theory"
+    ],
     "significance": "key"
   },
   {
@@ -55,6 +66,12 @@
       "Sym2",
       "edge cut",
       "Menger's theorem (edge version)"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj",
+      "Sym2",
+      "basic set theory",
+      "graph theory basics"
     ],
     "significance": "key"
   },
@@ -75,6 +92,11 @@
       "existential quantification",
       "pairwise property"
     ],
+    "prerequisites": [
+      "Fin",
+      "Fintype",
+      "basic set theory"
+    ],
     "significance": "key"
   },
   {
@@ -94,6 +116,12 @@
       "ex(n, H)",
       "Ramsey theory"
     ],
+    "prerequisites": [
+      "Turán number",
+      "basic set theory",
+      "extremal graph theory",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -111,6 +139,11 @@
       "ell_le_k",
       "leonard_small_m",
       "monotonicity of extremal functions"
+    ],
+    "prerequisites": [
+      "basic set theory",
+      "ell_le_k",
+      "leonard_small_m"
     ],
     "significance": "key"
   },
@@ -131,6 +164,12 @@
       "extremal construction",
       "Turán-type conjecture"
     ],
+    "prerequisites": [
+      "Nat.choose",
+      "basic set theory",
+      "complete graph K_m",
+      "natural number arithmetic"
+    ],
     "significance": "key"
   },
   {
@@ -150,6 +189,12 @@
       "ContainsMVertexDisjointPair",
       "complete graph"
     ],
+    "prerequisites": [
+      "Fintype.card",
+      "edgeFinset.card",
+      "graph theory basics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -167,6 +212,12 @@
       "cycle",
       "tree",
       "Euler's formula for trees"
+    ],
+    "prerequisites": [
+      "cycle",
+      "graph theory basics",
+      "proof techniques",
+      "tree"
     ],
     "significance": "supporting"
   },
@@ -186,6 +237,11 @@
       "bollobas_k4",
       "conjecture_m3"
     ],
+    "prerequisites": [
+      "bollobas_k4",
+      "k_2",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -203,6 +259,12 @@
       "bartfai_k3_even",
       "conjecture_m4",
       "extremal graph theory"
+    ],
+    "prerequisites": [
+      "bartfai_k3_even",
+      "conjecture_m4",
+      "graph theory basics",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -224,6 +286,12 @@
       "conjecture_m3",
       "conjecture_m4"
     ],
+    "prerequisites": [
+      "BollobasErdosConjecture",
+      "Nat.choose",
+      "natural number arithmetic",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -242,6 +310,12 @@
       "Fintype.card",
       "edgeFinset.card",
       "conjecture_false_m5"
+    ],
+    "prerequisites": [
+      "ContainsMVertexDisjointPair",
+      "Fintype.card",
+      "graph theory basics",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -262,6 +336,12 @@
       "Rat",
       "sorensen_thomassen_k5"
     ],
+    "prerequisites": [
+      "Filter.Eventually",
+      "Filter.atTop",
+      "filter theory",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -279,6 +359,11 @@
       "Nat.div",
       "leonard_counterexample",
       "conjecture_false_m5"
+    ],
+    "prerequisites": [
+      "Nat.div",
+      "leonard_counterexample",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -299,6 +384,11 @@
       "conjecture_false_m5",
       "conjecture_false_large_m"
     ],
+    "prerequisites": [
+      "BollobasErdosConjecture",
+      "leonard_counterexample",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -318,6 +408,12 @@
       "edge_disjoint_solved",
       "minimum degree"
     ],
+    "prerequisites": [
+      "EdgeDisjointConjecture",
+      "Nat.div",
+      "graph theory basics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -336,6 +432,12 @@
       "EdgeDisjointConjecture",
       "function application"
     ],
+    "prerequisites": [
+      "EdgeDisjointConjecture",
+      "mader_edge_disjoint",
+      "proof techniques",
+      "simp tactic"
+    ],
     "significance": "key"
   },
   {
@@ -353,6 +455,12 @@
       "leonard_small_m",
       "ell_le_k",
       "mader_edge_disjoint"
+    ],
+    "prerequisites": [
+      "ell_le_k",
+      "leonard_small_m",
+      "matching theory",
+      "proof techniques"
     ],
     "significance": "supporting"
   },
@@ -374,6 +482,12 @@
       "Finset.range",
       "ContainsMEdgeDisjointPair"
     ],
+    "prerequisites": [
+      "Finset API",
+      "Finset.sum",
+      "SimpleGraph.degree",
+      "filter theory"
+    ],
     "significance": "supporting"
   },
   {
@@ -394,6 +508,12 @@
       "vertex separator",
       "k-connectivity"
     ],
+    "prerequisites": [
+      "Finset API",
+      "SimpleGraph.Connected",
+      "SimpleGraph.induce",
+      "graph theory basics"
+    ],
     "significance": "supporting"
   },
   {
@@ -412,6 +532,11 @@
       "EdgeDisjointConjecture",
       "And.intro",
       "conjunction"
+    ],
+    "prerequisites": [
+      "BollobasErdosConjecture",
+      "EdgeDisjointConjecture",
+      "proof techniques"
     ],
     "significance": "key"
   }

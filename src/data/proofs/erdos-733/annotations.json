@@ -11,6 +11,10 @@
     "content": "**Erdos Problem #733: Line-Compatible Sequences**\n\nA sequence is 'line-compatible' if it records the point counts on lines for some n-point configuration.\n\n**Question:** How many such sequences exist?\n\n**Answer:** exp(Theta(sqrt(n)))\n\n- Lower: exp(c*sqrt(n)) (Erdos, 'easy')\n- Upper: exp(C*sqrt(n)) (Szemeredi-Trotter 1983)",
     "mathContext": "A counting problem in combinatorial geometry solved using the Szemeredi-Trotter incidence theorem.",
     "significance": "key",
+    "prerequisites": [
+      "Incidences",
+      "Point-line geometry"
+    ],
     "relatedConcepts": [
       "Incidences",
       "Point-line geometry",
@@ -29,6 +33,12 @@
     "content": "**PointSet:**\n\nA finite set of points in the plane R^2.\n\n**Type:** Finset (R x R)\n\nThe basic object of study - we count line-compatible sequences for n-point configurations.",
     "mathContext": "Formalizes the concept of point configuration",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "discrete geometry",
+      "point configurations"
+    ],
     "relatedConcepts": [
       "discrete geometry",
       "point configurations",
@@ -48,6 +58,11 @@
     "content": "**lineThrough, pointsOnLine:**\n\n- lineThrough(p, q): The line through points p and q\n- pointsOnLine(P, L): Count of points from P that lie on line L\n\nThese define the incidence structure between points and lines.",
     "mathContext": "Lean: `def lineThrough (p q : ℝ × ℝ) : Set (ℝ × ℝ)`",
     "significance": "key",
+    "prerequisites": [
+      "Collinearity",
+      "Incidence geometry",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Collinearity",
       "Incidence geometry"
@@ -67,6 +82,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -84,6 +103,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -98,6 +122,10 @@
     "content": "**szemeredi_trotter:**\n\nFor n points and m lines, the number of incidences is:\nI(P, L) <= C * (n^{2/3} * m^{2/3} + n + m)\n\nThis is a fundamental result in combinatorial geometry, proved in 1983.\n\nIt is the key tool for the upper bound on line-compatible sequences.",
     "mathContext": "One of the most important theorems in discrete geometry.",
     "significance": "key",
+    "prerequisites": [
+      "Crossing number inequality",
+      "Incidence bounds"
+    ],
     "relatedConcepts": [
       "Incidence bounds",
       "Crossing number inequality"
@@ -118,6 +146,10 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -132,6 +164,10 @@
     "content": "**lower_bound:**\n\nf(n) >= exp(c * sqrt(n))\n\nErdos considered this 'easy'.\n\n**Construction:** A sqrt(n) x sqrt(n) grid has Theta(n) lines through it. Selecting different subsets of lines gives exponentially many sequences.",
     "mathContext": "$f(n) >= exp(c * sqrt(n))$",
     "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
+    "prerequisites": [
       "bounds",
       "inequalities"
     ],
@@ -151,6 +187,9 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -165,6 +204,10 @@
     "content": "**upper_bound:**\n\nf(n) <= exp(C * sqrt(n))\n\nProved by Szemeredi and Trotter (1983) using their incidence theorem.\n\nThe proof controls the number of possible sequence patterns by bounding incidences.",
     "mathContext": "This was the 'difficult' direction that Erdos anticipated.",
     "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
+    "prerequisites": [
       "bounds",
       "inequalities"
     ],
@@ -185,6 +228,10 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -199,6 +246,9 @@
     "content": "**erdos_733:**\n\nComplete solution: f(n) = exp(Theta(sqrt(n)))\n\nFor n >= 4, there exist c, C > 0 such that:\nexp(c*sqrt(n)) <= f(n) <= exp(C*sqrt(n))\n\nThe Szemeredi-Trotter theorem is the key tool.",
     "mathContext": "$Complete solution: f(n) = exp(Theta(sqrt(n)))$",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
       "formal mathematics"
     ],
     "significance": "key"
@@ -218,6 +268,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -232,6 +287,10 @@
     "content": "**erdos_733_summary:**\n\n1. Line-compatible sequences counted by f(n)\n2. Lower: f(n) >= exp(c*sqrt(n)) (grid construction)\n3. Upper: f(n) <= exp(C*sqrt(n)) (Szemeredi-Trotter)\n4. Together: f(n) = exp(Theta(sqrt(n)))\n\n**erdos_733_answer:** Confirms the complete bounds.",
     "mathContext": "$2. Lower: f(n) >= exp(c*sqrt(n)) (grid construction)$",
     "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
+    "prerequisites": [
       "bounds",
       "inequalities"
     ],

@@ -11,6 +11,11 @@
     "content": "Erdős Problem #383: For every k, are there infinitely many primes p such that p is the largest prime divisor of ∏_{i=0}^k (p² + i)? Status: OPEN.",
     "mathContext": "Posed in [ErGr80]. Relates to smooth numbers and the Dickman function ρ(2) ≈ 0.307.",
     "significance": "key",
+    "prerequisites": [
+      "prime numbers",
+      "prime-divisors",
+      "smooth-numbers"
+    ],
     "relatedConcepts": [
       "prime-divisors",
       "smooth-numbers",
@@ -35,6 +40,12 @@
     "content": "primeDivisors(n) = n.primeFactors. hasLargestPrimeFactor(n, p) := p is in primeDivisors(n) and maximal.",
     "mathContext": "Using Mathlib's primeFactors for the set of prime factors.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "divisibility",
+      "prime numbers",
+      "prime-factors"
+    ],
     "relatedConcepts": [
       "prime-factors",
       "divisibility"
@@ -57,6 +68,11 @@
     "content": "consecutiveSquareProduct(p, k) = ∏_{i=0}^k (p² + i) = p²(p²+1)...(p²+k). This is k+1 consecutive integers starting at p².",
     "mathContext": "The product of k+1 terms, each a consecutive integer.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "consecutive-integers",
+      "product"
+    ],
     "relatedConcepts": [
       "product",
       "consecutive-integers"
@@ -79,6 +95,12 @@
     "content": "consecutiveSquareProduct(p, 0) = p². consecutiveSquareProduct(p, 1) = p²(p²+1).",
     "mathContext": "For k=0, the product is just p², so p is always the largest prime factor.",
     "significance": "supporting",
+    "prerequisites": [
+      "base-case",
+      "k-zero",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "base-case",
       "k-zero"
@@ -101,6 +123,12 @@
     "content": "isKGood(p, k) := p.Prime ∧ hasLargestPrimeFactor(product, p). A prime p is k-good if p is the largest prime factor of the product.",
     "mathContext": "The central definition: when is p the dominant prime factor?",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "dominant-factor",
+      "k-good",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "k-good",
       "dominant-factor"
@@ -123,6 +151,12 @@
     "content": "kGoodPrimes(k) = {p | isKGood(p, k)}. zero_good_iff: every prime is 0-good.",
     "mathContext": "The problem asks if kGoodPrimes(k) is infinite for all k.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "infinite",
+      "prime numbers",
+      "prime-set"
+    ],
     "relatedConcepts": [
       "prime-set",
       "infinite"
@@ -145,6 +179,12 @@
     "content": "ErdosConjecture383 := ∀k, kGoodPrimes(k) is infinite. ErdosConjecture383' uses Nat.maxPrimeFac directly.",
     "mathContext": "The conjecture asserts infinitely many k-good primes for each k.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "conjecture",
+      "infinite-primes",
+      "natural number arithmetic"
+    ],
     "relatedConcepts": [
       "conjecture",
       "infinite-primes"
@@ -168,6 +208,12 @@
     "content": "all_primes_zero_good: every prime is 0-good. infinitely_many_zero_good: kGoodPrimes(0) is infinite. positive_density_smooth: smooth numbers have positive density.",
     "mathContext": "The k=0 case is trivial. Smooth number density supports the general conjecture.",
     "significance": "key",
+    "prerequisites": [
+      "density theory",
+      "k-zero",
+      "partial",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "partial",
       "k-zero",
@@ -191,6 +237,12 @@
     "content": "Problem382Part2: infinitely many primes p with p = maxPrimeFac(p²+1). problem383_implies_382: k=1 case implies Problem 382 Part 2.",
     "mathContext": "A positive answer to Problem 383 would resolve Problem 382.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "implication",
+      "prime numbers",
+      "problem-382"
+    ],
     "relatedConcepts": [
       "problem-382",
       "implication"
@@ -213,6 +265,12 @@
     "content": "isSmooth(n, y) := all prime factors of n are ≤ y. p is k-good iff p²+i is p-smooth for all i ≤ k.",
     "mathContext": "The k-good condition is equivalent to smoothness of consecutive integers.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "prime numbers",
+      "smooth",
+      "y-smooth"
+    ],
     "relatedConcepts": [
       "smooth",
       "y-smooth"
@@ -235,6 +293,11 @@
     "content": "dickman_asymptotic: Ψ(x, x^{1/u}) ~ x·ρ(u) where ρ is the Dickman function. ρ(2) ≈ 0.307.",
     "mathContext": "The Dickman function describes the density of smooth numbers. ρ(2) > 0 supports the conjecture.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic-density",
+      "density theory",
+      "dickman"
+    ],
     "relatedConcepts": [
       "dickman",
       "asymptotic-density"
@@ -257,6 +320,11 @@
     "content": "ρ(2) ≈ 0.307 means about 30.7% of numbers have no prime factor > √n. This suggests infinitely many k-good primes exist.",
     "mathContext": "The probabilistic argument: smooth numbers are common enough.",
     "significance": "supporting",
+    "prerequisites": [
+      "heuristic",
+      "prime numbers",
+      "probability"
+    ],
     "relatedConcepts": [
       "heuristic",
       "probability"
@@ -279,6 +347,10 @@
     "content": "The problem is OPEN. Heuristic arguments strongly suggest a positive answer.",
     "mathContext": "No proof or disproof exists. The probabilistic evidence favors YES.",
     "significance": "key",
+    "prerequisites": [
+      "conjectured-true",
+      "open-problem"
+    ],
     "relatedConcepts": [
       "open-problem",
       "conjectured-true"
@@ -301,6 +373,12 @@
     "content": "erdos_383_statement: The conjecture using Nat.maxPrimeFac and Finset.Icc.",
     "mathContext": "Precise formal statement adapted from formal-conjectures.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "formal-statement",
+      "maxPrimeFac",
+      "natural number arithmetic"
+    ],
     "relatedConcepts": [
       "formal-statement",
       "maxPrimeFac"

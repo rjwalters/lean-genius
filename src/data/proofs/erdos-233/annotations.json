@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #233** asks about the sum of squares of prime gaps. The prime gap dₙ = pₙ₊₁ - pₙ measures the distance between consecutive primes.\n\nThe conjecture is that Σ dₙ² grows like N(log N)², meaning gaps are 'typically' not too large. This is currently OPEN.",
     "mathContext": "The conjecture states Σₙ≤N dₙ² ≪ N(log N)². The prime number theorem gives the matching lower bound, but the upper bound is only known conditionally on RH.",
     "significance": "key",
+    "prerequisites": [
+      "Prime gaps",
+      "Prime number theorem",
+      "matching theory",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "Prime gaps",
       "Prime number theorem",
@@ -29,6 +35,12 @@
     "content": "The **n-th prime function** returns the n-th prime number (0-indexed). So nthPrime(0) = 2, nthPrime(1) = 3, nthPrime(2) = 5, etc.\n\nWe use Mathlib's `Nat.nth` which enumerates elements satisfying a predicate - here, `Nat.Prime`.",
     "mathContext": "Defined as `Nat.nth Nat.Prime n`. This is noncomputable because checking primality requires unbounded search.",
     "significance": "key",
+    "prerequisites": [
+      "Nat.nth",
+      "Prime numbers",
+      "basic set theory",
+      "natural number arithmetic"
+    ],
     "relatedConcepts": [
       "Nat.nth",
       "Prime numbers",
@@ -47,6 +59,12 @@
     "content": "The **prime gap** dₙ = pₙ₊₁ - pₙ measures the distance between the n-th and (n+1)-th primes.\n\nFor example: d₀ = 3 - 2 = 1, d₁ = 5 - 3 = 2, d₂ = 7 - 5 = 2.\n\nUnderstanding the distribution of prime gaps is one of the fundamental questions in number theory.",
     "mathContext": "primeGap(n) = nthPrime(n+1) - nthPrime(n). The prime number theorem implies the average gap near x is approximately log x.",
     "significance": "key",
+    "prerequisites": [
+      "Cramér's conjecture",
+      "Prime distribution",
+      "basic set theory",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "Prime distribution",
       "Cramér's conjecture",
@@ -65,6 +83,12 @@
     "content": "The **sum of squared prime gaps** aggregates how the gaps vary:\n\nΣₙ≤N dₙ² = d₀² + d₁² + d₂² + ... + dₙ₋₁²\n\nThis is the 'second moment' of the prime gap distribution - it measures not just the average, but the spread.",
     "mathContext": "sumSquaresGaps(N) = Σₙ∈range(N) (primeGap(n))². Large gaps contribute disproportionately due to squaring.",
     "significance": "key",
+    "prerequisites": [
+      "Second moment",
+      "Variance",
+      "basic set theory",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "Second moment",
       "Variance",
@@ -83,6 +107,12 @@
     "content": "**Erdős Problem #233** conjectures that Σ dₙ² = O(N(log N)²).\n\nIn plain terms: the sum of squared prime gaps grows at most like N times (log N)².\n\nThis is the 'expected' growth rate if gaps are typically around log p (as the PNT suggests). The conjecture says gaps don't have unusually large spikes too often.",
     "mathContext": "Formalized as: (fun N => sumSquaresGaps N) =O[atTop] (fun N => N * (log N)²). This uses Mathlib's asymptotic notation.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic analysis",
+      "Big-O notation",
+      "basic set theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Big-O notation",
       "Asymptotic analysis",
@@ -101,6 +131,12 @@
     "content": "The **Prime Number Theorem** gives a matching LOWER bound: Σ dₙ² ≥ c·N(log N)² for some constant c.\n\nThis is unconditional - no hypothesis needed.\n\n**Why?** The average gap is log p by PNT. So on average, dₙ² ≈ (log p)². Summing N such terms gives N(log N)².",
     "mathContext": "Axiomatized as: N(log N)² =O[atTop] sumSquaresGaps. This is the reverse big-O (lower bound).",
     "significance": "key",
+    "prerequisites": [
+      "Prime number theorem",
+      "de la Vallée Poussin",
+      "matching theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Prime number theorem",
       "de la Vallée Poussin",
@@ -119,6 +155,11 @@
     "content": "**Cramér** proved that assuming the **Riemann Hypothesis**, we have Σ dₙ² = O(N(log N)⁴).\n\nThis is the best known unconditional-style upper bound, but it's weaker than the conjecture by a factor of (log N)².\n\nThe proof uses deep connections between prime distribution and zeros of the zeta function.",
     "mathContext": "RiemannHypothesis → sumSquaresGaps =O[atTop] N(log N)⁴. Cramér's 1936 paper 'On the order of magnitude...'",
     "significance": "key",
+    "prerequisites": [
+      "Cramér",
+      "Riemann Hypothesis",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Riemann Hypothesis",
       "Cramér",
@@ -137,6 +178,11 @@
     "content": "**Selberg** improved Cramér's result by considering a weighted sum:\n\nΣ dₙ²/n ≪ (log N)⁴\n\nThe 1/n weighting gives more influence to small indices. This is slightly stronger than Cramér's bound.\n\nSelberg's work pioneered the 'Selberg sieve' technique.",
     "mathContext": "RiemannHypothesis → selbergSum =O[atTop] (log N)⁴, where selbergSum = Σ dₙ²/(n+1).",
     "significance": "supporting",
+    "prerequisites": [
+      "Selberg sieve",
+      "Weighted sums",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Selberg sieve",
       "Weighted sums",
@@ -155,6 +201,10 @@
     "content": "**The conjecture remains OPEN.** We have:\n\n- Lower bound: N(log N)² (unconditional) ✓\n- Upper bound: N(log N)⁴ (conditional on RH) ✓\n- Conjecture: N(log N)² (open) ✗\n\nThe gap between what we can prove and what we conjecture is (log N)² - two logarithmic factors.",
     "mathContext": "We state: Erdos233Conjecture ∨ ¬Erdos233Conjecture (law of excluded middle - we don't know which).",
     "significance": "key",
+    "prerequisites": [
+      "Gap between bounds",
+      "Open problems"
+    ],
     "relatedConcepts": [
       "Open problems",
       "Gap between bounds",
@@ -173,6 +223,12 @@
     "content": "**Cramér's Conjecture** is a famous open problem about individual prime gaps:\n\ndₙ = O((log pₙ)²)\n\nThis says each gap is at most about (log p)². If true, it would immediately imply Problem #233, since squaring and summing gives N(log N)².\n\nCramér's conjecture is based on probabilistic heuristics treating primes as 'random'.",
     "mathContext": "∀ε>0, ∃N₀, ∀n≥N₀: primeGap(n) ≤ (1+ε)(log(nthPrime(n)))². This is stronger than Erdős #233.",
     "significance": "key",
+    "prerequisites": [
+      "Cramér's model",
+      "Probabilistic number theory",
+      "basic set theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Cramér's model",
       "Probabilistic number theory",
@@ -191,6 +247,12 @@
     "content": "The first few prime gaps are:\n\n- d₀ = 3 - 2 = 1\n- d₁ = 5 - 3 = 2  \n- d₂ = 7 - 5 = 2\n\nThese concrete values are axiomatized since nthPrime is noncomputable in Lean.",
     "mathContext": "primeGap(0) = 1, primeGap(1) = 2, primeGap(2) = 2. These can be verified externally.",
     "significance": "supporting",
+    "prerequisites": [
+      "Concrete examples",
+      "Small primes",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Small primes",
       "Concrete examples",
@@ -209,6 +271,12 @@
     "content": "The **summary theorem** combines our concrete examples with the open status:\n\n1. First prime gaps: d₀=1, d₁=2, d₂=2\n2. The conjecture is either true or false (we don't know which)\n\nThis captures the complete state of knowledge we've formalized.",
     "mathContext": "summary_erdos_233: (first_prime_gaps) ∧ (Erdos233Conjecture ∨ ¬Erdos233Conjecture)",
     "significance": "supporting",
+    "prerequisites": [
+      "Known results",
+      "Summary",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Summary",
       "Known results",

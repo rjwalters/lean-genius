@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #727** asks: For k ≥ 2, does ((n+k)!)² divide (2n)! for infinitely many n?\n\n**Status**: OPEN (for k ≥ 2)\n\nThis is a conjecture of Erdős, Graham, Ruzsa, and Straus from 1975. Remarkably, the k = 1 case was solved by Balakran in 1929, but k ≥ 2 remains open nearly a century later.",
     "mathContext": "The problem connects factorial divisibility to Catalan numbers and prime factorization theory.",
     "significance": "key",
+    "prerequisites": [
+      "Catalan numbers",
+      "divisibility",
+      "factorial divisibility",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "factorial divisibility",
       "Catalan numbers",
@@ -30,6 +36,12 @@
     "content": "**centralBinom(n)** = C(2n, n) = (2n)! / (n!)²\n\nThe central binomial coefficient appears in the middle of Pascal's triangle row 2n. It counts ways to choose n items from 2n.\n\n**Basic identity**: (2n)! = C(2n,n) × (n!)²\n\nValues: C(2,1)=2, C(4,2)=6, C(6,3)=20, C(8,4)=70, ...",
     "mathContext": "The central binomial coefficient has rich divisibility properties that connect to Catalan numbers and prime distribution.",
     "significance": "key",
+    "prerequisites": [
+      "Pascal's triangle",
+      "basic set theory",
+      "binomial coefficient",
+      "divisibility"
+    ],
     "relatedConcepts": [
       "binomial coefficient",
       "Pascal's triangle",
@@ -48,6 +60,12 @@
     "content": "**divides_factorial(k, n)**: ((n+k)!)² | (2n)!\n\nThis is the core predicate of the problem. We ask whether this divisibility holds for infinitely many n.\n\n**divisible_set(k)** = { n : ℕ | divides_factorial(k, n) }\n\nThe main question is whether this set is infinite for each k ≥ 2.",
     "mathContext": "The squared factorial in the divisor makes this harder than it might first appear. The prime powers in (2n)! must be at least twice those in (n+k)!.",
     "significance": "key",
+    "prerequisites": [
+      "Set.Infinite",
+      "basic set theory",
+      "divisibility",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Set.Infinite",
       "divisibility",
@@ -66,6 +84,12 @@
     "content": "**erdos_727_conjecture**: For every k ≥ 2, (divisible_set k).Infinite\n\nThis states that for each k ≥ 2, there are infinitely many n such that ((n+k)!)² | (2n)!.\n\n**erdos_727_k2_open** focuses on k = 2 specifically, which remains unsolved.\n\nThe conjecture is stated but not proven (or disproven) - it's a genuine OPEN problem.",
     "mathContext": "This is the formal statement of Erdős's question. The answer is unknown even for the smallest case k = 2.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "divisibility",
+      "open problem",
+      "universal quantifier"
+    ],
     "relatedConcepts": [
       "universal quantifier",
       "open problem",
@@ -84,6 +108,11 @@
     "content": "**balakran_theorem**: (divisible_set 1).Infinite\n\nBalakran proved in 1929 that there are infinitely many n with ((n+1)!)² | (2n)!.\n\nEquivalently: (n+1)² | C(2n, n) for infinitely many n.\n\n**erdos_727_k1_solved** records this as a proven theorem.\n\n**Reference**: H. Balakran, 'On the values of n which make (2n)!/(n+1)!(n+1)! an integer', J. Indian Math. Soc. (1929), 97-100.",
     "mathContext": "Balakran's result is nearly 100 years old. The gap between k=1 (solved) and k=2 (open) remains mysterious.",
     "significance": "key",
+    "prerequisites": [
+      "1929 result",
+      "divisibility",
+      "solved case"
+    ],
     "relatedConcepts": [
       "solved case",
       "1929 result",
@@ -102,6 +131,12 @@
     "content": "**catalanNumber(n)** = C(2n,n) / (n+1)\n\nThe Catalan numbers count many combinatorial structures: balanced parentheses, binary trees, non-crossing partitions, etc.\n\n**catalan_divisibility**: (n+1) | C(2n, n) for ALL n.\n\nThis classical fact ensures catalanNumber(n) is always an integer. The identity is:\nC(2n, n) = (n+1) × C_n\n\nCatalan sequence: 1, 1, 2, 5, 14, 42, 132, ...",
     "mathContext": "The connection to Catalan numbers shows this problem has deep combinatorial roots. The (n+1) divisibility is always true; the question is when (n+1)² divides.",
     "significance": "key",
+    "prerequisites": [
+      "Catalan numbers",
+      "basic set theory",
+      "combinatorics",
+      "divisibility"
+    ],
     "relatedConcepts": [
       "Catalan numbers",
       "combinatorics",
@@ -120,6 +155,10 @@
     "content": "**egrs_divides(k, n)**: (n+k)! × (n+1)! | (2n)!\n\nThis is a weaker condition than ((n+k)!)².\n\n**egrs_theorem**: For k ≥ 2, (egrs_set k).Infinite\n\nErdős, Graham, Ruzsa, and Straus proved this weaker variant holds. They showed:\n- There are infinitely many n with (n+k)!(n+1)! | (2n)!\n- In fact, this holds whenever k < c log n for some constant c > 0\n\nThis uses Balakran's method but doesn't achieve the squared version.",
     "mathContext": "The EGRS result shows that the product (n+k)!(n+1)! divides infinitely often. But since (n+1)! < (n+k)! when k ≥ 2, this is weaker than the main conjecture.",
     "significance": "key",
+    "prerequisites": [
+      "EGRS 1975",
+      "weaker variant"
+    ],
     "relatedConcepts": [
       "EGRS 1975",
       "weaker variant",
@@ -138,6 +177,11 @@
     "content": "**main_implies_egrs**: If ((n+k)!)² | (2n)!, then (n+k)!(n+1)! | (2n)!\n\nThis is because (n+1)! ≤ (n+k)! when k ≥ 0, so:\n(n+k)! × (n+1)! ≤ (n+k)! × (n+k)! = ((n+k)!)²\n\n**main_conjecture_implies_egrs**: If the main conjecture holds, then the EGRS variant holds.\n\nThe converse is NOT known - EGRS doesn't imply the main conjecture.",
     "mathContext": "This shows the logical structure: the main conjecture is strictly stronger than EGRS. Proving EGRS is insufficient to resolve the main question.",
     "significance": "supporting",
+    "prerequisites": [
+      "implication",
+      "proof techniques",
+      "stronger vs weaker"
+    ],
     "relatedConcepts": [
       "implication",
       "stronger vs weaker",
@@ -156,6 +200,10 @@
     "content": "**erdos_factorial_bound**: If a!b! | n!, then a + b ≤ n + O(log n)\n\nErdős proved this bound in 1968 (Elemente Math., Aufgabe 557).\n\nFor Erdős #727, we have a = b = n+k and the factorial is (2n)!, giving:\n2(n+k) ≤ 2n + O(log 2n)\n\nThis means 2k ≤ O(log n), so valid n must be exponentially large in k.",
     "mathContext": "This bound constrains where solutions can occur. For fixed k, solutions exist only when n is large enough to satisfy the logarithmic constraint.",
     "significance": "supporting",
+    "prerequisites": [
+      "Erdős 1968",
+      "logarithmic bound"
+    ],
     "relatedConcepts": [
       "Erdős 1968",
       "logarithmic bound",
@@ -174,6 +222,11 @@
     "content": "For k = 2, we check whether ((n+2)!)² | (2n)!:\n\n| n | (n+2)! | ((n+2)!)² | (2n)! | Divides? |\n|---|--------|-----------|-------|----------|\n| 2 | 24 | 576 | 24 | No |\n| 3 | 120 | 14400 | 720 | No |\n| 4 | 720 | 518400 | 40320 | No |\n\nFor small n, divisibility fails. The conjecture predicts divisibility for infinitely many larger n.",
     "mathContext": "Computational evidence neither proves nor disproves the conjecture, but gives intuition for the difficulty of finding solutions.",
     "significance": "supporting",
+    "prerequisites": [
+      "computational verification",
+      "counterexamples",
+      "divisibility"
+    ],
     "relatedConcepts": [
       "computational verification",
       "counterexamples",
@@ -192,6 +245,12 @@
     "content": "**erdos_727_status** summarizes what is known:\n\n1. (divisible_set 1).Infinite ✓ (Balakran 1929)\n2. ∀ k ≥ 2, (egrs_set k).Infinite ✓ (EGRS 1975)\n\n**Still OPEN**:\n- erdos_727_conjecture: ∀ k ≥ 2, (divisible_set k).Infinite\n- erdos_727_k2_open: (divisible_set 2).Infinite\n\nThe gap between k=1 (solved) and k=2 (open) is the central mystery.",
     "mathContext": "This theorem captures the current state of knowledge, clearly separating solved from open questions.",
     "significance": "key",
+    "prerequisites": [
+      "divisibility",
+      "proof techniques",
+      "solved vs open",
+      "status summary"
+    ],
     "relatedConcepts": [
       "solved vs open",
       "status summary",

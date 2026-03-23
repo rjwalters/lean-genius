@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #381: Counting Highly Composite Numbers**\n\n**Question:** Is Q(x) ≫_k (log x)^k for every k ≥ 1, where Q(x) counts highly composite numbers up to x?\n\n**Answer: NO** (Nicolas 1971)\n\nNicolas proved Q(x) ≪ (log x)^C, showing polynomial growth in log x.",
     "mathContext": "Highly composite numbers have more divisors than any smaller number. OEIS A002182.",
     "significance": "key",
+    "prerequisites": [
+      "Divisor function",
+      "Highly composite numbers",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Highly composite numbers",
       "Divisor function",
@@ -29,6 +34,12 @@
     "content": "**tau(n):**\n\nτ(n) = |{d : d | n}|, the number of positive divisors of n.\n\n```lean\ndef tau (n : ℕ) : ℕ :=\n  (Finset.filter (· ∣ n) (Finset.range (n + 1))).card\n```\n\nAlso denoted d(n) or σ₀(n) in the literature.",
     "mathContext": "Lean: `def tau (n : ℕ) : ℕ :=`",
     "significance": "key",
+    "prerequisites": [
+      "Divisor function",
+      "Finset API",
+      "Multiplicative functions",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Divisor function",
       "Multiplicative functions"
@@ -46,6 +57,11 @@
     "content": "**IsHighlyComposite(n):**\n\nn is highly composite if τ(m) < τ(n) for all positive m < n.\n\n```lean\ndef IsHighlyComposite (n : ℕ) : Prop :=\n  n ≥ 1 ∧ ∀ m : ℕ, 0 < m → m < n → tau m < tau n\n```\n\nn has strictly more divisors than any smaller positive integer.",
     "mathContext": "First few: 1, 2, 4, 6, 12, 24, 36, 48, 60, 120, ... (OEIS A002182)",
     "significance": "key",
+    "prerequisites": [
+      "Divisor extrema",
+      "Record-setting numbers",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Record-setting numbers",
       "Divisor extrema"
@@ -63,6 +79,12 @@
     "content": "**Q(x):**\n\nQ(x) = |{n ∈ HC : n ≤ x}|, the number of highly composite numbers up to x.\n\n```lean\nnoncomputable def Q (x : ℕ) : ℕ :=\n  Nat.card { n : ℕ | n ≤ x ∧ IsHighlyComposite n }\n```\n\nThe central function in this problem.",
     "mathContext": "Lean: `noncomputable def Q (x : ℕ) : ℕ :=`",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic growth",
+      "Counting functions",
+      "basic set theory",
+      "natural number arithmetic"
+    ],
     "relatedConcepts": [
       "Counting functions",
       "Asymptotic growth"
@@ -80,6 +102,10 @@
     "content": "**one_highly_composite:** 1 ∈ HC.\n\nτ(1) = 1, and there's no positive integer less than 1 to compare against.\n\nThis is the smallest highly composite number.",
     "mathContext": "$τ(1) = 1, and there's no positive integer less than 1 to compare against.$",
     "significance": "supporting",
+    "prerequisites": [
+      "Base cases",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Base cases"
     ]
@@ -96,6 +122,11 @@
     "content": "**twelve_highly_composite:** 12 ∈ HC.\n\nτ(12) = 6, the first number with 6 divisors.\n\nDivisors of 12: {1, 2, 3, 4, 6, 12}.",
     "mathContext": "$τ(12) = 6, the first number with 6 divisors.$",
     "significance": "key",
+    "prerequisites": [
+      "Divisor records",
+      "Small examples",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Small examples",
       "Divisor records"
@@ -113,6 +144,11 @@
     "content": "**Computational verification of τ values:**\n\nUsing `native_decide` to verify:\n- τ(1) = 1, τ(2) = 2, τ(3) = 2\n- τ(4) = 3, τ(5) = 2, τ(6) = 4\n- τ(12) = 6, τ(24) = 8, τ(36) = 9\n\nThese confirm which numbers are highly composite.",
     "mathContext": "Formalizes the concept of divisor counts verified",
     "significance": "supporting",
+    "prerequisites": [
+      "Computational verification",
+      "native_decide",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Computational verification",
       "native_decide"
@@ -130,6 +166,11 @@
     "content": "**erdos_lower_bound:** Q(x) ≫ (log x)^{1+c} for some c > 0.\n\nErdős proved this in his 1944 paper \"On highly composite numbers\".\n\nThe count grows faster than log x, but still subpolynomially in x.",
     "mathContext": "This lower bound shows HC numbers are more common than one might expect from their sparse appearance.",
     "significance": "key",
+    "prerequisites": [
+      "Erdős 1944",
+      "Lower bounds",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Lower bounds",
       "Erdős 1944"
@@ -147,6 +188,12 @@
     "content": "**erdos_question:**\n\nIs Q(x) ≫_k (log x)^k for every k ≥ 1?\n\n```lean\ndef erdos_question : Prop :=\n  ∀ k : ℕ, k ≥ 1 → ∃ C : ℝ, C > 0 ∧\n    ∀ᶠ x in atTop, (Q x : ℝ) ≥ C * (Real.log x)^k\n```\n\nDoes Q(x) grow faster than ANY power of log x?",
     "mathContext": "Lean: `def erdos_question : Prop :=`",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic notation",
+      "Growth rates",
+      "basic set theory",
+      "logarithmic functions"
+    ],
     "relatedConcepts": [
       "Asymptotic notation",
       "Growth rates"
@@ -164,6 +211,11 @@
     "content": "**nicolas_upper_bound:** Q(x) ≪ (log x)^C for some constant C > 0.\n\nNicolas proved this in \"Répartition des nombres hautement composés de Ramanujan\" (1971).\n\nThis DISPROVES Erdős's question - Q(x) has bounded polynomial growth in log x.",
     "mathContext": "The exponent C ≈ 1.71 according to Nicolas's analysis.",
     "significance": "key",
+    "prerequisites": [
+      "Nicolas 1971",
+      "Upper bounds",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Upper bounds",
       "Nicolas 1971",
@@ -182,6 +234,11 @@
     "content": "**erdos_question_false:** ¬erdos_question.\n\nNicolas's upper bound contradicts the existence of arbitrarily fast growth.\n\nIf Q(x) ≤ K(log x)^C, then Q(x) cannot be ≥ c(log x)^k for k > C.",
     "mathContext": "$If Q(x) ≤ K(log x)^C, then Q(x) cannot be ≥ c(log x)^k for k > C.$",
     "significance": "key",
+    "prerequisites": [
+      "Contradiction",
+      "Disproof",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Disproof",
       "Contradiction"
@@ -199,6 +256,11 @@
     "content": "**Q_bounds:** (log x)^{1+c} ≪ Q(x) ≪ (log x)^C.\n\nErdős's lower bound and Nicolas's upper bound together pin down the growth rate:\n- Lower: Q(x) ≥ K₁(log x)^{1+c}\n- Upper: Q(x) ≤ K₂(log x)^C\n\nSo Q(x) ~ (log x)^α for some 1 + c ≤ α ≤ C.",
     "mathContext": "$So Q(x) ~ (log x)^α for some 1 + c ≤ α ≤ C.$",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic behavior",
+      "Tight bounds",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Tight bounds",
       "Asymptotic behavior"
@@ -216,6 +278,11 @@
     "content": "**HC_exponent_decreasing:** For highly composite n, the prime factorization exponents are non-increasing.\n\nIf n = 2^{a₁} · 3^{a₂} · ... · p^{a_k}, then a₁ ≥ a₂ ≥ ... ≥ a_k.\n\nThis is the key structural result from Ramanujan (1915).",
     "mathContext": "Formalized as: for primes p < q, factorization(q) ≤ factorization(p).",
     "significance": "key",
+    "prerequisites": [
+      "Prime factorization",
+      "Ramanujan structure theorem",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Prime factorization",
       "Ramanujan structure theorem"
@@ -233,6 +300,11 @@
     "content": "**ramanujan_characterization:** For sufficiently large HC numbers (n > 720), the largest prime factor divides n exactly once, and no larger primes appear.\n\nThis gives a complete structural description of highly composite numbers.",
     "mathContext": "Lean: `axiom ramanujan_characterization (n : ℕ) (hn : IsHighlyComposite n) (hn_large : n > 720) :`",
     "significance": "key",
+    "prerequisites": [
+      "Prime factorization",
+      "Ramanujan 1915",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Ramanujan 1915",
       "Prime factorization"
@@ -250,6 +322,11 @@
     "content": "**IsSuperiorHighlyComposite(n):**\n\nn is superior highly composite if τ(n)/n^ε > τ(m)/m^ε for all m ≠ n and some ε > 0.\n\nA stronger condition than highly composite. SHC numbers are even sparser.",
     "mathContext": "SHC numbers are used in proofs about divisor function extrema.",
     "significance": "key",
+    "prerequisites": [
+      "Optimization",
+      "Superior highly composite",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Superior highly composite",
       "Optimization"
@@ -267,6 +344,11 @@
     "content": "**How HC numbers compare:**\n\n**vs Primes:** π(x) ~ x/log x grows MUCH faster than Q(x) ~ (log x)^α. HC_sparser_than_primes axiomatizes Q(x)/π(x) → 0.\n\n**vs Highly Abundant:** Numbers where σ(n) > σ(m) for all m < n. These are denser than HC numbers.",
     "mathContext": "Lean: `axiom HC_sparser_than_primes :`",
     "significance": "supporting",
+    "prerequisites": [
+      "Highly abundant",
+      "Prime counting",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Prime counting",
       "Highly abundant"
@@ -284,6 +366,11 @@
     "content": "**erdos_381:** ¬erdos_question.\n\n```lean\ntheorem erdos_381 : ¬erdos_question := erdos_question_false\n```\n\n**The conjecture is FALSE** - Q(x) does NOT grow faster than every power of log x.",
     "mathContext": "Lean: `theorem erdos_381 : ¬erdos_question := erdos_question_false`",
     "significance": "key",
+    "prerequisites": [
+      "Disproved",
+      "Main result",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Main result",
       "Disproved"
@@ -301,6 +388,11 @@
     "content": "**erdos_381_summary:** Combines the three key results:\n\n1. **Erdős's lower bound** (1944): Q(x) ≫ (log x)^{1+c}\n2. **Nicolas's upper bound** (1971): Q(x) ≪ (log x)^C\n3. **Disproof**: ¬erdos_question\n\nThis single theorem captures the complete resolution of the problem.",
     "mathContext": "Lean: `theorem erdos_381_summary :`",
     "significance": "key",
+    "prerequisites": [
+      "Resolution",
+      "Summary",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Summary",
       "Resolution"

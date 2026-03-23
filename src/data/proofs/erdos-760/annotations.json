@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #760: Cochromatic Number of Subgraphs**\n\nIf G has chromatic number χ(G) = m, must G contain a subgraph H with ζ(H) ≫ m / log m?\n\n**Status:** SOLVED (YES)\n\n**Solution:** Alon-Krivelevich-Sudakov (1997)\n\nThe bound is tight - complete graphs achieve it.",
     "mathContext": "Connects chromatic number, cochromatic number, and Ramsey theory. The cochromatic number allows cliques as color classes, not just independent sets.",
     "significance": "key",
+    "prerequisites": [
+      "Chromatic number",
+      "Cochromatic number",
+      "Ramsey theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Chromatic number",
       "Cochromatic number",
@@ -96,6 +102,12 @@
     "content": "**Complete graphs show tightness:**\n\nFor Kₘ: χ(Kₘ) = m but ζ(Kₘ) = O(log m) (group into doubling cliques).\n\nThis means subgraphs H can only achieve ζ(H) ~ m / log m at best, showing the AKS bound is optimal.",
     "mathContext": "$For Kₘ: χ(Kₘ) = m but ζ(Kₘ) = O(log m) (group into doubling cliques).$",
     "significance": "key",
+    "prerequisites": [
+      "complete_graph_cochromatic",
+      "complete_graph_tight_bound",
+      "graph theory basics",
+      "group theory"
+    ],
     "relatedConcepts": [
       "complete_graph_cochromatic",
       "complete_graph_tight_bound"
@@ -119,6 +131,12 @@
     "content": "**erdos_gimbel_theorem:**\n\nIf χ(G) = m, then G has subgraph H with ζ(H) ≥ c · √(m / log m).\n\nThis was the first bound, weaker than the eventual solution by AKS.",
     "mathContext": "Erdős and Gimbel posed the problem in 1993 and gave this initial bound. The √(m / log m) comes from a simpler Ramsey-type argument.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "aks_theorem",
+      "erdos_gimbel_weaker",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "erdos_gimbel_weaker",
       "aks_theorem"
@@ -142,6 +160,12 @@
     "content": "**aks_theorem** and **erdos_760_solved:**\n\nIf χ(G) = m, then G has subgraph H with ζ(H) ≥ c · m / log m.\n\n**This solves Erdős Problem #760!**\n\nThe bound is optimal - complete graphs achieve it. erdos_760_solved directly refers to aks_theorem.",
     "mathContext": "The proof uses recursive decomposition via Ramsey-type homogeneous sets. At each step, a log-sized homogeneous set is extracted, and the process repeats m / log m times.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "erdos_760_solved",
+      "graph theory basics",
+      "ramsey_for_cochromatic"
+    ],
     "relatedConcepts": [
       "ramsey_for_cochromatic",
       "erdos_760_solved",
@@ -166,6 +190,12 @@
     "content": "**ramsey_for_cochromatic** and **ramsey_number_bound:**\n\nAny graph on n vertices has a homogeneous set of size ≥ log₂ n (Ramsey). More precisely, R(k,k) ≤ 4^k gives homogeneous sets of size log₄ n.\n\nThis logarithmic bound explains the log factor in the main theorem: each iteration of the recursive decomposition finds a log-sized piece.",
     "mathContext": "Lean: `axiom ramsey_for_cochromatic :`",
     "significance": "key",
+    "prerequisites": [
+      "IsHomogeneous",
+      "Ramsey number",
+      "Ramsey theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Ramsey number",
       "IsHomogeneous",
@@ -190,6 +220,12 @@
     "content": "**erdos_760:**\n\nA genuine theorem combining the AKS result: ∃c > 0 such that χ(G) = m implies G has subgraph H with ζ(H) ≥ cm / log m. Proved via `aks_theorem`.\n\n**Timeline:**\n- 1993: Erdős-Gimbel prove √(m / log m)\n- 1997: AKS prove optimal m / log m",
     "mathContext": "Lean: `theorem erdos_760 :`",
     "significance": "key",
+    "prerequisites": [
+      "aks_theorem",
+      "erdos_760_solved",
+      "graph theory basics",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "aks_theorem",
       "erdos_760_solved",

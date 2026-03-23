@@ -11,6 +11,12 @@
     "content": "Erdos Problem #602: Given family of countably infinite sets with finite (≠ 1) intersections, is there a 2-coloring avoiding monochromatic members? Status: OPEN.",
     "mathContext": "From [Er87], attributed to Komjath. Property B for infinite set families with intersection constraints.",
     "significance": "key",
+    "prerequisites": [
+      "coloring",
+      "graph coloring",
+      "property-b",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "property-b",
       "coloring",
@@ -29,6 +35,12 @@
     "content": "SetFamily(U, I) := I -> Set U. IsCountablyInfinite(S) := |S| = aleph0. AllCountablyInfinite: all members countably infinite.",
     "mathContext": "Family of sets indexed by I, each having cardinality aleph0 (countable infinity).",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "cardinal arithmetic",
+      "countable",
+      "set-family"
+    ],
     "relatedConcepts": [
       "set-family",
       "countable",
@@ -47,6 +59,11 @@
     "content": "HasFiniteIntersection: A_i ∩ A_j finite. IntersectionNotOne: |A_i ∩ A_j| ≠ 1. IsErdosFamily combines all conditions.",
     "mathContext": "The condition ≠ 1 is crucial. Single-element intersections enable counterexamples via constraint forcing.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "finite",
+      "intersection"
+    ],
     "relatedConcepts": [
       "intersection",
       "finite",
@@ -65,6 +82,12 @@
     "content": "TwoColoring(U) := U -> Bool. IsMonochromatic(S, c) := all elements same color. HasPropertyB: exists non-monochromatic coloring.",
     "mathContext": "Property B asks for existence of 2-coloring where no set is all one color.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "coloring",
+      "graph coloring",
+      "monochromatic"
+    ],
     "relatedConcepts": [
       "coloring",
       "monochromatic",
@@ -83,6 +106,12 @@
     "content": "IsValidColoring(A, c) := no A_i is monochromatic. FamilyHasPropertyB := exists valid coloring.",
     "mathContext": "Property B for families: find one coloring that works for ALL members simultaneously.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "family",
+      "graph coloring",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "valid-coloring",
       "family"
@@ -100,6 +129,11 @@
     "content": "ErdosConjecture602 := every Erdos family has Property B. conjecture_equiv: equivalent to no counterexample exists.",
     "mathContext": "The open question: do the intersection conditions suffice to guarantee Property B?",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "conjecture",
+      "property-b"
+    ],
     "relatedConcepts": [
       "conjecture",
       "property-b"
@@ -117,6 +151,10 @@
     "content": "|A_i| = aleph0: prevents finite pigeonhole. |A_i ∩ A_j| < aleph0: prevents forced monochromatic. ≠ 1: excludes constraint-forcing.",
     "mathContext": "Each condition rules out a class of counterexamples. The ≠ 1 condition is most subtle.",
     "significance": "key",
+    "prerequisites": [
+      "conditions",
+      "counterexample"
+    ],
     "relatedConcepts": [
       "conditions",
       "counterexample"
@@ -134,6 +172,11 @@
     "content": "KomjathProblem := ErdosQuestion602. Originally posed by Komjáth.",
     "mathContext": "Erdos recorded this problem from Komjath in [Er87].",
     "significance": "supporting",
+    "prerequisites": [
+      "attribution",
+      "basic set theory",
+      "komjath"
+    ],
     "relatedConcepts": [
       "komjath",
       "attribution"
@@ -151,6 +194,11 @@
     "content": "IsDisjointFamily: pairwise disjoint. IsAlmostDisjoint: finite intersections. Disjoint families trivially have Property B.",
     "mathContext": "Disjoint case is trivial. Almost disjoint with the ≠ 1 condition is the interesting case.",
     "significance": "key",
+    "prerequisites": [
+      "almost-disjoint",
+      "basic set theory",
+      "disjoint"
+    ],
     "relatedConcepts": [
       "disjoint",
       "almost-disjoint",
@@ -169,6 +217,12 @@
     "content": "Is2ChromaticForcing: every coloring has monochromatic member. counterexample_structure: equivalent to ¬ErdosConjecture602.",
     "mathContext": "A counterexample would be an Erdos family that forces some member to be monochromatic.",
     "significance": "key",
+    "prerequisites": [
+      "counterexample",
+      "forcing",
+      "graph coloring",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "counterexample",
       "forcing"
@@ -186,6 +240,12 @@
     "content": "The problem is OPEN. Unknown whether every Erdos family has Property B or if counterexamples exist.",
     "mathContext": "Combines infinite set theory with combinatorial coloring. Neither answer has been established.",
     "significance": "key",
+    "prerequisites": [
+      "graph coloring",
+      "open-problem",
+      "ring tactic",
+      "set-theory"
+    ],
     "relatedConcepts": [
       "open-problem",
       "set-theory",

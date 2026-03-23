@@ -79,6 +79,11 @@
     "content": "Three nested questions formalize the logical progression:\n\nHuberQuestion (weak): for each $\\lambda > 0$, there exists a path $C_\\lambda$ (possibly depending on $\\lambda$) with $\\int_{C_\\lambda} |f|^{-\\lambda} < \\infty$. The quantifier order is $\\forall \\lambda, \\exists \\gamma$.\n\nErdosQuestion (strong): there exists a single path $C$ such that for all $\\lambda > 0$, $\\int_C |f|^{-\\lambda} < \\infty$. The quantifier order is $\\exists \\gamma, \\forall \\lambda$ — a crucial swap.\n\nUniversalQuestion: ErdosQuestion holds for all transcendental entire $f$. This is what LRW proved.\n\nThe progression from Huber to Erdős is a quantifier swap: $\\forall \\lambda \\, \\exists \\gamma$ becomes $\\exists \\gamma \\, \\forall \\lambda$. This is generally much harder — it requires a single path that simultaneously avoids all the 'bad' regions for every $\\lambda$.",
     "mathContext": "The quantifier swap $\\forall \\exists \\to \\exists \\forall$ is a common theme in analysis (uniform vs. pointwise convergence, equicontinuity vs. continuity). Here it is especially delicate because increasing $\\lambda$ makes the integral more sensitive to small values of $|f|$, so the path must increasingly avoid the zero set. The universal path must be 'optimal' in the sense of maximizing the growth of $|f|$ along it.",
     "significance": "key",
+    "prerequisites": [
+      "Quantifier swap in analysis",
+      "Uniform vs. pointwise convergence",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Quantifier swap in analysis",
       "Uniform vs. pointwise convergence",
@@ -163,6 +168,12 @@
     "content": "Three summary theorems package the formalization:\n\nerdos_515_summary proves the conjunction: (1) UniversalQuestion (from LRW), (2) Huber's weaker result as a corollary (each $\\lambda$ separately), and (3) True (placeholder for Zhang's intermediate result). The Huber component is proved by unfolding HuberQuestion and applying huber_1957.\n\nerdos_515 and erdos_515_answer are both direct aliases for lewis_rossi_weitsman_1984 : UniversalQuestion, restating the result in the explicit quantified form.\n\nThe formalization spans 290 lines with 0 sorries. The deep results (Huber, Zhang, LRW, subharmonic extension) are axiomatized; the summary theorem is proved by assembling these axioms. Definitions use Mathlib's Differentiable, Filter.Tendsto, and Real.rpow.",
     "mathContext": "The logical structure of the proof is unusually clean: LRW subsumes both Huber and Zhang, so the main theorem is a single axiom instantiation. The formalization's value lies in precisely capturing the quantifier structure (the $\\forall\\lambda \\, \\exists\\gamma$ vs. $\\exists\\gamma \\, \\forall\\lambda$ distinction) and the type-theoretic definitions of entire functions, paths, and integrability in Lean 4.",
     "significance": "key",
+    "prerequisites": [
+      "Axiom-based formalization",
+      "Quantifier structure in analysis",
+      "differential calculus",
+      "filter theory"
+    ],
     "relatedConcepts": [
       "Axiom-based formalization",
       "Quantifier structure in analysis"

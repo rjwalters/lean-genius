@@ -11,6 +11,11 @@
     "content": "The **Erdős Sumset Conjecture** asks whether sets of positive density contain infinite sumsets B + C. This was a major open problem connecting density to additive structure.",
     "mathContext": "The problem was posed by Erdős and solved by Moreira, Richter, and Robertson in 2019, published in the Annals of Mathematics. Related to Problem #656.",
     "significance": "supporting",
+    "prerequisites": [
+      "Erdős",
+      "density theory",
+      "sumsets"
+    ],
     "relatedConcepts": [
       "Erdős",
       "sumsets",
@@ -29,6 +34,12 @@
     "content": "The **counting function** countingFn(A, N) counts how many elements of A lie in {1,...,N}. This is the fundamental building block for defining density.",
     "mathContext": "Defined as `Set.ncard (A ∩ Set.Icc 1 N)` — the cardinality of the intersection of A with the interval [1, N].",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "cardinal arithmetic",
+      "cardinality",
+      "density"
+    ],
     "relatedConcepts": [
       "cardinality",
       "density",
@@ -47,6 +58,12 @@
     "content": "**Upper density** uses limsup: it captures the 'best case' proportion of A in {1,...,N} as N grows. **Lower density** uses liminf. A set has 'asymptotic density' if these are equal.",
     "mathContext": "Upper density = limsup_{N→∞} |A ∩ {1,...,N}|/N. For the even numbers, both densities equal 1/2. For {1, 10, 100, 1000, ...}, upper density is 0.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "density theory",
+      "liminf",
+      "limsup"
+    ],
     "relatedConcepts": [
       "limsup",
       "liminf",
@@ -65,6 +82,12 @@
     "content": "A **fully verified theorem**: lower density is always at most upper density. This follows from the general fact that liminf ≤ limsup for bounded sequences.",
     "mathContext": "The proof shows the density sequence is bounded in [0, 1], then applies the general filter inequality. This is non-trivial Lean code working with Filter.liminf_le_limsup.",
     "significance": "key",
+    "prerequisites": [
+      "bounded sequences",
+      "density theory",
+      "filter theory",
+      "liminf ≤ limsup"
+    ],
     "relatedConcepts": [
       "liminf ≤ limsup",
       "bounded sequences",
@@ -83,6 +106,11 @@
     "content": "The **sumset** B + C (written B +ₛ C) contains all sums b + c with b ∈ B and c ∈ C. We prove basic properties: zero membership when both contain zero, and commutativity.",
     "mathContext": "Formally: `Sumset B C = { n | ∃ b ∈ B, ∃ c ∈ C, n = b + c }`. The custom notation +ₛ distinguishes from Mathlib's pointwise addition.",
     "significance": "key",
+    "prerequisites": [
+      "additive combinatorics",
+      "basic set theory",
+      "sumsets"
+    ],
     "relatedConcepts": [
       "sumsets",
       "additive combinatorics",
@@ -101,6 +129,12 @@
     "content": "**ErdosSumsetConjecture**: For all A ⊆ ℕ with positive upper density, there exist infinite sets B and C such that B + C ⊆ A. This is the formal statement of Erdős's question.",
     "mathContext": "The conjecture connects two seemingly different concepts: asymptotic density (an analytic notion) and sumset structure (an algebraic notion).",
     "significance": "key",
+    "prerequisites": [
+      "Erdős conjecture",
+      "basic set theory",
+      "density",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Erdős conjecture",
       "density",
@@ -119,6 +153,12 @@
     "content": "**The main result**: The Erdős Sumset Conjecture is TRUE. This is axiomatized because the proof uses deep ergodic theory: Furstenberg correspondence, IP-sets, and polynomial recurrence.",
     "mathContext": "Published in Ann. of Math. (2) 189(2):605-652, 2019. The 47-page proof uses measure-preserving systems and sophisticated dynamical arguments.",
     "significance": "key",
+    "prerequisites": [
+      "Furstenberg correspondence",
+      "ergodic theory",
+      "measure theory",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "ergodic theory",
       "Furstenberg correspondence",
@@ -137,6 +177,12 @@
     "content": "**Key consequence**: If A contains an infinite sumset B + C, then A is infinite. Combined with the main theorem: sets of positive density are infinite (a non-trivial fact!).",
     "mathContext": "The proof shows B + C is infinite when B and C are (via the injection c ↦ b + c for fixed b), then A ⊇ B + C implies A infinite.",
     "significance": "key",
+    "prerequisites": [
+      "density theory",
+      "infinite sets",
+      "injection",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "infinite sets",
       "injection",
@@ -155,6 +201,12 @@
     "content": "**Concrete verification**: The natural numbers have density 1 (the full set). This requires proving that |{1,...,N}|/N → 1, which we do using Filter.le_limsup_of_frequently_le.",
     "mathContext": "The proof computes |Icc 1 N| = N using ncard and Nat.card_Icc, then shows the ratio equals 1 for all N ≥ 1.",
     "significance": "supporting",
+    "prerequisites": [
+      "density 1",
+      "density theory",
+      "filter theory",
+      "natural number arithmetic"
+    ],
     "relatedConcepts": [
       "density 1",
       "verification",
@@ -173,6 +225,12 @@
     "content": "**Concrete example**: The even numbers have positive density (1/2) and satisfy the conjecture with B = C = evens. We prove evenNumbers_infinite and even + even ⊆ even.",
     "mathContext": "The sum of two even numbers is even: if b = 2k and c = 2j, then b + c = 2(k+j). This gives a complete worked example of the conjecture.",
     "significance": "key",
+    "prerequisites": [
+      "density theory",
+      "even numbers",
+      "examples",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "even numbers",
       "examples",

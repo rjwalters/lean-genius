@@ -11,6 +11,12 @@
     "content": "**Erdos Problem #378: Squarefree Binomial Coefficients**\n\nThis problem asks about the density of integers n for which C(n,k) is squarefree for at least r values of k.\n\n**Questions:**\n1. Does this density exist?\n2. Is this density positive?\n\n**Answer: YES to both**\n\nResolved by Granville-Ramare (1996), observed by Aggarwal-Cambie.",
     "mathContext": "A number is squarefree if no prime squared divides it. For example, 6 = 2*3 is squarefree, but 12 = 4*3 is not.",
     "significance": "key",
+    "prerequisites": [
+      "Binomial coefficients",
+      "Squarefree numbers",
+      "density theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Squarefree numbers",
       "Binomial coefficients",
@@ -29,6 +35,12 @@
     "content": "**Squarefree(n):**\n\nA positive integer n is squarefree if no prime squared divides n.\n\n**Definition:**\n```lean\ndef Squarefree (n : N) : Prop :=\n  forall p, p.Prime -> not(p * p | n)\n```\n\n**Examples:**\n- 1, 2, 3, 5, 6, 7, 10 are squarefree\n- 4, 8, 9, 12, 16 are NOT squarefree",
     "mathContext": "$n$ is squarefree iff $\\forall p$ prime, $p^2 \\nmid n$. Equivalently, $n = p_1 p_2 \\cdots p_k$ with distinct primes.",
     "significance": "key",
+    "prerequisites": [
+      "Divisibility",
+      "Prime factorization",
+      "basic set theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Prime factorization",
       "Divisibility"
@@ -50,6 +62,12 @@
       "factorization",
       "prime numbers"
     ],
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "prime numbers",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -64,6 +82,12 @@
     "content": "**BinomialSquarefree(n, k):**\n\nC(n,k) is squarefree.\n\n```lean\ndef BinomialSquarefree (n k : N) : Prop :=\n  Squarefree (n.choose k)\n```\n\nThis is the key property we're counting in Pascal's triangle rows.",
     "mathContext": "$\\text{BinomialSquarefree}(n, k) \\iff \\text{Squarefree}\\!\\left(\\binom{n}{k}\\right)$, i.e., $\\forall p$ prime, $p^2 \\nmid \\binom{n}{k}$.",
     "significance": "key",
+    "prerequisites": [
+      "Binomial coefficients",
+      "Pascal's triangle",
+      "basic set theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Binomial coefficients",
       "Pascal's triangle"
@@ -81,6 +105,12 @@
     "content": "**squarefreeCount(n):**\n\nThe number of k in [1, n-1] for which C(n,k) is squarefree.\n\n**hasAtLeastSquarefree(n, r):**\nTrue when squarefreeCount(n) >= r.\n\nThis is the quantity whose density we study.",
     "mathContext": "$\\text{squarefreeCount}(n) = \\#\\{k \\in [1, n-1] : \\text{Squarefree}(\\binom{n}{k})\\}$ and $\\text{hasAtLeastSquarefree}(n, r) \\iff \\text{squarefreeCount}(n) \\ge r$.",
     "significance": "key",
+    "prerequisites": [
+      "Counting",
+      "Row analysis",
+      "basic set theory",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Counting",
       "Row analysis"
@@ -98,6 +128,12 @@
     "content": "**NaturalDensity(S, d):**\n\nThe set S has density d if:\nlim_{N->inf} |S intersect [1,N]| / N = d\n\n**HasDensity(S):**\nTrue when the limit exists.\n\n**Formalization:**\nFor all epsilon > 0, there exists N_0 such that for N >= N_0,\nthe ratio is within epsilon of d.",
     "mathContext": "Natural density captures the \"proportion\" of integers in a set. Not all sets have a density.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic analysis",
+      "Limits",
+      "basic set theory",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Limits",
       "Asymptotic analysis"
@@ -115,6 +151,12 @@
     "content": "**Two key observations by Erdos and Graham:**\n\n1. **erdos_graham_sparse:** For fixed large k, the density of n with C(n,k) squarefree is o_k(1) - approaches 0 as k grows.\n\n2. **erdos_graham_infinite_bad:** Infinitely many n have NO squarefree binomial coefficients (all C(n,k) have a prime squared divisor).\n\nThey expected the set of such bad n has positive density (confirmed).",
     "mathContext": "1. $\\forall \\varepsilon > 0,\\; \\exists K$ s.t. $\\forall k \\ge K$: $d(\\{n : \\text{Squarefree}(\\binom{n}{k})\\}) < \\varepsilon$. 2. $|\\{n : \\forall\\, 1 \\le k < n,\\; p^2 \\mid \\binom{n}{k} \\text{ for some } p\\}| = \\infty$.",
     "significance": "key",
+    "prerequisites": [
+      "Preliminary results",
+      "Sparsity",
+      "density theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Preliminary results",
       "Sparsity"
@@ -132,6 +174,12 @@
     "content": "**exactlySquarefree(m):**\n\nThe set of n where squarefreeCount(n) = 2m + 2.\n\n**Why 2m + 2?**\nDue to the symmetry C(n,k) = C(n,n-k), squarefree counts come in pairs. The formula 2m + 2 captures this pairing.\n\nGranville-Ramare showed each of these sets has a well-defined density.",
     "mathContext": "$\\text{exactlySquarefree}(m) = \\{n \\in \\mathbb{N} : \\text{squarefreeCount}(n) = 2m + 2\\}$. The even form $2m+2$ arises from the symmetry $\\binom{n}{k} = \\binom{n}{n-k}$.",
     "significance": "key",
+    "prerequisites": [
+      "Partitioning",
+      "Symmetry",
+      "basic set theory",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Symmetry",
       "Partitioning"
@@ -149,6 +197,11 @@
     "content": "**The key technical results:**\n\n1. **granville_ramare_density_exists:** For each m, the set exactlySquarefree(m) has a density.\n\n2. **eta(m):** Define eta_m as this density.\n\n3. **eta_is_density:** eta_m is indeed the density.\n\n4. **eta_positive:** For all m, eta_m > 0.\n\n**Reference:** \"Explicit bounds on exponential sums and the scarcity of squarefree binomial coefficients\", Mathematika 1996.",
     "mathContext": "The proof uses sophisticated analytic number theory - bounds on exponential sums.",
     "significance": "key",
+    "prerequisites": [
+      "Analytic number theory",
+      "Exponential sums",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Analytic number theory",
       "Exponential sums"
@@ -166,6 +219,11 @@
     "content": "**atLeastSquarefree(r):**\n\nThe set of n with squarefreeCount(n) >= r.\n\nThis is exactly the set whose density the original problem asks about.",
     "mathContext": "$\\text{atLeastSquarefree}(r) = \\{n \\in \\mathbb{N} : \\text{squarefreeCount}(n) \\ge r\\}$.",
     "significance": "key",
+    "prerequisites": [
+      "Main question",
+      "basic set theory",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Main question"
     ]
@@ -182,6 +240,11 @@
     "content": "**The key formula:**\n\nThe complement {n : squarefreeCount(n) < r} decomposes as:\n\nunion of exactlySquarefree(m) for 2m + 2 < r\n\n**Density formula:**\ndensity of complement = sum of eta_m for 0 <= m <= (r-1)/2\n\nTherefore:\ndensity of atLeastSquarefree(r) = 1 - sum of eta_m",
     "mathContext": "This uses the fact that the exactlySquarefree sets partition the integers.",
     "significance": "key",
+    "prerequisites": [
+      "Complement",
+      "Partition",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Complement",
       "Partition"
@@ -199,6 +262,12 @@
     "content": "**erdos_378_density_exists:**\n\nFor any r, the set atLeastSquarefree(r) has a natural density.\n\n**Proof idea:**\nThe complement has density (sum of finitely many eta_m). Taking 1 - that gives the density of the original set.",
     "mathContext": "$\\forall r,\\; \\exists\\, d \\in \\mathbb{R}$ such that $\\lim_{N \\to \\infty} \\frac{|\\{n \\le N : \\text{squarefreeCount}(n) \\ge r\\}|}{N} = d$. The density is $d = 1 - \\sum_{m=0}^{\\lfloor(r-1)/2\\rfloor} \\eta_m$.",
     "significance": "key",
+    "prerequisites": [
+      "Complement",
+      "Existence",
+      "density theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Existence",
       "Complement"
@@ -216,6 +285,12 @@
     "content": "**erdos_378_density_positive:**\n\nFor any r, the density of atLeastSquarefree(r) is positive.\n\n**Proof idea:**\nThe complement density is sum of eta_m for m <= (r-1)/2. Since eta_{(r-1)/2 + 1} > 0 and is NOT in this sum, the complement doesn't cover everything. Hence 1 - sum > 0.",
     "mathContext": "$d(\\text{atLeastSquarefree}(r)) = 1 - \\sum_{m=0}^{\\lfloor(r-1)/2\\rfloor} \\eta_m > 0$, since $\\eta_{\\lfloor(r-1)/2\\rfloor+1} > 0$ ensures the complement sum is strictly less than $1$.",
     "significance": "key",
+    "prerequisites": [
+      "Key argument",
+      "Positivity",
+      "density theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Positivity",
       "Key argument"
@@ -237,6 +312,12 @@
       "factorization",
       "prime numbers"
     ],
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "prime numbers",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -251,6 +332,10 @@
     "content": "**example_C_6_3_not_squarefree:**\n\nC(6,3) = 20 = 4 * 5 = 2^2 * 5 is NOT squarefree.\n\n**Proof:** We verify 4 = 2^2 divides 20, so 20 fails the squarefree condition.",
     "mathContext": "$\\binom{6}{3} = 20 = 2^2 \\cdot 5$, so $2^2 \\mid 20$, which means $\\binom{6}{3}$ is not squarefree.",
     "significance": "key",
+    "prerequisites": [
+      "Counterexample",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Counterexample"
     ]
@@ -267,6 +352,11 @@
     "content": "**binomial_squarefree_symm:**\n\nC(n,k) is squarefree iff C(n, n-k) is squarefree.\n\n**Proof:** Uses C(n,k) = C(n, n-k).\n\n**Consequence:** Squarefree binomials come in pairs (except possibly k = n/2 when n is even).",
     "mathContext": "$\\binom{n}{k} = \\binom{n}{n-k}$, so $\\text{Squarefree}\\!\\left(\\binom{n}{k}\\right) \\iff \\text{Squarefree}\\!\\left(\\binom{n}{n-k}\\right)$. Squarefree entries in row $n$ of Pascal's triangle are symmetric.",
     "significance": "key",
+    "prerequisites": [
+      "Pairing",
+      "Symmetry",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Symmetry",
       "Pairing"
@@ -284,6 +374,12 @@
     "content": "**erdos_378:**\n\nCombines both answers:\n1. For all r, HasDensity(atLeastSquarefree r)\n2. For all r, the density is positive\n\n**The formula:**\ndensity = 1 - sum_{0 <= m <= (r-1)/2} eta_m\n\n**Contributors:**\n- Granville-Ramare: Technical density results\n- Aggarwal-Cambie: Observed the connection",
     "mathContext": "$\\forall r \\ge 0$: the set $\\{n : \\#\\{k \\in [1,n-1] : \\text{Squarefree}(\\binom{n}{k})\\} \\ge r\\}$ has natural density $d_r = 1 - \\sum_{m=0}^{\\lfloor(r-1)/2\\rfloor} \\eta_m > 0$, where $\\eta_m = d(\\{n : \\text{squarefreeCount}(n) = 2m+2\\})$.",
     "significance": "key",
+    "prerequisites": [
+      "Main theorem",
+      "Resolution",
+      "density theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Main theorem",
       "Resolution"

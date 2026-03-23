@@ -11,6 +11,10 @@
     "content": "**Erdős Problem #91: Non-Uniqueness of Minimal Distance Sets**\n\nFor n-point sets minimizing distinct distances, are there multiple non-similar optimal configurations?\n\n**Known Results:**\n- n=3: UNIQUE (equilateral triangle)\n- n=4: NON-UNIQUE (square vs bowtie)\n- n=5: UNIQUE (pentagon) - Kovács 2024\n- n=6-9: NON-UNIQUE\n- Large n: OPEN",
     "mathContext": "The problem connects to the Erdős distinct distances problem (#89) which asks for the minimum number of distinct distances.",
     "significance": "key",
+    "prerequisites": [
+      "Distinct distances",
+      "Point configurations"
+    ],
     "relatedConcepts": [
       "Distinct distances",
       "Point configurations",
@@ -29,6 +33,11 @@
     "content": "**Point and dist:**\n\nPoints are pairs (x, y) ∈ ℝ². Distance is Euclidean:\n\n```lean\nabbrev Point := ℝ × ℝ\n\nnoncomputable def dist (p q : Point) : ℝ :=\n  Real.sqrt ((p.1 - q.1)^2 + (p.2 - q.2)^2)\n```",
     "mathContext": "Lean: `abbrev Point := ℝ × ℝ`",
     "significance": "supporting",
+    "prerequisites": [
+      "Euclidean distance",
+      "Plane geometry",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Euclidean distance",
       "Plane geometry"
@@ -46,6 +55,12 @@
     "content": "**distinctDistances A:**\n\nThe set of all pairwise distances in point set A.\n\n**numDistinctDistances A:**\n\nThe cardinality of the distinct distance set.\n\nFor n points, this ranges from 1 (equilateral triangle) to C(n,2) (general position).",
     "mathContext": "Minimizing this count is the Erdős distinct distances problem.",
     "significance": "key",
+    "prerequisites": [
+      "Combinatorics",
+      "Distance sets",
+      "basic set theory",
+      "cardinal arithmetic"
+    ],
     "relatedConcepts": [
       "Distance sets",
       "Combinatorics"
@@ -63,6 +78,12 @@
     "content": "**IsOptimal A:**\n\nA configuration A is optimal if it achieves the minimum number of distinct distances among all |A|-point sets.\n\n```lean\ndef IsOptimal (A : Finset Point) : Prop :=\n  A.card > 0 ∧ numDistinctDistances A = minDistinctDistances A.card\n```",
     "mathContext": "Lean: `def IsOptimal (A : Finset Point) : Prop :=`",
     "significance": "key",
+    "prerequisites": [
+      "Extremal configurations",
+      "Finset API",
+      "Optimization",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Extremal configurations",
       "Optimization"
@@ -80,6 +101,12 @@
     "content": "**AreSimilar A B:**\n\nTwo point sets are similar if one can be transformed to the other by translation, rotation, reflection, and uniform scaling.\n\n**AreNonSimilar A B:**\n\nSame cardinality but NOT similar - the key property we're looking for in multiple optima.",
     "mathContext": "Similarity is the natural equivalence relation for geometric questions.",
     "significance": "key",
+    "prerequisites": [
+      "Isometry groups",
+      "Similarity transformations",
+      "basic set theory",
+      "cardinal arithmetic"
+    ],
     "relatedConcepts": [
       "Similarity transformations",
       "Isometry groups"
@@ -97,6 +124,10 @@
     "content": "**n3_unique:**\n\nThe equilateral triangle is the unique optimal 3-point configuration.\n\nIt achieves 1 distinct distance, which is the minimum possible for 3 points.",
     "mathContext": "Lean: `axiom n3_unique :`",
     "significance": "key",
+    "prerequisites": [
+      "Equilateral triangle",
+      "Uniqueness"
+    ],
     "relatedConcepts": [
       "Equilateral triangle",
       "Uniqueness"
@@ -114,6 +145,11 @@
     "content": "**n4_two_optima:**\n\nTwo non-similar 4-point configurations achieve the minimum 2 distinct distances:\n1. **Square:** side s, diagonal s√2\n2. **Bowtie:** Two equilateral triangles sharing an edge\n\nThis is the first case of non-uniqueness.",
     "mathContext": "Lean: `axiom n4_two_optima :`",
     "significance": "key",
+    "prerequisites": [
+      "Bowtie configuration",
+      "Square",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Square",
       "Bowtie configuration",
@@ -132,6 +168,10 @@
     "content": "**kovacs_2024_n5_unique:**\n\nThe regular pentagon is uniquely optimal for n=5, achieving 2 distinct distances.\n\n**Historical note:** Erdős attributed this to 'a colleague from Zagreb' whose letter he lost. Kovács (2024) finally published a rigorous proof.",
     "mathContext": "The mystery of the 'Zagreb colleague' was a famous anecdote in combinatorics for decades.",
     "significance": "key",
+    "prerequisites": [
+      "Kovács 2024",
+      "Regular pentagon"
+    ],
     "relatedConcepts": [
       "Regular pentagon",
       "Kovács 2024",
@@ -150,6 +190,10 @@
     "content": "**n6_to_9_nonunique:**\n\nFor each n from 6 to 9, there exist at least two non-similar optimal configurations.\n\nErdős verified this for these small cases, but the pattern for all large n is unknown.",
     "mathContext": "Lean: `axiom n6_to_9_nonunique :`",
     "significance": "key",
+    "prerequisites": [
+      "Non-uniqueness pattern",
+      "Small cases"
+    ],
     "relatedConcepts": [
       "Small cases",
       "Non-uniqueness pattern"
@@ -167,6 +211,12 @@
     "content": "**erdos_91_conjecture:**\n\nFor sufficiently large n, there exist at least two non-similar optimal n-point configurations.\n\n```lean\ndef erdos_91_conjecture : Prop :=\n  ∃ N : ℕ, ∀ n : ℕ, n ≥ N →\n    ∃ A B : Finset Point, ...\n```\n\n**Status: OPEN**",
     "mathContext": "The non-monotonic pattern (unique at n=5 but non-unique at n=4,6) makes this hard to prove.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic behavior",
+      "Finset API",
+      "Open problems",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Open problems",
       "Asymptotic behavior"
@@ -184,6 +234,11 @@
     "content": "**erdos_91_summary:**\n\nCombines the known results:\n\n| n | Status | Configuration |\n|---|--------|---------------|\n| 3 | UNIQUE | Equilateral triangle |\n| 4 | NON-UNIQUE | Square, Bowtie |\n| 5 | UNIQUE | Regular pentagon (Kovács 2024) |\n| 6-9 | NON-UNIQUE | Multiple examples |\n| Large | OPEN | Conjectured non-unique |",
     "mathContext": "Lean: `theorem erdos_91_summary :`",
     "significance": "key",
+    "prerequisites": [
+      "Known results",
+      "Research frontier",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Known results",
       "Research frontier"

@@ -11,6 +11,12 @@
     "content": "We import the full Mathlib library which provides `Real.sqrt`, `Filter.limsup`, `Filter.liminf`, and `Set.ncard` for cardinality of finite sets within an infinite set.",
     "mathContext": "The `open scoped Topology` allows Filter notation. `open Nat Set Filter Real` brings common namespaces into scope.",
     "significance": "supporting",
+    "prerequisites": [
+      "Mathlib",
+      "cardinal arithmetic",
+      "filter theory",
+      "filters"
+    ],
     "relatedConcepts": [
       "Mathlib",
       "filters",
@@ -29,6 +35,11 @@
     "content": "A set A ⊆ ℕ is an **additive complement of the squares** if every natural number k can be written as k = a + n² for some a ∈ A and n ≥ 0. Such sets 'fill in the gaps' left by squares.",
     "mathContext": "Formally: `∀ k : ℕ, ∃ n a : ℕ, a ∈ A ∧ k = a + n^2`. The original problem says 'every large integer' but this is equivalent since finitely many exceptions can be handled by adding finitely many elements.",
     "significance": "key",
+    "prerequisites": [
+      "additive combinatorics",
+      "basic set theory",
+      "squares"
+    ],
     "relatedConcepts": [
       "additive combinatorics",
       "squares",
@@ -47,6 +58,12 @@
     "content": "The **counting function** |A ∩ {1,...,N}| measures how many elements of A lie in the interval [1,N]. The **normalized density** divides by √N, which is the natural scale since there are ~√N squares up to N.",
     "mathContext": "We use `Set.ncard` for the cardinality of the intersection A ∩ [1,N]. The √N normalization means that if A had density comparable to squares, the ratio would be ~1.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "cardinal arithmetic",
+      "counting function",
+      "density"
+    ],
     "relatedConcepts": [
       "density",
       "counting function",
@@ -65,6 +82,11 @@
     "content": "**Erdős observed** that additive complements of squares exist with finite limsup > 1. This shows the problem is non-trivial: you can't achieve density approaching 0, but you also don't need density approaching ∞.",
     "mathContext": "The axiom states: ∃ A with the complement property and ∃ c > 1 such that limsup of normalized density equals c. The construction uses careful selection to cover all residue classes not covered by squares.",
     "significance": "key",
+    "prerequisites": [
+      "density theory",
+      "existence",
+      "limsup"
+    ],
     "relatedConcepts": [
       "existence",
       "limsup",
@@ -83,6 +105,11 @@
     "content": "**Moser (1965)** proved the first quantitative lower bound: for ANY additive complement A of squares, liminf |A ∩ {1,...,N}|/√N > 1.06. This means you can't be too sparse.",
     "mathContext": "This was groundbreaking as the first proof that additive complements must have substantial density. The proof analyzes how many elements are needed to cover all integers in each interval.",
     "significance": "key",
+    "prerequisites": [
+      "density theory",
+      "liminf",
+      "lower bound"
+    ],
     "relatedConcepts": [
       "lower bound",
       "liminf",
@@ -101,6 +128,10 @@
     "content": "The **best known lower bound** is liminf ≥ 4/π ≈ 1.273, proved independently by Cilleruelo (1993), Habsieger (1995), and Balasubramanian-Ramana (2001).",
     "mathContext": "The constant 4/π arises from Fourier analysis on ℤ/nℤ. The proof uses properties of the Jacobi theta function and the distribution of quadratic residues. The appearance of π suggests deep analytic structure.",
     "significance": "key",
+    "prerequisites": [
+      "Fourier analysis",
+      "quadratic residues"
+    ],
     "relatedConcepts": [
       "Fourier analysis",
       "quadratic residues",
@@ -119,6 +150,12 @@
     "content": "We define the **golden ratio** φ = (1 + √5)/2 ≈ 1.618 and prove its characteristic property: **φ² = φ + 1**. This identity is fundamental to Fibonacci sequences and appears in Van Doorn's construction.",
     "mathContext": "The proof uses `ring_nf` to normalize, then `sq_sqrt` to handle √5² = 5, and `ring` to complete the algebraic verification. The golden ratio satisfies x² - x - 1 = 0.",
     "significance": "key",
+    "prerequisites": [
+      "Fibonacci",
+      "golden ratio",
+      "proof techniques",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "golden ratio",
       "Fibonacci",
@@ -137,6 +174,11 @@
     "content": "**Van Doorn constructed** an additive complement A with limsup ≤ 2φ^(5/2) ≈ 6.66. This is the best known upper bound - there EXISTS a set achieving this density.",
     "mathContext": "The construction uses a greedy algorithm with Fibonacci-like patterns. The constant 2φ^(5/2) = 2·(1.618...)^2.5 ≈ 6.66 arises from the optimal balance between coverage and density.",
     "significance": "key",
+    "prerequisites": [
+      "construction",
+      "density theory",
+      "upper bound"
+    ],
     "relatedConcepts": [
       "upper bound",
       "construction",
@@ -155,6 +197,11 @@
     "content": "**What is the exact minimum** value of limsup |A ∩ {1,...,N}|/√N over all additive complements A? We only know: it's between 1 (from liminf bounds) and 2φ^(5/2) ≈ 6.66 (Van Doorn).",
     "mathContext": "We define `minLimsup` as the set of achievable limsup values. This is the 'harder' direction of Problem 33 - finding the infimum of this set remains open.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "open problem",
+      "optimization"
+    ],
     "relatedConcepts": [
       "open problem",
       "optimization",
@@ -173,6 +220,12 @@
     "content": "We **prove** that liminf > 1 for any additive complement by combining the 4/π lower bound with the fact that 4/π > 1. This uses the axioms to derive a concrete consequence.",
     "mathContext": "The proof is: from `cilleruelo_habsieger_lower_bound` we get liminf ≥ 4/π, and from `four_over_pi_gt_one` we know 4/π > 1. By `linarith`, we conclude liminf > 1.",
     "significance": "key",
+    "prerequisites": [
+      "derived result",
+      "linarith",
+      "linarith tactic",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "derived result",
       "linarith",

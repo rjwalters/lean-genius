@@ -11,6 +11,12 @@
     "content": "We define `nthPrime` using Mathlib's `Nat.nth Nat.Prime`, which enumerates primes: p_0 = 2, p_1 = 3, p_2 = 5, etc.",
     "mathContext": "Mathlib provides a well-defined enumeration of primes with properties like strict monotonicity via `Nat.nth_strictMono`.",
     "significance": "supporting",
+    "prerequisites": [
+      "Nat.nth",
+      "basic set theory",
+      "natural number arithmetic",
+      "prime enumeration"
+    ],
     "relatedConcepts": [
       "prime enumeration",
       "Nat.nth"
@@ -28,6 +34,12 @@
     "content": "The **prime gap** $d_n = p_{n+1} - p_n$ measures the distance between consecutive primes. The sequence of gaps begins: 1, 2, 2, 4, 2, 4, 2, 4, 6, ...",
     "mathContext": "Prime gaps are the central object of study. By the Prime Number Theorem, the average gap near n is approximately ln(n).",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "measure theory",
+      "prime distribution",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "prime distribution",
       "twin primes",
@@ -46,6 +58,12 @@
     "content": "**Euclid's Theorem**: The set of prime numbers is infinite. This fundamental result from `Nat.infinite_setOf_prime` is needed for the nth prime to be well-defined for all n.",
     "mathContext": "Lean: `theorem primes_infinite : (setOf Nat.Prime).Infinite`",
     "significance": "supporting",
+    "prerequisites": [
+      "Euclid's theorem",
+      "infinitude of primes",
+      "natural number arithmetic",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Euclid's theorem",
       "infinitude of primes"
@@ -63,6 +81,12 @@
     "content": "`nthPrime_strictMono`: The prime enumeration is strictly increasing. This follows from `Nat.nth_strictMono` applied to the infinite set of primes.",
     "mathContext": "Lean: `theorem nthPrime_strictMono : StrictMono nthPrime`",
     "significance": "key",
+    "prerequisites": [
+      "StrictMono",
+      "natural number arithmetic",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "strict monotonicity",
       "StrictMono"
@@ -80,6 +104,12 @@
     "content": "Since primes are strictly increasing (p_{n+1} > p_n for all n), all prime gaps d_n are positive. The proof uses strict monotonicity and omega.",
     "mathContext": "Lean: `theorem primeGap_pos (n : ℕ) : primeGap n > 0`",
     "significance": "supporting",
+    "prerequisites": [
+      "omega tactic",
+      "prime numbers",
+      "proof techniques",
+      "strict monotonicity"
+    ],
     "relatedConcepts": [
       "strict monotonicity",
       "omega tactic"
@@ -97,6 +127,12 @@
     "content": "`primeGap_zero = 1` (gap between 2 and 3) and `primeGap_one = 2` (gap between 3 and 5). These are proved using Mathlib's concrete values for small primes.",
     "mathContext": "Lean: `theorem primeGap_zero : primeGap 0 = 1`",
     "significance": "supporting",
+    "prerequisites": [
+      "concrete computation",
+      "prime numbers",
+      "proof techniques",
+      "simp"
+    ],
     "relatedConcepts": [
       "concrete computation",
       "simp"
@@ -114,6 +150,12 @@
     "content": "`HasIncreasingGaps n m` means the m consecutive gaps starting at n form a strictly increasing sequence: d_n < d_{n+1} < ... < d_{n+m}.",
     "mathContext": "This captures the local behavior we're interested in: when do prime gaps form monotone runs?",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "monotone sequences",
+      "prime gap patterns",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "monotone sequences",
       "prime gap patterns"
@@ -131,6 +173,10 @@
     "content": "`HasDecreasingGaps n m` means the m consecutive gaps starting at n form a strictly decreasing sequence: d_n > d_{n+1} > ... > d_{n+m}.",
     "mathContext": "Lean: `def HasDecreasingGaps (n m : ℕ) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "monotone sequences"
+    ],
     "relatedConcepts": [
       "monotone sequences"
     ]
@@ -147,6 +193,11 @@
     "content": "`InfinitelyManyIncreasing m` asserts that for any N, we can find n > N with an increasing run of length m. This is the standard formalization of 'infinitely many'.",
     "mathContext": "Logically: ∀ N, ∃ n > N, HasIncreasingGaps n m. No matter how far out we go, we can always find more examples.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "cofinality",
+      "infinite sets"
+    ],
     "relatedConcepts": [
       "infinite sets",
       "cofinality"
@@ -164,6 +215,11 @@
     "content": "**Erdős Problem 6**: Are there infinitely many n with d_n < d_{n+1} < d_{n+2}? This is precisely `InfinitelyManyIncreasing 2` (runs of length 2 means 3 consecutive gaps).",
     "mathContext": "Erdős and Turán posed this in 1948. Erdős was so confident it was true that he only offered money for a disproof.",
     "significance": "key",
+    "prerequisites": [
+      "Erdős problems",
+      "basic set theory",
+      "prime gap conjecture"
+    ],
     "relatedConcepts": [
       "Erdős problems",
       "prime gap conjecture"
@@ -181,6 +237,12 @@
     "content": "**The Main Result (2015)**: For any m ≥ 1, there are infinitely many n with d_n < d_{n+1} < ... < d_{n+m}. This completely resolves and generalizes Erdős Problem 6.",
     "mathContext": "The proof uses the Maynard-Tao sieve machinery developed for the bounded gaps conjecture. This allows controlling the distribution of primes in short intervals with remarkable precision.",
     "significance": "key",
+    "prerequisites": [
+      "Maynard-Tao",
+      "prime numbers",
+      "proof techniques",
+      "sieve methods"
+    ],
     "relatedConcepts": [
       "Maynard-Tao",
       "sieve methods",
@@ -199,6 +261,12 @@
     "content": "The decreasing analogue also holds: infinitely many n have d_n > d_{n+1} > ... > d_{n+m} for any m. Prime gaps oscillate in both directions.",
     "mathContext": "Lean: `axiom banks_freiberg_turnage_butterbaugh_decreasing (m : ℕ) (hm : m ≥ 1) :`",
     "significance": "key",
+    "prerequisites": [
+      "gap patterns",
+      "oscillation",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "oscillation",
       "gap patterns"
@@ -216,6 +284,10 @@
     "content": "**erdos_6_solved**: The conjecture is TRUE. This follows by applying Banks-Freiberg-Turnage-Butterbaugh with m = 2.",
     "mathContext": "A 67-year-old problem solved by the bounded gaps revolution.",
     "significance": "key",
+    "prerequisites": [
+      "proof techniques",
+      "theorem derivation"
+    ],
     "relatedConcepts": [
       "theorem derivation"
     ]
@@ -232,6 +304,12 @@
     "content": "**Key Tool**: The Maynard-Tao theorem guarantees that for any m, there exists H such that infinitely often, an interval of length H contains at least m primes.",
     "mathContext": "Maynard (2015) and independently Tao developed powerful sieve methods showing primes cluster in ways previously thought impossible to prove. This revolutionized prime gap research.",
     "significance": "key",
+    "prerequisites": [
+      "prime clusters",
+      "prime numbers",
+      "proof techniques",
+      "sieve theory"
+    ],
     "relatedConcepts": [
       "sieve theory",
       "prime clusters",
@@ -250,6 +328,12 @@
     "content": "**Zhang (2013)**: There exists H such that infinitely many prime pairs differ by at most H. Zhang proved H = 70,000,000 initially; this has been reduced to H = 246.",
     "mathContext": "Zhang's proof was the first to show bounded gaps unconditionally, a landmark in analytic number theory. It opened the floodgates for subsequent improvements.",
     "significance": "key",
+    "prerequisites": [
+      "bounded gaps",
+      "prime numbers",
+      "proof techniques",
+      "twin prime conjecture"
+    ],
     "relatedConcepts": [
       "twin prime conjecture",
       "bounded gaps",
@@ -268,6 +352,12 @@
     "content": "A beautiful corollary: not just triples, but arbitrarily long increasing (or decreasing) sequences of prime gaps exist. There are infinitely many runs of length 10, 100, or any m.",
     "mathContext": "Lean: `theorem arbitrarily_long_increasing_runs :`",
     "significance": "key",
+    "prerequisites": [
+      "generalization",
+      "prime gap patterns",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "generalization",
       "prime gap patterns"
@@ -285,6 +375,12 @@
     "content": "`prime_gaps_oscillate`: Both increasing and decreasing patterns occur infinitely often. Prime gaps never settle into monotone behavior - they oscillate forever.",
     "mathContext": "This rules out any eventual regularity in prime gaps. The primes remain 'random-looking' at all scales.",
     "significance": "key",
+    "prerequisites": [
+      "oscillation theorems",
+      "prime numbers",
+      "prime randomness",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "oscillation theorems",
       "prime randomness"

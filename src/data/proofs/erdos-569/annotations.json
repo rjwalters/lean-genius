@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #569** asks: for k ≥ 1, what is the best constant c_k such that R(C_{2k+1}, H) ≤ c_k · m for any graph H on m edges without isolated vertices? Here R denotes the two-color Ramsey number — the smallest N such that every red-blue coloring of K_N contains a red odd cycle or a blue copy of H. The problem was posed by Erdős, Faudree, Rousseau, and Schelp in 1993.",
     "mathContext": "The Ramsey number R(G₁, G₂) is a central object in combinatorics. This problem asks about the asymmetric case where one graph is an odd cycle and the other is arbitrary, parameterized by edge count rather than vertex count.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "graph coloring",
+      "graph theory basics",
+      "odd-cycles"
+    ],
     "relatedConcepts": [
       "ramsey-theory",
       "odd-cycles",
@@ -29,6 +35,12 @@
     "content": "**OddCycleLength k = 2k + 1** parametrizes all odd cycle lengths ≥ 3. For k = 1 we get triangles (C_3), for k = 2 pentagons (C_5), and so on. Two theorems are **proved** (not axiomatized): the length is always ≥ 3 for k ≥ 1, and the length is always odd. Both proofs use the `omega` tactic.",
     "mathContext": "The oddness is crucial: a graph contains no odd cycle iff it is bipartite. This structural characterization gives odd cycles special Ramsey properties that even cycles lack.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "basic set theory",
+      "graph theory basics",
+      "odd-cycles"
+    ],
     "relatedConcepts": [
       "odd-cycles",
       "omega-tactic",
@@ -47,6 +59,12 @@
     "content": "**NoIsolatedVertices** requires every vertex to have at least one neighbor. This is essential: without this condition, adding isolated vertices would make the Ramsey number depend on vertex count rather than edge count. The **vertex_bound_no_isolated** axiom states n ≤ 2m (from the handshaking lemma: sum of degrees = 2m, each vertex contributes ≥ 1).",
     "mathContext": "Uses Mathlib's SimpleGraph.Adj for the adjacency relation and edgeFinset.card for edge count. The no-isolated-vertices condition ensures that edge count meaningfully controls graph complexity.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "Ramsey theory",
+      "SimpleGraph",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "SimpleGraph",
       "handshaking-lemma",
@@ -65,6 +83,12 @@
     "content": "**R_cycle_graph(k, m)** is axiomatized as the Ramsey number R(C_{2k+1}, H) for H with m edges. **LinearRamseyBound k c** formalizes the target property: R(C_{2k+1}, H) ≤ c · m for ALL graphs H with m edges and no isolated vertices. This universally quantified definition ranges over all graph types V and all simple graphs, capturing the full generality of the problem.",
     "mathContext": "The Ramsey number is axiomatized rather than constructed because formalizing it would require graph homomorphisms, colorings of complete graphs, and the Ramsey existence theorem — well beyond current Mathlib.",
     "significance": "key",
+    "prerequisites": [
+      "LinearRamseyBound",
+      "Ramsey theory",
+      "RamseyNumber",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "RamseyNumber",
       "LinearRamseyBound",
@@ -83,6 +107,11 @@
     "content": "Several results are axiomatized:\n\n1. **triangle_ramsey_linear:** R(C_3, H) ≤ 2m + 1, from Turán-type arguments.\n2. **triangle_constant_bound:** LinearRamseyBound 1 3, since 2m+1 ≤ 3m for m ≥ 1.\n3. **pentagon_ramsey_linear:** R(C_5, H) ≤ 4m + 1.\n4. **efrs_upper_bound:** ∃ c, R(C_{2k+1}, H) ≤ c·k·m — the EFRS93 general bound.\n5. **conjectured_linear_bound:** ∀ k ≥ 1, ∃ c_k with LinearRamseyBound k c_k.",
     "mathContext": "The EFRS93 bound is linear in m but has an extra factor of k. The open question is whether this k factor can be absorbed into a constant c_k depending only on k.",
     "significance": "key",
+    "prerequisites": [
+      "EFRS93",
+      "Ramsey theory",
+      "triangle-ramsey"
+    ],
     "relatedConcepts": [
       "EFRS93",
       "triangle-ramsey",
@@ -101,6 +130,12 @@
     "content": "Two lower bounds:\n\n1. **star_lower_bound:** R(C_{2k+1}, K_{1,m}) ≥ 2m + 1, from the star graph with m edges.\n2. **constant_lower_bound:** c_k ≥ 2 for all k ≥ 1, meaning LinearRamseyBound k 1 fails.\n\nThese show that the linear dependence on m is genuine and the constant must be at least 2.",
     "mathContext": "The star lower bound colors K_{2m} with one color class forming a bipartite graph (no odd cycle) while the other color class lacks K_{1,m}.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "graph theory basics",
+      "lower-bounds",
+      "star-graphs"
+    ],
     "relatedConcepts": [
       "star-graphs",
       "lower-bounds",
@@ -119,6 +154,12 @@
     "content": "**erdos_569_summary** combines the two central known results: (1) the EFRS93 general bound R(C_{2k+1}, H) ≤ c·k·m for some absolute constant c, and (2) the triangle case LinearRamseyBound 1 3. The proof is `⟨efrs_upper_bound, triangle_constant_bound⟩`.\n\nThis replaces previous placeholder content (`True := trivial` and `String` defs) with a genuine mathematical summary.",
     "mathContext": "The conjunction packages the best general upper bound with the best specific case (k=1), giving a concrete picture of what is known.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "efrs_upper_bound",
+      "proof techniques",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "efrs_upper_bound",
       "triangle_constant_bound"

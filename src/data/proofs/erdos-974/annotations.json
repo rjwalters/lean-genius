@@ -11,6 +11,11 @@
     "content": "Erdős Problem #974 asks: if power sums sₖ = Σ zᵢᵏ have infinitely many (n-1)-tuples of consecutive zeros, must the zᵢ be nth roots of unity? **YES** — proved by Tijdeman (1966).",
     "mathContext": "For complex z₁, ..., zₙ with z₁ = 1, the power sums encode algebraic structure. The vanishing of n-1 consecutive sums is a rigid constraint related to Newton's identities.",
     "significance": "key",
+    "prerequisites": [
+      "complex numbers",
+      "power sums",
+      "roots of unity"
+    ],
     "relatedConcepts": [
       "power sums",
       "roots of unity",
@@ -29,6 +34,12 @@
     "content": "A **Configuration n** is a function Fin n → ℂ, representing n complex numbers indexed by 0, 1, ..., n-1.",
     "mathContext": "Using Fin n ensures exactly n elements. The function type allows clean summation syntax via BigOperators.",
     "significance": "key",
+    "prerequisites": [
+      "Fin",
+      "basic set theory",
+      "complex numbers",
+      "function type"
+    ],
     "relatedConcepts": [
       "Fin",
       "function type",
@@ -47,6 +58,12 @@
     "content": "The **power sum** sₖ = Σᵢ zᵢᵏ sums the kth powers of all configuration elements. These are the central objects of study.",
     "mathContext": "Power sums form a basis for symmetric polynomials. Via Newton's identities, they determine elementary symmetric functions and thus the minimal polynomial.",
     "significance": "key",
+    "prerequisites": [
+      "Newton's identities",
+      "basic set theory",
+      "polynomial ring theory",
+      "symmetric functions"
+    ],
     "relatedConcepts": [
       "symmetric functions",
       "Newton's identities",
@@ -65,6 +82,12 @@
     "content": "**nthRootOfUnity n j** = e(j/n) = exp(2πij/n) gives the jth of the n equally-spaced points on the unit circle.",
     "mathContext": "The nth roots of unity satisfy xⁿ = 1 and are ζ, ζ², ..., ζⁿ = 1 where ζ = exp(2πi/n) is primitive. They form a cyclic group of order n.",
     "significance": "key",
+    "prerequisites": [
+      "Complex.exp",
+      "basic set theory",
+      "group theory",
+      "unit circle"
+    ],
     "relatedConcepts": [
       "Complex.exp",
       "unit circle",
@@ -83,6 +106,10 @@
     "content": "For the nth roots of unity: sₖ = n if n divides k, else sₖ = 0. This geometric series property is fundamental.",
     "mathContext": "When n ∤ k, the sum Σⱼ ζʲᵏ = (1 - ζⁿᵏ)/(1 - ζᵏ) = 0 since ζⁿ = 1 but ζᵏ ≠ 1. When n | k, each term is 1.",
     "significance": "key",
+    "prerequisites": [
+      "divisibility",
+      "geometric series"
+    ],
     "relatedConcepts": [
       "geometric series",
       "divisibility",
@@ -101,6 +128,12 @@
     "content": "**consecutiveZeroTuple z k** means (sₖ, sₖ₊₁, ..., sₖ₊ₙ₋₂) are all zero — an (n-1)-tuple of consecutive vanishing power sums.",
     "mathContext": "Why n-1? Because n power sums (s₁, ..., sₙ) determine the characteristic polynomial via Newton's identities. Having n-1 zeros is nearly maximal constraint.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "polynomial constraint",
+      "polynomial ring theory",
+      "power sum vanishing"
+    ],
     "relatedConcepts": [
       "power sum vanishing",
       "polynomial constraint"
@@ -118,6 +151,11 @@
     "content": "**hasInfinitelyManyZeroTuples z** means for any N, there exists k > N with a zero (n-1)-tuple starting at k.",
     "mathContext": "This infinite condition seems strong, but Tijdeman showed even TWO such tuples suffice to force the roots-of-unity conclusion!",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic condition",
+      "basic set theory",
+      "infinite family"
+    ],
     "relatedConcepts": [
       "asymptotic condition",
       "infinite family"
@@ -135,6 +173,12 @@
     "content": "**isEssentiallyRootsOfUnity z** means z is a permutation of the nth roots of unity. 'Essentially' allows reordering since power sums are symmetric.",
     "mathContext": "Power sums are symmetric functions: Σ zᵢᵏ is unchanged if we permute the zᵢ. So we can only determine the configuration up to permutation.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "bijection",
+      "permutation",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "permutation",
       "bijection",
@@ -153,6 +197,11 @@
     "content": "For even n, **isTwoRegularPolygons z** allows the zᵢ to be vertices of two regular (n/2)-gons with the same circumscribed circle centered at origin.",
     "mathContext": "When n is even, there's more flexibility: two rotated copies of (n/2)-gons give the same power sums as the n roots of unity for many k values.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "even n case",
+      "regular polygon"
+    ],
     "relatedConcepts": [
       "even n case",
       "regular polygon",
@@ -171,6 +220,10 @@
     "content": "**turan_conjecture**: If infinitely many (n-1)-tuples of consecutive power sums vanish, then z is essentially roots of unity. This is the original problem statement.",
     "mathContext": "Turán posed this conjecture connecting the analytic condition (power sum zeros) to the algebraic conclusion (roots of unity).",
     "significance": "key",
+    "prerequisites": [
+      "Turán",
+      "conjecture"
+    ],
     "relatedConcepts": [
       "Turán",
       "conjecture",
@@ -189,6 +242,10 @@
     "content": "**tijdeman_1966_odd**: For odd n ≥ 3, just TWO distinct (n-1)-tuples of consecutive zeros suffice to conclude z is exactly the nth roots of unity.",
     "mathContext": "This is far stronger than Turán's conjecture: finitely many (just 2!) tuples suffice. For odd n, the characterization is exact — no 'essentially' needed.",
     "significance": "key",
+    "prerequisites": [
+      "Tijdeman",
+      "odd case"
+    ],
     "relatedConcepts": [
       "Tijdeman",
       "odd case",
@@ -207,6 +264,10 @@
     "content": "**tijdeman_1966_even**: For even n ≥ 4, two distinct zero tuples imply z forms two regular (n/2)-gons. This is the complete characterization.",
     "mathContext": "The even case has extra flexibility from the Z₂ symmetry: rotating one (n/2)-gon by π gives another valid configuration with same power sums.",
     "significance": "key",
+    "prerequisites": [
+      "Tijdeman",
+      "even case"
+    ],
     "relatedConcepts": [
       "Tijdeman",
       "even case",
@@ -225,6 +286,11 @@
     "content": "**Erdős Problem #974: SOLVED (YES)**. If infinitely many (n-1)-tuples of consecutive power sums vanish, then z is essentially roots of unity.",
     "mathContext": "The theorem wraps turan_conjecture with a clean interface. The proof is immediate from the axiom.",
     "significance": "key",
+    "prerequisites": [
+      "main theorem",
+      "proof techniques",
+      "resolution"
+    ],
     "relatedConcepts": [
       "main theorem",
       "resolution",
@@ -243,6 +309,11 @@
     "content": "Newton's identities relate power sums to elementary symmetric polynomials: k·eₖ = Σⱼ (-1)^(j-1) eₖ₋ⱼ pⱼ. This algebraic structure underlies the result.",
     "mathContext": "If z₁, ..., zₙ are roots of P(x) = xⁿ - e₁xⁿ⁻¹ + ... + (-1)ⁿeₙ, then the power sums determine the eᵢ. Consecutive zeros heavily constrain the polynomial.",
     "significance": "key",
+    "prerequisites": [
+      "Newton's identities",
+      "elementary symmetric",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Newton's identities",
       "elementary symmetric",
@@ -261,6 +332,11 @@
     "content": "**erdos_974_summary** packages both the main result (Turán's conjecture) and Tijdeman's strengthening for odd n into a single statement.",
     "mathContext": "The conjunction shows both the original problem (infinitely many) and the surprising strengthening (just 2 tuples for odd n).",
     "significance": "key",
+    "prerequisites": [
+      "conjunction",
+      "proof techniques",
+      "summary"
+    ],
     "relatedConcepts": [
       "summary",
       "conjunction",

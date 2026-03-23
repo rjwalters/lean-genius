@@ -11,6 +11,10 @@
     "content": "Erdős Problem #958: For n points in ℝ² with k = n-1 distinct distances and multiplicities {n-1,...,1}, must the points be equidistant on a line or circle? Answer: NO. Clemen-Dumitrescu-Liu (2025) found arc+center counterexamples. SOLVED.",
     "mathContext": "k = n-1 distances, multiplicities {n-1,...,1} ⟹ line/circle? FALSE.",
     "significance": "key",
+    "prerequisites": [
+      "distance geometry",
+      "point configurations"
+    ],
     "relatedConcepts": [
       "distance geometry",
       "point configurations",
@@ -29,6 +33,12 @@
     "content": "Point := EuclideanSpace ℝ (Fin 2). distanceSet(A) = set of distinct pairwise distances. multiplicity(A, d) = |{(p,q) : dist(p,q) = d}|. multiplicityMultiset(A) = multiset of all multiplicities. These definitions use Finset.product and Finset.image from Mathlib.",
     "mathContext": "distanceSet A = {‖p-q‖ : p,q ∈ A}. multiplicity A d = |{(p,q) ∈ A² : ‖p-q‖ = d}|.",
     "significance": "key",
+    "prerequisites": [
+      "EuclideanSpace",
+      "Finset API",
+      "Finset.product",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "EuclideanSpace",
       "Finset.product",
@@ -47,6 +57,11 @@
     "content": "isEquidistantLine(A, n): n points on a line with a common direction vector. isEquidistantCircle(A, n): n points on a circle of radius r > 0. isStandardConfig(A): line or circle configuration. These are the two classical configurations that satisfy the special multiplicity pattern.",
     "mathContext": "isStandardConfig A ≡ ∃ n, isEquidistantLine A n ∨ isEquidistantCircle A n.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "collinearity",
+      "concyclic points"
+    ],
     "relatedConcepts": [
       "collinearity",
       "concyclic points",
@@ -65,6 +80,11 @@
     "content": "hasSpecialPattern(A): k = n-1 distinct distances and multiplicities form {1, 2, ..., n-1}. OriginalConjecture: hasSpecialPattern ↔ isStandardConfig for |A| ≥ 3. This conjecture turned out to be FALSE — there exist non-standard configurations with the special pattern.",
     "mathContext": "hasSpecialPattern A ≡ |distanceSet A| = n-1 ∧ multiplicityMultiset A = Multiset.range(n-1) + 1.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "characterization",
+      "multiplicity patterns"
+    ],
     "relatedConcepts": [
       "multiplicity patterns",
       "characterization",
@@ -83,6 +103,11 @@
     "content": "isArcPlusCenter(A, n): n-1 equidistant points on a short arc of a unit circle plus the center. The arc must be short enough that all arc-to-arc distances are distinct and less than the diameter. The center has distance exactly 1 to every arc point, producing multiplicity n-1 for that distance.",
     "mathContext": "The key geometric insight: with n-1 arc points and 1 center, the center-to-arc distance d=1 has multiplicity n-1, and the arc-to-arc distances are all distinct with decreasing multiplicities.",
     "significance": "key",
+    "prerequisites": [
+      "arc length",
+      "basic set theory",
+      "unit circle"
+    ],
     "relatedConcepts": [
       "unit circle",
       "arc length",
@@ -101,6 +126,10 @@
     "content": "clemen_dumitrescu_liu (axiom): For all n ≥ 4, there exists an arc+center configuration of n points that satisfies hasSpecialPattern but is NOT isStandardConfig. conjecture_disproved (axiom): ¬OriginalConjecture. Together these establish that the characterization fails for every n ≥ 4.",
     "mathContext": "∀ n ≥ 4, ∃ A, isArcPlusCenter A n ∧ hasSpecialPattern A ∧ ¬isStandardConfig A.",
     "significance": "key",
+    "prerequisites": [
+      "counterexample",
+      "disproof"
+    ],
     "relatedConcepts": [
       "counterexample",
       "disproof",
@@ -119,6 +148,10 @@
     "content": "erdos_958_summary: ¬OriginalConjecture ∧ (∀ n ≥ 4, ∃ counterexample). Proved from conjecture_disproved and clemen_dumitrescu_liu axioms using exact ⟨conjecture_disproved, clemen_dumitrescu_liu⟩. The characterization conjecture is FALSE — arc+center configurations provide a new infinite family of solutions.",
     "mathContext": "erdos_958_summary : ¬OriginalConjecture ∧ (∀ n ≥ 4, ∃ A, isArcPlusCenter A n ∧ hasSpecialPattern A ∧ ¬isStandardConfig A) := ⟨conjecture_disproved, clemen_dumitrescu_liu⟩.",
     "significance": "key",
+    "prerequisites": [
+      "Erdős intuition",
+      "solved problems"
+    ],
     "relatedConcepts": [
       "solved problems",
       "Erdős intuition",

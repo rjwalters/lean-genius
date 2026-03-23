@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #1099: Divisor Ratio Sum Boundedness**\n\nThe problem studies how \"smooth\" the divisor structure of integers can be. Given divisors 1 = d₁ < d₂ < ⋯ < d_τ(n) = n, the function h_α(n) measures the total \"gap\" between consecutive divisors:\n$$h_\\alpha(n) = \\sum_i \\left(\\frac{d_{i+1}}{d_i} - 1\\right)^\\alpha$$\n\n**Question:** Is liminf h_α(n) bounded for α > 1?\n\n**Answer:** YES (Vose, 1984). There exist integers with remarkably evenly-spaced divisors.",
     "mathContext": "This function penalizes large gaps between consecutive divisors. For α > 1, larger ratios contribute disproportionately more, so small h_α requires ALL ratios to be close to 1.",
     "significance": "key",
+    "prerequisites": [
+      "Consecutive ratios",
+      "Divisor structure",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "Divisor structure",
       "Consecutive ratios",
@@ -29,6 +34,12 @@
     "content": "**tau (n):**\n\nτ(n) = |divisors(n)| is the number of positive divisors of n.\n\n**Examples:**\n- τ(1) = 1 (only divisor is 1)\n- τ(p) = 2 for prime p (divisors: 1, p)\n- τ(12) = 6 (divisors: 1, 2, 3, 4, 6, 12)\n- τ(2^k) = k+1 (divisors: 1, 2, 4, ..., 2^k)",
     "mathContext": "$τ(n) = |divisors(n)| is the number of positive divisors of n.$",
     "significance": "key",
+    "prerequisites": [
+      "Divisor function",
+      "Highly composite numbers",
+      "basic set theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Divisor function",
       "Highly composite numbers"
@@ -46,6 +57,11 @@
     "content": "**sortedDivisors (n):**\n\nThe divisors of n listed in increasing order: 1 = d₁ < d₂ < ⋯ < d_τ(n) = n.\n\n**Example for n = 12:**\n[1, 2, 3, 4, 6, 12]\n\nThe first divisor is always 1, and the last is always n itself.",
     "mathContext": "$The divisors of n listed in increasing order: 1 = d₁ < d₂ < ⋯ < d_τ(n) = n.$",
     "significance": "key",
+    "prerequisites": [
+      "Divisors",
+      "Ordering",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Divisors",
       "Ordering"
@@ -63,6 +79,11 @@
     "content": "**divisorRatios (n):**\n\nThe list of ratios d_{i+1}/dᵢ for consecutive divisors.\n\n**Example for n = 12:**\nDivisors: [1, 2, 3, 4, 6, 12]\nRatios: [2/1, 3/2, 4/3, 6/4, 12/6] = [2, 1.5, 1.33, 1.5, 2]\n\n**Key observation:** The product of all ratios equals n (telescoping product).",
     "mathContext": "$Ratios: [2/1, 3/2, 4/3, 6/4, 12/6] = [2, 1.5, 1.33, 1.5, 2]$",
     "significance": "key",
+    "prerequisites": [
+      "Divisor gaps",
+      "Telescoping products",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Divisor gaps",
       "Telescoping products"
@@ -80,6 +101,12 @@
     "content": "**h_alpha (α) (n):**\n\n$$h_\\alpha(n) = \\sum_i \\left(\\frac{d_{i+1}}{d_i} - 1\\right)^\\alpha$$\n\nThis measures the total \"gap irregularity\" of divisors:\n- Each term (ratio - 1)^α is 0 when ratio = 1 (adjacent divisors)\n- Larger ratios contribute more, especially for large α\n- Small h_α means ALL ratios are close to 1\n\n**Key:** The α > 1 constraint makes this non-linear, penalizing large gaps.",
     "mathContext": "For α = 2, this is like a sum of squares of gaps. For larger α, individual large gaps dominate even more.",
     "significance": "key",
+    "prerequisites": [
+      "Gap functions",
+      "Power sums",
+      "basic set theory",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "Gap functions",
       "Power sums"
@@ -97,6 +124,12 @@
     "content": "**h_alpha_ge_one:**\n\n```lean\ntheorem h_alpha_ge_one (α : ℝ) (hα : α > 1) (n : ℕ) (hn : n ≥ 2) :\n    h_alpha α n ≥ 1\n```\n\n**Why?** For any n ≥ 2:\n- The first divisor is 1\n- The second divisor d₂ ≥ 2 (smallest prime factor)\n- So the first ratio d₂/1 ≥ 2\n- Therefore (d₂ - 1)^α ≥ (2-1)^α = 1\n\nThis shows liminf h_α(n) ≥ 1 trivially.",
     "mathContext": "Lean: `theorem h_alpha_ge_one (α : ℝ) (hα : α > 1) (n : ℕ) (hn : n ≥ 2) :`",
     "significance": "key",
+    "prerequisites": [
+      "First term",
+      "Lower bounds",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Lower bounds",
       "First term"
@@ -114,6 +147,12 @@
     "content": "**factorialDivisors (n):**\n\nThe divisors of n!. Factorials have MANY divisors because they contain every prime up to n.\n\n**Example:** 5! = 120 = 2³ · 3 · 5\nτ(120) = 4 · 2 · 2 = 16 divisors\n\n**Erdős's Question:** Does h_α(n!) remain bounded? STILL OPEN!",
     "mathContext": "Intuitively, n! has so many divisors that consecutive ratios should be small. But proving uniform bounds is surprisingly hard.",
     "significance": "key",
+    "prerequisites": [
+      "Erdős's candidates",
+      "Factorials",
+      "basic set theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Factorials",
       "Erdős's candidates"
@@ -131,6 +170,12 @@
     "content": "**lcmDivisors (n):**\n\nThe divisors of lcm{1, 2, ..., n}. This number has each prime p ≤ n appearing exactly once with maximal power p^⌊log_p(n)⌋.\n\n**Example:** lcm{1,...,6} = 60 = 2² · 3 · 5\n\n**Erdős's Question:** Does h_α(lcm{1,...,n}) remain bounded? STILL OPEN!",
     "mathContext": "Like n!, this has many divisors, but the structure is different. The conjecture remains unproved.",
     "significance": "key",
+    "prerequisites": [
+      "LCM",
+      "LCM theory",
+      "Primorial",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "LCM",
       "Primorial",
@@ -149,6 +194,11 @@
     "content": "**vose_bounded_sequence:**\n\nFor any α > 1, there exists a bound C and a sequence (nₖ) such that h_α(nₖ) ≤ C for all k.\n\n**Key insight:** Vose constructed numbers whose divisors are very evenly spaced:\n- If all τ ratios are approximately 1 + c/τ\n- Then h_α ≈ τ · (c/τ)^α = c^α · τ^(1-α) → 0\n\nThe construction is specific and doesn't use n! or lcm.",
     "mathContext": "The proof uses careful number-theoretic constructions to ensure divisor regularity.",
     "significance": "key",
+    "prerequisites": [
+      "Bounded sequences",
+      "LCM theory",
+      "Vose 1984"
+    ],
     "relatedConcepts": [
       "Vose 1984",
       "Bounded sequences"
@@ -166,6 +216,10 @@
     "content": "**vose_liminf_bounded:**\n\nFor any α > 1, liminf_{n→∞} h_α(n) is finite.\n\n**This resolves Erdős Problem #1099!**\n\nThe answer is YES: there exist integers with arbitrarily small h_α values (approaching some finite limit inferior).",
     "mathContext": "Published in Journal of Number Theory (1984): 'Integers with consecutive divisors in small ratio.'",
     "significance": "key",
+    "prerequisites": [
+      "Main theorem",
+      "Problem resolution"
+    ],
     "relatedConcepts": [
       "Main theorem",
       "Problem resolution"
@@ -183,6 +237,11 @@
     "content": "**erdos_1099:**\n\n```lean\ntheorem erdos_1099 (α : ℝ) (hα : α > 1) :\n    ∃ C : ℝ, C > 0 ∧ ∀ ε > 0, ∃ n : ℕ, n > 0 ∧ h_alpha α n < C + ε\n```\n\nThis formalizes the answer to Erdős's question: YES, the liminf is bounded.\n\nThe proof extracts a bound from Vose's axiom.",
     "mathContext": "Lean: `theorem erdos_1099 (α : ℝ) (hα : α > 1) :`",
     "significance": "key",
+    "prerequisites": [
+      "Erdős Problem #1099",
+      "Existence theorem",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Erdős Problem #1099",
       "Existence theorem"
@@ -200,6 +259,10 @@
     "content": "**sum_divisor_ratios_lower_bound:**\n\n$$\\sum_i \\frac{d_{i+1}}{d_i} > \\tau(n) + \\log(n)$$\n\n**Why?** \n- There are τ(n) - 1 ratios, each ≥ 1\n- The product of ratios is n (telescoping)\n- By AM-GM, the sum exceeds what we'd expect from uniform ratios\n\n**Related question:** Is liminf(Σ ratios - τ - log n) < ∞? This follows from the main result.",
     "mathContext": "$\\sum_i \\frac{d_{i+1}}{d_i} > \\tau(n) + \\log(n)$",
     "significance": "key",
+    "prerequisites": [
+      "AM-GM",
+      "Ratio sums"
+    ],
     "relatedConcepts": [
       "Ratio sums",
       "AM-GM",
@@ -218,6 +281,12 @@
     "content": "**prime_h_alpha_unbounded:**\n\nFor a prime p, divisors are just {1, p}, with single ratio p.\n\nh_α(p) = (p - 1)^α → ∞ as p → ∞\n\n**Lesson:** Primes are the WORST case for divisor regularity. They have only one gap, and it's maximal.\n\nThis shows we need composite numbers with many divisors to achieve bounded h_α.",
     "mathContext": "$h_α(p) = (p - 1)^α → ∞ as p → ∞$",
     "significance": "key",
+    "prerequisites": [
+      "Primes",
+      "Worst case",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Primes",
       "Worst case",
@@ -236,6 +305,12 @@
     "content": "**power_of_two_h_alpha:**\n\nFor n = 2^k, divisors are {1, 2, 4, ..., 2^k}, with k ratios all equal to 2.\n\nh_α(2^k) = k · (2-1)^α = k · 1 = k\n\n**Lesson:** Even with many divisors, if ratios are uniform but not close to 1, h_α still grows.\n\nPowers of 2 grow linearly in h_α, which is better than primes but still unbounded.",
     "mathContext": "$For n = 2^k, divisors are {1, 2, 4, ..., 2^k}, with k ratios all equal to 2.$",
     "significance": "key",
+    "prerequisites": [
+      "Powers of primes",
+      "Uniform ratios",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Powers of primes",
       "Uniform ratios",
@@ -254,6 +329,12 @@
     "content": "**erdos_1099_summary:**\n\n**Q:** For α > 1, is liminf h_α(n) bounded?\n\n**A:** YES (Vose, 1984)\n\n**Key points:**\n1. Trivial lower bound: liminf ≥ 1\n2. Primes are terrible: h_α(p) = (p-1)^α → ∞\n3. Powers of 2 grow linearly: h_α(2^k) = k\n4. Vose constructed good examples with bounded h_α\n5. Whether n! or lcm{1,...,n} work remains OPEN\n\nThis resolves a question about divisor structure from 1981.",
     "mathContext": "$1. Trivial lower bound: liminf ≥ 1$",
     "significance": "key",
+    "prerequisites": [
+      "LCM theory",
+      "Main result",
+      "Open questions",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Main result",
       "Open questions"

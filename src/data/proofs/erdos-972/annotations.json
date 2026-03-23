@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #972** asks: for irrational α > 1, are there infinitely many primes p such that ⌊pα⌋ is also prime?\n\nThis is an **OPEN** problem. Vinogradov (1948) proved a related result about uniform distribution, but it doesn't answer this question.",
     "mathContext": "The key distinction is between asking 'which integers n have ⌊nα⌋ prime?' (Vinogradov) versus 'which primes p have ⌊pα⌋ prime?' (this problem). The former has a positive answer by equidistribution; the latter is unknown.",
     "significance": "key",
+    "prerequisites": [
+      "irrational-numbers",
+      "prime numbers",
+      "primes"
+    ],
     "relatedConcepts": [
       "primes",
       "irrational-numbers",
@@ -30,6 +35,12 @@
     "content": "We import **Mathlib** for prime numbers (`Nat.Prime`), the floor function (`⌊·⌋₊`), irrationality (`Irrational`), and infinite sets (`Set.Infinite`).",
     "mathContext": "The notation ⌊x⌋₊ denotes the natural number floor, which maps a real x to the largest natural number ≤ x. For negative x, this returns 0.",
     "significance": "supporting",
+    "prerequisites": [
+      "floor-function",
+      "infinite sets",
+      "mathlib",
+      "natural number arithmetic"
+    ],
     "relatedConcepts": [
       "mathlib",
       "floor-function",
@@ -48,6 +59,12 @@
     "content": "**primeSet(α)** is defined as {p ∈ ℕ | p is prime AND ⌊αp⌋ is prime}.\n\nThis set captures all primes whose image under 'scale by α and floor' remains prime. The central question is: is this set infinite for irrational α > 1?",
     "mathContext": "We also define primeSetAlt using explicit Nat.floor notation and prove the two definitions are equivalent (they're definitionally equal, so `rfl` suffices).",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "natural number arithmetic",
+      "prime numbers",
+      "primes"
+    ],
     "relatedConcepts": [
       "primes",
       "set-builder",
@@ -66,6 +83,12 @@
     "content": "When α = 1, we have ⌊1·p⌋ = ⌊p⌋ = p, so **primeSet(1) equals the set of all primes**.\n\nThis is a sanity check: scaling by 1 preserves primality trivially.",
     "mathContext": "The proof uses Nat.floor_natCast, which says ⌊n⌋₊ = n for natural numbers n. This is why α = 1 is a trivial case - no information is lost.",
     "significance": "supporting",
+    "prerequisites": [
+      "natural number arithmetic",
+      "prime numbers",
+      "proof techniques",
+      "special-case"
+    ],
     "relatedConcepts": [
       "special-case",
       "trivial",
@@ -84,6 +107,12 @@
     "content": "For 0 < α < 1, we prove that ⌊αp⌋ < p for any prime p in primeSet(α).\n\nThis shows that scaling down by α < 1 always reduces the floor value.",
     "mathContext": "The proof uses that αp < p (since α < 1) and the floor is bounded by its argument. The sorry marks a technical step connecting real inequalities to natural number inequalities.",
     "significance": "supporting",
+    "prerequisites": [
+      "floor-bound",
+      "prime numbers",
+      "proof techniques",
+      "scaling-down"
+    ],
     "relatedConcepts": [
       "floor-bound",
       "scaling-down",
@@ -102,6 +131,12 @@
     "content": "**erdos972Conjecture**: For all irrational α > 1, is primeSet(α) infinite?\n\nThis is defined as a Prop, allowing us to reason about the conjecture without committing to its truth value.",
     "mathContext": "The formal statement is: ∀ α : ℝ, α > 1 → Irrational α → (primeSet α).Infinite. The 'Irrational' predicate from Mathlib captures numbers not expressible as p/q.",
     "significance": "key",
+    "prerequisites": [
+      "infinite-set",
+      "open-problem",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "open-problem",
       "infinite-set",
@@ -120,6 +155,11 @@
     "content": "**Vinogradov (1948)**: For irrational α > 1, there are infinitely many primes p = ⌊nα⌋ for some integer n.\n\nThis is stated as an **axiom** since the proof requires Vinogradov's deep work on exponential sums with primes.",
     "mathContext": "The key observation is: p = ⌊nα⌋ iff p/α ≤ n < (p+1)/α, which is equivalent to {p/α} > 1 - 1/α. By uniform distribution of {pα⁻¹}, this occurs infinitely often.",
     "significance": "key",
+    "prerequisites": [
+      "axiom",
+      "prime numbers",
+      "uniform-distribution"
+    ],
     "relatedConcepts": [
       "axiom",
       "uniform-distribution",
@@ -138,6 +178,11 @@
     "content": "The **key distinction**:\n- **Vinogradov**: Which n have ⌊nα⌋ prime? (Infinitely many, by equidistribution)\n- **Erdős #972**: Which primes p have ⌊pα⌋ prime? (Unknown)\n\nThese are different questions about the floor function's interaction with primes.",
     "mathContext": "We define vinogradovSet(α) = {p prime : p = ⌊nα⌋ for some n} and prove it differs from primeSet(α). Vinogradov's set is about primes in the *range* of floor∘(α·), while Erdős's set is about primes in the *domain*.",
     "significance": "key",
+    "prerequisites": [
+      "domain-vs-range",
+      "hard-problem",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "domain-vs-range",
       "hard-problem",
@@ -156,6 +201,12 @@
     "content": "We verify the definition for specific values:\n\n- **α = 2, p = 2**: ⌊2·2⌋ = 4 (not prime), so 2 ∉ primeSet(2)\n- **α = 2, p = 3**: ⌊2·3⌋ = 6 (not prime), so 3 ∉ primeSet(2)\n- **α = 3/2, p = 2**: ⌊1.5·2⌋ = 3 (prime), so 2 ∈ primeSet(3/2)\n- **α = 3/2, p = 5**: ⌊1.5·5⌋ = 7 (prime), so 5 ∈ primeSet(3/2)\n- **α = 3/2, p = 7**: ⌊1.5·7⌋ = 10 (not prime), so 7 ∉ primeSet(3/2)",
     "mathContext": "These examples use norm_num and push_neg tactics to verify membership. Note α = 3/2 is rational, so these don't address the conjecture directly, but they verify the definition is working correctly.",
     "significance": "supporting",
+    "prerequisites": [
+      "examples",
+      "norm_num tactic",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "examples",
       "verification",
@@ -174,6 +225,12 @@
     "content": "We study the **golden ratio φ = (1 + √5)/2** as a canonical test case.\n\nWe prove:\n1. **φ > 1**: Since √5 > 2 (because 5 > 4 = 2²), we have φ = (1+√5)/2 > 3/2 > 1\n2. **φ is irrational**: Stated as axiom (√5 irrational implies φ irrational)\n3. **Conjecture → φ case**: If the conjecture holds, then primeSet(φ) is infinite",
     "mathContext": "The golden ratio satisfies φ² = φ + 1, making it the simplest algebraic irrational > 1. Its continued fraction [1;1,1,1,...] has the slowest convergence, which might affect the distribution of ⌊pφ⌋.",
     "significance": "supporting",
+    "prerequisites": [
+      "basic set theory",
+      "golden-ratio",
+      "irrational",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "golden-ratio",
       "irrational",

@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #710: Minimal Interval for Divisibility Matching**\n\nGiven n, find the minimal interval length f(n) such that (n, n+f(n)) contains distinct integers a₁,...,aₙ with k | aₖ for all k.\n\n**Known Bounds (Erdős-Pomerance 1980):**\n- Lower: (2/√e + o(1)) · n · √(log n / log log n)\n- Upper: (1.7398... + o(1)) · n · √(log n)\n\n**Status:** OPEN - exact asymptotics unknown\n\n**Prize:** 2000 rupees (~$78 in 1992)",
     "mathContext": "This problem combines divisibility constraints with interval combinatorics. The gap between upper and lower bounds (a factor of √(log log n)) is the key mystery.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic analysis",
+      "Divisibility",
+      "divisibility",
+      "matching theory"
+    ],
     "relatedConcepts": [
       "Divisibility",
       "Asymptotic analysis",
@@ -29,6 +35,12 @@
     "content": "**IsValidSelection n start len a:**\n\nA function a : Fin n → ℕ is a valid selection if:\n1. All values a(k) are in the interval (start, start + len)\n2. All values are pairwise distinct\n3. For each k, we have (k+1) | a(k) (1-indexed)\n\n**Definition:**\n```lean\ndef IsValidSelection (n start len : ℕ) (a : Fin n → ℕ) : Prop :=\n  (∀ k, start < a k ∧ a k < start + len) ∧\n  (∀ i j, a i = a j → i = j) ∧\n  (∀ k, (k.val + 1) ∣ a k)\n```",
     "mathContext": "This captures the divisibility matching condition: each position k must be assigned a distinct integer divisible by k.",
     "significance": "key",
+    "prerequisites": [
+      "Divisibility",
+      "Injective functions",
+      "basic set theory",
+      "divisibility"
+    ],
     "relatedConcepts": [
       "Divisibility",
       "Injective functions",
@@ -47,6 +59,12 @@
     "content": "**minimalIntervalLength n** (written f(n)):\n\nThe minimal length L such that the interval (n, n+L) admits a valid n-selection.\n\n**Definition:**\n```lean\nnoncomputable def minimalIntervalLength (n : ℕ) : ℕ :=\n  Nat.find (selection_exists_large n)\n```\n\nThe function f(n) is the central object of the problem: determine its asymptotic growth.",
     "mathContext": "This is a well-defined function since for large enough intervals, valid selections always exist (e.g., take L = n² and use multiples 2n, 2·(floor(n/2)+1), etc.).",
     "significance": "key",
+    "prerequisites": [
+      "Existence theorems",
+      "Nat.find",
+      "basic set theory",
+      "natural number arithmetic"
+    ],
     "relatedConcepts": [
       "Nat.find",
       "Existence theorems",
@@ -65,6 +83,11 @@
     "content": "**multiplesInInterval d a b:**\n\nCount of multiples of d in the interval (a, b).\n\n**Definition:**\n```lean\ndef multiplesInInterval (d a b : ℕ) : ℕ :=\n  (b / d) - (a / d)\n```\n\n**Key property:** In interval (n, n+L), there are about L/k multiples of k.\nAs k grows, this count shrinks - making the constraint harder to satisfy.",
     "mathContext": "This counting function is central to the heuristic analysis: the k-th slot has ~L/k candidates, so large k provides the tightest constraints.",
     "significance": "key",
+    "prerequisites": [
+      "Counting multiples",
+      "Floor function",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Floor function",
       "Counting multiples",
@@ -83,6 +106,10 @@
     "content": "**erdos_pomerance_lower_bound:**\n\nf(n) ≥ (2/√e + o(1)) · n · √(log n / log log n)\n\n**Statement:**\n```lean\naxiom erdos_pomerance_lower_bound :\n    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,\n      (f(n) : ℝ) ≥ (2/√e - ε) * n * √(log n / log log n)\n```\n\nThe constant 2/√e ≈ 1.2131... comes from a probabilistic counting argument.",
     "mathContext": "The lower bound has an extra factor of 1/√(log log n) compared to the upper bound, creating the gap that makes this problem hard.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic bounds",
+      "Probabilistic method"
+    ],
     "relatedConcepts": [
       "Asymptotic bounds",
       "Probabilistic method",
@@ -101,6 +128,11 @@
     "content": "**erdos_pomerance_upper_bound:**\n\nf(n) ≤ (1.7398... + o(1)) · n · √(log n)\n\n**Statement:**\n```lean\naxiom erdos_pomerance_upper_bound :\n    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,\n      (f(n) : ℝ) ≤ (1.7398 + ε) * n * √(log n)\n```\n\nThe constant 1.7398... comes from an explicit construction.",
     "mathContext": "The upper bound is achieved by a specific algorithm for assigning integers to positions, balancing the need for distinct values with divisibility constraints.",
     "significance": "key",
+    "prerequisites": [
+      "Constructive bounds",
+      "Greedy algorithms",
+      "divisibility"
+    ],
     "relatedConcepts": [
       "Constructive bounds",
       "Greedy algorithms",
@@ -119,6 +151,10 @@
     "content": "**bounds_gap:**\n\nThe lower bound has √(log n / log log n), the upper has √(log n).\n\nThese differ by a factor of √(log log n), which grows very slowly but is unbounded.\n\n**Statement:**\n```lean\naxiom bounds_gap :\n    ∀ n ≥ 3, √(log n / log log n) < √(log n)\n```",
     "mathContext": "The √(log log n) gap is small (about 1.5 for n = 10^100) but mathematically significant. Closing this gap would solve the problem.",
     "significance": "key",
+    "prerequisites": [
+      "Iterated logarithms",
+      "Slow-growing functions"
+    ],
     "relatedConcepts": [
       "Iterated logarithms",
       "Slow-growing functions",
@@ -142,6 +178,10 @@
       "growth rates",
       "inequalities"
     ],
+    "prerequisites": [
+      "asymptotics",
+      "bounds"
+    ],
     "significance": "key"
   },
   {
@@ -157,6 +197,11 @@
     "mathContext": "Lean: `theorem example_n1 : IntervalAdmitsSelection 1 1 2`",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "divisibility",
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "supporting"
   },
@@ -174,6 +219,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -190,6 +239,11 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "divisibility",
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -204,6 +258,12 @@
     "content": "**constraintDensity:**\n\nFor the k-th slot, the density of valid candidates is ~L/k.\n\n**Analysis:**\n- Slot 1: ~L candidates (everything)\n- Slot 2: ~L/2 candidates (even numbers)\n- ...\n- Slot n: ~L/n candidates (multiples of n)\n\n**Key insight:** The n-th slot is the hardest constraint. We need at least one multiple of n in the interval, which requires L ≈ n as a minimum.",
     "mathContext": "This heuristic explains why f(n) must grow at least linearly with n: the constraint for position n alone requires the interval to be long enough to contain a multiple of n.",
     "significance": "key",
+    "prerequisites": [
+      "Density",
+      "Sparsity",
+      "basic set theory",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Density",
       "Sparsity",
@@ -222,6 +282,12 @@
     "content": "**smallest_multiple_bound:**\n\nFor each k, the smallest multiple of k greater than n is at most n + k.\n\n**Statement:**\n```lean\ntheorem smallest_multiple_bound (n k : ℕ) (hk : k > 0) :\n    ∃ m : ℕ, n < m ∧ m ≤ n + k ∧ k ∣ m\n```\n\n**Greedy approach:** Assign a₁ = n+1, then a₂ = smallest even > n+1 not yet used, etc.\n\nThis gives an upper bound on f(n) but is not optimal.",
     "mathContext": "The greedy algorithm is the simplest constructive approach. The true minimum f(n) is achieved by a more clever assignment that balances constraints.",
     "significance": "key",
+    "prerequisites": [
+      "Constructive proofs",
+      "Greedy algorithms",
+      "proof techniques",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "Greedy algorithms",
       "Constructive proofs",
@@ -244,6 +310,11 @@
       "bounds",
       "growth rates",
       "inequalities"
+    ],
+    "prerequisites": [
+      "asymptotics",
+      "bounds",
+      "proof techniques"
     ],
     "significance": "key"
   }

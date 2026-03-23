@@ -11,6 +11,11 @@
     "content": "**Erdos Problem #245** asks about the growth rate of sumsets for sparse sequences.\n\nFor an infinite set A with **zero density** (meaning |A ∩ {1,...,N}| grows slower than N), how much bigger is the sumset A+A compared to A?\n\nThe answer: at least 3 times as big (asymptotically).\n\nThis was proved by G.A. Freiman in 1973 as part of his foundational work on additive combinatorics.",
     "mathContext": "Formalizes the concept of problem overview",
     "significance": "key",
+    "prerequisites": [
+      "Freiman's theorem",
+      "additive combinatorics",
+      "density theory"
+    ],
     "relatedConcepts": [
       "additive combinatorics",
       "Freiman's theorem",
@@ -29,6 +34,12 @@
     "content": "The **counting function** `countingFunc A N` counts how many elements of A are at most N.\n\nThis is the key tool for measuring the 'density' of a set. For example:\n- For A = all naturals: countingFunc A N = N\n- For A = primes: countingFunc A N ≈ N/log(N)\n- For A = powers of 2: countingFunc A N ≈ log₂(N)\n\nWe use `Nat.card` for the cardinality of a subtype.",
     "mathContext": "|A ∩ {1,...,N}|",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "cardinal arithmetic",
+      "cardinality",
+      "density"
+    ],
     "relatedConcepts": [
       "cardinality",
       "density",
@@ -47,6 +58,12 @@
     "content": "A set has **zero density** if `|A ∩ {1,...,N}| / N → 0` as N → ∞.\n\nThis means the set is 'sparse' - its elements become increasingly rare among all natural numbers.\n\n**Examples of zero-density sets:**\n- Prime numbers (density ~ 1/log N → 0)\n- Perfect squares (density ~ 1/√N → 0)\n- Powers of 2 (density ~ log₂N / N → 0)\n- Any finite set (eventually 0)\n\nThe condition is expressed using Mathlib's `Tendsto` and `atTop` filter.",
     "mathContext": "Tendsto (λ N => |A ∩ {1,...,N}| / N) atTop (𝓝 0)",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic density",
+      "basic set theory",
+      "density theory",
+      "filter theory"
+    ],
     "relatedConcepts": [
       "asymptotic density",
       "sparse sets",
@@ -65,6 +82,12 @@
     "content": "The **sumset** `A + A` is the set of all pairwise sums:\n```\nA + A = {a + b : a ∈ A, b ∈ A}\n```\n\nUsing Mathlib's pointwise operations, this is simply `A + A` with the `Pointwise` scope open.\n\nFor example, if A = {1, 2, 4}:\n- A + A = {2, 3, 4, 5, 6, 8}\n\nNote: The sumset includes both `a + a` terms (diagonal) and `a + b` terms (off-diagonal).",
     "mathContext": "A + A with Pointwise notation",
     "significance": "key",
+    "prerequisites": [
+      "Pointwise operations",
+      "additive combinatorics",
+      "basic set theory",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "Pointwise operations",
       "additive combinatorics"
@@ -82,6 +105,12 @@
     "content": "The **growth ratio** measures how much bigger A+A is compared to A:\n\n```\ngrowthRatio A N = |A+A ∩ {1,...,N}| / |A ∩ {1,...,N}|\n```\n\nThe **asymptotic growth ratio** is the limsup of this as N → ∞.\n\nWe use `EReal` (extended reals with ±∞) to handle division by zero gracefully when |A ∩ {1,...,N}| = 0 for small N.",
     "mathContext": "limsup_{N→∞} |A+A ∩ {1,...,N}| / |A ∩ {1,...,N}|",
     "significance": "key",
+    "prerequisites": [
+      "EReal",
+      "basic set theory",
+      "limsup",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "limsup",
       "EReal",
@@ -141,6 +170,11 @@
     "content": "The main theorem `erdos_245_positive_answer` states:\n\n**For all infinite sets A with zero density, the asymptotic growth ratio is ≥ 3.**\n\nThis is a direct application of Freiman's theorem, affirming Erdos's conjecture.",
     "mathContext": "Lean: `theorem erdos_245_positive_answer :`",
     "significance": "key",
+    "prerequisites": [
+      "Erdos problems",
+      "density theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Erdos problems"
     ]
@@ -157,6 +191,12 @@
     "content": "We prove that {2^k : k ∈ ℕ} is an infinite set.\n\nThe proof uses `Set.infinite_of_injective_forall_mem`:\n1. The function k ↦ 2^k is injective (different exponents give different powers)\n2. Every value 2^k is in the set\n\nTherefore the set is infinite.\n\nThe injectivity uses `Nat.pow_right_injective` with base 2 > 1.",
     "mathContext": "{n : ℕ | ∃ k, n = 2^k}.Infinite",
     "significance": "supporting",
+    "prerequisites": [
+      "Set.Infinite",
+      "infinite sets",
+      "injectivity",
+      "natural number arithmetic"
+    ],
     "relatedConcepts": [
       "Set.Infinite",
       "injectivity"
@@ -174,6 +214,10 @@
     "content": "The bound 3 is **optimal** - it cannot be improved.\n\n**The optimal example: Powers of 2**\n\nConsider A = {1, 2, 4, 8, 16, ...} = {2^k : k ∈ ℕ}\n\nUp to N = 2^n:\n- |A ∩ {1,...,N}| = n elements\n- |A+A ∩ {1,...,N}| ≈ n(n+1)/2 elements (distinct binary sums)\n\nThe sumset A+A contains:\n- All 2^k (when a = b, giving 2^(k+1))\n- All 2^a + 2^b for a ≠ b (distinct by unique binary representation)\n\nThe ratio approaches 3 as we analyze at the right scale.",
     "mathContext": "$Consider A = {1, 2, 4, 8, 16, ...} = {2^k : k ∈ ℕ}$",
     "significance": "key",
+    "prerequisites": [
+      "binary representation",
+      "geometric progressions"
+    ],
     "relatedConcepts": [
       "geometric progressions",
       "binary representation"
@@ -191,6 +235,11 @@
     "content": "We prove that for any a, b ∈ ℕ, the sum 2^a + 2^b belongs to the sumset of powers of 2.\n\nThis is a simple application of the sumset definition:\n- 2^a ∈ powersOfTwo (witnessed by a)\n- 2^b ∈ powersOfTwo (witnessed by b)\n- Therefore 2^a + 2^b ∈ powersOfTwo + powersOfTwo",
     "mathContext": "2^a + 2^b ∈ sumset powersOfTwo",
     "significance": "supporting",
+    "prerequisites": [
+      "proof techniques",
+      "simp tactic",
+      "sumset membership"
+    ],
     "relatedConcepts": [
       "sumset membership"
     ]
@@ -207,6 +256,10 @@
     "content": "**Erdos Problem #899** asks the analogous question for **difference sets** A - A instead of sumsets A + A.\n\nThe difference set A - A = {a - b : a, b ∈ A} lives in ℤ (integers) to allow negatives.\n\nThe growth behavior of difference sets is related but different from sumsets. The key difference:\n- Sumsets only go 'up' (sums are positive)\n- Difference sets go both ways (can be negative)\n\nThis creates different counting behavior near zero.",
     "mathContext": "$The difference set A - A = {a - b : a, b ∈ A} lives in ℤ (integers) to allow negatives.$",
     "significance": "supporting",
+    "prerequisites": [
+      "Erdos Problem #899",
+      "difference sets"
+    ],
     "relatedConcepts": [
       "Erdos Problem #899",
       "difference sets"
@@ -224,6 +277,12 @@
     "content": "`problem_245_summary` combines all our results:\n\n1. **Freiman (1973)**: Growth ratio ≥ 3 for all zero-density sets\n   - The sharp bound\n   - Part of foundational additive combinatorics\n\n2. **Mann (1960)**: Growth ratio ≥ 2 for all zero-density sets\n   - The weaker bound\n   - 'Easy to see' according to Erdos\n\nBoth are stated as axioms and combined into a single summary theorem.",
     "mathContext": "$1. **Freiman (1973)**: Growth ratio ≥ 3 for all zero-density sets$",
     "significance": "key",
+    "prerequisites": [
+      "density theory",
+      "mathematical progress",
+      "proof techniques",
+      "sharp bounds"
+    ],
     "relatedConcepts": [
       "mathematical progress",
       "sharp bounds"

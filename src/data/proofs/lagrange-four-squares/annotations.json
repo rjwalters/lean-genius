@@ -11,6 +11,12 @@
     "content": "We import Mathlib's `SumFourSquares` module which contains the complete proof of Lagrange's theorem. The proof involves algebraic identities, quadratic residues, and a descent argument.",
     "mathContext": "Module provides `Nat.sum_four_squares` and related lemmas.",
     "significance": "supporting",
+    "prerequisites": [
+      "Mathlib",
+      "module theory",
+      "natural number arithmetic",
+      "number theory"
+    ],
     "relatedConcepts": [
       "Mathlib",
       "number theory",
@@ -29,6 +35,11 @@
     "content": "Euler discovered the four-square identity in 1748, but its true meaning remained hidden until Hamilton discovered quaternions in 1843. The identity encodes quaternion multiplication!\n\nFor quaternions $q_1 = a + bi + cj + dk$ and $q_2 = x + yi + zj + wk$:\n$$|q_1 \\cdot q_2|^2 = |q_1|^2 \\cdot |q_2|^2$$\n\nwhere $|q|^2 = a^2 + b^2 + c^2 + d^2$.\n\nThis explains WHY four squares work when three don't: quaternions form a division algebra, but Frobenius proved there's no 3-dimensional division algebra.",
     "mathContext": "The four-square identity IS quaternion norm multiplicativity in disguise.",
     "significance": "critical",
+    "prerequisites": [
+      "Euler's work",
+      "Hamilton",
+      "quaternions"
+    ],
     "relatedConcepts": [
       "quaternions",
       "Hamilton",
@@ -48,6 +59,12 @@
     "content": "**The Heart of the Proof**\n\nEuler proved in 1748 that:\n$$(a^2 + b^2 + c^2 + d^2)(x^2 + y^2 + z^2 + w^2) = A^2 + B^2 + C^2 + D^2$$\n\nwhere:\n- $A = ax - by - cz - dw$\n- $B = ay + bx + cw - dz$\n- $C = az - bw + cx + dy$\n- $D = aw + bz - cy + dx$\n\nThese are exactly the components of the quaternion product $(a + bi + cj + dk)(x + yi + zj + wk)$!\n\nThe proof is pure algebra - Lean's `ring` tactic handles it instantly.",
     "mathContext": "$(a^2+b^2+c^2+d^2)(x^2+y^2+z^2+w^2) = (ax-by-cz-dw)^2 + (ay+bx+cw-dz)^2 + (az-bw+cx+dy)^2 + (aw+bz-cy+dx)^2$",
     "significance": "critical",
+    "prerequisites": [
+      "Euler's work",
+      "bilinear forms",
+      "logical reasoning",
+      "quaternions"
+    ],
     "relatedConcepts": [
       "quaternions",
       "bilinear forms",
@@ -66,6 +83,12 @@
     "content": "The `ring` tactic is Lean's automated prover for polynomial ring identities. It expands both sides and verifies they're equal.\n\nThis 8-term polynomial identity would be tedious to prove by hand, but `ring` handles it instantly by normalizing both sides to a canonical form.",
     "mathContext": "Ring arithmetic in any commutative ring R.",
     "significance": "supporting",
+    "prerequisites": [
+      "polynomial identities",
+      "polynomial ring theory",
+      "proof automation",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "proof automation",
       "polynomial identities",
@@ -84,6 +107,10 @@
     "content": "**Legendre's Three Squares Theorem** tells us exactly which numbers fail:\n\nA natural number $n$ is a sum of three squares if and only if $n$ is NOT of the form $4^k(8m + 7)$.\n\nThe smallest failures are: 7, 15, 23, 28, 31, 39, 47, 55, 60, 63, ...\n\nFor example:\n- 7 = 1 + 1 + 1 + 4 (needs 4 squares)\n- 15 = 1 + 1 + 4 + 9 (needs 4 squares)\n\nThis is why four squares is special - it's universal!",
     "mathContext": "$n$ is NOT a sum of 3 squares $\\Leftrightarrow n = 4^k(8m+7)$ for some $k, m \\geq 0$.",
     "significance": "key",
+    "prerequisites": [
+      "Legendre's theorem",
+      "quadratic forms"
+    ],
     "relatedConcepts": [
       "Legendre's theorem",
       "quadratic forms",
@@ -102,6 +129,10 @@
     "content": "7 is the smallest number that requires all four squares:\n$$7 = 1^2 + 1^2 + 1^2 + 2^2 = 1 + 1 + 1 + 4$$\n\nYou can verify: there's no way to write 7 = a² + b² + c² with integers.",
     "mathContext": "7 = 4⁰(8·0 + 7) fits Legendre's obstruction.",
     "significance": "key",
+    "prerequisites": [
+      "counterexamples",
+      "three squares theorem"
+    ],
     "relatedConcepts": [
       "counterexamples",
       "three squares theorem"
@@ -140,6 +171,10 @@
     "content": "The theorem also holds with integers instead of natural numbers. The squares of any integers work, since $(-a)^2 = a^2$.\n\nThis version is sometimes more convenient in algebraic contexts.",
     "mathContext": "$\\forall n \\in \\mathbb{N}, \\exists a,b,c,d \\in \\mathbb{Z}: a^2 + b^2 + c^2 + d^2 = n$",
     "significance": "supporting",
+    "prerequisites": [
+      "integer arithmetic",
+      "type coercion"
+    ],
     "relatedConcepts": [
       "integer arithmetic",
       "type coercion"
@@ -157,6 +192,11 @@
     "content": "**Fermat's Two Squares Theorem**: An odd prime p is a sum of two squares iff p ≡ 1 (mod 4).\n\n- 5 ≡ 1 (mod 4): 5 = 1² + 2²\n- 13 ≡ 1 (mod 4): 13 = 2² + 3²\n- 7 ≡ 3 (mod 4): 7 is NOT a sum of two squares\n\nTwo squares is much more restrictive than four. Fermat proved the two-square theorem; Lagrange proved the four-square theorem. Together they reveal the arithmetic of quadratic forms.",
     "mathContext": "Odd prime p = a² + b² $\\Leftrightarrow$ p ≡ 1 (mod 4).",
     "significance": "key",
+    "prerequisites": [
+      "Fermat two squares",
+      "prime numbers",
+      "quadratic residues"
+    ],
     "relatedConcepts": [
       "Fermat two squares",
       "quadratic residues",

@@ -11,6 +11,12 @@
     "content": "We import the full Mathlib library which provides `Nat.totient` (Euler's totient function).",
     "mathContext": "Euler's totient φ(n) = |{1 ≤ k ≤ n : gcd(k,n) = 1}| is available as `Nat.totient` in Mathlib.",
     "significance": "supporting",
+    "prerequisites": [
+      "Euler's work",
+      "GCD theory",
+      "mathlib",
+      "natural number arithmetic"
+    ],
     "relatedConcepts": [
       "totient",
       "mathlib"
@@ -28,6 +34,12 @@
     "content": "We partition ℕ into three sets based on how φ(n) compares to φ(n - φ(n)): **A₊** where φ(n) > φ(n-φ(n)), **A₋** where φ(n) < φ(n-φ(n)), and **A₌** where they're equal.",
     "mathContext": "Note n - φ(n) counts integers ≤ n sharing a factor with n. For n = 12: φ(12) = 4, so n - φ(n) = 8, and φ(8) = 4 = φ(12).",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "comparison",
+      "ring tactic",
+      "totient"
+    ],
     "relatedConcepts": [
       "totient",
       "comparison",
@@ -46,6 +58,10 @@
     "content": "For n = 15: φ(15) = 8, n - φ(n) = 7, φ(7) = 6, so 8 > 6. This is the \"typical\" situation that holds for almost all n.",
     "mathContext": "The `native_decide` tactic computes these values directly and verifies the inequality.",
     "significance": "supporting",
+    "prerequisites": [
+      "computation",
+      "typical behavior"
+    ],
     "relatedConcepts": [
       "computation",
       "typical behavior"
@@ -63,6 +79,11 @@
     "content": "For n = 30: φ(30) = 8, n - φ(n) = 22, φ(22) = 10, so 8 < 10. These exceptional cases form an infinite set of density 0.",
     "mathContext": "The sequence A₋ begins 30, 60, 66, 120, ... All multiples 15·2^k are in A₋.",
     "significance": "key",
+    "prerequisites": [
+      "counterexamples",
+      "density theory",
+      "exceptional cases"
+    ],
     "relatedConcepts": [
       "counterexamples",
       "exceptional cases"
@@ -80,6 +101,11 @@
     "content": "**Luca-Pomerance (2002):** The set of n with φ(n) > φ(n - φ(n)) has natural density 1. \"Almost all\" integers satisfy this inequality.",
     "mathContext": "The proof uses analytic methods to show n - φ(n) typically has a smaller totient. The stronger result: φ(n) > φ(n-φ(n)) + f(n) for any f = o(n).",
     "significance": "key",
+    "prerequisites": [
+      "almost all",
+      "density",
+      "density theory"
+    ],
     "relatedConcepts": [
       "density",
       "almost all",
@@ -98,6 +124,11 @@
     "content": "**Grytczuk-Luca-Wójtowicz (2001):** The set of n with φ(n) < φ(n - φ(n)) is infinite. The pattern 15·2^k provides explicit witnesses.",
     "mathContext": "This was the first breakthrough. They also showed A₊ has lower density ≥ 0.54, later improved to density 1.",
     "significance": "key",
+    "prerequisites": [
+      "density theory",
+      "explicit construction",
+      "infinitude"
+    ],
     "relatedConcepts": [
       "infinitude",
       "explicit construction"
@@ -115,6 +146,12 @@
     "content": "**Erdős Problem 1064 (Solved):** Part 1 shows φ(n) > φ(n - φ(n)) for almost all n (density 1). Part 2 shows φ(n) < φ(n - φ(n)) for infinitely many n.",
     "mathContext": "The theorem statement confirms A₋ is infinite, referencing the Grytczuk-Luca-Wójtowicz axiom.",
     "significance": "key",
+    "prerequisites": [
+      "both parts",
+      "density theory",
+      "proof techniques",
+      "resolution"
+    ],
     "relatedConcepts": [
       "resolution",
       "both parts"
@@ -132,6 +169,10 @@
     "content": "For n = 15·2^k with k ≥ 1, we have φ(n) < φ(n - φ(n)). This gives an explicit infinite family of counterexamples.",
     "mathContext": "Calculation: φ(15·2^k) = 4·2^k, n - φ(n) = 11·2^k, φ(11·2^k) = 5·2^k > 4·2^k. The key is that 11 has higher \"totient ratio\" than 15.",
     "significance": "key",
+    "prerequisites": [
+      "explicit construction",
+      "multiplicativity"
+    ],
     "relatedConcepts": [
       "multiplicativity",
       "explicit construction"

@@ -11,6 +11,10 @@
     "content": "Unlike most of Hilbert's 23 problems which asked for specific mathematical results, the sixth problem is a **meta-problem**: it asks for the axiomatization of entire physical theories.\n\nThis has led to a unique situation where the problem is 'partially solved'—individual theories have been axiomatized, but no unified framework exists.",
     "mathContext": "Hilbert: 'To treat in the same manner, by means of axioms, those physical sciences in which mathematics plays an important part.'",
     "significance": "key",
+    "prerequisites": [
+      "axiomatic method",
+      "foundations of mathematics"
+    ],
     "relatedConcepts": [
       "axiomatic method",
       "foundations of mathematics",
@@ -29,6 +33,12 @@
     "content": "The first Kolmogorov axiom states that the measure of the entire sample space is 1. This normalizes probabilities to lie in [0,1].\n\nIn Mathlib, this is captured by `IsProbabilityMeasure`, which requires `μ Set.univ = 1`.",
     "mathContext": "$P(\\Omega) = 1$\n\nThis represents certainty: something in the sample space must occur.",
     "significance": "key",
+    "prerequisites": [
+      "measure theory",
+      "omega tactic",
+      "probability measure",
+      "probability theory"
+    ],
     "relatedConcepts": [
       "probability measure",
       "sample space",
@@ -47,6 +57,11 @@
     "content": "The **σ-additivity** axiom is the most powerful: for countably many pairwise disjoint events, the probability of their union is the sum of their probabilities.\n\nThis axiom enables limit theorems (Law of Large Numbers, Central Limit Theorem) and distinguishes Kolmogorov's theory from earlier finitary approaches.",
     "mathContext": "$P\\left(\\bigcup_{i=1}^{\\infty} A_i\\right) = \\sum_{i=1}^{\\infty} P(A_i)$ for pairwise disjoint $A_i$",
     "significance": "key",
+    "prerequisites": [
+      "convergence theorems",
+      "measure theory",
+      "probability theory"
+    ],
     "relatedConcepts": [
       "measure theory",
       "convergence theorems",
@@ -65,6 +80,11 @@
     "content": "**Bayes' theorem** relates conditional probabilities in opposite directions:\n\n$P(A|B) \\cdot P(B) = P(B|A) \\cdot P(A)$\n\nThis is the foundation of Bayesian inference, allowing us to update beliefs given new evidence.",
     "mathContext": "$P(A|B) = \\frac{P(B|A) \\cdot P(A)}{P(B)}$\n\nThe 'posterior' equals the 'likelihood' times 'prior' divided by 'evidence'.",
     "significance": "key",
+    "prerequisites": [
+      "Bayesian inference",
+      "conditional probability",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Bayesian inference",
       "conditional probability",
@@ -83,6 +103,12 @@
     "content": "In von Neumann's formulation (1932), a **quantum state** is a unit vector in a complex Hilbert space H.\n\nThe normalization condition |ψ|² = 1 ensures that total probability sums to 1 (via the Born rule).",
     "mathContext": "$|\\psi\\rangle \\in H$ with $\\langle\\psi|\\psi\\rangle = 1$\n\nPhase is unobservable: $|\\psi\\rangle$ and $e^{i\\theta}|\\psi\\rangle$ represent the same state.",
     "significance": "key",
+    "prerequisites": [
+      "Hilbert space",
+      "basic set theory",
+      "complex numbers",
+      "probability theory"
+    ],
     "relatedConcepts": [
       "Hilbert space",
       "quantum superposition",
@@ -101,6 +127,12 @@
     "content": "The **Born rule** gives the probability of finding a system in state φ given it was prepared in state ψ:\n\n$P(\\phi|\\psi) = |\\langle\\phi|\\psi\\rangle|^2$\n\nThis connects the abstract Hilbert space formalism to measurable probabilities.",
     "mathContext": "Probability = $|\\langle\\phi|\\psi\\rangle|^2 = $ (transition amplitude)²\n\nThis is axiomatic in standard quantum mechanics but may be derivable in some interpretations.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "probability amplitude",
+      "probability theory",
+      "quantum measurement"
+    ],
     "relatedConcepts": [
       "quantum measurement",
       "probability amplitude",
@@ -119,6 +151,11 @@
     "content": "In the Lagrangian formulation, a physical system is described by:\n\n1. A **configuration space** Q (all possible positions)\n2. A **Lagrangian** L(q, q̇, t) = T - V (kinetic minus potential energy)\n\nPhysical motion minimizes (actually extremizes) the action integral.",
     "mathContext": "$L(q, \\dot{q}, t) = T - V$\n\nConfiguration space can be a manifold (e.g., SO(3) for rigid body rotation).",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "configuration space",
+      "kinetic energy"
+    ],
     "relatedConcepts": [
       "configuration space",
       "kinetic energy",
@@ -137,6 +174,11 @@
     "content": "**Hamilton's Principle** (Principle of Least Action):\n\nPhysical trajectories are those that make the action functional stationary:\n\n$\\delta S = \\delta \\int_{t_0}^{t_1} L(q, \\dot{q}, t) \\, dt = 0$\n\nThis single principle encodes all of classical mechanics.",
     "mathContext": "The Euler-Lagrange equations follow:\n$\\frac{d}{dt}\\frac{\\partial L}{\\partial \\dot{q}} - \\frac{\\partial L}{\\partial q} = 0$",
     "significance": "key",
+    "prerequisites": [
+      "Euler's work",
+      "Euler-Lagrange equations",
+      "variational calculus"
+    ],
     "relatedConcepts": [
       "variational calculus",
       "Euler-Lagrange equations",
@@ -155,6 +197,10 @@
     "content": "**Caratheodory's Axiom** (1909):\n\nIn every neighborhood of any equilibrium state, there exist states that are adiabatically inaccessible.\n\nThis elegant geometric statement implies the existence of entropy without invoking heat engines or Carnot cycles.",
     "mathContext": "$\\forall s \\in \\mathcal{S}, \\exists s' \\text{ arbitrarily close to } s : s \\not\\rightarrow_{\\text{adiabatic}} s'$\n\nInaccessibility defines 'adiabatic surfaces' whose level function is entropy.",
     "significance": "key",
+    "prerequisites": [
+      "entropy",
+      "second law"
+    ],
     "relatedConcepts": [
       "entropy",
       "second law",
@@ -173,6 +219,10 @@
     "content": "From Caratheodory's axiom, one can prove the **existence of entropy** as a state function.\n\nEntropy increases (or stays constant) in adiabatic processes, formalized as: if s₁ → s₂ adiabatically, then S(s₁) ≤ S(s₂).",
     "mathContext": "$\\exists S : \\mathcal{S} \\to \\mathbb{R}$ such that $s_1 \\rightarrow_{\\text{adiabatic}} s_2 \\Rightarrow S(s_1) \\leq S(s_2)$",
     "significance": "key",
+    "prerequisites": [
+      "irreversibility",
+      "second law of thermodynamics"
+    ],
     "relatedConcepts": [
       "second law of thermodynamics",
       "irreversibility",
@@ -191,6 +241,12 @@
     "content": "Hilbert's sixth problem has a unique status: **partially solved**.\n\nWe have rigorous axiom systems for:\n- Probability (Kolmogorov)\n- Quantum mechanics (von Neumann)\n- Thermodynamics (Caratheodory)\n- Classical mechanics (Lagrange/Hamilton)\n\nBut a unified 'theory of everything' axiom system does not exist.",
     "mathContext": "Individual theories: ✓ Axiomatized\nUnified framework: ✗ Open problem\n\nSome argue unified axiomatization is philosophically impossible.",
     "significance": "key",
+    "prerequisites": [
+      "probability theory",
+      "proof techniques",
+      "quantum gravity",
+      "theory of everything"
+    ],
     "relatedConcepts": [
       "quantum gravity",
       "theory of everything",

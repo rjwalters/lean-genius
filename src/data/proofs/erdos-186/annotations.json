@@ -11,6 +11,10 @@
     "content": "**Erdős Problem #186: Non-Averaging Sets**\n\nWhat is the maximum size of a non-averaging subset of {1,...,N}?\n\n**Answer:** F(N) = N^(1/4+o(1))\n\nThe problem was originally due to Straus and resolved through work spanning 35 years:\n- Lower bound: Bosznay (1989) via number-theoretic construction\n- Upper bound: Pham-Zakharov (2024), improving Conlon-Fox-Pham (2023)\n- Earlier upper bound: Erdős-Sárközy (1990)",
     "mathContext": "A set is non-averaging if no element equals the mean of two other distinct elements. This is weaker than avoiding all 3-term arithmetic progressions.",
     "significance": "key",
+    "prerequisites": [
+      "Arithmetic means",
+      "Non-averaging sets"
+    ],
     "relatedConcepts": [
       "Non-averaging sets",
       "Arithmetic means",
@@ -29,6 +33,12 @@
     "content": "**IsNonAveraging:**\n\nA set A is non-averaging if no element is the arithmetic mean of two distinct other elements.\n\n**Definition:**\n```lean\ndef IsNonAveraging (A : Finset N) : Prop :=\n  forall a in A, forall b in A, forall c in A,\n    b != a -> c != a -> b != c -> 2 * a != b + c\n```\n\nEquivalently: no centered 3-term arithmetic progressions. The condition 2a != b + c prevents a from being the midpoint of b and c.",
     "mathContext": "This is a weaker condition than AP-freeness. AP-free sets avoid all 3-term APs, while non-averaging sets only avoid those centered at an element of the set.",
     "significance": "key",
+    "prerequisites": [
+      "Arithmetic progressions",
+      "Finset API",
+      "Means",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Arithmetic progressions",
       "Means",
@@ -47,6 +57,12 @@
     "content": "**IsNonAveraging':**\n\nAlternative definition using ordered triples: for a < b < c in A, the common difference b - a must differ from c - b.\n\nThis is equivalent to IsNonAveraging but sometimes easier to work with when elements are ordered.",
     "mathContext": "Lean: `def IsNonAveraging' (A : Finset ℕ) : Prop`",
     "significance": "supporting",
+    "prerequisites": [
+      "Erdős problems",
+      "Finset API",
+      "basic set theory",
+      "combinatorics"
+    ],
     "relatedConcepts": [
       "Erdős problems",
       "combinatorics",
@@ -67,6 +83,11 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "cardinal arithmetic",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -84,6 +105,12 @@
       "indirect proof",
       "proof by contradiction"
     ],
+    "prerequisites": [
+      "Finset API",
+      "indirect proof",
+      "proof by contradiction",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -99,6 +126,10 @@
     "mathContext": "Lean: `theorem singleton_is_nonAveraging (n : ℕ) : IsNonAveraging {n}`",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "supporting"
   },
@@ -116,6 +147,11 @@
     "relatedConcepts": [
       "counting argument",
       "pigeonhole principle"
+    ],
+    "prerequisites": [
+      "counting argument",
+      "pigeonhole principle",
+      "proof techniques"
     ],
     "significance": "supporting"
   },
@@ -136,6 +172,10 @@
       "counting",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "combinatorics"
+    ],
     "significance": "key"
   },
   {
@@ -153,6 +193,12 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "Finset API",
+      "bounds",
+      "cardinal arithmetic",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -167,6 +213,10 @@
     "content": "**erdos_sarkozy_upper_bound_1990:**\n\nOriginal upper bound: F(N) <= C * (N log N)^(1/2).\n\nThis was the first non-trivial upper bound, proved by Erdős and Sárközy in their 1990 paper \"On a problem of Straus.\" The bound has exponent 1/2, far from the lower bound exponent of 1/4.",
     "mathContext": "The gap between exponents 1/4 and 1/2 persisted for over 30 years.",
     "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
+    "prerequisites": [
       "bounds",
       "inequalities"
     ],
@@ -189,6 +239,11 @@
       "inequalities",
       "matching theory"
     ],
+    "prerequisites": [
+      "bounds",
+      "graph theory",
+      "matching theory"
+    ],
     "significance": "key"
   },
   {
@@ -209,6 +264,12 @@
       "inequalities",
       "matching theory"
     ],
+    "prerequisites": [
+      "algebra",
+      "bounds",
+      "matching theory",
+      "polynomial ring theory"
+    ],
     "significance": "key"
   },
   {
@@ -225,6 +286,11 @@
     "relatedConcepts": [
       "bounds",
       "inequalities"
+    ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -245,6 +311,10 @@
       "growth rates",
       "inequalities"
     ],
+    "prerequisites": [
+      "asymptotics",
+      "bounds"
+    ],
     "significance": "key"
   },
   {
@@ -260,6 +330,10 @@
     "mathContext": "Hereditary properties are fundamental in extremal set theory. They ensure that the extremal function F(N) is well-behaved.",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -277,6 +351,11 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "Finset API",
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -291,6 +370,10 @@
     "content": "**roth_bound_comparison:**\n\nF(N) >= C * N / log N for some constant C > 0.\n\nThis axiom captures the key comparison with Roth's theorem: sets avoiding ALL 3-term APs have size at most N / log N (Roth 1953). Since non-averaging is a weaker condition (only avoiding centered APs), non-averaging sets can be much larger. Indeed, F(N) ~ N^(1/4) >> N / log N.",
     "mathContext": "Roth's theorem is a cornerstone of additive combinatorics. The comparison shows non-averaging is fundamentally different from AP-freeness.",
     "significance": "key",
+    "prerequisites": [
+      "3-term arithmetic progressions",
+      "Roth's theorem"
+    ],
     "relatedConcepts": [
       "Roth's theorem",
       "3-term arithmetic progressions",
@@ -313,6 +396,11 @@
       "bounds",
       "inequalities",
       "polynomials"
+    ],
+    "prerequisites": [
+      "algebra",
+      "bounds",
+      "polynomial ring theory"
     ],
     "significance": "key"
   }

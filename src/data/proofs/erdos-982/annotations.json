@@ -11,6 +11,11 @@
     "content": "**Erdos Problem #982** asks a fundamental question about convex polygons:\n\nIf n points form a convex polygon, must some vertex see at least floor(n/2) different distances to other vertices?\n\n**Status:** OPEN\n\n**Key facts:**\n- Regular n-gon shows floor(n/2) would be tight\n- Best known: f(n) >= 0.361n (Nivasch et al. 2013)\n- Related stronger conjectures have been disproved",
     "mathContext": "This problem is part of the Erdos-Moser distinct distances program in combinatorial geometry.",
     "significance": "key",
+    "prerequisites": [
+      "Convex polygon",
+      "Distinct distances",
+      "convexity"
+    ],
     "relatedConcepts": [
       "Convex polygon",
       "Distinct distances",
@@ -32,6 +37,11 @@
       "distance",
       "metric spaces"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "distance",
+      "metric spaces"
+    ],
     "significance": "supporting"
   },
   {
@@ -46,6 +56,11 @@
     "content": "**distinctDistancesFrom:**\n\nCounts the number of distinct distances from point p to points in a finite set S.\n\n```lean\ndef distinctDistancesFrom (p : Plane) (S : Finset Plane) : N :=\n  (S.image (fun q => dist p q)).card\n```\n\n**Example:** In a regular hexagon, each vertex has 3 distinct distances to the other 5 vertices.",
     "mathContext": "This is the key quantity in Erdos's conjecture.",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
       "formal mathematics"
     ],
     "significance": "key"
@@ -64,6 +79,11 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -80,6 +100,12 @@
     "relatedConcepts": [
       "convexity",
       "optimization"
+    ],
+    "prerequisites": [
+      "basic set theory",
+      "convexity",
+      "optimization",
+      "simp tactic"
     ],
     "significance": "key"
   },
@@ -101,6 +127,11 @@
       "inequalities",
       "optimization"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "bounds",
+      "convexity"
+    ],
     "significance": "key"
   },
   {
@@ -115,6 +146,12 @@
     "content": "**erdos982Conjecture:**\n\n```lean\ndef erdos982Conjecture : Prop :=\n  forall n >= 3,\n    forall (S : Finset Plane), S.card = n -> InConvexPosition S ->\n      maxDistinctDistances S >= n / 2\n```\n\n**Status:** This proposition is OPEN - neither proved nor disproved.",
     "mathContext": "Erdos proposed this in 1946. After 80 years, we still don't know if it's true.",
     "significance": "key",
+    "prerequisites": [
+      "Extremal geometry",
+      "Finset API",
+      "Open problem",
+      "convexity"
+    ],
     "relatedConcepts": [
       "Open problem",
       "Extremal geometry"
@@ -137,6 +174,11 @@
       "inequalities",
       "pigeonhole principle"
     ],
+    "prerequisites": [
+      "bounds",
+      "counting argument",
+      "field theory"
+    ],
     "significance": "key"
   },
   {
@@ -155,6 +197,10 @@
       "convexity",
       "inequalities",
       "optimization"
+    ],
+    "prerequisites": [
+      "bounds",
+      "convexity"
     ],
     "significance": "key"
   },
@@ -175,6 +221,10 @@
       "inequalities",
       "optimization"
     ],
+    "prerequisites": [
+      "bounds",
+      "convexity"
+    ],
     "significance": "key"
   },
   {
@@ -194,6 +244,10 @@
       "inequalities",
       "optimization"
     ],
+    "prerequisites": [
+      "bounds",
+      "convexity"
+    ],
     "significance": "key"
   },
   {
@@ -208,6 +262,10 @@
     "content": "**regular_polygon_distances:**\n\nThe regular n-gon achieves the conjectured bound:\n- Even n: each vertex has exactly n/2 distinct distances\n- Odd n: each vertex has (n+1)/2 = ceil(n/2) distinct distances\n\nThis shows the conjecture, if true, would be tight.",
     "mathContext": "The regular polygon is symmetric, giving the minimum possible distinct distances.",
     "significance": "key",
+    "prerequisites": [
+      "Regular polygon",
+      "Symmetry"
+    ],
     "relatedConcepts": [
       "Regular polygon",
       "Symmetry",
@@ -227,6 +285,10 @@
     "mathContext": "$The conjecture requires floor(3/2) = 1.$",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "supporting"
   },
@@ -248,6 +310,12 @@
       "inequalities",
       "normed spaces"
     ],
+    "prerequisites": [
+      "bounds",
+      "convexity",
+      "norm_num tactic",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -262,6 +330,11 @@
     "content": "**strongerConjectureDisproved:**\n\nErdos originally conjectured something stronger: every convex polygon has a vertex with no three equidistant vertices.\n\nThis is FALSE - see Erdos Problem #97 for counterexamples.\n\nThe failure of this stronger conjecture is why Problem #982 remains interesting.",
     "mathContext": "Sometimes understanding why a stronger conjecture fails helps attack the weaker version.",
     "significance": "key",
+    "prerequisites": [
+      "Counterexample",
+      "Problem #97",
+      "convexity"
+    ],
     "relatedConcepts": [
       "Problem #97",
       "Counterexample"
@@ -285,6 +358,12 @@
       "inequalities",
       "optimization"
     ],
+    "prerequisites": [
+      "bounds",
+      "continuity",
+      "continuous functions",
+      "convexity"
+    ],
     "significance": "key"
   },
   {
@@ -304,6 +383,10 @@
       "inequalities",
       "optimization"
     ],
+    "prerequisites": [
+      "bounds",
+      "convexity"
+    ],
     "significance": "supporting"
   },
   {
@@ -320,6 +403,11 @@
     "relatedConcepts": [
       "bounds",
       "inequalities"
+    ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -338,6 +426,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -354,6 +447,11 @@
     "relatedConcepts": [
       "distance",
       "metric spaces"
+    ],
+    "prerequisites": [
+      "distance",
+      "metric spaces",
+      "proof techniques"
     ],
     "significance": "key"
   }

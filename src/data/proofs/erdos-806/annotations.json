@@ -146,6 +146,10 @@
     "content": "**erdos_806:**\n\nThe answer to Erdős's question is YES: for any A ⊆ {1,...,n} with |A| ≤ √n, there exists B with A ⊆ B + B and |B| < √n.\n\nThis follows from the Alon-Bukh-Sudakov upper bound since the factor (log log n / log n) → 0 as n → ∞.",
     "mathContext": "The axiom asserts $\\forall n \\geq 2, \\forall A \\subseteq \\{1,\\ldots,n\\}$ with $|A| \\leq \\sqrt{n}$, $\\exists B$ such that $A \\subseteq B + B$ and $|B| < \\sqrt{n}$. This is weaker than the quantitative bound but captures the essential qualitative answer to Erdős's original question.",
     "significance": "key",
+    "prerequisites": [
+      "Existence theorem",
+      "Main result"
+    ],
     "relatedConcepts": [
       "Main result",
       "Existence theorem",
@@ -256,6 +260,12 @@
     "content": "**erdos_806_summary:**\n\n**Question:** For A ⊆ {1,...,n} with |A| ≤ √n, does there exist B with |B| = o(√n) such that A ⊆ B + B?\n\n**Answer:** YES (Alon-Bukh-Sudakov, 2009)\n\n**Optimal Bound:** Θ((log log n / log n) · √n)\n\nThis closed a 32-year-old problem in additive combinatorics, matching the 1977 Erdős-Newman lower bound.",
     "mathContext": "The summary axiom restates the full quantitative bound: $\\exists B$ with $A \\subseteq B + B$ and $|B| \\leq \\frac{\\log \\log n}{\\log n} \\cdot \\sqrt{n}$ (without the constant $C$). This is slightly stronger than `erdos_806` which only asserts $|B| < \\sqrt{n}$, capturing the precise asymptotic rate.",
     "significance": "key",
+    "prerequisites": [
+      "Main result",
+      "Problem resolution",
+      "matching theory",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Main result",
       "Problem resolution",

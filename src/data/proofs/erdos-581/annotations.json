@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #581: Bipartite Subgraphs of Triangle-Free Graphs**\n\nLet f(m) = guaranteed bipartite edges in any triangle-free graph with m edges.\n\n**Question:** Determine f(m).\n\n**Answer (Alon 1996):**\nf(m) = m/2 + Θ(m^{4/5})\n\nTriangle-free graphs are 'more bipartite' than arbitrary graphs.",
     "mathContext": "This connects extremal graph theory to probabilistic methods.",
     "significance": "key",
+    "prerequisites": [
+      "Bipartite graphs",
+      "Triangle-free graphs",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Triangle-free graphs",
       "Bipartite graphs",
@@ -35,6 +40,12 @@
       "Mantel's theorem",
       "extremal graph theory"
     ],
+    "prerequisites": [
+      "K₃-free graphs",
+      "Turán's theorem",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -53,6 +64,12 @@
       "graph partitioning",
       "Kővári-Sós-Turán theorem",
       "bipartite subgraph"
+    ],
+    "prerequisites": [
+      "2-colorability",
+      "basic set theory",
+      "graph partitioning",
+      "graph theory basics"
     ],
     "significance": "key"
   },
@@ -73,6 +90,11 @@
       "extremal functions",
       "supremum of bipartite subgraphs"
     ],
+    "prerequisites": [
+      "Classical.choose in Lean 4",
+      "graph theory basics",
+      "infimum over graphs"
+    ],
     "significance": "key"
   },
   {
@@ -91,6 +113,12 @@
       "random 2-coloring",
       "expected value argument",
       "Edwards bound"
+    ],
+    "prerequisites": [
+      "graph coloring",
+      "graph theory basics",
+      "probabilistic method",
+      "random 2-coloring"
     ],
     "significance": "key"
   },
@@ -111,6 +139,11 @@
       "Classical.choose",
       "Alon 1996 Combinatorica"
     ],
+    "prerequisites": [
+      "extremal constructions",
+      "graph theory basics",
+      "m^{4/5} exponent"
+    ],
     "significance": "key"
   },
   {
@@ -129,6 +162,11 @@
       "algebraic constructions",
       "triangle-free bonus",
       "m^{4/5} lower bound"
+    ],
+    "prerequisites": [
+      "algebraic constructions",
+      "graph theory basics",
+      "probabilistic method"
     ],
     "significance": "key"
   },
@@ -149,6 +187,12 @@
       "linarith tactic",
       "Alon's theorem"
     ],
+    "prerequisites": [
+      "asymptotic equivalence",
+      "big-Theta notation",
+      "linarith tactic",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -168,6 +212,11 @@
       "Turán-type problems",
       "extremal graph theory"
     ],
+    "prerequisites": [
+      "Kővári-Sós-Turán theorem",
+      "Mantel's theorem 1907",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -186,6 +235,12 @@
       "conjunction of bounds",
       "bipartite-like structure",
       "solved Erdős problems"
+    ],
+    "prerequisites": [
+      "Alon 1996 Combinatorica 16",
+      "conjunction of bounds",
+      "graph theory basics",
+      "proof techniques"
     ],
     "significance": "key"
   }

@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #762: Chromatic vs Cochromatic Number**\n\nThe cochromatic number ζ(G) is the minimum colors needed where each color class induces either a complete graph or an independent set.\n\n**Conjecture (EGS 1990):** If ω(G) ≤ 4 and ζ(G) ≥ 4, then χ(G) ≤ ζ(G) + 2.\n\n**Status:** DISPROVED (Steiner 2024)\n\n**Counterexample:** Graph with ω=4, ζ=4, χ=7",
     "mathContext": "The cochromatic number generalizes chromatic number by allowing both cliques and independent sets as color classes.",
     "significance": "key",
+    "prerequisites": [
+      "Chromatic number",
+      "Cochromatic number",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Chromatic number",
       "Cochromatic number",
@@ -36,6 +41,12 @@
     "content": "**IsProperColoring:**\n\nA proper k-coloring assigns colors from Fin k to vertices such that adjacent vertices have different colors.\n\n**Definition:**\n```lean\ndef IsProperColoring (G : SimpleGraph V) (k : ℕ) (c : V → Fin k) : Prop :=\n  ∀ v w, G.Adj v w → c v ≠ c w\n```\n\nThe chromatic number χ(G) is the minimum k for which such a coloring exists.",
     "mathContext": "Proper colorings are the standard notion of graph coloring. Each color class is an independent set.",
     "significance": "key",
+    "prerequisites": [
+      "Graph coloring",
+      "Independent set",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Graph coloring",
       "Independent set",
@@ -60,6 +71,12 @@
     "content": "**IsCochromaticColorClass:**\n\nA color class C is cochromatic if it induces either:\n1. An independent set (no edges between vertices in C), OR\n2. A clique (all edges between distinct vertices in C)\n\n**Definition:**\n```lean\ndef IsCochromaticColorClass (G : SimpleGraph V) (C : Set V) : Prop :=\n  (∀ v w, v ∈ C → w ∈ C → v ≠ w → ¬G.Adj v w) ∨\n  (∀ v w, v ∈ C → w ∈ C → v ≠ w → G.Adj v w)\n```",
     "mathContext": "This is the key generalization: cochromatic colorings allow cliques as color classes, giving more flexibility than proper colorings.",
     "significance": "key",
+    "prerequisites": [
+      "Clique",
+      "Independent set",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Clique",
       "Independent set",
@@ -84,6 +101,12 @@
     "content": "**IsCochromaticColoring and cochromaticNumber:**\n\nA cochromatic k-coloring partitions vertices into k classes, each a clique or independent set.\n\n**Definitions:**\n```lean\ndef IsCochromaticColoring (G : SimpleGraph V) (k : ℕ) (c : V → Fin k) : Prop :=\n  ∀ i : Fin k, IsCochromaticColorClass G {v | c v = i}\n\naxiom cochromaticNumber (G : SimpleGraph V) : ℕ\n```\n\nThe cochromatic number ζ(G) is the minimum k for such a coloring.",
     "mathContext": "Since every proper coloring is cochromatic (all classes are independent), we always have ζ(G) ≤ χ(G).",
     "significance": "key",
+    "prerequisites": [
+      "Cochromatic number",
+      "Partition",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Cochromatic number",
       "Partition",
@@ -108,6 +131,12 @@
     "content": "**proper_implies_cochromatic:**\n\nEvery proper coloring is automatically a cochromatic coloring.\n\n**Theorem:**\n```lean\ntheorem proper_implies_cochromatic (G : SimpleGraph V) (k : ℕ) (c : V → Fin k) :\n    IsProperColoring G k c → IsCochromaticColoring G k c\n```\n\n**Proof:** In a proper coloring, each color class is an independent set, which satisfies the cochromatic condition (no edges).",
     "mathContext": "This implies χ(G) ≥ ζ(G): any proper coloring gives a cochromatic coloring with the same number of colors.",
     "significance": "key",
+    "prerequisites": [
+      "Chromatic number",
+      "Cochromatic number",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Chromatic number",
       "Cochromatic number",
@@ -132,6 +161,12 @@
     "content": "**Erdős-Gimbel-Straight Conjecture (1990):**\n\nIf G has no K₅ (ω(G) ≤ 4) and ζ(G) ≥ 4, then χ(G) ≤ ζ(G) + 2.\n\n**Definition:**\n```lean\ndef egs_conjecture : Prop :=\n  ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),\n    cliqueNumber G ≤ 4 →\n    cochromaticNumber G ≥ 4 →\n    chromaticNumber G ≤ cochromaticNumber G + 2\n```\n\nThis conjectured a specific bound on the gap χ - ζ.",
     "mathContext": "The conjecture proposed that the gap between chromatic and cochromatic numbers is at most 2 for K₅-free graphs.",
     "significance": "key",
+    "prerequisites": [
+      "Chromatic number",
+      "Cochromatic number",
+      "Fintype",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Chromatic number",
       "Cochromatic number",
@@ -156,6 +191,12 @@
     "content": "**steiner_counterexample (2024):**\n\nSteiner constructed a graph G with:\n- ω(G) = 4 (no K₅)\n- ζ(G) = 4 (cochromatic number 4)\n- χ(G) = 7 (chromatic number 7)\n\n**Axiom:**\n```lean\naxiom steiner_counterexample :\n  ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),\n    cliqueNumber G = 4 ∧ cochromaticNumber G = 4 ∧ chromaticNumber G = 7\n```\n\nSince 7 > 4 + 2 = 6, this disproves the EGS conjecture.",
     "mathContext": "The gap χ - ζ = 7 - 4 = 3 > 2 shows the conjecture's +2 bound was too optimistic.",
     "significance": "key",
+    "prerequisites": [
+      "Counterexample",
+      "Fintype",
+      "Graph construction",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Counterexample",
       "Graph construction",
@@ -180,6 +221,12 @@
     "content": "**egs_conjecture_false:**\n\nThe EGS conjecture is FALSE.\n\n**Theorem:**\n```lean\ntheorem egs_conjecture_false : ¬egs_conjecture\n```\n\n**Proof:** Apply the conjecture to Steiner's graph (ω=4, ζ=4). The conjecture would give χ ≤ 6, but χ = 7. Contradiction.",
     "mathContext": "This formally derives the falsity of the conjecture from the existence of Steiner's counterexample.",
     "significance": "key",
+    "prerequisites": [
+      "Counterexample",
+      "Proof by contradiction",
+      "graph theory basics",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Proof by contradiction",
       "Counterexample",
@@ -204,6 +251,12 @@
     "content": "**egs_general_theorem (1990):**\n\nFor every n > 2, there exists f(n) such that if ω(G) < n then χ(G) ≤ ζ(G) + f(n).\n\n**Axiom:**\n```lean\naxiom egs_general_theorem :\n  ∀ n : ℕ, n > 2 → ∃ f : ℕ,\n    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),\n      cliqueNumber G < n → chromaticNumber G ≤ cochromaticNumber G + f\n```\n\nThis general statement IS TRUE - only the specific bound \"+2\" was disproved.",
     "mathContext": "The gap χ - ζ is bounded by some function of the clique number. Finding optimal bounds remains open.",
     "significance": "key",
+    "prerequisites": [
+      "Bounded gap",
+      "Clique number",
+      "Fintype",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Bounded gap",
       "Clique number",
@@ -228,6 +281,12 @@
     "content": "**chi_zeta_gap_bounded:**\n\nThe gap χ(G) - ζ(G) can be bounded in terms of clique number.\n\n**Theorem:**\n```lean\ntheorem chi_zeta_gap_bounded :\n    ∀ n : ℕ, n > 2 → ∃ f : ℕ,\n      ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),\n        cliqueNumber G < n → chromaticNumber G - cochromaticNumber G ≤ f\n```\n\nDerived from the general EGS theorem.",
     "mathContext": "Lean: `theorem chi_zeta_gap_bounded :`",
     "significance": "key",
+    "prerequisites": [
+      "Chromatic number",
+      "Cochromatic number",
+      "Fintype",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Chromatic number",
       "Cochromatic number",
@@ -252,6 +311,12 @@
     "content": "**steiner_gap_lower_bound:**\n\nThe gap χ - ζ can be at least 3 for K₅-free graphs.\n\n**Axiom:**\n```lean\naxiom steiner_gap_lower_bound :\n  ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),\n    cliqueNumber G = 4 ∧ chromaticNumber G - cochromaticNumber G ≥ 3\n```\n\nSteiner's example shows χ - ζ = 7 - 4 = 3.",
     "mathContext": "Lean: `axiom steiner_gap_lower_bound :`",
     "significance": "supporting",
+    "prerequisites": [
+      "Clique number",
+      "Fintype",
+      "Lower bound",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Lower bound",
       "Clique number",
@@ -275,6 +340,12 @@
     "content": "**erdos_762_summary:**\n\nCombines all results:\n1. The EGS conjecture (χ ≤ ζ + 2 for K₅-free graphs) is FALSE\n2. The general bounded gap theorem (χ - ζ bounded by f(ω)) is TRUE\n\n**Theorem:**\n```lean\ntheorem erdos_762_summary :\n    ¬egs_conjecture ∧\n    (∀ n > 2, ∃ f : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),\n      cliqueNumber G < n → chromaticNumber G ≤ cochromaticNumber G + f)\n```",
     "mathContext": "Lean: `theorem erdos_762_summary :`",
     "significance": "key",
+    "prerequisites": [
+      "Bounded gap",
+      "Disproof",
+      "Fintype",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Disproof",
       "Bounded gap",

@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #861: SOLVED (Cameron-Erdős)**\n\nTwo questions about Sidon sets:\n\n**Q1:** Is A(N)/2^{f(N)} → ∞? **YES**\n**Q2:** Is A(N) = 2^{(1+o(1))f(N)}? **NO**\n\nCurrent bounds: 2^{1.16·f(N)} ≤ A(N) ≤ 2^{6.442·f(N)}",
     "mathContext": "Sidon sets (B₂ sequences) are fundamental in additive combinatorics. Counting them requires sophisticated techniques like hypergraph containers.",
     "significance": "key",
+    "prerequisites": [
+      "B2-sequences",
+      "Sidon-sets",
+      "graph theory basics",
+      "hypergraph theory"
+    ],
     "relatedConcepts": [
       "Sidon-sets",
       "B2-sequences",
@@ -30,6 +36,11 @@
     "content": "**IsSidon S:**\n\nA set S is Sidon if all pairwise sums a + b (with a ≤ b) are distinct.\n\nEquivalently: if a + b = c + d with a ≤ b, c ≤ d, then a = c and b = d.",
     "mathContext": "Sidon sets are named after Simon Sidon. Also called B₂ sequences in additive combinatorics.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "distinct-sums",
+      "pairwise-sums"
+    ],
     "relatedConcepts": [
       "pairwise-sums",
       "distinct-sums",
@@ -48,6 +59,11 @@
     "content": "**maxSidonSize N:**\n\nf(N) = max{|S| : S ⊆ {1,...,N} is Sidon}\n\nThe largest possible Sidon set within {1,...,N}.",
     "mathContext": "It is known that f(N) ~ √N. The exact behavior of f(N) - √N is still studied.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic",
+      "basic set theory",
+      "maximum-set-size"
+    ],
     "relatedConcepts": [
       "maximum-set-size",
       "asymptotic"
@@ -65,6 +81,11 @@
     "content": "**countSidonSets N:**\n\nA(N) = |{S : S ⊆ {1,...,N} is Sidon}|\n\nThe total number of Sidon subsets of {1,...,N}.",
     "mathContext": "This counting function is the main object of study. The Cameron-Erdős questions ask about its growth rate relative to 2^{f(N)}.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "combinatorics",
+      "counting"
+    ],
     "relatedConcepts": [
       "counting",
       "combinatorics"
@@ -82,6 +103,11 @@
     "content": "**erdos_turan_sidon:**\n\nf(N) ~ √N as N → ∞.\n\nThe maximum Sidon set size grows like the square root of N.",
     "mathContext": "This classical result shows Sidon sets are quite sparse - at most ~√N elements can have all distinct pairwise sums.",
     "significance": "key",
+    "prerequisites": [
+      "Erdos-Turan",
+      "asymptotic",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Erdos-Turan",
       "asymptotic",
@@ -100,6 +126,11 @@
     "content": "**CameronErdosQuestion1:**\n\nIs A(N)/2^{f(N)} → ∞?\n\n**ANSWER: YES**\n\nThe number of Sidon sets grows much faster than 2^{f(N)}.",
     "mathContext": "This asks whether there are 'many more' Sidon sets than one might naively expect from the maximum size.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "counting",
+      "growth-rate"
+    ],
     "relatedConcepts": [
       "counting",
       "growth-rate"
@@ -117,6 +148,11 @@
     "content": "**CameronErdosQuestion2:**\n\nIs A(N) = 2^{(1+o(1))f(N)}?\n\n**ANSWER: NO**\n\nThe exponent is strictly between 1.16 and 6.442, not 1+o(1).",
     "mathContext": "This asks for a more precise growth rate. The answer shows there's a non-trivial multiplicative constant in the exponent.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "exponent",
+      "precise-asymptotics"
+    ],
     "relatedConcepts": [
       "precise-asymptotics",
       "exponent"
@@ -134,6 +170,12 @@
     "content": "**saxton_thomason_lower_bound:**\n\nA(N) ≥ 2^{1.16·f(N)} for large N.\n\nFrom 'Hypergraph containers', Invent. Math. (2015).",
     "mathContext": "The hypergraph container method provides a powerful way to count combinatorial structures. This lower bound implies Question 1 is true.",
     "significance": "key",
+    "prerequisites": [
+      "graph theory basics",
+      "hypergraph theory",
+      "hypergraph-containers",
+      "lower-bound"
+    ],
     "relatedConcepts": [
       "hypergraph-containers",
       "lower-bound",
@@ -152,6 +194,11 @@
     "content": "**klrs_upper_bound:**\n\nA(N) ≤ 2^{6.442·f(N)} for large N.\n\nFrom Kohayakawa-Lee-Rödl-Samotij, Random Structures Algorithms (2015).",
     "mathContext": "This upper bound, combined with the lower bound, shows the exponent is strictly between 1.16 and 6.442.",
     "significance": "key",
+    "prerequisites": [
+      "KLRS",
+      "proof techniques",
+      "upper-bound"
+    ],
     "relatedConcepts": [
       "upper-bound",
       "KLRS",
@@ -170,6 +217,11 @@
     "content": "**current_bounds:**\n\nFor large N: 2^{1.16·f(N)} ≤ A(N) ≤ 2^{6.442·f(N)}\n\nThis theorem combines the Saxton-Thomason lower and KLRS upper bounds.",
     "mathContext": "The gap between 1.16 and 6.442 shows both questions are answered: Q1 yes (exponent > 1), Q2 no (exponent ≠ 1+o(1)).",
     "significance": "key",
+    "prerequisites": [
+      "bounds",
+      "gap",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "bounds",
       "gap",
@@ -188,6 +240,11 @@
     "content": "**erdos_861_summary:**\n\n- Question 1: YES (A(N)/2^{f(N)} → ∞)\n- Question 2: NO (exponent ≠ 1+o(1))\n\nThe exact constant c in A(N) ~ 2^{c·f(N)} remains open, known to be in [1.16, 6.442].",
     "mathContext": "Determining the exact value of c is an active research problem in additive combinatorics.",
     "significance": "key",
+    "prerequisites": [
+      "open-problem",
+      "proof techniques",
+      "summary"
+    ],
     "relatedConcepts": [
       "summary",
       "open-problem",

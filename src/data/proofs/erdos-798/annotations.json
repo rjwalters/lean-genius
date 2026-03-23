@@ -11,6 +11,11 @@
     "content": "**Erdos Problem #798: Covering Lattice Points with Lines**\n\nGiven the integer grid {1,...,n}^2, what is the minimum number of points such that the lines they determine cover every grid point?\n\n**Answer: t(n) = Theta(n^{2/3} log n)**\n\n- Lower bound: t(n) >= c*n^{2/3} (Erdos-Purdy)\n- Upper bound: t(n) <= C*n^{2/3}*log n (Alon 1991)\n\nThe answer to 't(n) = o(n)?' is YES.",
     "mathContext": "A problem in discrete geometry about efficient coverage of lattice grids.",
     "significance": "key",
+    "prerequisites": [
+      "Lattice points",
+      "Line geometry",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Lattice points",
       "Line geometry",
@@ -52,6 +57,11 @@
     "content": "**lineThroughPoints:**\n\nThe line determined by two distinct points p and q.\n\n**Definition:** All points r such that r is collinear with p and q.\n\nFormally: r = p + t*(q - p) for some real t.",
     "mathContext": "$Formally: r = p + t*(q - p) for some real t.$",
     "significance": "key",
+    "prerequisites": [
+      "Collinearity",
+      "Parametric lines",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Collinearity",
       "Parametric lines"
@@ -69,6 +79,11 @@
     "content": "**pointsCoversGrid:**\n\nA set S of points covers {1,...,n}^2 if every lattice point lies on some line determined by S.\n\n**Definition:**\n```lean\ndef pointsCoversGrid (S : Set (Z x Z)) (n : N) : Prop :=\n  forall r in latticeGrid n, exists p q in S, p != q and\n    r in lineThroughPoints p q\n```",
     "mathContext": "Lean: `def pointsCoversGrid (S : Set (Z x Z)) (n : N) : Prop :=`",
     "relatedConcepts": [
+      "lattice theory",
+      "order theory"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "lattice theory",
       "order theory"
     ],
@@ -91,6 +106,11 @@
       "order theory",
       "ring theory"
     ],
+    "prerequisites": [
+      "algebra",
+      "basic set theory",
+      "lattice theory"
+    ],
     "significance": "key"
   },
   {
@@ -109,6 +129,10 @@
       "inequalities",
       "lattice theory",
       "order theory"
+    ],
+    "prerequisites": [
+      "bounds",
+      "inequalities"
     ],
     "significance": "key"
   },
@@ -130,6 +154,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "abstract algebra",
+      "algebra",
+      "ring tactic"
+    ],
     "significance": "key"
   },
   {
@@ -148,6 +177,10 @@
       "order theory",
       "probabilistic method",
       "random structures"
+    ],
+    "prerequisites": [
+      "lattice theory",
+      "order theory"
     ],
     "significance": "key"
   },
@@ -187,6 +220,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -207,6 +244,12 @@
       "lattice theory",
       "order theory"
     ],
+    "prerequisites": [
+      "algebra",
+      "bounds",
+      "proof techniques",
+      "ring tactic"
+    ],
     "significance": "supporting"
   },
   {
@@ -226,6 +269,11 @@
       "lattice theory",
       "order theory"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -242,6 +290,11 @@
     "relatedConcepts": [
       "bounds",
       "inequalities"
+    ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -261,6 +314,12 @@
       "graph theory",
       "inequalities",
       "matching theory"
+    ],
+    "prerequisites": [
+      "bounds",
+      "graph theory",
+      "matching theory",
+      "proof techniques"
     ],
     "significance": "key"
   }

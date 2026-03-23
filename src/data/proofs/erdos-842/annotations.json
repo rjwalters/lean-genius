@@ -11,6 +11,11 @@
     "content": "Erdős Problem #842 asks: given n vertex-disjoint triangles with all 3n vertices connected by a Hamiltonian cycle, is the resulting graph always 3-colorable? Each triangle requires 3 colors, and the question is whether the Hamiltonian cycle can be accommodated without a fourth color. Answer: YES, proved by Fleischner and Stiebitz (1992).",
     "mathContext": "The construction combines a perfect triangle packing with a Hamiltonian cycle — two natural graph structures whose chromatic interaction is non-obvious.",
     "significance": "key",
+    "prerequisites": [
+      "Graph coloring",
+      "Hamiltonian cycle",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Graph coloring",
       "Hamiltonian cycle",
@@ -29,6 +34,12 @@
     "content": "TriangleGraph is the complete graph on 3 vertices (Fin 3) where adjacency is the not-equal relation. The theorem triangle_is_complete confirms every distinct pair is adjacent, and the axiom triangle_chromatic_number states χ(K₃) = 3. This is the building block: the construction starts with n copies of this graph.",
     "mathContext": "Lean: `def TriangleGraph : SimpleGraph (Fin 3)`",
     "significance": "key",
+    "prerequisites": [
+      "Complete graph",
+      "K₃",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Complete graph",
       "K₃",
@@ -47,6 +58,12 @@
     "content": "The construction on Fin(3n) vertices: triangleIndex assigns each vertex to one of n triangles via integer division by 3, trianglePosition gives position 0/1/2 within the triangle via mod 3, and isHamiltonianEdge connects consecutive vertices cyclically. TriangleHamiltonianGraph combines triangle edges (same triangle, different position) with Hamiltonian cycle edges, proved symmetric and loopless.",
     "mathContext": "This is THE graph Erdős asked about — the formal definition makes the construction completely precise.",
     "significance": "key",
+    "prerequisites": [
+      "Graph construction",
+      "Vertex partition",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Graph construction",
       "Vertex partition",
@@ -65,6 +82,12 @@
     "content": "The main result has three parts: thg_3_colorable (axiom): a proper 3-coloring exists. thg_chromatic_number_le_3 (axiom): χ ≤ 3, the content of Fleischner-Stiebitz 1992. thg_chromatic_number_ge_3 (axiom): χ ≥ 3, since the graph contains K₃. The theorem fleischner_stiebitz combines these via le_antisymm to get χ = 3 exactly.",
     "mathContext": "The upper bound χ ≤ 3 is the hard direction — it requires showing that despite the Hamiltonian cycle, 3 colors always suffice.",
     "significance": "key",
+    "prerequisites": [
+      "Chromatic number",
+      "Fleischner-Stiebitz 1992",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Chromatic number",
       "Fleischner-Stiebitz 1992",
@@ -83,6 +106,12 @@
     "content": "The cycle length 3n is divisible by 3 (proved by Nat.dvd_mul_right). This is crucial for the coloring: a cyclic pattern 0-1-2-0-1-2-... around the cycle returns to color 0 at position 3n, which is consistent. If the cycle length were not divisible by 3, the coloring would fail to close properly.",
     "mathContext": "This arithmetic fact is the fundamental reason why the construction works — it ensures the cyclic coloring pattern is self-consistent.",
     "significance": "key",
+    "prerequisites": [
+      "Cyclic coloring",
+      "Divisibility",
+      "divisibility",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Divisibility",
       "Cyclic coloring",
@@ -101,6 +130,12 @@
     "content": "vertex_count confirms |V| = 3n via Fintype.card_fin. max_degree_bound (axiom): each vertex has degree ≤ 4 (2 from its triangle, 2 from the Hamiltonian cycle). Special cases: case_n_eq_1 (3 vertices, just K₃) and case_n_eq_2 (6 vertices, two triangles plus cycle) both follow directly from fleischner_stiebitz.",
     "mathContext": "Lean: `theorem vertex_count (n : ℕ) : Fintype.card (Fin (3 * n)) = 3 * n`",
     "significance": "supporting",
+    "prerequisites": [
+      "Fintype",
+      "Maximum degree",
+      "Vertex count",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Vertex count",
       "Maximum degree",
@@ -119,6 +154,12 @@
     "content": "erdos_842 combines both key results into a single theorem: the Triangle-Hamiltonian Graph admits a proper 3-coloring AND has chromatic number exactly 3. Proved by exact ⟨thg_3_colorable n hn, fleischner_stiebitz n hn⟩. This completely answers Erdős's question: YES, the graph has chromatic number at most 3 (and in fact exactly 3).",
     "mathContext": "Lean: `theorem erdos_842 (n : ℕ) (hn : n > 0) :`",
     "significance": "key",
+    "prerequisites": [
+      "Complete resolution",
+      "Summary",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Summary",
       "Complete resolution",

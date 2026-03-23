@@ -59,6 +59,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -77,6 +81,12 @@
       "factorization",
       "prime numbers"
     ],
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "prime numbers",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -91,6 +101,10 @@
     "content": "**g:**\n\nThe product function g(k) = k · σ(k).\n\n```lean\ndef g (k : N) : N := k * sigma k\n```\n\nThis is the central function of the problem. The question is: how many k give g(k) = n?",
     "mathContext": "Lean: `def g (k : N) : N := k * sigma k`",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "formal mathematics"
     ],
     "significance": "key"
@@ -131,6 +145,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -145,6 +163,11 @@
     "content": "**f:**\n\nf(n) = number of solutions to k·σ(k) = n.\n\n```lean\nnoncomputable def f (n : N) : N := (solutionSet n).ncard\n```\n\nThis is the main object of study. The conjectures bound f(n).",
     "mathContext": "Lean: `noncomputable def f (n : N) : N := (solutionSet n).ncard`",
     "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "bounds",
       "inequalities"
     ],
@@ -164,6 +187,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -179,6 +206,10 @@
     "mathContext": "The double-logarithmic decay means f(n) grows extremely slowly compared to any polynomial.",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "polynomial ring theory"
     ],
     "significance": "key"
   },
@@ -197,6 +228,11 @@
       "algebra",
       "polynomials"
     ],
+    "prerequisites": [
+      "algebra",
+      "polynomial ring theory",
+      "polynomials"
+    ],
     "significance": "key"
   },
   {
@@ -211,6 +247,11 @@
     "content": "**oeis_A327153:**\n\nThe set of n for which f(n) > 0 (i.e., k·σ(k) = n has a solution).\n\n```lean\ndef oeis_A327153 : Set N := {n : N | f n > 0}\n```\n\nThis is the range of the function g(k) = k·σ(k).",
     "mathContext": "Lean: `def oeis_A327153 : Set N := {n : N | f n > 0}`",
     "significance": "key",
+    "prerequisites": [
+      "Integer sequences",
+      "OEIS",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "OEIS",
       "Integer sequences"
@@ -230,6 +271,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -246,6 +291,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -261,6 +310,10 @@
     "mathContext": "$n = 72: k = 6 gives 6·σ(6) = 6·12 = 72.$",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "supporting"
   },
@@ -279,6 +332,12 @@
       "divisibility",
       "factorization",
       "prime numbers"
+    ],
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "prime numbers",
+      "proof techniques"
     ],
     "significance": "key"
   }

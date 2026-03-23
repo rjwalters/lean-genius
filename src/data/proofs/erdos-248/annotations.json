@@ -11,6 +11,12 @@
     "content": "Erdos Problem #248 asks whether there are infinitely many integers n such that the number of distinct prime divisors of n+k grows at most linearly in k. Remarkably, Erdos and Graham admitted in 1980: 'we just know too little about sieves to be able to handle such a question.'",
     "mathContext": "The notation omega(n+k) << k means omega(n+k) <= C*k for some constant C independent of k. The problem was open for 45 years until Tao and Teravainen's 2025 solution.",
     "significance": "supporting",
+    "prerequisites": [
+      "omega tactic",
+      "prime factors",
+      "prime numbers",
+      "sieve theory"
+    ],
     "relatedConcepts": [
       "sieve theory",
       "prime factors",
@@ -29,6 +35,12 @@
     "content": "We import Mathlib modules for prime numbers, factorization (which provides primeFactors), set cardinality, and real numbers.",
     "mathContext": "Formalizes the concept of mathlib imports",
     "significance": "supporting",
+    "prerequisites": [
+      "Mathlib",
+      "cardinal arithmetic",
+      "module theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Mathlib",
       "prime numbers"
@@ -46,6 +58,12 @@
     "content": "The **prime omega function** omega(n) counts the number of distinct prime divisors of n. For example, omega(12) = 2 because 12 = 2^2 * 3 has exactly two distinct primes: 2 and 3.",
     "mathContext": "We define `omega n := n.primeFactors.card` using Mathlib's primeFactors which returns the finite set of prime divisors. The cardinality of this set gives us omega(n).",
     "significance": "key",
+    "prerequisites": [
+      "arithmetic functions",
+      "basic set theory",
+      "cardinal arithmetic",
+      "omega tactic"
+    ],
     "relatedConcepts": [
       "arithmetic functions",
       "prime factorization",
@@ -64,6 +82,12 @@
     "content": "We verify concrete values using native_decide: omega(1) = 0 (no prime divisors), omega(2) = 1 (only 2), omega(6) = 2 (primes 2, 3), and omega(30) = 3 (primes 2, 3, 5).",
     "mathContext": "The native_decide tactic compiles the decidable proposition to native code and evaluates it, giving a machine-checked certificate of these equalities.",
     "significance": "supporting",
+    "prerequisites": [
+      "decidability",
+      "native_decide",
+      "omega tactic",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "decidability",
       "native_decide",
@@ -82,6 +106,12 @@
     "content": "We define the set of **smooth-tail integers** as those n satisfying Erdos's condition: omega(n+k) <= C*k for all k >= 1. These are 'exceptional' starting points where consecutive integers have unusually few prime factors.",
     "mathContext": "In Lean: `smoothTailIntegers C := {n : N | forall k >= 1, (omega(n+k) : R) <= C * k}`. The coercion to R allows comparison with the real number C*k.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "omega tactic",
+      "prime numbers",
+      "set comprehension"
+    ],
     "relatedConcepts": [
       "set comprehension",
       "smooth numbers",
@@ -100,6 +130,11 @@
     "content": "**Erdos Problem #248 SOLVED**: There exists C > 0 such that the set of smooth-tail integers is infinite. This groundbreaking result was proved by Terence Tao and Joni Teravainen in December 2025.",
     "mathContext": "We state this as an axiom: `exists C : R, C > 0 and (smoothTailIntegers C).Infinite`. The proof requires deep sieve theory - specifically, quantitative bounds on correlations of multiplicative functions - which is far beyond current Mathlib formalization.",
     "significance": "key",
+    "prerequisites": [
+      "analytic number theory",
+      "proof techniques",
+      "sieve theory"
+    ],
     "relatedConcepts": [
       "sieve theory",
       "analytic number theory",
@@ -118,6 +153,12 @@
     "content": "For any prime p, omega(p) = 1 since the only prime divisor of p is itself. This is a fundamental property of the prime omega function.",
     "mathContext": "The proof uses hp.primeFactors which, for a prime p, simplifies to the singleton {p}. The cardinality of a singleton is 1.",
     "significance": "supporting",
+    "prerequisites": [
+      "cardinal arithmetic",
+      "omega tactic",
+      "prime factorization",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "prime numbers",
       "prime factorization"
@@ -135,6 +176,12 @@
     "content": "We verify that n=1 satisfies the smooth-tail condition with C=2 for small values of k. For instance, omega(2)=1 <= 2, omega(3)=1 <= 4, omega(4)=1 <= 6, omega(5)=1 <= 8, omega(6)=2 <= 10.",
     "mathContext": "These verifications use native_decide on natural number inequalities. While we don't prove n=1 works for all k, these examples illustrate the condition.",
     "significance": "supporting",
+    "prerequisites": [
+      "examples",
+      "omega tactic",
+      "proof techniques",
+      "verification"
+    ],
     "relatedConcepts": [
       "examples",
       "verification"
@@ -152,6 +199,12 @@
     "content": "As a simple corollary of the main theorem, the set of smooth-tail integers is nonempty. If a set is infinite, it must be nonempty.",
     "mathContext": "We use Set.Infinite.nonempty to derive nonemptiness from the axiom erdos_248. This gives us an existential witness without constructing a specific n.",
     "significance": "supporting",
+    "prerequisites": [
+      "infinite sets",
+      "proof techniques",
+      "set theory",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "set theory",
       "infinite sets"

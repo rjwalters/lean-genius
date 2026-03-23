@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #625**\n\nFor random graph G(n, 1/2), does χ(G) - ζ(G) → ∞ almost surely?\n\n**Status: OPEN**\n\n**Prize:** $1000 for FALSE, $100 for TRUE\n\nThe 2024 Heckel-Steiner breakthrough shows the difference is unbounded, but the exact asymptotic remains open.",
     "mathContext": "This problem connects random graph theory, graph coloring, and probabilistic combinatorics. The cochromatic number is a natural relaxation of chromatic number.",
     "significance": "key",
+    "prerequisites": [
+      "Chromatic number",
+      "Random graphs",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Random graphs",
       "Chromatic number",
@@ -30,6 +36,12 @@
     "content": "**IsCochromaticClass G S:**\n\nA set S of vertices is cochromatic if it induces either:\n- A complete graph (all pairs adjacent), OR\n- An empty graph (no pairs adjacent)\n\nThis is the key relaxation from proper colorings, which only allow independent sets.",
     "mathContext": "The cochromatic condition is symmetric under graph complement, unlike proper colorings.",
     "significance": "key",
+    "prerequisites": [
+      "Clique",
+      "Independent set",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Clique",
       "Independent set",
@@ -48,6 +60,12 @@
     "content": "**CochromaticColoring G k:**\n\nA structure with:\n- color : V → Fin k (assignment of colors)\n- cochromatic : each color class is cochromatic\n\nEvery proper coloring is cochromatic (all classes are independent sets), but cochromatic colorings can also have clique classes.",
     "mathContext": "The structure uses Fin k for colors to ensure we use exactly k colors.",
     "significance": "key",
+    "prerequisites": [
+      "Graph coloring",
+      "Proper coloring",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Graph coloring",
       "Proper coloring",
@@ -66,6 +84,12 @@
     "content": "**cochromaticNumber G:**\n\nThe minimum k such that G has a cochromatic k-coloring. Defined using Nat.find.\n\n**Properties:**\n- ζ(G) ≤ χ(G) (every proper coloring is cochromatic)\n- ζ(G) = ζ(Gᶜ) (symmetric under complement)",
     "mathContext": "The cochromatic number was introduced as a measure of how far a graph is from being a disjoint union of cliques and independent sets.",
     "significance": "key",
+    "prerequisites": [
+      "Chromatic number",
+      "Graph invariant",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Chromatic number",
       "Graph invariant",
@@ -84,6 +108,12 @@
     "content": "**chromaticNumber G:**\n\nThe minimum k such that G has a proper k-coloring (no two adjacent vertices share a color).\n\nFor random G(n, 1/2):\nχ(G) ≤ (1+o(1))n/(2 log₂ n) almost surely.",
     "mathContext": "The chromatic number is one of the most studied graph invariants, central to the Four Color Theorem.",
     "significance": "key",
+    "prerequisites": [
+      "Graph coloring",
+      "Proper coloring",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Graph coloring",
       "Proper coloring",
@@ -102,6 +132,12 @@
     "content": "**proper_is_cochromatic:**\n\nEvery proper k-coloring is also a cochromatic k-coloring.\n\n**Proof idea:** In a proper coloring, each color class is an independent set. An independent set is trivially cochromatic (the 'empty' case).",
     "mathContext": "This shows that cochromatic colorings are a strict relaxation of proper colorings.",
     "significance": "key",
+    "prerequisites": [
+      "Independent set",
+      "Proper coloring",
+      "graph coloring",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Proper coloring",
       "Independent set",
@@ -120,6 +156,12 @@
     "content": "**cochromatic_le_chromatic:**\n\nThe cochromatic number is at most the chromatic number.\n\n**Proof:** Any proper χ(G)-coloring is also cochromatic, so ζ(G) ≤ χ(G).\n\nThis is why the question χ - ζ → ∞ is interesting: how much better can cochromatic colorings be?",
     "mathContext": "The gap χ - ζ measures how much we gain by allowing clique color classes.",
     "significance": "key",
+    "prerequisites": [
+      "Chromatic number",
+      "Inequality",
+      "graph coloring",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "Chromatic number",
       "Inequality",
@@ -138,6 +180,12 @@
     "content": "**cochromatic_complement:**\n\nζ(G) ≤ ζ(Gᶜ) for any graph G.\n\nThis follows from the symmetry of the cochromatic condition under swapping 'complete' and 'empty'.",
     "mathContext": "The complement graph Gᶜ has edges exactly where G doesn't.",
     "significance": "key",
+    "prerequisites": [
+      "Complement graph",
+      "Symmetry",
+      "graph theory basics",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Complement graph",
       "Symmetry"
@@ -155,6 +203,12 @@
     "content": "**cochromatic_eq_complement:**\n\nThe cochromatic number is invariant under graph complement!\n\n**Proof:** Apply cochromatic_complement in both directions.\n\nThis is a beautiful symmetry property that chromatic number lacks (χ(G) ≠ χ(Gᶜ) in general).",
     "mathContext": "For random G(n, 1/2), the graph and its complement have the same distribution, making this symmetry particularly relevant.",
     "significance": "key",
+    "prerequisites": [
+      "Complement invariant",
+      "Graph symmetry",
+      "graph theory basics",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Complement invariant",
       "Graph symmetry",
@@ -173,6 +227,12 @@
     "content": "**RandomGraph n p:**\n\nThe Erdős-Rényi random graph G(n, p): n vertices, each edge included independently with probability p.\n\n**ErdosRenyi n:** G(n, 1/2) - the symmetric case where G and Gᶜ have the same distribution.",
     "mathContext": "G(n, 1/2) is central to probabilistic combinatorics. The symmetry p = 1/2 makes complement-invariant properties like ζ particularly natural.",
     "significance": "key",
+    "prerequisites": [
+      "Erdős-Rényi model",
+      "Random graph",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Erdős-Rényi model",
       "Random graph",
@@ -191,6 +251,12 @@
     "content": "**AlmostSurely P:**\n\nA property P holds almost surely (a.s.) if the probability it fails goes to 0 as n → ∞.\n\nFormally: ∀ε > 0, ∃N, ∀n ≥ N, Pr[¬P(G)] < ε.\n\n(Placeholder definition - full measure theory is beyond current Mathlib scope.)",
     "mathContext": "Almost sure properties are the standard way to state results about random graphs - they hold with high probability as the graph grows.",
     "significance": "key",
+    "prerequisites": [
+      "High probability",
+      "Probability",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Probability",
       "High probability",
@@ -209,6 +275,12 @@
     "content": "**cochromatic_lower_bound:**\n\nAlmost surely: ζ(G) ≥ n/(2 log₂ n).\n\nThis follows from bounds on clique and independence numbers: both ω(G) and α(G) are roughly 2 log₂ n a.s.",
     "mathContext": "The lower bound shows cochromatic colorings cannot be too efficient in random graphs.",
     "significance": "key",
+    "prerequisites": [
+      "Clique number",
+      "Lower bound",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Lower bound",
       "Clique number",
@@ -227,6 +299,12 @@
     "content": "**bollobas_upper_bound:**\n\nAlmost surely: χ(G) ≤ (1+o(1))n/(2 log₂ n).\n\nBollobás proved this in 1988, showing the chromatic number of G(n, 1/2) is well-concentrated.\n\nCombined with the lower bound on ζ, this gives:\nn/(2 log₂ n) ≤ ζ(G) ≤ χ(G) ≤ (1+o(1))n/(2 log₂ n)",
     "mathContext": "Bollobás's result is a cornerstone of random graph coloring theory.",
     "significance": "key",
+    "prerequisites": [
+      "Chromatic number",
+      "Random graph",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Chromatic number",
       "Random graph",
@@ -245,6 +323,11 @@
     "content": "**chromatic_cochromatic_sandwich:**\n\nAlmost surely: ζ(G) ≤ χ(G) ≤ 1.01 · n/(2 log₂ n).\n\nThis 'sandwiches' both χ and ζ in a narrow band. The main question asks: do they separate within this band?",
     "mathContext": "The sandwich suggests χ and ζ are both of order n/log n, but leaves room for a gap of order n/(log n)^k.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic bounds",
+      "Concentration",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Asymptotic bounds",
       "Concentration"
@@ -262,6 +345,12 @@
     "content": "**MainQuestion:**\n\nDoes χ(G) - ζ(G) → ∞ almost surely as n → ∞?\n\nThis is the central open problem. Erdős offered prizes:\n- $100 for YES\n- $1000 for NO\n\nThe asymmetric prizes suggest Erdős believed the answer is YES.",
     "mathContext": "The question asks whether the cochromatic relaxation provides an asymptotically unbounded advantage over proper coloring in random graphs.",
     "significance": "key",
+    "prerequisites": [
+      "Open problem",
+      "Prize problem",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Open problem",
       "Prize problem",
@@ -280,6 +369,11 @@
     "content": "**main_question_open:**\n\nAxiom stating the main question is true. This is a placeholder - the problem is OPEN.\n\nThe axiom allows us to state implications like: if the main question is true, then [consequence].",
     "mathContext": "Formalizing open questions as axioms allows exploring their consequences without claiming to have proved them.",
     "significance": "key",
+    "prerequisites": [
+      "Axiom",
+      "Open problem",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Axiom",
       "Open problem",
@@ -298,6 +392,11 @@
     "content": "**PrizeValue answer:**\n\n- If answer = true (χ - ζ → ∞): $100\n- If answer = false: $1000\n\nThe 10:1 ratio reflects Erdős's belief that YES is more likely. He later remarked that \"$1000 was perhaps too much.\"",
     "mathContext": "Erdős famously offered cash prizes for solutions to his problems. These prizes are now administered by Ronald Graham's estate.",
     "significance": "supporting",
+    "prerequisites": [
+      "Erdős prizes",
+      "Mathematical prizes",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Erdős prizes",
       "Mathematical prizes"
@@ -315,6 +414,12 @@
     "content": "**heckel_steiner_unbounded:**\n\nFor all M: almost surely χ(G) - ζ(G) ≥ M.\n\nHeckel (2024) and independently Steiner (2024) proved the difference is unbounded with high probability.\n\nThis is a major breakthrough, but doesn't fully resolve the problem (needs χ - ζ → ∞ a.s., not just unbounded w.h.p.).",
     "mathContext": "The subtle difference between 'unbounded w.h.p.' and '→ ∞ a.s.' is important in probability theory.",
     "significance": "key",
+    "prerequisites": [
+      "Breakthrough result",
+      "Heckel",
+      "probability theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Breakthrough result",
       "Heckel",
@@ -334,6 +439,12 @@
     "content": "**difference_lower_bound:**\n\nFor any ε > 0, along some subsequence:\nχ - ζ ≥ n^{1/2 - ε} almost surely.\n\nThis shows the difference can grow polynomially, not just logarithmically.",
     "mathContext": "Polynomial growth is much stronger than logarithmic growth, suggesting the difference is substantial.",
     "significance": "key",
+    "prerequisites": [
+      "Polynomial growth",
+      "Subsequence",
+      "polynomial ring theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Subsequence",
       "Polynomial growth"
@@ -351,6 +462,12 @@
     "content": "**heckel_density_result:**\n\nFor any ε > 0: χ - ζ ≥ n^{1-ε} for roughly 95% of all n.\n\nThis is remarkably strong - for most n, the difference grows almost linearly!",
     "mathContext": "The 95% density result shows the polynomial lower bound holds for 'generic' n, not just a sparse subsequence.",
     "significance": "key",
+    "prerequisites": [
+      "Density",
+      "Generic n",
+      "density theory",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Density",
       "Generic n",
@@ -369,6 +486,12 @@
     "content": "**HeckelConjecture:**\n\nχ(G) - ζ(G) ≈ n/(log n)³ with high probability.\n\nMore precisely: ∃ c₁, c₂ > 0 such that a.s.:\nc₁ · n/(log n)³ ≤ χ - ζ ≤ c₂ · n/(log n)³\n\nThis predicts the exact growth rate of the gap.",
     "mathContext": "The conjectured growth n/(log n)³ is between the bounds n/log n and n/(log n)². This would fully answer Problem #625.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic",
+      "Conjecture",
+      "basic set theory",
+      "probability theory"
+    ],
     "relatedConcepts": [
       "Conjecture",
       "Asymptotic",
@@ -387,6 +510,11 @@
     "content": "**heckel_implies_main:**\n\nIf Heckel's conjecture holds, then the main question has answer YES.\n\nSince n/(log n)³ → ∞ as n → ∞, the conjecture implies χ - ζ → ∞ a.s.",
     "mathContext": "This shows Heckel's conjecture is a strengthening of the main question.",
     "significance": "key",
+    "prerequisites": [
+      "Implication",
+      "Strengthening",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Implication",
       "Strengthening"
@@ -404,6 +532,12 @@
     "content": "**cliqueNumber G:**\n\nThe size of the largest clique (complete subgraph) in G.\n\nFor G(n, 1/2): ω(G) ≈ 2 log₂ n almost surely.\n\nThis is used in bounds on the cochromatic number.",
     "mathContext": "The clique number bounds how efficiently we can use clique color classes in a cochromatic coloring.",
     "significance": "key",
+    "prerequisites": [
+      "Clique",
+      "Maximum",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Clique",
       "Maximum",
@@ -422,6 +556,11 @@
     "content": "**independenceNumber G:**\n\nThe size of the largest independent set (no edges) in G. Defined as ω(Gᶜ).\n\nFor G(n, 1/2): α(G) ≈ 2 log₂ n almost surely.\n\nBy symmetry of G(n, 1/2), α and ω have the same distribution.",
     "mathContext": "The independence number bounds how efficiently we can use independent color classes.",
     "significance": "key",
+    "prerequisites": [
+      "Complement",
+      "Independent set",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Independent set",
       "Complement",
@@ -440,6 +579,12 @@
     "content": "**clique_independence_bound:**\n\nAlmost surely: ω(G), α(G) ≤ 2.1 · log₂ n.\n\nThese bounds are tight: ω ≈ α ≈ 2 log₂ n.\n\nThis limits how much each color class can cover, giving the lower bound on ζ.",
     "mathContext": "The factor 2 in 2 log₂ n comes from the probability 1/2 in G(n, 1/2).",
     "significance": "key",
+    "prerequisites": [
+      "Logarithmic",
+      "Upper bound",
+      "probability theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Upper bound",
       "Logarithmic",
@@ -458,6 +603,11 @@
     "content": "**cochromatic_clique_independence:**\n\nζ(G) · (ω(G) + α(G)) ≥ n.\n\nThus: ζ(G) ≥ n / (ω(G) + α(G)).\n\n**Proof idea:** Each color class has size at most max(ω, α) ≤ ω + α. So we need at least n/(ω + α) classes.",
     "mathContext": "This gives the lower bound ζ ≥ n/(4 log₂ n) since ω + α ≈ 4 log₂ n.",
     "significance": "key",
+    "prerequisites": [
+      "Covering argument",
+      "Lower bound",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Lower bound",
       "Covering argument"
@@ -475,6 +625,12 @@
     "content": "**chromatic_concentration:**\n\nAlmost surely: χ(G) lies in an interval of width O(n/log²n) around its mean.\n\nThe chromatic number is concentrated, but the exact width of concentration is still being refined.",
     "mathContext": "Concentration inequalities are key tools in random graph theory. Tighter concentration would help resolve Problem #625.",
     "significance": "key",
+    "prerequisites": [
+      "Concentration",
+      "Mean",
+      "graph theory basics",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Concentration",
       "Mean",
@@ -493,6 +649,12 @@
     "content": "**cochromatic_concentration:**\n\nAlmost surely: ζ(G) lies in an interval of width O(n/log n) around its mean.\n\nLess is known about concentration of ζ than χ. Better bounds might help resolve the main question.",
     "mathContext": "The weaker concentration for ζ reflects that cochromatic colorings are less well-understood than proper colorings.",
     "significance": "supporting",
+    "prerequisites": [
+      "Concentration",
+      "Open question",
+      "graph coloring",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Concentration",
       "Open question"
@@ -510,6 +672,11 @@
     "content": "**known_summary:**\n\nCombines the two key structural properties:\n1. ζ(G) ≤ χ(G) for all G\n2. ζ(G) = ζ(Gᶜ) for all G\n\nThese are the foundational facts about the cochromatic number.",
     "mathContext": "This theorem bundles the essential properties that make the problem interesting.",
     "significance": "key",
+    "prerequisites": [
+      "Structural properties",
+      "Summary",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Summary",
       "Structural properties"
@@ -527,6 +694,11 @@
     "content": "**problem_status:**\n\nThe Heckel-Steiner unboundedness result implies χ and ζ are not always equal.\n\nHowever, the main question (whether χ - ζ → ∞ a.s.) remains OPEN despite significant recent progress.",
     "mathContext": "The gap between 'not always equal' and 'difference tends to infinity' is the remaining open question.",
     "significance": "key",
+    "prerequisites": [
+      "Open problem",
+      "Progress",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Open problem",
       "Progress"
@@ -544,6 +716,10 @@
     "content": "**Summary of Erdős Problem #625 Formalization:**\n\n**Status:** OPEN (Prize: $1000 false / $100 true)\n\n**Main Question:** χ(G) - ζ(G) → ∞ a.s. for G(n, 1/2)?\n\n**Known Results:**\n- ζ ≤ χ ≤ (1+o(1))n/(2 log₂ n) a.s.\n- Heckel/Steiner 2024: difference unbounded\n- Heckel conjecture: χ - ζ ≈ n/(log n)³\n\n**Key sorries:** cochromatic_le_chromatic, heckel_steiner_unbounded, main_question_open",
     "mathContext": "This formalization captures the current state of knowledge on a prize problem that has seen major progress in 2024.",
     "significance": "key",
+    "prerequisites": [
+      "Open problem",
+      "Prize problem"
+    ],
     "relatedConcepts": [
       "Open problem",
       "Prize problem",

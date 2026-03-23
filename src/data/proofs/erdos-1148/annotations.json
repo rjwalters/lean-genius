@@ -11,6 +11,10 @@
     "content": "**Erdős Problem #1148**: Can every sufficiently large integer $n$ be written as $n = x^2 + y^2 - z^2$ where $\\max(x^2, y^2, z^2) \\le n$?\n\nThe bound constraint means $x, y, z \\le \\lfloor\\sqrt{n}\\rfloor$. Without this bound, every integer has such a representation (e.g., $n = ((n+1)/2)^2 - ((n-1)/2)^2$ for odd $n$). The difficulty is keeping the components small.\n\n**Known results**:\n- The largest known non-representable integer is **6563**\n- With the relaxed bound $\\max(x^2, y^2, z^2) \\le n + 2\\sqrt{n}$, representation always exists\n- Reference: Vaughan [Va99, §1.25]\n\nThe problem sits at the intersection of additive number theory and the geometry of numbers.",
     "mathContext": "$n = x^2 + y^2 - z^2$ with $x, y, z \\le \\lfloor\\sqrt{n}\\rfloor$, equivalently $x^2 + y^2 = n + z^2$ with bounded components",
     "significance": "context",
+    "prerequisites": [
+      "sum of squares",
+      "ternary quadratic forms"
+    ],
     "relatedConcepts": [
       "sum of squares",
       "ternary quadratic forms",

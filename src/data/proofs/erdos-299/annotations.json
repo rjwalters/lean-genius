@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #299** asks whether there exists an infinite sequence with bounded gaps such that no finite sum of reciprocals equals 1. The answer is **NO**: Bloom (2021) proved that bounded-gap sequences must contain Egyptian fraction sums.",
     "mathContext": "We import Asymptotics for O(1) notation, Filter.atTop for asymptotic statements, and Finset for finite sums. The key connection is that bounded gaps imply positive density.",
     "significance": "supporting",
+    "prerequisites": [
+      "Finset API",
+      "density theory",
+      "erdos",
+      "filter theory"
+    ],
     "relatedConcepts": [
       "erdos",
       "unit-fractions",
@@ -30,6 +36,12 @@
     "content": "**HasBoundedGaps** captures sequences where consecutive differences are O(1) - bounded by some constant C for large n. **HasUniformBoundedGaps** is a simpler version requiring all gaps to be ≤ C.",
     "mathContext": "Using Asymptotics.IsBigO, we define (fun n => a(n+1) - a(n)) =O[atTop] (1). The simpler uniform version is ∀ n, a(n+1) - a(n) ≤ C.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotics",
+      "basic set theory",
+      "big-O",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "asymptotics",
       "big-O",
@@ -48,6 +60,11 @@
     "content": "**HasUnitFractionSum** defines a finite set of positive integers whose reciprocals sum to exactly 1 - an Egyptian fraction decomposition. **AvoidsUnitFractionSum** means no finite subset of the sequence sums to 1.",
     "mathContext": "HasUnitFractionSum S := (∀ n ∈ S, n > 0) ∧ (∑ n ∈ S, 1/n) = 1. We use ℚ for decidable equality in native_decide proofs.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "egyptian-fractions",
+      "finset"
+    ],
     "relatedConcepts": [
       "egyptian-fractions",
       "finset",
@@ -66,6 +83,12 @@
     "content": "**Upper density** measures what fraction of natural numbers belong to a set. The **counting function** |A ∩ [1,N]| counts elements up to N, and upper density is limsup of this ratio as N → ∞.",
     "mathContext": "upperDensity A = limsup (|A ∩ [1,N]| / N) as N → ∞. HasPositiveUpperDensity means this limit is > 0. Sets with positive density are 'large' in a precise sense.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "counting",
+      "density theory",
+      "limsup"
+    ],
     "relatedConcepts": [
       "limsup",
       "counting",
@@ -84,6 +107,12 @@
     "content": "**The crucial connection**: if a strictly increasing sequence has gaps bounded by C, its range has positive density (at least 1/C). This is because bounded gaps force the sequence to include many elements below any N.",
     "mathContext": "Intuitively: if gaps ≤ C, then a_n ≤ a_0 + n·C, so there are at least N/C - O(1) elements below N. The proof requires careful counting arguments.",
     "significance": "key",
+    "prerequisites": [
+      "counting",
+      "density",
+      "density theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "density",
       "counting",
@@ -102,6 +131,12 @@
     "content": "**Bloom's theorem** (Problem #298): If A ⊆ ℕ has positive upper density and 0 ∉ A, then A contains a finite subset S with ∑_{n ∈ S} 1/n = 1. This resolved the Erdős-Graham conjecture using deep additive combinatorics.",
     "mathContext": "Stated as an axiom because the full proof requires sophisticated techniques beyond Mathlib. The 2021 paper uses polynomial methods and density increment arguments.",
     "significance": "key",
+    "prerequisites": [
+      "additive-combinatorics",
+      "axiom",
+      "density theory",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "axiom",
       "additive-combinatorics",
@@ -120,6 +155,12 @@
     "content": "**Erdős Problem #299 (SOLVED)**: There does NOT exist an infinite sequence with bounded gaps that avoids unit fraction sums. The proof chains: bounded gaps → positive density → contains unit fraction sum (by Bloom).",
     "mathContext": "The full proof: assume such a sequence exists. By boundedGaps_implies_positiveDensity, its range has positive density. By bloom_theorem, it contains a unit fraction sum. Contradiction.",
     "significance": "key",
+    "prerequisites": [
+      "contradiction",
+      "density theory",
+      "main-theorem",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "contradiction",
       "main-theorem",
@@ -138,6 +179,12 @@
     "content": "**Verified examples**: {2, 3, 6} gives 1/2 + 1/3 + 1/6 = 1, and {2, 4, 6, 12} gives 1/2 + 1/4 + 1/6 + 1/12 = 1. These concrete examples show that Egyptian fractions with sum 1 exist.",
     "mathContext": "We use native_decide for the rational arithmetic verification. The positivity conditions are proved by case analysis with omega.",
     "significance": "supporting",
+    "prerequisites": [
+      "native-decide",
+      "omega tactic",
+      "proof techniques",
+      "verification"
+    ],
     "relatedConcepts": [
       "native-decide",
       "verification",
@@ -156,6 +203,12 @@
     "content": "**Contrast with sparse sequences**: Powers of 2 (1, 2, 4, 8, ...) have gaps that grow without bound (2^{n+1} doubles each time). Their reciprocals sum to less than 1 (geometric series). This shows bounded gaps are necessary.",
     "mathContext": "Proof by contradiction: if gaps ≤ C for all n, then 2^{C+1} ≤ C at position C, but 2^{C+1} > C + 1 > C by Nat.lt_two_pow_self.",
     "significance": "supporting",
+    "prerequisites": [
+      "counterexample",
+      "geometric-series",
+      "natural number arithmetic",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "counterexample",
       "geometric-series",
@@ -174,6 +227,12 @@
     "content": "**Summary**: We bundle the main theorem (no bounded-gap sequence avoids unit fractions), the density variant (positive density suffices), and verified Egyptian fraction examples into a single theorem statement.",
     "mathContext": "erdos_299_summary packages: (1) the impossibility result, (2) the density variant using bloom_theorem, and (3) the concrete example {2,3,6}.",
     "significance": "supporting",
+    "prerequisites": [
+      "bundled-theorem",
+      "density theory",
+      "proof techniques",
+      "summary"
+    ],
     "relatedConcepts": [
       "summary",
       "bundled-theorem",

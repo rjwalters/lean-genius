@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #705: Unit Distance Graphs with Large Girth**\n\nDoes forbidding short cycles in unit distance graphs force 3-colorability?\n\nA unit distance graph (UDG) in ℝ² connects points at Euclidean distance 1. The girth is the shortest cycle length. The question: is there k such that girth ≥ k implies χ ≤ 3?\n\nKnown: 4-chromatic UDGs exist with girth up to 5. Girth ≥ 6 is the open frontier.\n\n**Status:** OPEN",
     "mathContext": "Posed by Erdős in 1981. Related to the Hadwiger-Nelson problem and Erdős Problems #508, #704, #706.",
     "significance": "key",
+    "prerequisites": [
+      "chromatic number",
+      "graph theory basics",
+      "unit distance graphs"
+    ],
     "relatedConcepts": [
       "unit distance graphs",
       "chromatic number",
@@ -30,6 +35,12 @@
     "content": "**unitDistAdj(p, q):** Points p, q ∈ ℝ² are adjacent iff p ≠ q and ||p - q|| = 1.\n\n**unitDistGraph(V):** The SimpleGraph on point set V with edges between all unit-distance pairs.\n\nThe symmetry proof uses dist_comm (||p-q|| = ||q-p||). The loopless proof follows from p ≠ p being false.\n\nUnit distance graphs are the fundamental objects in combinatorial geometry, connecting metric structure to graph coloring.",
     "mathContext": "Uses Mathlib's EuclideanSpace ℝ (Fin 2) for the plane and dist for Euclidean distance.",
     "significance": "key",
+    "prerequisites": [
+      "Euclidean distance",
+      "SimpleGraph",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Euclidean distance",
       "SimpleGraph",
@@ -48,6 +59,12 @@
     "content": "**chromaticNumber'(G):** The minimum number of colors for a proper coloring of G. Axiomatized since computing χ requires combinatorial optimization.\n\n**girth'(G):** Length of the shortest cycle. Convention: 0 for acyclic graphs (infinite girth).\n\n**hasGirthAtLeast(G, k):** g(G) ≥ k or G is acyclic. This captures 'no short cycles' including the forest case.",
     "mathContext": "Lean: `axiom chromaticNumber' {V : Type*} [Fintype V] (G : SimpleGraph V) : ℕ`",
     "significance": "key",
+    "prerequisites": [
+      "Fintype",
+      "basic set theory",
+      "cycle length",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "graph coloring",
       "cycle length",
@@ -66,6 +83,11 @@
     "content": "**Four key constructions** axiomatized from the literature:\n\n1. **Moser Spindle (1961):** 7 vertices, girth 3, χ = 4. The smallest 4-chromatic UDG.\n\n2. **O'Donnell (1994):** 56 vertices, girth 4, χ = 4. Triangle-free!\n\n3. **Chilakamarri (1995):** 47 vertices, girth 4, χ = 4. Smallest triangle-free 4-chromatic UDG.\n\n4. **Wormald (1979):** 6448 vertices, girth 5, χ = 4. No triangles or 4-cycles!\n\nThe dramatic growth in vertex count (7 → 47 → 6448) hints that higher-girth constructions may be impossible.",
     "mathContext": "Each axiom asserts existence of a finite point set in ℝ² with specific cardinality, girth, and chromatic number properties.",
     "significance": "key",
+    "prerequisites": [
+      "Moser spindle",
+      "cardinal arithmetic",
+      "graph constructions"
+    ],
     "relatedConcepts": [
       "Moser spindle",
       "graph constructions",
@@ -84,6 +106,11 @@
     "content": "**erdos_705_conjecture:** ∃ k, ∀ finite V ⊆ ℝ², girth(UDG(V)) ≥ k → χ(UDG(V)) ≤ 3.\n\nThis asks for a universal girth threshold k that forces 3-colorability for ALL finite unit distance graphs.\n\n**erdos_705_negation:** The opposite — for every k, some 4-chromatic UDG with girth ≥ k exists. This would mean geometry alone cannot prevent high-girth 4-chromatic UDGs.\n\nSince Wormald's construction has girth 5 and χ = 4, any such k must be ≥ 6.",
     "mathContext": "$Since Wormald's construction has girth 5 and χ = 4, any such k must be ≥ 6.$",
     "significance": "key",
+    "prerequisites": [
+      "girth constraint",
+      "graph theory basics",
+      "universal threshold"
+    ],
     "relatedConcepts": [
       "universal threshold",
       "girth constraint",
@@ -102,6 +129,11 @@
     "content": "Three theorems derived from the construction axioms:\n\n**girth_3_chi_4:** 4-chromatic UDGs exist (from Moser spindle).\n**girth_4_chi_4:** 4-chromatic UDGs with girth ≥ 4 exist (from O'Donnell).\n**girth_5_chi_4:** 4-chromatic UDGs with girth ≥ 5 exist (from Wormald).\n\nEach proof extracts the relevant properties from the axioms. Together, they show the conjecture's threshold k must be at least 6.",
     "mathContext": "Lean: `theorem girth_3_chi_4 :`",
     "significance": "key",
+    "prerequisites": [
+      "construction consequences",
+      "lower bound on k",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "lower bound on k",
       "construction consequences"
@@ -119,6 +151,12 @@
     "content": "**The Hadwiger-Nelson Problem:** What is χ(ℝ²), the chromatic number of the infinite unit distance graph of the plane?\n\n**Known bounds:** 5 ≤ χ(ℝ²) ≤ 7.\n- **de Grey (2018):** Found a 1581-vertex 5-chromatic UDG, raising the lower bound from 4 to 5 — a breakthrough after 60+ years.\n- **Upper bound:** A hexagonal tiling with hexagon diameter < 1 gives a 7-coloring.\n\n**de_grey_lower_bound** axiomatizes the existence of a 5-chromatic finite UDG.",
     "mathContext": "The Hadwiger-Nelson problem (1950) is one of the most famous open problems in combinatorial geometry.",
     "significance": "key",
+    "prerequisites": [
+      "Hadwiger-Nelson problem",
+      "chromatic number of the plane",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Hadwiger-Nelson problem",
       "chromatic number of the plane",
@@ -137,6 +175,11 @@
     "content": "**Erdős (1959):** For ANY g and k, there exist abstract graphs with girth ≥ g and χ ≥ k.\n\nThis landmark result (proved by the probabilistic method) shows that in the world of abstract graphs, large girth does NOT constrain chromatic number.\n\nBut **unit distance graphs** live in ℝ² — the rigid Euclidean structure may prevent high-girth high-chromatic-number constructions. Problem #705 asks exactly whether this geometric constraint eventually forces χ ≤ 3.",
     "mathContext": "Erdős's 1959 result was one of the first major applications of the probabilistic method in combinatorics.",
     "significance": "key",
+    "prerequisites": [
+      "Erdős 1959",
+      "graph theory basics",
+      "probabilistic method"
+    ],
     "relatedConcepts": [
       "probabilistic method",
       "Erdős 1959",
@@ -155,6 +198,10 @@
     "content": "**vertexCountGrowth:** The sizes of known 4-chromatic UDGs by girth:\n- Girth 3: 7 vertices\n- Girth 4: 47 vertices\n- Girth 5: 6448 vertices\n- Girth 6: Unknown!\n\nThe growth is roughly exponential: each step up in girth requires ~100× more vertices. This suggests a natural barrier: constructing girth-6 examples might require millions of carefully placed points, or may be outright impossible.",
     "mathContext": "Lean: `def vertexCountGrowth : List (ℕ × ℕ)`",
     "significance": "key",
+    "prerequisites": [
+      "construction complexity",
+      "exponential growth"
+    ],
     "relatedConcepts": [
       "exponential growth",
       "construction complexity",
@@ -173,6 +220,12 @@
     "content": "**erdos_705_main** combines all three girth-specific results:\n\n1. 4-chromatic UDGs exist (Moser spindle)\n2. 4-chromatic UDGs with girth ≥ 4 exist (O'Donnell)\n3. 4-chromatic UDGs with girth ≥ 5 exist (Wormald)\n\nThe problem asks whether this sequence can be extended to all girths, or whether some threshold forces 3-colorability.\n\nThe answer remains **OPEN** — one of the most tantalizing problems in combinatorial geometry.",
     "mathContext": "The proof is a simple conjunction of the three derived theorems, showing the current state of knowledge.",
     "significance": "key",
+    "prerequisites": [
+      "combinatorial geometry",
+      "open problems",
+      "proof techniques",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "open problems",
       "combinatorial geometry",

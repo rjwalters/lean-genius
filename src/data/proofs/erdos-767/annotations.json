@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #767: Cycles with Chords**\n\nThis is an extremal graph theory problem asking: what is the maximum number of edges g_k(n) in a graph on n vertices that avoids cycles where some vertex has k or more chords?\n\n**Answer:** g_k(n) = (k+1)n - (k+1)² for n >= 3k+3.\n\n**History:**\n- Czipszer: proved g_k(n) <= (k+1)n\n- Erdős: construction giving g_k(n) >= (k+1)n - (k+1)²\n- Pósa: exact formula for k=1\n- Jiang (2004): proved the conjecture for all k",
     "mathContext": "Part of Turán-type extremal graph theory: maximizing edges subject to forbidden substructures.",
     "significance": "key",
+    "prerequisites": [
+      "Extremal graph theory",
+      "Turán numbers",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Extremal graph theory",
       "Turán numbers",
@@ -29,6 +34,12 @@
     "content": "**Graph** and **edgeCount:**\n\nWe model graphs using Mathlib's SimpleGraph on the finite vertex set Fin n. The edge count is computed via edgeFinset.card, which counts unordered pairs {u, v} with u adj v.\n\nSimpleGraph ensures no self-loops and no multi-edges, matching the standard definition of simple graphs in extremal graph theory.",
     "mathContext": "SimpleGraph (Fin n) provides a decidable adjacency relation on a finite vertex set, enabling both theoretical proofs and computational verification.",
     "significance": "supporting",
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "edge count",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "simple graph",
       "edge count",
@@ -48,6 +59,12 @@
     "content": "**IsCycle:**\n\nA cycle in a graph is a list of vertices satisfying three conditions:\n1. **Length >= 3** (at least a triangle)\n2. **No duplicates** (vertices are distinct)\n3. **Adjacency** — each vertex is adjacent to the next, with the last adjacent to the first (via modular indexing)\n\nThis captures the standard graph-theoretic notion of a simple cycle (no repeated vertices).",
     "mathContext": "The modular adjacency condition vertices[i] ~ vertices[(i+1) % length] elegantly handles the wrap-around from last to first vertex.",
     "significance": "key",
+    "prerequisites": [
+      "Hamiltonian paths",
+      "Simple cycles",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Simple cycles",
       "Hamiltonian paths",
@@ -66,6 +83,11 @@
     "content": "**IsChord:**\n\nA chord of a cycle is an edge between two vertices that are on the cycle but NOT adjacent on the cycle. Formally, u and v are both on the cycle, G has edge u-v, and the distance between their positions on the cycle is > 1 in both directions.\n\nExample: In a 5-cycle (1-2-3-4-5-1), the edge 1-3 is a chord because 1 and 3 are separated by at least 2 edges in both directions around the cycle.",
     "mathContext": "The condition (j-i) % length > 1 AND (i-j) % length > 1 ensures the edge is not a cycle edge.",
     "significance": "key",
+    "prerequisites": [
+      "Chord diagrams",
+      "Triangulations",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Chord diagrams",
       "Triangulations",
@@ -87,6 +109,12 @@
       "combinatorics",
       "graph theory"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "combinatorics",
+      "graph theory",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -105,6 +133,12 @@
       "extremal problems",
       "graph theory",
       "optimization"
+    ],
+    "prerequisites": [
+      "basic set theory",
+      "combinatorics",
+      "extremal problems",
+      "graph theory basics"
     ],
     "significance": "key"
   },
@@ -126,6 +160,12 @@
       "graph theory",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "combinatorics",
+      "graph theory basics",
+      "simp tactic"
+    ],
     "significance": "key"
   },
   {
@@ -145,6 +185,11 @@
       "graph theory",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "combinatorics",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -161,6 +206,11 @@
     "relatedConcepts": [
       "combinatorics",
       "graph theory"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "graph theory basics"
     ],
     "significance": "key"
   },
@@ -181,6 +231,10 @@
       "phase transitions",
       "threshold phenomena"
     ],
+    "prerequisites": [
+      "graph theory",
+      "matching theory"
+    ],
     "significance": "key"
   },
   {
@@ -195,6 +249,10 @@
     "content": "**jiang_2004** and **erdos_767_solved:**\n\nJiang proved the complete conjecture: g_k(n) = (k+1)n - (k+1)² for ALL k when n >= 3k+3.\n\nThe theorem erdos_767_solved reformulates this as a universal statement over all sufficiently large n, derived directly from jiang_2004.\n\n**Reference:** Jiang, \"A note on a conjecture about cycles with many incident chords\", Combinatorica (2004).",
     "mathContext": "The threshold n >= 3k+3 is sufficient but may not be optimal. For small k, better thresholds are known (e.g., n >= 4 for k=1).",
     "relatedConcepts": [
+      "combinatorics",
+      "counting"
+    ],
+    "prerequisites": [
       "combinatorics",
       "counting"
     ],
@@ -218,6 +276,12 @@
       "graph theory",
       "matching theory"
     ],
+    "prerequisites": [
+      "abstract algebra",
+      "algebra",
+      "matching theory",
+      "omega tactic"
+    ],
     "significance": "supporting"
   },
   {
@@ -234,6 +298,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -249,6 +317,10 @@
     "mathContext": "This single theorem encapsulates the complete resolution of Erdős Problem #767.",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   }

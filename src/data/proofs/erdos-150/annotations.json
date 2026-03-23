@@ -11,6 +11,11 @@
     "content": "**Erdos Problem #150: Minimal Cuts in Graphs**\n\nA minimal cut is a minimal set of vertices whose removal disconnects a graph. Let c(n) be the maximum number of minimal cuts any n-vertex graph can have.\n\n**Question:** Does c(n)^{1/n} converge to some alpha < 2?\n\n**Answer: YES** (Bradac, 2024)\n\nBradac proved:\n- The limit alpha = lim c(n)^{1/n} exists\n- alpha <= 2^{H(1/3)} = 1.8899...\n- Combined with Seymour's lower bound: alpha >= 3^{1/3} = 1.442...",
     "mathContext": "This is a problem in extremal graph theory, asking about the maximum growth rate of a combinatorial quantity over all graphs of a given size.",
     "significance": "key",
+    "prerequisites": [
+      "Graph theory",
+      "Vertex cuts",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Graph theory",
       "Vertex cuts",
@@ -29,6 +34,12 @@
     "content": "**isVertexCut:**\n\nA set S of vertices is a vertex cut if removing S disconnects the graph.\n\n**Definition:**\n```lean\ndef isVertexCut (G : SimpleGraph V) (S : Set V) : Prop :=\n  not (G.induce (S^c)).Connected\n```\n\nWe check whether the induced subgraph on the complement of S is disconnected.",
     "mathContext": "Vertex cuts generalize the notion of a cut vertex (articulation point) to sets of vertices.",
     "significance": "key",
+    "prerequisites": [
+      "Graph connectivity",
+      "Induced subgraph",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Graph connectivity",
       "Induced subgraph",
@@ -47,6 +58,12 @@
     "content": "**isMinimalCut:**\n\nA vertex cut S is minimal if no proper subset of S is also a cut.\n\n**Definition:**\n```lean\ndef isMinimalCut (G : SimpleGraph V) (S : Set V) : Prop :=\n  isVertexCut G S and forall T, T subset S -> not isVertexCut G T\n```\n\n**Key point:** Minimal here means inclusion-minimal, not minimum-size.",
     "mathContext": "Minimal cuts are the 'tight' separators - removing any vertex from S reconnects the graph.",
     "significance": "key",
+    "prerequisites": [
+      "Inclusion-minimal",
+      "Vertex separator",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Inclusion-minimal",
       "Vertex separator",
@@ -68,6 +85,12 @@
       "combinatorics",
       "graph theory"
     ],
+    "prerequisites": [
+      "Fintype",
+      "basic set theory",
+      "combinatorics",
+      "graph theory"
+    ],
     "significance": "key"
   },
   {
@@ -82,6 +105,10 @@
     "content": "**seymour_construction:**\n\nc(3m+2) >= 3^m\n\n**The Construction:**\n- Take two vertices u and v\n- Connect them by m independent paths of length 4\n- Each path has 3 internal vertices\n- Total: 2 + 3m = 3m+2 vertices\n\n**Why 3^m cuts?**\nTo disconnect u from v, we must remove at least one vertex from each path. Since each path has 3 internal vertices, there are 3^m ways to choose one from each path.",
     "mathContext": "This elegant construction shows that c(n) can grow exponentially, and provides the lower bound on alpha.",
     "significance": "key",
+    "prerequisites": [
+      "Independent paths",
+      "Path graphs"
+    ],
     "relatedConcepts": [
       "Path graphs",
       "Independent paths",
@@ -103,6 +130,10 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -117,6 +148,12 @@
     "content": "**binaryEntropy H(p):**\n\nThe binary entropy function measures uncertainty in a binary random variable.\n\n**Definition:**\nH(p) = -p log_2(p) - (1-p) log_2(1-p)\n\nFor p in (0,1), H(p) in (0,1) with maximum H(1/2) = 1.\n\n**Special value:**\nH(1/3) = log_2(3) - 2/3 = 0.9183...",
     "mathContext": "The binary entropy function appears throughout information theory and combinatorics, often in counting arguments.",
     "significance": "key",
+    "prerequisites": [
+      "Information theory",
+      "Shannon entropy",
+      "basic set theory",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "Shannon entropy",
       "Information theory",
@@ -137,6 +174,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "filter theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -151,6 +192,10 @@
     "content": "**bradac_upper_bound:**\n\nalpha <= 2^{H(1/3)} = 1.8899...\n\nThis is the key result from Bradac's 2024 paper, showing that alpha < 2.\n\nThe upper bound involves sophisticated counting and entropy arguments.",
     "mathContext": "The appearance of binary entropy suggests counting arguments involving subsets or binary choices.",
     "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
+    "prerequisites": [
       "bounds",
       "inequalities"
     ],
@@ -172,6 +217,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "analysis",
+      "bounds",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -187,6 +237,11 @@
     "mathContext": "Lean: `theorem erdos_150 :`",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "filter theory",
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -205,6 +260,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -219,6 +279,12 @@
     "content": "**bradac_conjecture:**\n\nalpha = 3^{1/3}\n\nBradac conjectures that the lower bound is tight, meaning Seymour's construction is optimal.\n\nIf true, this would determine the exact value alpha = 1.4422...",
     "mathContext": "Many extremal problems have their bounds achieved by simple, elegant constructions.",
     "significance": "key",
+    "prerequisites": [
+      "Construction optimality",
+      "Extremal graphs",
+      "basic set theory",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "Extremal graphs",
       "Construction optimality"
@@ -239,6 +305,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -257,6 +328,12 @@
       "bounds",
       "inequalities",
       "ring theory"
+    ],
+    "prerequisites": [
+      "algebra",
+      "bounds",
+      "proof techniques",
+      "ring tactic"
     ],
     "significance": "key"
   }

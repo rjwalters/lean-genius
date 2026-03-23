@@ -143,6 +143,10 @@
     "content": "**Example 1**: Circle of radius 5, point P at distance 3 from center.\n- Power = $5^2 - 3^2 = 16$\n- For any chord: $PA \\cdot PB = 16$\n- If PA = 2, then PB = 8\n\n**Example 2**: If one chord gives segments 2 and 8:\n- Product = 16\n- Other chord: if PC = 4, then PD = 4\n- (The chord is bisected at P!)\n\n**Example 3**: Segments 1 and 12:\n- Product = 12\n- Other chord: segments could be 2 and 6, or 3 and 4",
     "mathContext": "$PA \\cdot PB = PC \\cdot PD$ for intersecting chords",
     "significance": "supporting",
+    "prerequisites": [
+      "chord bisection",
+      "numerical verification"
+    ],
     "relatedConcepts": [
       "numerical verification",
       "chord bisection"

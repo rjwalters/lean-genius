@@ -11,6 +11,11 @@
     "content": "This header documents **Erdős Problem #351**, asking whether the set {p(n) + 1/n} is strongly complete for polynomials p(x). The general problem is OPEN, but specific cases have been solved.",
     "mathContext": "Strong completeness means: for any finite 'forbidden' set B, the finite sums from A \\ B contain all sufficiently large integers. This is stronger than ordinary completeness.",
     "significance": "supporting",
+    "prerequisites": [
+      "completeness",
+      "erdos",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "erdos",
       "completeness",
@@ -29,6 +34,12 @@
     "content": "We import Mathlib and open **Polynomial**, **Finset**, **Filter**, and **Set** namespaces for working with polynomials, finite sets, filters, and set operations.",
     "mathContext": "Formalizes the concept of imports and namespace",
     "significance": "supporting",
+    "prerequisites": [
+      "Finset API",
+      "filter theory",
+      "mathlib",
+      "polynomial"
+    ],
     "relatedConcepts": [
       "mathlib",
       "polynomial",
@@ -47,6 +58,12 @@
     "content": "The **image set** for polynomial P is {P(n) + 1/n : n ∈ ℕ}. For p(x) = x, this gives {1+1, 2+1/2, 3+1/3, ...} = {2, 2.5, 3.33..., ...}.",
     "mathContext": "We define `imageSet P` as the range of the function n ↦ P.eval(n) + 1/n over natural numbers. Note that n=0 contributes P(0) since 1/0 = 0 in this context.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "polynomial ring theory",
+      "polynomial-evaluation",
+      "range"
+    ],
     "relatedConcepts": [
       "polynomial-evaluation",
       "range",
@@ -65,6 +82,12 @@
     "content": "A set A is **strongly complete** if for ANY finite set B we remove, all sufficiently large integers can still be written as finite sums from A \\ B.",
     "mathContext": "Formally: ∀ B : Finset, ∀ᶠ m in atTop, ∃ X ⊆ A \\ B with X.sum = m. The 'eventually' (∀ᶠ) means 'for all sufficiently large m'. This uses Mathlib's filter-based eventually predicate.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "completeness",
+      "filter"
+    ],
     "relatedConcepts": [
       "completeness",
       "filter",
@@ -83,6 +106,11 @@
     "content": "**HasStronglyCompleteImage(P)** means the image set {P(n) + 1/n} is strongly complete. This is the property Erdős asked about.",
     "mathContext": "Lean: `def HasStronglyCompleteImage (P : ℚ[X]) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "completeness",
+      "polynomial"
+    ],
     "relatedConcepts": [
       "polynomial",
       "completeness"
@@ -100,6 +128,12 @@
     "content": "**Erdős Problem #351** asks: for every polynomial p(x) with positive leading coefficient, is {p(n) + 1/n} strongly complete? This general question remains **OPEN**.",
     "mathContext": "We represent the open status with a trivial axiom. The answer is unknown—it could be true or false. Specific cases have been resolved, but the general pattern is not understood.",
     "significance": "key",
+    "prerequisites": [
+      "conjecture",
+      "open-problem",
+      "polynomial ring theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "open-problem",
       "conjecture"
@@ -117,6 +151,12 @@
     "content": "**Graham (1963)** proved that {n + 1/n : n ∈ ℕ} is strongly complete. Even after removing any finite set of terms, all large integers are representable.",
     "mathContext": "This is stated as `HasStronglyCompleteImage X` where X is the polynomial x. Graham's proof uses intricate partition arguments and is a landmark result in additive number theory.",
     "significance": "key",
+    "prerequisites": [
+      "graham",
+      "partition-theory",
+      "polynomial ring theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "graham",
       "partition-theory",
@@ -135,6 +175,11 @@
     "content": "The set {n² + 1/n : n ∈ ℕ} is strongly complete. Van Doorn noted this follows from combining Graham's 1963 result with Alekseyev's 2019 work on partitions into squares.",
     "mathContext": "Stated as `HasStronglyCompleteImage (X ^ 2)`. Alekseyev studied partitions into distinct squares whose reciprocals sum to 1, which connects to this problem.",
     "significance": "key",
+    "prerequisites": [
+      "alekseyev",
+      "proof techniques",
+      "squares"
+    ],
     "relatedConcepts": [
       "alekseyev",
       "squares",
@@ -153,6 +198,12 @@
     "content": "We verify that n + 1/n ∈ imageSet(X) and n² + 1/n ∈ imageSet(X²) for all n. These follow directly from the definition by exhibiting n as a witness.",
     "mathContext": "The proofs use `Set.mem_range` and simplification of polynomial evaluation. For X, eval(n) = n; for X², eval(n) = n².",
     "significance": "supporting",
+    "prerequisites": [
+      "membership",
+      "polynomial ring theory",
+      "polynomial-eval",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "membership",
       "polynomial-eval"
@@ -170,6 +221,11 @@
     "content": "We prove: (1) n + 1/n > n for n ≥ 1, and (2) n + 1/n < n + 1 for n ≥ 2. The special case n=1 gives exactly 2.",
     "mathContext": "The lower bound uses positivity of 1/n. The upper bound uses 1/n < 1 when n ≥ 2. For n=1, we have 1 + 1/1 = 2 = 1 + 1, so it's not strictly less.",
     "significance": "supporting",
+    "prerequisites": [
+      "bounds",
+      "proof techniques",
+      "rational-arithmetic"
+    ],
     "relatedConcepts": [
       "bounds",
       "rational-arithmetic"
@@ -187,6 +243,12 @@
     "content": "We verify: **1 + 1/1 = 2**, **2 + 1/2 = 5/2**, **3 + 1/3 = 10/3**. These use `norm_num` for automatic verification.",
     "mathContext": "These concrete values show the sequence: 2, 2.5, 3.333..., 4.25, 5.2, ... The terms are 'almost integers' that grow roughly linearly.",
     "significance": "supporting",
+    "prerequisites": [
+      "computation",
+      "norm_num",
+      "norm_num tactic",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "computation",
       "norm_num"

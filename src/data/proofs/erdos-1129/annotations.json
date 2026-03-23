@@ -11,6 +11,12 @@
     "content": "**Erdos Problem #1129: Optimal Lagrange Interpolation Nodes**\n\nThe problem asks: given n interpolation nodes in [-1,1], which choice minimizes the Lebesgue constant?\n\n**Key Results:**\n- Optimal nodes exist (Kilgore-Cheney 1976)\n- Characterized by equal-height property (Kilgore 1977)\n- Unique for canonical configurations (de Boor-Pinkus 1978)\n- Asymptotic bounds: (2/pi) log n - O(1) <= Lambda <= (2/pi) log n + O(1)\n\n**Status:** SOLVED",
     "mathContext": "The Lebesgue constant measures how much polynomial interpolation can amplify errors. This is fundamental to numerical analysis and approximation theory.",
     "significance": "key",
+    "prerequisites": [
+      "Lagrange interpolation",
+      "Lebesgue constant",
+      "measure theory",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Lagrange interpolation",
       "Lebesgue constant",
@@ -30,6 +36,12 @@
     "content": "**LagrangeBasis** l_k(x):\n\nGiven distinct nodes x_1,...,x_n, the k-th Lagrange basis polynomial is:\n$$l_k(x) = \\frac{\\prod_{i \\neq k}(x - x_i)}{\\prod_{i \\neq k}(x_k - x_i)}$$\n\n**Key Properties:**\n- l_k(x_k) = 1 (equals 1 at its own node)\n- l_k(x_i) = 0 for i != k (equals 0 at other nodes)\n- deg(l_k) = n - 1\n\n**Use:** Any polynomial of degree <= n-1 can be written as P(x) = sum y_k * l_k(x).",
     "mathContext": "Named after Joseph-Louis Lagrange (1736-1813), these form the canonical basis for polynomial interpolation.",
     "significance": "key",
+    "prerequisites": [
+      "Polynomial interpolation",
+      "Vandermonde matrix",
+      "basic set theory",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Polynomial interpolation",
       "Vandermonde matrix",
@@ -50,6 +62,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "supporting"
   },
   {
@@ -67,6 +83,11 @@
       "integration",
       "measure theory"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "integration",
+      "measure theory"
+    ],
     "significance": "key"
   },
   {
@@ -81,6 +102,12 @@
     "content": "**LebesgueConstant** Lambda:\n\nThe supremum of the Lebesgue function over [-1, 1]:\n$$\\Lambda = \\sup_{x \\in [-1,1]} \\lambda(x) = \\sup_{x \\in [-1,1]} \\sum_k |l_k(x)|$$\n\n**Significance:**\nIf f is any continuous function and P is its interpolating polynomial:\n$$\\|f - P\\|_\\infty \\leq (1 + \\Lambda) \\cdot E_n(f)$$\nwhere E_n(f) is the best polynomial approximation error.\n\nSmaller Lambda = better-conditioned interpolation.",
     "mathContext": "Named after Henri Lebesgue. This constant controls the stability of polynomial interpolation.",
     "significance": "key",
+    "prerequisites": [
+      "Condition number",
+      "Operator norm",
+      "basic set theory",
+      "continuous functions"
+    ],
     "relatedConcepts": [
       "Operator norm",
       "Condition number",
@@ -99,6 +126,12 @@
     "content": "**ChebyshevNodes:**\n\nThe n roots of the n-th Chebyshev polynomial T_n:\n$$x_k = \\cos\\left(\\frac{(2k-1)\\pi}{2n}\\right), \\quad k = 1, \\ldots, n$$\n\n**Key Property:**\nThese nodes cluster near the endpoints +/- 1, which counteracts the Runge phenomenon and minimizes interpolation error.\n\n**Lebesgue Constant:**\nChebyshev nodes achieve Lambda ~ (2/pi) log n, which is asymptotically optimal.",
     "mathContext": "Named after Pafnuty Chebyshev (1821-1894). Chebyshev polynomials have the minimax property: they deviate least from zero among all monic polynomials.",
     "significance": "key",
+    "prerequisites": [
+      "Chebyshev polynomials",
+      "Minimax approximation",
+      "basic set theory",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Chebyshev polynomials",
       "Minimax approximation",
@@ -122,6 +155,11 @@
       "inequalities",
       "polynomials"
     ],
+    "prerequisites": [
+      "algebra",
+      "bounds",
+      "polynomial ring theory"
+    ],
     "significance": "key"
   },
   {
@@ -136,6 +174,10 @@
     "content": "**erdos_lower_bound (1961):**\n\nThe sharp lower bound with exact constant:\n$$\\Lambda(x_1,\\ldots,x_n) \\geq \\frac{2}{\\pi} \\log n - O(1)$$\n\nThis improved earlier bounds by Bernstein (1931) who showed Lambda > (2/pi - o(1)) log n.\n\n**Statement:**\n```lean\naxiom erdos_lower_bound :\n    exists C, forall n nodes, NodesInInterval nodes -> DistinctNodes nodes -> n > 0 ->\n    LebesgueConstant nodes >= (2 / pi) * log n - C\n```",
     "mathContext": "Erdos achieved the sharp constant 2/pi, which matches the upper bound from Chebyshev nodes.",
     "relatedConcepts": [
+      "bounds",
+      "inequalities"
+    ],
+    "prerequisites": [
       "bounds",
       "inequalities"
     ],
@@ -158,6 +200,10 @@
       "growth rates",
       "inequalities"
     ],
+    "prerequisites": [
+      "asymptotics",
+      "bounds"
+    ],
     "significance": "key"
   },
   {
@@ -172,6 +218,11 @@
     "content": "**EqualHeightProperty:**\n\nOptimal nodes are characterized by 'equioscillation': the subinterval maxima of the Lebesgue function are all equal.\n\nFor sorted nodes x_1 < x_2 < ... < x_n with x_0 = -1 and x_{n+1} = 1:\n$$\\max_{x \\in [x_i, x_{i+1}]} \\sum_k |l_k(x)|$$\nare the same for all intervals.\n\nErdos conjectured this characterization, and Kilgore proved it in 1977.",
     "mathContext": "This is analogous to the equioscillation theorem in Chebyshev approximation theory.",
     "significance": "key",
+    "prerequisites": [
+      "Chebyshev approximation",
+      "Equioscillation",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Equioscillation",
       "Chebyshev approximation",
@@ -193,6 +244,10 @@
       "Heine-Borel",
       "compactness"
     ],
+    "prerequisites": [
+      "Heine-Borel",
+      "compactness"
+    ],
     "significance": "key"
   },
   {
@@ -207,6 +262,9 @@
     "content": "**kilgore_characterization (1977):**\n\nOptimal nodes are characterized by the equal-height property.\n\nIf nodes minimize the Lebesgue constant, then the subinterval maxima are all equal.\n\nConversely, if nodes have equal subinterval maxima, they are optimal.\n\nThis provides a theoretical characterization but not a practical algorithm.",
     "mathContext": "Kilgore's paper in SIAM J. Numer. Anal. established this equivalence, confirming Erdos's conjecture.",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
       "formal mathematics"
     ],
     "significance": "key"
@@ -226,6 +284,10 @@
       "distance",
       "metric spaces"
     ],
+    "prerequisites": [
+      "distance",
+      "metric spaces"
+    ],
     "significance": "key"
   },
   {
@@ -241,6 +303,10 @@
     "mathContext": "$For n = 2, the optimal nodes are {-1, 1} with Lambda = 1.$",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "supporting"
   },
@@ -258,6 +324,11 @@
     "relatedConcepts": [
       "bounds",
       "inequalities"
+    ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -278,6 +349,11 @@
       "algebraic structures",
       "polynomials"
     ],
+    "prerequisites": [
+      "abstract algebra",
+      "algebra",
+      "polynomial ring theory"
+    ],
     "significance": "key"
   },
   {
@@ -292,6 +368,11 @@
     "content": "**ComplexLebesgueConstant:**\n\nFor nodes z_1,...,z_n on the unit circle |z| = 1, the complex Lebesgue constant is:\n$$\\Lambda = \\max_{|z|=1} \\sum_k |l_k(z)|$$\n\nThis is the natural extension of the real problem to the complex setting.",
     "mathContext": "Erdos posed this variant in 1967, suggesting that uniformly spaced nodes (roots of unity) should be optimal.",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
+      "basic set theory",
+      "complex numbers",
       "formal mathematics"
     ],
     "significance": "key"
@@ -310,6 +391,12 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "complex numbers",
+      "formal mathematics",
+      "omega tactic"
+    ],
     "significance": "key"
   },
   {
@@ -324,6 +411,10 @@
     "content": "**brutman_odd (1980) and brutman_pinkus_even (1980):**\n\nFor both odd and even n, the n-th roots of unity minimize the complex Lebesgue constant.\n\n- Brutman proved the odd case in SIAM J. Numer. Anal.\n- Brutman and Pinkus proved the even case separately\n\nThis confirms Erdos's conjecture that 'it seems certain' roots of unity are optimal.",
     "mathContext": "L. Brutman and A. Pinkus completed the resolution of Erdos's complex conjecture.",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
+      "complex numbers",
       "formal mathematics"
     ],
     "significance": "key"
@@ -342,6 +433,11 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "complex numbers",
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -359,6 +455,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -374,6 +475,11 @@
     "mathContext": "Lean: `theorem erdos_1129_summary :`",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "complex numbers",
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   }

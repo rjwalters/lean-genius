@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #111: Edge Deletion to Bipartiteness**\n\nFor a graph G, define h_G(n) as the maximum number of edges that must be deleted from any n-vertex subgraph to make it bipartite.\n\n**The Question:** Does h_G(n)/n → ∞ for every graph with chromatic number ℵ₁?\n\n**Status:** OPEN\n\n**Key References:**\n- Erdős-Hajnal-Szemerédi (1982): \"On almost bipartite large chromatic graphs\"\n- Erdős (1981): \"On the combinatorial problems which I would most like to see solved\"",
     "mathContext": "This problem connects graph coloring (chromatic number) with graph structure (bipartiteness). The chromatic number ℵ₁ is the first uncountable cardinal.",
     "significance": "key",
+    "prerequisites": [
+      "Bipartite graphs",
+      "Chromatic number",
+      "cardinal arithmetic",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Chromatic number",
       "Bipartite graphs",
@@ -30,6 +36,12 @@
     "content": "**IsBipartite:**\n\nA graph G is bipartite if its vertices can be partitioned into two disjoint sets A and B such that every edge connects a vertex in A to a vertex in B.\n\n**Definition:**\n```lean\ndef IsBipartite {V : Type*} (G : SimpleGraph V) : Prop :=\n  ∃ A B : Set V, A ∪ B = Set.univ ∧ A ∩ B = ∅ ∧\n    ∀ v w, G.Adj v w → (v ∈ A ∧ w ∈ B) ∨ (v ∈ B ∧ w ∈ A)\n```\n\nEquivalently, a graph is bipartite iff it contains no odd cycles.",
     "mathContext": "Bipartite graphs are 2-colorable. They appear throughout combinatorics, from matching theory to network flow.",
     "significance": "key",
+    "prerequisites": [
+      "Graph coloring",
+      "Odd cycles",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Graph coloring",
       "Odd cycles",
@@ -48,6 +60,12 @@
     "content": "**edgesToRemoveForBipartite and edgeDeletionFunction h_G:**\n\nFor a graph G and natural number n, h_G(n) is the maximum number of edges that must be deleted from any n-vertex induced subgraph of G to make it bipartite.\n\n**Intuition:**\n- h_G(n) measures how \"far from bipartite\" the densest n-vertex subgraphs are\n- For bipartite G: h_G(n) = 0\n- For complete K_n: h_G(n) ≈ n²/4 (remove a max-cut)\n\n**Axioms (complexity requires axiomatization):**\n```lean\naxiom edgesToRemoveForBipartite {V : Type*} [Fintype V] (G : SimpleGraph V) : ℕ\naxiom edgeDeletionFunction {V : Type*} (G : SimpleGraph V) (n : ℕ) : ℕ\n```",
     "mathContext": "These functions capture the worst-case edge deletion cost over all n-vertex subgraphs. They are the central objects in Erdős Problem #111.",
     "significance": "key",
+    "prerequisites": [
+      "Fintype",
+      "Max-cut",
+      "Subgraph",
+      "complex numbers"
+    ],
     "relatedConcepts": [
       "Subgraph",
       "Max-cut",
@@ -66,6 +84,12 @@
     "content": "**IsProperColoring and IsKColorable:**\n\nA proper coloring assigns colors to vertices such that adjacent vertices have different colors.\n\n**Definitions:**\n```lean\ndef IsProperColoring {V C : Type*} (G : SimpleGraph V) (f : V → C) : Prop :=\n  ∀ v w, G.Adj v w → f v ≠ f w\n\ndef IsKColorable {V : Type*} (G : SimpleGraph V) (k : ℕ) : Prop :=\n  ∃ f : V → Fin k, IsProperColoring G f\n```\n\nThe chromatic number χ(G) is the minimum k for which G is k-colorable.",
     "mathContext": "Graph coloring is a fundamental problem in combinatorics with applications to scheduling, register allocation, and map coloring.",
     "significance": "key",
+    "prerequisites": [
+      "Chromatic number",
+      "Four color theorem",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Chromatic number",
       "Four color theorem",
@@ -84,6 +108,12 @@
     "content": "**chromaticNumber (axiomatized):**\n\nThe minimum number of colors needed for a proper coloring.\n\n**Axioms:**\n```lean\naxiom chromaticNumber {V : Type*} [Fintype V] (G : SimpleGraph V) : ℕ\naxiom chromaticNumber_exists {V : Type*} [Fintype V] (G : SimpleGraph V) :\n    IsKColorable G (chromaticNumber G)\n```\n\nAxiomatized to avoid decidability issues with IsKColorable.",
     "mathContext": "Every finite graph is k-colorable for some k ≤ |V|. The chromatic number is NP-hard to compute.",
     "significance": "key",
+    "prerequisites": [
+      "Fintype",
+      "Graph coloring",
+      "Greedy algorithm",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Graph coloring",
       "Greedy algorithm",
@@ -102,6 +132,12 @@
     "content": "**cardinalChromaticNumber and hasAleph1ChromaticNumber:**\n\nFor infinite graphs, the chromatic number is a cardinal number.\n\n**Axiom and Definition:**\n```lean\naxiom cardinalChromaticNumber (V : Type*) (G : SimpleGraph V) : Cardinal.{0}\n\ndef hasAleph1ChromaticNumber {V : Type*} (G : SimpleGraph V) : Prop :=\n  cardinalChromaticNumber V G = Cardinal.aleph 1\n```\n\nℵ₁ (aleph-one) is the first uncountable cardinal - larger than ℵ₀ = |ℕ|.",
     "mathContext": "Graphs with uncountable chromatic number cannot be properly colored with countably many colors, leading to rich structural properties.",
     "significance": "key",
+    "prerequisites": [
+      "Cardinal numbers",
+      "cardinal arithmetic",
+      "graph theory basics",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "Cardinal numbers",
       "ℵ₁",
@@ -121,6 +157,12 @@
     "content": "**hasOddCycle and bipartite_iff_no_odd_cycle:**\n\nA fundamental theorem in graph theory: a graph is bipartite if and only if it contains no odd cycle.\n\n**Odd Cycle Definition:**\n```lean\ndef hasOddCycle {V : Type*} (G : SimpleGraph V) : Prop :=\n  ∃ (n : ℕ) (hn : n ≥ 1) (c : Fin (2*n + 1) → V),\n    (∀ i, G.Adj (c i) (c ⟨(i.val + 1) % (2*n + 1), ...⟩)) ∧ ...\n```\n\n**Axiom:**\n```lean\naxiom bipartite_iff_no_odd_cycle {V : Type*} (G : SimpleGraph V) :\n    IsBipartite G ↔ ¬hasOddCycle G\n```\n\nThis is why edge deletion matters: removing edges can eliminate odd cycles.",
     "mathContext": "This characterization is the basis for bipartiteness testing via BFS/DFS in linear time.",
     "significance": "key",
+    "prerequisites": [
+      "BFS",
+      "Cycle detection",
+      "graph theory basics",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "Cycle detection",
       "BFS",
@@ -139,6 +181,12 @@
     "content": "**hasVertexDisjointOddCycles and ehs_lower_bound:**\n\nGraphs with χ(G) = ℵ₁ contain uncountably many vertex-disjoint odd cycles.\n\n**EHS Lower Bound (1982):**\nEvery graph with chromatic number ℵ₁ contains ℵ₁ many vertex-disjoint odd cycles of some fixed odd length 2r+1.\n\n**Axiom:**\n```lean\naxiom ehs_lower_bound {V : Type*} (G : SimpleGraph V)\n    (hχ : hasAleph1ChromaticNumber G) :\n    ∃ r : ℕ, hasVertexDisjointOddCycles G (Cardinal.aleph 1)\n```\n\nThis implies h_G(n) ≫ n: each odd cycle contributes at least 1 edge to delete.",
     "mathContext": "The proof uses compactness and the fact that odd cycles are obstructions to bipartiteness.",
     "significance": "key",
+    "prerequisites": [
+      "Compactness",
+      "Ramsey theory",
+      "cardinal arithmetic",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Compactness",
       "Ramsey theory",
@@ -162,6 +210,12 @@
       "graph theory",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "combinatorics",
+      "graph theory basics",
+      "simp tactic"
+    ],
     "significance": "key"
   },
   {
@@ -176,6 +230,12 @@
     "content": "**ehs_upper_bound:**\n\nErdős-Hajnal-Szemerédi (1982) constructed a graph with χ = ℵ₁ but h_G(n) = O(n^(3/2)).\n\n**Axiom:**\n```lean\naxiom ehs_upper_bound :\n    ∃ (V : Type*) (G : SimpleGraph V),\n      hasAleph1ChromaticNumber G ∧\n      ∃ C : ℕ, ∀ n : ℕ, edgeDeletionFunction G n ≤ C * n * Nat.sqrt n\n```\n\nThis shows the linear lower bound is not tight - there exist graphs with subquadratic h_G(n).",
     "mathContext": "The construction uses shift graphs and probabilistic methods. It represents the current best upper bound.",
     "significance": "key",
+    "prerequisites": [
+      "Probabilistic method",
+      "Shift graphs",
+      "graph theory basics",
+      "natural number arithmetic"
+    ],
     "relatedConcepts": [
       "Shift graphs",
       "Probabilistic method",
@@ -194,6 +254,12 @@
     "content": "**erdosConjecture111:**\n\nErdős (1981) conjectured that for every ε > 0, there exists a graph G with χ(G) = ℵ₁ such that h_G(n) = O(n^(1+ε)).\n\n**Definition:**\n```lean\ndef erdosConjecture111 : Prop :=\n  ∀ ε : ℝ, ε > 0 →\n    ∃ (V : Type*) (G : SimpleGraph V),\n      hasAleph1ChromaticNumber G ∧\n      ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, (edgeDeletionFunction G n : ℝ) ≤ C * (n : ℝ) ^ (1 + ε)\n```\n\nIf true, this would show the growth rate can be arbitrarily close to linear.",
     "mathContext": "This conjecture would significantly improve the n^(3/2) upper bound and narrow the gap with the linear lower bound.",
     "significance": "key",
+    "prerequisites": [
+      "Extremal graph theory",
+      "Growth rates",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Extremal graph theory",
       "Growth rates",
@@ -212,6 +278,11 @@
     "content": "**erdos111_question and erdos_111_gap_exists:**\n\nThe central question of Erdős Problem #111: does $h_G(n)/n \\to \\infty$ for every graph $G$ with chromatic number $\\aleph_1$?\n\nWe know $h_G(n) \\gg n$ (at least some positive constant ratio), but whether the ratio grows without bound is unknown. The theorem `erdos_111_gap_exists` directly derives the existence of subquadratic graphs from the EHS upper bound axiom.",
     "mathContext": "The problem cannot be resolved by finite computation since it involves graphs with uncountable chromatic number.",
     "significance": "key",
+    "prerequisites": [
+      "Growth rates",
+      "Limit behavior",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Limit behavior",
       "Growth rates",
@@ -230,6 +301,11 @@
     "content": "**Connection to Problem #74 and finite_bipartite_zero:**\n\nErdős Problem #74 asks related questions about edge-chromatic number and bipartite subgraphs. For finite graphs, the situation is well-understood: bipartite graphs need 0 edge deletions (`finite_bipartite_zero`), odd cycles need $O(n)$, and complete graphs need $\\Theta(n^2)$. The interesting behavior emerges for infinite graphs with uncountable chromatic number.",
     "mathContext": "The axiom `finite_bipartite_zero` formalizes that bipartite graphs require no edge deletions — they are already bipartite. This is the trivial case that contrasts with the deep open question for $\\chi = \\aleph_1$ graphs.",
     "significance": "supporting",
+    "prerequisites": [
+      "Finite combinatorics",
+      "Problem #74",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Problem #74",
       "Finite combinatorics",
@@ -252,6 +328,12 @@
       "combinatorics",
       "graph theory",
       "inequalities"
+    ],
+    "prerequisites": [
+      "bounds",
+      "combinatorics",
+      "graph theory basics",
+      "proof techniques"
     ],
     "significance": "key"
   }

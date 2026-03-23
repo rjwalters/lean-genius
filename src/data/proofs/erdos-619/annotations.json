@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #619: Decreasing Diameter of Triangle-Free Graphs**\n\n**Question (OPEN):** Does there exist c > 0 such that h₄(G) < (1-c)n for all connected triangle-free graphs G on n vertices?\n\n**Known bounds:**\n- h₃(G) ≤ n\n- h₄(G) ≤ ? (OPEN)\n- h₅(G) ≤ (n-1)/2\n\n**Key constraint:** Graph must remain triangle-free after adding edges.",
     "mathContext": "h_r(G) = min edges to add to achieve diameter r while staying triangle-free. Introduced by Erdős-Gyárfás-Ruszinkó (1998).",
     "significance": "key",
+    "prerequisites": [
+      "Graph diameter",
+      "Triangle-free graphs",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Graph diameter",
       "Triangle-free graphs",
@@ -29,6 +34,12 @@
     "content": "**TriangleFree(G):** A graph with no K₃ subgraphs — for all vertices a, b, c, it is impossible that a-b, b-c, and c-a are all edges.\n\n**diameter(G):** The supremum of pairwise distances in G.\n\n**HasDiameter / HasDiameterAtMost:** Predicates for exact and bounded diameter.\n\nExamples of triangle-free graphs: paths, even cycles, bipartite graphs, Petersen graph.",
     "mathContext": "$G$ is triangle-free if $\\forall a, b, c \\in V(G)$: $\\neg(ab \\in E \\wedge bc \\in E \\wedge ca \\in E)$. The diameter $\\text{diam}(G) = \\max_{u,v} d(u,v)$ measures the worst-case distance.",
     "significance": "key",
+    "prerequisites": [
+      "Bipartite graphs",
+      "Forbidden subgraphs",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Forbidden subgraphs",
       "Bipartite graphs",
@@ -48,6 +59,12 @@
     "content": "**addEdges(G, E):** Constructs a new graph by adding edges E to G. The definition proves symmetry and looplessness, making it a valid SimpleGraph.\n\n**h(G, r):** The central function — the minimum number of edges to add to G to achieve diameter ≤ r while preserving the triangle-free property. Defined via sInf over all valid edge sets.\n\n**h_exact(G, r):** Variant requiring diameter exactly r.",
     "mathContext": "Lean: `def addEdges (G : SimpleGraph V) (E : Set (Sym2 V)) : SimpleGraph V`",
     "significance": "key",
+    "prerequisites": [
+      "Graph augmentation",
+      "Minimum edge addition",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Graph augmentation",
       "Minimum edge addition",
@@ -67,6 +84,11 @@
     "content": "**h₃(G) ≤ n:** For any connected triangle-free graph G on n vertices, at most n edges suffice to reduce diameter to 3.\n\n**h₃(G) ≥ n - c:** This bound is tight — there exist graphs needing nearly n edges for diameter 3.\n\n**h₅(G) ≤ (n-1)/2:** Much fewer edges suffice for diameter 5.\n\nThe dramatic drop from h₃ ~ n to h₅ ~ n/2 is what makes the intermediate h₄ case so intriguing.",
     "mathContext": "These results are from Erdős, Gyárfás, and Ruszinkó's 1998 paper that introduced the h_r function.",
     "significance": "key",
+    "prerequisites": [
+      "Lower bound",
+      "Upper bound",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Upper bound",
       "Lower bound",
@@ -86,6 +108,11 @@
     "content": "**erdos_619_question:** Does there exist c > 0 such that h₄(G) < (1-c)n for all connected triangle-free G on n vertices?\n\nIn other words: can we always save a constant fraction of n edges when targeting diameter 4? Neither a proof nor counterexample is known.\n\n**erdos_619_upper_bound_form:** Equivalent formulation as h₄(G) < n - εn.",
     "mathContext": "Lean: `def erdos_619_question : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "Diameter 4",
+      "Open problem",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Open problem",
       "Diameter 4",
@@ -105,6 +132,10 @@
     "content": "**without_triangle_free_constraint:** When triangles are allowed, n/2 edges always suffice for diameter 4 (Alon-Gyárfás-Ruszinkó 2000).\n\nThis shows the triangle-free constraint fundamentally changes the problem. The most natural shortcut edges often create triangles, so forbidding them makes diameter reduction much harder.",
     "mathContext": "Comparison with the unconstrained case reveals the essential difficulty of the triangle-free requirement.",
     "significance": "key",
+    "prerequisites": [
+      "Comparison",
+      "General graphs"
+    ],
     "relatedConcepts": [
       "Comparison",
       "General graphs",
@@ -124,6 +155,12 @@
     "content": "**pathGraph(n):** The path on n vertices (v₀-v₁-...-v_{n-1}), defined as a SimpleGraph on Fin n with adjacency i↔j iff |i-j|=1. The definition includes proofs of symmetry and looplessness.\n\n**path_is_triangle_free:** Paths contain no triangles (axiomatized).\n**path_diameter:** The path Pₙ has diameter n-1 (axiomatized).\n\nPaths are natural test cases for h_r: they have maximum possible diameter, requiring many edges to reduce it.",
     "mathContext": "Lean: `def pathGraph (n : ℕ) : SimpleGraph (Fin n)`",
     "significance": "key",
+    "prerequisites": [
+      "Path graph",
+      "Triangle-free examples",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Path graph",
       "Triangle-free examples",
@@ -143,6 +180,10 @@
     "content": "**h_monotone:** h(G, r) ≥ h(G, r+1) — achieving smaller diameter requires at least as many edges as achieving larger diameter.\n\nThis gives the chain: h₃(G) ≥ h₄(G) ≥ h₅(G).\n\nCombined with the known bounds h₃ ≤ n and h₅ ≤ (n-1)/2, monotonicity constrains h₄ to lie between (n-1)/2 and n.",
     "mathContext": "$This gives the chain: h₃(G) ≥ h₄(G) ≥ h₅(G).$",
     "significance": "key",
+    "prerequisites": [
+      "Monotonicity",
+      "Ordering of bounds"
+    ],
     "relatedConcepts": [
       "Monotonicity",
       "Ordering of bounds"
@@ -161,6 +202,11 @@
     "content": "**erdos_619:** The main open question, defined as erdos_619_question.\n\n**erdos_619_partial_results:** For any connected triangle-free G on n vertices:\n- h(G, 3) ≤ n\n- h(G, 5) ≤ (n-1)/2\n\nProved by combining h3_upper_bound and h5_upper_bound axioms. These are the established bounds from Erdős-Gyárfás-Ruszinkó (1998), with the h₄ gap remaining open.",
     "mathContext": "Lean: `def erdos_619 : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "Known results",
+      "Summary",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Summary",
       "Known results",

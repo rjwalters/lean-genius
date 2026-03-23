@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #643** asks about hypergraphs and 'crossed pairs'.\n\nGiven a t-uniform hypergraph, find the minimum number of edges f(n;t) that forces four edges A,B,C,D satisfying:\n- A ∪ B = C ∪ D\n- A ∩ B = C ∩ D = ∅\n\nThe conjecture: f(n;t) = (1+o(1))·C(n,t-1) for t ≥ 3.",
     "mathContext": "f(n;t) = min{m : every t-uniform H with m edges contains a crossed pair}",
     "significance": "key",
+    "prerequisites": [
+      "erdos",
+      "graph theory basics",
+      "hypergraph theory",
+      "hypergraphs"
+    ],
     "relatedConcepts": [
       "erdos",
       "hypergraphs",
@@ -29,6 +35,12 @@
     "content": "**Hypergraph V** is defined as `Set (Finset V)` - a collection of subsets of vertices.\n\n**IsUniform H t** holds if all edges have exactly t vertices.\n\n**edgeCount H** is the number of edges (using Set.ncard for cardinality).",
     "mathContext": "A t-uniform hypergraph is a collection of t-element subsets of a vertex set.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "cardinal arithmetic",
+      "finset"
+    ],
     "relatedConcepts": [
       "finset",
       "set",
@@ -47,6 +59,12 @@
     "content": "**IsCrossedPair A B C D** holds when:\n1. A ∪ B = C ∪ D (same union)\n2. A ∩ B = ∅ (first pair disjoint)\n3. C ∩ D = ∅ (second pair disjoint)\n4. {A,B} ≠ {C,D} (different pairing)\n\nThis is the forbidden configuration we're trying to force.",
     "mathContext": "Four edges partition the same 2t-element set in two different ways.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "disjoint",
+      "partition",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "partition",
       "disjoint",
@@ -65,6 +83,12 @@
     "content": "**f(n,t)** is defined as the minimum m such that any t-uniform hypergraph on n vertices with at least m edges must contain a crossed pair.\n\nWe use Nat.find to select the least such m, with existence proven by noting that the total number of t-subsets is finite.",
     "mathContext": "f(n,t) = min{m : ∀H t-uniform on n vertices, |H| ≥ m → HasCrossedPair H}",
     "significance": "key",
+    "prerequisites": [
+      "Nat.find",
+      "basic set theory",
+      "extremal",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Nat.find",
       "extremal",
@@ -83,6 +107,12 @@
     "content": "**For graphs (t=2)**, a crossed pair is essentially a 4-cycle!\n\nThe four 2-element edges form an alternating path v1-v2-v3-v4-v1.\n\nThe **Kovari-Sos-Turan theorem** gives f(n,2) = O(n^{3/2}), connecting this to classical extremal graph theory.",
     "mathContext": "C4-free graphs have at most (1/2 + o(1))n^{3/2} edges.",
     "significance": "key",
+    "prerequisites": [
+      "cycle",
+      "graph theory basics",
+      "kovari-sos-turan",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "cycle",
       "kovari-sos-turan",
@@ -101,6 +131,12 @@
     "content": "**Pikhurko-Verstrate (2009)** proved that for 3-uniform hypergraphs:\n\nf(n,3) <= (13/9)*C(n,2)\n\nThis is the best known upper bound for the 3-uniform case and represents significant progress toward the conjecture.",
     "mathContext": "f(n,3) <= (13/9)*(n choose 2) for all n >= 3",
     "significance": "key",
+    "prerequisites": [
+      "3-uniform",
+      "graph theory basics",
+      "hypergraph theory",
+      "upper-bound"
+    ],
     "relatedConcepts": [
       "upper-bound",
       "3-uniform",
@@ -119,6 +155,11 @@
     "content": "**Lower bound**: f(n,t) >= C(n-1,t-1) + floor((n-1)/t)\n\nThis comes from sunflower constructions.\n\n**Upper bound**: f(n,t) < (7/2)*C(n,t-1)\n\nThe gap between these bounds is what the conjecture aims to close.",
     "mathContext": "C(n-1,t-1) <= f(n,t) < (7/2)*C(n,t-1)",
     "significance": "supporting",
+    "prerequisites": [
+      "lower-bound",
+      "proof techniques",
+      "upper-bound"
+    ],
     "relatedConcepts": [
       "lower-bound",
       "upper-bound",
@@ -137,6 +178,11 @@
     "content": "**Erdos Problem #643** (OPEN): For t >= 3,\n\nlim_{n->inf} f(n,t) / C(n,t-1) = 1\n\nEquivalently, f(n,t) = (1 + o(1))*C(n,t-1).\n\nThis would show sunflower constructions are asymptotically optimal.",
     "mathContext": "Erdos643Conjecture := forall t>=3, Tendsto (fun n => f(n,t)/C(n,t-1)) atTop (nhds 1)",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic",
+      "basic set theory",
+      "tendsto"
+    ],
     "relatedConcepts": [
       "asymptotic",
       "tendsto",
@@ -155,6 +201,12 @@
     "content": "**SunflowerHypergraph** is the key construction for lower bounds.\n\nAll edges share a common (t-1)-element **core**.\nEach edge adds one unique element from the **petals** set.\n\nThis gives approximately C(n-1,t-1) edges with no crossed pairs.",
     "mathContext": "Edges have form core U {p} for p in petals, where |core| = t-1.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "construction",
+      "graph theory basics",
+      "hypergraph theory"
+    ],
     "relatedConcepts": [
       "sunflower",
       "construction",
@@ -173,6 +225,11 @@
     "content": "**Key Insight**: A sunflower cannot contain crossed pairs!\n\n**Proof sketch**: Any two edges in a sunflower intersect in the core. For a crossed pair, we need A cap B = empty. But since t >= 2, the core has size >= 1, so any two edges share at least one vertex.\n\nThis contradiction shows sunflowers are crossed-pair-free.",
     "mathContext": "forall A,B in Sunflower: A cap B contains core != empty",
     "significance": "key",
+    "prerequisites": [
+      "contradiction",
+      "intersection",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "contradiction",
       "intersection",
@@ -191,6 +248,12 @@
     "content": "**f(4,2) = 3**: With 4 vertices and 3 edges, we can avoid a 4-cycle. With 4 edges (K4), we must have one.\n\n**f(5,2) = 5**: Related to the Petersen graph, a famous 3-regular graph avoiding 4-cycles.",
     "mathContext": "Exact values known for small parameters.",
     "significance": "supporting",
+    "prerequisites": [
+      "graph theory basics",
+      "petersen",
+      "proof techniques",
+      "small-cases"
+    ],
     "relatedConcepts": [
       "small-cases",
       "petersen",
@@ -209,6 +272,12 @@
     "content": "**The Sunflower Lemma** (Erdos-Rado 1960): Any sufficiently large k-uniform family contains a sunflower with r petals.\n\nSpecifically: there exists F(k) such that any k-uniform family with > F(k) * (r-1)^k members contains an r-sunflower.\n\nThis structural result constrains what large hypergraphs can look like.",
     "mathContext": "Large uniform families must contain sunflowers - a foundational result.",
     "significance": "supporting",
+    "prerequisites": [
+      "erdos-rado",
+      "graph theory basics",
+      "hypergraph theory",
+      "sunflower-lemma"
+    ],
     "relatedConcepts": [
       "erdos-rado",
       "sunflower-lemma",

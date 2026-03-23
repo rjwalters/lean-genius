@@ -11,6 +11,10 @@
     "content": "**Erdős Problem #945** asks: how long can a run of consecutive integers be where each has a *different* number of divisors?\n\nDefine F(x) = max length of such a run up to x. The conjecture is that F(x) ≤ (log x)^C for some constant C—meaning divisor count 'collisions' must happen within polylogarithmic intervals.",
     "mathContext": "F(x) = max{k : ∃n, τ(n+1), ..., τ(n+k) all distinct, n+k ≤ x}. The conjecture: F(x) = O((log x)^C).",
     "significance": "key",
+    "prerequisites": [
+      "divisors",
+      "erdos"
+    ],
     "relatedConcepts": [
       "erdos",
       "divisors",
@@ -29,6 +33,11 @@
     "content": "We import Mathlib and open filter/real namespaces for asymptotic notation. Classical logic enables decidability for arbitrary set predicates.",
     "mathContext": "Filter.atTop represents 'for all sufficiently large x'. The =O[atTop] notation is big-O asymptotics.",
     "significance": "supporting",
+    "prerequisites": [
+      "filter",
+      "filter theory",
+      "mathlib"
+    ],
     "relatedConcepts": [
       "mathlib",
       "filter",
@@ -47,6 +56,12 @@
     "content": "**τ(n)** counts the positive divisors of n. It's one of the most studied functions in number theory.\n\nExamples:\n- τ(1) = 1 (only divisor is 1)\n- τ(p) = 2 for primes (1 and p)\n- τ(12) = 6 (1, 2, 3, 4, 6, 12)\n\nHighly composite numbers have unusually large τ values.",
     "mathContext": "τ(n) = |{d : d | n}| = n.divisors.card in Mathlib. For n = p₁^a₁ ⋯ pₖ^aₖ, τ(n) = (a₁+1)⋯(aₖ+1).",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "divisors",
+      "multiplicative-function",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "divisors",
       "multiplicative-function",
@@ -65,6 +80,12 @@
     "content": "We verify concrete τ values using `native_decide`, which computes the divisor count directly:\n\n- τ(1) = 1\n- τ(2) = 2 (prime)\n- τ(6) = 4 (1, 2, 3, 6)\n- τ(12) = 6 (highly composite)\n\nThese serve as sanity checks for the definition.",
     "mathContext": "native_decide evaluates the decidable proposition by computation, providing machine-checked verification.",
     "significance": "supporting",
+    "prerequisites": [
+      "native-decide",
+      "prime numbers",
+      "proof techniques",
+      "verification"
+    ],
     "relatedConcepts": [
       "native-decide",
       "verification",
@@ -83,6 +104,12 @@
     "content": "**F(x)** is the maximum k such that some k consecutive integers up to x all have distinct τ values.\n\nIntuitively:\n- Large F(x) means divisor counts vary widely—long runs without repeats\n- Small F(x) means τ collisions happen quickly\n\nThe conjecture asks whether F(x) is polynomially bounded in log x.",
     "mathContext": "F(x) = sSup{k : ∃n, n+k ≤ x, τ injective on (n, n+k]}. Uses sSup (supremum) over the valid set.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "injective",
+      "polynomial ring theory",
+      "supremum"
+    ],
     "relatedConcepts": [
       "supremum",
       "injective",
@@ -101,6 +128,12 @@
     "content": "**Is F(x) ≤ (log x)^{O(1)}?**\n\nThis asks whether the longest run of consecutive integers with distinct divisor counts is bounded by a polynomial in log x. After 70+ years, this remains open.\n\nStated as an axiom since no proof exists.",
     "mathContext": "Erdos945Prop: ∃C>0, F(x) ≤ (log x)^C eventually. The O(1) means some constant exponent.",
     "significance": "key",
+    "prerequisites": [
+      "axiom",
+      "conjecture",
+      "polynomial ring theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "conjecture",
       "axiom",
@@ -119,6 +152,11 @@
     "content": "An equivalent way to state the conjecture: **every interval [x, x + (log x)^C] contains a τ collision** (two distinct integers with equal divisor counts).\n\nThis 'collision' view is sometimes more intuitive—we're asking how long you can avoid finding a, b with τ(a) = τ(b).",
     "mathContext": "Erdos945Collision: ∃C>0, ∀ large x, ∃ distinct a,b ∈ [x, x+(log x)^C] with τ(a)=τ(b).",
     "significance": "supporting",
+    "prerequisites": [
+      "basic set theory",
+      "collision",
+      "equivalent"
+    ],
     "relatedConcepts": [
       "collision",
       "equivalent",
@@ -137,6 +175,12 @@
     "content": "**F(x) ≫ (log x)^{1/2} / log log x**\n\nThis says F(x) grows at least like a square root of log x (divided by log log x). Runs of distinct τ values can be at least this long.\n\nErdős claimed this could be improved to (log x)^{1-o(1)} 'with some more work'.",
     "mathContext": "The lower bound shows F is unbounded and grows at least polynomially in log x.",
     "significance": "key",
+    "prerequisites": [
+      "erdos-mirsky",
+      "lower-bound",
+      "polynomial ring theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "lower-bound",
       "erdos-mirsky",
@@ -155,6 +199,12 @@
     "content": "**log F(x) ≪ (log x)^{1/2} / log log x**\n\nEquivalently: F(x) ≪ exp(O((log x)^{1/2} / log log x))\n\nThis is *exponential* in √log x, much larger than the polynomial lower bound. The gap between these bounds is the main open problem.",
     "mathContext": "Taking logs: log F(x) = O((log x)^{1/2}/log log x). The upper bound is exponential in a fractional power of log.",
     "significance": "key",
+    "prerequisites": [
+      "exponential",
+      "polynomial ring theory",
+      "proof techniques",
+      "upper-bound"
+    ],
     "relatedConcepts": [
       "upper-bound",
       "exponential",
@@ -173,6 +223,11 @@
     "content": "**F(x) ≪ exp(O((log x)^{1/3 + o(1)}))**\n\nBeker improved the Erdős-Mirsky upper bound from exponent 1/2 to 1/3 (plus o(1)). This is currently the best known upper bound.\n\nStill exponential, still far from the conjectured polynomial bound.",
     "mathContext": "Improvement from exp((log x)^{1/2}) to exp((log x)^{1/3}). The exponent dropped from 0.5 to ~0.33.",
     "significance": "key",
+    "prerequisites": [
+      "beker",
+      "improvement",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "beker",
       "improvement",
@@ -191,6 +246,12 @@
     "content": "**If Cramér's conjecture holds, then F(x) ≪ (log x)²**\n\nCramér's conjecture says prime gaps are ≤ (log p)². If true, it implies the main conjecture with C = 2!\n\nThis connection shows the problem relates to deep questions about prime distribution.",
     "mathContext": "Cramér's conjecture: p_{n+1} - p_n = O((log p_n)²). This would give F(x) = O((log x)²).",
     "significance": "supporting",
+    "prerequisites": [
+      "cramer",
+      "prime numbers",
+      "prime-gaps",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "cramer",
       "prime-gaps",

@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #614: Minimum Edges for Induced Maximum Degree**\n\nLet f(n,k) be the minimal number of edges such that there exists a graph on n vertices where every (k+2)-subset induces a subgraph with maximum degree at least k.\n\n**Question:** Determine f(n,k).\n\n**Status:** OPEN. No closed-form formula is known.",
     "mathContext": "This is an extremal graph theory problem combining Turán-type minimization with a Ramsey-theoretic universal condition. The function f(n,k) measures the minimum edge density needed to force local degree structure.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "Turán numbers",
+      "density theory",
+      "extremal graph theory"
+    ],
     "relatedConcepts": [
       "extremal graph theory",
       "Turán numbers",
@@ -29,6 +35,12 @@
     "content": "**degree G v:** The degree of vertex v in graph G is the number of vertices adjacent to v. Computed by filtering the universe for vertices adjacent to v.",
     "mathContext": "Standard graph-theoretic degree, using Finset.filter on the adjacency predicate. This is noncomputable since it depends on DecidableRel G.Adj.",
     "significance": "supporting",
+    "prerequisites": [
+      "Finset API",
+      "adjacency",
+      "basic set theory",
+      "filter theory"
+    ],
     "relatedConcepts": [
       "adjacency",
       "graph degree",
@@ -47,6 +59,12 @@
     "content": "**maxDegree G:** The maximum degree Δ(G) is the largest degree among all vertices. For induced subgraphs, this measures local connectivity.",
     "mathContext": "Uses Finset.sup' with the nonemptiness witness for Finset.univ. This gives the maximum of the degree function over all vertices.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "Finset.sup'",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "maximum degree",
       "Finset.sup'",
@@ -65,6 +83,12 @@
     "content": "**inducedSubgraph G S:** The induced subgraph G[S] contains all edges of G between vertices in S. Defined using SimpleGraph.comap with the subtype inclusion.",
     "mathContext": "The comap construction pulls back the adjacency relation along the inclusion S ↪ V. This correctly restricts edges to those with both endpoints in S.",
     "significance": "key",
+    "prerequisites": [
+      "SimpleGraph.comap",
+      "basic set theory",
+      "graph theory basics",
+      "induced subgraph"
+    ],
     "relatedConcepts": [
       "induced subgraph",
       "SimpleGraph.comap",
@@ -83,6 +107,12 @@
     "content": "**inducedMaxDegree G S:** The maximum degree in the induced subgraph G[S]. For each vertex v ∈ S, counts neighbors in S, then takes the maximum.\n\nThis is the key quantity in the problem: we want every (k+2)-subset to have inducedMaxDegree ≥ k.",
     "mathContext": "Handles the empty case separately (returns 0). For nonempty S, uses sup' to find the maximum over filtered neighbor counts within S.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "filter theory",
+      "graph theory basics",
+      "induced subgraph degree"
+    ],
     "relatedConcepts": [
       "local degree",
       "induced subgraph degree",
@@ -101,6 +131,12 @@
     "content": "**hasPropertyP G k:** A graph has property P(k) if EVERY (k+2)-vertex induced subgraph has maximum degree at least k.\n\nThis is an extremely strong condition: it must hold for ALL subsets of the given size, not just some.",
     "mathContext": "The universal quantifier over all S with S.card = k + 2 makes this a Ramsey-type condition. The minimum edges to achieve this is the function f(n,k) that Erdős asks to determine.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "basic set theory",
+      "graph theory basics",
+      "property P(k)"
+    ],
     "relatedConcepts": [
       "property P(k)",
       "universal graph property",
@@ -119,6 +155,12 @@
     "content": "**edgeCount G:** Counts ordered pairs (u,v) with u < v and G.Adj u v.\n\n**existsGraphWithPropertyP n k m:** States that there exists a graph on n vertices with exactly m edges that has property P(k). This predicate captures when f(n,k) ≤ m.",
     "mathContext": "The existence predicate quantifies over all types V with Fintype.card V = n and all simple graphs on V. This allows the minimum m to define f(n,k).",
     "significance": "key",
+    "prerequisites": [
+      "Fintype",
+      "basic set theory",
+      "edge count",
+      "extremal function"
+    ],
     "relatedConcepts": [
       "edge count",
       "extremal function",
@@ -137,6 +179,11 @@
     "content": "**f_lower_bound:** f(n,k) ≥ kn/2 for n > k+2 and k > 0. A double-counting argument: each (k+2)-subset needs a vertex of degree ≥ k, contributing at least k edges.\n\n**f_upper_bound:** The complete graph K_n has n(n-1)/2 edges and trivially has property P(k) for k ≤ n-2, since every induced subgraph of K_n is also complete.",
     "mathContext": "The lower bound follows from averaging: the total degree contributions across all (k+2)-subsets must be sufficient. The upper bound is trivial since K_n[S] = K_{|S|} has max degree |S|-1.",
     "significance": "key",
+    "prerequisites": [
+      "complete graph",
+      "graph theory basics",
+      "lower bounds"
+    ],
     "relatedConcepts": [
       "lower bounds",
       "complete graph",
@@ -155,6 +202,12 @@
     "content": "**f_case_k_eq_1:** f(n,1) ≥ n-2. Every 3-vertex subset must contain at least one edge (no independent triple). A path P_n achieves this with exactly n-1 edges.\n\n**f_max_k:** f(n, n-2) ≥ n(n-1)/2. When k = n-2, the (n-2+2 = n)-vertex induced subgraph is the whole graph, requiring max degree ≥ n-2. Only the complete graph has this.",
     "mathContext": "The k=1 case relates to the Turán number ex(n, K_3) for triangle-free graphs. The k=n-2 case forces the extremal graph to be K_n itself.",
     "significance": "key",
+    "prerequisites": [
+      "complete graphs",
+      "graph theory basics",
+      "ring tactic",
+      "triangle-free graphs"
+    ],
     "relatedConcepts": [
       "triangle-free graphs",
       "complete graphs",
@@ -173,6 +226,11 @@
     "content": "**f_mono_k:** f(n,k) ≤ f(n,k+1). If a graph has property P(k+1), it automatically has property P(k).\n\nReason: if every (k+3)-subset has max degree ≥ k+1, then every (k+2)-subset has max degree ≥ k (take any (k+2)-subset, extend to a (k+3)-subset, and the degree within the smaller subset is at least as large).",
     "mathContext": "The monotonicity follows from the fact that the property condition becomes strictly stronger as k increases: both the required degree and the subset size grow.",
     "significance": "supporting",
+    "prerequisites": [
+      "graph theory basics",
+      "monotonicity",
+      "property inclusion"
+    ],
     "relatedConcepts": [
       "monotonicity",
       "property inclusion",
@@ -191,6 +249,11 @@
     "content": "**erdos_614_existence:** The function f(n,k) is well-defined: for all n ≥ k+2 and k > 0, there exists at least one graph achieving property P(k).\n\nThe exact determination of f(n,k) remains OPEN. Unknown: exact values for most n, k; asymptotic behavior; whether f(n,k)/n² has a limit.",
     "mathContext": "The existence follows from the complete graph, but the minimum is the open question. The problem cannot be resolved by finite computation alone.",
     "significance": "key",
+    "prerequisites": [
+      "extremal graph theory",
+      "graph theory basics",
+      "open problems"
+    ],
     "relatedConcepts": [
       "open problems",
       "extremal graph theory",
@@ -209,6 +272,12 @@
     "content": "**erdos_614_summary** combines two key results:\n1. **Existence:** f(n,k) is well-defined for n ≥ k+2 and k > 0\n2. **Upper bound:** The complete graph gives f(n,k) ≤ n(n-1)/2\n\nProved by ⟨erdos_614_existence, f_upper_bound⟩. The exact value remains the open question.",
     "mathContext": "This is the main proved theorem, packaging the well-definedness and trivial upper bound. The lower bound, special cases, and monotonicity are separate axioms.",
     "significance": "key",
+    "prerequisites": [
+      "conjunction",
+      "graph theory basics",
+      "proof techniques",
+      "summary theorem"
+    ],
     "relatedConcepts": [
       "summary theorem",
       "conjunction",

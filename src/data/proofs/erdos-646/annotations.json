@@ -104,6 +104,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "prime numbers"
+    ],
     "significance": "key"
   },
   {
@@ -119,6 +123,10 @@
     "mathContext": "$n = 7 has even 2-valuation.$",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "supporting"
   },
@@ -136,6 +144,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -150,6 +162,12 @@
     "content": "**berend_existence:**\n\nFor any finite set S of primes, infinitely many n exist such that n! is divisible by an even power of each prime in S.\n\n**Statement:**\n```lean\naxiom berend_existence (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) :\n  {n : ℕ | hasAllEvenValuations S n}.Infinite\n```\n\nThis is the main positive result from Berend (1997).",
     "mathContext": "Berend's proof uses analytic number theory techniques.",
     "relatedConcepts": [
+      "divisibility",
+      "factorization",
+      "prime numbers"
+    ],
+    "prerequisites": [
+      "Finset API",
       "divisibility",
       "factorization",
       "prime numbers"
@@ -174,6 +192,12 @@
       "divisibility",
       "factorization"
     ],
+    "prerequisites": [
+      "Finset API",
+      "asymptotic analysis",
+      "bounds",
+      "density theory"
+    ],
     "significance": "key"
   },
   {
@@ -192,6 +216,12 @@
       "factorization",
       "prime numbers"
     ],
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "divisibility",
+      "factorization"
+    ],
     "significance": "key"
   },
   {
@@ -208,6 +238,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -222,6 +256,12 @@
     "content": "**Kummer's Theorem:**\n\nvₚ(C(m+n, n)) = number of carries when adding m and n in base p.\n\n**In Lean:**\n```lean\naxiom kummer_carries (p m n : ℕ) (hp : p.Prime) :\n  padicValNat p (Nat.choose (m + n) n) =\n    (Nat.digits p m).sum + (Nat.digits p n).sum - (Nat.digits p (m + n)).sum\n```\n\nRelates binomial coefficients to digit sums.",
     "mathContext": "Named after Ernst Kummer (1852). Connects combinatorics to p-adic analysis.",
     "significance": "key",
+    "prerequisites": [
+      "Binomial coefficients",
+      "Carrying in addition",
+      "natural number arithmetic",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Binomial coefficients",
       "Carrying in addition",
@@ -267,6 +307,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -285,6 +330,12 @@
       "factorization",
       "prime numbers"
     ],
+    "prerequisites": [
+      "Finset API",
+      "divisibility",
+      "factorization",
+      "prime numbers"
+    ],
     "significance": "key"
   },
   {
@@ -299,6 +350,12 @@
     "content": "**prescribed_parities_infinite:**\n\nFor ANY assignment of parities to primes, infinitely many n achieve it.\n\n**Definition:**\n```lean\ndef hasPrescribedParities (S : Finset ℕ) (parity : ℕ → Bool) (n : ℕ) : Prop :=\n  ∀ p ∈ S, p.Prime →\n    (parity p = true ↔ Even (padicValNat p (n.factorial)))\n```\n\nThis is the strongest generalization of Erdős's question.",
     "mathContext": "Lean: `def hasPrescribedParities (S : Finset ℕ) (parity : ℕ → Bool) (n : ℕ) : Prop :=`",
     "relatedConcepts": [
+      "divisibility",
+      "factorization",
+      "prime numbers"
+    ],
+    "prerequisites": [
+      "Finset API",
       "divisibility",
       "factorization",
       "prime numbers"
@@ -323,6 +380,12 @@
       "inequalities",
       "prime numbers"
     ],
+    "prerequisites": [
+      "Finset API",
+      "bounds",
+      "divisibility",
+      "prime numbers"
+    ],
     "significance": "key"
   },
   {
@@ -341,6 +404,12 @@
       "divisibility",
       "factorization",
       "inequalities",
+      "prime numbers"
+    ],
+    "prerequisites": [
+      "Finset API",
+      "bounds",
+      "divisibility",
       "prime numbers"
     ],
     "significance": "key"

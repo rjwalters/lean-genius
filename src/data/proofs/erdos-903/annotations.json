@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #903** asks: for n = p² + p + 1 with p a prime power, if a block design has t > n blocks, must t ≥ n + p? The answer is YES, proved by Erdős-Fowler-Sós-Wilson (1985). The problem reveals a rigidity phenomenon: once a block design exceeds the projective-plane minimum, its block count must jump by at least p.",
     "mathContext": "Block designs with the pair-coverage property (every pair in exactly one block) are also called *pairwise balanced designs* (PBDs). The parameter n = p² + p + 1 is the point count of a projective plane of order p, and the de Bruijn-Erdős theorem (1948) establishes t ≥ n as a universal lower bound. This problem asks whether the lower bound is essentially the only achievable value near n — answering yes, with a gap of width p.",
     "significance": "key",
+    "prerequisites": [
+      "block-designs",
+      "prime numbers",
+      "projective-planes",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "block-designs",
       "projective-planes",
@@ -43,6 +49,12 @@
     "content": "A block design on {1,...,n} is a collection of subsets (blocks) such that every pair of distinct elements is contained in exactly one block. This is the 2-(n, k, 1) design property when blocks are uniform, or a pairwise balanced design (PBD) in the non-uniform case.",
     "mathContext": "The structure `BlockDesign n` captures a PBD(n) — a partition of the complete graph K_n into cliques (blocks). The `pair_coverage` axiom encodes λ = 1 pair-coverage: for every distinct x, y ∈ {1,...,n}, there exists a unique block containing both. This is equivalent to saying the blocks form the lines of a *linear space* on n points. The formalization uses `Finset (Finset ℕ)` for blocks, restricting to finite set-system combinatorics.",
     "significance": "key",
+    "prerequisites": [
+      "BlockDesign structure",
+      "Finset API",
+      "PBD",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "PBD",
       "BlockDesign structure",
@@ -77,6 +89,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -97,6 +113,12 @@
       "field theory",
       "prime numbers"
     ],
+    "prerequisites": [
+      "algebra",
+      "basic set theory",
+      "divisibility",
+      "field theory"
+    ],
     "significance": "key"
   },
   {
@@ -115,6 +137,12 @@
       "factorization",
       "prime numbers"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "divisibility",
+      "factorization",
+      "prime numbers"
+    ],
     "significance": "key"
   },
   {
@@ -129,6 +157,10 @@
     "content": "Every block design on n ≥ 2 points has at least n blocks. This foundational 1948 result of de Bruijn and Erdős provides the universal lower bound t ≥ n for pairwise balanced designs.",
     "mathContext": "The original proof by de Bruijn and Erdős (1948) uses a clever double-counting argument. For each point x, let r_x be the number of blocks containing x. Then Σ r_x = Σ |A_i| (counting incidences), and Σ r_x(r_x - 1) = n - 1 for each x (each pair through x is in exactly one block). By Cauchy-Schwarz on the r_x, one obtains t ≥ n. Equality holds iff all r_x are equal — which characterizes projective planes and near-pencil designs.",
     "significance": "key",
+    "prerequisites": [
+      "de_bruijn_erdos",
+      "double counting"
+    ],
     "relatedConcepts": [
       "de_bruijn_erdos",
       "double counting",
@@ -159,6 +191,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -175,6 +212,9 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics"
+    ],
     "significance": "supporting"
   },
   {
@@ -189,6 +229,12 @@
     "content": "A projective plane of order q has q² + q + 1 points and q² + q + 1 lines, with each line containing q + 1 points and every two points determining a unique line. The Fano plane (q = 2) is the smallest example.",
     "mathContext": "The axioms capture the incidence structure PG(2, GF(q)): (1) `num_points` = q²+q+1 points, (2) `num_lines` = q²+q+1 lines (duality), (3) `line_size` = q+1 points per line, (4) `two_points_one_line` = the unique-line axiom. Missing from the formalization is the dual axiom (two lines meet in a unique point) — but this follows from the other axioms for finite planes. The formalization also omits *non-Desarguesian planes*, which exist for non-prime orders (the smallest is the Hall plane of order 9).",
     "significance": "key",
+    "prerequisites": [
+      "PG(2,q)",
+      "ProjectivePlane",
+      "basic set theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "ProjectivePlane",
       "PG(2,q)",
@@ -224,6 +270,11 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities",
+      "ring tactic"
+    ],
     "significance": "key",
     "crossReferences": [
       {
@@ -245,6 +296,10 @@
     "content": "Erdős-Fowler-Sós-Wilson (1985) proved the central conjecture: for a block design on n = p² + p + 1 points, if t > n then t ≥ n + p. This creates a forbidden interval (n, n + p) of unachievable block counts.",
     "mathContext": "The proof by Erdős, Fowler, Sós, and Wilson uses a detailed analysis of the *replication numbers* r_x (blocks through point x) and *intersection numbers* (|A_i ∩ A_j|). When t > n, the replication numbers must deviate from the uniform value q + 1 (the projective-plane value). The deviation is quantified using the variance Σ(r_x - r̄)², and a careful algebraic argument shows that sufficient deviation forces t ≥ n + p. The paper appeared in the Proceedings of the London Mathematical Society, 1985.",
     "significance": "key",
+    "prerequisites": [
+      "EFSW 1985",
+      "gap theorem"
+    ],
     "relatedConcepts": [
       "EFSW 1985",
       "gap theorem",
@@ -268,6 +323,10 @@
       "bounds",
       "inequalities"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -284,6 +343,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -298,6 +361,11 @@
     "content": "Values in the open interval (n, n+p) are NOT achievable by any block design on n = p² + p + 1 points. This is the core 'gap phenomenon' — the de Bruijn-Erdős bound is not merely tight but isolated.",
     "mathContext": "The gap phenomenon is analogous to spectral gaps in other areas of combinatorics. Compare with the Ramsey multiplicity problem (erdos-905): just as edge-triangle counts have gaps near the Turán threshold, block-design counts have gaps near the projective-plane minimum. Both reflect *rigidity* of extremal configurations — small perturbations from the extremal structure force large parameter jumps.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "forbidden block counts",
+      "gap phenomenon"
+    ],
     "relatedConcepts": [
       "gap phenomenon",
       "forbidden block counts",
@@ -327,6 +395,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -344,6 +416,11 @@
       "functional analysis",
       "normed spaces"
     ],
+    "prerequisites": [
+      "functional analysis",
+      "norm_num tactic",
+      "normed spaces"
+    ],
     "significance": "supporting"
   },
   {
@@ -358,6 +435,10 @@
     "content": "A 2-(v, k, 1) design is a block design where every block has exactly k elements. Also called a *balanced incomplete block design* (BIBD) or *Steiner 2-design* when λ = 1.",
     "mathContext": "The 2-design property adds uniformity to the PBD: all blocks have the same size k. This forces strong parameter relationships: bk(k-1) = v(v-1) (pair counting), and r(k-1) = v-1 (replication). When b = v (symmetric design), k = r and we get a projective plane. Fisher's inequality b ≥ v is the uniform analogue of de Bruijn-Erdős. The Is2Design predicate connects the general block design framework to the more structured theory of BIBDs.",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "formal mathematics"
     ],
     "significance": "key",
@@ -384,6 +465,11 @@
       "analysis",
       "inequalities"
     ],
+    "prerequisites": [
+      "analysis",
+      "inequalities",
+      "matrix algebra"
+    ],
     "significance": "key"
   },
   {
@@ -401,6 +487,11 @@
       "analysis",
       "inequalities"
     ],
+    "prerequisites": [
+      "analysis",
+      "inequalities",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -415,6 +506,12 @@
     "content": "The main summary theorem combining three results: (1) de Bruijn-Erdős: t ≥ n for all block designs, (2) projective plane achieves t = n, (3) EFSW: t > n implies t ≥ n + p. All three conjuncts are proved from the axioms.",
     "mathContext": "The proof structure uses `refine ⟨?_, ?_, ?_⟩` to split the conjunction into three goals. The first goal requires showing n ≥ 2 (needed by `de_bruijn_erdos`), which is proved from the prime power hypothesis: if q = p^k with p prime and k ≥ 1, then q ≥ 2, so q²+q+1 ≥ 7 ≥ 2. This is the most substantial sub-proof, using `calc` and `omega` tactics. The second goal is discharged by `projective_plane_design`, and the third by `efsw_1985`. This theorem serves as a certificate that the formalization captures the complete answer to Erdős Problem #903.",
     "significance": "key",
+    "prerequisites": [
+      "conjunction proof",
+      "erdos_903_summary",
+      "omega tactic",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "erdos_903_summary",
       "conjunction proof",

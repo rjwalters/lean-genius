@@ -11,6 +11,10 @@
     "content": "**Erdős Problem #774: Dissociated Sets**\n\nThis problem asks whether proportionately dissociated sets can always be decomposed into finitely many dissociated sets.\n\n**Key Question:** Is every proportionately dissociated set a finite union of dissociated sets?\n\n**Status:** OPEN (conjectured NO by Alon-Erdős)\n\n**Recent Progress:** The Nešetřil-Rödl-Sales theorem (2024) resolving the analogous Sidon question negatively provides strong evidence.",
     "mathContext": "Dissociated sets arise naturally in harmonic analysis (Sidon sets) and additive combinatorics. The unique subset sum property makes them fundamental objects for studying set structure.",
     "significance": "key",
+    "prerequisites": [
+      "Harmonic analysis",
+      "Sidon sets"
+    ],
     "relatedConcepts": [
       "Sidon sets",
       "Harmonic analysis",
@@ -29,6 +33,12 @@
     "content": "**IsDissociated** (finite sets):\n\nA finite set A ⊂ ℕ is dissociated if distinct subsets have different sums:\n\n∀ X, Y ⊆ A: X ≠ Y ⟹ ∑_{n∈X} n ≠ ∑_{n∈Y} n\n\n**Definition:**\n```lean\ndef IsDissociated (A : Finset ℕ) : Prop :=\n  ∀ X Y : Finset ℕ, X ⊆ A → Y ⊆ A → X ≠ Y →\n    X.sum id ≠ Y.sum id\n```\n\nEquivalently: the only way to get sum 0 with ±1 coefficients from elements of A is the trivial assignment.",
     "mathContext": "The name 'dissociated' comes from functional analysis: characteristic functions of dissociated sets form dissociated random variables in probability theory.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "Subset sums",
+      "Unique representation",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Unique representation",
       "Subset sums",
@@ -47,6 +57,12 @@
     "content": "**IsDissociatedSet** (infinite sets):\n\nExtends the dissociated property to infinite sets A ⊂ ℕ: every pair of distinct finite subsets has different sums.\n\n**Definition:**\n```lean\ndef IsDissociatedSet (A : Set ℕ) : Prop :=\n  ∀ X Y : Finset ℕ, ↑X ⊆ A → ↑Y ⊆ A → X ≠ Y →\n    X.sum id ≠ Y.sum id\n```\n\nFor infinite sets, we only consider finite subsets (infinite sums would diverge).",
     "mathContext": "Infinite dissociated sets are necessarily sparse. For example, powers of 2 form an infinite dissociated set.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "Lacunary sequences",
+      "Sparse sets",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Sparse sets",
       "Lacunary sequences"
@@ -64,6 +80,12 @@
     "content": "**Equivalence Theorem:**\n\nDissociated sets are characterized by unique subset sums:\n\n- **IsDissociated A:** distinct subsets have different sums\n- **HasUniqueSubsetSums A:** equal sums imply equal subsets\n\n```lean\ntheorem dissociated_iff_unique_sums (A : Finset ℕ) :\n    IsDissociated A ↔ HasUniqueSubsetSums A\n```\n\nThis is a direct logical equivalence: IsDissociated is the contrapositive of HasUniqueSubsetSums.",
     "mathContext": "The unique subset sum property is equivalent to saying the sumset of A with itself has no 'collisions' beyond the trivial ones.",
     "significance": "key",
+    "prerequisites": [
+      "Contrapositive",
+      "Finset API",
+      "Sumsets",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Contrapositive",
       "Sumsets",
@@ -82,6 +104,12 @@
     "content": "**Powers of 2:** The Canonical Example\n\nThe set {1, 2, 4, 8, 16, ...} = {2^0, 2^1, 2^2, ...} is dissociated.\n\n**Why?** Every natural number has a unique binary representation. If two subsets had equal sums, they would represent the same binary number, hence be equal.\n\n**Definition:**\n```lean\ndef powersOfTwo (n : ℕ) : Finset ℕ :=\n  (Finset.range n).image (fun i => 2^i)\n```\n\nThis gives {1, 2, ..., 2^(n-1)} = the first n powers of 2.",
     "mathContext": "Binary representation is the fundamental example. Dissociated sets generalize this unique representation property beyond base 2.",
     "significance": "key",
+    "prerequisites": [
+      "Binary representation",
+      "Finset API",
+      "Positional numeral systems",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Binary representation",
       "Positional numeral systems"
@@ -99,6 +127,11 @@
     "content": "**Lacunary Sequences:**\n\nA sequence (a_n) is lacunary if each term exceeds twice the sum of all previous terms:\n\na_{n+1} > 2 · (a_0 + a_1 + ... + a_n)\n\n**Key Property:** Lacunary sequences are always dissociated.\n\n**Proof idea:** If a_n > 2·∑_{i<n} a_i, then any subset containing a_n has sum > ∑_{i<n} a_i, so different subsets can't have equal sums.\n\n**Examples:** {1, 3, 7, 15, ...} (2^n - 1), or any sequence growing faster than geometric.",
     "mathContext": "The lacunary condition is a sufficient but not necessary condition for being dissociated. It provides explicit constructions of dissociated sets.",
     "significance": "key",
+    "prerequisites": [
+      "Geometric sequences",
+      "Growth conditions",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Geometric sequences",
       "Growth conditions",
@@ -117,6 +150,12 @@
     "content": "**Proportionately Dissociated:**\n\nAn infinite set A is proportionately dissociated if there exists c > 0 such that every finite B ⊆ A contains a dissociated subset D with |D| ≥ c|B|.\n\n**Definition:**\n```lean\ndef IsProportionatelyDissociated (A : Set ℕ) : Prop :=\n  ∃ c : ℝ, c > 0 ∧ ∀ B : Finset ℕ, ↑B ⊆ A →\n    ∃ D : Finset ℕ, D ⊆ B ∧ IsDissociated D ∧\n      (D.card : ℝ) ≥ c * B.card\n```\n\nThis is weaker than being dissociated: we only require proportional-size dissociated subsets, not the whole set.",
     "mathContext": "The proportional constant c measures how 'locally dissociated' the set is. Pisier showed this equals being a Sidon set in harmonic analysis.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "Local structure",
+      "Sidon constant",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Sidon constant",
       "Local structure",
@@ -135,6 +174,11 @@
     "content": "**Trivial Direction:**\n\nEvery dissociated set is proportionately dissociated with constant c = 1.\n\n```lean\ntheorem dissociated_is_proportionately (A : Set ℕ) :\n    IsDissociatedSet A → IsProportionatelyDissociated A\n```\n\n**Proof:** If A is dissociated, every subset B is also dissociated. Take D = B itself, giving |D| = |B| = 1 · |B|.\n\nThe converse is the content of Erdős Problem #774.",
     "mathContext": "The question is whether proportionate dissociation implies a decomposition into finitely many truly dissociated sets.",
     "significance": "supporting",
+    "prerequisites": [
+      "Decomposition",
+      "Implication",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Implication",
       "Decomposition"
@@ -152,6 +196,11 @@
     "content": "**Sidon Sets in Harmonic Analysis:**\n\nA set A ⊂ ℕ is Sidon (harmonic) if there exists C > 0 such that for any function f supported on A:\n\n||f||_1 ≤ C · sup_θ |∑_{n∈A} f(n) e^{2πinθ}|\n\n**Meaning:** The L¹ norm is controlled by the supremum of Fourier coefficients. This is a strong 'independence' property in harmonic analysis.\n\n**Definition:**\n```lean\ndef IsSidonHarmonic (A : Set ℕ) : Prop :=\n  ∃ C : ℝ, C > 0 ∧ ∀ f : ℕ → ℂ, (∀ n, n ∉ A → f n = 0) →\n    ∃ θ : ℝ, ... (technical bound)\n```",
     "mathContext": "Sidon sets were introduced by Simon Sidon in the 1930s. They appear naturally in the study of Fourier series and lacunary trigonometric series.",
     "significance": "key",
+    "prerequisites": [
+      "Fourier analysis",
+      "Lacunary series",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Fourier analysis",
       "Lacunary series",
@@ -170,6 +219,11 @@
     "content": "**Pisier's Theorem (1983):**\n\nThe following are equivalent for infinite A ⊂ ℕ:\n1. A is proportionately dissociated\n2. A is a Sidon set (harmonic analysis)\n\n```lean\naxiom pisier_theorem (A : Set ℕ) :\n    IsProportionatelyDissociated A ↔ IsSidonHarmonic A\n```\n\nThis is a deep theorem connecting combinatorics to harmonic analysis. Pisier won the 2017 Shaw Prize partly for this work.",
     "mathContext": "Pisier's theorem shows that the combinatorial notion of 'locally having unique sums' is exactly the harmonic analysis notion of Sidon sets.",
     "significance": "key",
+    "prerequisites": [
+      "Banach spaces",
+      "Functional analysis",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Functional analysis",
       "Banach spaces",
@@ -188,6 +242,12 @@
     "content": "**Sidon Sets in Additive Combinatorics:**\n\nA set A is Sidon (additive) if all pairwise sums are distinct:\n\na + b = c + d with a ≤ b, c ≤ d ⟹ a = c and b = d\n\n**Definition:**\n```lean\ndef IsSidonAdditive (A : Finset ℕ) : Prop :=\n  ∀ a b c d : ℕ, a ∈ A → b ∈ A → c ∈ A → d ∈ A →\n    a ≤ b → c ≤ d → a + b = c + d → (a = c ∧ b = d)\n```\n\n**Note:** This is different from IsSidonHarmonic! Additive Sidon is about pairwise sums; harmonic Sidon is about Fourier coefficients.",
     "mathContext": "Sidon sets in additive combinatorics were studied by Erdős and Turán. They relate to the sumset A + A having maximum size.",
     "significance": "key",
+    "prerequisites": [
+      "B₂ sequences",
+      "Finset API",
+      "Sum-free sets",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "B₂ sequences",
       "Sum-free sets",
@@ -206,6 +266,12 @@
     "content": "**Sidon ⟹ Dissociated:**\n\nEvery Sidon set (additive) is dissociated, but not conversely.\n\n```lean\naxiom sidon_implies_dissociated (A : Finset ℕ) :\n    IsSidonAdditive A → IsDissociated A\n```\n\n**Why?** If A is Sidon, pairwise sums are unique. This forces all subset sums to be unique (stronger condition).\n\n**Counterexample:** {1, 2, 3} is dissociated (unique subset sums) but not Sidon (1+3 = 2+2 is impossible since 2 appears once).",
     "mathContext": "The hierarchy is: Sidon (additive) ⊂ Dissociated ⊂ Proportionately Dissociated = Sidon (harmonic).",
     "significance": "key",
+    "prerequisites": [
+      "Counterexamples",
+      "Finset API",
+      "Set hierarchy",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Set hierarchy",
       "Counterexamples"
@@ -223,6 +289,11 @@
     "content": "**Finite Union Decomposition:**\n\nA set A is a finite union of dissociated sets if:\nA = D₁ ∪ D₂ ∪ ... ∪ Dₙ\nwhere each Dᵢ is dissociated.\n\n**Definition:**\n```lean\ndef IsFiniteUnionDissociated (A : Set ℕ) : Prop :=\n  ∃ n : ℕ, ∃ D : Fin n → Set ℕ, (∀ i, IsDissociatedSet (D i)) ∧\n    A = ⋃ i, D i\n```\n\nThis is the decomposition property that Erdős Problem #774 asks about.",
     "mathContext": "Decomposing sets into structured pieces is a fundamental technique in combinatorics. Here we ask if proportionate structure implies global decomposition.",
     "significance": "key",
+    "prerequisites": [
+      "Partition",
+      "Set decomposition",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Set decomposition",
       "Partition",
@@ -241,6 +312,11 @@
     "content": "**Erdős Conjecture #774:**\n\nIs every proportionately dissociated set a finite union of dissociated sets?\n\n**Formal Statement:**\n```lean\ndef ErdosConjecture774 : Prop :=\n  ∀ A : Set ℕ, A.Infinite → IsProportionatelyDissociated A →\n    IsFiniteUnionDissociated A\n```\n\n**The Question:** Does local dissociated structure (proportionately dissociated) imply global dissociated structure (finite union)?",
     "mathContext": "This is a local-to-global question: can local structure be 'assembled' into finitely many global pieces?",
     "significance": "key",
+    "prerequisites": [
+      "Local-global principle",
+      "Ramsey theory",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Local-global principle",
       "Ramsey theory",
@@ -259,6 +335,12 @@
     "content": "**Alon-Erdős Conjecture (1985):**\n\nNoga Alon and Paul Erdős conjectured that the answer to Problem #774 is NO.\n\n```lean\naxiom alon_erdos_conjecture : ¬ErdosConjecture774\n```\n\nThey wrote: 'it seems unlikely that [proportionate dissociation] is sufficient' for finite union decomposition.\n\nThis remains unproved as of 2025.",
     "mathContext": "Alon and Erdős introduced this problem in their 1985 paper 'An application of graph theory to additive number theory.'",
     "significance": "key",
+    "prerequisites": [
+      "Conjecture",
+      "Graph theory",
+      "graph theory basics",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Conjecture",
       "Graph theory",
@@ -277,6 +359,12 @@
     "content": "**Proportionately Sidon (Additive):**\n\nAnalogous to proportionately dissociated but using additive Sidon sets:\n\nEvery finite B ⊆ A contains a Sidon subset of size ≥ c|B|.\n\n**Definition:**\n```lean\ndef IsProportionatelySidon (A : Set ℕ) : Prop :=\n  ∃ c : ℝ, c > 0 ∧ ∀ B : Finset ℕ, ↑B ⊆ A →\n    ∃ S : Finset ℕ, S ⊆ B ∧ IsSidonAdditive S ∧\n      (S.card : ℝ) ≥ c * B.card\n```\n\nThis is the Sidon analogue of proportionately dissociated.",
     "mathContext": "Since Sidon (additive) is stronger than dissociated, proportionately Sidon is stronger than proportionately dissociated.",
     "significance": "key",
+    "prerequisites": [
+      "Analogy",
+      "Finset API",
+      "Sidon sets",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Analogy",
       "Sidon sets",
@@ -295,6 +383,11 @@
     "content": "**The Sidon Analogue:**\n\nIs every proportionately Sidon set a finite union of Sidon sets?\n\n**Formal Statement:**\n```lean\ndef SidonAnalogue : Prop :=\n  ∀ A : Set ℕ, A.Infinite → IsProportionatelySidon A →\n    IsFiniteUnionSidon A\n```\n\nThis is exactly the same question as Erdős #774 but for Sidon sets instead of dissociated sets.",
     "mathContext": "Resolving the Sidon analogue provides evidence for the dissociated version, since Sidon is stronger than dissociated.",
     "significance": "key",
+    "prerequisites": [
+      "Hierarchy of notions",
+      "Parallel questions",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Parallel questions",
       "Hierarchy of notions"
@@ -312,6 +405,12 @@
     "content": "**Nešetřil-Rödl-Sales Theorem (2024):**\n\nThe Sidon analogue is FALSE. There exists a proportionately Sidon set that is NOT a finite union of Sidon sets.\n\n```lean\naxiom nesetril_rodl_sales_theorem : ¬SidonAnalogue\n\naxiom nrs_construction :\n    ∃ A : Set ℕ, A.Infinite ∧ IsProportionatelySidon A ∧\n      ¬IsFiniteUnionSidon A\n```\n\n**Method:** Probabilistic construction using random methods.\n\n**Significance:** This provides strong evidence that Erdős #774 also has a negative answer.",
     "mathContext": "The counterexample uses Ramsey-theoretic and probabilistic techniques. Published in 2024 in 'On Pisier type theorems.'",
     "significance": "key",
+    "prerequisites": [
+      "Counterexample",
+      "Probabilistic method",
+      "Ramsey theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Probabilistic method",
       "Counterexample",
@@ -330,6 +429,11 @@
     "content": "**Key Implications:**\n\n1. Proportionately Sidon ⟹ Proportionately Dissociated\n   (Sidon subsets are dissociated subsets)\n\n2. Finite union of Sidon ⟹ Finite union of Dissociated\n   (Each Sidon piece is dissociated)\n\n```lean\naxiom prop_sidon_implies_prop_dissociated (A : Set ℕ) :\n    IsProportionatelySidon A → IsProportionatelyDissociated A\n\naxiom union_sidon_implies_union_dissociated (A : Set ℕ) :\n    IsFiniteUnionSidon A → IsFiniteUnionDissociated A\n```",
     "mathContext": "These implications show how results about Sidon sets transfer to dissociated sets, supporting the conjecture that #774 is also false.",
     "significance": "key",
+    "prerequisites": [
+      "Implication",
+      "Transfer principle",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Implication",
       "Transfer principle"
@@ -347,6 +451,12 @@
     "content": "**Maximum Dissociated Subset Size:**\n\nThe maximum size of a dissociated subset of {1, 2, ..., n} is Θ(log n).\n\n```lean\naxiom max_dissociated_log_bound :\n    ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∀ n : ℕ, n ≥ 2 →\n      c * Real.log n ≤ maxDissociatedSize n ∧\n      maxDissociatedSize n ≤ C * Real.log n\n```\n\n**Upper bound:** Subset sums range in [0, n(n+1)/2], so at most O(n²) possible sums. Dissociated sets have 2^|A| distinct sums, giving |A| ≤ O(log n²) = O(log n).\n\n**Lower bound:** Powers of 2 up to n give log₂(n) elements.",
     "mathContext": "This Θ(log n) bound is tight. It shows dissociated sets are necessarily very sparse in {1,...,n}.",
     "significance": "key",
+    "prerequisites": [
+      "Density bounds",
+      "Extremal combinatorics",
+      "logarithmic functions",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Extremal combinatorics",
       "Density bounds",
@@ -365,6 +475,11 @@
     "content": "**erdos_774_summary** (PROVED): Combines two key established results:\n1. Finite union of dissociated ⟹ proportionately dissociated (the easy direction)\n2. The Sidon analogue is FALSE (NRS 2024)\n\nProof: `⟨finite_union_is_proportionately, nesetril_rodl_sales_theorem⟩`\n\nThis captures the known mathematical landscape: the converse direction of Problem #774 holds trivially, and the closely related Sidon analogue has been resolved negatively, providing strong evidence that #774 also has a negative answer.",
     "mathContext": "The summary theorem packages the two main established results without claiming resolution of the open problem. The NRS result on Sidon sets provides the strongest available evidence.",
     "significance": "key",
+    "prerequisites": [
+      "Known results",
+      "Summary theorems",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Summary theorems",
       "Known results",

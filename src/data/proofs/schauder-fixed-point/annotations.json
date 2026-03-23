@@ -11,6 +11,12 @@
     "content": "Brouwer's Fixed Point Theorem (1911) guarantees that every continuous self-map of a closed ball in $\\mathbb{R}^n$ has a fixed point. But what happens in infinite-dimensional spaces like function spaces?\n\nThe answer is surprising: **Brouwer's theorem fails in infinite dimensions.** The unit ball in $\\ell^2$ is not compact, and there exist continuous self-maps with no fixed point.\n\nSchauder's insight (1930): **compactness is the key**, not finite-dimensionality. If we map a compact convex set to itself continuously, fixed points are guaranteed regardless of dimension.\n\nThis file formalizes the complete hierarchy: Brouwer -> Schauder -> Tychonoff, with applications to ODEs and the Banach contraction principle proved using Mathlib.",
     "mathContext": "$\\mathbb{R}^n$",
     "significance": "key",
+    "prerequisites": [
+      "compactness",
+      "continuous functions",
+      "convexity",
+      "finite-dimensional approximation"
+    ],
     "relatedConcepts": [
       "compactness",
       "finite-dimensional approximation",
@@ -29,6 +35,12 @@
     "content": "The Schauder Projection Lemma is the technical heart of the proof. It says: given a compact set $K$ in a normed space and $\\varepsilon > 0$, we can approximate the identity map on $K$ by a continuous map into a finite-dimensional convex hull.\n\n**Construction:** Cover $K$ by finitely many $\\varepsilon$-balls $B(x_1,\\varepsilon), \\ldots, B(x_n,\\varepsilon)$ (possible by compactness). Define:\n$$\\pi_\\varepsilon(x) = \\frac{\\sum_i \\varphi_i(x) \\cdot x_i}{\\sum_i \\varphi_i(x)}$$\nwhere $\\varphi_i(x) = \\max(0, \\varepsilon - \\|x - x_i\\|)$ is a partition of unity.\n\nThen $\\pi_\\varepsilon$ is continuous, maps into $\\text{conv}\\{x_1,\\ldots,x_n\\}$ (finite-dimensional!), and $\\|\\pi_\\varepsilon(x) - x\\| < \\varepsilon$.",
     "mathContext": "For compact $K$, $\\forall \\varepsilon > 0$, $\\exists \\pi_\\varepsilon: K \\to \\text{conv}(\\text{finite subset of } K)$ with $\\|\\pi_\\varepsilon - \\text{id}\\| < \\varepsilon$",
     "significance": "key",
+    "prerequisites": [
+      "compact set",
+      "continuous functions",
+      "convexity",
+      "partition of unity"
+    ],
     "relatedConcepts": [
       "partition of unity",
       "compact set",
@@ -110,6 +122,12 @@
     "content": "The simplest case: every continuous $f: [0,1] \\to [0,1]$ has a fixed point.\n\nThis is fully proved using Mathlib's `exists_mem_Icc_isFixedPt_of_mapsTo`, which applies the Intermediate Value Theorem to $g(x) = f(x) - x$.\n\nThis is the 1D base case of the entire hierarchy, and it's the only level where a simple calculus argument suffices.",
     "mathContext": "$f: [0,1] \\to [0,1]$",
     "significance": "key",
+    "prerequisites": [
+      "closed interval",
+      "continuous functions",
+      "intermediate value theorem",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "intermediate value theorem",
       "closed interval"
@@ -127,6 +145,12 @@
     "content": "**Theorem (Banach, 1922):** If $f: X \\to X$ is a contraction ($\\text{dist}(f(x), f(y)) \\leq k \\cdot \\text{dist}(x, y)$ with $k < 1$) on a complete metric space, then $f$ has a **unique** fixed point.\n\nThis is proved using Mathlib's `ContractingWith` API, which provides:\n- `ContractingWith.fixedPoint`: the unique fixed point\n- `ContractingWith.fixedPoint_isFixedPt`: it satisfies $f(x^*) = x^*$\n- `ContractingWith.fixedPoint_unique`: no other fixed point exists\n\n**Relationship to Schauder:** Contractions on bounded closed convex sets in Banach spaces are automatically compact operators (contraction images are totally bounded). So Schauder gives existence; Banach adds uniqueness and the constructive iteration $x^* = \\lim f^n(x_0)$.",
     "mathContext": "$f$ contraction with constant $k < 1$ on complete metric space $\\Rightarrow \\exists! x^*: f(x^*) = x^*$",
     "significance": "key",
+    "prerequisites": [
+      "Cauchy sequence",
+      "contraction mapping",
+      "convexity",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "contraction mapping",
       "Cauchy sequence",
@@ -145,6 +169,12 @@
     "content": "In infinite dimensions, the unit ball is NOT compact (by Riesz's lemma, the unit ball in a normed space is compact if and only if the space is finite-dimensional).\n\nConsequently, there exist continuous self-maps of the unit ball in $\\ell^2$ with no fixed point. A concrete example:\n$$T(x_1, x_2, \\ldots) = (\\sqrt{1 - \\|x\\|^2}, x_1, x_2, \\ldots)$$\n\nThis maps the unit ball to itself continuously but has no fixed point. The existence of such maps is precisely why Schauder needs the compactness hypothesis.\n\n**Takeaway:** Brouwer's theorem is about compact convex sets, not about balls. In finite dimensions these coincide (Heine-Borel); in infinite dimensions they don't.",
     "mathContext": "$\\ell^2$",
     "significance": "key",
+    "prerequisites": [
+      "Riesz's lemma",
+      "continuous functions",
+      "convexity",
+      "non-compact unit ball"
+    ],
     "relatedConcepts": [
       "Riesz's lemma",
       "non-compact unit ball",

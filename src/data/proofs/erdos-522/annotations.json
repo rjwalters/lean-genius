@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #522**: For random polynomials f(z) = Σε_k z^k with ε_k ∈ {-1,1} uniformly at random, if R_n is the number of roots in the unit disk {z : |z| ≤ 1}, does R_n/(n/2) → 1 almost surely?\n\n**Status**: PARTIALLY SOLVED\n- Erdős-Offord (1956): ~(2/π) log n real roots\n- Yakir (2021): R_n/(n/2) → 1 in probability\n- **OPEN**: Almost sure convergence",
     "mathContext": "Random polynomials with i.i.d. coefficients are called 'Kac polynomials' after Mark Kac (1943). When coefficients are ±1, they are called 'Rademacher' or 'Littlewood' polynomials.",
     "significance": "key",
+    "prerequisites": [
+      "polynomial ring theory",
+      "probability theory",
+      "random polynomials",
+      "unit disk"
+    ],
     "relatedConcepts": [
       "random polynomials",
       "unit disk",
@@ -30,6 +36,12 @@
     "content": "**Imports**: Uses Mathlib's Complex.Basic for ℂ, Polynomial.Basic for polynomial operations, MetricSpace for the unit disk definition, and BigOperators for finite sums.\n\n**Namespace**: Erdos522 contains all definitions and theorems.",
     "mathContext": "Careful import management avoids memory issues. We only import what we need for complex polynomials and the unit disk.",
     "significance": "supporting",
+    "prerequisites": [
+      "Mathlib",
+      "complex numbers",
+      "imports",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Mathlib",
       "imports",
@@ -48,6 +60,12 @@
     "content": "**IsLittlewoodPolynomial(p)**: All coefficients of p are in {-1, 0, 1}.\n\n```lean\ndef IsLittlewoodPolynomial (p : ℂ[X]) : Prop :=\n  ∀ i, p.coeff i ∈ ({-1, 0, 1} : Set ℂ)\n```\n\nNamed after J.E. Littlewood who studied such polynomials extensively in connection with the Riemann hypothesis.",
     "mathContext": "Littlewood conjectured bounds on the L¹ norm of such polynomials. They appear in signal processing and filter design.",
     "significance": "key",
+    "prerequisites": [
+      "Littlewood",
+      "basic set theory",
+      "filter theory",
+      "polynomial coefficients"
+    ],
     "relatedConcepts": [
       "polynomial coefficients",
       "Littlewood",
@@ -66,6 +84,12 @@
     "content": "**IsRademacherPolynomial(p)**: Nonzero coefficients are ±1.\n\n**IsStrictRademacher(p, n)**: Coefficients 0 through n are exactly ±1, and the polynomial has degree n.\n\n```lean\ndef IsStrictRademacher (p : ℂ[X]) (n : ℕ) : Prop :=\n  (∀ i ≤ n, p.coeff i ∈ ({-1, 1} : Set ℂ)) ∧\n  (∀ i > n, p.coeff i = 0) ∧ p.natDegree = n\n```",
     "mathContext": "Rademacher random variables take values ±1 with equal probability 1/2. These polynomials model random signing of monomials.",
     "significance": "key",
+    "prerequisites": [
+      "Rademacher distribution",
+      "basic set theory",
+      "polynomial ring theory",
+      "probability theory"
+    ],
     "relatedConcepts": [
       "Rademacher distribution",
       "random signs",
@@ -84,6 +108,12 @@
     "content": "**unitDisk**: {z ∈ ℂ : |z| ≤ 1} = Metric.closedBall 0 1\n\n**unitCircle**: {z ∈ ℂ : |z| = 1} = Metric.sphere 0 1\n\nThe norm on ℂ is the absolute value: ‖a + bi‖ = √(a² + b²).",
     "mathContext": "The unit disk is the fundamental domain in complex analysis. Its boundary (the unit circle) is where polynomials with real coefficients have conjugate pairs of roots.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "closed ball",
+      "complex numbers",
+      "metric space"
+    ],
     "relatedConcepts": [
       "metric space",
       "closed ball",
@@ -103,6 +133,12 @@
     "content": "**Verified membership**:\n- **one_on_unitCircle**: 1 ∈ unitCircle\n- **neg_one_on_unitCircle**: -1 ∈ unitCircle\n- **I_on_unitCircle**: i ∈ unitCircle\n- **neg_I_on_unitCircle**: -i ∈ unitCircle\n- **zero_in_unitDisk**: 0 ∈ unitDisk\n- **unitCircle_subset_unitDisk**: ∂D ⊆ D̄\n\nAll proofs are by simp with Mathlib's norm lemmas.",
     "mathContext": "The four points {1, -1, i, -i} are the fourth roots of unity. They form the vertices of a square inscribed in the unit circle.",
     "significance": "key",
+    "prerequisites": [
+      "complex norm",
+      "proof techniques",
+      "roots of unity",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "roots of unity",
       "complex norm",
@@ -121,6 +157,12 @@
     "content": "**KacPolynomialData(n)** bundles:\n- **coefficients**: Fin (n+1) → ℂ\n- **coeff_constraint**: ∀ i, coefficients i ∈ {-1, 1}\n\n**toPolynomial**: Converts to ℂ[X] via Σ C(coeff_i) * X^i\n\nThe axiom **isRademacher** states this conversion produces a valid Rademacher polynomial.",
     "mathContext": "Mark Kac studied expected zeros of random polynomials in his landmark 1943 paper. This structure represents one realization from the random ensemble.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "coefficients",
+      "polynomial ring theory",
+      "structure"
+    ],
     "relatedConcepts": [
       "structure",
       "coefficients",
@@ -139,6 +181,12 @@
     "content": "**rootsInUnitDisk**: ℂ[X] → ℕ\n\nAxiomatized function counting roots (with multiplicity) in the closed unit disk.\n\nFull formalization would require:\n- Splitting fields over ℂ\n- The fundamental theorem of algebra\n- Careful handling of multiplicities",
     "mathContext": "By the fundamental theorem of algebra, a degree-n polynomial has exactly n roots in ℂ (with multiplicity). Counting those inside a region is a standard but technical task.",
     "significance": "key",
+    "prerequisites": [
+      "field theory",
+      "fundamental theorem of algebra",
+      "polynomial ring theory",
+      "root multiplicity"
+    ],
     "relatedConcepts": [
       "root multiplicity",
       "fundamental theorem of algebra",
@@ -157,6 +205,12 @@
     "content": "**Three key results documented as doc comments** (no trivial axioms):\n\n1. **Erdős-Offord (1956)**: Random ±1 polynomials have ~(2/π) log n real roots. The constant 2/π ≈ 0.6366 arises from sign change probabilities. Real roots are O(log n) — far fewer than the ~n/2 complex roots in the disk.\n\n2. **Yakir (2021)**: R_n/(n/2) → 1 in probability: lim P(|R_n - n/2| ≥ n^{9/10}) = 0. The error n^{9/10} is likely not optimal.\n\n3. **OPEN**: Does R_n/(n/2) → 1 almost surely? Almost sure convergence ⟹ convergence in probability, but not vice versa. The gap is whether exceptional sequences have measure zero.",
     "mathContext": "These results cannot be formalized in Lean without probability spaces. They are preserved as documentation rather than trivial `→ True` axioms.",
     "significance": "key",
+    "prerequisites": [
+      "complex numbers",
+      "convergence in probability",
+      "measure theory",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "real roots",
       "convergence in probability",
@@ -175,6 +229,11 @@
     "content": "The involution z ↔ 1/z̄ relates roots inside and outside the unit disk. For 'generic' polynomials with real coefficients, roots come in conjugate pairs, suggesting a roughly equal split. This heuristic is made precise by Yakir's theorem.",
     "mathContext": "The symmetry argument doesn't immediately give almost sure convergence — it only suggests the expected proportion.",
     "significance": "key",
+    "prerequisites": [
+      "involution",
+      "polynomial ring theory",
+      "symmetry"
+    ],
     "relatedConcepts": [
       "symmetry",
       "involution",
@@ -193,6 +252,11 @@
     "content": "**geometricPoly(n)**: 1 + X + X² + ... + Xⁿ\n\n**geometric_roots_on_circle**: All n roots lie exactly ON the unit circle.\n\nThe geometric series equals (X^{n+1} - 1)/(X - 1), so roots are the (n+1)-th roots of unity except 1:\ne^{2πik/(n+1)} for k = 1, 2, ..., n\n\nThis is a Littlewood polynomial with extreme behavior: ALL roots on the boundary!",
     "mathContext": "The geometric polynomial is an extreme case: zero roots strictly inside, zero strictly outside. Random polynomials are more 'generic'.",
     "significance": "key",
+    "prerequisites": [
+      "geometric series",
+      "polynomial ring theory",
+      "roots of unity"
+    ],
     "relatedConcepts": [
       "geometric series",
       "roots of unity",
@@ -211,6 +275,11 @@
     "content": "**connection_salem**: Axiomatized connection.\n\nA **Salem number** τ > 1 is a real algebraic integer whose conjugates (other roots of its minimal polynomial) all satisfy |conjugate| ≤ 1, with at least one on the unit circle.\n\n**Connection**: The minimal polynomial of a Salem number is a Littlewood polynomial. Random Littlewood polynomials give insight into 'typical' root distributions.",
     "mathContext": "Salem numbers arise in dynamical systems and diophantine approximation. Lehmer's problem asks for the smallest Salem number.",
     "significance": "key",
+    "prerequisites": [
+      "Salem numbers",
+      "algebraic integers",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Salem numbers",
       "algebraic integers",
@@ -229,6 +298,12 @@
     "content": "**connection_mahler**: Axiomatized connection.\n\n**Mahler measure**: For p(z) = aₙ∏(z - αᵢ),\nM(p) = |aₙ| ∏_{|αᵢ|>1} |αᵢ|\n\n**Jensen's formula**: log M(p) = log|aₙ| + Σ_{|αᵢ|>1} log|αᵢ|\n\n**Connection**: Root distribution directly affects M(p). For Littlewood polynomials, bounds on M(p) relate to Lehmer's problem.",
     "mathContext": "Mahler measure is central to height theory in number theory. Lehmer's conjecture: M(p) ≥ 1.176... for non-cyclotomic integer polynomials.",
     "significance": "key",
+    "prerequisites": [
+      "Jensen formula",
+      "Mahler measure",
+      "measure theory",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Mahler measure",
       "Jensen formula",
@@ -247,6 +322,12 @@
     "content": "**Explicit polynomial evaluations**:\n- (X - 1).eval(1) = 0: z = 1 is a root of z - 1 ✓\n- (X + 1).eval(-1) = 0: z = -1 is a root of z + 1 ✓\n- **roots_of_z2_plus_1**: (X² + 1).eval(±i) = 0\n\nAll these roots are on the unit circle, demonstrating Littlewood polynomials with boundary roots.",
     "mathContext": "These are the simplest Littlewood polynomials. z² + 1 = (z - i)(z + i) factors over ℂ with roots at the fourth roots of unity.",
     "significance": "supporting",
+    "prerequisites": [
+      "factorization",
+      "polynomial evaluation",
+      "polynomial ring theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "polynomial evaluation",
       "factorization",
@@ -265,6 +346,12 @@
     "content": "**unitCircle_summary**: Packages the key verified facts:\n- 1, -1, i, -i ∈ unitCircle\n\n**State of Knowledge**:\n1. Erdős-Offord (1956): ~(2/π) log n real roots (logarithmic, much less than n/2)\n2. Yakir (2021): R_n/(n/2) → 1 in probability (typical behavior)\n3. **OPEN**: Almost sure convergence (all sequences simultaneously)\n\n**The Gap**: 'Probability' says almost all polynomials. 'Almost sure' asks about almost all infinite sequences of polynomials.",
     "mathContext": "The probability vs. almost sure distinction is fundamental. Think: coin flips approach 50% in probability, but almost surely any specific sequence has runs of all heads.",
     "significance": "key",
+    "prerequisites": [
+      "open problem",
+      "polynomial ring theory",
+      "probability theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "summary",
       "open problem",

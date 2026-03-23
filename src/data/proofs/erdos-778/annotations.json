@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #778: Clique-Building Games on Complete Graphs**\n\nAlice and Bob alternate coloring edges of K_n, with Alice coloring Red and Bob coloring Blue. The clique game asks: does Bob have a winning strategy for n ≥ 3? Erdős believed yes.\n\nThree variants are considered: the clique game (comparing largest cliques), a modified game (Bob colors 2 edges per turn), and a degree game (comparing maximum degrees). All three remain open.\n\n**Key Result:** Malekshahian and Spiro (2024) proved Bob wins the clique game for at least 3/4 of all n, and that if Alice wins at any n, Bob recovers to win the next three values n+1, n+2, n+3.",
     "mathContext": "This problem sits at the intersection of combinatorial game theory and Ramsey theory. The game on K_n is finite with perfect information, so by Zermelo's theorem it is determined — one player always has a winning strategy. The question is which player.",
     "significance": "key",
+    "prerequisites": [
+      "Combinatorial games",
+      "Ramsey theory",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Combinatorial games",
       "Ramsey theory",
@@ -31,6 +37,12 @@
     "content": "**EdgeColor** is an inductive type with three constructors:\n- **Red** — Alice's color\n- **Blue** — Bob's color  \n- **Uncolored** — not yet claimed by either player\n\nThe `deriving DecidableEq` instance allows us to programmatically compare colors, which is needed for defining the colored subgraphs and checking game completion.",
     "mathContext": "In the original problem, the game starts with all edges uncolored and ends when every edge has been claimed. The three-valued coloring captures this lifecycle.",
     "significance": "key",
+    "prerequisites": [
+      "DecidableEq",
+      "Inductive types",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Inductive types",
       "DecidableEq",
@@ -49,6 +61,12 @@
     "content": "**GameState** is a structure (not just a bare function) with three fields:\n- **color** : Fin n → Fin n → EdgeColor — the edge coloring\n- **symm** : the coloring is symmetric (color i j = color j i)\n- **diag** : diagonal entries are Uncolored (no self-loops)\n\nThis is a significant improvement over using a raw function `Fin n → Fin n → EdgeColor`, because the invariants are enforced by construction. The symmetry property is essential for proving that redSubgraph and blueSubgraph are well-formed SimpleGraphs.",
     "mathContext": "The symmetry constraint ensures the game state represents an undirected graph coloring. When Alice colors edge {u,v}, both (u,v) and (v,u) get the same color.",
     "significance": "key",
+    "prerequisites": [
+      "Invariants by construction",
+      "Structure types",
+      "basic set theory",
+      "field theory"
+    ],
     "relatedConcepts": [
       "Structure types",
       "Invariants by construction",
@@ -67,6 +85,12 @@
     "content": "**Kn** defines the complete graph on n vertices where Adj x y iff x ≠ y. The symmetry proof uses Ne.symm and the loopless proof derives a contradiction from x ≠ x.\n\n**numEdges** computes n(n-1)/2, the number of edges in K_n. This determines the total number of moves in the game — after n(n-1)/2 turns, all edges are colored.",
     "mathContext": "K_n has exactly n(n-1)/2 edges. Since Alice goes first and players alternate, Alice makes ⌈n(n-1)/4⌉ moves and Bob makes ⌊n(n-1)/4⌋ moves. This asymmetry is small but may affect who wins.",
     "significance": "key",
+    "prerequisites": [
+      "Complete graphs",
+      "SimpleGraph",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Complete graphs",
       "SimpleGraph",
@@ -85,6 +109,12 @@
     "content": "**redSubgraph** and **blueSubgraph** extract the subgraphs of edges colored Red and Blue respectively. Each is a well-formed SimpleGraph:\n- **Adj** requires both x ≠ y and the correct color\n- **symm** is proved by rewriting with `state.symm` — this is where the GameState's symmetry invariant pays off\n- **loopless** follows from the x ≠ y requirement\n\n**hasClique G k** asserts that G contains a clique of size k, using Mathlib's `IsClique` predicate on a finset of vertices. This cleanly connects to Mathlib's clique theory.",
     "mathContext": "At game's end, every edge is in exactly one of these subgraphs (the partition into Red and Blue). The winning condition compares the sizes of the largest cliques in each subgraph.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "SimpleGraph.IsClique",
+      "Subgraphs",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "SimpleGraph.IsClique",
       "Subgraphs",
@@ -103,6 +133,12 @@
     "content": "**Game 1 (Clique Game):** Alice wins if she has a red clique of size k that Bob cannot match — formally, ∃ k such that red has a k-clique but blue does not.\n\n**Game 2 (Modified):** Bob colors 2 edges per turn. Bob wins if his blue clique exceeds Alice's red clique. The asymmetric move ratio gives Bob more edges overall.\n\n**Game 3 (Degree):** Alice wins if the maximum red degree exceeds the maximum blue degree. This is a local property (per vertex) rather than a global one (cliques).\n\nAll three games have the same setup but different winning conditions, and all three remain open.",
     "mathContext": "The clique game captures a global structural property (large dense substructures), while the degree game captures a local property (vertex neighborhoods). The different conditions lead to different density bounds in the Malekshahian-Spiro results.",
     "significance": "key",
+    "prerequisites": [
+      "Clique number",
+      "Maximum degree",
+      "basic set theory",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Clique number",
       "Maximum degree",
@@ -122,6 +158,11 @@
     "content": "**AliceStrategy** and **BobStrategy** are functions from GameState to an edge (pair of vertices). A strategy tells a player which edge to color given the current board.\n\n**playGame** is axiomatized: given strategies for both players, the game produces a final GameState. This exists because K_n has finitely many edges and the game must terminate.\n\n**BobHasWinningStrategy_CliqueGame n**: ∃ Bob strategy σ such that for ALL Alice strategies τ, Alice does not win the resulting game. Similarly for Alice.",
     "mathContext": "The quantifier structure is important: Bob has a winning strategy means ∃σ ∀τ (Bob wins), while Alice has one means ∃τ ∀σ (Alice wins). By Zermelo's theorem, exactly one of these holds for each n.",
     "significance": "key",
+    "prerequisites": [
+      "Game strategies",
+      "Quantifier alternation",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Game strategies",
       "Quantifier alternation",
@@ -140,6 +181,11 @@
     "content": "**ErdosConjecture:** Bob has a winning strategy for ALL n ≥ 3.\n\nErdős believed this based on the intuition that the second player has a structural advantage: Bob can always respond to Alice's moves. This is reminiscent of strategy-stealing arguments in other combinatorial games, though a direct strategy-stealing argument does not apply here (since it would prove the first player wins, not the second).",
     "mathContext": "Strategy-stealing arguments show that in many games, the first player cannot lose. Here the situation is reversed — Erdős conjectured the second player always wins, which requires a different kind of structural argument.",
     "significance": "key",
+    "prerequisites": [
+      "Second player advantage",
+      "Strategy-stealing",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Strategy-stealing",
       "Second player advantage",
@@ -158,6 +204,11 @@
     "content": "**Four key results from Malekshahian-Spiro (arXiv:2410.18304, 2024):**\n\n1. **Density ≥ 3/4 (clique game):** The set {n : Bob wins} has natural density at least 3/4. Formalized: for all N, the count of Bob-wins in {0,...,N-1} is ≥ 3N/4.\n\n2. **Recovery property (clique):** If Alice wins at n, then Bob wins at n+1, n+2, and n+3. This is the strongest structural constraint known.\n\n3. **Density ≥ 2/3 (degree game):** The degree game version with a weaker bound.\n\n4. **Recovery property (degree):** If Alice wins degree game at n, Bob wins at n+1, n+2.\n\nThe density result follows from the recovery property: if Alice wins at n, she loses the next 3 values, so at most 1 in 4 consecutive values can be Alice wins.",
     "mathContext": "Natural density of a set S ⊆ ℕ is lim_{N→∞} |S ∩ {1,...,N}| / N. A density of 3/4 means Bob wins 'almost always' but leaves room for Alice to win at scattered values.",
     "significance": "key",
+    "prerequisites": [
+      "Natural density",
+      "Periodicity",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Natural density",
       "Periodicity",
@@ -177,6 +228,11 @@
     "content": "**alice_no_four_consecutive:** If Alice wins at n, then she cannot also win at n+1, n+2, and n+3.\n\n**Proof:** Assume Alice wins at n and at n+1. By the Malekshahian-Spiro recovery property, Alice winning at n implies Bob has a winning strategy at n+1. But we assumed Alice also has a winning strategy at n+1. The contradiction arises from applying both strategies: Bob's strategy σ beats all Alice strategies (including τ), but Alice's strategy τ beats all Bob strategies (including σ). This yields hσ τ (hτ σ), a direct contradiction.",
     "mathContext": "This is a clean example of how axiomatized results enable downstream proofs. The recovery property (an axiom from the Malekshahian-Spiro paper) immediately yields this structural constraint as a theorem.",
     "significance": "key",
+    "prerequisites": [
+      "Proof by contradiction",
+      "Strategy interactions",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Proof by contradiction",
       "Strategy interactions",
@@ -195,6 +251,11 @@
     "content": "**game_determined:** For each n, either Alice or Bob has a winning strategy.\n\nThis is Zermelo's theorem (1913) applied to this specific game: every finite two-player game of perfect information has a determined outcome. Since K_n has finitely many edges and each turn colors one edge, the game tree is finite, and backward induction guarantees a winning strategy exists for one player.",
     "mathContext": "Zermelo's theorem is one of the foundational results in game theory. It applies to chess, tic-tac-toe, and all finite perfect-information games. Here it ensures the game is not a draw — one player always has a winning strategy.",
     "significance": "key",
+    "prerequisites": [
+      "Game determinacy",
+      "Zermelo's theorem",
+      "tree theory"
+    ],
     "relatedConcepts": [
       "Zermelo's theorem",
       "Game determinacy",
@@ -214,6 +275,12 @@
     "content": "**erdos_778_periodicity:** This summary theorem packages the main proved result — that Alice cannot win 4 consecutive values — as a clean statement.\n\nThe proof is simply `alice_no_four_consecutive`, directly referencing the earlier theorem. This serves as the entry point for understanding what has been formalized about Problem #778.\n\n**Status:** The full conjecture (Bob wins for ALL n ≥ 3) remains OPEN. What we have formalized is the strongest structural constraint derivable from the Malekshahian-Spiro results.",
     "mathContext": "Summary theorems serve as formal certificates of the state of knowledge. Here, the formalization captures not just the conjecture but also the partial progress toward it.",
     "significance": "key",
+    "prerequisites": [
+      "Partial results",
+      "Summary theorems",
+      "proof techniques",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "Summary theorems",
       "Partial results",

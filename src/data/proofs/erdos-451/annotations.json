@@ -17,6 +17,12 @@
       "sieve theory",
       "consecutive products"
     ],
+    "prerequisites": [
+      "Bertrand's postulate",
+      "Chinese Remainder Theorem",
+      "polynomial ring theory",
+      "prime numbers"
+    ],
     "significance": "key"
   },
   {
@@ -34,6 +40,12 @@
       "finite products",
       "consecutive integers",
       "prime factorization"
+    ],
+    "prerequisites": [
+      "basic set theory",
+      "consecutive integers",
+      "divisibility",
+      "finite products"
     ],
     "significance": "supporting"
   },
@@ -54,6 +66,12 @@
       "residue classes",
       "modular arithmetic"
     ],
+    "prerequisites": [
+      "Bertrand's postulate",
+      "basic set theory",
+      "prime avoidance",
+      "prime numbers"
+    ],
     "significance": "key"
   },
   {
@@ -71,6 +89,12 @@
       "axiomatization",
       "minimality",
       "well-ordering principle"
+    ],
+    "prerequisites": [
+      "axiomatization",
+      "basic set theory",
+      "minimality",
+      "prime numbers"
     ],
     "significance": "key"
   },
@@ -91,6 +115,12 @@
       "prime divisibility",
       "pigeonhole principle"
     ],
+    "prerequisites": [
+      "Chinese Remainder Theorem",
+      "cardinal arithmetic",
+      "divisibility",
+      "prime numbers"
+    ],
     "significance": "key"
   },
   {
@@ -109,6 +139,12 @@
       "sieve methods",
       "superlinear growth",
       "prime number theorem"
+    ],
+    "prerequisites": [
+      "Erdos-Graham inequality",
+      "density theory",
+      "polynomial ring theory",
+      "prime numbers"
     ],
     "significance": "key"
   },
@@ -129,6 +165,11 @@
       "Chebyshev's theorem",
       "exponential bounds"
     ],
+    "prerequisites": [
+      "Chinese Remainder Theorem",
+      "prime numbers",
+      "primorial"
+    ],
     "significance": "supporting"
   },
   {
@@ -145,6 +186,10 @@
     "relatedConcepts": [
       "type coercion",
       "baseline bounds"
+    ],
+    "prerequisites": [
+      "baseline bounds",
+      "type coercion"
     ],
     "significance": "supporting"
   },
@@ -164,6 +209,11 @@
       "superpolynomial growth",
       "sub-exponential growth",
       "intermediate asymptotics"
+    ],
+    "prerequisites": [
+      "growth rate classification",
+      "polynomial ring theory",
+      "superpolynomial growth"
     ],
     "significance": "key"
   }

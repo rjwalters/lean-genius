@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #220 ($500)**\n\nFor reduced residues a₁ < ⋯ < a_{φ(n)} mod n, is ∑(a_{k+1}-a_k)² ≪ n²/φ(n)?\n\n**Status:** SOLVED (Montgomery-Vaughan 1986)",
     "mathContext": "Reduced residues are integers coprime to n. The problem asks if squared gaps are well-controlled.",
     "significance": "key",
+    "prerequisites": [
+      "Euler totient",
+      "Reduced residues",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Reduced residues",
       "Euler totient",
@@ -29,6 +34,12 @@
     "content": "**reducedResidues n:**\n\n{m : 1 ≤ m < n, gcd(m,n) = 1}\n\nThe set of integers in [1, n-1] that are coprime to n. Has exactly φ(n) elements.",
     "mathContext": "These form a group under multiplication mod n.",
     "significance": "key",
+    "prerequisites": [
+      "Coprimality",
+      "GCD theory",
+      "Totient function",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Coprimality",
       "Totient function",
@@ -47,6 +58,12 @@
     "content": "**card_reducedResidues:**\n\n|reducedResidues n| = φ(n)\n\nThis is essentially the definition of Euler's totient function.",
     "mathContext": "$|reducedResidues n| = φ(n)$",
     "significance": "key",
+    "prerequisites": [
+      "Cardinality",
+      "Euler's work",
+      "Totient",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Totient",
       "Cardinality"
@@ -64,6 +81,11 @@
     "content": "**sortedResidues n, a n k:**\n\nThe reduced residues sorted in increasing order, and the k-th element.\n\nWritten as a₁ < a₂ < ⋯ < a_{φ(n)}.",
     "mathContext": "Formalizes the concept of sorted residues",
     "significance": "key",
+    "prerequisites": [
+      "Indexing",
+      "Sorting",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Sorting",
       "Indexing"
@@ -81,6 +103,11 @@
     "content": "**gap n k:**\n\na_{k+1} - a_k\n\nThe difference between consecutive reduced residues.",
     "mathContext": "Average gap is n/φ(n), but individual gaps can vary significantly.",
     "significance": "key",
+    "prerequisites": [
+      "Consecutive elements",
+      "Difference",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Consecutive elements",
       "Difference"
@@ -98,6 +125,11 @@
     "content": "**gapList n:**\n\nThe list of all gaps [gap(0), gap(1), ..., gap(φ(n)-2)].\n\nThere are φ(n) - 1 gaps between φ(n) elements.",
     "mathContext": "Formalizes the concept of gap list",
     "significance": "key",
+    "prerequisites": [
+      "All gaps",
+      "List",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "List",
       "All gaps"
@@ -115,6 +147,11 @@
     "content": "**sumGapPowers n γ:**\n\n∑_{k=1}^{φ(n)-1} (a_{k+1} - a_k)^γ\n\nThe sum of γ-th powers of all gaps.\n\n**sumSquaredGaps n** is the γ = 2 case.",
     "mathContext": "The squared case (γ=2) was Erdős's original question.",
     "significance": "key",
+    "prerequisites": [
+      "Power sum",
+      "Sum of squares",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Power sum",
       "Sum of squares"
@@ -132,6 +169,11 @@
     "content": "**boundedSquaredGaps n:**\n\nn² / φ(n)\n\nThis is the \"expected\" squared sum if all gaps were equal to average n/φ(n).",
     "mathContext": "φ(n) gaps of size (n/φ(n)) each gives sum = φ(n) · (n/φ(n))² = n²/φ(n).",
     "significance": "key",
+    "prerequisites": [
+      "Average gap squared",
+      "Expected value",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Expected value",
       "Average gap squared"
@@ -149,6 +191,11 @@
     "content": "**erdos_220_conjecture:**\n\n∃C > 0: ∀n ≥ 1, ∑(gap)² ≤ C · n²/φ(n)\n\nThe squared gaps sum is at most a constant times the \"all-equal\" bound.",
     "mathContext": "$∃C > 0: ∀n ≥ 1, ∑(gap)² ≤ C · n²/φ(n)$",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic bound",
+      "Big-O",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Big-O",
       "Asymptotic bound"
@@ -166,6 +213,11 @@
     "content": "**erdos_220_general:**\n\nFor any γ ≥ 1: ∑(gap)^γ ≪ n^γ/φ(n)^{γ-1}\n\nThis generalizes from squares to arbitrary powers.",
     "mathContext": "Erdős posed this general version in 1973.",
     "significance": "key",
+    "prerequisites": [
+      "Generalization",
+      "Power sum bound",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Generalization",
       "Power sum bound"
@@ -183,6 +235,10 @@
     "content": "**montgomery_vaughan_squared:**\n\n∃C > 0: ∀n ≥ 1, ∑(gap)² ≤ C · n²/φ(n)\n\nThe main result confirming Erdős's conjecture.",
     "mathContext": "Published in Annals of Mathematics, 1986.",
     "significance": "key",
+    "prerequisites": [
+      "Ann. of Math.",
+      "Montgomery-Vaughan 1986"
+    ],
     "relatedConcepts": [
       "Montgomery-Vaughan 1986",
       "Ann. of Math."
@@ -200,6 +256,10 @@
     "content": "**montgomery_vaughan_general:**\n\nFor any γ ≥ 1: ∃C > 0: ∀n ≥ 1, ∑(gap)^γ ≤ C · n^γ/φ(n)^{γ-1}\n\nThe full generalization to all powers.",
     "mathContext": "$For any γ ≥ 1: ∃C > 0: ∀n ≥ 1, ∑(gap)^γ ≤ C · n^γ/φ(n)^{γ-1}$",
     "significance": "key",
+    "prerequisites": [
+      "All powers",
+      "General result"
+    ],
     "relatedConcepts": [
       "General result",
       "All powers"
@@ -217,6 +277,11 @@
     "content": "**averageGap n:**\n\nn / φ(n)\n\nWith φ(n) residues spread over [1,n-1], average spacing is n/φ(n).",
     "mathContext": "Formalizes the concept of average gap",
     "significance": "key",
+    "prerequisites": [
+      "Average",
+      "Expected spacing",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Average",
       "Expected spacing"
@@ -234,6 +299,12 @@
     "content": "**prime_case:**\n\nFor prime p, reduced residues are {1, 2, ..., p-1} with all gaps = 1.\n\nSum of squares = p - 2, bound = p²/(p-1) ≈ p. Bound holds easily.",
     "mathContext": "Primes give the simplest case where all gaps are equal.",
     "significance": "supporting",
+    "prerequisites": [
+      "Prime",
+      "Unit gaps",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Prime",
       "Unit gaps"
@@ -251,6 +322,11 @@
     "content": "**power_of_two_case:**\n\nFor n = 2^k, residues are {1, 3, 5, ..., 2^k - 1} with all gaps = 2.\n\nSum = 2^{k+1}, bound = 2^{k+1}. The bound is TIGHT here.",
     "mathContext": "Powers of 2 show the bound is essentially optimal.",
     "significance": "key",
+    "prerequisites": [
+      "Power of 2",
+      "Tight bound",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Power of 2",
       "Tight bound",
@@ -269,6 +345,12 @@
     "content": "**jacobsthal n:**\n\nmax{gap} = maximum gap between consecutive reduced residues.\n\nRelated to the smallest prime not dividing n.",
     "mathContext": "Large gaps can occur but are rare enough not to dominate the sum.",
     "significance": "key",
+    "prerequisites": [
+      "Jacobsthal",
+      "Maximum gap",
+      "basic set theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Maximum gap",
       "Jacobsthal",
@@ -287,6 +369,10 @@
     "content": "**maximum_gap_bound:**\n\nmax(gap) ≤ C · (n/φ(n)) · (log n)²\n\nThe maximum gap is at most average times a logarithmic factor.",
     "mathContext": "$max(gap) ≤ C · (n/φ(n)) · (log n)²$",
     "significance": "supporting",
+    "prerequisites": [
+      "Logarithmic factor",
+      "Maximum"
+    ],
     "relatedConcepts": [
       "Maximum",
       "Logarithmic factor"
@@ -304,6 +390,11 @@
     "content": "**erdos_220_summary:**\n\nCombines all components: Montgomery-Vaughan proved the squared gaps conjecture.\n\n∑(gap)² ≪ n²/φ(n)",
     "mathContext": "The theorem statement captures the complete resolution.",
     "significance": "key",
+    "prerequisites": [
+      "Main result",
+      "Resolution",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Main result",
       "Resolution"
@@ -321,6 +412,11 @@
     "content": "**erdos_220_solved:**\n\nErdős Problem #220 was completely resolved by Montgomery-Vaughan (1986).\n\nThe $500 prize problem is solved.",
     "mathContext": "Formalizes the concept of problem solved",
     "significance": "supporting",
+    "prerequisites": [
+      "Prize",
+      "Solved",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Solved",
       "Prize",

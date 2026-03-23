@@ -11,6 +11,12 @@
     "content": "**Theorem**: For nonneg reals `a`, `b`: `2 * a * b ≤ a² + b²`\n\nThis is the NNReal version of Young's inequality at p=q=2. The proof casts to ℝ and uses `nlinarith` with the hint `(a-b)² ≥ 0`, then casts back via `exact_mod_cast`.\n\n**Note**: The general Young's inequality `ab ≤ aᵖ/p + bᵠ/q` for NNReal uses `NNReal.HolderConjugate` (not `Real.HolderConjugate`), so it requires a different predicate than the main Hölder theorems.",
     "mathContext": "2ab \\leq a^2 + b^2 \\iff 0 \\leq (a-b)^2",
     "significance": "key",
+    "prerequisites": [
+      "AM-GM",
+      "Young's inequality",
+      "linarith tactic",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "AM-GM",
       "Young's inequality",
@@ -30,6 +36,11 @@
     "content": "**Theorem** `holder_lintegral`: For Hölder conjugate exponents `p, q` (1/p + 1/q = 1) and non-negative measurable functions `f, g: α → ℝ≥0∞`:\n```\n∫⁻ a, f a * g a ∂μ ≤ (∫⁻ a, f a ^ p ∂μ) ^ (1/p) * (∫⁻ a, g a ^ q ∂μ) ^ (1/q)\n```\n\nThis directly wraps Mathlib's `ENNReal.lintegral_mul_le_Lp_mul_Lq`. The NNReal version `holder_nnreal_lintegral` follows via the canonical coercion `ℝ≥0 → ℝ≥0∞`.",
     "mathContext": "\\int_{\\alpha} f \\cdot g \\, d\\mu \\leq \\left(\\int_{\\alpha} f^p \\, d\\mu\\right)^{1/p} \\cdot \\left(\\int_{\\alpha} g^q \\, d\\mu\\right)^{1/q}",
     "significance": "key",
+    "prerequisites": [
+      "ENNReal",
+      "Hölder's inequality",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Hölder's inequality",
       "ENNReal",
@@ -49,6 +60,12 @@
     "content": "**Theorem** `holder_conj_2_2: Real.HolderConjugate 2 2`\n\nThis is a subtle formalization challenge. `Real.HolderConjugate.conjExponent hp` where `hp : 1 < 2` gives `HolderConjugate 2 (Real.conjExponent 2)`, not `HolderConjugate 2 2`.\n\nWe need to explicitly prove `Real.conjExponent 2 = 2`, which unfolds to `2 / (2-1) = 2` and is solved by `norm_num`. Then `rwa [heq] at h` converts the hypothesis to the desired form.",
     "mathContext": "\\frac{1}{2} + \\frac{1}{2} = 1 \\implies (p=2, q=2) \\text{ is a Hölder conjugate pair}",
     "significance": "key",
+    "prerequisites": [
+      "HolderConjugate",
+      "conjExponent",
+      "norm_num tactic",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "HolderConjugate",
       "conjExponent",
@@ -67,6 +84,12 @@
     "content": "**Theorem** `cauchy_schwarz_from_holder`: For non-negative measurable `f, g: α → ℝ≥0∞`:\n```\n∫⁻ f·g dμ ≤ (∫⁻ f² dμ)^{1/2} · (∫⁻ g² dμ)^{1/2}\n```\n\nThis is **the answer to OQ-01**: Cauchy-Schwarz is exactly Hölder's inequality with `p = q = 2`. The bound $(\\int f^2)^{1/2}$ IS the L2 norm of f, so this reads $\\int fg \\leq \\|f\\|_{L^2} \\cdot \\|g\\|_{L^2}$, which matches the result in `CauchySchwarzIntegral.lean`.\n\nThe symmetry `p = q = 2` means both functions are measured with the SAME L2 norm, which is the hallmark of Cauchy-Schwarz.",
     "mathContext": "\\int fg \\, d\\mu \\leq \\left(\\int f^2 \\, d\\mu\\right)^{1/2} \\cdot \\left(\\int g^2 \\, d\\mu\\right)^{1/2} = \\|f\\|_{L^2} \\cdot \\|g\\|_{L^2}",
     "significance": "key",
+    "prerequisites": [
+      "Cauchy-Schwarz",
+      "Hölder p=q=2",
+      "measure theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Cauchy-Schwarz",
       "Hölder p=q=2",
@@ -86,6 +109,12 @@
     "content": "**Theorem** `holder_real_lintegral`: For real-valued measurable `f, g: α → ℝ`:\n```\n∫⁻ ‖f·g‖₊ dμ ≤ (∫⁻ ‖f‖₊^p dμ)^{1/p} · (∫⁻ ‖g‖₊^q dμ)^{1/q}\n```\n\nKey insight: For reals, `nnnorm_mul : ‖x·y‖₊ = ‖x‖₊·‖y‖₊` (nnnorm is multiplicative in a NormedField). This lets us rewrite `‖fg‖₊ = ‖f‖₊·‖g‖₊` and apply `holder_nnreal_lintegral` to the nnnorms.\n\n**Caveat**: The correct lemma name is `nnnorm_mul` (not `Real.nnnorm_mul`).",
     "mathContext": "\\int_{\\alpha} \\|f(x) \\cdot g(x)\\|_+ \\, d\\mu(x) \\leq \\left(\\int_{\\alpha} \\|f(x)\\|_+^p \\, d\\mu(x)\\right)^{1/p} \\cdot \\left(\\int_{\\alpha} \\|g(x)\\|_+^q \\, d\\mu(x)\\right)^{1/q}",
     "significance": "key",
+    "prerequisites": [
+      "field theory",
+      "nnnorm",
+      "proof techniques",
+      "real-valued functions"
+    ],
     "relatedConcepts": [
       "real-valued functions",
       "nnnorm",
@@ -105,6 +134,12 @@
     "content": "**Theorem** `minkowski_l2 (f g : Lp ℝ 2 μ) : ‖f + g‖ ≤ ‖f‖ + ‖g‖`\n\nSince `Lp ℝ 2 μ` is a `NormedAddCommGroup`, Minkowski's inequality is just the norm triangle inequality `norm_add_le`. In Mathlib, the proof that `Lp E p μ` is a normed space uses Hölder's inequality internally to establish the triangle inequality for the Lp norm.\n\n**Note**: The snorm-based API `MeasureTheory.snorm_add_le` (for general p) had API changes in Mathlib 4.26+; the Lp-space `norm_add_le` is more stable.",
     "mathContext": "\\|f + g\\|_{L^2} \\leq \\|f\\|_{L^2} + \\|g\\|_{L^2}",
     "significance": "key",
+    "prerequisites": [
+      "L2 norm",
+      "Minkowski's inequality",
+      "group theory",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "Minkowski's inequality",
       "L2 norm",

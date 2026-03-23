@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #312: Subset Sums of Unit Fractions**\n\nGiven a multiset of positive integers whose reciprocals sum to more than K, can we always find a subset whose reciprocal sum is within exp(-cK) of 1?\n\nThe exponential bound exp(-cK) is much stronger than the known polynomial bound c/K². For K = 100, exp(-100c) is astronomically smaller than c/10000, so the conjecture demands far more precise approximation.\n\nThis is an open problem posed by Erdős and Graham [ErGr80].",
     "mathContext": "The problem connects to Egyptian fraction theory and the fine structure of subset sums. Unit fractions 1/n have irregular spacing, making precise subset sum control much harder than for geometric sequences.",
     "significance": "key",
+    "prerequisites": [
+      "Subset sum",
+      "Unit fractions",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Unit fractions",
       "Subset sum",
@@ -30,6 +35,11 @@
     "content": "**reciprocalSum n a:** The total reciprocal sum Σ_{i=0}^{n-1} 1/a(i), where a : Fin n → ℕ encodes a multiset of n positive integers. Marked noncomputable because real number inverses require classical choice.\n\n**subsetReciprocalSum n a S:** The partial sum over a subset S ⊆ Fin n. The goal is to find S such that this partial sum is close to 1.\n\nThe condition reciprocalSum n a > K ensures we have 'enough' reciprocals to work with — a large budget from which to select a near-1 sum.",
     "mathContext": "For the canonical example a(i) = i+1, this gives the harmonic series H_n ≈ ln(n) + γ. Larger K means more reciprocals available, which should make it easier to approximate 1.",
     "significance": "key",
+    "prerequisites": [
+      "Finset.sum",
+      "Inverse",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Finset.sum",
       "Inverse",
@@ -48,6 +58,11 @@
     "content": "**hasExponentialPrecision n a c K:** There exists a subset S ⊆ {0,...,n-1} such that the reciprocal sum over S lies in the half-open interval (1 - exp(-cK), 1].\n\nThe upper bound ≤ 1 means the subset sum does not exceed 1. The lower bound 1 - exp(-cK) means the sum is exponentially close to 1 — the gap shrinks exponentially in K.\n\nThis is the conjectured property. The known property uses 1 - c/K² instead of 1 - exp(-cK).",
     "mathContext": "The interval (1 - ε, 1] with ε = exp(-cK) shrinks exponentially. For K = 10 and c = 1, this interval has width ~0.0000454. For K = 100, width ~3.7 × 10^{-44}.",
     "significance": "key",
+    "prerequisites": [
+      "Half-open intervals",
+      "Real.exp",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Real.exp",
       "Half-open intervals",
@@ -66,6 +81,12 @@
     "content": "**mainConjecture:** ∃ c > 0, ∀ K > 1, ∃ N₀, ∀ multisets of size ≥ N₀ with reciprocal sum > K, the exponential precision property holds.\n\nNote the quantifier structure: the constant c is universal (works for all K), but the threshold N₀ can depend on K. This means for each K, 'sufficiently large' may mean different things.\n\nThis is defined as a Prop rather than stated as a theorem with sorry, reflecting that this is a genuine open question — not something we claim to know the answer to.",
     "mathContext": "The formal statement matches the formal-conjectures project (FormalConjectures/ErdosProblems/312.lean), ensuring compatibility with the broader formalization effort.",
     "significance": "key",
+    "prerequisites": [
+      "Open problems",
+      "Quantifier structure",
+      "basic set theory",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Open problems",
       "Quantifier structure",
@@ -84,6 +105,11 @@
     "content": "**hasPolynomialPrecision:** Like exponential precision, but with error bound c/K² instead of exp(-cK).\n\n**erdos_graham_polynomial:** The known theorem of Erdős and Graham [ErGr80]: the polynomial bound c/K² holds. This is axiomatized because the proof uses sophisticated techniques from analytic number theory.\n\nThe polynomial bound means: for some c > 0, any large enough multiset with reciprocal sum > K has a subset summing to within c/K² of 1. This is already non-trivial — it says we can always find a *very* good approximation to 1.",
     "mathContext": "The proof of the polynomial bound uses the greedy algorithm with careful analysis of the remainder terms. The transition to exponential bounds would require understanding higher-order correlations in the subset sum distribution.",
     "significance": "key",
+    "prerequisites": [
+      "Erdős-Graham theorem",
+      "Polynomial bounds",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Erdős-Graham theorem",
       "Polynomial bounds",
@@ -102,6 +128,12 @@
     "content": "**exponential_stronger_than_polynomial:** For large K, exp(-cK) < c'/K². This axiom captures the fundamental fact that exponential decay beats polynomial decay.\n\n**conjecture_implies_known:** This is a *proved* theorem: if the exponential conjecture holds, then in particular we can always find subsets with reciprocal sum ≤ 1. The proof extracts the upper bound from hasExponentialPrecision by destructing the existential to get the subset S and its upper bound.\n\nThis theorem verifies the logical consistency of our formalization — the conjectured property is strictly stronger than the known property.",
     "mathContext": "The proof uses basic Lean tactics: intro for the hypothesis, obtain to destructure existentials, and exact to provide the witness. This is a clean example of extracting weaker conclusions from stronger hypotheses.",
     "significance": "key",
+    "prerequisites": [
+      "Bound comparison",
+      "Implication proofs",
+      "polynomial ring theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Implication proofs",
       "Bound comparison",
@@ -120,6 +152,12 @@
     "content": "**harmonicNumber n:** H_n = 1 + 1/2 + 1/3 + ... + 1/n, the n-th partial sum of the harmonic series. Computed as Σ_{i=0}^{n-1} 1/(i+1).\n\n**harmonic_unbounded:** H_n → ∞ as n → ∞. This is a classical result (often proved via comparison with ln(n)). It ensures that for any K > 0, the multiset {1, 2, ..., n} for large enough n has reciprocal sum > K, providing canonical test cases for the conjecture.",
     "mathContext": "H_n = ln(n) + γ + O(1/n) where γ ≈ 0.5772 is the Euler-Mascheroni constant. The divergence of the harmonic series, proved by Oresme (c. 1350), is one of the earliest results in analysis.",
     "significance": "key",
+    "prerequisites": [
+      "Euler's work",
+      "Euler-Mascheroni constant",
+      "Harmonic series",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Harmonic series",
       "Euler-Mascheroni constant",
@@ -138,6 +176,12 @@
     "content": "**erdos_312_status:** A summary theorem packaging the known result — the polynomial bound exists. The proof is `exact erdos_graham_polynomial`, directly referencing the axiom.\n\n**What's known:** c/K² precision (Erdős-Graham).\n**What's conjectured:** exp(-cK) precision (OPEN).\n**What we proved:** The conjecture implies the known result (conjecture_implies_known).\n\nThe formalization cleanly separates the open conjecture from the established theorem, making the state of knowledge explicit.",
     "mathContext": "Summary theorems serve as entry points for understanding the formalization. The erdos_312_status theorem is the single statement that captures what has been established about this problem.",
     "significance": "key",
+    "prerequisites": [
+      "State of knowledge",
+      "Summary theorems",
+      "polynomial ring theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Summary theorems",
       "State of knowledge",

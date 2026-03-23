@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #967: Zeros of Generalized Dirichlet Sums**\n\nFor integers 1 < a₁ < a₂ < ... with ∑(1/aᵢ) < ∞, is it true that 1 + ∑ₖ 1/aₖ^(1+it) ≠ 0 for all real t?\n\n**Answer**: NO - The Erdős-Ingham conjecture is FALSE.\n\nYip (2025) proved counterexamples exist for any nonzero t. The finite sequence case remains open.",
     "mathContext": "The sum 1 + ∑ₖ 1/aₖ^(1+it) is a generalized Dirichlet series with complex exponent 1+it. The oscillatory factor a^(it) = e^(it·log(a)) is key to the existence of zeros.",
     "significance": "key",
+    "prerequisites": [
+      "Complex analysis",
+      "Dirichlet series",
+      "complex numbers"
+    ],
     "relatedConcepts": [
       "Dirichlet series",
       "Complex analysis",
@@ -31,6 +36,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -49,6 +58,11 @@
       "limits",
       "sequences"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "convergence",
+      "limits"
+    ],
     "significance": "key"
   },
   {
@@ -63,6 +77,12 @@
     "content": "**complexPow(a, t) = a^(1+it):**\n\na^(1+it) = a · a^(it) = a · e^(it·log(a))\n\nThe factor a^(it) = cos(t·log(a)) + i·sin(t·log(a)) oscillates on the unit circle.",
     "mathContext": "This oscillatory behavior is what enables zeros to exist. Different a values give different oscillation frequencies t·log(a).",
     "significance": "key",
+    "prerequisites": [
+      "Complex exponential",
+      "Unit circle",
+      "basic set theory",
+      "complex numbers"
+    ],
     "relatedConcepts": [
       "Complex exponential",
       "Unit circle",
@@ -83,6 +103,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -97,6 +121,11 @@
     "content": "**generalizedDirichletSum(a, t) = 1 + ∑ₖ 1/aₖ^(1+it):**\n\nThe central object of Problem #967. The conjecture asked if this is always nonzero.",
     "mathContext": "At t = 0, this reduces to 1 + ∑ₖ 1/aₖ > 1. For t ≠ 0, the oscillating terms can potentially sum to -1.",
     "significance": "key",
+    "prerequisites": [
+      "Dirichlet series",
+      "Series summation",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Dirichlet series",
       "Series summation"
@@ -114,6 +143,11 @@
     "content": "**erdosInghamConjecture:**\n\nFor any convergent sequence a and any real t, 1 + ∑ₖ 1/aₖ^(1+it) ≠ 0.\n\nThis conjecture from 1964 was disproved by Yip in 2025.",
     "mathContext": "The conjecture was motivated by Tauberian theory: if true, it would imply certain asymptotic results for functional equations.",
     "significance": "key",
+    "prerequisites": [
+      "Erdős-Ingham (1964)",
+      "Tauberian theorems",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Erdős-Ingham (1964)",
       "Tauberian theorems"
@@ -133,6 +167,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -147,6 +185,12 @@
     "content": "**sum235(t) = 1 + 2^(-1-it) + 3^(-1-it) + 5^(-1-it):**\n\nThe simplest case Erdős and Ingham could not decide. Whether this equals zero for some t is still unknown.",
     "mathContext": "This case connects to the Four Exponentials conjecture in transcendence theory. If 4EC holds, sum235(t) ≠ 0 for all t.",
     "significance": "key",
+    "prerequisites": [
+      "Four Exponentials conjecture",
+      "Transcendence theory",
+      "basic set theory",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "Four Exponentials conjecture",
       "Transcendence theory"
@@ -164,6 +208,10 @@
     "content": "**four_exponentials_implies_235_nonzero:**\n\nIf the Four Exponentials conjecture holds, then sum235(t) ≠ 0 for all t.\n\nThis deep connection was noted on MathOverflow.",
     "mathContext": "The 4EC concerns algebraic independence of logarithms. It implies constraints on when 2^z + 3^z + 5^z can vanish.",
     "significance": "key",
+    "prerequisites": [
+      "Algebraic independence",
+      "Schanuel's conjecture"
+    ],
     "relatedConcepts": [
       "Schanuel's conjecture",
       "Algebraic independence"
@@ -181,6 +229,11 @@
     "content": "**tauberianEquivalence:**\n\nErdős-Ingham (1964) proved: the no-zeros condition is equivalent to a Tauberian result.\n\nIf f(x) + ∑ₖ f(x/aₖ) = (1 + ∑ₖ 1/aₖ + o(1))x, does f(x) = (1+o(1))x?",
     "mathContext": "This connection motivated the original problem. The zeros of the Dirichlet sum obstruct the Tauberian implication.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic analysis",
+      "Tauberian theorems",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Tauberian theorems",
       "Asymptotic analysis"
@@ -198,6 +251,10 @@
     "content": "**Axiom yip_counterexample:**\n\nFor any real t ≠ 0, there EXISTS a sequence a with ∑(1/aᵢ) < ∞ such that 1 + ∑ₖ 1/aₖ^(1+it) = 0.\n\nThis DISPROVES the Erdős-Ingham conjecture after 60 years.",
     "mathContext": "Yip's construction (arXiv:2512.16528) builds different sequences for each t. The key insight is exploiting the oscillatory phases.",
     "significance": "key",
+    "prerequisites": [
+      "Complex analysis",
+      "Counterexample construction"
+    ],
     "relatedConcepts": [
       "Counterexample construction",
       "Complex analysis"
@@ -218,6 +275,11 @@
       "indirect proof",
       "proof by contradiction"
     ],
+    "prerequisites": [
+      "indirect proof",
+      "proof by contradiction",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -234,6 +296,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -248,6 +314,10 @@
     "content": "**openQuestion_finiteCase:**\n\nDoes the conjecture hold for FINITE sequences?\n\nYip's counterexamples are infinite sequences. The finite case, including {2,3,5}, remains unsolved.",
     "mathContext": "Lean: `def openQuestion_finiteCase : Prop`",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "formal mathematics"
     ],
     "significance": "key"
@@ -266,6 +336,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -282,6 +356,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -296,6 +374,10 @@
     "content": "**Oscillation for t ≠ 0:**\n\nThe terms 1/aₖ^(1+it) = (1/aₖ)·e^(-it·log(aₖ)) rotate around the origin.\n\nBy choosing aₖ carefully, these oscillating terms can sum to exactly -1, giving a zero.",
     "mathContext": "This is the key mechanism behind Yip's construction. Different aₖ values give different angular velocities t·log(aₖ) on the unit circle.",
     "significance": "key",
+    "prerequisites": [
+      "Constructive interference",
+      "Phase cancellation"
+    ],
     "relatedConcepts": [
       "Phase cancellation",
       "Constructive interference"
@@ -319,6 +401,11 @@
       "metric spaces",
       "sequences"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "convergence",
+      "distance"
+    ],
     "significance": "supporting"
   },
   {
@@ -339,6 +426,11 @@
       "metric spaces",
       "sequences"
     ],
+    "prerequisites": [
+      "convergence",
+      "distance",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -354,6 +446,10 @@
     "mathContext": "Lean: `theorem erdos_967_summary :`",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   }

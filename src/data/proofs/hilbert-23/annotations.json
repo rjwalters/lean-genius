@@ -11,6 +11,12 @@
     "content": "Hilbert's 23rd problem is unique: it's not a specific question but a **call for development** of an entire field.\n\nHilbert asked for 'further development of the methods of the calculus of variations,' and the 20th century delivered spectacularly with direct methods, weak solutions, optimal control, and geometric measure theory.",
     "mathContext": "Hilbert: 'I wish to bring forward a question which should be attacked by the same method of continuous variation of a function.'",
     "significance": "key",
+    "prerequisites": [
+      "Hilbert's problems",
+      "continuous functions",
+      "field theory",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "Hilbert's problems",
       "variational methods",
@@ -29,6 +35,11 @@
     "content": "A **Lagrangian** L(x, y, y') is a function of three variables:\n- x: the independent variable\n- y: the unknown function value\n- y': the derivative\n\nThe goal is to find y that extremizes the integral of L.",
     "mathContext": "$L : \\mathbb{R} \\times \\mathbb{R} \\times \\mathbb{R} \\to \\mathbb{R}$\n\nExample: Arc length has $L = \\sqrt{1 + (y')^2}$",
     "significance": "key",
+    "prerequisites": [
+      "action functional",
+      "basic set theory",
+      "extremization"
+    ],
     "relatedConcepts": [
       "action functional",
       "extremization",
@@ -47,6 +58,11 @@
     "content": "The **action functional** (or energy functional) is:\n\n$J[y] = \\int_a^b L(x, y(x), y'(x)) \\, dx$\n\nThis maps functions to real numbers. Finding extrema of J is the central problem of calculus of variations.",
     "mathContext": "$J : \\{\\text{functions}\\} \\to \\mathbb{R}$\n\nIn physics, this is the 'action' that nature extremizes (Hamilton's principle).",
     "significance": "key",
+    "prerequisites": [
+      "Hamilton's principle",
+      "basic set theory",
+      "functional"
+    ],
     "relatedConcepts": [
       "functional",
       "Hamilton's principle",
@@ -65,6 +81,12 @@
     "content": "**Du Bois-Reymond Lemma (1879)**:\n\nIf f is continuous and $\\int_a^b f(x)\\eta(x) \\, dx = 0$ for all smooth test functions $\\eta$ vanishing at endpoints, then $f = 0$.\n\nThis 'localization lemma' converts integral conditions to pointwise conditions.",
     "mathContext": "$\\forall \\eta \\in C_0^\\infty : \\int f \\cdot \\eta = 0 \\Rightarrow f \\equiv 0$\n\nCrucial for deriving Euler-Lagrange from the variational condition.",
     "significance": "key",
+    "prerequisites": [
+      "Euler's work",
+      "continuous functions",
+      "distribution theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "test functions",
       "distribution theory",
@@ -83,6 +105,11 @@
     "content": "**Euler-Lagrange Equation** (Euler 1744, Lagrange 1788):\n\nIf y extremizes $J[y] = \\int L \\, dx$, then:\n\n$\\frac{\\partial L}{\\partial y} - \\frac{d}{dx}\\left(\\frac{\\partial L}{\\partial y'}\\right) = 0$\n\nThis is THE fundamental theorem of calculus of variations.",
     "mathContext": "$\\frac{\\partial L}{\\partial y} = \\frac{d}{dx}\\frac{\\partial L}{\\partial y'}$\n\nReduces infinite-dimensional optimization to a second-order ODE.",
     "significance": "key",
+    "prerequisites": [
+      "Euler's work",
+      "extremum",
+      "necessary conditions"
+    ],
     "relatedConcepts": [
       "necessary conditions",
       "extremum",
@@ -101,6 +128,11 @@
     "content": "The **geodesic problem** asks for curves minimizing arc length:\n\n$J[y] = \\int \\sqrt{1 + (y')^2} \\, dx$\n\nEuler-Lagrange gives $y'' = 0$, so geodesics in Euclidean space are **straight lines**.",
     "mathContext": "$L = \\sqrt{1 + (y')^2}$ (arc length element)\n\nOn curved surfaces, geodesics are 'straightest possible' curves.",
     "significance": "key",
+    "prerequisites": [
+      "Euler's work",
+      "arc length",
+      "differential geometry"
+    ],
     "relatedConcepts": [
       "arc length",
       "differential geometry",
@@ -119,6 +151,12 @@
     "content": "**Classical Mechanics** uses $L = T - V$ (kinetic minus potential energy).\n\nEuler-Lagrange yields:\n$m\\ddot{y} = -\\frac{dV}{dy}$\n\nThis is **Newton's second law**: F = ma where F = -grad(V).",
     "mathContext": "$L = \\frac{1}{2}m(y')^2 - V(y)$\n\nHamilton's principle: Nature extremizes the action integral.",
     "significance": "key",
+    "prerequisites": [
+      "Euler's work",
+      "Hamilton's principle",
+      "Lagrangian mechanics",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Lagrangian mechanics",
       "Hamilton's principle",
@@ -137,6 +175,11 @@
     "content": "**Direct Methods** prove existence without solving the Euler-Lagrange ODE:\n\n1. Show J is bounded below (coercivity)\n2. Take a minimizing sequence\n3. Extract convergent subsequence (weak compactness)\n4. Limit achieves minimum (weak lower semicontinuity)\n\nThis was a major response to Hilbert's 23rd problem.",
     "mathContext": "Tonelli (1920s): If J is coercive and weakly l.s.c. on W^{1,p}, then J attains its minimum.",
     "significance": "key",
+    "prerequisites": [
+      "Euler's work",
+      "Tonelli's theorem",
+      "weak convergence"
+    ],
     "relatedConcepts": [
       "Tonelli's theorem",
       "weak convergence",
@@ -155,6 +198,12 @@
     "content": "**Optimal Control** extends calculus of variations to systems with constraints.\n\nMinimize $\\int f_0(x,u) \\, dt$ subject to $\\dot{x} = f(x,u)$.\n\n**Pontryagin's Maximum Principle (1956)**: The optimal control maximizes the Hamiltonian $H = p \\cdot f - f_0$ where p is the costate.",
     "mathContext": "$H(x^*, u^*, p^*) = \\max_u H(x^*, u, p^*)$\n\nRevolutionized control engineering and aerospace.",
     "significance": "key",
+    "prerequisites": [
+      "Hamiltonian",
+      "optimal control",
+      "proof techniques",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "optimal control",
       "Hamiltonian",
@@ -173,6 +222,11 @@
     "content": "**Sobolev spaces** $W^{k,p}$ allow 'weak' (distributional) derivatives.\n\nThis was essential because:\n- Minimizers may not be classically differentiable\n- Existence proofs work in Sobolev spaces\n- Regularity theory then shows smoothness\n\nThe Rellich-Kondrachov theorem provides compactness.",
     "mathContext": "$W^{1,2}[a,b] = \\{u \\in L^2 : u' \\in L^2\\}$\n\nThe natural domain for variational problems.",
     "significance": "key",
+    "prerequisites": [
+      "Sobolev spaces",
+      "differential calculus",
+      "weak derivatives"
+    ],
     "relatedConcepts": [
       "Sobolev spaces",
       "weak derivatives",
@@ -191,6 +245,12 @@
     "content": "Unlike most Hilbert problems with definitive solutions, Problem 23 is a **living research program**.\n\nModern applications include:\n- **Optimal transport** (Villani, Figalli)\n- **Machine learning** (neural networks as variational problems)\n- **Materials science** (phase transitions, microstructure)\n- **Image processing** (total variation regularization)",
     "mathContext": "The field continues to develop new methods and applications.",
     "significance": "key",
+    "prerequisites": [
+      "field theory",
+      "machine learning",
+      "optimal transport",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "optimal transport",
       "machine learning",

@@ -37,6 +37,12 @@
       "combinatorics",
       "graph theory"
     ],
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "cardinal arithmetic",
+      "combinatorics"
+    ],
     "significance": "key"
   },
   {
@@ -51,6 +57,12 @@
     "content": "A graph G is K_n-free if it contains no clique of size n: `¬IsCliqueOfSize G n`. For the Folkman graph problem, we require K_{l+1}-freeness while forcing monochromatic K_l.",
     "mathContext": "The K_{l+1}-freeness constraint is what makes the problem non-trivial. Without it, any sufficiently large complete graph would work. The Ramsey number R(l, l; k) gives the threshold for K_n with k colors, but K_n contains K_{l+1} for n ≥ l+1. The challenge is to maintain Ramsey forcing while keeping ω(G) ≤ l. By Ramsey's theorem, such graphs must have many vertices (far more than R(l,l;k)), but they need not have large clique number.",
     "relatedConcepts": [
+      "combinatorics",
+      "graph theory"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "basic set theory",
       "combinatorics",
       "graph theory"
     ],
@@ -127,6 +139,12 @@
       "graph coloring",
       "graph theory"
     ],
+    "prerequisites": [
+      "Ramsey theory",
+      "algebra",
+      "basic set theory",
+      "chromatic number"
+    ],
     "significance": "key"
   },
   {
@@ -171,6 +189,12 @@
       "combinatorics",
       "graph coloring"
     ],
+    "prerequisites": [
+      "Ramsey theory",
+      "algebra",
+      "basic set theory",
+      "graph coloring"
+    ],
     "significance": "key"
   },
   {
@@ -188,6 +212,12 @@
       "Ramsey theory",
       "combinatorics",
       "graph theory"
+    ],
+    "prerequisites": [
+      "Fintype",
+      "Ramsey theory",
+      "basic set theory",
+      "combinatorics"
     ],
     "significance": "key"
   },
@@ -207,6 +237,12 @@
       "combinatorics",
       "graph theory"
     ],
+    "prerequisites": [
+      "Ramsey theory",
+      "basic set theory",
+      "combinatorics",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -222,6 +258,12 @@
     "mathContext": "Computing Folkman numbers is extremely challenging. Known values and bounds include: f(3; 2) = 786 (the minimum vertices for a K_4-free graph where every 2-coloring of edges yields a monochromatic triangle). The original bounds were astronomical — Folkman's construction gave f(3; 2) ≤ 10^10^10, and even the Nešetřil-Rödl construction gives tower-type bounds. Reductions to f(3; 2) = 786 required decades of work by Spencer, Graham, Frankl-Rödl, Dudek-Rödl, and others. The `Nat.find` definition requires a decidability instance to search for the minimum.",
     "relatedConcepts": [
       "combinatorics",
+      "graph theory"
+    ],
+    "prerequisites": [
+      "basic set theory",
+      "combinatorics",
+      "graph coloring",
       "graph theory"
     ],
     "significance": "key"
@@ -243,6 +285,12 @@
       "combinatorics",
       "graph coloring",
       "graph theory"
+    ],
+    "prerequisites": [
+      "algebra",
+      "chromatic number",
+      "graph coloring",
+      "graph theory basics"
     ],
     "significance": "key",
     "crossReferences": [
@@ -268,6 +316,12 @@
       "combinatorics",
       "counting",
       "graph theory"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "combinatorics",
+      "counting",
+      "graph coloring"
     ],
     "significance": "key",
     "crossReferences": [
@@ -301,6 +355,12 @@
       "graph coloring",
       "graph theory"
     ],
+    "prerequisites": [
+      "algebra",
+      "basic set theory",
+      "chromatic number",
+      "graph coloring"
+    ],
     "significance": "key"
   },
   {
@@ -320,6 +380,12 @@
       "combinatorics",
       "density",
       "graph theory"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "asymptotic analysis",
+      "basic set theory",
+      "density theory"
     ],
     "significance": "key"
   },
@@ -341,6 +407,12 @@
       "distance",
       "graph coloring"
     ],
+    "prerequisites": [
+      "Ramsey theory",
+      "algebra",
+      "basic set theory",
+      "chromatic number"
+    ],
     "significance": "key"
   },
   {
@@ -357,6 +429,11 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "norm_num tactic",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -372,6 +449,10 @@
     "mathContext": "This one-line proof `erdos_924 = nesetril_rodl_1976` is a clean demonstration that the Erdős-Hajnal question is exactly answered by the Nešetřil-Rödl theorem. The identification `erdos_924 := nesetril_rodl_1976` makes the mathematical point explicit: Problem #924 *is* the Nešetřil-Rödl theorem. The axiomatized proof delegates to the deep combinatorial content of the original 1976 paper.",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -390,6 +471,12 @@
       "Ramsey theory",
       "combinatorics",
       "graph theory"
+    ],
+    "prerequisites": [
+      "Fintype",
+      "Ramsey theory",
+      "combinatorics",
+      "graph theory basics"
     ],
     "significance": "key"
   }

@@ -11,6 +11,11 @@
     "content": "This header documents **Erdős Problem #228**, originally Littlewood's conjecture on flat polynomials. The question: do there exist polynomials P with ±1 coefficients such that |P(z)| ≈ √n for ALL |z|=1? Answer: YES (BBMST 2019).",
     "mathContext": "A 'flat' Littlewood polynomial has magnitude uniformly close to √n on the entire unit circle. This is remarkable because the constraint is global—not just on average, but pointwise everywhere.",
     "significance": "key",
+    "prerequisites": [
+      "Littlewood polynomials",
+      "polynomial ring theory",
+      "unit circle"
+    ],
     "relatedConcepts": [
       "Littlewood polynomials",
       "unit circle",
@@ -29,6 +34,12 @@
     "content": "A **Littlewood polynomial** has all coefficients in {-1, +1}. These are polynomials P(z) = Σᵢ aᵢzⁱ where each aᵢ = ±1.",
     "mathContext": "IsLittlewoodPolynomial p := ∀ i ≤ p.natDegree, p.coeff i = 1 ∨ p.coeff i = -1. The binary constraint makes these polynomials special objects of study.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "binary constraints",
+      "polynomial coefficients",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "polynomial coefficients",
       "binary constraints",
@@ -47,6 +58,12 @@
     "content": "A polynomial is **flat** on the unit circle if |P(z)| stays between c₁√n and c₂√n for ALL |z|=1, where c₁, c₂ > 0 are constants independent of z and n.",
     "mathContext": "IsFlatOnUnitCircle p c₁ c₂ requires c₁ > 0 ∧ c₂ > 0 ∧ ∀ z with ‖z‖ = 1, c₁√n ≤ ‖p.eval z‖ ≤ c₂√n. This is a very strong uniform bound.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "magnitude",
+      "polynomial ring theory",
+      "uniform bounds"
+    ],
     "relatedConcepts": [
       "uniform bounds",
       "magnitude",
@@ -65,6 +82,12 @@
     "content": "**Erdős Problem #228**: For all sufficiently large n, does there exist a flat Littlewood polynomial of degree n? This asks whether 'random' magnitude behavior can be achieved deterministically.",
     "mathContext": "Erdos228Question := ∃ c₁ c₂ > 0, ∀ᶠ n in atTop, ∃ p with degree n, IsLittlewoodPolynomial p ∧ IsFlatOnUnitCircle p c₁ c₂.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "eventually",
+      "existence",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "existence",
       "eventually",
@@ -83,6 +106,12 @@
     "content": "**Intuition**: For a random Littlewood polynomial evaluated at z on the unit circle, |P(z)|² is a sum of n terms with random signs. By the central limit theorem, the magnitude behaves like √n.",
     "mathContext": "expected_magnitude_heuristic proves √n > 0 for n ≥ 1 using Real.sqrt_pos. This basic fact underlies the whole problem—we need a positive target magnitude.",
     "significance": "key",
+    "prerequisites": [
+      "central limit theorem",
+      "polynomial ring theory",
+      "proof techniques",
+      "random sums"
+    ],
     "relatedConcepts": [
       "central limit theorem",
       "random sums",
@@ -101,6 +130,11 @@
     "content": "**Theorem** (Balister-Bollobás-Morris-Sahasrabudhe-Tiba, 2019): Flat Littlewood polynomials exist. This resolved Littlewood's 50-year-old conjecture.",
     "mathContext": "axiom bbmst_theorem : Erdos228Question. The proof uses probabilistic construction with sophisticated derandomization, combining harmonic analysis and combinatorics.",
     "significance": "key",
+    "prerequisites": [
+      "derandomization",
+      "polynomial ring theory",
+      "probabilistic method"
+    ],
     "relatedConcepts": [
       "probabilistic method",
       "derandomization",
@@ -119,6 +153,12 @@
     "content": "The answer to Erdős Problem #228 is **YES**: flat Littlewood polynomials exist for all n ≥ 2.",
     "mathContext": "theorem erdos_228_answer : Erdos228Question := bbmst_theorem. This directly invokes the axiomatized BBMST theorem.",
     "significance": "key",
+    "prerequisites": [
+      "polynomial ring theory",
+      "positive answer",
+      "proof techniques",
+      "resolution"
+    ],
     "relatedConcepts": [
       "resolution",
       "positive answer"
@@ -136,6 +176,11 @@
     "content": "An equivalent explicit formulation: there exist universal constants c₁, c₂ > 0 and threshold N₀ such that for all n ≥ N₀, a flat degree-n Littlewood polynomial exists.",
     "mathContext": "This makes the constructive content clearer: we need specific numbers c₁, c₂, and N₀, not just abstract existence. The actual values from BBMST are not easily computable.",
     "significance": "key",
+    "prerequisites": [
+      "explicit bounds",
+      "polynomial ring theory",
+      "threshold"
+    ],
     "relatedConcepts": [
       "explicit bounds",
       "threshold",
@@ -154,6 +199,12 @@
     "content": "**Related Problem**: Does there exist c > 0 such that max_{|z|=1} |P(z)| > (1+c)√n for ALL Littlewood polynomials? This asks about lower bounds on the maximum.",
     "mathContext": "ErdosHaymanQuestion asks whether every Littlewood polynomial must have a 'spike' above (1+c)√n somewhere on the unit circle. This is distinct from flatness.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "lower bounds",
+      "maximum magnitude",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "maximum magnitude",
       "lower bounds",
@@ -172,6 +223,11 @@
     "content": "The summary combines our main results: the BBMST theorem holds (axiomatized), and √n > 0 for all n ≥ 1 (proved as the basic magnitude target).",
     "mathContext": "summary_erdos_228 : Erdos228Question ∧ (∀ n ≥ 1, √n > 0). The conjunction packages the key verified facts for export.",
     "significance": "supporting",
+    "prerequisites": [
+      "conjunction",
+      "proof techniques",
+      "summary"
+    ],
     "relatedConcepts": [
       "conjunction",
       "summary",

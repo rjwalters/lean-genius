@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #936** asks whether four special sequences eventually avoid being powerful numbers:\n\n- $2^n + 1$\n- $2^n - 1$\n- $n! + 1$\n- $n! - 1$\n\nA **powerful number** is one where every prime factor appears with exponent at least 2. For example, 36 = 2² · 3² is powerful, but 12 = 2² · 3 is not.\n\nThe problem is conditionally resolved: assuming the ABC conjecture, all four sequences are eventually not powerful.",
     "mathContext": "This problem connects to the ABC conjecture, one of the most important unsolved problems in number theory. The ABC conjecture would imply strong constraints on the prime factorization of numbers of the form a + b = c.",
     "significance": "key",
+    "prerequisites": [
+      "ABC conjecture",
+      "Powerful numbers",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Powerful numbers",
       "ABC conjecture",
@@ -29,6 +34,12 @@
     "content": "**Powerful(n):** A natural number n is powerful if for every prime p dividing n, we also have p² dividing n.\n\n**Examples:**\n- 1 is powerful (vacuously - no prime divisors)\n- 4 = 2² is powerful (only prime 2 appears with exponent 2)\n- 8 = 2³ is powerful (exponent 3 ≥ 2)\n- 6 = 2 · 3 is NOT powerful (both primes have exponent 1)\n\n**Equivalent definition:** n = a²b³ for some positive integers a, b.",
     "mathContext": "Powerful numbers are also called squareful numbers. They are the opposite extreme from squarefree numbers (where all prime exponents are exactly 1).",
     "significance": "key",
+    "prerequisites": [
+      "Prime factorization",
+      "Squarefree numbers",
+      "basic set theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Prime factorization",
       "Squarefree numbers",
@@ -53,6 +64,12 @@
       "inequalities",
       "prime numbers"
     ],
+    "prerequisites": [
+      "bounds",
+      "divisibility",
+      "prime numbers",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -70,6 +87,12 @@
       "divisibility",
       "factorization",
       "prime numbers"
+    ],
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "prime numbers",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -89,6 +112,12 @@
       "factorization",
       "prime numbers"
     ],
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "prime numbers",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -103,6 +132,11 @@
     "content": "**EventuallyNotPowerful(a):** A sequence a : ℕ → ℕ is eventually not powerful if there exists N such that for all n ≥ N, a(n) is not powerful.\n\n**Formalization:** Uses Filter.atTop to express \"for all sufficiently large n\":\n```lean\ndef EventuallyNotPowerful (a : ℕ → ℕ) : Prop :=\n  atTop.Eventually (fun n => ¬Powerful (a n))\n```\n\nThis is exactly what Erdős #936 asks about the four sequences.",
     "mathContext": "Lean: `def EventuallyNotPowerful (a : ℕ → ℕ) : Prop :=`",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
+      "basic set theory",
+      "filter theory",
       "formal mathematics"
     ],
     "significance": "key"
@@ -123,6 +157,12 @@
       "factorization",
       "prime numbers"
     ],
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "prime numbers",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -137,6 +177,11 @@
     "content": "**abc_conjecture_holds:** Placeholder for the ABC conjecture.\n\nThe **ABC conjecture** states: For coprime positive integers a, b, c with a + b = c, the product of distinct prime factors of abc (the \"radical\" rad(abc)) satisfies:\n\nrad(abc) > c^(1-ε) for any ε > 0, with only finitely many exceptions.\n\nThis remains one of the most important unsolved problems in mathematics. It was proposed by Oesterlé and Masser in 1985.",
     "mathContext": "The ABC conjecture has profound implications for Diophantine equations and would resolve many open problems including Fermat's Last Theorem (by a different route).",
     "significance": "key",
+    "prerequisites": [
+      "Diophantine equations",
+      "Radical of integer",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Radical of integer",
       "Diophantine equations",
@@ -157,6 +202,9 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -171,6 +219,9 @@
     "content": "**crowdmath_theorem:** Assuming the ABC conjecture, 2^n ± 1 is powerful for only finitely many n.\n\nThis was proved through the CrowdMath collaborative mathematics project, demonstrating the power of distributed mathematical research.\n\nThe proof extends techniques from Cushing-Pascoe to exponential sequences.",
     "mathContext": "Lean: `axiom crowdmath_theorem :`",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
       "formal mathematics"
     ],
     "significance": "key"
@@ -189,6 +240,9 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -203,6 +257,12 @@
     "content": "**Squarefree'(n):** A number n is squarefree if no prime square divides it.\n\n**Key relationship:** Squarefree numbers with n > 1 are NOT powerful.\n\n**Proof:** If n is squarefree and n > 1, then n has at least one prime divisor p. Since n is squarefree, p² does not divide n. So n fails the powerful condition.\n\nThe ABC conjecture implies n! ± 1 is actually squarefree (not just not-powerful) for large n.",
     "mathContext": "Lean: `def Squarefree' (n : ℕ) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "Möbius function",
+      "Powerful numbers",
+      "basic set theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Powerful numbers",
       "Möbius function",
@@ -224,6 +284,12 @@
       "divisibility",
       "factorization",
       "prime numbers"
+    ],
+    "prerequisites": [
+      "divisibility",
+      "factorization",
+      "prime numbers",
+      "proof techniques"
     ],
     "significance": "key"
   }

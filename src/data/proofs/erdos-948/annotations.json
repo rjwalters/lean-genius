@@ -11,6 +11,12 @@
     "content": "Erdős Problem #948: For any k-coloring, does there exist a bounded sequence whose finite subsums don't contain all colors? Original monochromatic version DISPROVED by Galvin. Modified version OPEN.",
     "mathContext": "Posed in [Er77c]. Connects to Hindman's theorem (1974) and IP set theory.",
     "significance": "key",
+    "prerequisites": [
+      "graph coloring",
+      "hindman",
+      "ip-sets",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "hindman",
       "ip-sets",
@@ -29,6 +35,11 @@
     "content": "FiniteSubsums(a) = {∑ᵢ∈S aᵢ : S finite ⊆ ℕ}. All possible sums of finite subsets of the sequence.",
     "mathContext": "Also called FS(a). These form an IP set if a is infinite.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "ip-set",
+      "subset-sum"
+    ],
     "relatedConcepts": [
       "ip-set",
       "subset-sum"
@@ -46,6 +57,11 @@
     "content": "0 ∈ FiniteSubsums(a) (empty sum) and a(n) ∈ FiniteSubsums(a) (singleton sum).",
     "mathContext": "These are immediate from the definition.",
     "significance": "supporting",
+    "prerequisites": [
+      "empty-sum",
+      "proof techniques",
+      "singleton"
+    ],
     "relatedConcepts": [
       "empty-sum",
       "singleton"
@@ -63,6 +79,12 @@
     "content": "Coloring(k) := ℕ → Fin k. Assigns each natural number one of k colors.",
     "mathContext": "Finite colorings are central to Ramsey theory.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "basic set theory",
+      "finite-coloring",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "ramsey",
       "finite-coloring"
@@ -80,6 +102,11 @@
     "content": "IsMonochromatic: all elements have same color. ContainsAllColors: all k colors appear. AvoidsSomeColor: at least one color missing.",
     "mathContext": "These predicates capture different notions of color structure.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "monochromaticity",
+      "rainbow"
+    ],
     "relatedConcepts": [
       "monochromaticity",
       "rainbow"
@@ -97,6 +124,11 @@
     "content": "BoundedInfinitelyOften(a, f) := {n | aₙ < f(n)} is infinite. StrictlyIncreasing(a) := m < n → a(m) < a(n).",
     "mathContext": "The growth bound is the key constraint. Without it, Hindman guarantees existence.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "bounded-growth",
+      "strict-mono"
+    ],
     "relatedConcepts": [
       "bounded-growth",
       "strict-mono"
@@ -114,6 +146,12 @@
     "content": "MonochromaticConjecture: ∃f, k such that for any k-coloring, there's a bounded sequence with monochromatic subsums. This is FALSE.",
     "mathContext": "Galvin showed this fails for k=2 using the dyadic coloring.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "disproved",
+      "galvin",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "disproved",
       "galvin"
@@ -131,6 +169,10 @@
     "content": "galvin_counterexample: ¬MonochromaticConjecture. The monochromatic version is disproved.",
     "mathContext": "Galvin used the 2-adic structure to construct a counterexample.",
     "significance": "key",
+    "prerequisites": [
+      "counterexample",
+      "disproof"
+    ],
     "relatedConcepts": [
       "counterexample",
       "disproof"
@@ -148,6 +190,12 @@
     "content": "ErdosConjecture948: ∃f, k≥2 such that for any k-coloring, there's a bounded sequence whose subsums don't contain all colors. This is OPEN.",
     "mathContext": "The modified version weakens 'monochromatic' to 'not all colors'.",
     "significance": "key",
+    "prerequisites": [
+      "avoid-color",
+      "basic set theory",
+      "graph coloring",
+      "open-problem"
+    ],
     "relatedConcepts": [
       "open-problem",
       "avoid-color"
@@ -165,6 +213,12 @@
     "content": "dyadicValuation(n) = max k such that 2^k | n. galvinColoring colors by parity of the odd part.",
     "mathContext": "The 2-adic structure ensures subsums have mixed parities.",
     "significance": "key",
+    "prerequisites": [
+      "2-adic",
+      "basic set theory",
+      "graph coloring",
+      "odd-part"
+    ],
     "relatedConcepts": [
       "2-adic",
       "odd-part"
@@ -182,6 +236,12 @@
     "content": "hindman_theorem: ∀k > 0, ∀k-coloring c, ∃ increasing a with monochromatic FiniteSubsums(a). But NO growth bound!",
     "mathContext": "Hindman (1974) proved this using ultrafilters. Won the Steele Prize.",
     "significance": "key",
+    "prerequisites": [
+      "filter theory",
+      "graph coloring",
+      "hindman",
+      "ip-set-existence"
+    ],
     "relatedConcepts": [
       "hindman",
       "ip-set-existence"
@@ -199,6 +259,11 @@
     "content": "IsIPSet(S) := S contains FiniteSubsums(a) for some infinite a. IsFSSet(S) := S equals FiniteSubsums(a).",
     "mathContext": "IP = 'idempotent' (Furstenberg). IP sets are closed under shifted addition.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "fs-set",
+      "ip-set"
+    ],
     "relatedConcepts": [
       "ip-set",
       "fs-set"
@@ -216,6 +281,11 @@
     "content": "IsIPStar(S) := S meets every IP set. Hindman implies some color class is always IP*.",
     "mathContext": "IP* is the dual notion. Large in the IP-sense.",
     "significance": "supporting",
+    "prerequisites": [
+      "basic set theory",
+      "dual",
+      "ip-star"
+    ],
     "relatedConcepts": [
       "ip-star",
       "dual"
@@ -233,6 +303,10 @@
     "content": "Modified conjecture is OPEN. The countable colors version is also open.",
     "mathContext": "The gap between Hindman (existence) and Galvin (no bounded monochromatic) remains unresolved.",
     "significance": "key",
+    "prerequisites": [
+      "countable",
+      "open-problem"
+    ],
     "relatedConcepts": [
       "open-problem",
       "countable"
@@ -250,6 +324,11 @@
     "content": "erdos_948_mono_false: Original monochromatic conjecture is FALSE. erdos_948_statement: Formal statement of modified conjecture.",
     "mathContext": "The formalization captures both the disproved and open versions.",
     "significance": "key",
+    "prerequisites": [
+      "formal-statement",
+      "main-result",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "main-result",
       "formal-statement"

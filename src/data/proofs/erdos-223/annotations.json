@@ -11,6 +11,10 @@
     "content": "Erdős Problem #223 (Vázsonyi's Conjecture) asks: how many pairs of points can be at distance 1 (the diameter) in an n-point set with diameter 1? The answer varies dramatically by dimension.",
     "mathContext": "For d ≥ 2 and n ≥ 2, define f_d(n) = max number of diameter pairs. The key result: f₂(n) = n, f₃(n) = 2n-2, f_d(n) ~ cn² for d ≥ 4.",
     "significance": "key",
+    "prerequisites": [
+      "diameter",
+      "point configuration"
+    ],
     "relatedConcepts": [
       "diameter",
       "point configuration",
@@ -29,6 +33,11 @@
     "content": "A **PointConfig d n** is a function Fin n → EuclideanSpace ℝ (Fin d), representing n points in d-dimensional Euclidean space.",
     "mathContext": "Using EuclideanSpace from Mathlib provides the standard inner product structure and distance function on ℝ^d.",
     "significance": "key",
+    "prerequisites": [
+      "EuclideanSpace",
+      "Fin",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "EuclideanSpace",
       "Fin",
@@ -47,6 +56,11 @@
     "content": "The **diameter** of a configuration is the supremum of pairwise distances: diam(A) = sup{dist(Aᵢ, Aⱼ) : i, j}.",
     "mathContext": "Using ⨆ (iSup) captures the maximum. For finite sets this is achieved, giving the actual maximum distance.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "metric space",
+      "supremum"
+    ],
     "relatedConcepts": [
       "supremum",
       "metric space",
@@ -65,6 +79,12 @@
     "content": "**diameterPairs A** counts pairs {i, j} with i < j where dist(Aᵢ, Aⱼ) equals the diameter. This is the central quantity we maximize.",
     "mathContext": "We filter pairs with distance exactly equal to the maximum, then count. The i < j constraint avoids double counting.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "cardinality",
+      "filter",
+      "filter theory"
+    ],
     "relatedConcepts": [
       "cardinality",
       "filter",
@@ -83,6 +103,11 @@
     "content": "**f d n** is the maximum number of diameter pairs over all n-point configurations with diameter 1 in ℝ^d. This is the function Erdős asked us to estimate.",
     "mathContext": "Using ⨆ (supremum) over configurations satisfying hasDiameterExactly A 1 ensures we consider exactly the valid configurations.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "extremal problem",
+      "supremum"
+    ],
     "relatedConcepts": [
       "supremum",
       "extremal problem",
@@ -101,6 +126,10 @@
     "content": "In 2D, **f₂(n) = n** exactly. The regular n-gon inscribed in a unit circle achieves this bound, and no configuration can do better.",
     "mathContext": "Each vertex of a regular n-gon is at the diameter distance from the opposite vertex (or two opposite vertices for even n). This gives n diameter pairs.",
     "significance": "key",
+    "prerequisites": [
+      "2D geometry",
+      "regular polygon"
+    ],
     "relatedConcepts": [
       "regular polygon",
       "2D geometry",
@@ -119,6 +148,11 @@
     "content": "In 3D, **f₃(n) = 2n - 2**. Proved independently by Grünbaum, Heppes, and Strasziewicz.",
     "mathContext": "The construction: take two regular (n-1)-gons in perpendicular planes sharing one vertex. This gives 2(n-1) = 2n-2 diameter pairs.",
     "significance": "key",
+    "prerequisites": [
+      "3D geometry",
+      "independent discovery",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "3D geometry",
       "independent discovery",
@@ -137,6 +171,11 @@
     "content": "For d ≥ 4, **f_d(n) grows quadratically** in n. The coefficient is (p-1)/(2p) where p = ⌊d/2⌋. This is a phase transition!",
     "mathContext": "The constraint on diameter pairs relaxes dramatically in dimension 4+. Cross-polytope-like constructions achieve quadratic density.",
     "significance": "key",
+    "prerequisites": [
+      "density theory",
+      "phase transition",
+      "quadratic growth"
+    ],
     "relatedConcepts": [
       "quadratic growth",
       "phase transition",
@@ -155,6 +194,12 @@
     "content": "The **leadingCoefficient d** = (p-1)/(2p) where p = ⌊d/2⌋. For d=4: 1/4, d=6: 1/3, approaching 1/2 as d → ∞.",
     "mathContext": "This determines the asymptotic density of diameter pairs. As dimension increases, we can pack more diameter pairs.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic coefficient",
+      "basic set theory",
+      "density theory",
+      "floor function"
+    ],
     "relatedConcepts": [
       "asymptotic coefficient",
       "floor function",
@@ -173,6 +218,10 @@
     "content": "Swanepoel gave **exact formulas** for f_d(n) for all sufficiently large n and characterized all extremal configurations.",
     "mathContext": "For d ≥ 4 and n ≥ N(d), we know precisely f_d(n), not just asymptotics. The extremal configurations are also explicitly described.",
     "significance": "key",
+    "prerequisites": [
+      "exact formula",
+      "extremal configuration"
+    ],
     "relatedConcepts": [
       "exact formula",
       "extremal configuration",
@@ -191,6 +240,12 @@
     "content": "The **diameterGraph** is a SimpleGraph where vertices are points and edges connect diameter pairs. Its structure varies by dimension: in 2D, max degree ≤ 2 (linear bound); in 3D, at most 2n-2 edges; in 4D+, Θ(n²) edges from cross-polytope constructions.",
     "mathContext": "The graph-theoretic view reveals why the dimension transition happens: in low dimensions, geometric constraints limit vertex degrees, while in d ≥ 4, cross-polytope configurations allow quadratic edge density.",
     "significance": "key",
+    "prerequisites": [
+      "SimpleGraph",
+      "basic set theory",
+      "density theory",
+      "graph structure"
+    ],
     "relatedConcepts": [
       "SimpleGraph",
       "graph structure",
@@ -210,6 +265,11 @@
     "content": "For d = 4: **leadingCoefficient 4 = 1/4**. Since p = 2, we get (2-1)/(2·2) = 1/4.",
     "mathContext": "This means f₄(n) ≈ n²/4 for large n. About 1/4 of all pairs can be at the diameter distance!",
     "significance": "key",
+    "prerequisites": [
+      "dimension 4",
+      "explicit calculation",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "dimension 4",
       "explicit calculation",
@@ -228,6 +288,11 @@
     "content": "**erdos_223_summary** packages all three cases: 2D (f = n), 3D (f = 2n-2), and 4D+ (f ≥ cn²).",
     "mathContext": "The conjunction shows the complete solution across all dimensions, demonstrating the phase transition at d = 4.",
     "significance": "key",
+    "prerequisites": [
+      "all dimensions",
+      "proof techniques",
+      "summary"
+    ],
     "relatedConcepts": [
       "summary",
       "all dimensions",

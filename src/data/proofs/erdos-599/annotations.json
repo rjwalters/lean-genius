@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #599** asks whether Menger's theorem for finite graphs extends to infinite graphs. Menger's theorem (1927) states that the maximum number of vertex-disjoint paths equals the minimum separator size. Erdős conjectured in 1981 that this holds for infinite graphs too.",
     "mathContext": "The conjecture was open for 28 years before being resolved by Aharoni and Berger in 2009.",
     "significance": "key",
+    "prerequisites": [
+      "erdos",
+      "graph theory basics",
+      "menger-theorem"
+    ],
     "relatedConcepts": [
       "erdos",
       "menger-theorem",
@@ -29,6 +34,12 @@
     "content": "**Graph** structure supporting infinite vertex sets with symmetric adjacency and no self-loops. An **independent set** S has no two vertices adjacent — this ensures A and B don't trivially share edges.",
     "mathContext": "Unlike Mathlib's SimpleGraph, this custom Graph type avoids decidability assumptions needed for infinite vertex sets.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "graph theory basics",
+      "graph-theory",
+      "independent-set"
+    ],
     "relatedConcepts": [
       "graph-theory",
       "independent-set"
@@ -46,6 +57,12 @@
     "content": "A **Path** is a nonempty list of vertices with consecutive adjacency. Key operations: **first** (start vertex), **last** (end vertex), **vertexSet** (all vertices on the path). A path goes **from A to B** if its first vertex is in A and last is in B.",
     "mathContext": "List-based representation allows clean formalization of path operations without requiring decidable equality on the vertex type.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "connectivity",
+      "path",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "path",
       "connectivity"
@@ -63,6 +80,11 @@
     "content": "Two notions of disjointness: **AreDisjoint** allows shared endpoints only, while **AreInternallyDisjoint** is the weaker condition used in the conjecture — paths may share endpoints but not internal vertices.",
     "mathContext": "Internal disjointness is the standard notion for Menger-type theorems, as paths between A and B naturally share membership in those sets.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "path-separation",
+      "vertex-disjoint"
+    ],
     "relatedConcepts": [
       "vertex-disjoint",
       "path-separation"
@@ -80,6 +102,12 @@
     "content": "A **PathFamily** is a set of paths all going from A to B, with a **pairwiseDisjoint** property requiring all pairs to be internally vertex-disjoint.",
     "mathContext": "Lean: `def PathFamily.pairwiseDisjoint {V : Type*} {G : Graph V} {A B : Set V}`",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "disjoint-paths",
+      "graph theory basics",
+      "path-family"
+    ],
     "relatedConcepts": [
       "path-family",
       "disjoint-paths"
@@ -97,6 +125,11 @@
     "content": "The two key properties of the set S in the conjecture: **IsTransversal** means S hits each path exactly once. **IsSeparator** means every A-B path passes through S. Together, these capture the max-flow min-cut duality.",
     "mathContext": "A set that is both a transversal and separator witnesses the equality of maximum flow and minimum cut.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "separator",
+      "transversal"
+    ],
     "relatedConcepts": [
       "transversal",
       "separator",
@@ -115,6 +148,12 @@
     "content": "**The formal statement**: For any graph G with disjoint independent sets A, B, there exist vertex-disjoint A-B paths P and a set S that is both a transversal of P and a separator for all A-B paths. This is the central object of the formalization.",
     "mathContext": "Lean: `def ErdosMengerConjecture : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "erdos",
+      "graph theory basics",
+      "menger-theorem"
+    ],
     "relatedConcepts": [
       "erdos",
       "menger-theorem",
@@ -133,6 +172,12 @@
     "content": "**Menger (1927)**: For finite graphs, max vertex-disjoint A-B paths equals min A-B separator size. This classical result is the finite case of the Erdős-Menger conjecture.",
     "mathContext": "Stated as an axiom since the full proof requires significant finite graph theory infrastructure not built here.",
     "significance": "key",
+    "prerequisites": [
+      "finite-graphs",
+      "graph theory basics",
+      "menger-theorem",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "menger-theorem",
       "finite-graphs"
@@ -150,6 +195,12 @@
     "content": "**The main result**: Aharoni and Berger proved the Erdős-Menger conjecture holds for ALL graphs, including infinite ones. Published in Inventiones Mathematicae, this resolved a 28-year-old conjecture using infinite matroid theory.",
     "mathContext": "The proof technique involves infinite matroid intersection, a deep result in combinatorial optimization that extends finite matroid theory.",
     "significance": "key",
+    "prerequisites": [
+      "aharoni-berger",
+      "graph theory basics",
+      "infinite-matroid",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "aharoni-berger",
       "infinite-matroid"
@@ -167,6 +218,11 @@
     "content": "The Aharoni-Berger proof uses **infinite matroid theory** — a generalization of finite matroids to infinite ground sets. The connection to well-quasi-ordering provides the compactness arguments needed for the infinite case.",
     "mathContext": "Formalizes the concept of proof techniques",
     "significance": "key",
+    "prerequisites": [
+      "matroid-theory",
+      "ring tactic",
+      "well-quasi-ordering"
+    ],
     "relatedConcepts": [
       "matroid-theory",
       "well-quasi-ordering"
@@ -184,6 +240,12 @@
     "content": "**IsKLinked**: A graph is k-linked if any k source-target pairs can be connected by disjoint paths. The Erdős-Menger result implies k-linkage for sufficiently connected graphs.",
     "mathContext": "k-linkage is a natural strengthening that asks for multiple independent path connections simultaneously.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "connectivity",
+      "graph theory basics",
+      "k-linkage"
+    ],
     "relatedConcepts": [
       "k-linkage",
       "connectivity"
@@ -201,6 +263,12 @@
     "content": "The vertex version of max-flow min-cut: the maximum number of vertex-disjoint A-B paths equals the minimum vertex separator size. This is the quantitative form of Menger's theorem.",
     "mathContext": "Lean: `axiom maxflow_mincut_vertex {V : Type*} [Fintype V] (G : Graph V) (A B : Set V) :`",
     "significance": "key",
+    "prerequisites": [
+      "Fintype",
+      "graph theory basics",
+      "max-flow-min-cut",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "max-flow-min-cut",
       "vertex-separator"
@@ -218,6 +286,12 @@
     "content": "**Problem #599 is SOLVED**: YES, Menger's theorem extends to infinite graphs. The timeline spans from Menger (1927) through Erdős (1981) to Aharoni-Berger (2009). This is a major result in infinite combinatorics.",
     "mathContext": "Lean: `theorem erdos_599_solved : ErdosMengerConjecture`",
     "significance": "key",
+    "prerequisites": [
+      "erdos",
+      "graph theory basics",
+      "proof techniques",
+      "solved"
+    ],
     "relatedConcepts": [
       "erdos",
       "solved",

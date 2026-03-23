@@ -11,6 +11,12 @@
     "content": "**Descartes' Rule of Signs (1637)**:\n\nFor polynomial $p(x) = a_n x^n + a_{n-1} x^{n-1} + \\cdots + a_0$:\n\n1. Count **sign changes** in $(a_n, a_{n-1}, \\ldots, a_0)$, ignoring zeros\n2. Number of **positive real roots** $\\leq$ this count\n3. The difference is **even**\n\nFor **negative roots**: Apply the rule to $p(-x)$.\n\n**Historical**: Published in *La Géométrie* (1637), appendix to *Discours de la méthode*. One of the first systematic methods for determining root properties without solving.\n\n**Applications**: Root isolation algorithms, existence tests, computational algebra.",
     "mathContext": "$p(x) = a_n x^n + a_{n-1} x^{n-1} + \\cdots + a_0$",
     "significance": "key",
+    "prerequisites": [
+      "polynomial ring theory",
+      "polynomial roots",
+      "ring tactic",
+      "sign changes"
+    ],
     "relatedConcepts": [
       "polynomial roots",
       "sign changes",
@@ -29,6 +35,11 @@
     "content": "**Sign of a Real Number**:\n```lean\nnoncomputable def realSign (x : ℝ) : ℤ :=\n  if x > 0 then 1 else if x < 0 then -1 else 0\n```\n\n**Opposite Signs**: $x \\cdot y < 0$\n\n**Sign Change Between Indices**:\n```lean\ndef SignChangeBetween (f : Fin n → ℝ) (i j : Fin n) : Prop :=\n  i < j ∧ f i ≠ 0 ∧ f j ≠ 0 ∧\n  (∀ k, i < k → k < j → f k = 0) ∧\n  oppositeSign (f i) (f j)\n```\n\n**Key**: Zeros are **skipped** when counting sign changes. We look for consecutive non-zero terms with opposite signs.",
     "mathContext": "sign change: opposite non-zero neighbors",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "coefficient sequence",
+      "oppositeSign"
+    ],
     "relatedConcepts": [
       "oppositeSign",
       "coefficient sequence",
@@ -47,6 +58,12 @@
     "content": "**Coefficient Sequence**:\n```lean\nnoncomputable def coeffSequence (p : ℝ[X]) (d : ℕ) : Fin (d + 1) → ℝ :=\n  fun i => p.coeff (d - i.val)\n```\n\nReturns coefficients from **highest to lowest** degree.\n\n**Sign Changes in Coefficients**:\n```lean\nnoncomputable def signChangesInCoeffs (p : ℝ[X]) : ℕ :=\n  countSignChanges (coeffSequence p p.natDegree)\n```\n\n**Positive Roots**:\n```lean\ndef IsPositiveRoot (p : ℝ[X]) (r : ℝ) : Prop :=\n  r > 0 ∧ p.eval r = 0\n\nnoncomputable def countPositiveRoots (p : ℝ[X]) : ℕ :=\n  Multiset.card (p.roots.filter (· > 0))\n```",
     "mathContext": "coefficients → sign changes → root bound",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "coeffSequence",
+      "countPositiveRoots",
+      "filter theory"
+    ],
     "relatedConcepts": [
       "coeffSequence",
       "countPositiveRoots",
@@ -65,6 +82,10 @@
     "content": "**Descartes' Rule of Signs** (Wiedijk #100):\n\n**Upper Bound**:\n```lean\ntheorem descartes_upper_bound (p : ℝ[X]) (hp : p ≠ 0) :\n    countPositiveRoots p ≤ signChangesInCoeffs p\n```\n\n**Parity**:\n```lean\ntheorem descartes_parity (p : ℝ[X]) (hp : p ≠ 0) :\n    Even (signChangesInCoeffs p - countPositiveRoots p)\n```\n\n**Combined Form**: $\\exists k, \\text{pos roots} + 2k = \\text{sign changes}$\n\n**Proof Sketch**:\n1. Induction on degree\n2. Base case: constant has no positive roots\n3. Inductive: Rolle's theorem — between roots of $p$, there's a root of $p'$\n4. Sign changes decrease by at most 1 per differentiation",
     "mathContext": "pos roots ≤ sign changes, difference even",
     "significance": "key",
+    "prerequisites": [
+      "Rolle's theorem",
+      "induction"
+    ],
     "relatedConcepts": [
       "Rolle's theorem",
       "induction",
@@ -83,6 +104,11 @@
     "content": "**For Negative Roots**: Apply rule to $p(-x)$.\n\n```lean\nnoncomputable def negSubst (p : ℝ[X]) : ℝ[X] := p.comp (-X)\n\ntheorem negative_root_iff_positive_of_negSubst (p : ℝ[X]) (r : ℝ) :\n    (r < 0 ∧ p.eval r = 0) ↔ (-r > 0 ∧ (negSubst p).eval (-r) = 0)\n```\n\n**Effect on Coefficients**: $p(-x)$ alternates signs of odd-degree terms.\n\n**Example**: $p(x) = x^3 - 2x^2 + x - 1$\n- Sign changes in $p(x)$: 3 → at most 3 positive roots\n- $p(-x) = -x^3 - 2x^2 - x - 1$: 0 sign changes → 0 negative roots",
     "mathContext": "negative roots of p = positive roots of p(-x)",
     "significance": "key",
+    "prerequisites": [
+      "comp",
+      "negSubst",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "negSubst",
       "comp",
@@ -101,6 +127,10 @@
     "content": "**Example 1**: $x^2 - 1$ has coefficients $[1, 0, -1]$\n- Sign changes: 1 (from $+1$ to $-1$, skipping 0)\n- Positive roots: 1 (namely $x = 1$) ✓\n\n**Example 2**: $x^2 + 1$ has coefficients $[1, 0, 1]$\n- Sign changes: 0 (no sign change)\n- Positive roots: 0 (roots are $\\pm i$) ✓\n\n**Example 3**: $x^3 - x$ has coefficients $[1, 0, -1, 0]$\n- Sign changes: 1\n- Positive roots: 1 (namely $x = 1$; also $x = 0, -1$) ✓\n\nThe rule correctly bounds the positive root count!",
     "mathContext": "concrete coefficient sequences",
     "significance": "supporting",
+    "prerequisites": [
+      "examples",
+      "verification"
+    ],
     "relatedConcepts": [
       "examples",
       "verification",
@@ -119,6 +149,12 @@
     "content": "**All Positive Coefficients**:\n\nIf all $a_i \\geq 0$ with some $a_i > 0$:\n- No sign changes → 0 positive roots\n- For $x > 0$: $p(x) = \\sum a_i x^i > 0$\n\n```lean\ntheorem no_positive_roots_if_positive_coeffs (p : ℝ[X])\n    (hpos : ∀ i, 0 ≤ p.coeff i) (hsome : ∃ i, 0 < p.coeff i) :\n    countPositiveRoots p = 0\n```\n\n**Alternating Signs**:\n\nIf coefficients strictly alternate signs:\n- $n$ sign changes for degree $n$ polynomial\n- Bound is **achieved**: exactly $n$ positive roots\n\n```lean\ntheorem alternating_signs_max_roots (p : ℝ[X])\n    (halt : ∀ i, (Even i → 0 < coeff i) ∧ (Odd i → coeff i < 0)) :\n    countPositiveRoots p = p.natDegree\n```",
     "mathContext": "all positive ⟹ no pos roots; alternating ⟹ max roots",
     "significance": "key",
+    "prerequisites": [
+      "alternating signs",
+      "polynomial ring theory",
+      "positive coefficients",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "positive coefficients",
       "alternating signs",
@@ -137,6 +173,12 @@
     "content": "**Rolle's Theorem for Polynomials**:\n\nBetween any two distinct roots of $p$, there exists a root of $p'$.\n\n```lean\ntheorem rolle_polynomial (p : ℝ[X]) (a b : ℝ) (hab : a < b)\n    (ha : p.eval a = 0) (hb : p.eval b = 0) :\n    ∃ c, a < c ∧ c < b ∧ (derivative p).eval c = 0\n```\n\n**Key Insight**: Differentiation can reduce sign changes by at most 1.\n\n```lean\ntheorem derivative_reduces_sign_changes (p : ℝ[X]) (hp : p ≠ 0) :\n    signChangesInCoeffs (derivative p) ≤ signChangesInCoeffs p - 1 ∨\n    signChangesInCoeffs (derivative p) = signChangesInCoeffs p\n```\n\nThis links root count changes to sign change decreases under differentiation.",
     "mathContext": "Rolle connects roots of p to roots of p'",
     "significance": "key",
+    "prerequisites": [
+      "Rolle's theorem",
+      "derivative",
+      "polynomial ring theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Rolle's theorem",
       "derivative",
@@ -155,6 +197,10 @@
     "content": "**Why Descartes' Rule Matters**:\n\n1. **Root Bounds**: Upper bound on positive/negative roots without solving\n\n2. **Existence Tests**:\n   - Sign changes = 1 → exactly 1 positive root\n   - Sign changes = 0 → no positive roots\n\n3. **Historical**: Predates Fundamental Theorem of Algebra; early general root result\n\n4. **Algorithms**: Foundation for:\n   - Sturm's theorem (exact root counting)\n   - Vincent's theorem (root isolation)\n   - Real root computation\n\n5. **Education**: Beautiful connection between algebraic (coefficients) and analytic (roots) properties",
     "mathContext": "Lean: `theorem alternating_signs_max_roots (p : ℝ[X]) (hp : p ≠ 0)`",
     "significance": "supporting",
+    "prerequisites": [
+      "Sturm's theorem",
+      "Vincent's theorem"
+    ],
     "relatedConcepts": [
       "Sturm's theorem",
       "Vincent's theorem",

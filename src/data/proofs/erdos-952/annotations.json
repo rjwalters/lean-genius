@@ -11,6 +11,11 @@
     "content": "The Gaussian Moat Problem: Can we walk from 0 to infinity on Gaussian primes with bounded step size? Status: OPEN.",
     "mathContext": "NOT actually an Erdős problem - originated with Motzkin, Gordon, et al. at a 1963 Pasadena meeting. Erdős popularized it.",
     "significance": "key",
+    "prerequisites": [
+      "bounded-gaps",
+      "gaussian-primes",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "gaussian-primes",
       "bounded-gaps",
@@ -29,6 +34,12 @@
     "content": "IsGaussianPrime(z) := Prime z in ℤ[i]. GaussianPrimes := {z | IsGaussianPrime z}.",
     "mathContext": "ℤ[i] is a unique factorization domain; Gaussian primes are its irreducibles.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "gaussian-integers",
+      "prime numbers",
+      "ufd"
+    ],
     "relatedConcepts": [
       "gaussian-integers",
       "ufd",
@@ -47,6 +58,12 @@
     "content": "Three types: (1) IsNorm2Prime: norm = 2 (like 1+i). (2) IsInertPrime: p ≡ 3 (mod 4) stays prime. (3) IsSplitPrime: p ≡ 1 (mod 4) splits.",
     "mathContext": "Complete classification: π is Gaussian prime iff norm is 2, p² for p ≡ 3 (mod 4), or p for p ≡ 1 (mod 4).",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "fermat-two-square",
+      "prime numbers",
+      "splitting"
+    ],
     "relatedConcepts": [
       "fermat-two-square",
       "splitting",
@@ -65,6 +82,12 @@
     "content": "IsInfiniteGaussianPrimeWalk(x) := x is injective AND all x(n) are Gaussian primes. HasBoundedGaps(x, C) := norm(x(n+1) - x(n)) < C for all n.",
     "mathContext": "We want to walk on Gaussian primes with steps of bounded length (norm).",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "bounded-steps",
+      "prime numbers",
+      "sequence"
+    ],
     "relatedConcepts": [
       "sequence",
       "bounded-steps"
@@ -82,6 +105,12 @@
     "content": "GaussianMoatConjecture := exists infinite walk x and bound C such that HasBoundedGaps(x, C). ErdosConjecture952 := GaussianMoatConjecture.",
     "mathContext": "Positive answer means Gaussian primes are 'connected' at bounded distance.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "connectivity",
+      "moat-problem",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "moat-problem",
       "connectivity"
@@ -99,6 +128,10 @@
     "content": "jordan_rabung: No walk exists with step norm < 5 (i.e., |step| ≤ 2).",
     "mathContext": "First computational result showing moats exist for small step sizes.",
     "significance": "key",
+    "prerequisites": [
+      "negative-result",
+      "step-bound"
+    ],
     "relatedConcepts": [
       "negative-result",
       "step-bound"
@@ -116,6 +149,10 @@
     "content": "tsuchimura: No walk exists with step norm < 27 (i.e., |step| ≤ √26).",
     "mathContext": "Current best bound showing moats exist for larger step sizes.",
     "significance": "key",
+    "prerequisites": [
+      "best-known",
+      "computational"
+    ],
     "relatedConcepts": [
       "best-known",
       "computational"
@@ -133,6 +170,11 @@
     "content": "CanEscapeMoat(k) := exists walk with HasBoundedGaps(x, k). criticalMoatWidth := smallest k with NOT CanEscapeMoat(k).",
     "mathContext": "If answer is NO, there's a critical width beyond which escape is impossible.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "critical-value",
+      "escape"
+    ],
     "relatedConcepts": [
       "critical-value",
       "escape"
@@ -150,6 +192,11 @@
     "content": "gaussian_prime_theorem: π_ℤ[i](R) ~ R² / log(R). Similar to rational prime counting function.",
     "mathContext": "Gaussian primes are dense enough locally, but gaps can still grow.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic",
+      "prime numbers",
+      "prime-counting"
+    ],
     "relatedConcepts": [
       "prime-counting",
       "asymptotic"
@@ -167,6 +214,11 @@
     "content": "primes_mod_4_connection: If no escape possible, then large gaps in primes ≡ 1 (mod 4) exist.",
     "mathContext": "Primes p ≡ 1 (mod 4) split in ℤ[i], creating Gaussian primes. Gaps in these create moats.",
     "significance": "key",
+    "prerequisites": [
+      "gaps",
+      "prime numbers",
+      "splitting-primes"
+    ],
     "relatedConcepts": [
       "splitting-primes",
       "gaps"
@@ -184,6 +236,12 @@
     "content": "Terence Tao has indicated this problem appears quite difficult.",
     "mathContext": "Understanding global structure of Gaussian primes is much harder than local density.",
     "significance": "supporting",
+    "prerequisites": [
+      "density theory",
+      "difficulty",
+      "expert-opinion",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "difficulty",
       "expert-opinion"
@@ -201,6 +259,12 @@
     "content": "EisensteinMoatProblem: Same question for ℤ[ω]. RationalPrimeMoat: Related to twin prime conjecture.",
     "mathContext": "Analogous problems exist for other number rings and the integers.",
     "significance": "supporting",
+    "prerequisites": [
+      "basic set theory",
+      "eisenstein",
+      "prime numbers",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "eisenstein",
       "twin-primes"
@@ -218,6 +282,10 @@
     "content": "The problem is OPEN. Known: no walk with steps ≤ √26. Unknown: whether any bounded step suffices.",
     "mathContext": "Note: NOT actually an Erdős problem despite the attribution.",
     "significance": "key",
+    "prerequisites": [
+      "misattribution",
+      "open-problem"
+    ],
     "relatedConcepts": [
       "open-problem",
       "misattribution"

@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #550** asks for a general upper bound on Ramsey numbers R(T, G) when T is a tree and G is a complete multipartite graph. The conjectured bound R(T,G) ≤ (χ(G)-1)(R(T,K_{m₁,m₂})-1)+m₁ would unify and extend Chvátal's classical result for complete graphs.",
     "mathContext": "This is an OPEN problem in Ramsey theory. The conjecture builds on Chvátal's exact formula R(T, Kₘ) = (m-1)(n-1)+1 by replacing the complete graph target with a complete multipartite graph, using the chromatic number and the bipartite Ramsey number as building blocks.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "graph theory basics",
+      "graph-coloring",
+      "ramsey-theory"
+    ],
     "relatedConcepts": [
       "ramsey-theory",
       "graph-coloring",
@@ -29,6 +35,12 @@
     "content": "**IsTree** captures that a graph is connected with no cycles. The axiom **tree_edge_count** states the fundamental fact that any tree on n vertices has exactly n-1 edges, provable by induction on the number of vertices.",
     "mathContext": "Trees are the simplest connected graphs, and their rigid structure is what makes Chvátal's exact Ramsey formula possible. Unlike general graphs, trees embed greedily: you can build the embedding one vertex at a time.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "acyclic-graphs",
+      "basic set theory",
+      "connected-graphs"
+    ],
     "relatedConcepts": [
       "connected-graphs",
       "acyclic-graphs",
@@ -47,6 +59,12 @@
     "content": "**CompleteMultipartite** models K_{m₁,...,mₖ} with sorted part sizes. Two vertices are adjacent iff they belong to different parts. The **completeBipartite** constructor builds K_{m₁,m₂}, which appears in the conjectured bound. The **completeGraphAsMultipartite** shows Kₘ as a special case with m singleton parts.",
     "mathContext": "Complete multipartite graphs generalize complete graphs. Their chromatic number equals the number of parts k, since vertices in the same part are non-adjacent and can share a color, while vertices in different parts must have different colors.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "chromatic-number",
+      "graph theory basics",
+      "graph-coloring"
+    ],
     "relatedConcepts": [
       "graph-coloring",
       "chromatic-number",
@@ -65,6 +83,12 @@
     "content": "**R(T, G)** is the smallest N such that every red-blue coloring of K_N contains either a red copy of T or a blue copy of G. The existence axiom **ramsey_exists** captures Ramsey's theorem, and **ramseyNumber** uses Nat.find to extract the minimum such N. The **ramseyNumber_achieves** axiom confirms R(T,G) itself satisfies the Ramsey property.",
     "mathContext": "Ramsey's theorem guarantees that for any finite graphs, such an N exists. The formalization encodes a blue copy of a multipartite graph via disjoint vertex parts with all inter-part edges colored blue, which is more faithful than a simplified True placeholder.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "basic set theory",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "ramsey-theory",
       "pigeonhole",
@@ -83,6 +107,12 @@
     "content": "**Chvátal's theorem** gives the exact Ramsey number R(T, Kₘ) = (m-1)(n-1)+1 for any tree T on n vertices. This is one of the rare exact results in Ramsey theory. The upper and lower bound axioms decompose the equality. Four **computational examples** verify the formula: e.g., R(T₅, K₃) = 9.",
     "mathContext": "Chvátal's proof works by induction. The lower bound comes from the extremal construction of (m-1) disjoint red cliques of size (n-1), which has no red tree T_n and no blue K_m. The upper bound uses a greedy embedding argument exploiting the tree structure.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "exact-ramsey-numbers",
+      "tree theory",
+      "tree-embedding"
+    ],
     "relatedConcepts": [
       "exact-ramsey-numbers",
       "tree-embedding",
@@ -101,6 +131,12 @@
     "content": "**The conjectured bound** R(T,G) ≤ (χ(G)-1)(R(T,K_{m₁,m₂})-1)+m₁ is recursive: it uses the bipartite Ramsey number R(T, K_{m₁,m₂}) as a subroutine. **ErdosConjecture** formalizes this with an eventual quantifier (for n sufficiently large). The axiom **erdos_conjecture_open** marks this as an OPEN problem.",
     "mathContext": "When G = Kₘ (so k = m, all parts size 1), the bound reduces to (m-1)(R(T, K_{1,1})-1)+1 = (m-1)(n-1)+1, recovering Chvátal. The 'sufficiently large n' condition is needed because small cases may have different behavior.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "open-problems",
+      "recursive-bounds",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "open-problems",
       "recursive-bounds",
@@ -119,6 +155,12 @@
     "content": "**complete_graph_case** proves the conjecture reduces to Chvátal when G = Kₘ (the only fully proved case). **bipartite_case** axiomatizes an upper bound for K_{m,m}. **starGraph** constructs K_{1,n-1} as a bipartite graph, relevant because stars are the 'easiest' trees for Ramsey problems.",
     "mathContext": "Stars K_{1,n-1} have maximum degree n-1 (hub vertex), making them extremal among trees. For stars, R(K_{1,n}, G) can often be computed exactly because embedding a star requires only finding a vertex with enough neighbors of the right color.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "complete-graphs",
+      "graph theory basics",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "star-graphs",
       "complete-graphs",
@@ -137,6 +179,12 @@
     "content": "**IsPath** defines paths as trees where every vertex has degree at most 2, with exactly two endpoints of degree 1. **path_complete** notes Chvátal applies to paths (they're trees). The **Gerencsér-Gyárfás theorem** (1967) gives the exact path-vs-path Ramsey number R(Pₙ, Pₘ) = n + ⌊m/2⌋ - 1.",
     "mathContext": "Paths are at the opposite extreme from stars: they have minimum possible maximum degree (2) among connected graphs. The Gerencsér-Gyárfás result predates Chvátal's theorem and was one of the first exact Ramsey results for specific graph families.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "basic set theory",
+      "exact-ramsey",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "path-graphs",
       "exact-ramsey",
@@ -155,6 +203,12 @@
     "content": "**maxDegree** computes the maximum vertex degree. **bounded_degree_ramsey** states that trees with bounded maximum degree Δ satisfy R(T, K₃) ≤ C·n for some constant C depending on Δ. **BurrConjecture** formalizes this uniformly, and **burr_conjecture** marks it as proved.",
     "mathContext": "Burr's conjecture (now a theorem) is significant because it shows that the Ramsey number grows linearly in n for bounded-degree trees, matching the Chvátal lower bound up to a constant. The proof uses the regularity lemma and embedding techniques for sparse graphs.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "bounded-degree",
+      "graph theory basics",
+      "linear-ramsey"
+    ],
     "relatedConcepts": [
       "bounded-degree",
       "linear-ramsey",
@@ -173,6 +227,12 @@
     "content": "**turanNumber** computes ex(n, Kᵣ), the maximum number of edges in an n-vertex Kᵣ-free graph. **ramsey_turan_connection** links Ramsey and Turán: R(T, Kᵣ) exceeds the Turán number plus 1, because any graph with more than ex(n, Kᵣ) edges must contain Kᵣ.",
     "mathContext": "Turán extremal graphs are complete multipartite with balanced parts, connecting directly to the multipartite theme of this problem. The Turán bound provides a structural lower bound on Ramsey numbers complementary to probabilistic methods.",
     "significance": "supporting",
+    "prerequisites": [
+      "Ramsey theory",
+      "extremal-graph-theory",
+      "graph theory basics",
+      "turan-theorem"
+    ],
     "relatedConcepts": [
       "turan-theorem",
       "extremal-graph-theory",
@@ -191,6 +251,12 @@
     "content": "**probabilistic_lower** gives R(T, G) ≥ n-1 for any n-vertex tree: you need at least n-1 vertices to embed any tree. **tree_embedding_lower** strengthens this for K₂: R(T, K₂) ≥ n, since embedding T requires at least n vertices and K₂ is a single edge.",
     "mathContext": "These are simple but fundamental lower bounds. The probabilistic method can give stronger bounds for specific cases, but the basic embedding argument already shows that tree Ramsey numbers must grow at least linearly in the tree size.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "lower-bounds",
+      "simp tactic",
+      "tree theory"
+    ],
     "relatedConcepts": [
       "lower-bounds",
       "tree-embedding",
@@ -209,6 +275,12 @@
     "content": "**RamseyExtremalGraph** defines the witness showing R(T, Kₘ) ≥ (m-1)(n-1)+1: take (m-1) disjoint red cliques of size (n-1). No red tree of size n fits in any single clique, and there are only m-1 < m cliques, so no blue Kₘ exists. The axiom **ramsey_extremal_exists** asserts this construction works.",
     "mathContext": "This extremal construction is the key to Chvátal's lower bound. It illustrates a common Ramsey strategy: partition the vertex set into clusters and color intra-cluster edges red and inter-cluster edges blue, then argue neither color contains the target graph.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "basic set theory",
+      "extremal-constructions",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "extremal-constructions",
       "ramsey-lower-bounds",
@@ -227,6 +299,11 @@
     "content": "**asymptotic_behavior** states R(T_n, Kₘ)/n → (m-1) as n → ∞. **leading_coefficient** gives the exact formula showing this ratio: R(T_n, Kₘ) = (m-1)(n-1)+1 = (m-1)n - (m-2), so the leading term is (m-1)n.",
     "mathContext": "This asymptotic is an immediate consequence of Chvátal's exact formula. For the multipartite conjecture, the analogous asymptotic would involve R(T, K_{m₁,m₂}), making the growth rate depend on the bipartite Ramsey behavior rather than just the chromatic number.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "asymptotics",
+      "growth-rate"
+    ],
     "relatedConcepts": [
       "asymptotics",
       "growth-rate",

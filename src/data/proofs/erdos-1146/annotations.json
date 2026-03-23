@@ -39,6 +39,11 @@
     "content": "The 3-smooth numbers are closed under multiplication by 2, by 3, and by each other. This follows directly from the definition: if n = 2^m · 3^k, then 2n = 2^{m+1} · 3^k and 3n = 2^m · 3^{k+1}. For the product, (2^{m₁}·3^{k₁}) · (2^{m₂}·3^{k₂}) = 2^{m₁+m₂} · 3^{k₁+k₂}.",
     "mathContext": "Multiplicative closure is a key structural property. It means the 3-smooth numbers form a multiplicative monoid. This structure distinguishes them from lacunary sets and gives them richer additive behavior.",
     "significance": "supporting",
+    "prerequisites": [
+      "mul_three_mem_smooth23",
+      "mul_two_mem_smooth23",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "mul_two_mem_smooth23",
       "mul_three_mem_smooth23",
@@ -62,6 +67,12 @@
     "content": "Mann's theorem states d_s(A + B) ≥ min(1, d_s(A) + d_s(B)). Since d_s(smoothNumbers23) = 0, this gives d_s(A + B) ≥ min(1, d_s(B)) = d_s(B). This is a non-strict inequality — it shows the density doesn't decrease, but doesn't prove it strictly increases. The essential component question asks for strict inequality.",
     "mathContext": "This is the crux of why the problem is hard. All known general tools (Mann, Schnirelmann, Kneser) give only ≥, not >. Proving strict inequality requires understanding the specific arithmetic structure of {2^m · 3^n}.",
     "significance": "key",
+    "prerequisites": [
+      "density theory",
+      "mann_theorem",
+      "proof techniques",
+      "smooth23_schnirelmann_zero"
+    ],
     "relatedConcepts": [
       "mann_theorem",
       "smooth23_schnirelmann_zero",
@@ -86,6 +97,11 @@
     "content": "Erdos1146Conjecture is defined as IsEssentialComponent smoothNumbers23, which unfolds to: for every B with 0 < d_s(B) < 1, d_s({2^m·3^n} + B) > d_s(B). The equivalence with RuzsaOpenQuestion (from Erdős #37) is proved by reflexivity — they are definitionally equal.",
     "mathContext": "This is the central open question. The difficulty is that no existing technique can distinguish between the non-strict ≥ from Mann's theorem and the strict > needed here. New methods involving the multiplicative structure or distribution in residue classes are likely needed.",
     "significance": "key",
+    "prerequisites": [
+      "IsEssentialComponent",
+      "RuzsaOpenQuestion",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "RuzsaOpenQuestion",
       "IsEssentialComponent",
@@ -110,6 +126,12 @@
     "content": "For any prime p, the set {p^n : n ≥ 0} is lacunary (with ratio p) and therefore not an essential component, by Erdős #37. This makes {2^m · 3^n} (using TWO primes) the simplest possible case that could be essential.",
     "mathContext": "The proof constructs the lacunary sequence enumeration explicitly (a_k = p^k, ratio = p) and applies erdos_37_disproved. The key insight: using a single prime gives exponential growth (lacunary), but two primes give polynomial-in-log growth, crossing Ruzsa's threshold.",
     "significance": "key",
+    "prerequisites": [
+      "IsLacunarySet",
+      "erdos_37_disproved",
+      "polynomial ring theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "IsLacunarySet",
       "erdos_37_disproved",

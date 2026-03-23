@@ -11,6 +11,10 @@
     "content": "**Erdős Problem #363: Square Products from Disjoint Intervals**\n\nGiven disjoint intervals I₁, ..., Iₙ of consecutive integers with |Iᵢ| ≥ 4, are there only finitely many collections whose product is a perfect square?\n\n**Answer**: NO - the conjecture is FALSE.\n\nUlas (2005), Bauer-Bennett (2007), and Bennett-Van Luijk (2012) collectively showed infinitely many solutions exist.",
     "mathContext": "This connects to the Erdős-Selfridge theorem: a single block of consecutive integers is never a perfect power. But disjoint blocks can combine to give squares.",
     "significance": "key",
+    "prerequisites": [
+      "Erdős-Selfridge theorem",
+      "Perfect powers"
+    ],
     "relatedConcepts": [
       "Erdős-Selfridge theorem",
       "Perfect powers",
@@ -31,6 +35,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -45,6 +53,10 @@
     "content": "**DisjointIntervalCollection:**\n\nA list of ConsecutiveIntervals with a proof that they are pairwise disjoint (no common elements).\n\nThe total product is the product of all individual interval products.",
     "mathContext": "Disjointness is crucial: overlapping intervals would trivially give more solutions. The mathematical challenge is finding disjoint blocks whose product is a square.",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
+      "basic set theory",
       "formal mathematics"
     ],
     "significance": "key"
@@ -63,6 +75,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -79,6 +95,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -93,6 +113,10 @@
     "content": "**pomeranceCounterexample:**\n\nFor any n ≥ 2, the product of four specific size-3 intervals built from powers of 2 is always a perfect square.\n\nThis shows the |Iᵢ| ≥ 4 condition is necessary - without it, infinitely many counterexamples exist trivially.",
     "mathContext": "The four blocks involve terms like (2^n - 1) · 2^n · (2^n + 1) = 2^n(2^(2n) - 1). These combine in a way that makes the total product a perfect square.",
     "significance": "key",
+    "prerequisites": [
+      "Mersenne numbers",
+      "Powers of 2"
+    ],
     "relatedConcepts": [
       "Powers of 2",
       "Mersenne numbers"
@@ -110,6 +134,10 @@
     "content": "**Axiom ulas_theorem:**\n\nFor n = 4 or n ≥ 6, there are infinitely many collections of n disjoint intervals, each of size exactly 4, whose product is a perfect square.\n\nThis was the first major result disproving the conjecture.",
     "mathContext": "Ulas used techniques from Diophantine equations to construct parametric families of solutions. The cases n = 3 and n = 5 required different methods.",
     "significance": "key",
+    "prerequisites": [
+      "Diophantine equations",
+      "Parametric solutions"
+    ],
     "relatedConcepts": [
       "Parametric solutions",
       "Diophantine equations"
@@ -127,6 +155,9 @@
     "content": "**Axiom bauer_bennett_theorem:**\n\nFor n = 3 or n = 5, there are infinitely many collections of n disjoint intervals, each of size exactly 4, whose product is a perfect square.\n\nThis filled the gaps left by Ulas's theorem.",
     "mathContext": "Together with Ulas, this shows infinitely many solutions exist for ALL n ≥ 3 when using size-4 intervals.",
     "significance": "key",
+    "prerequisites": [
+      "Bauer-Bennett (2007)"
+    ],
     "relatedConcepts": [
       "Bauer-Bennett (2007)"
     ]
@@ -143,6 +174,9 @@
     "content": "**Axiom bennett_van_luijk_theorem:**\n\nFor n ≥ 5, there are infinitely many collections of n disjoint intervals, each of size exactly 5, whose product is a perfect square.\n\nThis extended the result to larger interval sizes.",
     "mathContext": "This suggests the phenomenon is not specific to size-4 intervals, supporting Ulas's conjecture that any size k ≥ 4 admits infinitely many solutions for large enough n.",
     "significance": "key",
+    "prerequisites": [
+      "Bennett-Van Luijk (2012)"
+    ],
     "relatedConcepts": [
       "Bennett-Van Luijk (2012)"
     ]
@@ -161,6 +195,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -178,6 +216,11 @@
       "indirect proof",
       "proof by contradiction"
     ],
+    "prerequisites": [
+      "indirect proof",
+      "proof by contradiction",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -193,6 +236,10 @@
     "mathContext": "Lean: `theorem erdos_363 : ¬erdosConjecture363`",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   },
@@ -210,6 +257,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -224,6 +275,11 @@
     "content": "**Axiom erdos_selfridge:**\n\nThe product of two or more consecutive positive integers is never a perfect power.\n\nThis 1975 result motivates Problem #363: if a single block is never a power, what about disjoint blocks?",
     "mathContext": "The proof uses prime factorization arguments. Key insight: among n consecutive integers, there's always a prime p > n/2 that divides exactly one term, preventing the product from being a perfect power.",
     "significance": "key",
+    "prerequisites": [
+      "Erdős-Selfridge (1975)",
+      "Perfect powers",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Erdős-Selfridge (1975)",
       "Perfect powers"
@@ -242,6 +298,10 @@
     "mathContext": "$2. Pomerance showed |Iᵢ| ≥ 4 is needed (size-3 gives trivial counterexamples)$",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   }

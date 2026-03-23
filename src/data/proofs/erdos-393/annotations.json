@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #393: Factorial Factorization Span**\n\nLet f(n) = minimal m ≥ 1 such that n! = a₁ · ... · aₜ with a₁ < ... < aₜ = a₁ + m.\n\nThe function f(n) measures the minimum 'span' (max - min) when writing n! as a product of distinct increasing integers.\n\n**Key question:** What is the behavior of f(n)? Does it tend to infinity?",
     "mathContext": "This connects factorial structure to Diophantine equations. The constraint aₜ = a₁ + m forces the factors to have a specific span.",
     "significance": "key",
+    "prerequisites": [
+      "Factorials",
+      "Factorizations",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "Factorials",
       "Factorizations",
@@ -30,6 +35,12 @@
     "content": "**IsFactorization n factors:**\n\nA factorization of n is a list of positive integers whose product equals n.\n\nConditions:\n- factors.prod = n\n- All factors are ≥ 1\n\nThis captures the basic notion of multiplicative decomposition.",
     "mathContext": "We work with lists rather than multisets to maintain ordering, which is essential for the span constraint.",
     "significance": "key",
+    "prerequisites": [
+      "Divisibility",
+      "Products",
+      "basic set theory",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Products",
       "Divisibility",
@@ -48,6 +59,12 @@
     "content": "**span factors:**\n\nThe span of a list is the difference between its maximum and minimum elements.\n\nFor a non-empty list [a₁, ..., aₜ]: span = aₜ - a₁ (when sorted).\n\nThis measures how 'spread out' the factors are.",
     "mathContext": "The span constraint is what makes this problem interesting - without it, any factorization would work.",
     "significance": "key",
+    "prerequisites": [
+      "Max-min",
+      "Range",
+      "basic set theory",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "Range",
       "Max-min",
@@ -66,6 +83,11 @@
     "content": "**f(n) Definition:**\n\nf(n) is the minimal m such that n! can be written as a product of distinct increasing integers with span exactly m.\n\nThis is the central object of Problem #393.",
     "mathContext": "f(n) exists for all n ≥ 1 since the trivial factorization 1 · 2 · ... · n works.",
     "significance": "key",
+    "prerequisites": [
+      "Extremal functions",
+      "Minimum span",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Extremal functions",
       "Minimum span",
@@ -84,6 +106,11 @@
     "content": "**IsProductOfConsecutive n:**\n\nn! = k(k+1) for some k ≥ 1.\n\nThis is the special case where f(n) = 1 - the smallest possible span.\n\n**Example:** 3! = 6 = 2 · 3 (two consecutive integers).\n\nErdős and Graham asked: Is this true for infinitely many n?",
     "mathContext": "The equation x(x+1) = n! is a Pell-like Diophantine equation with factorial parameter.",
     "significance": "key",
+    "prerequisites": [
+      "Consecutive integers",
+      "Pell equations",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Consecutive integers",
       "Pell equations",
@@ -102,6 +129,12 @@
     "content": "**F(m, N):**\n\nThe count of n ≤ N with f(n) = m.\n\nF_m(N) = #{n ≤ N : f(n) = m}\n\nThis allows density analysis: how often does f(n) take the value m?",
     "mathContext": "Counting functions are standard tools in analytic number theory for studying distribution of arithmetic functions.",
     "significance": "key",
+    "prerequisites": [
+      "Counting functions",
+      "Density",
+      "basic set theory",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Counting functions",
       "Density",
@@ -120,6 +153,11 @@
     "content": "**berend_osgood_1992:**\n\nFor each fixed m ≥ 1: F_m(N) = o(N).\n\nThis means the density of n with f(n) = m is 0.\n\n**Interpretation:** For any specific span m, 'most' n have f(n) ≠ m.",
     "mathContext": "The o(N) statement means F_m(N)/N → 0 as N → ∞. This is a strong density result.",
     "significance": "key",
+    "prerequisites": [
+      "Density zero",
+      "Little-o notation",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Density zero",
       "Little-o notation",
@@ -138,6 +176,10 @@
     "content": "**bpz_2023:**\n\nF_m(N) ≪_m N^{33/34} for all m ≥ 1.\n\nThis is a 'power saving' over the trivial bound N:\n\n33/34 ≈ 0.971 < 1\n\nBui-Pratt-Zaharescu achieved this using advanced exponential sum techniques.",
     "mathContext": "Power savings (improving N to N^θ with θ < 1) are major achievements in analytic number theory.",
     "significance": "key",
+    "prerequisites": [
+      "Exponential sums",
+      "Power saving"
+    ],
     "relatedConcepts": [
       "Power saving",
       "Exponential sums",
@@ -156,6 +198,12 @@
     "content": "**ABCConjecture:**\n\nFor all ε > 0, there exists K such that for coprime a + b = c:\n\nc ≤ K · rad(abc)^{1+ε}\n\nwhere rad(n) is the product of distinct prime factors of n.\n\nThis is one of the most important open conjectures in number theory.",
     "mathContext": "The ABC conjecture implies many deep results, including Fermat's Last Theorem and bounds on solutions to various Diophantine equations.",
     "significance": "key",
+    "prerequisites": [
+      "Coprimality",
+      "Radical",
+      "basic set theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Radical",
       "Coprimality",
@@ -174,6 +222,11 @@
     "content": "**luca_2002:**\n\nAssuming ABC Conjecture: f(n) → ∞ as n → ∞.\n\nThis means the minimal span must grow without bound - you can't keep finding tightly-packed factorizations.\n\n**Note:** This is conditional; the unconditional statement remains open.",
     "mathContext": "Luca's proof uses the ABC conjecture to bound solutions to P(x) = n! where P is a polynomial.",
     "significance": "key",
+    "prerequisites": [
+      "ABC applications",
+      "Conditional results",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Conditional results",
       "ABC applications",
@@ -192,6 +245,12 @@
     "content": "**Related Problems:**\n\n1. **P(x) = n!:** When does a polynomial evaluated at some integer equal a factorial?\n\n2. **x(x+1) = n!:** The f(n) = 1 case - when is n! a product of two consecutive integers?\n\n3. **Brocard's Problem:** n! + 1 = m² - only known solutions: n = 4, 5, 7.\n\nThese are all notoriously difficult Diophantine problems involving factorials.",
     "mathContext": "Factorial-polynomial equations are connected to the deep structure of factorials and their prime factorization.",
     "significance": "key",
+    "prerequisites": [
+      "Brocard's problem",
+      "Polynomial equations",
+      "basic set theory",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "Polynomial equations",
       "Brocard's problem",
@@ -210,6 +269,12 @@
     "content": "**density_zero:**\n\nFor each fixed m ≥ 1, the set {n : f(n) = m} has natural density 0.\n\n**Proof:** Direct application of berend_osgood_1992.\n\n**Consequence:** If f(n) → ∞, then each value is achieved 'rarely' in a density sense.",
     "mathContext": "This doesn't say the sets are finite - just that they have density 0.",
     "significance": "key",
+    "prerequisites": [
+      "Density arguments",
+      "Natural density",
+      "density theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Natural density",
       "Density arguments",
@@ -228,6 +293,12 @@
     "content": "**erdos_393:**\n\nComplete status of Problem #393:\n\n1. **Density:** F_m(N) = o(N) for each fixed m (Berend-Osgood 1992)\n2. **Power Saving:** F_m(N) ≪ N^{33/34} (BPZ 2023)\n3. **Conditional:** f(n) → ∞ assuming ABC (Luca 2002)\n\n**Open:** Does f(n) → ∞ unconditionally? Is f(n) = 1 infinitely often?",
     "mathContext": "The theorem combines the known results to give a complete picture of current knowledge.",
     "significance": "key",
+    "prerequisites": [
+      "Combined results",
+      "Problem resolution",
+      "density theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Problem resolution",
       "Combined results",

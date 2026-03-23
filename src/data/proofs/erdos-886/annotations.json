@@ -11,6 +11,10 @@
     "content": "**Erdős Problem #886: Divisors Near the Square Root**\n\nRuzsa's Conjecture: For ε > 0, is the number of divisors of n in (√n, √n + n^{1/2-ε}) bounded by O_ε(1)?\n\n**Status:** OPEN\n\n**Attribution:** Erdős attributes this conjecture to Imre Z. Ruzsa.\n\n**Known Result:** Erdős-Rosenfeld (1997) showed infinitely many n have 4 divisors in (√n, √n + n^{1/4}).\n\n**Key question:** Can divisors 'cluster' near √n in a shrinking window, or must they spread out?",
     "mathContext": "The interval (√n, √n + n^{1/2-ε}) shrinks relative to √n as n grows (width/√n = n^{-ε} → 0). The problem asks whether only finitely many divisors can fit in this shrinking window.",
     "significance": "key",
+    "prerequisites": [
+      "Distribution of divisors",
+      "Divisor function"
+    ],
     "relatedConcepts": [
       "Divisor function",
       "Distribution of divisors",
@@ -29,6 +33,11 @@
     "content": "**criticalInterval(n, ε)** = {x : ℝ | √n < x < √n + n^{1/2-ε}} — the interval where divisors might cluster.\n\n**intervalWidth(n, ε)** = n^{1/2-ε} — the interval width.\n\n**intervalWidth_sublinear** (axiom): For large n, the width is o(√n). This is because n^{1/2-ε}/√n = n^{-ε} → 0.\n\nThe shrinking nature of this interval is what makes the problem hard — can divisors 'pile up' as the window narrows?",
     "mathContext": "For ε = 0, the interval has width √n and trivially contains many divisors. For ε > 0, the window shrinks and the question becomes non-trivial.",
     "significance": "key",
+    "prerequisites": [
+      "Shrinking windows",
+      "Sublinear growth",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Sublinear growth",
       "Shrinking windows",
@@ -47,6 +56,11 @@
     "content": "**ruzsaConjecture:** For all ε > 0, ∃ C_ε such that for all large n, divisorsNearSqrt(n, ε) ≤ C_ε.\n\nIn asymptotic notation: divisorsNearSqrt(n, ε) = O_ε(1) — bounded by a constant depending only on ε.\n\nThe conjecture is defined as a `Prop` (not asserted as axiom) since it remains OPEN.",
     "mathContext": "The constant C_ε may depend on ε, but not on n. For fixed ε, the conjecture says the count is eventually bounded.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic bounds",
+      "Big-O notation",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Big-O notation",
       "Asymptotic bounds",
@@ -65,6 +79,10 @@
     "content": "**erdos_rosenfeld_four_divisors:** Infinitely many n have ≥ 4 divisors in (√n, √n + n^{1/4}).\n\n**erdos_rosenfeld:** For every k, there exists n ≥ k with 4 divisors in that interval.\n\nNote: This uses ε = 1/4, giving interval width n^{1/4}. The conjecture asks about arbitrarily small ε. The Erdős-Rosenfeld result shows divisors CAN cluster to some extent, but doesn't resolve whether the bounded count holds for all ε > 0.\n\nPublished in Acta Arithmetica (1997): 'The factor-difference set of integers'.",
     "mathContext": "For ε = 1/4, the interval (√n, √n + n^{1/4}) is wider than for smaller ε. The result doesn't contradict Ruzsa's conjecture since the bound 4 is finite.",
     "significance": "key",
+    "prerequisites": [
+      "Explicit constructions",
+      "Factor-difference set"
+    ],
     "relatedConcepts": [
       "Factor-difference set",
       "Explicit constructions"
@@ -82,6 +100,12 @@
     "content": "**factorDifferenceSet(n)** = {d - d' : d, d' | n, d > d'} — the set of positive differences between divisors of n.\n\nIf divisors cluster near √n, their differences are small. The factor-difference set captures the spacing structure.\n\n**factorDifferenceSet_nonempty** (axiom): Non-empty when n has ≥ 2 divisors.\n\nThis concept is from the Erdős-Rosenfeld paper and connects divisor clustering to the arithmetic of differences.",
     "mathContext": "The factor-difference set is related to the sumset D - D where D is the divisor set. Small elements correspond to closely-spaced divisors.",
     "significance": "key",
+    "prerequisites": [
+      "Difference sets",
+      "Divisor spacing",
+      "basic set theory",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Difference sets",
       "Divisor spacing"
@@ -99,6 +123,12 @@
     "content": "**localDivisorDensity(n, ε)** = divisorsNearSqrt(n, ε) / intervalWidth(n, ε) — the 'density' of divisors near √n.\n\n**ruzsaConjectureAlt:** The density goes to 0 as n → ∞. For all ε, δ > 0, eventually localDivisorDensity(n, ε) < δ.\n\n**conjecture_equivalence** (axiom): ruzsaConjecture ↔ ruzsaConjectureAlt.\n\nThe density formulation is often more natural for analytic arguments.",
     "mathContext": "Bounded count implies vanishing density (since the interval grows). Conversely, vanishing density implies the count is eventually bounded.",
     "significance": "key",
+    "prerequisites": [
+      "Density",
+      "Equivalent formulations",
+      "basic set theory",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Density",
       "Equivalent formulations",
@@ -117,6 +147,12 @@
     "content": "**trivial_bound** (PROVED): divisorsNearSqrt(n, ε) ≤ divisorCount(n) = τ(n). The count of divisors in any interval is at most the total divisor count.\n\nProof: `card_filter_le` — filtering a finset can only decrease its cardinality.\n\n**divisor_count_bound** (axiom): τ(n) ≤ 2√n for all n ≥ 1. This classical bound shows divisors can't be too numerous overall.\n\nCombined: divisorsNearSqrt(n, ε) ≤ 2√n, but this is much weaker than the conjectured O_ε(1).",
     "mathContext": "The trivial bound is proved in Lean using Finset.card_filter_le. The divisor count bound τ(n) ≤ 2√n is a standard result in elementary number theory.",
     "significance": "key",
+    "prerequisites": [
+      "Divisor bound",
+      "Finset API",
+      "card_filter_le",
+      "cardinal arithmetic"
+    ],
     "relatedConcepts": [
       "Divisor bound",
       "card_filter_le",
@@ -135,6 +171,12 @@
     "content": "**erdos_886_summary** (PROVED): Combines two key results:\n1. The trivial bound: divisorsNearSqrt(n, ε) ≤ divisorCount(n) for all n ≥ 1 (proved)\n2. Erdős-Rosenfeld: infinitely many n have ≥ 4 divisors in (√n, √n + n^{1/4}) (axiom)\n\nProof: ⟨trivial_bound, erdos_rosenfeld_four_divisors⟩\n\nThis captures the known facts: divisor count near √n is bounded by τ(n), and clustering does occur for ε = 1/4. The main conjecture (O_ε(1) for all ε > 0) remains open.",
     "mathContext": "The summary theorem packages the proved result with the axiomatized Erdős-Rosenfeld result, giving a complete picture of what is known.",
     "significance": "key",
+    "prerequisites": [
+      "Known results",
+      "Summary theorems",
+      "proof techniques",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Summary theorems",
       "Known results",

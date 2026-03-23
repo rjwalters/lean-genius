@@ -33,6 +33,12 @@
     "content": "We import Mathlib and enable classical logic. The `open Filter Real` brings filter-based limits and real analysis into scope, needed for asymptotic bounds like o(x) and the counting function.",
     "mathContext": "Filter.atTop is the neighborhood of +∞, used to express 'for all sufficiently large x' in statements about A(x).",
     "significance": "supporting",
+    "prerequisites": [
+      "filter",
+      "filter theory",
+      "mathlib",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "mathlib",
       "filter",

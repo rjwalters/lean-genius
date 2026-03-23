@@ -11,6 +11,10 @@
     "content": "**Erdos Problem #18**: Practical Numbers and the h(m) Function\n\n**Definition**: A positive integer m is **practical** if every integer 1 <= k < m can be expressed as a sum of distinct divisors of m.\n\n**Status**: OPEN ($250 prize)\n\n**Key Question**: Is h(n!) < n^o(1)? Where h(m) is the minimum number of divisors needed.\n\n**Examples**: 12 is practical: divisors {1,2,3,4,6,12} represent 5=1+4, 7=1+6, etc.",
     "mathContext": "Practical numbers were defined by Srinivasan (1948). The OEIS sequence is A005153: 1, 2, 4, 6, 8, 12, 16, 18, 20, 24, ...",
     "significance": "key",
+    "prerequisites": [
+      "divisor-sums",
+      "practical-numbers"
+    ],
     "relatedConcepts": [
       "practical-numbers",
       "divisor-sums",
@@ -29,6 +33,11 @@
     "content": "**divisors n** = n.divisors (Mathlib's divisor function)\n\n**divisorSubsetSum n S** = S.sum id (sum of a subset)\n\n**IsRepresentable k m**: k equals a sum of distinct divisors of m\nE S such that S is a subset of divisors m, S.sum id = k",
     "mathContext": "Using distinct divisors is crucial - each divisor can only appear once in the sum. This connects to subset sum problems.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "divisors",
+      "subset-sum"
+    ],
     "relatedConcepts": [
       "divisors",
       "subset-sum",
@@ -47,6 +56,12 @@
     "content": "**IsPractical m**: m >= 1 and for all k : 1 <= k < m, IsRepresentable k m\n\nEvery positive integer less than m is representable.\n\n**PracticalNumbers** = { m | IsPractical m }\n\nAlso called **panarithmic numbers** (Srinivasan, 1948).",
     "mathContext": "The definition requires covering all integers from 1 to m-1. This is much stronger than just representing 'most' integers.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "practical-number",
+      "ring tactic",
+      "srinivasan"
+    ],
     "relatedConcepts": [
       "practical-number",
       "srinivasan",
@@ -65,6 +80,12 @@
     "content": "**theorem one_practical : IsPractical 1** (verified)\nVacuously true: no k in range [1, 0).\n\n**theorem two_practical : IsPractical 2** (verified)\nOnly need to represent 1, and 1 divides 2.\n\nProof uses `interval_cases k` for exhaustive case analysis.",
     "mathContext": "These verified proofs show the definition is correct and usable. The vacuous case for 1 is handled cleanly by omega.",
     "significance": "supporting",
+    "prerequisites": [
+      "interval-cases",
+      "omega tactic",
+      "proof techniques",
+      "verified"
+    ],
     "relatedConcepts": [
       "verified",
       "interval-cases",
@@ -83,6 +104,11 @@
     "content": "**Axiomatized small cases**:\n- **4**: divisors {1,2,4}, represent 1,2,3=1+2\n- **6**: divisors {1,2,3,6}, represent 1,2,3,4=1+3,5=2+3\n- **12**: divisors {1,2,3,4,6,12}, all 1-11 covered\n\n**Powers of 2 are practical**: divisors {1,2,4,...,2^n} give binary representations!\n\nEvery k < 2^n has a unique binary representation.",
     "mathContext": "Powers of 2 being practical is the simplest infinite family. Binary representations directly correspond to subset sums of powers of 2.",
     "significance": "key",
+    "prerequisites": [
+      "binary",
+      "powers-of-two",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "powers-of-two",
       "binary",
@@ -101,6 +127,11 @@
     "content": "**axiom three_not_practical : not IsPractical 3**\nDivisors {1,3} cannot represent 2.\n\n**axiom five_not_practical : not IsPractical 5**\nDivisors {1,5} cannot represent 2, 3, or 4.\n\nOdd primes are never practical (divisors only {1, p}).",
     "mathContext": "Prime numbers p > 2 have only divisors {1, p}, which cannot represent any integer in the range [2, p-1]. This explains why practical numbers become sparse.",
     "significance": "supporting",
+    "prerequisites": [
+      "non-practical",
+      "prime numbers",
+      "primes"
+    ],
     "relatedConcepts": [
       "primes",
       "non-practical",
@@ -119,6 +150,11 @@
     "content": "**Complete characterization** (1954-1955):\n\nFor m = p_1^a_1 * p_2^a_2 * ... * p_k^a_k with p_1 < p_2 < ... < p_k:\n\nm is practical iff\n- p_1 = 2 (m is even), AND\n- p_i <= 1 + sigma(p_1^a_1 * ... * p_{i-1}^{a_{i-1}}) for all i >= 2\n\nwhere sigma(n) = sum of divisors of n.",
     "mathContext": "This gives an efficient O(log m) test for practicality. The condition ensures each prime 'fits' within the representable range of smaller factors.",
     "significance": "key",
+    "prerequisites": [
+      "prime numbers",
+      "sierpinski",
+      "stewart"
+    ],
     "relatedConcepts": [
       "stewart",
       "sierpinski",
@@ -137,6 +173,11 @@
     "content": "**h(m)**: Minimum number of divisors of m needed such that every k < m can be represented.\n\n**Trivial bound**: h(m) <= d(m) where d(m) = number of divisors.\n\n**Key insight**: Even with many divisors, we might only need a few!\n\nFor 2^n: h(2^n) = n+1 (need all powers of 2 for binary).",
     "mathContext": "Computing h(m) exactly is hard (subset sum optimization). The question is whether h(n!) can be much smaller than the divisor count.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "h-function",
+      "minimum"
+    ],
     "relatedConcepts": [
       "h-function",
       "minimum",
@@ -155,6 +196,12 @@
     "content": "**axiom erdos_factorial_bound**:\nn! is practical AND h(n!) < n\n\nDespite n! having Omega(n log n) divisors, only n-1 divisors suffice!\n\nThis is a major simplification but still linear in n.",
     "mathContext": "The number of divisors of n! grows much faster than n, but h(n!) grows only linearly. The question is: can we do better?",
     "significance": "key",
+    "prerequisites": [
+      "erdos-bound",
+      "factorial",
+      "omega tactic",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "erdos-bound",
       "factorial",
@@ -173,6 +220,10 @@
     "content": "**axiom vose_bound**: There exists C > 0, infinitely many practical m satisfy:\nh(m) <= C * sqrt(log m)\n\n**Interpretation**: For special m, h(m) can be polylogarithmic!\n\nVose constructed explicit families achieving this bound.",
     "mathContext": "This shows h(m) = O(sqrt(log m)) is achievable, but only for specially constructed m. The question is whether n! is among these special cases.",
     "significance": "key",
+    "prerequisites": [
+      "polylog",
+      "vose-1985"
+    ],
     "relatedConcepts": [
       "vose-1985",
       "polylog",
@@ -191,6 +242,12 @@
     "content": "**conjecture_part1**: There exist infinitely many m with h(m) < (log log m)^O(1)\nDoubly-logarithmic bound for infinitely many m.\n\n**conjecture_part2_weak** ($250): h(n!) = o(n^epsilon) for all epsilon > 0\nSubpolynomial growth - slower than any power of n.\n\n**conjecture_part2_strong**: h(n!) < (log n)^O(1)\nPolylogarithmic growth in n.",
     "mathContext": "The prize is for part 2. The weak form asks if h(n!) grows slower than any polynomial. The strong form conjectures polylog behavior.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "conjecture",
+      "polynomial ring theory",
+      "subpolynomial"
+    ],
     "relatedConcepts": [
       "conjecture",
       "subpolynomial",
@@ -209,6 +266,12 @@
     "content": "**axiom practical_density_zero**: practicalCount(x)/x tends to 0\n\nPractical numbers have density 0 - 'almost all' integers are non-practical.\n\n**More precisely**: practicalCount(x) <= C * x / (log x)^delta\n\nSparse like primes, but with a different exponent.",
     "mathContext": "Erdos (1950) proved this. The count grows slower than x but not by much - similar to prime counting function behavior.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic",
+      "density theory",
+      "density-zero",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "density-zero",
       "asymptotic",
@@ -227,6 +290,11 @@
     "content": "**practical_closed_multiplication**: If m is practical and k <= sigma(m)+1, then m*k is practical.\n\n**factorials_practical**: All n! for n >= 1 are practical.\nThis follows from the closure property inductively.\n\n**primorials_practical**: Products of first k primes are practical.\np_1*p_2*...*p_k = 2*3*5*7*... is always practical.",
     "mathContext": "These closure properties explain why factorials and primorials are practical. The multiplication rule connects to Stewart-Sierpinski.",
     "significance": "key",
+    "prerequisites": [
+      "closure",
+      "factorial",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "closure",
       "factorial",
@@ -245,6 +313,11 @@
     "content": "**axiom practical_goldbach**: Every even n >= 2 is p + q for practical p, q.\n\nThis is the Goldbach conjecture for practical numbers - and it's PROVEN!\n\n**axiom practical_twins_infinite**: Infinitely many (p, p+2) are both practical.\n\nUnlike twin primes, practical twins are known to be infinite!",
     "mathContext": "These results show practical numbers behave 'nicer' than primes. Both Goldbach-type results are proven, while the prime versions remain open.",
     "significance": "key",
+    "prerequisites": [
+      "goldbach",
+      "prime numbers",
+      "twin-practical"
+    ],
     "relatedConcepts": [
       "goldbach",
       "twin-practical",
@@ -263,6 +336,10 @@
     "content": "**Historical Note**: Fibonacci (1202) used practical numbers for Egyptian fractions!\n\n**fibonacci_connection**: If m is practical, every fraction k/m (k < m) equals a sum of unit fractions 1/d where d | m.\n\n**Example**: 5/12 = 1/3 + 1/12 (using divisors of 12).",
     "mathContext": "This connects practical numbers to ancient mathematics. Egyptian fractions (sums of distinct unit fractions) were studied by Fibonacci in Liber Abaci.",
     "significance": "supporting",
+    "prerequisites": [
+      "egyptian-fractions",
+      "fibonacci"
+    ],
     "relatedConcepts": [
       "egyptian-fractions",
       "fibonacci",
@@ -281,6 +358,11 @@
     "content": "**knownPracticalNumbers** = [1, 2, 4, 6, 8, 12, 16, 18, 20, 24, 28, 30, 32, 36, 40, 42, 48]\n\n**axiom known_practical_correct**: All listed numbers are practical.\n\nPattern: Even numbers with 'enough' small factors.\n\nNote: 10 is missing (divisors {1,2,5,10} can't represent 4).",
     "mathContext": "OEIS A005153 lists practical numbers. The sequence is computable via Stewart-Sierpinski. About 13% of positive integers are practical.",
     "significance": "supporting",
+    "prerequisites": [
+      "basic set theory",
+      "oeis",
+      "sequence"
+    ],
     "relatedConcepts": [
       "oeis",
       "sequence",
@@ -299,6 +381,11 @@
     "content": "**axiom factorial_divisor_count_lower**: (divisors n!).card >= n\n\nFactorials have at least n divisors, but h(n!) might be much smaller.\n\nThe gap between d(n!) and h(n!) is the core of the conjecture.\n\n**Key difficulty**: Finding minimum S contained in divisors(m) covering all k < m is NP-hard in general.",
     "mathContext": "The problem asks whether the special structure of factorials (products of all integers up to n) forces h(n!) to be very small.",
     "significance": "key",
+    "prerequisites": [
+      "factorial-divisors",
+      "ring tactic",
+      "subset-sum"
+    ],
     "relatedConcepts": [
       "factorial-divisors",
       "subset-sum",
@@ -317,6 +404,12 @@
     "content": "**Erdos Problem #18: OPEN** ($250 prize)\n\n**Question**: Is h(n!) < n^o(1)? Or even h(n!) < (log n)^O(1)?\n\n**Known**:\n- h(n!) < n (Erdos)\n- Some m have h(m) = O(sqrt(log m)) (Vose)\n- Stewart-Sierpinski characterization\n\n**Related facts**:\n- Practical Goldbach: PROVEN\n- Practical twins: INFINITE\n- Density: 0 (like primes)\n\n**References**: Srinivasan (1948), Stewart-Sierpinski (1954-55), Vose (1985), OEIS A005153",
     "mathContext": "The problem has been open since at least 1985. Progress requires understanding the divisor structure of factorials deeply.",
     "significance": "key",
+    "prerequisites": [
+      "density theory",
+      "open",
+      "prime numbers",
+      "problem-status"
+    ],
     "relatedConcepts": [
       "problem-status",
       "open",

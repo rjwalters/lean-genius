@@ -17,6 +17,12 @@
       "power series",
       "complex analysis"
     ],
+    "prerequisites": [
+      "Wiman-Valiron theory",
+      "entire functions",
+      "measure theory",
+      "polynomial ring theory"
+    ],
     "significance": "key"
   },
   {
@@ -34,6 +40,11 @@
       "central index",
       "power series terms",
       "order of entire functions"
+    ],
+    "prerequisites": [
+      "basic set theory",
+      "central index",
+      "power series terms"
     ],
     "significance": "supporting"
   },
@@ -54,6 +65,12 @@
       "order of growth",
       "convexity"
     ],
+    "prerequisites": [
+      "Hadamard three-circles theorem",
+      "basic set theory",
+      "convexity",
+      "maximum modulus principle"
+    ],
     "significance": "supporting"
   },
   {
@@ -71,6 +88,12 @@
       "transcendental functions",
       "polynomial vs transcendental growth",
       "liminf optimization"
+    ],
+    "prerequisites": [
+      "basic set theory",
+      "polynomial ring theory",
+      "polynomial vs transcendental growth",
+      "ring tactic"
     ],
     "significance": "key"
   },
@@ -90,6 +113,11 @@
       "Cauchy integral formula",
       "term-by-term bounds"
     ],
+    "prerequisites": [
+      "Cauchy integral formula",
+      "simp tactic",
+      "triangle inequality"
+    ],
     "significance": "supporting"
   },
   {
@@ -107,6 +135,10 @@
       "verified foundations",
       "division by zero handling",
       "real arithmetic in Lean"
+    ],
+    "prerequisites": [
+      "division by zero handling",
+      "verified foundations"
     ],
     "significance": "supporting"
   },
@@ -127,6 +159,11 @@
       "extremal entire functions",
       "gap series"
     ],
+    "prerequisites": [
+      "Kovari's theorem",
+      "lacunary series",
+      "simp tactic"
+    ],
     "significance": "key"
   },
   {
@@ -145,6 +182,10 @@
       "Borel-Caratheodory lemma",
       "Phragmen-Lindelof indicator",
       "phase cancellation"
+    ],
+    "prerequisites": [
+      "Borel-Caratheodory lemma",
+      "Clunie-Hayman theorem"
     ],
     "significance": "key"
   },
@@ -165,6 +206,11 @@
       "linarith tactic",
       "interval consistency"
     ],
+    "prerequisites": [
+      "linarith tactic",
+      "numerical verification",
+      "pi bounds in Mathlib"
+    ],
     "significance": "supporting"
   },
   {
@@ -184,6 +230,11 @@
       "Bloch constant",
       "Landau constant",
       "supremum characterization"
+    ],
+    "prerequisites": [
+      "Wiman-Valiron theory",
+      "complex numbers",
+      "extremal constants"
     ],
     "significance": "key"
   }

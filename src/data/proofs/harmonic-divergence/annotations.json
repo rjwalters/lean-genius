@@ -11,6 +11,11 @@
     "content": "We import `Mathlib.Analysis.PSeries` which contains the main theorems about p-series convergence and the harmonic series, plus `Mathlib.Topology.Algebra.InfiniteSum.Basic` for the `Summable` predicate.",
     "mathContext": "Introduction to the formalization of Mathlib Imports",
     "significance": "supporting",
+    "prerequisites": [
+      "Mathlib",
+      "p-series",
+      "topology"
+    ],
     "relatedConcepts": [
       "Mathlib",
       "p-series",
@@ -29,6 +34,11 @@
     "content": "**The Main Result**: The function $n \\mapsto 1/n$ is not summable over the natural numbers. In other words, $\\sum_{n=1}^{\\infty} \\frac{1}{n} = \\infty$.",
     "mathContext": "In Lean, `Summable f` means the series $\\sum f(n)$ converges. We prove `¬Summable (fun n => 1 / n)` using Mathlib's `Real.not_summable_one_div_natCast`.",
     "significance": "critical",
+    "prerequisites": [
+      "Summable",
+      "divergence",
+      "logical reasoning"
+    ],
     "relatedConcepts": [
       "Summable",
       "divergence",
@@ -47,6 +57,11 @@
     "content": "The same result using $n^{-1}$ notation instead of $1/n$. These are mathematically equivalent but use different Mathlib lemmas.",
     "mathContext": "`Real.not_summable_natCast_inv` proves `¬Summable (fun n => (n : ℝ)⁻¹)`, which is the inverse notation rather than division.",
     "significance": "supporting",
+    "prerequisites": [
+      "inverse",
+      "logical reasoning",
+      "notation"
+    ],
     "relatedConcepts": [
       "notation",
       "inverse",
@@ -65,6 +80,11 @@
     "content": "The classical proof from ~1350: group terms so each group of $2^k$ consecutive terms (from $2^k$ to $2^{k+1}-1$) sums to at least $1/2$. With infinitely many such groups, the series diverges.",
     "mathContext": "The key observation: in the group from $2^k$ to $2^{k+1}-1$, there are $2^k$ terms, and each is at least $1/2^{k+1}$. So the sum is at least $2^k \\cdot (1/2^{k+1}) = 1/2$.",
     "significance": "critical",
+    "prerequisites": [
+      "comparison",
+      "group theory",
+      "grouping"
+    ],
     "relatedConcepts": [
       "grouping",
       "comparison",
@@ -83,6 +103,11 @@
     "content": "A simple but necessary fact: $1/n > 0$ for all $n > 0$. This ensures all our terms contribute positively to the sum.",
     "mathContext": "$\\sum_{n=1}^{\\infty} \\frac{1}{n} = \\infty$",
     "significance": "supporting",
+    "prerequisites": [
+      "positivity",
+      "simp tactic",
+      "well-definedness"
+    ],
     "relatedConcepts": [
       "positivity",
       "well-definedness"
@@ -121,6 +146,11 @@
     "content": "In contrast to the harmonic series ($p = 1$), the p-series $\\sum 1/n^p$ converges for any $p > 1$. The harmonic series is right at the boundary!",
     "mathContext": "We use `Real.summable_nat_rpow_inv` which proves summability when the exponent exceeds 1. The Basel problem shows $\\sum 1/n^2 = \\pi^2/6$.",
     "significance": "key",
+    "prerequisites": [
+      "Basel problem",
+      "logical reasoning",
+      "p-series"
+    ],
     "relatedConcepts": [
       "p-series",
       "Basel problem",
@@ -139,6 +169,11 @@
     "content": "The harmonic series grows like $\\ln(n)$: specifically, $H_n \\approx \\ln(n) + \\gamma$ where $\\gamma \\approx 0.5772$ is the Euler-Mascheroni constant.",
     "mathContext": "This explains the extremely slow divergence. To reach a partial sum of 10, you need about $e^{10} \\approx 22026$ terms. To reach 100, you'd need about $e^{100} \\approx 10^{43}$ terms!",
     "significance": "key",
+    "prerequisites": [
+      "Euler's work",
+      "Euler-Mascheroni constant",
+      "logarithm"
+    ],
     "relatedConcepts": [
       "logarithm",
       "Euler-Mascheroni constant",

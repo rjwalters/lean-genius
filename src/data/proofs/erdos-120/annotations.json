@@ -11,6 +11,11 @@
     "content": "Erdős Problem #120 (The Similarity Problem, $100 prize): For every infinite A ⊆ ℝ, must there exist a positive-measure set E containing no similar copy aA + b? Steinhaus showed finite sets are universal. The conjecture is that all infinite sets are avoidable.",
     "mathContext": "Similar copy: aA + b = {a·x + b : x ∈ A} for a ≠ 0. Avoidable: ∃ E measurable with μ(E) > 0 and ¬∃ a,b with aA+b ⊆ E.",
     "significance": "key",
+    "prerequisites": [
+      "Lebesgue measure",
+      "measure theory",
+      "similarity transformations"
+    ],
     "relatedConcepts": [
       "similarity transformations",
       "Lebesgue measure",
@@ -29,6 +34,11 @@
     "content": "Three key definitions: similarCopy A a b = (x ↦ a·x + b) '' A; containsSimilarCopy E A requires some aA+b ⊆ E with a ≠ 0; avoidsSimilarCopies E A negates containment.",
     "mathContext": "similarCopy A a b = {a·x + b : x ∈ A}. containsSimilarCopy E A ≡ ∃ a b, a ≠ 0 ∧ aA+b ⊆ E. avoidsSimilarCopies ≡ ¬containsSimilarCopy.",
     "significance": "key",
+    "prerequisites": [
+      "affine maps",
+      "basic set theory",
+      "set image"
+    ],
     "relatedConcepts": [
       "affine maps",
       "set image",
@@ -47,6 +57,12 @@
     "content": "A is universal if every measurable E with μ(E) > 0 contains a similar copy of A. A is avoidable if some positive-measure measurable E avoids all copies. These are complementary properties (proved in Part 9).",
     "mathContext": "universalSimilaritySet A ≡ ∀ E, MeasurableSet E → μ(E) > 0 → containsSimilarCopy E A. avoidable A ≡ ∃ E, MeasurableSet E ∧ μ(E) > 0 ∧ avoidsSimilarCopies E A.",
     "significance": "key",
+    "prerequisites": [
+      "Lebesgue measure",
+      "MeasurableSet",
+      "basic set theory",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "Lebesgue measure",
       "MeasurableSet",
@@ -65,6 +81,10 @@
     "content": "Steinhaus (1920) proved that every finite nonempty set A is a universal similarity set. The proof uses the Steinhaus difference theorem: if μ(E) > 0, then E - E contains an interval, providing room to embed finite patterns.",
     "mathContext": "steinhaus_finite: A.Finite → A.Nonempty → universalSimilaritySet A.",
     "significance": "key",
+    "prerequisites": [
+      "Steinhaus theorem",
+      "difference set"
+    ],
     "relatedConcepts": [
       "Steinhaus theorem",
       "difference set",
@@ -83,6 +103,11 @@
     "content": "Two classes are known avoidable: (1) unbounded sets — bounded E cannot contain copies with arbitrarily large elements; (2) sets dense in an interval — density forces copies to fill intervals, which can be avoided.",
     "mathContext": "unbounded_avoidable: ¬IsBounded A → avoidable A. dense_in_interval_avoidable: (∃ a < b, Dense(A ∩ (a,b))) → avoidable A.",
     "significance": "key",
+    "prerequisites": [
+      "boundedness",
+      "density",
+      "density theory"
+    ],
     "relatedConcepts": [
       "boundedness",
       "density",
@@ -101,6 +126,11 @@
     "content": "Every infinite set A ⊆ ℝ is avoidable. Equivalently, no infinite set is a universal similarity set. The negation would give an infinite set whose similar copies appear in every positive-measure set.",
     "mathContext": "erdos_120_conjecture ≡ ∀ A, A.Infinite → avoidable A. erdos_120_negation ≡ ∃ A, A.Infinite ∧ universalSimilaritySet A.",
     "significance": "key",
+    "prerequisites": [
+      "$100 prize",
+      "measure theory",
+      "open problem"
+    ],
     "relatedConcepts": [
       "open problem",
       "$100 prize",
@@ -119,6 +149,11 @@
     "content": "The geometric sequence {(1/2)^n : n ∈ ℕ} = {1, 1/2, 1/4, ...} is bounded, infinite, and nowhere dense. Whether it is avoidable is the key test case, also listed as Problem 94 on Ben Green's open problems list.",
     "mathContext": "geometricSeq = {x | ∃ n : ℕ, x = (1/2)^n}. Axioms: geometricSeq.Infinite and IsBounded geometricSeq.",
     "significance": "key",
+    "prerequisites": [
+      "Ben Green Problem 94",
+      "basic set theory",
+      "geometric sequence"
+    ],
     "relatedConcepts": [
       "geometric sequence",
       "Ben Green Problem 94",
@@ -137,6 +172,11 @@
     "content": "Similar copies preserve ratios of differences: (a·a₁+b - (a·a₂+b)) / (a·a₃+b - (a·a₄+b)) = (a₁-a₂)/(a₃-a₄). This is proved by ring_nf and mul_div_mul_left. It constrains where copies can appear in E.",
     "mathContext": "ratio_preserved: proved via ring_nf; rw [mul_div_mul_left _ _ ha]. No axioms or sorry needed.",
     "significance": "key",
+    "prerequisites": [
+      "affine invariant",
+      "cross-ratio",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "affine invariant",
       "cross-ratio",
@@ -155,6 +195,12 @@
     "content": "Two key tools: (1) Steinhaus difference theorem — E-E contains an interval when μ(E) > 0; (2) Lebesgue density theorem — almost every point of E has density 1. Both constrain the local structure of positive-measure sets.",
     "mathContext": "steinhaus_difference: μ(E) > 0 → ∃ δ > 0, (-δ,δ) ⊆ E-E. lebesgue_density: μ(E) > 0 → ∃ x ∈ E, local density > 1/2.",
     "significance": "supporting",
+    "prerequisites": [
+      "Lebesgue density",
+      "Steinhaus theorem",
+      "density theory",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "Steinhaus theorem",
       "Lebesgue density",
@@ -173,6 +219,10 @@
     "content": "Two proved theorems: (1) universal_iff_not_avoidable shows A is universal iff not avoidable; (2) conjecture_equiv shows the conjecture is equivalent to 'no infinite set is universal'. Both use the definitions directly.",
     "mathContext": "universal_iff_not_avoidable: universalSimilaritySet A ↔ ¬avoidable A. conjecture_equiv: erdos_120_conjecture ↔ ∀ A, A.Infinite → ¬universalSimilaritySet A.",
     "significance": "key",
+    "prerequisites": [
+      "equivalent formulations",
+      "logical duality"
+    ],
     "relatedConcepts": [
       "logical duality",
       "equivalent formulations",
@@ -191,6 +241,10 @@
     "content": "The known results theorem combines: finite sets are universal (Steinhaus) and unbounded sets are avoidable. The problem remains OPEN with a $100 prize. The geometric sequence is the key test case.",
     "mathContext": "erdos_120_known_results: (∀ A, A.Finite → A.Nonempty → universalSimilaritySet A) ∧ (∀ A, ¬IsBounded A → avoidable A).",
     "significance": "key",
+    "prerequisites": [
+      "known results",
+      "open problem"
+    ],
     "relatedConcepts": [
       "open problem",
       "known results",

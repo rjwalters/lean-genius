@@ -11,6 +11,10 @@
     "content": "This header documents **Erdős Problem #219**, which asks whether there exist arbitrarily long arithmetic progressions of primes. The Green-Tao theorem (2008) proves the answer is YES.",
     "mathContext": "An arithmetic progression of primes has the form p, p+d, p+2d, ..., p+(k-1)d where all terms are prime. The question is whether such progressions exist for arbitrarily large k.",
     "significance": "key",
+    "prerequisites": [
+      "Green-Tao theorem",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Green-Tao theorem",
       "prime numbers",
@@ -29,6 +33,12 @@
     "content": "An **arithmetic progression** starting at a with common difference d and length k is the set {a, a+d, a+2d, ..., a+(k-1)d}. We represent this as a Finset using Finset.image.",
     "mathContext": "The formula a + i * d for i in range(k) generates all elements. This is the standard representation allowing easy computation and membership testing.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "Finset.image",
+      "Finset.range",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Finset.image",
       "Finset.range",
@@ -47,6 +57,12 @@
     "content": "A set is a **prime AP** if all its elements are prime AND it forms an arithmetic progression. This combines the structural requirement (AP form) with the number-theoretic requirement (primality).",
     "mathContext": "The predicate IsPrimeAP requires: (1) ∀ p ∈ S, p.Prime, and (2) ∃ a d k, S = arithmeticProg a d k with k ≥ 1, d > 0.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "primality",
+      "prime numbers",
+      "structural properties"
+    ],
     "relatedConcepts": [
       "primality",
       "structural properties",
@@ -65,6 +81,12 @@
     "content": "The triple **{3, 5, 7}** is the simplest non-trivial example of a prime AP. It has first term 3, common difference 2, and length 3. All three are prime.",
     "mathContext": "This is the unique 3-term prime AP with difference 2. For larger differences, many 3-term APs exist (e.g., {5, 11, 17} with difference 6).",
     "significance": "key",
+    "prerequisites": [
+      "prime gaps",
+      "prime numbers",
+      "proof techniques",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "twin primes",
       "prime gaps",
@@ -83,6 +105,12 @@
     "content": "The quintuple **{5, 11, 17, 23, 29}** is a 5-term prime AP with first term 5 and common difference 6. We verify each element is prime using norm_num.",
     "mathContext": "The common difference 6 = 2·3 is the smallest possible for a 5-term prime AP. Differences must be divisible by 2·3 = 6 for progressions of length ≥ 5.",
     "significance": "key",
+    "prerequisites": [
+      "divisibility",
+      "divisibility constraints",
+      "norm_num tactic",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "divisibility constraints",
       "primorials",
@@ -101,6 +129,12 @@
     "content": "**Erdős Problem #219**: For every k ≥ 1, does there exist a prime AP of length k? This asks whether we can find arbitrarily long prime APs, not just specific small examples.",
     "mathContext": "Formally: ∀ k ≥ 1, ∃ S : Finset ℕ, S.card = k ∧ IsPrimeAP S. This is a universal statement about existence for ALL k.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "existence",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "universal quantification",
       "existence",
@@ -119,6 +153,11 @@
     "content": "The **Green-Tao theorem** (2008) proves that primes contain arbitrarily long arithmetic progressions. This is one of the most celebrated results in 21st century mathematics.",
     "mathContext": "The proof combines Szemerédi's theorem (APs in dense sets), ergodic theory, and a pseudorandomness argument to handle the sparseness of primes.",
     "significance": "key",
+    "prerequisites": [
+      "Szemerédi's theorem",
+      "ergodic theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Szemerédi's theorem",
       "ergodic theory",
@@ -137,6 +176,11 @@
     "content": "An equivalent explicit formulation: for all k ≥ 1, there exist a, d with d > 0 such that a, a+d, a+2d, ..., a+(k-1)d are ALL prime.",
     "mathContext": "This makes the constructive content clearer: we need specific numbers a and d, not just abstract existence. Finding such a, d is computationally hard for large k.",
     "significance": "key",
+    "prerequisites": [
+      "computational search",
+      "constructive mathematics",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "constructive mathematics",
       "computational search",
@@ -155,6 +199,11 @@
     "content": "The **longest known** arithmetic progression of primes has 23 terms, found by Pritchard, Moran, and others in 2019. The first term and common difference are astronomically large.",
     "mathContext": "The progression uses a = 56211383760397 and d involves the primorial 23# = 223092870. Finding k = 24 would require massive computational resources.",
     "significance": "key",
+    "prerequisites": [
+      "computational records",
+      "prime numbers",
+      "primorial"
+    ],
     "relatedConcepts": [
       "computational records",
       "primorial",
@@ -173,6 +222,12 @@
     "content": "An **open problem**: Are there arbitrarily long APs of CONSECUTIVE primes? That is, can we find p₁ < p₂ < ... < pₖ forming an AP where each pᵢ is the immediate next prime after pᵢ₋₁?",
     "mathContext": "The longest known consecutive prime AP has 10 terms. This is much harder than arbitrary prime APs because we cannot skip primes.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "consecutive primes",
+      "prime gaps",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "consecutive primes",
       "prime gaps",
@@ -191,6 +246,12 @@
     "content": "The **summary** combines our main results: the Green-Tao theorem holds (axiomatized), {3, 5, 7} is verified as a prime AP, and {5, 11, 17, 23, 29} are all prime.",
     "mathContext": "This conjunction packages the key verified facts for export and reference.",
     "significance": "supporting",
+    "prerequisites": [
+      "conjunction",
+      "prime numbers",
+      "proof techniques",
+      "summary"
+    ],
     "relatedConcepts": [
       "conjunction",
       "summary",

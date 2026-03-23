@@ -11,6 +11,12 @@
     "content": "Erdős Problem #758: Cochromatic number ζ(G) is the minimum colors such that each color class induces a clique or independent set. z(n) = max ζ over n-vertex graphs. Is z(12) = 4? YES (Bhavik Mehta, computational). SOLVED.",
     "mathContext": "Cochromatic number generalizes both chromatic number and clique cover number. Connects to Ramsey theory since R(k,k) controls z(n).",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "chromatic number",
+      "clique cover",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "chromatic number",
       "clique cover",
@@ -30,6 +36,12 @@
     "content": "CochromaticColoring(G): structure with numColors, color function, and validity (each class is clique or independent set). cochromaticNumber(G) = sInf{k : ∃ coloring with k colors}. z(n) = sSup{ζ(G) : G has n vertices}.",
     "mathContext": "CochromaticColoring is a structure; cochromaticNumber uses sInf; z uses sSup over all n-vertex graphs.",
     "significance": "key",
+    "prerequisites": [
+      "Fintype",
+      "SimpleGraph",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "SimpleGraph",
       "Fintype",
@@ -49,6 +61,10 @@
     "content": "z_bounds (axiom): 1 ≤ z(n) ≤ n for n ≥ 1. z_monotone (axiom): z(n) ≤ z(n+1). cochromatic_bound (axiom): ζ(G) ≤ min(χ(G), χ(Ḡ)).",
     "mathContext": "Cochromatic number bounded by both chromatic number and complement's chromatic number.",
     "significance": "supporting",
+    "prerequisites": [
+      "bounds",
+      "monotonicity"
+    ],
     "relatedConcepts": [
       "bounds",
       "monotonicity",
@@ -67,6 +83,10 @@
     "content": "z(1)=z(2)=1, z(3)=z(4)=2, z(5)–z(8)=3, z(9)–z(12)=4, z(13)–z(15)=5, z(16)–z(19)=6. All axioms. Main result: z_12 (axiom). z(20) = 6 or 7 (unknown). knownValues function encodes the table.",
     "mathContext": "z = {1,1,2,2,3,3,3,3,4,4,4,4,5,5,5,6,6,6,6} for n = 1..19. known_values_correct: z(i+1) = knownValues(i).",
     "significance": "key",
+    "prerequisites": [
+      "exact computation",
+      "z(12) = 4"
+    ],
     "relatedConcepts": [
       "exact computation",
       "z(12) = 4",
@@ -85,6 +105,10 @@
     "content": "gimbel_asymptotic (axiom): z(n) ~ n/log n with sandwich bounds c₁·n/log n ≤ z(n) ≤ c₂·n/log n. z_sublinear (axiom): for every ε > 0, z(n) ≤ ε·n for large n.",
     "mathContext": "Gimbel [Gi86] proved the asymptotic. Growth is sublinear but unbounded.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic analysis",
+      "logarithmic growth"
+    ],
     "relatedConcepts": [
       "asymptotic analysis",
       "logarithmic growth",
@@ -103,6 +127,10 @@
     "content": "erdos_gimbel_12 (axiom): 4 ≤ z(12) ≤ 5. erdos_gimbel_15 (axiom): 5 ≤ z(15) ≤ 6. These original bounds were tightened by Mehta's computation.",
     "mathContext": "The gap between 4 and 5 for z(12) is what Mehta's work resolved.",
     "significance": "supporting",
+    "prerequisites": [
+      "lower bounds",
+      "upper bounds"
+    ],
     "relatedConcepts": [
       "upper bounds",
       "lower bounds",
@@ -121,6 +149,11 @@
     "content": "mehta_unique_graph (axiom): ∃! G on Fin 12 with G, Ḡ both K₄-free and χ ≥ 5. mehta_verification (axiom): that graph has ζ = 4. This resolves z(12) = 4.",
     "mathContext": "If χ(G) ≤ 4 or χ(Ḡ) ≤ 4, then ζ(G) ≤ 4 automatically. Mehta found and verified the unique exception.",
     "significance": "key",
+    "prerequisites": [
+      "K₄-free graphs",
+      "computational proof",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "K₄-free graphs",
       "computational proof",
@@ -139,6 +172,10 @@
     "content": "ramsey_connection (axiom): R(k,k) ≤ n → z(n) ≤ k. Ramsey numbers control cochromatic number because they force either G or Ḡ to contain large cliques.",
     "mathContext": "R(3) = 6 means z(5) ≤ 3. R(4) = 18 means z(17) ≤ 4. This explains the known values structure.",
     "significance": "supporting",
+    "prerequisites": [
+      "Ramsey theory",
+      "ramseyNumber"
+    ],
     "relatedConcepts": [
       "Ramsey theory",
       "ramseyNumber",
@@ -157,6 +194,10 @@
     "content": "erdos_758_summary: z(12) = 4 ∧ (known values verified) ∧ True. Proved from z_12 and known_values_correct axioms. erdos_758: z(12) = 4 := z_12. Problem SOLVED.",
     "mathContext": "erdos_758_summary := ⟨z_12, known_values_correct, trivial⟩.",
     "significance": "key",
+    "prerequisites": [
+      "cochromatic number",
+      "solved problems"
+    ],
     "relatedConcepts": [
       "solved problems",
       "cochromatic number",

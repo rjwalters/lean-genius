@@ -129,6 +129,11 @@
     "content": "ErdosConjecture603(C): for all valid families, C colors suffice. minimalChromatic: the smallest such C.",
     "mathContext": "The question is the value of minimalChromatic.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "minimal",
+      "universal-bound"
+    ],
     "relatedConcepts": [
       "universal-bound",
       "minimal"
@@ -211,6 +216,11 @@
     "content": "CanDoBetterThanAleph0: some finite n suffices. Aleph0Necessary: no finite n works.",
     "mathContext": "The key open question: is the answer finite or infinite?",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "finite",
+      "infinite"
+    ],
     "relatedConcepts": [
       "finite",
       "infinite",
@@ -290,6 +300,11 @@
     "content": "SatisfiesBoth: intersection != 1 AND != 2. both_constraints: Komjath's bound applies.",
     "mathContext": "Families avoiding both 1 and 2 are covered by Komjath's result.",
     "significance": "supporting",
+    "prerequisites": [
+      "both-constraints",
+      "intersection",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "both-constraints",
       "intersection"
@@ -341,6 +356,10 @@
     "content": "The problem is OPEN. Known: 2 <= C <= aleph_0. For != 1: C = aleph_0 (Komjath). For != 2: unknown.",
     "mathContext": "The contrast with the solved != 1 case is notable.",
     "significance": "key",
+    "prerequisites": [
+      "open-problem",
+      "status"
+    ],
     "relatedConcepts": [
       "open-problem",
       "status"

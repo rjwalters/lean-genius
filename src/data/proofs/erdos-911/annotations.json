@@ -11,6 +11,12 @@
     "content": "Erdős Problem #911: Does there exist f with f(x)/x → ∞ such that for C-dense graphs G (e ≥ Cn), we have R̂(G) > f(C)·e(G)? Status: OPEN.",
     "mathContext": "Posed in [Er82e, p.78]. Size Ramsey numbers measure minimum edge complexity for Ramsey properties.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "complex numbers",
+      "graph theory basics",
+      "graph-density"
+    ],
     "relatedConcepts": [
       "size-ramsey",
       "graph-density",
@@ -29,6 +35,12 @@
     "content": "SimpleGraph'(V) has adjacency relation adj : V → V → Prop, symmetry (adj a b → adj b a), and no loops (¬adj a a).",
     "mathContext": "Custom structure to avoid Mathlib's SimpleGraph for cleaner axiomatization.",
     "significance": "key",
+    "prerequisites": [
+      "adjacency",
+      "basic set theory",
+      "graph theory basics",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "adjacency",
       "undirected-graph"
@@ -46,6 +58,11 @@
     "content": "edgeCount(G) = |{(a,b) : a adj b and a < b}| counts edges. avgDegree(G) = 2e/n is the average vertex degree.",
     "mathContext": "Uses ordered pairs to avoid double-counting symmetric edges.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "degree",
+      "edge-set"
+    ],
     "relatedConcepts": [
       "edge-set",
       "degree"
@@ -63,6 +80,12 @@
     "content": "isDense(G, C) := e(G) ≥ C·n means G has at least C edges per vertex on average. This is the key density condition.",
     "mathContext": "Density is central to the problem: we ask if high density forces large size Ramsey numbers.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "average-degree",
+      "basic set theory",
+      "density theory"
+    ],
     "relatedConcepts": [
       "edge-density",
       "average-degree"
@@ -80,6 +103,12 @@
     "content": "EdgeColoring assigns each edge a color (Bool). isMonochromatic(G,H,c,col) says G-edges in H all have color col. isRamseyFor(H,G) says every 2-coloring of H contains monochromatic G.",
     "mathContext": "The Ramsey property: no matter how you color H, you find a monochromatic copy of G.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "basic set theory",
+      "coloring",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "ramsey-property",
       "coloring"
@@ -97,6 +126,12 @@
     "content": "sizeRamseyNumber(G) = R̂(G) is the minimum number of edges in a graph H that is Ramsey for G. Axiomatized since the definition spans all graph sizes.",
     "mathContext": "Introduced by Erdős-Faudree-Rousseau-Schelp (1978). Measures edge-complexity of Ramsey.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "complex numbers",
+      "edge-minimality",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "ramsey-number",
       "edge-minimality"
@@ -114,6 +149,11 @@
     "content": "superlinearGrowth(f) := ∀M, ∃x₀, ∀x > x₀, f(x)/x > M. This says f grows faster than any linear function.",
     "mathContext": "The problem asks for f with this growth property, implying R̂(G) >> e(G) for dense G.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic",
+      "basic set theory",
+      "growth-rate"
+    ],
     "relatedConcepts": [
       "growth-rate",
       "asymptotic"
@@ -131,6 +171,12 @@
     "content": "ErdosConjecture911: ∃f superlinear, ∃C₀, ∀C ≥ C₀, ∀G C-dense, R̂(G) > f(C)·e(G). This is THE open problem.",
     "mathContext": "The conjecture asserts density forces superlinear size Ramsey growth.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "basic set theory",
+      "density theory",
+      "density-ramsey"
+    ],
     "relatedConcepts": [
       "erdos-conjecture",
       "density-ramsey"
@@ -148,6 +194,11 @@
     "content": "R̂(Pₙ) = O(n) for paths. Paths have linear size Ramsey numbers despite having n-1 edges.",
     "mathContext": "Beck's breakthrough showed paths are 'easy' for size Ramsey. Uses random embedding techniques.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "linear-bound",
+      "paths"
+    ],
     "relatedConcepts": [
       "paths",
       "linear-bound"
@@ -165,6 +216,11 @@
     "content": "R̂(Kₙ) = Θ(n²) for complete graphs. This is linear in edge count e(Kₙ) = n(n-1)/2.",
     "mathContext": "Complete graphs are maximally dense but have R̂ = Θ(edges), not superlinear.",
     "significance": "key",
+    "prerequisites": [
+      "complete-graphs",
+      "graph theory basics",
+      "tight-bound"
+    ],
     "relatedConcepts": [
       "complete-graphs",
       "tight-bound"
@@ -182,6 +238,12 @@
     "content": "Bounded degree graphs have linear size Ramsey numbers: if max_deg(G) ≤ Δ, then R̂(G) = O_Δ(n).",
     "mathContext": "Kohayakawa-Rödl-Schacht-Szemerédi showed bounded degree is sufficient for linear R̂.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "bounded-degree",
+      "graph theory basics",
+      "linear-ramsey"
+    ],
     "relatedConcepts": [
       "bounded-degree",
       "linear-ramsey"
@@ -199,6 +261,12 @@
     "content": "R̂(G) ≥ e(G) always. Any Ramsey graph H for G must contain G as a subgraph, hence has at least e(G) edges.",
     "mathContext": "This is the baseline. The conjecture asks if density improves this to R̂(G) ≥ f(C)·e(G).",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "density theory",
+      "graph theory basics",
+      "lower-bound"
+    ],
     "relatedConcepts": [
       "lower-bound",
       "subgraph"
@@ -216,6 +284,11 @@
     "content": "If G is C-dense (e ≥ Cn), then e(G) ≥ Cn trivially. Combined with R̂ ≥ e, we get R̂(G) ≥ Cn.",
     "mathContext": "But the question is whether we can do better: R̂(G) ≥ f(C)·e(G) where f(C)/C → ∞.",
     "significance": "supporting",
+    "prerequisites": [
+      "density-edges",
+      "linear-bound",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "density-edges",
       "linear-bound"
@@ -233,6 +306,10 @@
     "content": "The problem is OPEN. No proof either way is known. The conjecture is neither confirmed nor refuted.",
     "mathContext": "The status 'OPEN' indicates genuine mathematical uncertainty, not just missing formalization.",
     "significance": "key",
+    "prerequisites": [
+      "open-problem",
+      "unknown"
+    ],
     "relatedConcepts": [
       "open-problem",
       "unknown"
@@ -250,6 +327,12 @@
     "content": "densityForcesStructure: ∀ε>0, ∃C₀, ∀C≥C₀, C-dense G has R̂(G) ≥ C^(1+ε)·e(G). This asks for polynomial superlinearity.",
     "mathContext": "An equivalent way to state superlinear growth: R̂ grows like C^(1+ε)·e, not just C·e.",
     "significance": "supporting",
+    "prerequisites": [
+      "basic set theory",
+      "density theory",
+      "epsilon",
+      "polynomial ring theory"
+    ],
     "relatedConcepts": [
       "polynomial-growth",
       "epsilon"
@@ -267,6 +350,12 @@
     "content": "graphRamseyNumber(G) = R(G) is the classical Ramsey number (minimum vertices). R̂(G) ≤ e(K_{R(G)}) = R(G)·(R(G)-1)/2.",
     "mathContext": "Size Ramsey is bounded by taking the complete graph on R(G) vertices.",
     "significance": "supporting",
+    "prerequisites": [
+      "Ramsey theory",
+      "complete-bound",
+      "graph theory basics",
+      "vertex-ramsey"
+    ],
     "relatedConcepts": [
       "vertex-ramsey",
       "complete-bound"
@@ -284,6 +373,12 @@
     "content": "Status: OPEN. Known: R̂(G) ≥ e(G), R̂(Pₙ) = O(n), R̂(Kₙ) = Θ(n²), bounded degree has linear R̂. Unknown: does density alone force superlinear R̂?",
     "mathContext": "The formalization captures the problem statement and known partial results on size Ramsey numbers.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "density theory",
+      "status",
+      "summary"
+    ],
     "relatedConcepts": [
       "status",
       "summary"

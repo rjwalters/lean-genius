@@ -11,6 +11,12 @@
     "content": "Erdos Problem #1105: Find exact formulas for anti-Ramsey numbers AR(n, C_k) and AR(n, P_k). Status: OPEN.",
     "mathContext": "From Erdos-Simonovits-Sos (1975). AR(n,G) = max colors in rainbow-G-free coloring of K_n. Foundational anti-Ramsey theory.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "anti-ramsey",
+      "graph coloring",
+      "rainbow-coloring"
+    ],
     "relatedConcepts": [
       "anti-ramsey",
       "rainbow-coloring",
@@ -29,6 +35,12 @@
     "content": "SimpleGraph(n) := Fin n -> Fin n -> Prop. CompleteGraph(n) := all distinct pairs adjacent. numEdgesKn(n) = C(n,2).",
     "mathContext": "Basic graph-theoretic setup. K_n has n(n-1)/2 edges.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "complete-graph",
+      "edge-count",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "complete-graph",
       "edge-count"
@@ -46,6 +58,12 @@
     "content": "PathGraph(k): edges {i, i+1}. CycleGraph(k): path plus edge {0, k-1}. |E(P_k)| = k-1, |E(C_k)| = k.",
     "mathContext": "Standard path and cycle structures. P_k has k vertices and k-1 edges. C_k has k vertices and k edges.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "cycle",
+      "graph theory basics",
+      "path"
+    ],
     "relatedConcepts": [
       "path",
       "cycle",
@@ -64,6 +82,12 @@
     "content": "GraphEmbedding(n, k, H): injective map vertices: Fin k -> Fin n preserving edges of H in K_n.",
     "mathContext": "A copy of H in K_n is an injective vertex mapping where edges of H correspond to edges of K_n.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "graph theory basics",
+      "homomorphism",
+      "subgraph"
+    ],
     "relatedConcepts": [
       "subgraph",
       "homomorphism",
@@ -82,6 +106,12 @@
     "content": "IsRainbow: all edges in embedded copy have distinct colors. AvoidsRainbow: no embedded copy is rainbow.",
     "mathContext": "Rainbow = all-distinct-colors. Anti-Ramsey problem seeks max colors while avoiding rainbow copies.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "basic set theory",
+      "distinct-colors",
+      "rainbow"
+    ],
     "relatedConcepts": [
       "rainbow",
       "distinct-colors",
@@ -100,6 +130,12 @@
     "content": "antiRamsey(n, k, H) := sup{c : exists c-coloring of K_n avoiding rainbow H}. arCycle, arPath specialize to C_k, P_k.",
     "mathContext": "The central extremal quantity. Contrast with Ramsey numbers which minimize colors to force monochromatic.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "basic set theory",
+      "extremal",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "extremal",
       "supremum",
@@ -118,6 +154,12 @@
     "content": "CycleConjecture: AR(n, C_k) = ((k-2)/2 + 1/(k-1)) * n + O(1). ar_triangle: AR(n, C_3) = n - 1.",
     "mathContext": "Linear growth in n with coefficient depending on k. For k=3, coefficient is 1, matching n-1.",
     "significance": "key",
+    "prerequisites": [
+      "asymptotic",
+      "basic set theory",
+      "linear-growth",
+      "matching theory"
+    ],
     "relatedConcepts": [
       "asymptotic",
       "linear-growth",
@@ -136,6 +178,11 @@
     "content": "PathConjecture: AR(n, P_k) = max(C(k-2,2)+1, C(l-1,2)+(l-1)(n-l+1)+eps) where l = floor((k-1)/2), eps = 1 or 2.",
     "mathContext": "Exact formula with two cases. Simonovits-Sos proved for n >= ck^2. Yuan (2021) announced full proof.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "binomial",
+      "exact-formula"
+    ],
     "relatedConcepts": [
       "exact-formula",
       "binomial",
@@ -154,6 +201,11 @@
     "content": "ar_lower_bound: AR(n, H) >= 1. ar_upper_bound: AR(n, H) <= C(n,2). ar_mono_n: monotone in n.",
     "mathContext": "Basic bounds. Upper bound is trivial (each edge gets own color). Monotonicity follows from restriction.",
     "significance": "key",
+    "prerequisites": [
+      "bounds",
+      "monotonicity",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "bounds",
       "monotonicity",
@@ -172,6 +224,12 @@
     "content": "turan(n, k, H) := max edges in H-free graph. ar_turan_lower: AR(n, H) >= ex(n, H) + 1.",
     "mathContext": "Key connection to extremal graph theory. Give H-free subgraph rainbow coloring, one color for complement.",
     "significance": "key",
+    "prerequisites": [
+      "extremal",
+      "graph coloring",
+      "graph theory basics",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "turan",
       "extremal",
@@ -190,6 +248,10 @@
     "content": "ar_path_3: AR(n, P_3) = 1. ar_k3: AR(n, K_3) = n - 1. Small cases are known exactly.",
     "mathContext": "P_3 is trivial (2 edges need different colors). K_3 = C_3 gives n-1 by Erdos-Simonovits-Sos.",
     "significance": "supporting",
+    "prerequisites": [
+      "exact-values",
+      "small-cases"
+    ],
     "relatedConcepts": [
       "small-cases",
       "exact-values"
@@ -207,6 +269,12 @@
     "content": "The problem is OPEN. Cycle formula open for general k. Path formula: proven for n >= ck^2, announced for all n >= k >= 5.",
     "mathContext": "Open problem in extremal graph theory. Connects Ramsey theory with Turan-type questions.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "graph theory basics",
+      "open-problem",
+      "partial-progress"
+    ],
     "relatedConcepts": [
       "open-problem",
       "partial-progress"

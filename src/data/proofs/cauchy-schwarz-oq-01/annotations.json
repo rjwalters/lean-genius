@@ -11,6 +11,12 @@
     "content": "**Theorem** `cauchy_schwarz_complex`: For `u, v` in a complex inner product space `E`:\n```\n‖⟪u, v⟫_ℂ‖ ≤ ‖u‖ * ‖v‖\n```\n\nThe entire proof is `norm_inner_le_norm u v` — a single application of Mathlib's built-in result. The `[InnerProductSpace ℂ E]` instance tells Lean that `𝕜 = ℂ`, so `norm_inner_le_norm` specializes to the complex case automatically.\n\n**Key observation**: No special handling of conjugate-linearity is needed. Mathlib's `norm_inner_le_norm` already accounts for the modulus `‖⟪u,v⟫_𝕜‖` (not just the real part `|Re⟪u,v⟫|`), which is what makes it work for complex inner products.",
     "mathContext": "\\|\\langle u, v \\rangle_{\\mathbb{C}}\\| \\leq \\|u\\| \\cdot \\|v\\|",
     "significance": "key",
+    "prerequisites": [
+      "Cauchy-Schwarz",
+      "complex inner product",
+      "complex numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Cauchy-Schwarz",
       "complex inner product",
@@ -30,6 +36,12 @@
     "content": "**Theorem** `cauchy_schwarz_rclike`: For any `[RCLike 𝕜]` field and inner product space `E` over `𝕜`:\n```\n‖⟪u, v⟫_𝕜‖ ≤ ‖u‖ * ‖v‖\n```\n\nThis is the most general form. `RCLike` is Mathlib's abstract typeclass for `ℝ`-like or `ℂ`-like fields — fields that are either `ℝ` itself or `ℂ` itself (or anything with equivalent algebraic and analytic structure).\n\n**Significance**: One theorem covers infinitely many spaces: real Hilbert spaces, complex Hilbert spaces, and their finite-dimensional subspaces.",
     "mathContext": "\\forall 𝕜 \\text{ (RCLike)}, \\forall E \\text{ (InnerProductSpace}_{𝕜}\\text{)}: \\|\\langle u, v \\rangle_𝕜\\| \\leq \\|u\\| \\cdot \\|v\\|",
     "significance": "key",
+    "prerequisites": [
+      "RCLike",
+      "complex numbers",
+      "field theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "RCLike",
       "uniform inequality",
@@ -49,6 +61,11 @@
     "content": "**Theorem** `re_inner_le_norm_mul`: `Re(⟪u,v⟫_ℂ) ≤ ‖u‖·‖v‖`\n\nThe proof chains three inequalities:\n1. `Re(z) ≤ |Re(z)|` — real number below its absolute value\n2. `|Re(z)| ≤ ‖z‖` — `RCLike.norm_re_le_norm`: the real part's absolute value is at most the norm\n3. `‖⟪u,v⟫_ℂ‖ ≤ ‖u‖·‖v‖` — Cauchy-Schwarz\n\nThis bound is important for proving the parallelogram law and related identities.",
     "mathContext": "\\text{Re}(\\langle u, v \\rangle_{\\mathbb{C}}) \\leq |\\text{Re}(\\langle u, v \\rangle_{\\mathbb{C}})| \\leq \\|\\langle u, v \\rangle_{\\mathbb{C}}\\| \\leq \\|u\\| \\cdot \\|v\\|",
     "significance": "supporting",
+    "prerequisites": [
+      "RCLike.norm_re_le_norm",
+      "proof techniques",
+      "real part"
+    ],
     "relatedConcepts": [
       "real part",
       "RCLike.norm_re_le_norm",
@@ -68,6 +85,12 @@
     "content": "**Theorem** `cauchy_schwarz_complex_sq`: `‖⟪u,v⟫_ℂ‖² ≤ ‖u‖²·‖v‖²`\n\nDerived from the linear form `h : ‖⟪u,v⟫_ℂ‖ ≤ ‖u‖·‖v‖` by `nlinarith` with hints:\n- `sq_nonneg (‖u‖·‖v‖ - ‖⟪u,v⟫_ℂ‖)` gives `0 ≤ (‖u‖·‖v‖)² - 2‖u‖·‖v‖·‖⟪u,v⟫‖ + ‖⟪u,v⟫‖²`\n- Combined with `h` and nonnegativity, `nlinarith` concludes `‖⟪u,v⟫‖² ≤ ‖u‖²·‖v‖²`\n\n**Why nlinarith needs hints**: The nonlinear arithmetic solver needs explicit quadratic witnesses to close the goal.",
     "mathContext": "\\|\\langle u, v \\rangle\\|^2 \\leq \\|u\\|^2 \\cdot \\|v\\|^2",
     "significance": "supporting",
+    "prerequisites": [
+      "complex numbers",
+      "linarith tactic",
+      "nlinarith",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "squared inequality",
       "nlinarith",
@@ -87,6 +110,12 @@
     "content": "**Theorem** `pythagorean_from_orthogonal`: If `⟪u,v⟫_𝕜 = 0` then `‖u+v‖² = ‖u‖² + ‖v‖²`\n\nProof via `norm_add_sq (𝕜 := 𝕜)` which gives the polarization identity:\n```\n‖u+v‖² = ‖u‖² + 2·Re⟪u,v⟫_𝕜 + ‖v‖²\n```\nThen `rw [h, map_zero]` substitutes `⟪u,v⟫_𝕜 = 0` and simplifies `Re(0) = 0`.\nFinally `ring` closes `‖u‖² + 2·0 + ‖v‖² = ‖u‖² + ‖v‖²`.\n\n**Why this matters**: Orthogonality is the abstract generalization of right angles. Pythagoras holds in any inner product space — real or complex — when two vectors are orthogonal (their inner product is zero).",
     "mathContext": "\\langle u, v \\rangle_𝕜 = 0 \\implies \\|u + v\\|^2 = \\|u\\|^2 + \\|v\\|^2",
     "significance": "key",
+    "prerequisites": [
+      "Pythagorean theorem",
+      "complex numbers",
+      "orthogonality",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "orthogonality",
       "Pythagorean theorem",
@@ -106,6 +135,12 @@
     "content": "**Theorem** `cauchy_schwarz_works_for_complex`: A conjunction asserting that `norm_inner_le_norm` answers the open question affirmatively:\n\n1. **ℂ-specific**: For all complex inner product spaces and `u, v : E`, `‖⟪u,v⟫_ℂ‖ ≤ ‖u‖·‖v‖`\n2. **Uniform RCLike**: For all `[RCLike 𝕜]` fields and inner product spaces, `‖⟪u,v⟫_𝕜‖ ≤ ‖u‖·‖v‖`\n\nBoth are proved by `norm_inner_le_norm u v` — the field `𝕜` is inferred from the typeclass context. The conjunction is the formal statement that the open question has a positive answer.",
     "mathContext": "\\text{OQ-01 Answer: YES — norm\\_inner\\_le\\_norm works for } \\mathbb{C} \\text{ and all RCLike fields}",
     "significance": "key",
+    "prerequisites": [
+      "RCLike",
+      "complex numbers",
+      "field theory",
+      "open question"
+    ],
     "relatedConcepts": [
       "open question",
       "RCLike",

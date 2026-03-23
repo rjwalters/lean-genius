@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #894: Chromatic Numbers of Lacunary Cayley Graphs**\n\nFor a lacunary sequence A (n_{k+1} ≥ (1+ε)n_k), does there exist a finite coloring of ℕ with no monochromatic a - b ∈ A?\n\n**Status:** SOLVED (YES)\n\n**Key results:**\n- Katznelson (2001): Connected to Problem #464 via Diophantine approximation\n- Peres-Schlag (2010): O(ε⁻¹ log(1/ε)) colors suffice, essentially optimal\n\n**Key insight:** Use irrational rotation — color integers by their position on the circle (mod 1), with the irrational angle θ chosen so that θ·n_k stays away from integers.",
     "mathContext": "The equivalence between finite colorings avoiding monochromatic differences and finite chromatic number of Cayley graphs on ℤ is standard in additive combinatorics.",
     "significance": "key",
+    "prerequisites": [
+      "Chromatic number",
+      "Lacunary sequences",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Lacunary sequences",
       "Chromatic number",
@@ -30,6 +36,12 @@
     "content": "**IsLacunary(a, ε):** ε > 0 and a(k+1) ≥ (1+ε)·a(k) for all k. This means the sequence grows at least geometrically.\n\n**lacunary_exponential_growth** (PROVED): a(k) ≥ a(0)·(1+ε)^k, proved by induction on k. The inductive step uses monotonicity of multiplication by (1+ε) > 1.\n\n**geometricSequence(r, n)** = r^n. **geometric_is_lacunary** (PROVED): r^n is lacunary with ε = r-1 when r ≥ 2. Proof uses r^{k+1} = r·r^k ≥ 2·r^k = (1+1)·r^k.",
     "mathContext": "Lacunary sequences are fundamental in harmonic analysis. Their exponential growth ensures sparsity, which is key to the coloring construction.",
     "significance": "key",
+    "prerequisites": [
+      "Exponential growth",
+      "Geometric sequences",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Exponential growth",
       "Geometric sequences",
@@ -48,6 +60,12 @@
     "content": "**Coloring(k):** ℕ → Fin k — an assignment of k colors to natural numbers.\n\n**AvoidsMonochromatic(c, A):** Whenever b < a and a - b ∈ A, the colors c(a) ≠ c(b). This prevents monochromatic solutions to x - y ∈ A.\n\n**IsFinitelyColorable(A):** ∃ k, ∃ c : Coloring k, AvoidsMonochromatic c A — the key property.\n\n**chromaticNumber(A)** (axiom): The minimum number of colors needed. Axiomatized since the infimum over all valid colorings requires careful construction.",
     "mathContext": "The coloring problem can be phrased as: is the chromatic number of the Cayley graph Cay(ℤ, A ∪ (-A)) finite?",
     "significance": "key",
+    "prerequisites": [
+      "Forbidden differences",
+      "Graph coloring",
+      "basic set theory",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Graph coloring",
       "Forbidden differences",
@@ -66,6 +84,12 @@
     "content": "**fractionalDistance(x)** = min(x - ⌊x⌋, ⌈x⌉ - x) — distance to the nearest integer.\n\n**problem_464_result** (axiom): For any lacunary sequence, ∃ irrational θ and δ > 0 such that ||θ·n_k|| > δ for all k. This is the 'badly approximable' property.\n\n**katznelsonColoring** (defined): Divide [0,1) into ⌈1/δ⌉ intervals of length δ. Color n by which interval contains the fractional part of n·θ. The Lean definition computes ⌊frac(nθ)/δ⌋ mod ⌈1/δ⌉.\n\n**katznelson_theorem** (axiom): If ||θ·n_k|| > δ for all k, then katznelsonColoring avoids monochromatic differences. The key idea: if c(a) = c(b) then frac(aθ) and frac(bθ) are in the same δ-interval, so ||θ(a-b)|| < δ, contradicting the separation.",
     "mathContext": "Katznelson's crucial observation (2001) reduced the coloring problem to Diophantine approximation. The separation condition ||θ·n_k|| > δ ensures no two same-colored integers differ by an element of A.",
     "significance": "key",
+    "prerequisites": [
+      "Fractional distance",
+      "Irrational rotation",
+      "graph coloring",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Fractional distance",
       "Irrational rotation",
@@ -85,6 +109,12 @@
     "content": "**lacunary_finitely_colorable** (PROVED): Every lacunary sequence is finitely colorable.\n\nProof: Given IsLacunary a ε, apply problem_464_result to get θ and δ. Use ⌈1/δ⌉ colors via katznelsonColoring. Apply katznelson_theorem to verify the coloring avoids monochromatic differences.\n\n**ErdosConjecture894** (Prop): The formal statement ∀ a ε, IsLacunary a ε → IsFinitelyColorable {n | ∃ k, n = a k}.\n\n**erdos_894** (PROVED): ErdosConjecture894, definitionally equal to lacunary_finitely_colorable.\n\nThis is the central result — Problem #894 is SOLVED.",
     "mathContext": "The proof is a clean composition: Problem #464 provides the Diophantine input, Katznelson's construction produces the coloring, and the theorem follows.",
     "significance": "key",
+    "prerequisites": [
+      "Composition of axioms",
+      "Main theorem",
+      "graph coloring",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Main theorem",
       "Composition of axioms",
@@ -103,6 +133,12 @@
     "content": "**peres_schlag_bound** (axiom): For a lacunary sequence with ratio (1+ε), ∃ C and a coloring using ⌈C/(ε·log(1/ε))⌉ colors that avoids monochromatic differences.\n\n**peres_schlag_optimality** (axiom): The chromatic number is ≤ C/(ε·log(1/ε)) for a universal constant C > 0.\n\nPeres and Schlag (2010) proved these in 'Two Erdős problems on lacunary sequences: the Peres-Schlag theorem'. Their method combined harmonic analysis with probabilistic arguments.",
     "mathContext": "For ε = 1 (e.g., powers of 2), the bound gives O(1) colors. For ε → 0 (slowly growing lacunary sequences), more colors are needed, scaling as ε⁻¹ log(1/ε).",
     "significance": "key",
+    "prerequisites": [
+      "Peres-Schlag 2010",
+      "Quantitative bounds",
+      "graph coloring",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Quantitative bounds",
       "Peres-Schlag 2010",
@@ -121,6 +157,11 @@
     "content": "**powers_of_2_colorable** (PROVED): {1, 2, 4, 8, ...} is finitely colorable. Proof: 2^n is lacunary with ε = 1 (from geometric_is_lacunary), so apply lacunary_finitely_colorable.\n\n**powers_of_3_colorable** (PROVED): {1, 3, 9, 27, ...} is finitely colorable. Proof: 3^n is lacunary with ε = 2, since 3^{k+1} = 3·3^k = (1+2)·3^k.\n\nThese concrete examples demonstrate the main theorem on familiar sequences.",
     "mathContext": "Powers of any integer r ≥ 2 are lacunary with ε = r-1. The main theorem applies uniformly to all such sequences.",
     "significance": "key",
+    "prerequisites": [
+      "Examples",
+      "Powers of integers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Examples",
       "Powers of integers",
@@ -139,6 +180,11 @@
     "content": "**erdos_894_summary** (PROVED): Combines two key results:\n1. ErdosConjecture894 holds — every lacunary sequence is finitely colorable\n2. Problem464Statement → ErdosConjecture894 — the logical implication is proved\n\nProof: ⟨erdos_894, problem_464_implies_894⟩\n\nThis captures both the resolution of Problem #894 and the logical structure showing how it follows from Problem #464.",
     "mathContext": "The summary theorem packages the positive resolution with the proved dependency on Problem #464, giving a complete picture of the logical structure.",
     "significance": "key",
+    "prerequisites": [
+      "Solved problems",
+      "Summary theorems",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Summary theorems",
       "Solved problems",

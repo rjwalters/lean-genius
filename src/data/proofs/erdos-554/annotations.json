@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #554** asks whether odd cycles become negligible compared to triangles in multicolor Ramsey theory.\n\nThe k-color Ramsey number R(G; k) is the minimum m such that any k-coloring of the edges of the complete graph K_m contains a monochromatic copy of G. Erdős and Graham (1981) conjectured that for any n >= 2, the ratio R(C_{2n+1}; k) / R(K_3; k) tends to 0 as k grows.\n\nThis is OPEN even for the pentagon C_5 (the simplest odd cycle beyond the triangle).",
     "mathContext": "Multicolor Ramsey theory studies how the number of colors affects the difficulty of guaranteeing monochromatic substructures. This problem captures a fundamental asymmetry between cycles and cliques.",
     "significance": "key",
+    "prerequisites": [
+      "Graph coloring",
+      "Ramsey theory",
+      "graph coloring",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Ramsey theory",
       "Graph coloring",
@@ -29,6 +35,12 @@
     "content": "**ramseyNumber** is axiomatized as a function ℕ → ℕ → ℕ representing R(G; k), the k-color Ramsey number.\n\nThe full definition would require graph theory infrastructure (SimpleGraph, graph homomorphisms, edge colorings). Instead, we axiomatize it with basic properties:\n- **ramseyNumber_ge**: R(G; k) >= graph size (at least enough vertices to contain G)\n- **ramseyNumber_mono_colors**: monotone in k (more colors never decrease the Ramsey number)",
     "mathContext": "Ramsey's theorem guarantees that ramseyNumber is well-defined (finite) for any finite graph and number of colors. The axiomatization captures the essential properties without requiring a full graph theory library.",
     "significance": "key",
+    "prerequisites": [
+      "Graph Ramsey theory",
+      "Ramsey theory",
+      "Ramsey's theorem",
+      "graph coloring"
+    ],
     "relatedConcepts": [
       "Ramsey's theorem",
       "Graph Ramsey theory",
@@ -47,6 +59,12 @@
     "content": "**triangleRamsey k** = R(K_3; k): the k-color triangle Ramsey number.\n**oddCycleRamsey n k** = R(C_{2n+1}; k): the k-color Ramsey number of the odd (2n+1)-cycle.\n\nThe triangle (3 vertices) and odd cycles (2n+1 vertices) both have chromatic number 3, yet the conjecture predicts their Ramsey numbers behave very differently.",
     "mathContext": "Lean: `def triangleRamsey (k : ℕ) : ℕ`",
     "significance": "key",
+    "prerequisites": [
+      "Complete graphs",
+      "Cycle graphs",
+      "Ramsey theory",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Complete graphs",
       "Cycle graphs",
@@ -65,6 +83,11 @@
     "content": "**erdosConjecture554** states the ratio-limit conjecture using rational arithmetic.\n\nInstead of a real-valued limit (which would require Mathlib's topology), we encode 'tends to 0' as: for every rational ε = εNum/εDen > 0, there exists K_0 such that for all k >= K_0, R(C_{2n+1}; k) * εDen < εNum * R(K_3; k).\n\nThis is equivalent to the real-valued limit but avoids importing real analysis infrastructure.",
     "mathContext": "The rational arithmetic formulation is a standard technique in formalization: it avoids the need for real numbers while being logically equivalent for natural number sequences.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic analysis",
+      "Rational arithmetic",
+      "topology"
+    ],
     "relatedConcepts": [
       "Asymptotic analysis",
       "Rational arithmetic",
@@ -83,6 +106,11 @@
     "content": "**triangle_ramsey_exponential**: R(K_3; k) >= 2^k for k >= 2.\n\nThis follows from Schur's theorem and probabilistic arguments. The exponential lower bound is crucial because if R(K_3; k) grows exponentially while R(C_{2n+1}; k) grows slower, the ratio would indeed tend to 0.\n\n**triangle_ramsey_upper**: R(K_3; k) is at most C^k for some constant C. The exact growth rate of R(K_3; k) is itself a major open problem.",
     "mathContext": "The lower bound comes from the probabilistic method (Erdős 1947) and explicit constructions. The upper bound uses stepping-up lemmas. Pinning down the exact exponential base is one of the central open problems in Ramsey theory.",
     "significance": "key",
+    "prerequisites": [
+      "Exponential growth",
+      "Probabilistic method",
+      "Ramsey theory"
+    ],
     "relatedConcepts": [
       "Probabilistic method",
       "Exponential growth",
@@ -101,6 +129,11 @@
     "content": "**oddCycle_ramsey_upper**: R(C_{2n+1}; k) <= (2n+1)^k.\nThe upper bound is exponential with base 2n+1, the cycle length.\n\n**oddCycle_ramsey_lower**: R(C_{2n+1}; k) >= k*(2n) + 1.\nThe lower bound is linear in k (for fixed n), much weaker than exponential.\n\nThe gap between these bounds is where the conjecture lives: if the true growth rate is subexponential or has a smaller exponential base than triangles, the ratio tends to 0.",
     "mathContext": "Lean: `axiom oddCycle_ramsey_upper :`",
     "significance": "key",
+    "prerequisites": [
+      "Lower bounds",
+      "Ramsey theory",
+      "Upper bounds"
+    ],
     "relatedConcepts": [
       "Upper bounds",
       "Lower bounds",
@@ -119,6 +152,11 @@
     "content": "**Bondy-Erdős (1973)**: R(C_{2n+1}; 2) = 4n + 1 for n >= 2.\n**Classical**: R(K_3; 2) = 6.\n\nThe 2-color case is completely solved. For the pentagon: R(C_5; 2) = 9, R(K_3; 2) = 6, so the ratio is 9/6 = 1.5.\n\n**two_color_pentagon_ratio** derives these values from the axioms, verifying consistency of our formalization.",
     "mathContext": "The Bondy-Erdős theorem uses a Hamiltonian cycle argument: in a 2-colored K_{4n+1}, one color class has minimum degree >= 2n, which guarantees a C_{2n+1}. The proof is elegant and constructive.",
     "significance": "key",
+    "prerequisites": [
+      "Bondy-Erdős theorem",
+      "Hamiltonian cycles",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Bondy-Erdős theorem",
       "Hamiltonian cycles",
@@ -137,6 +175,12 @@
     "content": "**erdosConjecture554_Pentagon** isolates the simplest open case: n = 2, the pentagon C_5.\n\nEven this most basic instance is unresolved. The theorem **pentagon_is_special_case** shows it follows from the full conjecture, which is proved by instantiating the universal quantifier over n.\n\nThe pentagon is the shortest odd cycle beyond the triangle itself, making it the natural first test case.",
     "mathContext": "The pentagon C_5 has chromatic number 3 and is vertex-transitive. Its Ramsey-theoretic behavior in the multicolor setting remains mysterious.",
     "significance": "key",
+    "prerequisites": [
+      "Pentagon graph",
+      "Ramsey theory",
+      "Special cases",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "Pentagon graph",
       "Special cases",
@@ -155,6 +199,12 @@
     "content": "**odd_cycle_chromatic**: All odd cycles have chromatic number 3.\n\nThis is the same chromatic number as K_3 (the triangle). The conjecture implies that chromatic number alone does NOT determine the Ramsey-theoretic complexity of a graph.\n\n**erdos_question_chromatic_3** poses a broader question: is there ANY 3-chromatic graph G with R(G; k) / R(K_3; k) not tending to 0? Problem #554 conjectures that odd cycles are not counterexamples.",
     "mathContext": "A graph is 3-chromatic if it needs exactly 3 colors for a proper vertex coloring. Odd cycles are the simplest 3-chromatic graphs. The relationship between chromatic number and Ramsey numbers is a deep theme in combinatorics.",
     "significance": "key",
+    "prerequisites": [
+      "Chromatic number",
+      "Graph coloring",
+      "Ramsey theory",
+      "complex numbers"
+    ],
     "relatedConcepts": [
       "Chromatic number",
       "Graph coloring",
@@ -173,6 +223,10 @@
     "content": "**erdos_554** axiomatizes the full conjecture as an axiom, since the problem is OPEN.\n\nThis is the standard formalization approach for open problems: state the conjecture precisely and axiomatize it, allowing downstream reasoning to proceed conditionally.\n\nIf/when the conjecture is proved, this axiom can be replaced with a theorem.",
     "mathContext": "Lean: `axiom erdos_554 : erdosConjecture554`",
     "significance": "key",
+    "prerequisites": [
+      "Axiomatization",
+      "Open problems"
+    ],
     "relatedConcepts": [
       "Open problems",
       "Axiomatization",

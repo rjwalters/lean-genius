@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #1032** (OPEN):\n\nDo there exist 4-chromatic critical graphs on n vertices with minimum degree linear in n (i.e., δ(G) ≥ cn for some constant c > 0)?\n\nA graph G is k-chromatic critical if χ(G) = k and removing any edge reduces the chromatic number to k − 1. The question asks whether criticality is compatible with high minimum degree for k = 4.",
     "mathContext": "Critical graphs are 'tightly chromatic' — every edge is essential. For k = 6, Dirac showed linear minimum degree is achievable. For k = 4, the best known is δ ≫ n^{1/3} (Simonovits–Toft).",
     "significance": "key",
+    "prerequisites": [
+      "chromatic number",
+      "critical graphs",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "chromatic number",
       "critical graphs",
@@ -29,6 +34,11 @@
     "content": "**Axiomatised functions:**\n\n- `vertexCount G` — number of vertices\n- `minDegree G` — minimum degree δ(G)\n- `chromaticNumber G` — chromatic number χ(G)\n- `edgeCount G` — number of edges\n\nThese are axiomatised because Lean 4's Mathlib does not have a built-in chromatic number for general graphs parametrised over Type.",
     "mathContext": "Lean: `axiom vertexCount : Type → ℕ`",
     "significance": "supporting",
+    "prerequisites": [
+      "axiom",
+      "graph theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "axiom",
       "graph theory",
@@ -47,6 +57,12 @@
     "content": "**IsKChromaticCritical G k:**\n\nG is k-chromatic critical if:\n1. χ(G) = k, and\n2. Removing any edge reduces the chromatic number\n\n**Examples:**\n- Complete graph K_k is k-critical\n- Odd cycles C_{2m+1} are 3-critical\n- Petersen graph is 3-critical\n\nCritical graphs are the 'minimal' graphs achieving a given chromatic number.",
     "mathContext": "The study of critical graphs dates to Dirac (1952). A k-critical graph on n vertices must have δ(G) ≥ k−1 (otherwise a vertex of degree < k−1 could be coloured greedily).",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "chromatic number",
+      "graph colouring",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "chromatic number",
       "graph colouring",
@@ -65,6 +81,11 @@
     "content": "**dirac_6_critical:**\n\nDirac constructed 6-chromatic critical graphs with δ > n/2. This shows that linear minimum degree is achievable for k = 6.\n\nThe gap: for k = 6, we can achieve δ(G) = Θ(n). For k = 4, the best known is δ(G) = Θ(n^{1/3}). Problem #1032 asks whether the k = 4 case can also achieve δ(G) = Θ(n).",
     "mathContext": "Dirac's construction uses iterated Mycielski-type operations. The key difficulty for k = 4 is that 4-critical graphs have more structural constraints.",
     "significance": "key",
+    "prerequisites": [
+      "Dirac",
+      "Mycielski construction",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Dirac",
       "Mycielski construction",
@@ -83,6 +104,11 @@
     "content": "**simonovits_toft_4_critical:**\n\nSimonovits and Toft constructed 4-chromatic critical graphs with δ ≫ n^{1/3}.\n\nFormally: there exists c > 0 such that for every N, a 4-critical graph on N vertices exists with δ(G) ≥ c · N^{1/3}.\n\nThis is the best known lower bound on minimum degree for 4-chromatic critical graphs.",
     "mathContext": "The cube-root barrier n^{1/3} arises from the construction technique. Breaking through to linear minimum degree would require fundamentally new ideas.",
     "significance": "key",
+    "prerequisites": [
+      "construction",
+      "cube-root barrier",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "construction",
       "cube-root barrier",
@@ -101,6 +127,12 @@
     "content": "**ToftConjecture:**\n\nEvery 4-chromatic critical graph on n vertices has at least (5/3 + o(1))n edges.\n\nFormally: for every ε > 0 and sufficiently large n, every 4-critical graph G on n vertices satisfies |E(G)| ≥ (5/3 − ε)n.\n\nThis is a companion conjecture to Problem #1032, bounding edge density rather than minimum degree.",
     "mathContext": "The 5/3 constant is sharp for certain known constructions. This conjecture and Problem #1032 are related but neither implies the other.",
     "significance": "key",
+    "prerequisites": [
+      "Toft's conjecture",
+      "density theory",
+      "edge density",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "edge density",
       "Toft's conjecture",
@@ -119,6 +151,11 @@
     "content": "**ErdosProblem1032:**\n\nThere exist 4-chromatic critical graphs on n vertices with δ(G) ≥ c·n for some constant c > 0.\n\nThis would close the gap from n^{1/3} (Simonovits–Toft) to linear n. The question is whether 4-criticality is compatible with dense graphs.\n\n**ErdosProblem1032_k5** extends the question to 5-chromatic critical graphs.",
     "mathContext": "The progression is: k=3 (odd cycles, δ=2), k=4 (unknown if δ can be linear), k=5 (unknown), k=6 (Dirac: δ > n/2). The jump from k=5 to k=6 is where linear degree becomes achievable.",
     "significance": "key",
+    "prerequisites": [
+      "chromatic number",
+      "graph theory basics",
+      "minimum degree"
+    ],
     "relatedConcepts": [
       "minimum degree",
       "chromatic number",

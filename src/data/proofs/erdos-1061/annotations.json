@@ -11,6 +11,10 @@
     "content": "**Erdos Problem #1061: Additive Divisor Equation**\n\nThis problem asks: How many ordered pairs (a, b) satisfy sigma(a) + sigma(b) = sigma(a + b) with a + b <= x?\n\nMore importantly: Is this count asymptotic to c * x for some c > 0?\n\n**Source:** Problem B15 in Guy's \"Unsolved Problems in Number Theory\"\n**Status:** OPEN\n**Related:** OEIS A110177",
     "mathContext": "The sum of divisors function sigma(n) is multiplicative but not additive. This problem explores rare cases where additivity-like behavior occurs.",
     "significance": "key",
+    "prerequisites": [
+      "Arithmetic functions",
+      "Sum of divisors"
+    ],
     "relatedConcepts": [
       "Sum of divisors",
       "Arithmetic functions",
@@ -29,6 +33,12 @@
     "content": "**sigma(n):**\n\nThe sum of all positive divisors of n.\n\n```lean\ndef sigma (n : N) : N := (n.divisors).sum id\n```\n\n**Examples:**\n- sigma(1) = 1\n- sigma(2) = 3\n- sigma(6) = 1 + 2 + 3 + 6 = 12\n- sigma(p) = 1 + p for prime p",
     "mathContext": "One of the most fundamental arithmetic functions, studied since ancient times in connection with perfect numbers (sigma(n) = 2n).",
     "significance": "key",
+    "prerequisites": [
+      "Divisors",
+      "Perfect numbers",
+      "basic set theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Divisors",
       "Perfect numbers",
@@ -47,6 +57,11 @@
     "content": "**Computed values of sigma:**\n\n- sigma(1) = 1\n- sigma(2) = 3\n- sigma(3) = 4\n- sigma(4) = 7\n- sigma(5) = 6\n- sigma(6) = 12\n\nAll verified by native_decide.",
     "mathContext": "Lean: `theorem sigma_val_5 : sigma 1 5 = 6`",
     "significance": "supporting",
+    "prerequisites": [
+      "Erdős problems",
+      "combinatorics",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Erdős problems",
       "combinatorics",
@@ -67,6 +82,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -82,6 +101,12 @@
     "mathContext": "This counting function is the central object of the problem. Its asymptotic behavior determines whether solutions have positive density.",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "density theory",
+      "filter theory"
     ],
     "significance": "key"
   },
@@ -99,6 +124,10 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
+    ],
     "significance": "supporting"
   },
   {
@@ -114,6 +143,11 @@
     "mathContext": "The pair (1, 2) shows the equation can be satisfied. By symmetry, (2, 1) also works.",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques",
+      "simp tactic"
     ],
     "significance": "key"
   },
@@ -131,6 +165,11 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics",
+      "prime numbers",
+      "proof techniques"
+    ],
     "significance": "key"
   },
   {
@@ -145,6 +184,9 @@
     "content": "**Non-subadditivity and non-superadditivity:**\n\nsigma is neither subadditive nor superadditive:\n- Some pairs have sigma(a+b) < sigma(a) + sigma(b)\n- Some pairs have sigma(a+b) > sigma(a) + sigma(b)\n\nThe equation sigma(a)+sigma(b) = sigma(a+b) is a special balance point.",
     "mathContext": "Unlike the totient function, sigma can go either way relative to additivity, making equality particularly interesting.",
     "relatedConcepts": [
+      "formal mathematics"
+    ],
+    "prerequisites": [
       "formal mathematics"
     ],
     "significance": "key"
@@ -162,6 +204,11 @@
     "mathContext": "This is the standard way to formalize asymptotic linear growth in analysis.",
     "relatedConcepts": [
       "asymptotics",
+      "growth rates"
+    ],
+    "prerequisites": [
+      "asymptotics",
+      "basic set theory",
       "growth rates"
     ],
     "significance": "key"
@@ -183,6 +230,10 @@
       "monotonicity",
       "order theory"
     ],
+    "prerequisites": [
+      "bounds",
+      "inequalities"
+    ],
     "significance": "key"
   },
   {
@@ -199,6 +250,9 @@
     "relatedConcepts": [
       "formal mathematics"
     ],
+    "prerequisites": [
+      "formal mathematics"
+    ],
     "significance": "key"
   },
   {
@@ -213,6 +267,11 @@
     "content": "**A110177:**\n\nThe set of n such that n = a + b for some solution pair.\n\n```lean\ndef A110177 : Set N :=\n  {n | exists a b >= 1, a + b = n and sigma(a) + sigma(b) = sigma(n)}\n```\n\n**Example:** 3 is in A110177 since sigma(1) + sigma(2) = sigma(3).\n\nThis connects our formalization to the OEIS database.",
     "mathContext": "OEIS A110177 catalogs these special sums, providing computational data for the problem.",
     "significance": "key",
+    "prerequisites": [
+      "Integer sequences",
+      "OEIS",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "OEIS",
       "Integer sequences"
@@ -231,6 +290,10 @@
     "mathContext": "Lean: `theorem erdos_1061_summary :`",
     "relatedConcepts": [
       "formal mathematics"
+    ],
+    "prerequisites": [
+      "formal mathematics",
+      "proof techniques"
     ],
     "significance": "key"
   }

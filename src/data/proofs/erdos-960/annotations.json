@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #960** asks about the threshold f_{r,k}(n) of ordinary lines needed to guarantee an all-ordinary r-subset in n-point configurations with no k collinear.\n\nAn **ordinary line** passes through exactly 2 points of the configuration. The threshold f_{r,k}(n) measures: how many ordinary lines must there be before we can find r points whose C(r,2) connecting lines are ALL ordinary?\n\n**Status: OPEN.** The conjecture is that f_{r,k}(n) = o(n²), with the stronger form asking if f_{r,k}(n) ≪ n.",
     "mathContext": "The problem originates from Erdős's 1984 paper [Er84] and connects discrete geometry (ordinary lines, Sylvester-Gallai) with Ramsey-type phenomena (forcing structured subsets from quantitative conditions).",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "measure theory",
+      "ordinary lines"
+    ],
     "relatedConcepts": [
       "ordinary lines",
       "Ramsey theory",
@@ -30,6 +35,12 @@
     "content": "**PointConfig**: a finite set of points in ℕ × ℕ with specified cardinality.\n\n**NoKCollinear(P, k)**: no k points of P lie on a common line (defined via integer linear equations ax + by + c = 0).\n\n**IsOrdinaryLine(P, p, q)**: the line through p and q contains exactly these two points of P. No third point r ∈ P is collinear with p, q (tested via parametric form).\n\n**ordinaryLineCount(P)**: the number of ordinary lines, computed as half the count of ordered ordinary pairs.",
     "mathContext": "The collinearity test uses integer coefficients (a, b, c) ≠ (0, 0, 0) rather than real-valued slopes, avoiding division-by-zero issues for vertical lines. The ordinary line test uses rational parametric interpolation.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "cardinal arithmetic",
+      "collinearity",
+      "ordinary line"
+    ],
     "relatedConcepts": [
       "collinearity",
       "ordinary line",
@@ -49,6 +60,12 @@
     "content": "**AllOrdinary(P, S)**: S ⊆ P.points and every pair (p, q) in S determines an ordinary line of P. This means r points form C(r,2) ordinary lines — a 'Ramsey clique' in the ordinary-line graph.\n\n**threshold(r, k, n)**: defined as sSup over the set of m such that some n-point, k-general-position configuration has ≥ m ordinary lines but NO all-ordinary r-subset. This captures the extremal threshold.",
     "mathContext": "The sSup formulation means threshold(r, k, n) is the maximum ordinary line count achievable while avoiding an all-ordinary r-subset. One more ordinary line would force the subset to exist.",
     "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "basic set theory",
+      "extremal function",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "sSup",
       "extremal function",
@@ -68,6 +85,11 @@
     "content": "**ErdosConjecture960_littleo(r, k)**: For every ε > 0, f_{r,k}(n) < εn² for large n. This is the subquadratic growth conjecture.\n\n**ErdosConjecture960_linear(r, k)**: ∃ C such that f_{r,k}(n) ≤ Cn for all n. This is the stronger linear growth form.\n\n**erdos_960_littleo_conjecture** (axiom): axiomatizes the little-o conjecture. Both forms remain OPEN.",
     "mathContext": "The little-o conjecture says f_{r,k}(n) = o(n²). Since C(n,2) ≈ n²/2, this means the threshold is subquadratic — a vanishing fraction of all possible lines. The linear conjecture would be asymptotically sharp for some cases.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "little-o notation",
+      "subquadratic growth"
+    ],
     "relatedConcepts": [
       "little-o notation",
       "subquadratic growth",
@@ -87,6 +109,11 @@
     "content": "**turan_upper_bound** (axiom): f_{r,k}(n) ≤ (1 - 1/(r-1)) · n²/2 + 1, stated over ℚ.\n\nThis comes from Turán's theorem in extremal graph theory: if the ordinary-line graph on n vertices has more than the Turán number ex(n, K_r) edges, it must contain a K_r (i.e., an all-ordinary r-subset).\n\n**trivial_bound** (axiom): ordinaryLineCount ≤ C(n,2) = n(n-1)/2.",
     "mathContext": "The Turán connection works because an 'all-ordinary r-subset' corresponds to a clique of size r in the graph where vertices are points and edges are ordinary lines. Turán's theorem gives the maximum edges avoiding K_r.",
     "significance": "key",
+    "prerequisites": [
+      "Turán's theorem",
+      "extremal graph theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Turán's theorem",
       "extremal graph theory",
@@ -106,6 +133,12 @@
     "content": "**threshold_r2** (axiom): For r = 2, the threshold is trivially 1. Any ordinary line contains 2 points forming an all-ordinary 2-subset.\n\n**green_tao_ordinary_lines** (axiom): For n ≥ 13 points with no 3 collinear, there are ≥ n/2 ordinary lines. This is the celebrated Green-Tao (2013) result strengthening Sylvester-Gallai.\n\n**ordinary_pairs_in_r_subset** (axiom): An all-ordinary r-subset contributes C(r,2) = r(r-1)/2 ordinary lines. This quantifies the 'Ramsey density' of the required structure.",
     "mathContext": "The Green-Tao bound resolved a conjecture of Motzkin (1951). Combined with the threshold function, it shows that for k = 3, configurations in general position already have linearly many ordinary lines — the question is whether this forces all-ordinary subsets.",
     "significance": "key",
+    "prerequisites": [
+      "Green-Tao theorem",
+      "Ramsey theory",
+      "Sylvester-Gallai",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Green-Tao theorem",
       "Sylvester-Gallai",
@@ -125,6 +158,11 @@
     "content": "**erdos_960_summary** (PROVED): Combines two results:\n1. The little-o conjecture for all r, k ≥ 2 (from erdos_960_littleo_conjecture axiom)\n2. The base case: threshold(2, k, n) = 1 for all k ≥ 2, n ≥ 2\n\nProof uses `⟨erdos_960_littleo_conjecture, fun k n hk hn => threshold_r2 k n hk hn⟩`.",
     "mathContext": "The summary demonstrates that the formalization captures both the open conjecture and the known base case, packaging them into a single theorem.",
     "significance": "key",
+    "prerequisites": [
+      "conjunction",
+      "proof techniques",
+      "summary theorem"
+    ],
     "relatedConcepts": [
       "summary theorem",
       "conjunction",

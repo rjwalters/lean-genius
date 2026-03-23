@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #769: Cube Dissection**\n\nLet c(n) be the minimal k such that for all m ≥ k, the n-dimensional unit cube can be decomposed into m homothetic (scaled, axis-aligned) cubes. The problem asks for good bounds on c(n), and in particular whether c(n) ≫ n^n.\n\n**Known Bounds:**\n- Lower: c(n) ≥ 2^{n+1} - 1 (Connor-Marmorino 2018)\n- Upper: c(n) ≤ O(n^{n+1}) (Burgess-Erdős 1974)\n- Exact: c(2) = 6\n\nThe gap between exponential lower and super-exponential upper bound is enormous. Erdős conjectured c(n) > n^n when n+1 is prime.",
     "mathContext": "This problem sits at the intersection of combinatorial geometry, packing theory, and number theory. The primality condition on n+1 in the upper bounds reveals unexpected arithmetic structure.",
     "significance": "key",
+    "prerequisites": [
+      "Cube dissection",
+      "Homothety",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Cube dissection",
       "Homothety",
@@ -29,6 +34,11 @@
     "content": "**CanDecomposeCubeIntoKCubes n k** asserts the n-dimensional unit cube can be decomposed into exactly k smaller homothetic cubes.\n\nThe formalization captures two constraints:\n1. All cubes have side length in (0, 1) — strictly smaller than the original\n2. Total volume: Σ sideᵢⁿ = 1 — cubes fill the unit cube exactly\n\nThe implicit geometric constraint (cubes must actually fit without overlap) is not captured by the volume equation alone, which is why the problem is hard.",
     "mathContext": "A homothetic cube is obtained from the unit cube by scaling and translation only — no rotation is allowed. The sides remain parallel to the original axes.",
     "significance": "key",
+    "prerequisites": [
+      "Geometric packing",
+      "Volume constraint",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Volume constraint",
       "Geometric packing",
@@ -47,6 +57,12 @@
     "content": "**cubeDissectionNumber** is axiomatized as a function ℕ → ℕ with two characterizing properties:\n\n- **cubeDissectionNumber_spec**: for all k ≥ c(n), decomposition into k cubes is possible (threshold property)\n- **cubeDissectionNumber_minimal**: there exists some k < c(n) where decomposition is impossible (minimality)\n\nThis replaces the original `Nat.find`-based definition which required a `sorry` for the existence proof. The axiomatization cleanly captures the same mathematical content.",
     "mathContext": "The function c(n) is well-defined by the finite obstruction principle: only finitely many values of k fail to admit decomposition. Beyond some threshold, splitting a cube into one more piece is always possible (by subdividing an existing piece).",
     "significance": "key",
+    "prerequisites": [
+      "Extremal function",
+      "Threshold",
+      "basic set theory",
+      "natural number arithmetic"
+    ],
     "relatedConcepts": [
       "Extremal function",
       "Threshold",
@@ -65,6 +81,10 @@
     "content": "**c(2) = 6** is the only dimension where the exact value is known.\n\n**Impossible cases** (square_not_2 through square_not_5): A unit square cannot be decomposed into 2, 3, 4, or 5 smaller squares. For k=2, any partition into two rectangles cannot both be square. For k=4, a 2×2 grid of equal squares works, but these aren't strictly smaller (they're exactly half the side).\n\n**Achievable** (square_6_achievable): Six squares suffice — various constructions exist using squares of different sizes.\n\n**Exact value** (c_of_2): cubeDissectionNumber 2 = 6.",
     "mathContext": "The impossibility proofs for k = 2,3,4,5 use geometric arguments about how squares can tile a square. The key insight is that any square touching a corner must have its corner there, constraining the configuration.",
     "significance": "key",
+    "prerequisites": [
+      "Exact values",
+      "Square dissection"
+    ],
     "relatedConcepts": [
       "Square dissection",
       "Exact values",
@@ -83,6 +103,12 @@
     "content": "**Hadwiger's bound** (hadwiger_lower_bound): c(n) ≥ 2^n + 2^{n-1} = 3·2^{n-1}. The theorem hadwiger_explicit restates this as c(n) ≥ 3·2^{n-1}, proved via `omega`.\n\n**Connor-Marmorino (2018)** (connor_marmorino_lower): c(n) ≥ 2^{n+1} - 1 for n ≥ 3. This improves Hadwiger.\n\n**connor_vs_hadwiger** is a proved theorem showing 2^{n+1} - 1 > 2^n + 2^{n-1} for n ≥ 3, via `omega`.\n\nFor n = 10: Hadwiger gives c(10) ≥ 1536, Connor-Marmorino gives c(10) ≥ 2047.",
     "mathContext": "Both lower bounds are exponential in n. The Connor-Marmorino improvement roughly doubles the constant: from 3·2^{n-1} to 2^{n+1} - 1 ≈ 2·2^n. The proof uses refined geometric arguments about face-touching constraints in cube packings.",
     "significance": "key",
+    "prerequisites": [
+      "Connor-Marmorino 2018",
+      "Hadwiger",
+      "omega tactic",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Hadwiger",
       "Connor-Marmorino 2018",
@@ -101,6 +127,12 @@
     "content": "**Burgess-Erdős (1974)** (burgess_erdos_upper): c(n) ≪ n^{n+1}. The first super-exponential upper bound.\n\n**Hudelson (1998)**: Two results — c(n) ≪ (2n)^{n-1} in general, and c(n) < 6^n under the coprimality condition gcd(2^n - 1, 3^n - 1) = 1.\n\n**Connor-Marmorino (2018)**: Refined upper bounds depending on primality:\n- c(n) ≤ 1.8·n^{n+1} if n+1 is prime\n- c(n) ≤ e²·n^n ≈ 7.39·n^n if n+1 is not prime\n\nThe composite case gives a tighter bound (~n^n vs ~n^{n+1}).",
     "mathContext": "The primality condition arises because the constructions use modular arithmetic: when n+1 is prime, certain subdivision schemes become available. The factor e² ≈ 7.39 in the composite case comes from optimizing a construction parameter.",
     "significance": "key",
+    "prerequisites": [
+      "Burgess-Erdős 1974",
+      "GCD theory",
+      "Hudelson 1998",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Burgess-Erdős 1974",
       "Hudelson 1998",
@@ -119,6 +151,12 @@
     "content": "**erdosConjecture**: If n+1 is prime, then c(n) > n^n. Erdős wrote: 'I am certain that if n+1 is a prime then c(n) > n^n.' This is defined as a Prop since it remains unproven.\n\n**mainQuestion**: Is c(n) ≫ n^n in general? Formally: does there exist C > 0 and N such that c(n) ≥ C·n^n for all n ≥ N?\n\nThe current lower bound (~2^n) is far from n^n, so proving either conjecture would require fundamentally new techniques.",
     "mathContext": "The gap between the best lower bound (exponential) and the conjectured lower bound (super-exponential) is vast. For n = 20: 2^21 ≈ 2 million vs 20^20 ≈ 10^26.",
     "significance": "key",
+    "prerequisites": [
+      "Erdős conjecture",
+      "Open problem",
+      "basic set theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "Erdős conjecture",
       "Open problem",
@@ -137,6 +175,11 @@
     "content": "**packing_beyond_volume** asserts that volume matching is necessary but not sufficient for cube decomposition. There exist configurations where:\n1. All cubes have side lengths in (0, 1)\n2. Total volume Σ sideᵢⁿ = 1\n3. But the cubes CANNOT be packed into the unit cube\n\nThis axiom captures the fundamental difficulty: the problem is geometric, not just arithmetic.",
     "mathContext": "In dimension 2, this is easy to see: four squares of side 0.6 have total area 4 × 0.36 = 1.44 > 1, so they can't fit. But even with total area exactly 1, the shapes may not tile the square.",
     "significance": "key",
+    "prerequisites": [
+      "Geometric feasibility",
+      "Volume constraint",
+      "matching theory"
+    ],
     "relatedConcepts": [
       "Volume constraint",
       "Geometric feasibility",
@@ -155,6 +198,11 @@
     "content": "**erdos_769_summary** is a proved theorem combining three key results:\n1. c(2) = 6 exactly (c_of_2)\n2. c(n) ≥ 2^{n+1} - 1 for n ≥ 3 (connor_marmorino_lower)\n3. c(n) ≤ C·n^{n+1} for some C > 0 (burgess_erdos_upper)\n\nProof: `⟨c_of_2, connor_marmorino_lower, burgess_erdos_upper⟩`\n\nThis captures the complete current state of knowledge: an exponential lower bound, a super-exponential upper bound, and one exact value.",
     "mathContext": "The summary demonstrates that despite 50+ years of work, the gap between lower and upper bounds remains enormous. The exact growth rate of c(n) is one of the main open problems in combinatorial geometry.",
     "significance": "key",
+    "prerequisites": [
+      "State of knowledge",
+      "Summary theorem",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Summary theorem",
       "State of knowledge",

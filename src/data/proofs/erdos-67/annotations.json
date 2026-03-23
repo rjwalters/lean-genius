@@ -11,6 +11,10 @@
     "content": "**Erdős Problem #67** is one of the most famous problems in combinatorics, open for over 80 years until Terence Tao solved it in 2015.\n\n**The Question**: For any ±1 sequence, must the partial sums along some arithmetic progression be unbounded?\n\n**Answer**: YES (Tao 2015). No matter how you assign ±1 to the natural numbers, some arithmetic progression will have arbitrarily large imbalance.\n\n**Prize**: $500 (collected by Tao)",
     "mathContext": "This connects combinatorics to analytic number theory. Tao's proof uses the Elliott conjecture about multiplicative functions.",
     "significance": "key",
+    "prerequisites": [
+      "discrepancy",
+      "erdos"
+    ],
     "relatedConcepts": [
       "erdos",
       "discrepancy",
@@ -30,6 +34,11 @@
     "content": "The **discrepancy** along an arithmetic progression {d, 2d, ..., md} measures how unbalanced the ±1 values are.\n\nIf f(d) + f(2d) + ... + f(md) = 5, that means 5 more +1s than -1s appear.\n\n**Erdős's question**: Can you assign ±1s so cleverly that ALL arithmetic progressions stay balanced (sum bounded by some fixed C)?\n\nThe answer is NO—you can't escape large imbalances.",
     "mathContext": "Think of trying to color ℕ with two colors so no arithmetic progression is too monochromatic. Tao proved this is impossible.",
     "significance": "key",
+    "prerequisites": [
+      "arithmetic-progression",
+      "coloring",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "arithmetic-progression",
       "coloring",
@@ -48,6 +57,12 @@
     "content": "**discrepancy f d m** computes |Σ_{k=1}^m f(kd)|, the absolute value of the sum of f values along the arithmetic progression {d, 2d, ..., md}.\n\nThis is THE quantity that Erdős asked about: can it be kept bounded for all d, m?",
     "mathContext": "Formally: `|∑ k ∈ Icc 1 m, f (k * d)|`\n\nThe Finset.Icc 1 m gives {1, 2, ..., m}, and we sum f(k·d) over these k values.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "absolute-value",
+      "basic set theory",
+      "finset-sum"
+    ],
     "relatedConcepts": [
       "finset-sum",
       "absolute-value",
@@ -66,6 +81,11 @@
     "content": "**hasBoundedDiscrepancy f C** says that ALL arithmetic progressions have discrepancy at most C.\n\nFormally: for all d ≥ 1 and m ≥ 1, discrepancy(f, d, m) ≤ C.\n\nErdős asked: do such functions exist for large C? Tao proved: NO, not for any C.",
     "mathContext": "This is a universal statement over all arithmetic progressions. Tao's theorem says this predicate is always false for ±1 sequences.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "bounded",
+      "universal-quantifier"
+    ],
     "relatedConcepts": [
       "universal-quantifier",
       "bounded",
@@ -84,6 +104,11 @@
     "content": "**isPlusMinusOne f** says f only takes values +1 and -1.\n\nThis is the constraint on the functions we consider. Every natural number gets assigned either +1 or -1.",
     "mathContext": "Formally: `∀ n : ℕ, f n = 1 ∨ f n = -1`\n\nNote we use ℤ (integers) as the codomain for easier arithmetic, but restrict to {-1, +1}.",
     "significance": "supporting",
+    "prerequisites": [
+      "basic set theory",
+      "constraint",
+      "two-coloring"
+    ],
     "relatedConcepts": [
       "constraint",
       "two-coloring"
@@ -101,6 +126,11 @@
     "content": "**erdosDiscrepancy** is Tao's main theorem: For any ±1 sequence f and any bound C, there exist d, m ≥ 1 such that discrepancy(f, d, m) > C.\n\n**Why an axiom?** Tao's proof is highly non-trivial:\n1. Reduce to completely multiplicative functions\n2. Use a logarithmic averaging argument\n3. Apply a variant of the Elliott conjecture\n4. Show no multiplicative function avoids large sums\n\nFormalizing this would require substantial analytic number theory.",
     "mathContext": "The statement `∃ d m : ℕ, d ≥ 1 ∧ m ≥ 1 ∧ discrepancy f d m > C` asserts the existence of a 'bad' progression for any bound C.",
     "significance": "key",
+    "prerequisites": [
+      "axiom",
+      "proof techniques",
+      "tao"
+    ],
     "relatedConcepts": [
       "axiom",
       "tao",
@@ -119,6 +149,12 @@
     "content": "**noBoundedDiscrepancy** is derived from erdosDiscrepancy: for any ±1 sequence f and any C, ¬hasBoundedDiscrepancy f C.\n\nThis is a genuine Lean proof (not an axiom). It follows immediately from the main theorem by contradiction: if the discrepancy were bounded, no progression would exceed C, contradicting Tao's theorem.",
     "mathContext": "The proof uses `obtain` to get the witnesses d, m from erdosDiscrepancy, then `omega` to derive the contradiction from the conflicting inequalities.",
     "significance": "key",
+    "prerequisites": [
+      "contradiction",
+      "derived-theorem",
+      "omega tactic",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "derived-theorem",
       "contradiction",
@@ -137,6 +173,12 @@
     "content": "Tao proved a more general version: the theorem holds even when f takes values on the entire unit circle S¹ ⊂ ℂ, not just {-1, +1}.\n\n**complexDiscrepancy** uses the complex norm ‖·‖ instead of integer absolute value.\n\n**erdosDiscrepancyComplex** states the generalization: for any f: ℕ → S¹ and C > 0, some progression has complex discrepancy > C.\n\nThis is strictly stronger since {-1, +1} ⊂ S¹.",
     "mathContext": "The unit circle constraint is `‖f n‖ = 1` for all n. The discrepancy becomes the norm of the complex sum.",
     "significance": "key",
+    "prerequisites": [
+      "complex numbers",
+      "complex-numbers",
+      "proof techniques",
+      "unit-circle"
+    ],
     "relatedConcepts": [
       "complex-numbers",
       "unit-circle",
@@ -155,6 +197,11 @@
     "content": "Erdős conjectured something even stronger: the discrepancy should grow at least logarithmically.\n\n**ErdosStrongerConjecture** states: there exists c > 0 such that for any ±1 sequence and x ≥ 2, some progression with md ≤ x has discrepancy > c·log(x).\n\nThis remains OPEN. Tao's theorem only shows discrepancy is unbounded, not how fast it grows.",
     "mathContext": "The constraint `m * d ≤ x` restricts to progressions that 'fit' within the first x terms. The conjecture says we can still find large discrepancy.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "logarithmic-growth",
+      "open-problem"
+    ],
     "relatedConcepts": [
       "open-problem",
       "logarithmic-growth",
@@ -173,6 +220,12 @@
     "content": "**isCompletelyMultiplicative** says f(mn) = f(m)f(n) for all m, n.\n\n**multiplicativeDiscrepancy** states that completely multiplicative ±1 functions also have unbounded discrepancy. This case was known before Tao's general result.\n\nTao's key insight was reducing the GENERAL case to the multiplicative case, where analytic techniques apply.",
     "mathContext": "Examples of multiplicative functions: the Liouville function λ(n) = (-1)^Ω(n) where Ω counts prime factors. Such functions encode multiplicative structure.",
     "significance": "supporting",
+    "prerequisites": [
+      "liouville",
+      "multiplicative-function",
+      "prime numbers",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "multiplicative-function",
       "liouville",
@@ -191,6 +244,12 @@
     "content": "**no_discrepancy_2_sequence** is a simple corollary: there is no ±1 sequence with all discrepancies ≤ 2.\n\nThis follows directly from noBoundedDiscrepancy with C = 2. It illustrates that even very small bounds are impossible.",
     "mathContext": "The Polymath5 project computationally verified this for small cases before Tao's theoretical proof. They found no sequence of length 1161 with discrepancy ≤ 2.",
     "significance": "supporting",
+    "prerequisites": [
+      "corollary",
+      "polymath5",
+      "proof techniques",
+      "simp tactic"
+    ],
     "relatedConcepts": [
       "corollary",
       "polymath5",

@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #343** asks: if A ⊆ ℕ has positive lower density (|A ∩ {1,...,N}| ≫ N), must its sumset P(A) contain an infinite arithmetic progression? The answer is **YES**, proved by Szemerédi and Vu in 2006. The linear density threshold is **sharp**: Folkman (1966) showed that sublinear density does not suffice.",
     "mathContext": "The problem sits at the intersection of additive combinatorics and density theory. The sumset P(A) = {∑_{n∈B} n : B ⊆ A finite} captures all representable integers. Subcompleteness (P(A) contains an infinite AP) is a natural measure of the arithmetic richness of the sumset.",
     "significance": "key",
+    "prerequisites": [
+      "Additive combinatorics",
+      "Sumsets",
+      "density theory",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "Additive combinatorics",
       "Sumsets",
@@ -30,6 +36,12 @@
     "content": "**countingFunction(A, N)** counts how many elements of A lie in {0,...,N}. **hasPositiveLowerDensity(A)** requires that this count grows at least linearly: ∃ c > 0 such that countingFunction(A,N) ≥ cN for all large N.\n\n**hasDensity(A, α)** is the stronger asymptotic density condition: countingFunction(A,N)/N → α.",
     "mathContext": "The counting function is defined using Finset.filter on Finset.range. The DecidablePred instance is needed but here we work with Set ℕ membership, using the classical decidability.",
     "significance": "key",
+    "prerequisites": [
+      "Counting functions",
+      "Finset API",
+      "Lower density",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Counting functions",
       "Lower density",
@@ -48,6 +60,12 @@
     "content": "**sumsetInfinite(A)** is the set of all finite subset sums of A: {∑_{n∈B} n : B ⊆ A finite}. **containsInfiniteAP(S)** checks whether S contains an infinite arithmetic progression {a + kd : k ∈ ℕ} with d > 0.\n\n**isSubcomplete(A)** ties these together: A is subcomplete if P(A) contains an infinite AP.",
     "mathContext": "For infinite sets A, we define sumsetInfinite using Finset subsets whose coercion to Set is contained in A. This avoids needing decidability of A-membership directly on the infinite set.",
     "significance": "key",
+    "prerequisites": [
+      "Complete sequences",
+      "Finset API",
+      "Subset sums",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Subset sums",
       "Complete sequences",
@@ -66,6 +84,11 @@
     "content": "Folkman established both directions around the linear threshold:\n\n**folkman_superlinear**: If |A ∩ {1,...,N}| ≫ N^{1+ε} (superlinear density), then A is subcomplete. This was the first positive result.\n\n**folkman_counterexample**: For any ε > 0, there exists A with density ~N^{1-ε} (sublinear) that is NOT subcomplete. This shows linear density is necessary.",
     "mathContext": "Folkman's counterexamples are carefully constructed sets that grow just slowly enough to avoid producing an infinite AP in the sumset. The gap between N^{1+ε} and N^{1-ε} left the linear case open for 40 years.",
     "significance": "key",
+    "prerequisites": [
+      "Extremal constructions",
+      "Threshold phenomena",
+      "density theory"
+    ],
     "relatedConcepts": [
       "Threshold phenomena",
       "Extremal constructions",
@@ -84,6 +107,12 @@
     "content": "**szemeredi_vu_2006**: The main result answering Problem #343. If A has positive lower density, then A is subcomplete. This closes the gap left by Folkman.\n\n**erdos_343_solved** is the entry-point theorem, proved directly from the Szemerédi-Vu axiom.",
     "mathContext": "The proof by Szemerédi and Vu appears in their paper 'Long arithmetic progressions in sumsets: thresholds and bounds'. It uses deep results from additive combinatorics including Freiman-type structure theorems and iterated sumset estimates.",
     "significance": "key",
+    "prerequisites": [
+      "Freiman's theorem",
+      "Sumset structure",
+      "density theory",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Freiman's theorem",
       "Sumset structure",
@@ -102,6 +131,12 @@
     "content": "**linear_threshold_is_sharp** combines with erdos_343_solved to give the full picture: linear density is **exactly** the critical threshold.\n\n- Above linear (N^{1+ε}): always subcomplete (Folkman)\n- At linear (cN): always subcomplete (Szemerédi-Vu)\n- Below linear (N^{1-ε}): can fail (Folkman counterexample)",
     "mathContext": "The theorem is proved directly from folkman_counterexample. Together with szemeredi_vu_2006, this gives a complete phase transition at linear density.",
     "significance": "key",
+    "prerequisites": [
+      "Phase transitions",
+      "Sharp thresholds",
+      "density theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Phase transitions",
       "Sharp thresholds",
@@ -120,6 +155,12 @@
     "content": "**erdos_343_answer** restates the main result: positive lower density implies subcompleteness.\n\n**Complete answer**: YES — linear density is sufficient (Szemerédi-Vu 2006) and necessary (Folkman 1966). The linear density threshold is the exact boundary for subcompleteness of sumsets.",
     "mathContext": "This is a clean restatement of szemeredi_vu_2006, providing a clear entry point for the resolved problem. The 40-year gap between Folkman's partial results and the full resolution highlights the difficulty of the linear case.",
     "significance": "key",
+    "prerequisites": [
+      "Problem resolution",
+      "Threshold characterization",
+      "density theory",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Problem resolution",
       "Threshold characterization"

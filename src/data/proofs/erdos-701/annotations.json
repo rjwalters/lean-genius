@@ -11,6 +11,10 @@
     "content": "**Erdős Problem #701: Chvátal's Conjecture**\n\nLet F be a hereditary family (closed under subsets).\n\n**Conjecture:** There exists x such that for all intersecting F' ⊆ F:\n|F'| ≤ |{A ∈ F : x ∈ A}|\n\n**Status:** OPEN\n\n**Partial results:** Chvátal 1974, Sterboul 1974, Frankl-Kupavskii 2023",
     "mathContext": "This generalizes Erdős-Ko-Rado to hereditary families. The conjecture says stars achieve the maximum intersecting subfamily size.",
     "significance": "key",
+    "prerequisites": [
+      "Hereditary families",
+      "Intersecting families"
+    ],
     "relatedConcepts": [
       "Hereditary families",
       "Intersecting families",
@@ -36,6 +40,12 @@
     "content": "**IsHereditary F:** B ⊆ A ∈ F implies B ∈ F.\n\nAlso called downsets, ideals, or independence systems. These are families closed under taking subsets.",
     "mathContext": "Lean: `def IsHereditary {α : Type*} (F : Set (Set α)) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "Downsets",
+      "Ideals",
+      "basic set theory",
+      "ideal theory"
+    ],
     "relatedConcepts": [
       "Downsets",
       "Ideals",
@@ -60,6 +70,11 @@
     "content": "**powerset_hereditary:** The power set P(X) is hereditary.\n\nThis is the prototypical example - if A ⊆ X and B ⊆ A, then B ⊆ X.",
     "mathContext": "$This is the prototypical example - if A ⊆ X and B ⊆ A, then B ⊆ X.$",
     "significance": "supporting",
+    "prerequisites": [
+      "Examples",
+      "Power set",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Power set",
       "Examples"
@@ -82,6 +97,11 @@
     "content": "**bounded_card_hereditary:** {A : |A| ≤ k} is hereditary.\n\nSubsets of small sets are small. This is the independence system of a uniform matroid.",
     "mathContext": "Lean: `theorem bounded_card_hereditary {α : Type*} [DecidableEq α] (k : ℕ) :`",
     "significance": "supporting",
+    "prerequisites": [
+      "Bounded sets",
+      "Matroids",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Matroids",
       "Bounded sets"
@@ -105,6 +125,11 @@
     "content": "**IsIntersecting F:** For all A, B ∈ F: (A ∩ B).Nonempty.\n\nEvery two sets in the family have non-empty intersection. This is the key structural constraint in extremal set theory.",
     "mathContext": "Lean: `def IsIntersecting {α : Type*} (F : Set (Set α)) : Prop`",
     "significance": "key",
+    "prerequisites": [
+      "Extremal set theory",
+      "Intersection",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Intersection",
       "Extremal set theory"
@@ -127,6 +152,11 @@
     "content": "**Star F x:** {A ∈ F : x ∈ A}\n\nThe star at x is the subfamily of all sets containing x. Stars are the conjectured maximizers for intersecting subfamilies.",
     "mathContext": "Lean: `def Star {α : Type*} (F : Set (Set α)) (x : α) : Set (Set α)`",
     "significance": "key",
+    "prerequisites": [
+      "Fixed element",
+      "Stars",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Stars",
       "Fixed element"
@@ -150,6 +180,11 @@
     "content": "**star_intersecting:** Star F x is intersecting.\n\nAll sets in a star contain x, so any two sets intersect at least at x. This makes stars natural candidates for maximum intersecting subfamilies.",
     "mathContext": "Lean: `theorem star_intersecting {α : Type*} (F : Set (Set α)) (x : α) :`",
     "significance": "key",
+    "prerequisites": [
+      "Intersection",
+      "Stars",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Intersection",
       "Stars"
@@ -172,6 +207,11 @@
     "content": "**ChvatalConjecture F:** IsHereditary F →\n∃ x, ∀ intersecting F' ⊆ F: |F'| ≤ |Star F x|\n\nThe maximum size of an intersecting subfamily equals the size of some star. This is the main open problem.",
     "mathContext": "$∃ x, ∀ intersecting F' ⊆ F: |F'| ≤ |Star F x|$",
     "significance": "key",
+    "prerequisites": [
+      "Extremal bounds",
+      "Open problems",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Open problems",
       "Extremal bounds"
@@ -195,6 +235,10 @@
     "content": "**chvatal_conjecture_open:**\n\nAxiom recording that the conjecture is unresolved in full generality.\n\nThe conjecture has been open since 1974 despite significant partial progress.",
     "mathContext": "Axiomatizing an open conjecture allows formal reasoning about its consequences.",
     "significance": "key",
+    "prerequisites": [
+      "Axiomatization",
+      "Open problems"
+    ],
     "relatedConcepts": [
       "Open problems",
       "Axiomatization"
@@ -217,6 +261,10 @@
     "content": "**SterboulConditions, sterboul_1974:**\n\nChvátal's conjecture holds when:\n1. All maximal sets have equal size\n2. Pairwise intersections have size ≤ 1\n3. At least two maximal sets intersect\n\nThese conditions capture certain 'regular' hereditary families.",
     "mathContext": "Sterboul's result covers matroids and similar structures with uniform maximal sets.",
     "significance": "key",
+    "prerequisites": [
+      "Matroids",
+      "Partial results"
+    ],
     "relatedConcepts": [
       "Partial results",
       "Matroids"
@@ -240,6 +288,11 @@
     "content": "**frankl_kupavskii_2023:**\n\nChvátal's conjecture holds for families with covering number 2.\n\nThe covering number τ(F) is the minimum number of elements hitting all sets. This 2023 result is significant recent progress.",
     "mathContext": "Published in Discrete Mathematics (2023). Covering number 2 is a strong but natural condition.",
     "significance": "key",
+    "prerequisites": [
+      "Covering number",
+      "Recent progress",
+      "ring tactic"
+    ],
     "relatedConcepts": [
       "Covering number",
       "Recent progress"
@@ -262,6 +315,11 @@
     "content": "**WeightedChvatalConjecture:**\n\nGeneralizes the conjecture to weighted families:\n∑_{A ∈ F'} w(A) ≤ ∑_{A ∈ Star(F,x)} w(A)\n\nBorg (2011) proved this under additional assumptions.",
     "mathContext": "$∑_{A ∈ F'} w(A) ≤ ∑_{A ∈ Star(F,x)} w(A)$",
     "significance": "supporting",
+    "prerequisites": [
+      "Generalizations",
+      "Weighted families",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Weighted families",
       "Generalizations"
@@ -284,6 +342,12 @@
     "content": "**Erdős-Ko-Rado Context:**\n\nEKR bounds intersecting families in uniform hypergraphs:\nmax |F'| = C(n-1, k-1) for k-uniform families on [n].\n\nChvátal's conjecture generalizes this to hereditary families, where uniform families are NOT directly applicable.",
     "mathContext": "EKR is for uniform families, which aren't hereditary (subsets of k-sets have smaller cardinality).",
     "significance": "key",
+    "prerequisites": [
+      "Erdős-Ko-Rado",
+      "Uniform hypergraphs",
+      "cardinal arithmetic",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Erdős-Ko-Rado",
       "Uniform hypergraphs"
@@ -306,6 +370,11 @@
     "content": "**uniform_not_hereditary:**\n\nFor k ≥ 2, the family of all k-subsets is NOT hereditary.\n\nProof: A k-set has (k-1)-subsets, which aren't in the k-uniform family.\n\nThis explains why Chvátal's conjecture is distinct from EKR.",
     "mathContext": "$For k ≥ 2, the family of all k-subsets is NOT hereditary.$",
     "significance": "supporting",
+    "prerequisites": [
+      "Counterexample",
+      "Uniform families",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "Uniform families",
       "Counterexample"
@@ -328,6 +397,10 @@
     "content": "**erdos_701_open_status:**\n\nAxiom recording the full conjecture statement.\n\n**Status:** OPEN since 1974.\n\n**Why it's hard:** Need a SINGLE x that works for ALL intersecting subfamilies simultaneously. Local arguments fail.",
     "mathContext": "Lean: `axiom erdos_701_open_status :`",
     "significance": "key",
+    "prerequisites": [
+      "Open problems",
+      "Summary"
+    ],
     "relatedConcepts": [
       "Summary",
       "Open problems"

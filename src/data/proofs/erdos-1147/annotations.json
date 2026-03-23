@@ -11,6 +11,11 @@
     "content": "**Erdős Problem #1147**: Additive Basis from Diophantine Approximation\n\n**Question**: Is the set {n ≥ 1 : ‖αn²‖ < 1/log(n)} an additive basis of order 2 for every irrational α > 0?\n\n**Status**: DISPROVED (Konieczny [Ko16b])\n**Answer**: NO\n\n**Context**: Connects Diophantine approximation (how well irrationals can be approximated) with additive combinatorics (sumset structure). Despite the set being infinite, it is too sparse to form a basis.",
     "mathContext": "The distance to nearest integer ‖x‖ measures proximity to integers. For irrational α, the sequence αn² mod 1 is equidistributed but its fine structure affects additive properties.",
     "significance": "key",
+    "prerequisites": [
+      "additive-basis",
+      "diophantine-approximation",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "diophantine-approximation",
       "additive-basis",
@@ -29,6 +34,12 @@
     "content": "**def distToNearestInt (x : ℝ)**: ℝ\n  min(fract(x), 1 - fract(x))\n\nMeasures how close x is to an integer. Key properties:\n- Always non-negative (distToNearestInt_nonneg)\n- At most 1/2 (distToNearestInt_le_half)\n- Zero iff x is an integer (distToNearestInt_eq_zero_iff)\n\nAll three properties are fully proved from Mathlib's Int.fract API.",
     "mathContext": "This is the standard fractional distance function ‖·‖ used in Diophantine approximation. It differs from the fractional part by being symmetric around 0.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "distance-function",
+      "fractional-part",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "fractional-part",
       "distance-function",
@@ -47,6 +58,12 @@
     "content": "**def IsAdditiveBasisOrder2 (A : Set ℕ)**: Prop\n  ∃ N₀, ∀ n ≥ N₀, ∃ a b ∈ A, n = a + b\n\n**def Sumset (A : Set ℕ)**: Set ℕ\n  {n | ∃ a ∈ A, ∃ b ∈ A, n = a + b}\n\nThese are equivalent (proved in additiveBasis_iff_sumset_cofinite): being a basis of order 2 means the sumset A + A covers all sufficiently large integers.",
     "mathContext": "Additive bases are a central concept in additive number theory. The primes form a basis of order at most 4 (Goldbach-type results). Sidon sets are the opposite extreme.",
     "significance": "key",
+    "prerequisites": [
+      "additive-basis",
+      "basic set theory",
+      "prime numbers",
+      "sumset"
+    ],
     "relatedConcepts": [
       "additive-basis",
       "sumset",
@@ -65,6 +82,11 @@
     "content": "**axiom konieczny_disproof**:\n  ∀ᵐ α ∂(volume.restrict (Ioi 0)),\n    Irrational α → ¬IsAdditiveBasisOrder2 (diophantineSet α)\n\n**axiom konieczny_generalized (ε) (hε : ε → 0)**:\n  Same conclusion for generalizedDiophantineSet α ε\n\nFor ALMOST EVERY irrational α > 0, the set A is NOT a basis of order 2. This uses Lebesgue measure on (0,∞).\n\nThe generalization shows that no threshold ε(n) → 0 can save the conjecture.",
     "mathContext": "The measure-theoretic formulation ∀ᵐ (almost everywhere) is essential. There might exist specific α values where the set IS a basis, but the generic behavior is failure.",
     "significance": "key",
+    "prerequisites": [
+      "almost-everywhere",
+      "konieczny",
+      "measure theory"
+    ],
     "relatedConcepts": [
       "konieczny",
       "almost-everywhere",
@@ -83,6 +105,11 @@
     "content": "**theorem erdos_1147_false**: ¬Erdos1147Conjecture\n\nProved without sorry! The proof:\n1. Assume the conjecture holds for ALL irrational α > 0\n2. In particular, it holds for α = √2\n3. But sqrt2_not_basis says diophantineSet(√2) is NOT a basis\n4. Contradiction\n\nUses Real.sqrt_pos_of_pos for √2 > 0 and irrational_sqrt_two from Mathlib.",
     "mathContext": "This is the cleanest route to disproving the conjecture: a single specific counterexample suffices to refute a universal statement.",
     "significance": "key",
+    "prerequisites": [
+      "counterexample",
+      "disproof",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "disproof",
       "counterexample",

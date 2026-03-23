@@ -11,6 +11,12 @@
     "content": "**Erdős Problem #747: Shamir's Problem**\n\nHow large should ℓ(n) be such that a random 3-uniform hypergraph on 3n vertices with ℓ(n) edges almost surely has n vertex-disjoint edges?\n\n**Answer:** ℓ(n) ~ n log n\n\n- Johansson-Kahn-Vu (2008): ℓ(n) ≍ n log n\n- Kahn (2023): precise asymptotic ~ n log n",
     "mathContext": "A famous problem in probabilistic combinatorics. Shamir asked Erdős in 1979, and even Erdős said 'here we have no idea of the answer'.",
     "significance": "key",
+    "prerequisites": [
+      "Perfect matchings",
+      "Random hypergraphs",
+      "graph theory basics",
+      "hypergraph theory"
+    ],
     "relatedConcepts": [
       "Random hypergraphs",
       "Perfect matchings",
@@ -30,6 +36,12 @@
     "content": "**Hypergraph:**\n\nAn r-uniform hypergraph is a collection of edges where each edge has exactly r vertices.\n\n**Structure:**\n- edges : Finset (Finset V) — the edge set\n- uniform : ∀ e ∈ edges, e.card = r — uniformity constraint\n\nFor r = 2, this is an ordinary graph. For r = 3, edges are triples.",
     "mathContext": "An $r$-uniform hypergraph $H = (V, E)$ has edge set $E \\subseteq \\binom{V}{r}$, i.e., every $e \\in E$ satisfies $|e| = r$. Formalized as `structure Hypergraph (V : Type*) (r : \\mathbb{N})` with field `uniform : \\forall e \\in \\text{edges},\\; e.\\text{card} = r$.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "Graph theory",
+      "Hypergraph",
+      "basic set theory"
+    ],
     "relatedConcepts": [
       "Graph theory",
       "Hypergraph",
@@ -48,6 +60,12 @@
     "content": "**IsMatching:**\n\nA set of edges is a matching if no two edges share a vertex.\n\n∀ e₁ e₂ ∈ M, e₁ ≠ e₂ → e₁ ∩ e₂ = ∅\n\nIn a 3-uniform hypergraph, a matching of size n covers 3n vertices.",
     "mathContext": "A matching $M \\subseteq E$ satisfies $\\forall e_1, e_2 \\in M,\\; e_1 \\neq e_2 \\Rightarrow e_1 \\cap e_2 = \\emptyset$. Formalized via `Disjoint e_1 e_2` for distinct edges in the matching.",
     "significance": "key",
+    "prerequisites": [
+      "Graph matching",
+      "Vertex-disjoint",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Graph matching",
       "Vertex-disjoint",
@@ -72,6 +90,12 @@
       "hypergraph theory",
       "matching theory"
     ],
+    "prerequisites": [
+      "algebra",
+      "basic set theory",
+      "combinatorics",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -86,6 +110,12 @@
     "content": "**AlmostSurely:**\n\nAn event holds 'almost surely' if it holds with probability → 1 as n → ∞.\n\nFormally: ∃ N, ∀ n ≥ N, P(property holds) → 1\n\nThis is the standard notion in probabilistic combinatorics.",
     "mathContext": "A property $P$ holds almost surely (a.s.) if $\\mathbb{P}[P(n)] \\to 1$ as $n \\to \\infty$. Formalized as $\\exists N,\\; \\forall n \\geq N,\\; P(n)$, capturing the asymptotic certainty.",
     "significance": "key",
+    "prerequisites": [
+      "Asymptotic behavior",
+      "Probability",
+      "basic set theory",
+      "probability theory"
+    ],
     "relatedConcepts": [
       "Probability",
       "Asymptotic behavior",
@@ -104,6 +134,12 @@
     "content": "**IsThreshold:**\n\nℓ(n) is a threshold for property P if:\n- Below (1-ε)ℓ(n): P fails a.s.\n- Above (1+ε)ℓ(n): P holds a.s.\n\nThis is a 'sharp threshold' - the transition from failure to success is abrupt.",
     "mathContext": "Sharp thresholds are a fundamental concept in random graph theory, pioneered by Erdős and Rényi.",
     "significance": "key",
+    "prerequisites": [
+      "Critical probability",
+      "Phase transition",
+      "basic set theory",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Phase transition",
       "Critical probability",
@@ -128,6 +164,12 @@
       "matching theory",
       "phase transitions"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "combinatorics",
+      "graph theory",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -147,6 +189,12 @@
       "phase transitions",
       "threshold phenomena"
     ],
+    "prerequisites": [
+      "basic set theory",
+      "graph theory",
+      "logarithmic functions",
+      "matching theory"
+    ],
     "significance": "key"
   },
   {
@@ -161,6 +209,11 @@
     "content": "**johansson_kahn_vu:**\n\nThe threshold for Shamir's problem is ℓ(n) ≍ n log n.\n\nThis means: c · n log n ≤ ℓ(n) ≤ C · n log n for some constants 0 < c < C.\n\nThis was the breakthrough result, published in 'Factors in random graphs', Random Structures Algorithms (2008).",
     "mathContext": "This paper resolved a 30-year-old problem using sophisticated probabilistic methods.",
     "significance": "key",
+    "prerequisites": [
+      "Nibble method",
+      "Second moment method",
+      "graph theory basics"
+    ],
     "relatedConcepts": [
       "Nibble method",
       "Second moment method"
@@ -184,6 +237,12 @@
       "growth rates",
       "hypergraph theory"
     ],
+    "prerequisites": [
+      "asymptotics",
+      "combinatorics",
+      "filter theory",
+      "graph theory basics"
+    ],
     "significance": "key"
   },
   {
@@ -203,6 +262,12 @@
       "hypergraph theory",
       "matching theory",
       "phase transitions"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "complex numbers",
+      "graph theory",
+      "graph theory basics"
     ],
     "significance": "key"
   },
@@ -224,6 +289,12 @@
       "matching theory",
       "phase transitions"
     ],
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "graph theory basics",
+      "hypergraph theory"
+    ],
     "significance": "key"
   },
   {
@@ -242,6 +313,12 @@
       "graph theory",
       "phase transitions",
       "probabilistic method",
+      "probability theory"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "graph theory basics",
       "probability theory"
     ],
     "significance": "key"
@@ -263,6 +340,10 @@
       "phase transitions",
       "threshold phenomena"
     ],
+    "prerequisites": [
+      "graph theory",
+      "matching theory"
+    ],
     "significance": "key"
   },
   {
@@ -282,6 +363,12 @@
       "hypergraph theory",
       "probabilistic method",
       "random structures"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "graph theory basics",
+      "hypergraph theory"
     ],
     "significance": "supporting"
   },
@@ -303,6 +390,12 @@
       "growth rates",
       "hypergraph theory"
     ],
+    "prerequisites": [
+      "asymptotics",
+      "combinatorics",
+      "graph theory basics",
+      "hypergraph theory"
+    ],
     "significance": "key"
   },
   {
@@ -321,6 +414,11 @@
       "growth rates",
       "phase transitions",
       "threshold phenomena"
+    ],
+    "prerequisites": [
+      "asymptotics",
+      "growth rates",
+      "proof techniques"
     ],
     "significance": "key"
   }

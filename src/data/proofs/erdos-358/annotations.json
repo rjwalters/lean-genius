@@ -11,6 +11,11 @@
     "content": "Erdos Problem #358 asks: for an infinite increasing sequence A, let f(n) count ways to write n as a sum of consecutive terms. Does any A have f(n) -> infinity? Or even f(n) >= 2 for large n? Both questions are OPEN.",
     "mathContext": "Related to additive combinatorics and convex sumsets. The problem has connections to classical results about consecutive integer sums.",
     "significance": "key",
+    "prerequisites": [
+      "additive-basis",
+      "consecutive-sums",
+      "convexity"
+    ],
     "relatedConcepts": [
       "consecutive-sums",
       "additive-basis",
@@ -29,6 +34,11 @@
     "content": "An IntSequence is a strictly increasing sequence of integers: seq(n) < seq(n+1) for all n. This captures the requirement that A = {a_1 < a_2 < ...} be infinite and strictly increasing.",
     "mathContext": "The increasing property ensures each term is used at most once in any consecutive sum representation.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "monotonicity",
+      "sequences"
+    ],
     "relatedConcepts": [
       "sequences",
       "monotonicity"
@@ -46,6 +56,12 @@
     "content": "f(n) = consecutiveSumCount counts pairs (u,v) with u <= v where the sum of A's terms from index u to v equals n. This is the central object: how many ways can n be represented?",
     "mathContext": "Uses Set.ncard to count the set of valid (u,v) pairs. The sum is computed over Finset.Icc u v.",
     "significance": "key",
+    "prerequisites": [
+      "Finset API",
+      "basic set theory",
+      "counting-functions",
+      "sum-representations"
+    ],
     "relatedConcepts": [
       "counting-functions",
       "sum-representations"
@@ -63,6 +79,12 @@
     "content": "naturalsSeq is A = {1, 2, 3, ...} defined as seq(n) = n+1. This is the most natural example and has a complete characterization: f(n) equals the number of odd divisors of n.",
     "mathContext": "The increasing property is proven inline using omega tactic.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "natural-numbers",
+      "odd-divisors",
+      "omega tactic"
+    ],
     "relatedConcepts": [
       "natural-numbers",
       "odd-divisors"
@@ -80,6 +102,11 @@
     "content": "The sum of integers from u+1 to v+1 equals (v-u+1)(u+v+2)/2. This is the classic arithmetic series formula, essential for characterizing which n are representable.",
     "mathContext": "Sorry'd because the proof requires algebraic manipulation that is tedious in Lean.",
     "significance": "supporting",
+    "prerequisites": [
+      "arithmetic-series",
+      "gauss-sum",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "arithmetic-series",
       "gauss-sum"
@@ -97,6 +124,11 @@
     "content": "n can be written as a sum of at least 2 consecutive positive integers if and only if n is NOT a power of 2. This is the complete answer for naturals with the >=2 terms restriction.",
     "mathContext": "The proof uses the sum formula: (v-u+1)(u+v+2)/2 = n. For n = 2^k, the factors force v-u+1 = 1 (single term).",
     "significance": "key",
+    "prerequisites": [
+      "divisibility",
+      "powers-of-two",
+      "proof techniques"
+    ],
     "relatedConcepts": [
       "powers-of-two",
       "divisibility"
@@ -114,6 +146,10 @@
     "content": "For the natural numbers sequence, f(n) equals the number of odd divisors of n. This gives explicit values: f(15) = 4 (divisors 1,3,5,15), f(16) = 1 (only divisor 1).",
     "mathContext": "Axiomatized because the proof requires careful analysis of the sum formula factors.",
     "significance": "key",
+    "prerequisites": [
+      "divisor-function",
+      "odd-numbers"
+    ],
     "relatedConcepts": [
       "divisor-function",
       "odd-numbers"
@@ -131,6 +167,12 @@
     "content": "Erdos358Strong: Does there exist A with f(n) -> infinity as n -> infinity? This asks for a sequence where large integers have arbitrarily many consecutive sum representations.",
     "mathContext": "Formalized using Filter.Tendsto and Filter.atTop for the limit.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "filter theory",
+      "limits",
+      "tendsto"
+    ],
     "relatedConcepts": [
       "limits",
       "tendsto"
@@ -148,6 +190,11 @@
     "content": "Erdos358Weak: Does there exist A with f(n) >= 2 for all sufficiently large n? Even this modest requirement - just two representations eventually - is unknown!",
     "mathContext": "Weaker than the Strong form but still open. For naturals, powers of 2 violate this (f(2^k) = 1 for single-term sums only).",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "eventually",
+      "lower-bounds"
+    ],
     "relatedConcepts": [
       "eventually",
       "lower-bounds"
@@ -165,6 +212,10 @@
     "content": "f(n) >= 1 for all n >= 1 is trivially achieved by A = naturals, since n can always be written as the single-term sum (n itself). The challenge is getting f(n) >= 2.",
     "mathContext": "The trivial representation n = sum from index n-1 to n-1 works for any n.",
     "significance": "supporting",
+    "prerequisites": [
+      "proof techniques",
+      "trivial-bounds"
+    ],
     "relatedConcepts": [
       "trivial-bounds"
     ]
@@ -181,6 +232,10 @@
     "content": "Powers of 2 cannot be written as sums of 2 or more consecutive positive integers. This is the only obstruction - all other positive integers have such a representation.",
     "mathContext": "If 2^k = sum from u+1 to v+1 with u < v, then 2^k = (v-u+1)(u+v+2)/2, but 2^k has no odd factor > 1 unless v-u+1 = 1.",
     "significance": "key",
+    "prerequisites": [
+      "powers-of-two",
+      "uniqueness"
+    ],
     "relatedConcepts": [
       "powers-of-two",
       "uniqueness"
@@ -198,6 +253,12 @@
     "content": "For A = primes, Erdos and Moser (1963) conjectured that limsup f(n) = infinity. They could not even prove that the upper density of representable integers is positive!",
     "mathContext": "primesSeq is axiomatized since extracting the nth prime is complex. The conjecture remains open.",
     "significance": "key",
+    "prerequisites": [
+      "complex numbers",
+      "density theory",
+      "erdos-moser",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "prime-numbers",
       "erdos-moser"
@@ -215,6 +276,12 @@
     "content": "PositiveDensityConjecture asks: does the set of integers representable as consecutive prime sums have positive upper density? Even this basic question is unknown.",
     "mathContext": "representableCount counts integers up to N with f(n) >= 1. We don't know if representableCount(N)/N has a positive liminf.",
     "significance": "key",
+    "prerequisites": [
+      "basic set theory",
+      "density",
+      "density theory",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "density",
       "prime-sums"
@@ -232,6 +299,11 @@
     "content": "Problem #356 is the finite analogue. Modern additive combinatorics views this as asking for a convex set A with 1_A * 1_A(n) -> infinity (convolution of indicator functions).",
     "mathContext": "The convex set formulation connects to sumset theory and the structure of arithmetic progressions within A.",
     "significance": "supporting",
+    "prerequisites": [
+      "convex-sumsets",
+      "convexity",
+      "problem-356"
+    ],
     "relatedConcepts": [
       "problem-356",
       "convex-sumsets"
@@ -249,6 +321,12 @@
     "content": "Both the Strong and Weak forms of Erdos #358 remain OPEN. What's known: (1) For naturals, f(n) = odd divisors, (2) n != 2^k iff representable by >=2 terms, (3) For primes, even positive density is unknown.",
     "mathContext": "Erdos called the problem 'artificial and in the backwater of Mathematics' but found it 'very strange and attractive.'",
     "significance": "key",
+    "prerequisites": [
+      "density theory",
+      "erdos-quote",
+      "open-problems",
+      "prime numbers"
+    ],
     "relatedConcepts": [
       "open-problems",
       "erdos-quote"
@@ -266,6 +344,11 @@
     "content": "erdos_358_status: Summarizes that Strong implies Weak, and the problem is formally undetermined (either answer is consistent with current knowledge).",
     "mathContext": "The final theorem packages the implications and openness into a single statement.",
     "significance": "key",
+    "prerequisites": [
+      "implications",
+      "proof techniques",
+      "summary"
+    ],
     "relatedConcepts": [
       "summary",
       "implications"
