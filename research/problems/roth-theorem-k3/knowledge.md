@@ -183,3 +183,43 @@ tripleCount_add_card_eq_triple_sum (sorry) ─── pure combinatorics
 parseval_on_zmod (PROVED) ──┘    └→ density_increment_lemma (sorry)
                                        └→ roth_density_bound (PROVED)
 ```
+
+## Session 7 (2026-03-23, researcher-3)
+
+### What Was Done
+1. **Proved `fourierCoeff_zero`**: Â(0) = |A| (zeroth Fourier coefficient counts elements)
+2. **Proved `apFree_card_lt`**: AP-free sets cannot be full ZMod N for N ≥ 2
+   - Uses {0, 1, 0+2·1} as a 3-AP in any ZMod N with N ≥ 2
+   - Requires `ZMod.val_one_lt_of_lt` to show 1 ≠ 0 in ZMod N
+3. **Proved `parseval_nonzero`**: Σ_{r≠0}‖Â(r)‖² = n·N - n² (Parseval minus r=0 term)
+4. **Decomposed `fourier_large_coefficient` into two cases**:
+   - **Case 1 (δ²N < 2): FULLY PROVED** via Parseval pigeonhole
+     - n ∈ {1,...,N-1} ⟹ n(N-n) ≥ N-1 ⟹ max ‖Â(r)‖ ≥ 1 > δ²N/2
+   - **Case 2 (δ²N ≥ 2): Reduced to one sorry** (norm bound inequality)
+     - Set up Fourier identity: nN = n³ + S, computed ‖S‖ = n(n²-N)
+     - Proved n² > N from δ²N ≥ 2 and n ≥ δN
+     - Reduced to: n²-N < δ²N²/2 (which contradicts n² ≥ δ²N²)
+     - Remaining sorry: the norm bound chain (AM-GM + Parseval)
+5. **Changed signature**: `hN : 0 < N` → `hN : 1 < N` (ZMod 1 has no nonzero element)
+
+### Proof Strategy for Remaining Sorry
+The norm bound in Case 2 follows from:
+- ‖S‖ ≤ Σ_{r≠0} ‖Â(r)‖²·‖Â(2r)‖  (triangle inequality + norm multiplicativity)
+- < (δ²N/2) · Σ ‖Â(r)‖·‖Â(2r)‖  (hypothesis: each ‖Â(r)‖ < δ²N/2)
+- ≤ (δ²N/2) · Σ (‖Â(r)‖² + ‖Â(2r)‖²)/2  (AM-GM: ab ≤ (a²+b²)/2)
+- ≤ (δ²N/2) · (n(N-n) + nN)/2  (Parseval + sub-sum bound)
+- ≤ (δ²N/2) · nN  (simplification: n(N-n)+nN = n(2N-n) ≤ 2nN)
+After dividing by n > 0: n²-N < δ²N²/2. Combined with n² ≥ δ²N²: contradiction.
+
+### Technical Notes
+- `RCLike.norm_conj` handles ‖conj(z)‖ = ‖z‖ for the starRingEnd ℂ
+- `Complex.norm_natCast` for ‖(↑n : ℂ)‖ = n
+- `Complex.norm_real` + `abs_of_pos` for ‖(↑x : ℂ)‖ = |x| = x when x > 0
+- `Finset.sum_lt_sum` for strict bound: need at least one strict inequality in the sum
+
+### Remaining Sorry Dependency Chain (Updated Session 7)
+```
+fourier_large_coefficient (1 sorry: norm bound in Case 2)
+    └→ density_increment_lemma (sorry)
+          └→ roth_density_bound (PROVED)
+```
