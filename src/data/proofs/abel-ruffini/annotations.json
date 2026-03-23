@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Module Documentation",
-    "content": "The Abel-Ruffini theorem, proven by Niels Henrik Abel in 1824 and later illuminated by Galois's theory, answers a 300-year-old question: why is there no 'quintic formula' like the quadratic formula?\n\nGalois discovered that solvability by radicals is equivalent to having a solvable Galois group, revealing a profound connection between field theory and group theory.",
+    "content": "The Abel-Ruffini theorem, proven by Niels Henrik Abel in 1824 and later illuminated by Galois's theory, answers a 300-year-old question: why is there no 'quintic formula' like the quadratic formula?\n\nGalois discovered that solvability by radicals is equivalent to having a solvable Galois group, revealing a profound connection between field theory and group theory.\n\n**The file's logical structure mirrors the historical development:** Part I defines solvability by radicals (the algebraic question that drove centuries of work), Part II establishes the Galois bridge (Galois's key insight connecting fields to groups), Part III proves the group-theoretic obstruction ($S_5$ not solvable), Parts IV–V combine these ingredients, and Parts VI–VII provide historical context. This is entry #16 in Wiedijk's '100 Theorems' project.",
     "mathContext": "The question: Given $ax^5 + bx^4 + cx^3 + dx^2 + ex + f = 0$, is there a formula for $x$ using only $+, -, \\times, \\div,$ and $\\sqrt[n]{\\phantom{x}}$?",
     "significance": "supporting",
     "prerequisites": [
@@ -52,8 +52,8 @@
     },
     "type": "context",
     "title": "Namespace Declaration",
-    "content": "The `AbelRuffini` namespace scopes all theorems in the file. All theorem names are prefixed with `AbelRuffini.` when referenced externally (e.g., `AbelRuffini.galois_bridge`). The namespace is closed at line 185 with `end AbelRuffini`.",
-    "mathContext": "Lean 4 namespaces organize declarations hierarchically. The `AbelRuffini` namespace groups `galois_bridge`, `symmetric_group_not_solvable`, `not_solvable_by_rad_of_not_solvable_gal`, etc. under a common prefix.",
+    "content": "The `AbelRuffini` namespace scopes all theorems in the file. All theorem names are prefixed with `AbelRuffini.` when referenced externally (e.g., `AbelRuffini.galois_bridge`). The namespace is closed at line 185 with `end AbelRuffini`.\n\n**Key declarations in this namespace:** `galois_bridge` (the field-to-group bridge), `symmetric_group_not_solvable` (the group-theoretic core), `s5_not_solvable` and `s6_not_solvable` (concrete instances), `a5_is_simple` (the structural reason), `s0_solvable` and `s1_solvable` (contrast cases), `exists_quintic` (degree witness), and `not_solvable_by_rad_of_not_solvable_gal` (the main theorem in contrapositive form).",
+    "mathContext": "Lean 4 namespaces organize declarations hierarchically. The `AbelRuffini` namespace groups 9 theorems following the logical chain: bridge ($\\alpha$ solvable $\\Rightarrow$ Gal solvable) $\\to$ obstruction ($S_n$ not solvable for $n \\geq 5$) $\\to$ conclusion (non-solvable Gal $\\Rightarrow$ $\\alpha$ not solvable by radicals).",
     "significance": "context",
     "prerequisites": [
       "Lean 4 namespace system"

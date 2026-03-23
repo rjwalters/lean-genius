@@ -277,6 +277,20 @@
       "year": "1979",
       "venue": "Unpublished manuscript, later cited in Menezes et al., Handbook of Applied Cryptography",
       "note": "Introduced the birthday attack on hash functions, showing collisions can be found in O(2^(n/2)) time — fundamentally changing hash output length requirements in cryptography"
+    },
+    {
+      "authors": "Feller, William",
+      "title": "An Introduction to Probability Theory and Its Applications, vol. 1",
+      "year": "1968",
+      "venue": "Wiley, 3rd edition, Chapter 2",
+      "note": "Classic treatment of the birthday problem with the occupancy framework: n balls into m urns, P(all distinct) = m!/(m^n · (m-n)!)"
+    },
+    {
+      "authors": "Suzuki, Jeff",
+      "title": "A History of Mathematics: An Introduction",
+      "year": "2009",
+      "venue": "Prentice Hall, Chapter 15",
+      "note": "Historical context: traces the birthday problem from von Mises (1939) through its popularization by mathematical recreationists and its unexpected applications in cryptography and DNA forensics"
     }
   ]
 }
