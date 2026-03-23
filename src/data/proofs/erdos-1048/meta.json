@@ -66,6 +66,7 @@
       "erdos-1042"
     ],
     "axiomCount": 10,
+    "assumptions": "10 axiom declarations: counterexample_n_components (lemniscate has n connected components), pommerenke_diameter_vanishes (component diameters tend to 0 as n grows), pommerenke_case_small_r (r <= 1/2 implies diam >= 2), pommerenke_case_medium_r (1/2 < r <= phi-1 implies diam > 1/r), pommerenke_case_large_r (phi-1 <= r <= 1 implies diam > 2-r^2), diameter_near_1_for_r_eq_1 (r=1 max diameter < 1+eps), component_count_bound (degree-n poly has <= n components), logCapacity (logarithmic capacity function), lemniscate_capacity (cap(L(f,c)) = c^(1/n) for monic f), capacity_diameter_inequality (diam >= 4*cap for connected sets)",
     "lineCount": 273
   },
   "overview": {
