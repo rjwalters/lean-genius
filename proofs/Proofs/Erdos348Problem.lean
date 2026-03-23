@@ -144,9 +144,16 @@ theorem fib_1_robust : IsRobust fib 1 := by
   -- Removing one Fibonacci number doesn't break completeness
   sorry
 
-/-- Fibonacci sequence is not 2-robust -/
+/-- Fibonacci sequence is not 2-robust: removing indices 0 and 1 (values 1 and 2)
+    leaves {3, 5, 8, 13, ...} which has permanent gaps (4, 6, 7, 9, 10, ...).
+    The gap criterion a₂ = 5 > a₁ + 1 = 4 means 4 is never representable.
+    By Zeckendorf, integers whose representation needs 1 or 2 form an infinite
+    non-representable set, so the remaining sequence is not complete. -/
 theorem fib_not_2_robust : NotRobust fib 2 := by
-  -- Removing fib(0)=1 and fib(1)=2 breaks completeness for representing 3
+  -- Removing indices {0, 1} (values fib(0)=1, fib(1)=2) leaves {3, 5, 8, 13, ...}
+  -- which is NOT complete: the number 4 cannot be represented (only element ≤ 4 is 3,
+  -- and sum({3}) = 3 ≠ 4). For arbitrarily large N, numbers like fib(k)+1 are
+  -- also non-representable, so ¬IsComplete holds.
   sorry
 
 /-- (1, 2) is a valid pair -/
@@ -155,9 +162,11 @@ theorem pair_1_2_valid : (1, 2) ∈ validPairs := by
   · norm_num
   · use fib
     constructor
-    · -- Fibonacci is monotone
-      intro m n hmn
-      sorry
+    · -- Fibonacci is monotone: fib n ≤ fib (n+1) for all n
+      exact monotone_nat_of_le_succ (fun n => by
+        cases n with
+        | zero => show (1 : ℕ) ≤ 2; norm_num
+        | succ k => show fib (k + 1) ≤ fib k + fib (k + 1); omega)
     constructor
     · exact fib_complete
     constructor
@@ -177,9 +186,10 @@ axiom erdos_348_characterization :
   -- Or there's some cutoff
   (∃ k : ℕ, validPairs = {p : ℕ × ℕ | p.1 < p.2 ∧ p.1 < k})
 
-/-- The case (2, 3) is unknown -/
-axiom erdos_348_case_2_3 :
-  (2, 3) ∈ validPairs ∨ (2, 3) ∉ validPairs
+/-- The case (2, 3) is unknown — but the disjunction is trivially decidable. -/
+theorem erdos_348_case_2_3 :
+    (2, 3) ∈ validPairs ∨ (2, 3) ∉ validPairs :=
+  em _
 
 /-
 ## Van Doorn's Result
