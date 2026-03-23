@@ -1,1 +1,122 @@
-[]
+[
+  {
+    "id": "ann-ultrametric-implies-triangle",
+    "proofId": "triangle-inequality-oq-03",
+    "range": { "startLine": 40, "endLine": 45 },
+    "type": "concept",
+    "title": "Ultrametric Implies Standard Triangle Inequality",
+    "content": "Shows that the ultrametric inequality d(x,z) ≤ max(d(x,y), d(y,z)) implies the standard triangle inequality d(x,z) ≤ d(x,y) + d(y,z) via the universal bound max(a,b) ≤ a + b for non-negative reals. This establishes that every ultrametric space is automatically a metric space — the ultrametric axiom is a strict strengthening.",
+    "mathContext": "$d(x,z) \\leq \\max(d(x,y), d(y,z)) \\leq d(x,y) + d(y,z)$, since $\\max(a,b) \\leq a + b$ for $a, b \\geq 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["metric space axioms", "max inequality", "non-negative distance"],
+    "prerequisites": ["IsUltrametricDist.dist_triangle_max", "max_le_add_of_nonneg"]
+  },
+  {
+    "id": "ann-isosceles-of-lt",
+    "proofId": "triangle-inequality-oq-03",
+    "range": { "startLine": 57, "endLine": 80 },
+    "type": "technique",
+    "title": "Isosceles Theorem: Unequal Sides Force Equality",
+    "content": "The central original theorem: if d(x,y) < d(y,z) then d(x,z) = d(y,z). The proof uses antisymmetry (le_antisymm). The upper bound d(x,z) ≤ d(y,z) follows directly from the ultrametric inequality since max(d(x,y), d(y,z)) = d(y,z). The lower bound uses contradiction: if d(x,z) < d(y,z), then both d(x,y) < d(y,z) and d(x,z) < d(y,z), so max(d(x,y), d(x,z)) < d(y,z). But d(y,z) ≤ max(d(y,x), d(x,z)) = max(d(x,y), d(x,z)) — contradiction. This is the 'double application' pattern: applying the ultrametric inequality from both sides.",
+    "mathContext": "If $d(x,y) < d(y,z)$, then $d(x,z) = d(y,z)$. Proof by contradiction for $\\geq$: if $d(x,z) < d(y,z)$, then $d(y,z) \\leq \\max(d(x,y), d(x,z)) < d(y,z)$.",
+    "significance": "key",
+    "relatedConcepts": ["antisymmetric ordering", "proof by contradiction", "ultrametric geometry"],
+    "prerequisites": ["IsUltrametricDist.dist_triangle_max", "le_antisymm", "max_lt"]
+  },
+  {
+    "id": "ann-isosceles-triangle",
+    "proofId": "triangle-inequality-oq-03",
+    "range": { "startLine": 82, "endLine": 109 },
+    "type": "insight",
+    "title": "Every Ultrametric Triangle Is Isosceles",
+    "content": "The striking corollary: in any ultrametric space, every triple of points forms an isosceles triangle. The proof proceeds by case analysis on equality of the three pairwise distances. When d(x,y) ≠ d(y,z), isosceles_of_lt immediately gives d(x,z) = d(y,z). The remaining case d(x,y) ≠ d(x,z) and d(y,z) > d(x,y) leads to contradiction via a symmetric application. This rules out scalene triangles entirely — a property with no analog in Euclidean geometry.",
+    "mathContext": "For all $x, y, z$ in an ultrametric space: $d(x,y) = d(x,z) \\lor d(x,y) = d(y,z) \\lor d(x,z) = d(y,z)$.",
+    "significance": "key",
+    "relatedConcepts": ["isosceles triangle", "case analysis", "p-adic geometry", "non-Euclidean geometry"],
+    "prerequisites": ["isosceles_of_lt", "lt_or_gt_of_ne"]
+  },
+  {
+    "id": "ann-dist-eq-max",
+    "proofId": "triangle-inequality-oq-03",
+    "range": { "startLine": 111, "endLine": 129 },
+    "type": "technique",
+    "title": "Sharp Form: Distance Equals Max of Unequal Sides",
+    "content": "Strengthens the isosceles theorem to an equality: when d(x,y) ≠ d(y,z), the third side d(x,z) equals exactly max(d(x,y), d(y,z)). This is proved by case-splitting on which side is larger and applying isosceles_of_lt in each case, with appropriate distance symmetry rewrites (dist_comm). The sharp form reveals that the ultrametric inequality is tight whenever two sides differ — the third side is determined, not merely bounded.",
+    "mathContext": "If $d(x,y) \\neq d(y,z)$, then $d(x,z) = \\max(d(x,y), d(y,z))$.",
+    "significance": "key",
+    "relatedConcepts": ["tight inequality", "ultrametric equality case", "metric symmetry"],
+    "prerequisites": ["isosceles_of_lt", "dist_comm"]
+  },
+  {
+    "id": "ann-ball-eq-of-mem",
+    "proofId": "triangle-inequality-oq-03",
+    "range": { "startLine": 138, "endLine": 144 },
+    "type": "insight",
+    "title": "Every Point in a Ball Is Its Center",
+    "content": "In an ultrametric space, if z ∈ B(x,r), then B(x,r) = B(z,r). This means the 'center' of a ball is not special — any point serves equally well. In Euclidean geometry, the center is unique; in ultrametric geometry, the concept of center is vacuous. This delegates to Mathlib's IsUltrametricDist.ball_eq_of_mem, which proves it via the ultrametric inequality: if w ∈ B(x,r) and z ∈ B(x,r), then d(z,w) ≤ max(d(z,x), d(x,w)) < r.",
+    "mathContext": "$z \\in B(x, r) \\Rightarrow B(x, r) = B(z, r)$: every interior point is a center.",
+    "significance": "key",
+    "relatedConcepts": ["metric ball", "center-free geometry", "ultrametric topology"],
+    "prerequisites": ["IsUltrametricDist.ball_eq_of_mem"]
+  },
+  {
+    "id": "ann-ball-eq-or-disjoint",
+    "proofId": "triangle-inequality-oq-03",
+    "range": { "startLine": 146, "endLine": 151 },
+    "type": "concept",
+    "title": "Balls Are Equal or Disjoint: No Partial Overlap",
+    "content": "Two balls of equal radius in an ultrametric space are either identical or completely disjoint — they cannot partially overlap. This is a consequence of every point being a center: if two balls share even one point, then that point is a center of both, forcing them to be equal. This property makes ultrametric topology remarkably simple: the set of r-balls forms a partition of the space.",
+    "mathContext": "For any $x, y$ and $r > 0$: $B(x, r) = B(y, r)$ or $B(x, r) \\cap B(y, r) = \\emptyset$.",
+    "significance": "supporting",
+    "relatedConcepts": ["partition of a set", "equivalence relation", "Venn diagram impossibility"],
+    "prerequisites": ["IsUltrametricDist.ball_eq_or_disjoint"]
+  },
+  {
+    "id": "ann-clopen-ball",
+    "proofId": "triangle-inequality-oq-03",
+    "range": { "startLine": 162, "endLine": 173 },
+    "type": "insight",
+    "title": "Clopen Balls: No Boundary in Ultrametric Spaces",
+    "content": "Open balls in ultrametric spaces are simultaneously closed (clopen), and their frontier (boundary) is empty. This is a topological consequence of the every-point-is-a-center property: if a sequence in B(x,r) converges to a limit, that limit is in B(x,r) since the ball equals B(limit, r). The empty frontier means there are no 'edge points' — a radical departure from Euclidean topology where the sphere ∂B(x,r) is always non-empty. This gives ultrametric spaces a totally disconnected topology.",
+    "mathContext": "$B(x, r)$ is clopen: $\\overline{B(x,r)} = B(x,r)^\\circ = B(x,r)$, so $\\partial B(x,r) = \\emptyset$.",
+    "significance": "key",
+    "relatedConcepts": ["clopen set", "totally disconnected space", "frontier", "Stone space"],
+    "prerequisites": ["IsUltrametricDist.isClopen_ball", "IsUltrametricDist.frontier_ball_eq_empty"]
+  },
+  {
+    "id": "ann-padic-ultrametric",
+    "proofId": "triangle-inequality-oq-03",
+    "range": { "startLine": 187, "endLine": 198 },
+    "type": "concept",
+    "title": "p-adic Norm: The Canonical Ultrametric",
+    "content": "The p-adic norm |·|_p on ℚ satisfies the ultrametric inequality |x+y|_p ≤ max(|x|_p, |y|_p), providing the canonical example of a non-Archimedean norm. This delegates to Mathlib's padicNorm.nonarchimedean. The p-adic norm is defined by |q|_p = p^(-v_p(q)) where v_p is the p-adic valuation. The standard triangle inequality follows immediately since max(a,b) ≤ a + b. By Ostrowski's theorem (1916), the only nontrivial absolute values on ℚ are the usual absolute value and the p-adic absolute values.",
+    "mathContext": "$|x + y|_p \\leq \\max(|x|_p, |y|_p)$ for all $x, y \\in \\mathbb{Q}$, where $|q|_p = p^{-v_p(q)}$.",
+    "significance": "key",
+    "relatedConcepts": ["p-adic valuation", "Ostrowski's theorem", "non-Archimedean norm", "local fields"],
+    "prerequisites": ["padicNorm.nonarchimedean", "padicNorm.nonneg"]
+  },
+  {
+    "id": "ann-padic-int-bounded",
+    "proofId": "triangle-inequality-oq-03",
+    "range": { "startLine": 200, "endLine": 205 },
+    "type": "concept",
+    "title": "p-adic Integers Are Bounded: The Anti-Archimedean Property",
+    "content": "The p-adic norm of any integer satisfies |n|_p ≤ 1. This means the integers are 'small' p-adically — the exact opposite of the real absolute value where |n| → ∞. Intuitively, |n|_p measures divisibility by p: n is p-adically small when it is highly divisible by p. The set {x ∈ ℚ_p : |x|_p ≤ 1} forms the ring of p-adic integers ℤ_p, which is compact and open — a property impossible in Archimedean settings.",
+    "mathContext": "$|n|_p \\leq 1$ for all $n \\in \\mathbb{Z}$, so $\\mathbb{Z} \\subseteq \\mathbb{Z}_p = \\{x \\in \\mathbb{Q}_p : |x|_p \\leq 1\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["p-adic integers", "compact open subring", "p-adic valuation", "Archimedean property"],
+    "prerequisites": ["padicNorm.of_int"]
+  },
+  {
+    "id": "ann-archimedean-comparison",
+    "proofId": "triangle-inequality-oq-03",
+    "range": { "startLine": 243, "endLine": 253 },
+    "type": "context",
+    "title": "Archimedean vs Non-Archimedean: A Fundamental Dichotomy",
+    "content": "The formalization concludes by juxtaposing the Archimedean property (for any x > 0, some n ∈ ℕ has n > 1/x) with its p-adic failure (|n|_p ≤ 1 for all n). This dichotomy, established by Ostrowski's theorem, partitions all absolute values on ℚ into two families. The Archimedean world (ℝ, ℂ) has unbounded integers, scalene triangles, and open balls with boundaries. The non-Archimedean world (ℚ_p) has bounded integers, isosceles triangles, and clopen balls — a complete inversion of geometric intuition.",
+    "mathContext": "Archimedean: $\\forall x > 0, \\exists n \\in \\mathbb{N}: n > 1/x$. Non-Archimedean: $|n|_p \\leq 1$ for all $n \\in \\mathbb{Z}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Ostrowski's theorem", "local-global principle", "adeles", "product formula"],
+    "prerequisites": ["exists_nat_gt", "padicNorm.of_int"]
+  }
+]
