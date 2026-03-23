@@ -9,17 +9,22 @@
     "type": "concept",
     "title": "Generalizing Pythagoras",
     "content": "The **Law of Cosines** generalizes the Pythagorean theorem to all triangles, not just right triangles:\n\n$$c^2 = a^2 + b^2 - 2ab\\cos(C)$$\n\nWhen $C = 90°$, we have $\\cos(90°) = 0$, so:\n$$c^2 = a^2 + b^2$$\n\nThis is precisely the Pythagorean theorem! The Law of Cosines adds a correction term $-2ab\\cos(C)$ that accounts for non-right angles.",
-    "mathContext": "The correction term $-2ab\\cos(C)$ is negative when $C < 90°$ (acute: side $c$ is shorter than the Pythagorean prediction), zero when $C = 90°$ (right: exact Pythagorean relation), and positive when $C > 90°$ (obtuse: $c$ is longer). This is Wiedijk 100 theorem #94.",
-    "significance": "key",
+    "mathContext": "The Law of Cosines $c^2 = a^2 + b^2 - 2ab\\cos C$ interpolates continuously between the degenerate case ($C = 0$, $c = |a-b|$), the right-angle case ($C = \\pi/2$, $c = \\sqrt{a^2+b^2}$), and the collinear case ($C = \\pi$, $c = a+b$). In Lean, this is formalized via inner product spaces: $c^2 = \\|v-w\\|^2 = \\|v\\|^2 + \\|w\\|^2 - 2\\langle v, w \\rangle$, with the cosine connection given by $\\langle v, w \\rangle = \\|v\\|\\|w\\|\\cos\\theta$.",
+    "significance": "critical",
+    "prerequisites": [
+      "Euclidean geometry",
+      "Pythagorean theorem",
+      "trigonometry (cosine function)",
+      "real inner product spaces",
+      "Lean 4 / Mathlib basics"
+    ],
     "relatedConcepts": [
       "Pythagorean theorem",
       "trigonometry",
-      "triangles"
-    ],
-    "prerequisites": [
-      "trigonometric functions",
-      "triangle geometry",
-      "cosine function"
+      "triangles",
+      "inner product spaces",
+      "Euclidean distance",
+      "Wiedijk #94"
     ]
   },
   {
@@ -32,19 +37,22 @@
     "type": "theorem",
     "title": "The Inner Product Form",
     "content": "**Law of Cosines** (Inner Product Form):\n\nFor any vectors $v$ and $w$ in an inner product space:\n\n$$\\|v - w\\|^2 = \\|v\\|^2 + \\|w\\|^2 - 2\\langle v, w \\rangle$$\n\nThis is the fundamental algebraic identity. The inner product $\\langle v, w \\rangle$ equals $\\|v\\|\\|w\\|\\cos(\\theta)$ where $\\theta$ is the angle between the vectors.\n\nThe proof uses linearity and symmetry of the inner product.",
-    "mathContext": "$\\|v-w\\|^2 = \\langle v-w, v-w \\rangle = \\langle v,v \\rangle - 2\\langle v,w \\rangle + \\langle w,w \\rangle = \\|v\\|^2 + \\|w\\|^2 - 2\\langle v, w \\rangle$. Using $\\langle v, w \\rangle = \\|v\\|\\|w\\|\\cos\\theta$ recovers the classical form $c^2 = a^2 + b^2 - 2ab\\cos C$.",
-    "significance": "key",
+    "mathContext": "$\\|v-w\\|^2 = \\|v\\|^2 + \\|w\\|^2 - 2\\langle v, w \\rangle$",
+    "significance": "critical",
+    "prerequisites": [
+      "real inner product spaces (InnerProductSpace)",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "bilinearity and symmetry of inner product",
+      "norm-squared as inner product: ‖v‖² = ⟨v,v⟩",
+      "inner_sub_left, inner_sub_right lemmas"
+    ],
     "relatedConcepts": [
       "inner product",
       "norm",
       "vector spaces",
-      "bilinearity"
-    ],
-    "prerequisites": [
-      "inner product spaces",
-      "real_inner_self_eq_norm_mul_norm",
-      "inner_sub_left",
-      "real_inner_comm"
+      "bilinearity",
+      "real_inner_comm",
+      "EuclideanSpace ℝ (Fin 2)"
     ]
   },
   {
@@ -57,17 +65,20 @@
     "type": "theorem",
     "title": "The Pythagorean Special Case",
     "content": "**Pythagorean Theorem from Law of Cosines**:\n\nWhen vectors $v$ and $w$ are **perpendicular** (orthogonal), their inner product is zero:\n$$\\langle v, w \\rangle = 0$$\n\nSubstituting into the Law of Cosines:\n$$\\|v - w\\|^2 = \\|v\\|^2 + \\|w\\|^2 - 2 \\cdot 0 = \\|v\\|^2 + \\|w\\|^2$$\n\nThis is exactly the Pythagorean theorem! The '- 2ab cos(C)' term vanishes when C = 90°.",
-    "mathContext": "$\\langle v, w \\rangle = 0 \\Rightarrow \\|v-w\\|^2 = \\|v\\|^2 + \\|w\\|^2 - 2 \\cdot 0 = \\|v\\|^2 + \\|w\\|^2$. The perpendicularity hypothesis $v \\perp w$ is defined as `inner v w = (0 : ℝ)` and substituted via `rw [h]` followed by `ring`.",
+    "mathContext": "$v \\perp w \\Rightarrow \\|v-w\\|^2 = \\|v\\|^2 + \\|w\\|^2$",
     "significance": "key",
+    "prerequisites": [
+      "inner product spaces",
+      "definition of perpendicularity: ⟨v,w⟩ = 0",
+      "law_of_cosines_inner theorem",
+      "Pythagorean theorem"
+    ],
     "relatedConcepts": [
       "perpendicularity",
       "orthogonality",
-      "Pythagorean theorem"
-    ],
-    "prerequisites": [
-      "law_of_cosines_inner",
-      "inner product",
-      "perpendicularity definition"
+      "Pythagorean theorem",
+      "inner product zero",
+      "angle 90°"
     ]
   },
   {
@@ -80,17 +91,20 @@
     "type": "theorem",
     "title": "The Polarization Identity",
     "content": "The **Polarization Identity** recovers the inner product from norms alone:\n\n$$\\langle v, w \\rangle = \\frac{\\|v + w\\|^2 - \\|v\\|^2 - \\|w\\|^2}{2}$$\n\nOr equivalently:\n$$\\langle v, w \\rangle = \\frac{\\|v\\|^2 + \\|w\\|^2 - \\|v - w\\|^2}{2}$$\n\nThis is remarkable: you can compute the inner product (which captures angle information) using only lengths!",
-    "mathContext": "$\\langle v, w \\rangle = \\frac{1}{2}(\\|v+w\\|^2 - \\|v\\|^2 - \\|w\\|^2)$. Equivalently, $\\langle v, w \\rangle = \\frac{1}{2}(\\|v\\|^2 + \\|w\\|^2 - \\|v-w\\|^2)$. This recovers the inner product (hence angles) from norms (distances) alone — the metric determines the angle structure.",
+    "mathContext": "$\\langle v, w \\rangle = \\frac{1}{2}(\\|v+w\\|^2 - \\|v\\|^2 - \\|w\\|^2)$",
     "significance": "key",
+    "prerequisites": [
+      "law_of_cosines_inner (difference form)",
+      "law_of_cosines_inner_add (sum form)",
+      "linarith tactic",
+      "inner product spaces"
+    ],
     "relatedConcepts": [
       "inner product",
       "norm",
       "angle measurement",
-      "metric geometry"
-    ],
-    "prerequisites": [
-      "law_of_cosines_inner_add",
-      "inner product spaces"
+      "metric geometry",
+      "Jordan-von Neumann theorem"
     ]
   },
   {
@@ -103,17 +117,19 @@
     "type": "theorem",
     "title": "The Parallelogram Law",
     "content": "The **Parallelogram Law** follows directly from adding the two forms of the Law of Cosines:\n\n$$\\|v + w\\|^2 + \\|v - w\\|^2 = 2(\\|v\\|^2 + \\|w\\|^2)$$\n\n**Geometric meaning**: In a parallelogram, the sum of the squares of the diagonals equals the sum of the squares of all four sides.\n\nThis identity characterizes inner product spaces among normed spaces.",
-    "mathContext": "$\\|v+w\\|^2 + \\|v-w\\|^2 = 2\\|v\\|^2 + 2\\|w\\|^2$. By the Jordan-von Neumann theorem, a normed space satisfying this identity is an inner product space — the parallelogram law characterizes Hilbert space geometry among Banach spaces.",
+    "mathContext": "$\\|v+w\\|^2 + \\|v-w\\|^2 = 2\\|v\\|^2 + 2\\|w\\|^2$",
     "significance": "key",
+    "prerequisites": [
+      "law_of_cosines_inner and law_of_cosines_inner_add",
+      "linarith tactic",
+      "normed spaces",
+      "inner product spaces"
+    ],
     "relatedConcepts": [
       "parallelogram",
       "diagonals",
       "inner product characterization",
-      "Jordan-von Neumann theorem"
-    ],
-    "prerequisites": [
-      "law_of_cosines_inner",
-      "law_of_cosines_inner_add",
+      "Jordan-von Neumann theorem",
       "normed spaces"
     ]
   },
@@ -127,17 +143,21 @@
     "type": "example",
     "title": "Worked Examples",
     "content": "**60° angle (equilateral triangle)**:\n- $a = b = 1$, $\\cos(60°) = 1/2$\n- $c^2 = 1 + 1 - 2(1)(1)(1/2) = 1$\n- So $c = 1$ (equilateral!)\n\n**90° angle (Pythagorean)**:\n- $a = 3$, $b = 4$, $\\cos(90°) = 0$\n- $c^2 = 9 + 16 - 0 = 25$\n- So $c = 5$ (the 3-4-5 triangle)\n\n**120° angle (obtuse)**:\n- $a = b = 1$, $\\cos(120°) = -1/2$\n- $c^2 = 1 + 1 - 2(1)(1)(-1/2) = 3$\n- So $c = \\sqrt{3}$",
-    "mathContext": "For $a = b = 1$, $\\cos(60°) = 1/2$: $c^2 = 1 + 1 - 2(1/2) = 1$, so $c = 1$ (equilateral). For $a = 3$, $b = 4$, $\\cos(90°) = 0$: $c^2 = 9 + 16 = 25$, so $c = 5$ (Pythagorean 3-4-5). For $a = b = 1$, $\\cos(120°) = -1/2$: $c^2 = 1 + 1 + 1 = 3$, so $c = \\sqrt{3}$. Each verified by `norm_num`.",
+    "mathContext": "The four examples in the Lean file cover the full range: equilateral ($C = 60°$, $c = 1$), right-angle (3-4-5, $C = 90°$), obtuse ($C = 120°$, $c = \\sqrt{3}$), and degenerate ($C = 0°$, $c = |a-b|$, proved by `ring`). The degenerate case shows $c^2 = a^2 + b^2 - 2ab = (a-b)^2$ algebraically without needing numerical values — the only example requiring a general parameter proof.",
     "significance": "supporting",
+    "prerequisites": [
+      "Law of Cosines: c² = a² + b² - 2ab cos C",
+      "cosine values: cos(0°)=1, cos(60°)=1/2, cos(90°)=0, cos(120°)=-1/2",
+      "norm_num tactic for numerical verification",
+      "ring tactic for algebraic identity"
+    ],
     "relatedConcepts": [
       "special triangles",
       "cosine values",
       "equilateral triangle",
-      "3-4-5 triangle"
-    ],
-    "prerequisites": [
-      "trigonometric special values",
-      "norm_num tactic"
+      "Pythagorean triples",
+      "degenerate triangle",
+      "norm_num"
     ]
   },
   {
@@ -150,18 +170,20 @@
     "type": "insight",
     "title": "From Euclid to al-Kashi",
     "content": "The Law of Cosines has ancient roots:\n\n**Euclid (300 BCE)**: Elements Book II, Propositions 12-13 contain geometric versions:\n- Prop 12: For obtuse triangles, $c^2 = a^2 + b^2 + 2a \\cdot h$\n- Prop 13: For acute triangles, $c^2 = a^2 + b^2 - 2a \\cdot h$\n\n**al-Kashi (1420s)**: Persian mathematician who first stated the modern trigonometric form, sometimes called 'al-Kashi's theorem' in his honor.\n\nThe theorem is fundamental to surveying, navigation, and physics.",
-    "mathContext": "Euclid's Proposition 12 (obtuse case): $c^2 = a^2 + b^2 + 2a \\cdot h$ where $h$ is the projection of side $b$ onto the extension of side $a$. Proposition 13 (acute case): $c^2 = a^2 + b^2 - 2a \\cdot h$. Since $h = b\\cos C$, both reduce to the modern $c^2 = a^2 + b^2 - 2ab\\cos C$.",
+    "mathContext": "Euclid's geometric equivalents (Elements II.12-13) are coordinate-free: for a triangle with altitude $h$ from vertex $C$ to side $c$, he showed $c^2 = a^2 + b^2 \\pm 2ah$ (plus for obtuse, minus for acute). The modern form $c^2 = a^2 + b^2 - 2ab\\cos C$ unifies both cases since $h = b\\cos A$ (in the acute case). Al-Kashi's formulation first used the cosine function explicitly in the 1420s. The Lean formalization uses neither Euclid's altitude decomposition nor spherical trigonometry, but instead the abstract inner product $\\langle v, w \\rangle = \\|v\\|\\|w\\|\\cos\\theta$, giving a proof valid in any real inner product space.",
     "significance": "supporting",
+    "prerequisites": [
+      "history of mathematics",
+      "Euclid's Elements (geometry)",
+      "trigonometry (historical development)",
+      "Persian/Islamic mathematics"
+    ],
     "relatedConcepts": [
       "history of mathematics",
       "Euclid's Elements",
       "al-Kashi's theorem",
-      "surveying"
-    ],
-    "prerequisites": [
-      "Euclidean geometry",
-      "projection",
-      "trigonometric identities"
+      "spherical trigonometry",
+      "Wiedijk list"
     ]
   }
 ]
