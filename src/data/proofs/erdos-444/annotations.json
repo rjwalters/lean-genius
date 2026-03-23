@@ -27,7 +27,7 @@
     },
     "type": "definition",
     "title": "Generalized Divisor Function d_A(n)",
-    "content": "**d_A(n) = |{a ∈ A : a | n}|** counts divisors of n belonging to A. When A = ℕ, this is the standard divisor function d(n) = τ(n). When A = primes, this is ω(n), the number of distinct prime factors.",
+    "content": "**d_A(n) = |{a ∈ A : a | n}|** counts divisors of n belonging to A. When A = ℕ, this is the standard divisor function d(n) = τ(n) (related to `euler-totient` — Euler's totient $\\varphi(n)$ counts coprime residues while τ counts all divisors). When A = primes, this is ω(n), the number of distinct prime factors, central to unique factorization (see `fundamental-arithmetic`).",
     "significance": "key",
     "mathContext": "The **generalized divisor function** d_A is a multiplicative-flavored counting function that measures how 'divisible' n is with respect to A. When A is the set of all naturals, d_A = τ (the number-of-divisors function), whose average order is log n (Dirichlet) and maximal order is exp((1+o(1)) log 2 · log n / log log n) (Wigert/Ramanujan). When A = primes, d_A = ω, whose average order is log log n (Hardy-Ramanujan) and maximal order is (1+o(1)) log n / log log n. The problem asks whether the relationship M_A(x) ≫ H_A(x)^k always holds, capturing the idea that extremal divisibility is a **universal phenomenon** independent of which divisors are allowed.",
     "relatedConcepts": [
