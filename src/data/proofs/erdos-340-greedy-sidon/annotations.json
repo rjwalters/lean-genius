@@ -1,237 +1,270 @@
 [
   {
-    "id": "ann-sidon-def",
+    "id": "ann-header-docstring",
     "proofId": "erdos-340-greedy-sidon",
-    "range": {
-      "startLine": 76,
-      "endLine": 78
-    },
-    "type": "definition",
-    "title": "IsSidon: The Sidon Set Predicate",
-    "content": "A finite set $A \\subseteq \\mathbb{N}$ is **Sidon** (also called a $B_2$ sequence) if all pairwise sums are distinct: whenever $a + b = c + d$ with $a \\leq b$ and $c \\leq d$, we have $a = c$ and $b = d$.\n\nThe definition quantifies over all quadruples $(a, b, c, d) \\in A^4$ with the ordering constraints. This is equivalent to requiring the sumset $A + A = \\{a + b : a, b \\in A, a \\leq b\\}$ to have no repeated elements.\n\nSimon Sidon originally posed the problem of constructing dense sets with this property in the 1930s. The concept connects additive combinatorics, number theory, and harmonic analysis.",
-    "mathContext": "$\\text{IsSidon}(A) :\\Leftrightarrow \\forall a,b,c,d \\in A,\\; a \\leq b,\\; c \\leq d,\\; a + b = c + d \\Rightarrow (a,b) = (c,d)$\n\nEquivalently: the representation function $r(n) = |\\{(a,b) \\in A^2 : a + b = n, a \\leq b\\}|$ satisfies $r(n) \\leq 1$ for all $n$.",
-    "significance": "critical",
+    "range": { "startLine": 1, "endLine": 65 },
+    "type": "context",
+    "title": "Module Overview and Background",
+    "content": "Comprehensive documentation of Erdos Problem #340 and the greedy Sidon sequence. A Sidon set (B$_2$ sequence) is a set $A$ of positive integers where all pairwise sums $a + b$ (with $a \\leq b$) are distinct. The greedy (Mian-Chowla) construction starts with 1 and repeatedly adds the smallest integer preserving the Sidon property, producing the sequence 1, 2, 4, 8, 13, 21, 31, 45, 66, 81, 97, ... (OEIS A005282).\n\nThe module documents the key research landscape: Singer's construction (1938) achieves near-optimal $(1-o(1))N^{1/2}$ density via perfect difference sets from finite projective planes; Ruzsa (1998) built explicit Sidon sets with $N^{\\sqrt{2}-1} \\approx N^{0.414}$ elements using clever algebraic constructions; but the greedy sequence's growth rate remains stuck at the trivial $N^{1/3}$ lower bound despite Erdos's conjecture that it achieves $N^{1/2-\\varepsilon}$.",
+    "mathContext": "A Sidon set: $a + b = c + d$ with $a \\leq b, c \\leq d \\Rightarrow (a,b) = (c,d)$. Greedy: $a_0 = 1$, $a_{n+1} = \\min\\{m > a_n : \\{a_0,\\ldots,a_n,m\\}$ is Sidon$\\}$. Conjecture: $|A \\cap [1,N]| \\gg N^{1/2-\\varepsilon}$.",
+    "significance": "context",
     "relatedConcepts": [
-      "B₂ sequences",
+      "Sidon sets",
+      "B2 sequences",
+      "Mian-Chowla sequence",
       "additive combinatorics",
-      "sumset",
-      "representation function"
+      "OEIS A005282"
     ],
     "prerequisites": [
-      "Finset membership",
-      "additive number theory"
+      "additive combinatorics",
+      "basic number theory"
+    ]
+  },
+  {
+    "id": "ann-sidon-definition",
+    "proofId": "erdos-340-greedy-sidon",
+    "range": { "startLine": 72, "endLine": 82 },
+    "type": "definition",
+    "title": "Sidon Set Definition (IsSidon)",
+    "content": "Defines `IsSidon A` for a finite set $A \\subseteq \\mathbb{N}$: for all $a, b, c, d \\in A$ with $a \\leq b$ and $c \\leq d$, $a + b = c + d$ implies $a = c$ and $b = d$. This is the classical ordered-pair formulation, equivalent to saying the sumset $A + A$ has no collisions.\n\nThe alternative definition `IsSidon'` characterizes Sidon sets by the cardinality of the sumset: $|A + A| = |A|(|A|+1)/2$, which is the maximum possible cardinality (each sum $a + b$ with $a \\leq b$ appears exactly once). The two definitions are equivalent but `IsSidon` is more convenient for proofs because it gives direct access to the elements involved in a collision.\n\n**Terminology:** 'Sidon set' honors Simon Sidon, who posed the original problem in the 1930s. The name 'B$_2$ sequence' comes from the $B_h$ hierarchy: a set is $B_h$ if all $h$-fold sums are distinct. Sidon sets are precisely $B_2$ sets.",
+    "mathContext": "$\\text{IsSidon}(A) \\iff \\forall a \\leq b,\\ c \\leq d \\in A:\\ a + b = c + d \\Rightarrow (a,b) = (c,d)$. Equivalently: $|A + A| = \\binom{|A|+1}{2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "B2 sequence",
+      "sumset",
+      "distinct pairwise sums",
+      "additive combinatorics"
+    ],
+    "prerequisites": [
+      "finite sets",
+      "pairwise sums"
     ]
   },
   {
     "id": "ann-base-cases",
     "proofId": "erdos-340-greedy-sidon",
-    "range": {
-      "startLine": 85,
-      "endLine": 103
-    },
-    "type": "theorem",
-    "title": "Base Cases: Empty, Singleton, and Pair Sets",
-    "content": "`isSidon_empty` is trivial (vacuously true). `isSidon_singleton` follows because all four elements must equal $n$, making both sides of the equation $2n = 2n$. `isSidon_pair` for $\\{a, b\\}$ with $a < b$ uses exhaustive case analysis (`rcases`) on which of $\\{a, b\\}$ each variable equals, then `omega` resolves all resulting arithmetic goals.\n\nThese base cases anchor inductive arguments: the greedy Sidon sequence starts with $\\{1\\}$ (singleton, hence Sidon) and extends by adding one element at a time while preserving the Sidon property.",
-    "mathContext": "$\\emptyset$ is Sidon (vacuous). $\\{n\\}$ is Sidon ($n + n = n + n \\Rightarrow n = n$). $\\{a, b\\}$ with $a < b$ is Sidon because the only sums are $2a, a+b, 2b$, which are distinct when $a \\neq b$.",
+    "range": { "startLine": 84, "endLine": 103 },
+    "type": "technique",
+    "title": "Base Cases: Empty, Singleton, Pair",
+    "content": "Proves three foundational base cases:\n\n- `isSidon_empty`: The empty set is trivially Sidon (vacuous truth — no elements means no collisions possible).\n- `isSidon_singleton`: Any singleton $\\{n\\}$ is Sidon. The only sum is $n + n = 2n$, which cannot collide.\n- `isSidon_pair`: For $a < b$, the pair $\\{a, b\\}$ is Sidon. The three possible sums $2a, a+b, 2b$ are all distinct when $a \\neq b$. Proved by exhaustive case analysis using `rcases` on which elements of $\\{a, b\\}$ each variable equals, then `omega` resolves all cases.\n\nThe pair case is the first non-trivial Sidon verification, establishing that the Sidon property begins to constrain set structure only at cardinality 3.",
+    "mathContext": "$\\emptyset$, $\\{n\\}$, and $\\{a, b\\}$ (with $a < b$) are all Sidon. For the pair: $2a < a + b < 2b$, so all three sums are distinct.",
     "significance": "supporting",
     "relatedConcepts": [
       "vacuous truth",
-      "exhaustive case analysis",
+      "case analysis",
       "omega tactic"
     ],
     "prerequisites": [
-      "Finset membership",
-      "basic arithmetic"
+      "IsSidon definition"
     ]
   },
   {
     "id": "ann-subset-closure",
     "proofId": "erdos-340-greedy-sidon",
-    "range": {
-      "startLine": 108,
-      "endLine": 110
-    },
-    "type": "theorem",
-    "title": "Sidon Sets Are Closed Under Subsets",
-    "content": "`IsSidon.subset` proves that any subset of a Sidon set is Sidon. The proof is immediate: if $B \\subseteq A$ and $a, b, c, d \\in B$, then they are also in $A$ (via `hBA`), so the Sidon property of $A$ applies.\n\nThis closure property is essential for the greedy construction: when we verify that adding a new element preserves Sidon, we only need to check interactions involving the new element, since the old set is already Sidon.",
-    "mathContext": "$A$ Sidon, $B \\subseteq A \\Rightarrow B$ Sidon. Proof: $B \\subseteq A$ embeds the Sidon condition on $B$ into that on $A$.",
+    "range": { "startLine": 105, "endLine": 110 },
+    "type": "concept",
+    "title": "Sidon Property Closed Under Subsets",
+    "content": "Proves that subsets of Sidon sets are Sidon: if $A$ is Sidon and $B \\subseteq A$, then $B$ is Sidon. The proof simply passes all membership proofs through the subset inclusion. This hereditary property is fundamental — it means 'being Sidon' is a monotone decreasing property under inclusion, analogous to how independent sets in matroids are closed under subsets.\n\nThis fact is used heavily in the greedy construction: at each step, we only need to check that adding the new element preserves the Sidon property, since the existing elements already form a Sidon set.",
+    "mathContext": "$B \\subseteq A$ and $\\text{IsSidon}(A) \\Rightarrow \\text{IsSidon}(B)$. The Sidon property is hereditary (monotone decreasing under inclusion).",
     "significance": "key",
     "relatedConcepts": [
-      "monotone property",
       "hereditary property",
-      "greedy algorithm correctness"
+      "monotone property",
+      "matroid",
+      "greedy algorithm"
     ],
     "prerequisites": [
-      "Finset.Subset",
-      "IsSidon definition"
+      "IsSidon definition",
+      "subset relation"
     ]
   },
   {
     "id": "ann-diff-injective",
     "proofId": "erdos-340-greedy-sidon",
-    "range": {
-      "startLine": 117,
-      "endLine": 161
-    },
-    "type": "theorem",
-    "title": "Difference Injectivity: The Key Counting Lemma",
-    "content": "`IsSidon.diff_injective` proves that in a Sidon set, all pairwise differences are distinct: if $a - b = c - d$ with $a > b$ and $c > d$, then $(a, b) = (c, d)$.\n\nThe proof converts differences to sums: $a - b = c - d \\Rightarrow a + d = c + b$ (using `Nat.sub_add_cancel`), then applies the Sidon property to the pairs $(d, a)$ and $(b, c)$. Case analysis handles the ordering requirements, with three cases: the main case where $d \\leq a$ and $b \\leq c$, and two contradiction cases.\n\nThis lemma is the bridge from the Sidon *sum* condition to the *difference set* counting that drives the pigeonhole bound.",
-    "mathContext": "$a - b = c - d$ with $a > b, c > d \\Rightarrow a + d = c + b \\xrightarrow{\\text{Sidon}} (d, a) = (b, c) \\Rightarrow a = c, b = d$.\n\nThe difference set $\\text{diffSet}(A) = \\{a - b : a, b \\in A, a > b\\}$ has $|\\text{diffSet}(A)| = \\binom{|A|}{2}$ for Sidon $A$, precisely because differences are injective.",
-    "significance": "critical",
+    "range": { "startLine": 112, "endLine": 161 },
+    "type": "technique",
+    "title": "Difference Injectivity in Sidon Sets",
+    "content": "Proves the key structural property: in a Sidon set, all ordered pairwise differences are distinct. If $a - b = c - d$ with $a > b$ and $c > d$ (all in $A$), then $a = c$ and $b = d$.\n\n**Proof strategy:** The crucial bridge is that $a - b = c - d$ implies $a + d = c + b$ (rearranging using `Nat.sub_add_cancel`). This transforms a difference equation into a sum equation, where the Sidon property applies. The proof then uses `calc` to establish $a + d = c + b$, rewrites as $d + a = b + c$ (to match the ordering convention $d \\leq a, b \\leq c$), and applies the Sidon condition.\n\n**Subtlety:** The ordering cases require care. The main case ($d \\leq a, b \\leq c$) directly applies Sidon. Two degenerate cases ($d > a$ or $b > c$) lead to contradictions by applying Sidon in a different order and deriving $a = b$ or $c = d$, contradicting the strict inequality hypotheses.\n\nThis lemma is the foundational tool for the counting arguments: because differences are injective, the image of the difference map has the same cardinality as the set of ordered pairs.",
+    "mathContext": "For Sidon $A$: $a - b = c - d$ with $a > b, c > d$ implies $(a,b) = (c,d)$. Key step: $a - b = c - d \\Rightarrow a + d = c + b$, then apply Sidon.",
+    "significance": "key",
     "relatedConcepts": [
-      "difference set",
-      "injectivity",
-      "sum-to-difference conversion",
-      "pigeonhole principle"
+      "difference injectivity",
+      "sum-to-difference bridge",
+      "case analysis",
+      "Nat.sub_add_cancel"
     ],
     "prerequisites": [
       "IsSidon definition",
-      "Nat.sub_add_cancel",
-      "case analysis"
+      "natural number subtraction"
     ]
   },
   {
-    "id": "ann-bijection",
+    "id": "ann-ordered-pairs-diffset",
     "proofId": "erdos-340-greedy-sidon",
-    "range": {
-      "startLine": 193,
-      "endLine": 244
-    },
-    "type": "theorem",
-    "title": "Bijection: Ordered Pairs ↔ 2-Element Subsets",
-    "content": "`orderedPairsLt_card_via_choose` establishes that the number of ordered pairs $(a, b)$ with $a < b$ in $A$ equals $\\binom{|A|}{2}$, via an explicit bijection with `Finset.powersetCard 2 A`.\n\nThe proof uses `Finset.card_bij` with three obligations:\n1. **Forward map**: $(a, b) \\mapsto \\{a, b\\}$ sends ordered pairs to 2-element subsets\n2. **Injectivity**: Different ordered pairs give different subsets (since both are ordered by $<$)\n3. **Surjectivity**: Every 2-element subset $\\{a, b\\}$ comes from either $(a, b)$ or $(b, a)$ depending on ordering\n\nThis 50-line proof is the most technical in the module — the surjectivity case requires careful handling of `lt_or_gt_of_ne` and `Finset.pair_comm`.",
-    "mathContext": "$|\\{(a, b) \\in A^2 : a < b\\}| = \\binom{|A|}{2} = \\frac{|A|(|A|-1)}{2}$.\n\nThe bijection: $(a, b) \\mapsto \\{a, b\\}$ with inverse $\\{a, b\\} \\mapsto (\\min(a,b), \\max(a,b))$.",
+    "range": { "startLine": 163, "endLine": 191 },
+    "type": "definition",
+    "title": "Ordered Pairs and Difference Map Framework",
+    "content": "Defines the infrastructure for counting arguments:\n\n- `orderedPairsLt A`: the set of ordered pairs $(a, b)$ with $a, b \\in A$ and $a < b$, constructed by filtering `A.offDiag` (pairs with $a \\neq b$).\n- `pairDiff`: the difference map $(a, b) \\mapsto b - a$.\n- `sidon_pairDiff_injective`: for Sidon sets, `pairDiff` is injective on `orderedPairsLt A`. This follows from `diff_injective`.\n- `sidon_diffSet_card`: the image of `pairDiff` on `orderedPairsLt A` has the same cardinality as `orderedPairsLt A`, by `card_image_of_injOn`.\n\nThis framework separates the counting argument into two clean steps: (1) count ordered pairs (combinatorics), and (2) show differences are injective (Sidon property). Step 1 is `orderedPairsLt_card_via_choose`; step 2 is the injectivity theorem above.",
+    "mathContext": "For Sidon $A$ with $n$ elements: $|\\{(a,b) : a < b,\\ a,b \\in A\\}| = \\binom{n}{2}$ and $\\text{pairDiff}$ is injective $\\Rightarrow |\\text{diffSet}(A)| = \\binom{n}{2} = n(n-1)/2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ordered pairs",
+      "difference map",
+      "injective image",
+      "card_image_of_injOn"
+    ],
+    "prerequisites": [
+      "Finset operations",
+      "difference injectivity"
+    ]
+  },
+  {
+    "id": "ann-bijection-choose",
+    "proofId": "erdos-340-greedy-sidon",
+    "range": { "startLine": 192, "endLine": 249 },
+    "type": "technique",
+    "title": "Bijection: Ordered Pairs <-> 2-Element Subsets",
+    "content": "The combinatorial core: proves $|\\text{orderedPairsLt}(A)| = \\binom{n}{2}$ by constructing an explicit bijection between ordered pairs $(a, b)$ with $a < b$ and 2-element subsets $\\{a, b\\} \\in \\binom{A}{2}$.\n\nThe bijection uses `Finset.card_bij` with three obligations:\n1. **Forward map** $i\\_mem$: $(a, b) \\mapsto \\{a, b\\}$ lands in `powersetCard 2 A`. Uses `card_eq_two` to verify the subset has exactly 2 elements.\n2. **Injectivity** $i\\_inj$: Different ordered pairs give different 2-subsets. Proved by extracting membership from the `Finset.ext_iff` characterization of set equality, then `omega`.\n3. **Surjectivity**: Every 2-element subset $S \\in \\binom{A}{2}$ comes from some ordered pair. Decomposes $S$ via `card_eq_two` as $\\{a, b\\}$ with $a \\neq b$, then cases on $a < b$ or $b < a$ to produce the pair in the correct order.\n\nThe corollary `orderedPairsLt_card` combines this with `Nat.choose_two_right` to get $|\\text{orderedPairsLt}(A)| = n(n-1)/2$.",
+    "mathContext": "Bijection $\\{(a,b) : a < b \\in A\\} \\cong \\binom{A}{2}$ via $(a,b) \\mapsto \\{a,b\\}$. Hence $|\\text{orderedPairsLt}(A)| = \\binom{n}{2} = n(n-1)/2$.",
     "significance": "key",
     "relatedConcepts": [
-      "binomial coefficient",
       "Finset.card_bij",
-      "Finset.powersetCard",
-      "double counting"
+      "binomial coefficient",
+      "powersetCard",
+      "choose two",
+      "explicit bijection"
     ],
     "prerequisites": [
-      "Finset.card_bij",
-      "Finset.powersetCard",
-      "Nat.choose_two_right"
+      "Finset operations",
+      "combinatorics",
+      "Nat.choose"
     ]
   },
   {
-    "id": "ann-lower-bound",
+    "id": "ann-diffset-counting",
     "proofId": "erdos-340-greedy-sidon",
-    "range": {
-      "startLine": 314,
-      "endLine": 317
-    },
-    "type": "theorem",
-    "title": "Pigeonhole Lower Bound on max(A)",
-    "content": "`sidon_lower_bound` proves that the largest element of a Sidon set $A$ satisfies $\\max(A) \\geq \\frac{|A|(|A|-1)}{2}$.\n\nThe proof chain: `card_diffSet_eq` gives $|\\text{diffSet}(A)| = \\frac{n(n-1)}{2}$, and `diffSet_subset_Icc` shows all differences lie in $[1, \\max(A)]$. By the pigeonhole principle (Finset.card_le_card), $\\max(A) \\geq \\frac{n(n-1)}{2}$.\n\nThis is the fundamental counting argument in Sidon set theory — it shows that Sidon sets must be 'sparse' because their elements must accommodate all $\\binom{n}{2}$ distinct differences.",
-    "mathContext": "For Sidon $A$ with $n = |A|$: $\\text{diffSet}(A) \\subseteq [1, \\max(A)]$ and $|\\text{diffSet}(A)| = \\binom{n}{2} = \\frac{n(n-1)}{2}$.\n\nBy pigeonhole: $\\max(A) \\geq \\frac{n(n-1)}{2}$.\n\nThis immediately gives $|A \\cap [1, N]| \\leq O(\\sqrt{N})$.",
-    "significance": "critical",
+    "range": { "startLine": 264, "endLine": 317 },
+    "type": "technique",
+    "title": "Difference Set Counting and Pigeonhole Lower Bound",
+    "content": "Proves two key results using the difference set framework:\n\n1. **`card_diffSet_eq`**: For a Sidon set $A$ with $n$ elements, $|\\text{diffSet}(A)| = n(n-1)/2$. The proof constructs a bijection between pairs $(a, b)$ with $b < a$ in $A \\times A$ and 2-element subsets of $A$ (via `card_bij`), then uses the injectivity of differences (from the Sidon property, proved via `grind` and `aesop`) to show the image has the same cardinality.\n\n2. **`sidon_lower_bound`**: For a nonempty Sidon set $A$, $\\max(A) \\geq n(n-1)/2$. The proof chains: $\\text{diffSet}(A) \\subseteq [1, \\max(A)]$ (since all differences are positive and bounded by the maximum), so $|\\text{diffSet}(A)| \\leq \\max(A)$, and $|\\text{diffSet}(A)| = n(n-1)/2$.\n\nThis is the pigeonhole principle in action: $n(n-1)/2$ distinct positive integers must fit in $[1, \\max(A)]$, forcing $\\max(A)$ to be large.",
+    "mathContext": "$|\\text{diffSet}(A)| = n(n-1)/2$ for Sidon $A$. Since $\\text{diffSet}(A) \\subseteq [1, \\max(A)]$, pigeonhole gives $\\max(A) \\geq n(n-1)/2 \\approx n^2/2$.",
+    "significance": "key",
     "relatedConcepts": [
       "pigeonhole principle",
-      "difference set counting",
-      "density bounds",
-      "Sidon set sparsity"
+      "difference set",
+      "counting argument",
+      "Finset.card_le_card"
     ],
     "prerequisites": [
-      "card_diffSet_eq",
-      "diffSet_subset_Icc",
-      "Finset.card_le_card"
+      "difference injectivity",
+      "ordered pairs counting",
+      "Finset.Icc"
     ]
   },
   {
-    "id": "ann-upper-bound-weak",
+    "id": "ann-weak-upper-bound",
     "proofId": "erdos-340-greedy-sidon",
-    "range": {
-      "startLine": 327,
-      "endLine": 373
-    },
-    "type": "theorem",
-    "title": "Weak Upper Bound: |A| ≤ √(2N) + 1",
-    "content": "`sidon_upper_bound_weak` is the main fully-proved density result: any Sidon subset of $\\{1, \\ldots, N\\}$ has at most $\\lfloor\\sqrt{2N}\\rfloor + 1$ elements.\n\nThe proof is by contradiction: assume $n \\geq \\sqrt{2N} + 2$. Then $n - 1 \\geq \\sqrt{2N} + 1$, so $(n-1)^2 > 2N$ (by definition of integer square root). Since $n(n-1) = (n-1)^2 + (n-1) > 2N + 1$, we get $\\frac{n(n-1)}{2} > N$, contradicting `sidon_lower_bound` (which requires $\\max(A) \\geq \\frac{n(n-1)}{2}$ but $\\max(A) \\leq N$).\n\nThe tight Erdős-Turán bound $\\sqrt{N} + O(N^{1/4})$ (axiomatized as `sidon_upper_bound`) is stronger by a factor of $\\sqrt{2}$, requiring sum-counting instead of difference-counting.",
-    "mathContext": "If $A \\subseteq [1, N]$ is Sidon with $|A| = n$: $\\frac{n(n-1)}{2} \\leq \\max(A) \\leq N \\Rightarrow n(n-1) \\leq 2N \\Rightarrow n \\leq \\frac{1 + \\sqrt{1 + 8N}}{2} < \\sqrt{2N} + 1$.\n\nThe integer version uses `Nat.sqrt` and `Nat.lt_succ_sqrt`: $\\lfloor\\sqrt{2N}\\rfloor + 1 > \\sqrt{2N}$, so $(\\lfloor\\sqrt{2N}\\rfloor + 1)^2 > 2N$.",
-    "significance": "critical",
+    "range": { "startLine": 319, "endLine": 373 },
+    "type": "insight",
+    "title": "Weak Upper Bound: |A| <= sqrt(2N) + 1",
+    "content": "Proves the weak Sidon upper bound: if $A$ is a Sidon subset of $\\{1, \\ldots, N\\}$, then $|A| \\leq \\sqrt{2N} + 1$. The proof proceeds by contradiction:\n\n1. Assume $|A| = n \\geq \\sqrt{2N} + 2$.\n2. From `sidon_lower_bound`, $\\max(A) \\geq n(n-1)/2$. Since $A \\subseteq [1, N]$, we have $n(n-1)/2 \\leq N$, i.e., $n(n-1) \\leq 2N$.\n3. But $n - 1 \\geq \\sqrt{2N} + 1$, so $(n-1)^2 > 2N$ (by definition of integer square root: $\\sqrt{2N} + 1 > \\sqrt{2N}$ means $(\\sqrt{2N}+1)^2 > 2N$).\n4. Since $n(n-1) = (n-1)^2 + (n-1) > 2N + 1$, we get $n(n-1)/2 > N$, contradicting step 2.\n\n**Comparison with Erdos-Turan:** This bound ($\\sqrt{2N} + 1 \\approx 1.41\\sqrt{N}$) loses a factor of $\\sqrt{2}$ compared to the tight Erdos-Turan bound ($\\sqrt{N} + O(N^{1/4})$). The difference is that counting *differences* gives $n(n-1)/2$ values in $[1, N]$ (factor 2), while counting *sums* gives $\\binom{n+1}{2}$ values in $[2, 2N]$ (no factor 2). The Erdos-Turan bound requires the more delicate sum-counting approach.",
+    "mathContext": "For Sidon $A \\subseteq [1, N]$: $n(n-1)/2 \\leq N$, so $n \\leq \\sqrt{2N} + 1$. Tight bound (Erdos-Turan): $n \\leq \\sqrt{N} + O(N^{1/4})$.",
+    "significance": "key",
     "relatedConcepts": [
       "proof by contradiction",
-      "Nat.sqrt",
-      "Erdős-Turán bound",
-      "nlinarith tactic"
+      "integer square root",
+      "Nat.lt_succ_sqrt",
+      "nlinarith",
+      "Erdos-Turan bound"
     ],
     "prerequisites": [
       "sidon_lower_bound",
-      "Nat.lt_succ_sqrt",
-      "integer square root"
+      "integer square root properties"
     ]
   },
   {
-    "id": "ann-greedy-axioms",
+    "id": "ann-tight-upper-axiom",
     "proofId": "erdos-340-greedy-sidon",
-    "range": {
-      "startLine": 396,
-      "endLine": 412
-    },
+    "range": { "startLine": 375, "endLine": 386 },
+    "type": "context",
+    "title": "Axiomatized Erdos-Turan Upper Bound",
+    "content": "Axiomatizes the tight Erdos-Turan upper bound: $|A| \\leq \\sqrt{N} + \\sqrt[4]{N} + 1$ for Sidon $A \\subseteq [1, N]$. The formalization uses `Nat.sqrt N + Nat.sqrt (Nat.sqrt N) + 1` as the Lean expression for $\\lfloor\\sqrt{N}\\rfloor + \\lfloor N^{1/4}\\rfloor + 1$.\n\nThis is axiomatized because the proof requires counting sums rather than differences. The idea: $|A + A| \\leq 2N$ (sums are at most $2N$) and $|A + A| \\geq \\binom{|A|+1}{2}$ (all sums distinct by Sidon), giving $|A|(|A|+1)/2 \\leq 2N$, hence $|A| \\leq \\sqrt{4N} = 2\\sqrt{N}$. The tighter $\\sqrt{N} + O(N^{1/4})$ requires a careful double-counting argument using modular arithmetic.",
+    "mathContext": "Axiom: $|A| \\leq \\lfloor\\sqrt{N}\\rfloor + \\lfloor N^{1/4}\\rfloor + 1$ for Sidon $A \\subseteq [1,N]$. Known result (Erdos-Turan, 1941), not yet formalized.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "axiomatized result",
+      "Erdos-Turan bound",
+      "sum counting",
+      "modular arithmetic"
+    ],
+    "prerequisites": [
+      "Sidon set theory",
+      "analytic number theory"
+    ]
+  },
+  {
+    "id": "ann-greedy-construction",
+    "proofId": "erdos-340-greedy-sidon",
+    "range": { "startLine": 388, "endLine": 443 },
     "type": "concept",
     "title": "Greedy Sidon Sequence Axiomatization",
-    "content": "The **greedy (Mian-Chowla) Sidon sequence** is axiomatized with four properties:\n1. `greedySidonSeq_zero`: starts at 1\n2. `greedySidonSeq_strictMono`: strictly increasing\n3. `greedySidonSeq_isSidon`: the first $n+1$ terms always form a Sidon set\n4. `greedySidonSeq_greedy`: each term is the *smallest* integer preserving Sidon\n\nAxiomatization is used instead of a constructive definition because the well-founded recursion on \"smallest $m$ preserving Sidon\" requires decidability of `IsSidon` on finite sets, which is technically available but complex to formalize. The axioms capture exactly the mathematical content needed for the growth rate analysis.",
-    "mathContext": "$a_0 = 1$, $a_{n+1} = \\min\\{m > a_n : \\{a_0, \\ldots, a_n, m\\}$ is Sidon$\\}$.\n\nFirst terms (OEIS A005282): $1, 2, 4, 8, 13, 21, 31, 45, 66, 81, 97, \\ldots$\n\nThe sequence was first studied by Mian and Chowla (1944). Its density behavior remains one of the most intractable problems in additive combinatorics.",
+    "content": "Axiomatizes the greedy (Mian-Chowla) Sidon sequence and its key properties:\n\n- **`greedySidonSeq`**: The sequence function $\\mathbb{N} \\to \\mathbb{N}$.\n- **`greedySidonSeq_zero`**: $a_0 = 1$.\n- **`greedySidonSeq_strictMono`**: The sequence is strictly increasing.\n- **`greedySidonSeq_isSidon`**: The first $n+1$ terms always form a Sidon set.\n- **`greedySidonSeq_greedy`**: The greedy property — $a_{n+1}$ is the *smallest* value exceeding $a_n$ that maintains Sidon. No value between $a_n$ and $a_{n+1}$ could be added.\n- **Values** (`greedySidon_0` through `greedySidon_10`): First 11 terms: 1, 2, 4, 8, 13, 21, 31, 45, 66, 81, 97 (OEIS A005282).\n\nThe axiomatization is necessary because defining the sequence constructively would require well-founded recursion on a complex predicate (minimality over the Sidon-preserving candidates). The values match the OEIS A005282 entry.\n\n**Why greedy is interesting:** Despite its simplicity, the greedy algorithm produces a remarkably dense Sidon set. The $n$-th term grows roughly as $n^3$ (based on the $N^{1/3}$ counting bound), but Erdos conjectured the true growth is nearly $n^2$ (from $N^{1/2-\\varepsilon}$).",
+    "mathContext": "Greedy Sidon sequence: $a_0 = 1$, $a_{n+1} = \\min\\{m > a_n : \\{a_0, \\ldots, a_n, m\\}$ is Sidon$\\}$. First terms: $1, 2, 4, 8, 13, 21, 31, 45, 66, 81, 97$.",
     "significance": "key",
     "relatedConcepts": [
+      "greedy algorithm",
       "Mian-Chowla sequence",
       "OEIS A005282",
-      "greedy algorithm",
-      "well-founded recursion"
+      "well-founded recursion",
+      "axiomatization"
     ],
     "prerequisites": [
       "IsSidon definition",
-      "StrictMono",
-      "Finset.image",
-      "Finset.range"
+      "greedy algorithms",
+      "strict monotonicity"
     ]
   },
   {
-    "id": "ann-erdos-340",
+    "id": "ann-growth-bounds",
     "proofId": "erdos-340-greedy-sidon",
-    "range": {
-      "startLine": 504,
-      "endLine": 506
-    },
-    "type": "concept",
-    "title": "Erdős Problem #340: The Main Open Conjecture",
-    "content": "**Erdős Problem #340** (OPEN): For all $\\varepsilon > 0$, the greedy Sidon sequence satisfies $|A \\cap [1, N]| \\geq C \\cdot N^{1/2 - \\varepsilon}$ for some constant $C > 0$ and all sufficiently large $N$.\n\nThis conjecture asserts the greedy construction is nearly optimal — achieving density close to $\\sqrt{N}$, matching the Erdős-Turán upper bound up to subpolynomial factors.\n\nThe gap between the known $N^{1/3}$ lower bound and the conjectured $N^{1/2 - \\varepsilon}$ has persisted for over 80 years. Ruzsa (1998) showed non-greedy constructions achieve $N^{\\sqrt{2}-1} \\approx N^{0.414}$, but the greedy sequence's deterministic nature makes it harder to analyze.\n\nThe axiom uses Lean's `Filter.atTop` for \"eventually for all large $N$\", the standard formalization of asymptotic statements.",
-    "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists C > 0,\\; \\forall^{\\infty} N,\\; N^{1/2 - \\varepsilon} \\leq C \\cdot |A \\cap [1, N]|$\n\nKnown bounds: $\\Omega(N^{1/3}) \\leq |A \\cap [1, N]| \\leq O(\\sqrt{N})$.\n\nConjectured: $|A \\cap [1, N]| \\geq \\Omega(N^{1/2 - \\varepsilon})$.\n\n**STATUS: OPEN.**",
-    "significance": "critical",
+    "range": { "startLine": 444, "endLine": 506 },
+    "type": "insight",
+    "title": "Growth Rate Bounds and Erdos's Conjecture (#340)",
+    "content": "The climax of the module: the growth rate of the greedy Sidon sequence.\n\n**`greedySidon_growth_third`** (axiomatized): The greedy sequence contains $\\Omega(N^{1/3})$ elements up to $N$. This 'trivial' bound follows from the worst-case analysis: at step $n$, the greedy element is at most $\\sim n^3/6$ (since $n(n-1)/2$ differences use up values), so inverting gives $n \\geq \\Omega(N^{1/3})$.\n\n**`erdos_340`** (axiomatized, OPEN): Erdos's conjecture that for all $\\varepsilon > 0$, the greedy sequence contains $\\Omega(N^{1/2-\\varepsilon})$ elements up to $N$. Both are stated using `Filter.atTop` for the 'eventually for all large $N$' quantification.\n\nThe documentation outlines five potential research approaches: improving the $N^{1/3}$ bound, structural analysis of the difference set, probabilistic comparison with random Sidon sets, local-to-global arguments on intervals $[N, 2N]$, and density increment strategies analogous to Roth's theorem.\n\n**The 80-year gap:** Between the $N^{1/3}$ lower bound (trivial) and the conjectured $N^{1/2-\\varepsilon}$ lies one of the most persistent open problems in additive combinatorics. Any improvement beyond $1/3$ in the exponent would be publishable and significant.",
+    "mathContext": "Known: $|A \\cap [1,N]| \\geq \\Omega(N^{1/3})$. Conjectured (Erdos #340): $\\forall \\varepsilon > 0$, $|A \\cap [1,N]| \\geq \\Omega(N^{1/2-\\varepsilon})$. STATUS: OPEN. The exponent gap $1/3 \\to 1/2$ is unresolved since the 1940s.",
+    "significance": "key",
     "relatedConcepts": [
-      "asymptotic growth rate",
+      "open conjecture",
+      "growth rate",
       "Filter.atTop",
-      "additive combinatorics open problems",
-      "Erdős conjectures"
+      "asymptotic bounds",
+      "density increment",
+      "Roth's theorem analogy"
     ],
     "prerequisites": [
-      "Filter.atTop",
-      "Real.rpow",
-      "greedySidonCount"
+      "greedy Sidon sequence",
+      "asymptotic analysis",
+      "Filter.atTop"
     ]
   },
   {
-    "id": "ann-diff-set-greedy",
+    "id": "ann-difference-set-props",
     "proofId": "erdos-340-greedy-sidon",
-    "range": {
-      "startLine": 518,
-      "endLine": 535
-    },
-    "type": "concept",
+    "range": { "startLine": 508, "endLine": 537 },
+    "type": "context",
     "title": "Difference Set of the Greedy Sequence",
-    "content": "`greedySidonDiffSet` defines the difference set $A - A = \\{a - b : a, b \\in A\\}$ where $A$ is the greedy Sidon sequence. The two axioms `_22_mem_diffSet` and `_33_mem_diffSet_iff` are computational facts about specific membership.\n\nThe difference set structure is key to understanding the growth rate: for a Sidon set, $|A - A| = |A|^2 - |A| + 1$ (each nonzero difference appears exactly once). Understanding the *distribution* of these differences — which integers appear and which are skipped — could provide insights into why the greedy sequence achieves the density it does.\n\nThe axiom `_33_mem_diffSet_iff : 33 \\in \\text{greedySidonDiffSet} \\leftrightarrow \\text{True}` is a placeholder indicating the membership is believed true but requires computing more terms of the sequence to verify.",
-    "mathContext": "$A - A = \\{a - b : a, b \\in A\\} \\subseteq \\mathbb{Z}$.\n\nFor Sidon $A$: $|A - A| = |A|^2 - |A| + 1$ (each nonzero difference appears exactly once, plus $0$ from $a - a$).\n\nExample: $204 - 182 = 22 \\in A - A$ (from $a_{14} - a_{13}$ of the Mian-Chowla sequence).",
+    "content": "Defines `greedySidonDiffSet`, the set of all integer differences $a - b$ where $a, b$ belong to the greedy Sidon sequence. For a Sidon set with $n$ elements, the difference set $A - A$ has exactly $|A|^2 - |A| + 1$ elements (counting both positive and negative differences, plus 0).\n\nTwo specific membership facts are axiomatized:\n- `_22_mem_diffSet`: 22 is a difference (from $204 - 182$, i.e., $a_{14} - a_{13}$).\n- `_33_mem_diffSet_iff`: 33's membership is axiomatized as equivalent to True (placeholder).\n\nUnderstanding the density and distribution of differences in the greedy sequence is a key open direction: if one could show the difference set avoids unexpectedly many small values, this could improve the $N^{1/3}$ growth bound.",
+    "mathContext": "$A - A = \\{a - b : a, b \\in A\\}$. For Sidon $A$: $|A - A| = |A|^2 - |A| + 1$. Each non-zero difference appears exactly once (by difference injectivity).",
     "significance": "supporting",
     "relatedConcepts": [
-      "difference set density",
-      "Mian-Chowla sequence values",
-      "OEIS A005282",
-      "additive structure"
+      "difference set",
+      "Set.range",
+      "specific computations",
+      "OEIS A005282"
     ],
     "prerequisites": [
-      "Set.range",
-      "greedySidon definition"
+      "greedy Sidon sequence",
+      "integer differences"
     ]
   }
 ]
