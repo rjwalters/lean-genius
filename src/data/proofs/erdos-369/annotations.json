@@ -10,16 +10,18 @@
     "title": "Module Header: Problem Statement and Historical References",
     "content": "The module docstring describes Erdős Problem #369 from *Old and New Problems and Results in Combinatorial Number Theory* (Erdős-Graham, 1980, p.69). The problem asks whether for any $\\varepsilon > 0$ and $k \\geq 2$, all sufficiently large $n$ contain $k$ consecutive $n^\\varepsilon$-smooth integers in $\\{1,\\ldots,n\\}$. The header references the Dickman function $\\rho(u)$ governing smooth number density, the Balog-Wooley (1998) partial result ($\\exists^\\infty$ pairs of consecutive smooth numbers), and notes that the problem is open even for $k = 2$.",
     "mathContext": "A number $m$ is $B$-smooth if its largest prime factor $P^+(m) \\leq B$. The problem: $\\forall \\varepsilon > 0, k \\geq 2, \\exists N_0: n \\geq N_0 \\implies \\exists m \\leq n$ with $m, m+1, \\ldots, m+k-1$ all $n^\\varepsilon$-smooth. The Dickman function $\\rho(u) = \\Pr[P^+(n) \\leq n^{1/u}]$ satisfies $u\\rho'(u) = -\\rho(u-1)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "smooth numbers",
       "Dickman function",
       "consecutive integers",
-      "Erdős-Graham problems"
+      "Erdős-Graham problems",
+      "friable integers"
     ],
     "prerequisites": [
       "prime factorization",
-      "smooth number density"
+      "smooth number density",
+      "analytic number theory basics"
     ]
   },
   {
