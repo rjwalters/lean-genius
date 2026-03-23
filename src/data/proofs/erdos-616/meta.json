@@ -86,7 +86,7 @@
   "overview": {
     "historicalContext": "This problem originates from Erdős's extensive work on extremal hypergraph theory during the late 1980s and early 1990s. The covering number (transversal number) τ(G) is a fundamental parameter in combinatorial optimization, dual to the matching number by König-type theorems. The question of how local structure constrains global covering was formalized by Erdős, Hajnal, and Tuza in their 1991 paper 'Local constraints ensuring small representing sets' published in the *Journal of Combinatorial Theory, Series A* (vol. 58, pp. 78-84). The problem sits at the intersection of Helly-type combinatorics (where local intersection properties imply global ones) and extremal set theory. András Hajnal was Erdős's longtime collaborator on set-theoretic combinatorics, while Zsolt Tuza contributed deep expertise in hypergraph transversals. The problem is reminiscent of the classical Helly theorem (1923), which states that for convex sets in $\\mathbb{R}^d$, pairwise intersection in every $d+1$ sets implies a common point. Here the 'dimension' is replaced by the uniformity $r$, and the threshold $3r-3$ plays the role of $d+1$. The bounds $(3/16)r \\le t(r) \\le (1/5)r$ have stood unchanged since 1991, making this one of the more persistent open problems in extremal hypergraph theory.",
     "problemStatement": "Let $r \\ge 3$. For an $r$-uniform hypergraph $G$, let $\\tau(G)$ denote the covering number — the minimum size of a vertex set intersecting every edge. Determine the best $t = t(r)$ such that: if every induced subhypergraph on at most $3r-3$ vertices has $\\tau \\le 1$ (i.e., has a vertex common to all its edges), then $\\tau(G) \\le t$. Erdős, Hajnal, and Tuza proved $\\frac{3}{16}r + \\frac{7}{8} \\le t(r) \\le \\frac{1}{5}r$.",
-    "text": "Determine the best constant t(r) such that if every subgraph on \u2264 3r-3 vertices of an r-uniform hypergraph has covering number \u2264 1, then the global covering number is \u2264 t(r). Erd\u0151s-Hajnal-Tuza proved (3/16)r \u2264 t(r) \u2264 (1/5)r but the exact coefficient remains OPEN.",
+    "text": "Determine the best constant t(r) such that if every subgraph on ≤ 3r-3 vertices of an r-uniform hypergraph has covering number ≤ 1, then the global covering number is ≤ t(r). Erdős-Hajnal-Tuza proved (3/16)r ≤ t(r) ≤ (1/5)r but the exact coefficient remains OPEN.",
     "proofStrategy": "The problem remains OPEN: the exact value of $t(r)$ is unknown. The Lean formalization captures all key definitions ($r$-uniform hypergraph, covering set, covering number, induced subhypergraph, local covering condition) and axiomatizes the known bounds from Erdős-Hajnal-Tuza (1991). The lower bound $(3/16)r + 7/8$ is established via explicit constructions — carefully designed hypergraphs where edges locally always share a vertex but globally require many vertices to cover. The upper bound $(1/5)r$ is proved via a combinatorial counting argument showing that the local intersection property constrains the global edge structure enough to guarantee a small transversal. The only proved theorem in the file is `tau_one_iff_kernel`, establishing the equivalence between singleton covers and kernel vertices. The summary theorem combines both axiomatized bounds into a single statement using `linarith`.",
     "keyInsights": [
       "The local condition τ(G') ≤ 1 for small subhypergraphs means every small piece has a 'kernel' vertex — a vertex in every edge. This is a strong structural constraint that forces edges to cluster around common vertices locally.",
@@ -221,6 +221,10 @@
     "",
     "",
     "",
-    ""
+    "",
+    "ramseys-theorem",
+    "erdos-610",
+    "erdos-20",
+    "erdos-644"
   ]
 }
