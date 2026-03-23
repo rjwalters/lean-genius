@@ -34,7 +34,7 @@
     "title": "Imports and Namespace",
     "content": "The formalization imports Mathlib's Euclidean distance infrastructure, Lebesgue measure theory, and metric space basics. The `EuclideanSpace R (Fin 2)` type provides the formal model of R^2 with its inner product structure.",
     "mathContext": "The type `EuclideanSpace \\mathbb{R} (\\text{Fin } 2)` is Mathlib's representation of $\\mathbb{R}^2$ as a finite-dimensional inner product space, inheriting the Euclidean norm $\\|x\\| = \\sqrt{x_0^2 + x_1^2}$ and induced metric.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Inner product spaces",
       "Normed vector spaces"

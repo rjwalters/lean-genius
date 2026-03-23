@@ -9,16 +9,10 @@
     "type": "concept",
     "title": "The Theorem That Took 124 Years",
     "content": "The Four Color Theorem has a remarkable history. Posed in 1852, it resisted proof for over a century, defeating many brilliant mathematicians. Its eventual 1976 proof required something unprecedented: a computer checking thousands of cases no human could verify.\n\nThe theorem states that any map can be colored with at most four colors such that no two adjacent regions share a color. While easy to state and seemingly simple, the proof revealed deep connections between graph theory, combinatorics, and computation.\n\nThis formalization presents the conceptual structure. The complete proof (Appel-Haken 1976, Gonthier 2005) requires computer verification of 1,936 configurations.",
-    "mathContext": "The Four Color Theorem: every planar graph $G$ satisfies $\\chi(G) \\leq 4$, where $\\chi(G)$ is the chromatic number. Equivalently, every map drawn on a sphere or plane can be colored with at most 4 colors so that adjacent regions have different colors.",
-    "significance": "key",
+    "significance": "critical",
     "relatedConcepts": [
       "graph theory",
       "computer-assisted proof",
-      "planar graphs",
-      "chromatic number"
-    ],
-    "prerequisites": [
-      "graph theory basics",
       "planar graphs"
     ]
   },
@@ -32,18 +26,11 @@
     "type": "definition",
     "title": "Graphs and Their Structure",
     "content": "We model maps as graphs where vertices represent regions and edges connect adjacent regions. This transforms the map coloring problem into a graph coloring problem.\n\nA graph $G = (V, E)$ consists of:\n- A set $V$ of vertices (the regions)\n- A set $E$ of edges (adjacency relations)\n- Edges are symmetric: if region A borders B, then B borders A\n\nThis abstraction lets us apply graph-theoretic tools to a geometric problem.",
-    "mathContext": "A simple graph $G = (V, E)$ with $E \\subseteq \\binom{V}{2}$. The dual graph of a map has one vertex per region and an edge between regions sharing a boundary. Lean's `SimpleGraph V` type models this as a symmetric irreflexive relation on `V`.",
     "significance": "key",
     "relatedConcepts": [
       "vertex",
       "edge",
-      "adjacency",
-      "dual graph",
-      "SimpleGraph"
-    ],
-    "prerequisites": [
-      "graph theory",
-      "set theory"
+      "adjacency"
     ]
   },
   {
@@ -73,19 +60,12 @@
     },
     "type": "definition",
     "title": "Planar Graphs",
-    "content": "A graph is **planar** if it can be drawn in the plane with no edge crossings. Equivalently, it can be embedded on a sphere.\n\nNot all graphs are planar! The complete graph $K_5$ (5 vertices, all connected) and the complete bipartite graph $K_{3,3}$ are the 'forbidden minors'—every non-planar graph contains one of these as a substructure (Kuratowski's theorem, 1930).\n\nPlanarity is essential to the theorem. Non-planar graphs can require arbitrarily many colors: the complete graph $K_n$ requires $n$ colors, and $K_n$ is non-planar for $n \\geq 5$.",
-    "mathContext": "A graph $G$ is planar iff it contains no subdivision of $K_5$ or $K_{3,3}$ (Kuratowski 1930). Equivalently, $G$ has no $K_5$ or $K_{3,3}$ minor (Wagner 1937). For planar $G$ with $|V| \\geq 3$: $|E| \\leq 3|V| - 6$.",
-    "significance": "key",
+    "content": "A graph is **planar** if it can be drawn in the plane with no edge crossings. Equivalently, it can be embedded on a sphere.\n\nNot all graphs are planar! The complete graph $K_5$ (5 vertices, all connected) and the complete bipartite graph $K_{3,3}$ are the 'forbidden minors'—every non-planar graph contains one of these as a substructure.\n\nPlanarity is essential to the theorem. Non-planar graphs can require arbitrarily many colors.",
+    "significance": "critical",
     "relatedConcepts": [
       "planar embedding",
       "Kuratowski's theorem",
-      "Wagner's theorem",
-      "forbidden minors",
-      "graph minor"
-    ],
-    "prerequisites": [
-      "graph theory",
-      "topological embeddings"
+      "forbidden minors"
     ]
   },
   {
@@ -99,7 +79,7 @@
     "title": "Euler's Formula: The Fundamental Constraint",
     "content": "For any connected planar graph embedded in the plane:\n\n$$V - E + F = 2$$\n\nwhere V = vertices, E = edges, F = faces (including the unbounded outer face).\n\nThis remarkable formula constrains planar graph structure. Combined with the handshaking lemma (sum of degrees = 2E), it implies every planar graph has a vertex of degree at most 5.\n\nThis 'low-degree vertex' existence is the entry point for inductive proofs of coloring theorems.",
     "mathContext": "$V - E + F = 2$ for connected planar graphs",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [
       "ann-planar"
     ],
@@ -158,18 +138,12 @@
     },
     "type": "concept",
     "title": "Kempe Chains: The Color-Swapping Trick",
-    "content": "A **Kempe chain** for colors a and b starting at vertex v is the maximal connected subgraph of vertices colored a or b containing v.\n\nThe crucial property: swapping colors a ↔ b on a Kempe chain produces another valid coloring! Adjacent vertices still have different colors because:\n- Vertices outside the chain keep their colors\n- Inside the chain, neighbors alternate between a and b\n\nKempe invented this for his 1879 'proof' of Four Colors. His argument was flawed (Heawood found the error in 1890), but the technique is correct and essential. The flaw was in handling cases where two Kempe chains for different color pairs intersect, creating a situation where swapping one chain disrupts another.",
-    "mathContext": "Given a proper coloring $c: V \\to \\{1,2,3,4\\}$, the $(a,b)$-Kempe chain at $v$ is the connected component of $c^{-1}(\\{a,b\\})$ containing $v$. Swapping $a \\leftrightarrow b$ on this component yields a new proper coloring $c'$. Kempe's error: for a degree-5 vertex $v$ with neighbors using all 4 colors, swapping the $(1,3)$-chain through one neighbor may merge with the $(2,4)$-chain through another.",
-    "significance": "key",
+    "content": "A **Kempe chain** for colors a and b starting at vertex v is the maximal connected subgraph of vertices colored a or b containing v.\n\nThe crucial property: swapping colors a ↔ b on a Kempe chain produces another valid coloring! Adjacent vertices still have different colors because:\n- Vertices outside the chain keep their colors\n- Inside the chain, neighbors alternate between a and b\n\nKempe invented this for his 1879 'proof' of Four Colors. His argument was flawed, but the technique is correct and essential. The flaw was in handling cases where multiple Kempe chains interact.",
+    "significance": "critical",
     "relatedConcepts": [
       "color swapping",
       "connected component",
-      "Kempe's fallacy",
-      "Heawood's counterexample"
-    ],
-    "prerequisites": [
-      "proper coloring",
-      "connected components"
+      "Kempe's fallacy"
     ]
   },
   {
@@ -201,19 +175,12 @@
     },
     "type": "concept",
     "title": "Reducibility: Configurations That Can't Block Coloring",
-    "content": "A configuration C is **reducible** if it cannot appear in a minimal counterexample to Four Color. That is: if a planar graph G contains C, then G is 4-colorable (or G can be simplified to a smaller graph that's 4-colorable).\n\nProving reducibility requires showing that any 4-coloring of the graph minus the configuration can be extended to include it. This involves analyzing all possible colorings of the boundary (the 'ring') and showing Kempe chains can always make room.\n\nFor many configurations, this case analysis is astronomically complex—too many cases for human verification. Appel-Haken's proof checked 1,936 configurations; Robertson-Sanders-Seymour-Thomas (1997) reduced this to 633. This is where computers become essential.",
-    "mathContext": "A configuration with ring size $r$ has up to $4^r$ possible boundary colorings. For each, one must show the coloring extends to the interior via Kempe chain arguments. The unavoidable set must cover all possible local structures in a minimal counterexample — a discharging argument shows that at least one of the 633 (or 1,936) configurations must appear.",
-    "significance": "key",
+    "content": "A configuration C is **reducible** if it cannot appear in a minimal counterexample to Four Color. That is: if a planar graph G contains C, then G is 4-colorable (or G can be simplified to a smaller graph that's 4-colorable).\n\nProving reducibility requires showing that any 4-coloring of the graph minus the configuration can be extended to include it. This involves analyzing all possible colorings of the boundary and showing Kempe chains can always make room.\n\nFor many configurations, this case analysis is astronomically complex—too many cases for human verification. This is where computers become essential.",
+    "significance": "critical",
     "relatedConcepts": [
       "minimal counterexample",
       "configuration",
-      "extendability",
-      "ring coloring",
-      "discharging"
-    ],
-    "prerequisites": [
-      "Kempe chains",
-      "planar graph structure"
+      "extendability"
     ]
   },
   {
@@ -225,19 +192,12 @@
     },
     "type": "concept",
     "title": "Computer-Assisted Proof",
-    "content": "The Appel-Haken proof (1976) required:\n- 1,200 hours of computer time on an IBM 370-168\n- Verification of 1,936 configurations for reducibility\n- 400+ pages of hand-written proofs for the discharging argument\n\nInitial reception was skeptical. How can we trust a proof no human can check? What if there's a bug in the program? Robertson, Sanders, Seymour, and Thomas (1997) simplified the proof to 633 configurations with cleaner code, partially addressing these concerns.\n\nGeorges Gonthier's 2005 Coq formalization fully addressed them by reducing trust to Coq's small, verified proof-checking kernel (~10,000 lines). The proof certificate is machine-checkable, and the checker itself is tiny enough to be human-verified.\n\nThis paradigm shift—from 'trust the program' to 'trust the proof checker'—has become foundational in formal methods.",
-    "mathContext": "The proof strategy: (1) find an unavoidable set $\\mathcal{U}$ of configurations (every minimal counterexample contains some $C \\in \\mathcal{U}$), and (2) show each $C \\in \\mathcal{U}$ is reducible (cannot appear in a minimal counterexample). The contradiction proves no counterexample exists. Step (1) uses a discharging argument; step (2) is the computer-verified part.",
+    "content": "The Appel-Haken proof (1976) required:\n- 1,200 hours of computer time\n- Verification of 1,936 configurations\n- 400+ pages of hand-written supporting proofs\n\nInitial reception was skeptical. How can we trust a proof no human can check? What if there's a bug in the program?\n\nGeorges Gonthier's 2005 Coq formalization addressed these concerns by reducing trust to a small, verified proof-checking kernel. The proof certificate is machine-checkable, and the checker itself is tiny enough to be human-verified.\n\nThis paradigm shift—from 'trust the program' to 'trust the proof checker'—has become foundational in formal methods.",
     "significance": "key",
     "relatedConcepts": [
       "Coq",
       "formal verification",
-      "proof assistant",
-      "unavoidable set",
-      "discharging method"
-    ],
-    "prerequisites": [
-      "reducibility",
-      "Kempe chains"
+      "proof assistant"
     ]
   },
   {
@@ -249,20 +209,12 @@
     },
     "type": "insight",
     "title": "Gonthier's Coq Formalization",
-    "content": "In 2005, Georges Gonthier completed a full formalization of the Four Color Theorem in Coq. This was a landmark achievement:\n\n- **Complete verification:** Every step machine-checked, including all configuration reducibility checks\n- **Independent verification:** The Coq proof is a certificate anyone can verify using the proof checker\n- **Trust reduction:** We no longer trust Appel-Haken's program; we trust Coq's small kernel (~10,000 lines)\n- **SSReflect:** Gonthier developed the SSReflect proof language for this project, which became a standard tool in Coq and influenced Lean's tactic library\n\nThe formalization took approximately 6 person-years and comprised ~60,000 lines of Coq code. It provided certainty that the theorem is correct and demonstrated that even massive computational proofs can be made rigorous through formal methods. Gonthier went on to formalize the Feit-Thompson (Odd Order) theorem in 2013 using the same methodology.",
-    "mathContext": "Gonthier's proof follows Robertson et al.'s simplified version with 633 configurations. The Coq proof encodes each configuration as a hypergraph, computes its reducibility by exhaustive coloring analysis (using a reflection-based procedure compiled to Coq's reduction machinery), and verifies the discharging rules algebraically. The key insight: computational verification becomes a single `native_compute` or `vm_compute` step in Coq, with correctness guaranteed by the type system.",
+    "content": "In 2005, Georges Gonthier completed a full formalization of the Four Color Theorem in Coq. This was a landmark achievement:\n\n- **Complete verification:** Every step machine-checked, including all 1,936 configurations\n- **Independent verification:** The Coq proof is a certificate anyone can verify using the proof checker\n- **Trust reduction:** We no longer trust Appel-Haken's program; we trust Coq's small kernel\n\nThe formalization took several person-years but provided certainty that the theorem is correct. It demonstrated that even massive computational proofs can be made rigorous through formal methods.",
     "significance": "key",
     "relatedConcepts": [
       "Coq proof assistant",
       "SSReflect",
-      "proof certificate",
-      "reflection",
-      "Feit-Thompson theorem"
-    ],
-    "prerequisites": [
-      "formal verification",
-      "proof assistants",
-      "computational reflection"
+      "proof certificate"
     ]
   }
 ]

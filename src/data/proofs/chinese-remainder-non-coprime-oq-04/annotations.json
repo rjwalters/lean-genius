@@ -59,7 +59,7 @@
     },
     "type": "insight",
     "title": "Nearest Integer Approximation Bound",
-    "content": "A simple but foundational corollary: every real number has an integer within distance 1/2. The proof uses p = ⌊α + 1/2⌋, centering the floor function at the midpoint between consecutive integers. While elementary, this result is the N=1 case of Dirichlet's theorem (with the stronger bound 1/2 instead of 1/1), and it illustrates how floor/ceiling arguments yield approximation guarantees. In higher dimensions, this generalizes to Babai's nearest plane algorithm for lattice closest vector approximation.",
+    "content": "A simple but foundational corollary: every real number has an integer within distance 1/2. The proof uses p = \u230a\u03b1 + 1/2\u230b, centering the floor function at the midpoint between consecutive integers. While elementary, this result is the N=1 case of Dirichlet's theorem (with the stronger bound 1/2 instead of 1/1), and it illustrates how floor/ceiling arguments yield approximation guarantees. In higher dimensions, this generalizes to Babai's nearest plane algorithm for lattice closest vector approximation.",
     "mathContext": "For any $\\alpha \\in \\mathbb{R}$, $\\exists p \\in \\mathbb{Z}$ with $|\\alpha - p| \\leq 1/2$. Take $p = \\lfloor \\alpha + 1/2 \\rfloor$. This is optimal: equality holds when $\\alpha$ is a half-integer.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -158,7 +158,7 @@
     "title": "CRT Non-Coprime Lattice Examples",
     "content": "Concrete examples connecting CRT solvability to lattice coset membership. The solvable system x \u2261 3 (mod 6), x \u2261 1 (mod 4) has solution x = 9 (mod 12) because gcd(6,4) = 2 divides 3-1 = 2. The unsolvable system x \u2261 3 (mod 6), x \u2261 2 (mod 4) fails because gcd(6,4) = 2 does not divide 3-2 = 1. B\u00e9zout's identity 6\u00b7(-1) + 4\u00b72 = 2 provides the coefficient witness. The Sunzi example (3rd century CE) x \u2261 2 (mod 3), x \u2261 3 (mod 5), x \u2261 2 (mod 7) \u2192 x = 23 (mod 105) demonstrates the classical CRT for coprime moduli. All examples use `native_decide` for computational verification.",
     "mathContext": "**CRT non-coprime solvability**: $x \\equiv a_1 \\pmod{m_1},\\ x \\equiv a_2 \\pmod{m_2}$ is solvable $\\iff \\gcd(m_1, m_2) \\mid (a_1 - a_2)$. When solvable, the solution is unique modulo $\\text{lcm}(m_1, m_2)$. Geometrically: the solution set is the intersection of two cosets in $\\mathbb{Z}$, which is nonempty iff the cosets are compatible modulo $\\gcd$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Chinese Remainder Theorem",
       "non-coprime CRT",

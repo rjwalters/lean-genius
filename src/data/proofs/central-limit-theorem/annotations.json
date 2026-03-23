@@ -9,13 +9,12 @@
     "type": "concept",
     "title": "Dual Perspectives on CLT",
     "content": "This proof presents the Central Limit Theorem through two complementary lenses. The **classical approach** uses characteristic functions (Fourier transforms) to show convergence. The **topological approach** reveals why the Gaussian emerges: it is a fixed-point attractor in the dynamics of averaging.",
-    "significance": "key",
+    "significance": "critical",
     "relatedConcepts": [
       "characteristic functions",
       "fixed point theory",
       "renormalization group"
-    ],
-    "mathContext": "The CLT states: if $X_1, X_2, \\ldots$ are i.i.d. with mean $\\mu$ and variance $\\sigma^2 < \\infty$, then $\\frac{\\sum_{i=1}^n X_i - n\\mu}{\\sigma\\sqrt{n}} \\xrightarrow{d} N(0,1)$ as $n \\to \\infty$."
+    ]
   },
   {
     "id": "ann-clt-imports",
@@ -32,8 +31,7 @@
       "Mathlib",
       "measure theory",
       "Fourier analysis"
-    ],
-    "mathContext": "The Gaussian measure $\\mathcal{N}(\\mu, \\sigma^2)$ has density $p(x) = \\frac{1}{\\sigma\\sqrt{2\\pi}} e^{-\\frac{(x-\\mu)^2}{2\\sigma^2}}$. Mathlib formalizes it as a Borel probability measure on $\\mathbb{R}$."
+    ]
   },
   {
     "id": "ann-clt-charfun-def",
@@ -46,7 +44,7 @@
     "title": "Characteristic Functions",
     "content": "The **characteristic function** $\\varphi_X(t) = \\mathbb{E}[e^{itX}]$ is the Fourier transform of a probability distribution. It uniquely determines the distribution and has a crucial property: for independent $X, Y$, we have $\\varphi_{X+Y} = \\varphi_X \\cdot \\varphi_Y$. This converts convolution (sums of random variables) into multiplication.",
     "mathContext": "Characteristic functions always exist (bounded exponential integrand) and are uniformly continuous. They encode all moments: $\\varphi^{(k)}(0) = i^k \\mathbb{E}[X^k]$ when moments exist.",
-    "significance": "key",
+    "significance": "critical",
     "relatedConcepts": [
       "Fourier transform",
       "moment generating function",
@@ -60,7 +58,7 @@
       "startLine": 12,
       "endLine": 52
     },
-    "type": "technique",
+    "type": "lemma",
     "title": "Characteristic Function at Zero",
     "content": "At $t = 0$, the characteristic function equals 1 for any probability measure: $\\varphi(0) = \\mathbb{E}[e^{i \\cdot 0 \\cdot X}] = \\mathbb{E}[1] = 1$. This normalization anchors the Fourier representation.",
     "mathContext": "This simple fact is essential: it means all characteristic functions pass through the same point, allowing us to compare different distributions on a common scale.",
@@ -85,8 +83,7 @@
       "Taylor series",
       "moments",
       "cumulants"
-    ],
-    "mathContext": "For a standardized variable ($\\mu = 0$, $\\sigma^2 = 1$), the expansion simplifies to $\\varphi_X(t) = 1 - \\frac{t^2}{2} + O(t^3)$, matching the Gaussian $\\varphi_{N(0,1)}(t) = e^{-t^2/2} = 1 - \\frac{t^2}{2} + \\frac{t^4}{8} - \\cdots$ to second order."
+    ]
   },
   {
     "id": "ann-clt-taylor-theorem",
@@ -95,7 +92,7 @@
       "startLine": 75,
       "endLine": 85
     },
-    "type": "technique",
+    "type": "lemma",
     "title": "Taylor Expansion with Error Bound",
     "content": "For small $t$, the characteristic function is well-approximated by its quadratic Taylor polynomial. The error is $O(t^3)$, controlled by the third moment. This approximation is sharp enough to extract the limiting behavior.",
     "mathContext": "The third moment condition $\\mathbb{E}[|X|^3] < \\infty$ ensures the remainder is well-controlled. Without it, convergence may fail (leading to stable distributions instead).",
@@ -119,13 +116,12 @@
     "type": "concept",
     "title": "The Product-to-Exponential Limit",
     "content": "The classical limit $(1 + x/n)^n \\to e^x$ is the engine of CLT. For the normalized sum $S_n = (X_1 + \\cdots + X_n)/\\sqrt{n}$, we have $\\varphi_{S_n}(t) = [\\varphi_X(t/\\sqrt{n})]^n$. Taylor expansion gives $\\varphi_X(t/\\sqrt{n}) \\approx 1 - t^2/(2n)$, and $(1 - t^2/(2n))^n \\to e^{-t^2/2}$.",
-    "significance": "key",
+    "significance": "critical",
     "relatedConcepts": [
       "exponential limit",
       "compound interest",
       "Euler's definition of e"
-    ],
-    "mathContext": "The chain: $\\varphi_{S_n}(t) = \\left[\\varphi_X\\!\\left(\\tfrac{t}{\\sqrt{n}}\\right)\\right]^n \\approx \\left(1 - \\frac{t^2}{2n}\\right)^n \\xrightarrow{n \\to \\infty} e^{-t^2/2} = \\varphi_{N(0,1)}(t)$, establishing pointwise convergence of characteristic functions."
+    ]
   },
   {
     "id": "ann-clt-key-convergence",
@@ -134,11 +130,11 @@
       "startLine": 133,
       "endLine": 134
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Heart of CLT: Characteristic Function Convergence",
     "content": "**The Central Computation**: As $n \\to \\infty$, the characteristic function of $S_n$ converges pointwise to $e^{-t^2/2}$. This is the analytical core of CLT.\n\n**Topological insight**: We're watching the orbit of a distribution under the renormalization map $T_n(\\mu) = (1/\\sqrt{n}) \\cdot \\mu^{*n}$. The Gaussian is a fixed point, and all finite-variance distributions are in its basin of attraction.",
     "mathContext": "The third moment condition ensures uniform convergence on compact sets, which is needed for the next step (Lévy's theorem).",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [
       "ann-clt-taylor-theorem",
       "ann-clt-limit-setup"
@@ -156,11 +152,11 @@
       "startLine": 180,
       "endLine": 190
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Lévy Continuity Theorem",
     "content": "**The Bridge**: Pointwise convergence of characteristic functions to a continuous function implies weak convergence of probability measures. This connects the Fourier (analysis) world to the distributional (probability) world.\n\nLévy's theorem is the inverse of the continuity of the Fourier transform: if the images converge, so do the preimages.",
     "mathContext": "Continuity at $t=0$ is essential and automatic for characteristic functions (they equal 1 at 0). The theorem fails for discontinuous limits.",
-    "significance": "key",
+    "significance": "critical",
     "relatedConcepts": [
       "weak convergence",
       "Fourier inversion",
@@ -174,11 +170,11 @@
       "startLine": 207,
       "endLine": 217
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "The Central Limit Theorem",
     "content": "**Statement**: Let $X_1, X_2, \\ldots$ be i.i.d. with mean $\\mu$ and variance $\\sigma^2$. The normalized sum $Z_n = (\\sum X_i - n\\mu)/(\\sigma\\sqrt{n})$ converges in distribution to $N(0,1)$.\n\n**Classical interpretation**: Sums of random effects average toward the bell curve.\n\n**Topological interpretation**: The renormalization flow contracts all finite-variance distributions toward the Gaussian fixed point.",
     "mathContext": "The proof assembles: (1) Taylor expansion of characteristic function, (2) product-to-exponential limit, (3) Lévy continuity. Each piece is classical; together they prove the most useful theorem in probability.",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [
       "ann-clt-key-convergence",
       "ann-clt-levy-theorem"
@@ -199,13 +195,12 @@
     "type": "concept",
     "title": "The Topological Viewpoint",
     "content": "Now we shift perspective: instead of computing limits, we ask WHY the Gaussian emerges. The answer: **it is a fixed point attractor** of the renormalization group flow on the space of probability distributions.\n\nThis dynamical systems perspective reveals that CLT is not an accident of computation but a consequence of the structure of the convolution operation.",
-    "significance": "key",
+    "significance": "critical",
     "relatedConcepts": [
       "dynamical systems",
       "fixed point theory",
       "renormalization group"
-    ],
-    "mathContext": "Define the renormalization map $T: \\mathcal{P}_2(\\mathbb{R}) \\to \\mathcal{P}_2(\\mathbb{R})$ by $T(\\mu) = \\text{law}\\!\\left(\\frac{X_1 + X_2}{\\sqrt{2}}\\right)$ where $X_1, X_2 \\overset{\\text{i.i.d.}}{\\sim} \\mu$. The Gaussian $\\mathcal{N}(0,\\sigma^2)$ satisfies $T(\\mathcal{N}(0,\\sigma^2)) = \\mathcal{N}(0,\\sigma^2)$, making it a fixed point."
+    ]
   },
   {
     "id": "ann-clt-wasserstein",
@@ -232,11 +227,11 @@
       "startLine": 297,
       "endLine": 316
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Gaussian as Universal Attractor",
     "content": "**CLT Restated**: Every distribution with finite variance is in the basin of attraction of the Gaussian under the renormalization flow. Formally, $T_n(\\mu) \\to \\mathcal{N}$ in the Wasserstein metric as $n \\to \\infty$.\n\nThis is the dynamical systems view: we have a discrete dynamical system on $\\mathcal{P}_2$ with the Gaussian as a globally attracting fixed point (for finite-variance starting points).",
     "mathContext": "The 'domain of attraction' is exactly the set of distributions with finite variance. Infinite variance leads to stable distributions with $\\alpha < 2$ (Lévy flights).",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [
       "ann-clt-fixed-point"
     ],
@@ -271,7 +266,7 @@
       "startLine": 347,
       "endLine": 363
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Fourier Self-Duality",
     "content": "The Gaussian is its own Fourier transform (up to scaling). This explains why the same function $e^{-t^2/2}$ appears as both the characteristic function AND the probability density (after appropriate normalization).\n\nSelf-duality under Fourier transform is a unique property that singles out the Gaussian among all probability distributions.",
     "mathContext": "More precisely: if $f(x) = e^{-x^2/2}/\\sqrt{2\\pi}$, then $\\hat{f}(\\xi) = e^{-\\xi^2/2}$. The Hermite functions (Gaussian times polynomials) form an orthonormal basis of eigenfunctions for the Fourier transform.",
@@ -289,7 +284,7 @@
       "startLine": 365,
       "endLine": 401
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Berry-Esseen: Rate of Convergence",
     "content": "**Quantitative CLT**: The Kolmogorov distance between $F_{Z_n}$ and $\\Phi$ (standard normal CDF) is $O(\\rho/\\sqrt{n})$, where $\\rho = \\mathbb{E}[|X|^3]$ is the third absolute moment.\n\n$\\sup_x |F_{Z_n}(x) - \\Phi(x)| \\leq \\frac{C \\rho}{\\sqrt{n}}$ with $C \\approx 0.4748$.\n\nThis tells us HOW FAST the convergence occurs, not just that it happens.",
     "mathContext": "The $1/\\sqrt{n}$ rate is optimal: there exist distributions achieving this rate. The constant $C$ has been refined by many authors.",
@@ -329,12 +324,11 @@
     "type": "concept",
     "title": "Synthesis: Why the Gaussian is Universal",
     "content": "The Central Limit Theorem reveals the Gaussian as a **mathematical necessity**, not an accident:\n\n1. **Dynamically**: It is the unique fixed-point attractor of the averaging operation\n2. **Information-theoretically**: It maximizes entropy at fixed variance\n3. **Analytically**: It is self-dual under Fourier transform\n4. **Probabilistically**: It is the only finite-variance stable distribution\n\nWherever we see many small independent effects being summed—measurement errors, thermal fluctuations, stock prices, IQ scores—the Gaussian emerges because averaging dynamics demand it.",
-    "significance": "key",
+    "significance": "critical",
     "relatedConcepts": [
       "universality",
       "emergence",
       "mathematical inevitability"
-    ],
-    "mathContext": "Four equivalent characterizations converge on $\\mathcal{N}(0,\\sigma^2)$: (1) fixed point of $T_n(\\mu)$ in $W_2$, (2) $\\arg\\max_{\\text{Var}=\\sigma^2} H(\\mu)$, (3) $\\hat{f} = f$ under Fourier, (4) unique $\\alpha$-stable law with $\\alpha = 2$. Each perspective illuminates a different facet of universality."
+    ]
   }
 ]

@@ -171,6 +171,16 @@
       "targetId": "sophie-germain",
       "relationship": "related",
       "description": "The conjecture's connection to prime distribution involves primes $p$ where $(p+1)/2$ is also prime — closely related to Sophie Germain primes (where $2p+1$ is prime). Finding such primes in intervals $[N, 2N]$ would resolve #287 for all large denominators"
+    },
+    {
+      "targetId": "erdos-291",
+      "relationship": "related",
+      "description": "Erdős #291 (harmonic number divisibility) and #287 both concern the arithmetic structure of sums $\\sum 1/n$ over structured sets of denominators. The divisibility properties of harmonic numbers (Wolstenholme, Erdős-Graham) constrain which Egyptian fractions can sum to integers"
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "foundational",
+      "description": "The divergence of $\\sum 1/p$ over primes (Euler 1737) ensures that unit fractions with prime denominators alone can approximate any rational. This connects to the gap ≥ 2 theorem: the obstruction from large primes in $(N, 2N)$ is precisely because $1/p$ contributes an irreducible $p$-adic valuation that prevents consecutive denominators from summing to 1"
     }
   ],
   "relatedProofs": [
@@ -180,7 +190,9 @@
     "erdos-288",
     "harmonic-divergence",
     "infinitude-primes",
-    "sophie-germain"
+    "sophie-germain",
+    "erdos-291",
+    "prime-reciprocal-divergence"
   ],
   "leanFile": {
     "imports": [
@@ -216,6 +228,13 @@
       "year": "1964",
       "venue": "Proceedings of the London Mathematical Society 14, pp. 193-207",
       "note": "Systematic study of Egyptian fraction representations; established several structural results"
+    },
+    {
+      "authors": "Croot, Ernie",
+      "title": "On a coloring conjecture about unit fractions",
+      "year": "2003",
+      "venue": "Annals of Mathematics 157(2), pp. 545-556",
+      "note": "Resolved a major conjecture on Egyptian fractions: for any finite coloring of the integers ≥ 2, some color class contains denominators whose unit fractions sum to 1. Uses sophisticated Fourier-analytic and combinatorial arguments, extending the circle of ideas around Erdős #287"
     },
     {
       "authors": "Erdős, Paul; Straus, Ernst G.",

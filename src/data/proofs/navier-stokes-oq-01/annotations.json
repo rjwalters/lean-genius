@@ -85,7 +85,7 @@
     "title": "GlobalNSSolution2DRegular: Adding Palinstrophy Continuity",
     "content": "`GlobalNSSolution2DRegular` is a minimal extension of `GlobalNSSolution2D` adding one field: `P_cont : ContinuousOn P (Ici 0)` (palinstrophy is continuous on [0,\u221e)). This is needed to apply the Fundamental Theorem of Calculus to integrate the enstrophy ODE. Without continuity of P, the integral \u222b -2\u03bdP(t) dt may not be well-defined as a Riemann/Lebesgue integral, or the FTC may not apply. Physical solutions to Navier-Stokes are expected to have continuous palinstrophy for t > 0, and this structure encodes that regularity. The separation of GlobalNSSolution2D (basic) and GlobalNSSolution2DRegular (with continuous P) follows the principle of minimal hypotheses: decay results only need the Poincar\u00e9 structure, but the integrated identity needs additional regularity.",
     "mathContext": "The FTC lemma `integral_eq_sub_of_hasDerivAt_of_le` requires:\n1. `ContinuousOn E (Icc 0 T)` \u2014 provided by `E_cont : ContinuousOn E (Ici 0)`\n2. `\u2200 t \u2208 Ioo 0 T, HasDerivAt E (-2\u03bdP t) t` \u2014 provided by `enstrophy_ode`\n3. `IntervalIntegrable (-2\u03bdP) volume 0 T` \u2014 derived from `ContinuousOn (-2\u03bdP) (Icc 0 T)`\n\nThe `P_cont : ContinuousOn P (Ici 0)` field directly enables step 3: restrict to `Icc 0 T`, multiply by the constant `-2\u03bd`.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Fundamental Theorem of Calculus",
       "ContinuousOn",

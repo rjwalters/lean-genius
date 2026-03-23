@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Problem Overview and Imports",
-    "content": "**Erdős Problem #512: Littlewood's Conjecture on Exponential Sums**\n\nLittlewood conjectured that the $L^1$ norm of exponential sums $\\int_0^1 |\\sum_{n \\in A} e(n\\theta)|\\,d\\theta$ is at least $c \\log N$ for any finite $A \\subset \\mathbb{Z}$ with $|A| = N$. This was independently proved by Konyagin (1981) and McGehee-Pigno-Smith (1981).\n\nImports include `Complex.Exponential` for $e^{2\\pi i x}$, `Bochner` integration for the $L^1$ norm, and `SpecialFunctions.Complex.Log` for the logarithmic bound.",
+    "content": "**Erd\u0151s Problem #512: Littlewood's Conjecture on Exponential Sums**\n\nLittlewood conjectured that the $L^1$ norm of exponential sums $\\int_0^1 |\\sum_{n \\in A} e(n\\theta)|\\,d\\theta$ is at least $c \\log N$ for any finite $A \\subset \\mathbb{Z}$ with $|A| = N$. This was independently proved by Konyagin (1981) and McGehee-Pigno-Smith (1981).\n\nImports include `Complex.Exponential` for $e^{2\\pi i x}$, `Bochner` integration for the $L^1$ norm, and `SpecialFunctions.Complex.Log` for the logarithmic bound.",
     "mathContext": "The exponential sum $S_A(\\theta) = \\sum_{n \\in A} e^{2\\pi i n \\theta}$ is a trigonometric polynomial of degree $\\max A - \\min A$. Its $L^1$ norm $\\|S_A\\|_1 = \\int_0^1 |S_A(\\theta)|\\,d\\theta$ measures how concentrated or spread out the polynomial is on the unit circle. Littlewood's conjecture asserts $\\|S_A\\|_1 \\geq c \\log N$ for an absolute constant $c > 0$.",
     "significance": "key",
     "relatedConcepts": [
@@ -34,10 +34,10 @@
     "type": "definition",
     "title": "Exponential Function e(x) and Properties",
     "content": "**expTwoPiI x:** The exponential $e(x) = e^{2\\pi i x}$, the fundamental building block of Fourier analysis on the circle group $\\mathbb{R}/\\mathbb{Z}$.\n\n**expTwoPiI_periodic (proved):** $e(x+1) = e(x)$, using $e^{2\\pi i} = 1$. This is the key periodicity that makes $e(n\\theta)$ well-defined on $[0,1]$.\n\n**expTwoPiI_norm (proved):** $|e(x)| = 1$ for all $x$, since $e(x)$ lies on the unit circle.\n\n**expTwoPiI_add (proved):** $e(x+y) = e(x) \\cdot e(y)$, from the exponential law. This makes $e$ a group homomorphism from $(\\mathbb{R}, +)$ to $(\\mathbb{C}^\\times, \\cdot)$.",
-    "mathContext": "The function $e(x) = e^{2\\pi i x}$ is the canonical character of $\\mathbb{R}/\\mathbb{Z}$. Its key properties — periodicity ($e(x+1) = e(x)$), unit modulus ($|e(x)| = 1$), and multiplicativity ($e(x+y) = e(x)e(y)$) — are all proved directly from the complex exponential. The characters $\\{e(n\\cdot) : n \\in \\mathbb{Z}\\}$ form a complete orthonormal system for $L^2([0,1])$.",
+    "mathContext": "The function $e(x) = e^{2\\pi i x}$ is the canonical character of $\\mathbb{R}/\\mathbb{Z}$. Its key properties \u2014 periodicity ($e(x+1) = e(x)$), unit modulus ($|e(x)| = 1$), and multiplicativity ($e(x+y) = e(x)e(y)$) \u2014 are all proved directly from the complex exponential. The characters $\\{e(n\\cdot) : n \\in \\mathbb{Z}\\}$ form a complete orthonormal system for $L^2([0,1])$.",
     "significance": "key",
     "relatedConcepts": [
-      "characters of ℝ/ℤ",
+      "characters of \u211d/\u2124",
       "unit circle",
       "group homomorphisms",
       "Pontryagin duality"
@@ -57,7 +57,7 @@
     },
     "type": "definition",
     "title": "Exponential Sums and Triangle Inequality",
-    "content": "**expSum A θ:** The exponential sum $\\sum_{n \\in A} e(n\\theta)$ for a finite set $A \\subset \\mathbb{Z}$.\n\n**expSumNat A θ:** Variant for $A \\subset \\mathbb{N}$.\n\n**expSumNorm A θ:** The modulus $|\\sum_{n \\in A} e(n\\theta)|$.\n\n**expSum_bound (proved):** The triangle inequality gives $|\\sum_{n \\in A} e(n\\theta)| \\leq |A|$, since each $|e(n\\theta)| = 1$. Equality holds at $\\theta = 0$ where all terms are $e(0) = 1$.",
+    "content": "**expSum A \u03b8:** The exponential sum $\\sum_{n \\in A} e(n\\theta)$ for a finite set $A \\subset \\mathbb{Z}$.\n\n**expSumNat A \u03b8:** Variant for $A \\subset \\mathbb{N}$.\n\n**expSumNorm A \u03b8:** The modulus $|\\sum_{n \\in A} e(n\\theta)|$.\n\n**expSum_bound (proved):** The triangle inequality gives $|\\sum_{n \\in A} e(n\\theta)| \\leq |A|$, since each $|e(n\\theta)| = 1$. Equality holds at $\\theta = 0$ where all terms are $e(0) = 1$.",
     "mathContext": "The exponential sum $S_A(\\theta) = \\sum_{n \\in A} e^{2\\pi i n\\theta}$ is a finite Fourier series with spectrum $A$. The triangle inequality gives $|S_A(\\theta)| \\leq \\sum_{n \\in A} |e^{2\\pi i n\\theta}| = N$. The bound is tight: $S_A(0) = N$ since all terms equal 1. This shows $\\|S_A\\|_\\infty = N$, and by Cauchy-Schwarz $\\|S_A\\|_1 \\leq \\|S_A\\|_2 = \\sqrt{N}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -80,7 +80,7 @@
       "endLine": 104
     },
     "type": "definition",
-    "title": "L¹ Norm and Basic Properties",
+    "title": "L\u00b9 Norm and Basic Properties",
     "content": "**L1norm A:** The $L^1$ norm $\\int_0^1 |\\sum_{n \\in A} e(n\\theta)|\\,d\\theta$, formalized using Bochner integration over the interval $[0,1]$.\n\n**L1norm_nonneg (proved):** The $L^1$ norm is nonneg, since the integrand $|S_A(\\theta)| \\geq 0$.\n\n**L1norm_upper_bound (sorry):** $L^1 \\leq N$ from the pointwise bound $|S_A(\\theta)| \\leq N$ and $\\mu([0,1]) = 1$. Requires measure-theoretic integration.",
     "mathContext": "The $L^1$ norm $\\|S_A\\|_1 = \\int_0^1 |S_A(\\theta)|\\,d\\theta$ satisfies $1 \\leq \\|S_A\\|_1 \\leq N$. The lower bound $\\|S_A\\|_1 \\geq 1$ follows from $|\\int_0^1 S_A(\\theta)\\,d\\theta| = |\\sum_{n \\in A} \\hat{1}(n)| \\geq 1$ when $0 \\in A$ (and in general from orthogonality). Littlewood's conjecture sharpens this to $\\|S_A\\|_1 \\geq c \\log N$.",
     "significance": "key",
@@ -129,7 +129,7 @@
     },
     "type": "concept",
     "title": "The Solution: Konyagin and McGehee-Pigno-Smith (1981)",
-    "content": "**konyagin_theorem (axiom):** Konyagin proved Littlewood's conjecture in 1981 using analytic techniques involving character sums and probabilistic methods.\n\n**mcgehee_pigno_smith_theorem (axiom):** McGehee, Pigno, and Smith independently proved it via a beautiful application of Hardy's inequality. Their proof is considered more elegant: they showed that the $L^1$ norm of an idempotent measure on the circle group satisfies a logarithmic lower bound, which directly implies Littlewood.\n\n**littlewoodConstant = 1/(4π):** An explicit lower bound constant. The optimal constant is believed to be close to $1/\\pi$.\n\n**littlewood_explicit (axiom):** $L^1(A) \\geq \\frac{1}{4\\pi} \\log |A|$ for all $|A| \\geq 2$.",
+    "content": "**konyagin_theorem (axiom):** Konyagin proved Littlewood's conjecture in 1981 using analytic techniques involving character sums and probabilistic methods.\n\n**mcgehee_pigno_smith_theorem (axiom):** McGehee, Pigno, and Smith independently proved it via a beautiful application of Hardy's inequality. Their proof is considered more elegant: they showed that the $L^1$ norm of an idempotent measure on the circle group satisfies a logarithmic lower bound, which directly implies Littlewood.\n\n**littlewoodConstant = 1/(4\u03c0):** An explicit lower bound constant. The optimal constant is believed to be close to $1/\\pi$.\n\n**littlewood_explicit (axiom):** $L^1(A) \\geq \\frac{1}{4\\pi} \\log |A|$ for all $|A| \\geq 2$.",
     "mathContext": "Both proofs establish: $\\exists c > 0$ such that $\\int_0^1 |\\sum_{n \\in A} e^{2\\pi i n\\theta}|\\,d\\theta \\geq c \\log |A|$ for all finite $A \\subset \\mathbb{Z}$. The MPS proof is particularly clean: if $\\mu = \\sum_{n \\in A} \\delta_n$ is a discrete measure, then $\\|\\hat{\\mu}\\|_{L^1(\\mathbb{T})} = \\|S_A\\|_1$, and Hardy's inequality for power series gives $\\|S_A\\|_1 \\geq c \\sum_{k=1}^{N} 1/k \\sim c \\log N$.",
     "significance": "key",
     "relatedConcepts": [
@@ -153,7 +153,7 @@
     },
     "type": "concept",
     "title": "Sharpness: log N is Optimal",
-    "content": "**littlewood_sharpness (axiom):** There exists $c' > 0$ such that for each $N \\geq 2$, some set $A$ with $|A| = N$ achieves $\\|S_A\\|_1 \\leq c' \\log N$. This shows the lower bound is tight.\n\n**geometricProgression N:** The set $\\{0, 1, \\ldots, N-1\\}$, an arithmetic progression.\n\n**arithmetic_progression_bound (axiom):** For the arithmetic progression $A = \\{0,\\ldots,N-1\\}$, $\\|S_A\\|_1 \\asymp \\log N$ — both upper and lower bounds are $\\Theta(\\log N)$. This is because $S_A(\\theta) = \\sum_{n=0}^{N-1} e^{2\\pi i n\\theta}$ is the Dirichlet kernel, whose $L^1$ norm is the Lebesgue constant $\\sim (4/\\pi^2) \\log N$.",
+    "content": "**littlewood_sharpness (axiom):** There exists $c' > 0$ such that for each $N \\geq 2$, some set $A$ with $|A| = N$ achieves $\\|S_A\\|_1 \\leq c' \\log N$. This shows the lower bound is tight.\n\n**geometricProgression N:** The set $\\{0, 1, \\ldots, N-1\\}$, an arithmetic progression.\n\n**arithmetic_progression_bound (axiom):** For the arithmetic progression $A = \\{0,\\ldots,N-1\\}$, $\\|S_A\\|_1 \\asymp \\log N$ \u2014 both upper and lower bounds are $\\Theta(\\log N)$. This is because $S_A(\\theta) = \\sum_{n=0}^{N-1} e^{2\\pi i n\\theta}$ is the Dirichlet kernel, whose $L^1$ norm is the Lebesgue constant $\\sim (4/\\pi^2) \\log N$.",
     "mathContext": "The Dirichlet kernel $D_N(\\theta) = \\sum_{n=0}^{N-1} e^{2\\pi i n\\theta} = \\frac{\\sin(N\\pi\\theta)}{\\sin(\\pi\\theta)}$ has $L^1$ norm $\\|D_N\\|_1 = \\frac{4}{\\pi^2} \\log N + O(1)$. This is the Lebesgue constant from Fourier analysis. It shows that arithmetic progressions are essentially the worst case for Littlewood's bound.",
     "significance": "key",
     "relatedConcepts": [
@@ -201,14 +201,14 @@
     },
     "type": "technique",
     "title": "Related Results: Parseval, Flat Polynomials",
-    "content": "**L2_norm (sorry):** The $L^2$ norm of $S_A$ is $\\sqrt{N}$ by Parseval's theorem. This is because $\\int_0^1 |S_A(\\theta)|^2\\,d\\theta = \\sum_{n \\in A} |\\hat{1}_A(n)|^2 = |A| = N$.\n\n**L1_vs_L2_comparison:** The dramatic gap $\\log N \\ll \\sqrt{N}$ between $L^1$ and $L^2$ norms shows that $|S_A(\\theta)|$ is highly non-constant — it must have large peaks near $\\theta = 0$ and deep cancellations elsewhere.\n\n**flatPolynomialProblem:** Littlewood's conjecture implies no trigonometric polynomial with $\\pm 1$ coefficients can be \"flat\" (nearly constant modulus) on the circle.",
-    "mathContext": "The norm hierarchy for $S_A$ with $|A| = N$: $\\|S_A\\|_1 \\asymp \\log N$, $\\|S_A\\|_2 = \\sqrt{N}$, $\\|S_A\\|_\\infty = N$. By Hölder: $\\|S_A\\|_1 \\leq \\|S_A\\|_2 = \\sqrt{N}$, but Littlewood's conjecture says $\\|S_A\\|_1$ is only logarithmic, far below the Hölder bound. This means $|S_A(\\theta)|$ is typically small ($\\sim \\sqrt{N}$ at most points) but has a spike of height $N$ near $\\theta = 0$.",
+    "content": "**L2_norm (sorry):** The $L^2$ norm of $S_A$ is $\\sqrt{N}$ by Parseval's theorem. This is because $\\int_0^1 |S_A(\\theta)|^2\\,d\\theta = \\sum_{n \\in A} |\\hat{1}_A(n)|^2 = |A| = N$.\n\n**L1_vs_L2_comparison:** The dramatic gap $\\log N \\ll \\sqrt{N}$ between $L^1$ and $L^2$ norms shows that $|S_A(\\theta)|$ is highly non-constant \u2014 it must have large peaks near $\\theta = 0$ and deep cancellations elsewhere.\n\n**flatPolynomialProblem:** Littlewood's conjecture implies no trigonometric polynomial with $\\pm 1$ coefficients can be \"flat\" (nearly constant modulus) on the circle.",
+    "mathContext": "The norm hierarchy for $S_A$ with $|A| = N$: $\\|S_A\\|_1 \\asymp \\log N$, $\\|S_A\\|_2 = \\sqrt{N}$, $\\|S_A\\|_\\infty = N$. By H\u00f6lder: $\\|S_A\\|_1 \\leq \\|S_A\\|_2 = \\sqrt{N}$, but Littlewood's conjecture says $\\|S_A\\|_1$ is only logarithmic, far below the H\u00f6lder bound. This means $|S_A(\\theta)|$ is typically small ($\\sim \\sqrt{N}$ at most points) but has a spike of height $N$ near $\\theta = 0$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Parseval's theorem",
       "flat polynomials",
       "Rudin-Shapiro polynomials",
-      "Hölder's inequality"
+      "H\u00f6lder's inequality"
     ],
     "prerequisites": [
       "MeasureTheory.integral",
@@ -225,7 +225,7 @@
     },
     "type": "definition",
     "title": "Generalizations: Weighted and Higher-Dimensional",
-    "content": "**weightedExpSum A w θ:** Weighted exponential sum $\\sum_{n \\in A} w_n e(n\\theta)$ where $w_n \\in \\mathbb{C}$.\n\n**weighted_littlewood (axiom):** For unit weights ($|w_n| = 1$ for all $n \\in A$), the same $\\log N$ lower bound holds. This is the natural generalization: the conjecture depends only on the cardinality and the unit modulus constraint, not on the specific coefficients.\n\n**higherDimensionalGeneralization:** Placeholder noting that analogous bounds exist for character sums over $\\mathbb{Z}^d$.",
+    "content": "**weightedExpSum A w \u03b8:** Weighted exponential sum $\\sum_{n \\in A} w_n e(n\\theta)$ where $w_n \\in \\mathbb{C}$.\n\n**weighted_littlewood (axiom):** For unit weights ($|w_n| = 1$ for all $n \\in A$), the same $\\log N$ lower bound holds. This is the natural generalization: the conjecture depends only on the cardinality and the unit modulus constraint, not on the specific coefficients.\n\n**higherDimensionalGeneralization:** Placeholder noting that analogous bounds exist for character sums over $\\mathbb{Z}^d$.",
     "mathContext": "The weighted version: if $|w_n| = 1$ for all $n \\in A$, then $\\int_0^1 |\\sum_{n \\in A} w_n e^{2\\pi i n\\theta}|\\,d\\theta \\geq c \\log |A|$. This follows from the same technique since $|w_n| = 1$ preserves the unit modulus property. For non-unit weights, the bound depends on $\\sum |w_n|$ instead.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -250,7 +250,7 @@
     "title": "Applications",
     "content": "**diophantineApplication:** Placeholder for the connection to Diophantine approximation. Lower bounds on exponential sums control the equidistribution of sequences $\\{n\\alpha\\}_{n \\in A}$ modulo 1 via Weyl's criterion.\n\n**numberTheoreticApplication:** Placeholder for analytic number theory applications. Bounds on character sums (closely related to exponential sums) are fundamental in estimating error terms in the prime number theorem and Dirichlet $L$-functions.",
     "mathContext": "Weyl's equidistribution criterion: the sequence $\\{n\\alpha\\}$ is equidistributed mod 1 iff $\\frac{1}{N}\\sum_{n=1}^N e^{2\\pi i n\\alpha} \\to 0$ for all nonzero integers. Littlewood's conjecture, applied to Gauss sums and Kloosterman sums, yields bounds on character sums $\\sum_{n} \\chi(n) e(n\\alpha)$ that appear throughout analytic number theory.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Weyl's criterion",
       "equidistribution",

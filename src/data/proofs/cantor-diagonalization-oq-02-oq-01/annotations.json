@@ -10,7 +10,7 @@
     "title": "Imports and Namespace Setup",
     "content": "Imports Mathlib's cardinal-ordinal theory (`SetTheory.Cardinal.Ordinal`), cofinality theory (`SetTheory.Cardinal.Cofinality`), and ordinal arithmetic. Opens the `Cardinal` and `Ordinal` namespaces for convenient access to `aleph`, `ord`, `cof`, etc.",
     "mathContext": "The key Mathlib modules provide: `Cardinal.aleph` (the $\\alpha \\mapsto \\aleph_\\alpha$ function), `Cardinal.aleph_lt_aleph` (order characterization), `Cardinal.isRegular_aleph_one` (regularity of $\\aleph_1$), `Cardinal.card_ord` and `Cardinal.lt_ord` (cardinal-ordinal bridge).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
       "cardinal arithmetic",
@@ -30,7 +30,7 @@
     },
     "type": "technique",
     "title": "Strict Monotonicity of the Aleph Function",
-    "content": "**theorem aleph_strictMono**: The map $\\alpha \\mapsto \\aleph_\\alpha$ is strictly monotone.\n\n**Proof**: Unfolds to `Cardinal.aleph_lt_aleph.mpr` — Mathlib already knows that $\\aleph_\\alpha < \\aleph_\\beta \\iff \\alpha < \\beta$.",
+    "content": "**theorem aleph_strictMono**: The map $\\alpha \\mapsto \\aleph_\\alpha$ is strictly monotone.\n\n**Proof**: Unfolds to `Cardinal.aleph_lt_aleph.mpr` \u2014 Mathlib already knows that $\\aleph_\\alpha < \\aleph_\\beta \\iff \\alpha < \\beta$.",
     "mathContext": "Strict monotonicity of the aleph function is equivalent to the statement that the aleph sequence has no repeated values: distinct ordinal indices give distinct infinite cardinals. This is a consequence of the definition $\\aleph_{\\alpha+1} = \\aleph_\\alpha^+$ (successor cardinal) and the limit case $\\aleph_\\lambda = \\sup_{\\alpha < \\lambda} \\aleph_\\alpha$.",
     "significance": "key",
     "relatedConcepts": [
@@ -52,7 +52,7 @@
     },
     "type": "technique",
     "title": "Aleph Successor Inequality",
-    "content": "**theorem aleph_lt_aleph_succ**: $\\aleph_\\alpha < \\aleph_{\\alpha+1}$ for all ordinals $\\alpha$.\n\n**Proof**: Applies `aleph_strictMono` to `Order.lt_succ α`.",
+    "content": "**theorem aleph_lt_aleph_succ**: $\\aleph_\\alpha < \\aleph_{\\alpha+1}$ for all ordinals $\\alpha$.\n\n**Proof**: Applies `aleph_strictMono` to `Order.lt_succ \u03b1`.",
     "mathContext": "This is the defining property of the cardinal successor: $\\aleph_{\\alpha+1}$ is the smallest cardinal strictly greater than $\\aleph_\\alpha$. There are no cardinals between $\\aleph_\\alpha$ and $\\aleph_{\\alpha+1}$, which is the generalized continuum hypothesis's starting point.",
     "significance": "key",
     "relatedConcepts": [
@@ -119,7 +119,7 @@
     "type": "technique",
     "title": "Regularity of $\\aleph_1$",
     "content": "**theorem aleph1_regular**: $\\aleph_1$ is a regular cardinal.\n\n**Proof**: Directly invokes Mathlib's `Cardinal.isRegular_aleph_one`.",
-    "mathContext": "A cardinal $\\kappa$ is **regular** if $\\text{cof}(\\kappa) = \\kappa$: it cannot be expressed as a union of fewer than $\\kappa$ sets each of size less than $\\kappa$. $\\aleph_1$ is regular because any countable union of countable sets is countable. Not all alephs are regular — $\\aleph_\\omega = \\sup_n \\aleph_n$ is singular since $\\text{cof}(\\aleph_\\omega) = \\omega < \\aleph_\\omega$.",
+    "mathContext": "A cardinal $\\kappa$ is **regular** if $\\text{cof}(\\kappa) = \\kappa$: it cannot be expressed as a union of fewer than $\\kappa$ sets each of size less than $\\kappa$. $\\aleph_1$ is regular because any countable union of countable sets is countable. Not all alephs are regular \u2014 $\\aleph_\\omega = \\sup_n \\aleph_n$ is singular since $\\text{cof}(\\aleph_\\omega) = \\omega < \\aleph_\\omega$.",
     "significance": "key",
     "relatedConcepts": [
       "regular cardinal",

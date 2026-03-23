@@ -225,6 +225,11 @@
       "description": "Matiyasevich's negative resolution of Hilbert's tenth problem (1970) extends the impossibility tradition: Abel-Ruffini shows no radical formula solves all quintics, while Hilbert-10 shows no algorithm decides all Diophantine equations — both proving fundamental limits on 'solving' polynomial equations"
     },
     {
+      "targetId": "hilbert-13",
+      "relationship": "related",
+      "description": "Hilbert's 13th problem asked whether the solution of the degree-7 polynomial (reduced to 3 parameters via Tschirnhaus/Bring-Jerrard) requires functions of 3 variables. This was directly motivated by Abel-Ruffini's impossibility: since radicals cannot solve the general septic, Hilbert asked what class of functions *can*. The Kolmogorov-Arnold theorem (1957) disproved Hilbert's conjecture by showing every continuous multivariate function can be represented using continuous functions of one variable — a positive answer that contrasts with Abel-Ruffini's negative answer about radicals"
+    },
+    {
       "targetId": "sqrt2-irrational",
       "relationship": "foundational",
       "description": "The irrationality of √2 (c. 500 BCE) is the earliest impossibility result in mathematics — showing √2 cannot be expressed as a ratio of integers. Abel-Ruffini generalizes this paradigm: certain quantities cannot be expressed within a given algebraic framework (radicals rather than rationals)"
@@ -454,6 +459,7 @@
     "e-transcendental",
     "pi-transcendental",
     "hilbert-10",
+    "hilbert-13",
     "sqrt2-irrational",
     "hermite-lindemann",
     "kroneckers-jugendtraum",

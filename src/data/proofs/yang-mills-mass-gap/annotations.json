@@ -388,7 +388,7 @@
     "title": "AdS/CFT and Holographic Mass Gap",
     "content": "Formalizes aspects of Maldacena's AdS/CFT correspondence (1997), which maps $\\mathcal{N}=4$ $\\mathrm{SU}(N)$ Yang-Mills to type IIB string theory on $\\text{AdS}_5 \\times S^5$. While $\\mathcal{N}=4$ SYM is conformal (no mass gap), deformations that break conformal symmetry can produce a mass gap. The holographic approach provides non-perturbative insights via the strong/weak coupling duality: when gauge theory is strongly coupled, the gravity dual is weakly coupled and tractable. This represents one of the most promising routes to understanding the 4D mass gap, though it has not yet produced a rigorous proof.",
     "mathContext": "$\\mathcal{N}=4$ SYM on $\\partial(\\text{AdS}_5)$ $\\longleftrightarrow$ strings on $\\text{AdS}_5 \\times S^5$; mass gap requires conformal symmetry breaking",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Maldacena conjecture",
       "holography",
@@ -873,7 +873,7 @@
     "title": "Complexity Barriers and the Spectral Gap Undecidability",
     "content": "The spectral gap problem for general translation-invariant Hamiltonians on $\\mathbb{Z}^2$ is undecidable (Cubitt-Perez-Garcia-Wolf 2015) \u2014 no algorithm can determine whether $\\Delta > 0$ or $\\Delta = 0$. However, Yang-Mills is NOT a general Hamiltonian: gauge symmetry (Gauss law), asymptotic freedom (specific $\\beta$-function), and confining dynamics impose strong structural constraints, analogous to how specific Diophantine equations may be decidable even though Hilbert's 10th problem is undecidable. The local Hamiltonian ground-state energy problem is QMA-complete (Kitaev 1999), but for Yang-Mills the ground-state energy is 0 by construction \u2014 the question is about the gap above it. Pure Yang-Mills also avoids the fermion sign problem ($e^{-S_W} > 0$ for all configurations), enabling reliable Monte Carlo computation.",
     "mathContext": "General spectral gap undecidable on $\\mathbb{Z}^2$ (Cubitt et al.); Yang-Mills: specific structure may evade undecidability; no sign problem for pure YM",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "undecidability",
       "QMA-completeness",
@@ -1579,7 +1579,7 @@
     "title": "Quantum Simulation of Lattice Gauge Theories",
     "content": "Quantum computers offer a fundamentally new approach to the Yang-Mills mass gap by circumventing the sign problem that plagues classical Monte Carlo at finite baryon density. The formalization covers: (1) qubit-based lattice gauge theory, where group elements $U \\in \\mathrm{SU}(N)$ on links are encoded in qubit registers, (2) Trotterized time evolution $e^{-iHt} \\approx (e^{-iH_E \\delta t} e^{-iH_B \\delta t})^{t/\\delta t}$ splitting electric and magnetic Hamiltonians, and (3) the quantum advantage for real-time dynamics inaccessible to Euclidean methods. Current experimental demonstrations include trapped-ion simulations of the Schwinger model ($\\mathrm{U}(1)$ in 1+1D), showing confinement dynamics and string breaking in real time. For Yang-Mills specifically, quantum simulation could: verify the mass gap on small lattices with controlled systematics, simulate real-time flux tube formation, and eventually probe the continuum limit. The formalization proves Trotter error bounds and the polynomial scaling of qubit resources with lattice volume \u2014 quantum simulation of lattice gauge theory is in the BQP complexity class.",
     "mathContext": "$e^{-iHt} \\approx (e^{-iH_E \\delta t} e^{-iH_B \\delta t})^{t/\\delta t}$; qubits per link $\\sim \\log(\\Lambda_{\\max})$; Trotter error $\\sim N_{\\text{links}} \\cdot (\\delta t)^2$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "quantum computing",
       "Trotterization",

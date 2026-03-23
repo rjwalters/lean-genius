@@ -8,12 +8,12 @@
     },
     "type": "context",
     "title": "Problem Statement and Context",
-    "content": "**Erdős Problem #1144** asks about the partial sums of random completely multiplicative functions.\n\nFor each prime $p$, independently choose $f(p) \\in \\{-1, 1\\}$ uniformly at random, then extend multiplicatively to all of $\\mathbb{N}$.\n\n**Conjecture**: With probability 1,\n$$\\limsup_{N \\to \\infty} \\frac{\\left|\\sum_{m \\le N} f(m)\\right|}{\\sqrt{N}} = \\infty$$\n\nThis belongs to a family of problems about the **Erdős discrepancy theory** and random multiplicative functions, connecting number theory to probability.\n\n**Key known result** (Atherfold, 2025): Almost surely, $\\sum_{m \\le N} f(m) \\ll N^{1/2} (\\log N)^{1+o(1)}$, giving an upper bound but not resolving the conjecture.\n\nRelated to Erdős Problem #520 (Rademacher functions on squarefree integers).",
+    "content": "**Erd\u0151s Problem #1144** asks about the partial sums of random completely multiplicative functions.\n\nFor each prime $p$, independently choose $f(p) \\in \\{-1, 1\\}$ uniformly at random, then extend multiplicatively to all of $\\mathbb{N}$.\n\n**Conjecture**: With probability 1,\n$$\\limsup_{N \\to \\infty} \\frac{\\left|\\sum_{m \\le N} f(m)\\right|}{\\sqrt{N}} = \\infty$$\n\nThis belongs to a family of problems about the **Erd\u0151s discrepancy theory** and random multiplicative functions, connecting number theory to probability.\n\n**Key known result** (Atherfold, 2025): Almost surely, $\\sum_{m \\le N} f(m) \\ll N^{1/2} (\\log N)^{1+o(1)}$, giving an upper bound but not resolving the conjecture.\n\nRelated to Erd\u0151s Problem #520 (Rademacher functions on squarefree integers).",
     "mathContext": "$\\limsup_{N \\to \\infty} |S_f(N)| / \\sqrt{N} = \\infty$ a.s., where $S_f(N) = \\sum_{m=1}^{N} f(m)$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "random multiplicative functions",
-      "Erdős discrepancy problem",
+      "Erd\u0151s discrepancy problem",
       "Rademacher random variables",
       "limsup"
     ]
@@ -49,7 +49,7 @@
     },
     "type": "definition",
     "title": "Rademacher Multiplicative Functions",
-    "content": "A **Rademacher multiplicative function** is a completely multiplicative function where each prime value is $\\pm 1$:\n$$f(p) \\in \\{-1, 1\\} \\quad \\text{for all primes } p$$\n\nThe name comes from **Rademacher random variables**: independent random variables taking values $\\pm 1$ with equal probability. In the probabilistic setting of Problem #1144, the values $f(p)$ are independent Rademacher random variables.\n\nThis is a natural model for 'random' multiplicative functions — the simplest non-trivial choice at each prime. The resulting function $f(n) = \\pm 1$ for all $n \\ge 1$.",
+    "content": "A **Rademacher multiplicative function** is a completely multiplicative function where each prime value is $\\pm 1$:\n$$f(p) \\in \\{-1, 1\\} \\quad \\text{for all primes } p$$\n\nThe name comes from **Rademacher random variables**: independent random variables taking values $\\pm 1$ with equal probability. In the probabilistic setting of Problem #1144, the values $f(p)$ are independent Rademacher random variables.\n\nThis is a natural model for 'random' multiplicative functions \u2014 the simplest non-trivial choice at each prime. The resulting function $f(n) = \\pm 1$ for all $n \\ge 1$.",
     "mathContext": "$f$ is completely multiplicative with $f(p) \\in \\{-1, +1\\}$ for every prime $p$",
     "significance": "key",
     "relatedConcepts": [
@@ -70,12 +70,12 @@
     },
     "type": "definition",
     "title": "Partial Sum Definition",
-    "content": "The **partial sum** $S_f(N) = \\sum_{m=1}^{N} f(m)$ is the central object of study.\n\nFor the Liouville function $\\lambda$, the partial sum $L(N) = \\sum_{m \\le N} \\lambda(m)$ is the **summatory Liouville function**, connected to the Riemann Hypothesis (Pólya's conjecture, disproved by Haselgrove 1958).\n\nFor random $f$, heuristically each $f(m)$ is 'like' a random $\\pm 1$, but the multiplicative structure creates correlations. A sum of $N$ independent $\\pm 1$ variables has typical size $\\sqrt{N}$, so the question is whether multiplicative correlations change this behavior.\n\nThe implementation uses `Finset.range N` filtered to $m \\ge 1$, which computes $\\sum_{m=1}^{N-1} f(m)$.",
-    "mathContext": "$S_f(N) = \\sum_{m=1}^{N} f(m)$, implemented as `∑ m ∈ (Finset.range N).filter (· ≥ 1), f m`",
+    "content": "The **partial sum** $S_f(N) = \\sum_{m=1}^{N} f(m)$ is the central object of study.\n\nFor the Liouville function $\\lambda$, the partial sum $L(N) = \\sum_{m \\le N} \\lambda(m)$ is the **summatory Liouville function**, connected to the Riemann Hypothesis (P\u00f3lya's conjecture, disproved by Haselgrove 1958).\n\nFor random $f$, heuristically each $f(m)$ is 'like' a random $\\pm 1$, but the multiplicative structure creates correlations. A sum of $N$ independent $\\pm 1$ variables has typical size $\\sqrt{N}$, so the question is whether multiplicative correlations change this behavior.\n\nThe implementation uses `Finset.range N` filtered to $m \\ge 1$, which computes $\\sum_{m=1}^{N-1} f(m)$.",
+    "mathContext": "$S_f(N) = \\sum_{m=1}^{N} f(m)$, implemented as `\u2211 m \u2208 (Finset.range N).filter (\u00b7 \u2265 1), f m`",
     "significance": "key",
     "relatedConcepts": [
       "summatory function",
-      "Pólya conjecture",
+      "P\u00f3lya conjecture",
       "random walk",
       "Finset.sum"
     ],
@@ -112,7 +112,7 @@
       "endLine": 94
     },
     "type": "definition",
-    "title": "The Erdős Conjecture (Deterministic Form)",
+    "title": "The Erd\u0151s Conjecture (Deterministic Form)",
     "content": "The **deterministic formulation** of Problem #1144: for a fixed Rademacher multiplicative function $f$,\n$$\\forall C > 0,\\; \\exists^\\infty N \\text{ such that } |S_f(N)| > C \\sqrt{N}$$\n\nIn Lean, 'infinitely many' is expressed via `Filter.atTop`: the set $\\{N : |S_f(N)| \\ge C\\sqrt{N}\\}$ is in the cofinite filter, meaning it's infinite.\n\nThis says the partial sums **cannot** be bounded by any fixed multiple of $\\sqrt{N}$. Compare with the Central Limit Theorem: for independent $\\pm 1$ summands, $S(N) / \\sqrt{N}$ converges in distribution, so $|S(N)| > C\\sqrt{N}$ occurs with constant positive probability for any $C$. The conjecture asserts that multiplicative structure doesn't suppress this.",
     "mathContext": "$\\forall C > 0,\\; \\forall^\\infty N,\\; C\\sqrt{N} \\le |S_f(N)|$, expressed via `Filter.atTop`",
     "significance": "key",
@@ -120,7 +120,7 @@
       "Filter.atTop",
       "limsup",
       "central limit theorem",
-      "Erdős discrepancy"
+      "Erd\u0151s discrepancy"
     ],
     "prerequisites": [
       "ann-e1144-partialSum"
@@ -180,7 +180,7 @@
     },
     "type": "technique",
     "title": "Structural Theorems and Bounds",
-    "content": "Three structural results connecting the definitions:\n\n1. **`partialSum_zero`**: $S_f(0) = 0$, the empty sum. Proved by `simp [partialSum]`.\n\n2. **`atherfold_implies_subpolynomial`**: Atherfold's bound implies $|S_f(N)| \\le C \\cdot N^{1/2+\\delta}$ for any $\\delta > 0$. This follows because $(\\log N)^{1+\\varepsilon} = o(N^\\delta)$ for any $\\delta > 0$. Currently `sorry` — filling this in requires showing log-polynomial growth is dominated by any positive power of $N$.\n\n3. **`partialSum_trivial_bound`**: $|S_f(N)| \\le N$ for Rademacher functions. Since $|f(m)| = 1$, the triangle inequality gives $|\\sum f(m)| \\le \\sum |f(m)| = N$. Currently `sorry`.",
+    "content": "Three structural results connecting the definitions:\n\n1. **`partialSum_zero`**: $S_f(0) = 0$, the empty sum. Proved by `simp [partialSum]`.\n\n2. **`atherfold_implies_subpolynomial`**: Atherfold's bound implies $|S_f(N)| \\le C \\cdot N^{1/2+\\delta}$ for any $\\delta > 0$. This follows because $(\\log N)^{1+\\varepsilon} = o(N^\\delta)$ for any $\\delta > 0$. Currently `sorry` \u2014 filling this in requires showing log-polynomial growth is dominated by any positive power of $N$.\n\n3. **`partialSum_trivial_bound`**: $|S_f(N)| \\le N$ for Rademacher functions. Since $|f(m)| = 1$, the triangle inequality gives $|\\sum f(m)| \\le \\sum |f(m)| = N$. Currently `sorry`.",
     "mathContext": "$S_f(0) = 0$; $(\\log N)^{1+\\varepsilon} = o(N^\\delta)$ implies subpolynomial bound; $|S_f(N)| \\le N$ by triangle inequality",
     "significance": "supporting",
     "relatedConcepts": [

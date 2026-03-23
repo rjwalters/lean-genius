@@ -10,7 +10,7 @@
     "title": "Mathlib Imports and Namespace",
     "content": "A single `import Mathlib` pulls in the entire library, then `open Set Function` brings set-theoretic and function notations into scope. The file works inside the `Erdos477` namespace to avoid name collisions.",
     "mathContext": "Uses $\\text{Set}$, $\\text{Function}$, $\\text{range}$, $\\text{Injective}$ from Mathlib.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
       "namespaces",
@@ -119,7 +119,7 @@
       "endLine": 77
     },
     "title": "Linear Case is Trivial",
-    "content": "For $f(x) = x$ (degree 1), $A = \\{0\\}$ is a perfect complement since $f(\\mathbb{Z}) = \\mathbb{Z}$. This demonstrates why Erdős requires degree $\\geq 2$: the problem is trivial for linear polynomials.",
+    "content": "For $f(x) = x$ (degree 1), $A = \\{0\\}$ is a perfect complement since $f(\\mathbb{Z}) = \\mathbb{Z}$. This demonstrates why Erd\u0151s requires degree $\\geq 2$: the problem is trivial for linear polynomials.",
     "mathContext": "$\\{0\\} \\oplus \\text{id}(\\mathbb{Z}) = \\{0\\} \\oplus \\mathbb{Z} = \\mathbb{Z}$",
     "significance": "key",
     "relatedConcepts": [
@@ -273,7 +273,7 @@
       "startLine": 244,
       "endLine": 271
     },
-    "title": "Erdős Problem 477 (Open)",
+    "title": "Erd\u0151s Problem 477 (Open)",
     "content": "The main conjecture in three forms: (1) no degree $\\geq 2$ polynomial has a perfect complement, (2) no monomial $x^k$ with $k \\geq 2$ has a perfect complement, and (3) the combined statement. The formalization also notes connections to the Coven-Meyerowitz conjecture on integer tilings.",
     "mathContext": "$\\nexists f : \\mathbb{Z} \\to \\mathbb{Z},\\; \\deg f \\geq 2,\\; \\exists A \\subseteq \\mathbb{Z}:\\; A \\oplus f(\\mathbb{Z}) = \\mathbb{Z}$",
     "significance": "key",

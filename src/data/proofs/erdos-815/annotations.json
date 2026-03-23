@@ -8,9 +8,9 @@
     },
     "type": "context",
     "title": "Problem Overview and References",
-    "content": "Erdős Problem #815 asks whether 'degree 3 critical' graphs must contain cycles of all lengths $k \\geq 3$. A degree 3 critical graph has $n$ vertices, $2n-2$ edges, and every proper induced subgraph has minimum degree $\\leq 2$. The conjecture was posed by Erdős and Hajnal and DISPROVED by Narins, Pokrovskiy, and Szabó (2017), who constructed arbitrarily large such graphs avoiding $C_{23}$. Earlier, Erdős, Faudree, Gyárfás, and Schelp (1988) proved that $C_3$, $C_4$, $C_5$ always exist and that the longest cycle lies between $\\log_2 n$ and $\\sqrt{n}$.",
+    "content": "Erd\u0151s Problem #815 asks whether 'degree 3 critical' graphs must contain cycles of all lengths $k \\geq 3$. A degree 3 critical graph has $n$ vertices, $2n-2$ edges, and every proper induced subgraph has minimum degree $\\leq 2$. The conjecture was posed by Erd\u0151s and Hajnal and DISPROVED by Narins, Pokrovskiy, and Szab\u00f3 (2017), who constructed arbitrarily large such graphs avoiding $C_{23}$. Earlier, Erd\u0151s, Faudree, Gy\u00e1rf\u00e1s, and Schelp (1988) proved that $C_3$, $C_4$, $C_5$ always exist and that the longest cycle lies between $\\log_2 n$ and $\\sqrt{n}$.",
     "mathContext": "Does $G$ degree 3 critical with $|V| = n$, $|E| = 2n - 2$ imply $C_k \\subseteq G$ for all $k \\geq 3$? Answer: NO ($C_{23}$ can be avoided).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "degree 3 critical graph",
       "cycle containment",
@@ -106,7 +106,7 @@
     },
     "type": "definition",
     "title": "Cycles in Graphs",
-    "content": "`HasCycleOfLength G k` asserts the existence of a closed trail (walk that doesn't repeat edges) of length $k \\geq 3$ starting and ending at the same vertex. `ContainsCk` is a synonym. Using trails rather than simple paths is a simplification — for cycles in simple graphs, the two notions coincide when the cycle is the shortest closed walk through its vertices.",
+    "content": "`HasCycleOfLength G k` asserts the existence of a closed trail (walk that doesn't repeat edges) of length $k \\geq 3$ starting and ending at the same vertex. `ContainsCk` is a synonym. Using trails rather than simple paths is a simplification \u2014 for cycles in simple graphs, the two notions coincide when the cycle is the shortest closed walk through its vertices.",
     "mathContext": "$C_k \\subseteq G \\iff \\exists$ closed trail of length $k \\geq 3$ in $G$",
     "significance": "key",
     "relatedConcepts": [
@@ -129,8 +129,8 @@
       "endLine": 98
     },
     "type": "concept",
-    "title": "The Erdős-Hajnal Conjecture",
-    "content": "`ErdosHajnalConjecture` states: for all $k \\geq 3$, there exists $N$ such that every degree 3 critical graph on $\\geq N$ vertices contains $C_k$. This is a strong assertion — it would mean that the rich cycle structure of these graphs is *universal*, containing cycles of every possible length. The quantifier order ($\\forall k, \\exists N, \\forall G$) allows $N$ to depend on $k$, which is the natural formulation for asymptotic graph theory.",
+    "title": "The Erd\u0151s-Hajnal Conjecture",
+    "content": "`ErdosHajnalConjecture` states: for all $k \\geq 3$, there exists $N$ such that every degree 3 critical graph on $\\geq N$ vertices contains $C_k$. This is a strong assertion \u2014 it would mean that the rich cycle structure of these graphs is *universal*, containing cycles of every possible length. The quantifier order ($\\forall k, \\exists N, \\forall G$) allows $N$ to depend on $k$, which is the natural formulation for asymptotic graph theory.",
     "mathContext": "$\\forall k \\geq 3,\\, \\exists N,\\, \\forall G$ degree 3 critical with $|V| \\geq N$: $C_k \\subseteq G$",
     "significance": "key",
     "relatedConcepts": [
@@ -152,13 +152,13 @@
       "endLine": 108
     },
     "type": "technique",
-    "title": "EFGS Short Cycles (1988): C₃, C₄, C₅ Always Exist",
-    "content": "The axiom `efgs_short_cycles` captures the Erdős-Faudree-Gyárfás-Schelp theorem: every degree 3 critical graph on $n \\geq 5$ vertices contains $C_3$, $C_4$, AND $C_5$. The proof for $C_3$ follows from the edge density ($2n - 2$ edges forces triangles for large $n$ by Turán-type arguments). The $C_4$ and $C_5$ proofs require more delicate structural analysis of the degree 3 critical condition.",
+    "title": "EFGS Short Cycles (1988): C\u2083, C\u2084, C\u2085 Always Exist",
+    "content": "The axiom `efgs_short_cycles` captures the Erd\u0151s-Faudree-Gy\u00e1rf\u00e1s-Schelp theorem: every degree 3 critical graph on $n \\geq 5$ vertices contains $C_3$, $C_4$, AND $C_5$. The proof for $C_3$ follows from the edge density ($2n - 2$ edges forces triangles for large $n$ by Tur\u00e1n-type arguments). The $C_4$ and $C_5$ proofs require more delicate structural analysis of the degree 3 critical condition.",
     "mathContext": "$|V| \\geq 5 \\wedge \\text{IsDegree3Critical}(G) \\Rightarrow C_3, C_4, C_5 \\subseteq G$",
     "significance": "key",
     "relatedConcepts": [
       "short cycle containment",
-      "Turán-type argument",
+      "Tur\u00e1n-type argument",
       "EFGS theorem"
     ],
     "prerequisites": [
@@ -175,7 +175,7 @@
       "endLine": 125
     },
     "type": "technique",
-    "title": "EFGS Cycle Length Bounds: log₂(n) to √n",
+    "title": "EFGS Cycle Length Bounds: log\u2082(n) to \u221an",
     "content": "Two axioms capture the EFGS bounds on the longest cycle. `efgs_long_cycle`: every degree 3 critical graph contains a cycle of length $\\geq \\lfloor \\log_2 n \\rfloor$, providing a guaranteed minimum. `efgs_upper_bound`: there exist degree 3 critical graphs whose longest cycle has length $\\leq \\sqrt{n}$, showing the longest cycle can be much shorter than $n$. The gap between $\\log_2 n$ and $\\sqrt{n}$ represents the range of possible longest cycle lengths.",
     "mathContext": "$\\log_2 n \\leq \\max\\{k : C_k \\subseteq G\\} \\leq \\sqrt{n}$ for degree 3 critical $G$ on $n$ vertices",
     "significance": "key",
@@ -200,8 +200,8 @@
       "endLine": 137
     },
     "type": "technique",
-    "title": "Erdős-Hajnal Partial Result: k = 3, 4, 5, 6",
-    "content": "`erdos_hajnal_small_k` states that the conjecture holds for $3 \\leq k \\leq 6$: degree 3 critical graphs always contain $C_k$ for these values. The cases $k = 3, 4, 5$ follow from `efgs_short_cycles`. The case $k = 6$ was claimed by Erdős and Hajnal but is left as `sorry` — it would require a separate proof or axiom. This is the one remaining sorry in the file.",
+    "title": "Erd\u0151s-Hajnal Partial Result: k = 3, 4, 5, 6",
+    "content": "`erdos_hajnal_small_k` states that the conjecture holds for $3 \\leq k \\leq 6$: degree 3 critical graphs always contain $C_k$ for these values. The cases $k = 3, 4, 5$ follow from `efgs_short_cycles`. The case $k = 6$ was claimed by Erd\u0151s and Hajnal but is left as `sorry` \u2014 it would require a separate proof or axiom. This is the one remaining sorry in the file.",
     "mathContext": "$3 \\leq k \\leq 6 \\Rightarrow \\exists N,\\, \\forall G$ degree 3 critical with $|V| \\geq N$: $C_k \\subseteq G$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -222,7 +222,7 @@
       "endLine": 153
     },
     "type": "insight",
-    "title": "Narins-Pokrovskiy-Szabó Counterexample (2017)",
+    "title": "Narins-Pokrovskiy-Szab\u00f3 Counterexample (2017)",
     "content": "The axiom `narins_pokrovskiy_szabo` formalizes the breakthrough counterexample: for any $N$, there exists a degree 3 critical graph on $\\geq N$ vertices with no $C_{23}$. The number 23 is the smallest odd $k$ where their recursive construction technique works. The construction builds graphs satisfying $|E| = 2|V| - 2$ and the subgraph condition while carefully avoiding any 23-cycle, using graph products and local cycle analysis.",
     "mathContext": "$\\forall N,\\, \\exists G$ degree 3 critical with $|V| \\geq N$ and $C_{23} \\not\\subseteq G$",
     "significance": "key",
@@ -270,7 +270,7 @@
     },
     "type": "concept",
     "title": "Open Problem: Even k Conjecture",
-    "content": "`evenKConjecture` formalizes the remaining open question: does every degree 3 critical graph contain $C_k$ for all even $k \\geq 4$? The Narins-Pokrovskiy-Szabó counterexample uses $k = 23$ (odd), and their technique specifically exploits odd cycle structure. Even and odd cycles behave differently in graph theory (e.g., bipartite graphs have no odd cycles), so the even case may require entirely different techniques.",
+    "content": "`evenKConjecture` formalizes the remaining open question: does every degree 3 critical graph contain $C_k$ for all even $k \\geq 4$? The Narins-Pokrovskiy-Szab\u00f3 counterexample uses $k = 23$ (odd), and their technique specifically exploits odd cycle structure. Even and odd cycles behave differently in graph theory (e.g., bipartite graphs have no odd cycles), so the even case may require entirely different techniques.",
     "mathContext": "$\\forall k \\geq 4$ even: $\\exists N,\\, \\forall G$ degree 3 critical with $|V| \\geq N$: $C_k \\subseteq G$? (OPEN)",
     "significance": "key",
     "relatedConcepts": [
@@ -293,7 +293,7 @@
     },
     "type": "context",
     "title": "Motivation and Construction Idea",
-    "content": "Two expository sections explain: (1) Why 'degree 3 critical'? The $2n-2$ edge count gives average degree $\\approx 4$, but the subgraph condition prevents any proper subgraph from having minimum degree $\\geq 3$. These graphs are minimal witnesses to having a vertex of degree $\\geq 3$. (2) How the counterexample works: Narins-Pokrovskiy-Szabó use recursive structure, graph products, and local cycle analysis. The choice of 23 is the smallest odd $k$ where their technique succeeds.",
+    "content": "Two expository sections explain: (1) Why 'degree 3 critical'? The $2n-2$ edge count gives average degree $\\approx 4$, but the subgraph condition prevents any proper subgraph from having minimum degree $\\geq 3$. These graphs are minimal witnesses to having a vertex of degree $\\geq 3$. (2) How the counterexample works: Narins-Pokrovskiy-Szab\u00f3 use recursive structure, graph products, and local cycle analysis. The choice of 23 is the smallest odd $k$ where their technique succeeds.",
     "mathContext": "Average degree $= 2|E|/|V| = 2(2n-2)/n \\approx 4$; subgraph condition prevents dense cores",
     "significance": "supporting",
     "relatedConcepts": [
