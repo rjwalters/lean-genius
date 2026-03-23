@@ -10,7 +10,7 @@
     "title": "Hölder's Inequality (Lintegral Form)",
     "content": "The main inequality: ∫⁻ f·g dμ ≤ (∫⁻ f^p dμ)^{1/p} · (∫⁻ g^q dμ)^{1/q} for Hölder conjugate p, q and AEMeasurable f, g. Directly wraps Mathlib's ENNReal.lintegral_mul_le_Lp_mul_Lq.",
     "mathContext": "Hölder's inequality is the fundamental duality pairing in Lp theory. The proof normalizes f, g to unit Lp/Lq norms, applies Young's inequality pointwise (ab ≤ a^p/p + b^q/q), and integrates: the left side is ∫FG and the right side evaluates to 1/p + 1/q = 1. The ENNReal formulation handles infinite values correctly and works for any measure space.",
-    "significance": "The apex of the lintegral chain — all subsequent specializations (Cauchy-Schwarz, Minkowski) derive from this single inequality. It establishes the duality pairing between Lp and Lq that underlies the Riesz representation theorem.",
+    "significance": "key",
     "relatedConcepts": [
       "ENNReal.lintegral_mul_le_Lp_mul_Lq",
       "Hölder conjugate",
@@ -33,7 +33,7 @@
     "title": "Cauchy-Schwarz at Lintegral Level (p=q=2)",
     "content": "Specializes Hölder to p = q = 2: ∫⁻ f·g dμ ≤ (∫⁻ f² dμ)^{1/2} · (∫⁻ g² dμ)^{1/2}. Constructs the (2,2) conjugate pair using the 3-field HolderConjugate constructor with norm_num.",
     "mathContext": "The p = q = 2 specialization is the integral Cauchy-Schwarz inequality, the most frequently used case of Hölder. The HolderConjugate 2 2 proof requires three fields: 1 < 2, 1 < 2, and 1/2 + 1/2 = 1, all discharged by norm_num. This case makes L² into an inner product space via ⟨f,g⟩ = ∫fg.",
-    "significance": "The bridge between Hölder's inequality and the inner product structure of L². This lintegral-level CS is the ENNReal version; the L² inner product CS in Part III is the typed Hilbert space version.",
+    "significance": "key",
     "relatedConcepts": [
       "Cauchy-Schwarz inequality",
       "HolderConjugate",
@@ -56,7 +56,7 @@
     "title": "Minkowski's Inequality (eLpNorm Form)",
     "content": "The Lp triangle inequality in eLpNorm form: eLpNorm (f + g) p μ ≤ eLpNorm f p μ + eLpNorm g p μ for p ≥ 1 and AEStronglyMeasurable f, g. Wraps Mathlib's eLpNorm_add_le.",
     "mathContext": "Minkowski's inequality (1896) is the triangle inequality that makes Lp into a normed space. The proof for p > 1 uses Hölder internally: expand ‖f+g‖_p^p = ∫|f+g|^p, split as ∫|f+g|^{p-1}·(|f|+|g|), apply Hölder to each term with exponents p and p/(p-1), then divide. The eLpNorm API (renamed from snorm in Mathlib 4.26+) computes the Lp seminorm as an extended non-negative real.",
-    "significance": "Completes the Banach space structure of Lp, enabling the full functional analytic toolkit. The eLpNorm formulation handles p = 0 and p = ∞ uniformly via the extended non-negative real framework.",
+    "significance": "key",
     "relatedConcepts": [
       "eLpNorm_add_le",
       "Minkowski inequality",
@@ -79,7 +79,7 @@
     "title": "Minkowski at p=2 (eLpNorm Specialization)",
     "content": "The L² triangle inequality via eLpNorm: eLpNorm (f+g) 2 μ ≤ eLpNorm f 2 μ + eLpNorm g 2 μ. The 1 ≤ 2 hypothesis is discharged by norm_num.",
     "mathContext": "The p = 2 specialization of Minkowski is the Hilbert space triangle inequality. While eLpNorm_add_le proves it using the general Hölder-based argument, Part IV provides an alternative derivation from Cauchy-Schwarz alone via the norm-squared identity — the classical Hilbert space proof.",
-    "significance": "Demonstrates the p = 2 case of Minkowski, which pairs with the alternative CS-based derivation in Part IV to give two independent proofs of the same result.",
+    "significance": "key",
     "relatedConcepts": [
       "eLpNorm_add_le",
       "Hilbert space",
@@ -100,7 +100,7 @@
     "title": "L² Inner Product Cauchy-Schwarz",
     "content": "Two versions of Cauchy-Schwarz for L²(μ) functions: |⟨f,g⟩| ≤ ‖f‖·‖g‖ (two-sided) and ⟨f,g⟩ ≤ ‖f‖·‖g‖ (one-sided). Uses Mathlib's abs_real_inner_le_norm. The one-sided version follows from le_abs_self.",
     "mathContext": "The inner product Cauchy-Schwarz |⟨u,v⟩| ≤ ‖u‖·‖v‖ is the defining inequality of a Hilbert space. For L²(μ), the inner product is ⟨f,g⟩ = ∫fg dμ and the norm is ‖f‖ = (∫f² dμ)^{1/2}. Mathlib's abs_real_inner_le_norm proves this for any real inner product space; the L² instance comes from the Lp infrastructure.",
-    "significance": "The typed Hilbert space version of Cauchy-Schwarz, complementing the lintegral version in Part I. The one-sided version is needed for the norm-squared derivation of Minkowski in Part IV.",
+    "significance": "key",
     "relatedConcepts": [
       "abs_real_inner_le_norm",
       "inner product space",
@@ -123,7 +123,7 @@
     "title": "Minkowski L² from Cauchy-Schwarz (Classical Derivation)",
     "content": "Derives ‖f+g‖ ≤ ‖f‖+‖g‖ from Cauchy-Schwarz using the norm-squared identity: ‖f+g‖² = ‖f‖² + 2⟨f,g⟩ + ‖g‖² ≤ ‖f‖² + 2‖f‖·‖g‖ + ‖g‖² = (‖f‖+‖g‖)², then take square roots.",
     "mathContext": "This is the standard Hilbert space proof of the triangle inequality: expand using norm_add_sq_real, bound the inner product via CS, recognize the right side as a perfect square, then apply sqrt monotonicity. The nlinarith tactic handles the algebraic step, and Real.sqrt_le_sqrt + Real.sqrt_sq complete the square root argument. This proof works only for p = 2 (where the parallelogram law holds); the general Minkowski requires the Hölder-based bootstrap.",
-    "significance": "Demonstrates the alternative proof path: while eLpNorm_add_le uses Hölder internally, this derivation shows the L² triangle inequality follows from Cauchy-Schwarz alone — the proof that works in any inner product space.",
+    "significance": "key",
     "relatedConcepts": [
       "norm_add_sq_real",
       "Real.sqrt_le_sqrt",
@@ -147,7 +147,7 @@
     "title": "Young's Inequality at p=q=2 (AM-GM for Squares)",
     "content": "The elementary identity: ab ≤ a²/2 + b²/2 for all reals a, b. Proved by nlinarith from (a-b)² ≥ 0, which expands to a² - 2ab + b² ≥ 0.",
     "mathContext": "Young's inequality at p = q = 2 is the arithmetic-geometric mean inequality in disguise: ab ≤ (a² + b²)/2 is exactly AM-GM applied to a² and b². The proof from (a-b)² ≥ 0 is the most elementary route, requiring only that squares are non-negative. This is the pointwise seed from which the entire Lp hierarchy grows: integrate to get Hölder, specialize to get CS.",
-    "significance": "The pointwise foundation of the inequality hierarchy. While the NNReal version (young_nnreal) handles the general case, the p = q = 2 version connects directly to the elementary AM-GM inequality, grounding the abstract machinery in basic algebra.",
+    "significance": "key",
     "relatedConcepts": [
       "AM-GM inequality",
       "Young's inequality",
@@ -168,7 +168,7 @@
     "title": "Young's Inequality (Generalized NNReal Form)",
     "content": "For NNReal Hölder conjugate p, q: a·b ≤ a^p/p + b^q/q. Wraps Mathlib's NNReal.young_inequality, which proves this via the concavity of log.",
     "mathContext": "The general Young inequality (1912) is proved using the concavity of logarithm: log(ab) = log a + log b, and by Jensen's inequality applied to the convex combination (1/p)·log(a^p) + (1/q)·log(b^q), we get log(ab) ≤ log(a^p/p + b^q/q). Exponentiating gives the result. The NNReal version ensures all quantities are non-negative, avoiding the sign issues of the real version.",
-    "significance": "The general pointwise foundation from which Hölder's inequality is derived by integration. The NNReal formulation is directly compatible with the ENNReal lintegral, making it the natural type for measure-theoretic applications.",
+    "significance": "key",
     "relatedConcepts": [
       "NNReal.young_inequality",
       "NNReal.HolderConjugate",
@@ -191,7 +191,7 @@
     "title": "Hierarchy Verification: General Lp Triangle Inequality",
     "content": "The Lp norm triangle inequality ‖f+g‖ ≤ ‖f‖+‖g‖ for general p ≥ 1, using Mathlib's norm_add_le on the Lp type. The [Fact (1 ≤ p)] instance provides the p ≥ 1 hypothesis.",
     "mathContext": "This theorem closes the hierarchy: Young → Hölder → CS → Minkowski → general Lp triangle inequality. Mathlib's norm_add_le on Lp is the ultimate consumer of the entire chain. The Fact typeclass mechanism passes the 1 ≤ p hypothesis through the type class system rather than as an explicit argument.",
-    "significance": "Confirms the full chain is consistent: the general Lp triangle inequality, the most downstream result, is provable by a single Mathlib lemma application, verifying that all upstream infrastructure (Hölder, Minkowski) is correctly assembled.",
+    "significance": "key",
     "relatedConcepts": [
       "norm_add_le",
       "MeasureTheory.Lp",
