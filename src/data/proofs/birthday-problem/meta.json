@@ -218,6 +218,11 @@
       "targetId": "prob-method-expectation",
       "relationship": "related",
       "description": "The probabilistic method uses expectation to prove existence: in the birthday problem, the expected number of matching pairs is $\\binom{n}{2}/365 > 1$ for $n \\geq 28$, guaranteeing a match exists in expectation. The birthday bound is a key ingredient in probabilistic method arguments for hash collisions and random graph coloring"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "related",
+      "description": "The number of birthday collisions among $n$ people follows a distribution that converges to Poisson (and thence to Gaussian via CLT) as $n$ grows. The Poisson approximation $P \\approx 1 - e^{-n^2/(2m)}$ for $m$ buckets is the CLT-style limit that explains the $\\sqrt{m}$ scaling of the birthday threshold"
     }
   ],
   "relatedProofs": [
@@ -231,7 +236,8 @@
     "inclusion-exclusion",
     "stirling-formula",
     "combinations-formula",
-    "prob-method-expectation"
+    "prob-method-expectation",
+    "central-limit-theorem"
   ],
   "leanFile": {
     "imports": [
