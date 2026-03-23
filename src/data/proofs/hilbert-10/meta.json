@@ -142,12 +142,18 @@
       "targetId": "pell-equation",
       "relationship": "technical",
       "description": "Matiyasevich's proof uses Pell equations to show exponential relations are Diophantine — the key technical step"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "thematic",
+      "description": "Abel-Ruffini (1824) pioneered the impossibility-proof paradigm for polynomial equations: no radical formula solves all quintics, because the Galois group $S_5$ is not solvable. Matiyasevich (1970) proved the analogous impossibility for Diophantine equations: no algorithm decides all integer polynomial systems. Both reveal fundamental limits on 'solving' polynomial equations within a given formal framework"
     }
   ],
   "relatedProofs": [
     "halting-problem",
     "godel-incompleteness",
-    "pell-equation"
+    "pell-equation",
+    "abel-ruffini"
   ],
   "references": [
     {

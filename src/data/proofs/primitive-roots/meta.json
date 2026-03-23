@@ -142,6 +142,11 @@
       "targetId": "fermat-two-squares",
       "relationship": "related",
       "description": "Fermat's two-square theorem uses quadratic residues, which are characterized via primitive roots"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "foundational",
+      "description": "Primitive roots establish that $(\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ is cyclic — the structural property that makes radical extensions work in the Galois bridge theorem. Each radical step $K_i \\to K_i(\\sqrt[n]{a})$ factors through the cyclotomic extension $K_i(\\zeta_n)$, whose Galois group is cyclic. Abel-Ruffini's impossibility arises because the composition of such cyclic quotients cannot produce the non-solvable group $S_5$"
     }
   ],
   "conclusion": {
@@ -172,7 +177,8 @@
   "relatedProofs": [
     "euler-totient",
     "quadratic-reciprocity",
-    "fermat-two-squares"
+    "fermat-two-squares",
+    "abel-ruffini"
   ],
   "references": [
     {
