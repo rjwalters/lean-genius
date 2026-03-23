@@ -149,6 +149,46 @@
       "seeAlso": "For an alternative Lean 4 formalization that addresses some of these concerns with a more modular approach, see [Jim Bowery's RelativeIdentity project](https://github.com/jabowery/RelativeIdentity)."
     }
   },
+  "crossReferences": [
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "thematic",
+      "description": "Gödel's incompleteness theorems demonstrate the limits of formal foundations — the meta-level/object-level distinction central to evaluating Etter's universality claim is precisely the distinction Gödel exploited in his diagonal argument"
+    },
+    {
+      "targetId": "russell-1-plus-1",
+      "relationship": "foundational",
+      "description": "Russell and Whitehead's proof that 1+1=2 in Principia Mathematica exemplifies the traditional set-theoretic foundation that Etter's identity theory proposes to replace — both address the question of what constitutes a sufficient foundation for arithmetic"
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "thematic",
+      "description": "Cantor's theorem ($|S| < |\\mathcal{P}(S)|$) is a core result of ZF set theory — the system whose axioms Etter's bridges translate to and from three-place identity structures"
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "thematic",
+      "description": "Cantor's diagonal argument establishes the uncountability of the reals within set-theoretic foundations — a result that identity theory must be able to express if it is truly foundationally adequate"
+    },
+    {
+      "targetId": "schroeder-bernstein",
+      "relationship": "thematic",
+      "description": "The Schröder-Bernstein theorem on set bijections relies on the membership relation that Etter's D1 bridge derives from identity — showing how classical set-theoretic results emerge from the identity-first perspective"
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "thematic",
+      "description": "The halting problem's undecidability constrains what any foundational system can prove — Etter's identity theory, being mutually interpretable with ZF, inherits the same computability-theoretic limitations"
+    }
+  ],
+  "relatedProofs": [
+    "godel-incompleteness",
+    "russell-1-plus-1",
+    "cantors-theorem",
+    "cantor-diagonalization",
+    "schroeder-bernstein",
+    "halting-problem"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Tactic.Tauto",
@@ -164,11 +204,39 @@
   },
   "references": [
     {
+      "authors": "Etter, Tom",
+      "title": "Three-Place Identity",
+      "year": "2006",
+      "venue": "Boundary Institute Working Paper",
+      "note": "The original paper proposing three-place relative identity as a foundation for mathematics, with the universality theorem and bridges D1/D2"
+    },
+    {
+      "authors": "Benacerraf, Paul",
+      "title": "What Numbers Could Not Be",
+      "year": "1965",
+      "venue": "The Philosophical Review 74(1), 47–73",
+      "note": "The classic paper questioning whether numbers are sets — motivates Etter's search for an alternative foundation where objects are defined by identity relations rather than membership"
+    },
+    {
+      "authors": "Quine, Willard Van Orman",
+      "title": "Word and Object",
+      "year": "1960",
+      "venue": "MIT Press",
+      "note": "Develops the notion of identity as indiscernibility relative to predicates — the philosophical ancestor of Etter's Id_mem(x,y,z) iff (y ∈ x ↔ z ∈ x)"
+    },
+    {
+      "authors": "Rota, Gian-Carlo",
+      "title": "Indiscrete Thoughts",
+      "year": "1997",
+      "venue": "Birkhäuser",
+      "note": "Contains Rota's slogan 'Identity precedes existence' that Etter's formalization makes mathematically precise"
+    },
+    {
       "authors": "Mac Lane, Saunders",
       "title": "Categories for the Working Mathematician",
       "year": "1998",
       "venue": "Springer GTM 5, 2nd edition",
-      "note": "Standard reference for categorical identities and coherence theorems"
+      "note": "Standard reference for categorical identities and coherence theorems — relevant to the categorical semantics question raised in the open questions"
     }
   ]
 }
