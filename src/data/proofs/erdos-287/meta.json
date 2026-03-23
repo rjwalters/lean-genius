@@ -22,6 +22,36 @@
     "erdosNumber": 287,
     "erdosUrl": "https://erdosproblems.com/287",
     "erdosProblemStatus": "open",
+    "references": [
+      {
+        "authors": "Erdős, Paul",
+        "title": "Egy Kürschák-féle elemi számelméleti tétel általánosítása",
+        "year": "1932",
+        "venue": "Mat. Fiz. Lapok 39, pp. 17-24",
+        "note": "First proved the gap ≥ 2 result using Bertrand's postulate and p-adic valuations"
+      },
+      {
+        "authors": "Guy, Richard K.",
+        "title": "Unsolved Problems in Number Theory",
+        "year": "2004",
+        "venue": "Springer, 3rd edition",
+        "note": "Problem D11: Egyptian fraction representations of unity"
+      },
+      {
+        "authors": "Graham, Ronald L.",
+        "title": "On finite sums of unit fractions",
+        "year": "1964",
+        "venue": "Proceedings of the London Mathematical Society 14, pp. 193-207",
+        "note": "Systematic study of Egyptian fraction representations; established several structural results"
+      },
+      {
+        "authors": "Erdős, Paul; Straus, Ernst G.",
+        "title": "On the irrationality of certain Ahmes series",
+        "year": "1971",
+        "venue": "Journal of the Indian Mathematical Society 27, pp. 129-133",
+        "note": "Related work on Egyptian fraction structure and irrationality of harmonic subseries"
+      }
+    ],
     "dateAdded": "2026-01-24",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
@@ -135,11 +165,23 @@
       "targetId": "erdos-268",
       "relationship": "related",
       "description": "Both involve harmonic subseries and unit fraction representations. Problem #268 studies the topology of harmonic subseries points in $\\mathbb{R}^d$; Problem #287 studies the gap structure of Egyptian fraction representations of 1"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "foundational",
+      "description": "The divergence of $\\sum 1/n$ ensures that sufficiently long Egyptian fractions can approximate any positive rational, including 1. The gap ≥ 2 proof uses p-adic valuations of harmonic-type sums, connecting the two areas"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The gap ≥ 2 proof uses Bertrand's postulate to find a prime in $(N, 2N)$ whose p-adic valuation creates an obstruction to consecutive-denominator decompositions. The infinitude of primes is implicit in the argument"
     }
   ],
   "relatedProofs": [
     "bertrands-postulate",
-    "erdos-268"
+    "erdos-268",
+    "harmonic-divergence",
+    "infinitude-primes"
   ],
   "leanFile": {
     "imports": [
