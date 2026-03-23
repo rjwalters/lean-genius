@@ -82,6 +82,38 @@
       "What is the minimum chromatic number of a graph with girth g that fails robust orientability?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "related",
+      "description": "Both concern structural properties of graph orientations and colorings. The four-color theorem constrains planar graph colorings; Erdős #1006 asks about acyclic orientations robust to edge reversal, connecting graph orientation theory to chromatic properties"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey theory and this problem share the theme of unavoidable structures: Ramsey shows large enough graphs must contain monochromatic substructures; the Nešetřil-Rödl disproof uses Ramsey-type constructions to show high-girth graphs cannot always admit robustly acyclic orientations"
+    }
+  ],
+  "relatedProofs": [
+    "four-color-theorem",
+    "ramseys-theorem"
+  ],
+  "references": [
+    {
+      "authors": "Nešetřil, Jaroslav; Rödl, Vojtěch",
+      "title": "A short proof of the existence of highly chromatic hypergraphs without short cycles",
+      "year": "1979",
+      "venue": "Journal of Combinatorial Theory, Series B, vol. 27, pp. 225–227",
+      "note": "Provides the probabilistic construction disproving Erdős #1006: graphs with arbitrarily high girth and chromatic number exist, and such graphs cannot admit robustly acyclic orientations"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Problems and results in graph theory and combinatorial analysis",
+      "year": "1976",
+      "venue": "Congressus Numerantium, vol. 15, pp. 169–192",
+      "note": "Collection of open problems including #1006 on robust acyclic orientations of high-girth graphs"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
