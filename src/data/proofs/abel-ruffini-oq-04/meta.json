@@ -82,6 +82,11 @@
         "key": "Co05",
         "citation": "Cohen, H., A Course in Computational Algebraic Number Theory, Springer GTM 138 (1993, corrected 4th printing 2005), Chapter 6: Galois groups of polynomials.",
         "type": "book"
+      },
+      {
+        "key": "Bu04",
+        "citation": "Burnside, W., On groups of order p^α q^β, Proceedings of the London Mathematical Society 2(1) (1904), 388–392.",
+        "type": "paper"
       }
     ],
     "relatedProofs": [
@@ -325,7 +330,8 @@
       "Prove S₂, S₃, S₄ solvable explicitly (not just S₀, S₁) to complete the degree-by-degree picture",
       "Formalize Galois's criterion: a polynomial is solvable by radicals iff its Galois group is solvable",
       "Exhibit specific solvable quintics (e.g., x⁵ - 1 with cyclic Galois group) to illustrate the generic/specific distinction",
-      "Formalize the effective decision procedure: given a polynomial f ∈ ℚ[x], compute Gal(f/ℚ) as a transitive subgroup of Sₙ and check its solvability — connecting Abel-Ruffini's impossibility to a constructive algorithm"
+      "Formalize the effective decision procedure: given a polynomial f ∈ ℚ[x], compute Gal(f/ℚ) as a transitive subgroup of Sₙ and check its solvability — connecting Abel-Ruffini's impossibility to a constructive algorithm",
+      "Formalize the Jordan-Hölder theorem applied to Sₙ: show that the composition factors of S₅ are {ℤ/2ℤ, A₅} and prove that a group is solvable iff all its composition factors are cyclic of prime order — giving an alternative proof path for Abel-Ruffini"
     ]
   },
   "leanFile": {
