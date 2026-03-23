@@ -123,6 +123,20 @@
       "Can we prove specific prime gap values (e.g., gap between 7 and 11 is 4) computationally?"
     ]
   },
+  "crossReferences": [
+    {
+      "proofId": "erdos-1138",
+      "relationship": "Parent formalization that this OQ-03 extends by resolving all sorries and converting axioms to proved theorems"
+    },
+    {
+      "proofId": "bertrands-postulate",
+      "relationship": "Bertrand's postulate (Nat.bertrand in Mathlib) is the key ingredient for proving prime_gap_le_prev_prime and maxPrimeGap_le_half"
+    },
+    {
+      "proofId": "prime-gap-bounds",
+      "relationship": "Related formalization of prime gap bounds; both study the growth rate of maximal prime gaps G(x)"
+    }
+  ],
   "relatedProblems": [
     {
       "id": "erdos-1138",

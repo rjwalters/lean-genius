@@ -130,6 +130,43 @@
       "Can the lower bound of 3 be improved, perhaps to 4 or 5, using finer topological or measure-theoretic obstructions?"
     ]
   },
+  "crossReferences": [
+    {
+      "proofId": "erdos-1124",
+      "relationship": "Parent formalization of Laczkovich's circle-squaring theorem; this OQ-01 investigates the minimum piece count"
+    },
+    {
+      "proofId": "area-of-circle",
+      "relationship": "Foundational formalization of the area of a circle (pi*r^2), the equal-area condition central to this equidecomposition problem"
+    },
+    {
+      "proofId": "lebesgue-measure",
+      "relationship": "Lebesgue measure theory underpins the measurability distinctions (non-measurable vs Borel pieces) in the upper bound progression"
+    }
+  ],
+  "references": [
+    {
+      "authors": "M. Laczkovich",
+      "title": "Equidecomposability and discrepancy: a solution of Tarski's circle-squaring problem",
+      "year": "1990",
+      "venue": "Journal fur die reine und angewandte Mathematik, 404, 77-117",
+      "note": "Proved circle-squaring with ~10^50 non-measurable pieces using discrepancy theory"
+    },
+    {
+      "authors": "A. S. Marks, S. T. Unger",
+      "title": "Borel circle squaring",
+      "year": "2017",
+      "venue": "Annals of Mathematics, 186(2), 581-605",
+      "note": "Achieved Borel measurable pieces with fewer than 10^5 pieces using descriptive set theory"
+    },
+    {
+      "authors": "L. Grabowski, A. Mathe, O. Pikhurko",
+      "title": "Measurable circle squaring",
+      "year": "2017",
+      "venue": "Annals of Mathematics, 185(2), 671-710",
+      "note": "First proof that circle-squaring is possible with Lebesgue measurable pieces"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

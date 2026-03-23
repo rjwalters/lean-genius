@@ -132,6 +132,43 @@
       "Does the primorial sequence σ(p_1·...·p_k)/(p_1·...·p_k) → ∞ suffice for density-0?"
     ]
   },
+  "crossReferences": [
+    {
+      "proofId": "erdos-1054",
+      "relationship": "Parent formalization of Erdos Problem #1054; this OQ-01 tackles the 'almost all' version that remains open after Tao's disproof"
+    },
+    {
+      "proofId": "prime-number-theorem",
+      "relationship": "The prime number theorem underpins the asymptotic analysis of sigma(m)/m via Mertens' theorem for primorials"
+    },
+    {
+      "proofId": "dirichlets-theorem",
+      "relationship": "Dirichlet's theorem on primes in arithmetic progressions relates to the distribution of divisors used in the sigma bound approach"
+    }
+  ],
+  "references": [
+    {
+      "authors": "R. K. Guy",
+      "title": "Unsolved Problems in Number Theory",
+      "year": "2004",
+      "venue": "Springer, 3rd edition, Problem B2",
+      "note": "Source of Erdos Problem #1054 on partial sums of divisors"
+    },
+    {
+      "authors": "T. Tao",
+      "title": "A remark on partial sums involving the Mobius function",
+      "year": "2012",
+      "venue": "Bulletin of the Australian Mathematical Society, 85(3), 462-470",
+      "note": "Disproved the unconditional form f(n) = o(n) for all n; the 'almost all' version remains open"
+    },
+    {
+      "authors": "T. H. Gronwall",
+      "title": "Some asymptotic expressions in the theory of numbers",
+      "year": "1913",
+      "venue": "Transactions of the American Mathematical Society, 14(1), 113-122",
+      "note": "Gronwall's theorem: sigma(n)/(n log log n) -> e^gamma; key to the superabundant number approach"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.Divisors",
