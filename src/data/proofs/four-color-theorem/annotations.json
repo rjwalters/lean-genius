@@ -75,7 +75,7 @@
       "startLine": 62,
       "endLine": 70
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Euler's Formula: The Fundamental Constraint",
     "content": "For any connected planar graph embedded in the plane:\n\n$$V - E + F = 2$$\n\nwhere V = vertices, E = edges, F = faces (including the unbounded outer face).\n\nThis remarkable formula constrains planar graph structure. Combined with the handshaking lemma (sum of degrees = 2E), it implies every planar graph has a vertex of degree at most 5.\n\nThis 'low-degree vertex' existence is the entry point for inductive proofs of coloring theorems.",
     "mathContext": "$V - E + F = 2$ for connected planar graphs",
@@ -96,7 +96,7 @@
       "startLine": 76,
       "endLine": 83
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Every Planar Graph Has a Low-Degree Vertex",
     "content": "Every planar graph with at least one vertex has a vertex of degree at most 5.\n\n**Proof sketch:** By Euler's formula and handshaking, the average degree in a planar graph is less than 6. Therefore, some vertex must have degree at most 5.\n\nThis result is crucial: it guarantees we can always find a 'removable' vertex for inductive arguments. It's why the Five Color Theorem is easy (6 colors would be trivial, 5 requires one trick, 4 requires computer assistance).",
     "mathContext": "$\\forall G$ planar, $\\exists v \\in V(G)$ with $\\deg(v) \\leq 5$",
@@ -116,7 +116,7 @@
       "startLine": 88,
       "endLine": 98
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Five Color Theorem",
     "content": "Every planar graph is 5-colorable. This is much easier than Four Color!\n\n**Proof by induction:**\n1. Find a vertex v of degree ≤ 5\n2. Remove v to get smaller graph G'\n3. By induction, G' is 5-colorable\n4. Restore v: it has ≤ 5 neighbors using ≤ 5 colors\n5. If all 5 colors appear among neighbors, use Kempe chains to free one\n6. Color v with the freed color\n\nThe key insight: with 5 colors and ≤ 5 neighbors, we can always make room. With 4 colors, this argument fails—hence the difficulty of the Four Color Theorem.",
     "mathContext": "$\\chi(G) \\leq 5$ for all planar graphs G",
@@ -153,7 +153,7 @@
       "startLine": 104,
       "endLine": 150
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Kempe Chain Swapping Preserves Validity",
     "content": "If we have a proper coloring and swap colors along a Kempe chain, the result is still a proper coloring.\n\n**Why it works:**\n- Any edge with both endpoints in the chain: before, one was color a, one was b; after, they're swapped but still different\n- Any edge with one endpoint in, one out: the outside endpoint keeps its original color (not a or b), so still different from the inside endpoint\n- Any edge with both endpoints outside: unchanged\n\nThis lets us 'free up' a color at a specific vertex by pushing conflicting colors elsewhere.",
     "mathContext": "Swapping on Kempe chain preserves $\\forall(u,v) \\in E: c(u) \\neq c(v)$",

@@ -94,7 +94,7 @@
       "startLine": 53,
       "endLine": 69
     },
-    "type": "conjecture",
+    "type": "concept",
     "title": "The Two Open Conjectures",
     "content": "ErdosProblem741_density formalizes Part 1: for all A with HasPosDensity(sumset A A), there exist A_1, A_2 with A = A_1 union A_2, Disjoint A_1 A_2, and both HasPosDensity(sumset A_1 A_1) and HasPosDensity(sumset A_2 A_2). ErdosProblem741_basis formalizes Part 2: there exists A with IsBasisOrder2 A such that for all disjoint partitions A = A_1 union A_2, not both IsSyndetic(sumset A_1 A_1) and IsSyndetic(sumset A_2 A_2). The two parts are in tension: Part 2 would provide a counterexample to the strongest version of Part 1.",
     "mathContext": "$\\text{Part 1}: \\forall A, \\bar{d}(A+A) > 0 \\Rightarrow \\exists A = A_1 \\sqcup A_2, \\bar{d}(A_1+A_1) > 0 \\wedge \\bar{d}(A_2+A_2) > 0$. $\\text{Part 2}: \\exists A \\text{ basis}, \\forall A = A_1 \\sqcup A_2, \\neg(\\text{Synd}(A_1+A_1) \\wedge \\text{Synd}(A_2+A_2))$.",
@@ -118,7 +118,7 @@
       "startLine": 71,
       "endLine": 121
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sumset Algebraic Properties (10 Proved Theorems)",
     "content": "Ten structural results about sumsets, all fully proved. sumset_comm: A+B = B+A (by swapping existential witnesses with omega). empty_sumset, sumset_empty_left/right: sumsets involving empty sets are empty (by simp). sumset_mono: A subset B implies A+A subset B+B. sumset_mono_left: monotonicity in the first argument. zero_mem_sumset_self: 0 in A implies 0 in A+A. double_mem_sumset: a in A implies 2a in A+A. sumset_union_contains_left/right: A+A and B+B are both subsets of (A union B)+(A union B).",
     "mathContext": "Key proved results: $A + B = B + A$ (`sumset_comm`), $A \\subseteq B \\Rightarrow A+A \\subseteq B+B$ (`sumset_mono`), $a \\in A \\Rightarrow 2a \\in A+A$ (`double_mem_sumset`), $A+A \\subseteq (A \\cup B)+(A \\cup B)$ (`sumset_union_contains_left`). Proofs use `ext`, `rintro`, `omega`, and `Set.subset_union_left/right`.",
@@ -139,7 +139,7 @@
       "startLine": 123,
       "endLine": 148
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Partition Properties (3 Proved Theorems)",
     "content": "Three results about disjoint partitions. trivial_partition: A = A union empty with Disjoint A empty (by simp and disjoint_bot_right). complement_partition: for any A_1 subset A, A = A_1 union (A \\ A_1) with Disjoint A_1 (A \\ A_1), proved by cases on membership and disjoint_sdiff_self_right. partition_membership: in a disjoint partition, x in A_1 implies x not in A_2, from Set.disjoint_left.",
     "mathContext": "`trivial_partition : A = A \\cup \\emptyset \\wedge \\text{Disjoint } A\\ \\emptyset$. `complement_partition : A_1 \\subseteq A \\Rightarrow A = A_1 \\cup (A \\setminus A_1) \\wedge \\text{Disjoint}$. `partition_membership : \\text{Disjoint } A_1\\ A_2 \\Rightarrow x \\in A_1 \\Rightarrow x \\notin A_2$.",
@@ -160,7 +160,7 @@
       "startLine": 149,
       "endLine": 181
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Syndetic Set Theory (5 Proved Theorems)",
     "content": "Five structural results about syndetic sets. nat_syndetic: N is syndetic with gap 0. empty_not_syndetic: the empty set is not syndetic (any witness m would be in empty). syndetic_nonempty: syndetic sets are nonempty (take n=0 in the gap condition). syndetic_mono: supersets of syndetic sets are syndetic (transfer witnesses). syndetic_infinite: syndetic sets are infinite (for any n, the gap condition produces an element > n, proved via Set.infinite_iff_exists_gt).",
     "mathContext": "`nat_syndetic : IsSyndetic(\\mathbb{N})` with $g = 0$. `empty_not_syndetic : \\neg\\text{IsSyndetic}(\\emptyset)$. `syndetic_mono : S \\subseteq T \\Rightarrow \\text{IsSyndetic}(S) \\Rightarrow \\text{IsSyndetic}(T)$. `syndetic_infinite : \\text{IsSyndetic}(S) \\Rightarrow S.\\text{Infinite}$, using `Set.infinite_iff_exists_gt` and the gap condition at $n+1$.",
@@ -201,7 +201,7 @@
       "startLine": 201,
       "endLine": 239
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Basis Properties: Infiniteness and Positive Density",
     "content": "basis_infinite (PROVED): a basis of order 2 must be infinite. Proof by contradiction: if A is bounded by n, then A+A is bounded by 2n, contradicting the Eventually condition which requires arbitrarily large elements in A+A. Uses Filter.Eventually, Filter.mem_atTop_sets to extract the threshold N, then takes max(N, 2n+1) for the contradiction. cofinite_density_one (axiom): cofinite sets have density 1. basis_has_pos_density_sumset (PROVED): a basis has HasPosDensity(A+A), since A+A is cofinite (by definition of basis) and cofinite sets have density 1 > 0.",
     "mathContext": "`basis_infinite : IsBasisOrder2(A) \\Rightarrow A.\\text{Infinite}$. Proof: if $A \\subseteq [0,n]$ then $A+A \\subseteq [0,2n]$, but $\\forall^\\infty m, m \\in A+A$ requires $\\max(N, 2n+1) \\in A+A$, contradiction. `basis_has_pos_density_sumset` uses `cofinite_density_one` and `norm_num` to show $1 > 0$.",
@@ -223,7 +223,7 @@
       "startLine": 241,
       "endLine": 273
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Connections Between Parts: Tension Theorem",
     "content": "Two key theorems connecting the conjectures. part2_gives_non_syndetic (PROVED): if Part 2 holds, then for the constructed basis, every partition has at least one non-syndetic sumset (by push_neg and contradiction). syndetic_has_pos_density (axiom): syndetic implies positive density. part2_contradicts_part1_for_basis (PROVED): if Part 2 holds, then there exists a specific set A with HasPosDensity(A+A) where Part 1 fails for syndetic partitions. This formally establishes the tension between the two parts.",
     "mathContext": "`part2_gives_non_syndetic : \\text{Part2} \\Rightarrow \\exists A \\text{ basis}, \\forall A = A_1 \\sqcup A_2, \\neg\\text{Synd}(A_1+A_1) \\vee \\neg\\text{Synd}(A_2+A_2)$. `part2_contradicts_part1_for_basis : \\text{Part2} \\Rightarrow \\exists A, \\bar{d}(A+A) > 0 \\wedge \\forall A = A_1 \\sqcup A_2, \\neg(\\text{Synd}(A_1+A_1) \\wedge \\text{Synd}(A_2+A_2))$.",

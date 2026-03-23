@@ -80,7 +80,7 @@
       "startLine": 119,
       "endLine": 127
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Butler-Erdős-Graham Theorem",
     "content": "**butler_erdos_graham_theorem**: Every positive integer can be expressed as an Egyptian fraction where each denominator is a product of exactly 3 distinct primes.\n\n```lean\naxiom butler_erdos_graham_theorem :\n  ∀ m : ℕ, 0 < m →\n    ∃ k : ℕ, k > 0 ∧ ∃ repr : EgyptianRepr k,\n      isThreePrimeRepr repr ∧ repr.sum = m\n```\n\nThis was proved by Butler, Erdős, and Graham in their 2015 paper, appearing 19 years after Erdős's death.",
     "mathContext": "The 3-prime case is easier than 2-prime because products of 3 distinct primes are denser among the integers.",
@@ -98,7 +98,7 @@
       "startLine": 135,
       "endLine": 138
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Three-Prime Version Solved",
     "content": "**three_prime_solved**: Derives the 3-prime integer version from Butler-Erdős-Graham.\n\n```lean\ntheorem three_prime_solved : three_prime_integer_version := by\n  intro m hm\n  obtain ⟨k, hk, repr, hrepr, hsum⟩ := butler_erdos_graham_theorem m hm\n  exact ⟨k, repr, hrepr, hsum⟩\n```\n\nThis is a direct corollary of the axiomatized theorem, dropping the k > 0 condition.",
     "mathContext": "The proof uses obtain to destructure the existence statement and rebuilds it with the simpler predicate.",
@@ -116,7 +116,7 @@
       "startLine": 147,
       "endLine": 163
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Computational Verification",
     "content": "**native_decide examples**: Verify that specific numbers satisfy the conditions:\n\n```lean\nexample : ArithmeticFunction.cardDistinctFactors 6 = 2 := by native_decide\nexample : ArithmeticFunction.cardFactors 6 = 2 := by native_decide\nexample : ArithmeticFunction.cardDistinctFactors 30 = 3 := by native_decide\n```\n\nThese confirm:\n- 6 = 2×3 has ω(6) = Ω(6) = 2 (product of 2 distinct primes)\n- 30 = 2×3×5 has ω(30) = 3 (product of 3 distinct primes)",
     "mathContext": "native_decide uses Lean's kernel to compute and verify arithmetic statements.",
@@ -134,7 +134,7 @@
       "startLine": 153,
       "endLine": 157
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Representation of 1",
     "content": "**example_one_representation**: The integer 1 can be represented with 2-distinct-prime denominators:\n\n```lean\naxiom example_one_representation :\n  (1 : ℚ) / 6 + 1 / 10 + 1 / 14 + 1 / 15 + 1 / 21 + 1 / 35 = 1\n```\n\nVerification: 6=2×3, 10=2×5, 14=2×7, 15=3×5, 21=3×7, 35=5×7\n\nSum: 1/6 + 1/10 + 1/14 + 1/15 + 1/21 + 1/35 = 35+21+15+14+10+6 / 210 = 1",
     "mathContext": "This shows the conjecture holds for q = 1. The denominators form all products of pairs from {2,3,5,7}.",
@@ -188,7 +188,7 @@
       "startLine": 223,
       "endLine": 239
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Greedy Algorithm",
     "content": "**greedy_egyptian_exists**: The classical greedy algorithm produces an Egyptian fraction for any positive rational:\n\n1. Given q > 0, find smallest n with 1/n ≤ q\n2. Set q ← q - 1/n\n3. Repeat until q = 0\n\n```lean\naxiom greedy_egyptian_exists : ∀ q : ℚ, 0 < q →\n  ∃ k : ℕ, ∃ repr : EgyptianRepr k, repr.sum = q\n```\n\n**Limitation**: The greedy algorithm doesn't guarantee prime structure of denominators.",
     "mathContext": "The greedy algorithm always terminates but may produce denominators that violate the semiprime constraint.",

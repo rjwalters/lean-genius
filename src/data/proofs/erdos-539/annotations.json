@@ -33,7 +33,7 @@
       "startLine": 42,
       "endLine": 48
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "gcdQuotient_pos",
     "content": "gcdQuotient is always positive for positive inputs.",
     "significance": "key",
@@ -59,7 +59,7 @@
       "startLine": 50,
       "endLine": 54
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "gcdQuotient_is_nat",
     "content": "gcdQuotient a b * gcd(a,b) = a.",
     "significance": "key",
@@ -165,7 +165,7 @@
       "startLine": 83,
       "endLine": 86
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "gcdQuotient_self",
     "content": "gcdQuotient a a = 1 for a > 0.",
     "significance": "key",
@@ -191,7 +191,7 @@
       "startLine": 88,
       "endLine": 94
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "one_in_quotient_set",
     "content": "1 is always in the quotient set.",
     "significance": "key",
@@ -217,7 +217,7 @@
       "startLine": 100,
       "endLine": 105
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "erdos_szemeredi_lower",
     "content": "Erdős-Szemerédi: h(n) ≥ c·n^{1/2}.",
     "significance": "key",
@@ -244,7 +244,7 @@
       "startLine": 107,
       "endLine": 113
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "erdos_szemeredi_upper",
     "content": "Erdős-Szemerédi: h(n) ≤ n^{1-c}.",
     "significance": "key",
@@ -297,7 +297,7 @@
       "startLine": 124,
       "endLine": 130
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "freiman_lev_upper",
     "content": "Freiman-Lev: h(n) ≤ C·n^{2/3}.",
     "significance": "key",
@@ -431,7 +431,7 @@
       "startLine": 180,
       "endLine": 193
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Granville-Roesler Geometric Reformulation",
     "content": "**Geometric reformulation** by Granville and Roesler: the GCD-quotient problem can be studied through lattice point configurations in ℤ^d. The 'directed distance' δ(a,b) has i-th coordinate max(0, aᵢ - bᵢ). This reformulation yields dimension-dependent lower bounds.",
     "mathContext": "The geometric view transforms a number-theoretic problem into combinatorial geometry, enabling techniques from lattice point counting and convex geometry.",
@@ -458,7 +458,7 @@
       "startLine": 195,
       "endLine": 213
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Extremal Sets and Structure",
     "content": "**Extremal sets** that minimize the quotient set size have multiplicative structure — they share a common factor and are built from structured subsets. This reveals that the upper bound n^{2/3} is achieved by sets with arithmetic regularity.",
     "mathContext": "The extremal structure theorem shows that sets achieving h(n) ~ n^{2/3} must be of the form {d·k : k ∈ S} for a common divisor d, connecting to smooth numbers and multiplicative number theory.",
@@ -513,7 +513,7 @@
       "startLine": 250,
       "endLine": 253
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "erdos_539: Erdős-Szemerédi Bounds",
     "content": "**Main result:** The Erdős-Szemerédi bounds n^{1/2} ≪ h(n) ≪ n^{1-c} hold. Axiomatized because proving that h(n) achieves its infimum requires measure-theoretic arguments beyond current Mathlib.",
     "mathContext": "The proof uses counting arguments for the lower bound and explicit constructions for the upper bound.",
@@ -540,7 +540,7 @@
       "startLine": 255,
       "endLine": 261
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "erdos_539_bounds: Improved Bounds",
     "content": "**Improved bounds:** n^{1/2} ≪ h(n) ≪ n^{2/3}, combining Erdős-Szemerédi lower with Freiman-Lev upper. This tightens the exponent gap from [1/2, 1-c] to [1/2, 2/3].",
     "mathContext": "The Freiman-Lev improvement uses structural properties of sets with small quotient sets.",
@@ -567,7 +567,7 @@
       "startLine": 263,
       "endLine": 265
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "erdos_539_open: Problem Remains Open",
     "content": "**OPEN:** The exact exponent α with h(n) = Θ(n^α) is unknown. This axiom asserts that such an exponent exists in [1/2, 2/3], which is the core open question of Erdős Problem #539.",
     "significance": "key",

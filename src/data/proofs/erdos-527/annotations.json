@@ -61,7 +61,7 @@
       "startLine": 67,
       "endLine": 81
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Classical Divergence Results",
     "content": "**Two classical results establishing context:**\n\n1. **divergence_typical**: When Σ|aₙ|² = ∞, the random series diverges at Lebesgue-a.e. point of S¹, for a.e. signs. Divergence is the generic behavior.\n\n2. **dvoretzky_erdos_1959**: If coefficients decay no faster than c/√n, the series diverges everywhere on S¹ a.s. This shows |aₙ| = o(1/√n) is the sharp threshold.",
     "mathContext": "Dvoretzky-Erdős (1959) proves the o(1/√n) condition cannot be weakened. Any slower decay destroys convergence entirely. The Michelen-Sawhney result shows that above this threshold, convergence survives on a fractal set.",
@@ -79,7 +79,7 @@
       "startLine": 83,
       "endLine": 99
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Michelen-Sawhney (2025): Main Result",
     "content": "**The solution to Erdős Problem #527:**\n\n1. **michelen_sawhney_2025**: For a.e. sign choice, the convergence set on S¹ is nonempty.\n\n2. **hausdorff_dimension_one**: The convergence set has Hausdorff dimension 1 — as geometrically large as the full circle, despite having Lebesgue measure zero.\n\nThis resolved the problem after 60+ years. The proof uses oscillation analysis, metric entropy, and martingale methods.",
     "mathContext": "Hausdorff dimension 1 for a measure-zero set is remarkable — the convergence set is a 'fat' fractal filling the circle geometrically while remaining invisible to Lebesgue measure.",
@@ -97,7 +97,7 @@
       "startLine": 101,
       "endLine": 112
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Convergence Set Properties",
     "content": "**The convergence set is a fractal:**\n\n- **Uncountable** (follows from dimH = 1)\n- **Lebesgue measure zero** (from divergence_typical)\n\nA measure-zero uncountable set with full Hausdorff dimension — the hallmark of a 'thick' fractal like a Cantor-type set of dimension 1.",
     "mathContext": "This phenomenon — measure zero but full dimension — occurs for well-known fractals. The convergence set shares this property, suggesting deep geometric structure.",
@@ -133,7 +133,7 @@
       "startLine": 133,
       "endLine": 162
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorems",
     "content": "**Three proved theorems:**\n\n1. **erdos_527_main**: Convergence set is nonempty a.s. (from michelen_sawhney_2025)\n2. **erdos_527_strong**: Convergence set has dimH = 1 a.s. (from hausdorff_dimension_one)\n3. **erdos_527_summary**: Packages both results as a conjunction\n\nAll proved by direct reference to the axioms — genuine theorems, not placeholders.",
     "mathContext": "The summary captures the complete resolution: convergence occurs, and the convergence set is geometrically rich (dimension 1).",

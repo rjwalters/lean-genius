@@ -55,7 +55,7 @@
       "startLine": 74,
       "endLine": 86
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Historical Results: Dirac and Mader",
     "content": "**dirac_1960**: 2n-2 edges forces a K₄ subdivision (initiated the field). **mader_1967**: 2^{r(r-1)/2} · n edges suffices for Kᵣ subdivision. This exponential bound stood for nearly 30 years before the quadratic improvement.",
     "mathContext": "These results established the systematic study of edge thresholds for topological cliques.",
@@ -68,7 +68,7 @@
       "startLine": 94,
       "endLine": 108
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The 1996 Resolution",
     "content": "**komlos_szemeredi_1996** and **bollobas_thomason_1996**: Two independent proofs that the Mader Conjecture holds. Komlós-Szemerédi used extremal methods; Bollobás-Thomason used highly linked graph characterizations. **mader_conjecture_true** follows directly.",
     "mathContext": "One of the landmark results in extremal graph theory, proven independently by two groups in the same year.",
@@ -81,7 +81,7 @@
       "startLine": 123,
       "endLine": 133
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "k-Linked Graphs",
     "content": "**IsKLinked** (axiomatized): a graph is k-linked if any 2k terminals can be connected by k vertex-disjoint paths. **dense_graphs_linked**: graphs with Ckn edges are k-linked. This was a key lemma in Bollobás-Thomason's proof.",
     "mathContext": "A strong connectivity property related to subdivision existence, axiomatized since path-disjointness is complex to formalize.",
@@ -99,7 +99,7 @@
       "startLine": 142,
       "endLine": 148
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Minors vs Subdivisions",
     "content": "**IsMinorOf** (axiomatized): H is a minor of G via edge/vertex deletion and contraction. **subdivision_implies_minor**: every subdivision gives a minor, but not conversely. Subdivisions preserve topological structure more strictly.",
     "mathContext": "The Graph Minor Theorem (Robertson-Seymour) is one of the deepest results in graph theory.",
@@ -116,7 +116,7 @@
       "startLine": 167,
       "endLine": 199
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Results and Summary",
     "content": "**erdos_718_solved**: MaderConjecture is true (via Komlós-Szemerédi). **erdos_718_summary** and **erdos_718**: combine the quadratic bound with the earlier exponential bound, proved via exact ⟨komlos_szemeredi_1996, mader_1967⟩. The trivial True := trivial pattern has been replaced with a meaningful summary.",
     "significance": "key"

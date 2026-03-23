@@ -54,7 +54,7 @@
       "startLine": 54,
       "endLine": 61
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Power Set Example",
     "content": "**powerset_hereditary:** The power set P(X) is hereditary.\n\nThis is the prototypical example - if A ⊆ X and B ⊆ A, then B ⊆ X.",
     "significance": "supporting",
@@ -75,7 +75,7 @@
       "startLine": 62,
       "endLine": 71
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bounded Cardinality Example",
     "content": "**bounded_card_hereditary:** {A : |A| ≤ k} is hereditary.\n\nSubsets of small sets are small. This is the independence system of a uniform matroid.",
     "significance": "supporting",
@@ -140,7 +140,7 @@
       "startLine": 112,
       "endLine": 120
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Stars are Intersecting",
     "content": "**star_intersecting:** Star F x is intersecting.\n\nAll sets in a star contain x, so any two sets intersect at least at x. This makes stars natural candidates for maximum intersecting subfamilies.",
     "significance": "key",
@@ -183,7 +183,7 @@
       "startLine": 143,
       "endLine": 151
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Open Status",
     "content": "**chvatal_conjecture_open:**\n\nAxiom recording that the conjecture is unresolved in full generality.\n\nThe conjecture has been open since 1974 despite significant partial progress.",
     "mathContext": "Axiomatizing an open conjecture allows formal reasoning about its consequences.",
@@ -205,7 +205,7 @@
       "startLine": 176,
       "endLine": 198
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sterboul's Conditions",
     "content": "**SterboulConditions, sterboul_1974:**\n\nChvátal's conjecture holds when:\n1. All maximal sets have equal size\n2. Pairwise intersections have size ≤ 1\n3. At least two maximal sets intersect\n\nThese conditions capture certain 'regular' hereditary families.",
     "mathContext": "Sterboul's result covers matroids and similar structures with uniform maximal sets.",
@@ -228,7 +228,7 @@
       "startLine": 200,
       "endLine": 208
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Frankl-Kupavskii 2023",
     "content": "**frankl_kupavskii_2023:**\n\nChvátal's conjecture holds for families with covering number 2.\n\nThe covering number τ(F) is the minimum number of elements hitting all sets. This 2023 result is significant recent progress.",
     "mathContext": "Published in Discrete Mathematics (2023). Covering number 2 is a strong but natural condition.",
@@ -293,7 +293,7 @@
       "startLine": 240,
       "endLine": 265
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Uniform Not Hereditary",
     "content": "**uniform_not_hereditary:**\n\nFor k ≥ 2, the family of all k-subsets is NOT hereditary.\n\nProof: A k-set has (k-1)-subsets, which aren't in the k-uniform family.\n\nThis explains why Chvátal's conjecture is distinct from EKR.",
     "significance": "supporting",
@@ -314,7 +314,7 @@
       "startLine": 291,
       "endLine": 320
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Summary and Open Status",
     "content": "**erdos_701_open_status:**\n\nAxiom recording the full conjecture statement.\n\n**Status:** OPEN since 1974.\n\n**Why it's hard:** Need a SINGLE x that works for ALL intersecting subfamilies simultaneously. Local arguments fail.",
     "significance": "key",

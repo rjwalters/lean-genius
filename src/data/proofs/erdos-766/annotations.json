@@ -168,7 +168,7 @@
       "startLine": 98,
       "endLine": 107
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Dirac-Erdős Theorem",
     "content": "**dirac_erdos_theorem:**\n\nWhen l = ⌊k²/4⌋ + 1 (one edge beyond bipartite threshold):\nf(n; k, l) ≤ ⌊n²/4⌋ + 1\n\n```lean\naxiom dirac_erdos_theorem (n k : ℕ) (hk : k ≥ 3) (hn : n ≥ k) :\n    f n k (maxBipartiteEdges k + 1) ≤ n * n / 4 + 1\n```\n\n**Why?**\nAny graph with k vertices and > k²/4 edges contains a triangle (K₃).\nSo ex(n; G) ≤ ex(n; K₃) = ⌊n²/4⌋.\n\nThis is the key KNOWN result at the bipartite boundary.\n\nProved independently by Dirac and Erdős.",
     "mathContext": "The theorem shows f collapses to the triangle-free bound at the bipartite threshold.",
@@ -186,7 +186,7 @@
       "startLine": 109,
       "endLine": 118
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Turán's Theorem",
     "content": "**turan_theorem (Classical, 1941):**\n\n```lean\naxiom turan_theorem (n r : ℕ) (hr : r ≥ 2) :\n    ∃ C > 0, |turanNumber n (completeGraph (Fin r)) -\n      (1 - 1 / (r - 1 : ℝ)) * n * n / 2| ≤ C * n\n```\n\n**Formula:**\nex(n; K_r) = (1 - 1/(r-1)) · n²/2 + O(n)\n\n**Extremal Graph (Turán Graph T(n,r-1)):**\nComplete (r-1)-partite graph with parts as equal as possible.\n\n**Special Cases:**\n- r = 3: ex(n; K₃) = ⌊n²/4⌋ (complete bipartite)\n- r = 4: ex(n; K₄) = (1-1/3)n²/2 = n²/3 + O(n)",
     "mathContext": "One of the most celebrated results in combinatorics. Turán graphs achieve the extremal edge count.",
@@ -222,7 +222,7 @@
       "startLine": 139,
       "endLine": 142
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "f is Non-Decreasing",
     "content": "**f_nondecreasing:** The weak monotonicity result.\n\n```lean\naxiom f_nondecreasing (n k l₁ l₂ : ℕ) (hl : l₁ ≤ l₂)\n    (h1 : inRangeOfInterest k l₁) (h2 : inRangeOfInterest k l₂) :\n    f n k l₁ ≤ f n k l₂\n```\n\n**Meaning:** l₁ ≤ l₂ implies f(n; k, l₁) ≤ f(n; k, l₂).\n\nThis is the known (weak) result. The STRICT inequality (l₁ < l₂ → f < f) remains open.",
     "significance": "key",
@@ -238,7 +238,7 @@
       "startLine": 144,
       "endLine": 166
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bounds on f",
     "content": "**Basic Bounds:**\n\n**Lower:** f(n; k, l) ≥ 0 (trivial)\n\n**Upper:** f(n; k, l) ≤ n(n-1)/2 (complete graph)\n\nThe upper bound is axiomatized because it requires showing that the infimum over Turán numbers is bounded by the complete graph's edge count.\n\n**Trees (l = k-1):**\nf(n; k, k-1) ≥ (k-2)(n-1)/2\n\nFor paths, ex(n; P_k) is about this size.\n\n**Near Bipartite:**\nf(n; k, ⌊k²/4⌋) ≤ n²/4 + k\n\nThe bipartite Turán graph nearly achieves the bound.",
     "mathContext": "Bounds bracket f between trivial extremes and reveal behavior at special points.",
@@ -256,7 +256,7 @@
       "startLine": 169,
       "endLine": 174
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Triangle Case",
     "content": "**f_triangle:** f(n; 3, 3) = ⌊n²/4⌋\n\n```lean\naxiom f_triangle (n : ℕ) (hn : n ≥ 3) : f n 3 3 = n * n / 4\n```\n\nThe only graph with 3 vertices and 3 edges is K₃ (triangle).\nSo f(n; 3, 3) = ex(n; K₃) = ⌊n²/4⌋.\n\nThis is Mantel's theorem (1907): the maximum edges in a triangle-free graph on n vertices is ⌊n²/4⌋. Axiomatized as the proof requires machinery beyond current Mathlib formalization.",
     "mathContext": "The triangle case is exactly Mantel's theorem (1907), the first result in extremal graph theory.",
@@ -274,7 +274,7 @@
       "startLine": 181,
       "endLine": 186
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "4-Cycle Anomaly",
     "content": "**turan_c4:** ex(n; C₄) = Θ(n^{3/2})\n\n```lean\naxiom turan_c4 (n : ℕ) (hn : n ≥ 4) :\n    ∃ C₁ C₂ : ℝ, C₁ > 0 ∧ C₂ > 0 ∧\n      C₁ * n^(3/2 : ℝ) ≤ turanNumber n (cycleGraph 4) ∧\n      turanNumber n (cycleGraph 4) ≤ C₂ * n^(3/2 : ℝ)\n```\n\n**Significance:**\nC₄ = K_{2,2} (complete bipartite 2-by-2) has ex(n; C₄) = Θ(n^{3/2}).\n\nThis is MUCH smaller than n² - 4-cycles are \"hard to avoid\".\n\nThe Kővári-Sós-Turán theorem (1954) gives ex(n; K_{s,t}) = O(n^{2-1/s}).",
     "mathContext": "The subquadratic growth for K_{s,t} is a major departure from the complete graph case. It reflects the structure of bipartite forbidden graphs.",
@@ -310,7 +310,7 @@
       "startLine": 202,
       "endLine": 206
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Dense Graphs Contain Triangles",
     "content": "**dense_graph_contains_triangle:**\n\nIf a graph has k vertices and > k²/4 edges, it contains K₃.\n\n```lean\naxiom dense_graph_contains_triangle (k l : ℕ) (hk : k ≥ 3)\n    (hdense : l > k * k / 4) :\n    ∀ G : Graph (Fin k), numEdges G = l → containsSubgraph G (completeGraph (Fin 3))\n```\n\n**Why?**\nIf l > k²/4, the graph cannot be bipartite (bipartite graphs have ≤ k²/4 edges).\nNon-bipartite graphs contain odd cycles.\nThe smallest odd cycle is a triangle.\n\nThis is why the bipartite threshold is so important!",
     "mathContext": "This structural result underlies the Dirac-Erdős theorem.",
@@ -328,7 +328,7 @@
       "startLine": 209,
       "endLine": 235
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_766_summary:**\n\nCombines the two main known results:\n1. Dirac-Erdős theorem at bipartite threshold\n2. f is non-decreasing in l (weak monotonicity)\n\n```lean\ntheorem erdos_766_summary :\n    (∀ n k, k ≥ 3 → n ≥ k → f n k (maxBipartiteEdges k + 1) ≤ n * n / 4 + 1) ∧\n    (∀ n k l₁ l₂, l₁ ≤ l₂ → inRangeOfInterest k l₁ → inRangeOfInterest k l₂ →\n      f n k l₁ ≤ f n k l₂)\n```\n\n**Known:**\n- Dirac-Erdős: f(n; k, ⌊k²/4⌋+1) ≤ ⌊n²/4⌋+1\n- f is non-decreasing in l\n- f(n; 3, 3) = ⌊n²/4⌋\n\n**Open:**\n1. Good estimates for f(n; k, l) when k < l ≤ k²/4\n2. Is f(n; k, l) STRICTLY monotone in l?",
     "significance": "key",
@@ -344,7 +344,7 @@
       "startLine": 237,
       "endLine": 245
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Strict Monotonicity (OPEN)",
     "content": "**erdos_766_strict_monotonicity_open:**\n\n```lean\naxiom erdos_766_strict_monotonicity_open :\n    ∀ k : ℕ, k ≥ 3 →\n      ∃ N : ℕ, ∀ n ≥ N, ∀ l₁ l₂ : ℕ,\n        inRangeOfInterest k l₁ → inRangeOfInterest k l₂ →\n        l₁ < l₂ → f n k l₁ < f n k l₂\n```\n\n**Status: OPEN**\n\nThe strict monotonicity conjecture: for fixed k and sufficiently large n, f(n;k,l) is strictly increasing in l within the range k < l ≤ k²/4.\n\nAxiomatized as an open conjecture. The problem dates to Erdős [Er64c] and remains an active area of research in extremal graph theory.",
     "mathContext": "Originally posed in Erdős's 1964 paper. Over 60 years later, the strict monotonicity question remains open.",

@@ -2,7 +2,7 @@
   {
     "id": "ann-e875-imports",
     "proofId": "erdos-875",
-    "type": "import",
+    "type": "context",
     "title": "Combinatorics and Bitwise Imports",
     "content": "Imports tactics, Finset.Basic, Finset.Powerset for subset enumeration, and Nat.Bitwise for popcount.",
     "mathContext": "The formalization uses `Finset.powersetCard r` to enumerate all $r$-element subsets (for the $r$-fold sumset), `Finset.image` and `Finset.sum` for computing sumset elements, and `Nat.popcount` (from `Nat.Bitwise`) for the binary argument that powers of 2 are admissible. The `Filter.atTop` filter is used implicitly through `HasPolynomialGaps` and `HasRatioOne`.",
@@ -150,7 +150,7 @@
   {
     "id": "ann-e875-gapThreshold",
     "proofId": "erdos-875",
-    "type": "axiom",
+    "type": "concept",
     "title": "Gap Threshold Conjecture (OPEN)",
     "content": "There exists a critical exponent c₀ such that polynomial gaps n^c are achievable for c > c₀ but not for c < c₀.",
     "mathContext": "The **gap threshold** axiom asserts the existence of a critical exponent $c_0 > 0$ with a sharp transition: no admissible sequence has gaps $\\leq n^c$ for $c < c_0$, but admissible sequences with gaps $\\leq n^c$ exist for $c > c_0$. This is the central quantitative question of Problem 875. The axiom's form—existential over $c_0$ with both impossibility below and existence above—encodes a sharp phase transition in the space of admissible sequences.",
@@ -194,7 +194,7 @@
   {
     "id": "ann-e875-ratioOneAxiom",
     "proofId": "erdos-875",
-    "type": "axiom",
+    "type": "concept",
     "title": "Ratio-One Existence (Erdős Claim)",
     "content": "There exists an admissible sequence with a(n+1)/a(n) → 1.",
     "mathContext": "Erdős claimed that an admissible sequence with $a(n+1)/a(n) \\to 1$ exists, describing this as 'not completely trivial.' This is axiomatized rather than proved. A construction might use highly lacunary sequences that are 'almost' geometric with ratio tending to 1, carefully avoiding sumset collisions. The axiom is $\\exists a, \\text{IsAdmissible}(a) \\wedge \\text{HasRatioOne}(a)$.",
@@ -216,7 +216,7 @@
   {
     "id": "ann-e875-pow2Increasing",
     "proofId": "erdos-875",
-    "type": "theorem",
+    "type": "technique",
     "title": "Powers of 2 Strictly Increasing (Fully Proved)",
     "content": "2^n < 2^(n+1) for all n, proved by Nat.pow_lt_pow_right.",
     "mathContext": "The **fully proved** lemma that $2^n < 2^{n+1}$ establishes `StrictlyIncreasing (fun n => 2^n)`. The proof uses `Nat.pow_lt_pow_right` with base $\\geq 2$ and exponent increase. This is the first half of showing powers of 2 are admissible.",
@@ -234,7 +234,7 @@
   {
     "id": "ann-e875-popcountAxiom",
     "proofId": "erdos-875",
-    "type": "axiom",
+    "type": "concept",
     "title": "Popcount of Sum of Distinct Powers of 2",
     "content": "The popcount (number of 1-bits) of a sum of distinct powers of 2 equals the number of terms.",
     "mathContext": "The **popcount lemma** states that if $S$ is a set of distinct natural numbers, then $\\text{popcount}(\\sum_{i \\in S} 2^i) = |S|$. This is because distinct powers of 2 have disjoint binary representations, so their sum has exactly $|S|$ bits set. This is the key technical fact for proving powers of 2 are admissible: if $\\sum_{i \\in S} 2^i = \\sum_{j \\in T} 2^j$, then $|S| = |T|$ by popcount, establishing sumset disjointness across different $r$-values.",
@@ -255,7 +255,7 @@
   {
     "id": "ann-e875-pow2Admissible",
     "proofId": "erdos-875",
-    "type": "theorem",
+    "type": "technique",
     "title": "Powers of 2 Admissible (Partially Proved)",
     "content": "a(n) = 2^n is admissible. Strict increase is proved; disjoint sumsets part uses sorry (relies on popcount argument).",
     "mathContext": "The theorem that $a(n) = 2^n$ is admissible is **partially proved**: the `StrictlyIncreasing` half is established via `pow2_strictly_increasing`, but the `DisjointSumsets` half is left as `sorry`. The full proof would use the popcount axiom: if a sum $\\sum 2^{i_j}$ with $r$ terms equals a sum $\\sum 2^{i'_j}$ with $s$ terms, then popcount gives $r = s$, so sumsets of different sizes are disjoint.",
@@ -277,7 +277,7 @@
   {
     "id": "ann-e875-growthLower",
     "proofId": "erdos-875",
-    "type": "theorem",
+    "type": "technique",
     "title": "Growth Lower Bound a(n) ≥ n+1 (Fully Proved)",
     "content": "Every admissible sequence with a(0) ≥ 1 satisfies a(n) ≥ n+1, proved by induction using strict increase.",
     "mathContext": "A **fully proved** growth lower bound: if $a(0) \\geq 1$ and $a$ is admissible (hence strictly increasing), then $a(n) \\geq n+1$ for all $n$. The proof is by induction: base case $a(0) \\geq 1$, and if $a(n) \\geq n+1$ then $a(n+1) > a(n) \\geq n+1$ so $a(n+1) \\geq n+2$. The `omega` tactic handles the final inequality. This is a crude bound; the disjoint sumsets condition forces much faster growth.",
@@ -299,7 +299,7 @@
   {
     "id": "ann-e875-finiteConnection",
     "proofId": "erdos-875",
-    "type": "axiom",
+    "type": "concept",
     "title": "Connection to Problem #874 (Finite Version)",
     "content": "For any n, there is a maximum size f(n) for a subset of {1,...,n} with pairwise disjoint r-fold sumsets.",
     "mathContext": "Problem #874 (Deshouillers-Erdős) is the **finite version**: what is the maximum size of $A \\subseteq \\{1, \\ldots, n\\}$ with pairwise disjoint $r$-fold sumsets? The axiom asserts this maximum $f(n)$ exists. The infinite Problem 875 asks about the growth rate of infinite admissible sequences, which corresponds to understanding how $f(n)$ grows. If $f(n) \\sim n^\\alpha$, then admissible sequences can grow like $n^{1/\\alpha}$.",

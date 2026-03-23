@@ -93,7 +93,7 @@
       "startLine": 145,
       "endLine": 163
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Folkman's Existence Theorem",
     "content": "**folkman_existence:**\n\nThere exists a K4-free graph where every 2-coloring contains a monochromatic triangle.\n\n```lean\naxiom folkman_existence :\n    exists (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),\n      isFolkmanGraph G\n```\n\n**erdos_582:**\nThis is the affirmative answer to the problem.\n\nFolkman's original proof (1970) gave astronomically large bounds on the number of vertices required.",
     "mathContext": "Folkman's proof was non-constructive and gave bounds that were towers of exponentials. Subsequent work dramatically reduced this.",
@@ -110,7 +110,7 @@
       "startLine": 171,
       "endLine": 198
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Quantitative Bounds",
     "content": "**Current Best Bounds:**\n\n**Lower Bound (Radziszowski-Xu 2007):**\nf(2,3,4) >= 19\n\n**Upper Bound (Dudek-Rodl 2008):**\nf(2,3,4) <= 941\n\n```lean\ntheorem folkman_bounds : 19 <= folkmanNumber_2_3_4 and folkmanNumber_2_3_4 <= 941\n```\n\n**Spencer's Bound (1988):**\nf(2,3,4) <= 3 x 10^9, which resolved Erdos's $100 challenge for < 10^10 vertices.",
     "mathContext": "The gap between 19 and 941 remains one of the intriguing open problems. Radziszowski-Xu conjecture the true value is <= 127.",
@@ -144,7 +144,7 @@
       "startLine": 238,
       "endLine": 254
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Classical Ramsey R(3,3)",
     "content": "**ramsey_3_3:**\n\nThe classical Ramsey number R(3,3) = 6: any 2-coloring of K6 contains a monochromatic triangle.\n\n```lean\naxiom ramsey_3_3 : forall c : EdgeColoring (completeGraph (Fin 6)),\n    hasClique (monochromaticSubgraph ... c true) 3 or\n    hasClique (monochromaticSubgraph ... c false) 3\n```\n\n**Connection:** Folkman numbers ask: what if we can't use the complete graph? What's the smallest K4-free graph with the same property?",
     "mathContext": "R(3,3) = 6 is one of the few exactly known Ramsey numbers. Folkman numbers add a forbidden subgraph constraint.",
@@ -162,7 +162,7 @@
       "startLine": 267,
       "endLine": 281
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "f(2,3,3) = Infinity",
     "content": "**folkman_2_3_3_infinite:**\n\nThere is NO triangle-free graph where every 2-coloring has a monochromatic triangle!\n\n```lean\naxiom folkman_2_3_3_infinite :\n    not exists (V : Type) ... (G : SimpleGraph V),\n      isKFree G 3 and hasRamseyProperty G\n```\n\n**Why?** If G is triangle-free (K3-free), then G itself contains no triangles. Any monochromatic subgraph is a subgraph of G, so neither the red nor blue subgraph can contain a triangle!",
     "mathContext": "This shows the constraint matters: f(2,3,3) = infinity but f(2,3,4) is finite. The jump from K3-free to K4-free is crucial.",
@@ -179,7 +179,7 @@
       "startLine": 287,
       "endLine": 301
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Explicit Constructions",
     "content": "**lu_explicit_construction:**\n\nLu (2007) gave an EXPLICIT construction of a Folkman graph on 9697 vertices using Cayley graphs over finite fields.\n\n```lean\naxiom lu_explicit_construction :\n    exists (G : SimpleGraph (Fin 9697)), isFolkmanGraph G\n```\n\n**dudek_rodl_construction:**\n\nDudek-Rodl (2008) verified a 941-vertex Folkman graph using probabilistic and computer-assisted methods.\n\nThe gap between explicit (9697) and probabilistic (941) is significant.",
     "mathContext": "Explicit constructions are valuable for understanding structure. Probabilistic methods give better bounds but less insight.",
@@ -197,7 +197,7 @@
       "startLine": 307,
       "endLine": 320
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Results Summary",
     "content": "**erdos_582_summary:**\n\nCombines all main results:\n1. Such graphs exist (Folkman 1970)\n2. 19 <= f(2,3,4) <= 941 (current bounds)\n3. Conjecture: f(2,3,4) <= 127\n\n```lean\ntheorem erdos_582_summary :\n    (exists ... isFolkmanGraph G) and\n    19 <= folkmanNumber_2_3_4 and\n    folkmanNumber_2_3_4 <= 941\n```",
     "significance": "key",
@@ -213,7 +213,7 @@
       "startLine": 322,
       "endLine": 337
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The $100 Challenge",
     "content": "**erdos_100_challenge_resolved:**\n\nErdos offered $100 for finding a Folkman graph with < 10^10 vertices. Spencer (1988) claimed this prize.\n\n```lean\ntheorem erdos_100_challenge_resolved : folkmanNumber_2_3_4 < 10^10 := by\n  calc folkmanNumber_2_3_4 <= 941 := folkman_upper_bound\n    _ < 10^10 := by norm_num\n```\n\n**Conjecture:** Radziszowski-Xu (2007) conjecture f(2,3,4) <= 127.",
     "mathContext": "Erdos famously offered cash prizes for solving his problems. The $100 prize for this problem motivated significant research.",

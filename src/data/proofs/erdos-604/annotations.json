@@ -127,7 +127,7 @@
       "startLine": 75,
       "endLine": 79
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Katz-Tardos Theorem (2004)",
     "content": "**Best Known Result:**\n\nEvery n-point set in the plane has a point x with at least c·n^0.864 distinct distances, where c > 0 is an absolute constant.\n\nThis is marked `sorry` because the full proof requires:\n- The crossing number inequality\n- Incidence geometry bounds\n- Careful combinatorial counting",
     "mathContext": "The proof uses the fact that if all points had few pinned distances, there would be too many repeated distances, creating graph structures that violate crossing number bounds.",
@@ -146,7 +146,7 @@
       "startLine": 83,
       "endLine": 86
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Trivial Lower Bound",
     "content": "Every point in a set of 2+ points sees at least 1 distinct distance.\n\nThis is trivial: if |A| ≥ 2 and x ∈ A, there exists y ∈ A with y ≠ x, giving d(x,y) > 0.",
     "significance": "supporting",
@@ -163,7 +163,7 @@
       "startLine": 88,
       "endLine": 96
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Upper Bound on Pinned Distances",
     "content": "No point can see more than n-1 distinct distances.\n\nProof: From x, we measure distances to at most n-1 other points. Even if all distances are distinct, we get at most n-1 values.\n\nThe `card_image_le` lemma shows |image f S| ≤ |S|.",
     "mathContext": "Uses the chain: |image| ≤ |filter| ≤ |A| ≤ |A| - 1, where the last step needs |A| ≥ 1.",
@@ -181,7 +181,7 @@
       "startLine": 98,
       "endLine": 102
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Integer Lattice Construction",
     "content": "**Key Upper Bound Example:**\n\nThe integer lattice {1,...,√n} × {1,...,√n} contains n points where every point sees at most O(n/√log n) distinct distances.\n\nThis is because distances in the lattice are √(a² + b²) for integers a,b, and the number of such representable integers up to N is O(N/√log N) by classical results on sums of two squares.",
     "mathContext": "Uses Landau's theorem: the count of integers ≤ N representable as sum of two squares is asymptotic to c·N/√log N.",
@@ -243,7 +243,7 @@
       "startLine": 121,
       "endLine": 130
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Pinned Distances Subset of All",
     "content": "**Structural Result:**\n\nFor any x ∈ A, the pinned distances from x form a subset of all pairwise distances.\n\nThis is immediate: if d = d(x,y) is a pinned distance, then (x,y) is a pair in A with distance d.",
     "mathContext": "The proof constructs the pair (x,y) witnessing that d appears in the full distance set. Uses membership in products and filters.",
@@ -261,7 +261,7 @@
       "startLine": 134,
       "endLine": 138
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Open Problem Marker",
     "content": "**Status: OPEN**\n\nThis reflexive statement `pinnedDistanceConjecture ↔ pinnedDistanceConjecture` serves as a marker that the conjecture remains unproven.\n\nThe $500 prize awaits whoever proves the exponent approaches 1.",
     "significance": "key",

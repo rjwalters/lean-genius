@@ -40,7 +40,7 @@
       "startLine": 51,
       "endLine": 81
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Squarefree Examples",
     "content": "**Verified examples:**\n\n- squarefree_one: 1 is squarefree (no prime squared divides 1)\n- squarefree_six: 6 = 2*3 is squarefree (axiom)\n- not_squarefree_four: 4 = 2^2 is NOT squarefree\n- not_squarefree_twelve: 12 = 4*3 is NOT squarefree\n\n**Proof for 4:** We show 2*2 divides 4, contradicting the definition.",
     "significance": "supporting"
@@ -101,7 +101,7 @@
       "startLine": 131,
       "endLine": 147
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdos-Graham Preliminary Results",
     "content": "**Two key observations by Erdos and Graham:**\n\n1. **erdos_graham_sparse:** For fixed large k, the density of n with C(n,k) squarefree is o_k(1) - approaches 0 as k grows.\n\n2. **erdos_graham_infinite_bad:** Infinitely many n have NO squarefree binomial coefficients (all C(n,k) have a prime squared divisor).\n\nThey expected the set of such bad n has positive density (confirmed).",
     "significance": "key",
@@ -133,7 +133,7 @@
       "startLine": 160,
       "endLine": 187
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Granville-Ramare Results (1996)",
     "content": "**The key technical results:**\n\n1. **granville_ramare_density_exists:** For each m, the set exactlySquarefree(m) has a density.\n\n2. **eta(m):** Define eta_m as this density.\n\n3. **eta_is_density:** eta_m is indeed the density.\n\n4. **eta_positive:** For all m, eta_m > 0.\n\n**Reference:** \"Explicit bounds on exponential sums and the scarcity of squarefree binomial coefficients\", Mathematika 1996.",
     "mathContext": "The proof uses sophisticated analytic number theory - bounds on exponential sums.",
@@ -165,7 +165,7 @@
       "startLine": 199,
       "endLine": 212
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Complement Decomposition",
     "content": "**The key formula:**\n\nThe complement {n : squarefreeCount(n) < r} decomposes as:\n\nunion of exactlySquarefree(m) for 2m + 2 < r\n\n**Density formula:**\ndensity of complement = sum of eta_m for 0 <= m <= (r-1)/2\n\nTherefore:\ndensity of atLeastSquarefree(r) = 1 - sum of eta_m",
     "mathContext": "This uses the fact that the exactlySquarefree sets partition the integers.",
@@ -182,7 +182,7 @@
       "startLine": 214,
       "endLine": 226
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Density Exists",
     "content": "**erdos_378_density_exists:**\n\nFor any r, the set atLeastSquarefree(r) has a natural density.\n\n**Proof idea:**\nThe complement has density (sum of finitely many eta_m). Taking 1 - that gives the density of the original set.",
     "significance": "key",
@@ -198,7 +198,7 @@
       "startLine": 228,
       "endLine": 244
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Density is Positive",
     "content": "**erdos_378_density_positive:**\n\nFor any r, the density of atLeastSquarefree(r) is positive.\n\n**Proof idea:**\nThe complement density is sum of eta_m for m <= (r-1)/2. Since eta_{(r-1)/2 + 1} > 0 and is NOT in this sum, the complement doesn't cover everything. Hence 1 - sum > 0.",
     "significance": "key",
@@ -214,7 +214,7 @@
       "startLine": 250,
       "endLine": 257
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Example: C(2,1) = 2",
     "content": "**example_C_2_1:**\n\nC(2,1) = 2 is squarefree.\n\n**Verification:** 2 is prime, so no prime squared divides it.",
     "significance": "supporting"
@@ -226,7 +226,7 @@
       "startLine": 264,
       "endLine": 273
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Example: C(6,3) = 20",
     "content": "**example_C_6_3_not_squarefree:**\n\nC(6,3) = 20 = 4 * 5 = 2^2 * 5 is NOT squarefree.\n\n**Proof:** We verify 4 = 2^2 divides 20, so 20 fails the squarefree condition.",
     "significance": "key",
@@ -241,7 +241,7 @@
       "startLine": 287,
       "endLine": 294
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Symmetry of Squarefree Status",
     "content": "**binomial_squarefree_symm:**\n\nC(n,k) is squarefree iff C(n, n-k) is squarefree.\n\n**Proof:** Uses C(n,k) = C(n, n-k).\n\n**Consequence:** Squarefree binomials come in pairs (except possibly k = n/2 when n is even).",
     "significance": "key",
@@ -257,7 +257,7 @@
       "startLine": 308,
       "endLine": 328
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdos Problem #378: Main Result",
     "content": "**erdos_378:**\n\nCombines both answers:\n1. For all r, HasDensity(atLeastSquarefree r)\n2. For all r, the density is positive\n\n**The formula:**\ndensity = 1 - sum_{0 <= m <= (r-1)/2} eta_m\n\n**Contributors:**\n- Granville-Ramare: Technical density results\n- Aggarwal-Cambie: Observed the connection",
     "significance": "key",

@@ -73,7 +73,7 @@
       "startLine": 85,
       "endLine": 95
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Verified Initial Values (OEIS A390642)",
     "content": "The first 11 terms of the Rosen sequence $(0, 1, 3, 5, 9, 13, 17, 24, 31, 38, 45)$ are verified by `native_decide`. These match OEIS A390642. The gaps between consecutive terms grow: $1, 2, 2, 4, 4, 4, 7, 7, 7, 7$, suggesting roughly $\\sqrt{k}$-type growth in spacing.",
     "significance": "supporting",
@@ -94,7 +94,7 @@
       "startLine": 99,
       "endLine": 131
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Basic Structural Properties (Proved)",
     "content": "Four theorems proved directly from the greedy definition (no sorry): (1) `repcount_below_at_elements`: $R_k(a_{k+1}) < a_{k+1}$ at each new element. (2) `repcount_above_between`: $R_k(m) \\geq m$ for $a_k < m < a_{k+1}$. (3) `rosen_strictMono`: strict monotonicity of the sequence. (4) `rosen_growth`: $a_k \\geq k$ by induction. These establish the basic structure of the greedy construction.",
     "significance": "key",
@@ -115,7 +115,7 @@
       "startLine": 133,
       "endLine": 151
     },
-    "type": "conjecture",
+    "type": "concept",
     "title": "Main Conjectures: Weak and Strong",
     "content": "The `fullRepCount` extends the representation count over the infinite sequence. **Weak conjecture** (axiom): $R(x) \\leq (1+\\varepsilon)x$ for large $x$, i.e., $R(x) = (1+o(1))x$. Even this is unproved. **Strong conjecture** (axiom): $|R(x) - x| \\leq C x^{1/4} \\log x$. The exponent $1/4$ comes from analogy with B$_2$ sequences where $R(x) \\sim \\sqrt{x}$ and optimal error is $\\sim x^{1/4}$.",
     "significance": "key",
@@ -160,7 +160,7 @@
       "startLine": 174,
       "endLine": 187
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Representation Count Monotonicity in $k$ (Proved)",
     "content": "Proved in Lean: $R_k(n) \\leq R_{k+1}(n)$, i.e., adding more sequence elements can only increase the representation count. The proof uses `Finset.sum_le_sum_of_subset_of_nonneg` since $[1,k] \\subseteq [1,k+1]$. This is a fundamental monotonicity property of the greedy construction.",
     "significance": "supporting",

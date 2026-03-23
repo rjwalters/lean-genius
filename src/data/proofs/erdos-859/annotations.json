@@ -233,7 +233,7 @@
       "startLine": 115,
       "endLine": 122
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős: Density Exists",
     "content": "**Erdős (1970)**: The density $d_t$ exists for ALL $t$. This is nontrivial—many natural sets don't have density (e.g., the set $\\{n : \\lfloor \\log_2 n \\rfloor \\text{ even}\\}$ oscillates between densities 1/3 and 2/3). The proof exploits the multiplicative structure of divisors: for coprime $m, n$, the divisor sets factor, allowing a sieve-theoretic argument to establish convergence of $A_t(N)/N$.",
     "mathContext": "$\\forall t \\in \\mathbb{N},\\; \\exists d_t \\in \\mathbb{R},\\; \\lim_{N \\to \\infty} \\frac{|D_t \\cap [1,N]|}{N} = d_t$. The proof in [Er70] uses the multiplicativity: if $\\gcd(m,n) = 1$, then $\\mathrm{div}(mn) \\cong \\mathrm{div}(m) \\times \\mathrm{div}(n)$, enabling factorization of the density computation over prime powers.",
@@ -257,7 +257,7 @@
       "startLine": 124,
       "endLine": 130
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős: Density Positive",
     "content": "**Erdős (1970)**: For $t > 0$, the density $d_t$ is positive. This means a positive proportion of integers can represent $t$ as a divisor subset sum—not just infinitely many, but a definite fraction. The key idea is that highly composite numbers (with many small prime factors) have very flexible divisor sets, and these numbers have positive density.",
     "mathContext": "$\\forall t > 0,\\; d_t > 0$. Erdős's argument: numbers of the form $n = 2^a \\cdot 3^b \\cdot 5^c \\cdots$ with sufficiently many small prime factors can represent any $t \\le \\sigma(n)$ as a divisor subset sum. Such $n$ have positive density among all integers.",
@@ -279,7 +279,7 @@
       "startLine": 132,
       "endLine": 141
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős: Upper and Lower Bounds",
     "content": "**Erdős (1970)**: There exist $c_3, c_4 > 0$ such that $(\\log t)^{-c_3} < d_t < (\\log t)^{-c_4}$ for large $t$. The density decays polynomially in $\\log t$—much slower than $1/t$ but faster than $1/\\log t$. The formalization uses `∀ᶠ t in atTop` (Lean's filter-based 'eventually') to express 'for sufficiently large $t$'.",
     "mathContext": "$\\exists c_3, c_4 > 0 : \\forall^\\infty t,\\; \\frac{1}{(\\log t)^{c_3}} < d_t < \\frac{1}{(\\log t)^{c_4}}$. The gap between $c_3$ and $c_4$ means we know the right 'shape' ($\\log t$ to a power) but not the exact exponent.",
@@ -546,7 +546,7 @@
       "startLine": 220,
       "endLine": 223
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Practical Numbers Have Positive Density",
     "content": "**Margenstern (1991)**: Practical numbers have positive natural density. Saias (1997) refined this to show the counting function satisfies $P(x) \\sim cx/\\log x$ for a constant $c$, analogous to the prime number theorem. Since practical $n$ contributes to $D_t$ for all $t \\le \\sigma(n)$, this provides a lower bound on $d_t$ via the density of practical numbers with $\\sigma(n) \\ge t$.",
     "mathContext": "$\\delta(\\{n : n \\text{ practical}\\}) > 0$. More precisely, Saias (1997) proved $|\\{n \\le x : n \\text{ practical}\\}| \\sim \\frac{cx}{\\log x}$ where $c \\approx 1.341$. This gives $d_t \\ge \\delta(\\{n \\text{ practical} : \\sigma(n) \\ge t\\})$.",
@@ -614,7 +614,7 @@
       "startLine": 238,
       "endLine": 243
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Average Order of σ(n)",
     "content": "$\\sum_{n \\le N} \\sigma(n) \\sim (\\pi^2/12)N^2$, so the average value of $\\sigma(n)$ for $n \\le N$ is approximately $(\\pi^2/6)N \\approx 1.645N$. This classical result (proved via Dirichlet's hyperbola method) implies most $n$ have $\\sigma(n)$ roughly proportional to $n$, bounding how many $n$ can contribute to $D_t$ when $t$ is large.",
     "mathContext": "$\\sum_{n=1}^N \\sigma(n) = \\frac{\\pi^2}{12} N^2 + O(N \\log N)$. Equivalently, $\\frac{1}{N} \\sum_{n=1}^N \\sigma(n) \\sim \\frac{\\pi^2}{6} N$. This follows from $\\sum_{n=1}^N \\sigma(n) = \\sum_{d=1}^N d \\lfloor N/d \\rfloor$ and the Euler product $\\sum_{n=1}^\\infty 1/n^2 = \\pi^2/6$.",
@@ -637,7 +637,7 @@
       "startLine": 245,
       "endLine": 248
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Typical Size of σ(n)",
     "content": "For 'most' $n$, $\\sigma(n) < n \\cdot (\\log n)^2$. This follows from the normal order of $\\sigma(n)/n$ being $e^\\gamma \\log \\log n$ (Gronwall's theorem), so $\\sigma(n)/n$ is usually small. For large $t$, this means most $n < t/(\\log t)^2$ cannot be in $D_t$, as their divisors don't sum high enough.",
     "mathContext": "$\\sigma(n) < n (\\log n)^2$ for density-1 set of $n$. More precisely, $\\limsup_{n \\to \\infty} \\frac{\\sigma(n)}{n \\log \\log n} = e^\\gamma \\approx 1.781$ (Gronwall 1913), where $\\gamma$ is the Euler–Mascheroni constant.",

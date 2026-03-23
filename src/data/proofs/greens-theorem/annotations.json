@@ -124,7 +124,7 @@
       "startLine": 149,
       "endLine": 161
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Green's Theorem for Rectangles",
     "content": "The core axiom `greens_theorem_rectangle`: for a continuously differentiable vector field $\\mathbf{F} = (P, Q)$ and rectangle $R$, the line integral around $\\partial R$ equals the double integral of the curl over $R$. Axiomatized because the full proof requires Mathlib's integration machinery (Lebesgue integral, Fubini). This rectangular case is the foundation — general regions reduce to it via decomposition.",
     "mathContext": "$\\oint_{\\partial R} (P\\,dx + Q\\,dy) = \\iint_R \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right) dA$ for rectangle $R = [a,b] \\times [c,d]$.",
@@ -149,7 +149,7 @@
       "startLine": 162,
       "endLine": 188
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "General Green's Theorem",
     "content": "The general form `greens_theorem_general` for arbitrary regions bounded by positively oriented, piecewise smooth, simple closed curves. Currently a placeholder axiom (`True`). The `GreenRegion` structure is abstract (contains only `dummy : Unit`). The proof strategy for general regions: (1) decompose into rectangles; (2) apply `greens_theorem_rectangle` to each; (3) internal boundary integrals cancel (opposite orientations on shared edges); (4) only the external boundary remains.",
     "mathContext": "$\\oint_C (P\\,dx + Q\\,dy) = \\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right) dA$ for $D$ bounded by positively oriented, piecewise smooth, simple closed curve $C$.",
@@ -219,7 +219,7 @@
       "startLine": 277,
       "endLine": 294
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Cauchy-Riemann and Zero Circulation",
     "content": "Defines `SatisfiesCauchyRiemann` as the condition that curl vanishes everywhere: $\\forall (x,y), \\text{curl}(x,y) = 0$. The theorem `cauchy_integral_zero_of_cauchy_riemann` states that if a field satisfies Cauchy-Riemann, the line integral around any rectangle is zero. The proof is trivial (`rfl`) because `lineIntegral` is currently defined as 0. In a full formalization, this would follow from Green's theorem with zero integrand.",
     "mathContext": "Cauchy-Riemann: $\\frac{\\partial P}{\\partial x} = \\frac{\\partial Q}{\\partial y}$ and $\\frac{\\partial P}{\\partial y} = -\\frac{\\partial Q}{\\partial x}$. These imply $\\text{curl} = \\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y} = 0$, so $\\oint_C \\mathbf{F} \\cdot d\\mathbf{r} = \\iint_D 0\\,dA = 0$.",

@@ -54,7 +54,7 @@
       "startLine": 68,
       "endLine": 73
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Euler's Identity and $\\pi > 0$",
     "content": "**Two key Mathlib facts**:\n\n1. $\\pi > 0$ via `Real.pi_pos`\n2. **Euler's identity**: $e^{i\\pi} = -1$ via `Complex.exp_pi_mul_I`\n\nEquivalently: $e^{i\\pi} + 1 = 0$, connecting the five fundamental constants $e$, $i$, $\\pi$, $1$, and $0$.\n\n**Role in proof**: Euler's identity is the critical bridge — it converts the algebraic status of $\\pi$ into a claim about the complex exponential, which Lindemann's theorem constrains.",
     "mathContext": "$e^{i\\pi} = -1$, proved via `Complex.exp_pi_mul_I`",
@@ -102,7 +102,7 @@
       "startLine": 119,
       "endLine": 143
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorems (Axiomatized)",
     "content": "**Three axiomatized results**:\n\n1. **Lindemann's Theorem**: For algebraic $\\alpha \\neq 0$, $e^\\alpha$ is transcendental\n   `axiom lindemann_theorem (α : ℂ) (hα_ne : α ≠ 0) (hα_alg : IsAlgebraic ℤ α) : Transcendental ℤ (Complex.exp α)`\n\n2. **$\\pi$ transcendental over $\\mathbb{Z}$**: `axiom pi_transcendental : Transcendental ℤ Real.pi`\n\n3. **$\\pi$ transcendental over $\\mathbb{Q}$**: Equivalent since clearing denominators converts $\\mathbb{Q}$-polynomials to $\\mathbb{Z}$-polynomials\n\n**Axiomatization rationale**: The full Lindemann-Weierstrass theorem requires substantial complex analysis infrastructure not yet in Mathlib. Once formalized, these axioms can be replaced with proofs.",
     "mathContext": "`Transcendental ℤ Real.pi` and `Transcendental ℚ Real.pi`",
@@ -125,7 +125,7 @@
       "startLine": 163,
       "endLine": 183
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Key Algebraic Numbers: $-1$ and $i$",
     "content": "**Fully proved supporting lemmas**:\n\n1. **$-1$ is algebraic**: Root of $X + 1 = 0$\n   `theorem neg_one_algebraic : IsAlgebraic ℤ (-1 : ℂ)` — proved by exhibiting `Polynomial.X + 1`\n\n2. **$i$ is algebraic**: Root of $X^2 + 1 = 0$\n   `theorem I_algebraic : IsAlgebraic ℤ Complex.I` — proved using `Complex.I_sq`\n\n3. **Euler's identity**: `euler_identity_neg_one : Complex.exp (Real.pi * Complex.I) = -1`\n\n**Connection to main proof**: These are the three ingredients for the contraposition: if $\\pi$ were algebraic, $i\\pi$ would be algebraic ($i$ algebraic), so $e^{i\\pi}$ would be transcendental (Lindemann), but $e^{i\\pi} = -1$ is algebraic (proved here) — contradiction.",
     "mathContext": "$-1$: root of $X + 1$; $i$: root of $X^2 + 1$; both in $\\overline{\\mathbb{Z}} \\subset \\overline{\\mathbb{Q}}$",
@@ -149,7 +149,7 @@
       "startLine": 188,
       "endLine": 236
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Corollaries of Transcendence",
     "content": "**Transcendence propagates under algebraic operations**:\n\n| Expression | Why Transcendental | Axiom |\n|------------|--------------------|---------|\n| $\\pi$ irrational | Transcendental $\\Rightarrow$ not rational | `pi_irrational_axiom` |\n| $2\\pi$ | If $p(2\\pi) = 0$, then $\\pi$ satisfies $p(2X) = 0$ | `two_pi_transcendental_axiom` |\n| $\\pi^2$ | If $p(\\pi^2) = 0$, then $\\pi$ satisfies $p(X^2) = 0$ | `pi_sq_transcendental_axiom` |\n| $\\pi + 1$ | If $p(\\pi+1) = 0$, then $\\pi$ satisfies $p(X+1) = 0$ | `pi_plus_one_transcendental_axiom` |\n| $1/\\pi$ | Reciprocal polynomial: $X^n \\cdot p(1/X)$ | `pi_inv_transcendental_axiom` |\n\n**General principle**: Any algebraic function of a transcendental number remains transcendental, since composing the vanishing polynomial with an algebraic substitution yields a vanishing polynomial for the original.",
     "mathContext": "If $f$ is algebraic and $P(f(\\pi)) = 0$, then $Q(\\pi) = P(f(X)) = 0$, contradicting $\\pi$ transcendental",

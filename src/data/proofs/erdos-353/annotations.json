@@ -141,7 +141,7 @@
       "startLine": 190,
       "endLine": 215
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Koizumi's Theorems (2025)",
     "content": "**koizumi_isosceles_trapezoid, koizumi_isosceles_triangle, koizumi_right_triangle:**\n\nEvery measurable set with infinite measure contains:\n1. An isosceles trapezoid of area 1\n2. An isosceles triangle of area 1\n3. A right-angled triangle of area 1\n\nThis completely resolves Erdős Problem #353 for these shapes.\n\n**Reference:** arXiv:2501.01914 (January 2025)",
     "mathContext": "The proof uses measure-theoretic density arguments.",
@@ -158,7 +158,7 @@
       "startLine": 233,
       "endLine": 245
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Parallelogram Counterexample",
     "content": "**kovac_parallelogram_counterexample:**\n\nThere EXISTS a set A with infinite measure such that A does NOT contain the vertices of any parallelogram with area 1.\n\nThis shows parallelograms are fundamentally different from trapezoids!\n\n**Why?** Parallelograms have two parallel pairs, giving more constraints. The counterexample exploits this rigidity.",
     "mathContext": "Kovač (2023) arXiv:2309.09973",
@@ -175,7 +175,7 @@
       "startLine": 247,
       "endLine": 254
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Cyclic Quadrilaterals Exist",
     "content": "**kovac_predojevic_cyclic:**\n\nEvery set with infinite measure contains four points on a circle forming a quadrilateral of area 1.\n\n**Reference:** Kovač-Predojević (2024) arXiv:2412.11725",
     "significance": "key",
@@ -191,7 +191,7 @@
       "startLine": 299,
       "endLine": 318
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Scaling Property",
     "content": "**scaling_property:**\n\nIf infinite measure sets contain configurations of area 1, they contain configurations of ANY positive area t.\n\n**Proof idea:** Scale the set by factor √t. The scaled set still has infinite measure, so it contains area-1 configurations. Scaling back gives area-t configurations in the original set.",
     "significance": "key",
@@ -207,7 +207,7 @@
       "startLine": 342,
       "endLine": 393
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary",
     "content": "**Erdős Problem #353: SOLVED**\n\n**Results:**\n- Isosceles trapezoid: YES (Koizumi 2025)\n- Isosceles triangle: YES (Koizumi 2025)\n- Right triangle: YES (Koizumi 2025)\n- Cyclic quadrilateral: YES (Kovač-Predojević 2024)\n- Parallelogram: NO (counterexample exists)\n\n**Key Insight:** One parallel pair (trapezoid) is weak enough to guarantee existence, but two parallel pairs (parallelogram) can fail.",
     "significance": "key",

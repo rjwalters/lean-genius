@@ -59,7 +59,7 @@
       "startLine": 61,
       "endLine": 86
     },
-    "type": "example",
+    "type": "context",
     "title": "Divisor Count Examples",
     "content": "We verify τ(1)=1, τ(2)=2, τ(3)=2, τ(4)=3, τ(6)=4, τ(12)=6 computationally. We also verify that 2, 14, and 21 are in our target set.",
     "mathContext": "The `native_decide` tactic computes these values directly. For instance, divisors of 12 are {1,2,3,4,6,12}, so τ(12) = 6.",
@@ -93,7 +93,7 @@
       "startLine": 90,
       "endLine": 94
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Axiom: Heath-Brown's Theorem",
     "content": "We state Heath-Brown's 1984 result as an **axiom**: there are infinitely many n with τ(n) = τ(n+1).",
     "mathContext": "Heath-Brown improved Spiro's method which only worked for gap 5040. His proof uses sieve methods and properties of highly composite numbers.",
@@ -111,7 +111,7 @@
       "startLine": 96,
       "endLine": 102
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem: Erdős Problem 946",
     "content": "**Erdős Problem 946 (Solved):** There are infinitely many consecutive integers with equal divisor counts. This is Heath-Brown's theorem applied.",
     "mathContext": "The theorem `erdos_946` simply invokes the axiom. A full formalization would require the sieve theory underlying Heath-Brown's proof.",
@@ -128,7 +128,7 @@
       "startLine": 106,
       "endLine": 111
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Spiro's Precursor Result",
     "content": "Spiro (1981) proved τ(n) = τ(n + 5040) infinitely often. The gap 5040 = 7! was chosen because it has many divisors (60), creating more chances for coincidence.",
     "mathContext": "A highly composite number like 5040 has many factorizations, making it easier to find n where n and n+5040 have similar divisor counts.",

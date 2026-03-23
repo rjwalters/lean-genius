@@ -119,7 +119,7 @@
       "startLine": 53,
       "endLine": 63
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Cambie: Unimodal for k = 1, 2, 3",
     "content": "Cambie (2025, arXiv:2501.10333) proved that d_k(p) is unimodal in p for k = 1, 2, 3. The k = 1 case is classical: d_1(p) = (1/p)·∏_{q<p}(1−1/q) is strictly decreasing, so trivially unimodal with peak at p = 2. The k = 2 and k = 3 cases require more delicate analysis of the interaction between inclusion-exclusion contributions from small primes.",
     "mathContext": "For $k = 1$: $d_1(2) = 1/2 > d_1(3) = 1/6 > d_1(5) = 1/15 > \\cdots$ (strictly decreasing). For $k = 2$: $d_2(p)$ first increases then decreases, with peak near $p = 5$. For $k = 3$: peak near $p = 11$.",
@@ -142,7 +142,7 @@
       "startLine": 65,
       "endLine": 67
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Cambie: Not Unimodal for 4 ≤ k ≤ 20",
     "content": "Cambie proved that d_k(p) is NOT unimodal for 4 ≤ k ≤ 20, confirming Erdős's expectation. The proof identifies a specific pair of consecutive primes where d_k increases after an initial decrease, violating unimodality. This establishes that k = 3 is the exact threshold: the answer to Erdős's question is NO.",
     "mathContext": "For $k \\ge 4$: $\\exists$ primes $p < q < r$ with $d_k(q) < d_k(p)$ and $d_k(q) < d_k(r)$, so $d_k$ has a local minimum on primes, violating unimodality. The non-unimodality arises from interference between contributions of different prime combinations.",
@@ -164,7 +164,7 @@
       "startLine": 69,
       "endLine": 75
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Answer to Erdős's Question: NO",
     "content": "The answer to Problem #690 is NO: d_k(p) is not unimodal for all k ≥ 1. This is proved constructively from Cambie's k = 4 result, providing a concrete counterexample. The proof is a simple application of the k = 4 non-unimodality to contradict the universal statement.",
     "mathContext": "Proof: assume $\\forall k \\ge 1$, $d_k$ is unimodal. Then $d_4$ is unimodal, contradicting Cambie's theorem. Hence $\\exists k \\ge 1$ with $d_k$ not unimodal. QED.",
@@ -230,7 +230,7 @@
       "startLine": 105,
       "endLine": 113
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Explicit Values of d₁",
     "content": "For k = 1, d_1(p) = (1/p)·∏_{q<p}(1−1/q): the density of integers whose smallest prime factor is p equals 1/p times the probability of having no prime factor below p. Concretely, d_1(2) = 1/2 (half of all integers are even) and d_1(3) = 1/6 (one-sixth of integers have smallest prime factor 3). The function d_1 is strictly decreasing.",
     "mathContext": "$d_1(p) = \\frac{1}{p}\\prod_{q < p, q \\text{ prime}} \\left(1 - \\frac{1}{q}\\right)$. By Mertens: $d_1(p) \\sim \\frac{e^{-\\gamma}}{p \\log p}$ for large $p$, where $\\gamma$ is Euler's constant.",

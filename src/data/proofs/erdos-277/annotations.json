@@ -51,7 +51,7 @@
       "startLine": 47,
       "endLine": 48
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "σ(1) = 1",
     "content": "Base case: $\\sigma(1) = 1$ since the only divisor of 1 is itself. Proved by `simp` with the definitions.",
     "significance": "supporting",
@@ -72,7 +72,7 @@
       "startLine": 51,
       "endLine": 52
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "σ(p) = p + 1 for Primes",
     "content": "For prime $p$, the only divisors are 1 and $p$, so $\\sigma(p) = 1 + p = p + 1$. This is the simplest non-trivial evaluation of $\\sigma$ and shows primes have the smallest possible abundancy ratio $\\sigma(p)/p = 1 + 1/p$ among integers $> 1$.",
     "significance": "key",
@@ -293,7 +293,7 @@
       "startLine": 113,
       "endLine": 116
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Haight's Theorem (1979)",
     "content": "Axiomatized main result: `ErdosQuestion277` holds. Haight proved that for every $c > 0$, there exists $n$ with $\\sigma(n) > cn$ but no covering system has all moduli dividing $n$. Published in Mathematika 26 (1979), 53-61.",
     "significance": "key",
@@ -315,7 +315,7 @@
       "startLine": 118,
       "endLine": 119
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Answer: YES",
     "content": "Immediate corollary restating Haight's theorem: the answer to Erdős #277 is YES. Derived directly from the axiomatized `haight_theorem`.",
     "significance": "key",
@@ -358,7 +358,7 @@
       "startLine": 130,
       "endLine": 150
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Trivial Covering Properties (Proved)",
     "content": "Three proved results: (1) the trivial covering is indeed a covering system, (2) its modulus 1 divides every $n \\geq 1$, and (3) therefore every $n \\geq 1$ has some covering with divisor moduli. These are the only fully proved theorems in the file.",
     "significance": "key",
@@ -426,7 +426,7 @@
       "startLine": 164,
       "endLine": 169
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Haight's Strong Theorem",
     "content": "The stronger axiomatized result: for every $c > 0$, there exists $n \\geq 1$ with $\\sigma(n) > cn$ and $\\neg\\text{HasNonTrivialCoveringWithDivisorModuli}(n)$. This is the precise formalization of Haight's 1979 paper.",
     "significance": "key",
@@ -471,7 +471,7 @@
       "startLine": 179,
       "endLine": 182
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Reciprocal Sum Bound",
     "content": "Axiomatized: for a covering system with distinct moduli, $\\sum 1/m_i \\geq 1$. This is the fundamental necessary condition constraining covering systems.",
     "significance": "key",
@@ -560,7 +560,7 @@
       "startLine": 276,
       "endLine": 284
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem and Restatements",
     "content": "Three equivalent restatements of the main result: `erdos_277`, `erdos_277_main` (with explicit $\\sigma$ inequality), and `erdos_277_summary`. All derive from `haight_theorem` directly.",
     "significance": "key",

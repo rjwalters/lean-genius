@@ -121,7 +121,7 @@
       "startLine": 100,
       "endLine": 109
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Conlon-Janzer-Lee Exponents: 3/2 - 1/(2s)",
     "content": "Axiomatizes that $3/2 - 1/(2s)$ is a Turan exponent for each $s \\ge 2$, giving $\\{5/4, 7/6, 9/8, 11/10, \\ldots\\}$ accumulating at $3/2$ from below. The witness graphs are subdivisions of bipartite graphs: start with $K_{s,t}$, subdivide each edge into a path of length $\\ell$, and tune $\\ell$ to control the extremal number's growth rate. The subdivision technique works because replacing edges with long paths reduces the 'density' of the forbidden graph in a quantifiable way, lowering the exponent from $2 - 1/s$ toward specific rationals.",
     "mathContext": "$\\forall s \\ge 2:\\; 3/2 - 1/(2s) \\in \\{5/4, 7/6, 9/8, \\ldots\\}$ is a Turan exponent; witness: subdivided bipartite graphs",
@@ -143,7 +143,7 @@
       "startLine": 111,
       "endLine": 127
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Jiang-Qiu Exponent Families (2020, 2023)",
     "content": "Three axiomatized families: (1) $4/3 - 1/(3s)$ for $s \\ge 2$ (accumulates at $4/3$), (2) $5/4 - 1/(4s)$ for $s \\ge 2$ (accumulates at $5/4$), and (3) the crucial $1 + a/b$ with $b > a^2$ and $a \\ge 1$ (covers infinitely many low exponents). The third family is the most significant: it addresses the difficult regime near 1 where standard subdivision constructions fail. The condition $b > a^2$ is a consequence of the algebraic construction -- the witness graphs come from norm-type constructions over finite fields, where the exponent depends on the relationship between parameters.",
     "mathContext": "$4/3 - 1/(3s)$, $5/4 - 1/(4s)$ for $s \\ge 2$; $1 + a/b$ for $a \\ge 1,\\, b > a^2$ (low exponents near 1)",
@@ -165,7 +165,7 @@
       "startLine": 129,
       "endLine": 136
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Jiang-Ma-Yepremyan Exponents and 7/5",
     "content": "Axiomatizes that $2 - 2/(2b+1)$ is a Turan exponent for $b \\ge 2$, producing $\\{6/5, 10/7, 14/9, \\ldots\\}$ accumulating at 2 through odd-denominator rationals. The specific value $7/5$ is separately axiomatized as `exponent_7_5`. The constructions use hypergraph-based techniques: start with a $(2b+1)$-uniform hypergraph Turan problem, 'encode' it as a bipartite graph problem via incidence structures, and transfer the exponent from the hypergraph setting to the graph setting.",
     "mathContext": "$2 - 2/(2b+1)$ for $b \\ge 2$: $\\{6/5, 10/7, 14/9, \\ldots\\}$; also $7/5 = 2 - 3/5$ specifically",
@@ -187,7 +187,7 @@
       "startLine": 138,
       "endLine": 144
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Conlon-Janzer Near-Two Exponents (2022)",
     "content": "Axiomatizes that $2 - a/b$ with $a \\ge 2$ and $b \\ge (a-1)^2$ is a Turan exponent. This covers a dense set of rationals in $[7/4, 2)$: for any target $\\alpha$ close to 2, choose $a$ and $b$ such that $2 - a/b \\approx \\alpha$ with $b \\ge (a-1)^2$. The condition $b \\ge (a-1)^2$ comes from the algebraic construction using random algebraic graphs over finite fields -- specifically, polynomials of degree $a-1$ in $\\mathbb{F}_q[x]$ have at most $(a-1)^2$ roots in appropriate extensions.",
     "mathContext": "$2 - a/b$ for $a \\ge 2,\\, b \\ge (a-1)^2$: dense near 2; all $\\alpha \\ge 7/4$ covered",
@@ -209,7 +209,7 @@
       "startLine": 146,
       "endLine": 158
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bukh-Conlon Finite Family Theorem (2018)",
     "content": "Axiomatizes the strongest partial result: every rational $\\alpha \\in [1,2)$ is achievable for a finite FAMILY $\\mathcal{F}$ of bipartite graphs, i.e., $\\text{ex}(n; \\mathcal{F}) \\asymp n^\\alpha$ where $\\text{ex}(n; \\mathcal{F})$ forbids all graphs in $\\mathcal{F}$ simultaneously. The axiom existentially quantifies over a family size $k$ and an extremal function. The gap between families and single graphs is fundamental: a family can forbid 'complementary' structures that no single graph captures, making the family version strictly easier.",
     "mathContext": "$\\forall \\alpha \\in [1,2) \\cap \\mathbb{Q},\\; \\exists$ finite family $\\mathcal{F}$ of bipartite graphs: $\\text{ex}(n; \\mathcal{F}) \\asymp n^\\alpha$",
@@ -231,7 +231,7 @@
       "startLine": 160,
       "endLine": 182
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Classical Upper Bounds: Kovari-Sos-Turan and Bondy-Simonovits",
     "content": "Two foundational axioms justifying the interval $[1,2)$. `kovari_sos_turan` (1954): $\\text{ex}(n; K_{s,t}) = O(n^{2-1/s})$ for $s \\le t$, proved by double counting -- if a bipartite graph avoids $K_{s,t}$, then counting common neighborhoods of $s$-sets bounds the edge density. `bondy_simonovits_upper`: for ANY bipartite $G$, there exists $k \\ge 1$ with $\\text{ex}(n;G) = O(n^{2-1/k})$. Together these establish that bipartite Turan exponents cannot reach 2, justifying the open interval $[1,2)$.",
     "mathContext": "$\\text{ex}(n; K_{s,t}) = O(n^{2-1/s})$ for $s \\le t$; $\\forall$ bipartite $G,\\; \\exists k:\\; \\text{ex}(n;G) = O(n^{2-1/k})$",
@@ -254,7 +254,7 @@
       "startLine": 184,
       "endLine": 209
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary: Three Representative Exponent Families",
     "content": "The proved `erdos_571_summary` bundles three axioms representing different parts of $[1,2)$: (1) Conlon-Janzer-Lee $3/2 - 1/(2s)$ (middle range, accumulating at $3/2$), (2) Jiang-Qiu $1 + a/b$ with $b > a^2$ (low range near 1), (3) $7/5$ as a specific achievable exponent. Proved by `exact \\langle conlon\\_janzer\\_lee\\_exponents, jiang\\_qiu\\_low\\_exponents, exponent\\_7\\_5 \\rangle`. The three families collectively demonstrate progress across the entire interval, though gaps remain.",
     "mathContext": "$(\\forall s \\ge 2:\\; 3/2 - 1/(2s) \\text{ achievable}) \\wedge (\\forall a,b:\\; 1 + a/b \\text{ achievable if } b > a^2) \\wedge (7/5 \\text{ achievable})$",

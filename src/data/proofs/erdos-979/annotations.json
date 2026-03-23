@@ -60,7 +60,7 @@
       "startLine": 52,
       "endLine": 66
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Edge Cases",
     "content": "**solution_zero_zero** proves the empty multiset is the unique solution for n=0, k=0. **solution_zero_pos** states there's no solution for n=0 when k>=1.",
     "mathContext": "For k>=1, we need k positive primes summing to 0, which is impossible since all prime powers are positive. This is axiomatized due to proof complexity.",
@@ -78,7 +78,7 @@
       "startLine": 68,
       "endLine": 81
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Examples: Squares of Primes",
     "content": "**example_8_eq_2sq_2sq** shows {2,2} solves n=8, k=2 since 2^2 + 2^2 = 4 + 4 = 8. **example_50** shows {5,5} solves n=50 since 5^2 + 5^2 = 50.",
     "mathContext": "These are the simplest non-trivial examples for k=2. The multiset {2,2} contains 2 with multiplicity 2, and 8 is the smallest n with any solution.",
@@ -96,7 +96,7 @@
       "startLine": 83,
       "endLine": 91
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Examples: Cubes of Primes",
     "content": "**example_24_eq_cubes** shows {2,2,2} solves n=24, k=3 since 2^3 + 2^3 + 2^3 = 8 + 8 + 8 = 24.",
     "mathContext": "For k=3, we need three prime cubes. Using the smallest prime 2 three times gives 24, the smallest n with a k=3 solution.",
@@ -114,7 +114,7 @@
       "startLine": 95,
       "endLine": 100
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdos k=2 Theorem (1937)",
     "content": "**erdos_979_k2** states lim sup f_2(n) = infinity. There are infinitely many n that can be written as p^2 + q^2 for primes p, q in arbitrarily many ways.",
     "mathContext": "Published in 'On the Sum and Difference of Squares of Primes' (1937). The proof uses the Hardy-Littlewood circle method with estimates for primes in arithmetic progressions.",
@@ -132,7 +132,7 @@
       "startLine": 102,
       "endLine": 107
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdos k=3 Theorem (unpublished)",
     "content": "**erdos_979_k3** states lim sup f_3(n) = infinity for cubes of primes. This extends the k=2 result but was never formally published.",
     "mathContext": "The k=3 case requires similar techniques but with more complex singular series. The proof exists but appears only in private communications.",
@@ -150,7 +150,7 @@
       "startLine": 109,
       "endLine": 114
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Open Question (k >= 4)",
     "content": "**erdos_979_general_open** axiomatizes the unknown: is lim sup f_k(n) = infinity for ALL k >= 2? The k >= 4 cases remain unsolved.",
     "mathContext": "As k increases, the k-th powers of primes become sparser, making it harder to find multiple representations. Whether the count still grows unboundedly is unknown.",
@@ -186,7 +186,7 @@
       "startLine": 131,
       "endLine": 147
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bounds on Solutions",
     "content": "**no_solution_small** shows solutionSet n k = empty when n < 2^k. **smallest_k2** proves solutionSet 8 2 is nonempty (8 is the smallest n with a k=2 solution).",
     "mathContext": "Since 2 is the smallest prime, the minimum sum of k k-th powers of primes is k * 2^k. For k=2, this is 2*4 = 8. For k=3, it's 3*8 = 24.",
@@ -204,7 +204,7 @@
       "startLine": 149,
       "endLine": 167
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_979_summary** packages the verified examples: 8 = 2^2 + 2^2, 50 = 5^2 + 5^2, and 24 = 2^3 + 2^3 + 2^3.",
     "mathContext": "This confirms the definitions are correctly capturing the intended mathematical content. Each example satisfies all three conditions: correct count of primes, all primes, sum equals n.",

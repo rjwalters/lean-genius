@@ -72,7 +72,7 @@
       "startLine": 74,
       "endLine": 103
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Historical Bounds: Erdos-Klein, Reiman, Projective Planes",
     "content": "Three key axiomatized bounds. erdos_klein_upper (1938): ex(n;C4) <= c * n^{3/2} for some c > 0, proved via double counting of 2-paths (each pair of vertices shares at most one common neighbor). reiman_bounds (1958): the limit L = lim ex(n;C4)/n^{3/2} satisfies 1/(2*sqrt(2)) <= L <= 1/2. projective_plane_construction: for n = q^2+q+1 with q prime power, ex(n;C4) >= (1/2)q(q+1)^2 via the incidence graph of PG(2,q).",
     "mathContext": "`erdos_klein_upper : \\exists c > 0, \\text{ex\\_C4}(n) \\leq c \\cdot n^{3/2}$. Proof: double count 2-paths; $C_4$-free means $\\leq 1$ common neighbor per pair, so $\\sum \\binom{\\deg(v)}{2} \\leq \\binom{n}{2}$, giving $|E| \\leq \\frac{1}{2}(1 + \\sqrt{2n-1})n/2$. `reiman_bounds : 1/(2\\sqrt{2}) \\leq L \\leq 1/2$. `projective_plane_construction : \\text{ex\\_C4}(q^2+q+1) \\geq \\frac{1}{2}q(q+1)^2$.",
@@ -95,7 +95,7 @@
       "startLine": 108,
       "endLine": 130
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem: ex(n; C4) ~ (1/2)n^{3/2}",
     "content": "asymptotic_ratio n = ex_C4(n)/n^{3/2} (with 0 for n=0). asymptotic_formula (axiom): for all epsilon > 0, exists N such that |asymptotic_ratio(n) - 1/2| < epsilon for n >= N. erdos_765 (PROVED): the main theorem, proved by direct application of asymptotic_formula. This combines the Erdos-Klein upper bound (lim sup <= 1/2) with the projective plane lower bound (lim inf >= 1/2).",
     "mathContext": "$r(n) = \\text{ex\\_C4}(n)/n^{3/2}$. `asymptotic_formula : \\forall \\varepsilon > 0, \\exists N, \\forall n \\geq N, |r(n) - 1/2| < \\varepsilon$. `erdos_765 := asymptotic_formula`. The limit follows from: upper bound $\\limsup r(n) \\leq 1/2$ (Erdos-Klein/Reiman) and lower bound $\\liminf r(n) \\geq 1/2$ (projective planes at $n = q^2+q+1$).",
@@ -116,7 +116,7 @@
       "startLine": 135,
       "endLine": 144
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Furedi's Exact Result (1983)",
     "content": "furedi_exact (axiom): for q > 13 prime power and n = q^2+q+1, ex(n;C4) = (1/2)q(q+1)^2 exactly. The projective plane incidence graph PG(2,q) is the unique extremal graph (up to isomorphism) for these parameters. This gives exact values for infinitely many n, not just asymptotic bounds.",
     "mathContext": "`furedi_exact : q > 13 \\Rightarrow \\text{ex\\_C4}(q^2+q+1) = q(q+1)^2/2$. The incidence graph of $PG(2,q)$ has $q^2+q+1$ vertices (points), $q^2+q+1$ vertices (lines), and $q+1$ edges per vertex, totaling $(q^2+q+1)(q+1)/2$ edges. The $C_4$-free property follows from: two points determine a unique line in a projective plane.",
@@ -138,7 +138,7 @@
       "startLine": 148,
       "endLine": 174
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdos's Conjecture and Ma-Yang Disproof (2023)",
     "content": "erdos_refined_upper (axiom): ex(n;C4) <= (1/2)n^{3/2} + (1/4)n + c*sqrt(n) for some c. erdos_conjecture (definition): the lower bound also holds with coefficient 1/4. ma_yang_disproof (axiom): there exists c > 0 and delta > 0 such that for all N, a positive-density subset S of [1,N] satisfies ex(n;C4) <= (1/2)n^{3/2} + (1/4 - c)*n for all n in S. This means the coefficient 1/4 is NOT tight.",
     "mathContext": "`erdos_refined_upper : \\text{ex\\_C4}(n) \\leq \\frac{1}{2}n^{3/2} + \\frac{1}{4}n + O(\\sqrt{n})$. `erdos_conjecture := \\exists c, \\forall n, |\\text{ex\\_C4}(n) - (\\frac{1}{2}n^{3/2} + \\frac{1}{4}n)| \\leq c\\sqrt{n}$. `ma_yang_disproof : \\exists c > 0, \\delta > 0, \\forall N, \\exists S \\subseteq [1,N], |S| \\geq \\delta N \\wedge \\forall n \\in S, \\text{ex\\_C4}(n) \\leq \\frac{1}{2}n^{3/2} + (\\frac{1}{4}-c)n$.",
@@ -180,7 +180,7 @@
       "startLine": 196,
       "endLine": 227
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Projective Plane Examples (4 PROVED)",
     "content": "Four projective plane vertex counts proved by simp+ring. fano_plane_example: PG(2,2) has 7 vertices (the Fano plane, smallest projective plane). pg23_example: PG(2,3) has 13 vertices. pg24_example: PG(2,4) has 21 vertices (4 = 2^2 is prime power but not prime). pg25_example: PG(2,5) has 31 vertices. Each uses projectivePlaneVertices q = q^2 + q + 1.",
     "mathContext": "`fano_plane_example : 2^2 + 2 + 1 = 7`. `pg23_example : 3^2 + 3 + 1 = 13`. `pg24_example : 4^2 + 4 + 1 = 21`. `pg25_example : 5^2 + 5 + 1 = 31`. All proved by `simp [projectivePlaneVertices]; ring`. The Fano plane has 7 points, 7 lines, 3 points per line, 3 lines per point.",
@@ -200,7 +200,7 @@
       "startLine": 239,
       "endLine": 246
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "erdos_765_summary (PROVED): combines the asymptotic formula (via axiom) and the Fano plane computation (proved by simp+ring). The conjunction establishes both the main asymptotic answer and a concrete computational example. Problem #765 is SOLVED: ex(n;C4) ~ (1/2)n^{3/2}.",
     "mathContext": "`erdos_765_summary : (\\forall \\varepsilon > 0, \\exists N, \\forall n \\geq N, |r(n) - 1/2| < \\varepsilon) \\wedge \\text{projectivePlaneVertices}(2) = 7$. Proved: `\\langle\\text{asymptotic\\_formula}, \\text{simp+ring}\\rangle`.",

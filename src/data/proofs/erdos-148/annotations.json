@@ -92,7 +92,7 @@
       "startLine": 82,
       "endLine": 97
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "F(1) = 1",
     "content": "The only 1-decomposition is {1}: 1 = 1/1. No other single unit fraction equals 1.",
     "mathContext": "Trivial case but establishes the base case for F.",
@@ -108,7 +108,7 @@
       "startLine": 98,
       "endLine": 111
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "F(2) = 0",
     "content": "There is NO way to write 1 as a sum of exactly 2 distinct unit fractions! If 1/n1 + 1/n2 = 1 with n1 < n2, algebra forces n1 = n2 = 2, violating distinctness.",
     "mathContext": "Surprising result: the first non-trivial case has no solutions.",
@@ -125,7 +125,7 @@
       "startLine": 112,
       "endLine": 128
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "F(3) = 1",
     "content": "The unique 3-decomposition is {2, 3, 6}: 1/2 + 1/3 + 1/6 = 1. No other triple of distinct unit fractions sums to 1.",
     "mathContext": "The example isEgyptianDecomposition {2, 3, 6} is verified computationally.",
@@ -142,7 +142,7 @@
       "startLine": 131,
       "endLine": 137
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Konyagin Lower Bound (2014)",
     "content": "F(k) >= 2^{c * k / log k} for some c > 0. This means F grows at least as fast as 2^{k/log k}, which is super-polynomial.",
     "mathContext": "Konyagin's 2014 result gave the best known lower bound, improving earlier work.",
@@ -159,7 +159,7 @@
       "startLine": 138,
       "endLine": 151
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Elsholtz-Planitzer Upper Bound (2021)",
     "content": "F(k) <= c_0^{(1/5 + o(1)) * 2^k} where c_0 = 1.26408... (Vardi constant). This is doubly exponential in k!",
     "mathContext": "Elsholtz and Planitzer 2021 gave the best upper bound, involving the Vardi constant from analysis.",
@@ -193,7 +193,7 @@
       "startLine": 175,
       "endLine": 192
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Egyptian Fraction Existence",
     "content": "Every positive rational has an Egyptian fraction representation. The greedy (Fibonacci-Sylvester) algorithm always terminates with a valid decomposition.",
     "mathContext": "This classical result ensures the counting problem is well-posed - decompositions exist.",
@@ -244,7 +244,7 @@
       "startLine": 221,
       "endLine": 255
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Status Summary",
     "content": "erdos_148_status: Combines lower and upper bounds into one theorem. The problem is OPEN - true growth rate of F(k) unknown.",
     "mathContext": "Captures the state of mathematical knowledge on this problem.",

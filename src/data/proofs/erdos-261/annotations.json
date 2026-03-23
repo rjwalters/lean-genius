@@ -49,7 +49,7 @@
   {
     "id": "cusick-theorem",
     "proofId": "erdos-261",
-    "type": "theorem",
+    "type": "technique",
     "title": "Cusick's Infinitude Theorem",
     "content": "**Cusick (1989)**: For every $N$, there exists $n \\geq N$ that is representable.\n\n**Lean statement**: `∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧ IsRepresentable n` — this is the standard Lean idiom for 'infinitely many' using the Archimedean property. It says: no matter how large a bound $N$ you choose, there's a representable $n$ above it.\n\n**Proof idea** (not formalized): Cusick showed that the binary expansion of n/2^n, when n has a specific digit pattern in base 2, decomposes into a valid sum. The argument uses properties of binary carry propagation.\n\n**Role in the formalization**: This axiom directly proves `ErdosProblem261_infinitely_many` via `:= cusick_infinitely_many` — Part 1 of the problem is resolved.",
     "mathContext": "∀ N, ∃ n ≥ N, IsRepresentable(n)",
@@ -71,11 +71,11 @@
   {
     "id": "borwein-loring",
     "proofId": "erdos-261",
-    "type": "theorem",
+    "type": "technique",
     "title": "Borwein–Loring Family",
     "content": "**Borwein–Loring**: For every $m \\geq 1$, the integer $n = 2^{m+1} - m - 2$ is representable using the consecutive block $\\{n+1, \\ldots, n+m\\}$.\n\n**Verification** (small cases):\n- $m = 2$: $n = 2^3 - 4 = 4$, block $\\{5, 6\\}$: $5/32 + 6/64 = 10/64 + 6/64 = 16/64 = 1/4 = 4/16$ ✓\n- $m = 3$: $n = 2^4 - 5 = 11$, block $\\{12, 13, 14\\}$\n\n**Why it works**: The sum $\\sum_{k=n+1}^{n+m} k/2^k$ telescopes when written as a difference of partial sums of the series $\\sum k x^k$. The specific choice $n = 2^{m+1} - m - 2$ makes the telescope collapse to exactly $n/2^n$.\n\n**Lean**: Uses `let n := 2 ^ (m + 1) - m - 2` with the hypothesis `1 ≤ m` to ensure $n$ is well-defined as a natural number.",
     "mathContext": "n = 2^{m+1} − m − 2, S = {n+1,...,n+m}",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "telescoping sums",
       "explicit construction",
@@ -95,11 +95,11 @@
   {
     "id": "computational-verification",
     "proofId": "erdos-261",
-    "type": "result",
+    "type": "insight",
     "title": "Tengely–Ulas–Zygadło Verification",
     "content": "**Tengely–Ulas–Zygadło**: All positive integers $n \\leq 10000$ are representable.\n\n**Method**: Exhaustive computer search. For each $n$, they searched for a finite set $S$ of distinct positive integers with $|S| \\geq 2$ and $\\sum_{k \\in S} k/2^k = n/2^n$. The search space is bounded because the weights decay exponentially — elements much larger than $n$ contribute negligibly.\n\n**Significance**: This is the strongest computational evidence for the universality conjecture. The fact that no counterexample exists up to 10000 suggests the conjecture is true, but the representations for larger $n$ may require increasingly complex sets $S$.\n\n**Lean**: Axiomatized with explicit bounds: `(hn : 1 ≤ n) (hn' : n ≤ 10000)` — these are the exact hypotheses. A Lean proof could in principle verify each case by computation, but 10000 cases would be impractical for tactic-based proofs.",
     "mathContext": "∀ 1 ≤ n ≤ 10000, IsRepresentable(n)",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "exhaustive search",
       "computational number theory",
@@ -117,7 +117,7 @@
   {
     "id": "universality-conjecture",
     "proofId": "erdos-261",
-    "type": "conjecture",
+    "type": "concept",
     "title": "Universality Conjecture (Part 2)",
     "content": "**Erdős Problem 261, Part 2**: Every positive integer $n \\geq 1$ is representable.\n\n**Formal statement**: `∀ n : ℕ, 1 ≤ n → IsRepresentable n`\n\n**Why this is hard**: The Borwein–Loring family only covers $n$ of the form $2^{m+1} - m - 2$, which is a sparse set. For arbitrary $n$, no systematic construction of the witness set $S$ is known. The difficulty is that different $n$ may require very different sets — there's no uniform pattern.\n\n**Status**: OPEN. Computational evidence (all $n \\leq 10000$) is strong, but no general proof exists. A proof would likely need to show that the 'budget' of available weights $\\{k/2^k : k \\geq 1\\}$ is rich enough to hit every target $n/2^n$ with a finite subset sum.\n\n**Part 1 vs Part 2**: Part 1 (infinitely many) is resolved by Cusick. Part 2 (all) is strictly stronger and remains the main open question.",
     "mathContext": "∀ n ≥ 1, ∃ S with |S| ≥ 2, Σ_{k∈S} k/2^k = n/2^n",
@@ -141,7 +141,7 @@
   {
     "id": "continuum-conjecture",
     "proofId": "erdos-261",
-    "type": "conjecture",
+    "type": "concept",
     "title": "Continuum Representations (Part 3)",
     "content": "**Erdős Problem 261, Part 3**: Does some rational number $x$ admit continuum-many ($2^{\\aleph_0}$) distinct infinite representations $x = \\sum_{k=1}^{\\infty} a_k / 2^{a_k}$?\n\n**Infinite vs finite**: Parts 1 and 2 deal with finite sets $S$. Part 3 switches to infinite sequences $a : \\mathbb{N} \\to \\mathbb{N}$ of distinct positive integers, where the infinite series $\\sum a_k/2^{a_k}$ converges (guaranteed by comparison with $\\sum k/2^k = 2$).\n\n**IsInfiniteRep**: Requires positivity ($a_i \\geq 1$) and injectivity ($i \\neq j \\Rightarrow a_i \\neq a_j$). The convergence condition is left abstract in the formalization — only the distinctness and positivity are checked, with the sum value $x$ as a parameter.\n\n**Lean encoding of uncountability**: Uses `Set.Icc (0 : ℝ) 1` as the source type for the injection, since $[0,1]$ has cardinality $2^{\\aleph_0}$. The function `f : Set.Icc 0 1 → (ℕ → ℕ)` maps each parameter to a distinct representation.\n\n**Weakened form**: `ErdosProblem261_two_reps` asks for just two distinct representations of some rational — a much weaker statement that is also open.",
     "mathContext": "∃ x ∈ ℚ, |{a : ℕ → ℕ | IsInfiniteRep a x}| = 2^ℵ₀",

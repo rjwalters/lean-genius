@@ -140,7 +140,7 @@
       "startLine": 118,
       "endLine": 123
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Adenwalla's Theorem (2025): The Main Result",
     "content": "**Axiom** (`adenwalla_2025`): `ErdosGrahamConjecture`, i.e., no $n > 1$ has a disjoint covering system.\n\nAxiomatized because Adenwalla's proof (arXiv:2501.15170) uses deep number-theoretic arguments. Derived: `erdos_204_answer` ($\\neg$ExistsDisjointCoveringN) follows directly.\n\nThis is a very recent result (January 2025), resolving a 45-year-old conjecture.",
     "mathContext": "Adenwalla's proof analyzes the structure of the divisor lattice of $n$ and shows that the covering condition forces the use of divisible pairs $(d, d')$ with $d \\mid d'$, which violate the coprimality constraint $\\gcd(d, d') = 1$.",
@@ -162,7 +162,7 @@
       "startLine": 125,
       "endLine": 131
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Every n Fails",
     "content": "**Theorem** (`every_n_fails`): $\\forall n > 1$, no residue assignment gives a disjoint covering system.\n\nProved by contradiction: if some assignment worked, we'd have `ExistsDisjointCoveringN`, contradicting `adenwalla_2025`. This is the 'for all' version of the main result.",
     "mathContext": "The universal statement $\\forall n > 1,\\, \\neg \\exists \\text{assignment}$ is logically equivalent to $\\neg \\exists n > 1,\\, \\exists \\text{assignment}$, but the 'for all' form is often more useful for applying the result to specific $n$.",
@@ -183,7 +183,7 @@
       "startLine": 143,
       "endLine": 147
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Divisor Pairs are Not Coprime (Verified Proof)",
     "content": "**Theorem** (`divisor_pair_not_coprime`): If $d \\mid d'$ and $d > 1$, then $\\gcd(d, d') \\neq 1$.\n\n**Proof**: By `Nat.gcd_eq_left hdiv`, $\\gcd(d, d') = d$, and $d > 1$ gives $d \\neq 1$.\n\nThis is the verified heart of the obstruction: any pair of divisors with a divisibility relation violates the coprimality requirement. Since every $n > 1$ has such pairs (e.g., any prime factor $p$ and $n$ satisfy $p \\mid n$), the disjointness constraint is always violated.",
     "mathContext": "The identity $\\gcd(d, d') = d$ when $d \\mid d'$ follows from the definition of GCD as the largest common divisor. Combined with $d > 1$, this gives the obstruction $\\gcd(d, d') > 1$.",
@@ -250,7 +250,7 @@
       "startLine": 240,
       "endLine": 247
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary: Problem #204 SOLVED",
     "content": "**Theorem** (`erdos_204_summary`): $\\neg$ExistsDisjointCoveringN $\\wedge$ ErdosGrahamConjecture.\n\nBoth conjuncts proved from `adenwalla_2025`. This is the complete resolution of Erdős Problem #204: the Erdős-Graham conjecture is confirmed, and no $n > 1$ admits a covering system by its divisors with the disjointness property.",
     "mathContext": "The conjunction is logically redundant (both parts are $\\neg$ExistsDisjointCoveringN), but serves to explicitly connect the formalized statement to the named conjecture.",

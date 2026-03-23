@@ -76,7 +76,7 @@
       "startLine": 87,
       "endLine": 94
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős's Upper Bound",
     "content": "**erdos_delta1_bound:** $\\forall n \\geq 2,\\; \\exists c > 0,\\; \\delta_1(n, m) \\leq 1/(\\log n)^c$. This was Erdős's original quantitative result from 1986, showing the density decays as $n$ grows. The bound holds uniformly in $m$.",
     "mathContext": "The bound $\\delta_1(n,m) \\ll 1/(\\log n)^c$ follows from the fact that a typical integer $k$ has about $\\log \\log k$ prime factors, so divisors are spread out. For divisors to cluster (having exactly one in $(n,m)$), $k$ must have special multiplicative structure, which is rare.",
@@ -99,7 +99,7 @@
       "startLine": 102,
       "endLine": 111
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Ford's Sharper Bounds (2008)",
     "content": "**ford_2008_bounds:** For $n \\geq 2$ and $m > n$, $\\delta_1(n, m) \\leq \\text{bound}(n, m)$ where the bound depends on the ratio $m/n$. Kevin Ford's paper 'The distribution of integers with a divisor in a given interval' (Annals of Mathematics, 2008) gave precise asymptotics for $H(x, y, z) = \\#\\{n \\leq x : \\exists d \\mid n,\\; y < d < z\\}$.",
     "mathContext": "Ford proved $H(x, y, z) \\asymp x \\cdot \\delta(u)$ where $u = \\log z / \\log y$ and $\\delta(u)$ involves the Dickman function $\\rho(u)$. The function $\\delta_1$ is the density analog restricted to exactly one divisor. Ford's bounds depend on whether $m/n$ is close to 1, bounded, or large.",
@@ -146,7 +146,7 @@
       "startLine": 142,
       "endLine": 157
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Cambie's Counterexample Values (n = 3)",
     "content": "**cambie_n3_values:** For $n = 3$: $\\delta_1(3,6) > 0.34$, $\\delta_1(3,7) < 0.34$, $\\delta_1(3,8) > 0.36$. The sequence decreases then increases: $\\delta_1(3,6) > \\delta_1(3,7) < \\delta_1(3,8)$, violating unimodality at any purported peak.",
     "mathContext": "Cambie computed these via inclusion-exclusion over divisibility conditions. Integers with exactly one divisor in $(3,6)$ are those divisible by 4 or 5 but not 20 (and not having other divisors in the range). The non-monotonicity at $m = 6, 7, 8$ constitutes a minimal counterexample.",
@@ -169,7 +169,7 @@
       "startLine": 159,
       "endLine": 175
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Cambie Disproves Unimodality (n = 2, 3)",
     "content": "**cambie_disproves_unimodality:** $\\neg(\\forall n \\geq 2,\\; \\text{erdosUnimodalityQuestion}\\, n)$. **cambie_n3_not_unimodal:** $\\neg\\, \\text{erdosUnimodalityQuestion}\\, 3$. **cambie_n2_not_unimodal:** $\\neg\\, \\text{erdosUnimodalityQuestion}\\, 2$. Unimodality fails for the smallest interesting values of $n$.",
     "mathContext": "Any purported peak must satisfy $\\delta_1(3, \\text{peak}) \\geq \\delta_1(3, 6) = 0.35$, but then $\\delta_1(3, 7) < 0.34$ followed by $\\delta_1(3, 8) > 0.36$ violates both monotonicity conditions.",
@@ -216,7 +216,7 @@
       "startLine": 209,
       "endLine": 213
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Superpolynomially Many Local Maxima",
     "content": "**cambie_superpolynomial_maxima:** For fixed $n \\geq 2$, the count of local maxima of $\\delta_1(n, \\cdot)$ up to $M$ grows superpolynomially in $M$. This is dramatically stronger than merely disproving unimodality.",
     "mathContext": "The mechanism: as $m$ passes through prime powers entering $(n, m)$, $\\delta_1(n, m)$ jumps. The superpolynomial growth follows from the prime counting function $\\pi(m) - \\pi(n)$ growing like $m/\\log m$.",
@@ -285,7 +285,7 @@
       "startLine": 277,
       "endLine": 295
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Summary Theorems",
     "content": "**erdos_692:** Combines the upper bound ($\\exists c > 0,\\; \\delta_1(n,m) \\leq 1/(\\log n)^c$) with the disproof of unimodality. Proved by `constructor`. **erdos_692_status:** $\\neg\\, \\text{erdosUnimodalityQuestion}\\, 3$. Resolves a 39-year-old problem (1986–2025).",
     "mathContext": "The `constructor` tactic splits the conjunction into two goals: Erdős's bound (applied from the axiom) and Cambie's disproof (applied directly). The end of namespace closes `Erdos692`.",

@@ -62,7 +62,7 @@
       "startLine": 62,
       "endLine": 67
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Hypercube is n-Regular",
     "content": "**hypercube_regular:**\n\nFor n ≥ 1, every vertex in Qₙ has degree exactly n.\n\n**Proof idea:** Each vertex (binary string) has exactly n neighbors - one for each bit position that can be flipped.",
     "mathContext": "n-regularity is immediate from the XOR definition: flipping bit i gives a unique neighbor for each i ∈ {0,...,n-1}.",
@@ -171,7 +171,7 @@
       "startLine": 133,
       "endLine": 140
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Conjecture Disproved",
     "content": "**erdos_conjecture_false:**\n\n¬ErdosConjecture\n\nThe conjecture is FALSE. With ε = 1/4, Chung's partition gives a counterexample: a subgraph with 1/4 of all edges but no C₆.\n\nConder's 3-coloring gives an even stronger counterexample with ε = 1/3.",
     "mathContext": "The disproof shows hypercubes have unexpected structure allowing dense cycle-free subgraphs.",
@@ -189,7 +189,7 @@
       "startLine": 146,
       "endLine": 161
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Chung's Partition (1992)",
     "content": "**chung_1992:**\n\nFor n ≥ 3, Qₙ can be edge-partitioned into 4 subgraphs H₁, H₂, H₃, H₄ such that:\n1. Each Hᵢ is a subgraph of Qₙ\n2. The Hᵢ partition Qₙ's edges (disjoint union)\n3. Each Hᵢ is C₆-free\n\nEach part has approximately n·2ⁿ⁻¹/4 edges - a 1/4 fraction.",
     "mathContext": "Published in J. Graph Theory. The construction is explicit and algebraic, using properties of binary strings.",
@@ -208,7 +208,7 @@
       "startLine": 163,
       "endLine": 174
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Chung's Counterexample",
     "content": "**chung_counterexample:**\n\nFor n ≥ 3, there exists H ⊆ Qₙ with ~1/4 of all edges and no C₆.\n\n**Construction:** Take H₁ from Chung's 4-partition.\n\nThis disproves ErdosConjecture with ε = 1/4.",
     "mathContext": "The theorem follows immediately from the partition axiom by taking any one of the four parts.",
@@ -225,7 +225,7 @@
       "startLine": 180,
       "endLine": 197
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Brouwer-Dejter-Thomassen (1993)",
     "content": "**brouwer_dejter_thomassen_1993:**\n\nFor n ≥ 3, Qₙ's edges can be 4-colored such that:\n- The coloring is consistent (symmetric on each edge)\n- No color class contains C₄\n- No color class contains C₆\n\nThis independently confirms and extends Chung's result.",
     "mathContext": "Published in J. Algebraic Combin. The algebraic approach uses group-theoretic properties of the hypercube.",
@@ -243,7 +243,7 @@
       "startLine": 203,
       "endLine": 218
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Conder's Improvement (1993)",
     "content": "**conder_1993:**\n\nFor n ≥ 3, Qₙ's edges can be 3-colored with no monochromatic C₄ or C₆.\n\nThis improves Chung/BDT from 4 colors to 3!\n\n**Implication:** Subgraphs with 1/3 of all edges can be C₆-free.",
     "mathContext": "Conder's construction is more sophisticated, showing the chromatic number for avoiding small even cycles is at most 3.",
@@ -261,7 +261,7 @@
       "startLine": 220,
       "endLine": 231
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "ε = 1/3 Counterexample",
     "content": "**conder_better_bound:**\n\nFor n ≥ 3, there exists H ⊆ Qₙ with ~1/3 of all edges and no C₆.\n\nThis is a stronger counterexample than Chung's ε = 1/4.\n\n**Open question:** Is 3 optimal, or can we do even better with 2 colors?",
     "mathContext": "The gap between ε = 1/3 and ε = 1/2 remains unexplored.",
@@ -297,7 +297,7 @@
       "startLine": 250,
       "endLine": 253
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Generalized Question Open",
     "content": "**generalized_conjecture_open:**\n\nThe generalized conjecture about C_{2k} thresholds remains unsolved.\n\nDetermining the exponents aₖ is a major open problem in extremal hypercube theory.",
     "mathContext": "This connects to Turán-type problems in structured graphs.",
@@ -314,7 +314,7 @@
       "startLine": 259,
       "endLine": 270
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Turán Number for C₄",
     "content": "**turan_c4_hypercube:**\n\nThe maximum number of edges in a C₄-free subgraph of Qₙ is Θ(√n · 2ⁿ).\n\nThis is polynomial in n times 2ⁿ, unlike the constant fraction for C₆.\n\n**Comparison:**\n- C₄-free: ~√n · 2ⁿ edges (sublinear in n)\n- C₆-free: ~n · 2ⁿ⁻¹ / 3 edges (linear in n)",
     "mathContext": "The different behaviors for C₄ and C₆ show the complexity of cycle thresholds in hypercubes.",
@@ -332,7 +332,7 @@
       "startLine": 276,
       "endLine": 305
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem Summary",
     "content": "**erdos_666_summary:**\n\nCombines all main results:\n1. ErdosConjecture is FALSE\n2. Chung's 4-partition provides ε = 1/4 counterexample\n3. Generalized question remains open\n\n| Result | Year | Contribution |\n|--------|------|-------------|\n| Chung | 1992 | 4-partition, ε = 1/4 |\n| BDT | 1993 | Independent 4-coloring |\n| Conder | 1993 | 3-coloring, ε = 1/3 |",
     "mathContext": "This theorem bundles the complete resolution of Problem #666.",

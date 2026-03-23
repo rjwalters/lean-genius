@@ -142,7 +142,7 @@
       "startLine": 50,
       "endLine": 53
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Pattern Count",
     "content": "There are exactly **$k!$** ordering patterns on $k$ elements. This grows very fast: $2! = 2$, $3! = 6$, $4! = 24$, $5! = 120$. Finding all $k!$ patterns in consecutive $\\varphi$ values becomes exponentially harder as $k$ increases.",
     "significance": "key",
@@ -272,7 +272,7 @@
       "startLine": 95,
       "endLine": 97
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős 1936 Result",
     "content": "**Erdős (1936):** $F(n) \\asymp \\log\\log\\log n$. This is the main known result — the exact constant remains unknown after nearly 90 years. Source: 'On a problem of Chowla and some related problems,' Proc. Nat. Inst. Sci. India.",
     "significance": "key",
@@ -402,7 +402,7 @@
       "startLine": 139,
       "endLine": 142
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "k = 2 Patterns",
     "content": "For $k = 2$, both patterns (increasing and decreasing) appear for small $n$. Specifically, `AllPatternsAchievable n 2` holds for $n \\geq 10$. For increasing: $\\varphi(4) = 2 < \\varphi(5) = 4$. For decreasing: $\\varphi(7) = 6 > \\varphi(8) = 4$.",
     "significance": "supporting",
@@ -423,7 +423,7 @@
       "startLine": 151,
       "endLine": 153
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "φ at Primes",
     "content": "**$\\varphi(p) = p - 1$** for prime $p$. This is because all integers $1, 2, \\ldots, p-1$ are coprime to $p$. One of the few non-sorry results in the file, proved directly from Mathlib's `Nat.totient_prime`.",
     "significance": "key",
@@ -445,7 +445,7 @@
       "startLine": 164,
       "endLine": 167
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "φ Can Be Small",
     "content": "$\\varphi$ is highly variable: $\\varphi(n)$ can be much smaller than $n$. For highly composite $n$ (many small prime factors), $\\varphi(n)/n$ can be arbitrarily small. This variability drives the diversity of ordering patterns.",
     "significance": "key",
@@ -467,7 +467,7 @@
       "startLine": 171,
       "endLine": 180
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Extension to Other Functions",
     "content": "**Universality:** The same $F(n) \\asymp \\log\\log\\log n$ holds for $\\sigma(n)$ (sum of divisors), $\\tau(n)$ (number of divisors), $\\omega(n)$ (distinct prime factors), and any 'decent' additive or multiplicative function. The triple-log growth is robust across all standard arithmetic functions.",
     "significance": "key",
@@ -510,7 +510,7 @@
       "startLine": 196,
       "endLine": 198
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Range Size of φ",
     "content": "The number of distinct values in $\\{\\varphi(1), \\ldots, \\varphi(n)\\}$ grows as $n / \\log n$. Most integers are NOT totient values. This sparsity of the range contributes to the pattern ordering constraints and the third log in $\\log\\log\\log n$.",
     "significance": "key",
@@ -532,7 +532,7 @@
       "startLine": 199,
       "endLine": 202
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "φ Collisions",
     "content": "Many integers share the same $\\varphi$ value: $\\varphi(1) = \\varphi(2) = 1$, $\\varphi(3) = \\varphi(4) = \\varphi(6) = 2$, $\\varphi(5) = \\varphi(8) = \\varphi(10) = \\varphi(12) = 4$. These collisions reduce the effective 'randomness' of $\\varphi$ sequences.",
     "significance": "key",
@@ -554,7 +554,7 @@
       "startLine": 206,
       "endLine": 216
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result",
     "content": "**Erdős Problem #415: OPEN.** Known: $F(n) \\asymp \\log\\log\\log n$ (Erdős 1936). Three open questions remain: (1) exact constant $c$, (2) whether strictly decreasing fails first, (3) whether natural pattern is most common. All three have seen essentially no progress beyond Erdős's original 1936 result.",
     "significance": "key",

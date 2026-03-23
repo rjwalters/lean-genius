@@ -60,7 +60,7 @@
       "startLine": 88,
       "endLine": 105
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Powers of 2 Reach 1",
     "content": "**Theorem**: For k >= 1, f^k(2^k) = 1.\n\n**Proof**: By induction on k.\n- Base: f(2) = 1\n- Step: 2^(k+1) = 2 * 2^k, so f(2^(k+1)) = 2^k\n\nEach application halves the value:\n$$2^k \\to 2^{k-1} \\to \\cdots \\to 2 \\to 1$$",
     "mathContext": "collatz_pow_two: k >= 1 -> collatzIter k (2^k) = 1",
@@ -78,7 +78,7 @@
       "startLine": 117,
       "endLine": 133
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Closure Under Doubling",
     "content": "**Theorem**: If n reaches 1, then 2^m * n also reaches 1.\n\n**Proof**: If n reaches 1 in k steps, then:\n- 2n reaches 1 in k+1 steps (first step: 2n -> n)\n- 4n reaches 1 in k+2 steps\n- In general: 2^m * n reaches 1 in k+m steps\n\nThis means verifying odd numbers is sufficient!",
     "mathContext": "reaches_one_pow_two_mul: ReachesOne n -> ReachesOne (2^m * n)",
@@ -96,7 +96,7 @@
       "startLine": 153,
       "endLine": 156
     },
-    "type": "example",
+    "type": "context",
     "title": "3 Reaches 1",
     "content": "The trajectory of 3:\n\n3 -> 10 -> 5 -> 16 -> 8 -> 4 -> 2 -> 1\n\n(7 steps)\n\nThis is verified computationally using `native_decide`.",
     "mathContext": "three_reaches_one: ReachesOne 3 := use 7; native_decide",
@@ -113,7 +113,7 @@
       "startLine": 178,
       "endLine": 181
     },
-    "type": "example",
+    "type": "context",
     "title": "27 Reaches 1 (111 Steps)",
     "content": "27 is famous for its unexpectedly long trajectory.\n\nStarting from just 27, the sequence:\n- Grows to a maximum of 9232\n- Takes 111 steps to reach 1\n\nThis demonstrates how even small numbers can have dramatic orbits. Verified computationally in Lean.",
     "mathContext": "twentyseven_reaches_one: ReachesOne 27 := use 111; native_decide",
@@ -131,7 +131,7 @@
       "startLine": 189,
       "endLine": 190
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Full Conjecture",
     "content": "**The Collatz Conjecture** (unsolved): For all n >= 1, ReachesOne n.\n\nWe state this as an axiom since it remains unproven.\n\nPaul Erdos: 'Mathematics is not yet ready for such problems.'",
     "mathContext": "axiom collatz_conjecture: forall n, n >= 1 -> ReachesOne n",

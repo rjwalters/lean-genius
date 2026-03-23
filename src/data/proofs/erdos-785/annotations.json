@@ -145,7 +145,7 @@
       "startLine": 118,
       "endLine": 124
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Danzer's Existence Theorem",
     "content": "**Danzer (1964): Exact Additive Complements Exist**\n\nThis was surprising - Hanani had conjectured they don't exist!\n\n```lean\naxiom danzer_1964_existence :\n    ∃ A B : Set ℕ, IsExactAdditiveComplement A B\n```\n\n**Construction:** Danzer used a careful greedy algorithm or probabilistic method to construct sets that balance density perfectly.",
     "mathContext": "Danzer's result showed that the 'obvious' lower bound A(x)B(x) ≥ x is asymptotically achievable.",
@@ -163,7 +163,7 @@
       "startLine": 137,
       "endLine": 144
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sárközy-Szemerédi Theorem",
     "content": "**Sárközy-Szemerédi (1994): Affirmative Answer**\n\nFor exact additive complements, A(x)B(x) - x → ∞.\n\n```lean\naxiom sarkozy_szemeredi_1994 :\n    ∀ A B : Set ℕ, IsExactAdditiveComplement A B →\n      Filter.Tendsto (fun x => (countingFunction A x * countingFunction B x : ℤ) - x)\n        Filter.atTop Filter.atTop\n```\n\n**Proof Technique:** Analysis of the representation function r(n) and variance estimates.",
     "mathContext": "The proof shows that if A(x)B(x) - x were bounded, the variance of the representation function would be too small, contradicting the asymptotic behavior.",
@@ -180,7 +180,7 @@
       "startLine": 146,
       "endLine": 151
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem",
     "content": "**erdos_danzer_solved:**\n\nThe Erdős-Danzer question has an affirmative answer.\n\n```lean\ntheorem erdos_danzer_solved : ErdosDanzerQuestion :=\n  sarkozy_szemeredi_1994\n```\n\nThis directly applies the Sárközy-Szemerédi result.",
     "mathContext": "This theorem completes Problem #785 affirmatively.",
@@ -197,7 +197,7 @@
       "startLine": 164,
       "endLine": 174
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Ruzsa's Refinement",
     "content": "**Ruzsa (2017): Tight Characterization**\n\nFor ANY function w(x) → ∞, there exist exact additive complements with A(x)B(x) - x < w(x) infinitely often.\n\n```lean\naxiom ruzsa_2017 :\n    ∀ w : ℕ → ℝ, (Filter.Tendsto w Filter.atTop Filter.atTop) →\n      ∃ A B : Set ℕ, IsExactAdditiveComplement A B ∧\n        ∃ᶠ x in Filter.atTop,\n          (countingFunction A x * countingFunction B x : ℝ) - x < w x\n```\n\n**Interpretation:** Growth to ∞ is mandatory but can be arbitrarily slow.",
     "mathContext": "This shows the Sárközy-Szemerédi result is tight: you can't replace 'tends to ∞' with any specific growth rate.",
@@ -231,7 +231,7 @@
       "startLine": 195,
       "endLine": 203
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Average Representation",
     "content": "**average_representation:**\n\nFor exact complements, the average of r(n) for n ≤ x is close to 1.\n\n```lean\naxiom average_representation :\n    ∀ A B : Set ℕ, IsExactAdditiveComplement A B →\n      Filter.Tendsto (fun x =>\n        (Finset.range (x + 1)).sum (fun n => representationFunction A B n : ℝ) / x)\n        Filter.atTop (nhds 1)\n```\n\nThis follows from A(x)B(x) ~ x since ∑r(n) = A(x)B(x).",
     "mathContext": "The sum of r(n) equals the product A(x)B(x), connecting the representation function to counting functions.",
@@ -265,7 +265,7 @@
       "startLine": 233,
       "endLine": 261
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_785_summary:**\n\nCombines all the main results:\n\n1. **Existence:** Exact additive complements exist (Danzer 1964)\n2. **Main Result:** A(x)B(x) - x → ∞ (Sárközy-Szemerédi 1994)\n3. **Tightness:** Growth can be arbitrarily slow (Ruzsa 2017)\n\n```lean\ntheorem erdos_785_summary :\n    (∃ A B : Set ℕ, IsExactAdditiveComplement A B) ∧\n    ErdosDanzerQuestion ∧\n    True\n```\n\n**STATUS: SOLVED**",
     "mathContext": "This theorem collects the complete picture of exact additive complements: they exist, the difference tends to infinity, but arbitrarily slowly.",
@@ -282,7 +282,7 @@
       "startLine": 263,
       "endLine": 267
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem Solved",
     "content": "**erdos_785:**\n\nErdős Problem #785 is SOLVED.\n\n```lean\ntheorem erdos_785 : True := trivial\n```\n\nThe answer is YES: for exact additive complements, A(x)B(x) - x → ∞.\n\nSolved by Sárközy and Szemerédi in 1994.",
     "mathContext": "This marks the problem as completely resolved.",

@@ -94,7 +94,7 @@
       "startLine": 100,
       "endLine": 110
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Riemann Hypothesis - Formal Statement",
     "content": "**THE RIEMANN HYPOTHESIS**: All non-trivial zeros of the Riemann zeta function lie on the critical line Re(s) = 1/2.\n\nThis is formalized as: for all s ∈ ℂ, if ζ(s) = 0 and 0 < Re(s) < 1, then Re(s) = 1/2.\n\nProving this would resolve one of the most important open problems in mathematics and earn a $1 million Millennium Prize.",
     "mathContext": "$\\forall s \\in \\mathbb{C}: \\zeta(s) = 0 \\land 0 < \\text{Re}(s) < 1 \\Rightarrow \\text{Re}(s) = 1/2$",
@@ -112,7 +112,7 @@
       "startLine": 160,
       "endLine": 165
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Functional Equation",
     "content": "The completed zeta function Λ(s) = π^(-s/2) Γ(s/2) ζ(s) satisfies Λ(s) = Λ(1-s). This remarkable symmetry about s = 1/2 is why the critical line is at Re(s) = 1/2: if ζ(s₀) = 0 with 0 < Re(s₀) < 1, then ζ(1-s₀) = 0 too, and both zeros are equidistant from Re(s) = 1/2.",
     "mathContext": "$\\Lambda(s) = \\Lambda(1-s)$ where $\\Lambda(s) = \\pi^{-s/2} \\Gamma(s/2) \\zeta(s)$",
@@ -184,7 +184,7 @@
       "startLine": 282,
       "endLine": 291
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Hardy's Theorem (1914)",
     "content": "**Hardy proved**: Infinitely many zeros of ζ(s) lie on the critical line Re(s) = 1/2.\n\nThis was a major breakthrough but does NOT prove RH - it leaves open whether some zeros might lie off the critical line. Hardy's proof used the Hardy Z-function: Z(t) = e^(iθ(t))ζ(1/2 + it) which is real for real t.",
     "mathContext": "$|\\{s : \\zeta(s) = 0, \\text{Re}(s) = 1/2\\}| = \\infty$",
@@ -202,7 +202,7 @@
       "startLine": 293,
       "endLine": 302
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Selberg's Positive Proportion (1942)",
     "content": "**Selberg proved**: A positive proportion of all zeros lie on the critical line. This was refined:\n- Levinson (1974): >1/3 of zeros\n- Conrey (1989): >40% of zeros\n\nThese results suggest RH is likely true - if there were zeros off the line, we'd expect to have found one by now.",
     "mathContext": "$\\liminf_{T \\to \\infty} \\frac{N_0(T)}{N(T)} > 0.40$\n\nwhere $N_0(T)$ = zeros on critical line, $N(T)$ = all zeros with $|\\text{Im}(s)| \\leq T$",

@@ -2,7 +2,7 @@
   {
     "id": "ann-e675-imports",
     "proofId": "erdos-675",
-    "type": "import",
+    "type": "context",
     "title": "Number Theory and Set Imports",
     "content": "Imports Nat.Basic, Set.Basic, Finset.Basic, and tactics from Mathlib.",
     "mathContext": "The formalization uses Mathlib's `Set ℕ` for number-theoretic sets (sums of two squares, squarefree integers, B-free sets) and `Finset` for finite counting. The `Nat.Basic` import provides `Nat.Prime`, divisibility, and coprimality. Unlike more advanced formalizations, this file avoids `Real.log` and works purely in the natural number/rational number setting.",
@@ -175,7 +175,7 @@
   {
     "id": "ann-e675-brunSieve",
     "proofId": "erdos-675",
-    "type": "axiom",
+    "type": "concept",
     "title": "Brun's Sieve for B-Free Sets",
     "content": "If B is pairwise coprime with small reciprocal sums, then the B-free set has the translation property.",
     "mathContext": "**Brun's sieve** (1920) was the first practical sieve method, and its application to B-free sets is a classical result in multiplicative number theory. The proof constructs the translation $t_n$ via the Chinese Remainder Theorem applied to finitely many moduli from $B$: for $b_1, \\ldots, b_k \\in B$ with $\\prod b_i > n$, CRT gives $t$ with $a \\equiv a + t \\pmod{b_i}$ for all $i$, ensuring $a \\in \\text{bFreeSet}(B) \\iff a + t \\in \\text{bFreeSet}(B)$ for $a \\leq n$. The small reciprocal sum condition guarantees that enough moduli can be chosen with product exceeding $n$.",
@@ -198,7 +198,7 @@
   {
     "id": "ann-e675-squarefreeTranslation",
     "proofId": "erdos-675",
-    "type": "axiom",
+    "type": "concept",
     "title": "Squarefree Numbers Have the Translation Property",
     "content": "The set of squarefree integers has the translation property, as a special case of Brun's sieve with B = {p² : p prime}.",
     "mathContext": "This is the direct corollary of `brun_sieve_translation` applied to $B = \\{p^2 : p \\text{ prime}\\}$. The set $B$ is pairwise coprime (since $\\gcd(p^2, q^2) = 1$ for distinct primes $p, q$) and $\\sum_p 1/p^2 < \\pi^2/6 - 1 \\approx 0.6449$ converges, satisfying $o(\\log \\log x)$. The minimal translation $t_n$ for squarefree numbers is bounded by $\\text{lcm}(p_1^2, \\ldots, p_k^2) = (p_1 \\cdots p_k)^2$ where $p_1 \\cdots p_k > n$; by the prime number theorem, $k \\approx n/\\log n$ primes suffice, giving $t_n \\leq e^{O(n)}$. Part 3 asks whether the lower bound is also exponential.",
@@ -220,7 +220,7 @@
   {
     "id": "ann-e675-twoSquaresConjecture",
     "proofId": "erdos-675",
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős Problem 675, Part 1: Sums of Two Squares",
     "content": "Erdős conjectured that the set of sums of two squares has the translation property.",
     "mathContext": "The set of sums of two squares is determined by a multiplicative condition: $n = a^2 + b^2$ iff every prime $p \\equiv 3 \\pmod{4}$ divides $n$ to an even power (Fermat). Unlike B-free sets, this condition involves *even exponents* rather than *non-divisibility*, so Brun's sieve does not directly apply. The decaying density $\\sim C/\\sqrt{\\log x}$ (Landau-Ramanujan) means the pattern on $\\{1, \\ldots, n\\}$ is increasingly sparse, yet the multiplicative structure (captured by Dirichlet characters modulo 4) should still force pattern repetition. This is the most prominent of the three questions in Problem 675.",
@@ -285,7 +285,7 @@
   {
     "id": "ann-e675-balancedConjecture",
     "proofId": "erdos-675",
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős Problem 675, Part 2: Balanced Partition",
     "content": "There exists a balanced partition P ∪ Q of primes such that the P-smooth numbers have the translation property.",
     "mathContext": "Part 2 is an *existential* question: does *some* balanced partition yield $P$-smooth numbers with the translation property? The existential nature makes it potentially easier than Part 1 (which asks about a *specific* set). The construction would need to choose $P$ so that the CRT-based argument works despite $P$-smooth numbers not being B-free. Note the formalization asks for existence of a balanced partition, not that all balanced partitions work—a single example would suffice.",
@@ -308,7 +308,7 @@
   {
     "id": "ann-e675-growthRate",
     "proofId": "erdos-675",
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős Problem 675, Part 3: Squarefree Growth Rate",
     "content": "For squarefree numbers, the minimal translation t_n grows at least exponentially: t_n > exp(n^c) for some c > 0.",
     "mathContext": "Part 3 asks about the *quantitative* behavior of the minimal translation. The CRT upper bound gives $t_n \\leq (p_1 \\cdots p_k)^2 \\leq e^{O(n)}$ where $k$ primes are needed with $p_1^2 \\cdots p_k^2 > n$. The conjecture asserts a *lower bound* $t_n > \\exp(n^c)$, meaning the translation cannot be found with polynomially many prime square moduli. The formalization uses a weaker proxy: $n^2 \\leq t_n$ for infinitely many $n$, capturing super-polynomial growth without formalizing exponentials. This growth rate question captures how 'non-periodic' the squarefree pattern is locally.",

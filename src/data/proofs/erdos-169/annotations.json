@@ -75,7 +75,7 @@
       "startLine": 101,
       "endLine": 120
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Berlekamp's Lower Bound (1968)",
     "content": "Berlekamp proved f(k) ≥ (log 2 / 2)·k, the first non-trivial lower bound. His construction uses integers whose binary representation has at most ⌊k/2⌋ ones. Such sets avoid k-term APs because APs require 'balanced' digit patterns, and the harmonic sum of restricted-digit numbers is computable.",
     "mathContext": "f(k) ≥ (ln 2 / 2) · k ≈ 0.347 · k",
@@ -92,7 +92,7 @@
       "startLine": 122,
       "endLine": 141
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Gerver's Improvement (1977)",
     "content": "Gerver substantially improved Berlekamp's bound to f(k) ≥ (1-o(1))k log k. This shows superlinear growth in k. Gerver also proved that Problem #3 (whether all f(k) are finite) is equivalent to the finiteness of f(k) for each individual k—a deep structural observation.",
     "mathContext": "f(k) ≥ (1-o(1)) k log k",
@@ -109,7 +109,7 @@
       "startLine": 143,
       "endLine": 164
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Ratio Question",
     "content": "The trivial bound f(k)/log W(k) ≥ 1/2 follows from basic properties. Erdős asks: can we do better? Specifically, does this ratio tend to infinity? Even improving 1/2 to any constant > 1/2 remains open. This is the heart of Problem #169.",
     "mathContext": "Question: lim_{k→∞} f(k)/log W(k) = ∞?",
@@ -143,7 +143,7 @@
       "startLine": 182,
       "endLine": 203
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Walker's Kempner Characterization (2025)",
     "content": "Walker proved a structural result: optimal AP-free sets for harmonic sum can be approximated by Kempner sets—integers whose base-b representation uses only digits from a fixed subset S ⊆ {0,...,b-1}. This reduces an infinite optimization to a more tractable class of sets.",
     "mathContext": "∀ε>0, ∃ Kempner set A: A is k-AP-free ∧ ∑ 1/n ≥ f(k) - ε",
@@ -161,7 +161,7 @@
       "startLine": 205,
       "endLine": 227
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Basic Properties of f(k)",
     "content": "The function f has natural properties: f(k) is monotonically decreasing in k (avoiding longer APs is more restrictive), and f(k) > 0 for all k ≥ 3 (non-trivial AP-free sets always exist). Even the singleton {1} is k-AP-free for k ≥ 2.",
     "mathContext": "k₁ ≤ k₂ → f(k₂) ≤ f(k₁), f(k) > 0 for k ≥ 3",
@@ -195,7 +195,7 @@
       "startLine": 251,
       "endLine": 291
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem Summary",
     "content": "Erdős Problem #169 remains OPEN. We know: (1) f(k) ≥ (1-o(1))k log k (Gerver), (2) f(k)/log W(k) ≥ 1/2 trivially, (3) improving 1/2 is open, (4) optimal sets are approximable by Kempner sets (Walker). The core question—whether f(k)/log W(k) → ∞—is unresolved.",
     "mathContext": "Status: OPEN. Known: f(k) ~ k log k lower bound",

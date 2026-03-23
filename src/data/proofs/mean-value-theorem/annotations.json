@@ -54,7 +54,7 @@
       "startLine": 54,
       "endLine": 75
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Lagrange's Mean Value Theorem (Main Result)",
     "content": "The central theorem `mvt`: for $f : \\mathbb{R} \\to \\mathbb{R}$ satisfying:\n- `ContinuousOn f (Icc a b)` — continuity on $[a, b]$\n- `DifferentiableOn ℝ f (Ioo a b)` — differentiability on $(a, b)$\n\nThere exists $c \\in (a, b)$ with $\\text{deriv}\\, f\\, c = (f(b) - f(a))/(b - a)$.\n\nThe proof is a single term: `exists_deriv_eq_slope f hab hfc hfd`. Internally, Mathlib proves this by applying Rolle's theorem to the auxiliary function $h(x) = f(x) - f(a) - \\frac{f(b)-f(a)}{b-a}(x-a)$, which satisfies $h(a) = h(b) = 0$.",
     "mathContext": "$\\forall a < b,\\; f \\in C([a,b]) \\cap D((a,b)),\\; \\exists c \\in (a,b): f'(c) = \\frac{f(b) - f(a)}{b - a}$. Rolle's theorem is the special case where $f(a) = f(b)$, giving $f'(c) = 0$.",
@@ -80,7 +80,7 @@
       "startLine": 77,
       "endLine": 85
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "HasDerivAt Version of MVT",
     "content": "Alternative formulation `mvt_hasDerivAt` replacing `DifferentiableOn` with explicit derivative values. Instead of assuming $f$ is differentiable and using the computed `deriv f`, this version takes an explicit derivative function $f'$ and the hypothesis `HasDerivAt f (f' x) x` for each $x \\in (a,b)$.\n\nThis form is more convenient when working with specific functions where the derivative is known (e.g., $f(x) = x^2$ with $f'(x) = 2x$). The proof wraps `exists_hasDerivAt_eq_slope`.\n\n**Why two versions?** `deriv` is more general (always defined, even when non-differentiable), while `HasDerivAt` is more informative (carries a proof that the derivative exists and has a specific value).",
     "mathContext": "$\\forall x \\in (a,b),\\; \\text{HasDerivAt}\\, f\\, (f'\\, x)\\, x \\implies \\exists c \\in (a,b): f'(c) = \\frac{f(b) - f(a)}{b - a}$. The `HasDerivAt` predicate asserts: $\\lim_{h \\to 0} \\frac{f(x+h) - f(x) - f'(x) \\cdot h}{h} = 0$.",
@@ -104,7 +104,7 @@
       "startLine": 87,
       "endLine": 109
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Cauchy's Mean Value Theorem (Generalization)",
     "content": "**Cauchy's generalized MVT** (`cauchy_mvt`): for two functions $f, g$ both continuous on $[a,b]$ and differentiable on $(a,b)$:\n$$\\exists c \\in (a,b): (g(b) - g(a)) \\cdot f'(c) = (f(b) - f(a)) \\cdot g'(c)$$\n\nThe multiplicative form avoids division by $g'(c)$ or $g(b) - g(a)$, which might be zero. Setting $g(x) = x$ recovers Lagrange's MVT: $(b - a) \\cdot f'(c) = (f(b) - f(a)) \\cdot 1$.\n\nThe proof wraps `exists_ratio_deriv_eq_ratio_slope`. This generalization is the key lemma for proving L'Hôpital's rule: if $\\lim f'(x)/g'(x) = L$, then $\\lim f(x)/g(x) = L$.",
     "mathContext": "Cauchy's MVT applies Rolle's theorem to $h(x) = (g(b) - g(a))f(x) - (f(b) - f(a))g(x)$, which satisfies $h(a) = h(b) = g(b)f(a) - f(b)g(a)$. Setting $h'(c) = 0$ gives the result. The parametric interpretation: for the curve $(g(t), f(t))$, there is a point where the tangent is parallel to the chord.",
@@ -148,7 +148,7 @@
       "startLine": 115,
       "endLine": 128
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Zero Derivative Implies Constant (Original Proof)",
     "content": "The **only non-wrapper proof** in the file: `constant_of_deriv_zero` proves that if $f'(x) = 0$ for all $x \\in (a,b)$, then $f(b) = f(a)$.\n\nThe proof structure:\n1. `obtain ⟨c, hc, hc_eq⟩ := mvt hab hfc hfd` — get the MVT point $c$ with $f'(c) = (f(b) - f(a))/(b - a)$\n2. `have : deriv f c = 0 := hf0 c hc` — apply the zero-derivative hypothesis at $c$\n3. `rw [this] at hc_eq` — substitute to get $0 = (f(b) - f(a))/(b - a)$\n4. `field_simp at hc_eq` — clear the denominator (using $b - a \\neq 0$)\n5. `linarith` — conclude $f(b) = f(a)$ from the resulting linear arithmetic\n\nThis corollary implies: two antiderivatives of the same function differ by a constant.",
     "mathContext": "$\\forall x \\in (a,b),\\; f'(x) = 0 \\implies f(b) - f(a) = 0$. Proof: MVT gives $c$ with $0 = f'(c) = (f(b)-f(a))/(b-a)$. Since $b - a > 0$, multiplying both sides gives $f(b) - f(a) = 0$.",

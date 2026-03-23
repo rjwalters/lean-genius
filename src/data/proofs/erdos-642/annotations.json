@@ -188,7 +188,7 @@
       "startLine": 95,
       "endLine": 97
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Tree Lower Bound",
     "content": "**f_ge_tree**: $f(n) \\ge n - 1$ (sorry).\n\nTrees have no cycles at all, so the cycle-diagonal condition is vacuously satisfied. A tree on $n$ vertices has exactly $n - 1$ edges, giving this trivial lower bound.",
     "significance": "supporting",
@@ -210,7 +210,7 @@
       "startLine": 99,
       "endLine": 101
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Complete Graph Bound",
     "content": "**f_le_complete**: $f(n) \\le n(n-1)/2$ (sorry).\n\nNo simple graph has more than $\\binom{n}{2}$ edges. This is the trivial upper bound — the interesting challenge is proving much tighter bounds like $O(n^{3/2})$ or $O(n(\\log n)^8)$.",
     "significance": "supporting",
@@ -231,7 +231,7 @@
       "startLine": 103,
       "endLine": 106
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Maximum Diagonals",
     "content": "**max_diagonals_in_cycle**: A cycle of length $k$ has at most $k(k-3)/2$ possible diagonals (sorry).\n\nTotal vertex pairs is $\\binom{k}{2}$, minus the $k$ cycle edges themselves: $\\binom{k}{2} - k = k(k-1)/2 - k = k(k-3)/2$. This is the maximum possible chord count.",
     "significance": "supporting",
@@ -253,7 +253,7 @@
       "startLine": 114,
       "endLine": 116
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Chen-Erdős-Staton (1996)",
     "content": "**chen_erdos_staton**: $f(n) \\le 2n^{3/2}$ for $n \\ge 10$.\n\nThe first non-trivial upper bound, proved by Chen, Erdős, and Staton in 1996. Their argument shows that dense graphs necessarily contain cycles with many diagonals. The exponent $3/2$ matches the lower bound from girth-5 graphs, so this was initially believed to be tight.",
     "significance": "key",
@@ -275,7 +275,7 @@
       "startLine": 127,
       "endLine": 129
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "DMMS Bound (2024)",
     "content": "**dmms_2024**: $f(n) \\le \\lceil n(\\log n)^8 \\rceil$ for $n \\ge 10$.\n\nDraganić-Methuku-Munhá Correia-Sudakov (2024) dramatically improved the CES bound from $O(n^{3/2})$ to $O(n(\\log n)^8)$. This is nearly linear — only a polylogarithmic factor from the conjectured $o(n)$.\n\nThe breakthrough uses sublinear expander techniques: random walks in expander-like substructures efficiently find cycles with many chords.",
     "significance": "key",
@@ -299,7 +299,7 @@
       "startLine": 131,
       "endLine": 134
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "DMMS Improves CES",
     "content": "**dmms_improves_ces**: For $n \\ge 1000$, the DMMS bound $n(\\log n)^8$ beats the CES bound $2n^{3/2}$ (sorry).\n\nThe improvement factor is $\\sqrt{n} / (\\log n)^8$, which grows without bound. For $n = 10^6$, DMMS gives roughly $10^6 \\cdot 20^8 \\approx 2.6 \\times 10^{16}$ while CES gives $2 \\times 10^9$. Wait — actually CES is better for moderate $n$; DMMS wins asymptotically.",
     "significance": "supporting",
@@ -389,7 +389,7 @@
       "startLine": 166,
       "endLine": 170
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Girth-5 Satisfies Condition",
     "content": "**girth_5_satisfies**: Girth $\\ge 5$ graphs satisfy the cycle-diagonal condition (sorry).\n\nIn a girth-5 graph, every cycle has length $\\ge 5$. But more importantly, girth $\\ge 5$ means that for any two vertices on a cycle at distance $\\ge 2$ around the cycle, there is no short path between them (no $C_3$ or $C_4$), severely limiting the possible diagonals.",
     "significance": "key",
@@ -411,7 +411,7 @@
       "startLine": 172,
       "endLine": 175
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Turán C₄-free Bound",
     "content": "**turan_C4_free**: There exist girth-5 graphs on $n$ vertices with $\\Omega(n^{3/2})$ edges.\n\nClassical constructions from finite geometry: the incidence graph of a projective plane of order $q$ is a bipartite graph on $2(q^2 + q + 1)$ vertices with $(q+1)(q^2 + q + 1)$ edges and girth 6. For $n \\approx 2q^2$, this gives $\\sim n^{3/2}/2\\sqrt{2}$ edges.\n\nThe Kővári-Sós-Turán theorem gives the matching upper bound: $\\text{ex}(n, C_4) = O(n^{3/2})$.",
     "significance": "key",
@@ -435,7 +435,7 @@
       "startLine": 177,
       "endLine": 180
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Lower Bound on f(n)",
     "content": "**f_lower_bound**: $f(n) \\ge \\lfloor n^{3/2}/4 \\rfloor$ for $n \\ge 10$ (sorry).\n\nThe argument chains: girth-5 graphs satisfy the condition (girth_5_satisfies) + girth-5 graphs with $\\Omega(n^{3/2})$ edges exist (turan_C4_free) → $f(n) \\ge \\Omega(n^{3/2})$.\n\nThis is the best known lower bound and has stood since the problem was posed.",
     "significance": "key",
@@ -504,7 +504,7 @@
       "startLine": 201,
       "endLine": 205
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Expander Cycle Lemma",
     "content": "**expander_cycle_lemma**: In a good $(n, d, \\lambda)$-expander with $\\lambda \\le d/2$, either the graph violates the cycle-diagonal condition OR has fewer than $dn/2$ edges.\n\nThis is the heart of the DMMS proof: expanders with many edges necessarily contain cycles with many chords. The contrapositive: if the condition holds, the graph is sparse.",
     "significance": "key",
@@ -526,7 +526,7 @@
       "startLine": 213,
       "endLine": 216
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Short Cycles OK",
     "content": "**short_cycles_ok**: Cycles of length $k \\le 4$ always satisfy $k > k(k-3)/2$ (proved by `interval_cases` + `norm_num`).\n\n- $k = 3$: $3 > 3 \\cdot 0/2 = 0$ (triangle has 0 possible diagonals)\n- $k = 4$: $4 > 4 \\cdot 1/2 = 2$ (quadrilateral has at most 2 diagonals)\n\nSo the condition is automatically satisfied for short cycles regardless of how many diagonals are present.",
     "significance": "supporting",
@@ -547,7 +547,7 @@
       "startLine": 218,
       "endLine": 220
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Pentagon Violation",
     "content": "**pentagon_all_diags_violates**: A pentagon with all 5 diagonals violates the condition: $\\neg(5 > 5 \\cdot 2/2)$, i.e., $\\neg(5 > 5)$ (proved by `norm_num`).\n\nThe pentagon $C_5$ has $\\binom{5}{2} - 5 = 5$ possible diagonals. With all diagonals present (forming $K_5$), the condition $5 > 5$ fails. This is the **critical transition point**: the smallest cycle length where violation is possible.",
     "significance": "key",
@@ -570,7 +570,7 @@
       "startLine": 222,
       "endLine": 225
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Critical Length",
     "content": "**critical_length**: For all $k \\ge 5$: $k \\le k(k-3)/2$ (proved by `omega`).\n\nFor long cycles, the number of possible diagonals grows quadratically while the vertex count grows linearly, so violations become increasingly possible. The inequality $k \\le k(k-3)/2$ simplifies to $k \\ge 5$.",
     "significance": "key",
@@ -592,7 +592,7 @@
       "startLine": 233,
       "endLine": 250
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result",
     "content": "**erdos_642_bounds**: For $n \\ge 10$: $\\lfloor n^{3/2}/4 \\rfloor \\le f(n) \\le \\lceil n(\\log n)^8 \\rceil$.\n\nThe lower bound uses `f_lower_bound` (girth-5 constructions). The upper bound uses `dmms_2024` (expander techniques). The proof is a direct `constructor` combining both results.\n\nThe Hamburger-Szegedy conjecture $f(n) = o(n)$ remains OPEN.",
     "significance": "key",
@@ -634,7 +634,7 @@
       "startLine": 260,
       "endLine": 265
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bounds Gap",
     "content": "**bounds_gap**: The ratio upper/lower is $(\\log n)^8 / \\sqrt{n}$ (proved by `ring_nf`).\n\nComputation: $\\frac{n(\\log n)^8}{n^{3/2}} = \\frac{(\\log n)^8}{n^{1/2}}$. This ratio $\\to 0$ as $n \\to \\infty$, meaning the upper bound is asymptotically negligible compared to $n^{3/2}$. But this does NOT resolve the conjecture — it just says the bounds are getting closer in relative terms.",
     "significance": "supporting",

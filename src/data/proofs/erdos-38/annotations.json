@@ -150,7 +150,7 @@
       "startLine": 105,
       "endLine": 108
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős 1936: Bases Have Density-Boost",
     "content": "**Erdős proved** in 1936 that additive bases of order k DO have the density-boost property with f(α) = α(1-α)/(2k). This shows one direction: being a basis implies density-boosting.",
     "mathContext": "The factor α(1-α) is maximal at α = 1/2 (giving 1/8k), and approaches 0 as α → 0 or α → 1. Random sets show this factor is optimal.",
@@ -168,7 +168,7 @@
       "startLine": 110,
       "endLine": 116
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Linnik 1942: Essential Components",
     "content": "**Linnik constructed** an essential component that is NOT an additive basis. Essential components increase Schnirelmann density when added to any set, but this is weaker than density-boosting.",
     "mathContext": "Linnik's construction shows: ∃ B, ¬IsAdditiveBasis B ∧ (∀ A, σ(A) > 0 → σ(A + B) > σ(A)). But Problem 38 asks for the stronger pointwise count improvement.",
@@ -186,7 +186,7 @@
       "startLine": 118,
       "endLine": 122
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Optimality of α(1-α)",
     "content": "For B = ℕ (the full set), the factor α(1-α) in Erdős's bound **cannot be improved**. Random sets demonstrate this - sometimes you can't do better than α(1-α).",
     "mathContext": "This shows the bound α(1-α)/(2k) for bases of order k is essentially tight. The question remains whether non-bases can achieve ANY positive f(α).",

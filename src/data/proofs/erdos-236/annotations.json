@@ -42,7 +42,7 @@
       "startLine": 48,
       "endLine": 55
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Trivial Upper Bound",
     "content": "**Proved**: f(n) ≤ log₂(n) + 1 always. Since we only check k ∈ {0,...,log₂(n)}, we can have at most log₂(n) + 1 valid representations.",
     "mathContext": "f_trivial_upper_bound : f n ≤ Nat.log2 n + 1. The proof uses that filtering a list cannot exceed its original length.",
@@ -59,7 +59,7 @@
       "startLine": 57,
       "endLine": 73
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Concrete Values",
     "content": "**Proved/Axiomatized**: f(2)=0, f(3)=1, f(5)=1, f(9)=2, f(15)=3. Small cases verified by decide or explicit computation.",
     "mathContext": "f_two : f 2 = 0; f_three : f 3 = 1; f_five : f 5 = 1. For 9: 7+2 and 5+4. For 15: 13+2, 11+4, 7+8.",
@@ -110,7 +110,7 @@
       "startLine": 108,
       "endLine": 123
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Guy Conjecture",
     "content": "**Conjecture**: The only all-prime numbers are {4, 7, 15, 21, 45, 75, 105}. Verified up to 2^44 by Mientka-Weitzenkamp (1969).",
     "mathContext": "axiom erdos_guy_all_prime_conjecture : {n | HasAllPrimeProperty n ∧ n > 1} = {4, 7, 15, 21, 45, 75, 105}.",
@@ -145,7 +145,7 @@
       "startLine": 134,
       "endLine": 139
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős Lower Bound",
     "content": "**Erdős (1950)**: f(n) ≫ log log n infinitely often. There are infinitely many n where f(n) ≥ c·log log n for some c > 0.",
     "mathContext": "axiom erdos_lower_bound : ∀ C, ∀ᶠ n in atTop, ∃ m ≥ n, f m ≥ C * log log m. Shows the conjecture, if true, is tight.",
@@ -162,7 +162,7 @@
       "startLine": 141,
       "endLine": 153
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Vaughan's Sparsity Bound",
     "content": "**Vaughan (1973)**: All-prime numbers are extremely sparse. Their count up to N is at most N·exp(-c·(log log log N / log log N)·log N).",
     "mathContext": "This is a super-polynomial decay rate, much faster than any polynomial. Shows all-prime numbers are astronomically rare.",

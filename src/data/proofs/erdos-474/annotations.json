@@ -140,7 +140,7 @@
       "startLine": 110,
       "endLine": 113
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sierpinski-Kurepa Theorem",
     "content": "`sierpinski_kurepa`: For 2 colors, the property ALWAYS holds: any 2-coloring of pairs from an uncountable set contains both colors. Proved independently by Sierpiński and Kurepa. This is unconditional — no set-theoretic assumptions needed.",
     "mathContext": "The proof uses a pigeonhole argument: given an uncountable set $A$ and a 2-coloring $\\chi$ of $A \\times A$, for each $a \\in A$ the function $b \\mapsto \\chi(a,b)$ must take both values on uncountably many $b$ (otherwise $A$ would split into at most countably many monochromatic parts). This argument fails for 3 colors because the pigeonhole bound is no longer tight — three colors can be distributed more subtly.",
@@ -159,7 +159,7 @@
       "startLine": 120,
       "endLine": 123
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Two-Color Partition",
     "content": "`two_color_partition`: $2^{\\aleph_0} \\to (\\aleph_1)^2_2$ holds unconditionally. Every 2-coloring of pairs from the continuum has an uncountable monochromatic set. The partition relation form of Sierpiński-Kurepa.",
     "mathContext": "This is a strengthening of the Sierpiński-Kurepa result to partition relation notation. The result says not just that both colors appear in pairs from any uncountable set, but that there is an entire uncountable monochromatic set. This is part of the Erdős-Rado partition calculus, which systematically studies such relations.",
@@ -198,7 +198,7 @@
       "startLine": 138,
       "endLine": 141
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős Under CH",
     "content": "`erdos_under_ch`: If CH holds ($\\mathfrak{c} = \\aleph_1$), then for any 3-coloring of $\\mathbb{R} \\times \\mathbb{R}$, every uncountable set's pairs contain all 3 colors.",
     "mathContext": "The proof works by well-ordering $\\mathbb{R}$ in order type $\\omega_1$ (possible under CH since $|\\mathbb{R}| = \\aleph_1$). For a given 3-coloring, one builds an uncountable set $A$ by transfinite induction, at each stage $\\alpha < \\omega_1$ adding a point that ensures all three colors appear in pairs with earlier points. The key is that at each stage, only countably many constraints exist, and the continuum provides enough points to satisfy them.",
@@ -217,7 +217,7 @@
       "startLine": 152,
       "endLine": 157
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Shelah's Consistency Result",
     "content": "`shelah_consistency`: There exists a model of ZFC with a 'bad' 3-coloring — a coloring such that every uncountable set avoids pairs of some color. This shows failure of the partition property is consistent.",
     "mathContext": "Shelah's proof uses iterated forcing to construct a model of ZFC where a specific 3-coloring witnesses the failure of $2^{\\aleph_0} \\to (\\aleph_1)^3_2$. The forcing adds many reals (making the continuum large) while maintaining careful control of the coloring. The model necessarily has $\\mathfrak{c} > \\aleph_2$ — this is why the $\\mathfrak{c} = \\aleph_2$ case remains open.",
@@ -236,7 +236,7 @@
       "startLine": 164,
       "endLine": 166
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Shelah's Large Continuum",
     "content": "`shelah_large_c`: Shelah's counterexample model has continuum much larger than $\\aleph_2$. This is why the $\\mathfrak{c} = \\aleph_2$ case remains open.",
     "mathContext": "The technical reason Shelah's construction requires a large continuum is that the iterated forcing adds many Cohen reals. The number of forcing conditions needed to define the 'bad' coloring grows with the iteration, requiring the final model to have $\\mathfrak{c} \\gg \\aleph_2$. Whether the construction can be refined to work with $\\mathfrak{c} = \\aleph_2$ is the central open question.",
@@ -311,7 +311,7 @@
       "startLine": 246,
       "endLine": 250
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Why CH Helps",
     "content": "`ch_argument`: Under CH, $|\\mathbb{R}| = \\aleph_1$ so $\\mathbb{R}$ can be well-ordered in type $\\omega_1$. A diagonal argument over this well-ordering produces an uncountable monochromatic set by transfinite induction.",
     "mathContext": "The transfinite induction argument is constructive given a well-ordering. At successor stage $\\alpha + 1$, we have a set $A_\\alpha$ of size $|\\alpha| < \\aleph_1$ and need to add a new point $x_{\\alpha+1}$ such that $\\chi(x_{\\alpha+1}, a) = c$ for all $a \\in A_\\alpha$ and some fixed color $c$. Since $|A_\\alpha|$ is countable, the number of constraints is countable, and by pigeonhole among the uncountably many remaining points, one works. At limit stages, we take unions. The argument relies on $|\\mathbb{R}| = \\aleph_1$ to ensure the induction runs for $\\omega_1$ steps.",
@@ -330,7 +330,7 @@
       "startLine": 286,
       "endLine": 312
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős 474 Main Theorems",
     "content": "`erdos_474_summary` is a **genuine theorem** combining: (1) `erdos_under_ch` — CH implies the 3-color property, and (2) `sierpinski_kurepa` — the 2-color case always works.\n\n`erdos_474` is a **genuine theorem** combining: (1) `erdos_under_ch` — CH implies the property, and (2) `shelah_consistency` — failure is consistent with ZFC. Together, these establish the independence of the partition property from ZFC + ¬CH.",
     "mathContext": "Both theorems use the anonymous constructor $\\langle\\ldots, \\ldots\\rangle$ to combine axiomatized results. The `erdos_474` theorem captures the state of the art: the partition property is independent of ZFC, holding under CH but consistently failing without it. The $\\mathfrak{c} = \\aleph_2$ case remains the key open question, worth Erdős's $100 prize.",

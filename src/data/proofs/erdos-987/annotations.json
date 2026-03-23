@@ -242,7 +242,7 @@
       "startLine": 239,
       "endLine": 258
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result: erdos_987",
     "content": "**erdos_987_unbounded** (axiom): Aₖ → ∞ for any sequence, a consequence of Clunie's √k bound.\n\n**erdos_987** (theorem, proved): The summary statement combining three key facts:\n1. Aₖ grows unboundedly for any sequence (from erdos_987_unbounded)\n2. Aₖ ≥ C√k infinitely often (from clunie_sqrt_bound)\n3. ∃ sequences with Aₖ ≤ k always (from clunie_upper_construction)\n\nProved directly as `⟨erdos_987_unbounded, clunie_sqrt_bound, clunie_upper_construction⟩` — a simple conjunction of the three axiomatized results. This is one of two proved (non-axiom) results in the file, alongside `known_bounds`.",
     "mathContext": "The theorem packages the complete state of knowledge about Problem #987: $\\forall (x_j) \\subset (0,1)$, $\\limsup A_k = \\infty$ and $A_k \\geq C\\sqrt{k}$ i.o., while $\\exists (x_j)$ with $A_k \\leq k$ for all $k$. The remaining open question—whether $A_k = o(k)$ is achievable—would complete the picture by determining whether the upper bound $O(k)$ can be improved.",

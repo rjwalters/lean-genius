@@ -60,7 +60,7 @@
       "startLine": 99,
       "endLine": 108
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Fundamental Lemma of Calculus of Variations",
     "content": "**Du Bois-Reymond Lemma (1879)**:\n\nIf f is continuous and $\\int_a^b f(x)\\eta(x) \\, dx = 0$ for all smooth test functions $\\eta$ vanishing at endpoints, then $f = 0$.\n\nThis 'localization lemma' converts integral conditions to pointwise conditions.",
     "mathContext": "$\\forall \\eta \\in C_0^\\infty : \\int f \\cdot \\eta = 0 \\Rightarrow f \\equiv 0$\n\nCrucial for deriving Euler-Lagrange from the variational condition.",
@@ -78,7 +78,7 @@
       "startLine": 156,
       "endLine": 158
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Euler-Lagrange Equation",
     "content": "**Euler-Lagrange Equation** (Euler 1744, Lagrange 1788):\n\nIf y extremizes $J[y] = \\int L \\, dx$, then:\n\n$\\frac{\\partial L}{\\partial y} - \\frac{d}{dx}\\left(\\frac{\\partial L}{\\partial y'}\\right) = 0$\n\nThis is THE fundamental theorem of calculus of variations.",
     "mathContext": "$\\frac{\\partial L}{\\partial y} = \\frac{d}{dx}\\frac{\\partial L}{\\partial y'}$\n\nReduces infinite-dimensional optimization to a second-order ODE.",
@@ -96,7 +96,7 @@
       "startLine": 172,
       "endLine": 182
     },
-    "type": "example",
+    "type": "context",
     "title": "Geodesics: Shortest Paths",
     "content": "The **geodesic problem** asks for curves minimizing arc length:\n\n$J[y] = \\int \\sqrt{1 + (y')^2} \\, dx$\n\nEuler-Lagrange gives $y'' = 0$, so geodesics in Euclidean space are **straight lines**.",
     "mathContext": "$L = \\sqrt{1 + (y')^2}$ (arc length element)\n\nOn curved surfaces, geodesics are 'straightest possible' curves.",
@@ -114,7 +114,7 @@
       "startLine": 198,
       "endLine": 205
     },
-    "type": "def",
+    "type": "definition",
     "title": "Newton from Lagrange",
     "content": "**Classical Mechanics** uses $L = T - V$ (kinetic minus potential energy).\n\nEuler-Lagrange yields:\n$m\\ddot{y} = -\\frac{dV}{dy}$\n\nThis is **Newton's second law**: F = ma where F = -grad(V).",
     "mathContext": "$L = \\frac{1}{2}m(y')^2 - V(y)$\n\nHamilton's principle: Nature extremizes the action integral.",
@@ -132,7 +132,7 @@
       "startLine": 239,
       "endLine": 246
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Direct Methods (Tonelli)",
     "content": "**Direct Methods** prove existence without solving the Euler-Lagrange ODE:\n\n1. Show J is bounded below (coercivity)\n2. Take a minimizing sequence\n3. Extract convergent subsequence (weak compactness)\n4. Limit achieves minimum (weak lower semicontinuity)\n\nThis was a major response to Hilbert's 23rd problem.",
     "mathContext": "Tonelli (1920s): If J is coercive and weakly l.s.c. on W^{1,p}, then J attains its minimum.",
@@ -150,7 +150,7 @@
       "startLine": 285,
       "endLine": 300
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Pontryagin Maximum Principle",
     "content": "**Optimal Control** extends calculus of variations to systems with constraints.\n\nMinimize $\\int f_0(x,u) \\, dt$ subject to $\\dot{x} = f(x,u)$.\n\n**Pontryagin's Maximum Principle (1956)**: The optimal control maximizes the Hamiltonian $H = p \\cdot f - f_0$ where p is the costate.",
     "mathContext": "$H(x^*, u^*, p^*) = \\max_u H(x^*, u, p^*)$\n\nRevolutionized control engineering and aerospace.",
@@ -186,7 +186,7 @@
       "startLine": 373,
       "endLine": 378
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "A Living Research Program",
     "content": "Unlike most Hilbert problems with definitive solutions, Problem 23 is a **living research program**.\n\nModern applications include:\n- **Optimal transport** (Villani, Figalli)\n- **Machine learning** (neural networks as variational problems)\n- **Materials science** (phase transitions, microstructure)\n- **Image processing** (total variation regularization)",
     "mathContext": "The field continues to develop new methods and applications.",

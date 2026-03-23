@@ -79,7 +79,7 @@
       "startLine": 65,
       "endLine": 80
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Graham Polynomial Bound",
     "content": "**hasPolynomialPrecision:** Like exponential precision, but with error bound c/K² instead of exp(-cK).\n\n**erdos_graham_polynomial:** The known theorem of Erdős and Graham [ErGr80]: the polynomial bound c/K² holds. This is axiomatized because the proof uses sophisticated techniques from analytic number theory.\n\nThe polynomial bound means: for some c > 0, any large enough multiset with reciprocal sum > K has a subset summing to within c/K² of 1. This is already non-trivial — it says we can always find a *very* good approximation to 1.",
     "mathContext": "The proof of the polynomial bound uses the greedy algorithm with careful analysis of the remainder terms. The transition to exponential bounds would require understanding higher-order correlations in the subset sum distribution.",
@@ -97,7 +97,7 @@
       "startLine": 84,
       "endLine": 109
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Comparing Exponential and Polynomial Bounds",
     "content": "**exponential_stronger_than_polynomial:** For large K, exp(-cK) < c'/K². This axiom captures the fundamental fact that exponential decay beats polynomial decay.\n\n**conjecture_implies_known:** This is a *proved* theorem: if the exponential conjecture holds, then in particular we can always find subsets with reciprocal sum ≤ 1. The proof extracts the upper bound from hasExponentialPrecision by destructing the existential to get the subset S and its upper bound.\n\nThis theorem verifies the logical consistency of our formalization — the conjectured property is strictly stronger than the known property.",
     "mathContext": "The proof uses basic Lean tactics: intro for the hypothesis, obtain to destructure existentials, and exact to provide the witness. This is a clean example of extracting weaker conclusions from stronger hypotheses.",
@@ -133,7 +133,7 @@
       "startLine": 124,
       "endLine": 137
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary: Known Polynomial Bound",
     "content": "**erdos_312_status:** A summary theorem packaging the known result — the polynomial bound exists. The proof is `exact erdos_graham_polynomial`, directly referencing the axiom.\n\n**What's known:** c/K² precision (Erdős-Graham).\n**What's conjectured:** exp(-cK) precision (OPEN).\n**What we proved:** The conjecture implies the known result (conjecture_implies_known).\n\nThe formalization cleanly separates the open conjecture from the established theorem, making the state of knowledge explicit.",
     "mathContext": "Summary theorems serve as entry points for understanding the formalization. The erdos_312_status theorem is the single statement that captures what has been established about this problem.",

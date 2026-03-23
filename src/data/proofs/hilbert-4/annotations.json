@@ -54,7 +54,7 @@
       "startLine": 127,
       "endLine": 168
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Geodesics in Minkowski Spaces",
     "content": "**Key Theorem**: In any Minkowski space, straight lines are geodesics.\n\n**Why?** For points on a line segment:\n$$\\|z - x\\| + \\|y - z\\| = \\|y - x\\|$$\n\nThis is **equality** in the triangle inequality!\n\n**Corollary**: The straight line is the **unique** shortest path between two points in a Minkowski geometry.",
     "mathContext": "For collinear points $x, z, y$ with $z$ between $x$ and $y$: $f(z-x) + f(y-z) = f(y-x)$. This is equality in the triangle inequality, achieved because $z-x$ and $y-z$ are positive scalar multiples of the same direction $y-x$, and the gauge $f$ is positively homogeneous. The equality $d(x,z) + d(z,y) = d(x,y)$ means the line segment achieves the infimum of all path lengths.",
@@ -102,7 +102,7 @@
       "startLine": 212,
       "endLine": 266
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Busemann's Classification (1955)",
     "content": "**THE MAIN THEOREM**:\n\nLet d be a continuous metric on an open convex U ⊂ ℝⁿ with straight-line geodesics.\n\nThen d is one of:\n1. **Minkowski metric** (translation-invariant)\n2. **Hilbert metric** (projectively invariant)\n3. **Funk-type metric** (asymmetric)\n\nThis **completely solves** Hilbert's 4th Problem for metrizable geometries!",
     "mathContext": "Busemann's theorem: every continuous metric on an open convex $U \\subseteq \\mathbb{R}^n$ where geodesics are straight lines falls into exactly one of three classes. The proof uses Busemann's theory of G-spaces (geodesic spaces with local extendability of geodesics). The classification is exhaustive: any such metric is determined by its behavior under translations (Minkowski), projective transformations (Hilbert), or neither (Funk).",
@@ -149,7 +149,7 @@
       "startLine": 320,
       "endLine": 354
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Hamel's Theorem (1903)",
     "content": "**First Progress on Hilbert 4**:\n\n**Theorem (Hamel 1903)**: In dimension 2, every Desarguesian projective metric is a Minkowski metric.\n\nThis showed that in the plane, Minkowski geometries are **exactly** the metrics where straight lines are shortest.\n\nHamel's proof uses functional equations and projective geometry.",
     "mathContext": "Hamel (1903) proved that in $\\mathbb{R}^2$, every Desarguesian projective metric (one where Desargues' theorem holds for the geodesic lines) is a Minkowski metric. This was the first substantial progress on Hilbert's 4th Problem. Hamel's approach used functional equations arising from the projective structure, showing that the Desargues condition forces the metric to be translation-invariant.",

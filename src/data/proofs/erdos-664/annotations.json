@@ -9,7 +9,7 @@
     "type": "context",
     "title": "Imports and Setup",
     "content": "Imports Mathlib modules for natural numbers, finite sets with cardinality, real numbers with square root, big operators for summation, and opens the Finset, BigOperators, and Real namespaces.",
-    "significance": "useful",
+    "significance": "supporting",
     "mathContext": "The formalization requires $\\text{Finset.card}$ for set sizes $|A_i|$ and $|B \\cap A_i|$, $\\text{Real.sqrt}$ for the threshold $c\\sqrt{n}$, and $\\text{Real.log}$ for the logarithmic lower bound $\\Omega(\\log n)$.",
     "relatedConcepts": [
       "Mathlib finite set API",
@@ -210,7 +210,7 @@
       "startLine": 104,
       "endLine": 106
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "alon_disproof",
     "content": "Alon's theorem: the answer to Erdős's question is NO. Formalized as ¬ErdosQuestion664.",
     "significance": "key",
@@ -254,7 +254,7 @@
       "startLine": 116,
       "endLine": 131
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "alon_construction",
     "content": "Alon's explicit counterexample: for each large prime q, there exists a near-linear family on n = q² + q + 1 elements where every blocker has intersection ≥ (log n)/10 with some set.",
     "significance": "key",
@@ -300,7 +300,7 @@
       "startLine": 162,
       "endLine": 166
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "logarithmic_lower_bound",
     "content": "Any blocker B must satisfy |B ∩ Aⱼ| ≥ Ω(log n) for some j. This is the key quantitative content of Alon's disproof.",
     "significance": "key",
@@ -370,7 +370,7 @@
     "type": "context",
     "title": "The Constant 2/5 and Other Constants",
     "content": "The constant 2/5 in Alon's construction comes from the random thinning probability. Any constant c < 1/2 yields a similar counterexample.",
-    "significance": "useful",
+    "significance": "supporting",
     "mathContext": "Retaining each point independently with probability $p$ gives expected line size $p(q+1)$. For $p = 2/5$, the expected size is $(2/5)(q+1) \\approx (2/5)\\sqrt{n}$. Concentration (Chernoff bounds) ensures all lines have size close to the expectation. The theorem $\\texttt{other\\_constants\\_work}$ states the construction works for any $c < 1/2$; the barrier at $c = 1/2$ relates to the covering threshold where a random subset begins to block all lines.",
     "relatedConcepts": [
       "Chernoff bound",
@@ -389,7 +389,7 @@
       "startLine": 261,
       "endLine": 279
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Results",
     "content": "Three equivalent formulations of the main result: erdos_664, erdos_664_main, and erdos_664_disproved all state ¬ErdosQuestion664. The constructive version erdos_664_constructive provides the explicit counterexample for each large prime q.",
     "significance": "key",

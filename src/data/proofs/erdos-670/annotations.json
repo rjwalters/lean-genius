@@ -55,7 +55,7 @@
       "startLine": 59,
       "endLine": 84
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bounds and Conjectures",
     "content": "**trivial_lower_bound:** diameter ≥ C(n,2) = n(n-1)/2. With C(n,2) distances spread ≥ 1 apart, the largest must be ≥ C(n,2).\n\n**MainConjecture:** diameter ≥ (1-ε)n² for large n. The (1+o(1))n² conjecture.\n\n**WeakConjecture:** diameter ≥ cn² for some c > 0. Follows from trivial bound with c = 1/2.\n\n**trivial_gives_half:** WeakConjecture holds in all dimensions.",
     "mathContext": "The gap between the trivial n²/2 and the conjectured n² is the central question. The WeakConjecture is known; only the exact coefficient is open.",
@@ -79,7 +79,7 @@
       "startLine": 86,
       "endLine": 115
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "One-Dimensional Case (SOLVED)",
     "content": "**erdos_1997_d1:** For d=1, ∀ ε > 0, ∃ N, n ≥ N → realDiameter A ≥ (1-ε)n². Erdős's 1997 proof uses the ordering of the real line.\n\n**erdos_1997_d1_asymptotic:** Exact form: realDiameter ≥ n(n-1)/2.\n\nSpecialized definitions: RealPointSet = Finset ℝ, realDist = |x-y|, realDiameter = max - min.",
     "mathContext": "On the real line, points can be ordered, and the minimum/maximum structure gives a direct proof. This ordering fails in higher dimensions, which is why d ≥ 2 remains open.",
@@ -103,7 +103,7 @@
       "startLine": 117,
       "endLine": 139
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Constructions and Tightness",
     "content": "**arithmeticProgression n:** {0, n, 2n, ..., (n-1)n}. Has n points, diameter (n-1)n ≈ n², and all pairwise distances are multiples of n.\n\n**ap_distinct_distances:** The AP has distance gaps ≥ n ≥ 1.\n\n**conjecture_is_tight:** There exist sequences of point sets with diameter ≤ n² and distance gaps ≥ 1, showing the n² bound cannot be improved.",
     "mathContext": "The arithmetic progression construction demonstrates that if the conjecture is true, it is essentially tight. The coefficient (1+o(1)) cannot be replaced by a larger constant.",
@@ -126,7 +126,7 @@
       "startLine": 141,
       "endLine": 164
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Higher Dimensions and Connections",
     "content": "**SuperlinearConjecture:** diameter ≥ n(n-1)/2 in any dimension.\n\n**differ_implies_distinct:** Distance gaps ≥ 1 forces exactly C(n,2) distinct distances, connecting to Erdős's 1946 distinct distances problem.\n\n**pigeonhole_approach:** C(n,2) distances in a bounded range force diameter ≥ C(n,2) - 1.",
     "mathContext": "Problem #670 can be viewed as a strengthened variant of the distinct distances problem: instead of just counting distinct distances, it asks about the geometric consequences of having large distance gaps.",
@@ -150,7 +150,7 @@
       "startLine": 166,
       "endLine": 186
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_670_summary (PROVED):** Conjunction of:\n1. d = 1 SOLVED: diameter ≥ (1-ε)n² for large n (from erdos_1997_d1)\n2. WeakConjecture holds in all dimensions (from trivial_gives_half)\n\nThe problem remains OPEN for d ≥ 2.",
     "mathContext": "The summary combines the known results into a single proved theorem. The d=1 case uses Erdős's 1997 result; the weak conjecture follows from the trivial bound.",

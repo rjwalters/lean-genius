@@ -42,7 +42,7 @@
       "startLine": 56,
       "endLine": 62
     },
-    "type": "proof",
+    "type": "technique",
     "title": "Concrete Primitive Set Example",
     "content": "**{6, 10, 15}** is primitive: 6 = 2·3, 10 = 2·5, 15 = 3·5. None divides another since each pair shares exactly one prime factor but not both. Proved by case analysis with `omega` finishing each case.",
     "significance": "supporting",
@@ -76,7 +76,7 @@
       "startLine": 88,
       "endLine": 98
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős Convergence Theorem (1935)",
     "content": "**erdos_convergence** axiomatizes Erdős's 1935 result that Σ 1/(n log n) converges for any primitive set. This is the foundational result making the maximization question meaningful — without convergence, there would be no finite maximum to compare. The corollary **primes_sum_converges** follows immediately.",
     "mathContext": "Erdős's proof uses the fact that primitive sets have upper density zero and a careful comparison with the prime harmonic series. The numerical bound on primeSum (between 1.6 and 1.7) is axiomatized from numerical computation.",
@@ -94,7 +94,7 @@
       "startLine": 107,
       "endLine": 118
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Lichtman's Theorem (2023)",
     "content": "**lichtman_theorem** states that for any primitive set A, primitiveSum A ≤ primeSum. **lichtman_uniqueness** strengthens this: equality holds only when A is the primes. The answer theorem **erdos_164_answer** wraps the main result. These are axiomatized because the proof requires techniques beyond Mathlib.",
     "mathContext": "Lichtman's proof uses a comparison argument: for any primitive set, replacing elements with primes in a controlled way increases the sum. The key insight is that primes contribute maximally to 1/(n log n) relative to their 'position' in the multiplicative structure of ℕ.",
@@ -129,7 +129,7 @@
       "startLine": 147,
       "endLine": 151
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary: Erdős #164 SOLVED",
     "content": "**erdos_164_main** packages the complete answer: (1) primes maximize Σ 1/(n log n), and (2) primes are the unique maximizer. Proved by combining lichtman_theorem and lichtman_uniqueness in a conjunction.",
     "significance": "key",

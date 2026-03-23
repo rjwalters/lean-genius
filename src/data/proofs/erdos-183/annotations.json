@@ -78,7 +78,7 @@
       "startLine": 76,
       "endLine": 89
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Known Small Values",
     "content": "R(3;1) = 3: With one color, K_3 has a monochromatic triangle (trivially). R(3;2) = 6: The famous R(3,3) = 6 from classical Ramsey theory. R(3;3) = 17: Proved by Greenwood and Gleason in 1955 using clever constructions.",
     "mathContext": "These values are obtained through exhaustive analysis. R(3;2) = 6 is often the first Ramsey number students encounter. R(3;3) = 17 required significant computational effort.",
@@ -96,7 +96,7 @@
       "startLine": 91,
       "endLine": 100
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Inductive Upper Bound",
     "content": "The key recurrence R(3;k) ≤ 2 + k(R(3;k-1) - 1) follows from a pigeonhole argument: in any k-coloring of a sufficiently large complete graph, some vertex has many edges of the same color, reducing to a (k-1)-coloring problem.",
     "mathContext": "Pick any vertex v. By pigeonhole, at least ⌈(n-1)/k⌉ edges from v have the same color. If this subgraph is large enough, it either contains a monochromatic triangle or we can apply induction.",
@@ -114,7 +114,7 @@
       "startLine": 102,
       "endLine": 111
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Factorial Upper Bound",
     "content": "Unfolding the recurrence gives R(3;k) ≤ e·k! + O(1). This is essentially the best known upper bound. The factor e arises from the limit of (1 + 1/n)^n and the accumulation of constants in the recurrence.",
     "mathContext": "The exact form is R(3;k) ≤ ⌈e·k!⌉. This shows R(3;k) grows at most factorially, which is much faster than exponential but gives a concrete upper bound.",
@@ -150,7 +150,7 @@
       "startLine": 128,
       "endLine": 135
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Exponential Lower Bound",
     "content": "The breakthrough 2021 result by Ageron et al. showed R(3;k) ≥ 380^{k/5} - O(1). This means the k-th root is at least 380^{1/5} ≈ 3.28, providing a strong lower bound on the limit.",
     "mathContext": "The construction uses sophisticated techniques from additive combinatorics and computer-assisted verification. Previous bounds gave smaller constants.",
@@ -222,7 +222,7 @@
       "startLine": 187,
       "endLine": 207
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bounds Summary Theorem",
     "content": "The bounds_summary theorem formally states what we know: R(3;k) ≥ c^k for some c > 3, and R(3;k) ≤ C·k! for some constant C. The proof combines the exponential lower and factorial upper bounds.",
     "mathContext": "The theorem uses calc mode to chain the inequalities. The lower bound constant comes from the Ageron et al. result.",
@@ -258,7 +258,7 @@
       "startLine": 228,
       "endLine": 250
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem",
     "content": "The erdos_183_main theorem combines three statements: (1) R(3;k) ≥ 3 for all k ≥ 1, (2) the factorial upper bound, and (3) the dichotomy that either the limit exists finitely or diverges to infinity.",
     "mathContext": "This is the formal statement of Problem #183. The proof uses the axiomatized bounds and classical logic for the dichotomy.",

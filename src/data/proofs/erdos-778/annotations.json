@@ -153,7 +153,7 @@
       "startLine": 156,
       "endLine": 180
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Malekshahian-Spiro Results (2024)",
     "content": "**Four key results from Malekshahian-Spiro (arXiv:2410.18304, 2024):**\n\n1. **Density ≥ 3/4 (clique game):** The set {n : Bob wins} has natural density at least 3/4. Formalized: for all N, the count of Bob-wins in {0,...,N-1} is ≥ 3N/4.\n\n2. **Recovery property (clique):** If Alice wins at n, then Bob wins at n+1, n+2, and n+3. This is the strongest structural constraint known.\n\n3. **Density ≥ 2/3 (degree game):** The degree game version with a weaker bound.\n\n4. **Recovery property (degree):** If Alice wins degree game at n, Bob wins at n+1, n+2.\n\nThe density result follows from the recovery property: if Alice wins at n, she loses the next 3 values, so at most 1 in 4 consecutive values can be Alice wins.",
     "mathContext": "Natural density of a set S ⊆ ℕ is lim_{N→∞} |S ∩ {1,...,N}| / N. A density of 3/4 means Bob wins 'almost always' but leaves room for Alice to win at scattered values.",
@@ -172,7 +172,7 @@
       "startLine": 187,
       "endLine": 199
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Alice Cannot Win Four Consecutive Values",
     "content": "**alice_no_four_consecutive:** If Alice wins at n, then she cannot also win at n+1, n+2, and n+3.\n\n**Proof:** Assume Alice wins at n and at n+1. By the Malekshahian-Spiro recovery property, Alice winning at n implies Bob has a winning strategy at n+1. But we assumed Alice also has a winning strategy at n+1. The contradiction arises from applying both strategies: Bob's strategy σ beats all Alice strategies (including τ), but Alice's strategy τ beats all Bob strategies (including σ). This yields hσ τ (hτ σ), a direct contradiction.",
     "mathContext": "This is a clean example of how axiomatized results enable downstream proofs. The recovery property (an axiom from the Malekshahian-Spiro paper) immediately yields this structural constraint as a theorem.",
@@ -190,7 +190,7 @@
       "startLine": 201,
       "endLine": 204
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Game Determinacy",
     "content": "**game_determined:** For each n, either Alice or Bob has a winning strategy.\n\nThis is Zermelo's theorem (1913) applied to this specific game: every finite two-player game of perfect information has a determined outcome. Since K_n has finitely many edges and each turn colors one edge, the game tree is finite, and backward induction guarantees a winning strategy exists for one player.",
     "mathContext": "Zermelo's theorem is one of the foundational results in game theory. It applies to chess, tic-tac-toe, and all finite perfect-information games. Here it ensures the game is not a draw — one player always has a winning strategy.",
@@ -209,7 +209,7 @@
       "startLine": 221,
       "endLine": 230
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary: Periodicity Theorem",
     "content": "**erdos_778_periodicity:** This summary theorem packages the main proved result — that Alice cannot win 4 consecutive values — as a clean statement.\n\nThe proof is simply `alice_no_four_consecutive`, directly referencing the earlier theorem. This serves as the entry point for understanding what has been formalized about Problem #778.\n\n**Status:** The full conjecture (Bob wins for ALL n ≥ 3) remains OPEN. What we have formalized is the strongest structural constraint derivable from the Malekshahian-Spiro results.",
     "mathContext": "Summary theorems serve as formal certificates of the state of knowledge. Here, the formalization captures not just the conjecture but also the partial progress toward it.",

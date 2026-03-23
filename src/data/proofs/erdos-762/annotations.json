@@ -103,7 +103,7 @@
       "startLine": 108,
       "endLine": 119
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Proper Implies Cochromatic",
     "content": "**proper_implies_cochromatic:**\n\nEvery proper coloring is automatically a cochromatic coloring.\n\n**Theorem:**\n```lean\ntheorem proper_implies_cochromatic (G : SimpleGraph V) (k : ℕ) (c : V → Fin k) :\n    IsProperColoring G k c → IsCochromaticColoring G k c\n```\n\n**Proof:** In a proper coloring, each color class is an independent set, which satisfies the cochromatic condition (no edges).",
     "mathContext": "This implies χ(G) ≥ ζ(G): any proper coloring gives a cochromatic coloring with the same number of colors.",
@@ -151,7 +151,7 @@
       "startLine": 144,
       "endLine": 157
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Steiner's Counterexample",
     "content": "**steiner_counterexample (2024):**\n\nSteiner constructed a graph G with:\n- ω(G) = 4 (no K₅)\n- ζ(G) = 4 (cochromatic number 4)\n- χ(G) = 7 (chromatic number 7)\n\n**Axiom:**\n```lean\naxiom steiner_counterexample :\n  ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),\n    cliqueNumber G = 4 ∧ cochromaticNumber G = 4 ∧ chromaticNumber G = 7\n```\n\nSince 7 > 4 + 2 = 6, this disproves the EGS conjecture.",
     "mathContext": "The gap χ - ζ = 7 - 4 = 3 > 2 shows the conjecture's +2 bound was too optimistic.",
@@ -175,7 +175,7 @@
       "startLine": 159,
       "endLine": 170
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Conjecture is False",
     "content": "**egs_conjecture_false:**\n\nThe EGS conjecture is FALSE.\n\n**Theorem:**\n```lean\ntheorem egs_conjecture_false : ¬egs_conjecture\n```\n\n**Proof:** Apply the conjecture to Steiner's graph (ω=4, ζ=4). The conjecture would give χ ≤ 6, but χ = 7. Contradiction.",
     "mathContext": "This formally derives the falsity of the conjecture from the existence of Steiner's counterexample.",
@@ -199,7 +199,7 @@
       "startLine": 174,
       "endLine": 183
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "General EGS Theorem",
     "content": "**egs_general_theorem (1990):**\n\nFor every n > 2, there exists f(n) such that if ω(G) < n then χ(G) ≤ ζ(G) + f(n).\n\n**Axiom:**\n```lean\naxiom egs_general_theorem :\n  ∀ n : ℕ, n > 2 → ∃ f : ℕ,\n    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),\n      cliqueNumber G < n → chromaticNumber G ≤ cochromaticNumber G + f\n```\n\nThis general statement IS TRUE - only the specific bound \"+2\" was disproved.",
     "mathContext": "The gap χ - ζ is bounded by some function of the clique number. Finding optimal bounds remains open.",
@@ -223,7 +223,7 @@
       "startLine": 185,
       "endLine": 196
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Gap is Bounded",
     "content": "**chi_zeta_gap_bounded:**\n\nThe gap χ(G) - ζ(G) can be bounded in terms of clique number.\n\n**Theorem:**\n```lean\ntheorem chi_zeta_gap_bounded :\n    ∀ n : ℕ, n > 2 → ∃ f : ℕ,\n      ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),\n        cliqueNumber G < n → chromaticNumber G - cochromaticNumber G ≤ f\n```\n\nDerived from the general EGS theorem.",
     "significance": "key",
@@ -246,7 +246,7 @@
       "startLine": 208,
       "endLine": 215
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Gap Lower Bound",
     "content": "**steiner_gap_lower_bound:**\n\nThe gap χ - ζ can be at least 3 for K₅-free graphs.\n\n**Axiom:**\n```lean\naxiom steiner_gap_lower_bound :\n  ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),\n    cliqueNumber G = 4 ∧ chromaticNumber G - cochromaticNumber G ≥ 3\n```\n\nSteiner's example shows χ - ζ = 7 - 4 = 3.",
     "significance": "supporting",
@@ -268,7 +268,7 @@
       "startLine": 236,
       "endLine": 247
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary",
     "content": "**erdos_762_summary:**\n\nCombines all results:\n1. The EGS conjecture (χ ≤ ζ + 2 for K₅-free graphs) is FALSE\n2. The general bounded gap theorem (χ - ζ bounded by f(ω)) is TRUE\n\n**Theorem:**\n```lean\ntheorem erdos_762_summary :\n    ¬egs_conjecture ∧\n    (∀ n > 2, ∃ f : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),\n      cliqueNumber G < n → chromaticNumber G ≤ cochromaticNumber G + f)\n```",
     "significance": "key",

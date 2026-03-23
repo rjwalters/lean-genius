@@ -73,7 +73,7 @@
       "startLine": 47,
       "endLine": 58
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The IBP Theorem for Fourier Coefficients",
     "content": "The main theorem states that for a $C^1$ function $f: \\mathbb{R} \\to \\mathbb{R}$ with period $2\\pi$ and integer $n \\neq 0$:\n$$\\text{fourierCoeffOn}(\\text{ofReal} \\circ f', n) = I \\cdot n \\cdot \\text{fourierCoeffOn}(\\text{ofReal} \\circ f, n)$$\n\nThe hypotheses are carefully chosen:\n- **$C^1$ regularity** (`ContDiff ℝ 1 f`): ensures the derivative exists and is continuous, making both sides well-defined\n- **$2\\pi$-periodicity** (`∀ t, f(t + 2π) = f(t)`): kills the boundary term in integration by parts\n- **$n \\neq 0$**: the formula is trivially true but differently structured for $n = 0$ (the average term)",
     "mathContext": "$\\hat{c}_n(f') = in \\cdot \\hat{c}_n(f)$ for $f \\in C^1(\\mathbb{R}/2\\pi\\mathbb{Z})$, $n \\in \\mathbb{Z} \\setminus \\{0\\}$.",

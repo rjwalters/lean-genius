@@ -42,7 +42,7 @@
       "startLine": 43,
       "endLine": 75
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "f_max and f_min Functions",
     "content": "**f_max(n)** is the largest m with φ(m) = n. **f_min(n)** is the smallest. These are axiomatized with properties ensuring they're the max/min of the preimage.",
     "mathContext": "For n=1: f_min(1) = 1, f_max(1) = 2. For n=2: f_min(2) = 3, f_max(2) = 6. The ratio f_max(n)/f_min(n) measures the 'spread' of the preimage.",
@@ -96,7 +96,7 @@
       "startLine": 112,
       "endLine": 128
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős's Conditional Infinitude",
     "content": "**erdos_conditional_infinite**: If ANY Carmichael totient exists, then INFINITELY MANY exist. This is the SOLVED part of the problem.",
     "mathContext": "The proof uses multiplicative structure: if φ(m) = n is unique, then for certain primes p, n·p also has a unique preimage. This iterates infinitely.",
@@ -114,7 +114,7 @@
       "startLine": 130,
       "endLine": 146
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Ford's Lower Bound",
     "content": "**ford_lower_bound**: Any Carmichael totient must exceed 10^(10^10). This astronomical bound makes computational search impossible.",
     "mathContext": "Ford's 1999 result uses careful analysis of the distribution of totient values. Even with all computing power, we can't check this many values.",
@@ -132,7 +132,7 @@
       "startLine": 148,
       "endLine": 163
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Totient Computations",
     "content": "Concrete examples verified by rfl: φ(1) = 1, φ(2) = 1, φ(3) = 2, φ(4) = 2, φ(6) = 2. These show 1 and 2 have multiple preimages.",
     "mathContext": "φ(n) counts integers up to n coprime to n. φ(1) = 1 trivially. φ(2) = 1 since only 1 is coprime to 2. φ(p) = p-1 for prime p.",
@@ -150,7 +150,7 @@
       "startLine": 165,
       "endLine": 189
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Non-Carmichael Proofs",
     "content": "**one_not_carmichael** and **two_not_carmichael**: We prove 1 and 2 are NOT Carmichael totients because they each have multiple preimages.",
     "mathContext": "Proof technique: Assume n is Carmichael, then get two preimages via huniq, deduce they're equal, get 1=2 or 3=4 contradiction.",
@@ -168,7 +168,7 @@
       "startLine": 191,
       "endLine": 205
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_694_summary** packages the proved results: neither 1 nor 2 is a Carmichael totient. These are the first two totient values.",
     "mathContext": "This is a genuine proved theorem (not axiom). While we can't check all totient values computationally, we verify the smallest ones aren't Carmichael.",

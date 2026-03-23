@@ -76,7 +76,7 @@
       "startLine": 95,
       "endLine": 131
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Hensley-Richards Incompatibility (1973)",
     "content": "**hensley_richards_incompatibility**: The k-tuples conjecture implies ¬SecondHardyLittlewoodConjecture.\n\nThe key insight is that admissible tuples can be denser than the primes: **dense_admissible_tuples_exist** shows that for large k, there exist admissible k-tuples in [0,k) with more than π(k) elements.\n\nThe **quantitative version** shows the violation can be substantial: under k-tuples, π(x+y) > π(x) + π(y) + (log 2/2) · y/(log y)² for infinitely many x.",
     "mathContext": "If an admissible H ⊂ [0,k) has |H| > π(k) elements, and k-tuples guarantees n where all n+h are prime, then π(n+k) ≥ π(n) + |H| > π(n) + π(k).",
@@ -94,7 +94,7 @@
       "startLine": 133,
       "endLine": 153
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Unconditional Results",
     "content": "**montgomery_vaughan_bound**: Unconditionally, π(x+y) ≤ π(x) + 2y/log(y). This is weaker than the conjecture's π(x) + π(y) but requires no unproved hypothesis.\n\n**primePi_add_ge**: The trivial lower bound π(x+y) ≥ π(x) holds by monotonicity. This is the only fully proved result in the file (using primePi_monotone).",
     "mathContext": "The Montgomery-Vaughan bound uses the large sieve inequality. The factor of 2 is the best known constant.",
@@ -128,7 +128,7 @@
       "startLine": 186,
       "endLine": 198
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result: erdos_855",
     "content": "**erdos_855** combines the two incompatibility results:\n1. k-tuples → ¬SecondHardyLittlewoodConjecture\n2. k-tuples → ¬StrausConjecture\n\nProved via `exact ⟨hensley_richards_incompatibility, straus_also_incompatible⟩`. This captures the essence of the problem: if the widely-believed k-tuples conjecture is true, then both the original and Straus's variant are false.",
     "mathContext": "The theorem is a clean conjunction of the two incompatibility axioms, demonstrating that one natural conjecture (k-tuples) refutes two others.",

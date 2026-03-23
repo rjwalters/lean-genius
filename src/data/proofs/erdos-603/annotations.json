@@ -147,7 +147,7 @@
       "startLine": 86,
       "endLine": 96
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Komjath's Theorem",
     "content": "`komjath_not1` axiomatizes Komjáth's theorem: for families with $|A_i \\cap A_j| \\neq 1$, $\\aleph_0$ colors suffice. This is declared as an `axiom` because the proof requires deep set-theoretic arguments beyond current Mathlib. The contrast with the $\\neq 2$ case (still open) is the central motivation for Problem #603.",
     "mathContext": "Komjáth proved: if $(A_i)$ is a family of countably infinite sets with $|A_i \\cap A_j| \\neq 1$ for all $i \\neq j$, then $\\bigcup A_i$ can be $\\aleph_0$-colored so no $A_i$ is monochromatic. The proof uses a transfinite induction argument specific to the $\\neq 1$ constraint.",
@@ -176,7 +176,7 @@
       "startLine": 104,
       "endLine": 125
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bounds",
     "content": "`lower_bound_2` proves $C \\geq 2$ by contradiction: with $< 2$ colors, any infinite set is automatically monochromatic (has a `sorry` for the cardinal $< 2$ case analysis). `countable_suffices_trivial` axiomatizes the trivial upper bound: assign each element a distinct natural number color, so no infinite set can be monochromatic. Together these give $2 \\leq C \\leq \\aleph_0$.",
     "mathContext": "Lower bound: with $|\\Gamma| < 2$, pigeonhole forces any infinite set to have all elements the same color. Upper bound: the identity coloring $c(x) = x$ (after injection into $\\mathbb{N}$) gives $\\aleph_0$ colors with no monochromatic infinite set.",
@@ -258,7 +258,7 @@
       "startLine": 154,
       "endLine": 157
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Disjoint Families",
     "content": "`disjoint_2_colors` (has `sorry`): if $A_i \\cap A_j = \\emptyset$ for all $i \\neq j$, then 2 colors suffice. The proof idea: for disjoint infinite sets, color half of each set one color and half the other. This is the easiest special case — the difficulty in #603 comes from families where intersections exist but avoid size 2.",
     "mathContext": "Disjoint families vacuously satisfy $|A_i \\cap A_j| \\neq 2$ (since $|\\emptyset| = 0 \\neq 2$). The 2-coloring uses the fact that each infinite set can be split into two infinite subsets.",
@@ -285,7 +285,7 @@
       "startLine": 161,
       "endLine": 169
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Satisfying Both Constraints",
     "content": "SatisfiesBoth: intersection != 1 AND != 2. both_constraints: Komjath's bound applies.",
     "mathContext": "Families avoiding both 1 and 2 are covered by Komjath's result.",
@@ -307,7 +307,7 @@
       "startLine": 186,
       "endLine": 196
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Formal Statement",
     "content": "`erdos_603_statement` proves the formal equivalence: $\\exists C, \\text{ErdosConjecture603}(C)$ iff $\\exists C, \\forall \\mathcal{A}$ valid, $C$ suffices for $\\mathcal{A}$. This is essentially unfolding the definition — the proof is a straightforward `constructor` with both directions wrapping/unwrapping the `IsValidFamily` conjunction. The theorem confirms the formalization correctly captures the intended mathematical statement.",
     "mathContext": "The formal statement unfolds to: $\\exists C, \\forall \\alpha\\, I\\, (A : I \\to \\text{Set}\\,\\alpha), (\\text{countably infinite family} \\wedge |A_i \\cap A_j| \\neq 2) \\to \\exists \\Gamma\\, (|\\Gamma| \\leq C) \\, (c : \\alpha \\to \\Gamma)$ valid.",

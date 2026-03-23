@@ -77,7 +77,7 @@
       "startLine": 116,
       "endLine": 121
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdos-Rousseau Lower Bound (1993)",
     "content": "**erdos_rousseau_lower_bound:**\n\nFor n >= 6, R_hat(K_{n,n}) > (1/60)*n^2*2^n.\n\n**Statement:**\n```lean\naxiom erdos_rousseau_lower_bound (n : N) (hn : n >= 6) :\n    (R_hat(K[n,n]) : R) > (1 / 60) * n^2 * 2^n\n```\n\nThis was proved using probabilistic counting arguments.",
     "mathContext": "The lower bound shows that even edge-minimal Ramsey graphs for K_{n,n} must have exponentially many edges with n^2 polynomial factor.",
@@ -95,7 +95,7 @@
       "startLine": 123,
       "endLine": 128
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Upper Bound (EFRS 1978)",
     "content": "**upper_bound:**\n\nR_hat(K_{n,n}) < (3/2)*n^3*2^n.\n\n**Statement:**\n```lean\naxiom upper_bound (n : N) (hn : n >= 1) :\n    (R_hat(K[n,n]) : R) < (3 / 2) * n^3 * 2^n\n```\n\nProved independently by EFRS (1978) and Nesetril-Rodl (1978) using explicit constructions.",
     "mathContext": "The upper bound constructs specific graphs that force monochromatic K_{n,n} in any 2-coloring.",
@@ -113,7 +113,7 @@
       "startLine": 130,
       "endLine": 138
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Combined Size Ramsey Bounds",
     "content": "**size_ramsey_bounds:**\n\nCombines both bounds into a single theorem for n >= 6:\n\n(1/60)*n^2*2^n < R_hat(K_{n,n}) < (3/2)*n^3*2^n\n\nThe ratio of upper to lower bound is 90n, showing the gap is O(n).",
     "significance": "key",
@@ -129,7 +129,7 @@
       "startLine": 144,
       "endLine": 160
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Conlon-Fox-Wigderson Results (2023)",
     "content": "**CFW General and Asymptotic Bounds:**\n\nFor s <= t:\n- R_hat(K_{s,t}) >> s^{2-s/t} * t * 2^s\n- When t >> s*log(s): R_hat(K_{s,t}) ~ s^2 * t * 2^s\n\nThese 2023 results give tight asymptotic bounds when t is large compared to s.\n\nFor the balanced case s = t = n, this suggests R_hat(K_{n,n}) ~ n^3 * 2^n.",
     "mathContext": "The CFW paper made significant progress on this 40+ year old problem, providing new techniques for both upper and lower bounds.",
@@ -147,7 +147,7 @@
       "startLine": 162,
       "endLine": 172
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "CFW Conjecture",
     "content": "**cfw_conjecture:**\n\nConjectured: R_hat(K_{n,n}) = Theta(n^3 * 2^n).\n\nThis would mean:\n- The upper bound (3/2)*n^3*2^n is tight up to constants\n- The lower bound (1/60)*n^2*2^n can be improved by factor n\n- The true order is n^3*2^n\n\nThis is the natural extension of asymptotic results to the balanced case.",
     "mathContext": "If true, this conjecture would resolve Problem #560 up to constant factors.",
@@ -165,7 +165,7 @@
       "startLine": 174,
       "endLine": 199
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Basic Properties",
     "content": "**Size Ramsey Properties:**\n\n1. **Monotonicity:** G subgraph of G' implies R_hat(G) <= R_hat(G')\n\n2. **Lower bound:** R_hat(G) >= |E(G)| (need at least as many edges)\n\n3. **K_{1,1} case:** R_hat(K_{1,1}) = 1 (single edge)\n\n4. **Path linear:** R_hat(P_n) = O(n) (linear in path length)\n\nThese basic properties establish the framework for size Ramsey theory.",
     "significance": "key",
@@ -200,7 +200,7 @@
       "startLine": 229,
       "endLine": 258
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bounds Gap Analysis",
     "content": "**bounds_gap:**\n\nThe ratio between upper and lower bounds:\n\n(3/2)*n^3*2^n / ((1/60)*n^2*2^n) = 90*n\n\nSo the gap is O(n) - a linear factor of uncertainty remains.\n\n**Implication:** If CFW conjecture is true (R_hat ~ n^3*2^n), then the lower bound can be improved by factor n while upper bound is optimal.",
     "significance": "key",
@@ -217,7 +217,7 @@
       "startLine": 260,
       "endLine": 291
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Results Summary",
     "content": "**erdos_560_summary:**\n\nCombines all main results for n >= 6:\n\n1. **Lower bound:** (1/60)*n^2*2^n (Erdos-Rousseau 1993)\n2. **Upper bound:** (3/2)*n^3*2^n (EFRS 1978)\n3. **Monotonicity:** m <= n implies R_hat(K_{m,m}) <= R_hat(K_{n,n})\n\n**Status:** OPEN - exact value unknown, O(n) gap between bounds\n\n**Conjecture:** R_hat(K_{n,n}) = Theta(n^3*2^n) (CFW 2023)",
     "significance": "key",

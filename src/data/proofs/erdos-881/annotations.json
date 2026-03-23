@@ -41,7 +41,7 @@
       "startLine": 47,
       "endLine": 66
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Order 1 Characterization",
     "content": "**order_one_basis**: A set is a basis of order 1 iff it contains all sufficiently large integers. This is because order 1 means each number represents itself (one element sum). This is a fully proved theorem, not an axiom.",
     "mathContext": "The proof uses that a singleton sum {n} requires n ∈ A, and conversely if n ∈ A then {n} represents n.",
@@ -75,7 +75,7 @@
       "startLine": 83,
       "endLine": 86
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Minimal Bases Are Infinite",
     "content": "**minimal_basis_infinite**: Every minimal basis must be infinite. A finite set can only produce finitely many sums, so it cannot be a basis of any order. Axiomatized since the full proof requires careful analysis of finite sum bounds.",
     "significance": "key",
@@ -124,7 +124,7 @@
       "startLine": 120,
       "endLine": 124
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Strong Implies Weak",
     "content": "**strong_implies_weak**: The main conjecture (m=1) implies the weak version (any m). This is proved by taking m=1 and using the strong conjecture's witness. A clean, fully proved theorem.",
     "significance": "key",
@@ -157,7 +157,7 @@
       "startLine": 149,
       "endLine": 160
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Monotonicity of Order",
     "content": "**basis_order_monotone**: If A is a basis of order k and k' ≥ k, then A is also a basis of order k'. Using more summands can only make representation easier. Fully proved.",
     "mathContext": "The proof simply observes that any k-representation is also a k'-representation when k' ≥ k.",
@@ -174,7 +174,7 @@
       "startLine": 162,
       "endLine": 173
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Subset Property",
     "content": "**basis_subset**: If A ⊆ A' and A is a basis of order k, then A' is also a basis of order k. Adding more elements can only improve or maintain representability. Fully proved.",
     "significance": "key",
@@ -190,7 +190,7 @@
       "startLine": 177,
       "endLine": 197
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary",
     "content": "**erdos_881_summary**: Erdős Problem #881 remains OPEN. The summary theorem shows the conjecture is definitionally equal to its natural language form. Related to Waring's problem, Sidon sets, and the Erdős-Turán conjecture.",
     "significance": "key",

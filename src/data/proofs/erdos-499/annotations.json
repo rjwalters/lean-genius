@@ -84,7 +84,7 @@
       "startLine": 142,
       "endLine": 151
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Marcus-Ree Theorem (1959)",
     "content": "**marcus_ree_theorem:** For every doubly stochastic matrix M, there exists a permutation σ with:\n\n1. All diagonal entries non-zero: M_{i,σ(i)} ≠ 0 for all i\n2. Sum at least 1: ∑_i M_{i,σ(i)} ≥ 1\n\nThis is a **weaker** result than Erdős #499, requiring only a sum bound instead of a product bound.",
     "significance": "key"
@@ -96,7 +96,7 @@
       "startLine": 159,
       "endLine": 177
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Marcus-Minc Theorem (1962)",
     "content": "**marcus_minc_theorem:** For every n×n doubly stochastic matrix M, there exists a permutation σ with:\n\n$$\\prod_{i=1}^{n} M_{i,\\sigma(i)} \\geq n^{-n}$$\n\nThis IS Erdős Problem #499.\n\n**erdos_499 theorem:** Simply restates Marcus-Minc as the answer to the problem.",
     "significance": "key"
@@ -108,7 +108,7 @@
       "startLine": 185,
       "endLine": 200
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Van der Waerden Conjecture",
     "content": "**van_der_waerden:** For every n×n doubly stochastic matrix M:\n\n$$\\text{perm}(M) \\geq n^{-n} \\cdot n!$$\n\nEquality holds exactly when M is the uniform matrix.\n\n**History:** Conjectured by van der Waerden in 1926, proved independently by Egorychev and Falikman in 1981.\n\n**Implies Erdős #499:** If the sum of n! terms is ≥ n^{-n}·n!, then at least one term is ≥ n^{-n}.",
     "mathContext": "This was one of the most famous open problems in combinatorics for over 50 years.",
@@ -125,7 +125,7 @@
       "startLine": 202,
       "endLine": 214
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Van der Waerden Implies Erdős #499",
     "content": "**vanDerWaerden_implies_erdos499:** The permanent bound implies the diagonal bound.\n\n**Proof idea (pigeonhole):**\n- Permanent = sum of n! diagonal products\n- If sum ≥ n^{-n} · n!, then average ≥ n^{-n}\n- So at least one diagonal product ≥ n^{-n}\n\nThis shows Erdős #499 is a weaker statement than van der Waerden.",
     "significance": "key"
@@ -137,7 +137,7 @@
       "startLine": 222,
       "endLine": 237
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The 2×2 Case",
     "content": "**two_by_two_erdos499:** For n = 2, verification is elementary.\n\nA 2×2 doubly stochastic matrix has form:\n$$\\begin{pmatrix} a & 1-a \\\\ 1-a & a \\end{pmatrix}$$\n\nThe two diagonal products are a² and (1-a)².\n\n**Claim:** max(a², (1-a)²) ≥ 1/4 always.\n\n**Proof:** If a ≤ 1/2, then 1-a ≥ 1/2, so (1-a)² ≥ 1/4. Similar if a ≥ 1/2.",
     "significance": "key"
@@ -149,7 +149,7 @@
       "startLine": 252,
       "endLine": 262
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Birkhoff-von Neumann Theorem",
     "content": "**birkhoff_von_neumann:** Every doubly stochastic matrix is a convex combination of permutation matrices.\n\n$$M = \\sum_{i} c_i P_{\\sigma_i}$$\n\nwhere c_i ≥ 0, ∑c_i = 1, and P_σ is the permutation matrix for σ.\n\nThis characterizes the Birkhoff polytope: its vertices are exactly the permutation matrices.",
     "mathContext": "This theorem is fundamental to understanding doubly stochastic matrices geometrically.",
@@ -167,7 +167,7 @@
       "startLine": 268,
       "endLine": 288
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem Summary",
     "content": "**erdos_499_summary:** Complete status of Erdős Problem #499.\n\n**Solved Results:**\n1. marcus_minc_theorem: Product bound (1962) = Erdős #499\n2. van_der_waerden: Stronger permanent bound (1981)\n\n**Supporting Results:**\n- marcus_ree_theorem: Weaker sum bound (1959)\n- birkhoff_von_neumann: Structural characterization\n- 2×2 case: Elementary verification\n\n**Answer:** YES, every doubly stochastic matrix has a diagonal with product ≥ n^{-n}.",
     "significance": "key"

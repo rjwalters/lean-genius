@@ -80,7 +80,7 @@
       "startLine": 71,
       "endLine": 84
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Main Conjecture (OPEN)",
     "content": "**ErdosHajnalConjecture** states: For EVERY graph H, there exists c > 0 such that n^c is an Erdős-Hajnal lower bound for H.\n\n**In plain terms**: Forbidding any fixed induced subgraph forces a polynomial-size clique or independent set.\n\n**Why this is hard**: The conjecture quantifies over ALL possible graphs H. Each specific H might require different techniques to prove.\n\n**We do NOT claim this is true**—we just state it as a Prop to be studied.",
     "mathContext": "The quantification `∀ {α : Type*} [Fintype α] [DecidableEq α] (H : SimpleGraph α)` allows H to be defined on any finite vertex type. The existential `∃ c : ℝ, c > 0` asserts the polynomial exponent exists.",
@@ -98,7 +98,7 @@
       "startLine": 92,
       "endLine": 106
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős-Hajnal 1989 Bound",
     "content": "**erdosHajnal1989** states that Erdős and Hajnal proved: for any H, there exists c > 0 such that exp(c·√log n) is a valid lower bound.\n\n**Why this matters**: This is strictly better than the log(n) Ramsey bound:\n- For n = 10^6: log n ≈ 6, but exp(√6) ≈ 10\n\n**Why an axiom?** The proof uses probabilistic combinatorics and regularity lemmas that aren't yet formalized in Mathlib.",
     "mathContext": "The bound `fun n => exp (c * sqrt (log n))` grows faster than log(n) but slower than any polynomial n^ε. This is called a 'sub-polynomial' bound.",
@@ -116,7 +116,7 @@
       "startLine": 108,
       "endLine": 118
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "BNSS 2023 Improvement",
     "content": "**bnss2023** captures the current best known bound from Bucić, Nguyen, Scott, and Seymour (2023):\n\nFor any H, there exists c > 0 such that exp(c·√(log n · log log n)) is a valid lower bound.\n\n**The improvement**: Adding the √(log log n) factor may seem small, but it represents significant technical progress. For n = 10^6:\n- Erdős-Hajnal 1989: exp(c·√6) ≈ exp(2.4c)\n- BNSS 2023: exp(c·√(6·1.8)) ≈ exp(3.3c)",
     "mathContext": "This is the state-of-the-art as of 2025. The gap to the polynomial conjecture remains enormous—closing it would be a major breakthrough.",
@@ -151,7 +151,7 @@
       "startLine": 132,
       "endLine": 148
     },
-    "type": "example",
+    "type": "context",
     "title": "Concrete Example Graphs",
     "content": "We define two concrete example graphs to make the formalization testable:\n\n**triangleGraph**: The complete graph K₃ on 3 vertices (all pairs adjacent). This is `completeGraph (Fin 3)`.\n\n**threePathGraph**: The path P₃ on 3 vertices (a-b-c with edges a-b and b-c). Defined explicitly with adjacency predicate.\n\n**Known result (axiom)**: The Erdős-Hajnal conjecture IS proved for paths! We state `erdosHajnalForPaths` asserting polynomial bounds exist for the 3-path.",
     "mathContext": "For specific graph families (paths, cycles, complete bipartite graphs, graphs on ≤5 vertices), the conjecture has been proven using structural arguments. Paths were among the first cases resolved.",

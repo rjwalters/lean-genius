@@ -79,7 +79,7 @@
       "startLine": 75,
       "endLine": 89
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Original Conjecture (WRONG)",
     "content": "**OriginalConjecture**: Erdős and Graham conjectured that the maximum GCD-intersecting set size equals $\\max(\\lfloor N/p \\rfloor, |\\text{evenMultiplesSharing}(N)|)$, where $p$ is the smallest prime factor of $N$. **original_conjecture_false**: This is FALSE — Ahlswede and Khachatrian (1992) found counterexamples where the Ahlswede-Khachatrian optimal family construction exceeds both candidates. **counterexample_exists**: Witnesses a specific $N > 1$ where $\\text{maxGCDIntersecting}(N) > \\max(N/p, |\\text{evenMultiplesSharing}(N)|)$. This failure motivated the search for the correct, more complex characterization.",
     "mathContext": "OriginalConjecture ↔ ∀ N > 1, maxGCDIntersecting N = max (N / N.minFac) (evenMultiplesSharing N).card\noriginal_conjecture_false : ¬OriginalConjecture\ncounterexample_exists : ∃ N > 1, maxGCDIntersecting N > max (N / N.minFac) (evenMultiplesSharing N).card",
@@ -102,7 +102,7 @@
       "startLine": 91,
       "endLine": 108
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Ahlswede-Khachatrian Theorem (1996)",
     "content": "**optimalFamily N j primes**: Integers in $\\{1,\\ldots,N\\}$ divisible by at least one of $2q_1, \\ldots, 2q_j$ or by the product $q_1 \\cdot q_2 \\cdots q_j$, where $q_1 < \\cdots < q_j$ are prime factors of $N$. The $2q_i$ terms capture multiples of even numbers divisible by $q_i$; the product term captures multiples of the full product. The construction balances between using more $2q_i$ factors (larger $j$, more multiples per factor but larger product) and fewer (smaller $j$, fewer factors but smaller product with more multiples).\n\n**ahlswede_khachatrian_theorem**: For every $N > 1$, there exists an optimal $j$ and a list of prime factors of $N$ such that $\\text{maxGCDIntersecting}(N)$ equals the size of the corresponding optimal family. This completely characterizes the answer to Erdős Problem #534.",
     "mathContext": "optimalFamily N j primes = (interval N).filter (fun n => (primes.take j).map (2*·)).any (·∣n) ∨ (primes.take j).foldl (·*·) 1 ∣ n)\nahlswede_khachatrian_theorem : ∀ N > 1, ∃ j primes, (∀ p ∈ primes, p.Prime ∧ p ∣ N) ∧ maxGCDIntersecting N = (optimalFamily N j primes).card",
@@ -128,7 +128,7 @@
       "startLine": 110,
       "endLine": 120
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Special Cases",
     "content": "**prime_power_case**: For $N = p^k$ (prime power), $\\text{maxGCDIntersecting}(p^k) = p^{k-1}$. Since $N$ has only one prime factor $p$, every element of $A$ must be divisible by $p$. There are exactly $p^{k-1}$ multiples of $p$ in $\\{1,\\ldots,p^k\\}$, and they form a GCD-intersecting set.\n\n**two_times_prime_case**: For $N = 2p$ (odd prime $p$), $\\text{maxGCDIntersecting}(2p) = 2$. Any element sharing a factor with $N = 2p$ must be even or divisible by $p$. But even numbers not divisible by $p$ are coprime to odd multiples of $p$, so the only valid set is $\\{2p\\}$ plus one partner that shares a factor with $2p$, giving size 2.",
     "mathContext": "prime_power_case : ∀ p k, p.Prime → k ≥ 1 → maxGCDIntersecting (p^k) = p^(k-1)\ntwo_times_prime_case : ∀ p, p.Prime → p > 2 → maxGCDIntersecting (2*p) = 2",
@@ -151,7 +151,7 @@
       "startLine": 122,
       "endLine": 150
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_534_summary**: Packages the three central results into a single conjunction: (1) the Erdős-Graham conjecture is false (`original_conjecture_false`), (2) a concrete counterexample exists (`counterexample_exists`), and (3) the correct Ahlswede-Khachatrian characterization holds for all $N > 1$ (`ahlswede_khachatrian_theorem`). The proof is a direct construction from the three axioms via `⟨_, _, _⟩`.",
     "mathContext": "erdos_534_summary : ¬OriginalConjecture ∧ (∃ N > 1, ...) ∧ (∀ N > 1, ∃ j primes, ...)\nProof: exact ⟨original_conjecture_false, counterexample_exists, ahlswede_khachatrian_theorem⟩",

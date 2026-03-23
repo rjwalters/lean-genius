@@ -79,7 +79,7 @@
       "startLine": 71,
       "endLine": 73
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "cototient(1) = 0",
     "content": "**cototient_one** shows 1 - phi(1) = 1 - 1 = 0. The only positive integer <= 1 is 1 itself, which is coprime to 1.",
     "mathContext": "phi(1) = 1 by convention (or because gcd(1,1) = 1).",
@@ -96,7 +96,7 @@
       "startLine": 75,
       "endLine": 77
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "cototient(2) = 1",
     "content": "**cototient_two** shows 2 - phi(2) = 2 - 1 = 1. Only 1 is coprime to 2, so one integer (2 itself) shares a factor.",
     "mathContext": "Verified by native_decide which computes phi(2) = 1 directly.",
@@ -113,7 +113,7 @@
       "startLine": 79,
       "endLine": 84
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "cototient(p) = 1 for Prime p",
     "content": "**cototient_prime** proves that for any prime p, cototient(p) = 1. Since phi(p) = p - 1, we get p - (p-1) = 1.",
     "mathContext": "Uses Nat.totient_prime and omega tactic. The only non-coprime integer in [1,p] is p itself.",
@@ -131,7 +131,7 @@
       "startLine": 100,
       "endLine": 113
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Small Cototient Values",
     "content": "**zero_is_cototient** through **four_is_cototient** verify that 0, 1, 2, 3, 4 are all cototient values with explicit witnesses.",
     "mathContext": "0 = cototient(1), 1 = cototient(2), 2 = cototient(4), 3 = cototient(9), 4 = cototient(8).",
@@ -149,7 +149,7 @@
       "startLine": 121,
       "endLine": 123
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "10 is a Non-Cototient",
     "content": "**ten_is_non_cototient** states that 10 is the smallest non-cototient. No n satisfies n - phi(n) = 10.",
     "mathContext": "Proving this requires exhaustive search or clever analysis. The OEIS sequence A005278 lists non-cototients: 10, 26, 34, 50, ...",
@@ -203,7 +203,7 @@
       "startLine": 148,
       "endLine": 152
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Main Theorem (SOLVED)",
     "content": "**erdos_418** states NonCototients.Infinite - there are infinitely many non-cototients. This answers Erdos's question affirmatively.",
     "mathContext": "The proof uses the Browkin-Schinzel witness sequence, which provides infinitely many distinct non-cototients.",
@@ -239,7 +239,7 @@
       "startLine": 165,
       "endLine": 171
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Odd Numbers are Cototients",
     "content": "**odd_cototient_conditional** shows that under strengthened Goldbach, every odd m is a cototient value.",
     "mathContext": "For odd m >= 7: m+1 is even > 6, so m+1 = p+q (distinct primes). Then cototient(p*q) = p*q - (p-1)(q-1) = p+q-1 = m.",
@@ -257,7 +257,7 @@
       "startLine": 173,
       "endLine": 178
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Small Odd Cases",
     "content": "**small_odd_cototients** verifies 1, 3, 5 are cototients directly: 1 = cototient(2), 3 = cototient(9), 5 = cototient(25).",
     "mathContext": "These handle the base cases (m < 7) separately from the Goldbach-based argument.",
@@ -275,7 +275,7 @@
       "startLine": 186,
       "endLine": 196
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Density Question (OPEN)",
     "content": "**density_open** marks the open question: do non-cototients have positive density? The Browkin-Schinzel set has density 0.",
     "mathContext": "Positive density would mean a constant fraction of integers are non-cototients. The exponentially sparse witness set doesn't prove this.",
@@ -293,7 +293,7 @@
       "startLine": 205,
       "endLine": 215
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Nonaliquots Have Positive Density",
     "content": "**erdos_nonaliquot_density** states that numbers not of the form sigma(n) - n (nonaliquots) have positive density. Erdos proved this in 1973.",
     "mathContext": "This contrasts with non-cototients where density is unknown. Banks-Luca showed density >= 1/48; Chen-Zhao improved to 0.06.",
@@ -311,7 +311,7 @@
       "startLine": 232,
       "endLine": 237
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary",
     "content": "**erdos_418_summary** packages key facts: the base 509203, and the first two witnesses 2*509203 and 4*509203.",
     "mathContext": "Verified computationally using native_decide to check the arithmetic.",

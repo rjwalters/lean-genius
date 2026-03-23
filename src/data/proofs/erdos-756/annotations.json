@@ -201,7 +201,7 @@
       "startLine": 106,
       "endLine": 108
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Hopf-Pannwitz Theorem (1934)",
     "content": "**hopf_pannwitz:**\n\nThe largest distance in a set of n points occurs at most n times.\n\n```lean\naxiom hopf_pannwitz (A : PointSet) (hA : A.card ≥ 2) :\n  distanceMultiplicity A (maxDistance A) ≤ A.card\n```\n\n**Why?** The diameter is achieved only by points on the convex hull. With n points, there are at most n pairs achieving the maximum (think of a regular n-gon).\n\n**Consequence:** The largest distance is NEVER rich.",
     "mathContext": "This classical result (Hopf-Pannwitz 1934) is the only known universal constraint on distance multiplicities.",
@@ -220,7 +220,7 @@
       "startLine": 110,
       "endLine": 115
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Maximum Distance Not Rich",
     "content": "**max_distance_not_rich:**\n\nDirect consequence: the largest distance is never rich.\n\n```lean\ntheorem max_distance_not_rich (A : PointSet) (hA : A.card ≥ 2) :\n    ¬IsRichDistance A (maxDistance A)\n```\n\n**Proof:** By Hopf-Pannwitz, multiplicity ≤ n. Rich requires multiplicity > n. Contradiction.\n\nThis is why the strong question asks for n-1 rich distances (excluding the largest).",
     "mathContext": "This is a direct corollary of Hopf-Pannwitz, proved in Lean using omega.",
@@ -237,7 +237,7 @@
       "startLine": 128,
       "endLine": 130
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bhowmick's Main Result (2024)",
     "content": "**bhowmick_main:**\n\nFor n ≥ 4, there exist n points with at least ⌊n/4⌋ rich distances.\n\n```lean\naxiom bhowmick_main (n : ℕ) (hn : n ≥ 4) :\n  ∃ A : PointSet, A.card = n ∧ numRichDistances A ≥ n / 4\n```\n\n**Significance:** This proves ErdosPachQuestion with constant c = 1/4.\n\n**Construction:** Bhowmick gives an explicit geometric construction (see arXiv:2407.01174).",
     "mathContext": "Bhowmick's 2024 paper provides the first construction achieving linear growth in rich distances.",
@@ -255,7 +255,7 @@
       "startLine": 132,
       "endLine": 136
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bhowmick's General Result",
     "content": "**bhowmick_general:**\n\nFor higher multiplicities: ⌊n/(2(m+1))⌋ distances can occur ≥ n+m times.\n\n```lean\naxiom bhowmick_general (m n : ℕ) (hn : n ≥ 2 * (m + 1)) :\n  ∃ A : PointSet, A.card = n ∧\n    (((allDistances A).filter fun d =>\n      distanceMultiplicity A d ≥ n + m).card : ℕ) ≥ n / (2 * (m + 1))\n```\n\n**Trade-off:** Higher multiplicity (n+m instead of n+1) means fewer such distances.",
     "mathContext": "This generalizes the main result to multiplicities beyond the n+1 threshold.",
@@ -273,7 +273,7 @@
       "startLine": 142,
       "endLine": 150
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Answer: YES",
     "content": "**erdos_756_answer:**\n\nThe answer to Erdős Problem #756 is YES.\n\n```lean\ntheorem erdos_756_answer : ErdosPachQuestion := by\n  unfold ErdosPachQuestion\n  use 1/4\n  constructor\n  · norm_num\n  intro n hn\n  obtain ⟨A, hcard, hrich⟩ := bhowmick_main n hn\n  exact ⟨A, hcard, by simp only [hcard]; linarith [hrich]⟩\n```\n\n**Proof:** Use Bhowmick's construction with constant c = 1/4.",
     "mathContext": "This theorem formally resolves Erdős Problem #756 by invoking Bhowmick's axiomatized result.",
@@ -290,7 +290,7 @@
       "startLine": 165,
       "endLine": 170
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Square Grid Results (2025)",
     "content": "**clemen_dumitrescu_liu:**\n\nOn the n×n square grid: superpolynomially many rich distances.\n\n```lean\naxiom clemen_dumitrescu_liu (n : ℕ) (hn : n ≥ 2) :\n  ∃ c : ℝ, c > 0 ∧\n    let A := squareGrid n\n    let k := n^2  -- number of grid points\n    (numRichDistances A : ℝ) ≥ k^(c / Real.log (Real.log k))\n```\n\n**Growth:** n^{c/log log n} rich distances among n² = k grid points.\n\nThe grid structure creates many distances with high multiplicity!",
     "mathContext": "Clemen-Dumitrescu-Liu (2025) showed structured sets like grids can achieve superpolynomial richness.",
@@ -308,7 +308,7 @@
       "startLine": 203,
       "endLine": 217
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Richness Ratio",
     "content": "**richDistanceRatio and bhowmick_ratio:**\n\nThe ratio of rich distances to n.\n\n```lean\nnoncomputable def richDistanceRatio (A : PointSet) : ℝ :=\n  (numRichDistances A : ℝ) / A.card\n\ntheorem bhowmick_ratio (n : ℕ) (hn : n ≥ 4) :\n    ∃ A : PointSet, A.card = n ∧ richDistanceRatio A ≥ 1/4\n```\n\nBhowmick achieves ratio ≥ 1/4. What is the optimal ratio as n → ∞?",
     "mathContext": "The ratio question asks for the best constant in the linear bound.",
@@ -326,7 +326,7 @@
       "startLine": 244,
       "endLine": 256
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Upper Bounds",
     "content": "**multiplicity_trivial_upper:**\n\nTrivial bound: any distance has multiplicity ≤ n².\n\n```lean\ntheorem multiplicity_trivial_upper (A : PointSet) (d : ℝ) :\n    distanceMultiplicity A d ≤ A.card * A.card\n```\n\n**Proof:** The multiplicity counts pairs from A × A, which has n² elements.\n\n**rich_distances_trivial_upper:**\nNumber of rich distances ≤ number of distinct distances.",
     "significance": "supporting",
@@ -342,7 +342,7 @@
       "startLine": 262,
       "endLine": 284
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem",
     "content": "**erdos_756 and erdos_756_main:**\n\nThe complete resolution of Erdős Problem #756.\n\n```lean\ntheorem erdos_756 : ErdosPachQuestion := erdos_756_answer\n\ntheorem erdos_756_main :\n    ∀ n : ℕ, n ≥ 4 →\n      ∃ A : PointSet, A.card = n ∧\n        (numRichDistances A : ℝ) ≥ n / 4\n```\n\n**Summary:**\n- Answer: YES to Erdős-Pach question\n- Constant: c = 1/4 achieved\n- Constraint: Largest distance never rich (Hopf-Pannwitz)\n- Status: SOLVED by Bhowmick (2024)",
     "mathContext": "These theorems package the complete answer: the Erdős-Pach question has an affirmative answer with explicit constant.",

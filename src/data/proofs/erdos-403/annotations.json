@@ -83,7 +83,7 @@
       "startLine": 68,
       "endLine": 97
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Known Solutions: Computational Verification",
     "content": "**Verified solutions using `native_decide` and `simp`:**\n\n- **solution_m1:** $2^1 = 2 = 2!$ (simplest nontrivial solution)\n- **solution_m7:** $2^7 = 128 = 2! + 3! + 5! = 2 + 6 + 120$ (LARGEST solution)\n- **maximal_solution_elements:** Confirms $2! = 2$, $3! = 6$, $5! = 120$, sum $= 128$\n\nThe `native_decide` tactic delegates to the kernel's native evaluator for efficient verification.",
     "mathContext": "Direct computation confirms $\\{2,3,5\\}$ witnesses the maximum: $\\text{sumFactorials}(\\{2,3,5\\}) = 2! + 3! + 5! = 2 + 6 + 120 = 128 = 2^7$. The `simp [sumFactorials, factorial]` path works for $m=1$ since $2! = 2 = 2^1$ simplifies directly.",
@@ -109,7 +109,7 @@
       "startLine": 99,
       "endLine": 128
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Lin's Finiteness Theorem and Finite Solution Set",
     "content": "**solutionExponents:** The finite set $\\{1,2,3,4,5,6,7\\}$ of candidate exponents.\n\n**lin_theorem_finiteness (axiom):** $\\forall m \\in \\mathbb{N},\\ \\text{IsPowerOfTwoFactorialSum}(m) \\Rightarrow m \\leq 7$. Lin's 1976 result — the deep mathematical content, axiomatized here.\n\n**solution_set_finite (theorem):** $\\{m : \\text{IsPowerOfTwoFactorialSum}(m)\\}$ is finite. Proved using `Set.Finite.subset (Set.finite_le_nat 7)` — any set bounded by 7 is finite.",
     "mathContext": "Lin's theorem establishes $\\{m \\in \\mathbb{N} : 2^m = \\sum_{i} a_i!\\} \\subseteq \\{0,1,\\ldots,7\\}$, a finite set. The Lean proof derives finiteness structurally: if $m$ satisfies the predicate then $m \\leq 7$ by lin_theorem_finiteness, hence $m$ lies in the finite set $\\{n : n \\leq 7\\}$.",
@@ -137,7 +137,7 @@
       "startLine": 130,
       "endLine": 160
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "2-adic Valuation and Lin's 254 Bound",
     "content": "**twoAdicValuation(n):** The 2-adic valuation $v_2(n)$ — the largest $k$ such that $2^k \\mid n$. Implemented via `Nat.factorization 2`.\n\n**lin_two_adic_bound (axiom):** If $2 \\in S$ then $v_2(\\text{sumFactorials}(S)) \\leq 254$. The key technical result: any factorial sum containing $2! = 2$ cannot be divisible by $2^{255}$.\n\n**power_of_two_bound (axiom):** If $2^m = \\text{sumFactorials}(S)$ with $2 \\in S$, then $m \\leq 254$. Since $v_2(2^m) = m$, this follows from Lin's bound.",
     "mathContext": "The 2-adic valuation satisfies $v_2(n) = \\max\\{k \\in \\mathbb{N} : 2^k \\mid n\\}$. Legendre's formula gives $v_2(n!) = n - s_2(n)$ where $s_2(n)$ is the digit sum base 2. For $v_2(2!) = 1$, $v_2(3!) = 1$, $v_2(5!) = 3$, the interaction of these valuations in sums is subtle — Lin's bound $v_2(\\sum_{a \\in S} a!) \\leq 254$ when $2 \\in S$ uses careful mod-$2^k$ analysis.",
@@ -164,7 +164,7 @@
       "startLine": 162,
       "endLine": 209
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Powers of 3: Complete Classification",
     "content": "**threeExponentSolutions:** The set $\\{0,1,2,3,6\\}$ — exactly the exponents $m$ with $3^m = \\sum a_i!$.\n\n**Verified solutions (each by native_decide):**\n- $3^0 = 1 = 1!$\n- $3^1 = 3 = 1! + 2! = 1 + 2$\n- $3^2 = 9 = 1! + 2! + 3! = 1 + 2 + 6$\n- $3^3 = 27 = 1! + 2! + 4! = 1 + 2 + 24$\n- $3^6 = 729 = 1! + 2! + 3! + 6! = 1 + 2 + 6 + 720$\n\n**lin_theorem_powers_of_three (axiom):** Complete biconditional — these are ALL solutions.",
     "mathContext": "Lin's classification for powers of 3: $3^m = \\sum_{i} a_i!$ (distinct $a_i$) $\\iff m \\in \\{0,1,2,3,6\\}$. The 3-adic valuation argument parallels the 2-adic case: $v_3(\\sum_{a \\in S} a!)$ is bounded, restricting which powers $3^m$ can appear. Note the gap at $m=4,5$ and termination at $m=6$.",
@@ -191,7 +191,7 @@
       "startLine": 211,
       "endLine": 244
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Factorial Dominance and Bounding the Solution Set",
     "content": "**factorial_dominates_exponential (axiom):** $\\forall c,\\ \\exists N,\\ \\forall a \\geq N:\\ a! > 2^{a+c}$. Factorial growth overtakes any exponential.\n\n**few_terms_in_solution (axiom):** If $2^m = \\text{sumFactorials}(S)$ and some element $\\geq 8$ is in $S$, then $|S| \\leq 8$. Since $8! = 40{,}320 > 2^{15}$, large factorials severely constrain the sum.\n\n**max_element_bound (axiom):** $\\max(S) \\leq 13$ for any solution. Since $14! = 87{,}178{,}291{,}200$, elements $\\geq 14$ produce sums too large to be any power of 2.",
     "mathContext": "Stirling's approximation $n! \\approx \\sqrt{2\\pi n}(n/e)^n$ confirms super-exponential growth. Concretely: $7! = 5040$, $8! = 40320$, $13! = 6{,}227{,}020{,}800$, $14! = 87{,}178{,}291{,}200$. Since $2^{37} \\approx 1.37 \\times 10^{11} < 14!$, any factorial sum including $14!$ exceeds $2^{37}$ — but also can't equal $2^{38}$ since no combination of remaining factorials patches the difference.",
@@ -246,7 +246,7 @@
       "startLine": 278,
       "endLine": 309
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Computational Verification: Explicit Witnesses",
     "content": "**Explicit witnesses for each verified solution:**\n- **check_m1:** $2^1 = 2 = 2!$ via witness $S = \\{2\\}$\n- **check_m2:** $2^2 = 4 = 0! + 1! + 2! = 1 + 1 + 2$ via $S = \\{0,1,2\\}$\n- **check_m3:** $2^3 = 8 = 0! + 1! + 3! = 1 + 1 + 6$ via $S = \\{0,1,3\\}$\n- **check_m7:** $2^7 = 128 = 2! + 3! + 5!$ via $S = \\{2,3,5\\}$ (maximum)\n\n**Note:** Not every $m \\leq 7$ admits a solution — Lin's bound says $m \\leq 7$ for any solution that exists.",
     "mathContext": "The existential witness pattern: `IsPowerOfTwoFactorialSum m` is proved by providing $\\langle S, \\text{hNonempty}, \\text{hSum}\\rangle$ where `hSum : sumFactorials S = 2^m`. Notably $0! = 1! = 1$, so $\\{0,1,2\\}$ gives $1+1+2=4=2^2$. The pattern demonstrates Lean's constructive existentials.",
@@ -272,7 +272,7 @@
       "startLine": 311,
       "endLine": 356
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Results: erdos_403 and Powers of Three",
     "content": "**erdos_403:** The main theorem packaging the complete answer:\n1. $\\text{IsPowerOfTwoFactorialSum}(7)$ — the maximal solution exists\n2. $\\forall m,\\ \\text{IsPowerOfTwoFactorialSum}(m) \\Rightarrow m \\leq 7$ — all solutions bounded\n\nProved concisely: `exact ⟨check_m7, lin_theorem_finiteness⟩`.\n\n**related_powers_of_three:** All 5 solutions for $3^m$ verified using `fin_cases` over `threeExponentSolutions`, dispatching each case with the individual solution theorems.",
     "mathContext": "The `And.intro` proof `⟨check_m7, lin_theorem_finiteness⟩` combines the existence witness ($m=7$ works) with the upper bound ($m \\leq 7$ always). Together they characterize the solution set: $\\{m \\in \\mathbb{N} : 2^m = \\sum a_i!\\} \\subseteq \\{1,2,3,7\\}$ with $m=7$ confirmed. For powers of 3, `fin_cases hm` destructs $m \\in \\{0,1,2,3,6\\}$ into 5 goals, each solved by providing the explicit Finset witness.",

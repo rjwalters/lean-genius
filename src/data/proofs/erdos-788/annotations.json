@@ -62,7 +62,7 @@
       "startLine": 81,
       "endLine": 89
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Choi's Results (1971)",
     "content": "**choi_upper_bound** axiomatizes f(n) ≤ C·n^{3/4} for some constant C > 0. **choiConjecture** is defined (not axiomatized) as the statement that for any ε > 0, eventually f(n) ≤ n^{1/2+ε}. Choi's 3/4 bound was the first upper bound; his conjecture that the true exponent is 1/2 remains the central open question after 50+ years.",
     "mathContext": "The o(1) notation in n^{1/2+o(1)} means: for any ε > 0, f(n) ≤ n^{1/2+ε} for all sufficiently large n. This is strictly weaker than f(n) = O(n^{1/2}).",
@@ -80,7 +80,7 @@
       "startLine": 91,
       "endLine": 107
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Adenwalla's Lower Bound via Sidon Sets",
     "content": "**adenwalla_lower_bound** axiomatizes f(n) ≥ c·n^{1/2}. The construction uses Sidon sets: **isSidonSet S** requires all pairwise sums a+b (a ≤ b) to be distinct. **sidon_sets_exist** axiomatizes that Sidon sets of size ~√n exist in intervals of length n. Taking C as a Sidon set in (n, 2n) ensures pairwiseSums(C) has |C|² entries, all distinct, so at most |C|² of (2n, 4n) is 'hit.' This forces |C| + |B| ≥ c√n.",
     "mathContext": "A Sidon set (B₂ set) of size k has exactly k(k-1)/2 distinct pairwise sums. In (n, 2n), Sidon sets of size ~√n exist by probabilistic or algebraic constructions (using Singer difference sets or Erdős-Turán).",
@@ -98,7 +98,7 @@
       "startLine": 109,
       "endLine": 121
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Hunter's and BSS Upper Bounds",
     "content": "**hunter_bound** axiomatizes f(n) ≤ C·n^{2/3+ε} for any ε > 0, improving Choi's 3/4 exponent to 2/3. **bss_bound** (Baltz-Schoen-Srivastav 2000) gives the current best: f(n) ≤ C·(n log n)^{2/3}. The BSS proof uses probabilistic construction of strongly sum-free sets via large random Sidon sets. The log n factor is a technical overhead from the probabilistic argument.",
     "mathContext": "The BSS bound (n log n)^{2/3} improves Hunter's n^{2/3+ε} by making the o(1) correction explicit as (log n)^{2/3}. Whether the log factor can be removed (giving f(n) = O(n^{2/3})) is itself open.",
@@ -116,7 +116,7 @@
       "startLine": 123,
       "endLine": 144
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Interval Arithmetic",
     "content": "**interval_sum_range** is proved constructively: for c₁, c₂ ∈ (n, 2n) with c₁ ≠ c₂, their sum is either in (2n, 4n), ≤ 2n, or ≥ 4n. The proof uses by_cases on membership in upperInterval, with simp and omega handling the arithmetic. **sums_in_upper_interval** axiomatizes the stronger statement that the sum always lands in (2n, 4n), which requires the strict inequalities n < c₁, c₂ < 2n.",
     "mathContext": "The interval constraint is what makes the problem natural: if n < c₁ < 2n and n < c₂ < 2n with c₁ ≠ c₂, then 2n < c₁ + c₂ < 4n. This means every pairwise sum from C lands in the same interval as B.",
@@ -134,7 +134,7 @@
       "startLine": 146,
       "endLine": 164
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_788_summary** combines the two main bounds: (1) the lower bound f(n) ≫ n^{1/2} (Adenwalla), and (2) the upper bound f(n) ≪ (n log n)^{2/3} (BSS 2000). The proof is constructive: `exact ⟨adenwalla_lower_bound, bss_bound⟩`. This captures the complete state of knowledge: the exponent of f(n) lies between 1/2 and 2/3, with Choi's conjecture predicting 1/2.",
     "mathContext": "The conjunction captures the best known bounds without asserting which is tight. The gap between 1/2 and 2/3 is the central open question. Closing it in either direction would be a significant advance in additive combinatorics.",

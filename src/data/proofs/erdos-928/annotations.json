@@ -186,7 +186,7 @@
       "startLine": 123,
       "endLine": 133
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Dickman's Theorem (1930)",
     "content": "The foundational theorem of smooth number theory: the proportion of integers up to $x$ that are $x^\\alpha$-smooth converges to $\\rho(1/\\alpha)$. Formalized as an $\\varepsilon$-$X$ limit statement. Dickman proved this in 1930 using what is now called the 'Dickman method'; Ramaswami (1949) and de Bruijn (1951) gave modern proofs. The formalization axiomatizes this since the proof requires detailed sieve-theoretic estimates.",
     "mathContext": "$\\forall \\varepsilon > 0,\\, \\exists X,\\, \\forall x > X:\\, \\left|\\frac{\\Psi(x, x^\\alpha)}{x} - \\rho(1/\\alpha)\\right| < \\varepsilon$",
@@ -298,7 +298,7 @@
       "startLine": 176,
       "endLine": 186
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Infinitely Many Exist (Schinzel/Meza)",
     "content": "For any $\\alpha, \\beta \\in (0,1)$, infinitely many $n$ exist with both $P(n) < n^\\alpha$ and $P(n+1) < (n+1)^\\beta$. This is the weakest positive result — it says the set is infinite but says nothing about its density. It follows from Schinzel's 1967 result that $P(n(n+1)) \\le n^{O(1/\\log\\log n)}$ for infinitely many $n$. Formalized as: for every $N$, there exists $n > N$ satisfying both smoothness conditions.",
     "mathContext": "$\\forall N \\in \\mathbb{N},\\, \\exists n > N:\\, P(n) < n^\\alpha \\wedge P(n+1) < (n+1)^\\beta$",
@@ -320,7 +320,7 @@
       "startLine": 188,
       "endLine": 197
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Teräväinen (2018): Logarithmic Density",
     "content": "Joni Teräväinen proved that the logarithmic density exists and equals $\\rho(1/\\alpha) \\cdot \\rho(1/\\beta)$. The logarithmic density $\\delta_L(A) = \\lim_{N\\to\\infty} \\frac{1}{\\log N} \\sum_{n \\le N, n \\in A} \\frac{1}{n}$ is weaker than natural density but easier to establish because the $1/n$ weighting smooths out fluctuations. This appeared in 'On binary correlations of multiplicative functions' (2018). The technique uses the pretentious approach to multiplicative functions developed by Granville-Soundararajan.",
     "mathContext": "$\\delta_L = \\lim_{N\\to\\infty} \\frac{1}{\\log N} \\sum_{\\substack{n \\le N \\\\ P(n) < n^\\alpha \\\\ P(n+1) < (n+1)^\\beta}} \\frac{1}{n} = \\rho(1/\\alpha) \\cdot \\rho(1/\\beta)$",
@@ -343,7 +343,7 @@
       "startLine": 199,
       "endLine": 206
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Wang (2021): Conditional Natural Density",
     "content": "Zhiwei Wang proved that assuming the Elliott-Halberstam conjecture for friable integers, the natural density exists and equals $\\rho(1/\\alpha) \\cdot \\rho(1/\\beta)$. This appeared in 'Three conjectures on $P^+(n)$ and $P^+(n+1)$' (2021). The Elliott-Halberstam hypothesis provides the needed uniformity in the distribution of smooth numbers across arithmetic progressions. The formalization states this as an unconditional Lean theorem that directly invokes `independenceConjecture`.",
     "mathContext": "Assuming EH for friable integers: $\\lim_{N\\to\\infty} |C(\\alpha,\\beta,N)|/N = \\rho(1/\\alpha)\\rho(1/\\beta)$",
@@ -410,7 +410,7 @@
       "startLine": 230,
       "endLine": 237
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Schinzel's Product Result",
     "content": "Andrzej Schinzel proved that for infinitely many $n$, the product $n(n+1)$ has its largest prime factor bounded by $n$. More precisely, his 1967 result shows $P(n(n+1)) \\le n^{O(1/\\log\\log n)}$ infinitely often. This is the key input for the `infinitely_many_exist` axiom. The axiomatized form states the simpler bound $P(n(n+1)) \\le n$ for infinitely many $n$.",
     "mathContext": "$\\forall N,\\, \\exists n > N:\\, P(n \\cdot (n+1)) \\le n$. Schinzel's stronger result: $P(n(n+1)) \\le n^{O(1/\\log\\log n)}$ i.o.",
@@ -432,7 +432,7 @@
       "startLine": 241,
       "endLine": 258
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "The summary theorem assembles all three known results into a single conjunction: (1) infinitely many consecutive smooth pairs exist; (2) logarithmic density $= \\rho(1/\\alpha)\\rho(1/\\beta)$; (3) natural density $= \\rho(1/\\alpha)\\rho(1/\\beta)$ under EH. The proof is simply the triple of the three axioms applied to the given parameters. This is the strongest known combined statement about consecutive smooth numbers.",
     "mathContext": "$(\\text{infinitely many}) \\wedge (\\delta_L = \\rho(1/\\alpha)\\rho(1/\\beta)) \\wedge (\\text{EH} \\implies d = \\rho(1/\\alpha)\\rho(1/\\beta))$",
@@ -454,7 +454,7 @@
       "startLine": 260,
       "endLine": 274
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős Problem #928: OPEN",
     "content": "The main theorem states the strongest unconditional result: infinitely many $n$ exist with both $P(n) < n^\\alpha$ and $P(n+1) < (n+1)^\\beta$. The proof is a direct application of `infinitely_many_exist`. The gap between this (infinitely many) and the desired result (positive density) illustrates the difficulty of Erdős #928 — even proving the set is infinite required Schinzel's deep sieve theory.",
     "mathContext": "$\\forall \\alpha, \\beta \\in (0,1),\\, \\forall N,\\, \\exists n > N:\\, P(n) < n^\\alpha \\wedge P(n+1) < (n+1)^\\beta$",

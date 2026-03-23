@@ -73,7 +73,7 @@
       "startLine": 104,
       "endLine": 124
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Trivial Cases: k <= 2",
     "content": "**k = 1 Case:**\nAny composite n+1 has at least one prime divisor. Just pick that prime.\n\n**k = 2 Case:**\nConsecutive integers n+1 and n+2 are coprime (gcd = 1).\nSo they have distinct prime factors, and we can pick one from each.\n\nThese cases are \"trivial\" - the real difficulty starts at k >= 3.",
     "significance": "key",
@@ -89,7 +89,7 @@
       "startLine": 130,
       "endLine": 159
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Partial Results",
     "content": "**grimm_original (1969):**\nTrue for k << log n / log log n\n\n**erdos_selfridge:**\nTrue for k <= (1+o(1)) log n\n\n**ramachandra_shorey_tijdeman (1975):**\nTrue for k << (log n / log log n)^3\n\n```lean\naxiom ramachandra_shorey_tijdeman :\n    exists c : R, c > 0 and forall n k : N, k >= 1 -> n >= 3 ->\n      (k : R) <= c * (Real.log n / Real.log (Real.log n))^3 ->\n      isCompositeBlock n k ->\n      exists f : PrimeDivisorAssignment n k, isValidAssignment n k f\n```\n\nThis is the current best unconditional result.",
     "mathContext": "Each improvement was a significant breakthrough. The RST bound is cubic in (log n / log log n).",
@@ -123,7 +123,7 @@
       "startLine": 198,
       "endLine": 214
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Example: 24, 25, 26",
     "content": "**example_24_25_26:**\n\n24, 25, 26 are consecutive composites (between primes 23 and 29).\n\n**Factorizations:**\n- 24 = 2^3 x 3\n- 25 = 5^2\n- 26 = 2 x 13\n\n**Valid Assignment:**\np_1 = 2 (divides 24)\np_2 = 5 (divides 25)\np_3 = 13 (divides 26)\n\nDistinct primes: 2, 5, 13 - verified!",
     "significance": "supporting",
@@ -139,7 +139,7 @@
       "startLine": 216,
       "endLine": 233
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Example: 90-95",
     "content": "**example_90_to_95:**\n\n90 through 95 are 6 consecutive composites (between primes 89 and 97).\n\n**Factorizations:**\n- 90 = 2 x 3^2 x 5\n- 91 = 7 x 13\n- 92 = 2^2 x 23\n- 93 = 3 x 31\n- 94 = 2 x 47\n- 95 = 5 x 19\n\n**Valid Assignment:** 5, 7, 23, 31, 47, 19\n\nNote: Many share factor 2 or 3, but we can find 6 distinct primes.",
     "significance": "supporting",
@@ -155,7 +155,7 @@
       "startLine": 239,
       "endLine": 253
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Counting Arguments",
     "content": "**prime_factor_bound:**\n\nA composite n has at least 1 prime factor, at most log_2(n) distinct prime factors.\n\n**small_prime_divisor:**\n\nEvery composite n has a prime divisor p <= sqrt(n).\n\n**Why This Makes Grimm Hard:**\nMany consecutive composites share small primes (2, 3, 5...).\nAs k grows, finding k DISTINCT primes becomes difficult.",
     "significance": "key",
@@ -189,7 +189,7 @@
       "startLine": 304,
       "endLine": 318
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary",
     "content": "**erdos_375_summary:**\n\n1. Trivial cases k <= 2 are provable\n2. Best partial result: k << (log n / log log n)^3\n3. The general conjecture is open\n\n```lean\ntheorem erdos_375_summary :\n    True and  -- trivial cases\n    (exists c ...) and  -- RST bound\n    True  -- open status\n```",
     "significance": "key",
@@ -205,7 +205,7 @@
       "startLine": 320,
       "endLine": 336
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Why Grimm's Conjecture is Hard",
     "content": "**grimm_difficulty:**\n\nGrimm's conjecture implies Legendre's conjecture.\n\n```lean\ntheorem grimm_difficulty :\n    grimmsConjecture -> legendresConjecture\n```\n\n**Why Hard:**\n1. Long prime gaps create long composite runs\n2. Many composites share small primes (2, 3, 5)\n3. Distinctness requirement grows harder with k\n4. Full proof would resolve Legendre",
     "mathContext": "The difficulty stems from the deep connection to prime gaps. Proving Grimm would be a major breakthrough.",

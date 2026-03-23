@@ -134,7 +134,7 @@
       "startLine": 190,
       "endLine": 202
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Rödl's Linear Case (1982)",
     "content": "**rodlLinear** states: For any ε > 0, there exists a graph with infinite chromatic number where every n-vertex subgraph needs at most εn edge deletions to become bipartite.\n\nThis shows the conjecture is TRUE for linear f(n) = εn. Rödl's construction uses probabilistic methods.\n\n**Why an axiom?** The construction is complex and not yet formalized in Mathlib.",
     "mathContext": "The bound ⌈εn⌉₊ is linear in n. The construction works for any positive ε, no matter how small.",
@@ -170,7 +170,7 @@
       "startLine": 217,
       "endLine": 230
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Uncountable Chromatic Number Fails",
     "content": "**uncountableFails** states: If we require chromatic number ≥ ℵ₁ (uncountable), then NO such graph exists for any unbounded f.\n\nThis is a surprising dichotomy:\n- χ = ℵ₀ (countable infinite): Open question\n- χ = ℵ₁ (uncountable): Impossible!\n\nThe set-theoretic distinction is crucial to the problem.",
     "mathContext": "The proof uses that uncountably-chromatic graphs must contain certain unavoidable non-bipartite configurations.",
@@ -189,7 +189,7 @@
       "startLine": 239,
       "endLine": 276
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Basic Bounds (Proved)",
     "content": "**edgeDistUpperBound**: Any n-vertex graph has at most n(n-1)/2 edges, so edge distance to bipartite is at most this. Proved by showing we can delete all edges to get the empty (bipartite) graph.\n\n**bipartite_chromaticNumber_le_two**: Bipartite graphs have χ ≤ 2. Follows directly from the definition of IsBipartite.\n\n*Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>*",
     "mathContext": "The upper bound shows the problem is well-posed—edge distance is always finite for finite graphs.",

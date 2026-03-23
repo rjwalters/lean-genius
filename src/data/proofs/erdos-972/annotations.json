@@ -61,7 +61,7 @@
       "startLine": 54,
       "endLine": 65
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Special Case: α = 1",
     "content": "When α = 1, we have ⌊1·p⌋ = ⌊p⌋ = p, so **primeSet(1) equals the set of all primes**.\n\nThis is a sanity check: scaling by 1 preserves primality trivially.",
     "mathContext": "The proof uses Nat.floor_natCast, which says ⌊n⌋₊ = n for natural numbers n. This is why α = 1 is a trivial case - no information is lost.",
@@ -79,7 +79,7 @@
       "startLine": 67,
       "endLine": 78
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Special Case: α < 1",
     "content": "For 0 < α < 1, we prove that ⌊αp⌋ < p for any prime p in primeSet(α).\n\nThis shows that scaling down by α < 1 always reduces the floor value.",
     "mathContext": "The proof uses that αp < p (since α < 1) and the floor is bounded by its argument. The sorry marks a technical step connecting real inequalities to natural number inequalities.",
@@ -97,7 +97,7 @@
       "startLine": 84,
       "endLine": 91
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Main Conjecture (OPEN)",
     "content": "**erdos972Conjecture**: For all irrational α > 1, is primeSet(α) infinite?\n\nThis is defined as a Prop, allowing us to reason about the conjecture without committing to its truth value.",
     "mathContext": "The formal statement is: ∀ α : ℝ, α > 1 → Irrational α → (primeSet α).Infinite. The 'Irrational' predicate from Mathlib captures numbers not expressible as p/q.",
@@ -115,7 +115,7 @@
       "startLine": 105,
       "endLine": 121
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Vinogradov's Theorem (Related Result)",
     "content": "**Vinogradov (1948)**: For irrational α > 1, there are infinitely many primes p = ⌊nα⌋ for some integer n.\n\nThis is stated as an **axiom** since the proof requires Vinogradov's deep work on exponential sums with primes.",
     "mathContext": "The key observation is: p = ⌊nα⌋ iff p/α ≤ n < (p+1)/α, which is equivalent to {p/α} > 1 - 1/α. By uniform distribution of {pα⁻¹}, this occurs infinitely often.",
@@ -151,7 +151,7 @@
       "startLine": 145,
       "endLine": 189
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Verified Examples",
     "content": "We verify the definition for specific values:\n\n- **α = 2, p = 2**: ⌊2·2⌋ = 4 (not prime), so 2 ∉ primeSet(2)\n- **α = 2, p = 3**: ⌊2·3⌋ = 6 (not prime), so 3 ∉ primeSet(2)\n- **α = 3/2, p = 2**: ⌊1.5·2⌋ = 3 (prime), so 2 ∈ primeSet(3/2)\n- **α = 3/2, p = 5**: ⌊1.5·5⌋ = 7 (prime), so 5 ∈ primeSet(3/2)\n- **α = 3/2, p = 7**: ⌊1.5·7⌋ = 10 (not prime), so 7 ∉ primeSet(3/2)",
     "mathContext": "These examples use norm_num and push_neg tactics to verify membership. Note α = 3/2 is rational, so these don't address the conjecture directly, but they verify the definition is working correctly.",

@@ -2,79 +2,153 @@
   {
     "id": "ann-oq03-01-header",
     "proofId": "greens-theorem-oq-03",
-    "range": { "startLine": 1, "endLine": 43 },
+    "range": {
+      "startLine": 1,
+      "endLine": 43
+    },
     "type": "context",
     "title": "OQ-03: From Dummy Placeholder to Concrete Simply-Connected Region",
     "content": "The base GreensTheorem.lean had only `structure GreenRegion where dummy : Unit` — no mathematical content — and `axiom greens_theorem_general : True` (trivially satisfied by anything). OQ-03 asked whether we can replace these placeholders with a concrete structure for a simply-connected planar region and a non-trivial Green's theorem. The answer is YES using Type I (vertically simple) regions, the standard approach from Apostol's Mathematical Analysis §17.4.",
     "mathContext": "**Type I region**: $D = \\{(x,y) \\mid a \\leq x \\leq b, \\; f(x) \\leq y \\leq g(x)\\}$ where $f, g$ are continuous with $f(x) \\leq g(x)$. **Green's theorem**: $\\oint_{\\partial D}(P\\,dx + Q\\,dy) = \\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right)dA$. For TypeI regions, the double integral is the iterated integral $\\int_a^b \\int_{f(x)}^{g(x)} (\\cdot)\\,dy\\,dx$.",
     "summary": "OQ-03 replaces dummy GreenRegion with concrete TypeI (vertically simple) regions for Green's theorem.",
     "significance": "key",
-    "relatedConcepts": ["TypeIRegion", "GreenRegion", "vertically simple region", "simply-connected domain"],
-    "prerequisites": ["intervalIntegral", "Set.Icc", "HasDerivAt"]
+    "relatedConcepts": [
+      "TypeIRegion",
+      "GreenRegion",
+      "vertically simple region",
+      "simply-connected domain"
+    ],
+    "prerequisites": [
+      "intervalIntegral",
+      "Set.Icc",
+      "HasDerivAt"
+    ]
   },
   {
     "id": "ann-oq03-02-structure",
     "proofId": "greens-theorem-oq-03",
-    "range": { "startLine": 56, "endLine": 89 },
+    "range": {
+      "startLine": 56,
+      "endLine": 89
+    },
     "type": "definition",
     "title": "TypeIRegion: Replacing dummy : Unit with Real Geometric Data",
     "content": "The TypeIRegion structure has 6 fields: bounds a, b : ℝ; curves f, g : ℝ → ℝ; strict inequality hab : a < b; ordering constraint hfg : ∀ x ∈ Set.Icc a b, f x ≤ g x. Note: ContinuousOn is NOT in the structure fields — this avoids a typeclass resolution loop in Lean 4 where `ContinuousOn f (Set.Icc a b)` causes a stuck instance problem in structure definitions. Continuity is passed as a parameter to theorems that need it.\n\nThe typeI_mem_iff theorem gives the explicit iff characterization. typeI_lower_mem and typeI_upper_mem show that the boundary curves lie in the region — proved via the hfg ordering constraint and le_refl. typeI_nonempty uses the left endpoint (a, f(a)) as a witness.",
     "mathContext": "**Structure fields**: `a b : ℝ` (base interval), `f g : ℝ → ℝ` (boundary curves), `hab : a < b` (nondegenerate), `hfg : ∀ x ∈ Icc a b, f x ≤ g x` (ordering). **Membership**: $(x,y) \\in D \\iff a \\leq x \\leq b \\text{ and } f(x) \\leq y \\leq g(x)$. **Boundary curves**: $(x, f(x))$ and $(x, g(x))$ lie in $D$ for all $x \\in [a,b]$.",
     "summary": "TypeIRegion structure with bounds a < b, curves f ≤ g, membership iff, boundary inclusion, and nonemptiness.",
     "significance": "key",
-    "relatedConcepts": ["TypeIRegion", "Set.Icc", "Set.Nonempty", "le_refl"],
-    "prerequisites": ["Lean 4 structure syntax", "Set.mem_setOf_eq"]
+    "relatedConcepts": [
+      "TypeIRegion",
+      "Set.Icc",
+      "Set.Nonempty",
+      "le_refl"
+    ],
+    "prerequisites": [
+      "Lean 4 structure syntax",
+      "Set.mem_setOf_eq"
+    ]
   },
   {
     "id": "ann-oq03-03-rectangles",
     "proofId": "greens-theorem-oq-03",
-    "range": { "startLine": 91, "endLine": 121 },
-    "type": "proof",
+    "range": {
+      "startLine": 91,
+      "endLine": 121
+    },
+    "type": "technique",
     "title": "Rectangles as Special TypeI Regions",
     "content": "The rectToTypeI constructor creates the rectangle [a,b]×[c,d] as a TypeI region by taking constant boundary curves f = const c and g = const d. The key theorem rectTypeI_set_eq proves the set equality (rectToTypeI).toSet = Set.Icc a b ×ˢ Set.Icc c d using ext + simp + constructor/rintro pattern.\n\nThis connects OQ03 back to OQ01: the rectangle case in GreensTheoremOQ01.lean is now recognized as a special TypeI region. The unit square [0,1]² is the canonical example, proved to contain its center (1/2, 1/2) by norm_num.",
     "mathContext": "**Rectangle as TypeI**: $f \\equiv c$, $g \\equiv d$ with $c \\leq d$. Then $D = [a,b] \\times [c,d]$. **Set equality**: `toSet = Icc a b ×ˢ Icc c d` proved by `ext ⟨x, y⟩` + membership unfolding. **Unit square**: `rectToTypeI 0 1 0 1 (by norm_num) (by norm_num)`.",
     "summary": "Rectangle [a,b]×[c,d] as TypeI with constant curves; set equality and unit square example.",
     "significance": "insight",
-    "relatedConcepts": ["rectToTypeI", "unitSquareTypeI", "Set.prod", "Set.Icc"],
-    "prerequisites": ["Set.mem_prod", "Set.mem_Icc", "norm_num"]
+    "relatedConcepts": [
+      "rectToTypeI",
+      "unitSquareTypeI",
+      "Set.prod",
+      "Set.Icc"
+    ],
+    "prerequisites": [
+      "Set.mem_prod",
+      "Set.mem_Icc",
+      "norm_num"
+    ]
   },
   {
     "id": "ann-oq03-04-area",
     "proofId": "greens-theorem-oq-03",
-    "range": { "startLine": 123, "endLine": 157 },
-    "type": "proof",
+    "range": {
+      "startLine": 123,
+      "endLine": 157
+    },
+    "type": "technique",
     "title": "Area Formula via intervalIntegral: Area(D) = ∫_a^b (g(x) - f(x)) dx",
     "content": "TypeIRegion.area is a noncomputable def using Mathlib's intervalIntegral. The area nonnegativity proof (typeI_area_nonneg) uses intervalIntegral.integral_nonneg with R.hab.le for the interval ordering, then linarith from hfg to establish g(x) - f(x) ≥ 0 pointwise.\n\nFor rectangles, typeI_rect_area proves (rectToTypeI).area = (b-a)*(d-c) by using show to reduce to a constant integral, then rw [integral_const, smul_eq_mul] — the rewrite closes the goal via rfl (no ring needed). The unit square area = 1 follows by unfold + rw + norm_num.",
     "mathContext": "**Area formula**: $\\text{Area}(D) = \\int_a^b (g(x) - f(x))\\,dx$. **Nonnegativity**: $g(x) - f(x) \\geq 0$ on $[a,b]$ from `hfg`, so `integral_nonneg` applies. **Rectangle**: $\\int_a^b (d-c)\\,dx = (b-a)(d-c)$ via `integral_const`. **Key Lean fact**: `rw [integral_const, smul_eq_mul]` closes `(b-a)*(d-c) = (b-a)*(d-c)` automatically via `rfl` — no `ring` needed after `smul_eq_mul`.",
     "summary": "Area = ∫_a^b (g-f) dx; proved nonneg via integral_nonneg; rectangle area = (b-a)(d-c).",
     "significance": "technical",
-    "relatedConcepts": ["intervalIntegral.integral_nonneg", "intervalIntegral.integral_const", "smul_eq_mul", "TypeIRegion.area"],
-    "prerequisites": ["intervalIntegral", "Set.Icc membership in integral_nonneg", "noncomputable def"]
+    "relatedConcepts": [
+      "intervalIntegral.integral_nonneg",
+      "intervalIntegral.integral_const",
+      "smul_eq_mul",
+      "TypeIRegion.area"
+    ],
+    "prerequisites": [
+      "intervalIntegral",
+      "Set.Icc membership in integral_nonneg",
+      "noncomputable def"
+    ]
   },
   {
     "id": "ann-oq03-05-iterated-integral",
     "proofId": "greens-theorem-oq-03",
-    "range": { "startLine": 158, "endLine": 180 },
-    "type": "proof",
+    "range": {
+      "startLine": 158,
+      "endLine": 180
+    },
+    "type": "technique",
     "title": "Iterated Integral: The Double Integral as Outer-x, Inner-y Integration",
     "content": "TypeIRegion.iteratedIntegral F = ∫ x in a..b, ∫ y in f(x)..g(x), F(x,y) is the standard double integral over a TypeI region. The integration order is outer-x inner-y, matching the TypeI region shape.\n\nNote: this is OPPOSITE to GreensTheoremOQ01's rectDoubleIntegral which is outer-y inner-x. The two are equal by Fubini (for rectangles), but the Fubini swap requires measurability/integrability hypotheses and is NOT proved here.\n\ntypeI_area_is_iterated_one proves Area = iteratedIntegral(const 1) using congr 1 + ext + integral_const + smul_eq_mul + mul_one. This is the key geometric fact connecting area to double integration.",
     "mathContext": "**Iterated integral**: $\\iint_D F\\,dA = \\int_a^b \\left(\\int_{f(x)}^{g(x)} F(x,y)\\,dy\\right)dx$. **Area as integral of 1**: $\\text{Area}(D) = \\iint_D 1\\,dA = \\int_a^b (g(x)-f(x))\\,dx$. **Order matters**: TypeI is $(dx\\,dy)$ order (outer $x$, inner $y$); OQ01's `rectDoubleIntegral` is $(dy\\,dx)$ order — they're equal by Fubini but Fubini is not proved here.",
     "summary": "Double integral as iterated integral ∫_a^b ∫_{f(x)}^{g(x)} F dy dx; area equals iterated integral of 1.",
     "significance": "technical",
-    "relatedConcepts": ["TypeIRegion.iteratedIntegral", "typeI_area_is_iterated_one", "Fubini theorem", "intervalIntegral"],
-    "prerequisites": ["congr 1", "ext", "intervalIntegral.integral_const", "mul_one"]
+    "relatedConcepts": [
+      "TypeIRegion.iteratedIntegral",
+      "typeI_area_is_iterated_one",
+      "Fubini theorem",
+      "intervalIntegral"
+    ],
+    "prerequisites": [
+      "congr 1",
+      "ext",
+      "intervalIntegral.integral_const",
+      "mul_one"
+    ]
   },
   {
     "id": "ann-oq03-06-greens-theorem",
     "proofId": "greens-theorem-oq-03",
-    "range": { "startLine": 181, "endLine": 210 },
+    "range": {
+      "startLine": 181,
+      "endLine": 210
+    },
     "type": "context",
     "title": "Green's Theorem Axiom: Concrete Non-Trivial Formulation",
     "content": "greens_theorem_typeI is an axiom (not True!) stating the concrete Green's theorem formula for TypeI regions. Unlike the base file's `axiom greens_theorem_general : True`, this axiom has substantive mathematical content: it equates the iterated integral of (∂Q/∂x - ∂P/∂y) to a specific combination of four boundary integrals involving P, Q along the curves f(x), g(x) and the vertical sides.\n\nThe boundary formula uses deriv R.g x and deriv R.f x — the chain rule terms from parametrizing the boundary curves. The smoothness hypotheses hP_smooth and hQ_smooth use HasDerivAt (pointwise differentiability), not ContinuousOn — this is intentional for generality.\n\nA full proof sketch: ∬ ∂P/∂y dA = inner FTC: ∫_a^b [P(x,g(x)) - P(x,f(x))] dx. For ∬ ∂Q/∂x dA, apply FTC to outer integral + Fubini. The boundary decomposes into lower curve (with -P), upper curve (with P and Q), right side, left side.",
     "mathContext": "**Green's theorem**: $\\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right)dA = \\oint_{\\partial D} P\\,dx + Q\\,dy$. **For TypeI boundary**: lower curve $(x, f(x))$ contributes $\\int_a^b Q(x,f(x)) f'(x)\\,dx + \\int_a^b P(x,f(x))\\,dx$; upper curve $(x,g(x))$ contributes with opposite sign; vertical sides $x=a$ (downward) and $x=b$ (upward) contribute $\\int_{f(a)}^{g(a)}$ and $\\int_{f(b)}^{g(b)}$ terms. **Key**: `deriv R.f x` and `deriv R.g x` appear in boundary Q-integrals from chain rule.",
     "summary": "Green's theorem axiom for TypeI regions with concrete boundary formula using deriv f and deriv g.",
     "significance": "key",
-    "relatedConcepts": ["greens_theorem_typeI", "HasDerivAt", "deriv", "iteratedIntegral", "boundary decomposition"],
-    "prerequisites": ["Green's theorem for Type I regions", "FTC for variable limits", "chain rule for parametric curves", "Apostol Mathematical Analysis §17.4"]
+    "relatedConcepts": [
+      "greens_theorem_typeI",
+      "HasDerivAt",
+      "deriv",
+      "iteratedIntegral",
+      "boundary decomposition"
+    ],
+    "prerequisites": [
+      "Green's theorem for Type I regions",
+      "FTC for variable limits",
+      "chain rule for parametric curves",
+      "Apostol Mathematical Analysis §17.4"
+    ]
   }
 ]

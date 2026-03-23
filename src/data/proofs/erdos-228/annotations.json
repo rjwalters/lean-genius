@@ -78,7 +78,7 @@
       "startLine": 64,
       "endLine": 75
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Why √n is Expected",
     "content": "**Intuition**: For a random Littlewood polynomial evaluated at z on the unit circle, |P(z)|² is a sum of n terms with random signs. By the central limit theorem, the magnitude behaves like √n.",
     "mathContext": "expected_magnitude_heuristic proves √n > 0 for n ≥ 1 using Real.sqrt_pos. This basic fact underlies the whole problem—we need a positive target magnitude.",
@@ -96,7 +96,7 @@
       "startLine": 79,
       "endLine": 98
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The BBMST Theorem",
     "content": "**Theorem** (Balister-Bollobás-Morris-Sahasrabudhe-Tiba, 2019): Flat Littlewood polynomials exist. This resolved Littlewood's 50-year-old conjecture.",
     "mathContext": "axiom bbmst_theorem : Erdos228Question. The proof uses probabilistic construction with sophisticated derandomization, combining harmonic analysis and combinatorics.",
@@ -114,7 +114,7 @@
       "startLine": 97,
       "endLine": 98
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Answer",
     "content": "The answer to Erdős Problem #228 is **YES**: flat Littlewood polynomials exist for all n ≥ 2.",
     "mathContext": "theorem erdos_228_answer : Erdos228Question := bbmst_theorem. This directly invokes the axiomatized BBMST theorem.",
@@ -131,7 +131,7 @@
       "startLine": 102,
       "endLine": 112
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Explicit Formulation",
     "content": "An equivalent explicit formulation: there exist universal constants c₁, c₂ > 0 and threshold N₀ such that for all n ≥ N₀, a flat degree-n Littlewood polynomial exists.",
     "mathContext": "This makes the constructive content clearer: we need specific numbers c₁, c₂, and N₀, not just abstract existence. The actual values from BBMST are not easily computable.",
@@ -167,7 +167,7 @@
       "startLine": 146,
       "endLine": 159
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary",
     "content": "The summary combines our main results: the BBMST theorem holds (axiomatized), and √n > 0 for all n ≥ 1 (proved as the basic magnitude target).",
     "mathContext": "summary_erdos_228 : Erdos228Question ∧ (∀ n ≥ 1, √n > 0). The conjunction packages the key verified facts for export.",

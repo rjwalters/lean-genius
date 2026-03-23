@@ -132,7 +132,7 @@
       "startLine": 120,
       "endLine": 126
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Roth's Theorem (1954)",
     "content": "**Roth (1954)** proved the analogous result for the unit square: rectangle discrepancy grows at least as c·(log n)^{1/4}. This established the paradigm before Schmidt's spherical result.",
     "mathContext": "For axis-aligned rectangles in [0,1]², the discrepancy cannot be made arbitrarily small. The logarithmic growth is slower than the polynomial growth on spheres.",
@@ -150,7 +150,7 @@
       "startLine": 132,
       "endLine": 138
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Schmidt's Theorem (1969)",
     "content": "**Schmidt (1969)** proved that spherical cap discrepancy grows at least as c·n^{d/(2d+2)} for S^d. This is the key axiom resolving Problem #988.",
     "mathContext": "For d=2 (S²), the exponent is 2/(2·2+2) = 2/6 = 1/3, giving growth ≥ c·n^{1/3}. This polynomial growth ensures minDiscrepancy → ∞.",
@@ -168,7 +168,7 @@
       "startLine": 140,
       "endLine": 145
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Discrepancy Tends to Infinity",
     "content": "The axiom **min_discrepancy_tends_to_infinity** states that minDiscrepancy(d,n) → ∞ as n → ∞, for any dimension d ≥ 1. This follows from Schmidt's lower bound.",
     "mathContext": "Using Filter.Tendsto with atTop atTop expresses that the minimum discrepancy grows without bound. Axiomatized because formalizing the filter proof from the existential bound is non-trivial.",
@@ -186,7 +186,7 @@
       "startLine": 161,
       "endLine": 164
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result: erdos_988_solved",
     "content": "**Erdős Problem #988: SOLVED (YES)**. For all dimensions d ≥ 1, the minimum discrepancy over n-point configurations tends to infinity. Perfect uniformity is impossible!",
     "mathContext": "The theorem erdos_988_solved wraps min_discrepancy_tends_to_infinity with the universal quantifier over dimensions. The proof is immediate from the helper theorem.",
@@ -204,7 +204,7 @@
       "startLine": 175,
       "endLine": 179
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Lower Bound for S²",
     "content": "For the 2-sphere specifically, **minDiscrepancy(2,n) ≥ c·n^{1/3}**. This is Schmidt's bound specialized to dimension 2.",
     "mathContext": "The exponent 1/3 comes from d/(2d+2) = 2/6 when d=2. This means even the best n-point configuration has discrepancy growing like the cube root of n.",
@@ -222,7 +222,7 @@
       "startLine": 181,
       "endLine": 186
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Upper Bound for S²",
     "content": "Good configurations exist achieving **D(P) = O(n^{1/2})**. The gap between n^{1/3} and n^{1/2} represents an open problem: what is the true exponent?",
     "mathContext": "The upper bound shows constructibility: there exist n-point configurations with discrepancy at most C·√n. The exact optimal exponent between 1/3 and 1/2 is unknown.",
@@ -240,7 +240,7 @@
       "startLine": 218,
       "endLine": 226
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_988_summary** packages both results: (1) Schmidt's theorem for all dimensions, and (2) Roth's precedent for the square. Together they establish the general impossibility of perfect uniformity.",
     "mathContext": "The conjunction ∧ combines the spherical result (polynomial growth) with the square result (logarithmic growth). Both demonstrate fundamental limits on uniform distribution.",

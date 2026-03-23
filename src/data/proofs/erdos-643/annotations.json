@@ -78,7 +78,7 @@
       "startLine": 94,
       "endLine": 109
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Case t = 2: Connection to C4",
     "content": "**For graphs (t=2)**, a crossed pair is essentially a 4-cycle!\n\nThe four 2-element edges form an alternating path v1-v2-v3-v4-v1.\n\nThe **Kovari-Sos-Turan theorem** gives f(n,2) = O(n^{3/2}), connecting this to classical extremal graph theory.",
     "mathContext": "C4-free graphs have at most (1/2 + o(1))n^{3/2} edges.",
@@ -96,7 +96,7 @@
       "startLine": 117,
       "endLine": 124
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Pikhurko-Verstrate Bound",
     "content": "**Pikhurko-Verstrate (2009)** proved that for 3-uniform hypergraphs:\n\nf(n,3) <= (13/9)*C(n,2)\n\nThis is the best known upper bound for the 3-uniform case and represents significant progress toward the conjecture.",
     "mathContext": "f(n,3) <= (13/9)*(n choose 2) for all n >= 3",
@@ -114,7 +114,7 @@
       "startLine": 132,
       "endLine": 139
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "General Bounds",
     "content": "**Lower bound**: f(n,t) >= C(n-1,t-1) + floor((n-1)/t)\n\nThis comes from sunflower constructions.\n\n**Upper bound**: f(n,t) < (7/2)*C(n,t-1)\n\nThe gap between these bounds is what the conjecture aims to close.",
     "mathContext": "C(n-1,t-1) <= f(n,t) < (7/2)*C(n,t-1)",
@@ -168,7 +168,7 @@
       "startLine": 171,
       "endLine": 181
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sunflowers Have No Crossed Pairs",
     "content": "**Key Insight**: A sunflower cannot contain crossed pairs!\n\n**Proof sketch**: Any two edges in a sunflower intersect in the core. For a crossed pair, we need A cap B = empty. But since t >= 2, the core has size >= 1, so any two edges share at least one vertex.\n\nThis contradiction shows sunflowers are crossed-pair-free.",
     "mathContext": "forall A,B in Sunflower: A cap B contains core != empty",
@@ -186,7 +186,7 @@
       "startLine": 189,
       "endLine": 195
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Small Cases",
     "content": "**f(4,2) = 3**: With 4 vertices and 3 edges, we can avoid a 4-cycle. With 4 edges (K4), we must have one.\n\n**f(5,2) = 5**: Related to the Petersen graph, a famous 3-regular graph avoiding 4-cycles.",
     "mathContext": "Exact values known for small parameters.",
@@ -204,7 +204,7 @@
       "startLine": 219,
       "endLine": 226
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdos-Rado Sunflower Lemma",
     "content": "**The Sunflower Lemma** (Erdos-Rado 1960): Any sufficiently large k-uniform family contains a sunflower with r petals.\n\nSpecifically: there exists F(k) such that any k-uniform family with > F(k) * (r-1)^k members contains an r-sunflower.\n\nThis structural result constrains what large hypergraphs can look like.",
     "mathContext": "Large uniform families must contain sunflowers - a foundational result.",

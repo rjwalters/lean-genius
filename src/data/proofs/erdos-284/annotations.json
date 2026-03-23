@@ -41,7 +41,7 @@
       "startLine": 68,
       "endLine": 82
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Function f(k)",
     "content": "**f (axiomatized):** The function f(k) returns the maximum first denominator among all k-term Egyptian fraction representations of 1. Axiomatized because the sSup formulation would require proving the set is bounded and nonempty.\n\n**f_well_defined:** For k ≥ 2, at least one k-term representation exists (e.g., 1 = 1/2 + 1/3 + 1/6 for k=3).",
     "mathContext": "The function f is well-defined because the set of first denominators is finite and nonempty for each k ≥ 2. The supremum formulation in ℕ requires BddAbove which is nontrivial to prove formally.",
@@ -58,7 +58,7 @@
       "startLine": 84,
       "endLine": 115
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Upper Bound and the Constant e-1",
     "content": "**harmonic_interval:** The harmonic sum Σ_{n=u}^{⌊eu⌋} 1/n → 1 as u → ∞. This is the discrete version of ∫₁ᵉ 1/x dx = 1.\n\n**f_upper_bound:** f(k) ≤ (1+ε)·k/(e-1) for large k. If the first denominator is u, we need ~(e-1)u terms from [u, eu], so k ≥ (e-1-o(1))u.\n\n**e_minus_one_constant:** The integral identity exp(1) - 1 = ∫₁ᵉ 1/x dx.",
     "mathContext": "The constant e-1 ≈ 1.718 is the key to this problem. The interval [N, eN] has multiplicative length e, and ∫_N^{eN} 1/x dx = ln(e) = 1. So the number of integers in this interval (~(e-1)N) is roughly what's needed for a sum of reciprocals to reach 1.",
@@ -76,7 +76,7 @@
       "startLine": 117,
       "endLine": 145
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Croot's Theorem (2001)",
     "content": "**croot_2001:** For any N > 1, there exist distinct integers n₁ < ... < nₖ in (N, eN] with 1 = Σ 1/nᵢ. This is the hard direction.\n\n**f_lower_bound:** Consequence: f(k) ≥ (1-ε)·k/(e-1) for large k.\n\n**f_asymptotic:** Combining bounds: |f(k) - k/(e-1)| < ε·k/(e-1) for large k, i.e., f(k) = (1+o(1))·k/(e-1).",
     "mathContext": "Croot's proof starts with the harmonic sum over (N, eN], which slightly exceeds 1, then carefully removes terms to bring the sum down to exactly 1. The key difficulty is showing this removal process always succeeds while maintaining distinctness.",
@@ -94,7 +94,7 @@
       "startLine": 158,
       "endLine": 194
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorems",
     "content": "**erdos_284_summary:** Combines the upper and lower bounds into a single conjunction:\n1. f(k) ≤ (1+ε)k/(e-1) for large k\n2. f(k) ≥ (1-ε)k/(e-1) for large k\n\nProved by ⟨f_upper_bound, f_lower_bound⟩.\n\n**erdos_284:** The main theorem, equal to erdos_284_summary. States that Erdős Problem #284 is SOLVED.",
     "mathContext": "The conjunction of upper and lower bounds is equivalent to f(k)/k → 1/(e-1), which is the asymptotic statement f(k) = (1+o(1))k/(e-1).",

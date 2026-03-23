@@ -60,7 +60,7 @@
       "startLine": 65,
       "endLine": 72
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Four Fractions Suffice",
     "content": "**Four unit fractions always work.** The greedy algorithm (always take the largest unit fraction ≤ the remainder) guarantees that any proper fraction can be written as a sum of unit fractions.\n\nFor 4/n, at most 4 are needed. The conjecture asks: can we always do it with exactly 3?",
     "mathContext": "Axiom: ∀ n > 2, ∃ x < y < z < w with 4/n = 1/x + 1/y + 1/z + 1/w. This is trivial; the conjecture asks about 3.",
@@ -78,7 +78,7 @@
       "startLine": 74,
       "endLine": 81
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Density Result",
     "content": "**Almost all n satisfy the conjecture.** The set of n for which 4/n can be written as 3 unit fractions has natural density 1.\n\nThis means: as N → ∞, the fraction of integers n ≤ N satisfying the conjecture approaches 1. But 'almost all' isn't 'all'!",
     "mathContext": "∃ S with density 1 such that ∀ n ∈ S with n > 2, the representation exists. The exceptions have density 0 but may be infinite.",
@@ -96,7 +96,7 @@
       "startLine": 83,
       "endLine": 92
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Computational Verification",
     "content": "**Verified for n ≤ 10^14** (and beyond). Multiple researchers have computationally checked the conjecture for astronomically large values:\n\n- Swett verified up to 10^14\n- Others have pushed to 10^17\n\nYet computational evidence isn't proof. There could still be a counterexample beyond our reach.",
     "mathContext": "Axiom: ∀ n, 2 < n → n ≤ 10^14 → representation exists. This is trusted computational mathematics.",
@@ -114,7 +114,7 @@
       "startLine": 94,
       "endLine": 112
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Modular Arithmetic Cases",
     "content": "**Special cases by residue class.** Different constructions work for different residue classes of n mod 4:\n\n- n ≡ 0 (mod 4): 4/(4k) = 1/k, easy to extend\n- n ≡ 1 (mod 4): Special constructions exist\n- n ≡ 2, 3 (mod 4): More elaborate methods\n\nThe difficulty lies in covering ALL cases uniformly.",
     "mathContext": "Separate axioms for n = 4k and n = 4k+1 cases. The challenge is a unified proof.",
@@ -150,7 +150,7 @@
       "startLine": 128,
       "endLine": 136
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Schinzel Implies Erdős-Straus Eventually",
     "content": "**Schinzel's conjecture implies Erdős-Straus for large n.** If we knew Schinzel's conjecture for a = 4, we'd know Erdős-Straus holds eventually.\n\nBut Erdős-Straus claims it holds for ALL n > 2, not just large n. This is the gap.",
     "mathContext": "Proof: Apply Schinzel with a = 4. This gives ∀ᶠ n, which is weaker than ∀ n > 2.",
@@ -168,7 +168,7 @@
       "startLine": 140,
       "endLine": 144
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Example: n = 3",
     "content": "**Concrete example**: 4/3 = 1/1 + 1/4 + 1/12\n\nVerification: 1 + 0.25 + 0.0833... = 1.333... = 4/3 ✓\n\nOr: 12/12 + 3/12 + 1/12 = 16/12 = 4/3 ✓",
     "mathContext": "theorem example_n_3 : (4 : ℚ) / 3 = 1 / 1 + 1 / 4 + 1 / 12 := by norm_num",
@@ -186,7 +186,7 @@
       "startLine": 146,
       "endLine": 150
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Example: n = 5",
     "content": "**Concrete example**: 4/5 = 1/2 + 1/4 + 1/20\n\nVerification: 10/20 + 5/20 + 1/20 = 16/20 = 4/5 ✓\n\nNote: denominators 2, 4, 20 are distinct and increasing.",
     "mathContext": "theorem example_n_5 : (4 : ℚ) / 5 = 1 / 2 + 1 / 4 + 1 / 20 := by norm_num",
@@ -204,7 +204,7 @@
       "startLine": 152,
       "endLine": 159
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Example: n = 7",
     "content": "**Concrete example**: 4/7 = 1/2 + 1/15 + 1/210\n\nVerification: 105/210 + 14/210 + 1/210 = 120/210 = 4/7 ✓\n\nThis example shows that denominators can get quite large even for small n.",
     "mathContext": "theorem example_n_7 : (4 : ℚ) / 7 = 1 / 2 + 1 / 15 + 1 / 210 := by norm_num",
@@ -222,7 +222,7 @@
       "startLine": 161,
       "endLine": 175
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Open Status",
     "content": "**The conjecture remains OPEN.** We summarize what's known:\n\n| Statement | Status |\n|-----------|--------|\n| 4/n = 3 unit fractions ∀ n > 2 | OPEN |\n| Verified for n ≤ 10^17 | COMPUTED |\n| Holds for density 1 | PROVED |\n| 4 unit fractions suffice | TRIVIAL |",
     "mathContext": "axiom erdos_straus_open : ErdosStrausConjecture ∨ ¬ErdosStrausConjecture. We don't know which.",
@@ -240,7 +240,7 @@
       "startLine": 179,
       "endLine": 184
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**Summary**: We combine our verified examples with the open status.\n\nThe concrete examples (n = 3, 5, 7) are fully proved by Lean's norm_num tactic. The general conjecture is axiomatized as either true or false - we don't know which.",
     "mathContext": "summary_erdos_242 proves the conjunction of the three examples and the classical statement (P ∨ ¬P).",

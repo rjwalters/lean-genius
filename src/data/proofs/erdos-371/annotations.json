@@ -51,7 +51,7 @@
       "startLine": 46,
       "endLine": 65
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Basic Properties of P(n)",
     "content": "Five foundational theorems about $P(n)$: (1) `P_dvd`: $P(n) \\mid n$ for $n > 1$; (2) `P_prime`: $P(n)$ is prime for $n > 1$; (3) `P_is_max`: $P(n)$ is the largest prime dividing $n$; (4) `P_prime_eq`: $P(p) = p$ for prime $p$; (5) `P_le`: $P(n) \\le n$. All carry `sorry` — these are routine but require careful manipulation of `Finset.max'` and `primeFactors`.",
     "mathContext": "For $n > 1$: $P(n) \\mid n$, $P(n)$ is prime, $p \\mid n \\Rightarrow p \\le P(n)$, $P(p) = p$ for prime $p$, and $P(n) \\le n$.",
@@ -186,7 +186,7 @@
       "startLine": 100,
       "endLine": 105
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Partition Property",
     "content": "Proves the dichotomy: every $n \\ge 2$ is in exactly one of `SetPIncreasing` or `SetPDecreasing`. The proof is a simple case split on whether $P(n) < P(n+1)$. This is one of the few non-sorry results in the file — a clean `by_cases` proof.",
     "mathContext": "$\\forall n \\ge 2,\\; n \\in S^+ \\lor n \\in S^-$. Since $S^+ \\cup S^- = \\mathbb{N}_{\\ge 2}$ and $S^+ \\cap S^- = \\emptyset$, if $d(S^+) = \\alpha$ then $d(S^-) = 1 - \\alpha$.",
@@ -208,7 +208,7 @@
       "startLine": 109,
       "endLine": 118
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdos-Pomerance (1978)",
     "content": "Two axioms record the foundational result: both $S^+$ and $S^-$ have positive upper density. This was the first major progress — showing that neither set is negligible. Erdős and Pomerance used sieve methods to prove $\\overline{d}(S^+) > 0$ and $\\overline{d}(S^-) > 0$, but could not determine the exact density.",
     "mathContext": "Erdős-Pomerance (1978): $\\overline{d}(S^+) > 0$ and $\\overline{d}(S^-) > 0$. Their method gave explicit but small positive bounds, far from the conjectured $1/2$.",
@@ -231,7 +231,7 @@
       "startLine": 122,
       "endLine": 133
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Lu-Wang Lower Bound (2025)",
     "content": "Axiomatizes the best unconditional lower bound: $\\underline{d}(S^+) \\ge 0.2017$ and $\\underline{d}(S^-) \\ge 0.2017$. This means the density of $S^+$ lies in $[0.2017, 0.7983]$. The gap to $1/2$ is significant — closing it unconditionally remains the main open challenge.",
     "mathContext": "Lü-Wang (2025): $\\underline{d}(\\{n : P(n) < P(n+1)\\}) \\ge 0.2017$. Combined with the complement: $0.2017 \\le d(S^+) \\le 0.7983$ unconditionally.",
@@ -253,7 +253,7 @@
       "startLine": 137,
       "endLine": 147
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Teravanen (2018): Logarithmic Density 1/2",
     "content": "Axiomatizes Teräväinen's breakthrough: the logarithmic density of $S^+$ is exactly $1/2$. This was the first result achieving the conjectured value, albeit in a weaker density notion. The complement `teravanen_complement` (sorry) would follow from log-density additivity. Teräväinen's proof used a novel approach to binary correlations of multiplicative functions.",
     "mathContext": "$\\delta(S^+) = \\lim_{x \\to \\infty} \\frac{\\sum_{n \\in S^+, n < x} 1/n}{\\log x} = \\frac{1}{2}$. Teräväinen's method: analyze $\\sum_{n < x} f(n) g(n+1)$ for multiplicative $f, g$ related to $P(n)$.",
@@ -276,7 +276,7 @@
       "startLine": 149,
       "endLine": 162
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Tao-Teravanen (2019): Almost All Scales",
     "content": "Axiomatizes the Tao-Teräväinen result: the natural density is $1/2$ at 'almost all scales.' This means that the exceptional set of $x$ where $\\pi_{S^+}(x)/x$ deviates from $1/2$ has zero logarithmic measure. Formally uses `DensityAtAlmostAllScales`, a custom definition requiring the 'bad' set $E$ to have vanishing proportion.",
     "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists E \\subseteq \\mathbb{R}$ with $|E \\cap [1,T]|/T \\to 0$ such that $\\forall x \\notin E,\\; |\\pi_{S^+}(x)/x - 1/2| < \\varepsilon$. This is stronger than logarithmic density but weaker than natural density.",
@@ -390,7 +390,7 @@
       "startLine": 249,
       "endLine": 274
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Small Examples and Set Membership",
     "content": "Computes $P(2)=2$, $P(3)=3$, $P(4)=2$, $P(5)=5$, $P(6)=3$ (all sorry). Then proves set membership: $2 \\in S^+$ (since $P(2)=2 < P(3)=3$), $4 \\in S^+$ (since $P(4)=2 < P(5)=5$), $5 \\in S^-$ (since $P(5)=5 > P(6)=3$). These concrete examples ground the abstract definitions.",
     "mathContext": "$P(2)=2, P(3)=3, P(4)=2, P(5)=5, P(6)=3$. So $2,4 \\in S^+$ and $5 \\in S^-$. The OEIS sequence A070089 begins $2, 4, 6, 8, 10, 12, \\ldots$",

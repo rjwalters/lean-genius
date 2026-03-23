@@ -42,7 +42,7 @@
       "startLine": 59,
       "endLine": 62
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Small Primes Always Divide",
     "content": "**small_primes_divide: Every prime p ≤ k divides ∏(n+i) for i ∈ [1,k]**\n\nAmong any k consecutive integers, there is always a multiple of p (when p ≤ k). This is because the integers n+1, n+2, ..., n+k cover all residues modulo p at least once when k ≥ p.\n\n**This is the trivial baseline:** it tells us q(n, k) > k always. The interesting question is: how much bigger can q be?",
     "mathContext": "This follows from the pigeonhole principle: among k consecutive integers, at least ⌊k/p⌋ ≥ 1 are divisible by p when p ≤ k.",
@@ -78,7 +78,7 @@
       "startLine": 78,
       "endLine": 90
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Properties of q(n, k)",
     "content": "**Four axioms characterizing q(n, k):**\n\n1. **q_prime:** q(n,k) is always a prime number.\n\n2. **q_not_dvd:** q(n,k) does not divide ∏(n+i). This is what makes it the 'first failure.'\n\n3. **q_minimal:** Every prime p < q(n,k) divides the product. So q is truly the smallest non-divisor.\n\n4. **q_lower_trivial:** q(n,k) > k. This follows from small_primes_divide: all primes ≤ k divide the product, so the first non-divisor must be > k.\n\n**Together:** These axioms say q(n,k) is the unique smallest prime non-divisor of the consecutive product.",
     "mathContext": "The minimality property makes q(n,k) a well-defined function. The trivial lower bound q > k is the starting point for the problem.",
@@ -114,7 +114,7 @@
       "startLine": 119,
       "endLine": 128
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Equivalent q-Formulation",
     "content": "**Two equivalent ways to state the conjecture:**\n\n1. **All primes below threshold divide:** All primes p ≤ (2+ε)log(n) divide the consecutive product.\n\n2. **First non-divisor is large:** q(n, ⌊log n⌋) ≥ (2+ε)log(n).\n\nThese are equivalent because q is the smallest non-dividing prime: saying q ≥ X is the same as saying all primes < X divide the product.\n\n**conjecture_equivalence axiom** formalizes this equivalence.",
     "mathContext": "The q-formulation is often preferred because it reduces the conjecture to a single inequality about a well-defined function.",
@@ -131,7 +131,7 @@
       "startLine": 140,
       "endLine": 154
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Known Construction: (2+o(1)) Barrier",
     "content": "**Achieving q(n, log n) ≥ (2+o(1))log(n):**\n\n**Construction:** Take n = ∏{p prime : log(n) ≤ p ≤ (2+o(1))log(n)}.\n\nSuch n is a product of primes in a specific range. The consecutive integers n+1, ..., n+⌊log n⌋ then have the property that all primes up to about (2+o(1))log(n) divide their product.\n\n**Why it works:** The Chinese Remainder Theorem ensures that among any k consecutive integers, there is a multiple of every prime p ≤ k. By choosing n carefully, we can extend this to primes up to about 2k.\n\n**The gap:** (2+o(1)) means for any ε > 0, we eventually achieve (2-ε), but we cannot guarantee a fixed positive margin above 2.",
     "mathContext": "The o(1) term vanishes as n → ∞ but cannot be replaced by a fixed positive constant with current techniques. This is the essence of the open problem.",

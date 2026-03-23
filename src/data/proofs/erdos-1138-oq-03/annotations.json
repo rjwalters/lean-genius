@@ -2,73 +2,126 @@
   {
     "id": "ann-e1138oq03-01-bddabove",
     "proofId": "erdos-1138-oq-03",
-    "range": { "startLine": 45, "endLine": 53 },
-    "type": "theorem",
+    "range": {
+      "startLine": 45,
+      "endLine": 53
+    },
+    "type": "technique",
     "title": "Prime Gap BddAbove Foundation",
     "content": "primeGap_le_x proves every gap d = q-p satisfies d <= x (since d <= q <= x). primeGapSet_bddAbove wraps this as BddAbove, enabling sSup.",
     "mathContext": "$d = q - p \\leq q \\leq x$, so $\\{d\\} \\subseteq [0, x]$ and $\\text{BddAbove}(\\text{primeGapSet}(x))$.",
     "significance": "key",
-    "relatedConcepts": ["BddAbove", "csSup_le", "Nat.sub_le"],
-    "prerequisites": ["Nat.sub_le"]
+    "relatedConcepts": [
+      "BddAbove",
+      "csSup_le",
+      "Nat.sub_le"
+    ],
+    "prerequisites": [
+      "Nat.sub_le"
+    ]
   },
   {
     "id": "ann-e1138oq03-02-maxgap",
     "proofId": "erdos-1138-oq-03",
-    "range": { "startLine": 56, "endLine": 60 },
-    "type": "theorem",
+    "range": {
+      "startLine": 56,
+      "endLine": 60
+    },
+    "type": "technique",
     "title": "Maximal Prime Gap Bounded by x",
     "content": "maxPrimeGap_le proves sSup(primeGapSet x) <= x. Case split: if nonempty, use csSup_le with the bound from primeGap_le_x; if empty, csSup_empty gives 0.",
     "mathContext": "$G(x) = \\sup\\{d \\mid d \\text{ is a prime gap below } x\\} \\leq x$.",
     "significance": "key",
-    "relatedConcepts": ["csSup_le", "csSup_empty", "Set.not_nonempty_iff_eq_empty"],
-    "prerequisites": ["primeGap_le_x", "primeGapSet_bddAbove"]
+    "relatedConcepts": [
+      "csSup_le",
+      "csSup_empty",
+      "Set.not_nonempty_iff_eq_empty"
+    ],
+    "prerequisites": [
+      "primeGap_le_x",
+      "primeGapSet_bddAbove"
+    ]
   },
   {
     "id": "ann-e1138oq03-03-bertrand",
     "proofId": "erdos-1138-oq-03",
-    "range": { "startLine": 92, "endLine": 98 },
-    "type": "theorem",
+    "range": {
+      "startLine": 92,
+      "endLine": 98
+    },
+    "type": "technique",
     "title": "Prime Gap <= Previous Prime (via Bertrand)",
     "content": "prime_gap_le_prev_prime proves q-p <= p for consecutive primes p < q. Uses Nat.bertrand to get a prime r with p < r <= 2p. Since q is the next prime after p, the consecutiveness condition gives q <= r, so q - p <= r - p <= 2p - p = p.",
     "mathContext": "Bertrand: $\\exists r$ prime, $p < r \\leq 2p$. Consecutiveness: $q \\leq r$. So $q - p \\leq 2p - p = p$.",
     "significance": "key",
-    "relatedConcepts": ["Nat.bertrand", "Nat.Prime"],
-    "prerequisites": ["Nat.bertrand"]
+    "relatedConcepts": [
+      "Nat.bertrand",
+      "Nat.Prime"
+    ],
+    "prerequisites": [
+      "Nat.bertrand"
+    ]
   },
   {
     "id": "ann-e1138oq03-04-half",
     "proofId": "erdos-1138-oq-03",
-    "range": { "startLine": 103, "endLine": 112 },
-    "type": "theorem",
+    "range": {
+      "startLine": 103,
+      "endLine": 112
+    },
+    "type": "technique",
     "title": "Maximal Gap <= x/2 (from Bertrand)",
     "content": "maxPrimeGap_le_half proves G(x) <= x/2 for x >= 25. From prime_gap_le_prev_prime: d = q-p <= p, so 2d <= d+p = q <= x, giving d <= x/2.",
     "mathContext": "$d \\leq p$ and $d + p = q \\leq x$, so $2d \\leq x$, i.e., $d \\leq x/2$.",
-    "significance": "standard",
-    "relatedConcepts": ["prime_gap_le_prev_prime", "csSup_le"],
-    "prerequisites": ["prime_gap_le_prev_prime"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "prime_gap_le_prev_prime",
+      "csSup_le"
+    ],
+    "prerequisites": [
+      "prime_gap_le_prev_prime"
+    ]
   },
   {
     "id": "ann-e1138oq03-05-cramer",
     "proofId": "erdos-1138-oq-03",
-    "range": { "startLine": 141, "endLine": 196 },
-    "type": "theorem",
+    "range": {
+      "startLine": 141,
+      "endLine": 196
+    },
+    "type": "technique",
     "title": "Cramer Sublinearity: C*(log x)^2 = o(x)",
     "content": "cramer_implies_gap_sublinear proves: for all epsilon>0 and C>0, C*(log x)^2 <= epsilon*x for x >= ceil((16C/epsilon)^2)+1. The proof chains: (1) Real.log_le_rpow_div with delta=1/4 gives log x <= 4*x^(1/4), (2) squaring with rpow_mul gives (log x)^2 <= 16*x^(1/2), (3) comparing 16C*x^(1/2) <= epsilon*x when 16C/epsilon <= x^(1/2).",
     "mathContext": "$\\log x \\leq 4x^{1/4} \\Rightarrow (\\log x)^2 \\leq 16x^{1/2}$. Then $16C \\cdot x^{1/2} \\leq \\varepsilon \\cdot x$ when $x \\geq (16C/\\varepsilon)^2$.",
     "significance": "key",
-    "relatedConcepts": ["Real.log_le_rpow_div", "Real.rpow_mul", "Real.rpow_add"],
-    "prerequisites": ["Real.log_le_rpow_div", "Nat.ceil"]
+    "relatedConcepts": [
+      "Real.log_le_rpow_div",
+      "Real.rpow_mul",
+      "Real.rpow_add"
+    ],
+    "prerequisites": [
+      "Real.log_le_rpow_div",
+      "Nat.ceil"
+    ]
   },
   {
     "id": "ann-e1138oq03-06-mono",
     "proofId": "erdos-1138-oq-03",
-    "range": { "startLine": 119, "endLine": 130 },
-    "type": "theorem",
+    "range": {
+      "startLine": 119,
+      "endLine": 130
+    },
+    "type": "technique",
     "title": "Monotonicity of Prime Gap Sets and Maximal Gaps",
     "content": "primeGapSet_mono: if x <= y then primeGapSet x is a subset of primeGapSet y (just weaken the q <= x bound). maxPrimeGap_mono: follows from csSup_le_csSup with the subset and BddAbove.",
     "mathContext": "$x \\leq y \\Rightarrow \\text{primeGapSet}(x) \\subseteq \\text{primeGapSet}(y) \\Rightarrow G(x) \\leq G(y)$.",
-    "significance": "standard",
-    "relatedConcepts": ["csSup_le_csSup", "primeGapSet_bddAbove"],
-    "prerequisites": ["primeGapSet_bddAbove"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "csSup_le_csSup",
+      "primeGapSet_bddAbove"
+    ],
+    "prerequisites": [
+      "primeGapSet_bddAbove"
+    ]
   }
 ]

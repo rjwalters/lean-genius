@@ -118,7 +118,7 @@
       "startLine": 46,
       "endLine": 48
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Conjecture (Axiomatized)",
     "content": "The EGRS conjecture: CentralBinomPairs is infinite. Stated as an axiom reflecting its open status. Erdős, Graham, Ruzsa, and Straus (1975) expressed 'no doubt' the answer is yes.",
     "significance": "key",
@@ -140,7 +140,7 @@
       "startLine": 52,
       "endLine": 57
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Known Pairs (87,88) and (607,608)",
     "content": "The first known consecutive pairs where central binomials share prime divisors. Axiomatized since verification requires computing $\\binom{174}{87}$ and $\\binom{176}{88}$ — numbers with 52 digits — and checking their prime factorizations agree.",
     "significance": "key",
@@ -162,7 +162,7 @@
       "startLine": 59,
       "endLine": 64
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Triple 10003–10005",
     "content": "Three consecutive values $n = 10003, 10004, 10005$ where all pairwise central binomials share prime divisors. This yields three elements of CentralBinomPairs and shows non-consecutive pairs $(10003, 10005)$ with gap 2 exist.",
     "significance": "key",
@@ -184,7 +184,7 @@
       "startLine": 67,
       "endLine": 68
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Non-Consecutive Pair Existence",
     "content": "Proved theorem: there exists a pair $(n,m) \\in \\text{CentralBinomPairs}$ with $m \\ne n+1$. Witnessed by $(10003, 10005)$ from the triple, with gap 2.",
     "significance": "supporting",
@@ -206,7 +206,7 @@
       "startLine": 72,
       "endLine": 75
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Kummer's Divisibility Criterion",
     "content": "A prime $p \\le 2n$ divides $\\binom{2n}{n}$ if and only if some base-$p$ digit of $n$ is at least $\\lceil p/2 \\rceil$. This is the structural foundation for understanding which primes appear in the factorization.",
     "significance": "key",
@@ -230,7 +230,7 @@
       "startLine": 77,
       "endLine": 78
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Evenness of Central Binomials",
     "content": "For $n \\ge 1$, $2 \\mid \\binom{2n}{n}$. In binary, $n$ always has a digit $\\ge 1 = \\lceil 2/2 \\rceil$, so Kummer's criterion is satisfied for $p=2$.",
     "significance": "supporting",
@@ -252,7 +252,7 @@
       "startLine": 81,
       "endLine": 83
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Large Prime Exclusion",
     "content": "A prime $p > 2n$ cannot divide $\\binom{2n}{n}$, since $p$ does not appear in the factorization of $(2n)!$. This bounds the prime divisor set to $\\{p : p \\le 2n\\}$.",
     "significance": "key",
@@ -274,7 +274,7 @@
       "startLine": 85,
       "endLine": 87
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Middle Primes Always Divide",
     "content": "Every prime $p$ with $n < p \\le 2n$ divides $\\binom{2n}{n}$. In base $p$, $n < p$ means $n$ is a single digit $\\ge 1 \\ge \\lceil p/2 \\rceil$ only when $p = 2$, but the general result follows from Legendre: $\\nu_p\\binom{2n}{n} = 1$ for such primes.",
     "significance": "key",
@@ -296,7 +296,7 @@
       "startLine": 91,
       "endLine": 95
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Spacing Conjecture",
     "content": "For every $k \\ge 1$, infinitely many $n$ satisfy $\\mathrm{rad}\\binom{2n}{n} = \\mathrm{rad}\\binom{2(n+k)}{n+k}$. This generalization of the main conjecture (which is the $\\exists k$ version) asks for every fixed gap to occur infinitely often.",
     "significance": "key",
@@ -319,7 +319,7 @@
       "startLine": 98,
       "endLine": 106
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Spacing-1 Implies Main Conjecture",
     "content": "Proved theorem: if infinitely many consecutive matches exist (spacing $k=1$), then CentralBinomPairs is infinite. The proof maps $n \\mapsto (n, n+1)$ injectively into CentralBinomPairs.",
     "significance": "key",

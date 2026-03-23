@@ -79,7 +79,7 @@
       "startLine": 134,
       "endLine": 165
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Straus Theorems",
     "content": "**erdos_straus_main:**\nf(π(n)+1, n) = 2π(√n) + o_A(√n/(log n)^A) for any A > 0.\nThe error term is smaller than any polynomial power of log n — an extremely precise result.\n\n**difference_is_sublinear:**\n|2π(√n) - f(π(n)+1, n)| / √n → 0, confirming asymptotic equivalence.\n\n**erdos_straus_dense:**\nFor constant 0 < c < 1: f(cn, n) = log log n + (c₁ + o(1))√(2 log log n)\nwhere c₁ relates to c via the normal distribution. For \"dense\" sets (cn elements), f grows much more slowly — doubly logarithmic rather than proportional to π(√n).",
     "mathContext": "The notation o_A means the error can be made smaller than any polynomial power of log n. The appearance of log log n in the dense case reflects the distribution of smooth numbers, and the normal distribution connection comes from probabilistic number theory.",
@@ -98,7 +98,7 @@
       "startLine": 173,
       "endLine": 181
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Prime Structure Lemma",
     "content": "**prime_structure:**\n\nEvery m ≤ n with m ≥ 1 satisfies:\n- Either all prime factors of m are ≤ √n, OR\n- There exists a unique prime q > √n dividing m\n\n**Why?** If m had two primes > √n, their product would exceed n.\n\nThis dichotomy explains why 2π(√n) appears in the formula: π(√n) primes for small prime factors, plus π(√n) additional to handle numbers with one large prime factor.",
     "mathContext": "This structural lemma is fundamental. It means every integer ≤ n either consists entirely of small primes, or has exactly one large prime factor multiplied by small primes. The factor 2 in 2π(√n) reflects this bipartite structure.",
@@ -135,7 +135,7 @@
       "startLine": 213,
       "endLine": 228
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős Problem #983: SOLVED",
     "content": "**erdos_983:**\n\nCombines the two main results:\n1. ¬ErdosQuestion983 — The answer is NO\n2. |2π(√n) - f(π(n)+1, n)| / √n → 0 — The difference is sublinear\n\n```lean\ntheorem erdos_983 :\n    ¬ErdosQuestion983 ∧\n    (∀ ε > 0, ...) :=\n  ⟨erdos_question_answer, difference_is_sublinear⟩\n```\n\n**Status: SOLVED** by Erdős and Straus (1970) in \"Some applications of graph theory to number theory\", Proc. Second Chapel Hill Conf. Combinatorial Mathematics, pp. 136-145.",
     "mathContext": "This theorem packages the complete solution. The proof is a simple conjunction of the two axiomatized results, reflecting that the deep mathematics is in the Erdős-Straus paper.",

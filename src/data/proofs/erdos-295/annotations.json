@@ -59,7 +59,7 @@
       "startLine": 45,
       "endLine": 62
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Existence of Egyptian Representations",
     "content": "This axiom asserts that for any N ≥ 1, we can write 1 as a sum of distinct unit fractions 1/n₁ + 1/n₂ + ... + 1/nₖ where all denominators are at least N.\n\n**Examples**:\n- N = 2: 1 = 1/2 + 1/3 + 1/6\n- N = 3: 1 = 1/3 + 1/4 + 1/5 + 1/6 + 1/20",
     "mathContext": "The existence follows from the **greedy algorithm**: repeatedly subtract the largest possible unit fraction 1/⌈1/r⌉ from the remaining sum r. This always terminates because the denominator increases at each step.",
@@ -95,7 +95,7 @@
       "startLine": 72,
       "endLine": 80
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "k(N) Achieves a Representation",
     "content": "This axiom states that k(N) is not just a theoretical minimum—there actually exists a sequence of k(N) distinct integers n₁ < n₂ < ... < nₖ, all at least N, whose reciprocals sum to exactly 1.",
     "significance": "supporting",
@@ -111,7 +111,7 @@
       "startLine": 82,
       "endLine": 86
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Minimality of k(N)",
     "content": "This axiom captures that k(N) is truly the *minimum*: any other representation of 1 using unit fractions with denominators ≥ N must use at least k(N) terms.",
     "significance": "supporting",
@@ -127,7 +127,7 @@
       "startLine": 88,
       "endLine": 106
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős-Straus Bounds (1971)",
     "content": "The **Erdős-Straus theorem** establishes that k(N) grows like (e-1)N, with an error term bounded above by O(N/log N) and bounded below by a constant:\n\n**-c < k(N) - (e-1)N < O · N/log N**\n\nThis means k(N) is squeezed between (e-1)N - c and (e-1)N + O(N/log N).",
     "mathContext": "The appearance of **e - 1 ≈ 1.718** comes from harmonic series asymptotics. The sum ∑_{n=N}^{M} 1/n ≈ ln(M/N). To sum to 1, we need ln(M/N) ≈ 1, so M ≈ eN, meaning we use about (e-1)N terms from the range [N, eN].",
@@ -164,7 +164,7 @@
       "startLine": 158,
       "endLine": 169
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_295_summary** combines the key known results: (1) the Erdős-Straus bounds showing -c < k(N) - (e-1)N < O(N/log N), and (2) the fact that e-1 > 0. The main conjecture (does the difference tend to ∞?) remains OPEN.",
     "significance": "key",
@@ -180,7 +180,7 @@
       "startLine": 135,
       "endLine": 139
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Example: N = 2",
     "content": "We verify the classic Egyptian fraction identity **1 = 1/2 + 1/3 + 1/6**.\n\nThis shows that k(2) ≤ 3: we can represent 1 using 3 unit fractions with all denominators ≥ 2.",
     "mathContext": "The proof uses `norm_num`, which handles rational arithmetic computations automatically. The computation: 1/2 + 1/3 + 1/6 = 3/6 + 2/6 + 1/6 = 6/6 = 1.",
@@ -198,7 +198,7 @@
       "startLine": 141,
       "endLine": 145
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Alternative Example: N = 2",
     "content": "Another representation: **1 = 1/2 + 1/4 + 1/5 + 1/20**.\n\nThis uses 4 terms instead of 3, showing that Egyptian fraction representations are not unique. The k(N) function finds the *minimum* number of terms.",
     "significance": "supporting",
@@ -214,7 +214,7 @@
       "startLine": 147,
       "endLine": 151
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Example: N = 3",
     "content": "For larger N, we need more terms: **1 = 1/3 + 1/4 + 1/5 + 1/6 + 1/20**.\n\nWith denominators restricted to ≥ 3, we can't use 1/2, so more smaller fractions are needed to reach 1.",
     "significance": "supporting",
@@ -230,7 +230,7 @@
       "startLine": 153,
       "endLine": 162
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "e - 1 is Positive",
     "content": "We prove **e - 1 > 0**, a basic fact ensuring the coefficient (e-1) in the asymptotic k(N) ≈ (e-1)N is positive.\n\nSince e ≈ 2.718 > 1, this is obvious mathematically. In Lean, we derive it from `Real.one_lt_exp_iff`: e^x > 1 when x > 0.",
     "mathContext": "This uses the monotonicity of the exponential function. Since exp(0) = 1 and exp is strictly increasing, exp(1) > 1, so e - 1 > 0.",

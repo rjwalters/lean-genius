@@ -96,7 +96,7 @@
       "startLine": 91,
       "endLine": 107
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The 2025 Disproof",
     "content": "**The breakthrough result** by van Doorn and Everts (arXiv:2511.04585, 2025):\n\n`vanDoornEverts_universal`: Every positive integer has a 6-bounded representation.\n\n`erdosConjecture_false`: Therefore Erdős's conjecture is false.\n\nThis is stated as an axiom because the proof involves intricate combinatorial constructions not yet formalized in Mathlib. The key insight is that 3-smooth numbers are dense enough that clever combinations can hit every integer while keeping the ratio bounded.",
     "mathContext": "The paper title 'Smooth sums with small spacings' emphasizes the ratio constraint. The proof likely uses greedy algorithms and careful case analysis.",
@@ -114,7 +114,7 @@
       "startLine": 116,
       "endLine": 134
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Lower Bounds on the Optimal Constant",
     "content": "**What's the tightest ratio that works?** Let C* be the smallest constant such that all large integers have C*-bounded representations.\n\n**Known bounds**:\n- **Erdős-Lewin (1996)**: C* > 2. Infinitely many integers fail with ratio bound 2.\n- **van Doorn-Everts (2025)**: C* ≥ 3. Infinitely many integers fail with ratio bound 3.\n- **Upper bound**: C* ≤ 6 (since C = 6 works universally).\n\nSo we know 3 < C* ≤ 6, with conjectures suggesting C* ≈ 3.604.",
     "mathContext": "The notation ∃ᶠ n in atTop means 'for infinitely many n' or equivalently 'frequently as n → ∞'. This captures that exceptions exist at arbitrarily large scales.",
@@ -132,7 +132,7 @@
       "startLine": 144,
       "endLine": 162
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The 'Silly Conjecture'",
     "content": "**A related, simpler problem** that Erdős called his 'silly conjecture': Every positive integer can be written as a sum of distinct 3-smooth numbers where NO summand divides any other.\n\nErdős thought this was 'nice and difficult' but Jansen and others quickly found a simple inductive proof:\n- If n is even, apply induction to n/2 and double all summands\n- If n is odd, let 3^k be the largest power of 3 ≤ n, subtract it, and apply induction to the (even) remainder\n\nThe `nonDivisible` predicate captures the no-divisibility constraint.",
     "mathContext": "Non-divisibility is weaker than the ratio constraint—if bₜ ≤ C·b₁ with C < 2, then automatically no bᵢ divides another (since bᵢ₊₁ > bᵢ but bᵢ₊₁ < 2bᵢ).",
@@ -150,7 +150,7 @@
       "startLine": 170,
       "endLine": 189
     },
-    "type": "example",
+    "type": "context",
     "title": "Verified Examples",
     "content": "**Concrete computations** verified by Lean:\n\n- 1 = 2⁰·3⁰ is 3-smooth\n- 6 = 2¹·3¹ is 3-smooth  \n- 12 = 2²·3¹ is 3-smooth\n\n**Sum examples**:\n- 7 = 1 + 2 + 4 = smoothNum(0,0) + smoothNum(1,0) + smoothNum(2,0)\n- 5 = 2 + 3 = smoothNum(1,0) + smoothNum(0,1)\n\nThese use `norm_num` for arithmetic verification, demonstrating that our definitions correctly capture the intended mathematics.",
     "mathContext": "The examples show that even small integers have multiple 3-smooth representations, hinting at why universality might hold for larger ratio bounds.",

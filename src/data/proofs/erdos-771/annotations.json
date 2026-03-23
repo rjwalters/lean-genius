@@ -73,7 +73,7 @@
       "startLine": 87,
       "endLine": 101
     },
-    "type": "conjecture",
+    "type": "concept",
     "title": "The Erdos-Graham Conjecture: f(n) ~ (1/2)n/log n",
     "content": "expectedValue n = (1/2)*n/log(n) for n > 1, else 0. ErdosGrahamConjecture: for all epsilon > 0, exists N such that |f(n)/(n/log n) - 1/2| < epsilon for n >= N. ErdosGrahamConjecture': alternative formulation with explicit error function g(n) tending to 0. Both express f(n) = (1/2 + o(1))*n/log n.",
     "mathContext": "`ErdosGrahamConjecture := \\forall \\varepsilon > 0, \\exists N, \\forall n \\geq N, |f(n)/(n/\\log n) - 1/2| < \\varepsilon$. Alternative: $f(n) = (1/2 + g(n)) \\cdot n/\\log n$ where $g(n) \\to 0$. The factor $1/2$ arises from the prime number theorem: the smallest prime not dividing $m$ is approximately $2\\log n$.",
@@ -95,7 +95,7 @@
       "startLine": 107,
       "endLine": 131
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdos-Graham Lower Bound via Prime Multiples",
     "content": "erdos_graham_lower_bound (axiom): f(n) >= (1/2 - epsilon)*n/log n for large n. Construction: for any m, let p be the smallest prime not dividing m. Then S = multiples of p in {1,...,n} avoids m (every subset sum is divisible by p, but m is not). |S| = floor(n/p). By PNT, the smallest prime not dividing m is at most (2+o(1))log m <= (2+o(1))log n, giving |S| >= (1/2-epsilon)n/log n. primeMutliples p n: multiples of p in Icc_n(n). prime_multiples_size (sorry): card = n/p. prime_multiples_avoid (sorry): p prime, p not dividing m implies AvoidSum. smallest_prime_bound (axiom): Bertrand's postulate.",
     "mathContext": "`erdos_graham_lower_bound : \\forall \\varepsilon > 0, \\exists N, \\forall n \\geq N, f(n) \\geq (1/2 - \\varepsilon) \\cdot n/\\log n$. Construction: $S = \\{k \\in [n] : p \\mid k\\}$ where $p$ is smallest prime $\\nmid m$. Then $|S| = \\lfloor n/p \\rfloor$ and every $\\sum_{a \\in A} a \\equiv 0 \\pmod{p}$, but $m \\not\\equiv 0 \\pmod{p}$. By PNT: $p \\leq (2+o(1))\\log n$, so $|S| \\geq n/((2+o(1))\\log n) = (1/2+o(1))n/\\log n$.",
@@ -118,7 +118,7 @@
       "startLine": 137,
       "endLine": 154
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Alon-Freiman Upper Bound via LCM Argument",
     "content": "alon_freiman_upper_bound (axiom): f(n) <= (1/2 + epsilon)*n/log n for large n. Key idea: choose m = lcm{1,...,s} where s is maximal with m <= n^2/(20(log n)^2). Any large set S must have some nonempty subset summing to a multiple of lcm{1,...,s}, which equals m itself. lcm_up_to s = (Icc_n s).lcm id. lcm_estimate (axiom): lcm{1,...,s} <= exp(2s) by PNT. large_set_achieves_sum (axiom): if |S| > L, some subset sums to some m <= L.",
     "mathContext": "`alon_freiman_upper_bound : \\forall \\varepsilon > 0, \\exists N, \\forall n \\geq N, f(n) \\leq (1/2 + \\varepsilon) \\cdot n/\\log n$. Choose $m = \\text{lcm}(1, \\ldots, s)$ with $s$ maximal such that $m \\leq n^2/(20(\\log n)^2)$. By PNT: $\\text{lcm}(1,\\ldots,s) \\approx e^s$, so $s \\approx 2\\log n$. The divisibility structure of $m$ forces large sets to hit $m$. `lcm_estimate : \\text{lcm}(1,\\ldots,s) \\leq e^{2s}$.",
@@ -140,7 +140,7 @@
       "startLine": 160,
       "endLine": 174
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Complete Answer: Conjecture is TRUE",
     "content": "erdos_graham_conjecture_true (partial proof + sorry): combines lower and upper bounds. Takes epsilon > 0, obtains N1 from lower bound with epsilon/2 and N2 from upper bound with epsilon/2, uses max(N1,N2). The final sorry bridges the absolute value inequality from the two-sided bounds. f_asymptotic: alias for erdos_graham_conjecture_true.",
     "mathContext": "`erdos_graham_conjecture_true : ErdosGrahamConjecture`. Proof sketch: for $\\varepsilon > 0$, get $N_1$ with $f(n) \\geq (1/2 - \\varepsilon/2)n/\\log n$ and $N_2$ with $f(n) \\leq (1/2 + \\varepsilon/2)n/\\log n$ for $n \\geq \\max(N_1, N_2)$. Then $|f(n)/(n/\\log n) - 1/2| < \\varepsilon$.",
@@ -161,7 +161,7 @@
       "startLine": 180,
       "endLine": 189
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Explicit Bounds and Leading Constant",
     "content": "explicitBounds: for n >= 10, 0.4*n/log(n) <= f(n) <= 0.6*n/log(n). This gives concrete numerical bounds for moderate n. leading_constant (sorry): the ratio f(n)/(n/log n) tends to 1/2 via Filter.Tendsto to nhds(1/2). This is the precise statement that 1/2 is the exact leading constant.",
     "mathContext": "`explicitBounds(n) := n \\geq 10 \\Rightarrow 0.4 \\cdot n/\\log n \\leq f(n) \\leq 0.6 \\cdot n/\\log n$. `leading_constant : f(n)/(n/\\log n) \\to 1/2$ via `Filter.Tendsto ... atTop (nhds (1/2))`.",
@@ -183,7 +183,7 @@
       "startLine": 195,
       "endLine": 208
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Special Cases and Small Prime Construction",
     "content": "m_eq_one_case (sorry): maxAvoidingSize(n,1) = n-1. For m=1, we simply exclude 1 from S; any other subset avoids the sum 1. m_eq_two_case (sorry): maxAvoidingSize(n,2) >= n-2. For m=2, exclude both 1 and 2 (or exclude 2 alone if 1+1 is not a valid sum). smallPrimeConstruction m n: constructs an m-avoiding set using the smallest prime factor of m+1, which does not divide m.",
     "mathContext": "`m_eq_one_case : \\text{maxAvoidingSize}(n, 1) = n - 1$, since only the singleton $\\{1\\}$ sums to 1. `m_eq_two_case : \\text{maxAvoidingSize}(n, 2) \\geq n - 2$. `smallPrimeConstruction(m, n)`: uses $p = \\text{minFac}(m+1)$, which is prime and $p \\nmid m$ since $p \\mid (m+1)$.",
@@ -225,7 +225,7 @@
       "startLine": 246,
       "endLine": 257
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary: Problem #771 SOLVED",
     "content": "erdos_771, erdos_771_main, erdos_771_solved: three equivalent statements that ErdosGrahamConjecture holds. All are aliases for erdos_graham_conjecture_true. The problem is completely solved: f(n) = (1/2+o(1))n/log n, with lower bound from prime multiples (Erdos-Graham) and upper bound from LCM argument (Alon-Freiman 1988).",
     "mathContext": "`erdos_771 : ErdosGrahamConjecture := erdos_graham_conjecture_true`. `erdos_771_main : \\forall \\varepsilon > 0, \\exists N, \\forall n \\geq N, |f(n)/(n/\\log n) - 1/2| < \\varepsilon$. `erdos_771_solved : ErdosGrahamConjecture$. All proved from `erdos_graham_conjecture_true`.",

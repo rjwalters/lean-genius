@@ -54,7 +54,7 @@
       "startLine": 57,
       "endLine": 80
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Verification of All Seven Known Solutions",
     "content": "Computationally verifies each element of OEIS A039669 satisfies the property.",
     "mathContext": "Each theorem is proved by `native_decide`, which reduces the proposition to a Boolean computation executed by the Lean kernel:\n\n| $n$ | Powers of 2 in $(1,n)$ | Differences | All prime? |\n|-----|----------------------|-------------|------------|\n| 4 | $\\{2\\}$ | $\\{2\\}$ | Yes |\n| 7 | $\\{2, 4\\}$ | $\\{5, 3\\}$ | Yes |\n| 15 | $\\{2, 4, 8\\}$ | $\\{13, 11, 7\\}$ | Yes |\n| 21 | $\\{2, 4, 8, 16\\}$ | $\\{19, 17, 13, 5\\}$ | Yes |\n| 45 | $\\{2, 4, 8, 16, 32\\}$ | $\\{43, 41, 37, 29, 13\\}$ | Yes |\n| 75 | $\\{2, 4, 8, 16, 32, 64\\}$ | $\\{73, 71, 67, 59, 43, 11\\}$ | Yes |\n| 105 | $\\{2, 4, 8, 16, 32, 64\\}$ | $\\{103, 101, 97, 89, 73, 41\\}$ | Yes |\n\nNote that $n = 4$ is the only even solution. The largest, $n = 105 = 3 \\times 5 \\times 7$, produces six simultaneous primes.",
@@ -76,7 +76,7 @@
       "startLine": 85,
       "endLine": 91
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Non-Examples: Why Most Numbers Fail",
     "content": "Demonstrates failure modes: composite differences and the value 1 (not prime).",
     "mathContext": "Three non-examples illustrate different failure mechanisms:\n\n- $n = 6$: $6 - 2 = 4 = 2^2$ is composite (even non-prime difference)\n- $n = 9$: $9 - 8 = 1$ is not prime (difference equals 1)\n- $n = 10$: $10 - 2 = 8 = 2^3$ is composite (even $n$ forces even largest difference)\n\nThese demonstrate that the property fails generically. For even $n > 4$, the difference $n - 2$ is always even and $> 2$, hence composite — proving that solutions must be odd (except $n = 4$).",
@@ -97,7 +97,7 @@
       "startLine": 98,
       "endLine": 116
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Structural Constraints: Oddness and Lower Bound",
     "content": "Proves solutions must be odd (except 4), at least 4, and that n − 2 is always prime.",
     "mathContext": "Four structural theorems constrain the solution set:\n\n1. **`erdos1142_odd_or_4`**: If $\\text{SatisfiesErdos1142}(n)$ and $n \\neq 4$, then $n$ is odd. Proof idea: for even $n > 4$, $n - 2$ is even and $> 2$, hence composite.\n\n2. **`erdos1142_ge_4`**: Solutions satisfy $n \\geq 4$, since `powersOfTwoBetween n` must be nonempty (requiring $2 < n$, i.e., $n \\geq 3$, but the filter condition $m \\geq 2$ ensures $n \\geq 4$).\n\n3. **`erdos1142_n_minus_2_prime`**: $n - 2$ is always prime for solutions, since $2 \\in \\text{powersOfTwoBetween}(n)$.\n\n4. **`erdos1142_mod2`**: For $n > 4$, $n \\equiv 1 \\pmod{2}$.\n\nThese are currently `sorry` — provable via `Finset.mem_filter` and parity arithmetic.",
@@ -120,7 +120,7 @@
       "startLine": 131,
       "endLine": 133
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Logarithmic Growth of Conditions",
     "content": "The number of primality conditions equals floor(log₂ n).",
     "mathContext": "The theorem `powersOfTwoBetween_card` states:\n$$|\\text{powersOfTwoBetween}(n)| = \\lfloor \\log_2 n \\rfloor \\quad \\text{for } n \\geq 4$$\n\nThis is the key quantitative fact: the number of conditions that must simultaneously hold grows logarithmically. For $n = 10^6$, approximately 20 differences must all be prime. The heuristic probability of all being prime is roughly $(1/\\ln n)^{\\log_2 n}$, which decreases super-polynomially — supporting the conjecture that solutions are finite.",
@@ -189,7 +189,7 @@
       "startLine": 161,
       "endLine": 164
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Exhaustive Verification: Complete List up to 105",
     "content": "Proves computationally that exactly {4, 7, 15, 21, 45, 75, 105} satisfy the property among n ≤ 105.",
     "mathContext": "The theorem `erdos1142_complete_le_105` verifies:\n$$\\{n \\leq 105 : \\text{SatisfiesErdos1142}(n)\\} = \\{4, 7, 15, 21, 45, 75, 105\\}$$\n\nThis is proved by `native_decide`, which exhaustively evaluates `SatisfiesErdos1142` for all $n$ from 0 to 105 and checks equality of the resulting finite sets. This gives Lean-kernel-level certainty that the OEIS sequence A039669 is correct in this range — stronger than any pen-and-paper verification.",
@@ -212,7 +212,7 @@
       "startLine": 171,
       "endLine": 175
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Stronger Conjecture Implies Eventual Non-Existence",
     "content": "If the o(log n) conjecture holds, then only finitely many n satisfy the full property.",
     "mathContext": "The theorem `stronger_implies_eventually_not_all_prime` formalizes:\n$$\\text{erdos\\_1142\\_stronger\\_conjecture} \\implies \\exists N,\\, \\forall n \\geq N,\\, \\neg \\text{SatisfiesErdos1142}(n)$$\n\n**Proof idea**: Apply the stronger conjecture with $\\varepsilon = 1$. Then for large $n$, the number of prime differences is $\\leq \\log_2 n$. But `SatisfiesErdos1142` requires ALL $\\lfloor \\log_2 n \\rfloor$ differences to be prime. For $\\varepsilon < 1$ and $n$ sufficiently large, this is impossible. Hence only finitely many solutions exist.\n\nThis establishes that the stronger conjecture (about density of prime differences) implies a negative answer to the infinitude question.",

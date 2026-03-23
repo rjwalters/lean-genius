@@ -94,7 +94,7 @@
       "startLine": 43,
       "endLine": 55
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result: Infinitely Many Solutions",
     "content": "**Erdős Problem #397** is DISPROVED: the set of solutions is infinite. Somani's parametric family provides infinitely many distinct solutions, one for each a ≥ 2.",
     "mathContext": "We state `CentralBinomSolutions.Infinite` as an axiom. The proof follows from Somani's family: for each a ≥ 2, we get a distinct solution, so there are at least countably infinitely many.",
@@ -129,7 +129,7 @@
       "startLine": 65,
       "endLine": 72
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Somani's Identity",
     "content": "**Somani's Identity**: For a ≥ 2, C(a)·C(2a+2)·C(c) = C(a+1)·C(2a)·C(c+1) where c = 8a² + 8a + 1.",
     "mathContext": "This identity is stated as an axiom because verifying it requires expanding the factorial expressions and showing the prime factorizations match. The identity was discovered computationally and verified algebraically.",
@@ -147,7 +147,7 @@
       "startLine": 74,
       "endLine": 75
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Disjointness of Somani's Sets",
     "content": "For a ≥ 2, the sets {a, 2a+2, c} and {a+1, 2a, c+1} are disjoint—they share no common elements.",
     "mathContext": "This requires checking six inequalities: a ≠ a+1, a ≠ 2a, a ≠ c+1, 2a+2 ≠ a+1, 2a+2 ≠ 2a, 2a+2 ≠ c+1, c ≠ a+1, c ≠ 2a, c ≠ c+1. All hold for a ≥ 2 by simple arithmetic.",

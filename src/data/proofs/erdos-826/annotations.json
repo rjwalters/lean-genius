@@ -42,7 +42,7 @@
       "startLine": 57,
       "endLine": 85
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Growth Bounds on τ",
     "content": "**Average order:** The average value of τ(n) for n ≤ x is about log(x). This is Dirichlet's classical result:\n  Σ_{n≤x} τ(n) = x·log(x) + (2γ-1)x + O(√x)\n\n**Maximum order:** τ(n) can be as large as 2^{(1+o(1))·log(n)/log(log(n))}, achieved by highly composite numbers like 2·3·5·7·...·p_k.\n\nThe gap between average (logarithmic) and maximum (sub-polynomial) order is central to understanding this problem.",
     "mathContext": "The average order result goes back to Dirichlet (1849). The maximum order was determined by Ramanujan and later refined by Nicolas and others.",
@@ -95,7 +95,7 @@
       "startLine": 144,
       "endLine": 164
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Relation to Problem #248",
     "content": "**erdos_826_implies_248:** Problem #826 implies the weaker Problem #248.\n\nProblem #248 concerns similar growth conditions on the divisor function along shifts, but with weaker requirements. Any solution to #826 automatically solves #248.\n\nThe proof is immediate since the conditions of #826 are strictly stronger.",
     "significance": "key",
@@ -182,7 +182,7 @@
       "startLine": 266,
       "endLine": 307
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Statement and Summary",
     "content": "**erdos_826_main** establishes two facts:\n\n1. **Well-definedness:** The conjecture is equivalent to ∃ C > 0, goodStartingPoints(C) is infinite.\n\n2. **Implication:** erdos_826_conjecture → erdos_248_weaker.\n\nThe problem remains **OPEN**. This formalization captures the mathematical framework surrounding the problem, including growth bounds, heuristic arguments, and the structural challenges that have prevented resolution.",
     "mathContext": "This is primarily a documentation formalization of an open problem. The axioms and definitions establish the framework without claiming to resolve the conjecture.",

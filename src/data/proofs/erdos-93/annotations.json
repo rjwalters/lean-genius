@@ -36,7 +36,7 @@
       "startLine": 53,
       "endLine": 65
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Convex Position",
     "content": "**InConvexPosition(S)** (axiom): Points form a convex polygon — no point lies in the convex hull of the others.\n\nAxiomatized because formally defining convex hulls in ℝ² requires substantial geometric infrastructure. The key property is that vertices can be cyclically ordered with all interior angles < 180°.",
     "mathContext": "Convexity forces angular spread among points, which is the geometric constraint that creates distance diversity.",
@@ -54,7 +54,7 @@
       "startLine": 67,
       "endLine": 88
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Altman's Theorem and Tightness",
     "content": "**altman_theorem (axiom):** For any S in convex position, numDistinctDistances(S) ≥ |S|/2.\n\nThe main result solving Erdős Problem #93.\n\n**regular_polygon_exact (axiom):** For n ≥ 3, there exists a convex n-gon with exactly n/2 distinct distances. The distances from vertex 0 to vertex k are 2R sin(kπ/n), giving ⌊n/2⌋ distinct values.\n\nExamples: triangle 1, square 2, pentagon 2, hexagon 3.",
     "mathContext": "Altman's 1963 proof uses the cyclic ordering of vertices and analyzes distances from a fixed vertex.",
@@ -89,7 +89,7 @@
       "startLine": 113,
       "endLine": 131
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Fishburn's Conjecture",
     "content": "**FishburnConjecture**: For convex n-gon, Σ_{x ∈ S} R(x) ≥ C(n,2) where R(x) = numDistancesFrom(x, S).\n\n**fishburn_implies_stronger (axiom):** Fishburn ⟹ StrongerVariant.\n\nReasoning: If Σ R(x) ≥ n(n-1)/2, the average R(x) ≥ (n-1)/2, so some vertex achieves ≥ ⌊n/2⌋ by pigeonhole.",
     "mathContext": "This averaging argument shows that Fishburn's sum conjecture is the natural strengthening to prove.",
@@ -107,7 +107,7 @@
       "startLine": 133,
       "endLine": 155
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_93_summary (proved from axioms):**\n\nCombines:\n1. Altman's theorem: convex n-gon has ≥ ⌊n/2⌋ distinct distances\n2. Fishburn's conjecture implies the stronger single-vertex variant\n\nProved by: `⟨altman_theorem, fishburn_implies_stronger⟩`",
     "significance": "key"

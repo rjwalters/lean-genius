@@ -42,7 +42,7 @@
       "startLine": 46,
       "endLine": 75
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Basic Properties",
     "content": "We verify basic properties: lcm_upto 1 = 1, lcm_upto is always positive, and compute small values like lcm(1,...,5) = 60. Monotonicity is also established.",
     "mathContext": "Small values verified by native_decide: lcm_upto 2 = 2, lcm_upto 3 = 6, lcm_upto 4 = 12, lcm_upto 5 = 60, lcm_upto 6 = 60.",
@@ -60,7 +60,7 @@
       "startLine": 77,
       "endLine": 91
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Growth Properties",
     "content": "**Axioms about LCM growth**: When crossing a prime p, the LCM multiplies by exactly p. Between primes, the LCM only grows by powers of smaller primes.",
     "mathContext": "lcm_upto(p) = p · lcm_upto(p-1) for prime p. This captures how primes contribute to LCM growth.",
@@ -132,7 +132,7 @@
       "startLine": 160,
       "endLine": 168
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Verified Small Cases",
     "content": "**Small cases verified computationally**: k=1 (lcm(1,2,3,4)=12 < 3·6=18) and k=2 (lcm(1,...,6)=60 < 5·60=300). Both verified by native_decide.",
     "mathContext": "These concrete examples show the conjecture holds for the first few primes, building confidence in the general statement.",
@@ -150,7 +150,7 @@
       "startLine": 170,
       "endLine": 179
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Chebyshev's Asymptotic",
     "content": "**Chebyshev's Result**: log(lcm_upto n) ~ n as n → ∞. This means lcm_upto n grows roughly like e^n. The conjecture asks about fine structure of this growth between consecutive primes.",
     "mathContext": "There exist 0 < c₁ < 1 < c₂ such that c₁n < log(lcm_upto n) < c₂n for all n ≥ 2.",

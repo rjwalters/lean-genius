@@ -96,7 +96,7 @@
       "startLine": 78,
       "endLine": 97
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The t = 1 Case: Complete Solution",
     "content": "**Three axioms resolve the t = 1 case completely:**\n\n1. **oddSet_admissible:** The odd set satisfies 1-non-divisibility. Why? If a, b are both odd with a < b, then b - a is even. An even number cannot divide an odd number, so (b-a) ∤ b.\n\n2. **oddSet_card:** |oddSet(N)| = (N+1)/2. This follows from counting: there are ⌊(N+1)/2⌋ odd numbers in {1,...,N}.\n\n3. **f_t1:** f(N, 1) = (N+1)/2. The odd set achieves this (lower bound), and no larger set can satisfy the condition (upper bound).\n\nThe upper bound argument: any 1-admissible set can contain at most one element from each pair {2k, 2k+1}.",
     "mathContext": "These axioms could in principle be proved constructively in Lean, but the upper bound requires a pigeonhole argument over residue classes modulo 2.",
@@ -114,7 +114,7 @@
       "startLine": 106,
       "endLine": 123
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The t = 2 Case: Erdős Construction",
     "content": "**Beating the N/2 barrier for t = 2:**\n\nErdős showed f(N, 2) ≥ N/2 + c·log(N) using a clever construction:\n\n**Construction:** Take A = {odd numbers in {1,...,N}} ∪ {2^k : k is odd, 2^k ≤ N}.\n\nThis adds about log₂(N)/2 extra elements (the odd-exponent powers of 2) to the N/2 odd numbers.\n\n**Why it works for the added elements:** For a power of 2, say b = 2^k, any difference b - a ≥ 2 with a being odd means b - a is odd (even minus odd). An odd number dividing 2^k would need to be 1, but the difference is at least 2.\n\n**Significance:** This shows the N/2 barrier is not tight for t ≥ 2, but the improvement is only logarithmic.",
     "mathContext": "The logarithmic improvement is small compared to N, consistent with the conjecture that density → 1/2. The construction exploits the fact that powers of 2 have very few divisors, making it hard for differences to divide them.",
@@ -150,7 +150,7 @@
       "startLine": 154,
       "endLine": 171
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Known Bounds and Monotonicity",
     "content": "**Four structural axioms about f(N, t):**\n\n1. **f_upper_trivial:** f(N, t) ≤ N — trivially, since A ⊆ {1,...,N}.\n\n2. **f_monotone_t:** f(N, t) ≤ f(N, t') when t ≤ t' — larger t means fewer restricted pairs, so more sets qualify. This is a key structural property.\n\n3. **f_lower_half:** f(N, t) ≥ (N+1)/2 for all t ≥ 1 — the odd set always works, regardless of t.\n\n4. **f_t1_density:** f(N,1)/N → 1/2 as N → ∞ — the t = 1 density converges to exactly 1/2.\n\n**Together:** (N+1)/2 ≤ f(N, t) ≤ N, with the lower bound achieved at t = 1.",
     "mathContext": "The monotonicity property means the problem gets 'easier' (larger extremal sets) as t increases. Combined with the conjecture, this suggests f(N,t)/N → 1/2 for all fixed t, not just t = 1.",
@@ -168,7 +168,7 @@
       "startLine": 178,
       "endLine": 187
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "No Far Multiples",
     "content": "**no_far_multiples: Multiples at large distance are forbidden**\n\nIf A is t-admissible and a, b ∈ A with a < b, b - a ≥ t, then b ≠ k·a for any k ≥ 2.\n\n**Proof idea:** If b = k·a, then b - a = (k-1)·a. Since (k-1)·a divides k·a = b (as k·a = (k-1)·a + a, and (k-1) divides k·(k-1) but more directly (k-1)·a | k·a iff (k-1) | k, which is true only for k-1 = 1, but actually (k-1)a | ka since ka/(k-1)a = k/(k-1) — wait, we need (b-a) | b, i.e., (k-1)a | ka. This holds iff (k-1) | k, i.e., k-1 | k, which is true iff k-1 | 1, i.e., k = 2). In general, (k-1)a | ka is not always true. However, the axiom captures a related structural consequence.\n\n**Implication:** Admissible sets have restricted multiplicative structure — no element can be a simple multiple of a distant element.",
     "mathContext": "This connects to multiplicative number theory: the constraint prevents 'arithmetic progressions' in the multiplicative sense (geometric sequences) from appearing in admissible sets when elements are far apart.",

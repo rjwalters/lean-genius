@@ -115,7 +115,7 @@
       "startLine": 141,
       "endLine": 144
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Main Theorem (Axiom)",
     "content": "**erdos_645 : erdos_645_statement**\n\nThis axiom asserts that Erdős Problem #645 is true. The proof uses Ramsey-type combinatorial arguments involving careful case analysis and the pigeonhole principle.\n\nThe statement is known to be true in the mathematical literature, proven by combinatorial methods.",
     "mathContext": "We axiomatize this result rather than proving it from first principles, as the full proof requires substantial combinatorial machinery not yet in Mathlib.",
@@ -133,7 +133,7 @@
       "startLine": 149,
       "endLine": 174
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Connection to van der Waerden",
     "content": "**vanDerWaerden_2_3**: For any 2-coloring, there exists a monochromatic 3-AP (without the d > x constraint).\n\n**erdos_645_implies_vdw**: Erdős #645 implies this weak form of van der Waerden.\n\nProof: If we have a monochromatic 3-AP with d > x, then in particular d > 0, so it's a valid 3-AP for van der Waerden.\n\nThe converse is NOT true - van der Waerden is strictly weaker since it doesn't guarantee d > x.",
     "mathContext": "This shows the logical relationship between the problems. Erdős's question is a strengthening that adds structure beyond mere existence.",
@@ -151,7 +151,7 @@
       "startLine": 182,
       "endLine": 192
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Example: Parity Coloring",
     "content": "**colorByParity(n)** = (n % 2 = 0)\n\nThis colors even numbers true and odd numbers false.\n\n**example_parity**: The AP (2, 6, 10) works:\n- x = 2, d = 4\n- d = 4 > 2 = x ✓\n- All three terms are even: c(2) = c(6) = c(10) = true ✓\n\nSo colorByParity satisfies Erdős #645 with this specific witness.",
     "mathContext": "This example shows a natural coloring that immediately yields a monochromatic AP with large difference. Even numbers form APs with even differences.",
@@ -169,7 +169,7 @@
       "startLine": 193,
       "endLine": 205
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Example: Threshold Coloring",
     "content": "**colorByThreshold(n)** = (n < 5)\n\nThis colors numbers 1-4 as true, and numbers ≥ 5 as false.\n\n**example_threshold**: The AP (5, 11, 17) works:\n- x = 5, d = 6\n- d = 6 > 5 = x ✓\n- All three terms are ≥ 5: c(5) = c(11) = c(17) = false ✓\n\nNote that we can't use the 'true' color since 1, 2, 3, 4 are too small to form an AP with d > x.",
     "mathContext": "This shows that even simple threshold colorings must contain the desired pattern among the larger (false) values.",

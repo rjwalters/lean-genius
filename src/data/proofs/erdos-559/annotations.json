@@ -54,7 +54,7 @@
       "startLine": 94,
       "endLine": 109
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Beck-Erdős Conjecture (DISPROVED)",
     "content": "**beck_erdos_conjecture**: For each $d \\geq 1$, $\\exists c_d > 0$ such that $\\hat{R}(G) \\leq c_d n$ for all $n$-vertex graphs $G$ with $\\Delta(G) \\leq d$.\n\n**beck_erdos_conjecture_false**: This is FALSE (Rödl-Szemerédi 2000). The conjecture was motivated by Beck's 1983 proof for paths and seemed natural: bounded degree limits local complexity, so why not global Ramsey complexity? The answer: bounded-degree graphs can still encode complex global structures (via expander-like properties) that force superlinear size Ramsey numbers.",
     "mathContext": "The conjecture $\\hat{R}(G) \\leq c_d n$ when $\\Delta(G) \\leq d$ is equivalent to: the class of bounded-degree graphs has linear size Ramsey numbers. Rödl and Szemerédi (2000) disproved this for $d = 3$ by constructing degree-3 graphs $G_n$ on $n$ vertices with $\\hat{R}(G_n) \\geq cn(\\log n)^c$. Their construction uses a delicate probabilistic argument: random regular graphs of degree 3 have this property with positive probability.",
@@ -78,7 +78,7 @@
       "startLine": 111,
       "endLine": 150
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Positive Results: Paths, Trees, and Cycles",
     "content": "**beck_paths** (Beck 1983): $\\hat{R}(P_n) = O(n)$ for paths. Beck's original breakthrough — he showed random graphs of linear size are Ramsey for paths, initiating the study of size Ramsey numbers.\n\n**friedman_pippenger_trees** (1987): $\\hat{R}(T) = O(n)$ for any $n$-vertex tree $T$. The proof uses expander graphs: a sufficiently good expander with $O(n)$ edges is Ramsey for any tree with $n$ vertices.\n\n**haxell_kohayakawa_luczak_cycles** (1995): $\\hat{R}(C_n) = O(n)$ for cycles. This completed the picture for $\\Delta \\leq 2$: paths, cycles, and hence all graphs with maximum degree $\\leq 2$ have linear size Ramsey numbers.",
     "mathContext": "Beck (1983) proved $\\hat{R}(P_n) \\leq cn$ by showing that a random graph $G(N, p)$ with $N = cn$ and appropriate $p$ is Ramsey for $P_n$ with high probability. Friedman-Pippenger (1987) extended this to all trees using expansion: if $H$ is a $(k, \\varepsilon)$-expander with $|V(H)| \\geq (1 + \\varepsilon)n$, then $H$ contains every tree with $n$ vertices and maximum degree $\\leq k$. Since good expanders have $O(n)$ edges, this gives $\\hat{R}(T) = O(n)$. The transition from linear to superlinear happens precisely at $\\Delta = 3$.",
@@ -102,7 +102,7 @@
       "startLine": 152,
       "endLine": 171
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Counterexamples: Rödl-Szemerédi and Tikhomirov",
     "content": "**rodl_szemeredi_counterexample** (2000): $\\exists c > 0$ such that for all $N \\geq 2$, $\\exists$ degree-3 graph $G$ on $N$ vertices with $\\hat{R}(G) \\geq cN(\\log N)^c$. This was the key breakthrough disproving the Beck-Erdős conjecture at $d = 3$, the smallest possible counterexample degree.\n\n**tikhomirov_improved_lower_bound** (2022): $\\exists c > 0$ with $\\hat{R}(G) \\geq cN \\cdot \\exp(c\\sqrt{\\log N})$. This is much stronger than any polylogarithmic factor but still subpolynomial — the lower bound is $n^{1+o(1)}$, leaving a large gap with the upper bound $n^{3/2+o(1)}$.",
     "mathContext": "Rödl-Szemerédi's construction: take a random 3-regular graph $G_n$. With positive probability, any graph $H$ that is Ramsey for $G_n$ must have $\\geq cn(\\log n)^c$ edges. The argument uses the fact that random regular graphs have complex neighborhood structure that resists embedding into sparse Ramsey hosts. Tikhomirov's improvement to $n \\cdot \\exp(c\\sqrt{\\log n})$ uses a refined analysis of the structure of Ramsey hosts, showing they must contain many more paths than a linear-sized graph can accommodate.",
@@ -126,7 +126,7 @@
       "startLine": 173,
       "endLine": 200
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Upper Bounds for Degree-3: Progressing Toward n^{3/2}",
     "content": "**kohayakawa_upper_bound**: $\\hat{R}(G) \\leq n^{5/3+o(1)}$ for degree-3 graphs. The initial polynomial upper bound.\n\n**conlon_nenadov_trujic_upper_bound**: $\\hat{R}(G) \\leq cn^{8/5}$ for degree-3 graphs. Improved the exponent from $5/3 \\approx 1.667$ to $8/5 = 1.6$.\n\n**draganic_petrova_best_upper_bound** (2022): $\\hat{R}(G) \\leq n^{3/2+o(1)}$. The current best, reducing the exponent to $3/2 = 1.5$. The proof uses sparse regularity and the blow-up lemma to embed bounded-degree graphs into random-like subgraphs of the Ramsey host.",
     "mathContext": "The exponent progression: $5/3 \\to 8/5 \\to 3/2$ for degree-3 graphs. Combined with Tikhomirov's lower bound $n \\cdot \\exp(c\\sqrt{\\log n}) = n^{1+o(1)}$, the current gap is between exponents $1+o(1)$ and $3/2+o(1)$. The key technique for upper bounds is the **sparse regularity method**: decompose a random graph into regular pairs using Szemerédi's regularity lemma for sparse graphs, then apply the blow-up lemma to embed $G$. The regularity method naturally gives polynomial bounds; breaking below $n^{3/2}$ would likely require fundamentally new ideas.",

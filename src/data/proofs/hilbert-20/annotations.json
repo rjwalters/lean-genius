@@ -42,7 +42,7 @@
       "startLine": 87,
       "endLine": 95
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Dirichlet Existence Theorem",
     "content": "For a bounded domain with regular boundary and continuous boundary data, the Dirichlet problem **always has a unique solution**.\n\nThis positive result uses Perron's method (1923) with subharmonic functions or the direct method in calculus of variations.",
     "mathContext": "If $\\Omega$ is bounded with regular boundary and $f \\in C(\\partial\\Omega)$, then $\\exists! u \\in C(\\bar{\\Omega}) \\cap C^2(\\Omega)$ solving the Dirichlet problem.",
@@ -78,7 +78,7 @@
       "startLine": 175,
       "endLine": 179
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Lax-Milgram Theorem",
     "content": "**Lax-Milgram (1954)**: The fundamental existence theorem for elliptic boundary value problems.\n\nIf $a$ is bounded and coercive on a Hilbert space $V$, and $F$ is a bounded linear functional, then $\\exists! u \\in V$ with $a(u,v) = F(v)$ for all $v$.\n\nThis single theorem handles a vast class of PDEs.",
     "mathContext": "$\\exists! u \\in V: a(u,v) = F(v) \\quad \\forall v \\in V$\n\nMoreover: $\\|u\\| \\leq \\frac{1}{\\alpha}\\|F\\|$ where $\\alpha$ is the coercivity constant.",
@@ -114,7 +114,7 @@
       "startLine": 225,
       "endLine": 233
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sobolev Spaces",
     "content": "**Sobolev spaces** $H^k(\\Omega)$ consist of functions with $k$ weak derivatives in $L^2$.\n\n$H_0^1(\\Omega)$ is the subspace of $H^1$ functions vanishing on $\\partial\\Omega$ - the natural space for Dirichlet problems.\n\nThese spaces are Hilbert spaces, enabling Lax-Milgram.",
     "mathContext": "$H^1(\\Omega) = \\{u \\in L^2: \\nabla u \\in L^2\\}$\n\n$H_0^1(\\Omega) = \\{u \\in H^1: u|_{\\partial\\Omega} = 0\\}$",
@@ -132,7 +132,7 @@
       "startLine": 216,
       "endLine": 224
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Poisson Equation Existence",
     "content": "The **Poisson equation** $-\\Delta u = f$ with $u = 0$ on $\\partial\\Omega$ has a unique weak solution for any $f \\in L^2(\\Omega)$.\n\nThis is a direct application of Lax-Milgram with $a(u,v) = \\int \\nabla u \\cdot \\nabla v$.",
     "mathContext": "Weak form: Find $u \\in H_0^1(\\Omega)$ such that\n$\\int_\\Omega \\nabla u \\cdot \\nabla v = \\int_\\Omega fv \\quad \\forall v \\in H_0^1(\\Omega)$",
@@ -150,7 +150,7 @@
       "startLine": 240,
       "endLine": 252
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Lewy's Counterexample",
     "content": "**Lewy (1957)**: A shocking negative result!\n\nThere exists a perfectly smooth, first-order linear PDE that has **no solution at all** - not even locally, in any neighborhood of any point.\n\nThis definitively answers Hilbert's question: NOT all PDEs are solvable.",
     "mathContext": "Lewy operator: $L = \\frac{\\partial}{\\partial x} + i\\frac{\\partial}{\\partial y} - 2i(x+iy)\\frac{\\partial}{\\partial t}$\n\nThere exists smooth $f$ such that $Lu = f$ has no solution.",
@@ -168,7 +168,7 @@
       "startLine": 288,
       "endLine": 291
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Failure is Fundamental",
     "content": "Lewy's example shows that unsolvability is not about boundary conditions - the equation has no solution even **locally**, ignoring boundaries entirely.\n\nThis revealed that solvability is a deep structural property of the differential operator itself.",
     "mathContext": "For Lewy's operator $L$, there exists $f$ such that for every open $U \\neq \\emptyset$: $\\nexists u$ with $Lu = f$ in $U$.\n\nNo boundary conditions involved!",

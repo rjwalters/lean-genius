@@ -61,7 +61,7 @@
       "startLine": 70,
       "endLine": 82
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Galvin's Theorem (1973)",
     "content": "**galvin_countable_theorem:** If χ(G) = ℵ₀, then for every positive n, G has a subgraph with chromatic number n. This is the only case of the Galvin property provable in ZFC.\n\n**finite_chromatic_subgraphs:** A proved corollary directly applying galvin_countable_theorem. This demonstrates the basic pattern: from a graph with infinite chromatic number, extract subgraphs with any desired finite chromatic number.",
     "mathContext": "The proof that χ(G) = ℵ₀ implies existence of n-chromatic subgraphs uses a compactness-like argument: if no n-chromatic subgraph exists, the graph can be colored with fewer than ℵ₀ colors. This argument doesn't extend to uncountable cardinals.",
@@ -79,7 +79,7 @@
       "startLine": 95,
       "endLine": 111
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Independence: Komjáth and Shelah",
     "content": "**komjath_consistency (1988):** In certain models of ZFC (where the continuum function collapses: 2^ℵ₀ = 2^ℵ₁ = 2^ℵ₂ = ℵ₃), there exists a graph with χ = ℵ₂ having no subgraph with χ = ℵ₁. This shows the Galvin property is NOT provable in ZFC.\n\n**shelah_constructibility (1990):** Under V=L (axiom of constructibility), if χ(G) = ℵ₂ then G has a subgraph with χ = ℵ₁. This shows the Galvin property is NOT refutable in ZFC.\n\nTogether, these establish set-theoretic independence: ZFC can neither prove nor disprove the Galvin property for uncountable cardinals.",
     "mathContext": "Komjáth's model collapses the continuum function, making 2^κ the same for κ = ℵ₀, ℵ₁, ℵ₂. This prevents Galvin's set-theoretic implication (which requires strict inequality 2^κ < 2^ν) from applying. V=L provides enough structure (via the constructible hierarchy) to build the required subgraphs.",
@@ -117,7 +117,7 @@
       "startLine": 123,
       "endLine": 139
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_739_summary:** A proved conjunction of two results:\n1. Galvin's countable theorem (every ℵ₀-chromatic graph has n-chromatic subgraphs for all n > 0)\n2. Komjáth's consistency result (some graph with χ = ℵ₂ has no ℵ₁-chromatic subgraph)\n\nProved by `exact ⟨galvin_countable_theorem, komjath_consistency⟩`. The conjunction captures both the positive result (countable case) and the obstruction to extending it (independence for uncountable case).",
     "mathContext": "The summary pairs a ZFC theorem (Galvin) with a consistency result (Komjáth), illustrating that the transition from countable to uncountable chromatic numbers fundamentally changes the problem's character.",

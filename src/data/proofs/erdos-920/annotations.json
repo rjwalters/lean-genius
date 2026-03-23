@@ -126,7 +126,7 @@
       "startLine": 77,
       "endLine": 87
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Graver-Yackel Upper Bound (1968)",
     "content": "**graver_yackel_1968**: $g_k(n) \\leq C(n \\cdot \\log\\log n / \\log n)^{1-1/(k-1)}$ for some constant $C > 0$. This is the best known upper bound, published by Graver and Yackel in the Journal of Combinatorial Theory (1968). The proof uses a counting argument relating the number of independent sets to the coloring structure. The exponent $1 - 1/(k-1)$ in the upper bound matches Erdős's conjectured lower bound exponent, suggesting this is the correct order of growth.",
     "mathContext": "$g_k(n) \\leq C \\left(\\frac{n \\log\\log n}{\\log n}\\right)^{1-1/(k-1)}$. The $\\log\\log n$ factor in the numerator is a minor correction; the key feature is that the dominant term is $(n/\\log n)^{1-1/(k-1)}$. For $k=3$: exponent $1/2$, so $g_3(n) \\ll (n \\log\\log n / \\log n)^{1/2}$.",
@@ -149,7 +149,7 @@
       "startLine": 88,
       "endLine": 93
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Trivial Upper Bound",
     "content": "**trivial_upper**: $g_k(n) \\leq n$ since any graph on $n$ vertices can be properly colored with at most $n$ colors (assign each vertex a distinct color). This serves as a sanity check and base case for inductive arguments.",
     "mathContext": "$\\chi(G) \\leq |V(G)|$ for all graphs $G$, with equality iff $G \\cong K_n$. Since $K_n$ is not $K_k$-free for $n \\geq k$, for $K_k$-free graphs we actually have $\\chi(G) \\leq n-1$ when $n \\geq k$.",
@@ -169,7 +169,7 @@
       "startLine": 99,
       "endLine": 107
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős Lower Bound for k=3 (1959)",
     "content": "**erdos_1959_k3**: $g_3(n) \\geq c \\cdot n^{1/2} / \\log n$ for some $c > 0$. Derived from the Ramsey bound $R(3,m) \\gg (m/\\log m)^2$ proved by Erdős in 1959 using the probabilistic method. This was one of the earliest applications of probabilistic combinatorics: a random graph $G(n,p)$ with $p = n^{-1/2}$ is triangle-free with positive probability while having high chromatic number.",
     "mathContext": "From $R(3,m) \\geq c(m/\\log m)^2$: taking $n = R(3,m)-1$, a $K_3$-free graph on $n$ vertices has $\\alpha \\leq m-1$, so $\\chi \\geq n/\\alpha \\geq c' \\cdot n^{1/2}/\\log n$. The exponent $1/2 = 1 - 1/(3-1)$ matches the conjecture for $k=3$.",
@@ -193,7 +193,7 @@
       "startLine": 109,
       "endLine": 116
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Shearer's Improved Bound for k=3",
     "content": "**shearer_k3**: $g_3(n) \\geq c \\cdot (n/\\log n)^{1/2}$ for some $c > 0$. This improves the Erdős bound by moving the logarithmic factor inside the square root. Shearer achieved this by sharpening the Ramsey bound to $R(3,m) \\gg m^2/\\log m$ (removing one logarithmic factor from the denominator). Together with Graver-Yackel, this essentially determines $g_3(n) \\asymp (n/\\log n)^{1/2}$ up to lower-order corrections.",
     "mathContext": "Shearer's improvement: $R(3,m) \\geq c \\cdot m^2/\\log m$. Via the Ramsey-chromatic bridge with $\\alpha = 2$, $\\beta = 1$: $g_3(n) \\geq c' \\cdot n^{1-1/2}/(\\log n)^{1/2} = c'(n/\\log n)^{1/2}$. This is stronger than Erdős's $n^{1/2}/\\log n$ by a factor of $(\\log n)^{1/2}$.",
@@ -215,7 +215,7 @@
       "startLine": 118,
       "endLine": 126
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Mattheus-Verstraete Breakthrough (2023)",
     "content": "**mattheus_verstraete_2023**: $g_4(n) \\geq c \\cdot n^{2/3} / (\\log n)^{4/3}$ for some $c > 0$. This 2023 breakthrough by Sam Mattheus and Jacques Verstraete resolves the $k=4$ case with the optimal exponent $2/3 = 1 - 1/(4-1)$, matching the Erdős conjecture. They proved $R(4,t) \\gg t^3/(\\log t)^4$ using pseudorandom constructions based on norm graphs over finite fields $\\mathbb{F}_{q^3}$, improving the previous best bound of Ajtai-Komlós-Szemerédi.",
     "mathContext": "$g_4(n) \\geq c \\cdot n^{2/3}/(\\log n)^{4/3}$. Via the Ramsey-chromatic bridge with $R(4,m) \\geq c \\cdot m^3/(\\log m)^4$: $\\alpha = 3$, $\\beta = 4$, giving $g_4(n) \\geq c' \\cdot n^{1-1/3}/(\\log n)^{4/3} = c' \\cdot n^{2/3}/(\\log n)^{4/3}$. The exponent $2/3$ matches the conjectured $1 - 1/(k-1) = 1 - 1/3$.",
@@ -239,7 +239,7 @@
       "startLine": 128,
       "endLine": 138
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "General Lower Bound",
     "content": "**general_lower_bound**: For all $k \\geq 3$, $g_k(n) \\geq c \\cdot n^{1-2/(k+1)} / (\\log n)^{c_k}$ for some constants $c, c_k > 0$. This follows from the best known general Ramsey bound $R(k,m) \\gg m^{(k+1)/2}$ (up to logarithmic factors). For $k \\geq 5$, the exponent $1 - 2/(k+1)$ is strictly less than the conjectured $1 - 1/(k-1)$, leaving a gap that narrows but never closes.",
     "mathContext": "From $R(k,m) \\gg m^{(k+1)/2}/(\\log m)^c$ with $\\alpha = (k+1)/2$: $g_k(n) \\gg n^{1-2/(k+1)}/(\\log n)^{c'}$. The gap: $1 - 2/(k+1) < 1 - 1/(k-1) \\iff 2/(k+1) > 1/(k-1) \\iff 2(k-1) > k+1 \\iff k > 3$. So for $k \\geq 4$ there's always a gap (until resolved case-by-case).",
@@ -284,7 +284,7 @@
       "startLine": 154,
       "endLine": 164
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Exponent Gap",
     "content": "**the_gap**: For $k \\geq 4$, the known exponent $1 - 2/(k+1)$ is strictly less than the conjectured exponent $1 - 1/(k-1)$. Axiomatized as a real inequality. Concrete values:\n- $k=4$: known $3/5 = 0.6$, conjectured $2/3 \\approx 0.667$ (**RESOLVED** by MV2023)\n- $k=5$: known $2/3 \\approx 0.667$, conjectured $3/4 = 0.75$\n- $k=6$: known $5/7 \\approx 0.714$, conjectured $4/5 = 0.8$",
     "mathContext": "The gap $\\Delta(k) = (1 - 1/(k-1)) - (1 - 2/(k+1)) = 2/(k+1) - 1/(k-1) = (k-3)/((k+1)(k-1))$. For large $k$: $\\Delta(k) \\sim 1/k^2$, so the gap shrinks but never vanishes. Closing the gap for each $k$ requires improving $R(k,m)$ from $\\Omega(m^{(k+1)/2})$ to $\\Omega(m^{k-1})$.",
@@ -353,7 +353,7 @@
       "startLine": 190,
       "endLine": 197
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős Ramsey Bound R(3,m)",
     "content": "**erdos_ramsey_k3**: $R(3,m) \\geq c \\cdot (m/\\log m)^2$ for some $c > 0$. Proved by Erdős in 1959 using the probabilistic method — one of the foundational results in probabilistic combinatorics. The random graph $G(n, 1/\\sqrt{n})$ is triangle-free with positive probability and has independence number $O(\\sqrt{n \\log n})$, yielding the bound. This was later improved by Kim (1995) to $R(3,m) \\gg m^2/\\log m$ and further refined by Fiz Pontiveros, Griffiths, and Morris.",
     "mathContext": "$R(3,m) \\geq c \\cdot (m/\\log m)^2 = c \\cdot m^2/(\\log m)^2$. With $\\alpha = 2$, $\\beta = 2$ in the Ramsey-chromatic bridge: $g_3(n) \\geq c' \\cdot n^{1-1/2}/(\\log n)^{2/2} = c' \\cdot n^{1/2}/\\log n$, reproducing the Erdős $k=3$ bound.",
@@ -377,7 +377,7 @@
       "startLine": 199,
       "endLine": 207
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Mattheus-Verstraete Ramsey Bound R(4,m)",
     "content": "**mattheus_verstraete_ramsey**: $R(4,m) \\geq c \\cdot m^3 / (\\log m)^4$ for some $c > 0$. The 2023 breakthrough by Mattheus and Verstraete. They constructed $K_4$-free graphs using norm graphs over the finite field $\\mathbb{F}_{q^3}$: vertices are elements of $\\mathbb{F}_{q^3}^*$, edges connect $x,y$ when the norm $N(x+y) = 0$. These graphs are pseudorandom with controlled clique and independence numbers. Published in Annals of Mathematics, this resolved a problem open since the 1950s.",
     "mathContext": "$R(4,m) \\geq c \\cdot m^3/(\\log m)^4$. With $\\alpha = 3$, $\\beta = 4$: $g_4(n) \\geq c' \\cdot n^{1-1/3}/(\\log n)^{4/3} = c' \\cdot n^{2/3}/(\\log n)^{4/3}$. The exponent $2/3 = 1 - 1/(4-1)$ matches the Erdős conjecture. The previous best was $R(4,m) \\gg m^{5/2}$ (Spencer, Ajtai-Komlós-Szemerédi).",
@@ -401,7 +401,7 @@
       "startLine": 213,
       "endLine": 235
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem: Erdős #920 OPEN",
     "content": "**erdos_920_summary**: The only non-axiom theorem in the file. Combines two axiomatized results into a conjunction:\n1. The general lower bound: $\\forall k \\geq 3, g_k(n) \\gg n^{1-2/(k+1)}/(\\log n)^c$\n2. The $k=4$ breakthrough: $g_4(n) \\gg n^{2/3}/(\\log n)^{4/3}$\n\nProved by pairing `general_lower_bound` and `mattheus_verstraete_2023` as `⟨general_lower_bound, mattheus_verstraete_2023⟩`. The conjecture remains OPEN for $k \\geq 5$.",
     "mathContext": "The summary asserts $\\left(\\forall k \\geq 3, \\exists c > 0, \\forall n \\geq 2: g_k(n) \\geq c \\cdot n^{1-2/(k+1)}/(\\log n)^c\\right) \\wedge \\left(\\exists c > 0, \\forall n \\geq 2: g_4(n) \\geq c \\cdot n^{2/3}/(\\log n)^{4/3}\\right)$. The anonymous constructor $\\langle \\cdot, \\cdot \\rangle$ builds the conjunction from the two axioms.",

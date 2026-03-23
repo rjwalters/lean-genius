@@ -92,7 +92,7 @@
       "startLine": 146,
       "endLine": 167
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Partial Results: Huber (1957) and Zhang (1977)",
     "content": "Two historical milestones are axiomatized:\n\nhuber_1957: For all transcendental $f$ and all $\\lambda > 0$, there exists a good path $\\gamma$ with finite $\\int |f \\circ \\gamma|^{-\\lambda}$. Published in Comment. Math. Helv. (1957). Huber's proof uses potential-theoretic estimates on the growth of subharmonic functions along paths.\n\nzhang_1977: If $f$ is additionally of finite order, then a single path works for all $\\lambda$. Published in Kexue Tongbao (1977). Zhang exploits the controlled growth $|f(z)| \\le C \\exp(|z|^\\rho)$ to construct a path along which $|f|$ grows polynomially fast, ensuring $|f|^{-\\lambda}$ is integrable for all $\\lambda$.\n\nThe gap between Zhang and LRW is precisely the infinite-order case, where $f$ can grow faster than any $\\exp(|z|^\\rho)$.",
     "mathContext": "Huber's 1957 paper 'On subharmonic functions and differential geometry in the large' established fundamental connections between subharmonic function theory and Riemannian geometry. His path-integral result was a byproduct of studying the growth of subharmonic functions on complete Riemannian manifolds. Zhang's contribution narrowed the gap to infinite-order functions, which include exotic examples like $\\exp(\\exp(z))$ and Mittag-Leffler-type sums.",
@@ -113,7 +113,7 @@
       "startLine": 169,
       "endLine": 188
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Lewis-Rossi-Weitsman Theorem (1984)",
     "content": "The complete resolution is axiomatized in two forms:\n\nlewis_rossi_weitsman_1984: UniversalQuestion — for every transcendental entire $f$, a single good path exists with $\\int |f|^{-\\lambda} < \\infty$ for all $\\lambda > 0$.\n\nlrw_subharmonic_version: The result extends to $e^u$ for any subharmonic function $u$ (axiomatized with placeholder True body). This generalization reveals that the complex-analytic structure ($f$ being entire) is incidental — what matters is the subharmonicity of $\\log|f|$.\n\nPublished as 'On the growth of subharmonic functions along paths' in Ark. Mat. (1984), pp. 109-119.",
     "mathContext": "The LRW proof constructs the path by selecting, at each radius $r$, the angular direction $\\theta(r)$ maximizing the subharmonic function $u(re^{i\\theta})$. The maximum principle for subharmonic functions guarantees that $\\max_\\theta u(re^{i\\theta})$ grows at least as fast as the average, which grows without bound for non-constant $u$. The resulting path $\\gamma(t) = te^{i\\theta(t)}$ (suitably smoothed) keeps $|f(\\gamma(t))|$ large enough that $|f|^{-\\lambda}$ is integrable for all $\\lambda$. The subharmonic version works because the proof only uses the maximum principle and the sub-mean-value property.",
@@ -158,7 +158,7 @@
       "startLine": 236,
       "endLine": 290
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary and Main Theorems",
     "content": "Three summary theorems package the formalization:\n\nerdos_515_summary proves the conjunction: (1) UniversalQuestion (from LRW), (2) Huber's weaker result as a corollary (each $\\lambda$ separately), and (3) True (placeholder for Zhang's intermediate result). The Huber component is proved by unfolding HuberQuestion and applying huber_1957.\n\nerdos_515 and erdos_515_answer are both direct aliases for lewis_rossi_weitsman_1984 : UniversalQuestion, restating the result in the explicit quantified form.\n\nThe formalization spans 290 lines with 0 sorries. The deep results (Huber, Zhang, LRW, subharmonic extension) are axiomatized; the summary theorem is proved by assembling these axioms. Definitions use Mathlib's Differentiable, Filter.Tendsto, and Real.rpow.",
     "mathContext": "The logical structure of the proof is unusually clean: LRW subsumes both Huber and Zhang, so the main theorem is a single axiom instantiation. The formalization's value lies in precisely capturing the quantifier structure (the $\\forall\\lambda \\, \\exists\\gamma$ vs. $\\exists\\gamma \\, \\forall\\lambda$ distinction) and the type-theoretic definitions of entire functions, paths, and integrability in Lean 4.",

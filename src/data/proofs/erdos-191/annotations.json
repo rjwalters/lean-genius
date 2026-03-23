@@ -130,7 +130,7 @@
       "startLine": 99,
       "endLine": 105
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Positivity of log x",
     "content": "**log_pos_of_ge_two:**\n\nFor x ≥ 2, log x > 0, so 1/log x is well-defined and positive:\n```lean\nlemma log_pos_of_ge_two (x : ℕ) (hx : x ≥ 2) : Real.log x > 0\n```\n\nThis is why we use {2, ..., n} instead of {1, ..., n}: log 1 = 0 would cause division by zero.",
     "significance": "supporting"
@@ -142,7 +142,7 @@
       "startLine": 107,
       "endLine": 115
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Non-negativity of Sum",
     "content": "**logInverseSum_nonneg:**\n\nThe sum is non-negative for sets of integers ≥ 2:\n```lean\nlemma logInverseSum_nonneg (X : Finset ℕ) (hX : ∀ x ∈ X, x ≥ 2) :\n    logInverseSum X ≥ 0\n```\n\nSince each term 1/log x > 0 for x ≥ 2, the sum over any such set is positive.",
     "significance": "supporting"
@@ -178,7 +178,7 @@
       "startLine": 140,
       "endLine": 144
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Problem Solved",
     "content": "**erdos_191:**\n\nThe conjecture is TRUE:\n```lean\naxiom erdos_191 : erdos191Conjecture\n```\n\n**Proved by:** Vojtěch Rödl in 2003. His paper 'On homogeneous sets of positive integers' in J. Combin. Theory Ser. A established the affirmative answer.",
     "significance": "key"
@@ -206,7 +206,7 @@
       "startLine": 165,
       "endLine": 177
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Rödl's Upper Construction",
     "content": "**rodl_upper_construction:**\n\nFor any n, there exists a 2-coloring where all monochromatic X satisfy sum ≤ c · log log log n:\n```lean\naxiom rodl_upper_construction :\n  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 16 →\n    ∃ coloring : SimpleEdgeColoring n,\n      ∀ X, X ⊆ IntegerSet n → HasMonochromaticSubset coloring X →\n        logInverseSum X ≤ c * tripleLog n\n```\n\n**Significance:** This shows O(log log log n) is best possible - you cannot do better asymptotically.",
     "significance": "key"
@@ -218,7 +218,7 @@
       "startLine": 179,
       "endLine": 189
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Conlon-Fox-Sudakov Bound",
     "content": "**conlon_fox_sudakov_bound:**\n\nFor any 2-coloring, there exists monochromatic X with sum ≥ 2^{-8} · log log log n:\n```lean\naxiom conlon_fox_sudakov_bound :\n  ∀ n : ℕ, n ≥ 16 → ∀ c : SimpleEdgeColoring n,\n    ∃ X : Finset ℕ, X ⊆ IntegerSet n ∧ HasMonochromaticSubset c X ∧\n      logInverseSum X ≥ (1 / 256) * tripleLog n\n```\n\n**The constant:** 2^{-8} = 1/256 is explicit. Combined with Rödl's upper bound, this gives Θ(log log log n).",
     "mathContext": "From 'Two extensions of Ramsey's theorem' in Duke Math. J. (2013).",
@@ -231,7 +231,7 @@
       "startLine": 191,
       "endLine": 194
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The CFS Constant",
     "content": "**cfs_constant:**\n\nThe constant 2^{-8} = 1/256:\n```lean\nlemma cfs_constant : (1 : ℝ) / 256 = 2^(-(8 : ℝ))\n```\n\nThis explicit constant from Conlon-Fox-Sudakov may not be optimal, but it gives the correct order of magnitude.",
     "significance": "supporting"
@@ -243,7 +243,7 @@
       "startLine": 205,
       "endLine": 223
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Derivation from CFS",
     "content": "**erdos_191_from_cfs:**\n\nThe main theorem follows from CFS bound + unboundedness of triple log:\n```lean\ntheorem erdos_191_from_cfs : erdos191Conjecture := by\n  intro C hC\n  obtain ⟨N₀, hN₀⟩ := tripleLog_unbounded (256 * C)\n  use max N₀ 16\n  ...\n```\n\n**Logic:** For any target C, we need (1/256) · tripleLog n ≥ C, i.e., tripleLog n ≥ 256C. Since tripleLog → ∞, such N exists.",
     "significance": "key"
@@ -267,7 +267,7 @@
       "startLine": 240,
       "endLine": 246
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Classical Ramsey Connection",
     "content": "**classical_ramsey_connection:**\n\nClassical Ramsey theorem gives monochromatic cliques of size ≈ 2 log n:\n```lean\naxiom classical_ramsey_connection :\n  ∀ n : ℕ, n ≥ 6 → ∀ c : SimpleEdgeColoring n,\n    ∃ X, X ⊆ IntegerSet n ∧ HasMonochromaticSubset c X ∧ X.card ≥ 2\n```\n\nThe weighted sum perspective transforms this cardinality guarantee into a sum guarantee.",
     "significance": "key",
@@ -283,7 +283,7 @@
       "startLine": 275,
       "endLine": 282
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sum Growth Asymptotic",
     "content": "**sum_one_over_log_asymptotic:**\n\nThe sum Σ_{x=2}^{k} 1/log x grows like k/log k:\n```lean\naxiom sum_one_over_log_asymptotic :\n  ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∀ k : ℕ, k ≥ 2 →\n    c₁ * k / Real.log k ≤ logInverseSum (IntegerSet k) ∧\n    logInverseSum (IntegerSet k) ≤ c₂ * k / Real.log k\n```\n\nThis is analogous to the prime counting function π(x) ~ x/log x.",
     "significance": "supporting",
@@ -323,7 +323,7 @@
       "startLine": 318,
       "endLine": 337
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Tight Asymptotic Bounds",
     "content": "**tight_asymptotic:**\n\nThe optimal sum is Θ(log log log n):\n```lean\ntheorem tight_asymptotic :\n    (∃ c₁ > 0, ∀ n ≥ 16, ∀ coloring,\n      ∃ X, logInverseSum X ≥ c₁ * tripleLog n) ∧\n    (∃ c₂ > 0, ∀ n ≥ 16, ∃ coloring,\n      ∀ X, logInverseSum X ≤ c₂ * tripleLog n)\n```\n\n**Interpretation:** c₁ = 1/256 (CFS) and c₂ from Rödl's construction. The gap between these constants is the remaining open question.",
     "significance": "key"
@@ -335,7 +335,7 @@
       "startLine": 343,
       "endLine": 364
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_191_summary:**\n\nCombines all main results:\n```lean\ntheorem erdos_191_summary :\n    erdos191Conjecture ∧\n    (∃ c₁ > 0, ... lower bound ...) ∧\n    (∃ c₂ > 0, ... upper bound ...)\n```\n\n**Summary:**\n1. YES, arbitrarily large sums are achievable for large n\n2. Lower bound: Ω(log log log n) guaranteed\n3. Upper construction: O(log log log n) is best possible",
     "significance": "key"
@@ -347,7 +347,7 @@
       "startLine": 366,
       "endLine": 369
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Answer",
     "content": "**erdos_191_answer:**\n\nThe answer to Erdős Problem #191 is **YES**.\n\nFor any target sum C > 0, if n is large enough, any 2-coloring of K({2,...,n}) contains a monochromatic subset X with Σ(1/log x) ≥ C.",
     "significance": "key"

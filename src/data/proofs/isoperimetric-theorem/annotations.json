@@ -97,7 +97,7 @@
       "startLine": 168,
       "endLine": 182
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Circle Achieves Optimal Ratio",
     "content": "Verifies that every circle achieves $\\rho = 1/(4\\pi)$. The proof is algebraic: $\\pi r^2 / (2\\pi r)^2 = \\pi r^2 / (4\\pi^2 r^2) = 1/(4\\pi)$, closed by `field_simp` and `ring`.",
     "mathContext": "$\\frac{\\pi r^2}{(2\\pi r)^2} = \\frac{1}{4\\pi}$ — pure algebra confirming the circle saturates the isoperimetric bound.",
@@ -120,7 +120,7 @@
       "startLine": 188,
       "endLine": 233
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Isoperimetric Inequality",
     "content": "**Main Theorem** (Wiedijk #43):\n\n$4\\pi A \\le L^2$ for any simple closed curve. Axiomatized because full proofs require techniques beyond current Mathlib:\n1. **Steiner symmetrization** (1838)\n2. **Fourier/Wirtinger inequality** (Hurwitz 1902)\n3. **Brunn-Minkowski inequality**\n4. **Calculus of variations** (Lagrange multipliers)\n\nThe ratio form $A/L^2 \\le 1/(4\\pi)$ follows as a corollary.",
     "mathContext": "The axiom states $4\\pi A \\le L^2$. Hurwitz's 1902 proof via Fourier analysis: parameterize the curve as $(x(t), y(t))$ with $t \\in [0, 2\\pi]$, expand in Fourier series, and apply Parseval's theorem plus the Wirtinger inequality to bound the area integral.",
@@ -143,7 +143,7 @@
       "startLine": 239,
       "endLine": 276
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Equality Characterization",
     "content": "**Rigidity**: $4\\pi A = L^2$ if and only if the curve is a circle. Defines `IsOptimal` and proves circles satisfy it. The converse (optimality implies circularity) is axiomatized — this is the \"rigidity\" part requiring deeper analysis.",
     "mathContext": "$4\\pi A = L^2 \\iff C$ is a circle. In the Fourier proof, equality in Wirtinger's inequality forces all higher Fourier coefficients to vanish, so the curve must be $x(t) = a\\cos t + c_1$, $y(t) = a\\sin t + c_2$ — a circle of radius $a$.",

@@ -139,7 +139,7 @@
       "startLine": 67,
       "endLine": 74
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "ESS Upper Bound: $O(N^{1/2+\\varepsilon})$ Achievable",
     "content": "Erdős, Sárközy, and Szemerédi showed there exists $A \\subseteq \\mathbb{N}$ with $f_A(N) \\ll_{\\varepsilon} N^{1/2+\\varepsilon}$ for every $\\varepsilon > 0$. This means the non-unique count can be brought very close to $\\sqrt{N}$ — but the extra $N^{\\varepsilon}$ factor cannot be removed by their construction.",
     "mathContext": "$\\exists A \\subseteq \\mathbb{N},\\, \\forall \\varepsilon > 0,\\, \\exists C > 0,\\, \\forall^{\\infty} N,\\, f_A(N) \\leq C N^{1/2 + \\varepsilon}$. The construction uses a probabilistic argument with careful adjustments to reduce collisions.",
@@ -161,7 +161,7 @@
       "startLine": 76,
       "endLine": 81
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "ESS Lower Bound: $\\Omega(N^{1/3-\\varepsilon})$ Infinitely Often",
     "content": "The same ESS construction has $f_A(N) \\gg_{\\varepsilon} N^{1/3-\\varepsilon}$ for infinitely many $N$. This is the best known lower bound and uses the `∃ᶠ` (frequently) quantifier in Lean. The gap between the exponents $1/3$ and $1/2$ is the open territory of the problem.",
     "mathContext": "$\\exists A \\subseteq \\mathbb{N},\\, \\forall \\varepsilon > 0,\\, \\exists C > 0,\\, \\exists^{\\infty} N,\\, f_A(N) \\geq C N^{1/3 - \\varepsilon}$. Note the weaker quantifier: this holds for infinitely many $N$ (not eventually all $N$), unlike conjecture (a).",
@@ -183,7 +183,7 @@
       "startLine": 83,
       "endLine": 88
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős-Freud Finite Analogue",
     "content": "For the finite version (restricting $A \\subseteq \\{1, \\ldots, N\\}$), Erdős and Freud showed there exists $A$ with non-unique count less than $2^{3/2} \\sqrt{N} \\approx 2.83 \\sqrt{N}$. The constant $2^{3/2}$ may be optimal. This gives a concrete bound rather than an asymptotic one.",
     "mathContext": "$\\forall N \\geq 1,\\, \\exists A \\subseteq \\{1, \\ldots, N\\},\\, |\\{1, \\ldots, N\\} \\setminus \\text{uniqueSums}(A)| < 2^{3/2} \\sqrt{N}$. The constant $2^{3/2} = 2\\sqrt{2}$ arises from optimizing the finite construction.",
@@ -205,7 +205,7 @@
       "startLine": 90,
       "endLine": 99
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sidon Set Analysis",
     "content": "Sidon sets (sets where all pairwise sums are distinct) give perfect uniqueness — every sum has exactly one representation. But Sidon sets are too sparse: $|A \\cap \\{1, \\ldots, N\\}| \\leq \\sqrt{N} + O(N^{1/4})$. This means the sumset $A + A$ has at most $\\sim N$ elements, missing about half of $\\{1, \\ldots, N\\}$. So Sidon sets solve the uniqueness problem but fail the coverage problem.",
     "mathContext": "If $A$ is Sidon (i.e., $a+b = c+d,\\, a \\leq b,\\, c \\leq d \\implies a=c \\wedge b=d$), then $\\text{uniqueSums}(A) = A + A$, so $f_A(N) = N - |A + A \\cap [1,N]|$. Since $|A \\cap [1,N]| \\leq \\sqrt{N} + O(N^{1/4})$, we get $|A+A| \\leq N + O(N^{3/4})$, hence $f_A(N) \\geq N/2$ eventually.",

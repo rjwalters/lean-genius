@@ -73,7 +73,7 @@
       "startLine": 112,
       "endLine": 127
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős's Belief (Disproved)",
     "content": "**ErdosBelief, erdos_belief_false:**\n\nErdős originally thought g(n) = Ω(n) - linear growth.\n\nThis was DISPROVED. The density Hales-Jewett theorem implies g(n) = o(n).",
     "mathContext": "Erdős's intuition was wrong on this problem.",
@@ -90,7 +90,7 @@
       "startLine": 133,
       "endLine": 154
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Greedy Lower Bound",
     "content": "**greedy_lower_bound, trivial_lower_bound:**\n\ng(n) ≥ c·√n for some constant c > 0.\n\n**Algorithm:** Pick points one by one, always choosing a point that doesn't form a collinear triple with any two already chosen.\n\nThis is the 'trivial' bound improved by Füredi.",
     "significance": "key",
@@ -106,7 +106,7 @@
       "startLine": 160,
       "endLine": 187
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Füredi's Results (1991)",
     "content": "**furedi_lower_bound, furedi_upper_bound:**\n\n- Lower: g(n) ≥ c·√n·log n (improves greedy by log factor)\n- Upper: g(n) = o(n) (sublinear growth)\n\nThe upper bound uses the density Hales-Jewett theorem.",
     "mathContext": "Published in SIAM J. Discrete Math.",
@@ -123,7 +123,7 @@
       "startLine": 193,
       "endLine": 215
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Density Hales-Jewett Connection",
     "content": "**density_hales_jewett, dhj_implies_sublinear:**\n\nThe DHJ theorem (Furstenberg-Katznelson 1991): For every δ > 0 and k ≥ 2, there exists N such that any δ-dense subset of [k]^N contains a combinatorial line.\n\nThis implies g(n) = o(n) via embedding arguments.",
     "mathContext": "A deep result in Ramsey theory/ergodic theory.",
@@ -140,7 +140,7 @@
       "startLine": 221,
       "endLine": 252
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Balogh-Solymosi (2018)",
     "content": "**balogh_solymosi_2018:**\n\ng(n) ≤ n^(5/6+o(1))\n\nProved using the **container method** (Saxton-Thomason, Balogh-Morris-Samotij).\n\nThis was the FIRST application of containers to discrete geometry.\n\n**Construction:** Random n-element subset of large 3D grid, projected to 2D.",
     "mathContext": "Published in Discrete Analysis.",
@@ -157,7 +157,7 @@
       "startLine": 243,
       "endLine": 252
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Current Best Bounds",
     "content": "**current_bounds:**\n\nn^(1/2)·log n ≪ g(n) ≤ n^(5/6+o(1))\n\nThe gap between exponents 1/2 and 5/6 remains open.",
     "significance": "key",
@@ -205,7 +205,7 @@
       "startLine": 306,
       "endLine": 342
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem Summary",
     "content": "**erdos_589_summary:**\n\n| Aspect | Result |\n|--------|--------|\n| Question | Estimate g(n) |\n| Erdős's belief | g(n) = Ω(n) (WRONG) |\n| Lower bound | c·√n·log n (Füredi) |\n| Upper bound | n^(5/6+o(1)) (Balogh-Solymosi) |\n| Key tools | DHJ, Container method |\n| Status | Partially resolved |",
     "significance": "key",

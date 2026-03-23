@@ -62,7 +62,7 @@
       "startLine": 81,
       "endLine": 92
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős's Unit Disk Construction",
     "content": "**erdos_unit_disk_construction** (axiom): There exists C with 1 < C < 1.33 such that for all n ≥ 2, a sequence with HasFirstOne, AllModulusLeOne, and maxPowerSum < C^{-n} exists.\n\nErdős showed C ≈ 1.32 works when elements are constrained to the unit disk. The construction uses careful placement of points near the boundary of the unit disk to achieve cancellation.\n\n**erdosConstant** = 1.32: the approximate value of Erdős's constant.",
     "mathContext": "In the unit disk, elements can be placed with |z_i| < 1, allowing their powers z_i^k to decay as k grows. This extra flexibility makes the problem solvable.",
@@ -80,7 +80,7 @@
       "startLine": 94,
       "endLine": 107
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "L. Erdős's Unit Circle Bounds (1992)",
     "content": "**M2(n):** The infimum of maxPowerSum over all unit circle sequences with z₁ = 1. This is the fundamental quantity for the |z_i| = 1 case.\n\n**l_erdos_1992_bounds** (axiom): For n ≥ 2, (1.746)^{-n} < M₂(n) < (1.745)^{-n}. These remarkably tight bounds pin down the optimal constant to within 0.001.\n\n**unitCircleConstant** = 1.7455: the approximate optimal constant.",
     "mathContext": "L. Erdős (a relative of Paul Erdős) proved these bounds in 'On some problems of P. Turán' (1992). The lower bound uses geometric arguments about unit complex numbers; the upper bound constructs explicit near-optimal sequences.",
@@ -99,7 +99,7 @@
       "startLine": 109,
       "endLine": 122
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Turán's Lower Bound",
     "content": "**turan_lower_bound** (axiom): For all ε > 0, there exists N such that for n ≥ N and any sequence with HasFirstOne and AllModulusGeOne, maxPowerSum ≥ (2e)^{-(1+ε)n}.\n\nThis is Theorem 6.1 from Turán's book (1984). It says that when |z_i| ≥ 1, the power sums cannot decay faster than approximately (5.44)^{-n}.\n\n**turanConstant** = 2e ≈ 5.44, confirmed by axiom turan_constant_approx.",
     "mathContext": "Turán's method is one of the most powerful tools in analytic number theory. The (1+o(1)) in the exponent means the bound is asymptotically tight up to subexponential factors. The gap between 1.32 (disk) and 5.44 (exterior) shows the dramatic effect of the modulus constraint.",
@@ -136,7 +136,7 @@
       "startLine": 139,
       "endLine": 155
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Roots of Unity as Extremal Candidates",
     "content": "**rootsOfUnitySequence(n):** The n-th roots of unity e^{2πik/n} for k = 0, ..., n-1.\n\n**roots_on_circle** (PROVED): The roots of unity satisfy AllOnUnitCircle. Proof uses Complex.abs_exp and simplification.\n\n**roots_power_sum** (axiom): For n-th roots of unity, the k-th power sum equals n when n | k and 0 otherwise. This is the classical orthogonality relation for roots of unity.",
     "mathContext": "Roots of unity are natural test sequences because their power sums have a clean closed form. However, they are not optimal for the power sum problem since powerSum = n when n | k, giving maxPowerSum = n (which grows rather than decays).",
@@ -154,7 +154,7 @@
       "startLine": 171,
       "endLine": 201
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorems",
     "content": "**erdos_973_unit_disk** (PROVED): Derives the unit disk existence result from erdos_unit_disk_construction by extracting C and the existential.\n\n**erdos_973_turan_constrained** (PROVED): The Turán lower bound, definitionally equal to turan_lower_bound.\n\n**erdos_973** (PROVED): The main summary theorem proving AnswerSummary by combining:\n1. erdos_unit_disk_construction → unit disk result\n2. l_erdos_1992_bounds → unit circle bounds\n3. turan_lower_bound → exterior constraint\n\nThis packages all known results into a single theorem.",
     "mathContext": "The summary theorem demonstrates the logical structure: three independent axioms (one per regime) combine to give a complete picture of what is known about Erdős Problem #973.",

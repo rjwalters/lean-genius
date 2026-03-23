@@ -3,72 +3,144 @@
     "id": "erdos-187-header",
     "proofId": "erdos-187",
     "type": "concept",
-    "range": { "startLine": 1, "endLine": 16 },
+    "range": {
+      "startLine": 1,
+      "endLine": 16
+    },
     "title": "Problem Overview",
     "content": "**Erdős Problem #187** asks for the optimal f(d): the maximum guaranteed length of a monochromatic arithmetic progression (AP) with common difference d in any 2-coloring of ℤ, for infinitely many d.\n\n**Status:** OPEN\n\n**Known:**\n- f(d) → ∞ (van der Waerden 1927)\n- f(d) ≤ (1+o(1))log₂ d (Beck 1980)\n\n**Gap:** No lower bound beyond f(d) → ∞ is known. The conjecture is f(d) = Θ(log d).",
     "mathContext": "$f(d) = \\inf_{\\chi} \\sup\\{k : \\exists a,\\ \\text{IsMonoAP}(\\chi, a, d, k) \\text{ for inf. many } d\\}$; known: $f(d) \\leq (1+o(1))\\log_2 d$ (Beck), $f(d) \\to \\infty$ (van der Waerden); conjectured: $f(d) = \\Theta(\\log d)$",
     "significance": "key",
-    "relatedConcepts": ["van-der-waerden", "arithmetic-progressions", "ramsey-theory", "discrepancy-theory"],
-    "prerequisites": ["van der Waerden's theorem: every finite coloring of ℤ contains monochromatic APs of any length", "the difference between Ramsey theory (existence) and quantitative bounds (rate)", "what Θ(log d) growth means and how it compares to tower-type van der Waerden bounds"]
+    "relatedConcepts": [
+      "van-der-waerden",
+      "arithmetic-progressions",
+      "ramsey-theory",
+      "discrepancy-theory"
+    ],
+    "prerequisites": [
+      "van der Waerden's theorem: every finite coloring of ℤ contains monochromatic APs of any length",
+      "the difference between Ramsey theory (existence) and quantitative bounds (rate)",
+      "what Θ(log d) growth means and how it compares to tower-type van der Waerden bounds"
+    ]
   },
   {
     "id": "erdos-187-definitions",
     "proofId": "erdos-187",
     "type": "definition",
-    "range": { "startLine": 24, "endLine": 43 },
+    "range": {
+      "startLine": 24,
+      "endLine": 43
+    },
     "title": "Colorings and Monochromatic APs",
     "content": "**`TwoColoring`** = ℕ → Fin 2. Each integer gets color 0 or 1.\n\n**`IsMonoAP χ a d k`**: the AP {a, a+d, a+2d, ..., a+(k-1)d} is monochromatic under χ (all same color).\n\n**`maxMonoAPLength χ d`**: supremum of k over all starting points a with IsMonoAP χ a d k.\n\n**`optAPBound d = f(d)`**: infimum of maxMonoAPLength χ d over all 2-colorings χ — the guaranteed minimum.\n\n**Design**: The minimax structure (inf over χ, sup over k and a) captures the worst-case guarantee.",
     "mathContext": "$\\text{IsMonoAP}(\\chi, a, d, k) \\iff \\forall i < k,\\ \\chi(a + i \\cdot d) = \\chi(a)$; $f(d) = \\inf_{\\chi} \\sup_{a,k} \\{k : \\text{IsMonoAP}(\\chi,a,d,k)\\}$",
     "significance": "key",
-    "relatedConcepts": ["two-colouring", "arithmetic-progression", "minimax", "extremal-combinatorics"],
-    "prerequisites": ["arithmetic progressions: definition and notation for AP with first term a, common difference d, length k", "Fin 2 in Lean 4: the type with two elements 0 and 1", "inf/sup in Lean 4 and ℕ: iSup, iInf syntax and semantics"]
+    "relatedConcepts": [
+      "two-colouring",
+      "arithmetic-progression",
+      "minimax",
+      "extremal-combinatorics"
+    ],
+    "prerequisites": [
+      "arithmetic progressions: definition and notation for AP with first term a, common difference d, length k",
+      "Fin 2 in Lean 4: the type with two elements 0 and 1",
+      "inf/sup in Lean 4 and ℕ: iSup, iInf syntax and semantics"
+    ]
   },
   {
     "id": "erdos-187-vdw",
     "proofId": "erdos-187",
-    "type": "theorem",
-    "range": { "startLine": 49, "endLine": 51 },
+    "type": "technique",
+    "range": {
+      "startLine": 49,
+      "endLine": 51
+    },
     "title": "Van der Waerden's Theorem Implication",
     "content": "**Axiom:** For any k₀, there exists d such that f(d) ≥ k₀ — equivalently, f(d) → ∞.\n\n**Origin:** Van der Waerden's 1927 theorem proves this by the Hales-Jewett compactness argument: any 2-coloring of {1,...,N} with N = W(2, k) contains a monochromatic k-AP. Taking d to be any common difference in this AP gives f(d) ≥ k.\n\n**Limitation:** The van der Waerden numbers W(2, k) are tower-type in k, so this gives no quantitative rate for f(d) as a function of d.",
     "mathContext": "$\\forall k_0,\\ \\exists d,\\ f(d) \\geq k_0$; van der Waerden: $\\forall k, r,\\ \\exists N = W(r,k)$ such that any $r$-coloring of $\\{1,\\ldots,N\\}$ contains a monochromatic $k$-AP; for $r=2$: $W(2,k) \\leq 2^{2^{\\cdots}}$ (tower-type)",
     "significance": "key",
-    "relatedConcepts": ["van-der-waerden-numbers", "hales-jewett", "tower-bounds", "compactness"],
-    "prerequisites": ["van der Waerden's theorem statement and what W(r,k) means", "the connection between W(r,k) bounds and quantitative information about f(d)", "why tower-type bounds give no useful rate for f(d)"]
+    "relatedConcepts": [
+      "van-der-waerden-numbers",
+      "hales-jewett",
+      "tower-bounds",
+      "compactness"
+    ],
+    "prerequisites": [
+      "van der Waerden's theorem statement and what W(r,k) means",
+      "the connection between W(r,k) bounds and quantitative information about f(d)",
+      "why tower-type bounds give no useful rate for f(d)"
+    ]
   },
   {
     "id": "erdos-187-beck",
     "proofId": "erdos-187",
-    "type": "theorem",
-    "range": { "startLine": 53, "endLine": 59 },
+    "type": "technique",
+    "range": {
+      "startLine": 53,
+      "endLine": 59
+    },
     "title": "Beck's Upper Bound (1980)",
     "content": "**Axiom:** ∃ C, D₀ such that for all d ≥ D₀, f(d) ≤ C·(log₂ d + 1).\n\n**Proof sketch:** Beck constructs an explicit 2-coloring χ using a probabilistic/discrepancy argument. The key is to control the 'discrepancy' of the coloring on all APs with any fixed difference d simultaneously, bounding the longest monochromatic run to O(log d).\n\n**Significance:** The O(log d) bound is believed tight, but no matching lower bound exists.",
     "mathContext": "$\\exists C, D_0,\\ \\forall d \\geq D_0,\\ f(d) \\leq C(\\log_2 d + 1)$; equivalently $f(d) = O(\\log d)$; Beck's proof uses discrepancy theory: for AP discrepancy $D(\\chi, a, d, k) = |\\sum_{i<k} (-1)^{\\chi(a+id)}|$, a coloring with $D = O(\\sqrt{k})$ everywhere limits mono runs to $O(\\log d)$",
     "significance": "key",
-    "relatedConcepts": ["beck", "discrepancy-theory", "probabilistic-method", "AP-discrepancy"],
-    "prerequisites": ["discrepancy theory basics: measuring how evenly a ±1 sequence distributes over APs", "the probabilistic method in combinatorics: showing a random coloring has desired properties with positive probability", "Beck's 1980 paper 'On arithmetic progressions in random sets'"]
+    "relatedConcepts": [
+      "beck",
+      "discrepancy-theory",
+      "probabilistic-method",
+      "AP-discrepancy"
+    ],
+    "prerequisites": [
+      "discrepancy theory basics: measuring how evenly a ±1 sequence distributes over APs",
+      "the probabilistic method in combinatorics: showing a random coloring has desired properties with positive probability",
+      "Beck's 1980 paper 'On arithmetic progressions in random sets'"
+    ]
   },
   {
     "id": "erdos-187-sqrt2",
     "proofId": "erdos-187",
     "type": "technique",
-    "range": { "startLine": 61, "endLine": 66 },
+    "range": {
+      "startLine": 61,
+      "endLine": 66
+    },
     "title": "Erdős's √2-Coloring Construction",
     "content": "**Axiom:** There exists a 2-coloring χ with optAPBound d ≪ d — specifically, the coloring χ(n) = ⌊√2·n⌋ mod 2.\n\n**Mechanism:** For any AP {a, a+d, ..., a+(k-1)d}, the values {√2·(a+id)} mod 1 are equidistributed by Weyl's theorem (since √2 is irrational). This means the coloring alternates rapidly, limiting the longest monochromatic run.\n\n**Historical role:** This was Erdős's own construction, predating Beck, showing the problem is non-trivial.",
     "mathContext": "$\\chi(n) = \\lfloor \\sqrt{2} \\cdot n \\rfloor \\bmod 2$; Weyl: $\\{\\alpha n d\\}_{n=1}^{N}$ equidistributed mod 1 for irrational $\\alpha$; monochromatic run length in AP with diff $d$: $O(d)$ (from irrationality measure of $\\sqrt{2}$, not optimal $O(\\log d)$)",
     "significance": "supporting",
-    "relatedConcepts": ["equidistribution", "weyl-theorem", "irrational-rotation", "diophantine-approximation"],
-    "prerequisites": ["Weyl's equidistribution theorem: {αn} mod 1 is equidistributed for irrational α", "irrationality measure of √2: how well √2 is approximated by rationals p/q", "why equidistribution limits monochromatic AP length but gives O(d) not O(log d)"]
+    "relatedConcepts": [
+      "equidistribution",
+      "weyl-theorem",
+      "irrational-rotation",
+      "diophantine-approximation"
+    ],
+    "prerequisites": [
+      "Weyl's equidistribution theorem: {αn} mod 1 is equidistributed for irrational α",
+      "irrationality measure of √2: how well √2 is approximated by rationals p/q",
+      "why equidistribution limits monochromatic AP length but gives O(d) not O(log d)"
+    ]
   },
   {
     "id": "erdos-187-conjecture",
     "proofId": "erdos-187",
     "type": "insight",
-    "range": { "startLine": 70, "endLine": 78 },
+    "range": {
+      "startLine": 70,
+      "endLine": 78
+    },
     "title": "Optimal Bound Conjecture: f(d) = Θ(log d)",
     "content": "**ErdosProblem187:** f(d) = Θ(log d) — i.e., ∃ c, C > 0 and D₀ such that c·log₂ d ≤ f(d) ≤ C·log₂ d for all d ≥ D₀.\n\n**Status:** The upper bound C·log₂ d is known (Beck 1980). The lower bound c·log₂ d is **completely open**: no non-trivial lower bound on f(d) is known beyond f(d) → ∞.\n\n**Difficulty:** Proving a lower bound requires showing that every 2-coloring (including Beck's optimal one) must have some difference d with a monochromatic AP of length Ω(log d).",
     "mathContext": "$\\exists c, C > 0, D_0,\\ \\forall d \\geq D_0:\\ c \\log_2 d \\leq f(d) \\leq C \\log_2 d$; upper bound $C \\log_2 d$: known (Beck); lower bound $c \\log_2 d$: open; best known lower: $f(d) \\to \\infty$ (van der Waerden, no quantitative rate)",
     "significance": "key",
-    "relatedConcepts": ["theta-notation", "open-problem", "lower-bound-gap", "ramsey-quantitative"],
-    "prerequisites": ["Θ notation: both O and Ω hold simultaneously", "why proving a lower bound requires handling ALL 2-colorings, including adversarial ones", "the current state of knowledge: upper bound O(log d) known, lower bound open since 1980"]
+    "relatedConcepts": [
+      "theta-notation",
+      "open-problem",
+      "lower-bound-gap",
+      "ramsey-quantitative"
+    ],
+    "prerequisites": [
+      "Θ notation: both O and Ω hold simultaneously",
+      "why proving a lower bound requires handling ALL 2-colorings, including adversarial ones",
+      "the current state of knowledge: upper bound O(log d) known, lower bound open since 1980"
+    ]
   }
 ]

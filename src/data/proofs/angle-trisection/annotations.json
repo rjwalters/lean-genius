@@ -140,7 +140,7 @@
       "startLine": 121,
       "endLine": 130
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "cos(20°) Satisfies the Cubic",
     "content": "`cos_20_satisfies_equation` proves $8\\cos^3(20°) - 6\\cos(20°) - 1 = 0$. The proof applies `triple_angle_formula` at angle20, rewrites using `angle60_eq_three_mul_angle20` and `cos_60_eq_half`, then finishes with `linarith` to combine the algebraic identities.",
     "mathContext": "From $\\cos(3 \\cdot 20°) = 4\\cos^3(20°) - 3\\cos(20°)$ and $\\cos(60°) = 1/2$: substituting gives $1/2 = 4x^3 - 3x$, hence $8x^3 - 6x - 1 = 0$. This makes $\\cos(20°)$ a root of `trisectionPolynomial`.",
@@ -251,7 +251,7 @@
       "startLine": 200,
       "endLine": 214
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Axiom 2 (Irreducibility) and Lindemann's Theorem",
     "content": "Two results complete the algebraic setup:\n\n1. **Axiom 2** (`trisectionPolynomial_irreducible`): The polynomial $8x^3 - 6x - 1$ is irreducible over $\\mathbb{Q}$. Stated as an axiom because Mathlib's irreducibility API for specific polynomials is difficult to interface with `norm_num` verification. The computational evidence (`no_rational_roots`) makes the axiom well-justified: a degree-3 polynomial with no rational roots is irreducible over $\\mathbb{Q}$.\n\n2. **Lindemann's theorem** (`lindemann_pi_transcendental`): $\\pi$ is transcendental over $\\mathbb{Q}$. Unlike the axioms, this is **proved** from the project's own `PiTranscendental` module, which establishes transcendence over $\\mathbb{Z}$ and lifts via `IsFractionRing.isAlgebraic_iff`.",
     "mathContext": "Irreducibility: a cubic $f \\in \\mathbb{Q}[X]$ is irreducible iff it has no root in $\\mathbb{Q}$. Since $\\deg(f) = 3 < 4$, any non-trivial factorization must include a linear factor, hence a rational root. Transcendence: $\\pi \\notin \\overline{\\mathbb{Q}}$ (Lindemann 1882), proved here via Hermite-Lindemann-Weierstrass.",
@@ -274,7 +274,7 @@
       "startLine": 218,
       "endLine": 260
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "3 Is Not a Power of 2 and Non-Constructibility of Degree 3",
     "content": "Four theorems building to the key result:\n1. `three_not_power_of_two`: $\\forall n, 2^n \\neq 3$ (by parity — powers of 2 are even for $n \\geq 1$)\n2. `three_not_dvd_power_of_two`: $\\forall n, 3 \\nmid 2^n$ (by induction using $\\gcd(3,2) = 1$)\n3. `three_dvd_not_dvd_power_of_two`: if $3 \\mid d$ then $d \\nmid 2^n$ (transitivity of divisibility)\n4. `degree_three_not_constructible`: $\\neg\\,\\text{IsConstructible}(\\alpha, 3)$ — the punchline\n\nThese are proved entirely from Lean/Mathlib basics with no axioms.",
     "mathContext": "$2^n \\equiv 0 \\pmod{2}$ for $n \\geq 1$ but $3 \\equiv 1 \\pmod{2}$, so $2^n \\neq 3$. For divisibility: $3$ is prime, $3 \\nmid 2$, so $3 \\nmid 2^n$ by induction on $n$ using `Nat.Prime.dvd_mul`.",
@@ -296,7 +296,7 @@
       "startLine": 266,
       "endLine": 282
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Angle Trisection is Impossible",
     "content": "`cos_20_degree_over_Q` restates `trisectionPolynomial_degree` (degree = 3) for clarity. `angle_trisection_impossible` proves $\\neg\\,\\text{IsConstructible}(\\cos(20°), 3)$ — a one-liner delegating to `degree_three_not_constructible`.\n\nThis is the culmination: cos(20°) satisfies an irreducible degree-3 polynomial, constructible numbers have degree dividing $2^n$, and $3 \\nmid 2^n$. The proof is completely elementary once the pieces are assembled.",
     "mathContext": "The chain: $\\cos(20°)$ is a root of $8x^3 - 6x - 1$ (proved) $\\Rightarrow$ minimal polynomial has degree 3 (from irreducibility axiom) $\\Rightarrow$ $3 \\nmid 2^n$ (proved) $\\Rightarrow$ not constructible.",
@@ -320,7 +320,7 @@
       "startLine": 292,
       "endLine": 306
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Doubling the Cube is Impossible",
     "content": "`cubeDoublingPolynomial` = $X^3 - 2$, verified to have degree 3. `cube_doubling_impossible` proves $\\neg\\,\\text{IsConstructible}(2^{1/3}, 3)$ — same argument as trisection since the degree obstruction is the same.\n\nHistorically, the Delian problem (doubling the altar of Apollo) was a foundational motivation for Greek geometry. Legend attributes it to an oracle's demand during a plague on Delos.",
     "mathContext": "$\\sqrt[3]{2}$ satisfies $x^3 - 2 = 0$, irreducible over $\\mathbb{Q}$ by Eisenstein at $p = 2$ (or rational root theorem: candidates $\\pm 1, \\pm 2$ fail). Degree 3 $\\Rightarrow$ not constructible.",
@@ -341,7 +341,7 @@
       "startLine": 317,
       "endLine": 330
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Squaring the Circle is Impossible",
     "content": "`circle_squaring_impossible` proves non-constructibility of $\\sqrt{\\pi}$ under the assumption $3 \\mid d$ (the degree). `circle_squaring_impossible_deg3` specializes to $d = 3$.\n\nThe deeper result — that $\\sqrt{\\pi}$ is transcendental (hence not constructible for ANY degree) — follows from `lindemann_pi_transcendental` proved above from the PiTranscendental import. This is a stronger impossibility than the algebraic cases.",
     "mathContext": "Lindemann (1882): $\\pi$ is transcendental over $\\mathbb{Q}$. If $\\sqrt{\\pi}$ were algebraic, then $\\pi = (\\sqrt{\\pi})^2$ would be algebraic (algebraic numbers form a field), contradicting transcendence. A transcendental number has no minimal polynomial over $\\mathbb{Q}$, so it cannot be constructible under any degree assumption.",

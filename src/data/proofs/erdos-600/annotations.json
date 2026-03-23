@@ -60,7 +60,7 @@
       "startLine": 101,
       "endLine": 114
     },
-    "type": "conjecture",
+    "type": "concept",
     "title": "The Two Open Questions",
     "content": "**Question1** formalizes: ∀r ≥ 2, ∀M, eventually e(n,r+1) - e(n,r) > M. This asks whether the gap between consecutive thresholds is unbounded. **Question2** formalizes: ∀r ≥ 2, ∀ε > 0, eventually |e(n,r+1)/e(n,r) - 1| < ε. This asks whether consecutive thresholds are asymptotically equivalent. Both remain completely open.",
     "mathContext": "If both questions have positive answers, we get a striking phenomenon: the absolute gap grows without bound, but the relative gap vanishes. This would mean the thresholds grow at the same asymptotic rate but are separated by an amount that increases to infinity. The questions probe the fine structure of extremal thresholds, a type of question that is notoriously difficult in combinatorics.",
@@ -78,7 +78,7 @@
       "startLine": 116,
       "endLine": 154
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Monotonicity and Known Bounds",
     "content": "**e_monotone_r** (axiom): e(n,r) ≤ e(n,r+1). **e_monotone_n** (axiom): e(n,r) ≤ e(n+1,r). **questions_together** (proved): if both questions hold, differences → ∞ but relative differences → 0 (via ⟨h1, h2⟩). **turan_number_bound** (axiom): e(n,r) ≤ n²/4. **upper_bound** (axiom): e(n,r) ≤ Cn²/log n. **lower_bound** (axiom): e(n,r) ≥ cn^{2-o(1)}.",
     "mathContext": "Monotonicity in r follows from the definition: if m edges force some edge into r+1 triangles, they certainly force some edge into r triangles. The Turán bound ex(n,K₃) = ⌊n²/4⌋ gives an absolute upper bound. The refined upper bound n²/log n comes from improvements to Ruzsa-Szemerédi using the regularity lemma. The lower bound n^{2-o(1)} shows the threshold is nearly quadratic.",
@@ -96,7 +96,7 @@
       "startLine": 156,
       "endLine": 179
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_600_summary** packages three known results as a proved conjunction: (1) e(n,r) = o(n²) for fixed r (Ruzsa-Szemerédi), (2) monotonicity in r, (3) monotonicity in n. The proof is exact ⟨fun r hr => ruzsa_szemeredi r hr, e_monotone_r, e_monotone_n⟩.",
     "mathContext": "The three-part conjunction captures the complete known picture: subquadratic growth rate (the main theorem) and structural monotonicity (basic but important properties). The two open questions about differences and ratios are not included since they remain unresolved. This is an open problem — the formalization captures what is known rather than a complete resolution.",

@@ -74,7 +74,7 @@
       "startLine": 83,
       "endLine": 89
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Alon-Erdős (1996)",
     "content": "**First Bounds on f(n):**\n\nAlon and Erdős proved f(n) = n^{1/3+o(1)}, with explicit bounds:\n\n$$\\frac{n^{1/3}}{(\\log n)^{4/3}} \\ll f(n) \\ll \\frac{n^{1/3}}{(\\log n)^{1/3}}(\\log\\log n)^{1/3}$$\n\n**Significance:** This established the cube-root growth rate as the correct order of magnitude.\n\n**Reference:** Alon, N. and Erdős, P., \"Sure monochromatic subset sums\", Acta Arith. (1996), 269-272.",
     "mathContext": "The proof uses probabilistic methods and bounds on subset sums in random colorings.",
@@ -91,7 +91,7 @@
       "startLine": 91,
       "endLine": 95
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Vu (2007)",
     "content": "**Improved Lower Bound:**\n\n$$f(n) \\gg \\frac{n^{1/3}}{\\log n}$$\n\nVu improved the lower bound from n^{1/3}/(log n)^{4/3} to n^{1/3}/log n, closing the gap between upper and lower bounds.\n\n**Reference:** Vu, V.H., \"Some new results on subset sums\", J. Number Theory (2007), 229-233.",
     "significance": "key",
@@ -107,7 +107,7 @@
       "startLine": 97,
       "endLine": 104
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Conlon-Fox-Pham (2021)",
     "content": "**Exact Order of Growth:**\n\n$$f(n) \\asymp \\frac{n^{1/3}(n/\\phi(n))}{(\\log n)^{1/3}(\\log\\log n)^{2/3}}$$\n\nThis determines f(n) up to a multiplicative constant. The factor n/φ(n) (where φ is Euler's totient) captures how the arithmetic structure of n affects the partition problem.\n\n**Reference:** Conlon, D., Fox, J., and Pham, H.T., \"Subset sums, completeness and colorings\", arXiv:2104.14766 (2021).\n\n**This resolves Erdős Problem #360.**",
     "mathContext": "The totient factor arises because numbers with many small prime divisors have more arithmetic constraints on subset sums.",
@@ -141,7 +141,7 @@
       "startLine": 122,
       "endLine": 127
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Prime Totient Ratio",
     "content": "**prime_totient_ratio:**\n\nFor a prime p, φ(p) = p - 1, so:\n\n$$\\frac{p}{\\phi(p)} = \\frac{p}{p-1} \\approx 1$$\n\nThis means for prime n, the n/φ(n) factor contributes little to f(n). The complexity comes from composite n with many factors.",
     "significance": "supporting",
@@ -157,7 +157,7 @@
       "startLine": 135,
       "endLine": 152
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Small Cases",
     "content": "**Explicit Values:**\n\n- **f(2) = 1:** {1} is 2-sum-free (single element can't sum to 2)\n- **f(3) = 1:** {1,2} needs careful analysis - subsets are ∅, {1}, {2}, {1,2} with sums 0, 1, 2, 3\n- **f(4) = 2:** Need 2 classes because {1,3} sums to 4\n\nThese small cases illustrate the basic structure of the problem before asymptotic behavior dominates.",
     "significance": "supporting",
@@ -190,7 +190,7 @@
       "startLine": 166,
       "endLine": 185
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result: Problem Solved",
     "content": "**erdos_360_solved:**\n\nThe theorem confirms that Problem #360 is resolved by showing:\n\n$$c_1 \\cdot \\frac{n^{1/3}}{(\\log n)^{1/3}} \\leq f(n) \\leq c_2 \\cdot \\frac{n^{1/3}}{(\\log n)^{1/3}}$$\n\nfor positive constants c₁, c₂ and sufficiently large n.\n\nThis follows from the Conlon-Fox-Pham result by observing that:\n- n/φ(n) ≥ 1 always\n- (log log n)^{2/3} grows slowly\n\nThe full characterization includes the n/φ(n) factor which captures arithmetic structure.",
     "mathContext": "The simplified bound omits the n/φ(n) and (log log n) factors for clarity, but the full result includes them.",

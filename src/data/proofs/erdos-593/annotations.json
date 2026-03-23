@@ -98,7 +98,7 @@
       "startLine": 74,
       "endLine": 97
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Solved Graph Case: Unavoidable ⟺ Bipartite",
     "content": "For ordinary graphs (2-uniform hypergraphs), the characterization is completely solved: a finite graph G is unavoidable in every graph of uncountable chromatic number if and only if G is bipartite. Non-bipartite graphs (those containing odd cycles) need not appear because there exist triangle-free graphs of arbitrarily large chromatic number, as shown by Erdős's probabilistic construction (1959) and Mycielski's explicit construction (1955).",
     "mathContext": "For 2-uniform: $G$ is unavoidable $\\iff$ $G$ is bipartite ($\\chi(G) \\le 2$). The key is that $\\chi(G) \\ge 3 \\implies \\exists H$ with $\\chi(H) > \\aleph_0$ and $G \\not\\subseteq H$. Erdős showed triangle-free graphs can have $\\chi = \\aleph_1$.",
@@ -121,7 +121,7 @@
       "startLine": 99,
       "endLine": 111
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "2-Colorable Hypergraphs Are Unavoidable",
     "content": "Any 2-colorable (properly 2-chromatic) finite 3-uniform hypergraph is unavoidable. This is the natural analog of the bipartiteness condition: if F can be properly 2-colored, then F must appear in every 3-uniform hypergraph of uncountable chromatic number. The open question is whether this sufficient condition is also necessary, or whether some non-2-colorable hypergraphs are also unavoidable.",
     "mathContext": "$\\mathrm{Is2Colorable}(F) \\implies \\mathrm{IsUnavoidable}(F)$. For 3-uniform $F$, 2-colorability means $\\exists f: V(F) \\to \\{0,1\\}$ with no monochromatic edge. The converse — whether unavoidable implies 2-colorable — is the heart of Problem #593.",

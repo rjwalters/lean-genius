@@ -81,7 +81,7 @@
       "startLine": 56,
       "endLine": 68
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Prime Sequence: Values and Monotonicity",
     "content": "**Three properties of the prime sequence:**\n\n1. **nthPrime_values (sorry):** $p_1=2, p_2=3, p_3=5, p_4=7$\n\n2. **nthPrime_is_prime (axiom):** For $n \\geq 1$, `nthPrime n` is prime\n\n3. **nthPrime_strictMono (axiom):** The sequence $n \\mapsto p_{n+1}$ is strictly monotone\n\nThe `sorry` in `nthPrime_values` is provable via `native_decide` but left for future work.",
     "mathContext": "`StrictMono (fun n => nthPrime (n + 1))` means $p_{n+1} < p_{n+2}$ for all $n$: the shifted sequence is strictly increasing. This rules out repeated primes. The axioms `nthPrime_is_prime` and `nthPrime_strictMono` formalize the two key properties of prime enumeration needed for Pomerance's argument.",
@@ -157,7 +157,7 @@
       "startLine": 91,
       "endLine": 101
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Mutually Exclusive Conjectures",
     "content": "**conjectures_mutually_exclusive:**\n\nThe Erdős-Straus and Selfridge conjectures cannot both be true.\n\n```lean\ntheorem conjectures_mutually_exclusive :\n    ErdosStrausConjecture → ¬SelfridgeConjecture\n```\n\nFully proved (no sorry) using `omega` on integer comparisons. If E-S holds from some N, Selfridge provides n ≥ N with opposing inequality.",
     "mathContext": "$\\text{ErdősStraus} \\Rightarrow \\neg\\text{Selfridge}$. Proof structure: `obtain ⟨N, hN⟩ := hES; obtain ⟨n, hn_ge, hn_all⟩ := hS N`. Then `hN n hn_ge` gives $i$ with $p_n^2 < p_{n+i}p_{n-i}$, while `hn_all i` gives $p_n^2 > p_{n+i}p_{n-i}$. Contradiction discharged by `omega` on $\\mathbb{Z}$ inequalities.",
@@ -207,7 +207,7 @@
       "startLine": 114,
       "endLine": 120
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Ratio Tends to Zero (PNT Consequence)",
     "content": "**logPrime_ratio_tendsto_zero (axiom):**\n\nlog p_n / n → 0 as n → ∞.\n\n```lean\naxiom logPrime_ratio_tendsto_zero :\n    Filter.Tendsto (fun n => logPrime n / n) Filter.atTop (nhds 0)\n```\n\nThis follows from PNT: p_n ~ n log n, so log p_n ~ log n + log log n = o(n). This is the **essential hypothesis** for Pomerance's convex hull lemma.",
     "mathContext": "$\\frac{\\log p_n}{n} \\to 0$. By PNT, $p_n \\sim n \\log n$, giving $\\log p_n \\sim \\log n + \\log \\log n$. Since $\\log n / n \\to 0$, we have $\\log p_n = o(n)$. Formalized using `Filter.Tendsto ... Filter.atTop (nhds 0)` — topological filter convergence.",
@@ -259,7 +259,7 @@
       "startLine": 130,
       "endLine": 136
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Pomerance's Convex Hull Lemma",
     "content": "**pomerance_convex_hull_lemma (axiom):**\n\nFor any sequence with a_n = o(n), there are infinitely many convex hull vertices.\n\n```lean\naxiom pomerance_convex_hull_lemma (a : ℕ → ℝ)\n    (h : Filter.Tendsto (fun n => a n / n) Filter.atTop (nhds 0)) :\n    ∀ N : ℕ, ∃ n ≥ N, IsConvexHullVertex a n\n```\n\nThe geometric core of Pomerance's proof — sublinear growth forces infinitely many hull vertices.",
     "mathContext": "$a_n = o(n) \\Rightarrow$ infinitely many convex hull vertices. Geometric intuition: if $a_n / n \\to 0$, the upper boundary of $\\{(n, a_n)\\}$ must be concave with infinitely many 'bends'. Applied to $a_n = \\log p_n$ with `logPrime_ratio_tendsto_zero`. The cofinal pattern $\\forall N \\exists n \\geq N$ encodes infinitude.",
@@ -286,7 +286,7 @@
       "startLine": 142,
       "endLine": 150
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Convexity Implies Product Bound",
     "content": "**convexity_implies_product_bound (sorry):**\n\nIf (n, log p_n) is a convex hull vertex, then p_n² > p_{n-i}·p_{n+i} for all i.\n\n```lean\ntheorem convexity_implies_product_bound (n : ℕ) (hn : n ≥ 2)\n    (hv : IsConvexHullVertex logPrime n) :\n    ∀ i : ℕ, 0 < i → i < n →\n      (nthPrime n : ℤ) ^ 2 > (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ)\n```\n\nThe `sorry` requires proving `exp` is strictly monotone — mathematically clear but involves real analysis lemmas.",
     "mathContext": "$\\text{IsConvexHullVertex}(\\log p, n) \\Rightarrow \\forall\\, 0 < i < n : p_n^2 > p_{n+i} p_{n-i}$. The key step: $2 \\log p_n > \\log p_{n+i} + \\log p_{n-i}$ (vertex condition) gives $\\log(p_n^2) > \\log(p_{n+i} p_{n-i})$, then strict monotonicity of $\\exp$ gives $p_n^2 > p_{n+i} p_{n-i}$. The `sorry` encapsulates this real analysis step.",
@@ -313,7 +313,7 @@
       "startLine": 152,
       "endLine": 159
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Pomerance's Theorem (1979)",
     "content": "**pomerance_1979 (axiom):**\n\nInfinitely many n have p_n² > p_{n+i}·p_{n-i} for all i < n.\n\n```lean\naxiom pomerance_1979 :\n    ∀ N : ℕ, ∃ n ≥ N,\n      ∀ i : ℕ, 0 < i → i < n →\n        (nthPrime n : ℤ) ^ 2 > (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ)\n```\n\nPublished in 'The prime number graph', Math. Comp. 33 (1979), pp. 399–408.",
     "mathContext": "$\\forall N,\\ \\exists n \\geq N,\\ \\forall\\, 0 < i < n : p_n^2 > p_{n+i} \\cdot p_{n-i}$. Proof chain: `logPrime_ratio_tendsto_zero` → `pomerance_convex_hull_lemma` (infinitely many vertices) → `convexity_implies_product_bound` (vertex ⇒ inequality). The `axiom` here acknowledges that `convexity_implies_product_bound` carries a `sorry`.",
@@ -339,7 +339,7 @@
       "startLine": 161,
       "endLine": 164
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Selfridge Was Correct",
     "content": "**selfridge_correct:**\n\nSelfridge's conjecture is true.\n\n```lean\ntheorem selfridge_correct : SelfridgeConjecture := pomerance_1979\n```\n\nProved by direct term assignment — Pomerance's theorem is definitionally the Selfridge conjecture.",
     "mathContext": "`selfridge_correct : SelfridgeConjecture := pomerance_1979`. Definitionally equal — `pomerance_1979` and `SelfridgeConjecture` have exactly the same type, so no tactics are needed. This is the cleanest possible proof: a one-line term assignment establishing the historical verdict.",
@@ -363,7 +363,7 @@
       "startLine": 166,
       "endLine": 171
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős-Straus Were Wrong",
     "content": "**erdos_straus_wrong:**\n\nThe Erdős-Straus conjecture is false.\n\n```lean\ntheorem erdos_straus_wrong : ¬ErdosStrausConjecture := by\n  intro hES\n  exact conjectures_mutually_exclusive hES selfridge_correct\n```\n\nFollows from mutual exclusivity and Selfridge being correct.",
     "mathContext": "$\\neg\\text{ErdősStraus}$. Proof: assume E-S, apply `conjectures_mutually_exclusive hES` to get $\\neg$Selfridge, contradiction with `selfridge_correct`. The full chain: Pomerance (1979) → Selfridge correct → E-S false. Three lines of Lean encode Pomerance's historical resolution.",
@@ -388,7 +388,7 @@
       "startLine": 177,
       "endLine": 188
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős Problem #453: SOLVED",
     "content": "**erdos_453_solution:**\n\nThe answer to Problem #453 is NO.\n\n```lean\ntheorem erdos_453_solution : ¬ErdosStrausConjecture :=\n  erdos_straus_wrong\n```\n\nIt is NOT true that for all large n, some i exists with p_n² < p_{n+i}·p_{n-i}. Pomerance (1979) proved the opposite holds infinitely often.",
     "mathContext": "$\\neg\\bigl(\\exists N,\\ \\forall n \\geq N,\\ \\exists\\, 0 < i < n : p_n^2 < p_{n+i} p_{n-i}\\bigr)$. The formal resolution of Problem #453: Pomerance's convex hull argument shows there are infinitely many $n$ where $p_n$ is a strict geometric maximum of the sequence, so no such eventually-true statement can hold.",
@@ -412,7 +412,7 @@
       "startLine": 190,
       "endLine": 197
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Infinitely Many Counterexamples (Positive Formulation)",
     "content": "**erdos_453_negative_answer:**\n\nThere are infinitely many n where p_n² dominates ALL symmetric products.\n\n```lean\ntheorem erdos_453_negative_answer :\n    ∀ N : ℕ, ∃ n ≥ N,\n      ∀ i : ℕ, 0 < i → i < n →\n        (nthPrime n : ℤ) ^ 2 > (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ) :=\n  pomerance_1979\n```\n\nThe positive form: directly states the cofinal sequence of counterexamples.",
     "mathContext": "Alternative to the `¬ErdősStraus` formulation. States constructively: for any threshold $N$, there exists $n \\geq N$ beating ALL symmetric products. The term-mode proof `pomerance_1979` shows definitional equality. This formulation is closer to the original Pomerance statement.",
@@ -488,7 +488,7 @@
       "startLine": 239,
       "endLine": 245
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Log-to-Product Bridge",
     "content": "**log_to_product (axiom):**\n\n```lean\naxiom log_to_product (n i : ℕ) (hn : n ≥ 2) (hi : 0 < i ∧ i < n)\n    (h : 2 * logPrime n > logPrime (n - i) + logPrime (n + i)) :\n    (nthPrime n : ℤ) ^ 2 > (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ)\n```\n\nBridges the additive log inequality to the multiplicative prime inequality. The key step in Pomerance's proof.",
     "mathContext": "$2 \\log p_n > \\log p_{n+i} + \\log p_{n-i} \\Rightarrow p_n^2 > p_{n+i} \\cdot p_{n-i}$. Proof: $2 \\log p_n > \\log p_{n+i} + \\log p_{n-i}$ iff $\\log(p_n^2) > \\log(p_{n+i} p_{n-i})$ iff $p_n^2 > p_{n+i} p_{n-i}$ (strict monotonicity of $\\exp$). The `axiom` encapsulates this real analysis step (Real.log_mul, Real.exp_lt_exp).",
@@ -515,7 +515,7 @@
       "startLine": 251,
       "endLine": 261
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Infinite Counterexample Set",
     "content": "**counterexample_set_infinite (fully proved):**\n\nThe set of n violating Erdős-Straus is infinite.\n\n```lean\ntheorem counterexample_set_infinite :\n    {n : ℕ | ∀ i : ℕ, 0 < i → i < n →\n      (nthPrime n : ℤ) ^ 2 > ...}.Infinite := by\n  rw [Set.infinite_iff_nat_lt]\n  intro N\n  obtain ⟨n, hn, h⟩ := pomerance_1979 N\n  exact ⟨n, h, hn⟩\n```\n\nFully proved (no sorry) using `Set.infinite_iff_nat_lt`.",
     "mathContext": "`Set.infinite_iff_nat_lt` converts set infinitude to: $\\forall N,\\ \\exists n \\geq N, n \\in S$. Then `pomerance_1979 N` provides the required $n$. The counterexample set $\\{n \\mid \\forall\\, 0 < i < n : p_n^2 > p_{n+i} p_{n-i}\\}$ is **cofinal** in $\\mathbb{N}$. This is stronger than just 'there are some' — there are arbitrarily large ones.",
@@ -540,7 +540,7 @@
       "startLine": 268,
       "endLine": 275
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem A14 in Guy's UPINT",
     "content": "**guy_problem_A14:**\n\nThis is Problem A14 in Guy's 'Unsolved Problems in Number Theory' (2004).\n\n```lean\ntheorem guy_problem_A14 :\n    -- The Erdős-Straus conjecture is false\n    ¬ErdosStrausConjecture :=\n  erdos_453_solution\n```\n\nConnects to Guy's encyclopedic reference work. Pomerance's 1979 solution predates Guy's 2004 edition.",
     "mathContext": "Richard K. Guy's 'Unsolved Problems in Number Theory' (Springer, 2004) catalogues hundreds of open problems. Problem A14 asks about prime products. The formalization confirms the problem's resolution: the answer is NO, proved by Pomerance. Guy apparently listed it despite Pomerance's 1979 solution — perhaps noting the lack of a constructive or density-theoretic characterization.",
@@ -564,7 +564,7 @@
       "startLine": 281,
       "endLine": 302
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary: Both Conjectures Resolved",
     "content": "**erdos_453_summary:**\n\nCombines both halves of the resolution.\n\n```lean\ntheorem erdos_453_summary :\n    ¬ErdosStrausConjecture ∧ SelfridgeConjecture :=\n  ⟨erdos_straus_wrong, selfridge_correct⟩\n```\n\n**Key Results:**\n1. Erdős-Straus conjecture is FALSE\n2. Selfridge's counter-conjecture is TRUE\n3. Pomerance's proof uses convex hull geometry on (n, log p_n)\n4. Infinitely many n have p_n² > p_{n+i}·p_{n-i} for all i\n5. Problem A14 in Guy's UPINT\n\n**Status:** SOLVED",
     "mathContext": "$\\neg\\text{ErdősStraus} \\wedge \\text{Selfridge}$. Proved by `⟨erdos_straus_wrong, selfridge_correct⟩` — anonymous constructor for `And`. The conjunction packages the complete resolution: the original conjecture is false AND the counter-conjecture is true. Proof chain: PNT ($\\log p_n / n \\to 0$) → convex hull lemma → convexity implies product bound → `pomerance_1979` → both halves.",

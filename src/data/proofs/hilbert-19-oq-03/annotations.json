@@ -50,7 +50,7 @@
       "startLine": 80,
       "endLine": 87
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Uniform Ellipticity Implies Monotonicity",
     "content": "This theorem shows that uniform ellipticity is strictly stronger than degenerate ellipticity (monotonicity). The proof extracts the lower bound lambda(b - a) <= F(b) - F(a), observes that lambda > 0 and b - a >= 0 make the left side nonneg, so F(b) >= F(a). This is a clean linarith argument from the positivity of the ellipticity constant.",
     "mathContext": "\\lambda > 0,\\; a \\le b \\implies \\lambda(b-a) \\ge 0 \\implies F(b) - F(a) \\ge 0",
@@ -139,7 +139,7 @@
       "startLine": 264,
       "endLine": 273
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Viscosity Uniqueness via Double Comparison",
     "content": "Uniqueness of viscosity solutions follows from applying the comparison principle twice. If u and v are both viscosity solutions with the same boundary data, then u <= v (comparing u as subsolution against v as supersolution) and v <= u (comparing v as subsolution against u as supersolution). The linarith tactic closes the proof from these two inequalities. This elegant argument reduces uniqueness entirely to the comparison principle.",
     "mathContext": "u \\le v \\text{ and } v \\le u \\implies u = v \\text{ on } [a,b]",
@@ -161,7 +161,7 @@
       "startLine": 296,
       "endLine": 304
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Evans-Krylov Theorem: C^{2,alpha} Regularity",
     "content": "The Evans-Krylov theorem (1982) is the central result of this formalization. It states that viscosity solutions of uniformly elliptic, convex F(D^2u) = 0 have Holder-continuous second derivatives. This is axiomatized because the proof requires deep PDE analysis (Krylov-Safonov Harnack inequality, Ishii-Lions method). The theorem is the fully nonlinear counterpart of De Giorgi-Nash regularity for divergence-form equations.",
     "mathContext": "F \\text{ convex, uniformly elliptic} \\implies u \\in C^{2,\\alpha} \\text{ for some } \\alpha \\in (0,1]",
@@ -207,7 +207,7 @@
       "startLine": 390,
       "endLine": 398
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bellman Equations: Why Convexity Is Natural",
     "content": "The supremum of affine (linear + constant) functions is convex, which explains why the Evans-Krylov hypothesis of convexity is not merely technical. Bellman equations from stochastic optimal control take the form F(M) = sup_alpha L_alpha(M), where each L_alpha is linear in M. This theorem proves the pointwise convexity inequality, showing that the most important class of fully nonlinear PDEs in applications automatically satisfies the Evans-Krylov condition.",
     "mathContext": "F(M) = \\sup_\\alpha L_\\alpha(M), \\quad L_\\alpha \\text{ affine} \\implies F \\text{ convex}",
@@ -231,7 +231,7 @@
       "startLine": 347,
       "endLine": 349
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "ABP Maximum Principle: Foundation of Nonlinear Regularity",
     "content": "The Alexandrov-Bakelman-Pucci (ABP) maximum principle is the foundational estimate for all fully nonlinear regularity theory. It controls the supremum of a subsolution u by its boundary values plus an $L^n$ norm of the right-hand side $f$, using the contact set (where the convex envelope of $u$ touches $u$). In 1D, this simplifies to: $\\max u \\leq \\max(u(a), u(b)) + C \\|f\\|$. The ABP estimate replaces the energy methods used for divergence-form equations, which are unavailable in the fully nonlinear setting.",
     "mathContext": "$\\sup_{\\Omega} u \\leq \\sup_{\\partial\\Omega} u^+ + C \\|f\\|_{L^n(\\Gamma^+)}$ where $\\Gamma^+$ is the upper contact set of $u$",
@@ -255,7 +255,7 @@
       "startLine": 373,
       "endLine": 376
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Krylov-Safonov Harnack Inequality",
     "content": "The Krylov-Safonov Harnack inequality (1980) is the nondivergence-form analog of the De Giorgi-Nash-Moser theory. It states that non-negative solutions of $M^-(D^2 u) \\leq 0 \\leq M^+(D^2 u)$ satisfy $\\sup u \\leq C \\inf u$ on interior subdomains. The constant $C$ depends only on dimension, ellipticity ratio $\\Lambda/\\lambda$, and the ratio of domain sizes. This Harnack inequality implies Holder continuity (oscillation decay) via the standard iteration argument, providing $C^\\alpha$ regularity for solutions of uniformly elliptic equations without any convexity assumption.",
     "mathContext": "$u \\geq 0,\\; M^-(D^2u) \\leq 0 \\leq M^+(D^2u) \\implies \\sup_{B_{r/2}} u \\leq C \\inf_{B_{r/2}} u$",
@@ -303,7 +303,7 @@
       "startLine": 468,
       "endLine": 475
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Hilbert's 19th Problem: Fully Nonlinear Extension",
     "content": "The main theorem of the formalization: for convex, uniformly elliptic $F$ with smooth coefficients, viscosity solutions of $F(u'') = 0$ are $C^\\infty$. This directly extends Hilbert's 19th problem from the quasilinear (divergence-form) setting resolved by De Giorgi-Nash-Moser (1957-58) to the fully nonlinear convex setting. The proof is a one-line appeal to the regularity chain theorem, composing Evans-Krylov ($C^{2,\\alpha}$) with Schauder bootstrap ($C^\\infty$).",
     "mathContext": "$F$ convex, uniformly elliptic, $F \\in C^\\infty \\implies$ viscosity solutions of $F(u'') = 0$ are $C^\\infty$",

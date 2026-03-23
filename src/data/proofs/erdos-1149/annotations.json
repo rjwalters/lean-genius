@@ -37,7 +37,7 @@
       "startLine": 50,
       "endLine": 81
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Bergelson-Richter Theorem and Erdős #1149",
     "content": "bergelson_richter (axiom): For non-integer α > 0, the natural density of {n : gcd(n, ⌊n^α⌋) = 1} is 6/π². Axiomatized because the proof uses deep ergodic theory.\n\ndensity_equals_inv_zeta2: 6/π² = 1/(π²/6) by ring — connecting to ζ(2) = π²/6.\n\nerdos_1149_solved: Direct wrapper applying the axiom, marking the problem as SOLVED.",
     "mathContext": "Bergelson and Richter (2017) proved this using the theory of multiplicative functions along polynomial sequences: $\\frac{1}{N}\\sum_{n=1}^{N} f(n)g(\\lfloor n^\\alpha \\rfloor)$ converges for bounded multiplicative functions $f, g$. Setting $f = g = \\mu^2 \\cdot 1_{\\gcd=1}$ gives the coprime density.",
@@ -67,7 +67,7 @@
       "startLine": 83,
       "endLine": 97
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Density Bounds: 0 < 6/π² < 1",
     "content": "density_pos: 6/π² > 0 from π² > 0 (positivity of π).\n\ndensity_lt_one: 6/π² < 1 using π > 3 (from Real.pi_gt_three). Since π > 3, we get π² > 9 > 6, so 6/π² < 1. The proof uses nlinarith to conclude from the chain 6 < 9 = 3² < π².",
     "mathContext": "The density $6/\\pi^2 \\approx 0.6079$ lies strictly between 0 and 1. The bound $6/\\pi^2 < 1$ (equivalently $\\pi^2 > 6$, or $\\pi > \\sqrt{6} \\approx 2.449$) is much weaker than $\\pi > 3$, but the latter is available in Mathlib and gives a clean proof.",
@@ -97,7 +97,7 @@
       "startLine": 99,
       "endLine": 110
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Integer Exponent Exclusion",
     "content": "integer_alpha_trivial: For positive integer k and n > 1, gcd(n, n^k) ≠ 1. Since n | n^k (by dvd_pow_self), we get n | gcd(n, n^k). If gcd(n, n^k) = 1, then n | 1, contradicting n > 1.\n\nThis justifies the non-integer hypothesis: for integer α, the coprime set would be {1}, with density 0.",
     "mathContext": "When $\\alpha = k \\in \\mathbb{Z}_{>0}$, $\\lfloor n^k \\rfloor = n^k$ exactly, so $\\gcd(n, n^k) = n$. Only $n = 1$ satisfies coprimality, giving density 0. The non-integer condition is therefore necessary for the 6/$\\pi^2$ result.",

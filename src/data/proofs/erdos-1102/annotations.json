@@ -78,7 +78,7 @@
       "startLine": 71,
       "endLine": 84
     },
-    "type": "example",
+    "type": "context",
     "title": "Squarefree Examples",
     "content": "We verify that 1, 2, 6 are squarefree (no square factor > 1) while 4 = 2² and 12 = 4·3 are not. The `native_decide` tactic computes these directly.",
     "mathContext": "Checking squarefreeness: trial divide by 4, 9, 25, ... up to n. For small n, this is efficient. For large n, factorization is needed.",
@@ -113,7 +113,7 @@
       "startLine": 95,
       "endLine": 101
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Property P Implies Density Zero",
     "content": "**van Doorn-Tao:** Any sequence with property P has density 0, meaning aⱼ/j → ∞ as j → ∞.",
     "mathContext": "The proof shows that for any P-sequence, the counting function A(x) = |{a ∈ A : a ≤ x}| satisfies A(x)/x → 0.",
@@ -131,7 +131,7 @@
       "startLine": 103,
       "endLine": 111
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Arbitrarily Slow Decay for P",
     "content": "**van Doorn-Tao:** For any function f → ∞, there exists a P-sequence with aⱼ/j ≤ f(j). P-sequences can have density going to 0 arbitrarily slowly.",
     "mathContext": "This is an existence result using probabilistic or greedy construction. The sequence is not given explicitly.",
@@ -149,7 +149,7 @@
       "startLine": 113,
       "endLine": 119
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Property Q Upper Density Bound",
     "content": "**van Doorn-Tao:** Any Q-sequence has upper density at most 6/π². The squarefree numbers achieve this bound exactly.",
     "mathContext": "For random n, the probability that n + a is squarefree for all small a depends on the density of A. Optimizing gives the 6/π² bound.",
@@ -167,7 +167,7 @@
       "startLine": 131,
       "endLine": 143
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Squarefree Numbers Form a Q-Sequence",
     "content": "**Derived theorem:** The squarefree numbers {1, 2, 3, 5, 6, 7, 10, ...} form a sequence with property Q. This is a direct consequence of the existence axiom.",
     "mathContext": "The proof uses the Lean `obtain` tactic to destructure the existence axiom, then recombines the components in the desired order.",
@@ -185,7 +185,7 @@
       "startLine": 145,
       "endLine": 152
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Optimal Density Exists",
     "content": "**Derived theorem:** There exists a Q-sequence achieving the maximum possible density 6/π². Combined with the upper bound, this shows 6/π² is the exact optimal value.",
     "mathContext": "This theorem extracts the limit statement from the existence axiom, confirming the squarefree numbers achieve the theoretical maximum.",
@@ -203,7 +203,7 @@
       "startLine": 164,
       "endLine": 170
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Special Sequences Have Property Q",
     "content": "The sequences 2ⁿ ± 1 and n! ± 1 have property Q. These grow fast enough that infinitely many n have all translates squarefree. Whether they have property P remains open.",
     "mathContext": "Fast growth ensures the sequence is sparse, making it easier to find n where all a ∈ A ∩ [1,n) give n + a squarefree.",

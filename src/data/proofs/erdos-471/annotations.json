@@ -60,7 +60,7 @@
       "startLine": 89,
       "endLine": 121
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Vinogradov's Theorem (Three Forms)",
     "content": "**Three axiomatized forms of Vinogradov's theorem, each strengthening the last:**\n\n1. **vinogradov_three_primes:** Every large odd n = p + q + r for primes p, q, r. This is the classical 1937 result.\n\n2. **vinogradov_distinct:** The primes can be chosen pairwise distinct (p ≠ q ≠ r ≠ p). This follows from the basic version by a counting argument.\n\n3. **vinogradov_smaller_primes:** For large primes p, the summands q₁, q₂, q₃ can all be chosen strictly less than p. This is the crucial form — it means large primes *decompose* into smaller ones.\n\nAll three are axiomatized because Vinogradov's theorem requires deep analytic number theory (exponential sums, circle method) far beyond current Mathlib.",
     "mathContext": "Vinogradov's theorem is one of the landmark results of 20th-century number theory. The proof uses the Hardy-Littlewood circle method with exponential sum estimates. Helfgott (2013) proved the theorem for all odd n > 5, removing the 'sufficiently large' qualifier.",
@@ -79,7 +79,7 @@
       "startLine": 123,
       "endLine": 173
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Solution: vinogradovQ₀ Construction",
     "content": "**The elegant solution constructs Q₀ from Vinogradov's constant:**\n\n**vinogradovQ₀** = {p prime : p ≤ N} where N = Classical.choose vinogradov_smaller_primes.\n\n**vinogradovQ₀_finite** (proved): This set is finite — there are only finitely many primes ≤ N.\n\n**all_primes_in_QLim** (axiom): Every prime appears in Q∞. The argument: by strong induction, any prime p > N decomposes as p = q₁ + q₂ + q₃ with smaller primes, which are in some Qᵢ, so p ∈ Q_{i+1}.\n\n**ulams_question_positive** (axiom): YES, there exists Q₀ making |Qᵢ| → ∞.\n\n**stronger_question_positive** (proved): Q∞ contains ALL primes. This follows directly from vinogradovQ₀_finite and all_primes_in_QLim.",
     "mathContext": "The use of Classical.choose extracts the Vinogradov constant N from the existential. The finiteness proof uses Finset.filter on Finset.range to construct a witnessing finite set. The stronger theorem is proved constructively from the axiom.",
@@ -97,7 +97,7 @@
       "startLine": 175,
       "endLine": 221
     },
-    "type": "proof",
+    "type": "technique",
     "title": "Concrete Examples: Q₁ from {3, 5, 7, 11}",
     "content": "**Ulam's original test case Q₀ = {3, 5, 7, 11} is explored concretely:**\n\n**Q1_contains_19** (fully proved): 3 + 5 + 11 = 19 is prime, so 19 ∈ Q₁. The proof uses Nat.prime_def_lt'' with norm_num and interval_cases to verify primality.\n\n**Q1_contains_23** (fully proved): 5 + 7 + 11 = 23 is prime, so 23 ∈ Q₁.\n\n**ulam_example_contains_all_primes** (axiom): Conjectured that Q∞ from {3, 5, 7, 11} contains all primes ≥ 3. This is a computational question — the sequence grows quickly enough that it likely captures everything.\n\nNote that 2 can never appear (it's even, and sums of three odd primes are always odd), which is why the axiom requires p ≥ 3.",
     "mathContext": "The proofs demonstrate Lean 4 tactics for computational primality: norm_num for arithmetic, interval_cases for exhaustive case analysis on small ranges, and simp for set membership in finite sets like {3, 5, 7, 11}.",
@@ -115,7 +115,7 @@
       "startLine": 223,
       "endLine": 249
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Structural Properties (Fully Proved)",
     "content": "**Two important structural properties, both proved by induction:**\n\n**QSeq_monotone:** Qᵢ ⊆ Qᵢ₊₁ for all i. The proof is immediate from the definition: nextQ(Q) = Q ∪ {...} ⊇ Q. Once a prime enters the sequence, it stays forever.\n\n**QSeq_primes:** If Q₀ contains only primes, then every Qᵢ contains only primes. The base case is the hypothesis on Q₀. The inductive step uses the fact that nextQ only adds elements p with Nat.Prime p.\n\nThese properties are key for reasoning about the sequence: monotonicity guarantees no information is lost, and the primality invariant ensures the sequence stays within the primes.",
     "mathContext": "Both proofs use straightforward structural induction on i. QSeq_monotone unfolds one step and uses Set.subset_union_left. QSeq_primes uses case analysis on the union to show primality is preserved.",
@@ -133,7 +133,7 @@
       "startLine": 272,
       "endLine": 300
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_471_summary combines three key results into a single conjunction:**\n\n1. **StrongerQuestion holds:** Q∞ contains all primes (from stronger_question_positive)\n2. **Monotonicity:** Qᵢ ⊆ Qᵢ₊₁ for all Q₀ and i (from QSeq_monotone)\n3. **Primality preservation:** If Q₀ has only primes, so does every Qᵢ (from QSeq_primes)\n\nThe proof is a simple tuple: ⟨stronger_question_positive, QSeq_monotone, ...⟩. This theorem serves as the formal capstone of the formalization, summarizing that Erdős Problem #471 is completely resolved.",
     "mathContext": "The summary packages three orthogonal results. The conjunction type A ∧ B ∧ C is constructed with anonymous constructor ⟨a, b, c⟩. This is a common pattern for 'summary theorems' in formalizations.",

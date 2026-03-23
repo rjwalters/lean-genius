@@ -65,7 +65,7 @@
       "startLine": 59,
       "endLine": 93
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Cochromatic Number",
     "content": "**axiom cochromaticNumber G : ℕ**\n\nThe minimum colors needed so each color class is cochromatic-valid.\n\n**Key property**: ζ(G) ≤ χ(G) always.\n\nEvery proper (chromatic) coloring is a cochromatic coloring since independent sets are cochromatic-valid.\n\nSo cochromatic number is a relaxation of chromatic number.",
     "mathContext": "The cochromatic number was introduced to study graph structure. It can be much smaller than chromatic number for graphs with large cliques.",
@@ -146,7 +146,7 @@
       "startLine": 131,
       "endLine": 151
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Maximum Cochromatic Number z(S_n)",
     "content": "**axiom maxCochromaticNumber n : ℕ**\n\nz(S_n) = max{ζ(G) : G embeddable on S_n}\n\n**Properties**:\n- maxCochromatic_realizes: The maximum is achieved\n- maxCochromatic_upper: All embeddable G have ζ(G) ≤ z(S_n)\n\nThe question: How does z(S_n) grow with n?",
     "mathContext": "Extremal graph theory asks for maximum values of graph parameters under constraints. Here the constraint is surface embeddability.",
@@ -194,7 +194,7 @@
       "startLine": 178,
       "endLine": 191
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Gimbel's Lower Bound (1986)",
     "content": "**axiom gimbel_lower_bound**: z(S_n) ≥ c · √n / log n\n\n**Construction idea**: Use high-girth graphs embeddable on S_n.\n\nHigh-girth graphs have:\n- Low chromatic number (no small cliques)\n- High cochromatic number (forced to use many colors)\n\nThis gives z(S_n) ≫ √n / log n.",
     "mathContext": "Gimbel's 1986 paper 'Three extremal problems in cochromatic theory' established this lower bound using probabilistic existence arguments.",
@@ -218,7 +218,7 @@
       "startLine": 193,
       "endLine": 201
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Gimbel's Upper Bound (1986)",
     "content": "**axiom gimbel_upper_bound**: z(S_n) ≤ C · √n\n\nThis was the initial upper bound - weaker by a factor of log n.\n\n**Proof idea**: Use Euler's formula to bound graph density on S_n, then bound cochromatic number in terms of density.\n\n**The gap**: √n/log n vs √n - which is correct?",
     "mathContext": "The log n gap between bounds was the key open question. Either the lower or upper bound needed improvement.",
@@ -242,7 +242,7 @@
       "startLine": 203,
       "endLine": 224
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Gimbel-Thomassen Theorem (1997)",
     "content": "**axiom gimbel_thomassen_theorem**: z(S_n) ≍ √n / log n\n\nThey proved the tight upper bound: z(S_n) ≤ C · √n / log n.\n\n**Key insight**: The log n factor in the lower bound is essential!\n\n**theorem erdos759_answer : erdos759Question**\nFollows from gimbel_thomassen_theorem.\n\nThe problem is completely resolved.",
     "mathContext": "The 1997 paper 'Coloring graphs with fixed genus and girth' appeared in Trans. Amer. Math. Soc. The proof uses deep structural arguments about surface embeddings.",
@@ -273,7 +273,7 @@
       "startLine": 226,
       "endLine": 251
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Heawood Number",
     "content": "**axiom heawood_number n : ℕ**\n\nH(n) = ⌊(7 + √(1 + 48n)) / 2⌋\n\nThis is the maximum chromatic number for graphs on S_n (for n ≥ 1).\n\n**Heawood Conjecture** (proved): χ(G) ≤ H(n) for G on S_n.\n\n**Ringel-Youngs** (1968): The bound is achieved - K_{H(n)} embeds on S_n.\n\n**Note**: H(n) = Θ(√n), while z(S_n) = Θ(√n / log n).",
     "mathContext": "The Heawood conjecture and Ringel-Youngs theorem are landmarks of topological graph theory, completing the map coloring problem for surfaces.",
@@ -297,7 +297,7 @@
       "startLine": 252,
       "endLine": 260
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Girth and Cochromatic Number",
     "content": "**axiom high_girth_cochromatic**: Girth affects cochromatic number.\n\n**High girth** = no short cycles.\n\n**Effect on coloring**:\n- Low chromatic number (Erdős: χ ≤ O(n^{1-1/g}))\n- But cochromatic number can still be high\n\nHigh-girth graphs achieve the lower bound for z(S_n).",
     "mathContext": "Girth is the length of the shortest cycle. High-girth graphs are sparse but can be hard to cochromatic-color.",
@@ -321,7 +321,7 @@
       "startLine": 262,
       "endLine": 273
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Why √n / log n?",
     "content": "**axiom growth_rate_intuition**: Understanding the growth rate.\n\n**The √n**: Comes from Euler's formula constraints on S_n.\nMaximum vertices in dense graphs is O(n).\nSquare root appears in many surface graph bounds.\n\n**The log n**: Comes from girth considerations.\nHigh-girth graphs (which achieve the lower bound) have this factor.\n\nTogether: √n / log n is the natural growth rate.",
     "mathContext": "The interplay between density (√n) and local structure (log n factor) determines the cochromatic behavior.",
@@ -345,7 +345,7 @@
       "startLine": 275,
       "endLine": 282
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Planar Case",
     "content": "**axiom planar_cochromatic_bounded**: z(S_0) is bounded.\n\nFor planar graphs:\n- χ ≤ 4 (4-color theorem)\n- ζ ≤ χ ≤ 4\n\nSo cochromatic number of planar graphs is at most 4.\n\nThe interesting growth happens for n ≥ 1.",
     "mathContext": "Planar graphs are the special case n = 0. Their bounded chromatic number implies bounded cochromatic number.",
@@ -368,7 +368,7 @@
       "startLine": 284,
       "endLine": 298
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary of Results",
     "content": "**theorem erdos_759_summary** combines:\n\n1. **Gimbel lower**: z(S_n) ≥ c · √n / log n (1986)\n2. **Gimbel-Thomassen**: z(S_n) ≍ √n / log n (1997)\n\n**The resolution**: The lower bound is tight.\n\nThe maximum cochromatic number on genus-n surfaces grows like √n / log n.",
     "mathContext": "The summary packages the key results. The 11-year gap between Gimbel's bounds and the resolution shows the difficulty of the upper bound.",
@@ -392,7 +392,7 @@
       "startLine": 300,
       "endLine": 312
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result: erdos_759",
     "content": "**theorem erdos_759 : erdos759Question**\n\n**Statement**: z(S_n) ≍ √n / log n.\n\nThere exist constants c₁, c₂ > 0 such that for all n ≥ 2:\nc₁ · √n / log n ≤ z(S_n) ≤ c₂ · √n / log n\n\n**Status**: SOLVED (Gimbel-Thomassen 1997)",
     "mathContext": "This is the formal statement that completely determines the growth rate of maximum cochromatic number on surfaces.",
@@ -440,7 +440,7 @@
       "startLine": 85,
       "endLine": 93
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Chromatic vs Cochromatic",
     "content": "**axiom cochromatic_le_chromatic**: ζ(G) ≤ χ(G)\n\n**Why?** Independent sets are cochromatic-valid.\nSo any chromatic coloring is also cochromatic.\n\n**On surfaces**:\n- max χ on S_n = H(n) = Θ(√n)\n- max ζ on S_n = z(S_n) = Θ(√n / log n)\n\nCochromatic grows more slowly by factor log n!",
     "mathContext": "The log n difference between χ and ζ extremals shows that cochromatic number captures different graph structure than chromatic number.",

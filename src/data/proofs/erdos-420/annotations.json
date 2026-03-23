@@ -75,7 +75,7 @@
       "startLine": 116,
       "endLine": 126
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Easy Result: F(√n, n) → ∞",
     "content": "**sqrt_gives_infinity:**\n\nWhen f(n) = √n, the ratio F grows without bound.\n\n**Statement:**\n```lean\naxiom sqrt_gives_infinity :\n    ∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → F (√·) n > M\n```\n\nErdős and Graham note this is \"easy to show.\" The exponent 1/2 can even be reduced to 1/2 - c for some small c > 0.\n\n**Intuition:** √n new integers contribute many new prime factors to the factorial.",
     "significance": "key",
@@ -91,7 +91,7 @@
       "startLine": 142,
       "endLine": 151
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "EGIP96: liminf F(c log n, n) = 1",
     "content": "**liminf_log_equals_one:**\n\nFor any constant c > 0, F(c log n, n) can get arbitrarily close to 1 along subsequences.\n\n**Statement:**\n```lean\naxiom liminf_log_equals_one :\n    ∀ c : ℝ, c > 0 →\n      ∀ ε : ℝ, ε > 0 → ∃ᶠ n, F (c * log(·)) n < 1 + ε\n```\n\n**Meaning:** Even when f(n) = c log n, the ratio F doesn't always grow - it repeatedly returns close to 1.",
     "mathContext": "This is proved in Erdős-Graham-Ivić-Pomerance (1996).",
@@ -109,7 +109,7 @@
       "startLine": 153,
       "endLine": 160
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "EGIP96: lim F(n^{4/9}, n) = ∞",
     "content": "**four_ninths_gives_infinity:**\n\nWhen f(n) = n^{4/9}, the ratio F grows without bound.\n\n**Statement:**\n```lean\naxiom four_ninths_gives_infinity :\n    ∀ M : ℝ, ∃ N : ℕ, ∀ n ≥ N, F (·^{4/9}) n > M\n```\n\n**Note:** The exponent 4/9 ≈ 0.444 can be improved slightly. There's a gap between this and √n (exponent 1/2).",
     "mathContext": "This establishes an upper bound on the \"critical exponent\" for F → ∞.",
@@ -126,7 +126,7 @@
       "startLine": 162,
       "endLine": 173
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "EGIP96: F ≈ 1 for Almost All n",
     "content": "**small_f_gives_one_almost_all:**\n\nIf f(n) = o((log n)²), then F(f,n) ≈ 1 for almost all n.\n\n**Meaning:** The exceptional set where F differs significantly from 1 has density 0.\n\n**Interpretation:** For slowly growing f, the divisor ratio is close to 1 \"most of the time,\" even though limsup can be large.",
     "mathContext": "\"Almost all\" means density 1 - all but a negligible set of integers.",
@@ -144,7 +144,7 @@
       "startLine": 179,
       "endLine": 190
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bounded Prime Gaps Implication",
     "content": "**bounded_gaps_implies_limsup_infinity:**\n\nIf there exist infinitely many bounded prime gaps (which is now known!), then limsup F(g(n), n) = ∞ for any g(n) → ∞.\n\n**Connection:** When p and p+k are both prime with k bounded, the transition from p! to (p+k)! involves no new primes, affecting divisor structure.\n\n**Consequence:** Since Zhang proved bounded gaps exist, this applies!",
     "mathContext": "Prime gaps directly affect how τ(n!) changes as n increases.",
@@ -162,7 +162,7 @@
       "startLine": 192,
       "endLine": 198
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Zhang's Bounded Gaps Theorem",
     "content": "**zhang_bounded_gaps:**\n\nThere exist infinitely many pairs of primes differing by at most 70,000,000.\n\n```lean\naxiom zhang_bounded_gaps : ∃ k : ℕ, k ≤ 70000000 ∧\n    ∃ᶠ p, p.Prime ∧ (p + k).Prime\n```\n\n**History:** Proved by Yitang Zhang in 2013, later improved to 246 by the Polymath project.\n\n**Impact:** This landmark result has consequences for Problem #420!",
     "mathContext": "Zhang's theorem resolved a century-old question about bounded prime gaps.",
@@ -180,7 +180,7 @@
       "startLine": 200,
       "endLine": 211
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Corollary of Zhang's Theorem",
     "content": "**bounded_gaps_consequence:**\n\nZhang's theorem implies limsup F(g(n), n) = ∞ for any g(n) → ∞.\n\n```lean\ntheorem bounded_gaps_consequence :\n    ∀ g : ℕ → ℝ, (∀ M, ∃ N, ∀ n ≥ N, g n > M) →\n      ∀ M : ℝ, ∃ᶠ n, F g n > M\n```\n\n**This is a theorem, not an axiom!** It follows from zhang_bounded_gaps and bounded_gaps_implies_limsup_infinity.",
     "significance": "key",
@@ -196,7 +196,7 @@
       "startLine": 213,
       "endLine": 223
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Cramér's Conjecture Implication",
     "content": "**cramer_implies_limit_infinity:**\n\nIf Cramér's conjecture holds (prime gaps are O((log p)²)), then lim F(g(n)·(log n)², n) = ∞ for any g(n) → ∞.\n\n**Cramér's Conjecture:** The gap between consecutive primes p and q satisfies q - p = O((log p)²).\n\n**Implication:** This would pin down the critical threshold for F → ∞ much more precisely.",
     "mathContext": "Cramér's conjecture remains unproved but is widely believed.",
@@ -229,7 +229,7 @@
       "startLine": 261,
       "endLine": 271
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős Problem #420: Partially Solved",
     "content": "**erdos_420:**\n\nThe problem is partially solved.\n\n**What's Known:**\n- liminf F(c log n, n) = 1 for any c > 0\n- lim F(n^{4/9}, n) = ∞\n- F ≈ 1 almost always for f = o((log n)²)\n\n**What's Open:**\n- Behavior for f between log n and n^{4/9}\n- Density questions",
     "significance": "key",

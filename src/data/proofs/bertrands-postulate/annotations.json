@@ -47,7 +47,7 @@
       "startLine": 54,
       "endLine": 61
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Main Statement",
     "content": "**Bertrand's Postulate**: For any positive natural number $n$, there exists a prime $p$ with $n < p \\leq 2n$.\n\n```lean\ntheorem bertrand_postulate (n : ℕ) (hn : 0 < n) :\n    ∃ p, Nat.Prime p ∧ n < p ∧ p ≤ 2 * n\n```\n\nWe wrap Mathlib's `Nat.exists_prime_lt_and_le_two_mul`, converting the hypothesis from `n ≠ 0` to `0 < n`.",
     "mathContext": "$\\exists p \\text{ prime}: n < p \\leq 2n$",
@@ -172,7 +172,7 @@
       "startLine": 99,
       "endLine": 106
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "No Largest Prime (via Bertrand)",
     "content": "Another formulation of the infinitude of primes: there is no largest prime number. Proved by contradiction — if $p$ were the largest prime, `primes_infinite_via_bertrand` produces a prime $q > p$, contradicting maximality. The `omega` tactic closes the final numerical contradiction $q \\leq p$ vs $q > p$.",
     "mathContext": "$\\neg\\exists p \\text{ prime}: \\forall q \\text{ prime},\\, q \\leq p$. Equivalent to: $\\forall N, \\exists p > N$ prime.",

@@ -77,7 +77,7 @@
       "startLine": 83,
       "endLine": 88
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Convergence Axiom",
     "content": "We **axiomatize** that the Erdős sum converges (is summable). This follows from the prime number theorem: pₙ ~ n ln n, so pₙ/2ⁿ is eventually dominated by any geometric series with ratio > 1/2.",
     "mathContext": "The ratio test shows Σ n ln n / 2ⁿ converges since (n+1)ln(n+1)/n ln n → 1 as n → ∞, and the limiting ratio 1/2 < 1.",
@@ -95,7 +95,7 @@
       "startLine": 99,
       "endLine": 106
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Partial Sum Verification",
     "content": "We verify that the first 5 terms sum to **101/32 ≈ 3.15625**. This is computed as 2/2 + 3/4 + 5/8 + 7/16 + 11/32 = 1 + 0.75 + 0.625 + 0.4375 + 0.34375.",
     "mathContext": "Partial sums provide lower bounds on the infinite sum. The gap between 3.15625 and 3.597 shows that the tail contributes about 0.44 to the total.",
@@ -131,7 +131,7 @@
       "startLine": 132,
       "endLine": 140
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős's Factorial Result",
     "content": "**Erdős (1958)** proved that Σ pₙᵏ/n! is irrational for all k ≥ 1. The factorial denominators grow much faster than 2ⁿ, making irrationality provable via tail analysis.",
     "mathContext": "The key insight is that n! grows super-exponentially. For large N, the tail Σ_{n>N} pₙᵏ/n! < 1/(N+1)!, which can be made arbitrarily small. This approach fails for 2ⁿ denominators.",
@@ -184,7 +184,7 @@
       "startLine": 184,
       "endLine": 188
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "OEIS Bounds",
     "content": "The Erdős sum lies between **3 and 4**, more precisely between **3.596 and 3.597**. This is catalogued as OEIS sequence A098990.",
     "mathContext": "These bounds can be computed by evaluating sufficiently many terms and bounding the tail. The sum to 100 terms gives 10+ decimal places of accuracy.",
@@ -202,7 +202,7 @@
       "startLine": 196,
       "endLine": 209
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Explicit Partial Sums",
     "content": "We prove exact values for the first 1, 2, 3, 4, 5 terms: **1, 7/4, 19/8, 45/16, 101/32**. These are verified using Lean's `norm_num` tactic.",
     "mathContext": "Each computation is straightforward arithmetic: 1 + 3/4 = 7/4, then + 5/8 = 19/8, then + 7/16 = 45/16, then + 11/32 = 101/32. The pattern of numerators (1, 7, 19, 45, 101) has no simple formula.",

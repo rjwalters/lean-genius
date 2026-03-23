@@ -93,7 +93,7 @@
       "startLine": 45,
       "endLine": 54
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "General Problem (Open)",
     "content": "**Erdős Problem #351** asks: for every polynomial p(x) with positive leading coefficient, is {p(n) + 1/n} strongly complete? This general question remains **OPEN**.",
     "mathContext": "We represent the open status with a trivial axiom. The answer is unknown—it could be true or false. Specific cases have been resolved, but the general pattern is not understood.",
@@ -110,7 +110,7 @@
       "startLine": 58,
       "endLine": 64
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Graham's Theorem (p = x)",
     "content": "**Graham (1963)** proved that {n + 1/n : n ∈ ℕ} is strongly complete. Even after removing any finite set of terms, all large integers are representable.",
     "mathContext": "This is stated as `HasStronglyCompleteImage X` where X is the polynomial x. Graham's proof uses intricate partition arguments and is a landmark result in additive number theory.",
@@ -128,7 +128,7 @@
       "startLine": 66,
       "endLine": 73
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Graham-Alekseyev Theorem (p = x²)",
     "content": "The set {n² + 1/n : n ∈ ℕ} is strongly complete. Van Doorn noted this follows from combining Graham's 1963 result with Alekseyev's 2019 work on partitions into squares.",
     "mathContext": "Stated as `HasStronglyCompleteImage (X ^ 2)`. Alekseyev studied partitions into distinct squares whose reciprocals sum to 1, which connects to this problem.",
@@ -146,7 +146,7 @@
       "startLine": 77,
       "endLine": 87
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Image Set Membership",
     "content": "We verify that n + 1/n ∈ imageSet(X) and n² + 1/n ∈ imageSet(X²) for all n. These follow directly from the definition by exhibiting n as a witness.",
     "mathContext": "The proofs use `Set.mem_range` and simplification of polynomial evaluation. For X, eval(n) = n; for X², eval(n) = n².",
@@ -163,7 +163,7 @@
       "startLine": 89,
       "endLine": 107
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Bounds on n + 1/n",
     "content": "We prove: (1) n + 1/n > n for n ≥ 1, and (2) n + 1/n < n + 1 for n ≥ 2. The special case n=1 gives exactly 2.",
     "mathContext": "The lower bound uses positivity of 1/n. The upper bound uses 1/n < 1 when n ≥ 2. For n=1, we have 1 + 1/1 = 2 = 1 + 1, so it's not strictly less.",
@@ -180,7 +180,7 @@
       "startLine": 109,
       "endLine": 115
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Concrete Examples",
     "content": "We verify: **1 + 1/1 = 2**, **2 + 1/2 = 5/2**, **3 + 1/3 = 10/3**. These use `norm_num` for automatic verification.",
     "mathContext": "These concrete values show the sequence: 2, 2.5, 3.333..., 4.25, 5.2, ... The terms are 'almost integers' that grow roughly linearly.",

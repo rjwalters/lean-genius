@@ -104,7 +104,7 @@
       "startLine": 71,
       "endLine": 96
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Tashkinov's Theorem and Consequences",
     "content": "**tashkinov_theorem, regular_has_3_regular, alon_friedland_kalai, five_regular_has_3_regular.** Tashkinov (1982): Every 4-regular graph contains a 3-regular subgraph. Corollary: HasRegularSubgraph r 3 for all r ≥ 4. Alon-Friedland-Kalai (1984): every 4-regular graph plus one edge contains a 3-regular subgraph, directly implying the r ≥ 5 case.",
     "mathContext": "Tashkinov's proof uses a careful analysis of the structure of 4-regular graphs, showing that edge-disjoint cycles can be combined to form a 3-regular subgraph. The **Alon-Friedland-Kalai** (AFK) strengthening is remarkable: adding just one edge to a 4-regular graph already forces a 3-regular subgraph. This implies the r ≥ 5 case immediately: any 5-regular graph can have an edge removed to become 'almost 4-regular', and AFK applies to find the 3-regular subgraph. The proofs use parity arguments and the structure theory of Eulerian graphs.",
@@ -129,7 +129,7 @@
       "startLine": 98,
       "endLine": 121
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Counterexamples: K₄ and the Threshold r = 4",
     "content": "**K4, K4_is_3_regular, K4_minimal_3_regular, three_regular_no_proper_3_subgraph.** K₄ (complete graph on 4 vertices) is 3-regular but has no proper 3-regular subgraph — the only 3-regular spanning subgraph is K₄ itself. This shows the threshold for HasRegularSubgraph(r, 3) is exactly r = 4.",
     "mathContext": "K₄ has 6 edges and every vertex has degree 3. Any proper subgraph must remove at least one edge, reducing some vertex degree below 3, so no proper 3-regular subgraph exists. This is the smallest counterexample. The argument generalizes: for a 3-regular graph on n vertices to have a proper 3-regular subgraph, it must have enough 'redundancy' in its edge structure — K₄ is too tight. The sharpness of the threshold r = 4 is remarkable: regularity 4 provides exactly enough flexibility.",
@@ -154,7 +154,7 @@
       "startLine": 123,
       "endLine": 141
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Berge-Sauer Answer and General Threshold",
     "content": "**berge_sauer_question, berge_sauer_answer, RegularSubgraphThreshold, threshold_for_3.** The Berge-Sauer question asks whether any r works; the answer is r = 4 (Tashkinov). The general threshold function for k-regular subgraphs is defined, with value 4 for k = 3.",
     "mathContext": "The `berge_sauer_answer` is proved directly from `tashkinov_theorem` using the witness r = 4. The `RegularSubgraphThreshold k` function generalizes the question: for each k, what is the minimum r such that every r-regular graph contains a k-regular subgraph? For k = 1, the threshold is 1 (trivial: any 1-regular graph is its own 1-regular subgraph). For k = 2, the threshold is 2 (every 2-regular graph is a union of cycles, which are 2-regular). For k = 3, the threshold is 4 (Tashkinov). The general pattern remains an open research direction.",
@@ -203,7 +203,7 @@
       "startLine": 176,
       "endLine": 189
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Edge Counting and Parity",
     "content": "**regular_edge_count, regular_parity.** The handshaking lemma for regular graphs: an r-regular graph on n vertices has rn/2 edges. Necessary condition: rn must be even. This gives a parity obstruction for existence of regular graphs.",
     "mathContext": "The **handshaking lemma** (Euler 1736) states Σ deg(v) = 2|E|. For r-regular graphs, this gives r·n = 2|E|, so |E| = rn/2. The parity condition `Even (r * n)` is necessary: either r or n must be even. This rules out, e.g., 3-regular graphs on an odd number of vertices. The parity argument is fundamental to the theory of regular graphs and connects to the existence of Eulerian circuits (a graph has an Eulerian circuit iff every vertex has even degree).",

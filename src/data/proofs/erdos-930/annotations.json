@@ -76,7 +76,7 @@
       "startLine": 56,
       "endLine": 70
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Main Conjecture (OPEN)",
     "content": "**Erdős Problem #930**: For every r > 0, there exists k such that if I₁,...,Iᵣ are r disjoint intervals of consecutive integers, each of length at least k, then their combined product is **never** a perfect power.\n\nThe intervals are encoded by start/end functions, with conditions ensuring:\n1. Each interval has positive start and sufficient length\n2. Intervals are disjoint and ordered",
     "mathContext": "The length constraint (≥ k) is necessary—without it, counterexamples exist for r=2.",
@@ -94,7 +94,7 @@
       "startLine": 79,
       "endLine": 89
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Selfridge Theorem (r=1 Solved)",
     "content": "**Erdős-Selfridge Theorem (1975)**: The product of k ≥ 2 consecutive positive integers is **never** a perfect power.\n\nIn symbols: (n+1)(n+2)···(n+k) ≠ m^l for any m, l with l > 1.\n\nThis resolved a long-standing conjecture and is the r=1 case of Problem #930.",
     "mathContext": "The proof uses sophisticated arguments about prime multiplicities in consecutive products.",
@@ -130,7 +130,7 @@
       "startLine": 103,
       "endLine": 112
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Prime Multiplicity Lemma",
     "content": "**Key Technical Result**: For k ≥ 3, l ≥ 2, and n + k ≥ nextPrime(k), there exists a prime p ≥ k such that l does NOT divide the multiplicity of p in (n+1)(n+2)···(n+k).\n\nThis is the heart of the Erdős-Selfridge proof—it shows that no consecutive product can be a perfect l-th power by finding a 'problematic' prime.",
     "mathContext": "If every prime had multiplicity divisible by l, the product would be a perfect l-th power. This lemma shows such a prime always fails to divide evenly.",
@@ -148,7 +148,7 @@
       "startLine": 118,
       "endLine": 128
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Basic Perfect Power Facts",
     "content": "We verify elementary facts about perfect powers:\n- **0** is a perfect power (0 = 0²)\n- **1** is a perfect power (1 = 1²)\n- Any **n²** is a perfect power\n- Any **n³** is a perfect power",
     "significance": "supporting",
@@ -181,7 +181,7 @@
       "startLine": 143,
       "endLine": 158
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Non-Power Examples",
     "content": "**2** and **6** are NOT perfect powers.\n\nFor 2: If 2 = m^l with l > 1, then m ∈ {0,1} gives 0 or 1, and m ≥ 2 gives m^l ≥ 4.\n\nFor 6 = 2·3: The distinct prime factors each have exponent 1, preventing 6 from being any m^l.",
     "mathContext": "Numbers with distinct prime factors of different multiplicities cannot be perfect powers.",
@@ -199,7 +199,7 @@
       "startLine": 160,
       "endLine": 164
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Product 2·3 = 6 Example",
     "content": "We verify that the product of consecutive integers 2·3 = 6 is not a perfect power.\n\nThis is a concrete instance of the Erdős-Selfridge theorem with n=1, k=2: the product (1+1)(1+2) = 2·3 = 6 is not a perfect power.",
     "mathContext": "The proof computes the product using native_decide and applies six_not_isPower.",

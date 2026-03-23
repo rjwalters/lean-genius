@@ -78,7 +78,7 @@
       "startLine": 63,
       "endLine": 76
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Cross Product Properties",
     "content": "**cross2D_antisymm** proves the cross product is antisymmetric: u x v = -(v x u). We also axiomatize that triangle area is invariant under cyclic permutation of vertices.",
     "mathContext": "Antisymmetry follows directly from the definition by algebraic manipulation. The permutation invariance of unsigned area follows from the absolute value, but we axiomatize it to avoid detailed casework.",
@@ -114,7 +114,7 @@
       "startLine": 90,
       "endLine": 106
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Open Problem",
     "content": "**erdos_352_open** axiomatizes the unknown: does there exist c > 0 such that measure(A) >= c implies A contains a unit triangle? This is axiomatized as Prop since the answer is not known.",
     "mathContext": "The formal statement erdos_352_statement packages this precisely: exists c > 0 such that for all measurable A with volume >= c, we have ContainsUnitTriangle A.",
@@ -168,7 +168,7 @@
       "startLine": 136,
       "endLine": 148
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Infinite and Unbounded Cases",
     "content": "**infinite_measure_contains_unit_triangle** and **unbounded_positive_measure_contains_unit_triangle** are Erdos's unpublished results. Both follow from the Lebesgue density theorem.",
     "mathContext": "The Lebesgue density theorem says almost every point of a measurable set is a 'density point' where the local density approaches 1. This easily proves the special cases.",
@@ -186,7 +186,7 @@
       "startLine": 150,
       "endLine": 161
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Freiling-Mauldin Results",
     "content": "**freiling_mauldin_2002** and **conjecture_for_compact_convex** are the main known results. Freiling and Mauldin proved the conjecture for compact convex sets in 2002.",
     "mathContext": "Their key result: if outer measure > 4pi/sqrt(27), then A contains a triangle with area GREATER than 1 (not just equal). This implies the conjecture for nice sets.",
@@ -222,7 +222,7 @@
       "startLine": 178,
       "endLine": 191
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Maximum Inscribed Triangle",
     "content": "**max_inscribed_triangle_area** states the largest triangle inscribed in a circle of radius r has area (3*sqrt(3)/4)*r^2. This is achieved by an equilateral triangle.",
     "mathContext": "For the critical radius, the max area is 3*sqrt(3)/4 * 4*3^(-3/2) = 3*sqrt(3)*3^(-3/2) which equals 1 exactly at the boundary. Hence circles slightly smaller contain no unit triangle.",
@@ -240,7 +240,7 @@
       "startLine": 193,
       "endLine": 215
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Reduction to Finite Unions",
     "content": "**reduction_to_finite_unions** is Mauldin's observation: proving the conjecture for unions of finitely many compact convex interiors would prove it for all sets.",
     "mathContext": "Freiling and Mauldin verified the conjecture for n <= 3 such sets. The general case for arbitrary n remains open and would resolve the full problem.",
@@ -258,7 +258,7 @@
       "startLine": 217,
       "endLine": 240
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_352_summary** packages verified results: the conjectured constant is positive (by positivity), and our triangle area formula correctly computes area 1 for a specific example.",
     "mathContext": "The example triangle (0,0), (2,0), (1,1) has signed area cross2D(2,0)(1,1)/2 = (2*1 - 0*1)/2 = 1. This validates our definition.",

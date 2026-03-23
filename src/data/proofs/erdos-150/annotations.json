@@ -72,7 +72,7 @@
       "startLine": 104,
       "endLine": 112
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Seymour's Lower Bound",
     "content": "**seymour_construction:**\n\nc(3m+2) >= 3^m\n\n**The Construction:**\n- Take two vertices u and v\n- Connect them by m independent paths of length 4\n- Each path has 3 internal vertices\n- Total: 2 + 3m = 3m+2 vertices\n\n**Why 3^m cuts?**\nTo disconnect u from v, we must remove at least one vertex from each path. Since each path has 3 internal vertices, there are 3^m ways to choose one from each path.",
     "mathContext": "This elegant construction shows that c(n) can grow exponentially, and provides the lower bound on alpha.",
@@ -90,7 +90,7 @@
       "startLine": 114,
       "endLine": 120
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Lower Bound on Alpha",
     "content": "**seymour_lower_bound:**\n\nalpha >= 3^{1/3} = 1.442...\n\n**Derivation:**\nFrom c(3m+2) >= 3^m, taking the (3m+2)th root:\nc(3m+2)^{1/(3m+2)} >= 3^{m/(3m+2)}\n\nAs m -> infinity, m/(3m+2) -> 1/3, so:\nalpha >= 3^{1/3}",
     "significance": "key"
@@ -120,7 +120,7 @@
       "startLine": 154,
       "endLine": 164
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Limit Existence",
     "content": "**limit_exists:**\n\nThe limit alpha = lim c(n)^{1/n} exists.\n\n**Statement:**\n```lean\naxiom limit_exists :\n  exists alpha : R, Filter.Tendsto\n    (fun n : N => (c(n) : R) ^ (1/n))\n    Filter.atTop\n    (nhds alpha)\n```\n\nThis is the first part of Bradac's theorem - the limit is well-defined.",
     "mathContext": "Limit existence for such extremal functions often follows from sub/superadditivity arguments.",
@@ -133,7 +133,7 @@
       "startLine": 172,
       "endLine": 178
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bradac's Upper Bound",
     "content": "**bradac_upper_bound:**\n\nalpha <= 2^{H(1/3)} = 1.8899...\n\nThis is the key result from Bradac's 2024 paper, showing that alpha < 2.\n\nThe upper bound involves sophisticated counting and entropy arguments.",
     "mathContext": "The appearance of binary entropy suggests counting arguments involving subsets or binary choices.",
@@ -146,7 +146,7 @@
       "startLine": 180,
       "endLine": 190
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Alpha Less Than Two",
     "content": "**alpha_less_than_two:**\n\nalpha < 2\n\nThis answers Erdos's question affirmatively.\n\n**Proof outline:**\n1. alpha <= 2^{H(1/3)} (Bradac's upper bound)\n2. H(1/3) < 1, so 2^{H(1/3)} < 2\n3. Therefore alpha < 2\n\nThe proof uses one sorry for the numerical inequality H(1/3) < 1.",
     "significance": "key"
@@ -158,7 +158,7 @@
       "startLine": 198,
       "endLine": 213
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdos Problem #150: SOLVED",
     "content": "**erdos_150:**\n\nThe complete answer to Erdos's question.\n\n**Statement:**\n```lean\ntheorem erdos_150 :\n  exists alpha : R, alpha < 2 and\n    Filter.Tendsto (fun n => (c(n))^(1/n)) Filter.atTop (nhds alpha)\n```\n\n**Answer:** YES, c(n)^{1/n} converges to some alpha < 2.",
     "significance": "key"
@@ -170,7 +170,7 @@
       "startLine": 235,
       "endLine": 240
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Complete Bounds on Alpha",
     "content": "**alpha_bounds:**\n\n3^{1/3} <= alpha <= 2^{H(1/3)}\n\nNumerically: 1.442... <= alpha <= 1.890...\n\n**Sources:**\n- Lower bound: Seymour's construction\n- Upper bound: Bradac's theorem\n\nThe gap of about 0.45 remains to be closed.",
     "significance": "key"
@@ -199,7 +199,7 @@
       "startLine": 267,
       "endLine": 295
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Concrete Examples",
     "content": "**Seymour lower bounds for specific values:**\n\n- **c(5) >= 3:** m=1 gives c(5) >= 3^1 = 3\n- **c(8) >= 9:** m=2 gives c(8) >= 3^2 = 9  \n- **c(11) >= 27:** m=3 gives c(11) >= 3^3 = 27\n\nThese follow directly from Seymour's construction with m = 1, 2, 3 paths.",
     "significance": "supporting"
@@ -211,7 +211,7 @@
       "startLine": 301,
       "endLine": 323
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Complete Solution Summary",
     "content": "**erdos_150_summary:**\n\nComplete characterization of the solution:\n\n1. **Existence:** The limit alpha = lim c(n)^{1/n} exists\n2. **Upper bound:** alpha < 2 (answering the question)\n3. **Bounds:** 3^{1/3} <= alpha <= 2^{H(1/3)}\n4. **Convergence:** c(n)^{1/n} -> alpha\n\n**erdos_150_answer:** Confirms the answer is YES.",
     "significance": "key"

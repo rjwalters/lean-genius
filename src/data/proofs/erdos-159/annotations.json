@@ -58,7 +58,7 @@
     "title": "Ramsey Number R(C₄, Kₙ) and Threshold Specification",
     "content": "The Ramsey number `ramseyC4Kn : ℕ → ℕ` is axiomatized as a function. Its threshold specification `ramseyC4Kn_spec` asserts two conditions: (1) **Above threshold:** every graph on $R(C_4, K_n)$ vertices satisfies `HasC4 G ∨ HasClique Gᶜ n` — it either contains a 4-cycle or its complement contains $K_n$ (equivalently, $G$ has independence number $\\geq n$). (2) **Below threshold:** for any $N < R(C_4, K_n)$, there exists a graph on $N$ vertices that is both $C_4$-free and has no independent set of size $n$. This is the standard min-max characterization of Ramsey numbers.",
     "mathContext": "$R(C_4, K_n) = \\min\\{N : \\forall G \\text{ on } N \\text{ vertices},\\, C_4 \\subseteq G \\text{ or } \\alpha(G) \\geq n\\}$. Equivalently, $R(C_4, K_n) - 1$ is the max vertices of a $C_4$-free graph with $\\alpha < n$.",
-    "significance": "core",
+    "significance": "key",
     "relatedConcepts": [
       "Ramsey number",
       "threshold property",
@@ -78,11 +78,11 @@
       "startLine": 52,
       "endLine": 66
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Known Bounds: Szemerédi Upper and Spencer Lower",
     "content": "Two foundational bounds are axiomatized: (1) **Szemerédi's upper bound:** $R(C_4, K_n) \\leq C \\cdot n^2/(\\log n)^2$ for a constant $C > 0$ and large $n$. This follows from the Szemerédi regularity lemma applied to $C_4$-free graphs: such graphs have low density in regular pairs, forcing large independent sets. The improvement over $n^2$ is only $(\\log n)^2$, not a power saving. (2) **Spencer's lower bound:** $R(C_4, K_n) \\geq c \\cdot n^{3/2}/(\\log n)^{3/2}$ for a constant $c > 0$ and large $n$. This uses the probabilistic method (random $C_4$-free graphs) combined with the Kővári-Sós-Turán theorem for bounding the independence number. The exponent gap between $3/2$ and $2$ (modulo logs) is the central mystery.",
     "mathContext": "Upper: $R(C_4, K_n) \\leq C \\cdot n^2/(\\log n)^2$ (Szemerédi). Lower: $R(C_4, K_n) \\geq c \\cdot n^{3/2}/(\\log n)^{3/2}$ (Spencer). Gap: exponent between $3/2$ and $2$.",
-    "significance": "core",
+    "significance": "key",
     "relatedConcepts": [
       "Szemerédi regularity lemma",
       "probabilistic method",
@@ -106,7 +106,7 @@
     "title": "Main Conjecture: Power Saving in the Exponent",
     "content": "The formal statement `ErdosProblem159` asks: $\\exists c > 0,\\, \\exists C > 0,\\, \\exists n_0,\\, \\forall n \\geq n_0$: $R(C_4, K_n) \\leq C \\cdot n^{2-c}$. This is a **power saving** over $n^2$, strictly stronger than the known $(\\log n)^2$ improvement. The nested existential quantifiers $c, C, n_0$ follow the standard format for asymptotic bounds in combinatorics. Note that Spencer's lower bound $n^{3/2-o(1)}$ implies any $c > 0$ must satisfy $c \\leq 1/2$ (since the exponent cannot go below $3/2$).",
     "mathContext": "$\\text{ErdosProblem159}: \\exists c > 0,\\, \\exists C > 0,\\, \\exists n_0,\\, \\forall n \\geq n_0: R(C_4, K_n) \\leq C \\cdot n^{2-c}$. If true, $c \\leq 1/2$ by Spencer's lower bound.",
-    "significance": "core",
+    "significance": "key",
     "relatedConcepts": [
       "power saving",
       "polynomial improvement",
@@ -125,7 +125,7 @@
       "startLine": 81,
       "endLine": 91
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Basic Properties: Monotonicity and Trivial Lower Bound",
     "content": "Two elementary properties: (1) `ramseyC4Kn_mono` — $R(C_4, K_m) \\leq R(C_4, K_n)$ when $m \\leq n$, since requiring a larger independent set can only increase the threshold. (2) `ramseyC4Kn_ge` — $R(C_4, K_n) \\geq n$ for $n \\geq 1$, a trivial lower bound since $K_{n-1}$ (the complete graph on $n-1$ vertices) is $C_4$-free for $n \\leq 4$ and has no independent set of size $n$. These are axiomatized for simplicity though both are provable from the specification.",
     "mathContext": "Monotonicity: $m \\leq n \\implies R(C_4, K_m) \\leq R(C_4, K_n)$. Trivial bound: $R(C_4, K_n) \\geq n$.",

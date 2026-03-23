@@ -62,7 +62,7 @@
       "startLine": 54,
       "endLine": 64
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős's Lower Bound Construction",
     "content": "**Erdős showed that MaxNotSqSum(N) ≥ cN^{1/3}** for some constant c > 0. His elegant construction takes approximately N^{1/3} multiples of a prime p ≈ N^{2/3}. Since any sum of distinct multiples of p is divisible by p but not by p², it cannot be a perfect square.",
     "mathContext": "Stated as an axiom: ∃ c > 0, ∀ᶠ N, MaxNotSqSum(N) ≥ c·N^{1/3}. The ∀ᶠ notation means \"for all sufficiently large N\" using Filter.atTop. This is an axiom because formalizing the prime-multiple construction requires number-theoretic results not in Mathlib.",
@@ -80,7 +80,7 @@
       "startLine": 66,
       "endLine": 80
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Nguyen-Vu Upper Bound",
     "content": "**Nguyen and Vu (2010) proved the matching upper bound**: MaxNotSqSum(N) ≤ C·N^{1/3}·(log N)^{O(1)}. Their paper \"Squares in sumsets\" appeared in the Szemerédi 70th birthday volume. This shows Erdős's simple construction is essentially optimal.",
     "mathContext": "Stated as an axiom: ∃ C > 0, k > 0, ∀ᶠ N, MaxNotSqSum(N) ≤ C·N^{1/3}·(log N)^k. The proof uses sophisticated additive combinatorics techniques analyzing the distribution of squares in sumsets, which are not yet formalized in Mathlib.",
@@ -98,7 +98,7 @@
       "startLine": 82,
       "endLine": 97
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Combined Tight Asymptotic Bound",
     "content": "**The main theorem combines both bounds** to show MaxNotSqSum(N) = Θ(N^{1/3}·(log N)^{O(1)}). This is the complete answer to Erdős's question: the maximum size grows like the cube root of N, up to polylogarithmic factors.",
     "mathContext": "The proof is straightforward: we obtain the constants from both axioms and combine the eventually-true statements using Filter.Eventually.and. The result states: ∃ c, C, k, ∀ᶠ N, c·N^{1/3} ≤ MaxNotSqSum(N) ≤ C·N^{1/3}·(log N)^k.",
@@ -116,7 +116,7 @@
       "startLine": 111,
       "endLine": 123
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Singleton Characterization",
     "content": "**A singleton {n} is square-sum-free if and only if n is not a perfect square.** This fundamental lemma helps understand the structure: any square-sum-free set must avoid perfect squares as elements (since the singleton subset would violate the property).",
     "mathContext": "We prove both directions: (→) If IsSquareSumFree({n}), apply it to S = {n} to get ¬IsSquare(n). (←) If ¬IsSquare(n), then any non-empty S ⊆ {n} must equal {n}, and its sum is just n, which is not a square.",
@@ -134,7 +134,7 @@
       "startLine": 153,
       "endLine": 158
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Counterexample: {1, 2} Fails",
     "content": "**The set {1, 2} is NOT square-sum-free** because 1 is a perfect square (1 = 1²). This shows that avoiding squares in subset sums is non-trivial: even the smallest natural numbers can cause problems. Any square-sum-free subset of {1,...,N} must exclude 1 entirely.",
     "mathContext": "The proof applies the square-sum-free hypothesis to S = {1} ⊆ {1, 2}. The sum is 1, which equals 1² by rfl, giving a contradiction.",

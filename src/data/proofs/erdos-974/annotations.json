@@ -78,7 +78,7 @@
       "startLine": 67,
       "endLine": 69
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Power Sum of Roots of Unity",
     "content": "For the nth roots of unity: sₖ = n if n divides k, else sₖ = 0. This geometric series property is fundamental.",
     "mathContext": "When n ∤ k, the sum Σⱼ ζʲᵏ = (1 - ζⁿᵏ)/(1 - ζᵏ) = 0 since ζⁿ = 1 but ζᵏ ≠ 1. When n | k, each term is 1.",
@@ -166,7 +166,7 @@
       "startLine": 116,
       "endLine": 121
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Turán's Conjecture",
     "content": "**turan_conjecture**: If infinitely many (n-1)-tuples of consecutive power sums vanish, then z is essentially roots of unity. This is the original problem statement.",
     "mathContext": "Turán posed this conjecture connecting the analytic condition (power sum zeros) to the algebraic conclusion (roots of unity).",
@@ -184,7 +184,7 @@
       "startLine": 123,
       "endLine": 132
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Tijdeman's Theorem (Odd n)",
     "content": "**tijdeman_1966_odd**: For odd n ≥ 3, just TWO distinct (n-1)-tuples of consecutive zeros suffice to conclude z is exactly the nth roots of unity.",
     "mathContext": "This is far stronger than Turán's conjecture: finitely many (just 2!) tuples suffice. For odd n, the characterization is exact — no 'essentially' needed.",
@@ -202,7 +202,7 @@
       "startLine": 134,
       "endLine": 140
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Tijdeman's Theorem (Even n)",
     "content": "**tijdeman_1966_even**: For even n ≥ 4, two distinct zero tuples imply z forms two regular (n/2)-gons. This is the complete characterization.",
     "mathContext": "The even case has extra flexibility from the Z₂ symmetry: rotating one (n/2)-gon by π gives another valid configuration with same power sums.",
@@ -220,7 +220,7 @@
       "startLine": 154,
       "endLine": 158
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result: erdos_974_solved",
     "content": "**Erdős Problem #974: SOLVED (YES)**. If infinitely many (n-1)-tuples of consecutive power sums vanish, then z is essentially roots of unity.",
     "mathContext": "The theorem wraps turan_conjecture with a clean interface. The proof is immediate from the axiom.",
@@ -256,7 +256,7 @@
       "startLine": 207,
       "endLine": 221
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_974_summary** packages both the main result (Turán's conjecture) and Tijdeman's strengthening for odd n into a single statement.",
     "mathContext": "The conjunction shows both the original problem (infinitely many) and the surprising strengthening (just 2 tuples for odd n).",

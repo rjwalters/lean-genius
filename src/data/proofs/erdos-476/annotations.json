@@ -58,7 +58,7 @@
       "startLine": 72,
       "endLine": 80
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Restricted Subset of Ordinary",
     "content": "**restrictedSumset_subset_sumset:**\n\nA +̂ A ⊆ A + A\n\nEvery sum of distinct elements is also a sum (possibly equal). The restricted sumset is always contained in the ordinary sumset.",
     "significance": "supporting",
@@ -74,7 +74,7 @@
       "startLine": 82,
       "endLine": 87
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Singleton Restricted Sumset",
     "content": "**restrictedSumset_singleton:**\n\n{a} +̂ {a} = ∅\n\nA singleton has no pairs of distinct elements, so its restricted sumset is empty. This is the edge case where the bound 2|A| - 3 = -1 would be negative.",
     "significance": "supporting",
@@ -90,7 +90,7 @@
       "startLine": 103,
       "endLine": 119
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Erdős-Heilbronn Bound",
     "content": "**erdos_heilbronn_bound:**\n\nFor any A ⊆ 𝔽ₚ with |A| ≥ 2:\n  |A +̂ A| ≥ min(2|A| - 3, p)\n\n**erdos_476:**\nThe main theorem directly follows from this axiom.\n\nThis bound is TIGHT - arithmetic progressions achieve exactly 2|A| - 3 elements.",
     "mathContext": "The proof uses exterior algebra (Grassmann derivatives) or the polynomial method.",
@@ -107,7 +107,7 @@
       "startLine": 127,
       "endLine": 136
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Da Silva-Hamidoune Theorem",
     "content": "**da_silva_hamidoune (1994):**\n\nThe original proof uses **exterior algebra** over 𝔽ₚ.\n\n**Key Idea:**\nConsider the Grassmann (exterior) algebra ⋀(𝔽ₚⁿ). The k-th derivative of a polynomial relates to k-fold sums. By tracking dimensions in this algebra, one obtains the lower bound.\n\nThis approach connects combinatorics to advanced linear algebra.",
     "mathContext": "Grassmann derivatives generalize ordinary derivatives to wedge products.",
@@ -125,7 +125,7 @@
       "startLine": 144,
       "endLine": 169
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Tightness via Arithmetic Progressions",
     "content": "**arithmeticProgression:**\n\nA = {a, a+d, a+2d, ..., a+(n-1)d} in 𝔽ₚ.\n\n**AP_restrictedSumset:**\nFor this A with d ≠ 0:\n  A +̂ A = {2a+d, 2a+2d, ..., 2a+(2n-3)d}\n\nThis has exactly 2n - 3 elements (when small enough).\n\nSo the bound min(2|A| - 3, p) is TIGHT - we cannot improve it.",
     "mathContext": "APs are the extremal examples for many sumset problems.",
@@ -143,7 +143,7 @@
       "startLine": 183,
       "endLine": 196
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Comparison with Cauchy-Davenport",
     "content": "**cauchy_davenport:**\n\nFor nonempty A, B ⊆ 𝔽ₚ:\n  |A + B| ≥ min(|A| + |B| - 1, p)\n\n**Comparison:**\n- Ordinary: |A + A| ≥ min(2|A| - 1, p)\n- Restricted: |A +̂ A| ≥ min(2|A| - 3, p)\n\nThe difference of 2 reflects the exclusion of diagonal sums.",
     "mathContext": "Cauchy-Davenport is fundamental in additive combinatorics, proved in 1813/1935.",
@@ -160,7 +160,7 @@
       "startLine": 205,
       "endLine": 222
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Polynomial Method",
     "content": "**Combinatorial Nullstellensatz (Alon, 1999):**\n\nA powerful tool: if a polynomial f has a leading monomial with nonzero coefficient, then f is nonzero on a sufficiently large grid.\n\n**ANR Proof (1995):**\nAlon, Nathanson, and Ruzsa gave an alternative proof of Erdős-Heilbronn using this method.\n\nConstruct f(x,y) = ∏_{c ∉ A+̂A} (x + y - c) and analyze its coefficients.",
     "mathContext": "The polynomial method is now central to additive combinatorics.",
@@ -178,7 +178,7 @@
       "startLine": 230,
       "endLine": 245
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Generalization to r-Sums",
     "content": "**restrictedSumsetR:**\n\nThe set of sums a₁ + a₂ + ... + aᵣ where all aᵢ are distinct elements of A.\n\n**erdos_generalized:**\n|r-fold restricted sumset| ≥ min(r|A| - r² + 1, p)\n\nFor r = 2: min(2|A| - 3, p) ✓\n\nThis generalization was also conjectured by Erdős and proved via the polynomial method.",
     "significance": "key",
@@ -194,7 +194,7 @@
       "startLine": 251,
       "endLine": 257
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Example: |A| = 2",
     "content": "**card_two_case:**\n\nIf A = {a, b} with a ≠ b, then:\n  A +̂ A = {a + b}\n\nExactly 1 element. The bound gives min(2·2 - 3, p) = min(1, p) = 1. ✓",
     "significance": "supporting",
@@ -210,7 +210,7 @@
       "startLine": 259,
       "endLine": 270
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Example: |A| = 3",
     "content": "**card_three_lower_bound:**\n\nFor |A| = 3, the restricted sumset has at least 3 elements.\n\nThe bound gives min(2·3 - 3, p) = min(3, p) = 3 for p ≥ 3.\n\nIf A = {a, b, c}, then A +̂ A contains a+b, a+c, b+c (at least 3 elements).",
     "significance": "supporting",
@@ -226,7 +226,7 @@
       "startLine": 276,
       "endLine": 300
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_476_summary:**\n\nCombines the main results:\n1. |A +̂ A| ≥ min(2|A| - 3, p) for all A with |A| ≥ 2\n2. The bound is tight (achieved by arithmetic progressions)\n\nThe Erdős-Heilbronn conjecture is completely resolved.",
     "significance": "key",

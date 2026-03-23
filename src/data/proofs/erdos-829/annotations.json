@@ -144,7 +144,7 @@
       "startLine": 92,
       "endLine": 100
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Mordell's Theorem: Unboundedness",
     "content": "**mordell_unbounded:**\n\nFor every $M \\in \\mathbb{N}$, there exists $n$ with $r_2(n) \\geq M$. This is the starting point: the representation function grows without bound.\n\nMordell's proof uses the theory of rational points on elliptic curves. Each representation $n = a^3 + b^3$ corresponds to a rational point on the curve $X^3 + Y^3 = n$. By choosing $n$ with high-rank elliptic curves, one obtains many representations.",
     "mathContext": "Mordell's result $\\limsup_{n \\to \\infty} r_2(n) = \\infty$ establishes that the representation function is unbounded. The proof relies on constructing integers $n$ such that the elliptic curve $E_n: x^3 + y^3 = n$ has large Mordell-Weil rank, yielding many distinct rational points and hence many cube-sum representations.",
@@ -168,7 +168,7 @@
       "startLine": 102,
       "endLine": 106
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Infinitely Many Large Values",
     "content": "**infinitely_many_large_aux:**\n\nFor any threshold $k$ and any starting point $N$, there exists $n > N$ with $r_2(n) > k$. This strengthens Mordell's result by guaranteeing that large values of $r_2(n)$ occur arbitrarily far out — not just eventually, but infinitely often beyond any bound.",
     "mathContext": "This auxiliary axiom states $\\forall k, N \\in \\mathbb{N},\\, \\exists n > N$ with $r_2(n) > k$. Combined with Mordell's result, it ensures large values of $r_2$ are not confined to a finite initial segment but recur infinitely often.",
@@ -190,7 +190,7 @@
       "startLine": 108,
       "endLine": 115
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Mahler's Lower Bound (1935)",
     "content": "**mahler_1935:**\n\nFor infinitely many $n$: $r_2(n) \\geq c (\\log n)^{1/4}$ for some absolute constant $c > 0$.\n\nMahler's proof appeared in *Proc. London Math. Soc.* (1935) and used the geometry of numbers — specifically, counting lattice points on curves of genus 1. His approach involved bounding the number of integer points on twists of the Fermat cubic $x^3 + y^3 = n$ via estimates on the associated elliptic curve.",
     "mathContext": "Mahler proved $r_2(n) \\gg (\\log n)^{1/4}$ infinitely often. His exponent $1/4$ stood as the best lower bound for over 70 years until Stewart's improvement. Mahler's method connects to the theory of lattice points on algebraic curves and the arithmetic of elliptic curves over $\\mathbb{Q}$.",
@@ -214,7 +214,7 @@
       "startLine": 117,
       "endLine": 126
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Stewart's Improved Lower Bound (2008)",
     "content": "**stewart_2008:**\n\nFor infinitely many $n$: $r_2(n) \\geq c (\\log n)^{11/13}$ for some $c > 0$.\n\nStewart's breakthrough improved Mahler's exponent from $1/4 \\approx 0.25$ to $11/13 \\approx 0.846$ — more than tripling it. His method uses deep results on the number of solutions to cubic Thue equations $F(x, y) = h$ and their connection to the distribution of cube-sum representations.",
     "mathContext": "Stewart showed $r_2(n) \\gg (\\log n)^{11/13}$ i.o. His approach exploits the fact that representations $n = a^3 + b^3$ correspond to solutions of the Thue equation $x^3 + y^3 = n$. By carefully analyzing the distribution of solutions to families of Thue equations, and using bounds on the number of solutions of $|F(x,y)| \\leq h$ for binary cubic forms $F$, he achieved the improved exponent.",
@@ -238,7 +238,7 @@
       "startLine": 130,
       "endLine": 150
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Taxicab Numbers and 1729",
     "content": "**taxicab_1729 and hardy_ramanujan_1729:**\n\n$1729 = 1^3 + 12^3 = 9^3 + 10^3$ is the smallest positive integer with two distinct representations as a sum of two positive cubes. This is $\\text{Ta}(2)$, the second taxicab number.\n\nThe famous anecdote: Hardy visited Ramanujan in hospital (1919) and mentioned his taxi number 1729 was dull. Ramanujan replied: 'No, it is a very interesting number; it is the smallest number expressible as the sum of two cubes in two different ways.'",
     "mathContext": "The taxicab numbers $\\text{Ta}(k)$ are the smallest $n$ with $r_2(n) \\geq k$: $\\text{Ta}(1) = 2$, $\\text{Ta}(2) = 1729$, $\\text{Ta}(3) = 87539319$. These concrete examples illustrate the growth of $r_2(n)$. The formalization asserts $r_2(1729) = 2$ as an axiom and derives $r_2(1729) \\geq 2$ as a theorem.",
@@ -261,7 +261,7 @@
       "startLine": 152,
       "endLine": 157
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Taxicab(3) = 87539319",
     "content": "**taxicab_3:**\n\n$87539319 = 167^3 + 436^3 = 228^3 + 423^3 = 255^3 + 414^3$ is the smallest number with three representations as a sum of two positive cubes. Found by John Leech in 1957.\n\nThe general taxicab number $\\text{Ta}(k)$ grows extremely rapidly. $\\text{Ta}(4) = 6963472309248$ (Rosenstiel et al., 1991), $\\text{Ta}(5) = 48988659276962496$ (Wilson, 1999), and $\\text{Ta}(6) = 24153319581254312065344$ (Calude et al., 2003).",
     "mathContext": "The taxicab numbers demonstrate that $r_2(n)$ does achieve arbitrarily large values. Their growth rate provides empirical evidence about the relationship between $r_2(n)$ and $\\log n$: for $\\text{Ta}(3) = 87539319$, we have $\\log(87539319) \\approx 18.3$, so $r_2(n) = 3$ versus $(\\log n)^{11/13} \\approx 13.5$.",
@@ -283,7 +283,7 @@
       "startLine": 161,
       "endLine": 171
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Asymptotic Density of Cube Sums",
     "content": "**density_of_sums:**\n\nThe number of integers up to $x$ representable as a sum of two cubes is asymptotically $\\sim c \\cdot x^{2/3}$ for a positive constant $c$. This was established by Hooley (1986) conditionally on GRH, and unconditionally (with a weaker error term) by Wooley.\n\nThe constant $c$ involves the Gamma function: $c = \\frac{\\Gamma(1/3)^2}{2 \\cdot 3^{1/3} \\cdot \\Gamma(2/3)}$.",
     "mathContext": "Let $N(x) = |\\{n \\leq x : r_2(n) > 0\\}|$. Then $N(x) \\sim c \\cdot x^{2/3}$ as $x \\to \\infty$. Since there are $\\lfloor x^{1/3} \\rfloor$ cubes up to $x$, the sumset $A + A$ has density $\\Theta(x^{2/3})$, much sparser than the trivial upper bound $O(x^{2/3})$ from pairs of cube roots.",
@@ -307,7 +307,7 @@
       "startLine": 173,
       "endLine": 181
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Most Integers Are Not Cube Sums",
     "content": "**most_not_sum_of_cubes:**\n\nThe proportion of integers up to $x$ that cannot be written as a sum of two cubes tends to 1. Equivalently, the set $\\{n : r_2(n) > 0\\}$ has natural density zero.\n\nThis follows from the density result: $N(x) \\sim c \\cdot x^{2/3} = o(x)$, so the fraction $N(x)/x \\to 0$.",
     "mathContext": "Since $N(x) \\sim c \\cdot x^{2/3}$, the complementary counting function satisfies $\\frac{|\\{n \\leq x : r_2(n) = 0\\}|}{x} \\to 1$. The density zero of $A + A$ in $\\mathbb{N}$ contrasts with the $A + A$ problem for squares, where the density is positive (by the four-square theorem, every $n$ is a sum of four squares).",
@@ -329,7 +329,7 @@
       "startLine": 183,
       "endLine": 189
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Stewart Improves Mahler's Exponent",
     "content": "**stewart_improves_mahler:**\n\nA simple verified arithmetic fact: $11/13 > 1/4$. This confirms that Stewart's exponent $11/13 \\approx 0.846$ strictly exceeds Mahler's $1/4 = 0.25$, representing a major improvement over 70 years.\n\nProved by `norm_num` — one of the few fully verified results in this formalization.",
     "mathContext": "The inequality $\\frac{11}{13} > \\frac{1}{4}$ (equivalently $44 > 13$) is trivial, but in context it summarizes 73 years of progress: from Mahler's 1935 exponent of $1/4$ to Stewart's 2008 exponent of $11/13$. The gap between $11/13$ and 1 (or any conjectured upper bound exponent) remains the frontier.",
@@ -350,7 +350,7 @@
       "startLine": 193,
       "endLine": 217
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary: State of Knowledge",
     "content": "**erdos_829_summary:**\n\nCombines the two key known results into a single theorem statement:\n1. **Stewart (2008):** $r_2(n) \\gg (\\log n)^{11/13}$ infinitely often\n2. **Mordell:** $\\limsup r_2(n) = \\infty$\n\nThe proof is a direct conjunction `⟨stewart_2008, mordell_unbounded⟩` of the two axioms. The summary theorem encapsulates the complete known lower-bound picture for Erdős Problem #829.\n\n**What remains open:** Any upper bound $r_2(n) \\ll (\\log n)^c$ for any constant $c$.",
     "mathContext": "The theorem states $(\\exists c > 0,\\, \\forall M,\\, \\exists n \\geq M,\\, r_2(n) \\geq c (\\log n)^{11/13}) \\wedge (\\forall M,\\, \\exists n,\\, r_2(n) \\geq M)$. This conjunction packages both the quantitative lower bound (Stewart) and the qualitative unboundedness (Mordell) into a single Lean proposition.",

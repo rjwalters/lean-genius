@@ -24,7 +24,7 @@
       "startLine": 47,
       "endLine": 53
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Chromatic Number and ℵ₁",
     "content": "**chromaticNumber G:** Axiomatized as a cardinal-valued function.\n\n**hasChromaticNumberAleph1 G:** χ(G) = ℵ₁, the first uncountable cardinal.\n\nThis is the critical threshold for Thomassen's result. Finite or countable χ doesn't suffice.",
     "mathContext": "De Bruijn-Erdős theorem: χ(G) = sup{χ(H) : H finite subgraph}.",
@@ -42,7 +42,7 @@
       "startLine": 62,
       "endLine": 74
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Cycle and Edge Predicates",
     "content": "**hasCycleOfLength G n:** G contains a cycle of length n (axiomatized).\n\n**edgeInCycleOfLength G u v h n:** Edge (u,v) belongs to a cycle of length n.\n\n**edgeInAllLargeCycles:** Edge is in cycles of all lengths ≥ N.\n\n**existsEdgeInAllLargeCycles:** The main property: ∃ edge in all large cycles.",
     "significance": "key"
@@ -54,7 +54,7 @@
       "startLine": 82,
       "endLine": 85
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Hajnal-Shelah (1974)",
     "content": "**erdos_hajnal_shelah_1974:** If χ(G) = ℵ₁, then G contains all sufficiently large cycles.\n\n∃ N, ∀ n ≥ N: G has a cycle of length n.\n\nThis established cycle existence but not the edge routing property.",
     "mathContext": "Published in Topics in Topology, 1974.",
@@ -67,7 +67,7 @@
       "startLine": 94,
       "endLine": 104
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Thomassen's Theorem (1983)",
     "content": "**thomassen_1983:** If χ(G) = ℵ₁, there exists an edge e such that G contains a cycle of length n through e for all large n.\n\nThis is STRONGER than EHS — cycles can be routed through one edge.\n\n**erdos_737_resolved** directly applies Thomassen to resolve Problem #737.",
     "mathContext": "Published in Combinatorica, 1983, pp. 133-134.",
@@ -85,7 +85,7 @@
       "startLine": 113,
       "endLine": 118
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Eventually Pancyclic",
     "content": "**eventually_pancyclic:** Graphs with χ = ℵ₁ contain cycles of all sufficiently large lengths.\n\nFollows directly from EHS 1974. This is a weaker form of Thomassen's result.",
     "significance": "key"
@@ -97,7 +97,7 @@
       "startLine": 120,
       "endLine": 129
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Universal Cycle Edges",
     "content": "**isUniversalCycleEdge:** An edge is \"universal\" if it lies in all large cycles.\n\n**universal_edges_exist:** Thomassen's theorem guarantees such edges exist when χ = ℵ₁.",
     "significance": "key",
@@ -113,7 +113,7 @@
       "startLine": 149,
       "endLine": 152
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_737_summary:** For χ(G) = ℵ₁, there exists an edge in all large cycles.\n\nThomassen's theorem as the definitive resolution of Erdős Problem #737.",
     "significance": "key"

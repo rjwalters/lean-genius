@@ -120,7 +120,7 @@
       "startLine": 111,
       "endLine": 156
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Worked Examples: n=63 and n=224",
     "content": "Two verified examples of the Steinerberger construction:\n\n**n = 63** ($m = 8 = 2^3$): $63 = 7 \\times 3^2$, so $\\operatorname{gpf}(63) = 7 < \\sqrt{63} \\approx 7.94$. And $64 = 2^6$, so $\\operatorname{gpf}(64) = 2 < \\sqrt{64} = 8$. Both conditions verified by Aristotle using `Real.sqrt_lt_sqrt`.\n\n**n = 224** ($m = 15$): $224 = 2^5 \\times 7$, $\\operatorname{gpf}(224) = 7 < \\sqrt{224} \\approx 14.97$. And $225 = 15^2 = (3 \\times 5)^2$, $\\operatorname{gpf}(225) = 5 < 15$.\n\n`ValidSteinerbergerM` additionally requires $m-1$ and $m+1$ to be composite.",
     "mathContext": "$\\operatorname{gpf}(63) = 7 < 7.94 \\approx \\sqrt{63}$; $\\operatorname{gpf}(64) = 2 < 8 = \\sqrt{64}$. Proved using `Real.sqrt_sq` and `Real.sqrt_lt_sqrt` with gpf values from axioms `gpf_63 = 7` and `gpf_64 = 2`.",
@@ -144,7 +144,7 @@
       "startLine": 158,
       "endLine": 201
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem: Infinitely Many Solutions (sorry'd)",
     "content": "**erdos_370_infinitely_many**: The set $\\{n : \\text{ConsecutiveSqrtSmooth}(n)\\}$ is infinite. **erdos_370**: There exists an injective function $f : \\mathbb{N} \\to \\mathbb{N}$ with $\\text{ConsecutiveSqrtSmooth}(f(k))$ for all $k$. Both statements are **sorry'd** --- the proof would require showing infinitely many valid $m$ exist (e.g., $m = 2^k$ for suitable $k$, where both $2^k - 1$ and $2^k + 1$ have small prime factors). Aristotle failed to load these due to namespace issues.",
     "mathContext": "$|\\{n \\in \\mathbb{N} : \\operatorname{gpf}(n) < \\sqrt{n} \\wedge \\operatorname{gpf}(n+1) < \\sqrt{n+1}\\}| = \\infty$. Two formulations: `Set.Infinite` and injective function encoding.",

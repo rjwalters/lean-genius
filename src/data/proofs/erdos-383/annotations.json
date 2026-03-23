@@ -74,7 +74,7 @@
       "startLine": 71,
       "endLine": 81
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Special Cases",
     "content": "consecutiveSquareProduct(p, 0) = p². consecutiveSquareProduct(p, 1) = p²(p²+1).",
     "mathContext": "For k=0, the product is just p², so p is always the largest prime factor.",
@@ -163,7 +163,7 @@
       "startLine": 128,
       "endLine": 138
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Partial Results",
     "content": "all_primes_zero_good: every prime is 0-good. infinitely_many_zero_good: kGoodPrimes(0) is infinite. positive_density_smooth: smooth numbers have positive density.",
     "mathContext": "The k=0 case is trivial. Smooth number density supports the general conjecture.",
@@ -230,7 +230,7 @@
       "startLine": 170,
       "endLine": 175
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Dickman Function",
     "content": "dickman_asymptotic: Ψ(x, x^{1/u}) ~ x·ρ(u) where ρ is the Dickman function. ρ(2) ≈ 0.307.",
     "mathContext": "The Dickman function describes the density of smooth numbers. ρ(2) > 0 supports the conjecture.",
@@ -296,7 +296,7 @@
       "startLine": 206,
       "endLine": 211
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Formal Statement",
     "content": "erdos_383_statement: The conjecture using Nat.maxPrimeFac and Finset.Icc.",
     "mathContext": "Precise formal statement adapted from formal-conjectures.",

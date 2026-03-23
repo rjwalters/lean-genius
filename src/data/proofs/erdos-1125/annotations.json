@@ -61,7 +61,7 @@
       "startLine": 86,
       "endLine": 92
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Kemperman's Partial Result (1969)",
     "content": "**kemperman_1969** axiomatizes Kemperman's 1969 theorem: if f satisfies the inequality AND f is Measurable (using Mathlib's measure-theoretic predicate), then f is monotonic. This uses Mathlib's `Measurable` typeclass rather than a custom placeholder, connecting the formalization to the standard measure theory library. The measurability assumption was natural because non-measurable functions (constructed via Axiom of Choice) can exhibit pathological behavior like additive non-linear functions.",
     "mathContext": "kemperman_1969 : satisfiesKemperman f → Measurable f → isMonotonic f. Published in Trans. Amer. Math. Soc. (1969).",
@@ -79,7 +79,7 @@
       "startLine": 94,
       "endLine": 108
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Laczkovich's Theorem (1984)",
     "content": "**laczkovich_1984** is the central axiom: ∀ f : ℝ → ℝ, satisfiesKemperman f → isMonotonic f. No measurability hypothesis. This completely resolves Erdős Problem #1125. **kemperman_question_resolved** is an immediate consequence: kemperman_question follows directly from laczkovich_1984. Laczkovich's proof in Colloq. Math. (1984, pp. 109-115) uses combinatorial and order-theoretic arguments to show that the functional inequality bounds oscillations enough to force global monotonicity, bypassing measure theory entirely.",
     "mathContext": "laczkovich_1984 : ∀ f, satisfiesKemperman f → isMonotonic f. kemperman_question_resolved : kemperman_question := laczkovich_1984.",
@@ -97,7 +97,7 @@
       "startLine": 110,
       "endLine": 118
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Oscillation Bound Interpretation",
     "content": "**kemperman_interpretation** gives a concrete consequence: f(x) - f(x+h) ≤ f(x+2h) - f(x+h). This is a genuine Lean proof via `linarith`. The interpretation: if f decreases from x to x+h by some amount δ, then f must increase from x+h to x+2h by at least δ. This prevents the function from 'oscillating downward' — any dip must be compensated by at least as large a rise. Iterating this argument across scales is the intuitive basis for why monotonicity is forced.",
     "mathContext": "kemperman_interpretation : satisfiesKemperman f → f(x) - f(x+h) ≤ f(x+2h) - f(x+h). Proved by linarith.",
@@ -115,7 +115,7 @@
       "startLine": 120,
       "endLine": 141
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Examples Satisfying Kemperman",
     "content": "Four results about functions satisfying the inequality. **constant_satisfies**: f(x) = c satisfies it (2c ≤ c+c), proved by `ring_nf`. **linear_satisfies**: f(x) = ax+b satisfies it, proved by `ring_nf`. **convex_satisfies** (axiom): any convex function satisfies Kemperman, since 2f(x) ≤ f(x+h)+f(x+2h) follows from midpoint convexity with the substitution y=x, z=x+2h, t=1/2. **square_satisfies**: f(x)=x² satisfies it, proved by `ring_nf; nlinarith [sq_nonneg h]` — the key step is that (x+h)²+(x+2h)²-2x² = 2h²+6xh+5h² and h²≥0.",
     "mathContext": "constant_satisfies, linear_satisfies: proved by ring_nf. square_satisfies: proved by nlinarith. convex_satisfies: axiomatized.",
@@ -134,7 +134,7 @@
       "startLine": 143,
       "endLine": 174
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorems",
     "content": "Two summary theorems. **erdos_1125** combines both main results into a conjunction: (1) Kemperman's 1969 measurable case and (2) Laczkovich's 1984 unconditional result, proved by ⟨kemperman_1969, laczkovich_1984⟩. **erdos_1125_summary** gives the cleanest statement: for any f, satisfiesKemperman f → isMonotonic f, proved as laczkovich_1984 f. The problem is completely SOLVED — Laczkovich's theorem subsumes Kemperman's partial result, but both are recorded for historical completeness.",
     "mathContext": "erdos_1125 : (∀ f, Kemperman f → Measurable f → Monotonic f) ∧ (∀ f, Kemperman f → Monotonic f) := ⟨kemperman_1969, laczkovich_1984⟩.",

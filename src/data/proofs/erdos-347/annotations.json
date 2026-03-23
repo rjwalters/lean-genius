@@ -3,72 +3,143 @@
     "id": "erdos-347-subset-sums",
     "proofId": "erdos-347",
     "type": "definition",
-    "range": { "startLine": 25, "endLine": 27 },
+    "range": {
+      "startLine": 25,
+      "endLine": 27
+    },
     "title": "Subset Sums P(A)",
     "content": "subsetSums A is the set of all natural numbers expressible as a sum of a finite subset of A. This is the central object: the problem asks when P(A') has density 1.",
     "mathContext": "The subset sum set $P(A) = \\{\\sum_{a \\in S} a : S \\subseteq A,\\ S \\text{ finite}\\} = \\{s \\in \\mathbb{N} : \\exists S \\in \\mathcal{F}(A),\\ \\sum_{a \\in S} a = s\\}$ where $\\mathcal{F}(A)$ denotes finite subsets of $A$. The Lean definition uses `Finset` with `Finset.sum id` for the summation. $P(A)$ always contains 0 (empty sum). A sequence is 'complete' if $P(A) \\supseteq \\{n : n \\ge N_0\\}$ for some $N_0$, and 'subcomplete' if $P(A)$ has density 1. The problem asks for the stronger property that $P(A')$ has density 1 for ALL cofinite subsequences $A'$.",
     "significance": "key",
-    "relatedConcepts": ["complete sequences", "knapsack problem", "partition function", "Zeckendorf representation"],
-    "prerequisites": ["Finset.sum with id", "Set.coe (Finset to Set)", "existential quantification over finite subsets"]
+    "relatedConcepts": [
+      "complete sequences",
+      "knapsack problem",
+      "partition function",
+      "Zeckendorf representation"
+    ],
+    "prerequisites": [
+      "Finset.sum with id",
+      "Set.coe (Finset to Set)",
+      "existential quantification over finite subsets"
+    ]
   },
   {
     "id": "erdos-347-density",
     "proofId": "erdos-347",
     "type": "definition",
-    "range": { "startLine": 31, "endLine": 39 },
+    "range": {
+      "startLine": 31,
+      "endLine": 39
+    },
     "title": "Asymptotic Density",
     "content": "HasDensity S delta means |S cap {1,...,N}|/N -> delta as N -> infinity. Density 1 means S contains almost all natural numbers.",
     "mathContext": "The asymptotic density $d(S) = \\lim_{N \\to \\infty} |S \\cap [1,N]| / N$ is defined in Lean via $\\varepsilon$-$N_0$ formulation: `HasDensity S \\delta` requires that for every $\\varepsilon > 0$ there exists $N_0$ such that $||S \\cap [1,N]|/N - \\delta| < \\varepsilon$ for all $N \\ge N_0$. Using $\\mathbb{Q}$ arithmetic avoids real-number complications. Density 1 means $|S^c \\cap [1,N]| = o(N)$: the complement is sparse. For subset sum sets, density 1 is equivalent to 'almost all integers are representable' — a strong form of additive completeness.",
     "significance": "key",
-    "relatedConcepts": ["natural density vs upper/lower density", "density-one sets", "counting function asymptotics", "Cesaro density"],
-    "prerequisites": ["rational absolute value", "Finset.Icc and Finset.filter for countIn", "epsilon-N_0 limit definition"]
+    "relatedConcepts": [
+      "natural density vs upper/lower density",
+      "density-one sets",
+      "counting function asymptotics",
+      "Cesaro density"
+    ],
+    "prerequisites": [
+      "rational absolute value",
+      "Finset.Icc and Finset.filter for countIn",
+      "epsilon-N_0 limit definition"
+    ]
   },
   {
     "id": "erdos-347-ratio-limit",
     "proofId": "erdos-347",
     "type": "definition",
-    "range": { "startLine": 43, "endLine": 52 },
+    "range": {
+      "startLine": 43,
+      "endLine": 52
+    },
     "title": "Monotone Sequences with Ratio Limit 2",
     "content": "IsMonotone a means a is nondecreasing. HasRatioLimit a r means a(n+1)/a(n) -> r. The critical value r = 2 is the boundary: powers of 2 grow at exactly this rate and have complete subset sums (binary representations).",
     "mathContext": "A monotone sequence with ratio limit 2 satisfies $a_{n+1}/a_n \\to 2$, meaning $a_n \\sim c \\cdot 2^n$ for some constant $c$. Powers of 2 are the prototypical example: $P(\\{1, 2, 4, 8, \\ldots\\}) = \\mathbb{N}$ (binary representation). But the ratio exactly 2 is fragile: $a_n = 2^n + 1$ still has ratio $\\to 2$ but $P(A)$ misses many integers. The Lean definition `HasRatioLimit a r` uses $\\varepsilon$-$N_0$ convergence of the ratio $a(n+1)/a(n)$ to $r$, guarded by $a(n) > 0$ to avoid division by zero. The condition $r = 2$ is the critical threshold: for $r < 2$, completeness is easy (the sequence grows slowly enough); for $r > 2$, gaps appear (the sequence grows too fast).",
     "significance": "key",
-    "relatedConcepts": ["geometric sequences", "binary representations", "complete sequences (Erdos-Graham)", "ratio test for completeness"],
-    "prerequisites": ["IsMonotone (nondecreasing condition)", "rational division and convergence", "exponential growth characterization"]
+    "relatedConcepts": [
+      "geometric sequences",
+      "binary representations",
+      "complete sequences (Erdos-Graham)",
+      "ratio test for completeness"
+    ],
+    "prerequisites": [
+      "IsMonotone (nondecreasing condition)",
+      "rational division and convergence",
+      "exponential growth characterization"
+    ]
   },
   {
     "id": "erdos-347-cofinite",
     "proofId": "erdos-347",
     "type": "definition",
-    "range": { "startLine": 56, "endLine": 63 },
+    "range": {
+      "startLine": 56,
+      "endLine": 63
+    },
     "title": "Cofinite Subsequences",
     "content": "IsCofiniteSubseq a iota means iota is a strictly monotone reindexing omitting only finitely many indices. This captures robustness: removing finitely many terms should not destroy the density-1 property.",
     "mathContext": "A cofinite subsequence is defined by a strictly monotone $\\iota : \\mathbb{N} \\to \\mathbb{N}$ with $(\\text{range}(\\iota))^c$ finite. Equivalently, $\\iota$ skips only finitely many indices, so $a \\circ \\iota$ is $a$ with finitely many terms removed. The Lean definition `IsCofiniteSubseq a \\iota := \\text{StrictMono}\\ \\iota \\wedge (\\text{range}(\\iota))^c.\\text{Finite}` uses `StrictMono` from Mathlib and `Set.Finite` on the complement. The cofinite image `Set.range (a \\circ \\iota)` is the set of values of the subsequence. The robustness requirement — density 1 survives finite deletion — is what makes the problem non-trivial. Removing even one carefully chosen term can destroy completeness for fragile sequences.",
     "significance": "key",
-    "relatedConcepts": ["cofinite topology", "Frechet filter", "robustness in additive combinatorics", "stability of completeness"],
-    "prerequisites": ["StrictMono in Mathlib", "Set.range and function composition", "Set.Finite on complements"]
+    "relatedConcepts": [
+      "cofinite topology",
+      "Frechet filter",
+      "robustness in additive combinatorics",
+      "stability of completeness"
+    ],
+    "prerequisites": [
+      "StrictMono in Mathlib",
+      "Set.range and function composition",
+      "Set.Finite on complements"
+    ]
   },
   {
     "id": "erdos-347-conjecture",
     "proofId": "erdos-347",
-    "type": "result",
-    "range": { "startLine": 67, "endLine": 78 },
+    "type": "insight",
+    "range": {
+      "startLine": 67,
+      "endLine": 78
+    },
     "title": "Erdos Problem 347 (Solved Affirmatively)",
     "content": "There exists a monotone sequence with ratio limit 2 such that every cofinite subsequence has subset sums of density 1. Solved affirmatively by ebarschkis, using ideas from Terence Tao and Wouter van Doorn.",
     "mathContext": "The problem `ErdosProblem347` is formalized as an existential: $\\exists a,\\ \\text{IsMonotone}\\ a \\wedge \\text{HasRatioLimit}\\ a\\ 2 \\wedge \\forall \\iota,\\ \\text{IsCofiniteSubseq}\\ a\\ \\iota \\Rightarrow \\text{HasDensity}(P(a \\circ \\iota))\\ 1$. The axiom `erdos347_affirmative` asserts this is true. The construction (due to ebarschkis, building on Tao and van Doorn) uses a carefully designed sequence where each term $a_n$ is chosen close to $2^n$ but with small perturbations that ensure the subset sum set remains dense even after finite deletions. The key insight is that binary-like sequences with controlled deviations from exact powers of 2 can be made 'robustly complete'.",
     "significance": "key",
-    "relatedConcepts": ["Tao-van Doorn construction", "robust completeness", "perturbation of geometric sequences", "formal verification of combinatorial results"],
-    "prerequisites": ["ErdosProblem347 definition", "axiom declaration in Lean", "existential witness construction"]
+    "relatedConcepts": [
+      "Tao-van Doorn construction",
+      "robust completeness",
+      "perturbation of geometric sequences",
+      "formal verification of combinatorial results"
+    ],
+    "prerequisites": [
+      "ErdosProblem347 definition",
+      "axiom declaration in Lean",
+      "existential witness construction"
+    ]
   },
   {
     "id": "erdos-347-properties",
     "proofId": "erdos-347",
-    "type": "result",
-    "range": { "startLine": 80, "endLine": 93 },
+    "type": "insight",
+    "range": {
+      "startLine": 80,
+      "endLine": 93
+    },
     "title": "Basic Properties of Subset Sums",
     "content": "Three structural properties: 0 is always in P(A) (empty sum), P(A) is closed under adding elements of A, and P is monotone (A subset B implies P(A) subset P(B)).",
     "mathContext": "The three axioms capture the algebraic structure of subset sums: (1) `zero_mem_subsetSums`: $0 \\in P(A)$ for any $A$ (the empty finite subset sums to 0). (2) `subsetSums_add`: if $s \\in P(A)$ and $a \\in A$ then $s + a \\in P(A)$ (extend the witnessing finite subset by $a$). (3) `subsetSums_mono`: $A \\subseteq B \\Rightarrow P(A) \\subseteq P(B)$ (more elements means more possible sums). Together these make $P$ a closure operator on $\\mathcal{P}(\\mathbb{N})$. The monotonicity property is used in the main proof: since a cofinite subsequence of $a$ omits only finitely many terms, $P(a \\circ \\iota) \\supseteq P(a) \\setminus (\\text{sums using deleted terms})$, and the density-1 property is preserved if the 'damage' from deleted terms is bounded.",
     "significance": "supporting",
-    "relatedConcepts": ["closure operators", "submodular set functions", "monotone operators on power sets"],
-    "prerequisites": ["Finset operations (union, singleton)", "subset transitivity", "Set.subset implications"]
+    "relatedConcepts": [
+      "closure operators",
+      "submodular set functions",
+      "monotone operators on power sets"
+    ],
+    "prerequisites": [
+      "Finset operations (union, singleton)",
+      "subset transitivity",
+      "Set.subset implications"
+    ]
   }
 ]

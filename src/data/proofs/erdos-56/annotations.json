@@ -60,7 +60,7 @@
       "startLine": 45,
       "endLine": 57
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Boundary Cases for Weak Divisibility",
     "content": "Three basic lemmas establish the behavior at boundaries:\n\n1. **Empty set**: Always k-weakly divisible (vacuously true)\n2. **Singleton**: k-weakly divisible when k ≥ 1 (can't pick k+1 elements)\n3. **k = 0**: Only the empty set works (every single element trivially satisfies 'pairwise coprime')",
     "mathContext": "These lemmas use `simp` to reduce to logical trivialities. The k=0 case is interesting: a set is 0-weakly divisible iff it's empty, because any 1-element 'pairwise coprime' subset exists in any nonempty set.",
@@ -113,7 +113,7 @@
       "startLine": 84,
       "endLine": 103
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Disproved Conjecture (Main Result)",
     "content": "**Erdős's conjecture was FALSE.** The axiom states the negation of:\n\n'For all k > 0 and N ≥ p_{k-1}, the maximum equals |FirstPrimesMultiples N k|'\n\nAhlswede and Khachatrian found that at k=212, you can construct a larger k-weakly divisible set than the prime multiples.\n\n**Why an axiom?** The counterexample construction is highly technical, involving careful analysis of which numbers can be added to the prime multiples without creating k+1 pairwise coprimes.",
     "mathContext": "The condition `N ≥ (k-1).nth Nat.Prime` ensures N is at least as large as the (k-1)-th prime, so there are enough numbers to work with.\n\nThe `¬(∀ ...)` form states the conjecture is false—there exist k, N where the equality fails.",
@@ -131,7 +131,7 @@
       "startLine": 111,
       "endLine": 121
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Verified Boundary Cases",
     "content": "Two boundary theorems that we can prove:\n\n1. **N = 0**: MaxWeaklyDivisible 0 k = 0 (empty interval, only empty set exists)\n2. **k = 0**: MaxWeaklyDivisible N 0 = 0 (only empty set is 0-weakly divisible)\n\nThese confirm our definitions behave correctly at edge cases.",
     "mathContext": "The N=0 case uses `Nat.sSup_def` to evaluate the supremum of the empty set. The k=0 case uses our earlier lemma `not_weaklyDivisible_zero` to show only ∅ qualifies.",
@@ -148,7 +148,7 @@
       "startLine": 123,
       "endLine": 132
     },
-    "type": "example",
+    "type": "context",
     "title": "Concrete Verification: Even Numbers",
     "content": "We verify concretely that **2 and 4 are not coprime** (their gcd is 2, not 1).\n\nThis illustrates the key idea: even numbers share factor 2, so they can never be pairwise coprime. This is why multiples of primes form weakly divisible sets.\n\n**gcd(2, 4) = 2** is computed by `native_decide`, which evaluates the expression directly in the kernel.",
     "mathContext": "Using `native_decide` for concrete computations is efficient—Lean compiles the expression and runs it natively rather than building a proof term.\n\n`Nat.Coprime a b` is defined as `Nat.gcd a b = 1`.",

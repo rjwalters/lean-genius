@@ -114,7 +114,7 @@
       "startLine": 110,
       "endLine": 115
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdos (1954): Log-Squared Works",
     "content": "**erdos_log_squared**: There exists an additive complement with O((log N)^2) density. This was Erdos's own improvement over Lorentz's O((log N)^3).",
     "mathContext": "Erdos's construction uses the greedy algorithm: include elements that cover the most uncovered integers. The analysis shows this achieves the quadratic bound.",
@@ -132,7 +132,7 @@
       "startLine": 117,
       "endLine": 123
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Kolountzakis (1996): Near-Optimal",
     "content": "**kolountzakis_log_loglog**: There exists an additive complement with O((log N)(log log N)) density. This was a major improvement, getting very close to O(log N).",
     "mathContext": "The log log N factor is tiny - for N = 10^10, log log N is about 3. Kolountzakis's result showed the quadratic bound was far from optimal.",
@@ -150,7 +150,7 @@
       "startLine": 125,
       "endLine": 133
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Ruzsa (1998): Arbitrarily Close",
     "content": "**ruzsa_omega_log**: For ANY function omega(N) -> infinity, there exists an additive complement with O(omega(N)*log N) density. This shows we can get arbitrarily close to O(log N).",
     "mathContext": "Even omega(N) = log log log N works! Ruzsa's probabilistic construction shows the barrier is not in finding complements, but in proving O(log N) itself is achievable.",
@@ -186,7 +186,7 @@
       "startLine": 147,
       "endLine": 156
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Ruzsa's Lower Bound: The Barrier",
     "content": "**ruzsa_lower_bound**: ANY additive complement A must satisfy liminf |A intersect [1,N]|/log N >= e^gamma. You cannot have density less than 1.781*log N infinitely often.",
     "mathContext": "This uses Filter.atTop and the 'frequently' quantifier. The proof analyzes the covering requirements using prime gap distribution and shows e^gamma is unavoidable.",
@@ -222,7 +222,7 @@
       "startLine": 218,
       "endLine": 234
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Connection to Goldbach",
     "content": "**goldbach_gives_partial_complement**: If Goldbach's conjecture holds, every even n >= 4 can be written as p + (n-p) with both prime. This shows primes are 'almost' self-complementing.",
     "mathContext": "Goldbach says every even n is p + q. Setting a = q, we have n = p + a with a prime. For even numbers, the primes themselves serve as complement. Odd numbers need more work.",
@@ -240,7 +240,7 @@
       "startLine": 244,
       "endLine": 257
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_32_summary** combines the solved parts: (1) O((log N)^2) works, (2) O((log N)(log log N)) works, (3) liminf >= e^gamma * log N. The O(log N) question remains open.",
     "mathContext": "This theorem packages the complete known state of Problem #32. The upper bounds are existence results (proved via constructions); the lower bound applies to all complements.",

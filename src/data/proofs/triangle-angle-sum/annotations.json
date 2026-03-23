@@ -74,7 +74,7 @@
       "startLine": 54,
       "endLine": 66
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Triangle Angle Sum Theorem",
     "content": "The central result: for any three points $p_1, p_2, p_3$ in a Euclidean space with $p_2 \\neq p_1$ and $p_3 \\neq p_1$:\n\n$$\\angle p_1 p_2 p_3 + \\angle p_2 p_3 p_1 + \\angle p_3 p_1 p_2 = \\pi$$\n\nThe proof is a single line: `EuclideanGeometry.angle_add_angle_add_angle_eq_pi h₂ h₃`. The hypotheses $p_2 \\neq p_1$ and $p_3 \\neq p_1$ ensure the angle at $p_1$ is well-defined (the rays from $p_1$ to $p_2$ and $p_3$ are non-degenerate). Note that $p_2 = p_3$ is permitted — in that case the 'triangle' degenerates but the angle sum still holds.",
     "mathContext": "$\\angle p_1 p_2 p_3 + \\angle p_2 p_3 p_1 + \\angle p_3 p_1 p_2 = \\pi$ for $p_2 \\neq p_1$, $p_3 \\neq p_1$",
@@ -96,7 +96,7 @@
       "startLine": 68,
       "endLine": 77
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Non-Degenerate Triangle Version",
     "content": "A reformulation with stronger hypotheses: all three vertices are pairwise distinct ($p_1 \\neq p_2$, $p_2 \\neq p_3$, $p_3 \\neq p_1$). This matches the classical statement for 'proper' triangles. The proof reduces to the main theorem by noting that $p_1 \\neq p_2$ implies $p_2 \\neq p_1$ (via `.symm`) and $p_3 \\neq p_1$ is given directly.",
     "mathContext": "For pairwise distinct $p_1, p_2, p_3$: $\\alpha + \\beta + \\gamma = \\pi$ (non-degenerate triangle)",
@@ -116,7 +116,7 @@
       "startLine": 79,
       "endLine": 89
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Angle Bounds",
     "content": "Two fundamental bounds on the angle function:\n\n- $0 \\leq \\angle p_1 p_2 p_3$ (angles are non-negative, from `angle_nonneg`)\n- $\\angle p_1 p_2 p_3 \\leq \\pi$ (angles are at most $\\pi$, from `angle_le_pi`)\n\nThese follow from the definition $\\angle = \\arccos(\\cdot)$ where $\\arccos : [-1, 1] \\to [0, \\pi]$. Combined with the angle sum, they imply each angle lies in $[0, \\pi]$.",
     "mathContext": "$\\forall p_1, p_2, p_3: 0 \\leq \\angle p_1 p_2 p_3 \\leq \\pi$, since $\\angle = \\arccos$ maps into $[0, \\pi]$",
@@ -138,7 +138,7 @@
       "startLine": 91,
       "endLine": 115
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Corollaries via Linear Arithmetic",
     "content": "Three consequences derived purely from $\\alpha + \\beta + \\gamma = \\pi$ using `linarith`:\n\n1. **third_angle_eq**: $\\gamma = \\pi - \\alpha - \\beta$ — knowing two angles determines the third\n2. **any_angle_lt_pi**: If two angles are positive, the third is strictly less than $\\pi$ — no angle in a non-degenerate triangle can be a straight angle\n3. **two_angles_lt_pi**: If one angle is positive, the sum of the other two is less than $\\pi$\n\nThe `linarith` tactic solves all three by linear arithmetic over the reals, demonstrating how a single identity generates multiple useful consequences without further geometric reasoning.",
     "mathContext": "From $\\alpha + \\beta + \\gamma = \\pi$: (1) $\\gamma = \\pi - \\alpha - \\beta$, (2) $\\alpha, \\beta > 0 \\implies \\gamma < \\pi$, (3) $\\gamma > 0 \\implies \\alpha + \\beta < \\pi$",
@@ -160,7 +160,7 @@
       "startLine": 117,
       "endLine": 126
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Right Triangle Special Case",
     "content": "In a right triangle with right angle $\\angle p_1 p_2 p_3 = \\pi/2$ at vertex $p_2$, the two acute angles satisfy:\n\n$$\\angle p_2 p_3 p_1 + \\angle p_3 p_1 p_2 = \\pi/2$$\n\nThis is the familiar result that the acute angles of a right triangle sum to $90°$. The proof substitutes $\\alpha = \\pi/2$ into $\\alpha + \\beta + \\gamma = \\pi$ and applies `linarith`.",
     "mathContext": "If $\\angle p_1 p_2 p_3 = \\pi/2$, then $\\angle p_2 p_3 p_1 + \\angle p_3 p_1 p_2 = \\pi/2$ (acute angles sum to $90°$)",
@@ -182,7 +182,7 @@
       "startLine": 128,
       "endLine": 137
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Exterior Angle Theorem",
     "content": "The exterior angle at vertex $p_2$ (defined as $\\pi - \\angle p_1 p_2 p_3$) equals the sum of the two remote interior angles:\n\n$$\\pi - \\angle p_1 p_2 p_3 = \\angle p_2 p_3 p_1 + \\angle p_3 p_1 p_2$$\n\nThis is Euclid's Proposition 32, which he stated as: 'the exterior angle of any triangle is equal to the two interior and opposite angles.' The proof is a direct rearrangement of $\\alpha + \\beta + \\gamma = \\pi$ via `linarith`.",
     "mathContext": "$\\pi - \\alpha = \\beta + \\gamma$ (exterior angle = sum of remote interior angles), equivalent to Euclid I.32",

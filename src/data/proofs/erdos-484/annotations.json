@@ -76,7 +76,7 @@
       "startLine": 86,
       "endLine": 98
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Sárközy-Sós Main Theorem",
     "content": "**ESS_theorem**: For any k ≥ 1, there exists C > 0 such that any k-coloring of {1,...,N} has ≥ N/2 − C·N^{1−1/2^{k+1}} even integers representable as monochromatic sums.",
     "significance": "key",
@@ -99,7 +99,7 @@
       "startLine": 100,
       "endLine": 118
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Parity Structure and Error Exponent",
     "content": "**even_sum_parity**: (a+1) + (b+1) mod 2 = ((a+1) mod 2 + (b+1) mod 2) mod 2 — parity is additive. **exponent_sublinear**: 1 − 1/2^{k+1} < 1 for all k ≥ 1, ensuring the error term is sub-linear.",
     "significance": "key",
@@ -121,7 +121,7 @@
       "startLine": 122,
       "endLine": 142
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Two-Coloring Case: O(log N) Tight Bound",
     "content": "**ESS_two_coloring**: For k = 2, ≥ N/2 − C·log N even numbers are representable. **two_coloring_optimal**: ∃ a 2-coloring where no power of 2 is a monochromatic sum, showing O(log N) exceptions is best possible.",
     "significance": "key",
@@ -145,7 +145,7 @@
       "startLine": 144,
       "endLine": 157
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Optimal 2-adic Valuation Construction",
     "content": "**optimal_construction_exists**: Color n by ν₂(n) mod 2 (the 2-adic valuation of n, reduced mod 2). This construction blocks all powers of 2 from being monochromatic sums.",
     "significance": "key",
@@ -168,7 +168,7 @@
       "startLine": 159,
       "endLine": 184
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sumset Structure: Pigeonhole and Density",
     "content": "**sumset_lower_bound**: By pigeonhole, some color class has size ≥ N/k. **sumset_density**: A set of size m has sumset (restricted, same-set sums) of size ≥ m − 1.",
     "significance": "key",
@@ -191,7 +191,7 @@
       "startLine": 186,
       "endLine": 198
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Fourier Analytic Bound on Unrepresented Sums",
     "content": "**fourier_representation_count**: The number of even numbers in {0,...,2N} that are NOT monochromatic sums is ≤ ⌈N^{1−1/2^{k+1}}⌉. This is the technical heart of the ESS theorem.",
     "significance": "key",
@@ -214,7 +214,7 @@
       "startLine": 200,
       "endLine": 224
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Positive Density and c → 1/2",
     "content": "**positive_density**: Roth's conjecture holds — proved by `exact roth_conjecture_true`. **constant_half_minus_epsilon**: For any ε > 0 and fixed k, the constant c = 1/2 − ε works for N large enough, since the error N^{1−1/2^{k+1}} = o(N).",
     "significance": "key",
@@ -236,7 +236,7 @@
       "startLine": 242,
       "endLine": 252
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Schur's Theorem (1916)",
     "content": "**schur_theorem**: For any k ≥ 1 and N large enough, any k-coloring of {1,...,N} contains monochromatic a, b, c with a + b = c. This is the 'equation version' where the sum itself must be in the same color class.",
     "significance": "supporting",
@@ -259,7 +259,7 @@
       "startLine": 254,
       "endLine": 265
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Hindman's Theorem (1974)",
     "content": "**hindman_theorem**: Any finite coloring of ℕ has an infinite set S such that all finite sums of distinct elements of S share one color. This is vastly stronger than Schur — giving infinite monochromatic sumset structure.",
     "significance": "supporting",
@@ -282,7 +282,7 @@
       "startLine": 267,
       "endLine": 322
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Complete Solution: erdos_484",
     "content": "**erdos_484**: The main theorem combining all three components — (1) Roth's conjecture is true, (2) two-coloring case has O(log N) error, (3) the O(log N) bound is tight. Proved by `⟨roth_conjecture_true, ESS_two_coloring, two_coloring_optimal⟩`.",
     "significance": "key",

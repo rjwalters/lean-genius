@@ -343,7 +343,7 @@
       "startLine": 161,
       "endLine": 171
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Szemerédi Density",
     "content": "**Erdős-Szemerédi**: ε-Ramsey graphs have Θ(n²) edges.\n\nThis makes δn² the natural target - it's the order of magnitude of total edges.",
     "mathContext": "For fixed $\\varepsilon > 0$, there exist $c_1, c_2 > 0$ (depending on $\\varepsilon$) such that every $\\varepsilon$-Ramsey graph $G$ on $n$ vertices satisfies $c_1 n^2 \\le |E(G)| \\le c_2 n^2$. The lower bound follows because small $\\omega(G)$ forces many edges (complement has small $\\alpha$), and the upper bound because small $\\alpha(G)$ limits the complement's clique structure. This 1972 result of Erdős–Szemerédi establishes that $\\Theta(n^2)$ is the correct scale for the edge count range.",
@@ -389,7 +389,7 @@
       "startLine": 202,
       "endLine": 208
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "KSSS Theorem",
     "content": "**Kwan-Sah-Sauermann-Sawhney (2022)**:\n\nThe Erdős-McKay conjecture is TRUE.\n\nUsed anticoncentration to show random subgraphs hit all edge counts.",
     "mathContext": "The KSSS theorem (arXiv:2206.01068) proves: for every $\\varepsilon > 0$ there exists $\\delta > 0$ such that if $G$ is $\\varepsilon$-Ramsey on $n$ vertices, then $G$ has induced subgraphs with all edge counts in $\\{0, 1, \\ldots, \\lfloor \\delta n^2 \\rfloor\\}$. The proof has three main ingredients: (1) anticoncentration of polynomial threshold functions (building on Meka–Nguyen–Vu), (2) the Erdős–Szemerédi density to ensure $\\Theta(n^2)$ edges, and (3) a careful coupling argument to pass from random subsets to deterministic ones. Axiomatized as `ksss_theorem : ErdosMcKayConjecture`.",
@@ -453,7 +453,7 @@
       "startLine": 228,
       "endLine": 232
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "δ(ε) > 0",
     "content": "**Theorem**: δ(ε) > 0 for all ε > 0.\n\nThe function is well-defined and positive.",
     "mathContext": "The proof unfolds `delta`, simplifies the `dite` (if-then-else) using $\\varepsilon > 0$, and applies `Classical.choose_spec` to extract the positivity from the existential statement $\\exists \\delta > 0, \\ldots$ This is a fully proved theorem (0 sorries) that demonstrates the KSSS theorem provides a meaningful bound. The proof is: `unfold delta; simp [hε]; exact (Classical.choose_spec (ksss_theorem ε hε)).1`.",
@@ -474,7 +474,7 @@
       "startLine": 270,
       "endLine": 283
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result",
     "content": "**Erdős Problem #88: SOLVED**\n\nThe Erdős-McKay conjecture is TRUE.\n\nFor ε > 0, every ε-Ramsey graph has induced subgraphs with all edge counts up to δn².\n\n**Prize**: $100 (awarded to KSSS 2022).",
     "mathContext": "The main theorem `erdos_88 : ErdosMcKayConjecture := ksss_theorem` is a one-line proof that aliases the KSSS axiom. This file achieves 0 sorries because all complex results (KSSS, Erdős–Szemerédi, Erdős–McKay weak, anticoncentration, Ramsey existence) are axiomatized, while the structural theorems (`delta_pos`, `erdos_88`) are fully proved from these axioms. The formalization cleanly separates the deep mathematical content (axioms) from the logical framework (definitions and derived theorems).",

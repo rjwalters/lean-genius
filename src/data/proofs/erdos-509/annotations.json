@@ -79,7 +79,7 @@
       "startLine": 98,
       "endLine": 123
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Known Results: Cartan, Pommerenke",
     "content": "Three known results are axiomatized:\n\n1. **Cartan's Theorem (1928):** The sublevel set can always be covered with total radius ≤ 2e ≈ 5.44. This was the first general bound, proved using logarithmic potential theory.\n\n2. **Pommerenke's Improvement (1961):** The bound was tightened to 2.59 using refined estimates on polynomial capacity and component geometry.\n\n3. **Connected Case (Pommerenke, 1959):** When the sublevel set is connected, total radius 2 suffices. This is a key partial result — the difficulty arises precisely when the sublevel set splits into multiple components.",
     "mathContext": "Cartan's bound uses 2 * Real.exp 1 (i.e., 2e) from Mathlib's exponential function. Pommerenke's 2.59 is a rational approximation. The connected case adds IsConnected as a hypothesis.",
@@ -97,7 +97,7 @@
       "startLine": 125,
       "endLine": 157
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sublevel Set Structure and Examples",
     "content": "Three structural results about sublevel sets:\n\n1. **sublevelSet_bounded:** The sublevel set of a monic polynomial is contained in some closed ball of radius R around the origin. This follows from the fact that |f(z)| → ∞ as |z| → ∞ for monic polynomials.\n\n2. **linear_sublevel_is_disc:** For the simplest polynomial f(z) = z, the sublevel set is exactly the closed unit disc centered at 0. This is the base case, requiring only radius 1 to cover.\n\n3. **quadratic_sublevel_nonempty:** The sublevel set of z² − 1 is nonempty (it contains the roots ±1). This polynomial is the conjectured extremal case, with two components each requiring radius ≈ 1.",
     "mathContext": "The linear case uses Polynomial.X (the indeterminate). The quadratic case uses X^2 - C 1 where C is the constant polynomial constructor.",
@@ -115,7 +115,7 @@
       "startLine": 173,
       "endLine": 201
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_509_summary** combines the two key known bounds into a single theorem: (1) Cartan's bound — every monic polynomial's sublevel set can be covered with total radius ≤ 2e, and (2) Pommerenke's bound — total radius ≤ 2.59 suffices. The proof is `⟨cartan_bound, pommerenke_bound⟩`, directly combining the two axioms.\n\nThis replaces a previous placeholder `True := trivial` with genuine mathematical content.",
     "mathContext": "The conjunction is proved by exact anonymous constructor syntax ⟨·, ·⟩. The theorem serves as a machine-checkable summary of the formalization's known results.",

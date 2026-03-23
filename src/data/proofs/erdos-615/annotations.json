@@ -96,7 +96,7 @@
       "startLine": 122,
       "endLine": 131
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "EHSS Upper Bound (1983)",
     "content": "**ehss_upper_bound:**\n\nFor any fixed e > 0: rt(n; 4, en) < (1/8 + o(1))n^2\n\nThis established that the 1/8 threshold is correct for *linear* independence number.\n\n**Significance:**\nWhen alpha(G) must be < en (a constant fraction of n), dense K4-free graphs need ~ (1/8)n^2 edges.\n\nThis suggested maybe the bound could be improved for slower-growing independence numbers.",
     "significance": "key",
@@ -112,7 +112,7 @@
       "startLine": 133,
       "endLine": 144
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sudakov's Result (2003)",
     "content": "**sudakov_upper_bound:**\n\nrt(n; 4, ne^(-f(n))) = o(n^2) whenever f(n)/sqrt(log n) -> infinity.\n\n**Interpretation:**\nWhen the independence number bound grows VERY slowly (slower than ne^(-sqrt(log n))), the Ramsey-Turan number becomes subquadratic.\n\nThis identified a regime where the behavior changes qualitatively.",
     "mathContext": "Sudakov's result showed there's a transition from O(n^2) to o(n^2) behavior somewhere.",
@@ -125,7 +125,7 @@
       "startLine": 152,
       "endLine": 164
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Fox-Loh-Zhao Theorem (2015)",
     "content": "**fox_loh_zhao_lower_bound:**\n\nrt(n; 4, ne^(-f(n))) >= (1/8 - o(1))n^2 whenever f(n) = o(sqrt(log n / log log n)).\n\n**The Critical Window:**\nThe threshold is sqrt(log n / log log n).\n\n- f(n) << sqrt(log n / log log n): rt ~ (1/8)n^2 (quadratic)\n- f(n) >> sqrt(log n / log log n): rt = o(n^2) (subquadratic)\n\nFor n/log n = ne^(-log n), since log n = o(sqrt(log n / log log n)), we get rt >= (1/8 - o(1))n^2.",
     "mathContext": "This is the main theorem that disproves the conjecture by showing the 1/8 threshold cannot be improved for n/log n.",
@@ -142,7 +142,7 @@
       "startLine": 166,
       "endLine": 180
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Conjecture is FALSE",
     "content": "**erdos_615:**\n\nThe answer to the conjecture is NO.\n\n```lean\ntheorem erdos_615 : not erdos_615_conjecture := erdos_615_false\n```\n\n**Why?**\nFor l = n/log n, we have l = ne^(-log n).\nSince log n = o(sqrt(log n / log log n)), Fox-Loh-Zhao gives:\nrt(n; 4, n/log n) >= (1/8 - o(1))n^2\n\nSo no constant c > 0 can make rt < (1/8 - c)n^2.",
     "significance": "key"
@@ -183,7 +183,7 @@
       "startLine": 214,
       "endLine": 221
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Turan's Theorem",
     "content": "**turan_k4:**\n\nex(n, K4) = (1 - 1/3)(n choose 2) ~ (1/6)n^2\n\n**Interpretation:**\nWithout any independence constraint (l = n), the maximum edges in a K4-free graph is the Turan number.\n\nThe Turan graph T(n, 3) achieves this: partition vertices into 3 equal parts and add all edges between different parts.",
     "mathContext": "Turan's theorem (1941) is one of the foundational results of extremal graph theory.",
@@ -200,7 +200,7 @@
       "startLine": 271,
       "endLine": 283
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Construction",
     "content": "**simonovits_sos_construction:**\n\nTo prove the lower bound, Fox-Loh-Zhao construct a specific graph:\n\n1. Start with balanced complete 3-partite graph (K4-free, ~(3/9)n^2 = (1/3)(n^2/3) edges)\n2. Remove edges using probabilistic method to destroy large independent sets\n3. The resulting graph has ~(1/8)n^2 edges, no K4, and alpha < n/log n\n\nKey insight: The 3-partite structure prevents K4, and random removal prevents large independent sets.",
     "significance": "key",
@@ -216,7 +216,7 @@
       "startLine": 301,
       "endLine": 307
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_615_summary:**\n\nCombines the main results:\n1. The conjecture is false\n2. For linear alpha < en, rt ~ (1/8)n^2 (EHSS bound is tight)\n\nThe 1/8 threshold is optimal for a wide range of independence number bounds, all the way down to n/log n.",
     "significance": "key"
@@ -228,7 +228,7 @@
       "startLine": 309,
       "endLine": 313
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Answer is NO",
     "content": "**erdos_615_answer:**\n\nThe answer to Erdos Problem #615 is NO.\n\nThe threshold 1/8 cannot be improved even for independence number n/log n.\n\nGraphs with ~(1/8)n^2 edges can avoid both K4 and large independent sets.",
     "significance": "key"

@@ -99,7 +99,7 @@
       "startLine": 117,
       "endLine": 147
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Thomassen's Theorem",
     "content": "**Thomassen's Theorem (1974): The Main Result**\n\n```lean\naxiom thomassen_cycle_structure (G : SimpleGraph V) (n : ℕ) (hn : n ≥ 4)\n    (h : hasVerticesAndEdges G n (2 * n - 2)) :\n    hasVertexTriplyAdjacentToCycle G\n```\n\n**Statement:** Every graph with $n \\geq 4$ vertices and $2n-2$ edges contains a cycle and a vertex adjacent to at least 3 vertices on that cycle.\n\n**Why Axiom?** The full proof requires detailed case analysis on graph structure that goes beyond Mathlib's current graph theory capabilities. The result is well-established in the literature.\n\n**Key Insight:** With $2n-2$ edges, the average degree is approximately 4, which forces enough connectivity to guarantee this structure.",
     "mathContext": "n ≥ 4, |V| = n, |E| = 2n-2 → cycle + triply adjacent vertex",
@@ -117,7 +117,7 @@
       "startLine": 139,
       "endLine": 147
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem: Erdős #916",
     "content": "**Erdős Problem #916: SOLVED**\n\n```lean\ntheorem erdos_916 (G : SimpleGraph V) (n : ℕ) (hn : n ≥ 4)\n    (h : hasVerticesAndEdges G n (2 * n - 2)) :\n    hasVertexTriplyAdjacentToCycle G :=\n  thomassen_cycle_structure G n hn h\n```\n\nThis theorem directly answers Erdős's question: **YES**, every such graph contains the required structure.\n\nThe proof is immediate from Thomassen's axiomatized result.",
     "mathContext": "Direct application of Thomassen's theorem",
@@ -135,7 +135,7 @@
       "startLine": 149,
       "endLine": 172
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Relationship to Dirac's Theorem",
     "content": "**Thomassen Implies Dirac**\n\nThe cycle + triply adjacent vertex structure immediately gives a K₄ subdivision:\n\n```lean\ntheorem thomassen_implies_dirac (G : SimpleGraph V) (n : ℕ) (hn : n ≥ 4)\n    (h : hasVerticesAndEdges G n (2 * n - 2)) :\n    isK4Subdivision G :=\n  triply_adjacent_implies_k4 G (thomassen_cycle_structure G n hn h)\n```\n\n**Why?** If we have a cycle $C$ and vertex $v$ with 3 adjacencies to $C$:\n- Take $v$ as one branch vertex\n- Take the 3 vertices on $C$ adjacent to $v$ as the other branch vertices\n- The cycle provides paths between the vertices on $C$\n- Edges from $v$ provide the remaining connections\n\nThis shows Thomassen's result is strictly stronger than Dirac's.",
     "mathContext": "Cycle + triply adjacent vertex ⟹ K₄ subdivision",
@@ -172,7 +172,7 @@
       "startLine": 202,
       "endLine": 233
     },
-    "type": "example",
+    "type": "context",
     "title": "Concrete Small Cases",
     "content": "**Edge Thresholds for Small n**\n\n```lean\ntheorem case_n_eq_4 : edgeThreshold 4 = 6 := by simp [edgeThreshold]; norm_num\ntheorem case_n_eq_5 : edgeThreshold 5 = 8 := by simp [edgeThreshold]; norm_num\ntheorem case_n_eq_6 : edgeThreshold 6 = 10 := by simp [edgeThreshold]; norm_num\n```\n\n**n = 4 (6 edges):** This is exactly K₄ (the complete graph on 4 vertices). K₄ trivially satisfies the property - any 3 vertices form a triangle (cycle), and the 4th vertex is adjacent to all 3.\n\n**n = 5 (8 edges):** Significant room for variation in structure, but Thomassen's theorem guarantees the property.\n\n**n = 6 (10 edges):** Even more graphs possible, all satisfying the property.",
     "mathContext": "n=4: 6 edges, n=5: 8 edges, n=6: 10 edges",
@@ -190,7 +190,7 @@
       "startLine": 254,
       "endLine": 284
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Final Summary",
     "content": "**Erdős Problem #916: Complete Answer**\n\n```lean\ntheorem erdos_916_summary (G : SimpleGraph V) (n : ℕ) (hn : n ≥ 4)\n    (h : hasVerticesAndEdges G n (2 * n - 2)) :\n    hasVertexTriplyAdjacentToCycle G ∧ isK4Subdivision G\n```\n\n**The Problem:** Does every graph with $n$ vertices and $2n-2$ edges contain a cycle and another vertex adjacent to three vertices on the cycle?\n\n**The Answer:** YES (Thomassen, 1974)\n\n**Key Takeaways:**\n1. The edge density $2n-2$ is critical for forcing this structure\n2. This result strengthens Dirac's K₄ subdivision theorem\n3. The structure specifies exact geometric relationships, not just topological ones\n4. Proof involves careful case analysis on dense graph structure",
     "mathContext": "Complete characterization for n ≥ 4",

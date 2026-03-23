@@ -60,7 +60,7 @@
       "startLine": 76,
       "endLine": 132
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Verified Examples",
     "content": "**Concrete powerful number examples:**\n\n- **one_is_powerful:** 1 is powerful (vacuously, no prime divisors)\n- **four_is_powerful:** 4 = 2² is powerful\n- **eight_is_powerful:** 8 = 2³ is powerful\n- **nine_is_powerful:** 9 = 3² is powerful\n- **seventytwo_is_powerful:** 72 = 2³ · 3² is powerful\n\n**Key theorem:**\n```lean\ntheorem square_is_powerful (n : ℕ) (hn : n ≥ 1) : IsPowerful (n^2)\n```\n\nEvery perfect square is powerful.",
     "significance": "key"
@@ -118,7 +118,7 @@
       "startLine": 219,
       "endLine": 228
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Fermat's Theorem on Squares",
     "content": "**fermat_no_four_squares_in_AP:**\n\nThere are no four distinct squares in arithmetic progression.\n\n**Axiom:**\n```lean\naxiom fermat_no_four_squares_in_AP :\n    ¬∃ (a b c d : ℕ), a < b ∧ b < c ∧ c < d ∧\n      IsFourTermAP (a^2) (b^2) (c^2) (d^2)\n```\n\nThis classical result of Fermat shows that perfect squares are too sparse/structured to form 4-term APs.",
     "mathContext": "Proved by Fermat using infinite descent. Related to the theory of elliptic curves.",
@@ -136,7 +136,7 @@
       "startLine": 234,
       "endLine": 253
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Easy Construction (Without Coprimality)",
     "content": "**extend_powerful_AP and arbitrarily_long_powerful_APs:**\n\nWithout coprimality, arbitrarily long APs of powerful numbers exist.\n\n**Construction:**\nIf a, a+d, ..., a+(k-1)d is an AP of powerful numbers, then:\na(a+kd)², (a+d)(a+kd)², ..., (a+(k-1)d)(a+kd)², (a+kd)³\n\nis an AP of powerful numbers with one more term.\n\nStarting from any two powerful numbers, we can extend indefinitely.",
     "mathContext": "This shows why coprimality is essential - without it, the problem is trivial.",
@@ -149,7 +149,7 @@
       "startLine": 259,
       "endLine": 275
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bajpai-Bennett-Chan Theorem",
     "content": "**bajpai_bennett_chan_four_term and bajpai_bennett_chan_three_term_3powerful:**\n\nThe main results from the 2024 paper:\n\n1. **Four-term powerful APs:**\n```lean\naxiom bajpai_bennett_chan_four_term :\n    coprimePowerfulFourTermAPs.Infinite\n```\n\n2. **Three-term 3-powerful APs:**\n```lean\naxiom bajpai_bennett_chan_three_term_3powerful :\n    coprime3PowerfulThreeTermAPs.Infinite\n```\n\nThese settle Erdős Problem #937 and part of his conjecture on r-powerful numbers.",
     "mathContext": "The proof uses sophisticated techniques from analytic number theory.",
@@ -166,7 +166,7 @@
       "startLine": 281,
       "endLine": 308
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "ABC Conjecture Connection",
     "content": "**erdosConjectureRPowerful and abc_implies_finite_rpowerful:**\n\nErdős's conjecture on r-powerful numbers:\n- r ≥ 4: Only finitely many 3-term coprime APs\n- r = 3: Infinitely many 3-term but finitely many 4-term\n\n**Conditional result:**\n```lean\naxiom abc_implies_finite_rpowerful (r : ℕ) (hr : r ≥ 4) :\n    True → -- ABC conjecture\n    ∃ (S : Finset (ℕ × ℕ × ℕ)), ∀ t, ... → t ∈ S\n```\n\nThe r ≥ 4 case is proved assuming the ABC conjecture.",
     "mathContext": "The ABC conjecture is one of the most important open problems in number theory.",
@@ -184,7 +184,7 @@
       "startLine": 314,
       "endLine": 323
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result: Erdős #937 Solved",
     "content": "**erdos_937:**\n\n```lean\ntheorem erdos_937 : coprimePowerfulFourTermAPs.Infinite :=\n  bajpai_bennett_chan_four_term\n```\n\n**Answer: YES**\n\nThere are infinitely many four-term arithmetic progressions of pairwise coprime powerful numbers.\n\nProved by Bajpai, Bennett, and Chan in 2024.",
     "significance": "key"
@@ -196,7 +196,7 @@
       "startLine": 337,
       "endLine": 348
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Contrast with Fermat",
     "content": "**squares_vs_powerful:**\n\n```lean\ntheorem squares_vs_powerful :\n    (¬∃ (a b c d : ℕ), a < b ∧ b < c ∧ c < d ∧\n      IsFourTermAP (a^2) (b^2) (c^2) (d^2)) ∧\n    coprimePowerfulFourTermAPs.Infinite\n```\n\n**Contrast:**\n- **Squares:** No four in AP (Fermat)\n- **Powerful numbers:** Infinitely many coprime 4-term APs\n\nPowerful numbers are richer than perfect squares.",
     "significance": "key",

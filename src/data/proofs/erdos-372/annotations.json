@@ -42,7 +42,7 @@
       "startLine": 73,
       "endLine": 91
     },
-    "type": "proof",
+    "type": "technique",
     "title": "Concrete Examples",
     "content": "**Three computed examples verified by native_decide:**\n\n- P(6) = 3, since 6 = 2 × 3\n- P(30) = 5, since 30 = 2 × 3 × 5\n- P(210) = 7, since 210 = 2 × 3 × 5 × 7 (the primorial of 7)\n\nThe `native_decide` tactic compiles the decision procedure to native code for fast evaluation. These examples illustrate how P extracts the largest prime from increasingly complex factorizations.",
     "mathContext": "The primorial p# is the product of all primes up to p. These are natural test cases because their largest prime factor equals p exactly.",
@@ -77,7 +77,7 @@
       "startLine": 109,
       "endLine": 125
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Pomerance Ascending Theorem (1978)",
     "content": "**erdos_pomerance_ascending (axiom):**\n\nThere are infinitely many n with P(n) < P(n+1) < P(n+2).\n\nThis was proved by Erdős and Pomerance in 1978 — 23 years before the descending case. The ascending case is easier because smooth numbers (numbers with only small prime factors) are relatively common, and transitioning from a smooth number to one with a large prime factor is natural.\n\nAxiomatized because the proof uses sieve-theoretic methods not yet formalized in Mathlib.",
     "mathContext": "The proof leverages the fact that y-smooth numbers (P(n) ≤ y) have positive density for y = x^ε. By finding runs where P increases, ascending triplets can be constructed. The key tool is the Dickman function ρ(u) which governs smooth number counts.",
@@ -95,7 +95,7 @@
       "startLine": 127,
       "endLine": 148
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Balog's Theorem (2001)",
     "content": "**Two axiomatized results from Balog (2001):**\n\n**balog_quantitative:** There exist constants c > 0 and x₀ such that for all x ≥ x₀, at least c·√x integers n ≤ x satisfy P(n) > P(n+1) > P(n+2). This is the main technical achievement.\n\n**balog_descending_infinite:** The set of descending triplets is infinite. This follows from the quantitative bound since c·√x → ∞, but is axiomatized separately for clarity.\n\nBalog's proof uses deep sieve methods (Selberg sieve, Brun's sieve) to construct these triplets, far beyond current Mathlib capabilities.",
     "mathContext": "The √x bound is sublinear — it grows slower than x — which means descending triplets are relatively sparse. By comparison, the density conjecture predicts ~x/6 such triplets up to x. The gap between √x and x/6 reflects the limitations of Balog's sieve approach.",
@@ -131,7 +131,7 @@
       "startLine": 193,
       "endLine": 219
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_372_summary combines two key results:**\n\n1. **Descending triplets are infinite:** Set.Infinite {n | isDescendingTriple n} — from Balog (2001)\n2. **Ascending triplets are infinite:** Set.Infinite {n | isAscendingTriple n} — from Erdős-Pomerance (1978)\n\nTogether, these establish that both monotone patterns in largest prime factors occur infinitely often among consecutive integers. The proof is a simple conjunction: ⟨balog_descending_infinite, erdos_pomerance_ascending⟩.\n\nErdős Problem #372 is completely SOLVED.",
     "mathContext": "The summary theorem packages the two main results into a single conjunction. The proof is trivially constructed from the two axioms. The remaining open question is the density conjecture (1/6 for each of the 6 orderings).",

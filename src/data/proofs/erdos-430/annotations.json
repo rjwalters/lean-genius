@@ -184,7 +184,7 @@
       "startLine": 64,
       "endLine": 64
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Example: $n = 8$",
     "content": "For $n = 8$: $a_0 = 7$ (prime, factor $7 > 8 - 7 = 1$), $a_1 = 5$ (prime, factor $5 > 8 - 5 = 3$), then the sequence terminates since no $m \\in [1, 5)$ has all prime factors exceeding $8 - m$. The sequence is entirely prime, showing the conjecture fails for small $n$. Note: $4$ is not admissible since $2 \\mid 4$ and $2 \\not> 8 - 4 = 4$.",
     "mathContext": "$n = 8$: $a_0 = 7, a_1 = 5, a_2 = 0$. Check: $4$ fails since $2 \\mid 4$ but $2 \\leq 4 = 8 - 4$. $3$ fails since $3 \\leq 5 = 8 - 3$.",
@@ -206,7 +206,7 @@
       "startLine": 71,
       "endLine": 74
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Equivalence with Problem #385",
     "content": "Adenwalla's key observation: Problem #430 (greedy sequence contains composite for large $n$) is equivalent to the first part of Problem #385 (for large $n$, there exists a composite $m < n$ with all prime factors exceeding $n - m$). The equivalence follows because the greedy sequence includes all admissible integers in decreasing order, so it contains a composite iff any composite is admissible. This connects the constructive greedy process to a pure existence question about rough composites near $n$.",
     "mathContext": "$(\\exists N_0,\\; \\forall n \\geq N_0,\\; \\texttt{hasComposite}(n)) \\iff (\\exists N_0,\\; \\forall n \\geq N_0,\\; \\exists m < n,\\; m \\text{ composite} \\wedge \\text{all primes } p \\mid m \\text{ satisfy } p > n - m)$.",
@@ -230,7 +230,7 @@
       "startLine": 81,
       "endLine": 82
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Conjecture: Composites for Large $n$",
     "content": "The central open problem: for sufficiently large $n$, the greedy large-factor sequence must contain at least one composite number. Selfridge performed extensive computations supporting this conjecture but reported 'no proof is in sight.' The difficulty is that primes near $n$ are automatically admissible (by Bertrand's postulate, there is always a prime in $(n/2, n)$), so one must show that the greedy process cannot be sustained by primes alone.",
     "mathContext": "$\\exists N_0,\\; \\forall n \\geq N_0,\\; \\exists k,\\; a_k > 1 \\wedge a_k \\text{ is composite}$. Equivalently (by Adenwalla): $\\forall n \\geq N_0,\\; \\exists m < n$ composite with all prime factors $> n - m$.",
@@ -254,7 +254,7 @@
       "startLine": 88,
       "endLine": 90
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Small $n$: All-Prime Sequences",
     "content": "For small $n$, the greedy sequence may consist entirely of primes (or 1). There exists a threshold $n_0$ below which no composite appears. The conjecture asserts this all-prime behavior cannot persist for arbitrarily large $n$: eventually, the density of primes near $n$ is insufficient to fill all admissible slots, and a composite must enter the sequence.",
     "mathContext": "$\\exists n_0,\\; \\forall n \\leq n_0,\\; \\forall k,\\; a_k > 0 \\Rightarrow a_k$ is prime or $a_k = 1$. The prime number theorem implies primes thin out: $\\pi(n) \\sim n/\\ln n$, but admissible composites may be abundant.",

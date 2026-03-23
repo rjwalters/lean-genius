@@ -59,7 +59,7 @@
     "title": "The Erdős-Nešetřil Conjecture and C₅ Blow-up Tightness",
     "content": "The conjecture `ErdosNesetrilConjecture` states $\\chi'_s(G) \\leq \\frac{5}{4}\\Delta^2$ universally (quantified over all types, Fintype, DecidableEq instances, and graphs). Two tightness axioms: (1) `conjecture_is_tight` — for every $\\Delta \\geq 2$, a graph achieving exactly $\\frac{5}{4}\\Delta^2$ exists. (2) `c5_blowup_construction` — the explicit construction for even $\\Delta$: replace each vertex of the 5-cycle $C_5$ with $\\Delta/2$ independent copies, connecting copies of adjacent vertices completely. This yields $\\frac{5}{2}\\Delta$ vertices, max degree $\\Delta$, and strong chromatic index $\\frac{5}{4}\\Delta^2$.",
     "mathContext": "Conjecture: $\\forall G,\\, \\chi'_s(G) \\leq \\frac{5}{4}\\Delta(G)^2$. Tight: $C_5[K_{\\Delta/2}]$ has $\\chi'_s = \\frac{5}{4}\\Delta^2$. The $C_5$ blow-up has $5 \\cdot \\binom{\\Delta/2}{1}^2 = \\frac{5}{4}\\Delta^2$ edges at maximum mutual distance, forming a clique in $L(G)^2$.",
-    "significance": "core",
+    "significance": "key",
     "relatedConcepts": [
       "blow-up graph",
       "cycle graph C₅",
@@ -79,11 +79,11 @@
       "startLine": 84,
       "endLine": 122
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Progress History: From 2Δ² to 1.772Δ²",
     "content": "Five upper bounds axiomatized in chronological order: (1) **Trivial:** $\\chi'_s(G) \\leq 2\\Delta^2 - 2\\Delta + 1$ — each edge has at most $2(\\Delta - 1)$ neighbors at each endpoint. (2) **Molloy-Reed (1997):** $1.998\\Delta^2$ for large $\\Delta$ — first to break the factor-2 barrier using the Lovász Local Lemma. (3) **Bruhn-Joos (2018):** $1.93\\Delta^2$ — entropy compression method. (4) **Bonamy-Perrett-Postle (2022):** $1.835\\Delta^2$ — refined probabilistic approach. (5) **Hurley-de Joannis de Verclos-Kang (2022):** $1.772\\Delta^2$ — current best, using the cluster expansion method. The theorem `current_gap` is **proved in Lean** by `norm_num`: $1.772 - \\frac{5}{4} = 0.522$.",
     "mathContext": "Trivial: $\\chi'_s \\leq 2\\Delta^2 - 2\\Delta + 1$. Best: $\\chi'_s \\leq 1.772\\Delta^2$ for $\\Delta \\geq \\Delta_0$. Gap: $1.772 - 1.25 = 0.522$.",
-    "significance": "core",
+    "significance": "key",
     "relatedConcepts": [
       "Lovász Local Lemma",
       "entropy compression",
@@ -103,7 +103,7 @@
       "startLine": 124,
       "endLine": 144
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Special Graph Classes: C₄-free and Bipartite",
     "content": "Better bounds exist for restricted graph families: (1) **Mahdian:** For $C_4$-free graphs, $\\chi'_s(G) \\leq (2 + o(1))\\Delta^2/\\log \\Delta$. The absence of 4-cycles limits the local density around edges, yielding a logarithmic improvement. (2) **Bipartite graphs:** The conjecture holds with a constant $c < \\frac{5}{4}$, axiomatized without specifying the exact value. These results suggest that the difficulty lies in dense local structures.",
     "mathContext": "$C_4$-free: $\\chi'_s(G) \\leq (2 + \\varepsilon) \\cdot \\Delta^2 / \\log \\Delta$ for $\\Delta \\geq \\Delta_0(\\varepsilon)$. Bipartite: $\\chi'_s(G) \\leq c \\cdot \\Delta^2$ with $c < 5/4$.",
@@ -127,7 +127,7 @@
       "startLine": 146,
       "endLine": 166
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Clique Number of L(G)²: A Weaker Problem",
     "content": "Since $\\chi(H) \\geq \\omega(H)$ for any graph $H$, bounding the clique number $\\omega(L(G)^2)$ is a necessary condition for the conjecture. This weaker problem has seen progress: **Śleszyńska-Nowak (2015):** $\\omega(L(G)^2) \\leq \\frac{3}{2}\\Delta^2$. **Faron-Postle (2019):** $\\omega(L(G)^2) \\leq \\frac{4}{3}\\Delta^2$. Note that `cliqueNumber_LineSquare` is introduced as an axiom (not a definition), and `clique_le_chromatic` axiomatizes $\\omega \\leq \\chi'_s$.",
     "mathContext": "$\\omega(L(G)^2) \\leq \\chi'_s(G)$ since $\\chi(H) \\geq \\omega(H)$. Best bound: $\\omega(L(G)^2) \\leq \\frac{4}{3}\\Delta^2$. The conjecture $\\omega \\leq \\frac{5}{4}\\Delta^2$ is open in general.",
@@ -150,7 +150,7 @@
       "startLine": 168,
       "endLine": 183
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Strongly Independent Edge Pairs: Chung-Gyárfás-Tuza-Trotter",
     "content": "Two edges are **strongly independent** if they are not at distance $\\leq 2$: they share no vertex and no vertex of one is adjacent to a vertex of the other. `StronglyIndependentEdges` is defined as the negation of `edgesAtDistance2`. **Chung-Gyárfás-Tuza-Trotter (1990):** if $|E(G)| \\geq \\frac{5}{4}\\Delta^2$, then $G$ has two strongly independent edges. This is a weaker version of the conjecture: if the conjecture's bound on colors is right, then certainly there are pairs of non-conflicting edges.",
     "mathContext": "Edges $e_1, e_2$ are strongly independent iff $\\text{dist}_{L(G)}(e_1, e_2) > 2$. If $|E| \\geq \\frac{5}{4}\\Delta^2$, $\\exists$ strongly independent pair.",
@@ -195,11 +195,11 @@
       "startLine": 201,
       "endLine": 217
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem: Best Bound and Tightness",
     "content": "The main theorem `erdos_149_summary` combines two results: (1) `hurley_joannis_kang_2022` — the current best bound $\\chi'_s(G) \\leq 1.772\\Delta^2$ for large $\\Delta$, and (2) `conjecture_is_tight` — for every $\\Delta \\geq 2$, graphs achieving exactly $\\frac{5}{4}\\Delta^2$ exist. Proved by `exact ⟨hurley_joannis_kang_2022, conjecture_is_tight⟩`. Together these bound the problem: $\\frac{5}{4}\\Delta^2 \\leq \\chi'_s(G_{\\text{worst}}) \\leq 1.772\\Delta^2$.",
     "mathContext": "$\\frac{5}{4}\\Delta^2 \\leq \\max_G \\chi'_s(G) \\leq 1.772\\Delta^2$ for large $\\Delta$. Gap: $0.522\\Delta^2$.",
-    "significance": "core",
+    "significance": "key",
     "relatedConcepts": [
       "open problems in graph theory",
       "extremal bounds",

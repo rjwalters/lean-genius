@@ -95,7 +95,7 @@
       "startLine": 98,
       "endLine": 100
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Trivial Upper Bound",
     "content": "**F(n) ≤ n + √n** because any composite m < n has p(m) ≤ √m ≤ √(n-1), giving m + p(m) < n + √n. This bound is tight: Erdős conjectured F(n) ≥ n + (1-o(1))√n.",
     "mathContext": "The axiom states F(n) ≤ n + Nat.sqrt(n) for n > 4. The proof would chain leastPrimeDivisor_le_sqrt with the monotonicity of √ and the bound m < n.",
@@ -185,7 +185,7 @@
       "startLine": 146,
       "endLine": 155
     },
-    "type": "proof",
+    "type": "technique",
     "title": "Composite Number Examples",
     "content": "**Concrete verification** that 4, 9, and 6 are composite numbers. These serve as witnesses for the F function: F(10) = 12 is achieved by m = 9 with p(9) = 3, giving 9 + 3 = 12 > 10.",
     "mathContext": "Each proof uses omega for the n > 1 condition and decide for the ¬n.Prime condition. These are fully constructive with no sorry.",
@@ -203,7 +203,7 @@
       "startLine": 169,
       "endLine": 175
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Derived: Finite Exceptions",
     "content": "**If Question 1 holds**, then only finitely many n have F(n) ≤ n. This is the contrapositive view: the 'eventually' quantifier means the exceptions form a finite set.",
     "mathContext": "finitely_many_exceptions : erdos385Question1 → {n : ℕ | F n ≤ n}.Finite. This follows from the definition of Filter.Eventually for atTop: eventually P means {n | ¬P n} is bounded.",

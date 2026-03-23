@@ -122,7 +122,7 @@
       "startLine": 95,
       "endLine": 100
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős–Freud Lower Bound",
     "content": "Erdős and Freud (1991) proved f(N) ≥ (2/√3 + o(1))√N ≈ 1.155√N. The construction takes a Sidon set B ⊆ [1, N/3] of size ~√(N/3) and forms A = B ∪ {N - b : b ∈ B}. The key insight: sums from different halves cluster near N, avoiding collisions with sums within each half.",
     "mathContext": "$f(N) \\geq (2/\\sqrt{3} + o(1))\\sqrt{N}$. Construction: $B$ Sidon in $[1, N/3]$, $|B| \\sim \\sqrt{N/3}$. Set $A = B \\cup (N - B)$, $|A| = 2|B| \\sim 2\\sqrt{N/3} = (2/\\sqrt{3})\\sqrt{N}$.",
@@ -166,7 +166,7 @@
       "startLine": 120,
       "endLine": 124
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős–Freud Upper Bound",
     "content": "The original upper bound f(N) ≤ (2 + o(1))√N by Erdős and Freud (1991), using a counting argument on the number of sums. Superseded by Pikhurko's sharper bound.",
     "mathContext": "$f(N) \\leq (2 + o(1))\\sqrt{N}$. Proof sketch: if $|A| = k$ and $A \\subseteq [1, N]$, then $A + A \\subseteq [2, 2N]$, so $\\binom{k}{2} \\lesssim |A+A| \\leq 2N$, giving $k \\lesssim 2\\sqrt{N}$.",
@@ -188,7 +188,7 @@
       "startLine": 126,
       "endLine": 132
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Pikhurko's Upper Bound",
     "content": "Pikhurko (2006) improved the upper bound to f(N) ≤ c_P√N where c_P = (1/4 + 1/(π+2)²)^{-1/2} ≈ 1.863. The proof uses a connection between quasi-Sidon sets and edge-magic graph labelings, combined with analytic optimization over trigonometric sums.",
     "mathContext": "$c_P = \\left(\\frac{1}{4} + \\frac{1}{(\\pi + 2)^2}\\right)^{-1/2} \\approx 1.863$. The $\\pi$ arises from optimizing $\\int_0^1 \\min(t, 1-t)^2 \\, dt$ in the Fourier analysis of the sum representation function.",
@@ -256,7 +256,7 @@
       "startLine": 160,
       "endLine": 166
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Cilleruelo's Difference Set Result",
     "content": "Cilleruelo (2010) proved the analogous problem for A - A instead of A + A is simpler: the maximum quasi-Sidon size (for differences) is ~√N with constant 1. The asymmetry between sums and differences is related to the fact that A - A is symmetric while A + A is not.",
     "mathContext": "$f_{\\text{diff}}(N) \\sim \\sqrt{N}$: the constant for the difference version is exactly 1. This contrasts with the sum version where the constant lies in $[1.155, 1.863]$.",
@@ -278,7 +278,7 @@
       "startLine": 170,
       "endLine": 174
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Classical Sidon Bound",
     "content": "For actual Sidon sets (not quasi-Sidon), the maximum size in {1,...,N} is √N + O(N^{1/4}) (Erdős–Turán 1941 upper bound, Singer 1938 / Bose–Chowla 1962 lower bound). The quasi-Sidon relaxation gains a factor of at least 2/√3 ≈ 1.155.",
     "mathContext": "Classical Sidon: $\\max\\{|A| : A \\subseteq [N],\\, A \\text{ Sidon}\\} = \\sqrt{N} + O(N^{1/4})$. Quasi-Sidon gains: $f(N) / \\sqrt{N} \\geq 2/\\sqrt{3} > 1$.",

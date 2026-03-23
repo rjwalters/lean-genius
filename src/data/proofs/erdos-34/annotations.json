@@ -77,7 +77,7 @@
       "startLine": 87,
       "endLine": 99
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Disproved Conjecture",
     "content": "**ErdosConjecture** states: For all epsilon > 0, there exists N such that for all n > N and all pi in S_n, S(pi) < epsilon * n^2.\n\n**erdos_34_disproved** asserts this is FALSE.\n\nCounterexamples exist with S(pi) >= cn^2 for constant c > 0 (specifically c >= 1/4).",
     "mathContext": "The little-o notation S(pi) = o(n^2) means S(pi)/n^2 -> 0 as n -> infinity.",
@@ -101,7 +101,7 @@
       "startLine": 105,
       "endLine": 111
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Hegyvari's Counterexample (1986)",
     "content": "**hegyvari_counterexample** states there exist permutations with S(pi) >= (1/18 + o(1))n^2.\n\nThis was the FIRST counterexample to Erdos's conjecture.\n\n1/18 ~ 0.056 shows the conjecture fails by a constant factor.",
     "mathContext": "Hegyvari's construction is explicit but the 1/18 constant was later improved dramatically.",
@@ -124,7 +124,7 @@
       "startLine": 113,
       "endLine": 119
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Konieczny's Quarter Bound (2015)",
     "content": "**konieczny_quarter_bound** states there exist permutations with S(pi) >= n^2/4.\n\nThis shows the conjecture is 'extremely false' - not just failing by a small constant, but by a factor of 1/4.\n\nSince max possible is ~n^2/2 pairs, this is nearly half the theoretical maximum!",
     "mathContext": "1/4 = 0.25, compared to Hegyvari's 1/18 ~ 0.056 - a 4.5x improvement.",
@@ -148,7 +148,7 @@
       "startLine": 121,
       "endLine": 131
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bounds on Maximum f(n)",
     "content": "**f_lower_bound**: f(n) >= 0.286 * n^2\n**f_upper_bound**: f(n) <= 0.446 * n^2\n\nwhere f(n) = max_{pi} S(pi).\n\nThe gap [0.286, 0.446] shows the exact maximum is not yet known.",
     "mathContext": "These bounds from Konieczny (2015) leave room for improvement.",
@@ -172,7 +172,7 @@
       "startLine": 133,
       "endLine": 141
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Random Permutation Behavior",
     "content": "**random_permutation_limit** states that for a random permutation,\n\nS(pi) ~ (1 + e^-2)/4 * n^2 ~ 0.2838 * n^2\n\nThis shows most permutations violate the conjecture by the same amount as worst-case constructions!",
     "mathContext": "e^-2 ~ 0.135, so (1 + e^-2)/4 ~ 0.2838. Almost identical to the lower bound 0.286.",
@@ -196,7 +196,7 @@
       "startLine": 149,
       "endLine": 162
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Identity Permutation is Special",
     "content": "**identity_is_little_o** states S(iota) = o(n^2) for the identity permutation.\n\nFor iota(i) = i, consecutive sums are arithmetic progressions: sum_{i=u}^v i = (v-u+1)(u+v)/2.\n\nThe number of distinct such sums is O(n^1.5), not Theta(n^2).\n\nThis special case motivated Erdos's (false) conjecture.",
     "mathContext": "Identity has fewer distinct sums because arithmetic progression sums have algebraic structure.",

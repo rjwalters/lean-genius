@@ -97,7 +97,7 @@
       "startLine": 118,
       "endLine": 150
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Squarefree Case",
     "content": "**PrimeSquares**, **squarefreeSetAsBFree**, **erdos_squarefree_limit**, **squarefree_density:**\n\nPrimeSquares = {p² : p prime}. The axiom squarefreeSetAsBFree states BFreeSet(PrimeSquares) = {n : Squarefree n}.\n\nerdos_squarefree_limit axiomatizes Erdős's theorem: LimitExists(PrimeSquares). The density axiom states squarefree numbers have density 6/π² ≈ 0.6079.",
     "mathContext": "The density 6/π² = 1/ζ(2) comes from inclusion-exclusion over prime squares. Each prime p excludes 1/p² of integers, and by Euler's product formula, the density of squarefree numbers is Π_p (1 - 1/p²) = 1/ζ(2) = 6/π².",
@@ -115,7 +115,7 @@
       "startLine": 169,
       "endLine": 198
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorems",
     "content": "**erdos_489_summary** and **erdos_489:**\n\nBoth theorems state LimitExists(PrimeSquares), proved via erdos_squarefree_limit. This captures the known result: the squarefree case is solved.\n\nThe general conjecture (ErdosConjecture) remains open — it is defined but not asserted as an axiom, reflecting its unsolved status.",
     "mathContext": "The formalization distinguishes between the solved special case (squarefree numbers, stated as a theorem) and the open general conjecture (stated as a definition of type Prop). This accurately reflects the mathematical status of Problem #489.",

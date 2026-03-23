@@ -138,7 +138,7 @@
       "startLine": 149,
       "endLine": 164
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sylvester-Gallai Theorem",
     "content": "**sylvester_gallai:**\n\nAny finite set of non-collinear points in ℝ² determines at least one ordinary line (containing exactly 2 points).\n\n**Dual version:** Any arrangement of ≥ 3 non-concurrent lines has at least one ordinary point.\n\n**History:** Posed by Sylvester (1893), proved by Gallai (1944).\n\n**Importance:** This guarantees ordinary points exist, but Erdős asked if three of them must form a triangle.",
     "mathContext": "The theorem fails over finite fields (e.g., the Fano plane has no ordinary points).",
@@ -155,7 +155,7 @@
       "startLine": 198,
       "endLine": 208
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Füredi-Palásti (1984)",
     "content": "**furedi_palasti_1984:**\n\nFor d not divisible by 9, there exist d-line arrangements with:\n- No parallels\n- No 4-concurrent points\n- No Gallai triangles\n\n**Contribution:** First partial disproof of Erdős's conjecture.\n\n**Gap:** Left open the case d ≡ 0 (mod 9).",
     "mathContext": "Published in Proc. Amer. Math. Soc. (1984), 'Arrangements of lines with a large number of triangles.'",
@@ -172,7 +172,7 @@
       "startLine": 210,
       "endLine": 222
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Escudero's Construction (2016)",
     "content": "**escudero_2016:**\n\nFor ALL d ≥ 4, there exist d-line arrangements with:\n- No parallels\n- No 4-concurrent points\n- No Gallai triangles\n\n**This completely resolves Erdős Problem #209!**\n\nEscudero filled the gap left by Füredi-Palásti, handling the d ≡ 0 (mod 9) case.",
     "mathContext": "Published in C. R. Math. Acad. Sci. Paris (2016), 'Gallai triangles in configurations of lines in the projective plane.'",
@@ -189,7 +189,7 @@
       "startLine": 228,
       "endLine": 246
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem",
     "content": "**erdos_209:**\n\n```lean\ntheorem erdos_209 :\n    ∀ d ≥ 4, ∃ A : LineArrangement,\n      A.card = d ∧ NoParallels A ∧ NoFourConcurrent A ∧ ¬HasGallaiTriangle A\n```\n\n**The answer to Erdős's question is NO.**\n\nCounterexamples exist for every d ≥ 4. The proof uses Escudero's 2016 construction.",
     "significance": "key",
@@ -205,7 +205,7 @@
       "startLine": 248,
       "endLine": 275
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_209_summary:**\n\nThe summary theorem restates the complete disproof: for every d ≥ 4, there exists a d-line arrangement with no parallels, no 4-concurrent points, and no Gallai triangle. This is proved as a direct consequence of Escudero's 2016 construction.\n\n**Key takeaway:** While Sylvester-Gallai guarantees ordinary points exist, three such points need not form a triangle. The counterexamples use algebraic configurations where 3-rich points block every potential Gallai triangle.",
     "significance": "key",

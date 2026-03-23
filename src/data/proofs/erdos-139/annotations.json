@@ -78,7 +78,7 @@
       "startLine": 89,
       "endLine": 96
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős #139: Main Statement",
     "content": "**Szemerédi's Theorem (Erdős #139)**: For any k ≥ 2, the ratio r_k(N)/N tends to 0 as N → ∞. This means that k-AP-free subsets of {1,...,N} become asymptotically negligible compared to N.",
     "mathContext": "Using Filter.Tendsto, we express this as: `Tendsto (fun N => (r k N / N : ℝ)) atTop (𝓝 0)`. The hypothesis `1 < k` excludes the trivial case k=1 where every nonempty set contains a 1-AP.",
@@ -126,7 +126,7 @@
       "startLine": 123,
       "endLine": 147
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Trivial Cases: k=1 and k=2",
     "content": "**k=1**: Any nonempty set contains a 1-AP (a single element). **k=2**: Any set with ≥2 elements contains a 2-AP (two distinct elements form a 2-term AP with common difference their gap).",
     "mathContext": "For k=1, we witness `⟨a, 1, Nat.one_pos, ...⟩` with any element a. For k=2, given distinct a,b with a < b, the progression is a, b with common difference b-a. The `interval_cases i` tactic handles the two cases i=0,1.",
@@ -149,7 +149,7 @@
       "startLine": 155,
       "endLine": 194
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Equivalence with Mathlib's ThreeAPFree",
     "content": "**isKAPFree_iff_threeAPFree**: Our `IsKAPFree S 3` is equivalent to Mathlib's `ThreeAPFree S`. This is crucial for connecting to Mathlib's Roth theorem.",
     "mathContext": "Mathlib's `ThreeAPFree S` says: ∀ a,b,c ∈ S, a+c = b+b implies a=b. This captures 'no non-trivial 3-APs' differently—by requiring that arithmetic mean b equals the endpoint a when they satisfy the AP condition. The proof carefully handles the case analysis for both directions.",
@@ -173,7 +173,7 @@
       "startLine": 196,
       "endLine": 210
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Roth's Theorem via Mathlib",
     "content": "**Roth's Theorem (k=3)**: Proved completely using Mathlib's `roth_3ap_theorem_nat`. For any δ > 0 and sufficiently large N, any subset of {0,...,N-1} with ≥δN elements contains a 3-AP.",
     "mathContext": "The proof uses `cornersTheoremBound (δ/3)` as the threshold N₀. Mathlib's proof chain is: Szemerédi Regularity → Triangle Removal → Corners → Roth. The bound is tower-type exponential, making it huge in practice, but the theorem is fully proved.",
@@ -197,7 +197,7 @@
       "startLine": 222,
       "endLine": 225
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Kelley-Meka Bound (2023)",
     "content": "**Kelley-Meka (2023)**: The current best upper bound for k=3: r₃(N) ≤ N·exp(-c(log N)^{1/12}) for some constant c > 0. This is a major breakthrough, exponentially improving previous bounds.",
     "mathContext": "This is axiomatized because the proof involves sophisticated harmonic analysis and density increment arguments far beyond current Mathlib capabilities. The exponent 1/12 comes from iteration of Bogolyubov-type arguments.",
@@ -221,7 +221,7 @@
       "startLine": 243,
       "endLine": 246
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Behrend's Lower Bound (1946)",
     "content": "**Behrend (1946)**: The lower bound r₃(N) ≥ N·exp(-c√(log N)) shows that 3-AP-free sets can be surprisingly dense. This is achieved by taking integers whose base-d representation lies on a sphere.",
     "mathContext": "Behrend's construction uses the fact that points on a sphere in ℤᵈ (with fixed L²-norm) form a 3-AP-free set, then encodes these as base-d integers. The gap between upper and lower bounds (exp(-log^{1/12}) vs exp(-√log)) remains a major open problem.",
@@ -245,7 +245,7 @@
       "startLine": 251,
       "endLine": 259
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Full Szemerédi Theorem Axiom",
     "content": "**szemeredi_theorem**: We axiomatize the full Szemerédi theorem for all k ≥ 2. While k=3 is proved in Mathlib, k≥4 requires hypergraph regularity lemma which is not yet formalized.",
     "mathContext": "Szemerédi's original 1975 proof used a complex combinatorial argument. Furstenberg's 1977 proof used ergodic theory (correspondence principle). Gowers' 2001 proof introduced higher-order Fourier analysis. None of these approaches are fully in Mathlib for k≥4.",

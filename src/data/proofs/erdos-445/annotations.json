@@ -42,7 +42,7 @@
       "startLine": 63,
       "endLine": 73
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Heilbronn's Result",
     "content": "**heilbronn_threshold** (axiom): an unspecified real number c₀. **heilbronn_unpublished** (axiom): c₀ < 1 and the conjecture holds for all c > c₀. Heilbronn proved this result but never published it, and the exact value of c₀ is not known from his work.",
     "mathContext": "Heilbronn's unpublished result was the first progress on the problem. The existential nature of the axiom (some c₀ exists) reflects the historical situation: we know a threshold exists below 1, but Heilbronn's specific bound is not recorded. Heath-Brown's result supersedes this by proving c₀ ≤ 3/4.",
@@ -59,7 +59,7 @@
       "startLine": 75,
       "endLine": 98
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Heath-Brown's Result and Kloosterman Sums",
     "content": "**KloostermanSum** (axiom): K(m,n;p) = Σₓ e^{2πi(mx + nx⁻¹)/p}, axiomatized since it requires exponential sum machinery. **weil_bound** (axiom): |K(m,n;p)| ≤ 2√p, Weil's deep estimate from algebraic geometry. **heath_brown_2000** (axiom): the conjecture holds for all c > 3/4. **heath_brown_threshold** (proved): witnesses c₀ = 3/4 with proof ⟨rfl, heath_brown_2000⟩.",
     "mathContext": "Heath-Brown's proof uses Kloosterman sums to count inverse pairs via Fourier analysis on (Z/pZ)*. The Weil bound — a consequence of the Riemann hypothesis for curves over finite fields — provides the key square-root cancellation. The factor 3/4 arises from balancing the Weil bound contribution against the main term in the counting formula.",
@@ -77,7 +77,7 @@
       "startLine": 100,
       "endLine": 116
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Open Range and Current Knowledge",
     "content": "**OpenRange** = Set.Ioc (1/2) (3/4), the gap where the conjecture is neither proved nor disproved. **current_knowledge** (proved): packages Heath-Brown's result together with the fact that OpenRange ⊆ (1/2, 1). The proof of the inclusion uses calc with hx.2 and norm_num.",
     "mathContext": "The open range c ∈ (1/2, 3/4] is the main challenge. The lower bound 1/2 comes from the heuristic counting argument. The upper bound 3/4 is Heath-Brown's threshold. Closing this gap requires either stronger exponential sum estimates (improving the Weil bound is impossible, but better averaging may help) or entirely new methods.",
@@ -95,7 +95,7 @@
       "startLine": 118,
       "endLine": 141
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_445_summary** packages both known results as a proved conjunction: (1) Heilbronn's result — ∃ c₀ < 1 with the conjecture holding for c > c₀, and (2) Heath-Brown's c > 3/4 result. The proof is ⟨⟨heilbronn_threshold, heilbronn_unpublished.1, heilbronn_unpublished.2⟩, heath_brown_2000⟩.",
     "mathContext": "The two-part conjunction captures the complete known picture: an early existential result (Heilbronn) and a quantitative improvement (Heath-Brown). Heath-Brown's result strictly improves Heilbronn's since 3/4 < c₀ ≤ 1, but including both preserves the historical development. The open questions about c ∈ (1/2, 3/4] are stated in the problem but not included in the summary since they are unresolved.",

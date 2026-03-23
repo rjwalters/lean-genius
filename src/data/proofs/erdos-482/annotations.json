@@ -43,7 +43,7 @@
       "startLine": 60,
       "endLine": 66
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Graham-Pollak Digit Extraction Theorem",
     "content": "**graham_pollak_theorem** states that differences a_{2n+1} - 2·a_{2n-1} are always 0 or 1, corresponding to binary digits. This is the central result: a simple integer recurrence can systematically extract the binary expansion of an irrational number. The proof requires analyzing how the floor function interacts with multiplication by √2.",
     "mathContext": "The theorem uses Set.mem with the set {0, 1} : Set ℤ. The key mathematical insight is that the factor of 2 in '2·a_{2n-1}' corresponds to a binary shift, and the difference isolates the next digit.",
@@ -61,7 +61,7 @@
       "startLine": 72,
       "endLine": 81
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Recurrence Growth Rate",
     "content": "**sqrt2_approx** gives the numerical bound 1.414 < √2 < 1.415. **growth_rate** proves that consecutive term ratios converge to √2 with error O(1/n). This explains why the recurrence captures √2: each term is approximately √2 times the previous one, with the floor function creating controlled rounding errors that encode the binary digits.",
     "mathContext": "The growth rate bound uses absolute value |·| for the difference between the ratio and √2. The O(1/n) convergence rate means the sequence quickly locks onto √2's arithmetic properties.",
@@ -79,7 +79,7 @@
       "startLine": 87,
       "endLine": 106
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Stoll's Generalizations",
     "content": "**sqrtSeq** generalizes the recurrence to arbitrary √m. **stoll_generalization_sqrt** extends digit extraction to square-free m. **stoll_general** goes further: for any quadratic irrational α (root of aα² + bα + c = 0), there exist recurrence and digit-extraction functions. Stoll's work uses Pisot-Vijayaraghavan number theory.",
     "mathContext": "The generalization uses the quadratic equation a·α² + b·α + c = 0 with a ≠ 0 to characterize quadratic irrationals. The digit-extraction function produces values in {0, 1} ⊂ ℤ, encoding base-⌊√m⌋ digits.",
@@ -97,7 +97,7 @@
       "startLine": 112,
       "endLine": 120
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Non-Periodicity of Digit Sequence",
     "content": "**sqrt2_nonperiodic** asserts that the extracted digit sequence is never eventually periodic. This follows from the irrationality of √2: a rational number has an eventually periodic binary expansion, so if the digits were periodic, √2 would be rational — a contradiction.",
     "mathContext": "The negation ¬∃ (p : ℕ) (start : ℕ), p > 0 ∧ ∀ n ≥ start, f(n+p) = f(n) formally states 'not eventually periodic'. This connects the digit-extraction theorem to the classical proof of irrationality of √2.",
@@ -115,7 +115,7 @@
       "startLine": 128,
       "endLine": 159
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result: erdos_482",
     "content": "**erdos_482_characterization** proves the recurrence satisfies a_{n+1} = ⌊√2(aₙ + 1/2)⌋ by definition (rfl) and digit-extraction by axiom. **erdos_482** packages the complete solution: Graham-Pollak for √2 and Stoll's generalization to all quadratic irrationals, proved via ⟨graham_pollak_theorem, stoll_general⟩.",
     "mathContext": "The characterization theorem uses rfl for the definitional equality and the axiom for the mathematical content. The main theorem is a conjunction combining the original result with the generalization requested by Erdős.",

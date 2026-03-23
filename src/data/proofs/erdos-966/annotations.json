@@ -90,7 +90,7 @@
       "startLine": 109,
       "endLine": 127
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Spencer's Set Construction",
     "content": "**SpencerSet k r:**\n\nThe witness set satisfying both properties simultaneously:\n1. **spencer_AP_free:** No (k+1)-term AP exists\n2. **spencer_forces_mono_AP:** Every r-coloring has a monochromatic k-AP\n\nThe actual construction is sophisticated - marked as `sorry` since the combinatorial details are beyond simple formalization.",
     "mathContext": "Spencer's construction uses probabilistic or algebraic methods to achieve both constraints.",
@@ -107,7 +107,7 @@
       "startLine": 146,
       "endLine": 154
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdős Problem #966: SOLVED",
     "content": "**erdos_966:**\n\n```lean\ntheorem erdos_966 (k r : ℕ) (hk : k ≥ 2) (hr : r ≥ 2) :\n    ∃ A : Set ℕ,\n      APFreeOfLength A (k + 1) ∧\n      forcesMonochromaticAP A r k :=\n  spencer_theorem k r hk hr\n```\n\n**The answer is YES** for all k, r ≥ 2. Such sets exist!",
     "significance": "key",
@@ -123,7 +123,7 @@
       "startLine": 163,
       "endLine": 189
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Van der Waerden Connection",
     "content": "**Van der Waerden's Theorem (1927):**\n\nFor any k, r, there exists N such that any r-coloring of {1, ..., N} contains a monochromatic k-term AP.\n\n**Van der Waerden Number W(k, r):**\nThe minimum such N.\n\n**Erdős 966 Refinement:**\nEven when restricted to (k+1)-AP-free sets, the Ramsey property persists for k-APs.",
     "mathContext": "Van der Waerden numbers grow extremely fast - W(3,3) is already unknown!",
@@ -157,7 +157,7 @@
       "startLine": 214,
       "endLine": 228
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Specific Instantiations",
     "content": "**case_k2_r2:**\nThere exists A with no 3-AP, but every 2-coloring has a monochromatic 2-AP.\n(Note: Any 2 distinct elements form a \"2-AP\", so this is nearly trivial.)\n\n**case_k3_r2:**\nThere exists A with no 4-AP, but every 2-coloring has a monochromatic 3-AP.\nThis is more interesting - avoiding 4-APs while forcing 3-APs in any 2-coloring.",
     "significance": "supporting",
@@ -173,7 +173,7 @@
       "startLine": 238,
       "endLine": 254
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Roth's Theorem and Density",
     "content": "**Roth's Theorem (1953):**\n\nAny subset of ℕ with positive upper density contains a 3-term AP.\n\n**Implication for Spencer's Sets:**\n\nSince Spencer's sets avoid all sufficiently long APs, they must have **zero upper density**.\n\n```lean\naxiom spencer_zero_density (k r : ℕ) (hk : k ≥ 2) (hr : r ≥ 2) :\n    upperDensity (SpencerSet k r) = 0\n```",
     "mathContext": "Roth won the Fields Medal partly for this result. Szemerédi extended it to all k.",
@@ -191,7 +191,7 @@
       "startLine": 260,
       "endLine": 269
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Singleton Sets are AP-Free",
     "content": "**singleton_AP_free:**\n\nAny singleton {n} is trivially k-AP-free for k ≥ 2.\n\n**Proof Idea:**\nA k-AP with d > 0 has at least 2 distinct elements: a and a+d. A singleton can't contain both.\n\nThis shows the base case: extreme AP-avoidance is easy (just use tiny sets).",
     "significance": "supporting",
@@ -207,7 +207,7 @@
       "startLine": 271,
       "endLine": 281
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "AP Cardinality",
     "content": "**AP_card:**\n\nAn arithmetic progression {a, a+d, ..., a+(k-1)d} with d > 0 has exactly k elements.\n\n**Proof:**\nThe map i ↦ a + i·d is injective when d > 0 (different i give different values). So the image of {0, ..., k-1} has cardinality k.",
     "significance": "supporting",
@@ -223,7 +223,7 @@
       "startLine": 287,
       "endLine": 308
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_966_summary:**\n\nCombines all main results:\n1. Existence of the required set A\n2. A is (k+1)-AP-free\n3. A forces monochromatic k-APs in any r-coloring\n4. A has zero upper density\n\nThis captures the complete solution to Erdős Problem #966.",
     "significance": "key",

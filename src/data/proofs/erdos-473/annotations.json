@@ -43,7 +43,7 @@
       "startLine": 56,
       "endLine": 65
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Segal's Question and Odlyzko's Theorem",
     "content": "**segalQuestion:** The formal statement — ∃ a, IsPrimeSumPermutation a.\n\n**odlyzko_theorem:** Axiomatizes Odlyzko's affirmative answer. The proof is unpublished but referenced in Erdős-Graham (1980). The existence argument likely uses a back-and-forth construction: build the permutation step by step, at each stage ensuring both the prime sum property and that every integer eventually gets included.",
     "mathContext": "Existence proofs for infinite permutations with properties often use a priority argument: maintain a list of 'obligations' (integers not yet placed) and satisfy them in order while preserving the constraint. The infinitude of primes ensures this doesn't get stuck.",
@@ -118,7 +118,7 @@
       "startLine": 135,
       "endLine": 154
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorems",
     "content": "**erdos_473_solved:** Direct corollary — segalQuestion follows from odlyzko_theorem.\n\n**erdos_473_main:** A proved conjunction packaging four results:\n1. segalQuestion (existence, from Odlyzko)\n2. HasPrimeSumProperty greedySeq (greedy works)\n3. 197 never appears as a greedy sum (van Doorn)\n4. Finite version true for infinitely many n\n\nThe proof uses `refine ⟨..., ...⟩` to package the four axioms into a single proved statement. This captures the complete state of knowledge about prime sum permutations.",
     "mathContext": "The summary theorem serves as an entry point for understanding the formalization. It demonstrates that the axioms are logically consistent (they can be combined without contradiction) and captures the full landscape of known results.",

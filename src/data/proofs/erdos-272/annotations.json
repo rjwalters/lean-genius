@@ -60,7 +60,7 @@
       "startLine": 84,
       "endLine": 92
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Simonovits-Sós Bounds (1981)",
     "content": "**simonovits_sos_upper** and **simonovits_sos_lower** together establish t = Θ(N²): the maximum family size grows quadratically. The upper bound uses a counting argument on pairs of elements and their appearances in sets. The lower bound comes from the small-sets construction (detailed in Part V). These axioms pin down the growth rate before Szabó's more precise asymptotic.",
     "mathContext": "The quadratic growth rate means ~N²/2 sets can be packed with the AP-intersection property, while ~N² is impossible. This is typical of extremal set theory problems with pairwise constraints.",
@@ -78,7 +78,7 @@
       "startLine": 94,
       "endLine": 110
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Graham Conjecture (Disproved)",
     "content": "**erdos_graham_conjecture_false** asserts that for large enough N, there exists a family F with the AP-intersection property that is strictly larger than any family of APs through ⌊N/2⌋. This disproves the natural conjecture that structured sets (APs) are optimal. The counterexample uses small sets (size ≤ 3) through a fixed element, which have trivially AP intersections (always a singleton).",
     "mathContext": "The Erdős-Graham conjecture predicted ~π²N²/24 ≈ 0.411N² sets. The small-sets construction gives ~N²/2 = 0.5N², a significant improvement. The key insight is that requiring AP intersections is easier with small sets.",
@@ -115,7 +115,7 @@
       "startLine": 127,
       "endLine": 149
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Szabó's Theorem and Refined Results",
     "content": "**szabo_theorem** is the main result: |maxAPFamily(N) - N²/2| ≤ C·N^{5/3}·(log N)³ for some constant C > 0. **szabo_leading_constant** gives the precise asymptotic: maxAPFamily(N)/N² → 1/2. **szabo_lower_bound** improves the lower bound to C(N,2) + ⌊(N-1)/4⌋ + 1, beating the basic small-sets count. **szabo_common_element_conjecture** is an open structural conjecture: every extremal family has a common element k contained in all sets.",
     "mathContext": "The error term N^{5/3}(log N)³ arises from the gap between the lower bound (small-sets construction) and the upper bound (counting argument). Szabó conjectured the true error is O(N), i.e., t = C(N,2) + O(N).",
@@ -134,7 +134,7 @@
       "startLine": 151,
       "endLine": 167
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_272_summary** combines the two main results into a conjunction: (1) the Simonovits-Sós upper bound t = O(N²), and (2) Szabó's precise asymptotic t = N²/2 + O(N^{5/3}(log N)³). The proof is constructive, using exact ⟨...⟩ to assemble the axioms. This captures the complete resolution of Erdős Problem #272.",
     "mathContext": "The proof delegates to simonovits_sos_upper and szabo_theorem via lambda abstractions to handle the universal quantifiers over N.",

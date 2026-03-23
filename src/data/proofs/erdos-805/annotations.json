@@ -59,7 +59,7 @@
       "startLine": 62,
       "endLine": 68
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Alon-Sudakov Negative Result (2007)",
     "content": "**alon_sudakov_2007:** There exists c > 0 such that no graph has the everywhere-Ramsey property when g(n) = c(log n)³/(log log n). This provides an UPPER bound on the threshold function, ruling out graphs when g(n) is too large.\n\nThis nearly settles the Erdős-Hajnal conjecture for (log n)³, missing by only a log log n factor.",
     "mathContext": "Published in Journal of Combinatorial Theory, Series B (2007). Uses probabilistic and counting arguments.",
@@ -77,7 +77,7 @@
       "startLine": 70,
       "endLine": 77
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Alon-Bucić-Sudakov Positive Result (2021)",
     "content": "**alon_bucic_sudakov_2021:** Such a graph EXISTS for g(n) ≤ 2^{2^{√(log log n)}}. This is vastly smaller than (log n)³ but establishes that the property is achievable for some threshold.\n\nThe construction uses probabilistic arguments, careful analysis of Ramsey numbers, and iterative graph constructions.",
     "mathContext": "The gap between 2^{2^{√(log log n)}} and (log n)³/(log log n) is enormous — roughly doubly exponential vs polynomial in log n.",
@@ -112,7 +112,7 @@
       "startLine": 86,
       "endLine": 105
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_805** packages both main results:\n1. Negative: ∃ c > 0, no graph for g(n) = c(log n)³/(log log n) (Alon-Sudakov)\n2. Positive: graph exists for g(n) ≤ 2^{2^{√(log log n)}} (Alon-Bucić-Sudakov)\n\nProved by `⟨alon_sudakov_2007, alon_bucic_sudakov_2021⟩`.\n\nThe enormous gap between these bounds — polynomial in log n vs doubly exponential in √(log log n) — shows the exact threshold requires fundamentally new techniques.",
     "significance": "key",

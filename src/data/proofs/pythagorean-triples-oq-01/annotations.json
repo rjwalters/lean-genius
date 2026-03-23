@@ -54,7 +54,7 @@
       "startLine": 154,
       "endLine": 183
     },
-    "title": "Three-Factor Decomposition: \u03c0N/8 \u00d7 6/\u03c0\u00b2 \u00d7 2/3 = N/(2\u03c0)",
+    "title": "Three-Factor Decomposition: πN/8 × 6/π² × 2/3 = N/(2π)",
     "content": "The density $N/(2\\pi)$ decomposes into three independent factors from different areas of mathematics: (1) sector area gives $\\pi N/8$ lattice points (geometry), (2) coprime density gives fraction $6/\\pi^2$ (analytic number theory via $\\zeta(2) = \\pi^2/6$), (3) parity correction gives fraction $2/3$ (combinatorics). The algebraic identity is verified by `field_simp; ring`.",
     "mathContext": "$\\frac{\\pi N}{8} \\cdot \\frac{6}{\\pi^2} \\cdot \\frac{2}{3} = \\frac{N}{2\\pi}$",
     "significance": "key",
@@ -123,12 +123,12 @@
       "endLine": 530
     },
     "title": "Three Density Axioms from Analytic Number Theory",
-    "content": "The three axioms encode deep analytic number theory results: (1) sector lattice point density $\\pi/8$ from the Gauss circle problem, (2) coprime fraction $6/\\pi^2$ from M\u00f6bius inversion and the Euler product for $\\zeta(2)$, (3) both-odd fraction $1/3$ from equidistribution of parity classes. The third axiom is shown equivalent to the 2/3 primitive fraction via `parity_axiom_equivalent`. Full proofs would require sieve methods or complex analysis beyond current Mathlib.",
+    "content": "The three axioms encode deep analytic number theory results: (1) sector lattice point density $\\pi/8$ from the Gauss circle problem, (2) coprime fraction $6/\\pi^2$ from Möbius inversion and the Euler product for $\\zeta(2)$, (3) both-odd fraction $1/3$ from equidistribution of parity classes. The third axiom is shown equivalent to the 2/3 primitive fraction via `parity_axiom_equivalent`. Full proofs would require sieve methods or complex analysis beyond current Mathlib.",
     "mathContext": "$\\frac{\\text{sector}(N)}{N} \\to \\frac{\\pi}{8}$, $\\frac{\\text{coprime}(N)}{\\text{sector}(N)} \\to \\frac{6}{\\pi^2}$, $\\frac{\\text{bothOdd}(N)}{\\text{coprime}(N)} \\to \\frac{1}{3}$",
     "significance": "key",
     "relatedConcepts": [
       "Gauss circle problem",
-      "M\u00f6bius function",
+      "Möbius function",
       "Euler product",
       "Basel problem",
       "Riemann zeta function"
@@ -147,7 +147,7 @@
       "startLine": 531,
       "endLine": 587
     },
-    "title": "Main Asymptotic Result: primitiveTripleCount(N)/N \u2192 1/(2\u03c0)",
+    "title": "Main Asymptotic Result: primitiveTripleCount(N)/N → 1/(2π)",
     "content": "The central theorem derives the asymptotic density from the three axioms by telescoping: $\\frac{\\text{count}}{N} = \\frac{\\text{count}}{\\text{coprime}} \\cdot \\frac{\\text{coprime}}{\\text{sector}} \\cdot \\frac{\\text{sector}}{N}$. Each factor has a known limit, and the product of limits gives $\\frac{2}{3} \\cdot \\frac{6}{\\pi^2} \\cdot \\frac{\\pi}{8} = \\frac{1}{2\\pi}$. The telescoping requires showing denominators are eventually nonzero (from growth lemmas).",
     "mathContext": "$\\lim_{N \\to \\infty} \\frac{\\text{primitiveTripleCount}(N)}{N} = \\frac{1}{2\\pi}$",
     "significance": "key",
@@ -165,12 +165,12 @@
   {
     "id": "parity-involution",
     "proofId": "pythagorean-triples-oq-01",
-    "type": "theorem",
+    "type": "technique",
     "range": {
       "startLine": 814,
       "endLine": 917
     },
-    "title": "The Parity Involution (m,n) \u2194 (m, m\u2212n)",
+    "title": "The Parity Involution (m,n) ↔ (m, m−n)",
     "content": "The map $(m,n) \\mapsto (m, m-n)$ is the key bijective technique. It preserves coprimality (any common divisor of $m$ and $m-n$ also divides $n$), swaps parity of the second coordinate (odd $\\leftrightarrow$ even when $m$ is odd), and is an involution ($m - (m-n) = n$). Applied to Finsets via `Finset.card_bij`, it proves $|\\text{OE}(K)| = |\\text{OO}(K)|$ exactly for all $K$.",
     "mathContext": "$(m,n) \\mapsto (m, m-n)$: $\\gcd(m,n)=1 \\Rightarrow \\gcd(m,m-n)=1$, swaps OE $\\leftrightarrow$ OO",
     "significance": "key",
@@ -262,14 +262,14 @@
       "startLine": 2029,
       "endLine": 2120
     },
-    "title": "Additional Axioms: r\u2082 and Landau Counting",
-    "content": "Four additional axioms encode deeper analytic number theory: (1) r\u2082 positivity criterion \u2014 the number of representations of $n$ as a sum of two squares is positive iff all prime factors $\\equiv 3 \\pmod{4}$ appear to even powers, (2) r\u2082 average order \u2014 $\\sum_{n \\le N} r_2(n) \\sim \\pi N$, (3) Landau two-squares counting \u2014 $\\#\\{n \\le N : r_2(n) > 0\\} \\sim C \\cdot N/\\sqrt{\\ln N}$ (the Landau-Ramanujan theorem), and (4) primitive-by-leg density. These support alternative approaches and extensions of the main result.",
+    "title": "Additional Axioms: r₂ and Landau Counting",
+    "content": "Four additional axioms encode deeper analytic number theory: (1) r₂ positivity criterion — the number of representations of $n$ as a sum of two squares is positive iff all prime factors $\\equiv 3 \\pmod{4}$ appear to even powers, (2) r₂ average order — $\\sum_{n \\le N} r_2(n) \\sim \\pi N$, (3) Landau two-squares counting — $\\#\\{n \\le N : r_2(n) > 0\\} \\sim C \\cdot N/\\sqrt{\\ln N}$ (the Landau-Ramanujan theorem), and (4) primitive-by-leg density. These support alternative approaches and extensions of the main result.",
     "mathContext": "$r_2(n) = \\#\\{(a,b) \\in \\mathbb{Z}^2 : a^2 + b^2 = n\\}$; Landau-Ramanujan: $\\#\\{n \\le N : r_2(n) > 0\\} \\sim \\frac{C \\cdot N}{\\sqrt{\\ln N}}$ where $C = \\frac{1}{\\sqrt{2}} \\prod_{p \\equiv 3 \\pmod{4}} (1 - p^{-2})^{-1/2}$",
     "significance": "supporting",
     "relatedConcepts": [
       "sum-of-two-squares theorem",
       "Landau-Ramanujan constant",
-      "r\u2082 arithmetic function"
+      "r₂ arithmetic function"
     ],
     "prerequisites": [
       "analytic number theory",
@@ -286,7 +286,7 @@
       "endLine": 375
     },
     "title": "Monotonicity and Growth of Counting Functions",
-    "content": "Establishes that all counting functions are monotone non-decreasing: if $M \\le N$, then $\\text{count}(M) \\le \\text{count}(N)$. Also proves that the intermediate coprime sector count tends to infinity ($\\text{coprimeInSectorCount}(N) \\to \\infty$), which is needed for the telescoping ratio argument \u2014 you cannot divide by the coprime count unless it is eventually nonzero.",
+    "content": "Establishes that all counting functions are monotone non-decreasing: if $M \\le N$, then $\\text{count}(M) \\le \\text{count}(N)$. Also proves that the intermediate coprime sector count tends to infinity ($\\text{coprimeInSectorCount}(N) \\to \\infty$), which is needed for the telescoping ratio argument — you cannot divide by the coprime count unless it is eventually nonzero.",
     "mathContext": "$M \\le N \\Rightarrow \\text{primitiveTripleCount}(M) \\le \\text{primitiveTripleCount}(N)$; $\\text{coprimeInSectorCount}(N) \\to \\infty$ as $N \\to \\infty$",
     "significance": "technical",
     "relatedConcepts": [
