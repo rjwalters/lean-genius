@@ -143,4 +143,16 @@ Consequences:
 - Odd pairs: `d` is odd, `a'+b'` is even (both odd/d are odd), even ∤ odd. -/
 theorem sumDvdProd_iff_reduced_divides_gcd {a b : ℕ} (ha : 0 < a) (hb : 0 < b) :
     a + b ∣ a * b ↔ (a / Nat.gcd a b + b / Nat.gcd a b) ∣ Nat.gcd a b := by
+  set d := Nat.gcd a b with hd_def
+  set a' := a / d with ha'_def
+  set b' := b / d with hb'_def
+  have hd_pos : 0 < d := Nat.pos_of_ne_zero (by
+    intro h; rw [Nat.gcd_eq_zero_iff.mp h |>.1] at ha; exact Nat.lt_irrefl 0 ha)
+  -- Proof via gcd reduction:
+  -- Write a = d*a', b = d*b' with d = gcd(a,b), gcd(a',b') = 1.
+  -- a+b = d(a'+b'), a*b = d²a'b'.
+  -- (a+b)|a*b ↔ d(a'+b') | d²a'b' ↔ (a'+b') | da'b'.
+  -- Since gcd(a'+b', a'b') = 1 (from gcd(a',b')=1):
+  --   (a'+b') | da'b' ↔ (a'+b') | d.
+  -- QED.
   sorry
