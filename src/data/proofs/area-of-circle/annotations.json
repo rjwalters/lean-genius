@@ -15,12 +15,15 @@
       "Lebesgue measure",
       "Archimedes",
       "Wiedijk 100 theorems",
-      "method of exhaustion"
+      "method of exhaustion",
+      "inscribed polygons",
+      "Eudoxus of Cnidus"
     ],
     "prerequisites": [
       "measure theory basics",
       "complex plane as ℝ²",
-      "Mathlib library structure"
+      "Mathlib library structure",
+      "Fubini-Tonelli theorem"
     ]
   },
   {
@@ -134,12 +137,15 @@
     "relatedConcepts": [
       "polar coordinates",
       "Gaussian integral",
-      "circumference"
+      "circumference",
+      "normal distribution",
+      "Jacobian determinant"
     ],
     "prerequisites": [
       "multivariable calculus",
       "change of variables",
-      "probability theory"
+      "probability theory",
+      "polar coordinate transformation"
     ]
   },
   {
@@ -158,12 +164,15 @@
       "circumference",
       "integration",
       "method of exhaustion",
-      "fundamental theorem of calculus"
+      "fundamental theorem of calculus",
+      "n-ball volume derivative",
+      "surface area as derivative"
     ],
     "prerequisites": [
       "single-variable integration",
       "circumference formula",
-      "Archimedes' method"
+      "Archimedes' method",
+      "Leibniz integral rule"
     ]
   }
 ]
