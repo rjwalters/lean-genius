@@ -131,6 +131,88 @@
       "Can the counterexample be made explicit or canonical?"
     ]
   },
+  "crossReferences": [
+    {
+      "slug": "erdos-1167",
+      "title": "Erdős Problem #1167: Stepping-Down Partition Relations",
+      "relationship": "The stepping-down principle is the mechanism underlying the Prikry-Mills counterexample: partition failures at ℵ₁³ propagate to lower-dimensional products. This problem asks whether such stepping-down holds in general for infinite partition relations.",
+      "relevance": "core"
+    },
+    {
+      "slug": "erdos-1169",
+      "title": "Erdős Problem #1169: Partition Relations for ω₁²",
+      "relationship": "ω₁² → (ω₁², 3)² is a direct 2D analogue of the 3D question in #1128. The failure of ℵ₁³ → (ℵ₀)³₂ (proved by Prikry-Mills) sits in the same program of determining which partition relations hold at ω₁.",
+      "relevance": "high"
+    },
+    {
+      "slug": "erdos-1172",
+      "title": "Erdős Problem #1172: Partition Relations under GCH and CH",
+      "relationship": "Both problems operate in the ZFC + (G)CH setting where partition relations at ω₁ are analyzed. The negative result in #1128 holds in ZFC without additional axioms, while #1172 explores how GCH affects positive partition properties at higher cardinals.",
+      "relevance": "high"
+    },
+    {
+      "slug": "erdos-597",
+      "title": "Erdős Problem #597: Partition Relations for Ordinal Powers",
+      "relationship": "Both concern partition relations on powers of ω₁ (or 2D/3D products). Problem #597 asks about ω₁² → (ω₁ω, G)² for graph targets, while #1128 treats ω₁³ → (ω)³₂ for product sub-cubes — both in the Erdős-Hajnal partition calculus tradition.",
+      "relevance": "high"
+    },
+    {
+      "slug": "erdos-70",
+      "title": "Erdős Problem #70: Partition Calculus for the Continuum",
+      "relationship": "Asks whether 𝔠 → (β, n)³₂ for countable ordinals β — another instance of the continuum-level partition calculus that Erdős and Hajnal developed. Together with #1128 these probe the boundary between positive and negative partition relations at uncountable cardinals.",
+      "relevance": "medium"
+    },
+    {
+      "slug": "erdos-61",
+      "title": "Erdős Problem #61: The Erdős–Hajnal Conjecture",
+      "relationship": "Erdős and Hajnal are the co-authors of both problems. The Erdős-Hajnal conjecture concerns H-free graphs and large homogeneous sets — a finite-graph analogue of the infinite Ramsey question in #1128 about large monochromatic sub-cubes in cardinal products.",
+      "relevance": "medium"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "slug": "ramseys-theorem",
+      "title": "Ramsey's Theorem",
+      "connection": "The classical finite Ramsey theorem guarantees monochromatic cliques in any 2-coloring of edges. Problem #1128 tests whether an infinite analogue holds for product colorings at ℵ₁ — the negative answer (Prikry-Mills) shows the infinite case fundamentally differs."
+    },
+    {
+      "slug": "cantor-diagonalization-oq-02-oq-01",
+      "title": "ω₁ Properties: Aleph Hierarchy, Regularity, and Cofinality",
+      "connection": "The Prikry-Mills construction in #1128 exploits the regularity and well-ordering structure of ω₁. This proof establishes the foundational properties of ω₁ (first uncountable ordinal) used throughout the partition-calculus arguments."
+    },
+    {
+      "slug": "erdos-118",
+      "title": "Erdős Problem #118: Partition Ordinals and Higher Cliques",
+      "connection": "Both problems study when ordinal Ramsey properties fail to transfer across dimensions or graph parameters. Problem #118 asks whether α → (α,3)² implies α → (α,n)² — an analogous question about the robustness of partition relations."
+    },
+    {
+      "slug": "erdos-590",
+      "title": "Erdős #590: Ordinal Ramsey Theory for ω^ω",
+      "connection": "Chang's theorem (ω^ω → (ω^ω, 3)²) is a positive ordinal partition result contrasting with the negative result in #1128. Together they map out which infinite cardinals and ordinals admit Ramsey-type partition properties."
+    }
+  ],
+  "references": [
+    {
+      "citation": "Erdős, P. and Hajnal, A. (1958). On the structure of set mappings. Acta Mathematica Academiae Scientiarum Hungaricae, 9(1–2), 111–131.",
+      "relevance": "Erdős and Hajnal's foundational paper on set mappings and partition relations, establishing the program of which the #1128 problem is a part."
+    },
+    {
+      "citation": "Erdős, P. and Hajnal, A. (1962). Some remarks on set theory, IX: Combinatorial problems in measure theory and set theory. Michigan Mathematical Journal, 11(2), 107–127.",
+      "relevance": "Develops the partition calculus notation κ → (λ)^n_r and formulates the class of questions to which #1128 belongs, including product-coloring partition properties."
+    },
+    {
+      "citation": "Todorčević, S. (1987). Partitioning pairs of countable ordinals. Acta Mathematica, 159(3–4), 261–294.",
+      "relevance": "Todorčević's systematic study of partition relations at ω₁ provides the modern framework for the Prikry-Mills result and documents the unpublished disproof referenced in Problem #1128."
+    },
+    {
+      "citation": "Komjáth, P. (2025). The Erdős-Hajnal Problem List. Preprint.",
+      "relevance": "The primary modern source documenting Problem #1128, the Prikry-Mills disproof (1978), and the surrounding open questions in infinite partition calculus."
+    },
+    {
+      "citation": "Prikry, K. and Mills, G. (1978). Unpublished manuscript on partition relations for uncountable cardinals.",
+      "relevance": "The original (unpublished) counterexample construction showing ℵ₁³ ↛ (ℵ₀)³₂, cited in the Erdős-Hajnal problem list and Todorčević's survey as the resolution of Problem #1128."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.SetTheory.Cardinal.Basic",

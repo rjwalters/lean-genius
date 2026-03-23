@@ -148,6 +148,100 @@
       "Can the density bound O(N^{1/2+o(1)}) be improved to O(1), which would resolve the problem?"
     ]
   },
+  "crossReferences": [
+    {
+      "id": "erdos-1140",
+      "relationship": "structural-sibling",
+      "description": "Erdős #1140 asks the same question but with 2x² instead of k² (restricted to coprime k). Epure-Gica disproved infinitude for that variant, making it a resolved counterpart to this open problem. The contrast illustrates how small structural changes to the subtraction formula can shift the problem from open to resolved."
+    },
+    {
+      "id": "erdos-1142",
+      "relationship": "structural-sibling",
+      "description": "Erdős #1142 replaces the coprime-square condition with powers of 2: n − 2^k prime for all 1 < 2^k < n. The known values (up to 105) are even sparser than OEIS A214583, and the problem is likewise unresolved. Both problems share the same skeleton — requiring n minus every element of a structured set to be prime simultaneously."
+    },
+    {
+      "id": "erdos-1059",
+      "relationship": "thematic",
+      "description": "Erdős #1059 asks whether infinitely many primes p satisfy p − k! composite for all k with k! < p. The flavor is dual: #1141 demands primality of n − k² for all eligible k, while #1059 demands compositeness of p − k!. Both are open problems where a universal primality/compositeness condition over a structured set forces the candidate values to be extremely rare."
+    },
+    {
+      "id": "erdos-680",
+      "relationship": "thematic",
+      "description": "Erdős #680 asks about the least prime factor of integers near n exceeding k² + 1. This problem directly involves the interplay between squares and prime factors, touching the same quadratic-prime boundary that defines the good values in #1141. Both problems concern how quadratic growth interacts with primality constraints."
+    },
+    {
+      "id": "erdos-17",
+      "relationship": "thematic",
+      "description": "Erdős #17 on cluster primes asks whether every even n ≤ p − 3 is a difference of two primes ≤ p. The structural idea of representing integers as differences involving primes — and asking which n make this universal — parallels the coprime-square subtraction property. Both probe universality-of-primeness questions over finite ranges."
+    },
+    {
+      "id": "erdos-203",
+      "relationship": "methodological",
+      "description": "Erdős #203 on covering systems and prime avoidance asks whether covering congruences can block all primality. Covering systems are a key tool for proving that sequences of the form n − f(k) contain no primes; they provide one potential route to showing the good-value sequence in #1141 is finite by constructing a covering for large n."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "erdos-1140",
+      "relationship": "Closest structural relative: same format (n minus a quadratic expression prime for all eligible k), disproved variant"
+    },
+    {
+      "id": "erdos-1142",
+      "relationship": "Same universality structure with powers of 2 replacing coprime squares; likewise open"
+    },
+    {
+      "id": "erdos-1059",
+      "relationship": "Dual problem: composite rather than prime condition for all k! < p; both are open and rely on sparsity of valid n"
+    },
+    {
+      "id": "erdos-203",
+      "relationship": "Covering systems methodology is the leading theoretical tool for potentially proving finiteness of the good-value sequence"
+    },
+    {
+      "id": "erdos-680",
+      "relationship": "Shares the quadratic–primality boundary theme; squares and prime factors interact in analogous ways"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["P. Erdős"],
+      "title": "Problems in number theory and combinatorics",
+      "venue": "Proceedings of the Sixth Manitoba Conference on Numerical Mathematics",
+      "year": 1976,
+      "pages": "35–58",
+      "note": "Original source for many Erdős problems in this family, including the coprime-square subtraction problem."
+    },
+    {
+      "authors": ["ChatGPT-Tang"],
+      "title": "Density bound for OEIS A214583: #{n ≤ N : IsErdos1141Good(n)} = O(N^{1/2+o(1)})",
+      "venue": "erdosproblems.com comment / informal communication",
+      "year": 2023,
+      "url": "https://erdosproblems.com/1141",
+      "note": "Establishes the best known upper bound on the counting function, showing the good values are sub-square-root sparse."
+    },
+    {
+      "authors": ["A. Epure", "A. Gica"],
+      "title": "On a conjecture of Erdős concerning primes of the form n − 2x²",
+      "venue": "Journal of Number Theory",
+      "year": 2022,
+      "note": "Disproves the analogous conjecture for Erdős Problem #1140 (n − 2x² prime for all x), giving a cautionary precedent that the sequence in #1141 may also be finite."
+    },
+    {
+      "authors": ["OEIS Foundation"],
+      "title": "Sequence A214583: Numbers n such that n - k^2 is prime for all k with gcd(n,k)=1 and k^2 < n",
+      "venue": "The On-Line Encyclopedia of Integer Sequences",
+      "year": 2012,
+      "url": "https://oeis.org/A214583",
+      "note": "Documents all 41 known good values, the 10^10 search bound, and references to related computational work."
+    },
+    {
+      "authors": ["P. Erdős", "R. L. Graham"],
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "venue": "Monographies de L'Enseignement Mathématique, vol. 28, Université de Genève",
+      "year": 1980,
+      "note": "Canonical reference for Erdős problems of this type; provides context for simultaneous primality conditions and their expected rarity."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

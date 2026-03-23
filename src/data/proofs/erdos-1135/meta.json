@@ -100,5 +100,82 @@
       "What is the expected growth rate of the total stopping time $\\sigma(m)$? Heuristics suggest $\\sigma(m) \\sim c \\log m$ with $c = \\frac{2}{\\log(4/3)} \\approx 6.95$",
       "Is the Collatz conjecture independent of Peano Arithmetic or ZFC, as Conway's undecidability result for generalizations hints?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "id": "collatz-structured",
+      "title": "Collatz Conjecture for Structured Values",
+      "relationship": "Direct structural companion: #collatz-structured verifies Collatz convergence for powers of 2 and small concrete cases (including 27's 111-step orbit) using the same compressed map f(n) = n/2 or (3n+1)/2. Together these two entries present the full formalization strategy: computable definitions for concrete verification in collatz-structured, and axiomatized deep results (Tao, Krasikov–Lagarias) in erdos-1135."
+    },
+    {
+      "id": "riemann-hypothesis",
+      "title": "The Riemann Hypothesis",
+      "relationship": "Peer open Millennium-class conjecture: both the Collatz conjecture and RH are prize problems that remain open despite massive computational evidence and significant partial results. RH has been verified to enormous height for zeta zeros; Collatz has been checked to 2^68. Both are formalized via axiomatization of the deepest partial results, and both may require fundamentally new mathematics to resolve."
+    },
+    {
+      "id": "fermats-last-theorem",
+      "title": "Fermat's Last Theorem",
+      "relationship": "Instructive contrast: FLT stood open for 358 years despite simple statement and heavy computational evidence, then fell to a deep synthesis of modular forms and elliptic curves. Conway's undecidability result for generalized Collatz maps hints that the 3n+1 problem may require an equally unexpected conceptual bridge — possibly between ergodic theory, logic, and number theory."
+    },
+    {
+      "id": "poincare-conjecture",
+      "title": "The Poincaré Conjecture",
+      "relationship": "Resolved Millennium Prize problem used for methodological comparison: Perelman's proof required completely new analytical machinery (Ricci flow with surgery), bypassing all classical approaches. The Collatz conjecture, like the Poincaré Conjecture before its resolution, may await an unforeseen conceptual leap rather than incremental strengthening of existing density or ergodic bounds."
+    },
+    {
+      "id": "bertrands-postulate",
+      "title": "Bertrand's Postulate",
+      "relationship": "Erdős connection and proof culture: Erdős gave his celebrated elementary proof of Bertrand's Postulate in 1932 at age 19, demonstrating his characteristic style of 'elementary but deep' argument. The Collatz problem carries a $500 Erdős prize and shares the same 'deceptively elementary statement, resistant to elementary methods' character that fascinated Erdős throughout his career."
+    },
+    {
+      "id": "prime-number-theorem",
+      "title": "The Prime Number Theorem",
+      "relationship": "Analytic number theory benchmark: Tao's 2019 Collatz result uses entropy-decrement techniques on cyclic groups drawing on Fourier-analytic ideas from the same tradition as PNT proofs. Both results establish 'almost all' or 'typical' behavior — density for almost all integers — while the full exceptional-set question (all integers for Collatz, all zeros for RH) remains open."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "collatz-structured",
+      "relationship": "Companion formalization: verifies concrete Collatz convergence for powers of 2 and small values (3, 5, 6, 7, 9, 27) using the same compressed Lean definitions. Together they constitute the full Collatz formalization in this gallery."
+    },
+    {
+      "id": "riemann-hypothesis",
+      "relationship": "Fellow axiomatized open conjecture formalized with computational evidence up to enormous ranges and strong partial results; both represent the outer frontier of current proof assistant formalization."
+    },
+    {
+      "id": "fermats-last-theorem",
+      "relationship": "Canonical example of a long-open Diophantine conjecture resolved by deep new mathematics — the benchmark for how 'unprovable-seeming' number-theoretic problems can eventually fall to the right new ideas."
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "Erdős's own elementary proof of this prime-gap result exemplifies the style of reasoning he championed; the Collatz prize reflects the same Erdős tradition of offering cash rewards for hard problems."
+    }
+  ],
+  "references": [
+    {
+      "key": "Tao22",
+      "citation": "Tao, T., Almost all orbits of the Collatz map attain almost bounded values, Forum of Mathematics Pi 10 (2022), e12. (arXiv:1909.03562, submitted 2019.)",
+      "type": "paper"
+    },
+    {
+      "key": "KL03",
+      "citation": "Krasikov, I. and Lagarias, J.C., Bounds for the 3x+1 problem using difference inequalities, Acta Arithmetica 109 (2003), 237–258.",
+      "type": "paper"
+    },
+    {
+      "key": "Lag10",
+      "citation": "Lagarias, J.C. (ed.), The Ultimate Challenge: The 3x+1 Problem, American Mathematical Society, Providence, RI, 2010.",
+      "type": "book"
+    },
+    {
+      "key": "Con72",
+      "citation": "Conway, J.H., Unpredictable iterations, Proceedings of the Number Theory Conference, University of Colorado, Boulder, 1972, pp. 49–52.",
+      "type": "proceedings"
+    },
+    {
+      "key": "Bar21",
+      "citation": "Barina, D., Convergence verification of the Collatz problem, Journal of Supercomputing 77 (2021), 2681–2688.",
+      "type": "paper"
+    }
+  ]
 }
