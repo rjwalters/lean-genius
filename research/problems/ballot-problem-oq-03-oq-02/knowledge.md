@@ -217,3 +217,41 @@ The self-inverse proof has this structure:
 
 ### Files Modified
 - `proofs/Proofs/BallotProblemOQ03OQ02.lean` (~+50 lines, northThenEast infrastructure)
+
+---
+
+## Session 2026-03-23 (researcher-6) - Membership Proof + sum_involution Assembly
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 59)
+**Problem**: ballot-problem-oq-03-oq-02
+**Prior Status**: in-progress, ACT phase, 2 sorries (membership + self-inverse)
+
+### Work Done
+- Proved `gvInvolution_membership`: the GV involution image is cancellable
+- Added `northThenEast_not_NI_general`: generalized NTE crossing lemma (handles m=0)
+- Added `pathMN_cast_val`: cast between PathMN with equal n preserves .val
+- Assembled `cancellable_sum_eq_zero` using `Finset.sum_involution` with 3/4 properties proved
+
+### Key Technical Insights
+1. **Cast preservation via subst**: `pathMN_cast_val` proves `(cast h P).val = P.val` by `subst hn; intro _; rfl`. Key: provide the natural number equality separately, then Lean's `subst` makes the type equality trivial.
+2. **σ'-identity extraction**: When `hσ : σ' = 1`, use `fun k => by rw [hσ]; rfl` to derive `σ' k = k` for all k. Then `rw [hσ_id k]` propagates through `gvNewPerm` to simplify northThenEast arguments.
+3. **m=0 edge case**: northThenEast_not_NI fails at m=0 (no columns to check). But the final-column condition `targets(i) < sources(j) ∨ targets(j) < sources(i)` contradicts wellFormed.
+4. **wellFormed → NTE crossing bounds**: Need `sources(i) ≤ sources(j) + (targets(j) - sources(j))`, which requires both `hwf i j` (sources(i) ≤ targets(j)) and `source_le_target j` (to undo Nat subtraction).
+
+### Remaining: 1 Sorry (Self-Inverse)
+The self-inverse `g(g(t)) = t` cannot be proved with the current `gvInvolutionFn` which replaces ALL paths with northThenEast (destroying original path data).
+
+**Required redesign**: Replace `gvInvolutionFn` with a tail-swap involution:
+1. Find canonical first crossing (lex-min column, y-value across all pairs)
+2. Swap path suffixes at that crossing point (preserving prefixes)
+3. Self-inverse follows because: crossing is the same for t and g(t) (prefix unchanged → same crossing set before the swap point), and double tail-swap = identity.
+
+**Infrastructure in place**: `northBeforeEast_prefix`, `colEntry_prefix_eq` (proves suffix swap doesn't change colEntry at earlier columns).
+
+### Files Modified
+- `proofs/Proofs/BallotProblemOQ03OQ02.lean` (2→1 sorries, +3 new lemmas)
+- `src/data/proofs/ballot-problem-oq-03-oq-02/meta.json`
+- `src/data/research/problems/ballot-problem-oq-03-oq-02.json`
+
+### Pool Status
+- Available: 76, In-progress: 322, Completed: 235

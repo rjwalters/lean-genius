@@ -23,7 +23,7 @@ where e(A,B) = C(dx + dy, dx) is the number of lattice paths from A to B.
 The identity permutation contributes ∏ e(Aᵢ,Bᵢ). Non-identity permutations
 cancel via a sign-reversing involution (Gessel-Viennot involution).
 
-## Status (0 axioms, 2 sorries — GV involution needs membership cast + self-inverse)
+## Status (0 axioms, 1 sorry — GV involution self-inverse needs tail-swap redesign)
 - [x] Path tuple and non-intersecting definitions (closed-interval formulation)
 - [x] Path weight matrix using Matrix.det
 - [x] Permutation path tuples and signed counts
@@ -53,8 +53,8 @@ cancel via a sign-reversing involution (Gessel-Viennot involution).
 - [x] northThenEast_not_NI: these paths cross at column 0 under wellFormed (PROVED)
 - [x] gvInvolutionFn: uses northThenEast paths (well-typed, compiles)
 - [x] gvInvolution_sign_reversal + no_fixed: proved for northThenEast variant
-- [ ] Membership: image cancellable (sorry — needs toPathTuple cast unfolding)
-- [ ] Self-inverse: g(g(a)) = a (sorry — needs full tail-swap path construction)
+- [x] Membership: image cancellable (PROVED via pathMN_cast_val + northThenEast_not_NI_general)
+- [ ] Self-inverse: g(g(a)) = a (sorry — needs tail-swap involution redesign)
 
 ## References
 - Lindström (1973): "On the Vector Representations of Induced Matroids"
@@ -1126,6 +1126,21 @@ private lemma northThenEast_not_NI {m n₁ n₂ y₁ y₂ : ℕ}
   rw [hce1_1, hce2_1, hce1_0, hce2_0] at h0
   omega
 
+/-- Generalized: northThenEast paths are never NI under wellFormed bounds,
+    including the degenerate m = 0 case (final-column condition fails). -/
+private lemma northThenEast_not_NI_general {m n₁ n₂ y₁ y₂ : ℕ}
+    (hy₁n₂ : y₁ ≤ y₂ + n₂) (hy₂n₁ : y₂ ≤ y₁ + n₁) :
+    ¬NonIntersecting (northThenEastList m n₁) (northThenEastList m n₂)
+      m y₁ y₂ n₁ n₂ := by
+  rcases Nat.eq_zero_or_pos m with rfl | hm
+  · intro ⟨_, hfinal⟩; simp [colEntry] at hfinal; omega
+  · exact northThenEast_not_NI hm hy₁n₂ hy₂n₁
+
+/-- Cast between PathMN with provably equal North step counts preserves .val. -/
+private lemma pathMN_cast_val {m : ℕ} {n₁ n₂ : ℕ} (hn : n₁ = n₂) (P : PathMN m n₁) :
+    ∀ (h : PathMN m n₁ = PathMN m n₂), (cast h P).val = P.val := by
+  subst hn; intro _; rfl
+
 -- ============================================================
 -- PART 7h: GV Involution (using northThenEast for membership)
 -- ============================================================
@@ -1195,7 +1210,7 @@ private theorem gvInvolution_no_fixed {r : ℕ} (cfg : LGVConfig r)
 
 /-- The GV involution image is cancellable: ¬isNonCancellable(g(t)).
     If σ' = σ * swap(i,j) ≠ 1, the image is trivially cancellable.
-    If σ' = 1, the northThenEast paths cross at column 0 (by wellFormed). -/
+    If σ' = 1, the northThenEast paths cross under wellFormed. -/
 private theorem gvInvolution_membership {r : ℕ} (cfg : LGVConfig r)
     (hwf : cfg.wellFormed) (t : TaggedPathTuple cfg)
     (ht : ¬isNonCancellable t) :
@@ -1203,37 +1218,44 @@ private theorem gvInvolution_membership {r : ℕ} (cfg : LGVConfig r)
   simp only [isNonCancellable, IsGVFixedPoint]
   intro ⟨hσ, hni⟩
   have hij := crossingI_lt_J cfg hwf t ht
-  set i := crossingI cfg hwf t ht with hi_def
-  set j := crossingJ cfg hwf t ht with hj_def
-  simp only [IsNonIntersecting] at hni
-  -- Specialize NI to pair (i, j) with i < j
-  have hpair := hni i j hij
-  -- The image has σ' = 1 (by hσ) and northThenEast paths
-  -- toPathTuple with σ' = 1 gives paths from sources(k) to targets(k)
-  -- These are northThenEastPath m (targets(k) - sources(k))
-  -- By wellFormed: sources(i) ≤ targets(j) and sources(j) ≤ targets(i)
-  -- So northThenEast paths at i and j cross
-  -- We need to show the hpair leads to contradiction
-  -- The NonIntersecting of northThenEast paths is ¬ for overlapping sources/targets
-  -- Membership proof requires careful unfolding of PermPathTuple.toPathTuple + cast
-  -- across the σ' = 1 specialization and the northThenEastPath definition.
-  -- This is a HARD sorry (engineering, not math) — the mathematical argument is:
-  -- paths i and j are northThenEast, they overlap at column 0 by wellFormed,
-  -- contradicting NonIntersecting.
-  sorry
+  have hpair := hni (crossingI cfg hwf t ht) (crossingJ cfg hwf t ht) hij
+  -- σ' acts as identity
+  have hσ_id : ∀ k : Fin r, (gvInvolutionFn cfg hwf t ht).1 k = k := fun k => by rw [hσ]; rfl
+  -- Underlying .val of each path is northThenEastList (cast preserves .val)
+  have hval : ∀ k : Fin r,
+      ((gvInvolutionFn cfg hwf t ht).2.toPathTuple hσ k).val =
+      northThenEastList cfg.m (cfg.targets k - cfg.sources k) := by
+    intro k
+    simp only [PermPathTuple.toPathTuple]
+    rw [pathMN_cast_val (by rw [hσ_id] :
+      cfg.targets ((gvInvolutionFn cfg hwf t ht).1 k) - cfg.sources k =
+      cfg.targets k - cfg.sources k)]
+    show northThenEastList cfg.m
+      (cfg.targets (gvNewPerm cfg hwf t ht k) - cfg.sources k) =
+      northThenEastList cfg.m (cfg.targets k - cfg.sources k)
+    rw [show gvNewPerm cfg hwf t ht k = k from hσ_id k]
+  rw [hval (crossingI cfg hwf t ht), hval (crossingJ cfg hwf t ht)] at hpair
+  exact absurd hpair (northThenEast_not_NI_general
+    (by have := hwf (crossingI cfg hwf t ht) (crossingJ cfg hwf t ht)
+        have := cfg.source_le_target (crossingJ cfg hwf t ht); omega)
+    (by have := hwf (crossingJ cfg hwf t ht) (crossingI cfg hwf t ht)
+        have := cfg.source_le_target (crossingI cfg hwf t ht); omega))
 
 /-- The signed sum over cancellable (non-NI) tagged tuples is zero,
     by the GV sign-reversing involution.
-    This is the combinatorial engine of the LGV lemma. -/
+    Uses `Finset.sum_involution` with (1) sign cancel, (2) no fixed points,
+    (3) membership (all proved), and (4) self-inverse (sorry — needs tail-swap). -/
 private theorem cancellable_sum_eq_zero {r : ℕ} (cfg : LGVConfig r)
     (hwf : cfg.wellFormed) :
     (Finset.sum (Finset.univ.filter
       (fun t : TaggedPathTuple cfg => ¬isNonCancellable t)) taggedWeight) = 0 := by
-  -- Use Finset.sum_involution. The GV involution function g maps
-  -- (σ, paths) ↦ (σ * swap(i,j), northThenEast_paths).
-  -- Properties: (1) sign cancel, (2) no fixed pts, (3) membership, (4) self-inverse.
-  -- (1)-(3) are proved; (4) requires tail-swap construction (HARD sorry).
-  sorry
+  exact Finset.sum_involution
+    (fun t ht => gvInvolutionFn cfg hwf t ((Finset.mem_filter.mp ht).2))
+    (fun t ht => gvInvolution_sign_reversal cfg hwf t ht)
+    (fun t ht hw => gvInvolution_no_fixed cfg hwf t ht hw)
+    (fun t ht => Finset.mem_filter.mpr
+      ⟨Finset.mem_univ _, gvInvolution_membership cfg hwf t ((Finset.mem_filter.mp ht).2)⟩)
+    (fun t ht => sorry) -- self-inverse: needs tail-swap involution redesign
 
 theorem gv_involution_cancellation {r : ℕ} (cfg : LGVConfig r)
     (hwf : cfg.wellFormed) :

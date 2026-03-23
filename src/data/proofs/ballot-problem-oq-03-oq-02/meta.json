@@ -72,7 +72,7 @@
       "Gessel-Viennot involution theory"
     ],
     "assumptions": [
-      "gv_involution_cancellation: the GV sign-reversing involution cancellation (1 sorry remaining: involution bookkeeping)"
+      "cancellable_sum_eq_zero: self-inverse property of GV involution (1 sorry: needs tail-swap redesign to preserve path data)"
     ]
   },
   "overview": {
@@ -210,9 +210,9 @@
       "Finset"
     ],
     "namespace": "LGV",
-    "lineCount": 896,
+    "lineCount": 1347,
     "axiomCount": 0,
-    "theoremCount": 28,
+    "theoremCount": 31,
     "definitionCount": 16
   },
   "relatedProofs": [
