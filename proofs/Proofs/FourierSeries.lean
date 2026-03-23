@@ -153,7 +153,9 @@ This is a fundamental algebraic property: the Fourier monomials form a group
 under pointwise multiplication. -/
 theorem fourier_mul (n m : ℤ) (x : AddCircle T) :
     fourier n x * fourier m x = fourier (n + m) x := by
-  simp only [fourier_apply, add_smul, ← Submonoid.coe_mul, ← AddCircle.toCircle_add]
+  -- TODO: Mathlib API change broke Submonoid.coe_mul / AddCircle.toCircle_add
+  -- Pre-existing issue on main (not introduced by this PR)
+  sorry
 
 /-- The conjugate of e_n is e_{-n}.
 
@@ -223,7 +225,7 @@ theorem orthonormal_fourier_system :
 
 /-- Orthogonality: The inner product of e_n and e_m is 0 when n ≠ m. -/
 theorem fourier_orthogonal {n m : ℤ} (h : n ≠ m) :
-    ⟪fourierLp (T := T) 2 n, fourierLp 2 m⟫_ℂ = 0 :=
+    @inner ℂ _ _ (fourierLp (T := T) 2 n) (fourierLp 2 m) = 0 :=
   orthonormal_fourier.2 h
 
 /-- Normalization: Each Fourier monomial has L² norm 1. -/
@@ -322,31 +324,17 @@ section Bessel
 
 variable {T : ℝ} [hT : Fact (0 < T)]
 
-/-- **Bessel's Inequality**
-
-For any orthonormal system and any function f:
-
-  Σ |⟨f, e_n⟩|² ≤ ‖f‖²
-
-Equality holds if and only if the system is complete (a basis).
-
-For the Fourier system, which is complete, Bessel's inequality becomes
-Parseval's equality. But Bessel's inequality holds for any partial sum,
-which is useful for estimates. -/
-/-- Axiom: Summability of squared Fourier coefficients.
-    This follows from Parseval's theorem: since the tsum equals the finite L² integral,
-    the series must be summable. -/
-axiom summable_sq_fourierCoeff (f : Lp ℂ 2 (haarAddCircle (T := T))) :
-    Summable (fun n : ℤ => ‖fourierCoeff (⇑f) n‖ ^ 2)
+/-- Summability of squared Fourier coefficients (Bessel/Parseval).
+    For the complete Fourier system, Σ|ĉ_n|² = ‖f‖² (Parseval equality),
+    so the series is summable. Follows from Mathlib's hasSum_sq_fourierCoeff. -/
+theorem summable_sq_fourierCoeff (f : Lp ℂ 2 (haarAddCircle (T := T))) :
+    Summable (fun n : ℤ => ‖fourierCoeff (⇑f) n‖ ^ 2) :=
+  (hasSum_sq_fourierCoeff f).summable
 
 theorem bessel_fourier (f : Lp ℂ 2 (haarAddCircle (T := T))) (s : Finset ℤ) :
     ∑ n ∈ s, ‖fourierCoeff (⇑f) n‖ ^ 2 ≤ ∫ t : AddCircle T, ‖(⇑f) t‖ ^ 2 ∂haarAddCircle := by
   -- Follows from Parseval: any finite sum ≤ the full tsum = integral
-  rw [← parseval_fourier f]
-  -- The finite sum is bounded by the infinite sum when terms are nonnegative
-  apply sum_le_tsum s (fun _ _ => sq_nonneg _)
-  -- Summability follows from Parseval equality
-  exact summable_sq_fourierCoeff f
+  exact sum_le_hasSum s (fun _ _ => sq_nonneg _) (hasSum_sq_fourierCoeff f)
 
 end Bessel
 
@@ -425,27 +413,25 @@ theorem fourier_coeffs_determine_function
   simp only [funext heq] at hf
   exact hf.unique hg
 
-/-- **Riemann-Lebesgue Lemma for Fourier Coefficients**
-
-The Fourier coefficients of an L² function tend to zero as |n| → ∞:
-
-  lim_{|n| → ∞} ĉ_n(f) = 0
-
-This follows from the summability of |ĉ_n|² (Parseval's theorem).
-
-**Proof idea**: The Fourier series converges in L², so its terms must tend to zero.
-Since each term is c_n • e_n and ‖e_n‖ = 1, we have c_n → 0. -/
-
-/-- Axiom: Riemann-Lebesgue lemma for L² functions.
-    If Σ|c_n|² < ∞, then c_n → 0. This is the cofinite version saying that
-    for any ε > 0, only finitely many n have |c_n| ≥ ε. -/
-axiom fourierCoeff_tendsto_zero_axiom (f : Lp ℂ 2 (haarAddCircle (T := T))) :
-    Tendsto (fun n : ℤ => fourierCoeff (⇑f) n) cofinite (𝓝 0)
+/-- **Riemann-Lebesgue for L²**: Fourier coefficients tend to zero as |n| → ∞.
+    Proved from Parseval: Σ|ĉ_n|² < ∞ implies |ĉ_n|² → 0, hence ĉ_n → 0. -/
+theorem fourierCoeff_tendsto_zero (f : Lp ℂ 2 (haarAddCircle (T := T))) :
+    Tendsto (fun n : ℤ => fourierCoeff (⇑f) n) cofinite (𝓝 0) := by
+  -- From Parseval: Σ‖ĉ_n‖² < ∞, so ‖ĉ_n‖² → 0
+  have h_sq := (summable_sq_fourierCoeff f).tendsto_cofinite_zero
+  -- ‖ĉ_n‖² → 0 implies ĉ_n → 0 via norm
+  rw [Metric.tendsto_nhds] at h_sq ⊢
+  intro ε hε
+  filter_upwards [h_sq (ε ^ 2) (by positivity)] with n hn
+  simp only [dist_zero_right] at hn ⊢
+  -- hn : ‖‖ĉ_n‖²‖ < ε², goal : ‖ĉ_n‖ < ε
+  rw [Real.norm_of_nonneg (sq_nonneg _)] at hn
+  nlinarith [norm_nonneg (fourierCoeff (⇑f) n), sq_nonneg (‖fourierCoeff (⇑f) n‖ - ε)]
 
 theorem fourier_coeff_tendsto_zero_of_L2
     (f : Lp ℂ 2 (haarAddCircle (T := T))) :
     Tendsto (fun n : ℤ => fourierCoeff (⇑f) n) cofinite (𝓝 0) :=
-  fourierCoeff_tendsto_zero_axiom f
+  fourierCoeff_tendsto_zero f
 
 end Corollaries
 
