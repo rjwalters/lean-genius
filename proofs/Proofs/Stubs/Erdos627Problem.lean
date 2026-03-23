@@ -20,30 +20,14 @@
 -/
 
 import Mathlib
+import Proofs.GraphCore
 
-open Finset Function SimpleGraph Nat
+open Finset Function Nat GraphCore
+open SimpleGraph hiding chromaticNumber
 
 namespace Erdos627
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
-
-/- ## Basic Graph Parameters -/
-
-/-- The clique number ω(G) = size of largest clique -/
-noncomputable def cliqueNumber (G : SimpleGraph V) : ℕ :=
-  sorry -- Maximum k such that G contains K_k
-
-/-- The chromatic number χ(G) = minimum colors needed -/
-noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
-  sorry -- Minimum k such that G is k-colorable
-
-/-- A graph is k-colorable -/
-def IsKColorable (G : SimpleGraph V) (k : ℕ) : Prop :=
-  ∃ f : V → Fin k, ∀ v w : V, G.Adj v w → f v ≠ f w
-
-/-- A graph contains a k-clique -/
-def ContainsClique (G : SimpleGraph V) (k : ℕ) : Prop :=
-  ∃ S : Finset V, S.card = k ∧ ∀ v w : V, v ∈ S → w ∈ S → v ≠ w → G.Adj v w
 
 /- ## The Ratio χ/ω -/
 

@@ -20,30 +20,18 @@
 -/
 
 import Mathlib
+import Proofs.GraphCore
 
-open Finset Function SimpleGraph Nat
+open Finset Function Nat GraphCore
+open SimpleGraph hiding chromaticNumber
 
 namespace Erdos626
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/- ## Basic Definitions -/
-
-/-- The chromatic number of a graph -/
-noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
-  sorry -- Minimum k such that G is k-colorable
-
-/-- A graph is k-colorable -/
-def IsKColorable (G : SimpleGraph V) (k : ℕ) : Prop :=
-  ∃ f : V → Fin k, ∀ v w : V, G.Adj v w → f v ≠ f w
-
-/-- The girth of a graph (length of shortest cycle, 0 if acyclic) -/
-noncomputable def girth (G : SimpleGraph V) : ℕ :=
-  sorry -- Length of shortest cycle, or 0 if no cycles
-
 /-- A graph has girth > m (no cycle of length ≤ m) -/
 def HasGirthGT (G : SimpleGraph V) (m : ℕ) : Prop :=
-  girth G = 0 ∨ girth G > m
+  GraphCore.girth G = 0 ∨ GraphCore.girth G > m
 
 /- ## The g_k(n) Function -/
 

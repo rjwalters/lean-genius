@@ -26,10 +26,11 @@
 -/
 
 import Mathlib
+import Proofs.GraphCore
 
 namespace Erdos641
 
-open Finset Function
+open Finset Function GraphCore
 
 /-
 ## Part I: Graphs and Chromatic Number
@@ -39,18 +40,6 @@ Basic definitions.
 
 /-- A simple graph on vertex set V. -/
 abbrev Graph (V : Type*) := SimpleGraph V
-
-/-- A proper k-coloring assigns colors so adjacent vertices differ. -/
-def IsProperColoring (G : SimpleGraph V) (k : ℕ) (c : V → Fin k) : Prop :=
-  ∀ u v : V, G.Adj u v → c u ≠ c v
-
-/-- The chromatic number χ(G) is the minimum k for a proper k-coloring. -/
-noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
-  sInf { k : ℕ | ∃ c : V → Fin k, IsProperColoring G k c }
-
-/-- G is k-colorable. -/
-def IsKColorable (G : SimpleGraph V) (k : ℕ) : Prop :=
-  ∃ c : V → Fin k, IsProperColoring G k c
 
 /-
 ## Part II: Cycles and Regular Subgraphs
