@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-03-22T09:13:15-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
@@ -29,11 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: Full proof, 0 sorries, 0 axioms, 314 lines, PR #5122",
+    "builtItems": [
+      "baseSet, expand, reachableSet (core definitions)",
+      "nat_seq_stabilize (pigeonhole for bounded monotone sequences)",
+      "reachable_stable (fixed-point property)",
+      "reachable_closed + reachable_decomp (structural lemmas)",
+      "cbsBijection + injective/surjective proofs",
+      "constructive_CBS: final equivalence"
+    ],
+    "insights": [
+      "For Fintype types with DecidableEq, orbit classification is decidable",
+      "Pigeonhole on bounded monotone N-sequences gives stabilization of Finset iterations",
+      "Cross-case contradiction (reachable + non-reachable) uses closure under g∘f",
+      "Decomposition lemma (base or g∘f-image) is key for surjectivity",
+      "Lean noncomputable tag on bijection is artifact of Multiset quotient, not mathematical limitation",
+      "expand_mono + iterate_succ_apply rewriting pattern for Finset iteration proofs"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Extend to countably infinite types with decidable equality",
+      "Investigate connection to excluded middle equivalence"
+    ],
     "markdown": "# Knowledge Base: schroeder-bernstein-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
