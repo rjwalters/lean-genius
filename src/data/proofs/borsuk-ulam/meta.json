@@ -46,6 +46,16 @@
     ],
     "assumptions": [
       "no_continuous_odd_nonzero_on_sphere: For n ≥ 1, there is no continuous odd function h: ℝ^(n+1) → ℝ^n that is nonzero on the n-sphere. This requires covering space theory and fundamental groups beyond Mathlib's current algebraic topology coverage."
+    ],
+    "relatedProblems": [
+      {
+        "id": "borsuk-ulam-oq-02",
+        "relationship": "Extension of borsuk ulam"
+      },
+      {
+        "id": "borsuk-ulam-oq-03",
+        "relationship": "Extension of borsuk ulam"
+      }
     ]
   },
   "overview": {

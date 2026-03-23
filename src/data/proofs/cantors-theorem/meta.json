@@ -39,7 +39,17 @@
     ],
     "dateAdded": "2025-12-26",
     "axiomCount": 0,
-    "lineCount": 157
+    "lineCount": 157,
+    "relatedProblems": [
+      {
+        "id": "cantors-theorem-oq-01",
+        "relationship": "Extension of cantors theorem"
+      },
+      {
+        "id": "cantors-theorem-oq-02",
+        "relationship": "Extension of cantors theorem"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "Georg Cantor published this theorem in 1891, using the now-famous diagonal argument. It was revolutionary because it showed that not all infinities are equal - the power set of any set is strictly larger than the set itself.\n\nThis result shattered the intuition that 'infinity is just infinity' and established the foundation for the theory of transfinite cardinal numbers. Cantor showed there is an endless hierarchy of infinities: |N| < |P(N)| < |P(P(N))| < ...\n\nThe diagonal construction used in the proof is remarkably versatile and appears in many areas of mathematics and computer science, including Godel's incompleteness theorems and the undecidability of the halting problem.",
