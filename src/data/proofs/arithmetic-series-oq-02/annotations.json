@@ -2,10 +2,10 @@
   {
     "id": "ann-imports",
     "proofId": "arithmetic-series-oq-02",
-    "range": { "startLine": 1, "endLine": 4 },
+    "range": { "startLine": 1, "endLine": 47 },
     "type": "context",
-    "title": "Imports: Choose, BigOperators, Tactic",
-    "content": "The proof imports `Mathlib.Data.Nat.Choose.Basic` for binomial coefficients (`Nat.choose`, `Nat.choose_self`, `Nat.choose_succ_succ`, `Nat.choose_one_right`), `Mathlib.Algebra.BigOperators.Intervals` for `Finset.sum_range_succ`, and `Mathlib.Tactic` for `linarith`, `nlinarith`, `ring`, and `simp`.",
+    "title": "Module Header, Imports, and Setup",
+    "content": "The file imports four Mathlib modules: `Data.Nat.Choose.Basic` (binomial coefficients `Nat.choose` and identities like `Nat.choose_self`, `Nat.choose_succ_succ`, `Nat.choose_one_right`), `Data.Nat.Choose.Sum` (sums involving choose), `Algebra.BigOperators.Intervals` (`Finset.sum_range_succ` for peeling off the last term), and `Tactic` (`linarith`, `nlinarith`, `ring`, `simp`, `native_decide`). The module header documents the open question, its answer via the Hockey Stick Identity, and lists all 8 key theorems. The namespace `ArithmeticSeriesOQ02` and `open Finset BigOperators` set up the notation.",
     "mathContext": "The key Mathlib theorem is `Nat.choose_succ_succ (n k : ℕ) : Nat.choose (n+1) (k+1) = Nat.choose n k + Nat.choose n (k+1)` — Pascal's identity. This single lemma drives both the recurrence and the hockey stick inductive step.",
     "significance": "context",
     "relatedConcepts": ["binomial coefficients", "Pascal's triangle", "BigOperators", "Finset.sum"],
@@ -82,5 +82,17 @@
     "significance": "supporting",
     "relatedConcepts": ["nlinarith tactic", "natural number division avoidance", "inductive formulas", "simplicial_succ_recurrence"],
     "prerequisites": ["simplicial_succ_recurrence", "simplicial_one", "nlinarith"]
+  },
+  {
+    "id": "ann-verification",
+    "proofId": "arithmetic-series-oq-02",
+    "range": { "startLine": 161, "endLine": 209 },
+    "type": "context",
+    "title": "Concrete Values, Summary, and Verification",
+    "content": "Concrete computations verified by `native_decide`: the 10th triangular number is 55 (S_2(9) = C(11,2) = 55), the 10th tetrahedral number is 220 (S_3(9) = C(12,3) = 220), and the sum of the first 10 triangular numbers equals 220 (confirming hockey_stick_sum at k=2, n=9). The `native_decide` tactic evaluates the Lean expression directly, serving as a computational cross-check.\n\nThe summary section documents the complete answer to OQ-02: arithmetic series is one instance of the dimension-raising principle ∑ S_k(i) = S_{k+1}(n), where each level of summation moves up one dimension in Pascal's triangle. The `#check` commands verify the types of the five main theorems.",
+    "mathContext": "Verification: $S_2(9) = \\binom{11}{2} = 55$, $S_3(9) = \\binom{12}{3} = 220$, $\\sum_{i=0}^{9} S_2(i) = 220 = S_3(9)$.",
+    "significance": "context",
+    "relatedConcepts": ["native_decide", "computational verification", "concrete instances", "dimension-raising principle"],
+    "prerequisites": ["simplicial definition", "hockey_stick_sum"]
   }
 ]

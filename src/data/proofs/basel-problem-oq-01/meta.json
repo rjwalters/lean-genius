@@ -76,8 +76,10 @@
       "The correct lower bound approach in Mathlib: use hasSum_ite_eq + hasSum_le, not sum_le_tsum (which is only for ENNReal)"
     ],
     "prerequisites": [
-      "Mathematical analysis",
-      "Number theory (primes, divisibility)"
+      "Real analysis (infinite series, convergence)",
+      "Number theory (irrationality, algebraic independence)",
+      "Riemann zeta function basics",
+      "Familiarity with Lean 4 and Mathlib"
     ]
   },
   "sections": [
@@ -194,5 +196,27 @@
     "axiomCount": 3,
     "theoremCount": 15,
     "definitionCount": 1
-  }
+  },
+  "references": [
+    {
+      "key": "Ap79",
+      "citation": "Apéry, R., Irrationalité de ζ(2) et ζ(3), Astérisque 61 (1979), 11–13.",
+      "type": "paper"
+    },
+    {
+      "key": "Ri00",
+      "citation": "Rivoal, T., La fonction zêta de Riemann prend une infinité de valeurs irrationnelles aux entiers impairs, Comptes Rendus de l'Académie des Sciences 331(4) (2000), 267–270.",
+      "type": "paper"
+    },
+    {
+      "key": "Zu01",
+      "citation": "Zudilin, W., One of the numbers ζ(5), ζ(7), ζ(9), ζ(11) is irrational, Russian Mathematical Surveys 56(4) (2001), 774–776.",
+      "type": "paper"
+    },
+    {
+      "key": "FN10",
+      "citation": "Fischler, S. and Nesterenko, Y., Arithmetic properties of values of the Riemann zeta function at odd integers, Bulletin of the London Mathematical Society 42(3) (2010), 457–470.",
+      "type": "paper"
+    }
+  ]
 }

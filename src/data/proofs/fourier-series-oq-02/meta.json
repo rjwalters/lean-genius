@@ -6,6 +6,7 @@
   "leanFile": "Proofs/FourierSeriesOQ02.lean",
   "meta": {
     "author": "Classical (Bernstein, Zygmund)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fourier_series#Rate_of_convergence",
     "date": "1912",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/FourierSeriesOQ02.lean",
@@ -91,8 +92,10 @@
       "**Full regularity-decay hierarchy**: L² → Hölder → Lipschitz → C¹ → C^k → C^∞ → Analytic corresponds to ĉ_n → 0 → O(1/|n|^α) → O(1/|n|) → O(1/|n|^k) → rapid → exponential."
     ],
     "prerequisites": [
-      "Mathematical analysis",
-      "Fourier analysis on the circle"
+      "Real analysis (Lebesgue integration, L^p spaces)",
+      "Fourier analysis on the circle (Fourier coefficients, Haar measure)",
+      "Hölder continuity and moduli of continuity",
+      "Familiarity with Lean 4 and Mathlib"
     ]
   },
   "sections": [
