@@ -21,7 +21,13 @@
     "erdosUrl": "https://erdosproblems.com/42",
     "erdosProblemStatus": "open",
     "axiomCount": 7,
-    "lineCount": 100
+    "lineCount": 100,
+    "prerequisites": [
+      "Sidon sets (B₂ sequences) and their properties",
+      "Difference sets of finite sets",
+      "Extremal combinatorics and Ramsey theory",
+      "Finite field constructions (Singer difference sets)"
+    ]
   },
   "overview": {
     "historicalContext": "Sidon sets (also called B₂ sets) were introduced by Simon Sidon in the 1930s through correspondence with Erdős. A Sidon set is a set of integers where all pairwise sums are distinct. Erdős and Turán (1941) proved the fundamental size bound |A| ≤ √(2N) for Sidon subsets of {1,...,N}. Problem 42 asks about the rigidity of maximal Sidon sets: even though adding any new element to a maximal Sidon set creates a repeated sum, the conjecture asserts that the difference set A−A cannot monopolize all available differences. Sedov proved the cases M = 2 (by pigeonhole counting) and M = 3 (by combining analytic estimates with computational verification). The problem connects to broader questions in additive combinatorics about the structure of B₂ sets, including the Erdős–Turán conjecture on the maximum size of Sidon sets and Ruzsa's constructions of near-optimal Sidon sets.",
@@ -130,5 +136,56 @@
     "axiomCount": 7,
     "theoremCount": 0,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-39",
+      "relationship": "related",
+      "description": "Problem #39 asks about the growth rate of infinite Sidon sets, while Problem #42 concerns the structural compatibility of Sidon sets via their difference sets. Both explore fundamental constraints on Sidon set structure"
+    },
+    {
+      "targetId": "erdos-44",
+      "relationship": "related",
+      "description": "Problem #44 asks about extending Sidon sets to near-optimal density. Both problems concern how individual Sidon sets can be related or combined — #42 via disjoint differences, #44 via extension"
+    },
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "The Erdős-Turán conjecture on additive bases uses Sidon sets as the extremal case. Understanding Sidon set structure (via difference sets, as in #42) informs the broader question of representation functions"
+    },
+    {
+      "targetId": "erdos-41",
+      "relationship": "extends",
+      "description": "Problem #41 on B_h sequence bounds generalizes the Sidon set density theory. The difference set structure studied in Problem #42 has natural B_h analogs"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Lindström, Bernt",
+      "title": "An inequality for B₂-sequences",
+      "year": "1969",
+      "venue": "Journal of Combinatorial Theory, vol. 6, no. 2, pp. 211–212",
+      "note": "Fundamental inequality for Sidon sets relating density to difference set structure"
+    },
+    {
+      "authors": "Singer, James",
+      "title": "A theorem in finite projective geometry and some applications to number theory",
+      "year": "1938",
+      "venue": "Transactions of the American Mathematical Society, vol. 43, no. 3, pp. 377–385",
+      "note": "Constructed perfect difference sets from finite projective planes, providing optimal Sidon sets"
+    },
+    {
+      "authors": "O'Bryant, Kevin",
+      "title": "A complete annotated bibliography of work related to Sidon sets",
+      "year": "2004",
+      "venue": "Electronic Journal of Combinatorics, Dynamic Survey DS11",
+      "note": "Comprehensive survey of Sidon set theory including structural results on difference sets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-28",
+    "erdos-39",
+    "erdos-41",
+    "erdos-44"
+  ]
 }
