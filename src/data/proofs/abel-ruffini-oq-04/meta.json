@@ -145,7 +145,10 @@
       "derangements",
       "partition-theorem",
       "wilsons-theorem",
-      "euler-totient"
+      "euler-totient",
+      "angle-trisection-oq-02-oq-03",
+      "angle-trisection-oq-02-oq-03-oq-01",
+      "nth-root-irrational-oq-01"
     ],
     "prerequisites": [
       "Group theory (normal subgroups, derived series, solvability)",
@@ -310,6 +313,21 @@
       "targetId": "euler-totient",
       "relationship": "related",
       "description": "Euler's totient φ(n) = |(ℤ/nℤ)*| computes the order of the multiplicative unit group modulo n. The structure theorem (ℤ/nℤ)* ≅ ∏ (ℤ/pᵢᵉⁱℤ)* shows this group is always a product of cyclic groups — hence always solvable. This solvability of unit groups is why cyclotomic extensions (adjoining nth roots of unity) are always radical: their Galois groups are subgroups of (ℤ/nℤ)*, which are abelian. The Abel-Ruffini impossibility arises precisely when the Galois group escapes this abelian world — the generic quintic has Galois group S₅, which is not a subgroup of any (ℤ/nℤ)* and is not solvable. Euler's totient thus quantifies the 'solvable side' of the radical solvability dichotomy"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-03",
+      "relationship": "related",
+      "description": "The Gauss-Wantzel theorem characterizes exactly which regular n-gons are constructible by compass and straightedge: n must be a product of a power of 2 and distinct Fermat primes. The parallel with Abel-Ruffini is striking — both are Galois-theoretic impossibility results that reduce geometric/algebraic questions to group-theoretic criteria: constructibility requires the Galois group to be a 2-group (tower of degree-2 extensions), while radical solvability requires a solvable Galois group (tower of cyclic extensions). Gauss-Wantzel and Abel-Ruffini together illustrate how Galois theory provides a unified framework for impossibility proofs across algebra and geometry"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-03-oq-01",
+      "relationship": "related",
+      "description": "The cyclotomic field approach to the Gauss-Wantzel theorem connects directly to the radical solvability paradigm: the nth cyclotomic polynomial Φₙ has Galois group (ℤ/nℤ)*, which is abelian and hence solvable — explaining why roots of unity are always expressible by radicals. The Abel-Ruffini theorem arises precisely when the Galois group escapes this abelian cyclotomic world: the generic quintic's Galois group S₅ is not solvable, and its non-abelian simple composition factor A₅ is the exact obstruction"
+    },
+    {
+      "targetId": "nth-root-irrational-oq-01",
+      "relationship": "foundational",
+      "description": "The irrationality of nth roots via irreducible polynomials is a prototype of the field extension arguments that underlie Abel-Ruffini. Showing ⁿ√m ∉ ℚ uses the irreducibility of xⁿ − m over ℚ (Eisenstein's criterion), giving [ℚ(ⁿ√m) : ℚ] = n — a degree-n radical extension. Abel-Ruffini asks when arbitrary polynomial roots can be reached by chaining such radical extensions (tower of radical extensions), and the answer depends on whether the Galois group is solvable. The irrationality proof is the base case (degree 1 tower, always possible) of the general radical solvability question"
     }
   ],
   "overview": {
