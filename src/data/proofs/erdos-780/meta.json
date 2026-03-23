@@ -61,6 +61,7 @@
       "Two proved theorems (erdos_780_main, erdos_780_summary) wrapping axioms"
     ],
     "axiomCount": 10,
+    "assumptions": "10 axiom declarations: chromaticNumber (Kneser hypergraph chromatic number function), alon_frankl_lovasz_1986 (n >= threshold implies monochromatic k-matching), kneser_hypergraph_chromatic_number (chromatic number formula for Kneser hypergraph), tightness_construction (partition coloring avoids k disjoint monochromatic edges), kneser_conjecture (chi(KG(n,r)) = n-2r+2 for n >= 2r), petersen_chromatic (chi(KG(5,2)) = 3), kg_7_3_chromatic (chi(KG(7,3)) = 2), kg_2r_r_chromatic (chi(KG(2r,r)) = 2 perfect matching), kg_2r_plus_1_r (chi(KG(2r+1,r)) = 3 odd graph), erdos_ko_rado (max intersecting family size C(n-1,r-1))",
     "lineCount": 200
   },
   "overview": {

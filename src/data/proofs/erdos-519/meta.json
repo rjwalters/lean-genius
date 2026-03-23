@@ -53,6 +53,7 @@
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 7,
+    "assumptions": "7 axiom declarations: turan_bound (max power sum >= c/n), atkinson_theorem (absolute constant c=1/6), biro_1994 (improved to c=1/2), biro_2000 (c > 1/2), optimal_constant_conjecture (optimal c ~ 0.7), roots_of_unity_sum (orthogonality relation), computational_evidence (numerical c ~ 0.7)",
     "prerequisites": [
       "Complex number arithmetic and absolute value",
       "Finite sums over indexed families (Finset.sum)",

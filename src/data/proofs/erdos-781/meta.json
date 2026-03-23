@@ -53,6 +53,7 @@
       "erdos_781_summary main theorem"
     ],
     "axiomCount": 12,
+    "assumptions": "12 axiom declarations: descending_wave_equiv_gaps (descending wave iff non-increasing gaps), f_exists (f(k) well-defined for k >= 1), f_minimal (f(k) is minimal such n), BEF_lower_bound (f(k) >= k^2-k+1), BEF_upper_bound (f(k) <= (k^3-4k+9)/3), alon_spencer_cubic (f(k) >= ck^3 for some c > 0), f_1 (f(1) = 1), f_2 (f(2) = 2), f_3 (f(3) = 7), alon_spencer_construction (coloring avoiding k-waves for n <= ck^3), ascending_descending_similar (both f and g are Theta(k^3)), descending_wave_is_quasi (descending waves are quasi-progressions)",
     "lineCount": 258
   },
   "overview": {

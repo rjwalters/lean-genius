@@ -65,6 +65,7 @@
       }
     ],
     "axiomCount": 3,
+    "assumptions": "prime_divides_at_most_one (each prime divides at most one element of a pairwise coprime sumset A+B), coprime_set_bound (a pairwise coprime subset of [1,n] has at most pi(n)+1 elements), ostmann_connection (link to Ostmann's additive complement problem #431)",
     "relatedProblems": [
       {
         "id": "ramseys-theorem",

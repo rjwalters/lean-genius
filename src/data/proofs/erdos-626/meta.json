@@ -51,6 +51,7 @@
       "Limit existence question formalization"
     ],
     "axiomCount": 7,
+    "assumptions": "7 axiom declarations: g_well_defined (g_k(n) well-defined for k >= 4), erdos_high_girth_high_chromatic (high-chi high-girth graphs exist), erdos_upper_bound (g_k(n) <= (2/log(k-2))*log n + 1), kostochka_lower_bound (g_k(n) >= (1/(4 log k))*log n), limit_question_open (limit existence is open), h_bounds (dual problem polynomial bounds), erdos_1959_probabilistic_method (Erdos 1959 probabilistic existence)",
     "lineCount": 256
   },
   "overview": {
