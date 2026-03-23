@@ -23,7 +23,18 @@
     "erdosUrl": "https://erdosproblems.com/1095",
     "erdosProblemStatus": "open",
     "axiomCount": 10,
-    "lineCount": 197
+    "lineCount": 197,
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Full Mathlib library",
+        "module": "Mathlib"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #1095: The Erdős-Selfridge Function",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "The Erdős-Selfridge function was introduced by Ecklund, Erdős, and Selfridge in their 1974 paper 'A new function associated with the prime factors of C(n,k)' in Mathematics of Computation. They proved the first bounds: k^{1+c} < g(k) ≤ exp((1+o(1))k). Konyagin (1999) dramatically improved the lower bound to exp(c·(log k)²) using Rankin's method and smooth number estimates from Canfield–Erdős–Pomerance (1983). Erdős, Lacampagne, and Selfridge (1993) conjectured that any 'right-thinking person' would believe g(k) ≥ exp(c·k/log k), but this remains unproven. The problem connects to Kummer's theorem (1852) on the p-adic valuation of binomial coefficients, the distribution of smooth numbers (Dickman ρ-function), and the Prime Number Theorem via Chebyshev's ψ-function. Sorenson, Sorenson, and Webster (2020) computed g(k) for k ≤ 200, revealing the wildly irregular behavior predicted by the ratio conjectures. The sequence is OEIS A003458.",

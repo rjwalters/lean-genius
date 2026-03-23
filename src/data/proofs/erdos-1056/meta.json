@@ -26,7 +26,28 @@
       "erdos-1004"
     ],
     "axiomCount": 3,
-    "lineCount": 204
+    "lineCount": 204,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #1056: Consecutive Interval Products ≡ 1 (mod p)",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "sections": [
     {

@@ -33,7 +33,23 @@
       "Analytic number theory: exponential sum estimates",
       "Geometry of numbers and lattice point estimates"
     ],
-    "lineCount": 95
+    "lineCount": 95,
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithmic functions",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős #466: Points in a Circle with Fractional Distance Separation",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "sections": [
     {

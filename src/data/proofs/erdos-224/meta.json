@@ -32,7 +32,28 @@
       }
     ],
     "axiomCount": 7,
-    "lineCount": 256
+    "lineCount": 256,
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number field",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #224: Obtuse Angles in Point Sets",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in the context of discrete geometry, asking how many points in $\\mathbb{R}^d$ can avoid forming any obtuse angle. The question connects to the geometry of the hypercube: the $2^d$ vertices of $\\{0,1\\}^d$ form an obtuse-free set because all angles between triples of binary vectors are $\\leq 90°$ (specifically $60°$ or $90°$). For $d = 2$, any 5 points in the plane trivially contain an obtuse triple (via convex position arguments). For $d = 3$, Kuiper and Boerdijk proved the 9-point case independently. The general result was established by Ludwig Danzer and Branko Grünbaum in their 1962 paper in *Mathematische Zeitschrift*, resolving the problem for all dimensions. The proof uses induction on dimension with a projection argument, showing that $2^d + 1$ points must contain an obtuse triple. Erdős and Füredi (1983) later studied the related problem of the greatest angle among $n$ points, extending the analysis beyond the threshold case.",

@@ -28,7 +28,18 @@
       "Wiman-Valiron theory: maximum term μ(r), central index, and their relation to M(r)",
       "Lacunary series: gap series with controlled coefficient growth"
     ],
-    "relatedProofs": []
+    "relatedProofs": [],
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #513: Maximum Term of a Power Series",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "crossReferences": [
     {

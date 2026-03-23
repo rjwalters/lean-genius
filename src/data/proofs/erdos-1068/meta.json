@@ -21,7 +21,23 @@
     "erdosUrl": "https://erdosproblems.com/1068",
     "erdosProblemStatus": "open",
     "axiomCount": 6,
-    "lineCount": 205
+    "lineCount": 205,
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      },
+      {
+        "theorem": "Set.Basic",
+        "description": "Set operations",
+        "module": "Mathlib.Data.Set.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #1068: Countable Infinitely-Connected Subgraphs",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "This problem originates from the Erdős–Hajnal program (1966, *Acta Math. Acad. Sci. Hungar.* 17:61–99) connecting chromatic number with structural graph properties. Erdős and Hajnal conjectured that uncountable chromatic number forces subgraphs of infinite connectivity. The specific formulation about countable subgraphs appears in Vatter's 1999 problem collection (Problem 7.90) and is catalogued as Problem B24-adjacent in Guy's survey. Soukup (2015, *Combinatorica*) gave the first ZFC construction of an uncountably chromatic graph where every uncountable vertex set is only finitely connected, using ladder systems on non-special $\\omega_1$-trees. This disproved Problem 1067 but left Problem 1068 (the countable case) open. Bowler and Pitz (2024, *Electronic J. Combinatorics*) simplified Soukup's construction using elementary ladder graphs. Earlier, Komjáth (2013, *Israel J. Math.*) had shown a related question is independent of ZFC, highlighting the set-theoretic depth of the problem. The infinite Menger theorem, proved by Aharoni and Berger (2009, *Inventiones mathematicae*), provides the key characterization: infinite connectivity is equivalent to the absence of finite vertex separators. The De Bruijn–Erdős theorem (1951) connects infinite and finite graph coloring, ensuring $\\chi(G) \\geq \\aleph_1$ implies arbitrarily large finite chromatic number.",
@@ -144,7 +160,10 @@
   ],
   "references": [
     {
-      "authors": ["Paul Erdős", "András Hajnal"],
+      "authors": [
+        "Paul Erdős",
+        "András Hajnal"
+      ],
       "title": "On chromatic number of graphs and set-systems",
       "journal": "Acta Mathematica Academiae Scientiarum Hungaricae",
       "volume": "17",
@@ -154,7 +173,9 @@
       "note": "Foundational Erdős–Hajnal paper establishing the program connecting chromatic number with structural graph properties; origin of the conjecture formalized in Problem 1068."
     },
     {
-      "authors": ["Lajos Soukup"],
+      "authors": [
+        "Lajos Soukup"
+      ],
       "title": "A note on a problem of Erdős and Hajnal",
       "journal": "Combinatorica",
       "volume": "35",
@@ -165,7 +186,10 @@
       "note": "Constructs in ZFC an uncountably chromatic graph where every uncountable vertex set is only finitely connected, disproving Problem 1067 and isolating Problem 1068 as the key open case."
     },
     {
-      "authors": ["Ron Aharoni", "Eli Berger"],
+      "authors": [
+        "Ron Aharoni",
+        "Eli Berger"
+      ],
       "title": "Menger's theorem for infinite graphs",
       "journal": "Inventiones Mathematicae",
       "volume": "176",
@@ -176,7 +200,9 @@
       "note": "Proves the infinite Menger theorem: infinite vertex-connectivity is equivalent to the absence of finite vertex separators. This characterization is used in the formalization's no-finite-separator axiom."
     },
     {
-      "authors": ["Péter Komjáth"],
+      "authors": [
+        "Péter Komjáth"
+      ],
       "title": "A note on set theory",
       "journal": "Israel Journal of Mathematics",
       "volume": "196",
@@ -187,7 +213,10 @@
       "note": "Shows a related chromatic-connectivity question is independent of ZFC, indicating that Problem 1068 lies near the boundary of standard set theory and may depend on forcing axioms or diamond principles."
     },
     {
-      "authors": ["Nathan Bowler", "Max Pitz"],
+      "authors": [
+        "Nathan Bowler",
+        "Max Pitz"
+      ],
       "title": "A simplified construction of an uncountably chromatic graph with no uncountably connected subgraph",
       "journal": "Electronic Journal of Combinatorics",
       "volume": "31",

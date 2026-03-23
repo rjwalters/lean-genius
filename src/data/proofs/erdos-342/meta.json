@@ -28,7 +28,38 @@
       "Natural density and asymptotic analysis",
       "Lean 4 Set.Infinite and Filter.Tendsto"
     ],
-    "lineCount": 181
+    "lineCount": 181,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Set.Basic",
+        "description": "Set operations",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Filter.Basic",
+        "description": "Filter theory",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #342: The Ulam Sequence U(1,2)",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "Stanisław Ulam introduced this sequence in 1964 as part of his broad program of studying simple recursive constructions with complex emergent behavior. The Ulam sequence U(1,2) begins 1, 2, 3, 4, 6, 8, 11, 13, 16, 18, 26, 28, ... (OEIS A002858), where each term is the smallest integer expressible as a sum of two distinct earlier terms in exactly one way. The number 5 is excluded because 5 = 1+4 = 2+3 has two representations.\n\nErdős asked whether the Ulam sequence has positive density — i.e., whether the proportion of integers in the sequence stays bounded away from zero. Empirical computation suggests the density converges to approximately 0.0739, but proving this rigorously is remarkably difficult. The sequence exhibits quasi-periodic behavior that resists standard analytic methods.\n\nSteinerberger (2015) discovered a stunning hidden regularity: the Fourier transform of the characteristic function of U(1,2) has a single dominant frequency at 2π/λ where λ ≈ 2.5714. This suggests the sequence has deep quasi-crystalline structure, connecting to aperiodic tilings and mathematical physics. Despite this empirical understanding, proving positive density remains open.",

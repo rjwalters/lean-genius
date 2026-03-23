@@ -45,6 +45,32 @@
       "Preimage counting in arithmetic functions",
       "Multiplicative number theory",
       "Distribution of totient values"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Filter.Basic",
+        "description": "Filter theory",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Topology.Basic",
+        "description": "Topological spaces",
+        "module": "Mathlib.Topology.Basic"
+      },
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős #51: Totient Preimage Growth",
+      "Complete proof architecture with verified type-checking"
     ]
   },
   "sections": [

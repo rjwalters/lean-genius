@@ -21,7 +21,38 @@
     "erdosUrl": "https://erdosproblems.com/120",
     "erdosProblemStatus": "open",
     "axiomCount": 7,
-    "lineCount": 331
+    "lineCount": 331,
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      },
+      {
+        "theorem": "Topology.Basic",
+        "description": "Topological spaces",
+        "module": "Mathlib.Topology.Basic"
+      },
+      {
+        "theorem": "Filter.Basic",
+        "description": "Filter theory",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Set.Basic",
+        "description": "Set operations",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number field",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #120: The Similarity Problem",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "The Similarity Problem asks whether infinite sets are 'avoidable' — whether positive-measure sets can be constructed that contain no translated-scaled copy. Steinhaus (1920) showed finite sets are universal: every positive-measure set contains a similar copy of any finite set.\n\nErdős conjectured that infinite sets behave fundamentally differently and offered a $100 prize. Unbounded sets and sets dense in intervals are known to be avoidable. The hard case is bounded, nowhere-dense infinite sets, with the geometric sequence {1, 1/2, 1/4, ...} as the key test case (also Problem 94 on Ben Green's list).\n\nSvetic (2000) surveyed the problem comprehensively. Jung, Lai, and Mooroogen (2024) provided recent progress. The problem connects measure theory, Ramsey-type combinatorics, and the fine structure of the real line.",

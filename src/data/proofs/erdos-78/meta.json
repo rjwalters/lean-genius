@@ -42,7 +42,28 @@
     "sourceUrl": "https://erdosproblems.com/78",
     "erdosUrl": "https://erdosproblems.com/78",
     "axiomCount": 9,
-    "lineCount": 107
+    "lineCount": 107,
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      },
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #78: Constructive Ramsey Lower Bound",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "sections": [
     {

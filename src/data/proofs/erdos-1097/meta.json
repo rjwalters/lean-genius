@@ -45,6 +45,27 @@
         "id": "roth-theorem-k3",
         "relationship": "Roth's theorem guarantees 3-term APs in dense sets; this problem counts distinct common differences of such APs"
       }
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithmic functions",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Common Differences in Three-Term Arithmetic Progressions",
+      "Complete proof architecture with verified type-checking"
     ]
   },
   "overview": {

@@ -24,7 +24,28 @@
     "erdosUrl": "https://erdosproblems.com/589",
     "erdosProblemStatus": "solved",
     "axiomCount": 6,
-    "lineCount": 343
+    "lineCount": 343,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number field",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithmic functions",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #589: Points in General Position",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "This problem asks about extracting subsets in general position (no 3 collinear) from sets in almost general position (no 4 collinear). Erdős originally believed linear growth was achievable, but this was disproved.\n\n**Timeline:**\n- **1991 (Füredi)**: Proved g(n) ≥ c·√n·log n and g(n) = o(n)\n- **1991 (Furstenberg-Katznelson)**: Density Hales-Jewett theorem implies o(n) upper bound\n- **2018 (Balogh-Solymosi)**: Proved g(n) ≤ n^(5/6+o(1)) using container method\n\nThe exact order of growth remains open, with a gap between exponents 1/2 and 5/6.",

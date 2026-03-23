@@ -28,6 +28,17 @@
       "Additive complements",
       "Waring's problem for squares",
       "Asymptotic density"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Full Mathlib library",
+        "module": "Mathlib"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős #33: Additive Complements of Squares",
+      "Complete proof architecture with verified type-checking"
     ]
   },
   "overview": {

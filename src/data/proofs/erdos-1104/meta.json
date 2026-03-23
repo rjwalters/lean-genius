@@ -21,7 +21,28 @@
     "erdosUrl": "https://erdosproblems.com/1104",
     "erdosProblemStatus": "open",
     "axiomCount": 6,
-    "lineCount": 212
+    "lineCount": 212,
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number field",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithmic functions",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #1104: Maximum Chromatic Number of Triangle-Free Graphs",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "sections": [
     {

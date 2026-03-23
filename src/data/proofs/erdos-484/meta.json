@@ -44,7 +44,28 @@
       }
     ],
     "axiomCount": 14,
-    "lineCount": 322
+    "lineCount": 322,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number field",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős #484: Monochromatic Sums in Colorings",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "sections": [
     {

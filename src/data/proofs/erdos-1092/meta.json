@@ -21,7 +21,28 @@
     "erdosUrl": "https://erdosproblems.com/1092",
     "erdosProblemStatus": "open",
     "axiomCount": 5,
-    "lineCount": 102
+    "lineCount": 102,
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      },
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #1092: Chromatic Decomposition Threshold",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős, Hajnal, and Szemerédi introduced this problem as part of their investigation into when local chromatic structure forces global coloring bounds. The function $f_r(n)$ captures a 'local-to-global' threshold: if every subgraph of an $n$-vertex graph can be made $r$-colorable by deleting at most $k$ edges, what is the largest $k$ that still forces $\\chi(G) \\leq r+1$? Rödl's 1982 construction provided a crucial upper bound, showing $f_2(n) = O(n \\cdot (\\log n)^2)$ via probabilistic and algebraic techniques. Tang subsequently observed that Rödl's construction directly addresses Question 1, providing evidence that $f_2(n) \\gg n$ may be false. The problem connects to broader themes in extremal graph theory: the interplay between local substructure (each piece is nearly $r$-colorable) and global properties (the whole graph has bounded chromatic number). Similar local-to-global phenomena appear in Szemerédi's regularity lemma, Brooks' theorem ($\\chi \\leq \\Delta + 1$ from local degree bounds), and Johansson's theorem ($\\chi = O(\\Delta/\\log \\Delta)$ for triangle-free graphs). The problem also relates to Erdős Problem #744, which considers variant chromatic decomposition thresholds.",

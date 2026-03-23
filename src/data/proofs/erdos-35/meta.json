@@ -30,6 +30,37 @@
       "Additive bases and Waring's problem",
       "Goldbach conjecture and related results",
       "Sieve methods in number theory"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number field",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Set.Basic",
+        "description": "Set operations",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Filter.Basic",
+        "description": "Filter theory",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős #35: Schnirelmann Density and Additive Bases",
+      "Complete proof architecture with verified type-checking"
     ]
   },
   "overview": {

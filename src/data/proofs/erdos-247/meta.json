@@ -22,7 +22,23 @@
     "erdosUrl": "https://erdosproblems.com/247",
     "erdosProblemStatus": "partially-solved",
     "axiomCount": 1,
-    "lineCount": 506
+    "lineCount": 506,
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      },
+      {
+        "theorem": "Topology.Basic",
+        "description": "Topological spaces",
+        "module": "Mathlib.Topology.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Transcendence of Lacunary Sums",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős posed this problem about transcendental numbers in the context of lacunary series - infinite sums where the terms become increasingly sparse. The study of transcendental numbers began with Liouville (1844) who constructed the first explicit examples. Hermite (1873) proved e is transcendental, and Lindemann (1882) proved π is transcendental. Erdős's problem asks about a family of numbers defined by their binary expansions: when n_k grows quickly, the number Σ 1/2^{n_k} has 1s at increasingly sparse positions in its binary expansion. In 1975, Erdős proved transcendence under the strong condition that n_k grows faster than any polynomial. The general conjecture (just faster-than-linear growth) remains open and was described by Erdős in 1988 as 'hopeless at present'.",

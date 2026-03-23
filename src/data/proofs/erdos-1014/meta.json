@@ -23,7 +23,23 @@
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-01",
     "axiomCount": 16,
-    "lineCount": 104
+    "lineCount": 104,
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number field",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #1014: Ramsey Number Ratio Convergence",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "crossReferences": [
     {

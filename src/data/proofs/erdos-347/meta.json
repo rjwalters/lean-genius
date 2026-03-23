@@ -21,7 +21,38 @@
     "erdosUrl": "https://erdosproblems.com/347",
     "erdosProblemStatus": "proved",
     "axiomCount": 4,
-    "lineCount": 93
+    "lineCount": 93,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number field",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Set.Basic",
+        "description": "Set operations",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #347: Complete Sequences with Ratio Tending to 2",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this in their 1980 monograph, asking about the interplay between multiplicative growth rates and additive completeness. The ratio limit 2 is the critical threshold for subset sum completeness: powers of 2 give every natural number via binary representation ($P(\\{1,2,4,8,\\ldots\\}) = \\mathbb{N}$), but small perturbations can destroy this. The question asks whether a sequence growing at rate 2 can be made 'robustly complete' — not just complete, but maintaining density-1 subset sums even after removing finitely many terms. This robustness requirement is much stronger than simple completeness and connects to the stability theory of additive representations. The problem was solved affirmatively by ebarschkis, building on ideas from Terence Tao and Wouter van Doorn. The construction carefully perturbs powers of 2 to create controlled redundancy: each integer has many different subset sum representations, so deleting finitely many terms still leaves enough representations to cover almost all integers.",

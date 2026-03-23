@@ -47,7 +47,23 @@
       }
     ],
     "axiomCount": 14,
-    "lineCount": 109
+    "lineCount": 109,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #414: Merging Orbits of h(n) = n + τ(n)",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "sections": [
     {

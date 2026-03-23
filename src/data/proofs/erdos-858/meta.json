@@ -22,7 +22,38 @@
     "erdosUrl": "https://erdosproblems.com/858",
     "erdosProblemStatus": "solved",
     "axiomCount": 6,
-    "lineCount": 351
+    "lineCount": 351,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithmic functions",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number field",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "BigOperators",
+        "description": "Summation and product notation",
+        "module": "Mathlib.Algebra.BigOperators"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #858: Avoiding Multiplicative Relations with Large Prime Factors",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #858 concerns sets $A \\subseteq \\{1,\\ldots,N\\}$ where no element $at = b$ holds with $a,b \\in A$ and $\\text{spf}(t) > a$ (spf = smallest prime factor). This is a weakening of the **primitive set condition** (no element divides another). The **weighted reciprocal sum** $(1/\\log N) \\sum_{n \\in A} 1/n$ is the quantity of interest. **Alexander** (1966, *Acta Arithmetica*) first proved this sum is $o(1)$; **Erdős–Sárközi–Szemerédi** (1968, *J. London Math. Soc.*) gave an independent proof by different methods. For the stronger primitive condition, **Behrend** (1935) showed the quantitative bound $O(1/\\sqrt{\\log\\log N})$. The problem is fully resolved: the maximum is $o(1)$, with no known sharp quantitative bound for the weaker condition.",

@@ -21,7 +21,33 @@
     "erdosUrl": "https://erdosproblems.com/130",
     "erdosProblemStatus": "open",
     "axiomCount": 5,
-    "lineCount": 128
+    "lineCount": 128,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number field",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Set.Basic",
+        "description": "Set operations",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #130: Integer Distance Graphs in General Position",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "sections": [
     {

@@ -26,7 +26,23 @@
       "erdos-945"
     ],
     "axiomCount": 7,
-    "lineCount": 260
+    "lineCount": 260,
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number field",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #1018: Non-Planar Subgraphs in Dense Graphs",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "**Planarity, Density, and Topological Obstructions**\n\nThe study of planar graphs has deep roots: Euler's formula (1752) implies that planar graphs on $n \\ge 3$ vertices have at most $3n - 6$ edges—a linear bound. Kuratowski (1930) characterized non-planarity: a graph is non-planar if and only if it contains a subdivision of $K_5$ or $K_{3,3}$. Wagner (1937) proved the equivalent minor characterization.\n\nErdős asked a quantitative refinement: if a graph has $n^{1+\\varepsilon}$ edges (super-linear density), must non-planarity be concentrated in a *small* subgraph? Specifically, does there exist a constant $C_\\varepsilon$, depending only on $\\varepsilon$ and not on $n$, such that every such graph contains a non-planar subgraph on at most $C_\\varepsilon$ vertices?\n\n**Kostochka and Pyber (1988)** resolved this affirmatively, proving that graphs with $n^{1+\\varepsilon}$ edges contain $K_5$ subdivisions on $O_\\varepsilon(1)$ vertices. Their proof uses the probabilistic method combined with extremal graph theory. Mader (1967) had earlier shown that the Turán number for $K_t$ subdivisions is $O(t\\sqrt{\\log t} \\cdot n)$, establishing a linear threshold for topological containment. The Kostochka-Pyber result goes further by bounding the *size* of the subdivision found.\n\nErdős also observed that $C_\\varepsilon \\to \\infty$ as $\\varepsilon \\to 0$: as the density approaches linear, non-planarity becomes more diffuse and cannot be localized to a small subgraph. This tradeoff between density and obstruction size is a recurring theme in extremal graph theory.",
@@ -165,35 +181,48 @@
   ],
   "references": [
     {
-      "authors": ["A. V. Kostochka", "L. Pyber"],
+      "authors": [
+        "A. V. Kostochka",
+        "L. Pyber"
+      ],
       "title": "Small topological complete subgraphs of 'dense' graphs",
       "year": 1988,
       "venue": "Combinatorica",
       "note": "Proves the main result of Erdős Problem #1018: graphs with n^(1+ε) edges contain K₅ subdivisions on O_ε(1) vertices."
     },
     {
-      "authors": ["W. Mader"],
+      "authors": [
+        "W. Mader"
+      ],
       "title": "Homomorphieeigenschaften und mittlere Kantendichte von Graphen",
       "year": 1967,
       "venue": "Mathematische Annalen",
       "note": "Established that the Turán number for K_t subdivisions is O(t√(log t) · n), a key precursor to the Kostochka-Pyber result."
     },
     {
-      "authors": ["K. Kuratowski"],
+      "authors": [
+        "K. Kuratowski"
+      ],
       "title": "Sur le problème des courbes gauches en topologie",
       "year": 1930,
       "venue": "Fundamenta Mathematicae",
       "note": "The foundational characterization of planar graphs: a graph is planar if and only if it contains no subdivision of K₅ or K_{3,3}."
     },
     {
-      "authors": ["P. Erdős", "M. Simonovits"],
+      "authors": [
+        "P. Erdős",
+        "M. Simonovits"
+      ],
       "title": "A limit theorem in graph theory",
       "year": 1966,
       "venue": "Studia Scientiarum Mathematicarum Hungarica",
       "note": "Foundational work on extremal graph theory and Turán-type problems underlying the density threshold analysis in Problem #1018."
     },
     {
-      "authors": ["N. Alon", "J. H. Spencer"],
+      "authors": [
+        "N. Alon",
+        "J. H. Spencer"
+      ],
       "title": "The Probabilistic Method",
       "year": 2016,
       "venue": "Wiley (4th edition)",

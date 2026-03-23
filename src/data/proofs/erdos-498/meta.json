@@ -20,7 +20,28 @@
     "erdosUrl": "https://erdosproblems.com/498",
     "axiomCount": 3,
     "lineCount": 89,
-    "badge": "axiom"
+    "badge": "axiom",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Complex.Basic",
+        "description": "Complex number field",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #498: Complex Littlewood–Offord Problem",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "sections": [
     {

@@ -20,7 +20,28 @@
     "erdosUrl": "https://erdosproblems.com/689",
     "erdosProblemStatus": "open",
     "axiomCount": 5,
-    "lineCount": 140
+    "lineCount": 140,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #689: Double Covering by Prime Congruence Classes",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "sections": [
     {

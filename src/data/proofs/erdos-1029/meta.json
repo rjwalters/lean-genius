@@ -23,7 +23,18 @@
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$100/$1000",
     "axiomCount": 12,
-    "lineCount": 190
+    "lineCount": 190,
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Full Mathlib library",
+        "module": "Mathlib"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #1029: Ramsey Number Growth Rate",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "Ramsey theory, initiated by Ramsey (1930) and developed by Erdős and Szekeres (1935), studies the emergence of order in large structures. The diagonal Ramsey number R(k) is the minimum n such that every 2-coloring of the edges of K_n contains a monochromatic K_k. The Erdős-Szekeres theorem gives the upper bound R(k) ≤ C(2k-2, k-1) ≈ 4^k/√(πk), proved by a simple induction on the recurrence R(s,t) ≤ R(s-1,t) + R(s,t-1).\n\nThe lower bound R(k) ≥ c·k·2^{k/2} was one of the first applications of the probabilistic method, which Erdős pioneered. A random 2-coloring of K_n has expected number of monochromatic k-cliques roughly C(n,k)·2^{1-C(k,2)}, which is less than 1 when n ≈ k·2^{k/2}. Spencer (1975) refined this using the Lovász Local Lemma to improve the constant to √2/e ≈ 0.52.\n\nProblem #1029, posed by Erdős in 1993, asks whether R(k)/(k·2^{k/2}) → ∞, i.e., whether the probabilistic lower bound is far from tight. The enormous gap between the lower bound base √2 and upper bound base 4 suggests the answer is yes, but no proof exists. Erdős offered $100 for a proof and $1000 for a disproof, reflecting his belief that the conjecture is true but that a disproof would be more surprising and valuable.",
@@ -135,7 +146,10 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "G. Szekeres"],
+      "authors": [
+        "P. Erdős",
+        "G. Szekeres"
+      ],
       "title": "A combinatorial problem in geometry",
       "venue": "Compositio Mathematica",
       "year": 1935,
@@ -144,7 +158,9 @@
       "note": "Establishes the upper bound R(k) ≤ C(2k-2, k-1) and the lower bound R(k) ≥ 2^{k/2} by induction and construction."
     },
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "Some remarks on the theory of graphs",
       "venue": "Bulletin of the American Mathematical Society",
       "year": 1947,
@@ -154,7 +170,9 @@
       "note": "First probabilistic proof of the lower bound R(k) > 2^{k/2}; foundational paper for the probabilistic method in combinatorics."
     },
     {
-      "authors": ["J. Spencer"],
+      "authors": [
+        "J. Spencer"
+      ],
       "title": "Ramsey's theorem — a new lower bound",
       "venue": "Journal of Combinatorial Theory, Series A",
       "year": 1975,
@@ -164,7 +182,9 @@
       "note": "Applies the Lovász Local Lemma to sharpen the constant in the lower bound to √2/e, giving R(k) ≥ (√2/e) k 2^{k/2}."
     },
     {
-      "authors": ["D. Conlon"],
+      "authors": [
+        "D. Conlon"
+      ],
       "title": "A new upper bound for diagonal Ramsey numbers",
       "venue": "Annals of Mathematics",
       "year": 2009,
@@ -175,7 +195,9 @@
       "note": "Gives the best known improvement to the upper bound via a probabilistic deletion argument, reducing the constant factor but not the exponential base 4^k."
     },
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "Problems and results on graphs and hypergraphs: similarities and differences",
       "venue": "Mathematics of Ramsey Theory (Algorithms and Combinatorics 5, eds. J. Nešetřil and V. Rödl)",
       "year": 1990,

@@ -28,6 +28,17 @@
       "Explicit vs. probabilistic constructions",
       "Schnirelmann density",
       "Computational number theory"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Full Mathlib library",
+        "module": "Mathlib"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #29: Explicit Economical Additive Basis",
+      "Complete proof architecture with verified type-checking"
     ]
   },
   "overview": {

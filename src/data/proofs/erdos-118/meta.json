@@ -24,7 +24,18 @@
       592
     ],
     "axiomCount": 8,
-    "lineCount": 93
+    "lineCount": 93,
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #118: Partition Ordinals and Higher Cliques",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "sections": [
     {

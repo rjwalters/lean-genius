@@ -33,7 +33,11 @@
       }
     ],
     "axiomCount": 6,
-    "lineCount": 94
+    "lineCount": 94,
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #261: Reciprocal Power-of-Two Representations",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "Paul Erdős posed this problem in the 1970s, asking whether every positive integer n can be represented as n/2^n = Σ_{k∈S} k/2^k for a finite set S of distinct positive integers. Thomas Cusick (1989) proved the first positive result: infinitely many n admit such representations. Peter Borwein and Tamás Loring gave an explicit infinite family: for m ≥ 1, the integer n = 2^{m+1} − m − 2 is representable using the consecutive block {n+1,...,n+m}. Szabolcs Tengely, Maciej Ulas, and Jakub Zygadło computationally verified the conjecture for all n ≤ 10000, providing strong evidence for universality. Erdős also asked a deeper question: does some rational number admit continuum-many (2^{ℵ₀}) distinct infinite representations as Σ a_k/2^{a_k}? Both the universality conjecture (all n) and the continuum question remain open.",

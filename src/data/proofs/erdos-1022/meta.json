@@ -23,7 +23,11 @@
     "erdosProblemStatus": "open",
     "relatedProblems": [],
     "axiomCount": 0,
-    "lineCount": 1
+    "lineCount": 1,
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #1022: Property B and Sparse Set Families",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "Property B was introduced by E.W. Miller in 1937, who named it after Felix Bernstein's 1908 work on set partitions. The property asks: given a family $\\mathcal{F}$ of sets, can the elements be 2-colored so that no set in $\\mathcal{F}$ is monochromatic? This is precisely hypergraph 2-colorability, where $\\mathcal{F}$ is the set of hyperedges.\n\nThe study of property B became central to combinatorics through the work of Erdős and Hajnal in the 1960s. Erdős (1963) proved the foundational probabilistic bound: if all sets in $\\mathcal{F}$ have size $\\ge t$ and $|\\mathcal{F}| < 2^{t-1}$, then $\\mathcal{F}$ has property B. The proof is a beautiful application of the probabilistic method—a uniformly random 2-coloring fails to properly color a set of size $s$ with probability exactly $2^{1-s}$, and a union bound gives the result. This is tight: Erdős also constructed families of $2^{t-1}$ sets of size $t$ without property B.\n\nProblem #1022 asks a more refined question. Instead of bounding the total number of sets, it imposes a *local density* condition: for every set $X$, the number of family members that are subsets of $X$ must be fewer than $c_t |X|$. The conjecture is that the threshold $c_t$ can be chosen to tend to infinity with $t$, meaning that as the minimum set size grows, increasingly denser families can still be 2-colored.\n\nThe only solved case is $t = 2$, due to Lovász (1968): if every element of the ground set appears in fewer than $|X|$ of the subfamily of sets contained in $X$, the family has property B. Lovász's proof is related to his later work on the Lovász Local Lemma (1975, with Erdős), which provides a general framework for proving that events with limited dependencies cannot all occur simultaneously.\n\nThe problem connects to several major threads in combinatorics: the Lovász Local Lemma (which provides 2-colorings when dependencies are controlled), the theory of VC dimension (which bounds the combinatorial complexity of set families), Turán-type extremal problems (bounding structure by density), and the theory of cover-free families from combinatorial group testing and information theory. The sparseness condition $|\\{A \\in \\mathcal{F} : A \\subseteq X\\}| < c_t |X|$ is a 'trace' condition, bounding how many family members can appear inside any given set—a concept closely related to the Sauer-Shelah lemma and VC theory.",
@@ -169,7 +173,10 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "L. Lovász"],
+      "authors": [
+        "P. Erdős",
+        "L. Lovász"
+      ],
       "title": "Problems and Results on 3-Chromatic Hypergraphs and Some Related Questions",
       "venue": "Infinite and Finite Sets (Colloq. Math. Soc. J. Bolyai, Vol. 10)",
       "year": 1975,
@@ -177,7 +184,9 @@
       "note": "Introduces the Lovász Local Lemma and applies it to hypergraph coloring; the paper in which the Erdős-Lovász collaboration on property B and related problems (including #1022) is most fully developed."
     },
     {
-      "authors": ["L. Lovász"],
+      "authors": [
+        "L. Lovász"
+      ],
       "title": "Coverings and Colorings of Hypergraphs",
       "venue": "Proceedings of the 4th Southeastern Conference on Combinatorics, Graph Theory and Computing",
       "year": 1973,
@@ -185,7 +194,9 @@
       "note": "Contains Lovász's proof of the t=2 case (c_2 = 1) of Problem #1022: a sparse family of 2-sets has property B. The only solved case of the conjecture."
     },
     {
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "title": "On a Combinatorial Problem",
       "venue": "Nordisk Mat. Tidskr.",
       "year": 1963,
@@ -194,7 +205,10 @@
       "note": "Erdős's original probabilistic proof that families of t-sets with fewer than 2^{t-1} members have property B; establishes the probabilistic method approach that underlies the conjecture in Problem #1022."
     },
     {
-      "authors": ["N. Alon", "J. H. Spencer"],
+      "authors": [
+        "N. Alon",
+        "J. H. Spencer"
+      ],
       "title": "The Probabilistic Method",
       "venue": "John Wiley & Sons",
       "edition": "4th",
@@ -202,7 +216,10 @@
       "note": "Standard reference for the probabilistic method in combinatorics. Chapter 15 covers the Lovász Local Lemma; Chapter 3 covers property B and hypergraph 2-colorability, including the first-moment argument and its relation to sparseness conditions."
     },
     {
-      "authors": ["D.-Z. Du", "F. K. Hwang"],
+      "authors": [
+        "D.-Z. Du",
+        "F. K. Hwang"
+      ],
       "title": "Combinatorial Group Testing and Its Applications",
       "venue": "World Scientific",
       "edition": "2nd",

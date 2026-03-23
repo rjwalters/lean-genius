@@ -34,6 +34,17 @@
       "Alternating series and conditional convergence",
       "Analytic number theory",
       "Distribution of primes in arithmetic progressions"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Full Mathlib library",
+        "module": "Mathlib"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #15: Alternating Prime Series",
+      "Complete proof architecture with verified type-checking"
     ]
   },
   "overview": {

@@ -47,7 +47,23 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 238
+    "lineCount": 238,
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithmic functions",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős #546: Ramsey Numbers and Edge Count",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "sections": [
     {

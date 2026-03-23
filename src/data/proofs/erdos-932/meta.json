@@ -21,7 +21,33 @@
     "erdosUrl": "https://erdosproblems.com/932",
     "erdosProblemStatus": "open",
     "axiomCount": 12,
-    "lineCount": 314
+    "lineCount": 314,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      },
+      {
+        "theorem": "BigOperators",
+        "description": "Summation and product notation",
+        "module": "Mathlib.Algebra.BigOperators"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #932: Smooth Numbers in Prime Gaps",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "This problem connects two fundamental concepts in analytic number theory: the distribution of prime gaps and the density of smooth numbers. Erdős proved that the set of r for which even ONE smooth number exists in the gap (p_r, p_{r+1}) has natural density zero, showing such gaps are exceptionally rare.\n\nThe question asks whether infinitely many prime gaps contain at least TWO numbers that are smooth relative to the gap size. Since the density is zero, proving infinitude requires showing that these rare events occur unboundedly often — a type of argument common in analytic number theory.\n\nThe problem connects to the Dickman function ρ(u), which governs the density of y-smooth numbers up to x when y = x^{1/u}. The smooth number counting function Ψ(x,y) ∼ x·ρ(log x / log y) is well-understood asymptotically, but its behavior in short intervals (like prime gaps) remains subtle.",

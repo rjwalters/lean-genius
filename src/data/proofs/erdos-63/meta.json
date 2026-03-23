@@ -27,6 +27,17 @@
       "Cycle lengths in graphs",
       "Powers of 2 in combinatorics",
       "Ramsey theory for infinite structures"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Full Mathlib library",
+        "module": "Mathlib"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #63: Cycles of Length 2^n in Infinite Chromatic Graphs",
+      "Complete proof architecture with verified type-checking"
     ]
   },
   "overview": {

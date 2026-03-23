@@ -36,7 +36,33 @@
       }
     ],
     "axiomCount": 4,
-    "lineCount": 248
+    "lineCount": 248,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.Basic",
+        "description": "Complex number field",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number field",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #230: Ultraflat Polynomials on the Unit Circle",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "sections": [
     {

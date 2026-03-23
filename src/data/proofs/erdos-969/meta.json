@@ -22,7 +22,38 @@
     "erdosUrl": "https://erdosproblems.com/969",
     "erdosProblemStatus": "open",
     "axiomCount": 9,
-    "lineCount": 251
+    "lineCount": 251,
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      },
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number field",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Filter.Basic",
+        "description": "Filter theory",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Topology.Basic",
+        "description": "Topological spaces",
+        "module": "Mathlib.Topology.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #969: Error Term in Squarefree Integer Counting",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "This problem concerns the distribution of squarefree integers, which are integers not divisible by any perfect square greater than 1. The density of squarefree integers converges to 6/π² ≈ 0.6079, a beautiful fact connected to the Basel problem and ζ(2) = π²/6. The question of how the actual count Q(x) deviates from this asymptotic is intimately tied to some of the deepest problems in analytic number theory, including the Riemann Hypothesis. The problem has attracted work from Evelyn-Linfoot (1931), Walfisz (1963), and Liu (2016), but remains fundamentally open.",

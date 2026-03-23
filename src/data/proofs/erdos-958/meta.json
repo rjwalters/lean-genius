@@ -22,7 +22,23 @@
     "erdosUrl": "https://erdosproblems.com/958",
     "erdosProblemStatus": "solved",
     "axiomCount": 2,
-    "lineCount": 200
+    "lineCount": 200,
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #958: Distance Multiplicities and Point Configurations",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #958 asks whether a special distance multiplicity pattern — exactly n-1 distinct distances with multiplicities {n-1, n-2, ..., 1} — uniquely characterizes equidistant points on a line or circle. Erdős himself conjectured the answer was NO, predicting that other geometric configurations should also produce this pattern.\n\nThe problem remained open for decades until Clemen, Dumitrescu, and Liu resolved it in 2025. They constructed an elegant counterexample: take n-1 equidistant points on a sufficiently short arc of a unit circle and add the center of the circle. This n-point configuration satisfies the special multiplicity pattern but is neither equidistant on a line nor equidistant on a circle.\n\nThe result confirms Erdős's intuition and opens new questions about which geometric properties are actually characterized by distance multiplicity patterns. The arc-plus-center family provides infinitely many counterexamples for all n ≥ 4.",

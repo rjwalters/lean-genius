@@ -28,7 +28,33 @@
       }
     ],
     "axiomCount": 11,
-    "lineCount": 197
+    "lineCount": 197,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number field",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithmic functions",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #841: Minimal Interval for Square Product",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "**Products and Perfect Squares in Short Intervals**\n\nThis problem was posed by Erdős, Graham, and Selfridge. Given n, what is the smallest t such that we can find a subset S of {n+1, ..., n+t} where n·∏S is a perfect square?\n\n**Example**: t_6 = 6 because 6·8·12 = 576 = 24².\n\n**The Key Player**: The largest prime divisor P(n). If p^(2k+1) || n, we need another factor of p to make the exponent even. The trivial bound is t_n ≥ P(n).\n\n**Selfridge's Theorem**: When P(n) > √(2n)+1 (n is 'rough'), we have exactly t_n = P(n). When P(n) ≤ √(2n)+1 (n is 'smooth'), we have t_n ≤ O(√n).\n\n**Recent Progress**: Bui-Pratt-Zaharescu (2024) proved that the distribution of t_n mirrors P(n)'s distribution precisely.",

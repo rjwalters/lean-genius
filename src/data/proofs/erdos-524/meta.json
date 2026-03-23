@@ -35,7 +35,28 @@
       }
     ],
     "axiomCount": 4,
-    "lineCount": 82
+    "lineCount": 82,
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number field",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Filter.Basic",
+        "description": "Filter theory",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős #524: Maximum of Random Sign Polynomials",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "sections": [
     {

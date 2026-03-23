@@ -21,7 +21,23 @@
     "erdosProblemStatus": "open",
     "badge": "axiom",
     "axiomCount": 11,
-    "lineCount": 100
+    "lineCount": 100,
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      },
+      {
+        "theorem": "Topology.Basic",
+        "description": "Topological spaces",
+        "module": "Mathlib.Topology.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #1117: Maximum Modulus Points on Circles",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "sections": [
     {

@@ -20,7 +20,28 @@
     "erdosUrl": "https://erdosproblems.com/201",
     "erdosProblemStatus": "open",
     "axiomCount": 7,
-    "lineCount": 197
+    "lineCount": 197,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Int.Basic",
+        "description": "Integer arithmetic",
+        "module": "Mathlib.Data.Int.Basic"
+      },
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #201: Arithmetic Progressions in Integer Sets",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "Riddell (1969) first investigated the function $G_k(N)$ — the guaranteed size of a $k$-AP-free subset in any $N$-element integer set. The natural comparison with $R_k(N)$ (the maximum AP-free subset of $\\{1, \\ldots, N\\}$, studied by Roth and later Szemerédi) reveals a subtle gap: $\\{1, \\ldots, N\\}$ is not always the worst case for AP avoidance. Komlós, Sulyok, and Szemerédi (1975) proved the fundamental result that $R_k(N) \\asymp G_k(N)$, showing the two functions have the same order of magnitude. Erdős then asked the sharper question: does the ratio $R_3(N)/G_3(N)$ tend to 1? This connects to the broader program of understanding how the structure of the ambient set affects AP density, a theme central to Szemerédi's theorem (1975) and the subsequent work of Gowers, Green–Tao, and Kelley–Meka on quantitative bounds for $R_3(N)$.",

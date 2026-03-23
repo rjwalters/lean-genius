@@ -23,7 +23,11 @@
     "erdosProblemStatus": "open",
     "relatedProblems": [],
     "axiomCount": 0,
-    "lineCount": 1
+    "lineCount": 1,
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #1002: Asymptotic Distribution of Weighted Fractional Sums",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "**Fractional Parts in Number Theory**\n\nThe study of fractional parts $\\{n\\alpha\\}$ for irrational $\\alpha$ is central to Diophantine approximation. Hermann Weyl's equidistribution theorem (1916) established that $\\{\\alpha\\}, \\{2\\alpha\\}, \\{3\\alpha\\}, \\ldots$ is uniformly distributed in $[0,1)$, a foundational result connecting number theory to ergodic theory.\n\n**Gauss and Continued Fractions**: Carl Friedrich Gauss studied the map $T(x) = \\{1/x\\}$ on $(0,1)$, discovering its invariant measure $d\\mu = dx/(\\log 2 \\cdot (1+x))$. The Gauss-Kuzmin theorem (Kuzmin 1928, Lévy 1929) describes the rate at which iterates of $T$ converge to this measure.\n\n**Erdős's Question**: Erdős asked whether $f(\\alpha, n) = \\frac{1}{\\log n}\\sum_{k=1}^{n}(1/2 - \\{\\alpha k\\})$ has an asymptotic distribution function — does the proportion of $\\alpha$ with $f(\\alpha, n) \\le c$ converge as $n \\to \\infty$?\n\n**Kesten's Breakthrough**: Harry Kesten (1960) proved the two-parameter variant $f(\\alpha, \\beta, n) = \\frac{1}{\\log n}\\sum(1/2 - \\{\\beta + \\alpha k\\})$ has a Cauchy limit distribution $g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + 1/2$, using the ergodic properties of the natural extension of the Gauss map. The extra parameter $\\beta$ provides the independence needed for the ergodic argument. Fixing $\\beta = 0$ destroys this independence, and the one-parameter problem remains **OPEN**.",
@@ -170,7 +174,9 @@
   ],
   "references": [
     {
-      "authors": ["H. Kesten"],
+      "authors": [
+        "H. Kesten"
+      ],
       "title": "On a conjecture of Erdős and Szüsz related to uniform distribution mod 1",
       "venue": "Acta Arithmetica",
       "year": 1960,
@@ -179,7 +185,9 @@
       "notes": "Proves the two-parameter variant f(α,β,n) has Cauchy limit distribution using ergodic properties of the natural extension of the Gauss map; the foundational result for Problem #1002"
     },
     {
-      "authors": ["H. Weyl"],
+      "authors": [
+        "H. Weyl"
+      ],
       "title": "Über die Gleichverteilung von Zahlen mod. Eins",
       "venue": "Mathematische Annalen",
       "year": 1916,
@@ -188,7 +196,9 @@
       "notes": "Weyl's equidistribution theorem: {kα} is uniformly distributed mod 1 for irrational α; the foundational result that justifies the log n normalization in f(α,n)"
     },
     {
-      "authors": ["R. Lyons"],
+      "authors": [
+        "R. Lyons"
+      ],
       "title": "Strong laws of large numbers for weakly correlated random variables",
       "venue": "Michigan Mathematical Journal",
       "year": 1988,
@@ -197,14 +207,19 @@
       "notes": "Ergodic and probabilistic framework for sums of weakly dependent sequences, directly relevant to the one-parameter case where the shift average is absent"
     },
     {
-      "authors": ["J. Beck"],
+      "authors": [
+        "J. Beck"
+      ],
       "title": "Probabilistic Diophantine approximation: randomness in lattice point counting",
       "venue": "Springer Monographs in Mathematics",
       "year": 2014,
       "notes": "Comprehensive treatment of distribution and fluctuation questions for fractional-part sums, including Cauchy and non-Cauchy limit laws and connections to continued fractions"
     },
     {
-      "authors": ["P. Liardet", "P. Volný"],
+      "authors": [
+        "P. Liardet",
+        "P. Volný"
+      ],
       "title": "Sums of continuous and differentiable functions in dynamical systems",
       "venue": "Israel Journal of Mathematics",
       "year": 1997,

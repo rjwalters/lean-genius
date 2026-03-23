@@ -20,7 +20,28 @@
     "erdosUrl": "https://erdosproblems.com/544",
     "erdosProblemStatus": "open",
     "axiomCount": 12,
-    "lineCount": 93
+    "lineCount": 93,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #544: Consecutive Ramsey Number Differences",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős and Sós asked whether the consecutive differences $R(3,k+1) - R(3,k)$ tend to infinity, and whether the growth is sublinear in $k$. The asymptotic behaviour of $R(3,k)$ has a rich history: **Erdős** established early bounds using the probabilistic method; **Shearer** (1983) proved $R(3,k) \\leq Ck^2/\\log k$; **Kim** (1995) proved the matching lower bound $R(3,k) \\geq ck^2/\\log k$ via the triangle-free process, a landmark in probabilistic combinatorics. Most recently, **Campos–Griffiths–Morris–Sahasrabudhe** (2023, *Ann. Math.*) sharpened the upper bound constant to within a factor of 4. The average consecutive difference is thus $\\Theta(k/\\log k)$, but the pointwise behaviour of individual differences remains an open problem.",

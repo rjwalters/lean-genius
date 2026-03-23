@@ -22,7 +22,28 @@
     "erdosUrl": "https://erdosproblems.com/1013",
     "erdosProblemStatus": "open",
     "axiomCount": 11,
-    "lineCount": 121
+    "lineCount": 121,
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number field",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithmic functions",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Triangle-Free Chromatic Threshold",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "Jan Mycielski's foundational 1955 paper 'Sur le coloriage des graphes' proved that triangle-free graphs of arbitrarily high chromatic number exist, via his celebrated inductive construction. This raised the quantitative question: how many vertices are needed? Graver and Yackel (1968) gave the first quantitative lower bound $h_3(k) \\gg k^2 \\log k / \\log \\log k$ using probabilistic deletion. The connection to Ramsey theory proved decisive: Shearer's 1983 entropy-based bound on $R(3,k) \\leq (1+o(1))k^2/(2\\log k)$ implies $h_3(k) \\geq (1/2 - o(1))k^2 \\log k$, since triangle-free graphs on $n$ vertices must have large independent sets. The upper bound $h_3(k) \\leq (1+o(1))k^2 \\log k$ comes from explicit algebraic constructions. The exact constant $c$ in $h_3(k) \\sim c \\cdot k^2 \\log k$, known to lie in $[1/2, 1]$, remains one of the central open questions in extremal graph theory. Erdos also asked the weaker question of whether $h_3(k+1)/h_3(k) \\to 1$. The problem is closely related to Problem #1104 (the dual function $f(n)$, the maximum chromatic number of a triangle-free graph on $n$ vertices) and Problem #920 (the $K_r$-free generalization $h_r(k)$).",
@@ -169,7 +190,9 @@
   ],
   "references": [
     {
-      "authors": ["Jan Mycielski"],
+      "authors": [
+        "Jan Mycielski"
+      ],
       "title": "Sur le coloriage des graphes",
       "venue": "Colloquium Mathematicum",
       "year": 1955,
@@ -178,7 +201,9 @@
       "note": "The foundational paper proving that triangle-free graphs of arbitrarily high chromatic number exist via the Mycielski inductive construction. Proves $h_3(k) < \\infty$ for all $k$."
     },
     {
-      "authors": ["James B. Shearer"],
+      "authors": [
+        "James B. Shearer"
+      ],
       "title": "A note on the independence number of triangle-free graphs",
       "venue": "Discrete Mathematics",
       "year": 1983,
@@ -189,7 +214,10 @@
       "note": "Proves $R(3,k) \\leq (1+o(1))k^2/(2\\log k)$ via an entropy argument, establishing the lower bound $h_3(k) \\geq (1/2 - o(1))k^2 \\log k$."
     },
     {
-      "authors": ["John E. Graver", "James Yackel"],
+      "authors": [
+        "John E. Graver",
+        "James Yackel"
+      ],
       "title": "Some graph theoretic results associated with Ramsey's theorem",
       "venue": "Journal of Combinatorial Theory",
       "year": 1968,
@@ -200,7 +228,10 @@
       "note": "First quantitative lower bound on $h_3(k)$: proves $h_3(k) \\gg k^2 \\log k / \\log \\log k$ using probabilistic deletion, the predecessor to the sharper Ramsey-theoretic bound."
     },
     {
-      "authors": ["Noga Alon", "Joel H. Spencer"],
+      "authors": [
+        "Noga Alon",
+        "Joel H. Spencer"
+      ],
       "title": "The Probabilistic Method",
       "venue": "Wiley-Interscience",
       "year": 2016,
@@ -208,7 +239,10 @@
       "note": "The standard reference for the probabilistic method in combinatorics. Chapter 8 covers triangle-free graphs with high chromatic number, including the Mycielski construction, random graph constructions, and the connection to Ramsey numbers relevant to Problem #1013."
     },
     {
-      "authors": ["Zdeněk Dvořák", "Luke Postle"],
+      "authors": [
+        "Zdeněk Dvořák",
+        "Luke Postle"
+      ],
       "title": "Correspondence coloring and its application to list-coloring planar graphs without cycles of lengths 4 to 8",
       "venue": "Journal of Combinatorial Theory, Series B",
       "year": 2018,

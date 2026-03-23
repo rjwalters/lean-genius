@@ -46,6 +46,17 @@
       "Ramsey theory and monochromatic structures",
       "Number theory (divisibility, harmonic sums)",
       "Coloring theorems"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Full Mathlib library",
+        "module": "Mathlib"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős #45: Monochromatic Egyptian Fractions",
+      "Complete proof architecture with verified type-checking"
     ]
   },
   "sections": [

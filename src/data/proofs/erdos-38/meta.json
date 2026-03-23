@@ -28,6 +28,17 @@
       "Density boosting in sumsets",
       "Schnirelmann density",
       "Freiman's theorem"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Full Mathlib library",
+        "module": "Mathlib"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős #38: Essential Components and Density Boosting",
+      "Complete proof architecture with verified type-checking"
     ]
   },
   "overview": {

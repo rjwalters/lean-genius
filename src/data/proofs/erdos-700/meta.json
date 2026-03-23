@@ -20,7 +20,23 @@
     "erdosUrl": "https://erdosproblems.com/700",
     "erdosProblemStatus": "open",
     "axiomCount": 9,
-    "lineCount": 85
+    "lineCount": 85,
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      },
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #700: GCD of n with Binomial Coefficients",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "sections": [
     {

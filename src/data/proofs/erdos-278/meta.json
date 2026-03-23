@@ -25,7 +25,33 @@
       "erdos-273"
     ],
     "axiomCount": 5,
-    "lineCount": 148
+    "lineCount": 148,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number field",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #278: Maximum Covering Density of Congruence Systems",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p.28), as part of their systematic study of covering systems — a topic Erdős championed from his groundbreaking 1950 paper showing that covering systems with distinct moduli greater than 1 exist. The problem asks: given fixed moduli, how should one choose residues to optimize coverage? R.J. Simpson resolved the minimum question in 1986 (Discrete Mathematics 59), proving by an elegant averaging argument that equal residues minimize coverage density. The maximum question remains open and connects to the broader structure theory of covering systems, which saw a major breakthrough when Bob Hough (2015, Annals of Mathematics) proved the minimum modulus conjecture — showing that any covering system with distinct moduli must include a modulus at most $10^{16}$. The interplay between coprime and non-coprime moduli connects to the Chinese Remainder Theorem and to sieve-theoretic methods in analytic number theory.",

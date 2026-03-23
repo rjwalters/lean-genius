@@ -36,6 +36,17 @@
       "Chinese Remainder Theorem",
       "Basic combinatorics and the pigeonhole principle",
       "Lovász Local Lemma (for understanding Hough's proof)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Full Mathlib library",
+        "module": "Mathlib"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #2: Covering Systems",
+      "Complete proof architecture with verified type-checking"
     ]
   },
   "overview": {

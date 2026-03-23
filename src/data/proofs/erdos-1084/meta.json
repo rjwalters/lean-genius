@@ -20,7 +20,23 @@
     "erdosUrl": "https://erdosproblems.com/1084",
     "axiomCount": 13,
     "lineCount": 198,
-    "badge": "axiom"
+    "badge": "axiom",
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number field",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #1084: Unit Distances Among Separated Points",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "sections": [
     {

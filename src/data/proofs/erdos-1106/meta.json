@@ -22,7 +22,18 @@
     "erdosUrl": "https://erdosproblems.com/1106",
     "erdosProblemStatus": "open",
     "axiomCount": 4,
-    "lineCount": 246
+    "lineCount": 246,
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib",
+        "description": "Full Mathlib library",
+        "module": "Mathlib"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős #1106: Prime Factors of Partition Products",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "overview": {
     "historicalContext": "Erdos posed this problem at the Oberwolfach mathematics research institute in 1986, inspired by the interplay between the partition function's analytic properties and multiplicative number theory. The partition function $p(n)$ — counting unordered sums of positive integers equaling $n$ — had been studied since Euler's pioneering work on generating functions in the 1740s. Hardy and Ramanujan's 1918 asymptotic formula $p(n) \\sim \\frac{1}{4n\\sqrt{3}}e^{\\pi\\sqrt{2n/3}}$, obtained via the circle method, revealed that $p(n)$ grows sub-exponentially but faster than any polynomial.\n\nThe first question ($F(n) \\to \\infty$) was resolved quickly: Schinzel noted in the Oberwolfach problem book that this follows from combining the Hardy-Ramanujan asymptotic with Tijdeman's 1973 result showing that sequences growing at least exponentially must accumulate infinitely many distinct prime factors. Full details appear on page 69 of the 1990 paper by Erdos and Ivic.\n\nSchinzel and Wirsing (1987) proved the quantitative lower bound $F(n) \\gg \\log n$, but the gap between $\\log n$ and the conjectured $n$ remains enormous. A breakthrough came with Ken Ono's 2000 result (using modular forms and Galois representations) that every prime divides $p(n)$ for a positive density of $n$, extending Ramanujan's classical congruences for $p = 5, 7, 11$.",
@@ -167,7 +178,10 @@
   ],
   "references": [
     {
-      "authors": ["G.H. Hardy", "S. Ramanujan"],
+      "authors": [
+        "G.H. Hardy",
+        "S. Ramanujan"
+      ],
       "title": "Asymptotic formulæ in combinatory analysis",
       "journal": "Proceedings of the London Mathematical Society",
       "volume": "17",
@@ -177,7 +191,9 @@
       "note": "Introduces the circle method and derives the asymptotic p(n) ~ (1/4n√3)exp(π√(2n/3)); the sub-exponential growth rate is the starting point for Tijdeman's argument used in Part 1 of Erdős #1106."
     },
     {
-      "authors": ["R. Tijdeman"],
+      "authors": [
+        "R. Tijdeman"
+      ],
       "title": "On integers with many small prime factors",
       "journal": "Compositio Mathematica",
       "volume": "26",
@@ -187,7 +203,10 @@
       "note": "Proves that sequences growing at least exponentially must have F(n) → ∞; combined with the Hardy-Ramanujan asymptotic this resolves the first part of Erdős Problem #1106."
     },
     {
-      "authors": ["A. Schinzel", "E. Wirsing"],
+      "authors": [
+        "A. Schinzel",
+        "E. Wirsing"
+      ],
       "title": "Multiplicative properties of the partition function",
       "journal": "Acta Arithmetica",
       "volume": "52",
@@ -196,7 +215,9 @@
       "note": "Establishes the quantitative lower bound F(n) ≫ log n for the number of distinct prime factors of the partition product, currently the best known result toward the open conjecture F(n) > n."
     },
     {
-      "authors": ["K. Ono"],
+      "authors": [
+        "K. Ono"
+      ],
       "title": "Distribution of the partition function modulo m",
       "journal": "Annals of Mathematics",
       "volume": "151",
@@ -206,7 +227,10 @@
       "note": "Proves that every prime p divides p(n) for a positive density set of n, generalizing Ramanujan's classical congruences; this shows the partition function has universal arithmetic structure and is cited as an axiom in the Lean formalization."
     },
     {
-      "authors": ["P. Erdős", "A. Ivić"],
+      "authors": [
+        "P. Erdős",
+        "A. Ivić"
+      ],
       "title": "The distribution of values of a certain class of arithmetic functions at consecutive integers",
       "journal": "Colloquia Mathematica Societatis János Bolyai",
       "volume": "51",

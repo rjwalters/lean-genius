@@ -19,7 +19,28 @@
     "erdosUrl": "https://erdosproblems.com/101",
     "axiomCount": 5,
     "lineCount": 790,
-    "badge": "axiom"
+    "badge": "axiom",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #101: Four-Point Lines from Planar Point Sets",
+      "Complete proof architecture with verified type-checking"
+    ]
   },
   "sections": [
     {

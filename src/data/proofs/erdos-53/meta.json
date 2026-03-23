@@ -26,6 +26,32 @@
       "Additive vs multiplicative structure",
       "Combinatorial number theory",
       "Arithmetic combinatorics"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Int.Basic",
+        "description": "Integer arithmetic",
+        "module": "Mathlib.Data.Int.Basic"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #53: Sums and Products of Distinct Elements",
+      "Complete proof architecture with verified type-checking"
     ]
   },
   "overview": {

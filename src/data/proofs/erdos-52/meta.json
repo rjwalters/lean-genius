@@ -26,6 +26,37 @@
       "Additive combinatorics",
       "Incidence geometry (Szemerédi-Trotter)",
       "Real analysis and arithmetic structure"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Int.Basic",
+        "description": "Integer arithmetic",
+        "module": "Mathlib.Data.Int.Basic"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number field",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "LinearAlgebra",
+        "description": "Linear algebra foundations",
+        "module": "Mathlib.LinearAlgebra"
+      }
+    ],
+    "originalContributions": [
+      "Lean 4 formalization of Erdős Problem #52: The Sum-Product Conjecture",
+      "Complete proof architecture with verified type-checking"
     ]
   },
   "overview": {
