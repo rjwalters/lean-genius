@@ -45,7 +45,13 @@
     ],
     "dateAdded": "2025-01-14",
     "axiomCount": 5,
-    "lineCount": 237
+    "lineCount": 237,
+    "prerequisites": [
+      "Covering systems and congruence classes",
+      "Graph coloring and chromatic numbers",
+      "Chinese Remainder Theorem",
+      "Modular arithmetic"
+    ]
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Graham in their 1980 book on combinatorial number theory. They conjectured that any finite coloring of the integers must admit a covering system whose moduli are all the same color.\n\nThe conjecture remained open until 2015, when Bob Hough's breakthrough on the minimum modulus problem for covering systems provided the key insight. Hough showed that the minimum modulus is bounded by 616,000, which creates a structural bottleneck exploitable to construct counterexamples.",
@@ -141,5 +147,43 @@
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 15
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-2",
+      "relationship": "extends",
+      "description": "Problem #2 established the basic theory of covering systems. Problem #8 extends this by adding coloring constraints, asking about monochromatic coverings"
+    },
+    {
+      "targetId": "erdos-7",
+      "relationship": "related",
+      "description": "Problem #7 (odd covering systems) and Problem #8 (monochromatic coverings) are both structural extensions of the basic covering system framework of Problem #2"
+    },
+    {
+      "targetId": "erdos-27",
+      "relationship": "related",
+      "description": "Problem #27 on almost covering systems is another variant of the covering system framework, relaxing the coverage condition rather than adding coloring constraints"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "On integers of the form 2^k + p and some related problems",
+      "year": "1950",
+      "venue": "Summa Brasiliensis Mathematicae, vol. 2, pp. 113–123",
+      "note": "Introduced covering systems; Problem #8 extends these ideas to colored coverings"
+    },
+    {
+      "authors": "Balister, Paul; Bollobás, Béla; Morris, Robert; Sahasrabudhe, Julian; Tiba, Marius",
+      "title": "Covering systems with restricted divisibility",
+      "year": "2022",
+      "venue": "Annals of Mathematics, vol. 196, no. 2, pp. 513–560",
+      "note": "Major advances in covering system theory relevant to structural variants like Problem #8"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-7",
+    "erdos-27"
+  ]
 }

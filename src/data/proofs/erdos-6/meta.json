@@ -45,7 +45,13 @@
     ],
     "dateAdded": "2025-01-14",
     "axiomCount": 5,
-    "lineCount": 204
+    "lineCount": 204,
+    "prerequisites": [
+      "Prime gaps and the distribution of primes",
+      "Sequences and monotonicity",
+      "Prime number theorem (for context)",
+      "Erdős's work on prime gap problems"
+    ]
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Turán in 1948. Erdős was confident it was true, famously offering substantial money only for a *disproof*. The problem remained open for over 60 years until the revolutionary work on bounded gaps between primes.\n\nThe breakthrough came from Zhang's 2013 proof of bounded gaps (infinitely many prime pairs differ by at most 70 million), followed by Maynard and Tao's improvements. Banks, Freiberg, and Turnage-Butterbaugh applied this machinery to solve Erdős Problem 6 in 2015.",
@@ -126,5 +132,50 @@
     "axiomCount": 5,
     "theoremCount": 10,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes is a basic prerequisite. Problem #6 studies the fine structure of gaps between consecutive primes"
+    },
+    {
+      "targetId": "erdos-15",
+      "relationship": "related",
+      "description": "Problem #15 on alternating prime series also concerns the distribution of primes. Both study how primes are spaced and distributed"
+    },
+    {
+      "targetId": "erdos-9",
+      "relationship": "related",
+      "description": "Problem #9 on integers not of the form p + 2^k + 2^l concerns the interplay between primes and structured sequences, related to the prime gap structure studied in Problem #6"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "The difference of consecutive primes",
+      "year": "1940",
+      "venue": "Duke Mathematical Journal, vol. 6, pp. 438–441",
+      "note": "Foundational study of prime gaps using sieve methods"
+    },
+    {
+      "authors": "Maynard, James",
+      "title": "Small gaps between primes",
+      "year": "2015",
+      "venue": "Annals of Mathematics, vol. 181, no. 1, pp. 383–413",
+      "note": "Breakthrough on bounded prime gaps, establishing that lim inf (p_{n+1} - p_n) ≤ 246"
+    },
+    {
+      "authors": "Zhang, Yitang",
+      "title": "Bounded gaps between primes",
+      "year": "2014",
+      "venue": "Annals of Mathematics, vol. 179, no. 3, pp. 1121–1174",
+      "note": "First proof of bounded gaps between primes, showing infinitely many pairs of primes differ by at most 70 million"
+    }
+  ],
+  "relatedProofs": [
+    "infinitude-primes",
+    "erdos-9",
+    "erdos-15"
+  ]
 }
