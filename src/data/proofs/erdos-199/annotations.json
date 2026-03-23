@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #199: Arithmetic Progressions in Set Complements**\n\n**Question:** If A ⊂ ℝ contains no 3-term arithmetic progression, must ℝ \\ A contain an infinite arithmetic progression?\n\n**Answer:** NO (Disproved)\n\n**Historical Timeline:**\n- 1970s: Erdős posed the question\n- 1975: Baumgartner provided counterexample using axiom of choice\n\n**Key Insight:** The construction uses a Hamel basis for ℝ over ℚ to partition the reals into two sets, neither containing an infinite AP.",
     "mathContext": "This problem connects Ramsey theory (van der Waerden's theorem) with set-theoretic constructions requiring the axiom of choice.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Arithmetic progressions",
       "Ramsey theory",
@@ -28,7 +28,7 @@
     "type": "definition",
     "title": "3-Term Arithmetic Progression",
     "content": "**has3AP:**\n\nA set A contains a 3-term arithmetic progression if there exist a, d ∈ ℝ with d ≠ 0 such that a, a+d, a+2d are all in A.\n\n**Examples:**\n- {1, 2, 3} has a 3-AP: 1, 2, 3 with d = 1\n- {1, 3, 9} has no 3-AP (it's a geometric progression)",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Erdős problems",
       "combinatorics",
@@ -57,7 +57,7 @@
     "type": "definition",
     "title": "Infinite Arithmetic Progression",
     "content": "**infiniteAP:**\n\nThe infinite arithmetic progression {a, a+d, a+2d, a+3d, ...} for d ≠ 0.\n\n**Examples:**\n- infiniteAP 0 1 = {0, 1, 2, 3, ...} = ℕ\n- infiniteAP 1 2 = {1, 3, 5, 7, ...} = odd naturals",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-199-containsinf",
@@ -69,7 +69,7 @@
     "type": "definition",
     "title": "Contains Infinite AP",
     "content": "**containsInfiniteAP:**\n\nA set contains an infinite AP if some infinite arithmetic progression is a subset.\n\n**Note:** This is a much stronger condition than containing arbitrarily long finite APs.",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-199-conjecture",
@@ -82,7 +82,7 @@
     "title": "Erdős's Conjecture",
     "content": "**ErdosConjecture199:**\n\nThe original question formalized: if A is 3-AP-free, must ℝ \\ A contain an infinite AP?\n\n**Intuition:** If you remove a \"sparse\" set (3-AP-free), there should be \"lots of structure\" left (infinite AP). This turns out to be false!",
     "mathContext": "The conjecture seems plausible given van der Waerden's theorem, but infinite APs behave very differently.",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-199-baumgartner",
@@ -95,7 +95,7 @@
     "title": "Baumgartner's Partition (1975)",
     "content": "**baumgartner_partition:**\n\nBaumgartner showed ℝ can be partitioned into two sets A and B, where NEITHER contains an infinite arithmetic progression.\n\n**Construction Idea:**\n1. Take a Hamel basis B for ℝ over ℚ\n2. Partition using the \"parity\" of coefficients in the basis expansion\n3. This prevents infinite APs in either part\n\n**baumgartner_3AP_free:** From the partition, derive a 3-AP-free set whose complement has no infinite AP.",
     "mathContext": "Published in 'Partitioning vector spaces' (J. Combinatorial Theory Ser. A, 1975, pp. 231-233). The Hamel basis existence requires the axiom of choice.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Set partition",
       "Hamel basis",
@@ -112,7 +112,7 @@
     "type": "theorem",
     "title": "Conjecture Disproved",
     "content": "**erdos_199_disproved:**\n\nErdős's conjecture is false.\n\n**Logic:** Baumgartner gives a 3-AP-free set A whose complement has no infinite AP. This directly contradicts the conjecture.",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-199-main",
@@ -124,7 +124,7 @@
     "type": "theorem",
     "title": "Main Result",
     "content": "**erdos_199:**\n\nThe answer to Erdős Problem #199 is NO.\n\nThere exists a set A that is 3-AP-free, yet its complement contains no infinite AP.",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-199-vdw",
@@ -178,6 +178,6 @@
     "type": "theorem",
     "title": "Summary Theorem",
     "content": "**erdos_199_summary:**\n\nCombines all the main results:\n1. Erdős's conjecture is FALSE\n2. A counterexample EXISTS (via Baumgartner)\n\nThe problem is fully resolved.",
-    "significance": "critical"
+    "significance": "key"
   }
 ]

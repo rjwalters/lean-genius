@@ -3,192 +3,372 @@
     "id": "erdos-776-ann-header",
     "proofId": "erdos-776",
     "type": "context",
-    "range": { "startLine": 1, "endLine": 19 },
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
     "title": "Problem Statement and References",
     "content": "Erdős Problem #776 asks: given a multiplicity constraint $r \\geq 2$ (every occurring set size must appear at least $r$ times), how many distinct set sizes can an antichain in $2^{[n]}$ achieve? The answer is $n - 3$ for sufficiently large $n$, down from $n - 2$ when $r = 1$. The threshold $N(r)$ — the smallest $n$ where $n - 3$ is both achievable and optimal — is the open problem.\n\nThe file references Griggs [Gu83] for the $r = 1$ case and the Erdős problems database.",
     "mathContext": "An antichain in $2^{[n]}$ is a family $\\mathcal{F}$ of subsets of $[n] = \\{1, \\ldots, n\\}$ where no set contains another. The multiplicity-$r$ constraint requires $|\\{A \\in \\mathcal{F} : |A| = k\\}| \\geq r$ for every size $k$ that appears.",
-    "significance": "critical",
-    "relatedConcepts": ["antichain", "Boolean lattice", "extremal set theory", "multiplicity constraint"],
-    "prerequisites": ["set-theory", "combinatorics-basics", "partial-orders"]
+    "significance": "key",
+    "relatedConcepts": [
+      "antichain",
+      "Boolean lattice",
+      "extremal set theory",
+      "multiplicity constraint"
+    ],
+    "prerequisites": [
+      "set-theory",
+      "combinatorics-basics",
+      "partial-orders"
+    ]
   },
   {
     "id": "erdos-776-ann-imports",
     "proofId": "erdos-776",
     "type": "concept",
-    "range": { "startLine": 21, "endLine": 27 },
+    "range": {
+      "startLine": 21,
+      "endLine": 27
+    },
     "title": "Imports and Setup",
     "content": "Imports Mathlib modules for finite sets (`Finset.Basic`, `Finset.Powerset`), the order-theoretic antichain definition (`Order.Antichain`), and standard tactics. Note: the formalization defines its own `IsAntichain` predicate rather than using Mathlib's `IsAntichain` from `Order.Antichain`, since the subset-inclusion version is more natural for the combinatorial setting.",
     "mathContext": "The `open Finset` command brings `Finset.card`, `Finset.image`, `Finset.filter`, `Finset.sup` into scope without qualification.",
     "significance": "supporting",
-    "relatedConcepts": ["Mathlib imports", "Finset", "Order.Antichain"],
-    "prerequisites": ["lean4-syntax", "mathlib-modules"]
+    "relatedConcepts": [
+      "Mathlib imports",
+      "Finset",
+      "Order.Antichain"
+    ],
+    "prerequisites": [
+      "lean4-syntax",
+      "mathlib-modules"
+    ]
   },
   {
     "id": "erdos-776-ann-family",
     "proofId": "erdos-776",
     "type": "definition",
-    "range": { "startLine": 30, "endLine": 31 },
+    "range": {
+      "startLine": 30,
+      "endLine": 31
+    },
     "title": "Subset Family",
     "content": "Defines `SubsetFamily n` as `Finset (Finset (Fin n))`, representing a finite collection of subsets of $\\{1, \\ldots, n\\}$. Using `Fin n` ensures the ground set is exactly $[n]$, and the double `Finset` wrapping makes both individual subsets and the family itself finite and decidable. This is the ambient type for all subsequent definitions.",
     "mathContext": "$\\mathcal{F} \\subseteq 2^{[n]}$, represented as a `Finset` of `Finset (Fin n)` values",
     "significance": "supporting",
-    "relatedConcepts": ["Finset", "Fin n", "power set", "Boolean lattice"],
-    "prerequisites": ["Finset type", "Fin n type", "subset notation"]
+    "relatedConcepts": [
+      "Finset",
+      "Fin n",
+      "power set",
+      "Boolean lattice"
+    ],
+    "prerequisites": [
+      "Finset type",
+      "Fin n type",
+      "subset notation"
+    ]
   },
   {
     "id": "erdos-776-ann-antichain",
     "proofId": "erdos-776",
     "type": "definition",
-    "range": { "startLine": 33, "endLine": 35 },
+    "range": {
+      "startLine": 33,
+      "endLine": 35
+    },
     "title": "Antichain of Subsets",
     "content": "Defines `IsAntichain F` as: for all distinct $A, B \\in \\mathcal{F}$, neither $A \\subseteq B$ nor $B \\subseteq A$. This is the inclusion-based antichain property in the Boolean lattice $2^{[n]}$. Sperner's theorem (1928) shows the maximum antichain has size $\\binom{n}{\\lfloor n/2 \\rfloor}$, achieved by taking all sets of size $\\lfloor n/2 \\rfloor$.",
     "mathContext": "$\\text{IsAntichain}(\\mathcal{F}) \\iff \\forall A \\neq B \\in \\mathcal{F},\\, A \\not\\subseteq B$",
-    "significance": "critical",
-    "relatedConcepts": ["Sperner's theorem", "Boolean lattice", "partial order", "Order.Antichain"],
-    "prerequisites": ["subset relation", "Finset membership", "partial orders"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Sperner's theorem",
+      "Boolean lattice",
+      "partial order",
+      "Order.Antichain"
+    ],
+    "prerequisites": [
+      "subset relation",
+      "Finset membership",
+      "partial orders"
+    ]
   },
   {
     "id": "erdos-776-ann-distinct-sizes",
     "proofId": "erdos-776",
     "type": "definition",
-    "range": { "startLine": 37, "endLine": 43 },
+    "range": {
+      "startLine": 37,
+      "endLine": 43
+    },
     "title": "Distinct Sizes and Count",
     "content": "Defines `distinctSizes F` as `F.image Finset.card`, the set of cardinalities appearing in $\\mathcal{F}$, and `numDistinctSizes F` as its cardinality. The image operation automatically deduplicates, so `numDistinctSizes` counts each size exactly once regardless of multiplicity. These are the central quantities: the problem asks to maximize `numDistinctSizes` subject to antichain and multiplicity constraints.",
     "mathContext": "$\\text{distinctSizes}(\\mathcal{F}) = \\{|A| : A \\in \\mathcal{F}\\}$, $d(\\mathcal{F}) = |\\text{distinctSizes}(\\mathcal{F})|$",
     "significance": "key",
-    "relatedConcepts": ["Finset.image", "Finset.card", "set cardinality", "multiset vs set"],
-    "prerequisites": ["Finset.image", "cardinality", "deduplication"]
+    "relatedConcepts": [
+      "Finset.image",
+      "Finset.card",
+      "set cardinality",
+      "multiset vs set"
+    ],
+    "prerequisites": [
+      "Finset.image",
+      "cardinality",
+      "deduplication"
+    ]
   },
   {
     "id": "erdos-776-ann-multiplicity",
     "proofId": "erdos-776",
     "type": "definition",
-    "range": { "startLine": 45, "endLine": 47 },
+    "range": {
+      "startLine": 45,
+      "endLine": 47
+    },
     "title": "Multiplicity Constraint",
     "content": "Defines `HasMultiplicity F r`: every size $s$ appearing in $\\mathcal{F}$ has at least $r$ sets of that size. Formally, for each $s \\in \\text{distinctSizes}(\\mathcal{F})$, the filter $\\{A \\in \\mathcal{F} : |A| = s\\}$ has cardinality $\\geq r$. For $r = 1$ this is vacuous (every occurring size trivially appears at least once). For $r \\geq 2$, this excludes sizes $k$ where $\\binom{n}{k} < r$, particularly the extreme sizes $0$ and $n$.",
     "mathContext": "$\\text{HasMultiplicity}(\\mathcal{F}, r) \\iff \\forall s \\in \\text{distinctSizes}(\\mathcal{F}),\\, |\\{A \\in \\mathcal{F} : |A| = s\\}| \\geq r$",
-    "significance": "critical",
-    "relatedConcepts": ["Finset.filter", "layer cardinality", "binomial coefficient constraint"],
-    "prerequisites": ["Finset.filter", "cardinality comparison", "distinctSizes definition"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.filter",
+      "layer cardinality",
+      "binomial coefficient constraint"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "cardinality comparison",
+      "distinctSizes definition"
+    ]
   },
   {
     "id": "erdos-776-ann-maxsizes",
     "proofId": "erdos-776",
     "type": "definition",
-    "range": { "startLine": 49, "endLine": 53 },
+    "range": {
+      "startLine": 49,
+      "endLine": 53
+    },
     "title": "Maximum Distinct Sizes",
     "content": "Defines `maxDistinctSizes n r` as `Finset.sup` over all families satisfying both `IsAntichain` and `HasMultiplicity F r`, applied to `numDistinctSizes`. This is the extremal quantity: the maximum number of distinct set sizes achievable. The definition uses `Finset.univ.filter` over all possible families, which is computationally intractable but logically clean for stating the extremal problem.",
     "mathContext": "$\\text{maxDistinctSizes}(n, r) = \\max\\{d(\\mathcal{F}) : \\mathcal{F} \\subseteq 2^{[n]},\\, \\text{IsAntichain}(\\mathcal{F}),\\, \\text{HasMultiplicity}(\\mathcal{F}, r)\\}$",
-    "significance": "critical",
-    "relatedConcepts": ["Finset.sup", "Finset.univ", "extremal combinatorics", "optimization"],
-    "prerequisites": ["Finset.sup", "Finset.filter", "IsAntichain", "HasMultiplicity"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sup",
+      "Finset.univ",
+      "extremal combinatorics",
+      "optimization"
+    ],
+    "prerequisites": [
+      "Finset.sup",
+      "Finset.filter",
+      "IsAntichain",
+      "HasMultiplicity"
+    ]
   },
   {
     "id": "erdos-776-ann-r1",
     "proofId": "erdos-776",
     "type": "concept",
-    "range": { "startLine": 57, "endLine": 60 },
+    "range": {
+      "startLine": 57,
+      "endLine": 60
+    },
     "title": "r=1: Maximum is n-2",
     "content": "Axiomatizes `erdos_trotter_r1`: for $n > 3$ and $r = 1$ (vacuous multiplicity), $\\text{maxDistinctSizes}(n, 1) = n - 2$. The key constraint is that sizes $0$ and $n$ cannot both appear: $\\{\\emptyset\\}$ and $\\{[n]\\}$ would violate the antichain property with any other set. Griggs (1983) showed $n - 2$ is achievable by constructing families using layers $1$ through $n - 1$ (excluding one extreme).",
     "mathContext": "$\\text{maxDistinctSizes}(n, 1) = n - 2$ for $n > 3$: sizes $\\{1, 2, \\ldots, n-2\\}$ plus one of $\\{0, n-1\\}$ or similar",
-    "significance": "critical",
-    "relatedConcepts": ["Griggs 1983", "extreme sizes", "antichain constraints at boundaries"],
-    "prerequisites": ["maxDistinctSizes definition", "antichain property for singletons and full set"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Griggs 1983",
+      "extreme sizes",
+      "antichain constraints at boundaries"
+    ],
+    "prerequisites": [
+      "maxDistinctSizes definition",
+      "antichain property for singletons and full set"
+    ]
   },
   {
     "id": "erdos-776-ann-upper",
     "proofId": "erdos-776",
     "type": "concept",
-    "range": { "startLine": 62, "endLine": 65 },
+    "range": {
+      "startLine": 62,
+      "endLine": 65
+    },
     "title": "r>1: Upper Bound n-3",
     "content": "Axiomatizes `erdos_trotter_upper`: for $r > 1$, there exists $N$ such that $\\text{maxDistinctSizes}(n, r) \\leq n - 3$ for all $n \\geq N$. The multiplicity constraint $r \\geq 2$ forces $\\binom{n}{k} \\geq 2$ for each used size $k$, excluding $k = 0$ and $k = n$ (where $\\binom{n}{k} = 1$). Combined with the antichain constraint already losing one size, this loses a third size.",
     "mathContext": "$r > 1 \\implies \\exists N,\\, \\forall n \\geq N:\\, \\text{maxDistinctSizes}(n, r) \\leq n - 3$",
     "significance": "key",
-    "relatedConcepts": ["binomial coefficient at extremes", "layer exclusion", "asymptotic bound"],
-    "prerequisites": ["maxDistinctSizes", "binomial coefficient values at k=0,n"]
+    "relatedConcepts": [
+      "binomial coefficient at extremes",
+      "layer exclusion",
+      "asymptotic bound"
+    ],
+    "prerequisites": [
+      "maxDistinctSizes",
+      "binomial coefficient values at k=0,n"
+    ]
   },
   {
     "id": "erdos-776-ann-achievable",
     "proofId": "erdos-776",
     "type": "concept",
-    "range": { "startLine": 67, "endLine": 70 },
+    "range": {
+      "startLine": 67,
+      "endLine": 70
+    },
     "title": "r>1: Achievability of n-3",
     "content": "Axiomatizes `erdos_trotter_achievable`: for $r > 1$, there exists $N$ such that $\\text{maxDistinctSizes}(n, r) \\geq n - 3$ for all $n \\geq N$. The construction takes $r$ sets from each of the $n - 3$ non-excluded layers, forming an antichain. This requires $n$ large enough that at least $n - 3$ layers have $\\binom{n}{k} \\geq r$ and the antichain property is maintainable.",
     "mathContext": "$r > 1 \\implies \\exists N,\\, \\forall n \\geq N:\\, \\text{maxDistinctSizes}(n, r) \\geq n - 3$",
     "significance": "key",
-    "relatedConcepts": ["constructive lower bound", "layer selection", "antichain construction"],
-    "prerequisites": ["maxDistinctSizes", "binomial coefficient growth", "antichain from distinct layers"]
+    "relatedConcepts": [
+      "constructive lower bound",
+      "layer selection",
+      "antichain construction"
+    ],
+    "prerequisites": [
+      "maxDistinctSizes",
+      "binomial coefficient growth",
+      "antichain from distinct layers"
+    ]
   },
   {
     "id": "erdos-776-ann-exact",
     "proofId": "erdos-776",
     "type": "concept",
-    "range": { "startLine": 72, "endLine": 81 },
+    "range": {
+      "startLine": 72,
+      "endLine": 81
+    },
     "title": "Exact Formula: Proved Theorem",
     "content": "The theorem `erdos_trotter_exact` is *proved* (no sorry): for $r > 1$ and sufficiently large $n$, $\\text{maxDistinctSizes}(n, r) = n - 3$. The proof takes $N = \\max(N_1, N_2)$ from the upper and lower axioms and uses `omega` to close $\\leq$ and $\\geq$ into equality. This is a genuine proof combining two axiomatized directions, demonstrating the sandwich technique in extremal combinatorics.",
     "mathContext": "$\\text{maxDistinctSizes}(n, r) \\leq n - 3$ and $\\geq n - 3$ for $n \\geq \\max(N_1, N_2) \\implies = n - 3$",
-    "significance": "critical",
-    "relatedConcepts": ["sandwich theorem", "omega tactic", "Nat.le_antisymm", "max of thresholds"],
-    "prerequisites": ["erdos_trotter_upper", "erdos_trotter_achievable", "le_of_max_le_left/right"]
+    "significance": "key",
+    "relatedConcepts": [
+      "sandwich theorem",
+      "omega tactic",
+      "Nat.le_antisymm",
+      "max of thresholds"
+    ],
+    "prerequisites": [
+      "erdos_trotter_upper",
+      "erdos_trotter_achievable",
+      "le_of_max_le_left/right"
+    ]
   },
   {
     "id": "erdos-776-ann-threshold",
     "proofId": "erdos-776",
     "type": "concept",
-    "range": { "startLine": 85, "endLine": 92 },
+    "range": {
+      "startLine": 85,
+      "endLine": 92
+    },
     "title": "Threshold Conjecture",
     "content": "Axiomatizes `erdos_776_threshold`: for each $r \\geq 2$, there exists the *smallest* $N(r)$ such that $\\text{maxDistinctSizes}(n, r) = n - 3$ for all $n \\geq N(r)$. The minimality clause ($\\forall M,\\, (\\forall n \\geq M, \\ldots) \\implies N \\leq M$) ensures $N$ is the optimal threshold. Determining $N(r)$ explicitly is the open problem.",
     "mathContext": "$\\forall r \\geq 2,\\, \\exists N(r) \\text{ (smallest)}: \\forall n \\geq N(r),\\, \\text{maxDistinctSizes}(n,r) = n - 3$",
     "significance": "key",
-    "relatedConcepts": ["well-ordering", "optimal threshold", "Ramsey-type threshold", "minimality"],
-    "prerequisites": ["erdos_trotter_exact", "well-ordering of natural numbers"]
+    "relatedConcepts": [
+      "well-ordering",
+      "optimal threshold",
+      "Ramsey-type threshold",
+      "minimality"
+    ],
+    "prerequisites": [
+      "erdos_trotter_exact",
+      "well-ordering of natural numbers"
+    ]
   },
   {
     "id": "erdos-776-ann-sperner",
     "proofId": "erdos-776",
     "type": "concept",
-    "range": { "startLine": 96, "endLine": 99 },
+    "range": {
+      "startLine": 96,
+      "endLine": 99
+    },
     "title": "Sperner's Theorem",
     "content": "Axiomatizes Sperner's theorem (1928): the maximum antichain in $2^{[n]}$ has size $\\binom{n}{\\lfloor n/2 \\rfloor}$. This is the foundational result in extremal set theory. The proof uses the LYM inequality: $\\sum_{k} |\\mathcal{F}_k|/\\binom{n}{k} \\leq 1$, where $\\mathcal{F}_k$ is the family restricted to layer $k$. By convexity, the maximum is achieved when all sets are in the middle layer.",
     "mathContext": "$|\\mathcal{F}| \\leq \\binom{n}{\\lfloor n/2 \\rfloor}$ for any antichain $\\mathcal{F} \\subseteq 2^{[n]}$",
     "significance": "key",
-    "relatedConcepts": ["LYM inequality", "Dilworth's theorem", "Bollobás set-pairs inequality", "Nat.choose"],
-    "prerequisites": ["antichain definition", "binomial coefficients", "middle layer"]
+    "relatedConcepts": [
+      "LYM inequality",
+      "Dilworth's theorem",
+      "Bollobás set-pairs inequality",
+      "Nat.choose"
+    ],
+    "prerequisites": [
+      "antichain definition",
+      "binomial coefficients",
+      "middle layer"
+    ]
   },
   {
     "id": "erdos-776-ann-middle",
     "proofId": "erdos-776",
     "type": "concept",
-    "range": { "startLine": 101, "endLine": 106 },
+    "range": {
+      "startLine": 101,
+      "endLine": 106
+    },
     "title": "Middle Layer Antichain",
     "content": "Axiomatizes `middle_layer_antichain`: taking all sets of size $\\lfloor n/2 \\rfloor$ gives an antichain with 1 distinct size and $\\binom{n}{\\lfloor n/2 \\rfloor}$ sets. This is the extremal family for Sperner's theorem but the *worst* for distinct sizes (only one layer). It shows the tension between antichain size and size diversity: maximizing one minimizes the other.",
     "mathContext": "$\\mathcal{F} = \\binom{[n]}{\\lfloor n/2 \\rfloor}$ gives $|\\mathcal{F}| = \\binom{n}{\\lfloor n/2 \\rfloor}$ but $d(\\mathcal{F}) = 1$",
     "significance": "supporting",
-    "relatedConcepts": ["Sperner family", "single-layer antichain", "size-diversity tradeoff"],
-    "prerequisites": ["antichain property of single layers", "Nat.choose"]
+    "relatedConcepts": [
+      "Sperner family",
+      "single-layer antichain",
+      "size-diversity tradeoff"
+    ],
+    "prerequisites": [
+      "antichain property of single layers",
+      "Nat.choose"
+    ]
   },
   {
     "id": "erdos-776-ann-tradeoff",
     "proofId": "erdos-776",
     "type": "concept",
-    "range": { "startLine": 108, "endLine": 113 },
+    "range": {
+      "startLine": 108,
+      "endLine": 113
+    },
     "title": "Size-Variety Tradeoff",
     "content": "Axiomatizes `size_variety_tradeoff`: if $\\mathcal{F}$ has multiplicity $\\geq r$ and $d$ distinct sizes, then $|\\mathcal{F}| \\geq r \\cdot d$. This is a pigeonhole argument: each of the $d$ sizes contributes at least $r$ sets, and the antichain property ensures these are distinct. Combined with Sperner's bound $|\\mathcal{F}| \\leq \\binom{n}{\\lfloor n/2 \\rfloor}$, this gives $d \\leq \\binom{n}{\\lfloor n/2 \\rfloor}/r$.",
     "mathContext": "$\\text{HasMultiplicity}(\\mathcal{F}, r) \\implies |\\mathcal{F}| \\geq r \\cdot d(\\mathcal{F})$",
     "significance": "key",
-    "relatedConcepts": ["pigeonhole principle", "counting argument", "Sperner bound interaction"],
-    "prerequisites": ["HasMultiplicity definition", "distinctSizes", "counting"]
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "counting argument",
+      "Sperner bound interaction"
+    ],
+    "prerequisites": [
+      "HasMultiplicity definition",
+      "distinctSizes",
+      "counting"
+    ]
   },
   {
     "id": "erdos-776-ann-availability",
     "proofId": "erdos-776",
     "type": "concept",
-    "range": { "startLine": 115, "endLine": 118 },
+    "range": {
+      "startLine": 115,
+      "endLine": 118
+    },
     "title": "Size Availability",
     "content": "Axiomatizes `size_availability`: a layer $k$ can contribute to a multiplicity-$r$ family only if $\\binom{n}{k} \\geq r$. This is the key exclusion mechanism: for $r \\geq 2$, layers $k = 0$ and $k = n$ have $\\binom{n}{k} = 1 < r$ and are immediately excluded. For larger $r$, layers near the extremes also become unavailable, progressively reducing the number of usable sizes.",
     "mathContext": "Layer $k$ is usable for multiplicity $r$ iff $\\binom{n}{k} \\geq r$; extreme layers with $\\binom{n}{k} = 1$ are excluded for $r \\geq 2$",
     "significance": "supporting",
-    "relatedConcepts": ["Nat.choose", "layer availability", "boundary exclusion", "unimodality of binomial coefficients"],
-    "prerequisites": ["binomial coefficients", "HasMultiplicity definition"]
+    "relatedConcepts": [
+      "Nat.choose",
+      "layer availability",
+      "boundary exclusion",
+      "unimodality of binomial coefficients"
+    ],
+    "prerequisites": [
+      "binomial coefficients",
+      "HasMultiplicity definition"
+    ]
   }
 ]

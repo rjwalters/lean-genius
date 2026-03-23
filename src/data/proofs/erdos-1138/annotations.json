@@ -10,7 +10,7 @@
     "title": "Problem Statement and Context",
     "content": "Header documentation for Erdős Problem #1138, stating the conjecture on primes in short intervals near maximal gaps. The problem asks whether the prime counting function obeys its expected asymptotic $\\pi(y + Cd) - \\pi(y) \\sim Cd / \\log y$ when $d$ is the maximal prime gap below $x$ and $y \\in (x/2, x)$. The header notes that even under the Riemann Hypothesis, the conjectured gap size $(\\log x)^2$ is far below the threshold for known short-interval prime number theorems.",
     "mathContext": "The conjecture connects two central quantities: the maximal prime gap $d(x) = \\max_{p_n < x}(p_{n+1} - p_n)$ and the short-interval prime counting function $\\pi(y+h) - \\pi(y)$. By the PNT, we expect $\\pi(y+h) - \\pi(y) \\approx h/\\log y$ for 'reasonable' $h$. If Cramér's conjecture holds ($d(x) \\sim (\\log x)^2$), then the interval length $Cd$ is approximately $C(\\log x)^2$, which is enormously shorter than any interval for which the short-interval PNT is known to hold.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "prime number theorem",
       "short interval prime counting",
@@ -56,7 +56,7 @@
     "title": "Prime Counting Function",
     "content": "Defines $\\pi(n)$ as the number of primes at most $n$, computed by filtering `Finset.range(n+1)` for primes and taking the cardinality. This is noncomputable because `Nat.Prime` uses `Decidable` instances that may not reduce efficiently, though the definition is mathematically transparent.",
     "mathContext": "$\\pi(n) = |\\{p \\le n : p \\text{ is prime}\\}| = (\\texttt{Finset.range}(n+1)).\\texttt{filter}(\\texttt{Nat.Prime}).\\texttt{card}$. The prime counting function is one of the most studied objects in number theory, with the PNT establishing $\\pi(x) \\sim x / \\log x$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "prime number theorem",
       "Chebyshev's estimates",
@@ -125,7 +125,7 @@
     "title": "Maximal Prime Gap",
     "content": "Defines $d(x) = \\sup\\{q - p : p, q \\text{ consecutive primes}, q \\le x\\}$ using `sSup` (the supremum in $\\mathbb{N}$ with its conditionally complete lattice structure). This is noncomputable because computing the supremum requires deciding primality across all pairs.",
     "mathContext": "$d(x) = \\text{sSup}(\\texttt{primeGapBelow}(x))$. Known values include $d(10) = 4$ (gap between 7 and 11), $d(100) = 8$ (gap between 89 and 97), and $d(10^{18}) = 1476$ (discovered computationally). Cramér conjectured $d(x) \\sim (\\log x)^2$; the best proven upper bound is $d(x) \\ll x^{0.525}$ (Baker–Harman–Pintz, 2001).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "supremum in conditionally complete lattice",
       "Cramér's conjecture",
@@ -240,7 +240,7 @@
     "title": "Erdős Problem 1138 (Main Conjecture)",
     "content": "The central conjecture, stated as an axiom: for any constant $C > 1$ and tolerance $\\varepsilon > 0$, there exists $N$ such that for all $x \\ge N$ and all $y$ with $x/2 < y < x$, the number of primes in $(y, y + \\lfloor Cd \\rfloor]$ satisfies $(1 - \\varepsilon) \\cdot Cd/\\log y \\le \\pi(y + \\lfloor Cd \\rfloor) - \\pi(y) \\le (1 + \\varepsilon) \\cdot Cd/\\log y$. The extensive docstring documents the problem's status (OPEN) and why it is out of reach: even under RH, short-interval PNT needs $h > x^{1/2+\\varepsilon}$, while $Cd \\sim C(\\log x)^2$ is far shorter.",
     "mathContext": "The $\\varepsilon$-sandwich formulation avoids division: $f(x) \\sim g(x)$ is equivalent to $(1-\\varepsilon)g(x) \\le f(x) \\le (1+\\varepsilon)g(x)$ for all $\\varepsilon > 0$ eventually. The use of `Nat.floor (C * d)` converts the real-valued interval length to a natural number endpoint. The universality over $y \\in (x/2, x)$ is the strongest form, implying both average and worst-case control.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "short interval prime number theorem",
       "asymptotic equivalence",

@@ -2,145 +2,286 @@
   {
     "id": "imports-setup",
     "proofId": "erdos-28",
-    "range": { "startLine": 20, "endLine": 29 },
+    "range": {
+      "startLine": 20,
+      "endLine": 29
+    },
     "type": "concept",
     "title": "Imports and Setup",
     "content": "Imports Mathlib modules for additive combinatorics (SumConv for Minkowski sums), Finset cardinality, filter convergence (atTop, Tendsto), and real-valued functions (log, sqrt). Opens the Filter and Set namespaces and enables pointwise set operations for the A + A notation.",
     "mathContext": "The pointwise sum $A + A = \\{a + b : a, b \\in A\\}$ is the **Minkowski sum** of $A$ with itself. Filter convergence via `atTop` formalizes limits as $N \\to \\infty$.",
     "significance": "supporting",
-    "relatedConcepts": ["Minkowski sum", "pointwise set operations", "filter convergence"],
-    "prerequisites": ["Mathlib Finset API", "Lean 4 set notation"]
+    "relatedConcepts": [
+      "Minkowski sum",
+      "pointwise set operations",
+      "filter convergence"
+    ],
+    "prerequisites": [
+      "Mathlib Finset API",
+      "Lean 4 set notation"
+    ]
   },
   {
     "id": "rep-function",
     "proofId": "erdos-28",
-    "range": { "startLine": 33, "endLine": 36 },
+    "range": {
+      "startLine": 33,
+      "endLine": 36
+    },
     "type": "definition",
     "title": "Representation Function",
     "content": "Defines $r_A(n)$ as the number of pairs $(a, b)$ with $a \\leq b$, both in $A$, summing to $n$. This ordered-pair convention avoids double-counting and is standard in additive number theory. The function filters the interval $[0, n]$ for elements $a \\in A$ with $n - a \\in A$ and $a \\leq n - a$.",
     "mathContext": "$r_A(n) = |\\{(a,b) \\in A \\times A : a + b = n, \\, a \\leq b\\}|$. Some references use the unordered count $r'_A(n) = |\\{(a,b) : a + b = n\\}|$ which counts each unordered pair twice (except when $a = b = n/2$). The conjecture is equivalent under either convention.",
-    "significance": "critical",
-    "relatedConcepts": ["additive energy", "sumset", "Schnirelmann density", "B_2 sets"],
-    "prerequisites": ["Finset.filter", "set membership", "natural number subtraction"]
+    "significance": "key",
+    "relatedConcepts": [
+      "additive energy",
+      "sumset",
+      "Schnirelmann density",
+      "B_2 sets"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "set membership",
+      "natural number subtraction"
+    ]
   },
   {
     "id": "asymptotic-basis",
     "proofId": "erdos-28",
-    "range": { "startLine": 38, "endLine": 41 },
+    "range": {
+      "startLine": 38,
+      "endLine": 41
+    },
     "type": "definition",
     "title": "Asymptotic Basis of Order 2",
     "content": "A set $A \\subseteq \\mathbb{N}$ is an asymptotic basis of order 2 if its sumset $A + A$ misses only finitely many natural numbers. This is formalized as $(A + A)^c$ being finite. Classical examples include the primes (by Goldbach-type results for large numbers) and perfect squares (every sufficiently large integer is a sum of at most 4 squares by Lagrange, but 2 squares require additional conditions).",
     "mathContext": "$A$ is an **asymptotic basis of order 2** if $|\\mathbb{N} \\setminus (A + A)| < \\infty$. Equivalently, there exists $N_0$ such that for all $n \\geq N_0$, we have $n \\in A + A$. The **Schnirelmann density** of $A + A$ is 1 when $A$ is a basis.",
-    "significance": "critical",
-    "relatedConcepts": ["Schnirelmann density", "Waring's problem", "Goldbach conjecture", "essential component"],
-    "prerequisites": ["Set.Finite", "set complement", "Minkowski sum"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Schnirelmann density",
+      "Waring's problem",
+      "Goldbach conjecture",
+      "essential component"
+    ],
+    "prerequisites": [
+      "Set.Finite",
+      "set complement",
+      "Minkowski sum"
+    ]
   },
   {
     "id": "counting-fn",
     "proofId": "erdos-28",
-    "range": { "startLine": 43, "endLine": 45 },
+    "range": {
+      "startLine": 43,
+      "endLine": 45
+    },
     "type": "definition",
     "title": "Counting Function",
     "content": "The counting function $A(N) = |A \\cap [1, N]|$ measures the density of $A$ up to $N$. For any basis of order 2, a simple pigeonhole argument shows $A(N) \\geq c\\sqrt{N}$ — the number of pairs from $A \\cap [1,N]$ must cover all integers up to $N$. This is the density threshold relevant to the stronger conjecture.",
     "mathContext": "$A(N) = |A \\cap \\{1, 2, \\ldots, N\\}|$. If $A + A \\supseteq \\{1, \\ldots, N\\}$, then $\\binom{A(N)}{2} \\geq N$, giving $A(N) \\gg \\sqrt{N}$. The **density version** of the conjecture replaces the basis condition with $A(N) \\gg \\sqrt{N}$.",
     "significance": "key",
-    "relatedConcepts": ["asymptotic density", "Schnirelmann density", "pigeonhole principle"],
-    "prerequisites": ["Finset.Icc", "Finset.filter", "counting arguments"]
+    "relatedConcepts": [
+      "asymptotic density",
+      "Schnirelmann density",
+      "pigeonhole principle"
+    ],
+    "prerequisites": [
+      "Finset.Icc",
+      "Finset.filter",
+      "counting arguments"
+    ]
   },
   {
     "id": "main-conjecture",
     "proofId": "erdos-28",
-    "range": { "startLine": 49, "endLine": 56 },
+    "range": {
+      "startLine": 49,
+      "endLine": 56
+    },
     "type": "theorem",
     "title": "Erdős–Turán Conjecture (1941)",
     "content": "The central conjecture: if $A$ is an asymptotic basis of order 2, then $\\limsup_{n \\to \\infty} r_A(n) = \\infty$. Formalized as: for every bound $B$, there exists $n$ with $r_A(n) \\geq B$. This is stated as an axiom because the conjecture remains OPEN after 85 years. Erdős offered a $500 bounty — one of his largest prizes, reflecting the problem's depth.",
     "mathContext": "$\\forall B \\in \\mathbb{N}, \\; \\exists n \\in \\mathbb{N}: \\; r_A(n) \\geq B$. Equivalently, $\\limsup_{n \\to \\infty} r_A(n) = \\infty$. The negation — that some basis has $r_A(n) \\leq C$ for all $n$ — would give a remarkable **thin basis** with perfectly controlled representations.",
-    "significance": "critical",
-    "relatedConcepts": ["thin bases", "B_2[g] sets", "Sidon sets", "additive energy"],
-    "prerequisites": ["repFunction", "IsAsymptoticBasis2", "limsup"]
+    "significance": "key",
+    "relatedConcepts": [
+      "thin bases",
+      "B_2[g] sets",
+      "Sidon sets",
+      "additive energy"
+    ],
+    "prerequisites": [
+      "repFunction",
+      "IsAsymptoticBasis2",
+      "limsup"
+    ]
   },
   {
     "id": "strong-form",
     "proofId": "erdos-28",
-    "range": { "startLine": 60, "endLine": 63 },
+    "range": {
+      "startLine": 60,
+      "endLine": 63
+    },
     "type": "theorem",
     "title": "Logarithmic Growth Conjecture",
     "content": "The stronger form predicts $\\limsup r_A(n) / \\log n > 0$: representation counts grow at least logarithmically along some subsequence. This is motivated by probabilistic heuristics — if $A$ has density $\\sim \\sqrt{N}$, then for a 'random' such set, $r_A(n)$ has expectation $\\sim \\log n$. Proving even the weaker form (unboundedness without rate) remains out of reach.",
     "mathContext": "$\\exists c > 0, \\; \\forall N, \\; \\exists n \\geq N: \\; r_A(n) \\geq c \\log n$. Heuristically, if $\\mathbb{P}[a \\in A] \\approx 1/\\sqrt{a}$, then $\\mathbb{E}[r_A(n)] = \\sum_{a \\leq n} \\frac{1}{\\sqrt{a}} \\cdot \\frac{1}{\\sqrt{n-a}} \\approx \\log n$.",
     "significance": "key",
-    "relatedConcepts": ["probabilistic method", "random sets", "logarithmic growth", "second moment method"],
-    "prerequisites": ["repFunction", "IsAsymptoticBasis2", "Real.log"]
+    "relatedConcepts": [
+      "probabilistic method",
+      "random sets",
+      "logarithmic growth",
+      "second moment method"
+    ],
+    "prerequisites": [
+      "repFunction",
+      "IsAsymptoticBasis2",
+      "Real.log"
+    ]
   },
   {
     "id": "density-version",
     "proofId": "erdos-28",
-    "range": { "startLine": 65, "endLine": 70 },
+    "range": {
+      "startLine": 65,
+      "endLine": 70
+    },
     "type": "theorem",
     "title": "Density Version of the Conjecture",
     "content": "Replaces the basis condition with the weaker hypothesis $A(N) \\geq c\\sqrt{N}$ for all large $N$. Since every basis of order 2 satisfies this density bound, this version is strictly stronger. It asks: does sufficient density alone force unbounded representations, without requiring $A + A$ to cover almost all integers?",
     "mathContext": "If $A(N) \\geq c\\sqrt{N}$ for some $c > 0$ and all $N \\geq 1$, then $\\limsup r_A(n) = \\infty$. This generalizes the main conjecture since $\\text{IsAsymptoticBasis2}(A) \\Rightarrow A(N) \\gg \\sqrt{N}$.",
     "significance": "key",
-    "relatedConcepts": ["density conditions", "sumset structure", "inverse sumset theory"],
-    "prerequisites": ["countingFn", "Real.sqrt", "basis_counting_lower"]
+    "relatedConcepts": [
+      "density conditions",
+      "sumset structure",
+      "inverse sumset theory"
+    ],
+    "prerequisites": [
+      "countingFn",
+      "Real.sqrt",
+      "basis_counting_lower"
+    ]
   },
   {
     "id": "basis-counting",
     "proofId": "erdos-28",
-    "range": { "startLine": 74, "endLine": 77 },
+    "range": {
+      "startLine": 74,
+      "endLine": 77
+    },
     "type": "theorem",
     "title": "Basis Counting Lower Bound",
     "content": "A necessary condition: any basis of order 2 must have $A(N) \\geq c\\sqrt{N}$. This follows by counting: the sumset $A + A$ contains $\\sim N$ elements up to $N$, but $|A + A| \\leq \\binom{A(N)+1}{2}$, so $A(N) \\gg \\sqrt{N}$. This bound is essentially tight — Sidon sets achieve $A(N) \\sim \\sqrt{N}$ but are too thin to be bases.",
     "mathContext": "$|A \\cap [1,N]| \\geq c\\sqrt{N}$ for some absolute constant $c > 0$ and all $N \\geq 1$. The upper bound $|A + A| \\leq \\binom{|A|+1}{2}$ gives $N \\leq \\binom{A(N)+1}{2}$, hence $A(N) \\geq \\sqrt{2N} - 1$.",
     "significance": "supporting",
-    "relatedConcepts": ["pigeonhole principle", "Plünnecke–Ruzsa inequality", "sumset size bounds"],
-    "prerequisites": ["countingFn", "IsAsymptoticBasis2", "binomial coefficient bounds"]
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "Plünnecke–Ruzsa inequality",
+      "sumset size bounds"
+    ],
+    "prerequisites": [
+      "countingFn",
+      "IsAsymptoticBasis2",
+      "binomial coefficient bounds"
+    ]
   },
   {
     "id": "sidon-connection",
     "proofId": "erdos-28",
-    "range": { "startLine": 79, "endLine": 84 },
+    "range": {
+      "startLine": 79,
+      "endLine": 84
+    },
     "type": "theorem",
     "title": "Sidon Sets Cannot Be Bases",
     "content": "A Sidon set (or $B_2$ set) has $r_A(n) \\leq 1$ for all $n$: each integer has at most one representation as $a + b$. Such sets satisfy $A(N) \\leq \\sqrt{N} + O(N^{1/4})$ (by the Lindström–Erdős–Turán bound), which is too sparse for a basis. This confirms the conjecture vacuously: the extremal case $r \\leq 1$ is incompatible with being a basis.",
     "mathContext": "If $r_A(n) \\leq 1$ for all $n$, then $A$ is a **Sidon set** ($B_2$ set). Sidon sets satisfy $|A \\cap [1,N]| \\leq \\sqrt{N} + O(N^{1/4})$, but bases require $|A \\cap [1,N]| \\gg \\sqrt{N}$ with a constant that forces density beyond the Sidon threshold.",
     "significance": "key",
-    "relatedConcepts": ["Sidon sets", "B_2 sequences", "Erdős–Turán bound on Sidon sets", "Singer difference sets"],
-    "prerequisites": ["repFunction", "IsAsymptoticBasis2", "Sidon set density bounds"]
+    "relatedConcepts": [
+      "Sidon sets",
+      "B_2 sequences",
+      "Erdős–Turán bound on Sidon sets",
+      "Singer difference sets"
+    ],
+    "prerequisites": [
+      "repFunction",
+      "IsAsymptoticBasis2",
+      "Sidon set density bounds"
+    ]
   },
   {
     "id": "problem-40",
     "proofId": "erdos-28",
-    "range": { "startLine": 88, "endLine": 93 },
+    "range": {
+      "startLine": 88,
+      "endLine": 93
+    },
     "type": "theorem",
     "title": "Connection to Problem #40 (B₂[g] Sets)",
     "content": "Problem #40 asks: if $r_A(n) \\leq g$ for some constant $g$ (i.e., $A$ is a $B_2[g]$ set), can $A$ be a basis of order 2? The Erdős–Turán conjecture (#28) implies the answer is no for every finite $g$. This formalization shows #28 $\\Rightarrow$ #40, connecting two of Erdős's most celebrated problems in additive combinatorics.",
     "mathContext": "A $B_2[g]$ set satisfies $r_A(n) \\leq g$ for all $n$. Problem #28 states $\\limsup r_A(n) = \\infty$ for any basis, which immediately implies no $B_2[g]$ set (with bounded $r$) can be a basis. The converse implication (#40 $\\Rightarrow$ #28) is unknown.",
     "significance": "key",
-    "relatedConcepts": ["B_2[g] sets", "Erdős Problem #40", "Erdős Problem #1145", "additive structure"],
-    "prerequisites": ["repFunction", "IsAsymptoticBasis2", "erdos_turan_conjecture"]
+    "relatedConcepts": [
+      "B_2[g] sets",
+      "Erdős Problem #40",
+      "Erdős Problem #1145",
+      "additive structure"
+    ],
+    "prerequisites": [
+      "repFunction",
+      "IsAsymptoticBasis2",
+      "erdos_turan_conjecture"
+    ]
   },
   {
     "id": "erdos-fuchs",
     "proofId": "erdos-28",
-    "range": { "startLine": 97, "endLine": 103 },
+    "range": {
+      "startLine": 97,
+      "endLine": 103
+    },
     "type": "theorem",
     "title": "Erdős–Fuchs Theorem (1956)",
     "content": "The Erdős–Fuchs theorem shows the cumulative representation count $\\sum_{n \\leq N} r_A(n)$ cannot be approximated by a linear function $cN$ with error $o(N^{1/4} / \\sqrt{\\log N})$. This is a fluctuation result: the partial sums of $r_A(n)$ must oscillate. However, it does NOT imply the Erdős–Turán conjecture — the fluctuations could come from occasional large values with $r_A(n)$ still bounded.",
     "mathContext": "$\\nexists \\, c > 0$ such that $\\sum_{n \\leq N} r_A(n) = cN + o\\left(\\frac{N^{1/4}}{\\sqrt{\\log N}}\\right)$. The exponent $1/4$ is sharp (Montgomery–Vaughan, 1990). This is an **Omega result**: $\\sum r_A(n) - cN = \\Omega(N^{1/4} / \\sqrt{\\log N})$.",
     "significance": "key",
-    "relatedConcepts": ["Erdős–Fuchs theorem", "oscillation theorems", "circle method", "Montgomery–Vaughan improvement"],
-    "prerequisites": ["repFunction", "IsAsymptoticBasis2", "asymptotic notation", "Finset.sum"]
+    "relatedConcepts": [
+      "Erdős–Fuchs theorem",
+      "oscillation theorems",
+      "circle method",
+      "Montgomery–Vaughan improvement"
+    ],
+    "prerequisites": [
+      "repFunction",
+      "IsAsymptoticBasis2",
+      "asymptotic notation",
+      "Finset.sum"
+    ]
   },
   {
     "id": "average-rep",
     "proofId": "erdos-28",
-    "range": { "startLine": 105, "endLine": 111 },
+    "range": {
+      "startLine": 105,
+      "endLine": 111
+    },
     "type": "theorem",
     "title": "Average Representation Unbounded (Halberstam–Roth)",
     "content": "For a basis of order 2, the average representation $\\frac{1}{N}\\sum_{n \\leq N} r_A(n) \\to \\infty$ as $N \\to \\infty$. This follows because $A + A$ covers all large integers, so the sum grows like $N$, but the representation function concentrates differently than a uniform distribution. Crucially, this does NOT prove $\\limsup r_A(n) = \\infty$ — the average could diverge even if individual values are bounded (e.g., if the average is pulled up by a bounded function applied to more and more terms).",
     "mathContext": "$\\frac{1}{N+1} \\sum_{n=0}^{N} r_A(n) \\to \\infty$ as $N \\to \\infty$. More precisely, if $A + A \\supseteq \\{N_0, N_0+1, \\ldots\\}$, then $\\sum_{n \\leq N} r_A(n) \\geq N - N_0$ for $N \\geq N_0$, so the average is at least $\\sim 1$. But actually the sum grows faster because of multiplicities, making the average tend to $\\infty$.",
     "significance": "supporting",
-    "relatedConcepts": ["Cesàro mean", "divergence of averages", "Halberstam–Roth", "additive bases density"],
-    "prerequisites": ["repFunction", "IsAsymptoticBasis2", "Filter.Tendsto", "atTop"]
+    "relatedConcepts": [
+      "Cesàro mean",
+      "divergence of averages",
+      "Halberstam–Roth",
+      "additive bases density"
+    ],
+    "prerequisites": [
+      "repFunction",
+      "IsAsymptoticBasis2",
+      "Filter.Tendsto",
+      "atTop"
+    ]
   }
 ]

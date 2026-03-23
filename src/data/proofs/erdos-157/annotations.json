@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #157**: Infinite Sidon Set as Asymptotic Basis\n\n**Question**: Does there exist an infinite Sidon set which is an asymptotic basis of order 3?\n\n**Answer**: YES (Pilatte, 2023)\n\n**Key Definitions**:\n- **Sidon set** (B₂ sequence): All pairwise sums are distinct\n- **Asymptotic basis of order k**: Every large integer is a sum of at most k elements\n\n**The Tension**: Sidon sets are sparse (≤ √N elements up to N), but bases need density. Order 3 is the sweet spot where these constraints can coexist.",
     "mathContext": "This problem sits at the intersection of additive combinatorics and density arguments. The Sidon condition severely limits growth, while the basis condition demands sufficient density.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "sidon-set",
       "asymptotic-basis",
@@ -28,7 +28,7 @@
     "title": "Sidon Set Definition",
     "content": "**def IsSidon (A : Set ℕ)**: Prop\n  All pairwise sums are distinct: a + b = c + d with a ≤ b, c ≤ d implies (a,b) = (c,d)\n\n**Equivalently**: No sum s has more than one representation as a + b with a ≤ b.\n\n**Example**: {1, 2, 5, 11} is Sidon:\n- Sums: 3, 6, 7, 12, 13, 16 (all distinct)\n\n**Non-example**: {1, 2, 5, 10, 11} is NOT Sidon:\n- 1 + 11 = 2 + 10 = 12 (repeated sum)",
     "mathContext": "Sidon sets (named after Simon Sidon) are also called B₂ sequences. They arise naturally in Fourier analysis on abelian groups.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "b2-sequence",
       "sum-free-structure"
@@ -96,7 +96,7 @@
     "title": "Asymptotic Basis Definition",
     "content": "**def IsAsymptoticBasis (A : Set ℕ) (k : ℕ)**: Prop\n  ∃ N₀, ∀ n ≥ N₀, n ∈ SumsetK A k\n\n**Meaning**: Every sufficiently large integer is a sum of at most k elements of A.\n\n**Classic examples**:\n- ℕ is an asymptotic basis of order 1 (trivially)\n- Squares are an asymptotic basis of order 4 (Lagrange)\n- Primes are an asymptotic basis of order 3 (Vinogradov, for odd numbers)\n\n**Key constraint**: The order k matters greatly for density requirements.",
     "mathContext": "The concept of 'basis' has been central to additive number theory since Waring's problem. The asymptotic version allows finitely many exceptions.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "waring-problem",
       "lagrange-four-squares"
@@ -113,7 +113,7 @@
     "title": "The Erdős Conjecture",
     "content": "**def Erdos157Conjecture**: Prop\n  ∃ A : Set ℕ, A.Infinite ∧ IsSidon A ∧ IsAsymptoticBasis A 3\n\n**In words**: There exists an infinite Sidon set that is also an asymptotic basis of order 3.\n\n**Why order 3?**\n- Order 2 is impossible (Sidon sets too sparse)\n- Order 3 is achievable (Pilatte 2023)\n- This is the minimal order for which it works!",
     "mathContext": "The question asks whether the Sidon sparsity condition and the basis density condition can coexist. Order 3 is the boundary case.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "existence",
       "boundary-case"
@@ -130,7 +130,7 @@
     "title": "Pilatte's Existence Theorem (2023)",
     "content": "**theorem pilatte_existence**: Erdos157Conjecture\n\n**Status**: sorry (existential construction not formalized)\n\n**Pilatte's proof** (2023) uses a probabilistic construction:\n1. Carefully select elements to maintain the Sidon property\n2. Ensure enough density to cover all large integers with 3 terms\n3. Balance the competing constraints through delicate analysis\n\nThe construction is non-explicit - it proves existence without giving a concrete set.",
     "mathContext": "Probabilistic existence proofs are common in combinatorics. They show something exists without constructing it explicitly.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "probabilistic-method",
       "pilatte-2023",

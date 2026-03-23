@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "This header documents **Erdős Problem #208**, which asks about the maximum size of gaps between consecutive squarefree numbers. A squarefree number has no perfect square divisors greater than 1.",
     "mathContext": "The squarefree sequence is 1, 2, 3, 5, 6, 7, 10, 11, 13, ... (skipping 4, 8, 9, 12, ...). The problem asks how fast gaps can grow with the sequence index.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "squarefree numbers",
       "gaps in sequences",
@@ -28,7 +28,7 @@
     "title": "Squarefree Definition",
     "content": "A number n is **squarefree** if it's not divisible by any perfect square greater than 1. Equivalently, in its prime factorization, each prime appears at most once.",
     "mathContext": "In Lean, we use Mathlib's `Squarefree` predicate which characterizes this via the property that only units can be squared and still divide n.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "prime factorization",
       "divisibility",
@@ -64,7 +64,7 @@
     "title": "Question 1: Subpolynomial Gaps",
     "content": "**Erdős's first question**: Is it true that s_{n+1} - sₙ ≪_ε sₙ^ε for any ε > 0? This asks whether gaps are always subpolynomial - smaller than any fixed power of sₙ.",
     "mathContext": "We formalize this using Mathlib's `IsBigO` (=O notation). The condition must hold for all positive ε, making this a strong requirement.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "big-O notation",
       "subpolynomial growth",
@@ -82,7 +82,7 @@
     "title": "Question 2: Precise Bound",
     "content": "**Erdős's second question**: Is s_{n+1} - sₙ ≤ (1 + o(1)) · (π²/6) · log(sₙ)/log(log(sₙ))? This proposes a specific logarithmic bound on maximum gap size.",
     "mathContext": "The constant π²/6 connects to the density of squarefree numbers (which is 6/π²). The log/log-log form appears in many gap problems.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "logarithmic bounds",
       "little-o notation",

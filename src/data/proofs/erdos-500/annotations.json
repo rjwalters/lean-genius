@@ -3,144 +3,267 @@
     "id": "erdos-500-ann-imports",
     "proofId": "erdos-500",
     "type": "concept",
-    "range": { "startLine": 21, "endLine": 24 },
+    "range": {
+      "startLine": 21,
+      "endLine": 24
+    },
     "title": "Imports and Dependencies",
     "content": "Imports $\\texttt{SimpleGraph.Basic}$ (for graph-theoretic context), $\\texttt{Finset.Basic}$ (for hyperedge collections), $\\texttt{Nat.Choose.Basic}$ (for binomial coefficients $\\binom{n}{3}$), and $\\texttt{Tactic}$ for proof automation.",
     "mathContext": "The formalization represents 3-uniform hypergraphs as $\\texttt{Finset}(\\texttt{Finset}(\\texttt{Fin}\\ n))$ and uses $\\texttt{Nat.choose}\\ n\\ 3 = \\binom{n}{3}$ for the total number of triples.",
     "significance": "supporting",
-    "relatedConcepts": ["SimpleGraph", "Finset", "Nat.choose", "Fin"],
-    "prerequisites": ["Lean 4 import system", "Mathlib combinatorics"]
+    "relatedConcepts": [
+      "SimpleGraph",
+      "Finset",
+      "Nat.choose",
+      "Fin"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib combinatorics"
+    ]
   },
   {
     "id": "erdos-500-ann-hypergraph",
     "proofId": "erdos-500",
     "type": "definition",
-    "range": { "startLine": 29, "endLine": 29 },
+    "range": {
+      "startLine": 29,
+      "endLine": 29
+    },
     "title": "3-Uniform Hypergraph",
     "content": "A 3-uniform hypergraph on vertex set $\\texttt{Fin}\\ n$ is a collection of 3-element subsets (edges). Unlike ordinary graphs (2-uniform), hyperedges connect triples of vertices. The type $\\texttt{Hypergraph3}(n) = \\texttt{Finset}(\\texttt{Finset}(\\texttt{Fin}\\ n))$ allows arbitrary edge collections; 3-uniformity is enforced by $\\texttt{IsThreeUniform}$.",
     "mathContext": "$\\texttt{Hypergraph3}(n) = \\{E \\subseteq \\binom{[n]}{3}\\}$. A 3-uniform hypergraph $H = (V, E)$ with $V = [n]$ and $E \\subseteq \\binom{V}{3}$.",
     "significance": "key",
-    "relatedConcepts": ["3-uniform hypergraph", "Finset", "Fin n"],
-    "prerequisites": ["Finset.card", "finite set theory"]
+    "relatedConcepts": [
+      "3-uniform hypergraph",
+      "Finset",
+      "Fin n"
+    ],
+    "prerequisites": [
+      "Finset.card",
+      "finite set theory"
+    ]
   },
   {
     "id": "erdos-500-ann-three-uniform",
     "proofId": "erdos-500",
     "type": "definition",
-    "range": { "startLine": 32, "endLine": 33 },
+    "range": {
+      "startLine": 32,
+      "endLine": 33
+    },
     "title": "3-Uniformity Predicate",
     "content": "The predicate $\\texttt{IsThreeUniform}$ requires every edge $e \\in H$ to have exactly 3 vertices ($e.\\text{card} = 3$). This is the higher-dimensional analogue of requiring all edges in a graph to be pairs.",
     "mathContext": "$\\texttt{IsThreeUniform}(H) \\iff \\forall e \\in H,\\; |e| = 3$.",
     "significance": "supporting",
-    "relatedConcepts": ["uniformity", "edge cardinality", "hypergraph regularity"],
-    "prerequisites": ["Hypergraph3", "Finset.card"]
+    "relatedConcepts": [
+      "uniformity",
+      "edge cardinality",
+      "hypergraph regularity"
+    ],
+    "prerequisites": [
+      "Hypergraph3",
+      "Finset.card"
+    ]
   },
   {
     "id": "erdos-500-ann-k43",
     "proofId": "erdos-500",
     "type": "definition",
-    "range": { "startLine": 37, "endLine": 39 },
+    "range": {
+      "startLine": 37,
+      "endLine": 39
+    },
     "title": "$K_4^{(3)}$ Containment",
     "content": "$K_4^{(3)}$ is the complete 3-uniform hypergraph on 4 vertices, containing all $\\binom{4}{3} = 4$ triples. Containment means there exist 4 vertices $S$ with $|S| = 4$ such that every 3-subset of $S$ is an edge. This is the simplest forbidden subhypergraph whose Turán density is unknown.",
     "mathContext": "$\\texttt{ContainsK4\\_3}(H) \\iff \\exists S \\subseteq V,\\; |S| = 4 \\wedge \\forall T \\in \\binom{S}{3},\\; T \\in E(H)$. Note: $|K_4^{(3)}| = \\binom{4}{3} = 4$ edges.",
-    "significance": "critical",
-    "relatedConcepts": ["complete hypergraph", "forbidden substructure", "Ramsey theory"],
-    "prerequisites": ["Hypergraph3", "Finset.card", "subset containment"]
+    "significance": "key",
+    "relatedConcepts": [
+      "complete hypergraph",
+      "forbidden substructure",
+      "Ramsey theory"
+    ],
+    "prerequisites": [
+      "Hypergraph3",
+      "Finset.card",
+      "subset containment"
+    ]
   },
   {
     "id": "erdos-500-ann-k4free",
     "proofId": "erdos-500",
     "type": "definition",
-    "range": { "startLine": 42, "endLine": 43 },
+    "range": {
+      "startLine": 42,
+      "endLine": 43
+    },
     "title": "$K_4^{(3)}$-Free Hypergraph",
     "content": "A $K_4^{(3)}$-free hypergraph is 3-uniform and contains no 4 vertices spanning all 4 triples. Equivalently, every 4-vertex set misses at least one triple. The extremal problem asks: how many edges can such a hypergraph have?",
     "mathContext": "$\\texttt{IsK4Free}(H) \\iff \\texttt{IsThreeUniform}(H) \\wedge \\neg\\texttt{ContainsK4\\_3}(H)$.",
-    "significance": "critical",
-    "relatedConcepts": ["forbidden subhypergraph", "Turán problem", "extremal hypergraph theory"],
-    "prerequisites": ["IsThreeUniform", "ContainsK4_3"]
+    "significance": "key",
+    "relatedConcepts": [
+      "forbidden subhypergraph",
+      "Turán problem",
+      "extremal hypergraph theory"
+    ],
+    "prerequisites": [
+      "IsThreeUniform",
+      "ContainsK4_3"
+    ]
   },
   {
     "id": "erdos-500-ann-turan-number",
     "proofId": "erdos-500",
     "type": "theorem",
-    "range": { "startLine": 47, "endLine": 47 },
+    "range": {
+      "startLine": 47,
+      "endLine": 47
+    },
     "title": "Turán Number $\\text{ex}_3(n, K_4^{(3)})$",
     "content": "The Turán number $\\text{ex}_3(n, K_4^{(3)})$ is the maximum number of edges in a $K_4^{(3)}$-free 3-uniform hypergraph on $n$ vertices. Axiomatized with achievability (some hypergraph attains it) and optimality (no hypergraph exceeds it).",
     "mathContext": "$\\text{ex}_3(n, K_4^{(3)}) = \\max\\{|E(H)| : H \\text{ is } K_4^{(3)}\\text{-free on } n \\text{ vertices}\\}$.",
-    "significance": "critical",
-    "relatedConcepts": ["Turán number", "extremal function", "Kruskal-Katona theorem"],
-    "prerequisites": ["IsK4Free", "Hypergraph3"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán number",
+      "extremal function",
+      "Kruskal-Katona theorem"
+    ],
+    "prerequisites": [
+      "IsK4Free",
+      "Hypergraph3"
+    ]
   },
   {
     "id": "erdos-500-ann-density",
     "proofId": "erdos-500",
     "type": "theorem",
-    "range": { "startLine": 60, "endLine": 65 },
+    "range": {
+      "startLine": 60,
+      "endLine": 65
+    },
     "title": "Turán Density $\\pi(K_4^{(3)})$",
     "content": "The Turán density $\\pi(K_4^{(3)}) = \\lim_{n \\to \\infty} \\text{ex}_3(n, K_4^{(3)})/\\binom{n}{3}$ exists by the Katona–Nemetz–Simonovits theorem (1964), which guarantees convergence for all hypergraph Turán problems. The axiom formalizes $\\pi$ as a real number with an $\\varepsilon$-$N$ convergence statement.",
     "mathContext": "$\\pi(K_4^{(3)}) = \\lim_{n \\to \\infty} \\frac{\\text{ex}_3(n, K_4^{(3)})}{\\binom{n}{3}}$. Existence: Katona–Nemetz–Simonovits 1964.",
-    "significance": "critical",
-    "relatedConcepts": ["Turán density", "Katona-Nemetz-Simonovits theorem", "asymptotic density"],
-    "prerequisites": ["ex3_K4", "Nat.choose", "limit definition"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán density",
+      "Katona-Nemetz-Simonovits theorem",
+      "asymptotic density"
+    ],
+    "prerequisites": [
+      "ex3_K4",
+      "Nat.choose",
+      "limit definition"
+    ]
   },
   {
     "id": "erdos-500-ann-lower",
     "proofId": "erdos-500",
     "type": "theorem",
-    "range": { "startLine": 72, "endLine": 72 },
+    "range": {
+      "startLine": 72,
+      "endLine": 72
+    },
     "title": "Turán's Lower Bound: $\\pi \\geq 5/9$ (1941)",
     "content": "Turán's elegant construction: partition $n$ vertices into 3 nearly-equal parts $V_1, V_2, V_3$. Include all triples $\\{a, b, c\\}$ that intersect each part in at most 2 vertices (equivalently, not all 3 from one part). This gives $(5/9 + o(1))\\binom{n}{3}$ edges and is $K_4^{(3)}$-free since any 4 vertices spanning all triples would require 2 in the same part.",
     "mathContext": "$\\pi(K_4^{(3)}) \\geq 5/9$. Construction: $E = \\{\\{a,b,c\\} : \\text{not all 3 in same part}\\}$. Edge count: $\\binom{n}{3} - 3\\binom{n/3}{3} = (5/9+o(1))\\binom{n}{3}$.",
-    "significance": "critical",
-    "relatedConcepts": ["Turán construction", "partition construction", "extremal construction"],
-    "prerequisites": ["turanDensityK4_3", "Nat.choose"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán construction",
+      "partition construction",
+      "extremal construction"
+    ],
+    "prerequisites": [
+      "turanDensityK4_3",
+      "Nat.choose"
+    ]
   },
   {
     "id": "erdos-500-ann-razborov",
     "proofId": "erdos-500",
     "type": "theorem",
-    "range": { "startLine": 82, "endLine": 82 },
+    "range": {
+      "startLine": 82,
+      "endLine": 82
+    },
     "title": "Razborov's Upper Bound: $\\pi \\leq 0.5612$ (2010)",
     "content": "Alexander Razborov used his flag algebra method to prove $\\pi(K_4^{(3)}) \\leq 0.5611666\\ldots$, dramatically improving earlier bounds. De Caen (1994) had $\\pi \\leq 1/\\sqrt{2} \\approx 0.707$. Flag algebras encode density inequalities as semidefinite programs, providing rigorous computer-assisted bounds. The gap $5/9 \\approx 0.5556$ to $0.5612$ is small but stubbornly unresolved.",
     "mathContext": "$\\pi(K_4^{(3)}) \\leq 0.5611666\\ldots$ [Razborov 2010]. Previous: $\\leq 1/\\sqrt{2} \\approx 0.707$ [de Caen 1994]. Gap: $0.5556 \\leq \\pi \\leq 0.5612$.",
-    "significance": "critical",
-    "relatedConcepts": ["flag algebras", "semidefinite programming", "Cauchy-Schwarz method"],
-    "prerequisites": ["turanDensityK4_3", "de Caen bound"]
+    "significance": "key",
+    "relatedConcepts": [
+      "flag algebras",
+      "semidefinite programming",
+      "Cauchy-Schwarz method"
+    ],
+    "prerequisites": [
+      "turanDensityK4_3",
+      "de Caen bound"
+    ]
   },
   {
     "id": "erdos-500-ann-conjecture",
     "proofId": "erdos-500",
     "type": "theorem",
-    "range": { "startLine": 89, "endLine": 89 },
+    "range": {
+      "startLine": 89,
+      "endLine": 89
+    },
     "title": "Turán's Conjecture: $\\pi(K_4^{(3)}) = 5/9$",
     "content": "Turán conjectured in 1941 that his 3-partition construction is optimal: $\\pi(K_4^{(3)}) = 5/9$. After 80+ years, this remains one of the most famous and stubborn open problems in combinatorics. Erdős offered \\$500 for its resolution (hence Problem #500). Unlike the graph Turán theorem (solved by Turán himself for $K_r$), the hypergraph case has resisted all approaches.",
     "mathContext": "$\\texttt{turan\\_conjecture} : \\pi(K_4^{(3)}) = 5/9$. Status: OPEN.",
-    "significance": "critical",
-    "relatedConcepts": ["Turán conjecture", "extremal problem", "Erdős prize problems"],
-    "prerequisites": ["turan_lower_bound", "razborov_upper_bound"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán conjecture",
+      "extremal problem",
+      "Erdős prize problems"
+    ],
+    "prerequisites": [
+      "turan_lower_bound",
+      "razborov_upper_bound"
+    ]
   },
   {
     "id": "erdos-500-ann-small",
     "proofId": "erdos-500",
     "type": "theorem",
-    "range": { "startLine": 94, "endLine": 100 },
+    "range": {
+      "startLine": 94,
+      "endLine": 100
+    },
     "title": "Exact Values for Small $n$",
     "content": "Known exact values: $\\text{ex}_3(4, K_4^{(3)}) = 3$ (out of $\\binom{4}{3} = 4$ possible), $\\text{ex}_3(5, K_4^{(3)}) = 7$ (out of 10), $\\text{ex}_3(6, K_4^{(3)}) = 13$ (out of 20). All consistent with Turán's conjecture. Computing $\\text{ex}_3(n)$ for $n \\geq 7$ is computationally challenging.",
     "mathContext": "$\\text{ex}_3(4) = 3$, $\\text{ex}_3(5) = 7$, $\\text{ex}_3(6) = 13$. Ratios: $3/4 = 0.75$, $7/10 = 0.70$, $13/20 = 0.65$, trending toward $5/9 \\approx 0.556$.",
     "significance": "key",
-    "relatedConcepts": ["exact Turán numbers", "computational combinatorics", "integer programming"],
-    "prerequisites": ["ex3_K4", "small case verification"]
+    "relatedConcepts": [
+      "exact Turán numbers",
+      "computational combinatorics",
+      "integer programming"
+    ],
+    "prerequisites": [
+      "ex3_K4",
+      "small case verification"
+    ]
   },
   {
     "id": "erdos-500-ann-gap",
     "proofId": "erdos-500",
     "type": "theorem",
-    "range": { "startLine": 107, "endLine": 107 },
+    "range": {
+      "startLine": 107,
+      "endLine": 107
+    },
     "title": "Current Bounds Summary",
     "content": "The combined bounds $5/9 \\leq \\pi(K_4^{(3)}) \\leq 0.5612$ form the tightest known interval. The gap of $\\approx 0.0056$ has narrowed dramatically since de Caen's 1994 bound of $1/\\sqrt{2} \\approx 0.707$, but closing it entirely remains one of the great challenges of extremal combinatorics.",
     "mathContext": "$5/9 \\leq \\pi(K_4^{(3)}) \\leq 5612/10000$. Gap: $\\approx 0.0056$.",
     "significance": "key",
-    "relatedConcepts": ["bound gap", "flag algebra limits", "SDP relaxation"],
-    "prerequisites": ["turan_lower_bound", "razborov_upper_bound"]
+    "relatedConcepts": [
+      "bound gap",
+      "flag algebra limits",
+      "SDP relaxation"
+    ],
+    "prerequisites": [
+      "turan_lower_bound",
+      "razborov_upper_bound"
+    ]
   }
 ]

@@ -11,8 +11,15 @@
     "content": "The friendship property states that every pair of distinct vertices has exactly one common neighbor. This captures the sociological intuition: any two people have exactly one mutual friend.",
     "mathContext": "$\\text{IsFriendshipGraph}(G) \\Leftrightarrow \\forall u \\neq v,\\, |N(u) \\cap N(v)| = 1$; in Lean: `IsFriendshipGraph G := ∀ u v, u ≠ v → (G.commonNeighbors u v).ncard = 1`. The common neighbor set is always a singleton under this condition.",
     "significance": "key",
-    "prerequisites": ["SimpleGraph", "commonNeighbors"],
-    "relatedConcepts": ["windmill graphs", "strongly regular graphs", "commonNeighborCount"]
+    "prerequisites": [
+      "SimpleGraph",
+      "commonNeighbors"
+    ],
+    "relatedConcepts": [
+      "windmill graphs",
+      "strongly regular graphs",
+      "commonNeighborCount"
+    ]
   },
   {
     "id": "universal-vertex",
@@ -26,8 +33,14 @@
     "content": "A universal vertex, also called a 'politician', is adjacent to every other vertex in the graph. The Friendship Theorem proves that every friendship graph must have such a vertex.",
     "mathContext": "`IsUniversalVertex G c := ∀ v ≠ c, G.Adj c v`; in degree terms: $\\deg(c) = |V| - 1$. The universal vertex is characterized by having maximum possible degree in a simple graph on $|V|$ vertices.",
     "significance": "key",
-    "prerequisites": ["adjacency"],
-    "relatedConcepts": ["complete graph", "star graph", "degree"]
+    "prerequisites": [
+      "adjacency"
+    ],
+    "relatedConcepts": [
+      "complete graph",
+      "star graph",
+      "degree"
+    ]
   },
   {
     "id": "ann-key-lemmas",
@@ -58,7 +71,7 @@
     "title": "The Dichotomy: Universal Vertex or Regular Graph",
     "content": "`friendship_has_universal_or_regular` establishes the key structural dichotomy: a friendship graph either has a universal vertex (done), or it is regular. The proof delegates to `FriendshipTheoremOQ01` which uses the $A^3$ commutativity argument — non-adjacent vertices must have the same degree.\n\n`friendship_regular_implies_universal` then rules out the regular case via spectral analysis: the eigenvalue constraints of a regular friendship graph force the existence of a universal vertex.",
     "mathContext": "The adjacency matrix satisfies $A^2 = J - I + (k-1)A$ where $k$ is the common degree. Eigenvalue analysis: $\\lambda^2 = n - 1 + (k-1)\\lambda$, and the constraint $n = k^2 - k + 1$ combined with integrality forces $k \\leq 2$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "spectral graph theory",
       "adjacency matrix",
@@ -95,8 +108,16 @@
     "content": "A windmill graph (Dutch windmill) $W_n$ consists of $n$ triangles all sharing a common central vertex $c$. The definition requires: (1) $c$ is universal, and (2) non-central vertices are only connected through $c$ — for distinct non-central $u, v$ with $u \\not\\sim v$, their only common neighbor is $c$.",
     "mathContext": "`IsWindmillGraph G := ∃ c, IsUniversalVertex G c ∧ ∀ u v ≠ c, u ≠ v → ¬Adj u v → commonNeighbors u v = {c}`; $W_n$ has $2n+1$ vertices and $3n$ edges; $|V(W_n)| = 2n+1$ must be odd, a fact derivable from the friendship property.",
     "significance": "key",
-    "prerequisites": ["IsUniversalVertex", "commonNeighbors"],
-    "relatedConcepts": ["friendship graphs", "Dutch windmill", "triangles", "characterization"]
+    "prerequisites": [
+      "IsUniversalVertex",
+      "commonNeighbors"
+    ],
+    "relatedConcepts": [
+      "friendship graphs",
+      "Dutch windmill",
+      "triangles",
+      "characterization"
+    ]
   },
   {
     "id": "main-theorem",
@@ -110,8 +131,15 @@
     "content": "The main result: every finite simple graph satisfying the friendship property has a universal vertex. This means someone must be friends with everyone.",
     "mathContext": "`friendship_theorem`: `IsFriendshipGraph G → Fintype.card V ≥ 3 → ∃ c, IsUniversalVertex G c`; proved via the spectral sandwich: either all vertices are regular (proved impossible for $|V| \\geq 3$ unless universal vertex exists) or one vertex already has degree $|V|-1$.",
     "significance": "key",
-    "prerequisites": ["friendship property", "graph theory"],
-    "relatedConcepts": ["spectral graph theory", "windmill graphs", "friendship_graph_is_windmill"]
+    "prerequisites": [
+      "friendship property",
+      "graph theory"
+    ],
+    "relatedConcepts": [
+      "spectral graph theory",
+      "windmill graphs",
+      "friendship_graph_is_windmill"
+    ]
   },
   {
     "id": "windmill-example",
@@ -125,7 +153,15 @@
     "content": "The windmill graph W₂ consists of two triangles sharing a common vertex (vertex 0). This is the simplest non-trivial friendship graph with 5 vertices.",
     "mathContext": "`windmill2 : SimpleGraph (Fin 5)` with vertex 0 as the universal vertex; adjacency defined by: 0∼1, 0∼2, 0∼3, 0∼4, 1∼2, 3∼4. Lemmas `windmill2_has_universal` and `windmill2_is_friendship` verify the friendship property holds.",
     "significance": "supporting",
-    "prerequisites": ["SimpleGraph", "IsUniversalVertex"],
-    "relatedConcepts": ["friendship graphs", "Dutch windmill", "W₂", "verification"]
+    "prerequisites": [
+      "SimpleGraph",
+      "IsUniversalVertex"
+    ],
+    "relatedConcepts": [
+      "friendship graphs",
+      "Dutch windmill",
+      "W₂",
+      "verification"
+    ]
   }
 ]

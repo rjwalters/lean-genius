@@ -35,7 +35,7 @@
     "content": "Dirichlet's 1837 proof marks the birth of analytic number theory - using complex analysis to study prime numbers.\n\nBefore Dirichlet, Euclid had proved there are infinitely many primes, but mathematicians struggled to prove anything about their distribution. Dirichlet showed that primes are equidistributed among arithmetic progressions, a far more refined statement.\n\nTo prove this, Dirichlet invented entirely new mathematics: Dirichlet characters and L-functions. These tools would later be essential for the Prime Number Theorem (1896) and remain central to modern number theory.",
     "summary": "Historical overview of Dirichlet's 1837 breakthrough and its role as the founding result of analytic number theory.",
     "mathContext": "The L-function $L(s, \\chi) = \\sum \\chi(n)/n^s$ generalizes the Riemann zeta function $\\zeta(s)$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "analytic number theory",
       "Dirichlet L-functions",
@@ -59,7 +59,7 @@
     "content": "**Mathlib's primary statement:** For any positive q and unit a in ZMod q, there are infinitely many primes p such that (p : ZMod q) = a.\n\nThe condition 'a is a unit' means gcd(a, q) = 1, which is necessary: if gcd(a, q) = d > 1, then all terms a + kq are divisible by d, so at most one can be prime (namely d itself, if a = d).\n\nThis formulation uses ZMod, Lean's type for integers modulo q, which provides a clean algebraic framework.",
     "summary": "The primary ZMod formulation of Dirichlet's theorem: infinitely many primes in each coprime residue class.",
     "mathContext": "The unit group $(\\mathbb{Z}/q\\mathbb{Z})^*$ has order $\\phi(q)$, and $a$ is a unit iff $\\gcd(a, q) = 1$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "ZMod type in Lean/Mathlib",
       "unit group of modular integers",
@@ -108,7 +108,7 @@
     "content": "**Dirichlet characters** are completely multiplicative functions chi: Z -> C that are periodic with period q and vanish on integers not coprime to q.\n\nFormally, chi is a group homomorphism from (Z/qZ)* to C*, extended by zero. For q prime, there are exactly q-1 characters; for general q, there are phi(q) characters.\n\n**Key property (orthogonality):** Summing over all characters 'picks out' a specific residue class. This allows isolating primes p = a (mod q) in the analysis.",
     "summary": "Dirichlet characters as group homomorphisms from (Z/qZ)* to C* with orthogonality relations.",
     "mathContext": "$\\sum_{\\chi \\bmod q} \\chi(n) = \\begin{cases} \\phi(q) & \\text{if } n \\equiv 1 \\pmod q \\\\ 0 & \\text{otherwise} \\end{cases}$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Dirichlet characters",
       "group homomorphisms (Z/qZ)* to C*",
@@ -133,7 +133,7 @@
     "content": "**Dirichlet L-function** associated to a character chi:\n$$L(s, \\chi) = \\sum_{n=1}^{\\infty} \\frac{\\chi(n)}{n^s}$$\n\nFor chi = 1 (the principal character), this essentially gives the Riemann zeta function. For other characters, L(s, chi) extends to an entire function on C.\n\n**Euler product:** $L(s, \\chi) = \\prod_p (1 - \\chi(p)/p^s)^{-1}$\n\nThis product over primes connects L-functions to prime distribution.",
     "summary": "Dirichlet L-functions as infinite series with Euler product representation connecting to prime distribution.",
     "mathContext": "The Euler product shows L-functions encode information about primes. Taking logarithmic derivatives gives sums over prime powers.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Dirichlet L-functions",
       "Riemann zeta function (principal character case)",
@@ -158,7 +158,7 @@
     "content": "**The heart of Dirichlet's proof:** For a non-trivial (non-principal) Dirichlet character chi, we have L(1, chi) != 0.\n\nThis is easy for complex characters (take absolute values) but subtle for real characters. Dirichlet needed to show that L(s, chi) does not have a zero at s = 1, which requires careful analysis of the class number formula.\n\nMathlib proves this in `DirichletCharacter.LFunction_apply_one_ne_zero`.",
     "summary": "The crucial non-vanishing theorem: L(1, chi) != 0 for non-principal Dirichlet characters.",
     "mathContext": "If $L(1, \\chi) = 0$ for some $\\chi$, then the orthogonality sum would be finite, contradicting the infinitude of primes $\\equiv a \\pmod{q}$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "L-function non-vanishing",
       "real vs complex Dirichlet characters",

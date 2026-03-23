@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "This header documents **Erdős Problem #172**, a beautiful question at the intersection of Ramsey theory and arithmetic. The problem asks whether the additive and multiplicative structures of ℕ can be simultaneously exploited to find monochromatic configurations.",
     "mathContext": "First asked by Hindman, this combines partition regularity (Ramsey theory) with the arithmetic structure of natural numbers. The question is whether colorings can always be defeated by both sums AND products simultaneously.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Ramsey theory",
       "partition regularity",
@@ -46,7 +46,7 @@
     "title": "Sum-Product Monochromatic",
     "content": "A set A is **sum-product monochromatic** if for every nonempty subset S ⊆ A, both the sum Σ S and product Π S have the same color. This is a very strong condition - not just pairwise sums/products, but ALL subset sums and products.",
     "mathContext": "The definition uses Finset.sum and Finset.prod with the identity function. For S = {a, b}, this requires c(a+b) = c(a·b) = c₀.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "monochromatic sets",
       "subset sums",
@@ -64,7 +64,7 @@
     "title": "The Main Conjecture",
     "content": "**Erdős Problem #172** (OPEN): For any k-coloring and any target size m, there exists a set A with |A| ≥ m that is sum-product monochromatic. In other words, arbitrarily large such sets exist regardless of the coloring.",
     "mathContext": "Formally: ∀ k ≥ 1, ∀ c : ℕ → Fin k, ∀ m, ∃ A with |A| ≥ m and ∃ c₀ such that all subset sums and products of A have color c₀.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open problem",
       "Ramsey theory",
@@ -82,7 +82,7 @@
     "title": "Moreira (2017)",
     "content": "**Joel Moreira's breakthrough**: In any finite coloring of ℕ, there exist x, y such that {x, x+y, xy} are all the same color. This was the first non-trivial case (|A| = 2) of the conjecture.",
     "mathContext": "Published in Annals of Mathematics, this resolved a long-standing question. The proof uses ergodic theory and the structure of ultrafilters on ℕ.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "ergodic theory",
       "partial progress",

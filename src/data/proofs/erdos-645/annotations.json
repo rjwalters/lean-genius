@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdos Problem #645** asks: If ℕ is 2-colored, must there exist a monochromatic 3-term arithmetic progression x, x+d, x+2d such that d > x?\n\n**Status**: SOLVED (Yes)\n\nThis is a strengthening of van der Waerden's theorem. Van der Waerden guarantees monochromatic APs of any length, but this asks for a structural constraint: the common difference must exceed the first term.",
     "mathContext": "The problem lies in Ramsey theory, asking what arithmetic structures must appear in any partition of the natural numbers.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "van der Waerden's theorem",
       "arithmetic progressions",
@@ -83,7 +83,7 @@
     "title": "The Erdős Condition: d > x",
     "content": "**erdosCondition(x, d)**: 0 < x ∧ x < d\n\nThis is the key constraint that strengthens van der Waerden's theorem:\n- x > 0: The first term is positive\n- d > x: The common difference exceeds the first term\n\n**Satisfying examples**:\n- (1, 3, 5): x = 1, d = 2, so d > x ✓\n- (2, 7, 12): x = 2, d = 5, so d > x ✓\n\n**Non-satisfying examples**:\n- (3, 5, 7): x = 3, d = 2, so d < x ✗\n- (5, 7, 9): x = 5, d = 2, so d < x ✗",
     "mathContext": "The constraint d > x forces the progression to 'jump' by more than its starting point. This is a nontrivial structural requirement beyond just having a monochromatic AP.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "structural constraint",
       "large difference",
@@ -101,7 +101,7 @@
     "title": "The Main Statement",
     "content": "**erdos_645_statement**: For any 2-coloring c : ℕ → Bool, there exist x, d with:\n- erdosCondition(x, d) (i.e., 0 < x < d)\n- isMonochromatic'(c, x, d) (i.e., x, x+d, x+2d are all the same color)\n\n**erdos_645_explicit** gives an equivalent formulation that unfolds all definitions:\n∀ c, ∃ x d, 0 < x ∧ x < d ∧ ∃ C, c(x) = C ∧ c(x+d) = C ∧ c(x+2d) = C\n\nThe theorem **erdos_645_equiv** proves these are logically equivalent.",
     "mathContext": "This is the precise formalization of Erdős's question. The answer being YES means no 2-coloring can avoid such progressions.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "universal quantifier",
       "existential quantifier",
@@ -119,7 +119,7 @@
     "title": "Main Theorem (Axiom)",
     "content": "**erdos_645 : erdos_645_statement**\n\nThis axiom asserts that Erdős Problem #645 is true. The proof uses Ramsey-type combinatorial arguments involving careful case analysis and the pigeonhole principle.\n\nThe statement is known to be true in the mathematical literature, proven by combinatorial methods.",
     "mathContext": "We axiomatize this result rather than proving it from first principles, as the full proof requires substantial combinatorial machinery not yet in Mathlib.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "axiomatization",
       "combinatorial proof",

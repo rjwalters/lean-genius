@@ -28,7 +28,7 @@
     "title": "Additive Complement of Squares",
     "content": "A set A ⊆ ℕ is an **additive complement of the squares** if every natural number k can be written as k = a + n² for some a ∈ A and n ≥ 0. Such sets 'fill in the gaps' left by squares.",
     "mathContext": "Formally: `∀ k : ℕ, ∃ n a : ℕ, a ∈ A ∧ k = a + n^2`. The original problem says 'every large integer' but this is equivalent since finitely many exceptions can be handled by adding finitely many elements.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "additive combinatorics",
       "squares",
@@ -100,7 +100,7 @@
     "title": "Best Known Lower Bound: 4/π",
     "content": "The **best known lower bound** is liminf ≥ 4/π ≈ 1.273, proved independently by Cilleruelo (1993), Habsieger (1995), and Balasubramanian-Ramana (2001).",
     "mathContext": "The constant 4/π arises from Fourier analysis on ℤ/nℤ. The proof uses properties of the Jacobi theta function and the distribution of quadratic residues. The appearance of π suggests deep analytic structure.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Fourier analysis",
       "quadratic residues",
@@ -136,7 +136,7 @@
     "title": "Van Doorn's Upper Bound",
     "content": "**Van Doorn constructed** an additive complement A with limsup ≤ 2φ^(5/2) ≈ 6.66. This is the best known upper bound - there EXISTS a set achieving this density.",
     "mathContext": "The construction uses a greedy algorithm with Fibonacci-like patterns. The constant 2φ^(5/2) = 2·(1.618...)^2.5 ≈ 6.66 arises from the optimal balance between coverage and density.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "upper bound",
       "construction",
@@ -154,7 +154,7 @@
     "title": "Open Question: Minimum Limsup",
     "content": "**What is the exact minimum** value of limsup |A ∩ {1,...,N}|/√N over all additive complements A? We only know: it's between 1 (from liminf bounds) and 2φ^(5/2) ≈ 6.66 (Van Doorn).",
     "mathContext": "We define `minLimsup` as the set of achievable limsup values. This is the 'harder' direction of Problem 33 - finding the infimum of this set remains open.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open problem",
       "optimization",

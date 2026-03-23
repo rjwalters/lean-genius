@@ -10,7 +10,7 @@
     "title": "Problem Statement: Primes of the form n − 2^k",
     "content": "Header documentation establishing the open problem and surveying known results.",
     "mathContext": "# Erdős Problem #1142 — Primes of the form $n - 2^k$\n\n**Question**: Are there infinitely many $n$ such that $n - 2^k$ is prime for every $2^k$ with $1 < 2^k < n$?\n\n## Known Values\n\nThe only known solutions are $n \\in \\{4, 7, 15, 21, 45, 75, 105\\}$ (OEIS A039669). As $n$ grows, the number of primality conditions increases logarithmically: for $n = 105$, six differences must all be prime simultaneously.\n\n## Computational Searches\n\nMientka and Weitzenkamp (1969) verified exhaustively that no other solutions exist up to $2^{44} \\approx 1.76 \\times 10^{13}$. The enormous gap between 105 and the search bound strongly suggests finiteness.\n\n## The Stronger Conjecture\n\nErdős conjectured that the number of $k$ for which $n - 2^k$ is prime is $o(\\log n)$. Since the property requires ALL $\\lfloor \\log_2 n \\rfloor$ differences to be prime, the $o(\\log n)$ bound would imply eventual impossibility.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "OEIS A039669",
       "additive number theory",
@@ -34,7 +34,7 @@
     "title": "Core Definitions: powersOfTwoBetween and SatisfiesErdos1142",
     "content": "Defines the central predicate via finite set filtering and universal primality.",
     "mathContext": "Three interrelated definitions capture the problem:\n\n1. `powersOfTwoBetween n` = $\\{m \\in \\mathbb{N} : 2 \\leq m < n \\text{ and } m \\text{ is a power of 2}\\} = \\{2, 4, 8, \\ldots, 2^{\\lfloor \\log_2(n-1) \\rfloor}\\}$\n\n2. `SatisfiesErdos1142 n` = the set is nonempty AND $\\forall m \\in \\text{powersOfTwoBetween}(n),\\; (n - m)$ is prime\n\n3. `satisfiesErdos1142Bool n` = decidable Boolean version using `Finset.all`\n\nThe nonemptiness requirement ensures $n \\geq 4$ (since $2^1 = 2$ is the smallest qualifying power). The `Decidable` instance enables `native_decide` verification.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Finset.filter",
       "Nat.isPowerOfTwo",
@@ -58,7 +58,7 @@
     "title": "Verification of All Seven Known Solutions",
     "content": "Computationally verifies each element of OEIS A039669 satisfies the property.",
     "mathContext": "Each theorem is proved by `native_decide`, which reduces the proposition to a Boolean computation executed by the Lean kernel:\n\n| $n$ | Powers of 2 in $(1,n)$ | Differences | All prime? |\n|-----|----------------------|-------------|------------|\n| 4 | $\\{2\\}$ | $\\{2\\}$ | Yes |\n| 7 | $\\{2, 4\\}$ | $\\{5, 3\\}$ | Yes |\n| 15 | $\\{2, 4, 8\\}$ | $\\{13, 11, 7\\}$ | Yes |\n| 21 | $\\{2, 4, 8, 16\\}$ | $\\{19, 17, 13, 5\\}$ | Yes |\n| 45 | $\\{2, 4, 8, 16, 32\\}$ | $\\{43, 41, 37, 29, 13\\}$ | Yes |\n| 75 | $\\{2, 4, 8, 16, 32, 64\\}$ | $\\{73, 71, 67, 59, 43, 11\\}$ | Yes |\n| 105 | $\\{2, 4, 8, 16, 32, 64\\}$ | $\\{103, 101, 97, 89, 73, 41\\}$ | Yes |\n\nNote that $n = 4$ is the only even solution. The largest, $n = 105 = 3 \\times 5 \\times 7$, produces six simultaneous primes.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "OEIS A039669",
       "kernel-verified computation",
@@ -147,7 +147,7 @@
     "title": "The Open Conjecture: Infinitely Many Solutions?",
     "content": "States the main open problem as a Lean proposition.",
     "mathContext": "`erdos_1142_conjecture` asserts:\n$$\\{n \\in \\mathbb{N} : \\text{SatisfiesErdos1142}(n)\\} \\text{ is infinite}$$\n\nDespite the problem title asking 'are there infinitely many', the evidence strongly suggests NO — the set is likely finite, with $\\{4, 7, 15, 21, 45, 75, 105\\}$ being the complete list. The gap between 105 and the search bound $2^{44}$ spans 13 orders of magnitude with no new solutions found.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Set.Infinite",
       "open problems in number theory",
@@ -169,7 +169,7 @@
     "title": "Stronger Conjecture: o(log n) Prime Differences",
     "content": "Formalizes Erdős's stronger quantitative conjecture about prime difference density.",
     "mathContext": "`erdos_1142_stronger_conjecture` states: for every $\\varepsilon > 0$, for sufficiently large $n$,\n$$|\\{k \\geq 1 : 2^k < n \\text{ and } n - 2^k \\text{ is prime}\\}| \\leq \\varepsilon \\cdot \\log_2 n$$\n\nThis is the $o(\\log n)$ conjecture: the fraction of powers of two yielding prime differences tends to zero. This is a quantitative refinement — instead of asking whether ALL differences can be prime, it asks about the proportion. The formalization uses real-valued comparison, requiring coercion from $\\mathbb{N}$ to $\\mathbb{R}$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "little-o notation",
       "prime density",
@@ -216,7 +216,7 @@
     "title": "Stronger Conjecture Implies Eventual Non-Existence",
     "content": "If the o(log n) conjecture holds, then only finitely many n satisfy the full property.",
     "mathContext": "The theorem `stronger_implies_eventually_not_all_prime` formalizes:\n$$\\text{erdos\\_1142\\_stronger\\_conjecture} \\implies \\exists N,\\, \\forall n \\geq N,\\, \\neg \\text{SatisfiesErdos1142}(n)$$\n\n**Proof idea**: Apply the stronger conjecture with $\\varepsilon = 1$. Then for large $n$, the number of prime differences is $\\leq \\log_2 n$. But `SatisfiesErdos1142` requires ALL $\\lfloor \\log_2 n \\rfloor$ differences to be prime. For $\\varepsilon < 1$ and $n$ sufficiently large, this is impossible. Hence only finitely many solutions exist.\n\nThis establishes that the stronger conjecture (about density of prime differences) implies a negative answer to the infinitude question.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "logical implication",
       "asymptotic analysis",

@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #135**: If any 4 points from A ⊂ ℝ² determine at least 5 distinct distances, must A determine ≫ n² distances?\n\n**Status**: DISPROVED ($250 prize)\n**Solver**: Terence Tao (2024)\n\n**Answer**: NO! Tao constructed sets with O(n²/√(log n)) distances while maintaining the five-distance property.\n\nThis was one of several Erdős problems Tao solved in 2024-2025.",
     "mathContext": "Four points have 6 pairwise distances. Requiring ≥ 5 distinct forbids highly symmetric configurations like parallelograms.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "distinct-distances",
       "four-points",
@@ -46,7 +46,7 @@
     "title": "Distinct Distances",
     "content": "**distinctDistances A** = {sqDist(p,q) : p,q ∈ A, p ≠ q}\n\n**distanceCount A** = |distinctDistances A|\n\nThis counts how many different pairwise distances appear in the point set.",
     "mathContext": "The famous Erdős distinct distances conjecture asks: what's the minimum distanceCount for n points? Guth-Katz (2015) proved Ω(n/√(log n)).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "distinct-distances",
       "erdos-conjecture",
@@ -64,7 +64,7 @@
     "title": "The Five-Distance Property",
     "content": "**fourPointDistances p₁ p₂ p₃ p₄** = the set of 6 pairwise distances\n\n**HasFiveDistanceProperty A**: For any 4 distinct points in A, at least 5 of the 6 pairwise distances are distinct.\n\nThis forbids highly symmetric 4-point configurations:\n- Parallelograms have only 2-3 distinct distances\n- Squares have 2 (sides and diagonal)\n- Rhombi have 3",
     "mathContext": "The constraint is: (fourPointDistances p₁ p₂ p₃ p₄).card ≥ 5. At most 1 distance can repeat among the 6 pairs.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "four-points",
       "pairwise-distances",
@@ -82,7 +82,7 @@
     "title": "Erdős's Conjecture (FALSE)",
     "content": "**ErdosConjecture135**: ∃ c > 0 such that HasFiveDistanceProperty A implies distanceCount A ≥ c·n²\n\nErdős hoped that forbidding degenerate 4-point configurations would force many global distances.\n\n**axiom erdos_135_false : ¬ErdosConjecture135**\n\nThe conjecture is FALSE!",
     "mathContext": "The conjecture would mean: local constraints (on 4-tuples) imply global density (n² distances). Tao showed this fails.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "local-global",
       "disproved",
@@ -100,7 +100,7 @@
     "title": "Tao's Counterexample (2024)",
     "content": "**TaoCounterexample**: For n ≥ 2, ∃ A with:\n- A.card = n\n- HasFiveDistanceProperty A ✓\n- distanceCount A ≤ C·n²/√(log n)\n\n**axiom tao_counterexample : TaoCounterexample**\n\n**theorem erdos_135_disproved : ¬ErdosConjecture135** ✓\n\nThe counterexample has fewer than n² distances while satisfying the five-distance property!",
     "mathContext": "n²/√(log n) is o(n²), so this disproves the Ω(n²) conjecture. The log factor matches Guth-Katz lower bounds.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "counterexample",
       "tao-2024",
@@ -172,7 +172,7 @@
     "title": "Tao's Algebraic Construction",
     "content": "**ParabolaParams**: Parameters (a,b,c,d,e) defining parabolas\n(ax+by)² ≡ cx+dy+e (mod p) in finite field\n\n**Key property**: Points on such parabolas avoid parallelograms!\n\n**RandomizedParabolaApproach**:\n1. Take points on random parabola in ℤₚ²\n2. Apply random affine transformation\n3. Delete remaining bad 4-tuples (only O(n) of them)\n\n**axiom randomized_parabola_works** ✓",
     "mathContext": "Parabolas have the property that no 4 points form a parallelogram (algebraic constraint). The randomization handles other forbidden patterns probabilistically.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "parabola",
       "finite-fields",
@@ -244,7 +244,7 @@
     "title": "Summary and Status",
     "content": "**Erdős Problem #135: DISPROVED** ($250 prize)\n\n**Question**: Must five-distance sets have Ω(n²) distances?\n**Answer**: NO (Tao 2024)\n\n**Tao's Construction**:\n1. Randomized parabolas over finite fields\n2. Parabolas avoid parallelograms automatically\n3. Random affine transforms reduce other forbidden patterns\n4. Probabilistic deletion of remaining bad 4-tuples\n\n**Result**: O(n²/√(log n)) distances with five-distance property\n\n**Historical Note**: Part of Tao's 2024-2025 exploration of erdosproblems.com",
     "mathContext": "Tao explicitly mentioned this work was partly motivated by exploring AI-assisted mathematics. The problem had been open since the 1980s.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "problem-status",
       "disproved",

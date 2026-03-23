@@ -78,7 +78,7 @@
     "title": "The Trisection Polynomial and Its Degree",
     "content": "`trisectionPolynomial` is defined as $8X^3 - 6X - 1 \\in \\mathbb{Q}[X]$, the minimal polynomial for $\\cos(20°)$. The degree 3 is verified using `natDegree_sub_eq_left_of_natDegree_lt` and `norm_num` to simplify the degree computation on the polynomial expression.",
     "mathContext": "The polynomial arises from the triple angle formula: $\\cos(60°) = 4\\cos^3(20°) - 3\\cos(20°)$, i.e., $1/2 = 4x^3 - 3x$, giving $8x^3 - 6x - 1 = 0$. Its degree 3 is the critical obstruction to constructibility.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "minimal polynomial",
       "polynomial degree",
@@ -122,7 +122,7 @@
     "title": "Triple Angle Formula",
     "content": "`triple_angle_formula` proves $\\cos(3\\theta) = 4\\cos^3(\\theta) - 3\\cos(\\theta)$ by invoking Mathlib's `cos_three_mul` and adjusting with `linarith`. This identity is the algebraic bridge connecting the trisection problem to a polynomial equation.",
     "mathContext": "$\\cos(3\\theta) = 4\\cos^3(\\theta) - 3\\cos(\\theta)$ follows from the addition formula $\\cos(A+B)$ applied twice. Setting $\\theta = 20°$: $\\cos(60°) = 4\\cos^3(20°) - 3\\cos(20°)$, giving $1/2 = 4x^3 - 3x$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "trigonometric identities",
       "Chebyshev polynomials",
@@ -211,7 +211,7 @@
     "title": "Constructible Numbers",
     "content": "`IsConstructible α d` is defined as `d > 0 ∧ ∃ n : ℕ, d ∣ 2^n` — encoding Wantzel's algebraic criterion that the minimal polynomial degree of a constructible number must divide some power of 2.\n\nThe definition captures the geometric fact that each compass-and-straightedge step creates at most a quadratic extension, so the total extension degree over $\\mathbb{Q}$ is $2^n$ for some $n$, and the minimal polynomial degree must divide this.",
     "mathContext": "A constructible number $\\alpha$ lies in a tower $\\mathbb{Q} = F_0 \\subset F_1 \\subset \\cdots \\subset F_n$ with $[F_{i+1}:F_i] = 2$, so $[F_n:\\mathbb{Q}] = 2^n$. By the tower law, $[\\mathbb{Q}(\\alpha):\\mathbb{Q}]$ divides $2^n$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "field extensions",
       "tower law",
@@ -233,7 +233,7 @@
     "title": "Wantzel's Theorem (Axiom 1)",
     "content": "`axiom wantzel_theorem`: if $\\alpha$ is constructible with minimal polynomial degree $d > 0$, then $d \\mid 2^n$ for some $n$. This is the deep algebraic result (Wantzel, 1837) encoding the equivalence between compass-straightedge geometry and quadratic field extensions.\n\nThis is stated as an axiom because the full proof — that each construction step corresponds to a degree-2 extension — requires formalizing compass-straightedge operations as algebraic operations on field extensions, which is substantial infrastructure not in Mathlib.",
     "mathContext": "Wantzel's theorem: $\\alpha$ constructible $\\Rightarrow [\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\mid 2^n$. Equivalently, the Galois group of the minimal polynomial of a constructible number is a 2-group.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Wantzel's theorem",
       "compass-straightedge axiomatics",
@@ -255,7 +255,7 @@
     "title": "Axiom 2 (Irreducibility) and Lindemann's Theorem",
     "content": "Two results complete the algebraic setup:\n\n1. **Axiom 2** (`trisectionPolynomial_irreducible`): The polynomial $8x^3 - 6x - 1$ is irreducible over $\\mathbb{Q}$. Stated as an axiom because Mathlib's irreducibility API for specific polynomials is difficult to interface with `norm_num` verification. The computational evidence (`no_rational_roots`) makes the axiom well-justified: a degree-3 polynomial with no rational roots is irreducible over $\\mathbb{Q}$.\n\n2. **Lindemann's theorem** (`lindemann_pi_transcendental`): $\\pi$ is transcendental over $\\mathbb{Q}$. Unlike the axioms, this is **proved** from the project's own `PiTranscendental` module, which establishes transcendence over $\\mathbb{Z}$ and lifts via `IsFractionRing.isAlgebraic_iff`.",
     "mathContext": "Irreducibility: a cubic $f \\in \\mathbb{Q}[X]$ is irreducible iff it has no root in $\\mathbb{Q}$. Since $\\deg(f) = 3 < 4$, any non-trivial factorization must include a linear factor, hence a rational root. Transcendence: $\\pi \\notin \\overline{\\mathbb{Q}}$ (Lindemann 1882), proved here via Hermite-Lindemann-Weierstrass.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "irreducibility",
       "transcendental numbers",
@@ -300,7 +300,7 @@
     "title": "Angle Trisection is Impossible",
     "content": "`cos_20_degree_over_Q` restates `trisectionPolynomial_degree` (degree = 3) for clarity. `angle_trisection_impossible` proves $\\neg\\,\\text{IsConstructible}(\\cos(20°), 3)$ — a one-liner delegating to `degree_three_not_constructible`.\n\nThis is the culmination: cos(20°) satisfies an irreducible degree-3 polynomial, constructible numbers have degree dividing $2^n$, and $3 \\nmid 2^n$. The proof is completely elementary once the pieces are assembled.",
     "mathContext": "The chain: $\\cos(20°)$ is a root of $8x^3 - 6x - 1$ (proved) $\\Rightarrow$ minimal polynomial has degree 3 (from irreducibility axiom) $\\Rightarrow$ $3 \\nmid 2^n$ (proved) $\\Rightarrow$ not constructible.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-cos-20-equation",
       "ann-no-rational-roots",

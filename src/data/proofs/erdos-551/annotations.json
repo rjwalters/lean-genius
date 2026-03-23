@@ -2,73 +2,140 @@
   {
     "id": "ann-551-defs",
     "proofId": "erdos-551",
-    "range": { "startLine": 34, "endLine": 91 },
+    "range": {
+      "startLine": 34,
+      "endLine": 91
+    },
     "type": "definition",
     "title": "Graph Definitions: Cycles, Cliques, and Containment",
     "content": "**cycleGraph** $C_k$ on $k$ vertices: adjacent if indices differ by 1 modulo $k$.\n\n**completeGraph** $K_n$ is the top element of the SimpleGraph lattice (all edges present).\n\n**ContainsCycle** formalizes '$G$ contains $C_k$' via an injective embedding $f: \\text{Fin}\\,k \\to V$ preserving adjacency.\n\n**ContainsClique** formalizes '$G$ contains $K_n$' via a Finset $S$ of size $n$ that forms a clique in $G$.\n\nThese definitions encode the asymmetric Ramsey problem: we seek a red $C_k$ or blue $K_n$.",
     "mathContext": "$C_k$ is the graph with vertex set $\\{0, \\ldots, k-1\\}$ and edges $\\{i, (i+1) \\bmod k\\}$. $G$ contains $C_k$ if $\\exists$ injective $f: [k] \\hookrightarrow V(G)$ with $f(i) \\sim f((i+1) \\bmod k)$ for all $i$. $G$ contains $K_n$ if $\\exists S \\subseteq V(G)$ with $|S| = n$ forming a clique.",
-    "significance": "critical",
-    "relatedConcepts": ["Hamiltonian cycles", "clique number", "graph embedding", "cycle detection"],
-    "prerequisites": ["graph theory", "modular arithmetic", "injective functions"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Hamiltonian cycles",
+      "clique number",
+      "graph embedding",
+      "cycle detection"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "modular arithmetic",
+      "injective functions"
+    ]
   },
   {
     "id": "ann-551-ramsey",
     "proofId": "erdos-551",
-    "range": { "startLine": 96, "endLine": 157 },
+    "range": {
+      "startLine": 96,
+      "endLine": 157
+    },
     "type": "definition",
     "title": "Ramsey Number R(C_k, K_n) and the Conjecture",
     "content": "**RamseyNumber** $R(C_k, K_n)$: minimum $N$ such that every 2-coloring of $K_N$ contains a red $C_k$ or blue $K_n$. Defined via `Nat.find`.\n\n**RamseyProperty**: the Ramsey property for given parameters.\n\n**ConjecturedFormula**: $R(C_k, K_n) = (k-1)(n-1) + 1$. This elegant product formula was conjectured by Erdős, Faudree, Rousseau, and Schelp.\n\n**MainConjecture**: the formula holds for all $k \\geq n \\geq 3$ except $(k,n) = (3,3)$.\n\n**exception_3_3**: $R(C_3, K_3) = R(K_3, K_3) = 6 \\neq 5 = (3-1)(3-1)+1$.",
     "mathContext": "$R(C_k, K_n) = \\min\\{N : K_N \\to \\{\\text{red, blue}\\} \\Rightarrow \\text{red } C_k \\text{ or blue } K_n\\}$. The conjecture $R(C_k, K_n) = (k-1)(n-1)+1$ for $k \\geq n \\geq 3$ (except $(3,3)$) has a beautiful structural explanation: the lower bound graph consists of $(n-1)$ disjoint copies of $K_{k-1}$, which has $(k-1)(n-1)$ vertices, avoids $C_k$ (each component is too small) and its complement avoids $K_n$ (independence number $n-1$).",
-    "significance": "critical",
-    "relatedConcepts": ["asymmetric Ramsey numbers", "Turán-type problems", "graph coloring"],
-    "prerequisites": ["Ramsey theory", "Nat.find", "complete graphs"]
+    "significance": "key",
+    "relatedConcepts": [
+      "asymmetric Ramsey numbers",
+      "Turán-type problems",
+      "graph coloring"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "Nat.find",
+      "complete graphs"
+    ]
   },
   {
     "id": "ann-551-lower-bound",
     "proofId": "erdos-551",
-    "range": { "startLine": 191, "endLine": 232 },
+    "range": {
+      "startLine": 191,
+      "endLine": 232
+    },
     "type": "technique",
     "title": "Lower Bound: Disjoint Cliques Construction",
     "content": "**LowerBoundGraph**: $(n-1)$ disjoint copies of $K_{k-1}$, constructed by partitioning vertices via integer division. Vertices $i, j$ are adjacent iff $\\lfloor i/(k-1) \\rfloor = \\lfloor j/(k-1) \\rfloor$ and $i \\neq j$.\n\n**lower_bound_no_cycle**: Each component has $k-1$ vertices, so no component can contain $C_k$ (a cycle needs $k$ vertices).\n\n**lower_bound_complement_no_clique**: The complement consists of $(n-1)$ independent sets of size $k-1$. Any clique in the complement must take at most one vertex from each component, giving at most $n-1$ vertices — too small for $K_n$.",
     "mathContext": "The graph $G = K_{k-1} \\sqcup K_{k-1} \\sqcup \\cdots \\sqcup K_{k-1}$ ($n-1$ copies) has $(k-1)(n-1)$ vertices. Since $C_k$ requires $k$ vertices and each component has only $k-1$, $G$ is $C_k$-free. The complement $\\bar{G}$ is a complete $(n-1)$-partite graph with parts of size $k-1$, so $\\omega(\\bar{G}) = n-1 < n$, meaning $\\bar{G}$ is $K_n$-free. This shows $R(C_k, K_n) \\geq (k-1)(n-1) + 1$.",
-    "significance": "critical",
-    "relatedConcepts": ["Turán graph", "complete multipartite graphs", "independence number", "disjoint union"],
-    "prerequisites": ["graph products", "clique number bounds", "Ramsey lower bounds"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán graph",
+      "complete multipartite graphs",
+      "independence number",
+      "disjoint union"
+    ],
+    "prerequisites": [
+      "graph products",
+      "clique number bounds",
+      "Ramsey lower bounds"
+    ]
   },
   {
     "id": "ann-551-progression",
     "proofId": "erdos-551",
-    "range": { "startLine": 243, "endLine": 358 },
+    "range": {
+      "startLine": 243,
+      "endLine": 358
+    },
     "type": "theorem",
     "title": "Progressive Results: Bondy-Erdős → Nikiforov → KLS",
     "content": "Three progressively stronger results proving the formula for larger ranges:\n\n**bondy_erdos** (1973): Formula holds for $k > n^2 - 2$. The Bondy-Erdős threshold is quadratic in $n$.\n\n**nikiforov** (2005): Formula holds for $k \\geq 4n + 2$. Reduces the threshold from quadratic to linear. Uses spectral graph theory and eigenvalue bounds.\n\n**keevash_long_skokan** (2021): Formula holds for $k \\geq C \\log n / \\log \\log n$. Reduces the threshold to near-logarithmic. Uses the stability method and extremal graph theory.\n\n**kls_improves** (proved by Aristotle): For $n \\geq 100$, the KLS threshold $\\log n / \\log \\log n < 4n + 2$. This uses the bound $e < 3$.",
     "mathContext": "The threshold progression: $n^2 - 1$ (Bondy-Erdős 1973) $\\to$ $4n + 2$ (Nikiforov 2005) $\\to$ $C \\log n / \\log \\log n$ (KLS 2021). For $n = 100$: Bondy-Erdős needs $k \\geq 9999$, Nikiforov needs $k \\geq 402$, KLS needs $k \\geq C \\cdot \\log 100 / \\log \\log 100 \\approx 3C$. The dramatic improvement from quadratic to near-logarithmic represents 48 years of progress.",
-    "significance": "critical",
-    "relatedConcepts": ["spectral graph theory", "stability method", "extremal graph theory", "Szemerédi regularity"],
-    "prerequisites": ["graph Ramsey theory", "eigenvalue methods", "logarithmic functions"]
+    "significance": "key",
+    "relatedConcepts": [
+      "spectral graph theory",
+      "stability method",
+      "extremal graph theory",
+      "Szemerédi regularity"
+    ],
+    "prerequisites": [
+      "graph Ramsey theory",
+      "eigenvalue methods",
+      "logarithmic functions"
+    ]
   },
   {
     "id": "ann-551-special",
     "proofId": "erdos-551",
-    "range": { "startLine": 376, "endLine": 420 },
+    "range": {
+      "startLine": 376,
+      "endLine": 420
+    },
     "type": "theorem",
     "title": "Special Cases: Small Parameters and R(C_k, K_3)",
     "content": "**cycle_3_is_triangle**: $R(C_3, K_n) = R(K_3, K_n)$ since $C_3 = K_3$.\n\n**ramsey_C4_K3** = 7 and **ramsey_C5_K3** = 9: small verified values.\n\n**ramsey_Ck_K3**: $R(C_k, K_3) = 2k - 1$ for $k \\geq 4$. This is the triangle case: every 2-coloring of $K_{2k-1}$ contains a red $C_k$ or a blue triangle. The formula gives $(k-1)(3-1)+1 = 2k-1$, confirming the conjecture for $n = 3$.",
     "mathContext": "For $n = 3$: $R(C_k, K_3) = 2k - 1$ for all $k \\geq 4$. This was proved by Faudree and Schelp (1974) and independently by Rosta (1973). The proof uses the fact that a graph on $2k-1$ vertices with no triangle in the complement has minimum degree $\\geq k$, and Dirac's theorem gives a Hamiltonian cycle (hence $C_k$).",
     "significance": "key",
-    "relatedConcepts": ["Dirac's theorem", "triangle-free graphs", "Ramsey numbers of triangles"],
-    "prerequisites": ["Hamiltonian cycle theory", "minimum degree conditions"]
+    "relatedConcepts": [
+      "Dirac's theorem",
+      "triangle-free graphs",
+      "Ramsey numbers of triangles"
+    ],
+    "prerequisites": [
+      "Hamiltonian cycle theory",
+      "minimum degree conditions"
+    ]
   },
   {
     "id": "ann-551-related-summary",
     "proofId": "erdos-551",
-    "range": { "startLine": 425, "endLine": 604 },
+    "range": {
+      "startLine": 425,
+      "endLine": 604
+    },
     "type": "insight",
     "title": "Related Questions, Monotonicity, and Summary",
     "content": "**SmallestValidK**: For fixed $n$, the smallest $k$ where the formula holds. KLS shows this is at most $O(\\log n / \\log \\log n)$.\n\n**MinRamseyValue**: For fixed $n$, the minimum of $R(C_k, K_n)$ over $k \\geq n$.\n\n**Monotonicity**: $R(C_k, K_n)$ is non-decreasing in both $k$ and $n$. The formula $(k-1)(n-1)+1$ is also monotone.\n\n**Upper bound**: The path-cycle method shows $R(C_k, K_n) \\leq (k-1)(n-1)+1$ for $k \\geq n \\geq 3$, $(k,n) \\neq (3,3)$.\n\n**main_theorem**: The formula holds iff $k \\geq \\text{SmallestValidK}(n)$.\n\n**solved_asymptotically**: For each $n \\geq 3$, the formula holds for all sufficiently large $k$.",
     "mathContext": "The main theorem establishes $R(C_k, K_n) = (k-1)(n-1)+1 \\iff k \\geq k_0(n)$ where $k_0(n) \\leq \\lceil C \\log n / \\log \\log n \\rceil$. The problem is considered SOLVED: for any fixed $n$, the formula holds for all but finitely many $k$. The remaining question is determining $k_0(n)$ exactly.",
-    "significance": "critical",
-    "relatedConcepts": ["monotonicity of Ramsey numbers", "path-cycle method", "asymptotic Ramsey theory"],
-    "prerequisites": ["all preceding sections", "ceiling function"]
+    "significance": "key",
+    "relatedConcepts": [
+      "monotonicity of Ramsey numbers",
+      "path-cycle method",
+      "asymptotic Ramsey theory"
+    ],
+    "prerequisites": [
+      "all preceding sections",
+      "ceiling function"
+    ]
   }
 ]

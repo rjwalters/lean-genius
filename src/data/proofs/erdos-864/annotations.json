@@ -3,144 +3,270 @@
     "id": "erdos-864-ann-reprcount",
     "proofId": "erdos-864",
     "type": "definition",
-    "range": { "startLine": 30, "endLine": 31 },
+    "range": {
+      "startLine": 30,
+      "endLine": 31
+    },
     "title": "Sum Representation Count",
     "content": "Defines `sumRepCount A n` as the cardinality of $\\{(a,b) \\in A \\times A : a \\leq b,\\, a + b = n\\}$. The ordering constraint $a \\leq b$ avoids double-counting: each unordered pair $\\{a, b\\}$ contributes once. A collision at $n$ means $\\text{sumRepCount}(A, n) \\geq 2$: at least two distinct pairs sum to $n$.",
     "mathContext": "$r_A(n) = |\\{(a,b) : a \\leq b,\\, a,b \\in A,\\, a+b = n\\}|$",
-    "significance": "critical",
-    "relatedConcepts": ["Finset.filter", "Finset.card", "representation function", "B_2 sets"],
-    "prerequisites": ["Finset product", "filtering", "cardinality"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.filter",
+      "Finset.card",
+      "representation function",
+      "B_2 sets"
+    ],
+    "prerequisites": [
+      "Finset product",
+      "filtering",
+      "cardinality"
+    ]
   },
   {
     "id": "erdos-864-ann-multirepset",
     "proofId": "erdos-864",
     "type": "definition",
-    "range": { "startLine": 34, "endLine": 36 },
+    "range": {
+      "startLine": 34,
+      "endLine": 36
+    },
     "title": "Multi-Representation Set",
     "content": "Defines `multiRepSet A` as the set of integers with $\\geq 2$ sum representations from $A$. Computed by imaging all pairwise sums from $A \\times A$ then filtering for those with $\\text{sumRepCount} \\geq 2$. For a Sidon set this is empty; for an almost-Sidon set it has at most one element.",
     "mathContext": "$\\text{multiRepSet}(A) = \\{n \\in \\mathbb{N} : r_A(n) \\geq 2\\}$",
     "significance": "key",
-    "relatedConcepts": ["Finset.image", "Finset.filter", "collision detection"],
-    "prerequisites": ["sumRepCount", "Finset operations"]
+    "relatedConcepts": [
+      "Finset.image",
+      "Finset.filter",
+      "collision detection"
+    ],
+    "prerequisites": [
+      "sumRepCount",
+      "Finset operations"
+    ]
   },
   {
     "id": "erdos-864-ann-almostsidon",
     "proofId": "erdos-864",
     "type": "definition",
-    "range": { "startLine": 39, "endLine": 40 },
+    "range": {
+      "startLine": 39,
+      "endLine": 40
+    },
     "title": "Almost-Sidon Set",
     "content": "Defines `IsAlmostSidon A` as $|\\text{multiRepSet}(A)| \\leq 1$: at most one integer has multiple sum representations. This is strictly weaker than the Sidon condition ($|\\text{multiRepSet}| = 0$) and strictly stronger than unconstrained ($|\\text{multiRepSet}|$ arbitrary). The single allowed collision enables the reflected construction to exceed the Sidon bound.",
     "mathContext": "$A$ is almost-Sidon $\\iff |\\{n : r_A(n) \\geq 2\\}| \\leq 1$",
-    "significance": "critical",
-    "relatedConcepts": ["Sidon sets", "B_2^+ sets", "collision bound"],
-    "prerequisites": ["multiRepSet", "Finset.card"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Sidon sets",
+      "B_2^+ sets",
+      "collision bound"
+    ],
+    "prerequisites": [
+      "multiRepSet",
+      "Finset.card"
+    ]
   },
   {
     "id": "erdos-864-ann-sidon",
     "proofId": "erdos-864",
     "type": "definition",
-    "range": { "startLine": 43, "endLine": 44 },
+    "range": {
+      "startLine": 43,
+      "endLine": 44
+    },
     "title": "Sidon Set",
     "content": "Defines `IsSidon A` as $|\\text{multiRepSet}(A)| = 0$: no integer has multiple sum representations, meaning all pairwise sums $a + b$ ($a \\leq b$) are distinct. Classical results: $|A| \\leq \\sqrt{N} + O(N^{1/4})$ (Lindström 1969), with constructions achieving $\\sqrt{N} - O(N^{5/8})$ (Cilleruelo 2010).",
     "mathContext": "$A$ is Sidon ($B_2$) $\\iff$ all sums $a + b$ with $a \\leq b \\in A$ are distinct $\\iff |\\text{multiRepSet}(A)| = 0$",
     "significance": "key",
-    "relatedConcepts": ["B_2 sets", "Lindström bound", "Singer construction"],
-    "prerequisites": ["multiRepSet"]
+    "relatedConcepts": [
+      "B_2 sets",
+      "Lindström bound",
+      "Singer construction"
+    ],
+    "prerequisites": [
+      "multiRepSet"
+    ]
   },
   {
     "id": "erdos-864-ann-maxalmostsidon",
     "proofId": "erdos-864",
     "type": "definition",
-    "range": { "startLine": 47, "endLine": 48 },
+    "range": {
+      "startLine": 47,
+      "endLine": 48
+    },
     "title": "Maximum Almost-Sidon Size",
     "content": "Defines `maxAlmostSidon N` as the supremum of $|A|$ over all almost-Sidon $A \\subseteq \\{1, \\ldots, N\\}$. Computed as `Finset.sup` over the powerset of `Icc 1 N` filtered by `IsAlmostSidon`. Marked `noncomputable` since the powerset is exponentially large. The conjecture asserts this is $(1 + o(1)) \\cdot (2/\\sqrt{3}) \\cdot \\sqrt{N}$.",
     "mathContext": "$\\text{maxAlmostSidon}(N) = \\max\\{|A| : A \\subseteq [N],\\, A \\text{ almost-Sidon}\\}$",
     "significance": "key",
-    "relatedConcepts": ["Finset.sup", "powerset", "noncomputable", "extremal function"],
-    "prerequisites": ["IsAlmostSidon", "Finset.Icc", "Finset.powerset"]
+    "relatedConcepts": [
+      "Finset.sup",
+      "powerset",
+      "noncomputable",
+      "extremal function"
+    ],
+    "prerequisites": [
+      "IsAlmostSidon",
+      "Finset.Icc",
+      "Finset.powerset"
+    ]
   },
   {
     "id": "erdos-864-ann-conjecture",
     "proofId": "erdos-864",
     "type": "concept",
-    "range": { "startLine": 52, "endLine": 57 },
+    "range": {
+      "startLine": 52,
+      "endLine": 57
+    },
     "title": "Main Conjecture (Placeholder)",
     "content": "Axiomatizes `erdos_864_conjecture` as `True`: the full conjecture $\\text{maxAlmostSidon}(N) \\leq (1 + o(1)) \\cdot (2/\\sqrt{3}) \\cdot \\sqrt{N}$ is not formalized here. Combined with the Erdős-Freud lower bound, this would give the exact asymptotics. The placeholder indicates the statement is open and its precise formalization (involving $o(1)$ terms) is deferred.",
     "mathContext": "Conjecture: $\\text{maxAlmostSidon}(N) = (1 + o(1)) \\cdot \\frac{2}{\\sqrt{3}} \\cdot \\sqrt{N}$",
-    "significance": "critical",
-    "relatedConcepts": ["asymptotic notation", "o(1) terms", "open problem"],
-    "prerequisites": ["maxAlmostSidon", "Real.sqrt"]
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic notation",
+      "o(1) terms",
+      "open problem"
+    ],
+    "prerequisites": [
+      "maxAlmostSidon",
+      "Real.sqrt"
+    ]
   },
   {
     "id": "erdos-864-ann-lower",
     "proofId": "erdos-864",
     "type": "concept",
-    "range": { "startLine": 61, "endLine": 67 },
+    "range": {
+      "startLine": 61,
+      "endLine": 67
+    },
     "title": "Erdős-Freud Lower Bound",
     "content": "Axiomatizes `erdos_freud_lower_bound`: for all $\\varepsilon > 0$, eventually $\\text{maxAlmostSidon}(N) \\geq (2/\\sqrt{3} - \\varepsilon)\\sqrt{N}$. The proof: take a Sidon set $B \\subseteq \\{1, \\ldots, N/3\\}$ of size $\\approx \\sqrt{N/3}$ (exists by probabilistic/algebraic constructions), and form $A = B \\cup \\{N - b : b \\in B\\}$. Then $|A| \\approx 2\\sqrt{N/3} = (2/\\sqrt{3})\\sqrt{N}$.",
     "mathContext": "$\\text{maxAlmostSidon}(N) \\geq (2/\\sqrt{3} - \\varepsilon)\\sqrt{N}$ for $N \\geq N_0(\\varepsilon)$",
-    "significance": "critical",
-    "relatedConcepts": ["reflected construction", "Sidon set existence", "Real.sqrt"],
-    "prerequisites": ["maxAlmostSidon", "Sidon set constructions"]
+    "significance": "key",
+    "relatedConcepts": [
+      "reflected construction",
+      "Sidon set existence",
+      "Real.sqrt"
+    ],
+    "prerequisites": [
+      "maxAlmostSidon",
+      "Sidon set constructions"
+    ]
   },
   {
     "id": "erdos-864-ann-sidonupper",
     "proofId": "erdos-864",
     "type": "concept",
-    "range": { "startLine": 69, "endLine": 73 },
+    "range": {
+      "startLine": 69,
+      "endLine": 73
+    },
     "title": "Sidon Upper Bound",
     "content": "Axiomatizes `sidon_upper_bound`: for Sidon sets in $\\{1, \\ldots, N\\}$, $|A| \\leq \\sqrt{N} + C \\cdot N^{1/4}$. This classical result (Lindström 1969, improving Erdős-Turán 1941) follows from the pigeonhole principle: $\\binom{|A|}{2} + |A|$ distinct sums must fit in $[2, 2N]$. The almost-Sidon bound is conjectured to be $(2/\\sqrt{3})\\sqrt{N}$, a factor $\\approx 1.155$ larger.",
     "mathContext": "Sidon: $|A| \\leq \\sqrt{N} + O(N^{1/4})$; Almost-Sidon: $|A| \\leq (2/\\sqrt{3} + o(1))\\sqrt{N}$ (conjectured)",
     "significance": "key",
-    "relatedConcepts": ["Lindström bound", "Erdős-Turán 1941", "pigeonhole principle"],
-    "prerequisites": ["IsSidon", "Real.sqrt", "distinct sum counting"]
+    "relatedConcepts": [
+      "Lindström bound",
+      "Erdős-Turán 1941",
+      "pigeonhole principle"
+    ],
+    "prerequisites": [
+      "IsSidon",
+      "Real.sqrt",
+      "distinct sum counting"
+    ]
   },
   {
     "id": "erdos-864-ann-implies",
     "proofId": "erdos-864",
     "type": "concept",
-    "range": { "startLine": 81, "endLine": 84 },
+    "range": {
+      "startLine": 81,
+      "endLine": 84
+    },
     "title": "Sidon Implies Almost-Sidon (Proved)",
     "content": "Proves `sidon_is_almost_sidon`: every Sidon set is almost-Sidon. The proof unfolds both definitions (`IsSidon`: $|\\text{multiRepSet}| = 0$; `IsAlmostSidon`: $|\\text{multiRepSet}| \\leq 1$) and closes with `omega` since $0 \\leq 1$. This is the only proved theorem in the file, establishing the trivial containment $\\text{Sidon} \\subseteq \\text{AlmostSidon}$.",
     "mathContext": "$|\\text{multiRepSet}(A)| = 0 \\implies |\\text{multiRepSet}(A)| \\leq 1$",
     "significance": "key",
-    "relatedConcepts": ["omega tactic", "unfold", "trivial implication"],
-    "prerequisites": ["IsSidon", "IsAlmostSidon"]
+    "relatedConcepts": [
+      "omega tactic",
+      "unfold",
+      "trivial implication"
+    ],
+    "prerequisites": [
+      "IsSidon",
+      "IsAlmostSidon"
+    ]
   },
   {
     "id": "erdos-864-ann-paircount",
     "proofId": "erdos-864",
     "type": "concept",
-    "range": { "startLine": 100, "endLine": 101 },
+    "range": {
+      "startLine": 100,
+      "endLine": 101
+    },
     "title": "Pairwise Sum Count",
     "content": "Axiomatizes `pairwise_sum_count`: the number of ordered pairs $(a, b)$ with $a \\leq b$ in $A$ is $|A|(|A|+1)/2 = \\binom{|A|}{2} + |A|$. This counts both the $\\binom{|A|}{2}$ pairs with $a < b$ and the $|A|$ diagonal pairs $a = b$. For Sidon sets, each pair gives a distinct sum; for almost-Sidon, at most two pairs may share one sum.",
     "mathContext": "$|\\{(a,b) \\in A^2 : a \\leq b\\}| = \\binom{|A|}{2} + |A| = \\frac{|A|(|A|+1)}{2}$",
     "significance": "supporting",
-    "relatedConcepts": ["binomial coefficient", "diagonal pairs", "Finset.filter"],
-    "prerequisites": ["Finset product", "cardinality arithmetic"]
+    "relatedConcepts": [
+      "binomial coefficient",
+      "diagonal pairs",
+      "Finset.filter"
+    ],
+    "prerequisites": [
+      "Finset product",
+      "cardinality arithmetic"
+    ]
   },
   {
     "id": "erdos-864-ann-sumrange",
     "proofId": "erdos-864",
     "type": "concept",
-    "range": { "startLine": 105, "endLine": 107 },
+    "range": {
+      "startLine": 105,
+      "endLine": 107
+    },
     "title": "Sum Range Constraint",
     "content": "Axiomatizes `almost_sidon_sum_range`: for almost-Sidon $A \\subseteq \\{1, \\ldots, N\\}$, at most one sum has a collision, so $\\geq |A|(|A|+1)/2 - 1$ distinct sums must fit in $[2, 2N]$. This gives $|A|(|A|+1)/2 - 1 \\leq 2N - 1$, i.e., $|A| = O(\\sqrt{N})$. The precise constant in the almost-Sidon case is conjectured to be $2/\\sqrt{3}$.",
     "mathContext": "$A \\subseteq [N]$ almost-Sidon $\\implies \\frac{|A|(|A|+1)}{2} - 1 \\leq 2N - 1$",
     "significance": "key",
-    "relatedConcepts": ["sum range", "pigeonhole argument", "quadratic constraint"],
-    "prerequisites": ["pairwise_sum_count", "IsAlmostSidon"]
+    "relatedConcepts": [
+      "sum range",
+      "pigeonhole argument",
+      "quadratic constraint"
+    ],
+    "prerequisites": [
+      "pairwise_sum_count",
+      "IsAlmostSidon"
+    ]
   },
   {
     "id": "erdos-864-ann-reflected",
     "proofId": "erdos-864",
     "type": "concept",
-    "range": { "startLine": 111, "endLine": 113 },
+    "range": {
+      "startLine": 111,
+      "endLine": 113
+    },
     "title": "Reflected Construction Validity",
     "content": "Axiomatizes `reflected_construction_valid`: if $B$ is Sidon in $\\{1, \\ldots, N/3\\}$, then $B \\cup \\{N - b : b \\in B\\}$ is almost-Sidon. The key insight: the only collision occurs at sum $N$, since $b + (N - b) = N$ for every $b \\in B$. No other sum has a collision because: sums within $B$ are distinct (Sidon), sums within $N - B$ are distinct (Sidon by reflection), and cross-sums $b + (N - b')$ with $b \\neq b'$ are distinct since $B \\subseteq \\{1, \\ldots, N/3\\}$ prevents overlap.",
     "mathContext": "$B$ Sidon in $[N/3] \\implies B \\cup (N - B)$ is almost-Sidon with collision only at $n = N$",
-    "significance": "critical",
-    "relatedConcepts": ["reflected construction", "single collision point", "cross-sum analysis"],
-    "prerequisites": ["IsSidon", "IsAlmostSidon", "Finset.union", "Finset.image"]
+    "significance": "key",
+    "relatedConcepts": [
+      "reflected construction",
+      "single collision point",
+      "cross-sum analysis"
+    ],
+    "prerequisites": [
+      "IsSidon",
+      "IsAlmostSidon",
+      "Finset.union",
+      "Finset.image"
+    ]
   }
 ]

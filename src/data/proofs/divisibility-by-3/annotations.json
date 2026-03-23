@@ -9,7 +9,7 @@
     "type": "concept",
     "title": "Divisibility by 3 Rule",
     "content": "A natural number is divisible by 3 if and only if the sum of its decimal digits is divisible by 3:\n\n$$3 | n \\iff 3 | (d_0 + d_1 + d_2 + \\cdots)$$\n\nThis is one of the most practical divisibility tests, easily performed mentally.\n\nThis is Wiedijk's 100 Theorems #85.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "divisibility",
       "modular arithmetic",
@@ -31,7 +31,7 @@
     "title": "The Key Insight",
     "content": "The rule works because $10 \\equiv 1 \\pmod 3$.\n\nThis means every power of 10 is also congruent to 1 modulo 3:\n$$10^k \\equiv 1^k = 1 \\pmod 3$$\n\nSo when we write $n = d_0 + d_1 \\cdot 10 + d_2 \\cdot 10^2 + \\cdots$, we get:\n$$n \\equiv d_0 + d_1 + d_2 + \\cdots \\pmod 3$$",
     "mathContext": "$10 \\equiv 1 \\pmod 3$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "modular equivalence",
       "powers of 10"
@@ -52,7 +52,7 @@
     "title": "Main Theorem: Divisibility by 3",
     "content": "**Divisibility by 3 Rule (Wiedijk #85)**:\n\n```lean\ntheorem divisibility_by_3 (n : ℕ) :\n    3 ∣ n ↔ 3 ∣ (Nat.digits 10 n).sum\n```\n\nThis follows from Mathlib's `Nat.three_dvd_iff`.\n\nExample: 123 has digits [3, 2, 1], sum = 6. Since 3 | 6, we have 3 | 123.",
     "mathContext": "$3 | n \\iff 3 | \\text{(digit sum)}$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Nat.digits",
       "divisibility"

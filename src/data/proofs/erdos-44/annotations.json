@@ -10,7 +10,7 @@
     "title": "Sidon Set Definition",
     "content": "A **Sidon set** (B_2 sequence) is a set of integers where all pairwise sums are distinct. If a+b = c+d with a<=b and c<=d, then we must have a=c and b=d. These sets were introduced by Simon Sidon in the 1930s.",
     "mathContext": "Uses `IsSidon` predicate from Erdos340: `IsSidon A` means forall a b c d in A with a<=b, c<=d, if a+b=c+d then a=c and b=d.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "additive combinatorics",
       "B_2 sequences",
@@ -136,7 +136,7 @@
     "title": "Main Conjecture (OPEN)",
     "content": "**Erdős Problem #44**: Given any Sidon set A in [1,N] and eps > 0, there exists M > N and B in [N+1,M] such that A U B is Sidon with size >= (1-eps)*sqrt(M). This conjecture remains OPEN.",
     "mathContext": "Stated with sorry since it's an unsolved mathematical problem. No known counterexamples exist, but no proof either.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "extension problem",
       "density",

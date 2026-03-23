@@ -9,9 +9,14 @@
     },
     "title": "Problem Background",
     "content": "Erdős Problem #460 concerns a greedy coprime sieve: given $n$, construct a sequence $a_0 = 0, a_1 = 1, a_2, \\ldots$ where each $a_k$ is the least integer exceeding $a_{k-1}$ such that $n - a_k$ is coprime to all previous $n - a_i$. The central question is whether the sum of reciprocals $\\sum_{0 < a_i < n} 1/a_i$ tends to infinity as $n \\to \\infty$. This connects greedy algorithms, coprimality structure, and divergence of reciprocal sums.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "\\sum_{\\substack{0 < a_i < n}} \\frac{1}{a_i} \\stackrel{?}{\\to} \\infty \\text{ as } n \\to \\infty: The problem asks whether a greedy coprime sieve produces enough terms for their reciprocals to diverge. Related to Mertens' theorem on prime reciprocal sums and Brun's theorem on twin prime reciprocals. Prerequisites: coprimality, greedy algorithms, reciprocal sum divergence, sieve of Eratosthenes.",
-    "relatedConcepts": ["Mertens' theorem", "Brun's theorem", "sieve of Eratosthenes", "greedy algorithms"]
+    "relatedConcepts": [
+      "Mertens' theorem",
+      "Brun's theorem",
+      "sieve of Eratosthenes",
+      "greedy algorithms"
+    ]
   },
   {
     "id": "erdos-460-sieve-def",
@@ -23,9 +28,14 @@
     },
     "title": "Greedy Coprime Sieve Sequence",
     "content": "The function `greedyCoprimeSieve n k` gives the $k$-th element of the greedy sequence for a fixed $n$. Starting with $a_0 = 0, a_1 = 1$, each subsequent $a_k$ is the least integer greater than $a_{k-1}$ such that $\\gcd(n - a_k, n - a_i) = 1$ for all $i < k$. The sieve ensures the shifted values $n - a_0, n - a_1, \\ldots$ are pairwise coprime.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "a_k = \\min\\{m > a_{k-1} : \\gcd(n - m, n - a_i) = 1 \\; \\forall i < k\\}: Defined as a constant function with behavior specified by axioms sieve_initial and sieve_greedy. This separates specification from explicit construction, which would require implementing a computationally complex greedy search.",
-    "relatedConcepts": ["pairwise coprimality", "greedy sequence", "Nat.Coprime", "sieve sequence"]
+    "relatedConcepts": [
+      "pairwise coprimality",
+      "greedy sequence",
+      "Nat.Coprime",
+      "sieve sequence"
+    ]
   },
   {
     "id": "erdos-460-sieve-initial",
@@ -50,7 +60,7 @@
     },
     "title": "Greedy Selection Property",
     "content": "For $k \\geq 2$, the axiom captures three properties: (1) $a_k > a_{k-1}$ (strict increase), (2) $\\gcd(n - a_k, n - a_i) = 1$ for all $i < k$ (pairwise coprimality of shifted values), and (3) minimality — every integer between $a_{k-1}$ and $a_k$ fails the coprimality condition for some earlier term.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "a_k > a_{k-1}, \\quad \\gcd(n - a_k, n - a_i) = 1 \\; \\forall i < k, \\quad \\nexists\\, m \\in (a_{k-1}, a_k) \\text{ satisfying coprimality}: The minimality clause is crucial: it ensures the sequence is uniquely defined by the greedy rule, not just any coprime subsequence. Without minimality, many sequences would satisfy the other two conditions."
   },
   {
@@ -76,7 +86,7 @@
     },
     "title": "Reciprocal Sum $\\sum 1/a_i$",
     "content": "The sum $\\sum_{0 < a_i < n} 1/a_i$ is computed over positive sieve terms less than $n$. This is a finite sum for each $n$. The central question is whether this sum diverges as $n \\to \\infty$. If the Eggleton-Erdős-Selfridge conjectured bound $a_k \\ll k \\log k$ holds, then the reciprocal sum would be $\\gg \\sum 1/(k \\log k) = \\infty$.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "S(n) = \\sum_{\\substack{k : a_k > 0 \\\\ a_k < n}} \\frac{1}{a_k}: The conditional summation excludes a_0 = 0 (which would give 1/0) and terms ≥ n. The quadratic bound a_k < k^{2+ε} gives Σ 1/k^{2+ε} which converges, so the known bound is insufficient; the conjectured k log k bound would give Σ 1/(k log k) which diverges."
   },
   {
@@ -89,9 +99,13 @@
     },
     "title": "Main Conjecture: Divergence of Reciprocal Sum",
     "content": "Erdős Problem #460: for every $M > 0$, there exists $N_0$ such that for all $n \\geq N_0$, the reciprocal sum $\\sum_{0 < a_i < n} 1/a_i > M$. Equivalently, $\\lim_{n \\to \\infty} S(n) = \\infty$. The problem is OPEN — the known growth bound $a_k < k^{2+\\varepsilon}$ is too weak to imply divergence.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "\\forall M > 0,\\; \\exists N_0,\\; \\forall n \\geq N_0,\\; \\sum_{0 < a_i < n} \\frac{1}{a_i} > M: Stated in the ε-N form of divergence to infinity rather than using filters, for concreteness. This is the formal definition of ErdosProblem460 as a Prop in Lean.",
-    "relatedConcepts": ["divergence of series", "Filter.Tendsto", "reciprocal sum criteria"]
+    "relatedConcepts": [
+      "divergence of series",
+      "Filter.Tendsto",
+      "reciprocal sum criteria"
+    ]
   },
   {
     "id": "erdos-460-ees-bound",
@@ -103,7 +117,7 @@
     },
     "title": "Eggleton-Erdős-Selfridge Bound: $a_k < k^{2+o(1)}$",
     "content": "Eggleton, Erdős, and Selfridge proved that the sieve sequence satisfies $a_k < k^{2+\\varepsilon}$ for any $\\varepsilon > 0$ and all sufficiently large $k$. This quadratic-type growth is the best known upper bound. It means the sieve doesn't grow too fast, but is insufficient for reciprocal sum divergence (since $\\sum 1/k^{2+\\varepsilon}$ converges).",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "\\forall \\varepsilon > 0,\\; \\exists K_0,\\; \\forall k \\geq K_0,\\; a_k < k^{2+\\varepsilon}: The proof uses the fact that primes up to k have product ~ e^k (by PNT), so the sieve can find coprime elements within roughly k² steps. The o(1) formulation captures that the exponent 2 is optimal."
   },
   {
@@ -144,7 +158,12 @@
     "content": "The function $f(n) = \\sum_{\\substack{0 < a < n \\\\ P^-(n-a) > a}} 1/a$ sums reciprocals over those $a < n$ whose complement $n - a$ has all prime factors exceeding $a$. This is a 'smooth number' condition on $n - a$. Divergence of $f(n)$ would imply Problem #460.",
     "significance": "key",
     "mathContext": "f(n) = \\sum_{\\substack{0 < a < n \\\\ P^-(n-a) > a}} \\frac{1}{a}: The condition P⁻(n-a) > a means n-a has no 'small' prime divisors relative to a. This connects to the counting function Ψ(x,y) of y-smooth numbers, a central object in analytic number theory.",
-    "relatedConcepts": ["smooth numbers", "Dickman–de Bruijn function", "Ψ(x,y) counting function", "rough numbers"]
+    "relatedConcepts": [
+      "smooth numbers",
+      "Dickman–de Bruijn function",
+      "Ψ(x,y) counting function",
+      "rough numbers"
+    ]
   },
   {
     "id": "erdos-460-filtered-implies",

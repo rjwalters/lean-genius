@@ -58,7 +58,7 @@
     "title": "The Basel Identity",
     "content": "**The Main Result**: $\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6}$. This is Euler's celebrated 1734 solution to the Basel Problem.",
     "mathContext": "In Lean, `HasSum f s` means the series $\\sum f(n)$ converges to $s$. We prove `HasSum (fun n => 1 / n^2) (π^2 / 6)` using Mathlib's `hasSum_zeta_two`.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "hasSum_zeta_two",
       "HasSum predicate",

@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #479** (Graham's Conjecture) asks: Is it true that for all k ≠ 1, there are infinitely many n such that 2^n ≡ k (mod n)?\n\nThis problem connects exponential functions with modular arithmetic in a surprising way: the modulus n appears both as the exponent of 2 and as the divisor.\n\n**Status**: OPEN — The general conjecture remains unproved, though important special cases have been resolved.",
     "mathContext": "The restriction k ≠ 1 is necessary and easy to verify: for n > 1, we always have 2^n ≢ 1 (mod n). This is because for even n, 2^n ≡ 0 (mod 2) ≠ 1, and for odd n > 1, more subtle arguments apply.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "modular arithmetic",
       "exponential congruences",
@@ -28,7 +28,7 @@
     "title": "The Solution Set",
     "content": "**SolutionSet(k)** is the set of positive integers n such that 2^n ≡ k (mod n).\n\n```\nSolutionSet (k : ℤ) : Set ℕ :=\n  { n : ℕ | n > 0 ∧ (2 : ℤ) ^ n ≡ k [ZMOD n] }\n```\n\nGraham's conjecture states that this set is infinite for every k ≠ 1.",
     "mathContext": "We use integer modular equivalence (ZMOD) rather than natural number modular arithmetic to handle negative residues cleanly. The condition n > 0 excludes the trivial case n = 0.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "set builder notation",
       "modular equivalence",
@@ -82,7 +82,7 @@
     "title": "Graham's Conjecture",
     "content": "**Graham's Conjecture** (Erdős Problem #479):\n\n```\ndef grahams_conjecture : Prop :=\n  ∀ k : ℕ, k > 1 → (SolutionSet k).Infinite\n```\n\nFor all k > 1, the set of n with 2^n ≡ k (mod n) is infinite.\n\nWe state this for positive k. Negative residues can be handled by taking k mod n.",
     "mathContext": "The conjecture remains open despite decades of work. The difficulty lies in the complex interaction between the exponential growth of 2^n and the divisibility conditions imposed by the modulus n.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open conjecture",
       "asymptotic density",
@@ -153,6 +153,6 @@
     "type": "theorem",
     "title": "Summary Theorem",
     "content": "**erdos_479_summary (proved from axioms):**\n\nCombines three key results:\n1. SolutionSet(1) is finite (k = 1 impossible)\n2. SolutionSet(2^i) is infinite for all i ≥ 1 (powers of 2)\n3. SolutionSet(2) is infinite (via Fermat's Little Theorem)\n\nProved by: `⟨solution_set_one_finite, powers_of_two_infinite, solution_set_two_infinite⟩`",
-    "significance": "critical"
+    "significance": "key"
   }
 ]

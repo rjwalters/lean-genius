@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #885** asks about common factor difference sets.\n\n**Definition**: For n ≥ 1, D(n) = {|a - b| : n = ab}\n\n**Conjecture**: For every k ≥ 1, there exist k integers whose D sets have ≥ k elements in common.\n\n**Timeline**:\n- 1997: Erdős-Rosenfeld prove k = 2\n- 1999: Jiménez-Urroz proves k = 3\n- 2019: Bremner proves k = 4\n- k ≥ 5 remains **OPEN**",
     "mathContext": "D(n) captures the arithmetic structure of n's factorizations through their differences.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "factorization",
       "divisors",
@@ -28,7 +28,7 @@
     "title": "Factor Difference Set",
     "content": "**factorDifferenceSet n** = {d | ∃ a b, n = a * b ∧ d = |a - b|}\n\nThis captures all possible absolute differences between factor pairs.\n\n**Examples**:\n- D(12) = {11, 4, 1} from 1×12, 2×6, 3×4\n- D(6) = {5, 1} from 1×6, 2×3\n- D(p) = {p-1} for prime p (only 1×p)",
     "mathContext": "Uses Int.natAbs to compute |a - b| as a natural number.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Int.natAbs",
       "factorization",
@@ -77,7 +77,7 @@
     "title": "k-Common Sets",
     "content": "**IsKCommonSet k Ns** means:\n1. All n ∈ Ns are positive (n ≥ 1)\n2. |Ns| = k\n3. |⋂_{n ∈ Ns} D(n)| ≥ k\n\nA k-common set is a collection of k integers whose factor difference sets share at least k elements.",
     "mathContext": "Uses Finset intersection and Set.ncard for cardinality.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "set intersection",
       "cardinality"
@@ -93,7 +93,7 @@
     "type": "axiom",
     "title": "Main Conjecture (Partially OPEN)",
     "content": "**erdos_885_conjecture**: For all k ≥ 1, there exists a k-common set.\n\nThis is stated as an axiom because k ≥ 5 remains OPEN.\n\nThe conjecture asks whether the existence of k-common sets is unbounded.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open problem",
       "existence conjecture"
@@ -158,7 +158,7 @@
     "title": "The Open Case: k ≥ 5",
     "content": "**open_k5**: Either a 5-common set exists, or it doesn't.\n\nThis is the **next unsolved case**. The difficulty increases rapidly because:\n1. More integers are needed\n2. Each must have many divisors\n3. Their D(n) sets must align on ≥ 5 common values\n\nNo construction for k = 5 is currently known.",
     "mathContext": "The computational barrier grows exponentially with k.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open problem",
       "computational complexity"

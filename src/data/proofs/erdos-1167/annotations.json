@@ -10,7 +10,7 @@
     "title": "The Stepping-Down Problem for Partition Relations",
     "content": "Erdős Problem #1167 asks a fundamental question about the relationship between partition relations at consecutive exponents. Given the partition relation 2^λ → (κ_α + 1)^{r+1}_{α < γ} (a property of (r+1)-element subsets of 2^λ), does it follow that λ → (κ_α)^r_{α < γ} (the corresponding property for r-element subsets of λ)?\n\nThis is a 'stepping-down' question: can partition properties be transferred from higher exponents on larger cardinals to lower exponents on smaller cardinals? The classical Erdős-Rado stepping-up lemma goes the other direction (from r to r+1), and this conjecture asks whether the reverse implication holds.\n\nThe problem was posed by Erdős, Hajnal, and Rado in their foundational 1956 work on partition calculus, catalogued as [Va99, 7.79]. It remains open after nearly 70 years, making it one of the longest-standing problems in infinite combinatorics.",
     "mathContext": "$$2^\\lambda \\to (\\kappa_\\alpha + 1)^{r+1}_{\\alpha < \\gamma} \\implies \\lambda \\to (\\kappa_\\alpha)^r_{\\alpha < \\gamma}$$\nHere $\\kappa \\to (\\lambda_\\alpha)^r_{\\alpha < \\gamma}$ means: for every $\\gamma$-coloring $c: [\\kappa]^r \\to \\gamma$, $\\exists \\alpha < \\gamma$ and $H \\subseteq \\kappa$ with $|H| \\geq \\lambda_\\alpha$ such that $c|_{[H]^r} \\equiv \\alpha$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "partition calculus",
       "Ramsey theory",
@@ -94,7 +94,7 @@
     "title": "The Open Conjecture and Known Results",
     "content": "The section states the main conjecture and two classical reference points:\n\n**erdos_1167_conjecture** (axiom): For r ≥ 2, infinite λ, and any indexed family of target cardinals, the stepping-down implication holds:\n  IndexedPartitionRelation (2^λ) (fun α => targets α + 1) (r+1) γ →\n  IndexedPartitionRelation λ targets r γ\n\nThis remains open. The conjecture is stated as an axiom so its consequences can be explored.\n\n**infinite_ramsey** (axiom): ℵ₀ → (ℵ₀)^r_k for all finite r, k. Ramsey (1929) proved the finite case; the infinite extension follows from the infinite Ramsey theorem. This axiom provides a consistency check.\n\n**erdos_rado_theorem** (axiom): (2^κ)⁺ → (κ⁺)²_κ for infinite κ. The classical 1956 result by Erdős and Rado. This is the stepping-UP direction — the conjecture asks about stepping DOWN.",
     "mathContext": "The conjecture: $2^\\lambda \\to (\\kappa_\\alpha + 1)^{r+1}_{\\alpha < \\gamma} \\Rightarrow \\lambda \\to (\\kappa_\\alpha)^r_{\\alpha < \\gamma}$.\nErdős-Rado (stepping up): $(2^\\kappa)^+ \\to (\\kappa^+)^2_\\kappa$.\nInfinite Ramsey: $\\aleph_0 \\to (\\aleph_0)^r_k$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Erdős-Rado theorem",
       "infinite Ramsey theorem",

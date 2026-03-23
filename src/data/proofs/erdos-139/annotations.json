@@ -58,7 +58,7 @@
     "title": "The r_k(N) Function",
     "content": "**r_k(N)** is the maximum cardinality of a k-AP-free subset of {1,...,N}. This is the central object in Erdős #139: we want to prove r_k(N) = o(N), meaning r_k(N)/N → 0 as N → ∞.",
     "mathContext": "We define r using supremum over all valid sets: `sSup {m | ∃ S : Finset ℕ, S.card = m ∧ S ⊆ Icc 1 N ∧ IsKAPFree S k}`. The function is noncomputable because it involves supremum over an infinite search space.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "extremal combinatorics",
       "density",
@@ -82,7 +82,7 @@
     "title": "Erdős #139: Main Statement",
     "content": "**Szemerédi's Theorem (Erdős #139)**: For any k ≥ 2, the ratio r_k(N)/N tends to 0 as N → ∞. This means that k-AP-free subsets of {1,...,N} become asymptotically negligible compared to N.",
     "mathContext": "Using Filter.Tendsto, we express this as: `Tendsto (fun N => (r k N / N : ℝ)) atTop (𝓝 0)`. The hypothesis `1 < k` excludes the trivial case k=1 where every nonempty set contains a 1-AP.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Szemerédi's theorem",
       "density",
@@ -177,7 +177,7 @@
     "title": "Roth's Theorem via Mathlib",
     "content": "**Roth's Theorem (k=3)**: Proved completely using Mathlib's `roth_3ap_theorem_nat`. For any δ > 0 and sufficiently large N, any subset of {0,...,N-1} with ≥δN elements contains a 3-AP.",
     "mathContext": "The proof uses `cornersTheoremBound (δ/3)` as the threshold N₀. Mathlib's proof chain is: Szemerédi Regularity → Triangle Removal → Corners → Roth. The bound is tower-type exponential, making it huge in practice, but the theorem is fully proved.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Roth's theorem",
       "corners theorem",
@@ -249,7 +249,7 @@
     "title": "Full Szemerédi Theorem Axiom",
     "content": "**szemeredi_theorem**: We axiomatize the full Szemerédi theorem for all k ≥ 2. While k=3 is proved in Mathlib, k≥4 requires hypergraph regularity lemma which is not yet formalized.",
     "mathContext": "Szemerédi's original 1975 proof used a complex combinatorial argument. Furstenberg's 1977 proof used ergodic theory (correspondence principle). Gowers' 2001 proof introduced higher-order Fourier analysis. None of these approaches are fully in Mathlib for k≥4.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "hypergraph regularity",
       "ergodic theory",

@@ -98,7 +98,7 @@
     "title": "Main Theorem (Axiom): Tao-Teravainen 2025",
     "content": "**Erdos Problem #248 SOLVED**: There exists C > 0 such that the set of smooth-tail integers is infinite. This groundbreaking result was proved by Terence Tao and Joni Teravainen in December 2025.",
     "mathContext": "We state this as an axiom: `exists C : R, C > 0 and (smoothTailIntegers C).Infinite`. The proof requires deep sieve theory - specifically, quantitative bounds on correlations of multiplicative functions - which is far beyond current Mathlib formalization.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "sieve theory",
       "analytic number theory",

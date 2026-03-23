@@ -11,7 +11,11 @@
     "content": "We import the full Mathlib library which provides `Squarefree`, filters, and topology for asymptotic statements.",
     "mathContext": "Squarefree n means no prime p has p² | n. Equivalently, in the prime factorization n = p₁^{e₁} ⋯ pₖ^{eₖ}, all exponents eᵢ ≤ 1.",
     "significance": "supporting",
-    "relatedConcepts": ["squarefree", "filters", "asymptotics"]
+    "relatedConcepts": [
+      "squarefree",
+      "filters",
+      "asymptotics"
+    ]
   },
   {
     "id": "ann-e1102-property-p",
@@ -24,8 +28,12 @@
     "title": "Property P Definition",
     "content": "**Property P:** For all n ≥ 1, only finitely many a ∈ A have n + a squarefree. Intuitively, A is 'anti-squarefree'—adding any fixed n destroys squarefreeness for almost all elements.",
     "mathContext": "If A has property P, then for each n, the set {a ∈ A : n + a is squarefree} is finite. This is a strong sparsity condition on A.",
-    "significance": "critical",
-    "relatedConcepts": ["finiteness", "squarefree", "density"]
+    "significance": "key",
+    "relatedConcepts": [
+      "finiteness",
+      "squarefree",
+      "density"
+    ]
   },
   {
     "id": "ann-e1102-property-q",
@@ -38,8 +46,12 @@
     "title": "Property Q Definition",
     "content": "**Property Q:** Infinitely many n have n + a squarefree for all a < n in A. This is a 'pro-squarefree' condition—infinitely often, every translate is squarefree.",
     "mathContext": "Property Q is easier to satisfy than P. The squarefree numbers themselves have property Q with optimal density 6/π².",
-    "significance": "critical",
-    "relatedConcepts": ["infinitude", "squarefree", "universal quantifier"]
+    "significance": "key",
+    "relatedConcepts": [
+      "infinitude",
+      "squarefree",
+      "universal quantifier"
+    ]
   },
   {
     "id": "ann-e1102-squarefree-set",
@@ -53,7 +65,11 @@
     "content": "The set of squarefree natural numbers: {1, 2, 3, 5, 6, 7, 10, 11, 13, 14, 15, ...}. Missing numbers are divisible by some p².",
     "mathContext": "The density of squarefree numbers is 6/π² = ∏_p (1 - 1/p²) ≈ 0.6079. This product formula connects to the Riemann zeta function: 6/π² = 1/ζ(2).",
     "significance": "key",
-    "relatedConcepts": ["density", "zeta function", "product formula"]
+    "relatedConcepts": [
+      "density",
+      "zeta function",
+      "product formula"
+    ]
   },
   {
     "id": "ann-e1102-examples",
@@ -67,7 +83,10 @@
     "content": "We verify that 1, 2, 6 are squarefree (no square factor > 1) while 4 = 2² and 12 = 4·3 are not. The `native_decide` tactic computes these directly.",
     "mathContext": "Checking squarefreeness: trial divide by 4, 9, 25, ... up to n. For small n, this is efficient. For large n, factorization is needed.",
     "significance": "supporting",
-    "relatedConcepts": ["computation", "decidability"]
+    "relatedConcepts": [
+      "computation",
+      "decidability"
+    ]
   },
   {
     "id": "ann-e1102-density-constant",
@@ -80,8 +99,12 @@
     "title": "The Magic Constant 6/π²",
     "content": "The density of squarefree numbers is **6/π² ≈ 0.6079**. This equals 1/ζ(2) where ζ is the Riemann zeta function.",
     "mathContext": "By the Euler product, 1/ζ(2) = ∏_p (1 - 1/p²), which counts the probability that a random integer is not divisible by p² for any prime p. This is the squarefree density.",
-    "significance": "critical",
-    "relatedConcepts": ["zeta function", "Euler product", "probability"]
+    "significance": "key",
+    "relatedConcepts": [
+      "zeta function",
+      "Euler product",
+      "probability"
+    ]
   },
   {
     "id": "ann-e1102-p-density-zero",
@@ -94,8 +117,12 @@
     "title": "Property P Implies Density Zero",
     "content": "**van Doorn-Tao:** Any sequence with property P has density 0, meaning aⱼ/j → ∞ as j → ∞.",
     "mathContext": "The proof shows that for any P-sequence, the counting function A(x) = |{a ∈ A : a ≤ x}| satisfies A(x)/x → 0.",
-    "significance": "critical",
-    "relatedConcepts": ["density", "counting function", "asymptotics"]
+    "significance": "key",
+    "relatedConcepts": [
+      "density",
+      "counting function",
+      "asymptotics"
+    ]
   },
   {
     "id": "ann-e1102-p-slow-decay",
@@ -109,7 +136,11 @@
     "content": "**van Doorn-Tao:** For any function f → ∞, there exists a P-sequence with aⱼ/j ≤ f(j). P-sequences can have density going to 0 arbitrarily slowly.",
     "mathContext": "This is an existence result using probabilistic or greedy construction. The sequence is not given explicitly.",
     "significance": "key",
-    "relatedConcepts": ["existence", "construction", "slow decay"]
+    "relatedConcepts": [
+      "existence",
+      "construction",
+      "slow decay"
+    ]
   },
   {
     "id": "ann-e1102-q-upper-density",
@@ -122,8 +153,12 @@
     "title": "Property Q Upper Density Bound",
     "content": "**van Doorn-Tao:** Any Q-sequence has upper density at most 6/π². The squarefree numbers achieve this bound exactly.",
     "mathContext": "For random n, the probability that n + a is squarefree for all small a depends on the density of A. Optimizing gives the 6/π² bound.",
-    "significance": "critical",
-    "relatedConcepts": ["upper density", "optimal bound", "squarefree density"]
+    "significance": "key",
+    "relatedConcepts": [
+      "upper density",
+      "optimal bound",
+      "squarefree density"
+    ]
   },
   {
     "id": "ann-e1102-squarefrees-form-q",
@@ -137,7 +172,11 @@
     "content": "**Derived theorem:** The squarefree numbers {1, 2, 3, 5, 6, 7, 10, ...} form a sequence with property Q. This is a direct consequence of the existence axiom.",
     "mathContext": "The proof uses the Lean `obtain` tactic to destructure the existence axiom, then recombines the components in the desired order.",
     "significance": "key",
-    "relatedConcepts": ["squarefree numbers", "property Q", "existence"]
+    "relatedConcepts": [
+      "squarefree numbers",
+      "property Q",
+      "existence"
+    ]
   },
   {
     "id": "ann-e1102-optimal-density",
@@ -150,8 +189,12 @@
     "title": "Optimal Density Exists",
     "content": "**Derived theorem:** There exists a Q-sequence achieving the maximum possible density 6/π². Combined with the upper bound, this shows 6/π² is the exact optimal value.",
     "mathContext": "This theorem extracts the limit statement from the existence axiom, confirming the squarefree numbers achieve the theoretical maximum.",
-    "significance": "critical",
-    "relatedConcepts": ["optimal bound", "density", "6/π²"]
+    "significance": "key",
+    "relatedConcepts": [
+      "optimal bound",
+      "density",
+      "6/π²"
+    ]
   },
   {
     "id": "ann-e1102-special-sequences",
@@ -165,6 +208,10 @@
     "content": "The sequences 2ⁿ ± 1 and n! ± 1 have property Q. These grow fast enough that infinitely many n have all translates squarefree. Whether they have property P remains open.",
     "mathContext": "Fast growth ensures the sequence is sparse, making it easier to find n where all a ∈ A ∩ [1,n) give n + a squarefree.",
     "significance": "key",
-    "relatedConcepts": ["exponential growth", "factorial", "open problems"]
+    "relatedConcepts": [
+      "exponential growth",
+      "factorial",
+      "open problems"
+    ]
   }
 ]

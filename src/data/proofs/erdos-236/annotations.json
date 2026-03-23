@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "This header documents **Erdős Problem #236** about counting representations n = p + 2^k. Let f(n) count such representations where p is prime and k ≥ 0. The question: Is f(n) = o(log n)?",
     "mathContext": "f(n) := |{k : n - 2^k is prime}|. Erdős (1950) proved infinitely many n have f(n) ≫ log log n. The conjecture asks if f(n)/log n → 0.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "prime representations",
       "asymptotic growth",
@@ -28,7 +28,7 @@
     "title": "The Counting Function f(n)",
     "content": "**f(n)** counts solutions to n = p + 2^k where p is prime. We iterate k from 0 to log₂(n) and count those where n - 2^k is prime.",
     "mathContext": "def f (n : ℕ) := |{k ∈ [0, log₂ n] : Prime(n - 2^k)}|. This is computable via filtering and checking primality.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "counting function",
       "prime checking",
@@ -80,7 +80,7 @@
     "title": "All-Prime Property",
     "content": "**HasAllPrimeProperty n** means n - 2^k is prime for ALL k with 1 < 2^k < n. These numbers are extremely rare.",
     "mathContext": "HasAllPrimeProperty n := ∀ k, 1 < 2^k → 2^k < n → Prime(n - 2^k). Conjectured to be exactly 7 such numbers.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "all-prime numbers",
       "special sets"
@@ -114,7 +114,7 @@
     "title": "Erdős-Guy Conjecture",
     "content": "**Conjecture**: The only all-prime numbers are {4, 7, 15, 21, 45, 75, 105}. Verified up to 2^44 by Mientka-Weitzenkamp (1969).",
     "mathContext": "axiom erdos_guy_all_prime_conjecture : {n | HasAllPrimeProperty n ∧ n > 1} = {4, 7, 15, 21, 45, 75, 105}.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "conjecture",
       "computational verification"
@@ -131,7 +131,7 @@
     "title": "Main Conjecture",
     "content": "**Erdős Problem #236**: Is f(n) = o(log n)? Formally: the ratio f(n)/log(n) tends to 0 as n → ∞.",
     "mathContext": "Erdos236_Conjecture := (fun n => f n) =o[atTop] (fun n => Real.log n). Uses Mathlib's asymptotic notation.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "little-o",
       "asymptotic",
@@ -149,7 +149,7 @@
     "title": "Erdős Lower Bound",
     "content": "**Erdős (1950)**: f(n) ≫ log log n infinitely often. There are infinitely many n where f(n) ≥ c·log log n for some c > 0.",
     "mathContext": "axiom erdos_lower_bound : ∀ C, ∀ᶠ n in atTop, ∃ m ≥ n, f m ≥ C * log log m. Shows the conjecture, if true, is tight.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "lower bound",
       "Erdős 1950"

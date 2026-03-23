@@ -10,7 +10,7 @@
     "title": "Hilbert's Vision",
     "content": "Hilbert posed this problem in 1900: 'For any given number field, to find the most general reciprocity law which governs the behavior of the n-th power residue symbol.'\n\nHe was asking: Can we generalize Gauss's beautiful quadratic reciprocity law to higher powers (cubic, quartic, etc.) and to arbitrary number fields?\n\nThe answer took 27 years and the development of an entirely new field: class field theory.",
     "mathContext": "Hilbert sought a general formula for when $a$ is an $n$-th power residue modulo a prime ideal $\\mathfrak{p}$ in a number field $K$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Hilbert's 23 problems",
       "power residue symbol",
@@ -28,7 +28,7 @@
     "title": "Quadratic Reciprocity",
     "content": "**Gauss's Golden Theorem** (1796): For distinct odd primes $p$ and $q$:\n\n$(p/q)(q/p) = (-1)^{\\frac{p-1}{2} \\cdot \\frac{q-1}{2}}$\n\nThis is the simplest reciprocity law, governing when a prime is a quadratic residue (perfect square) modulo another prime.\n\nGauss called this his 'golden theorem' and gave 8 different proofs during his lifetime.",
     "mathContext": "$(p/q) = 1$ means $p$ is a quadratic residue mod $q$: $\\exists x : x^2 \\equiv p \\pmod{q}$\n\n$(p/q) = -1$ means $p$ is a quadratic non-residue mod $q$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Legendre symbol",
       "quadratic residue",
@@ -100,7 +100,7 @@
     "title": "The Artin Symbol",
     "content": "The **Artin symbol** (or Frobenius element) $(L/K, \\mathfrak{p})$ is the key innovation.\n\nFor a prime ideal $\\mathfrak{p}$ of $K$ unramified in an abelian extension $L/K$, the Artin symbol is the unique automorphism $\\sigma \\in \\text{Gal}(L/K)$ satisfying:\n\n$\\sigma(x) \\equiv x^{N\\mathfrak{p}} \\pmod{\\mathfrak{P}}$\n\nfor any prime $\\mathfrak{P}$ above $\\mathfrak{p}$.\n\nThis generalizes the Legendre symbol to arbitrary extensions!",
     "mathContext": "For $L = \\mathbb{Q}(\\sqrt{p})$, the Artin symbol at $q$ equals the identity iff $(p/q) = 1$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Frobenius automorphism",
       "Galois groups",
@@ -118,7 +118,7 @@
     "title": "Artin Reciprocity Law",
     "content": "**Artin Reciprocity** (1927): For an abelian extension $L/K$ of number fields, the Artin map\n\n$\\mathfrak{p} \\mapsto (L/K, \\mathfrak{p})$\n\nextends to a surjective homomorphism from the ray class group $C_{\\mathfrak{m}}(K)$ to $\\text{Gal}(L/K)$.\n\nThis is THE answer to Hilbert's 9th problem. Every reciprocity law follows from this single principle!",
     "mathContext": "$\\psi: I^{\\mathfrak{m}}(K) \\to \\text{Gal}(L/K)$\n$\\psi(\\mathfrak{p}) = (L/K, \\mathfrak{p})$\n\nKernel: $\\ker(\\psi) = P_{\\mathfrak{m},1}(K) \\cdot N_{L/K}(I(L))$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "class field theory",
       "ray class groups",

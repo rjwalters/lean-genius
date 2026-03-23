@@ -10,7 +10,7 @@
     "title": "Problem Overview and Resolution History",
     "content": "Header documentation summarizing the full history of Erdős Problem #116. The conjecture by Erdős, Herzog, and Piranian asked for a lower bound on the Lebesgue measure of the sublevel set $\\{z \\in \\mathbb{C} : |p(z)| < 1\\}$ for monic polynomials with roots in the unit disk. The problem was resolved by Krishnapur, Lundberg, and Ramachandran who proved the optimal $c/\\log n$ lower bound. The file also records Pommerenke's earlier $c/n^4$ bound, Pólya's $\\pi$ upper bound, and the KLR upper bound of $C/\\log\\log n$.",
     "mathContext": "For $p(z) = \\prod_{i=1}^n (z - z_i)$ with $|z_i| \\leq 1$, the sublevel set $S_p = \\{z \\in \\mathbb{C} : |p(z)| < 1\\}$ satisfies $c/\\log n \\leq \\mu(S_p) \\leq \\pi$, where $\\mu$ denotes 2D Lebesgue measure. The lower bound $c/\\log n$ is optimal up to $\\log\\log$ factors.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "monic polynomials",
       "sublevel sets",
@@ -56,7 +56,7 @@
     "title": "Unit Disk Polynomial",
     "content": "A monic polynomial of degree $n$ with all roots $z_i$ satisfying $|z_i| \\leq 1$. The structure bundles a function `roots : Fin n → ℂ` with a proof that each root lies in the closed unit disk. The polynomial is implicitly monic since it equals $\\prod(z - z_i)$ with leading coefficient 1.",
     "mathContext": "The structure `UnitDiskPoly n` encodes $p(z) = \\prod_{i=1}^n (z - z_i)$ where $|z_i| \\leq 1$ for all $i \\in \\{1, \\ldots, n\\}$. The closed unit disk $\\overline{\\mathbb{D}} = \\{z \\in \\mathbb{C} : |z| \\leq 1\\}$ is the natural domain for the roots.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "monic polynomials",
       "closed unit disk",
@@ -101,7 +101,7 @@
     "title": "Sublevel Set",
     "content": "The sublevel set $\\{z \\in \\mathbb{C} : |p(z)| < 1\\}$ is the region of the complex plane where the polynomial takes values smaller than 1 in modulus. This is an open set containing a neighborhood of each root, and is the central geometric object of the problem. Its 2D Lebesgue measure quantifies how 'spread out' the polynomial's small values are.",
     "mathContext": "$S_p = \\{z \\in \\mathbb{C} : |p(z)| < 1\\}$. Near each root $z_i$, $|p(z)| \\approx |z - z_i| \\cdot \\prod_{j \\neq i} |z - z_j|$, so each root contributes a small disk-like region to $S_p$. The sublevel set is also called a polynomial lemniscate.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "level sets",
       "complex modulus",
@@ -168,7 +168,7 @@
     "title": "KLR Lower Bound (Proves the Conjecture)",
     "content": "Krishnapur, Lundberg, and Ramachandran proved $\\mu(S_P) \\geq c/\\log n$ for all unit disk polynomials of degree $n \\geq 2$. This resolves the Erdős-Herzog-Piranian conjecture with the optimal logarithmic dependence, improving Pommerenke's $c/n^4$ by an enormous factor. The proof uses probabilistic methods and careful analysis of the polynomial's value distribution.",
     "mathContext": "$\\exists c > 0,\\, \\forall n \\geq 2,\\, \\forall P \\in \\text{UnitDiskPoly}(n),\\, \\mu(S_P) \\geq c/\\log n$. The logarithmic growth rate is optimal: $1/\\log n \\gg 1/n^4$ for large $n$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "probabilistic method",
       "value distribution",
@@ -236,7 +236,7 @@
     "title": "Erdős Problem 116: Resolution",
     "content": "The formal statement of Erdős Problem #116 (PROVED): the sublevel set measure is at least $c/\\log n$, matching the KLR lower bound. This axiom is equivalent to `klr_lower_bound` and explicitly records the resolution of the Erdős-Herzog-Piranian conjecture. The bound is optimal up to the gap with the $C/\\log\\log n$ upper bound.",
     "mathContext": "$\\text{ErdosProblem116} \\iff \\exists c > 0,\\, \\forall n \\geq 2,\\, \\forall P \\in \\text{UnitDiskPoly}(n),\\, \\mu(S_P) \\geq c/\\log n$. This resolves the conjecture: the measure decays at most logarithmically in the degree.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Erdős problems",
       "resolved conjectures",

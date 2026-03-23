@@ -2,127 +2,204 @@
   {
     "id": "ann-e491-context",
     "proofId": "erdos-491",
-    "range": { "startLine": 1, "endLine": 24 },
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
     "type": "concept",
     "title": "Problem Statement and Background",
     "content": "**Erdős Problem #491** asks whether additive arithmetic functions with bounded consecutive differences must be essentially logarithmic. If f: ℕ → ℝ is additive (f(ab) = f(a) + f(b) when gcd(a,b) = 1) and |f(n+1) - f(n)| < c for all n, must f(n) = c'·log(n) + O(1)?\n\nErdős proved weaker versions in 1946 (vanishing differences or monotonicity force exact logarithmic behavior). Wirsing (1970) proved the full result under the weaker bounded-differences hypothesis.",
     "mathContext": "The result characterizes the logarithm among additive arithmetic functions. Additive functions are fundamental in analytic number theory, determined by their values on prime powers via the fundamental theorem of arithmetic.",
-    "significance": "critical",
-    "relatedConcepts": ["Additive functions", "Analytic number theory", "Logarithm characterization"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Additive functions",
+      "Analytic number theory",
+      "Logarithm characterization"
+    ]
   },
   {
     "id": "ann-e491-additive",
     "proofId": "erdos-491",
-    "range": { "startLine": 40, "endLine": 42 },
+    "range": {
+      "startLine": 40,
+      "endLine": 42
+    },
     "type": "definition",
     "title": "Additive Function",
     "content": "**IsAdditive f** means f(1) = 0 and f(ab) = f(a) + f(b) whenever gcd(a,b) = 1. This is the standard definition in analytic number theory. Examples include the logarithm and the number-of-prime-factors function Ω(n). Unlike completely additive functions, additivity only requires the identity for coprime arguments.",
     "mathContext": "Additive functions are determined by their values on prime powers p^k. For completely additive functions, the values on primes alone suffice since f(p^k) = k·f(p).",
-    "significance": "critical",
-    "relatedConcepts": ["Coprimality", "Multiplicative functions", "Prime factorization"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Coprimality",
+      "Multiplicative functions",
+      "Prime factorization"
+    ]
   },
   {
     "id": "ann-e491-completely-additive",
     "proofId": "erdos-491",
-    "range": { "startLine": 44, "endLine": 51 },
+    "range": {
+      "startLine": 44,
+      "endLine": 51
+    },
     "type": "definition",
     "title": "Completely Additive and Its Relation to Additive",
     "content": "**IsCompletelyAdditive f** strengthens additivity: f(ab) = f(a) + f(b) for ALL pairs a, b, not just coprime ones. The natural logarithm is the canonical example: log(ab) = log(a) + log(b) always.\n\n**completely_additive_is_additive** proves the obvious implication: completely additive functions are additive (the coprimality hypothesis is simply dropped).",
     "significance": "key",
-    "relatedConcepts": ["Completely additive", "Logarithm"]
+    "relatedConcepts": [
+      "Completely additive",
+      "Logarithm"
+    ]
   },
   {
     "id": "ann-e491-bounded-diff",
     "proofId": "erdos-491",
-    "range": { "startLine": 62, "endLine": 68 },
+    "range": {
+      "startLine": 62,
+      "endLine": 68
+    },
     "type": "definition",
     "title": "Bounded Consecutive Differences",
     "content": "**HasBoundedDifferences f c** means c > 0 and |f(n+1) - f(n)| < c for all n ∈ ℕ. This is the key hypothesis in Erdős's problem — a regularity condition saying the function doesn't jump too much between consecutive integers.\n\n**log_bounded_differences** axiomatizes that the logarithm satisfies this: log((n+1)/n) = log(1 + 1/n) ≤ log(2) for n ≥ 1.",
     "mathContext": "The bounded-differences condition is strictly weaker than requiring differences to tend to zero. Wirsing's result shows that even this weaker condition forces logarithmic behavior up to O(1).",
-    "significance": "critical",
-    "relatedConcepts": ["Regularity conditions", "Bounded variation"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Regularity conditions",
+      "Bounded variation"
+    ]
   },
   {
     "id": "ann-e491-erdos-1946",
     "proofId": "erdos-491",
-    "range": { "startLine": 70, "endLine": 91 },
+    "range": {
+      "startLine": 70,
+      "endLine": 91
+    },
     "type": "axiom",
     "title": "Erdős's 1946 Results",
     "content": "**erdos_1946_o1:** If f is additive and f(n+1) - f(n) → 0 (differences tend to zero), then f(n) = c·log(n) *exactly* for some constant c. No O(1) error term is needed.\n\n**erdos_1946_monotone:** If f is additive and monotone (f(n+1) ≥ f(n)), then f(n) = c·log(n) with c ≥ 0. Monotonicity also forces exact logarithmic behavior.\n\nBoth results are stronger than Wirsing's theorem (exact rather than approximate), but require stronger hypotheses.",
     "mathContext": "These 1946 results motivated the 491 conjecture: if even bounded differences (not necessarily vanishing) suffice for an approximate characterization.",
-    "significance": "critical",
-    "relatedConcepts": ["Erdős 1946", "o(1) condition", "Monotone functions"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős 1946",
+      "o(1) condition",
+      "Monotone functions"
+    ]
   },
   {
     "id": "ann-e491-wirsing",
     "proofId": "erdos-491",
-    "range": { "startLine": 93, "endLine": 110 },
+    "range": {
+      "startLine": 93,
+      "endLine": 110
+    },
     "type": "axiom",
     "title": "Wirsing's Theorem (1970)",
     "content": "**IsLogPlusO1 f c'** means ∃ M > 0 such that |f(n) - c'·log(n)| ≤ M for all n ≥ 1. This captures 'f equals c'·log plus a bounded error.'\n\n**wirsing_theorem:** The core result resolving Erdős #491. If f is additive with HasBoundedDifferences f c, then ∃ c' such that IsLogPlusO1 f c'. The O(1) error cannot be removed in general (unlike the vanishing-differences case).\n\n**wirsingConstant** extracts the unique coefficient c' using Classical.choose.",
     "mathContext": "Wirsing's proof uses sophisticated techniques from analytic number theory, relating the behavior of f on consecutive integers to its values on prime powers through the structure of the integers.",
-    "significance": "critical",
-    "relatedConcepts": ["Wirsing 1970", "O(1) approximation", "Logarithm characterization"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Wirsing 1970",
+      "O(1) approximation",
+      "Logarithm characterization"
+    ]
   },
   {
     "id": "ann-e491-main",
     "proofId": "erdos-491",
-    "range": { "startLine": 117, "endLine": 128 },
+    "range": {
+      "startLine": 117,
+      "endLine": 128
+    },
     "type": "theorem",
     "title": "Erdős Problem #491: Main Theorems",
     "content": "**erdos_491** is the main entry point: additive + bounded differences implies f = c'·log + O(1). It is a direct application of wirsing_theorem.\n\n**erdos_491_explicit** unpacks the existential to make the bound M explicit: ∃ c' M, M > 0 ∧ ∀ n ≥ 1, |f(n) - c'·log(n)| ≤ M.",
-    "significance": "critical",
-    "relatedConcepts": ["Problem resolution", "Wirsing's theorem"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Problem resolution",
+      "Wirsing's theorem"
+    ]
   },
   {
     "id": "ann-e491-properties",
     "proofId": "erdos-491",
-    "range": { "startLine": 130, "endLine": 148 },
+    "range": {
+      "startLine": 130,
+      "endLine": 148
+    },
     "type": "axiom",
     "title": "Properties of the Characterization",
     "content": "**wirsing_constant_unique:** The coefficient c' in f = c'·log + O(1) is unique. If f is within O(1) of both c'·log and c''·log, then c' = c''.\n\n**wirsing_monotone_nonneg:** For monotone additive functions, c' ≥ 0 (the function grows like a non-negative multiple of log).\n\n**log_unique_completely_additive:** For completely additive functions, the characterization sharpens to f = c'·log exactly (no O(1) error), since complete additivity provides enough structure to eliminate the bounded perturbation.",
     "significance": "key",
-    "relatedConcepts": ["Uniqueness", "Monotonicity", "Complete additivity"]
+    "relatedConcepts": [
+      "Uniqueness",
+      "Monotonicity",
+      "Complete additivity"
+    ]
   },
   {
     "id": "ann-e491-examples",
     "proofId": "erdos-491",
-    "range": { "startLine": 150, "endLine": 172 },
+    "range": {
+      "startLine": 150,
+      "endLine": 172
+    },
     "type": "concept",
     "title": "Examples and Non-Examples",
     "content": "**log_satisfies_hypothesis** (axiom): The logarithm itself satisfies bounded consecutive differences, confirming the hypothesis is non-vacuous.\n\n**nonExample:** f(n) = n is a non-additive function with bounded differences (|1| < 2) that does NOT satisfy f = c·log + O(1), since n grows much faster than any c·log(n). This shows that the additivity hypothesis is essential — bounded differences alone don't force logarithmic behavior.\n\n**non_example_bounded_diff** (theorem): Verified by norm_num that f(n) = n has HasBoundedDifferences with c = 2.",
     "significance": "key",
-    "relatedConcepts": ["Necessity of additivity", "Counter-examples"]
+    "relatedConcepts": [
+      "Necessity of additivity",
+      "Counter-examples"
+    ]
   },
   {
     "id": "ann-e491-prime-powers",
     "proofId": "erdos-491",
-    "range": { "startLine": 174, "endLine": 190 },
+    "range": {
+      "startLine": 174,
+      "endLine": 190
+    },
     "type": "axiom",
     "title": "Connection to Prime Factorization",
     "content": "**additive_from_prime_powers:** An additive function f is determined by its values on prime powers: f(n) = Σ_{p | n} f(p^{v_p(n)}). This follows from the fundamental theorem of arithmetic and the additivity identity.\n\n**additiveFromPrimes:** Constructs a completely additive function from any function g on primes by f(n) = Σ_{p | n} g(p)·v_p(n). This is the canonical construction showing that completely additive functions are determined by their values on primes alone.",
     "mathContext": "The prime factorization connection explains why additive functions are 'almost logarithmic': log(n) = Σ v_p(n)·log(p), which is exactly the additiveFromPrimes construction with g(p) = log(p).",
     "significance": "key",
-    "relatedConcepts": ["Prime factorization", "Fundamental theorem of arithmetic"]
+    "relatedConcepts": [
+      "Prime factorization",
+      "Fundamental theorem of arithmetic"
+    ]
   },
   {
     "id": "ann-e491-convergence",
     "proofId": "erdos-491",
-    "range": { "startLine": 192, "endLine": 208 },
+    "range": {
+      "startLine": 192,
+      "endLine": 208
+    },
     "type": "axiom",
     "title": "Rate of Convergence and Non-Vanishing Error",
     "content": "**wirsing_explicit_bound:** The O(1) constant M can be bounded explicitly: |f(n) - c'·log(n)| ≤ 10c for n ≥ 2, where c is the difference bound.\n\n**deviation_bounded_not_zero:** There exist additive functions with bounded differences where the O(1) error genuinely does not vanish — the function oscillates around c'·log(n) without converging to it. This shows that Wirsing's O(1) conclusion cannot be strengthened to o(1) in general, distinguishing it from Erdős's 1946 result.",
     "significance": "key",
-    "relatedConcepts": ["Explicit bounds", "Sharpness of results"]
+    "relatedConcepts": [
+      "Explicit bounds",
+      "Sharpness of results"
+    ]
   },
   {
     "id": "ann-e491-summary",
     "proofId": "erdos-491",
-    "range": { "startLine": 227, "endLine": 249 },
+    "range": {
+      "startLine": 227,
+      "endLine": 249
+    },
     "type": "theorem",
     "title": "Summary Theorem",
     "content": "**erdos_491_summary** packages all main results into a conjunction: (1) Wirsing's theorem (bounded differences ⟹ f = c'·log + O(1)), (2) Erdős's 1946 result (vanishing differences ⟹ exact f = c·log), and (3) uniqueness of the coefficient c'.\n\n**erdos_491_answer:** Final restatement that Erdős Problem #491 is SOLVED by Wirsing (1970). The answer is YES — additive + bounded differences implies f = c'·log + O(1).",
-    "significance": "critical",
-    "relatedConcepts": ["Problem resolution", "Summary"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Problem resolution",
+      "Summary"
+    ]
   }
 ]

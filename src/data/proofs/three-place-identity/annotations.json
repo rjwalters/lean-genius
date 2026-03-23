@@ -10,7 +10,7 @@
     "title": "The RelativeIdentity Structure",
     "content": "This is the core innovation: instead of binary identity x = y, we use a three-place predicate Id(x, y, z) meaning 'x regards y as identical to z.' The key insight is that identity becomes perspectival—different viewpoints x may identify different pairs of objects.",
     "mathContext": "For each fixed x, the relation Id(x, -, -) must satisfy reflexivity, symmetry, and transitivity—making it an equivalence relation. But there's no requirement that these equivalences agree across different viewpoints.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "equivalence-relation",
       "predicate-logic"
@@ -32,7 +32,7 @@
     "title": "Bridge D1: Existence as Distinguishability",
     "content": "The first definitional bridge: y ∈' x := ¬Id(x, y, x). This says 'y is a member of x' when 'x does NOT regard y as identical to x itself.' Philosophically stunning: existence is derived from distinguishability from non-existence!",
     "mathContext": "The viewpoint x serves as an 'ontological origin.' What exists for x is precisely what x distinguishes from the undifferentiated background (x itself playing the role of 'nothing'). This formalizes Rota's 'identity precedes existence.'",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "relative-identity-structure"
     ],
@@ -75,7 +75,7 @@
     "title": "Bridge D2: Identity from Membership Status",
     "content": "The second bridge: Id∈(x, y, z) := (y ∈ x ∧ z ∈ x) ∨ (¬y ∈ x ∧ ¬z ∈ x). This says 'x regards y and z as identical' when they have the same membership status in x—either both members or both non-members.",
     "mathContext": "This connects directly to Quine's insight: identity within a language is indistinguishability with respect to that language's predicates. Here the predicate is 'member of x', and the viewpoint x determines which predicate matters.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "set-membership"
     ],
@@ -137,7 +137,7 @@
     "title": "The Foundation (Regularity) Axiom",
     "content": "ZF's Foundation axiom: ∀x. ¬(x ∈ x). No set is a member of itself. This seems like a technical detail but is ESSENTIAL for the round-trip theorem. Without it, the mutual interpretability breaks down.",
     "mathContext": "Foundation ensures x can serve as a 'null element'—something that genuinely contains nothing. In non-well-founded set theories (like Aczel's AFA), the round-trip fails, suggesting a deep connection between well-foundedness and the identity-membership duality.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "zf-set-theory"
     ],
@@ -158,7 +158,7 @@
     "title": "The Round-Trip Theorem",
     "content": "THE key theorem: starting from membership ∈, going to identity via D2, then back to membership via D1, we recover the original: ∈' ↔ ∈. This establishes that identity and membership are mutually interpretable.",
     "mathContext": "The proof expands definitions and uses Foundation crucially. The expression simplifies because x ∉ x (by Foundation), making the 'y ∈ x ∧ x ∈ x' disjunct always false. What remains is ¬(¬y ∈ x), which is just y ∈ x.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "mem-from-id",
       "id-from-mem",
@@ -221,7 +221,7 @@
     "title": "The Universality Theorem",
     "content": "The culmination: identity theory can express all of mathematics. Since ZF is a universal foundation and derived membership ∈' is equivalent to original ∈, any ZF axiom true of ∈ is equally true of ∈'. Identity theory + ZF-on-∈' is consistent.",
     "mathContext": "This is a meta-theorem: it says identity theory is 'open-ended' in Etter's terminology—capable of expressing any mathematical structure. The three-place identity predicate, with its minimal axioms, suffices for all of mathematics.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "round-trip-theorem",
       "zf-set-theory"

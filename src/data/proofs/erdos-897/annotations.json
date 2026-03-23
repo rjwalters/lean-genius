@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #897** explores the relationship between the behavior of additive arithmetic functions on prime powers and their consecutive differences. If f grows unboundedly fast on prime powers, must the consecutive differences f(n+1) - f(n) also be unbounded?\n\nThe problem has two parts, both **OPEN**. The converse direction was settled by Wirsing in 1970.",
     "mathContext": "An additive function satisfies f(ab) = f(a) + f(b) when gcd(a,b) = 1. Examples: ω(n), Ω(n), log(n).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "additive functions",
       "prime powers",
@@ -46,7 +46,7 @@
     "title": "Additive Function Definition",
     "content": "**IsAdditive f** holds when f(ab) = f(a) + f(b) for all positive coprime pairs (a, b).\n\nThis is the standard definition of an additive arithmetic function, weaker than completely additive (which holds for ALL products, not just coprime ones).\n\nClassic examples:\n- **ω(n)**: number of distinct prime divisors\n- **Ω(n)**: total prime factors with multiplicity\n- **log(n)**: natural logarithm",
     "mathContext": "For additive f, the value f(n) is determined by f on prime powers via the fundamental theorem of arithmetic.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "coprimality",
       "arithmetic functions",
@@ -82,7 +82,7 @@
     "title": "Part I: Consecutive Differences (OPEN)",
     "content": "**Erdős Problem #897, Part I**: If f is additive and f(p^k)/log(p^k) is unbounded over prime powers, then is (f(n+1) - f(n))/log(n) also unbounded?\n\nThis asks whether rapid growth on prime powers propagates to consecutive differences. The `∃ᶠ n in atTop` notation means \"for infinitely many n\".",
     "mathContext": "The normalization by log(n) is natural since log is the canonical additive function with bounded differences.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open problem",
       "consecutive integers",
@@ -100,7 +100,7 @@
     "title": "Part II: Ratio of Consecutive Values (OPEN)",
     "content": "**Erdős Problem #897, Part II**: Under the same hypotheses, is f(n+1)/f(n) also unbounded?\n\nThis is a multiplicative version of Part I. Instead of differences, we ask about ratios. Can the ratio of consecutive values be arbitrarily large?",
     "mathContext": "For log, the ratio log(n+1)/log(n) → 1, so this asks about functions with more erratic behavior.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open problem",
       "ratios",
@@ -118,7 +118,7 @@
     "title": "Wirsing's Theorem (1970)",
     "content": "**Wirsing's Theorem**: If f is additive and |f(n+1) - f(n)| ≤ C for all n (bounded consecutive differences), then f(n) = c·log(n) + O(1) for some constant c.\n\nThis is the **converse** direction—it characterizes log as essentially the unique additive function with bounded consecutive differences. This beautiful rigidity result was proved in 1970.",
     "mathContext": "The O(1) notation via `=O[atTop] (1 : ℕ → ℝ)` means the error term f(n) - c·log(n) is bounded.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "solved result",
       "logarithm characterization",

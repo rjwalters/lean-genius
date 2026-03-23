@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "This header documents **Erdős Problem #168** about {n, 2n, 3n}-free sets. Let F(N) be the maximum size of a subset of {1,...,N} avoiding all such triples. What is the limiting density lim F(N)/N?",
     "mathContext": "Graham-Spencer-Witsenhausen (1977) proved the limit exists. The limit ≈ 0.5564 involves 3-smooth numbers (2^a · 3^b). Erdős asked whether this limit is irrational—still open.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "extremal combinatorics",
       "density",
@@ -28,7 +28,7 @@
     "title": "Contains Triple",
     "content": "**ContainsTriple A** means A contains some {n, 2n, 3n} where n ≥ 1. This is a 'multiplicative' arithmetic progression with common ratio 2.",
     "mathContext": "ContainsTriple A := ∃ n ≥ 1, n ∈ A ∧ 2*n ∈ A ∧ 3*n ∈ A. Note this is different from additive APs like {n, n+d, n+2d}.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "arithmetic progression",
       "multiplicative structure"
@@ -45,7 +45,7 @@
     "title": "Triple-Free Sets",
     "content": "**IsTripleFree A** means A contains NO {n, 2n, 3n} triple. This is the negation of ContainsTriple.",
     "mathContext": "IsTripleFree A := ¬ContainsTriple A. The goal is to find the largest such sets within {1,...,N}.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "negation",
       "avoidance"
@@ -62,7 +62,7 @@
     "title": "The Function F(N)",
     "content": "**F(N)** is the maximum cardinality of a triple-free subset of {1,...,N}. This is defined as a supremum over all valid sets.",
     "mathContext": "F N := sSup { k | ∃ A ⊆ Icc 1 N, IsTripleFree A ∧ A.card = k }. The noncomputable definition uses sSup for the maximum.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "supremum",
       "cardinality",
@@ -132,7 +132,7 @@
     "title": "GSW Limit Theorem",
     "content": "**Graham-Spencer-Witsenhausen (1977)**: The limit lim_{N→∞} F(N)/N exists. This is axiomatized since the proof requires deep analysis.",
     "mathContext": "axiom gsw_limit_exists : ∃ L, Tendsto (F N / N) atTop (nhds L). The limit is computed to be ≈ 0.5564.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "limit existence",
       "density theorem"

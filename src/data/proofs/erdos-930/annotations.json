@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #930** asks whether products of integers from disjoint intervals can ever be perfect powers. The r=1 case (single interval of consecutive integers) was famously solved by Erdős and Selfridge in 1975. The general case remains **OPEN**.",
     "mathContext": "A perfect power is n = m^l with l > 1. Examples: 4, 8, 9, 16, 25, 27, ...",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "perfect powers",
       "consecutive integers",
@@ -45,7 +45,7 @@
     "title": "Perfect Power Definition",
     "content": "**IsPower n** holds when n = m^l for some natural numbers m and l with l > 1.\n\nExamples of perfect powers: 4 = 2², 8 = 2³, 9 = 3², 16 = 2⁴, 27 = 3³.\n\nNote: 0 and 1 are technically perfect powers (0 = 0², 1 = 1²).",
     "mathContext": "The condition l > 1 excludes trivial cases like n = n¹.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "squares",
       "cubes",
@@ -80,7 +80,7 @@
     "title": "The Main Conjecture (OPEN)",
     "content": "**Erdős Problem #930**: For every r > 0, there exists k such that if I₁,...,Iᵣ are r disjoint intervals of consecutive integers, each of length at least k, then their combined product is **never** a perfect power.\n\nThe intervals are encoded by start/end functions, with conditions ensuring:\n1. Each interval has positive start and sufficient length\n2. Intervals are disjoint and ordered",
     "mathContext": "The length constraint (≥ k) is necessary—without it, counterexamples exist for r=2.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open problem",
       "disjoint intervals",
@@ -98,7 +98,7 @@
     "title": "Erdős-Selfridge Theorem (r=1 Solved)",
     "content": "**Erdős-Selfridge Theorem (1975)**: The product of k ≥ 2 consecutive positive integers is **never** a perfect power.\n\nIn symbols: (n+1)(n+2)···(n+k) ≠ m^l for any m, l with l > 1.\n\nThis resolved a long-standing conjecture and is the r=1 case of Problem #930.",
     "mathContext": "The proof uses sophisticated arguments about prime multiplicities in consecutive products.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "consecutive integers",
       "solved case",
@@ -134,7 +134,7 @@
     "title": "Prime Multiplicity Lemma",
     "content": "**Key Technical Result**: For k ≥ 3, l ≥ 2, and n + k ≥ nextPrime(k), there exists a prime p ≥ k such that l does NOT divide the multiplicity of p in (n+1)(n+2)···(n+k).\n\nThis is the heart of the Erdős-Selfridge proof—it shows that no consecutive product can be a perfect l-th power by finding a 'problematic' prime.",
     "mathContext": "If every prime had multiplicity divisible by l, the product would be a perfect l-th power. This lemma shows such a prime always fails to divide evenly.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "prime factorization",
       "multiplicity",

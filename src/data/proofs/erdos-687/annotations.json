@@ -2,193 +2,351 @@
   {
     "id": "erdos-687-imports",
     "proofId": "erdos-687",
-    "range": { "startLine": 29, "endLine": 31 },
+    "range": {
+      "startLine": 29,
+      "endLine": 31
+    },
     "type": "concept",
     "title": "Imports: Primes, Lattices, Tactics",
     "content": "Imports Mathlib modules for prime numbers, conditionally complete lattices (for sSup and BddAbove), and tactics. These provide the infrastructure for defining the Jacobsthal function via suprema over sets of natural numbers.",
     "significance": "supporting",
     "mathContext": "The formalization uses `sSup` from `Order.ConditionallyCompleteLattice.Basic` to define $Y(x)$ and $g(n)$ as suprema. This requires showing the relevant sets are nonempty and bounded above.",
-    "relatedConcepts": ["sSup", "BddAbove", "Nat.Prime", "ConditionallyCompleteLattice"],
-    "prerequisites": ["Mathlib basics"]
+    "relatedConcepts": [
+      "sSup",
+      "BddAbove",
+      "Nat.Prime",
+      "ConditionallyCompleteLattice"
+    ],
+    "prerequisites": [
+      "Mathlib basics"
+    ]
   },
   {
     "id": "erdos-687-primorial",
     "proofId": "erdos-687",
-    "range": { "startLine": 37, "endLine": 39 },
+    "range": {
+      "startLine": 37,
+      "endLine": 39
+    },
     "type": "definition",
     "title": "Primorial P(x)",
     "content": "Defines **primorial(x)** = ∏_{p ≤ x, p prime} p, the product of all primes up to x. This is the modulus whose Jacobsthal function equals Y(x).",
     "significance": "key",
     "mathContext": "The primorial $P(x) = \\prod_{p \\le x} p$ grows as $e^{(1+o(1))x}$ by the prime number theorem. It is the most 'efficient' number with many small prime factors, making $g(P(x))$ the extremal case of the Jacobsthal function.",
-    "relatedConcepts": ["prime number theorem", "Finset.prod", "smooth numbers"],
-    "prerequisites": ["Nat.Prime", "Finset"]
+    "relatedConcepts": [
+      "prime number theorem",
+      "Finset.prod",
+      "smooth numbers"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Finset"
+    ]
   },
   {
     "id": "erdos-687-covering",
     "proofId": "erdos-687",
-    "range": { "startLine": 41, "endLine": 45 },
+    "range": {
+      "startLine": 41,
+      "endLine": 45
+    },
     "type": "definition",
     "title": "Covering System",
     "content": "Defines **IsCovered(x, a, n)**: an integer n is covered if n ≡ aₚ (mod p) for some prime p ≤ x. The function a assigns a residue class to each prime, forming a covering system.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "A covering system assigns residue classes $\\{a_p \\pmod{p} \\mid p \\le x, p \\text{ prime}\\}$. An integer $n$ is covered if $n \\in \\bigcup_p (a_p + p\\mathbb{Z})$. The question is: how long an initial interval $[1, y]$ can be covered?",
-    "relatedConcepts": ["congruence classes", "Chinese Remainder Theorem", "sieve of Eratosthenes"],
-    "prerequisites": ["Nat.Prime", "Int modular arithmetic"]
+    "relatedConcepts": [
+      "congruence classes",
+      "Chinese Remainder Theorem",
+      "sieve of Eratosthenes"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Int modular arithmetic"
+    ]
   },
   {
     "id": "erdos-687-jacobsthalSet",
     "proofId": "erdos-687",
-    "range": { "startLine": 48, "endLine": 50 },
+    "range": {
+      "startLine": 48,
+      "endLine": 50
+    },
     "type": "definition",
     "title": "Jacobsthal Set",
     "content": "Defines **jacobsthalSet(x)** as the set of all y such that some covering system for primes ≤ x covers every integer in [1, y]. The supremum of this set is Y(x).",
     "significance": "key",
     "mathContext": "The set $\\{y \\mid \\exists a, \\forall n \\in [1,y], n \\text{ is covered by } a\\}$ captures all achievable covering lengths. Its supremum $Y(x) = \\sup(\\text{jacobsthalSet}(x))$ is the extremal quantity.",
-    "relatedConcepts": ["sSup", "covering length", "jacobsthalY"],
-    "prerequisites": ["IsCovered"]
+    "relatedConcepts": [
+      "sSup",
+      "covering length",
+      "jacobsthalY"
+    ],
+    "prerequisites": [
+      "IsCovered"
+    ]
   },
   {
     "id": "erdos-687-Y",
     "proofId": "erdos-687",
-    "range": { "startLine": 52, "endLine": 54 },
+    "range": {
+      "startLine": 52,
+      "endLine": 54
+    },
     "type": "definition",
     "title": "Y(x) — Maximum Covering Length",
     "content": "Defines **jacobsthalY(x)** = sSup(jacobsthalSet(x)), the maximum y such that some covering system for primes ≤ x covers all integers in [1, y]. This is the central object of Problem #687.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "$Y(x) = \\sup\\{y \\mid \\exists \\text{covering } a, [1,y] \\subseteq \\bigcup_p (a_p + p\\mathbb{Z})\\}$. The well-definedness requires `jacobsthalSet` to be nonempty and bounded above, both of which are established.",
-    "relatedConcepts": ["Jacobsthal function", "sSup", "covering congruences"],
-    "prerequisites": ["jacobsthalSet", "jacobsthalSet_nonempty", "jacobsthalSet_bddAbove"]
+    "relatedConcepts": [
+      "Jacobsthal function",
+      "sSup",
+      "covering congruences"
+    ],
+    "prerequisites": [
+      "jacobsthalSet",
+      "jacobsthalSet_nonempty",
+      "jacobsthalSet_bddAbove"
+    ]
   },
   {
     "id": "erdos-687-jacobsthal",
     "proofId": "erdos-687",
-    "range": { "startLine": 58, "endLine": 63 },
+    "range": {
+      "startLine": 58,
+      "endLine": 63
+    },
     "type": "definition",
     "title": "Jacobsthal Function g(n)",
     "content": "Defines **jacobsthal(n)** = sSup{d | ∃ m, ∀ k ∈ (m, m+d), ∃ prime p | n with p | k}. This is the largest gap between consecutive integers coprime to n, equivalently 1 plus the longest run of non-coprime integers.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The Jacobsthal function $g(n) = \\max\\{d \\mid \\exists m, \\text{gcd}(k, n) > 1 \\text{ for all } m < k < m + d\\}$ measures the largest gap in the integers coprime to $n$. For $n = P(x)$, this equals $Y(x)$.",
-    "relatedConcepts": ["coprime integers", "prime gaps", "sieve theory", "Euler's totient"],
-    "prerequisites": ["Nat.Prime", "sSup"]
+    "relatedConcepts": [
+      "coprime integers",
+      "prime gaps",
+      "sieve theory",
+      "Euler's totient"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "sSup"
+    ]
   },
   {
     "id": "erdos-687-nonempty",
     "proofId": "erdos-687",
-    "range": { "startLine": 68, "endLine": 72 },
+    "range": {
+      "startLine": 68,
+      "endLine": 72
+    },
     "type": "theorem",
     "title": "Jacobsthal Set Nonempty",
     "content": "The jacobsthalSet is always nonempty: y = 0 is vacuously in the set since there are no integers in [1, 0]. This is needed to justify the use of sSup.",
     "significance": "supporting",
     "mathContext": "The proof constructs $y = 0$ and any covering function $a$ (choosing $a_p = 0$ for all $p$). The covering condition $\\forall n \\in [1, 0]$ is vacuously true since $[1, 0] = \\emptyset$.",
-    "relatedConcepts": ["Set.Nonempty", "vacuous truth", "sSup"],
-    "prerequisites": ["jacobsthalSet"]
+    "relatedConcepts": [
+      "Set.Nonempty",
+      "vacuous truth",
+      "sSup"
+    ],
+    "prerequisites": [
+      "jacobsthalSet"
+    ]
   },
   {
     "id": "erdos-687-bddAbove",
     "proofId": "erdos-687",
-    "range": { "startLine": 78, "endLine": 79 },
+    "range": {
+      "startLine": 78,
+      "endLine": 79
+    },
     "type": "theorem",
     "title": "Jacobsthal Set Bounded Above",
     "content": "The jacobsthalSet(x) is bounded above. By the Chinese Remainder Theorem, the covering pattern repeats with period primorial(x), so any uncovered integer implies infinitely many uncovered integers.",
     "significance": "key",
     "mathContext": "By CRT, $\\text{IsCovered}(x, a, n) \\iff \\text{IsCovered}(x, a, n + P(x))$. So if $[1, y]$ is covered, the pattern repeats but $y \\le P(x)$ since eventually an uncovered residue class modulo $P(x)$ appears. Thus $Y(x) \\le P(x)$.",
-    "relatedConcepts": ["Chinese Remainder Theorem", "BddAbove", "primorial"],
-    "prerequisites": ["jacobsthalSet", "primorial"]
+    "relatedConcepts": [
+      "Chinese Remainder Theorem",
+      "BddAbove",
+      "primorial"
+    ],
+    "prerequisites": [
+      "jacobsthalSet",
+      "primorial"
+    ]
   },
   {
     "id": "erdos-687-mono-set",
     "proofId": "erdos-687",
-    "range": { "startLine": 86, "endLine": 95 },
+    "range": {
+      "startLine": 86,
+      "endLine": 95
+    },
     "type": "theorem",
     "title": "Jacobsthal Set Monotonicity",
     "content": "If x₁ ≤ x₂ then jacobsthalSet(x₁) ⊆ jacobsthalSet(x₂). The proof extends any covering for primes ≤ x₁ to primes ≤ x₂ by assigning residue class 0 to each new prime.",
     "significance": "key",
     "mathContext": "Given a covering $a$ for primes $\\le x_1$, define $a'_p = a_p$ for $p \\le x_1$ and $a'_p = 0$ for $x_1 < p \\le x_2$. Any $n$ covered by $a$ is also covered by $a'$ (using the same prime $p \\le x_1$). The new primes only help.",
-    "relatedConcepts": ["set inclusion", "covering extension", "dite"],
-    "prerequisites": ["jacobsthalSet", "IsCovered"]
+    "relatedConcepts": [
+      "set inclusion",
+      "covering extension",
+      "dite"
+    ],
+    "prerequisites": [
+      "jacobsthalSet",
+      "IsCovered"
+    ]
   },
   {
     "id": "erdos-687-mono-Y",
     "proofId": "erdos-687",
-    "range": { "startLine": 99, "endLine": 103 },
+    "range": {
+      "startLine": 99,
+      "endLine": 103
+    },
     "type": "theorem",
     "title": "Y(x) Monotonicity",
     "content": "**Y(x) is monotone**: x₁ ≤ x₂ implies Y(x₁) ≤ Y(x₂). More primes allow longer covering intervals. Proved via csSup_le_csSup from the set monotonicity.",
     "significance": "key",
     "mathContext": "From $\\text{jacobsthalSet}(x_1) \\subseteq \\text{jacobsthalSet}(x_2)$ and both sets being nonempty and bounded above, `csSup_le_csSup` gives $\\text{sSup}(\\text{jacobsthalSet}(x_1)) \\le \\text{sSup}(\\text{jacobsthalSet}(x_2))$.",
-    "relatedConcepts": ["csSup_le_csSup", "monotone function", "sSup"],
-    "prerequisites": ["jacobsthalSet_mono", "jacobsthalSet_nonempty", "jacobsthalSet_bddAbove"]
+    "relatedConcepts": [
+      "csSup_le_csSup",
+      "monotone function",
+      "sSup"
+    ],
+    "prerequisites": [
+      "jacobsthalSet_mono",
+      "jacobsthalSet_nonempty",
+      "jacobsthalSet_bddAbove"
+    ]
   },
   {
     "id": "erdos-687-eq-jacobsthal",
     "proofId": "erdos-687",
-    "range": { "startLine": 108, "endLine": 109 },
+    "range": {
+      "startLine": 108,
+      "endLine": 109
+    },
     "type": "theorem",
     "title": "Y(x) = g(primorial(x))",
     "content": "**Fundamental equivalence**: Y(x) equals the Jacobsthal function of the primorial. This connects covering systems (combinatorial) to gaps in coprime sequences (analytic).",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The integers not coprime to $P(x)$ are exactly those divisible by some prime $p \\le x$. A covering system assigns residue classes to these primes. The maximum covered interval $Y(x)$ equals the maximum gap $g(P(x))$ between consecutive integers coprime to $P(x)$.",
-    "relatedConcepts": ["Jacobsthal function", "primorial", "coprime integers"],
-    "prerequisites": ["jacobsthalY", "jacobsthal", "primorial"]
+    "relatedConcepts": [
+      "Jacobsthal function",
+      "primorial",
+      "coprime integers"
+    ],
+    "prerequisites": [
+      "jacobsthalY",
+      "jacobsthal",
+      "primorial"
+    ]
   },
   {
     "id": "erdos-687-conjecture",
     "proofId": "erdos-687",
-    "range": { "startLine": 115, "endLine": 117 },
+    "range": {
+      "startLine": 115,
+      "endLine": 117
+    },
     "type": "theorem",
     "title": "Erdős Problem #687 ($1,000 Prize)",
     "content": "**Main Conjecture**: For all ε > 0, eventually Y(x) ≤ x^{1+ε}. This asks whether Y(x) = o(x²), formalized using Lean's `Filter.Eventually` and `Filter.atTop`.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The conjecture $Y(x) = o(x^2)$ is equivalent to: $\\forall \\varepsilon > 0, \\exists X, \\forall x \\ge X, Y(x) \\le x^{1+\\varepsilon}$. The stronger form $Y(x) \\le x^{1+o(1)}$ is formalized here. Even proving $Y(x) \\le x^{2-\\delta}$ for any fixed $\\delta > 0$ would be a major advance.",
-    "relatedConcepts": ["Filter.atTop", "Filter.Eventually", "little-o notation"],
-    "prerequisites": ["jacobsthalY"]
+    "relatedConcepts": [
+      "Filter.atTop",
+      "Filter.Eventually",
+      "little-o notation"
+    ],
+    "prerequisites": [
+      "jacobsthalY"
+    ]
   },
   {
     "id": "erdos-687-iwaniec",
     "proofId": "erdos-687",
-    "range": { "startLine": 123, "endLine": 125 },
+    "range": {
+      "startLine": 123,
+      "endLine": 125
+    },
     "type": "theorem",
     "title": "Iwaniec Upper Bound (1978)",
     "content": "**Iwaniec's Theorem**: There exists C > 0 such that Y(x) ≤ C · x² for all x ≥ 2. This 1978 result remains the best known upper bound, unimproved for nearly 50 years.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "Iwaniec proved $g(n) \\ll (\\log n)^2$ for any $n$, which for $n = P(x)$ with $\\log P(x) \\sim x$ gives $Y(x) = g(P(x)) \\ll x^2$. The proof uses the Selberg sieve: the number of integers in $[1, y]$ coprime to $P(x)$ is $\\sim y/\\log x$ by Mertens' theorem, so gaps of length $\\gg x^2$ would leave too many uncovered integers.",
-    "relatedConcepts": ["Selberg sieve", "Mertens' theorem", "sieve methods"],
-    "prerequisites": ["jacobsthalY"]
+    "relatedConcepts": [
+      "Selberg sieve",
+      "Mertens' theorem",
+      "sieve methods"
+    ],
+    "prerequisites": [
+      "jacobsthalY"
+    ]
   },
   {
     "id": "erdos-687-fgkmt",
     "proofId": "erdos-687",
-    "range": { "startLine": 130, "endLine": 134 },
+    "range": {
+      "startLine": 130,
+      "endLine": 134
+    },
     "type": "theorem",
     "title": "FGKMT Lower Bound (2018)",
     "content": "**Ford–Green–Konyagin–Maynard–Tao**: Y(x) ≥ c · x · (log x)(log log log x)/(log log x). This improved Rankin's 1938 classical bound using breakthrough techniques from the proof of bounded gaps between primes.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The FGKMT bound $Y(x) \\gg x \\cdot \\frac{\\log x \\cdot \\log \\log \\log x}{\\log \\log x}$ improves Rankin's $x \\cdot \\frac{\\log x \\cdot \\log \\log x \\cdot \\log \\log \\log \\log x}{(\\log \\log \\log x)^2}$ by a factor of $(\\log \\log \\log x)^3 / (\\log \\log x \\cdot \\log \\log \\log \\log x)$. Their method uses Maynard–Tao sieve weights and the Erdős–Rankin construction.",
-    "relatedConcepts": ["Rankin's bound", "Maynard–Tao weights", "Erdős–Rankin construction", "prime gaps"],
-    "prerequisites": ["jacobsthalY"]
+    "relatedConcepts": [
+      "Rankin's bound",
+      "Maynard–Tao weights",
+      "Erdős–Rankin construction",
+      "prime gaps"
+    ],
+    "prerequisites": [
+      "jacobsthalY"
+    ]
   },
   {
     "id": "erdos-687-mp",
     "proofId": "erdos-687",
-    "range": { "startLine": 138, "endLine": 140 },
+    "range": {
+      "startLine": 138,
+      "endLine": 140
+    },
     "type": "theorem",
     "title": "Maier–Pomerance Conjecture",
     "content": "**Conjectured**: Y(x) ≤ C · x · (log x)^{2+ε} for any ε > 0 and large x. If true, this would nearly close the gap with the FGKMT lower bound, leaving only a (log x)^{1+o(1)} factor.",
     "significance": "key",
     "mathContext": "The Maier–Pomerance conjecture $Y(x) \\ll x \\cdot (\\log x)^{2+o(1)}$ would imply $Y(x) = o(x^{1+\\delta})$ for any $\\delta > 0$, resolving Erdős's \\$1,000 problem. It is based on probabilistic heuristics for the Jacobsthal function.",
-    "relatedConcepts": ["Maier's matrix method", "probabilistic heuristics", "smooth numbers"],
-    "prerequisites": ["jacobsthalY"]
+    "relatedConcepts": [
+      "Maier's matrix method",
+      "probabilistic heuristics",
+      "smooth numbers"
+    ],
+    "prerequisites": [
+      "jacobsthalY"
+    ]
   },
   {
     "id": "erdos-687-trivial",
     "proofId": "erdos-687",
-    "range": { "startLine": 147, "endLine": 148 },
+    "range": {
+      "startLine": 147,
+      "endLine": 148
+    },
     "type": "theorem",
     "title": "Trivial Lower Bound: Y(x) ≥ x + 1",
     "content": "For x ≥ 2, Y(x) ≥ x + 1. Every integer in [1, x] has a prime factor ≤ x, so taking aₚ = 0 for all primes p ≤ x covers at least [1, x].",
     "significance": "supporting",
     "mathContext": "For any $n \\in [1, x]$, the smallest prime factor of $n$ is $\\le \\sqrt{n} \\le x$ (for $n \\ge 2$), and $1$ is covered vacuously. Taking $a_p = 0$ gives $n \\equiv 0 \\pmod{p}$ iff $p \\mid n$, covering all of $[1, x]$.",
-    "relatedConcepts": ["smallest prime factor", "trivial covering", "lower bound"],
-    "prerequisites": ["jacobsthalY"]
+    "relatedConcepts": [
+      "smallest prime factor",
+      "trivial covering",
+      "lower bound"
+    ],
+    "prerequisites": [
+      "jacobsthalY"
+    ]
   }
 ]

@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #186: Non-Averaging Sets**\n\nWhat is the maximum size of a non-averaging subset of {1,...,N}?\n\n**Answer:** F(N) = N^(1/4+o(1))\n\nThe problem was originally due to Straus and resolved through work spanning 35 years:\n- Lower bound: Bosznay (1989) via number-theoretic construction\n- Upper bound: Pham-Zakharov (2024), improving Conlon-Fox-Pham (2023)\n- Earlier upper bound: Erdős-Sárközy (1990)",
     "mathContext": "A set is non-averaging if no element equals the mean of two other distinct elements. This is weaker than avoiding all 3-term arithmetic progressions.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Non-averaging sets",
       "Arithmetic means",
@@ -28,7 +28,7 @@
     "title": "Non-Averaging Set Definition",
     "content": "**IsNonAveraging:**\n\nA set A is non-averaging if no element is the arithmetic mean of two distinct other elements.\n\n**Definition:**\n```lean\ndef IsNonAveraging (A : Finset N) : Prop :=\n  forall a in A, forall b in A, forall c in A,\n    b != a -> c != a -> b != c -> 2 * a != b + c\n```\n\nEquivalently: no centered 3-term arithmetic progressions. The condition 2a != b + c prevents a from being the midpoint of b and c.",
     "mathContext": "This is a weaker condition than AP-freeness. AP-free sets avoid all 3-term APs, while non-averaging sets only avoid those centered at an element of the set.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Arithmetic progressions",
       "Means",
@@ -63,7 +63,7 @@
     "title": "Maximum Non-Averaging Set Size",
     "content": "**F(N):**\n\nThe maximum size of a non-averaging subset of {1,...,N}.\n\nDefined as the supremum of cardinalities over all non-averaging subsets of the range {0,...,N}. This is the central quantity in the problem.",
     "mathContext": "F(N) is a monotone non-decreasing function of N. Understanding its growth rate is the core question.",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-e186-empty",
@@ -112,7 +112,7 @@
     "title": "Bosznay's Lower Bound (1989)",
     "content": "**bosznay_lower_bound:**\n\nThere exist non-averaging sets of size >= N^(1/4) / 2.\n\nBosznay's construction uses number-theoretic techniques — selecting elements based on representations as sums of two squares or similar combinatorial structures — to build large non-averaging subsets of {1,...,N}.\n\n**Reference:** Bosznay, \"On the lower estimation of non-averaging sets\", Acta Math. Hungar. (1989).",
     "mathContext": "This achieves the correct exponent 1/4. The construction is explicit but the proof that it works requires careful analysis.",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-e186-lower",
@@ -162,7 +162,7 @@
     "title": "Pham-Zakharov Sharp Bound (2024)",
     "content": "**pham_zakharov_upper_bound_2024:**\n\nSharp upper bound: for any epsilon > 0, F(N) <= C * N^(1/4+epsilon) for all sufficiently large N.\n\nThis essentially resolves the problem by matching the lower bound up to sub-polynomial factors. The o(1) term in the exponent is necessary — the bound cannot be improved to exactly N^(1/4).\n\n**Reference:** Pham-Zakharov, \"A sharp upper bound for the Erdős-Straus non-averaging sets problem\" (2024).",
     "mathContext": "The formulation with forall epsilon captures the N^(1/4+o(1)) asymptotic precisely.",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-e186-main",
@@ -175,7 +175,7 @@
     "title": "Main Bounds Theorem",
     "content": "**erdos_186_bounds:**\n\nCombines the lower and upper bounds into a single statement:\n\n(1/2) * N^(1/4) <= F(N) <= C * N^(1/4+epsilon)\n\nfor any epsilon > 0, with C depending on epsilon.\n\n**Proof:** Uses the Bosznay lower bound axiom and Pham-Zakharov upper bound axiom directly. The constant c = 1/2 comes from the lower bound construction.",
     "mathContext": "This is the key result that establishes F(N) = N^(1/4+o(1)).",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-e186-erdos186",
@@ -187,7 +187,7 @@
     "type": "axiom",
     "title": "Erdős Problem #186: Asymptotic Form",
     "content": "**erdos_186:**\n\nThe o(1) exponent form: for any epsilon > 0, eventually\nN^(1/4-epsilon) <= F(N) <= N^(1/4+epsilon).\n\nThis is the standard asymptotic notation meaning the exponent converges to 1/4. Axiomatized because deriving the lower bound in the form N^(1/4-epsilon) from Bosznay's construction requires careful asymptotic analysis beyond the direct N^(1/4)/2 bound.",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-e186-subset",

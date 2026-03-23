@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "This header documents **Erdős Problem #158**, which concerns the counting function of B₂[g] sets. The problem generalizes a known result about Sidon sets to a broader class of sets with bounded representation.",
     "mathContext": "A B₂[g] set A is one where each sum n has at most g representations a + b = n with a ≤ b. The counting function A(N) = |A ∩ {1,...,N}| measures the density. The question is whether liminf A(N)/√N = 0 must hold.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "additive combinatorics",
       "Sidon sets",
@@ -28,7 +28,7 @@
     "title": "B₂[g] Set Definition",
     "content": "A **B₂[g] set** is a set where each sum has at most g ordered representations. When g = 1, this is exactly a Sidon set. When g = 2, each sum can appear at most twice - the case that remains open.",
     "mathContext": "Formally: A is B₂[g] if for all n, |{(a,b) : a + b = n, a ≤ b, a,b ∈ A}| ≤ g. We use encard (extended cardinality) to handle potentially infinite representation sets.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Sidon sets",
       "representation function",
@@ -82,7 +82,7 @@
     "title": "ESS94 Log Bound",
     "content": "**Erdős-Sárközy-Sós (1994)** proved a stronger bound for Sidon sets: liminf A(N)/√N · (log N)^{1/2} < ∞. This implies the weaker result that liminf A(N)/√N = 0.",
     "mathContext": "The log factor is crucial - it provides the 'room' that makes the limit inferior finite rather than requiring it to be zero directly. This uses sieve methods and probabilistic arguments from the ESS94 paper.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "logarithmic bounds",
       "sieve theory",
@@ -100,7 +100,7 @@
     "title": "Sidon Sets: liminf = 0",
     "content": "For any **infinite Sidon set**, the counting function must dip below c√N infinitely often. You cannot have A(N) ≥ c√N for all large N - uniform density is impossible.",
     "mathContext": "This follows from the log bound: if liminf A(N)/√N = c > 0, then liminf A(N)/√N · (log N)^{1/2} would be infinite (since log N → ∞), contradicting ESS94.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "limit inferior",
       "density bounds",
@@ -118,7 +118,7 @@
     "title": "The Open Conjecture",
     "content": "**Erdős Problem #158** asks if the same conclusion holds for B₂[2] sets. Allowing two representations per sum is a significant relaxation - does it still force liminf A(N)/√N = 0?",
     "mathContext": "Formally: ∀ A, A.Infinite → B2 2 A → liminf (normalizedCount A) atTop = 0. The Sidon case is solved but this remains open.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open problem",
       "B₂[2] sets",

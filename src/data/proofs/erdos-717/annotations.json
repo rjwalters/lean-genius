@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #717**: Chromatic Number and Clique Subdivisions\n\nIs χ(G) ≤ C · (√n/log n) · σ(G) for all n-vertex graphs?\n\n**Status**: SOLVED (Fox, Lee, Sudakov 2013)\n\n**Answer**: YES - the bound is tight by Erdős-Fajtlowicz.\n\n**Historical context**: Disproves Hajós conjecture in quantitative form.",
     "mathContext": "σ(G) is the maximum k such that G contains a subdivision of K_k. The problem asks for the best upper bound on χ in terms of σ and n.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "chromatic-number",
       "subdivisions",
@@ -35,7 +35,7 @@
     "title": "Chromatic Number",
     "content": "**axiom chromaticNumber G : ℕ**\n\nThe minimum number of colors needed to properly color G (adjacent vertices get different colors).\n\n**Properties axiomatized**:\n- `chromaticNumber_pos`: χ(G) ≥ 1 for nonempty G\n- `chromaticNumber_bound`: χ(G) ≤ |V(G)|\n\nComputing χ is NP-hard, so we axiomatize it.",
     "mathContext": "The chromatic number is one of the most studied graph parameters. It's related to clique number by χ ≥ ω (clique number), with equality for perfect graphs.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "chromatic-number",
       "graph-coloring",
@@ -81,7 +81,7 @@
     "title": "Subdivisions and σ(G)",
     "content": "**Subdivision of H**: Replace edges with paths (add 'branch vertices').\n\n**hasSubdivision G H**: G contains a subdivision of H.\n\n**axiom subdivisionNumber G : ℕ**\nσ(G) = maximum k such that G contains a subdivision of K_k.\n\nThis measures the 'topological clique structure' of G.",
     "mathContext": "A subdivision of K_k in G means k 'branch vertices' connected by disjoint paths. This is stronger than having K_k as a minor (where paths can share internal vertices).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "subdivision",
       "topological-minor",
@@ -105,7 +105,7 @@
     "title": "Hajós Conjecture",
     "content": "**Hajós Conjecture (1961)**: χ(G) ≤ σ(G) for all graphs G.\n\n```lean\ndef hajosConjecture (G : SimpleGraph V) : Prop :=\n  chromaticNumber G ≤ subdivisionNumber G\n```\n\n**Meaning**: If G needs k colors, it contains a K_k subdivision.\n\n**Status**: FALSE for k ≥ 7! (Catlin 1974)",
     "mathContext": "Hajós conjecture would be a beautiful strengthening of the trivial bound χ ≤ n. It was open for decades before being disproved.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "hajos-conjecture",
       "catlin",
@@ -175,7 +175,7 @@
     "title": "Erdős-Fajtlowicz Strong Disproof (1981)",
     "content": "**axiom erdos_fajtlowicz_lower_bound**:\nFor almost all n-vertex graphs:\nχ(G) ≥ c · (√n / log n) · σ(G)\n\n**The strength**: Not only can χ > σ, but χ/σ can be as large as √n/log n!\n\n**Random graphs G(n, 1/2)**:\n- χ ≈ n/(2 log n) (high: needs many colors)\n- σ ≈ 2 log n (low: sparse K_k subdivisions)",
     "mathContext": "Random graphs are excellent counterexamples to Hajós. They're hard to color (high independence number) but contain few clique subdivisions.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "erdos-fajtlowicz-1981",
       "random-graphs",
@@ -199,7 +199,7 @@
     "title": "The Main Question",
     "content": "**erdos717QuestionUniversal**: Is there C > 0 such that for all n ≥ 2 and all G on n vertices:\nχ(G) ≤ C · (√n / log n) · σ(G)?\n\n**Why this specific bound?**\nErdős-Fajtlowicz shows χ/σ can be Ω(√n/log n). The question asks: is this the worst case?\n\n**If YES**: χ/σ = Θ(√n/log n) - a complete characterization!",
     "mathContext": "The question asks for a matching upper bound to the Erdős-Fajtlowicz lower bound. This would give tight asymptotics for χ vs σ.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "main-question",
       "upper-bound",
@@ -223,7 +223,7 @@
     "title": "Fox-Lee-Sudakov Theorem (2013)",
     "content": "**axiom fox_lee_sudakov_theorem**:\nFor all n ≥ 2 and all G on n vertices:\nχ(G) ≤ C · (√n / log n) · σ(G)\n\nfor some absolute constant C > 0.\n\n**theorem erdos717_answer : erdos717QuestionUniversal**\nThe answer is YES - follows from fox_lee_sudakov_theorem.\n\nThis completes the picture: χ/σ = Θ(√n/log n).",
     "mathContext": "The Fox-Lee-Sudakov paper appeared in Combinatorica (2013). The proof uses probabilistic and extremal graph theory techniques.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "fox-lee-sudakov-2013",
       "main-result",
@@ -385,7 +385,7 @@
     "title": "Main Result: erdos_717",
     "content": "**theorem erdos_717 : erdos717QuestionUniversal**\n\n**Statement**: There exists C > 0 such that for all n ≥ 2 and graphs G on n vertices:\nχ(G) ≤ C · (√n / log n) · σ(G)\n\n**Proof**: Follows from fox_lee_sudakov_theorem.\n\n**Status**: SOLVED (Fox, Lee, Sudakov 2013)",
     "mathContext": "This theorem is the formal statement of the main result. The answer to Erdős Problem #717 is YES.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "main-theorem",
       "erdos-717",

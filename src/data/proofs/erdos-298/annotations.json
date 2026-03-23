@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #298**: Unit Fractions from Sets of Positive Density\n\n**Question**: Does every set A ⊆ ℕ of positive density contain some finite S ⊂ A such that ∑_{n ∈ S} 1/n = 1?\n\n**Answer**: YES (Thomas Bloom, 2021)\n\n**Prize**: $500 (one of Erdős's monetary problems)\n\n**Key Points**:\n- Bloom proved the stronger result: positive UPPER density suffices\n- The proof uses probabilistic methods, sum-product estimates, and Fourier analysis\n- A Lean 3 formalization exists at github.com/b-mehta/unit-fractions (~10,000 lines)",
     "mathContext": "This problem connects additive structure (sums of unit fractions) with multiplicative structure (density of the set). It was a major open problem in additive combinatorics.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "unit-fractions",
       "density",
@@ -82,7 +82,7 @@
     "title": "The Erdős Conjecture",
     "content": "**def erdos_298_conjecture**: Prop\n  ∀ A : Set ℕ, 0 ∉ A → HasPosDensity A → ContainsUnitSumSubset A\n\n**In words**: Every set of positive integers with positive natural density contains a finite subset whose reciprocals sum to 1.\n\nThis was a conjecture of Erdős with a $500 prize.",
     "mathContext": "The condition 0 ∉ A is technical (to avoid 1/0). The key insight is that positive density forces enough structure to guarantee unit sum subsets.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "conjecture",
       "erdos-prize",
@@ -100,7 +100,7 @@
     "title": "Bloom's Theorem (2021)",
     "content": "**axiom bloom_2021**: erdos_298_conjecture\n\n**theorem bloom_theorem (A : Set ℕ)**:\n  0 ∉ A → HasPosDensity A → ContainsUnitSumSubset A\n  := bloom_2021 A\n\n**Thomas Bloom's proof** (arXiv:2112.03726) uses:\n1. Probabilistic construction of auxiliary sets\n2. Sum-product estimates\n3. Fourier-analytic techniques on ℤ/pℤ\n4. Density increment arguments\n\nThis was a major breakthrough in additive combinatorics!",
     "mathContext": "Bloom's proof resolved a longstanding conjecture and earned the $500 Erdős prize. The techniques connect number theory, combinatorics, and harmonic analysis.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "bloom-2021",
       "probabilistic-method",
@@ -226,7 +226,7 @@
     "title": "Summary and Final Theorem",
     "content": "**theorem erdos_298_solved**: erdos_298_conjecture := bloom_2021\n\n**Erdős Problem #298: SOLVED** (Bloom 2021)\n\n**Answer**: YES - every set of positive density contains a unit sum subset.\n\n**Key techniques**:\n1. Probabilistic method for candidate sets\n2. Sum-product estimates\n3. Fourier analysis on ℤ/pℤ\n4. Density increment arguments\n\n**Stronger result**: Positive UPPER density suffices.\n\n**Prize**: $500 (awarded to Bloom)",
     "mathContext": "This was one of Erdős's monetary problems, demonstrating the importance he placed on this question. The solution reveals deep connections between additive and multiplicative structure.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "problem-status",
       "solved",

@@ -2,133 +2,251 @@
   {
     "id": "imports-setup",
     "proofId": "erdos-566",
-    "range": { "startLine": 18, "endLine": 21 },
+    "range": {
+      "startLine": 18,
+      "endLine": 21
+    },
     "type": "concept",
     "title": "Imports and Dependencies",
     "content": "Imports core Mathlib libraries for natural numbers, finite sets, real numbers, and general tactics. These provide the combinatorial and algebraic foundations needed to formalize graph sparsity conditions and size Ramsey numbers.",
     "mathContext": "The formalization uses $\\mathbb{N}$ for vertex/edge counts, $\\text{Finset}$ for finite subgraphs, and $\\mathbb{R}$ for the linear bound $\\hat{r}(G,H) \\le c \\cdot |E(H)|$.",
     "significance": "supporting",
-    "relatedConcepts": ["Finset", "Nat.Basic", "Real.Basic"],
-    "prerequisites": ["Lean 4 syntax", "Mathlib library structure"]
+    "relatedConcepts": [
+      "Finset",
+      "Nat.Basic",
+      "Real.Basic"
+    ],
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "graph-structure",
     "proofId": "erdos-566",
-    "range": { "startLine": 25, "endLine": 29 },
+    "range": {
+      "startLine": 25,
+      "endLine": 29
+    },
     "type": "definition",
     "title": "Graph Structure",
     "content": "Defines a simple graph on $n$ vertices as a symmetric, irreflexive adjacency relation on $\\text{Fin}\\; n$. This is a standard combinatorial representation: vertices are $\\{0, 1, \\ldots, n-1\\}$ and the adjacency predicate encodes undirected edges without self-loops.",
     "mathContext": "A simple graph $G = (V, E)$ with $V = \\text{Fin}\\; n$ satisfies $\\text{adj}(u,v) \\Leftrightarrow \\text{adj}(v,u)$ (symmetry) and $\\lnot\\text{adj}(v,v)$ (irreflexivity).",
     "significance": "supporting",
-    "relatedConcepts": ["simple graph", "adjacency relation", "Fin type"],
-    "prerequisites": ["graph theory basics", "Lean structures"]
+    "relatedConcepts": [
+      "simple graph",
+      "adjacency relation",
+      "Fin type"
+    ],
+    "prerequisites": [
+      "graph theory basics",
+      "Lean structures"
+    ]
   },
   {
     "id": "edge-count",
     "proofId": "erdos-566",
-    "range": { "startLine": 32, "endLine": 33 },
+    "range": {
+      "startLine": 32,
+      "endLine": 33
+    },
     "type": "definition",
     "title": "Edge Count",
     "content": "Counts edges by filtering ordered pairs $(u,v)$ with $u < v$ that satisfy the adjacency predicate. The $u < v$ constraint avoids double-counting since the graph is undirected. Marked noncomputable since it uses classical decidability of the adjacency predicate.",
     "mathContext": "$|E(G)| = |\\{(u,v) \\in V \\times V : u < v \\land \\text{adj}(u,v)\\}|$",
     "significance": "supporting",
-    "relatedConcepts": ["edge counting", "Finset.filter", "noncomputable definition"],
-    "prerequisites": ["finite combinatorics", "ordered pairs"]
+    "relatedConcepts": [
+      "edge counting",
+      "Finset.filter",
+      "noncomputable definition"
+    ],
+    "prerequisites": [
+      "finite combinatorics",
+      "ordered pairs"
+    ]
   },
   {
     "id": "sparse-graph",
     "proofId": "erdos-566",
-    "range": { "startLine": 37, "endLine": 41 },
+    "range": {
+      "startLine": 37,
+      "endLine": 41
+    },
     "type": "definition",
     "title": "(2k−3)-Sparse Graph",
     "content": "A graph is $(2k-3)$-sparse if every induced subgraph on $k \\ge 2$ vertices has at most $2k - 3$ edges. This condition is **the conjectured threshold** for Ramsey size linearity: any sparser condition is known to imply linearity (EFRS 1993), while denser graphs can fail. The condition captures a degeneracy property — these graphs cannot contain dense local clusters.",
     "mathContext": "$G$ is $(2k-3)$-sparse $\\iff$ $\\forall S \\subseteq V(G),\\; |S| \\ge 2 \\implies |E(G[S])| \\le 2|S| - 3$, where $G[S]$ denotes the subgraph induced by $S$.",
-    "significance": "critical",
-    "relatedConcepts": ["graph degeneracy", "induced subgraph density", "arboricity", "sparse graph theory"],
-    "prerequisites": ["subgraph density", "extremal graph theory"]
+    "significance": "key",
+    "relatedConcepts": [
+      "graph degeneracy",
+      "induced subgraph density",
+      "arboricity",
+      "sparse graph theory"
+    ],
+    "prerequisites": [
+      "subgraph density",
+      "extremal graph theory"
+    ]
   },
   {
     "id": "no-isolated",
     "proofId": "erdos-566",
-    "range": { "startLine": 44, "endLine": 45 },
+    "range": {
+      "startLine": 44,
+      "endLine": 45
+    },
     "type": "definition",
     "title": "No Isolated Vertices",
     "content": "Requires that every vertex has at least one neighbor. This is a standard nondegeneracy condition in size Ramsey theory: isolated vertices trivially inflate vertex counts without affecting edge structure, so excluding them ensures the edge-based bound $\\hat{r}(G,H) \\le c \\cdot |E(H)|$ is meaningful.",
     "mathContext": "$H$ has no isolated vertices $\\iff$ $\\forall v \\in V(H),\\; \\deg(v) \\ge 1$, equivalently $|V(H)| \\le 2|E(H)|$.",
     "significance": "supporting",
-    "relatedConcepts": ["minimum degree", "vertex isolation", "graph nondegeneracy"],
-    "prerequisites": ["degree sequence", "graph theory basics"]
+    "relatedConcepts": [
+      "minimum degree",
+      "vertex isolation",
+      "graph nondegeneracy"
+    ],
+    "prerequisites": [
+      "degree sequence",
+      "graph theory basics"
+    ]
   },
   {
     "id": "size-ramsey",
     "proofId": "erdos-566",
-    "range": { "startLine": 49, "endLine": 51 },
+    "range": {
+      "startLine": 49,
+      "endLine": 51
+    },
     "type": "definition",
     "title": "Size Ramsey Number",
     "content": "The size Ramsey number $\\hat{r}(G,H)$ is the minimum number of edges in a graph $F$ such that every 2-coloring of $E(F)$ yields a monochromatic copy of $G$ or $H$. Unlike the classical Ramsey number $R(G,H)$ (minimum vertices), this measures **edge complexity**. Introduced by Erdős, Faudree, Rousseau, and Schelp (1978), size Ramsey numbers reveal finer structural properties of Ramsey phenomena.",
     "mathContext": "$\\hat{r}(G,H) = \\min\\{|E(F)| : F \\to (G,H)\\}$, where $F \\to (G,H)$ means every 2-coloring of $E(F)$ contains a red $G$ or blue $H$.",
-    "significance": "critical",
-    "relatedConcepts": ["Ramsey number", "size Ramsey number", "graph coloring", "Ramsey theory"],
-    "prerequisites": ["Ramsey's theorem", "graph coloring", "extremal graph theory"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey number",
+      "size Ramsey number",
+      "graph coloring",
+      "Ramsey theory"
+    ],
+    "prerequisites": [
+      "Ramsey's theorem",
+      "graph coloring",
+      "extremal graph theory"
+    ]
   },
   {
     "id": "main-conjecture",
     "proofId": "erdos-566",
-    "range": { "startLine": 58, "endLine": 62 },
+    "range": {
+      "startLine": 58,
+      "endLine": 62
+    },
     "type": "theorem",
     "title": "Erdős Problem #566: Ramsey Size Linearity Conjecture",
     "content": "The central conjecture: if $G$ is $(2k-3)$-sparse, then $G$ is **Ramsey size linear**, i.e., $\\hat{r}(G,H) = O(|E(H)|)$ uniformly over all $H$ without isolated vertices. This would provide a **clean combinatorial characterization** of Ramsey size linearity in terms of subgraph density. The axiom form reflects that this is an open problem — the statement is assumed without proof.",
     "mathContext": "$\\text{IsSparse}(G) \\implies \\exists c > 0,\\; \\forall H \\text{ with no isolated vertices},\\; \\hat{r}(G,H) \\le c \\cdot |E(H)|$",
-    "significance": "critical",
-    "relatedConcepts": ["Ramsey size linearity", "sparse graph conjecture", "extremal Ramsey theory"],
-    "prerequisites": ["size Ramsey numbers", "graph sparsity", "Ramsey theory"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey size linearity",
+      "sparse graph conjecture",
+      "extremal Ramsey theory"
+    ],
+    "prerequisites": [
+      "size Ramsey numbers",
+      "graph sparsity",
+      "Ramsey theory"
+    ]
   },
   {
     "id": "efrs-result",
     "proofId": "erdos-566",
-    "range": { "startLine": 68, "endLine": 72 },
+    "range": {
+      "startLine": 68,
+      "endLine": 72
+    },
     "type": "theorem",
     "title": "EFRS Theorem (1993): n+1 Edge Bound",
     "content": "Erdős, Faudree, Rousseau, and Schelp proved that any graph with $n$ vertices and at most $n+1$ edges is Ramsey size linear. This is the **strongest confirmed positive case** toward the conjecture. Graphs with $\\le n+1$ edges have at most one cycle, so they are very close to trees. The proof uses the structure theory of unicyclic graphs combined with Ramsey embedding arguments.",
     "mathContext": "$|E(G)| \\le |V(G)| + 1 \\implies \\exists c > 0,\\; \\forall H,\\; \\hat{r}(G,H) \\le c \\cdot |E(H)|$. Note: such $G$ has cyclomatic number $\\le 1$.",
     "significance": "key",
-    "relatedConcepts": ["unicyclic graph", "EFRS theorem", "cyclomatic number", "Ramsey embedding"],
-    "prerequisites": ["tree structure", "cycle rank", "Ramsey size linearity"]
+    "relatedConcepts": [
+      "unicyclic graph",
+      "EFRS theorem",
+      "cyclomatic number",
+      "Ramsey embedding"
+    ],
+    "prerequisites": [
+      "tree structure",
+      "cycle rank",
+      "Ramsey size linearity"
+    ]
   },
   {
     "id": "counterexample",
     "proofId": "erdos-566",
-    "range": { "startLine": 77, "endLine": 81 },
+    "range": {
+      "startLine": 77,
+      "endLine": 81
+    },
     "type": "theorem",
     "title": "Counterexample at 2n−2 Edges",
     "content": "There exist graphs with $2n - 2$ edges that are **not** Ramsey size linear. This demonstrates that the $(2k-3)$ sparsity threshold is **tight**: since a graph on $n$ vertices with $2n - 2$ edges can have a subgraph on $k$ vertices with $2k - 2$ edges (one above the threshold), the conjecture precisely identifies the boundary. The gap between $n+1$ (confirmed) and $2n-3$ (conjectured) remains the central open question.",
     "mathContext": "$\\exists G$ with $|E(G)| = 2|V(G)| - 2$ such that $\\hat{r}(G,H) \\ne O(|E(H)|)$. The $(2k-3)$ threshold is tight since $2k - 2 > 2k - 3$.",
     "significance": "key",
-    "relatedConcepts": ["tightness of bounds", "extremal counterexample", "Ramsey lower bounds"],
-    "prerequisites": ["Ramsey size linearity", "graph density thresholds"]
+    "relatedConcepts": [
+      "tightness of bounds",
+      "extremal counterexample",
+      "Ramsey lower bounds"
+    ],
+    "prerequisites": [
+      "Ramsey size linearity",
+      "graph density thresholds"
+    ]
   },
   {
     "id": "trees-linear",
     "proofId": "erdos-566",
-    "range": { "startLine": 89, "endLine": 97 },
+    "range": {
+      "startLine": 89,
+      "endLine": 97
+    },
     "type": "theorem",
     "title": "Trees Are Ramsey Size Linear",
     "content": "Trees (connected acyclic graphs on $n$ vertices with $n-1$ edges) are Ramsey size linear. This is a well-known result that predates the EFRS work and provides the foundational evidence for the conjecture. The proof for paths was established by Beck (1983), and the general tree case follows from careful embedding arguments. Trees are far below the $(2k-3)$ threshold since every $k$-vertex subtree has exactly $k-1$ edges.",
     "mathContext": "$T$ a tree on $n$ vertices $\\implies |E(T[S])| \\le |S| - 1 \\le 2|S| - 3$ for $|S| \\ge 2$, so trees are $(2k-3)$-sparse. Beck showed $\\hat{r}(P_n) = O(n)$ for paths.",
     "significance": "key",
-    "relatedConcepts": ["Beck's theorem on paths", "tree Ramsey theory", "graph embedding"],
-    "prerequisites": ["tree properties", "Ramsey number bounds", "Beck's theorem"]
+    "relatedConcepts": [
+      "Beck's theorem on paths",
+      "tree Ramsey theory",
+      "graph embedding"
+    ],
+    "prerequisites": [
+      "tree properties",
+      "Ramsey number bounds",
+      "Beck's theorem"
+    ]
   },
   {
     "id": "implies-567",
     "proofId": "erdos-566",
-    "range": { "startLine": 99, "endLine": 101 },
+    "range": {
+      "startLine": 99,
+      "endLine": 101
+    },
     "type": "concept",
     "title": "Implication to Problem #567",
     "content": "A positive resolution of Problem #566 would immediately resolve Problem #567, which asks whether specific graphs — the 3-cube $Q_3$, the complete bipartite graph $K_{3,3}$, and the graph $H_5$ (a 5-cycle with two chords) — are Ramsey size linear. These are all $(2k-3)$-sparse, so they fall under the scope of #566. Problem #567 serves as a concrete test case for the broader conjecture.",
     "mathContext": "$Q_3$, $K_{3,3}$, and $H_5$ are all $(2k-3)$-sparse, so $\\text{Conj. \\#566} \\implies$ they are Ramsey size linear.",
     "significance": "key",
-    "relatedConcepts": ["Erdős Problem #567", "Q₃ graph", "K₃₃", "hypercube graph"],
-    "prerequisites": ["graph sparsity verification", "specific graph families"]
+    "relatedConcepts": [
+      "Erdős Problem #567",
+      "Q₃ graph",
+      "K₃₃",
+      "hypercube graph"
+    ],
+    "prerequisites": [
+      "graph sparsity verification",
+      "specific graph families"
+    ]
   }
 ]

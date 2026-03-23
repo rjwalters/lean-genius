@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "This header documents **Erdős Problem #229** about prescribing zeros of derivatives of entire functions. Given discrete sets (Sₙ), can we find a transcendental entire function whose derivatives vanish on them? Answer: YES.",
     "mathContext": "The problem combines complex analysis (entire functions, derivatives) with topology (discrete sets). The solution by Barth-Schneider (1972) shows the answer is yes.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "entire functions",
       "derivatives",
@@ -28,7 +28,7 @@
     "title": "No Finite Limit Point",
     "content": "A set has **no finite limit point** if its derived set (set of accumulation points) is empty. This means the set is discrete - every point is isolated from the others.",
     "mathContext": "HasNoFiniteLimitPoint S := derivedSet S = ∅. This is the standard condition for prescribing zeros of analytic functions, forced by the identity theorem.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "derivedSet",
       "discrete set",
@@ -82,7 +82,7 @@
     "title": "The Main Question",
     "content": "**Erdős Problem #229**: Given discrete sets (Sₙ), can we find a transcendental entire function f and indices kₙ such that f^(kₙ) vanishes on Sₙ for all n?",
     "mathContext": "Erdos229Question := ∀ S, (∀ n, HasNoFiniteLimitPoint (S n)) → ∃ f, IsTranscendental f ∧ ∀ n ≥ 1, ∃ k, ∀ z ∈ S n, iteratedDeriv k f z = 0.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "existence",
       "iteratedDeriv",
@@ -118,7 +118,7 @@
     "title": "Barth-Schneider Theorem",
     "content": "**Theorem** (Barth-Schneider, 1972): The answer to Erdős Problem #229 is YES. For any sequence of discrete sets, there exists a transcendental entire function whose derivatives vanish on them.",
     "mathContext": "axiom barth_schneider_theorem : Erdos229Question. The construction uses Weierstrass products and careful control of derivatives. Axiomatized because the proof requires advanced function theory.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Weierstrass product",
       "function theory",

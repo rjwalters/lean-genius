@@ -9,7 +9,7 @@
     "type": "concept",
     "title": "The Cayley-Hamilton Theorem",
     "content": "The Cayley-Hamilton theorem is one of the most important results in linear algebra. It states that every square matrix satisfies its own characteristic polynomial.\n\nGiven an n×n matrix A, its characteristic polynomial is:\n$$p(\\lambda) = \\det(\\lambda I - A)$$\n\nThe theorem says that if we substitute the matrix A for λ and interpret powers of λ as matrix powers, we get the zero matrix:\n$$p(A) = 0$$\n\nThis is remarkable because p(λ) is a polynomial equation satisfied by the eigenvalues, yet the entire matrix A satisfies the same equation!",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "characteristic polynomial",
       "eigenvalues",
@@ -61,7 +61,7 @@
     "title": "The Main Theorem (Wiedijk #49)",
     "content": "**The Cayley-Hamilton Theorem**: Every square matrix satisfies its own characteristic polynomial.\n\nFormally, if A is an n×n matrix with characteristic polynomial p(λ) = det(λI - A), then:\n$$p(A) = 0$$\n\nThe proof in Mathlib uses the adjugate matrix identity:\n$$A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$$\n\nBy working with matrices over the polynomial ring R[X] and carefully analyzing (XI - A) and its adjugate, the result follows from pure algebra.",
     "mathContext": "$p_A(A) = 0$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "adjugate matrix",
       "polynomial evaluation",

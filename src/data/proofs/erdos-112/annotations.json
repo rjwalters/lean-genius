@@ -2,145 +2,281 @@
   {
     "id": "imports",
     "proofId": "erdos-112",
-    "range": { "startLine": 20, "endLine": 22 },
+    "range": {
+      "startLine": 20,
+      "endLine": 22
+    },
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "Imports Mathlib's natural number basics, finite set library, and tactic framework. Data.Finset.Basic provides the Finset type used for vertex subsets, while Mathlib.Tactic supplies automation for the quantifier-heavy axiom statements.",
     "mathContext": "The formalization works over $\\text{Fin}\\,k$ (finite types of cardinality $k$) and $\\text{Finset}(\\text{Fin}\\,k)$ for vertex subsets, leveraging Mathlib's decidable equality and cardinality infrastructure.",
     "significance": "supporting",
-    "relatedConcepts": ["Finset", "Fin type", "Mathlib tactics"],
-    "prerequisites": ["Lean 4 basics", "Mathlib library structure"]
+    "relatedConcepts": [
+      "Finset",
+      "Fin type",
+      "Mathlib tactics"
+    ],
+    "prerequisites": [
+      "Lean 4 basics",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "directed-graph",
     "proofId": "erdos-112",
-    "range": { "startLine": 26, "endLine": 29 },
+    "range": {
+      "startLine": 26,
+      "endLine": 29
+    },
     "type": "definition",
     "title": "Directed Graph as Irreflexive Relation",
     "content": "A directed graph on Fin k is modeled as an irreflexive binary relation E : Fin k → Fin k → Prop. The irreflexivity condition ∀ v, ¬E v v ensures no self-loops. This is more general than a tournament — it allows pairs of vertices with no edge in either direction, which is essential for capturing independent sets.",
     "mathContext": "A directed graph $G = (V, E)$ with $V = \\{0, \\ldots, k-1\\}$ is represented as $E : V \\times V \\to \\text{Prop}$ satisfying $\\forall v \\in V,\\; \\neg E(v,v)$. Unlike tournaments, pairs $(u,v)$ may have neither $E(u,v)$ nor $E(v,u)$.",
     "significance": "key",
-    "relatedConcepts": ["tournament", "irreflexive relation", "simple graph", "adjacency relation"],
-    "prerequisites": ["Fin type", "binary relations", "Prop in Lean"]
+    "relatedConcepts": [
+      "tournament",
+      "irreflexive relation",
+      "simple graph",
+      "adjacency relation"
+    ],
+    "prerequisites": [
+      "Fin type",
+      "binary relations",
+      "Prop in Lean"
+    ]
   },
   {
     "id": "independent-set",
     "proofId": "erdos-112",
-    "range": { "startLine": 31, "endLine": 35 },
+    "range": {
+      "startLine": 31,
+      "endLine": 35
+    },
     "type": "definition",
     "title": "Independent Set in a Directed Graph",
     "content": "A set S of vertices is independent if no edge exists in either direction between any pair of distinct vertices in S. The condition requires both ¬E u v and ¬E v u for all distinct u, v ∈ S, which is stronger than undirected independence — it demands the complete absence of directed edges.",
     "mathContext": "The independent set condition $\\forall u, v \\in S,\\; u \\neq v \\Rightarrow \\neg E(u,v) \\wedge \\neg E(v,u)$ ensures $S$ is an antichain in the directed graph: no vertex in $S$ dominates another.",
     "significance": "key",
-    "relatedConcepts": ["antichain", "stable set", "Ramsey independent set", "directed independence"],
-    "prerequisites": ["directed graph definition", "Finset membership"]
+    "relatedConcepts": [
+      "antichain",
+      "stable set",
+      "Ramsey independent set",
+      "directed independence"
+    ],
+    "prerequisites": [
+      "directed graph definition",
+      "Finset membership"
+    ]
   },
   {
     "id": "transitive-tournament",
     "proofId": "erdos-112",
-    "range": { "startLine": 37, "endLine": 44 },
+    "range": {
+      "startLine": 37,
+      "endLine": 44
+    },
     "type": "definition",
     "title": "Transitive Tournament via Linear Order",
     "content": "A set S forms a transitive tournament if there exists a strict total order lt on S consistent with edge directions (lt u v → E u v) and satisfying transitivity. This existential characterization captures the classical equivalence: a tournament is transitive iff it has no directed 3-cycle. The order witnesses the acyclicity.",
     "mathContext": "A transitive tournament on $S$ is equivalent to a linear order $(S, \\prec)$ where $u \\prec v \\Rightarrow E(u,v)$. By Rédei's theorem, every tournament has a Hamiltonian path, but transitive tournaments are those where this path uniquely determines all edges: if $v_1 \\prec v_2 \\prec \\cdots \\prec v_m$, then $E(v_i, v_j)$ for all $i < j$.",
-    "significance": "critical",
-    "relatedConcepts": ["linear order", "total order", "acyclic tournament", "Dilworth's theorem", "chain"],
-    "prerequisites": ["directed graph", "strict total order", "transitivity"]
+    "significance": "key",
+    "relatedConcepts": [
+      "linear order",
+      "total order",
+      "acyclic tournament",
+      "Dilworth's theorem",
+      "chain"
+    ],
+    "prerequisites": [
+      "directed graph",
+      "strict total order",
+      "transitivity"
+    ]
   },
   {
     "id": "directed-ramsey",
     "proofId": "erdos-112",
-    "range": { "startLine": 46, "endLine": 49 },
+    "range": {
+      "startLine": 46,
+      "endLine": 49
+    },
     "type": "definition",
     "title": "Directed Ramsey Number k(n,m)",
     "content": "The noncomputable function directedRamsey : ℕ → ℕ → ℕ represents k(n,m). It is axiomatized (defined as the constant 0) because the exact values are unknown. The noncomputability annotation reflects that even if values were known, computing Ramsey-type numbers is generally intractable.",
     "mathContext": "$k(n,m) = \\min\\{k : \\text{every directed graph on } k \\text{ vertices contains an independent set of size } n \\text{ or a transitive tournament of size } m\\}$. The function is well-defined by a compactness argument: for finite $n,m$, only finitely many directed graphs on $k$ vertices exist.",
-    "significance": "critical",
-    "relatedConcepts": ["Ramsey number", "noncomputable definition", "axiomatization", "extremal function"],
-    "prerequisites": ["directed graph", "independent set", "transitive tournament"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey number",
+      "noncomputable definition",
+      "axiomatization",
+      "extremal function"
+    ],
+    "prerequisites": [
+      "directed graph",
+      "independent set",
+      "transitive tournament"
+    ]
   },
   {
     "id": "well-defined",
     "proofId": "erdos-112",
-    "range": { "startLine": 55, "endLine": 61 },
+    "range": {
+      "startLine": 55,
+      "endLine": 61
+    },
     "type": "theorem",
     "title": "Well-Definedness of k(n,m)",
     "content": "The core axiom states that k(n,m) achieves its Ramsey-type guarantee: for all n, m ≥ 1, every directed graph on k ≥ k(n,m) vertices contains either an independent set of size n or a transitive tournament of size m. This is the directed analogue of the classical Ramsey theorem.",
     "mathContext": "For all $n, m \\geq 1$ and every directed graph $G$ on $k \\geq k(n,m)$ vertices: $\\alpha(G) \\geq n \\;\\lor\\; \\text{tt}(G) \\geq m$, where $\\alpha(G)$ is the independence number and $\\text{tt}(G)$ is the maximum transitive tournament size.",
-    "significance": "critical",
-    "relatedConcepts": ["Ramsey theorem", "pigeonhole principle", "partition regularity"],
-    "prerequisites": ["directed Ramsey number definition", "directed graph", "independent set", "transitive tournament"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey theorem",
+      "pigeonhole principle",
+      "partition regularity"
+    ],
+    "prerequisites": [
+      "directed Ramsey number definition",
+      "directed graph",
+      "independent set",
+      "transitive tournament"
+    ]
   },
   {
     "id": "ramsey-lower",
     "proofId": "erdos-112",
-    "range": { "startLine": 67, "endLine": 69 },
+    "range": {
+      "startLine": 67,
+      "endLine": 69
+    },
     "type": "theorem",
     "title": "Ramsey Lower Bound k(n,m) ≥ R(n,m)",
     "content": "The ordinary Ramsey number R(n,m) provides a lower bound on k(n,m). Any undirected graph can be oriented to create a directed graph, and a clique in the undirected graph becomes a tournament (not necessarily transitive) in the directed version. Since transitive tournaments are more restrictive than cliques, more vertices may be needed.",
     "mathContext": "Since every clique of size $m$ in an undirected graph contains a transitive tournament of size $m$ when oriented, we have $R(n,m) \\leq k(n,m)$. The axiom states the weaker $k(n,m) \\geq 1$ as a placeholder for the full Ramsey bound.",
     "significance": "key",
-    "relatedConcepts": ["Ramsey number R(n,m)", "graph orientation", "clique", "tournament"],
-    "prerequisites": ["classical Ramsey theorem", "directed Ramsey number"]
+    "relatedConcepts": [
+      "Ramsey number R(n,m)",
+      "graph orientation",
+      "clique",
+      "tournament"
+    ],
+    "prerequisites": [
+      "classical Ramsey theorem",
+      "directed Ramsey number"
+    ]
   },
   {
     "id": "hunter-upper",
     "proofId": "erdos-112",
-    "range": { "startLine": 73, "endLine": 76 },
+    "range": {
+      "startLine": 73,
+      "endLine": 76
+    },
     "type": "theorem",
     "title": "Hunter's 3-Color Ramsey Upper Bound",
     "content": "Hunter's bound k(n,m) ≤ C · 3^(n+2m) arises from a 3-coloring reduction. Given a directed graph, color each pair of distinct vertices with one of three colors: 'forward edge,' 'backward edge,' or 'no edge.' A monochromatic set of color 'no edge' gives an independent set; monochromatic 'forward' or 'backward' gives a tournament, which yields the bound via the 3-color Ramsey number R(n,m,m).",
     "mathContext": "The 3-coloring argument yields $k(n,m) \\leq R_3(n,m,m)$ where $R_3$ is the 3-color Ramsey number. Using the standard bound $R_3(n,m,m) \\leq C \\cdot 3^{n+2m}$, this gives an exponential upper bound in both $n$ and $m$.",
     "significance": "key",
-    "relatedConcepts": ["multicolor Ramsey number", "3-coloring", "R(n,m,m)", "exponential bounds"],
-    "prerequisites": ["Ramsey theorem for multiple colors", "directed graph coloring"]
+    "relatedConcepts": [
+      "multicolor Ramsey number",
+      "3-coloring",
+      "R(n,m,m)",
+      "exponential bounds"
+    ],
+    "prerequisites": [
+      "Ramsey theorem for multiple colors",
+      "directed graph coloring"
+    ]
   },
   {
     "id": "larson-mitchell",
     "proofId": "erdos-112",
-    "range": { "startLine": 78, "endLine": 81 },
+    "range": {
+      "startLine": 78,
+      "endLine": 81
+    },
     "type": "theorem",
     "title": "Larson–Mitchell Quadratic Bound for m=3",
     "content": "Larson and Mitchell (1997) proved that k(n,3) ≤ n² for all n ≥ 1. This means every directed graph on n² vertices contains either an independent set of size n or a transitive triple (three vertices forming a → b → c with also a → c). The quadratic bound is dramatically tighter than the exponential general bound.",
     "mathContext": "For the special case $m = 3$: $k(n,3) \\leq n^2$. A transitive triple is $\\{a,b,c\\}$ with $E(a,b) \\wedge E(b,c) \\wedge E(a,c)$. The proof uses an inductive argument on vertex out-neighborhoods in the directed graph.",
     "significance": "key",
-    "relatedConcepts": ["transitive triple", "quadratic bound", "directed graph neighborhoods", "inductive argument"],
-    "prerequisites": ["directed Ramsey number", "transitive tournament for m=3"]
+    "relatedConcepts": [
+      "transitive triple",
+      "quadratic bound",
+      "directed graph neighborhoods",
+      "inductive argument"
+    ],
+    "prerequisites": [
+      "directed Ramsey number",
+      "transitive tournament for m=3"
+    ]
   },
   {
     "id": "erdos-rado",
     "proofId": "erdos-112",
-    "range": { "startLine": 85, "endLine": 88 },
+    "range": {
+      "startLine": 85,
+      "endLine": 88
+    },
     "type": "theorem",
     "title": "Erdős–Rado Original Upper Bound (1967)",
     "content": "The original 1967 bound by Erdős and Rado gives k(n,m) ≤ (2^{m-1}(n-1)^m + n - 2)/(2n - 3). This was the first non-trivial upper estimate for the directed Ramsey problem. For fixed m, the bound is polynomial in n (degree m), but for fixed n, it is exponential in m.",
     "mathContext": "$k(n,m) \\leq \\frac{2^{m-1}(n-1)^m + n - 2}{2n - 3}$. For fixed $m$, this is $O(n^m)$; for fixed $n \\geq 2$, this is $O(2^m)$. The bound was obtained via a stepping-up lemma applied to the classical Ramsey theorem.",
-    "significance": "critical",
-    "relatedConcepts": ["stepping-up lemma", "partition relation", "Erdős–Rado theorem", "exponential growth"],
-    "prerequisites": ["Ramsey theory", "partition calculus", "real number arithmetic in Lean"]
+    "significance": "key",
+    "relatedConcepts": [
+      "stepping-up lemma",
+      "partition relation",
+      "Erdős–Rado theorem",
+      "exponential growth"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "partition calculus",
+      "real number arithmetic in Lean"
+    ]
   },
   {
     "id": "path-variant",
     "proofId": "erdos-112",
-    "range": { "startLine": 92, "endLine": 95 },
+    "range": {
+      "startLine": 92,
+      "endLine": 95
+    },
     "type": "insight",
     "title": "Directed Path Variant: Exact Solution",
     "content": "Hunter and Steiner proved that if 'transitive tournament' is replaced by 'directed path' (a weaker requirement), the exact answer is (n-1)(m-1)+1. This shows that the difficulty of Problem #112 lies specifically in the transitivity requirement — directed paths are much easier to force than full transitive tournaments.",
     "mathContext": "Let $p(n,m)$ be the minimum $k$ such that every directed graph on $k$ vertices has an independent set of size $n$ or a directed path of length $m$. Then $p(n,m) = (n-1)(m-1)+1$. Compare with the open $k(n,m)$ where full transitivity is required.",
     "significance": "key",
-    "relatedConcepts": ["directed path", "Erdős–Gallai theorem", "path Ramsey number", "monotone subsequence"],
-    "prerequisites": ["directed Ramsey number", "directed path definition"]
+    "relatedConcepts": [
+      "directed path",
+      "Erdős–Gallai theorem",
+      "path Ramsey number",
+      "monotone subsequence"
+    ],
+    "prerequisites": [
+      "directed Ramsey number",
+      "directed path definition"
+    ]
   },
   {
     "id": "ramsey-connection",
     "proofId": "erdos-112",
-    "range": { "startLine": 100, "endLine": 101 },
+    "range": {
+      "startLine": 100,
+      "endLine": 101
+    },
     "type": "concept",
     "title": "Connection to Classical Ramsey Theory",
     "content": "The final axiom records the fundamental connection: k(n,m) is bounded above by the classical Ramsey number R(n,m). An undirected independent set is automatically a directed independent set (no edges in either direction), so the undirected Ramsey guarantee transfers to the directed setting.",
     "mathContext": "Since an independent set in the undirected sense (no edges) is also independent in the directed sense (no edges in either direction), the classical Ramsey theorem gives $k(n,m) \\leq R(n,m)$. Together with $k(n,m) \\geq R(n,m)$, this yields the sandwich $R(n,m) \\leq k(n,m) \\leq R(n,m,m)$.",
     "significance": "supporting",
-    "relatedConcepts": ["Ramsey theorem", "undirected vs directed independence", "Ramsey number bounds"],
-    "prerequisites": ["classical Ramsey theorem", "directed independence"]
+    "relatedConcepts": [
+      "Ramsey theorem",
+      "undirected vs directed independence",
+      "Ramsey number bounds"
+    ],
+    "prerequisites": [
+      "classical Ramsey theorem",
+      "directed independence"
+    ]
   }
 ]

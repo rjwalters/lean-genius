@@ -10,14 +10,19 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #698**: GCDs of Binomial Coefficients\n\nIs there h(n) → ∞ such that gcd(C(n,i), C(n,j)) ≥ h(n) for all 2 ≤ i < j ≤ n/2?\n\n**Status**: SOLVED (Bergman 2011)\n\n**Answer**: YES - the minimum GCD grows like Ω(√n).\n\n**Origin**: Erdős and Szekeres (1978).",
     "mathContext": "This problem explores the arithmetic structure of Pascal's triangle, asking whether middle entries share increasingly large common factors.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "binomial-coefficients",
       "gcd",
       "pascal-triangle",
       "bergman"
     ],
-    "tags": ["combinatorics", "number-theory", "erdos-problem", "solved-problem"]
+    "tags": [
+      "combinatorics",
+      "number-theory",
+      "erdos-problem",
+      "solved-problem"
+    ]
   },
   {
     "id": "ann-e698-binom-def",
@@ -30,13 +35,18 @@
     "title": "Binomial Coefficients and GCD",
     "content": "**binom n k**: Wrapper for Nat.choose n k.\n\n```lean\ndef binom (n k : ℕ) : ℕ := Nat.choose n k\n```\n\n**binomGcd n i j**: The GCD of two binomial coefficients.\n\n```lean\ndef binomGcd (n i j : ℕ) : ℕ := Nat.gcd (binom n i) (binom n j)\n```\n\nThese are the central objects of study in this problem.",
     "mathContext": "Binomial coefficients C(n,k) = n!/(k!(n-k)!) count combinations. Their arithmetic properties reveal deep structure.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "binomial-coefficients",
       "gcd",
       "nat-choose"
     ],
-    "tags": ["definition", "binomial-coefficient", "gcd", "lean4-formalization"]
+    "tags": [
+      "definition",
+      "binomial-coefficient",
+      "gcd",
+      "lean4-formalization"
+    ]
   },
   {
     "id": "ann-e698-valid-pair",
@@ -55,7 +65,12 @@
       "symmetry",
       "constraints"
     ],
-    "tags": ["definition", "pascal-triangle-symmetry", "index-constraints", "combinatorics"]
+    "tags": [
+      "definition",
+      "pascal-triangle-symmetry",
+      "index-constraints",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-e698-erdos-szekeres",
@@ -68,13 +83,18 @@
     "title": "Erdős-Szekeres Bound (1978)",
     "content": "**axiom erdos_szekeres_bound**: gcd(C(n,i), C(n,j)) ≥ C(n,i)/C(j,i)\n\n**axiom erdos_szekeres_exponential**: gcd(C(n,i), C(n,j)) ≥ 2^i\n\n**The key observation**:\nC(n,i) divides C(n,j) · C(j,i) (by a counting argument).\nSo any common divisor of C(n,i) and C(n,j) must be at least C(n,i)/C(j,i) ≥ 2^i.\n\nThis shows the GCD is exponential in i!",
     "mathContext": "The bound uses the identity C(n,j) · C(j,i) = C(n,i) · C(n-i,j-i), which follows from counting ordered selections.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "erdos-szekeres-1978",
       "lower-bound",
       "exponential"
     ],
-    "tags": ["axiom", "lower-bound", "exponential-growth", "counting-argument"]
+    "tags": [
+      "axiom",
+      "lower-bound",
+      "exponential-growth",
+      "counting-argument"
+    ]
   },
   {
     "id": "ann-e698-gcd-gt-one",
@@ -93,7 +113,12 @@
       "non-trivial-gcd",
       "corollary"
     ],
-    "tags": ["theorem", "gcd-lower-bound", "pascal-triangle", "verified-proof"]
+    "tags": [
+      "theorem",
+      "gcd-lower-bound",
+      "pascal-triangle",
+      "verified-proof"
+    ]
   },
   {
     "id": "ann-e698-sharpness",
@@ -112,7 +137,12 @@
       "extremal",
       "prime"
     ],
-    "tags": ["extremal-example", "tight-bound", "prime-numbers", "axiom"]
+    "tags": [
+      "extremal-example",
+      "tight-bound",
+      "prime-numbers",
+      "axiom"
+    ]
   },
   {
     "id": "ann-e698-question",
@@ -125,13 +155,18 @@
     "title": "The Main Question",
     "content": "**tendsToInfinity h**: Function h grows unboundedly.\n\n```lean\ndef tendsToInfinity (h : ℕ → ℕ) : Prop :=\n  ∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N, h n > M\n```\n\n**erdos698Question**: Does the minimum GCD grow unboundedly?\n\n```lean\ndef erdos698Question : Prop :=\n  ∃ h : ℕ → ℕ, tendsToInfinity h ∧\n    ∀ n i j : ℕ, isValidPair n i j → binomGcd n i j ≥ h n\n```\n\nThe Erdős-Szekeres bound shows gcd ≥ 2^i depends on i, not n. The question is whether a bound depending only on n also grows.",
     "mathContext": "The distinction is subtle: 2^i can be small when i = 2. The question asks if there's a *uniform* lower bound growing with n.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "main-question",
       "unbounded-growth",
       "uniform-bound"
     ],
-    "tags": ["problem-statement", "tends-to-infinity", "uniform-bound", "real-analysis"]
+    "tags": [
+      "problem-statement",
+      "tends-to-infinity",
+      "uniform-bound",
+      "real-analysis"
+    ]
   },
   {
     "id": "ann-e698-bergman-bound",
@@ -144,13 +179,18 @@
     "title": "Bergman's Theorem (2011)",
     "content": "**axiom bergman_bound_exists**:\ngcd(C(n,i), C(n,j)) ≥ c · n^{1/2} · 2^i / i^{3/2}\n\n**axiom min_gcd_growth**:\nFor n ≥ 4 and valid pairs, gcd ≥ c · √n.\n\n**The key improvement**:\nBergman's bound has an n-dependent term! Taking i = 2 (the minimum valid i):\ngcd ≥ c · √n · 4 / 2^{3/2} = c' · √n\n\nSo the minimum GCD grows like √n - answering Erdős-Szekeres affirmatively.",
     "mathContext": "Bergman's 2011 paper 'On common divisors of multinomial coefficients' appeared in Bull. Aust. Math. Soc. The proof uses deep number-theoretic techniques.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "bergman-2011",
       "sqrt-growth",
       "main-result"
     ],
-    "tags": ["bergman-theorem", "sqrt-growth", "number-theory", "asymptotic-bound"]
+    "tags": [
+      "bergman-theorem",
+      "sqrt-growth",
+      "number-theory",
+      "asymptotic-bound"
+    ]
   },
   {
     "id": "ann-e698-resolution",
@@ -163,13 +203,18 @@
     "title": "Resolution of the Problem",
     "content": "**bergmanH c n**: The growth function h(n) = ⌊c · √n⌋.\n\n```lean\nnoncomputable def bergmanH (c : ℝ) (n : ℕ) : ℕ :=\n  ⌊c * Real.sqrt n⌋₊\n```\n\n**theorem bergmanH_unbounded**: h(n) = ⌊c · √n⌋ → ∞.\n\n**theorem erdos698_answer : erdos698Question**\n\nBy Bergman's bound, taking h = bergmanH c gives an unbounded function with gcd ≥ h(n) for all valid pairs.",
     "mathContext": "The resolution connects Bergman's analytic bound to the discrete existence question. The floor function ensures h is a natural number.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "resolution",
       "floor-function",
       "growth-function"
     ],
-    "tags": ["resolution", "floor-function", "noncomputable", "existence-proof"]
+    "tags": [
+      "resolution",
+      "floor-function",
+      "noncomputable",
+      "existence-proof"
+    ]
   },
   {
     "id": "ann-e698-sorry1",
@@ -188,7 +233,12 @@
       "real-analysis",
       "floor"
     ],
-    "tags": ["sorry", "real-analysis", "floor-function", "proof-gap"]
+    "tags": [
+      "sorry",
+      "real-analysis",
+      "floor-function",
+      "proof-gap"
+    ]
   },
   {
     "id": "ann-e698-sorry2",
@@ -207,7 +257,12 @@
       "floor-bound",
       "coercion"
     ],
-    "tags": ["sorry", "nat-real-coercion", "floor-bound", "proof-gap"]
+    "tags": [
+      "sorry",
+      "nat-real-coercion",
+      "floor-bound",
+      "proof-gap"
+    ]
   },
   {
     "id": "ann-e698-pascal",
@@ -226,7 +281,12 @@
       "primes",
       "divisibility"
     ],
-    "tags": ["pascal-triangle", "prime-factorization", "divisibility", "axiom"]
+    "tags": [
+      "pascal-triangle",
+      "prime-factorization",
+      "divisibility",
+      "axiom"
+    ]
   },
   {
     "id": "ann-e698-multinomial",
@@ -245,7 +305,12 @@
       "generalization",
       "bergman"
     ],
-    "tags": ["multinomial-coefficient", "generalization", "bergman", "axiom"]
+    "tags": [
+      "multinomial-coefficient",
+      "generalization",
+      "bergman",
+      "axiom"
+    ]
   },
   {
     "id": "ann-e698-kummer",
@@ -264,7 +329,12 @@
       "p-adic",
       "carries"
     ],
-    "tags": ["kummer-theorem", "p-adic-valuation", "base-representation", "number-theory"]
+    "tags": [
+      "kummer-theorem",
+      "p-adic-valuation",
+      "base-representation",
+      "number-theory"
+    ]
   },
   {
     "id": "ann-e698-lucas",
@@ -283,7 +353,12 @@
       "modular",
       "base-p"
     ],
-    "tags": ["lucas-theorem", "modular-arithmetic", "base-p-digits", "number-theory"]
+    "tags": [
+      "lucas-theorem",
+      "modular-arithmetic",
+      "base-p-digits",
+      "number-theory"
+    ]
   },
   {
     "id": "ann-e698-summary",
@@ -302,7 +377,12 @@
       "packaging",
       "documentation"
     ],
-    "tags": ["summary-theorem", "result-packaging", "combinatorics", "gcd"]
+    "tags": [
+      "summary-theorem",
+      "result-packaging",
+      "combinatorics",
+      "gcd"
+    ]
   },
   {
     "id": "ann-e698-main",
@@ -315,13 +395,18 @@
     "title": "Main Result: erdos_698",
     "content": "**theorem erdos_698 : erdos698Question**\n\n**Statement**: There exists h(n) → ∞ such that gcd(C(n,i), C(n,j)) ≥ h(n) for all valid pairs.\n\n**Proof**: Follows from erdos698_answer, which uses Bergman's bound.\n\n**Status**: SOLVED by Bergman (2011)\n\n**The answer**: h(n) = Ω(√n) works - the minimum GCD grows like the square root of n.",
     "mathContext": "This is the formal resolution of Erdős Problem #698. The theorem states the existence of the required growth function.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "main-theorem",
       "erdos-698",
       "solved"
     ],
-    "tags": ["main-theorem", "erdos-problem", "solved-problem", "binomial-coefficient"]
+    "tags": [
+      "main-theorem",
+      "erdos-problem",
+      "solved-problem",
+      "binomial-coefficient"
+    ]
   },
   {
     "id": "ann-e698-historical",
@@ -340,7 +425,12 @@
       "timeline",
       "erdos-szekeres"
     ],
-    "tags": ["historical-context", "erdos-szekeres", "bergman-2011", "timeline"]
+    "tags": [
+      "historical-context",
+      "erdos-szekeres",
+      "bergman-2011",
+      "timeline"
+    ]
   },
   {
     "id": "ann-e698-imports",
@@ -359,7 +449,12 @@
       "imports",
       "lean4"
     ],
-    "tags": ["mathlib-imports", "lean4", "discrete-continuous-bridge", "dependencies"]
+    "tags": [
+      "mathlib-imports",
+      "lean4",
+      "discrete-continuous-bridge",
+      "dependencies"
+    ]
   },
   {
     "id": "ann-e698-number-theory",
@@ -378,6 +473,11 @@
       "connections",
       "interdisciplinary"
     ],
-    "tags": ["number-theory", "p-adic-valuation", "modular-arithmetic", "prime-distribution"]
+    "tags": [
+      "number-theory",
+      "p-adic-valuation",
+      "modular-arithmetic",
+      "prime-distribution"
+    ]
   }
 ]

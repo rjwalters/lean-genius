@@ -2,181 +2,331 @@
   {
     "id": "ann-1095-imports",
     "proofId": "erdos-1095",
-    "range": { "startLine": 45, "endLine": 47 },
+    "range": {
+      "startLine": 45,
+      "endLine": 47
+    },
     "type": "concept",
     "title": "Imports and Open Declarations",
     "content": "Imports the full Mathlib library and opens `Nat`, `Finset`, and `BigOperators` for convenient access to `Nat.minFac`, `Nat.choose`, `Finset.lcm`, and big operator notation $\\sum$, $\\prod$.",
     "significance": "supporting",
     "mathContext": "The `Nat.minFac` function computes the smallest prime factor of $n > 1$ by trial division. `Finset.lcm` computes the LCM over a finite set. `BigOperators` provides the notation `∑` and `∏` used in number-theoretic formulas.",
-    "relatedConcepts": ["mathlib", "nat-operations", "finset-lcm"],
-    "prerequisites": ["lean-4-basics"]
+    "relatedConcepts": [
+      "mathlib",
+      "nat-operations",
+      "finset-lcm"
+    ],
+    "prerequisites": [
+      "lean-4-basics"
+    ]
   },
   {
     "id": "ann-1095-spf",
     "proofId": "erdos-1095",
-    "range": { "startLine": 55, "endLine": 58 },
+    "range": {
+      "startLine": 55,
+      "endLine": 58
+    },
     "type": "definition",
     "title": "Smallest Prime Factor",
     "content": "The smallest prime factor of $n$, returning $n$ itself if $n \\le 1$. Wraps Mathlib's `Nat.minFac` which finds the smallest divisor $\\ge 2$ by trial division up to $\\sqrt{n}$.",
     "significance": "supporting",
     "mathContext": "The function $\\operatorname{spf}(n)$ (or $P^-(n)$ in analytic number theory) is central to the study of **smooth numbers**. An integer $n$ is $y$-smooth if $P^-(n) \\le y$, and $y$-rough if $P^-(n) > y$. The distribution of smooth numbers is governed by the Dickman $\\rho$-function: the fraction of integers up to $x$ that are $x^{1/u}$-smooth is $\\rho(u)$.",
-    "relatedConcepts": ["smallest-prime-factor", "smooth-numbers", "dickman-function"],
-    "prerequisites": ["prime-factorization", "trial-division"]
+    "relatedConcepts": [
+      "smallest-prime-factor",
+      "smooth-numbers",
+      "dickman-function"
+    ],
+    "prerequisites": [
+      "prime-factorization",
+      "trial-division"
+    ]
   },
   {
     "id": "ann-1095-krough",
     "proofId": "erdos-1095",
-    "range": { "startLine": 60, "endLine": 62 },
+    "range": {
+      "startLine": 60,
+      "endLine": 62
+    },
     "type": "definition",
     "title": "$k$-Roughness",
     "content": "An integer $n$ is **$k$-rough** if every prime divisor $p \\mid n$ satisfies $p > k$. This is the central property: we seek the first $n$ where $\\binom{n}{k}$ is $k$-rough. Roughness generalizes primality — all primes are 1-rough.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "In the notation of analytic number theory, $n$ is $k$-rough iff $P^-(n) > k$, where $P^-(n)$ is the smallest prime factor. The number of $k$-rough integers up to $x$ is $\\Phi(x, k) \\sim x \\prod_{p \\le k}(1 - 1/p) \\sim x e^{-\\gamma}/\\log k$ by Mertens' theorem. For binomial coefficients, $k$-roughness is rare because $\\binom{n}{k}$ is a product of $k$ consecutive integers divided by $k!$, which typically introduces small prime factors.",
-    "relatedConcepts": ["smooth-numbers", "rough-numbers", "sieve-theory"],
-    "prerequisites": ["prime-divisors", "mertens-theorem"]
+    "relatedConcepts": [
+      "smooth-numbers",
+      "rough-numbers",
+      "sieve-theory"
+    ],
+    "prerequisites": [
+      "prime-divisors",
+      "mertens-theorem"
+    ]
   },
   {
     "id": "ann-1095-binom",
     "proofId": "erdos-1095",
-    "range": { "startLine": 64, "endLine": 69 },
+    "range": {
+      "startLine": 64,
+      "endLine": 69
+    },
     "type": "definition",
     "title": "Binomial Coefficient Condition",
     "content": "Defines `binom n k = Nat.choose n k` and `binomIsKRough n k`, asking that all prime factors of $\\binom{n}{k}$ exceed $k$. By **Kummer's theorem**, $p \\mid \\binom{n}{k}$ iff there is a carry when adding $k$ and $n-k$ in base $p$.",
     "significance": "key",
     "mathContext": "Kummer's theorem (1852) states that $\\nu_p(\\binom{n}{k}) = $ the number of carries when adding $k$ and $n-k$ in base $p$. For $p \\le k$, a carry is likely unless the base-$p$ digits of $n$ are specially arranged. This explains why $\\binom{n}{k}$ is usually **not** $k$-rough: for each prime $p \\le k$, avoiding a carry requires specific digit conditions in base $p$, and these conditions for different primes are nearly independent.",
-    "relatedConcepts": ["kummer-theorem", "p-adic-valuation", "binomial-coefficient"],
-    "prerequisites": ["k-roughness", "base-p-representation"]
+    "relatedConcepts": [
+      "kummer-theorem",
+      "p-adic-valuation",
+      "binomial-coefficient"
+    ],
+    "prerequisites": [
+      "k-roughness",
+      "base-p-representation"
+    ]
   },
   {
     "id": "ann-1095-g",
     "proofId": "erdos-1095",
-    "range": { "startLine": 77, "endLine": 80 },
+    "range": {
+      "startLine": 77,
+      "endLine": 80
+    },
     "type": "definition",
     "title": "The Erdős-Selfridge Function $g(k)$",
     "content": "The function $g(k) = \\min\\{n > k+1 : \\binom{n}{k} \\text{ is } k\\text{-rough}\\}$. Defined via `Nat.find` with witness $k! + k + 1$: since $\\binom{k!+k+1}{k} = \\prod_{i=1}^{k}(k!+i)/k!$, each factor $k!+i$ has no prime factor $\\le k$ (because $p \\le k \\Rightarrow p \\mid k!$ but $p \\nmid k!+i$).",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The witness $n = k! + k + 1$ gives the trivial upper bound $g(k) \\le k! + k + 1$, which is much weaker than the EES bound $g(k) \\le e^{(1+o(1))k}$. The factorial bound is easy to see: $\\binom{k!+k+1}{k} = \\frac{(k!+k+1)(k!+k)\\cdots(k!+2)}{k!}$. Each numerator term $k!+i$ for $1 \\le i \\le k$ satisfies $\\gcd(k!+i, k!) = \\gcd(i, k!) = i$, so after dividing by $k!$, only factors $> k$ remain.",
-    "relatedConcepts": ["erdos-selfridge-function", "nat-find", "well-ordering"],
-    "prerequisites": ["binomial-k-rough", "factorial"]
+    "relatedConcepts": [
+      "erdos-selfridge-function",
+      "nat-find",
+      "well-ordering"
+    ],
+    "prerequisites": [
+      "binomial-k-rough",
+      "factorial"
+    ]
   },
   {
     "id": "ann-1095-basic",
     "proofId": "erdos-1095",
-    "range": { "startLine": 82, "endLine": 92 },
+    "range": {
+      "startLine": 82,
+      "endLine": 92
+    },
     "type": "theorem",
     "title": "Basic Properties of $g(k)$",
     "content": "Two immediate consequences: (1) $g(k) > k + 1$ — by construction, we skip $n \\le k+1$ (where $\\binom{n}{k} \\in \\{0, 1, n\\}$ are degenerate); (2) $\\binom{g(k)}{k}$ is $k$-rough — by the `Nat.find_spec` minimality property.",
     "significance": "key",
     "mathContext": "The restriction $n > k+1$ excludes trivial cases: $\\binom{k+1}{k} = k+1$ which may or may not be $k$-rough (it is iff $k+1$ has no prime factor $\\le k$, i.e., iff $k+1$ is prime or 1). The theorems use `Nat.find_spec` from Mathlib, which extracts the existential witness from the well-ordering of $\\mathbb{N}$.",
-    "relatedConcepts": ["well-ordering", "nat-find-spec", "minimality"],
-    "prerequisites": ["g-definition", "binomial-k-rough"]
+    "relatedConcepts": [
+      "well-ordering",
+      "nat-find-spec",
+      "minimality"
+    ],
+    "prerequisites": [
+      "g-definition",
+      "binomial-k-rough"
+    ]
   },
   {
     "id": "ann-1095-ees",
     "proofId": "erdos-1095",
-    "range": { "startLine": 100, "endLine": 106 },
+    "range": {
+      "startLine": 100,
+      "endLine": 106
+    },
     "type": "theorem",
     "title": "Original EES Bounds (1974)",
     "content": "Ecklund, Erdős, and Selfridge proved: (1) **Lower**: $g(k) > k^{1+c}$ for some $c > 0$; (2) **Upper**: $g(k) \\le e^{(1+o(1))k}$. The polynomial lower bound follows from counting primes in $[k+2, n]$ that divide $\\binom{n}{k}$. The exponential upper bound uses $\\operatorname{lcm}(1,\\ldots,k) \\sim e^k$.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The 1974 paper [EES74] in *Mathematics of Computation* introduced $g(k)$ and established its basic asymptotic behavior. The lower bound $g(k) > k^{1+c}$ was proved by showing that if $n < k^{1+c}$ for small $c$, then some prime $p \\le k$ must divide $\\binom{n}{k}$, using Legendre's formula $\\nu_p(\\binom{n}{k}) = \\sum_{i \\ge 1} (\\lfloor n/p^i \\rfloor - \\lfloor k/p^i \\rfloor - \\lfloor (n-k)/p^i \\rfloor)$. The upper bound comes from taking $n$ near $\\operatorname{lcm}(1,\\ldots,k) + k$.",
-    "relatedConcepts": ["legendre-formula", "lcm-bound", "polynomial-lower-bound"],
-    "prerequisites": ["g-definition", "prime-number-theorem"]
+    "relatedConcepts": [
+      "legendre-formula",
+      "lcm-bound",
+      "polynomial-lower-bound"
+    ],
+    "prerequisites": [
+      "g-definition",
+      "prime-number-theorem"
+    ]
   },
   {
     "id": "ann-1095-konyagin",
     "proofId": "erdos-1095",
-    "range": { "startLine": 108, "endLine": 111 },
+    "range": {
+      "startLine": 108,
+      "endLine": 111
+    },
     "type": "theorem",
     "title": "Konyagin's Improvement (1999)",
     "content": "Konyagin proved $g(k) \\gg \\exp(c (\\log k)^2)$ for some $c > 0$. This is **superpolynomial** but still far from the conjectured $\\exp(c \\cdot k / \\log k)$. The proof uses results on the distribution of smooth numbers and Rankin's method.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "Konyagin's 1999 paper in *Mathematika* used Rankin's method for counting smooth numbers: the number of $y$-smooth integers up to $x$ is $\\Psi(x,y) = x \\cdot u^{-u(1+o(1))}$ where $u = \\log x / \\log y$ (Canfield–Erdős–Pomerance 1983). For $\\binom{n}{k}$ to be $k$-rough, $n$ must avoid having $\\binom{n}{k}$ divisible by any prime $p \\le k$. The superpolynomial bound $\\exp(c(\\log k)^2)$ reflects the difficulty of simultaneously avoiding all small primes.",
-    "relatedConcepts": ["rankin-method", "smooth-number-distribution", "canfield-erdos-pomerance"],
-    "prerequisites": ["ees-bounds", "smooth-number-theory"]
+    "relatedConcepts": [
+      "rankin-method",
+      "smooth-number-distribution",
+      "canfield-erdos-pomerance"
+    ],
+    "prerequisites": [
+      "ees-bounds",
+      "smooth-number-theory"
+    ]
   },
   {
     "id": "ann-1095-lcm-def",
     "proofId": "erdos-1095",
-    "range": { "startLine": 119, "endLine": 125 },
+    "range": {
+      "startLine": 119,
+      "endLine": 125
+    },
     "type": "definition",
     "title": "LCM Function and Conjecture",
     "content": "Defines $L_k = \\operatorname{lcm}(1, 2, \\ldots, k)$ via `Finset.Icc 1 k |>.lcm id`. The **LCM conjecture** asserts $g(k) < L_k$ for all sufficiently large $k$. Since $\\log L_k \\sim k$ by PNT, this would give $g(k) < e^{(1+o(1))k}$, consistent with the EES upper bound.",
     "significance": "key",
     "mathContext": "The function $L_k = \\operatorname{lcm}(1,\\ldots,k)$ equals $e^{\\psi(k)}$ where $\\psi(k) = \\sum_{p^m \\le k} \\log p$ is **Chebyshev's $\\psi$-function**. By the Prime Number Theorem, $\\psi(k) \\sim k$, so $L_k \\sim e^k$. The significance of $L_k$ for $g(k)$ is that $L_k$ is the natural 'modulus' for simultaneous divisibility by all primes $p \\le k$: the residues $n \\bmod p$ for $p \\le k$ repeat with period $L_k$.",
-    "relatedConcepts": ["chebyshev-psi-function", "lcm", "prime-number-theorem"],
-    "prerequisites": ["prime-number-theorem", "lcm-properties"]
+    "relatedConcepts": [
+      "chebyshev-psi-function",
+      "lcm",
+      "prime-number-theorem"
+    ],
+    "prerequisites": [
+      "prime-number-theorem",
+      "lcm-properties"
+    ]
   },
   {
     "id": "ann-1095-lcmasym",
     "proofId": "erdos-1095",
-    "range": { "startLine": 127, "endLine": 129 },
+    "range": {
+      "startLine": 127,
+      "endLine": 129
+    },
     "type": "theorem",
     "title": "LCM Asymptotic",
     "content": "The Prime Number Theorem gives $\\log(L_k)/k \\to 1$ as $k \\to \\infty$. Equivalently, $\\psi(k)/k \\to 1$ where $\\psi$ is Chebyshev's function. Thus $L_k = e^{k(1+o(1))}$.",
     "significance": "key",
     "mathContext": "This is one of the equivalent formulations of the **Prime Number Theorem** (Hadamard and de la Vallée-Poussin, 1896). The equivalence $\\psi(x) \\sim x \\Leftrightarrow \\pi(x) \\sim x/\\log x$ is a standard result. Chebyshev (1852) had already shown $0.92 \\le \\psi(x)/x \\le 1.11$ for large $x$, establishing that $L_k$ has order $e^{\\Theta(k)}$.",
-    "relatedConcepts": ["prime-number-theorem", "chebyshev-estimates", "von-mangoldt-function"],
-    "prerequisites": ["chebyshev-psi-function", "analytic-number-theory"]
+    "relatedConcepts": [
+      "prime-number-theorem",
+      "chebyshev-estimates",
+      "von-mangoldt-function"
+    ],
+    "prerequisites": [
+      "chebyshev-psi-function",
+      "analytic-number-theory"
+    ]
   },
   {
     "id": "ann-1095-ratio",
     "proofId": "erdos-1095",
-    "range": { "startLine": 137, "endLine": 143 },
+    "range": {
+      "startLine": 137,
+      "endLine": 143
+    },
     "type": "definition",
     "title": "Ratio Conjectures",
     "content": "Two conjectures on the irregularity of $g$: (1) $\\limsup_{k \\to \\infty} g(k+1)/g(k) = \\infty$; (2) $\\liminf_{k \\to \\infty} g(k+1)/g(k) = 0$. This means $g$ can jump by arbitrary multiplicative factors or barely change between consecutive values of $k$.",
     "significance": "key",
     "mathContext": "The extreme irregularity of $g$ contrasts with the smooth heuristic $\\log g(k) \\sim k/\\log k$. When $k+1$ is prime, a new prime constraint is added, potentially causing $g(k+1) \\gg g(k)$. When $k+1$ is highly composite, the constraints on $\\binom{n}{k+1}$ vs $\\binom{n}{k}$ change little. Sorenson, Sorenson, and Webster (2020) computed $g(k)$ for $k \\le 200$ and observed wild oscillations, supporting both conjectures.",
-    "relatedConcepts": ["limsup-liminf", "irregularity", "prime-gaps"],
-    "prerequisites": ["g-definition", "sequence-analysis"]
+    "relatedConcepts": [
+      "limsup-liminf",
+      "irregularity",
+      "prime-gaps"
+    ],
+    "prerequisites": [
+      "g-definition",
+      "sequence-analysis"
+    ]
   },
   {
     "id": "ann-1095-heuristic",
     "proofId": "erdos-1095",
-    "range": { "startLine": 151, "endLine": 155 },
+    "range": {
+      "startLine": 151,
+      "endLine": 155
+    },
     "type": "definition",
     "title": "Heuristic Asymptotic: $\\log g(k) \\sim c \\cdot k / \\log k$",
     "content": "The central conjecture: there exists $c > 0$ such that $\\log g(k) / (k / \\log k) \\to c$ as $k \\to \\infty$. This is between the known bounds $\\exp(c(\\log k)^2)$ and $\\exp((1+o(1))k)$. A 'right-thinking person' believes this, according to Erdős–Lacampagne–Selfridge (1993).",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The heuristic reasoning: for $\\binom{n}{k}$ to be $k$-rough, for each prime $p \\le k$ we need $\\nu_p(\\binom{n}{k}) = 0$, i.e., no carry in base $p$. The probability of no carry is roughly $1/p$ (by Chinese Remainder Theorem heuristics), so the 'probability' that $\\binom{n}{k}$ is $k$-rough is $\\prod_{p \\le k} (1/p) \\approx e^{-k/\\log k}$ by Mertens' theorem. So we need $n \\approx e^{k/\\log k}$.",
-    "relatedConcepts": ["mertens-theorem", "chinese-remainder-theorem", "probabilistic-number-theory"],
-    "prerequisites": ["prime-number-theorem", "smooth-number-theory"]
+    "relatedConcepts": [
+      "mertens-theorem",
+      "chinese-remainder-theorem",
+      "probabilistic-number-theory"
+    ],
+    "prerequisites": [
+      "prime-number-theorem",
+      "smooth-number-theory"
+    ]
   },
   {
     "id": "ann-1095-consensus",
     "proofId": "erdos-1095",
-    "range": { "startLine": 157, "endLine": 160 },
+    "range": {
+      "startLine": 157,
+      "endLine": 160
+    },
     "type": "theorem",
     "title": "ELS Consensus Bound (1993)",
     "content": "Erdős, Lacampagne, and Selfridge stated that any 'right-thinking person' would conjecture $g(k) \\ge \\exp(c \\cdot k / \\log k)$. This expected lower bound remains unproven. It would bridge the gap between Konyagin's $\\exp(c(\\log k)^2)$ and the heuristic.",
     "significance": "key",
     "mathContext": "The ELS 1993 paper in *Mathematics of Computation* was one of Erdős's last papers on this topic. The colorful phrasing 'right-thinking person' is characteristic of Erdős's style — he often expressed mathematical beliefs as moral imperatives. The gap between $\\exp(c(\\log k)^2)$ and $\\exp(ck/\\log k)$ is enormous: for $k = 100$, the ratio of exponents is $(\\log 100)^2 \\approx 21$ vs $100/\\log 100 \\approx 22$, but for $k = 10^6$ it becomes $\\approx 190$ vs $\\approx 72{,}000$.",
-    "relatedConcepts": ["erdos-style-conjecture", "gap-between-bounds", "mathematics-of-computation"],
-    "prerequisites": ["konyagin-bound", "heuristic-conjecture"]
+    "relatedConcepts": [
+      "erdos-style-conjecture",
+      "gap-between-bounds",
+      "mathematics-of-computation"
+    ],
+    "prerequisites": [
+      "konyagin-bound",
+      "heuristic-conjecture"
+    ]
   },
   {
     "id": "ann-1095-values",
     "proofId": "erdos-1095",
-    "range": { "startLine": 168, "endLine": 181 },
+    "range": {
+      "startLine": 168,
+      "endLine": 181
+    },
     "type": "theorem",
     "title": "Computed Values of $g(k)$",
     "content": "Known values: $g(2) = 3$, $g(3) = 7$, $g(4) = 23$, $g(5) = 62$, $g(6) = 143$ (OEIS A003458). For example, $\\binom{7}{3} = 35 = 5 \\cdot 7$ is 3-rough, and no smaller $n > 4$ works: $\\binom{5}{3} = 10 = 2 \\cdot 5$ (factor 2 $\\le$ 3), $\\binom{6}{3} = 20 = 2^2 \\cdot 5$ (factor 2 $\\le$ 3).",
     "significance": "key",
     "mathContext": "The OEIS sequence A003458 extends further: $g(7) = 111$, $g(8) = 253$, $g(9) = 412$, $g(10) = 786$. Sorenson, Sorenson, and Webster (2020) computed $g(k)$ for $k \\le 200$ using a sieve-based algorithm. The values show the predicted irregular behavior: $g(6)/g(5) = 143/62 \\approx 2.31$ but $g(7)/g(6) = 111/143 \\approx 0.78$ (a decrease!). This supports the ratio conjectures.",
-    "relatedConcepts": ["OEIS-A003458", "computational-number-theory", "sieve-algorithm"],
-    "prerequisites": ["g-definition", "k-roughness"]
+    "relatedConcepts": [
+      "OEIS-A003458",
+      "computational-number-theory",
+      "sieve-algorithm"
+    ],
+    "prerequisites": [
+      "g-definition",
+      "k-roughness"
+    ]
   },
   {
     "id": "ann-1095-open",
     "proofId": "erdos-1095",
-    "range": { "startLine": 189, "endLine": 192 },
+    "range": {
+      "startLine": 189,
+      "endLine": 192
+    },
     "type": "definition",
     "title": "The Main Open Problem",
     "content": "Find a function $f(k)$ such that $\\log g(k) / f(k) \\to 1$. The conjecture is $f(k) = c \\cdot k / \\log k$, but the gap between the best known lower bound $c(\\log k)^2$ and upper bound $(1+o(1))k$ leaves the true growth rate completely unknown.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The problem asks for the **precise asymptotic order** of $g(k)$, which is a fundamental question about the arithmetic of binomial coefficients. The difficulty lies in understanding the joint distribution of $\\nu_p(\\binom{n}{k})$ across all primes $p \\le k$ simultaneously. Each prime imposes a digit condition in base $p$ (by Kummer's theorem), and these conditions across different primes are hard to analyze simultaneously — this is essentially a multi-dimensional sieve problem.",
-    "relatedConcepts": ["asymptotic-analysis", "sieve-methods", "digit-conditions"],
-    "prerequisites": ["konyagin-bound", "ees-bounds", "heuristic-conjecture"]
+    "relatedConcepts": [
+      "asymptotic-analysis",
+      "sieve-methods",
+      "digit-conditions"
+    ],
+    "prerequisites": [
+      "konyagin-bound",
+      "ees-bounds",
+      "heuristic-conjecture"
+    ]
   }
 ]

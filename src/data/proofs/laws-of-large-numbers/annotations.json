@@ -11,8 +11,14 @@
     "content": "P(|X - μ| ≥ ε) ≤ Var(X)/ε². This is `ProbabilityTheory.meas_ge_le_variance_div_sq` from Mathlib, which follows from Markov's inequality applied to (X - μ)².",
     "mathContext": "Chebyshev's inequality gives a universal bound on tail probabilities using only the variance. It's tight for two-point distributions.",
     "significance": "key",
-    "prerequisites": ["variance", "markov-inequality"],
-    "relatedConcepts": ["concentration-inequalities", "wlln"]
+    "prerequisites": [
+      "variance",
+      "markov-inequality"
+    ],
+    "relatedConcepts": [
+      "concentration-inequalities",
+      "wlln"
+    ]
   },
   {
     "id": "variance-sample-mean",
@@ -26,8 +32,13 @@
     "content": "For independent random variables, the variance of the sum equals the sum of variances. This is `ProbabilityTheory.IndepFun.variance_sum` from Mathlib.",
     "mathContext": "Independence is crucial here: Var(X+Y) = Var(X) + Var(Y) only holds for independent variables. For the sample mean, Var(X̄ₙ) = σ²/n.",
     "significance": "key",
-    "prerequisites": ["variance", "independence"],
-    "relatedConcepts": ["chebyshev-inequality"]
+    "prerequisites": [
+      "variance",
+      "independence"
+    ],
+    "relatedConcepts": [
+      "chebyshev-inequality"
+    ]
   },
   {
     "id": "wlln-chebyshev",
@@ -40,9 +51,16 @@
     "title": "Weak Law of Large Numbers",
     "content": "For i.i.d. random variables with finite variance, the sample mean converges in probability to the population mean. The proof uses Chebyshev's inequality: P(|X̄ₙ - μ| ≥ ε) ≤ σ²/(nε²) → 0.",
     "mathContext": "This is Wiedijk's Theorem #59 (partial). The variance of the sample mean is σ²/n, which goes to 0, making large deviations from μ increasingly unlikely.",
-    "significance": "critical",
-    "prerequisites": ["variance", "chebyshev-inequality", "convergence-probability"],
-    "relatedConcepts": ["central-limit-theorem", "strong-law"]
+    "significance": "key",
+    "prerequisites": [
+      "variance",
+      "chebyshev-inequality",
+      "convergence-probability"
+    ],
+    "relatedConcepts": [
+      "central-limit-theorem",
+      "strong-law"
+    ]
   },
   {
     "id": "slln-mathlib",
@@ -55,9 +73,15 @@
     "title": "Strong Law of Large Numbers",
     "content": "For pairwise independent, identically distributed, integrable random variables, the sample mean converges almost surely to the expectation. This is `ProbabilityTheory.strong_law_ae` from Mathlib.",
     "mathContext": "Almost sure convergence means the set of outcomes where convergence fails has probability zero. This is strictly stronger than convergence in probability.",
-    "significance": "critical",
-    "prerequisites": ["almost-sure-convergence", "integrability"],
-    "relatedConcepts": ["wlln", "ergodic-theorem"]
+    "significance": "key",
+    "prerequisites": [
+      "almost-sure-convergence",
+      "integrability"
+    ],
+    "relatedConcepts": [
+      "wlln",
+      "ergodic-theorem"
+    ]
   },
   {
     "id": "ae-implies-prob",
@@ -71,7 +95,12 @@
     "content": "Almost sure convergence implies convergence in measure. This is `MeasureTheory.tendstoInMeasure_of_tendsto_ae` from Mathlib. If Xₙ → X a.s., then for any ε > 0, P(|Xₙ - X| > ε) → 0.",
     "mathContext": "The converse is false: convergence in probability does not imply almost sure convergence. A counterexample involves random variables that 'flicker' back and forth.",
     "significance": "key",
-    "prerequisites": ["almost-sure-convergence", "convergence-probability"],
-    "relatedConcepts": ["modes-of-convergence"]
+    "prerequisites": [
+      "almost-sure-convergence",
+      "convergence-probability"
+    ],
+    "relatedConcepts": [
+      "modes-of-convergence"
+    ]
   }
 ]

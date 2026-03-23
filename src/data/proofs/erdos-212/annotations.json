@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "This header documents **Erdős Problem #212**, the famous Erdős-Ulam rational distance problem. It asks whether there can be a dense subset of the plane with all pairwise distances rational.",
     "mathContext": "The problem connects elementary geometry (distances in the plane) to deep arithmetic geometry (the Bombieri-Lang conjecture). This unexpected connection is part of what makes the problem fascinating.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Erdős-Ulam",
       "rational distances",
@@ -28,7 +28,7 @@
     "title": "Rational Distance Sets",
     "content": "A set S has **rational distances** if for every pair of distinct points p, q in S, the Euclidean distance d(p,q) is a rational number. We formalize this using Pairwise on sets.",
     "mathContext": "HasRationalDistances S := S.Pairwise (fun p₁ p₂ => ∃ q : ℚ, dist p₁ p₂ = q). The Pairwise predicate ensures we only check distinct pairs.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Pairwise",
       "distance",
@@ -46,7 +46,7 @@
     "title": "The Main Conjecture",
     "content": "**Erdos212Conjecture** states that no dense rational distance set exists. This is Ulam's conjecture, which Erdős believed to be true. It remains one of the most famous open problems in combinatorial geometry.",
     "mathContext": "Erdos212Conjecture := ¬∃ S : Set (ℝ × ℝ), Dense S ∧ HasRationalDistances S. A set is Dense if its closure equals the whole space.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Ulam",
       "conjecture",
@@ -99,7 +99,7 @@
     "title": "Tao-Shaffaf Conditional Result",
     "content": "**Tao (2014) and Shaffaf (2018)** independently proved that assuming Bombieri-Lang, the answer to Erdős-Ulam is NO. This is the strongest known result toward resolving the problem.",
     "mathContext": "axiom tao_shaffaf_conditional : BombieriLangConjecture → Erdos212Conjecture. The proof uses that rational distance constraints force points onto certain algebraic varieties, whose rational points are controlled by Bombieri-Lang.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Tao",
       "Shaffaf",
@@ -135,7 +135,7 @@
     "title": "Unconditional Algebraic Constraint",
     "content": "**Shaffaf-Tao** proved unconditionally that any rational distance set must be contained in a finite union of real algebraic curves. This severely restricts the structure of such sets.",
     "mathContext": "axiom shaffaf_tao_algebraic_curves : ∀ S, HasRationalDistances S → ∃ curves : Finset (Set (ℝ × ℝ)), (∀ C ∈ curves, IsRealAlgebraicCurve C) ∧ S ⊆ ⋃ C ∈ curves, C",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "algebraic constraint",
       "finite union",

@@ -2,97 +2,185 @@
   {
     "id": "erdos-638-ann-header",
     "proofId": "erdos-638",
-    "range": { "startLine": 1, "endLine": 22 },
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
     "type": "context",
     "title": "Problem Statement and Imports",
     "content": "The header states Erdős Problem #638: given a Ramsey family S of finite graphs (where for every n, some member forces a monochromatic triangle under n-colourings), does there exist, for every infinite cardinal κ, a graph whose finite subgraphs lie in S and whose edges cannot be κ-coloured without a monochromatic triangle? Erdős noted an affirmative answer would enable many extensions and generalisations.",
     "mathContext": "A family $\\mathcal{S}$ is Ramsey if $\\forall n \\ge 1$, $\\exists G_n \\in \\mathcal{S}$ with $G_n \\to (K_3)^2_n$ (every $n$-colouring of $E(G_n)$ yields a monochromatic $K_3$). The problem asks: $\\forall \\kappa \\ge \\aleph_0$, $\\exists G$ with the $\\kappa$-colour Ramsey property.",
     "significance": "context",
-    "relatedConcepts": ["Ramsey theory", "infinite combinatorics", "compactness"],
-    "prerequisites": ["simple graphs", "Fin", "graph coloring"]
+    "relatedConcepts": [
+      "Ramsey theory",
+      "infinite combinatorics",
+      "compactness"
+    ],
+    "prerequisites": [
+      "simple graphs",
+      "Fin",
+      "graph coloring"
+    ]
   },
   {
     "id": "erdos-638-ann-mono-triangle",
     "proofId": "erdos-638",
-    "range": { "startLine": 24, "endLine": 32 },
+    "range": {
+      "startLine": 24,
+      "endLine": 32
+    },
     "type": "definition",
     "title": "Monochromatic Triangle",
     "content": "HasMonoTriangle defines a monochromatic triangle under a vertex-pair colouring c : V → V → α. Three mutually adjacent vertices a, b, d with c(a,b) = c(b,d) = c(a,d) form the monochromatic triangle. The coloring is defined on ordered vertex pairs rather than edges, which simplifies the Lean formalization while being equivalent for symmetric colorings.",
     "mathContext": "A monochromatic $K_3$ under $c: \\binom{V}{2} \\to \\alpha$ is a triple $\\{a,b,d\\}$ with $a \\sim b \\sim d \\sim a$ in $G$ and $c(a,b) = c(b,d) = c(a,d)$. The arrow notation $G \\to (K_3)^2_n$ means every $n$-colouring of $E(G)$ contains such a triple.",
     "significance": "key",
-    "relatedConcepts": ["Ramsey number R(3,3)", "edge coloring", "Schur's theorem"],
-    "prerequisites": ["SimpleGraph.Adj", "distinctness", "equality chains"]
+    "relatedConcepts": [
+      "Ramsey number R(3,3)",
+      "edge coloring",
+      "Schur's theorem"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj",
+      "distinctness",
+      "equality chains"
+    ]
   },
   {
     "id": "erdos-638-ann-triangle-ramsey",
     "proofId": "erdos-638",
-    "range": { "startLine": 34, "endLine": 38 },
+    "range": {
+      "startLine": 34,
+      "endLine": 38
+    },
     "type": "definition",
     "title": "n-Colour Triangle Ramsey Property",
     "content": "HasTriangleRamsey G n states that every colouring of vertex pairs with Fin n colours yields a monochromatic triangle. This is the finite-colour Ramsey property for a fixed graph G. By the classical Ramsey theorem, for every n there exists N such that K_N has this property; the smallest such N is the Ramsey number R(3,3,...,3) with n arguments.",
     "mathContext": "The $n$-colour Ramsey property: $G \\to (K_3)^2_n$, i.e., $\\forall c: E(G) \\to [n]$, $\\exists$ monochromatic $K_3$. The classical Ramsey number $R_n(3) = R(\\underbrace{3,\\ldots,3}_n)$ gives the minimum vertex count for $K_{R_n(3)}$ to have this property.",
-    "significance": "critical",
-    "relatedConcepts": ["Ramsey number", "partition regularity", "Hales–Jewett"],
-    "prerequisites": ["Fin n", "universal quantification", "HasMonoTriangle"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey number",
+      "partition regularity",
+      "Hales–Jewett"
+    ],
+    "prerequisites": [
+      "Fin n",
+      "universal quantification",
+      "HasMonoTriangle"
+    ]
   },
   {
     "id": "erdos-638-ann-ramsey-family",
     "proofId": "erdos-638",
-    "range": { "startLine": 40, "endLine": 48 },
+    "range": {
+      "startLine": 40,
+      "endLine": 48
+    },
     "type": "definition",
     "title": "Ramsey Family",
     "content": "IsRamseyFamily defines a family S of finite graphs (indexed by vertex count m) such that for every n ≥ 1, some member G ∈ S(m) has the n-colour triangle Ramsey property. The family of complete graphs trivially forms a Ramsey family by the classical theorem. The key question is what happens when S is a more restricted family.",
     "mathContext": "A Ramsey family $\\mathcal{S} = \\bigcup_m \\mathcal{S}(m)$ satisfies $\\forall n \\ge 1$, $\\exists m$, $\\exists G \\in \\mathcal{S}(m)$ with $G \\to (K_3)^2_n$. The classical Ramsey theorem shows $\\{K_m : m \\in \\mathbb{N}\\}$ is a Ramsey family.",
-    "significance": "critical",
-    "relatedConcepts": ["Nešetřil–Rödl theorem", "structural Ramsey theory", "age of a structure"],
-    "prerequisites": ["indexed families", "existential quantification", "HasTriangleRamsey"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Nešetřil–Rödl theorem",
+      "structural Ramsey theory",
+      "age of a structure"
+    ],
+    "prerequisites": [
+      "indexed families",
+      "existential quantification",
+      "HasTriangleRamsey"
+    ]
   },
   {
     "id": "erdos-638-ann-cardinal-ramsey",
     "proofId": "erdos-638",
-    "range": { "startLine": 50, "endLine": 54 },
+    "range": {
+      "startLine": 50,
+      "endLine": 54
+    },
     "type": "definition",
     "title": "Cardinal Triangle Ramsey Property",
     "content": "HasCardinalTriangleRamsey generalises the Ramsey property to arbitrary colour types κ (not just Fin n). For an infinite type κ, requiring every κ-colouring to yield a monochromatic triangle is a much stronger condition than the finite-colour version. This is the property that the conjecture asserts must be achievable.",
     "mathContext": "For a type $\\kappa$: $G \\to (K_3)^2_\\kappa$ means $\\forall c: E(G) \\to \\kappa$, $\\exists$ monochromatic $K_3$. When $|\\kappa| = \\aleph_0$, this requires a countably-coloured Ramsey property; for uncountable $\\kappa$, it is even stronger.",
-    "significance": "critical",
-    "relatedConcepts": ["infinite Ramsey theory", "Erdős–Rado theorem", "partition calculus"],
-    "prerequisites": ["type-parametric coloring", "HasMonoTriangle", "Infinite typeclass"]
+    "significance": "key",
+    "relatedConcepts": [
+      "infinite Ramsey theory",
+      "Erdős–Rado theorem",
+      "partition calculus"
+    ],
+    "prerequisites": [
+      "type-parametric coloring",
+      "HasMonoTriangle",
+      "Infinite typeclass"
+    ]
   },
   {
     "id": "erdos-638-ann-conjecture",
     "proofId": "erdos-638",
-    "range": { "startLine": 56, "endLine": 65 },
+    "range": {
+      "startLine": 56,
+      "endLine": 65
+    },
     "type": "insight",
     "title": "Erdős Problem #638: The Main Conjecture",
     "content": "The central conjecture: for every Ramsey family S and every infinite colour type κ, there exists a graph G with the cardinal triangle Ramsey property for κ. Erdős noted an affirmative answer would enable many extensions and generalisations. The problem asks whether the finite Ramsey property for increasingly many colors can be 'compiled' into an infinite-colour Ramsey property, a compactness-type question.",
     "mathContext": "The conjecture: $\\forall \\mathcal{S}$ Ramsey, $\\forall \\kappa$ infinite, $\\exists G$ with $G \\to (K_3)^2_\\kappa$. This is a partition-calculus statement lifting $G_n \\to (K_3)^2_n$ (for all $n$) to $G \\to (K_3)^2_\\kappa$ for infinite $\\kappa$.",
-    "significance": "critical",
-    "relatedConcepts": ["compactness principle", "ultraproduct", "Erdős–Rado partition relation"],
-    "prerequisites": ["IsRamseyFamily", "Infinite typeclass", "existential quantification"]
+    "significance": "key",
+    "relatedConcepts": [
+      "compactness principle",
+      "ultraproduct",
+      "Erdős–Rado partition relation"
+    ],
+    "prerequisites": [
+      "IsRamseyFamily",
+      "Infinite typeclass",
+      "existential quantification"
+    ]
   },
   {
     "id": "erdos-638-ann-classical",
     "proofId": "erdos-638",
-    "range": { "startLine": 67, "endLine": 77 },
+    "range": {
+      "startLine": 67,
+      "endLine": 77
+    },
     "type": "theorem",
     "title": "Classical Ramsey Theorem and Complete Graph Family",
     "content": "The classical Ramsey theorem for triangles: for every n ≥ 1, there exists N such that K_N (represented as ⊤ : SimpleGraph (Fin N)) has the n-colour triangle Ramsey property. As a corollary, the family of complete graphs {K_m : m ∈ ℕ} forms a Ramsey family. This is Ramsey's theorem (1930) specialized to triangles and multiple colors.",
     "mathContext": "Ramsey's theorem (1930): $\\forall n \\ge 1$, $\\exists N = R_n(3)$ such that $K_N \\to (K_3)^2_n$. The known bounds are $R_2(3) = 6$ (Ramsey), $R_3(3) = 17$ (Greenwood–Gleason 1955), and $R_n(3)$ grows exponentially in $n$.",
     "significance": "key",
-    "relatedConcepts": ["Ramsey's theorem", "complete graphs", "Greenwood–Gleason"],
-    "prerequisites": ["SimpleGraph.top", "Fin N", "HasTriangleRamsey"]
+    "relatedConcepts": [
+      "Ramsey's theorem",
+      "complete graphs",
+      "Greenwood–Gleason"
+    ],
+    "prerequisites": [
+      "SimpleGraph.top",
+      "Fin N",
+      "HasTriangleRamsey"
+    ]
   },
   {
     "id": "erdos-638-ann-monotonicity",
     "proofId": "erdos-638",
-    "range": { "startLine": 79, "endLine": 84 },
+    "range": {
+      "startLine": 79,
+      "endLine": 84
+    },
     "type": "concept",
     "title": "Monotonicity of the Ramsey Property",
     "content": "If a graph G has the n-colour triangle Ramsey property and m ≤ n, then G also has the m-colour property. This follows because any m-colouring is a special case of an n-colouring (embed Fin m into Fin n). Monotonicity means the Ramsey family condition only needs to be checked at each n individually.",
     "mathContext": "If $G \\to (K_3)^2_n$ and $m \\le n$, then $G \\to (K_3)^2_m$. This follows from the injection $\\mathrm{Fin}\\,m \\hookrightarrow \\mathrm{Fin}\\,n$: any $m$-colouring $c: E(G) \\to [m]$ can be viewed as an $n$-colouring.",
     "significance": "supporting",
-    "relatedConcepts": ["color monotonicity", "Fin embedding", "Ramsey monotonicity"],
-    "prerequisites": ["Fin m ≤ Fin n", "HasTriangleRamsey", "function composition"]
+    "relatedConcepts": [
+      "color monotonicity",
+      "Fin embedding",
+      "Ramsey monotonicity"
+    ],
+    "prerequisites": [
+      "Fin m ≤ Fin n",
+      "HasTriangleRamsey",
+      "function composition"
+    ]
   }
 ]

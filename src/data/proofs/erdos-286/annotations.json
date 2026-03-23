@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #286**: Can 1 be expressed as a sum of k distinct unit fractions with denominators in an interval of width (e-1+o(1))k? Croot (2001) proved the answer is yes.",
     "mathContext": "1 = 1/n₁ + ... + 1/nₖ with all nᵢ in [a, a + (e-1)k]. The constant e-1 ≈ 1.718 is optimal.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "unit-fractions",
       "egyptian-fractions",
@@ -45,7 +45,7 @@
     "title": "Main Predicate",
     "content": "**HasShortIntervalRepresentation(k, width)**: There exist k positive integers in an interval of given width whose reciprocals sum to 1.",
     "mathContext": "The core question: for which k and width does such a representation exist?",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "existence",
       "interval-constraint"
@@ -96,7 +96,7 @@
     "title": "Croot's Theorem",
     "content": "**Croot (2001)**: For all sufficiently large k, there exists a representation with interval width at most (e-1+ε)k. The constant e-1 is asymptotically tight.",
     "mathContext": "croot_theorem states the upper bound; optimality states the matching lower bound.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "asymptotic-analysis",
       "upper-bound",

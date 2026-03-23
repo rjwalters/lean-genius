@@ -46,7 +46,7 @@
     "title": "Schnirelmann Density",
     "content": "**Schnirelmann density** σ(A) = inf_{N≥1} |A ∩ {1,...,N}|/N is a 'worst-case' density. Unlike asymptotic density, it's sensitive to gaps early in the sequence - if 1 ∉ A, then σ(A) = 0!",
     "mathContext": "The infimum is taken over N ≥ 1 using a subtype `{n : ℕ // n ≥ 1}`. This density is central to additive number theory: Schnirelmann proved that σ(A + B) ≥ σ(A) + σ(B) when σ(A) + σ(B) < 1.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "density",
       "infimum",
@@ -64,7 +64,7 @@
     "title": "Additive Basis of Order k",
     "content": "A set B is an **additive basis of order k** if every natural number can be written as a sum of at most k elements from B. Example: the squares are an additive basis of order 4 (Lagrange).",
     "mathContext": "Formally: ∀ n, ∃ S ⊆ B with |S| ≤ k and Σ S = n. We use `Finset.sum id` for the sum. Famous examples: primes (order 3 by Vinogradov for large odd n), squares (order 4).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "additive basis",
       "Waring's problem",
@@ -118,7 +118,7 @@
     "title": "Density-Boosting Property",
     "content": "The **density-boosting property** states: for any set A with Schnirelmann density α and any N, there exists b ∈ B such that |A ∪ (A+b) ∩ {1,...,N}| ≥ (α + f(α)) · N where f(α) > 0.",
     "mathContext": "This is STRONGER than being an essential component. Essential components just need to increase Schnirelmann density; this requires a specific quantitative improvement for EVERY N.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "essential component",
       "density improvement",
@@ -136,7 +136,7 @@
     "title": "Erdős Problem #38",
     "content": "**The question**: Does there exist B that is NOT an additive basis but still has the density-boosting property? This asks if 'density-boosting' is strictly weaker than 'being a basis'.",
     "mathContext": "The formal statement requires: (1) ¬IsAdditiveBasis B, and (2) ∃ f with f(α) > 0 for 0 < α < 1 such that B has the density-boost property. Both conditions must hold.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open problem",
       "additive basis",

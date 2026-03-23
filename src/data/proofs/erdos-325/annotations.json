@@ -82,7 +82,7 @@
     "title": "Main Conjecture (Axiom)",
     "content": "**Erdős Problem #325**: For k ≥ 3, is f_{k,3}(x) ≫ x^{3/k}? In other words, does the count of sums of three k-th powers grow at least as fast as x^{3/k}? This remains **OPEN**.",
     "mathContext": "We state this as `x^{3/k} =O[atTop] f_{k,3}(x)`, meaning f_{k,3} dominates x^{3/k} asymptotically. The `atTop` filter represents the limit as x → ∞. Stated as an axiom since unproven.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "big-O notation",
       "atTop filter",

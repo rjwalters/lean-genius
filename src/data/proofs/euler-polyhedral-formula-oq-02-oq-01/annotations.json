@@ -5,9 +5,17 @@
     "type": "definition",
     "content": "Axiomatic structure encoding a compact orientable Riemannian 2-manifold: Euler characteristic χ(M), total Gaussian curvature ∫_M K dA, area ∫_M dA > 0, and the Gauss-Bonnet axiom ∫_M K dA = 2πχ. This is a minimal axiomatization — one axiom captures the entire Gauss-Bonnet theorem.",
     "mathContext": "The structure encodes: $\\chi(M) \\in \\mathbb{Z}$, $\\int_M K\\,dA \\in \\mathbb{R}$, $\\text{Area}(M) > 0$, and the axiom $\\int_M K\\,dA = 2\\pi\\chi(M)$. Mathlib v4.26.0 lacks Riemannian metrics, so this axiomatization substitutes for the full differential-geometric proof.",
-    "significance": "critical",
-    "relatedConcepts": ["Riemannian manifold", "Gaussian curvature", "Euler characteristic", "Theorema Egregium"],
-    "prerequisites": ["Real.pi_pos", "basic structure syntax"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Riemannian manifold",
+      "Gaussian curvature",
+      "Euler characteristic",
+      "Theorema Egregium"
+    ],
+    "prerequisites": [
+      "Real.pi_pos",
+      "basic structure syntax"
+    ]
   },
   {
     "id": "ann-orientable-surface",
@@ -16,8 +24,15 @@
     "content": "Extends CompactRiemannianSurface with genus g ∈ ℕ and the topological relation χ = 2 - 2g. This encodes the classification of orientable closed surfaces: the genus (number of handles) uniquely determines the Euler characteristic.",
     "mathContext": "For an orientable closed surface of genus $g$: $\\chi(M) = 2 - 2g$. This follows from the Betti numbers: $b_0 = 1$, $b_1 = 2g$, $b_2 = 1$, giving $\\chi = 1 - 2g + 1 = 2 - 2g$.",
     "significance": "key",
-    "relatedConcepts": ["genus", "classification of surfaces", "Betti numbers", "handle decomposition"],
-    "prerequisites": ["CompactRiemannianSurface"]
+    "relatedConcepts": [
+      "genus",
+      "classification of surfaces",
+      "Betti numbers",
+      "handle decomposition"
+    ],
+    "prerequisites": [
+      "CompactRiemannianSurface"
+    ]
   },
   {
     "id": "ann-gauss-bonnet",
@@ -25,9 +40,16 @@
     "type": "theorem",
     "content": "States the Gauss-Bonnet theorem as a theorem (unwrapping the structure axiom): ∫_M K dA = 2πχ(M). This is the central result connecting local geometry to global topology — changing the Riemannian metric changes K pointwise but not the integral.",
     "mathContext": "$$\\int_M K\\,dA = 2\\pi\\chi(M)$$\nThe proof for embedded surfaces uses Stokes' theorem applied to the connection form; Chern's intrinsic proof uses the Pfaffian of the curvature 2-form. Here it is simply the structure axiom `S.gauss_bonnet`.",
-    "significance": "critical",
-    "relatedConcepts": ["Gauss-Bonnet theorem", "topological invariant", "Stokes' theorem", "curvature form"],
-    "prerequisites": ["CompactRiemannianSurface"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Gauss-Bonnet theorem",
+      "topological invariant",
+      "Stokes' theorem",
+      "curvature form"
+    ],
+    "prerequisites": [
+      "CompactRiemannianSurface"
+    ]
   },
   {
     "id": "ann-topological-invariance",
@@ -36,8 +58,14 @@
     "content": "Total curvature is a topological invariant: surfaces with the same Euler characteristic have the same total curvature, regardless of which Riemannian metric they carry. This is the profound content of Gauss-Bonnet — geometry is constrained by topology.",
     "mathContext": "If $\\chi(S_1) = \\chi(S_2)$, then $\\int_{S_1} K_1\\,dA_1 = \\int_{S_2} K_2\\,dA_2$. The metrics on $S_1, S_2$ can be completely different; only the topology matters.",
     "significance": "key",
-    "relatedConcepts": ["topological invariant", "metric independence", "deformation invariance"],
-    "prerequisites": ["gauss_bonnet_theorem"]
+    "relatedConcepts": [
+      "topological invariant",
+      "metric independence",
+      "deformation invariance"
+    ],
+    "prerequisites": [
+      "gauss_bonnet_theorem"
+    ]
   },
   {
     "id": "ann-curvature-sign",
@@ -46,8 +74,15 @@
     "content": "Three fundamental curvature-topology constraints: positive total curvature implies χ > 0, negative implies χ < 0, zero implies χ = 0. Each proof substitutes ∫K dA = 2πχ and uses nlinarith with π > 0 to derive the sign of χ from the sign of the integral.",
     "mathContext": "$\\int K\\,dA > 0 \\Rightarrow \\chi > 0$, $\\int K\\,dA < 0 \\Rightarrow \\chi < 0$, $\\int K\\,dA = 0 \\Rightarrow \\chi = 0$. Since $\\int K\\,dA = 2\\pi\\chi$ and $\\pi > 0$, the sign of $\\chi$ matches the sign of $\\int K\\,dA$.",
     "significance": "key",
-    "relatedConcepts": ["sign of curvature", "topology constraints", "nlinarith tactic"],
-    "prerequisites": ["gauss_bonnet_theorem", "Real.pi_pos"]
+    "relatedConcepts": [
+      "sign of curvature",
+      "topology constraints",
+      "nlinarith tactic"
+    ],
+    "prerequisites": [
+      "gauss_bonnet_theorem",
+      "Real.pi_pos"
+    ]
   },
   {
     "id": "ann-special-surfaces",
@@ -56,8 +91,16 @@
     "content": "Computes total curvature for each genus: sphere (g=0) gives 4π, torus (g=1) gives 0, double torus (g=2) gives -4π. The general formula ∫K dA = 4π(1-g) follows from 2π(2-2g) = 4π(1-g). Proved by substituting the genus into total_curvature_genus and using linarith.",
     "mathContext": "Genus $0$: $\\int K\\,dA = 4\\pi$. Genus $1$: $\\int K\\,dA = 0$. Genus $2$: $\\int K\\,dA = -4\\pi$. General: $\\int K\\,dA = 4\\pi(1 - g)$. Each step more negative by $4\\pi$ per handle added.",
     "significance": "supporting",
-    "relatedConcepts": ["sphere", "torus", "genus formula", "handle addition"],
-    "prerequisites": ["total_curvature_genus", "OrientableClosedSurface"]
+    "relatedConcepts": [
+      "sphere",
+      "torus",
+      "genus formula",
+      "handle addition"
+    ],
+    "prerequisites": [
+      "total_curvature_genus",
+      "OrientableClosedSurface"
+    ]
   },
   {
     "id": "ann-genus-determination",
@@ -65,9 +108,18 @@
     "type": "theorem",
     "content": "Complete classification from curvature sign: ∫K dA > 0 forces genus 0 (sphere), = 0 forces genus 1 (torus), < 0 forces genus ≥ 2. The negative case uses by_contra and omega to eliminate g = 0 (where ∫K = 4π > 0, contradicting ∫K < 0) and g = 1 (where ∫K = 0, also contradicting).",
     "mathContext": "$\\int K > 0 \\Rightarrow g = 0$ (sphere), $\\int K = 0 \\Rightarrow g = 1$ (torus), $\\int K < 0 \\Rightarrow g \\geq 2$ (hyperbolic). This is the topological content of the **uniformization theorem**: every closed surface admits constant curvature $+1, 0, -1$ matching its genus.",
-    "significance": "critical",
-    "relatedConcepts": ["uniformization theorem", "classification of surfaces", "constant curvature metrics", "Thurston geometrization"],
-    "prerequisites": ["positive_curvature_positive_chi", "zero_curvature_zero_chi", "negative_curvature_negative_chi"]
+    "significance": "key",
+    "relatedConcepts": [
+      "uniformization theorem",
+      "classification of surfaces",
+      "constant curvature metrics",
+      "Thurston geometrization"
+    ],
+    "prerequisites": [
+      "positive_curvature_positive_chi",
+      "zero_curvature_zero_chi",
+      "negative_curvature_negative_chi"
+    ]
   },
   {
     "id": "ann-average-curvature",
@@ -76,8 +128,15 @@
     "content": "Average Gaussian curvature K_avg = ∫K dA / Area(M). By Gauss-Bonnet, K_avg = 2πχ / Area. Verified concretely: unit sphere (area 4π) has K_avg = 1, flat torus has K_avg = 0. The average curvature is always determined by topology and area.",
     "mathContext": "$K_{\\text{avg}} = \\frac{\\int_M K\\,dA}{\\text{Area}(M)} = \\frac{2\\pi\\chi(M)}{\\text{Area}(M)}$. For the unit sphere: $K_{\\text{avg}} = 4\\pi / 4\\pi = 1$. For any flat torus: $K_{\\text{avg}} = 0/\\text{Area} = 0$.",
     "significance": "supporting",
-    "relatedConcepts": ["average curvature", "scalar curvature", "area normalization"],
-    "prerequisites": ["gauss_bonnet_theorem", "CompactRiemannianSurface.area_pos"]
+    "relatedConcepts": [
+      "average curvature",
+      "scalar curvature",
+      "area normalization"
+    ],
+    "prerequisites": [
+      "gauss_bonnet_theorem",
+      "CompactRiemannianSurface.area_pos"
+    ]
   },
   {
     "id": "ann-area-bound",
@@ -86,8 +145,16 @@
     "content": "Bonnet-type area bound: for a sphere (g=0) with K ≥ K_min > 0 everywhere, Area ≤ 4π/K_min. The proof uses K_min · Area ≤ ∫K dA = 4π. This is the 2D analogue of Bonnet's theorem (diameter ≤ π/√K_min), connecting curvature lower bounds to compactness.",
     "mathContext": "If $K \\geq K_{\\min} > 0$ on a sphere: $\\text{Area}(M) \\leq \\frac{4\\pi}{K_{\\min}}$. Equality holds for the round sphere of radius $r = 1/\\sqrt{K_{\\min}}$ with area $4\\pi r^2 = 4\\pi/K_{\\min}$.",
     "significance": "key",
-    "relatedConcepts": ["Bonnet's theorem", "Myers' theorem", "diameter bounds", "comparison geometry"],
-    "prerequisites": ["sphere_total_curvature", "le_div_iff"]
+    "relatedConcepts": [
+      "Bonnet's theorem",
+      "Myers' theorem",
+      "diameter bounds",
+      "comparison geometry"
+    ],
+    "prerequisites": [
+      "sphere_total_curvature",
+      "le_div_iff"
+    ]
   },
   {
     "id": "ann-discrete-connection",
@@ -96,8 +163,16 @@
     "content": "Proves smooth and discrete Gauss-Bonnet agree: both give 2πχ as total curvature. The smooth version uses K (Gaussian curvature), the discrete uses δ(v) = 2π - Σθ (angular deficiency). As a triangulation refines (mesh → 0), Σ_v δ(v) → ∫_M K dA, justifying finite element methods in geometric computing.",
     "mathContext": "Smooth: $\\int_M K\\,dA = 2\\pi\\chi(M)$. Discrete: $\\sum_v \\delta(v) = 2\\pi\\chi(M)$. Both yield $4\\pi$ for $S^2$, $0$ for $T^2$, $-4\\pi$ for genus $2$. The discrete-to-smooth limit is: $\\lim_{\\text{mesh} \\to 0} \\sum_v \\delta(v) = \\int_M K\\,dA$.",
     "significance": "key",
-    "relatedConcepts": ["discrete differential geometry", "angular deficiency", "finite element methods", "mesh refinement"],
-    "prerequisites": ["gauss_bonnet_theorem", "EulerPolyhedralOQ02.lean"]
+    "relatedConcepts": [
+      "discrete differential geometry",
+      "angular deficiency",
+      "finite element methods",
+      "mesh refinement"
+    ],
+    "prerequisites": [
+      "gauss_bonnet_theorem",
+      "EulerPolyhedralOQ02.lean"
+    ]
   },
   {
     "id": "ann-chern-generalization",
@@ -106,8 +181,16 @@
     "content": "Axiomatizes the Chern-Gauss-Bonnet theorem for compact oriented 2n-manifolds: ∫_M Pf(Ω) = (2π)^n χ(M), where Pf(Ω) is the Pfaffian of the curvature 2-form. Proves the n=1 (surface) case reduces to classical Gauss-Bonnet via (2π)^1 · χ = 2πχ.",
     "mathContext": "For compact oriented $2n$-manifolds: $\\int_M \\text{Pf}(\\Omega) = (2\\pi)^n \\chi(M)$. For surfaces ($n=1$): $\\text{Pf}(\\Omega) = K\\,dA / (2\\pi)$, recovering $\\int K\\,dA = 2\\pi\\chi$. Full formalization needs exterior algebra and Pfaffians beyond current Mathlib.",
     "significance": "key",
-    "relatedConcepts": ["Chern-Gauss-Bonnet theorem", "Pfaffian", "curvature form", "Atiyah-Singer index theorem"],
-    "prerequisites": ["CompactRiemannianSurface", "exterior algebra (not yet in Mathlib)"]
+    "relatedConcepts": [
+      "Chern-Gauss-Bonnet theorem",
+      "Pfaffian",
+      "curvature form",
+      "Atiyah-Singer index theorem"
+    ],
+    "prerequisites": [
+      "CompactRiemannianSurface",
+      "exterior algebra (not yet in Mathlib)"
+    ]
   },
   {
     "id": "ann-hairy-ball",
@@ -116,8 +199,17 @@
     "content": "The sphere has χ = 2, which by Poincaré-Hopf implies every tangent vector field on S² has zeros (sum of indices = χ = 2 ≠ 0). The torus has χ = 0 and admits nowhere-vanishing vector fields. These are topological applications of the Gauss-Bonnet computation.",
     "mathContext": "Sphere: $\\chi(S^2) = 2 - 2 \\cdot 0 = 2$. By **Poincaré-Hopf**: $\\sum_p \\text{ind}_p(X) = \\chi(M)$. Since $\\chi(S^2) = 2 \\neq 0$, every vector field on $S^2$ has zeros — the **hairy ball theorem**. Torus: $\\chi(T^2) = 0$, so nowhere-vanishing fields exist.",
     "significance": "supporting",
-    "relatedConcepts": ["hairy ball theorem", "Poincaré-Hopf theorem", "vector field index", "tangent bundle"],
-    "prerequisites": ["sphere_chi_two", "torus_chi_zero", "Poincaré-Hopf (not formalized)"]
+    "relatedConcepts": [
+      "hairy ball theorem",
+      "Poincaré-Hopf theorem",
+      "vector field index",
+      "tangent bundle"
+    ],
+    "prerequisites": [
+      "sphere_chi_two",
+      "torus_chi_zero",
+      "Poincaré-Hopf (not formalized)"
+    ]
   },
   {
     "id": "ann-concrete-examples",
@@ -126,8 +218,16 @@
     "content": "Three concrete OrientableClosedSurface instances: (1) standardSphere (area 4π, K_avg = 1), (2) flatTorus with parameters a,b > 0 (area ab, K_avg = 0), (3) hyperbolicGenus2 (area 4π, K_avg = -1). All verify Gauss-Bonnet via `ring` and chi_genus via `norm_num`.",
     "mathContext": "Standard sphere: $\\text{Area} = 4\\pi$, $K = 1$ constant, $\\int K\\,dA = 4\\pi = 2\\pi \\cdot 2$. Flat torus: $\\text{Area} = ab$, $K = 0$, $\\int K\\,dA = 0 = 2\\pi \\cdot 0$. Hyperbolic genus 2: $\\text{Area} = 4\\pi$ (by Gauss-Bonnet, since $K = -1$), $\\int K\\,dA = -4\\pi = 2\\pi \\cdot (-2)$.",
     "significance": "supporting",
-    "relatedConcepts": ["round sphere", "flat torus", "hyperbolic surface", "constant curvature"],
-    "prerequisites": ["OrientableClosedSurface", "averageCurvature"]
+    "relatedConcepts": [
+      "round sphere",
+      "flat torus",
+      "hyperbolic surface",
+      "constant curvature"
+    ],
+    "prerequisites": [
+      "OrientableClosedSurface",
+      "averageCurvature"
+    ]
   },
   {
     "id": "ann-boundary-gauss-bonnet",
@@ -136,8 +236,15 @@
     "content": "CompactSurfaceWithBoundary extends the Gauss-Bonnet framework to surfaces with boundary: ∫_M K dA + ∫_∂M κ_g ds = 2πχ(M). The boundary geodesic curvature term captures how the boundary curves relative to the surface.",
     "mathContext": "$$\\int_M K\\,dA + \\int_{\\partial M} \\kappa_g\\,ds = 2\\pi\\chi(M)$$\nFor a disk ($\\chi = 1$): $\\int K\\,dA + \\int \\kappa_g\\,ds = 2\\pi$. For geodesic boundary ($\\kappa_g = 0$): recovers the closed Gauss-Bonnet.",
     "significance": "key",
-    "relatedConcepts": ["geodesic curvature", "boundary term", "surfaces with boundary", "turning tangents"],
-    "prerequisites": ["CompactRiemannianSurface"]
+    "relatedConcepts": [
+      "geodesic curvature",
+      "boundary term",
+      "surfaces with boundary",
+      "turning tangents"
+    ],
+    "prerequisites": [
+      "CompactRiemannianSurface"
+    ]
   },
   {
     "id": "ann-girard-formula",
@@ -145,9 +252,17 @@
     "type": "theorem",
     "content": "Girard's formula (1629): on a surface of constant curvature K, a geodesic triangle has Area = (α + β + γ - π)/K. On the unit sphere: Area = α + β + γ - π (the spherical excess). This directly follows from the polygon Gauss-Bonnet with χ = 1.",
     "mathContext": "For a geodesic triangle on a surface of constant curvature $K$:\n$$K \\cdot \\text{Area} = \\alpha + \\beta + \\gamma - \\pi$$\nThis gives the famous trichotomy: $K > 0$ (spherical geometry, angle excess), $K = 0$ (Euclidean, angle sum $= \\pi$), $K < 0$ (hyperbolic, angle deficit).",
-    "significance": "critical",
-    "relatedConcepts": ["spherical excess", "angular deficit", "Girard's theorem", "non-Euclidean geometry"],
-    "prerequisites": ["GeodesicTriangle", "gauss_bonnet_triangle"]
+    "significance": "key",
+    "relatedConcepts": [
+      "spherical excess",
+      "angular deficit",
+      "Girard's theorem",
+      "non-Euclidean geometry"
+    ],
+    "prerequisites": [
+      "GeodesicTriangle",
+      "gauss_bonnet_triangle"
+    ]
   },
   {
     "id": "ann-poincare-hopf",
@@ -155,9 +270,17 @@
     "type": "theorem",
     "content": "The Poincaré-Hopf index theorem: for a vector field on a compact surface with isolated zeros, Σ index(p_i) = χ(M). The hairy ball theorem follows immediately: a nowhere-vanishing field has total index 0, so χ must be 0 — impossible for S² (χ = 2).",
     "mathContext": "$$\\sum_i \\text{index}(V, p_i) = \\chi(M)$$\nThe hairy ball theorem: every continuous tangent vector field on $S^2$ must vanish somewhere, since $\\chi(S^2) = 2 \\neq 0$. Only the torus ($\\chi = 0$) and Klein bottle support non-vanishing fields.",
-    "significance": "critical",
-    "relatedConcepts": ["Poincaré-Hopf theorem", "hairy ball theorem", "vector field index", "fixed point theory"],
-    "prerequisites": ["CompactRiemannianSurface", "VectorFieldOnSurface"]
+    "significance": "key",
+    "relatedConcepts": [
+      "Poincaré-Hopf theorem",
+      "hairy ball theorem",
+      "vector field index",
+      "fixed point theory"
+    ],
+    "prerequisites": [
+      "CompactRiemannianSurface",
+      "VectorFieldOnSurface"
+    ]
   },
   {
     "id": "ann-morse-theory",
@@ -166,7 +289,15 @@
     "content": "Morse theory relates critical points of smooth functions to topology: χ(M) = #minima - #saddles + #maxima. For S² (χ = 2): every Morse function needs #min + #max ≥ 2 + #saddles. For T² (χ = 0): at least 2 saddles needed.",
     "mathContext": "The weak Morse inequality: $\\chi(M) = \\sum_{k} (-1)^k c_k$ where $c_k$ is the number of index-$k$ critical points. For surfaces: $\\chi = c_0 - c_1 + c_2$. The strong Morse inequalities further constrain individual Betti numbers.",
     "significance": "key",
-    "relatedConcepts": ["Morse function", "critical points", "Morse inequalities", "handle decomposition"],
-    "prerequisites": ["CompactRiemannianSurface", "MorseFunctionOnSurface"]
+    "relatedConcepts": [
+      "Morse function",
+      "critical points",
+      "Morse inequalities",
+      "handle decomposition"
+    ],
+    "prerequisites": [
+      "CompactRiemannianSurface",
+      "MorseFunctionOnSurface"
+    ]
   }
 ]

@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "This header documents **Erdős Problem #198**, which asks about the relationship between Sidon sets and arithmetic progressions. The question is whether Sidon sets must be 'sparse' enough to leave room for an infinite AP in their complement.",
     "mathContext": "A Sidon set has all pairwise sums distinct. An infinite AP has the form {a, a+d, a+2d, ...}. The question is whether these two notions of 'structure' are incompatible.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Sidon sets",
       "arithmetic progressions",
@@ -28,7 +28,7 @@
     "title": "Sidon Set Definition",
     "content": "A **Sidon set** (B₂ sequence) is a set where all pairwise sums are distinct. If a₁ + a₂ = b₁ + b₂ with a₁ ≤ a₂ and b₁ ≤ b₂, then a₁ = b₁ and a₂ = b₂.",
     "mathContext": "This is equivalent to requiring the sumset A + A to have no repeated elements (except trivial ones). Sidon sets are fundamental in additive combinatorics.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "B₂ sequences",
       "additive combinatorics",
@@ -82,7 +82,7 @@
     "title": "The Main Result",
     "content": "**Erdős Problem #198** (DISPROVED): The answer is NO. There exist Sidon sets that intersect every infinite AP. This means the complement of such a Sidon set contains no infinite AP.",
     "mathContext": "Axiomatized as erdos_198_answer : ¬Erdos198_Question. The proof is non-constructive in Baumgartner's version, but AlphaProof gives an explicit example.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "disproof",
       "counterexample",
@@ -100,7 +100,7 @@
     "title": "AlphaProof Construction",
     "content": "**AlphaProof's discovery**: The set A = {n! + n : n ≥ 0} = {1, 2, 4, 9, 28, ...} is both a Sidon set AND intersects every infinite AP. This is an explicit counterexample to Erdős's question.",
     "mathContext": "Why it intersects all APs: For AP with first term a and difference d, the element (a+d+1)! + (a+d) is in A and is ≡ a (mod d) since d divides (a+d+1)!.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "AlphaProof",
       "factorial",

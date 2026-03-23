@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #723**: Prime Power Conjecture for Projective Planes\n\n**Question**: If there is a finite projective plane of order n, must n be a prime power?\n\n**Status**: OPEN (general conjecture)\n\n**Partial Results**:\n- Planes exist for all prime powers (classical PG(2,q) construction)\n- Verified for n ≤ 11\n- n = 10 ruled out by Lam, Thiel, Swiercz (1989) computer search\n- Bruck-Ryser (1949) rules out n ≡ 1,2 (mod 4) when n ≠ sum of two squares\n- Order 12 remains OPEN (smallest unknown case)",
     "mathContext": "One of the most famous open problems in combinatorics, connecting finite geometry to number theory. A projective plane of order $n$ is equivalent to a complete set of $n-1$ mutually orthogonal Latin squares (MOLS) of order $n$, linking this problem to Euler's 1782 conjecture on orthogonal Latin squares.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "projective-plane",
       "prime-power",
@@ -70,7 +70,7 @@
     "title": "The Prime Power Conjecture",
     "content": "**PrimePowerConjecture** is defined as a `Prop`:\n$$\\forall \\text{ projective plane } pp, \\; \\text{IsPrimePow}(pp.\\text{order})$$\n\nThis is stated as a definition (not an axiom), correctly reflecting that the conjecture is open—we do not assume it is true.\n\nThe separate `axiom erdos_723_open : True` records that the problem remains unsolved.",
     "mathContext": "The choice to encode this as `def PrimePowerConjecture : Prop` rather than `axiom` is semantically important in Lean: a `def` introduces a proposition without asserting it, while an `axiom` would add it to the trusted kernel. This distinction mirrors the mathematical reality that the conjecture is unproven.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open-problem",
       "prime-power",
@@ -159,7 +159,7 @@
     "title": "Bruck-Ryser Theorem",
     "content": "**axiom bruck_ryser** (1949):\nIf a projective plane of order $n$ exists and $n \\equiv 1,2 \\pmod{4}$, then $n$ must be the sum of two integer squares.\n\n**Rules out**:\n- $n = 6$: $6 \\equiv 2 \\pmod{4}$, but $6 \\ne a^2 + b^2$\n- $n = 14$: $14 \\equiv 2 \\pmod{4}$, but $14 \\ne a^2 + b^2$\n- $n = 21$: $21 \\equiv 1 \\pmod{4}$, but $21 \\ne a^2 + b^2$\n- $n = 22$: $22 \\equiv 2 \\pmod{4}$, but $22 \\ne a^2 + b^2$\n\nDoes NOT apply to $n \\equiv 0,3 \\pmod{4}$ (e.g., orders 12, 15, 20).",
     "mathContext": "Bruck and Ryser's proof uses the theory of rational quadratic forms. The key step shows that the incidence matrix $A$ of a projective plane satisfies $AA^T = nI + J$, and this matrix equation imposes number-theoretic constraints on $n$. The result was later generalized by Chowla and Ryser (1950) to arbitrary symmetric $(v, k, \\lambda)$-designs.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "sum-of-squares",
       "quadratic-forms",
@@ -190,7 +190,7 @@
     "title": "Lam's Theorem (Order 10)",
     "content": "**axiom lam_order_10** (Lam, Thiel, Swiercz, 1989):\nThere is no projective plane of order 10.\n\n$$\\neg\\exists \\text{ projective plane } pp, \\; pp.\\text{order} = 10$$\n\n**Significance**:\n- Bruck-Ryser does NOT rule out 10 (since $10 = 1^2 + 3^2$)\n- Required thousands of hours on Cray supercomputers over nearly a decade\n- One of the largest computational proofs in mathematics at the time\n\nShows the conjecture holds for $n = 10$ despite no theoretical obstruction.",
     "mathContext": "The search systematically eliminated all possible incidence structures on 111 points and 111 lines. An independent verification by McKay and others confirmed the result. The computation exploited symmetry-breaking and constraint propagation but fundamentally required exhaustive enumeration of a vast search tree.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "computational-proof",
       "exhaustive-search",
@@ -305,7 +305,7 @@
     "title": "Bruck-Ryser Application: No Order-6 Plane (Verified)",
     "content": "**theorem six_mod_4** ✓: $6 \\bmod 4 = 2$\n\n**theorem six_not_sum_squares** ✓:\n$$\\neg\\exists\\, a\\, b \\in \\mathbb{N},\\; 6 = a^2 + b^2$$\nProved by `interval_cases`: exhaustively checks all $(a,b)$ with $a^2 + b^2 \\le 6$.\n\n**theorem no_plane_order_6** ✓:\nNo projective plane of order 6 exists.\n\n**Proof chain**: Since $6 \\equiv 2 \\pmod{4}$, Bruck-Ryser requires $6 = a^2 + b^2$. But `six_not_sum_squares` shows this is impossible. Therefore no order-6 plane exists. This is the file's crown jewel: a complete, machine-verified non-existence proof using the Bruck-Ryser method.",
     "mathContext": "The `interval_cases` tactic generates cases for all natural numbers $a$ with $a^2 \\le 6$ (i.e., $a \\in \\{0, 1, 2\\}$) and similarly for $b$, then `simp_all` discharges each case. This verified proof mirrors the pencil-and-paper argument: check $0^2+0^2=0$, $0^2+1^2=1$, $0^2+2^2=4$, $1^2+1^2=2$, $1^2+2^2=5$, $2^2+2^2=8$—none equal 6. The connection to Fermat's two-square theorem is natural: 6 has a prime factor $3 \\equiv 3 \\pmod{4}$ appearing to an odd power, which obstructs the sum-of-squares representation.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Bruck-Ryser-application",
       "interval_cases-tactic",

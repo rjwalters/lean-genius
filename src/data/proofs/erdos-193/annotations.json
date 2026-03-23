@@ -3,120 +3,217 @@
     "id": "erdos-193-imports",
     "proofId": "erdos-193",
     "type": "concept",
-    "range": { "startLine": 14, "endLine": 16 },
+    "range": {
+      "startLine": 14,
+      "endLine": 16
+    },
     "title": "Library Imports",
     "content": "Imports Mathlib for integer arithmetic, finite sets (for step sets), and general tactics. These provide the foundation for lattice point geometry and walk definitions.",
     "mathContext": "The formalization works over $\\mathbb{Z}^d$ represented as `Fin d → ℤ`, requiring `Data.Int.Basic` for integer operations and `Data.Finset.Basic` for finite step sets $S \\subseteq \\mathbb{Z}^d$.",
     "significance": "supporting",
-    "relatedConcepts": ["integer arithmetic", "finite sets", "Lean tactics"],
-    "prerequisites": ["Lean 4 basics", "Mathlib integer library"]
+    "relatedConcepts": [
+      "integer arithmetic",
+      "finite sets",
+      "Lean tactics"
+    ],
+    "prerequisites": [
+      "Lean 4 basics",
+      "Mathlib integer library"
+    ]
   },
   {
     "id": "erdos-193-latpoint",
     "proofId": "erdos-193",
     "type": "definition",
-    "range": { "startLine": 20, "endLine": 27 },
+    "range": {
+      "startLine": 20,
+      "endLine": 27
+    },
     "title": "Lattice Points, Walks, and Step Sets",
     "content": "A point in $\\mathbb{Z}^d$ is `Fin d → ℤ`, a walk is a sequence $\\mathbb{N} \\to \\mathbb{Z}^d$, and a step set is a finite subset of $\\mathbb{Z}^d$. This dimension-generic setup allows stating the problem for any $d$.",
     "mathContext": "Points in $\\mathbb{Z}^d$ are formalized as functions $\\text{Fin}\\,d \\to \\mathbb{Z}$, enabling coordinate-wise operations. A walk $(a_n)_{n \\in \\mathbb{N}}$ traces a path through the lattice, and the step set $S \\subset \\mathbb{Z}^d$ constrains allowed moves.",
     "significance": "key",
-    "relatedConcepts": ["integer lattice", "self-avoiding walks", "Fin type for fixed dimensions"],
-    "prerequisites": ["Fin type", "function types", "Finset"]
+    "relatedConcepts": [
+      "integer lattice",
+      "self-avoiding walks",
+      "Fin type for fixed dimensions"
+    ],
+    "prerequisites": [
+      "Fin type",
+      "function types",
+      "Finset"
+    ]
   },
   {
     "id": "erdos-193-stepwalk",
     "proofId": "erdos-193",
     "type": "definition",
-    "range": { "startLine": 29, "endLine": 35 },
+    "range": {
+      "startLine": 29,
+      "endLine": 35
+    },
     "title": "S-Walk and Injectivity",
     "content": "An S-walk requires $a_{i+1} - a_i \\in S$ for all $i$, constraining each step to the finite set $S$. Injectivity ($a_i \\neq a_j$ for $i \\neq j$) ensures the walk visits distinct lattice points — without this, the problem is trivial.",
     "mathContext": "IsStepWalk$(S, w)$: $\\forall i, w(i+1) - w(i) \\in S$. IsInjective$(w)$: $w$ is injective ($i \\neq j \\implies w(i) \\neq w(j)$). The step constraint limits moves to $|S|$ directions, while injectivity prevents revisiting points.",
     "significance": "key",
-    "relatedConcepts": ["self-avoiding walk", "lattice path", "step-constrained sequence"],
-    "prerequisites": ["Function.Injective", "Finset membership", "integer subtraction"]
+    "relatedConcepts": [
+      "self-avoiding walk",
+      "lattice path",
+      "step-constrained sequence"
+    ],
+    "prerequisites": [
+      "Function.Injective",
+      "Finset membership",
+      "integer subtraction"
+    ]
   },
   {
     "id": "erdos-193-collinear",
     "proofId": "erdos-193",
     "type": "definition",
-    "range": { "startLine": 39, "endLine": 44 },
+    "range": {
+      "startLine": 39,
+      "endLine": 44
+    },
     "title": "Collinearity via Integer Parallelism",
     "content": "Three points $p, q, r \\in \\mathbb{Z}^d$ are collinear if the difference vectors $q - p$ and $r - p$ are integer-parallel: $\\exists a, b \\in \\mathbb{Z}$ (not both zero) with $a(q_j - p_j) = b(r_j - p_j)$ for all coordinates $j$.",
     "mathContext": "AreCollinear$(p, q, r) \\iff \\exists a, b \\in \\mathbb{Z}, (a \\neq 0 \\lor b \\neq 0) \\wedge \\forall j: a(q_j - p_j) = b(r_j - p_j)$. This is the integer analogue of the cross product condition: $(q - p) \\times (r - p) = 0$.",
-    "significance": "critical",
-    "relatedConcepts": ["cross product", "linear dependence", "affine collinearity", "integer parallelism"],
-    "prerequisites": ["integer multiplication", "universal quantification over Fin d"]
+    "significance": "key",
+    "relatedConcepts": [
+      "cross product",
+      "linear dependence",
+      "affine collinearity",
+      "integer parallelism"
+    ],
+    "prerequisites": [
+      "integer multiplication",
+      "universal quantification over Fin d"
+    ]
   },
   {
     "id": "erdos-193-has-collinear",
     "proofId": "erdos-193",
     "type": "definition",
-    "range": { "startLine": 46, "endLine": 49 },
+    "range": {
+      "startLine": 46,
+      "endLine": 49
+    },
     "title": "Walk Contains Three Collinear Points",
     "content": "HasThreeCollinear$(w)$ requires distinct indices $i < j < k$ with $w(i), w(j), w(k)$ collinear. The strict ordering ensures the three points are visited at different times.",
     "mathContext": "HasThreeCollinear$(w) \\iff \\exists i < j < k: $ AreCollinear$(w(i), w(j), w(k))$. Combined with injectivity, this gives three genuinely distinct collinear lattice points on the walk.",
     "significance": "key",
-    "relatedConcepts": ["Ramsey-type existence", "pattern avoidance in sequences"],
-    "prerequisites": ["AreCollinear", "natural number ordering"]
+    "relatedConcepts": [
+      "Ramsey-type existence",
+      "pattern avoidance in sequences"
+    ],
+    "prerequisites": [
+      "AreCollinear",
+      "natural number ordering"
+    ]
   },
   {
     "id": "erdos-193-conjecture",
     "proofId": "erdos-193",
     "type": "theorem",
-    "range": { "startLine": 53, "endLine": 57 },
+    "range": {
+      "startLine": 53,
+      "endLine": 57
+    },
     "title": "Erdős Problem 193 — The Open Conjecture",
     "content": "Every infinite injective $S$-walk in $\\mathbb{Z}^3$ contains three collinear points. The problem is open for $d = 3$; the $d = 2$ case was proved by Gerver and Ramsey. In 3D, walks have vastly more room to avoid collinear configurations.",
     "mathContext": "ErdosProblem193: $\\forall S \\subseteq \\mathbb{Z}^3$ finite, $\\forall w: \\mathbb{N} \\to \\mathbb{Z}^3$: IsStepWalk$(S, w) \\wedge$ IsInjective$(w) \\implies$ HasThreeCollinear$(w)$.",
-    "significance": "critical",
-    "relatedConcepts": ["unavoidable patterns", "collinearity in 3D", "lattice combinatorics"],
-    "prerequisites": ["all previous definitions", "dimension d = 3"]
+    "significance": "key",
+    "relatedConcepts": [
+      "unavoidable patterns",
+      "collinearity in 3D",
+      "lattice combinatorics"
+    ],
+    "prerequisites": [
+      "all previous definitions",
+      "dimension d = 3"
+    ]
   },
   {
     "id": "erdos-193-gerver-ramsey",
     "proofId": "erdos-193",
     "type": "theorem",
-    "range": { "startLine": 61, "endLine": 65 },
+    "range": {
+      "startLine": 61,
+      "endLine": 65
+    },
     "title": "Gerver–Ramsey Theorem (ℤ² Case)",
     "content": "In $\\mathbb{Z}^2$, every infinite injective $S$-walk contains three collinear points. Gerver and Ramsey proved this using a pigeonhole argument on the directions of steps — in 2D, finitely many step directions force repeated slopes, guaranteeing collinearity.",
     "mathContext": "Gerver–Ramsey: $\\forall S \\subseteq \\mathbb{Z}^2$ finite, $\\forall w$: IsStepWalk$(S, w) \\wedge$ IsInjective$(w) \\implies$ HasThreeCollinear$(w)$. In 2D, direction from the origin to each visited point has finitely many possible slopes (determined by $S$), and pigeonhole forces three points sharing a line.",
-    "significance": "critical",
-    "relatedConcepts": ["pigeonhole principle", "direction set", "2D lattice geometry", "slope argument"],
-    "prerequisites": ["ErdosProblem193 specialized to d = 2"]
+    "significance": "key",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "direction set",
+      "2D lattice geometry",
+      "slope argument"
+    ],
+    "prerequisites": [
+      "ErdosProblem193 specialized to d = 2"
+    ]
   },
   {
     "id": "erdos-193-collinear-refl",
     "proofId": "erdos-193",
     "type": "theorem",
-    "range": { "startLine": 69, "endLine": 72 },
+    "range": {
+      "startLine": 69,
+      "endLine": 72
+    },
     "title": "Collinearity Reflexivity",
     "content": "Any point $p$ is collinear with $q$ and $p$: AreCollinear$(p, q, p)$ holds with $a = 1, b = 0$, verified by `ring`. This is a degenerate case where the third point coincides with the first.",
     "mathContext": "AreCollinear$(p, q, p)$: take $a = 1, b = 0$. Then $1 \\cdot (q_j - p_j) = 0 \\cdot (p_j - p_j)$ simplifies to $q_j - p_j = 0$, but actually `ring` handles this directly.",
     "significance": "supporting",
-    "relatedConcepts": ["degenerate collinearity", "reflexivity"],
-    "prerequisites": ["AreCollinear definition", "ring tactic"]
+    "relatedConcepts": [
+      "degenerate collinearity",
+      "reflexivity"
+    ],
+    "prerequisites": [
+      "AreCollinear definition",
+      "ring tactic"
+    ]
   },
   {
     "id": "erdos-193-collinear-symm",
     "proofId": "erdos-193",
     "type": "theorem",
-    "range": { "startLine": 74, "endLine": 76 },
+    "range": {
+      "startLine": 74,
+      "endLine": 76
+    },
     "title": "Collinearity Symmetry",
     "content": "Collinearity is symmetric in the outer points: AreCollinear$(p, q, r) \\implies$ AreCollinear$(r, q, p)$. Axiomatized since the proof requires swapping roles of the integer witnesses.",
     "mathContext": "If $a(q_j - p_j) = b(r_j - p_j)$, then $b(q_j - r_j) = a(p_j - r_j)$, giving AreCollinear$(r, q, p)$ with witnesses $(b, a)$.",
     "significance": "supporting",
-    "relatedConcepts": ["symmetry of collinearity", "geometric invariance"],
-    "prerequisites": ["AreCollinear definition"]
+    "relatedConcepts": [
+      "symmetry of collinearity",
+      "geometric invariance"
+    ],
+    "prerequisites": [
+      "AreCollinear definition"
+    ]
   },
   {
     "id": "erdos-193-collinear-const",
     "proofId": "erdos-193",
     "type": "theorem",
-    "range": { "startLine": 78, "endLine": 80 },
+    "range": {
+      "startLine": 78,
+      "endLine": 80
+    },
     "title": "Constant Walk Collinearity",
     "content": "A constant walk (all points equal to $v$) has AreCollinear$(v, v, v)$ trivially. This shows the injectivity requirement is necessary — without it, any walk revisiting a point immediately gives collinear triples.",
     "mathContext": "AreCollinear$(v, v, v)$: all difference vectors are zero, so any non-zero $(a, b)$ satisfies $a \\cdot 0 = b \\cdot 0$. This motivates requiring $w$ injective in the conjecture.",
     "significance": "supporting",
-    "relatedConcepts": ["trivial case", "necessity of injectivity"],
-    "prerequisites": ["collinear_refl"]
+    "relatedConcepts": [
+      "trivial case",
+      "necessity of injectivity"
+    ],
+    "prerequisites": [
+      "collinear_refl"
+    ]
   }
 ]

@@ -2,85 +2,166 @@
   {
     "id": "ann-e468-imports",
     "proofId": "erdos-468",
-    "range": { "startLine": 17, "endLine": 21 },
+    "range": {
+      "startLine": 17,
+      "endLine": 21
+    },
     "type": "concept",
     "title": "Imports and Dependencies",
     "content": "Imports `Nat.Divisors` for `n.divisors` (the divisor set of $n$), `Finset.Card` for cardinality, `Finset.Sort` for sorting divisors in increasing order, `Nat.Basic` for arithmetic, and `Tactic` for automation. The formalization combines multiplicative number theory (`Nat.divisors`) with list operations (sorting, prefix sums) to construct the partial-sum sets.",
     "mathContext": "Uses `n.divisors : Finset \\mathbb{N}` from Mathlib, filtered to $\\{d \\mid n : d > 1\\}$ and sorted by $\\leq$.",
     "significance": "supporting",
-    "relatedConcepts": ["Nat.divisors", "Finset.Sort", "List.take", "prefix sums"],
-    "prerequisites": ["Lean 4 imports", "Mathlib divisor functions"]
+    "relatedConcepts": [
+      "Nat.divisors",
+      "Finset.Sort",
+      "List.take",
+      "prefix sums"
+    ],
+    "prerequisites": [
+      "Lean 4 imports",
+      "Mathlib divisor functions"
+    ]
   },
   {
     "id": "ann-e468-core-defs",
     "proofId": "erdos-468",
-    "range": { "startLine": 25, "endLine": 42 },
+    "range": {
+      "startLine": 25,
+      "endLine": 42
+    },
     "type": "definition",
     "title": "Core Definitions: $D_n$, Previous Sums, New Elements",
     "content": "Four key definitions. **properDivisorsSorted**: sorts $\\{d \\mid n : d > 1\\}$ in increasing order as a `List ℕ`. **partialDivisorSums**: $D_n = \\{d_1, d_1+d_2, \\ldots, d_1+\\cdots+d_k\\}$ computed via `List.take` and `List.sum` on prefixes of the sorted divisors, then converted to `Finset`. **previousPartialSums**: $\\bigcup_{m < n} D_m$ as a `Set ℕ` using indexed union. **newElements**: $D_n \\setminus \\bigcup_{m < n} D_m$ — the genuinely new partial sums contributed by $n$. All are `noncomputable` due to classical set operations.",
     "mathContext": "$D_n = \\{\\sum_{i=1}^{j} d_i : 1 \\leq j \\leq k\\}$ where $1 < d_1 < \\cdots < d_k$ are divisors of $n$. New elements: $D_n \\setminus \\bigcup_{m<n} D_m$.",
-    "significance": "critical",
-    "relatedConcepts": ["prefix sums", "divisor sets", "set difference", "indexed union"],
-    "prerequisites": ["Nat.divisors", "Finset.sort", "List operations", "Set.iUnion"]
+    "significance": "key",
+    "relatedConcepts": [
+      "prefix sums",
+      "divisor sets",
+      "set difference",
+      "indexed union"
+    ],
+    "prerequisites": [
+      "Nat.divisors",
+      "Finset.sort",
+      "List operations",
+      "Set.iUnion"
+    ]
   },
   {
     "id": "ann-e468-new-elements",
     "proofId": "erdos-468",
-    "range": { "startLine": 46, "endLine": 55 },
+    "range": {
+      "startLine": 46,
+      "endLine": 55
+    },
     "type": "theorem",
     "title": "Question 1: New Elements Exist and Grow",
     "content": "Two axioms for Question 1. **new_elements_exist** (lines 48–49): for $n \\geq 2$, the set $D_n \\setminus \\bigcup_{m<n} D_m$ is nonempty — every integer $\\geq 2$ contributes at least one new partial sum. **new_element_count_conjecture** (lines 53–55): $|D_n|$ grows without bound — for any $B$, eventually $|D_n| \\geq B$. This follows from the fact that $d(n)$ (number of divisors) is unbounded, so $|D_n| = d(n) - 1$ grows for highly composite $n$.",
     "mathContext": "**Axiom 1:** $D_n \\setminus \\bigcup_{m<n} D_m \\neq \\emptyset$ for $n \\geq 2$. **Axiom 2:** $\\forall B,\\; \\exists N,\\; \\forall n \\geq N: |D_n| \\geq B$.",
     "significance": "key",
-    "relatedConcepts": ["nonempty set", "divisor count growth", "highly composite numbers"],
-    "prerequisites": ["newElements", "partialDivisorSums", "Finset.card"]
+    "relatedConcepts": [
+      "nonempty set",
+      "divisor count growth",
+      "highly composite numbers"
+    ],
+    "prerequisites": [
+      "newElements",
+      "partialDivisorSums",
+      "Finset.card"
+    ]
   },
   {
     "id": "ann-e468-first-appearance",
     "proofId": "erdos-468",
-    "range": { "startLine": 59, "endLine": 67 },
+    "range": {
+      "startLine": 59,
+      "endLine": 67
+    },
     "type": "definition",
     "title": "First Appearance Function and Main Conjecture",
     "content": "**firstAppearance** defines $f(N) = \\inf\\{n : N \\in D_n\\}$ using `sInf`. The **main conjecture** (lines 65–67) states $f(N) = o(N)$: $\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0: f(N) \\leq \\varepsilon N$. This means every large $N$ first appears as a partial divisor sum of some $n$ much smaller than $N$. The intuition: highly composite numbers have many divisors, so their partial sums cover many values efficiently. For instance, $D_{12}$ already covers $\\{2, 5, 9, 15, 27\\}$ from just $n = 12$.",
     "mathContext": "$f(N) = \\min\\{n : N \\in D_n\\}$. **Conjecture (OPEN):** $f(N) = o(N)$, i.e., $f(N)/N \\to 0$.",
-    "significance": "critical",
-    "relatedConcepts": ["sInf", "sublinear growth", "covering efficiency", "highly composite numbers"],
-    "prerequisites": ["partialDivisorSums", "real arithmetic", "epsilon-delta"]
+    "significance": "key",
+    "relatedConcepts": [
+      "sInf",
+      "sublinear growth",
+      "covering efficiency",
+      "highly composite numbers"
+    ],
+    "prerequisites": [
+      "partialDivisorSums",
+      "real arithmetic",
+      "epsilon-delta"
+    ]
   },
   {
     "id": "ann-e468-almost-all",
     "proofId": "erdos-468",
-    "range": { "startLine": 69, "endLine": 73 },
+    "range": {
+      "startLine": 69,
+      "endLine": 73
+    },
     "type": "theorem",
     "title": "Almost-All Variant of the Conjecture",
     "content": "States $f(N) = o(N)$ for almost all $N$: the density of exceptions $\\{N \\leq M : f(N) > \\varepsilon N\\}$ is $\\leq \\delta M$ for any $\\delta > 0$ and large $M$. This is a natural weakening that may be approachable via averaging: if most $N$ values are covered by some moderately-sized $n$, the average of $f(N)/N$ could be bounded even if some individual values are large. The density-based formulation uses `Finset.filter` and `Finset.card`.",
     "mathContext": "**Weak conjecture (OPEN):** $|\\{N \\leq M : f(N) > \\varepsilon N\\}| = o(M)$, i.e., $f(N) = o(N)$ for density-1 set of $N$.",
     "significance": "key",
-    "relatedConcepts": ["natural density", "almost-all results", "averaging arguments", "density of exceptions"],
-    "prerequisites": ["firstAppearance", "Finset.filter", "density arguments"]
+    "relatedConcepts": [
+      "natural density",
+      "almost-all results",
+      "averaging arguments",
+      "density of exceptions"
+    ],
+    "prerequisites": [
+      "firstAppearance",
+      "Finset.filter",
+      "density arguments"
+    ]
   },
   {
     "id": "ann-e468-examples",
     "proofId": "erdos-468",
-    "range": { "startLine": 77, "endLine": 81 },
+    "range": {
+      "startLine": 77,
+      "endLine": 81
+    },
     "type": "insight",
     "title": "Concrete Examples: $D_6$ and $D_{12}$",
     "content": "Two concrete computations. **$D_6$**: divisors $> 1$ are $\\{2, 3, 6\\}$, partial sums $2, 2+3=5, 2+3+6=11$, so $D_6 = \\{2, 5, 11\\}$. **$D_{12}$**: divisors $> 1$ are $\\{2, 3, 4, 6, 12\\}$, partial sums $2, 5, 9, 15, 27$, so $D_{12} = \\{2, 5, 9, 15, 27\\}$. Note $D_{12}$ has 5 elements (more than $D_6$'s 3), illustrating how composite numbers generate more partial sums. The overlap $\\{2, 5\\} \\in D_6 \\cap D_{12}$ shows that new elements per step can be fewer than $|D_n|$.",
     "mathContext": "$D_6 = \\{2, 5, 11\\}$, $D_{12} = \\{2, 5, 9, 15, 27\\}$. Note $|D_n| = d(n) - 1$ where $d(n) = |\\{d : d \\mid n\\}|$.",
     "significance": "supporting",
-    "relatedConcepts": ["divisor enumeration", "prefix sum computation", "highly composite numbers"],
-    "prerequisites": ["partialDivisorSums", "integer factorization"]
+    "relatedConcepts": [
+      "divisor enumeration",
+      "prefix sum computation",
+      "highly composite numbers"
+    ],
+    "prerequisites": [
+      "partialDivisorSums",
+      "integer factorization"
+    ]
   },
   {
     "id": "ann-e468-boundaries",
     "proofId": "erdos-468",
-    "range": { "startLine": 85, "endLine": 95 },
+    "range": {
+      "startLine": 85,
+      "endLine": 95
+    },
     "type": "theorem",
     "title": "Boundary Elements of $D_n$",
     "content": "Two structural axioms. **Smallest element** (lines 87–88): $\\min(D_n) = \\text{minFac}(n)$, the smallest prime factor of $n$, since it is the first divisor $> 1$. **Largest element** (lines 91–92): $\\max(D_n) = \\sigma(n) - 1$, the sum of all divisors minus 1 (the total partial sum excludes the divisor 1). These anchor the set $D_n$ between $\\text{minFac}(n)$ and $\\sigma(n) - 1$. The connection to the OEIS sequences A167485, A387502, A387503 is noted in a comment.",
     "mathContext": "$\\min(D_n) = p_1(n)$ (smallest prime factor), $\\max(D_n) = \\sigma(n) - 1$ where $\\sigma(n) = \\sum_{d \\mid n} d$.",
     "significance": "key",
-    "relatedConcepts": ["Nat.minFac", "sum of divisors σ(n)", "OEIS A167485", "boundary elements"],
-    "prerequisites": ["partialDivisorSums", "Nat.divisors.sum", "prime factorization"]
+    "relatedConcepts": [
+      "Nat.minFac",
+      "sum of divisors σ(n)",
+      "OEIS A167485",
+      "boundary elements"
+    ],
+    "prerequisites": [
+      "partialDivisorSums",
+      "Nat.divisors.sum",
+      "prime factorization"
+    ]
   }
 ]

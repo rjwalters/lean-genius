@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #851** asks about covering integers with 2^k + n representations.\n\n**Romanoff's Theorem (1934)**: Integers of form 2^k + p (p prime) have positive lower density (~0.0868).\n\n**Erdős's Question**: For any ε > 0, can we find r such that integers of form 2^k + n (ω(n) ≤ r) have density ≥ 1 - ε?\n\n**Status**: OPEN - We don't know if density can approach 1 as r increases.",
     "mathContext": "Lower density = liminf_{N→∞} |S ∩ [1,N]| / N. This measures the 'worst-case' proportion of integers in S.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "lower density",
       "prime factors",
@@ -28,7 +28,7 @@
     "title": "TwoPowAddSet Definition",
     "content": "**TwoPowAddSet r** = {m | ∃ k n, m = 2^k + n ∧ n.primeFactors.card ≤ r}\n\nThis captures integers representable as a power of 2 plus a number with at most r distinct prime factors.\n\n**Examples**:\n- TwoPowAddSet 0 contains 2^k + 1 (since 1 has 0 prime factors)\n- TwoPowAddSet 1 contains 2^k + p for any prime p\n- TwoPowAddSet 2 contains 2^k + pq for distinct primes p, q",
     "mathContext": "Uses Nat.primeFactors.card (ω function) rather than Ω (total count with multiplicity).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Nat.primeFactors",
       "omega function",
@@ -114,7 +114,7 @@
     "title": "Romanoff's Theorem (1934)",
     "content": "**romanoff_theorem**: 0 < lowerDensity (TwoPowAddSet 1)\n\nRomanoff proved this foundational result in 1934. The set of integers of form 2^k + p (where p is prime or 1) has positive lower density.\n\n**Numerical value**: The density is approximately 0.0868, computed by Erdős-Odlyzko (1979).\n\n**Why this matters**: It shows that infinitely many integers have such representations, with positive proportion.",
     "mathContext": "This is stated as an axiom because the full proof requires analytic number theory beyond basic Mathlib.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "analytic number theory",
       "sieve methods"
@@ -147,7 +147,7 @@
     "title": "Main Conjecture (OPEN)",
     "content": "**erdos_851_conjecture**: ∀ ε > 0, ∃ r, 1 - ε ≤ lowerDensity(TwoPowAddSet r)\n\n**In words**: For any desired closeness to 1, we can achieve it by allowing enough prime factors.\n\n**This is OPEN**: We don't know if this is true. It's possible that:\n1. Yes: Density approaches 1 as r → ∞\n2. No: Some positive proportion of integers resist all such representations",
     "mathContext": "Stated as axiom because the truth value is unknown.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "open problem",
       "density limit"

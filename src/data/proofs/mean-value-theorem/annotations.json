@@ -2,109 +2,218 @@
   {
     "id": "ann-imports",
     "proofId": "mean-value-theorem",
-    "range": {"startLine": 1, "endLine": 3},
+    "range": {
+      "startLine": 1,
+      "endLine": 3
+    },
     "type": "concept",
     "title": "Imports: Mathlib Calculus Infrastructure",
     "content": "Three imports bring in the required Mathlib infrastructure:\n\n- **Deriv.Basic**: Core derivative definitions (`deriv`, `HasDerivAt`, `DifferentiableOn`)\n- **MeanValue**: The main MVT lemmas (`exists_deriv_eq_slope`, `exists_ratio_deriv_eq_ratio_slope`)\n- **Deriv.Slope**: Slope-related formulations connecting derivatives to difference quotients\n\nThese three modules together provide a complete calculus framework for stating and proving MVT variants.",
     "mathContext": "Mathlib's calculus library defines `deriv f x` as the Fréchet derivative of $f$ at $x$ (specialized to $\\mathbb{R} \\to \\mathbb{R}$), defaulting to 0 when $f$ is not differentiable. The `HasDerivAt f y x` proposition asserts that $f$ has derivative $y$ at $x$ in the strong (Fréchet) sense.",
     "significance": "supporting",
-    "relatedConcepts": ["Mathlib.Analysis.Calculus", "Fréchet derivative", "deriv", "HasDerivAt"],
-    "prerequisites": ["Lean 4 import system", "Mathlib library structure"]
+    "relatedConcepts": [
+      "Mathlib.Analysis.Calculus",
+      "Fréchet derivative",
+      "deriv",
+      "HasDerivAt"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-docstring",
     "proofId": "mean-value-theorem",
-    "range": {"startLine": 5, "endLine": 48},
+    "range": {
+      "startLine": 5,
+      "endLine": 48
+    },
     "type": "concept",
     "title": "Module Docstring: Problem Overview and History",
     "content": "The module docstring establishes this as **Wiedijk #75** — entry 75 in the list of 100 famous theorems. It states the MVT precisely: for $f$ continuous on $[a,b]$ and differentiable on $(a,b)$, there exists $c \\in (a,b)$ with $f'(c) = (f(b) - f(a))/(b - a)$.\n\nThe approach section distinguishes between Mathlib's foundation (`exists_deriv_eq_slope`) and original contributions (pedagogical wrappers, `HasDerivAt` version, Cauchy's generalization). The historical note credits Lagrange (1797) and Cauchy (1821), noting MVT's role as the foundation for L'Hôpital's rule, Taylor's theorem, and the fundamental theorem of calculus.",
     "mathContext": "The MVT is formulated using Mathlib's `deriv` function: $\\exists c \\in (a,b),\\; \\text{deriv}\\, f\\, c = (f(b) - f(a))/(b - a)$. The geometric meaning is that the tangent line at $(c, f(c))$ is parallel to the secant line through $(a, f(a))$ and $(b, f(b))$.",
     "significance": "key",
-    "relatedConcepts": ["Wiedijk 100 theorems", "Lagrange", "Cauchy", "L'Hôpital's rule", "Taylor's theorem"],
-    "prerequisites": ["continuity on closed intervals", "differentiability on open intervals", "secant and tangent lines"]
+    "relatedConcepts": [
+      "Wiedijk 100 theorems",
+      "Lagrange",
+      "Cauchy",
+      "L'Hôpital's rule",
+      "Taylor's theorem"
+    ],
+    "prerequisites": [
+      "continuity on closed intervals",
+      "differentiability on open intervals",
+      "secant and tangent lines"
+    ]
   },
   {
     "id": "ann-lagrange-mvt",
     "proofId": "mean-value-theorem",
-    "range": {"startLine": 54, "endLine": 75},
+    "range": {
+      "startLine": 54,
+      "endLine": 75
+    },
     "type": "theorem",
     "title": "Lagrange's Mean Value Theorem (Main Result)",
     "content": "The central theorem `mvt`: for $f : \\mathbb{R} \\to \\mathbb{R}$ satisfying:\n- `ContinuousOn f (Icc a b)` — continuity on $[a, b]$\n- `DifferentiableOn ℝ f (Ioo a b)` — differentiability on $(a, b)$\n\nThere exists $c \\in (a, b)$ with $\\text{deriv}\\, f\\, c = (f(b) - f(a))/(b - a)$.\n\nThe proof is a single term: `exists_deriv_eq_slope f hab hfc hfd`. Internally, Mathlib proves this by applying Rolle's theorem to the auxiliary function $h(x) = f(x) - f(a) - \\frac{f(b)-f(a)}{b-a}(x-a)$, which satisfies $h(a) = h(b) = 0$.",
     "mathContext": "$\\forall a < b,\\; f \\in C([a,b]) \\cap D((a,b)),\\; \\exists c \\in (a,b): f'(c) = \\frac{f(b) - f(a)}{b - a}$. Rolle's theorem is the special case where $f(a) = f(b)$, giving $f'(c) = 0$.",
-    "significance": "critical",
-    "relatedConcepts": ["exists_deriv_eq_slope", "Rolle's theorem", "Icc", "Ioo", "ContinuousOn", "DifferentiableOn"],
-    "prerequisites": ["continuity vs differentiability", "Mathlib interval types (Icc, Ioo)", "deriv function"]
+    "significance": "key",
+    "relatedConcepts": [
+      "exists_deriv_eq_slope",
+      "Rolle's theorem",
+      "Icc",
+      "Ioo",
+      "ContinuousOn",
+      "DifferentiableOn"
+    ],
+    "prerequisites": [
+      "continuity vs differentiability",
+      "Mathlib interval types (Icc, Ioo)",
+      "deriv function"
+    ]
   },
   {
     "id": "ann-hasderivat",
     "proofId": "mean-value-theorem",
-    "range": {"startLine": 77, "endLine": 85},
+    "range": {
+      "startLine": 77,
+      "endLine": 85
+    },
     "type": "theorem",
     "title": "HasDerivAt Version of MVT",
     "content": "Alternative formulation `mvt_hasDerivAt` replacing `DifferentiableOn` with explicit derivative values. Instead of assuming $f$ is differentiable and using the computed `deriv f`, this version takes an explicit derivative function $f'$ and the hypothesis `HasDerivAt f (f' x) x` for each $x \\in (a,b)$.\n\nThis form is more convenient when working with specific functions where the derivative is known (e.g., $f(x) = x^2$ with $f'(x) = 2x$). The proof wraps `exists_hasDerivAt_eq_slope`.\n\n**Why two versions?** `deriv` is more general (always defined, even when non-differentiable), while `HasDerivAt` is more informative (carries a proof that the derivative exists and has a specific value).",
     "mathContext": "$\\forall x \\in (a,b),\\; \\text{HasDerivAt}\\, f\\, (f'\\, x)\\, x \\implies \\exists c \\in (a,b): f'(c) = \\frac{f(b) - f(a)}{b - a}$. The `HasDerivAt` predicate asserts: $\\lim_{h \\to 0} \\frac{f(x+h) - f(x) - f'(x) \\cdot h}{h} = 0$.",
     "significance": "key",
-    "relatedConcepts": ["HasDerivAt", "exists_hasDerivAt_eq_slope", "deriv vs HasDerivAt", "Fréchet derivative"],
-    "prerequisites": ["HasDerivAt definition", "derivative as limit", "explicit vs computed derivatives"]
+    "relatedConcepts": [
+      "HasDerivAt",
+      "exists_hasDerivAt_eq_slope",
+      "deriv vs HasDerivAt",
+      "Fréchet derivative"
+    ],
+    "prerequisites": [
+      "HasDerivAt definition",
+      "derivative as limit",
+      "explicit vs computed derivatives"
+    ]
   },
   {
     "id": "ann-cauchy-mvt",
     "proofId": "mean-value-theorem",
-    "range": {"startLine": 87, "endLine": 109},
+    "range": {
+      "startLine": 87,
+      "endLine": 109
+    },
     "type": "theorem",
     "title": "Cauchy's Mean Value Theorem (Generalization)",
     "content": "**Cauchy's generalized MVT** (`cauchy_mvt`): for two functions $f, g$ both continuous on $[a,b]$ and differentiable on $(a,b)$:\n$$\\exists c \\in (a,b): (g(b) - g(a)) \\cdot f'(c) = (f(b) - f(a)) \\cdot g'(c)$$\n\nThe multiplicative form avoids division by $g'(c)$ or $g(b) - g(a)$, which might be zero. Setting $g(x) = x$ recovers Lagrange's MVT: $(b - a) \\cdot f'(c) = (f(b) - f(a)) \\cdot 1$.\n\nThe proof wraps `exists_ratio_deriv_eq_ratio_slope`. This generalization is the key lemma for proving L'Hôpital's rule: if $\\lim f'(x)/g'(x) = L$, then $\\lim f(x)/g(x) = L$.",
     "mathContext": "Cauchy's MVT applies Rolle's theorem to $h(x) = (g(b) - g(a))f(x) - (f(b) - f(a))g(x)$, which satisfies $h(a) = h(b) = g(b)f(a) - f(b)g(a)$. Setting $h'(c) = 0$ gives the result. The parametric interpretation: for the curve $(g(t), f(t))$, there is a point where the tangent is parallel to the chord.",
-    "significance": "critical",
-    "relatedConcepts": ["exists_ratio_deriv_eq_ratio_slope", "L'Hôpital's rule", "parametric curves", "Rolle's theorem"],
-    "prerequisites": ["Lagrange's MVT", "auxiliary function technique", "parametric derivatives"]
+    "significance": "key",
+    "relatedConcepts": [
+      "exists_ratio_deriv_eq_ratio_slope",
+      "L'Hôpital's rule",
+      "parametric curves",
+      "Rolle's theorem"
+    ],
+    "prerequisites": [
+      "Lagrange's MVT",
+      "auxiliary function technique",
+      "parametric derivatives"
+    ]
   },
   {
     "id": "ann-corollary-section",
     "proofId": "mean-value-theorem",
-    "range": {"startLine": 111, "endLine": 113},
+    "range": {
+      "startLine": 111,
+      "endLine": 113
+    },
     "type": "concept",
     "title": "Corollaries Section Header",
     "content": "Section header introducing corollaries and applications of the MVT. The key corollary proved here — zero derivative implies constant — is the foundation for the uniqueness of antiderivatives.",
     "mathContext": "The corollaries section demonstrates how MVT converts information about derivatives into information about function values — the central theme of differential calculus.",
     "significance": "supporting",
-    "relatedConcepts": ["corollaries", "applications of MVT"],
-    "prerequisites": ["MVT statement"]
+    "relatedConcepts": [
+      "corollaries",
+      "applications of MVT"
+    ],
+    "prerequisites": [
+      "MVT statement"
+    ]
   },
   {
     "id": "ann-constant-of-deriv-zero",
     "proofId": "mean-value-theorem",
-    "range": {"startLine": 115, "endLine": 128},
+    "range": {
+      "startLine": 115,
+      "endLine": 128
+    },
     "type": "theorem",
     "title": "Zero Derivative Implies Constant (Original Proof)",
     "content": "The **only non-wrapper proof** in the file: `constant_of_deriv_zero` proves that if $f'(x) = 0$ for all $x \\in (a,b)$, then $f(b) = f(a)$.\n\nThe proof structure:\n1. `obtain ⟨c, hc, hc_eq⟩ := mvt hab hfc hfd` — get the MVT point $c$ with $f'(c) = (f(b) - f(a))/(b - a)$\n2. `have : deriv f c = 0 := hf0 c hc` — apply the zero-derivative hypothesis at $c$\n3. `rw [this] at hc_eq` — substitute to get $0 = (f(b) - f(a))/(b - a)$\n4. `field_simp at hc_eq` — clear the denominator (using $b - a \\neq 0$)\n5. `linarith` — conclude $f(b) = f(a)$ from the resulting linear arithmetic\n\nThis corollary implies: two antiderivatives of the same function differ by a constant.",
     "mathContext": "$\\forall x \\in (a,b),\\; f'(x) = 0 \\implies f(b) - f(a) = 0$. Proof: MVT gives $c$ with $0 = f'(c) = (f(b)-f(a))/(b-a)$. Since $b - a > 0$, multiplying both sides gives $f(b) - f(a) = 0$.",
-    "significance": "critical",
-    "relatedConcepts": ["constant function theorem", "uniqueness of antiderivatives", "field_simp", "linarith", "fundamental theorem of calculus"],
-    "prerequisites": ["MVT statement", "field_simp tactic", "linarith tactic", "division by nonzero"]
+    "significance": "key",
+    "relatedConcepts": [
+      "constant function theorem",
+      "uniqueness of antiderivatives",
+      "field_simp",
+      "linarith",
+      "fundamental theorem of calculus"
+    ],
+    "prerequisites": [
+      "MVT statement",
+      "field_simp tactic",
+      "linarith tactic",
+      "division by nonzero"
+    ]
   },
   {
     "id": "ann-geometric-applications",
     "proofId": "mean-value-theorem",
-    "range": {"startLine": 130, "endLine": 155},
+    "range": {
+      "startLine": 130,
+      "endLine": 155
+    },
     "type": "concept",
     "title": "Geometric Interpretation and Key Applications",
     "content": "Documentation section covering the geometric and applied significance of MVT:\n\n**Geometric interpretation**: Given a curve $y = f(x)$ from $(a, f(a))$ to $(b, f(b))$, MVT guarantees a point where the tangent line is parallel to the secant line (i.e., has the same slope).\n\n**Four key applications**:\n1. **L'Hôpital's Rule**: Cauchy's MVT → evaluating $0/0$ and $\\infty/\\infty$ indeterminate forms\n2. **Taylor's Theorem**: MVT provides the Lagrange remainder $f^{(n+1)}(c)(x-a)^{n+1}/(n+1)!$\n3. **Monotonicity**: $f' > 0 \\implies f$ strictly increasing; $f' < 0 \\implies f$ strictly decreasing\n4. **Antiderivative uniqueness**: If $F' = G'$, then $F - G$ is constant (via `constant_of_deriv_zero`)",
     "mathContext": "The monotonicity application: if $f'(x) > 0$ for all $x \\in (a,b)$ and $a < x_1 < x_2 < b$, then MVT on $[x_1, x_2]$ gives $f(x_2) - f(x_1) = f'(c)(x_2 - x_1) > 0$. The Taylor remainder: $f(x) = \\sum_{k=0}^n f^{(k)}(a)(x-a)^k/k! + f^{(n+1)}(c)(x-a)^{n+1}/(n+1)!$ for some $c$ between $a$ and $x$.",
     "significance": "key",
-    "relatedConcepts": ["L'Hôpital's rule", "Taylor's theorem", "monotonicity", "antiderivatives", "secant line", "tangent line"],
-    "prerequisites": ["MVT statement", "Taylor series", "indeterminate forms", "monotone functions"]
+    "relatedConcepts": [
+      "L'Hôpital's rule",
+      "Taylor's theorem",
+      "monotonicity",
+      "antiderivatives",
+      "secant line",
+      "tangent line"
+    ],
+    "prerequisites": [
+      "MVT statement",
+      "Taylor series",
+      "indeterminate forms",
+      "monotone functions"
+    ]
   },
   {
     "id": "ann-verification",
     "proofId": "mean-value-theorem",
-    "range": {"startLine": 157, "endLine": 164},
+    "range": {
+      "startLine": 157,
+      "endLine": 164
+    },
     "type": "concept",
     "title": "Type-Check Verification",
     "content": "Closes the `MeanValueTheorem` namespace and runs `#check` on all four theorems to verify they are well-typed and accessible:\n- `MeanValueTheorem.mvt` — Lagrange's MVT\n- `MeanValueTheorem.mvt_hasDerivAt` — HasDerivAt variant\n- `MeanValueTheorem.cauchy_mvt` — Cauchy's generalization\n- `MeanValueTheorem.constant_of_deriv_zero` — zero derivative corollary\n\nThe `#check` commands serve as lightweight verification that all definitions and proofs in the namespace are complete and consistent.",
     "mathContext": "In Lean 4, `#check` prints the type of an expression, verifying it is well-formed. For theorems, this confirms the statement has been proved (no `sorry` holes).",
     "significance": "supporting",
-    "relatedConcepts": ["#check command", "namespace", "type verification"],
-    "prerequisites": ["Lean 4 #check", "namespace structure"]
+    "relatedConcepts": [
+      "#check command",
+      "namespace",
+      "type verification"
+    ],
+    "prerequisites": [
+      "Lean 4 #check",
+      "namespace structure"
+    ]
   }
 ]
