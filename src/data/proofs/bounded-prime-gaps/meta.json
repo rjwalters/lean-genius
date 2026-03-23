@@ -202,6 +202,11 @@
       "targetId": "dirichlets-theorem",
       "relationship": "foundational",
       "description": "Dirichlet's theorem on primes in arithmetic progressions is a prerequisite for the Bombieri-Vinogradov theorem, which is the key input to Zhang's bounded gaps proof. The equidistribution of primes in residue classes is what makes sieve methods effective for detecting prime clusters"
+    },
+    {
+      "targetId": "bounded-prime-gaps-oq-03-oq-01",
+      "relationship": "extended-by",
+      "description": "Analyzes how the $k$-tuple size parameter affects the gap bound: the Polymath 8b bound 246 comes from optimizing over 50-tuples, and this sub-entry explores whether larger tuples or different optimization strategies could improve the bound"
     }
   ],
   "relatedProofs": [
@@ -212,7 +217,8 @@
     "riemann-hypothesis",
     "twin-primes-special",
     "bounded-prime-gaps-oq-03",
-    "dirichlets-theorem"
+    "dirichlets-theorem",
+    "bounded-prime-gaps-oq-03-oq-01"
   ],
   "leanFile": {
     "imports": [
