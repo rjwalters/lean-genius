@@ -148,3 +148,72 @@ which matches σ'(i) = σ(j) and σ'(j) = σ(i) only with RIGHT multiplication.
 ### Files Modified
 - `proofs/Proofs/BallotProblemOQ03OQ02.lean` (+15/-26 lines, net smaller)
 - `src/data/research/problems/ballot-problem-oq-03-oq-02.json`
+
+---
+
+## Session 2026-03-23 (researcher-2, session 2) - northThenEast Path Infrastructure
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 47)
+**Problem**: ballot-problem-oq-03-oq-02
+**Prior Status**: in-progress, ACT phase, 2 sorries (membership + self-inverse)
+
+### Deep Analysis of Remaining Sorries
+
+Extensive analysis of the GV involution requirements revealed:
+
+1. **Classical.choice is fundamentally incompatible with self-inverse.**
+   `gvInvolutionFn` used `Classical.choice` for ALL paths. This makes g(g(t)).2 =
+   Classical.choice ≠ t.2, so self-inverse is impossible. The involution MUST use
+   specific path constructions.
+
+2. **Membership (σ=swap case) requires crossing paths.** When σ*swap(i,j)=1,
+   the image has σ'=1. To show ¬NI, we need actual paths that cross. Classical.choice
+   provides no guarantees about intersection properties.
+
+3. **Self-inverse requires canonical crossing preserved under tail swap.**
+   The firstNonFixed approach does NOT give self-inverse (shown by 3-cycle
+   counterexample: σ=(012), gvNewPerm gives swap(1,2), applying again gives id ≠ σ).
+   The correct approach uses lex-min on (c, y, i, j) crossing quadruples.
+
+### Work Done
+
+1. **Built `northThenEastPath`**: Canonical path (all North then all East) constructor.
+   - `northThenEastList_length`, `northThenEastList_east`: validity proofs
+   - `northThenEast_colEntry_one`: at column 0, visits all y-values up to n
+
+2. **Proved `northThenEast_not_NI`**: Two northThenEast paths cross at column 0
+   when wellFormed holds (sources(i) ≤ targets(j) gives overlapping y-ranges).
+
+3. **Replaced `gvInvolutionFn`**: Now uses `northThenEastPath` instead of
+   `Classical.choice`. This ensures the image paths are well-typed AND crossable.
+
+4. **Re-proved `sign_reversal` and `no_fixed`**: Identical proofs carry over
+   since they only depend on the permutation component.
+
+### What Remains
+
+1. **Membership sorry** (HARD, ~20 lines): The mathematical argument is complete:
+   when σ'=1, northThenEast paths cross at column 0. The sorry is due to
+   `PermPathTuple.toPathTuple` cast unfolding — need to show that under the
+   σ'=1 cast, the paths reduce to `northThenEastPath m (targets(k) - sources(k))`,
+   which cross by `northThenEast_not_NI` + `wellFormed`.
+
+2. **Self-inverse sorry** (HARD, ~200 lines): Requires full tail-swap construction:
+   (a) Canonical crossing pair via Finset.min' on lex-ordered (c, y, i, j) quadruples
+   (b) Split PathMN at shared lattice point (c, y) — prefix + suffix
+   (c) Join prefix of P with suffix of Q → valid PathMN (proved by take_east_count)
+   (d) Double swap = identity (via List.take_append_drop involutivity)
+   (e) Canonical crossing preservation: no new crossings before (c, y) introduced
+
+### Key Insight: Self-Inverse Architecture
+
+The self-inverse proof has this structure:
+- Tail swap at (c, y) only modifies paths AFTER position (c, y) in the list
+- Path prefixes before (c, y) are preserved
+- Any crossing before (c, y) in the image also existed in the original
+- Therefore the canonical first crossing (lex-min) is the same for t and g(t)
+- Swapping twice at the same point: take(take(P,k₁)++drop(Q,k₂), k₁)++drop(take(Q,k₂)++drop(P,k₁), k₂) = P
+  (proved by List.take_append_of_le_length + List.drop_append_of_le_length)
+
+### Files Modified
+- `proofs/Proofs/BallotProblemOQ03OQ02.lean` (~+50 lines, northThenEast infrastructure)
