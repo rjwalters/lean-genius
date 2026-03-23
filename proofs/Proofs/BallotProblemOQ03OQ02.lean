@@ -23,7 +23,7 @@ where e(A,B) = C(dx + dy, dx) is the number of lattice paths from A to B.
 The identity permutation contributes ∏ e(Aᵢ,Bᵢ). Non-identity permutations
 cancel via a sign-reversing involution (Gessel-Viennot involution).
 
-## Status (0 axioms, 2 sorries)
+## Status (0 axioms, 1 sorry)
 - [x] Path tuple and non-intersecting definitions (closed-interval formulation)
 - [x] Path weight matrix using Matrix.det
 - [x] Permutation path tuples and signed counts
@@ -842,9 +842,29 @@ private theorem nonCancellable_weight {r : ℕ} {cfg : LGVConfig r}
 private theorem card_nonCancellable_eq_niTupleCount {r : ℕ} (cfg : LGVConfig r) :
     ((Finset.univ.filter (fun t : TaggedPathTuple cfg => isNonCancellable t)).card : ℤ) =
     ↑(niTupleCount cfg) := by
-  -- Counting bijection between two equivalent finite types.
-  -- {⟨1, p⟩ : Σ σ, PermPathTuple cfg σ | p NI} ≃ {p : PathTuple cfg // p NI}
-  sorry
+  -- Both count NI identity path tuples, just with different packaging.
+  -- Since PermPathTuple cfg 1 ≡ PathTuple cfg (definitionally), the bijection is trivial.
+  norm_cast
+  rw [← @Fintype.card_coe _ (Finset.univ.filter (fun t : TaggedPathTuple cfg => isNonCancellable t))]
+  simp only [niTupleCount]
+  apply @Fintype.card_congr _ _ _
+    (@Subtype.fintype _ _ (fun _ => Classical.dec _) (PathTuple.instFintype cfg))
+  exact {
+    toFun := fun ⟨t, ht⟩ =>
+      let hnc := (Finset.mem_filter.mp ht).2
+      ⟨t.2.toPathTuple hnc.choose, hnc.choose_spec⟩
+    invFun := fun ⟨p, hp⟩ =>
+      ⟨⟨1, p⟩, Finset.mem_filter.mpr ⟨Finset.mem_univ _, ⟨rfl, hp⟩⟩⟩
+    left_inv := by
+      rintro ⟨⟨σ, paths⟩, hmem⟩
+      have hnc := (Finset.mem_filter.mp hmem).2
+      have hσ : σ = 1 := hnc.choose
+      subst hσ
+      exact Subtype.ext (Sigma.ext rfl (heq_of_eq rfl))
+    right_inv := by
+      rintro ⟨p, hp⟩
+      exact Subtype.ext rfl
+  }
 
 /-- The signed sum over cancellable (non-NI) tagged tuples is zero,
     by the GV sign-reversing involution.

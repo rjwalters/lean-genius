@@ -7,7 +7,7 @@
     "author": "Ruzsa & Szemeredi (1978), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Triangle_removal_lemma",
     "date": "1978",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/SzemerediCounting.lean",
     "tags": [
       "szemeredi",
@@ -16,8 +16,8 @@
       "regularity",
       "marquee-phase-3"
     ],
-    "badge": "formalized",
-    "sorries": 4,
+    "badge": "verified",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -69,7 +69,7 @@
       "Triangle counting and subgraph enumeration",
       "Roth's theorem on 3-term arithmetic progressions"
     ],
-    "lineCount": 1001
+    "lineCount": 1196
   },
   "overview": {
     "historicalContext": "The counting lemma and triangle removal lemma are the key applications of the Szemeredi Regularity Lemma. The counting lemma, implicit in Szemeredi's 1975 work, states that epsilon-regular triples contain approximately the expected number of triangles (as if edges were random). The triangle removal lemma, proved by Ruzsa and Szemeredi in 1978, says that a graph with few triangles can be made triangle-free by removing few edges.\n\nThe profound connection between the triangle removal lemma and additive combinatorics was recognized by Ruzsa and Szemeredi: encoding a 3-AP-free set as a tripartite graph, the removal lemma implies Roth's theorem. This connection was later generalized by Solymosi and by Fox to give new proofs of Szemeredi's theorem via hypergraph removal.\n\nFox (2011) proved the best known quantitative bounds for the triangle removal lemma, showing that the dependence of gamma on delta can be made a tower of bounded height (rather than the tower of height polynomial in 1/delta coming from a direct application of regularity). The optimal bounds remain an important open problem.",
@@ -88,39 +88,39 @@
       "id": "preamble",
       "title": "Module Docstring and Imports",
       "startLine": 1,
-      "endLine": 22,
-      "summary": "Module docstring listing Parts I–III (counting lemma, triangle removal, graph removal), references to Ruzsa-Szemerédi (1978) and Komlós-Simonovits (1996). Imports Mathlib and `Proofs.SzemerediRegularity`. Opens `Classical`, declares variables for finite vertex type $V$.",
+      "endLine": 23,
+      "summary": "Module docstring listing Parts I–III (counting lemma, triangle removal, graph removal), references to Ruzsa-Szemerédi (1978) and Komlós-Simonovits (1996). Imports Mathlib, `Proofs.SzemerediCore`, and `Proofs.SzemerediRegularity`. Opens `Classical`, declares variables for finite vertex type $V$.",
       "mathContext": "Setting: $G = (V, E)$ simple graph, $V$ finite with decidable equality. Depends on $\\varepsilon$-regularity from the regularity module."
     },
     {
       "id": "infrastructure",
       "title": "Neighborhood and Density Infrastructure",
-      "startLine": 24,
-      "endLine": 83,
-      "summary": "Defines `neighborhoodIn G v B` ($N_B(v)$), `badVertices` (vertices with small neighborhoods), `goodVertices` (complement). **Proves** subset and cardinality lemmas, good/bad partition (`good_union_bad`). States `bad_vertices_small`: in an $\\varepsilon$-regular pair with density $\\geq \\varepsilon$, fewer than $\\varepsilon|A|$ vertices have small neighborhoods. Sorry'd.",
+      "startLine": 25,
+      "endLine": 160,
+      "summary": "Defines `neighborhoodIn G v B` ($N_B(v)$), `badVertices` (vertices with small neighborhoods), `goodVertices` (complement). **Proves** subset and cardinality lemmas, good/bad partition (`good_union_bad`), and `bad_vertices_small`: in an $\\varepsilon$-regular pair with density $\\geq \\varepsilon$, fewer than $\\varepsilon|A|$ vertices have small neighborhoods. Fully proved via contraposition and regularity.",
       "mathContext": "$N_B(v) = \\{b \\in B : vb \\in E\\}$. Bad vertices: $\\{a \\in A : |N_B(a)| < (d - \\varepsilon)|B|\\}$. Key lemma: $|\\text{bad}| < \\varepsilon|A|$ for $\\varepsilon$-regular pairs with $d \\geq \\varepsilon$."
     },
     {
       "id": "counting-lemma",
       "title": "Part I: Counting Lemma for Regular Triples",
-      "startLine": 85,
-      "endLine": 115,
-      "summary": "Defines `triangleCount G A B C` as the number of ordered triples $(a,b,c) \\in A \\times B \\times C$ with all three edges present. States the counting lemma: for $\\varepsilon$-regular pairs with densities $\\geq \\varepsilon$, $T(A,B,C) \\geq (d_{AB} - \\varepsilon)(d_{AC} - \\varepsilon)(d_{BC} - \\varepsilon)|A||B||C|$. Sorry'd.",
+      "startLine": 161,
+      "endLine": 454,
+      "summary": "Defines `triangleCount G A B C` as the number of ordered triples $(a,b,c) \\in A \\times B \\times C$ with all three edges present. **Proves** the counting lemma: for $\\varepsilon$-regular pairs with densities $\\geq \\varepsilon$, $T(A,B,C) \\geq (d_{AB} - \\varepsilon)(d_{AC} - \\varepsilon)(d_{BC} - \\varepsilon)|A||B||C|$. Includes `counting_lemma_lower_bound` corollary for $d \\geq 2\\varepsilon$ triples.",
       "mathContext": "$T(A,B,C) \\geq (d_{AB} - \\varepsilon)(d_{AC} - \\varepsilon)(d_{BC} - \\varepsilon)|A||B||C|$ for $\\varepsilon$-regular triples with $d \\geq \\varepsilon$."
     },
     {
       "id": "triangle-removal",
       "title": "Part II: Triangle Removal Lemma",
-      "startLine": 117,
-      "endLine": 151,
-      "summary": "Defines `edgeSet G` and `removeEdges G R` (symmetric edge removal). States the triangle removal lemma: $\\forall \\delta > 0, \\exists \\gamma > 0$ such that $T(G) \\leq \\gamma n^3 \\Rightarrow$ removable to triangle-free with $\\leq \\delta n^2$ edge deletions. Sorry'd.",
+      "startLine": 455,
+      "endLine": 495,
+      "summary": "Defines `edgeSet G` and `removeEdges G R` (symmetric edge removal). **Proves** the triangle removal lemma: $\\forall \\delta > 0, \\exists \\gamma > 0$ such that $T(G) \\leq \\gamma n^3 \\Rightarrow$ removable to triangle-free with $\\leq \\delta n^2$ edge deletions.",
       "mathContext": "$\\forall \\delta > 0,\\, \\exists \\gamma > 0: T(G) \\leq \\gamma n^3 \\Rightarrow \\exists R \\subseteq E,\\, |R| \\leq \\delta n^2,\\, G \\setminus R$ triangle-free."
     },
     {
       "id": "graph-removal",
       "title": "Part III: General Graph Removal Lemma",
       "startLine": 496,
-      "endLine": 509,
+      "endLine": 510,
       "summary": "States the general graph removal lemma for arbitrary subgraph $H$ on $h \\geq 3$ vertices. Currently a stub proving only $\\exists \\gamma > 0$ without the full removal property.",
       "mathContext": "$\\forall H$ on $h$ vertices, $\\forall \\delta > 0, \\exists \\gamma > 0$: $\\text{copies}(H, G) \\leq \\gamma n^h \\Rightarrow$ removable to $H$-free with $\\leq \\delta n^2$ edges."
     },
@@ -136,8 +136,8 @@
       "id": "quantitative-removal",
       "title": "Quantitative Triangle Removal via Regularity",
       "startLine": 537,
-      "endLine": 1001,
-      "summary": "The main quantitative result: `triangle_removal_quantitative` constructs explicit $\\gamma(\\delta)$ using the Regularity Lemma. Applies `regularity_with_finpartition` to get a Finpartition, removes edges from irregular and sparse pairs, then uses `counting_lemma` to show any remaining triangle yields many triangles — contradicting the $\\gamma n^3$ bound. Uses part-size lower bounds from equitability.",
+      "endLine": 1196,
+      "summary": "The main quantitative result: `triangle_removal_quantitative` constructs explicit $\\gamma(\\delta)$ using the Regularity Lemma. **Fully proved.** Applies `regularity_with_finpartition` to get a Finpartition, removes edges from irregular and sparse pairs (h_irreg and h_sparse budget lemmas proved), then uses `counting_lemma` to show any remaining triangle yields many triangles — contradicting the $\\gamma n^3$ bound.",
       "mathContext": "$\\forall \\delta > 0, \\exists \\gamma = \\gamma(\\delta, M(\\varepsilon))$: $T(G) \\leq \\gamma n^3$ implies $G$ can be made triangle-free by removing $\\leq \\delta n^2$ edges. The proof is constructive: $\\gamma$ depends on the regularity bound $M(\\varepsilon)$ and $\\varepsilon = \\delta/6$."
     }
   ],
@@ -192,7 +192,7 @@
       "Szemeredi.Core"
     ],
     "namespace": "Szemeredi.Counting",
-    "lineCount": 1001,
+    "lineCount": 1196,
     "axiomCount": 0,
     "theoremCount": 13,
     "definitionCount": 7
