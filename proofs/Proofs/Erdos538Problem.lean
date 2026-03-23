@@ -231,7 +231,7 @@ theorem erdos_upper_bound :
           (c * Real.log (Real.log ↑N)) := by
         rw [mul_div_cancel_right₀ _ hcll_ne]
       _ ≤ (3 * ↑r * Real.log ↑N) / (c * Real.log (Real.log ↑N)) :=
-        (div_le_div_right hcll_pos).mpr key
+        div_le_div_of_nonneg_right key (le_of_lt hcll_pos)
       _ = 3 / c * ↑r * Real.log ↑N / Real.log (Real.log ↑N) := by ring
 
 /-
