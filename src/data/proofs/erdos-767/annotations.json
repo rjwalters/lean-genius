@@ -82,7 +82,8 @@
     "type": "definition",
     "title": "Chord Counting and Avoidance",
     "content": "**chordsIncidentTo**, **HasKChordsIncident**, **AvoidsCycleWithKChords:**\n\nThese three definitions build up the forbidden substructure:\n1. chordsIncidentTo counts chords incident to a specific vertex v on a cycle\n2. HasKChordsIncident asks if some vertex on the cycle has >= k chords\n3. AvoidsCycleWithKChords says no cycle in the graph has this property\n\nThe graph property is universal — it must hold for ALL cycles, not just a specific one.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of chord counting and avoidance"
   },
   {
     "id": "ann-767-gk",
@@ -120,7 +121,8 @@
     "type": "concept",
     "title": "Erdős Lower Bound",
     "content": "**erdos_lower:**\n\ng_k(n) >= (k+1)n - (k+1)² for n >= k+1.\n\nErdős provided an explicit construction of graphs achieving this edge count while avoiding k-chord cycles. Together with Czipszer's upper bound, this shows:\n\n(k+1)n - (k+1)² <= g_k(n) <= (k+1)n\n\nThe gap is exactly (k+1)², independent of n.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of erdős lower bound"
   },
   {
     "id": "ann-767-posa",
@@ -145,7 +147,8 @@
     "type": "concept",
     "title": "Erdős k=2,3 Cases",
     "content": "**erdos_k2** and **erdos_k3:**\n\n- g_2(n) = 3n - 9 for n >= 6\n- g_3(n) = 4n - 16 for n >= 8\n\nErdős verified these cases himself, matching the conjectured formula (k+1)n - (k+1)². The thresholds n >= 2k+2 (here 6 and 8) are smaller than Jiang's general threshold of 3k+3.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of erdős k=2,3 cases"
   },
   {
     "id": "ann-767-jiang",
@@ -170,7 +173,8 @@
     "type": "technique",
     "title": "Formula Verification",
     "content": "**formula_factored** and special case examples:\n\nThe algebraic identity (k+1)n - (k+1)² = (k+1)(n - k - 1) is verified in Lean using ring_nf and omega.\n\nThe examples verify specific cases:\n- k=1: 2n - 4 (matching Pósa)\n- k=2: 3n - 9 (matching Erdős)\n- k=3: 4n - 16 (matching Erdős)\n\nThese all follow from the general formula by substitution and ring arithmetic.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of formula verification"
   },
   {
     "id": "ann-767-examples",
@@ -182,7 +186,8 @@
     "type": "technique",
     "title": "Computational Examples",
     "content": "**Numerical verification with native_decide:**\n\nConcrete calculations for specific values:\n- g_1(10) = 16 (= 2*10 - 4)\n- g_2(15) = 36 (= 3*15 - 9)\n- g_3(20) = 64 (= 4*20 - 16)\n- g_5(30) = 144 (= 6*30 - 36)\n\nThese are verified computationally by Lean's native_decide tactic, providing additional confidence in the formula.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of computational examples"
   },
   {
     "id": "ann-767-main",

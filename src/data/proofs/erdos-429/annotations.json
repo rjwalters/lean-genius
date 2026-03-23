@@ -31,7 +31,8 @@
     "relatedConcepts": [
       "Modular arithmetic",
       "Residue classes"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of residue class coverage"
   },
   {
     "id": "ann-e429-admissible",
@@ -84,7 +85,8 @@
       "Twin primes",
       "Prime constellations",
       "Green-Tao theorem"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of prime shifts"
   },
   {
     "id": "ann-e429-zero-density",
@@ -131,7 +133,8 @@
     "type": "concept",
     "title": "The Erdős Conjecture",
     "content": "**ErdosConjecture429**:\n\nFormalizes the conjecture as: ∀ A, HasZeroDensity A → IsAdmissible A → HasPrimeShift A.\n\nThis states that any set which is both sparse and admissible must have a prime shift. The conjecture seemed plausible because both conditions are favorable: admissibility removes the obvious mod-p obstruction, and sparsity means fewer primality constraints to satisfy simultaneously.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of the erdős conjecture"
   },
   {
     "id": "ann-e429-weisenberg",
@@ -200,7 +203,8 @@
     "relatedConcepts": [
       "Necessary conditions",
       "Contrapositive"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of admissibility is necessary"
   },
   {
     "id": "ann-e429-summary",

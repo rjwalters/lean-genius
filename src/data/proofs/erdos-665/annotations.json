@@ -14,7 +14,8 @@
       "pairwise balanced designs",
       "block designs",
       "projective planes"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of problem overview"
   },
   {
     "id": "ann-e665-pbd",
@@ -48,7 +49,8 @@
     "relatedConcepts": [
       "deficiency function",
       "optimization over designs"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of the erdős question and h(n)"
   },
   {
     "id": "ann-e665-erdos-larson",
@@ -118,7 +120,8 @@
       "affine planes",
       "AG(2,q)",
       "optimal constructions"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of special case constructions"
   },
   {
     "id": "ann-e665-summary",
@@ -130,6 +133,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_665_summary (proved from axioms):**\n\nCombines three key results:\n1. Erdős-Larson: h(n) ≤ n^{1/2-c} unconditionally\n2. Prime power planes ⟹ h(n) unbounded (negative answer)\n3. h(n) correlates with largest prime gap H(n)\n\nProved by: `⟨erdos_larson_bound, prime_power_planes_implies_unbounded, h_correlates_with_prime_gap⟩`",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of summary theorem"
   }
 ]

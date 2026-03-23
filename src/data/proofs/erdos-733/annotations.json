@@ -33,7 +33,8 @@
       "point configurations",
       "Sylvester-Gallai theorem",
       "combinatorial geometry"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of point configuration"
   },
   {
     "id": "ann-e733-line",
@@ -49,7 +50,8 @@
     "relatedConcepts": [
       "Collinearity",
       "Incidence geometry"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of lines and incidences"
   },
   {
     "id": "ann-e733-line-compatible",
@@ -74,7 +76,8 @@
     "type": "definition",
     "title": "Counting Function f(n)",
     "content": "**countLineCompatible f(n):**\n\nThe number of distinct line-compatible sequences for n points.\n\nThe problem asks for bounds on f(n).",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of counting function f(n)"
   },
   {
     "id": "ann-e733-szemeredi-trotter",
@@ -103,7 +106,8 @@
     "type": "concept",
     "title": "Rich Lines Bound",
     "content": "**rich_lines_bound:**\n\nThe number of k-rich lines (lines with >= k points) is O(n^2/k^3 + n/k).\n\nThis is a corollary of Szemeredi-Trotter and controls the possible sequence patterns.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of rich lines bound"
   },
   {
     "id": "ann-e733-lower",
@@ -115,7 +119,8 @@
     "type": "concept",
     "title": "Lower Bound (Erdos)",
     "content": "**lower_bound:**\n\nf(n) >= exp(c * sqrt(n))\n\nErdos considered this 'easy'.\n\n**Construction:** A sqrt(n) x sqrt(n) grid has Theta(n) lines through it. Selecting different subsets of lines gives exponentially many sequences.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of lower bound (erdos)"
   },
   {
     "id": "ann-e733-grid",
@@ -127,7 +132,8 @@
     "type": "insight",
     "title": "Grid Construction",
     "content": "**grid_gives_lower:**\n\nA sqrt(n) x sqrt(n) integer grid has:\n- n points total\n- Theta(sqrt(n)) horizontal lines\n- Theta(sqrt(n)) vertical lines\n- Many diagonal lines\n\nTotal: Theta(n) lines, giving 2^{Theta(sqrt(n))} subsequences.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of grid construction"
   },
   {
     "id": "ann-e733-upper",
@@ -152,7 +158,8 @@
     "type": "insight",
     "title": "Tight Bounds",
     "content": "**tight_bounds:**\n\nexp(c*sqrt(n)) <= f(n) <= exp(C*sqrt(n))\n\nCombines lower and upper bounds to show f(n) = exp(Theta(sqrt(n))).",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of tight bounds"
   },
   {
     "id": "ann-e733-main",
@@ -164,7 +171,8 @@
     "type": "insight",
     "title": "Erdos Problem #733: SOLVED",
     "content": "**erdos_733:**\n\nComplete solution: f(n) = exp(Theta(sqrt(n)))\n\nFor n >= 4, there exist c, C > 0 such that:\nexp(c*sqrt(n)) <= f(n) <= exp(C*sqrt(n))\n\nThe Szemeredi-Trotter theorem is the key tool.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of erdos problem #733: solved"
   },
   {
     "id": "ann-e733-limit",
@@ -189,6 +197,7 @@
     "type": "insight",
     "title": "Complete Summary",
     "content": "**erdos_733_summary:**\n\n1. Line-compatible sequences counted by f(n)\n2. Lower: f(n) >= exp(c*sqrt(n)) (grid construction)\n3. Upper: f(n) <= exp(C*sqrt(n)) (Szemeredi-Trotter)\n4. Together: f(n) = exp(Theta(sqrt(n)))\n\n**erdos_733_answer:** Confirms the complete bounds.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of complete summary"
   }
 ]

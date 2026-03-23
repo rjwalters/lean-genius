@@ -52,7 +52,8 @@
       "equal-degree vertices",
       "P3 path conditions",
       "Erdős-Hajnal conjecture"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of equal-degree path-3 pair"
   },
   {
     "id": "ann-e816-conditions",
@@ -70,7 +71,8 @@
       "graph edge density",
       "Chen-Ma theorem",
       "vertex-edge bounds"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of erdős-hajnal and chen-ma conditions"
   },
   {
     "id": "ann-e816-bipartite",
@@ -114,7 +116,8 @@
     "type": "concept",
     "title": "Pigeonhole for Degrees",
     "content": "**pigeonhole_degrees:** In any graph with at least 2 vertices, some pair of vertices must share a degree. There are only n possible degrees (0 to n-1) among n vertices, so by pigeonhole, at least two coincide.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of pigeonhole for degrees"
   },
   {
     "id": "ann-e816-summary",
@@ -132,6 +135,7 @@
       "K_{n,n+1} counterexample",
       "graph theory open problems",
       "Erdős problems solved"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of summary"
   }
 ]

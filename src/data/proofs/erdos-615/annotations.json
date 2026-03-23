@@ -45,7 +45,8 @@
     "type": "definition",
     "title": "Ramsey-Turan Condition",
     "content": "**isRTGraph** G k l:\n\nA graph satisfies the RT(k, l) condition if:\n1. G is K_k-free (no clique of size k)\n2. alpha(G) < l (no independent set of size l)\n\n**Definition:**\n```lean\ndef isRTGraph (G : SimpleGraph V) (k l : N) : Prop :=\n  G.CliqueFree k and not (hasIndependentSet G l)\n```",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of ramsey-turan condition"
   },
   {
     "id": "ann-e615-rt-number",
@@ -74,7 +75,8 @@
     "type": "definition",
     "title": "The 1/8 Threshold",
     "content": "**threshold_one_eighth = 1/8:**\n\nFor rt(n; 4, l), the value 1/8 is the critical threshold.\n\n**Why 1/8?**\n- Turan: ex(n, K4) ~ (1/6)n^2\n- With independence constraint alpha < en: rt ~ (1/8)n^2\n- The factor drops from 1/6 to 1/8 due to independence constraints\n\nThe conjecture asked if this could be improved for l = n/log n.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of the 1/8 threshold"
   },
   {
     "id": "ann-e615-conjecture",
@@ -103,7 +105,8 @@
     "relatedConcepts": [
       "Linear independence",
       "Asymptotic bounds"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of ehss upper bound (1983)"
   },
   {
     "id": "ann-e615-sudakov",
@@ -145,7 +148,8 @@
     "type": "technique",
     "title": "The Conjecture is FALSE",
     "content": "**erdos_615:**\n\nThe answer to the conjecture is NO.\n\n```lean\ntheorem erdos_615 : not erdos_615_conjecture := erdos_615_false\n```\n\n**Why?**\nFor l = n/log n, we have l = ne^(-log n).\nSince log n = o(sqrt(log n / log log n)), Fox-Loh-Zhao gives:\nrt(n; 4, n/log n) >= (1/8 - o(1))n^2\n\nSo no constant c > 0 can make rt < (1/8 - c)n^2.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of the conjecture is false"
   },
   {
     "id": "ann-e615-critical-window",
@@ -174,7 +178,8 @@
     "type": "definition",
     "title": "Phase Transition",
     "content": "**isInCriticalWindow:**\n\nThe behavior of rt(n; 4, ne^(-f(n))) depends on f(n):\n\n- **Below critical window** (f << sqrt(log n / log log n)):\n  rt = (1/8 - o(1))n^2 (quadratic, threshold 1/8)\n\n- **Above critical window** (f >> sqrt(log n / log log n)):\n  rt = o(n^2) (subquadratic)\n\n- **At critical window** (f ~ sqrt(log n / log log n)):\n  Transition behavior",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of phase transition"
   },
   {
     "id": "ann-e615-turan",
@@ -207,7 +212,8 @@
     "relatedConcepts": [
       "Probabilistic method",
       "Random graphs"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of construction"
   },
   {
     "id": "ann-e615-summary",
@@ -219,7 +225,8 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_615_summary:**\n\nCombines the main results:\n1. The conjecture is false\n2. For linear alpha < en, rt ~ (1/8)n^2 (EHSS bound is tight)\n\nThe 1/8 threshold is optimal for a wide range of independence number bounds, all the way down to n/log n.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of summary theorem"
   },
   {
     "id": "ann-e615-answer",
@@ -231,6 +238,7 @@
     "type": "technique",
     "title": "The Answer is NO",
     "content": "**erdos_615_answer:**\n\nThe answer to Erdos Problem #615 is NO.\n\nThe threshold 1/8 cannot be improved even for independence number n/log n.\n\nGraphs with ~(1/8)n^2 edges can avoid both K4 and large independent sets.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of the answer is no"
   }
 ]

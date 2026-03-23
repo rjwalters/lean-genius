@@ -50,7 +50,8 @@
       "Bipartite graphs",
       "Complete graphs",
       "Graph decomposition"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of complete bipartite subgraph"
   },
   {
     "id": "ann-e807-bipartite-cover",
@@ -66,7 +67,8 @@
     "relatedConcepts": [
       "Edge covering",
       "Graph decomposition"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of edge-disjoint bipartite cover"
   },
   {
     "id": "ann-e807-bipartition-number",
@@ -125,7 +127,8 @@
     "type": "technique",
     "title": "ERW Conjecture is False",
     "content": "**erw_conjecture_false:**\n\nThe ERW conjecture is false.\n\n```lean\ntheorem erw_conjecture_false : not (forall n, ERW_conjecture n)\n```\n\n**Proof:** Since tau(G) <= n - alpha(G) - 1 < n - alpha(G) almost surely, the equality fails.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of erw conjecture is false"
   },
   {
     "id": "ann-e807-abh-2017",
@@ -171,7 +174,8 @@
     "relatedConcepts": [
       "Random graphs",
       "Probabilistic methods"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of independence number of random graphs"
   },
   {
     "id": "ann-e807-main-theorem",
@@ -196,7 +200,8 @@
     "type": "technique",
     "title": "Answer Statement",
     "content": "**erdos_807_answer:**\n\nErdos #807 asked if tau(G) = n - alpha(G) almost surely.\n\n**Answer: NO**\n\nThe bipartition number is strictly smaller than expected for random graphs.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of answer statement"
   },
   {
     "id": "ann-e807-clique-cover",
@@ -212,7 +217,8 @@
     "relatedConcepts": [
       "Clique",
       "Graph covering"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of clique cover number"
   },
   {
     "id": "ann-e807-probabilistic-method",
@@ -229,7 +235,8 @@
       "Random graphs",
       "Expectation",
       "Erdos"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of probabilistic method"
   },
   {
     "id": "ann-e807-concentration",
@@ -246,6 +253,7 @@
       "Probability theory",
       "Random graphs",
       "Tail bounds"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of concentration inequalities"
   }
 ]

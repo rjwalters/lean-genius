@@ -50,7 +50,8 @@
     ],
     "prerequisites": [
       "Inductive types in Lean 4"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of color type"
   },
   {
     "id": "ann-e518-two-coloring",
@@ -129,7 +130,8 @@
     "prerequisites": [
       "Finset operations",
       "List to set conversion"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of path vertex set"
   },
   {
     "id": "ann-e518-monochromatic-path",
@@ -209,7 +211,8 @@
     "prerequisites": [
       "Path cover structure",
       "Monochromatic path predicate"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of monochromatic cover"
   },
   {
     "id": "ann-e518-gerencser-gyarfas",
@@ -365,7 +368,8 @@
     ],
     "prerequisites": [
       "pokrovskiy_versteegen_williams axiom"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of conjecture confirmed"
   },
   {
     "id": "ann-e518-main-result",
@@ -390,7 +394,8 @@
     ],
     "prerequisites": [
       "All preceding axiomatized results"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of explicit main result"
   },
   {
     "id": "ann-e518-tightness",
@@ -469,6 +474,7 @@
     ],
     "prerequisites": [
       "All main results combined"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of summary theorem"
   }
 ]

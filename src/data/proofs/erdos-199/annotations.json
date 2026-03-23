@@ -33,7 +33,8 @@
       "Erdős problems",
       "combinatorics",
       "extremal problems"
-    ]
+    ],
+    "mathContext": "See annotation content for formal details of 3-term arithmetic progression"
   },
   {
     "id": "ann-199-3apfree",
@@ -45,7 +46,8 @@
     "type": "definition",
     "title": "3-AP-Free Sets",
     "content": "**is3APFree:**\n\nA set is 3-AP-free if it contains no 3-term arithmetic progression.\n\n**Classical examples of 3-AP-free sets:**\n- Stanley sequence: 0, 1, 3, 5, 11, 22, 45, ...\n- Powers of 2: {1, 2, 4, 8, 16, ...}",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of 3-ap-free sets"
   },
   {
     "id": "ann-199-infiniteap",
@@ -57,7 +59,8 @@
     "type": "definition",
     "title": "Infinite Arithmetic Progression",
     "content": "**infiniteAP:**\n\nThe infinite arithmetic progression {a, a+d, a+2d, a+3d, ...} for d ≠ 0.\n\n**Examples:**\n- infiniteAP 0 1 = {0, 1, 2, 3, ...} = ℕ\n- infiniteAP 1 2 = {1, 3, 5, 7, ...} = odd naturals",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of infinite arithmetic progression"
   },
   {
     "id": "ann-199-containsinf",
@@ -69,7 +72,8 @@
     "type": "definition",
     "title": "Contains Infinite AP",
     "content": "**containsInfiniteAP:**\n\nA set contains an infinite AP if some infinite arithmetic progression is a subset.\n\n**Note:** This is a much stronger condition than containing arbitrarily long finite APs.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of contains infinite ap"
   },
   {
     "id": "ann-199-conjecture",
@@ -112,7 +116,8 @@
     "type": "technique",
     "title": "Conjecture Disproved",
     "content": "**erdos_199_disproved:**\n\nErdős's conjecture is false.\n\n**Logic:** Baumgartner gives a 3-AP-free set A whose complement has no infinite AP. This directly contradicts the conjecture.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of conjecture disproved"
   },
   {
     "id": "ann-199-main",
@@ -124,7 +129,8 @@
     "type": "technique",
     "title": "Main Result",
     "content": "**erdos_199:**\n\nThe answer to Erdős Problem #199 is NO.\n\nThere exists a set A that is 3-AP-free, yet its complement contains no infinite AP.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of main result"
   },
   {
     "id": "ann-199-vdw",
@@ -154,7 +160,8 @@
     "type": "technique",
     "title": "Example: ℕ Has 3-APs",
     "content": "**Example showing ℕ (embedded in ℝ) has many 3-APs:**\n\n**Verification:** 1, 2, 3 is a 3-term AP with a = 1, d = 1.\n\nThis shows that dense sets like ℕ definitely contain APs. The question is about sparse (3-AP-free) sets.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of example: ℕ has 3-aps"
   },
   {
     "id": "ann-199-example-rat",
@@ -166,7 +173,8 @@
     "type": "technique",
     "title": "Example: ℚ Contains Infinite APs",
     "content": "**Example showing ℚ (embedded in ℝ) contains infinite APs:**\n\n**Verification:** The infinite AP {0, 1, 2, 3, ...} ⊆ ℚ.\n\nThis contrasts with Baumgartner's sets, which avoid all infinite APs.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of example: ℚ contains infinite aps"
   },
   {
     "id": "ann-199-summary",
@@ -178,6 +186,7 @@
     "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_199_summary:**\n\nCombines all the main results:\n1. Erdős's conjecture is FALSE\n2. A counterexample EXISTS (via Baumgartner)\n\nThe problem is fully resolved.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of summary theorem"
   }
 ]
