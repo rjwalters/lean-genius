@@ -74,14 +74,16 @@
       "title": "Part I: Generalized Ballot Sequences",
       "startLine": 61,
       "endLine": 67,
-      "summary": "Defines $\\text{kCountedSequence}(k,a,b)$ (lists with $a$ copies of $+1$ and $b$ copies of $-k$) and $\\text{kStaysPositive}$ (all prefix sums positive)"
+      "summary": "Defines $\\text{kCountedSequence}(k,a,b)$ (lists with $a$ copies of $+1$ and $b$ copies of $-k$) and $\\text{kStaysPositive}$ (all prefix sums positive)",
+      "mathContext": "$\\text{kCountedSequence}(k,a,b) = \\{l : l.\\text{count}(1) = a,\\, l.\\text{count}(-k) = b\\}$. The lattice path model: $+1$ steps for A-votes, $-k$ steps for B-votes. The condition $\\text{kStaysPositive}$ means all prefix sums $\\sigma(j) = \\sum_{i=1}^{j} l_i > 0$ for $j = 1, \\ldots, n$."
     },
     {
       "id": "algebraic-lemmas",
       "title": "Part II: Core Algebraic Lemmas",
       "startLine": 69,
       "endLine": 101,
-      "summary": "Proves $\\sum l = \\text{count}(1) - k \\cdot \\text{count}(-k)$ and $|l| = \\text{count}(1) + \\text{count}(-k)$ by list induction"
+      "summary": "Proves $\\sum l = \\text{count}(1) - k \\cdot \\text{count}(-k)$ and $|l| = \\text{count}(1) + \\text{count}(-k)$ by list induction",
+      "mathContext": "$S = \\sum l = a - kb$ (net displacement), $n = |l| = a + b$ (total steps). These identities are the algebraic backbone: the cycle lemma counts exactly $S$ good rotations out of $n$ total, giving $P = S/n = (a-kb)/(a+b)$."
     },
     {
       "id": "basic-properties",
@@ -116,7 +118,8 @@
       "title": "Prefix Sum Relations",
       "startLine": 237,
       "endLine": 334,
-      "summary": "Proves the key relation $\\sigma_{\\text{rot}(i)}(j) = \\sigma(i+j) - \\sigma(i)$ (non-wrapping) or $\\sigma(i+j-n) + S - \\sigma(i)$ (wrapping); defines `prefixSum`, doubled periodicity, `isGoodRotation`, and `goodRotations`"
+      "summary": "Proves the key relation $\\sigma_{\\text{rot}(i)}(j) = \\sigma(i+j) - \\sigma(i)$ (non-wrapping) or $\\sigma(i+j-n) + S - \\sigma(i)$ (wrapping); defines `prefixSum`, doubled periodicity, `isGoodRotation`, and `goodRotations`",
+      "mathContext": "The prefix sum relation is the technical heart: $\\sigma_{\\text{rot}(i)}(j) = \\sigma(i+j) - \\sigma(i)$ for $i+j \\leq n$, and $\\sigma_{\\text{rot}(i)}(j) = \\sigma(i+j-n) + S - \\sigma(i)$ for $i+j > n$. This converts the problem of counting good rotations into prefix sum arithmetic on the original sequence."
     },
     {
       "id": "rightmost-minimum",
@@ -130,14 +133,16 @@
       "title": "Cycle Lemma Upper Bound",
       "startLine": 421,
       "endLine": 514,
-      "summary": "Proves $|\\text{goodRotations}| \\leq S$ via an injection $i \\mapsto \\sigma(i) - \\min(\\sigma)$ from good rotations into $\\{0, \\ldots, S-1\\}$, using prefix sum strict monotonicity and injectivity"
+      "summary": "Proves $|\\text{goodRotations}| \\leq S$ via an injection $i \\mapsto \\sigma(i) - \\min(\\sigma)$ from good rotations into $\\{0, \\ldots, S-1\\}$, using prefix sum strict monotonicity and injectivity",
+      "mathContext": "The injection $f(i) = \\sigma(i) - \\min(\\sigma)$ maps good rotations to $\\{0, \\ldots, S-1\\}$. Injectivity: if $f(i_1) = f(i_2)$, then $\\sigma(i_1) = \\sigma(i_2)$, and good rotation uniqueness forces $i_1 = i_2$. Image bound: $0 \\leq f(i) < S$ by definition of $\\min(\\sigma)$ and the total sum constraint."
     },
     {
       "id": "lower-bound",
       "title": "Cycle Lemma Lower Bound and Main Theorem",
       "startLine": 516,
       "endLine": 700,
-      "summary": "Proves $|\\text{goodRotations}| \\geq S$ via `levelPos` surjection (discrete IVT exploiting $+1$ steps); combines with upper bound to prove the **cycle lemma**: $|\\text{goodRotations}| = a - kb$; includes `native_decide` verification examples"
+      "summary": "Proves $|\\text{goodRotations}| \\geq S$ via `levelPos` surjection (discrete IVT exploiting $+1$ steps); combines with upper bound to prove the **cycle lemma**: $|\\text{goodRotations}| = a - kb$; includes `native_decide` verification examples",
+      "mathContext": "The sandwich: injection gives $|\\text{goodRotations}| \\leq S$, surjection gives $|\\text{goodRotations}| \\geq S$, so $|\\text{goodRotations}| = S = a - kb$. The surjection uses a discrete IVT: for each level $v \\in [\\min(\\sigma), \\min(\\sigma)+S)$, find position $i$ with $\\sigma(i) = v$ (exploiting that $+1$ steps can only increase by 1), and this position gives a good rotation."
     },
     {
       "id": "lattice-paths",
@@ -149,7 +154,7 @@
   ],
   "conclusion": {
     "summary": "This formalization establishes a comprehensive framework for the generalized ballot problem, building from basic list combinatorics through cyclic rotation theory to the statement of the Dvoretzky-Motzkin cycle lemma. The key infrastructure - including the prefix sum relation for rotations - is complete, providing the foundation needed to prove the cycle lemma and derive the counting formula.",
-    "implications": "**Theoretical Significance**: **Applications:**\n\n1. **Voting theory**: Probability of sustained dominance in elections\n2.\n\n**Broader Connections**: **Queueing theory**: Probability that a queue never empties (k-server variant)\n3. **Random walks**: Paths with asymmetric step sizes staying above a barrier\n4. **Lattice path enumeration**: Counting paths with generalized step constraints.",
+    "implications": "**Theoretical Significance**: The Dvoretzky-Motzkin cycle lemma is one of the most powerful tools in lattice path combinatorics. It unifies the classical ballot problem, Catalan number identities, and Raney's theorem under a single rotational symmetry argument.\n\n**Applications**:\n1. **Voting theory**: Probability of sustained dominance in elections with weighted votes\n2. **Queueing theory**: Probability that a $k$-server queue never empties — the ballot condition models server utilization exceeding demand\n3. **Random walks**: Paths with asymmetric step sizes ($+1$ and $-k$) staying above a barrier, generalizing Dyck paths ($k=1$)\n4. **Lattice path enumeration**: Counting paths with generalized step constraints, with connections to Catalan numbers ($C_n = \\frac{1}{n+1}\\binom{2n}{n}$ counts Dyck paths of length $2n$)\n5. **Random trees**: Raney's theorem (a corollary of the cycle lemma) counts the number of labeled plane trees, connecting ballot sequences to tree enumeration",
     "openQuestions": [
       "Complete proof of the Dvoretzky-Motzkin cycle lemma in Lean 4",
       "Multi-candidate ballot problem (more than 2 candidates)",
