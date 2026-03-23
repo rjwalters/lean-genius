@@ -169,49 +169,56 @@
       "title": "Part I-VII: Foundations and Enstrophy Identity",
       "startLine": 1,
       "endLine": 715,
-      "summary": "Establishes the Navier-Stokes solution structure, enstrophy E = ∫|ω|², palinstrophy P, and the fundamental identity E' = 2S - 2νP. Numerical constants like κ·c_FK > 2 are genuinely proven via native_decide."
+      "summary": "Establishes the Navier-Stokes solution structure, enstrophy E = ∫|ω|², palinstrophy P, and the fundamental identity E' = 2S - 2νP. Numerical constants like κ·c_FK > 2 are genuinely proven via native_decide.",
+      "mathContext": "Enstrophy $E(t) = \\int |\\omega|^2\\, dx$ (total squared vorticity), palinstrophy $P(t) = \\int |\\nabla\\omega|^2\\, dx$, stretching $S = \\int \\omega \\cdot (\\nabla u)\\omega\\, dx$. The fundamental identity: $E'(t) = 2S - 2\\nu P$. The NSAxioms structure encodes 5 physical hypotheses (Type II exponent, spectral gap, theta dynamics, blowup rate, BKM criterion) — these are the unsolved parts."
     },
     {
       "id": "part-8b",
       "title": "Part VIII-B: Concentration Framework (Original)",
       "startLine": 808,
       "endLine": 893,
-      "summary": "Defines single-ball concentration θ = sup(E_loc/E). Proves bounds θ ≤ 1 and witness theorems."
+      "summary": "Defines single-ball concentration θ = sup(E_loc/E). Proves bounds θ ≤ 1 and witness theorems.",
+      "mathContext": "Single-ball concentration: $\\theta(t) = \\sup_x \\frac{E_{\\text{loc}}(x, R, t)}{E(t)}$ where $E_{\\text{loc}} = \\int_{B(x,R)} |\\omega|^2$. The critical threshold $\\theta \\geq 2/\\pi^2 \\approx 0.203$ ensures the Faber-Krahn spectral gap dominates stretching: $2\\nu P \\geq \\kappa c_{FK} \\theta E^2 > 2S$, forcing $E' < 0$."
     },
     {
       "id": "part-8b-prime",
       "title": "Part VIII-B': K-Ball Concentration Framework (NEW)",
       "startLine": 896,
       "endLine": 1038,
-      "summary": "NEW SECTION: Defines K-ball concentration θₖ, proves Faber-Krahn additivity, averaging lemma (θ ≥ θₖ/K), and K-threshold analysis. Shows proof works if θₖ ≥ 0.203·K for any fixed K."
+      "summary": "Defines K-ball concentration θₖ, proves Faber-Krahn additivity, averaging lemma (θ ≥ θₖ/K), and K-threshold analysis.",
+      "mathContext": "$\\theta_K(t) = \\sup_{K \\text{ disjoint balls}} \\frac{\\sum_{i=1}^K E_{\\text{loc}}(x_i, R, t)}{E(t)}$. Key: Faber-Krahn is additive for disjoint balls: $P \\geq \\sum_i \\frac{\\pi^2}{4R^2} E_{\\text{loc}}(x_i) = \\frac{\\pi^2}{4R^2} \\theta_K E$. Averaging lemma: $\\theta \\geq \\theta_K / K$ (pigeonhole). The proof works if $\\theta_K \\geq 0.203K$ for any fixed $K$."
     },
     {
       "id": "part-8c",
       "title": "Part VIII-C: Tropical Framework and Rigidity",
       "startLine": 1022,
       "endLine": 1100,
-      "summary": "Defines tropical L function and proves rigidity theorem: IF tropical crossing with τ ≤ 0.1, THEN θ > 0.99. This is genuine mathematical content that could close the proof if crossings are unavoidable."
+      "summary": "Defines tropical L function and proves rigidity theorem: IF tropical crossing with τ ≤ 0.1, THEN θ > 0.99.",
+      "mathContext": "Tropical $L$ function: $L(\\beta) = \\min(2\\beta, 1)$ (tropical analogue of the $L$-function). Rigidity theorem: if $L$ crosses level $\\tau \\leq 0.1$, then the crossing forces $\\theta > 0.99$ — a much stronger concentration than the $0.203$ threshold. This would close the proof if tropical crossings are unavoidable at blowup."
     },
     {
       "id": "axioms",
-      "title": "Critical Axioms (Revised)",
+      "title": "NSAxioms Structure (Hypotheses)",
       "startLine": 1270,
       "endLine": 1390,
-      "summary": "REVISED: The critical axiom is now finite_bubble_concentration (K-ball version) instead of concentration_near_blowup (single-ball). Also includes Faber-Krahn additivity axiom for K balls."
+      "summary": "The NSAxioms structure encodes 5 physical hypotheses as structure fields (not Lean axiom declarations). These are the unsolved parts of the Millennium Problem.",
+      "mathContext": "NSAxioms structure fields: (1) Type II exponent $\\alpha > 1$, (2) spectral gap $\\lambda_1 \\geq \\pi^2/R^2$, (3) concentration dynamics $\\theta \\geq c$, (4) blowup rate $E(t) \\leq C(T^* - t)^{-\\alpha}$, (5) BKM criterion $\\int_0^T \\|\\omega\\|_\\infty\\, dt < \\infty \\Rightarrow$ regularity. These are mathematically equivalent to `axiom` declarations — the assumptions were reorganized into a structure, not eliminated."
     },
     {
       "id": "twin-engine",
       "title": "Twin Engine Stability Theorem",
       "startLine": 1390,
       "endLine": 1460,
-      "summary": "Proves that Type II + concentration implies S ≤ νP eventually. Now works with K-ball concentration via Faber-Krahn additivity."
+      "summary": "Proves that Type II + concentration implies S ≤ νP eventually, using K-ball Faber-Krahn additivity.",
+      "mathContext": "If $\\theta_K \\geq 0.203K$ (concentration) and $E(t) \\sim (T^*-t)^{-\\alpha}$ with $\\alpha > 1$ (Type II), then $2\\nu P \\geq \\kappa c_{FK} \\theta_K E^2 / K > 2S$ eventually. This forces $E'(t) < 0$, contradicting the assumed blowup rate — the 'twin engine' (viscous damping + Faber-Krahn) overpowers stretching."
     },
     {
       "id": "main-theorems",
-      "title": "Final Theorems",
+      "title": "Final Theorems (Conditional 3D + Proven 2D)",
       "startLine": 1600,
       "endLine": 1670,
-      "summary": "Concludes: IF all axioms hold, THEN no blowup for Type II. The revised axiom set is weaker (finite bubble) rather than stronger (single bubble)."
+      "summary": "3D: NSAxioms → no blowup (CONDITIONAL). 2D: global existence and enstrophy bound (PROVEN — Ladyzhenskaya 1969, no assumptions).",
+      "mathContext": "3D conditional: $\\text{NSAxioms} \\Rightarrow \\nexists$ finite-time blowup (the conditional regularity theorem). 2D proven: for 2D Navier-Stokes, $E(t) \\leq E(0)e^{-c\\nu t}$ (exponential decay under Poincaré), giving global existence and smoothness unconditionally — Ladyzhenskaya's 1969 result."
     }
   ],
   "conclusion": {
@@ -240,5 +247,39 @@
       "venue": "Clay Mathematics Institute Millennium Problems",
       "note": "Official problem statement for the $1 million Clay prize — global regularity in 3D remains open"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "navier-stokes-existence",
+      "relationship": "extended-by",
+      "description": "Sub-entry with additional Navier-Stokes existence and regularity results, extending the conditional regularity framework"
+    },
+    {
+      "targetId": "yang-mills",
+      "relationship": "thematic",
+      "description": "Both are Millennium Prize Problems involving PDEs and regularity: Navier-Stokes asks for smooth solutions to fluid equations, Yang-Mills asks for a mass gap in gauge field theories. Both require controlling nonlinear interactions at all scales"
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "thematic",
+      "description": "Fellow Millennium Prize Problem. While RH concerns analytic number theory, both problems involve understanding how structures (prime distribution / fluid velocity) behave at extreme scales and under limits"
+    },
+    {
+      "targetId": "poincare-conjecture",
+      "relationship": "thematic",
+      "description": "The only Millennium Prize Problem solved so far (Perelman 2003). Both problems involve PDEs on manifolds: Ricci flow for Poincaré, Navier-Stokes for fluid dynamics. Perelman's blowup analysis techniques have parallels in the NS singularity analysis"
+    },
+    {
+      "targetId": "schauder-fixed-point",
+      "relationship": "foundational",
+      "description": "Schauder's fixed point theorem is used in PDE existence proofs: weak solutions to Navier-Stokes are constructed via Galerkin approximation and compactness arguments, where Schauder-type fixed points guarantee existence of approximate solutions"
+    }
+  ],
+  "relatedProofs": [
+    "navier-stokes-existence",
+    "yang-mills",
+    "riemann-hypothesis",
+    "poincare-conjecture",
+    "schauder-fixed-point"
   ]
 }

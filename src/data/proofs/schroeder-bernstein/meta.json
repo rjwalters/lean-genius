@@ -43,6 +43,11 @@
     ],
     "dateAdded": "2025-12-26",
     "axiomCount": 0,
+    "prerequisites": [
+      "Set theory: injections, bijections, cardinal arithmetic",
+      "Classical logic: law of excluded middle (for orbit classification)",
+      "Function.Embedding and Equiv types in Lean/Mathlib"
+    ],
     "lineCount": 198
   },
   "overview": {
@@ -63,63 +68,72 @@
       "title": "Introduction",
       "startLine": 1,
       "endLine": 51,
-      "summary": "Overview of the Schroeder-Bernstein theorem, its historical significance, and Mathlib dependencies."
+      "summary": "Overview of the Schroeder-Bernstein theorem, its historical significance, and Mathlib dependencies.",
+      "mathContext": "Statement: if $\\exists f: A \\hookrightarrow B$ and $\\exists g: B \\hookrightarrow A$ (injections), then $A \\cong B$ (bijection). Equivalently: $|A| \\leq |B| \\wedge |B| \\leq |A| \\Rightarrow |A| = |B|$ — antisymmetry of cardinal ordering."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "startLine": 53,
       "endLine": 78,
-      "summary": "The core theorem in function form: injections both ways implies existence of a bijection."
+      "summary": "The core theorem in function form: injections both ways implies existence of a bijection.",
+      "mathContext": "`schroeder_bernstein`: given $f: \\alpha \\to \\beta$ injective and $g: \\beta \\to \\alpha$ injective, constructs $h: \\alpha \\to \\beta$ bijective. Uses `Function.Embedding.schropicard_bernstein_antisymm` or direct orbit partition."
     },
     {
       "id": "embedding-form",
       "title": "Embedding Formulation",
       "startLine": 79,
       "endLine": 93,
-      "summary": "The embedding form using Lean's Function.Embedding type for bundled injective functions."
+      "summary": "The embedding form using Lean's Function.Embedding type for bundled injective functions.",
+      "mathContext": "`Function.Embedding α β` bundles a function with an injectivity proof. The embedding form: $(\\alpha \\hookrightarrow \\beta) \\to (\\beta \\hookrightarrow \\alpha) \\to (\\alpha \\simeq \\beta)$, where $\\simeq$ is `Equiv`."
     },
     {
       "id": "cardinality-form",
       "title": "Cardinality Formulation",
       "startLine": 95,
       "endLine": 106,
-      "summary": "The cardinal arithmetic form: embeddings both ways implies equal cardinalities."
+      "summary": "The cardinal arithmetic form: embeddings both ways implies equal cardinalities.",
+      "mathContext": "Cardinal form: $|\\alpha| \\leq |\\beta| \\wedge |\\beta| \\leq |\\alpha| \\Rightarrow |\\alpha| = |\\beta|$, where $|\\alpha| = \\text{Cardinal.mk}\\ \\alpha$. This is `Cardinal.antisymm` in Mathlib — the antisymmetry that makes cardinal ordering a partial order."
     },
     {
       "id": "proof-strategy",
       "title": "The Proof Strategy",
       "startLine": 107,
       "endLine": 129,
-      "summary": "Detailed explanation of the orbit-based proof technique."
+      "summary": "Detailed explanation of the orbit-based proof technique.",
+      "mathContext": "Partition $\\alpha$ into orbits: for each $a \\in \\alpha$, trace the backward chain $a, g^{-1}(a), f^{-1}(g^{-1}(a)), \\ldots$. Type A: chain ends in $\\alpha$; Type B: chain ends in $\\beta$; Type C: chain is infinite. Define $h(a) = f(a)$ for Types A,C and $h(a) = g^{-1}(a)$ for Type B. Injectivity of $f$ and $g$ ensures $h$ is bijective."
     },
     {
       "id": "corollaries",
       "title": "Corollaries",
       "startLine": 131,
       "endLine": 147,
-      "summary": "Derived results including composition injectivity and the symmetric equivalence."
+      "summary": "Derived results including composition injectivity and the symmetric equivalence.",
+      "mathContext": "Corollaries: (1) $f: \\alpha \\hookrightarrow \\beta,\\ g: \\beta \\hookrightarrow \\gamma \\Rightarrow g \\circ f: \\alpha \\hookrightarrow \\gamma$ (injection composition). (2) Symmetric equivalence: if $\\alpha \\hookrightarrow \\beta$ and $\\beta \\hookrightarrow \\alpha$, then both $\\alpha \\hookrightarrow \\beta \\hookrightarrow \\alpha$ chains yield the same equivalence $\\alpha \\simeq \\beta$."
     },
     {
       "id": "set-form",
       "title": "Set-Theoretic Formulation",
       "startLine": 148,
       "endLine": 159,
-      "summary": "The set-based version for subsets of a common type."
+      "summary": "The set-based version for subsets of a common type.",
+      "mathContext": "Set version: if $A \\subseteq B \\subseteq C$ and $A \\cong C$ (via some bijection), then $A \\cong B \\cong C$. This is the \"squeeze\" form: a set sandwiched between two equinumerous sets is equinumerous to both."
     },
     {
       "id": "connection",
       "title": "Connection to Cantor's Theorem",
       "startLine": 160,
       "endLine": 171,
-      "summary": "How Schroeder-Bernstein complements Cantor's diagonal argument."
+      "summary": "How Schroeder-Bernstein complements Cantor's diagonal argument.",
+      "mathContext": "Cantor proves $|A| < |\\mathcal{P}(A)|$ (no surjection $A \\to \\mathcal{P}(A)$). Schroeder-Bernstein complements this: the inclusion $A \\hookrightarrow \\mathcal{P}(A)$ (via singletons) shows $|A| \\leq |\\mathcal{P}(A)|$. Together: $|A| < |\\mathcal{P}(A)|$ strictly, confirming the power set is always strictly larger."
     },
     {
       "id": "visualization",
       "title": "Proof Visualization",
       "startLine": 172,
       "endLine": 198,
-      "summary": "ASCII diagram showing the orbit classification and bijection construction."
+      "summary": "ASCII diagram showing the orbit classification and bijection construction.",
+      "mathContext": "Visual representation: elements of $\\alpha$ partition into three orbit types based on backward chains under $g^{-1} \\circ f^{-1}$. Type A orbits (starting in $\\alpha$) and Type C orbits (infinite chains) use $f$; Type B orbits (starting in $\\beta$) use $g^{-1}$. The bijection $h: \\alpha \\to \\beta$ is piecewise-defined on these orbit types."
     }
   ],
   "conclusion": {
@@ -156,12 +170,24 @@
       "targetId": "denumerability-rationals",
       "relationship": "related",
       "description": "The denumerability of $\\mathbb{Q}$ can be proved via Schröder-Bernstein: $\\mathbb{N} \\hookrightarrow \\mathbb{Q}$ (obvious) and $\\mathbb{Q} \\hookrightarrow \\mathbb{N}$ (via Cantor pairing), so $|\\mathbb{Q}| = |\\mathbb{N}|$."
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "complementary",
+      "description": "Cantor's theorem ($|A| < |\\mathcal{P}(A)|$) establishes strict cardinal inequality. Schröder-Bernstein establishes cardinal equality from mutual injections. Together they form the foundation of cardinal arithmetic: we can prove $|A| < |B|$ (Cantor) and $|A| = |B|$ (Schröder-Bernstein) using injections alone"
+    },
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "related",
+      "description": "The orbit classification in the proof traces backward chains inductively: at each step, follow $g^{-1} \\circ f^{-1}$ one more step. The well-foundedness argument for terminating chains uses a form of strong induction on chain length"
     }
   ],
   "relatedProofs": [
     "cantor-diagonalization",
     "continuum-hypothesis",
-    "denumerability-rationals"
+    "denumerability-rationals",
+    "cantors-theorem",
+    "mathematical-induction"
   ],
   "leanFile": {
     "imports": [
