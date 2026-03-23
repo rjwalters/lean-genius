@@ -58,7 +58,7 @@
       "startLine": 41,
       "endLine": 56
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sidon Equivalence (VERIFIED)",
     "content": "**theorem sidon_iff_sidon_alt**: IsSidon A ↔ IsSidonAlt A\n\n✅ **FULLY VERIFIED** - This theorem is completely proved in Lean!\n\n**Proof outline**:\n- (⟹) If two representations exist for some s, the Sidon property forces them equal\n- (⟸) If |{(a,b) : a+b=s}| ≤ 1 for all s, repeated sums are impossible\n\nThe proof uses `Set.ncard` properties and `aesop` for set reasoning.",
     "mathContext": "This equivalence is fundamental for working with Sidon sets. Different characterizations are useful in different contexts.",
@@ -126,7 +126,7 @@
       "startLine": 87,
       "endLine": 92
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Pilatte's Existence Theorem (2023)",
     "content": "**theorem pilatte_existence**: Erdos157Conjecture\n\n**Status**: sorry (existential construction not formalized)\n\n**Pilatte's proof** (2023) uses a probabilistic construction:\n1. Carefully select elements to maintain the Sidon property\n2. Ensure enough density to cover all large integers with 3 terms\n3. Balance the competing constraints through delicate analysis\n\nThe construction is non-explicit - it proves existence without giving a concrete set.",
     "mathContext": "Probabilistic existence proofs are common in combinatorics. They show something exists without constructing it explicitly.",
@@ -144,7 +144,7 @@
       "startLine": 96,
       "endLine": 102
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sidon Sets Cannot Be Order-2 Bases",
     "content": "**theorem sidon_not_basis_2 (A : Set ℕ)**:\n  A.Infinite → IsSidon A → ¬IsAsymptoticBasis A 2\n\n**Status**: sorry\n\n**Why it's true**:\n- Sidon sets satisfy |A ∩ [1,N]| ≤ √N + O(N^{1/4})\n- Order-2 bases require |A ∩ [1,N]| ≫ √N (to cover N different sums)\n- These constraints are incompatible!\n\nThis explains why Erdős asked about order 3, not order 2.",
     "mathContext": "The impossibility of order 2 is a density argument. Sidon sets grow too slowly to form pairwise sums covering all integers.",
@@ -161,7 +161,7 @@
       "startLine": 104,
       "endLine": 106
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sidon Counting Bound",
     "content": "**axiom sidon_counting_bound**:\n  |A ∩ [1,N]| ≤ √N + C·N^{1/4} for some constant C\n\n**Classical result** (Erdős-Turán 1941):\n- Sidon sets grow at most like √N\n- The O(N^{1/4}) term captures lower-order fluctuations\n\n**Optimal constructions**:\n- Singer difference sets achieve |A ∩ [1,N]| ∼ √N\n- So the bound is essentially tight",
     "mathContext": "The √N growth rate is the key constraint. It comes from counting: a Sidon set of size k has k(k+1)/2 distinct pairwise sums, which must fit in [2, 2N].",
@@ -178,7 +178,7 @@
       "startLine": 108,
       "endLine": 111
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Basis Counting Lower Bound",
     "content": "**axiom basis_counting_lower**:\n  If A is an asymptotic basis of order k, then |A ∩ [1,N]| ≥ c·N^{1/k}\n\n**Proof idea**: The k-fold sums of |A ∩ [1,N]| elements must cover [N₀, N].\n- Number of such sums ≈ |A ∩ [1,N]|^k\n- Must cover ≈ N integers\n- So |A ∩ [1,N]|^k ≳ N, giving |A ∩ [1,N]| ≳ N^{1/k}\n\n**Why order 3 works**:\n- Sidon: |A| ≤ √N = N^{1/2}\n- Basis order 3: need |A| ≥ N^{1/3}\n- Since 1/3 < 1/2, these are compatible!",
     "mathContext": "This lower bound explains the density requirements for bases. Combined with the Sidon upper bound, it shows exactly which orders are feasible.",
@@ -195,7 +195,7 @@
       "startLine": 129,
       "endLine": 144
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Powers of Two Form a Sidon Set (VERIFIED)",
     "content": "**theorem powers_of_two_sidon**: IsSidon {n | ∃ k, n = 2^k}\n\n✅ **FULLY VERIFIED** - Complete proof in Lean!\n\n**Why {1, 2, 4, 8, 16, ...} is Sidon**:\nIf 2^a + 2^b = 2^c + 2^d with a ≤ b, c ≤ d, then (a,b) = (c,d).\n\n**Proof technique**:\n- Factor: 2^a(1 + 2^{b-a}) = 2^c(1 + 2^{d-c})\n- Compare 2-adic valuations\n- Case analysis on the exponents\n\nThis is the canonical example of an infinite Sidon set.",
     "mathContext": "Powers of 2 give the sparsest possible Sidon set (logarithmic growth). They show Sidon sets can be arbitrarily sparse.",
@@ -213,7 +213,7 @@
       "startLine": 146,
       "endLine": 153
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Finite Sidon Example",
     "content": "**def exampleSidonSet**: Finset ℕ := {1, 2, 5, 11}\n\n**theorem example_is_sidon**: IsSidon exampleSidonSet\n  Status: sorry\n\n**Verification**: The pairwise sums are:\n- 1+2=3, 1+5=6, 1+11=12, 2+5=7, 2+11=13, 5+11=16\n- All distinct ✓\n\n**Historical note**: The original set {1, 2, 5, 10, 11, 13} was NOT Sidon (1+11 = 2+10 = 12). Aristotle proof search discovered this bug!",
     "mathContext": "Small Sidon sets are useful for testing. The bug-finding note shows the value of formal verification even for 'obvious' claims.",

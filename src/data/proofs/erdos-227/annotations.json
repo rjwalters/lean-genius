@@ -186,7 +186,7 @@
       "startLine": 89,
       "endLine": 98
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Conjecture Disproved",
     "content": "The original conjecture is proved false by exhibiting a specific counterexample: take $\\lambda = 1/4 \\in (0, 1/2]$ in the Clunie-Hayman theorem to get an entire function with $\\mu(r)/M(r) \\to 1/4 \\neq 0$. The proof is a clean application of the existence result followed by contradiction with the conjecture's requirement that the limit be 0.",
     "mathContext": "Take $\\lambda = 1/4$. By Clunie-Hayman, $\\exists f$ with $\\mu(r)/M(r) \\to 1/4$. If the conjecture held, $1/4 = 0$, contradiction. Hence $\\lnot\\text{OriginalConjecture}$.",
@@ -230,7 +230,7 @@
       "startLine": 110,
       "endLine": 124
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Complete Characterization",
     "content": "The achievable limits form exactly the closed interval $[0, 1/2]$. The proof is a set extensionality argument: the forward direction uses the upper bound axiom (and a sorry for the non-negativity of ratios); the reverse direction is the Clunie-Hayman existence result. This is the definitive answer to Erdős's question.",
     "mathContext": "$\\text{AchievableLimits} = [0, 1/2]$. Proof: $L \\in \\text{AchievableLimits} \\iff 0 \\le L \\le 1/2$, using $\\mu(r)/M(r) \\ge 0$ and Clunie-Hayman for both directions.",
@@ -340,7 +340,7 @@
       "startLine": 154,
       "endLine": 160
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Positive Coeffs Normal",
     "content": "Functions with non-negative real coefficients ($a_n \\ge 0$) are normal. The proof (marked sorry) would follow from Clunie's result: when all coefficients are non-negative, $f(r) = M(r) = \\sum a_n r^n$, so $\\mu(r)/M(r) = (\\max a_n r^n)/(\\sum a_n r^n) \\to 0$ since infinitely many terms contribute.",
     "mathContext": "If $a_n \\ge 0$ for all $n$, then $M(r) = f(r) = \\sum a_n r^n$ and $\\mu(r)/M(r) = \\frac{\\max_n a_n r^n}{\\sum_n a_n r^n} \\to 0$ as $r \\to \\infty$.",
@@ -473,7 +473,7 @@
       "startLine": 203,
       "endLine": 217
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "erdos_227_statement",
     "content": "The complete formal statement assembles three results: (1) the original conjecture is false, (2) Clunie's partial result for positive coefficients holds, and (3) the achievable limits are exactly $[0, 1/2]$. The proof chains together original_conjecture_false, clunie_positive_coeffs, and achievable_limits_characterization.",
     "mathContext": "$\\lnot\\text{OriginalConjecture} \\land (\\forall f \\text{ with } a_n \\ge 0,\\; \\lim \\mu/M = 0) \\land (\\text{AchievableLimits} = [0, 1/2])$",
@@ -496,7 +496,7 @@
       "startLine": 223,
       "endLine": 236
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "erdos_227_summary",
     "content": "Repackaged summary of all main results in a single conjunction: the conjecture is false, the achievable limits equal $[0, 1/2]$, and functions with positive coefficients satisfy the original conjecture. This serves as the canonical reference theorem for the complete resolution.",
     "mathContext": "Combines $\\lnot\\text{OriginalConjecture}$, $\\text{AchievableLimits} = [0, 1/2]$, and Clunie's positive-coefficient theorem into a single statement.",
@@ -516,7 +516,7 @@
       "startLine": 238,
       "endLine": 239
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "erdos_227_answer",
     "content": "Final status marker: Erdős Problem #227 is SOLVED and DISPROVED. The original conjecture that the limit must be 0 is false; the complete answer is that the achievable limits form the interval $[0, 1/2]$.",
     "mathContext": "Status: DISPROVED. The answer is $\\{L : \\exists f,\\; \\mu_f(r)/M_f(r) \\to L\\} = [0, 1/2]$.",

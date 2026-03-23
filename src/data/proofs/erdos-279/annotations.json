@@ -50,11 +50,11 @@
   {
     "id": "small-k-result",
     "proofId": "erdos-279",
-    "type": "theorem",
+    "type": "technique",
     "title": "Small k Result (k ≤ 2)",
     "content": "**For $k \\leq 2$**: Any set with divergent reciprocal sum (including primes, since $\\sum 1/p = \\infty$) can cover all sufficiently large integers.\n\n**Why k ≤ 2 is easy**: For $k = 1$, each prime $p$ covers the full residue class $a_p + p\\mathbb{Z}_{\\geq 0}$. Since $\\sum 1/p$ diverges, the 'expected number of primes covering $n$' is infinite, and a probabilistic or greedy argument shows almost all integers are covered. For $k = 2$, the gap of $p$ at the start of each progression is manageable because the total coverage from all primes still diverges.\n\n**Current status in Lean**: Axiomatized with a placeholder `True` body — the formal proof would require Mertens' theorem ($\\sum_{p \\leq N} 1/p \\sim \\log \\log N$) and a covering argument.\n\n**The k = 3 barrier**: At $k = 3$, the gaps grow to $3p$, and the total 'lost coverage' from these gaps becomes comparable to the total coverage, making the divergence argument fail.",
     "mathContext": "k ≤ 2 ∧ Σ 1/p = ∞ ⟹ covering holds",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "Mertens' theorem",
       "divergence of Σ 1/p",
@@ -77,7 +77,7 @@
     "title": "Prime-Like Density",
     "content": "**HasPrimeLikeDensity A**: the counting function $|A \\cap [1,N]| \\geq c \\cdot N / \\log N$ for some constant $c > 0$ and all large $N$.\n\n**Why $N/\\log N$**: By the Prime Number Theorem (Hadamard and de la Vallée-Poussin, 1896), $\\pi(N) \\sim N/\\log N$. The condition says $A$ is at least as dense as the primes, up to a constant factor.\n\n**Current status**: Placeholder definition using `True` — a full formalization would use Mathlib's `Asymptotics.IsLittleO` or explicit bounds on the counting function.\n\n**Role in generalization**: Together with HasLogLogDivergence, this condition captures the essential density properties of primes needed for the covering argument. The conjecture says ONLY these density conditions matter, not the multiplicative structure of primes.",
     "mathContext": "|A ∩ [1,N]| ≥ c·N/log N for some c > 0",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "Prime Number Theorem",
       "counting function",
@@ -97,7 +97,7 @@
   {
     "id": "k3-conjecture",
     "proofId": "erdos-279",
-    "type": "conjecture",
+    "type": "concept",
     "title": "The k = 3 Case",
     "content": "**ErdosProblem279_k3**: There exists a residue choice $a$ such that $\\text{CoversEventually}(a, 3)$ — every sufficiently large integer $n$ can be written as $n = a_p + 3t \\cdot p$ for some prime $p$ and $t \\geq 1$ (equivalently, $n = a_p + tp$ with $t \\geq 3$).\n\n**Why this is the hardest open case**: $k = 3$ is the smallest value where the problem is open. For each prime $p$, the progression $\\{a_p + 3p, a_p + 4p, \\ldots\\}$ misses the first 3 multiples of $p$ after $a_p$. These gaps accumulate across all primes, and it's unknown whether any global choice of residues can compensate.\n\n**Status**: OPEN. No construction or obstruction is known.\n\n**Lean**: `∃ a : ResidueChoice, CoversEventually a 3` — a clean existential statement.",
     "mathContext": "∃ a, ∀ n ≫ 0, ∃ prime p, ∃ t ≥ 3, n = aₚ + tp",
@@ -120,11 +120,11 @@
   {
     "id": "generalization",
     "proofId": "erdos-279",
-    "type": "conjecture",
+    "type": "concept",
     "title": "Generalized Covering Conjecture",
     "content": "**ErdosProblem279_generalized**: For any set $A \\subseteq \\mathbb{N}$ with prime-like counting density and log-log reciprocal divergence, the covering property holds for all $k \\geq 3$.\n\n**GeneralizedCovering A k**: Replaces primes with an arbitrary set $A$. The residue choice becomes `aChoice : (n : ℕ) → n ∈ A → ℕ`, assigning a residue to each $n \\in A$. The covering condition is: for large $m$, there exist $n \\in A$ and $t \\geq k$ with $m = a_n + t \\cdot n$.\n\n**Philosophical point**: If the generalization is true, then Problem 279 for primes is 'just' a corollary of a density result. The prime structure (multiplicativity, gaps, twin primes, etc.) would be irrelevant — only the counting function and reciprocal sum matter.\n\n**Two density conditions**: HasPrimeLikeDensity ($|A \\cap [1,N]| \\gg N/\\log N$) controls the number of available moduli, while HasLogLogDivergence ($\\sum_{n \\in A, n \\leq N} 1/n - \\log\\log N \\to \\infty$) ensures the total coverage from all moduli grows fast enough.",
     "mathContext": "Dense A + log-log divergence ⟹ ∃ choice, CoversEventually(A, k)",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "density conditions",
       "generalization beyond primes",

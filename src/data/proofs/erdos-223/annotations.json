@@ -96,7 +96,7 @@
       "startLine": 90,
       "endLine": 93
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Hopf-Pannwitz Theorem (1934)",
     "content": "In 2D, **f₂(n) = n** exactly. The regular n-gon inscribed in a unit circle achieves this bound, and no configuration can do better.",
     "mathContext": "Each vertex of a regular n-gon is at the diameter distance from the opposite vertex (or two opposite vertices for even n). This gives n diameter pairs.",
@@ -114,7 +114,7 @@
       "startLine": 112,
       "endLine": 115
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "3D Case (1956-57)",
     "content": "In 3D, **f₃(n) = 2n - 2**. Proved independently by Grünbaum, Heppes, and Strasziewicz.",
     "mathContext": "The construction: take two regular (n-1)-gons in perpendicular planes sharing one vertex. This gives 2(n-1) = 2n-2 diameter pairs.",
@@ -132,7 +132,7 @@
       "startLine": 131,
       "endLine": 136
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős 1960: Higher Dimensions",
     "content": "For d ≥ 4, **f_d(n) grows quadratically** in n. The coefficient is (p-1)/(2p) where p = ⌊d/2⌋. This is a phase transition!",
     "mathContext": "The constraint on diameter pairs relaxes dramatically in dimension 4+. Cross-polytope-like constructions achieve quadratic density.",
@@ -168,7 +168,7 @@
       "startLine": 152,
       "endLine": 155
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Swanepoel's Complete Solution (2009)",
     "content": "Swanepoel gave **exact formulas** for f_d(n) for all sufficiently large n and characterized all extremal configurations.",
     "mathContext": "For d ≥ 4 and n ≥ N(d), we know precisely f_d(n), not just asymptotics. The extremal configurations are also explicitly described.",
@@ -205,7 +205,7 @@
       "startLine": 168,
       "endLine": 172
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Four-Dimensional Coefficient",
     "content": "For d = 4: **leadingCoefficient 4 = 1/4**. Since p = 2, we get (2-1)/(2·2) = 1/4.",
     "mathContext": "This means f₄(n) ≈ n²/4 for large n. About 1/4 of all pairs can be at the diameter distance!",
@@ -223,7 +223,7 @@
       "startLine": 260,
       "endLine": 276
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_223_summary** packages all three cases: 2D (f = n), 3D (f = 2n-2), and 4D+ (f ≥ cn²).",
     "mathContext": "The conjunction shows the complete solution across all dimensions, demonstrating the phase transition at d = 4.",

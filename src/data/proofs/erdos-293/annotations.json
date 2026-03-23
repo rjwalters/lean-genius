@@ -60,7 +60,7 @@
       "startLine": 81,
       "endLine": 91
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Lower Bounds",
     "content": "**Two progressively stronger lower bounds:**\n\n1. **bleicher_erdos_lower_bound** (1975): v(k) ≥ c · k! for some c > 0. The factorial bound was the best known for decades.\n\n2. **vanDoorn_Tang_lower_bound** (2025): v(k) ≥ e^{ck²} for some c > 0. This is an enormous improvement — e^{k²} grows much faster than k! (which is roughly (k/e)^k by Stirling's formula).\n\nThe 2025 result uses a novel counting argument to show that large denominators cannot appear in many distinct decompositions.",
     "mathContext": "The improvement from k! to e^{ck²} is qualitative, not just quantitative. It shows that v(k) grows faster than any polynomial in k, and even faster than any exponential e^{ck}.",
@@ -78,7 +78,7 @@
       "startLine": 93,
       "endLine": 105
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Upper Bounds",
     "content": "**elementary_upper_bound**: v(k) ≤ k · c₀^{2^k}. Since c₀ > 1, this is doubly exponential in k — the upper bound grows as e^{2^k · ln(c₀)}.\n\n**max_denominator_bound**: In any k-term decomposition, every denominator n satisfies n ≤ k · u_k. This follows from the Vardi sequence being the 'greediest' possible decomposition.\n\nThe upper bound comes from showing that every integer ≤ k · u_k appears in some decomposition, using the structure of the Vardi decomposition to rearrange denominators.",
     "mathContext": "The gap between the lower bound e^{ck²} and upper bound e^{c·2^k} is massive — roughly e^{k²} vs e^{2^k}. Erdős believed the true answer is closer to the upper bound (doubly exponential in k or √k).",
@@ -114,7 +114,7 @@
       "startLine": 134,
       "endLine": 146
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_293_summary** packages both bounds:\n\n1. Lower: ∃ c > 0, ∀ k > 0, v(k) ≥ e^{ck²} (van Doorn-Tang)\n2. Upper: ∀ k > 0, v(k) ≤ k · c₀^{2^k} (elementary)\n\nProved by `⟨vanDoorn_Tang_lower_bound, elementary_upper_bound⟩`.\n\nThe theorem captures the current state of knowledge: v(k) lies between singly exponential in k² and doubly exponential in k. Closing this gap is the open problem.",
     "mathContext": "This is a rare case where the best known bounds differ by more than an exponential factor. Most extremal problems in combinatorics have much tighter bounds.",

@@ -175,7 +175,7 @@
       "startLine": 139,
       "endLine": 144
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Wintner-Renyi Counterexample",
     "content": "**wintner_renyi_counterexample:**\n\nThe function n^i does NOT have a convergent mean.\n\nThis shows the restriction to {-1, 1} is essential. Complex values on the unit circle can oscillate without settling to a limit.",
     "mathContext": "The oscillation comes from exp(i log n) varying as n grows, with no damping to force convergence.",
@@ -192,7 +192,7 @@
       "startLine": 150,
       "endLine": 159
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Wirsing's Theorem (1967)",
     "content": "**wirsing_theorem:**\n\nEvery multiplicative f : N -> {-1, 1} has a convergent mean.\n\nThis is THE main result answering Erdos Problem #239 affirmatively.\n\n**Proof Method:** Analytic number theory - Dirichlet series, behavior of sum f(p)/p over primes.",
     "mathContext": "The proof analyzes how f behaves on primes and uses multiplicativity to extend to all integers.",
@@ -210,7 +210,7 @@
       "startLine": 161,
       "endLine": 165
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdos Problem #239: SOLVED",
     "content": "**erdos_239:**\n\nFor all f in MultPlusMinusOne, f has a convergent mean.\n\n```lean\ntheorem erdos_239 (f : N -> Z) (hf : f in MultPlusMinusOne) :\n    HasConvergentMean f\n```\n\nDirect application of Wirsing's theorem.",
     "significance": "key",
@@ -226,7 +226,7 @@
       "startLine": 175,
       "endLine": 188
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Halasz Characterization (1968)",
     "content": "**halasz_characterization:**\n\nFor multiplicative f : N -> {-1, 1}:\n\n- Mean limit L = 0 iff sum_p (1 - f(p))/p = infinity\n- Mean limit L != 0 iff sum_p (1 - f(p))/p < infinity\n\nIntuitively: if f = -1 at 'too many' primes (divergent sum), the mean is zero.\nIf f 'pretends to be 1' at most primes (convergent sum), the mean is nonzero.",
     "mathContext": "This generalizes Wirsing by telling us exactly when the limit is zero.",
@@ -244,7 +244,7 @@
       "startLine": 194,
       "endLine": 210
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Constant One Function",
     "content": "**constOne = 1 everywhere**\n\nThe trivial example:\n- Completely multiplicative (1 * 1 = 1)\n- Takes value 1 (which is in {-1, 1})\n- Mean value is exactly 1 for all N >= 1\n\nThis is the simplest multiplicative {-1, 1} function.",
     "significance": "supporting",
@@ -260,7 +260,7 @@
       "startLine": 222,
       "endLine": 228
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Liouville Mean is Zero",
     "content": "**liouville_mean_zero:**\n\nThe mean of the Liouville function converges to 0.\n\n**Remarkable Fact:** This is equivalent to the Prime Number Theorem!\n\nmeanValue lambda N -> 0 <=> pi(N) ~ N/log(N)",
     "mathContext": "The connection comes from the analytic properties of the Dirichlet series sum lambda(n)/n^s and its relation to the Riemann zeta function.",
@@ -277,7 +277,7 @@
       "startLine": 243,
       "endLine": 251
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "PNT Equivalence",
     "content": "**liouville_pnt_equivalence:**\n\nmeanValue lambda N -> 0 is equivalent to the Prime Number Theorem:\npi(N) ~ N/log(N)\n\nThe rate of convergence of the Liouville mean relates to error terms in PNT.",
     "mathContext": "The Riemann Hypothesis is equivalent to a specific rate: meanValue lambda N = O(N^{-1/2+epsilon}).",
@@ -295,7 +295,7 @@
       "startLine": 262,
       "endLine": 287
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_239_summary:**\n\nCombines all main results:\n1. All multiplicative {-1,1} functions have convergent mean (main theorem)\n2. constOne is in MultPlusMinusOne (trivial example)\n3. liouville is in MultPlusMinusOne (nontrivial example with mean 0)\n\nThe summary demonstrates both the theorem and concrete examples.",
     "significance": "key",

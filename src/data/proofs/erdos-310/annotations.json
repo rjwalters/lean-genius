@@ -94,7 +94,7 @@
       "startLine": 90,
       "endLine": 107
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Liu-Sawhney Theorem",
     "content": "**liu_sawhney_theorem:**\n\nThe 2024 resolution of Erdos #310 with quantitative bounds.\n\n**Statement:**\nFor 0 < alpha <= 1/2 and any alpha-dense A, there exists S subset A with:\n- S is nonempty\n- unit fraction sum of S has denominator <= exp(O(1/alpha))\n\n**Key insight:** Liu and Sawhney observed that Bloom's 2021 density result on integers representable as unit fraction sums implies this theorem.",
     "mathContext": "The bound exp(O(1/alpha)) is optimal - they also proved lower bounds showing this cannot be improved.",
@@ -112,7 +112,7 @@
       "startLine": 109,
       "endLine": 121
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bloom's Density Theorem",
     "content": "**bloom_unit_fraction_density:**\n\nThe set of integers that can be written as a sum of distinct unit fractions summing to 1 has positive density.\n\n**Statement:**\nThere exists delta > 0 such that for all N, there are at least delta * N integers up to N that can be represented as such sums.\n\nThis 2021 breakthrough was the foundation for Liu-Sawhney's resolution of Erdos #310.",
     "mathContext": "Bloom's result answered a long-standing question about the distribution of numbers representable as Egyptian fractions summing to 1.",
@@ -130,7 +130,7 @@
       "startLine": 129,
       "endLine": 131
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Classic Egyptian Fraction",
     "content": "**classic_egyptian_one:**\n\n1/2 + 1/3 + 1/6 = 1\n\nThis is the most famous Egyptian fraction representation of 1, known since antiquity.\n\nVerified computationally using norm_num.",
     "significance": "supporting",
@@ -146,7 +146,7 @@
       "startLine": 133,
       "endLine": 147
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Unit Fraction Sum Examples",
     "content": "**Unit fraction sum verifications:**\n\n- 1/2 + 1/4 = 3/4\n- 1/3 + 1/6 = 1/2\n- 1/2 + 1/3 = 5/6\n- 1/4 + 1/5 + 1/20 = 1/2\n\nThese demonstrate various ways to achieve rational sums from unit fractions, all verified by norm_num.",
     "significance": "supporting",
@@ -162,7 +162,7 @@
       "startLine": 155,
       "endLine": 164
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Full Density Trivial Case",
     "content": "**full_density_trivial:**\n\nIf A = {1, 2, ..., N} (the full set with density 1), then S = {1} gives unit fraction sum 1/1 = 1.\n\nThis shows the problem is trivial for density 1. The interesting case is when alpha < 1.",
     "significance": "supporting"
@@ -174,7 +174,7 @@
       "startLine": 186,
       "endLine": 197
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sharpness of Bounds",
     "content": "**liu_sawhney_sharpness:**\n\nThe bound b <= exp(O(1/alpha)) is optimal: for any constant C, there exist alpha-dense sets where every subset's unit fraction sum has denominator > C.\n\nThis shows Liu-Sawhney's result is essentially best possible - the exponential dependence on 1/alpha cannot be avoided.",
     "mathContext": "Optimal bounds in number theory are rare and valuable - they give complete understanding of the problem.",
@@ -191,7 +191,7 @@
       "startLine": 206,
       "endLine": 214
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Egyptian Fraction Existence",
     "content": "**egyptian_fraction_exists:**\n\nEvery positive rational q can be written as q = sum of 1/n for n in some finite set S of distinct positive integers.\n\nThis classical result is provable by the greedy algorithm: repeatedly subtract the largest unit fraction <= q.",
     "mathContext": "This explains why Egyptian fractions are of interest - they provide a universal representation system for positive rationals.",
@@ -226,7 +226,7 @@
       "startLine": 242,
       "endLine": 252
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdos-Straus Examples",
     "content": "**Verified cases of Erdos-Straus:**\n\n- n = 3: 4/3 = 1/1 + 1/3\n- n = 5: 4/5 = 1/2 + 1/4 + 1/20\n\nThese demonstrate the conjecture for small values. The proofs use norm_num for computational verification.",
     "significance": "supporting"
@@ -238,7 +238,7 @@
       "startLine": 260,
       "endLine": 290
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem: Erdos 310",
     "content": "**erdos_310:**\n\n```lean\ntheorem erdos_310 : erdosGrahamConjecture\n```\n\n**Proof outline:**\n1. For alpha <= 1/2: Apply liu_sawhney_theorem directly\n2. For alpha > 1/2: The set is more than half full, so it's also (1/2)-dense; apply liu_sawhney_theorem with alpha' = 1/2\n\nThe answer to Erdos's question is YES.",
     "mathContext": "The reduction from arbitrary alpha > 1/2 to alpha = 1/2 is a simple monotonicity argument.",
@@ -255,7 +255,7 @@
       "startLine": 292,
       "endLine": 295
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Answer is YES",
     "content": "**erdos_310_answer:**\n\nExistential witness that erdosGrahamConjecture holds.\n\n```lean\ntheorem erdos_310_answer :\n  exists _ : erdosGrahamConjecture, True :=\n  (erdos_310, trivial)\n```\n\nThis packages the result as an existence statement.",
     "significance": "key"
@@ -267,7 +267,7 @@
       "startLine": 301,
       "endLine": 312
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Croot's Theorem",
     "content": "**croot_theorem:**\n\nEvery set of positive integers with positive density contains a finite subset whose reciprocals sum to 1.\n\nThis is a strong precursor to Bloom's work, showing that density alone guarantees the existence of unit fraction sums equal to 1.",
     "mathContext": "Croot's work established foundational results connecting density to Egyptian fraction representations.",
@@ -285,7 +285,7 @@
       "startLine": 314,
       "endLine": 333
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_310_summary:**\n\nCombines the main results:\n\n1. erdosGrahamConjecture holds (the main theorem)\n2. For any alpha in (0, 1/2], there exists C such that alpha-dense sets have subsets with bounded denominator unit fraction sums\n\nThis provides a complete summary of what was proved about Erdos #310.",
     "significance": "key"

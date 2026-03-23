@@ -96,7 +96,7 @@
       "startLine": 67,
       "endLine": 75
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Erdos214Statement and Solution",
     "content": "The main statement: ∀ S, IsUnitDistanceFree S → ContainsUnitSquare Sᶜ. Juhász's theorem (1979) is axiomatized as juhasz_1979, and erdos_214_solved simply applies it. The complement Sᶜ must contain a unit square whenever S avoids the unit distance.",
     "mathContext": "$\\texttt{Erdos214Statement} = \\forall S \\subseteq \\mathbb{R}^2,\\; \\texttt{IsUnitDistanceFree}(S) \\to \\texttt{ContainsUnitSquare}(S^c)$. Juhász's proof uses the fact that for any $p \\in S$, the entire unit circle $\\{q : \\|p - q\\| = 1\\}$ lies in $S^c$. With enough unit circles in $S^c$, their intersection patterns guarantee the existence of four points forming a unit square.",
@@ -118,7 +118,7 @@
       "startLine": 77,
       "endLine": 106
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Juhász's Stronger Theorem — Any 4-Point Set",
     "content": "Juhász proved a stronger result: the complement contains a congruent copy of ANY 4-point configuration, not just unit squares. ContainsCongruentCopy uses an isometry f with f(P_i) ∈ Sᶜ for all i. The theorem unit_square_from_stronger derives the original statement (sorry: needs explicit unit square as PointSet 4).",
     "mathContext": "$\\texttt{JuhaszStrongerTheorem} = \\forall S,\\; \\texttt{IsUnitDistanceFree}(S) \\to \\forall P : \\texttt{Fin } 4 \\to \\mathbb{R}^2,\\; \\exists f : \\mathbb{R}^2 \\to \\mathbb{R}^2$ isometry with $f(P_i) \\in S^c\\; \\forall i$. The isometry preserves all distances, so the image is congruent to $P$. This is a Ramsey-type theorem: avoiding one distance (unit) in $S$ forces ALL bounded configurations in $S^c$. The 4-point threshold is sharp — the result fails for some $n$-point configurations when $n$ is large enough.",
@@ -163,7 +163,7 @@
       "startLine": 124,
       "endLine": 152
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Unit Distance Graph and Chromatic Number",
     "content": "Defines UnitDistanceGraph(S) = {(p,q) : p,q ∈ S, p≠q, dist(p,q)=1}. Proves unit_distance_free_iff_no_edges: S is unit-distance-free iff its unit distance graph is empty. Also states the chromatic number χ(ℝ²) ∈ {5,6,7} (de Grey 2018 lower bound).",
     "mathContext": "The theorem $\\texttt{unit\\_distance\\_free\\_iff\\_no\\_edges}$ is fully proved: ($\\to$) if $S$ is unit-distance-free and $(p,q) \\in \\texttt{UDG}(S)$, then $p, q \\in S$ with $\\|p-q\\| = 1$, contradicting the definition; ($\\leftarrow$) if $\\texttt{UDG}(S) = \\emptyset$ and $p, q \\in S$ with $\\|p-q\\| = 1$, then $(p,q) \\in \\texttt{UDG}(S) = \\emptyset$, contradiction. The chromatic number $\\chi(\\mathbb{R}^2)$ connects: each color class in a proper coloring is unit-distance-free, so Juhász's theorem applies to each class.",
@@ -251,7 +251,7 @@
       "startLine": 243,
       "endLine": 279
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary: erdos_214_summary (Fully Proved from Axioms)",
     "content": "The summary theorem packages both results: Erdos214Statement ∧ JuhaszStrongerTheorem, proved by applying juhasz_1979 and juhasz_stronger. Problem #214 is SOLVED. The 5-point case remains open.",
     "mathContext": "The packaging theorem $\\texttt{erdos\\_214\\_summary} : \\texttt{Erdos214Statement} \\wedge \\texttt{JuhaszStrongerTheorem}$ is proved by $\\langle\\texttt{juhasz\\_1979}, \\texttt{juhasz\\_stronger}\\rangle$. Also includes $\\texttt{erdos\\_214\\_status\\_str}$ as a human-readable summary string.",

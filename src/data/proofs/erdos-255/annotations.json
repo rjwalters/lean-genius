@@ -42,7 +42,7 @@
       "startLine": 74,
       "endLine": 103
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Schmidt's Theorems (1968, 1972)",
     "content": "**schmidt_theorem_1968** (axiom): erdosQuestion holds — every sequence has an interval with unbounded discrepancy. **no_uniformly_bounded_discrepancy** (proved): the contrapositive — no sequence has bounded discrepancy for all intervals. The proof uses Schmidt's theorem by contradiction: assume bounded everywhere, apply Schmidt to get an unbounded interval, derive M < |D_N| ≤ M via linarith. **schmidt_theorem_1972** (axiom): all but countably many [0,x] have unbounded discrepancy.",
     "mathContext": "The 1968 result was the first major theorem in the theory of irregularities of distribution. The 1972 strengthening uses the fact that [0,1] is uncountable: the exceptional set (bounded discrepancy) is countable, so most intervals witness unbounded growth. The proved corollary demonstrates non-trivial reasoning from axioms.",
@@ -60,7 +60,7 @@
       "startLine": 105,
       "endLine": 126
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Tijdeman-Wagner and Optimality",
     "content": "**hasLogarithmicDiscrepancy** says |D_N([0,x))| > c·log N for infinitely many N. **tijdeman_wagner_theorem** (axiom): for Lebesgue-a.e. x ∈ [0,1], the discrepancy grows at least logarithmically. **van_der_corput_sequence_exists** (axiom): there exist sequences achieving |D_N| = O(log N) for all x. Together, these show Θ(log N) is the correct growth rate for typical intervals.",
     "mathContext": "Tijdeman-Wagner uses the ∀ᵐ (almost everywhere) quantifier from measure theory, requiring Lebesgue measure. The van der Corput sequence is constructed by digit-reversing in base 2: z_n = reverse binary digits of n. It achieves the theoretically optimal O(log N) discrepancy, important for quasi-Monte Carlo methods.",
@@ -96,7 +96,7 @@
       "startLine": 150,
       "endLine": 172
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_255_summary** combines three results: (1) erdosQuestion holds (Schmidt 1968), (2) all but countably many intervals have unbounded discrepancy (Schmidt 1972), (3) O(log N) discrepancy is achievable (van der Corput). The proof is exact ⟨schmidt_theorem_1968, schmidt_theorem_1972, van_der_corput_sequence_exists⟩.",
     "mathContext": "The three-part conjunction captures the complete state of knowledge: existence of unbounded intervals (qualitative), prevalence of unbounded intervals (measure-theoretic), and tightness of the growth rate (constructive). This is one of the most thoroughly resolved problems in discrepancy theory.",

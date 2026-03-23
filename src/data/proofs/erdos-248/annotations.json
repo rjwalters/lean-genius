@@ -58,7 +58,7 @@
       "startLine": 48,
       "endLine": 59
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Verified Values of omega(n)",
     "content": "We verify concrete values using native_decide: omega(1) = 0 (no prime divisors), omega(2) = 1 (only 2), omega(6) = 2 (primes 2, 3), and omega(30) = 3 (primes 2, 3, 5).",
     "mathContext": "The native_decide tactic compiles the decidable proposition to native code and evaluates it, giving a machine-checked certificate of these equalities.",
@@ -94,7 +94,7 @@
       "startLine": 76,
       "endLine": 92
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem (Axiom): Tao-Teravainen 2025",
     "content": "**Erdos Problem #248 SOLVED**: There exists C > 0 such that the set of smooth-tail integers is infinite. This groundbreaking result was proved by Terence Tao and Joni Teravainen in December 2025.",
     "mathContext": "We state this as an axiom: `exists C : R, C > 0 and (smoothTailIntegers C).Infinite`. The proof requires deep sieve theory - specifically, quantitative bounds on correlations of multiplicative functions - which is far beyond current Mathlib formalization.",
@@ -112,7 +112,7 @@
       "startLine": 99,
       "endLine": 104
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "omega(p) = 1 for Primes",
     "content": "For any prime p, omega(p) = 1 since the only prime divisor of p is itself. This is a fundamental property of the prime omega function.",
     "mathContext": "The proof uses hp.primeFactors which, for a prime p, simplifies to the singleton {p}. The cardinality of a singleton is 1.",
@@ -129,7 +129,7 @@
       "startLine": 105,
       "endLine": 115
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Smooth-Tail Condition for n=1",
     "content": "We verify that n=1 satisfies the smooth-tail condition with C=2 for small values of k. For instance, omega(2)=1 <= 2, omega(3)=1 <= 4, omega(4)=1 <= 6, omega(5)=1 <= 8, omega(6)=2 <= 10.",
     "mathContext": "These verifications use native_decide on natural number inequalities. While we don't prove n=1 works for all k, these examples illustrate the condition.",
@@ -146,7 +146,7 @@
       "startLine": 130,
       "endLine": 133
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Corollary: Nonemptiness",
     "content": "As a simple corollary of the main theorem, the set of smooth-tail integers is nonempty. If a set is infinite, it must be nonempty.",
     "mathContext": "We use Set.Infinite.nonempty to derive nonemptiness from the axiom erdos_248. This gives us an existential witness without constructing a specific n.",

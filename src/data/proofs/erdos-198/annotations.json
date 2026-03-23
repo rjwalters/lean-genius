@@ -78,7 +78,7 @@
       "startLine": 59,
       "endLine": 72
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Main Result",
     "content": "**Erdős Problem #198** (DISPROVED): The answer is NO. There exist Sidon sets that intersect every infinite AP. This means the complement of such a Sidon set contains no infinite AP.",
     "mathContext": "Axiomatized as erdos_198_answer : ¬Erdos198_Question. The proof is non-constructive in Baumgartner's version, but AlphaProof gives an explicit example.",
@@ -96,7 +96,7 @@
       "startLine": 76,
       "endLine": 98
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "AlphaProof Construction",
     "content": "**AlphaProof's discovery**: The set A = {n! + n : n ≥ 0} = {1, 2, 4, 9, 28, ...} is both a Sidon set AND intersects every infinite AP. This is an explicit counterexample to Erdős's question.",
     "mathContext": "Why it intersects all APs: For AP with first term a and difference d, the element (a+d+1)! + (a+d) is in A and is ≡ a (mod d) since d divides (a+d+1)!.",
@@ -114,7 +114,7 @@
       "startLine": 100,
       "endLine": 103
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Factorial Counterexample",
     "content": "The theorem factorial_counterexample combines the two properties: the factorial set is Sidon AND it intersects all APs. This directly disproves Erdős's conjecture.",
     "mathContext": "This is the main result: IsSidonSet factorialSidon ∧ IntersectsAllAPs factorialSidon.",
@@ -150,7 +150,7 @@
       "startLine": 119,
       "endLine": 129
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Baumgartner's Construction",
     "content": "**Baumgartner (1975)**: Enumerate all infinite APs as P₁, P₂, ... Choose aₙ from Pₙ with aₙ > 2aₙ₋₁. The result is lacunary (hence Sidon) and hits every AP by construction.",
     "mathContext": "This is non-constructive - it uses the axiom of choice to enumerate all APs. The factorial construction is a concrete realization of this idea.",
@@ -168,7 +168,7 @@
       "startLine": 138,
       "endLine": 157
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Verified Examples",
     "content": "We verify the first factorial values using native_decide: 0! + 0 = 1, 1! + 1 = 2, 2! + 2 = 4, 3! + 3 = 9, 4! + 4 = 28. These are the first elements of the AlphaProof Sidon set.",
     "mathContext": "The native_decide tactic uses Lean's kernel evaluation to verify these numeric facts. This provides machine-checked confirmation of the construction.",

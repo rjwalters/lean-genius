@@ -113,7 +113,7 @@
       "startLine": 80,
       "endLine": 94
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Properties of Thick Sequences",
     "content": "**Basic thickness results:**\n\n1. **Finite sequences aren't thick** - finite sums always converge\n2. **Geometric sequences aren't thick** - sum(1/r^n) is finite for r > 1\n3. **Constant sequences are thick** - sum(1/c) diverges over infinite index",
     "mathContext": "These establish the boundary between thick and non-thick. The key insight: growth rate matters. Sequences growing faster than linear have convergent reciprocal sums.",
@@ -131,7 +131,7 @@
       "startLine": 95,
       "endLine": 107
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Davenport-Erdos Theorem",
     "content": "**Davenport-Erdos (1951)**: Every Behrend sequence must be thick.\n\nThis gives us Behrend implies thick. The Erdos conjecture asked about the converse: thick implies Behrend shift? The answer turns out to be NO.",
     "mathContext": "If A has density 1 coverage, then $\\sum_{a \\in A} 1/a = \\infty$. Intuitively: to cover almost all integers as multiples, you need \"enough\" elements - quantified by divergent reciprocal sum.",
@@ -166,7 +166,7 @@
       "startLine": 119,
       "endLine": 129
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Ruzsa's Counterexample",
     "content": "**Ruzsa's construction**: A strictly increasing sequence where NO shift is Behrend.\n\nThe trick: Choose elements n_l such that n_l is congruent to -(k-1) mod p_k for all k <= l, where p_k is the k-th prime. This ensures each shift A+k misses all multiples of p_k for large enough elements.",
     "mathContext": "By Chinese Remainder Theorem, we can construct n_l satisfying all congruences simultaneously. For any k, the shift A+k has elements divisible by p_k for only finitely many terms.",
@@ -184,7 +184,7 @@
       "startLine": 130,
       "endLine": 135
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Van Doorn's Thick Counterexample",
     "content": "**Van Doorn's modification**: Ruzsa's original wasn't thick. Van Doorn modified the construction to make sum(1/a) diverge while preserving the blocking property.\n\nThis definitively disproves Problem #26: even thick sequences can fail to have any Behrend shift.",
     "mathContext": "The modification carefully balances two requirements: (1) make the sequence thick enough, (2) maintain the prime-blocking structure that prevents Behrend shifts.",
@@ -202,7 +202,7 @@
       "startLine": 136,
       "endLine": 142
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Disproof",
     "content": "**erdos_26_disproved**: The conjecture is FALSE.\n\nProof: Van Doorn's counterexample provides a thick, strictly increasing sequence A with no Behrend shift. If the conjecture held, A would have some k with A+k Behrend - contradiction.",
     "mathContext": "This is a simple proof by contradiction using the axiomatized counterexample. The real mathematical work is in constructing Van Doorn's sequence.",
@@ -238,7 +238,7 @@
       "startLine": 155,
       "endLine": 179
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Supporting Lemmas",
     "content": "**Auxiliary results:**\n\n1. If 1 is in A, then MultiplesOf A equals all natural numbers (everything is a multiple of 1)\n2. Sequences containing 1 are trivially Behrend\n3. Edge cases for weakly Behrend with extreme epsilon values",
     "mathContext": "These handle degenerate cases and establish basic properties used elsewhere. The key insight: the \"interesting\" cases are when A doesn't contain small elements.",

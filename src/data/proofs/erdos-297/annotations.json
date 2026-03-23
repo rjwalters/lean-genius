@@ -76,7 +76,7 @@
       "startLine": 80,
       "endLine": 102
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Verified Examples",
     "content": "**Concrete Egyptian representations of 1:**\n\n- **{1}:** The trivial case, 1/1 = 1 (proved by simp)\n- **{2, 3, 6}:** The classic 1/2 + 1/3 + 1/6 = 1\n- **{2, 4, 5, 20}:** 1/2 + 1/4 + 1/5 + 1/20 = 1\n- **{2, 3, 7, 42}:** 1/2 + 1/3 + 1/7 + 1/42 = 1\n\nThe multi-element examples are axiomatized because proving rational arithmetic equalities over Finset.sum requires careful decidability handling.\n\n**at_least_three_representations** bundles the first three examples into a single theorem.",
     "significance": "key",
@@ -92,7 +92,7 @@
       "startLine": 110,
       "endLine": 123
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Elementary Bounds",
     "content": "**Basic bounds on egyptianCount(N):**\n\n1. **egyptianCount_finite:** The count is at most 2^{N+1} (number of subsets of {0,...,N})\n2. **trivial_upper_bound:** At most 2^N as a real number (subsets of an N-element set)\n3. **trivial_lower_bound:** At least 1 for N ≥ 1, since {1} always works\n\nThese frame the question: is the count closer to 1 or to 2^N?",
     "significance": "supporting",
@@ -124,7 +124,7 @@
       "startLine": 142,
       "endLine": 151
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Steinerberger's Upper Bound (2024)",
     "content": "**Steinerberger (arXiv:2403.17041, March 2024):**\n\negyptianCount(N) ≤ 2^{0.93N} for all sufficiently large N.\n\nThis was the **first proof** that c < 1, answering half of Erdős's question. The constant 0.93 was later improved by Liu-Sawhney to the optimal 0.91...\n\nThe proof uses combinatorial and analytic techniques to bound the number of subsets with a given harmonic sum.",
     "mathContext": "Steinerberger's paper appeared in March 2024, triggering the rapid independent solutions by Liu-Sawhney and Conlon et al. in April 2024.",
@@ -158,7 +158,7 @@
       "startLine": 169,
       "endLine": 179
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Liu-Sawhney Full Asymptotic",
     "content": "**Liu-Sawhney (arXiv:2404.07113, April 2024):**\n\nFull asymptotic: for every ε > 0, eventually:\n  2^{(c - ε)N} ≤ egyptianCount(N) ≤ 2^{(c + ε)N}\n\nThis gives **both upper AND lower bounds** with the same constant c, completely characterizing the exponential growth rate.\n\nThe notation 2^{(c+o(1))N} means the exponent is cN + o(N), i.e., cN plus a sublinear correction.",
     "mathContext": "The matching lower bound is the harder direction: one must show that enough Egyptian representations exist, not just that few do.",
@@ -175,7 +175,7 @@
       "startLine": 187,
       "endLine": 208
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Conlon et al. and Generalization",
     "content": "**Conlon-Fox-He-Mubayi-Pham-Suk-Verstraëte (arXiv:2404.16016, April 2024):**\n\nIndependently proved the same asymptotic as Liu-Sawhney, using different methods.\n\n**Key generalization:** For any positive rational target x (not just x = 1), the count of subsets with harmonic sum = x satisfies:\n  egyptianCountTarget(N, x) = 2^{(c_x + o(1))N}\nwhere c_x > 0 and c_x < 1 depends on x.\n\nThis shows the phenomenon of subexponential growth is universal across all positive rational targets.",
     "mathContext": "Seven authors from different institutions proved this independently of Liu-Sawhney, highlighting the problem's timeliness.",
@@ -227,7 +227,7 @@
       "startLine": 258,
       "endLine": 269
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem",
     "content": "**erdos_297_main:**\n\nThere exists c ∈ (0.9, 0.93) such that for all ε > 0, eventually:\n  2^{(c-ε)N} ≤ egyptianCount(N) ≤ 2^{(c+ε)N}\n\n**Proof:** Uses liuSawhneyConstant as the witness. The bounds on c come from liuSawhney_constant_bounds, and the asymptotic from liuSawhney_asymptotic. This is one of the few theorems with a complete (non-axiom) proof in the file.",
     "significance": "key",
@@ -243,7 +243,7 @@
       "startLine": 271,
       "endLine": 276
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Answer: YES",
     "content": "**erdos_297_answer:**\n\nhasSubexponentialGrowth holds — YES, there exists c < 1 with egyptianCount(N) ≤ C · 2^{cN}.\n\nSpecifically, c = 0.93 (Steinerberger's constant) suffices for the upper bound. The optimal constant is c ≈ 0.91... (Liu-Sawhney).\n\nThis resolves the long-standing question of Erdős and Graham.",
     "significance": "key",

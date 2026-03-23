@@ -146,7 +146,7 @@
       "startLine": 82,
       "endLine": 90
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Gaps to Infinity Implies Irrational",
     "content": "Erdős's 1974 theorem: if $a_{n+1} - a_n \\to \\infty$, then $\\sum a_n/2^{a_n}$ is irrational. The proof technique (formalized with `sorry`) uses the **rational approximation method**: if the sum were $p/q$, multiply by $2^{a_N}$ to get $2^{a_N} \\cdot p/q = \\text{integer} + \\text{tail}$. When gaps $\\to \\infty$, the tail $\\sum_{n>N} a_n/2^{a_n - a_N}$ can be made arbitrarily small (since $a_n - a_N$ grows rapidly), contradicting the assumed rationality.",
     "mathContext": "**Theorem (Erdős, 1974):** $a_{n+1} - a_n \\to \\infty \\Rightarrow \\sum \\frac{a_n}{2^{a_n}} \\notin \\mathbb{Q}$.\n\n**Proof sketch:** Suppose $\\sum = p/q$. Then $2^{a_N} \\cdot p/q - \\sum_{n \\leq N} a_n \\cdot 2^{a_N - a_n}$ equals the tail $\\sum_{n > N} a_n / 2^{a_n - a_N} \\to 0$, contradicting integrality.",
@@ -170,7 +170,7 @@
       "startLine": 92,
       "endLine": 99
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Superlogarithmic Growth Implies Irrational",
     "content": "Erdős's refined result from the Erdős-Graham monograph: $a_n \\gg n\\sqrt{\\log n \\cdot \\log \\log n}$ suffices for irrationality. The proof uses more delicate estimates on the approximation quality of the sum by rationals with denominators $2^{a_N}$, exploiting the superlogarithmic growth to control error terms that the simple gap argument cannot handle.",
     "mathContext": "**Theorem (Erdős):** $a_n \\geq C \\cdot n\\sqrt{\\log n \\cdot \\log\\log n}$ eventually $\\Rightarrow \\sum \\frac{a_n}{2^{a_n}} \\notin \\mathbb{Q}$.",
@@ -217,7 +217,7 @@
       "startLine": 150,
       "endLine": 152
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Square Sequence Series is Irrational",
     "content": "$\\sum n^2/2^{n^2}$ is irrational, proved by composing `irrational_of_gaps_to_infinity` with `squareSeq_gaps`. This demonstrates the formalization's composability: the irrationality of a specific series follows from the general theorem plus verification of a growth condition.",
     "mathContext": "$\\sum_{n=1}^{\\infty} \\frac{n^2}{2^{n^2}} \\notin \\mathbb{Q}$\n\nProved: $\\texttt{irrational\\_of\\_gaps\\_to\\_infinity}(\\texttt{squareSeq}, \\texttt{squareSeq\\_gaps})$",
@@ -239,7 +239,7 @@
       "startLine": 154,
       "endLine": 162
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Main Conjecture (OPEN)",
     "content": "Erdős Problem #260 formalized as an axiom: for *any* increasing sequence with $a_n/n \\to \\infty$, the sum $\\sum a_n/2^{a_n}$ is irrational. This is the strongest possible irrationality statement using only the growth rate. The axiom form reflects the open status — if proved, it would subsume both the gaps-to-infinity theorem and the superlogarithmic theorem as corollaries.",
     "mathContext": "$\\forall\\, a \\in \\mathrm{IncreasingSeq},\\; \\mathrm{FastGrowth}(a) \\Rightarrow \\mathrm{Irrational}\\left(\\sum_{n=1}^{\\infty} \\frac{a_n}{2^{a_n}}\\right)$",

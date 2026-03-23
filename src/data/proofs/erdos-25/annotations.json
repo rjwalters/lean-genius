@@ -3,72 +3,140 @@
     "id": "erdos-25-logdensity",
     "proofId": "erdos-25",
     "type": "definition",
-    "range": { "startLine": 27, "endLine": 43 },
+    "range": {
+      "startLine": 27,
+      "endLine": 43
+    },
     "title": "Logarithmic Density",
-    "content": "logDensity S d holds when the ratio \u03a3_{m\u2208S,m\u2264x} 1/m over \u03a3_{m\u2264x} 1/m converges to d. LogDensityExists asks for the existence of such d.",
-    "mathContext": "The logarithmic density of $S \\subseteq \\mathbb{N}$ is $\\delta_\\ell(S) = \\lim_{x \\to \\infty} \\frac{\\sum_{\\substack{m \\in S \\\\ m \\le x}} 1/m}{\\sum_{m=1}^{x} 1/m}$. Since $\\sum_{m=1}^{x} 1/m \\sim \\ln x$, this weights each integer $m$ by $1/m$ rather than uniformly. Logarithmic density always exists when natural density exists (and they agree), but logarithmic density can exist when natural density does not\u2014e.g., the set of integers with an odd number of prime factors has logarithmic density $1/2$ but oscillating natural density. It is axiomatized here with uniqueness and $[0,1]$ bounds.",
+    "content": "logDensity S d holds when the ratio Σ_{m∈S,m≤x} 1/m over Σ_{m≤x} 1/m converges to d. LogDensityExists asks for the existence of such d.",
+    "mathContext": "The logarithmic density of $S \\subseteq \\mathbb{N}$ is $\\delta_\\ell(S) = \\lim_{x \\to \\infty} \\frac{\\sum_{\\substack{m \\in S \\\\ m \\le x}} 1/m}{\\sum_{m=1}^{x} 1/m}$. Since $\\sum_{m=1}^{x} 1/m \\sim \\ln x$, this weights each integer $m$ by $1/m$ rather than uniformly. Logarithmic density always exists when natural density exists (and they agree), but logarithmic density can exist when natural density does not—e.g., the set of integers with an odd number of prime factors has logarithmic density $1/2$ but oscillating natural density. It is axiomatized here with uniqueness and $[0,1]$ bounds.",
     "significance": "key",
-    "relatedConcepts": ["natural density", "Dirichlet density", "harmonic series", "asymptotic density"],
-    "prerequisites": ["harmonic sums", "limit of ratios", "Filter.Tendsto"]
+    "relatedConcepts": [
+      "natural density",
+      "Dirichlet density",
+      "harmonic series",
+      "asymptotic density"
+    ],
+    "prerequisites": [
+      "harmonic sums",
+      "limit of ratios",
+      "Filter.Tendsto"
+    ]
   },
   {
     "id": "erdos-25-sieve",
     "proofId": "erdos-25",
     "type": "definition",
-    "range": { "startLine": 49, "endLine": 60 },
+    "range": {
+      "startLine": 49,
+      "endLine": 60
+    },
     "title": "Congruence Sieve",
     "content": "CongruenceSieve packages a strictly increasing sequence of positive moduli with associated residues. The sievedSet collects integers avoiding all specified residue classes.",
     "mathContext": "A congruence sieve $\\sigma = \\{(n_i, a_i)\\}_{i \\ge 1}$ with $n_1 < n_2 < \\cdots$ defines $A(\\sigma) = \\{m \\in \\mathbb{N} : \\forall i,\\ m < n_i \\text{ or } m \\not\\equiv a_i \\pmod{n_i}\\}$. The condition $m < n_i$ ensures each integer $m$ is only tested against moduli up to $m$, making $A(\\sigma)$ well-defined as a progressive sieve. The structure uses `StrictMono` for the moduli sequence and `Int.ModEq` (ZMOD) for the congruence condition.",
     "significance": "key",
-    "relatedConcepts": ["Eratosthenes sieve", "Selberg sieve", "Chinese Remainder Theorem", "modular arithmetic"],
-    "prerequisites": ["StrictMono in Mathlib", "Int.ModEq (ZMOD)", "Set comprehension"]
+    "relatedConcepts": [
+      "Eratosthenes sieve",
+      "Selberg sieve",
+      "Chinese Remainder Theorem",
+      "modular arithmetic"
+    ],
+    "prerequisites": [
+      "StrictMono in Mathlib",
+      "Int.ModEq (ZMOD)",
+      "Set comprehension"
+    ]
   },
   {
     "id": "erdos-25-conjecture",
     "proofId": "erdos-25",
-    "type": "conjecture",
-    "range": { "startLine": 66, "endLine": 69 },
-    "title": "Erd\u0151s Problem 25",
-    "content": "Must the logarithmic density of A(\u03c3) exist for every congruence sieve \u03c3? This is open and cannot be resolved by finite computation.",
+    "type": "concept",
+    "range": {
+      "startLine": 66,
+      "endLine": 69
+    },
+    "title": "Erdős Problem 25",
+    "content": "Must the logarithmic density of A(σ) exist for every congruence sieve σ? This is open and cannot be resolved by finite computation.",
     "mathContext": "The conjecture $\\forall \\sigma,\\ \\delta_\\ell(A(\\sigma)) \\text{ exists}$ asks whether $\\lim_{x \\to \\infty} \\frac{\\sum_{\\substack{m \\in A(\\sigma) \\\\ m \\le x}} 1/m}{\\ln x}$ always converges. The difficulty is that for infinite sieves, $A(\\sigma)$ is the intersection of infinitely many sets each missing one residue class. Even though each exclusion removes only a $1/n_i$ fraction, the cumulative effect depends on arithmetic relationships between the moduli, and the limit may oscillate unless there is a structural reason for convergence.",
     "significance": "key",
-    "relatedConcepts": ["existence of limits", "infinite products", "inclusion-exclusion", "Borel\u2013Cantelli lemma"],
-    "prerequisites": ["LogDensityExists definition", "CongruenceSieve structure", "universal quantification over structures"]
+    "relatedConcepts": [
+      "existence of limits",
+      "infinite products",
+      "inclusion-exclusion",
+      "Borel–Cantelli lemma"
+    ],
+    "prerequisites": [
+      "LogDensityExists definition",
+      "CongruenceSieve structure",
+      "universal quantification over structures"
+    ]
   },
   {
     "id": "erdos-25-finite",
     "proofId": "erdos-25",
-    "type": "result",
-    "range": { "startLine": 81, "endLine": 85 },
+    "type": "insight",
+    "range": {
+      "startLine": 81,
+      "endLine": 85
+    },
     "title": "Finite Sieve Case",
     "content": "When only finitely many moduli are used, the sieved set is eventually periodic, so the logarithmic density trivially exists.",
     "mathContext": "If the sieve stabilizes ($n_i = n_N$ for $i \\ge N$), then $A(\\sigma)$ differs from a periodic set by finitely many elements. A periodic set with period $q$ has logarithmic density $|S \\cap \\{1, \\ldots, q\\}| / q$. Since logarithmic density is unaffected by finite modifications, the density exists. This base case shows the problem is only interesting for genuinely infinite sieves with unbounded moduli.",
     "significance": "supporting",
-    "relatedConcepts": ["periodic sets", "eventual periodicity", "finite modifications of density"],
-    "prerequisites": ["periodicity and density", "set difference by finite sets"]
+    "relatedConcepts": [
+      "periodic sets",
+      "eventual periodicity",
+      "finite modifications of density"
+    ],
+    "prerequisites": [
+      "periodicity and density",
+      "set difference by finite sets"
+    ]
   },
   {
     "id": "erdos-25-coprime-positive",
     "proofId": "erdos-25",
-    "type": "result",
-    "range": { "startLine": 100, "endLine": 105 },
+    "type": "insight",
+    "range": {
+      "startLine": 100,
+      "endLine": 105
+    },
     "title": "Positive Density Under Coprimality",
-    "content": "When all moduli are pairwise coprime, the logarithmic density (if it exists) is strictly positive, since each congruence class removes only a 1/n\u1d62 fraction.",
+    "content": "When all moduli are pairwise coprime, the logarithmic density (if it exists) is strictly positive, since each congruence class removes only a 1/nᵢ fraction.",
     "mathContext": "If the moduli are pairwise coprime and $d = \\delta_\\ell(A(\\sigma))$ exists, then $d > 0$. By CRT independence, $d \\approx \\prod_{i} (1 - 1/n_i)$. Since $n_i$ are strictly increasing positive integers, $\\sum 1/n_i < \\infty$ is not guaranteed, but the strict monotonicity $n_i \\ge i$ gives $\\sum 1/n_i \\le \\sum 1/i = \\infty$. Under coprimality, the product $\\prod(1-1/n_i)$ converges to a positive value when $\\sum 1/n_i < \\infty$; the axiom covers this case.",
     "significance": "supporting",
-    "relatedConcepts": ["Chinese Remainder Theorem", "Euler product", "Mertens' theorem", "infinite products"],
-    "prerequisites": ["Nat.Coprime", "logDensity axiom", "product convergence"]
+    "relatedConcepts": [
+      "Chinese Remainder Theorem",
+      "Euler product",
+      "Mertens' theorem",
+      "infinite products"
+    ],
+    "prerequisites": [
+      "Nat.Coprime",
+      "logDensity axiom",
+      "product convergence"
+    ]
   },
   {
     "id": "erdos-25-monotone",
     "proofId": "erdos-25",
-    "type": "result",
-    "range": { "startLine": 113, "endLine": 118 },
+    "type": "insight",
+    "range": {
+      "startLine": 113,
+      "endLine": 118
+    },
     "title": "Sieve Monotonicity",
     "content": "Proved: removing any single modulus from the sieve enlarges the sieved set. Fewer exclusion conditions means more integers pass.",
     "mathContext": "The proved inclusion $A(\\sigma) \\subseteq \\{m : \\forall i \\ne k,\\ m < n_i \\text{ or } m \\not\\equiv a_i \\pmod{n_i}\\}$ follows immediately: if $m$ avoids all residue classes, it avoids all except the $k$-th. The proof is a single `exact hm i`. This monotonicity underlies the intuition that adding congruence conditions can only shrink the sieved set and hence decrease its density.",
     "significance": "supporting",
-    "relatedConcepts": ["set inclusion", "monotone operators", "sieve dimension"],
-    "prerequisites": ["Set.subset definition", "universal introduction"]
+    "relatedConcepts": [
+      "set inclusion",
+      "monotone operators",
+      "sieve dimension"
+    ],
+    "prerequisites": [
+      "Set.subset definition",
+      "universal introduction"
+    ]
   }
 ]

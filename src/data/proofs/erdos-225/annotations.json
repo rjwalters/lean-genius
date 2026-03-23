@@ -130,7 +130,7 @@
       "startLine": 90,
       "endLine": 108
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem (Contains Sorry — Formalization Bug)",
     "content": "**erdos_225_main**: For any trigonometric polynomial $p$ with `HasUnitCircleRoots` and `supNorm = 1`, the $L^1$ norm is $\\leq 4$. **Contains `sorry`** due to a formalization bug discovered by Aristotle: the statement is **false** for constant polynomials, which have $L^1$ norm $= 2\\pi > 4$.",
     "mathContext": "The mathematical theorem (Kristiansen 1974, Saff–Sheil-Small 1973) is correct when the polynomial has **degree $\\geq 1$** (i.e., at least one root). The formalization needs an additional hypothesis `n ≥ 1` or an explicit non-constant condition. This is a classic formalization subtlety: the informal statement implicitly excludes trivial cases that formal logic does not. The `sorry` marks the incomplete proof, not a mathematical gap.",
@@ -156,7 +156,7 @@
       "startLine": 112,
       "endLine": 129
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Optimality: Bound 4 is Sharp (Proved by Aristotle)",
     "content": "**erdos_225_optimal**: For every $\\varepsilon > 0$, there exists a polynomial with unit-circle roots, $\\|f\\|_\\infty = 1$, and $\\|f\\|_1 > 4 - \\varepsilon$. **Fully proved** by Aristotle (Harmonic) — the witness is the constant polynomial $f = 1$, which has $L^1$ norm $= 2\\pi > 4 > 4 - \\varepsilon$.",
     "mathContext": "Ironically, Aristotle's proof of optimality uses the same constant polynomial that **disproves** the main theorem as formalized. The constant polynomial $f(\\theta) = 1$ has $\\|f\\|_\\infty = 1$ and $\\|f\\|_1 = 2\\pi \\approx 6.28 > 4$, so it trivially satisfies $\\|f\\|_1 > 4 - \\varepsilon$ for any $\\varepsilon > 0$. The proof uses `ciSup_const` for the supremum and `Real.pi_gt_three` to show $2\\pi > 4$.",
@@ -181,7 +181,7 @@
       "startLine": 131,
       "endLine": 141
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Special Cases and Examples",
     "content": "**constant_l1_norm**: $2\\pi > 4$, proved via `Real.pi_gt_three` and `linarith`. This confirms the constant polynomial's $L^1$ norm exceeds the bound, demonstrating the formalization bug.",
     "mathContext": "The computation $2\\pi > 4$ follows from $\\pi > 3$ (available as `Real.pi_gt_three` in Mathlib), giving $2\\pi > 6 > 4$. This is the simplest demonstration that a polynomial can vacuously satisfy `HasUnitCircleRoots` while violating the $L^1 \\leq 4$ bound.",
@@ -225,7 +225,7 @@
       "startLine": 158,
       "endLine": 189
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Supremum Equivalence on Unit Circle (Proved by Aristotle)",
     "content": "**sup_on_circle_eq_trig_sup**: The $L^\\infty$ norm of $P(z)$ on the unit circle equals the supremum of $|f(\\theta)|$ over $[0, 2\\pi]$. **Fully proved** by Aristotle (Harmonic) using a bijection between $S^1$ and $[0, 2\\pi]$.",
     "mathContext": "The proof establishes a bijection: for every $z$ with $\\|z\\| = 1$, there exists $\\theta \\in [0, 2\\pi]$ with $z = e^{i\\theta}$, and vice versa. This uses `Complex.norm_eq_one_iff` and floor-division to normalize $\\theta$ into $[0, 2\\pi]$. The key steps are: (1) `le_antisymm` to prove equality of suprema, (2) `ciSup_le` to bound one supremum by the other, (3) `le_ciSup` with compactness (`IsCompact.bddAbove`) to reverse the inequality.",
@@ -250,7 +250,7 @@
       "startLine": 193,
       "endLine": 199
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Fejér–Riesz Theorem (Axiomatized)",
     "content": "**fejer_riesz**: If $f(\\theta) \\geq 0$ for all $\\theta$, then $f(\\theta) = |g(\\theta)|^2$ for some trigonometric polynomial $g$. This classical 1915 result connects non-negativity to sum-of-squares representations.",
     "mathContext": "The Fejér–Riesz theorem (1915) is a cornerstone of harmonic analysis: every non-negative trigonometric polynomial admits a **spectral factorization** $f = |g|^2$. It generalizes to operator-valued functions (Rosenblum's theorem) and matrix-valued settings. The theorem is relevant to Problem #225 because the unit-circle-roots condition can be analyzed via factorization of $|f|^2$. Axiomatized because its proof requires the fundamental theorem of algebra and careful root analysis.",
@@ -274,7 +274,7 @@
       "startLine": 201,
       "endLine": 215
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Littlewood's Conjecture (Now Theorem)",
     "content": "**littlewood_lower_bound**: For unimodular polynomials ($|c_k| = 1$ for all $k$), the $L^1$ norm on the unit circle is $\\geq C \\log n$. This provides a **lower bound** on $L^1$ norms, complementing Erdős #225's **upper bound**.",
     "mathContext": "Littlewood conjectured in 1966 that $\\int_0^{2\\pi} |\\sum_{k=0}^{n-1} c_k e^{ik\\theta}| \\, d\\theta \\geq C \\log n$ when all $|c_k| = 1$. Proved by McGehee, Pigno, and Smith (1981) and independently by Konyagin (1981). The result shows that unimodular polynomials have $L^1$ mass growing logarithmically. By contrast, Erdős #225 shows that unit-circle-root polynomials have $L^1$ norms **bounded** by 4 regardless of degree.",

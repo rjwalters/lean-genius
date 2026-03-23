@@ -93,7 +93,7 @@
       "startLine": 57,
       "endLine": 62
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Exceptional Characterization",
     "content": "**axiom exceptional_iff**:\n\nn ∈ ExceptionalSet ⟺ ∀ k ≥ 1, 2^k < n → n - 2^k is NOT prime\n\n**Interpretation**: An odd n is exceptional iff EVERY valid subtraction leaves a composite.",
     "mathContext": "This gives a computational test: check n - 2, n - 4, n - 8, ... until 2^k ≥ n. If all are composite, n is exceptional.",
@@ -208,7 +208,7 @@
       "startLine": 136,
       "endLine": 145
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Complex Structure",
     "content": "**axiom exceptional_complex_structure**:\n\nFor any progression (a, d), either:\n- ExceptionalSet \\ {a + md} has POSITIVE density, OR\n- The progression isn't fully contained in ExceptionalSet\n\nNo single progression captures the whole exceptional set!",
     "mathContext": "This is a consequence of Chen's disproof. The exceptional set has rich, possibly fractal-like structure.",
@@ -236,7 +236,7 @@
       "startLine": 147,
       "endLine": 170
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Known Exceptional Numbers",
     "content": "**OEIS A006285**: 1, 127, 149, 251, 331, 337, 373, 509, 599, 701, ...\n\n**axiom exceptional_127**: 127 ∈ ExceptionalSet\n\n**Verification for 127**:\n- 127 - 2 = 125 = 5³ ✗\n- 127 - 4 = 123 = 3×41 ✗\n- 127 - 8 = 119 = 7×17 ✗\n- 127 - 16 = 111 = 3×37 ✗\n- 127 - 32 = 95 = 5×19 ✗\n- 127 - 64 = 63 = 7×9 ✗\n(2^7 = 128 > 127, done)",
     "mathContext": "127 is the smallest non-trivial exceptional number. The verification shows all valid subtractions yield composites.",
@@ -293,7 +293,7 @@
       "startLine": 189,
       "endLine": 205
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Density Bounds",
     "content": "**axiom exceptional_positive_density**:\nlowerDensity(ExceptionalSet) > 0\n\nThe exceptional set has POSITIVE density (from Erdős's progression).\n\n**axiom exceptional_density_upper_bound**:\nlowerDensity(ExceptionalSet) < 1/10\n\nBut it's still small: ~9% of all integers, ~18% of odd integers.",
     "mathContext": "The density bounds $0 < \\underline{d}(E) < 1/10$ are sharp enough to show that: (1) the covering congruence progression contributes real density (not just infinitely many elements), and (2) most odd integers are still Romanoff. The upper bound $\\underline{d}(E) < 1/10$ combined with odd integers having density $1/2$ means roughly 82% of odd integers can be written as $2^k + p$.",
@@ -350,7 +350,7 @@
       "startLine": 242,
       "endLine": 248
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Multiple Progressions",
     "content": "**axiom multiple_progressions**:\n\n∃ infinitely many distinct progressions (aᵢ, dᵢ) such that:\n- All dᵢ are distinct\n- Each ExceptionalSet ∩ {aᵢ + m·dᵢ} has positive density\n\nThe exceptional set intersects infinitely many 'independent' progressions substantially.",
     "mathContext": "Chen's result is stronger than just $\\neg\\text{ErdosConjecture16}$: it proves that there exist infinitely many APs $(a_i, d_i)$ with pairwise distinct common differences $d_i$ such that $\\underline{d}(E \\cap \\{a_i + md_i\\}) > 0$ for each $i$. This means $E$'s positive density comes from genuinely independent sources — not just different residue classes of a single covering.",

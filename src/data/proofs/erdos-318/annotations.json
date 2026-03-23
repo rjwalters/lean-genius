@@ -184,7 +184,7 @@
       "startLine": 116,
       "endLine": 120
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Erdős-Straus 1975",
     "content": "**erdos_straus_1975:**\n\nThe natural numbers have Property P₁.\n\nFrom: Erdős, P. and Straus, E.G. (1975), Solution to Problem 387, Nieuw Arch. Wisk.",
     "mathContext": "The original proof constructs a zero-sum subset by careful selection of denominators.  Given a non-constant sign function $f$, find $a$ with $f(a) = +1$ and $b$ with $f(b) = -1$.  Then seek additional elements whose signed unit fractions compensate the difference $1/a - 1/b$.  The density of $\\mathbb{N}$ makes this always possible through iterated greedy algorithms on partial fractions.",
@@ -206,7 +206,7 @@
       "startLine": 122,
       "endLine": 126
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sattler 1975 (Odd Numbers)",
     "content": "**sattler_odd_1975:**\n\nThe odd numbers have Property P₁.\n\nExtension of Erdős-Straus to a proper subset of ℕ.",
     "mathContext": "Restricting to odd denominators means all unit fractions $1/n$ have odd denominators, so their sums (with integer numerators) always reduce to fractions with odd denominators.  The key insight is that this restriction does *not* create a parity obstruction: odd-denominator fractions form a dense enough subset of $\\mathbb{Q}$ to achieve zero sums.  This contrasts sharply with the counterexample where a single even denominator creates an uncancellable parity.",
@@ -228,7 +228,7 @@
       "startLine": 128,
       "endLine": 133
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Sattler's Main Theorem (1982)",
     "content": "**sattler_1982:**\n\nEvery infinite arithmetic progression has Property P₁.\n\n```lean\naxiom sattler_1982 (a d : ℕ) (ha : a ≥ 1) (hd : d ≥ 1) :\n    HasPropertyP1 (arithmeticProgression a d)\n```\n\nThis resolves the main question of Problem #318.",
     "mathContext": "Sattler's proof appeared in *On Erdős property $P_1$ for arithmetical sequence* (1982).  The argument uses the fact that in the AP $\\{a, a+d, a+2d, \\ldots\\}$, the partial fractions $1/(a+kd)$ have a common structure: clearing denominators produces a polynomial identity in $k$.  Combined with a careful analysis of $v_p$-adic valuations (for primes $p \\mid d$), Sattler shows that zero-sum subsets always exist.  The theorem is axiomatized because the full proof requires substantial infrastructure for rational cancellation arguments.",
@@ -250,7 +250,7 @@
       "startLine": 139,
       "endLine": 148
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem",
     "content": "**erdos_318_arithmetic_progression:**\n\nThe answer to the main question is YES.\n\n```lean\ntheorem erdos_318_arithmetic_progression :\n    ∀ a d : ℕ, a ≥ 1 → d ≥ 1 → HasPropertyP1 (arithmeticProgression a d)\n```\n\nDirect from Sattler's theorem.",
     "mathContext": "This is a direct wrapper applying Sattler's axiom.  The proof `exact sattler_1982 a d ha hd` simply instantiates the axiom with the given parameters.  The theorem serves as the formal answer to the primary question of Problem #318: *every* infinite arithmetic progression has Property $P_1$, regardless of the common difference $d$ or starting term $a$.",
@@ -295,7 +295,7 @@
       "startLine": 177,
       "endLine": 186
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Counterexample Fails P₁",
     "content": "**counterexample_fails_P1:**\n\nSets with exactly one even fail P₁.\n\n**Intuition:** The even 2m can't be canceled. Sums of 1/odd have odd denominators in lowest terms, so can't equal any multiple of 1/2m.",
     "mathContext": "This is the 2-adic valuation argument in detail.  Let $S \\subseteq C_m$ be finite and non-empty.  Write the signed sum as $\\sigma = \\sum_{n \\in S} f(n)/n$.  If $2m \\notin S$, then every denominator is odd, so $\\sigma$ has odd denominator when reduced — in particular $\\sigma \\neq 0$.  If $2m \\in S$, then $\\sigma = \\pm 1/(2m) + r$ where $r = \\sum_{\\text{odd } n \\in S} f(n)/n$ has odd denominator.  Writing $r = p/q$ with $q$ odd, we get $\\sigma = (\\pm q + 2mp)/(2mq)$.  Since $q$ is odd, $\\pm q$ is odd, and $2mp$ is even, so $\\pm q + 2mp$ is odd — hence $\\sigma \\neq 0$.  This is axiomatized because the formal proof requires detailed rational arithmetic.",
@@ -317,7 +317,7 @@
       "startLine": 188,
       "endLine": 197
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Positive Density Insufficient",
     "content": "**positive_density_insufficient:**\n\nThere exist positive-density sets without Property P₁.\n\n```lean\ntheorem positive_density_insufficient :\n    ∃ A : Set ℕ, hasPositiveDensity A ∧ ¬HasPropertyP1 A\n```\n\nThe counterexampleSet has density ~1/2 but fails P₁.",
     "mathContext": "This is a constructive existence proof: instantiate $A = C_1 = \\{1, 3, 5, \\ldots\\} \\cup \\{2\\}$ and combine `counterexample_positive_density` (density $\\approx 1/2$) with `counterexample_fails_P1` (fails $P_1$).  The result shows that $P_1$ is *not* a density property — it depends on arithmetic structure, not just the size of the set.  This distinguishes $P_1$ from properties like 'contains 3-term APs' which *are* density-dependent (Roth's theorem).",
@@ -363,7 +363,7 @@
       "startLine": 210,
       "endLine": 217
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Why Exclude 1",
     "content": "**sum_reciprocal_squares_less_than_one:**\n\n∑_{k≥2} 1/k² < 1.\n\nSo we can't cancel -1/1 = -1 with positive reciprocals of squares. Including 1 makes the problem trivially false.",
     "mathContext": "By the Basel problem (Euler, 1734), $\\sum_{k=1}^{\\infty} 1/k^2 = \\pi^2/6$.  Therefore $\\sum_{k=2}^{\\infty} 1/k^2 = \\pi^2/6 - 1 \\approx 0.6449$.  If $1 \\in A$ and $f(1) = -1$, we need $\\sum_{n \\in S \\setminus \\{1\\}} f(n)/n = 1$.  But even taking all positive signs gives $\\sum_{k \\geq 2} 1/k^2 < 1$, so no finite subset suffices.  The sign function $f(1) = -1$, $f(n) = +1$ for $n > 1$ witnesses $\\neg P_1$ for $\\{k^2 : k \\geq 1\\}$.  This is why the problem restricts to $k \\geq 2$.",
@@ -409,7 +409,7 @@
       "startLine": 237,
       "endLine": 246
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Common Denominator Technique",
     "content": "**zero_sum_integer_form:**\n\nIf ∑f(n)/n = 0, multiply by ∏m to get an integer equation.\n\nThis transforms rational arithmetic to integer arithmetic.\n\n```lean\ntheorem zero_sum_integer_form (S : Finset ℕ) (f : ℕ → ℤ) ...\n    ∑ n ∈ S, f n * (∏ m ∈ S, m) / n = 0\n```",
     "mathContext": "Given $\\sum_{n \\in S} f(n)/n = 0$, multiply both sides by $M = \\prod_{n \\in S} n$ to obtain $\\sum_{n \\in S} f(n) \\cdot (M/n) = 0$ where each $M/n$ is a positive integer.  This is the standard technique for converting unit fraction equations to integer equations.  The resulting integer equation is amenable to analysis via divisibility, modular arithmetic, and $p$-adic valuations.  The proof has `sorry` because it requires Mathlib's `Finset.prod_dvd_prod_of_dvd` and careful handling of the division in $\\mathbb{Z}$.",
@@ -479,7 +479,7 @@
       "startLine": 281,
       "endLine": 306
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_318_summary:**\n\nFormal conjunction of all main results:\n1. Arithmetic progressions: P₁ holds (Sattler 1982)\n2. Natural numbers: P₁ holds (Erdős-Straus 1975)\n3. Odd numbers: P₁ holds (Sattler 1975)\n4. Positive density: NOT sufficient\n\nProved via `refine ⟨?_, ?_, ?_, ?_⟩` decomposing the conjunction.",
     "mathContext": "The summary theorem packages the four resolved cases into a single formal statement.  The proof uses Lean 4's anonymous constructor `⟨...⟩` for the four-fold conjunction, applying each previously established result.  Note that the squares case is *not* included because it remains open — the summary only contains proven facts.  This is a common formalization pattern: collecting results into a 'state of the art' theorem.",
@@ -503,7 +503,7 @@
       "startLine": 308,
       "endLine": 315
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Problem Status",
     "content": "**erdos_318_status:**\n\n- Arithmetic progressions: SOLVED (YES)\n- Positive density: SOLVED (NO)\n- Squares: OPEN\n\nPartially solved problem with one remaining open case.",
     "mathContext": "The axiom `erdos_318_status : True` serves as a documentation marker recording the mixed status of Problem #318.  In the Lean Genius gallery, problems with mixed status (some parts solved, others open) use the `partially-solved` tag and `axiom` badge.  The three sorries in the file correspond to `counterexample_positive_density` (routine but tedious), `sum_reciprocal_squares_less_than_one` (requires real analysis), and `zero_sum_integer_form` (requires rational arithmetic infrastructure).",

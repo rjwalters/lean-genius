@@ -91,7 +91,7 @@
       "startLine": 73,
       "endLine": 83
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Baumgartner's Partition (1975)",
     "content": "**baumgartner_partition:**\n\nBaumgartner showed ℝ can be partitioned into two sets A and B, where NEITHER contains an infinite arithmetic progression.\n\n**Construction Idea:**\n1. Take a Hamel basis B for ℝ over ℚ\n2. Partition using the \"parity\" of coefficients in the basis expansion\n3. This prevents infinite APs in either part\n\n**baumgartner_3AP_free:** From the partition, derive a 3-AP-free set whose complement has no infinite AP.",
     "mathContext": "Published in 'Partitioning vector spaces' (J. Combinatorial Theory Ser. A, 1975, pp. 231-233). The Hamel basis existence requires the axiom of choice.",
@@ -109,7 +109,7 @@
       "startLine": 91,
       "endLine": 99
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Conjecture Disproved",
     "content": "**erdos_199_disproved:**\n\nErdős's conjecture is false.\n\n**Logic:** Baumgartner gives a 3-AP-free set A whose complement has no infinite AP. This directly contradicts the conjecture.",
     "significance": "key"
@@ -121,7 +121,7 @@
       "startLine": 101,
       "endLine": 103
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Result",
     "content": "**erdos_199:**\n\nThe answer to Erdős Problem #199 is NO.\n\nThere exists a set A that is 3-AP-free, yet its complement contains no infinite AP.",
     "significance": "key"
@@ -133,7 +133,7 @@
       "startLine": 114,
       "endLine": 118
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Van der Waerden's Theorem",
     "content": "**van_der_waerden:**\n\nFor any finite coloring of ℕ, some color class contains arbitrarily long arithmetic progressions.\n\n**Contrast with Erdős 199:**\n- VdW: Finite colorings of ℕ → long APs exist\n- Baumgartner: 2-partition of ℝ → NO infinite APs\n\nThe difference: infinite APs are much harder to avoid than arbitrarily long finite ones.",
     "mathContext": "Van der Waerden's theorem (1927) is a cornerstone of Ramsey theory.",
@@ -151,7 +151,7 @@
       "startLine": 127,
       "endLine": 138
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Example: ℕ Has 3-APs",
     "content": "**Example showing ℕ (embedded in ℝ) has many 3-APs:**\n\n**Verification:** 1, 2, 3 is a 3-term AP with a = 1, d = 1.\n\nThis shows that dense sets like ℕ definitely contain APs. The question is about sparse (3-AP-free) sets.",
     "significance": "supporting"
@@ -163,7 +163,7 @@
       "startLine": 140,
       "endLine": 150
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Example: ℚ Contains Infinite APs",
     "content": "**Example showing ℚ (embedded in ℝ) contains infinite APs:**\n\n**Verification:** The infinite AP {0, 1, 2, 3, ...} ⊆ ℚ.\n\nThis contrasts with Baumgartner's sets, which avoid all infinite APs.",
     "significance": "supporting"
@@ -175,7 +175,7 @@
       "startLine": 178,
       "endLine": 183
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_199_summary:**\n\nCombines all the main results:\n1. Erdős's conjecture is FALSE\n2. A counterexample EXISTS (via Baumgartner)\n\nThe problem is fully resolved.",
     "significance": "key"

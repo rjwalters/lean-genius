@@ -61,7 +61,7 @@
       "startLine": 84,
       "endLine": 110
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Examples and Non-Examples",
     "content": "Two key results axiomatized:\n\n1. **erdos_1975:** The doubly exponential sequence a_n = 2^{2^n} (i.e., 2, 4, 16, 256, 65536, ...) IS an irrationality sequence. The terms grow so fast that no choice of t_n can produce a rational sum. Proved by Erdős in 1975.\n\n2. **factorial_not_irrationality:** The factorial sequence a_n = n! is NOT an irrationality sequence. Choosing t_n = n+1 gives a telescoping series Σ 1/((n+1)·n!) = Σ (1/n! − 1/(n+1)!) which converges to a rational value.",
     "mathContext": "The doubleExp function computes 2^(2^n) using Lean's natural number exponentiation. The factorial_seq uses Nat.factorial from Mathlib.",
@@ -79,7 +79,7 @@
       "startLine": 112,
       "endLine": 138
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Hančl's Theorem and Growth Bounds",
     "content": "Three necessary conditions for irrationality sequences:\n\n1. **root_growth_necessary:** a_n^{1/n} → ∞. Even exponential growth (like 2^n) is not enough.\n\n2. **hančl_theorem (1991):** The sharp condition limsup (log₂ log₂ a_n)/n ≥ 1. This essentially says a_n must grow at least as fast as 2^{2^n}. The condition is formulated as: for every ε > 0, eventually log₂(log₂(a_n))/n ≥ 1 − ε.\n\n3. **double_exponential_necessary:** There exists c > 0 such that eventually a_n ≥ 2^{2^{cn}}. This is the quantitative version of Hančl's condition.",
     "mathContext": "Hančl's condition uses iterated logarithms (Real.log composed twice) divided by Real.log 2 to convert to base-2. The double exponential bound uses Real.rpow for real exponentiation.",
@@ -98,7 +98,7 @@
       "startLine": 140,
       "endLine": 159
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Hančl's General Criterion",
     "content": "**hančl_criterion** gives a precise sufficient condition for a sequence to NOT be an irrationality sequence: if a_n ≤ C · 2^{2^{n−F(n)}} where F(n) < n and Σ 2^{−F(n)} converges, then a_n is not an irrationality sequence.\n\n**slower_growth_fails** is a cleaner corollary: if a_n ≤ 2^{2^{n(1−ε)}} for some ε > 0, then a_n is not an irrationality sequence. Any sub-doubly-exponential growth rate fails.",
     "mathContext": "The criterion uses Summable for the convergence condition on F. The corollary specializes F(n) = εn, where Σ 2^{-εn} converges as a geometric series.",
@@ -116,7 +116,7 @@
       "startLine": 172,
       "endLine": 199
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_262_summary** combines the two central results: (1) 2^{2^n} IS an irrationality sequence (Erdős 1975), and (2) n! is NOT. The proof is `⟨erdos_1975, factorial_not_irrationality⟩`, directly pairing the two axioms.\n\nThis replaces a previous version that included a trivial `∧ True` conjunct. The theorem now carries only genuine mathematical content.",
     "mathContext": "The conjunction is proved by the anonymous constructor ⟨·, ·⟩. Together with Hančl's theorem, this gives a complete picture: doubly exponential growth is both sufficient and necessary.",

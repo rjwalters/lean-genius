@@ -72,7 +72,7 @@
       "startLine": 53,
       "endLine": 69
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Verified Computations of sigma(n)",
     "content": "Verified computations of $\\sigma(n)$ for small $n$ using Lean's `native_decide` tactic: $\\sigma(1) = 1$, $\\sigma(2) = 3$, $\\sigma(3) = 4$, $\\sigma(4) = 7$, $\\sigma(6) = 12$, $\\sigma(12) = 28$. Note that $\\sigma(6) = 2 \\cdot 6$ and $\\sigma(28) = 56 = 2 \\cdot 28$, confirming 6 and 28 are perfect numbers.",
     "mathContext": "The `native_decide` tactic compiles decidable propositions to native code for efficient verification. Since $\\sigma_k(n)$ is computable for any given $n$ and $k$, these are definitional equalities that Lean can verify by computation. This provides ground-truth checks that the Mathlib definition matches the mathematical one.",
@@ -139,7 +139,7 @@
       "startLine": 111,
       "endLine": 113
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Series Summability (Axiom)",
     "content": "Axiomatizes that the series $\\sum \\sigma(n)/2^n$ is summable. This follows from the comparison test with $\\sum n^2/2^n$ (using `sigma_le_sq`) but is stated as an axiom to keep the focus on the irrationality result.",
     "mathContext": "Mathlib's `Summable f` means the partial sums of $|f(n)|$ form a Cauchy sequence, implying absolute convergence. Since $\\sigma(n)/2^n \\leq n^2/2^n$ and $\\sum n^2/2^n = 6$ (a standard identity), summability follows by the comparison test.",
@@ -161,7 +161,7 @@
       "startLine": 115,
       "endLine": 125
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Nesterenko's Irrationality Theorem (Axiom)",
     "content": "**The core result**: any value $x$ equaling the sum of the sigma series must be irrational. This is axiomatized because the proof requires Nesterenko's deep machinery: (1) express the series using quasi-modular forms, (2) apply the algebraic independence theorem for $P(q)$, $Q(q)$, $R(q)$, (3) conclude transcendence (which implies irrationality).",
     "mathContext": "Nesterenko's 1996 paper (Mat. Sb. 187, 1319--1348) established that for algebraic $q$ with $0 < |q| < 1$, the values $P(q)$, $Q(q)$, $R(q)$ (the three Ramanujan-Eisenstein series) are algebraically independent over $\\mathbb{Q}$. Since our sum equals $(1 - P(1/2))/24$, and $P(1/2)$ is transcendental by Nesterenko's theorem, the sum itself is transcendental -- hence irrational.",
@@ -184,7 +184,7 @@
       "startLine": 127,
       "endLine": 131
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem: Erdos #250",
     "content": "**The answer to Erdos's question is YES.** The theorem `erdos_250` states that the sum of the sigma series is irrational. The proof is immediate from Nesterenko's axiomatized result -- it is literally the identity function applied to `nesterenko_irrationality`.",
     "mathContext": "The formal statement: $\\forall x \\in \\mathbb{R},\\; \\text{HasSum}(n \\mapsto \\sigma(n)/2^n, x) \\implies \\text{Irrational}(x)$. The `HasSum` predicate in Mathlib asserts that the partial sums converge to $x$ in the topology of $\\mathbb{R}$. Combined with `sigma_series_has_sum`, this gives: $\\exists x \\in \\mathbb{R},\\; \\sum \\sigma(n)/2^n = x \\wedge x \\notin \\mathbb{Q}$.",

@@ -83,7 +83,7 @@
       "startLine": 99,
       "endLine": 117
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Additive Basis Definition and Equivalence (Lean-Verified)",
     "content": "**IsAdditiveBasis A**: Doubling A = Set.univ ($A + A = \\mathbb{N}$)\n\n**CoversAll A**: Every n ∈ ℕ is in Doubling A\n\n**theorem additive_basis_iff (A : Set ℕ) : IsAdditiveBasis A ↔ CoversAll A** ✓\n\nProof: unfold IsAdditiveBasis CoversAll; ext n; simp; intro h n; rw [h]; trivial. This is a fully Lean-verified theorem — no sorry, no axiom.",
     "mathContext": "Additive basis of **order 2**: uses exactly 2-fold sumsets. Waring's problem concerns order $k$ for squares, cubes, etc. Goldbach's conjecture: primes form a basis of order 2 for even numbers $\\geq 4$. Here `Set.univ` represents all of ℕ including 0; 0 = 0+0 requires $0 \\in A$ for any basis. The proof uses `ext n`, then `simp only [Set.mem_univ, iff_true]` — standard Lean pattern for showing set equality.",
@@ -109,7 +109,7 @@
       "startLine": 118,
       "endLine": 141
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Economical Condition and Equivalence (Aristotle-Verified)",
     "content": "**IsEconomical A**: $\\forall \\varepsilon > 0$, `Tendsto (fun n => r_A(n) / n^ε) atTop (nhds 0)`\n\n**IsEconomical' A**: $\\forall \\varepsilon > 0, \\forall C > 0, \\exists N_0, \\forall n \\geq N_0 : r_A(n) < C \\cdot n^\\varepsilon$\n\n**theorem economical_equiv : IsEconomical A ↔ IsEconomical' A** ✓ (proved by Aristotle)\n\nThe proof (lines 129-141) uses `Filter.Tendsto`, `Metric.tendsto_nhds`, and `div_lt_iff₀` — a sophisticated real analysis argument about filter limits.",
     "mathContext": "Both definitions capture '$r_A(n) = o(n^\\varepsilon)$ for all $\\varepsilon > 0$'. `IsEconomical` uses filter limits (`Tendsto ... atTop (nhds 0)`). `IsEconomical'` uses the explicit $\\varepsilon$-$N$ formulation. The equivalence proof converts between these two standard notions of limit-to-zero. `atTop` is the filter of 'eventually large n'. Aristotle's proof uses `this.eventually (gt_mem_nhds hC)` — a filter.eventually argument.",
@@ -163,7 +163,7 @@
       "startLine": 160,
       "endLine": 183
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The JPSZ Explicit Construction (2024) — The Main Result",
     "content": "**axiom JPSZ_set : Set ℕ** - The explicit computable set\n**axiom JPSZ_is_basis : IsAdditiveBasis JPSZ_set** ✓\n**axiom JPSZ_is_economical : IsEconomical JPSZ_set** ✓\n\n**theorem erdos_29_solved : Erdos29Statement** ✓\n\nProof: `⟨JPSZ_set, JPSZ_is_basis, JPSZ_is_economical⟩` — a direct existential witness.\n\nJain, Pham, Sawhney, Zakharov (2024) gave the first explicit economical basis after 90+ years. The $100 Erdős prize is resolved!",
     "mathContext": "The JPSZ construction (arXiv:2405.08650) uses a deterministic derandomization of Erdős's probabilistic argument. The key technical tool is the 'method of conditional expectations' applied to a hash function construction. The resulting set has membership predicate: $n \\in A$ if and only if a certain hash of $n$ falls in a specific range. The representation bound is $r_A(n) \\leq \\exp(C\\sqrt{\\log n})$, far stronger than the required $o(n^\\varepsilon)$ for all $\\varepsilon > 0$.",
@@ -218,7 +218,7 @@
       "startLine": 205,
       "endLine": 231
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "ℕ is a Basis but Not Economical (Both Aristotle-Verified)",
     "content": "**theorem univ_is_basis : IsAdditiveBasis Set.univ** ✓\n\nProof: `n = 0 + n` for all n — use 0 ∈ ℕ and n ∈ ℕ.\n\n**theorem univ_not_economical : ¬IsEconomical Set.univ** ✓ (Aristotle proved this)\n\nProof: `representationCount Set.univ n = n + 1` for all n > 0. But $(n+1)/n^{1/2} \\to \\infty$, not 0. The proof computes $r_\\mathbb{N}(n) = n+1$ via `h_rep_count` using `Set.ncard_coe_finset` and `Finset.card_image_of_injective`.",
     "mathContext": "$r_\\mathbb{N}(n) = |\\{(a,b) : a+b=n\\}| = n+1$ (pairs $(0,n),(1,n-1),\\ldots,(n,0)$). The non-economical proof: take $\\varepsilon = 1/2$, then $(n+1)/n^{1/2} = n^{1/2} + n^{-1/2} \\to \\infty$. Aristotle's proof uses `Filter.Tendsto.add (tendsto_const_nhds.congr' ...) (tendsto_inverse_atTop_nhds_zero_nat)` — combining two Tendsto results. This shows 'being a basis' and 'being economical' are genuinely incompatible for the naive set ℕ.",
@@ -245,7 +245,7 @@
       "startLine": 232,
       "endLine": 244
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Squares Are Not an Additive Basis (Aristotle-Verified)",
     "content": "**theorem squares_not_basis : ¬IsAdditiveBasis {n : ℕ | ∃ k, n = k²}** ✓ (Aristotle proved)\n\n**Proof**: 3 cannot be written as a sum of two squares.\n- Squares ≤ 3: {0, 1} (since $2^2 = 4 > 3$)\n- Sums of pairs from {0,1}: {0, 1, 2}\n- 3 is not achievable!\n\nAristotle's proof: `interval_cases ka <;> interval_cases kb <;> trivial` — exhaustive case analysis on $k_a, k_b \\in \\{0, 1, 2\\}$.",
     "mathContext": "This is distinct from Lagrange's four-square theorem ($\\forall n, \\exists a,b,c,d : n = a^2+b^2+c^2+d^2$): we need TWO squares, not four. In fact, $3 \\equiv 3 \\pmod{4}$, and no number $\\equiv 3 \\pmod{4}$ is a sum of two squares (since squares are $\\equiv 0$ or $1 \\pmod{4}$). The proof uses `nlinarith` to bound $k_a, k_b < 3$ from the constraint $k_a^2 + k_b^2 = 3$, then `interval_cases` for exhaustive checking.",
@@ -271,7 +271,7 @@
       "startLine": 246,
       "endLine": 322
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Sidon Sets Cannot Be Bases — The 'Too Thin' Constraint (Aristotle-Verified)",
     "content": "**IsSidon A**: `orderedRepCount A n ≤ 1` for all n (each sum has at most one representation)\n\n**theorem sidon_not_basis (hS : IsSidon A) : ¬IsAdditiveBasis A** ✓ (Aristotle proved)\n\n**Proof strategy** (76 lines of Lean): Assume A is both Sidon and a basis.\n1. 0 ∈ A (to represent 0)\n2. 1 ∈ A (to represent 1)\n3. 2 ∉ A (else orderedRepCount 2 ≥ 2 via (0,2) and (1,1))\n4. 3 ∈ A (to represent 3 = 0+3 = 1+2 but 2∉A, so 3∈A)\n5. 4 ∉ A (Sidon: 4 = 1+3, so {(1,3)} is the unique pair)\n6. 5 ∈ A (to represent 5 = 0+5 = 1+4 = 2+3, only 1+4 and 2+3 fail, forces 5∈A)\n7. **Contradiction**: 6 = 1+5 = 3+3, giving orderedRepCount 6 ≥ 2 → contradicts Sidon!",
     "mathContext": "Sidon sets (also called $B_2$ sequences) satisfy $|A \\cap [1,N]| = O(\\sqrt{N})$ — much too sparse to be a basis ($|A \\cap [1,N]| \\geq C\\sqrt{N}$ is necessary for any basis). The Lean proof at line 270 uses `have h_two : 2 ∉ A := by ... contrapose! h_distinct` — negation by finding two distinct ordered pairs summing to 2. The final contradiction at line 314: `orderedRepCount A 6 ≥ 2` contradicts `hS 6 : orderedRepCount A 6 ≤ 1`. The proof uses `Set.ncard_le_ncard` and `Set.finite_iff_bddAbove` extensively.",
@@ -328,7 +328,7 @@
       "startLine": 358,
       "endLine": 421
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Aristotle Finds a Counterexample to the Lower Bound (False Theorem!)",
     "content": "**Claimed theorem** (FALSE):\n`basis_size_lower_bound (A : Set ℕ) (hA : IsAdditiveBasis A) : ∀ N ≥ 1, |A ∩ [1,N]| ≥ √N`\n\n**Aristotle proved this is FALSE** via `negate_state`, constructing:\n```lean\ndef CounterexampleA : Set ℕ := {0, 1} ∪ {n | 3 ≤ n}\n```\n- CounterexampleA is a basis (n=0: 0+0, n=1: 0+1, n=2: 1+1, n≥3: n+0)\n- But |CounterexampleA ∩ [1,2]| = 1 < √2 ≈ 1.41 for N=2!\n\n**The theorem remains in the file as `sorry`** — showing the gap between what was intended and what is true.",
     "mathContext": "The lower bound $|A \\cap [1,N]| \\geq \\sqrt{N}$ fails for small $N$ because $A = \\{0,1\\} \\cup \\{n \\geq 3\\}$ is a valid basis (2 = 1+1 works without 2 ∈ A). The true statement would need 'for all large N' or involve the asymptotic density. In fact, the correct lower bound is: for any additive basis $A$, $|A \\cap [1,N]| \\geq \\frac{1}{2}\\sqrt{N} - O(1)$ for all $N \\geq 1$ (using a counting argument). The file retains the false theorem with `sorry` to record the failed attempt. `negate_state` is Aristotle's meta-tactic for proving negations.",

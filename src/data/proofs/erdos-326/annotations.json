@@ -96,7 +96,7 @@
       "startLine": 101,
       "endLine": 116
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem (Open Problem)",
     "content": "**Erdős Problem #326**: Given any order 2 basis A, must there exist a sub-basis B with non-convergent growth ratio? This is stated as a disjunction: either YES for all A, or NO for some A.",
     "mathContext": "We use `axiom` because the answer is unknown. The disjunction P ∨ ¬P is always true, so this captures the mathematical question without assuming an answer. A proof of either disjunct would resolve the problem.",
@@ -114,7 +114,7 @@
       "startLine": 126,
       "endLine": 136
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Cassels' Theorem (1957)",
     "content": "**Cassels disproved Erdős's original conjecture** by constructing an order 2 basis A where the growth ratio aₖ/k² converges to a positive limit. This shows 'nice' bases exist.",
     "mathContext": "The existential statement guarantees a basis with `0 < x` and `HasGrowthLimit a x`. Cassels' construction is explicit but technical. This answered the A=B version negatively.",
@@ -132,7 +132,7 @@
       "startLine": 147,
       "endLine": 153
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Quadratic Upper Bound",
     "content": "**Standard bound**: For any order 2 basis, the k-th element satisfies bₖ <= Ck² for some constant C. This is a counting argument: we need enough pairs to represent all integers.",
     "mathContext": "If the k-th element were larger than Ck², there wouldn't be enough sums of pairs below n to cover all integers from 1 to n. This gives a density lower bound on order 2 bases.",

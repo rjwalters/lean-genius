@@ -60,7 +60,7 @@
       "startLine": 100,
       "endLine": 117
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Graham and Alekseyev Theorems",
     "content": "**graham_theorem** (axiom): ErdosCondition X holds — every large m is a sum n₁ + ... + nₖ where 1/n₁ + ... + 1/nₖ = 1. **alekseyev_theorem** (axiom): for m > 8542, same with squares n₁² + ... + nₖ². **alekseyev_example** (proved via native_decide): ∑ n² over {2,4,6,12} = 200.",
     "mathContext": "Graham's 1963 proof appeared in J. Austral. Math. Soc. and uses detailed combinatorial constructions. Alekseyev's 2019 result gives the explicit threshold 8542. The verified example 2²+4²+6²+12² = 200 provides a concrete witness.",
@@ -78,7 +78,7 @@
       "startLine": 119,
       "endLine": 154
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Extensions and Structure",
     "content": "**van_doorn_linear/quadratic** (axioms): extensions to p(x) = x+c and p(x) = x²+c. **cassels_theorem** (axiom): without the Egyptian constraint, representation always works — highlighting how much harder the constraint makes the problem. **trivial_egyptian** (proved): {1} is a decomposition since 1/1 = 1. **infinitely_many_egyptian_decompositions** (axiom): the set of decompositions is infinite.",
     "mathContext": "Cassels (1960) resolved the unconstrained version, showing the Egyptian fraction requirement is the real source of difficulty. The trivial decomposition {1} is degenerate but illustrates the base case. Splitting 1/n into 1/(n+1) + 1/(n(n+1)) generates infinitely many decompositions.",
@@ -96,7 +96,7 @@
       "startLine": 156,
       "endLine": 175
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "**erdos_283_summary** packages both known results as a proved conjunction: (1) Graham's theorem for p(x) = x, and (2) Alekseyev's theorem for p(x) = x² with threshold 8542. The proof is ⟨graham_theorem, alekseyev_theorem⟩.",
     "mathContext": "The two-part conjunction captures the partially solved status: two specific polynomial cases are resolved while the general conjecture remains open. Unlike fully solved Erdős problems, there is no single comprehensive result — the problem requires case-by-case analysis for each polynomial degree.",

@@ -138,7 +138,7 @@
       "startLine": 84,
       "endLine": 88
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Roth's Theorem (1953)",
     "content": "**First breakthrough:** Sets with positive upper density contain 3-term APs. Roth proved $r_3(N) = o(N)$ using the Hardy-Littlewood circle method adapted to combinatorics. This contributed to his Fields Medal (1958).",
     "mathContext": "Roth's proof introduced Fourier analysis into additive combinatorics. The density increment argument: if $A \\subseteq \\{1, \\ldots, N\\}$ has density $\\alpha$ and no 3-AP, then $A$ has increased density $\\alpha + c\\alpha^2$ on some AP sub-progression. After $O(1/\\alpha)$ iterations, density exceeds 1 -- contradiction. Original bound: $r_3(N) = O(N/\\log \\log N)$.",
@@ -160,7 +160,7 @@
       "startLine": 90,
       "endLine": 95
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Szemeredi's Theorem (1975)",
     "content": "**Landmark result:** $r_k(N) = o(N)$ for all $k$. Sets with positive density contain arbitrarily long APs. Szemeredi won the Abel Prize (2012).",
     "mathContext": "Three fundamentally different proofs exist: (1) Szemeredi's combinatorial proof using the Regularity Lemma (1975), (2) Furstenberg's ergodic-theoretic proof via multiple recurrence (1977), (3) Gowers' Fourier-analytic proof using uniformity norms (2001). Each proof introduced major new techniques that transformed their respective fields.",
@@ -183,7 +183,7 @@
       "startLine": 97,
       "endLine": 101
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Gowers' Bounds (2001)",
     "content": "**Quantitative Szemeredi:** $r_k(N) \\ll N / (\\log \\log N)^{c_k}$. Gowers' proof introduced higher-order Fourier analysis and the uniformity norms $\\|f\\|_{U^k}$ that control $k$-AP counts.",
     "mathContext": "The Gowers norm $\\|f\\|_{U^k}^{2^k} = \\mathbb{E}_{x, h_1, \\ldots, h_k} \\prod_{\\omega \\in \\{0,1\\}^k} C^{|\\omega|} f(x + \\omega \\cdot h)$ measures 'uniformity of order $k$'. If $\\|1_A - \\alpha\\|_{U^{k-1}}$ is small (pseudorandom), then $A$ has approximately $\\alpha^k N^2$ many $k$-APs. The inverse theorem converts large $U^{k-1}$ norm into structure (polynomial phases), enabling density increment.",
@@ -205,7 +205,7 @@
       "startLine": 103,
       "endLine": 107
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Kelley-Meka (2023)",
     "content": "**Breakthrough for $k=3$:** $r_3(N) \\ll N / \\exp((\\log N)^{1/11})$. A massive improvement, nearly reaching the Behrend barrier $N/\\exp(c\\sqrt{\\log N})$.",
     "mathContext": "Kelley and Meka's key innovation was a more efficient density increment that loses only a constant factor per step rather than a logarithmic factor. They showed that if $A$ has no 3-AP, then in a suitable density increment, the density increases by a multiplicative factor $1 + c$ (rather than additive $c\\alpha^2$). This geometric growth allows $O(\\log(1/\\alpha))$ iterations rather than $O(1/\\alpha)$, leading to exponential-type bounds.",
@@ -227,7 +227,7 @@
       "startLine": 109,
       "endLine": 113
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Leng-Sah-Sawhney (2024)",
     "content": "**Current best general bound:** $r_k(N) \\ll N / \\exp((\\log \\log N)^{c_k})$. Extends Kelley-Meka methods to general $k$ using the full inverse theorem for Gowers norms.",
     "mathContext": "For $k \\geq 4$, the extension requires the inverse theorem for $U^{k-1}$ norms, which characterizes functions with large Gowers norm as correlating with $(k-2)$-step nilsequences. This machinery, developed by Green-Tao-Ziegler, is far more complex than the $U^2$ case (ordinary Fourier analysis). The resulting bounds are in $\\log \\log N$ rather than $\\log N$, reflecting the tower-type dependencies in the inverse theorem.",
@@ -271,7 +271,7 @@
       "startLine": 136,
       "endLine": 154
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Behrend and Elkin Constructions",
     "content": "**Behrend (1946):** 3-AP-free sets of size $N/\\exp(c\\sqrt{\\log N})$. Uses sphere points in high-dimensional lattices. **Elkin (2011):** Improved by a $\\sqrt{\\log \\log N}$ factor.",
     "mathContext": "Behrend's construction: embed $\\{1, \\ldots, N\\}$ into $\\mathbb{Z}^d$ via base-$b$ representation, then take points on a sphere $\\sum x_i^2 = r$. Three collinear points cannot all lie on a sphere (in general position), so the image is 3-AP-free. Optimizing $d \\approx \\sqrt{\\log N}$ and $b \\approx \\sqrt{d}$ gives sets of size $N/\\exp(c\\sqrt{\\log N})$. This shows Kelley-Meka's bound is close to optimal for $k = 3$.",
@@ -293,7 +293,7 @@
       "startLine": 156,
       "endLine": 171
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Green-Tao and the Prime Connection",
     "content": "**Green-Tao (2008):** Primes contain arbitrarily long APs. **Euler (1737):** $\\sum 1/p = \\infty$. The theorem `erdos3_implies_green_tao` shows the conjecture would imply Green-Tao as an immediate corollary.",
     "mathContext": "Green-Tao's proof uses the transference principle: primes have density 0 but are 'pseudorandom' relative to a carefully chosen majorant $\\nu$ with $\\nu(n) \\geq 1_{\\text{primes}}(n)$ and $\\mathbb{E}[\\nu] = O(1)$. They then apply a relativized Szemeredi theorem. If Erdos #3 were proved, Green-Tao would follow trivially: $\\sum 1/p = \\infty$ (Euler) $\\implies$ primes contain all APs (by the conjecture).",
@@ -336,7 +336,7 @@
       "startLine": 184,
       "endLine": 214
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Problem Status: OPEN",
     "content": "**Erdos Problem #3 remains OPEN** with a $5,000 prize. The theorem `erdos_3_open` uses `Classical.em` (law of excluded middle) to state the tautology `Erdos3Conjecture ∨ \\neg Erdos3Conjecture`, emphasizing that we do not know which disjunct holds.",
     "mathContext": "The use of `Classical.em` (law of excluded middle) produces a constructively empty result -- it does not help determine the truth value. The concluding references document the trajectory from Bloom-Sisask (2020) through Kelley-Meka (2023) to Leng-Sah-Sawhney (2024), showing steady but insufficient progress toward the threshold $r_k(N) = o(N/\\log N)$.",

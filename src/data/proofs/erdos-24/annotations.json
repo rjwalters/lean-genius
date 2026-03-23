@@ -114,7 +114,7 @@
       "startLine": 116,
       "endLine": 121
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Blow-Up is Triangle-Free",
     "content": "The balanced blow-up of C5 is **triangle-free**. A triangle would require three mutually adjacent parts, but C5 contains no K3.",
     "mathContext": "This follows directly from C5 being triangle-free. The blow-up inherits this property since adjacency only depends on part adjacency, not within-part structure.",
@@ -131,7 +131,7 @@
       "startLine": 139,
       "endLine": 160
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Grzesik-Hatami Pentagon Theorem",
     "content": "**Main Theorem**: Every triangle-free graph on 5n vertices contains at most n^5 copies of C5. The proof uses Razborov's flag algebras, a computer-assisted method.",
     "mathContext": "Flag algebras convert extremal problems to semidefinite programs. The key is encoding graph constraints as polynomial inequalities and using SDP solvers to verify bounds.",
@@ -149,7 +149,7 @@
       "startLine": 162,
       "endLine": 171
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Uniqueness of Extremal",
     "content": "The balanced blow-up is the **unique extremal graph**. Any triangle-free graph on 5n vertices with exactly n^5 copies of C5 must be isomorphic to the blow-up.",
     "mathContext": "Extremal uniqueness is a strong structural result. It says there's only one way to achieve the maximum, not just that a maximum exists.",
@@ -167,7 +167,7 @@
       "startLine": 179,
       "endLine": 189
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Gyori's Earlier Bound",
     "content": "**Gyori** proved an earlier bound of 1.03n^5 before flag algebras. This was improved by Furedi, but neither achieved the sharp bound n^5.",
     "mathContext": "The progression 1.03n^5 -> improved -> n^5 shows how extremal problems often require new techniques. Flag algebras were the breakthrough that gave the sharp answer.",
@@ -202,7 +202,7 @@
       "startLine": 230,
       "endLine": 257
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorems",
     "content": "**erdos_24_pentagon_theorem**: The main result. **erdos_24_extremal_exists**: Proves the extremal graph exists and achieves the bound.",
     "mathContext": "The existence theorem constructs the extremal graph explicitly using balancedBlowupC5, showing the bound is tight. This completes the solution to Problem #24.",

@@ -111,7 +111,7 @@
       "startLine": 57,
       "endLine": 72
     },
-    "type": "result",
+    "type": "insight",
     "title": "Known Results",
     "content": "**minimal_basis_infinite_unrep:** For a minimal basis, removing any element leaves *infinitely many* integers unrepresentable. This is immediate from the definition of minimality.\n\n**minimal_basis_exists:** Minimal bases of every order h ≥ 2 exist.\n\n**minimal_basis_pos_density_exists:** (Härtter 1956, Stöhr 1955) Minimal bases with positive density exist for every h ≥ 2.\n\nThe weaker condition (minimality + positive density) is established. Problem #330 asks for the stronger condition (each removal yields positive-density unrepresentables).",
     "mathContext": "Hierarchy: (1) minimal basis (qualitative), (2) minimal basis with $\\bar{d}(A) > 0$ (Härtter-Stöhr 1955-56), (3) minimal basis where each removal creates $\\bar{d} > 0$ holes (Problem #330, open). Set.Infinite formalizes 'infinitely many' unrepresentables.",
@@ -137,7 +137,7 @@
       "startLine": 74,
       "endLine": 85
     },
-    "type": "conjecture",
+    "type": "concept",
     "title": "Erdős Problem #330 (OPEN)",
     "content": "**erdos_330_strong_minimal_basis:**\n\nThere exist A, h such that:\n1. A is a minimal basis of order h\n2. A has positive upper density\n3. For every n ∈ A, the set unrepresentableWithout(A, n, h) has positive upper density\n\nThis 'strong minimality' condition says every element of A is quantitatively important — removing any one element makes a positive proportion of integers unreachable.",
     "mathContext": "$\\exists A \\subseteq \\mathbb{N},\\, \\exists h \\ge 2 :$ (a) $A$ is minimal basis of order $h$, (b) $\\bar{d}(A) > 0$, (c) $\\forall n \\in A,\\, \\bar{d}(\\text{unrepresentableWithout}(A,n,h)) > 0$. Axiomatized since OPEN: no explicit construction is known. A positive answer requires simultaneously achieving density AND quantitative minimality.",

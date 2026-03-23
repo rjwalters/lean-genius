@@ -2,73 +2,144 @@
   {
     "id": "sidon-set",
     "proofId": "erdos-340",
-    "range": { "startLine": 27, "endLine": 30 },
+    "range": {
+      "startLine": 27,
+      "endLine": 30
+    },
     "type": "definition",
     "title": "Sidon Set (B2 Set)",
     "content": "A set S where all pairwise sums a+b (a <= b) are distinct. Equivalently, a+b = c+d with a <= b, c <= d implies a=c, b=d. The fundamental object in additive number theory.",
     "mathContext": "A finite set $S \\subseteq \\mathbb{N}$ is Sidon (or $B_2$) if all pairwise sums $a + b$ with $a \\le b$, $a, b \\in S$ are distinct. The Lean definition `IsSidonSet S` directly encodes the uniqueness condition: $a + b = c + d$ with $a \\le b$, $c \\le d$ implies $a = c$ and $b = d$. A Sidon set of size $k$ has $\\binom{k+1}{2}$ distinct sums in $[2, 2N]$ when $S \\subseteq [1, N]$, giving the counting bound $\\binom{k+1}{2} \\le 2N - 1$, hence $k \\le \\sqrt{2N}$. The refined Erdos-Turan bound is $k \\le \\sqrt{N} + O(N^{1/4})$.",
     "significance": "key",
-    "relatedConcepts": ["B_2 sequences", "distinct pairwise sums", "Erdos-Turan bound", "Singer difference sets"],
-    "prerequisites": ["Finset membership quantification", "ordered pair uniqueness", "counting distinct sums"]
+    "relatedConcepts": [
+      "B_2 sequences",
+      "distinct pairwise sums",
+      "Erdos-Turan bound",
+      "Singer difference sets"
+    ],
+    "prerequisites": [
+      "Finset membership quantification",
+      "ordered pair uniqueness",
+      "counting distinct sums"
+    ]
   },
   {
     "id": "greedy-sidon",
     "proofId": "erdos-340",
-    "range": { "startLine": 32, "endLine": 41 },
+    "range": {
+      "startLine": 32,
+      "endLine": 41
+    },
     "type": "definition",
     "title": "Greedy Sidon Sequence (Mian-Chowla)",
     "content": "The Mian-Chowla sequence: start with 1, then always add the smallest integer preserving the Sidon property. Produces 1, 2, 4, 8, 13, 21, 31, 45, 66, 81, 97, ... (OEIS A005282).",
     "mathContext": "The greedy Sidon sequence $a(0) = 1$, $a(n+1) = \\min\\{m > a(n) : \\{a(0), \\ldots, a(n), m\\} \\text{ is Sidon}\\}$ is defined in Lean using `sInf` over the set of valid extensions. The function `greedySidon : \\mathbb{N} \\to \\mathbb{N}` is noncomputable due to the infimum over a conditionally defined set. The counting function `greedySidonCount N` counts elements $a(k) \\le N$. The sequence grows roughly as $a(n) \\sim cn^2$ (since a Sidon set of size $n$ needs $\\sim n^2$ room), making $|A \\cap [1,N]| \\sim \\sqrt{N/c}$. The question is whether the greedy choice achieves this optimal $\\sqrt{N}$ scaling or falls short.",
     "significance": "key",
-    "relatedConcepts": ["greedy algorithms in combinatorics", "Mian-Chowla sequence (OEIS A005282)", "sInf (infimum) in Lean", "recursive sequence definitions"],
-    "prerequisites": ["noncomputable definitions with sInf", "Finset.image and Finset.range", "IsSidonSet definition"]
+    "relatedConcepts": [
+      "greedy algorithms in combinatorics",
+      "Mian-Chowla sequence (OEIS A005282)",
+      "sInf (infimum) in Lean",
+      "recursive sequence definitions"
+    ],
+    "prerequisites": [
+      "noncomputable definitions with sInf",
+      "Finset.image and Finset.range",
+      "IsSidonSet definition"
+    ]
   },
   {
     "id": "initial-values",
     "proofId": "erdos-340",
-    "range": { "startLine": 43, "endLine": 59 },
-    "type": "result",
+    "range": {
+      "startLine": 43,
+      "endLine": 59
+    },
+    "type": "insight",
     "title": "Initial Values and Basic Properties",
     "content": "The first 11 values (1,2,4,8,13,21,31,45,66,81,97) and structural properties: the sequence is strictly increasing and Sidon at every stage.",
     "mathContext": "The axiom `greedy_sidon_values` asserts 11 specific values, matching OEIS A005282. The gaps $\\Delta a(n) = a(n+1) - a(n)$ are: 1, 2, 4, 5, 8, 10, 14, 21, 15, 16, showing irregular but generally increasing behaviour. `StrictMono greedySidon` (strictly increasing) follows from the greedy definition since each new element exceeds the previous. `greedy_sidon_is_sidon n` verifies the Sidon property at each stage, which is the defining invariant of the construction. These are the verified 'ground truth' for the sequence.",
     "significance": "supporting",
-    "relatedConcepts": ["OEIS A005282", "StrictMono in Mathlib", "greedy algorithm invariants"],
-    "prerequisites": ["conjunction of equalities", "StrictMono definition", "Finset.image over Finset.range"]
+    "relatedConcepts": [
+      "OEIS A005282",
+      "StrictMono in Mathlib",
+      "greedy algorithm invariants"
+    ],
+    "prerequisites": [
+      "conjunction of equalities",
+      "StrictMono definition",
+      "Finset.image over Finset.range"
+    ]
   },
   {
     "id": "cube-root-lower",
     "proofId": "erdos-340",
-    "range": { "startLine": 61, "endLine": 74 },
-    "type": "result",
+    "range": {
+      "startLine": 61,
+      "endLine": 74
+    },
+    "type": "insight",
     "title": "Cube Root Lower Bound and Sidon Upper Bound",
     "content": "Lower: |A cap [1,N]| >= cN^{1/3} (greedy guarantees cube-root growth). Upper: any Sidon set in [1,N] has at most sqrt(N) + O(N^{1/4}) elements (Erdos-Turan). The gap between N^{1/3} and N^{1/2} is the heart of the problem.",
     "mathContext": "The lower bound $|A \\cap [1,N]| \\ge cN^{1/3}$ follows from a counting argument: when the greedy sequence has placed $k$ elements up to some value $M$, the 'forbidden sums' block at most $O(k^2)$ future integers from each new addition. Since a Sidon set of size $k$ in $[1,M]$ requires $M \\ge \\Omega(k^2)$, inversion gives $k \\ge \\Omega(M^{1/2})$ for the best Sidon sets. But the greedy argument only yields $M \\le O(k^3)$ (each of the $O(k^2)$ forbidden differences blocks one candidate per step), giving $k \\ge \\Omega(N^{1/3})$. The Erdos-Turan upper bound $\\sqrt{N} + O(N^{1/4})$ applies to ALL Sidon sets, including the greedy one.",
     "significance": "key",
-    "relatedConcepts": ["forbidden sum arguments", "Erdos-Turan 1941 upper bound", "N^{1/4} barrier (Problem #30)", "counting blocked integers"],
-    "prerequisites": ["Real power function (rpow)", "comparison of growth rates", "Sidon set counting bound"]
+    "relatedConcepts": [
+      "forbidden sum arguments",
+      "Erdos-Turan 1941 upper bound",
+      "N^{1/4} barrier (Problem #30)",
+      "counting blocked integers"
+    ],
+    "prerequisites": [
+      "Real power function (rpow)",
+      "comparison of growth rates",
+      "Sidon set counting bound"
+    ]
   },
   {
     "id": "main-conjecture",
     "proofId": "erdos-340",
-    "range": { "startLine": 76, "endLine": 84 },
-    "type": "conjecture",
+    "range": {
+      "startLine": 76,
+      "endLine": 84
+    },
+    "type": "concept",
     "title": "Near-Optimal Growth Conjecture",
     "content": "|A cap [1,N]| >> N^{1/2-epsilon} for all epsilon > 0. Since sqrt(N) is the maximum possible for a Sidon set, this says the greedy construction is nearly as good as the best possible.",
     "mathContext": "The conjecture `erdos_340_conjecture` states: $\\forall \\varepsilon > 0,\\ \\exists c > 0,\\ \\exists N_0,\\ \\forall N \\ge N_0,\\ |A \\cap [1,N]| \\ge c N^{1/2 - \\varepsilon}$. This is a near-optimality statement: the greedy Sidon sequence achieves density within a sub-polynomial factor of the theoretical maximum $\\sqrt{N}$. The analogous question for the greedy algorithm in other combinatorial settings (e.g., sum-free sets, independent sets in hypergraphs) often has negative answers — greedy can be exponentially suboptimal. For Sidon sets, numerical evidence strongly supports the conjecture: empirically $|A \\cap [1,N]| \\approx N^{0.497...}$, very close to $\\sqrt{N}$.",
     "significance": "key",
-    "relatedConcepts": ["greedy algorithm optimality", "sub-polynomial factors", "empirical growth rate analysis", "comparison with probabilistic constructions"],
-    "prerequisites": ["real exponentiation with variable exponent", "for-all epsilon quantification", "asymptotic lower bounds"]
+    "relatedConcepts": [
+      "greedy algorithm optimality",
+      "sub-polynomial factors",
+      "empirical growth rate analysis",
+      "comparison with probabilistic constructions"
+    ],
+    "prerequisites": [
+      "real exponentiation with variable exponent",
+      "for-all epsilon quantification",
+      "asymptotic lower bounds"
+    ]
   },
   {
     "id": "diff-set",
     "proofId": "erdos-340",
-    "range": { "startLine": 86, "endLine": 104 },
-    "type": "conjecture",
+    "range": {
+      "startLine": 86,
+      "endLine": 104
+    },
+    "type": "concept",
     "title": "Difference Set Density and Random Sidon Context",
     "content": "Does A - A = {a-b : a > b, a,b in A} have positive density in N? Separate open question from Erdos-Graham. Additionally, random Sidon sets achieve ~sqrt(N) elements, providing the probabilistic benchmark the greedy construction aims to match.",
     "mathContext": "The difference set $A - A = \\{a(m) - a(n) : m > n\\}$ is defined as `greedySidonDiffSet`. The conjecture `erdos_340_diff_set_question` asks whether $|\\{d \\in A - A : d \\le N\\}| \\ge \\delta N$ for some $\\delta > 0$. A Sidon set of size $k$ has $\\binom{k}{2}$ distinct positive differences, all in $[1, \\max A - 1]$. If $k \\approx \\sqrt{N}$, then $\\binom{k}{2} \\approx N/2$ differences spread over $[1, N]$, suggesting density $\\approx 1/2$. But the greedy construction might concentrate differences. The axiom `random_sidon_context` notes that random Sidon sets achieve $\\sim \\sqrt{N}$ elements, the benchmark for greedy performance.",
     "significance": "key",
-    "relatedConcepts": ["difference set density", "probabilistic method for Sidon sets", "random construction benchmarks", "OEIS A005282 difference analysis"],
-    "prerequisites": ["greedySidonDiffSet definition", "natural number subtraction and existential quantification", "Finset.filter for density counting"]
+    "relatedConcepts": [
+      "difference set density",
+      "probabilistic method for Sidon sets",
+      "random construction benchmarks",
+      "OEIS A005282 difference analysis"
+    ],
+    "prerequisites": [
+      "greedySidonDiffSet definition",
+      "natural number subtraction and existential quantification",
+      "Finset.filter for density counting"
+    ]
   }
 ]

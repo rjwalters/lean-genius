@@ -60,7 +60,7 @@
       "startLine": 56,
       "endLine": 58
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Classical Logic",
     "content": "We note that the conjecture is decidable classically - it's either true or false. This is a standard observation using excluded middle.",
     "mathContext": "erdos_212_classical : Erdos212Conjecture ∨ ¬Erdos212Conjecture := Classical.em _",
@@ -95,7 +95,7 @@
       "startLine": 72,
       "endLine": 81
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Tao-Shaffaf Conditional Result",
     "content": "**Tao (2014) and Shaffaf (2018)** independently proved that assuming Bombieri-Lang, the answer to Erdős-Ulam is NO. This is the strongest known result toward resolving the problem.",
     "mathContext": "axiom tao_shaffaf_conditional : BombieriLangConjecture → Erdos212Conjecture. The proof uses that rational distance constraints force points onto certain algebraic varieties, whose rational points are controlled by Bombieri-Lang.",
@@ -131,7 +131,7 @@
       "startLine": 89,
       "endLine": 100
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Unconditional Algebraic Constraint",
     "content": "**Shaffaf-Tao** proved unconditionally that any rational distance set must be contained in a finite union of real algebraic curves. This severely restricts the structure of such sets.",
     "mathContext": "axiom shaffaf_tao_algebraic_curves : ∀ S, HasRationalDistances S → ∃ curves : Finset (Set (ℝ × ℝ)), (∀ C ∈ curves, IsRealAlgebraicCurve C) ∧ S ⊆ ⋃ C ∈ curves, C",
@@ -149,7 +149,7 @@
       "startLine": 102,
       "endLine": 113
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Solymosi-de Zeeuw Theorem",
     "content": "**Solymosi and de Zeeuw (2010)** proved that rational distance sets contained in algebraic curves must be finite, unless the curve contains a line or circle. This is unconditional and rules out many configurations.",
     "mathContext": "axiom solymosi_de_zeeuw : ∀ C, IsRealAlgebraicCurve C → ∀ S, S ⊆ C → HasRationalDistances S → S.Finite ∨ (∃ line ⊆ C) ∨ (∃ circle ⊆ C)",
@@ -167,7 +167,7 @@
       "startLine": 117,
       "endLine": 137
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Summary Theorem",
     "content": "The summary theorem combines the two main results: (1) Bombieri-Lang implies no dense rational distance set exists, and (2) unconditionally, such sets are contained in finite unions of curves.",
     "mathContext": "summary_erdos_212 : (BombieriLangConjecture → Erdos212Conjecture) ∧ (∀ S, HasRationalDistances S → ∃ curves, S ⊆ ⋃ C ∈ curves, C)",

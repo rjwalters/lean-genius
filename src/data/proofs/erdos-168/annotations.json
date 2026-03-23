@@ -76,7 +76,7 @@
       "startLine": 67,
       "endLine": 70
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Density Bounded",
     "content": "**Proved**: The density F(N)/N is always between 0 and 1. This is trivial since F(N) ≤ N.",
     "mathContext": "density_bounded : 0 ≤ F(N)/N ≤ 1. The proof uses positivity and that any subset has cardinality at most N.",
@@ -93,7 +93,7 @@
       "startLine": 72,
       "endLine": 82
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Monotonicity",
     "content": "**Proved**: F is monotone: F(N) ≤ F(N+1). Any triple-free subset of {1,...,N} is also a subset of {1,...,N+1}.",
     "mathContext": "F_monotone : F N ≤ F (N + 1). The proof uses that subsets of {1,...,N} inject into subsets of {1,...,N+1}.",
@@ -128,7 +128,7 @@
       "startLine": 95,
       "endLine": 96
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "GSW Limit Theorem",
     "content": "**Graham-Spencer-Witsenhausen (1977)**: The limit lim_{N→∞} F(N)/N exists. This is axiomatized since the proof requires deep analysis.",
     "mathContext": "axiom gsw_limit_exists : ∃ L, Tendsto (F N / N) atTop (nhds L). The limit is computed to be ≈ 0.5564.",
@@ -145,7 +145,7 @@
       "startLine": 113,
       "endLine": 133
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Simple Lower Bound",
     "content": "**Proved**: F(N) ≥ 2N/3 - 1. This follows from removing all multiples of 3 from {1,...,N}—the remaining set is triple-free.",
     "mathContext": "simple_lower_bound : F(N) ≥ 2N/3 - 1. If we exclude {3, 6, 9, ...}, no {n, 2n, 3n} triple can exist since 3n would always be missing.",
@@ -179,7 +179,7 @@
       "startLine": 150,
       "endLine": 163
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Small Examples",
     "content": "We verify: {1, 2} is triple-free (no room for 3n), and {1, 2, 3} contains the triple {1, 2, 3} since 1, 2·1=2, 3·1=3 are all present.",
     "mathContext": "The examples use explicit case analysis with omega tactic to verify membership and non-membership.",
