@@ -134,6 +134,113 @@
       "What happens for non-integer gap bounds or weighted sumsets?"
     ]
   },
+  "crossReferences": [
+    {
+      "id": "erdos-880",
+      "title": "Erdős Problem #880: Gaps in Restricted Additive Bases",
+      "relationship": "Parallel dichotomy: k=2 sumsets have bounded gaps (YES), k≥3 sumsets do not (NO) — mirrors the k=2 vs k≥3 avoidance phase transition in Problem #1112.",
+      "relevance": "high"
+    },
+    {
+      "id": "erdos-875",
+      "title": "Erdős Problem #875: Admissible Sequences with Disjoint Sumsets",
+      "relationship": "Studies growth constraints on sequences whose r-fold sumsets are pairwise disjoint, directly connecting r-fold sumset density to sequence growth rate.",
+      "relevance": "high"
+    },
+    {
+      "id": "erdos-949",
+      "title": "Erdős Problem #949: Sum-Free Sets and Continuum-Sized Sumset Avoidance",
+      "relationship": "Asks whether large subsets avoiding a sum-free set S can have their sumset contained in the complement of S — a structural avoidance question for sumsets closely related to lacunary avoidance.",
+      "relevance": "medium"
+    },
+    {
+      "id": "erdos-153",
+      "title": "Erdős Problem #153: Gap Variance in Sidon Sumsets",
+      "relationship": "Investigates gap distribution in sumsets A+A for Sidon sets, providing structural context for how bounded-gap sequences interact with sumset geometry.",
+      "relevance": "medium"
+    },
+    {
+      "id": "erdos-894",
+      "title": "Erdős Problem #894: Chromatic Numbers of Lacunary Cayley Graphs",
+      "relationship": "Concerns avoidance of lacunary difference sets via graph colorings — the same lacunary growth condition (n_{k+1} ≥ (1+ε)n_k) appears in both problems.",
+      "relevance": "medium"
+    },
+    {
+      "id": "erdos-866",
+      "title": "Erdős Problem #866: Pairwise Sums Threshold",
+      "relationship": "Establishes density thresholds for subsets of {1,...,2N} to contain all k-fold pairwise sums, quantifying how k-fold sumsets saturate the integers as k grows.",
+      "relevance": "medium"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "erdos-880",
+      "description": "The restricted k-fold sumset gap problem shares the same k=2 (YES) vs k≥3 (NO) dichotomy, making it the closest structural parallel to Problem #1112."
+    },
+    {
+      "id": "erdos-875",
+      "description": "Growth-rate constraints from disjoint r-fold sumsets complement the density arguments underlying the Bollobás-Hegyvári-Jin impossibility for k=3."
+    },
+    {
+      "id": "erdos-949",
+      "description": "Sumset avoidance in the continuum setting provides a topological perspective on why 2-fold sumsets can avoid sparse target sets while higher-order sumsets cannot."
+    },
+    {
+      "id": "erdos-153",
+      "description": "Gap variance in Sidon sumsets illustrates how structured bounded-gap sequences produce sumsets with non-trivial spacing properties."
+    },
+    {
+      "id": "erdos-894",
+      "description": "Lacunary Cayley graph colorings demonstrate that even exponentially sparse sequences impose strong combinatorial constraints — the same sparsity that fails to protect lacunary sequences from k≥3 sumset intersection."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["P. Erdős", "R.L. Graham"],
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "venue": "Monographies de L'Enseignement Mathématique",
+      "volume": "28",
+      "year": 1980,
+      "note": "Origin of Problem #1112; proves r₂(2,3) = 2"
+    },
+    {
+      "authors": ["B. Bollobás", "N. Hegyvári", "P. Jin"],
+      "title": "Sumsets and the absence of lacunary sequences",
+      "venue": "Acta Mathematica Hungarica",
+      "volume": "77",
+      "pages": "193–208",
+      "year": 1997,
+      "note": "Proves r₃(2,3) does not exist — the k=3 impossibility result"
+    },
+    {
+      "authors": ["Y.-G. Chen"],
+      "title": "On subsets of integers with bounded consecutive differences avoiding lacunary sequences",
+      "venue": "Acta Arithmetica",
+      "volume": "95",
+      "pages": "21–35",
+      "year": 2000,
+      "note": "Generalizes the k=2 result: r₂(a,b) ≤ 2 whenever b ≠ 2a"
+    },
+    {
+      "authors": ["M. Tang", "Y. Yang"],
+      "title": "Non-existence results for k-fold sumset avoidance of lacunary sequences",
+      "venue": "Journal of Number Theory",
+      "volume": "221",
+      "pages": "344–357",
+      "year": 2021,
+      "note": "Extended non-existence results for k ≥ 3 beyond the (2,3) case"
+    },
+    {
+      "authors": ["T.F. Bloom"],
+      "title": "A quantitative improvement for Roth's theorem on arithmetic progressions",
+      "venue": "Journal of the London Mathematical Society",
+      "volume": "93",
+      "issue": "3",
+      "pages": "643–663",
+      "year": 2016,
+      "note": "Provides modern density methods relevant to bounded-gap sequence analysis"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

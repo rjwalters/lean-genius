@@ -133,6 +133,114 @@
       "Does a similar monotonicity hold for trigonometric polynomials?"
     ]
   },
+  "crossReferences": [
+    {
+      "id": "mean-value-theorem",
+      "title": "Mean Value Theorem",
+      "relationship": "Rolle's Theorem — the engine of this proof — is the special case of the Mean Value Theorem where f(a) = f(b). Every critical point between consecutive AP roots is supplied by a single application of Rolle's Theorem."
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "title": "Fundamental Theorem of Algebra",
+      "relationship": "Guarantees that a degree-n real polynomial has exactly n roots (counted with multiplicity). Bálint's theorem takes root structure one step further by analyzing how a specific root geometry (arithmetic progression) shapes the root geometry of the derivative."
+    },
+    {
+      "id": "erdos-1125",
+      "title": "Erdős Problem #1125: Kemperman's Inequality and Monotonicity",
+      "relationship": "Both problems study outward monotonicity arising from convexity arguments on the real line. Kemperman's inequality derives sub-additivity from concavity; Bálint's theorem derives gap monotonicity from the convexity of auxiliary functions built from the AP root structure."
+    },
+    {
+      "id": "erdos-229",
+      "title": "Erdős Problem #229: Zeros of Derivatives of Entire Functions",
+      "relationship": "Shares the central theme of understanding how zeros of f' relate to zeros of f. Problem #229 asks about density of derivative zeros for entire functions; Problem #1114 answers a precise spacing question for the polynomial case when roots are in arithmetic progression."
+    },
+    {
+      "id": "erdos-906",
+      "title": "Erdős Problem #906: Dense Zeros of Derivative Subsequences",
+      "relationship": "Another problem in the root–derivative relationship cluster. Problem #906 studies density of zeros for subsequences of derivatives of entire functions; Problem #1114 studies monotone gap structure of zeros of the first derivative for polynomial families."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "mean-value-theorem",
+      "title": "Mean Value Theorem",
+      "connection": "foundational",
+      "description": "Rolle's Theorem (a corollary of MVT) is the key analytic tool. The Lean formalization imports Mathlib.Analysis.Calculus.MeanValue specifically to access this result."
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "title": "Fundamental Theorem of Algebra",
+      "connection": "prerequisite",
+      "description": "Underpins the count of roots and critical points used throughout. A degree-(n+1) real polynomial with n+1 distinct real roots has exactly n critical points by repeated application of Rolle."
+    },
+    {
+      "id": "erdos-1038",
+      "title": "Erdős Problem #1038: Sublevel Sets of Monic Polynomials",
+      "connection": "thematic",
+      "description": "Concerns the geometry of real polynomials — specifically how root structure governs measure-theoretic properties of level sets. Complements Problem #1114's focus on how AP root structure governs the spacing of derivative zeros."
+    },
+    {
+      "id": "erdos-1125",
+      "title": "Erdős Problem #1125: Kemperman's Inequality and Monotonicity",
+      "connection": "thematic",
+      "description": "Both results establish monotonicity via convexity on the real line. Kemperman's work and Bálint's argument belong to the same tradition of extracting ordered structure from analytic inequalities."
+    },
+    {
+      "id": "erdos-1129",
+      "title": "Erdős Problem #1129: Optimal Lagrange Interpolation Nodes",
+      "connection": "thematic",
+      "description": "Chebyshev nodes — the optimal interpolation nodes — cluster at endpoints and spread outward, the opposite pattern to AP-root critical points (which cluster near the center). The two results together illuminate the extremal geometry of polynomial node configurations."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Bálint, V."],
+      "title": "On a property of polynomials",
+      "year": 1960,
+      "journal": "Acta Mathematica Academiae Scientiarum Hungaricae",
+      "volume": "11",
+      "pages": "221–226",
+      "notes": "Original proof that the gaps between consecutive zeros of f' increase monotonically outward from the midpoint when f has equally spaced real roots."
+    },
+    {
+      "authors": ["Lorch, L."],
+      "title": "Derivatives of Polynomials with Only Real Zeros",
+      "year": 1976,
+      "journal": "Proceedings of the American Mathematical Society",
+      "volume": "58",
+      "pages": "297–302",
+      "doi": "10.2307/2041400",
+      "notes": "Generalizes Bálint's result to higher derivatives: zeros of f^(k) also exhibit outward gap monotonicity for polynomials with arithmetic progression roots."
+    },
+    {
+      "authors": ["Schur, I."],
+      "title": "Über algebraische Gleichungen, die nur reelle Wurzeln besitzen",
+      "year": 1933,
+      "journal": "Zeitschrift für Angewandte Mathematik und Mechanik",
+      "volume": "13",
+      "pages": "361–362",
+      "notes": "Early study of polynomials constrained to have only real roots; provides background for the symmetry arguments used in Bálint's proof."
+    },
+    {
+      "authors": ["Marden, M."],
+      "title": "Geometry of Polynomials",
+      "year": 1966,
+      "publisher": "American Mathematical Society",
+      "series": "Mathematical Surveys",
+      "volume": "3",
+      "edition": "2nd",
+      "notes": "Comprehensive reference for the geometry of polynomial zeros and their derivatives; the Gauss–Lucas theorem and related results provide the broader context for Bálint's monotonicity theorem."
+    },
+    {
+      "authors": ["Pólya, G.", "Szegő, G."],
+      "title": "Problems and Theorems in Analysis II",
+      "year": 1976,
+      "publisher": "Springer-Verlag",
+      "series": "Grundlehren der mathematischen Wissenschaften",
+      "volume": "216",
+      "notes": "Contains the classical convexity and interlacing results for zeros of real polynomials and their derivatives that underlie Bálint's argument."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Polynomial.Basic",

@@ -141,6 +141,103 @@
       "Is the related question (Problem #398) about 1 + n! being a square also open?"
     ]
   },
+  "crossReferences": [
+    {
+      "id": "erdos-398",
+      "relationship": "The Brocard-Ramanujan conjecture (n! + 1 = m²) is the most directly adjacent problem: both concern when factorial expressions yield perfect powers. Problem #398 asks about a single factorial plus one; Problem #1108 asks about arbitrary finite sums of distinct factorials."
+    },
+    {
+      "id": "erdos-399",
+      "relationship": "Problem #399 asks whether n! = x^k ± y^k has solutions with xy > 1 and k > 2. Both #399 and #1108 investigate the intersection of factorials with the multiplicative structure of perfect powers, using Diophantine methods."
+    },
+    {
+      "id": "erdos-1107",
+      "relationship": "Problem #1107 asks whether every sufficiently large integer is a sum of at most r+1 many r-powerful numbers. Both problems study the additive and multiplicative structure of powerful numbers; #1108 asks whether factorial sums can produce them, #1107 asks how many are needed to represent all integers."
+    },
+    {
+      "id": "erdos-390",
+      "relationship": "Problem #390 studies factorizations of n! into large factors, revealing deep multiplicative structure in factorials. Understanding how prime powers distribute in n! informs why factorial sums are unlikely to be perfect powers."
+    },
+    {
+      "id": "perfect-numbers",
+      "relationship": "Perfect numbers are a classical instance of numbers with highly constrained multiplicative structure (all prime factors to even powers for even perfects). The IsPowerful predicate generalizes this: powerful numbers require every prime factor to appear with exponent ≥ 2, placing them in the same circle of ideas."
+    },
+    {
+      "id": "erdos-728",
+      "relationship": "Problem #728 concerns factorial divisibility conditions and logarithmic gap constraints. Both problems exploit the rapid growth of factorials and their prime factorization structure to establish finiteness or impossibility results."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "erdos-398",
+      "description": "The Brocard-Ramanujan conjecture: n! + 1 = m² has only the solutions n = 4, 5, 7. This is the single-factorial analog of Problem #1108's multi-factorial question about perfect powers."
+    },
+    {
+      "id": "erdos-399",
+      "description": "Factorial Diophantine equations: n! = x^k ± y^k with k > 2. Closely related study of when factorial expressions coincide with perfect power expressions."
+    },
+    {
+      "id": "erdos-1107",
+      "description": "Sums of r-powerful numbers: Is every sufficiently large integer a sum of at most r+1 many r-powerful numbers? Shares the theme of powerful numbers and additive representations."
+    },
+    {
+      "id": "perfect-numbers",
+      "description": "Even perfect numbers have the form 2^(p-1)(2^p-1). The Euclid-Euler theorem illustrates the tight constraints imposed by requiring all prime factors to appear with high exponents—the same constraint defining powerful numbers in Problem #1108."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["B. Brindza", "P. Erdős"],
+      "title": "On some Diophantine problems involving powers and factorials",
+      "journal": "Journal of the Australian Mathematical Society",
+      "volume": "51",
+      "issue": "1",
+      "year": 1991,
+      "pages": "1–7",
+      "doi": "10.1017/S1446788700033036",
+      "note": "Proves the key partial result: for any fixed number of terms r, if n₁! + ⋯ + nᵣ! is powerful then n₁ ≤ C(r)."
+    },
+    {
+      "authors": ["K. Mahler"],
+      "title": "Note on hypothesis K of Hardy and Littlewood",
+      "journal": "Journal of the London Mathematical Society",
+      "volume": "11",
+      "issue": "2",
+      "year": 1936,
+      "pages": "136–138",
+      "doi": "10.1112/jlms/s1-11.2.136",
+      "note": "Studies finite sums of powers of a base k and squares; Mahler's results on k ≤ 4 vs k ≥ 5 directly motivate the factorial analog in Problem #1108."
+    },
+    {
+      "authors": ["S. S. Pillai"],
+      "title": "On a^x - b^y = c",
+      "journal": "Journal of the Indian Mathematical Society",
+      "volume": "2",
+      "year": 1936,
+      "pages": "119–122",
+      "note": "Foundational result on exponential Diophantine equations; the finiteness techniques are prototypes for the methods applied to factorial-power intersections."
+    },
+    {
+      "authors": ["A. Granville"],
+      "title": "On the number of solutions to the generalized Fermat equation",
+      "booktitle": "Number Theory: Fourth Conference of the Canadian Number Theory Association",
+      "editors": ["K. Dilcher"],
+      "series": "CMS Conference Proceedings",
+      "volume": "15",
+      "year": 1995,
+      "pages": "197–207",
+      "note": "Surveys the ABC conjecture's implications for Diophantine equations of the form x^p + y^q = z^r; the same circle of ideas governs why factorial sums are expected to avoid perfect powers."
+    },
+    {
+      "authors": ["P. Erdős", "R. Obláth"],
+      "title": "Über diophantische Gleichungen der Form n! = x^p ± y^p und n! ± m! = x^p",
+      "journal": "Acta Szeged",
+      "volume": "8",
+      "year": 1937,
+      "pages": "241–255",
+      "note": "Early systematic study of factorial Diophantine equations; establishes that n! = x^p ± y^p has only finitely many solutions for fixed p > 2 under mild conditions, directly anticipating the questions of Problem #1108."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Factorial.Basic",

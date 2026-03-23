@@ -134,6 +134,92 @@
       "Are there quantitative refinements relating the rate $\\varphi(r) \\to \\infty$ above the threshold to the minimum path length growth?"
     ]
   },
+  "crossReferences": [
+    {
+      "slug": "erdos-1116",
+      "title": "Erdős Problem #1116: Extreme Value Distribution of Entire Functions",
+      "relationship": "Sibling problem on entire functions: concerns the distribution of extreme values of entire functions, complementing the asymptotic-path geometry studied in #1115. Both problems probe the global analytic structure of entire functions via Nevanlinna-theoretic techniques."
+    },
+    {
+      "slug": "erdos-1117",
+      "title": "Erdős Problem #1117: Maximum Modulus Points on Circles",
+      "relationship": "Sibling problem on entire functions: studies where the maximum modulus M(r) is attained on the circle |z|=r. The maximum modulus function M(r) appears in the definition of finite order in #1115, and its geometric behavior directly affects the existence and shape of escape paths."
+    },
+    {
+      "slug": "erdos-1118",
+      "title": "Erdős Problem #1118: Entire Functions with Finite Measure Superlevel Sets",
+      "relationship": "Sibling problem on entire functions and growth: asks about the measure of superlevel sets {|f(z)| > λ}. The geometry of these sets governs how level curves wind, which is the mechanism behind the Gol'dberg-Eremenko counterexamples in #1115."
+    },
+    {
+      "slug": "erdos-1120",
+      "title": "Erdős Problem #1120: Shortest Path in Polynomial Sublevel Sets",
+      "relationship": "Direct thematic companion: asks the same path-length question for polynomial lemniscates {|p(z)| ≤ r} instead of general entire functions. Both problems concern the minimum arc length of paths connecting level sets in the complex plane, and #1120 can be seen as the polynomial special case of the geometry underlying #1115."
+    },
+    {
+      "slug": "erdos-1119",
+      "title": "Erdős Problem #1119: Families of Entire Functions with Cardinal Constraints",
+      "relationship": "Sibling problem on entire functions: investigates cardinality constraints on families of entire functions sharing real values. Shares the setting of entire functions and the use of set-theoretic methods (continuum hypothesis) alongside analytic methods."
+    },
+    {
+      "slug": "liouville-theorem",
+      "title": "Liouville's Theorem on Transcendental Numbers",
+      "relationship": "Foundational result in complex analysis: Liouville's theorem that bounded entire functions are constant is the classical starting point for the study of growth rates of entire functions. The notion of finite order in #1115 measures how far an entire function is from being bounded."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "slug": "erdos-1116",
+      "title": "Erdős Problem #1116: Extreme Value Distribution of Entire Functions",
+      "connection": "Both problems belong to Erdős's complex analysis cluster on the global geometry of entire functions; #1116 addresses value distribution while #1115 addresses escape-path geometry."
+    },
+    {
+      "slug": "erdos-1120",
+      "title": "Erdős Problem #1120: Shortest Path in Polynomial Sublevel Sets",
+      "connection": "Asks the analogue of #1115 for polynomials: minimum arc length to traverse a lemniscate from one boundary component to another, making it the polynomial special case of the escape-path problem."
+    },
+    {
+      "slug": "erdos-1118",
+      "title": "Erdős Problem #1118: Entire Functions with Finite Measure Superlevel Sets",
+      "connection": "The winding of level curves — the mechanism that forces superlinear path length in #1115 — is governed by the measure and topology of superlevel sets studied in #1118."
+    },
+    {
+      "slug": "liouville-theorem",
+      "title": "Liouville's Theorem on Transcendental Numbers",
+      "connection": "Liouville's theorem on bounded entire functions provides the base case from which the theory of finite-order entire functions (central to #1115) is developed."
+    }
+  ],
+  "references": [
+    {
+      "key": "Er79",
+      "citation": "Erdős, P., Some problems on elementary geometry, Australian Math. Soc. Gazette 2 (1979), 2–3.",
+      "type": "paper",
+      "note": "Source of the original Erdős question about escape paths for finite-order entire functions."
+    },
+    {
+      "key": "Ne25",
+      "citation": "Nevanlinna, R., Zur Theorie der meromorphen Funktionen, Acta Math. 46 (1925), 1–99.",
+      "type": "paper",
+      "note": "Foundational paper for Nevanlinna value-distribution theory, which provides the analytic framework for studying level curves and growth of entire functions."
+    },
+    {
+      "key": "Le53",
+      "citation": "Levin, B. Ya., Distribution of Zeros of Entire Functions, GITTL, Moscow, 1953; English transl., American Mathematical Society, Providence, RI, 1964.",
+      "type": "book",
+      "note": "Classic reference for the theory of entire functions of finite order, including indicator functions and the Phragmén-Lindelöf principle."
+    },
+    {
+      "key": "IvE08",
+      "citation": "Iversen, F., Recherches sur les fonctions inverses des fonctions méromorphes, Thesis, Helsinki, 1914; see also: Eremenko, A., Iversen theorem and its applications (survey), preprint, 2008.",
+      "type": "paper",
+      "note": "Iversen's theorem classifies transcendental singularities of the inverse function, directly related to asymptotic values and escape paths."
+    },
+    {
+      "key": "Re91",
+      "citation": "Rempe-Gillen, L. and Stallard, G. M., Boundaries of escaping Fatou components, Proc. Amer. Math. Soc. 139 (2011), 2807–2820.",
+      "type": "paper",
+      "note": "Modern development connecting asymptotic curves of entire functions to the structure of the escaping set in complex dynamics, showing the relevance of #1115 to contemporary research."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.SpecialFunctions.Complex.Circle",

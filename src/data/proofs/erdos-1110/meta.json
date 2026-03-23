@@ -148,6 +148,99 @@
       "Are there other base pairs with all integers representable?"
     ]
   },
+  "crossReferences": [
+    {
+      "slug": "erdos-246",
+      "title": "Erdős Problem #246: Completeness of {a^k b^l : k, l ≥ 0}",
+      "relationship": "Direct predecessor: Problem #246 asks whether {a^k b^l} is a complete sequence (every large integer a sum of distinct elements), proved by Birch (1959). Problem #1110 builds on this by imposing the non-divisibility constraint on the summands, making the representation question substantially harder."
+    },
+    {
+      "slug": "erdos-845",
+      "title": "Erdős Problem #845: Sums of 3-Smooth Numbers with Bounded Ratio",
+      "relationship": "Closely related: Problem #845 studies sums of 3-smooth numbers (powers of 2 and 3) under a bounded ratio constraint b_t ≤ Cb_1. The {2,3} case of Problem #1110 (all positive integers representable) directly intersects this setting; both problems probe the additive richness of the set {2^k · 3^l}."
+    },
+    {
+      "slug": "erdos-123",
+      "title": "Erdős #123: d-Complete Sequences",
+      "relationship": "Thematic sibling: Problem #123 asks whether {a^i · b^j · c^k} is d-complete for pairwise coprime a, b, c. Both problems concern representability by products of prime powers; Problem #1110 restricts to two bases and adds a non-divisibility condition, while Problem #123 allows three bases and asks for d-completeness."
+    },
+    {
+      "slug": "erdos-124",
+      "title": "Erdős Problem #124: Complete Sequences from Digit-Restricted Sums",
+      "relationship": "Related completeness theme: Problem #124 studies completeness of sums of integers with restricted digit representations in given bases, directly related to the structural question of which integer systems allow complete additive representation — the overarching question of Problem #1110."
+    },
+    {
+      "slug": "erdos-1107",
+      "title": "Erdős Problem #1107: Sums of r-Powerful Numbers",
+      "relationship": "Parallel representation problem: Problem #1107 asks whether every sufficiently large integer is a sum of at most r+1 many r-powerful numbers. Both problems study structured additive representations of integers under multiplicative constraints on the summands, and share the density-theoretic perspective on exceptions."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "slug": "erdos-246",
+      "title": "Erdős Problem #246: Completeness of {a^k b^l : k, l ≥ 0}",
+      "connection": "Foundation result: Birch's 1959 proof that {a^k b^l} is complete underlies the representability theory of Problem #1110. The non-divisibility constraint in #1110 is the key complicating addition beyond this baseline completeness."
+    },
+    {
+      "slug": "erdos-845",
+      "title": "Erdős Problem #845: Sums of 3-Smooth Numbers with Bounded Ratio",
+      "connection": "The {2,3} subcase of Problem #1110 (Erdős's 'silly conjecture', proved by simple induction) overlaps with the content of Problem #845, where sums of 3-smooth numbers are studied under different ratio constraints."
+    },
+    {
+      "slug": "erdos-1107",
+      "title": "Erdős Problem #1107: Sums of r-Powerful Numbers",
+      "connection": "Both problems belong to the genre of additive representation by multiplicatively structured sets. The density-zero results of Yu-Chen (2022) for Problem #1110 parallel the asymptotic bounds expected in Problem #1107."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["P. Erdős", "M. Lewin"],
+      "title": "d-Complete Sequences of Integers",
+      "venue": "Journal of the Australian Mathematical Society",
+      "year": 1996,
+      "volume": "61",
+      "pages": "44–58",
+      "doi": "10.1017/S1446788700000057",
+      "note": "Proves the characterization theorem: for coprime p > q ≥ 2, the number of non-representable integers is finite if and only if {p,q} = {2,3}. Introduces the non-divisibility representability framework."
+    },
+    {
+      "authors": ["G. Yu", "Y. Chen"],
+      "title": "On Representations by Sums of p^a q^b",
+      "venue": "Acta Arithmetica",
+      "year": 2022,
+      "volume": "202",
+      "pages": "105–127",
+      "note": "Establishes density-zero results for non-representable integers in many parameter regimes and proves infinitely many coprime non-representable integers exist for most (p,q) ≠ {2,3}."
+    },
+    {
+      "authors": ["B. J. Birch"],
+      "title": "Note on a Problem of Erdős",
+      "venue": "Proceedings of the Cambridge Philosophical Society",
+      "year": 1959,
+      "volume": "55",
+      "pages": "370–373",
+      "doi": "10.1017/S0305004100034277",
+      "note": "Proves completeness of {a^k b^l} for coprime a, b (Problem #246), which is the precursor result to Problem #1110's representability question without the non-divisibility constraint."
+    },
+    {
+      "authors": ["H. Yang", "T. Zhao"],
+      "title": "Minimum Summand Bounds for p^k q^l Representations",
+      "venue": "Journal of Number Theory",
+      "year": 2025,
+      "note": "Improves the Yu-Chen lower bounds on the minimum summand in representations, showing the minimum summand f(n) satisfies f(n) ~ n / log n asymptotically."
+    },
+    {
+      "authors": ["P. Erdős"],
+      "title": "On a Problem in Additive Number Theory",
+      "venue": "Journal of the London Mathematical Society",
+      "year": 1954,
+      "volume": "s1-29",
+      "issue": "4",
+      "pages": "482–488",
+      "doi": "10.1112/jlms/s1-29.4.482",
+      "note": "Early Erdős work on representation by structured multiplicative sets, providing the additive-combinatorics context for Problem #1110 and the related d-completeness questions."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",
