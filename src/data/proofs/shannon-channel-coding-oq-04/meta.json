@@ -65,7 +65,9 @@
     "keyInsights": [
       "The 0·log(0) = 0 convention is automatic in Lean via Mathlib's Real.log 0 = 0, avoiding the need for conditional definitions",
       "The upper bound h(p) ≤ log 2 is equivalent to KL divergence non-negativity for binary distributions against uniform — the log(x) ≤ x-1 inequality is the universal tool",
-      "Concavity decomposes into two applications of convexity of x·log(x), one for each 'leg' of h(p) = f(p) + f(1-p) where f(x) = -x·log(x), connected by the affine identity on weights"
+      "Concavity decomposes into two applications of convexity of x·log(x), one for each 'leg' of h(p) = f(p) + f(1-p) where f(x) = -x·log(x), connected by the affine identity on weights",
+      "The zero characterization h(p)=0 iff p∈{0,1} uses strict log monotonicity to upgrade the non-negativity proof: the same sign argument that gives ≤ 0 becomes < 0 in the interior, forcing both terms to be simultaneously zero only at the boundary",
+      "The symmetry h(p) = h(1-p) is proved purely by ring arithmetic with no analysis, reflecting that entropy depends only on the multiset of probabilities — relabeling outcomes cannot change information content"
     ]
   },
   "sections": [
@@ -144,6 +146,11 @@
       "targetId": "shannon-entropy",
       "relationship": "specializes",
       "description": "Binary entropy is Shannon entropy for the Bernoulli(p) distribution on {0,1}"
+    },
+    {
+      "targetId": "shannon-source-coding",
+      "relationship": "supports",
+      "description": "Binary entropy h(p) determines the optimal compression rate for a Bernoulli(p) source via Shannon's source coding theorem"
     }
   ],
   "conclusion": {
@@ -158,7 +165,8 @@
   "relatedProofs": [
     "shannon-channel-coding",
     "shannon-entropy",
-    "shannon-source-coding"
+    "shannon-source-coding",
+    "shannon-source-coding-oq-02"
   ],
   "leanFile": {
     "imports": [
