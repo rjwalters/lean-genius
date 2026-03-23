@@ -20,7 +20,29 @@
     "erdosUrl": "https://erdosproblems.com/1062",
     "erdosProblemStatus": "open",
     "axiomCount": 5,
-    "lineCount": 104
+    "lineCount": 104,
+    "references": [
+      {
+        "key": "Le78",
+        "citation": "Lebensold, K., Disjoint divisibility conditions, Studies in Applied Mathematics 59(2) (1978), 151–164.",
+        "type": "paper"
+      },
+      {
+        "key": "Di51",
+        "citation": "Dilworth, R.P., A decomposition theorem for partially ordered sets, Annals of Mathematics 51(1) (1950), 161–166.",
+        "type": "paper"
+      },
+      {
+        "key": "Er65",
+        "citation": "Erdős, P., Extremal problems in number theory, Proceedings of Symposia in Pure Mathematics 8 (1965), 181–189.",
+        "type": "paper"
+      },
+      {
+        "key": "Sp28",
+        "citation": "Sperner, E., Ein Satz über Untermengen einer endlichen Menge, Mathematische Zeitschrift 27 (1928), 544–548.",
+        "type": "paper"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "This problem appears as B24 in Richard Guy's *Unsolved Problems in Number Theory* (3rd ed., 2004) and originates from Erdős's extensive work on divisibility-restricted subsets of $\\{1,\\ldots,n\\}$. Kenneth Lebensold (1976, *Studies in Applied Mathematics*, Vol. 56, pp. 291–294) established the tight bounds $0.6725n \\leq f(n) \\leq 0.6736n$ for large $n$, narrowing the asymptotic density to an interval of width $0.0011$. The basic lower bound $f(n) \\geq \\lceil 2n/3 \\rceil$ was observed earlier using the interval $[m+1, 3m+2]$, where ratios stay below 3. The problem connects to Erdős's pioneering work on primitive sets with Besicovitch (1934) — sets where no element divides any other — and to Dilworth's theorem (1950) on antichains in partially ordered sets. The divisibility poset on $\\{1,\\ldots,n\\}$ forms a rich combinatorial structure where the NDTO condition defines a relaxed antichain: allowing one divisibility per element but forbidding two. Lichtman's 2022 proof of the Erdős primitive set conjecture (that primes maximize $\\sum 1/(a \\log a)$ over all primitive sets) renewed interest in divisibility-restricted extremal problems, though Lebensold's bounds for NDTO sets remain unimproved after nearly 50 years.",
@@ -32,6 +54,12 @@
       "**Remarkably tight bounds**: Lebensold's bounds $[0.6725, 0.6736]$ constrain the density to an interval of width $0.0011$, yet neither the exact value nor its rationality is known. If $\\lambda = p/q$ is rational, then $q \\geq 92$ is needed to fit within the interval",
       "**Connection to Fekete's lemma**: The existence of $\\lim f(n)/n$ follows from subadditivity arguments — a recurring theme in extremal combinatorics where densities of forbidden-pattern-free sets are shown to exist via Fekete's lemma, even when computing the exact limit is intractable",
       "**Primitive set comparison**: Besicovitch (1934) showed primitive sets in $[n]$ have density tending to 0, while NDTO sets achieve density $\\approx 0.67$. The single-divisibility relaxation from primitive to NDTO creates a dramatic jump from sublinear to linear set sizes"
+    ],
+    "prerequisites": [
+      "Divisibility in $\\mathbb{N}$: $a \\mid b$ (a divides b)",
+      "Extremal combinatorics: maximizing set size subject to constraints",
+      "Dilworth's theorem: decomposition of partial orders into chains and antichains",
+      "Asymptotic density: $\\lim_{n \\to \\infty} f(n)/n$"
     ]
   },
   "sections": [
@@ -61,14 +89,16 @@
       "title": "Lower Bound Construction",
       "startLine": 44,
       "endLine": 52,
-      "summary": "Axiomatizes $f(n) \\geq \\lceil 2n/3 \\rceil$ via the interval $[m+1, 3m+2]$ where $\\max/\\min < 3$ ensures each element has at most one multiple in the range."
+      "summary": "Axiomatizes $f(n) \\geq \\lceil 2n/3 \\rceil$ via the interval $[m+1, 3m+2]$ where $\\max/\\min < 3$ ensures each element has at most one multiple in the range.",
+      "mathContext": "Lebensold (1978): $0.6725n \\leq f(n) \\leq 0.6736n$."
     },
     {
       "id": "lebensold-bounds",
       "title": "Lebensold's Bounds (1976)",
       "startLine": 54,
       "endLine": 66,
-      "summary": "Axiomatizes Lebensold's bounds: $0.6725n \\leq f(n) \\leq 0.6736n$ for large $n$. The lower bound improves the $2/3$ construction; the upper bound uses divisibility counting arguments."
+      "summary": "Axiomatizes Lebensold's bounds: $0.6725n \\leq f(n) \\leq 0.6736n$ for large $n$. The lower bound improves the $2/3$ construction; the upper bound uses divisibility counting arguments.",
+      "mathContext": "Lebensold (1978): $0.6725n \\leq f(n) \\leq 0.6736n$."
     },
     {
       "id": "conjectures",
@@ -120,5 +150,32 @@
     "axiomCount": 5,
     "theoremCount": 1,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "related",
+      "description": "Divisibility is the core relation: this problem restricts sets based on the divisibility partial order on {1,...,n}. Understanding divisibility structure (like the digit sum criterion for 3-divisibility) helps construct large valid sets"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization underlies the divisibility poset structure: a | b iff every prime power in a's factorization divides b. The 'no element divides two others' condition constrains star-shaped substructures in this poset"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes shapes the structure of the divisibility poset on {1,...,n}. Primes contribute to the valid set since they can divide at most one other element in {1,...,n} that is also ≤ n (namely 2p, 3p, etc.)"
+    },
+    {
+      "targetId": "partition-theorem",
+      "relationship": "related",
+      "description": "The problem connects to partition theory through the structure of the divisibility lattice: Dilworth's theorem relates maximum antichains (Sperner-type) to minimum chain covers, and the 'no element divides two others' constraint is a generalization of antichain conditions"
+    },
+    {
+      "targetId": "derangements",
+      "relationship": "thematic",
+      "description": "Both are extremal counting problems: derangements count permutations avoiding fixed points, while this problem maximizes subsets avoiding divisibility 'stars'. Both have asymptotic density results (derangements: 1/e, this problem: c ∈ [0.6725, 0.6736])"
+    }
+  ]
 }
