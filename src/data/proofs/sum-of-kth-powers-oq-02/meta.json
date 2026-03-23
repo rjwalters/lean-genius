@@ -81,54 +81,137 @@
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Module Setup and Imports",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Imports ZetaValues, PSeries, InfiniteSum, and Pow.Real. Sets maxHeartbeats for heavy elaboration.",
+      "mathContext": "Dependencies: `Real.summable_nat_rpow_inv`, `hasSum_zeta_two/four`, `rpow_le_rpow_of_exponent_le`."
+    },
+    {
       "id": "convergence",
-      "title": "Convergence Dichotomy",
-      "description": "The p-series ∑ 1/n^s converges if and only if s > 1."
+      "title": "Part I: Convergence Dichotomy",
+      "startLine": 39,
+      "endLine": 49,
+      "summary": "Proves ∑ (n^s)⁻¹ converges iff s > 1 via Cauchy condensation (internally in Mathlib).",
+      "mathContext": "$\\sum n^{-s}$ converges $\\iff s > 1$."
     },
     {
       "id": "known-values",
-      "title": "Known Values",
-      "description": "ζ(2) = π²/6 (Basel Problem) and ζ(4) = π⁴/90."
+      "title": "Part II: Known Values",
+      "startLine": 51,
+      "endLine": 59,
+      "summary": "Recovers ζ(2) = π²/6 and ζ(4) = π⁴/90 in tsum form from Mathlib.",
+      "mathContext": "$\\zeta(2) = \\pi^2/6$, $\\zeta(4) = \\pi^4/90$."
     },
     {
-      "id": "monotonicity",
-      "title": "Term and Zeta Monotonicity",
-      "description": "Each term 1/n^s decreases in s for n ≥ 1, so ζ(s) is antitone."
+      "id": "term-monotonicity",
+      "title": "Part III: Term Monotonicity",
+      "startLine": 61,
+      "endLine": 83,
+      "summary": "Proves (n^s)⁻¹ is antitone in s for n ≥ 1 (weak) and strictly for n ≥ 2.",
+      "mathContext": "$s_1 \\leq s_2 \\Rightarrow n^{-s_2} \\leq n^{-s_1}$ for $n \\geq 1$."
+    },
+    {
+      "id": "zeta-monotonicity",
+      "title": "Part IV: Zeta Monotonicity",
+      "startLine": 85,
+      "endLine": 91,
+      "summary": "States ζ(s) is antitone. Sorry: tsum ordering not yet assembled.",
+      "mathContext": "$1 < s_1 \\leq s_2 \\Rightarrow \\zeta(s_2) \\leq \\zeta(s_1)$."
     },
     {
       "id": "bounds",
-      "title": "Bounds",
-      "description": "ζ(s) ≥ 1 and ζ(s) ≤ π²/6 for s ≥ 2."
+      "title": "Parts V-VI: Bounds",
+      "startLine": 93,
+      "endLine": 107,
+      "summary": "States ζ(s) ≥ 1 and ζ(s) ≤ π²/6 for s ≥ 2. Both sorry.",
+      "mathContext": "$1 \\leq \\zeta(s) \\leq \\pi^2/6$ for $s \\geq 2$."
+    },
+    {
+      "id": "partial-sums",
+      "title": "Part VII: Partial Sums",
+      "startLine": 109,
+      "endLine": 126,
+      "summary": "Defines partialZeta, proves convergence and monotonicity in number of terms.",
+      "mathContext": "$S(n,s) \\to \\zeta(s)$ monotonically."
     },
     {
       "id": "bridge",
-      "title": "Bridge to Integer Exponents",
-      "description": "Connects real-exponent rpow series to classical 1/n^k via rpow_natCast."
+      "title": "Part VIII: Bridge to Integer Exponents",
+      "startLine": 128,
+      "endLine": 145,
+      "summary": "Connects rpow to nat pow via rpow_natCast. Proves summability and convergence for integer k.",
+      "mathContext": "$(n : \\mathbb{R})^{(k : \\mathbb{R})} = (n : \\mathbb{R})^k$."
+    },
+    {
+      "id": "verification",
+      "title": "Verification",
+      "startLine": 147,
+      "endLine": 164,
+      "summary": "Type-checks all 14 results. 11 proved, 3 with sorry.",
+      "mathContext": "Full type signatures verified."
     }
   ],
   "overview": {
-    "text": "Faulhaber's formulas give ∑ k^m for integer m. The natural extension to real exponents s leads to the p-series ∑ 1/n^s, whose limit is the Riemann zeta function. This formalization proves the convergence dichotomy at s = 1, recovers the Basel Problem value, and establishes monotonicity and bounds.",
+    "historicalContext": "Faulhaber (1631) published formulas for ∑k^m for integer m up to m = 17. Euler (1734) made the revolutionary leap to non-integer exponents by computing ∑1/n² = π²/6 (the Basel problem), launching analytic number theory. The convergence dichotomy at s = 1 — where the harmonic series diverges (Oresme, c. 1360) but ∑1/n^{1+ε} converges for any ε > 0 — is connected to the prime number theorem via the Euler product ∏(1 - p^{-s})^{-1} = ζ(s). Riemann's 1859 memoir extended the domain to ℂ, revealing the connection between prime distribution and the zeros of ζ(s).",
+    "problemStatement": "Extend Faulhaber's integer power sums to real exponents $s \\in \\mathbb{R}$ by studying $\\zeta(s) = \\sum 1/n^s$: prove convergence dichotomy, recover known values, establish monotonicity and bounds, and bridge back to integer exponents.",
+    "proofStrategy": "Eight parts following the logical dependency chain. Part I wraps Mathlib's convergence criterion. Part II recovers zeta values. Part III proves term-wise antitonicity via rpow monotonicity and inversion. Parts IV-VI state zeta-level properties (sorry: tsum comparison). Part VII provides constructive partial sums. Part VIII bridges to integer exponents via rpow_natCast.",
     "keyInsights": [
-      "The p-series convergence threshold at s = 1 separates convergent from divergent behavior",
-      "Known zeta values connect discrete sums to transcendental constants (π)",
-      "Monotonicity in the exponent follows from rpow monotonicity via inversion",
-      "The bridge theorem rpow_inv_eq_nat_inv connects real and integer exponent theories"
+      "The p-series convergence threshold at s = 1 separates integrable from non-integrable power-law decay via the Cauchy condensation test",
+      "Euler's Basel problem ζ(2) = π²/6 reveals a deep connection between discrete arithmetic and continuous geometry",
+      "The general formula ζ(2k) = (-1)^{k+1} B_{2k}(2π)^{2k}/(2(2k)!) gives all even zeta values, while no closed form is known for odd values",
+      "The bridge theorem rpow_inv_eq_nat_inv via rpow_natCast connects real-exponent analysis to integer-exponent combinatorics",
+      "The 3 remaining sorries are routine tsum ordering comparisons suitable for automated proof search"
+    ],
+    "prerequisites": [
+      "Real-valued power series and summability (tsum, Summable)",
+      "Zeta values and Bernoulli numbers from Mathlib",
+      "Real rpow (generalized exponentiation via exp and log)"
     ]
   },
   "conclusion": {
-    "text": "This formalization provides the analytical foundation for extending Faulhaber's discrete power sums to continuous exponents. With 11 of 14 results fully proved and 3 sorries (tsum ordering comparisons), the key mathematical content is captured."
+    "summary": "11 of 14 results fully proved including convergence dichotomy, Basel problem recovery, term monotonicity, partial sum convergence, and the rpow-to-natpow bridge. 3 sorries remain in tsum ordering comparisons.",
+    "implications": "The bridge from Faulhaber to ζ(s) is the first step toward formalizing special values of L-functions. The 3 remaining sorries are routine and likely Aristotle-provable.",
+    "openQuestions": [
+      "Close the 3 tsum ordering sorries using Mathlib's tsum_le_tsum and le_tsum",
+      "Extend to ζ(6), ζ(8) via the general Bernoulli number formula",
+      "Formalize the Euler product ∏(1 - p^{-s})^{-1} = ζ(s)",
+      "Prove the functional equation ζ(s) = 2^s π^{s-1} sin(πs/2) Γ(1-s) ζ(1-s)"
+    ]
   },
-  "relatedProofs": ["sum-of-kth-powers", "basel-problem"],
+  "relatedProofs": ["sum-of-kth-powers", "basel-problem", "basel-problem-oq-01", "riemann-hypothesis"],
   "crossReferences": [
     {
-      "target": "sum-of-kth-powers",
+      "targetId": "sum-of-kth-powers",
       "relationship": "extends",
-      "description": "Extends integer power sums to real exponents"
+      "description": "Extends integer power sums to real exponents via the p-series"
     },
     {
-      "target": "basel-problem",
+      "targetId": "basel-problem",
       "relationship": "uses",
-      "description": "Uses ζ(2) = π²/6 for upper bounds and known values"
+      "description": "Recovers ζ(2) = π²/6 and uses it as the upper bound for ζ(s) when s ≥ 2"
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "foundational",
+      "description": "Establishes basic properties of ζ(s) for real s > 1; RH concerns zeros of the analytic continuation"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.ZetaValues",
+      "Mathlib.Analysis.PSeries",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Topology.Algebra.InfiniteSum.Real",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Finset", "BigOperators", "Topology", "Filter"],
+    "namespace": "RealZeta",
+    "lineCount": 164,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 1
+  }
 }
