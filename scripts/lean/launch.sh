@@ -31,6 +31,7 @@ COMPLETIONS_DIR="$SIGNALS_DIR/completions"
 STOP_SIGNAL_FILE="$SIGNALS_DIR/stop-lean-daemon"
 DAEMON_PID_FILE="research/lean-daemon.pid"
 DAEMON_LOG_FILE="research/lean-daemon.log"
+SCHEDULE_FILE=".loom/lean-schedule.json"
 
 # Health check thresholds
 STUCK_THRESHOLD_MINUTES=30
@@ -54,7 +55,7 @@ DEFAULT_HERALD=1
 # Max pool sizes
 MAX_ENRICHER=5
 MAX_ARISTOTLE=2
-MAX_RESEARCHER=7
+MAX_RESEARCHER=16
 MAX_SEEKER=1
 MAX_DEPLOYER=1
 MAX_TESTER=1
@@ -1104,6 +1105,122 @@ daemon_log() {
     echo "[$timestamp] $level: $msg"
 }
 
+# Helper: Apply time-based schedule overrides to pool targets
+# Reads .loom/lean-schedule.json and adjusts pool variables based on current time
+apply_schedule() {
+    [[ ! -f "$SCHEDULE_FILE" ]] && return 0
+
+    local enabled
+    enabled=$(jq -r '.enabled // false' "$SCHEDULE_FILE" 2>/dev/null) || return 0
+    [[ "$enabled" != "true" ]] && return 0
+
+    local tz
+    tz=$(jq -r '.timezone // "America/Los_Angeles"' "$SCHEDULE_FILE" 2>/dev/null)
+
+    local current_time current_minutes
+    current_time=$(TZ="$tz" date +%H:%M)
+    current_minutes=$(( 10#$(echo "$current_time" | cut -d: -f1) * 60 + 10#$(echo "$current_time" | cut -d: -f2) ))
+
+    # Find matching window
+    local window_count matched_window=""
+    window_count=$(jq '.windows | length' "$SCHEDULE_FILE" 2>/dev/null) || return 0
+
+    for ((i=0; i<window_count; i++)); do
+        local hours_range
+        hours_range=$(jq -r ".windows[$i].hours // \"\"" "$SCHEDULE_FILE" 2>/dev/null)
+        [[ -z "$hours_range" ]] && continue
+
+        local start_str end_str
+        start_str=$(echo "$hours_range" | cut -d- -f1)
+        end_str=$(echo "$hours_range" | cut -d- -f2)
+
+        local start_minutes end_minutes
+        start_minutes=$(( 10#$(echo "$start_str" | cut -d: -f1) * 60 + 10#$(echo "$start_str" | cut -d: -f2) ))
+        end_minutes=$(( 10#$(echo "$end_str" | cut -d: -f1) * 60 + 10#$(echo "$end_str" | cut -d: -f2) ))
+
+        local in_window=false
+        if [[ $start_minutes -le $end_minutes ]]; then
+            # Normal range (e.g., 05:00-11:00)
+            [[ $current_minutes -ge $start_minutes && $current_minutes -lt $end_minutes ]] && in_window=true
+        else
+            # Overnight range (e.g., 23:00-05:00)
+            [[ $current_minutes -ge $start_minutes || $current_minutes -lt $end_minutes ]] && in_window=true
+        fi
+
+        if [[ "$in_window" == "true" ]]; then
+            matched_window="$i"
+            break
+        fi
+    done
+
+    # Fall back to default window if no match
+    if [[ -z "$matched_window" ]]; then
+        for ((i=0; i<window_count; i++)); do
+            local is_default
+            is_default=$(jq -r ".windows[$i].default // false" "$SCHEDULE_FILE" 2>/dev/null)
+            if [[ "$is_default" == "true" ]]; then
+                matched_window="$i"
+                break
+            fi
+        done
+    fi
+
+    [[ -z "$matched_window" ]] && return 0
+
+    local window_name
+    window_name=$(jq -r ".windows[$matched_window].name // \"unknown\"" "$SCHEDULE_FILE" 2>/dev/null)
+
+    # Apply pool overrides (only for keys present in the window's pools)
+    local pools
+    pools=$(jq -c ".windows[$matched_window].pools // {}" "$SCHEDULE_FILE" 2>/dev/null)
+
+    local new_val
+    new_val=$(echo "$pools" | jq -r '.researcher // empty' 2>/dev/null)
+    [[ -n "$new_val" ]] && researcher=$(( new_val > MAX_RESEARCHER ? MAX_RESEARCHER : new_val ))
+
+    new_val=$(echo "$pools" | jq -r '.enricher // empty' 2>/dev/null)
+    [[ -n "$new_val" ]] && enricher=$(( new_val > MAX_ENRICHER ? MAX_ENRICHER : new_val ))
+
+    new_val=$(echo "$pools" | jq -r '.aristotle // empty' 2>/dev/null)
+    [[ -n "$new_val" ]] && aristotle=$(( new_val > MAX_ARISTOTLE ? MAX_ARISTOTLE : new_val ))
+
+    new_val=$(echo "$pools" | jq -r '.seeker // empty' 2>/dev/null)
+    [[ -n "$new_val" ]] && seeker=$(( new_val > MAX_SEEKER ? MAX_SEEKER : new_val ))
+
+    new_val=$(echo "$pools" | jq -r '.deployer // empty' 2>/dev/null)
+    [[ -n "$new_val" ]] && deployer=$(( new_val > MAX_DEPLOYER ? MAX_DEPLOYER : new_val ))
+
+    new_val=$(echo "$pools" | jq -r '.tester // empty' 2>/dev/null)
+    [[ -n "$new_val" ]] && tester=$(( new_val > MAX_TESTER ? MAX_TESTER : new_val ))
+
+    new_val=$(echo "$pools" | jq -r '.herald // empty' 2>/dev/null)
+    [[ -n "$new_val" ]] && herald=$(( new_val > MAX_HERALD ? MAX_HERALD : new_val ))
+
+    daemon_log "INFO" "Schedule: window=$window_name (${current_time} ${tz}), targets: enricher=$enricher, researcher=$researcher, aristotle=$aristotle"
+
+    # Update state file config to reflect scheduled values
+    if [[ -f "$STATE_FILE" ]]; then
+        local tmp
+        tmp=$(mktemp)
+        jq \
+            --argjson enricher "$enricher" \
+            --argjson aristotle "$aristotle" \
+            --argjson researcher "$researcher" \
+            --argjson seeker "$seeker" \
+            --argjson deployer "$deployer" \
+            --arg schedule_window "$window_name" \
+            --arg schedule_time "$current_time" \
+            '.config.enricher = $enricher |
+             .config.aristotle = $aristotle |
+             .config.researcher = $researcher |
+             .config.seeker = $seeker |
+             .config.deployer = $deployer |
+             .schedule_window = $schedule_window |
+             .schedule_time = $schedule_time' \
+            "$STATE_FILE" > "$tmp" && mv "$tmp" "$STATE_FILE"
+    fi
+}
+
 # Helper: Determine agent type from session name
 get_agent_type() {
     local session="$1"
@@ -1667,6 +1784,9 @@ cmd_daemon() {
             deployer=$(jq -r '.config.deployer // 0' "$STATE_FILE" 2>/dev/null || echo "$deployer")
             herald=$(jq -r '.config.herald // 0' "$STATE_FILE" 2>/dev/null || echo "$herald")
         fi
+
+        # Apply time-based schedule overrides
+        apply_schedule
 
         local enricher_active=0 researcher_active=0 aristotle_active=0 seeker_active=0 deployer_active=0 herald_active=0
         for i in $(seq 1 $MAX_ENRICHER); do
