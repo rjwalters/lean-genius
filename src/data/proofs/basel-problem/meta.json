@@ -62,7 +62,7 @@
         "relationship": "Extensions and open questions arising from the Basel problem"
       }
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and no structure-encoded assumptions. All nine theorems are proved from Mathlib (hasSum_zeta_two, hasSum_zeta_four, hasSum_zeta_nat, Real.summable_nat_rpow_inv) with no custom axioms and no definition sorries. The file's original contributions (summable_one_div_sq, summable_nat_sq_inv, positivity lemmas, zeta_general) are pedagogical wrappers composing Mathlib lemmas."
   },
   "overview": {
     "historicalContext": "The Basel Problem was posed by Pietro Mengoli in 1650 and named after Basel, the hometown of the Bernoulli family who publicized it. Jakob Bernoulli himself tried and failed to find the sum, knowing only that $\\sum 1/n^2 < 2$ (published in *Tractatus de Seriebus Infinitis*, 1689). The problem defeated the leading mathematicians of the era — the Bernoulli brothers, Leibniz, and Stirling all attempted it without success.\n\nIn 1734, the 27-year-old Leonhard Euler stunned the mathematical world by proving $\\sum_{n=1}^{\\infty} 1/n^2 = \\pi^2/6$. His original proof used a daring factorization of $\\sin(x)/x$ as an infinite product $\\prod(1 - x^2/n^2\\pi^2)$, then compared the $x^2$ coefficient with the Taylor expansion — a method that was brilliant but not fully rigorous, as it assumed infinite polynomials factor like finite ones (justified later by the Weierstrass factorization theorem, 1876). Euler gave at least four different proofs, including partial fractions of $\\pi\\cot(\\pi x)$. The result was later proved rigorously via Fourier analysis: Parseval's identity applied to $f(x) = x$ on $[-\\pi, \\pi]$ yields the sum directly.\n\nThe problem has a remarkable probabilistic interpretation discovered by Euler himself: the probability that two random positive integers are coprime equals $6/\\pi^2 = 1/\\zeta(2)$. At least 70 proofs are now known, including approaches via residue calculus, double integrals, and even statistical mechanics.\n\nEuler went on to compute $\\zeta(2k)$ for all positive integers $k$, discovering the formula $\\zeta(2k) = (-1)^{k+1} B_{2k} (2\\pi)^{2k} / (2(2k)!)$ involving Bernoulli numbers. The odd values $\\zeta(3), \\zeta(5), \\ldots$ remain mysterious: Apéry proved $\\zeta(3)$ irrational in 1978, but no closed form in terms of $\\pi$ is known for any odd zeta value. Today the Basel identity $\\zeta(2) = \\pi^2/6$ is recognized as the birth of analytic number theory, connecting a sum over integers to the transcendental number $\\pi$ and foreshadowing Riemann's 1859 memoir on the distribution of primes.",
@@ -273,6 +273,26 @@
       "targetId": "fundamental-theorem-calculus",
       "relationship": "foundational",
       "description": "The integral test for series convergence ($\\sum f(n)$ converges iff $\\int f$ converges for decreasing $f > 0$) relies on FTC to evaluate $\\int_1^{\\infty} x^{-2}dx = 1$. This confirms convergence of $\\sum 1/n^2$ and provides the crude bound $\\sum 1/n^2 < 2$, but cannot determine the exact value $\\pi^2/6$ — for that, the deeper Bernoulli polynomial machinery is needed"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions uses Dirichlet L-functions $L(s, \\chi)$, which generalize the Riemann zeta function. The key step of Dirichlet's proof is showing $L(1, \\chi) \\neq 0$ for non-principal characters — a fact that parallels the Basel evaluation $\\zeta(2) = \\pi^2/6$ in showing that these L-functions have non-trivial values. The Euler product $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$ that links Basel to primes generalizes to $L(s, \\chi) = \\prod_p (1 - \\chi(p)p^{-s})^{-1}$"
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "related",
+      "description": "The Hermite-Lindemann theorem ($e^\\alpha$ is transcendental for algebraic $\\alpha \\neq 0$) implies $\\pi$ is transcendental (since $e^{i\\pi} = -1$ is algebraic), which in turn implies $\\zeta(2) = \\pi^2/6$ is transcendental. This places the Basel identity in the transcendence hierarchy: not only is $\\sum 1/n^2$ a specific real number, it is a transcendental one — the sum of rational terms converges to a number that satisfies no polynomial equation with rational coefficients"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "extends",
+      "description": "The Prime Number Theorem ($\\pi(x) \\sim x/\\ln x$) is proved by analyzing the Riemann zeta function $\\zeta(s)$ in the complex plane — the same function whose value $\\zeta(2) = \\pi^2/6$ is the Basel identity. Riemann's 1859 memoir showed that the distribution of primes is encoded in the zeros of $\\zeta(s)$, transforming Euler's product formula $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$ from a curiosity into the central tool of analytic number theory. Basel was the first hint that $\\zeta$ carries deep arithmetic information"
+    },
+    {
+      "targetId": "gelfond-schneider",
+      "relationship": "related",
+      "description": "The Gelfond-Schneider theorem ($\\alpha^\\beta$ is transcendental for algebraic $\\alpha \\neq 0,1$ and irrational algebraic $\\beta$) sits in the same transcendence hierarchy as the Basel identity: both involve the transcendence of expressions built from elementary operations. The Basel value $\\pi^2/6$ is transcendental because $\\pi$ is, while Gelfond-Schneider shows $2^{\\sqrt{2}}$ is transcendental despite being built from algebraic ingredients"
     }
   ],
   "relatedProofs": [
@@ -294,7 +314,11 @@
     "leibniz-pi",
     "geometric-series",
     "taylor-theorem",
-    "fundamental-theorem-calculus"
+    "fundamental-theorem-calculus",
+    "dirichlets-theorem",
+    "hermite-lindemann",
+    "prime-number-theorem",
+    "gelfond-schneider"
   ],
   "leanFile": {
     "imports": [
@@ -312,8 +336,11 @@
     ],
     "namespace": "BaselProblem",
     "lineCount": 164,
+    "structureCount": 0,
     "axiomCount": 0,
     "theoremCount": 9,
+    "lemmaCount": 0,
+    "defCount": 0,
     "definitionCount": 0
   }
 }
