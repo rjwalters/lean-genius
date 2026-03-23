@@ -28,7 +28,29 @@
       }
     ],
     "axiomCount": 4,
-    "lineCount": 86
+    "lineCount": 86,
+    "references": [
+      {
+        "key": "Er50",
+        "citation": "Erdős, P., On integers of the form 2^k + p and some related problems, Summa Brasiliensis Mathematicae 2 (1950), 113–123.",
+        "type": "paper"
+      },
+      {
+        "key": "He34",
+        "citation": "Heuristic: Halberstam, H. and Richert, H.-E., Sieve Methods, Academic Press (1974), Chapter 5: Covering systems.",
+        "type": "book"
+      },
+      {
+        "key": "CH07",
+        "citation": "Croot, E. and Helfgott, H.A., On Erdős and Sárközy's problem regarding products of prime powers, preprint (2007).",
+        "type": "paper"
+      },
+      {
+        "key": "Gu04",
+        "citation": "Guy, R.K., Unsolved Problems in Number Theory, 3rd ed., Springer (2004), Section F13: Covering congruences.",
+        "type": "book"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory'. The question asks whether arithmetic progressions with prime moduli can cover all large integers when the starting index is shifted by at least k steps. For k = 1 or k = 2, classical results on divergence of the harmonic sum over primes (Σ 1/p = ∞, proved by Euler in 1737) suffice to show covering. The case k ≥ 3 introduces a qualitatively different obstacle: the constraint t ≥ k means each prime p can only cover integers n ≡ aₚ (mod p) that are at least kp above the base residue, creating a 'gap' of size kp near the beginning of each progression. Erdős noted that even k = 3 seems difficult. The generalization to arbitrary dense sets (with prime-like counting function and log-log reciprocal divergence) was proposed to isolate the essential density condition from the specific arithmetic properties of primes.",
@@ -40,6 +62,12 @@
       "The generalization to dense sets suggests that the prime number theorem's density guarantee π(N) ~ N/log N, combined with the logarithmic reciprocal sum divergence, is the essential input — not any special multiplicative structure of primes",
       "The k = 3 barrier is fundamental: the constraint t ≥ 3 means each prime p can cover at most ⌊(n − aₚ)/(3p)⌋ + 1 values near n, drastically reducing overlap compared to t ≥ 1",
       "The problem connects to covering systems (Erdős 1950), Chinese Remainder Theorem constructions, and sieve methods — but none of these tools have been sufficient to resolve even k = 3"
+    ],
+    "prerequisites": [
+      "Residue classes: $a_p \\pmod{p}$ for primes $p$",
+      "Covering systems: finite collections of congruences covering all integers",
+      "Arithmetic progressions and prime moduli",
+      "Density and covering arguments in additive number theory"
     ]
   },
   "sections": [
@@ -102,5 +130,27 @@
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes provides the infinite family of moduli used in the covering system. The question asks whether shifted prime arithmetic progressions a_p (mod p) can cover all sufficiently large integers when k-fold covers are required"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate (prime in (n, 2n]) constrains the distribution of primes used as moduli. The density of primes affects how efficiently shifted progressions can cover the integers"
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Bounded gaps between primes (Maynard-Tao) affects the efficiency of covering with prime-modulus progressions. Small gaps mean nearby moduli can have overlapping residue classes, while large gaps leave potential uncovered intervals"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic reciprocity and its generalizations constrain which residue classes are achievable modulo different primes. The structure of (ℤ/pℤ)* and quadratic residues affects the design of covering systems"
+    }
+  ]
 }

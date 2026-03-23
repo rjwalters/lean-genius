@@ -53,7 +53,29 @@
       "erdos_283_summary: two-part conjunction of Graham and Alekseyev"
     ],
     "axiomCount": 6,
-    "lineCount": 175
+    "lineCount": 175,
+    "references": [
+      {
+        "key": "Er50",
+        "citation": "Erdős, P., On a Diophantine equation, Proceedings of the National Academy of Sciences of the United States of America 36 (1950), 252–255.",
+        "type": "paper"
+      },
+      {
+        "key": "Gu04",
+        "citation": "Guy, R.K., Unsolved Problems in Number Theory, 3rd ed., Springer (2004), Section D11: Egyptian fractions.",
+        "type": "book"
+      },
+      {
+        "key": "El72",
+        "citation": "Elsholtz, C. and Tao, T., Counting the number of solutions to the Erdős-Straus conjecture on unit fractions, Journal of the Australian Mathematical Society 94(1) (2013), 50–105.",
+        "type": "paper"
+      },
+      {
+        "key": "GS03",
+        "citation": "Graham, R.L. and Selfridge, J.L., On Egyptian fractions, Pacific Journal of Mathematics 5(1) (1955), 85–92.",
+        "type": "paper"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #283 connects two classical topics: Egyptian fractions (sums of distinct unit fractions, used by ancient Egyptians) and additive representation of integers by polynomial values. The problem asks: given a polynomial p with positive leading coefficient and no universal divisor (no d ≥ 2 dividing all p(n)), can every sufficiently large m be written as p(n₁) + ... + p(nₖ) where additionally 1/n₁ + ... + 1/nₖ = 1?\n\nGraham (1963) proved this for p(x) = x, showing that for large enough m, there exist distinct positive integers whose reciprocals sum to 1 and whose values sum to m. Alekseyev (2019) extended this to p(x) = x², proving it for all m > 8542. van Doorn (2025) extended to many linear and quadratic polynomials.\n\nThe general case remains open. The Egyptian fraction constraint is crucial: without it, Cassels (1960) showed the representation is always possible under the polynomial conditions. The difficulty lies in simultaneously satisfying both the unit fraction sum and the polynomial value sum.",
@@ -65,6 +87,12 @@
       "**Universal divisor condition**: If d | p(n) for all n, then only multiples of d are representable. The condition rules this out.",
       "**Alekseyev's example**: 1/2 + 1/4 + 1/6 + 1/12 = 1 and 2² + 4² + 6² + 12² = 200.",
       "**Cassels comparison**: Without the Egyptian constraint, representation is always possible — the constraint is the real challenge."
+    ],
+    "prerequisites": [
+      "Egyptian fractions: representations $\\frac{4}{n} = \\frac{1}{x} + \\frac{1}{y} + \\frac{1}{z}$",
+      "Polynomial growth: values of polynomials at integer points",
+      "Additive number theory: representing integers as sums",
+      "Waring's problem context: sums of $k$-th powers"
     ]
   },
   "sections": [
@@ -156,5 +184,27 @@
     "axiomCount": 6,
     "theoremCount": 7,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "sum-of-kth-powers",
+      "relationship": "related",
+      "description": "Waring's problem asks about representing integers as sums of k-th powers, directly related to this problem which asks about sums of polynomial values subject to an Egyptian fraction constraint"
+    },
+    {
+      "targetId": "lagrange-four-squares",
+      "relationship": "related",
+      "description": "Lagrange's four squares theorem (every positive integer is a sum of four squares) is the k=2 case of Waring's problem. This Erdős problem generalizes by requiring the summands' indices to satisfy an Egyptian fraction condition"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "foundational",
+      "description": "The divergence of the harmonic series Σ 1/n connects to Egyptian fractions: partial sums of 1/n can approximate any positive rational, and the density of Egyptian fraction representations depends on harmonic series asymptotics"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem provides polynomial identities used in analyzing polynomial values p(n). When p(x) = x^k, the number of representations relates to Waring's problem via binomial coefficient identities"
+    }
+  ]
 }

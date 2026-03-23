@@ -65,7 +65,34 @@
       "greedyRepresentation definition and greedy_eventually_works axiom"
     ],
     "axiomCount": 19,
-    "lineCount": 266
+    "lineCount": 266,
+    "references": [
+      {
+        "key": "Bi59",
+        "citation": "Birch, B.J., Note on a problem of Erdős, Proceedings of the Cambridge Philosophical Society 55 (1959), 370–373.",
+        "type": "paper"
+      },
+      {
+        "key": "Ca60",
+        "citation": "Cassels, J.W.S., On the representation of integers as the sums of distinct summands taken from a fixed set, Acta Scientiarum Mathematicarum (Szeged) 21 (1960), 111–124.",
+        "type": "paper"
+      },
+      {
+        "key": "He00",
+        "citation": "Hegyvári, N., On representation problems in the additive number theory, Periodica Mathematica Hungarica 43(1–2) (2000), 145–155.",
+        "type": "paper"
+      },
+      {
+        "key": "FC17",
+        "citation": "Fang, J.-H. and Chen, Y.-G., On a problem of Erdős on integers of the form 2^k + p and related problems, Journal of Number Theory 185 (2017), 255–267.",
+        "type": "paper"
+      },
+      {
+        "key": "Yu24",
+        "citation": "Yu, G., Representation of sufficiently large integers as sums of terms of a complete sequence with large summands, to appear (2024).",
+        "type": "paper"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "**Erdős Problem #246** asks about complete sequences — sets where every sufficiently large integer can be represented as a sum of distinct elements.\n\n**Historical Development:**\n- **Birch (1959):** Original proof that {a^k b^l : gcd(a,b)=1} is complete\n- **Cassels (1960):** General result implying completeness for logarithmically dense sets\n- **Davenport:** Observed that bounded l suffices\n- **Hegyvári (2000):** First explicit bound on l (quadruple exponential)\n- **Fang-Chen (2017):** Improved to triply exponential\n- **Yu (2024):** Can use only large summands (> n/(log n)^{1+o(1)})\n\n**Key Insight:** Two coprime bases generate enough distinct numbers that their logarithmic density suffices for completeness.",
@@ -78,6 +105,12 @@
       "**Bounded Exponents:** Remarkably, only finitely many values of l are needed (Davenport).",
       "**Quantitative Bounds:** The threshold drops from quadruple exponential (Hegyvári) to triply exponential (Fang-Chen).",
       "**Large Summands:** Yu (2024) shows we can avoid small summands entirely."
+    ],
+    "prerequisites": [
+      "Coprimality: $\\gcd(a,b) = 1$ and its role in ensuring distinct products",
+      "Complete sequences: every sufficiently large integer is a sum of distinct elements",
+      "Logarithmic density: counting function $|S \\cap [1,N]|$ and its growth rate",
+      "Binary representation: powers of 2 as the prototypical complete sequence"
     ]
   },
   "sections": [
@@ -86,21 +119,24 @@
       "title": "Basic Definitions",
       "summary": "Power sets and completeness property",
       "startLine": 45,
-      "endLine": 70
+      "endLine": 70,
+      "mathContext": "$P(a,b) = \\{a^k b^l : k, l \\geq 0\\}$. Complete: $\\forall n \\geq N_0,\\, \\exists S \\subseteq P(a,b)$ distinct, $n = \\sum_{s \\in S} s$."
     },
     {
       "id": "birch-theorem",
       "title": "Birch's Theorem (1959)",
       "summary": "Main result: coprime power sets are complete",
       "startLine": 72,
-      "endLine": 91
+      "endLine": 91,
+      "mathContext": "$\\gcd(a,b) = 1,\\, a,b \\geq 2 \\Rightarrow P(a,b)$ is complete (Birch 1959)."
     },
     {
       "id": "cassels-generalization",
       "title": "Cassels' Generalization",
       "summary": "Logarithmic density criterion",
       "startLine": 93,
-      "endLine": 105
+      "endLine": 105,
+      "mathContext": "Cassels criterion: if $|S \\cap [1,N]| \\gg (\\log N)^{1+\\epsilon}$, then $S$ is complete."
     },
     {
       "id": "davenport-observation",
@@ -114,7 +150,8 @@
       "title": "Quantitative Bounds",
       "summary": "Hegyvári and Fang-Chen bounds",
       "startLine": 125,
-      "endLine": 139
+      "endLine": 139,
+      "mathContext": "Hegyvári (2000): $l \\leq 2^{2^{2^{2^{\\max(a,b)}}}}$. Fang-Chen (2017): $l \\leq 2^{2^{2^{\\max(a,b)}}}$."
     },
     {
       "id": "yu-result",
@@ -177,5 +214,32 @@
     "axiomCount": 19,
     "theoremCount": 3,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "foundational",
+      "description": "The GCD algorithm tests coprimality gcd(a,b) = 1, the essential hypothesis of Birch's theorem. Without coprimality, the set {a^k b^l} can have systematic divisibility patterns that prevent completeness"
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "foundational",
+      "description": "Bézout's identity (sa + tb = 1 for coprime a,b) is central to Birch's proof: coprimality ensures that a^k b^l generates elements whose residues modulo any prime cover all possibilities, a key ingredient for completeness"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique factorization ensures that products a^k b^l are distinct when gcd(a,b) = 1: two such products equal implies the same prime factorization, hence k = k' and l = l'. This injectivity is essential for the completeness argument"
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "related",
+      "description": "Powers of 2 form the prototypical complete sequence (binary representation). The geometric growth rate 2^k means the partial sums 1 + 2 + 4 + ··· + 2^k = 2^{k+1} - 1 cover all integers — the Erdős problem asks whether mixing two geometric sequences (a^k and b^l) preserves this completeness"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem counts subset sums: a set of n elements generates at most 2^n distinct subset sums. For powerSet(a,b), the ~(log N)² elements up to N generate 2^{(log N)²} ≫ N subset sums, providing the combinatorial basis for completeness"
+    }
+  ]
 }

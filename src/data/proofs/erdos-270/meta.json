@@ -55,7 +55,24 @@
       "NondecreasingConjecture definition: remaining open problem"
     ],
     "axiomCount": 8,
-    "lineCount": 274
+    "lineCount": 274,
+    "references": [
+      {
+        "key": "ErGr80",
+        "citation": "Erdős, P. and Graham, R.L., Old and New Problems and Results in Combinatorial Number Theory, L'Enseignement Mathématique (1980).",
+        "type": "book"
+      },
+      {
+        "key": "Gu04",
+        "citation": "Guy, R.K., Unsolved Problems in Number Theory, 3rd ed., Springer (2004).",
+        "type": "book"
+      },
+      {
+        "key": "TV06",
+        "citation": "Tao, T. and Vu, V.H., Additive Combinatorics, Cambridge University Press (2006).",
+        "type": "book"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "**Erdős Problem #270** was posed by Erdős and Graham concerning the rationality of certain series involving products. The series Σ 1/((n+1)(n+2)⋯(n+f(n))) where f(n) → ∞ was conjectured to always be irrational.\n\n**Key Historical Developments:**\n- **1975 (Hansen):** Showed that for f(n) = n, the sum equals 1/3 + 2π/3^(5/2), which is transcendental (not just irrational).\n- **1980 (Erdős-Graham):** Formally posed the conjecture, writing \"the answer is almost surely in the affirmative if f(n) is assumed to be nondecreasing.\"\n- **2025 (Crmarić-Kovač):** Completely disproved the conjecture! They showed that for ANY positive real α, there exists f with the sum equal to α.\n\nThe disproof is striking: the conjecture asked if the sum is ALWAYS irrational, but in fact it can be ANY positive real number - rational, irrational, or transcendental.",
@@ -68,6 +85,12 @@
       "**Measure Zero:** For non-decreasing f, the possible sums form a set of Lebesgue measure zero - strong evidence the restricted conjecture might be true.",
       "**Construction Key:** The disproof exploits non-monotonicity of f to \"tune\" partial sums to any target.",
       "**Recent Result:** This was only solved in 2025, showing active research continues on Erdős problems."
+    ],
+    "prerequisites": [
+      "Series convergence: tests for convergence of Σ $a_n$ with decreasing terms",
+      "Irrationality: methods for proving sums of series are irrational",
+      "Falling factorials: $(n+1)(n+2)\\cdots(n+k) = (n+k)!/n!$ and their reciprocals",
+      "Transcendence theory context: distinguishing rational, irrational, and transcendental sums"
     ]
   },
   "sections": [
@@ -156,5 +179,27 @@
     "axiomCount": 8,
     "theoremCount": 3,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "related",
+      "description": "The harmonic series Σ 1/n diverges, while the product-reciprocal series Σ 1/((n+1)···(n+f(n))) converges for f(n) → ∞. The convergence behavior depends on the growth rate of f(n), connecting to the study of partial products and their reciprocal sums"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "The transcendence of e (Hermite 1873) is the archetype of irrationality results for series. The series e = Σ 1/n! involves factorial denominators, while this problem studies products of consecutive integers — a related class of rapidly growing denominators"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "thematic",
+      "description": "Both address irrationality questions: √2 ∉ ℚ via the descent method, while this problem asks when series with product denominators yield irrational sums. The disproof shows that any positive real is achievable, contrasting with the definitive irrationality of √2"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization of the product (n+1)(n+2)···(n+f(n)) = (n+f(n))!/n! determines the denominator structure and affects whether the series sum is rational or irrational"
+    }
+  ]
 }
