@@ -24,16 +24,22 @@ noncomputable def leastPrimeFactor (n : ℕ) : ℕ :=
     else n.minFac
 
 /-- For `n ≥ 2`, `leastPrimeFactor n` is prime. -/
-axiom leastPrimeFactor_prime (n : ℕ) (hn : 2 ≤ n) :
-    (leastPrimeFactor n).Prime
+theorem leastPrimeFactor_prime (n : ℕ) (hn : 2 ≤ n) :
+    (leastPrimeFactor n).Prime := by
+  unfold leastPrimeFactor; simp [show ¬(n ≤ 1) from by omega]
+  exact Nat.minFac_prime (by omega)
 
 /-- `leastPrimeFactor n` divides `n` for `n ≥ 2`. -/
-axiom leastPrimeFactor_dvd (n : ℕ) (hn : 2 ≤ n) :
-    leastPrimeFactor n ∣ n
+theorem leastPrimeFactor_dvd (n : ℕ) (hn : 2 ≤ n) :
+    leastPrimeFactor n ∣ n := by
+  unfold leastPrimeFactor; simp [show ¬(n ≤ 1) from by omega]
+  exact Nat.minFac_dvd n
 
 /-- `leastPrimeFactor n` is at most any prime dividing `n`. -/
-axiom leastPrimeFactor_le (n p : ℕ) (hn : 2 ≤ n) (hp : p.Prime) (hpn : p ∣ n) :
-    leastPrimeFactor n ≤ p
+theorem leastPrimeFactor_le (n p : ℕ) (hn : 2 ≤ n) (hp : p.Prime) (hpn : p ∣ n) :
+    leastPrimeFactor n ≤ p := by
+  unfold leastPrimeFactor; simp [show ¬(n ≤ 1) from by omega]
+  exact Nat.minFac_le_of_dvd hp.two_le hpn
 
 /- ## Sums involving least prime factor -/
 
@@ -72,13 +78,21 @@ def ErdosProblem462 : Prop :=
 /- ## Basic properties -/
 
 /-- The least prime factor of a prime is itself. -/
-axiom leastPrimeFactor_prime_self (p : ℕ) (hp : p.Prime) :
-    leastPrimeFactor p = p
+theorem leastPrimeFactor_prime_self (p : ℕ) (hp : p.Prime) :
+    leastPrimeFactor p = p := by
+  unfold leastPrimeFactor; simp [show ¬(p ≤ 1) from by omega [hp.two_le]]
+  exact hp.minFac_eq
 
 /-- The least prime factor of any `n ≥ 2` is at least 2. -/
-axiom leastPrimeFactor_ge_two (n : ℕ) (hn : 2 ≤ n) :
-    2 ≤ leastPrimeFactor n
+theorem leastPrimeFactor_ge_two (n : ℕ) (hn : 2 ≤ n) :
+    2 ≤ leastPrimeFactor n := by
+  unfold leastPrimeFactor; simp [show ¬(n ≤ 1) from by omega]
+  exact (Nat.minFac_prime (by omega : n ≠ 1)).two_le
 
-/-- The least prime factor of any `n ≥ 2` is at most `√n`. -/
-axiom leastPrimeFactor_le_sqrt (n : ℕ) (hn : 2 ≤ n) (hc : ¬n.Prime) :
-    (leastPrimeFactor n : ℝ) ≤ (n : ℝ) ^ (1/2 : ℝ)
+/-- The least prime factor of any `n ≥ 2` is at most `√n` for composite `n`. -/
+theorem leastPrimeFactor_le_sqrt (n : ℕ) (hn : 2 ≤ n) (hc : ¬n.Prime) :
+    (leastPrimeFactor n : ℝ) ≤ (n : ℝ) ^ (1/2 : ℝ) := by
+  unfold leastPrimeFactor; simp [show ¬(n ≤ 1) from by omega]
+  have hsq : n.minFac ^ 2 ≤ n := Nat.minFac_sq_le_self (by omega) hc
+  rw [← Real.sqrt_eq_rpow, ← Real.sqrt_sq (Nat.cast_nonneg (n.minFac))]
+  exact Real.sqrt_le_sqrt (by exact_mod_cast hsq)
