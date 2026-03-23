@@ -677,6 +677,13 @@
       "year": "1930",
       "venue": "Springer (English translation: Frederick Ungar, 1949; 7th German edition 1966)",
       "note": "The landmark textbook that established the modern abstract algebra curriculum. van der Waerden's presentation of Galois theory as the interplay between field extensions and automorphism groups (rather than permutations of roots) became the standard framework used in this Lean formalization. His Chapter 8 contains the cleanest classical proof of Abel-Ruffini via the derived series of Sₙ"
+    },
+    {
+      "authors": "Burnside, William",
+      "title": "On groups of order p^α q^β",
+      "year": "1904",
+      "venue": "Proceedings of the London Mathematical Society, 2(1), pp. 388–392",
+      "note": "Proved that every group of order p^a q^b (two primes) is solvable, establishing that non-solvability requires at least three distinct prime factors. A₅ (order 60 = 2²·3·5) is the smallest group escaping this criterion, making the connection to Abel-Ruffini explicit: the minimal non-solvable group has exactly the structure needed to block quintic radical solutions"
     }
   ],
   "leanFile": {
