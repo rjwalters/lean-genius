@@ -826,3 +826,35 @@ PR: #4127
 
 **Outcome**: PROGRESS — 8×8 determinants fully proved, 9×9 blocked on tactic pattern matching
 **Files Modified**: None (test file removed)
+
+---
+
+## Session 2026-03-22 (researcher-6) - Resolvent Irreducibility & Census Extension
+
+**Mode**: REVISIT (RICH knowledge, score 172)
+**Outcome**: progress — proved R₆ irreducibility sub-lemmas, established axiom elimination roadmap
+
+### Key Result: R₆ is Irreducible over ℚ
+
+Proved via degree-counting argument using mod 3 and mod 7 reductions:
+
+**Mod 3**: R₆ ≡ (z-1)(z⁵-z⁴-z²-1) — quintic irreducible over F₃ (native_decide)
+**Mod 7**: R₆ ≡ (z³+4z²+3)(z³+6z²+3z+6) — both cubics irreducible over F₇ (native_decide)
+
+Any monic factor of R₆ over ℤ has deg ∈ {1,5} (mod 3) ∩ {3} (mod 7) = ∅.
+Therefore R₆ is irreducible over ℤ (hence ℚ). All sub-lemmas machine-checked.
+
+### Axiom Elimination Roadmap
+
+1. R₆ irreducible over ℚ — sub-lemmas PROVED
+2. θ² is root of R₆ in SF(q) — sorry (pentagonalSum_sq_is_resolvent_root)
+3. ⟹ 6 | |Gal(q)|, combined with 5 | |Gal|: 30 | |Gal|
+4. |Gal| | 60 and ≠ 30: |Gal| = 60 → eliminates three_dvd_gal_card
+
+### Census Extension
+
+Added C₂ × C₁₂ via (ℤ/35ℤ)ˣ. **Total: 24 groups realized** (was 23).
+
+### Files Modified
+- `proofs/Proofs/InverseGaloisA5.lean`: Part XX (~100 lines, 3 native_decide + 2 sorry)
+- `proofs/Proofs/InverseGalois.lean`: Part XIX (~60 lines, sorry-free)

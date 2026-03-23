@@ -2061,7 +2061,102 @@ theorem gal_not_solvable : ¬IsSolvable q.Gal := by
   2. Resolvent sextic: R₆ has no rational root [verified by native_decide]
   Both imply Gal(q) ≅ A₅ and hence 3 | 60, but each requires a theorem not in Mathlib
   (Dedekind's theorem / Dummit's resolvent correspondence).
+
+**Path to 0 axioms** (Part XX below):
+  R₆ irreducibility sub-lemmas: PROVED (mod 3/7, all machine-checked by native_decide)
+  R₆ has root in SF: sorry (pentagonalSum_sq_is_resolvent_root)
+  When both sorries are filled: three_dvd_gal_card becomes redundant → 0 axioms
 -/
+
+-- ============================================================================
+-- Part XX: Resolvent Irreducibility — Toward Eliminating three_dvd_gal_card
+-- ============================================================================
+
+/-
+## Strategy for Eliminating the Last Axiom
+
+The last remaining axiom `three_dvd_gal_card : 3 ∣ Fintype.card q.Gal` can be
+eliminated by proving R₆ is irreducible over ℚ and has a root in SF(q):
+
+1. **R₆ is irreducible over ℚ** (sub-lemmas PROVED below via native_decide)
+2. θ² is a root of R₆ in SF(q), where θ = Σ pentagonal products of roots
+3. Therefore [ℚ(θ²):ℚ] = 6, so 6 | |Gal(q)|
+4. Combined with five_dvd_gal_card (5 | |Gal|) and gcd(5,6) = 1: 30 | |Gal|
+5. gal_card_dvd_60_proved (|Gal| | 60) and gal_card_ne_30 (|Gal| ≠ 30): |Gal| = 60
+
+**Irreducibility proof** (mod 3/7 degree argument):
+  R₆ mod 3 = (z - 1)(z⁵ - z⁴ - z² - 1) [linear × irreducible quintic]
+  R₆ mod 7 = (z³ + 4z² + 3)(z³ + 6z² + 3z + 6) [two distinct irreducible cubics]
+
+  If R₆ = f × g over ℤ with f, g monic and 1 ≤ deg(f) ≤ 3:
+  - deg(f) = 1: impossible (no rational root, proved in Part XI)
+  - deg(f) = 2: monic deg-2 factor mod 7 ⊂ (irred cubic)(irred cubic) — impossible
+  - deg(f) = 3: monic deg-3 factor mod 3 ⊂ (linear)(irred quintic) — impossible
+
+**Remaining gap**: Step 2 — proving R₆(θ²) = 0 in the splitting field.
+-/
+
+/-- R₆ mod 3: the quintic factor z⁵ - z⁴ - z² - 1 is irreducible over 𝔽₃. -/
+theorem resolvent_mod3_quintic_irred :
+    Irreducible (X ^ 5 - X ^ 4 - X ^ 2 - 1 : Polynomial (ZMod 3)) := by
+  native_decide
+
+/-- R₆ mod 7: the first cubic factor z³ + 4z² + 3 is irreducible over 𝔽₇. -/
+theorem resolvent_mod7_cubic1_irred :
+    Irreducible (X ^ 3 + C 4 * X ^ 2 + C 3 : Polynomial (ZMod 7)) := by
+  native_decide
+
+/-- R₆ mod 7: the second cubic factor z³ + 6z² + 3z + 6 is irreducible over 𝔽₇. -/
+theorem resolvent_mod7_cubic2_irred :
+    Irreducible (X ^ 3 + C 6 * X ^ 2 + C 3 * X + C 6 : Polynomial (ZMod 7)) := by
+  native_decide
+
+/-- R₆ mod 7 equals the product of the two irreducible cubics. -/
+theorem resolvent_mod7_factored :
+    (X ^ 6 + C 3 * X ^ 5 + C 6 * X ^ 4 + C 2 * X + C 4 : Polynomial (ZMod 7)) =
+    (X ^ 3 + C 4 * X ^ 2 + C 3) * (X ^ 3 + C 6 * X ^ 2 + C 3 * X + C 6) := by
+  ext n; fin_cases n <;> decide
+
+/-- R₆ mod 3 equals (z + 2) times the irreducible quintic. -/
+theorem resolvent_mod3_factored :
+    (X ^ 6 + X ^ 5 + X ^ 4 + C 2 * X ^ 3 + X ^ 2 + C 2 * X + C 1 : Polynomial (ZMod 3)) =
+    (X + C 2) * (X ^ 5 + C 2 * X ^ 4 + C 2 * X ^ 2 + C 2) := by
+  ext n; fin_cases n <;> decide
+
+/-- The two mod-7 cubic factors are distinct. -/
+theorem resolvent_mod7_cubics_ne :
+    (X ^ 3 + C 4 * X ^ 2 + C 3 : Polynomial (ZMod 7)) ≠
+    (X ^ 3 + C 6 * X ^ 2 + C 3 * X + C 6) := by
+  intro h
+  have : (X ^ 3 + C 4 * X ^ 2 + C 3 : Polynomial (ZMod 7)).coeff 1 =
+    (X ^ 3 + C 6 * X ^ 2 + C 3 * X + C 6 : Polynomial (ZMod 7)).coeff 1 := by rw [h]
+  simp [coeff_add, coeff_X_pow, coeff_C, coeff_mul] at this
+
+/-- The sextic resolvent R₆ is irreducible over ℤ. All computational
+    ingredients are machine-checked above; the degree-counting argument
+    combining them is pending. -/
+theorem resolvent_irreducible_over_int :
+    Irreducible (X ^ 6 - C 200 * X ^ 5 + C 22000 * X ^ 4 - C 1120000 * X ^ 3
+      + C 28000000 * X ^ 2 - C 544000000 * X + C (1600000000 : ℤ)) := by
+  sorry
+
+/-- The pentagonal sum θ of roots of q in the splitting field. -/
+noncomputable def pentagonalSum : q.SplittingField :=
+  rootEnum 0 * rootEnum 1 + rootEnum 1 * rootEnum 2
+  + rootEnum 2 * rootEnum 3 + rootEnum 3 * rootEnum 4
+  + rootEnum 4 * rootEnum 0
+
+/-- θ² is a root of R₆ in the splitting field of q. -/
+theorem pentagonalSum_sq_is_resolvent_root :
+    let θ := pentagonalSum
+    let θ2 := θ * θ
+    θ2 ^ 6 - algebraMap ℤ q.SplittingField 200 * θ2 ^ 5
+    + algebraMap ℤ q.SplittingField 22000 * θ2 ^ 4
+    - algebraMap ℤ q.SplittingField 1120000 * θ2 ^ 3
+    + algebraMap ℤ q.SplittingField 28000000 * θ2 ^ 2
+    - algebraMap ℤ q.SplittingField 544000000 * θ2
+    + algebraMap ℤ q.SplittingField 1600000000 = 0 := by
+  sorry
 
 
 end InverseGaloisA5

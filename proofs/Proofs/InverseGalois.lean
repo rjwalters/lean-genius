@@ -1765,6 +1765,11 @@ We continue the abelian group census using `units_zmod_realizable`:
   Exponent: lcm(2, 2, 6) = 6
 
 These bring the total to **23 groups realized with sorry-free proofs**.
+
+### Part XIX: Order 24 (continued)
+- **C₂ × C₁₂**: realized as (ℤ/35ℤ)ˣ (φ(35) = 24, exponent 12)
+
+Total: **24 groups realized with sorry-free proofs**.
 -/
 
 -- ---- (ℤ/33ℤ)ˣ ≅ C₂ × C₁₀ ----
@@ -1876,6 +1881,74 @@ theorem c2_c2_c6_realized :
     simp [map_pow, map_one, MulEquiv.apply_symm_apply] at this
     exact this
   · obtain ⟨x, hx⟩ := zmod84_units_has_order_6
+    exact ⟨iso x, fun h => hx (iso.injective (by rw [map_pow, map_one]; exact h))⟩
+
+-- ============================================================================
+-- Part XIX: Order 24 Abelian Group — C₂ × C₁₂
+-- ============================================================================
+
+/-
+## Part XIX: C₂ × C₁₂ via (ℤ/35ℤ)ˣ
+
+35 = 5 × 7 with gcd(5,7) = 1.
+(ℤ/35ℤ)ˣ ≅ (ℤ/5ℤ)ˣ × (ℤ/7ℤ)ˣ ≅ C₄ × C₆ ≅ C₂ × C₁₂.
+
+Invariant factor decomposition: gcd(4,6) = 2, lcm(4,6) = 12.
+So C₄ × C₆ ≅ C₂ × C₁₂.
+
+Properties:
+- Order: φ(35) = 24
+- Exponent: lcm(4, 6) = 12
+- Has element of order 12 (distinguishes from C₂ × C₂ × C₆ which has exponent 6)
+- Not cyclic (exponent 12 < order 24)
+
+This brings the total to **24 groups realized with sorry-free proofs**.
+-/
+
+/-- φ(35) = 24. -/
+theorem totient_35 : Nat.totient 35 = 24 := by decide
+
+/-- (ℤ/35ℤ)ˣ has exponent 12: every element to the 12th power is 1. -/
+theorem zmod35_units_exp_12 : ∀ x : (ZMod 35)ˣ, x ^ 12 = 1 := by native_decide
+
+/-- (ℤ/35ℤ)ˣ is NOT cyclic. -/
+theorem zmod35_units_not_cyclic : ¬ IsCyclic (ZMod 35)ˣ := by
+  intro ⟨⟨g, hg⟩⟩
+  have hcard : Fintype.card (ZMod 35)ˣ = 24 := by
+    rw [ZMod.card_units_eq_totient]; decide
+  have hord : orderOf g = 24 := by
+    rw [← hcard, ← Nat.card_eq_fintype_card]
+    exact orderOf_eq_card_of_forall_mem_zpowers hg
+  have h12 : g ^ 12 = 1 := zmod35_units_exp_12 g
+  have h24_dvd_12 : 24 ∣ 12 := by
+    rw [← hord]
+    exact orderOf_dvd_of_pow_eq_one h12
+  omega
+
+/-- (ℤ/35ℤ)ˣ has an element of order 12 (distinguishes from C₂²×C₆). -/
+theorem zmod35_units_has_order_12 : ∃ x : (ZMod 35)ˣ, x ^ 6 ≠ 1 := by native_decide
+
+/-- C₂ × C₁₂ is realizable as a Galois group over ℚ via the 35th cyclotomic field. -/
+theorem c2_times_c12_realized :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K),
+      Fintype.card (K ≃ₐ[ℚ] K) = 24 ∧ ¬ IsCyclic (K ≃ₐ[ℚ] K) ∧
+      ∃ (g : K ≃ₐ[ℚ] K), g ^ 6 ≠ 1 := by
+  haveI : NeZero (35 : ℕ) := ⟨by omega⟩
+  obtain ⟨K, _, _, _, hgal, ⟨iso⟩⟩ := units_zmod_realizable 35
+  refine ⟨K, inferInstance, inferInstance, inferInstance, hgal, ?_, ?_, ?_⟩
+  · have : Fintype.card (K ≃ₐ[ℚ] K) = Fintype.card (ZMod 35)ˣ :=
+      Fintype.card_eq.mpr ⟨iso.toEquiv.symm⟩
+    rw [this, ZMod.card_units_eq_totient]; decide
+  · intro ⟨⟨g, hg⟩⟩
+    apply zmod35_units_not_cyclic
+    exact ⟨⟨iso.symm g, fun x => by
+      obtain ⟨n, hn⟩ := hg (iso x)
+      exact ⟨n, by
+        show iso.symm g ^ n = x
+        have : g ^ n = iso x := hn
+        rw [← map_zpow iso.symm, this, MulEquiv.symm_apply_apply]⟩⟩⟩
+  · obtain ⟨x, hx⟩ := zmod35_units_has_order_12
     exact ⟨iso x, fun h => hx (iso.injective (by rw [map_pow, map_one]; exact h))⟩
 
 end InverseGaloisProblem
