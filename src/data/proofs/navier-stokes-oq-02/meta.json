@@ -125,6 +125,28 @@
       "Can the 3D analogue NSSolutionPair3D be formalized, making explicit where the uniqueness argument fails?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "navier-stokes",
+      "relationship": "parent",
+      "description": "Parent Navier-Stokes formalization providing the foundational structures (GlobalNSSolution2D, enstrophy bounds) that this well-posedness proof builds upon."
+    },
+    {
+      "targetId": "navier-stokes-existence",
+      "relationship": "related",
+      "description": "The Clay Millennium Prize problem on 3D Navier-Stokes existence and smoothness. This 2D well-posedness result highlights exactly where the 3D argument breaks: unbounded enstrophy."
+    },
+    {
+      "targetId": "schauder-fixed-point",
+      "relationship": "foundational",
+      "description": "Fixed-point methods for existence of PDE solutions. The Schauder fixed-point theorem provides existence results that complement the uniqueness and stability proved here."
+    }
+  ],
+  "relatedProofs": [
+    "navier-stokes",
+    "navier-stokes-existence",
+    "schauder-fixed-point"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.Calculus.Deriv.Basic",

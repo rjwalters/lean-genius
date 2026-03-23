@@ -196,6 +196,28 @@
     "theoremCount": 17,
     "definitionCount": 0
   },
+  "crossReferences": [
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "foundational",
+      "description": "The Intermediate Value Theorem underpins the scalar MVT equality f'(c) = slope, which has no vector analogue. The vector MVT inequality replaces the IVT-based argument with the triangle inequality."
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "related",
+      "description": "The Fundamental Theorem of Calculus connects differentiation and integration. The MVT inequality can be seen as a norm estimate on the integral: ||f(b)-f(a)|| = ||integral of f'|| <= C(b-a)."
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "foundational",
+      "description": "The triangle inequality in normed spaces is the key tool replacing IVT in the vector-valued setting, enabling the norm bound ||f(b)-f(a)|| <= C(b-a) that defines the mean value inequality."
+    }
+  ],
+  "relatedProofs": [
+    "intermediate-value-theorem",
+    "fundamental-theorem-calculus",
+    "triangle-inequality"
+  ],
   "references": [
     {
       "authors": "Jean Dieudonné",
