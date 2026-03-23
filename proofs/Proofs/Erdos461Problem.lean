@@ -95,6 +95,18 @@ private lemma no_small_prime_in_complement (t n p : ℕ) (hp : p.Prime)
   simp at this
   omega
 
+/-- Product of filtered list times product of complement equals product of original.
+    This is the multiplicative partition identity for filter predicates. -/
+private lemma list_prod_filter_mul_not (l : List ℕ) (P : ℕ → Bool) :
+    (l.filter P).prod * (l.filter (fun x => !P x)).prod = l.prod := by
+  induction l with
+  | nil => simp
+  | cons a tl ih =>
+    simp only [List.filter_cons, Bool.not_eq_true']
+    by_cases hP : P a <;> simp [hP, List.prod_cons]
+    · rw [mul_assoc, ih]
+    · rw [mul_left_comm, ih]
+
 /-- `smoothComponent t n` is the largest `t`-smooth divisor of `n`.
     Requires `n ≠ 0` since `smoothComponent t 0 = 1` but any
     `d` with all primes `< t` divides 0.
@@ -103,7 +115,30 @@ private lemma no_small_prime_in_complement (t n p : ℕ) (hp : p.Prime)
     are coprime (disjoint prime support), so d ∣ smoothComponent. -/
 theorem smoothComponent_largest (t n d : ℕ) (hn : n ≠ 0) :
     d ∣ n → (∀ p : ℕ, p.Prime → p ∣ d → p < t) → d ∣ smoothComponent t n := by
-  sorry
+  intro hdn hsmooth
+  -- Define the complement part: product of prime factors ≥ t
+  set comp := (n.factors.filter (fun x => ¬ x < t)).prod with hcomp_def
+  -- Key fact: n = smoothComponent * comp (partition of prime factorization)
+  have hfact : smoothComponent t n * comp = n := by
+    unfold smoothComponent
+    rw [list_prod_filter_mul_not, Nat.prod_factors hn]
+  -- d and comp are coprime: no prime divides both
+  have hcop : Nat.Coprime d comp := by
+    rw [Nat.coprime_comm, Nat.coprime_iff_gcd_eq_one]
+    by_contra h
+    push_neg at h
+    -- gcd > 1 means some prime divides both
+    have hgcd := Nat.exists_prime_and_dvd (by omega : Nat.gcd comp d ≠ 1)
+    obtain ⟨p, hp, hpg⟩ := hgcd
+    have hpcomp := (Nat.dvd_gcd.mp hpg).1
+    have hpd := (Nat.dvd_gcd.mp hpg).2
+    -- p | d → p < t (by smoothness of d)
+    have hpt := hsmooth p hp hpd
+    -- p | comp → p ≥ t (all factors of comp are ≥ t)
+    exact no_small_prime_in_complement t n p hp hpt hpcomp
+  -- d | smoothComponent * comp and coprime d comp → d | smoothComponent
+  have hdn' : d ∣ smoothComponent t n * comp := hfact ▸ hdn
+  exact (Nat.Coprime.dvd_of_dvd_mul_right hcop) hdn'
 
 /- ## Counting distinct smooth components -/
 
