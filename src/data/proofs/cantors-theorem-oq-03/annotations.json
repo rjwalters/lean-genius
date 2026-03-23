@@ -1,1 +1,168 @@
-[]
+[
+  {
+    "id": "ann-module-doc",
+    "proofId": "cantors-theorem-oq-03",
+    "range": {
+      "startLine": 3,
+      "endLine": 39
+    },
+    "type": "context",
+    "title": "Module Documentation: Diagonal Argument Hierarchy",
+    "content": "This module answers Open Question #3 from the Cantor's theorem gallery entry by revealing a three-level hierarchy of diagonal arguments:\n\n**Level 1 — Lawvere** (1969): One fixed-point-free map $g : \\beta \\to \\beta$ applied uniformly to produce $d(i) = g(f(i)(i))$.\n**Level 2 — Coordinate**: Different dodge values at each index, same target type.\n**Level 3 — König** (1905): Different types AND dodges at each index (heterogeneous).\n\nKönig captures cardinal arithmetic ($\\sum \\kappa_i < \\prod \\lambda_i$), while Cantor and Lawvere are special cases. The entire development is 0 sorries, 0 axioms.",
+    "mathContext": "König's inequality: if $\\kappa_i < \\lambda_i$ for all $i \\in I$, then $\\sum_i \\kappa_i < \\prod_i \\lambda_i$. Cantor's theorem $\\kappa < 2^{\\kappa}$ is the special case $\\kappa_i = 1$, $\\lambda_i = 2$. The diagonal hierarchy reveals the structural core: each level generalizes the dodge strategy.",
+    "significance": "key",
+    "prerequisites": [
+      "Cantor's diagonal argument",
+      "dependent types (Sigma and Pi)",
+      "König's theorem in set theory"
+    ],
+    "relatedConcepts": [
+      "diagonal argument",
+      "cardinal arithmetic",
+      "Lawvere fixed-point theorem",
+      "non-enumerability"
+    ]
+  },
+  {
+    "id": "ann-konig",
+    "proofId": "cantors-theorem-oq-03",
+    "range": {
+      "startLine": 70,
+      "endLine": 108
+    },
+    "type": "theorem",
+    "title": "König's Heterogeneous Diagonal Principle",
+    "content": "Three formulations of König's principle:\n\n1. `konig_principle`: If each column $\\text{col}_i : \\alpha_i \\to \\beta_i$ (defined by $\\text{col}_i(a) = f(\\langle i, a\\rangle)(i)$) misses some $b_i \\in \\beta_i$, then $f$ is not surjective. The diagonal witness $d$ with $d(i) = b_i$ is missed.\n\n2. `konig_witness_ne`: The explicit witness: $d \\neq f(s)$ for all $s \\in \\Sigma_i \\alpha_i$, because they differ at coordinate $s.1$.\n\n3. `konig_of_column_not_surj`: If no column projection is surjective, $f$ is not surjective. This makes the cardinality connection explicit.",
+    "mathContext": "$f : (\\Sigma_i \\alpha_i) \\to (\\Pi_i \\beta_i)$. Define $\\text{col}_i : \\alpha_i \\to \\beta_i$ by $\\text{col}_i(a) = f(i, a)(i)$. If $\\text{col}_i$ is not surjective for each $i$, choose $b_i \\notin \\text{range}(\\text{col}_i)$ and form $d = (b_i)_{i \\in I}$. Then $d \\notin \\text{range}(f)$ because $d(i) = b_i \\neq f(i,a)(i)$ for all $a \\in \\alpha_i$.",
+    "significance": "key",
+    "prerequisites": [
+      "Sigma types",
+      "Pi types",
+      "Function.Surjective",
+      "congr_fun"
+    ],
+    "relatedConcepts": [
+      "cardinal arithmetic",
+      "heterogeneous diagonal",
+      "column surjectivity",
+      "dependent function types"
+    ]
+  },
+  {
+    "id": "ann-coordinate",
+    "proofId": "cantors-theorem-oq-03",
+    "range": {
+      "startLine": 127,
+      "endLine": 143
+    },
+    "type": "theorem",
+    "title": "The Coordinate Diagonal: Intermediate Generalization",
+    "content": "`coordinate_diagonal`: If $\\text{dodge}(i) \\neq f(i)(i)$ for all $i$, then $\\text{dodge} \\notin \\text{range}(f)$. Unlike Lawvere, the dodge values need not come from a single fixed-point-free map — any pointwise deviation suffices.\n\nThis is strictly between Lawvere (uniform dodge via $g$) and König (heterogeneous types). It captures the essence of Cantor's original argument: construct a sequence differing from the $n$-th listed sequence at position $n$.",
+    "mathContext": "Given $f : \\iota \\to \\iota \\to \\beta$ and $\\text{dodge} : \\iota \\to \\beta$ with $\\text{dodge}(i) \\neq f(i)(i)$ for all $i$. If $f$ were surjective, $\\exists n, f(n) = \\text{dodge}$, giving $f(n)(n) = \\text{dodge}(n) \\neq f(n)(n)$ — contradiction.",
+    "significance": "key",
+    "prerequisites": [
+      "Function.Surjective",
+      "function extensionality"
+    ],
+    "relatedConcepts": [
+      "Cantor's diagonal",
+      "pointwise construction",
+      "non-enumerability"
+    ]
+  },
+  {
+    "id": "ann-classical",
+    "proofId": "cantors-theorem-oq-03",
+    "range": {
+      "startLine": 157,
+      "endLine": 187
+    },
+    "type": "theorem",
+    "title": "Cantor and Lawvere as Special Cases",
+    "content": "`lawvere_from_diagonal`: A fixed-point-free $g : \\beta \\to \\beta$ provides the uniform dodge strategy $\\text{dodge}(i) = g(f(i)(i))$. One line: the fixed-point-free property $g(b) \\neq b$ gives $g(f(i)(i)) \\neq f(i)(i)$.\n\n`not_no_fixed_point`: Negation on Prop has no fixed point — if $\\neg p = p$, then $p \\Leftrightarrow \\neg p$, giving the liar-paradox-style contradiction $\\neg p \\land p$.\n\n`cantor_bool`, `cantor_prop`, `cantor_set`: Cantor's theorem for Bool, Prop, and Set derived from Lawvere using negation ($!b \\neq b$, $\\neg p \\neq p$).",
+    "mathContext": "Lawvere specialization: set $\\text{dodge}(i) = g(f(i)(i))$. Then $\\text{dodge}(i) \\neq f(i)(i)$ because $g(b) \\neq b$ for all $b$. The coordinate diagonal gives $\\neg\\text{Surjective}(f)$.\n\nCantor: $g = \\text{not}$ on Bool or $g = \\neg$ on Prop. Since Set $\\alpha = \\alpha \\to \\text{Prop}$, Cantor's $|\\alpha| < |\\mathcal{P}(\\alpha)|$ follows directly.",
+    "significance": "key",
+    "prerequisites": [
+      "coordinate_diagonal",
+      "Bool.not",
+      "Prop negation"
+    ],
+    "relatedConcepts": [
+      "Lawvere fixed-point theorem",
+      "Russell's paradox",
+      "liar paradox",
+      "power set"
+    ]
+  },
+  {
+    "id": "ann-fpf",
+    "proofId": "cantors-theorem-oq-03",
+    "range": {
+      "startLine": 207,
+      "endLine": 225
+    },
+    "type": "insight",
+    "title": "Fixed-Point-Free Endomorphisms: The Universal Criterion",
+    "content": "The diagonal argument works on a type $\\beta$ precisely when $\\beta$ admits a fixed-point-free endomorphism $g : \\beta \\to \\beta$ (i.e., $g(b) \\neq b$ for all $b$).\n\nExamples: Bool negation ($!b \\neq b$, proved by `decide`), $\\mathbb{N}$ successor ($n+1 \\neq n$, by `omega`), $\\mathbb{Z}$ successor ($n+1 \\neq n$, by `omega`), Prop negation ($\\neg p \\neq p$, by the liar argument).\n\n`fpf_implies_non_enumerable` is the master theorem: any type with a fpf endomorphism yields non-enumerability of its function space.",
+    "mathContext": "$g : \\beta \\to \\beta$ is fixed-point-free $\\Leftrightarrow$ $\\forall b, g(b) \\neq b$. This is equivalent to $|\\beta| \\geq 2$ when $\\beta$ is finite (since the identity is always an endomorphism, any other permutation has fixed-point-free powers). For infinite $\\beta$, successor provides a canonical fpf map.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Bool.not_eq_self",
+      "Nat.succ_ne_self",
+      "Prop negation"
+    ],
+    "relatedConcepts": [
+      "fixed-point-free map",
+      "derangement",
+      "non-enumerability",
+      "Lawvere criterion"
+    ]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "cantors-theorem-oq-03",
+    "range": {
+      "startLine": 239,
+      "endLine": 274
+    },
+    "type": "theorem",
+    "title": "Applications: Non-Enumerability and Hierarchy Completion",
+    "content": "`nat_seq_uncountable`: No surjection $\\mathbb{N} \\to (\\mathbb{N} \\to \\mathbb{N})$ — the diagonal element $d(n) = f(n)(n) + 1$ differs from every listed sequence. This uses successor, not complementation, showing the diagonal works beyond set theory.\n\n`int_seq_uncountable`: Same for $\\mathbb{N} \\to (\\mathbb{N} \\to \\mathbb{Z})$.\n\n`konig_implies_lawvere`: König implies Lawvere by encoding $f : \\alpha \\to (\\alpha \\to \\beta)$ as a König map with constant fibers $\\alpha_i = \\text{Unit}$, $\\beta_i = \\beta$. Each column has 1 element mapping to $\\beta$, and since $g$ is fpf, $|\\beta| \\geq 2 > 1$, so each column can dodge. This completes the hierarchy: König $\\Rightarrow$ Coordinate $\\Rightarrow$ Lawvere.",
+    "mathContext": "$\\mathbb{N} \\to \\mathbb{N}$ non-enumerable: $d(n) = f(n)(n) + 1$. Since $\\text{succ}$ is fpf on $\\mathbb{N}$, `fpf_implies_non_enumerable` applies.\n\nKönig $\\Rightarrow$ Lawvere: set $\\alpha_i = 1$ (Unit), $\\beta_i = \\beta$ for all $i$. Then $\\Sigma_i \\alpha_i \\cong \\alpha$ and $\\Pi_i \\beta_i \\cong (\\alpha \\to \\beta)$. König's dodging gives Lawvere's non-surjectivity.",
+    "significance": "key",
+    "prerequisites": [
+      "fpf_implies_non_enumerable",
+      "konig_principle",
+      "PUnit"
+    ],
+    "relatedConcepts": [
+      "uncountability",
+      "Cantor's diagonal",
+      "successor function",
+      "hierarchy completion"
+    ]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "cantors-theorem-oq-03",
+    "range": {
+      "startLine": 280,
+      "endLine": 308
+    },
+    "type": "context",
+    "title": "Summary: The Complete Diagonal Hierarchy",
+    "content": "The closing commentary summarizes the three-level hierarchy and its implications:\n\n- **Level 1** (Lawvere): uniform dodge via fpf map — captures Russell, Gödel, Cantor\n- **Level 2** (Coordinate): pointwise dodge — captures non-enumerability\n- **Level 3** (König): heterogeneous types and dodges — captures cardinal arithmetic\n\nThe universality principle: the diagonal works on any type with $\\geq 2$ distinguishable elements (equivalently, admitting a fpf endomorphism). König's cardinal inequality $\\sum \\kappa_i < \\prod \\lambda_i$ is the most general form.",
+    "mathContext": "König $\\Rightarrow$ Coordinate $\\Rightarrow$ Lawvere. Cantor's $\\kappa < 2^{\\kappa}$ = König with $\\kappa_i = 1, \\lambda_i = 2$. The hierarchy shows the diagonal argument is not one technique but a spectrum parameterized by: (1) uniformity of dodge, (2) homogeneity of types.",
+    "significance": "supporting",
+    "prerequisites": [
+      "König's theorem",
+      "Lawvere's fixed-point theorem",
+      "cardinal arithmetic"
+    ],
+    "relatedConcepts": [
+      "proof hierarchy",
+      "generalization spectrum",
+      "cardinal inequality"
+    ]
+  }
+]
