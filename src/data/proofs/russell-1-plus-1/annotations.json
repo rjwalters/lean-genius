@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "The Most Famous 'Trivial' Proof",
     "content": "The claim that Principia Mathematica took 362 pages to prove $1+1=2$ has become legendary—and somewhat misleading. Those pages weren't proving a single equation; they were constructing the entire logical framework needed to give rigorous meaning to the symbols '1', '+', '=', and '2'.\n\nIn modern type theory, this proof is definitionally true: the computation $1+1$ *reduces to* $2$ by the very definitions of the symbols involved. The `rfl` tactic (reflexivity) captures this.",
+    "mathContext": "Introduction to the formalization of The Most Famous 'Trivial' Proof",
     "significance": "key",
     "relatedConcepts": [
       "Principia Mathematica",
@@ -124,6 +125,7 @@
     "type": "insight",
     "title": "The Power of 'rfl'",
     "content": "This alternative proof using just `rfl` shows the true elegance of type theory. The term `rfl` (reflexivity) proves any goal of the form `a = a`.\n\nBut here's the magic: type theory has **definitional equality** built in. If `a` and `b` compute to the same normal form, then `a = b` is proved by `rfl`. Since `one + one` and `two` both reduce to `succ (succ zero)`, they're definitionally equal.\n\nThis is why the proof is 'trivial'—it's not that we're avoiding work, it's that the *definitions themselves* do the work.",
+    "mathContext": "Lean: `def add : ℕ → ℕ → ℕ`",
     "significance": "key",
     "prerequisites": [
       "ann-unfold-proof"
@@ -219,6 +221,7 @@
     "type": "concept",
     "title": "Extending the Pattern",
     "content": "Once we have the machinery, more arithmetic facts fall out immediately:\n\n- $2 + 1 = 3$ — `rfl`\n- $1 + 2 = 3$ — `rfl` \n- $2 + 2 = 4$ — `rfl`\n\nAll definitionally true, requiring no proof beyond reflexivity. The pattern extends to any concrete computation with natural numbers.",
+    "mathContext": "Lean: `theorem succ_add (n m : ℕ) : succ n + m = succ (n + m)`",
     "significance": "supporting",
     "relatedConcepts": [
       "definitional equality",
@@ -235,6 +238,7 @@
     "type": "concept",
     "title": "Lean's Built-in Naturals",
     "content": "Lean's standard library defines `Nat` identically to our `Peano.ℕ`:\n\n```lean\ninductive Nat where\n  | zero : Nat\n  | succ : Nat → Nat\n```\n\nThe numeric literals `1`, `2`, etc. are notation for `Nat.succ Nat.zero`, `Nat.succ (Nat.succ Nat.zero)`, etc. And `Nat.add` is defined exactly as our `add`. So the proof `(1 : Nat) + 1 = 2` is also just `rfl`.",
+    "mathContext": "Lean: `theorem add_comm (n m : ℕ) : n + m = m + n`",
     "significance": "supporting",
     "prerequisites": [
       "ann-peano-inductive"
@@ -254,6 +258,7 @@
     "type": "concept",
     "title": "Understanding Principia Mathematica",
     "content": "Russell and Whitehead weren't trying to prove $1+1=2$ in isolation—they were building a complete logical foundation for all of mathematics.\n\nTheir approach was radically different from ours:\n\n- **Numbers as sets:** 1 was defined as *the set of all singleton sets*, 2 as *the set of all two-element sets*\n- **Addition via unions:** $a + b$ meant taking the union of disjoint representatives\n- **Ramified type theory:** To avoid paradoxes, they used a complex type hierarchy\n\nIn contrast, modern type theory treats natural numbers as a primitive inductive type, making the foundations far simpler. We're not cheating—we've just found a better foundation.",
+    "mathContext": "Lean: `theorem two_plus_one_eq_three : two + one = three`",
     "significance": "key",
     "relatedConcepts": [
       "Frege-Russell definition",

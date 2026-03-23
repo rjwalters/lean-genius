@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "A Primality Characterization",
     "content": "Wilson's theorem gives a complete characterization of prime numbers in terms of factorials:\n\n$$n > 1 \\text{ is prime} \\iff (n-1)! \\equiv -1 \\pmod{n}$$\n\nThis is remarkable because:\n- It provides an *exact* test for primality (not probabilistic)\n- The condition involves only modular arithmetic\n- It reveals deep structure about how primes behave\n\nHowever, computing $(n-1)!$ is computationally expensive, making this impractical for actual primality testing.",
+    "mathContext": "Overview: Wilson's theorem gives a complete characterization of prime numbers in terms of factorials:",
     "significance": "critical",
     "relatedConcepts": [
       "primality testing",
@@ -167,6 +168,7 @@
     "type": "tactic",
     "title": "Working with ZMod",
     "content": "In Lean/Mathlib, `ZMod n` represents the integers modulo $n$:\n\n```\nZMod n := if n = 0 then Z else Fin n\n```\n\nFor prime $p$, `ZMod p` is a field (we can divide). The typeclass `Fact (Nat.Prime p)` provides this automatically.\n\nThe coercion `(k : ZMod n)` converts a natural number to its residue class.",
+    "mathContext": "$(p-1)! \\equiv -1 \\pmod{p}$ for prime $p$",
     "significance": "supporting",
     "relatedConcepts": [
       "ZMod",

@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "The Theorem That Took 124 Years",
     "content": "The Four Color Theorem has a remarkable history. Posed in 1852, it resisted proof for over a century, defeating many brilliant mathematicians. Its eventual 1976 proof required something unprecedented: a computer checking thousands of cases no human could verify.\n\nThe theorem states that any map can be colored with at most four colors such that no two adjacent regions share a color. While easy to state and seemingly simple, the proof revealed deep connections between graph theory, combinatorics, and computation.\n\nThis formalization presents the conceptual structure. The complete proof (Appel-Haken 1976, Gonthier 2005) requires computer verification of 1,936 configurations.",
+    "mathContext": "Introduction to the formalization of The Theorem That Took 124 Years",
     "significance": "critical",
     "relatedConcepts": [
       "graph theory",
@@ -26,6 +27,7 @@
     "type": "definition",
     "title": "Graphs and Their Structure",
     "content": "We model maps as graphs where vertices represent regions and edges connect adjacent regions. This transforms the map coloring problem into a graph coloring problem.\n\nA graph $G = (V, E)$ consists of:\n- A set $V$ of vertices (the regions)\n- A set $E$ of edges (adjacency relations)\n- Edges are symmetric: if region A borders B, then B borders A\n\nThis abstraction lets us apply graph-theoretic tools to a geometric problem.",
+    "mathContext": "Every planar graph is 4-colorable: $\\chi(G) \\le 4$",
     "significance": "key",
     "relatedConcepts": [
       "vertex",
@@ -61,6 +63,7 @@
     "type": "definition",
     "title": "Planar Graphs",
     "content": "A graph is **planar** if it can be drawn in the plane with no edge crossings. Equivalently, it can be embedded on a sphere.\n\nNot all graphs are planar! The complete graph $K_5$ (5 vertices, all connected) and the complete bipartite graph $K_{3,3}$ are the 'forbidden minors'—every non-planar graph contains one of these as a substructure.\n\nPlanarity is essential to the theorem. Non-planar graphs can require arbitrarily many colors.",
+    "mathContext": "Every planar graph is 4-colorable: $\\chi(G) \\le 4$",
     "significance": "critical",
     "relatedConcepts": [
       "planar embedding",
@@ -139,6 +142,7 @@
     "type": "concept",
     "title": "Kempe Chains: The Color-Swapping Trick",
     "content": "A **Kempe chain** for colors a and b starting at vertex v is the maximal connected subgraph of vertices colored a or b containing v.\n\nThe crucial property: swapping colors a ↔ b on a Kempe chain produces another valid coloring! Adjacent vertices still have different colors because:\n- Vertices outside the chain keep their colors\n- Inside the chain, neighbors alternate between a and b\n\nKempe invented this for his 1879 'proof' of Four Colors. His argument was flawed, but the technique is correct and essential. The flaw was in handling cases where multiple Kempe chains interact.",
+    "mathContext": "Every planar graph is 4-colorable: $\\chi(G) \\le 4$",
     "significance": "critical",
     "relatedConcepts": [
       "color swapping",
@@ -176,6 +180,7 @@
     "type": "concept",
     "title": "Reducibility: Configurations That Can't Block Coloring",
     "content": "A configuration C is **reducible** if it cannot appear in a minimal counterexample to Four Color. That is: if a planar graph G contains C, then G is 4-colorable (or G can be simplified to a smaller graph that's 4-colorable).\n\nProving reducibility requires showing that any 4-coloring of the graph minus the configuration can be extended to include it. This involves analyzing all possible colorings of the boundary and showing Kempe chains can always make room.\n\nFor many configurations, this case analysis is astronomically complex—too many cases for human verification. This is where computers become essential.",
+    "mathContext": "Every planar graph is 4-colorable: $\\chi(G) \\le 4$",
     "significance": "critical",
     "relatedConcepts": [
       "minimal counterexample",
@@ -193,6 +198,7 @@
     "type": "concept",
     "title": "Computer-Assisted Proof",
     "content": "The Appel-Haken proof (1976) required:\n- 1,200 hours of computer time\n- Verification of 1,936 configurations\n- 400+ pages of hand-written supporting proofs\n\nInitial reception was skeptical. How can we trust a proof no human can check? What if there's a bug in the program?\n\nGeorges Gonthier's 2005 Coq formalization addressed these concerns by reducing trust to a small, verified proof-checking kernel. The proof certificate is machine-checkable, and the checker itself is tiny enough to be human-verified.\n\nThis paradigm shift—from 'trust the program' to 'trust the proof checker'—has become foundational in formal methods.",
+    "mathContext": "Every planar graph is 4-colorable: $\\chi(G) \\le 4$",
     "significance": "key",
     "relatedConcepts": [
       "Coq",
@@ -210,6 +216,7 @@
     "type": "insight",
     "title": "Gonthier's Coq Formalization",
     "content": "In 2005, Georges Gonthier completed a full formalization of the Four Color Theorem in Coq. This was a landmark achievement:\n\n- **Complete verification:** Every step machine-checked, including all 1,936 configurations\n- **Independent verification:** The Coq proof is a certificate anyone can verify using the proof checker\n- **Trust reduction:** We no longer trust Appel-Haken's program; we trust Coq's small kernel\n\nThe formalization took several person-years but provided certainty that the theorem is correct. It demonstrated that even massive computational proofs can be made rigorous through formal methods.",
+    "mathContext": "Every planar graph is 4-colorable: $\\chi(G) \\le 4$",
     "significance": "key",
     "relatedConcepts": [
       "Coq proof assistant",

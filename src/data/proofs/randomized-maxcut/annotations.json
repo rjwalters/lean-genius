@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import key Mathlib modules: `Finset.Basic` for finite set operations and summation, `SimpleGraph.Basic` and `SimpleGraph.Finite` for graph structure and edge sets, and `Data.Real.Basic` for real number arithmetic in probability calculations.",
+    "mathContext": "Introduction to the formalization of Mathlib Imports",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
@@ -86,6 +87,7 @@
     "type": "tactic",
     "title": "Sym2 Induction",
     "content": "To prove something about an unordered pair $e$, we use `induction e using Sym2.ind` to get representatives $u, v$. The hypothesis `h : ¬e.IsDiag` ensures $u \\neq v$ (edges don't have both endpoints the same).",
+    "mathContext": "Lean: `lemma prob_edge_in_cut {V : Type*} [DecidableEq V] [Fintype V] (G : SimpleGraph V)`",
     "significance": "supporting",
     "relatedConcepts": [
       "quotient induction",

@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Dual Perspectives on CLT",
     "content": "This proof presents the Central Limit Theorem through two complementary lenses. The **classical approach** uses characteristic functions (Fourier transforms) to show convergence. The **topological approach** reveals why the Gaussian emerges: it is a fixed-point attractor in the dynamics of averaging.",
+    "mathContext": "Introduction to the formalization of Dual Perspectives on CLT",
     "significance": "critical",
     "relatedConcepts": [
       "characteristic functions",
@@ -26,6 +27,7 @@
     "type": "concept",
     "title": "Mathlib Dependencies",
     "content": "We import from multiple Mathlib domains: **Probability.Distributions.Gaussian** for the Gaussian measure, **Fourier.FourierTransform** for characteristic functions, and **Topology.MetricSpace** for the geometric interpretation. This interdisciplinary foundation reflects the theorem's broad reach.",
+    "mathContext": "Introduction to the formalization of Mathlib Dependencies",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
@@ -78,6 +80,7 @@
     "type": "insight",
     "title": "Moments from Derivatives",
     "content": "Taking derivatives of the characteristic function at $t=0$ extracts moments: $\\varphi'(0) = i\\mu$ (mean), $\\varphi''(0) = i^2(\\mu^2 + \\sigma^2)$ (second moment). The Taylor expansion $\\varphi(t) = 1 + it\\mu - t^2\\sigma^2/2 + O(t^3)$ encodes the distribution's shape in its coefficients.",
+    "mathContext": "$\\frac{\\bar{X}_n - \\mu}{\\sigma/\\sqrt{n}} \\xrightarrow{d} N(0,1)$",
     "significance": "key",
     "relatedConcepts": [
       "Taylor series",
@@ -116,6 +119,7 @@
     "type": "concept",
     "title": "The Product-to-Exponential Limit",
     "content": "The classical limit $(1 + x/n)^n \\to e^x$ is the engine of CLT. For the normalized sum $S_n = (X_1 + \\cdots + X_n)/\\sqrt{n}$, we have $\\varphi_{S_n}(t) = [\\varphi_X(t/\\sqrt{n})]^n$. Taylor expansion gives $\\varphi_X(t/\\sqrt{n}) \\approx 1 - t^2/(2n)$, and $(1 - t^2/(2n))^n \\to e^{-t^2/2}$.",
+    "mathContext": "$\\frac{\\bar{X}_n - \\mu}{\\sigma/\\sqrt{n}} \\xrightarrow{d} N(0,1)$",
     "significance": "critical",
     "relatedConcepts": [
       "exponential limit",
@@ -195,6 +199,7 @@
     "type": "concept",
     "title": "The Topological Viewpoint",
     "content": "Now we shift perspective: instead of computing limits, we ask WHY the Gaussian emerges. The answer: **it is a fixed point attractor** of the renormalization group flow on the space of probability distributions.\n\nThis dynamical systems perspective reveals that CLT is not an accident of computation but a consequence of the structure of the convolution operation.",
+    "mathContext": "Introduction to the formalization of The Topological Viewpoint",
     "significance": "critical",
     "relatedConcepts": [
       "dynamical systems",
@@ -324,6 +329,7 @@
     "type": "concept",
     "title": "Synthesis: Why the Gaussian is Universal",
     "content": "The Central Limit Theorem reveals the Gaussian as a **mathematical necessity**, not an accident:\n\n1. **Dynamically**: It is the unique fixed-point attractor of the averaging operation\n2. **Information-theoretically**: It maximizes entropy at fixed variance\n3. **Analytically**: It is self-dual under Fourier transform\n4. **Probabilistically**: It is the only finite-variance stable distribution\n\nWherever we see many small independent effects being summed—measurement errors, thermal fluctuations, stock prices, IQ scores—the Gaussian emerges because averaging dynamics demand it.",
+    "mathContext": "$\\frac{\\bar{X}_n - \\mu}{\\sigma/\\sqrt{n}} \\xrightarrow{d} N(0,1)$",
     "significance": "critical",
     "relatedConcepts": [
       "universality",

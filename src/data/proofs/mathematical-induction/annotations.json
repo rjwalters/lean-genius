@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "The Foundation of Recursive Reasoning",
     "content": "Mathematical induction is the principle that allows us to prove statements about all natural numbers by:\n\n1. **Base Case**: Prove the statement holds for 0\n2. **Inductive Step**: Prove that if it holds for $n$, it holds for $n+1$\n\n$$P(0) \\land (\\forall n. P(n) \\to P(n+1)) \\to \\forall n. P(n)$$\n\nThis is Peano's fifth axiom, and it's what distinguishes the natural numbers from other structures.",
+    "mathContext": "Introduction to the formalization of The Foundation of Recursive Reasoning",
     "significance": "critical",
     "relatedConcepts": [
       "Peano axioms",
@@ -63,6 +64,7 @@
     "type": "insight",
     "title": "Induction IS the Recursor",
     "content": "The alternative proof `weak_induction'` shows that induction is literally the recursor:\n\n```lean\ntheorem weak_induction' ... : ∀ n, P n :=\n  Nat.rec base step\n```\n\nIn type theory, the induction principle for any inductive type is automatically generated as its **recursor**. For `Nat`, this is `Nat.rec`.",
+    "mathContext": "Lean: `theorem weak_induction' (P : ℕ → Prop) (base : P 0) (step : ∀ n, P n → P (n + 1)) :`",
     "significance": "key",
     "relatedConcepts": [
       "recursor",
@@ -98,6 +100,7 @@
     "type": "concept",
     "title": "Why Use Strong Induction?",
     "content": "Strong induction is more convenient when the proof of $P(n)$ needs information about values other than $n-1$.\n\n**Example**: To prove every $n \\geq 2$ has a prime divisor:\n- If $n$ is prime, done.\n- If $n = ab$ is composite, we need $P(a)$ where $a$ could be much smaller than $n-1$.\n\nWeak induction would require a more complex auxiliary statement.",
+    "mathContext": "$P(0) \\wedge (\\forall n,\\, P(n) \\to P(n+1)) \\to \\forall n,\\, P(n)$",
     "significance": "key",
     "relatedConcepts": [
       "divisibility",
@@ -220,6 +223,7 @@
     "type": "concept",
     "title": "Connection to Type Theory",
     "content": "In Lean's type theory, the natural numbers are defined as an **inductive type**:\n\n```lean\ninductive Nat where\n  | zero : Nat\n  | succ : Nat → Nat\n```\n\nThe induction principle is automatically generated as the **recursor** `Nat.rec`:\n\n```lean\nNat.rec : (base : P 0) → (step : ∀ n, P n → P (n+1)) → (n : ℕ) → P n\n```\n\nThis is exactly the computational content of the induction principle!",
+    "mathContext": "$P(0) \\wedge (\\forall n,\\, P(n) \\to P(n+1)) \\to \\forall n,\\, P(n)$",
     "significance": "key",
     "relatedConcepts": [
       "inductive types",
@@ -237,6 +241,7 @@
     "type": "concept",
     "title": "Generalizing to Other Data Types",
     "content": "Induction generalizes to any inductively defined type. For lists:\n\n```lean\ntheorem list_induction (P : List α → Prop)\n    (base : P [])\n    (step : ∀ x xs, P xs → P (x :: xs)) :\n    ∀ l, P l\n```\n\nThis is **structural induction**: prove for the empty list, and prove for `x :: xs` assuming it holds for `xs`.",
+    "mathContext": "Lean: `theorem list_induction {α : Type*} (P : List α → Prop)`",
     "significance": "supporting",
     "relatedConcepts": [
       "structural induction",

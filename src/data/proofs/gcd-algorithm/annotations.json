@@ -9,6 +9,7 @@
     "type": "context",
     "title": "The Oldest Algorithm",
     "content": "The Euclidean algorithm is arguably the oldest non-trivial algorithm still in common use:\n\n$$\\gcd(a, b) = \\gcd(b, a \\mod b)$$\n\n**Why it matters**:\n- Over 2,300 years old (Euclid's Elements, c. 300 BCE)\n- Foundation of modern cryptography (RSA, Diffie-Hellman)\n- Remarkably efficient: O(log min(a, b)) steps\n- Extends to polynomials, Gaussian integers, and more\n\nThe algorithm terminates because $a \\mod b < b$, giving a strictly decreasing sequence.",
+    "mathContext": "Introduction to the formalization of The Oldest Algorithm",
     "significance": "critical",
     "relatedConcepts": [
       "divisibility",
@@ -150,6 +151,7 @@
     "type": "concept",
     "title": "Algebraic Properties",
     "content": "GCD satisfies many nice algebraic properties:\n\n- **Commutativity**: $\\gcd(a, b) = \\gcd(b, a)$\n- **Associativity**: $\\gcd(\\gcd(a, b), c) = \\gcd(a, \\gcd(b, c))$\n- **Identity**: $\\gcd(a, 0) = a$\n- **Idempotence**: $\\gcd(a, a) = a$\n- **Absorption with 1**: $\\gcd(a, 1) = 1$\n\nThese make $(\\mathbb{N}, \\gcd)$ a semilattice (actually, with LCM it forms a lattice).",
+    "mathContext": "$\\gcd(a, b) = \\gcd(b, a \\bmod b)$",
     "significance": "supporting",
     "relatedConcepts": [
       "lattice theory",
@@ -255,6 +257,7 @@
     "type": "concept",
     "title": "Euclidean Domains",
     "content": "The algorithm generalizes beyond natural numbers to any **Euclidean domain**:\n\n- **Integers** $\\mathbb{Z}$: Same algorithm with absolute value\n- **Polynomials** $F[x]$: Polynomial GCD and division\n- **Gaussian integers** $\\mathbb{Z}[i]$: Complex number version\n\nA Euclidean domain has:\n1. A Euclidean function $\\phi$ (for $\\mathbb{N}$, just the identity)\n2. Division with remainder: $a = qb + r$ where $\\phi(r) < \\phi(b)$\n\nThis abstraction is key in abstract algebra and computer algebra systems.",
+    "mathContext": "$\\gcd(a, b) = \\gcd(b, a \\bmod b)$",
     "significance": "key",
     "relatedConcepts": [
       "Euclidean domain",

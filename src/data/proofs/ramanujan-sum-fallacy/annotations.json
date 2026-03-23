@@ -45,6 +45,7 @@
     "type": "definition",
     "title": "Defining the Natural Number Series",
     "content": "We define `naturals n = n + 1` to get the sequence $1, 2, 3, 4, \\ldots$ (offset by 1 because $\\mathbb{N}$ starts at 0 in Lean).",
+    "mathContext": "$\\sum_{n=1}^{\\infty} n \\ne -\\frac{1}{12}$ (divergent series are not summable in the classical sense)",
     "significance": "supporting",
     "relatedConcepts": [
       "natural numbers",
@@ -131,6 +132,7 @@
     "type": "lemma",
     "title": "Alternating Naturals Don't Converge Either",
     "content": "The series $1-2+3-4+5-6+\\cdots$ also diverges. Its partial sums grow without bound in absolute value: $1, -1, 2, -2, 3, -3, \\ldots$",
+    "mathContext": "Lean: `theorem grandi_not_summable : ¬ Summable grandi`",
     "significance": "key",
     "relatedConcepts": [
       "divergence",
@@ -164,6 +166,7 @@
     "type": "theorem",
     "title": "FALLACY: Shift-Add Blocked by Type System",
     "content": "When we try to apply the shift-and-add manipulation to our divergent series, **Lean blocks us**. We would need `Summable alternatingNaturals`, but we proved this is false!",
+    "mathContext": "$\\sum_{n=1}^{\\infty} n \\ne -\\frac{1}{12}$ (divergent series are not summable in the classical sense)",
     "significance": "critical",
     "relatedConcepts": [
       "type checking",
@@ -232,6 +235,7 @@
     "type": "theorem",
     "title": "Step 2 Fails: Cannot Shift Divergent Series",
     "content": "The second step uses the shift-and-add manipulation. **BLOCKED**: This requires `Summable` which we cannot prove for divergent series.",
+    "mathContext": "$\\sum_{n=1}^{\\infty} n \\ne -\\frac{1}{12}$ (divergent series are not summable in the classical sense)",
     "significance": "critical",
     "relatedConcepts": [
       "second fallacy",
@@ -265,6 +269,7 @@
     "type": "concept",
     "title": "Conclusion: Type Systems Enforce Rigor",
     "content": "Lean's type system and Mathlib's design choices enforce mathematical rigor automatically:\n\n1. **Summable typeclass**: Acts as proof obligation before series manipulation\n2. **tsum = 0 convention**: Prevents arithmetic on divergent 'values'\n3. **Distinct types**: Regularization would be a different function entirely\n\nThe -1/12 result is useful in physics, but it requires different mathematical machinery that Lean would model with appropriate types.",
+    "mathContext": "Lean: `theorem step1_exposed : (∑' n, grandi n) = 0`",
     "significance": "critical",
     "relatedConcepts": [
       "formal verification",

@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "The Most Beautiful Equation",
     "content": "Euler's Identity $e^{i\\pi} + 1 = 0$ is often called the most beautiful equation in mathematics. It connects five fundamental constants that arise from completely different areas of mathematics:\n\n- **e** from calculus and continuous growth\n- **i** from algebra and complex numbers\n- **$\\pi$** from geometry and circles\n- **1** the multiplicative identity\n- **0** the additive identity\n\nThe fact that these five constants, discovered independently, combine so simply suggests a deep underlying unity in mathematics.",
+    "mathContext": "Introduction to the formalization of The Most Beautiful Equation",
     "significance": "critical",
     "relatedConcepts": [
       "fundamental constants",
@@ -158,6 +159,7 @@
     "type": "concept",
     "title": "Geometry: Exponentials as Rotation",
     "content": "$e^{i\\theta}$ traces the **unit circle** in the complex plane as $\\theta$ varies:\n\n- $e^{i \\cdot 0} = 1$ (rightmost)\n- $e^{i\\pi/2} = i$ (topmost)\n- $e^{i\\pi} = -1$ (leftmost)\n- $e^{i \\cdot 3\\pi/2} = -i$ (bottommost)\n\n**Key insight**: Multiplying any complex number by $e^{i\\theta}$ **rotates** it by angle $\\theta$!\n\nThis is why complex exponentials appear in:\n- **Physics**: Wave functions $\\psi = Ae^{i(kx - \\omega t)}$\n- **Engineering**: Phasors in AC circuits\n- **Signal processing**: Fourier transforms\n\nRotation = multiplication by $e^{i\\theta}$ is one of the most powerful ideas in applied mathematics.",
+    "mathContext": "$e^{i\\pi} + 1 = 0$",
     "significance": "key",
     "relatedConcepts": [
       "polar form",
@@ -193,6 +195,7 @@
     "type": "concept",
     "title": "Why This Matters",
     "content": "Euler's Identity is the tip of an iceberg—the practical power lies in the full formula $e^{ix} = \\cos x + i \\sin x$:\n\n**Quantum Mechanics**: Wave functions are complex exponentials. Schrödinger's equation involves $i$ essentially.\n\n**Signal Processing**: The Fourier transform decomposes signals into complex exponentials, enabling everything from MP3s to medical imaging.\n\n**Electrical Engineering**: AC circuits use 'phasors'—complex numbers representing oscillating voltages and currents.\n\n**Differential Equations**: Solutions to $y'' + y = 0$ are $e^{\\pm ix} = \\cos x \\pm i \\sin x$.\n\nWithout Euler's Formula, modern physics and engineering would be vastly more complicated.",
+    "mathContext": "$e^{i\\pi} + 1 = 0$",
     "significance": "key",
     "relatedConcepts": [
       "Fourier analysis",

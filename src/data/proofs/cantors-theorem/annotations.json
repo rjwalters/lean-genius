@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "The Hierarchy of Infinities",
     "content": "Cantor's theorem establishes that **not all infinities are equal**. For any set A:\n\n$$|A| < |\\mathcal{P}(A)| = 2^{|A|}$$\n\nThis means:\n- There are strictly more subsets of N than there are natural numbers\n- There are strictly more real numbers than rationals\n- The hierarchy continues: $|\\mathbb{N}| < |\\mathcal{P}(\\mathbb{N})| < |\\mathcal{P}(\\mathcal{P}(\\mathbb{N}))| < ...$\n\nThe proof uses the **diagonal argument**, which constructs an explicit witness to the non-surjectivity of any proposed function.",
+    "mathContext": "Overview: Cantor's theorem establishes that **not all infinities are equal**. For any set A:",
     "significance": "critical",
     "relatedConcepts": [
       "cardinal numbers",
@@ -62,6 +63,7 @@
     "type": "theorem",
     "title": "Set Formulation Proof",
     "content": "The proof using `Set A` instead of `(A -> Prop)`:\n\n1. **Assume** f : A -> Set A is surjective\n2. **Define** D = {x | x not in f x}\n3. **By surjectivity**, exists b with f(b) = D\n4. **Consider**: Is b in D?\n   - **If b in D**: By definition, b not in f(b) = D. Contradiction!\n   - **If b not in D**: By definition, b in f(b) = D. Contradiction!\n5. **Conclude**: No such surjection exists\n\nThe `by_cases` tactic handles the case split, and `simp only [hb]` substitutes f(b) = D to reach the contradiction.",
+    "mathContext": "$|S| < |\\mathcal{P}(S)|$ for any set $S$",
     "significance": "key",
     "relatedConcepts": [
       "proof by contradiction",
@@ -133,6 +135,7 @@
     "type": "concept",
     "title": "Constructive Witness",
     "content": "Unlike many existence proofs, Cantor's theorem is **constructive**:\n\nGiven ANY f : A -> Set A, we can **explicitly construct** a set D not in the range of f.\n\n```lean\ntheorem cantor_witness (A : Type*) (f : A -> Set A) :\n    exists D : Set A, forall a : A, f a != D\n```\n\nThe witness is always the diagonal set D = {x | x not in f(x)}.\n\nThis constructivity is important because:\n- We don't just know D exists - we know exactly what it is\n- The proof can be 'run' to produce the witness\n- It works in constructive mathematics (intuitionistic logic)",
+    "mathContext": "$|S| < |\\mathcal{P}(S)|$ for any set $S$",
     "significance": "key",
     "relatedConcepts": [
       "constructive proof",
@@ -150,6 +153,7 @@
     "type": "concept",
     "title": "Connection to Russell's Paradox",
     "content": "The diagonal set D = {x | x not in f(x)} is reminiscent of **Russell's paradox**.\n\nRussell asked: Consider R = {x | x not in x}. Is R in R?\n- If R in R, then by definition, R not in R. Contradiction!\n- If R not in R, then by definition, R in R. Contradiction!\n\nThe key difference:\n- **Russell**: Tries to define a set in terms of *all* sets\n- **Cantor**: Defines a set in terms of a *specific function* f\n\nType theory resolves Russell's paradox by **stratifying** types into universes. A set can only contain elements of a lower type, preventing self-membership.",
+    "mathContext": "$|S| < |\\mathcal{P}(S)|$ for any set $S$",
     "significance": "key",
     "relatedConcepts": [
       "Russell's paradox",
@@ -167,6 +171,7 @@
     "type": "concept",
     "title": "Wiedijk #22 vs #63",
     "content": "This proof is the **general form** of Cantor's theorem:\n\n- **Wiedijk #63 (this proof)**: For any set A, no surjection A -> P(A)\n- **Wiedijk #22 (CantorDiagonalization.lean)**: The reals are uncountable (no surjection N -> R)\n\n#22 is a **special case** of #63:\n- Take A = N (natural numbers)\n- P(N) corresponds to binary sequences (N -> Bool), which represent reals in [0,1]\n- No surjection N -> (N -> Bool) means |N| < |R|\n\nBoth proofs use the diagonal argument, but #63 is the more abstract formulation.",
+    "mathContext": "$|S| < |\\mathcal{P}(S)|$ for any set $S$",
     "significance": "supporting",
     "relatedConcepts": [
       "uncountability",

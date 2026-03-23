@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import `Mathlib.Analysis.PSeries` which contains the main theorems about p-series convergence and the harmonic series, plus `Mathlib.Topology.Algebra.InfiniteSum.Basic` for the `Summable` predicate.",
+    "mathContext": "Introduction to the formalization of Mathlib Imports",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
@@ -80,6 +81,7 @@
     "type": "lemma",
     "title": "Terms are Positive",
     "content": "A simple but necessary fact: $1/n > 0$ for all $n > 0$. This ensures all our terms contribute positively to the sum.",
+    "mathContext": "$\\sum_{n=1}^{\\infty} \\frac{1}{n} = \\infty$",
     "significance": "supporting",
     "relatedConcepts": [
       "positivity",

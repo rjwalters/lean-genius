@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Antisymmetry of Cardinality",
     "content": "The Schroeder-Bernstein theorem establishes that cardinality is **antisymmetric**: if we can inject A into B and B into A, then A and B have the same size.\n\nThis is remarkable because:\n- We only need *injections* (one-to-one functions), not *bijections* (one-to-one and onto)\n- The bijection is guaranteed to exist, even though we don't explicitly construct it\n- This works for *infinite* sets, where counting elements doesn't make sense\n\nThe theorem allows indirect proofs of equicardinality: instead of building a bijection directly, we can find injections in both directions.",
+    "mathContext": "Overview: The Schroeder-Bernstein theorem establishes that cardinality is **antisymmetric**: if we can inject A into B and B into A, then A and B have the same size.",
     "significance": "critical",
     "relatedConcepts": [
       "cardinal numbers",
@@ -62,6 +63,7 @@
     "type": "definition",
     "title": "Embeddings",
     "content": "An **embedding** (`A hookrightarrow B`) is an injective function bundled with its injectivity proof:\n\n```\nstructure Embedding (A B : Type) where\n  to_fun : A -> B\n  injective : Injective to_fun\n```\n\nEmbeddings are the natural morphisms for 'subset-like' relationships between types. The notation `A hookrightarrow B` means 'A embeds into B' or 'A is at most as large as B'.\n\nMathlib's `Function.Embedding.antisymm` states: embeddings both ways implies equivalence exists.",
+    "mathContext": "$|A| \\le |B|$ and $|B| \\le |A|$ implies $|A| = |B|$",
     "significance": "key",
     "relatedConcepts": [
       "injective function",
@@ -97,6 +99,7 @@
     "type": "concept",
     "title": "The Orbit Partition Strategy",
     "content": "The classical proof works by **partitioning elements into orbits**:\n\n**Step 1**: For any element, trace backwards:\n- From $a \\in A$: look for $b$ with $g(b) = a$, then $a'$ with $f(a') = b$, etc.\n- The chain: $... \\to a' \\to b \\to a \\to f(a) \\to g(f(a)) \\to ...$\n\n**Step 2**: Classify by termination:\n- **Type A**: Chain terminates in A (no preimage under g at some point)\n- **Type B**: Chain terminates in B (no preimage under f at some point)\n- **Type C**: Chain is infinite (never terminates)\n\n**Step 3**: Define the bijection:\n- Type A/C elements: use $f$ (go forward)\n- Type B elements: use $g^{-1}$ (go backward)\n\nThis requires **classical logic** to decide which type each element is.",
+    "mathContext": "$|A| \\le |B|$ and $|B| \\le |A|$ implies $|A| = |B|$",
     "significance": "critical",
     "relatedConcepts": [
       "orbit",
@@ -114,6 +117,7 @@
     "type": "concept",
     "title": "Classical vs Constructive",
     "content": "The Schroeder-Bernstein theorem is **inherently classical**:\n\n- It requires the **law of excluded middle** to partition elements into orbit types\n- In fact, Schroeder-Bernstein is **equivalent** to excluded middle (assuming infinity axiom)\n\n**Constructively**, we cannot decide whether an element's backward chain terminates or not. The theorem fails in constructive settings like:\n- Intuitionistic type theory\n- Bishop-style constructive mathematics\n\nMathlib uses classical logic throughout, so this is not an issue for formalization.",
+    "mathContext": "$|A| \\le |B|$ and $|B| \\le |A|$ implies $|A| = |B|$",
     "significance": "key",
     "relatedConcepts": [
       "law of excluded middle",
@@ -166,6 +170,7 @@
     "type": "concept",
     "title": "Connection to Cantor's Theorem",
     "content": "Schroeder-Bernstein and **Cantor's theorem** work together:\n\n- **Cantor**: There is no surjection $A \\to \\mathcal{P}(A)$, so $|A| < |\\mathcal{P}(A)|$\n- **Schroeder-Bernstein**: To show $|X| = |Y|$, find injections both ways\n\n**Example**: Proving $|\\mathbb{R}| = |\\mathcal{P}(\\mathbb{N})|$\n1. Injection $\\mathbb{R} \\to \\mathcal{P}(\\mathbb{N})$: encode reals as sets of rationals (Dedekind cuts)\n2. Injection $\\mathcal{P}(\\mathbb{N}) \\to \\mathbb{R}$: binary representation $S \\mapsto \\sum_{n \\in S} 2^{-n}$\n3. Apply Schroeder-Bernstein!\n\nWithout SB, we'd need to construct an explicit bijection, which is much harder.",
+    "mathContext": "$|A| \\le |B|$ and $|B| \\le |A|$ implies $|A| = |B|$",
     "significance": "key",
     "relatedConcepts": [
       "Cantor's theorem",
@@ -183,6 +188,7 @@
     "type": "concept",
     "title": "Visualizing the Bijection",
     "content": "The ASCII diagram shows the orbit structure:\n\n```\nA                           B\no--f--> o                   o--g--> o\n         \\                 /\n           o <--g-- o--f--> o\n                     \\\n                       ...\n```\n\n**Reading the diagram**:\n- `o` represents elements (filled = A, empty = B)\n- Arrows show where f and g map elements\n- Following arrows backwards classifies orbit type\n\n**The bijection h**:\n- Follows f-arrows for Type A/C elements\n- Follows g-arrows backwards for Type B elements\n\nThe key insight: every element in B is reached exactly once.",
+    "mathContext": "$|A| \\le |B|$ and $|B| \\le |A|$ implies $|A| = |B|$",
     "significance": "supporting",
     "relatedConcepts": [
       "graph theory",
@@ -200,6 +206,7 @@
     "type": "concept",
     "title": "Where Schroeder-Bernstein Fails",
     "content": "The theorem is **specific to sets**. It fails for:\n\n**Groups**: There exist groups $G, H$ with injective homomorphisms $G \\to H$ and $H \\to G$, but $G \\not\\cong H$ as groups.\n\n**Rings**: Similarly, non-isomorphic rings can embed into each other.\n\n**Topological spaces**: Embeddings both ways don't imply homeomorphism.\n\n**Ordered sets**: Monotone injections both ways don't imply order-isomorphism.\n\nThe 'Schroeder-Bernstein property' holds for **sets and cardinal numbers**, but not for most algebraic or topological structures.",
+    "mathContext": "$|A| \\le |B|$ and $|B| \\le |A|$ implies $|A| = |B|$",
     "significance": "key",
     "relatedConcepts": [
       "group homomorphism",
