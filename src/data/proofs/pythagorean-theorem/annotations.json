@@ -118,7 +118,7 @@
     "title": "Perpendicularity via Inner Product",
     "content": "Two vectors are **perpendicular** (or orthogonal) if and only if their inner product is zero:\n\n$$\\vec{v} \\perp \\vec{w} \\iff \\langle \\vec{v}, \\vec{w} \\rangle = 0$$\n\nThis is the algebraic translation of 'at right angles'. It's remarkable that such a simple algebraic condition captures a geometric concept.\n\nExample: $(1, 0)$ and $(0, 1)$ are perpendicular because $1 \\cdot 0 + 0 \\cdot 1 = 0$.",
     "mathContext": "$\\vec{v} \\perp \\vec{w} \\iff \\langle \\vec{v}, \\vec{w} \\rangle = 0$",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [
       "inner product spaces",
       "normed vector spaces"
@@ -136,7 +136,7 @@
       "startLine": 86,
       "endLine": 107
     },
-    "type": "technique",
+    "type": "lemma",
     "title": "Bilinearity of Inner Product",
     "content": "The inner product is **bilinear**, meaning it distributes over addition in both arguments:\n\n$$\\langle \\vec{u} + \\vec{v}, \\vec{w} \\rangle = \\langle \\vec{u}, \\vec{w} \\rangle + \\langle \\vec{v}, \\vec{w} \\rangle$$\n$$\\langle \\vec{u}, \\vec{v} + \\vec{w} \\rangle = \\langle \\vec{u}, \\vec{v} \\rangle + \\langle \\vec{u}, \\vec{w} \\rangle$$\n\nThis property is what makes the Pythagorean theorem work: when we expand $\\|\\vec{v} + \\vec{w}\\|^2$, the bilinearity gives us all four terms.",
     "mathContext": "Bilinearity: linear in each argument",
@@ -158,11 +158,11 @@
       "startLine": 86,
       "endLine": 107
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "The Pythagorean Theorem (Vector Form)",
     "content": "The theorem states: if $\\vec{v} \\perp \\vec{w}$, then\n\n$$\\|\\vec{v} + \\vec{w}\\|^2 = \\|\\vec{v}\\|^2 + \\|\\vec{w}\\|^2$$\n\nThe proof is a beautiful application of bilinearity:\n\n1. $\\|\\vec{v} + \\vec{w}\\|^2 = \\langle \\vec{v} + \\vec{w}, \\vec{v} + \\vec{w} \\rangle$ (by definition)\n2. $= \\langle \\vec{v}, \\vec{v} \\rangle + \\langle \\vec{v}, \\vec{w} \\rangle + \\langle \\vec{w}, \\vec{v} \\rangle + \\langle \\vec{w}, \\vec{w} \\rangle$ (bilinearity)\n3. $= \\|\\vec{v}\\|^2 + 0 + 0 + \\|\\vec{w}\\|^2$ (perpendicularity!)\n4. $= \\|\\vec{v}\\|^2 + \\|\\vec{w}\\|^2$\n\nThe cross terms vanish because the vectors are perpendicular.",
     "mathContext": "$\\vec{v} \\perp \\vec{w} \\implies \\|\\vec{v} + \\vec{w}\\|^2 = \\|\\vec{v}\\|^2 + \\|\\vec{w}\\|^2$",
-    "significance": "key",
+    "significance": "critical",
     "prerequisites": [
       "ann-perpendicular",
       "ann-bilinearity"
@@ -225,7 +225,7 @@
       "startLine": 138,
       "endLine": 152
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Classical Formulation: a² + b² = c²",
     "content": "The classical theorem states that for a right triangle with legs $a, b$ and hypotenuse $c$:\n\n$$a^2 + b^2 = c^2$$\n\nIn our vector notation:\n- $a = \\|\\text{legB}\\|$ (length of leg B)\n- $b = \\|\\text{legA}\\|$ (length of leg A)  \n- $c = \\|\\text{legA} - \\text{legB}\\|$ (length of hypotenuse)\n\nThe theorem follows directly from our vector form.",
     "mathContext": "$a^2 + b^2 = c^2$",
@@ -291,7 +291,7 @@
       "startLine": 171,
       "endLine": 209
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Computational Verification",
     "content": "Lean can **compute** that these are valid Pythagorean triples using `native_decide`. This tactic evaluates the arithmetic and checks that both sides equal the same value.\n\nFor $(3, 4, 5)$:\n- Left side: $3^2 + 4^2 = 9 + 16 = 25$\n- Right side: $5^2 = 25$\n- Equal? Yes! Proof complete.\n\nThis is one of Lean's strengths: verifiable computation meets rigorous proof.",
     "mathContext": "Lean's `native_decide` tactic evaluates decidable propositions by computation, e.g., $3^2 + 4^2 = 25 = 5^2$ is verified by reduction.",
@@ -313,7 +313,7 @@
       "startLine": 171,
       "endLine": 209
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "The Converse Theorem",
     "content": "The **converse** of the Pythagorean theorem states:\n\n*If the sides of a triangle satisfy $a^2 + b^2 = c^2$, then the angle opposite $c$ is a right angle.*\n\nThis appears as Proposition 48 in Book I of Euclid's Elements. It means we can *test* whether an angle is 90° using only length measurements—no protractor needed!\n\nThe converse is crucial in surveying, construction, and navigation.",
     "mathContext": "$a^2 + b^2 = c^2 \\implies$ right angle",

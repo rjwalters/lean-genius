@@ -10,14 +10,16 @@
     "title": "Module Header: Problem Statement and Status",
     "content": "Documents Erdős Problem #36: partition $\\{1,\\ldots,2N\\}$ into equal halves $A, B$ and minimize the maximum overlap $\\max_k |\\{(a,b) : a-b=k\\}|$. The asymptotic constant $c = \\lim M(N)/N$ is pinned to $0.379005 < c < 0.380876$ but its exact value remains open. References erdosproblems.com and Wikipedia.",
     "mathContext": "$M(N) = \\min_{A \\sqcup B = [2N]} \\max_k r_{A-B}(k)$, $c = \\lim M(N)/N \\in (0.379, 0.381)$. Status: OPEN.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "minimax problem",
       "equal partition",
-      "asymptotic constant"
+      "asymptotic constant",
+      "representation function"
     ],
     "prerequisites": [
-      "basic combinatorics"
+      "basic combinatorics",
+      "additive number theory"
     ]
   },
   {

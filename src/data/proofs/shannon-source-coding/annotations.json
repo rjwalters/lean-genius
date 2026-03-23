@@ -2,61 +2,123 @@
   {
     "id": "ann-header-context",
     "proofId": "shannon-source-coding",
-    "range": { "startLine": 1, "endLine": 11 },
+    "range": {
+      "startLine": 1,
+      "endLine": 11
+    },
     "type": "context",
     "title": "Shannon Source Coding Theorem",
     "content": "This module formalizes Shannon's source coding theorem (1948): the entropy $H(X)$ is the fundamental limit of lossless data compression. Data from a source with entropy $H$ can be compressed to $H + \\varepsilon$ bits per symbol, but not below $H - \\varepsilon$, with asymptotically zero error probability. This is the 'data compression' half of Shannon's foundational 1948 paper, complementing the channel coding theorem.",
     "mathContext": "Shannon source coding: for an i.i.d. source with entropy $H(X) = -\\sum_x p(x)\\log p(x)$, lossless compression to rate $R$ bits/symbol is achievable iff $R > H(X)$.",
-    "significance": "context",
-    "relatedConcepts": ["entropy", "data compression", "typical sequences", "AEP", "Kraft inequality"],
-    "prerequisites": ["Shannon entropy", "probability distributions", "Fintype", "logarithms"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "entropy",
+      "data compression",
+      "typical sequences",
+      "AEP",
+      "Kraft inequality"
+    ],
+    "prerequisites": [
+      "Shannon entropy",
+      "probability distributions",
+      "Fintype",
+      "logarithms"
+    ]
   },
   {
     "id": "ann-aep",
     "proofId": "shannon-source-coding",
-    "range": { "startLine": 15, "endLine": 18 },
+    "range": {
+      "startLine": 15,
+      "endLine": 18
+    },
     "type": "technique",
     "title": "Asymptotic Equipartition Property (AEP)",
     "content": "The AEP states that for i.i.d. sequences, the normalized log-probability converges to the entropy: $-\\frac{1}{n}\\log p(X_1,\\ldots,X_n) \\to H(X)$ in probability. This is the information-theoretic analogue of the law of large numbers. The AEP partitions sequences into a 'typical set' of roughly $2^{nH}$ sequences that carry almost all the probability, and an 'atypical set' of negligible probability. Currently a placeholder.",
     "mathContext": "$-\\frac{1}{n}\\log p(X_1^n) \\xrightarrow{P} H(X)$ as $n \\to \\infty$. By the WLLN applied to $-\\log p(X_i)$, since $E[-\\log p(X)] = H(X)$.",
     "significance": "key",
-    "relatedConcepts": ["law of large numbers", "typical set", "information-theoretic convergence", "entropy rate"],
-    "prerequisites": ["i.i.d. sequences", "weak law of large numbers", "entropy definition"]
+    "relatedConcepts": [
+      "law of large numbers",
+      "typical set",
+      "information-theoretic convergence",
+      "entropy rate"
+    ],
+    "prerequisites": [
+      "i.i.d. sequences",
+      "weak law of large numbers",
+      "entropy definition"
+    ]
   },
   {
     "id": "ann-typical-set",
     "proofId": "shannon-source-coding",
-    "range": { "startLine": 22, "endLine": 26 },
+    "range": {
+      "startLine": 22,
+      "endLine": 26
+    },
     "type": "technique",
     "title": "Typical Set Size Bound",
     "content": "The typical set $A_\\varepsilon^{(n)}$ contains sequences whose empirical entropy is within $\\varepsilon$ of $H(X)$. Two key properties: (1) $|A_\\varepsilon^{(n)}| \\leq 2^{n(H+\\varepsilon)}$, bounding the number of typical sequences; (2) $P[A_\\varepsilon^{(n)}] \\to 1$ as $n \\to \\infty$. Together these mean that almost all probability concentrates on a set of size roughly $2^{nH}$, which is exponentially smaller than $|\\mathcal{X}|^n$ when $H < \\log|\\mathcal{X}|$.",
     "mathContext": "$A_\\varepsilon^{(n)} = \\{x^n : |{-\\frac{1}{n}\\log p(x^n)} - H| < \\varepsilon\\}$. Then $|A_\\varepsilon^{(n)}| \\leq 2^{n(H+\\varepsilon)}$ and $\\Pr[A_\\varepsilon^{(n)}] \\to 1$.",
     "significance": "key",
-    "relatedConcepts": ["typical set", "entropy coding", "high-probability set", "exponential growth rate"],
-    "prerequisites": ["AEP", "cardinality bounds from probability", "exponential functions"]
+    "relatedConcepts": [
+      "typical set",
+      "entropy coding",
+      "high-probability set",
+      "exponential growth rate"
+    ],
+    "prerequisites": [
+      "AEP",
+      "cardinality bounds from probability",
+      "exponential functions"
+    ]
   },
   {
     "id": "ann-achievability",
     "proofId": "shannon-source-coding",
-    "range": { "startLine": 30, "endLine": 34 },
+    "range": {
+      "startLine": 30,
+      "endLine": 34
+    },
     "type": "technique",
     "title": "Source Coding Achievability",
     "content": "Achievability: assign unique $n(H+\\varepsilon)$-bit codewords to each typical sequence (there are at most $2^{n(H+\\varepsilon)}$ of them). Atypical sequences get a generic error symbol. Since $P[\\text{atypical}] \\to 0$, the error probability vanishes and the rate $H + \\varepsilon$ is achievable for any $\\varepsilon > 0$. This is the fundamental reason entropy measures compressibility.",
     "mathContext": "For rate $R > H(X)$: encode typical sequences with $\\lceil n(H+\\varepsilon) \\rceil$ bits. Error probability $= \\Pr[X^n \\notin A_\\varepsilon^{(n)}] \\to 0$.",
     "significance": "key",
-    "relatedConcepts": ["fixed-to-variable coding", "Huffman coding", "arithmetic coding", "typical set coding"],
-    "prerequisites": ["typical set size bound", "binary encoding", "rate definition"]
+    "relatedConcepts": [
+      "fixed-to-variable coding",
+      "Huffman coding",
+      "arithmetic coding",
+      "typical set coding"
+    ],
+    "prerequisites": [
+      "typical set size bound",
+      "binary encoding",
+      "rate definition"
+    ]
   },
   {
     "id": "ann-converse",
     "proofId": "shannon-source-coding",
-    "range": { "startLine": 38, "endLine": 42 },
+    "range": {
+      "startLine": 38,
+      "endLine": 42
+    },
     "type": "technique",
     "title": "Source Coding Converse",
     "content": "The converse shows rates below entropy are impossible: any code with rate $R < H - \\varepsilon$ has error probability bounded away from 0. The proof uses the AEP: the typical set has at least $2^{n(H-\\varepsilon)}$ elements, but a rate-$R$ code can only distinguish $2^{nR}$ messages. When $R < H$, the code cannot represent all typical sequences, so decoding error persists.",
     "mathContext": "For rate $R < H(X)$: the typical set has $|A_\\varepsilon^{(n)}| \\geq (1-\\varepsilon)2^{n(H-\\varepsilon)}$ elements but only $2^{nR}$ codewords are available. Error probability $\\geq 1 - 2^{nR}/2^{n(H-\\varepsilon)} \\to 1$.",
     "significance": "key",
-    "relatedConcepts": ["counting argument", "pigeonhole principle", "entropy as compression limit", "converse bound"],
-    "prerequisites": ["typical set lower bound", "rate vs typical set size", "AEP"]
+    "relatedConcepts": [
+      "counting argument",
+      "pigeonhole principle",
+      "entropy as compression limit",
+      "converse bound"
+    ],
+    "prerequisites": [
+      "typical set lower bound",
+      "rate vs typical set size",
+      "AEP"
+    ]
   }
 ]

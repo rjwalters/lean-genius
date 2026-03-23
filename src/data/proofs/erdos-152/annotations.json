@@ -8,12 +8,12 @@
     },
     "type": "context",
     "title": "Problem Overview",
-    "content": "Header documenting Erdős Problem #152 on isolated elements in Sidon sumsets. For large finite Sidon sets $A$, the sumset $A + A$ is known to have $n(n+1)/2$ elements (where $n = |A|$), fitting inside an interval of length $\\sim 2n^2$. The question is whether many elements of $A + A$ are isolated — having no neighbors in the sumset. The stronger form conjectures $\\gg n^2$ isolated elements.",
+    "content": "Header documenting Erd\u0151s Problem #152 on isolated elements in Sidon sumsets. For large finite Sidon sets $A$, the sumset $A + A$ is known to have $n(n+1)/2$ elements (where $n = |A|$), fitting inside an interval of length $\\sim 2n^2$. The question is whether many elements of $A + A$ are isolated \u2014 having no neighbors in the sumset. The stronger form conjectures $\\gg n^2$ isolated elements.",
     "mathContext": "For a Sidon set $A$ with $|A| = n$, the sumset $A + A \\subseteq [2\\min A, 2\\max A]$ has exactly $\\binom{n+1}{2}$ elements in an interval of length $\\sim 2n^2$. The density is $\\binom{n+1}{2} / (2n^2) \\approx 1/4$, so roughly 3/4 of the interval is not covered. The conjecture asks how many covered points are completely surrounded by gaps.",
     "significance": "key",
     "relatedConcepts": [
       "Sidon sets",
-      "B₂ sequences",
+      "B\u2082 sequences",
       "sumset structure",
       "gap distribution"
     ],
@@ -33,7 +33,7 @@
     "title": "Imports",
     "content": "Imports Mathlib's Sidon set library (`Combinatorics.Additive.Sidon`), pointwise finset operations for $A + A$, and filter basics for the infinite version. Opens `Pointwise` for the `+` notation on finsets.",
     "mathContext": "Uses `Finset.Pointwise` for $A + A = \\{a + b : a \\in A,\\, b \\in A\\}$. The Sidon property from Mathlib states that the sumset map $(a,b) \\mapsto a+b$ is injective on unordered pairs.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib.Combinatorics.Additive.Sidon",
       "Finset.Pointwise"
@@ -55,7 +55,7 @@
     "mathContext": "$A$ is Sidon $\\iff \\forall a_1, b_1, a_2, b_2 \\in A,\\, a_1 + b_1 = a_2 + b_2 \\implies \\{a_1, b_1\\} = \\{a_2, b_2\\}$. Equivalently, the representation function $r(n) = |\\{(a,b) : a \\leq b,\\, a+b = n,\\, a,b \\in A\\}|$ satisfies $r(n) \\leq 1$ for all $n$. The sumset $A + A = \\{a + b : a, b \\in A\\}$.",
     "significance": "key",
     "relatedConcepts": [
-      "B₂ sequences",
+      "B\u2082 sequences",
       "representation function",
       "distinct pairwise sums"
     ],
@@ -73,7 +73,7 @@
       "endLine": 49
     },
     "title": "Isolated Elements and Their Count",
-    "content": "An element $s \\in A + A$ is isolated if $s - 1 \\notin A + A$ and $s + 1 \\notin A + A$ — it has no sumset neighbors. `isolatedCount A` counts these elements via `Finset.filter`. Isolated elements represent the most extreme form of sparsity in the sumset: not just gaps, but completely surrounded by gaps.",
+    "content": "An element $s \\in A + A$ is isolated if $s - 1 \\notin A + A$ and $s + 1 \\notin A + A$ \u2014 it has no sumset neighbors. `isolatedCount A` counts these elements via `Finset.filter`. Isolated elements represent the most extreme form of sparsity in the sumset: not just gaps, but completely surrounded by gaps.",
     "mathContext": "$\\text{IsIsolated}(A, s) \\iff s \\in A + A \\wedge (s-1) \\notin A + A \\wedge (s+1) \\notin A + A$. The isolated count is $I(A) = |\\{s \\in A + A : s \\pm 1 \\notin A + A\\}|$. For $A = \\{0, 1, 3, 5, 11\\}$ (a Sidon set), $A + A = \\{0,1,2,3,4,6,8,12,14,16,22\\}$ and the isolated elements are $\\{8, 22\\}$ (for example).",
     "significance": "key",
     "relatedConcepts": [
@@ -94,8 +94,8 @@
       "startLine": 51,
       "endLine": 60
     },
-    "title": "Erdős Problem 152: Weak Form",
-    "content": "The weak form of the conjecture: for any $M \\geq 1$, all sufficiently large Sidon sets have at least $M$ isolated elements. This says the isolated count grows without bound as the Sidon set grows. Formalized with a $\\forall M,\\, \\exists N_0$ quantifier structure — the threshold $N_0$ depends on $M$.",
+    "title": "Erd\u0151s Problem 152: Weak Form",
+    "content": "The weak form of the conjecture: for any $M \\geq 1$, all sufficiently large Sidon sets have at least $M$ isolated elements. This says the isolated count grows without bound as the Sidon set grows. Formalized with a $\\forall M,\\, \\exists N_0$ quantifier structure \u2014 the threshold $N_0$ depends on $M$.",
     "mathContext": "$\\text{ErdosProblem152}: \\forall M \\in \\mathbb{N},\\, \\exists N_0,\\, \\forall A$ Sidon with $|A| \\geq N_0,\\, I(A) \\geq M$. This is equivalent to: $\\lim_{n \\to \\infty} \\inf\\{I(A) : A \\text{ Sidon},\\, |A| = n\\} = \\infty$.",
     "significance": "key",
     "relatedConcepts": [
@@ -117,7 +117,7 @@
       "endLine": 72
     },
     "title": "Strong Form: $\\gg |A|^2$ Isolated Elements",
-    "content": "The stronger conjecture: $I(A) \\geq c \\cdot |A|^2$ for some absolute constant $c > 0$. Since $|A + A| = \\binom{|A|+1}{2} \\sim |A|^2/2$, this says a positive fraction of the sumset is isolated. This is a much stronger statement than the weak form — it gives the exact growth rate rather than just divergence.",
+    "content": "The stronger conjecture: $I(A) \\geq c \\cdot |A|^2$ for some absolute constant $c > 0$. Since $|A + A| = \\binom{|A|+1}{2} \\sim |A|^2/2$, this says a positive fraction of the sumset is isolated. This is a much stronger statement than the weak form \u2014 it gives the exact growth rate rather than just divergence.",
     "mathContext": "$\\exists c > 0,\\, \\forall A$ Sidon: $I(A) \\geq c \\cdot |A|^2$. Since $|A + A| = |A|(|A|+1)/2$, this means $I(A)/|A+A| \\geq 2c/(1 + 1/|A|) \\to 2c$, i.e., at least a fraction $2c$ of all sumset elements are isolated.",
     "significance": "key",
     "relatedConcepts": [
@@ -161,7 +161,7 @@
       "endLine": 99
     },
     "title": "Pigeonhole Gap Existence",
-    "content": "A basic result: for Sidon sets of size $\\geq 5$, there is at least one isolated element. This follows from the pigeonhole principle: $n(n+1)/2$ sumset elements in an interval of length $\\sim 2n^2$ cannot all be consecutive, so gaps must exist, and some sumset elements must be isolated. This is the starting point — the conjecture asks for much more.",
+    "content": "A basic result: for Sidon sets of size $\\geq 5$, there is at least one isolated element. This follows from the pigeonhole principle: $n(n+1)/2$ sumset elements in an interval of length $\\sim 2n^2$ cannot all be consecutive, so gaps must exist, and some sumset elements must be isolated. This is the starting point \u2014 the conjecture asks for much more.",
     "mathContext": "The sumset $A + A$ has $n(n+1)/2$ elements in $[2\\min A, 2\\max A]$, an interval of length $\\leq 2(n^2 - n)$. Since $n(n+1)/2 < 2(n^2 - n)$ for $n \\geq 5$, there are at least $2(n^2-n) - n(n+1)/2 = (3n^2 - 5n)/2$ gaps. Not all gaps create isolated elements, but at least one does.",
     "significance": "supporting",
     "relatedConcepts": [

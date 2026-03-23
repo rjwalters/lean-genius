@@ -1,48 +1,19 @@
 [
   {
-    "id": "ann-header-imports",
-    "proofId": "arithmetic-series",
-    "range": {
-      "startLine": 1,
-      "endLine": 48
-    },
-    "type": "context",
-    "title": "Module Header: Imports and Historical Documentation",
-    "content": "The file imports three Mathlib modules: `BigOperators.Intervals` (providing `Finset.sum_range_id` and `sum_range_id_mul_two`), `BigOperators.Ring.Finset` (for `sum_add_distrib`, `sum_mul`, and `sum_const`), and `Tactic` (general-purpose tactics including `ring`, `omega`, and `native_decide`). The module docstring documents the formula's attribution to Gauss (~1785), the famous schoolboy anecdote, and notes that the formula was known to the ancient Greeks and Babylonians. This is Wiedijk's 100 Theorems #68.\n\nThe `open Finset BigOperators` declaration brings `range`, `sum`, and the `∑` notation into scope, enabling concise summation expressions throughout the file.",
-    "mathContext": "The file proves $\\sum_{k=1}^{n} k = \\frac{n(n+1)}{2}$ (Wiedijk #68) and extensions: general arithmetic series $\\sum(a+kd)$, sum of odd numbers $= n^2$, and triangular number properties.",
-    "significance": "context",
-    "relatedConcepts": [
-      "Mathlib BigOperators",
-      "Wiedijk 100 theorems",
-      "Finset.sum_range_id",
-      "Gauss schoolboy anecdote"
-    ],
-    "prerequisites": [
-      "Lean 4 module system",
-      "Mathlib library structure"
-    ]
-  },
-  {
     "id": "ann-gauss-zero",
     "proofId": "arithmetic-series",
     "range": {
       "startLine": 52,
       "endLine": 58
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Gauss's Formula (0-indexed)",
-    "content": "**The sum 0 + 1 + 2 + ... + (n-1) = n*(n-1)/2.**\n\nThis is Mathlib's convention using `range n` = {0, 1, ..., n-1}. The proof is a direct application of `Finset.sum_range_id`, which Mathlib proves via the pairing argument internally.\n\n**Index convention note:** Mathlib's 0-indexed convention means `∑ i ∈ range n, i` sums from 0 to n-1, giving n(n-1)/2 rather than the classical n(n+1)/2. The off-by-one between 0-indexed and 1-indexed summation is a recurring source of confusion in formalizations — the next theorem bridges this gap.",
-    "mathContext": "$\\sum_{i=0}^{n-1} i = \\frac{n(n-1)}{2}$. Equivalently, $\\sum_{i \\in \\text{Finset.range}\\, n} i = \\frac{n(n-1)}{2}$.",
+    "content": "**The sum 0 + 1 + 2 + ... + (n-1) = n*(n-1)/2.**\n\nThis is Mathlib's convention using `range n` = {0, 1, ..., n-1}. The proof is a direct application of `Finset.sum_range_id`.",
+    "mathContext": "$\\sum_{i=0}^{n-1} i = \\frac{n(n-1)}{2}$",
     "significance": "key",
     "relatedConcepts": [
       "Finset.range",
-      "Finset.sum_range_id",
-      "0-indexed vs 1-indexed summation",
-      "off-by-one in formalization"
-    ],
-    "prerequisites": [
-      "Finset.sum_range_id",
-      "natural number arithmetic"
+      "Finset.sum_range_id"
     ]
   },
   {
@@ -52,21 +23,14 @@
       "startLine": 60,
       "endLine": 70
     },
-    "type": "technique",
-    "title": "Gauss's Classical Formula (1-indexed)",
-    "content": "**The sum 0 + 1 + 2 + ... + n = n*(n+1)/2.**\n\nThis is the formula young Gauss allegedly used to sum 1 to 100. Using `range (n+1)` gives us {0, 1, ..., n}, bridging Mathlib's 0-indexed convention to the classical formula.\n\nThe proof derives this from the 0-indexed version by substituting n+1 for n in `sum_range_id`, simplifying `(n+1) - 1 = n` via `Nat.add_sub_cancel`, and adjusting the multiplication order via `Nat.mul_comm`.\n\n**Historical note:** This formula appears as Proposition 22.10 in Archimedes' *The Sand Reckoner* (c. 250 BCE) and in Aryabhata's *Aryabhatiya* (499 CE). The attribution to Gauss reflects the formula's independent rediscovery across cultures.",
-    "mathContext": "$\\sum_{i=0}^{n} i = \\frac{n(n+1)}{2}$. Proof: apply `sum\\_range\\_id(n+1)$ to get $(n+1)n/2$, then use commutativity.",
-    "significance": "key",
+    "type": "theorem",
+    "title": "Gauss's Classical Formula",
+    "content": "**The sum 0 + 1 + 2 + ... + n = n*(n+1)/2.**\n\nThis is the formula young Gauss allegedly used to sum 1 to 100. Using `range (n+1)` gives us {0, 1, ..., n}.\n\nThe proof derives this from the 0-indexed version by adjusting the multiplication order.",
+    "mathContext": "$\\sum_{i=0}^{n} i = \\frac{n(n+1)}{2}$",
+    "significance": "critical",
     "relatedConcepts": [
       "Gauss schoolboy anecdote",
-      "triangular numbers",
-      "Archimedes",
-      "Aryabhata",
-      "index shifting"
-    ],
-    "prerequisites": [
-      "Finset.sum_range_id",
-      "natural number arithmetic"
+      "triangular numbers"
     ]
   },
   {
@@ -77,43 +41,13 @@
       "endLine": 84
     },
     "type": "insight",
-    "title": "The Pairing Argument (Gauss's Method)",
-    "content": "**Gauss's brilliant insight: pair terms from opposite ends.**\n\nWrite S = 1 + 2 + ... + n twice (forwards and backwards). Each pair sums to (n+1), and there are n pairs:\n\n```\n  S = 1 + 2 + ... + n\n  S = n + (n-1) + ... + 1\n ───────────────────────\n 2S = (n+1) + (n+1) + ... = n(n+1)\n```\n\nTherefore S = n(n+1)/2.\n\n**This pairing trick is a template:** The same idea — adding a sum to its reversal — appears in proofs of the binomial coefficient symmetry $\\binom{n}{k} = \\binom{n}{n-k}$, Wilson's theorem (pairing elements with their inverses mod p), and the derivation of the geometric series formula. In combinatorics, it is an instance of an involution argument: the map $k \\mapsto n-k$ pairs the summands.",
-    "mathContext": "$S + S = \\sum_{k=0}^{n} k + \\sum_{k=0}^{n} (n-k) = \\sum_{k=0}^{n} n = n(n+1)$, so $S = \\frac{n(n+1)}{2}$.",
-    "significance": "key",
+    "title": "The Pairing Argument",
+    "content": "**Gauss's brilliant insight: pair terms from opposite ends.**\n\nWrite S = 1 + 2 + ... + n twice (forwards and backwards). Each pair sums to (n+1), and there are n pairs:\n\n```\n  S = 1 + 2 + ... + n\n  S = n + (n-1) + ... + 1\n ───────────────────────\n 2S = (n+1) + (n+1) + ... = n(n+1)\n```\n\nTherefore S = n(n+1)/2.",
+    "mathContext": "$2S = n \\times (n+1) \\Rightarrow S = \\frac{n(n+1)}{2}$",
+    "significance": "critical",
     "relatedConcepts": [
       "bijective argument",
-      "symmetric sum",
-      "involution",
-      "Wilson's theorem",
-      "geometric series derivation"
-    ],
-    "prerequisites": [
-      "algebraic manipulation",
-      "commutativity of addition"
-    ]
-  },
-  {
-    "id": "ann-pairing-theorem",
-    "proofId": "arithmetic-series",
-    "range": {
-      "startLine": 86,
-      "endLine": 94
-    },
-    "type": "technique",
-    "title": "Pairing Identity: 2S = n(n+1)",
-    "content": "**The formalized pairing identity: (∑ i ∈ range(n+1), i) × 2 = n × (n+1).**\n\nThis theorem captures the algebraic heart of Gauss's argument in a form that avoids natural number division. By expressing the result as $2S = n(n+1)$ rather than $S = n(n+1)/2$, the proof works entirely in $\\mathbb{N}$ without needing to handle divisibility by 2.\n\nThe proof uses `Finset.sum_range_id_mul_two`, applies `Nat.add_sub_cancel` to simplify $(n+1)-1 = n$, and adjusts multiplication order via `Nat.mul_comm`. This multiplication-by-2 formulation is often preferred in formalizations because it avoids the floor division semantics of `Nat.div`.",
-    "mathContext": "$\\left(\\sum_{i=0}^{n} i\\right) \\times 2 = n(n+1)$. This avoids division: in $\\mathbb{N}$, $a/2$ is floor division, so $2S = n(n+1)$ is strictly stronger than $S = n(n+1)/2$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "avoiding division in ℕ",
-      "Finset.sum_range_id_mul_two",
-      "natural number division semantics",
-      "proof engineering"
-    ],
-    "prerequisites": [
-      "Finset.sum_range_id_mul_two",
-      "natural number arithmetic"
+      "symmetric sum"
     ]
   },
   {
@@ -123,45 +57,31 @@
       "startLine": 98,
       "endLine": 108
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "General Arithmetic Series",
-    "content": "**Sum of an arithmetic progression with first term a and common difference d.**\n\nThis generalizes Gauss's formula. Setting a=0 and d=1 recovers the sum of 0..n-1.\n\nThe proof decomposes the sum using `sum_add_distrib` to separate the constant part $na$ from the varying part $\\sum kd$, then uses `sum_const`, `card_range`, and `sum_range_id` to evaluate each piece. The final step uses `sum_mul` to factor out $d$.\n\n**Equivalent formulations:** The formula $na + dn(n-1)/2 = n(2a + (n-1)d)/2 = n \\cdot \\frac{\\text{first} + \\text{last}}{2}$ can be read as: the sum equals the number of terms times the average of the first and last terms. This 'average times count' formulation extends to any sum of an evenly-spaced sequence.",
-    "mathContext": "$\\sum_{k=0}^{n-1} (a + kd) = na + d \\cdot \\frac{n(n-1)}{2} = \\frac{n(2a + (n-1)d)}{2}$. The Lean proof uses linearity: $\\sum(a + kd) = \\sum a + \\sum kd = na + d \\sum k$.",
+    "content": "**Sum of an arithmetic progression with first term a and common difference d.**\n\nThis generalizes Gauss's formula. Setting a=0 and d=1 recovers the sum of 0..n-1.\n\nThe formula is derived by separating the constant term (na) from the varying part (sum of k*d).",
+    "mathContext": "$\\sum_{k=0}^{n-1} (a + kd) = na + d \\cdot \\frac{n(n-1)}{2}$",
     "significance": "key",
     "relatedConcepts": [
       "arithmetic progression",
-      "first term and common difference",
-      "linearity of summation",
-      "sum_add_distrib",
-      "Faulhaber's formulas"
-    ],
-    "prerequisites": [
-      "Finset.sum",
-      "arithmetic progressions",
-      "ring tactic"
+      "first term and common difference"
     ]
   },
   {
-    "id": "ann-special-cases",
+    "id": "ann-gauss-100",
     "proofId": "arithmetic-series",
     "range": {
-      "startLine": 110,
-      "endLine": 116
+      "startLine": 112,
+      "endLine": 113
     },
-    "type": "context",
-    "title": "Famous Special Cases: Computational Verification",
-    "content": "**Gauss's original problem (sum to 100 = 5050) and sum to 10 = 55, both verified by `native_decide`.**\n\nThese computational verifications serve two purposes: (1) they connect the abstract formula to the specific numerical instances from mathematical history, and (2) they demonstrate Lean's `native_decide` tactic, which compiles decidable propositions to native code for efficient evaluation. For these concrete instances, `native_decide` is faster than `norm_num` because it reduces the entire computation to machine arithmetic.\n\n**Historical note on the anecdote:** The earliest known source for the Gauss schoolboy story is Wolfgang Sartorius von Waltershausen's 1856 biography, written decades after the alleged event. The numbers 1 to 100 are one version; other accounts give different ranges.",
-    "mathContext": "$\\sum_{i=0}^{100} i = 5050 = 50 \\times 101$. $\\sum_{i=0}^{10} i = 55 = 5 \\times 11$.",
+    "type": "example",
+    "title": "Gauss's Original Problem",
+    "content": "**Sum of 1 to 100 = 5050.**\n\nThis is the famous problem Gauss allegedly solved as a schoolboy. The proof uses `native_decide` for computational verification.\n\n50 pairs × 101 = 5050.",
+    "mathContext": "$1 + 2 + \\cdots + 100 = 5050$",
     "significance": "supporting",
     "relatedConcepts": [
       "Gauss anecdote",
-      "native_decide",
-      "computational verification",
-      "norm_num"
-    ],
-    "prerequisites": [
-      "Finset.sum_range_id",
-      "natural number arithmetic"
+      "native_decide"
     ]
   },
   {
@@ -171,22 +91,14 @@
       "startLine": 118,
       "endLine": 128
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Sum of Odd Numbers = n²",
-    "content": "**The sum of the first n odd numbers equals n squared: 1 + 3 + 5 + ... + (2n-1) = n².**\n\nThis beautiful identity has a lovely visual proof: each odd number $(2k+1)$ adds an L-shaped gnomon that extends a $k \\times k$ square to a $(k+1) \\times (k+1)$ square. The proof uses induction: the base case is trivial, and the inductive step uses `sum_range_succ` to peel off the last term, applies the inductive hypothesis, and closes with `ring`.\n\n**Connections:** This identity means that consecutive squares differ by odd numbers: $(n+1)^2 - n^2 = 2n+1$. It also connects to the Pythagorean identity: Pythagoras himself reportedly used the gnomon construction to understand square numbers. In number theory, the identity implies that every odd number is a difference of consecutive squares.",
-    "mathContext": "$\\sum_{k=0}^{n-1} (2k+1) = n^2$. Equivalently, $1 + 3 + 5 + \\cdots + (2n-1) = n^2$. The $k$-th odd number $(2k+1)$ is the gnomon: $(k+1)^2 - k^2 = 2k+1$.",
+    "content": "**The sum of the first n odd numbers equals n squared.**\n\n1 + 3 + 5 + ... + (2n-1) = n²\n\nThis beautiful identity has a lovely visual proof: each odd number adds an 'L-shaped' layer to a growing square. The proof uses induction.",
+    "mathContext": "$\\sum_{k=0}^{n-1} (2k+1) = n^2$",
     "significance": "key",
     "relatedConcepts": [
       "perfect squares",
-      "L-shaped gnomon",
-      "telescoping sum",
-      "Pythagorean number theory",
-      "induction"
-    ],
-    "prerequisites": [
-      "sum_range_succ",
-      "ring tactic",
-      "mathematical induction"
+      "L-shaped gnomon"
     ]
   },
   {
@@ -196,21 +108,14 @@
       "startLine": 130,
       "endLine": 139
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Sum of Even Numbers",
-    "content": "**The sum 0 + 2 + 4 + ... + 2(n-1) = n*(n-1).**\n\nThis is a special case of the arithmetic series with a=0 and d=2. The proof factors out the 2 using `sum_mul`, then applies `sum_range_id_mul_two`. This factoring approach is cleaner than direct computation and demonstrates the algebraic relationship between even sums and the Gauss formula: $\\sum 2k = 2 \\sum k$.\n\n**Odd-even decomposition:** Combined with the sum of odd numbers: $\\sum_{k=0}^{n-1}(2k+1) + \\sum_{k=0}^{n-1}(2k) = n^2 + n(n-1) = n(2n-1) = \\sum_{k=0}^{2n-1} k$, showing that splitting a sum into odd and even parts recovers the full Gauss formula.",
-    "mathContext": "$\\sum_{k=0}^{n-1} 2k = n(n-1) = 2 \\cdot \\frac{n(n-1)}{2}$. Proof: $\\sum 2k = 2\\sum k$, then apply `sum\\_range\\_id\\_mul\\_two`.",
+    "content": "**The sum 0 + 2 + 4 + ... + 2(n-1) = n*(n-1).**\n\nThis is a special case of the arithmetic series with a=0 and d=2. The proof factors out the 2 and uses the Gauss pairing identity.",
+    "mathContext": "$\\sum_{k=0}^{n-1} 2k = n(n-1)$",
     "significance": "supporting",
     "relatedConcepts": [
       "even numbers",
-      "arithmetic series",
-      "factoring out constants",
-      "sum_mul",
-      "odd-even decomposition"
-    ],
-    "prerequisites": [
-      "Finset.sum_range_id",
-      "Finset.sum_mul"
+      "arithmetic series"
     ]
   },
   {
@@ -218,22 +123,15 @@
     "proofId": "arithmetic-series",
     "range": {
       "startLine": 143,
-      "endLine": 148
+      "endLine": 144
     },
     "type": "definition",
-    "title": "Triangular Numbers: Definition and Connection to Sums",
-    "content": "**The n-th triangular number T(n) = n(n+1)/2, and the sum formula produces triangular numbers.**\n\nTriangular numbers count the dots in triangular arrangements: 1, 3, 6, 10, 15, 21, 28, ... They're called 'triangular' because T(n) dots can be arranged in an equilateral triangle with n rows.\n\nThe `sum_eq_triangular` theorem immediately below connects the algebraic definition `triangular n = n*(n+1)/2` to the summation characterization `∑ i ∈ range(n+1), i = triangular n`, showing these are equivalent.\n\n**Combinatorial interpretation:** $T(n) = \\binom{n+1}{2}$, the number of ways to choose 2 items from $n+1$. This explains why triangular numbers count handshakes: at a party with $n+1$ people, there are $\\binom{n+1}{2} = T(n)$ distinct handshakes. The identity $T(n) = \\binom{n+1}{2}$ also connects to Pascal's triangle: triangular numbers form the third diagonal.",
-    "mathContext": "$T(n) = \\frac{n(n+1)}{2} = \\binom{n+1}{2} = \\sum_{k=1}^{n} k$. First few values: $T(1) = 1$, $T(2) = 3$, $T(3) = 6$, $T(4) = 10$, $T(5) = 15$.",
+    "title": "Triangular Numbers",
+    "content": "**The n-th triangular number T(n) = n(n+1)/2.**\n\nTriangular numbers count the dots in triangular arrangements: 1, 3, 6, 10, 15, ...\n\nThey're called 'triangular' because T(n) dots can be arranged in an equilateral triangle with n rows.",
+    "mathContext": "$T(n) = \\frac{n(n+1)}{2} = 1 + 2 + \\cdots + n$",
     "significance": "key",
     "relatedConcepts": [
       "figurate numbers",
-      "binomial coefficients",
-      "Pascal's triangle",
-      "handshake problem",
-      "tetrahedral numbers"
-    ],
-    "prerequisites": [
-      "triangular numbers",
       "binomial coefficients"
     ]
   },
@@ -244,66 +142,14 @@
       "startLine": 150,
       "endLine": 167
     },
-    "type": "technique",
-    "title": "Triangular Recurrence: T(n+1) = T(n) + (n+1)",
-    "content": "**T(n+1) = T(n) + (n+1) — each triangular number is obtained by adding the next integer.**\n\nThe proof is surprisingly subtle because it must handle natural number division by 2. The key step is proving `2 ∣ n*(n+1)` (one of two consecutive integers is even), which allows rewriting `n*(n+1) = 2*m` and then using `omega` for the arithmetic.\n\nThe divisibility proof splits into two cases: if $n = 2k$ (even), then $n(n+1) = 2k(2k+1)$, which is clearly even. If $n = 2k+1$ (odd), then $n(n+1) = (2k+1)(2k+2) = 2(2k+1)(k+1)$. This even-or-odd case split is a standard pattern when formalizing division in $\\mathbb{N}$.\n\n**Why this is hard in ℕ:** In $\\mathbb{Z}$ or $\\mathbb{Q}$, the recurrence would be a one-line `ring` proof. In $\\mathbb{N}$, division truncates ($5/2 = 2$, not $2.5$), so we must explicitly establish divisibility before dividing. This is a common pain point in Lean formalizations over natural numbers.",
-    "mathContext": "$T(n+1) = \\frac{(n+1)(n+2)}{2} = \\frac{n(n+1)}{2} + (n+1) = T(n) + (n+1)$. The key lemma: $2 \\mid n(n+1)$ for all $n \\in \\mathbb{N}$.",
+    "type": "theorem",
+    "title": "Triangular Recurrence",
+    "content": "**T(n+1) = T(n) + (n+1).**\n\nEach triangular number is obtained by adding the next integer to the previous one. The proof uses divisibility arguments to handle the division by 2.",
+    "mathContext": "$T(n+1) = T(n) + (n+1)$",
     "significance": "supporting",
     "relatedConcepts": [
       "recurrence relation",
-      "inductive definition",
-      "natural number division",
-      "divisibility by 2",
-      "even-odd case split"
-    ],
-    "prerequisites": [
-      "Nat.even_or_odd",
-      "natural number division",
-      "omega tactic"
-    ]
-  },
-  {
-    "id": "ann-triangular-mul-two",
-    "proofId": "arithmetic-series",
-    "range": {
-      "startLine": 169,
-      "endLine": 178
-    },
-    "type": "technique",
-    "title": "Triangular Doubling: T(n) × 2 = n(n+1)",
-    "content": "**Twice a triangular number equals a product of consecutive integers: T(n) × 2 = n(n+1).**\n\nThis theorem eliminates the division by 2 in the triangular number definition, providing a cleaner form for downstream proofs. The proof uses `Nat.div_mul_cancel` (canceling $n(n+1)/2 \\times 2 = n(n+1)$) after establishing the divisibility `2 ∣ n(n+1)` via the same even-odd case split as in the recurrence proof.\n\n**Geometric interpretation:** Two copies of the $n$-th triangle fit together to form an $n \\times (n+1)$ rectangle. This visual proof — arranging two triangular arrays of dots into a rectangle — is perhaps the most intuitive demonstration of the Gauss formula and dates back to at least ancient Greece.",
-    "mathContext": "$2T(n) = n(n+1)$. Geometrically: two triangles of $T(n)$ dots tile an $n \\times (n+1)$ rectangle.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "rectangular number",
-      "geometric proof",
-      "Nat.div_mul_cancel",
-      "oblong number"
-    ],
-    "prerequisites": [
-      "Nat.div_mul_cancel",
-      "divisibility"
-    ]
-  },
-  {
-    "id": "ann-verification",
-    "proofId": "arithmetic-series",
-    "range": {
-      "startLine": 180,
-      "endLine": 187
-    },
-    "type": "context",
-    "title": "Verification and Namespace Close",
-    "content": "**Type-checks the six main results using `#check`.**\n\nThe verified theorems are: `gauss_sum` ($\\sum_{0}^{n} = n(n+1)/2$), `gauss_sum_zero_indexed` (0-indexed variant), `arithmetic_series_sum` (general arithmetic progression), `sum_odd_numbers` ($\\sum(2k+1) = n^2$), `triangular` (definition), and `triangular_recurrence` ($T(n+1) = T(n) + (n+1)$). Together these constitute 11 theorems and 1 definition covering the classical theory of arithmetic series and triangular numbers.",
-    "mathContext": "All 11 theorems and 1 definition verified with 0 sorries and 0 axioms.",
-    "significance": "context",
-    "relatedConcepts": [
-      "#check command",
-      "proof verification",
-      "type checking"
-    ],
-    "prerequisites": [
-      "Lean 4 meta-commands"
+      "inductive definition"
     ]
   }
 ]

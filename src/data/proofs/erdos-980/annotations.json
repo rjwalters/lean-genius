@@ -10,7 +10,7 @@
     "title": "Problem Overview and Imports",
     "content": "The file formalizes Erdos Problem #980 on the sum of least $k$-th power nonresidues over primes. It imports Mathlib modules for prime number basics, the Legendre symbol, asymptotics, and logarithmic functions. The `open Nat Real` command brings natural number and real number notations into scope.",
     "mathContext": "The problem asks whether $\\sum_{p < x} n_k(p) \\sim c_k \\cdot x/\\log x$ where $n_k(p)$ is the least $k$-th power nonresidue modulo prime $p$. This connects the distribution of power residues to prime counting asymptotics via $\\pi(x) \\sim x/\\log x$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Power residues",
       "Quadratic nonresidues",
@@ -312,7 +312,7 @@
     },
     "type": "insight",
     "title": "Average and Typical Size",
-    "content": "The average value of $n_k(p)$ over primes $p < x$ is approximately $c_k \\cdot \\log x$, since $\\pi(x) \\sim x/\\log x$. While individual values can be as large as $O(p^{0.15+\\varepsilon})$ (Vinogradov), the average is only $O(\\log x)$. This shows that large nonresidues are rare among primes — most primes have small least nonresidues.",
+    "content": "The average value of $n_k(p)$ over primes $p < x$ is approximately $c_k \\cdot \\log x$, since $\\pi(x) \\sim x/\\log x$. While individual values can be as large as $O(p^{0.15+\\varepsilon})$ (Vinogradov), the average is only $O(\\log x)$. This shows that large nonresidues are rare among primes \u2014 most primes have small least nonresidues.",
     "mathContext": "$\\frac{1}{\\pi(x)} \\sum_{p < x} n_k(p) \\sim c_k \\cdot \\log x$ as $x \\to \\infty$, since $\\pi(x) \\sim x/\\log x$.",
     "significance": "key",
     "relatedConcepts": [
@@ -334,7 +334,7 @@
     },
     "type": "insight",
     "title": "Special Cases: $n_2(p) = 2$ and $n_2(p) = 3$",
-    "content": "The least quadratic nonresidue is 2 for infinitely many primes — precisely those with $p \\equiv 3, 5 \\pmod{8}$ (by the second supplement to quadratic reciprocity). Similarly, $n_2(p) = 3$ for infinitely many primes where 2 is a QR but 3 is not, occurring for $p \\equiv 1, 7 \\pmod{24}$. By Dirichlet's theorem on primes in arithmetic progressions, each residue class contains infinitely many primes.",
+    "content": "The least quadratic nonresidue is 2 for infinitely many primes \u2014 precisely those with $p \\equiv 3, 5 \\pmod{8}$ (by the second supplement to quadratic reciprocity). Similarly, $n_2(p) = 3$ for infinitely many primes where 2 is a QR but 3 is not, occurring for $p \\equiv 1, 7 \\pmod{24}$. By Dirichlet's theorem on primes in arithmetic progressions, each residue class contains infinitely many primes.",
     "mathContext": "$n_2(p) = 2 \\iff (2/p) = -1 \\iff p \\equiv \\pm 3 \\pmod{8}$. $n_2(p) = 3 \\iff (2/p) = 1 \\wedge (3/p) = -1$, which occurs for $p \\equiv 1, 7 \\pmod{24}$.",
     "significance": "supporting",
     "relatedConcepts": [

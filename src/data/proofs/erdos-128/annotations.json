@@ -8,14 +8,14 @@
     },
     "type": "context",
     "title": "Problem Overview and Known Results",
-    "content": "Header documenting Erdős Problem #128: a local-to-global triangle forcing conjecture. If every induced subgraph on at least $\\lfloor n/2 \\rfloor$ vertices has more than $n^2/50$ edges, must $G$ contain a triangle? The problem was posed by Erdős and Rousseau with a $250 prize. The constant $1/50$ is conjectured optimal, witnessed by blow-ups of $C_5$ and the Petersen graph.",
+    "content": "Header documenting Erd\u0151s Problem #128: a local-to-global triangle forcing conjecture. If every induced subgraph on at least $\\lfloor n/2 \\rfloor$ vertices has more than $n^2/50$ edges, must $G$ contain a triangle? The problem was posed by Erd\u0151s and Rousseau with a $250 prize. The constant $1/50$ is conjectured optimal, witnessed by blow-ups of $C_5$ and the Petersen graph.",
     "mathContext": "The conjecture asks: $\\forall G$ on $n$ vertices, if $\\forall S \\subseteq V(G)$ with $|S| \\geq \\lfloor n/2 \\rfloor$, $e(G[S]) > n^2/50$, then $G$ contains $K_3$. Known partial results replace $1/50$ by $1/16$ (EFRS), $27/1024$ (Razborov), or change the subgraph size threshold from $n/2$ to $3n/5$ (Krivelevich).",
     "significance": "key",
     "relatedConcepts": [
       "extremal graph theory",
       "triangle forcing",
       "local density conditions",
-      "Turán-type problems"
+      "Tur\u00e1n-type problems"
     ],
     "prerequisites": [
       "induced subgraphs",
@@ -34,7 +34,7 @@
     "title": "Imports",
     "content": "Imports Mathlib's basic tactics, natural number and finset infrastructure, and `SimpleGraph.Basic` for the foundational graph theory API. The file defines its own `Graph` structure rather than using Mathlib's `SimpleGraph` directly, bundling adjacency with symmetry and irreflexivity proofs.",
     "mathContext": "Uses `Finset.univ.product` and `Finset.filter` for edge counting, and `Fin n` for vertex indexing. The custom `Graph n` structure packages a decidable adjacency relation on `Fin n`.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "SimpleGraph",
       "Finset.filter",
@@ -77,14 +77,14 @@
     },
     "type": "definition",
     "title": "Dense Subgraphs Condition and Triangle-Freeness",
-    "content": "Defines `denseSubgraphs`: every induced subgraph on at least $\\lfloor n/2 \\rfloor$ vertices has more than $n^2/50$ edges. Also defines `triangleFree` as the negation of `hasTriangle`. The density threshold $n^2/50$ corresponds to edge density $2/50 = 1/25$ in the half-sized subgraph, which is exactly the Turán density for triangle-free graphs on 5-chromatic blow-ups.",
-    "mathContext": "The condition is: $\\forall S \\subseteq V(G),\\, |S| \\geq \\lfloor n/2 \\rfloor \\implies e(G[S]) > n^2/50$. For a balanced $C_5$ blow-up, each half-sized subgraph has approximately $2 \\cdot (n/5)^2 = 2n^2/25$ edges from 2 of the 5 bipartite pairs, yielding $\\approx n^2/50$ after normalization — exactly the threshold.",
+    "content": "Defines `denseSubgraphs`: every induced subgraph on at least $\\lfloor n/2 \\rfloor$ vertices has more than $n^2/50$ edges. Also defines `triangleFree` as the negation of `hasTriangle`. The density threshold $n^2/50$ corresponds to edge density $2/50 = 1/25$ in the half-sized subgraph, which is exactly the Tur\u00e1n density for triangle-free graphs on 5-chromatic blow-ups.",
+    "mathContext": "The condition is: $\\forall S \\subseteq V(G),\\, |S| \\geq \\lfloor n/2 \\rfloor \\implies e(G[S]) > n^2/50$. For a balanced $C_5$ blow-up, each half-sized subgraph has approximately $2 \\cdot (n/5)^2 = 2n^2/25$ edges from 2 of the 5 bipartite pairs, yielding $\\approx n^2/50$ after normalization \u2014 exactly the threshold.",
     "significance": "key",
     "relatedConcepts": [
       "local density",
-      "Turán density",
+      "Tur\u00e1n density",
       "edge density threshold",
-      "C₅ blow-up"
+      "C\u2085 blow-up"
     ],
     "prerequisites": [
       "induced subgraph edge count",
@@ -99,7 +99,7 @@
       "endLine": 67
     },
     "type": "context",
-    "title": "C₅ Blow-up: Extremal Example",
+    "title": "C\u2085 Blow-up: Extremal Example",
     "content": "The balanced blow-up of $C_5$ partitions $n$ vertices into 5 parts of size $\\sim n/5$ and connects parts $i$ and $i+1 \\pmod{5}$. This graph is triangle-free (since $C_5$ has no $K_3$) and achieves subgraph edge density approaching $n^2/50$ in half-sized subgraphs, showing the constant $1/50$ in the conjecture cannot be improved. The axiom states the subgraph density is at most $n^2/50 + n$ (with a linear error term).",
     "mathContext": "The $C_5$ blow-up $G$ has $5 \\cdot (n/5)^2 = n^2/5$ total edges. For $S \\subseteq V$ with $|S| = n/2$, one can show $e(G[S]) \\leq n^2/50 + O(n)$. The Petersen graph (vertex-transitive, 3-regular, triangle-free) is the $n = 10$ case.",
     "significance": "key",
@@ -110,7 +110,7 @@
       "tightness of constants"
     ],
     "prerequisites": [
-      "C₅ structure",
+      "C\u2085 structure",
       "bipartite subgraphs"
     ]
   },
@@ -123,16 +123,16 @@
     },
     "type": "technique",
     "title": "EFRS Theorem: Constant 16",
-    "content": "Erdős, Faudree, Rousseau, and Schelp (1994) proved the conjecture with $50$ replaced by $16$: if every induced subgraph on $\\geq n/2$ vertices has $> n^2/16$ edges, then $G$ contains a triangle. More generally, for any $0 < \\alpha < 1$, if every set of $\\geq \\alpha n$ vertices induces $> \\alpha^3 n^2/2$ edges, then $G$ contains a triangle.",
+    "content": "Erd\u0151s, Faudree, Rousseau, and Schelp (1994) proved the conjecture with $50$ replaced by $16$: if every induced subgraph on $\\geq n/2$ vertices has $> n^2/16$ edges, then $G$ contains a triangle. More generally, for any $0 < \\alpha < 1$, if every set of $\\geq \\alpha n$ vertices induces $> \\alpha^3 n^2/2$ edges, then $G$ contains a triangle.",
     "mathContext": "$\\forall n,\\, \\forall G$ on $n$ vertices: $(\\forall S,\\, |S| \\geq n/2 \\implies e(G[S]) > n^2/16) \\implies K_3 \\subseteq G$. The general form replaces $1/16$ by $\\alpha^3/2$ for threshold $\\alpha n$, recovering $1/16 = (1/2)^3/2$ at $\\alpha = 1/2$.",
     "significance": "key",
     "relatedConcepts": [
-      "Erdős-Faudree-Rousseau-Schelp",
+      "Erd\u0151s-Faudree-Rousseau-Schelp",
       "local-to-global forcing",
       "generalized density conditions"
     ],
     "prerequisites": [
-      "Turán's theorem",
+      "Tur\u00e1n's theorem",
       "graph regularity"
     ]
   },
@@ -189,16 +189,16 @@
     },
     "type": "technique",
     "title": "Norin-Yepremyan: Dense Graphs Case",
-    "content": "Norin and Yepremyan (2015) proved the conjecture for graphs with at least $(1/5 - c)n^2$ edges for some constant $c > 0$. Since the Turán number $\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$ and the $C_5$ blow-up has $n^2/5$ edges, this handles the case where the graph has nearly as many edges as the extremal triangle-free graph. The remaining hard cases are globally sparse graphs that are locally dense.",
-    "mathContext": "$\\exists c > 0,\\, \\forall n,\\, \\forall G$ on $n$ vertices: $e(G) \\geq (1/5 - c)n^2 \\wedge G.\\text{denseSubgraphs} \\implies K_3 \\subseteq G$. Note that $1/5 < 1/4 = \\text{ex}(n,K_3)/n^2$, so this condition is weaker than Turán-dense.",
+    "content": "Norin and Yepremyan (2015) proved the conjecture for graphs with at least $(1/5 - c)n^2$ edges for some constant $c > 0$. Since the Tur\u00e1n number $\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$ and the $C_5$ blow-up has $n^2/5$ edges, this handles the case where the graph has nearly as many edges as the extremal triangle-free graph. The remaining hard cases are globally sparse graphs that are locally dense.",
+    "mathContext": "$\\exists c > 0,\\, \\forall n,\\, \\forall G$ on $n$ vertices: $e(G) \\geq (1/5 - c)n^2 \\wedge G.\\text{denseSubgraphs} \\implies K_3 \\subseteq G$. Note that $1/5 < 1/4 = \\text{ex}(n,K_3)/n^2$, so this condition is weaker than Tur\u00e1n-dense.",
     "significance": "key",
     "relatedConcepts": [
-      "Turán number",
+      "Tur\u00e1n number",
       "global vs local density",
       "Mantel's theorem"
     ],
     "prerequisites": [
-      "Turán's theorem",
+      "Tur\u00e1n's theorem",
       "edge density"
     ]
   },
@@ -210,12 +210,12 @@
       "endLine": 105
     },
     "type": "concept",
-    "title": "Erdős Problem 128: The Full Conjecture ($250)",
-    "content": "The formal statement of the conjecture: for all graphs $G$ on $n$ vertices, if `G.denseSubgraphs` holds (every induced subgraph on $\\geq \\lfloor n/2 \\rfloor$ vertices has $> n^2/50$ edges), then $G$ contains a triangle. Stated as an axiom since the problem is open. Erdős offered $250 for a resolution.",
+    "title": "Erd\u0151s Problem 128: The Full Conjecture ($250)",
+    "content": "The formal statement of the conjecture: for all graphs $G$ on $n$ vertices, if `G.denseSubgraphs` holds (every induced subgraph on $\\geq \\lfloor n/2 \\rfloor$ vertices has $> n^2/50$ edges), then $G$ contains a triangle. Stated as an axiom since the problem is open. Erd\u0151s offered $250 for a resolution.",
     "mathContext": "$\\text{ErdosProblem128}: \\forall n \\in \\mathbb{N},\\, \\forall G \\text{ on } n \\text{ vertices},\\, G.\\text{denseSubgraphs} \\implies G.\\text{hasTriangle}$. Equivalently: every triangle-free graph on $n$ vertices has an induced subgraph on $\\geq \\lfloor n/2 \\rfloor$ vertices with $\\leq n^2/50$ edges.",
     "significance": "key",
     "relatedConcepts": [
-      "Erdős prizes",
+      "Erd\u0151s prizes",
       "open conjectures",
       "extremal graph theory",
       "triangle detection"

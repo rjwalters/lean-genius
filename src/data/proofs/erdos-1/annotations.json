@@ -10,7 +10,7 @@
     "title": "Aristotle Proof Search Results",
     "content": "This file was automatically proved by Aristotle, an automated proof search tool for Lean 4. All three theorems (`erdos_1_lower_bound`, `max_element_bound`, `subset_sums_spacing`) were found without human intervention. The header documents the Lean/Mathlib versions used and lists the proved theorems with their full type signatures. This is a notable Aristotle success: the proofs involve non-trivial case analysis (`rcases` with three cases), tactic composition (`simp_all`, `linarith`, `grind`), and proof reduction (`convert` to apply a general theorem to a specific corollary).",
     "mathContext": "Aristotle found proofs of three results about distinct subset sums: (1) $2^{|A|-1} \\leq N$, (2) $2^{|A|-1} \\leq \\max(A)$, (3) $S \\neq T \\Rightarrow \\sum S \\neq \\sum T$ for $S, T \\subseteq A$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Aristotle proof search",
       "automated theorem proving",
@@ -76,7 +76,7 @@
     },
     "type": "definition",
     "title": "Distinct Subset Sums Property",
-    "content": "Defines `hasDistinctSubsetSums A : Prop` as `Function.Injective (fun S => (S.filter (. in A)).sum id)`. For any two finite sets S, T of naturals, if their intersections with A have the same sum, then S = T. This captures the property that all $2^{|A|}$ subset sums of A are distinct.\n\n**Design choice**: The definition uses `filter` rather than restricting to subsets of A directly. This means the injectivity holds over *all* finite sets of naturals, not just subsets of A — a stronger but equivalent condition when restricted to subsets, and more flexible for proof manipulation.",
+    "content": "Defines `hasDistinctSubsetSums A : Prop` as `Function.Injective (fun S => (S.filter (. in A)).sum id)`. For any two finite sets S, T of naturals, if their intersections with A have the same sum, then S = T. This captures the property that all $2^{|A|}$ subset sums of A are distinct.\n\n**Design choice**: The definition uses `filter` rather than restricting to subsets of A directly. This means the injectivity holds over *all* finite sets of naturals, not just subsets of A \u2014 a stronger but equivalent condition when restricted to subsets, and more flexible for proof manipulation.",
     "mathContext": "A set $A$ has distinct subset sums if $\\sum_{a \\in S \\cap A} a = \\sum_{a \\in T \\cap A} a \\Rightarrow S = T$. For $A = \\{1, 2, 4\\}$: the 8 sums are $\\{0, 1, 2, 3, 4, 5, 6, 7\\}$, all distinct. The definition uses `filter` rather than `powerset` membership for flexibility.",
     "significance": "key",
     "relatedConcepts": [
@@ -125,7 +125,7 @@
     },
     "type": "technique",
     "title": "Maximum Element Bound",
-    "content": "Proves `max_element_bound`: for nonempty $A$ with positive elements and distinct subset sums, $2^{|A|-1} \\leq \\max(A)$. The Aristotle proof uses `convert` to reduce to `erdos_1_lower_bound` with $N = \\max(A)$. The hypothesis that all elements of $A$ are $\\leq \\max(A)$ is proved by `Finset.le_max'`. The `assumption` tactic handles the remaining goals.\n\nThis corollary is often more directly useful than the main theorem because it doesn't require knowing $N$ explicitly — the bound follows from the set's internal structure alone.",
+    "content": "Proves `max_element_bound`: for nonempty $A$ with positive elements and distinct subset sums, $2^{|A|-1} \\leq \\max(A)$. The Aristotle proof uses `convert` to reduce to `erdos_1_lower_bound` with $N = \\max(A)$. The hypothesis that all elements of $A$ are $\\leq \\max(A)$ is proved by `Finset.le_max'`. The `assumption` tactic handles the remaining goals.\n\nThis corollary is often more directly useful than the main theorem because it doesn't require knowing $N$ explicitly \u2014 the bound follows from the set's internal structure alone.",
     "mathContext": "$2^{|A|-1} \\leq \\max(A)$. Proof: set $N = \\max(A)$, then $A \\subseteq \\{1, \\ldots, N\\}$ (since $a \\leq \\max(A)$ for all $a \\in A$), so `erdos_1_lower_bound` gives $2^{|A|-1} \\leq N = \\max(A)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -148,7 +148,7 @@
     },
     "type": "technique",
     "title": "Subset Sum Spacing",
-    "content": "Proves `subset_sums_spacing`: for $A$ with positive elements and distinct subset sums, if $S, T \\subseteq A$ with $S \\neq T$, then $\\sum S \\neq \\sum T$. The Aristotle proof unfolds `hasDistinctSubsetSums` to extract the injectivity, then uses `simp_all` with `Finset.subset_iff` to convert the filter-based definition to the subset-based statement. The `Finset.sum_filter_of_ne` lemma simplifies the filtered sums, and `aesop_cat` closes the remaining goals.\n\nThis theorem restates the injectivity in a more user-friendly form: rather than working with the filter-based definition, it directly asserts that distinct subsets of $A$ have distinct sums — the Sidon-like property for full subsets rather than just pairs.",
+    "content": "Proves `subset_sums_spacing`: for $A$ with positive elements and distinct subset sums, if $S, T \\subseteq A$ with $S \\neq T$, then $\\sum S \\neq \\sum T$. The Aristotle proof unfolds `hasDistinctSubsetSums` to extract the injectivity, then uses `simp_all` with `Finset.subset_iff` to convert the filter-based definition to the subset-based statement. The `Finset.sum_filter_of_ne` lemma simplifies the filtered sums, and `aesop_cat` closes the remaining goals.\n\nThis theorem restates the injectivity in a more user-friendly form: rather than working with the filter-based definition, it directly asserts that distinct subsets of $A$ have distinct sums \u2014 the Sidon-like property for full subsets rather than just pairs.",
     "mathContext": "For $S, T \\subseteq A$ with $S \\neq T$: $\\sum_{a \\in S} a \\neq \\sum_{a \\in T} a$. This is a stronger condition than Sidon ($B_2$): Sidon sets require only $a + b \\neq c + d$ for distinct pairs $\\{a,b\\} \\neq \\{c,d\\}$, while distinct subset sums requires the full $2^n$ sums to be distinct.",
     "significance": "supporting",
     "relatedConcepts": [

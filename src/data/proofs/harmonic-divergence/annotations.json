@@ -9,15 +9,11 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import `Mathlib.Analysis.PSeries` which contains the main theorems about p-series convergence and the harmonic series, plus `Mathlib.Topology.Algebra.InfiniteSum.Basic` for the `Summable` predicate.",
-    "mathContext": "The p-series $\\sum_{n=1}^{\\infty} \\frac{1}{n^p}$ converges iff $p > 1$. The harmonic series ($p = 1$) is the critical boundary case.",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
       "p-series",
       "infinite sums"
-    ],
-    "prerequisites": [
-      "Lean 4 module system"
     ]
   },
   {
@@ -84,15 +80,10 @@
     "type": "lemma",
     "title": "Terms are Positive",
     "content": "A simple but necessary fact: $1/n > 0$ for all $n > 0$. This ensures all our terms contribute positively to the sum.",
-    "mathContext": "$\\frac{1}{n} > 0$ for $n \\geq 1$. Positivity of terms ensures partial sums are monotonically increasing.",
     "significance": "supporting",
     "relatedConcepts": [
       "positivity",
-      "well-definedness",
-      "monotone partial sums"
-    ],
-    "prerequisites": [
-      "ordered field axioms"
+      "well-definedness"
     ]
   },
   {
