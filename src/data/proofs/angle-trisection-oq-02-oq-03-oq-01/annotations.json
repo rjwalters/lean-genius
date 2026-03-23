@@ -137,5 +137,80 @@
       "Subgroup.zpowers",
       "IntermediateField.fixedField"
     ]
+  },
+  {
+    "id": "ann-alpha-field",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-01",
+    "range": {
+      "startLine": 168,
+      "endLine": 377
+    },
+    "type": "technique",
+    "title": "Alpha Field: ζ + ζ⁻¹ Generates the Maximal Real Subfield",
+    "content": "Defines $\\alpha = \\zeta_n + \\zeta_n^{-1}$ and proves $\\mathbb{Q}(\\alpha) = K^H$ (the fixed field of conjugation), with $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\varphi(n)/2$.\n\nThe proof strategy: (1) $\\zeta_n$ satisfies $X^2 - \\alpha X + 1 = 0$ over $\\mathbb{Q}(\\alpha)$, so $[K:\\mathbb{Q}(\\alpha)] \\leq 2$. (2) $\\alpha = \\zeta + \\zeta^{-1}$ is fixed by conjugation ($\\sigma(\\alpha) = \\zeta^{-1} + \\zeta = \\alpha$), so $\\mathbb{Q}(\\alpha) \\subseteq K^H$. (3) By the tower law: $\\varphi(n) = [K:\\mathbb{Q}] = [K:\\mathbb{Q}(\\alpha)] \\cdot [\\mathbb{Q}(\\alpha):\\mathbb{Q}]$. Since $[K:\\mathbb{Q}(\\alpha)] \\leq 2$ and $[K:K^H] = |H| = 2$, we get $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\varphi(n)/2$ by sandwiching between $\\leq$ and $\\geq$ bounds.\n\nThis 200-line section is the technical heart of the file, establishing the degree computation that drives Gauss-Wantzel.",
+    "mathContext": "$\\alpha = \\zeta_n + \\zeta_n^{-1}$; $\\zeta_n^2 - \\alpha\\zeta_n + 1 = 0$; $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\varphi(n)/2$. The equality $\\mathbb{Q}(\\alpha) = K^H$ follows from $\\alpha \\in K^H$ and the degree matching.",
+    "significance": "key",
+    "relatedConcepts": [
+      "maximal real subfield",
+      "fixed field",
+      "quadratic extension",
+      "degree sandwich argument",
+      "tower law"
+    ],
+    "prerequisites": [
+      "IntermediateField.adjoin",
+      "Module.finrank_mul_finrank",
+      "IntermediateField.fixedField"
+    ]
+  },
+  {
+    "id": "ann-axiom-bridge",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-01",
+    "range": {
+      "startLine": 379,
+      "endLine": 511
+    },
+    "type": "insight",
+    "title": "Bridge to cos(2π/n): Eliminating All Axioms",
+    "content": "Transfers the abstract result $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\varphi(n)/2$ (where $\\alpha = \\zeta_n + \\zeta_n^{-1}$) to the concrete cos(2π/n). The key steps: (1) embed the cyclotomic field into $\\mathbb{C}$ via the canonical embedding, (2) show that $\\alpha$ maps to $2\\cos(2\\pi/n)$ under this embedding (using Euler's formula: $e^{2\\pi i/n} + e^{-2\\pi i/n} = 2\\cos(2\\pi/n)$), (3) transfer the degree computation to $[\\mathbb{Q}(\\cos(2\\pi/n)):\\mathbb{Q}] = \\varphi(n)/2$, and (4) prove cos(2π/n) is algebraic over $\\mathbb{Q}$.\n\nThis section eliminates the last formerly-axiomatized results (`maximal_real_subfield_degree`, `cos_minimal_poly_degree`, `cos_extension_is_galois`), achieving 0 axioms.",
+    "mathContext": "$\\alpha = \\zeta_n + \\zeta_n^{-1} \\mapsto e^{2\\pi i/n} + e^{-2\\pi i/n} = 2\\cos(2\\pi/n)$. Hence $[\\mathbb{Q}(\\cos(2\\pi/n)):\\mathbb{Q}] = \\varphi(n)/2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's formula",
+      "canonical embedding",
+      "algebraicity",
+      "axiom elimination",
+      "finrank transfer"
+    ],
+    "prerequisites": [
+      "Complex.exp_mul_I",
+      "IsAlgebraic",
+      "IntermediateField.finrank"
+    ]
+  },
+  {
+    "id": "ann-chebyshev-conjugates",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-01",
+    "range": {
+      "startLine": 542,
+      "endLine": 739
+    },
+    "type": "technique",
+    "title": "Chebyshev Polynomials and Galois Conjugates of cos(2π/n)",
+    "content": "Proves the algebraic Chebyshev identity $T_k((x + x^{-1})/2) = (x^k + x^{-k})/2$ by strong induction on $k$, using the recurrence $T_{k+1}(t) = 2t \\cdot T_k(t) - T_{k-1}(t)$. This identity is then used to show that for coprime $k$ and $n$, $\\cos(2k\\pi/n)$ is a root of $\\text{minpoly}(\\mathbb{Q}, \\cos(2\\pi/n))$ — i.e., the Galois conjugates of $\\cos(2\\pi/n)$ are exactly $\\{\\cos(2k\\pi/n) : \\gcd(k,n) = 1\\}$.\n\nThe Chebyshev approach is more elementary than direct cyclotomic polynomial manipulation, leveraging the three-term recurrence and the connection $T_k(\\cos\\theta) = \\cos(k\\theta)$ to avoid explicit Galois group computations.",
+    "mathContext": "Chebyshev: $T_k(\\cos\\theta) = \\cos(k\\theta)$. Algebraic form: $T_k((x+x^{-1})/2) = (x^k + x^{-k})/2$. For $(k,n) = 1$: $\\text{minpoly}(\\mathbb{Q}, \\cos(2\\pi/n))(\\cos(2k\\pi/n)) = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chebyshev polynomials",
+      "three-term recurrence",
+      "Galois conjugates",
+      "strong induction",
+      "coprimality"
+    ],
+    "prerequisites": [
+      "Polynomial.Chebyshev.T",
+      "minpoly.aeval",
+      "IsCoprime"
+    ]
   }
 ]
