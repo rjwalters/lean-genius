@@ -90,7 +90,8 @@
       "randomized-maxcut-oq-01",
       "erdos-1009",
       "erdos-1010",
-      "erdos-1104"
+      "erdos-1104",
+      "roth-theorem-k3"
     ],
     "prerequisites": [
       "Filter-based asymptotics (Filter.Eventually, atTop)",
@@ -102,6 +103,14 @@
     "lineCount": 489
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "summary": "Documents the file's scope: extending Erdos1155Problem.lean to analyze the gap between BFL n^{3/2+o(1)} and the conjectured Θ(n^{3/2}). Imports Mathlib for filters, real powers, simple graph clique theory, and topological convergence.",
+      "startLine": 1,
+      "endLine": 21,
+      "mathContext": "Imports Mathlib's filter framework (`Filter.Eventually`, `atTop`), `SimpleGraph.CliqueFree`, `Real.rpow`, and `Filter.Tendsto` for asymptotic analysis."
+    },
     {
       "id": "triangle-defs",
       "title": "Triangle Definitions",
@@ -252,6 +261,11 @@
       "targetId": "randomized-maxcut-oq-01",
       "relationship": "thematic",
       "description": "Both formalize extensions of randomized graph algorithms: this entry extends the triangle removal process analysis with exact asymptotic gap characterization, while MaxCut OQ-01 extends the randomized cut analysis with derandomization and approximation guarantees"
+    },
+    {
+      "targetId": "roth-theorem-k3",
+      "relationship": "related",
+      "description": "The triangle removal lemma — a key consequence of Szemerédi regularity — states that graphs with o(n³) triangles can be made triangle-free by removing o(n²) edges. Ruzsa and Szemerédi (1978) used this to prove Roth's theorem (no 3-AP in dense sets) via a graph construction where triangles encode 3-term arithmetic progressions. The triangle removal *process* studied here is the random greedy counterpart: rather than removing a minimal edge set to destroy all triangles, it removes edges of uniformly random triangles one at a time. The connection raises the question of whether the triangle removal lemma's quantitative bounds (recently improved by Fox 2011) can constrain the process's terminal edge count"
     }
   ],
   "references": [
