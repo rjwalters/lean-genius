@@ -154,6 +154,11 @@
       "description": "Pythagorean triples $(a,b,c)$ with $a^2+b^2=c^2$ are completely classified: $a = m^2-n^2$, $b=2mn$, $c=m^2+n^2$. FLT shows the analogous equation $a^n+b^n=c^n$ has NO positive integer solutions for $n \\geq 3$ — the transition from rich structure at $n=2$ to emptiness at $n=3$ is the theorem's content"
     },
     {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Fermat proved $p = a^2 + b^2$ iff $p \\equiv 1 \\pmod{4}$ using descent — the same technique he used for the $n = 4$ case of FLT (showing $a^4 + b^4 = c^4$ has no solutions). Both results are proved by infinite descent on $\\mathbb{Z}[i]$, and the Gaussian integer factorization $p = (a+bi)(a-bi)$ foreshadows the ideal-theoretic methods Kummer used for regular primes"
+    },
+    {
       "targetId": "fundamental-theorem-algebra",
       "relationship": "related",
       "description": "FTA guarantees all algebraic numbers embed in $\\mathbb{C}$, providing the complex-analytic tools for Wiles's proof. Modular forms are complex-analytic objects, and Galois representations act on number fields embedded in $\\mathbb{C}$ — FTA ensures this algebraic/analytic bridge exists"
@@ -182,6 +187,26 @@
       "targetId": "hilbert-10",
       "relationship": "related",
       "description": "Both concern integer solutions of polynomial equations: FLT proves $x^n + y^n = z^n$ has none for $n > 2$, while Hilbert's 10th shows no algorithm decides arbitrary Diophantine equations. FLT resolves a specific Diophantine question positively (decidable, answer is 'no solutions') within the generally undecidable landscape"
+    },
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "foundational",
+      "description": "Sylow's theorems on $p$-subgroups are essential infrastructure for the modularity lifting argument: the Taylor-Wiles patching method constructs auxiliary primes using Sylow theory to control Galois cohomology groups, and the structure of deformation rings depends on the $p$-Sylow subgroups of the Galois image"
+    },
+    {
+      "targetId": "kroneckers-jugendtraum",
+      "relationship": "related",
+      "description": "Kronecker-Weber (every abelian extension of $\\mathbb{Q}$ is cyclotomic) classifies abelian Galois representations. Wiles's proof uses 2-dimensional Galois representations $\\rho: \\text{Gal}(\\overline{\\mathbb{Q}}/\\mathbb{Q}) \\to \\text{GL}_2(\\mathbb{Z}_p)$ — the non-abelian generalization that the Langlands program seeks to classify"
+    },
+    {
+      "targetId": "hilbert-9-reciprocity",
+      "relationship": "extends",
+      "description": "Hilbert's 9th problem seeks the most general reciprocity law. Wiles's modularity theorem is the first major result in the non-abelian case: it shows 2-dimensional $p$-adic Galois representations attached to semistable elliptic curves are modular, establishing a reciprocity between Galois representations and modular forms"
+    },
+    {
+      "targetId": "wolstenholme-theorem",
+      "relationship": "related",
+      "description": "Both concern prime-power divisibility: Wolstenholme's $\\binom{2p}{p} \\equiv 1 \\pmod{p^3}$ and FLT's first case (Wieferich's criterion: if $p \\nmid xyz$ then $2^{p-1} \\equiv 1 \\pmod{p^2}$). Wieferich primes connect both — they are the primes where the first case of FLT requires additional arguments"
     }
   ],
   "conclusion": {
@@ -209,7 +234,11 @@
     "fundamental-arithmetic",
     "godel-incompleteness",
     "euler-identity",
-    "hilbert-10"
+    "hilbert-10",
+    "sylow-theorems",
+    "kroneckers-jugendtraum",
+    "hilbert-9-reciprocity",
+    "wolstenholme-theorem"
   ],
   "references": [
     {
