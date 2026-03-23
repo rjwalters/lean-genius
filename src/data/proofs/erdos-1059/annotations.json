@@ -14,10 +14,10 @@
   {
     "id": "ann-1059-allcomp",
     "proofId": "erdos-1059",
-    "range": { "startLine": 29, "endLine": 32 },
+    "range": { "startLine": 25, "endLine": 32 },
     "type": "definition",
     "title": "AllFactorialSubtractionsComposite",
-    "content": "The key predicate: $n$ satisfies the property if for every $k$ with $k! < n$, both $\\neg(n - k!)$.Prime and $n - k! \\geq 2$. The $\\geq 2$ condition is essential — it excludes the trivial cases $n - k! \\in \\{0, 1\\}$ which are neither prime nor composite.",
+    "content": "The key predicate: $n$ satisfies the property if for every $k$ with $k! < n$, both $\\neg(n - k!)$.Prime and $n - k! \\geq 2$. The $\\geq 2$ condition is essential — it excludes the trivial cases $n - k! \\in \\{0, 1\\}$ which are neither prime nor composite. Without this condition, $n = 2$ would vacuously satisfy the property since $2 - 1! = 1$ is not prime, but $1$ is also not composite.\n\nNote the quantifier structure: $\\forall k : \\mathbb{N}$, not $\\forall k \\geq 1$ — this means $k = 0$ is included, and $0! = 1$ so the condition also checks $n - 1$. For $n = 101$: $101 - 0! = 100$ is composite (checked alongside $101 - 1! = 100$, which is the same value since $0! = 1! = 1$).",
     "mathContext": "$\\text{AllFactorialSubtractionsComposite}(n) \\iff \\forall k, k! < n \\implies \\neg(n-k!)\\text{.Prime} \\wedge n - k! \\geq 2$.",
     "significance": "key",
     "relatedConcepts": ["composite number", "factorial", "Nat.Prime"],
