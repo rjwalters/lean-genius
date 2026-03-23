@@ -145,6 +145,27 @@
       "year": "1940",
       "venue": "National Council of Teachers of Mathematics",
       "note": "Collection of 367 distinct proofs of the Pythagorean theorem, demonstrating its central role in mathematics"
+    },
+    {
+      "authors": "Neugebauer, Otto; Sachs, Abraham",
+      "title": "Mathematical Cuneiform Texts",
+      "year": "1945",
+      "venue": "American Oriental Society",
+      "note": "Analysis of Plimpton 322 (c. 1800 BCE), a Babylonian clay tablet containing a table of Pythagorean triples — evidence that the theorem was known over 1000 years before Pythagoras"
+    },
+    {
+      "authors": "Garfield, James A.",
+      "title": "Pons Asinorum",
+      "year": "1876",
+      "venue": "New-England Journal of Education 3(14), p. 161",
+      "note": "An original trapezoid-based proof of the Pythagorean theorem by the future 20th US President — one of the most elegant proofs using area decomposition"
+    },
+    {
+      "authors": "Maor, Eli",
+      "title": "The Pythagorean Theorem: A 4,000-Year History",
+      "year": "2007",
+      "venue": "Princeton University Press",
+      "note": "Comprehensive history tracing the theorem from Babylonian and Egyptian origins through its modern generalizations in Hilbert spaces and differential geometry"
     }
   ],
   "crossReferences": [
@@ -187,6 +208,31 @@
       "targetId": "cauchy-schwarz-integral",
       "relationship": "related",
       "description": "The integral Cauchy-Schwarz inequality $|\\int fg|^2 \\leq \\int f^2 \\cdot \\int g^2$ is the infinite-dimensional generalization of the same inner product framework. The Pythagorean theorem for $L^2$ functions — $\\|f+g\\|^2 = \\|f\\|^2 + \\|g\\|^2$ when $\\int fg = 0$ — is Parseval's identity in Fourier analysis"
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "related",
+      "description": "The triangle inequality $\\|u + v\\| \\leq \\|u\\| + \\|v\\|$ and the Pythagorean theorem $\\|u + v\\|^2 = \\|u\\|^2 + \\|v\\|^2$ (when $u \\perp v$) are complementary: the Pythagorean theorem gives equality in the squared norm when vectors are orthogonal, while the triangle inequality gives the bound for general vectors. Both are fundamental properties of inner product norms"
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "Both AM-GM and the Pythagorean theorem arise from inner product/norm inequalities. The AM-GM inequality $\\sqrt{ab} \\leq (a+b)/2$ can be proved via the Cauchy-Schwarz inequality, which itself is a direct consequence of the Pythagorean decomposition $v = \\text{proj}_w v + (v - \\text{proj}_w v)$"
+    },
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "The generalized Pythagorean theorem (`pythagorean_sum`) for $n$ mutually orthogonal vectors is proved by induction on the number of vectors using `Finset.induction_on` — a direct application of mathematical induction in the formalization"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "related",
+      "description": "The FTC connects to the Pythagorean theorem through arc length: the length of a curve $\\gamma$ is $\\int \\sqrt{dx^2 + dy^2}$, where $dx^2 + dy^2$ is the Pythagorean theorem applied infinitesimally. The Pythagorean theorem is the local, infinitesimal form of the metric that the FTC integrates globally"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The expansion $\\|u+v\\|^2 = \\|u\\|^2 + 2\\langle u,v \\rangle + \\|v\\|^2$ used in the proof is the inner product analog of the binomial expansion $(a+b)^2 = a^2 + 2ab + b^2$. The Pythagorean theorem says the cross term vanishes when $\\langle u,v \\rangle = 0$"
     }
   ],
   "relatedProofs": [
@@ -200,7 +246,12 @@
     "sqrt2-irrational",
     "law-of-cosines",
     "euler-identity",
-    "cauchy-schwarz-integral"
+    "cauchy-schwarz-integral",
+    "triangle-inequality",
+    "amgm-inequality",
+    "mathematical-induction",
+    "fundamental-theorem-calculus",
+    "binomial-theorem"
   ],
   "leanFile": {
     "imports": [

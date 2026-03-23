@@ -25,7 +25,7 @@
     "id": "ann-namespace-structure",
     "proofId": "abel-ruffini-oq-04",
     "range": {
-      "startLine": 30,
+      "startLine": 31,
       "endLine": 35
     },
     "type": "context",
@@ -51,14 +51,17 @@
     },
     "type": "concept",
     "title": "A₅ Is Simple — The Foundation",
-    "content": "The cornerstone of the entire chain: the alternating group A₅ is simple (has no proper non-trivial normal subgroups). This is the deepest fact used, proved in Mathlib by explicit computation on permutations. A₅ is the smallest non-abelian simple group, with order |A₅| = 60 = 5!/2. Its simplicity is equivalent to saying that the only normal subgroups are {e} and A₅ itself. The complete list of simple groups (the Classification of Finite Simple Groups) shows that A₅ ≅ PSL(2,4) ≅ PSL(2,5) is the first in the infinite family of alternating simple groups.\n\n**Why A₅ is simple (standard proof):** The conjugacy classes of A₅ have sizes 1, 12, 12, 15, 20. Any normal subgroup must be a union of conjugacy classes including {e}, and its order must divide 60. The only sub-sums of {1, 12, 12, 15, 20} that include 1 and divide 60 are 1 and 60 — so the only normal subgroups are {e} and A₅.",
-    "mathContext": "$A_5$ is simple: the only normal subgroups are $\\{e\\}$ and $A_5$. $|A_5| = 60$. Equivalently, every non-trivial normal subgroup of $A_5$ equals $A_5$ itself.",
+    "content": "The cornerstone of the entire chain: the alternating group A₅ is simple (has no proper non-trivial normal subgroups). This is the deepest fact used, proved in Mathlib by explicit computation on permutations. A₅ is the smallest non-abelian simple group, with order |A₅| = 60 = 5!/2. Its simplicity is equivalent to saying that the only normal subgroups are {e} and A₅ itself. The complete list of simple groups (the Classification of Finite Simple Groups) shows that A₅ ≅ PSL(2,4) ≅ PSL(2,5) is the first in the infinite family of alternating simple groups.\n\n**Why A₅ is simple (standard proof):** The conjugacy classes of A₅ have sizes 1, 12, 12, 15, 20. Any normal subgroup must be a union of conjugacy classes including {e}, and its order must divide 60. The only sub-sums of {1, 12, 12, 15, 20} that include 1 and divide 60 are 1 and 60 — so the only normal subgroups are {e} and A₅.\n\n**Burnside context:** Note that |A₅| = 60 = 2² · 3 · 5 involves three distinct primes. By Burnside's p^a q^b theorem (1904), every group of order p^a q^b (two primes) is solvable. A₅ is the smallest group escaping this criterion, making it the minimal counterexample to solvability in a precise sense.",
+    "mathContext": "$A_5$ is simple: the only normal subgroups are $\\{e\\}$ and $A_5$. $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$. By the Jordan-Hölder theorem, $A_5$ appears as the unique composition factor (up to isomorphism) in any composition series of $S_5$ that passes through $A_5$.",
     "significance": "key",
     "relatedConcepts": [
       "simple group",
       "alternating group",
       "normal subgroup",
-      "classification of finite simple groups"
+      "classification of finite simple groups",
+      "Jordan-Hölder theorem",
+      "composition series",
+      "Burnside p^a q^b theorem"
     ],
     "prerequisites": [
       "group theory",
@@ -278,14 +281,16 @@
     },
     "type": "insight",
     "title": "Why Simple Non-Abelian Implies Non-Solvable",
-    "content": "The core group-theoretic mechanism: for a simple non-abelian group G, the derived subgroup [G,G] is a non-trivial normal subgroup of G. Since G is simple, [G,G] must equal G itself. But solvability requires the derived series G ⊵ [G,G] ⊵ [[G,G],[G,G]] ⊵ ··· to eventually reach {e}. If [G,G] = G, the series is constant: G = G = G = ···, and it never reaches {e}. This is why simplicity is the exact obstruction to solvability.",
-    "mathContext": "For simple non-abelian $G$: $[G,G] \\trianglelefteq G$ is non-trivial (since $G$ is non-abelian), so $[G,G] = G$ (since $G$ is simple). The derived series $G \\supseteq [G,G] = G \\supseteq \\cdots$ never reaches $\\{e\\}$.",
+    "content": "The core group-theoretic mechanism: for a simple non-abelian group G, the derived subgroup [G,G] is a non-trivial normal subgroup of G. Since G is simple, [G,G] must equal G itself. But solvability requires the derived series G ⊵ [G,G] ⊵ [[G,G],[G,G]] ⊵ ··· to eventually reach {e}. If [G,G] = G, the series is constant: G = G = G = ···, and it never reaches {e}. This is why simplicity is the exact obstruction to solvability.\n\nThe Jordan-Hölder theorem provides the deeper structural perspective: the composition factors of a group (the successive quotients in any composition series) are unique up to permutation. For S₅, the composition factors are {ℤ/2ℤ, A₅}. A group is solvable if and only if all its composition factors are cyclic of prime order. Since A₅ is a non-abelian composition factor, S₅ cannot be solvable — and this obstruction is invariant of the choice of composition series.",
+    "mathContext": "For simple non-abelian $G$: $[G,G] \\trianglelefteq G$ is non-trivial (since $G$ is non-abelian), so $[G,G] = G$ (since $G$ is simple). The derived series $G \\supseteq [G,G] = G \\supseteq \\cdots$ never reaches $\\{e\\}$. By Jordan-Hölder, the composition factors of $S_5$ are $\\{\\mathbb{Z}/2\\mathbb{Z},\\, A_5\\}$; solvability requires all factors to be cyclic of prime order.",
     "significance": "key",
     "relatedConcepts": [
       "derived subgroup",
       "commutator subgroup",
       "derived series",
-      "composition series"
+      "composition series",
+      "Jordan-Hölder theorem",
+      "composition factors"
     ],
     "prerequisites": [
       "group theory",
@@ -328,14 +333,16 @@
     },
     "type": "insight",
     "title": "Why Exactly Degree 5? — Derived Series Table",
-    "content": "A summary table showing the derived series for each symmetric group S₁ through S₅, explaining why 5 is the exact threshold. For n ≤ 4, each derived series terminates at {e}: S₂ has one step, S₃ passes through A₃ ≅ ℤ/3ℤ, and S₄ has the longest chain {e} ◁ V₄ ◁ A₄ ◁ S₄. At n = 5, the derived series gets stuck because A₅ is simple: [A₅, A₅] = A₅, so the series A₅ = A₅ = A₅ = ··· never descends. The table crystallizes the insight that A₅ being the first non-abelian simple group (order 60) is the precise algebraic obstruction.",
-    "mathContext": "Derived series: $S_4$: $\\{e\\} \\triangleleft V_4 \\triangleleft A_4 \\triangleleft S_4$ (terminates). $S_5$: $A_5 = [A_5, A_5]$ is simple, series stuck at $A_5$. The transition $S_4$ solvable $\\to$ $S_5$ not solvable is sharp.",
+    "content": "A summary table showing the derived series for each symmetric group S₁ through S₅, explaining why 5 is the exact threshold. For n ≤ 4, each derived series terminates at {e}: S₂ has one step, S₃ passes through A₃ ≅ ℤ/3ℤ, and S₄ has the longest chain {e} ◁ V₄ ◁ A₄ ◁ S₄. At n = 5, the derived series gets stuck because A₅ is simple: [A₅, A₅] = A₅, so the series A₅ = A₅ = A₅ = ··· never descends. The table crystallizes the insight that A₅ being the first non-abelian simple group (order 60) is the precise algebraic obstruction.\n\nViewed through the Jordan-Hölder lens: S₄ has composition factors {ℤ/2ℤ, ℤ/3ℤ, ℤ/2ℤ, ℤ/2ℤ} — all cyclic of prime order, hence solvable. S₅ has composition factors {ℤ/2ℤ, A₅} — and A₅ (order 60) is not cyclic of prime order. The transition from S₄ to S₅ is the exact point where a non-cyclic composition factor first appears.",
+    "mathContext": "Derived series: $S_4$: $\\{e\\} \\triangleleft V_4 \\triangleleft A_4 \\triangleleft S_4$ (terminates, composition factors $\\{\\mathbb{Z}/2, \\mathbb{Z}/3, \\mathbb{Z}/2, \\mathbb{Z}/2\\}$). $S_5$: $A_5 = [A_5, A_5]$ is simple, series stuck at $A_5$ (composition factors $\\{\\mathbb{Z}/2, A_5\\}$). The transition $S_4$ solvable $\\to$ $S_5$ not solvable is sharp.",
     "significance": "key",
     "relatedConcepts": [
       "derived series",
       "Klein four-group",
       "solvable group",
-      "composition series"
+      "composition series",
+      "Jordan-Hölder theorem",
+      "composition factors"
     ],
     "prerequisites": [
       "group theory",

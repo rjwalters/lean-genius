@@ -86,6 +86,11 @@
         "key": "Li82",
         "citation": "Lindemann, F., Über die Zahl π, Mathematische Annalen 20 (1882), 213–225. Proved π is transcendental, settling the squaring of the circle — the third classical Greek problem resolved in this formalization.",
         "type": "paper"
+      },
+      {
+        "key": "DM72",
+        "citation": "De Morgan, A., A Budget of Paradoxes, Longmans, Green & Co. (1872, posthumous; 2nd ed. 1915). Catalogues angle trisection and circle squaring claims from amateur mathematicians, documenting the persistence of these problems long after their impossibility was proved.",
+        "type": "book"
       }
     ]
   },
@@ -193,6 +198,21 @@
       "targetId": "godel-incompleteness",
       "relationship": "thematic",
       "description": "Both are foundational impossibility results: Wantzel proved no compass-straightedge procedure can trisect a general angle (1837), Gödel proved no consistent formal system can prove all arithmetic truths (1931). Both resolve long-standing questions by showing that certain natural-seeming capabilities are provably unachievable within a given formal framework"
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "related",
+      "description": "Both involve the geometry of circles and the constant $\\pi$: the area formula $A = \\pi r^2$ is the first circle theorem formalized in this gallery, while this file proves that $\\sqrt{\\pi}$ is not constructible — connecting the geometric formula to the impossibility of squaring the circle"
+    },
+    {
+      "targetId": "vietas-formulas",
+      "relationship": "foundational",
+      "description": "Vieta's formulas relate the roots and coefficients of the trisection polynomial $8x^3 - 6x - 1 = 0$: the three roots $\\cos(20°)$, $\\cos(140°)$, $\\cos(260°)$ satisfy $r_1 + r_2 + r_3 = 0$, $r_1 r_2 + r_1 r_3 + r_2 r_3 = -3/4$, $r_1 r_2 r_3 = 1/8$ — these symmetric function relations are implicit in the rational root test used to prove irreducibility"
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "thematic",
+      "description": "Both belong to the impossibility proof tradition: Cantor's diagonal argument proves no enumeration reaches all reals (1891), Wantzel's argument proves no compass-straightedge construction trisects all angles (1837). Both show that natural-seeming operations (enumeration, geometric construction) have provable limitations"
     }
   ],
   "overview": {
@@ -301,6 +321,9 @@
     "angle-trisection-oq-02",
     "fundamental-arithmetic",
     "euler-totient",
-    "godel-incompleteness"
+    "godel-incompleteness",
+    "area-of-circle",
+    "vietas-formulas",
+    "cantor-diagonalization"
   ]
 }

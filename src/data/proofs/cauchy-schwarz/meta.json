@@ -218,6 +218,21 @@
       "targetId": "amgm-inequality-oq-02",
       "relationship": "related",
       "description": "The Cauchy-Schwarz sum n·∑xᵢ² ≥ (∑xᵢ)² is the key engine in the Maclaurin M₁²≥M₂ proof — directly connecting Cauchy-Schwarz to the elementary symmetric polynomial hierarchy"
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-01",
+      "relationship": "extended-by",
+      "description": "Extends Cauchy-Schwarz to complex inner product spaces using $|\\langle u,v \\rangle_{\\mathbb{C}}| \\leq \\|u\\|\\|v\\|$ — answering the open question about complex generalization"
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-03",
+      "relationship": "extended-by",
+      "description": "Hölder's inequality $|\\sum a_i b_i| \\leq (\\sum |a_i|^p)^{1/p}(\\sum |b_i|^q)^{1/q}$ for $1/p + 1/q = 1$ — Cauchy-Schwarz is the $p = q = 2$ case"
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-04",
+      "relationship": "extended-by",
+      "description": "Strengthens the equality characterization to give the exact proportionality constant $c = \\langle u,v\\rangle/\\|v\\|^2$ when $u = cv$ — answering the resolved open question"
     }
   ],
   "conclusion": {

@@ -137,6 +137,16 @@
       "targetId": "fundamental-arithmetic",
       "relationship": "foundational",
       "description": "Unique prime factorization underpins Erdős's proof: the prime factorization of C(2n,n) is analyzed to show large primes must appear"
+    },
+    {
+      "targetId": "bertrands-postulate-oq-03",
+      "relationship": "extended-by",
+      "description": "Explores the precise density of primes in short intervals — refining Bertrand's guarantee of at least one prime in $(n, 2n)$ to questions about how many primes exist in shorter intervals like $(n, n + n^\\theta)$"
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "RH implies the strongest form of the prime gap bound: $p_{n+1} - p_n = O(\\sqrt{p_n} \\log p_n)$, far stronger than Bertrand's $p_{n+1} < 2p_n$. Both concern the regularity of prime distribution but at different scales — Bertrand is elementary, RH is deep"
     }
   ],
   "relatedProofs": [
@@ -144,7 +154,9 @@
     "bounded-prime-gaps",
     "binomial-theorem",
     "prime-number-theorem",
-    "fundamental-arithmetic"
+    "fundamental-arithmetic",
+    "bertrands-postulate-oq-03",
+    "riemann-hypothesis"
   ],
   "leanFile": {
     "imports": [

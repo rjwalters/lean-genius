@@ -211,6 +211,31 @@
       "targetId": "cayley-hamilton",
       "relationship": "related",
       "description": "The Cayley-Hamilton theorem ($p(A) = 0$ where $p$ is the characteristic polynomial) combined with FTA yields the eigenvalue decomposition: FTA factors $p(\\lambda) = \\prod(\\lambda - \\lambda_i)^{m_i}$ over $\\mathbb{C}$, then Cayley-Hamilton gives $\\prod(A - \\lambda_i I)^{m_i} = 0$, which implies each $A - \\lambda_i I$ is singular on some subspace — the foundation of spectral theory"
+    },
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "foundational",
+      "description": "Gauss's algebraic proof of FTA (1849) reduces to IVT: every odd-degree real polynomial has a real root (by IVT, since it tends to $\\pm\\infty$), and every complex number has a square root. These two facts, both consequences of the completeness of $\\mathbb{R}$, suffice to prove FTA — making IVT one of the minimal prerequisites"
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "Both FTA and Brouwer's fixed point theorem are topological results about continuous maps on compact sets. The topological proof of FTA via winding numbers (the degree of $p(z)/|p(z)|$ on a large circle is $n$) uses the same homotopy-theoretic tools that prove Brouwer's theorem — both are consequences of the non-triviality of $\\pi_1(S^1) \\cong \\mathbb{Z}$"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's formula $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$ parametrizes the unit circle in $\\mathbb{C}$, and the $n$th roots of unity $e^{2\\pi ik/n}$ are the roots of $z^n - 1 = 0$ — the simplest application of FTA. The algebraic closure of $\\mathbb{C}$ guaranteed by FTA means all cyclotomic polynomials split completely over $\\mathbb{C}$"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "thematic",
+      "description": "Both were proved by Gauss: quadratic reciprocity in Disquisitiones Arithmeticae (1801) and FTA in his doctoral thesis (1799). Gauss gave four proofs of FTA (1799, 1816, 1816, 1849) and eight proofs of QR, reflecting his conviction that fundamental theorems deserve multiple proofs revealing different facets"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "FTA guarantees all algebraic numbers live in $\\mathbb{C}$, while Lindemann (1882) proves $\\pi \\notin \\overline{\\mathbb{Q}}$ — transcendental numbers exist in $\\mathbb{C}$ but are unreachable by polynomial equations. The algebraic closure $\\overline{\\mathbb{Q}}$ is a countable subfield of the uncountable $\\mathbb{C}$, so 'most' complex numbers are transcendental"
     }
   ],
   "relatedProofs": [
@@ -224,7 +249,12 @@
     "general-quartic",
     "lagrange-theorem",
     "vietas-formulas",
-    "cayley-hamilton"
+    "cayley-hamilton",
+    "intermediate-value-theorem",
+    "brouwer-fixed-point",
+    "euler-identity",
+    "quadratic-reciprocity",
+    "pi-transcendental"
   ],
   "references": [
     {
@@ -247,6 +277,20 @@
       "year": "1746",
       "venue": "Histoire de l'Académie Royale des Sciences et Belles-Lettres de Berlin",
       "note": "First attempted proof of FTA (incomplete — assumed continuity properties without proof). The theorem is sometimes called the d'Alembert-Gauss theorem in French"
+    },
+    {
+      "authors": "Argand, Jean-Robert",
+      "title": "Essai sur une manière de représenter les quantités imaginaires dans les constructions géométriques",
+      "year": "1806",
+      "venue": "Paris",
+      "note": "Contains a geometric proof of FTA based on the continuity of |p(z)| and the fact that it attains a minimum — the first proof using the geometric interpretation of complex numbers in the Argand plane"
+    },
+    {
+      "authors": "Remmert, Reinhold",
+      "title": "The Fundamental Theorem of Algebra",
+      "year": "1991",
+      "venue": "In: Numbers (Ebbinghaus et al.), Springer GTM 123, Chapter 4",
+      "note": "Survey of historical proofs with detailed analysis of the gaps in early attempts, including d'Alembert's (1746), Euler's (1749), and Gauss's first proof (1799)"
     }
   ],
   "leanFile": {
