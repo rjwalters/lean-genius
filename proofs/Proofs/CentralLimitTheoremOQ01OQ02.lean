@@ -267,9 +267,19 @@ theorem triplet_no_gaussian_is_compound_poisson (τ : LevyTriplet)
 theorem gaussian_variance_from_exponent (σ_sq : ℝ) :
     ∀ ε > 0, ∃ δ > 0, ∀ t : ℝ, 0 < |t| → |t| < δ →
     ‖(-2 * gaussianExponent 0 σ_sq t / ↑(t ^ 2) - ↑σ_sq)‖ < ε := by
-  -- Cast synthesis issue with Complex.ofReal in Mathlib v4.26
-  -- The algebra: -2 * (-(σ_sq * t²/2)) / t² - σ_sq = σ_sq - σ_sq = 0
-  sorry
+  -- gaussianExponent 0 σ_sq t = -(σ_sq * t²/2), so the expression = σ_sq - σ_sq = 0
+  intro ε hε
+  refine ⟨1, one_pos, fun t ht_pos _ => ?_⟩
+  have ht_ne : t ≠ 0 := by intro h; simp [h] at ht_pos
+  -- Unfold and simplify: the expression is identically 0
+  suffices h : -2 * gaussianExponent 0 σ_sq t / ↑(t ^ 2) - ↑σ_sq = 0 by
+    rw [h, norm_zero]; exact hε
+  unfold gaussianExponent
+  simp only [zero_mul, Complex.ofReal_zero, zero_mul, zero_sub]
+  have ht2 : (↑t : ℂ) ^ 2 ≠ 0 := pow_ne_zero 2 (Complex.ofReal_ne_zero.mpr ht_ne)
+  push_cast
+  field_simp
+  simp [div_self (Complex.ofReal_ne_zero.mpr ht_ne)]
 
 /-- The Poisson rate λ equals the total mass of the Lévy measure.
     For Poisson(λ): ν = λ · δ₁ (point mass at 1), so ∫ min(1,x²) dν = λ. -/
