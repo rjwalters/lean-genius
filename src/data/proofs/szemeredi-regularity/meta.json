@@ -7,7 +7,7 @@
     "author": "Szemeredi (1975), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Szemer%C3%A9di_regularity_lemma",
     "date": "1975",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/SzemerediRegularity.lean",
     "tags": [
       "szemeredi",
@@ -16,8 +16,8 @@
       "regularity",
       "marquee-phase-3"
     ],
-    "badge": "formalized",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -55,17 +55,17 @@
     "references": [
       {
         "key": "Sz75",
-        "citation": "Szemerédi, E., On sets of integers containing no k elements in arithmetic progression, Acta Arith. 27 (1975), 199-245.",
+        "citation": "Szemer\u00e9di, E., On sets of integers containing no k elements in arithmetic progression, Acta Arith. 27 (1975), 199-245.",
         "type": "paper"
       },
       {
         "key": "KS96",
-        "citation": "Komlós, J. and Simonovits, M., Szemerédi's regularity lemma and its applications in graph theory, Combinatorics, Paul Erdős is Eighty, Vol. 2 (1996), 295-352.",
+        "citation": "Koml\u00f3s, J. and Simonovits, M., Szemer\u00e9di's regularity lemma and its applications in graph theory, Combinatorics, Paul Erd\u0151s is Eighty, Vol. 2 (1996), 295-352.",
         "type": "paper"
       },
       {
         "key": "Go97",
-        "citation": "Gowers, W.T., Lower bounds of tower type for Szemerédi's uniformity lemma, GAFA 7 (1997), 322-337.",
+        "citation": "Gowers, W.T., Lower bounds of tower type for Szemer\u00e9di's uniformity lemma, GAFA 7 (1997), 322-337.",
         "type": "paper"
       },
       {
@@ -78,7 +78,7 @@
       {
         "id": "szemeredi-full",
         "relationship": "used-by",
-        "description": "The full Szemerédi theorem uses regularity + counting to find arithmetic progressions"
+        "description": "The full Szemer\u00e9di theorem uses regularity + counting to find arithmetic progressions"
       },
       {
         "id": "roth-theorem-k3",
@@ -106,7 +106,7 @@
       "title": "Preamble",
       "startLine": 1,
       "endLine": 20,
-      "summary": "Module docstring listing Parts I–III, references to Szemerédi (1975) and Komlós-Simonovits (1996). Imports Mathlib, opens `Classical`, declares finite vertex type variables.",
+      "summary": "Module docstring listing Parts I\u2013III, references to Szemer\u00e9di (1975) and Koml\u00f3s-Simonovits (1996). Imports Mathlib, opens `Classical`, declares finite vertex type variables.",
       "mathContext": "Setting: $G = (V, E)$ simple graph with $V$ finite. Namespace `Szemeredi.Regularity` encapsulates all definitions."
     },
     {

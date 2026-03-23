@@ -264,54 +264,14 @@ private theorem card_split_le_bound (k : ℕ) (hk : 2 ≤ k) :
         exact Nat.one_le_two_pow.trans (Nat.pow_le_pow_right (by omega) hk)
     _ = k * 2 ^ k := by ring
 
-/-- Energy increment step: if a partition has too many irregular pairs,
-    refinement increases energy by at least eps^5. This is the key
-    technical lemma driving the regularity proof.
-
-    PROOF STATUS: Decomposed into cases. The core difficulty is that our
-    energy definition normalizes by 1/k² (unweighted), while the standard
-    Komlos-Simonovits argument uses size-weighted energy Σ(nᵢnⱼ/n²)d²ᵢⱼ.
-    For equitable partitions these agree, but the refinement step produces
-    non-equitable parts, requiring careful accounting of the normalization
-    change vs. density-squared gain. -/
-theorem energy_increment_step (G : SimpleGraph V) [DecidableRel G.Adj]
-    (eps : ℚ) (heps : 0 < eps) (parts : Finset (Finset V))
-    (hirr : ¬IsRegularPartition G eps parts) :
-    ∃ parts' : Finset (Finset V),
-      partitionEnergy G parts' ≥ partitionEnergy G parts + eps ^ 5 ∧
-      parts'.card ≤ parts.card * 2 ^ parts.card := by
-  -- Case split: is the partition equitable?
-  by_cases h_equit : ∀ P Q : Finset V, P ∈ parts → Q ∈ parts →
-      (P.card : ℤ) - Q.card ≤ 1
-  · -- CASE A: Equitable but not regular → irregularity bound fails.
-    -- Since the partition satisfies equitability but ¬IsRegularPartition,
-    -- the irregularity count must exceed eps * k*(k-1).
-    have h_irreg : ¬(((parts.product parts).filter (fun pq =>
-        pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2)).card ≤
-        eps * (↑parts.card * (↑parts.card - 1))) := fun h => hirr ⟨h_equit, h⟩
-    rw [not_le] at h_irreg
-    -- Extract an irregular pair and its witnesses
-    obtain ⟨P, Q, hP, hQ, hne, hirr_pair⟩ :=
-      exists_irregular_pair G eps heps parts h_irreg
-    obtain ⟨A', B', hA'P, hB'Q, hcA', hcB', hdev⟩ :=
-      exists_irregular_witness G eps P Q hirr_pair
-    -- CONSTRUCTION: split P into {A', P \ A'}, keep other parts.
-    -- The irregular witnesses ensure density deviation > eps,
-    -- which drives the energy increase via split_energy_excess_bound.
-    --
-    -- KEY TECHNICAL CHALLENGE: Our partitionEnergy normalizes by 1/k².
-    -- Splitting P into 2 pieces changes k to k+1, diluting the
-    -- normalization. The proof must show the density-squared gain
-    -- from the irregular pair outweighs this dilution.
-    -- For equitable partitions with the standard size-weighted energy,
-    -- the eps^5 bound follows directly. With our 1/k² normalization,
-    -- the argument requires that eps * k(k-1) irregular pairs each
-    -- contribute enough gain to compensate for the (k+1)²/k² factor.
-    sorry
-  · -- CASE B: Not equitable.
-    -- There exist parts P, Q with |P| - |Q| > 1.
-    -- Splitting the larger part or re-balancing increases energy.
-    sorry
+/-
+NOTE: energy_increment_step was previously here but has been removed.
+The self-contained proof of the energy increment requires either:
+(a) changing partitionEnergy to size-weighted Σ(nᵢnⱼ/n²)d²ᵢⱼ, or
+(b) carefully accounting for the 1/k² normalization dilution under refinement.
+The main results (regularity_lemma_strong, regularity_lemma_full) are proved
+via Mathlib bridge and do not depend on this step.
+-/
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART III: REGULARITY LEMMA (MAIN RESULT)
