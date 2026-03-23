@@ -139,6 +139,21 @@
       "description": "The divisor function $\\tau(n) = \\prod (e_i + 1)$ is defined via unique prime factorization $n = p_1^{e_1} \\cdots p_k^{e_k}$. Understanding when $h^i(m) = h^j(n)$ (orbit coalescence) requires controlling how $\\tau$ transforms the prime factorization structure at each step"
     },
     {
+      "targetId": "erdos-413",
+      "relationship": "related",
+      "description": "Erdős #413 studies barriers for $\\omega(n)$ (number of distinct prime factors). The divisor function $\\tau(n) = \\prod(e_i + 1)$ is determined by the prime factorization, so the behavior of $\\omega(n)$ and its fluctuations directly influence the dynamics of $h(n) = n + \\tau(n)$"
+    },
+    {
+      "targetId": "erdos-415",
+      "relationship": "related",
+      "description": "Erdős #415 studies ordering patterns in $\\varphi(n)$. Both $\\tau$ and $\\varphi$ are multiplicative functions whose local behavior determines the dynamics of arithmetic iterations: $h(n) = n + \\tau(n)$ here vs. questions about $\\varphi$ ordering in #415"
+    },
+    {
+      "targetId": "perfect-numbers",
+      "relationship": "related",
+      "description": "Perfect numbers satisfy $\\sigma(n) = 2n$, making them fixed points of the iteration $n \\mapsto \\sigma(n) - n$. The open question mentions $h(n) = n + \\sigma(n)$ (Erdős #412) as a variant, connecting divisor sum dynamics to the classical theory of perfect and abundant numbers"
+    },
+    {
       "targetId": "harmonic-divergence",
       "relationship": "related",
       "description": "The average of $\\tau(n)$ over $[1, N]$ is $\\sim \\log N$ (Dirichlet's divisor problem), so the iteration $h(n) = n + \\tau(n)$ advances by $\\sim \\log n$ on average. The divergence of the harmonic series underlies the heuristic that orbits grow linearly with logarithmic corrections"
@@ -146,10 +161,13 @@
   ],
   "relatedProofs": [
     "erdos-444",
+    "erdos-413",
+    "erdos-415",
     "collatz-structured",
     "euler-totient",
     "fundamental-arithmetic",
-    "harmonic-divergence"
+    "harmonic-divergence",
+    "perfect-numbers"
   ],
   "conclusion": {
     "summary": "Erdős Problem #414 remains OPEN. The conjecture that all orbits of h(n) = n + τ(n) eventually merge is supported by overwhelming computational evidence and plausible heuristics, but no proof exists. The difficulty is fundamentally about controlling the cumulative irregularity of the divisor function along different trajectories to guarantee an exact collision.",

@@ -113,7 +113,28 @@
       "Probabilistic methods in combinatorics and number theory",
       "Filter-based asymptotics in Lean (Filter.atTop, Filter.Tendsto)"
     ],
-    "lineCount": 243
+    "lineCount": 243,
+    "leanFile": {
+      "lineCount": 243,
+      "structureCount": 0,
+      "axiomCount": 9,
+      "theoremCount": 2,
+      "lemmaCount": 0,
+      "defCount": 16,
+      "imports": [
+        "Mathlib"
+      ]
+    },
+    "relatedProblems": [
+      {
+        "id": "erdos-1",
+        "relationship": "Foundational Erdős problem on sumset structure; both concern extremal properties of integer sequences"
+      },
+      {
+        "id": "erdos-369",
+        "relationship": "Consecutive smooth numbers problem; smooth number distribution is related to prime gap structure since large prime gaps correspond to intervals where all integers have small prime factors"
+      }
+    ]
   },
   "sections": [
     {
@@ -285,10 +306,22 @@
       "targetId": "dirichlets-theorem",
       "relationship": "related",
       "description": "Dirichlet's theorem on primes in arithmetic progressions is used in Rankin's construction: to create large prime-free intervals, one exploits that primes in specific residue classes can be avoided, requiring control over how primes distribute in progressions"
+    },
+    {
+      "targetId": "erdos-5",
+      "relationship": "related",
+      "description": "Erdős #5 asks about the set of limit points of $g_n / \\log p_n$ (normalized prime gaps). While #4 proves $\\limsup g_n / f(n) = \\infty$ for specific growth functions $f$, #5 asks for the full accumulation structure of the normalized gap sequence — a finer question about the distribution of prime gaps"
+    },
+    {
+      "targetId": "erdos-6",
+      "relationship": "related",
+      "description": "Erdős #6 studies related questions about prime gap statistics. Together #4, #5, and #6 form a cluster of Erdős problems probing different aspects of prime gap distribution: maximum size (#4), limit points of ratios (#5), and statistical behavior (#6)"
     }
   ],
   "relatedProofs": [
     "erdos-1",
+    "erdos-5",
+    "erdos-6",
     "erdos-369",
     "bertrands-postulate",
     "prime-number-theorem",

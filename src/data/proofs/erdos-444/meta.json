@@ -82,7 +82,17 @@
       }
     ],
     "axiomCount": 6,
-    "lineCount": 160
+    "lineCount": 160,
+    "relatedProblems": [
+      {
+        "id": "erdos-414",
+        "relationship": "Both concern dynamics of divisor-related functions: #414 studies orbits of n + τ(n), #444 studies extremal behavior of generalized divisor functions"
+      },
+      {
+        "id": "erdos-1057",
+        "relationship": "Carmichael number counting connects to divisor function structure"
+      }
+    ]
   },
   "sections": [
     {
@@ -185,15 +195,27 @@
       "targetId": "prime-number-theorem",
       "relationship": "related",
       "description": "Mertens' theorem ($\\sum_{p \\leq x} 1/p \\sim \\log \\log x$) governs the harmonic sum over primes, and the PNT provides the prime counting function $\\pi(x) \\sim x/\\log x$ needed for the exponent optimization in the extremal construction"
+    },
+    {
+      "targetId": "perfect-numbers",
+      "relationship": "related",
+      "description": "Perfect numbers are extremal for the sum-of-divisors function $\\sigma(n) = 2n$. The generalized divisor function $\\tau_A(n)$ studied here extends the classical divisor function $\\tau(n)$ by restricting which prime factors contribute, connecting to the broader theory of multiplicative arithmetic functions including $\\sigma$"
+    },
+    {
+      "targetId": "erdos-413",
+      "relationship": "related",
+      "description": "Erdős #413 studies barriers for $\\omega(n)$ (distinct prime factor count). The generalized divisor function $\\tau_A(n)$ depends on the prime factorization restricted to primes in $A$, so the distribution of $\\omega(n)$ for primes in $A$ directly influences the extremal behavior studied in #444"
     }
   ],
   "relatedProofs": [
     "erdos-414",
+    "erdos-413",
     "euler-totient",
     "fundamental-arithmetic",
     "harmonic-divergence",
     "infinitude-primes",
-    "prime-number-theorem"
+    "prime-number-theorem",
+    "perfect-numbers"
   ],
   "leanFile": {
     "imports": [
