@@ -144,16 +144,32 @@
       "endLine": 202,
       "summary": "Step-by-step examples tracing the algorithm execution.",
       "mathContext": "Example: $\\gcd(252, 105)$: $252 = 2 \\cdot 105 + 42 \\to \\gcd(105, 42)$: $105 = 2 \\cdot 42 + 21 \\to \\gcd(42, 21)$: $42 = 2 \\cdot 21 + 0 \\to \\gcd(21, 0) = 21$. Three steps, with the second argument decreasing: $105 \\to 42 \\to 21 \\to 0$."
+    },
+    {
+      "id": "euclidean-domains",
+      "title": "Generalization to Euclidean Domains",
+      "startLine": 204,
+      "endLine": 221,
+      "summary": "Extends the GCD algorithm to Euclidean domains: any ring equipped with a Euclidean function $\\phi$ satisfying division with remainder $a = qb + r$ where $\\phi(r) < \\phi(b)$. Examples: $\\mathbb{Z}[i]$ (Gaussian integers), $F[x]$ (polynomial rings), and $\\mathbb{Z}[\\omega]$ (Eisenstein integers).",
+      "mathContext": "A Euclidean domain is an integral domain $R$ with a Euclidean function $\\phi: R \\setminus \\{0\\} \\to \\mathbb{N}$ such that for any $a, b \\in R$ with $b \\neq 0$, there exist $q, r \\in R$ with $a = qb + r$ and either $r = 0$ or $\\phi(r) < \\phi(b)$. The Euclidean algorithm generalizes verbatim: $\\gcd(a, b) = \\gcd(b, a \\bmod b)$, terminating because $\\phi(a \\bmod b) < \\phi(b)$."
+    },
+    {
+      "id": "complexity",
+      "title": "Complexity Analysis and Lamé's Theorem",
+      "startLine": 223,
+      "endLine": 247,
+      "summary": "Lamé's theorem (1844): the number of division steps is at most $5 \\cdot \\lfloor \\log_{10}(\\min(a,b)) \\rfloor + 1$. The worst case is consecutive Fibonacci numbers, where $\\gcd(F_{n+1}, F_n) = 1$ takes exactly $n$ steps. This was the first rigorous algorithm complexity analysis in history.",
+      "mathContext": "Lamé (1844): $\\gcd(a, b)$ with $b \\leq a$ terminates in at most $\\lfloor \\log_\\phi b \\rfloor + 1$ steps, where $\\phi = (1+\\sqrt{5})/2 \\approx 1.618$. Equivalently, at most $5d$ steps for $d$-digit $b$. The worst case $\\gcd(F_{n+1}, F_n)$ requires exactly $n$ steps because $F_{n+1} \\bmod F_n = F_{n-1}$, reducing to $\\gcd(F_n, F_{n-1})$."
     }
   ],
   "conclusion": {
     "summary": "The Euclidean algorithm is now fully verified using Mathlib's GCD infrastructure. We prove correctness (the result divides both inputs), maximality (it's the greatest such divisor), and provide the extended algorithm via Bezout's identity.",
     "implications": "The Euclidean algorithm has profound implications across mathematics and computer science:\n\n**1. Cryptography**\nEssential for RSA key generation and modular arithmetic operations.\n\n**2. Computer Algebra**\nFoundation for polynomial GCD and simplification algorithms.\n\n**3. Continued Fractions**\nThe algorithm produces continued fraction expansions.\n\n**4. Linear Diophantine Equations**\nBezout's identity solves ax + by = c when c is divisible by gcd(a,b).\n\n**5. Euclidean Domains**\nThe algorithm generalizes to any ring with a Euclidean function.",
     "openQuestions": [
-      "What is the average-case complexity of the Euclidean algorithm?",
-      "How do binary GCD algorithms compare in practice?",
-      "Can we extend this to more exotic number systems?",
-      "What is the connection to continued fractions and best rational approximations?"
+      "Can Lamé's theorem be formalized in Lean — that $\\gcd(a, b)$ requires at most $\\lfloor \\log_\\phi(b) \\rfloor + 1$ steps, with consecutive Fibonacci numbers achieving this bound?",
+      "The average number of steps is $\\frac{12 \\ln 2}{\\pi^2} \\ln n \\approx 0.843 \\ln n$ (Heilbronn, 1969; Dixon, 1970). Can this asymptotic result be formalized, or at least a weaker bound proved?",
+      "Can the binary GCD algorithm (Stein, 1967) — which replaces division by bit shifts — be formalized in Lean with a proof that it computes the same result as the Euclidean algorithm?",
+      "The Euclidean algorithm on $a, b$ produces the continued fraction expansion $a/b = [q_0; q_1, q_2, \\ldots]$ where $q_i$ are the successive quotients. Can this connection be formalized, showing convergents are best rational approximations?"
     ]
   },
   "leanFile": {
@@ -219,6 +235,26 @@
       "targetId": "abel-ruffini",
       "relationship": "related",
       "description": "The Euclidean algorithm in the polynomial ring $F[x]$ computes $\\gcd(p,q)$, which determines the splitting behavior of polynomials. In Galois theory, $\\gcd(p, p') = 1$ iff $p$ is separable (no repeated roots), a condition needed for the Galois correspondence underlying Abel-Ruffini"
+    },
+    {
+      "targetId": "pythagorean-triples",
+      "relationship": "related",
+      "description": "The parametrization of Pythagorean triples $a = m^2 - n^2$, $b = 2mn$, $c = m^2 + n^2$ requires $\\gcd(m, n) = 1$ and $m \\not\\equiv n \\pmod{2}$ for the triple to be primitive. The Euclidean algorithm tests this coprimality condition"
+    },
+    {
+      "targetId": "sqrt2-from-axioms",
+      "relationship": "related",
+      "description": "The irrationality of $\\sqrt{2}$ uses the key property that $\\gcd(p, q) = 1$ for a fraction $p/q$ in lowest terms. The Euclidean algorithm provides the reduction to lowest terms, and the coprimality condition is the starting point of the proof by contradiction"
+    },
+    {
+      "targetId": "erdos-432",
+      "relationship": "related",
+      "description": "Erdős Problem #432 concerns pairwise coprime sumsets — the GCD condition $\\gcd(a_i, a_j) = 1$ for all $i \\neq j$ is the central hypothesis, directly computed by the Euclidean algorithm"
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime-oq-04",
+      "relationship": "extended-by",
+      "description": "Dirichlet's approximation theorem connects the Euclidean algorithm to continued fractions and lattice theory: the convergents $p_k/q_k$ of the continued fraction expansion (produced by the GCD algorithm's quotients) are the best rational approximations to irrational numbers"
     }
   ],
   "relatedProofs": [
@@ -231,7 +267,11 @@
     "wilsons-theorem",
     "mathematical-induction",
     "perfect-numbers",
-    "abel-ruffini"
+    "abel-ruffini",
+    "pythagorean-triples",
+    "sqrt2-from-axioms",
+    "erdos-432",
+    "chinese-remainder-non-coprime-oq-04"
   ],
   "references": [
     {
