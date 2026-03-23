@@ -32,7 +32,7 @@
       "isoperimetric inequality",
       "concentration of measure"
     ],
-    "mathContext": "See annotation content for formal details of faber-krahn constant"
+    "mathContext": "The Faber-Krahn inequality states that among domains of fixed volume, the ball minimizes the first Dirichlet eigenvalue $\\lambda_1(\\Omega) \\geq c_{FK} \\cdot |\\Omega|^{-2/3}$. The constant $c_{FK} = (1 - e^{-2})\\pi^2/4$ encodes the efficiency with which vorticity can concentrate before viscous dissipation overcomes it."
   },
   {
     "id": "ann-key-numerical",
@@ -90,7 +90,7 @@
       "induction",
       "exponential growth"
     ],
-    "mathContext": "See annotation content for formal details of bernoulli's inequality"
+    "mathContext": "Bernoulli's inequality: $(1 + x)^n \\geq 1 + nx$ for $x \\geq -1$, $n \\in \\mathbb{N}$, proved by induction. The key application: for $x = \\lambda_1 h > 0$, this gives $(1 + \\lambda_1 h)^n \\geq 1 + n\\lambda_1 h \\to \\infty$, showing that enstrophy growing at spectral-gap rate in backward time is unbounded."
   },
   {
     "id": "ann-backward-growth",
@@ -211,7 +211,7 @@
       "Agmon inequality",
       "regularity criteria"
     ],
-    "mathContext": "See annotation content for formal details of bkm blowup criterion"
+    "mathContext": "The Beale-Kato-Majda criterion (1984): a smooth solution to 3D Euler/NS blows up at time $T$ iff $\\int_0^T \\|\\omega(\\cdot,t)\\|_{L^\\infty}\\,dt = \\infty$. Here it is used in contrapositive form: bounded $\\|\\omega\\|_{L^\\infty}$ on $[0,T)$ implies the solution extends past $T$."
   },
   {
     "id": "ann-typeII-scenario",

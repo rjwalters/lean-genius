@@ -15,7 +15,7 @@
       "definitional equality",
       "type theory"
     ],
-    "mathContext": "See annotation content for formal details of the most famous 'trivial' proof"
+    "mathContext": "In Lean 4, $1 + 1 = 2$ is proved by $\\mathtt{rfl}$ because both sides reduce to $\\mathtt{succ}(\\mathtt{succ}(\\mathtt{zero}))$ under the definitional equalities $\\mathtt{add}(n, \\mathtt{succ}(m)) = \\mathtt{succ}(\\mathtt{add}(n,m))$ and $\\mathtt{add}(n, \\mathtt{zero}) = n$. Principia Mathematica required hundreds of pages to first build set-theoretic foundations for the numerals."
   },
   {
     "id": "ann-peano-inductive",
@@ -134,7 +134,7 @@
       "normal form",
       "beta reduction"
     ],
-    "mathContext": "See annotation content for formal details of the power of 'rfl'"
+    "mathContext": "$\\mathtt{rfl}$ proves $a = b$ whenever $a$ and $b$ are definitionally equal, i.e., they reduce to the same normal form under $\\beta$-reduction and unfolding of definitions. Here $1 + 1 \\xrightarrow{\\text{def}} \\mathtt{succ}(\\mathtt{succ}(\\mathtt{zero})) \\xleftarrow{\\text{def}} 2$, so $\\mathtt{rfl} : 1 + 1 = 2$."
   },
   {
     "id": "ann-add-zero",
@@ -226,7 +226,7 @@
       "definitional equality",
       "computation"
     ],
-    "mathContext": "See annotation content for formal details of extending the pattern"
+    "mathContext": "Any closed arithmetic expression on concrete numerals is decidable by computation: $2 + 1 = 3$, $2 + 2 = 4$, etc. are all proved by $\\mathtt{rfl}$ since numerals are finite towers of $\\mathtt{succ}$ and $\\mathtt{add}$ reduces them by structural recursion in finitely many steps."
   },
   {
     "id": "ann-builtin-nat",
@@ -246,7 +246,7 @@
       "standard library",
       "numeric literals"
     ],
-    "mathContext": "See annotation content for formal details of lean's built-in naturals"
+    "mathContext": "Lean's $\\mathtt{Nat}$ is definitionally identical to Peano $\\mathbb{N}$: $\\mathtt{Nat.zero} = 0$, $\\mathtt{Nat.succ}\\, n = n+1$, and $\\mathtt{Nat.add}$ recurses on the second argument. The proof $(1 : \\mathbb{N}) + 1 = 2$ is $\\mathtt{rfl}$ by the same definitional reduction as in the custom $\\mathtt{Peano.\\mathbb{N}}$ type."
   },
   {
     "id": "ann-principia-context",
@@ -264,7 +264,7 @@
       "logicism",
       "set-theoretic foundations"
     ],
-    "mathContext": "See annotation content for formal details of understanding principia mathematica"
+    "mathContext": "In the Frege-Russell definition, cardinal $n$ is the equivalence class of all $n$-element sets under bijection. Addition becomes $|A| + |B| = |A \\sqcup B|$ for disjoint $A, B$. Proving $1 + 1 = 2$ then requires showing that the disjoint union of two singletons is in the class of 2-element sets — a non-trivial set-theoretic argument."
   },
   {
     "id": "ann-succ-add",

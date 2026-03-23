@@ -15,7 +15,7 @@
       "power set",
       "diagonal argument"
     ],
-    "mathContext": "See annotation content for formal details of the hierarchy of infinities"
+    "mathContext": "For any set $A$, there is a strict cardinal inequality $|A| < |\\mathcal{P}(A)| = 2^{|A|}$. This holds for all cardinalities: $|\\mathbb{N}| < |\\mathcal{P}(\\mathbb{N})| < |\\mathcal{P}(\\mathcal{P}(\\mathbb{N}))| < \\cdots$, producing an infinite ascending hierarchy of infinite cardinals."
   },
   {
     "id": "ann-main-theorem",
@@ -69,7 +69,7 @@
       "case analysis",
       "substitution"
     ],
-    "mathContext": "See annotation content for formal details of set formulation proof"
+    "mathContext": "Assume $f: A \\to \\mathcal{P}(A)$ is surjective. Define $D = \\{x \\mid x \\notin f(x)\\}$. By surjectivity $\\exists b$ with $f(b) = D$, but then $b \\in D \\iff b \\notin f(b) = D$, a contradiction. Hence no surjection $A \\to \\mathcal{P}(A)$ exists."
   },
   {
     "id": "ann-paradox",
@@ -141,7 +141,7 @@
       "witness",
       "intuitionistic logic"
     ],
-    "mathContext": "See annotation content for formal details of constructive witness"
+    "mathContext": "Given any $f: A \\to \\mathcal{P}(A)$, the diagonal set $D = \\{x \\mid x \\notin f(x)\\}$ is an explicit witness satisfying $D \\notin \\mathrm{ran}(f)$. The proof is constructive: no choice principle or excluded middle beyond the case split $b \\in D \\lor b \\notin D$ is needed."
   },
   {
     "id": "ann-russell",
@@ -159,7 +159,7 @@
       "type theory",
       "universes"
     ],
-    "mathContext": "See annotation content for formal details of connection to russell's paradox"
+    "mathContext": "Russell's paradox considers $R = \\{x \\mid x \\notin x\\}$ and derives $R \\in R \\iff R \\notin R$. Cantor's diagonal argument uses $D = \\{x \\mid x \\notin f(x)\\}$ for a fixed $f$, avoiding self-reference. Type theory resolves Russell's paradox by universe stratification: $x : \\mathcal{U}_i$ can only contain elements of $\\mathcal{U}_{i-1}$."
   },
   {
     "id": "ann-connection",
@@ -177,6 +177,6 @@
       "binary sequences",
       "real numbers"
     ],
-    "mathContext": "See annotation content for formal details of wiedijk #22 vs #63"
+    "mathContext": "Wiedijk #63 (general form): $\\neg\\exists f: A \\to \\mathcal{P}(A)$ surjective, for any type $A$. Wiedijk #22 (special case): $\\neg\\exists f: \\mathbb{N} \\to \\mathbb{R}$ surjective, obtained by taking $A = \\mathbb{N}$ and identifying $\\mathcal{P}(\\mathbb{N}) \\cong 2^{\\mathbb{N}} \\hookrightarrow \\mathbb{R}$."
   }
 ]

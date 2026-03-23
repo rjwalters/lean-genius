@@ -16,7 +16,7 @@
       "natural numbers",
       "well-ordering"
     ],
-    "mathContext": "See annotation content for formal details of the foundation of recursive reasoning"
+    "mathContext": "Peano's fifth axiom: $P(0) \\ \\land\\ (\\forall n.\\, P(n) \\to P(n+1)) \\to \\forall n.\\, P(n)$. In Lean 4, the natural numbers are an inductive type and this principle is the recursor $\\mathtt{Nat.rec}$, making induction definitionally built into the type system."
   },
   {
     "id": "ann-historical",
@@ -70,7 +70,7 @@
       "type theory",
       "inductive types"
     ],
-    "mathContext": "See annotation content for formal details of induction is the recursor"
+    "mathContext": "The recursor for the inductive type $\\mathbb{N}$ has type $\\mathtt{Nat.rec} : P(0) \\to (\\forall n,\\, P(n) \\to P(n+1)) \\to \\forall n,\\, P(n)$. Under the Curry-Howard correspondence, this term is both the induction proof and the recursive function definition."
   },
   {
     "id": "ann-strong-induction",
@@ -106,7 +106,7 @@
       "prime numbers",
       "inductive hypothesis"
     ],
-    "mathContext": "See annotation content for formal details of why use strong induction?"
+    "mathContext": "Strong induction is strictly more convenient (though not more powerful) when the proof of $P(n)$ requires $P(k)$ for $k \\ll n-1$. The canonical example: every $n \\geq 2$ has a prime divisor, where composite $n = ab$ requires $P(a)$ with $a \\leq n/2$."
   },
   {
     "id": "ann-equivalence-strong-from-weak",
@@ -229,7 +229,7 @@
       "recursor",
       "Curry-Howard correspondence"
     ],
-    "mathContext": "See annotation content for formal details of connection to type theory"
+    "mathContext": "In Martin-Löf type theory, $\\mathbb{N}$ is defined by two constructors: $\\mathtt{zero}: \\mathbb{N}$ and $\\mathtt{succ}: \\mathbb{N} \\to \\mathbb{N}$. The elimination rule (recursor) is exactly the induction principle. Every proof by induction corresponds to a well-typed term of type $\\forall n: \\mathbb{N},\\, P(n)$."
   },
   {
     "id": "ann-structural",
@@ -247,6 +247,6 @@
       "lists",
       "data structures"
     ],
-    "mathContext": "See annotation content for formal details of generalizing to other data types"
+    "mathContext": "Structural induction on lists: $P([]) \\ \\land\\ (\\forall x,\\, \\forall xs,\\, P(xs) \\to P(x :: xs)) \\to \\forall l,\\, P(l)$. More generally, every inductive type $T$ automatically generates an elimination principle whose form mirrors its constructors."
   }
 ]

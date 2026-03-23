@@ -50,7 +50,7 @@
       "natural numbers",
       "sequences"
     ],
-    "mathContext": "See annotation content for formal details of defining the natural number series"
+    "mathContext": "The sequence $f(n) = n + 1$ gives $f(0) = 1, f(1) = 2, \\ldots$, so $\\sum_{n=0}^{\\infty} f(n) = \\sum_{k=1}^{\\infty} k$. Since $\\mathbb{N}$ is 0-indexed in Lean, the offset ensures the series equals $1 + 2 + 3 + \\cdots$ as intended."
   },
   {
     "id": "ann-false-claim",
@@ -137,7 +137,7 @@
       "divergence",
       "partial sums"
     ],
-    "mathContext": "See annotation content for formal details of alternating naturals don't converge either"
+    "mathContext": "The series $\\sum_{n=0}^{\\infty} (-1)^n (n+1) = 1 - 2 + 3 - 4 + \\cdots$ has partial sums $S_{2k} = -(k)$ and $S_{2k+1} = k+1$, which grow without bound. Hence the series is not summable and $\\mathtt{tsum}\\, \\mathrm{alternatingNaturals} = 0$ by Mathlib convention."
   },
   {
     "id": "ann-shift-requires-summable",
@@ -171,7 +171,7 @@
       "type checking",
       "blocked proof"
     ],
-    "mathContext": "See annotation content for formal details of fallacy: shift-add blocked by type system"
+    "mathContext": "The shift identity $\\sum_{n=0}^{\\infty} f(n) = f(0) + \\sum_{n=0}^{\\infty} f(n+1)$ requires $\\mathtt{Summable}\\, f$ as a hypothesis in Mathlib. Since $\\neg\\,\\mathtt{Summable}\\, \\mathrm{alternatingNaturals}$, this lemma cannot be applied, and Lean rejects the manipulation at the type-checking stage."
   },
   {
     "id": "ann-unbounded",
@@ -240,7 +240,7 @@
       "second fallacy",
       "manipulation blocked"
     ],
-    "mathContext": "See annotation content for formal details of step 2 fails: cannot shift divergent series"
+    "mathContext": "Step 2 of the Numberphile argument asserts $2S_2 = S_2 + (0 + S_2\\text{ shifted})$. This requires additivity of $\\mathtt{tsum}$ and a shift lemma, both of which carry a $\\mathtt{Summable}$ hypothesis. Since $S_2 = 1 - 2 + 3 - \\cdots$ diverges, the prerequisite $\\mathtt{Summable}\\, S_2$ is false and the step is blocked."
   },
   {
     "id": "ann-step3",
@@ -275,6 +275,6 @@
       "type safety",
       "mathematical rigor"
     ],
-    "mathContext": "See annotation content for formal details of conclusion: type systems enforce rigor"
+    "mathContext": "The Ramanujan sum $\\zeta(-1) = -\\frac{1}{12}$ arises from analytic continuation of $\\zeta(s) = \\sum_{n=1}^{\\infty} n^{-s}$, valid for $\\mathrm{Re}(s) > 1$, to $s = -1$. This is a distinct mathematical object from $\\mathtt{tsum}\\,(\\lambda n,\\, n+1)$. Lean's type system enforces this distinction: no coercion exists between the two definitions."
   }
 ]
