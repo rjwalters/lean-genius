@@ -86,49 +86,56 @@
       "title": "Hölder Continuity on the Circle",
       "startLine": 48,
       "endLine": 72,
-      "summary": "Defines `IsHolderOnCircle` using Mathlib's `HolderWith`. Proves Hölder ⟹ continuous and Lipschitz ⟹ Hölder(1)."
+      "summary": "Defines `IsHolderOnCircle` using Mathlib's `HolderWith`. Proves Hölder ⟹ continuous and Lipschitz ⟹ Hölder(1).",
+      "mathContext": "A function $f$ is $(C, \\alpha)$-Hölder iff $|f(x) - f(y)| \\leq C \\cdot d(x,y)^\\alpha$. Lipschitz = Hölder(1)."
     },
     {
       "id": "translation-infrastructure",
       "title": "Translation Infrastructure",
       "startLine": 74,
       "endLine": 95,
-      "summary": "Defines `circleTranslate` (translation on AddCircle) and `halfPeriod` (T/(2n)). Axiomatizes `fourier_norm_one`: ‖e_n(x)‖ = 1."
+      "summary": "Defines `circleTranslate` (translation on AddCircle) and `halfPeriod` (T/(2n)). Axiomatizes `fourier_norm_one`: ‖e_n(x)‖ = 1.",
+      "mathContext": "The half-period $h = T/(2n)$ satisfies $e_{-n}(x + h) = -e_{-n}(x)$ because $e^{-\\pi i} = -1$."
     },
     {
       "id": "axiomatized-analysis",
       "title": "Axiomatized Analysis Infrastructure",
       "startLine": 97,
       "endLine": 148,
-      "summary": "Axiomatizes the core analytical tools: half-period identity (e_{-n} sign flip), difference formula (2ĉ_n as integral), Hölder translation bound, and integral product bound."
+      "summary": "Axiomatizes the core analytical tools: half-period identity (e_{-n} sign flip), difference formula (2ĉ_n as integral), Hölder translation bound, and integral product bound.",
+      "mathContext": "Key identity: $2\\hat{c}_n(f) = \\int (f(x) - f(x + T/(2n))) e_{-n}(x)\\, d\\mu$, bounded by $C(T/(2|n|))^\\alpha$ via Hölder."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: Fourier Coefficient Decay",
       "startLine": 150,
       "endLine": 177,
-      "summary": "**PROVED**: ‖ĉ_n(f)‖ ≤ (C/2)(T/2|n|)^α. Uses difference formula, integral bound, and norm arithmetic."
+      "summary": "**PROVED**: ‖ĉ_n(f)‖ ≤ (C/2)(T/2|n|)^α. Uses difference formula, integral bound, and norm arithmetic.",
+      "mathContext": "$\\|\\hat{c}_n(f)\\| \\leq \\frac{C}{2} \\left(\\frac{T}{2|n|}\\right)^\\alpha$ for $\\alpha$-Hölder $f$ with constant $C$."
     },
     {
       "id": "corollaries",
       "title": "Corollaries",
       "startLine": 179,
       "endLine": 205,
-      "summary": "Proves Lipschitz decay (α=1). Axiomatizes square-summability for α > 1/2 and Riemann-Lebesgue from Hölder."
+      "summary": "Proves Lipschitz decay (α=1). Axiomatizes square-summability for α > 1/2 and Riemann-Lebesgue from Hölder.",
+      "mathContext": "Lipschitz: $\\|\\hat{c}_n\\| \\leq CT/(4|n|)$. For $\\alpha > 1/2$: $\\sum |\\hat{c}_n|^2 < \\infty$."
     },
     {
       "id": "optimality",
       "title": "Optimality",
       "startLine": 207,
       "endLine": 232,
-      "summary": "Axiomatizes optimality (Weierstrass function construction) and partial converse (decay ⟹ regularity via Sobolev embedding)."
+      "summary": "Axiomatizes optimality (Weierstrass function construction) and partial converse (decay ⟹ regularity via Sobolev embedding).",
+      "mathContext": "For each $\\alpha \\in (0,1)$, $\\exists$ $\\alpha$-Hölder $f$ with $|\\hat{c}_n| \\geq c/|n|^\\alpha$. Converse: $O(1/|n|^\\beta)$ with $\\beta > \\alpha + 1/2$ gives Hölder($\\alpha$)."
     },
     {
       "id": "hierarchy",
       "title": "Regularity-Decay Hierarchy",
       "startLine": 234,
       "endLine": 258,
-      "summary": "Axiomatizes C^k, C^∞ (rapid), and analytic (exponential) decay. Proves arithmetic consequences for the α = 1/2 threshold."
+      "summary": "Axiomatizes C^k, C^∞ (rapid), and analytic (exponential) decay. Proves arithmetic consequences for the α = 1/2 threshold.",
+      "mathContext": "$C^k \\Rightarrow O(1/|n|^k)$, $C^\\infty \\Rightarrow$ rapid decay, analytic $\\Rightarrow O(e^{-c|n|})$. Complete regularity $\\leftrightarrow$ decay correspondence."
     }
   ],
   "crossReferences": [
@@ -153,6 +160,20 @@
       "Can the optimality construction (Weierstrass lacunary series) be formalized?"
     ]
   },
+  "references": [
+    {
+      "text": "Zygmund, A. (1935). Trigonometric Series. Cambridge University Press.",
+      "url": "https://en.wikipedia.org/wiki/Trigonometric_series_(book)"
+    },
+    {
+      "text": "Katznelson, Y. (2004). An Introduction to Harmonic Analysis. 3rd ed., Cambridge University Press.",
+      "url": "https://en.wikipedia.org/wiki/Harmonic_analysis"
+    },
+    {
+      "text": "Bernstein, S.N. (1912). Sur l'ordre de la meilleure approximation des fonctions continues par des polynômes de degré donné.",
+      "url": "https://en.wikipedia.org/wiki/Bernstein%27s_theorem_(approximation_theory)"
+    }
+  ],
   "relatedProofs": [
     "fourier-series",
     "fourier-series-oq-03"
