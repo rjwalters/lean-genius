@@ -353,6 +353,16 @@
       "targetId": "elementary-quadratic-reciprocity-oq-01",
       "relationship": "related",
       "description": "Zolotarev's 1872 proof of quadratic reciprocity uses the sign homomorphism $\\text{sign}: S_n \\to \\{\\pm 1\\}$ — the same homomorphism whose kernel $A_n = \\ker(\\text{sign})$ is central to Abel-Ruffini's proof chain. In Zolotarev's proof, the Legendre symbol $(a/p)$ equals the signature of the multiplication-by-$a$ permutation on $(\\mathbb{Z}/p\\mathbb{Z})^{\\times}$, directly linking the symmetric group structure that drives Abel-Ruffini's impossibility to quadratic reciprocity"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-03",
+      "relationship": "related",
+      "description": "The Gauss-Wantzel theorem characterizes constructible regular n-gons via Fermat primes, paralleling Abel-Ruffini's characterization of radical solvability via solvable Galois groups. Both are Galois-theoretic impossibility results: constructibility requires the Galois group to be a 2-group (tower of degree-2 extensions), while radical solvability requires a solvable Galois group (tower of cyclic extensions). Together they illustrate how Galois theory provides a unified framework for impossibility proofs across algebra and geometry"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-03-oq-01",
+      "relationship": "related",
+      "description": "The cyclotomic field approach to Gauss-Wantzel connects directly to Abel-Ruffini's radical solvability paradigm: cyclotomic polynomials have abelian Galois groups $(\\mathbb{Z}/n\\mathbb{Z})^{\\times}$, which are always solvable — explaining why roots of unity are expressible by radicals. The Abel-Ruffini impossibility arises when the Galois group escapes this abelian cyclotomic world, as the generic quintic's Galois group $S_5$ is not solvable"
     }
   ],
   "relatedProofs": [
@@ -396,7 +406,9 @@
     "angle-trisection-oq-02-oq-01",
     "chinese-remainder-constructive",
     "chinese-remainder-non-coprime",
-    "elementary-quadratic-reciprocity-oq-01"
+    "elementary-quadratic-reciprocity-oq-01",
+    "angle-trisection-oq-02-oq-03",
+    "angle-trisection-oq-02-oq-03-oq-01"
   ],
   "references": [
     {
