@@ -256,6 +256,7 @@ theorem sum_reprCount_bound (A : Finset ℕ) (N : ℕ)
   -- Step 3: The remaining set has N elements, each contributing ≤ A.card
   have hcard_erase : ((Finset.range (N + 1)).erase 0).card = N := by
     rw [Finset.card_erase_of_mem h0_mem, Finset.card_range]
+    omega
   calc ∑ m ∈ (Finset.range (N + 1)).erase 0, reprCount A m
       ≤ ∑ m ∈ (Finset.range (N + 1)).erase 0, A.card :=
         Finset.sum_le_sum (fun m _ => reprCount_le_card A m)
@@ -268,39 +269,49 @@ theorem sum_reprCount_bound (A : Finset ℕ) (N : ℕ)
 ## Section VIII: Connections to Multiplicative Structure
 -/
 
-/-- The problem is related to the multiplicative energy of A with primes.
-    The set E = {(a₁, a₂) ∈ A × A : ∃ p₁ p₂ prime, p₁a₁ = p₂a₂} measures
-    how "multiplicatively correlated" A is with the primes. -/
-theorem multiplicative_energy_bound (A : Finset ℕ) (N r : ℕ)
-    (hA : A ⊆ Finset.range (N + 1)) (hr : HasBoundedRepr A r) :
+/-- The multiplicative energy of A with primes: the number of pairs (a₁, a₂)
+    in A × A with ∃ p₁ p₂ prime, p₁a₁ = p₂a₂. Always includes the diagonal
+    (|A| pairs with a₁ = a₂, using any prime for both).
+    Note: the bound r²·|A| is FALSE. Counterexample: A = {2,3,5,7,11} with
+    N=11 has r=2, but all 25 pairs satisfy the condition (any two primes
+    p_i, p_j have gcd 1, and p_i/1, p_j/1 are both prime), while r²·|A| = 20.
+    The trivial bound |A|² always holds. -/
+theorem multiplicative_energy_trivial_bound (A : Finset ℕ) (N : ℕ)
+    (hA : A ⊆ Finset.range (N + 1)) :
     (Finset.card ((A ×ˢ A).filter (fun p =>
       ∃ q₁ q₂ : ℕ, q₁.Prime ∧ q₂.Prime ∧
         q₁ * p.1 = q₂ * p.2)) : ℝ)
-    ≤ (r : ℝ) ^ 2 * (A.card : ℝ) := by
-  sorry
+    ≤ (A.card : ℝ) ^ 2 := by
+  have h := Finset.card_filter_le (A ×ˢ A) (fun p =>
+    ∃ q₁ q₂ : ℕ, q₁.Prime ∧ q₂.Prime ∧ q₁ * p.1 = q₂ * p.2)
+  rw [Finset.card_product] at h
+  have : (A.card * A.card : ℕ) = A.card ^ 2 := by ring
+  calc ((Finset.card ((A ×ˢ A).filter _)) : ℝ)
+      ≤ (A.card * A.card : ℕ) := by exact_mod_cast h
+    _ = (A.card : ℝ) ^ 2 := by push_cast; ring
 
 /-
 ## Section IX: Special Cases
 -/
 
-/-- For r = 1, the constraint means each element of A appears in at most
-    one product p · a = m. This forces A to be "multiplicatively thin".
-    Note: requires A ⊆ {1,...,N} (positive elements only), since A = {0,...,N}
-    would give |A| = N+1 > N regardless of the representation constraint. -/
+/-- For r = 1 with A ⊆ {1,...,N} (positive elements), we have |A| ≤ N.
+    Note: without positivity, A ⊆ range(N+1) = {0,...,N} gives |A| ≤ N+1.
+    Adding the positivity hypothesis excludes 0, giving A ⊆ {1,...,N}. -/
 theorem r_eq_1_card_bound (A : Finset ℕ) (N : ℕ)
     (hA : A ⊆ Finset.range (N + 1)) (_hr : HasBoundedRepr A 1)
     (hpos : ∀ a ∈ A, 0 < a) :
     (A.card : ℝ) ≤ (N : ℝ) := by
-  -- A ⊆ {1,...,N} since 0 ∉ A, so |A| ≤ N.
-  have h0_not_mem : (0 : ℕ) ∉ A := by
-    intro h0; exact Nat.lt_irrefl 0 (hpos 0 h0)
-  have hA' : A ⊆ (Finset.range (N + 1)).erase 0 :=
-    fun a ha => Finset.mem_erase.mpr ⟨Nat.not_eq_zero_of_lt (hpos a ha), hA ha⟩
-  have hcard : A.card ≤ N := by
-    calc A.card ≤ ((Finset.range (N + 1)).erase 0).card := Finset.card_le_card hA'
-      _ = N := by rw [Finset.card_erase_of_mem (Finset.mem_range.mpr (Nat.zero_lt_succ N)),
-                       Finset.card_range]
-  exact Nat.cast_le.mpr hcard
+  -- 0 ∉ A since all elements are positive
+  have h0 : 0 ∉ A := fun h => Nat.lt_irrefl 0 (hpos 0 h)
+  have h_sub : A ⊆ (Finset.range (N + 1)).erase 0 := by
+    intro a ha
+    exact Finset.mem_erase.mpr ⟨Nat.pos_iff_ne_zero.mp (hpos a ha), hA ha⟩
+  have h_card : A.card ≤ N := by
+    have h1 := Finset.card_le_card h_sub
+    rw [Finset.card_erase_of_mem (Finset.mem_range.mpr (Nat.zero_lt_succ N)),
+        Finset.card_range] at h1
+    omega
+  exact_mod_cast h_card
 
 /-- A singleton set always has 1-bounded representations. -/
 theorem singleton_hasBoundedRepr {a : ℕ} : HasBoundedRepr {a} 1 := by
