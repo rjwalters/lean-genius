@@ -119,7 +119,7 @@
   ],
   "conclusion": {
     "summary": "We formalize Erdős Problem #56, which asks whether the set of multiples of the first k primes is the largest k-weakly divisible subset of {1,...,N}. The answer is NO in general—Ahlswede and Khachatrian found counterexamples—but YES when N is sufficiently large. We state the disproof as an axiom and verify basic properties of the definitions.",
-    "implications": "**Theoretical Significance**: This result illustrates how combinatorial extremal problems can have surprising phase transitions.\n\n**Broader Connections**: The 'obvious' construction isn't always optimal, especially near boundaries. The techniques developed by Ahlswede and Khachatrian connect to intersection theorems in combinatorics (Erdős-Ko-Rado type results).",
+    "implications": "**Theoretical Significance**: This result illustrates how combinatorial extremal problems can have surprising phase transitions.\n\nThe 'obvious' construction isn't always optimal, especially near boundaries. The techniques developed by Ahlswede and Khachatrian connect to intersection theorems in combinatorics (Erdős-Ko-Rado type results).",
     "openQuestions": [
       "What is the smallest k for which the conjecture fails?",
       "Can we characterize exactly when M_k(N) is optimal?",

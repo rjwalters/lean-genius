@@ -117,7 +117,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1028 asked to estimate H(n), the minimum possible maximum discrepancy over sign functions on pairs. Erdős (1963) gave n/4 ≤ H(n) ≪ n^(3/2), and Erdős-Spencer (1971) closed the gap: H(n) = Θ(n^(3/2)).",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Discrepancy Theory**: Fundamental result on unavoidable imbalance\n\n2.\n\n**Broader Connections**: **Signed Graphs**: Minimum imbalance in edge-signed complete graphs\n\n3. **Probabilistic Method**: Upper bound via random signs\n\n4. **Ramsey Connection**: Large homogeneous subsets relate to discrepancy.",
+    "implications": "1. **Discrepancy Theory**: Fundamental result on unavoidable imbalance\n\n**2. Signed Graphs**: Minimum imbalance in edge-signed complete graphs\n\n3. **Probabilistic Method**: Upper bound via random signs\n\n4. **Ramsey Connection**: Large homogeneous subsets relate to discrepancy.",
     "openQuestions": [
       "What are the exact constants in the asymptotic?",
       "Algorithmic: can we efficiently find high-discrepancy subsets?",

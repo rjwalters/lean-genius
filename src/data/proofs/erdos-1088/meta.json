@@ -110,7 +110,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #1088 on guaranteed distinct-distance subsets in high dimensions. The constructive `AllDistancesDistinct` predicate using squared Euclidean distance provides a clean definition, while the known results ($f_1(n) \\asymp n^2$, $f_2(3) = 7$, $f_3(3) = 9$, $f_d(3) = d^2/2 + O(d)$, $f_d(n) \\leq c_n^d$) and the open conjecture ($f_d(n) = 2^{o(d)}$) are axiomatized as separate statements.",
-    "implications": "**Theoretical Significance**: Resolving the subexponential conjecture would have implications for high-dimensional discrete geometry and Ramsey theory.\n\n**Broader Connections**: A positive answer ($f_d(n) = 2^{o(d)}$) would mean high-dimensional space provides a structural advantage for finding distinct-distance subsets beyond what counting arguments predict. A negative answer would establish a fundamental exponential barrier in the relationship between dimension and combinatorial complexity.",
+    "implications": "**Theoretical Significance**: Resolving the subexponential conjecture would have implications for high-dimensional discrete geometry and Ramsey theory.\n\nA positive answer ($f_d(n) = 2^{o(d)}$) would mean high-dimensional space provides a structural advantage for finding distinct-distance subsets beyond what counting arguments predict. A negative answer would establish a fundamental exponential barrier in the relationship between dimension and combinatorial complexity.",
     "openQuestions": [
       "Is $f_d(n) = 2^{o(d)}$ for fixed $n \\geq 3$? This is the main conjecture.",
       "What is $f_d(4)$ asymptotically? The $n = 4$ case is the first unknown beyond the quadratic $n = 3$ result.",

@@ -149,7 +149,7 @@
   ],
   "conclusion": {
     "summary": "The telescoping series identity ∑1/T_n = 2 is fully verified, including convergence via comparison with the p-series, the epsilon-N limit argument, and the connection between triangular numbers and the product n(n+1).",
-    "implications": "**Theoretical Significance**: The telescoping technique generalizes to ∑1/(n(n+k)) via partial fractions with k terms, extending to all figurate number reciprocals (pentagonal, hexagonal, etc.).\n\n**Broader Connections**: The comparison test framework connects these sums to p-series theory. Leibniz's 1673 evaluation of this series was a milestone in the development of calculus and infinite series theory.",
+    "implications": "**Theoretical Significance**: The telescoping technique generalizes to ∑1/(n(n+k)) via partial fractions with k terms, extending to all figurate number reciprocals (pentagonal, hexagonal, etc.).\n\nThe comparison test framework connects these sums to p-series theory. Leibniz's 1673 evaluation of this series was a milestone in the development of calculus and infinite series theory.",
     "openQuestions": [
       "Generalize to higher figurate numbers: ∑1/P_n where P_n is the nth k-gonal number",
       "Formalize the connection to the digamma function: ∑1/(n(n+k)) = H_k/k where H_k is a harmonic number",

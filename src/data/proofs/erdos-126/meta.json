@@ -145,7 +145,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #126 asks whether f(n)/log(n) → ∞, where f(n) counts the minimum distinct prime factors guaranteed in pairwise sum products of n-element sets. The formalization captures the extremal function, the Erdős–Turán bounds log(n) ≪ f(n) ≪ n/log(n), the main conjecture, the secondary little-o question, and structural properties including monotonicity.",
-    "implications": "**Theoretical Significance**: Resolution would reveal the arithmetic complexity of pairwise sums in finite subsets of ℕ.\n\n**Broader Connections**: A positive answer would show that large sets force rich prime structure in their pairwise sums, while a negative answer would mean sets can be constructed whose pairwise sums have surprisingly few distinct prime factors relative to set size. The problem connects to sieve methods, the prime number theorem, and extremal combinatorics.",
+    "implications": "**Theoretical Significance**: Resolution would reveal the arithmetic complexity of pairwise sums in finite subsets of ℕ.\n\nA positive answer would show that large sets force rich prime structure in their pairwise sums, while a negative answer would mean sets can be constructed whose pairwise sums have surprisingly few distinct prime factors relative to set size. The problem connects to sieve methods, the prime number theorem, and extremal combinatorics.",
     "openQuestions": [
       "Is f(n)/log(n) → ∞? ($250 Erdős prize)",
       "Is f(n) = o(n/log(n))? (tightness of the upper bound)",

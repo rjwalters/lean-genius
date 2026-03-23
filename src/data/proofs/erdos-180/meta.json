@@ -156,7 +156,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #180 asks whether a single forbidden graph always dominates the Turán number of a finite graph family. Resolved for non-bipartite families via Erdős-Stone, but open in general. The folklore counterexample shows finiteness is essential.",
-    "implications": "**Theoretical Significance**: A positive resolution would show that the extremal function of any finite forbidden family is always asymptotically determined by a single 'bottleneck' member.\n\n**Broader Connections**: This would simplify the study of extremal functions and connect to the broader Simonovits program. A negative resolution (a finite counterexample) would reveal unexpected complexity in how bipartite Turán numbers interact, with implications for the Zarankiewicz problem and algebraic constructions of extremal graphs.",
+    "implications": "**Theoretical Significance**: A positive resolution would show that the extremal function of any finite forbidden family is always asymptotically determined by a single 'bottleneck' member.\n\nThis would simplify the study of extremal functions and connect to the broader Simonovits program. A negative resolution (a finite counterexample) would reveal unexpected complexity in how bipartite Turán numbers interact, with implications for the Zarankiewicz problem and algebraic constructions of extremal graphs.",
     "openQuestions": [
       "Does domination hold for all finite families, especially those containing bipartite graphs with different Zarankiewicz exponents?",
       "For finite families $\\{K_{2,3}, K_{3,3}\\}$, does $\\mathrm{ex}(n; K_{2,3}) = O(\\mathrm{ex}(n; \\{K_{2,3}, K_{3,3}\\}))$?",

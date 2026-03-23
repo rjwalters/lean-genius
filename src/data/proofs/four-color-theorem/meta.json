@@ -191,7 +191,7 @@
   ],
   "conclusion": {
     "summary": "The Four Color Theorem demonstrates that every planar map can be colored with at most four colors such that no adjacent regions share a color. Its proof, requiring computer verification of nearly 2,000 configurations, marked a turning point in the philosophy of mathematics.",
-    "implications": "**Theoretical Significance**: The theorem's proof challenged traditional notions of mathematical proof.\n\n**Broader Connections**: Appel and Haken's 1976 work was initially met with skepticism—how can we trust a proof no human can fully check? Gonthier's 2005 Coq formalization provided a different kind of certainty: instead of trusting a fallible computer program, we now trust a small, verified proof-checking kernel. This approach—using formal verification to establish trust in complex proofs—has become increasingly important in both mathematics and software engineering.",
+    "implications": "**Theoretical Significance**: The theorem's proof challenged traditional notions of mathematical proof.\n\nAppel and Haken's 1976 work was initially met with skepticism—how can we trust a proof no human can fully check? Gonthier's 2005 Coq formalization provided a different kind of certainty: instead of trusting a fallible computer program, we now trust a small, verified proof-checking kernel. This approach—using formal verification to establish trust in complex proofs—has become increasingly important in both mathematics and software engineering.",
     "openQuestions": [
       "Is there a 'human-readable' proof of the Four Color Theorem that doesn't require computer case analysis?",
       "Can the set of unavoidable reducible configurations be significantly reduced?",

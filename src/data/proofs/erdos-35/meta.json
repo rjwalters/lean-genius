@@ -112,7 +112,7 @@
   ],
   "conclusion": {
     "summary": "The formalization captures the complete logical structure of Erdős Problem #35, from Schnirelmann density definitions through Plünnecke's inequality to the final result. The main theorem erdos_35 chains Plünnecke's bound with a calculus lemma via linarith, compiling cleanly modulo 8 sorries in the deep mathematical lemmas.",
-    "implications": "**Theoretical Significance**: Plünnecke's inequality has become a fundamental tool in additive combinatorics.\n\n**Broader Connections**: The Plünnecke–Ruzsa framework provides quantitative control over sumset growth and underpins results from Freiman's theorem to the polynomial Freiman–Ruzsa conjecture. This formalization demonstrates how a single deep inequality resolves Erdős's conjecture through clean algebraic chaining.",
+    "implications": "**Theoretical Significance**: Plünnecke's inequality has become a fundamental tool in additive combinatorics.\n\nThe Plünnecke–Ruzsa framework provides quantitative control over sumset growth and underpins results from Freiman's theorem to the polynomial Freiman–Ruzsa conjecture. This formalization demonstrates how a single deep inequality resolves Erdős's conjecture through clean algebraic chaining.",
     "openQuestions": [
       "Can the Plünnecke bound α^{1-1/k} be improved for specific classes of bases?",
       "What is the optimal density increment for squares (k=4): is α + α(1-α)/4 tight?",

@@ -120,7 +120,7 @@
   ],
   "conclusion": {
     "summary": "The threshold f_r(n) for forcing triangles in graphs with chromatic number ≥ r is well-understood for small r but the general asymptotic remains open. Simonovits showed f_r(n) = n²/4 - g(r)n/2 + O(1) where g(r) captures how far triangle-free χ≥r graphs are from bipartite. Current bounds show g(r) ~ r² log r with a factor-of-4 gap in the constant.",
-    "implications": "**Theoretical Significance**: This connects extremal graph theory (Turán-type problems) with chromatic theory.\n\n**Broader Connections**: Understanding g(r) would reveal how chromatic number constrains triangle-free graphs. The recent progress on R(3,k) (the Ramsey number) directly impacts the upper bound on g(r).",
+    "implications": "**Theoretical Significance**: This connects extremal graph theory (Turán-type problems) with chromatic theory.\n\nUnderstanding g(r) would reveal how chromatic number constrains triangle-free graphs. The recent progress on R(3,k) (the Ramsey number) directly impacts the upper bound on g(r).",
     "openQuestions": [
       "What is the exact constant c such that g(r) ~ c·r² log r?",
       "Is c = 1 (the 'natural' guess)?",

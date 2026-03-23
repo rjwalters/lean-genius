@@ -153,7 +153,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #744 asked whether f_k(n) → ∞ as n → ∞, where f_k(n) measures the minimum edge deletions needed to make a k-critical graph bipartite. Rödl and Tuza disproved this in 1985, showing f_k(n) = C(k-1,2) = (k-1)(k-2)/2 for all sufficiently large n — a constant independent of the number of vertices.",
-    "implications": "**Theoretical Significance**: The disproof reveals a striking structural property of k-chromatic critical graphs: their non-bipartiteness is concentrated in a bounded region isomorphic to a complete graph on k-1 vertices.\n\n**Broader Connections**: No matter how large the critical graph grows, the same fixed number of edge deletions suffices to make it bipartite. This challenges the intuition that larger graphs should have more 'spread out' coloring obstructions.",
+    "implications": "**Theoretical Significance**: The disproof reveals a striking structural property of k-chromatic critical graphs: their non-bipartiteness is concentrated in a bounded region isomorphic to a complete graph on k-1 vertices.\n\nNo matter how large the critical graph grows, the same fixed number of edge deletions suffices to make it bipartite. This challenges the intuition that larger graphs should have more 'spread out' coloring obstructions.",
     "openQuestions": [
       "What is the exact threshold N₀(k) beyond which f_k(n) = C(k-1, 2)?",
       "Do similar bounded-parameter phenomena hold for other graph coloring variants?",

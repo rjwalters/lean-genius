@@ -172,7 +172,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #328 is DISPROVED. Nešetřil and Rödl (1985) showed that for ALL values of C ≥ 1, there exist sets A with bounded convolution r_A ≤ C that cannot be partitioned into ANY number of pieces with strictly smaller convolution. This is a fundamental rigidity result: the additive structure captured by the representation function cannot be 'improved' through combinatorial decomposition.",
-    "implications": "**Theoretical Significance**: The result reveals that bounded representation is a robust, non-decomposable property in additive combinatorics.\n\n**Broader Connections**: Unlike unique sums (r_A ≤ 1), which are hereditary under subsets, bounded convolution for C ≥ 2 resists partition-based reduction. This connects to broader themes in Ramsey theory about the inevitability of structure under coloring.",
+    "implications": "**Theoretical Significance**: The result reveals that bounded representation is a robust, non-decomposable property in additive combinatorics.\n\nUnlike unique sums (r_A ≤ 1), which are hereditary under subsets, bounded convolution for C ≥ 2 resists partition-based reduction. This connects to broader themes in Ramsey theory about the inevitability of structure under coloring.",
     "openQuestions": [
       "What is the minimum size of a counterexample set A ⊆ [1,N] for each C, as a function of N and C?",
       "For C = 2 (Sidon sets), what is the largest t such that some Sidon set CAN be partitioned into t unique-sum pieces?",

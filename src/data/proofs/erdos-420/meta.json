@@ -155,7 +155,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #420 studies the ratio F(f,n) = τ((n+⌊f(n)⌋)!)/τ(n!) as a function of f. The EGIP96 paper established key results: liminf F(c log n, n) = 1 and lim F(n^{4/9}, n) = ∞. The density question for F(log n, n) in (1,∞) remains open. The problem has deep connections to prime gap theory, with Zhang's bounded gaps theorem implying consequences for F.",
-    "implications": "**Theoretical Significance**: **Broader Impact**\n\n1. **Divisor Theory:** Advances understanding of how τ grows for factorials.\n\n2.\n\n**Broader Connections**: **Prime Distribution:** F behavior encodes information about prime gaps.\n\n3. **Almost-All Results:** The density-0 exceptional set phenomenon appears frequently.\n\n4. **Connection to Cramér:** Resolution would shed light on prime gap conjectures.",
+    "implications": "**Theoretical Significance**: **Broader Impact**\n\n1. **Divisor Theory:** Advances understanding of how τ grows for factorials.\n\n**2. Prime Distribution:** F behavior encodes information about prime gaps.\n\n3. **Almost-All Results:** The density-0 exceptional set phenomenon appears frequently.\n\n4. **Connection to Cramér:** Resolution would shed light on prime gap conjectures.",
     "openQuestions": [
       "Does lim F((log n)^C, n) = ∞ for some/all large C?",
       "Is {F(log n, n) : n ∈ ℕ} dense in (1, ∞)?",

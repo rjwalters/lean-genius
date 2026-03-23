@@ -144,7 +144,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #710 asks for an asymptotic formula for f(n), the minimal interval length needed for divisibility matching. Erdős and Pomerance (1980) established bounds that differ by a factor of √(log log n). The exact asymptotics remain open, with a prize of 2000 rupees offered by Erdős. The formalization defines the key concepts, axiomatizes the known bounds, and verifies the setup with small examples.",
-    "implications": "**Theoretical Significance**: **Number-Theoretic Connections**\n\n1. **Divisibility Structure:** The distribution of multiples in intervals is central to the problem\n\n2. **Extremal Combinatorics:** Finding optimal matchings with divisibility constraints\n\n3.\n\n**Broader Connections**: **Asymptotic Analysis:** The √(log n) vs √(log n / log log n) question is delicate\n\n4. **Algorithmic Aspects:** Greedy algorithms give bounds but not optimal solutions\n\n5. **Prize Problems:** Part of Erdős's legacy of encouraging research with cash prizes.",
+    "implications": "**Theoretical Significance**: **Number-Theoretic Connections**\n\n1. **Divisibility Structure:** The distribution of multiples in intervals is central to the problem\n\n2. **Extremal Combinatorics:** Finding optimal matchings with divisibility constraints\n\n**3. Asymptotic Analysis:** The √(log n) vs √(log n / log log n) question is delicate\n\n4. **Algorithmic Aspects:** Greedy algorithms give bounds but not optimal solutions\n\n5. **Prize Problems:** Part of Erdős's legacy of encouraging research with cash prizes.",
     "openQuestions": [
       "What is the exact asymptotic formula for f(n)?",
       "Is the upper bound tight: f(n) ~ C·n·√(log n)?",

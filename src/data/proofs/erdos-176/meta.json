@@ -170,7 +170,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #176 asks for bounds on N(k,ℓ), the minimal N guaranteeing any ±1 coloring has a k-AP with discrepancy ≥ ℓ. Spencer gave an exact formula for N(k,1), and Erdős proved exponential lower bounds. The main open questions concern whether exponential upper bounds exist for N(k,2), N(k,√k), and N(k,ck).",
-    "implications": "**Theoretical Significance**: **Implications for Combinatorics**\n\n1. **Discrepancy Theory:** Understanding N(k,ℓ) illuminates the limits of balancing colorings.\n\n2.\n\n**Broader Connections**: **Ramsey Theory:** Connected to van der Waerden numbers and unavoidable patterns.\n\n3. **Ergodic Theory:** Related to uniformity of sequences and distributions.\n\n4. **Complexity:** The hardness of computing N(k,ℓ) relates to computational Ramsey theory.",
+    "implications": "**Theoretical Significance**: **Implications for Combinatorics**\n\n1. **Discrepancy Theory:** Understanding N(k,ℓ) illuminates the limits of balancing colorings.\n\n**2. Ramsey Theory:** Connected to van der Waerden numbers and unavoidable patterns.\n\n3. **Ergodic Theory:** Related to uniformity of sequences and distributions.\n\n4. **Complexity:** The hardness of computing N(k,ℓ) relates to computational Ramsey theory.",
     "openQuestions": [
       "Is N(k, 2) ≤ C^k for some constant C?",
       "Is N(k, √k) ≤ C^k?",

@@ -174,7 +174,7 @@
   ],
   "conclusion": {
     "summary": "This module provides comprehensive, fully verified infrastructure (687 lines, 38 theorems/lemmas, 35 definitions, 1 structure, 0 axioms, 0 sorries) for Feuerbach's Theorem. All 9 special points are proved to lie on the nine-point circle, the Euler line relation is established, and the 3-4-5 triangle serves as a numerical verification. This is the largest infrastructure entry in the gallery.",
-    "implications": "**Theoretical Significance**: The coordinate geometry approach, while algebraically intensive, makes the nine-point circle properties fully constructive and computationally verifiable.\n\n**Broader Connections**: The factored ninepoint_membership lemma provides a reusable proof pattern that could be extended to other circle membership proofs. The numerical verification with the 3-4-5 triangle demonstrates that all formulas are consistent.",
+    "implications": "**Theoretical Significance**: The coordinate geometry approach, while algebraically intensive, makes the nine-point circle properties fully constructive and computationally verifiable.\n\nThe factored ninepoint_membership lemma provides a reusable proof pattern that could be extended to other circle membership proofs. The numerical verification with the 3-4-5 triangle demonstrates that all formulas are consistent.",
     "openQuestions": [
       "Can the altitude foot proofs be optimized to require fewer heartbeats (currently 25.6M)?",
       "Extend to prove the nine-point circle is the unique circle through all 9 points",

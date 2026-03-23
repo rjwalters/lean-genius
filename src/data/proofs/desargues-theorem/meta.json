@@ -150,7 +150,7 @@
   ],
   "conclusion": {
     "summary": "This formalization establishes Desargues's Theorem using homogeneous coordinates in projective geometry. The theorem states that perspective from a point and perspective from a line are equivalent conditions for pairs of triangles. The proof uses cross products and determinants to express the geometric conditions algebraically.",
-    "implications": "**Theoretical Significance**: Desargues's theorem is foundational to projective geometry.\n\n**Broader Connections**: It characterizes Desarguesian planes and is closely related to the coordinatizability of projective planes by division rings. The theorem has practical applications in computer graphics (perspective projection), computer vision (3D reconstruction), and the theory of perspective in art.",
+    "implications": "**Theoretical Significance**: Desargues's theorem is foundational to projective geometry.\n\nIt characterizes Desarguesian planes and is closely related to the coordinatizability of projective planes by division rings. The theorem has practical applications in computer graphics (perspective projection), computer vision (3D reconstruction), and the theory of perspective in art.",
     "openQuestions": [
       "Can the full algebraic proof be completed without sorries using Mathlib's linear algebra?",
       "How can we formalize non-Desarguesian planes in Lean to demonstrate when the theorem fails?",

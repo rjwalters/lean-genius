@@ -94,7 +94,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem 127 is SOLVED: the excess $f(m)$ beyond Edwards' bipartite subgraph bound diverges along the sequence $m = n^2/2$, where $f \\ge c\\sqrt{n}$ (Alon 1996). The upper bound $f(m) = O(m^{1/4})$ shows the excess grows slowly. The formalization captures both bounds, the complete graph tightness, and structural properties of $f$.",
-    "implications": "**Theoretical Significance**: The result reveals that Edwards' bound, while tight for complete graphs, is systematically suboptimal for other graph densities.\n\n**Broader Connections**: This connects to the broader MAX-CUT problem in computer science: Alon's probabilistic methods prefigured the semidefinite programming approach of Goemans and Williamson (1995), which achieves a 0.878-approximation for MAX-CUT. Understanding the excess function helps quantify the gap between extremal bounds and algorithmic guarantees.",
+    "implications": "**Theoretical Significance**: The result reveals that Edwards' bound, while tight for complete graphs, is systematically suboptimal for other graph densities.\n\nThis connects to the broader MAX-CUT problem in computer science: Alon's probabilistic methods prefigured the semidefinite programming approach of Goemans and Williamson (1995), which achieves a 0.878-approximation for MAX-CUT. Understanding the excess function helps quantify the gap between extremal bounds and algorithmic guarantees.",
     "openQuestions": [
       "What is the optimal constant $C$ in $f(m) \\le C \\cdot m^{1/4}$?",
       "Can the lower bound $f(n^2/2) \\ge c\\sqrt{n}$ be improved, or is it tight?",

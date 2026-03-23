@@ -132,7 +132,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #471 is SOLVED affirmatively. Vinogradov's theorem ensures that starting with Q₀ = {primes ≤ N} for Vinogradov's constant N, all primes eventually appear in the sequence Qᵢ, so the sequence grows without bound. In fact, the stronger result Q∞ = {all primes} holds.",
-    "implications": "**Theoretical Significance**: This problem reveals a deep connection between a simple iterative process on prime sets and the analytic number theory behind Vinogradov's theorem.\n\n**Broader Connections**: The resolution shows that the additive structure among primes is rich enough to generate all primes from a finite seed, provided the seed is large enough. The elegance lies in reducing a combinatorial iteration question to a classical result in analytic number theory.",
+    "implications": "**Theoretical Significance**: This problem reveals a deep connection between a simple iterative process on prime sets and the analytic number theory behind Vinogradov's theorem.\n\nThe resolution shows that the additive structure among primes is rich enough to generate all primes from a finite seed, provided the seed is large enough. The elegance lies in reducing a combinatorial iteration question to a classical result in analytic number theory.",
     "openQuestions": [
       "Does Q₀ = {3, 5, 7, 11} generate all odd primes?",
       "How fast does |Qᵢ| grow as a function of i?",

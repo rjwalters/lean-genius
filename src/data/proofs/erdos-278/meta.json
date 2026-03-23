@@ -115,7 +115,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the full structure of Erdős Problem #278: congruence system coverage density, the optimization over residue choices, Simpson's theorem resolving the minimum (1986), the coprime case resolving the maximum via CRT, and the open question for non-coprime moduli. The three proved theorems (density bounds) demonstrate that the formalization is computationally meaningful beyond just axiomatized statements.",
-    "implications": "**Theoretical Significance**: A complete solution to the maximum density problem would characterize the covering efficiency of congruence systems with shared prime factors.\n\n**Broader Connections**: This connects to scheduling theory (cyclic scheduling with period constraints), coding theory (covering codes), and the broader Erdős program on covering systems that culminated in Hough's 2015 resolution of the minimum modulus conjecture.",
+    "implications": "**Theoretical Significance**: A complete solution to the maximum density problem would characterize the covering efficiency of congruence systems with shared prime factors.\n\nThis connects to scheduling theory (cyclic scheduling with period constraints), coding theory (covering codes), and the broader Erdős program on covering systems that culminated in Hough's 2015 resolution of the minimum modulus conjecture.",
     "openQuestions": [
       "What is the maximum coverage density $\\delta_{\\max}(A)$ for arbitrary (non-coprime) moduli?",
       "Is there a polynomial-time algorithm to compute $\\delta_{\\max}(A)$, or is the optimization NP-hard?",

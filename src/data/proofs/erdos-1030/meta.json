@@ -154,7 +154,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1030 asks whether lim R(k+1,k)/R(k,k) > 1+c for some c > 0. SOLVED by Burr-Erdős-Faudree-Schelp (1989) who proved R(k+1,k) - R(k,k) ≥ 2k-5. This linear growth of the difference, combined with known bounds on diagonal Ramsey numbers, establishes the result.",
-    "implications": "**Theoretical Significance**: **Theoretical Significance**\n\n1. **Ramsey Theory Growth**: Establishes that off-diagonal Ramsey numbers grow strictly faster than diagonal ones\n\n2.\n\n**Broader Connections**: **Bounds Improvement**: The BEFS bound doubled the trivial bound asymptotically\n\n3. **Probabilistic Method Connection**: Relates to Erdős's 1947 probabilistic lower bound\n\n4. **Off-Diagonal Structure**: Part of understanding how R(k+j, k) grows for fixed j.",
+    "implications": "1. **Ramsey Theory Growth**: Establishes that off-diagonal Ramsey numbers grow strictly faster than diagonal ones\n\n**2. Bounds Improvement**: The BEFS bound doubled the trivial bound asymptotically\n\n3. **Probabilistic Method Connection**: Relates to Erdős's 1947 probabilistic lower bound\n\n4. **Off-Diagonal Structure**: Part of understanding how R(k+j, k) grows for fixed j.",
     "openQuestions": [
       "What is the exact value of the limit ratio?",
       "Can the 2k-5 bound be improved further?",

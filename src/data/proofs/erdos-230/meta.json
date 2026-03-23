@@ -123,7 +123,7 @@
   },
   "conclusion": {
     "summary": "Erdős Problem #230 is fully solved (disproved). Kahane's 1980 construction of ultraflat polynomials shows the Parseval lower bound ‖P‖_∞ ≥ √n is asymptotically tight: the infimum of ‖P‖_∞/√n over unimodular polynomials converges to 1. The Lean formalization captures the complete story from Parseval's identity through the false conjecture to Kahane's disproof and the Bombieri-Bourgain quantitative improvement.",
-    "implications": "**Theoretical Significance**: Ultraflat polynomials reveal that unimodular coefficients permit surprising uniformity on the unit circle, challenging the intuition that random-phase polynomials should have large peaks.\n\n**Broader Connections**: The quantitative theory connects harmonic analysis to exponential sum techniques from analytic number theory. The Littlewood polynomial variant (±1 coefficients) remains open and may require fundamentally different methods.",
+    "implications": "**Theoretical Significance**: Ultraflat polynomials reveal that unimodular coefficients permit surprising uniformity on the unit circle, challenging the intuition that random-phase polynomials should have large peaks.\n\nThe quantitative theory connects harmonic analysis to exponential sum techniques from analytic number theory. The Littlewood polynomial variant (±1 coefficients) remains open and may require fundamentally different methods.",
     "openQuestions": [
       "Can the error in ultraflat polynomials be reduced to O(1)? (Is |P(z)| = √n + O(1) achievable?)",
       "What is the optimal error exponent — can 7/18 be improved?",
