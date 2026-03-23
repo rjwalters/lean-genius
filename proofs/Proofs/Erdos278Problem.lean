@@ -157,14 +157,59 @@ axiom simpson_theorem (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n) :
     ∀ r : ℕ → ℕ,
       coverageDensity ⟨moduli, (fun _ => 0), hpos⟩ ≤ coverageDensity ⟨moduli, r, hpos⟩
 
-/-- Corollary: the all-equal-residue system achieves minimum density.
-    Proof: the coverage set for constant residue a is a cyclic shift of the
-    all-0 set (m ↦ (m+a) % L is a bijection on {0,...,L-1}), preserving cardinality.
-    The modular arithmetic verification requires n | L for each modulus n. -/
-axiom equal_residues_minimize (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n)
+/-- The coverage filter for constant residue a has the same cardinality as for
+    constant residue 0, via the cyclic shift m ↦ (m+a)%L on {0,...,L-1}.
+    Since n∣L for each modulus n, the shift preserves residue classes. -/
+private lemma coverage_card_shift (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n) (a : ℕ) :
+    let L := systemLCM ⟨moduli, fun _ => a, hpos⟩
+    ((Finset.range L).filter (fun m => ∃ n ∈ moduli, m % n = a % n)).card =
+    ((Finset.range L).filter (fun m => ∃ n ∈ moduli, m % n = 0)).card := by
+  intro L
+  have hLpos : 0 < L := systemLCM_pos ⟨moduli, fun _ => a, hpos⟩
+  have hdvd : ∀ n ∈ moduli, n ∣ L := fun n hn =>
+    dvd_systemLCM ⟨moduli, fun _ => a, hpos⟩ n hn
+  -- Bijection: forward m ↦ (m+a)%L, backward m ↦ (m+L-a%L)%L
+  apply Finset.card_bij' (fun m _ => (m + a) % L) (fun m _ => (m + L - a % L) % L)
+  -- Forward: maps "divisible" filter into "≡a" filter
+  · intro m hm
+    simp only [Finset.mem_filter, Finset.mem_range] at hm ⊢
+    refine ⟨Nat.mod_lt _ hLpos, ?_⟩
+    obtain ⟨_, k, hk, hmod⟩ := hm
+    exact ⟨k, hk, by
+      rw [Nat.mod_mod_of_dvd _ (hdvd k hk), Nat.add_mod, hmod, Nat.zero_add,
+          Nat.mod_mod_of_dvd _ (dvd_refl k)]⟩
+  -- Backward: maps "≡a" filter into "divisible" filter
+  · intro m hm
+    simp only [Finset.mem_filter, Finset.mem_range] at hm ⊢
+    refine ⟨Nat.mod_lt _ hLpos, ?_⟩
+    obtain ⟨hml, k, hk, hmod⟩ := hm
+    have hkL := hdvd k hk
+    exact ⟨k, hk, by
+      rw [Nat.mod_mod_of_dvd _ hkL]
+      have hLk : L % k = 0 := by obtain ⟨q, hq⟩ := hkL; rw [hq]; exact Nat.mul_mod_right k q
+      have haLk : (a % L) % k = a % k := Nat.mod_mod_of_dvd a hkL
+      omega⟩
+  -- Round-trip: backward ∘ forward = id
+  · intro m hm
+    simp only [Finset.mem_filter, Finset.mem_range] at hm; omega
+  -- Round-trip: forward ∘ backward = id
+  · intro m hm
+    simp only [Finset.mem_filter, Finset.mem_range] at hm; omega
+
+/-- The all-equal-residue system achieves minimum density: the coverage density
+    with constant residue a equals that with constant residue 0.
+    Proved via cyclic shift bijection on {0,...,L-1}. -/
+theorem equal_residues_minimize (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n)
     (a : ℕ) :
     coverageDensity ⟨moduli, (fun _ => a), hpos⟩ =
-    coverageDensity ⟨moduli, (fun _ => 0), hpos⟩
+    coverageDensity ⟨moduli, (fun _ => 0), hpos⟩ := by
+  have hcard := coverage_card_shift moduli hpos a
+  simp only [coverageDensity_eq, Nat.zero_mod]
+  -- systemLCM is definitionally equal for both (depends only on moduli)
+  -- so after simp, both sides have same range and denominator
+  -- Just need to show cast of equal ℕ cards divided by same denominator are equal
+  congr 1
+  exact_mod_cast hcard
 
 -- ## Question 1: Maximum Density (OPEN)
 
