@@ -94,10 +94,93 @@ theorem apFree_iff_tripleCount_zero {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
 private theorem tripleCount_add_card_eq_triple_sum {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
     (tripleCount A : ℂ) + ↑A.card = A.sum fun x => A.sum fun y =>
       A.sum fun z => if x + z = 2 * y then (1 : ℂ) else 0 := by
-  -- The RHS counts |{(x,y,z) ∈ A³ : x+z=2y}|.
-  -- Bijection: (a,d) with a,a+d,a+2d ∈ A ↦ (x,y,z) = (a, a+d, a+2d).
-  -- d=0 gives |A| degenerate triples, d≠0 gives tripleCount A.
-  sorry
+  -- Step 1: Collapse inner z-sum: x+z=2y ↔ z=2y-x, unique solution
+  have inner_eq : ∀ (x y : ZMod N),
+      (A.sum fun z => if x + z = 2 * y then (1 : ℂ) else 0) =
+      if 2 * y - x ∈ A then 1 else 0 := by
+    intro x y
+    simp_rw [show ∀ z : ZMod N, (x + z = 2 * y) ↔ (z = 2 * y - x) from
+      fun z => ⟨fun h => by linear_combination h, fun h => by linear_combination h⟩]
+    exact Finset.sum_ite_eq' A _ fun _ => 1
+  simp_rw [inner_eq]
+  -- Goal: (tripleCount A : ℂ) + ↑A.card = ∑ x∈A, ∑ y∈A, ite (2*y-x∈A) 1 0
+  -- Both sides count |{(x,y) ∈ A² : 2y-x ∈ A}|.
+  -- Reduce to ℕ equality via cardinality.
+  set T := (A ×ˢ A).filter (fun p : ZMod N × ZMod N => 2 * p.2 - p.1 ∈ A) with T_def
+  -- Key ℕ identity: T.card = ∑∑ ite 1 0 (over ℕ)
+  have rhs_nat : T.card = (A.sum fun x => A.sum fun y =>
+      if 2 * y - x ∈ A then (1 : ℕ) else 0) := by
+    rw [T_def, Finset.card_eq_sum_ones, Finset.sum_filter, Finset.sum_product]
+  -- Define allAP = {(a,d) : a∈A, a+d∈A, a+2d∈A} (including d=0)
+  set allAP := (Finset.univ ×ˢ Finset.univ).filter
+    (fun p : ZMod N × ZMod N => p.1 ∈ A ∧ (p.1 + p.2) ∈ A ∧ (p.1 + 2 * p.2) ∈ A) with allAP_def
+  -- allAP bijects with T via (a,d) ↦ (a, a+d)
+  have hbij : allAP.card = T.card :=
+    Finset.card_bij (fun (p : ZMod N × ZMod N) _ => (p.1, p.1 + p.2))
+      -- Forward: maps into T
+      (fun ⟨a, d⟩ h => by
+        simp only [allAP_def, Finset.mem_filter, Finset.mem_product, Finset.mem_univ,
+          true_and] at h
+        simp only [T_def, Finset.mem_filter, Finset.mem_product]
+        refine ⟨⟨h.1, h.2.1⟩, ?_⟩
+        rw [show (2 : ZMod N) * (a + d) - a = a + 2 * d from by ring]
+        exact h.2.2)
+      -- Injective
+      (fun ⟨a₁, d₁⟩ _ ⟨a₂, d₂⟩ _ h => by
+        have heq := Prod.mk.inj h
+        ext
+        · exact heq.1
+        · exact add_left_cancel (heq.1 ▸ heq.2))
+      -- Surjective: inverse is (x, y-x)
+      (fun ⟨x, y⟩ h => by
+        simp only [T_def, Finset.mem_filter, Finset.mem_product] at h
+        refine ⟨⟨x, y - x⟩, ?_, ?_⟩
+        · simp only [allAP_def, Finset.mem_filter, Finset.mem_product, Finset.mem_univ, true_and]
+          refine ⟨h.1.1, ?_, ?_⟩
+          · rw [show x + (y - x) = y from by ring]; exact h.1.2
+          · rw [show x + 2 * (y - x) = 2 * y - x from by ring]; exact h.2
+        · exact Prod.ext rfl (show x + (y - x) = y from by ring))
+  -- Partition allAP by d=0/d≠0: allAP.card = tripleCount A + A.card
+  have hpart : tripleCount A + A.card = allAP.card := by
+    -- Decompose allAP into d≠0 and d=0 parts
+    set ne_part := allAP.filter (fun p : ZMod N × ZMod N => p.2 ≠ 0) with ne_part_def
+    set eq_part := allAP.filter (fun p : ZMod N × ZMod N => p.2 = 0) with eq_part_def
+    -- allAP = ne_part ∪ eq_part (disjoint)
+    have hunion : allAP = ne_part ∪ eq_part := by
+      ext ⟨a, d⟩
+      simp only [ne_part_def, eq_part_def, Finset.mem_union, Finset.mem_filter]
+      tauto
+    have hdisj : Disjoint ne_part eq_part := by
+      rw [Finset.disjoint_left]
+      intro ⟨a, d⟩ h1 h2
+      simp only [ne_part_def, eq_part_def, Finset.mem_filter] at h1 h2
+      exact h1.2 h2.2
+    rw [hunion, Finset.card_union_of_disjoint hdisj]
+    congr 1
+    · -- ne_part.card = tripleCount A (same set, reordered conjuncts)
+      simp only [tripleCount, ne_part_def, allAP_def, Finset.filter_filter]
+      congr 1
+      ext ⟨a, d⟩
+      simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_univ, true_and]
+      tauto
+    · -- eq_part.card = A.card
+      -- eq_part = A.image (fun a => (a, 0))
+      have heq_img : eq_part = A.image (fun a => (a, (0 : ZMod N))) := by
+        ext ⟨a, d⟩
+        simp only [eq_part_def, allAP_def, Finset.mem_filter, Finset.mem_product, Finset.mem_univ,
+          true_and, Finset.mem_image, Prod.mk.injEq]
+        constructor
+        · rintro ⟨⟨ha, -, -⟩, rfl⟩; exact ⟨a, ha, rfl, rfl⟩
+        · rintro ⟨b, hb, rfl, rfl⟩; simp [hb]
+      rw [heq_img, Finset.card_image_of_injective _
+        (fun a b h => (Prod.mk.inj h).1)]
+  -- Combine: tripleCount A + A.card = T.card
+  have nat_eq : tripleCount A + A.card = T.card := hpart.trans hbij
+  -- Cast ℕ equality to ℂ
+  have lhs_cast : (tripleCount A : ℂ) + ↑A.card = ↑(tripleCount A + A.card) := by push_cast; ring
+  rw [lhs_cast, nat_eq, rhs_nat]
+  -- ↑(∑ℕ) = ∑ℂ: push cast through double sum and ite
+  norm_cast
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART III: FOURIER ANALYSIS ON Z/NZ

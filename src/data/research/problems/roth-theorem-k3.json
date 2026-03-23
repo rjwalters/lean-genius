@@ -19,11 +19,11 @@
     "phase": "ACT",
     "since": "2026-03-21",
     "iteration": 5,
-    "focus": "triple_count_fourier PROVED. Remaining: tripleCount_add_card_eq_triple_sum, fourier_large_coefficient, density_increment_lemma",
+    "focus": "tripleCount_add_card_eq_triple_sum PROVED. Remaining 2 sorries: fourier_large_coefficient, density_increment_lemma",
     "blockers": [
-      "None. Independent problem, can start immediately."
+      "fourier_large_coefficient statement may need fixing (δ²N/2 bound fails for N=1)"
     ],
-    "nextAction": "Prove tripleCount_add_card_eq_triple_sum (combinatorial bijection), then fourier_large_coefficient",
+    "nextAction": "Fix fourier_large_coefficient statement (add N≥2/δ² hypothesis), then prove it via Parseval + AP-freeness",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 5 PROVED triple_count_fourier! Fixed distribution, sum swap, orthogonality. Reduced to combinatorial helper tripleCount_add_card_eq_triple_sum (sorry). 3 sorries remain but triple_count_fourier is no longer one.",
+    "progressSummary": "PROGRESS: Session 5b PROVED tripleCount_add_card_eq_triple_sum (combinatorial bijection). 2 sorries remain: fourier_large_coefficient, density_increment_lemma. The Fourier identity chain is now complete (triple_count_fourier fully proved).",
     "builtItems": [
       "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
       "Build now succeeds: 0 axioms, 3 sorries",
@@ -42,7 +42,8 @@
       "Proved psi_ne_one: ψ(c) ≠ 1 when c ≠ 0, via Complex.exp_eq_one_iff + integer squeeze on val(c)",
       "Proved char_orthogonality: Σ ψ(r·c) = N·δ(c=0) via shift argument (r↦r+1 bijection on ZMod N)",
       "Proved triple_count_fourier Part A: Fourier expansion ∑Â(r)²conj(Â(2r)) = N·∑δ(x+z=2y)",
-      "PROVED triple_count_fourier: Fourier identity for AP counting, via fixed distribution + sum swap + orthogonality"
+      "PROVED triple_count_fourier: Fourier identity for AP counting, via fixed distribution + sum swap + orthogonality",
+      "PROVED tripleCount_add_card_eq_triple_sum: bijection (a,d)↦(a,a+d) between all APs and {(x,y)∈A²:2y-x∈A}, partition d=0/d≠0"
     ],
     "insights": [
       "RothTheorem.lean had 3 build errors: deprecated Finset.not_mem_empty, broken apFree_singleton, non-existent Complex.abs",
@@ -61,13 +62,18 @@
       "fourier_large_coefficient bound δ²N/2 may be too strong — standard result is O(δ^{3/2}√N). Statement may need fixing.",
       "Ring normalization in simp_rw: use congr_arg ψ (by ring) to match ψ arguments regardless of associativity",
       "Finset.sum_mul + Finset.mul_sum does NOT fully distribute 3-factor products",
-      "simp_rw [Finset.sum_comm (s := univ) (t := A)] pushes r innermost in 3 passes"
+      "simp_rw [Finset.sum_comm (s := univ) (t := A)] pushes r innermost in 3 passes",
+      "Finset.sum_ite_eq' collapses ∑_{z∈A} [z=c] to [c∈A] — key for inner sum simplification",
+      "linear_combination works for ZMod N ring equalities (x+z=2y ↔ z=2y-x)",
+      "Finset.card_image_of_injective cleaner than card_bij for simple embeddings like a↦(a,0)",
+      "For Finset partition: manually construct union via ext+tauto, then card_union_of_disjoint",
+      "norm_cast pushes Nat.cast through Finset.sum and ite — closes ↑(∑ℕ) = ∑ℂ goals"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove triple_count_fourier Part B: show ∑_{x∈A}∑_{y∈A}δ(2y-x∈A) = tripleCount+|A| via bijection (x,y)↔(a,d)=(x,y-x)",
-      "Fix fourier_large_coefficient statement if needed (bound may be too strong for small N)",
-      "Prove density_increment_lemma using fourier_large_coefficient + pigeonhole"
+      "Fix fourier_large_coefficient: add hypothesis δ²N≥2 (bound δ²N/2 fails for N=1 since ZMod 1 has no r≠0)",
+      "Prove fourier_large_coefficient: AP-free → tripleCount=0, Fourier identity gives Σ_{r≠0}Â(r)²conj(Â(2r)) = N|A|-|A|³, triangle inequality + Parseval extracts large coefficient",
+      "Prove density_increment_lemma: use fourier_large_coefficient to find large Â(r), partition Z/NZ by character r into APs of length ~√N, pigeonhole for density increment, preserve AP-freeness"
     ]
   },
   "tags": [
@@ -86,7 +92,7 @@
     "mathlib": []
   },
   "started": "2026-03-22T06:10:36.236Z",
-  "lastUpdate": "2026-03-22T20:00:00Z",
+  "lastUpdate": "2026-03-23T12:00:00Z",
   "significance": 9,
   "tractability": 6
 }
