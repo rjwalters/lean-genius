@@ -111,8 +111,9 @@ theorem permCountByOrder_one_pos (n : ℕ) (hn : 0 < n) :
 /-- Every permutation has order dividing n!. -/
 theorem orderOf_perm_dvd_factorial (n : ℕ) (σ : Equiv.Perm (Fin n)) :
     orderOf σ ∣ n.factorial := by
-  have h := orderOf_dvd_card (G := Equiv.Perm (Fin n))
-  rwa [Fintype.card_perm] at h
+  have h : orderOf σ ∣ Fintype.card (Equiv.Perm (Fin n)) := orderOf_dvd_card
+  simp only [Fintype.card_perm, Fintype.card_fin] at h
+  exact h
 
 /-- The total count of permutations across all orders equals n!. -/
 theorem sum_permCountByOrder (n : ℕ) :
@@ -131,7 +132,7 @@ theorem permCountByOrder_eq_zero_of_not_dvd (n k : ℕ) (hk : ¬(k ∣ n.factori
   unfold permCountByOrder
   rw [Finset.card_eq_zero]
   ext σ
-  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.not_mem_empty, iff_false]
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.notMem_empty, iff_false]
   intro h
   exact hk (h ▸ orderOf_perm_dvd_factorial n σ)
 
@@ -227,7 +228,7 @@ theorem permCountByOrder_le_factorial (n k : ℕ) :
   unfold permCountByOrder
   calc (Finset.univ.filter (fun σ : Equiv.Perm (Fin n) => orderOf σ = k)).card
       ≤ (Finset.univ : Finset (Equiv.Perm (Fin n))).card := Finset.card_filter_le _ _
-    _ = n.factorial := by rw [Finset.card_univ, Fintype.card_perm]
+    _ = n.factorial := by rw [Finset.card_univ, Fintype.card_perm, Fintype.card_fin]
 
 /- Aristotle found this block to be false. Here is a proof of the negation:
 
@@ -271,14 +272,14 @@ theorem lcmRange_dvd_lcmRange (m m' : ℕ) (h : m ≤ m') :
   apply Finset.lcm_dvd
   intro i hi
   apply Finset.dvd_lcm
-  exact Finset.mem_range.mpr (by omega)
+  exact Finset.mem_range.mpr (lt_of_lt_of_le (Finset.mem_range.mp hi) h)
 
 /-- lcmRange includes each factor: for 1 ≤ j ≤ m, j ∣ lcmRange m. -/
 theorem dvd_lcmRange (m j : ℕ) (hj : 1 ≤ j) (hjm : j ≤ m) :
     j ∣ lcmRange m := by
   unfold lcmRange
   have : j - 1 ∈ Finset.range m := Finset.mem_range.mpr (by omega)
-  have : (fun i => i + 1) (j - 1) = j := by omega
+  have : (fun i => i + 1) (j - 1) = j := by dsimp; omega
   rw [← this]
   exact Finset.dvd_lcm (f := (· + 1)) ‹j - 1 ∈ Finset.range m›
 
