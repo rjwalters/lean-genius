@@ -11,8 +11,15 @@
     "content": "Imports `Nat.GCD.Basic` for natural number GCD, `Data.Int.GCD` for integer GCD, and `Mathlib.Tactic` for proof automation (including `linear_combination` and `native_decide`). The module documentation traces the open question back through the bezout-identity chain: starting from the basic Bézout identity (OQ-01), through Euclid's lemma generalization (OQ-02), to this constructive algorithm (OQ-02-OQ-01). The key formula $q = uc + vk$ is previewed in the header.",
     "mathContext": "The open question asks whether Bézout coefficients can be combined with Euclid's lemma algorithmically. The affirmative answer: $ua + vb = 1$ and $a | bc$ yield explicit $q = uc + vk$ with $aq = c$.",
     "significance": "context",
-    "relatedConcepts": ["open question chain", "constructive mathematics", "Bézout coefficients"],
-    "prerequisites": ["Mathlib", "Nat.GCD.Basic"]
+    "relatedConcepts": [
+      "open question chain",
+      "constructive mathematics",
+      "Bézout coefficients"
+    ],
+    "prerequisites": [
+      "Mathlib",
+      "Nat.GCD.Basic"
+    ]
   },
   {
     "id": "ann-bezout-extgcd",
@@ -26,8 +33,21 @@
     "content": "A self-contained implementation of the extended Euclidean algorithm. extGcd a b returns (x, y, g) where a*x + b*y = g = gcd(a,b). The base case extGcd(a,0) = (1,0,a) reflects gcd(a,0) = a. The recursive case uses the identity: if (b+1)*x' + (a%(b+1))*y' = g, then a*y' + (b+1)*(x' - ⌊a/(b+1)⌋*y') = g.\n\nThree correctness theorems are proved: extGcd_gcd (returns gcd via strong induction), extGcd_bezout (the Bézout identity via linear_combination), and extGcd_correct (combining both). The key proof step in extGcd_bezout reconstructs a = ⌊a/(b+1)⌋*(b+1) + a%(b+1) via Nat.div_add_mod.",
     "mathContext": "The extended Euclidean algorithm computes integers $u, v$ such that $au + bv = \\gcd(a,b)$. It runs in $O(\\log(\\min(a,b)))$ steps — the same as the standard Euclidean algorithm. When $\\gcd(a,b) = 1$, the coefficients give $u$ as the modular inverse of $a$ modulo $b$: $au \\equiv 1 \\pmod{b}$.",
     "significance": "key",
-    "relatedConcepts": ["Euclidean algorithm", "Bézout's identity", "GCD", "modular inverse", "strong recursion", "RSA key generation", "continued fractions"],
-    "prerequisites": ["Nat.gcd", "Nat.mod_lt", "Nat.div_add_mod", "linear_combination"]
+    "relatedConcepts": [
+      "Euclidean algorithm",
+      "Bézout's identity",
+      "GCD",
+      "modular inverse",
+      "strong recursion",
+      "RSA key generation",
+      "continued fractions"
+    ],
+    "prerequisites": [
+      "Nat.gcd",
+      "Nat.mod_lt",
+      "Nat.div_add_mod",
+      "linear_combination"
+    ]
   },
   {
     "id": "ann-bezout-quotient-formula",
@@ -36,13 +56,22 @@
       "startLine": 84,
       "endLine": 107
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Core Quotient Formula",
     "content": "The heart of the construction: in ANY CommRing, given u*a + v*b = 1 (Bézout) and b*c = a*k (divisibility witness), we have a*(u*c + v*k) = c. The proof is a beautiful calc chain: expand by ring → substitute a*k = b*c → factor as (u*a + v*b)*c → apply Bézout → simplify 1*c = c.\n\neuclids_lemma_constructive wraps this into a divisibility statement: the explicit witness is ⟨u*c + v*k, proof⟩. The ring-axiomatic generality means this works for integers, polynomials, Gaussian integers, and any commutative ring.",
     "mathContext": "The formula $q = uc + vk$ is the constructive content of Euclid's lemma. Classically, the proof is non-constructive: \"since $\\gcd(a,b) = 1$ and $a | bc$, therefore $a | c$.\" The constructive version gives an explicit algorithm: compute $u, v$ via extended GCD, extract $k$ from the divisibility proof, and return $uc + vk$.",
     "significance": "key",
-    "relatedConcepts": ["Euclid's lemma", "CommRing", "constructive mathematics", "divisibility witness", "calc chain"],
-    "prerequisites": ["CommRing", "one_mul"]
+    "relatedConcepts": [
+      "Euclid's lemma",
+      "CommRing",
+      "constructive mathematics",
+      "divisibility witness",
+      "calc chain"
+    ],
+    "prerequisites": [
+      "CommRing",
+      "one_mul"
+    ]
   },
   {
     "id": "ann-bezout-constructive-div",
@@ -51,13 +80,22 @@
       "startLine": 109,
       "endLine": 144
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Constructive Algorithm: Assembly over ℕ",
     "content": "constructive_div assembles the full algorithm: extract Bézout coefficients (x,y) from extGcd, extract divisibility witness k from hdvd.choose, return x*c + y*k. The correctness theorem constructive_div_correct proves a*q = c by converting extGcd_correct to match quotient_formula's hypothesis.\n\neuclids_lemma_via_extGcd packages the result as a divisibility statement over ℤ. The definition is noncomputable because it uses hdvd.choose (classical choice), but the Bézout coefficients themselves are computable.",
     "mathContext": "The algorithm takes $a, b, c \\in \\mathbb{N}$ with $\\gcd(a,b) = 1$ and a proof of $a | bc$, and returns the quotient $q = c/a \\in \\mathbb{Z}$. The correctness proof converts between the extGcd output format $(x, y, g)$ where $ax + by = g$ and the quotient formula's input format $ua + vb = 1$.",
     "significance": "key",
-    "relatedConcepts": ["constructive quotient", "noncomputable", "Dvd.choose", "witness extraction"],
-    "prerequisites": ["extGcd", "quotient_formula", "extGcd_correct"]
+    "relatedConcepts": [
+      "constructive quotient",
+      "noncomputable",
+      "Dvd.choose",
+      "witness extraction"
+    ],
+    "prerequisites": [
+      "extGcd",
+      "quotient_formula",
+      "extGcd_correct"
+    ]
   },
   {
     "id": "ann-bezout-verification",
@@ -71,8 +109,16 @@
     "content": "Seven examples verify the extGcd implementation against expected values using native_decide (kernel-level computation). Tests cover coprime pairs (3,7), (5,7), (17,5) confirming gcd = 1 and valid Bézout identities, plus the non-coprime pair (252,198) confirming gcd = 18.\n\nnative_decide compiles the expression to native code and evaluates it, providing absolute certainty that the computation matches. This is stronger than #eval (which doesn't produce a proof term).",
     "mathContext": "The examples verify: $\\gcd(3,7) = 1$ with $3 \\cdot (-2) + 7 \\cdot 1 = 1$; $\\gcd(5,7) = 1$ with $5 \\cdot 3 + 7 \\cdot (-2) = 1$; $\\gcd(17,5) = 1$ with $17 \\cdot (-2) + 5 \\cdot 7 = 1$; $\\gcd(252,198) = 18$ with $252 \\cdot 4 + 198 \\cdot (-5) = 18$.",
     "significance": "supporting",
-    "relatedConcepts": ["native_decide", "computational verification", "kernel evaluation", "test cases"],
-    "prerequisites": ["native_decide", "extGcd"]
+    "relatedConcepts": [
+      "native_decide",
+      "computational verification",
+      "kernel evaluation",
+      "test cases"
+    ],
+    "prerequisites": [
+      "native_decide",
+      "extGcd"
+    ]
   },
   {
     "id": "ann-bezout-uniqueness",
@@ -81,13 +127,21 @@
       "startLine": 170,
       "endLine": 180
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Quotient Uniqueness in Integral Domains",
     "content": "In an integral domain with a ≠ 0, if a*q₁ = c and a*q₂ = c, then q₁ = q₂. The proof is immediate from mul_left_cancel₀: a*q₁ = a*q₂ implies q₁ = q₂ since a ≠ 0 and there are no zero divisors.\n\nThis is the 'free' consequence of working in an integral domain — uniqueness doesn't require any number-theoretic machinery, just the cancellation law.",
     "mathContext": "An integral domain is a commutative ring with no zero divisors: $ab = 0 \\implies a = 0 \\lor b = 0$. Equivalently, multiplication by any nonzero element is injective: $a \\neq 0 \\land ax = ay \\implies x = y$. This is `mul_left_cancel₀` in Mathlib.",
     "significance": "supporting",
-    "relatedConcepts": ["integral domain", "cancellation law", "zero divisors", "IsDomain"],
-    "prerequisites": ["IsDomain", "mul_left_cancel₀"]
+    "relatedConcepts": [
+      "integral domain",
+      "cancellation law",
+      "zero divisors",
+      "IsDomain"
+    ],
+    "prerequisites": [
+      "IsDomain",
+      "mul_left_cancel₀"
+    ]
   },
   {
     "id": "ann-bezout-abstract",
@@ -96,12 +150,21 @@
       "startLine": 182,
       "endLine": 200
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Connection to Abstract Algebra and Mathlib",
     "content": "abstract_euclids_lemma shows that our constructive approach works directly with Mathlib's IsCoprime type class: given IsCoprime a b (which provides Bézout witnesses u, v with ua + vb = 1) and a ∣ b*c, we extract the divisibility witness via euclids_lemma_constructive.\n\nThe companion example shows this agrees with Mathlib's IsCoprime.dvd_of_dvd_mul_left, confirming that our explicit construction is consistent with the library's abstract approach. The key difference: our version gives you the explicit quotient q = u*c + v*k, while Mathlib's version only asserts existence.",
     "mathContext": "Mathlib's `IsCoprime a b` is defined as $\\exists u v, ua + vb = 1$ — exactly the Bézout condition. The `dvd_of_dvd_mul_left` method proves Euclid's lemma from this, but without exposing the quotient formula. Our approach makes the algorithm explicit while remaining compatible with the abstract framework.",
     "significance": "key",
-    "relatedConcepts": ["IsCoprime", "Mathlib compatibility", "abstract algebra", "Bézout domain", "principal ideal domain"],
-    "prerequisites": ["IsCoprime", "IsCoprime.dvd_of_dvd_mul_left"]
+    "relatedConcepts": [
+      "IsCoprime",
+      "Mathlib compatibility",
+      "abstract algebra",
+      "Bézout domain",
+      "principal ideal domain"
+    ],
+    "prerequisites": [
+      "IsCoprime",
+      "IsCoprime.dvd_of_dvd_mul_left"
+    ]
   }
 ]

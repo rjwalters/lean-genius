@@ -2,85 +2,159 @@
   {
     "id": "ann-bu-oq03-01-interval-bu",
     "proofId": "borsuk-ulam-oq-03",
-    "range": { "startLine": 83, "endLine": 106 },
-    "type": "theorem",
+    "range": {
+      "startLine": 83,
+      "endLine": 106
+    },
+    "type": "technique",
     "title": "1D Borsuk-Ulam via IVT on Antisymmetric Difference",
     "content": "borsuk_ulam_interval proves ∃ x ∈ [-1,1], f(x)=f(-x) for continuous f. The proof defines g(x)=f(x)-f(-x), observes g(-1)=-g(1) (antisymmetry), then case-splits on the sign of g(-1). In each case, IVT (intermediate_value_Icc or intermediate_value_Icc') gives a zero of g in [-1,1], and g(x₀)=0 means f(x₀)=f(-x₀). The continuity of g follows from hf.sub (hf.comp continuous_neg).",
     "mathContext": "$g(x) = f(x) - f(-x)$, $g(-1) = -g(1)$. IVT on $g$: $g(-1) \\leq 0 \\leq g(1)$ or $g(1) \\leq 0 \\leq g(-1)$ gives zero.",
     "significance": "key",
-    "relatedConcepts": ["intermediate_value_Icc", "borsuk_ulam_circle_param", "bu_iff_odd_zero"],
-    "prerequisites": ["Continuous.sub", "Continuous.comp", "intermediate_value_Icc"]
+    "relatedConcepts": [
+      "intermediate_value_Icc",
+      "borsuk_ulam_circle_param",
+      "bu_iff_odd_zero"
+    ],
+    "prerequisites": [
+      "Continuous.sub",
+      "Continuous.comp",
+      "intermediate_value_Icc"
+    ]
   },
   {
     "id": "ann-bu-oq03-02-circle",
     "proofId": "borsuk-ulam-oq-03",
-    "range": { "startLine": 167, "endLine": 194 },
-    "type": "theorem",
+    "range": {
+      "startLine": 167,
+      "endLine": 194
+    },
+    "type": "technique",
     "title": "Circle S^1 Borsuk-Ulam via Trigonometric Parametrization",
     "content": "borsuk_ulam_circle_param proves the circle version: for continuous f: ℝ²→ℝ, ∃ θ ∈ [0,π] with f(cosθ,sinθ)=f(-cosθ,-sinθ). The proof parametrizes S^1 by θ ∈ [0,π], defines g(θ)=f(cosθ,sinθ)-f(-cosθ,-sinθ), shows g(π)=-g(0) using cos(π)=-1, sin(π)=0, cos(0)=1, sin(0)=0, then applies IVT on [0,π]. Continuity is handled by fun_prop.",
     "mathContext": "$g(\\theta) = f(\\cos\\theta,\\sin\\theta) - f(-\\cos\\theta,-\\sin\\theta)$. $g(\\pi) = f(-1,0) - f(1,0) = -g(0)$. IVT gives zero.",
     "significance": "key",
-    "relatedConcepts": ["Real.cos_pi", "Real.sin_pi", "fun_prop", "circle_no_self_antipodal"],
-    "prerequisites": ["intermediate_value_Icc", "Real.pi_pos", "fun_prop"]
+    "relatedConcepts": [
+      "Real.cos_pi",
+      "Real.sin_pi",
+      "fun_prop",
+      "circle_no_self_antipodal"
+    ],
+    "prerequisites": [
+      "intermediate_value_Icc",
+      "Real.pi_pos",
+      "fun_prop"
+    ]
   },
   {
     "id": "ann-bu-oq03-03-tucker",
     "proofId": "borsuk-ulam-oq-03",
-    "range": { "startLine": 470, "endLine": 479 },
-    "type": "theorem",
+    "range": {
+      "startLine": 470,
+      "endLine": 479
+    },
+    "type": "technique",
     "title": "Tucker's 1D Combinatorial Lemma via Fin.induction",
     "content": "tucker_1d_sign_change proves the discrete BU: any Boolean sequence s: Fin(n+2)→Bool with s(0)≠s(last) has adjacent indices i where s(i)≠s(i+1). The proof is by contradiction: if all adjacent pairs agree, Fin.induction shows s is constant (s(i)=s(0) for all i), contradicting the endpoint hypothesis. The key Lean technique is Fin.induction with the recursive step (h i).symm.trans ih.",
     "mathContext": "Tucker 1D: $s_0 \\neq s_{n+1}$ and $\\forall i: s_i = s_{i+1}$ is contradictory (Fin.induction shows $s$ constant).",
     "significance": "key",
-    "relatedConcepts": ["Fin.induction", "tucker_1d_iff_constant", "tucker_1d_holds"],
-    "prerequisites": ["Fin.induction", "Fin.castSucc", "Fin.last"]
+    "relatedConcepts": [
+      "Fin.induction",
+      "tucker_1d_iff_constant",
+      "tucker_1d_holds"
+    ],
+    "prerequisites": [
+      "Fin.induction",
+      "Fin.castSucc",
+      "Fin.last"
+    ]
   },
   {
     "id": "ann-bu-oq03-04-brouwer",
     "proofId": "borsuk-ulam-oq-03",
-    "range": { "startLine": 405, "endLine": 423 },
-    "type": "theorem",
+    "range": {
+      "startLine": 405,
+      "endLine": 423
+    },
+    "type": "technique",
     "title": "1D Brouwer Fixed-Point Theorem (Independent Proof)",
     "content": "brouwer_fixed_point_1d proves every continuous f: [-1,1]→[-1,1] has a fixed point. The proof defines g(x)=f(x)-x, observes g(-1)=f(-1)+1≥0 (since f(-1)≥-1) and g(1)=f(1)-1≤0 (since f(1)≤1), then IVT gives x₀ with g(x₀)=0, i.e., f(x₀)=x₀. This is independent of Borsuk-Ulam, demonstrating IVT as a general tool for 1D fixed-point theory.",
     "mathContext": "$g(x) = f(x) - x$. $g(-1) \\geq 0$ and $g(1) \\leq 0$ (from $f: [-1,1] \\to [-1,1]$). IVT gives fixed point.",
     "significance": "supporting",
-    "relatedConcepts": ["intermediate_value_Icc'", "borsuk_ulam_interval"],
-    "prerequisites": ["intermediate_value_Icc'", "ContinuousOn.sub"]
+    "relatedConcepts": [
+      "intermediate_value_Icc'",
+      "borsuk_ulam_interval"
+    ],
+    "prerequisites": [
+      "intermediate_value_Icc'",
+      "ContinuousOn.sub"
+    ]
   },
   {
     "id": "ann-bu-oq03-05-no-retraction",
     "proofId": "borsuk-ulam-oq-03",
-    "range": { "startLine": 224, "endLine": 229 },
-    "type": "theorem",
+    "range": {
+      "startLine": 224,
+      "endLine": 229
+    },
+    "type": "technique",
     "title": "No Odd Continuous Map to {±1} (1D No-Retraction)",
     "content": "no_odd_map_to_pm_one proves there is no continuous odd function f: ℝ→{1,-1}. By odd_continuous_has_zero, f has a zero in [-1,1], but f only takes values ±1, giving the contradiction 0=1 or 0=-1. This is the 1D analog of the no-retraction theorem: S^0={±1} is not a retract of [-1,1] via odd maps.",
     "mathContext": "If $f$ continuous, $f(x) \\in \\{\\pm 1\\}$, and $f(-x) = -f(x)$, then $\\exists x_0: f(x_0)=0$ (by BU), contradicting $f(x_0) \\in \\{\\pm 1\\}$.",
     "significance": "supporting",
-    "relatedConcepts": ["odd_continuous_has_zero", "borsuk_ulam_interval"],
-    "prerequisites": ["odd_continuous_has_zero"]
+    "relatedConcepts": [
+      "odd_continuous_has_zero",
+      "borsuk_ulam_interval"
+    ],
+    "prerequisites": [
+      "odd_continuous_has_zero"
+    ]
   },
   {
     "id": "ann-bu-oq03-06-axiom-reduction",
     "proofId": "borsuk-ulam-oq-03",
-    "range": { "startLine": 3300, "endLine": 3317 },
+    "range": {
+      "startLine": 3300,
+      "endLine": 3317
+    },
     "type": "insight",
     "title": "Axiom Reduction: 4 Axioms Collapse to 1 Independent Axiom",
     "content": "The axiom reduction chain is the architectural centerpiece of the formalization. Starting with 4 declared axioms (borsuk_ulam_general, no_retraction, brouwer_fixed_point, lusternik_schnirelmann), the file proves 3 are redundant: BU → no_retraction via hemisphere folding and radial extension, no_retraction → Brouwer FP via ball projection and ray-sphere retraction, and BU → LS via the infDist technique. The single remaining independent axiom borsuk_ulam_general requires algebraic topology (Brouwer degree or homology) for its proof, which is not yet available in Mathlib. This reduction demonstrates that all major fixed-point and covering theorems in this family are logically equivalent.",
     "mathContext": "The equivalence chain: $\\text{BU} \\Rightarrow \\text{no-retraction} \\Rightarrow \\text{Brouwer FP}$ and $\\text{BU} \\Rightarrow \\text{LS}$. Conversely, no-retraction $\\Rightarrow$ BU and Brouwer FP $\\Rightarrow$ no-retraction, closing the cycle. The 1D cases are all provable from IVT alone (no axioms needed).",
     "significance": "key",
-    "relatedConcepts": ["axiom independence", "theorem equivalence", "algebraic topology", "Brouwer degree"],
-    "prerequisites": ["Borsuk-Ulam theorem", "no-retraction theorem", "Brouwer fixed-point theorem", "Lusternik-Schnirelmann covering"]
+    "relatedConcepts": [
+      "axiom independence",
+      "theorem equivalence",
+      "algebraic topology",
+      "Brouwer degree"
+    ],
+    "prerequisites": [
+      "Borsuk-Ulam theorem",
+      "no-retraction theorem",
+      "Brouwer fixed-point theorem",
+      "Lusternik-Schnirelmann covering"
+    ]
   },
   {
     "id": "ann-bu-oq03-07-structural-properties",
     "proofId": "borsuk-ulam-oq-03",
-    "range": { "startLine": 232, "endLine": 260 },
+    "range": {
+      "startLine": 232,
+      "endLine": 260
+    },
     "type": "concept",
     "title": "Structural Properties of Antipodal Pairs",
     "content": "Section VI establishes algebraic closure properties of antipodal pairs: symmetry (if f(x)=f(-x) then f(-x)=f(x)), the antipodal value equals the average, and preservation under sums and scalar multiples. These formalize the algebraic structure that makes BU useful in applications — the set of functions with antipodal pairs at a given point forms an additive subspace of the function space.",
     "mathContext": "If $f(x) = f(-x)$ and $h(x) = h(-x)$, then $(f+h)(x) = f(x)+h(x) = f(-x)+h(-x) = (f+h)(-x)$. The antipodal set $\\{f : f(x_0) = f(-x_0)\\}$ is a linear subspace.",
     "significance": "supporting",
-    "relatedConcepts": ["antipodal pairs", "linear subspace", "algebraic closure"],
-    "prerequisites": ["basic algebra", "function spaces"]
+    "relatedConcepts": [
+      "antipodal pairs",
+      "linear subspace",
+      "algebraic closure"
+    ],
+    "prerequisites": [
+      "basic algebra",
+      "function spaces"
+    ]
   }
 ]

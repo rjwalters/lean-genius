@@ -57,7 +57,7 @@
       "startLine": 41,
       "endLine": 73
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "coprime_iff_linear_combination: Bridge Between Arithmetic and Algebra",
     "content": "**Theorem:** `Nat.Coprime a b ↔ ∃ x y : ℤ, a*x + b*y = 1`\n\n**Forward direction (→):** From `Nat.Coprime a b` (i.e., `gcd a b = 1`):\n- Use `Nat.gcd_eq_gcd_ab a b : gcd a b = a * gcdA a b + b * gcdB a b`\n- Rewrite with `h : gcd a b = 1` to get `1 = a * gcdA + b * gcdB`\n- `push_cast` coerces to ℤ; `linarith` closes\n\n**Backward direction (←):** From `a*x + b*y = 1` over ℤ:\n- `gcd a b` divides both `a` and `b` (by `Nat.gcd_dvd_left/right`)\n- Hence `gcd a b | a*x + b*y = 1`\n- Cast to ℕ via `exact_mod_cast`, apply `Nat.eq_one_of_dvd_one`",
     "mathContext": "This theorem bridges two notions of coprimality: **arithmetic** (`Nat.Coprime a b : gcd(a,b) = 1`) and **algebraic** (`∃ x y \\in \\mathbb{Z}: ax + by = 1`). The backward direction uses $\\gcd(a,b) \\mid a$ and $\\gcd(a,b) \\mid b$, hence $\\gcd(a,b) \\mid ax + by = 1$, giving $\\gcd(a,b) = 1$. The cast `Int.natCast_dvd_natCast` handles the ℕ↔ℤ transition.",
@@ -87,7 +87,7 @@
       "startLine": 75,
       "endLine": 94
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Euclid's Lemma for Integers via IsCoprime",
     "content": "**Theorem:** `IsCoprime a b → a ∣ b*c → a ∣ c` (over ℤ)\n\nSince `IsCoprime a b` IS defined as `∃ u v, u*a + v*b = 1`, the proof is direct:\n1. `obtain ⟨u, v, huv⟩ := hcop` — extracts u, v with `u*a + v*b = 1`\n2. `obtain ⟨k, hk⟩ := hdvd` — extracts k with `b*c = a*k`\n3. **Witness:** `u*c + v*k`\n4. **Proof:** `by linear_combination v * hk - c * huv`\n\n**Identity verified by ring:** `c - a*(u*c + v*k) = v*(b*c - a*k) - c*(u*a + v*b - 1) = 0`",
     "mathContext": "Over $\\mathbb{Z}$, `IsCoprime a b` $\\equiv \\exists u, v: ua + vb = 1$. The witness for $a \\mid c$ is $u c + vk$ where $bc = ak$:\n$$c = 1 \\cdot c = (ua+vb)c = u(ac) + v(bc) = u(ac) + v(ak) = a(uc + vk)$$\nThe `linear_combination` check: $c - a(uc+vk) = v(bc-ak) - c(ua+vb-1) = v \\cdot 0 - c \\cdot 0 = 0$.",
@@ -113,7 +113,7 @@
       "startLine": 96,
       "endLine": 121
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Euclid's Lemma for Naturals: The Main Result",
     "content": "**Theorem (Main Answer to OQ):** `Nat.Coprime a b → a ∣ b*c → a ∣ c` (over ℕ)\n\n**Proof steps:**\n1. `rw [coprime_iff_linear_combination] at hcop` — rewrites coprimality as Bézout witness\n2. `obtain ⟨x, y, hbez⟩ := hcop` — extracts `(a:ℤ)*x + (b:ℤ)*y = 1`\n3. `rw [← Int.natCast_dvd_natCast]` — converts the goal `a ∣ c` in ℕ to `(a:ℤ) ∣ (c:ℤ)`\n4. `exact_mod_cast hdvd` — converts `a ∣ b*c` in ℕ to `(a:ℤ) ∣ (b:ℤ)*(c:ℤ)`\n5. `obtain ⟨k, hk⟩` — gets k with `(b:ℤ)*c = (a:ℤ)*k`\n6. Witness `x*c + y*k` with `by linear_combination y * hk - (c:ℤ) * hbez`\n\n**Why work in ℤ:** Natural numbers don't support negative Bézout coefficients. Cast to ℤ for the algebra, cast back for the result.",
     "mathContext": "This theorem has a key architectural choice: the Bézout coefficients $x, y$ may be negative (e.g., for $\\gcd(3,7)=1$: $x=5, y=-2$, since $3 \\cdot 5 + 7 \\cdot(-2) = 1$). Natural number arithmetic can't represent $y=-2$. The cast pattern `rw [← Int.natCast_dvd_natCast]` followed by `exact_mod_cast` is the standard Lean idiom for \"do arithmetic in $\\mathbb{Z}$, recover result in $\\mathbb{N}$\".",
@@ -140,7 +140,7 @@
       "startLine": 123,
       "endLine": 142
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Euclid's Lemma: Prime Version",
     "content": "**Theorem:** `Nat.Prime p → p ∣ a*b → p ∣ a ∨ p ∣ b`\n\n**Proof by case split on `p ∣ a`:**\n- **Case `p ∣ a`:** Direct — return `Or.inl ha`\n- **Case `p ∤ a`:** Use `Nat.Prime.coprime_iff_not_dvd`: a prime is coprime to $n$ iff it doesn't divide $n$. So `hp.coprime_iff_not_dvd.mpr ha : Nat.Coprime p a`. Then apply `euclids_lemma_nat p a b hcop hdvd` to get `p ∣ b`, return `Or.inr`\n\n**Key fact used:** For a prime $p$, the only possibilities are $\\gcd(p, a) = 1$ or $\\gcd(p, a) = p$ (i.e., $p \\mid a$).",
     "mathContext": "The primality of $p$ is essential: if $p$ doesn't divide $a$, then since $p$'s only divisors are 1 and $p$, we get $\\gcd(p,a) = 1$. Formally: `Nat.Prime.coprime_iff_not_dvd : Nat.Prime p → (Nat.Coprime p n ↔ ¬p ∣ n)`. This reduces the prime version to the coprime version, making `euclids_lemma_nat` the workhorse.",

@@ -2,133 +2,270 @@
   {
     "id": "ann-imports",
     "proofId": "amgm-inequality",
-    "range": {"startLine": 1, "endLine": 4},
+    "range": {
+      "startLine": 1,
+      "endLine": 4
+    },
     "type": "concept",
     "title": "Mathlib Imports for Mean Inequalities",
     "content": "Four Mathlib imports supply the complete mathematical infrastructure:\n- `Analysis.MeanInequalities`: The weighted AM-GM theorem `Real.geom_mean_le_arith_mean_weighted` and its 2/3-variable specializations, proved in Mathlib via convexity of $-\\log$ (Jensen's inequality)\n- `Analysis.SpecialFunctions.Pow.Real`: Real-valued powers $x^r$ for $r \\in \\mathbb{R}$, including `Real.sqrt_mul` and `Real.sq_sqrt`\n- `Algebra.Order.Field.Basic`: Ordered field arithmetic, providing the linear arithmetic facts needed by `linarith`\n- `Mathlib.Tactic`: General-purpose tactics including `norm_num`, `ring`, `linarith`, and `nlinarith`",
     "mathContext": "The key Mathlib result is `Real.geom_mean_le_arith_mean_weighted`: $\\prod_{i \\in s} z_i^{w_i} \\leq \\sum_{i \\in s} w_i z_i$ for $w_i \\geq 0$, $\\sum w_i = 1$, $z_i \\geq 0$. This is proved via Jensen's inequality applied to $f(x) = -\\log(x)$ (convex on $(0,\\infty)$).",
     "significance": "supporting",
-    "relatedConcepts": ["Mathlib", "mean inequalities", "convexity", "Jensen's inequality"],
-    "prerequisites": ["Lean 4 import system", "Mathlib library structure"]
+    "relatedConcepts": [
+      "Mathlib",
+      "mean inequalities",
+      "convexity",
+      "Jensen's inequality"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-intro",
     "proofId": "amgm-inequality",
-    "range": {"startLine": 6, "endLine": 52},
+    "range": {
+      "startLine": 6,
+      "endLine": 52
+    },
     "type": "concept",
     "title": "AM-GM Inequality: Wiedijk #38",
     "content": "**AM-GM Inequality**:\n\nFor non-negative real numbers:\n$$\\frac{a_1 + a_2 + \\cdots + a_n}{n} \\geq \\sqrt[n]{a_1 a_2 \\cdots a_n}$$\n\n**Two-variable case**:\n$$\\frac{a + b}{2} \\geq \\sqrt{ab}$$\n\n**Equality**: Holds iff all numbers are equal.\n\n**Historical**: Known since Euclid (geometric proof via altitude in semicircle); Cauchy gave the first general n-variable proof via forward-backward induction in 1821. This file is #38 on Wiedijk's landmark list of 100 mathematical theorems deemed important to formalize.",
     "mathContext": "$$\\frac{a+b}{2} \\geq \\sqrt{ab}, \\quad \\text{with equality iff } a = b$$",
     "significance": "key",
-    "relatedConcepts": ["arithmetic mean", "geometric mean", "inequality", "convexity", "Jensen's inequality"],
-    "prerequisites": ["real numbers", "square roots", "non-negativity"]
+    "relatedConcepts": [
+      "arithmetic mean",
+      "geometric mean",
+      "inequality",
+      "convexity",
+      "Jensen's inequality"
+    ],
+    "prerequisites": [
+      "real numbers",
+      "square roots",
+      "non-negativity"
+    ]
   },
   {
     "id": "ann-elementary-proof",
     "proofId": "amgm-inequality",
-    "range": {"startLine": 53, "endLine": 79},
+    "range": {
+      "startLine": 53,
+      "endLine": 79
+    },
     "type": "technique",
     "title": "Elementary Two-Variable Proof via Square Non-negativity",
     "content": "**The Classic Proof**:\n\nStart with $(\\sqrt{a} - \\sqrt{b})^2 \\geq 0$ (squares are non-negative)\n\n**Expand**:\n$$a - 2\\sqrt{ab} + b \\geq 0$$\n\n**Rearrange**:\n$$a + b \\geq 2\\sqrt{ab} \\implies \\frac{a + b}{2} \\geq \\sqrt{ab}$$\n\nIn Lean, the proof uses `Real.sq_sqrt` to replace $(\\sqrt{a})^2$ with $a$ and `Real.sqrt_mul` to merge $\\sqrt{a} \\cdot \\sqrt{b} = \\sqrt{ab}$, then closes by `linarith` on the resulting linear arithmetic goal. This illustrates a common Lean pattern: rewrite to reduce to a canonical form, then discharge with automation.",
     "mathContext": "$(\\sqrt{a} - \\sqrt{b})^2 = a - 2\\sqrt{ab} + b \\geq 0$",
     "significance": "key",
-    "relatedConcepts": ["square root", "non-negative squares", "nlinarith", "linarith", "Real.sq_sqrt"],
-    "prerequisites": ["square roots of non-negative reals", "sq_nonneg", "Real.sqrt_mul"]
+    "relatedConcepts": [
+      "square root",
+      "non-negative squares",
+      "nlinarith",
+      "linarith",
+      "Real.sq_sqrt"
+    ],
+    "prerequisites": [
+      "square roots of non-negative reals",
+      "sq_nonneg",
+      "Real.sqrt_mul"
+    ]
   },
   {
     "id": "ann-alt-form",
     "proofId": "amgm-inequality",
-    "range": {"startLine": 81, "endLine": 87},
+    "range": {
+      "startLine": 81,
+      "endLine": 87
+    },
     "type": "technique",
     "title": "Alternative Formulation: a + b ≥ 2√(ab)",
     "content": "**Equivalent statement** of AM-GM without division:\n$$a + b \\geq 2\\sqrt{ab}$$\n\nThis form is often more convenient in algebraic manipulations—it avoids division by 2, making it directly applicable to sum-product estimates. The Lean proof simply delegates to `am_gm_two` via `linarith`, demonstrating how to derive equivalent forms by scaling.\n\n**Usage**: This form appears in proofs of Cauchy-Schwarz via SOS (sum of squares) decompositions and in bounding products in number theory.\n\n**Connection to Young's inequality**: Substituting $a \\to a^p/p$ and $b \\to b^q/q$ with $1/p + 1/q = 1$ yields Young's inequality $ab \\leq a^p/p + b^q/q$, which is the workhorse behind Hölder's inequality and $L^p$ space theory. The two-variable AM-GM is exactly the case $p = q = 2$.",
     "mathContext": "$a + b \\geq 2\\sqrt{ab}$, equivalently $\\frac{a+b}{2} \\geq \\sqrt{ab}$",
     "significance": "supporting",
-    "relatedConcepts": ["sum-product bounds", "Cauchy-Schwarz", "scaling equivalence", "Young's inequality", "Hölder's inequality"],
-    "prerequisites": ["am_gm_two", "linarith"]
+    "relatedConcepts": [
+      "sum-product bounds",
+      "Cauchy-Schwarz",
+      "scaling equivalence",
+      "Young's inequality",
+      "Hölder's inequality"
+    ],
+    "prerequisites": [
+      "am_gm_two",
+      "linarith"
+    ]
   },
   {
     "id": "ann-equality",
     "proofId": "amgm-inequality",
-    "range": {"startLine": 89, "endLine": 132},
+    "range": {
+      "startLine": 89,
+      "endLine": 132
+    },
     "type": "insight",
     "title": "Equality Characterization: AM = GM iff a = b",
     "content": "**Theorem**: $(a + b)/2 = \\sqrt{ab}$ if and only if $a = b$.\n\n**Forward direction** (the interesting one): Equality forces $(\\sqrt{a} - \\sqrt{b})^2 = 0$, hence $\\sqrt{a} = \\sqrt{b}$. For non-negative reals, $\\sqrt{a} = \\sqrt{b}$ iff $a = b$ (by squaring and using `Real.sq_sqrt`).\n\nThe Lean proof uses a `calc` chain to show $(\\sqrt{a} - \\sqrt{b})^2 = a - 2\\sqrt{ab} + b = 0$ (from the equality hypothesis), then invokes `pow_eq_zero` to conclude the square root difference vanishes.\n\n**Why this matters**: The equality condition is what makes AM-GM useful for *optimization*—it identifies the unique optimum of problems like 'maximize $xy$ subject to $x + y = c$' (answer: $x = y = c/2$, giving maximum product $c^2/4$). More generally, for $n$ variables with fixed sum $S$, $\\prod x_i \\leq (S/n)^n$ with equality iff all $x_i = S/n$. This principle underlies results from the isoperimetric inequality (circle maximizes area for given perimeter) to the maximum entropy theorem (uniform distribution maximizes Shannon entropy).",
     "mathContext": "$\\frac{a+b}{2} = \\sqrt{ab} \\iff (\\sqrt{a} - \\sqrt{b})^2 = 0 \\iff a = b$",
     "significance": "key",
-    "relatedConcepts": ["equality condition", "optimization", "critical points", "pow_eq_zero"],
-    "prerequisites": ["Real.sq_sqrt", "Real.sqrt_inj for non-negative reals"]
+    "relatedConcepts": [
+      "equality condition",
+      "optimization",
+      "critical points",
+      "pow_eq_zero"
+    ],
+    "prerequisites": [
+      "Real.sq_sqrt",
+      "Real.sqrt_inj for non-negative reals"
+    ]
   },
   {
     "id": "ann-weighted",
     "proofId": "amgm-inequality",
-    "range": {"startLine": 134, "endLine": 160},
+    "range": {
+      "startLine": 134,
+      "endLine": 160
+    },
     "type": "concept",
     "title": "Weighted AM-GM via Mathlib's General Inequality",
     "content": "**Weighted AM-GM**:\n\nFor weights $w_i \\geq 0$ with $\\sum_{i} w_i = 1$ and values $z_i \\geq 0$:\n$$\\prod_i z_i^{w_i} \\leq \\sum_i w_i z_i$$\n\nThe left side is the **weighted geometric mean**; the right is the **weighted arithmetic mean**. Setting $w_i = 1/n$ for all $i$ recovers the classical unweighted AM-GM.\n\n**Mathlib implementation**: `Real.geom_mean_le_arith_mean_weighted` operates over `Finset ι`, allowing arbitrary finite index sets. Internally, Mathlib proves this via the concavity of $\\log$: since $\\log$ is concave on $(0,\\infty)$, Jensen's inequality gives $\\sum w_i \\log(z_i) \\leq \\log(\\sum w_i z_i)$, and exponentiating yields the weighted AM-GM. The proof `am_gm_two_via_weighted` uses Mathlib's pre-specialized two-variable form `Real.geom_mean_le_arith_mean2_weighted` with weights $1/2$, using `convert` to bridge between Mathlib's statement and the concrete form $a^{1/2} b^{1/2} \\leq (a+b)/2$—`ring` closes the remaining arithmetic goals. Similarly, `am_gm_three` uses the pre-specialized `Real.geom_mean_le_arith_mean3_weighted`.\n\n**Design pattern**: This section illustrates a common Lean formalization strategy: prove the result elementarily for the base case (two variables), then also provide a path through Mathlib's general machinery for n-variable extensions. The two approaches serve different audiences: the elementary proof is pedagogically transparent, while the Mathlib delegation is more scalable.",
     "mathContext": "$$\\prod_i z_i^{w_i} \\leq \\sum_i w_i z_i, \\quad \\sum_i w_i = 1, \\; z_i \\geq 0$$",
     "significance": "key",
-    "relatedConcepts": ["weighted mean", "convexity", "Jensen's inequality", "Finset", "Real.geom_mean_le_arith_mean_weighted", "Real.geom_mean_le_arith_mean2_weighted", "Real.geom_mean_le_arith_mean3_weighted"],
-    "prerequisites": ["Finset", "weighted sums and products", "Jensen's inequality", "convex functions"]
+    "relatedConcepts": [
+      "weighted mean",
+      "convexity",
+      "Jensen's inequality",
+      "Finset",
+      "Real.geom_mean_le_arith_mean_weighted",
+      "Real.geom_mean_le_arith_mean2_weighted",
+      "Real.geom_mean_le_arith_mean3_weighted"
+    ],
+    "prerequisites": [
+      "Finset",
+      "weighted sums and products",
+      "Jensen's inequality",
+      "convex functions"
+    ]
   },
   {
     "id": "ann-examples",
     "proofId": "amgm-inequality",
-    "range": {"startLine": 162, "endLine": 181},
+    "range": {
+      "startLine": 162,
+      "endLine": 181
+    },
     "type": "context",
     "title": "Concrete Verification Examples",
     "content": "**Three illustrative examples**:\n\n1. **Equal case** (lines 165–168): Shows $(a+a)/2 = \\sqrt{a \\cdot a} = a$—verifying that AM equals GM when both variables coincide. Uses `Real.sqrt_sq` to simplify $\\sqrt{a^2} = a$.\n\n2. **Strict inequality** (lines 171–176): The specific instance $a=1, b=4$ gives $AM = 5/2 > GM = 2$. Leans `norm_num` verifies $\\sqrt{4} = 2$ via the characterization `Real.sqrt_eq_iff_sq_eq`.\n\n3. **Delegation** (lines 179–180): The pair $(a,b) = (2,8)$ with $AM = 5 \\geq GM = 4$ is checked by direct application of `am_gm_two`, showing how the main theorem is used in practice.\n\nThese examples serve as sanity checks and demonstrate that Lean can verify concrete numerical claims about real square roots without any `sorry`.",
     "mathContext": "$(1+4)/2 = 5/2 > \\sqrt{4} = 2$; \\quad (2+8)/2 = 5 \\geq \\sqrt{16} = 4$",
     "significance": "supporting",
-    "relatedConcepts": ["norm_num", "Real.sqrt_sq", "concrete verification", "numerical examples"],
-    "prerequisites": ["am_gm_two", "Real.sqrt_sq", "norm_num tactic"]
+    "relatedConcepts": [
+      "norm_num",
+      "Real.sqrt_sq",
+      "concrete verification",
+      "numerical examples"
+    ],
+    "prerequisites": [
+      "am_gm_two",
+      "Real.sqrt_sq",
+      "norm_num tactic"
+    ]
   },
   {
     "id": "ann-product-sum",
     "proofId": "amgm-inequality",
-    "range": {"startLine": 184, "endLine": 194},
+    "range": {
+      "startLine": 184,
+      "endLine": 194
+    },
     "type": "insight",
     "title": "Product-Sum Corollary: ab ≤ ((a+b)/2)²",
     "content": "**Corollary**: For non-negative $a, b$:\n$$ab \\leq \\left(\\frac{a+b}{2}\\right)^2$$\n\n**Proof**: Square both sides of AM-GM:\n$$\\sqrt{ab} \\leq \\frac{a+b}{2} \\implies ab = (\\sqrt{ab})^2 \\leq \\left(\\frac{a+b}{2}\\right)^2$$\n\nThe Lean proof uses `sq_le_sq'` to square the inequality, combined with `Real.sq_sqrt` to recover $ab$ from $(\\sqrt{ab})^2$.\n\n**Application**: This is the key step in proving that among all rectangles with fixed perimeter, the square maximizes area—a classical isoperimetric principle. With perimeter $2(a+b) = P$, area $= ab \\leq (P/4)^2$, achieved when $a = b$. This is also the core ingredient in the arithmetic-geometric mean iteration used by Gauss and Legendre to compute elliptic integrals.",
     "mathContext": "$$ab = (\\sqrt{ab})^2 \\leq \\left(\\frac{a+b}{2}\\right)^2$$",
     "significance": "supporting",
-    "relatedConcepts": ["isoperimetric inequality", "optimization", "sq_le_sq'", "product maximization", "Gauss AGM iteration"],
-    "prerequisites": ["am_gm_two", "Real.sq_sqrt", "sq_le_sq'"]
+    "relatedConcepts": [
+      "isoperimetric inequality",
+      "optimization",
+      "sq_le_sq'",
+      "product maximization",
+      "Gauss AGM iteration"
+    ],
+    "prerequisites": [
+      "am_gm_two",
+      "Real.sq_sqrt",
+      "sq_le_sq'"
+    ]
   },
   {
     "id": "ann-mean-chain",
     "proofId": "amgm-inequality",
-    "range": {"startLine": 196, "endLine": 203},
+    "range": {
+      "startLine": 196,
+      "endLine": 203
+    },
     "type": "concept",
     "title": "The Mean Inequality Chain: QM ≥ AM ≥ GM",
     "content": "**The Power Mean Hierarchy**:\n\nThe `am_ge_gm` alias places AM-GM in the classical chain of mean inequalities:\n$$\\text{QM} = \\sqrt{\\frac{a^2+b^2}{2}} \\;\\geq\\; \\text{AM} = \\frac{a+b}{2} \\;\\geq\\; \\text{GM} = \\sqrt{ab} \\;\\geq\\; \\text{HM} = \\frac{2ab}{a+b}$$\n\nMore generally, the **power mean** $M_p(a,b) = \\left(\\frac{a^p+b^p}{2}\\right)^{1/p}$ satisfies $M_p \\leq M_q$ whenever $p \\leq q$, with $M_0 = \\text{GM}$, $M_1 = \\text{AM}$, $M_2 = \\text{QM}$, and $M_{-1} = \\text{HM}$. AM-GM is the single step $M_0 \\leq M_1$ in this chain.\n\nThis monotonicity of power means is equivalent to Jensen's inequality for the convex function $t \\mapsto t^{q/p}$ and unifies all classical mean comparisons under one principle.",
     "mathContext": "$$M_{-1} \\leq M_0 \\leq M_1 \\leq M_2, \\quad M_p = \\left(\\frac{a^p+b^p}{2}\\right)^{1/p}$$",
     "significance": "key",
-    "relatedConcepts": ["power mean", "quadratic mean", "harmonic mean", "Jensen's inequality", "convexity"],
-    "prerequisites": ["arithmetic mean", "geometric mean", "convex functions"]
+    "relatedConcepts": [
+      "power mean",
+      "quadratic mean",
+      "harmonic mean",
+      "Jensen's inequality",
+      "convexity"
+    ],
+    "prerequisites": [
+      "arithmetic mean",
+      "geometric mean",
+      "convex functions"
+    ]
   },
   {
     "id": "ann-three-variable",
     "proofId": "amgm-inequality",
-    "range": {"startLine": 205, "endLine": 218},
-    "type": "theorem",
+    "range": {
+      "startLine": 205,
+      "endLine": 218
+    },
+    "type": "technique",
     "title": "Three-Variable AM-GM via Mathlib",
     "content": "**Three-Variable AM-GM**:\n$$a^{1/3} b^{1/3} c^{1/3} \\leq \\frac{a + b + c}{3}$$\n\nEquivalently (for $a,b,c > 0$):\n$$\\sqrt[3]{abc} \\leq \\frac{a+b+c}{3}$$\n\n**Proof structure**: Calls `Real.geom_mean_le_arith_mean3_weighted` with weights $w_1 = w_2 = w_3 = 1/3$ (summing to 1). The `convert` tactic bridges the Finset-based statement to the concrete three-variable form, and `ring` closes the arithmetic goals.\n\n**Historical note**: The three-variable case was proved by Maclaurin (1729) via his symmetric function inequalities, before Cauchy's general n-variable proof. The chain $e_1/3 \\geq e_2^{1/2}/\\binom{3}{2}^{1/2} \\geq e_3^{1/3}$ (where $e_k$ are elementary symmetric polynomials) is known as Maclaurin's inequality and strictly strengthens AM-GM.",
     "mathContext": "$$a^{1/3} b^{1/3} c^{1/3} \\leq \\frac{a+b+c}{3}, \\quad \\text{equality iff } a=b=c$$",
     "significance": "supporting",
-    "relatedConcepts": ["three variables", "cube root", "symmetric functions", "Maclaurin's inequality", "Real.geom_mean_le_arith_mean3_weighted"],
-    "prerequisites": ["am_gm_weighted", "Finset-based mean inequalities", "real powers"]
+    "relatedConcepts": [
+      "three variables",
+      "cube root",
+      "symmetric functions",
+      "Maclaurin's inequality",
+      "Real.geom_mean_le_arith_mean3_weighted"
+    ],
+    "prerequisites": [
+      "am_gm_weighted",
+      "Finset-based mean inequalities",
+      "real powers"
+    ]
   },
   {
     "id": "ann-check-epilogue",
     "proofId": "amgm-inequality",
-    "range": {"startLine": 220, "endLine": 225},
+    "range": {
+      "startLine": 220,
+      "endLine": 225
+    },
     "type": "context",
     "title": "Type-Check Verification and Namespace Close",
     "content": "Four `#check` commands verify the signatures of the main theorems at the end of the file: `am_gm_two` (elementary two-variable), `am_gm_two_eq_iff` (equality characterization), `am_gm_weighted` (general Finset-based), and `am_gm_three` (three-variable specialization). This pattern serves as a quick-reference API summary.\n\nThe namespace `AMGMInequality` closes on line 225, scoping all definitions to prevent name collisions with Mathlib's own mean inequality lemmas.",
     "mathContext": "The four theorems form a hierarchy: `am_gm_weighted` is the most general (arbitrary finite sets, arbitrary weights), `am_gm_three` and `am_gm_two_via_weighted` are specializations, and `am_gm_two` is an independent elementary proof. The equality condition `am_gm_two_eq_iff` applies only to the two-variable case.",
     "significance": "supporting",
-    "relatedConcepts": ["#check command", "namespace scoping", "API design"],
-    "prerequisites": ["Lean 4 #check", "namespace management"]
+    "relatedConcepts": [
+      "#check command",
+      "namespace scoping",
+      "API design"
+    ],
+    "prerequisites": [
+      "Lean 4 #check",
+      "namespace management"
+    ]
   }
 ]
