@@ -1,63 +1,91 @@
 {
   "slug": "sum-of-kth-powers-oq-02",
-  "title": "## Source",
-  "phase": "OBSERVE",
+  "title": "Sum of Powers: Extension to Non-Integer Exponents",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "∀ s₁ s₂ : ℝ, 1 < s₁ → s₁ ≤ s₂ → ∑' n, (n^s₂)⁻¹ ≤ ∑' n, (n^s₁)⁻¹",
+    "plain": "Prove that the Riemann zeta function ζ(s) = ∑ 1/n^s is antitone for s > 1, bounded below by 1 and above by π²/6 for s ≥ 2.",
+    "whyMatters": [
+      "Completes the bridge from Faulhaber's integer power sums to real-exponent zeta theory",
+      "Establishes fundamental monotonicity and bounds for ζ(s)"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Convergence dichotomy: ∑ 1/n^s converges iff s > 1",
+      "Known values: ζ(2) = π²/6, ζ(4) = π⁴/90",
+      "Term monotonicity: (n^s)⁻¹ antitone in s",
+      "Zeta monotonicity: ζ(s₂) ≤ ζ(s₁) for 1 < s₁ ≤ s₂",
+      "Lower bound: ζ(s) ≥ 1",
+      "Upper bound: ζ(s) ≤ π²/6 for s ≥ 2",
+      "Bridge: rpow series = nat pow series for integer exponents"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "All 14 results fully proved"
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-03-22T09:13:15-07:00",
+    "phase": "COMPLETED",
+    "since": "2026-03-23T16:00:00Z",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "All sorries resolved.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None — proof is complete.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: All 14 theorems proved, 0 sorries, 0 axioms.",
+    "builtItems": [
+      "tsum_inv_rpow_antitone: proved via hasSum_le + inv_rpow_antitone",
+      "one_le_tsum_inv_rpow: proved via le_hasSum at n=1",
+      "tsum_inv_rpow_le_zeta_two: proved via antitone + rpow_natCast + zeta_two_eq"
+    ],
+    "insights": [
+      "hasSum_le (not tsum_le_tsum) is the correct API for tsum ordering in current Mathlib",
+      "le_hasSum (not le_tsum) is the correct API for single-term lower bounds on tsum",
+      "rpow (2:ℝ) and pow (2:ℕ) require explicit bridge via rpow_natCast + norm_num coercion",
+      "n=0 case of rpow comparison needs Real.zero_rpow (s ≠ 0) separately from n≥1 case",
+      "one_div converts between x⁻¹ and 1/x forms needed to bridge rpow and zeta_two_eq",
+      "import Mathlib.Topology.Algebra.InfiniteSum.Order needed for hasSum_le/le_hasSum"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: sum-of-kth-powers-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": []
   },
-  "tags": [],
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
   "relatedProofs": [
     "sum-of-kth-powers"
   ],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.Topology.Algebra.InfiniteSum.Order (hasSum_le, le_hasSum)",
+      "Mathlib.Analysis.PSeries (Real.summable_nat_rpow_inv)",
+      "Mathlib.NumberTheory.ZetaValues (hasSum_zeta_two)"
+    ]
   },
   "started": "2026-03-22T16:23:16.662Z",
-  "lastUpdate": "2026-03-22T16:23:16.672Z",
+  "lastUpdate": "2026-03-23T16:00:00.000Z",
   "leanFiles": [
     {
-      "path": "Proofs/SumOfKthPowers.lean",
-      "filename": "SumOfKthPowers.lean",
-      "lineCount": 601,
-      "theoremCount": 49,
+      "path": "Proofs/SumOfKthPowersOQ02.lean",
+      "filename": "SumOfKthPowersOQ02.lean",
+      "lineCount": 173,
+      "theoremCount": 14,
       "axiomCount": 0,
-      "defCount": 0,
+      "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfKthPowers.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfKthPowersOQ02.lean"
     }
   ]
 }
