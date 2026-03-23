@@ -75,6 +75,30 @@
     ]
   },
   {
+    "id": "ann-eval-nonvanishing",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01",
+    "range": { "startLine": 36, "endLine": 42 },
+    "type": "technique",
+    "title": "Polynomial Evaluation Non-vanishing Below Minimal Degree",
+    "content": "A short but pivotal lemma: if $p \\neq 0$ and $\\deg(p) < \\deg(\\mu_M)$, then $p(M) \\neq 0$. The proof is a clean 3-line contradiction: if $p(M) = 0$, then $\\mu_M | p$ by the minimality property (`minpoly.dvd`), forcing $\\deg(\\mu_M) \\leq \\deg(p)$ — contradicting $\\deg(p) < \\deg(\\mu_M)$. This lemma is the engine of Phase 2: it converts degree bounds on cofactors $\\mu/q$ into the non-vanishing $(\\mu/q)(M) \\neq 0$ needed to show cofactor kernels are proper subspaces.",
+    "mathContext": "$p \\neq 0$ and $\\deg(p) < \\deg(\\mu_M) \\implies p(M) \\neq 0$. Proof: $p(M) = 0 \\implies \\mu_M | p \\implies \\deg(\\mu_M) \\leq \\deg(p)$, contradicting the hypothesis. This is the contrapositive of the minimality definition of $\\mu_M$.",
+    "significance": "supporting",
+    "relatedConcepts": ["minimal polynomial", "polynomial degree", "divisibility", "contrapositive"],
+    "prerequisites": ["minpoly.dvd", "Polynomial.natDegree_le_of_dvd"]
+  },
+  {
+    "id": "ann-theorem-setup",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01",
+    "range": { "startLine": 150, "endLine": 168 },
+    "type": "context",
+    "title": "Main Theorem Setup: Base Case and Degree Computation",
+    "content": "The main theorem opens with two blocks: (1) the $n = 0$ base case, where `Fin.elim0` — the empty vector — is vacuously cyclic (no polynomial of degree $< 0$ exists), and (2) the setup phase, which extracts $\\mu = \\text{minpoly}(K, M)$, computes $\\deg(\\mu) = n$ from the nonderogatory hypothesis and `charpoly_natDegree_eq_dim`, verifies $\\mu$ is monic (`minpoly.monic`), not a unit (since $n > 0$), and converts `normalizedFactors(\\mu)` from a `Multiset` to a `Finset` for use with the `Finset.induction_on`-based union avoidance lemma. The `Nontrivial (Fin n → K)` instance is needed because union avoidance requires a nontrivial module.",
+    "mathContext": "Base case: when $n = 0$, $M_0(K)$ is the trivial ring, and the only vector in $K^0$ is trivially cyclic. Setup: $\\mu = \\chi_M$ (nonderogatory), $\\deg(\\mu) = \\deg(\\chi_M) = n$, and $\\text{normalizedFactors}(\\mu)$ is a finite multiset of irreducible polynomials over $K$.",
+    "significance": "context",
+    "relatedConcepts": ["base case", "Fin.elim0", "normalizedFactors", "Multiset.toFinset"],
+    "prerequisites": ["minpoly.monic", "Matrix.charpoly_natDegree_eq_dim", "Fintype.card_fin", "isIntegral"]
+  },
+  {
     "id": "ann-union-avoidance",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01",
     "range": { "startLine": 44, "endLine": 104 },
