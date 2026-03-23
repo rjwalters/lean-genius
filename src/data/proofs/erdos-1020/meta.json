@@ -37,6 +37,12 @@
       "**3-Uniform Breakthrough:** Łuczak-Mieczkowska (2014) confirmed the conjecture for r=3 using hypergraph container methods, a major technical achievement",
       "**Large n Regime:** Huang-Loh-Sudakov (2012) proved the conjecture for n ≥ 3kr² using dependent random choice and a clever counting argument",
       "**Monotonicity Properties:** f(n;r,k) is non-decreasing in both n (more vertices allow more edges) and k (weaker matching avoidance condition)"
+    ],
+    "prerequisites": [
+      "Hypergraph theory: r-uniform hypergraphs, matchings, and independent edges",
+      "Binomial coefficients Nat.choose and combinatorial identities (Mathlib.Data.Nat.Choose.Basic)",
+      "Extremal set theory: Turan-type problems and the shifting technique",
+      "Finset operations for hyperedge sets and matching predicates (Mathlib.Data.Finset.Basic)"
     ]
   },
   "sections": [

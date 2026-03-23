@@ -63,6 +63,12 @@
       "**The Combinatorial Nullstellensatz converts coloring to algebra:** The graph polynomial $P_G = \\prod_{uv \\in E}(x_u - x_v)$ encodes adjacency. A proper coloring makes $P_G \\ne 0$. The Nullstellensatz says: if the coefficient of $\\prod_v x_v^{d_v}$ in $P_G$ is nonzero (where $d_v = |L(v)| - 1$), then a list coloring exists for any lists of size $d_v + 1$.",
       "**Alon–Tarsi orientation theorem:** The coefficient in question counts the difference between even and odd Eulerian subgraphs in a specific orientation. For bipartite planar graphs, this difference is always nonzero (it relates to the permanent of a matrix), completing the proof.",
       "**The List Coloring Conjecture remains OPEN:** While $\\chi \\le 4$ for planar graphs (4CT) and $\\chi_L \\le 5$ (Thomassen), whether $\\chi_L \\le 4$ is unknown. Problem #630 resolves the bipartite case at $\\chi_L \\le 3$, but the general planar case is one of the most important open problems in graph coloring."
+    ],
+    "prerequisites": [
+      "Graph coloring: chromatic number $\\chi(G)$, list chromatic number $\\chi_L(G)$, choosability",
+      "Planar graph theory: Euler's formula, bipartiteness, planarity constraints ($|E| \\leq 2|V|-4$)",
+      "Combinatorial Nullstellensatz (Alon 1999): algebraic tool for combinatorial existence proofs",
+      "Multivariate polynomials: graph polynomial $f_G = \\prod_{uv \\in E}(x_u - x_v)$"
     ]
   },
   "sections": [

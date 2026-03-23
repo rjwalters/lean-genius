@@ -92,6 +92,12 @@
       "**The Constant 12:** The bound $R(G) \\leq 12n$ comes from $12 = 2 \\times 6$: factor 2 from considering both colors in the 2-coloring, and factor 6 from the probabilistic counting argument for successful embedding. This is remarkably tight for a probabilistic proof.",
       "**Degeneracy Connection:** Graphs with no adjacent high-degree vertices are 2-degenerate (every subgraph has a vertex of degree $\\leq 2$). This places Problem #800 as the $p = 2$ case of the Burr-Erdős conjecture, showing how a specific structural condition maps to a general graph parameter.",
       "**Lee's General Resolution (2016):** Choongbum Lee proved $R(G) \\leq 2^{2^{O(p)}} \\cdot n$ for $p$-degenerate graphs, fully resolving the Burr-Erdős conjecture. Alon's explicit constant of 12 for the $p = 2$ case remains much better than what Lee's general bound gives."
+    ],
+    "prerequisites": [
+      "Ramsey theory fundamentals: the finite Ramsey theorem guaranteeing R(G) is finite for every finite graph G, and basic two-color Ramsey number bounds",
+      "Graph degeneracy: the concept of p-degenerate graphs (every subgraph has a vertex of degree at most p) and the degeneracy ordering",
+      "Probabilistic method in combinatorics: random embedding arguments, the Lovasz Local Lemma, and expectation-based counting techniques used in Alon's proof",
+      "Topological graph theory basics: graph subdivisions, subdivision vertices vs. original vertices, and their degree properties"
     ]
   },
   "sections": [

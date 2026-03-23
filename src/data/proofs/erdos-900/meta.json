@@ -90,6 +90,12 @@
       "**Branching Process Connection:** The exact form of $f(c)$ relates to the survival probability of a Galton-Watson branching process with Poisson$(2c)$ offspring. The giant component size $\\alpha(c)$ satisfies the same equation, and $f(c) \\leq \\alpha(c)$ with equality conjectured for some models.",
       "**From Logarithmic to Hamiltonian:** The full picture spans three regimes: (1) $c < 1/2$: paths $O(\\log n)$ in trees. (2) $1/2 < c < O(\\log n)$: paths $f(c) \\cdot n$ with $0 < f(c) < 1$. (3) $c \\geq (\\log n)/2$: Hamiltonian paths exist (Komlós-Szemerédi 1983). The AKS function $f$ interpolates continuously between regimes (1) and (3).",
       "**Verified Main Theorem:** The proof of `erdos_900` is fully verified: it witnesses `pathLengthFunction` and combines the three axiomatized properties via an exact triple `⟨f_limit_at_half, f_limit_at_infinity, fun c hc => aks_theorem c hc⟩`. The 3 sorries are in `probHasProperty` (measure theory), `pathLengthFunction` (implicit construction), and `large_c_almost_hamiltonian` (quantitative bound)."
+    ],
+    "prerequisites": [
+      "Random graph models: the Erdos-Renyi G(n,m) and G(n,p) models, expected edge counts, and the relationship between sparse and dense regimes",
+      "Giant component phase transition: the threshold at average degree 1 (c = 1/2) where a unique giant component of size Theta(n) emerges, and the subcritical forest structure below it",
+      "Posa's rotation-extension technique: the method of rotating path endpoints and extending via unused neighbors, which is the core algorithmic idea behind the AKS proof",
+      "Probabilistic method and expansion properties: the notion that random graphs have strong vertex expansion (small sets have many external neighbors) and how this drives path-finding algorithms"
     ]
   },
   "sections": [

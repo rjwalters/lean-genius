@@ -92,6 +92,12 @@
       "**Unification via Parameter Space:** The family T(q, r) provides a two-dimensional parameter space in which Erdős's 1948 result (T(t, -1) for integer t) occupies a one-dimensional slice, and Problem #1050 (T(2, -3)) is a single point. Borwein's theorem proves irrationality across the entire parameter space (q ≥ 2, r ∈ ℚ\\{0, -q^n}) simultaneously, demonstrating that the individual problems are manifestations of a single phenomenon.",
       "**Irrationality vs Transcendence Gap:** The 35-year gap between Borwein's irrationality proof (1991) and the still-open transcendence conjecture reflects a fundamental methodological barrier. Irrationality requires only that rational approximations converge 'too fast' (one inequality), while transcendence requires ruling out all algebraic relations (infinitely many polynomial equations). The Mahler/Nishioka methods for q-series transcendence apply to functional equations f(q·z) = R(z, f(z)), but T(q, r) does not satisfy such an equation in a useful form.",
       "**Shifted Mersenne Structure:** The denominators 2^n - 3 form a 'shifted Mersenne' sequence. Unlike Mersenne numbers 2^n - 1 (which connect to perfect numbers and for which primality testing is efficient via the Lucas-Lehmer test), the sequence 2^n - 3 has no known special primality structure. The series ∑ 1/(2^n - 3) thus occupies an intermediate position between the well-studied Erdős-Borwein constant and more exotic Lambert-type series."
+    ],
+    "prerequisites": [
+      "Irrationality and transcendence predicates (Mathlib.Data.Real.Irrational, Mathlib.RingTheory.Algebraic)",
+      "Infinite series: tsum and Summable for convergence (Mathlib.Topology.Algebra.InfiniteSum.Basic)",
+      "Pade approximation and the Dirichlet approximation theorem for irrationality proofs",
+      "Lambert series and q-series: connections to divisor functions and multiplicative number theory"
     ]
   },
   "sections": [

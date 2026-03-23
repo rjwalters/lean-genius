@@ -152,6 +152,16 @@
       "targetId": "inverse-galois",
       "relationship": "related",
       "description": "Lagrange's original 1771 work on permutations of polynomial roots was the direct precursor to Galois theory. The Inverse Galois Problem asks which groups appear as Galois groups — Lagrange's theorem constrains which subgroups can appear in any finite group"
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem ($(p-1)! \\equiv -1 \\pmod{p}$) can be proved via Lagrange's theorem: in $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, every element pairs with its inverse in the product $(p-1)!$, except the elements equal to their own inverse ($a^2 \\equiv 1$), which by Lagrange applied to the equation $x^2 = 1$ are exactly $\\pm 1$. So $(p-1)! \\equiv 1 \\cdot (-1) = -1 \\pmod{p}$"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic reciprocity concerns the structure of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, specifically whether elements are quadratic residues. By Lagrange's theorem, $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ has order $p-1$, and the quadratic residues form a subgroup of index 2 (order $(p-1)/2$). This index-2 subgroup structure is the foundation for the Legendre symbol and reciprocity"
     }
   ],
   "relatedProofs": [
@@ -163,7 +173,9 @@
     "cayley-hamilton",
     "euler-totient",
     "angle-trisection",
-    "inverse-galois"
+    "inverse-galois",
+    "wilsons-theorem",
+    "quadratic-reciprocity"
   ],
   "references": [
     {

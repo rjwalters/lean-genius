@@ -38,6 +38,12 @@
       "**Local stability heuristic**: for consecutive $n$, the intervals $(n, 2n]$ and $(n+1, 2n+2]$ differ by $O(1/\\log n)$ primes on average (by PNT), and carry patterns change at $O(1/p)$ frequency for each prime $p$, suggesting matches have positive density",
       "**Triple rarity**: the triple at $10003$–$10005$ requires simultaneous carry stability across all prime bases, a much stronger condition than pairwise matching — its existence strongly supports the conjecture",
       "**Spacing generalization**: the stronger conjecture that every gap $k \\ge 1$ yields infinitely many matches is formally reduced to the $k=1$ case via an injective image argument"
+    ],
+    "prerequisites": [
+      "Prime factorization and the fundamental theorem of arithmetic",
+      "Binomial coefficients and properties of central binomials C(2n, n)",
+      "Kummer's theorem on p-adic valuations of binomial coefficients via carries in base-p addition",
+      "Bertrand's postulate and the distribution of primes in intervals (n, 2n]"
     ]
   },
   "sections": [

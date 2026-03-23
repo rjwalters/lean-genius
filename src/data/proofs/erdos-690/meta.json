@@ -104,6 +104,12 @@
       "**d₁ is explicitly computable**: $d_1(p) = (1/p)\\prod_{q<p}(1-1/q) \\sim e^{-\\gamma}/(p\\log p)$ by Mertens, giving a strictly decreasing (trivially unimodal) density",
       "**Divisor analogue predicted the answer**: Erdős could prove non-unimodality for the $k$-th smallest divisor directly, providing strong heuristic evidence for the prime factor case",
       "**Interference causes non-unimodality**: For $k \\ge 4$, contributions from different prime combinations to $d_k(p)$ interfere, creating local minima that break the single-peaked shape"
+    ],
+    "prerequisites": [
+      "**Prime factorization and ordered prime factors**: The canonical factorization of $n$ into primes via Nat.factors, and the notion of the $k$-th smallest prime factor $p_k(n)$ obtained by sorting the prime factor list. Familiarity with multiplicity in factorizations.",
+      "**Natural density of arithmetic sets**: The asymptotic density $d(A) = \\lim_{N \\to \\infty} |A \\cap [1,N]| / N$ for sets $A \\subseteq \\mathbb{N}$, including when such limits exist and basic inclusion-exclusion for density computations.",
+      "**Hardy-Ramanujan and Erdos-Kac theorems**: The Hardy-Ramanujan theorem (1917) that $\\omega(n) \\sim \\log \\log n$ for almost all $n$, and the Erdos-Kac theorem (1940) giving the Gaussian distribution of $\\omega(n)$ with mean and variance $\\log \\log n$.",
+      "**Mertens' theorems on prime reciprocals**: Mertens' estimates $\\sum_{p \\le x} 1/p = \\log \\log x + M + o(1)$ and $\\prod_{p \\le x}(1 - 1/p) \\sim e^{-\\gamma}/\\log x$, which underlie the explicit formula $d_1(p) = (1/p)\\prod_{q < p}(1 - 1/q)$."
     ]
   },
   "conclusion": {

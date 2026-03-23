@@ -74,6 +74,12 @@
       "**Radical as invariant**: The radical $\\mathrm{rad}(n) = \\prod_{p \\mid n} p$ is the natural invariant — `SamePrimeFactors` is precisely $\\mathrm{rad}(x) = \\mathrm{rad}(y)$, and the problem asks about simultaneous radical-equivalence under translation",
       "**Monotonicity structure**: The $k$-shift hierarchy is monotone: unsolvability propagates downward. This is formalized as `kshift_monotone` and proved by a simple restriction argument using `omega`",
       "**Sporadic vs parametric**: Makowski's example $(75, 1215)$ shows that two-shift solutions are not all explained by the parametric family, suggesting the structure of solutions is richer than initially expected"
+    ],
+    "prerequisites": [
+      "Prime factorization and the radical function: the radical rad(n) = product of distinct prime divisors of n, and the fundamental theorem of arithmetic",
+      "The ABC conjecture: statement of the Masser-Oesterle conjecture and Baker's strong form with explicit exponent 7/6, relating c to rad(abc) for coprime a + b = c",
+      "Elementary number theory of consecutive integers: properties of gcd, coprimality, and how prime factor sets interact under translation by 1",
+      "Diophantine equations and exponential equations: techniques for analyzing when integers with prescribed prime factor sets can satisfy shift relations"
     ]
   },
   "sections": [

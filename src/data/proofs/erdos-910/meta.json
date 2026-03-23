@@ -69,6 +69,12 @@
       "**Both conjectures fall simultaneously**: The Rudin set is a single counterexample to both questions: (1) no diverse connected subset exists (every non-singleton is homeomorphic to $X$), and (2) $X$ has exactly $2^{\\aleph_0}$ connected subsets, not $> 2^{\\aleph_0}$.",
       "**Set-theoretic independence**: The dependence on CH is not merely a proof artifact. Whether ZFC alone can resolve these questions is open, making this a problem at the intersection of topology and set theory.",
       "**Elegant proof structure**: The formalization cleanly separates the definitions (connected subsets, homeomorphism, diversity), the conjecture statements, the Rudin set properties, and the disproof. The key theorem `rudin_set_no_diverse_subset` is fully proved by case analysis on the Rudin property."
+    ],
+    "prerequisites": [
+      "Point-set topology: connected spaces, subspace topology, and the definition of connectedness via separation",
+      "Homeomorphisms: continuous bijections with continuous inverses, topological equivalence of subsets",
+      "Cardinal arithmetic: cardinalities of infinite sets, the continuum $2^{\\aleph_0}$, and comparison of cardinals",
+      "The Continuum Hypothesis (CH): the assertion $\\aleph_1 = 2^{\\aleph_0}$ and its role in transfinite constructions"
     ]
   },
   "sections": [

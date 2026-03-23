@@ -74,6 +74,12 @@
       "**Greedy Approach:** Assigning smallest available multiples gives upper bound but is not optimal",
       "**Prize Problem:** This is one of Erdős's \"forgotten problems\" with a modest prize attached",
       "**Related Problem:** See also #711 for a connected question"
+    ],
+    "prerequisites": [
+      "**Divisibility and multiples in intervals**: The count of multiples of $d$ in an interval $(a, a+L)$ is $\\lfloor (a+L)/d \\rfloor - \\lfloor a/d \\rfloor$, which is approximately $L/d$. For large $d$, multiples become sparse, making the matching constraint tight.",
+      "**Hall's marriage theorem and bipartite matching**: The existence of a perfect matching in a bipartite graph requires Hall's condition: every subset $S$ of slots must have $|N(S)| \\ge |S|$ available multiples. This is the combinatorial framework underlying the minimal interval problem.",
+      "**Asymptotic analysis and growth rates**: Familiarity with $O$, $o$, $\\Theta$ notation and the functions $\\sqrt{\\log n}$, $\\sqrt{\\log n / \\log \\log n}$, and their relative growth rates. The gap between the Erdos-Pomerance bounds involves the very slowly growing factor $\\sqrt{\\log \\log n}$.",
+      "**Distribution of prime factors and smooth numbers**: The prime factorization structure of integers in intervals, since the hardest divisibility constraints come from large prime divisors of $k$ where multiples of $k$ are most widely spaced."
     ]
   },
   "sections": [

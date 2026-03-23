@@ -35,6 +35,12 @@
       "**Pikhurko's constant involves $\\pi$**: The upper bound constant $c_P = (1/4 + 1/(\\pi + 2)^2)^{-1/2} \\approx 1.863$ arises from optimizing over trigonometric sums in the analysis of edge-magic graph labelings.",
       "**Difference vs. sum asymmetry**: For $A - A$, Cilleruelo showed $f_{\\text{diff}}(N) \\sim \\sqrt{N}$ (constant 1). The sum version is harder because $A + A$ is 'smaller' than $A - A$ for structured sets ($|A+A| \\leq |A-A|$ by Ruzsa's inequality for sets with additive structure).",
       "**Connection to Ruzsa–Szemerédi**: Quasi-Sidon sets relate to $(6,3)$-free graphs and the Ruzsa–Szemerédi removal lemma. Few repeated sums in $A + A$ mean the 'sum graph' on $A$ has few triangles."
+    ],
+    "prerequisites": [
+      "Additive combinatorics: sumsets $A + A$, Sidon ($B_2$) sets, and the Plünnecke-Ruzsa inequality relating $|A+A|$ to additive structure",
+      "Asymptotic analysis: little-$o$ notation, $\\Theta(\\sqrt{N})$ growth rates, and the distinction between exact and asymptotic extremal bounds",
+      "Combinatorial number theory: binomial coefficients $\\binom{|A|}{2}$ as representation counts, pigeonhole arguments on sum collisions, and constructive lower bounds via Singer difference sets",
+      "Extremal graph theory: connections to $(6,3)$-free graphs, the Ruzsa-Szemer\\'{e}di removal lemma, and edge-magic graph labelings (Pikhurko's upper bound)"
     ]
   },
   "sections": [

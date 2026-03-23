@@ -34,6 +34,12 @@
       "**Erdős' Dichotomy:** If liminf of the density ratio is 0, then limsup = 1 — maximal oscillation is forced. The proof uses the Euler product structure of φ(n)/n and smooth number properties",
       "**Haight's Resolution:** Despite these constraints, the Cesàro average CAN vanish. The construction exploits the gap between pointwise divergence and Cesàro convergence by using rapidly growing highly composite numbers",
       "**Cassels' Connection:** The problem links to metric Diophantine approximation and the Khinchin-Groshev theorem via the structure of Farey fractions and continued fraction convergents"
+    ],
+    "prerequisites": [
+      "Euler's totient function: the definition phi(n) = count of integers up to n coprime to n, the Euler product formula phi(n)/n = product of (1 - 1/p), and the average 6/pi^2",
+      "Diophantine approximation: the Khinchin-Groshev theorem on metric approximation by rationals, Farey fractions, and reduced fractions m/n with gcd(m,n) = 1",
+      "Cesaro summation and Tauberian theorems: the distinction between pointwise convergence and convergence of Cesaro means, and conditions under which averaging preserves or destroys limits",
+      "Highly composite numbers: properties of integers with many divisors, their role as extremal objects for multiplicative functions, and their use in Haight's construction"
     ]
   },
   "sections": [

@@ -116,8 +116,10 @@
     "summary": "The Sylow theorems are indispensable for understanding finite group structure. They combine existence, uniqueness up to conjugacy, and counting constraints into a powerful toolkit for analyzing groups.",
     "implications": "**Applications:**\n\n**1. Groups of order pq**\nSylow shows n_q = 1 when q > p.\n\n**2. Groups of order p^2**\nMust be abelian.\n\n**3. Simple group classification**\nRules out many possible orders.\n\n**4. Burnside's theorem**\nGroups of order p^a * q^b are solvable.",
     "openQuestions": [
-      "Algorithmic computation of Sylow subgroups",
-      "Generalizations to profinite and infinite groups"
+      "Can we formalize the classification of groups of small order using Sylow? E.g., every group of order $pq$ ($p < q$, $p \\nmid q-1$) is cyclic; every group of order $p^2$ is abelian ($\\mathbb{Z}/p^2$ or $(\\mathbb{Z}/p)^2$). These follow directly from Sylow's counting constraints.",
+      "Wielandt's combinatorial proof (1959) derives Sylow I from the action of $G$ on $\\binom{G}{p^k}$ (subsets of size $p^k$). Can we formalize this proof, which is more elementary than the orbit-counting approach?",
+      "The Sylow theorems for infinite groups fail in general. Can we formalize the pro-$p$ Sylow theorem for profinite groups, which recovers an analog via inverse limits?",
+      "Can we formalize the connection to the classification of finite simple groups? Sylow analysis is the first step in ruling out possible simple group orders — e.g., showing no simple group of order 132 exists (since Sylow forces $n_{11} = 1$, giving a normal Sylow 11-subgroup)."
     ]
   },
   "crossReferences": [
@@ -135,6 +137,21 @@
       "targetId": "fundamental-arithmetic",
       "relationship": "foundational",
       "description": "Unique prime factorization of |G| determines the Sylow subgroup structure via Sylow's theorems"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient $\\phi(n)$ determines the structure of $(\\mathbb{Z}/n\\mathbb{Z})^\\times$, whose Sylow $p$-subgroups are cyclic of order $p^{v_p(\\phi(n))}$. The Sylow decomposition of this group underlies the Chinese Remainder Theorem structure of $\\mathbb{Z}/n\\mathbb{Z}$"
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "The Cayley-Hamilton theorem connects to Sylow theory through the Jordan canonical form: the primary decomposition of a linear operator into $p$-primary components mirrors the Sylow decomposition of a group into $p$-subgroups, with the characteristic polynomial's factorization playing the role of $|G|$'s prime factorization"
+    },
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "related",
+      "description": "Wiles's proof uses the structure of Galois representations $\\text{Gal}(\\overline{\\mathbb{Q}}/\\mathbb{Q}) \\to GL_2(\\mathbb{Z}_p)$. The analysis of deformation rings and Hecke algebras requires detailed knowledge of $p$-adic group structure, where Sylow-type arguments (pro-$p$ subgroups) are fundamental"
     }
   ],
   "references": [
@@ -156,6 +173,11 @@
   "relatedProofs": [
     "lagrange-theorem",
     "abel-ruffini-oq-04",
-    "angle-trisection-oq-02"
+    "angle-trisection-oq-02",
+    "abel-ruffini",
+    "fundamental-arithmetic",
+    "euler-totient",
+    "cayley-hamilton",
+    "fermats-last-theorem"
   ]
 }

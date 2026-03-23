@@ -71,8 +71,10 @@
       "**90 Years Open:** Despite the simplicity of the statement and the elegance of the gap ≥ 2 proof, the step from 2 to 3 has resisted all attempts. The difficulty is qualitative: the Bertrand argument uses a single prime, but ruling out gap-2 sequences may require controlling multiple primes simultaneously"
     ],
     "prerequisites": [
-      "Elementary number theory: primes, divisibility, factorization",
-      "Mathematical maturity and proof techniques"
+      "Egyptian fractions: unit fraction representations $1 = 1/n_1 + \\cdots + 1/n_k$ with distinct $n_i$",
+      "Prime distribution: Bertrand's postulate (used in the gap $\\geq 2$ proof)",
+      "$p$-adic valuations: LCM arguments for eliminating consecutive denominators",
+      "Elementary number theory: divisibility, prime factorization"
     ]
   },
   "sections": [
@@ -123,6 +125,22 @@
       "Can the LCM/p-adic approach be strengthened to handle gap-2 sequences, or is a fundamentally new technique needed?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "uses",
+      "description": "Bertrand's postulate is a key ingredient in Erdős's proof that the maximum gap is $\\geq 2$: it provides a prime in $(N, 2N)$ that forces a gap in any consecutive-denominator decomposition"
+    },
+    {
+      "targetId": "erdos-268",
+      "relationship": "related",
+      "description": "Both involve harmonic subseries and unit fraction representations. Problem #268 studies the topology of harmonic subseries points in $\\mathbb{R}^d$; Problem #287 studies the gap structure of Egyptian fraction representations of 1"
+    }
+  ],
+  "relatedProofs": [
+    "bertrands-postulate",
+    "erdos-268"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

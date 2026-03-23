@@ -149,10 +149,11 @@
     "summary": "The Fundamental Theorem of Algebra establishes that every non-constant polynomial with complex coefficients has a root in the complex numbers. This makes the complex numbers algebraically closed - the natural 'completion' of algebra. No matter how complicated a polynomial equation, its solutions always live in the complex plane.",
     "implications": "This theorem is foundational to all of modern algebra. It tells us that the complex numbers are the right setting for polynomial algebra - we never need to extend further. Every polynomial of degree n has exactly n roots (with multiplicity), enabling complete factorization. The theorem connects algebra with analysis and topology, demonstrating the deep unity of mathematics.",
     "openQuestions": [
-      "Can a purely algebraic proof ever be found, or is analysis inherently required?",
-      "What is the 'simplest' proof of FTA - measuring by which prerequisites are needed?",
-      "How does the theorem generalize to other coefficient fields and algebraic closure?",
-      "What computational aspects arise when actually finding roots numerically?"
+      "Can a purely algebraic proof of FTA be found? Every known proof uses the completeness of $\\mathbb{R}$ (via Liouville's theorem, winding numbers, or the intermediate value theorem). The fact that $\\mathbb{Q}_p$ (the $p$-adic numbers) is complete but NOT algebraically closed shows completeness alone is insufficient — some topological property specific to $\\mathbb{R}$ (connectedness? the archimedean property?) seems essential.",
+      "The Mathlib proof uses Liouville's theorem. Can we formalize Gauss's purely algebraic proof (1849), which only uses the intermediate value theorem for odd-degree real polynomials plus the fact that every complex number has a square root? This would reduce the analytic prerequisites to the minimum.",
+      "Can we formalize the constructive content of FTA? Gauss's proof is non-constructive (it doesn't exhibit the root). There are constructive proofs (Bridges-Richman, 1999) that produce roots as limits of Cauchy sequences, but they require a modulus of separation. Can these be formalized in Lean's constructive type theory?",
+      "FTA implies $\\mathbb{C}$ is the algebraic closure of $\\mathbb{R}$. Can we formalize that $[\\mathbb{C}:\\mathbb{R}] = 2$ is the ONLY algebraically closed extension of $\\mathbb{R}$, and moreover that $\\mathbb{C}$ is the unique algebraically closed field of cardinality $\\mathfrak{c}$ and characteristic 0 (up to isomorphism)?",
+      "The Artin-Schreier theorem (1927) characterizes real-closed fields: a field $F$ is real-closed iff $F(\\sqrt{-1})$ is algebraically closed. Can we formalize this generalization and show that FTA is a special case ($F = \\mathbb{R}$)?"
     ]
   },
   "crossReferences": [
@@ -200,6 +201,16 @@
       "targetId": "lagrange-theorem",
       "relationship": "foundational",
       "description": "Lagrange's theorem on subgroup orders underpins the group-theoretic proof of FTA via Sylow theory: the non-existence of degree-2 extensions of C follows from the fact that [C:R] = 2 and every odd-degree polynomial over R has a real root"
+    },
+    {
+      "targetId": "vietas-formulas",
+      "relationship": "complementary",
+      "description": "Vieta's formulas express polynomial coefficients as elementary symmetric functions of roots: $a_{n-k}/a_n = (-1)^k e_k(r_1,\\ldots,r_n)$. FTA guarantees these $n$ roots exist in $\\mathbb{C}$, making Vieta's formulas universally applicable over $\\mathbb{C}$ — without FTA, the roots might not exist and the formulas would be vacuous"
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "The Cayley-Hamilton theorem ($p(A) = 0$ where $p$ is the characteristic polynomial) combined with FTA yields the eigenvalue decomposition: FTA factors $p(\\lambda) = \\prod(\\lambda - \\lambda_i)^{m_i}$ over $\\mathbb{C}$, then Cayley-Hamilton gives $\\prod(A - \\lambda_i I)^{m_i} = 0$, which implies each $A - \\lambda_i I$ is singular on some subspace — the foundation of spectral theory"
     }
   ],
   "relatedProofs": [
@@ -211,7 +222,9 @@
     "liouville-theorem",
     "hermite-lindemann",
     "general-quartic",
-    "lagrange-theorem"
+    "lagrange-theorem",
+    "vietas-formulas",
+    "cayley-hamilton"
   ],
   "references": [
     {

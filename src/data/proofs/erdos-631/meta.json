@@ -90,6 +90,12 @@
       "**The List Coloring Conjecture remains open**: whether $\\chi_L \\leq 4$ for all planar graphs is one of the most important open problems in graph coloring theory, despite strong evidence from restricted classes",
       "**Restricted planar classes are 3-choosable**: bipartite planar (Alon-Tarsi), outerplanar, and girth $\\geq 5$ planar graphs all satisfy $\\chi_L \\leq 3$, suggesting the difficulty concentrates on dense planar graphs with triangles",
       "**One theorem is machine-proved**: `choosable_implies_colorable` ($k$-choosable $\\Rightarrow$ $k$-colorable) was proved by Aristotle using a contrapositive argument with `ULift` and `Finset.filter`"
+    ],
+    "prerequisites": [
+      "Graph coloring: chromatic number $\\chi(G)$, list chromatic number $\\chi_L(G)$, $k$-choosability",
+      "Planar graph theory: Euler's formula ($|V| - |E| + |F| = 2$), edge bound $|E| \\leq 3|V|-6$",
+      "Thomassen's induction technique: path-reduction on facial cycles of planar graphs",
+      "The Four Color Theorem ($\\chi \\leq 4$ for planar) and its relationship to list coloring"
     ]
   },
   "sections": [
