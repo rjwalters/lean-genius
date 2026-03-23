@@ -17,7 +17,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 10,
+    "sorries": 2,
     "erdosNumber": 1161,
     "erdosUrl": "https://erdosproblems.com/1161",
     "erdosProblemStatus": "proved",
@@ -68,7 +68,7 @@
       "Beker characterization: f_k(n) ≥ (n-1)! implies lcm(1,...,n-k) | k",
       "Beker maximizer: minimal k with lcm(1,...,n-k) | k achieves (n-1)!",
       "Asymptotic: max_k f_k(n) ≥ (n-1)! for n ≥ 2",
-      "n-cycles counted: permCountByOrder n n = (n-1)!",
+      "Prime cycle counting: for prime p, permCountByOrder p p = (p-1)! (proved via cycleType characterization)",
       "Small cases: explicit counts for S_1, S_2, S_3"
     ],
     "relatedProofs": [
@@ -124,7 +124,7 @@
     {
       "id": "structural-lemmas",
       "title": "Structural Lemmas",
-      "summary": "Proves structural results: $n$-cycles number $(n-1)!$ (`permCountByOrder_n_eq_subfactorial_pred`), lcmRange is monotone (`lcmRange_dvd_lcmRange`), and each integer $j \\leq m$ divides `lcmRange m` (`dvd_lcmRange`).",
+      "summary": "Proves structural results: for prime $p$, permutations of order $p$ in $S_p$ are exactly the $p$-cycles, so there are $(p-1)!$ of them (`permCountByOrder_prime_self`). This corrects a previous false claim for general $n$ (counterexample: $n=6$). Also proves lcmRange monotonicity and divisibility.",
       "startLine": 135,
       "endLine": 163
     }
@@ -159,9 +159,9 @@
       "Nat"
     ],
     "namespace": null,
-    "lineCount": 285,
+    "lineCount": 338,
     "axiomCount": 0,
-    "theoremCount": 17,
+    "theoremCount": 16,
     "definitionCount": 3
   }
 }

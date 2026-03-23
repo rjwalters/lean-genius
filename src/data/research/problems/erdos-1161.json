@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1161",
   "title": "Erdős #1161",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -29,13 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed 4 pre-existing build errors (Fintype.card_fin, deprecated API, omega failures). File now compiles. 3 sorries remain: beker_characterization, beker_maximizer_achieves (both deep Beker [Be25d] results), permCountByOrder_n_eq_subfactorial_pred (n-cycle counting).",
+    "progressSummary": "PROGRESS: Removed false theorem permCountByOrder_n_eq_subfactorial_pred (Aristotle negated it: n=6 counterexample). Proved correct prime version permCountByOrder_prime_self via cycleType characterization. 2 sorries remain: beker_characterization, beker_maximizer_achieves (both deep Beker [Be25d] results, OPEN).",
     "builtItems": [
       "Fixed orderOf_perm_dvd_factorial: added Fintype.card_fin simp lemma",
       "Fixed permCountByOrder_le_factorial: added Fintype.card_fin to rw chain",
       "Fixed lcmRange_dvd_lcmRange: explicit lt_of_lt_of_le instead of omega",
       "Fixed dvd_lcmRange: dsimp before omega for lambda reduction",
-      "Fixed deprecated Finset.not_mem_empty → Finset.notMem_empty"
+      "Fixed deprecated Finset.not_mem_empty → Finset.notMem_empty",
+      "Proved cycleType_eq_singleton_of_prime_order: orderOf σ = p (prime) → cycleType σ = {p}",
+      "Proved permCountByOrder_prime_self: for prime p, permCountByOrder p p = (p-1)!",
+      "Removed false theorem permCountByOrder_n_eq_subfactorial_pred (n=6 counterexample: 240 ≠ 120)"
     ],
     "insights": [
       "File required import Mathlib (full import) - imports all of Mathlib",
@@ -43,7 +46,10 @@
       "omega cannot see through Finset.mem_range - need to extract membership manually",
       "lambda application (fun i => i+1) (j-1) needs dsimp before omega can process",
       "Beker characterization and maximizer theorems are deep published results, unlikely provable from Mathlib",
-      "permCountByOrder_n_eq_subfactorial_pred (n-cycle counting) might be provable but needs cycle-counting infrastructure not easily available in current Mathlib"
+      "permCountByOrder n n = (n-1)! is FALSE for composite n! At n=6, both 6-cycles (120) and (3,2,1)-type permutations (120) have order 6, giving 240 total",
+      "The correct statement holds only for prime p: order-p permutations are exactly p-cycles when p is prime",
+      "Key Mathlib APIs: Equiv.Perm.dvd_of_mem_cycleType, two_le_of_mem_cycleType, sum_cycleType, card_of_cycleType",
+      "Equiv.ext on Perm (Fin p) produces coerced goals (↑(σ x) = ↑(id x)); use simp not exact_mod_cast"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -71,11 +77,11 @@
     {
       "path": "Proofs/Erdos1161Problem.lean",
       "filename": "Erdos1161Problem.lean",
-      "lineCount": 285,
-      "theoremCount": 17,
+      "lineCount": 338,
+      "theoremCount": 16,
       "axiomCount": 0,
       "defCount": 3,
-      "sorryCount": 3,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1161Problem.lean"
     }
