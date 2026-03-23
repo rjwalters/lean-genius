@@ -9,7 +9,6 @@
     "date": "",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1040Problem.lean",
-    "leanFile": "Proofs/Erdos1040Problem.lean",
     "tags": [
       "complex-analysis",
       "polynomials",
@@ -57,12 +56,6 @@
       "**Capacity threshold at $\\rho = 1$**: The unit interval $[0, 4]$ has $\\rho = 1$ and Chebyshev polynomials $T_n$ achieve sublevel sets of area $\\sim \\pi/(4n) \\to 0$; the unit disc has $\\rho = 1$ and $z^n$ gives sublevel area $\\pi$ independent of $n$, but other configurations shrink it",
       "**Anti-monotonicity of $\\mu$**: Unlike $\\rho$ which grows with the set, $\\mu$ shrinks — larger sets provide more polynomial roots to work with, enabling smaller sublevel sets. This reversal is key to understanding why the conjecture is hard",
       "**Connection to Problem 1039**: Problem 1039 asks about the inscribed disc radius $\\rho(f)$ in sublevel sets rather than total measure, providing a complementary perspective on lemniscate geometry"
-    ],
-    "prerequisites": [
-      "Potential theory: transfinite diameter, logarithmic capacity, and Fekete points",
-      "Complex analysis: polynomial lemniscates and sublevel sets {z : |f(z)| < 1}",
-      "Measure theory: Lebesgue measure in the complex plane (MeasureTheory.volume)",
-      "Approximation theory: Chebyshev polynomials and extremal polynomial configurations"
     ]
   },
   "sections": [

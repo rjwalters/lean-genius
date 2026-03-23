@@ -55,36 +55,6 @@
     ],
     "dateAdded": "2025-12-29",
     "axiomCount": 13,
-    "references": [
-      {
-        "authors": "Erdős, Paul",
-        "title": "On some problems of elementary and combinatorial geometry",
-        "year": "1975",
-        "venue": "Annali di Matematica Pura ed Applicata 103, pp. 99-108",
-        "note": "Introduced the threshold function g_d(n) and proved the lower bound g_d(n) ≫ d^{n-1}"
-      },
-      {
-        "authors": "Guth, Larry; Katz, Nets Hawk",
-        "title": "On the Erdős distinct distances problem in the plane",
-        "year": "2015",
-        "venue": "Annals of Mathematics 181, pp. 155-190",
-        "note": "Resolved the 2D distinct distances conjecture (f_2(n) ≥ cn/√log n); the higher-dimensional analog motivates this problem"
-      },
-      {
-        "authors": "Croft, Hallard T.",
-        "title": "6-point and 7-point configurations in 3-space",
-        "year": "1962",
-        "venue": "Proceedings of the London Mathematical Society 12, pp. 400-424",
-        "note": "Computed g_3(3) = 7 — the largest known exact value of the threshold function"
-      },
-      {
-        "authors": "Solymosi, József; Vu, Van",
-        "title": "Near optimal bounds for the Erdős distinct distances problem in high dimensions",
-        "year": "2008",
-        "venue": "Combinatorica 28, pp. 113-125",
-        "note": "Best known bounds for distinct distances in high dimensions using polynomial method techniques"
-      }
-    ],
     "prerequisites": [
       "Discrete and combinatorial geometry: point configurations and distances",
       "Euclidean space ℝ^d and the distance function",
@@ -196,11 +166,6 @@
       "Lower bound: g_d(n) ≫ d^{n-1} (Erdős, 'easy') establishes polynomial growth",
       "Upper bound: g_d(n) ≤ c^{d^{1-b_n}} (Erdős-Straus) — stretched-exponential, creating a huge gap",
       "The ratio g_d(n)/d^{n-1} is bounded below (genuinely proved) but convergence is unknown"
-    ],
-    "prerequisites": [
-      "Basic combinatorics and graph theory",
-      "Asymptotic analysis and big-O notation",
-      "Ramsey theory fundamentals"
     ]
   },
   "crossReferences": [
@@ -273,5 +238,35 @@
     "axiomCount": 13,
     "theoremCount": 3,
     "definitionCount": 10
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "On some problems of elementary and combinatorial geometry",
+      "year": "1975",
+      "venue": "Annali di Matematica Pura ed Applicata 103, pp. 99-108",
+      "note": "Introduced the threshold function g_d(n) and proved the lower bound g_d(n) ≫ d^{n-1}"
+    },
+    {
+      "authors": "Guth, Larry; Katz, Nets Hawk",
+      "title": "On the Erdős distinct distances problem in the plane",
+      "year": "2015",
+      "venue": "Annals of Mathematics 181, pp. 155-190",
+      "note": "Resolved the 2D distinct distances conjecture (f_2(n) ≥ cn/√log n); the higher-dimensional analog motivates this problem"
+    },
+    {
+      "authors": "Croft, Hallard T.",
+      "title": "6-point and 7-point configurations in 3-space",
+      "year": "1962",
+      "venue": "Proceedings of the London Mathematical Society 12, pp. 400-424",
+      "note": "Computed g_3(3) = 7 — the largest known exact value of the threshold function"
+    },
+    {
+      "authors": "Solymosi, József; Vu, Van",
+      "title": "Near optimal bounds for the Erdős distinct distances problem in high dimensions",
+      "year": "2008",
+      "venue": "Combinatorica 28, pp. 113-125",
+      "note": "Best known bounds for distinct distances in high dimensions using polynomial method techniques"
+    }
+  ]
 }

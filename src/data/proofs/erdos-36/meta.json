@@ -25,43 +25,6 @@
     "sourceUrl": "https://erdosproblems.com/36",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-23",
-    "references": [
-      {
-        "authors": "Erdős, Paul",
-        "title": "Problem formulation on minimum overlap of equal partitions",
-        "year": "1955",
-        "venue": "Various correspondence",
-        "note": "Original problem formulation and trivial 1/4 lower bound via pigeonhole"
-      },
-      {
-        "authors": "Scherk, Peter",
-        "title": "Distinct elements in a set of sums",
-        "year": "1955",
-        "venue": "American Mathematical Monthly 62(1), 46-47",
-        "note": "Lower bound 1 − 1/√2 ≈ 0.293 via Fourier analysis — first non-trivial bound"
-      },
-      {
-        "authors": "Haugland, Jan Kristian",
-        "title": "Upper bounds for the minimum overlap problem",
-        "year": "2016",
-        "venue": "Preprint",
-        "note": "Upper bound 0.380926 via step-function partition constructions"
-      },
-      {
-        "authors": "White, Ethan",
-        "title": "An improved lower bound for the minimum overlap problem",
-        "year": "2022",
-        "venue": "arXiv preprint",
-        "note": "Best known lower bound 0.379005 via elementary Fourier analysis and convex optimization (SDP)"
-      },
-      {
-        "authors": "Guy, Richard K.",
-        "title": "Unsolved Problems in Number Theory",
-        "year": "2004",
-        "venue": "Springer, 3rd edition",
-        "note": "Problem C17: Minimum overlap of equal partitions"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "Finset.filter",
@@ -205,12 +168,6 @@
       "**Step-function upper bounds**: Haugland (2016) modeled the partition as a density function $f : [0,1] \\to [0,1]$ and optimized piecewise-constant approximations to minimize the maximum overlap",
       "**Erdős's failed conjecture**: The original $c = 1/2$ conjecture was far off — the true value $c \\approx 0.380$ shows that partition optimization over consecutive integers is subtler than expected",
       "**AI-assisted progress**: TTT-Discover LLM (2026) improved the upper bound to $0.380876$, demonstrating that AI-guided search can push explicit construction bounds in combinatorial optimization"
-    ],
-    "prerequisites": [
-      "Additive combinatorics: partitions of $\\{1,\\ldots,2N\\}$, representation functions",
-      "Fourier analysis on finite groups (discrete Fourier transform on $\\mathbb{Z}$)",
-      "Convex optimization and semidefinite programming",
-      "Asymptotic analysis: Fekete's lemma and limits of subadditive sequences"
     ]
   },
   "conclusion": {
@@ -281,5 +238,42 @@
     "erdos-1",
     "roth-theorem-k3",
     "szemeredi-theorem"
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "Problem formulation on minimum overlap of equal partitions",
+      "year": "1955",
+      "venue": "Various correspondence",
+      "note": "Original problem formulation and trivial 1/4 lower bound via pigeonhole"
+    },
+    {
+      "authors": "Scherk, Peter",
+      "title": "Distinct elements in a set of sums",
+      "year": "1955",
+      "venue": "American Mathematical Monthly 62(1), 46-47",
+      "note": "Lower bound 1 − 1/√2 ≈ 0.293 via Fourier analysis — first non-trivial bound"
+    },
+    {
+      "authors": "Haugland, Jan Kristian",
+      "title": "Upper bounds for the minimum overlap problem",
+      "year": "2016",
+      "venue": "Preprint",
+      "note": "Upper bound 0.380926 via step-function partition constructions"
+    },
+    {
+      "authors": "White, Ethan",
+      "title": "An improved lower bound for the minimum overlap problem",
+      "year": "2022",
+      "venue": "arXiv preprint",
+      "note": "Best known lower bound 0.379005 via elementary Fourier analysis and convex optimization (SDP)"
+    },
+    {
+      "authors": "Guy, Richard K.",
+      "title": "Unsolved Problems in Number Theory",
+      "year": "2004",
+      "venue": "Springer, 3rd edition",
+      "note": "Problem C17: Minimum overlap of equal partitions"
+    }
   ]
 }

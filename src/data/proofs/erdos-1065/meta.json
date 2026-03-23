@@ -16,44 +16,6 @@
       "smooth-numbers",
       "open"
     ],
-    "references": [
-      {
-        "authors": "Guy, Richard K.",
-        "title": "Unsolved Problems in Number Theory",
-        "year": "2004",
-        "venue": "Springer, 3rd edition",
-        "note": "Problem B46: primes of the form 2^k·q + 1"
-      },
-      {
-        "authors": "Hardy, G.H.; Littlewood, J.E.",
-        "title": "Some problems of 'Partitio numerorum'; III: On the expression of a number as a sum of primes",
-        "year": "1923",
-        "venue": "Acta Mathematica 44, 1-70",
-        "note": "Conjecture F predicts the density of safe primes as ~2C₂·x/(log x)²"
-      },
-      {
-        "authors": "Artin, Emil",
-        "title": "Beweis des allgemeinen Reziprozitätsgesetzes",
-        "year": "1927",
-        "venue": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg 5, 353-363",
-        "note": "Primitive root conjecture — connected via the factorization structure of p-1"
-      },
-      {
-        "authors": "Pomerance, Carl",
-        "title": "Popular values of Euler's function",
-        "year": "1980",
-        "venue": "Mathematika 27, 84-89",
-        "note": "Smooth-shifted primes and the distribution of Euler's totient values"
-      },
-      {
-        "authors": "OEIS Foundation",
-        "title": "A074781: Primes p such that (p-1)/2 is also prime (safe primes)",
-        "year": "2002",
-        "venue": "The On-Line Encyclopedia of Integer Sequences",
-        "note": "The k=1 special case of Form A: safe primes 5, 7, 11, 23, 47, ..."
-      }
-    ],
-    "leanFile": "Proofs/Erdos1065Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/1065",
     "erdosUrl": "https://erdosproblems.com/1065",
@@ -164,12 +126,6 @@
       "**Non-example $p = 37$:** $36 = 2^2 \\cdot 3^2$ is $\\{2,3\\}$-smooth with no additional prime factor, showing that not all primes satisfy even the relaxed Form B condition",
       "**Artin connection:** Both problems concern the multiplicative structure of $p - 1$; Artin's primitive root conjecture requires large prime factors of $p - 1$, while Erdős asks about the opposite extreme",
       "**Cryptographic significance:** Safe primes ($k=1$) are essential for Diffie-Hellman key exchange: when $p = 2q + 1$, the group $(\\mathbb{Z}/p\\mathbb{Z})^*$ has a subgroup of prime order $q$ where the discrete logarithm problem is believed hard. The infinitude of safe primes is an implicit assumption in modern cryptographic protocols, yet remains unproven"
-    ],
-    "prerequisites": [
-      "Prime numbers and `Nat.Prime` from Mathlib",
-      "Smooth numbers and the factorization of $p - 1$",
-      "Safe primes ($p = 2q + 1$) and Sophie Germain primes",
-      "Hardy-Littlewood conjectures on prime pairs"
     ]
   },
   "conclusion": {
@@ -265,5 +221,42 @@
     "axiomCount": 2,
     "theoremCount": 14,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    {
+      "authors": "Guy, Richard K.",
+      "title": "Unsolved Problems in Number Theory",
+      "year": "2004",
+      "venue": "Springer, 3rd edition",
+      "note": "Problem B46: primes of the form 2^k·q + 1"
+    },
+    {
+      "authors": "Hardy, G.H.; Littlewood, J.E.",
+      "title": "Some problems of 'Partitio numerorum'; III: On the expression of a number as a sum of primes",
+      "year": "1923",
+      "venue": "Acta Mathematica 44, 1-70",
+      "note": "Conjecture F predicts the density of safe primes as ~2C₂·x/(log x)²"
+    },
+    {
+      "authors": "Artin, Emil",
+      "title": "Beweis des allgemeinen Reziprozitätsgesetzes",
+      "year": "1927",
+      "venue": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg 5, 353-363",
+      "note": "Primitive root conjecture — connected via the factorization structure of p-1"
+    },
+    {
+      "authors": "Pomerance, Carl",
+      "title": "Popular values of Euler's function",
+      "year": "1980",
+      "venue": "Mathematika 27, 84-89",
+      "note": "Smooth-shifted primes and the distribution of Euler's totient values"
+    },
+    {
+      "authors": "OEIS Foundation",
+      "title": "A074781: Primes p such that (p-1)/2 is also prime (safe primes)",
+      "year": "2002",
+      "venue": "The On-Line Encyclopedia of Integer Sequences",
+      "note": "The k=1 special case of Form A: safe primes 5, 7, 11, 23, 47, ..."
+    }
+  ]
 }
