@@ -28,6 +28,7 @@ import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Data.Nat.Prime.Defs
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic
+import Proofs.WolstenholmeTheoremOQ02
 
 namespace WolstenholmeTheorem
 
@@ -130,8 +131,13 @@ These are beyond current Mathlib infrastructure, so we state as axiom.
     3. Lifting to mod p³ using properties of Fermat quotients -/
 axiom wolstenholme_theorem : WolstenholmeStatement
 
-/-- Babbage's theorem also stated as axiom for completeness -/
-axiom babbage_theorem : BabbageTheorem
+/-- **Babbage's theorem (1819)**: C(2p-1, p-1) ≡ 1 (mod p²) for prime p ≥ 3.
+    Proved via Vandermonde identity: C(2p,p) = ∑ C(p,k)², middle terms vanish mod p²,
+    giving C(2p,p) ≡ 2 (mod p²). Since C(2p,p) = 2·C(2p-1,p-1), cancel 2. -/
+theorem babbage_theorem : BabbageTheorem := by
+  intro p hp h3
+  -- The proof is delegated to the dedicated module
+  exact BabbageProof.babbage p hp h3
 
 /-!
 ## Consequences
