@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import `Mathlib.Analysis.PSeries` which contains the main theorems about p-series convergence and the harmonic series, plus `Mathlib.Topology.Algebra.InfiniteSum.Basic` for the `Summable` predicate.",
+    "mathContext": "Imports: `PSeries` provides `Real.not_summable_nat_of_tendsto_nat` and the $p$-series test; `InfiniteSum.Basic` provides the `Summable` predicate ($\\sum a_n$ converges iff the partial sums are Cauchy).",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
@@ -80,10 +81,12 @@
     "type": "lemma",
     "title": "Terms are Positive",
     "content": "A simple but necessary fact: $1/n > 0$ for all $n > 0$. This ensures all our terms contribute positively to the sum.",
+    "mathContext": "$\\forall n > 0,\\; 1/n > 0$. Proved via `Nat.cast_pos.mpr` and `div_pos`. Positivity of terms is needed for the comparison test: if $0 < a_n$ and $\\sum a_n$ diverges, then any series with $b_n \\geq a_n$ also diverges.",
     "significance": "supporting",
     "relatedConcepts": [
       "positivity",
-      "well-definedness"
+      "well-definedness",
+      "comparison test"
     ]
   },
   {
