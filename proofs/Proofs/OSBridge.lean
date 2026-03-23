@@ -453,27 +453,52 @@ The actual Clay Millennium Prize requires two additional conditions:
 
 Below we define these conditions and state the complete prize conjecture. -/
 
-/-- **Gauge invariance** of the continuum measure.
+/-- A gauge group action on field configurations.
 
-    The continuum measure should be invariant under local gauge transformations:
-    for any smooth map g : R^4 -> G, the measure is unchanged when field
-    configurations are transformed by the gauge action.
+    In the continuum Yang-Mills theory, the gauge group acts on connection
+    1-forms via A_mu -> g A_mu g^{-1} + g d(g^{-1}). At the level of the
+    distributional field space (the OS framework), this lifts to an action
+    on `EFieldConfiguration = WeakDual R (SchwartzMap ESpaceTime R)`.
 
-    Full formalization requires:
-    - Defining the gauge group action on `EFieldConfiguration`
-    - For connections: A_mu -> g A_mu g^{-1} + g d(g^{-1})
-    - For the measure: dmu[A^g] = dmu[A] (formal gauge orbit equivalence)
-
-    This is left as `True` because formalizing gauge transformations on
-    distribution-valued field configurations (elements of `WeakDual R SchwartzMap`)
-    requires substantial infrastructure not yet available in Mathlib:
-    the gauge orbit structure of the connection space A/G, principal bundle
-    geometry, and the Faddeev-Popov procedure.
+    We axiomatize this action abstractly: a group `G` acts on
+    `EFieldConfiguration` via measurable maps (w.r.t. the cylinder
+    sigma-algebra). The measurability condition is stated as an axiom
+    because the cylinder sigma-algebra (`fieldConfigMeasurableSpace`)
+    is defined as a supremum of comap sigma-algebras, and proving
+    measurability of a concrete gauge action requires showing that
+    evaluation maps compose measurably with the group action -- this
+    depends on the specific gauge group and its Lie algebra structure.
 
     Reference: Glimm-Jaffe, Quantum Physics, Ch. 6 (gauge group action);
     Wilson (1974), Phys. Rev. D10, 2445 (lattice gauge invariance). -/
-def GaugeInvariant (_dμ : ProbabilityMeasure EFieldConfiguration) : Prop :=
-  True  -- TODO: formalize gauge transformation action on field configurations
+class GaugeAction (G : Type*) [Group G] where
+  /-- The action of a gauge transformation on a field configuration. -/
+  act : G → EFieldConfiguration → EFieldConfiguration
+  /-- The action is measurable w.r.t. the cylinder sigma-algebra.
+      Axiomatized because proving this requires detailed knowledge of
+      the gauge group's Lie algebra action on the distribution space. -/
+  act_measurable : ∀ g, @Measurable _ _ fieldConfigMeasurableSpace fieldConfigMeasurableSpace (act g)
+
+/-- **Gauge invariance** of the continuum measure.
+
+    The continuum measure `dmu` is gauge-invariant if the pushforward of `dmu`
+    under every gauge transformation `g` equals `dmu`:
+
+      dmu.map (act g) = dmu  for all g in G
+
+    This is the standard mathematical definition of invariance of a measure
+    under a group action. It ensures that the measure descends to the orbit
+    space A/G, which is the physical configuration space modulo gauge
+    equivalence.
+
+    The definition uses `MeasureTheory.Measure.map`, which computes the
+    pushforward measure: (mu.map f)(S) = mu(f^{-1}(S)).
+
+    Reference: Glimm-Jaffe, Quantum Physics, Ch. 6;
+    Wilson (1974), Phys. Rev. D10, 2445 (lattice gauge invariance). -/
+def GaugeInvariant (G : Type*) [Group G] [GaugeAction G]
+    (dμ : ProbabilityMeasure EFieldConfiguration) : Prop :=
+  ∀ g : G, dμ.toMeasure.map (GaugeAction.act g) = dμ.toMeasure
 
 /-- **Non-triviality** of the continuum theory.
 
@@ -554,7 +579,7 @@ structure LatticeYangMills where
     Reference: Jaffe-Witten, Clay Millennium Prize problem statement;
     Douglas (2026), Nature Reviews Physics (the lattice -> OS -> Wightman chain). -/
 def YangMillsContinuumLimitFull (G : Type*) [Group G] [TopologicalSpace G]
-    [CompactSpace G] : Prop :=
+    [CompactSpace G] [GaugeAction G] : Prop :=
   ∃ (_family : ℕ → LatticeYangMills.{0})
     (dμ : ProbabilityMeasure EFieldConfiguration),
     SatisfiesAllOS dμ ∧
@@ -587,7 +612,7 @@ def YangMillsContinuumLimitFull (G : Type*) [Group G] [TopologicalSpace G]
 
     Reference: Osterwalder-Schrader (1973, 1975); Glimm-Jaffe Ch. 19. -/
 theorem yang_mills_millennium_prize
-    (G : Type*) [Group G] [TopologicalSpace G] [CompactSpace G]
+    (G : Type*) [Group G] [TopologicalSpace G] [CompactSpace G] [GaugeAction G]
     (h : YangMillsContinuumLimitFull G) :
     ∃ (qft : WightmanQFT) (Δ : ℝ), qft.hasMassGap Δ := by
   obtain ⟨_, dμ, hOS, _, _, Δ, hΔ⟩ := h
