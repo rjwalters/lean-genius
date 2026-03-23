@@ -89,7 +89,13 @@
     ],
     "dateAdded": "2025-12-28",
     "axiomCount": 2,
-    "lineCount": 366
+    "lineCount": 366,
+    "prerequisites": [
+      "Elementary geometry (cubes, volume)",
+      "Well-ordering principle and infinite descent",
+      "Combinatorial arguments in discrete geometry",
+      "Basic real analysis (volume decomposition)"
+    ]
   },
   "overview": {
     "historicalContext": "The impossibility of dissecting a cube into smaller cubes of all different sizes was proved by J.E. Littlewood and included in his book 'A Mathematician's Miscellany' (1953) as an example of mathematical elegance. The proof requires no computation or algebraic manipulation — just geometric visualization and infinite descent.\n\nThe 2D analog has a completely different answer: a square CAN be dissected into squares of all different sizes. The first such 'squared square' was found by Brooks, Smith, Stone, and Tutte in 1940, using an ingenious connection to electrical network theory. The smallest 'simple perfect squared square' has 21 squares and side 112, found by Duijvestijn (1978).\n\nThe key geometric reason for the dimensional difference: in 3D, the smallest cube on any floor is completely surrounded by taller cubes on all 4 sides, forcing its top face to be a new interior floor. In 2D, a square can extend to the boundary wall, breaking the descent argument. The impossibility extends to all dimensions >= 3 and to rectangular boxes.",
@@ -182,5 +188,37 @@
     "axiomCount": 2,
     "theoremCount": 7,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "hilbert-10",
+      "relationship": "thematic",
+      "description": "Both are impossibility results in mathematics: the dissection of cubes shows no finite decomposition into distinct smaller cubes exists, while Hilbert's 10th shows no algorithm solves all Diophantine equations"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "thematic",
+      "description": "Both are impossibility results in geometry: angle trisection shows certain constructions are impossible with compass and straightedge, while cube dissection shows certain geometric decompositions are impossible"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Dehn, Max",
+      "title": "Über die Zerlegung von Rechtecken in Rechtecke",
+      "year": "1903",
+      "venue": "Mathematische Annalen, vol. 57, pp. 314–332",
+      "note": "Early work on rectangle dissection that inspired the cube dissection problem"
+    },
+    {
+      "authors": "Brooks, R. L.; Smith, C. A. B.; Stone, A. H.; Tutte, W. T.",
+      "title": "The dissection of rectangles into squares",
+      "year": "1940",
+      "venue": "Duke Mathematical Journal, vol. 7, no. 1, pp. 312–340",
+      "note": "Pioneering work on squared rectangles using electrical network analogies, foundational for dissection theory"
+    }
+  ],
+  "relatedProofs": [
+    "hilbert-10",
+    "angle-trisection"
+  ]
 }
