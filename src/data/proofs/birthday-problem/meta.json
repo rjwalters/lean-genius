@@ -213,6 +213,11 @@
       "targetId": "combinations-formula",
       "relationship": "uses",
       "description": "The binomial coefficient $\\binom{n}{2} = n(n-1)/2$ counts the number of person-pairs, which is the key to the birthday 'paradox': 23 people yield 253 pairs, and each pair has probability $1/365$ of matching. The expected number of matching pairs is $\\binom{n}{2}/365$"
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "related",
+      "description": "The probabilistic method uses expectation to prove existence: in the birthday problem, the expected number of matching pairs is $\\binom{n}{2}/365 > 1$ for $n \\geq 28$, guaranteeing a match exists in expectation. The birthday bound is a key ingredient in probabilistic method arguments for hash collisions and random graph coloring"
     }
   ],
   "relatedProofs": [
@@ -225,7 +230,8 @@
     "derangements",
     "inclusion-exclusion",
     "stirling-formula",
-    "combinations-formula"
+    "combinations-formula",
+    "prob-method-expectation"
   ],
   "leanFile": {
     "imports": [
