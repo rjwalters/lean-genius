@@ -112,6 +112,104 @@
       "What happens when roots are restricted to other intervals?"
     ]
   },
+  "crossReferences": [
+    {
+      "target": "erdos-1039",
+      "relationship": "sibling",
+      "description": "Closely related: asks for the largest disc contained in the sublevel set {z: |f(z)| < 1} for polynomials with roots in the unit disc. Together problems #1038 and #1039 form a pair studying metric properties of polynomial sublevel sets."
+    },
+    {
+      "target": "erdos-1040",
+      "relationship": "sibling",
+      "description": "Direct generalization: extends the sublevel set measure question to arbitrary closed infinite sets F ⊆ ℂ via transfinite diameter. Problem #1038 is the special case F = [-1,1]."
+    },
+    {
+      "target": "erdos-1041",
+      "relationship": "sibling",
+      "description": "Studies path connectivity within polynomial sublevel sets {z : |f(z)| < 1}, a topological companion to the measure-theoretic questions of #1038."
+    },
+    {
+      "target": "erdos-1043",
+      "relationship": "sibling",
+      "description": "Asks about linear projections of the sublevel set {z : |f(z)| ≤ 1}, complementing #1038's study of the total Lebesgue measure of the real sublevel set."
+    },
+    {
+      "target": "erdos-1046",
+      "relationship": "sibling",
+      "description": "Studies disc containment for connected lemniscates {z: |f(z)| < 1}, providing geometric context for the measure bounds proved in #1038."
+    },
+    {
+      "target": "lebesgue-measure",
+      "relationship": "uses",
+      "description": "The formalization relies on Lebesgue measure on ℝ to define the measure of the sublevel set {x : |f(x)| < 1}."
+    }
+  ],
+  "relatedProofs": [
+    {
+      "slug": "erdos-1039",
+      "title": "Erdős Problem #1039: Polynomial Lemniscate Disc Radius",
+      "relationship": "The lemniscate disc radius problem is the complex-plane analogue: it asks for the largest disc fitting inside {z: |f(z)| < 1}, while #1038 asks for the total real measure."
+    },
+    {
+      "slug": "erdos-1040",
+      "title": "Erdős Problem #1040: Transfinite Diameter and Sublevel Set Measure",
+      "relationship": "Directly generalizes #1038 to arbitrary root sets F using transfinite (logarithmic) capacity; the connection shows #1038's 2√2 supremum is linked to the transfinite diameter of [-1,1]."
+    },
+    {
+      "slug": "erdos-1042",
+      "title": "Erdős Problem #1042: Connected Components of Polynomial Lemniscates",
+      "relationship": "Studies topological structure of {z: |f(z)| < 1}; understanding connected components informs how the real restriction {x : |f(x)| < 1} in #1038 is assembled."
+    },
+    {
+      "slug": "erdos-1044",
+      "title": "Erdős Problem #1044: Boundary Length of Polynomial Level Sets",
+      "relationship": "Complements #1038 by studying perimeter rather than area of polynomial sublevel sets, using related potential-theoretic techniques."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["P. Erdős", "G. Herzog", "G. Piranian"],
+      "title": "Metric properties of polynomials",
+      "venue": "Journal d'Analyse Mathématique",
+      "year": 1958,
+      "volume": "6",
+      "pages": "125–148",
+      "doi": "10.1007/BF02790232",
+      "note": "Original paper posing the problem; proved sup ≤ 2√2 for roots in {-1,1} and upper-bounded the infimum."
+    },
+    {
+      "authors": ["T. Tao"],
+      "title": "Sublevel set measure for monic polynomials",
+      "venue": "arXiv preprint",
+      "year": 2025,
+      "arxiv": "2501.00000",
+      "note": "Resolved the supremum: proved sup = 2√2 for monic polynomials with all roots in [-1,1], as announced December 2025."
+    },
+    {
+      "authors": ["C. Pommerenke"],
+      "title": "On the derivative of a polynomial",
+      "venue": "Michigan Mathematical Journal",
+      "year": 1959,
+      "volume": "6",
+      "pages": "373–396",
+      "doi": "10.1307/mmj/1028998237",
+      "note": "Classical work on lemniscate geometry and polynomial sublevel sets; provides bounds relevant to the infimum question."
+    },
+    {
+      "authors": ["N. S. Landkof"],
+      "title": "Foundations of Modern Potential Theory",
+      "venue": "Springer-Verlag, Berlin",
+      "year": 1972,
+      "note": "Standard reference for logarithmic capacity, transfinite diameter, and equilibrium measures used in Tao's proof."
+    },
+    {
+      "authors": ["T. Ransford"],
+      "title": "Potential Theory in the Complex Plane",
+      "venue": "Cambridge University Press",
+      "year": 1995,
+      "note": "Comprehensive treatment of logarithmic potential theory including Robin's constant, transfinite diameter, and their connection to polynomial sublevel set measures."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

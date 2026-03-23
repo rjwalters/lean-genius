@@ -203,6 +203,92 @@
       "Extend to k-monotonic decompositions (neither increasing nor decreasing)"
     ]
   },
+  "crossReferences": [
+    {
+      "proofId": "erdos-szekeres",
+      "relationship": "extends",
+      "description": "The classical Erdős-Szekeres theorem is the length-based foundation; Problem 1026 is the weighted (sum-based) generalization, asking how much total value a monotonic subsequence can capture"
+    },
+    {
+      "proofId": "ramseys-theorem",
+      "relationship": "analogous",
+      "description": "Both Ramsey theory and Erdős-Szekeres guarantee structured combinatorial objects; the weighted Erdős-Szekeres theorem follows a similar pigeonhole-over-partitions proof strategy"
+    },
+    {
+      "proofId": "erdos-1030",
+      "relationship": "companion",
+      "description": "Erdős Problem #1030 studies Ramsey number growth rates using related extremal and probabilistic combinatorics techniques; both problems sit in Erdős's 1960s–1970s sequence-and-graph extremal work"
+    },
+    {
+      "proofId": "erdos-1025",
+      "relationship": "companion",
+      "description": "Neighboring Erdős problem on independent sets in pair functions; both appear in the same era of Erdős's work on combinatorial optimization and extremal set theory"
+    },
+    {
+      "proofId": "stirling-formula",
+      "relationship": "uses",
+      "description": "The asymptotic constant c = 1 and the √n normalization in the main theorem connect to Stirling-type asymptotics; Hanani's bound involves √(2n) which mirrors the √(2πn) in Stirling's formula"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "proofId": "erdos-szekeres",
+      "description": "The Erdős-Szekeres theorem (1935) is the direct predecessor: it guarantees a monotonic subsequence of length ≥ √n. Problem 1026 upgrades this from a length guarantee to a sum (weight) guarantee.",
+      "similarity": "direct-generalization"
+    },
+    {
+      "proofId": "ramseys-theorem",
+      "description": "Ramsey's theorem provides the broader framework of guaranteed structure in large combinatorial objects. Erdős-Szekeres is a one-dimensional Ramsey-type theorem; Problem 1026 adds quantitative weight.",
+      "similarity": "thematic"
+    },
+    {
+      "proofId": "ballot-problem",
+      "description": "The ballot problem and Problem 1026 both use counting arguments over ordered sequences to extract combinatorial structure. The pigeonhole principle over monotonic decompositions mirrors the ballot counting argument.",
+      "similarity": "proof-technique"
+    },
+    {
+      "proofId": "stirling-formula",
+      "description": "Stirling's formula gives n! ~ √(2πn)·(n/e)^n. The √n normalization in Problem 1026 and the Hanani bound involving √(2n) both reflect the same combinatorial phenomenon of counting monotone paths.",
+      "similarity": "asymptotic-technique"
+    }
+  ],
+  "references": [
+    {
+      "authors": "P. Erdős and G. Szekeres",
+      "title": "A combinatorial problem in geometry",
+      "year": "1935",
+      "venue": "Compositio Mathematica, vol. 2, pp. 463–470",
+      "note": "The foundational Erdős-Szekeres theorem: every sequence of (r-1)(s-1)+1 distinct reals contains an increasing subsequence of length r or a decreasing subsequence of length s"
+    },
+    {
+      "authors": "H. Hanani",
+      "title": "On the number of monotone sequences",
+      "year": "1957",
+      "venue": "Bulletin of the Research Council of Israel, vol. 7F, pp. 41–45",
+      "note": "Proves every sequence of n distinct reals can be partitioned into at most ⌈√(2n)⌉ monotone subsequences; yields the lower bound c ≥ 1/√2 for the main constant"
+    },
+    {
+      "authors": "J. Tidor, P. Wang, and D. Yang",
+      "title": "1-color avoiding paths",
+      "year": "2016",
+      "venue": "arXiv preprint",
+      "note": "Proves the weighted Erdős-Szekeres theorem: for n = k² distinct positive reals summing to 1, some monotone subsequence has sum ≥ 1/k; establishes the optimal constant c = 1"
+    },
+    {
+      "authors": "J. M. Steele",
+      "title": "Variations on the monotone subsequence theme of Erdős and Szekeres",
+      "year": "1995",
+      "venue": "IMA Volumes in Mathematics and its Applications, vol. 72, pp. 111–131",
+      "note": "Survey of probabilistic and extremal aspects of monotone subsequence problems; discusses connections to patience sorting, random permutations, and longest increasing subsequences"
+    },
+    {
+      "authors": "R. P. Stanley",
+      "title": "Increasing and decreasing subsequences and their variants",
+      "year": "2007",
+      "venue": "Proceedings of the International Congress of Mathematicians, Madrid, pp. 545–579",
+      "note": "Surveys the deep connections between longest increasing subsequences, Young tableaux, the RSK correspondence, and random matrix theory; provides broad context for weighted subsequence problems"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",
