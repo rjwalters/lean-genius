@@ -80,7 +80,13 @@
       "knownPracticalNumbers: first 17 practical numbers (OEIS A005153)"
     ],
     "axiomCount": 19,
-    "lineCount": 187
+    "lineCount": 187,
+    "prerequisites": [
+      "Divisors and divisibility in number theory",
+      "Factorial function and its divisor structure",
+      "Representation of integers as sums of divisors",
+      "Analytic number theory (growth rates of arithmetic functions)"
+    ]
   },
   "overview": {
     "historicalContext": "Practical numbers were introduced by Srinivasan in 1948. The name reflects their 'practical' use: if m is practical, any weight k < m can be measured using denominations 1, d_2, d_3, ... where each d_i divides m. Stewart (1954) and Sierpinski (1955) independently characterized practical numbers via prime factorization: m is practical iff m=1 or m=2^a * p_2^{a_2} * ... * p_k^{a_k} where each prime p_i <= sigma(m/p_i^{a_i})+1.\n\nErdos studied practical numbers extensively, proving their density is 0 and showing h(n!) < n. Vose (1985) improved this for special numbers, showing infinitely many m have h(m) = O(sqrt(log m)). The main conjecture asks whether h(n!) can be subpolynomial in n.",
@@ -222,5 +228,50 @@
     "axiomCount": 0,
     "theoremCount": 2,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-48",
+      "relationship": "related",
+      "description": "Problem #48 concerns Euler's totient and sigma functions, sharing the theme of arithmetic functions and their representability properties with Problem #18's study of practical numbers"
+    },
+    {
+      "targetId": "erdos-1107",
+      "relationship": "related",
+      "description": "Problem #1107 on sums of powerful numbers shares the theme of representability: practical numbers represent all integers as sums of divisors, while Problem #1107 studies representation as sums of powerful numbers"
+    },
+    {
+      "targetId": "erdos-12",
+      "relationship": "related",
+      "description": "Problem #12 on divisibility-free sets concerns how sets of integers relate to divisibility. Practical numbers are defined by divisor properties, making the problems thematically connected"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Srinivasan, Anand K.",
+      "title": "Practical numbers",
+      "year": "1948",
+      "venue": "Current Science, vol. 17, pp. 179–180",
+      "note": "Introduced practical numbers: m is practical if every integer ≤ m is a sum of distinct divisors of m"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "On practical numbers",
+      "year": "1988",
+      "venue": "In: Number Theory (Budapest 1987), Colloquia Mathematica Societatis János Bolyai, vol. 51, pp. 453–459",
+      "note": "Studied the growth rate of h(n!) and its connection to the structure of practical numbers"
+    },
+    {
+      "authors": "Hausman, Miriam; Shapiro, Harold N.",
+      "title": "On practical numbers",
+      "year": "1984",
+      "venue": "Communications on Pure and Applied Mathematics, vol. 37, no. 5, pp. 801–812",
+      "note": "Proved practical numbers have asymptotic density, with counting function proportional to x/log x"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-12",
+    "erdos-48",
+    "erdos-1107"
+  ]
 }

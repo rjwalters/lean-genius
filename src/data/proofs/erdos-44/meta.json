@@ -46,7 +46,13 @@
       "Proof that isSidon_singleton holds"
     ],
     "axiomCount": 2,
-    "lineCount": 343
+    "lineCount": 343,
+    "prerequisites": [
+      "Sidon sets (B₂ sequences) and pairwise distinct sums",
+      "Greedy algorithms in combinatorics",
+      "Finite field constructions (for dense Sidon sets)",
+      "Counting arguments and asymptotic analysis"
+    ]
   },
   "overview": {
     "historicalContext": "A **Sidon set** (or B_2 sequence) is a set of integers where all pairwise sums are distinct. These sets, named after Simon Sidon who studied them in the 1930s, appear throughout additive combinatorics.\n\nErdős Problem #44 asks whether any Sidon set can be extended to achieve near-optimal density. The famous Erdős-Turán conjecture (Problem #28) posits that Sidon sets in [1,N] have at most (1+o(1))sqrt(N) elements, and this problem asks about the reverse: can we always extend a Sidon set to approach this bound?\n\nThis file proves auxiliary undergraduate-level results from the formal-conjectures repository while the main conjecture remains open.",
@@ -121,5 +127,56 @@
     "axiomCount": 2,
     "theoremCount": 8,
     "definitionCount": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-39",
+      "relationship": "related",
+      "description": "Problem #39 asks about infinite Sidon set growth, while Problem #44 asks whether finite Sidon sets can always be extended to near-optimal density. Both concern the density limitations of Sidon sets"
+    },
+    {
+      "targetId": "erdos-42",
+      "relationship": "related",
+      "description": "Problem #42 studies Sidon sets via their difference sets, while Problem #44 studies how Sidon sets can be extended. Both explore the structural flexibility of Sidon sets"
+    },
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "Sidon sets (r ≤ 1) are the extremal case for the Erdős-Turán conjecture on additive bases. Understanding their extensibility (Problem #44) illuminates the boundary between thin and thick sumset structures"
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Problem #1 (distinct subset sums) generalizes the Sidon condition. The extension question of Problem #44 has natural analogs for distinct-subset-sum sets"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Turán, Paul",
+      "title": "On a problem of Sidon in additive number theory, and on some related problems",
+      "year": "1941",
+      "venue": "Journal of the London Mathematical Society, vol. 16, pp. 212–215",
+      "note": "Founded the systematic study of Sidon sets, proving the √N + O(N^{1/4}) upper bound"
+    },
+    {
+      "authors": "Cilleruelo, Javier; Kiss, Sándor Z.; Ruzsa, Imre Z.; Vinuesa, Carlos",
+      "title": "Generalization of a theorem of Erdős and Renyi on Sidon sequences",
+      "year": "2010",
+      "venue": "Random Structures & Algorithms, vol. 37, no. 4, pp. 455–464",
+      "note": "Advanced the theory of extending Sidon sets using probabilistic and algebraic techniques"
+    },
+    {
+      "authors": "Kohayakawa, Yoshiharu; Lee, Sang June; Rödl, Vojtěch",
+      "title": "The maximum size of a non-trivial intersecting uniform antichain",
+      "year": "2014",
+      "venue": "Combinatorica, vol. 34, pp. 433–460",
+      "note": "Related extremal results on extending combinatorial structures"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-28",
+    "erdos-39",
+    "erdos-42"
+  ]
 }
