@@ -164,11 +164,53 @@
       "targetId": "infinitude-primes",
       "relationship": "related",
       "description": "Euclid's proof of infinite primes uses a form of induction (given any finite list, construct a new prime). Strong induction and well-ordering — equivalent to induction — appear throughout number theory."
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The uniqueness of prime factorization is proved by strong induction: assuming uniqueness for all $m < n$, if $n = p_1 \\cdots p_r = q_1 \\cdots q_s$, then $p_1 \\mid q_j$ for some $j$, so $p_1 = q_j$, and induction on $n/p_1 < n$ gives the result. Without strong induction, FTA cannot be proved"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "The generalized Pythagorean theorem ($\\|\\sum v_i\\|^2 = \\sum \\|v_i\\|^2$ for mutually orthogonal vectors) is proved by induction on the number of vectors, using `Finset.induction_on` — a direct application of induction to an inner product space identity"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Induction on group order powers many results built on Lagrange's theorem: Cauchy's theorem (a group of order divisible by $p$ has an element of order $p$) uses strong induction, and Sylow's theorems use induction on prime power factors"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "The proof that $\\sqrt{2}$ is irrational uses infinite descent — a form of strong induction: if $\\sqrt{2} = p/q$ in lowest terms, derive a fraction with smaller denominator, contradicting the minimality of $q$. Infinite descent is equivalent to the well-ordering principle, which is equivalent to induction"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "related",
+      "description": "Repeated application of FTC via induction gives Taylor's theorem: $f(x) = \\sum_{k=0}^n f^{(k)}(a)(x-a)^k/k! + R_n(x)$, where each step integrates by parts using FTC. The induction step increases the order of the Taylor expansion by one"
+    },
+    {
+      "targetId": "arithmetic-series",
+      "relationship": "related",
+      "description": "The sum formula $\\sum_{k=1}^n k = n(n+1)/2$ is the classic first example of proof by induction, attributed to Gauss. This formalization includes this example, connecting induction to combinatorial identities"
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "related",
+      "description": "Recursion (self-reference in programs) is the computational analog of induction (self-reference in proofs). The halting problem's diagonalization uses recursive self-application, and the undecidability proof relies on the same well-foundedness that makes induction valid"
     }
   ],
   "relatedProofs": [
     "godel-incompleteness",
     "binomial-theorem",
-    "infinitude-primes"
+    "infinitude-primes",
+    "fundamental-arithmetic",
+    "pythagorean-theorem",
+    "lagrange-theorem",
+    "sqrt2-irrational",
+    "fundamental-theorem-calculus",
+    "arithmetic-series",
+    "halting-problem"
   ]
 }
