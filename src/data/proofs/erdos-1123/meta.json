@@ -122,7 +122,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1123 is SET-THEORETICALLY DEPENDENT. Under CH, B₁ ≅ B₂ (Just-Krawczyk 1984). The question is independent of ZFC. The 'lost' Erdős-Ulam proof of non-isomorphism was likely erroneous.",
-    "implications": "Illustrates the interaction between number theory (density), algebra (Boolean algebras), and set theory (independence). Shows natural algebraic questions can be ZFC-undecidable.",
+    "implications": "**Set-Theoretic Independence**: The problem demonstrates that natural algebraic questions about the quotient Boolean algebra $\\mathcal{P}(\\mathbb{N})/\\text{Fin}$ (or its density-zero analogue) can be independent of ZFC. This connects to the broader phenomenon of set-theoretic independence in combinatorial settings, following Cohen's 1963 proof of CH independence.\n\n**Number Theory Meets Algebra**: The density-zero ideal $\\mathcal{Z} = \\{A \\subseteq \\mathbb{N} : d(A) = 0\\}$ bridges number theory and Boolean algebra. Questions about the structure of $\\mathcal{P}(\\mathbb{N})/\\mathcal{Z}$ — its automorphisms, chain conditions, and embedding properties — often depend on set-theoretic axioms beyond ZFC, revealing that even natural questions about integer density have undecidable aspects.\n\n**Forcing and Cardinal Characteristics**: Resolution typically involves forcing techniques (Martin's Axiom, proper forcing, or specific cardinal characteristic assumptions) that control the combinatorics of infinite subsets of $\\mathbb{N}$ modulo the density ideal.",
     "openQuestions": [
       "Are there models of ZFC where B₁ ≇ B₂?",
       "Classification of P(ω)/I for other natural ideals",
