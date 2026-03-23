@@ -192,6 +192,26 @@
       "targetId": "birthday-problem",
       "relationship": "thematic",
       "description": "The birthday problem uses uniform distribution on a circle (days of the year as a cycle), and its generalization to continuous distributions involves the Gaussian distribution — whose normalization $\\int e^{-x^2} dx = \\sqrt{\\pi}$ is proved by converting to polar coordinates using the area element $r\\,dr\\,d\\theta$ from $A = \\pi r^2$"
+    },
+    {
+      "targetId": "isoperimetric-theorem",
+      "relationship": "complementary",
+      "description": "The isoperimetric inequality states that among all planar curves of fixed perimeter $L$, the circle encloses the maximum area $L^2/(4\\pi)$. This provides a variational characterization of the circle: $A = \\pi r^2$ is the maximum area achievable with perimeter $C = 2\\pi r$. Equality holds if and only if the curve is a circle, making the area formula a consequence of the isoperimetric optimality"
+    },
+    {
+      "targetId": "greens-theorem",
+      "relationship": "foundational",
+      "description": "Green's theorem $\\oint_C (P\\,dx + Q\\,dy) = \\iint_D (\\partial Q/\\partial x - \\partial P/\\partial y)\\,dA$ converts the area integral $\\iint_D dA = \\pi r^2$ to a line integral around the boundary circle: $A = \\frac{1}{2}\\oint_C (x\\,dy - y\\,dx)$. This provides an alternative derivation of the area formula via the boundary parametrization $(r\\cos\\theta, r\\sin\\theta)$"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's formula $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ contains $\\sqrt{2\\pi}$ — the same constant that appears in the Gaussian integral $\\int e^{-x^2}dx = \\sqrt{\\pi}$, whose proof uses polar coordinates and the area formula $A = \\pi r^2$. The $\\pi$ in Stirling's formula traces back to the circle area through the Gamma function: $\\Gamma(1/2) = \\sqrt{\\pi}$"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of $\\sqrt{2}$ was discovered through the diagonal of the unit square — the Pythagorean relation $x^2 + y^2 = r^2$ that defines the circle. The same quadratic form whose level sets are circles (with area $\\pi r^2$) also generates the irrational $\\sqrt{2}$ when applied to the unit square. Both results reveal fundamental properties of Euclidean geometry"
     }
   ],
   "relatedProofs": [
@@ -208,7 +228,11 @@
     "law-of-cosines",
     "euler-identity",
     "intermediate-value-theorem",
-    "birthday-problem"
+    "birthday-problem",
+    "isoperimetric-theorem",
+    "greens-theorem",
+    "stirling-formula",
+    "sqrt2-irrational"
   ],
   "leanFile": {
     "imports": [
