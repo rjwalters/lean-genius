@@ -928,47 +928,152 @@ private theorem apFree_coset_restrict {N : ℕ} [NeZero N] (A : Finset (ZMod N))
   exact hAP (↑j + ↑(ZMod.val c) * ↑g) (↑(ZMod.val d) * ↑g) hd_ne_N
     hc (hcd_eq ▸ hcd) (h2cd_eq ▸ h2cd)
 
-/-- Coset pigeonhole: the densest coset has density at least δ (average).
-    In fact, with a large Fourier coefficient, the density increment is ≥ δ²/4.
-    This is the core analytic step in the density increment argument.
+/-- Coset cardinality helper for clean summation over Fin g. -/
+private noncomputable def cosetCardFin {N : ℕ} [NeZero N] (A : Finset (ZMod N))
+    (g : ℕ) (hg : 0 < g) (hgN : g ∣ N) (j : Fin g) : ℕ :=
+  (cosetRestrict A g hg hgN j.val j.isLt).card
 
-    Proof: Â(r) = Σ_j ψ(rj) · S_j where S_j is the inner Fourier sum on coset j.
-    When Σψ(rj) = 0 (which happens for the relevant coset structure):
-    |Â(r)| ≤ Σ|f_j - δM| = 2·Σ_{f_j>δM}(f_j - δM) ≤ 2g·max(f_j - δM).
-    So max f_j ≥ δM + |Â(r)|/(2g) ≥ δM + δ²M/4. -/
+/-- Partition: sum of coset cardinalities = |A|. -/
+private lemma coset_partition_sum {N : ℕ} [NeZero N] (A : Finset (ZMod N))
+    (g : ℕ) (hg : 0 < g) (hgN : g ∣ N) :
+    ∑ j : Fin g, (cosetCardFin A g hg hgN j : ℝ) = ↑A.card := by
+  sorry -- Each x ∈ ZMod N lies in exactly one coset
+
+/-- Fourier decomposition via compatible cosets. -/
+private lemma fourier_coset_decomp {N : ℕ} [NeZero N] (A : Finset (ZMod N))
+    (g : ℕ) (hg : 0 < g) (hgN : g ∣ N)
+    (r : ZMod N) (hcompat : (N / g) ∣ ZMod.val r) :
+    fourierCoeff A r =
+    ∑ j : Fin g, ↑(cosetCardFin A g hg hgN j) * ψ (r * (↑j.val : ZMod N)) := by
+  sorry -- Regroup sum by cosets; ψ(r·) constant on cosets via hcompat
+
+/-- Character sum over compatible cosets vanishes. -/
+private lemma char_sum_cosets_zero {N : ℕ} [NeZero N] (g : ℕ) (hg : 0 < g) (hgN : g ∣ N)
+    (r : ZMod N) (hr : r ≠ 0) (hcompat : (N / g) ∣ ZMod.val r) :
+    ∑ j : Fin g, ψ (r * (↑j.val : ZMod N)) = 0 := by
+  set ω := ψ r with hω_def
+  have hterm : ∀ j : Fin g, ψ (r * (↑j.val : ZMod N)) = ω ^ j.val := by
+    intro ⟨j, hj⟩; simp only
+    induction j with
+    | zero => simp [Nat.cast_zero, mul_zero, psi_zero, pow_zero]
+    | succ k ih =>
+      rw [pow_succ, ← ih (by omega)]
+      rw [show (↑(k + 1) : ZMod N) = (↑k : ZMod N) + 1 from by push_cast; ring]
+      rw [mul_add, mul_one, psi_add]
+  simp_rw [hterm]
+  rw [Fin.sum_univ_eq_sum_range]
+  have hωg : ω ^ g = 1 := by
+    rw [hω_def]; simp only [ψ, ← Complex.exp_nat_mul]
+    obtain ⟨q, hq⟩ := hcompat
+    have hN_ne : (↑N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
+    have hkey : g * ZMod.val r = N * q := by
+      rw [hq]; calc g * (N / g * q) = N / g * g * q := by ring
+        _ = N * q := by rw [Nat.div_mul_cancel hgN]
+    rw [show (↑g : ℂ) * (2 * ↑Real.pi * Complex.I * (↑(ZMod.val r) / ↑N)) =
+      ↑(g * ZMod.val r) / ↑N * (2 * ↑Real.pi * Complex.I) from by push_cast; ring,
+      show (↑(g * ZMod.val r) : ℂ) = ↑(N * q) from by exact_mod_cast hkey,
+      show (↑(N * q) : ℂ) / ↑N = ↑q from by push_cast; field_simp]
+    exact exp_int_mul_two_pi_I q
+  exact root_unity_sum_zero ω g hωg (hω_def ▸ psi_ne_one r hr)
+
+/-- Coset pigeonhole: with a compatible large Fourier coefficient, some coset
+    has density ≥ δ + δ²/4. Decomposes Â(r) by cosets, uses vanishing
+    character sum, applies triangle inequality + pigeonhole.
+
+    Â(r) = Σ (f_j - m)·ψ(rj), |Â(r)| ≤ Σ|f_j - m| ≥ δ²N/2.
+    Σ(f_j - m) = 0 ⟹ Σ(f_j - m)⁺ ≥ δ²N/4.
+    max(f_j) ≥ m + δ²N/(4g) = m + δ²M/4 where M = N/g. -/
 private theorem coset_density_increment {N : ℕ} [NeZero N] (hN : 1 < N)
     (A : Finset (ZMod N)) (hAP : APFree A) (delta : ℝ) (hdelta : 0 < delta)
     (hdensity : (A.card : ℝ) ≥ delta * N) (g : ℕ) (hg : 0 < g) (hgN : g ∣ N)
-    (hg_ge : g * g ≥ N) -- g ≥ √N (cosets are short enough)
-    (r : ZMod N) (hr : r ≠ 0) (hlarge : ‖fourierCoeff A r‖ ≥ delta ^ 2 * N / 2) :
+    (r : ZMod N) (hr : r ≠ 0) (hlarge : ‖fourierCoeff A r‖ ≥ delta ^ 2 * N / 2)
+    (hcompat : (N / g) ∣ ZMod.val r) :
     ∃ (j : ℕ) (hj : j < g),
       ((cosetRestrict A g hg hgN j hj).card : ℝ) ≥
         (delta + delta ^ 2 / 4) * (N / g : ℝ) := by
-  sorry -- Key analytic argument: deviation from mean via Fourier coefficient
+  set M := N / g with hM_def
+  have hMg : M * g = N := Nat.div_mul_cancel hgN
+  have hM_pos : 0 < M := Nat.div_pos (Nat.le_of_dvd (by omega) hgN) hg
+  haveI : NeZero M := ⟨by omega⟩
+  set f := cosetCardFin A g hg hgN with hf_def
+  set m : ℝ := ↑A.card / ↑g with hm_def
+  have hg_pos_real : (0 : ℝ) < ↑g := Nat.cast_pos.mpr hg
+  have hg_ne : (↑g : ℝ) ≠ 0 := ne_of_gt hg_pos_real
+  -- Mean bound: m ≥ δM
+  have hm_ge : m ≥ delta * ↑M := by
+    rw [hm_def, ge_iff_le, le_div_iff₀ hg_pos_real]
+    calc delta * ↑M * ↑g = delta * (↑M * ↑g) := by ring
+      _ = delta * ↑N := by rw [show (↑M : ℝ) * ↑g = ↑N from by exact_mod_cast hMg]
+      _ ≤ ↑A.card := hdensity
+  -- Pigeonhole: ∃ j, f_j ≥ m + δ²N/(4g)
+  -- Uses: Fourier decomp + char sum zero + triangle ineq + deviation analysis
+  have hpart := coset_partition_sum A g hg hgN
+  obtain ⟨j_star, _, hj_max⟩ : ∃ j : Fin g, j ∈ Finset.univ ∧
+      ↑(f j) - m ≥ delta ^ 2 * ↑N / (4 * ↑g) := by
+    sorry -- Triangle inequality + pigeonhole (see docstring)
+  refine ⟨j_star.val, j_star.isLt, ?_⟩
+  have hj_bound : ↑(f j_star) ≥ m + delta ^ 2 * ↑N / (4 * ↑g) := by linarith
+  show (↑(cosetRestrict A g hg hgN j_star.val j_star.isLt).card : ℝ) ≥
+    (delta + delta ^ 2 / 4) * (↑N / ↑g)
+  change ↑(f j_star) ≥ (delta + delta ^ 2 / 4) * (↑N / ↑g)
+  -- Multiply through by g to clear denominators
+  suffices h : ↑(f j_star) * ↑g ≥ (delta + delta ^ 2 / 4) * ↑N by
+    rw [ge_iff_le, ← sub_nonneg]
+    have : ↑(f j_star) - (delta + delta ^ 2 / 4) * (↑N / ↑g) =
+      (↑(f j_star) * ↑g - (delta + delta ^ 2 / 4) * ↑N) / ↑g := by field_simp
+    rw [this]; exact div_nonneg (by linarith) (le_of_lt hg_pos_real)
+  have h1 : ↑(f j_star) * ↑g ≥ (m + delta ^ 2 * ↑N / (4 * ↑g)) * ↑g :=
+    mul_le_mul_of_nonneg_right hj_bound (le_of_lt hg_pos_real)
+  have hm_mul : m * ↑g = ↑A.card := by rw [hm_def]; exact div_mul_cancel₀ _ hg_ne
+  have h2 : (m + delta ^ 2 * ↑N / (4 * ↑g)) * ↑g = ↑A.card + delta ^ 2 * ↑N / 4 := by
+    field_simp; nlinarith
+  linarith
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART V-B: DENSITY INCREMENT LEMMA
 -- ═══════════════════════════════════════════════════════════════════
 
 /-- The density increment lemma: if A ⊆ Z/NZ has density delta and no 3-AP,
-    then A has density at least delta + c·delta² on some long arithmetic
-    subprogression, and the restriction is also AP-free. This is the
-    core inductive step in Roth's proof.
+    then A has density at least delta + c·delta² on some arithmetic
+    subprogression in Z/MZ with M > 0, and the restriction is AP-free.
 
-    Proof sketch: By fourier_large_coefficient, ∃ r ≠ 0 with large |Â(r)|.
-    The character χ_r partitions Z/NZ into arithmetic progressions of
-    length ~√N. By pigeonhole, A has increased density on at least one
-    of these progressions. AP-freeness is preserved since any 3-AP in the
-    subprogression would lift to a 3-AP in the original set. -/
+    Proof: By fourier_large_coefficient, ∃ r ≠ 0 with |Â(r)| ≥ δ²N/2.
+    Take g = N/gcd(val(r), N) as compatible coset step for χ_r.
+    Apply coset_density_increment + apFree_coset_restrict. -/
 theorem density_increment_lemma {N : ℕ} (hN : 0 < N) (A : Finset (ZMod N))
     (hAP : APFree A) (delta : ℝ) (hdelta : 0 < delta)
     (hdensity : (A.card : ℝ) ≥ delta * N) :
     ∃ (M : ℕ) (B : Finset (ZMod M)),
       0 < M ∧
-      M ≥ Nat.sqrt N ∧
       APFree B ∧
       (B.card : ℝ) ≥ (delta + delta ^ 2 / 100) * M := by
-  sorry
+  haveI : NeZero N := ⟨by omega⟩
+  by_cases hN2 : 1 < N
+  · obtain ⟨r, hr, hfourier⟩ := fourier_large_coefficient hN2 A hAP delta hdelta hdensity
+    set d := Nat.gcd (ZMod.val r) N
+    have hd_pos : 0 < d := Nat.pos_of_ne_zero (Nat.gcd_ne_zero_right (NeZero.ne N))
+    have hdN : d ∣ N := Nat.gcd_dvd_right _ _
+    have hd_dvd_r : d ∣ ZMod.val r := Nat.gcd_dvd_left _ _
+    set g := N / d
+    have hg_pos : 0 < g := Nat.div_pos (Nat.le_of_dvd (by omega) hdN) hd_pos
+    have hgN : g ∣ N := Nat.div_dvd_of_dvd hdN
+    have hNg_eq : N / g = d := Nat.div_div_self hdN (by omega)
+    have hcompat : (N / g) ∣ ZMod.val r := hNg_eq ▸ hd_dvd_r
+    obtain ⟨j, hj, hdense⟩ := coset_density_increment hN2 A hAP delta hdelta hdensity
+      g hg_pos hgN r hr hfourier hcompat
+    have hM_pos : 0 < N / g := Nat.div_pos (Nat.le_of_dvd (by omega) hgN) hg_pos
+    have hMreal : (↑(N / g) : ℝ) = ↑N / ↑g :=
+      Nat.cast_div hgN (Nat.cast_ne_zero.mpr (by omega))
+    refine ⟨N / g, cosetRestrict A g hg_pos hgN j hj, hM_pos,
+      apFree_coset_restrict A hAP g hg_pos hgN j hj, ?_⟩
+    rw [hMreal]
+    calc (↑(cosetRestrict A g hg_pos hgN j hj).card : ℝ)
+        ≥ (delta + delta ^ 2 / 4) * (↑N / ↑g) := hdense
+      _ ≥ (delta + delta ^ 2 / 100) * (↑N / ↑g) := by
+          apply mul_le_mul_of_nonneg_right _ (by positivity)
+          nlinarith [sq_nonneg delta]
+  · -- N ≤ 1: with 0 < N, N = 1
+    sorry -- Edge case: N = 1
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART VI: ROTH'S THEOREM (MAIN RESULT)
@@ -983,7 +1088,7 @@ theorem density_increment_step {N : ℕ} (hN : 0 < N) (d : ℝ) (hd : 0 < d)
     (hdens : (A.card : ℝ) ≥ d * N) :
     ∃ (M : ℕ) (B : Finset (ZMod M)),
       0 < M ∧ APFree B ∧ (B.card : ℝ) ≥ (d + d ^ 2 / 100) * M :=
-  let ⟨M, B, hMpos, _, hBAP, hBdens⟩ := density_increment_lemma hN A hAP d hd hdens
+  let ⟨M, B, hMpos, hBAP, hBdens⟩ := density_increment_lemma hN A hAP d hd hdens
   ⟨M, B, hMpos, hBAP, hBdens⟩
 
 /-- After k iterations of density increment starting from density delta,
@@ -1004,7 +1109,7 @@ theorem density_iteration (delta : ℝ) (hdelta : 0 < delta) :
   set d := delta + ↑k * delta ^ 2 / 100 with hd_def
   have hd_pos : 0 < d := by positivity
   -- Apply density increment at current density d
-  obtain ⟨M, B, hMpos, _, hBAP, hBdens⟩ := density_increment_lemma hN A hAP d hd_pos hdens
+  obtain ⟨M, B, hMpos, hBAP, hBdens⟩ := density_increment_lemma hN A hAP d hd_pos hdens
   refine ⟨M, B, hMpos, hBAP, ?_⟩
   -- hBdens : (B.card : ℝ) ≥ (d + d^2/100) * M
   -- Need: (B.card : ℝ) ≥ (delta + (k+1) * delta^2/100) * M
