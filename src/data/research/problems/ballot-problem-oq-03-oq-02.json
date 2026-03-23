@@ -58,25 +58,26 @@
       "gvInvolutionFn_fst: first component accessor (PROVED by rfl)",
       "gvInvolution_sign_reversal: sign cancellation (PROVED modulo simp details)",
       "gvInvolution_no_fixed: no fixed points (PROVED modulo simp details)",
-      "cancellable_sum_eq_zero: structured via Finset.sum_involution (2 sorries remain)",
+      "cancellable_sum_eq_zero: structured via Finset.sum_involution (1 sorry remains — self-inverse)",
       "gvNewPerm RIGHT multiplication fix: σ*swap(i,j) instead of swap(i,j)*σ (PROVED)",
-      "pathMN_nonempty: Nonempty (PathMN m n) for all m,n (PROVED via pathMN_card + choose_pos)"
+      "pathMN_nonempty: Nonempty (PathMN m n) for all m,n (PROVED via pathMN_card + choose_pos)",
+      "cast_pathMN_val: cast between PathMN types with equal n preserves .val (PROVED)",
+      "gvInvolution_membership: image tuple is cancellable (PROVED via cast_pathMN_val + northThenEast_not_NI)"
     ],
     "openQuestions": [
       "Need canonical (deterministic) crossing pair for self-inverse — current crossingI/J use Classical.choose",
-      "Need specific tail-swapped paths for membership proof (when σ=swap(i,j), image paths must still cross)",
-      "Mathlib version drift: take_at_column_entry/take_east_count_within_column have pre-existing compat errors"
+      "Mathlib version drift: take_at_column_entry/take_east_count_within_column have pre-existing compat errors (~14 errors)"
     ],
     "nextSteps": [
-      "Close membership sorry: unfold PermPathTuple.toPathTuple cast under σ'=1, show it reduces to northThenEast paths, apply northThenEast_not_NI",
+      "Fix pre-existing Mathlib compat errors in take_at_column_entry (Bool.false_eq_false unknown) — needed for suffix-swap",
       "Build canonical crossing pair via Finset.min' on lex-ordered (c,y,i,j) crossing quadruples",
       "Build tail-swap PathMN construction: split at shared (c,y), join prefix+suffix, prove validity",
       "Prove self-inverse: canonical crossing preserved (prefix unchanged → lex-min same) + double swap = identity",
-      "Fix pre-existing Mathlib compat errors in take_at_column_entry (Bool.false_eq_false unknown)"
+      "Assemble cancellable_sum_eq_zero via Finset.sum_involution with the new self-inverse involution"
     ],
-    "progressSummary": "PROGRESS: Replaced Classical.choice with northThenEast paths. Proved northThenEast paths cross under wellFormed. sign_reversal + no_fixed proved. Membership: mathematical argument clear, needs cast unfolding (sorry). Self-inverse: needs full tail-swap + canonical crossing (~200 lines, well-understood architecture)."
+    "progressSummary": "PROGRESS: Membership sorry PROVED. 1 sorry remains (cancellable_sum_eq_zero — needs self-inverse involution via suffix-swap, ~200 lines). Pre-existing Mathlib compat errors in take_at_column_entry block suffix-swap work."
   },
-  "lastUpdate": "2026-03-23T18:00:00Z",
+  "lastUpdate": "2026-03-23T22:00:00Z",
   "leanFiles": [
     {
       "path": "Proofs/BallotProblem.lean",

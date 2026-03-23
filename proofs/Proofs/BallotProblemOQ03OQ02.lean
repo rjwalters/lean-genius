@@ -53,7 +53,7 @@ cancel via a sign-reversing involution (Gessel-Viennot involution).
 - [x] northThenEast_not_NI: these paths cross at column 0 under wellFormed (PROVED)
 - [x] gvInvolutionFn: uses northThenEast paths (well-typed, compiles)
 - [x] gvInvolution_sign_reversal + no_fixed: proved for northThenEast variant
-- [ ] Membership: image cancellable (sorry — needs toPathTuple cast unfolding)
+- [x] Membership: image cancellable (PROVED — cast_pathMN_val + northThenEast_not_NI)
 - [ ] Self-inverse: g(g(a)) = a (sorry — needs full tail-swap path construction)
 
 ## References
@@ -1088,6 +1088,12 @@ private lemma northThenEastList_east (m n : ℕ) :
 private def northThenEastPath (m n : ℕ) : PathMN m n :=
   ⟨northThenEastList m n, northThenEastList_length m n, northThenEastList_east m n⟩
 
+/-- Cast between PathMN types with equal n preserves the underlying list. -/
+private lemma cast_pathMN_val {m n₁ n₂ : ℕ} (hn : n₁ = n₂)
+    (p : PathMN m n₁) {heq : PathMN m n₁ = PathMN m n₂} :
+    (cast heq p).val = p.val := by
+  subst hn; rfl
+
 /-- colEntry of northThenEastList at column 0: the path has n North steps before any East step. -/
 private lemma northThenEast_colEntry_one (m n : ℕ) (hm : 0 < m) :
     colEntry (northThenEastList m n) 1 = n := by
@@ -1200,27 +1206,55 @@ private theorem gvInvolution_membership {r : ℕ} (cfg : LGVConfig r)
     (hwf : cfg.wellFormed) (t : TaggedPathTuple cfg)
     (ht : ¬isNonCancellable t) :
     ¬isNonCancellable (gvInvolutionFn cfg hwf t ht) := by
-  simp only [isNonCancellable, IsGVFixedPoint]
-  intro ⟨hσ, hni⟩
-  have hij := crossingI_lt_J cfg hwf t ht
-  set i := crossingI cfg hwf t ht with hi_def
-  set j := crossingJ cfg hwf t ht with hj_def
+  simp only [isNonCancellable, IsGVFixedPoint, not_exists]
+  intro hσ hni
   simp only [IsNonIntersecting] at hni
-  -- Specialize NI to pair (i, j) with i < j
-  have hpair := hni i j hij
-  -- The image has σ' = 1 (by hσ) and northThenEast paths
-  -- toPathTuple with σ' = 1 gives paths from sources(k) to targets(k)
-  -- These are northThenEastPath m (targets(k) - sources(k))
-  -- By wellFormed: sources(i) ≤ targets(j) and sources(j) ≤ targets(i)
-  -- So northThenEast paths at i and j cross
-  -- We need to show the hpair leads to contradiction
-  -- The NonIntersecting of northThenEast paths is ¬ for overlapping sources/targets
-  -- Membership proof requires careful unfolding of PermPathTuple.toPathTuple + cast
-  -- across the σ' = 1 specialization and the northThenEastPath definition.
-  -- This is a HARD sorry (engineering, not math) — the mathematical argument is:
-  -- paths i and j are northThenEast, they overlap at column 0 by wellFormed,
-  -- contradicting NonIntersecting.
-  sorry
+  have hij := crossingI_lt_J cfg hwf t ht
+  set ci := crossingI cfg hwf t ht
+  set cj := crossingJ cfg hwf t ht
+  have hpair := hni ci cj hij
+  -- gvNewPerm = 1 from hσ
+  have hperm_eq : gvNewPerm cfg hwf t ht = 1 := hσ
+  -- The n parameters of the paths match after substitution
+  have hn_eq : ∀ k : Fin r, cfg.targets ((gvNewPerm cfg hwf t ht) k) - cfg.sources k =
+      cfg.targets k - cfg.sources k := by
+    intro k; congr 1; simp [hperm_eq]
+  -- Show that the underlying lists in the toPathTuple are northThenEastList
+  -- toPathTuple applies cast, gvInvolutionFn gives northThenEastPath
+  have hval : ∀ k : Fin r,
+      ((gvInvolutionFn cfg hwf t ht).snd.toPathTuple hσ k).val =
+      northThenEastList cfg.m (cfg.targets k - cfg.sources k) := by
+    intro k
+    unfold PermPathTuple.toPathTuple
+    simp only [gvInvolutionFn]
+    rw [cast_pathMN_val (hn_eq k)]
+    simp only [northThenEastPath]
+    congr 1; exact hn_eq k
+  -- Rewrite hpair using hval
+  rw [hval ci, hval cj] at hpair
+  -- wellFormed gives overlap conditions
+  have hwf_ij : cfg.sources ci ≤ cfg.targets cj := hwf ci cj
+  have hwf_ji : cfg.sources cj ≤ cfg.targets ci := hwf cj ci
+  -- Case split on m > 0
+  have h_ci := cfg.source_le_target ci
+  have h_cj := cfg.source_le_target cj
+  by_cases hm : 0 < cfg.m
+  · -- northThenEast_not_NI needs: y₁ ≤ y₂ + n₂ and y₂ ≤ y₁ + n₁
+    -- where y₁ = sources ci, n₁ = targets ci - sources ci, etc.
+    -- sources(ci) + (targets(ci) - sources(ci)) = targets(ci) since sources ≤ targets
+    have hy₁n₂ : cfg.sources ci ≤ cfg.sources cj + (cfg.targets cj - cfg.sources cj) := by omega
+    have hy₂n₁ : cfg.sources cj ≤ cfg.sources ci + (cfg.targets ci - cfg.sources ci) := by omega
+    exact northThenEast_not_NI hm hy₁n₂ hy₂n₁ hpair
+  · -- m = 0 case: NonIntersecting final condition contradicts wellFormed
+    push_neg at hm
+    simp only [NonIntersecting] at hpair
+    obtain ⟨_, h_final⟩ := hpair
+    have hm0 : cfg.m = 0 := by omega
+    rw [hm0] at h_final
+    simp only [colEntry] at h_final
+    have h_ci := cfg.source_le_target ci
+    have h_cj := cfg.source_le_target cj
+    rcases h_final with h | h <;> omega
 
 /-- The signed sum over cancellable (non-NI) tagged tuples is zero,
     by the GV sign-reversing involution.

@@ -217,3 +217,55 @@ The self-inverse proof has this structure:
 
 ### Files Modified
 - `proofs/Proofs/BallotProblemOQ03OQ02.lean` (~+50 lines, northThenEast infrastructure)
+
+---
+
+## Session 2026-03-23 (researcher-1) - Membership Sorry PROVED
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 59)
+**Problem**: ballot-problem-oq-03-oq-02
+**Prior Status**: in-progress, ACT phase, 2 sorries (membership + self-inverse)
+
+### Work Done
+
+1. **PROVED `gvInvolution_membership`**: The GV involution image is cancellable.
+   - Added `cast_pathMN_val` helper lemma: cast between PathMN types with equal n
+     preserves the underlying list (proved via `subst hn; rfl`)
+   - Main proof structure:
+     (a) Extract `gvNewPerm = 1` from hypothesis (σ' = σ * swap(i,j) = 1)
+     (b) Show n parameters match: `targets(σ'(k)) - sources(k) = targets(k) - sources(k)`
+         via `congr 1; simp [hperm_eq]`
+     (c) Show `.val` of cast toPathTuple paths = northThenEastList via `cast_pathMN_val`
+     (d) Rewrite `hpair` to use northThenEastList directly
+     (e) Case split on m > 0:
+         - m > 0: apply `northThenEast_not_NI` with wellFormed conditions (omega for nat sub)
+         - m = 0: derive contradiction from `NonIntersecting` final condition
+           (colEntry = 0, sources ≤ targets from wellFormed, omega closes)
+
+2. **Reduced sorry count**: 2 → 1
+
+### Key Technical Discoveries
+- `cast` between PathMN subtypes preserves `.val` when the n parameter is propositionally
+  equal. Proved via `subst hn; rfl` (Lean 4 proof irrelevance makes cast on same type = id)
+- `northThenEast_not_NI` requires `hy₁n₂ : y₁ ≤ y₂ + n₂` not `y₁ ≤ targets(j)` — need
+  omega with `source_le_target` to bridge natural subtraction: `a + (b - a) ≥ c` from `c ≤ b`
+- m = 0 case handled separately: NonIntersecting final condition gives `targets < sources`
+  which contradicts wellFormed
+
+### Remaining Sorry
+1. **`cancellable_sum_eq_zero`** (1 sorry): Uses `Finset.sum_involution` which requires
+   self-inverse. Current `gvInvolutionFn` replaces ALL paths with northThenEast, so it's
+   NOT self-inverse (g(g(σ,P)) = (σ, NTE) ≠ (σ, P)).
+
+   **Required construction**: suffix-swap involution (~200 lines):
+   - Canonical crossing pair via Finset.min' on lex-ordered (c, y, i, j)
+   - Split PathMN at shared lattice point into prefix + suffix
+   - Join prefix_i ++ suffix_j → valid PathMN (correct type for new permutation)
+   - Self-inverse: double swap restores originals (prefixes preserved → same crossing found)
+
+   **Pre-existing blockers**: `take_at_column_entry` and `take_east_count_within_column`
+   have Mathlib compat errors (`Bool.false_eq_false` unknown, ~14 errors). These lemmas
+   ARE needed for the suffix-swap construction. Fix these first.
+
+### Files Modified
+- `proofs/Proofs/BallotProblemOQ03OQ02.lean` (+30 lines: cast_pathMN_val helper, membership proof)
