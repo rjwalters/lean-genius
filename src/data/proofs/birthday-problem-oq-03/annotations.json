@@ -84,6 +84,42 @@
     "prerequisites": ["Finset.one_lt_card", "Function.Injective"]
   },
   {
+    "id": "ann-bpoq03-complement",
+    "proofId": "birthday-problem-oq-03",
+    "range": { "startLine": 150, "endLine": 172 },
+    "type": "theorem",
+    "title": "Complement Characterization: Small Fibers ↔ Injective",
+    "content": "`no_kway_two_iff_injective` proves the complement of the classical recovery: all fibers have $< 2$ elements if and only if $f$ is injective. Forward: if all fibers are singletons or empty, then two people assigned to the same day would create a fiber of size $\\geq 2$, contradicting the hypothesis. Backward: injectivity means each day is assigned to at most one person, so every fiber has $\\leq 1$ element.\n\nThis complement form is essential for the probability framework: the 'safe' set `noKWaySet n d 2` is characterized as the set of injective functions, enabling the classical birthday probability formula $P(\\text{no collision}) = d^{\\underline{n}} / d^n$.",
+    "mathContext": "$(\\forall j,\\; |f^{-1}(j)| < 2) \\iff f \\text{ is injective}$\n\nThis is the complement of `hasKWay_two_iff_not_injective`: $\\neg(\\exists j,\\; |f^{-1}(j)| \\ge 2) \\iff \\neg\\neg\\text{Inj}(f)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["complement", "injectivity", "fiber singleton", "birthday probability"],
+    "prerequisites": ["Finset.one_lt_card", "Function.Injective"]
+  },
+  {
+    "id": "ann-bpoq03-trivial-cases",
+    "proofId": "birthday-problem-oq-03",
+    "range": { "startLine": 203, "endLine": 227 },
+    "type": "insight",
+    "title": "Edge Cases: k=0 and k=1 Validate the Definition",
+    "content": "Two edge cases validate that `HasKWay` is well-defined:\n\n`hasKWay_zero`: A 0-way coincidence is trivially satisfied (when $d > 0$), since every fiber has $\\geq 0$ elements. This confirms the definition handles the degenerate case correctly.\n\n`hasKWay_one_iff`: A 1-way coincidence for *all* assignments $f$ holds iff $n > 0$. Forward: if $n = 0$ then $f = \\text{Fin.elim0}$ and every fiber is empty. Backward: if $n > 0$ then person 0 exists and the fiber at $f(0)$ contains at least person 0. The proof uses `Fin.elim0` to handle the empty type and `Finset.one_le_card` for the existence witness.\n\nThese are 'smoke tests' for the formalization — trivial mathematically but important for catching definition errors.",
+    "mathContext": "$k = 0$: $\\text{HasKWay}(f, 0)$ always holds (for $d > 0$).\n$k = 1$: $(\\forall f,\\; \\text{HasKWay}(f, 1)) \\iff n > 0$.",
+    "significance": "context",
+    "relatedConcepts": ["edge case", "vacuous truth", "Fin.elim0", "well-definedness"],
+    "prerequisites": ["Nat.zero_le", "Finset.one_le_card"]
+  },
+  {
+    "id": "ann-bpoq03-counting-small",
+    "proofId": "birthday-problem-oq-03",
+    "range": { "startLine": 307, "endLine": 332 },
+    "type": "insight",
+    "title": "Counting Verification: Small Population Cases",
+    "content": "Three theorems verify the probability framework against trivially checkable cases:\n\n`noKWaySet_one_person`: With 1 person and any number of days, $\\text{noKWaySet}(1, d, 2) = \\text{univ}$ — no pairwise collision is possible. The proof shows every fiber has $\\leq 1$ element via `Finset.card_le_one` and `Fin.ext`.\n\n`fiberAt_empty`: With 0 people, every fiber is empty (elements of $\\text{Fin}\\,0$ are eliminated by `Fin.elim0`).\n\n`noKWaySet_zero_people`: With 0 people and $k > 0$, $\\text{noKWaySet}(0, d, k) = \\text{univ}$ — all assignments avoid k-way coincidences since all fibers are empty.\n\nThese serve as regression tests: any definition error in `noKWaySet` or `fiberAt` would cause these to fail.",
+    "mathContext": "$n = 1 \\implies P(\\text{2-way}) = 0$ (one person cannot collide with themselves).\n$n = 0 \\implies P(\\text{k-way}) = 0$ for $k > 0$ (no people, no coincidences).",
+    "significance": "context",
+    "relatedConcepts": ["verification", "ground truth", "edge case", "regression test"],
+    "prerequisites": ["Finset.card_le_one", "Fin.elim0"]
+  },
+  {
     "id": "ann-bpoq03-monotonicity",
     "proofId": "birthday-problem-oq-03",
     "range": { "startLine": 184, "endLine": 193 },

@@ -67,13 +67,14 @@
   "overview": {
     "historicalContext": "The birthday problem, first stated by Richard von Mises in *Über Aufteilungs- und Besetzungswahrscheinlichkeiten* (1939), asks how many people are needed for a >50% chance of a shared birthday. The answer — just 23 — is famously counterintuitive and became a staple of probability pedagogy.\n\nThe natural generalization to k-way coincidences asks: when do k people share a birthday? This connects to the classical occupancy problem in combinatorics, studied by Flajolet, Gardy, and Thimonier (1992) using analytic combinatorics, and by Wendl (2003) in the context of DNA sequence assembly. The threshold for a k-way collision scales roughly as $d^{(k-1)/k} \\cdot (k!)^{1/k}$: for $d = 365$ days, $k=2$ needs ~23 people, $k=3$ needs ~88, and $k=4$ needs ~187.\n\nThe generalized pigeonhole principle underlying this formalization was first explicitly formulated by Dirichlet (1834) as the *Schubfachprinzip* (drawer principle). The k-way version — if $n > (k-1)d$ items are placed in $d$ containers, some container holds $\\geq k$ items — is a straightforward extension that appears in virtually every combinatorics textbook. Applications range from hash table collision analysis in computer science to the coupon collector's problem and urn models in probability.",
     "problemStatement": "Formalize k-way birthday coincidences: given n people and d days, prove the generalized pigeonhole bound (n > (k-1)*d implies a k-way coincidence is certain), and show the k=2 case recovers the classical birthday problem.",
-    "proofStrategy": "The proof uses fiber decomposition: each assignment f : Fin n -> Fin d partitions people into fibers by day. The fiber sizes sum to n (partition of unity). The generalized pigeonhole follows by contradiction: if every fiber has < k elements, then n <= (k-1)*d. The classical recovery connects 2-way coincidences to non-injectivity by showing fibers of size >= 2 correspond to collisions.",
+    "proofStrategy": "The proof architecture has three layers. **Layer 1 (Structural foundation)**: Model birthday assignments as functions $f : \\text{Fin}\\,n \\to \\text{Fin}\\,d$ and define fibers $f^{-1}(j)$ via `Finset.filter`. Prove the partition-of-unity identity $\\sum_j |f^{-1}(j)| = n$ using `Finset.card_eq_sum_card_fiberwise`. **Layer 2 (Combinatorial core)**: The generalized pigeonhole follows by contradiction — if every fiber has $< k$ elements then $n \\leq (k-1)d$, contradicting the hypothesis. Classical recovery shows `HasKWay f 2 ↔ ¬Injective f` by extracting distinct witnesses from fibers of size $\\geq 2$ via `Finset.one_lt_card`. Monotonicity is a direct `le_trans`. **Layer 3 (Probabilistic framework)**: Define `noKWaySet` (safe assignments) and `probKWay` via complementary counting. The pigeonhole bound lifts to $P = 1$, the population bound gives $P = 0$, and set containment gives monotonicity in $k$. The $k=2$ case connects to the classical formula by identifying safe assignments with injections.",
     "keyInsights": [
       "The fiber decomposition (using Finset.card_eq_sum_card_fiberwise) is the key structural tool: it converts the global constraint on n into local constraints on each day",
       "The generalized pigeonhole follows from a simple averaging argument: n people in d bins with each bin having < k means n < k*d",
       "The k=2 classical recovery uses Finset.one_lt_card to extract two distinct elements from a fiber, connecting fiber size >= 2 to non-injectivity",
       "Monotonicity in k is immediate: if some day has >= k people, it certainly has >= k' people for k' <= k",
-      "The probability monotonicity follows from set containment: fewer safe assignments for smaller k means higher collision probability"
+      "The probability monotonicity follows from set containment: fewer safe assignments for smaller k means higher collision probability",
+      "The three-regime structure ($P=0$ for $n<k$, $0<P<1$ for $k \\leq n \\leq (k-1)d$, $P=1$ for $n>(k-1)d$) completely brackets the probability and shows the interesting behavior lies in the intermediate regime where the exact computation requires counting bounded-multiplicity functions"
     ],
     "prerequisites": [
       "Finite sets and cardinality (Finset, Finset.card)",
@@ -88,14 +89,14 @@
       "title": "Core Definitions",
       "startLine": 34,
       "endLine": 47,
-      "summary": "Defines fiberAt (the set of people assigned to a day) and HasKWay (some day has at least k people)."
+      "summary": "Defines `fiberAt f j` (the preimage fiber — the set of people assigned to day j) and `HasKWay f k` (existential predicate: some day has ≥ k people). These two definitions drive the entire formalization."
     },
     {
       "id": "fiber-partition",
       "title": "Fiber Partition of Unity",
       "startLine": 49,
       "endLine": 63,
-      "summary": "Proves fiber sizes sum to n using Finset.card_eq_sum_card_fiberwise."
+      "summary": "Proves the partition-of-unity identity: fiber sizes sum to n. Uses `Finset.card_eq_sum_card_fiberwise` — the structural foundation for the generalized pigeonhole argument."
     },
     {
       "id": "pigeonhole",
@@ -151,7 +152,7 @@
       "title": "Population Bounds",
       "startLine": 332,
       "endLine": 366,
-      "summary": "Proves that n < k people cannot have a k-way coincidence, and the probability is 0."
+      "summary": "Proves that n < k people cannot have a k-way coincidence (fiber sizes are bounded by n), and the probability is exactly 0. Together with the pigeonhole regime (P=1), this brackets the probability into three regimes."
     }
   ],
   "conclusion": {
