@@ -73,8 +73,34 @@ def pathGraph (n : ℕ) : SimpleGraph (Fin n) where
 /-- A star on n+1 vertices: one center adjacent to n leaves. -/
 def starGraph (n : ℕ) : SimpleGraph (Fin (n + 1)) where
   Adj i j := (i.val = 0 ∧ j.val ≠ 0) ∨ (j.val = 0 ∧ i.val ≠ 0)
-  symm := by intro i j h; cases h with | inl h => right; exact ⟨h.1 ▸ rfl, h.2 ▸ (by omega)⟩ | inr h => left; exact ⟨h.1 ▸ rfl, h.2 ▸ (by omega)⟩
+  symm := by intro i j h; cases h with | inl h => right; exact h | inr h => left; exact h
   loopless := by intro i h; cases h with | inl h => exact h.2 h.1 | inr h => exact h.2 h.1
+
+/-- Paths are triangle-free: no three vertices in a path are pairwise adjacent,
+    since adjacent vertices differ by 1 and no three values can pairwise differ by 1. -/
+theorem pathGraph_isTriangleFree {n : ℕ} : (pathGraph n).IsTriangleFree := by
+  intro t ⟨hc, hcard⟩
+  obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := Finset.card_eq_three.mp hcard
+  have h1 : (pathGraph n).Adj a b := hc (by simp) (by simp) hab
+  have h2 : (pathGraph n).Adj a c := hc (by simp) (by simp) hac
+  have h3 : (pathGraph n).Adj b c := hc (by simp) (by simp) hbc
+  change (a.val + 1 = b.val ∨ b.val + 1 = a.val) at h1
+  change (a.val + 1 = c.val ∨ c.val + 1 = a.val) at h2
+  change (b.val + 1 = c.val ∨ c.val + 1 = b.val) at h3
+  omega
+
+/-- Stars are triangle-free: in a star, only the center (vertex 0) has edges,
+    so any two non-center vertices are non-adjacent, preventing triangles. -/
+theorem starGraph_isTriangleFree {n : ℕ} : (starGraph n).IsTriangleFree := by
+  intro t ⟨hc, hcard⟩
+  obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := Finset.card_eq_three.mp hcard
+  have h1 : (starGraph n).Adj a b := hc (by simp) (by simp) hab
+  have h2 : (starGraph n).Adj a c := hc (by simp) (by simp) hac
+  have h3 : (starGraph n).Adj b c := hc (by simp) (by simp) hbc
+  change ((a.val = 0 ∧ b.val ≠ 0) ∨ (b.val = 0 ∧ a.val ≠ 0)) at h1
+  change ((a.val = 0 ∧ c.val ≠ 0) ∨ (c.val = 0 ∧ a.val ≠ 0)) at h2
+  change ((b.val = 0 ∧ c.val ≠ 0) ∨ (c.val = 0 ∧ b.val ≠ 0)) at h3
+  omega
 
 /-- **Paths**: Triangle-free graphs with infinite chromatic number contain
     paths of every length. This follows from Ramsey-type arguments. -/
@@ -135,6 +161,7 @@ theorem finite_implies_infinite_version
     (n : ℕ) (T : FiniteTree n) :
     G.HasInducedCopy T.graph := by
   obtain ⟨N, hN⟩ := hfin n T
-  -- The infinite chromatic number exceeds any finite bound
-  -- Full proof requires compactness argument beyond Lean's current scope
+  -- NOTE: A correct proof from hfin requires De Bruijn–Erdős compactness:
+  -- infinite χ(G) implies a finite subgraph with χ > N, to which hN applies.
+  -- For now we use the full conjecture axiom (which is stronger than hfin).
   exact gyarfas_conjecture G htf hinf n T
