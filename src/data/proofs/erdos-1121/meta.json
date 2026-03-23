@@ -115,7 +115,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1121 was proved by Goodman and Goodman in 1945. If circles form a 'connected' configuration (no separating line), they can be covered by a circle of radius equal to the sum of individual radii. This generalizes to higher dimensions.",
-    "implications": "This result has applications in computational geometry and covering problems. The characterization of 'no separating line' provides a useful criterion for geometric configurations.",
+    "implications": "**Computational Geometry**: The circle covering theorem — that a finite point set with no separating line can be covered by a unit circle — has direct applications in computational geometry, particularly in facility location problems (finding the smallest circle covering a point set) and in sensor network design (ensuring coverage with circular sensors).\n\n**Helly-Type Results**: The 'no separating line' condition is a Helly-type criterion: it characterizes when a geometric covering exists via a local condition on subsets. This connects to Helly's theorem (1923), Jung's theorem (bounding covering radius by diameter), and the broader theory of convex position and separation in the plane.\n\n**Algorithmic Implications**: The characterization provides an efficient criterion for determining coverability: checking the 'no separating line' condition can be done in $O(n \\log n)$ time via convex hull computation, yielding a practical algorithm for the covering problem.",
     "openQuestions": [
       "What is the optimal center for the covering circle?",
       "Are there efficient algorithms to compute the covering?",

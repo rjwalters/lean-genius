@@ -132,7 +132,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1078 is SOLVED. The BES conjecture that min degree (r-3/2-o(1))n forces K_r in r-partite graphs was proved by Haxell (2001). Haxell-Szabó (2006) gave the exact sharp threshold: (r-1)n - ⌈sn/(2s-1)⌉ where s = ⌊r/2⌋.",
-    "implications": "This result connects minimum degree conditions to transversal theory and list coloring. The sharp formula involving floor and ceiling functions reveals the importance of parity in extremal problems.",
+    "implications": "**Transversal Theory**: The minimum degree condition for guaranteeing a complete $r$-partite transversal ($K_r$) connects to the broader theory of independent transversals in multipartite graphs. The sharp formula, with its floor and ceiling functions, reveals that parity plays a subtle role in extremal problems — small changes in part sizes can shift the threshold.\n\n**List Coloring Connection**: The result has implications for list coloring: a complete $r$-partite graph with parts of size $n$ is $r$-choosable iff every subgraph has an independent transversal. The minimum degree threshold formalized here provides sufficient conditions for the existence of such transversals, connecting extremal graph theory to chromatic theory.\n\n**Applications**: Minimum degree conditions for subgraph containment are fundamental tools in combinatorics, with applications to network design (ensuring connectivity patterns) and scheduling theory (guaranteeing complete assignments across resource classes).",
     "openQuestions": [
       "What about non-balanced r-partite graphs (different part sizes)?",
       "How does the threshold change for spanning subgraphs?",

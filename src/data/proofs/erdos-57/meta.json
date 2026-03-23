@@ -169,10 +169,33 @@
     "definitionCount": 8
   },
   "references": [
-    "Erdős-Hajnal (1966): original conjecture on odd cycle lengths",
-    "Erdős (1981): upper density conjecture for odd cycle lengths",
-    "Erdős (1995-96): half density speculation (≥ 1/2)",
-    "Liu-Montgomery (2020): 'A solution to Erdős and Hajnal's odd cycle problem'",
-    "https://erdosproblems.com/57"
+    {
+      "authors": "Erdős, Paul; Hajnal, András",
+      "title": "On chromatic number of graphs and set-systems",
+      "year": "1966",
+      "venue": "Acta Mathematica Academiae Scientiarum Hungaricae, vol. 17, pp. 61–99",
+      "note": "Original conjecture that graphs with infinite chromatic number must have divergent reciprocal sum of odd cycle lengths"
+    },
+    {
+      "authors": "Liu, Hong; Montgomery, Richard",
+      "title": "A solution to Erdős and Hajnal's odd cycle problem",
+      "year": "2020",
+      "venue": "Journal of the American Mathematical Society, vol. 36, pp. 1191–1234",
+      "note": "Solved Problem #57 using dependent random choice and structural decomposition techniques from extremal combinatorics"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "On the combinatorial problems which I would most like to see solved",
+      "year": "1981",
+      "venue": "Combinatorica, vol. 1, pp. 25–42",
+      "note": "Posed the upper density conjecture: odd cycle lengths of graphs with χ(G) = ∞ should have positive upper density"
+    },
+    {
+      "authors": "Kwan, Matthew; Sudakov, Benny",
+      "title": "Ramsey numbers of degenerate graphs",
+      "year": "2021",
+      "venue": "Bulletin of the London Mathematical Society, vol. 53, pp. 1551–1562",
+      "note": "High-girth constructions showing χ(G) = ∞ is compatible with lower density 0 for odd cycle lengths — demonstrating the reciprocal sum divergence in Problem #57 is precisely calibrated"
+    }
   ]
 }

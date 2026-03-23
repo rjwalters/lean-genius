@@ -196,7 +196,7 @@
     },
     "type": "technique",
     "title": "Instantiating Non-Solvability for S₅ and S₆",
-    "content": "`s5_not_solvable` and `s6_not_solvable` specialize the general `symmetric_group_not_solvable` to $n = 5$ and $n = 6$. The proofs are one-liners: for $n = 5$, the bound $5 \\leq 5$ is `le_rfl`; for $n = 6$, it is discharged by `omega`. The simplicity of $A_5$ (`a5_is_simple`) is stated separately as the structural reason the derived series of $S_5$ stalls.\n\nThese instantiations make the abstract result concrete: $S_5$ is the specific group relevant to quintic polynomials, while $S_6$ confirms the pattern extends to all higher degrees. Notably, $S_6$ is the unique symmetric group possessing an outer automorphism ($|\\text{Out}(S_6)| = 2$), arising from the exceptional isomorphism $\\text{PSL}(2, \\mathbb{F}_5) \\cong A_5 \\cong \\text{Icosahedral group}$ — a coincidence that connects the quintic to the icosahedron (Klein, 1884). Despite this exceptional structure, $S_6$'s non-solvability follows from the same mechanism as $S_5$: $A_6$ is simple.",
+    "content": "`s5_not_solvable` and `s6_not_solvable` specialize the general `symmetric_group_not_solvable` to $n = 5$ and $n = 6$. The proofs are one-liners: for $n = 5$, the bound $5 \\leq 5$ is `le_rfl`; for $n = 6$, it is discharged by `omega`. The simplicity of $A_5$ (`a5_is_simple`) is stated separately as the structural reason the derived series of $S_5$ stalls.\n\nThese instantiations make the abstract result concrete: $S_5$ is the specific group relevant to quintic polynomials, while $S_6$ confirms the pattern extends to all higher degrees.",
     "mathContext": "$S_5 = \\text{Equiv.Perm}(\\text{Fin}\\ 5)$, $|S_5| = 120$. The derived series: $S_5 \\triangleright A_5 \\triangleright A_5 \\triangleright \\cdots$ (stuck because $[A_5, A_5] = A_5$, i.e., $A_5$ is perfect). Compare $S_4 \\triangleright A_4 \\triangleright V_4 \\triangleright \\mathbb{Z}/2 \\triangleright \\{e\\}$ which terminates.",
     "significance": "key",
     "prerequisites": [
@@ -232,8 +232,7 @@
       "alternating group",
       "simple group",
       "normal subgroup",
-      "cycle type",
-      "classification of finite simple groups"
+      "cycle type"
     ]
   },
   {

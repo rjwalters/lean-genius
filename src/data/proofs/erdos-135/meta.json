@@ -108,7 +108,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #135 is DISPROVED. Tao (2024) constructed n-point sets with the five-distance property but only O(n²/√(log n)) distinct distances, disproving the Ω(n²) conjecture.",
-    "implications": "Local constraints on 4-tuples don't imply global distance diversity. The √(log n) factor matches Guth-Katz bounds, suggesting this is optimal.",
+    "implications": "**Distinct Distances and the Guth-Katz Breakthrough**: The problem connects to the Erdős distinct distances conjecture, resolved by Guth and Katz (2015) who proved $n$ points in the plane determine $\\Omega(n/\\log n)$ distinct distances using algebraic methods (polynomial partitioning). The $\\sqrt{\\log n}$ factor appearing in this problem's bounds echoes the logarithmic correction in Guth-Katz, suggesting shared structural barriers.\n\n**Local-Global Phenomena**: The key insight — that local constraints on 4-point configurations don't guarantee global distance diversity — illustrates a fundamental theme in combinatorial geometry: local regularity can coexist with global structure. This parallels the Szemerédi regularity lemma's distinction between local pseudorandomness and global patterns.\n\n**Incidence Geometry**: The problem sits within the broader framework of incidence geometry, connecting to the Szemerédi-Trotter theorem on point-line incidences and the Elekes-Rónyai theorem on expanding polynomials. These algebraic-geometric tools provide the state-of-the-art bounds for distance problems.",
     "openQuestions": [
       "What is the exact optimal bound for five-distance sets?",
       "Can the construction be made deterministic?",

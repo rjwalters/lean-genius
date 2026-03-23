@@ -81,7 +81,7 @@
   ],
   "conclusion": {
     "summary": "The formalization captures Erdős Problem 1073 on composites dividing factorial plus one, Wilson's theorem connection, known examples, and the subpolynomial growth conjecture. 0 sorries.",
-    "implications": "Resolution would quantify how rare the Wilson-like property is among composites.",
+    "implications": "**Wilson's Theorem and Composites**: Wilson's theorem states $(p-1)! \\equiv -1 \\pmod{p}$ for primes $p$, meaning $p \\mid (p-1)! + 1$. This problem asks about the complementary question: which *composite* numbers $n$ divide $n! + 1$ (or more generally, how rarely composites exhibit Wilson-like divisibility). Resolution would quantify the rarity of this property among composites.\n\n**Connections to Factorial Number Theory**: The distribution of composites dividing $n! + 1$ connects to the study of Wilson quotients $W_p = ((p-1)! + 1)/p$ for primes, Korselt's criterion for Carmichael numbers, and the broader question of how factorials interact with divisibility. The problem also relates to the search for Wilson primes (primes where $p^2 \\mid (p-1)! + 1$), of which only three are known: 5, 13, and 563.",
     "openQuestions": [
       "Is A(x) ≤ x^{o(1)}?",
       "Are there infinitely many such composites?",
