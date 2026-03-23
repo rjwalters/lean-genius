@@ -171,10 +171,22 @@ the diameter is at least 1 (provided n ≥ 2).
 theorem diam_ge_one (S : Finset (EuclideanSpace ℝ (Fin 2)))
     (hint : hasIntegerDistances S) (h2 : S.card ≥ 2) :
     diam S ≥ 1 := by
-  -- Since S has ≥ 2 points, any pair has integer distance ≥ 1.
-  -- The diameter (max pairwise distance) is therefore ≥ 1.
-  -- This involves extracting elements from Finset and max' comparison.
-  sorry
+  -- Extract two distinct points from S
+  obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp (by omega : 1 < S.card)
+  -- Their distance is a positive integer ≥ 1
+  obtain ⟨k, hk_ge, hk_eq⟩ := hint a ha b hb hab
+  have hdist_ge1 : dist a b ≥ 1 := by rw [hk_eq]; exact_mod_cast hk_ge
+  have hdist_pos : dist a b > 0 := by linarith
+  -- dist a b ∈ pairwiseDistances S
+  have hmem : dist a b ∈ pairwiseDistances S := by
+    unfold pairwiseDistances
+    exact Finset.mem_filter.mpr
+      ⟨Finset.mem_image.mpr ⟨(a, b), Finset.mem_offDiag.mpr ⟨ha, hb, hab⟩, rfl⟩, hdist_pos⟩
+  -- diam S = max' (pairwiseDistances S) ... ≥ dist a b ≥ 1
+  have hne : (pairwiseDistances S).Nonempty := ⟨_, hmem⟩
+  unfold diam
+  rw [dif_pos hne]
+  exact le_trans hdist_ge1 (Finset.le_max' _ _ hmem)
 
 /--
 **Kanold's Bound**
@@ -335,9 +347,29 @@ n/log n = o(n) as n → ∞.
 
 For any ε > 0, we have n/log n < εn for sufficiently large n.
 -/
-axiom n_over_log_sublinear :
-  ∀ (ε : ℝ), ε > 0 → ∀ᶠ n : ℕ in atTop,
-    (n : ℝ) / Real.log n < ε * n
+theorem n_over_log_sublinear :
+    ∀ (ε : ℝ), ε > 0 → ∀ᶠ n : ℕ in atTop,
+      (n : ℝ) / Real.log n < ε * n := by
+  intro ε hε
+  -- log n → ∞ for natural n
+  have hlog_nat : Tendsto (fun n : ℕ => Real.log (n : ℝ)) atTop atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  -- Eventually log n > 1/ε (since log n → ∞)
+  filter_upwards [hlog_nat.eventually (eventually_gt_atTop (1 / ε)),
+                   Filter.eventually_ge_atTop 3] with n hlog_n hn
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by positivity
+  have hlog_pos : 0 < Real.log (n : ℝ) := by
+    calc 0 < 1 / ε := by positivity
+      _ < Real.log (n : ℝ) := hlog_n
+  -- log n > 1/ε implies ε * log n > 1, so ε * n * log n > n
+  rw [div_lt_iff₀ hlog_pos]
+  have hprod : 1 < ε * Real.log (n : ℝ) := by
+    have key : ε * (1 / ε) < ε * Real.log (n : ℝ) := mul_lt_mul_of_pos_left hlog_n hε
+    rw [one_div, mul_inv_cancel₀ (ne_of_gt hε)] at key
+    exact key
+  calc (n : ℝ) = (n : ℝ) * 1 := (mul_one _).symm
+    _ < (n : ℝ) * (ε * Real.log (n : ℝ)) := mul_lt_mul_of_pos_left hprod hn_pos
+    _ = ε * (n : ℝ) * Real.log (n : ℝ) := by ring
 
 /-
 ## Historical Development
