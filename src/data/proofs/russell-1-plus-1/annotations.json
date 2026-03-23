@@ -79,7 +79,7 @@
       "startLine": 59,
       "endLine": 61
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Main Theorem",
     "content": "Here it is—the theorem that launched a thousand memes. We claim that $1 + 1 = 2$, or more precisely, that `one + one = two` where these are our defined Peano naturals.\n\nThe proof will show that both sides compute to the same thing.",
     "mathContext": "$S(0) + S(0) = S(S(0))$",
@@ -100,7 +100,7 @@
       "startLine": 59,
       "endLine": 61
     },
-    "type": "tactic",
+    "type": "technique",
     "title": "Unfolding the Computation",
     "content": "The `unfold` tactic expands definitions, revealing the computation:\n\n1. `one + one` = `succ zero + succ zero`\n2. By the recursive case of `add`: `succ (succ zero + zero)`\n3. By the base case of `add`: `succ (succ zero)`\n4. Which is exactly `two`\n\nEach step is just applying a definition—no axioms, no magic, just computation. The `rfl` at the end confirms that both sides are definitionally equal.",
     "mathContext": "$S(0) + S(0) = S(S(0) + 0) = S(S(0)) = 2$",
@@ -141,7 +141,7 @@
       "startLine": 72,
       "endLine": 80
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Right Identity",
     "content": "Zero is a right identity for addition: $n + 0 = n$. This follows immediately from the definition of `add`—it's the base case! The proof is `rfl` because `n + zero` *reduces to* `n` by definition.",
     "mathContext": "$\\forall n \\in \\mathbb{N}: n + 0 = n$",
@@ -158,7 +158,7 @@
       "startLine": 72,
       "endLine": 80
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Left Identity (Requires Induction)",
     "content": "Zero is also a left identity: $0 + n = n$. But this requires **induction**! Why?\n\nOur addition is defined by recursion on the *second* argument, so `zero + n` doesn't immediately reduce. We must prove it for all `n` by induction:\n\n- **Base case:** `zero + zero = zero` ✓ (by definition)\n- **Inductive step:** If `zero + n = n`, then `zero + succ n = succ (zero + n) = succ n` ✓",
     "mathContext": "$\\forall n \\in \\mathbb{N}: 0 + n = n$",
@@ -178,7 +178,7 @@
       "startLine": 90,
       "endLine": 90
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Commutativity of Addition",
     "content": "Addition is commutative: $n + m = m + n$. This requires induction and uses both the `zero_add` and `succ_add` lemmas as stepping stones.\n\nThe proof goes by induction on `n`:\n- When $n = 0$: Use `zero_add` to show $0 + m = m = m + 0$\n- When $n = S(k)$: Use `succ_add` and the inductive hypothesis",
     "mathContext": "$\\forall m, n \\in \\mathbb{N}: m + n = n + m$",
@@ -198,7 +198,7 @@
       "startLine": 93,
       "endLine": 98
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Associativity of Addition",
     "content": "Addition is associative: $(a + b) + c = a + (b + c)$. With commutativity, this makes $(\\mathbb{N}, +)$ a commutative monoid.\n\nThe proof is by induction on `c`, which matches how addition is defined (recursion on the second argument). Both base case and inductive step reduce to definitional equality after applying the definition of `add`.",
     "mathContext": "$\\forall a, b, c \\in \\mathbb{N}: (a + b) + c = a + (b + c)$",
@@ -268,7 +268,7 @@
       "startLine": 83,
       "endLine": 83
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Successor Distributes Left",
     "content": "This lemma shows that $S(n) + m = S(n + m)$—the successor can be 'factored out' from the left argument.\n\nThis is NOT definitionally true (unlike `add_succ`) because our `add` recurses on the *right* argument. We need induction on `m` to prove it.\n\nThis asymmetry—one direction is trivial, the other requires proof—reflects the inherent asymmetry in our recursive definition.",
     "mathContext": "$S(n) + m = S(n + m)$",

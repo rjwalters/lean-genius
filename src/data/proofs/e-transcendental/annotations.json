@@ -50,7 +50,7 @@
       "startLine": 71,
       "endLine": 83
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Properties of e",
     "content": "**Basic Bounds**:\n\n$$e > 0$$\n(exponential is always positive)\n\n$$e > 1$$\n($\\exp$ is increasing and $\\exp(0) = 1$)\n\n$$e < 3$$\nUsing Mathlib's `exp_one_lt_d9`: $e < 2.7182818286$\n\n**Value**: $e \\approx 2.718281828459...$",
     "mathContext": "$0 < e < 3$. The bounds use `Real.exp_pos` (positivity of $\\exp$), `one_lt_exp_iff` ($\\exp(x) > 1$ iff $x > 0$), and Mathlib's 9-decimal approximation `exp_one_lt_d9`.",
@@ -95,7 +95,7 @@
       "startLine": 134,
       "endLine": 156
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Main Theorem (Axiomatized)",
     "content": "**Main Axiom**:\n$$\\text{Transcendental } \\mathbb{Z} \\ (\\exp 1)$$\n\n**Requirements for full proof**:\n1. Polynomial arithmetic over $\\mathbb{Z}$\n2. Integration by parts for polynomial $\\times$ exponential\n3. Divisibility analysis mod $p$\n4. Asymptotic estimates\n\n**Equivalence**:\n$$\\text{Transcendental } \\mathbb{Z} \\ e \\Leftrightarrow \\text{Transcendental } \\mathbb{Q} \\ e$$\n(Clear denominators to convert $\\mathbb{Q}$-polynomial to $\\mathbb{Z}$-polynomial)",
     "mathContext": "`Transcendental ℤ (Real.exp 1)` — axiomatized because the Lindemann-Weierstrass theorem (the standard generalization) is not yet in Mathlib. The $\\mathbb{Z} \\leftrightarrow \\mathbb{Q}$ equivalence follows from clearing denominators.",
@@ -117,7 +117,7 @@
       "startLine": 162,
       "endLine": 200
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Corollaries: Irrationality and Closure Properties",
     "content": "**$e$ is irrational**:\n- If $e = p/q$, then $e$ is root of $qX - p$\n- This makes $e$ algebraic — contradiction!\n\n**$e^n$ is transcendental** ($n \\neq 0$):\n- If $P(e^n) = 0$, then $Q(X) = P(X^n)$ has $e$ as root\n- Contradicts $e$ transcendental\n\n**$1/e$ is transcendental**:\n- Reciprocal polynomial argument: $Q(X) = X^n \\cdot P(1/X)$\n\n**$e + 1$ is transcendental**:\n- Shift polynomial: $Q(X) = P(X + 1)$",
     "mathContext": "Each corollary follows from the **polynomial substitution** principle: if $\\alpha$ is transcendental and $\\phi$ is a polynomial automorphism of $\\overline{\\mathbb{Q}}(X)$, then $\\phi(\\alpha)$ is also transcendental.",
