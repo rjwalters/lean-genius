@@ -51,16 +51,17 @@
       "endLine": 35
     },
     "type": "context",
-    "title": "Namespace Declaration",
-    "content": "The `AbelRuffini` namespace scopes all theorems in the file. All theorem names are prefixed with `AbelRuffini.` when referenced externally (e.g., `AbelRuffini.galois_bridge`). The namespace is closed at line 185 with `end AbelRuffini`.",
-    "mathContext": "Lean 4 namespaces organize declarations hierarchically. The `AbelRuffini` namespace groups `galois_bridge`, `symmetric_group_not_solvable`, `not_solvable_by_rad_of_not_solvable_gal`, etc. under a common prefix.",
+    "title": "Namespace and Proof Architecture",
+    "content": "The `AbelRuffini` namespace scopes the entire proof development into a seven-part logical structure that mirrors the mathematical argument:\n\n- **Part I** (Solvable by Radicals): Definitions — `IsSolvableByRad` and field variables\n- **Part II** (Galois Bridge): radical solvability implies solvable Galois group\n- **Part III** (Non-Solvability): $S_n$ not solvable for $n \\geq 5$, $A_5$ simple\n- **Part IV** (Small Groups): $S_0, S_1$ are solvable — contrast with the threshold\n- **Part V** (Abel-Ruffini): Synthesis via contrapositive\n- **Parts VI–VII** (Commentary): Why degree 5, historical significance\n\nThis organization separates the field-theoretic ingredient (Part II) from the group-theoretic ingredient (Part III) before combining them (Part V), reflecting how modern algebra textbooks present the proof as a composition of independent modules. All theorem names are prefixed with `AbelRuffini.` when referenced externally.",
+    "mathContext": "The namespace groups nine declarations: two core theorems (`galois_bridge`, `not_solvable_by_rad_of_not_solvable_gal`), four group-theoretic results (`symmetric_group_not_solvable`, `s5_not_solvable`, `s6_not_solvable`, `a5_is_simple`), two solvability instances (`s0_solvable`, `s1_solvable`), and one existence witness (`exists_quintic`). The modular structure enables each component to be independently verified and reused.",
     "significance": "context",
     "prerequisites": [
       "Lean 4 namespace system"
     ],
     "relatedConcepts": [
       "Lean 4 namespaces",
-      "module organization"
+      "module organization",
+      "proof architecture"
     ]
   },
   {
@@ -72,18 +73,20 @@
     },
     "type": "definition",
     "title": "Solvable by Radicals and Field Variables",
-    "content": "An element α is 'solvable by radicals' if it can be built from the base field using field operations and nth roots. The quadratic formula is an example: $x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$\n\nMathlib defines this inductively via `IsSolvableByRad`, with constructors for: base field elements, arithmetic operations, and radical extraction.",
-    "mathContext": "`solvableByRad F E` is the intermediate field of all elements solvable by radicals over F.\n\nExample: $\\sqrt{1 + \\sqrt{2}}$ is built by: 2 ∈ ℚ, then √2, then 1+√2, then √(1+√2).",
+    "content": "An element α is 'solvable by radicals' if it can be built from the base field using field operations and nth roots. The quadratic formula is an example: $x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$\n\nMathlib defines this inductively via `IsSolvableByRad`, with constructors for: base field elements, arithmetic operations (+, -, ×, ÷), and radical extraction ($\\alpha \\mapsto \\alpha^{1/n}$). The intermediate field `solvableByRad F E` is the largest subfield of $E$ whose elements are all solvable by radicals over $F$.\n\nThe variable declarations introduce a universe-polymorphic framework: `F` is an arbitrary field and `E/F` is a field extension with `[Algebra F E]`. This generality means the development applies to any characteristic, though the classical Abel-Ruffini theorem is typically stated over $\\mathbb{Q}$.",
+    "mathContext": "`solvableByRad F E` is the intermediate field of all elements solvable by radicals over $F$. Formally, $\\alpha \\in \\text{solvableByRad}(F, E)$ iff there exists a radical tower $F = K_0 \\subset K_1 \\subset \\cdots \\subset K_m$ with $\\alpha \\in K_m$ and each $K_{i+1} = K_i(\\beta_i)$ where $\\beta_i^{n_i} \\in K_i$.\n\nExample: $\\sqrt{1 + \\sqrt{2}}$ is built by the tower $\\mathbb{Q} \\subset \\mathbb{Q}(\\sqrt{2}) \\subset \\mathbb{Q}(\\sqrt{2}, \\sqrt{1+\\sqrt{2}})$.",
     "significance": "critical",
     "prerequisites": [
       "field extensions",
       "nth roots",
-      "IsSolvableByRad"
+      "IsSolvableByRad",
+      "radical tower"
     ],
     "relatedConcepts": [
       "radical extension",
       "intermediate field",
-      "inductive definition"
+      "inductive definition",
+      "Kummer theory"
     ]
   },
   {
@@ -95,9 +98,9 @@
     },
     "type": "context",
     "title": "Part II: The Galois-Theoretic Bridge",
-    "content": "This docstring introduces the central insight of the formalization: the connection between radical solvability (a field-theoretic property) and group solvability (a group-theoretic property). Galois's 1831 memoir established that these two notions correspond precisely.\n\nThe bridge is one-directional for the impossibility proof: solvable by radicals $\\Rightarrow$ solvable Galois group. The converse (solvable Galois group $\\Rightarrow$ solvable by radicals) also holds but is not needed here — only the contrapositive of the forward direction is used in `not_solvable_by_rad_of_not_solvable_gal`.",
+    "content": "This docstring introduces the central insight of the formalization: the connection between radical solvability (a field-theoretic property) and group solvability (a group-theoretic property). Galois's 1831 memoir established that these two notions correspond precisely.\n\nThe bridge is one-directional for the impossibility proof: solvable by radicals $\\Rightarrow$ solvable Galois group. The converse (solvable Galois group $\\Rightarrow$ solvable by radicals) also holds but is not needed here — only the contrapositive of the forward direction is used in `not_solvable_by_rad_of_not_solvable_gal`.\n\nNotably, this Galois-theoretic approach differs from Abel's original 1824 proof. Abel worked directly with the structure of radical expressions: he showed that any radical solution of a degree-$n$ polynomial can be written as a sum $x = p_0 + p_1 R^{1/m} + p_2 R^{2/m} + \\cdots + p_{m-1} R^{(m-1)/m}$ where the $p_i$ and $R$ involve nested radicals, and that the resulting permutation symmetries force inconsistencies for $n \\geq 5$. Abel never formulated the notion of a 'group' — that was Galois's contribution, which made the argument conceptually transparent and generalizable to characterize solvability for *any* polynomial, not just the generic one.",
     "mathContext": "Galois's correspondence: $\\text{IsSolvableByRad}\\,F\\,\\alpha \\Leftrightarrow \\text{IsSolvable}(\\text{Gal}(\\text{minpoly}_F(\\alpha)))$. The forward direction ($\\Rightarrow$) is `solvableByRad.isSolvable'`; the backward direction ($\\Leftarrow$) uses the primitive element theorem and Galois's constructive procedure for extracting radicals from a solvable tower of normal subgroups.",
-    "significance": "context",
+    "significance": "key",
     "prerequisites": [
       "Galois theory",
       "solvable groups",
@@ -106,7 +109,8 @@
     "relatedConcepts": [
       "Galois correspondence",
       "contrapositive reasoning",
-      "fundamental theorem of Galois theory"
+      "fundamental theorem of Galois theory",
+      "Abel's original proof"
     ]
   },
   {
@@ -237,8 +241,8 @@
     },
     "type": "insight",
     "title": "Solvable Small Symmetric Groups: The Other Side of the Threshold",
-    "content": "$S_0$ and $S_1$ are trivially solvable (both are the trivial group of order 1), and Lean's typeclass inference (`inferInstance`) finds their `IsSolvable` instances automatically. These contrast with $S_5$ and beyond, highlighting the sharp boundary.\n\nHistorically, $S_2$ (quadratic formula, ~2000 BCE), $S_3$ (Cardano's cubic formula, 1545), and $S_4$ (Ferrari's quartic formula, 1545) are all solvable — each corresponding to a classical radical formula. The file notes that Mathlib did not yet provide `IsSolvable` instances for $S_2, S_3, S_4$ at time of writing.",
-    "mathContext": "$S_0 \\cong S_1 \\cong \\{e\\}$ (trivial). $S_2 \\cong \\mathbb{Z}/2$ (abelian). $S_3$: derived series $S_3 \\triangleright A_3 \\cong \\mathbb{Z}/3 \\triangleright \\{e\\}$. $S_4$: derived series $S_4 \\triangleright A_4 \\triangleright V_4 \\triangleright \\mathbb{Z}/2 \\triangleright \\{e\\}$, where $V_4 = \\{e,(12)(34),(13)(24),(14)(23)\\}$ is the Klein four-group.",
+    "content": "$S_0$ and $S_1$ are trivially solvable (both are the trivial group of order 1), and Lean's typeclass inference (`inferInstance`) finds their `IsSolvable` instances automatically. These contrast with $S_5$ and beyond, highlighting the sharp boundary.\n\nHistorically, $S_2$ (quadratic formula, ~2000 BCE), $S_3$ (Cardano's cubic formula, 1545), and $S_4$ (Ferrari's quartic formula, 1545) are all solvable — each corresponding to a classical radical formula. The gallery includes formalizations of both the cubic solution (see `solution-of-cubic`) and the quartic solution (see `general-quartic`), providing the positive counterparts to Abel-Ruffini's impossibility: those proofs construct the radical formulas that exist precisely because $S_3$ and $S_4$ are solvable. Together with Abel-Ruffini, they form a complete picture of radical solvability for polynomials of every degree.\n\nThe file notes that Mathlib did not yet provide `IsSolvable` instances for $S_2, S_3, S_4$ at time of writing.",
+    "mathContext": "$S_0 \\cong S_1 \\cong \\{e\\}$ (trivial). $S_2 \\cong \\mathbb{Z}/2$ (abelian). $S_3$: derived series $S_3 \\triangleright A_3 \\cong \\mathbb{Z}/3 \\triangleright \\{e\\}$. $S_4$: derived series $S_4 \\triangleright A_4 \\triangleright V_4 \\triangleright \\mathbb{Z}/2 \\triangleright \\{e\\}$, where $V_4 = \\{e,(12)(34),(13)(24),(14)(23)\\}$ is the Klein four-group.\n\nEach solvable $S_n$ ($n \\leq 4$) yields a composition series with abelian quotients, and the Galois correspondence converts these quotients into radical extraction steps: $S_2/A_2 \\cong \\mathbb{Z}/2$ gives square roots, $A_3 \\cong \\mathbb{Z}/3$ gives cube roots, $A_4/V_4 \\cong \\mathbb{Z}/3$ and $V_4/(\\mathbb{Z}/2) \\cong \\mathbb{Z}/2$ give the nested radicals in Ferrari's formula.",
     "significance": "supporting",
     "prerequisites": [
       "IsSolvable typeclass",
@@ -249,7 +253,9 @@
       "Klein four-group",
       "abelian group",
       "typeclass inference",
-      "quadratic formula"
+      "quadratic formula",
+      "Cardano's formula",
+      "Ferrari's formula"
     ]
   },
   {
@@ -331,19 +337,22 @@
     },
     "type": "context",
     "title": "Why Degree 5 and the Historical Revolution",
-    "content": "The closing commentary (Parts VI–VII) explains *why* degree 5 is the exact threshold and places the result in historical context. The derived series of $S_4$ terminates because $A_4$ has the Klein four-group $V_4$ as a normal subgroup, while $A_5$ has no proper normal subgroups at all (it is simple).\n\nHistorically, Abel-Ruffini was revolutionary as one of the first major **impossibility proofs** — showing that something *cannot* be done. This methodology later influenced Lindemann's proof that $\\pi$ is transcendental (1882), Gödel's incompleteness theorems (1931), and Turing's halting problem (1936). The commentary also makes a subtle but important distinction: quintic equations **do** have solutions (by the Fundamental Theorem of Algebra), they just cannot be expressed using radicals.",
-    "mathContext": "The conjugacy classes of $A_5$ have sizes $1, 12, 12, 15, 20$ (summing to 60). A normal subgroup must be a union of conjugacy classes including $\\{e\\}$ (size 1), and its order must divide 60. No sub-sum $1 + \\cdots$ of $\\{1, 12, 12, 15, 20\\}$ divides 60 except $\\{1\\}$ and $\\{1,12,12,15,20\\}$. This combinatorial fact proves $A_5$ is simple.",
+    "content": "The closing commentary (Parts VI–VII) explains *why* degree 5 is the exact threshold and places the result in historical context. The derived series of $S_4$ terminates because $A_4$ has the Klein four-group $V_4$ as a normal subgroup, while $A_5$ has no proper normal subgroups at all (it is simple).\n\nHistorically, Abel-Ruffini was revolutionary as one of the first major **impossibility proofs** — showing that something *cannot* be done. This methodology later influenced Lindemann's proof that $\\pi$ is transcendental (1882), Gödel's incompleteness theorems (1931), and Turing's halting problem (1936). The commentary also makes a subtle but important distinction: quintic equations **do** have solutions (by the Fundamental Theorem of Algebra — see `fundamental-theorem-algebra` in the gallery), they just cannot be expressed using radicals.\n\nThe impossibility framework pioneered here — proving that a natural class of problems admits no solution within a given formal system — also connects to the angle trisection impossibility (see `angle-trisection`), which uses the same Galois-theoretic machinery to show that constructibility requires the minimal polynomial's degree to be a power of 2.",
+    "mathContext": "The conjugacy classes of $A_5$ have sizes $1, 12, 12, 15, 20$ (summing to 60), corresponding to: identity (1), products of two disjoint transpositions (15), 3-cycles (20), and two classes of 5-cycles (12 each). A normal subgroup must be a union of conjugacy classes including $\\{e\\}$ (size 1), and its order must divide $|A_5| = 60$. The possible sub-sums starting with 1 yield no proper divisor of 60 except 1 itself, proving $A_5$ has no proper nontrivial normal subgroups.\n\nThis combinatorial fact also proves $A_5$ is perfect: since $[A_5, A_5]$ is a normal subgroup and $A_5$ is simple, either $[A_5, A_5] = \\{e\\}$ (impossible since $A_5$ is non-abelian) or $[A_5, A_5] = A_5$.",
     "significance": "supporting",
     "prerequisites": [
       "derived series",
       "composition series",
-      "simple groups"
+      "simple groups",
+      "conjugacy classes"
     ],
     "relatedConcepts": [
       "impossibility proof",
       "Fundamental Theorem of Algebra",
       "transcendence of pi",
-      "Gödel incompleteness"
+      "Gödel incompleteness",
+      "angle trisection",
+      "perfect group"
     ]
   }
 ]
