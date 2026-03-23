@@ -62,6 +62,7 @@
     ],
     "dateAdded": "2026-02-24",
     "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms, 0 sorries. All 10 theorems proved from Mathlib with no custom axioms or structure-encoded assumptions.",
     "prerequisites": [
       "Derivatives in Mathlib (HasDerivAt, hasDerivAt_iff_tendsto_slope)",
       "Real exp/log/rpow identities and derivatives",
@@ -140,6 +141,16 @@
       "targetId": "euler-identity",
       "relationship": "related",
       "description": "Euler's identity e^(iπ) + 1 = 0 showcases the exp function that is central to this proof. The power mean limit M_r → GM relies on the exp/log representation M_r = exp(f(r)/r) and the continuity of exp to pass limits through the exponential — the same analytic properties of exp that make Euler's identity possible"
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "related",
+      "description": "The geometric mean $\\prod z_i^{w_i}$ and geometric series $\\sum r^n$ both involve multiplicative/exponential structures. The power mean limit $M_r \\to GM$ as $r \\to 0$ reveals the geometric mean as the natural multiplicative average, just as the geometric series $1/(1-r)$ is the natural multiplicative sum"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ involves the same exp/log analysis as the power mean limit: both use the representation $f(x) = \\exp(g(x))$ and analyze $g$ via derivatives. The geometric mean of $\\{1, 2, \\ldots, n\\}$ is $(n!)^{1/n} \\sim n/e$ by Stirling, connecting power means to factorial asymptotics"
     }
   ],
   "overview": {
@@ -267,7 +278,9 @@
     "fundamental-theorem-calculus",
     "harmonic-divergence",
     "taylor-theorem",
-    "euler-identity"
+    "euler-identity",
+    "geometric-series",
+    "stirling-formula"
   ],
   "references": [
     {
