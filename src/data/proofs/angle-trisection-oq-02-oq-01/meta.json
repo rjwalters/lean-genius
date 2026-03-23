@@ -58,43 +58,6 @@
       "galois_2group_implies_degree_is_pow2: Stronger — natDegree IS a power of 2, using OQ-01's dvd_pow_two_is_pow_two",
       "galois_criterion_implies_degree_criterion: Bridges the Galois criterion (2-group Gal) to the degree criterion (degree = 2^k)"
     ],
-    "references": [
-      {
-        "authors": "P. L. Wantzel",
-        "title": "Recherches sur les moyens de reconnaître si un Problème de Géométrie peut se résoudre avec la règle et le compas",
-        "year": "1837",
-        "venue": "Journal de Mathématiques Pures et Appliquées",
-        "note": "First rigorous proof that trisection, doubling the cube, and constructing regular n-gons are impossible for most cases — established the degree criterion"
-      },
-      {
-        "authors": "É. Galois (posthumous, edited by J. Liouville)",
-        "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
-        "year": "1846",
-        "venue": "Journal de Mathématiques Pures et Appliquées",
-        "note": "Foundational work introducing group theory and the Galois group, providing the deeper characterization of constructibility via 2-groups"
-      },
-      {
-        "authors": "I. Stewart",
-        "title": "Galois Theory",
-        "year": "2015",
-        "venue": "Chapman and Hall/CRC (4th edition)",
-        "note": "Modern treatment of the Wantzel-Galois constructibility criterion using the tower law, paralleling this formalization's approach"
-      },
-      {
-        "authors": "Morandi, P.",
-        "title": "Field and Galois Theory",
-        "year": "1996",
-        "venue": "Springer GTM 167",
-        "note": "Chapter 4: tower law for field extensions and its applications to degree computations — the exact technique used in natDegree_dvd_card_gal"
-      },
-      {
-        "authors": "Cox, D.A.",
-        "title": "Galois Theory",
-        "year": "2012",
-        "venue": "Wiley, 2nd edition",
-        "note": "Chapter 10: detailed treatment of constructibility and the Galois characterization, including the tower law argument connecting Galois group order to extension degree"
-      }
-    ],
     "dateAdded": "2026-03-21",
     "lineCount": 115,
     "axiomCount": 0,

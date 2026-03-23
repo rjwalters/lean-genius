@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-module-docstring",
+    "proofId": "angle-trisection-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 11 },
+    "type": "context",
+    "title": "Module Overview: Axiom Elimination via Mathlib Bridge",
+    "content": "The module docstring frames the file's purpose: proving `galois_2group_implies_degree_pow2` — which was an axiom in AngleTrisectionOQ02.lean — by generalizing Mathlib's `prime_degree_dvd_card` to all irreducible polynomials. This reduces the parent's axiom count from 6 to 5.\n\nThe docstring establishes the file's position in the formalization hierarchy: it sits between OQ-01 (degree characterization, fully verified) and OQ-02 (Galois characterization, partially axiomatized), providing a bridge that strengthens the connection between Mathlib's infrastructure and the constructibility theorems.",
+    "mathContext": "The axiom being eliminated: `galois_2group_implies_degree_pow2 : IsPGroup 2 (minpoly ℚ α).Gal → ∃ n, natDegree (minpoly ℚ α) ∣ 2^n`. The file proves this from Mathlib via the tower law, reducing the axiom count of the OQ-02 formalization.",
+    "significance": "context",
+    "relatedConcepts": ["axiom elimination", "Mathlib bridge", "formalization hierarchy"],
+    "prerequisites": ["AngleTrisectionOQ02", "AngleTrisectionOQ01"]
+  },
+  {
     "id": "ann-imports-context",
     "proofId": "angle-trisection-oq-02-oq-01",
     "range": { "startLine": 13, "endLine": 18 },
