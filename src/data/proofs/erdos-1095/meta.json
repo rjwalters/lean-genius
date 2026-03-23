@@ -113,6 +113,83 @@
       "Can the Kummer carry conditions for different primes be analyzed jointly, not just independently?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "kummer-theorem",
+      "relationship": "technique",
+      "description": "Kummer's theorem on p-adic valuations — ν_p(C(n,k)) equals the number of carries when adding k and n-k in base p — is the fundamental tool for understanding k-roughness of C(n,k). The condition that C(n,k) has no prime factor ≤ k is equivalent to zero carries in base p for every prime p ≤ k simultaneously."
+    },
+    {
+      "targetId": "erdos-1094",
+      "relationship": "related",
+      "description": "Problem 1094 studies the least prime factor of C(n,k) from the opposite direction: how small can it be? Together with Problem 1095 they bound the smallest and largest prime factors of C(n,k) — both arise from the Erdős–Lacampagne–Selfridge program on prime factorization of binomial coefficients."
+    },
+    {
+      "targetId": "erdos-1093",
+      "relationship": "related",
+      "description": "Problem 1093 studies deficiency of binomial coefficients — the count of k-smooth terms among n, n-1, …, n-k+1 when C(n,k) has no small prime factor. This 'no small prime factor' condition is precisely the same as C(n,k) being k-rough (the defining condition for g(k)), making Problems 1093 and 1095 two aspects of the same ELS investigation."
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Erdős's proof of Bertrand's postulate analyzes prime factors of the central binomial coefficient C(2n,n) using the same 'prime factorization of a binomial coefficient' technique that underlies the EES bounds on g(k). Both use the combinatorial sieve squeeze: lower-bound the binomial coefficient globally, upper-bound it via its prime factorization, then extract conclusions about prime distribution."
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The Prime Number Theorem via Chebyshev's ψ-function gives log L_k = ψ(k) ~ k, establishing the asymptotic log L_k / k → 1 for the LCM L_k = lcm(1,…,k). This PNT-equivalent asymptotic is the natural scale for the upper bound on g(k): since L_k ~ e^k, the EES bound g(k) ≤ e^{(1+o(1))k} essentially says g(k) ≤ L_k^{1+o(1)}."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The binomial coefficients C(n,k) are the central object of study: g(k) is the smallest n > k+1 where C(n,k) is k-rough. Properties of binomial coefficients — their prime factorizations, divisibility by small primes, and the role of Pascal's identity — underpin all results on g(k)."
+    }
+  ],
+  "relatedProofs": [
+    "kummer-theorem",
+    "erdos-1094",
+    "erdos-1093",
+    "bertrands-postulate",
+    "prime-number-theorem",
+    "binomial-theorem"
+  ],
+  "references": [
+    {
+      "authors": "Ecklund, Earl F., Jr.; Erdős, Paul; Selfridge, John L.",
+      "title": "A new function associated with the prime factors of $\\binom{n}{k}$",
+      "year": "1974",
+      "venue": "Mathematics of Computation 28(126), 647–649",
+      "note": "Introduces g(k) and proves the original bounds k^{1+c} < g(k) ≤ exp((1+o(1))k) using Legendre's formula; defines the Erdős-Selfridge function and poses the asymptotic question"
+    },
+    {
+      "authors": "Erdős, Paul; Lacampagne, Carole B.; Selfridge, John L.",
+      "title": "Estimates of the least prime factor of a binomial coefficient",
+      "year": "1993",
+      "venue": "Mathematics of Computation 61(203), 215–224",
+      "note": "Conjectures log g(k) ~ k/log k ('any right-thinking person would believe g(k) ≥ exp(ck/log k)'); computes g(k) for small k and studies deficiency and the Selfridge function"
+    },
+    {
+      "authors": "Konyagin, Sergei",
+      "title": "On the least prime factor of $\\binom{n}{k}$",
+      "year": "1999",
+      "venue": "Bulletin of the London Mathematical Society 31(3), 271–277",
+      "note": "Improves the lower bound to g(k) ≥ exp(c(log k)^2) using Rankin's method and smooth number estimates from Canfield–Erdős–Pomerance; the current best lower bound"
+    },
+    {
+      "authors": "Canfield, E. Rodney; Erdős, Paul; Pomerance, Carl",
+      "title": "On a problem of Oppenheim concerning 'Factorisatio Numerorum'",
+      "year": "1983",
+      "venue": "Journal of Number Theory 17(1), 1–28",
+      "note": "Establishes sharp estimates for Ψ(x, y) (count of y-smooth numbers up to x) via the Dickman ρ-function; these smooth number bounds are the key ingredient in Konyagin's proof"
+    },
+    {
+      "authors": "Sorenson, Jonathan P.; Sorenson, Jonathan; Webster, Justin",
+      "title": "An efficient algorithm for the Erdős-Selfridge function",
+      "year": "2020",
+      "venue": "Mathematics of Computation 89(326), 2951–2972",
+      "note": "Computes g(k) for all k ≤ 200, confirming the wildly irregular behavior (OEIS A003458) and providing computational evidence for the conjectured ratio lim sup g(k+1)/g(k) = ∞"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
