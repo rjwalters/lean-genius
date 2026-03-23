@@ -77,8 +77,8 @@
     "range": { "startLine": 84, "endLine": 88 },
     "type": "insight",
     "title": "Counterexample: p = 89 (Verified)",
-    "content": "Proof that $89$ does NOT satisfy the property: $89 - 3! = 89 - 6 = 83$, and $83$ is prime. The proof instantiates $k = 3$ in `AllFactorialSubtractionsComposite`, extracts the non-primality claim for $83$, and derives a contradiction via `decide` confirming $83$ is prime.",
-    "mathContext": "$89 - 3! = 83$, and $83$ is prime. So $\\neg\\text{AllFactorialSubtractionsComposite}(89)$.",
+    "content": "Proof that $89$ does NOT satisfy the property: $89 - 3! = 89 - 6 = 83$, and $83$ is prime. The proof instantiates $k = 3$ in `AllFactorialSubtractionsComposite`, extracts the non-primality claim for $83$, and derives a contradiction via `decide` confirming $83$ is prime.\n\nNotably, Wilson's theorem (see `wilsons-theorem`) gives $(p-1)! \\equiv -1 \\pmod{p}$, so $p - (p-1)! \\equiv 1 \\pmod{p}$, which is never prime for $p > 2$. But the factorials relevant here are much smaller than $(p-1)!$ — for $p = 89$, only $k \\leq 4$ (since $4! = 24 < 89 < 120 = 5!$), far from $88!$.",
+    "mathContext": "$89 - 3! = 83$, and $83$ is prime. So $\\neg\\text{AllFactorialSubtractionsComposite}(89)$. The remaining subtractions: $89 - 1 = 88 = 8 \\times 11$, $89 - 2 = 87 = 3 \\times 29$, $89 - 24 = 65 = 5 \\times 13$ — all composite. Only $89 - 6 = 83$ is the obstruction.",
     "significance": "key",
     "relatedConcepts": ["proof by contradiction", "decide tactic", "counterexample"],
     "prerequisites": ["AllFactorialSubtractionsComposite", "primality of 83"]
@@ -89,11 +89,11 @@
     "range": { "startLine": 90, "endLine": 97 },
     "type": "concept",
     "title": "Main Conjecture: Infinitely Many Factorial-Avoiding Primes",
-    "content": "The open conjecture: the set $\\{p \\in \\mathbb{N} : p\\text{ prime} \\wedge \\text{AllFactorialSubtractionsComposite}(p)\\}$ is infinite. Axiomatized using `Set.Infinite`. The probabilistic heuristic suggests most large primes satisfy this, so the set should have positive density among primes.",
-    "mathContext": "$\\text{Set.Infinite}\\{p : \\mathbb{N} \\mid p.\\text{Prime} \\wedge \\text{AllFactorialSubtractionsComposite}(p)\\}$.",
+    "content": "The open conjecture: the set $\\{p \\in \\mathbb{N} : p\\text{ prime} \\wedge \\text{AllFactorialSubtractionsComposite}(p)\\}$ is infinite. Axiomatized using `Set.Infinite`. The probabilistic heuristic suggests not just infinitude but density 1 among primes: each $p - k!$ is prime independently with probability $\\sim 1/\\ln p$, and with only $\\sim \\log p / \\log \\log p$ values to check, the probability all are composite is $(1 - 1/\\ln p)^{O(\\log p / \\log \\log p)} \\to 1$.\n\nCompare with the infinitude of primes itself (see `infinitude-primes`): that result is constructive and ancient (Euclid, ~300 BCE), while this conjecture about a structured subset of primes remains open — illustrating how much harder it is to prove infinitude results for subsets of primes than for primes themselves.",
+    "mathContext": "$\\text{Set.Infinite}\\{p : \\mathbb{N} \\mid p.\\text{Prime} \\wedge \\text{AllFactorialSubtractionsComposite}(p)\\}$. Heuristic: $\\Pr[\\text{all } p - k! \\text{ composite}] \\approx (1 - 1/\\ln p)^{O(\\log p / \\log \\log p)} \\to 1$ as $p \\to \\infty$.",
     "significance": "key",
-    "relatedConcepts": ["Set.Infinite", "open problem", "prime density", "Bunyakovsky conjecture", "Bateman-Horn conjecture"],
-    "prerequisites": ["AllFactorialSubtractionsComposite", "Set.Infinite"]
+    "relatedConcepts": ["Set.Infinite", "open problem", "prime density", "Bunyakovsky conjecture", "Bateman-Horn conjecture", "probabilistic heuristic"],
+    "prerequisites": ["AllFactorialSubtractionsComposite", "Set.Infinite", "prime number theorem (informal)"]
   },
   {
     "id": "ann-1059-factorial-count",
@@ -113,7 +113,7 @@
     "range": { "startLine": 108, "endLine": 119 },
     "type": "concept",
     "title": "Erdős's Smooth-Number Alternative",
-    "content": "Erdős suggested a potentially easier variant: infinitely many $n$ in $(l!, (l+1)!]$ have (1) all prime factors $> l$ (i.e., $n$ has no small prime factors), and (2) $n - k!$ is composite for all $1 \\leq k \\leq l$. This drops the primality requirement on $n$, replacing it with a smooth-number condition that may be more amenable to sieve theory.",
+    "content": "Erdős suggested a potentially easier variant: infinitely many $n$ in $(l!, (l+1)!]$ have (1) all prime factors $> l$ (i.e., $n$ is *$l$-rough*), and (2) $n - k!$ is composite for all $1 \\leq k \\leq l$. This drops the primality requirement on $n$, replacing it with an $l$-rough condition that may be more amenable to sieve theory (Selberg sieve, Brun-Titchmarsh inequality).\n\nThe connection to smooth numbers: the Dickman function $\\rho(u)$ governs the density of $y$-smooth numbers (all prime factors $\\leq y$) below $x$: the count is $\\sim x \\rho(\\log x / \\log y)$. In the factorial interval $(l!, (l+1)!]$, an integer $n$ with all prime factors $> l$ is the complement of being $l$-smooth. Since $\\log((l+1)!) \\approx l \\log l$ and $\\log l \\approx \\log l$, the smoothness parameter $u = l \\log l / \\log l = l$, and $\\rho(l) \\to 0$ rapidly, suggesting most large factorial-interval integers are indeed $l$-rough.",
     "mathContext": "$\\text{Set.Infinite}\\{n : \\exists l, l! < n \\leq (l+1)! \\wedge (\\forall p\\text{ prime}, p \\mid n \\implies p > l) \\wedge (\\forall k, 1 \\leq k \\leq l \\implies \\neg(n-k!)\\text{.Prime} \\wedge n-k! \\geq 2)\\}$.",
     "significance": "key",
     "relatedConcepts": ["smooth numbers", "sieve theory", "rough numbers", "prime factor lower bounds", "Dickman rho function", "Selberg sieve"],
