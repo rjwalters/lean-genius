@@ -127,10 +127,10 @@
       "startLine": 170,
       "endLine": 180
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Quotient Uniqueness in Integral Domains",
-    "content": "In an integral domain with a ≠ 0, if a*q₁ = c and a*q₂ = c, then q₁ = q₂. The proof is immediate from mul_left_cancel₀: a*q₁ = a*q₂ implies q₁ = q₂ since a ≠ 0 and there are no zero divisors.\n\nThis is the 'free' consequence of working in an integral domain — uniqueness doesn't require any number-theoretic machinery, just the cancellation law.",
-    "mathContext": "An integral domain is a commutative ring with no zero divisors: $ab = 0 \\implies a = 0 \\lor b = 0$. Equivalently, multiplication by any nonzero element is injective: $a \\neq 0 \\land ax = ay \\implies x = y$. This is `mul_left_cancel₀` in Mathlib.",
+    "content": "In an integral domain with a ≠ 0, if a*q₁ = c and a*q₂ = c, then q₁ = q₂. The proof is immediate from mul_left_cancel₀: a*q₁ = a*q₂ implies q₁ = q₂ since a ≠ 0 and there are no zero divisors.\n\nThis is the 'free' consequence of working in an integral domain — uniqueness doesn't require any number-theoretic machinery, just the cancellation law. The result would fail in rings with zero divisors: for example, in $\\mathbb{Z}/6\\mathbb{Z}$, $2 \\cdot 1 = 2 = 2 \\cdot 4$ but $1 \\neq 4$, because $2 \\cdot 3 = 0$ (zero divisors break cancellation).",
+    "mathContext": "An integral domain is a commutative ring with no zero divisors: $ab = 0 \\implies a = 0 \\lor b = 0$. Equivalently, multiplication by any nonzero element is injective: $a \\neq 0 \\land ax = ay \\implies x = y$. This is `mul_left_cancel₀` in Mathlib. The theorem establishes that in $\\mathbb{Z}$, polynomial rings $F[x]$, and other integral domains, the constructive quotient from Part III is the *only* possible quotient.",
     "significance": "supporting",
     "relatedConcepts": [
       "integral domain",
@@ -150,10 +150,10 @@
       "startLine": 182,
       "endLine": 200
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Connection to Abstract Algebra and Mathlib",
-    "content": "abstract_euclids_lemma shows that our constructive approach works directly with Mathlib's IsCoprime type class: given IsCoprime a b (which provides Bézout witnesses u, v with ua + vb = 1) and a ∣ b*c, we extract the divisibility witness via euclids_lemma_constructive.\n\nThe companion example shows this agrees with Mathlib's IsCoprime.dvd_of_dvd_mul_left, confirming that our explicit construction is consistent with the library's abstract approach. The key difference: our version gives you the explicit quotient q = u*c + v*k, while Mathlib's version only asserts existence.",
-    "mathContext": "Mathlib's `IsCoprime a b` is defined as $\\exists u v, ua + vb = 1$ — exactly the Bézout condition. The `dvd_of_dvd_mul_left` method proves Euclid's lemma from this, but without exposing the quotient formula. Our approach makes the algorithm explicit while remaining compatible with the abstract framework.",
+    "content": "abstract_euclids_lemma shows that our constructive approach works directly with Mathlib's IsCoprime type class: given IsCoprime a b (which provides Bézout witnesses u, v with ua + vb = 1) and a ∣ b*c, we extract the divisibility witness via euclids_lemma_constructive.\n\nThe companion example shows this agrees with Mathlib's IsCoprime.dvd_of_dvd_mul_left, confirming that our explicit construction is consistent with the library's abstract approach. The key difference: our version gives you the explicit quotient q = u*c + v*k, while Mathlib's version only asserts existence.\n\nThis compatibility theorem closes the loop: the constructive machinery works within Mathlib's abstraction hierarchy, so users can freely switch between the explicit formula (when they need the quotient value) and Mathlib's abstract API (when they only need the divisibility fact).",
+    "mathContext": "Mathlib's `IsCoprime a b` is defined as $\\exists u v, ua + vb = 1$ — exactly the Bézout condition. The `dvd_of_dvd_mul_left` method proves Euclid's lemma from this, but without exposing the quotient formula. Our approach makes the algorithm explicit while remaining compatible with the abstract framework. In a Bézout domain (an integral domain where every finitely generated ideal is principal), every pair of elements satisfies `IsCoprime` iff their GCD is a unit — the abstract setting that unifies $\\mathbb{Z}$, polynomial rings $k[x]$, and valuation rings.",
     "significance": "key",
     "relatedConcepts": [
       "IsCoprime",
