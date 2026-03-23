@@ -89,42 +89,48 @@
       "title": "Simplicial Number Definition",
       "startLine": 48,
       "endLine": 52,
-      "summary": "simplicial k n := Nat.choose (n+k) k. This gives: k=0 → C(n,0)=1; k=1 → C(n+1,1)=n+1; k=2 → C(n+2,2)=(n+1)(n+2)/2; k=3 → C(n+3,3)=(n+1)(n+2)(n+3)/6."
+      "summary": "simplicial k n := Nat.choose (n+k) k. This gives: k=0 → C(n,0)=1; k=1 → C(n+1,1)=n+1; k=2 → C(n+2,2)=(n+1)(n+2)/2; k=3 → C(n+3,3)=(n+1)(n+2)(n+3)/6.",
+      "mathContext": "$S_k(n) = \\binom{n+k}{k} = \\frac{(n+k)!}{n! \\cdot k!}$. This is a polynomial of degree $k$ in $n$: $S_0(n) = 1$, $S_1(n) = n+1$, $S_2(n) = \\frac{(n+1)(n+2)}{2}$, $S_3(n) = \\frac{(n+1)(n+2)(n+3)}{6}$. The combinatorial interpretation: $S_k(n)$ counts the number of $n$-element multisets from a $k$-element set."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 55,
       "endLine": 70,
-      "summary": "simplicial_zero: S_0(n)=1 via choose_zero_right. simplicial_start: S_k(0)=1 via choose_self. simplicial_one: S_1(n)=n+1 via choose_one_right. All three are one-line simp proofs."
+      "summary": "simplicial_zero: S_0(n)=1 via choose_zero_right. simplicial_start: S_k(0)=1 via choose_self. simplicial_one: S_1(n)=n+1 via choose_one_right. All three are one-line simp proofs.",
+      "mathContext": "Three boundary cases: $S_0(n) = \\binom{n}{0} = 1$ (0-simplex is always 1 point), $S_k(0) = \\binom{k}{k} = 1$ (any simplex has 1 vertex at $n=0$), $S_1(n) = \\binom{n+1}{1} = n+1$ (1-simplex counts points on a line segment). Each follows from a single Mathlib lemma via `simp`."
     },
     {
       "id": "recurrence",
       "title": "Pascal's Recurrence for Simplicial Numbers",
       "startLine": 72,
       "endLine": 84,
-      "summary": "simplicial_succ_recurrence: S_{k+1}(n+1) = S_{k+1}(n) + S_k(n+1). Proof: normalize indices to n+k+1, apply Nat.choose_succ_succ (Pascal's identity C(m+1,k+1)=C(m,k)+C(m,k+1)), then linarith for commutativity."
+      "summary": "simplicial_succ_recurrence: S_{k+1}(n+1) = S_{k+1}(n) + S_k(n+1). Proof: normalize indices to n+k+1, apply Nat.choose_succ_succ (Pascal's identity C(m+1,k+1)=C(m,k)+C(m,k+1)), then linarith for commutativity.",
+      "mathContext": "Pascal's identity specialized: $S_{k+1}(n+1) = \\binom{n+k+2}{k+1} = \\binom{n+k+1}{k} + \\binom{n+k+1}{k+1} = S_k(n+1) + S_{k+1}(n)$. This recurrence is the inductive engine for the hockey stick proof: it expresses each simplicial number as the sum of 'one dimension lower' plus 'one position earlier'."
     },
     {
       "id": "hockey-stick",
       "title": "The Hockey Stick Identity",
       "startLine": 99,
       "endLine": 110,
-      "summary": "hockey_stick_sum: ∑_{i=0}^n S_k(i) = S_{k+1}(n). Proved by induction. Base: S_k(0)=1=S_{k+1}(0) by choose_self. Step: IH + recurrence: ∑_{i=0}^{n+1} S_k(i) = S_{k+1}(n) + S_k(n+1) = S_{k+1}(n+1)."
+      "summary": "hockey_stick_sum: ∑_{i=0}^n S_k(i) = S_{k+1}(n). Proved by induction. Base: S_k(0)=1=S_{k+1}(0) by choose_self. Step: IH + recurrence: ∑_{i=0}^{n+1} S_k(i) = S_{k+1}(n) + S_k(n+1) = S_{k+1}(n+1).",
+      "mathContext": "The Hockey Stick Identity: $\\sum_{i=0}^{n} \\binom{i+k}{k} = \\binom{n+k+1}{k+1}$. Named after the shape it traces in Pascal's triangle — summing along a diagonal gives the entry at the bottom of the 'hockey stick'. Instances: $k=1$ gives Gauss's $\\sum(i+1) = \\binom{n+2}{2}$; $k=2$ gives $\\sum T_i = \\binom{n+3}{3}$ (triangular to tetrahedral)."
     },
     {
       "id": "connections",
       "title": "Connection to Arithmetic Series",
       "startLine": 113,
       "endLine": 130,
-      "summary": "arithmetic_to_triangular: ∑_{i=0}^n (i+1) = S_2(n) (hockey stick at k=1, using Finset.sum_congr and simplicial_one). triangular_to_tetrahedral: ∑_{i=0}^n S_2(i) = S_3(n) (hockey stick at k=2, direct application)."
+      "summary": "arithmetic_to_triangular: ∑_{i=0}^n (i+1) = S_2(n) (hockey stick at k=1, using Finset.sum_congr and simplicial_one). triangular_to_tetrahedral: ∑_{i=0}^n S_2(i) = S_3(n) (hockey stick at k=2, direct application).",
+      "mathContext": "Gauss's formula restated: $\\sum_{i=0}^{n} (i+1) = \\sum_{i=0}^{n} S_1(i) = S_2(n) = \\binom{n+2}{2} = \\frac{(n+1)(n+2)}{2}$. This is the $k=1$ hockey stick. The tetrahedral connection: $\\sum_{i=0}^{n} S_2(i) = S_3(n) = \\binom{n+3}{3} = \\frac{(n+1)(n+2)(n+3)}{6}$ (the $k=2$ hockey stick)."
     },
     {
       "id": "formulas",
       "title": "Explicit Closed Formulas",
       "startLine": 136,
       "endLine": 165,
-      "summary": "simplicial_two_formula: S_2(n)*2=(n+1)(n+2). simplicial_three_formula: S_3(n)*6=(n+1)(n+2)(n+3). Both proved by induction using simplicial_succ_recurrence + nlinarith."
+      "summary": "simplicial_two_formula: S_2(n)*2=(n+1)(n+2). simplicial_three_formula: S_3(n)*6=(n+1)(n+2)(n+3). Both proved by induction using simplicial_succ_recurrence + nlinarith.",
+      "mathContext": "Closed forms: $S_2(n) \\cdot 2 = (n+1)(n+2)$ and $S_3(n) \\cdot 6 = (n+1)(n+2)(n+3)$. Written with multiplication rather than division to avoid natural number division complications: in $\\mathbb{N}$, $(n+1)(n+2)/2$ is not well-typed without a divisibility proof. The general pattern is $S_k(n) \\cdot k! = (n+1)(n+2)\\cdots(n+k)$, the rising factorial."
     },
     {
       "id": "verification",
@@ -160,6 +166,11 @@
       "targetId": "combinations-formula",
       "relationship": "foundational",
       "description": "The combinatorial identity C(n+1,k+1) = C(n,k) + C(n,k+1) (Pascal's recurrence) is the key inductive step in the Hockey Stick Identity proof"
+    },
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "Both the hockey stick identity and the closed formulas are proved by mathematical induction on n — the hockey stick inductive step uses the Pascal recurrence, while the closed forms use nlinarith to discharge the nonlinear arithmetic goals"
     }
   ],
   "relatedProofs": [
