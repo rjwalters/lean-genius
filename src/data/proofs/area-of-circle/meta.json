@@ -2,7 +2,7 @@
   "id": "area-of-circle",
   "title": "Area of a Circle",
   "slug": "area-of-circle",
-  "description": "The area of a circle with radius r is πr². One of the most fundamental formulas in geometry, known since Archimedes proved it around 250 BCE.",
+  "description": "The area of a circle with radius r is πr², formalized as Lebesgue measure of a disk in ℂ ≅ ℝ². Wiedijk 100 theorem #9 — one of the most fundamental formulas in geometry, rigorously proved by Archimedes around 250 BCE using the method of exhaustion.",
   "meta": {
     "author": "Archimedes (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Area_of_a_circle",
@@ -255,8 +255,11 @@
     ],
     "namespace": "AreaOfCircle",
     "lineCount": 155,
+    "structureCount": 0,
     "axiomCount": 0,
     "theoremCount": 7,
+    "lemmaCount": 0,
+    "defCount": 0,
     "definitionCount": 0
   },
   "references": [
