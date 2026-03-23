@@ -95,20 +95,60 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 8,
+      "summary": "Docstring and Mathlib import. The header documents the key identity k^3(k+1)(m-k+2)*(LHS-RHS) = (m-k+1)(m+1)^2*b^4 and imports all of Mathlib for access to Nat.choose_succ_right_eq.",
+      "mathContext": "The module proves $bc^3 + adc^2 + ac^3 \\geq 2b^2cd + b^3d$ for consecutive binomial coefficients via the identity $D \\cdot (\\text{LHS} - \\text{RHS}) = r(k+r)^2 b^4$."
+    },
+    {
       "id": "quadratic-helper",
       "title": "Quadratic Non-Negativity Helper",
-      "startLine": 1,
+      "startLine": 10,
       "endLine": 18,
-      "summary": "Proves quadratic_nonneg: alpha*t^2 + beta*t + gamma >= 0 for t >= 0 when alpha, gamma >= 0 and 4*alpha*gamma >= beta^2. Uses the completing-the-square identity (2*alpha*t + beta)^2 >= 0.",
+      "summary": "Proves quadratic_nonneg: alpha*t^2 + beta*t + gamma >= 0 for t >= 0 when alpha, gamma >= 0 and 4*alpha*gamma >= beta^2. Two cases: alpha = 0 forces beta = 0 leaving gamma >= 0; alpha > 0 uses completing the square with the hint sq_nonneg(2*alpha*t + beta).",
       "mathContext": "If $\\alpha, \\gamma \\geq 0$ and $4\\alpha\\gamma \\geq \\beta^2$, then $\\alpha t^2 + \\beta t + \\gamma \\geq 0$ for all $t \\geq 0$. Proof: $\\alpha(\\alpha t^2 + \\beta t + \\gamma) = (\\alpha t + \\beta/2)^2 + (\\alpha\\gamma - \\beta^2/4) \\geq 0$."
     },
     {
-      "id": "binomial-inequality",
-      "title": "Main Binomial Inequality via Absorption Identities",
+      "id": "theorem-statement-absorption",
+      "title": "Theorem Statement and Absorption Identities",
       "startLine": 20,
+      "endLine": 46,
+      "summary": "States binom_ineq for consecutive binomial coefficients a, b, c, d = C(m, k-2..k+1) and derives three absorption identities from Nat.choose_succ_right_eq: k*c = (m-k+1)*b, (k+1)*d = (m-k)*c, (k-1)*b = (m-k+2)*a. Each derivation involves index arithmetic via omega, Nat.cast for N-to-R conversion, and push_cast for simplification.",
+      "mathContext": "Absorption identity: $k \\cdot \\binom{m}{k} = (m-k+1) \\cdot \\binom{m}{k-1}$. Three instances relate the four consecutive coefficients pairwise."
+    },
+    {
+      "id": "positivity-derived-identities",
+      "title": "Positivity Setup and Derived Power Identities",
+      "startLine": 47,
+      "endLine": 66,
+      "summary": "Introduces r = m - k + 1 and establishes positivity of k and r (both > 0 for valid parameters). Derives five algebraic identities: h1' (kc = rb), h1_sq (k^2*c^2 = r^2*b^2), h1_cube (k^3*c^3 = r^3*b^3), h12 (k(k+1)d = r(r-1)b combining h1 and h2), and h3' ((r+1)a = (k-1)b). Each is proved by linear_combination with polynomial hints.",
+      "mathContext": "Setting $r = m - k + 1$: from $kc = rb$, derive $k^2c^2 = r^2b^2$ and $k^3c^3 = r^3b^3$. From $h_1$ and $h_2$: $k(k+1)d = r(r-1)b$. From $h_3$: $(r+1)a = (k-1)b$."
+    },
+    {
+      "id": "sufficiency-reduction",
+      "title": "Reduction to D * (LHS - RHS) >= 0",
+      "startLine": 67,
+      "endLine": 94,
+      "summary": "Multiplies by the positive clearing factor D = k^3*(k+1)*(r+1). Positivity of D is established by the positivity tactic. Uses suffices to reduce the goal: if D > 0 and D*(LHS-RHS) >= 0 then LHS >= RHS. The contrapositive is proved via mul_neg_of_pos_of_neg.",
+      "mathContext": "Multiplier $D = k^3(k+1)(r+1) > 0$ since $k \\geq 2$ and $r \\geq 1$. If $D > 0$ and $D \\cdot x \\geq 0$ then $x \\geq 0$."
+    },
+    {
+      "id": "key-substitution-identities",
+      "title": "Key Substitution Identities (key1-key5)",
+      "startLine": 95,
+      "endLine": 129,
+      "summary": "Derives five identities expressing each term of D*(LHS-RHS) in terms of b^4: key1 (k^3*b*c^3 = r^3*b^4), key2 (k(k+1)*b^3*d = r(r-1)*b^4), key3 (k^2*b^2*c^2 = r^2*b^4), key4 (D*a*d*c^2 = (k-1)(r-1)*r^3*b^4), key5 (D*a*c^3 = (k^2-1)*r^3*b^4). key4 is the most intricate, requiring an intermediate step combining two absorption identities before multiplying by k^3*c^2.",
+      "mathContext": "Each product involving $a, c, d$ is rewritten as a polynomial in $k, r$ times $b^4$. The five identities convert the 5-term inequality into a single polynomial expression."
+    },
+    {
+      "id": "final-identity-completion",
+      "title": "Final Identity and Proof Completion",
+      "startLine": 130,
       "endLine": 152,
-      "summary": "Proves binom_ineq: for consecutive binomial coefficients a, b, c, d = C(m, k-2..k+1), the inequality bc^3 + adc^2 + ac^3 >= 2b^2cd + b^3d holds. Derives three absorption identities, computes power identities, multiplies by D = k^3(k+1)(r+1) > 0, and shows D*(LHS-RHS) = r*(k+r)^2*b^4 via linear_combination.",
-      "mathContext": "For $a = \\binom{m}{k-2}$, $b = \\binom{m}{k-1}$, $c = \\binom{m}{k}$, $d = \\binom{m}{k+1}$ with $2 \\leq k \\leq m-1$:\n$$bc^3 + adc^2 + ac^3 \\geq 2b^2cd + b^3d$$\nEquivalently: $k^3(k+1)(r+1)(\\text{LHS} - \\text{RHS}) = r(k+r)^2 b^4 \\geq 0$ where $r = m - k + 1$."
+      "summary": "Combines all five key identities via a single linear_combination call with six terms to prove D*(LHS-RHS) = r*(k+r)^2*b^4. The positivity tactic closes the goal since r > 0, (k+r)^2 >= 0, b^4 >= 0. The inequality is strict for valid parameters since b = C(m,k-1) > 0 and r >= 1.",
+      "mathContext": "$k^3(k+1)(r+1)(\\text{LHS} - \\text{RHS}) = r(k+r)^2 b^4 \\geq 0$. Verified by `linear_combination` combining six derived identities, then `positivity`."
     }
   ],
   "crossReferences": [
