@@ -15,7 +15,12 @@
       "PROVED: lattice_paths_must_cross via discrete IVT (crossing_column_exists using Finset.max') + colEntry monotonicity",
       "colEntry_mono proved: colEntry is non-decreasing (from northBeforeEast_mono)",
       "colEntry_le_north proved: colEntry P.val k ≤ n for PathMN m n",
-      "Crossing lemma proof: (1) final column first disjunct contradicts hend, (2) second disjunct gives p(m)>q(m), (3) IVT finds crossing, (4) colEntry monotonicity kills both disjointness options"
+      "Crossing lemma proof: (1) final column first disjunct contradicts hend, (2) second disjunct gives p(m)>q(m), (3) IVT finds crossing, (4) colEntry monotonicity kills both disjointness options",
+      "GV cancellation reduces to 2 sub-goals: (1) card_nonCancellable = niTupleCount (bijection), (2) cancellable part sums to 0 (involution)",
+      "isNonCancellable/IsGVFixedPoint: NI identity tuples have weight 1 (sign(id)=1)",
+      "Finset.sum_involution in Mathlib proves sum=0 for involution with no fixed points, need Finset.sum_filter_add_sum_filter_not to separate fixed pts",
+      "PermPathTuple cfg 1 is definitionally PathTuple cfg (σ=1 means target(σ(i))=target(i))",
+      "The involution must work at element level (not permutation level) because crossing points depend on specific path choices"
     ],
     "builtItems": [
       "BallotProblemOQ03OQ02.lean: r×r LGV lemma formalization (896 lines)",
@@ -24,17 +29,21 @@
       "crossing_column_exists: discrete IVT via Finset.max' (proved)",
       "colEntry_mono, colEntry_le_north, northBeforeEast_mono (proved)",
       "nonid_perm_paths_cross: non-id σ-tuples cross (proved from crossing lemma)",
-      "TaggedPathTuple: sigma type with sum decomposition (proved)"
+      "TaggedPathTuple: sigma type with sum decomposition (proved)",
+      "isNonCancellable predicate and nonCancellable_weight lemma (proved)",
+      "Structured proof outline for gv_involution_cancellation with explicit sub-goals"
     ],
     "openQuestions": [
       "GV involution: need first intersection point definition using closed-interval NonIntersecting",
       "GV involution: tail-swap construction must preserve PathMN validity"
     ],
     "nextSteps": [
-      "Prove gv_involution_cancellation: build sign-reversing involution on TaggedPathTuple",
-      "Key challenge: define first crossing column, swap suffixes, show swap preserves validity and changes sign"
+      "Prove card_nonCancellable_eq_niTupleCount: Fintype.card bijection between NI identity tagged tuples and NI PathTuples",
+      "Construct the GV involution: for each non-NI tagged tuple, find first crossing pair, swap tails, compose σ with transposition",
+      "Prove involution properties: involutivity, sign reversal, and that it has no fixed points on non-NI tagged tuples",
+      "Apply Finset.sum_involution to show cancellable sum = 0"
     ],
-    "progressSummary": "PROGRESS: Crossing lemma proved! Fixed NonIntersecting to use closed intervals + final column. Added 6 helper lemmas. File: 896 lines, 0 axioms, 1 sorry (GV involution bookkeeping only)."
+    "progressSummary": "PROGRESS: Restructured GV involution cancellation proof. Added isNonCancellable, nonCancellable_weight helpers. Main sorry split into 2 focused sub-goals: (1) counting bijection, (2) involution cancellation. File: 933 lines, 0 axioms, 2 sorries."
   },
   "lastUpdate": "2026-03-22T20:00:00Z",
   "leanFiles": [
