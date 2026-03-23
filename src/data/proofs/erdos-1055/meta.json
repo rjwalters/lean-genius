@@ -34,43 +34,45 @@
     "sourceUrl": "https://erdosproblems.com/1055",
     "erdosUrl": "https://erdosproblems.com/1055",
     "axiomCount": 4,
-    "lineCount": 198
+    "lineCount": 305,
+    "theoremCount": 36,
+    "definitionCount": 4
   },
   "sections": [
     {
+      "id": "termination",
+      "title": "Termination Lemma",
+      "startLine": 30,
+      "endLine": 63,
+      "summary": "Proves $\\texttt{nonSmooth\\_factor\\_lt}$: any prime factor $q \\mid (p+1)$ with $q \\notin \\{2,3\\}$ satisfies $q < p$. This is the key termination argument for well-founded prime classification."
+    },
+    {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "startLine": 27,
-      "endLine": 46,
-      "summary": "Defines $c(p)$ recursively: $c(p) = 1$ if $p + 1$ is $3$-smooth, else $c(p) = 1 + \\max\\{c(q) : q \\mid p+1\\}$. Provides the $\\text{IsInClass}$ predicate. Characterizes class 1 primes as those with $p + 1 = 2^a \\cdot 3^b$."
+      "startLine": 65,
+      "endLine": 91,
+      "summary": "Defines $c(p)$ via well-founded recursion ($\\texttt{primeClassWF}$): $c(p) = 1$ if $p + 1$ is $3$-smooth, else $c(p) = 1 + \\max\\{c(q) : q \\mid p+1, q \\notin \\{2,3\\}\\}$. Provides the $\\text{IsInClass}$ predicate."
     },
     {
-      "id": "least-primes",
-      "title": "Least Prime in Each Class",
-      "startLine": 48,
-      "endLine": 71,
-      "summary": "Defines $p_r = \\min\\{p : c(p) = r\\}$ and axiomatizes known values: $p_1 = 2$, $p_2 = 13$, $p_3 = 37$, $p_4 = 73$, $p_5 = 1021$ (OEIS A005113). Traces the factorization chain for each: e.g., $1022 = 2 \\cdot 7 \\cdot 73$."
+      "id": "verified-values",
+      "title": "Verified Class Values and Least Primes",
+      "startLine": 93,
+      "endLine": 128,
+      "summary": "Verifies $c(2)=1, c(13)=2, c(37)=3, c(73)=4, c(1021)=5$ by $\\texttt{native\\_decide}$. Confirms least primes $p_r$ from OEIS A005113. All computed without axioms."
     },
     {
-      "id": "existence",
-      "title": "Existence and Infinitude",
-      "startLine": 73,
-      "endLine": 82,
-      "summary": "Proves each class $r \\ge 1$ is nonempty (witnessed by the known $p_r$ values). States the main conjecture: $|\\{p : c(p) = r\\}| = \\infty$ for each $r$. Known for $r = 1$ via Størmer's theorem; open for $r \\ge 2$."
+      "id": "structural",
+      "title": "Structural Properties",
+      "startLine": 130,
+      "endLine": 254,
+      "summary": "Proves key structural results: class monotonicity ($c(q) < c(p)$ for nonSmooth factors), class-1 characterization ($c(p)=1 \\iff p+1$ is $3$-smooth), and positivity ($c(p) \\ge 1$ for primes). All fully proved with 0 sorries."
     },
     {
-      "id": "growth",
-      "title": "Growth Conjectures",
-      "startLine": 84,
-      "endLine": 100,
-      "summary": "States two contradictory conjectures. Erdős: $p_r^{1/r} \\to \\infty$ (superexponential growth of least primes). Selfridge: $p_r^{1/r}$ bounded (at most exponential growth). The data $p_r^{1/r} \\in \\{2, 3.61, 3.33, 2.92, 4.01\\}$ is inconclusive."
-    },
-    {
-      "id": "density",
-      "title": "Density and Contradiction",
-      "startLine": 102,
-      "endLine": 117,
-      "summary": "Proves $|\\{p \\le n : c(p) = r\\}| = n^{o(1)}$ for each fixed $r$: class-$r$ primes have zero relative density. Notes the logical incompatibility of the Erdős and Selfridge conjectures—exactly one must be false."
+      "id": "conjectures",
+      "title": "Main Conjectures (OPEN)",
+      "startLine": 275,
+      "endLine": 305,
+      "summary": "States the OPEN conjectures as axioms: infinitude of each class, Erdős growth conjecture ($p_r^{1/r} \\to \\infty$), Selfridge bounded conjecture ($p_r^{1/r}$ bounded), and subpolynomial density of each class."
     }
   ],
   "overview": {
@@ -105,9 +107,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 198,
+    "lineCount": 305,
     "axiomCount": 4,
-    "theoremCount": 31,
+    "theoremCount": 36,
     "definitionCount": 4
   }
 }
