@@ -234,6 +234,21 @@
       "targetId": "arithmetic-series",
       "relationship": "complementary",
       "description": "The simplest summation formula (∑k = n(n+1)/2) and the simplest infinite sum identity (∑1/n² = π²/6) — both are canonical examples of closed-form evaluation, the first via Gauss's pairing trick and the second via Bernoulli polynomials"
+    },
+    {
+      "targetId": "basel-problem-oq-01",
+      "relationship": "extended-by",
+      "description": "Explores the open question of whether $\\zeta(5)$ is irrational — extending the Basel problem's $\\zeta(2) = \\pi^2/6$ to odd zeta values, where Apéry proved $\\zeta(3)$ irrational (1978) but $\\zeta(5)$ remains unknown"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's product formula $\\zeta(s) = \\prod_p (1 - p^{-s})^{-1}$ connects the Basel problem's $\\zeta(2)$ to prime number theory via the same multiplicative structure that Euler's totient captures — the Euler product is the analytic counterpart to $\\phi(n)$'s arithmetic structure"
+    },
+    {
+      "targetId": "sum-of-kth-powers",
+      "relationship": "related",
+      "description": "Faulhaber's formulas for $\\sum k^p$ involve Bernoulli numbers $B_k$, which also determine $\\zeta(2n) = (-1)^{n+1} (2\\pi)^{2n} B_{2n} / (2(2n)!)$ — the Basel problem's $\\zeta(2) = \\pi^2/6$ is the $n=1$ case with $B_2 = 1/6$"
     }
   ],
   "relatedProofs": [
@@ -248,7 +263,10 @@
     "stirling-formula",
     "infinitude-primes",
     "area-of-circle",
-    "arithmetic-series"
+    "arithmetic-series",
+    "basel-problem-oq-01",
+    "euler-totient",
+    "sum-of-kth-powers"
   ],
   "leanFile": {
     "imports": [

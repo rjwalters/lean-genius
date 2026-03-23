@@ -132,12 +132,36 @@
       "targetId": "binomial-theorem",
       "relationship": "related",
       "description": "The binomial theorem generalizes finite sum identities: ∑C(n,k) = 2^n, while the arithmetic series ∑k = n(n+1)/2 is the simplest non-trivial case of summing polynomial expressions"
+    },
+    {
+      "targetId": "arithmetic-series-oq-02",
+      "relationship": "extended-by",
+      "description": "Generalizes the arithmetic series to simplicial numbers and higher-dimensional arithmetic sums, extending $\\sum k = n(n+1)/2$ to triangular, tetrahedral, and higher simplicial numbers"
+    },
+    {
+      "targetId": "sum-of-kth-powers",
+      "relationship": "extended-by",
+      "description": "Faulhaber's formulas generalize the arithmetic series from $\\sum k$ (degree 1) to $\\sum k^p$ for arbitrary $p$ — the arithmetic series formula $n(n+1)/2$ is the $p=1$ case of Faulhaber's general result"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "complementary",
+      "description": "The harmonic series $\\sum 1/k$ diverges while the arithmetic series $\\sum k$ grows quadratically — contrasting behaviors of the two most fundamental sequences: $k$ (unbounded terms, closed-form sum) vs $1/k$ (vanishing terms, no finite sum)"
+    },
+    {
+      "targetId": "triangular-reciprocals",
+      "relationship": "related",
+      "description": "The reciprocals of triangular numbers $T_n = n(n+1)/2$ telescope to give $\\sum 1/T_n = 2(1 - 1/(n+1))$ — connecting the arithmetic series formula directly to a convergent reciprocal sum via partial fractions"
     }
   ],
   "relatedProofs": [
     "geometric-series",
     "mathematical-induction",
-    "binomial-theorem"
+    "binomial-theorem",
+    "arithmetic-series-oq-02",
+    "sum-of-kth-powers",
+    "harmonic-divergence",
+    "triangular-reciprocals"
   ],
   "references": [
     {
