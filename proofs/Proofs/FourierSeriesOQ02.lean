@@ -120,20 +120,66 @@ axiom fourierCoeff_difference_formula (f : AddCircle T → ℂ) (n : ℤ) (hn : 
         (f x - f (circleTranslate (halfPeriod T n) x)) * fourier (-n) x ∂haarAddCircle
 
 /-- Hölder bound on translation differences:
-    ‖f(x) - f(x + T/(2n))‖ ≤ C · (T/(2|n|))^α -/
-axiom holder_translation_bound (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T → ℂ)
+    ‖f(x) - f(x + T/(2n))‖ ≤ C · (T/(2|n|))^α
+
+    Proof: From HolderWith.dist_le_of_le + quotient norm bound.
+    The key insight is that dist(x, x+↑s) = ‖↑s‖ on AddCircle T,
+    and the quotient norm satisfies ‖↑s‖ ≤ |s| by norm_mk_le_norm. -/
+theorem holder_translation_bound (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T → ℂ)
     (hf : IsHolderOnCircle C α f) (n : ℤ) (hn : n ≠ 0) (x : AddCircle T) :
     ‖f x - f (circleTranslate (halfPeriod T n) x)‖ ≤
-      ↑C * (T / (2 * |↑n|)) ^ (α : ℝ)
+      ↑C * (T / (2 * |↑n|)) ^ (α : ℝ) := by
+  -- Step 1: Bound the distance on AddCircle
+  have hdist : dist x (circleTranslate (halfPeriod T n) x) ≤ T / (2 * |(↑n : ℝ)|) := by
+    unfold circleTranslate halfPeriod
+    simp only [hn, ite_false]
+    -- dist x (x + ↑s) = ‖x - (x + ↑s)‖ = ‖↑s‖ (via norm_sub_rev + add_sub_cancel_left)
+    rw [dist_eq_norm, norm_sub_rev, add_sub_cancel_left]
+    -- ‖(↑s : AddCircle T)‖ ≤ ‖s‖ₐ = |s| by quotient norm bound
+    calc ‖(↑(T / (2 * (↑n : ℝ))) : AddCircle T)‖
+        ≤ ‖T / (2 * (↑n : ℝ))‖ := QuotientAddGroup.norm_mk_le_norm
+      _ = |T / (2 * (↑n : ℝ))| := Real.norm_eq_abs _
+      _ = T / (2 * |(↑n : ℝ)|) := by
+          rw [abs_div, abs_of_pos hT.out, abs_mul,
+            abs_of_pos (show (0 : ℝ) < 2 by norm_num)]
+  -- Step 2: Apply HolderWith.dist_le_of_le to get norm bound
+  have h := hf.dist_le_of_le hdist
+  rwa [dist_eq_norm] at h
 
 /-- The integral of the product is bounded by the Hölder constant.
-    Uses: (1) norm_integral_le_integral_norm, (2) ‖e_{-n}(x)‖ = 1,
-    (3) Hölder bound on difference, (4) probability measure total mass 1. -/
-axiom integral_product_bound (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T → ℂ)
+    Uses: (1) norm_integral_le_of_norm_le_const, (2) ‖e_{-n}(x)‖ = 1,
+    (3) Hölder bound on difference, (4) probability measure total mass 1.
+
+    Proof: Bound ‖g(x)‖ ≤ C·d^α pointwise (where g = (f-f∘τ)·e_{-n}),
+    then integrate the constant bound over the probability space. -/
+theorem integral_product_bound (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T → ℂ)
     (hf : IsHolderOnCircle C α f) (n : ℤ) (hn : n ≠ 0) :
     ‖∫ x : AddCircle T,
       (f x - f (circleTranslate (halfPeriod T n) x)) * fourier (-n) x ∂haarAddCircle‖ ≤
-      ↑C * (T / (2 * |↑n|)) ^ (α : ℝ)
+      ↑C * (T / (2 * |↑n|)) ^ (α : ℝ) := by
+  set bound := ↑C * (T / (2 * |(↑n : ℝ)|)) ^ (↑α : ℝ) with hbound_def
+  -- Pointwise norm bound: ‖(f x - f(x+s)) · e_{-n}(x)‖ ≤ bound
+  have hpointwise : ∀ x : AddCircle T,
+      ‖(f x - f (circleTranslate (halfPeriod T n) x)) * fourier (-n) x‖ ≤ bound := by
+    intro x
+    rw [norm_mul, fourier_norm_one, mul_one]
+    exact holder_translation_bound C α f hf n hn x
+  -- Apply norm_integral_le bound with probability measure
+  calc ‖∫ x : AddCircle T,
+        (f x - f (circleTranslate (halfPeriod T n) x)) * fourier (-n) x ∂haarAddCircle‖
+      ≤ ∫ x : AddCircle T,
+        ‖(f x - f (circleTranslate (halfPeriod T n) x)) * fourier (-n) x‖ ∂haarAddCircle :=
+        norm_integral_le_integral_norm _
+    _ ≤ ∫ _ : AddCircle T, bound ∂haarAddCircle := by
+        apply MeasureTheory.integral_mono_of_nonneg
+        · exact Eventually.of_forall (fun x => norm_nonneg _)
+        · exact integrable_const _
+        · exact Eventually.of_forall (fun x => hpointwise x)
+    _ = bound * (haarAddCircle (Set.univ)).toReal := by
+        rw [MeasureTheory.integral_const]
+        ring
+    _ = bound := by
+        rw [IsProbabilityMeasure.measure_univ, ENNReal.one_toReal, mul_one]
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
