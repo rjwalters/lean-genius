@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/1161",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1161Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 1161,
     "erdosUrl": "https://erdosproblems.com/1161",
     "erdosProblemStatus": "proved",
@@ -59,9 +59,9 @@
         "relationship": "Both problems involve extremal questions about arithmetic and combinatorial functions"
       }
     ],
-    "axiomCount": 0,
-    "lineCount": 285,
-    "assumptions": "No axioms. 2 sorry(s) remain in the formalization."
+    "axiomCount": 2,
+    "lineCount": 343,
+    "assumptions": "2 axioms: beker_characterization and beker_maximizer_achieves (Beker [Be25d], deep combinatorial group theory results). 0 sorries."
   },
   "overview": {
     "historicalContext": "The distribution of permutation orders is a classical topic in probabilistic group theory initiated by Erdős and Turán in their 1965 series of papers. They proved that for a random permutation $\\sigma \\in S_n$, $\\log(\\mathrm{ord}(\\sigma))$ is approximately normally distributed with mean $\\frac{1}{2}(\\log n)^2$ and variance $\\frac{1}{3}(\\log n)^3$—the celebrated Erdős-Turán law.\n\nProblem #1161 asks a different but related question: among all possible orders $k$, which value of $k$ maximizes the count $f_k(n) = |\\{\\sigma \\in S_n : \\mathrm{ord}(\\sigma) = k\\}|$? This was listed as Problem 5.72 in Vardi's \"Computational Recreations in Mathematica\" (1999) and on the Erdős Problems database.\n\nThe problem was resolved by Beker, who proved three precise results: (1) $\\max_{k \\geq 1} f_k(n) \\sim (n-1)!$ as $n \\to \\infty$, meaning the maximum count is asymptotically the number of $(n-1)$-cycles; (2) for large $n$, if $f_k(n) \\geq (n-1)!$ then $\\mathrm{lcm}(1, \\ldots, n-k)$ divides $k$; (3) the maximum is achieved precisely when $k$ is the minimal positive integer satisfying this lcm divisibility condition.\n\nThe connection between the maximizer and the lcm function is surprising and deep, linking the combinatorial structure of cycle types to number-theoretic properties of the least common multiple.\n\n**Status**: SOLVED (Beker [Be25d]).",
