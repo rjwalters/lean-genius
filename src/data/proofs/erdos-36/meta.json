@@ -95,7 +95,32 @@
       "Asymptotic analysis: limit of M(N)/N"
     ],
     "assumptions": "6 axiom declarations: erdos_36_limit_exists (the limit c = lim M(N)/N exists — the main open question), erdos_lower_quarter (Erdős's 1/4 lower bound), scherk_lower (Scherk's 1−1/√2 ≈ 0.293 lower bound via Fourier), white_lower (White's 0.379 lower bound via convex optimization), upper_bound (Haugland's 0.381 upper bound), small_values (computed M(N) for small N). The limit existence and bounds are established results.",
-    "lineCount": 91
+    "lineCount": 91,
+    "leanFile": {
+      "lineCount": 91,
+      "structureCount": 0,
+      "axiomCount": 6,
+      "theoremCount": 0,
+      "lemmaCount": 0,
+      "defCount": 3,
+      "imports": [
+        "Mathlib.Data.Nat.Basic",
+        "Mathlib.Data.Int.Basic",
+        "Mathlib.Data.Finset.Basic",
+        "Mathlib.Data.Real.Basic",
+        "Mathlib.Tactic"
+      ]
+    },
+    "relatedProblems": [
+      {
+        "id": "erdos-335",
+        "relationship": "Related Erdős problem on overlap in set partitions"
+      },
+      {
+        "id": "erdos-66",
+        "relationship": "Related Erdős problem on covering systems and density"
+      }
+    ]
   },
   "leanFile": {
     "imports": [
@@ -229,12 +254,24 @@
       "targetId": "roth-theorem-k3",
       "relationship": "related",
       "description": "Both use Fourier-analytic methods on finite sets of integers. Roth's theorem counts 3-term APs via the Fourier transform; the minimum overlap problem reduces to convex optimization over Fourier coefficients. The same machinery (Parseval's identity, energy bounds) drives both results"
+    },
+    {
+      "targetId": "erdos-35",
+      "relationship": "related",
+      "description": "Both concern additive structure in integer subsets: #35 studies Schnirelmann density and when sets form additive bases (sumsets cover all integers), while #36 studies the unavoidable overlap in equal partitions. Both use density and counting arguments on $\\{1,\\ldots,N\\}$"
+    },
+    {
+      "targetId": "erdos-37",
+      "relationship": "related",
+      "description": "Neighboring Erdős problem on essential components and lacunary sets in additive number theory. Both #36 and #37 probe the structural constraints that additive combinatorics imposes on subsets of integers"
     }
   ],
   "relatedProofs": [
     "erdos-335",
     "erdos-66",
     "erdos-30",
+    "erdos-35",
+    "erdos-37",
     "fourier-series",
     "erdos-1",
     "roth-theorem-k3"
