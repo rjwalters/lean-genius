@@ -71,6 +71,39 @@ private lemma foldl_lcm_pos (init : ℕ) (hinit : 0 < init)
         omega)
     · intro x hx; exact hl x (by simp [hx])
 
+/-- The init divides the foldl lcm result. -/
+private lemma init_dvd_foldl_lcm (init : ℕ) (l : List ℕ) :
+    init ∣ List.foldl Nat.lcm init l := by
+  induction l generalizing init with
+  | nil => exact dvd_refl _
+  | cons x t ih =>
+    simp only [List.foldl_cons]
+    exact dvd_trans (Nat.dvd_lcm_left init x) (ih _)
+
+/-- Each element of a list divides the foldl lcm. -/
+private lemma mem_dvd_foldl_lcm {a : ℕ} {l : List ℕ} (ha : a ∈ l) (init : ℕ) :
+    a ∣ List.foldl Nat.lcm init l := by
+  induction l generalizing init with
+  | nil => simp at ha
+  | cons x t ih =>
+    simp only [List.foldl_cons]
+    rcases List.mem_cons.mp ha with rfl | hmem
+    · exact dvd_trans (Nat.dvd_lcm_right init a) (init_dvd_foldl_lcm _ _)
+    · exact ih hmem _
+
+/-- Each modulus divides the system LCM. -/
+lemma dvd_systemLCM (sys : CongruenceSystem) (n : ℕ) (hn : n ∈ sys.moduli) :
+    n ∣ systemLCM sys := by
+  unfold systemLCM
+  exact mem_dvd_foldl_lcm (Multiset.mem_toList.mpr (Finset.mem_def.mpr hn)) 1
+
+/-- Unfolding coverageDensity without the let binding. -/
+private lemma coverageDensity_eq (sys : CongruenceSystem) :
+    coverageDensity sys =
+      ((Finset.range (systemLCM sys)).filter
+        (fun m => ∃ n ∈ sys.moduli, m % n = sys.residue n % n)).card /
+      (systemLCM sys : ℝ) := rfl
+
 /-- The LCM period is always positive. -/
 lemma systemLCM_pos (sys : CongruenceSystem) : 0 < systemLCM sys := by
   unfold systemLCM
@@ -124,7 +157,10 @@ axiom simpson_theorem (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n) :
     ∀ r : ℕ → ℕ,
       coverageDensity ⟨moduli, (fun _ => 0), hpos⟩ ≤ coverageDensity ⟨moduli, r, hpos⟩
 
-/-- Corollary: the all-equal-residue system achieves minimum density. -/
+/-- Corollary: the all-equal-residue system achieves minimum density.
+    Proof: the coverage set for constant residue a is a cyclic shift of the
+    all-0 set (m ↦ (m+a) % L is a bijection on {0,...,L-1}), preserving cardinality.
+    The modular arithmetic verification requires n | L for each modulus n. -/
 axiom equal_residues_minimize (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n)
     (a : ℕ) :
     coverageDensity ⟨moduli, (fun _ => a), hpos⟩ =
@@ -147,6 +183,64 @@ theorem erdos_278_density_le_one (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli,
 
 -- ## Single Modulus Case
 
+/-- The LCM of a singleton moduli set {n} is just n. -/
+private lemma systemLCM_singleton (n : ℕ) (r : ℕ → ℕ)
+    (hpos : ∀ m ∈ ({n} : Finset ℕ), 0 < m) :
+    systemLCM ⟨{n}, r, hpos⟩ = n := by
+  unfold systemLCM
+  set l := ({n} : Finset ℕ).val.toList with hl_def
+  have hlen : l.length = 1 := by rw [hl_def, Multiset.length_toList]; simp
+  have hmem : n ∈ l := by rw [hl_def, Multiset.mem_toList]; exact Finset.mem_singleton_self n
+  -- l has length 1 and contains n, so l = [n]
+  have hl : l = [n] := by
+    match l, hlen, hmem with
+    | [a], _, ha =>
+      simp only [List.mem_cons, List.not_mem_nil, or_false] at ha
+      rw [ha]
+  rw [hl]
+  simp [Nat.lcm, Nat.gcd_one_left]
+
+/-- For singleton moduli {n}, coverage density is 1/n regardless of residue choice. -/
+private lemma coverageDensity_singleton (n : ℕ) (hn : 0 < n) (r : ℕ → ℕ)
+    (hpos : ∀ m ∈ ({n} : Finset ℕ), 0 < m) :
+    coverageDensity ⟨{n}, r, hpos⟩ = 1 / (n : ℝ) := by
+  rw [coverageDensity_eq, systemLCM_singleton n r hpos]
+  -- After rewrite, struct field accesses reduce: .moduli = {n}, .residue = r
+  -- Goal: card(filter) / n = 1 / n where filter selects m < n with m % n = r n % n
+  suffices hfilt : ((Finset.range n).filter
+      (fun m => ∃ k ∈ ({n} : Finset ℕ), m % k = r k % k)).card = 1 by
+    rw [hfilt]; push_cast; ring
+  -- The filter = {r n % n} since for m < n, m % n = m
+  have hsub : (Finset.range n).filter
+      (fun m => ∃ k ∈ ({n} : Finset ℕ), m % k = r k % k) = {r n % n} := by
+    ext m
+    simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_singleton]
+    constructor
+    · intro ⟨hm, k, hk, hmod⟩
+      -- After simp, hk : k = n
+      subst hk
+      rwa [Nat.mod_eq_of_lt hm] at hmod
+    · intro heq
+      rw [heq]
+      exact ⟨Nat.mod_lt _ hn, n, rfl, Nat.mod_eq_of_lt (Nat.mod_lt _ hn)⟩
+  rw [hsub, Finset.card_singleton]
+
 /-- For a single modulus n, both the max and min density are 1/n. -/
-axiom single_modulus_density (n : ℕ) (hn : 0 < n) :
-    maxCoverageDensity {n} (by intro m hm; simp at hm; rwa [hm]) = 1 / (n : ℝ)
+theorem single_modulus_density (n : ℕ) (hn : 0 < n) :
+    maxCoverageDensity {n} (by intro m hm; simp at hm; rwa [hm]) = 1 / (n : ℝ) := by
+  unfold maxCoverageDensity
+  have hpos : ∀ m ∈ ({n} : Finset ℕ), 0 < m := by intro m hm; simp at hm; rwa [hm]
+  -- All densities in the set equal 1/n
+  have hall : ∀ d ∈ { d : ℝ | ∃ r : ℕ → ℕ, d = coverageDensity ⟨{n}, r, hpos⟩ },
+      d = 1 / (n : ℝ) := by
+    intro d hd
+    obtain ⟨r, rfl⟩ := hd
+    exact coverageDensity_singleton n hn r hpos
+  -- sSup of a set where all elements are c, and the set is nonempty, is c
+  apply le_antisymm
+  · apply csSup_le
+    · exact ⟨_, ⟨fun _ => 0, rfl⟩⟩
+    · intro d hd; rw [hall d hd]
+  · apply le_csSup
+    · exact ⟨1, by rintro d ⟨r, rfl⟩; exact density_le_one _⟩
+    · exact ⟨fun _ => 0, (coverageDensity_singleton n hn _ hpos).symm⟩
